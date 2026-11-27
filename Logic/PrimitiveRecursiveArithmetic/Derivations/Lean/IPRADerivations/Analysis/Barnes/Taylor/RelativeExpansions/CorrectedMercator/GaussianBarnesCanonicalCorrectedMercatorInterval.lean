@@ -26,7 +26,7 @@ open GaussianFastValueCut (exponent query_budget)
 open GaussianGammaCanonicalExponent (constantF constant_regular)
 open GaussianNamedInverseRate (independentRate diagonal_rate)
 open GaussianNameEquivalence (cross_refl cross_symm)
-open GaussianRationalDistanceOrder (distance_congr distance_radius_mono distance_symmetric distance_triangle_same)
+open GaussianRationalDistanceOrder (distance_congr distance_radius_mono distance_symmetric distance_triangle_scaled_left)
 open GaussianRationalFiniteSum (sum)
 open GaussianRationalHorner (positive_product)
 open GaussianRationalMetric (distanceBounded qsub)
@@ -125,16 +125,15 @@ private theorem row_distance (p m z h R B N H i : PTm n) (hs : Γ ⊢[PRAAx] inp
   have hrow := relative_input m z h R B N H i hs
   have hd := GaussianBarnesCanonicalCorrectedMercator.denominator_positive m B k hs.andE₁.andE₁ (zero_lt_succ _)
   have hu := unit_positive (Γ := Γ) p
-  have hdu := positive_product _ _ hd hu
   have observations := GaussianNamedDifference.sample_error L L a b p
     (GaussianBarnesCanonicalLogFactor.regular _ _ _ _ hrow.andE₂.andE₁)
     (GaussianBarnesCanonicalLogFactor.regular _ _ _ _ hrow.andE₁)
-  have first := distance_radius_mono _ _ _ _ (num 6*d) (d*unit p) hu hdu
-    (le_of_eq_add (d := zero) (by ipra_ring)) (distance_symmetric _ _ _ _ hu observations)
   have last := diagonal_rate (Diff L L) constantF (dd a b) (polynomial m z h B k) (numerator m H) d p hd
     (correctionRate m z h R B k H hrow hs.andE₂.andE₂.andE₂.andE₂)
   exact distance_congr (.eqRefl _) (GaussianGammaCanonicalExponent.constant_at p _)
-    (by ipra_ring) (.eqRefl _) (distance_triangle_same _ _ _ _ _ _ hdu first last)
+    (by ipra_ring) (.eqRefl _)
+    (distance_triangle_scaled_left hu hd
+      (distance_symmetric _ _ _ _ hu observations) last)
 
 private theorem finite_rows (p m z h R B N H r : PTm n) (hs : Γ ⊢[PRAAx] input m z h R B N H) :
     let b := GaussianNamedFiniteSumFamily.body L rowBody
@@ -191,8 +190,6 @@ private theorem observation (p m z h R B N H r : PTm n) (hs : Γ ⊢[PRAAx] inpu
   have hz' := GaussianNamedFiniteSumFamily.regular L rowBody r _ (GaussianBarnesCanonicalFiniteLogRows.rows_regular z R B N r hz)
   have hw' := GaussianNamedFiniteSumFamily.regular L rowBody r _ (GaussianBarnesCanonicalFiniteLogRows.rows_regular (add z h) R B N r hw)
   have e := GaussianNamedDifference.sample_error S S x y p hw' hz'
-  have first := distance_radius_mono _ _ _ _ (num 6*D) (D*U) hU (positive_product _ _ dpos hU)
-    (le_of_eq_add (d := zero) (by ipra_ring)) e
   have narrow := distance_radius_mono _ _ _ _ (C*r*U+num 8*D) (D*U)
     (positive_product _ _ dpos hV) (positive_product _ _ dpos hU)
     (by have budget : Γ ⊢[PRAAx] le (r*U) V := query_budget r p
@@ -202,7 +199,7 @@ private theorem observation (p m z h R B N H r : PTm n) (hs : Γ ⊢[PRAAx] inpu
       (GaussianNamedFiniteSumFamily.sample_at L rowBody p r _).eqSymm)
     (.eqRefl _) (.eqRefl _) (.eqRefl _) narrow
   exact distance_congr (.eqRefl _) (.eqRefl _) (by ipra_ring) (.eqRefl _)
-    (distance_triangle_same _ _ _ _ _ _ (positive_product _ _ dpos hU) first last)
+    (distance_triangle_scaled_left hU dpos e last)
 
 theorem rate (m z h R B N H r : PTm n) (hs : Γ ⊢[PRAAx] input m z h R B N H) :
     Γ ⊢[PRAAx] independentRate incrementF constantF (incrementData z h R B N r) (value m z h B N r)

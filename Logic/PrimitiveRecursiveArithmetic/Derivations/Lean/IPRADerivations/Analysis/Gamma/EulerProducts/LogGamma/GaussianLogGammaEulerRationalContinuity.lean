@@ -30,7 +30,7 @@ open GaussianLogGammaEulerTaylorUniform (source)
 open GaussianNameArithmetic (multiply_at multiplyModulus recode_congr)
 open GaussianNamedInverseRate (diagonal_rate independentRate)
 open GaussianNamedLipschitzRate (diagonalDenominator diagonalEnvelope diagonalNumerator)
-open GaussianRationalDistanceOrder (distance_radius_mono distance_symmetric distance_triangle_same)
+open GaussianRationalDistanceOrder (distance_symmetric distance_triangle_scaled_left)
 open GaussianRationalHorner (positive_product qmul)
 open GaussianRationalMetric (bounded bounded_of_cleared distanceBounded qsub)
 open GaussianRationalReciprocal (bound_congr bounded_product)
@@ -131,12 +131,10 @@ theorem diagonal_at (p A B neg a b sign D H K C : PTm n)
   have hx := GaussianLogGammaEulerCofinal.canonical_regular a b D sign h.andE₂.andE₁
   have hy := GaussianLogGammaEulerCofinal.canonical_regular A B D neg h.andE₁
   have sample := distance_symmetric _ _ _ _ hU (GaussianNamedDifference.sample_error F F x y p hx hy)
-  have first : Γ ⊢[PRAAx] distanceBounded raw (ap2 incrementF p i) (num 6*(D*D)) Q :=
-    distance_radius_mono _ _ _ _ _ _ hU hQ (le_of_eq_add (d := zero) (by dsimp only [Q]; ipra_ring)) sample
   have taylor := diagonal_rate incrementF weightedF i w (coefficient H K) (D*D) p hDD
     (GaussianLogGammaEulerTaylorUniform.independent_rate A B neg a b sign D H K C h)
   have fromSlope : Γ ⊢[PRAAx] distanceBounded raw (ap2 weightedF p w) P Q :=
-    distance_triangle_same raw (ap2 incrementF p i) (ap2 weightedF p w) _ _ Q hQ first taylor
+    distance_triangle_scaled_left hU hDD sample taylor
   have size := norm_from_distance raw (ap2 weightedF p w) P Q (H*bound C K) D hQ hD fromSlope
     (weighted_bound p A B neg a b sign D H K C h)
   exact bounded_radius_mono raw (P*D+H*bound C K*Q) (Q*D)

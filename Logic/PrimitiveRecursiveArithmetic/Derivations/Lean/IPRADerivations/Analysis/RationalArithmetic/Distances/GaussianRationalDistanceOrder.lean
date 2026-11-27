@@ -153,6 +153,16 @@ theorem distance_triangle_same (z y w A C B : PTm n)
     (le_congr (.eqRefl _) (by ipra_ring) (le_refl _))
     (GaussianReconstructionRoots.distance_triangle _ _ _ _ _ _ _ hB hB hzy hyw)
 
+/-- Add a distance bound to one whose denominator contains the first denominator. -/
+theorem distance_triangle_scaled_left {x y z A B C D : PTm n}
+    (hB : Γ ⊢[PRAAx] le one B) (hD : Γ ⊢[PRAAx] le one D)
+    (left : Γ ⊢[PRAAx] distanceBounded x y A B)
+    (right : Γ ⊢[PRAAx] distanceBounded y z C (D*B)) :
+    Γ ⊢[PRAAx] distanceBounded x z (A*D+C) (D*B) := by
+  have den := positive_product _ _ hD hB
+  exact distance_triangle_same _ _ _ _ _ _ den
+    (distance_radius_mono _ _ _ _ _ _ hB den (le_of_eq_add (d := zero) (by ipra_ring)) left) right
+
 /-- Compare two observations through approximating model values at a common observation denominator. -/
 theorem distance_from_model_comparison {x y u v : PTm n} (A D U L M : PTm n)
     (hD : Γ ⊢[PRAAx] le one D) (hU : Γ ⊢[PRAAx] le one U)

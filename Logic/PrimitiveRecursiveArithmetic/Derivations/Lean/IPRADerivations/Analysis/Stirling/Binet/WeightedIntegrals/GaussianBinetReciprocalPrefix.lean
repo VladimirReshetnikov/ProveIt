@@ -21,7 +21,7 @@ open GaussianLogGammaEulerHead (argument shifted_source)
 open GaussianLogGammaEulerReciprocalSlope (reciprocalSum row_at rowBody)
 open GaussianLogGammaEulerRepresentation (subst_argument)
 open GaussianNamedInverseRate (diagonal_rate)
-open GaussianRationalDistanceOrder (distance_congr distance_radius_mono distance_symmetric distance_triangle_same)
+open GaussianRationalDistanceOrder (distance_congr distance_radius_mono distance_symmetric distance_triangle_scaled_left)
 open GaussianRationalHorner (qadd qzero)
 open GaussianRationalHorner (positive_product)
 open GaussianRationalMetric (distanceBounded qsub)
@@ -79,7 +79,6 @@ private theorem cell (p A B D neg k : PTm n) (h : Γ ⊢[PRAAx] source A D neg) 
   let U := unit p
   have he := budget_positive A D k neg h
   have hu := unit_positive (Γ := Γ) p
-  have hD := positive_product _ _ he hu
   have named := diagonal_rate f constantF x z (D*D) E p he (GaussianBinetLogCellComparison.independent_rate A B D neg k h)
   have obs := distance_congr (.eqRefl _) (constant_at p z) (.eqRefl _) (.eqRefl _) named
   let a := qsub (sample p A B D neg (k+one)) (sample p A B D neg k)
@@ -87,11 +86,9 @@ private theorem cell (p A B D neg k : PTm n) (h : Γ ⊢[PRAAx] source A D neg) 
   have raw : Γ ⊢[PRAAx] distanceBounded b a (num 6) U := GaussianNamedDifference.sample_error L L _ _ p
     (GaussianRightHalfPlaneLogarithm.regular _ _ _ _ (shifted_source (k+one) A D neg h))
     (GaussianRightHalfPlaneLogarithm.regular _ _ _ _ (shifted_source k A D neg h))
-  have first := distance_radius_mono a b _ U (num 6*E) (E*U) hu hD (by ipra_le 0)
-    (distance_symmetric _ _ _ _ hu raw)
   have cast := code_congr (Γ := Γ) p A B D neg (k+one) (succ k) (by ipra_ring)
   exact distance_congr (qsub_congr cast (.eqRefl _)) (.eqRefl _) (by ipra_ring) (.eqRefl _)
-    (distance_triangle_same a b z _ _ (E*U) hD first obs)
+    (distance_triangle_scaled_left hu he (distance_symmetric _ _ _ _ hu raw) obs)
 
 private theorem zero_case (p A B D neg : PTm n) (h : Γ ⊢[PRAAx] source A D neg) : Γ ⊢[PRAAx] law p A B D neg zero := by
   let den := denominator p A D zero

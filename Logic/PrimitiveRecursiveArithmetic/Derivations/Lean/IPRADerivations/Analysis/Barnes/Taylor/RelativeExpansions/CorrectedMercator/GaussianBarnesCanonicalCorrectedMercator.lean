@@ -24,8 +24,8 @@ open GaussianCoefficientNameBounds (unit unit_positive)
 open GaussianDominantPairAlgebra (radiusPoint radius_bounded)
 open GaussianGammaCanonicalExponent (constantF constant_at)
 open GaussianNameArithmetic (sum_difference sum_distance)
-open GaussianNamedInverseRate (independentRate rate_at rateNumerator rateDenominator)
-open GaussianRationalDistanceOrder (distance_congr distance_radius_mono distance_triangle_same distance_symmetric)
+open GaussianNamedInverseRate (diagonal_rate independentRate)
+open GaussianRationalDistanceOrder (distance_congr distance_radius_mono distance_triangle_same distance_symmetric distance_triangle_scaled_left)
 open GaussianRationalHorner (qadd qmul positive_product)
 open GaussianRationalMetric (distanceBounded qsub)
 open GaussianRationalPowerDifference (distance_refl_zero)
@@ -109,18 +109,11 @@ private theorem ordinary_raw (p m z h R B k H : PTm n) (hs : Γ ⊢[PRAAx] sourc
     positive_product _ _ (scale_denominator_positive m B hs.andE₁.andE₁)
       (GaussianFactorBudget.power_positive _ _ hs.andE₁.andE₂.andE₁)
   have hU := unit_positive (Γ := Γ) p
-  have hW := positive_product D U hD hU
   have diff := distance_symmetric _ _ _ _ hU (GaussianNamedDifference.sample_error L L x y p hX hY)
-  have raw := rate_at Inc constantF (incd z h R B k) (Rel m z h B k) C D p p
+  have rate := diagonal_rate Inc constantF (incd z h R B k) (Rel m z h B k) C D p hD
     (GaussianBarnesCanonicalRelativeMercatorRemainder.power_rate m z h R B k H hs)
-  have first := distance_radius_mono _ _ _ _ (num 6*D) (D*U) hU hW
-    (le_of_eq_add (d := zero) (by ipra_ring)) diff
-  have middle := distance_radius_mono _ _ _ _ (C*U+two*D) (D*U)
-    (GaussianNamedInverseRate.denominator_positive D p p hD) hW
-    (le_of_eq_add (d := zero) (by dsimp only [rateNumerator,rateDenominator,U]; ipra_ring)) raw
-  have last := distance_congr (.eqRefl _) (constant_at p (Rel m z h B k)) (.eqRefl _) (.eqRefl _) middle
-  exact distance_congr (.eqRefl _) (.eqRefl _) (by ipra_ring) (.eqRefl _)
-    (distance_triangle_same _ _ _ _ _ _ hW first last)
+  exact distance_congr (.eqRefl _) (constant_at p (Rel m z h B k)) (by ipra_ring) (.eqRefl _)
+    (distance_triangle_scaled_left hU hD diff rate)
 
 private theorem weighted_budget (p t m B k H : PTm n) (hp : Γ ⊢[PRAAx] le p t)
     (hm : Γ ⊢[PRAAx] le two m) (hk : Γ ⊢[PRAAx] le one k) :
