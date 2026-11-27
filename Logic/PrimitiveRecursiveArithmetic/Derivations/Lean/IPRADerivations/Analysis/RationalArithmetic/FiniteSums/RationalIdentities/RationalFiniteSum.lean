@@ -95,12 +95,9 @@ theorem denominator_succ (A : PTm 2) (N x : PTm n) :
   simpa only [denominatorBody_at] using h
 
 theorem denominator_positive (A : PTm 2) (N x : PTm n) : Γ ⊢[PRAAx] le one (denominator A N x) := by
-  have pos : Γ ⊢[PRAAx] denominator A N x ≐ succ (PTm.pred (denominator A N x)) := by
-    apply prod_pos_bounded (denominatorBody A) x N
-    refine .allI (.impI ?_)
-    rw [denominatorBody_at]
-    exact RationalIntegerNormalization.positive_form (RationalArgmin.denominator_positive _)
-  exact le_congr (.eqRefl _) pos.eqSymm (zero_lt_succ _)
+  refine prod_one_le_bounded (denominatorBody A) x N (.allI (.impI ?_))
+  rw [denominatorBody_at]
+  exact RationalArgmin.denominator_positive _
 
 /-- The actual signed numerator has the ordinary rational addition recurrence. -/
 theorem numerator_succ (A : PTm 2) (N x : PTm n) :

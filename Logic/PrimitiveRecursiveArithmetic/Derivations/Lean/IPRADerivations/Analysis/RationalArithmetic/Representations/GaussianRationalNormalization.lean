@@ -74,10 +74,9 @@ theorem denominatorBody_positive (i P : PTm n) : Γ ⊢[PRAAx]
   exact RationalIntegerNormalization.positive_form (point_denominator_positive _)
 
 theorem denominator_positive (P : PTm n) : Γ ⊢[PRAAx] le one (denominator P) := by
-  have pos : Γ ⊢[PRAAx] denominator P ≐ succ (PTm.pred (denominator P)) := by
-    apply prod_pos_bounded denominatorBody P (length P)
-    exact .allI (.impI (denominatorBody_positive _ _))
-  exact le_congr (.eqRefl _) pos.eqSymm (zero_lt_succ _)
+  refine prod_one_le_bounded denominatorBody P (length P) (.allI (.impI ?_))
+  rw [denominatorBody_at]
+  exact point_denominator_positive _
 
 theorem denominator_empty (P : PTm n) (h : Γ ⊢[PRAAx] length P ≐ zero) : Γ ⊢[PRAAx] denominator P ≐ one :=
   (congrAp2 (prodF denominatorBody) h (.eqRefl _)).eqTrans (prod_zero _ _)

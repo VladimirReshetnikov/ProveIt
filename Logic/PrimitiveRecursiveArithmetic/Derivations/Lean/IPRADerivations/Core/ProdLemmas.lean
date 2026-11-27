@@ -1,4 +1,5 @@
 import IPRADerivations.Core.SumLemmas
+import IPRADerivations.Core.CommonLemmas
 
 /-!
 # Bounded products
@@ -10,6 +11,7 @@ Product counterparts of the sum tools of `Core/SumLemmas`, for `∏_{i<N} f(i, x
 * `prod_one`: `∏_{i<N} 1 = 1`;
 * `prod_const_of`: if `h(i, y) = C` for `i < N`, then `∏_{i<N} h(i, y) = C^N`;
 * `prod_pos_bounded`: a product of positive factors is positive;
+* `prod_one_le_bounded`: a product of factors at least one is at least one;
 * `prod_zero_of`: a zero factor below the bound makes the product zero;
 * `pos_of_eq_succ`, `pos_mul'`: positivity helpers (`a > 0` is written `a = succ (pred a)`).
 -/
@@ -99,6 +101,13 @@ theorem prod_pos_bounded (f : PTm 2) (x N : PTm n)
       have product := pos_mul' (Prf.hyp1 : C ⊢[PRAAx] P) (.impE h.allOpen.wk.wk Prf.hyp0)
       exact pos_of_eq_succ ((prod_succ f (var 0) _).eqTrans product)
   simpa [P] using atBound
+
+/-- A product of factors at least one is at least one. -/
+theorem prod_one_le_bounded (f : PTm 2) (x N : PTm n)
+    (h : Γ ⊢[PRAAx] Fm.all (lt (var 0) (Syn.shift N) ⟶ le one (inst2 f (var 0) (Syn.shift x)))) :
+    Γ ⊢[PRAAx] le one (ap2 (prodF f) N x) := by
+  refine Common.one_le_of_pos (prod_pos_bounded f x N (.allI (.impI ?_)))
+  exact Common.pos_of_one_le (.impE h.allOpen.wk Prf.hyp0)
 
 /-! ## A zero factor -/
 

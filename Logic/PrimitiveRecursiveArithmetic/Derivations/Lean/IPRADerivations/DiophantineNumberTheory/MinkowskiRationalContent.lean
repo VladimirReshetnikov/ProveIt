@@ -86,16 +86,13 @@ theorem partialCount_succ (N B j k : PTm n) (hk : Γ ⊢[PRAAx] lt k N) :
 
 /-- Positivity uses the original rational endpoint denominators only. -/
 theorem box_denominator_positive (N B j : PTm n) : Γ ⊢[PRAAx] le one (boxDenominator N B j) := by
-  have positive : Γ ⊢[PRAAx] boxDenominator N B j ≐ succ (PTm.pred (boxDenominator N B j)) := by
-    apply prod_pos_bounded denominatorBody (pairT B j) N
-    refine .allI (.impI ?_)
-    have hp : Γ.map Fm.shift ⊢[PRAAx] le one (widthDenominator (Syn.shift B) (Syn.shift j) (var 0)) :=
-      MinkowskiRationalBoxes.widthDenominator_positive _ _ _
-    have ep : lt (var 0) (Syn.shift N) :: Γ.map Fm.shift ⊢[PRAAx]
-        inst2 denominatorBody (var 0) (Syn.shift (pairT B j)) ≐ widthDenominator (Syn.shift B) (Syn.shift j) (var 0) := by
-      simpa only [Syn.shift, subst_pairT] using denominatorBody_at (Syn.shift B) (Syn.shift j) (var 0)
-    exact pos_of_eq_succ (ep.eqTrans (SignedEuclidean.positive_form _ hp.wk))
-  exact le_congr (.eqRefl _) positive.eqSymm (zero_lt_succ _)
+  refine prod_one_le_bounded denominatorBody (pairT B j) N (.allI (.impI ?_))
+  have hp : Γ.map Fm.shift ⊢[PRAAx] le one (widthDenominator (Syn.shift B) (Syn.shift j) (var 0)) :=
+    MinkowskiRationalBoxes.widthDenominator_positive _ _ _
+  have ep : lt (var 0) (Syn.shift N) :: Γ.map Fm.shift ⊢[PRAAx]
+      inst2 denominatorBody (var 0) (Syn.shift (pairT B j)) ≐ widthDenominator (Syn.shift B) (Syn.shift j) (var 0) := by
+    simpa only [Syn.shift, subst_pairT] using denominatorBody_at (Syn.shift B) (Syn.shift j) (var 0)
+  exact le_congr (.eqRefl _) ep.eqSymm hp.wk
 
 /-- The induction invariant contains only natural order and one equation of
 actual PR products. No induction on a quantified box correctness predicate. -/

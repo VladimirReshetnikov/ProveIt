@@ -110,13 +110,10 @@ theorem prefix_succ (N A j : PTm n) : Γ ⊢[PRAAx]
   simpa only [factorBody_at] using h
 
 theorem prefix_positive (N A j : PTm n) : Γ ⊢[PRAAx] le one (prefixProduct N A j) := by
-  have pos : Γ ⊢[PRAAx] prefixProduct N A j ≐ succ (PTm.pred (prefixProduct N A j)) := by
-    apply prod_pos_bounded factorBody (pairT N A) j
-    refine .allI (.impI ?_)
-    simp only [Syn.shift,subst_pairT]
-    rw [factorBody_at]
-    exact positive_form (factor_positive _ _ _)
-  exact le_congr (.eqRefl _) pos.eqSymm (zero_lt_succ _)
+  refine prod_one_le_bounded factorBody (pairT N A) j (.allI (.impI ?_))
+  simp only [Syn.shift, subst_pairT]
+  rw [factorBody_at]
+  exact factor_positive _ _ _
 
 theorem prefix_step_monotone (N A j : PTm n) : Γ ⊢[PRAAx]
     le (prefixProduct N A j) (prefixProduct N A (succ j)) :=

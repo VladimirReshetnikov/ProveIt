@@ -71,17 +71,14 @@ theorem positive_prefix (N W k : PTm n) (h : Γ ⊢[PRAAx] positive N W)
 
 theorem count_positive (N W : PTm n) (h : Γ ⊢[PRAAx] positive N W) :
     Γ ⊢[PRAAx] le one (count N W) := by
-  have prodpos : Γ ⊢[PRAAx] count N W ≐ succ (pred (count N W)) := by
-    apply prod_pos_bounded widthBody W N
-    refine .allI (.impI ?_)
-    have pos : Γ.map Fm.shift ⊢[PRAAx] positive (Syn.shift N) (Syn.shift W) := by
-      simpa only [Fm.shift, subst_positive, Syn.shift] using h.shift
-    have hp : lt (var 0) (Syn.shift N) :: Γ.map Fm.shift ⊢[PRAAx]
-        entry (Syn.shift W) (var 0) ≐ succ (pred (entry (Syn.shift W) (var 0))) :=
-      positive_form _ (positive_at (Syn.shift N) (Syn.shift W) (var 0) pos.wk Prf.hyp0)
-    simpa only [widthBody, inst2, subst_entry, Syn.subst_var, Matrix.cons_val_zero,
-      Matrix.cons_val_one] using hp
-  exact le_congr (.eqRefl _) prodpos.eqSymm (zero_lt_succ _)
+  refine prod_one_le_bounded widthBody W N (.allI (.impI ?_))
+  have pos : Γ.map Fm.shift ⊢[PRAAx] positive (Syn.shift N) (Syn.shift W) := by
+    simpa only [Fm.shift, subst_positive, Syn.shift] using h.shift
+  have hp : lt (var 0) (Syn.shift N) :: Γ.map Fm.shift ⊢[PRAAx]
+      le one (entry (Syn.shift W) (var 0)) :=
+    positive_at (Syn.shift N) (Syn.shift W) (var 0) pos.wk Prf.hyp0
+  simpa only [widthBody, inst2, subst_entry, Syn.subst_var, Matrix.cons_val_zero,
+    Matrix.cons_val_one] using hp
 
 /-- Division below a positive divisor returns the original remainder. -/
 theorem rem_small (i P : PTm n) (hP : Γ ⊢[PRAAx] le one P)

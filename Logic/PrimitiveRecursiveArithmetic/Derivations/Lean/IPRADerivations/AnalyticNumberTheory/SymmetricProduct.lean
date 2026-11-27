@@ -36,9 +36,8 @@ theorem inst2_shift (f : PTm 2) (a b : PTm n) :
 /-- Factors `≥ 1` give a product `≥ 1`. -/
 theorem prod_pos {f : PTm 2} {N x : PTm n}
     (h : Γ ⊢[PRAAx] Fm.all (lt (var 0) (Syn.shift N) ⟶ le one (inst2 f (var 0) (Syn.shift x)))) :
-    Γ ⊢[PRAAx] le one (ap2 (prodF f) N x) := by
-  refine Common.one_le_of_pos (prod_pos_bounded f x N (.allI (.impI ?_)))
-  exact Common.pos_of_one_le (.impE h.allOpen.wk Prf.hyp0)
+    Γ ⊢[PRAAx] le one (ap2 (prodF f) N x) :=
+  prod_one_le_bounded f x N h
 
 /-- One zero factor makes the product zero. -/
 theorem prod_zero_at {f : PTm 2} {N x j : PTm n} (hj : Γ ⊢[PRAAx] lt j N)

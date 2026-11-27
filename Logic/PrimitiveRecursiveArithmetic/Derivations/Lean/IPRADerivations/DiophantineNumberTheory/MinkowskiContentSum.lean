@@ -19,7 +19,6 @@ namespace LeanProofs.IPRA.DiophantineNumberTheory.MinkowskiContentSum
 
 open_ipra exports
 open LeanProofs.IPRA.Analysis.RationalIntegerNormalization (positive_form)
-open LeanProofs.IPRA.DiophantineNumberTheory.Coprime (one_le_of_pos)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
@@ -111,13 +110,8 @@ theorem sum_clearing (C P Q : PTm 2) (N K x : PTm n)
   simpa [inv] using atBound
 
 theorem denominator_positive (Q : PTm 2) (N x : PTm n)
-    (h : Γ ⊢[PRAAx] positiveDenominators Q N x) : Γ ⊢[PRAAx] le one (denominator Q N x) := by
-  apply one_le_of_pos
-  apply prod_pos_bounded Q x N
-  refine .allI (.impI ?_)
-  have all := h.allOpen
-  have pos := Prf.impE all.wk Prf.hyp0
-  exact positive_form pos
+    (h : Γ ⊢[PRAAx] positiveDenominators Q N x) : Γ ⊢[PRAAx] le one (denominator Q N x) :=
+  prod_one_le_bounded Q x N h
 
 /-- The strict rational threshold yields the actual integer count
 threshold. Positivity of `K` is explicit, since it will be `m^n`. -/
