@@ -27,15 +27,13 @@ open GaussianRelativeNormTriangle (signed_le_absolute)
 open LeanProofs.IPRA.AnalyticNumberTheory.PhiLower (le_mul_mono)
 open LeanProofs.IPRA.Foundations.GapDecision (zabs)
 open RationalGaussianEmbedding (scalarZero scalar_zero_represents)
-open GaussianRationalMetric (qsub qsub_canonical distanceBounded bounded)
-open GaussianRationalLowerBounds (lower name_lower inverse_bound)
-open GaussianNameReciprocal (lower_norm_positive)
-open GaussianRationalReciprocal (qone reciprocal reciprocal_identity bound_congr bounded_product)
+open GaussianRationalMetric (qsub qsub_canonical distanceBounded)
+open GaussianRationalLowerBounds (lower cancel_bounded_product)
+open GaussianRationalReciprocal (bound_congr)
 open GaussianRationalPowerAlgebra (qmul_commutative)
 open GaussianRationalPowerDifference (product_difference)
-open GaussianRationalSyntheticDivision (qadd_congr qmul_congr)
+open GaussianRationalSyntheticDivision (qadd_congr)
 open GaussianRationalCoefficientScaling (qmul_add)
-open GaussianReciprocalHorner (qmul_associative qmul_one_right)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 local notation "𝔞" t:max => Groth.ι (IPRA.Q.mk Γ t)
@@ -46,22 +44,20 @@ theorem difference_factorization (a b : PTm n) :
     ((qadd_congr (.eqRefl _) (qmul_commutative b (qsub a b))).eqTrans
       (qmul_add (qsub a b) a b).eqSymm)
 
+/-- Cancel the difference of two squares using a `1/B` lower bound on their sum. -/
+theorem cancel_square_scaled (a b E K B : PTm n) (hK : Γ ⊢[PRAAx] le one K)
+    (hB : Γ ⊢[PRAAx] le one B) (hL : Γ ⊢[PRAAx] lower (qadd a b) one B)
+    (h : Γ ⊢[PRAAx] distanceBounded (qmul a a) (qmul b b) E K) :
+    Γ ⊢[PRAAx] distanceBounded a b (E*B) K :=
+  cancel_bounded_product (qsub a b) (qadd a b) E K B (qsub_canonical a b) hK hB hL
+    (bound_congr (difference_factorization a b) (.eqRefl _) (.eqRefl _) h)
+
 theorem cancel_square (a b E K : PTm n) (hK : Γ ⊢[PRAAx] le one K)
     (hL : Γ ⊢[PRAAx] lower (qadd a b) one one)
     (h : Γ ⊢[PRAAx] distanceBounded (qmul a a) (qmul b b) E K) :
-    Γ ⊢[PRAAx] distanceBounded a b E K := by
-  let S := qadd a b
-  let d := qsub a b
-  let v := reciprocal S
-  have iv : Γ ⊢[PRAAx] bounded v one one := inverse_bound S one one (le_refl _) (le_refl _) hL
-  have si : Γ ⊢[PRAAx] qmul S v ≐ qone :=
-    reciprocal_identity S (lower_norm_positive S one (le_refl _) (name_lower _ _ _ (le_refl _) (le_refl _) hL))
-  have hd : Γ ⊢[PRAAx] bounded (qmul d S) E K :=
-    bound_congr (difference_factorization a b) (.eqRefl _) (.eqRefl _) h
-  have e : Γ ⊢[PRAAx] qmul (qmul d S) v ≐ d :=
-    (qmul_associative _ _ _).eqTrans ((qmul_congr (.eqRefl d) si).eqTrans
-      (qmul_one_right d (qsub_canonical a b)))
-  exact bound_congr e (by ipra_ring) (by ipra_ring) (bounded_product _ _ _ _ _ _ hK (le_refl one) hd iv)
+    Γ ⊢[PRAAx] distanceBounded a b E K :=
+  bound_congr (.eqRefl _) (by ipra_ring) (.eqRefl _)
+    (cancel_square_scaled a b E K one hK (le_refl one) hL h)
 
 theorem natural_sum_lower (m q : PTm n) (hm : Γ ⊢[PRAAx] le one m)
     (hq : Γ ⊢[PRAAx] RationalArgmin.rationalLE scalarZero (fstT q)) :

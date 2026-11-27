@@ -16,7 +16,10 @@ namespace LeanProofs.IPRA.Analysis.GaussianRationalLowerBounds
 
 open_ipra
 open LeanProofs.IPRA.AnalyticNumberTheory.PhiLower (le_mul_mono)
-open GaussianRationalHorner (represents positive_product)
+open GaussianRationalHorner (represents positive_product canonical qmul)
+open GaussianRationalReciprocal (reciprocal qone reciprocal_identity bound_congr bounded_product)
+open GaussianRationalSyntheticDivision (qmul_congr)
+open GaussianReciprocalHorner (qmul_associative qmul_one_right)
 open GaussianRationalL1 (rawGaussian rawDen raw_represents raw_den_positive)
 open GaussianRationalMetric (qnormSq squaredTolerance bounded)
 open ComplexLogarithmRemainder (normSq)
@@ -88,6 +91,17 @@ theorem inverse_bound (q A B : PTm n) (hA : Γ ⊢[PRAAx] le one A) (hB : Γ ⊢
     ipra_simps
     rw [e]
     ring) (by unfold GaussianRationalReciprocal.normNumerator; ipra_ring) main
+
+/-- Cancel a factor whose norm is at least `1/B`, multiplying the error by `B`. -/
+theorem cancel_bounded_product (d q E K B : PTm n) (hd : Γ ⊢[PRAAx] canonical d)
+    (hK : Γ ⊢[PRAAx] le one K) (hB : Γ ⊢[PRAAx] le one B) (hq : Γ ⊢[PRAAx] lower q one B)
+    (h : Γ ⊢[PRAAx] bounded (qmul d q) E K) : Γ ⊢[PRAAx] bounded d (E*B) K := by
+  have inv := inverse_bound q one B (le_refl one) hB hq
+  have unit : Γ ⊢[PRAAx] qmul q (reciprocal q) ≐ qone :=
+    reciprocal_identity q (GaussianNameReciprocal.lower_norm_positive q B hB hq)
+  have cancel : Γ ⊢[PRAAx] qmul (qmul d q) (reciprocal q) ≐ d :=
+    (qmul_associative _ _ _).eqTrans ((qmul_congr (.eqRefl d) unit).eqTrans (qmul_one_right d hd))
+  exact bound_congr cancel (.eqRefl _) (by ipra_ring) (bounded_product _ _ _ _ _ _ hK (le_refl one) h inv)
 
 theorem original_rational_gaussian_lower_product_closed : ([] : List (Fm PTm 0)) ⊢[PRAAx] univ 6
     (le one (var 3) ⟶ le one (var 5) ⟶ lower (var 0) (var 2) (var 3) ⟶ lower (var 1) (var 4) (var 5) ⟶

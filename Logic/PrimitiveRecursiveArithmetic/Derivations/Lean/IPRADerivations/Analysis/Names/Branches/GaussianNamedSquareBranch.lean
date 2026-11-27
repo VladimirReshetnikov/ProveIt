@@ -25,33 +25,12 @@ open GaussianNameEquivalence (crossEquivalent cross_to_diagonal diagonal_at poin
 open GaussianNameRingLaws (equivalent_of_envelope multiply_sample_error)
 open GaussianRationalHorner (qadd qmul)
 open GaussianRationalLowerBounds (lower)
-open GaussianRationalMetric (bounded distanceBounded qsub)
+open GaussianRationalMetric (distanceBounded)
 open GaussianRationalDistanceOrder (distance_radius_mono distance_symmetric distance_triangle_same)
-open GaussianRationalReciprocal (bound_congr bounded_product reciprocal reciprocal_identity qone)
-open GaussianRationalSyntheticDivision (qmul_congr)
-open GaussianReciprocalHorner (qmul_associative qmul_one_right)
+open GaussianRationalSquareCancellation (cancel_square_scaled)
 open GaussianNameReciprocal (apart anchor R)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
-
-private theorem rational_cancel (a b E K B : PTm n)
-    (hK : Γ ⊢[PRAAx] le one K) (hB : Γ ⊢[PRAAx] le one B)
-    (hL : Γ ⊢[PRAAx] lower (qadd a b) one B)
-    (h : Γ ⊢[PRAAx] distanceBounded (qmul a a) (qmul b b) E K) :
-    Γ ⊢[PRAAx] distanceBounded a b (E*B) K := by
-  let S := qadd a b
-  let d := qsub a b
-  let inv := reciprocal S
-  have ib : Γ ⊢[PRAAx] bounded inv B one :=
-    GaussianRationalLowerBounds.inverse_bound S one B (le_refl _) hB hL
-  have si : Γ ⊢[PRAAx] qmul S inv ≐ qone :=
-    reciprocal_identity S (GaussianNameReciprocal.lower_norm_positive S B hB hL)
-  have hd : Γ ⊢[PRAAx] bounded (qmul d S) E K :=
-    bound_congr (GaussianRationalSquareCancellation.difference_factorization a b) (.eqRefl _) (.eqRefl _) h
-  have e : Γ ⊢[PRAAx] qmul (qmul d S) inv ≐ d :=
-    (qmul_associative _ _ _).eqTrans ((qmul_congr (.eqRefl d) si).eqTrans
-      (qmul_one_right d (GaussianRationalMetric.qsub_canonical a b)))
-  exact bound_congr e (.eqRefl _) (by ipra_ring) (bounded_product _ _ _ _ _ _ hK (le_refl _) hd ib)
 
 def squareBudget (f g : PR 2) (x y : PTm n) : PTm n :=
   (((multiplyModulus f f x x+one)+two)+(multiplyModulus g g y y+one))
@@ -88,7 +67,7 @@ theorem sample_distance (f g : PR 2) (x y h p : PTm n)
   have lowerSum : Γ ⊢[PRAAx] lower (qadd (ap2 f k x) (ap2 g k y)) one (R h) :=
     GaussianRationalLowerBounds.lower_congr (add_sample f g x y j) (.eqRefl _) (.eqRefl _)
       (GaussianNameReciprocal.tail_lower (addF f g) h (addData x y) p (add_fast f g x y hf hg) ha)
-  have raw := rational_cancel _ _ _ _ _ hk (GaussianNameReciprocal.R_positive h) lowerSum
+  have raw := cancel_square_scaled _ _ _ _ _ hk (GaussianNameReciprocal.R_positive h) lowerSum
     (raw_squares f g x y k hf hg hs)
   let A := squareBudget f g x y*R h
   have close : Γ ⊢[PRAAx] distanceBounded (ap2 f k x) (ap2 g k y) A (unit p) :=

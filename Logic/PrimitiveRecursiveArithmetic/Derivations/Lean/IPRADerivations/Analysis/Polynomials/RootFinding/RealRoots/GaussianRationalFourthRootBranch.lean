@@ -20,10 +20,10 @@ open GaussianArctangentCayleyValues (imaginaryPoint imaginaryCode)
 open GaussianCoefficientNameBounds (bounded_radius_mono)
 open GaussianRationalHorner (qmul qadd canonical positive_product ofGaussian_represents ofGaussian_canonical
   represents canonical_unique represents_congr)
-open GaussianRationalLowerBounds (lower lower_congr product_lower inverse_bound name_lower)
+open GaussianRationalLowerBounds (lower lower_congr product_lower cancel_bounded_product)
 open GaussianRationalMetric (bounded distanceBounded qsub qnegative qnegative_represents qsub_represents
   bounded_difference_iff qsub_canonical qnegative_canonical)
-open GaussianRationalReciprocal (qone reciprocal reciprocal_identity bound_congr bounded_product)
+open GaussianRationalReciprocal (qone bound_congr)
 open GaussianRationalDistanceOrder (distance_radius_mono distance_symmetric)
 open GaussianRationalSyntheticDivision (qone_canonical qmul_congr qsub_congr qadd_congr)
 open GaussianRationalSquareCancellation (difference_factorization)
@@ -128,12 +128,7 @@ theorem cancel_fourth (q A B : PTm n) (hB : Γ ⊢[PRAAx] le one B)
   let r := qmul q q
   let S := qmul (qadd q qone) (qadd r qone)
   let d := qsub q qone
-  let v := reciprocal S
   have hp : Γ ⊢[PRAAx] le one (num 4096 : PTm n) := by ipra_le 4095
-  have lo := extra_factors_lower q hNear
-  have inv := inverse_bound S one (num 4096) (le_refl _) hp lo
-  have eq := reciprocal_identity S
-    (GaussianNameReciprocal.lower_norm_positive S (num 4096) hp (name_lower _ _ _ (le_refl _) hp lo))
   have sq₁ : Γ ⊢[PRAAx] qsub (qmul r r) qone ≐ qmul (qsub r qone) (qadd r qone) :=
     (qsub_congr (.eqRefl _) (qmul_one_right qone qone_canonical).eqSymm).eqTrans (difference_factorization r qone)
   have sq₂ : Γ ⊢[PRAAx] qsub r qone ≐ qmul d (qadd q qone) :=
@@ -141,10 +136,9 @@ theorem cancel_fourth (q A B : PTm n) (hB : Γ ⊢[PRAAx] le one B)
   have factor : Γ ⊢[PRAAx] qsub (qmul r r) qone ≐ qmul d S :=
     sq₁.eqTrans ((qmul_congr sq₂ (.eqRefl _)).eqTrans (qmul_associative _ _ _))
   have raw := bound_congr factor (.eqRefl _) (.eqRefl _) hFourth
-  have rest := bounded_product _ _ _ _ _ _ hB (le_refl one) raw inv
-  have cancel : Γ ⊢[PRAAx] qmul (qmul d S) v ≐ d :=
-    (qmul_associative _ _ _).eqTrans ((qmul_congr (.eqRefl _) eq).eqTrans (qmul_one_right d (qsub_canonical _ _)))
-  exact bound_congr cancel (by ipra_ring) (by ipra_ring) rest
+  have rest := cancel_bounded_product d S A B (num 4096) (qsub_canonical q qone) hB hp
+    (extra_factors_lower q hNear) raw
+  exact bound_congr (.eqRefl _) (mul_comm A (num 4096)) (.eqRefl _) rest
 
 theorem actual_rational_fourth_root_branch_closed : ([] : List (Fm PTm 0)) ⊢[PRAAx] univ 3
     (le one (var 2) ⟶ distanceBounded (var 0) qone (num 21) (num 16) ⟶
