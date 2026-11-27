@@ -84,19 +84,14 @@ theorem stage_zero (F G m a c : PTm n) : Γ ⊢[PRAAx]
 
 theorem stage_succ (F G m a c j : PTm n) : Γ ⊢[PRAAx]
     stage F G m a c (succ j) ≐ companion F (stage F G m a c j) m (bound a c j) c := by
-  have e := rec2_succ (Γ := Γ) initial stepBody j (data F G m a c)
-  have vector : (fun i => Syn.subst ![j,stage F G m a c j,data F G m a c]
-      ((![fstT (var 2),fstT (sndT (sndT (var 2))),fstT (sndT (sndT (sndT (var 2)))),
-        sndT (sndT (sndT (sndT (var 2)))),var 0,var 1] : Fin 6 → PTm 3) i)) =
-      ![fstT (data F G m a c),fstT (sndT (sndT (data F G m a c))),
-        fstT (sndT (sndT (sndT (data F G m a c)))),sndT (sndT (sndT (sndT (data F G m a c)))),j,stage F G m a c j] := by
-    funext i
-    fin_cases i <;> simp
-  change Γ ⊢[PRAAx] stage F G m a c (succ j) ≐ app advanceF
-    (fun i => Syn.subst ![j,stage F G m a c j,data F G m a c]
-      ((![fstT (var 2),fstT (sndT (sndT (var 2))),fstT (sndT (sndT (sndT (var 2)))),
-        sndT (sndT (sndT (sndT (var 2)))),var 0,var 1] : Fin 6 → PTm 3) i)) at e
-  rw [vector] at e
+  let d := data F G m a c
+  let R := stage F G m a c j
+  have e : Γ ⊢[PRAAx] stage F G m a c (succ j) ≐ app advanceF
+      ![fstT d,fstT (sndT (sndT d)),fstT (sndT (sndT (sndT d))),sndT (sndT (sndT (sndT d))),j,R] :=
+    rec2_succ_app initial advanceF
+      ![fstT (var 2),fstT (sndT (sndT (var 2))),fstT (sndT (sndT (sndT (var 2)))),
+        sndT (sndT (sndT (sndT (var 2)))),var 0,var 1]
+      j d _ (by funext i; fin_cases i <;> simp <;> rfl)
   have tail := snd_pair (Γ := Γ) F (pairT G (pairT m (pairT a c)))
   have rest := (congrSnd tail).eqTrans (snd_pair G (pairT m (pairT a c)))
   have last := (congrSnd rest).eqTrans (snd_pair m (pairT a c))

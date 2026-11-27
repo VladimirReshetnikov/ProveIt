@@ -71,17 +71,13 @@ theorem stage_zero (F H m a c : PTm n) : Γ ⊢[PRAAx] stage F H m a c zero ≐ 
   simp only [initial,subst_zeroRows,GaussianPolynomialConstantInjection.subst_fields,Syn.subst_var,Syn.inst_zero] at e
   exact e.eqTrans (zero_rows_congr (data_fields _ _ _ _ _ 2) (data_fields _ _ _ _ _ 3))
 theorem stage_succ (F H m a c j : PTm n) : Γ ⊢[PRAAx] stage F H m a c (succ j) ≐ advance F H m a c j (stage F H m a c j) := by
-  have e := rec2_succ (Γ := Γ) initial stepBody j (data F H m a c)
-  have vector : (fun i => Syn.subst ![j,stage F H m a c j,data F H m a c]
-      ((![fields (var 2) 0,fields (var 2) 1,fields (var 2) 2,fields (var 2) 3,fields (var 2) 4,var 0,var 1] : Fin 7 → PTm 3) i)) =
-      ![fields (data F H m a c) 0,fields (data F H m a c) 1,fields (data F H m a c) 2,
-        fields (data F H m a c) 3,fields (data F H m a c) 4,j,stage F H m a c j] := by
-    funext i
-    fin_cases i <;> simp
-  change Γ ⊢[PRAAx] stage F H m a c (succ j) ≐ app advanceF
-    (fun i => Syn.subst ![j,stage F H m a c j,data F H m a c]
-      ((![fields (var 2) 0,fields (var 2) 1,fields (var 2) 2,fields (var 2) 3,fields (var 2) 4,var 0,var 1] : Fin 7 → PTm 3) i)) at e
-  rw [vector] at e
+  let d := data F H m a c
+  let R := stage F H m a c j
+  have e : Γ ⊢[PRAAx] stage F H m a c (succ j) ≐
+      app advanceF ![fields d 0,fields d 1,fields d 2,fields d 3,fields d 4,j,R] :=
+    rec2_succ_app initial advanceF
+      ![fields (var 2) 0,fields (var 2) 1,fields (var 2) 2,fields (var 2) 3,fields (var 2) 4,var 0,var 1]
+      j d _ (by funext i; fin_cases i <;> simp <;> rfl)
   exact e.eqTrans ((advance_program _ _ _ _ _ _ _).eqTrans
     (advance_congr (data_fields F H m a c 0) (data_fields F H m a c 1) (data_fields F H m a c 2)
       (data_fields F H m a c 3) (data_fields F H m a c 4) (.eqRefl _) (.eqRefl _)))

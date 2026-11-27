@@ -118,15 +118,11 @@ theorem row_sum_succ (A B q a b k t : PTm n) : Γ ⊢[PRAAx] rowSum A B q a b k 
     added (rowSum A B q a b k t) (contribution A B q a b k t) (succ (a+b)) := by
   let d := data A B q a b k
   let S := rowSum A B q a b k t
-  have vector : (fun i => Syn.subst ![t,S,d]
-      ((![fields (var 2) 0,fields (var 2) 1,fields (var 2) 2,fields (var 2) 3,fields (var 2) 4,fields (var 2) 5,var 0,var 1] : Fin 8 → PTm 3) i)) =
-      ![fields d 0,fields d 1,fields d 2,fields d 3,fields d 4,fields d 5,t,S] := by
-    funext i
-    fin_cases i <;> simp
-  have e := rec2_succ (Γ := Γ) initial stepBody t d
-  change Γ ⊢[PRAAx] ap2 (rec2 initial stepBody) (succ t) d ≐ app sumStepF (fun i => Syn.subst ![t,S,d]
-    ((![fields (var 2) 0,fields (var 2) 1,fields (var 2) 2,fields (var 2) 3,fields (var 2) 4,fields (var 2) 5,var 0,var 1] : Fin 8 → PTm 3) i)) at e
-  rw [vector] at e
+  have e : Γ ⊢[PRAAx] rowSum A B q a b k (succ t) ≐
+      app sumStepF ![fields d 0,fields d 1,fields d 2,fields d 3,fields d 4,fields d 5,t,S] :=
+    rec2_succ_app initial sumStepF
+      ![fields (var 2) 0,fields (var 2) 1,fields (var 2) 2,fields (var 2) 3,fields (var 2) 4,fields (var 2) 5,var 0,var 1]
+      t d _ (by funext i; fin_cases i <;> simp <;> rfl)
   exact e.eqTrans ((sum_step_program _ _ _ _ _ _ _ _).eqTrans
     (sum_step_parameters d A B q a b k t S (data_fields A B q a b k)))
 theorem row_sum_index {A B q a b k t u : PTm n} (h : Γ ⊢[PRAAx] t ≐ u) : Γ ⊢[PRAAx]

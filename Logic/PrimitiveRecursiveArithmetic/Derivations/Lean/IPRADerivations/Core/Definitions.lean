@@ -111,6 +111,15 @@ theorem rec2_succ (base : PTm 1) (step : PTm 3) (y x : PTm n) :
       = ![y, ap2 (rec2 base step) y x, x] := by funext i; fin_cases i <;> rfl
   rw [e] at h; exact h
 
+/-- Read an application in a binary recursion's successor step using its substituted arguments. -/
+theorem rec2_succ_app {k : ℕ} (base : PTm 1) (f : PR k) (args : Fin k → PTm 3)
+    (y x : PTm n) (values : Fin k → PTm n)
+    (read : (fun i => Syn.subst ![y, ap2 (rec2 base (app f args)) y x, x] (args i)) = values) :
+    Γ ⊢[PRAAx] ap2 (rec2 base (app f args)) (succ y) x ≐ app f values := by
+  refine (rec2_succ base (app f args) y x).eqTrans ?_
+  rw [PTm.subst_app, read]
+  exact .eqRefl _
+
 /-! ## Sums, products, powers and factorials -/
 
 /-- The parameter-preserving renaming used to put a body under the recursion
