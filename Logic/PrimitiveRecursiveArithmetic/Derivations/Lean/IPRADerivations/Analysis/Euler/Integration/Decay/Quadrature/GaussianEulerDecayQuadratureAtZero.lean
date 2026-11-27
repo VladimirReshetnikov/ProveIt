@@ -1,4 +1,5 @@
 import IPRADerivations.Analysis.Euler.Integration.Decay.Quadrature.GaussianEulerDecayQuadraturePrecision
+import IPRADerivations.Analysis.Euler.Integration.Decay.Quadrature.GaussianEulerDecayQuadrature
 import IPRADerivations.Analysis.Gamma.Ratios.GaussianGammaRationalWendelBoundary
 import IPRADerivations.Analysis.Beta.EulerProducts.GaussianEulerBetaPrimitiveEvaluationPascal
 
@@ -21,17 +22,17 @@ open GaussianCoefficientNameBounds (unit unit_positive)
 open GaussianCompactRiemannName (quadrature sampleBody sampleData)
 open GaussianEulerDecayAddition (original_decay_linear_remainder)
 open GaussianEulerDecayMesh (observation observation_numerator_congr adjacent_step
-  consecutiveDifference consecutive_difference_at consecutive_difference_sum stepError errorDen)
-open GaussianEulerDecayQuadrature (evaluatorF cell_at endpoint_left_at endpoint_right_at)
+  consecutiveDifference stepError errorDen)
+open GaussianEulerDecayQuadrature (evaluatorF cell_distance_of_adjacent quadrature_of_adjacent)
 open GaussianEulerDecayQuadraturePrecision (endpointDifference)
 open GaussianEulerIntegrandName (decayF decayData decayPoint)
 open GaussianGammaCanonicalExponent (constantF constant_at)
 open GaussianPositiveRationalLogarithm (fraction)
 open GaussianRationalDistanceOrder (distance_congr distance_radius_mono distance_symmetric)
-open GaussianRationalFiniteSum (multiplyBody multiply_body_at sum_multiply)
+open GaussianRationalFiniteSum (multiplyBody)
 open GaussianRationalHorner (positive_product qmul qzero)
 open GaussianRationalMetric (distanceBounded qsub)
-open GaussianRationalRiemannRefinement (weight termsDistance sum_distance)
+open GaussianRationalRiemannRefinement (weight)
 open GaussianRationalSyntheticDivision (qone qone_canonical qmul_congr qsub_congr)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
@@ -108,49 +109,19 @@ theorem cell_distance (i p N a C E x : PTm n)
     Γ ⊢[PRAAx] distanceBounded
       (inst2 (multiplyBody (sampleBody evaluatorF)) i (pairT (weight C E N) (sampleData p N a C E x)))
       (inst2 (consecutiveDifference (sampleBody evaluatorF)) i (sampleData p N a C E x))
-      (stepError (E*N) C p) (errorDen (E*N) p) := by
-  let f := sampleBody evaluatorF
-  let d := sampleData p N a C E x
-  let X := observation (a*N+C*i) (E*N) p
-  let Y := observation (a*N+C*i+C) (E*N) p
-  let w := weight C E N
-  have first : Γ ⊢[PRAAx] inst2 (multiplyBody f) i (pairT w d) ≐ qmul X w :=
-    (multiply_body_at f w i d).eqTrans ((qmul_congr (.eqRefl _) (cell_at i p N a C E x)).eqTrans
-      (GaussianRationalPowerAlgebra.qmul_commutative w X))
-  have next : Γ ⊢[PRAAx] inst2 f (succ i) d ≐ Y :=
-    (cell_at (succ i) p N a C E x).eqTrans (observation_numerator_congr _ _ _ _ (by ipra_ring))
-  have second : Γ ⊢[PRAAx] inst2 (consecutiveDifference f) i d ≐ qsub X Y := by
-    rw [consecutive_difference_at]
-    exact qsub_congr (cell_at i p N a C E x) next
-  exact distance_congr first.eqSymm second.eqSymm (.eqRefl _) (.eqRefl _)
-    (adjacent (a*N+C*i) (E*N) C p (positive_product E N hE hN) hC hstep)
+      (stepError (E*N) C p) (errorDen (E*N) p) :=
+  cell_distance_of_adjacent i p N a C E x (adjacent (a*N+C*i) (E*N) C p (positive_product E N hE hN) hC hstep)
 
 theorem actual_decay_quadrature (p N a C E x : PTm n)
     (hN : Γ ⊢[PRAAx] le one N) (hE : Γ ⊢[PRAAx] le one E)
     (hC : Γ ⊢[PRAAx] le one C) (hstep : Γ ⊢[PRAAx] le C (E*N)) :
     Γ ⊢[PRAAx] distanceBounded (quadrature evaluatorF p N a C E x)
       (endpointDifference a C E p) (N*stepError (E*N) C p) (errorDen (E*N) p) := by
-  let f := sampleBody evaluatorF
-  let w := weight C E N
-  let d := sampleData p N a C E x
-  let A := stepError (E*N) C p
-  let D := errorDen (E*N) p
-  have hb := positive_product E N hE hN
-  have hD : Γ ⊢[PRAAx] le one D := positive_product _ _ (positive_product _ _ hb hb) (unit_positive p)
-  have entries : Γ ⊢[PRAAx] termsDistance (multiplyBody f) (consecutiveDifference f) N (pairT w d) d A D := by
-    have hn' : Γ.map Fm.shift ⊢[PRAAx] le one (Syn.shift N) := by simpa [Fm.shift,Syn.shift] using hN.shift
-    have he' : Γ.map Fm.shift ⊢[PRAAx] le one (Syn.shift E) := by simpa [Fm.shift,Syn.shift] using hE.shift
-    have hc' : Γ.map Fm.shift ⊢[PRAAx] le one (Syn.shift C) := by simpa [Fm.shift,Syn.shift] using hC.shift
-    have hs' : Γ.map Fm.shift ⊢[PRAAx] le (Syn.shift C) (Syn.shift E*Syn.shift N) :=
-      by simpa [Fm.shift,Syn.shift] using hstep.shift
-    refine .allI (.impI ?_)
-    simpa [termsDistance,A,D,w,d,f,Syn.shift,stepError,errorDen,GaussianNameRingLaws.three] using
-      cell_distance (var 0) (Syn.shift p) (Syn.shift N) (Syn.shift a) (Syn.shift C) (Syn.shift E) (Syn.shift x)
-        hn'.wk he'.wk hc'.wk hs'.wk
-  have endpoints := (consecutive_difference_sum f d N).eqTrans
-    (qsub_congr (endpoint_left_at p N a C E x hE hN) (endpoint_right_at p N a C E x hE hN))
-  exact distance_congr (sum_multiply f w N d) endpoints (.eqRefl _) (.eqRefl _)
-    (sum_distance _ _ _ _ _ _ _ hD entries)
+  apply quadrature_of_adjacent p N a C E x hN hE
+  have den := positive_product _ _ (Order.shift_one_le hE) (Order.shift_one_le hN)
+  have step : Γ.map Fm.shift ⊢[PRAAx] le (Syn.shift C) (Syn.shift E*Syn.shift N) :=
+    by simpa [Fm.shift,Syn.shift] using hstep.shift
+  exact adjacent _ _ _ _ den.wk (Order.shift_one_le hC).wk step.wk
 
 theorem actual_decay_quadrature_including_zero_closed : ([] : List (Fm PTm 0)) ⊢[PRAAx] univ 6
     ((le one (var 1) ⋏ le one (var 4)) ⟶ le one (var 3) ⟶ le (var 3) (var 4*var 1) ⟶

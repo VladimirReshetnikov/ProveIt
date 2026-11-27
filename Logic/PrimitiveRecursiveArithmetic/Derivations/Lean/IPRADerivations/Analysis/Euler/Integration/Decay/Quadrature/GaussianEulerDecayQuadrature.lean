@@ -44,9 +44,15 @@ theorem cell_at (i p N a C E x : PTm n) : Γ ⊢[PRAAx]
     inst2 (sampleBody evaluatorF) i (sampleData p N a C E x) ≐ observation (a*N+C*i) (E*N) p :=
   (sample_body_at evaluatorF i p N a C E x).eqTrans (evaluator_at p _ _ x)
 
-theorem cell_distance (i p N a C E x : PTm n) (ha : Γ ⊢[PRAAx] le one a)
-    (hN : Γ ⊢[PRAAx] le one N) (hE : Γ ⊢[PRAAx] le one E)
-    (hC : Γ ⊢[PRAAx] le one C) (hstep : Γ ⊢[PRAAx] le C (E*N)) :
+/-- The local error estimate at the unwrapped rational nodes of a decay cell. -/
+abbrev adjacentError (i p N a C E : PTm n) : Fm PTm n :=
+  distanceBounded (qmul (observation (a*N+C*i) (E*N) p) (weight C E N))
+    (qsub (observation (a*N+C*i) (E*N) p) (observation (a*N+C*i+C) (E*N) p))
+    (stepError (E*N) C p) (errorDen (E*N) p)
+
+/-- Read a local error bound back into the genuine weighted grid cell. -/
+theorem cell_distance_of_adjacent (i p N a C E x : PTm n)
+    (adjacent : Γ ⊢[PRAAx] adjacentError i p N a C E) :
     Γ ⊢[PRAAx] distanceBounded
       (inst2 (multiplyBody (sampleBody evaluatorF)) i (pairT (weight C E N) (sampleData p N a C E x)))
       (inst2 (consecutiveDifference (sampleBody evaluatorF)) i (sampleData p N a C E x))
@@ -64,7 +70,16 @@ theorem cell_distance (i p N a C E x : PTm n) (ha : Γ ⊢[PRAAx] le one a)
   have second : Γ ⊢[PRAAx] inst2 (consecutiveDifference f) i d ≐ qsub X Y := by
     rw [consecutive_difference_at]
     exact qsub_congr (cell_at i p N a C E x) next
-  exact distance_congr first.eqSymm second.eqSymm (.eqRefl _) (.eqRefl _)
+  exact distance_congr first.eqSymm second.eqSymm (.eqRefl _) (.eqRefl _) adjacent
+
+theorem cell_distance (i p N a C E x : PTm n) (ha : Γ ⊢[PRAAx] le one a)
+    (hN : Γ ⊢[PRAAx] le one N) (hE : Γ ⊢[PRAAx] le one E)
+    (hC : Γ ⊢[PRAAx] le one C) (hstep : Γ ⊢[PRAAx] le C (E*N)) :
+    Γ ⊢[PRAAx] distanceBounded
+      (inst2 (multiplyBody (sampleBody evaluatorF)) i (pairT (weight C E N) (sampleData p N a C E x)))
+      (inst2 (consecutiveDifference (sampleBody evaluatorF)) i (sampleData p N a C E x))
+      (stepError (E*N) C p) (errorDen (E*N) p) :=
+  cell_distance_of_adjacent i p N a C E x
     (adjacent_step (a*N+C*i) (E*N) C p
       (le_trans (positive_product a N ha hN) (le_add_right _ _)) (positive_product E N hE hN) hC hstep)
 
@@ -78,9 +93,11 @@ theorem endpoint_right_at (p N a C E x : PTm n) (hE : Γ ⊢[PRAAx] le one E) (h
   (cell_at N p N a C E x).eqTrans ((observation_numerator_congr _ _ _ _ (by ipra_ring)).eqTrans
     (observation_rescale (a+C) E N p hE hN))
 
-theorem actual_decay_quadrature (p N a C E x : PTm n) (ha : Γ ⊢[PRAAx] le one a)
+/-- Sum the local error estimates and telescope the original consecutive differences. -/
+theorem quadrature_of_adjacent (p N a C E x : PTm n)
     (hN : Γ ⊢[PRAAx] le one N) (hE : Γ ⊢[PRAAx] le one E)
-    (hC : Γ ⊢[PRAAx] le one C) (hstep : Γ ⊢[PRAAx] le C (E*N)) :
+    (adjacent : lt (var 0) (Syn.shift N) :: Γ.map Fm.shift ⊢[PRAAx]
+      adjacentError (var 0) (Syn.shift p) (Syn.shift N) (Syn.shift a) (Syn.shift C) (Syn.shift E)) :
     Γ ⊢[PRAAx] distanceBounded (quadrature evaluatorF p N a C E x)
       (qsub (observation a E p) (observation (a+C) E p))
       (N*stepError (E*N) C p) (errorDen (E*N) p) := by
@@ -92,20 +109,27 @@ theorem actual_decay_quadrature (p N a C E x : PTm n) (ha : Γ ⊢[PRAAx] le one
   have hb := positive_product E N hE hN
   have hD : Γ ⊢[PRAAx] le one D := positive_product _ _ (positive_product _ _ hb hb) (unit_positive p)
   have entries : Γ ⊢[PRAAx] termsDistance (multiplyBody f) (consecutiveDifference f) N (pairT w d) d A D := by
-    have ha' : Γ.map Fm.shift ⊢[PRAAx] le one (Syn.shift a) := by simpa [Fm.shift,Syn.shift] using ha.shift
-    have hn' : Γ.map Fm.shift ⊢[PRAAx] le one (Syn.shift N) := by simpa [Fm.shift,Syn.shift] using hN.shift
-    have he' : Γ.map Fm.shift ⊢[PRAAx] le one (Syn.shift E) := by simpa [Fm.shift,Syn.shift] using hE.shift
-    have hc' : Γ.map Fm.shift ⊢[PRAAx] le one (Syn.shift C) := by simpa [Fm.shift,Syn.shift] using hC.shift
-    have hs' : Γ.map Fm.shift ⊢[PRAAx] le (Syn.shift C) (Syn.shift E*Syn.shift N) := by
-      simpa [Fm.shift,Syn.shift] using hstep.shift
     refine .allI (.impI ?_)
     simpa [termsDistance,A,D,w,d,f,Syn.shift,stepError,errorDen,GaussianNameRingLaws.three] using
-      cell_distance (var 0) (Syn.shift p) (Syn.shift N) (Syn.shift a) (Syn.shift C) (Syn.shift E) (Syn.shift x)
-        ha'.wk hn'.wk he'.wk hc'.wk hs'.wk
+      cell_distance_of_adjacent (var 0) (Syn.shift p) (Syn.shift N) (Syn.shift a) (Syn.shift C) (Syn.shift E)
+        (Syn.shift x) adjacent
   have endpoints := (consecutive_difference_sum f d N).eqTrans
     (qsub_congr (endpoint_left_at p N a C E x hE hN) (endpoint_right_at p N a C E x hE hN))
   exact distance_congr (sum_multiply f w N d) endpoints (.eqRefl _) (.eqRefl _)
     (sum_distance _ _ _ _ _ _ _ hD entries)
+
+theorem actual_decay_quadrature (p N a C E x : PTm n) (ha : Γ ⊢[PRAAx] le one a)
+    (hN : Γ ⊢[PRAAx] le one N) (hE : Γ ⊢[PRAAx] le one E)
+    (hC : Γ ⊢[PRAAx] le one C) (hstep : Γ ⊢[PRAAx] le C (E*N)) :
+    Γ ⊢[PRAAx] distanceBounded (quadrature evaluatorF p N a C E x)
+      (qsub (observation a E p) (observation (a+C) E p))
+      (N*stepError (E*N) C p) (errorDen (E*N) p) := by
+  apply quadrature_of_adjacent p N a C E x hN hE
+  have left := positive_product _ _ (Order.shift_one_le ha) (Order.shift_one_le hN)
+  have den := positive_product _ _ (Order.shift_one_le hE) (Order.shift_one_le hN)
+  have step : Γ.map Fm.shift ⊢[PRAAx] le (Syn.shift C) (Syn.shift E*Syn.shift N) :=
+    by simpa [Fm.shift,Syn.shift] using hstep.shift
+  exact adjacent_step _ _ _ _ (le_trans left.wk (le_add_right _ _)) den.wk (Order.shift_one_le hC).wk step.wk
 
 theorem original_compact_decay_quadrature_endpoint_error_closed :
     ([] : List (Fm PTm 0)) ⊢[PRAAx] univ 6
