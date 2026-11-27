@@ -82,9 +82,8 @@ theorem even_not_prime {N : PTm n} (hN : Γ ⊢[PRAAx] le two N) :
 
 /-- For `N ≥ 2`, every prime divisor of `Cat_N` is less than `2N`. -/
 theorem prime_dvd_cat_lt {p N : PTm n} (hN : Γ ⊢[PRAAx] le two N)
-    (hp : Γ ⊢[PRAAx] prime p) (h : Γ ⊢[PRAAx] dvd p (cat N)) : Γ ⊢[PRAAx] lt p (two * N) := by
-  refine .orE (lt_or_eq_of_le (prime_dvd_cat_le hp h)) Prf.hyp0 ?_
-  exact .botE _ (prime_ne_even hN.wk hp.wk Prf.hyp0)
+    (hp : Γ ⊢[PRAAx] prime p) (h : Γ ⊢[PRAAx] dvd p (cat N)) : Γ ⊢[PRAAx] lt p (two * N) :=
+  Order.lt_of_le_of_ne (prime_dvd_cat_le hp h) (.impI (prime_ne_even hN.wk hp.wk Prf.hyp0))
 
 /-- `Cat_n` is not prime for `n = m + 4 ≥ 4`. -/
 theorem cat_not_prime (m : PTm n) :

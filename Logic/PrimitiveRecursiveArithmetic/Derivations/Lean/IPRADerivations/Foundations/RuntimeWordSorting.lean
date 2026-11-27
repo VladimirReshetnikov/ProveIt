@@ -384,7 +384,7 @@ theorem sorted_permutation_strict (m w : PTm n) (hs : Γ ⊢[PRAAx] sorted m w)
     simpa only [Fm.shift,RuntimePermutationWords.subst_permutation,Syn.shift] using hp.shift
   have hl := sorted_at (Syn.shift m) (Syn.shift w) (var 0) ss.wk Prf.hyp0
   have hd := RuntimeAdjacentPermutationSwap.adjacent_digits_different (Syn.shift m) (Syn.shift w) (var 0) ps.wk Prf.hyp0
-  exact .orE (lt_or_eq_of_le hl) Prf.hyp0 (.botE _ (.impE hd.wk Prf.hyp0))
+  exact Order.lt_of_le_of_ne hl hd
 theorem permutation_final_identity (m w : PTm n) (hw : Γ ⊢[PRAAx] lt w (RuntimePermutationWords.horizon m))
     (hp : Γ ⊢[PRAAx] RuntimePermutationWords.permutationBit m w ≐ one) :
     Γ ⊢[PRAAx] final m w ≐ identityCode m :=
@@ -445,11 +445,9 @@ theorem sorted_strict_of_no_tie (m w : PTm n) (hs : Γ ⊢[PRAAx] sorted m w)
   have hl := sorted_at (Syn.shift m) (Syn.shift w) (var 0) ss.wk Prf.hyp0
   have ht : lt (succ (var 0)) (Syn.shift m) :: Γ.map Fm.shift ⊢[PRAAx] tieBit (Syn.shift m) (Syn.shift w) (var 0) ≐ zero :=
     (tie_body_at _ _ _).eqSymm.eqTrans (BoundedReflection.ex_none tieBody zs.wk (lt_of_le_of_lt (le_succ_self _) Prf.hyp0))
-  refine .orE (lt_or_eq_of_le hl) Prf.hyp0 ?_
-  have ho : (RuntimePermutationWords.digit (Syn.shift m) (Syn.shift w) (var 0) ≐ RuntimePermutationWords.digit (Syn.shift m) (Syn.shift w) (succ (var 0))) ::
-      lt (succ (var 0)) (Syn.shift m) :: Γ.map Fm.shift ⊢[PRAAx] tieBit (Syn.shift m) (Syn.shift w) (var 0) ≐ one :=
-    (tie_reflection (Syn.shift m) (Syn.shift w) (var 0)).iffMpr (.andI Prf.hyp1 Prf.hyp0)
-  exact BoundedReflection.one_ne_zero _ (ho.eqSymm.eqTrans ht.wk)
+  refine Order.lt_of_le_of_ne hl (.impI ?_)
+  exact BoundedReflection.one_ne_zero _
+    (((tie_reflection (Syn.shift m) (Syn.shift w) (var 0)).iffMpr (.andI Prf.hyp1 Prf.hyp0)).eqSymm.eqTrans ht.wk)
 theorem nonpermutation_final_tie (m w : PTm n) (hw : Γ ⊢[PRAAx] lt w (RuntimePermutationWords.horizon m))
     (hp : Γ ⊢[PRAAx] RuntimePermutationWords.permutationBit m w ≐ zero) : Γ ⊢[PRAAx]
     lt (succ (tieIndex m (final m w))) m ⋏

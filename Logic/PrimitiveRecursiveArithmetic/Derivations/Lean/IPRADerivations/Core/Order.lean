@@ -199,6 +199,20 @@ theorem lt_or_le (a b : PTm n) : Γ ⊢[PRAAx] lt a b ⋎ le b a := by
   refine .orE (lt_or_eq_of_le Prf.hyp0) (.orI₁ Prf.hyp0) ?_
   exact .orI₂ (le_congr Prf.hyp0 (.eqRefl a) (le_refl a))
 
+theorem Order.ne_symm {a b : PTm n} (h : Γ ⊢[PRAAx] neg (a ≐ b)) : Γ ⊢[PRAAx] neg (b ≐ a) :=
+  .impI (.impE h.wk Prf.hyp0.eqSymm)
+
+/-- A weak inequality is strict when equality is excluded. -/
+theorem Order.lt_of_le_of_ne {a b : PTm n} (h : Γ ⊢[PRAAx] le a b) (hne : Γ ⊢[PRAAx] neg (a ≐ b)) :
+    Γ ⊢[PRAAx] lt a b :=
+  .orE (lt_or_eq_of_le h) Prf.hyp0 (.botE _ (.impE hne.wk Prf.hyp0))
+
+/-- Distinct terms admit exactly the two strict order cases. -/
+theorem Order.lt_or_gt_of_ne {a b : PTm n} (hne : Γ ⊢[PRAAx] neg (a ≐ b)) :
+    Γ ⊢[PRAAx] lt a b ⋎ lt b a :=
+  .orE (lt_or_le a b) (.orI₁ Prf.hyp0)
+    (.orI₂ (Order.lt_of_le_of_ne Prf.hyp0 (Order.ne_symm hne).wk))
+
 theorem eq_or_ne (a b : PTm n) : Γ ⊢[PRAAx] (a ≐ b) ⋎ neg (a ≐ b) := by
   refine .orE (lt_or_le a b) ?_ ?_
   · refine .orI₂ (.impI ?_)

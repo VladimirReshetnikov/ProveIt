@@ -65,15 +65,12 @@ theorem inverse_after_skip (p i : PTm n) : Γ ⊢[PRAAx] compressed p (slot p i)
 
 theorem inverse_before_skip (m p k : PTm n) (hp : Γ ⊢[PRAAx] lt p (succ m)) (hk : Γ ⊢[PRAAx] lt k (succ m))
     (hne : Γ ⊢[PRAAx] neg (k ≐ p)) : Γ ⊢[PRAAx] lt (compressed p k) m ⋏ slot p (compressed p k) ≐ k := by
-  refine .orE (lt_or_le k p) ?_ ?_
+  refine .orE (Order.lt_or_gt_of_ne hne) ?_ ?_
   · have e : lt k p :: Γ ⊢[PRAAx] compressed p k ≐ k := sel_one (sg_lt Prf.hyp0)
     exact .andI (lt_congr e.eqSymm (.eqRefl _) (lt_of_lt_of_le Prf.hyp0 (Order.le_of_lt_succ hp.wk)))
       ((slot_congr (.eqRefl p) e).eqTrans (slot_before p k Prf.hyp0))
-  · have above : le p k :: Γ ⊢[PRAAx] lt p k := by
-      refine .orE (lt_or_eq_of_le Prf.hyp0) Prf.hyp0 ?_
-      exact .botE _ (.impE hne.wk.wk Prf.hyp0.eqSymm)
-    have coordinates := after_index m p k above hk.wk
-    have e : le p k :: Γ ⊢[PRAAx] compressed p k ≐ pred k := sel_zero (sg_le Prf.hyp0)
+  · have coordinates := after_index m p k Prf.hyp0 hk.wk
+    have e : lt p k :: Γ ⊢[PRAAx] compressed p k ≐ pred k := sel_zero (sg_le (le_of_lt Prf.hyp0))
     exact .andI (lt_congr e.eqSymm (.eqRefl _) coordinates.andE₁)
       ((slot_congr (.eqRefl p) e).eqTrans ((slot_after p _ coordinates.andE₂.andE₁).eqTrans coordinates.andE₂.andE₂))
 

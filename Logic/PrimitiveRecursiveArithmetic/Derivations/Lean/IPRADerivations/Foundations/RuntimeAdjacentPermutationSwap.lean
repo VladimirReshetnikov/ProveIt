@@ -39,7 +39,7 @@ ipra_subst rankSwap
 
 alias different_of_lt := Common.ne_of_lt
 theorem different_symm {a b : PTm n} (h : Γ ⊢[PRAAx] neg (a ≐ b)) : Γ ⊢[PRAAx] neg (b ≐ a) :=
-  .impI (.impE h.wk Prf.hyp0.eqSymm)
+  Order.ne_symm h
 theorem tau_congr {j j' i i' : PTm n} (hj : Γ ⊢[PRAAx] j ≐ j') (hi : Γ ⊢[PRAAx] i ≐ i') :
     Γ ⊢[PRAAx] tau j i ≐ tau j' i' := by
   ipra_congr (tau (var 0) (var 1) : PTm 2) with [hj, hi]
@@ -85,12 +85,10 @@ theorem tuple_range (P m j : PTm n) (hP : Γ ⊢[PRAAx] RuntimePermutationWords.
     (RuntimePermutationWords.range_at _ _ _ ps.wk (tau_range _ _ _ js.wk Prf.hyp0))
 theorem distinct_entries (P m i l : PTm n) (h : Γ ⊢[PRAAx] RuntimePermutationWords.distinct P m)
     (hi : Γ ⊢[PRAAx] lt i m) (hl : Γ ⊢[PRAAx] lt l m) (hne : Γ ⊢[PRAAx] neg (i ≐ l)) :
-    Γ ⊢[PRAAx] neg (entry P i ≐ entry P l) := by
-  refine .orE (lt_or_le i l) ?_ ?_
-  · exact different_symm (RuntimePermutationWords.distinct_at _ _ _ _ h.wk hl.wk Prf.hyp0)
-  · refine .orE (lt_or_eq_of_le Prf.hyp0) ?_ ?_
-    · exact RuntimePermutationWords.distinct_at _ _ _ _ h.wk.wk hi.wk.wk Prf.hyp0
-    · exact .botE _ (.impE hne.wk.wk Prf.hyp0.eqSymm)
+    Γ ⊢[PRAAx] neg (entry P i ≐ entry P l) :=
+  .orE (Order.lt_or_gt_of_ne hne)
+    (different_symm (RuntimePermutationWords.distinct_at _ _ _ _ h.wk hl.wk Prf.hyp0))
+    (RuntimePermutationWords.distinct_at _ _ _ _ h.wk hi.wk Prf.hyp0)
 
 theorem tuple_preserved (P m j : PTm n) (hP : Γ ⊢[PRAAx] RuntimePermutationWords.tuple P m)
     (hj : Γ ⊢[PRAAx] lt (succ j) m) : Γ ⊢[PRAAx] RuntimePermutationWords.tuple (swapTuple P m j) m := by
@@ -259,9 +257,9 @@ theorem pair_first {a b c d : PTm n} (h : Γ ⊢[PRAAx] pairT a b ≐ pairT c d)
 theorem pair_second {a b c d : PTm n} (h : Γ ⊢[PRAAx] pairT a b ≐ pairT c d) : Γ ⊢[PRAAx] b ≐ d :=
   (snd_pair _ _).eqSymm.eqTrans ((congrSnd h).eqTrans (snd_pair _ _))
 theorem before_one (j i : PTm n) (hi : Γ ⊢[PRAAx] lt i (succ j)) (hne : Γ ⊢[PRAAx] neg (i ≐ j)) :
-    Γ ⊢[PRAAx] lt i j := .orE (lt_succ_cases hi) Prf.hyp0 (.botE _ (.impE hne.wk Prf.hyp0))
+    Γ ⊢[PRAAx] lt i j := Order.lt_of_le_of_ne (Order.le_of_lt_succ hi) hne
 theorem after_one (j i : PTm n) (hi : Γ ⊢[PRAAx] lt j i) (hne : Γ ⊢[PRAAx] neg (i ≐ succ j)) :
-    Γ ⊢[PRAAx] lt (succ j) i := .orE (lt_or_eq_of_le hi) Prf.hyp0 (.botE _ (.impE hne.wk Prf.hyp0.eqSymm))
+    Γ ⊢[PRAAx] lt (succ j) i := Order.lt_of_le_of_ne hi (Order.ne_symm hne)
 theorem tau_order_left (j l : PTm n) (hl : Γ ⊢[PRAAx] lt j l) (hne : Γ ⊢[PRAAx] neg (l ≐ succ j)) :
     Γ ⊢[PRAAx] lt (tau j j) (tau j l) :=
   lt_congr (tau_left _).eqSymm (tau_other _ _ (different_symm (different_of_lt hl)) hne).eqSymm (after_one _ _ hl hne)

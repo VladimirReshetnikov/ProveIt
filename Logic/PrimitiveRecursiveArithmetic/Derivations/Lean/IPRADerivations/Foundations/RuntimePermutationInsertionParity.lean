@@ -121,15 +121,12 @@ theorem inserted_after (m p d i : PTm n) (hp : Γ ⊢[PRAAx] lt p (succ m)) (hi 
 
 theorem compressed_move (p k : PTm n) (hne : Γ ⊢[PRAAx] neg (k ≐ p)) : Γ ⊢[PRAAx]
     compressed p k ≐ compressed (succ p) k := by
-  refine .orE (lt_or_le k p) ?_ ?_
+  refine .orE (Order.lt_or_gt_of_ne hne) ?_ ?_
   · have below : lt k p :: Γ ⊢[PRAAx] lt k (succ p) := lt_of_lt_of_le Prf.hyp0 (le_succ_self _)
     exact (GuardedTotalization.sel_one (AnalyticNumberTheory.Totatives.sg_lt Prf.hyp0)).eqTrans
       (GuardedTotalization.sel_one (AnalyticNumberTheory.Totatives.sg_lt below)).eqSymm
-  · have above : le p k :: Γ ⊢[PRAAx] le (succ p) k := by
-      refine .orE (lt_or_eq_of_le Prf.hyp0) Prf.hyp0 ?_
-      exact .botE _ (.impE hne.wk.wk Prf.hyp0.eqSymm)
-    exact (GuardedTotalization.sel_zero (AnalyticNumberTheory.Totatives.sg_le Prf.hyp0)).eqTrans
-      (GuardedTotalization.sel_zero (AnalyticNumberTheory.Totatives.sg_le above)).eqSymm
+  · exact (GuardedTotalization.sel_zero (AnalyticNumberTheory.Totatives.sg_le (le_of_lt Prf.hyp0))).eqTrans
+      (GuardedTotalization.sel_zero (AnalyticNumberTheory.Totatives.sg_le Prf.hyp0)).eqSymm
 
 theorem moving_digit (m p d k : PTm n) (hp : Γ ⊢[PRAAx] lt p m) (hk : Γ ⊢[PRAAx] lt k (succ m)) : Γ ⊢[PRAAx]
     digit (succ m) (RuntimeAdjacentPermutationSwap.swapWord (succ m) (insertedWord m p d) p) k ≐

@@ -105,9 +105,7 @@ private theorem div_mod₀ : ([] : List (Fm PTm 2)) ⊢[PRAAx] divModF := by
       refine .andI ?_ ?_
       · refine withEq hz.wk fun f₁ => withEq e₀ fun f₃ => withEq e₁ fun f₄ => ?_
         apply deriveNat; ipra_simps; rw [f₃, f₄]; linear_combination f₁
-      · refine lt_congr e₀.eqSymm (.eqRefl _) ?_
-        refine .orE (lt_or_eq_of_le (hr.wk : _ ⊢[PRAAx] le (succ Rv) Kv)) Prf.hyp0 ?_
-        exact .botE _ (.impE Prf.hyp1 Prf.hyp0)
+      · exact lt_congr e₀.eqSymm (.eqRefl _) (Order.lt_of_le_of_ne hr.wk Prf.hyp0)
 
 /-- `z = K quo z + rem z` and `rem z < K`, for `K = S K'`. -/
 theorem div_mod (z K' : PTm n) :

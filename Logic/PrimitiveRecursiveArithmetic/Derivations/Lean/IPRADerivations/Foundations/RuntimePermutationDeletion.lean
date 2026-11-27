@@ -122,12 +122,11 @@ theorem deleted_value_bound (m w i : PTm n) (hw : Γ ⊢[PRAAx] lt w (horizon (s
     lt (deletedValue m w i) m := by
   have max := maximum_correct m w hw hp
   have bound := RuntimePermutationWords.digit_bound (succ m) w (slot (maximumPosition m w) i) (slot_bound _ _ _ hi)
-  have small : Γ ⊢[PRAAx] le (deletedValue m w i) m :=
-    (succ_monus_succ (deletedValue m w i) m).eqSymm.eqTrans bound
+  have small := Order.le_of_lt_succ bound
   have different := digits_different (succ m) w (slot (maximumPosition m w) i) (maximumPosition m w)
     hp (slot_bound _ _ _ hi) (Prf.andE₁ max) (slot_different _ _)
-  refine .orE (lt_or_eq_of_le small) Prf.hyp0 ?_
-  exact .botE _ (.impE different.wk (Prf.hyp0.eqTrans (Prf.andE₂ max).wk.eqSymm))
+  exact Order.lt_of_le_of_ne small
+    (.impI (.impE different.wk (Prf.hyp0.eqTrans (Prf.andE₂ max).wk.eqSymm)))
 theorem deleted_range (m w : PTm n) (hw : Γ ⊢[PRAAx] lt w (horizon (succ m)))
     (hp : Γ ⊢[PRAAx] permutationBit (succ m) w ≐ one) : Γ ⊢[PRAAx] range (deleted m w) m := by
   have hs : Γ.map Fm.shift ⊢[PRAAx] lt (Syn.shift w) (horizon (succ (Syn.shift m))) := by simpa [Fm.shift,Syn.shift] using hw.shift
@@ -194,18 +193,15 @@ theorem recovered_correct (m w k : PTm n) (hw : Γ ⊢[PRAAx] lt w (horizon (suc
       ((Prf.andE₂ mx).wk.eqSymm.eqTrans (RuntimeAdjacentPermutationSwap.digit_congr (.eqRefl _) (.eqRefl _) Prf.hyp0.eqSymm))
   · have first := sel_zero (eqb_of_ne (Γ := neg (k ≐ maximumPosition m w) :: Γ) Prf.hyp0)
       (a := m) (d := sel (Signum.sg (monus (maximumPosition m w) k)) (digit m (deletedWord m w) k) (digit m (deletedWord m w) (pred k)))
-    refine first.eqTrans (.orE (lt_or_le k (maximumPosition m w)) ?_ ?_)
-    · have pm : lt k (maximumPosition m w) :: neg (k ≐ maximumPosition m w) :: Γ ⊢[PRAAx] le (maximumPosition m w) m :=
-        (succ_monus_succ (maximumPosition m w) m).eqSymm.eqTrans (Prf.andE₁ mx).wk.wk
-      have km := lt_of_lt_of_le Prf.hyp0 pm
+    refine first.eqTrans (.orE (Order.lt_or_gt_of_ne Prf.hyp0) ?_ ?_)
+    · have km : lt k (maximumPosition m w) :: neg (k ≐ maximumPosition m w) :: Γ ⊢[PRAAx] lt k m :=
+        lt_of_lt_of_le Prf.hyp0 (Order.le_of_lt_succ (Prf.andE₁ mx).wk.wk)
       exact (sel_one (AnalyticNumberTheory.Totatives.sg_lt Prf.hyp0)).eqTrans
         ((RuntimePermutationWords.encode_decode _ _ _ dr.wk.wk km).eqTrans
           ((deleted_lookup _ _ _ km).eqTrans (RuntimeAdjacentPermutationSwap.digit_congr (.eqRefl _) (.eqRefl _) (slot_before _ _ Prf.hyp0))))
-    · have pk : le (maximumPosition m w) k :: neg (k ≐ maximumPosition m w) :: Γ ⊢[PRAAx] lt (maximumPosition m w) k := by
-        refine .orE (lt_or_eq_of_le Prf.hyp0) Prf.hyp0 ?_
-        exact .botE _ (.impE Prf.hyp1.wk Prf.hyp0.eqSymm)
-      have indices := after_index m (maximumPosition m w) k pk hk.wk.wk
-      exact (sel_zero (AnalyticNumberTheory.Totatives.sg_le Prf.hyp0)).eqTrans
+    · have indices := after_index m (maximumPosition m w) k
+        (Prf.hyp0 (Γ := neg (k ≐ maximumPosition m w) :: Γ)) hk.wk.wk
+      exact (sel_zero (AnalyticNumberTheory.Totatives.sg_le (le_of_lt Prf.hyp0))).eqTrans
         ((RuntimePermutationWords.encode_decode _ _ _ dr.wk.wk (Prf.andE₁ indices)).eqTrans
           ((deleted_lookup _ _ _ (Prf.andE₁ indices)).eqTrans
             (RuntimeAdjacentPermutationSwap.digit_congr (.eqRefl _) (.eqRefl _)
