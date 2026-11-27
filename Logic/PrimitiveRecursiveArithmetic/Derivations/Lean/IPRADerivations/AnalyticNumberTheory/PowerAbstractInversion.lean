@@ -116,7 +116,7 @@ open LeanProofs.IPRA.Probability.Lotus (cmB inst2_cmB sum_const_mul)
 open LeanProofs.IPRA.AnalyticNumberTheory.FactorialLambda (sum_add2)
 open LeanProofs.IPRA.AnalyticNumberTheory.PNTStageStep (pos_of_one_le)
 open LeanProofs.IPRA.Signum (sg sg_zero sg_succ)
-open LeanProofs.IPRA.AnalyticNumberTheory.PowerDivisorRow (sum_cut sg_mul_pos)
+open LeanProofs.IPRA.AnalyticNumberTheory.PowerDivisorRow (sum_cut sg_mul_pos guarded_quotient reindex_bound)
 open LeanProofs.IPRA.AnalyticNumberTheory.ConvolutionAssoc (multiples_upto)
 open LeanProofs.IPRA.AnalyticNumberTheory.SumReindex (riB inst2_riB reindex_eq cM)
 open LeanProofs.IPRA.AnalyticNumberTheory.LogRefinement (quo_mul)
@@ -229,24 +229,9 @@ theorem multiples_g {d N h y : PTm n} (hd : Γ ⊢[PRAAx] d ≐ succ (pred d))
       congrMul (congrMul (congrEqb' (congrAp2 remF (.eqRefl _) f3) (.eqRefl _)) (.eqRefl _))
         (congrInst2 G (.eqRefl _) f4)
     refine l.eqTrans (Prf.eqTrans ?_ r.eqSymm)
-    refine .orE (eqb_cases (Γ := Λ) (rem (var 0) (Syn.shift d)) zero) ?_ ?_
-    · have z : ((eqb (rem (var 0) (Syn.shift d)) zero ≐ zero) :: Λ) ⊢[PRAAx]
-          eqb (rem (var 0) (Syn.shift d)) zero ≐ zero := Prf.hyp0
-      exact ((congrMul z (.eqRefl _)).eqTrans (zero_mul _)).eqTrans
-        ((congrMul (congrMul z (.eqRefl _)) (.eqRefl _)).eqTrans
-          ((congrMul (zero_mul _) (.eqRefl _)).eqTrans (zero_mul _))).eqSymm
-    · let C : List (Fm PTm (n + 1)) := (eqb (rem (var 0) (Syn.shift d)) zero ≐ one) :: Λ
-      have o : C ⊢[PRAAx] eqb (rem (var 0) (Syn.shift d)) zero ≐ one := Prf.hyp0
-      have r0 : C ⊢[PRAAx] rem (var 0) (Syn.shift d) ≐ zero := eq_of_eqb o
-      have dv : C ⊢[PRAAx] Syn.shift d * quo (var 0) (Syn.shift d) ≐ var 0 :=
-        ((add_zero _).eqSymm.eqTrans (congrAdd (.eqRefl _) r0.eqSymm)).eqTrans (div_eq hd'.wk).eqSymm
-      have sgq : C ⊢[PRAAx] sg (quo (var 0) (Syn.shift d)) ≐ sg (var 0) :=
-        (sg_mul_pos hd'.wk _).eqSymm.eqTrans (congrSg dv)
-      exact (congrMul (.eqRefl _) (congrMul sgq (congrInst2 G dv (.eqRefl _)))).eqTrans (mul_assoc _ _ _).eqSymm
+    exact guarded_quotient G (var 0) (Syn.shift d) P hd'
   -- the terms beyond `N` vanish
-  have hNd : Γ ⊢[PRAAx] le (succ N) (succ (N * d)) := by
-    have m := mul_le_mul_right N (le_congr (.eqRefl _) hd.eqSymm (by ipra_le 𝔞 (pred d)) : Γ ⊢[PRAAx] le one d)
-    ipra_le sl m
+  have hNd := reindex_bound N hd
   have s6 : Γ ⊢[PRAAx] ap2 (sumF (dmBg G)) (succ (N * d)) (pairT d (Zp N h y)) ≐
       ap2 (sumF (dmBg G)) (succ N) (pairT d (Zp N h y)) := by
     refine sum_cut (dmBg G) hNd (.allI ?_)

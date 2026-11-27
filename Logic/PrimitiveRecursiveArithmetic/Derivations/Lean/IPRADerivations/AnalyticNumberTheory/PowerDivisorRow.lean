@@ -115,6 +115,28 @@ theorem sg_mul_pos {d : PTm n} (hd : Γ ⊢[PRAAx] d ≐ succ (pred d)) (q : PTm
     have hq : C ⊢[PRAAx] q ≐ zero := (monus_zero q).eqSymm.eqTrans Prf.hyp0
     exact (congrSg ((congrMul (.eqRefl d) hq).eqTrans (mul_zero d))).eqTrans (congrSg hq).eqSymm
 
+/-- Under the divisibility gate, the quotient reindexes a positive-weight summand. -/
+theorem guarded_quotient (G : PTm 2) (i d P : PTm n) (hd : Γ ⊢[PRAAx] d ≐ succ (pred d)) :
+    Γ ⊢[PRAAx] eqb (rem i d) zero * (sg (quo i d) * inst2 G (d * quo i d) P) ≐
+      eqb (rem i d) zero * sg i * inst2 G i P := by
+  refine .orE (eqb_cases (rem i d) zero) ?_ ?_
+  · have z : (eqb (rem i d) zero ≐ zero) :: Γ ⊢[PRAAx] eqb (rem i d) zero ≐ zero := Prf.hyp0
+    exact ((congrMul z (.eqRefl _)).eqTrans (zero_mul _)).eqTrans
+      ((congrMul (congrMul z (.eqRefl _)) (.eqRefl _)).eqTrans
+        ((congrMul (zero_mul _) (.eqRefl _)).eqTrans (zero_mul _))).eqSymm
+  · have o : (eqb (rem i d) zero ≐ one) :: Γ ⊢[PRAAx] eqb (rem i d) zero ≐ one := Prf.hyp0
+    have r₀ := LeanProofs.IPRA.Foundations.BoundedReflection.eq_of_eqb o
+    have dv := ((div_eq hd.wk).eqTrans
+      ((congrAdd (.eqRefl _) r₀).eqTrans (add_zero _))).eqSymm
+    have s := (sg_mul_pos hd.wk _).eqSymm.eqTrans (congrSg dv)
+    exact (congrMul (.eqRefl _) (congrMul s (congrInst2 G dv (.eqRefl _)))).eqTrans (mul_assoc _ _ _).eqSymm
+
+/-- Reindexing by a positive divisor extends the upper bound. -/
+theorem reindex_bound (N : PTm n) {d : PTm n} (hd : Γ ⊢[PRAAx] d ≐ succ (pred d)) :
+    Γ ⊢[PRAAx] le (succ N) (succ (N * d)) :=
+  Order.succ_le_succ
+    (le_congr (Common.mul_one_right N) (.eqRefl _) (mul_le_mul_left N (Common.one_le_of_pos hd)))
+
 /-- The reindexed summand `sg(k) G(dk)` over `0 = k`, `1 = ⟨d, ⟨⟨N, h⟩, y⟩⟩`. -/
 def hB : PTm 2 := sg (var 0) * Syn.subst ![fstT (var 1) * var 0, sndT (var 1)] (GB a)
 
@@ -213,27 +235,13 @@ theorem row_identity {d h : PTm n} (hd : Γ ⊢[PRAAx] d ≐ succ (pred d)) (hh 
       congrAp2 quoF (.eqRefl _) (fst_pair _ _)
     refine (congrMul e0 ((congrInst2 (hB a) eq0 (snd_pair _ _)).eqTrans (hB_at a _ _ _ _ _))).eqTrans ?_
     refine Prf.eqTrans ?_ (dmB_at a _ _ _ _ _).eqSymm
-    refine .orE (eqb_cases (Γ := Λ) (rem (var 0) (Syn.shift d)) zero) ?_ ?_
-    · have z : ((eqb (rem (var 0) (Syn.shift d)) zero ≐ zero) :: Λ) ⊢[PRAAx]
-          eqb (rem (var 0) (Syn.shift d)) zero ≐ zero := Prf.hyp0
-      exact ((congrMul z (.eqRefl _)).eqTrans (zero_mul _)).eqTrans
-        ((congrMul (congrMul z (.eqRefl _)) (.eqRefl _)).eqTrans
-          ((congrMul (zero_mul _) (.eqRefl _)).eqTrans (zero_mul _))).eqSymm
-    · let C : List (Fm PTm (n + 1)) := (eqb (rem (var 0) (Syn.shift d)) zero ≐ one) :: Λ
-      have o : C ⊢[PRAAx] eqb (rem (var 0) (Syn.shift d)) zero ≐ one := Prf.hyp0
-      have r0 : C ⊢[PRAAx] rem (var 0) (Syn.shift d) ≐ zero := LeanProofs.IPRA.Foundations.BoundedReflection.eq_of_eqb o
-      have dv : C ⊢[PRAAx] Syn.shift d * quo (var 0) (Syn.shift d) ≐ var 0 :=
-        ((add_zero _).eqSymm.eqTrans (congrAdd (.eqRefl _) r0.eqSymm)).eqTrans (div_eq hd'.wk).eqSymm
-      have g : C ⊢[PRAAx] Apre a (quo (Syn.shift N) (pw (Syn.shift d * quo (var 0) (Syn.shift d)) (Syn.shift h)))
-          (Syn.shift y) ≐ Apre a (quo (Syn.shift N) (pw (var 0) (Syn.shift h))) (Syn.shift y) :=
-        congrAp2 _ (congrAp2 quoF (.eqRefl _) (congrAp2 powF (.eqRefl _) dv)) (.eqRefl _)
-      have sgq : C ⊢[PRAAx] sg (quo (var 0) (Syn.shift d)) ≐ sg (var 0) :=
-        (sg_mul_pos hd'.wk _).eqSymm.eqTrans (congrSg dv)
-      exact (congrMul (.eqRefl _) (congrMul sgq g)).eqTrans (mul_assoc _ _ _).eqSymm
+    have g₁ := GB_at (Γ := Λ) a (Syn.shift d * quo (var 0) (Syn.shift d))
+      (Syn.shift N) (Syn.shift h) (Syn.shift y)
+    have g₂ := GB_at (Γ := Λ) a (var 0) (Syn.shift N) (Syn.shift h) (Syn.shift y)
+    exact (congrMul (.eqRefl _) (congrMul (.eqRefl _) g₁.eqSymm)).eqTrans
+      ((guarded_quotient (GB a) (var 0) (Syn.shift d) _ hd').eqTrans (congrMul (.eqRefl _) g₂))
   -- (6) the terms beyond `N` vanish
-  have hNd : Γ ⊢[PRAAx] le (succ N) (succ (N * d)) := by
-    have m := mul_le_mul_right N (le_congr (.eqRefl _) hd.eqSymm (by ipra_le 𝔞 (pred d)) : Γ ⊢[PRAAx] le one d)
-    ipra_le sl m
+  have hNd := reindex_bound N hd
   have s6 : Γ ⊢[PRAAx] ap2 (sumF (dmB a)) (succ (N * d)) (pairT d (pairT (pairT N h) y)) ≐
       ap2 (sumF (dmB a)) (succ N) (pairT d (pairT (pairT N h) y)) := by
     refine sum_cut (dmB a) hNd (.allI ?_)
