@@ -18,7 +18,7 @@ The [verification directory](verification/) contains the
 [shared machine coding and IΣ₁ transfer](verification/shared/).
 The [research packets](docs/) retain the layout references from their delivery.
 
-Lean proves the unconditional iPRA equivalence for forty literal 194-state
+Lean proves the unconditional iPRA equivalence for forty-one literal 194-state
 tables. The theorems and staged replay instructions are under
 [the primary endpoint](verification/pa194/ipra/native-endpoint/README.md),
 [PA1944L](verification/pa194/ipra/variants/pa1944l/README.md),
@@ -29,6 +29,7 @@ tables. The theorems and staged replay instructions are under
 [PA194C32](verification/pa194/ipra/variants/pa194c32/README.md),
 [PA194HX](verification/pa194/ipra/variants/pa194hx/README.md),
 [PA194LC](verification/pa194/ipra/variants/pa194lc/README.md),
+[PA194LC_AX11H](verification/pa194/ipra/variants/pa194lcax11h/README.md),
 [PA194LC_A](verification/pa194/ipra/variants/pa194lca/PA194LCAFinal.lean),
 [PA194LC_B](verification/pa194/ipra/variants/pa194lcb/README.md),
 [PA194LC_C](verification/pa194/ipra/variants/pa194lcc/README.md),
@@ -42,8 +43,7 @@ the [seven timing variants](verification/pa194/ipra/variants/pa194fast/README.md
 The remaining 194-state candidates, the original PA195, and the PA196
 candidate still need equivalence proofs.
 
-The [LC_AX11H controller](verification/pa194/ipra/variants/pa194lcax11h/README.md)
-uses the same resolved source as AX11H and has its own checked blank startup.
+The [LC_AX11H endpoint](verification/pa194/ipra/variants/pa194lcax11h/PA194LCAX11HFinal.lean) uses the checked blank startup and coverage of all 3,671 sites to transfer the AX11H equivalence to the literal LC_AX11H table.
 The [radix-five](verification/pa194/ipra/variants/pa194m5/README-radix.md)
 and [radix-six](verification/pa194/ipra/variants/pa194m6/README.md) proofs
 use revised source programs with different numerical constructors.

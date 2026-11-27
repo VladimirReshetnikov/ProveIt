@@ -33,3 +33,13 @@ to replay the conditional endpoint.
 ```sh
 bash "$variants/pa194lcax11h/check-native.sh" /path/to/fresh-literal /path/to/ax11h-final /path/to/bounded-transfer /path/to/fresh-native
 ```
+
+The [final endpoint](PA194LCAX11HFinal.lean) supplies the generated coverage
+proof to the conditional theorem. Its theorem
+`PA194LCAX11HFinal.consistency_iff_literal_nonhalt` states the equivalence
+between PA consistency and literal blank-tape nonhalting in the standard iPRA
+theory.
+
+```sh
+bash "$variants/pa194lcax11h/check-final.sh" /path/to/fresh-native /path/to/fresh-coverage /path/to/fresh-final
+```
