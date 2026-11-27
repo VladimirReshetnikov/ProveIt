@@ -41,10 +41,10 @@ open LeanProofs.IPRA.DiophantineNumberTheory.QuadraticReciprocityGoal (nonsquare
 open LeanProofs.IPRA.DiophantineNumberTheory.RectangleCount (rectangle_of_odd)
 open LeanProofs.IPRA.DiophantineNumberTheory.EisensteinParity (eB)
 open LeanProofs.IPRA.DiophantineNumberTheory.FoldedPermutation (floor_gauss_parity)
-open LeanProofs.IPRA.DiophantineNumberTheory.PairProduct (sqB sq_at)
+open LeanProofs.IPRA.DiophantineNumberTheory.PairProduct (sqB sq_search_witness sq_search_no_root)
 open LeanProofs.IPRA.DiophantineNumberTheory.GaussLemma (rb gauss_lemma)
 open LeanProofs.IPRA.Foundations.BoundedSyntax (formula bit bounded_reflection bit_zero_iff program_correct)
-open LeanProofs.IPRA.Foundations.BoundedReflection (exB wit ex_cases ex_elim ex_none eqb_cases eq_of_eqb one_ne_zero)
+open LeanProofs.IPRA.Foundations.BoundedReflection (wit ex_cases)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
@@ -69,23 +69,14 @@ theorem nr_formula {p a : PTm n} (hnr : Γ ⊢[PRAAx] rb p a ≐ zero) : Γ ⊢[
   have hnr' : (Γ.map Fm.shift) ⊢[PRAAx] rb (Syn.shift p) (Syn.shift a) ≐ zero := by
     simpa [Fm.shift, Syn.shift] using hnr.shift
   have h0 : (exF p a :: (Fm.ex (exF p a) :: Γ).map Fm.shift) ⊢[PRAAx] exF p a := Prf.hyp0
-  have z := ex_none sqB (hnr'.wk.wk : (exF p a :: (Fm.ex (exF p a) :: Γ).map Fm.shift) ⊢[PRAAx] _)
-    (Prf.andE₁ h0)
-  exact one_ne_zero _ ((eqb_of_eq (Prf.andE₂ h0)).eqSymm.eqTrans ((sq_at _ _ _).eqSymm.eqTrans z))
+  exact .impE (sq_search_no_root hnr'.wk.wk (Prf.andE₁ h0)) (Prf.andE₂ h0)
 
 /-- A square root below `p`: the bounded formula fails. -/
 theorem res_formula {p a : PTm n} (hr : Γ ⊢[PRAAx] rb p a ≐ one) :
     Γ ⊢[PRAAx] neg (neg (Fm.ex (exF p a))) := by
-  have ee := ex_elim sqB hr
-  have ne : Γ ⊢[PRAAx] neg (eqb (rem (wit sqB p (pairT p a) * wit sqB p (pairT p a)) p) (rem a p) ≐ zero) :=
-    .impI (.impE (Prf.andE₂ ee).wk ((sq_at _ _ _).eqTrans Prf.hyp0))
-  have sq : Γ ⊢[PRAAx] rem (wit sqB p (pairT p a) * wit sqB p (pairT p a)) p ≐ rem a p := by
-    refine .orE (eqb_cases (rem (wit sqB p (pairT p a) * wit sqB p (pairT p a)) p) (rem a p)) ?_ ?_
-    · exact .botE _ (.impE ne.wk Prf.hyp0)
-    · exact eq_of_eqb Prf.hyp0
   refine .impI (.impE Prf.hyp0 (Prf.exI (wit sqB p (pairT p a)) ?_))
   rw [exF_at]
-  exact .andI (Prf.andE₁ ee).wk sq.wk
+  exact (sq_search_witness hr).wk
 
 /-- `signBit p a = 1 − [∃ x < p, x² ≡ a (mod p)]`. -/
 theorem sign_eq (p a : PTm n) : Γ ⊢[PRAAx] signBit p a ≐ monus one (rb p a) := by

@@ -43,10 +43,10 @@ open LeanProofs.IPRA.DiophantineNumberTheory.Coprime (gcd_comm_one)
 open LeanProofs.IPRA.DiophantineNumberTheory.ModularCertificate (rem_mul_congr2)
 open LeanProofs.IPRA.DiophantineNumberTheory.EisensteinParity (eB)
 open LeanProofs.IPRA.DiophantineNumberTheory.GaussProduct (gauss_unit)
-open LeanProofs.IPRA.DiophantineNumberTheory.PairProduct (sqB sq_at euler_nonresidue)
+open LeanProofs.IPRA.DiophantineNumberTheory.PairProduct (sqB sq_search_witness euler_nonresidue)
 open LeanProofs.IPRA.DiophantineNumberTheory.WilsonProduct (wilson pred_lt)
 open LeanProofs.IPRA.DiophantineNumberTheory.ResidueFacts (neg_pow residue_pow)
-open LeanProofs.IPRA.Foundations.BoundedReflection (exB wit ex_cases ex_elim eqb_cases eq_of_eqb one_ne_zero)
+open LeanProofs.IPRA.Foundations.BoundedReflection (exB wit ex_cases one_ne_zero)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
@@ -67,13 +67,7 @@ theorem euler_res {p a : PTm n} (hp : Γ ⊢[PRAAx] prime p) (hodd : Γ ⊢[PRAA
     Γ ⊢[PRAAx] rem (pw a (half p)) p ≐ rem one p := by
   have hq := prime_two hp
   have hp1 := p_pos hq
-  have ee := ex_elim sqB hr
-  have ne : Γ ⊢[PRAAx] neg (eqb (rem (wit sqB p (pairT p a) * wit sqB p (pairT p a)) p) (rem a p) ≐ zero) :=
-    .impI (.impE (Prf.andE₂ ee).wk ((sq_at _ _ _).eqTrans Prf.hyp0))
-  have sq : Γ ⊢[PRAAx] rem (wit sqB p (pairT p a) * wit sqB p (pairT p a)) p ≐ rem a p := by
-    refine .orE (eqb_cases (rem (wit sqB p (pairT p a) * wit sqB p (pairT p a)) p) (rem a p)) ?_ ?_
-    · exact .botE _ (.impE ne.wk Prf.hyp0)
-    · exact eq_of_eqb Prf.hyp0
+  have sq := (sq_search_witness hr).andE₂
   have hu : Γ ⊢[PRAAx] gcd (wit sqB p (pairT p a)) p ≐ one := cop_of_sol hq ha sq
   exact (pw_rem_congr hp1 sq.eqSymm (half p)).eqTrans (residue_pow hp hodd hu)
 

@@ -40,6 +40,7 @@ namespace LeanProofs.IPRA.DiophantineNumberTheory.PairProduct
 open_ipra
 open LeanProofs.IPRA.Analysis.Products (fact)
 open LeanProofs.IPRA.AnalyticNumberTheory.Primes (prime)
+open LeanProofs.IPRA.AnalyticNumberTheory.Valuation (eq_of_eqb_ne ne_of_eqb_zero)
 open LeanProofs.IPRA.AnalyticNumberTheory.ValuationMul (p_pos)
 open LeanProofs.IPRA.AnalyticNumberTheory.Mobius (prime_two one_inst inst2_mulB congrEqb')
 open LeanProofs.IPRA.AnalyticNumberTheory.Euler (shift_cop)
@@ -50,7 +51,7 @@ open LeanProofs.IPRA.Combinatorics.BinomialTheorem (congrPw)
 open LeanProofs.IPRA.DiophantineNumberTheory.ModularCertificate (rem_mul_congr2 prod_congr_mod)
 open LeanProofs.IPRA.DiophantineNumberTheory.UnitInvolution (sB s_at unit_perm pair_mul fixed_sq succ_lt_of)
 open LeanProofs.IPRA.Foundations.InvolutionPairing (LB EB inst2_LB inst2_EB inst2_pw pair_count pair_prod)
-open LeanProofs.IPRA.Foundations.BoundedReflection (exB ex_none one_ne_zero)
+open LeanProofs.IPRA.Foundations.BoundedReflection (exB wit ex_elim ex_none)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
@@ -74,6 +75,19 @@ theorem sq_at (x p a : PTm n) :
     Γ ⊢[PRAAx] inst2 sqB x (pairT p a) ≐ eqb (rem (x * x) p) (rem a p) := by
   rw [inst2_sqB]
   exact congrEqb' (congrAp2 remF (.eqRefl _) (fst_pair _ _)) (congrAp2 remF (snd_pair _ _) (fst_pair _ _))
+
+/-- A successful square search returns a root below the search bound. -/
+theorem sq_search_witness {p a : PTm n} (h : Γ ⊢[PRAAx] exB sqB p (pairT p a) ≐ one) :
+    let x := wit sqB p (pairT p a)
+    Γ ⊢[PRAAx] lt x p ⋏ (rem (x * x) p ≐ rem a p) := by
+  have witness := ex_elim sqB h
+  exact .andI witness.andE₁ (eq_of_eqb_ne (.impI (.impE witness.andE₂.wk
+    ((sq_at _ _ _).eqTrans Prf.hyp0))))
+
+/-- A failed square search excludes every root below the search bound. -/
+theorem sq_search_no_root {p a x : PTm n} (h : Γ ⊢[PRAAx] exB sqB p (pairT p a) ≐ zero)
+    (hx : Γ ⊢[PRAAx] lt x p) : Γ ⊢[PRAAx] neg (rem (x * x) p ≐ rem a p) :=
+  ne_of_eqb_zero ((sq_at x p a).eqSymm.eqTrans (ex_none sqB h hx))
 
 /-- `∏_{i<M} (i + 1) = M!`. -/
 theorem prod_id (M y : PTm n) : Γ ⊢[PRAAx] ap2 (prodF idB) M y ≐ fact M := by
@@ -168,7 +182,6 @@ theorem euler_nonresidue {p a : PTm n} (hp : Γ ⊢[PRAAx] prime p) (hodd : Γ �
   have e : C ⊢[PRAAx] (var 0 : PTm (n + 1)) ≐ pred (res (succ (var 0)) (Syn.shift p) (Syn.shift a)) :=
     (Prf.hyp0 : C ⊢[PRAAx] _).eqTrans (s_at _ _ _)
   have fs := fixed_sq hp'.wk.wk hc'.wk.wk hi e
-  have z := ex_none sqB hnr'.wk.wk (succ_lt_of hp1'.wk.wk hi)
-  exact one_ne_zero _ ((eqb_of_eq fs).eqSymm.eqTrans ((sq_at _ _ _).eqSymm.eqTrans z))
+  exact .botE _ (.impE (sq_search_no_root hnr'.wk.wk (succ_lt_of hp1'.wk.wk hi)) fs)
 
 end LeanProofs.IPRA.DiophantineNumberTheory.PairProduct

@@ -37,12 +37,12 @@ open LeanProofs.IPRA.DiophantineNumberTheory.Coprime (gcd_comm_one)
 open LeanProofs.IPRA.DiophantineNumberTheory.ModularCertificate (rem_mul_congr2)
 open LeanProofs.IPRA.DiophantineNumberTheory.QuadraticReciprocityGoal (signBit)
 open LeanProofs.IPRA.DiophantineNumberTheory.UnitInvolution (unit_of_lt)
-open LeanProofs.IPRA.DiophantineNumberTheory.PairProduct (sqB sq_at)
+open LeanProofs.IPRA.DiophantineNumberTheory.PairProduct (sqB sq_search_witness sq_search_no_root)
 open LeanProofs.IPRA.DiophantineNumberTheory.WilsonProduct (pred_lt pred_pos)
 open LeanProofs.IPRA.DiophantineNumberTheory.ResidueFacts (neg_pow)
 open LeanProofs.IPRA.DiophantineNumberTheory.GaussLemma (rb euler_nr euler_res pred_ne_one)
 open LeanProofs.IPRA.DiophantineNumberTheory.QuadraticReciprocity (sign_eq)
-open LeanProofs.IPRA.Foundations.BoundedReflection (exB wit ex_cases ex_elim ex_none eqb_cases eq_of_eqb one_ne_zero)
+open LeanProofs.IPRA.Foundations.BoundedReflection (wit ex_cases one_ne_zero)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
@@ -67,14 +67,8 @@ theorem rb_of_sign_one {p a : PTm n} (h : Γ ⊢[PRAAx] signBit p a ≐ one) : �
 /-- The witness of the search is a square root: `rb p a = 1` gives `wit < p` and `wit² ≡ a (mod p)`. -/
 theorem wit_sq {p a : PTm n} (hr : Γ ⊢[PRAAx] rb p a ≐ one) :
     Γ ⊢[PRAAx] lt (wit sqB p (pairT p a)) p ⋏
-      (rem (wit sqB p (pairT p a) * wit sqB p (pairT p a)) p ≐ rem a p) := by
-  have ee := ex_elim sqB hr
-  have ne : Γ ⊢[PRAAx] neg (eqb (rem (wit sqB p (pairT p a) * wit sqB p (pairT p a)) p) (rem a p) ≐ zero) :=
-    .impI (.impE (Prf.andE₂ ee).wk ((sq_at _ _ _).eqTrans Prf.hyp0))
-  refine .andI (Prf.andE₁ ee) ?_
-  refine .orE (eqb_cases (rem (wit sqB p (pairT p a) * wit sqB p (pairT p a)) p) (rem a p)) ?_ ?_
-  · exact .botE _ (.impE ne.wk Prf.hyp0)
-  · exact eq_of_eqb Prf.hyp0
+      (rem (wit sqB p (pairT p a) * wit sqB p (pairT p a)) p ≐ rem a p) :=
+  sq_search_witness hr
 
 /-- "Obtaining the promised root": `signBit p a = 0` gives the root `x = wit < p`, `x² ≡ a (mod p)`. -/
 theorem root_of_sign {p a : PTm n} (h : Γ ⊢[PRAAx] signBit p a ≐ zero) :
@@ -84,9 +78,8 @@ theorem root_of_sign {p a : PTm n} (h : Γ ⊢[PRAAx] signBit p a ≐ zero) :
 
 /-- `signBit p a = 1` excludes every root below `p`. -/
 theorem no_root_of_sign {p a x : PTm n} (h : Γ ⊢[PRAAx] signBit p a ≐ one) (hx : Γ ⊢[PRAAx] lt x p) :
-    Γ ⊢[PRAAx] neg (rem (x * x) p ≐ rem a p) := by
-  have z := ex_none sqB (rb_of_sign_one h) hx
-  exact .impI (one_ne_zero _ ((eqb_of_eq Prf.hyp0).eqSymm.eqTrans ((sq_at _ _ _).eqSymm.eqTrans z.wk)))
+    Γ ⊢[PRAAx] neg (rem (x * x) p ≐ rem a p) :=
+  sq_search_no_root (rb_of_sign_one h) hx
 
 /-! ## The first supplementary law -/
 
