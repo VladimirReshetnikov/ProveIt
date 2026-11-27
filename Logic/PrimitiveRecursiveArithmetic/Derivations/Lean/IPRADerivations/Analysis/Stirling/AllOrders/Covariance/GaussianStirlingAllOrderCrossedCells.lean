@@ -25,7 +25,7 @@ open GaussianStirlingAllOrderCenteredBernoulli (sample_canonical)
 open GaussianStirlingAllOrderPairedRefinement (mesh start pair_monotone)
 open GaussianStirlingAllOrderPairedWeight (pairWeight subst_pairWeight)
 open GaussianStirlingAllOrderPanelTail (panelData)
-open RationalAlgebra (add_congr add_associative add_commutative multiply_commutative)
+open RationalAlgebra (add_congr add_commutative multiply_commutative swap_tail)
 open RationalArgmin (rationalLE rationalLE_congr)
 open RationalArithmetic (add add_guard multiply)
 open RationalCrossedProductSums (cell rectangleCells rowCells)
@@ -53,10 +53,6 @@ private theorem weight_monotone (q A B S i j : PTm n) (hA : Γ ⊢[PRAAx] le one
     unfold mesh
     exact le_congr (by ipra_ring) (by ipra_ring) (mul_le_mul_right B hj)
   exact pair_monotone _ _ _ _ _ hu step bound
-
-private theorem put_middle (a b c : PTm n) : Γ ⊢[PRAAx] add (add a b) c ≐ add (add a c) b :=
-  (add_associative a b c).eqTrans
-    ((add_congr (.eqRefl _) (add_commutative b c)).eqTrans (add_associative a c b).eqSymm)
 
 private theorem increasing_cell (m : ℕ) (q A B S i j : PTm n) (hA : Γ ⊢[PRAAx] le one A)
     (hS : Γ ⊢[PRAAx] le one S) (hij : Γ ⊢[PRAAx] le i j) (hj : Γ ⊢[PRAAx] le (two*j) (S*num 8)) :
@@ -104,7 +100,7 @@ theorem strong_cell (m : ℕ) (q A B S i j : PTm n) (hA : Γ ⊢[PRAAx] le one A
     (hM : Γ ⊢[PRAAx] le (two*j) (S*num 8)) :
     Γ ⊢[PRAAx] cell (sampleAt m S i) (weightAt q A B S i) (sampleAt m S j) (weightAt q A B S j)
       (boxMargin m q A B) :=
-  rationalLE_congr (put_middle _ _ _) (add_congr (.eqRefl _) (multiply_commutative _ _))
+  rationalLE_congr (swap_tail _ _ _) (add_congr (.eqRefl _) (multiply_commutative _ _))
     (box_product_gap m q A B S i j hA hB hS hi hj hM)
 
 /-- Shared table environment for a half-grid segment with an initial index. -/

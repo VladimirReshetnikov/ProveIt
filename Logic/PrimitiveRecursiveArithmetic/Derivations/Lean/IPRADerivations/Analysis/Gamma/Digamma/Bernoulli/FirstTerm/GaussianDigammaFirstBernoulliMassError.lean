@@ -28,7 +28,7 @@ open GaussianStirlingAllOrderPowerIntegralMeshCells (primitive)
 open GaussianStirlingAllOrderPowerIntegralPrefix (corrected_prefix_bounds)
 open GaussianStirlingAllOrderReciprocalWeightError (power)
 open GaussianStirlingAllOrderFirstPanelReadback (upper_of_add_order)
-open RationalAlgebra (add_congr add_commutative add_associative)
+open RationalAlgebra (add_congr add_commutative swap_tail)
 open RationalArgmin (rationalLE rationalLE_congr reflexive transitive)
 open RationalArithmetic (add negative multiply_guard)
 open RationalFiniteSum (sum sum_zero sum_succ term)
@@ -59,10 +59,6 @@ private theorem mass_at_one (e : ℕ) (U B M : PTm n) : Γ ⊢[PRAAx] massPrefix
   have row := (mass_at e U B M zero).eqTrans ep
   exact first.eqTrans ((add_congr ((RationalFiniteSum.sum_zero f d).eqTrans zero_fraction.eqSymm) row).eqTrans
     ((add_commutative z P).eqTrans (add_zero_right P (multiply_guard _ _))))
-
-private theorem swap_tail (a b c : PTm n) : Γ ⊢[PRAAx] add (add a b) c ≐ add (add a c) b :=
-  (add_associative a b c).eqTrans
-    ((add_congr (.eqRefl _) (add_commutative b c)).eqTrans (add_associative a c b).eqSymm)
 
 theorem power_mass_error (e : ℕ) (he : 2≤e) (U B M : PTm n) (hU : Γ ⊢[PRAAx] le one U)
     (hM : Γ ⊢[PRAAx] le one M) :

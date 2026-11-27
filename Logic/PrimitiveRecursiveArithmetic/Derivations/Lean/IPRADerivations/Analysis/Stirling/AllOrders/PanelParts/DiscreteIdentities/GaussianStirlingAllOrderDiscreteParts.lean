@@ -20,13 +20,13 @@ open_ipra
 open GaussianEuclideanDistanceName (fraction fraction_represents)
 open GaussianRationalHorner (positive_product)
 open RationalArithmetic (add multiply negative)
-open RationalAlgebra (add_congr add_associative add_commutative multiply_congr multiply_add
+open RationalAlgebra (add_congr add_commutative multiply_congr multiply_add
   multiply_commutative multiply_negative negative_congr negative_minus_multiply negative_involution)
 open RationalReciprocalPowerTail (add_zero_right zero_fraction)
 open RationalHalfNinthProductLower (add_negative_cancel)
 open RationalNormalForm (wellFormed)
 open RationalFiniteSum (term)
-open RationalAlgebra (negative_add)
+open RationalAlgebra (negative_add swap_tail)
 open RationalAlgebra renaming add_shuffle → interleave
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
@@ -158,13 +158,11 @@ private theorem sum_succ_step (f g : PTm 2) (x y N : PTm n) (ih : Γ ⊢[PRAAx] 
   have e : Γ ⊢[PRAAx] term (body f g) N (pairT x y) ≐ sub v u := by
     rw [term_body]
     exact add_congr (cross_at f g x y (succ N)) (negative_congr (cross_at f g x y N))
-  have reorder (r s t : PTm n) : Γ ⊢[PRAAx] add (add r s) t ≐ add (add r t) s :=
-    (add_associative r s t).eqTrans ((add_congr (.eqRefl _) (add_commutative _ _)).eqTrans (add_associative _ _ _).eqSymm)
   have e' : Γ ⊢[PRAAx] add u (sub v u) ≐ v :=
-    (add_commutative _ _).eqTrans ((reorder v (negative u) u).eqTrans
+    (add_commutative _ _).eqTrans ((swap_tail v (negative u) u).eqTrans
       (add_negative_cancel v u (RationalArithmetic.add_guard _ _)))
   exact (add_congr ((RationalFiniteSum.sum_succ _ _ _).eqTrans (add_congr (.eqRefl _) e)) (.eqRefl _)).eqTrans
-    ((reorder a (sub v u) b).eqTrans ((add_congr ih (.eqRefl _)).eqTrans e'))
+    ((swap_tail a (sub v u) b).eqTrans ((add_congr ih (.eqRefl _)).eqTrans e'))
 
 theorem finite_parts (f g : PTm 2) (x y N : PTm n) : Γ ⊢[PRAAx] telescopeLaw f g x y N := by
   have all : Γ ⊢[PRAAx] .all (telescopeLaw f g (Syn.shift x) (Syn.shift y) (var 0)) := by
