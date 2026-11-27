@@ -65,15 +65,14 @@ theorem pt_two {j m : PTm n} (h : Γ ⊢[PRAAx] lt j (succ m)) :
 /-! ## The diagonal sums -/
 
 theorem diag_zero : Γ ⊢[PRAAx] diag (zero : PTm n) ≐ one := by
-  have s := sum_succ' (Γ := Γ) dB zero zero
-  rw [inst2_d] at s
-  exact s.eqTrans ((congrAdd (sum_zero _ _) (gb_zero _)).eqTrans (zero_add _))
+  refine (sum_singleton dB zero).eqTrans ?_
+  rw [inst2_d]
+  exact gb_zero _
 
 theorem offd_zero : Γ ⊢[PRAAx] offd (zero : PTm n) ≐ zero := by
-  have s := sum_succ' (Γ := Γ) eB zero zero
-  rw [inst2_e] at s
-  exact s.eqTrans ((congrAdd (sum_zero _ _)
-    ((congrGb (monus_self _) (.eqRefl _)).eqTrans (gb_above (le_refl _)))).eqTrans (zero_add _))
+  refine (sum_singleton eB zero).eqTrans ?_
+  rw [inst2_e]
+  exact (congrGb (monus_self _) (.eqRefl _)).eqTrans (gb_above (le_refl _))
 
 /-- `diag (m + 1) = 1 + offd m`. -/
 theorem diag_succ (m : PTm n) : Γ ⊢[PRAAx] diag (succ m) ≐ one + offd m := by

@@ -92,8 +92,7 @@ theorem signed_square (m : PTm n) :
 
 /-- (2.20), cleared, for `n = 0`: `1 + abs(C(0, 1) − C(0, 0))² = 2 Cat_0`. -/
 theorem signed_square_zero : Γ ⊢[PRAAx] one + ap2 (sumF dB) (succ zero) (zero : PTm n) ≐ two * cat zero := by
-  have a := natEq (sum_succ' (Γ := Γ) dB zero (zero : PTm n))
-  have z := natEq (sum_zero (Γ := Γ) dB (zero : PTm n))
+  have a := natEq (sum_singleton (Γ := Γ) dB (zero : PTm n))
   have h₁ : Γ ⊢[PRAAx] gb (zero : PTm n) (succ zero) ≐ zero := gb_above (le_refl _)
   have h₂ : Γ ⊢[PRAAx] gb (zero : PTm n) zero ≐ one := gb_zero _
   have d : Γ ⊢[PRAAx] ad (gb (zero : PTm n) (succ zero)) (gb zero zero) ≐ one :=
@@ -103,6 +102,6 @@ theorem signed_square_zero : Γ ⊢[PRAAx] one + ap2 (sumF dB) (succ zero) (zero
     rw [inst2_d]; exact (congrMul d d).eqTrans (one_mul one)
   have t := natEq t'; have c := natEq (cat_zero (Γ := Γ) (n := n))
   apply deriveNat; ipra_simps
-  linear_combination a + z + t - 2 * c
+  linear_combination a + t - 2 * c
 
 end LeanProofs.IPRA.Combinatorics.CatalanSquares

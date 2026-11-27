@@ -266,14 +266,14 @@ theorem even_rec (N : PTm n) : Γ ⊢[PRAAx] succ N * Es (succ N) ≐ two * succ
     2 * (𝔞 N + 1) * (2 * 𝔞 N + 1) * z'
 
 theorem Es_zero : Γ ⊢[PRAAx] Es (zero : PTm n) ≐ cb zero := by
-  have s := sum_succ' (Γ := Γ) eB zero (zero : PTm n)
-  rw [inst2_e] at s
   have g : Γ ⊢[PRAAx] gb (zero : PTm n) (zero + zero) ≐ one := (congrGb (.eqRefl _) (add_zero _)).eqTrans (gb_zero _)
   have p : Γ ⊢[PRAAx] pw two (monus (zero : PTm n) (zero + zero)) ≐ one :=
     (congrAp2 powF (zero_monus _) (.eqRefl two)).eqTrans (pw_zero two)
   have t : Γ ⊢[PRAAx] et (zero : PTm n) zero ≐ one :=
     (congrMul (congrMul g p) cb_zero).eqTrans ((congrMul (one_mul _) (.eqRefl _)).eqTrans (one_mul _))
-  exact s.eqTrans ((congrAdd (sum_zero _ _) t).eqTrans ((zero_add _).eqTrans cb_zero.eqSymm))
+  refine (sum_singleton eB zero).eqTrans ?_
+  rw [inst2_e]
+  exact t.eqTrans cb_zero.eqSymm
 
 theorem Es_step {N : PTm n} (ih : Γ ⊢[PRAAx] Es N ≐ cb N) : Γ ⊢[PRAAx] Es (succ N) ≐ cb (succ N) := by
   refine mul_cancel (succ_pos N) ?_

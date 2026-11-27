@@ -110,13 +110,13 @@ abbrev binetF : Fm PTm 1 :=
     pairT (two * W (var 0) five) (two * V (var 0) five)
 
 theorem W_zero (x : PTm n) : Γ ⊢[PRAAx] W zero x ≐ one := by
-  refine (sum_succ' _ _ _).eqTrans ((congrAdd (sum_zero _ _) ?_).eqTrans (zero_add _))
+  refine (sum_singleton _ _).eqTrans ?_
   rw [inst2_bg, inst2_gE]
   exact (congrMul (binom_zero' _) ((congrMul ev_zero (congrPw (.eqRefl _) half_zero)).eqTrans
     ((one_mul _).eqTrans (pw_zero _)))).eqTrans (one_mul _)
 
 theorem V_zero (x : PTm n) : Γ ⊢[PRAAx] V zero x ≐ zero := by
-  refine (sum_succ' _ _ _).eqTrans ((congrAdd (sum_zero _ _) ?_).eqTrans (zero_add _))
+  refine (sum_singleton _ _).eqTrans ?_
   rw [inst2_bg, inst2_gO]
   exact (congrMul (.eqRefl _) ((congrMul par_zero (.eqRefl _)).eqTrans (zero_mul _))).eqTrans (mul_zero _)
 

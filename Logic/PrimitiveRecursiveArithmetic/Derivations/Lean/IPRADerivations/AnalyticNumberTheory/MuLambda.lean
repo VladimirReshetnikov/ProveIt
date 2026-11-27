@@ -33,8 +33,7 @@ variable {n : ℕ} {Γ : List (Fm PTm n)}
 /-- `∑_{i < 2} B(i, x) = 0` when both terms vanish. -/
 theorem sum_two_zero (B : PTm 2) {x : PTm n} (h0 : Γ ⊢[PRAAx] inst2 B zero x ≐ zero)
     (h1 : Γ ⊢[PRAAx] inst2 B one x ≐ zero) : Γ ⊢[PRAAx] ap2 (sumF B) (succ one) x ≐ zero :=
-  (sum_succ' _ _ _).eqTrans ((congrAdd ((sum_succ' _ _ _).eqTrans
-    ((congrAdd (sum_zero _ _) h0).eqTrans (zero_add _))) h1).eqTrans (add_zero _))
+  (sum_two_terms B x).eqTrans ((congrAdd h0 h1).eqTrans (zero_add zero))
 
 section MuLambda
 

@@ -118,14 +118,14 @@ theorem T_succ {N : PTm n} (ih : Γ ⊢[PRAAx] ap2 (sumF vB) (succ N) zero ≐ z
   exact rec_pt ih'.wk ((succ_monus_succ _ _).eqSymm.eqTrans Prf.hyp0)
 
 theorem T_zero : Γ ⊢[PRAAx] T (zero : PTm n) ≐ bell zero := by
-  have s := sum_succ' (Γ := Γ) tB zero (zero : PTm n)
-  rw [inst2_t] at s
-  exact s.eqTrans ((congrAdd (sum_zero _ _) stir_zero).eqTrans ((zero_add _).eqTrans bell_zero.eqSymm))
+  refine (sum_singleton tB zero).eqTrans ?_
+  rw [inst2_t]
+  exact stir_zero.eqTrans bell_zero.eqSymm
 
 theorem v_base : Γ ⊢[PRAAx] ap2 (sumF vB) (succ zero) (zero : PTm n) ≐ zero := by
-  have s := sum_succ' (Γ := Γ) vB zero (zero : PTm n)
-  rw [inst2_v] at s
-  exact s.eqTrans ((congrAdd (sum_zero _ _) (viol_of_eq T_zero)).eqTrans (add_zero _))
+  refine (sum_singleton vB zero).eqTrans ?_
+  rw [inst2_v]
+  exact viol_of_eq T_zero
 
 theorem v_step {N : PTm n} (ih : Γ ⊢[PRAAx] ap2 (sumF vB) (succ N) zero ≐ zero) :
     Γ ⊢[PRAAx] ap2 (sumF vB) (succ (succ N)) zero ≐ zero := by

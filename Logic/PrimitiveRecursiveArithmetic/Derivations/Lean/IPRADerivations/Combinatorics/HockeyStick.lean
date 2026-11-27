@@ -36,9 +36,9 @@ abbrev hB : PTm 2 := gb (var 1 + var 0) (var 0)
 theorem inst2_h (k m : PTm n) : inst2 hB k m = gb (m + k) k := by simp [inst2]
 
 theorem hs_base (m : PTm n) : Γ ⊢[PRAAx] ap2 (sumF hB) (succ zero) m ≐ gb (m + zero + one) zero := by
-  have s := sum_succ' (Γ := Γ) hB zero m
-  rw [inst2_h] at s
-  refine s.eqTrans ((congrAdd (sum_zero _ _) ((gb_zero _).eqTrans (gb_zero _).eqSymm)).eqTrans (zero_add _))
+  refine (sum_singleton hB m).eqTrans ?_
+  rw [inst2_h]
+  exact (gb_zero _).eqTrans (gb_zero _).eqSymm
 
 theorem hs_step {m d : PTm n} (ih : Γ ⊢[PRAAx] ap2 (sumF hB) (succ d) m ≐ gb (m + d + one) d) :
     Γ ⊢[PRAAx] ap2 (sumF hB) (succ (succ d)) m ≐ gb (m + succ d + one) (succ d) := by

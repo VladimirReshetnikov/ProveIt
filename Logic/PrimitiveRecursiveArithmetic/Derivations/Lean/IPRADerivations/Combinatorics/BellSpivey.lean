@@ -454,7 +454,7 @@ theorem F_succ (N m : PTm n) : Γ ⊢[PRAAx] F N (succ m) ≐ F (succ N) m := by
   exact congrAdd (u31 m N).eqSymm (.eqRefl _)
 
 theorem F_zero (N : PTm n) : Γ ⊢[PRAAx] F N zero ≐ bell (N + zero) := by
-  refine (sum_succ' _ _ _).eqTrans ((congrAdd (sum_zero _ _) (f_at _ _ _)).eqTrans ((zero_add _).eqTrans ?_))
+  refine ((sum_singleton _ _).eqTrans (f_at _ _ _)).eqTrans ?_
   exact (congrMul stir_zero (G_zero N)).eqTrans ((one_mul _).eqTrans (congrBell (add_zero N)).eqSymm)
 
 /-! ## The induction -/

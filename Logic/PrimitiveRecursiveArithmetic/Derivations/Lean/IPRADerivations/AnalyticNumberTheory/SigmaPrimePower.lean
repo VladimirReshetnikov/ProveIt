@@ -44,9 +44,7 @@ theorem pos_pw {p : PTm n} (hp : Γ ⊢[PRAAx] p ≐ succ (pred p)) (a : PTm n) 
 
 /-- `σ(1) = 1`. -/
 theorem sig_one : Γ ⊢[PRAAx] sig one ≐ one := by
-  refine (sum_succ _ _ _).eqTrans ?_
-  refine (congrAdd ((sum_succ _ _ _).eqTrans ((congrAdd (sum_zero _ _) (.eqRefl _)).eqTrans (zero_add _)))
-    (.eqRefl _)).eqTrans ?_
+  refine (sum_two_terms _ _).eqTrans ?_
   have e0 : Γ ⊢[PRAAx] Syn.subst ![zero, one] sB ≐ zero := by
     show Γ ⊢[PRAAx] inst2 sB zero one ≐ zero
     rw [inst2_sB]; exact mul_zero _

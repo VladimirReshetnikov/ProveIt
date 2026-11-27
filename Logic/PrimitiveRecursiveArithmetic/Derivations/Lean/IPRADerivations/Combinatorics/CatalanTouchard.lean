@@ -180,14 +180,14 @@ theorem touch_rec (N : PTm n) :
     2 * (𝔞 N + 1) * (2 * 𝔞 N + 3) * z'
 
 theorem M_zero : Γ ⊢[PRAAx] M (zero : PTm n) ≐ cat (succ zero) := by
-  have s := sum_succ' (Γ := Γ) mtB zero (zero : PTm n)
-  rw [inst2_mt] at s
   have g : Γ ⊢[PRAAx] gb (zero : PTm n) (zero + zero) ≐ one := (congrGb (.eqRefl _) (add_zero _)).eqTrans (gb_zero _)
   have p : Γ ⊢[PRAAx] pw two (monus (zero : PTm n) (zero + zero)) ≐ one :=
     (congrAp2 powF (zero_monus _) (.eqRefl two)).eqTrans (pw_zero two)
   have t : Γ ⊢[PRAAx] mt (zero : PTm n) zero ≐ one :=
     (congrMul (congrMul g p) cat_zero).eqTrans ((congrMul (one_mul _) (.eqRefl _)).eqTrans (one_mul _))
-  exact s.eqTrans ((congrAdd (sum_zero _ _) t).eqTrans ((zero_add _).eqTrans cat_one.eqSymm))
+  refine (sum_singleton mtB zero).eqTrans ?_
+  rw [inst2_mt]
+  exact t.eqTrans cat_one.eqSymm
 
 theorem M_step {N : PTm n} (ih : Γ ⊢[PRAAx] M N ≐ cat (succ N)) : Γ ⊢[PRAAx] M (succ N) ≐ cat (succ (succ N)) := by
   refine mul_cancel (succ_pos (succ (succ N))) ?_

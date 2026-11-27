@@ -207,14 +207,14 @@ theorem C_rec (N : PTm n) : Γ ⊢[PRAAx] C (succ (succ N)) ≐ C (succ N) + C N
   exact h₁.eqTrans ((sum_add _ _ _ _).eqTrans (congrAdd (.eqRefl _) h₂))
 
 theorem C_zero : Γ ⊢[PRAAx] C (zero : PTm n) ≐ one := by
-  refine (congrAp2 (sumF okB) (pw_zero two) (.eqRefl _)).eqTrans ((sum_succ' _ _ _).eqTrans ?_)
+  refine (congrAp2 (sumF okB) (pw_zero two) (.eqRefl _)).eqTrans ((sum_singleton okB zero).eqTrans ?_)
   rw [inst2_ok]
-  exact (congrAdd (sum_zero _ _) (ok_zero _)).eqTrans (zero_add _)
+  exact ok_zero _
 
 theorem C_one : Γ ⊢[PRAAx] C (succ (zero : PTm n)) ≐ two := by
   have e : Γ ⊢[PRAAx] pw two (succ (zero : PTm n)) ≐ two * succ zero := (pw_two_succ _).eqTrans (congrMul (.eqRefl _) (pw_zero _))
   refine (congrAp2 (sumF okB) e (.eqRefl _)).eqTrans ((sum_pairs _ _ _).eqTrans ?_)
-  refine (sum_succ' _ _ _).eqTrans ((congrAdd (sum_zero _ _) ?_).eqTrans (zero_add _))
+  refine (sum_singleton _ _).eqTrans ?_
   rw [inst2_pair, inst2_ok, inst2_ok]
   ipra_lc natEq ((ok_even (Γ := Γ) zero zero).eqTrans (ok_zero _)) +
     natEq ((ok_odd (Γ := Γ) zero zero).eqTrans ((congrMul ev_zero (ok_zero _)).eqTrans (one_mul _)))
@@ -271,9 +271,9 @@ theorem okp_zero : Γ ⊢[PRAAx] okp (zero : PTm n) ≐ one :=
   (congrMonus (.eqRefl _) ((congrMul par_zero (.eqRefl _)).eqTrans (zero_mul _))).eqTrans (monus_zero _)
 
 theorem ext_base : Γ ⊢[PRAAx] ap2 (sumF vB) (pw two (zero : PTm n)) zero ≐ zero := by
-  refine (congrAp2 (sumF vB) (pw_zero two) (.eqRefl _)).eqTrans ((sum_succ' _ _ _).eqTrans ?_)
+  refine (congrAp2 (sumF vB) (pw_zero two) (.eqRefl _)).eqTrans ((sum_singleton vB zero).eqTrans ?_)
   rw [inst2_v]
-  refine (congrAdd (sum_zero _ _) (LeanProofs.IPRA.AnalyticNumberTheory.EulerProduct.viol_of_eq ?_)).eqTrans (zero_add _)
+  refine LeanProofs.IPRA.AnalyticNumberTheory.EulerProduct.viol_of_eq ?_
   exact (ok_succ _ _).eqTrans ((congrMul okp_zero (ok_zero _)).eqTrans ((one_mul _).eqTrans (ok_zero _).eqSymm))
 
 theorem ext_step {N : PTm n} (ih : Γ ⊢[PRAAx] ap2 (sumF vB) (pw two N) N ≐ zero) :

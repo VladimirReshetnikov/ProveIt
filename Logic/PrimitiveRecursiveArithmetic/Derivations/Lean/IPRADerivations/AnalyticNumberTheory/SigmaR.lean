@@ -296,9 +296,7 @@ theorem sigr_step {p : PTm n} (hp : Γ ⊢[PRAAx] prime p) (a r : PTm n) :
 
 /-- `σ_r(1) = 1`. -/
 theorem sigr_one (r : PTm n) : Γ ⊢[PRAAx] sigr r one ≐ one := by
-  refine (sum_succ _ _ _).eqTrans ?_
-  refine (congrAdd ((sum_succ _ _ _).eqTrans ((congrAdd (sum_zero _ _) (.eqRefl _)).eqTrans (zero_add _)))
-    (.eqRefl _)).eqTrans ?_
+  refine (sum_two_terms _ _).eqTrans ?_
   have e0 : Γ ⊢[PRAAx] Syn.subst ![zero, pairT one r] srB ≐ zero := by
     show Γ ⊢[PRAAx] inst2 srB zero (pairT one r) ≐ zero
     have ne : Γ ⊢[PRAAx] neg (rem (one : PTm n) zero ≐ zero) :=
@@ -345,10 +343,8 @@ theorem geo_succ (x a : PTm n) : Γ ⊢[PRAAx] geo x (succ a) ≐ geo x a + pw x
   rw [e] at h; exact h
 
 theorem geo_zero (x : PTm n) : Γ ⊢[PRAAx] geo x zero ≐ one := by
-  have h := sum_succ (Γ := Γ) geoB zero x
-  have e : Syn.subst ![zero, x] (geoB : PTm 2) = pw x zero := by simp
-  rw [e] at h
-  exact h.eqTrans ((congrAdd (sum_zero _ _) (pw_zero x)).eqTrans (zero_add _))
+  refine (sum_singleton geoB x).eqTrans ?_
+  simpa [inst2, geoB] using (pw_zero (Γ := Γ) x)
 
 theorem rev_base_alg {G0 G1 P1 P0 x : PTm n} (s1 : Γ ⊢[PRAAx] G1 ≐ G0 + P1) (g0 : Γ ⊢[PRAAx] G0 ≐ one)
     (p1 : Γ ⊢[PRAAx] P1 ≐ P0 * x) (p0 : Γ ⊢[PRAAx] P0 ≐ one) : Γ ⊢[PRAAx] G1 ≐ x * G0 + one := by
