@@ -102,33 +102,28 @@ actual PR products. No induction on a quantified box correctness predicate. -/
 theorem box_content_clears (N B j : PTm n) (h : Γ ⊢[PRAAx] rationalSides N B)
     (hj : Γ ⊢[PRAAx] lt j (length B)) :
     Γ ⊢[PRAAx] boxDenominator N B j*integerCount N B j ≐ pw (mesh N B) N*boxNumerator N B j := by
-  have all : Γ ⊢[PRAAx] .all (le (var 0) (Syn.shift N) ⟶
-      (boxDenominator (var 0) (Syn.shift B) (Syn.shift j)*
-        partialCount (Syn.shift N) (Syn.shift B) (Syn.shift j) (var 0) ≐
-          pw (mesh (Syn.shift N) (Syn.shift B)) (var 0)*boxNumerator (var 0) (Syn.shift B) (Syn.shift j))) := by
-    refine PRA.qfInd _ ⟨le_QF _ _, trivial⟩ ?_ ?_
-    · simp only [Fm.subst_imp, Fm.subst_eq, subst_le, PTm.subst_mul, subst_boxDenominator,
+  let P : Fm PTm (n + 1) :=
+    boxDenominator (var 0) (Syn.shift B) (Syn.shift j) *
+      partialCount (Syn.shift N) (Syn.shift B) (Syn.shift j) (var 0) ≐
+    pw (mesh (Syn.shift N) (Syn.shift B)) (var 0) * boxNumerator (var 0) (Syn.shift B) (Syn.shift j)
+  have atBound : Γ ⊢[PRAAx] P.subst (Syn.inst N) := by
+    refine qfIndUpTo N trivial ?_ ?_
+    · simp only [P, Fm.subst_eq, PTm.subst_mul, subst_boxDenominator,
         subst_partialCount, subst_boxNumerator, subst_ap2, subst_mesh, Syn.subst_var,
-        Syn.inst_zero, Syn.subst_inst_shift, ConciseIPRA.PTm.subst_zero]
-      exact .impI ((congrMul (boxDenominator_zero _ _) (partialCount_zero _ _ _)).eqTrans
-        (congrMul (pw_zero _) (boxNumerator_zero _ _)).eqSymm)
-    · simp only [Fm.subst_imp, Fm.subst_eq, subst_le, PTm.subst_mul, subst_boxDenominator,
+        Syn.inst_zero, Syn.subst_inst_shift]
+      exact (congrMul (boxDenominator_zero _ _) (partialCount_zero _ _ _)).eqTrans
+        (congrMul (pw_zero _) (boxNumerator_zero _ _)).eqSymm
+    · simp only [P, Fm.subst_eq, PTm.subst_mul, subst_boxDenominator,
         subst_partialCount, subst_boxNumerator, subst_ap2, subst_mesh, Syn.subst_var,
-        Syn.repl_zero, subst_repl_shift, ConciseIPRA.PTm.subst_succ]
+        Syn.repl_zero, subst_repl_shift]
       refine .impI ?_
-      let I : Fm PTm (n+1) := le (var 0) (Syn.shift N) ⟶
-        (boxDenominator (var 0) (Syn.shift B) (Syn.shift j)*partialCount (Syn.shift N) (Syn.shift B) (Syn.shift j) (var 0) ≐
-          pw (mesh (Syn.shift N) (Syn.shift B)) (var 0)*boxNumerator (var 0) (Syn.shift B) (Syn.shift j))
-      let Δ := le (succ (var 0)) (Syn.shift N) :: I :: Γ.map Fm.shift
+      let Δ := lt (var 0) (Syn.shift N) :: P :: Γ.map Fm.shift
       have guards : Γ.map Fm.shift ⊢[PRAAx] rationalSides (Syn.shift N) (Syn.shift B) := by
         simpa only [Fm.shift, subst_rationalSides, Syn.shift] using h.shift
       have bound : Γ.map Fm.shift ⊢[PRAAx] lt (Syn.shift j) (length (Syn.shift B)) := by
         simpa only [Fm.shift, subst_lt, subst_length, Syn.shift] using hj.shift
       have hk : Δ ⊢[PRAAx] lt (var 0) (Syn.shift N) := Prf.hyp0
-      have ih : Δ ⊢[PRAAx] boxDenominator (var 0) (Syn.shift B) (Syn.shift j)*
-          partialCount (Syn.shift N) (Syn.shift B) (Syn.shift j) (var 0) ≐
-            pw (mesh (Syn.shift N) (Syn.shift B)) (var 0)*boxNumerator (var 0) (Syn.shift B) (Syn.shift j) :=
-        .impE Prf.hyp1 (le_trans (le_succ_self _) Prf.hyp0)
+      have ih : Δ ⊢[PRAAx] P := Prf.hyp1
       have width := MinkowskiRationalBoxes.integer_width_clears (Syn.shift N) (Syn.shift B) (Syn.shift j) (var 0)
         bound.wk.wk hk (MinkowskiRationalBoxes.rationalSides_at _ _ _ _ guards.wk.wk bound.wk.wk hk)
       refine (congrMul (boxDenominator_succ _ _ _) (partialCount_succ _ _ _ _ hk)).eqTrans ?_
@@ -148,11 +143,9 @@ theorem box_content_clears (N B j : PTm n) (h : Γ ⊢[PRAAx] rationalSides N B)
         (pw (mesh (Syn.shift N) (Syn.shift B)) (var 0)*mesh (Syn.shift N) (Syn.shift B))*
           (boxNumerator (var 0) (Syn.shift B) (Syn.shift j)*widthNumerator (Syn.shift B) (Syn.shift j) (var 0)) from by ipra_ring) ?_
       exact congrMul (pw_succ _ _).eqSymm (boxNumerator_succ _ _ _).eqSymm
-  have final := Prf.allE N all
-  simp only [Fm.subst_imp, Fm.subst_eq, subst_le, PTm.subst_mul, subst_boxDenominator,
-    subst_partialCount, subst_boxNumerator, subst_ap2, subst_mesh, Syn.subst_var,
-    Syn.inst_zero, Syn.subst_inst_shift] at final
-  exact .impE final (le_refl N)
+  simp only [P, Fm.subst_eq, PTm.subst_mul, subst_boxDenominator, subst_partialCount,
+    subst_boxNumerator, subst_ap2, subst_mesh, Syn.subst_var, Syn.inst_zero, Syn.subst_inst_shift] at atBound
+  exact atBound
 
 /-- Count body is compiled as a fixed PR symbol so its pair-parameter identity
 does not unfold the whole endpoint-conversion program. -/

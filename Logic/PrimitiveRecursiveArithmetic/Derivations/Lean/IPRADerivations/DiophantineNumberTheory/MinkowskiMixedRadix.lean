@@ -142,34 +142,28 @@ natural order and one equality of actual prefix remainders. -/
 theorem prefix_remainders_equal (N W i j : PTm n) (h : Γ ⊢[PRAAx] positive N W)
     (he : Γ ⊢[PRAAx] digitsEqual N W i j) :
     Γ ⊢[PRAAx] rem i (count N W) ≐ rem j (count N W) := by
-  have all : Γ ⊢[PRAAx] .all (le (var 0) (Syn.shift N) ⟶
-      (rem (Syn.shift i) (count (var 0) (Syn.shift W)) ≐ rem (Syn.shift j) (count (var 0) (Syn.shift W)))) := by
-    refine PRA.qfInd _ ⟨le_QF _ _, trivial⟩ ?_ ?_
-    · simp only [Fm.subst_imp, Fm.subst_eq, subst_le, subst_ap2, subst_count,
-        Syn.subst_var, Syn.inst_zero, Syn.subst_inst_shift, ConciseIPRA.PTm.subst_zero]
-      refine .impI ?_
+  let P : Fm PTm (n + 1) :=
+    rem (Syn.shift i) (count (var 0) (Syn.shift W)) ≐ rem (Syn.shift j) (count (var 0) (Syn.shift W))
+  have atBound : Γ ⊢[PRAAx] P.subst (Syn.inst N) := by
+    refine qfIndUpTo N trivial ?_ ?_
+    · simp only [P, Fm.subst_eq, subst_ap2, subst_count, Syn.subst_var,
+        Syn.inst_zero, Syn.subst_inst_shift]
       exact ((congrAp2 remF (.eqRefl _) (count_zero W)).eqTrans (rem_one i)).eqTrans
         ((congrAp2 remF (.eqRefl _) (count_zero W)).eqTrans (rem_one j)).eqSymm
-    · simp only [Fm.subst_imp, Fm.subst_eq, subst_le, subst_ap2, subst_count,
-        Syn.subst_var, Syn.repl_zero, subst_repl_shift, ConciseIPRA.PTm.subst_succ]
+    · simp only [P, Fm.subst_eq, subst_ap2, subst_count, Syn.subst_var,
+        Syn.repl_zero, subst_repl_shift]
       refine .impI ?_
-      let Δ := le (succ (var 0)) (Syn.shift N) ::
-        (le (var 0) (Syn.shift N) ⟶
-          (rem (Syn.shift i) (count (var 0) (Syn.shift W)) ≐ rem (Syn.shift j) (count (var 0) (Syn.shift W)))) :: Γ.map Fm.shift
+      let Δ := lt (var 0) (Syn.shift N) :: P :: Γ.map Fm.shift
       have pos : Γ.map Fm.shift ⊢[PRAAx] positive (Syn.shift N) (Syn.shift W) := by
         simpa only [Fm.shift, subst_positive, Syn.shift] using h.shift
       have eqs : Γ.map Fm.shift ⊢[PRAAx] digitsEqual (Syn.shift N) (Syn.shift W) (Syn.shift i) (Syn.shift j) := by
         simpa only [Fm.shift, subst_digitsEqual, Syn.shift] using he.shift
       have hk : Δ ⊢[PRAAx] lt (var 0) (Syn.shift N) := Prf.hyp0
-      have ih : Δ ⊢[PRAAx] rem (Syn.shift i) (count (var 0) (Syn.shift W)) ≐ rem (Syn.shift j) (count (var 0) (Syn.shift W)) :=
-        .impE Prf.hyp1 (le_trans (le_succ_self _) Prf.hyp0)
+      have ih : Δ ⊢[PRAAx] P := Prf.hyp1
       exact (prefix_remainder_step _ _ _ _ pos.wk.wk hk).eqTrans
         ((congrAdd ih (congrMul (.eqRefl _) (digitsEqual_at _ _ _ _ _ eqs.wk.wk hk))).eqTrans
           (prefix_remainder_step _ _ _ _ pos.wk.wk hk).eqSymm)
-  have final := Prf.allE N all
-  simp only [Fm.subst_imp, Fm.subst_eq, subst_le, subst_ap2, subst_count,
-    Syn.subst_var, Syn.inst_zero, Syn.subst_inst_shift] at final
-  exact .impE final (le_refl N)
+  simpa [P, rem] using atBound
 
 /-- Injectivity of the actual mixed-radix digit program throughout its full
 computed product range. The width-one and empty-dimension cases are included. -/

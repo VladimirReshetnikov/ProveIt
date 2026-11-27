@@ -78,30 +78,24 @@ theorem clearing_at (C P Q : PTm 2) (N K x j : PTm n)
 theorem sum_clearing (C P Q : PTm 2) (N K x : PTm n)
     (h : Γ ⊢[PRAAx] clearing C P Q N K x) :
     Γ ⊢[PRAAx] denominator Q N x*count C N x ≐ K*numerator P Q N x := by
-  have all : Γ ⊢[PRAAx] .all (le (var 0) (Syn.shift N) ⟶
-      (denominator Q (var 0) (Syn.shift x)*count C (var 0) (Syn.shift x) ≐
-        Syn.shift K*numerator P Q (var 0) (Syn.shift x))) := by
-    refine PRA.qfInd _ ⟨le_QF _ _,trivial⟩ ?_ ?_
-    · simp only [Fm.subst_imp,Fm.subst_eq,subst_le,PTm.subst_mul,subst_denominator,
-        subst_count,subst_numerator,Syn.subst_var,Syn.inst_zero,Syn.subst_inst_shift]
-      refine .impI ?_
+  let inv : Fm PTm (n + 1) :=
+    denominator Q (var 0) (Syn.shift x) * count C (var 0) (Syn.shift x) ≐
+      Syn.shift K * numerator P Q (var 0) (Syn.shift x)
+  have atBound : Γ ⊢[PRAAx] inv.subst (Syn.inst N) := by
+    refine qfIndUpTo N trivial ?_ ?_
+    · simp only [inv, Fm.subst_eq, PTm.subst_mul, subst_denominator,
+        subst_count, subst_numerator, Syn.subst_var, Syn.inst_zero, Syn.subst_inst_shift]
       exact (congrMul (.eqRefl _) (sum_zero C x)).eqTrans ((mul_zero _).eqTrans
         ((mul_zero _).eqSymm.eqTrans (congrMul (.eqRefl _) (numerator_zero P Q x).eqSymm)))
-    · simp only [Fm.subst_imp,Fm.subst_eq,subst_le,PTm.subst_mul,subst_denominator,
-        subst_count,subst_numerator,Syn.subst_var,Syn.repl_zero,subst_repl_shift]
+    · simp only [inv, Fm.subst_eq, PTm.subst_mul, subst_denominator, subst_count,
+        subst_numerator, Syn.subst_var, Syn.repl_zero, subst_repl_shift]
       refine .impI ?_
-      let IH : Fm PTm (n+1) := le (var 0) (Syn.shift N) ⟶
-        (denominator Q (var 0) (Syn.shift x)*count C (var 0) (Syn.shift x) ≐
-          Syn.shift K*numerator P Q (var 0) (Syn.shift x))
-      let Δ : List (Fm PTm (n+1)) := le (succ (var 0)) (Syn.shift N) :: IH :: Γ.map Fm.shift
-      have ih : Δ ⊢[PRAAx] denominator Q (var 0) (Syn.shift x)*count C (var 0) (Syn.shift x) ≐
-          Syn.shift K*numerator P Q (var 0) (Syn.shift x) :=
-        .impE Prf.hyp1 (le_trans (le_succ_self _) Prf.hyp0)
+      let Δ := lt (var 0) (Syn.shift N) :: inv :: Γ.map Fm.shift
       have contract : Γ.map Fm.shift ⊢[PRAAx] clearing C P Q (Syn.shift N) (Syn.shift K) (Syn.shift x) := by
         simpa only [Fm.shift,subst_clearing,Syn.shift] using h.shift
       have pt := natEq (clearing_at C P Q _ _ _ (var 0) contract.wk.wk
         (Prf.hyp0 : Δ ⊢[PRAAx] _))
-      have i := natEq ih
+      have i := natEq (Prf.hyp1 : Δ ⊢[PRAAx] inv)
       have dp : Δ ⊢[PRAAx] denominator Q (succ (var 0)) (Syn.shift x) ≐
           denominator Q (var 0) (Syn.shift x)*inst2 Q (var 0) (Syn.shift x) := prod_succ Q _ _
       have cp : Δ ⊢[PRAAx] count C (succ (var 0)) (Syn.shift x) ≐
@@ -114,10 +108,7 @@ theorem sum_clearing (C P Q : PTm 2) (N K x : PTm n)
       rw [d,c,p]
       linear_combination 𝔞(inst2 Q (var 0) (Syn.shift x))*i+
         𝔞(denominator Q (var 0) (Syn.shift x))*pt
-  have r : Γ ⊢[PRAAx] le N N ⟶ (denominator Q N x*count C N x ≐ K*numerator P Q N x) := by
-    simpa only [Fm.subst_imp,Fm.subst_eq,subst_le,PTm.subst_mul,subst_denominator,
-      subst_count,subst_numerator,Syn.subst_var,Syn.inst_zero,Syn.subst_inst_shift] using Prf.allE N all
-  exact .impE r (le_refl _)
+  simpa [inv] using atBound
 
 theorem denominator_positive (Q : PTm 2) (N x : PTm n)
     (h : Γ ⊢[PRAAx] positiveDenominators Q N x) : Γ ⊢[PRAAx] le one (denominator Q N x) := by
