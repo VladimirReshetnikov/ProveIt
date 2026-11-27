@@ -86,11 +86,9 @@ theorem point_add_order (a b c d : PTm n)
 
 theorem point_add_upper_same (a b c d E F P : PTm n) (hP : Γ ⊢[PRAAx] le one P)
     (h : Γ ⊢[PRAAx] upper (fstT a) (fstT b) E P) (k : Γ ⊢[PRAAx] upper (fstT c) (fstT d) F P) :
-    Γ ⊢[PRAAx] upper (fstT (qadd a c)) (fstT (qadd b d)) (E+F) P := by
-  have h' := RationalUpperAddition.add_upper _ _ _ _ _ _ _ _ h k
-  exact upper_congr (RationalGaussianRealPart.real_add a c).eqSymm (RationalGaussianRealPart.real_add b d).eqSymm
-    (.eqRefl _) (.eqRefl _)
-    (RationalValueBounds.upper_mono _ _ _ _ _ _ (positive_product _ _ hP hP) h' (le_of_eq_add (d := zero) (by ipra_ring)))
+    Γ ⊢[PRAAx] upper (fstT (qadd a c)) (fstT (qadd b d)) (E+F) P :=
+  upper_congr (RationalGaussianRealPart.real_add a c).eqSymm (RationalGaussianRealPart.real_add b d).eqSymm
+    (.eqRefl _) (.eqRefl _) (RationalUpperAddition.add_upper_same hP h k)
 
 theorem sharp_partial_order (a b L k : PTm n) (ha : Γ ⊢[PRAAx] le one a) (hb : Γ ⊢[PRAAx] le one b)
     (hL : Γ ⊢[PRAAx] le (succ (two*succ (succ k))) L) :

@@ -37,7 +37,7 @@ open Products (fact)
 open RationalArithmetic (represents add)
 open RationalArgmin (rationalLE)
 open RationalCubeMidpoint (fraction fraction_represents)
-open RationalValueBounds (positive_cancel radius_symmetric upper upper_congr upper_of_order upper_of_radius
+open RationalValueBounds (positive_cancel radius_symmetric upper upper_congr upper_of_radius
   upper_order_right upper_triangle)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
@@ -143,12 +143,6 @@ private theorem refined_query (p A B R N : PTm n)
     (distance_radius_mono _ _ _ _ _ _ den (unit_positive p)
       (le_of_eq_add (d := zero) (by unfold mesh; ipra_ring)) raw)
 
-private theorem translate_upper (a b c A B : PTm n) (h : Γ ⊢[PRAAx] upper a b A B) :
-    Γ ⊢[PRAAx] upper (add a c) (add b c) A B :=
-  upper_congr (.eqRefl _) (.eqRefl _) (by ipra_ring) (by ipra_ring)
-    (RationalUpperAddition.add_upper a b c c A B zero one h
-      (upper_of_order c c zero one (RationalArgmin.reflexive _)))
-
 def slopeBound (p q A B C D : PTm n) : Fm PTm n :=
   upper (add (ordinate p A B) (gap A B C D)) (ordinate q C D) (unit p+unit q) (unit p*unit q) ⋏
     upper (ordinate q C D) (add (ordinate p A B) (twiceGap A B C D)) (unit p+unit q) (unit p*unit q)
@@ -177,14 +171,16 @@ theorem named_slope_at (p q A B C D : PTm n)
   have ydist := imaginary_coordinate_radius _ _ _ _ (unit_positive q) right
   have early : Γ ⊢[PRAAx] upper (add u g) y one P :=
     upper_order_right _ _ _ _ _
-      (translate_upper u x g one P (upper_of_radius _ _ _ _ (radius_symmetric _ _ _ _ xdist))) comparison.andE₁
+      (RationalUpperAddition.add_upper_order_right
+        (upper_of_radius _ _ _ _ (radius_symmetric _ _ _ _ xdist)) (RationalArgmin.reflexive g)) comparison.andE₁
   have late : Γ ⊢[PRAAx] upper v (add x g2) one Q :=
     upper_order_right _ _ _ _ _ (upper_of_radius _ _ _ _ (radius_symmetric _ _ _ _ ydist)) comparison.andE₂
   refine .andI ?_ ?_
   · exact upper_congr (.eqRefl _) (.eqRefl _) (by ipra_ring) (.eqRefl _)
       (upper_triangle _ _ _ _ _ _ _ early (upper_of_radius _ _ _ _ ydist))
   · exact upper_congr (.eqRefl _) (.eqRefl _) (by ipra_ring) (mul_comm Q P)
-      (upper_triangle _ _ _ _ _ _ _ late (translate_upper x u g2 one P (upper_of_radius _ _ _ _ xdist)))
+      (upper_triangle _ _ _ _ _ _ _ late
+        (RationalUpperAddition.add_upper_order_right (upper_of_radius _ _ _ _ xdist) (RationalArgmin.reflexive g2)))
 
 theorem actual_partial_arctangent_named_slope_closed : ([] : List (Fm PTm 0)) ⊢[PRAAx] univ 6
     (le one (var 3) ⟶ le one (var 5) ⟶ le (var 2) (var 3) ⟶ le (var 4) (var 5) ⟶

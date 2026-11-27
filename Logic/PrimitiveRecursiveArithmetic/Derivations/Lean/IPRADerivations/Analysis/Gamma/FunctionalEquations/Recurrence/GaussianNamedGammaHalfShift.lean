@@ -175,9 +175,7 @@ private theorem minus_certificate_at (f : PR 2) (p q x A : PTm n)
   let b := fstT (negativeHalf : PTm n)
   have obs := real_order_at constantF f (floorPoint A) x p r h
   have old := upper_congr (congrFst (constant_at p (floorPoint A))) (.eqRefl _) (.eqRefl _) (.eqRefl _) obs
-  have self : Γ ⊢[PRAAx] upper b b zero one :=
-    upper_of_order _ _ _ _ (le_refl _)
-  have temp := RationalUpperAddition.add_upper _ _ _ _ _ _ _ _ old self
+  have temp := RationalUpperAddition.add_upper_order_right old (RationalArgmin.reflexive b)
   have left := (RationalGaussianRealPart.real_add (floorPoint A) negativeHalf).eqSymm.eqTrans
     (congrFst (add_subtract_half (marginPoint A) (GaussianRationalHorner.ofGaussian_canonical _ _ hA)))
   have right := (RationalGaussianRealPart.real_add (Γ := Γ) z negativeHalf).eqSymm.eqTrans
@@ -185,7 +183,7 @@ private theorem minus_certificate_at (f : PR 2) (p q x A : PTm n)
   have bound : Γ ⊢[PRAAx] upper (fstT (ap2 constantF p (marginPoint A)))
       (fstT (ap2 (minusF f) q (minusData x))) (unit p+unit r) (unit p*unit r) :=
     upper_congr (left.eqTrans (congrFst (constant_at p (marginPoint A))).eqSymm) right
-      (by ipra_ring) (by ipra_ring) temp
+      (.eqRefl _) (.eqRefl _) temp
   have grow := GaussianExponentialReference.unit_monotone (GaussianEulerNamedShiftInput.clock_later (Γ := Γ) q)
   exact upper_mono _ _ _ _ _ _ (GaussianRationalHorner.positive_product _ _ (unit_positive p) (unit_positive r)) bound
     (by ipra_le 𝔞(unit p*unit p)*sl grow)

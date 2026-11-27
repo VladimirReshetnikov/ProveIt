@@ -33,7 +33,7 @@ open GaussianCoefficientNameBounds (unit unit_positive)
 open GaussianRationalHorner (qadd positive_product)
 open RationalGaussianRealPart (realBody real_add)
 open RationalValueBounds (upper upper_congr upper_mono upper_triangle)
-open RationalUpperAddition (add_upper)
+open RationalUpperAddition (add_upper_same)
 open GaussianRationalSyntheticBounds (natCode)
 open ComplexLogarithmRemainder (im)
 
@@ -135,12 +135,6 @@ private theorem middle_rows (p N E z R B A : PTm n)
     GaussianEulerRealIntegrandLowerEnvelope.lower,one,ConciseIPRA.PTm.subst_zero,
     ConciseIPRA.PTm.subst_succ] using out
 
-private theorem add_upper_same (a b c d A C D : PTm n) (hD : Γ ⊢[PRAAx] le one D)
-    (h : Γ ⊢[PRAAx] upper a b A D) (k : Γ ⊢[PRAAx] upper c d C D) :
-    Γ ⊢[PRAAx] upper (RationalArithmetic.add a c) (RationalArithmetic.add b d) (A+C) D := by
-  apply upper_mono _ _ _ _ _ _ (positive_product _ _ hD hD) (add_upper _ _ _ _ _ _ _ _ h k)
-  exact le_congr (by ipra_ring) (.eqRefl _) (le_refl _)
-
 private theorem exterior_panel (p N a C E z R B A : PTm n)
     (h : Γ ⊢[PRAAx] realSource z R B A) (ha : Γ ⊢[PRAAx] le one a)
     (hE : Γ ⊢[PRAAx] le one E) (hN : Γ ⊢[PRAAx] le one N) : Γ ⊢[PRAAx]
@@ -177,10 +171,10 @@ private theorem combined_panels (p k K z R B A : PTm n)
   have den := positive_product _ _ hE (unit_positive p)
   have h18 : Γ ⊢[PRAAx] le one (num 18 : PTm n) := le_of_eq_add (d := num 17) (by ipra_ring)
   have hc : Γ ⊢[PRAAx] RationalNormalForm.wellFormed c := RationalNormalForm.normalize_well_formed _ _ h18
-  have first := add_upper_same _ _ _ _ _ _ _ den left middle
+  have first := add_upper_same den left middle
   have first' := upper_congr (GaussianRationalLinearProduct.scalar_zero_add c hc) (real_add _ _).eqSymm
     (.eqRefl _) (.eqRefl _) first
-  have all := add_upper_same _ _ _ _ _ _ _ den first' right
+  have all := add_upper_same den first' right
   exact upper_congr (GaussianRationalLinearProduct.scalar_add_zero c hc) (real_add _ _).eqSymm
     (GaussianEulerUnitPanelGeometry.total_width k A R) (.eqRefl _) all
 

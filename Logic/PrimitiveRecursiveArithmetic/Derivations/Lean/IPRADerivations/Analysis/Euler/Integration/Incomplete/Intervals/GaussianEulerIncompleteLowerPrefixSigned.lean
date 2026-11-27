@@ -39,13 +39,12 @@ theorem extend_bound (x y A H U L M : PTm n)
 theorem remainder_inclusion (x y U : PTm n) (hx : Γ ⊢[PRAAx] canonical x)
     (hy : Γ ⊢[PRAAx] upper (fstT qzero) (fstT y) one U) : Γ ⊢[PRAAx]
     upper (fstT x) (fstT (qadd x y)) one U := by
-  have refl : Γ ⊢[PRAAx] upper (fstT x) (fstT x) zero one := upper_of_order _ _ _ _ (le_refl _)
-  have added := RationalUpperAddition.add_upper _ _ _ _ _ _ _ _ hy refl
+  have added := RationalUpperAddition.add_upper_order_right hy (RationalArgmin.reflexive (fstT x))
   have empty := (RationalGaussianRealPart.real_add qzero x).eqSymm.eqTrans
     (congrFst (GaussianRationalSyntheticDivision.qzero_add x hx))
   have sum := (RationalGaussianRealPart.real_add (Γ := Γ) y x).eqSymm.eqTrans
     (congrFst (GaussianReciprocalHorner.qadd_commutative y x))
-  exact upper_congr empty sum (by ipra_ring) (by ipra_ring) added
+  exact upper_congr empty sum (.eqRefl _) (.eqRefl _) added
 
 theorem rounded_sum_distance (F : PR 2) (t x y : PTm n)
     (hx : Γ ⊢[PRAAx] pointCN F x) (hy : Γ ⊢[PRAAx] pointCN F y) : Γ ⊢[PRAAx]

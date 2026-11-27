@@ -58,19 +58,17 @@ theorem margin_observation (f : PR 2) (p x y A C E : PTm n)
   have hku := positive_product _ _ (unit_positive k) hu
   have grow : Γ ⊢[PRAAx] le U K := unit_monotone hk.andE₁
   have radii := frozen_radii f p x y A hs
-  have first : Γ ⊢[PRAAx] upper (add z a) (add z r) (num 38) U := by
-    have h := RationalUpperAddition.add_upper z z a r zero one (num 38) U
-      (upper_of_order z z zero one (RationalArgmin.reflexive z)) (upper_of_radius _ _ _ _ radii.andE₁)
-    apply upper_mono _ _ _ _ _ _ (positive_product _ _ (le_refl one) hu) h
-    exact le_of_eq_add (d := zero) (by ipra_ring)
+  have first : Γ ⊢[PRAAx] upper (add z a) (add z r) (num 38) U :=
+    RationalValueBounds.upper_congr (.eqRefl _) (.eqRefl _) (by ipra_ring) (.eqRefl _)
+      (RationalUpperAddition.add_upper_same hu
+        (upper_of_order z z zero U (RationalArgmin.reflexive z)) (upper_of_radius _ _ _ _ radii.andE₁))
   have last : Γ ⊢[PRAAx] upper s b (num 38) U := upper_of_radius _ _ _ _ (radius_symmetric _ _ _ _ radii.andE₂)
   have middle : Γ ⊢[PRAAx] upper (add z r) s (C+two) U := by
     apply upper_mono _ _ _ _ _ _ hku hn
     change Γ ⊢[PRAAx] le ((C*U+two*K)*U) ((C+two)*(K*U))
     ipra_le 𝔞 C*𝔞 U*sl grow
-  have all := upper_triangle _ _ _ _ _ _ _ (upper_triangle _ _ _ _ _ _ _ first middle) last
-  apply upper_mono _ _ _ _ _ _ (positive_product _ _ (positive_product _ _ hu hu) hu) all
-  exact le_of_eq_add (d := zero) (by ipra_ring)
+  exact RationalValueBounds.upper_congr (.eqRefl _) (.eqRefl _) (by ipra_ring) (.eqRefl _)
+    (RationalValueBounds.upper_triangle_same hu (RationalValueBounds.upper_triangle_same hu first middle) last)
 
 private theorem constant_margin_paid (x E C U : PTm n) (he : Γ ⊢[PRAAx] le one E)
     (h : Γ ⊢[PRAAx] upper (add (fraction one E) x) x C U) :

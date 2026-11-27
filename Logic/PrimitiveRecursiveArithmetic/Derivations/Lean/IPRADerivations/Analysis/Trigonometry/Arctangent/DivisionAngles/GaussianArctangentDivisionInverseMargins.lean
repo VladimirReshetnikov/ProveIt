@@ -143,9 +143,7 @@ theorem inverse_gap_of_samples (i j m N p A B e f : PTm n)
   let C := num 4*(e+f)
   have hM := mesh_positive (Γ := Γ) p
   have step : Γ ⊢[PRAAx] upper (add a K) (add A K) (num 4*e) M :=
-    upper_congr (.eqRefl _) (.eqRefl _) (by ipra_ring) (by ipra_ring)
-      (RationalUpperAddition.add_upper a A K K _ _ zero one (mesh_error _ _ _ _ hla)
-        (upper_of_order _ _ _ _ (RationalArgmin.reflexive _)))
+    RationalUpperAddition.add_upper_order_right (mesh_error _ _ _ _ hla) (RationalArgmin.reflexive K)
   have s := RationalValueBounds.upper_triangle_same hM (upper_order_right _ _ _ _ _ step hg)
     (RationalValueBounds.upper_triangle_same hM (mesh_error _ _ _ _ hra) (grid_slope i j M hM hi hj))
   have clear : Γ ⊢[PRAAx] le M (m*(C+two*D)) :=

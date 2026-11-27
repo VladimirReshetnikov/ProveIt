@@ -14,7 +14,7 @@ namespace LeanProofs.IPRA.Analysis.RationalUpperAddition
 
 open_ipra
 open RationalSupMetric (numeratorOf denominatorOf)
-open RationalValueBounds (upper)
+open RationalValueBounds (upper upper_congr upper_cancel crossLeft upper_of_order)
 open RationalArithmetic (add add_value addNumerator productDenominator product_denominator_positive)
 open RationalRepresentedUpper (left right to_signed from_signed)
 open PolynomialBisection (slack)
@@ -50,5 +50,19 @@ theorem add_upper (a b c d A B C D : PTm n)
     ZT.toZ_ofNat,Q.mk_mul,map_mul,Q.mk_add,map_add] at l r ⊢
   linear_combination (𝔞(denominatorOf c)*𝔞(denominatorOf d)*𝔞(D))*l+
     (𝔞(denominatorOf a)*𝔞(denominatorOf b)*𝔞(B))*r
+
+/-- Add budgets for corresponding summands at a common positive denominator. -/
+theorem add_upper_same {a b c d A C D : PTm n} (hD : Γ ⊢[PRAAx] le one D)
+    (h : Γ ⊢[PRAAx] upper a b A D) (k : Γ ⊢[PRAAx] upper c d C D) :
+    Γ ⊢[PRAAx] upper (add a c) (add b d) (A+C) D :=
+  upper_cancel _ _ (A+C) D D hD
+    (upper_congr (.eqRefl _) (.eqRefl _) (by ipra_ring) (.eqRefl _) (add_upper a b c d A D C D h k))
+
+/-- Adding exactly ordered right summands preserves the left budget. -/
+theorem add_upper_order_right {a b c d A B : PTm n}
+    (h : Γ ⊢[PRAAx] upper a b A B) (k : Γ ⊢[PRAAx] le (crossLeft c d) (crossLeft d c)) :
+    Γ ⊢[PRAAx] upper (add a c) (add b d) A B :=
+  upper_congr (.eqRefl _) (.eqRefl _) (by ipra_ring) (by ipra_ring)
+    (add_upper a b c d A B zero one h (upper_of_order c d zero one k))
 
 end LeanProofs.IPRA.Analysis.RationalUpperAddition

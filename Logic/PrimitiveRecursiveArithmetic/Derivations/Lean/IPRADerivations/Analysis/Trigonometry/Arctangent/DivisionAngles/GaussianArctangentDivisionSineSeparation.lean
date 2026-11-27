@@ -120,9 +120,8 @@ private theorem cofinal_gap (p q t k l J z : PTm n) (hk : Γ ⊢[PRAAx] le one k
   have hT := unit_positive (Γ := Γ) t
   have kJ := le_trans (le_of_lt hkl) hl
   have left : Γ ⊢[PRAAx] upper (add a d) (add u d) (T+E*P) (P*T) :=
-    upper_congr (.eqRefl _) (.eqRefl _) (by ipra_ring) (by ipra_ring)
-      (RationalUpperAddition.add_upper a u d d _ _ zero one (upper_of_radius _ _ _ _ (square_radius p t k J z kJ))
-        (upper_of_order _ _ _ _ (RationalArgmin.reflexive _)))
+    RationalUpperAddition.add_upper_order_right (upper_of_radius _ _ _ _ (square_radius p t k J z kJ))
+      (RationalArgmin.reflexive d)
   have mid : Γ ⊢[PRAAx] upper (add a d) v (T+E*P) (P*T) :=
     upper_order_right _ _ _ _ _ left (squared_sine_gap_at (cayleyClock t) k l J z hk hkl hl (fine_at t J h))
   have right : Γ ⊢[PRAAx] upper v b (T+F*Q) (Q*T) :=
