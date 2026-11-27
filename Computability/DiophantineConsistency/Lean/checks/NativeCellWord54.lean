@@ -1,0 +1,6 @@
+import DiophantineConsistency.NativeCellWord54
+
+#print axioms DiophantineConsistency.NativeCellWord54.localCell_eq_nativeWord
+#print axioms DiophantineConsistency.NativeCellWord54.cell_bit
+#print axioms DiophantineConsistency.NativeCellWord54.binaryValue_lt
+#print axioms DiophantineConsistency.NativeCellWord54.binaryValue_mod_two
