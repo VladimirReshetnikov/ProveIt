@@ -47,14 +47,8 @@ private theorem value_congr (p q : PR 2) (x : PTm n) {a b : PTm n} (h : Γ ⊢[P
   simpa only [value, ZT.toZ] using congrArg₂ HSub.hSub (natEq (congrAp2 p h (.eqRefl x))) hq
 
 private theorem abs_scale (c : PTm n) (u : ZT n) :
-    Γ ⊢[PRAAx] zabs (ZT.ofNat c * u) ≐ c * zabs u := by
-  refine (zabs_congr (v := ⟨c * u.pos, c * u.neg⟩) ?_).eqTrans (ad_mul c u.pos u.neg)
-  rw [ZT.toZ_mul, ZT.toZ_ofNat]
-  change Groth.ι (Q.mk Γ c) *
-      (Groth.ι (Q.mk Γ u.pos) - Groth.ι (Q.mk Γ u.neg)) =
-    Groth.ι (Q.mk Γ (c * u.pos)) - Groth.ι (Q.mk Γ (c * u.neg))
-  simp only [Q.mk_mul, map_mul]
-  ring
+    Γ ⊢[PRAAx] zabs (ZT.ofNat c * u) ≐ c * zabs u :=
+  Foundations.GapDecision.zabs_scale c u
 
 private theorem difference_zero (p q : PR 2) (N x : PTm n) :
     Γ ⊢[PRAAx] zabs (difference p q N zero x) ≐ zero := by

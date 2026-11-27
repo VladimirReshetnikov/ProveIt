@@ -140,14 +140,8 @@ theorem sumDen_positive (e f : PR 2) (N r x : PTm n)
     Syn.inst_zero, Syn.subst_inst_shift] using Prf.allE r hall
 
 private theorem abs_scale (c : PTm n) (u : ZT n) :
-    Γ ⊢[PRAAx] zabs (ZT.ofNat c * u) ≐ c * zabs u := by
-  refine (zabs_congr (v := ⟨c * u.pos, c * u.neg⟩) ?_).eqTrans (ad_mul c u.pos u.neg)
-  rw [ZT.toZ_mul, ZT.toZ_ofNat]
-  change Groth.ι (Q.mk Γ c) *
-      (Groth.ι (Q.mk Γ u.pos) - Groth.ι (Q.mk Γ u.neg)) =
-    Groth.ι (Q.mk Γ (c * u.pos)) - Groth.ι (Q.mk Γ (c * u.neg))
-  simp only [Q.mk_mul, map_mul]
-  ring
+    Γ ⊢[PRAAx] zabs (ZT.ofNat c * u) ≐ c * zabs u :=
+  Foundations.GapDecision.zabs_scale c u
 
 /-- The denominator-cleared triangle inequality for three rational samples. -/
 theorem cross_triangle (a b c : ZT n) (da db dc : PTm n) :

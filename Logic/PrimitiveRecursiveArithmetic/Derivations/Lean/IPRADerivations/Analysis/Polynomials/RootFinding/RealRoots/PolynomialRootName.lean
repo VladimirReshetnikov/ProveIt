@@ -31,7 +31,7 @@ open_ipra
 open LeanProofs.IPRA.Analysis.PolynomialBisection
 open LeanProofs.IPRA.Analysis.RationalClosure (succ_le_two_pow)
 open LeanProofs.IPRA.Analysis.RationalSummableTails (cross subst_cross)
-open LeanProofs.IPRA.Foundations.GapDecision (zabs zabs_sq zabs_congr zabs_tri zabs_neg subst_zabs)
+open LeanProofs.IPRA.Foundations.GapDecision (zabs zabs_congr zabs_tri zabs_neg subst_zabs)
 open LeanProofs.IPRA.Foundations.QuantitativeIdentities (zpow toZ_zpow)
 open LeanProofs.IPRA.Probability.MedianWeighted (ad_le_of le_add_ad)
 open LeanProofs.IPRA.AnalyticNumberTheory.PhiLower (le_mul_mono)
@@ -323,33 +323,16 @@ theorem regular_name (degree : ℕ) :
 #print axioms regular_name
 
 theorem abs_ofNat (a : PTm n) : Γ ⊢[PRAAx] zabs (ZT.ofNat a) ≐ a :=
-  (congrAdd (monus_zero a) (zero_monus a)).eqTrans (LeanProofs.IPRA.add_zero a)
+  Foundations.GapDecision.zabs_ofNat a
 
 /-- Exact multiplicativity of the signed absolute-value code. -/
 theorem abs_mul (u v : ZT n) :
-    Γ ⊢[PRAAx] zabs (u * v) ≐ zabs u * zabs v := by
-  have square : Γ ⊢[PRAAx]
-      zabs (u * v) * zabs (u * v) ≐ (zabs u * zabs v) * (zabs u * zabs v) := by
-    apply deriveNat
-    calc
-      Groth.ι (Q.mk Γ (zabs (u * v) * zabs (u * v))) =
-          ZT.toZ Γ (u * v) * ZT.toZ Γ (u * v) := zabs_sq (u * v)
-      _ = (ZT.toZ Γ u * ZT.toZ Γ u) * (ZT.toZ Γ v * ZT.toZ Γ v) := by
-        rw [ZT.toZ_mul]
-        ring
-      _ = Groth.ι (Q.mk Γ (zabs u * zabs u)) *
-          Groth.ι (Q.mk Γ (zabs v * zabs v)) := by
-        rw [zabs_sq u, zabs_sq v]
-      _ = Groth.ι (Q.mk Γ ((zabs u * zabs v) * (zabs u * zabs v))) := by
-        simp only [Q.mk_mul, map_mul]
-        ring
-  exact le_antisymm
-    (nat_sqrt_mono (le_congr (.eqRefl _) square (le_refl _)))
-    (nat_sqrt_mono (le_congr (.eqRefl _) square.eqSymm (le_refl _)))
+    Γ ⊢[PRAAx] zabs (u * v) ≐ zabs u * zabs v :=
+  Foundations.GapDecision.zabs_mul u v
 
 theorem abs_scale (c : PTm n) (u : ZT n) :
     Γ ⊢[PRAAx] zabs (ZT.ofNat c * u) ≐ c * zabs u :=
-  (abs_mul (ZT.ofNat c) u).eqTrans (congrMul (abs_ofNat c) (.eqRefl _))
+  Foundations.GapDecision.zabs_scale c u
 
 private theorem toZ_naturalPower (a : PTm n) (k : ℕ) :
     Groth.ι (Q.mk Γ (naturalPower a k)) = Groth.ι (Q.mk Γ a) ^ k := by

@@ -31,9 +31,8 @@ open LeanProofs.IPRA.Combinatorics.BinomialIdentities (mul_cancel)
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
 /-- `r² = 1 → r = 1`. -/
-theorem eq_one_of_sq {r : PTm n} (h : Γ ⊢[PRAAx] r * r ≐ one) : Γ ⊢[PRAAx] r ≐ one := by
-  have e : Γ ⊢[PRAAx] one ≐ one * one := by ipra_ring
-  exact le_antisymm (le_of_sq_le (le_congr h.eqSymm e (le_refl _))) (le_of_sq_le (le_congr e h.eqSymm (le_refl _)))
+theorem eq_one_of_sq {r : PTm n} (h : Γ ⊢[PRAAx] r * r ≐ one) : Γ ⊢[PRAAx] r ≐ one :=
+  Common.eq_of_sq_eq (h.eqTrans (one_mul one).eqSymm)
 
 /-- `R < A`. -/
 theorem R_lt_A {A B D R T : PTm n} (hA : Γ ⊢[PRAAx] A * A ≐ one + D * (B * B))
@@ -113,9 +112,7 @@ theorem seed_unique {A B D R T R' T' : PTm n} (hA : Γ ⊢[PRAAx] A * A ≐ one 
   have hsq : Γ ⊢[PRAAx] R * R ≐ R' * R' := by
     refine mul_cancel two' ?_
     ipra_lc natEq a₂ - natEq a₁
-  have hRR : Γ ⊢[PRAAx] R ≐ R' :=
-    le_antisymm (le_of_sq_le (le_congr (.eqRefl _) hsq (le_refl _)))
-      (le_of_sq_le (le_congr hsq (.eqRefl _) (le_refl _)))
+  have hRR := Common.eq_of_sq_eq hsq
   refine .andI hRR (mul_cancel hRp (mul_cancel two' ?_))
   ipra_lc natEq (Prf.andE₂ (neg_square hA hB hmin hR' hRp' hTp' hTB')) -
     natEq (Prf.andE₂ (neg_square hA hB hmin hR hRp hTp hTB)) - 2 * Groth.ι (IPRA.Q.mk Γ T') * natEq hRR

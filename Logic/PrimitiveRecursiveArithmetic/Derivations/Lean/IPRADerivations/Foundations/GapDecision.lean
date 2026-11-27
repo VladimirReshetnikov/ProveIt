@@ -43,8 +43,28 @@ theorem zabs_congr {u v : ZT n} (h : ZT.toZ Γ u = ZT.toZ Γ v) : Γ ⊢[PRAAx] 
     have a := zabs_sq (Γ := Γ) u; have b := zabs_sq (Γ := Γ) v
     apply deriveNat
     rw [a, b, h]
-  exact le_antisymm (nat_sqrt_mono (le_congr (.eqRefl _) e (le_refl _)))
-    (nat_sqrt_mono (le_congr (.eqRefl _) e.eqSymm (le_refl _)))
+  exact Common.eq_of_sq_eq e
+
+/-- The signed absolute value of an embedded natural number. -/
+theorem zabs_ofNat (a : PTm n) : Γ ⊢[PRAAx] zabs (ZT.ofNat a) ≐ a :=
+  (congrAdd (monus_zero a) (zero_monus a)).eqTrans (add_zero a)
+
+/-- Multiplicativity of signed absolute value, via equality of natural squares. -/
+theorem zabs_mul (a b : ZT n) : Γ ⊢[PRAAx] zabs (a * b) ≐ zabs a * zabs b := by
+  apply Common.eq_of_sq_eq
+  have ha := zabs_sq (Γ := Γ) a
+  have hb := zabs_sq (Γ := Γ) b
+  have hab := zabs_sq (Γ := Γ) (a * b)
+  simp only [ZT.toZ_mul, Q.mk_mul, map_mul] at ha hb hab
+  apply deriveNat
+  ipra_simps
+  calc
+    _ = (ZT.toZ Γ a * ZT.toZ Γ b) * (ZT.toZ Γ a * ZT.toZ Γ b) := hab
+    _ = (ZT.toZ Γ a * ZT.toZ Γ a) * (ZT.toZ Γ b * ZT.toZ Γ b) := by ring
+    _ = _ := by rw [← ha, ← hb]; ring
+
+theorem zabs_scale (a : PTm n) (b : ZT n) : Γ ⊢[PRAAx] zabs (ZT.ofNat a * b) ≐ a * zabs b :=
+  (zabs_mul _ _).eqTrans (congrMul (zabs_ofNat a) (.eqRefl _))
 
 /-- The triangle inequality: `w = u + v` gives `|w| ≤ |u| + |v|`. -/
 theorem zabs_tri {u v w : ZT n} (h : ZT.toZ Γ w = ZT.toZ Γ u + ZT.toZ Γ v) :

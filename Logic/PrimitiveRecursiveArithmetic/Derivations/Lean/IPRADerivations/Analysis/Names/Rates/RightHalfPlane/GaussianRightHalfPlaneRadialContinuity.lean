@@ -113,9 +113,7 @@ private theorem native_magnitudes (A B neg : PTm n)
     ipra_simps
     rw [eRe] at hDecomp
     linear_combination hNorm-hDecomp
-  exact .andI hRe (le_antisymm
-    (nat_sqrt_mono (le_congr (.eqRefl _) eIm (le_refl _)))
-    (nat_sqrt_mono (le_congr (.eqRefl _) eIm.eqSymm (le_refl _))))
+  exact .andI hRe (Common.eq_of_sq_eq eIm)
 
 theorem squared_gap (A B neg a b sign H : PTm n)
     (hn : Γ ⊢[PRAAx] (neg ≐ zero) ⋎ (neg ≐ one))

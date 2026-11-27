@@ -20,33 +20,21 @@ open LeanProofs.IPRA.Analysis.ComplexLogarithmRemainder
   (re im add mul scale zeroCode oneCode normSq bounded)
 open LeanProofs.IPRA.Analysis.GaussianRootAlgebra
   (equal equal_re equal_im re_add im_add re_mul im_mul re_neg im_neg re_scale im_scale re_zero im_zero re_one im_one)
-open LeanProofs.IPRA.Foundations.GapDecision (zabs subst_zabs zabs_sq zabs_congr zabs_tri zabs_neg)
+open LeanProofs.IPRA.Foundations.GapDecision (zabs subst_zabs zabs_congr zabs_tri zabs_neg)
 open LeanProofs.IPRA.AnalyticNumberTheory.PhiLower (le_mul_mono)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
 theorem abs_ofNat (a : PTm n) : Γ ⊢[PRAAx] zabs (ZT.ofNat a) ≐ a :=
-  (congrAdd (monus_zero a) (zero_monus a)).eqTrans (add_zero a)
+  Foundations.GapDecision.zabs_ofNat a
 
 /-- Multiplicativity of signed absolute value uses natural square
 comparison, not an integral-domain assumption on the metatheory quotient. -/
-theorem abs_multiply (a b : ZT n) : Γ ⊢[PRAAx] zabs (a*b) ≐ zabs a*zabs b := by
-  have squares : Γ ⊢[PRAAx] zabs (a*b)*zabs (a*b) ≐ (zabs a*zabs b)*(zabs a*zabs b) := by
-    have aa := zabs_sq (Γ := Γ) a
-    have bb := zabs_sq (Γ := Γ) b
-    have ab := zabs_sq (Γ := Γ) (a*b)
-    simp only [ZT.toZ_mul,Q.mk_mul,map_mul] at aa bb ab
-    apply deriveNat
-    ipra_simps
-    calc
-      _ = (ZT.toZ Γ a*ZT.toZ Γ b)*(ZT.toZ Γ a*ZT.toZ Γ b) := ab
-      _ = (ZT.toZ Γ a*ZT.toZ Γ a)*(ZT.toZ Γ b*ZT.toZ Γ b) := by ring
-      _ = _ := by rw [← aa,← bb]; ring
-  exact le_antisymm (nat_sqrt_mono (le_congr (.eqRefl _) squares (le_refl _)))
-    (nat_sqrt_mono (le_congr (.eqRefl _) squares.eqSymm (le_refl _)))
+theorem abs_multiply (a b : ZT n) : Γ ⊢[PRAAx] zabs (a*b) ≐ zabs a*zabs b :=
+  Foundations.GapDecision.zabs_mul a b
 
 theorem abs_scale (C : PTm n) (a : ZT n) : Γ ⊢[PRAAx] zabs (ZT.ofNat C*a) ≐ C*zabs a :=
-  (abs_multiply _ _).eqTrans (congrMul (abs_ofNat C) (.eqRefl _))
+  Foundations.GapDecision.zabs_scale C a
 
 def norm1 (a : PTm n) : PTm n := zabs (re a)+zabs (im a)
 

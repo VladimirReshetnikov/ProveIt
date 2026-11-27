@@ -234,12 +234,8 @@ theorem point_cube (d t w : PTm k) : Γ ⊢[PRAAx] cube (point d t w) d := by
   simpa only [Δ,Syn.shift,subst_point] using interval_congr (point_lookup (Syn.shift d) (Syn.shift t) (Syn.shift w) (var 0) hi).eqSymm
     (fraction_interval _ _ (grid_digit_bound (Syn.shift t) (Syn.shift w) (reflected (Syn.shift d) (var 0))))
 
-private theorem abs_scale (c : PTm k) (u : ZT k) : Γ ⊢[PRAAx] zabs (ZT.ofNat c*u) ≐ c*zabs u := by
-  have e : ZT.toZ Γ (ZT.ofNat c*u) = ZT.toZ Γ (⟨c*u.pos,c*u.neg⟩ : ZT k) := by
-    simp only [ZT.toZ_mul,ZT.toZ_ofNat]
-    simp only [ZT.toZ,Q.mk_mul,map_mul]
-    ring
-  exact (zabs_congr e).eqTrans (Probability.MedianWeighted.ad_mul c u.pos u.neg)
+private theorem abs_scale (c : PTm k) (u : ZT k) : Γ ⊢[PRAAx] zabs (ZT.ofNat c*u) ≐ c*zabs u :=
+  Foundations.GapDecision.zabs_scale c u
 
 /-- Clear arbitrary true representatives, canceling only their positive denominators. -/
 theorem radius_of_representations (q r : PTm k) (a b : ZT k) (A B P Q : PTm k)

@@ -31,12 +31,8 @@ open LeanProofs.IPRA.AnalyticNumberTheory.PhiLower (le_mul_mono)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
-private theorem abs_scale (c : PTm n) (u : ZT n) : Γ ⊢[PRAAx] zabs (ZT.ofNat c * u) ≐ c * zabs u := by
-  have equal : ZT.toZ Γ (ZT.ofNat c * u) = ZT.toZ Γ (⟨c * u.pos, c * u.neg⟩ : ZT n) := by
-    rw [ZT.toZ_mul, ZT.toZ_ofNat]
-    simp only [ZT.toZ, Q.mk_mul, map_mul]
-    ring
-  exact (zabs_congr equal).eqTrans (Probability.MedianWeighted.ad_mul c u.pos u.neg)
+private theorem abs_scale (c : PTm n) (u : ZT n) : Γ ⊢[PRAAx] zabs (ZT.ofNat c * u) ≐ c * zabs u :=
+  Foundations.GapDecision.zabs_scale c u
 
 private alias positive_cancel := Common.mul_cancel_le
 

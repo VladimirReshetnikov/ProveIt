@@ -112,8 +112,7 @@ alias le_of_sq_le := Common.le_of_sq_le
 
 /-- `x² = y² → x = y`. -/
 theorem sq_inj {x y : PTm n} (h : Γ ⊢[PRAAx] x * x ≐ y * y) : Γ ⊢[PRAAx] x ≐ y :=
-  le_antisymm (le_of_sq_le (le_congr (.eqRefl _) h (le_refl _)))
-    (le_of_sq_le (le_congr (.eqRefl _) h.eqSymm (le_refl _)))
+  Common.eq_of_sq_eq h
 
 theorem gcd_comm_one {a b : PTm n} (hb : Γ ⊢[PRAAx] b ≐ succ (pred b)) (h : Γ ⊢[PRAAx] gcd a b ≐ one) :
     Γ ⊢[PRAAx] gcd b a ≐ one := by

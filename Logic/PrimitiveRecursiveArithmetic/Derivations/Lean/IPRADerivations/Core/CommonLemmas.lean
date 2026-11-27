@@ -12,7 +12,7 @@ proved once here, in the namespace `LeanProofs.IPRA.Common`, and the module-loca
 * positivity (`a = succ (pred a)`, equivalently `1 ≤ a`): `succ_pos`, `pos_of_succ`, `pos_of_one_le`, `one_le_of_pos`,
   `one_le_succ`, `pos_mul`, `pos_of_two_le`;
 * order: `le_of_eq_zero`, `succ_le_succ`, `le_of_lt_succ`, `lt_succ_of_le`, `ne_of_lt`, `pred_lt`, `add_le_add`,
-  `mul_le_mul`, cancellation `mul_cancel_le`, `mul_cancel_eq`, `two_mul_cancel`, and `le_of_sq_le`, `lt_of_sq_lt`;
+  `mul_le_mul`, cancellation `mul_cancel_le`, `mul_cancel_eq`, `two_mul_cancel`, and `le_of_sq_le`, `eq_of_sq_eq`, `lt_of_sq_lt`;
 * truncated subtraction: `monus_le_self`, `monus_of_eq`, `monus_succ_of_le`, `monus_monus_of_le`,
   `add_eq_zero_left`, `add_eq_zero_right`, `monus_one_of_zero`;
 * congruences: `congrPairT`, `congrEqb`, `congrSg`;
@@ -118,8 +118,15 @@ theorem two_mul_cancel {a b : PTm n} (h : Γ ⊢[PRAAx] two * a ≐ two * b) : �
 
 theorem le_of_sq_le {a b : PTm n} (h : Γ ⊢[PRAAx] le (a * a) (b * b)) : Γ ⊢[PRAAx] le a b := by
   refine .orE (lt_or_le b a) ?_ Prf.hyp0
-  have h₁ : (lt b a :: Γ) ⊢[PRAAx] lt (b * b) (succ b * succ b) := le_of_eq_add (d := b + b) (by ipra_ring)
-  exact le_lt_absurd _ h.wk (le_trans h₁ (sq_le_sq Prf.hyp0))
+  have hba : (lt b a :: Γ) ⊢[PRAAx] lt b a := Prf.hyp0
+  exact le_lt_absurd _ h.wk
+    (lt_of_le_of_lt (mul_le_mul_left b (le_of_lt hba))
+      (Order.mul_lt_mul_right (lt_of_le_of_lt (zero_le b) hba) hba))
+
+/-- Natural terms with equal squares are equal. -/
+theorem eq_of_sq_eq {a b : PTm n} (h : Γ ⊢[PRAAx] a * a ≐ b * b) : Γ ⊢[PRAAx] a ≐ b :=
+  le_antisymm (le_of_sq_le (le_congr (.eqRefl _) h (le_refl _)))
+    (le_of_sq_le (le_congr (.eqRefl _) h.eqSymm (le_refl _)))
 
 theorem lt_of_sq_lt {a b : PTm n} (h : Γ ⊢[PRAAx] lt (a * a) (b * b)) : Γ ⊢[PRAAx] lt a b :=
   .orE (lt_or_le a b) Prf.hyp0 (le_lt_absurd _ (sq_le_sq Prf.hyp0) h.wk)

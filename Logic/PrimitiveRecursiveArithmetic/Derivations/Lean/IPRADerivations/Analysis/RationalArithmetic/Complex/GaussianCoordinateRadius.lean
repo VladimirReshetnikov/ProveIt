@@ -16,7 +16,6 @@ namespace LeanProofs.IPRA.Analysis.GaussianCoordinateRadius
 
 open_ipra
 open LeanProofs.IPRA.Foundations.GapDecision (zabs zabs_congr zabs_sq)
-open GaussianL1 (abs_multiply abs_ofNat)
 open GaussianRationalHorner (represents)
 open GaussianRationalMetric (distanceBounded bounded_difference_iff)
 open GaussianRationalValueEquality
@@ -42,9 +41,8 @@ theorem scaled_cross (a b E : PTm n) (u v : ZT n)
     simp only [cross, ZT.toZ_mul, ZT.toZ_sub, ZT.toZ_ofNat]
     ipra_simps
     linear_combination -𝔞(denominatorOf b)*ea+𝔞(denominatorOf a)*eb
-  have product (D : PTm n) (w : ZT n) : Γ ⊢[PRAAx] zabs (ZT.ofNat D*w) ≐ D*zabs w :=
-    (abs_multiply _ _).eqTrans (congrMul (abs_ofNat D) (.eqRefl _))
-  exact (product _ _).eqSymm.eqTrans ((zabs_congr e).eqTrans (product _ _))
+  exact (Foundations.GapDecision.zabs_scale _ _).eqSymm.eqTrans
+    ((zabs_congr e).eqTrans (Foundations.GapDecision.zabs_scale _ _))
 
 theorem scalar_bound (a b E A B : PTm n) (u v : ZT n)
     (hE : Γ ⊢[PRAAx] le one E)
