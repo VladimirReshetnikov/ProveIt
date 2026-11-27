@@ -23,7 +23,7 @@ open GaussianBarnesCanonicalLogCofinal (source)
 open GaussianBarnesCanonicalLogSchedule (initial initial_positive)
 open GaussianBarnesCanonicalValueDerivative (input_of_margin stepGain numerator denominator)
 open GaussianCoefficientNameBounds (unit unit_positive)
-open GaussianFastValueCut (exponent query_budget)
+open GaussianFastValueCut (exponent split_query_budget)
 open GaussianL1 (norm1 norm1_one)
 open GaussianNameEquivalence (cross_symm)
 open GaussianNamedInverseRate (independentRate)
@@ -85,22 +85,13 @@ theorem dyadic_rate (p z h R B J K : PTm n) (hz : Γ ⊢[PRAAx] source z R B)
   let H := norm1 h
   let C := stepGain S
   let G := gain R
-  let U := unit p
-  let X := unit (stepClock p R)
-  have hp : Γ ⊢[PRAAx] le ((C+G)*U) X := query_budget (C+G) p
-  have fits : Γ ⊢[PRAAx] le (C*U) X := le_trans (mul_le_mul_right U (le_add_right C G)) hp
-  have grow : Γ ⊢[PRAAx] le C (C*U) :=
-    le_congr (one_mul C) (mul_comm U C) (mul_le_mul_right C (unit_positive p))
-  have margin : Γ ⊢[PRAAx] le (C*H) B :=
-    le_trans (le_congr (.eqRefl _) (mul_comm X H) (mul_le_mul_right H (le_trans grow fits))) hs
-  have budget : Γ ⊢[PRAAx] le (G*U) X := le_trans (mul_le_mul_right U (le_add_left G C)) hp
-  have small : Γ ⊢[PRAAx] le (numerator S h*U) B :=
-    le_trans (le_congr ((congrMul (numerator_linear R h) (.eqRefl U)).eqTrans (by ipra_ring)).eqSymm
-      (mul_comm X H) (mul_le_mul_right H budget)) hs
+  have limits := split_query_budget C G H B p hs
+  have small : Γ ⊢[PRAAx] le (numerator S h*unit p) B :=
+    le_congr (congrMul (numerator_linear R h).eqSymm (.eqRefl _)) (.eqRefl _) limits.andE₂.andE₂
   have den : Γ ⊢[PRAAx] le B (denominator S B) :=
     le_congr (one_mul B) (mul_comm _ _) (mul_le_mul_right B (initial_positive S))
   exact GaussianNamedRateRadius.weaken _ _ _ _ _ _ _ _ (positive_product _ _ hz.andE₁ (initial_positive S)) (unit_positive p)
-    (le_congr (.eqRefl _) (one_mul _).eqSymm (le_trans small den)) (linear_rate z h R B J K hz hw hn margin)
+    (le_congr (.eqRefl _) (one_mul _).eqSymm (le_trans small den)) (linear_rate z h R B J K hz hw hn limits.andE₁.andE₁)
 
 theorem actual_Barnes_base_factorial_Taylor_derivative_closed : ([] : List (Fm PTm 0)) ⊢[PRAAx] univ 7
     (let p := var 0

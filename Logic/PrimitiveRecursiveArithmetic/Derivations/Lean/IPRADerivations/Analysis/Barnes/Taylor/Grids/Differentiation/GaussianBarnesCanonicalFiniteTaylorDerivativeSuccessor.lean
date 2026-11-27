@@ -20,7 +20,7 @@ open GaussianBarnesCanonicalHigherRows (previous)
 open GaussianBarnesCanonicalLogCofinal (source)
 open GaussianBarnesCanonicalWeightedTaylorBallSource (stepDivisor)
 open GaussianCoefficientNameBounds (unit unit_positive)
-open GaussianFastValueCut (exponent query_budget)
+open GaussianFastValueCut (exponent split_query_budget)
 open GaussianL1 (norm1)
 open GaussianNamedInverseRate (independentRate rateNumerator rateDenominator)
 open GaussianRationalMetric (distanceBounded)
@@ -115,19 +115,11 @@ theorem dyadic_rate (p z h R B r M J e : PTm n) (hz : Γ ⊢[PRAAx] source z R B
   let H := norm1 h
   let C := stepDivisor R*(succ e*two)
   let G := gain R M e
-  let U := unit p
-  let K := unit (stepClock p R M e)
-  have full : Γ ⊢[PRAAx] le ((G+C)*U) K := query_budget (G+C) p
-  have fit : Γ ⊢[PRAAx] le (C*U) K := le_trans (mul_le_mul_right U (le_add_left C G)) full
-  have grow : Γ ⊢[PRAAx] le C (C*U) :=
-    le_congr (one_mul C) (mul_comm U C) (mul_le_mul_right C (unit_positive p))
+  have limits := split_query_budget G C H B p hsmall
   have margin : Γ ⊢[PRAAx] le (stepDivisor R*(succ e*(two*H))) B :=
-    le_trans (le_congr (by dsimp only [C]; ipra_ring) (mul_comm K H) (mul_le_mul_right H (le_trans grow fit))) hsmall
-  have pay : Γ ⊢[PRAAx] le (G*U) K := le_trans (mul_le_mul_right U (le_add_right G C)) full
-  have bound : Γ ⊢[PRAAx] le ((G*H)*U) (one*B) :=
-    le_congr (.eqRefl _) (one_mul B).eqSymm
-      (le_trans (le_congr (by ipra_ring) (mul_comm K H) (mul_le_mul_right H pay)) hsmall)
-  exact GaussianNamedRateRadius.weaken _ _ _ _ _ _ _ _ hz.andE₁ (unit_positive p) bound
+    le_congr (by dsimp only [C]; ipra_ring) (.eqRefl _) limits.andE₂.andE₁
+  exact GaussianNamedRateRadius.weaken _ _ _ _ _ _ _ _ hz.andE₁ (unit_positive p)
+    (le_congr (.eqRefl _) (one_mul B).eqSymm limits.andE₁.andE₂)
     (linear_rate z h R B r M J e hz hw hn margin hdeg hJ)
 
 theorem actual_Barnes_finite_next_factorial_Taylor_derivative_closed : ([] : List (Fm PTm 0)) ⊢[PRAAx] univ 9

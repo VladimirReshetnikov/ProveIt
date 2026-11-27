@@ -107,6 +107,22 @@ theorem query_budget (L k : PTm n) : Γ ⊢[PRAAx] le (L*unit k) (unit (exponent
   have h := le_mul_mono (normalizer_budget (Γ := Γ) L) (le_refl (unit k))
   exact le_congr (.eqRefl _) ((mul_comm _ _).eqTrans (exponent_unit L k).eqSymm) h
 
+/-- A clock for the sum of two budgets controls both contributions to a small step. -/
+theorem split_query_budget (L M H B p : PTm n)
+    (small : Γ ⊢[PRAAx] le (H*unit (exponent (L+M) p)) B) :
+    Γ ⊢[PRAAx] (le (L*H) B ⋏ le ((L*H)*unit p) B) ⋏
+      (le (M*H) B ⋏ le ((M*H)*unit p) B) := by
+  have full := query_budget (Γ := Γ) (L+M) p
+  have pay (C : PTm n) (hC : Γ ⊢[PRAAx] le C (L+M)) :
+      Γ ⊢[PRAAx] le (C*H) B ⋏ le ((C*H)*unit p) B := by
+    have fit := le_trans (le_mul_mono hC (le_refl (unit p))) full
+    have scaled : Γ ⊢[PRAAx] le ((C*H)*unit p) B :=
+      le_trans (le_congr (by ipra_ring) (.eqRefl _) (le_mul_mono (le_refl H) fit)) small
+    have grow : Γ ⊢[PRAAx] le (C*H) ((C*H)*unit p) :=
+      le_congr (by ipra_ring) (.eqRefl _) (le_mul_mono (le_refl (C*H)) (unit_positive p))
+    exact .andI (le_trans grow scaled) scaled
+  exact .andI (pay L (le_add_right L M)) (pay M (le_add_left M L))
+
 theorem regularity_budget (L s t : PTm n) : Γ ⊢[PRAAx]
     le ((L*(unit (exponent L s)+unit (exponent L t)))*(unit s*unit t))
       ((unit s+unit t)*(unit (exponent L s)*unit (exponent L t))) := by
