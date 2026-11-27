@@ -72,33 +72,31 @@ theorem R_zero : Γ ⊢[PRAAx] R zero ps ≐ ps 3 := by
 theorem W_zero : Γ ⊢[PRAAx] W zero ps ≐ pairT (ps 4) zero := by
   simpa using sim₂_zero (Γ := Γ) (var 3 : PTm 6) (pairT (var 4) zero) rStep wStep ps
 
-theorem T_zero : Γ ⊢[PRAAx] T zero ps ≐ ps 4 := (congrFst (W_zero ps)).eqTrans (fst_pair _ _)
-theorem C_zero : Γ ⊢[PRAAx] C zero ps ≐ zero := (congrSnd (W_zero ps)).eqTrans (snd_pair _ _)
+theorem T_zero : Γ ⊢[PRAAx] T zero ps ≐ ps 4 := (W_zero ps).fstE
+theorem C_zero : Γ ⊢[PRAAx] C zero ps ≐ zero := (W_zero ps).sndE
 
 theorem R_succ (k : PTm n) : Γ ⊢[PRAAx] R (succ k) ps ≐
     G k ps * monus (ps 0 * R k ps) (ps 2 * (ps 1 * T k ps)) + monus one (G k ps) * R k ps := by
-  have h := sim₁_succ (Γ := Γ) (var 3 : PTm 6) (pairT (var 4) zero) rStep wStep ps k
-  simp only [PTm.subst_add, PTm.subst_mul, PTm.subst_monus, subst_fstT, subst_sndT, subst_pairT,
+  simpa only [PTm.subst_add, PTm.subst_mul, PTm.subst_monus, subst_fstT,
     ConciseIPRA.PTm.subst_succ, ConciseIPRA.PTm.subst_zero, Syn.subst_var,
     Fin.cases_zero, finCases_one, finCases_two, finCases_three, finCases_four, finCases_five,
-    finCases_six, finCases_seven, finCases_eight] at h
-  exact h
+    finCases_six, finCases_seven, finCases_eight] using
+    sim₁_succ (Γ := Γ) (var 3 : PTm 6) (pairT (var 4) zero) rStep wStep ps k
 
 theorem W_succ (k : PTm n) : Γ ⊢[PRAAx] W (succ k) ps ≐
     pairT (G k ps * monus (ps 0 * T k ps) (ps 1 * R k ps) + monus one (G k ps) * T k ps) (C k ps + G k ps) := by
-  have h := sim₂_succ (Γ := Γ) (var 3 : PTm 6) (pairT (var 4) zero) rStep wStep ps k
-  simp only [PTm.subst_add, PTm.subst_mul, PTm.subst_monus, subst_fstT, subst_sndT, subst_pairT,
+  simpa only [PTm.subst_add, PTm.subst_mul, PTm.subst_monus, subst_fstT, subst_sndT, subst_pairT,
     ConciseIPRA.PTm.subst_succ, ConciseIPRA.PTm.subst_zero, Syn.subst_var,
-    Fin.cases_zero, finCases_one, finCases_two, finCases_three, finCases_four, finCases_five,
-    finCases_six, finCases_seven, finCases_eight] at h
-  exact h
+    Fin.cases_zero, finCases_one, finCases_two, finCases_three, finCases_four,
+    finCases_six, finCases_seven, finCases_eight] using
+    sim₂_succ (Γ := Γ) (var 3 : PTm 6) (pairT (var 4) zero) rStep wStep ps k
 
 theorem T_succ (k : PTm n) : Γ ⊢[PRAAx] T (succ k) ps ≐
     G k ps * monus (ps 0 * T k ps) (ps 1 * R k ps) + monus one (G k ps) * T k ps :=
-  (congrFst (W_succ ps k)).eqTrans (fst_pair _ _)
+  (W_succ ps k).fstE
 
 theorem C_succ (k : PTm n) : Γ ⊢[PRAAx] C (succ k) ps ≐ C k ps + G k ps :=
-  (congrSnd (W_succ ps k)).eqTrans (snd_pair _ _)
+  (W_succ ps k).sndE
 
 theorem X_succ (m : PTm n) : Γ ⊢[PRAAx] Xp (succ m) (p3 ps) ≐ ps 0 * Xp m (p3 ps) + ps 2 * (ps 1 * Yp m (p3 ps)) :=
   Recurrences.X_succ m (p3 ps)

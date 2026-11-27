@@ -26,11 +26,9 @@ variable {n : ℕ} {Γ : List (Fm PTm n)}
 /-- `a² < b² → a < b`. -/
 alias lt_of_sq_lt := Common.lt_of_sq_lt
 
-theorem A_pos {A B D : PTm n} (hA : Γ ⊢[PRAAx] A * A ≐ one + D * (B * B)) : Γ ⊢[PRAAx] A ≐ succ (pred A) := by
-  refine .orE (zero_or_succ A) ?_ Prf.hyp0
-  refine succ_ne_zero' _ (a := D * (B * B)) ((hA.wk.eqSymm.eqTrans ((congrMul Prf.hyp0 Prf.hyp0).eqTrans
-    (mul_zero _))).eqSymm.eqTrans ?_ |>.eqSymm)
-  exact (by ipra_ring)
+theorem A_pos {A B D : PTm n} (hA : Γ ⊢[PRAAx] A * A ≐ one + D * (B * B)) : Γ ⊢[PRAAx] A ≐ succ (pred A) :=
+  Common.pos_of_one_le (le_of_sq_le
+    (le_congr (Common.mul_one_right one).eqSymm hA.eqSymm (le_add_right one _)))
 
 /-- `D B y ≤ A x`. -/
 theorem le_r {A B D x y : PTm n} (hA : Γ ⊢[PRAAx] A * A ≐ one + D * (B * B))
