@@ -1,5 +1,5 @@
 import IPRADerivations.Analysis.Stirling.Binet.Laplace.Moments.DerivativeQuotients.GaussianBinetLaplaceMomentMarginRows
-import IPRADerivations.Analysis.Integration.CompactGrids.GaussianCompactMeshIndependence
+import IPRADerivations.Analysis.Stirling.Binet.Laplace.Moments.Improper.GaussianBinetLaplaceMomentTail
 import IPRADerivations.Analysis.SpecialFunctions.DampingPower.GaussianNamedDampingPowerReciprocalTail
 import IPRADerivations.Analysis.Stirling.Binet.Laplace.Strips.GaussianBinetLaplaceStripCutoff
 
@@ -17,20 +17,17 @@ set_option maxHeartbeats 1100000
 namespace LeanProofs.IPRA.Analysis.GaussianBinetLaplaceMomentMarginTail
 
 open_ipra
-open GaussianBinetLaplaceStripCutoff (grid_tag_numerator_positive reciprocal_square_majorant)
+open GaussianBinetLaplaceMomentTail (cell_majorant_of_observation name_bound_of_late_grid)
 open LeanProofs.IPRA.AnalyticNumberTheory.PhiLower (le_mul_mono)
-open GaussianBinetLaplaceMomentCompact (data compact_input)
+open GaussianBinetLaplaceMomentCompact (data)
 open GaussianBinetLaplaceMomentDecay (tailScale)
 open GaussianBinetLaplaceMomentMarginRows (allowance observation_inverse_square_bound)
-open GaussianBinetLaplaceMomentFloor (evaluatorF evaluator_at fixedData gain nameF)
-open GaussianBinetLaplaceStrip (source tagNumerator tag_inside)
-open GaussianCoefficientNameBounds (unit unit_positive bounded_radius_mono)
-open GaussianCompactRiemannName (grid inside grid_inside quadrature sampleBody sampleData sample_body_at precision mesh)
+open GaussianBinetLaplaceMomentFloor (evaluatorF fixedData gain nameF)
+open GaussianBinetLaplaceStrip (source)
+open GaussianCoefficientNameBounds (unit unit_positive)
+open GaussianCompactRiemannName (quadrature sampleBody sampleData precision mesh)
 open GaussianNamedDampingPowerReciprocalTail (body gridData subst_gridData quadrature_bound_of_majorized)
-open GaussianRationalDistanceOrder (distance_radius_mono distance_symmetric)
-open GaussianRationalHorner (positive_product)
-open GaussianRationalMetric (bounded distanceBounded)
-open GaussianRationalReciprocal (bound_congr)
+open GaussianRationalMetric (bounded)
 open GaussianRationalSumMajorant (majorized termsMajorized)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
@@ -47,36 +44,15 @@ private theorem cell_majorant (i p N j X D R K T A C E : PTm n)
     (hq : Γ ⊢[PRAAx] le ((T*T)*(one+pw T j)) (unit p)) (hi : Γ ⊢[PRAAx] lt i (C*N)) : Γ ⊢[PRAAx]
     majorized (inst2 (sampleBody evaluatorF) i (sampleData p (C*N) (E+A) C E (fixedData j X D R T)))
       (inst2 body i (gridData (coefficient j K) A E N)) := by
-  let M := C*N
-  let t := grid i M (E+A) C E
-  let a := tagNumerator t
-  let b := sndT t
-  let V := coefficient j K
-  have hM := positive_product C N hC hN
-  have hE := h.andE₂.andE₁
-  have ht : Γ ⊢[PRAAx] inside (E+A) C E t :=
-    grid_inside i M (E+A) C E (le_trans hE (le_add_right _ _)) hE hM (le_of_lt hi)
-  have ha := grid_tag_numerator_positive i M A C E hA hM
-  have hb := ht.andE₂.andE₁
-  have time := (tag_inside t A C E T hE h.andE₂.andE₂ ht).andE₂
-  have hAA := positive_product _ _ ha ha
-  have raw := observation_inverse_square_bound p j X D R K T a b
-    (.andI h.andE₁ (.andI hb time)) hK hmargin ha
-  have tagSquare : Γ ⊢[PRAAx] le (a*a) ((b*b)*(T*T)) :=
-    le_congr (.eqRefl _) (by ipra_ring) (le_mul_mono time time)
   have pad : Γ ⊢[PRAAx] le (allowance j T) (num 30*(one+pw T j)) := by
     unfold allowance
     ipra_le 26+4*𝔞(pw T j)
-  have cmp : Γ ⊢[PRAAx] le (allowance j T*(a*a)) (num 30*((b*b)*unit p)) := by
-    have scaled : Γ ⊢[PRAAx] le ((num 30*(b*b))*((T*T)*(one+pw T j))) ((num 30*(b*b))*unit p) :=
-      le_mul_mono (le_refl _) hq
-    exact le_trans (le_mul_mono pad tagSquare)
-      (le_congr (by ipra_ring) (by ipra_ring) scaled)
-  have bb := bounded_radius_mono _ _ _ (V*b*b) (a*a) (positive_product _ _ (unit_positive p) hAA) hAA
-    (by dsimp only [V,coefficient]; ipra_le 𝔞(a)*𝔞(a)*sl cmp) raw
-  have read := (sample_body_at (Γ := Γ) evaluatorF i p M (E+A) C E (fixedData j X D R T)).eqTrans
-    (evaluator_at p t j X D R T)
-  exact reciprocal_square_majorant i V A C E N hA hC hN read bb
+  have pay : Γ ⊢[PRAAx] le (allowance j T*(T*T)) (num 30*unit p) :=
+    le_trans (le_mul_mono pad (le_refl _))
+      (le_congr (by ipra_ring) (.eqRefl _) (le_mul_mono (le_refl _) hq))
+  exact cell_majorant_of_observation i p N j X D R T A C E (tailScale j K) (allowance j T) (num 30)
+    h hA hC hN hi pay (fun a b ha hb time =>
+      observation_inverse_square_bound p j X D R K T a b (.andI h.andE₁ (.andI hb time)) hK hmargin ha)
 
 theorem upper_tail_bound (p N j X D R K T A C E : PTm n)
     (h : Γ ⊢[PRAAx] source X zero D zero R T A C E)
@@ -114,28 +90,16 @@ theorem name_bound (p j X D R K T A C E : PTm n)
     (hA : Γ ⊢[PRAAx] le one A) (hC : Γ ⊢[PRAAx] le one C) :
     Γ ⊢[PRAAx] bounded (ap2 nameF p (data j X D R T A C E))
       (A+(two*coefficient j K*E)*unit p) (unit p*A) := by
-  let x := fixedData j X D R T
   let L := gain j R T
   let M := mesh p L T
   let q := GaussianFastValueCut.exponent ((T*T)*(one+pw T j)) (precision p T)
-  let S := unit (p+num 6)
-  let u := GaussianCompactRiemannName.sample evaluatorF p (E+A) C E L T x
-  let v := quadrature evaluatorF q (C*M) (E+A) C E x
   have hq : Γ ⊢[PRAAx] le (precision p T) q := le_add_right _ _
-  have hp := unit_positive (Γ := Γ) p
   have budget : Γ ⊢[PRAAx] le ((T*T)*(one+pw T j)) (unit q) :=
     le_trans (le_congr (by ipra_ring) (.eqRefl _)
       (le_mul_mono (le_refl ((T*T)*(one+pw T j))) (unit_positive (precision p T)))) (GaussianFastValueCut.query_budget _ _)
-  have b := upper_tail_bound q M j X D R K T A C E h hK hmargin hA hC
-    (GaussianCompactRiemannName.mesh_positive p L T) budget
-  have near := GaussianCompactMeshIndependence.arbitrary_refinement evaluatorF p q C (E+A) C E L T x
-    (compact_input j X D R T A C E h) hC hq
-  have ds : Γ ⊢[PRAAx] distanceBounded u v one (unit p) :=
-    distance_radius_mono _ _ _ _ _ _ (unit_positive _) hp
-      (le_congr (.eqRefl _) (by ipra_ring) (GaussianCompactRiemannName.dyadic_six_lower p))
-      (distance_symmetric v u (num 3) S (unit_positive _) near)
-  exact bound_congr (GaussianCompactRiemannName.name_at evaluatorF p (E+A) C E L T x).eqSymm
-    (by ipra_ring) (.eqRefl _) (GaussianReconstructionRoots.norm_from_distance u v _ _ _ _ hp hA ds b)
+  exact name_bound_of_late_grid p q j X D R T A C E _ h hA hC hq
+    (upper_tail_bound q M j X D R K T A C E h hK hmargin hA hC
+      (GaussianCompactRiemannName.mesh_positive p L T) budget)
 
 theorem actual_weighted_Binet_margin_tail_closed : ([] : List (Fm PTm 0)) ⊢[PRAAx] univ 10
     (let p := var 0
