@@ -83,9 +83,7 @@ private theorem unit_product (N : PTm n) (hN : Γ ⊢[PRAAx] le one N) :
   have hx := GaussianPositiveRationalLogarithm.name_regular N one (.andI hN (le_refl one))
   have constOne := GaussianArctangentExponentialPeriod.constant_one_cross (Γ := Γ) x
   have eq := cross_data_congr constantF oneF qone a x x argument_one.eqSymm (.eqRefl _) constOne
-  have product := multiply_cross constantF oneF logF logF a x x x
-    (constant_regular a) (one_fast x) hx hx eq (cross_refl _ _ hx)
-  exact cross_trans productF (multiplyF oneF logF) logF _ _ _ product (multiply_one_left logF x hx)
+  exact GaussianNameRingLaws.multiply_unit_left constantF logF a x x (constant_regular a) hx eq
 
 private theorem unit_rows (N : PTm n) :
     Γ ⊢[PRAAx] equalRows G logF rowBody I (succ N) (rowData one zero one zero) zero := by
