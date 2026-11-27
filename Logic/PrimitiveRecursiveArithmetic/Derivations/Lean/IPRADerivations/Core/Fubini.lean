@@ -35,21 +35,11 @@ theorem congrPairT {a a' b b' : PTm n} (h₁ : Γ ⊢[PRAAx] a ≐ a') (h₂ : �
 
 /-! ## The zero body -/
 
-/-- Variables: `0 = N`, `1 = x`. -/
-private abbrev zeroF : Fm PTm 2 := ap2 (sumF (zero : PTm 2)) (var 0) (var 1) ≐ zero
-
-private theorem sum_zeroB₀ : ([] : List (Fm PTm 2)) ⊢[PRAAx] zeroF := by
-  ipra_ind [subst_ap2]
-  · exact sum_zero _ _
-  · refine (sum_succ' _ _ _).eqTrans ((congrAdd Prf.hyp0 ?_).eqTrans (add_zero _))
-    have e : inst2 (zero : PTm 2) (var 0 : PTm 2) (var 1) = zero := by simp [inst2]
-    rw [e]
-    exact .eqRefl _
-
 /-- `∑_{i<N} 0 = 0`. -/
 theorem sum_zeroB (N x : PTm n) : Γ ⊢[PRAAx] ap2 (sumF (zero : PTm 2)) N x ≐ zero := by
-  have h := inst (Γ := Γ) sum_zeroB₀ (![N, x] : Fin 2 → PTm n)
-  simpa using h
+  refine sum_zero_of_all _ x (.allI ?_) N
+  simp only [inst2, ConciseIPRA.PTm.subst_zero]
+  exact .eqRefl _
 
 /-! ## Fubini -/
 

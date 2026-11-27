@@ -140,11 +140,7 @@ theorem toZ_sum_zeroB (N x : PTm n) : ZT.toZ Γ ((0 : ZB).sum N x) = 0 := by
 /-- A natural body. -/
 theorem toZ_sum_ofNat (f : PTm 2) (N x : PTm n) :
     ZT.toZ Γ ((ofNat f).sum N x) = Groth.ι (Q.mk Γ (ap2 (sumF f) N x)) := by
-  have hz : Γ ⊢[PRAAx] ap2 (sumF (zero : PTm 2)) N x ≐ zero := by
-    refine sum_zero_of_bounded _ _ _ (.allI (.impI ?_))
-    have e : inst2 (zero : PTm 2) (var 0 : PTm (n + 1)) (Syn.shift x) = zero := by simp [inst2]
-    rw [e]
-    exact .eqRefl _
+  have hz := sum_zeroB (Γ := Γ) N x
   have h := natEq hz
   simp only [Q.mk_zero, map_zero] at h
   show Groth.ι (Q.mk Γ (ap2 (sumF f) N x)) - Groth.ι (Q.mk Γ (ap2 (sumF (zero : PTm 2)) N x)) =

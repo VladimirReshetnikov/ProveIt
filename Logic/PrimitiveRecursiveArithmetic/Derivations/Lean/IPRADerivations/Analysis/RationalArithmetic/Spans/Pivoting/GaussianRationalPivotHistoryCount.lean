@@ -67,16 +67,8 @@ theorem count_succ (H N : PTm n) : Γ ⊢[PRAAx] count H (succ N) ≐ count H N 
 theorem zeroCount_succ (H N : PTm n) : Γ ⊢[PRAAx] zeroCount H (succ N) ≐ zeroCount H N + eqb (entry H N) zero := by
   simpa only [zeroCount,zero_body_at] using sum_succ' (Γ := Γ) zeroBody N H
 
-theorem sum_units (N H : PTm n) : Γ ⊢[PRAAx] ap2 (sumF (one : PTm 2)) N H ≐ N := by
-  have all : Γ ⊢[PRAAx] .all (ap2 (sumF (one : PTm 2)) (var 0) (Syn.shift H) ≐ var 0) := by
-    ipra_qfind [subst_ap2]
-    · exact sum_zero _ _
-    · have s := sum_succ' (Γ := (ap2 (sumF (one : PTm 2)) (var 0) (Syn.shift H) ≐ var 0) :: Γ.map Fm.shift)
-        (one : PTm 2) (var 0) (Syn.shift H)
-      have e := (congrAdd (Prf.hyp0 : (ap2 (sumF (one : PTm 2)) (var 0) (Syn.shift H) ≐ var 0) :: Γ.map Fm.shift ⊢[PRAAx] _)
-        (.eqRefl one)).eqTrans (succ_eq_add_one (var 0)).eqSymm
-      exact s.eqTrans (by simpa [inst2] using e)
-  simpa only [Fm.subst_eq,subst_ap2,Syn.subst_var,Syn.inst_zero,Syn.subst_inst_shift] using all.allE N
+theorem sum_units (N H : PTm n) : Γ ⊢[PRAAx] ap2 (sumF (one : PTm 2)) N H ≐ N :=
+  sum_one_body N H
 
 theorem count_bound (H N : PTm n) : Γ ⊢[PRAAx] le (count H N) N := by
   have h : Γ ⊢[PRAAx] le (count H N) (ap2 (sumF (one : PTm 2)) N H) := by

@@ -168,16 +168,9 @@ theorem second_moment_add (w X Y : PTm 2) (N x : PTm n) :
 
 /-! ## Constant sums and the sample mean -/
 
-/-- Variables: `0 = N`, `1 = x`. -/
-private abbrev oneF : Fm PTm 2 := ap2 (sumF (one : PTm 2)) (var 0) (var 1) ≐ var 0
-
-private theorem sum_one₀ : ([] : List (Fm PTm 2)) ⊢[PRAAx] oneF :=
-  sum_one_body (var 0) (var 1)
-
 /-- `∑_{j<N} 1 = N`. -/
-theorem sum_one (N x : PTm n) : Γ ⊢[PRAAx] ap2 (sumF (one : PTm 2)) N x ≐ N := by
-  have h := inst (Γ := Γ) sum_one₀ (![N, x] : Fin 2 → PTm n)
-  simpa using h
+theorem sum_one (N x : PTm n) : Γ ⊢[PRAAx] ap2 (sumF (one : PTm 2)) N x ≐ N :=
+  sum_one_body N x
 
 /-- If `h(j, y) = m` for `j < N`, then `∑_{j<N} h(j, y) = N · m`. -/
 theorem sum_const_of (h : PTm 2) (N m y : PTm n)
