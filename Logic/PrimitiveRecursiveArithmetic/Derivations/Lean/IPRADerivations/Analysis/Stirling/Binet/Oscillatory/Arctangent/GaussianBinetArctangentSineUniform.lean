@@ -28,7 +28,7 @@ open GaussianCoefficientNameBounds (unit unit_positive)
 open GaussianCompactRiemannName (quadrature mesh mesh_positive precision)
 open GaussianFastValueCut (exponent query_budget)
 open GaussianLogGammaEulerResidualDomain (source)
-open GaussianRationalDistanceOrder (distance_congr distance_radius_mono distance_symmetric distance_triangle_same)
+open GaussianRationalDistanceOrder (distance_congr distance_radius_mono distance_symmetric distance_triangle_same distance_radius_mono_den)
 open GaussianRationalHorner (positive_product)
 open GaussianRationalMetric (distanceBounded)
 open LeanProofs.IPRA.AnalyticNumberTheory.PhiLower (le_mul_mono)
@@ -154,8 +154,7 @@ private theorem compare_mesh (k M X Y D sign A B R U N : PTm n)
   have last : Γ ⊢[PRAAx] distanceBounded v q (num 3) (unit (k+num 6)) :=
     distance_congr (GaussianCompactRiemannName.quadrature_index_congr F (precision k U) _ _ (B+zero) A B x hM.eqSymm)
       (GaussianCompactRiemannName.name_at F k (B+zero) A B (D*D) U x).eqSymm (.eqRefl _) (.eqRefl _) raw
-  have wide := distance_radius_mono _ _ _ _ (num 3) (unit k) (unit_positive _) hk
-    (le_mul_mono (le_refl (num 3)) (GaussianExponentialReference.unit_monotone (le_add_right k _))) last
+  have wide := distance_radius_mono_den hk (GaussianExponentialReference.unit_monotone (le_add_right k _)) last
   exact distance_congr (.eqRefl _) (.eqRefl _) (by ipra_ring) (.eqRefl _)
     (distance_triangle_same z q v _ _ _ hk first' (distance_symmetric _ _ _ _ hk wide))
 

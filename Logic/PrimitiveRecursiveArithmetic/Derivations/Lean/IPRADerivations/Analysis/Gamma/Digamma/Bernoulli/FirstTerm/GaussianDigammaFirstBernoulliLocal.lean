@@ -24,7 +24,7 @@ open GaussianDigammaFirstBernoulliPanelSum (squareCoeff cubeCoeff actual_first_p
 open GaussianEuclideanDistanceName (fraction fraction_order pointCN)
 open GaussianGammaCanonicalExponent (constantF constant_at constant_regular)
 open GaussianNamedDifference (difference_distance sample_error)
-open GaussianRationalDistanceOrder (distance_congr distance_radius_mono distance_symmetric distance_triangle_same)
+open GaussianRationalDistanceOrder (distance_congr distance_radius_mono distance_symmetric distance_triangle_same distance_radius_mono_den)
 open GaussianRationalHorner (qmul positive_product)
 open GaussianRationalMetric (qsub bounded distanceBounded)
 open GaussianRationalPowerDifference (distance_refl_zero)
@@ -93,7 +93,7 @@ theorem finite_error (U B Q : PTm n) (hU : Γ ⊢[PRAAx] le one U) (hB : Γ ⊢[
   have hQM : Γ ⊢[PRAAx] le Q M := by unfold M; ipra_le 𝔞 Q*sl hB
   have widen (f g C : PTm n) (eq : Γ ⊢[PRAAx] distanceBounded f g C M) :
       Γ ⊢[PRAAx] distanceBounded f g C Q :=
-    distance_radius_mono _ _ _ _ _ _ hM hQ (le_mul_mono (le_refl _) hQM) eq
+    distance_radius_mono_den hQ hQM eq
   have p2 := widen _ _ _ (power_mass_error 2 (by omega) U B M hU hM)
   have p3 := widen _ _ _ (power_mass_error 3 (by omega) U B M hU hM)
   have p1 := harmonic_mass_error U B Q hU hB hQ
