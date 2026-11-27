@@ -115,9 +115,8 @@ theorem injective_history (A R N c : PTm n) : Γ ⊢[PRAAx] injectiveTags (histo
   refine .allI (.impI (.allI (.impI (.impI ?_))))
   let Δ := neg (entry (Syn.shift (Syn.shift (history A R N c))) (var 1) ≐ zero) :: lt (var 0) (var 1) ::
     (lt (var 0) (Syn.shift c)).shift :: (Γ.map Fm.shift).map Fm.shift
-  have rawRange : Δ ⊢[PRAAx] (lt (var 0) (Syn.shift c)).shift := .hyp (by simp [Δ])
-  have range : Δ ⊢[PRAAx] lt (var 1) (Syn.shift (Syn.shift c)) := by
-    simpa only [Δ,List.map_cons,Fm.shift,subst_lt,Syn.subst_var,Syn.shift,Fin.succ_zero_eq_one] using rawRange
+  have range : Δ ⊢[PRAAx] lt (var 1) (Syn.shift (Syn.shift c)) :=
+    (Order.shift_lt (Γ := _ :: Γ.map Fm.shift) (a := var 0) (b := Syn.shift c) Prf.hyp0).wk.wk
   have nz : Δ ⊢[PRAAx] neg (entry (history (Syn.shift (Syn.shift A)) (Syn.shift (Syn.shift R))
       (Syn.shift (Syn.shift N)) (Syn.shift (Syn.shift c))) (var 1) ≐ zero) := by
     simpa only [Δ,List.map_cons,Syn.shift,GaussianRationalEliminationLoop.subst_history,Fm.shift,subst_lt,Syn.subst_var,Fin.succ_zero_eq_one] using

@@ -134,8 +134,8 @@ theorem extended_upper (R m : PTm n) : Γ ⊢[PRAAx] belowZeros (extended R m) m
   refine .allI (.impI (.allI (.impI (.impI ?_))))
   let Δ := lt (var 0) (var 1) :: lt (var 0) (Syn.shift (Syn.shift m)) ::
     (lt (var 0) (Syn.shift m)).shift :: (Γ.map Fm.shift).map Fm.shift
-  have hr : Δ ⊢[PRAAx] lt (var 1) (Syn.shift (Syn.shift m)) := by
-    simpa [Δ,Fm.shift,Syn.shift] using (Prf.hyp0.wk.wk : Δ ⊢[PRAAx] (lt (var 0) (Syn.shift m)).shift)
+  have hr : Δ ⊢[PRAAx] lt (var 1) (Syn.shift (Syn.shift m)) :=
+    (Order.shift_lt (Γ := _ :: Γ.map Fm.shift) (a := var 0) (b := Syn.shift m) Prf.hyp0).wk.wk
   have actual := extended_upper_at (Γ := Δ) (Syn.shift (Syn.shift R)) (Syn.shift (Syn.shift m)) (var 1) (var 0) hr Prf.hyp1 Prf.hyp0
   simpa [Δ,belowZeros,GaussianScalarTriangularDeterminant.belowRow,Fm.shift,Syn.shift] using actual
 theorem extended_diagonal_ones (R m : PTm n) : Γ ⊢[PRAAx] diagonalOnes (extended R m) m := by
@@ -221,8 +221,8 @@ theorem completed_lower (R m : PTm n) : Γ ⊢[PRAAx] aboveZeros (completed R m)
   refine .allI (.impI (.allI (.impI (.impI ?_))))
   let Δ := lt (var 1) (var 0) :: lt (var 0) (Syn.shift (Syn.shift m)) ::
     (lt (var 0) (Syn.shift m)).shift :: (Γ.map Fm.shift).map Fm.shift
-  have hr : Δ ⊢[PRAAx] lt (var 1) (Syn.shift (Syn.shift m)) := by
-    simpa [Δ,Fm.shift,Syn.shift] using (Prf.hyp0.wk.wk : Δ ⊢[PRAAx] (lt (var 0) (Syn.shift m)).shift)
+  have hr : Δ ⊢[PRAAx] lt (var 1) (Syn.shift (Syn.shift m)) :=
+    (Order.shift_lt (Γ := _ :: Γ.map Fm.shift) (a := var 0) (b := Syn.shift m) Prf.hyp0).wk.wk
   have actual := (recode_congr (completed_above_at (Γ := Δ) (Syn.shift (Syn.shift R)) (Syn.shift (Syn.shift m))
     (var 1) (var 0) hr Prf.hyp1 Prf.hyp0)).eqTrans (recode_eq qzero qzero_canonical)
   simpa [Δ,aboveZeros,GaussianScalarTriangularDeterminant.aboveRow,Fm.shift,Syn.shift] using actual
