@@ -172,7 +172,7 @@ theorem phi_sq_odd {N : PTm n} (hodd : Γ ⊢[PRAAx] rem N two ≐ one) : Γ ⊢
   have h := inst (Γ := Γ) ob₀ (![succ N, zero] : Fin 2 → PTm n)
   simp only [Fm.subst_eq, subst_ap2, Syn.subst_var, Matrix.cons_val_zero, Matrix.cons_val_one,
     Matrix.head_cons, ConciseIPRA.PTm.subst_succ, ConciseIPRA.PTm.subst_zero] at h
-  have z := sum_zero_elim obB h ((succ_monus_succ _ _).eqTrans (le_refl N))
+  have z := sum_zero_elim_last obB h
   rw [inst2_ob] at z
   exact PhiDivides.sg_zero_inv ((one_mul _).eqSymm.eqTrans ((congrMul hodd.eqSymm (.eqRefl _)).eqTrans z))
 

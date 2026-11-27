@@ -135,7 +135,7 @@ theorem phi_dvd_mul {A : PTm n} (hA : Γ ⊢[PRAAx] A ≐ succ (pred A)) (c : PT
   have h := inst (Γ := Γ) viol₀ (![succ c, A] : Fin 2 → PTm n)
   simp only [Fm.subst_imp, Fm.subst_eq, subst_ap2, PTm.subst_pred, Syn.subst_var, Matrix.cons_val_zero,
     Matrix.cons_val_one, Matrix.head_cons, ConciseIPRA.PTm.subst_succ, ConciseIPRA.PTm.subst_zero] at h
-  have z := sum_zero_elim violB (.impE h hA) ((succ_monus_succ _ _).eqTrans (le_refl c))
+  have z := sum_zero_elim_last violB (.impE h hA)
   rw [inst2_viol] at z
   exact sg_zero_inv z
 

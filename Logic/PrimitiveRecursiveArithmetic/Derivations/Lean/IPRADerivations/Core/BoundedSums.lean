@@ -126,6 +126,12 @@ theorem sum_zero_elim (body : PTm 2) {N i x : PTm n} (hS : Γ ⊢[PRAAx] ap2 (su
     (hi : Γ ⊢[PRAAx] lt i N) : Γ ⊢[PRAAx] inst2 body i x ≐ zero :=
   (monus_zero _).eqSymm.eqTrans (le_congr (.eqRefl _) hS (sum_term_le body hi))
 
+/-- A sum through index `N` that vanishes has a vanishing last term. -/
+theorem sum_zero_elim_last (body : PTm 2) {N x : PTm n}
+    (hS : Γ ⊢[PRAAx] ap2 (sumF body) (succ N) x ≐ zero) :
+    Γ ⊢[PRAAx] inst2 body N x ≐ zero :=
+  sum_zero_elim body hS (le_refl (succ N))
+
 /-! ## Zero terms give a zero sum -/
 
 /-- `∀ i < N, f(i, x) = 0` gives `S(N, x) = 0`. -/

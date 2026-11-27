@@ -242,7 +242,7 @@ theorem sigma_product {N : PTm n} (hN : Γ ⊢[PRAAx] N ≐ succ (pred N)) :
   have h := inst (Γ := Γ) sp₀ (![succ N, zero] : Fin 2 → PTm n)
   simp only [Fm.subst_eq, subst_ap2, Syn.subst_var, Matrix.cons_val_zero, Matrix.cons_val_one,
     Matrix.head_cons, ConciseIPRA.PTm.subst_succ, ConciseIPRA.PTm.subst_zero] at h
-  have z := sum_zero_elim vB h ((succ_monus_succ _ _).eqTrans (le_refl N))
+  have z := sum_zero_elim_last vB h
   rw [inst2_vB] at z
   have sg1 : Γ ⊢[PRAAx] sg N ≐ one := (congrSg hN).eqTrans (sg_succ _)
   exact eq_of_viol ((one_mul _).eqSymm.eqTrans ((congrMul sg1.eqSymm (.eqRefl _)).eqTrans z))

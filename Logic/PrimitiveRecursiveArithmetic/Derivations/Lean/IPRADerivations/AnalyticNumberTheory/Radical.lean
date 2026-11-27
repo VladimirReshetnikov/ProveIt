@@ -146,7 +146,7 @@ theorem rad_dvd (N : PTm n) : Γ ⊢[PRAAx] dvd (rad N) N := by
   have h := inst (Γ := Γ) rd₀ (![succ N, zero] : Fin 2 → PTm n)
   simp only [Fm.subst_eq, subst_ap2, Syn.subst_var, Matrix.cons_val_zero, Matrix.cons_val_one,
     Matrix.head_cons, ConciseIPRA.PTm.subst_succ, ConciseIPRA.PTm.subst_zero] at h
-  have z := sum_zero_elim rdB h ((succ_monus_succ _ _).eqTrans (le_refl N))
+  have z := sum_zero_elim_last rdB h
   rw [inst2_rd] at z
   exact PhiDivides.sg_zero_inv z
 
@@ -211,7 +211,7 @@ theorem phi_rad (N : PTm n) : Γ ⊢[PRAAx] phi (rad N) ≐ PP F₂ N := by
   have h := inst (Γ := Γ) pr₀ (![succ N, zero] : Fin 2 → PTm n)
   simp only [Fm.subst_eq, subst_ap2, Syn.subst_var, Matrix.cons_val_zero, Matrix.cons_val_one,
     Matrix.head_cons, ConciseIPRA.PTm.subst_succ, ConciseIPRA.PTm.subst_zero] at h
-  have z := sum_zero_elim prB h ((succ_monus_succ _ _).eqTrans (le_refl N))
+  have z := sum_zero_elim_last prB h
   rw [inst2_pr] at z
   exact EulerProduct.eq_of_viol z
 

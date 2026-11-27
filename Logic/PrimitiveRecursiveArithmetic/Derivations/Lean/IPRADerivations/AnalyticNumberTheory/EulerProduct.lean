@@ -294,7 +294,7 @@ theorem euler_product_at (N : PTm n) : Γ ⊢[PRAAx] LHS N ≐ RHS N := by
   have h := inst (Γ := Γ) eu₀ (![succ N, zero] : Fin 2 → PTm n)
   simp only [Fm.subst_eq, subst_ap2, Syn.subst_var, Matrix.cons_val_zero, Matrix.cons_val_one,
     Matrix.head_cons, ConciseIPRA.PTm.subst_succ, ConciseIPRA.PTm.subst_zero] at h
-  have z := sum_zero_elim euB h ((succ_monus_succ _ _).eqTrans (le_refl N))
+  have z := sum_zero_elim_last euB h
   rw [inst2_eu] at z
   exact eq_of_viol z
 

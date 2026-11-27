@@ -56,6 +56,6 @@ theorem strong_ind (v : PTm 2)
   have h := inst (Γ := Γ) (strong_sum v step) (![succ N, x] : Fin 2 → PTm n)
   simp only [Fm.subst_eq, subst_ap2, Syn.subst_var, Matrix.cons_val_zero, Matrix.cons_val_one,
     Matrix.head_cons, ConciseIPRA.PTm.subst_succ, ConciseIPRA.PTm.subst_zero] at h
-  exact sum_zero_elim v h ((succ_monus_succ _ _).eqTrans (le_refl N))
+  exact sum_zero_elim_last v h
 
 end LeanProofs.IPRA

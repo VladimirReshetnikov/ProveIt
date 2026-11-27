@@ -208,7 +208,7 @@ theorem phi_sq_odd2 {M : PTm n} (hodd : Γ ⊢[PRAAx] rem M two ≐ one) (h1 : �
   have h := inst (Γ := Γ) o2₀ (![succ M, zero] : Fin 2 → PTm n)
   simp only [Fm.subst_eq, subst_ap2, Syn.subst_var, Matrix.cons_val_zero, Matrix.cons_val_one,
     Matrix.head_cons, ConciseIPRA.PTm.subst_succ, ConciseIPRA.PTm.subst_zero] at h
-  exact o2_read hodd h1 h3 (sum_zero_elim o2B h ((succ_monus_succ _ _).eqTrans (le_refl M)))
+  exact o2_read hodd h1 h3 (sum_zero_elim_last o2B h)
 
 /-! ## `φ(n)² ≥ n` for `n ∉ {2, 6}` -/
 

@@ -329,7 +329,7 @@ theorem phi_even_pow_at (N : PTm n) : Γ ⊢[PRAAx] dvd (pw two (oddR N)) (phi N
   have h := inst (Γ := Γ) ev₀ (![succ N, zero] : Fin 2 → PTm n)
   simp only [Fm.subst_eq, subst_ap2, Syn.subst_var, Matrix.cons_val_zero, Matrix.cons_val_one,
     Matrix.head_cons, ConciseIPRA.PTm.subst_succ, ConciseIPRA.PTm.subst_zero] at h
-  have z := sum_zero_elim evB h ((succ_monus_succ _ _).eqTrans (le_refl N))
+  have z := sum_zero_elim_last evB h
   rw [inst2_ev] at z
   exact PhiDivides.sg_zero_inv z
 
