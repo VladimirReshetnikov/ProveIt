@@ -154,9 +154,9 @@ theorem original_finite_pole_factors_closed : ([] : List (Fm PTm 0)) ⊢[PRAAx] 
 
 private theorem first_linear (h B j : PTm n) (hB : Γ ⊢[PRAAx] le one B) :
     Γ ⊢[PRAAx] linear (center h B j) B zero ≐ difference h B j :=
-  canonical_unique _ _ _ B (ofGaussian_canonical _ _ hB) (ofGaussian_canonical _ _ hB) hB
+  GaussianRationalHorner.cleared_input_exact _ _ B (ofGaussian_canonical _ _ hB) hB
     (represents_congr (.eqRefl _) (translated_zero (center h B j) B) (.eqRefl _)
-      (ofGaussian_represents _ _ hB)) (ofGaussian_represents _ _ hB)
+      (ofGaussian_represents _ _ hB))
 
 private theorem successive_center_terms (h B j i : PTm n) (hB : Γ ⊢[PRAAx] le one B) :
     Γ ⊢[PRAAx] linear (center h B (succ j)) B (one+i) ≐ linear (center h B j) B i := by
@@ -165,9 +165,8 @@ private theorem successive_center_terms (h B j i : PTm n) (hB : Γ ⊢[PRAAx] le
     apply equal_of_values <;>
       simp only [center,translated,poleNumerator,re_add,im_add,re_neg,im_neg,re_scale,im_scale,re_one,im_one] <;>
       ipra_simps <;> ring
-  exact canonical_unique _ _ _ B (ofGaussian_canonical _ _ hB) (ofGaussian_canonical _ _ hB) hB
+  exact GaussianRationalHorner.cleared_input_exact _ _ B (ofGaussian_canonical _ _ hB) hB
     (represents_congr (.eqRefl _) same (.eqRefl _) (ofGaussian_represents _ _ hB))
-    (ofGaussian_represents _ _ hB)
 
 private theorem offset_terms (h B j : PTm n) (hB : Γ ⊢[PRAAx] le one B) :
     Γ ⊢[PRAAx] GaussianRationalFiniteSum.termsEqual (offB linearBody) linearBody j
@@ -221,9 +220,9 @@ theorem centered_rising_factorization (h B j : PTm n) (hB : Γ ⊢[PRAAx] le one
     Γ ⊢[PRAAx] risingProduct (center h B j) B (succ j) ≐
       qmul (ofGaussian h B) (qmul (signedFactorial j) (factorProduct h B j)) := by
   have last : Γ ⊢[PRAAx] linear (center h B j) B j ≐ ofGaussian h B :=
-    canonical_unique _ _ _ B (ofGaussian_canonical _ _ hB) (ofGaussian_canonical _ _ hB) hB
+    GaussianRationalHorner.cleared_input_exact _ _ B (ofGaussian_canonical _ _ hB) hB
       (represents_congr (.eqRefl _) (GaussianGammaLocalPoleGuards.translation_at_center h B j)
-        (.eqRefl _) (ofGaussian_represents _ _ hB)) (ofGaussian_represents _ _ hB)
+        (.eqRefl _) (ofGaussian_represents _ _ hB))
   exact (prefix_succ _ B j).eqTrans ((qmul_congr
     ((reverse_rising h B j hB).eqTrans (finite_pole_factors h B j hB)) last).eqTrans (qmul_commutative _ _))
 

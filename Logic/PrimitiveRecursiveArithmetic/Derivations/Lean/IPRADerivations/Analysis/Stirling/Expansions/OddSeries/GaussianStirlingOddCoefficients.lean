@@ -52,8 +52,8 @@ theorem fraction_product (a b c d : PTm n) (hb : Γ ⊢[PRAAx] le one b) (hd : �
     (ofGaussian_represents u b hb) (ofGaussian_represents v d hd)
   have e : Γ ⊢[PRAAx] equal (ComplexLogarithmRemainder.mul u v) (scale (a*c) oneCode) := by
     apply equal_of_values <;> simp only [u,v,re_mul,im_mul,re_scale,im_scale,re_one,im_one,IPRA.Q.mk_mul,map_mul] <;> ring
-  exact canonical_unique _ _ _ _ (qmul_canonical _ _) (ofGaussian_canonical _ _ den) den
-    (represents_congr (.eqRefl _) e (.eqRefl _) rep) (ofGaussian_represents _ _ den)
+  exact GaussianRationalHorner.cleared_input_exact _ _ _ (qmul_canonical _ _) den
+    (represents_congr (.eqRefl _) e (.eqRefl _) rep)
 
 theorem fraction_add_same (a c b : PTm n) (hb : Γ ⊢[PRAAx] le one b) :
     Γ ⊢[PRAAx] qadd (fraction a b) (fraction c b) ≐ fraction (a+c) b := by
@@ -62,8 +62,8 @@ theorem fraction_add_same (a c b : PTm n) (hb : Γ ⊢[PRAAx] le one b) :
   have rep := qadd_represents (fraction a b) (fraction c b) u v b hb (ofGaussian_represents u b hb) (ofGaussian_represents v b hb)
   have e : Γ ⊢[PRAAx] equal (ComplexLogarithmRemainder.add u v) (scale (a+c) oneCode) := by
     apply equal_of_values <;> simp only [u,v,re_add,im_add,re_scale,im_scale,re_one,im_one,IPRA.Q.mk_add,map_add] <;> ring
-  exact canonical_unique _ _ _ _ (qadd_canonical _ _) (ofGaussian_canonical _ _ hb) hb
-    (represents_congr (.eqRefl _) e (.eqRefl _) rep) (ofGaussian_represents _ _ hb)
+  exact GaussianRationalHorner.cleared_input_exact _ _ _ (qadd_canonical _ _) hb
+    (represents_congr (.eqRefl _) e (.eqRefl _) rep)
 
 theorem fraction_embed (a b : PTm n) (hb : Γ ⊢[PRAAx] le one b) : Γ ⊢[PRAAx]
     RationalGaussianEmbedding.embed (GaussianEuclideanDistanceName.fraction a b) ≐ fraction a b := by
@@ -73,12 +73,12 @@ theorem fraction_embed (a b : PTm n) (hb : Γ ⊢[PRAAx] le one b) : Γ ⊢[PRAA
     apply equal_of_values <;>
       simp only [RationalGaussianEmbedding.native,ComplexLogarithmRemainder.eval_re_code,ComplexLogarithmRemainder.eval_im_code,
         re_scale,im_scale,re_one,im_one,ZT.toZ_ofNat] <;> (try ipra_simps) <;> ring
-  exact canonical_unique _ _ _ _ (RationalGaussianEmbedding.embed_canonical _) (ofGaussian_canonical _ _ hb) hb
-    (represents_congr (.eqRefl _) e (.eqRefl _) rr) (ofGaussian_represents _ _ hb)
+  exact GaussianRationalHorner.cleared_input_exact _ _ _ (RationalGaussianEmbedding.embed_canonical _) hb
+    (represents_congr (.eqRefl _) e (.eqRefl _) rr)
 
 private theorem fraction_one (a : PTm n) (ha : Γ ⊢[PRAAx] le one a) : Γ ⊢[PRAAx] fraction a a ≐ qone :=
-  canonical_unique _ _ _ a (ofGaussian_canonical _ _ ha) qone_canonical ha
-    (ofGaussian_represents _ _ ha) (GaussianRationalReciprocal.qone_represents_scaled a)
+  (GaussianRationalHorner.cleared_input_exact _ _ a qone_canonical ha
+    (GaussianRationalReciprocal.qone_represents_scaled a)).eqSymm
 
 alias coefficient_denominator_positive := Common.one_le_two_mul
 
