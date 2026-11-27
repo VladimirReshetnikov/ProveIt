@@ -19,8 +19,6 @@ exact identity `42^{42m} = A^m 21^{21m} 14^{14m} 6^{6m}`. Cancel the positive co
   then `M ≤ A^m`. The multinomial expansion itself is not derived here.
 -/
 
-set_option linter.unusedSimpArgs false
-
 namespace LeanProofs.IPRA.DiophantineNumberTheory.AperyMultibound
 
 open_ipra exports

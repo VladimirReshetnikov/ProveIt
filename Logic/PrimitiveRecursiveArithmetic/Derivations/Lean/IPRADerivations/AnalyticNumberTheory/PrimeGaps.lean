@@ -78,7 +78,7 @@ theorem pc_run {N t : PTm n} (h : Γ ⊢[PRAAx] le (succ t) N) :
     Γ ⊢[PRAAx] pc (fact N + succ t) ≐ pc (fact N + one) := by
   have i := inst (Γ := Γ) run_open (![t, N] : Fin 2 → PTm n)
   simp only [Fm.subst_imp, Fm.subst_eq, subst_le, subst_ap2, PTm.subst_add, Syn.subst_var, Matrix.cons_val_zero,
-    Matrix.cons_val_one, Matrix.head_cons, ConciseIPRA.PTm.subst_zero, ConciseIPRA.PTm.subst_succ] at i
+    Matrix.cons_val_one, ConciseIPRA.PTm.subst_zero, ConciseIPRA.PTm.subst_succ] at i
   exact .impE i h
 
 /-! ## The increments of the prime count -/

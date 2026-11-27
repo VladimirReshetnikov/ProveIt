@@ -19,7 +19,6 @@ Here `R(m) = ψ(m) − Fm` at integers, `|·|` is the natural distance of `AbsDi
 remainders `≤ 8F² ψ(x)` and `≤ 2F² ψ(x)` (`errP_le`, `errQ_le`).
 -/
 
-set_option linter.unusedSimpArgs false
 set_option linter.unusedSectionVars false
 
 namespace LeanProofs.IPRA.AnalyticNumberTheory.WeightedBound
@@ -234,7 +233,7 @@ theorem err_le (f : PTm 2) (c : PTm n)
     (pairT c (pairT K (fact L))) (succ x) (.allI (.impI (by
       simp only [ConvSummatory.shift_succ_x, shift_pairT, shift_fact']
       refine le_congr (hRB_at _ _ _ _ _).eqSymm (cm_pt _ _ _ _).eqSymm ?_
-      simp only [inst2_LamB, inst2_lamW]
+      simp only [inst2_LamB]
       refine .orE (zero_or_succ (var 0)) ?_ ?_
       · exact le_congr (zero_mul_l (zero_mul_l ((congrSg Prf.hyp0).eqTrans sg_zero) _) _).eqSymm (.eqRefl _)
           (zero_le _)

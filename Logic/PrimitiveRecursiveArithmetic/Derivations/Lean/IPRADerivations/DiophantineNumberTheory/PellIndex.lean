@@ -76,11 +76,9 @@ theorem Y_mono (m k : PTm n) : Γ ⊢[PRAAx] le (Yp m ps + k) (Yp (m + k) ps) :=
   have hall : Γ ⊢[PRAAx] Fm.all (le (Yp (Syn.shift m) (fun i => Syn.shift (ps i)) + var 0)
       (Yp (Syn.shift m + var 0) fun i => Syn.shift (ps i))) := by
     refine PRA.qfInd _ (le_QF _ _) ?_ ?_
-    · simp only [subst_le, subst_sim₂, PTm.subst_add, Syn.subst_var, Syn.inst_zero, Syn.subst_inst_shift,
-        ConciseIPRA.PTm.subst_zero]
+    · simp only [subst_le, subst_sim₂, PTm.subst_add, Syn.subst_var, Syn.inst_zero, Syn.subst_inst_shift]
       exact le_congr (add_zero _).eqSymm (congrYp ps (add_zero m).eqSymm) (le_refl _)
-    · simp only [subst_le, subst_sim₂, PTm.subst_add, Syn.subst_var, Syn.repl_zero, subst_repl_shift,
-        ConciseIPRA.PTm.subst_zero, ConciseIPRA.PTm.subst_succ]
+    · simp only [subst_le, subst_sim₂, PTm.subst_add, Syn.subst_var, Syn.repl_zero, subst_repl_shift]
       have hA' : Γ.map Fm.shift ⊢[PRAAx] le one (Syn.shift (ps 0)) := by simpa [Fm.shift, Syn.shift] using hA.shift
       have hB' : Γ.map Fm.shift ⊢[PRAAx] le one (Syn.shift (ps 1)) := by simpa [Fm.shift, Syn.shift] using hB.shift
       let C : List (Fm PTm (n + 1)) := le (Yp (Syn.shift m) (fun i => Syn.shift (ps i)) + var 0)

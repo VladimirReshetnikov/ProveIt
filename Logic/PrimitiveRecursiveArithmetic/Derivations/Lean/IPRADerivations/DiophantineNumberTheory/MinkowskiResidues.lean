@@ -78,11 +78,9 @@ theorem color_range (N m a : PTm n) (hm : Γ ⊢[PRAAx] le one m) :
     Γ ⊢[PRAAx] lt (color N m a) (pw m N) := by
   have all : Γ ⊢[PRAAx] .all (lt (color (var 0) (Syn.shift m) (Syn.shift a)) (pw (Syn.shift m) (var 0))) := by
     refine PRA.qfInd _ (lt_QF _ _) ?_ ?_
-    · simp only [subst_lt, subst_color, subst_ap2, Syn.subst_var, Syn.inst_zero, Syn.subst_inst_shift,
-        ConciseIPRA.PTm.subst_zero]
+    · simp only [subst_lt, subst_color, subst_ap2, Syn.subst_var, Syn.inst_zero, Syn.subst_inst_shift]
       exact lt_congr (color_zero m a).eqSymm (pw_zero m).eqSymm (zero_lt_succ zero)
-    · simp only [subst_lt, subst_color, subst_ap2, Syn.subst_var, Syn.repl_zero, subst_repl_shift,
-        ConciseIPRA.PTm.subst_succ]
+    · simp only [subst_lt, subst_color, subst_ap2, Syn.subst_var, Syn.repl_zero, subst_repl_shift]
       have positive : Γ.map Fm.shift ⊢[PRAAx] le one (Syn.shift m) := by
         simpa only [Fm.shift, subst_le, ConciseIPRA.PTm.subst_succ, ConciseIPRA.PTm.subst_zero, Syn.shift] using hm.shift
       exact lt_congr (color_succ _ _ _).eqSymm (pw_succ _ _).eqSymm
@@ -130,8 +128,8 @@ theorem coordinate_injective (N m a b k : PTm n) (hm : Γ ⊢[PRAAx] le one m)
       (color (var 0) (Syn.shift m) (Syn.shift a) ≐ color (var 0) (Syn.shift m) (Syn.shift b)) ⟶
         (digit (Syn.shift a) (Syn.shift k) (Syn.shift m) ≐ digit (Syn.shift b) (Syn.shift k) (Syn.shift m))) := by
     refine PRA.qfInd _ ⟨lt_QF _ _, ⟨trivial,trivial⟩⟩ ?_ ?_
-    · simp only [Fm.subst_imp, Fm.subst_eq, subst_lt, subst_color, subst_digit, Syn.subst_var,
-        Syn.inst_zero, Syn.subst_inst_shift, ConciseIPRA.PTm.subst_zero]
+    · simp only [Fm.subst_imp, Fm.subst_eq, subst_lt, subst_color, subst_digit, Syn.subst_var, Syn.inst_zero,
+        Syn.subst_inst_shift]
       exact .impI (lt_zero_absurd _ Prf.hyp0)
     · simp only [Fm.subst_imp, Fm.subst_eq, subst_lt, subst_color, subst_digit, Syn.subst_var,
         Syn.repl_zero, subst_repl_shift]

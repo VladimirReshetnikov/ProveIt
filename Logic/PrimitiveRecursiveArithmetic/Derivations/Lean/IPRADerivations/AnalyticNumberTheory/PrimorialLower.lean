@@ -21,8 +21,6 @@ assembled from
 The logarithmic side (`log 2`, `log P` enclosures) is the interval layer of the Robin modules.
 -/
 
-set_option linter.unusedSimpArgs false
-
 namespace LeanProofs.IPRA.AnalyticNumberTheory.PrimorialLower
 
 open_ipra exports

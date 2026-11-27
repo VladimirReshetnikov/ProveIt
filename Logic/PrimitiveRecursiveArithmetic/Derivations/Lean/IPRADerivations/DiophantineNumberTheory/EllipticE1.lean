@@ -32,9 +32,8 @@ variable {n : ℕ} {Γ : List (Fm PTm n)}
 /-- `thm:no-square-area` in any context. -/
 theorem no_tri {A B C S : PTm n} (ht : Γ ⊢[PRAAx] tri A B C S) : Γ ⊢[PRAAx] Fm.bot := by
   have d := inst (Γ := Γ) (.impI (DescentEx.descent hyps)) (![pairT A (pairT B S), C] : Fin 2 → PTm n)
-  simp only [Fm.subst_imp, Fm.subst_eq, subst_inst2, Syn.subst_var, Matrix.cons_val_zero,
-    Matrix.cons_val_one, Matrix.head_cons, ConciseIPRA.PTm.subst_succ, ConciseIPRA.PTm.subst_zero,
-    Fm.subst_bot] at d
+  simp only [Fm.subst_imp, Fm.subst_eq, subst_inst2, Syn.subst_var, Matrix.cons_val_zero, Matrix.cons_val_one,
+    ConciseIPRA.PTm.subst_succ, ConciseIPRA.PTm.subst_zero, Fm.subst_bot] at d
   exact .impE d (chi_of_tri ht)
 
 /-- The triangle of a point with `y ≠ 0`. -/

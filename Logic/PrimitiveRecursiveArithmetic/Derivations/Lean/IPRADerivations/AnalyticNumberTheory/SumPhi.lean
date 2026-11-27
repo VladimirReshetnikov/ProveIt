@@ -15,8 +15,6 @@ Packet: `analytic-number-theory/von_mangoldt_totient_ipra_2026-11-15`, Theorem `
 The divisor sum is `∑_{d<n+1} [n mod d = 0] φ(d)`; the term `d = 0` vanishes since `φ(0) = 0`.
 -/
 
-set_option linter.unusedSimpArgs false
-
 namespace LeanProofs.IPRA.AnalyticNumberTheory.SumPhi
 
 open_ipra exports
@@ -134,7 +132,7 @@ abbrev qB : PTm 2 := quo (var 1) (gcd (var 0) (var 1))
 
 theorem inst2_q (k N : PTm n) : inst2 qB k N = quo N (gcd k N) := by
   simp only [inst2, subst_ap2, subst_ex2, Syn.subst_var, Matrix.cons_val_zero, Matrix.cons_val_one,
-    Matrix.head_cons, ConciseIPRA.PTm.subst_succ, ConciseIPRA.PTm.subst_zero]
+    ConciseIPRA.PTm.subst_succ]
 
 theorem shift_eq' {a b : PTm n} (h : Γ ⊢[PRAAx] a ≐ b) : Γ.map Fm.shift ⊢[PRAAx] Syn.shift a ≐ Syn.shift b :=
   LeanProofs.IPRA.Order.shift_eq h
@@ -249,8 +247,8 @@ end Count
 abbrev dpB : PTm 2 := eqb (rem (var 1) (var 0)) zero * ap2 (sumF totBody) (var 0) (var 0)
 
 theorem inst2_dp (d N : PTm n) : inst2 dpB d N = eqb (rem N d) zero * phi d := by
-  simp only [inst2, PTm.subst_mul, subst_eqb, subst_ap2, Syn.subst_var, Matrix.cons_val_zero,
-    Matrix.cons_val_one, Matrix.head_cons, ConciseIPRA.PTm.subst_zero]
+  simp only [inst2, PTm.subst_mul, subst_eqb, subst_ap2, Syn.subst_var, Matrix.cons_val_zero, Matrix.cons_val_one,
+    ConciseIPRA.PTm.subst_zero]
 
 /-- `thm:sum-phi` at an arbitrary `N ≥ 1`: `∑_{d ≤ N, d ∣ N} φ(d) = N`. -/
 theorem sum_phi_at {N : PTm n} (hN : Γ ⊢[PRAAx] N ≐ succ (pred N)) :

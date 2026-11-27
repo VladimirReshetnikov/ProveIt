@@ -14,8 +14,6 @@ Reusable infrastructure for the factorization-based results of
   (`isP_of_prime`, `prime_of_isP`) and `isP q ∈ {0, 1}` (`isP_01`).
 -/
 
-set_option linter.unusedSimpArgs false
-
 namespace LeanProofs.IPRA.AnalyticNumberTheory.Valuation
 
 open_ipra exports
@@ -46,8 +44,8 @@ private theorem lt_pw₀ : ([] : List (Fm PTm 2)) ⊢[PRAAx] ltPwF := by
 
 theorem lt_pw {p : PTm n} (hp : Γ ⊢[PRAAx] le two p) (m : PTm n) : Γ ⊢[PRAAx] lt m (pw p m) := by
   have h := inst (Γ := Γ) lt_pw₀ (![m, p] : Fin 2 → PTm n)
-  simp only [Fm.subst_imp, subst_le, subst_lt, subst_ap2, Syn.subst_var, Matrix.cons_val_zero,
-    Matrix.cons_val_one, Matrix.head_cons, ConciseIPRA.PTm.subst_succ, ConciseIPRA.PTm.subst_zero] at h
+  simp only [Fm.subst_imp, subst_le, subst_lt, subst_ap2, Syn.subst_var, Matrix.cons_val_zero, Matrix.cons_val_one,
+    ConciseIPRA.PTm.subst_succ, ConciseIPRA.PTm.subst_zero] at h
   exact .impE h hp
 
 theorem pw_pos' {p : PTm n} (hp : Γ ⊢[PRAAx] p ≐ succ (pred p)) (k : PTm n) :

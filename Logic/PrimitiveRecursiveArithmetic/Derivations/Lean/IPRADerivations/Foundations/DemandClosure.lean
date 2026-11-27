@@ -435,16 +435,14 @@ def monotoneOn (F : PTm 2) (r caps x : PTm n) : Fm PTm n :=
 @[simp] theorem subst_monotoneOn {m : ℕ} (σ : Fin n → PTm m) (F : PTm 2) (r caps x : PTm n) :
     (monotoneOn F r caps x).subst σ =
       monotoneOn F (Syn.subst σ r) (Syn.subst σ caps) (Syn.subst σ x) := by
-  simp only [monotoneOn, Fm.subst_all, Fm.subst_imp, subst_ordered, subst_inst2,
-    Syn.subst_var, Syn.up_zero, Syn.up_succ, Syn.up_one, Syn.shift_var, Fin.succ_zero_eq_one,
-    BoundedFormulas.subst_up_shift']
+  simp only [monotoneOn, Fm.subst_all, Fm.subst_imp, subst_ordered, subst_inst2, Syn.subst_var, Syn.up_zero, Syn.up_one,
+    Syn.shift_var, Fin.succ_zero_eq_one, BoundedFormulas.subst_up_shift']
 
 theorem mapsInto_at {F : PTm 2} {r caps x a : PTm n}
     (hF : Γ ⊢[PRAAx] mapsInto F r caps x) (ha : Γ ⊢[PRAAx] ordered r a caps) :
     Γ ⊢[PRAAx] ordered r (inst2 F a x) caps := by
   have h := Prf.allE a hF
-  simp only [mapsInto, Fm.subst_imp, subst_ordered, subst_inst2, Syn.subst_var,
-    Syn.inst_zero, Syn.subst_inst_shift] at h
+  simp only [Fm.subst_imp, subst_ordered, subst_inst2, Syn.subst_var, Syn.inst_zero, Syn.subst_inst_shift] at h
   exact Prf.impE h ha
 
 theorem monotoneOn_at {F : PTm 2} {r caps x a b : PTm n}
@@ -453,8 +451,7 @@ theorem monotoneOn_at {F : PTm 2} {r caps x a b : PTm n}
     (hab : Γ ⊢[PRAAx] ordered r a b) :
     Γ ⊢[PRAAx] ordered r (inst2 F a x) (inst2 F b x) := by
   have h := Prf.allE b (Prf.allE a hF)
-  simp only [monotoneOn, Fm.subst_all, Fm.subst_imp, subst_ordered, subst_inst2,
-    Syn.subst_var, Syn.up_zero, Syn.up_succ, Syn.up_one, Syn.inst_zero, Syn.inst_one, Syn.inst_succ,
+  simp only [Fm.subst_imp, subst_ordered, subst_inst2, Syn.subst_var, Syn.up_zero, Syn.up_one, Syn.inst_zero,
     Syn.subst_inst_shift, BoundedFormulas.subst_up_shift'] at h
   exact Prf.impE (Prf.impE (Prf.impE h ha) hb) hab
 

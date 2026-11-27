@@ -20,8 +20,6 @@ For a coefficient body `a(n, y)` and an exponent `h ≥ 1`:
 `d ≤ N` the indicator terms are exactly `b_h(N+1)`, and the new term `d = N` of `Bt(N)` is `A(⌊N/(N+1)^h⌋) = A(0) = 0`.
 -/
 
-set_option linter.unusedSimpArgs false
-
 namespace LeanProofs.IPRA.AnalyticNumberTheory.PowerDivisorPrefix
 
 open_ipra exports

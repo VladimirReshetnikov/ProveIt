@@ -14,8 +14,6 @@ Packet: `analytic-number-theory/von_mangoldt_totient_ipra_2026-11-15`, Theorem `
   `phi_sq_odd2` (as `n ≠ 2, 6`); `a ≥ 2` uses `4^{a−1} ≥ 2^a`.
 -/
 
-set_option linter.unusedSimpArgs false
-
 namespace LeanProofs.IPRA.AnalyticNumberTheory.PhiLowerSharp
 
 open_ipra exports

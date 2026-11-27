@@ -14,8 +14,6 @@ at `n = gcd(d, e)`.
   the range extended from `gcd(d, e)` to `Z` (`MobiusBounds.sum_ext`).
 -/
 
-set_option linter.unusedSimpArgs false
-
 namespace LeanProofs.IPRA.AnalyticNumberTheory.GcdPhiSum
 
 open_ipra exports
@@ -52,7 +50,7 @@ abbrev gB : PTm 2 :=
 theorem inst2_gB (r y : PTm n) :
     inst2 gB r y = eqb (rem (fstT y) r) zero * eqb (rem (sndT y) r) zero * phi r := by
   simp only [inst2, PTm.subst_mul, subst_eqb, subst_ap2, subst_fstT, subst_sndT, Syn.subst_var, Matrix.cons_val_zero,
-    Matrix.cons_val_one, Matrix.head_cons, ConciseIPRA.PTm.subst_zero]
+    Matrix.cons_val_one, ConciseIPRA.PTm.subst_zero]
 
 theorem gB_at (r d e : PTm n) :
     Γ ⊢[PRAAx] inst2 gB r (pairT d e) ≐ eqb (rem d r) zero * eqb (rem e r) zero * phi r := by

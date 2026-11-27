@@ -18,8 +18,6 @@ primes and their counting functions. Their common starting point is derived here
 * Euclid's theorem: for every `n`, the prime `lpf(n! + 1)` exceeds `n`.
 -/
 
-set_option linter.unusedSimpArgs false
-
 namespace LeanProofs.IPRA.AnalyticNumberTheory.Primes
 
 open_ipra exports
@@ -60,8 +58,8 @@ theorem dvd_fact_open : ([] : List (Fm PTm 2)) ⊢[PRAAx] dvdFactF := by
 
 theorem dvd_fact {d' m : PTm n} (h : Γ ⊢[PRAAx] le (succ d') m) : Γ ⊢[PRAAx] dvd (succ d') (fact m) := by
   have i := inst (Γ := Γ) dvd_fact_open (![m, d'] : Fin 2 → PTm n)
-  simp only [Fm.subst_imp, Fm.subst_eq, subst_le, subst_ap2, Syn.subst_var, Matrix.cons_val_zero,
-    Matrix.cons_val_one, Matrix.head_cons, ConciseIPRA.PTm.subst_zero, ConciseIPRA.PTm.subst_succ] at i
+  simp only [Fm.subst_imp, Fm.subst_eq, subst_le, subst_ap2, Syn.subst_var, Matrix.cons_val_zero, Matrix.cons_val_one,
+    ConciseIPRA.PTm.subst_zero, ConciseIPRA.PTm.subst_succ] at i
   exact .impE i h
 
 theorem eq_succ_pred {x y : PTm n} (h : Γ ⊢[PRAAx] x ≐ succ y) : Γ ⊢[PRAAx] x ≐ succ (pred x) :=

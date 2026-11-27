@@ -236,8 +236,8 @@ theorem allSides_at (N B j : PTm n) (h : Γ ⊢[PRAAx] allSides N B)
     (hj : Γ ⊢[PRAAx] lt j (length B)) :
     Γ ⊢[PRAAx] sides N (fstT (entry B j)) (sndT (entry B j)) := by
   have all := Prf.allE j h
-  simp only [allSides, Fm.subst_imp, subst_lt, subst_length, subst_sides, subst_fstT, subst_sndT,
-    subst_entry, Syn.subst_var, Syn.inst_zero, Syn.subst_inst_shift] at all
+  simp only [Fm.subst_imp, subst_lt, subst_length, subst_sides, subst_fstT, subst_sndT, subst_entry, Syn.subst_var,
+    Syn.inst_zero, Syn.subst_inst_shift] at all
   exact .impE all hj
 
 theorem disjoint_at (N B i j : PTm n) (h : Γ ⊢[PRAAx] disjoint N B)

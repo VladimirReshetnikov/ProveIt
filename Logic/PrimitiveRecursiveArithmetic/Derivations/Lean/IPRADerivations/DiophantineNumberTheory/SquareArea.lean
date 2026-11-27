@@ -404,9 +404,8 @@ theorem square_area : ([] : List (Fm PTm 0)) ⊢[PRAAx] univ 4 squareAreaFormula
   have d := inst (Γ := [(succ (var 0) * succ (var 0) + succ (var 1) * succ (var 1) ≐ var 2 * var 2) ⋏
       (succ (var 0) * succ (var 1) ≐ two * (succ (var 3) * succ (var 3)))])
     (.impI (DescentEx.descent hyps)) (![pairT (succ (var 0)) (pairT (succ (var 1)) (succ (var 3))), var 2] : Fin 2 → PTm 4)
-  simp only [Fm.subst_imp, Fm.subst_eq, subst_inst2, Syn.subst_var, Matrix.cons_val_zero,
-    Matrix.cons_val_one, Matrix.head_cons, ConciseIPRA.PTm.subst_succ, ConciseIPRA.PTm.subst_zero,
-    Fm.subst_bot] at d
+  simp only [Fm.subst_imp, Fm.subst_eq, subst_inst2, Syn.subst_var, Matrix.cons_val_zero, Matrix.cons_val_one,
+    ConciseIPRA.PTm.subst_succ, ConciseIPRA.PTm.subst_zero, Fm.subst_bot] at d
   exact .impE d (chi_of_tri ht)
 
 end LeanProofs.IPRA.DiophantineNumberTheory.SquareArea

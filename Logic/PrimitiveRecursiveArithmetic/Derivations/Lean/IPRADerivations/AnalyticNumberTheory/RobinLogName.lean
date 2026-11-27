@@ -228,7 +228,7 @@ theorem L_eq (K x y : PTm n) : Γ ⊢[PRAAx] Lv K x ≐ Lv K y := by
     refine PRA.qfInd _ trivial ?_ ?_
     · simp only [Fm.subst_eq, subst_ap2, Syn.subst_var, Syn.inst_zero, Syn.subst_inst_shift]
       exact (L_zero _).eqTrans (L_zero _).eqSymm
-    · simp only [Fm.subst_eq, subst_ap2, ConciseIPRA.PTm.subst_succ, Syn.subst_var, Syn.repl_zero, subst_repl_shift]
+    · simp only [Fm.subst_eq, subst_ap2, Syn.subst_var, Syn.repl_zero, subst_repl_shift]
       exact (L_succ _ _).eqTrans ((congrMul (.eqRefl _) Prf.hyp0).eqTrans (L_succ _ _).eqSymm)
   have r := Prf.allE K hall
   simpa [Syn.subst_inst_shift] using r
@@ -278,11 +278,11 @@ theorem low_mono {p s p' s' : PTm n} (hz : Γ ⊢[PRAAx] le (p * s') (p' * s)) (
     Γ ⊢[PRAAx] le (Nz K p s * Dz K p' s') (Nz K p' s' * Dz K p s) := by
   have hall : Γ ⊢[PRAAx] Fm.all (MF (var 0) (Syn.shift p) (Syn.shift s) (Syn.shift p') (Syn.shift s')) := by
     refine PRA.qfInd _ (le_QF _ _) ?_ ?_
-    · simp only [subst_le, subst_ap2, subst_pairT, PTm.subst_add, PTm.subst_mul, ConciseIPRA.PTm.subst_succ,
+    · simp only [subst_le, subst_ap2, subst_pairT, PTm.subst_mul, ConciseIPRA.PTm.subst_succ,
         ConciseIPRA.PTm.subst_zero, Syn.subst_var, Syn.inst_zero, Syn.subst_inst_shift]
       have a := natEq (Nz_zero (Γ := Γ) p s)
       ipra_le 𝔞 (Nz zero p' s' * Pv zero s) with -(𝔞 (Pv zero s')) * a
-    · simp only [subst_le, subst_ap2, subst_pairT, PTm.subst_add, PTm.subst_mul, ConciseIPRA.PTm.subst_succ,
+    · simp only [subst_le, subst_ap2, subst_pairT, PTm.subst_mul, ConciseIPRA.PTm.subst_succ,
         ConciseIPRA.PTm.subst_zero, Syn.subst_var, Syn.repl_zero, subst_repl_shift]
       have hz' : (MF (var 0) (Syn.shift p) (Syn.shift s) (Syn.shift p') (Syn.shift s') :: Γ.map Fm.shift) ⊢[PRAAx]
           le (Syn.shift p * Syn.shift s') (Syn.shift p' * Syn.shift s) := by
@@ -291,8 +291,8 @@ theorem low_mono {p s p' s' : PTm n} (hz : Γ ⊢[PRAAx] le (p * s') (p' * s)) (
         exact b.wk
       exact mono_step hz' Prf.hyp0
   have r := Prf.allE K hall
-  simp only [subst_le, subst_ap2, subst_pairT, PTm.subst_add, PTm.subst_mul, ConciseIPRA.PTm.subst_succ,
-    ConciseIPRA.PTm.subst_zero, Syn.subst_var, Syn.inst_zero, Syn.subst_inst_shift] at r
+  simp only [subst_le, subst_ap2, subst_pairT, PTm.subst_mul, ConciseIPRA.PTm.subst_succ, ConciseIPRA.PTm.subst_zero,
+    Syn.subst_var, Syn.inst_zero, Syn.subst_inst_shift] at r
   ipra_le 𝔞 (Lz K p s) * sl r
 
 /-! ## The uniform tail -/

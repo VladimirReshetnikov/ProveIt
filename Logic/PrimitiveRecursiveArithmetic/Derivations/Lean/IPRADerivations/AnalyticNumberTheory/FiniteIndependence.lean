@@ -74,8 +74,7 @@ theorem tot_period {b : PTm n} (hb : Γ ⊢[PRAAx] b ≐ succ (pred b)) (x : PTm
     Γ ⊢[PRAAx] Tot (x + b) b ≐ Tot x b + phi b := by
   have i := inst (Γ := Γ) tp_open (![x, b] : Fin 2 → PTm n)
   simp only [tpF, Fm.subst_imp, Fm.subst_eq, subst_ap2, PTm.subst_add, PTm.subst_pred, Syn.subst_var,
-    Matrix.cons_val_zero, Matrix.cons_val_one, Matrix.head_cons, ConciseIPRA.PTm.subst_zero,
-    ConciseIPRA.PTm.subst_succ] at i
+    Matrix.cons_val_zero, Matrix.cons_val_one, ConciseIPRA.PTm.subst_succ] at i
   exact .impE i hb
 
 theorem mul_succ_alg (b c : PTm n) : Γ ⊢[PRAAx] b * succ c ≐ b * c + b := by
@@ -106,8 +105,7 @@ theorem tot_blocks {b : PTm n} (hb : Γ ⊢[PRAAx] b ≐ succ (pred b)) (c : PTm
     Γ ⊢[PRAAx] Tot (b * c) b ≐ c * phi b := by
   have i := inst (Γ := Γ) tb_open (![c, b] : Fin 2 → PTm n)
   simp only [tbF, Fm.subst_imp, Fm.subst_eq, subst_ap2, PTm.subst_mul, PTm.subst_pred, Syn.subst_var,
-    Matrix.cons_val_zero, Matrix.cons_val_one, Matrix.head_cons, ConciseIPRA.PTm.subst_zero,
-    ConciseIPRA.PTm.subst_succ] at i
+    Matrix.cons_val_zero, Matrix.cons_val_one, ConciseIPRA.PTm.subst_succ] at i
   exact .impE i hb
 
 /-! ## Multiples of `a` -/
@@ -156,8 +154,7 @@ theorem ev_at (m a b : PTm n) :
   have e : inst2 evB m (pairT a b) =
       eqb (rem m (fstT (pairT a b))) zero * eqb (gcd m (sndT (pairT a b))) one := by
     simp only [inst2, PTm.subst_mul, subst_eqb, subst_ex2, subst_ap2, subst_fstT, subst_sndT, Syn.subst_var,
-      Matrix.cons_val_zero, Matrix.cons_val_one, Matrix.head_cons, ConciseIPRA.PTm.subst_succ,
-      ConciseIPRA.PTm.subst_zero]
+      Matrix.cons_val_zero, Matrix.cons_val_one, ConciseIPRA.PTm.subst_succ, ConciseIPRA.PTm.subst_zero]
   rw [e]
   exact congrMul (congrEqb' (congrAp2 remF (.eqRefl _) (fst_pair a b)) (.eqRefl _))
     (congrEqb' (congrGcd (.eqRefl _) (snd_pair a b)) (.eqRefl _))

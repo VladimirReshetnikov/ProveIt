@@ -18,8 +18,6 @@ The gcd of the entries `f(0, x), …, f(N − 1, x)` of a vector body `f`, by th
 * `gv_eq_zero`: `G(N) = 0` forces every entry to vanish.
 -/
 
-set_option linter.unusedSimpArgs false
-
 namespace LeanProofs.IPRA.DiophantineNumberTheory.GcdList
 
 open_ipra exports
@@ -34,8 +32,7 @@ theorem rem_by_zero (z : PTm k) : Γ ⊢[PRAAx] rem z zero ≐ z := by
     refine PRA.qfInd _ trivial ?_ ?_
     · simp only [Fm.subst_eq, subst_ap2, Syn.subst_var, Syn.inst_zero, ConciseIPRA.PTm.subst_zero]
       exact rem_zero _
-    · simp only [Fm.subst_eq, subst_ap2, Syn.subst_var, Syn.repl_zero, ConciseIPRA.PTm.subst_zero,
-        ConciseIPRA.PTm.subst_succ]
+    · simp only [Fm.subst_eq, subst_ap2, Syn.subst_var, Syn.repl_zero, ConciseIPRA.PTm.subst_zero]
       have ih : ((rem (var 0 : PTm (k + 1)) zero ≐ var 0) :: Γ.map Fm.shift) ⊢[PRAAx] rem (var 0) zero ≐ var 0 :=
         Prf.hyp0
       have e0 : ((rem (var 0 : PTm (k + 1)) zero ≐ var 0) :: Γ.map Fm.shift) ⊢[PRAAx]
@@ -113,7 +110,7 @@ theorem gv_dvd_prefix (f : PTm 2) (M D x : PTm k) : Γ ⊢[PRAAx] dvd (gv f (M +
           · exact dvd_congr_left Prf.hyp0.eqSymm (dvd_congr Prf.hyp0.eqSymm dvd_zero_zero)
           · exact dvd_congr_left Prf.hyp0.eqSymm (dvd_congr Prf.hyp0.eqSymm (dvd_self _))))
     · simp only [Fm.subst_eq, subst_ap2, PTm.subst_add, Syn.subst_var, Syn.repl_zero, subst_repl_shift,
-        ConciseIPRA.PTm.subst_zero, ConciseIPRA.PTm.subst_succ]
+        ConciseIPRA.PTm.subst_zero]
       have ih : ((dvd (gv f (Syn.shift M + var 0) (Syn.shift x)) (gv f (Syn.shift M) (Syn.shift x))) ::
           Γ.map Fm.shift) ⊢[PRAAx] dvd (gv f (Syn.shift M + var 0) (Syn.shift x)) (gv f (Syn.shift M) (Syn.shift x)) :=
         Prf.hyp0

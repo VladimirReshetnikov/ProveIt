@@ -13,8 +13,6 @@ term `z_i^r` already exceeds the entire allowance `m h^r`."
 * `mom_forward`, `mom_backward`, `sym_mom`: `(∀i<m a_i ≤ b_i) ↔ Σ_{i<m} z_i^{mh+1} ≤ m h^{mh+1}`.
 -/
 
-set_option linter.unusedSimpArgs false
-
 namespace LeanProofs.IPRA.AnalyticNumberTheory.SymmetricMoment
 
 open_ipra exports
@@ -31,13 +29,13 @@ theorem pow_gap (h j : PTm n) : Γ ⊢[PRAAx] le ((succ h + j) * pw h j) (pw (su
   have hall : Γ ⊢[PRAAx] Fm.all (le ((succ (Syn.shift h) + var 0) * pw (Syn.shift h) (var 0))
       (pw (succ (Syn.shift h)) (succ (var 0)))) := by
     refine PRA.qfInd _ (le_QF _ _) ?_ ?_
-    · simp only [subst_le, subst_ap2, PTm.subst_add, PTm.subst_mul, Syn.subst_var, Syn.inst_zero,
-        Syn.subst_inst_shift, ConciseIPRA.PTm.subst_succ, ConciseIPRA.PTm.subst_zero]
+    · simp only [subst_le, subst_ap2, PTm.subst_add, PTm.subst_mul, Syn.subst_var, Syn.inst_zero, Syn.subst_inst_shift,
+        ConciseIPRA.PTm.subst_succ]
       have a := natEq (pw_zero (Γ := Γ) h)
       have b := natEq (pw_one (Γ := Γ) (succ h))
       ipra_le 0 with (𝔞 h + 1) * a - b
-    · simp only [subst_le, subst_ap2, PTm.subst_add, PTm.subst_mul, Syn.subst_var, Syn.repl_zero,
-        subst_repl_shift, ConciseIPRA.PTm.subst_succ, ConciseIPRA.PTm.subst_zero]
+    · simp only [subst_le, subst_ap2, PTm.subst_add, PTm.subst_mul, Syn.subst_var, Syn.repl_zero, subst_repl_shift,
+        ConciseIPRA.PTm.subst_succ]
       let Δ : List (Fm PTm (n + 1)) := le ((succ (Syn.shift h) + var 0) * pw (Syn.shift h) (var 0))
           (pw (succ (Syn.shift h)) (succ (var 0))) :: Γ.map Fm.shift
       have ih : Δ ⊢[PRAAx] le ((succ (Syn.shift h) + var 0) * pw (Syn.shift h) (var 0))
@@ -47,8 +45,8 @@ theorem pow_gap (h j : PTm n) : Γ ⊢[PRAAx] le ((succ h + j) * pw h j) (pw (su
       ipra_le (𝔞 (Syn.shift h) + 1) * sl ih + (𝔞 (var 0) + 1) * 𝔞 (pw (Syn.shift h) (var 0)) with
         a - (𝔞 (Syn.shift h) + 𝔞 (var 0) + 2) * b
   have h1 := Prf.allE j hall
-  simp only [subst_le, subst_ap2, PTm.subst_add, PTm.subst_mul, Syn.subst_var, Syn.inst_zero,
-    Syn.subst_inst_shift, ConciseIPRA.PTm.subst_succ, ConciseIPRA.PTm.subst_zero] at h1
+  simp only [subst_le, subst_ap2, PTm.subst_add, PTm.subst_mul, Syn.subst_var, Syn.inst_zero, Syn.subst_inst_shift,
+    ConciseIPRA.PTm.subst_succ] at h1
   exact h1
 
 /-- `m h^{mh+1} + 1 ≤ (h + 1)^{mh+1}` for `h ≥ 1`. -/

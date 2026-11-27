@@ -297,14 +297,14 @@ theorem W_zero (gP gN : PTm 2) {X y : PTm n}
   have hall : Γ ⊢[PRAAx] Fm.all (ap2 (sumF (vB gP gN)) (var 0) (pairT (Syn.shift X) (Syn.shift y)) ≐ zero) := by
     refine PRA.qfInd _ trivial ?_ ?_
     · simp only [Fm.subst_eq, subst_ap2, subst_pairT, Syn.subst_var, Syn.inst_zero, Syn.subst_inst_shift,
-        ConciseIPRA.PTm.subst_zero, ConciseIPRA.PTm.subst_succ]
+        ConciseIPRA.PTm.subst_zero]
       exact sum_zero _ _
     · simp only [Fm.subst_eq, subst_ap2, subst_pairT, Syn.subst_var, Syn.repl_zero, subst_repl_shift,
-        ConciseIPRA.PTm.subst_zero, ConciseIPRA.PTm.subst_succ]
+        ConciseIPRA.PTm.subst_zero]
       exact (sum_succ' _ _ _).eqTrans ((congrAdd Prf.hyp0 (v_step gP gN hE'.wk Prf.hyp0)).eqTrans (add_zero _))
   have h2 := Prf.allE t hall
   simp only [Fm.subst_eq, subst_ap2, subst_pairT, Syn.subst_var, Syn.inst_zero, Syn.subst_inst_shift,
-    ConciseIPRA.PTm.subst_zero, ConciseIPRA.PTm.subst_succ] at h2
+    ConciseIPRA.PTm.subst_zero] at h2
   exact h2
 
 /-- **`thm:floor-recurrence`, uniqueness**: a table `g = g⁺ − g⁻` that satisfies the floor recurrence for all

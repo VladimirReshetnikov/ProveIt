@@ -16,8 +16,6 @@ The step is stated in continuation form (`Cont`): the case analysis hands explic
 to the continuation under the hypotheses of its case.
 -/
 
-set_option linter.unusedSimpArgs false
-
 namespace LeanProofs.IPRA.DiophantineNumberTheory.QuarticStep
 
 open_ipra exports
@@ -53,8 +51,7 @@ theorem congrGcd {a a' b b' : PTm n} (h₁ : Γ ⊢[PRAAx] a ≐ a') (h₂ : Γ 
     Γ ⊢[PRAAx] gcd a b ≐ gcd a' b' := by
   have h := Prf.eqCongr (Γ := Γ) (gcd (var 0) (var 1) : PTm 2) (σ := ![a, b]) (σ' := ![a', b'])
     (fun j => by fin_cases j <;> assumption)
-  simp only [subst_ex2, Syn.subst_var, Matrix.cons_val_zero, Matrix.cons_val_one, Matrix.head_cons,
-    ConciseIPRA.PTm.subst_succ] at h
+  simp only [subst_ex2, Syn.subst_var, Matrix.cons_val_zero, Matrix.cons_val_one, ConciseIPRA.PTm.subst_succ] at h
   exact h
 
 theorem coprime_sq {a b : PTm n} (ha : Γ ⊢[PRAAx] a ≐ succ (pred a)) (hb : Γ ⊢[PRAAx] b ≐ succ (pred b))

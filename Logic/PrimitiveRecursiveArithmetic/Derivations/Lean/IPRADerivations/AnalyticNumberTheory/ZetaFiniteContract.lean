@@ -56,7 +56,7 @@ theorem sq_le_pow (m : PTm n) : Γ ⊢[PRAAx] le (succ m * succ m) (pw two m * p
         with (𝔞 (pw two (succ (var 0))) + 2 * 𝔞 (pw two (var 0))) * e
   have a := Prf.allE m hall
   rw [subst_sqInv] at a
-  simp only [Syn.subst_inst_shift, Syn.subst_var, Syn.inst_zero] at a
+  simp only [Syn.subst_var, Syn.inst_zero] at a
   exact a
 
 /-- `4 n² 2^n ≤ 2^{3n²}` for `n = m + 1`: the cleared form of `4 n² 2^{−3n²} ≤ 2^{−n}`. -/

@@ -17,8 +17,6 @@ Packet: `analytic-number-theory/von_mangoldt_totient_ipra_2026-11-15`, Definitio
 * `∑_{t<j} [p ∣ t] = ⌈j/p⌉ = (j + p − 1) / p` (`count_multiples`), by induction on `j`.
 -/
 
-set_option linter.unusedSimpArgs false
-
 namespace LeanProofs.IPRA.AnalyticNumberTheory.Totient
 
 open_ipra exports
@@ -38,7 +36,7 @@ abbrev mulBody : PTm 2 := eqb (rem (var 0) (var 1)) zero
 
 theorem inst2_tot (a x : PTm n) : inst2 totBody a x = eqb (gcd a x) one := by
   simp only [inst2, subst_eqb, subst_ex2, Syn.subst_var, Matrix.cons_val_zero, Matrix.cons_val_one,
-    Matrix.head_cons, ConciseIPRA.PTm.subst_succ, ConciseIPRA.PTm.subst_zero]
+    ConciseIPRA.PTm.subst_succ, ConciseIPRA.PTm.subst_zero]
 theorem inst2_mul (a x : PTm n) : inst2 mulBody a x = eqb (rem a x) zero := by simp [inst2]
 
 /-! ## Coprimality to powers -/
@@ -152,8 +150,8 @@ private theorem count₀ : ([] : List (Fm PTm 2)) ⊢[PRAAx] countF := by
 theorem count_multiples {j p : PTm n} (hp : Γ ⊢[PRAAx] p ≐ succ (pred p)) :
     Γ ⊢[PRAAx] ap2 (sumF mulBody) j p ≐ quo (j + pred p) p := by
   have h := inst (Γ := Γ) count₀ (![j, p] : Fin 2 → PTm n)
-  simp only [Fm.subst_imp, Fm.subst_eq, subst_ap2, PTm.subst_add, PTm.subst_pred, Syn.subst_var,
-    Matrix.cons_val_zero, Matrix.cons_val_one, Matrix.head_cons, ConciseIPRA.PTm.subst_succ] at h
+  simp only [Fm.subst_imp, Fm.subst_eq, subst_ap2, PTm.subst_add, PTm.subst_pred, Syn.subst_var, Matrix.cons_val_zero,
+    Matrix.cons_val_one, ConciseIPRA.PTm.subst_succ] at h
   exact .impE h hp
 
 /-- The count of multiples of positive `p` in `[0, x]` is `⌊x/p⌋ + 1`. -/
@@ -171,10 +169,10 @@ theorem totient_prime_power_at {p k : PTm n} (hp : Γ ⊢[PRAAx] prime p) :
       ap2 (sumF mulBody) (var 0) (Syn.shift p) ≐ var 0) := by
     refine PRA.qfInd _ trivial ?_ ?_
     · simp only [Fm.subst_eq, PTm.subst_add, subst_ap2, Syn.subst_var, Syn.inst_zero, Syn.subst_inst_shift,
-        ConciseIPRA.PTm.subst_zero, ConciseIPRA.PTm.subst_succ]
+        ConciseIPRA.PTm.subst_succ]
       exact (congrAdd (sum_zero _ _) (sum_zero _ _)).eqTrans (add_zero _)
     · simp only [Fm.subst_eq, PTm.subst_add, subst_ap2, Syn.subst_var, Syn.repl_zero, subst_repl_shift,
-        ConciseIPRA.PTm.subst_zero, ConciseIPRA.PTm.subst_succ]
+        ConciseIPRA.PTm.subst_succ]
       have hp' := (prime_shift hp).wk (ψ := ap2 (sumF totBody) (var 0) (pw (Syn.shift p) (succ (Syn.shift k))) +
         ap2 (sumF mulBody) (var 0) (Syn.shift p) ≐ var 0)
       have ind := indicator_sum (j := var 0) (k := Syn.shift k) hp'
@@ -189,7 +187,7 @@ theorem totient_prime_power_at {p k : PTm n} (hp : Γ ⊢[PRAAx] prime p) :
         natEq (Prf.hyp0 : ((ap2 (sumF totBody) (var 0) (pw (Syn.shift p) (succ (Syn.shift k))) + ap2 (sumF mulBody) (var 0) (Syn.shift p) ≐ var 0) :: Γ.map Fm.shift) ⊢[PRAAx] _)
   have h := Prf.allE (pw p (succ k)) hall
   simp only [Fm.subst_eq, PTm.subst_add, subst_ap2, Syn.subst_var, Syn.inst_zero, Syn.subst_inst_shift,
-    ConciseIPRA.PTm.subst_zero, ConciseIPRA.PTm.subst_succ] at h
+    ConciseIPRA.PTm.subst_succ] at h
   -- `∑_{j<p^{k+1}} [p ∣ j] = p^k`.
   have c := (count_multiples (j := pw p (succ k)) hq).eqTrans (quo_eq (q := pw p k) (r := pred p) hq
     ((congrAdd ((pw_succ p k).eqTrans (mul_comm _ _)) (.eqRefl _))) (pred_lt hq))

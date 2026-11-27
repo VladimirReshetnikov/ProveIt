@@ -11,8 +11,6 @@ Packet: `analytic-number-theory/von_mangoldt_totient_ipra_2026-11-15`, Theorem `
 * `phi_lower`: split `n = 2^a m` with `m` odd once; `φ(2^{k+1}) = 2^k` and `2 · 4^k ≥ 2^{k+1}`.
 -/
 
-set_option linter.unusedSimpArgs false
-
 namespace LeanProofs.IPRA.AnalyticNumberTheory.PhiLower
 
 open_ipra exports

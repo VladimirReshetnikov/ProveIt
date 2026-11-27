@@ -14,8 +14,6 @@ replacing the paper's factor-vector injection.
   `m' ∣ A(m' + 1)^{m'} ∣ A(m + 1)^{m'}` and `p ∣ A(m + 1)` give `m ∣ A(m + 1)^{m'+1} ∣ A(m + 1)^m`.
 -/
 
-set_option linter.unusedSimpArgs false
-
 namespace LeanProofs.IPRA.AnalyticNumberTheory.Smooth
 
 open_ipra exports
@@ -175,8 +173,7 @@ private theorem sm₀ : ([] : List (Fm PTm 1)) ⊢[PRAAx] smF := by
 /-- `m ≥ 1 → m ∣ A(m + 1)^m`. -/
 theorem smooth_self {m : PTm n} (hm : Γ ⊢[PRAAx] m ≐ succ (pred m)) : Γ ⊢[PRAAx] dvd m (pw (A (succ m)) m) := by
   have v := inst (Γ := Γ) sm₀ (![succ m] : Fin 1 → PTm n)
-  simp only [Fm.subst_eq, subst_ap2, Syn.subst_var, Matrix.cons_val_zero, ConciseIPRA.PTm.subst_succ,
-    ConciseIPRA.PTm.subst_zero] at v
+  simp only [Fm.subst_eq, subst_ap2, Syn.subst_var, Matrix.cons_val_zero, ConciseIPRA.PTm.subst_zero] at v
   have z := sum_zero_elim vB v (le_refl (succ m))
   rw [inst2_v] at z
   exact of_viol hm z

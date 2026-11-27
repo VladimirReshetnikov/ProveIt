@@ -26,7 +26,7 @@ variable {n : ℕ} {Γ : List (Fm PTm n)}
 /-- `[m prime] [m mod a = r]`, over `0 = m`, `1 = r`, `2 = a`. -/
 abbrev clB : PTm 3 := isP (var 0) * eqb (rem (var 0) (var 2)) (var 1)
 
-theorem inst3_clB (m r a : PTm n) : inst3 clB m r a = isP m * eqb (rem m a) r := by simp [inst3, FactorVector.subst_isP]
+theorem inst3_clB (m r a : PTm n) : inst3 clB m r a = isP m * eqb (rem m a) r := by simp [inst3]
 
 /-- `π_{a,r}(N) = ∑_{m ≤ N} [m prime] [m mod a = r]`. -/
 abbrev pcl (a r N : PTm n) : PTm n := ap2 (sumF (colB clB)) (succ N) (pairT r a)
@@ -34,7 +34,7 @@ abbrev pcl (a r N : PTm n) : PTm n := ap2 (sumF (colB clB)) (succ N) (pairT r a)
 /-- The weight `[m prime]` of the delta sum, over `1 = m`. -/
 abbrev GP : PTm 2 := isP (var 1)
 
-theorem inst2_GP (j m : PTm n) : inst2 GP j m = isP m := by simp [inst2, FactorVector.subst_isP]
+theorem inst2_GP (j m : PTm n) : inst2 GP j m = isP m := by simp [inst2]
 
 theorem row_term (m a j : PTm n) :
     Γ ⊢[PRAAx] inst2 (rowB clB) j (pairT m a) ≐ inst2 (dB GP) j (pairT (rem m a) m) := by

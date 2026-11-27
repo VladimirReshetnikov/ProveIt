@@ -72,9 +72,8 @@ theorem cop_open : ([] : List (Fm PTm 2)) ⊢[PRAAx] copF := by
 theorem cop_q {q : PTm n} (hq : Γ ⊢[PRAAx] q ≐ succ (pred q)) (y : PTm n) :
     Γ ⊢[PRAAx] gcd q (Aq y q) ≐ one := by
   have i := inst (Γ := Γ) cop_open (![y, q] : Fin 2 → PTm n)
-  simp only [copF, Fm.subst_imp, Fm.subst_eq, subst_ex2, subst_ap2, PTm.subst_pred, Syn.subst_var,
-    Matrix.cons_val_zero, Matrix.cons_val_one, Matrix.head_cons, ConciseIPRA.PTm.subst_zero,
-    ConciseIPRA.PTm.subst_succ] at i
+  simp only [copF, Fm.subst_imp, Fm.subst_eq, subst_ex2, subst_ap2, PTm.subst_pred, Syn.subst_var, Matrix.cons_val_zero,
+    Matrix.cons_val_one, ConciseIPRA.PTm.subst_zero, ConciseIPRA.PTm.subst_succ] at i
   exact .impE i hq
 
 /-- A divisor `d ≥ 1` of `A_q(z)` is coprime to `q`. -/

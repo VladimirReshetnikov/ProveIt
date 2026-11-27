@@ -15,8 +15,6 @@ The count is the explicit sum `r(n) = ∑_{q ≤ n} [q prime] [q ∣ n] (q mod 2
   either has no odd prime divisor (`r(n) = 0`), or splits off one with `Valuation`.
 -/
 
-set_option linter.unusedSimpArgs false
-
 namespace LeanProofs.IPRA.AnalyticNumberTheory.PhiEvenPow
 
 open_ipra exports
@@ -124,10 +122,10 @@ theorem sum_extend {m : PTm n} (hm : Γ ⊢[PRAAx] m ≐ succ (pred m)) (k : PTm
       ap2 (sumF oddB) (succ (Syn.shift m)) (Syn.shift m)) := by
     refine PRA.qfInd _ trivial ?_ ?_
     · simp only [Fm.subst_eq, subst_ap2, PTm.subst_add, Syn.subst_var, Syn.inst_zero, Syn.subst_inst_shift,
-        ConciseIPRA.PTm.subst_succ, ConciseIPRA.PTm.subst_zero]
+        ConciseIPRA.PTm.subst_succ]
       exact congrAp2 (sumF oddB) (add_zero _) (.eqRefl _)
-    · simp only [Fm.subst_eq, subst_ap2, PTm.subst_add, Syn.subst_var, Syn.repl_zero, Syn.subst_shift,
-        Syn.repl_succ, subst_repl_shift, ConciseIPRA.PTm.subst_succ, ConciseIPRA.PTm.subst_zero]
+    · simp only [Fm.subst_eq, subst_ap2, PTm.subst_add, Syn.subst_var, Syn.repl_zero, Syn.subst_shift, Syn.repl_succ,
+        ConciseIPRA.PTm.subst_succ]
       refine (congrAp2 (sumF oddB) (add_succ _ _) (.eqRefl _)).eqTrans ((sum_succ' _ _ _).eqTrans ?_)
       exact (congrAdd Prf.hyp0 (odd_far (shift_pos hm).wk _)).eqTrans (add_zero _)
   have h := Prf.allE k hall

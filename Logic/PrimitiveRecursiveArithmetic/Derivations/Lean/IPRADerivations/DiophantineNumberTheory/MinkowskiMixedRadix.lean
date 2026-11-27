@@ -56,8 +56,8 @@ def positive (N W : PTm n) : Fm PTm n :=
 theorem positive_at (N W k : PTm n) (h : Γ ⊢[PRAAx] positive N W)
     (hk : Γ ⊢[PRAAx] lt k N) : Γ ⊢[PRAAx] le one (entry W k) := by
   have all := Prf.allE k h
-  simp only [positive, Fm.subst_imp, subst_lt, subst_le, subst_entry, Syn.subst_var,
-    Syn.inst_zero, Syn.subst_inst_shift, ConciseIPRA.PTm.subst_succ, ConciseIPRA.PTm.subst_zero] at all
+  simp only [Fm.subst_imp, subst_lt, subst_le, subst_entry, Syn.subst_var, Syn.inst_zero, Syn.subst_inst_shift,
+    ConciseIPRA.PTm.subst_succ, ConciseIPRA.PTm.subst_zero] at all
   exact .impE all hk
 
 theorem positive_prefix (N W k : PTm n) (h : Γ ⊢[PRAAx] positive N W)
@@ -129,8 +129,8 @@ def digitsEqual (N W i j : PTm n) : Fm PTm n :=
 theorem digitsEqual_at (N W i j k : PTm n) (h : Γ ⊢[PRAAx] digitsEqual N W i j)
     (hk : Γ ⊢[PRAAx] lt k N) : Γ ⊢[PRAAx] digit W i k ≐ digit W j k := by
   have all := Prf.allE k h
-  simp only [digitsEqual, Fm.subst_imp, Fm.subst_eq, subst_lt, subst_digit, Syn.subst_var,
-    Syn.inst_zero, Syn.subst_inst_shift] at all
+  simp only [Fm.subst_imp, Fm.subst_eq, subst_lt, subst_digit, Syn.subst_var, Syn.inst_zero,
+    Syn.subst_inst_shift] at all
   exact .impE all hk
 
 /-- This induction is quantifier-free: its invariant is an implication between

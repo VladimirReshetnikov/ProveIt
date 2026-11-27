@@ -25,8 +25,6 @@ The size of the derivation is linear in `r`. First use: the ten primes of the fi
 Bertrand's postulate (`AnalyticNumberTheory/BertrandCertificate`).
 -/
 
-set_option linter.unusedSimpArgs false
-
 namespace LeanProofs.IPRA.Foundations.NumeralPrimes
 
 open_ipra exports
@@ -41,7 +39,7 @@ theorem subst_num {m : ℕ} (σ : Fin n → PTm m) : ∀ k : ℕ, Syn.subst σ (
   | 0 => by simp only [num, ConciseIPRA.PTm.subst_zero]
   | k + 1 => by simp only [num, ConciseIPRA.PTm.subst_succ, subst_num σ k]
 
-theorem shift_num (k : ℕ) : Syn.shift (num k : PTm n) = num k := by simp [Syn.shift, subst_num]
+theorem shift_num (k : ℕ) : Syn.shift (num k : PTm n) = num k := by simp [Syn.shift]
 
 theorem num_le {a b : ℕ} (h : a ≤ b) : Γ ⊢[PRAAx] le (num a : PTm n) (num b) := by
   obtain ⟨c, rfl⟩ : ∃ c, b = a + c := ⟨b - a, by omega⟩

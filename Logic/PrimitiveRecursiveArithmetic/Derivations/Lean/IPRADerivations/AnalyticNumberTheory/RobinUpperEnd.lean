@@ -63,13 +63,11 @@ theorem gf_step {t j K : PTm n} (ih : Γ ⊢[PRAAx] GF t j K) : Γ ⊢[PRAAx] GF
 theorem lo_t_mono (t j K : PTm n) : Γ ⊢[PRAAx] GF t j K := by
   have hall : Γ ⊢[PRAAx] Fm.all (GF (Syn.shift t) (var 0) (Syn.shift K)) := by
     refine PRA.qfInd _ (le_QF _ _) ?_ ?_
-    · simp only [subst_le, subst_ap2, PTm.subst_add, PTm.subst_mul, ConciseIPRA.PTm.subst_succ,
-        ConciseIPRA.PTm.subst_zero, Syn.subst_var, Syn.inst_zero, Syn.subst_inst_shift]
+    · simp only [subst_le, subst_ap2, PTm.subst_add, PTm.subst_mul, Syn.subst_var, Syn.inst_zero, Syn.subst_inst_shift]
       have e : Γ ⊢[PRAAx] t + zero ≐ t := add_zero _
       exact le_congr (congrMul (.eqRefl _) (congrAp2 _ e (.eqRefl _)).eqSymm)
         (congrMul (congrAp2 _ e (.eqRefl _)).eqSymm (.eqRefl _)) (le_refl _)
-    · simp only [subst_le, subst_ap2, PTm.subst_add, PTm.subst_mul, ConciseIPRA.PTm.subst_succ,
-        ConciseIPRA.PTm.subst_zero, Syn.subst_var, Syn.repl_zero, subst_repl_shift]
+    · simp only [subst_le, subst_ap2, PTm.subst_add, PTm.subst_mul, Syn.subst_var, Syn.repl_zero, subst_repl_shift]
       exact gf_step Prf.hyp0
   have r := Prf.allE j hall
   simpa [Syn.subst_inst_shift] using r

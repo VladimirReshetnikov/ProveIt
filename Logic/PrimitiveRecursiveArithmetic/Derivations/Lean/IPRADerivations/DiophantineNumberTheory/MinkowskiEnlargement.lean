@@ -90,7 +90,7 @@ theorem dot_succ (dimension row point : PTm n) :
   have hn := natEq (sum_succ (Γ := Γ) dotBody.neg dimension (pairT row point))
   have product := ZT.toZ_eq (dotBody_at (Γ := Γ) dimension row point)
   simp only [Q.mk_add, map_add] at hp hn
-  simp only [ZT.toZ, ZT.subst, inst2] at product
+  simp only [ZT.toZ, ZT.subst] at product
   calc
     _ = ZT.toZ Γ (dot dimension row point) + ZT.toZ Γ (integerAt row dimension * integerAt point dimension) := by
       change (Groth.ι (Q.mk Γ (ap2 (sumF dotBody.pos) (succ dimension) (pairT row point))) -
@@ -171,7 +171,7 @@ theorem member_at {dimension facets point i : PTm n} (h : Γ ⊢[PRAAx] member d
     (hi : Γ ⊢[PRAAx] lt i (length facets)) :
     Γ ⊢[PRAAx] le (absolute dimension facets point i) (bound facets i) := by
   have e := Prf.allE i h
-  simp [member] at e
+  simp at e
   exact .impE e hi
 
 theorem enlarged_at {dimension facets point i : PTm n} (h : Γ ⊢[PRAAx] enlargedMember dimension facets point)
@@ -179,7 +179,7 @@ theorem enlarged_at {dimension facets point i : PTm n} (h : Γ ⊢[PRAAx] enlarg
     Γ ⊢[PRAAx] le (lambdaDenominator facets * absolute dimension facets point i)
       (lambdaNumerator facets * bound facets i) := by
   have e := Prf.allE i h
-  simp [enlargedMember] at e
+  simp at e
   exact .impE e hi
 
 theorem enlargement_subset (dimension facets point : PTm n)
@@ -230,18 +230,15 @@ def bodyGuardF : PR 2 := BoundedSyntax.bitF bodyGuardSyntax
 
 theorem memberSyntax_at (dimension facets point : PTm n) :
     (BoundedSyntax.formula memberSyntax).subst ![dimension, facets, point] = member dimension facets point := by
-  simp [memberSyntax, BoundedSyntax.formula, BoundedSyntax.BFm.le, member,
-    Syn.up, Syn.subst_shift, ← Syn.shift_subst, le]
+  simp [memberSyntax, BoundedSyntax.formula, BoundedSyntax.BFm.le, member, Syn.up, Syn.subst_shift, le]
 
 theorem enlargedSyntax_at (dimension facets point : PTm n) :
     (BoundedSyntax.formula enlargedSyntax).subst ![dimension, facets, point] = enlargedMember dimension facets point := by
-  simp [enlargedSyntax, BoundedSyntax.formula, BoundedSyntax.BFm.le, enlargedMember,
-    Syn.up, Syn.subst_shift, ← Syn.shift_subst, le]
+  simp [enlargedSyntax, BoundedSyntax.formula, BoundedSyntax.BFm.le, enlargedMember, Syn.up, Syn.subst_shift, le]
 
 theorem bodyGuardSyntax_at (dimension facets : PTm n) :
     (BoundedSyntax.formula bodyGuardSyntax).subst ![dimension, facets] = bodyGuard dimension facets := by
-  simp [bodyGuardSyntax, BoundedSyntax.formula, BoundedSyntax.BFm.le, bodyGuard,
-    Syn.up, Syn.subst_shift, ← Syn.shift_subst, le]
+  simp [bodyGuardSyntax, BoundedSyntax.formula, BoundedSyntax.BFm.le, bodyGuard, Syn.up, Syn.subst_shift, le]
 
 theorem member_reflection (dimension facets point : PTm n) :
     Γ ⊢[PRAAx] Fm.iff (ap3 memberF dimension facets point ≐ one) (member dimension facets point) := by

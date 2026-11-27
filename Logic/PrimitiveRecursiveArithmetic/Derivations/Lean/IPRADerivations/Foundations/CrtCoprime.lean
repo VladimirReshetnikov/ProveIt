@@ -92,7 +92,7 @@ abbrev hB : PTm 2 := monus one (eqb (gcd (mS mB) (ap2 (prodF (mS mB)) (var 0) (v
 theorem inst2_h (j y : PTm n) :
     inst2 (hB mB) j y = monus one (eqb (gcd (inst2 (mS mB) j y) (L mB j y)) one) := by
   simp only [inst2, hB, PTm.subst_monus, subst_eqb, subst_ex2, subst_ap2, Syn.subst_var, Matrix.cons_val_zero,
-    Matrix.cons_val_one, Matrix.head_cons, ConciseIPRA.PTm.subst_succ, ConciseIPRA.PTm.subst_zero]
+    Matrix.cons_val_one, ConciseIPRA.PTm.subst_succ, ConciseIPRA.PTm.subst_zero]
 
 /-- `H K y = ∑_{j<K} [gcd(m_j, ∏_{i<j} m_i) ≠ 1]`. -/
 abbrev H (K y : PTm n) : PTm n := ap2 (sumF (hB mB)) K y

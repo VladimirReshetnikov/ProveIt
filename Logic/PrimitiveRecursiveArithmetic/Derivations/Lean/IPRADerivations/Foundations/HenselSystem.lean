@@ -62,7 +62,7 @@ def omega' (a b σ ω : Fin m → ZT k) (E : Fin m → Fin m → ZT k) (qKp : PT
     ZT.ofNat qKp * zsum (fun j => zsum fun l => W U ω j * W U ω l * tq (P i) b (corr P U b) j l)
 
 theorem kron_toZ (i l : Fin m) : ZT.toZ Γ (kron (k := k) i l) = if i = l then 1 else 0 := by
-  unfold kron; split_ifs <;> simp [toZ_zero]
+  unfold kron; split_ifs <;> simp
 
 /-- Contract a product of matrices against a vector when the product is `I - qE` in the selected row. -/
 theorem sum_mul_inverse {R : Type*} [CommRing R] (a : Fin m → R) (B : Fin m → Fin m → R)

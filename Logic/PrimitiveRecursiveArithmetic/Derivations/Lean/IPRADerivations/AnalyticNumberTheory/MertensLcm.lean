@@ -85,10 +85,10 @@ theorem lw_prod (b w : PTm 2) (N y K : PTm n) :
       ap2 (sumF (tB b w)) (var 0) (pairT (Syn.shift N) (Syn.shift y))) := by
     refine PRA.qfInd _ trivial ?_ ?_
     · simp only [Fm.subst_eq, subst_ap2, subst_pairT, Syn.subst_var, Syn.inst_zero, Syn.subst_inst_shift,
-        ConciseIPRA.PTm.subst_zero, ConciseIPRA.PTm.subst_succ]
+        ConciseIPRA.PTm.subst_succ]
       exact (congrLw w _ (prod_zero (pmB b) _)).eqTrans ((lw_one w _).eqTrans (sum_zero _ _).eqSymm)
     · simp only [Fm.subst_eq, subst_ap2, subst_pairT, Syn.subst_var, Syn.repl_zero, subst_repl_shift,
-        ConciseIPRA.PTm.subst_zero, ConciseIPRA.PTm.subst_succ]
+        ConciseIPRA.PTm.subst_succ]
       have ps := Foundations.MixedRadix.prod_succ' (Γ := (Lw w (ap2 (prodF (pmB b)) (var 0) (Syn.shift N))
         (Syn.shift y) ≐ ap2 (sumF (tB b w)) (var 0) (pairT (Syn.shift N) (Syn.shift y))) :: Γ.map Fm.shift)
         (pmB b) (var 0) (Syn.shift N)
@@ -100,7 +100,7 @@ theorem lw_prod (b w : PTm 2) (N y K : PTm n) :
           (congrAdd (.eqRefl _) (t_at b w (var 0) (Syn.shift N) (Syn.shift y))))
   have h2 := Prf.allE K hall
   simp only [Fm.subst_eq, subst_ap2, subst_pairT, Syn.subst_var, Syn.inst_zero, Syn.subst_inst_shift,
-    ConciseIPRA.PTm.subst_zero, ConciseIPRA.PTm.subst_succ] at h2
+    ConciseIPRA.PTm.subst_succ] at h2
   exact h2
 
 /-! ## The sums of the Chebyshev identity -/

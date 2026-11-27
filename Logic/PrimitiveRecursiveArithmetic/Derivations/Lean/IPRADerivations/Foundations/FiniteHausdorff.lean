@@ -179,8 +179,7 @@ def cover (d : PR 3) (S T r p : PTm n) : Fm PTm n :=
 
 theorem coverSyntax_at (d : PR 3) (S T r p : PTm n) :
     (BoundedSyntax.formula (coverSyntax d)).subst ![S, T, r, p] = cover d S T r p := by
-  simp [coverSyntax, BoundedSyntax.formula, BoundedSyntax.BFm.le, cover, distance,
-    Syn.subst_shift, Syn.up_succ, ← Syn.shift_subst, le, Syn.up]
+  simp [coverSyntax, BoundedSyntax.formula, BoundedSyntax.BFm.le, cover, distance, Syn.subst_shift, le, Syn.up]
 
 def coverF (d : PR 3) : PR 4 := BoundedSyntax.bitF (coverSyntax d)
 
@@ -208,9 +207,8 @@ theorem cover_at (d : PR 3) {S T r p i : PTm n}
     (h : Γ ⊢[PRAAx] cover d S T r p) (hi : Γ ⊢[PRAAx] lt i (length S)) :
     Γ ⊢[PRAAx] hit d (entry S i) T r p := by
   have atI := Prf.allE i h
-  simp only [cover, Fm.subst_imp, Fm.subst_ex, Fm.subst_and, subst_lt, subst_le,
-    subst_distance, MasterCertificate.subst_entry, SequenceComposition.subst_length,
-    Syn.subst_var, Syn.inst_zero, Syn.up_zero, Syn.up_one,
+  simp only [Fm.subst_imp, Fm.subst_ex, Fm.subst_and, subst_lt, subst_le, subst_distance, MasterCertificate.subst_entry,
+    SequenceComposition.subst_length, Syn.subst_var, Syn.inst_zero, Syn.up_zero, Syn.up_one,
     BoundedFormulas.subst_up_shift', Syn.subst_inst_shift] at atI
   have result : Γ ⊢[PRAAx] lt i (length S) ⟶ hit d (entry S i) T r p := by
     simpa only [hit, Syn.shift, MasterCertificate.subst_entry] using atI

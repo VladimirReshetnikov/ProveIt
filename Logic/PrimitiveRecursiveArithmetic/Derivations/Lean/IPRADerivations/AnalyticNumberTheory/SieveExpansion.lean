@@ -59,8 +59,8 @@ def lB (U : PTm 2) : PTm 2 := var 0 * ((sg (var 0) * eqb (gcd (var 0) (fstT (var
 theorem inst2_lB (U : PTm 2) (d P : PTm n) :
     inst2 (lB U) d P = d * ((sg d * eqb (gcd d (fstT P)) one) * inst2 U d P) := by
   simp only [inst2, lB, LeanProofs.IPRA.PTm.subst_mul, subst_eqb, LeanProofs.IPRA.PTm.subst_monus, subst_gcd',
-    subst_fstT, Syn.subst_var, Matrix.cons_val_zero, Matrix.cons_val_one, Matrix.head_cons,
-    ConciseIPRA.PTm.subst_succ, ConciseIPRA.PTm.subst_zero]
+    subst_fstT, Syn.subst_var, Matrix.cons_val_zero, Matrix.cons_val_one, ConciseIPRA.PTm.subst_succ,
+    ConciseIPRA.PTm.subst_zero]
 
 /-! ## The nested count is the progression count at the least common multiple -/
 

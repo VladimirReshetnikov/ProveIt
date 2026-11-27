@@ -126,7 +126,7 @@ theorem power_bezout (r' s' X Y : PTm n) :
       pw X (succ r') * ap2 (sumF gbody) (succ s')
         (pairT (r' + succ s') (pairT X (pairT Y (pairT (succ r') s')))) := by
     refine sum_scale _ _ _ _ _ _ (.allI (.impI ?_))
-    simp only [shift_pair, shift_succ, shift_zero, shift_add, shift_pw]
+    simp only [shift_pair, shift_succ, shift_add, shift_pw]
     rw [inst2_offB]
     exact (congrInst2 bt (congrAdd (fst_pair _ _) (.eqRefl _)) (snd_pair _ _)).eqTrans
       ((bt_at _ _ _ _).eqTrans ((p_point (le_of_lt_succ Prf.hyp0)).eqTrans

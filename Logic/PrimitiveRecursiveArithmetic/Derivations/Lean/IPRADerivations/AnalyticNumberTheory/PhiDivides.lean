@@ -13,8 +13,6 @@ the quantifier-free statement that the violation count `V(N) = ∑_{c<N} sg(φ(a
 — then gives `φ(a) ∣ φ(ac)`, peeling `q = lpf(c)` with `c″ = c / q < c` (`viol_ge2`).
 -/
 
-set_option linter.unusedSimpArgs false
-
 namespace LeanProofs.IPRA.AnalyticNumberTheory.PhiDivides
 
 open_ipra exports

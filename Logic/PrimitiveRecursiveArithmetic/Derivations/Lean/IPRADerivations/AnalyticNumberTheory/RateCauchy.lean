@@ -240,9 +240,8 @@ theorem ginv_all {r c y P : PTm n} (hr : Γ ⊢[PRAAx] le one r) (hP : Γ ⊢[PR
       have hc' : Δ ⊢[PRAAx] InM aP aN (Syn.shift r) (Syn.shift c) (Syn.shift y) := by
         have b : (Γ.map Fm.shift) ⊢[PRAAx] InM aP aN (Syn.shift r) (Syn.shift c) (Syn.shift y) := by
           have h := hc.shift
-          simp only [InM, Fm.shift, Fm.subst_all, subst_le, subst_ap2, PTm.subst_add, PTm.subst_mul,
-            PTm.subst_monus, LeanProofs.IPRA.PTm.subst_pred, ConciseIPRA.PTm.subst_succ, ConciseIPRA.PTm.subst_zero,
-            Syn.subst_var, Syn.up_zero, subst_up_shift_pal,
+          simp only [InM, Fm.shift, Fm.subst_all, subst_le, subst_ap2, PTm.subst_add, PTm.subst_mul, PTm.subst_monus,
+            ConciseIPRA.PTm.subst_succ, ConciseIPRA.PTm.subst_zero, Syn.subst_var, Syn.up_zero, subst_up_shift_pal,
             LeanProofs.IPRA.AnalyticNumberTheory.PowerDivisorGrowth.subst_sh] at h
           exact h
         exact b.wk.wk

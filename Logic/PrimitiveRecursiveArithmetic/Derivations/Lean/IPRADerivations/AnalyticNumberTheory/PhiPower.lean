@@ -15,8 +15,6 @@ No factorization is needed:
 * `phi_mul_pow`: `M ∣ nᵗ → φ(nM) = M φ(n)`; with `M = n^{k−1}` this is `phi_power`.
 -/
 
-set_option linter.unusedSimpArgs false
-
 namespace LeanProofs.IPRA.AnalyticNumberTheory.PhiPower
 
 open_ipra exports
@@ -58,8 +56,8 @@ private theorem per₀ : ([] : List (Fm PTm 2)) ⊢[PRAAx] perF := by
 theorem per_sum {N : PTm n} (hN : Γ ⊢[PRAAx] N ≐ succ (pred N)) (M : PTm n) :
     Γ ⊢[PRAAx] ap2 (sumF totBody) (N * M) N ≐ M * phi N := by
   have h := inst (Γ := Γ) per₀ (![M, N] : Fin 2 → PTm n)
-  simp only [Fm.subst_imp, Fm.subst_eq, subst_ap2, PTm.subst_mul, PTm.subst_pred, Syn.subst_var,
-    Matrix.cons_val_zero, Matrix.cons_val_one, Matrix.head_cons, ConciseIPRA.PTm.subst_succ] at h
+  simp only [Fm.subst_imp, Fm.subst_eq, subst_ap2, PTm.subst_mul, PTm.subst_pred, Syn.subst_var, Matrix.cons_val_zero,
+    Matrix.cons_val_one, ConciseIPRA.PTm.subst_succ] at h
   exact .impE h hN
 
 /-! ## The pointwise identity -/

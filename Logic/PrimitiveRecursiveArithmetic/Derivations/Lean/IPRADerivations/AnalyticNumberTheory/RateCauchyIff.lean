@@ -52,8 +52,7 @@ abbrev Rate3S (y : PTm n) : Fm PTm n :=
 
 theorem inm_shift (r c y : PTm n) : Fm.shift (InM aP aN r c y) = InM aP aN (Syn.shift r) (Syn.shift c) (Syn.shift y) := by
   simp only [InM, Fm.shift, Fm.subst_all, subst_le, subst_ap2, PTm.subst_add, PTm.subst_mul, PTm.subst_monus,
-    LeanProofs.IPRA.PTm.subst_pred, ConciseIPRA.PTm.subst_succ, ConciseIPRA.PTm.subst_zero, Syn.subst_var,
-    Syn.up_zero, subst_up_shift_pal, subst_sh]
+    ConciseIPRA.PTm.subst_succ, ConciseIPRA.PTm.subst_zero, Syn.subst_var, Syn.up_zero, subst_up_shift_pal, subst_sh]
 
 /-- The modulus part of (1) ⇒ (3), under its three binders. -/
 theorem cauchy_all {y k c : PTm n} {X K C : PTm (n + 1)} {X3 k3 K3 : PTm (n + 3)}
@@ -88,19 +87,18 @@ theorem cauchy_all {y k c : PTm n} {X K C : PTm (n + 1)} {X3 k3 K3 : PTm (n + 3)
 theorem growth_to_rate3 (y : PTm n) :
     Γ ⊢[PRAAx] GrowthS (AB aP) (AB aN) y ⟶ Rate3S aP aN y := by
   refine all_ex_imp_at (succ (two * var 0)) (Kc (succ (var 1)) (var 0)) ?_
-  simp only [GrowthS, Fm.shift, Fm.subst_all, Fm.subst_ex, subst_Mat, up3_v0, up3_v1, up3_v2, up2_v0, up2_v1, up2_v2,
-    up1_v0, up1_v1, up1_v2, inst_v0, inst_v1, subst_up_shift_pal, Syn.subst_inst_shift, Syn.up_zero, upf_one, upf_two,
-    Syn.subst_var, subst_sh, Fin.succ_zero_eq_one, Syn.shift_var, Syn.up_succ, Syn.inst_succ, Rate3S, Fm.subst_and,
-    subst_RMat, subst_CMat, LeanProofs.IPRA.AnalyticNumberTheory.PowerDivisorUniform.upf_three, upf_four]
+  simp only [Fm.subst_all, subst_Mat, inst_v0, subst_up_shift_pal, Syn.subst_inst_shift, Syn.up_zero, upf_one, upf_two,
+    Syn.subst_var, subst_sh, Fin.succ_zero_eq_one, Syn.shift_var, Syn.up_succ, Syn.inst_succ, Fm.subst_and, subst_RMat,
+    subst_CMat, LeanProofs.IPRA.AnalyticNumberTheory.PowerDivisorUniform.upf_three, upf_four]
   refine .andI ?_ ?_
   · exact fwd_all aP aN (y := Syn.shift (Syn.shift y)) (k := var 1) (c := var 0)
       (by simp [Syn.shift]) (by simp [Syn.shift]) (by simp [Syn.shift]) (by simp [Syn.shift]) (by simp [Syn.shift])
       (by simp [Syn.shift]) Prf.hyp0
   · exact cauchy_all aP aN (y := Syn.shift (Syn.shift y)) (k := var 1) (c := var 0)
       (by simp [Syn.shift]) (by simp [Syn.shift]) (by simp [Syn.shift])
-      (by simp [Syn.shift, LeanProofs.IPRA.AnalyticNumberTheory.PowerDivisorUniform.upf_three, upf_four])
-      (by simp [Syn.shift, LeanProofs.IPRA.AnalyticNumberTheory.PowerDivisorUniform.upf_three, upf_four])
-      (by simp [Syn.shift, LeanProofs.IPRA.AnalyticNumberTheory.PowerDivisorUniform.upf_three, upf_four]) Prf.hyp0
+      (by simp [Syn.shift])
+      (by simp [Syn.shift])
+      (by simp [Syn.shift]) Prf.hyp0
 
 /-- Renaming the binder forms of a prefix-bound matrix. -/
 theorem rmat_eq {X k K X' k' K' : PTm (n + 1)} (hX : X = X') (hk : k = k') (hK : K = K')
@@ -110,10 +108,9 @@ theorem rmat_eq {X k K X' k' K' : PTm (n + 1)} (hX : X = X') (hk : k = k') (hK :
 /-- `thm:rate` (3) ⇒ (2). -/
 theorem rate3_to_rate (y : PTm n) : Γ ⊢[PRAAx] Rate3S aP aN y ⟶ RateS aP aN y := by
   refine all_ex_imp (var 0) ?_
-  simp only [RateS, Fm.shift, Fm.subst_all, Fm.subst_ex, subst_RMat, up3_v0, up3_v1, up3_v2, up2_v0, up2_v1, up2_v2,
-    up1_v0, up1_v1, up1_v2, inst_v0, inst_v1, subst_up_shift_pal, Syn.subst_inst_shift, Syn.up_zero, upf_one, upf_two,
+  simp only [Fm.subst_all, subst_RMat, inst_v0, subst_up_shift_pal, Syn.subst_inst_shift, Syn.up_zero, upf_one, upf_two,
     Syn.subst_var, subst_sh, Fin.succ_zero_eq_one, Syn.shift_var, Syn.up_succ, Syn.inst_succ]
-  exact rmat_eq aP aN (by simp [Syn.shift]) (by simp [Syn.shift]) (by simp [Syn.shift]) (Prf.andE₁ Prf.hyp0)
+  exact rmat_eq aP aN (by simp [Syn.shift]) (by simp) (by simp) (Prf.andE₁ Prf.hyp0)
 
 /-- `thm:rate`, (1) ↔ (3): growth is equivalent to bounded weighted sums with the explicit Cauchy modulus
 `P, Q ≥ 2^{4r(t+K)} ⟹ |S_r(P) − S_r(Q)| ≤ 2^{−t}`, in object iPRA. -/

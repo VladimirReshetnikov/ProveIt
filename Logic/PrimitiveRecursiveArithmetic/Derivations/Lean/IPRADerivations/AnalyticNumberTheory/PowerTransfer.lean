@@ -20,8 +20,6 @@ stands for `d = i + 1`.
   with `ℓ = ell(N+1)` (`2^ℓ ≤ N ≤ 2^{ℓ+1}`), `PowerBudget.budget_below` and `PowerBudget.log_absorb` at `k = 4r`.
 -/
 
-set_option linter.unusedSimpArgs false
-
 namespace LeanProofs.IPRA.AnalyticNumberTheory.PowerTransfer
 
 open_ipra exports
@@ -78,11 +76,11 @@ theorem le_mx (body : PTm 2) {i N x : PTm n} (h : Γ ⊢[PRAAx] lt i N) :
   have hall : Γ ⊢[PRAAx] Fm.all (lt (Syn.shift i) (var 0) ⟶
       le (inst2 body (Syn.shift i) (Syn.shift x)) (mx body (var 0) (Syn.shift x))) := by
     refine PRA.qfInd _ ⟨le_QF _ _, le_QF _ _⟩ ?_ ?_
-    · simp only [Fm.subst_imp, subst_le, subst_lt, subst_inst2, subst_mx, ConciseIPRA.PTm.subst_succ,
-        ConciseIPRA.PTm.subst_zero, Syn.subst_var, Syn.inst_zero, Syn.subst_inst_shift]
+    · simp only [Fm.subst_imp, subst_le, subst_lt, subst_inst2, subst_mx, Syn.subst_var, Syn.inst_zero,
+        Syn.subst_inst_shift]
       exact .impI (lt_zero_absurd _ Prf.hyp0)
-    · simp only [Fm.subst_imp, subst_le, subst_lt, subst_inst2, subst_mx, ConciseIPRA.PTm.subst_succ,
-        ConciseIPRA.PTm.subst_zero, Syn.subst_var, Syn.repl_zero, subst_repl_shift]
+    · simp only [Fm.subst_imp, subst_le, subst_lt, subst_inst2, subst_mx, Syn.subst_var, Syn.repl_zero,
+        subst_repl_shift]
       refine .impI ?_
       let φ : Fm PTm (n + 1) := lt (Syn.shift i) (var 0) ⟶
         le (inst2 body (Syn.shift i) (Syn.shift x)) (mx body (var 0) (Syn.shift x))
@@ -111,12 +109,12 @@ theorem mx_pow_bound (body : PTm 2) {N x R K : PTm n} (hR : Γ ⊢[PRAAx] le one
   let P : Fm PTm (n + 1) := le (pw (mx body (var 0) (Syn.shift x)) (Syn.shift R)) (Syn.shift K)
   have atBound : Γ ⊢[PRAAx] P.subst (Syn.inst N) := by
     refine qfIndUpTo N (le_QF _ _) ?_ ?_
-    · simp only [P, subst_le, subst_ap2, subst_mx, Syn.subst_var, Syn.inst_zero, Syn.subst_inst_shift]
+    · simp only [P, subst_le, subst_ap2, Syn.subst_var, Syn.inst_zero, Syn.subst_inst_shift]
       have z : Γ ⊢[PRAAx] pw (mx body zero x) R ≐ zero :=
         (congrPw (mx_zero body x) (pos_of_one_le hR)).eqTrans
           ((pw_succ zero (pred R)).eqTrans (mul_zero _))
       exact le_congr z.eqSymm (.eqRefl _) (by ipra_le 𝔞 K)
-    · simp only [P, subst_le, subst_ap2, subst_mx, Syn.subst_var, Syn.repl_zero, subst_repl_shift]
+    · simp only [P, subst_le, subst_ap2, Syn.subst_var, Syn.repl_zero, subst_repl_shift]
       refine .impI ?_
       let Δ := lt (var 0) (Syn.shift N) :: P :: Γ.map Fm.shift
       have ih : Δ ⊢[PRAAx] P := Prf.hyp1

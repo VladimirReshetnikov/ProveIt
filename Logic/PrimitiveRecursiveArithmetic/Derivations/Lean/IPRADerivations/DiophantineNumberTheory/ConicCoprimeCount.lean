@@ -71,11 +71,11 @@ theorem qinv_step {N L : PTm k} (ih : Γ ⊢[PRAAx] QInv N L) : Γ ⊢[PRAAx] QI
 theorem qinv (N L : PTm k) : Γ ⊢[PRAAx] QInv N L := by
   have hall : Γ ⊢[PRAAx] Fm.all (QInv (Syn.shift N) (Syn.var 0)) := by
     refine PRA.qfInd _ (le_QF _ _) ?_ ?_
-    · simp only [subst_le, subst_ap2, PTm.subst_add, PTm.subst_mul, PTm.subst_num, Syn.subst_var,
-        Syn.inst_zero, Syn.subst_inst_shift, ConciseIPRA.PTm.subst_zero, ConciseIPRA.PTm.subst_succ]
+    · simp only [subst_le, subst_ap2, PTm.subst_add, PTm.subst_mul, PTm.subst_num, Syn.subst_var, Syn.inst_zero,
+        Syn.subst_inst_shift, ConciseIPRA.PTm.subst_succ]
       exact qinv_base N
-    · simp only [subst_le, subst_ap2, PTm.subst_add, PTm.subst_mul, PTm.subst_num, Syn.subst_var,
-        Syn.repl_zero, subst_repl_shift, ConciseIPRA.PTm.subst_zero, ConciseIPRA.PTm.subst_succ]
+    · simp only [subst_le, subst_ap2, PTm.subst_add, PTm.subst_mul, PTm.subst_num, Syn.subst_var, Syn.repl_zero,
+        subst_repl_shift, ConciseIPRA.PTm.subst_succ]
       exact qinv_step Prf.hyp0
   have h2 := Prf.allE L hall
   simpa only [subst_le, subst_ap2, PTm.subst_add, PTm.subst_mul, PTm.subst_num, Syn.subst_var,

@@ -58,7 +58,7 @@ theorem back_all {y k K : PTm n} {X Kk KK X' K' C' : PTm (n + 1)}
   have hr : (Γ.map Fm.shift) ⊢[PRAAx] le one (succ (Syn.shift k)) := by ipra_le 𝔞 (Syn.shift k)
   have hW : (Γ.map Fm.shift) ⊢[PRAAx] WBound aP aN (succ (Syn.shift k)) (Syn.shift y) (Syn.shift K) := by
     have h := H.shift
-    simp only [Fm.shift, Fm.subst_all, subst_RMat, up1_v0, subst_up_shift_pal, subst_sh] at h
+    simp only [Fm.shift, Fm.subst_all, subst_RMat, subst_up_shift_pal, subst_sh] at h
     have e1 : Syn.shift (succ (Syn.shift k)) = succ (Syn.shift (Syn.shift k)) := by simp [Syn.shift]
     simp only [WBound, e1]
     exact h
@@ -72,8 +72,7 @@ theorem back_all {y k K : PTm n} {X Kk KK X' K' C' : PTm (n + 1)}
 theorem rate_to_growth (y : PTm n) :
     Γ ⊢[PRAAx] RateS aP aN y ⟶ GrowthS (AB aP) (AB aN) y := by
   refine all_ex_imp (Crec (var 1) (var 0)) ?_
-  simp only [GrowthS, Fm.shift, Fm.subst_all, Fm.subst_ex, subst_Mat, up3_v0, up3_v1, up3_v2, up2_v0, up2_v1, up2_v2,
-    up1_v0, up1_v1, up1_v2, inst_v0, inst_v1, subst_up_shift_pal, Syn.subst_inst_shift, Syn.up_zero, upf_one, upf_two,
+  simp only [Fm.subst_all, subst_Mat, inst_v0, subst_up_shift_pal, Syn.subst_inst_shift, Syn.up_zero, upf_one, upf_two,
     Syn.subst_var, subst_sh, Fin.succ_zero_eq_one, Syn.shift_var, Syn.up_succ, Syn.inst_succ]
   exact back_all aP aN (y := Syn.shift (Syn.shift y)) (k := var 1) (K := var 0)
     (by simp [Syn.shift]) (by simp [Syn.shift]) (by simp [Syn.shift]) (by simp [Syn.shift]) (by simp [Syn.shift])
@@ -105,9 +104,8 @@ theorem fwd_all {y k c : PTm n} {X K C X' Kk KK : PTm (n + 1)}
 theorem growth_to_rate (y : PTm n) :
     Γ ⊢[PRAAx] GrowthS (AB aP) (AB aN) y ⟶ RateS aP aN y := by
   refine all_ex_imp_at (succ (two * var 0)) (Kc (succ (var 1)) (var 0)) ?_
-  simp only [GrowthS, Fm.shift, Fm.subst_all, Fm.subst_ex, subst_Mat, up3_v0, up3_v1, up3_v2, up2_v0, up2_v1, up2_v2,
-    up1_v0, up1_v1, up1_v2, inst_v0, inst_v1, subst_up_shift_pal, Syn.subst_inst_shift, Syn.up_zero, upf_one, upf_two,
-    Syn.subst_var, subst_sh, Fin.succ_zero_eq_one, Syn.shift_var, Syn.up_succ, Syn.inst_succ, RateS, subst_RMat]
+  simp only [Fm.subst_all, subst_Mat, inst_v0, subst_up_shift_pal, Syn.subst_inst_shift, Syn.up_zero, upf_one, upf_two,
+    Syn.subst_var, subst_sh, Fin.succ_zero_eq_one, Syn.shift_var, Syn.up_succ, Syn.inst_succ, subst_RMat]
   exact fwd_all aP aN (y := Syn.shift (Syn.shift y)) (k := var 1) (c := var 0)
     (by simp [Syn.shift]) (by simp [Syn.shift]) (by simp [Syn.shift]) (by simp [Syn.shift]) (by simp [Syn.shift])
     (by simp [Syn.shift]) Prf.hyp0

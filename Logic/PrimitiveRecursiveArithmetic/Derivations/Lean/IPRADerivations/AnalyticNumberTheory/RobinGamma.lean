@@ -111,14 +111,14 @@ theorem q_step (m K : PTm n) (ih : Γ ⊢[PRAAx] QF m K) : Γ ⊢[PRAAx] QF m (s
 theorem q_inv (m K : PTm n) : Γ ⊢[PRAAx] QF m K := by
   have hall : Γ ⊢[PRAAx] Fm.all (QF (Syn.shift m) (var 0)) := by
     refine PRA.qfInd _ (le_QF _ _) ?_ ?_
-    · simp only [Fm.subst_eq, subst_le, subst_ap2, PTm.subst_add, PTm.subst_mul, ConciseIPRA.PTm.subst_succ,
+    · simp only [subst_le, subst_ap2, PTm.subst_add, PTm.subst_mul, ConciseIPRA.PTm.subst_succ,
         ConciseIPRA.PTm.subst_zero, Syn.subst_var, Syn.inst_zero, Syn.subst_inst_shift]
       have hL := L_zero (Γ := Γ) (sv m)
       have e2 := natEq (congrMul (congrMul (.eqRefl two) hL) (.eqRefl (sv m * sv m)))
       have e3 := natEq (congrMul (.eqRefl (two * sv m)) (congrMul hL (P_zero (Γ := Γ) (sv m))))
       have e1 := natEq (congrMul (N_zero (Γ := Γ) (sv m)) (.eqRefl (Wv m)))
       ipra_le 0 with e3 - e1 - e2
-    · simp only [Fm.subst_eq, subst_le, subst_ap2, PTm.subst_add, PTm.subst_mul, ConciseIPRA.PTm.subst_succ,
+    · simp only [subst_le, subst_ap2, PTm.subst_add, PTm.subst_mul, ConciseIPRA.PTm.subst_succ,
         ConciseIPRA.PTm.subst_zero, Syn.subst_var, Syn.repl_zero, subst_repl_shift]
       exact q_step _ _ Prf.hyp0
   have r := Prf.allE K hall
@@ -163,10 +163,10 @@ theorem p_two (m : PTm n) : Γ ⊢[PRAAx] PF m (succ (succ zero)) := by
 theorem p_inv (m j : PTm n) : Γ ⊢[PRAAx] PF m (succ (succ j)) := by
   have hall : Γ ⊢[PRAAx] Fm.all (PF (Syn.shift m) (succ (succ (var 0)))) := by
     refine PRA.qfInd _ (le_QF _ _) ?_ ?_
-    · simp only [Fm.subst_eq, subst_le, subst_ap2, PTm.subst_add, PTm.subst_mul, ConciseIPRA.PTm.subst_succ,
+    · simp only [subst_le, subst_ap2, PTm.subst_add, PTm.subst_mul, ConciseIPRA.PTm.subst_succ,
         ConciseIPRA.PTm.subst_zero, Syn.subst_var, Syn.inst_zero, Syn.subst_inst_shift]
       exact p_two m
-    · simp only [Fm.subst_eq, subst_le, subst_ap2, PTm.subst_add, PTm.subst_mul, ConciseIPRA.PTm.subst_succ,
+    · simp only [subst_le, subst_ap2, PTm.subst_add, PTm.subst_mul, ConciseIPRA.PTm.subst_succ,
         ConciseIPRA.PTm.subst_zero, Syn.subst_var, Syn.repl_zero, subst_repl_shift]
       exact p_step _ _ Prf.hyp0
   have r := Prf.allE j hall
@@ -292,13 +292,13 @@ theorem t_step {m t j : PTm n} (hm : Γ ⊢[PRAAx] le one m) (ih : Γ ⊢[PRAAx]
 theorem gamma_tail {m : PTm n} (hm : Γ ⊢[PRAAx] le one m) (j t : PTm n) : Γ ⊢[PRAAx] TF m t (succ (succ j)) := by
   have hall : Γ ⊢[PRAAx] Fm.all (TF (Syn.shift m) (var 0) (succ (succ (Syn.shift j)))) := by
     refine PRA.qfInd _ (le_QF _ _) ?_ ?_
-    · simp only [Fm.subst_eq, subst_le, subst_ap2, subst_pairT, PTm.subst_add, PTm.subst_mul,
-        ConciseIPRA.PTm.subst_succ, ConciseIPRA.PTm.subst_zero, Syn.subst_var, Syn.inst_zero, Syn.subst_inst_shift]
+    · simp only [subst_le, subst_ap2, subst_pairT, PTm.subst_add, PTm.subst_mul, ConciseIPRA.PTm.subst_succ,
+        ConciseIPRA.PTm.subst_zero, Syn.subst_var, Syn.inst_zero, Syn.subst_inst_shift]
       have p0 := natEq (congrMul (.eqRefl (two * two * succ two * (m * m) * ((m + zero) * (m + zero))))
         (P_zero' (Γ := Γ) (pairT m (succ (succ j))) : Γ ⊢[PRAAx] ap2 Pf zero (pairT m (succ (succ j))) ≐ zero))
       ipra_le 0 with -p0
-    · simp only [Fm.subst_eq, subst_le, subst_ap2, subst_pairT, PTm.subst_add, PTm.subst_mul,
-        ConciseIPRA.PTm.subst_succ, ConciseIPRA.PTm.subst_zero, Syn.subst_var, Syn.repl_zero, subst_repl_shift]
+    · simp only [subst_le, subst_ap2, subst_pairT, PTm.subst_add, PTm.subst_mul, ConciseIPRA.PTm.subst_succ,
+        ConciseIPRA.PTm.subst_zero, Syn.subst_var, Syn.repl_zero, subst_repl_shift]
       have hm' : (TF (Syn.shift m) (var 0) (succ (succ (Syn.shift j))) :: Γ.map Fm.shift) ⊢[PRAAx]
           le one (Syn.shift m) := by
         have b : (Γ.map Fm.shift) ⊢[PRAAx] le one (Syn.shift m) := by simpa [Fm.shift, Syn.shift] using hm.shift

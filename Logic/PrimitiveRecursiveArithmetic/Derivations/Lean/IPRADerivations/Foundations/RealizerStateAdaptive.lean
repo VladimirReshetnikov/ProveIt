@@ -240,24 +240,24 @@ theorem block_laws {X Y : Interface} {D : Code} (h : Laws X Y D) :
   qf := h.qf
   relQf := h.relQf
   base := by
-    simp only [block_invAt,block_relAt]
+    simp only [block_invAt]
     dsimp only [blockCode]
     refine .impI (.impI ?_)
     exact h.base _ _ (by simpa only [queryAt_variables] using (Prf.hyp (Ax := PRAAx) (Γ := [allOf D.residuals,D.guard]) (φ := D.guard) (by simp))) (by simpa only [queryAt_variables] using (Prf.hyp0 (Ax := PRAAx) (Γ := [D.guard]) (φ := allOf D.residuals)))
   step := by
-    simp only [block_invAt,block_relAt]
+    simp only [block_invAt]
     dsimp only [blockCode]
     refine .impI (.impI (.impI (.impI (.impI (.impI ?_)))))
-    exact block_step h _ _ _ _ _ (.hyp (by simp [blockCode])) (.hyp (by simp [blockCode]))
-      (.hyp (by simp [blockCode,stageAt])) (.hyp (by simp [blockCode]))
-      (.hyp (by simp [blockCode])) (.hyp (by simp [blockCode]))
+    exact block_step h _ _ _ _ _ (.hyp (by simp)) (.hyp (by simp))
+      (.hyp (by simp [stageAt])) (.hyp (by simp))
+      (.hyp (by simp)) (.hyp (by simp))
   final := by
-    simp only [block_invAt,block_relAt]
+    simp only [block_invAt]
     dsimp only [blockCode]
     refine .impI (.impI (.impI ?_))
-    exact h.final _ _ _ (.hyp (by simp [blockCode])) (.hyp (by simp [blockCode])) (.hyp (by simp [blockCode]))
+    exact h.final _ _ _ (.hyp (by simp)) (.hyp (by simp)) (.hyp (by simp))
   relBase := by
-    simp only [block_invAt,block_relAt]
+    simp only [block_relAt]
     dsimp only [blockCode]
     refine .impI (.impI ?_)
     exact h.relBase _ _ (by simpa only [queryAt_variables] using (Prf.hyp (Ax := PRAAx) (Γ := [allOf D.residuals,D.guard]) (φ := D.guard) (by simp))) (by simpa only [queryAt_variables] using (Prf.hyp0 (Ax := PRAAx) (Γ := [D.guard]) (φ := allOf D.residuals)))
@@ -265,16 +265,16 @@ theorem block_laws {X Y : Interface} {D : Code} (h : Laws X Y D) :
     simp only [block_invAt,block_relAt]
     dsimp only [blockCode]
     refine .impI (.impI (.impI (.impI (.impI (.impI (.impI (.impI (.impI (.impI ?_)))))))))
-    exact block_rel_step h _ _ _ _ _ _ _ (.hyp (by simp [blockCode])) (.hyp (by simp [blockCode]))
-      (.hyp (by simp [blockCode,stageAt])) (.hyp (by simp [blockCode]))
-      (.hyp (by simp [blockCode])) (.hyp (by simp [blockCode])) (.hyp (by simp [blockCode]))
-      (.hyp (by simp [blockCode])) (.hyp (by simp [blockCode])) (.hyp (by simp [blockCode]))
+    exact block_rel_step h _ _ _ _ _ _ _ (.hyp (by simp)) (.hyp (by simp))
+      (.hyp (by simp [stageAt])) (.hyp (by simp))
+      (.hyp (by simp)) (.hyp (by simp)) (.hyp (by simp))
+      (.hyp (by simp)) (.hyp (by simp)) (.hyp (by simp))
   relFinal := by
     simp only [block_invAt,block_relAt]
     dsimp only [blockCode]
     refine .impI (.impI (.impI (.impI (.impI ?_))))
-    exact h.relFinal _ _ _ _ (.hyp (by simp [blockCode])) (.hyp (by simp [blockCode]))
-      (.hyp (by simp [blockCode])) (.hyp (by simp [blockCode])) (.hyp (by simp [blockCode]))
+    exact h.relFinal _ _ _ _ (.hyp (by simp)) (.hyp (by simp))
+      (.hyp (by simp)) (.hyp (by simp)) (.hyp (by simp))
 
 def realizer {X Y : Interface} {D : Code} (h : Laws X Y D) : Realizer X Y := RealizerBlockLoop.realizer (block_laws h)
 def code (D : Code) : RealizerGraph.Code := RealizerBlockLoop.code (blockCode D)

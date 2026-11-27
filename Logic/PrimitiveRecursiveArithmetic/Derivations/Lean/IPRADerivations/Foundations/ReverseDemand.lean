@@ -110,11 +110,9 @@ theorem least_all
       (inst2 p (succ (var 0)) (Syn.shift x)))) :
     Γ ⊢[PRAAx] Fm.all (le (rd term d (var 0) (Syn.shift x)) (inst2 p (var 0) (Syn.shift x))) := by
   refine PRA.qfInd _ (le_QF _ _) ?_ ?_
-  · simp only [subst_le, subst_ap2, subst_inst2, Syn.subst_var, Syn.inst_zero, Syn.subst_inst_shift,
-      ConciseIPRA.PTm.subst_zero, ConciseIPRA.PTm.subst_succ]
+  · simp only [subst_le, subst_ap2, subst_inst2, Syn.subst_var, Syn.inst_zero, Syn.subst_inst_shift]
     exact least_base hp0
-  · simp only [subst_le, subst_ap2, subst_inst2, Syn.subst_var, Syn.repl_zero, subst_repl_shift,
-      ConciseIPRA.PTm.subst_zero, ConciseIPRA.PTm.subst_succ]
+  · simp only [subst_le, subst_ap2, subst_inst2, Syn.subst_var, Syn.repl_zero, subst_repl_shift]
     exact least_step hmono hpt.allOpen.wk hpe.allOpen.wk Prf.hyp0
 
 /-- `lem:demand-least`, chain case: the reverse demand is below every satisfying request vector. -/
@@ -128,8 +126,7 @@ theorem least
       (inst2 p (succ (var 0)) (Syn.shift x))))
     (j : PTm n) : Γ ⊢[PRAAx] le (rd term d j x) (inst2 p j x) := by
   have a := Prf.allE j (least_all hmono hp0 hpt hpe)
-  simp only [subst_le, subst_ap2, subst_inst2, Syn.subst_var, Syn.inst_zero, Syn.subst_inst_shift,
-    ConciseIPRA.PTm.subst_zero, ConciseIPRA.PTm.subst_succ] at a
+  simp only [subst_le, subst_ap2, subst_inst2, Syn.subst_var, Syn.inst_zero, Syn.subst_inst_shift] at a
   exact a
 
 end Demand

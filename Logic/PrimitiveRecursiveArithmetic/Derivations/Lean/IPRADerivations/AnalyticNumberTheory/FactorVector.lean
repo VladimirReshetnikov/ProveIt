@@ -22,8 +22,6 @@ prime indicator `isP`, the product over the primes below `N` is
 The packet's factor trace is replaced by the valuations, which are already primitive recursive.
 -/
 
-set_option linter.unusedSimpArgs false
-
 namespace LeanProofs.IPRA.AnalyticNumberTheory.FactorVector
 
 open_ipra exports
@@ -200,7 +198,7 @@ theorem subst_lpf {m : ℕ} (σ : Fin n → PTm m) (z : PTm n) : Syn.subst σ (l
   simp [lpf, Primes.μz]
 
 theorem subst_isP {m : ℕ} (σ : Fin n → PTm m) (q : PTm n) : Syn.subst σ (isP q) = isP (Syn.subst σ q) := by
-  simp [isP, subst_lpf]
+  simp [isP]
 
 theorem subst_val {m : ℕ} (σ : Fin n → PTm m) (p x : PTm n) :
     Syn.subst σ (val p x) = val (Syn.subst σ p) (Syn.subst σ x) := by
@@ -216,21 +214,21 @@ theorem subst_dvd {m : ℕ} (σ : Fin n → PTm m) (d x : PTm n) :
 
 private theorem pd₀ : ([] : List (Fm PTm 3)) ⊢[PRAAx] pdF := by
   refine ind _ ⟨trivial, trivial, trivial⟩ ?_ ?_
-  · simp only [Fm.subst_imp, Fm.subst_eq, subst_dvd, subst_isP, subst_ap2, Syn.subst_var, Syn.inst_zero,
-      Syn.inst_one, inst_two, ConciseIPRA.PTm.subst_zero, ConciseIPRA.PTm.subst_succ]
+  · simp only [Fm.subst_imp, Fm.subst_eq, subst_isP, subst_ap2, Syn.subst_var, Syn.inst_zero, Syn.inst_one, inst_two,
+      ConciseIPRA.PTm.subst_zero, ConciseIPRA.PTm.subst_succ]
     exact .impI (.impI (.botE _ (.impE (not_dvd_one (Prf.andE₁ (prime_of_isP Prf.hyp1)))
       ((congrAp2 remF (pw_zero _).eqSymm (.eqRefl _)).eqTrans Prf.hyp0))))
-  · simp only [Fm.subst_imp, Fm.subst_eq, subst_dvd, subst_isP, subst_ap2, Syn.subst_var, Syn.repl_zero,
-      repl_one, repl_two, ConciseIPRA.PTm.subst_zero, ConciseIPRA.PTm.subst_succ]
+  · simp only [Fm.subst_imp, Fm.subst_eq, subst_isP, subst_ap2, Syn.subst_var, Syn.repl_zero, repl_one, repl_two,
+      ConciseIPRA.PTm.subst_zero, ConciseIPRA.PTm.subst_succ]
     exact .impI (prime_dvd_pw_step (prime_of_isP Prf.hyp0) (.impE Prf.hyp1 Prf.hyp0))
 
 /-- A prime dividing `x^e` divides `x`. -/
 theorem prime_dvd_pw {q x e : PTm n} (hq : Γ ⊢[PRAAx] prime q) (h : Γ ⊢[PRAAx] dvd q (pw x e)) :
     Γ ⊢[PRAAx] dvd q x := by
   have i := inst (Γ := Γ) pd₀ (![e, q, x] : Fin 3 → PTm n)
-  simp only [pdF, Fm.subst_imp, Fm.subst_eq, subst_dvd, subst_isP, subst_ap2, Syn.subst_var,
-    Matrix.cons_val_zero, Matrix.cons_val_one, Matrix.cons_val_two, Matrix.head_cons, Matrix.tail_cons,
-    ConciseIPRA.PTm.subst_zero, ConciseIPRA.PTm.subst_succ] at i
+  simp only [pdF, Fm.subst_imp, Fm.subst_eq, subst_isP, subst_ap2, Syn.subst_var, Matrix.cons_val_zero,
+    Matrix.cons_val_one, Matrix.cons_val_two, Matrix.head_cons, Matrix.tail_cons, ConciseIPRA.PTm.subst_zero,
+    ConciseIPRA.PTm.subst_succ] at i
   exact .impE (.impE i (isP_of_prime hq)) h
 
 theorem nd_zero {q m : PTm n} (hq : Γ ⊢[PRAAx] prime q) : Γ ⊢[PRAAx] neg (dvd q (R zero m)) :=
@@ -247,18 +245,18 @@ private abbrev ndF : Fm PTm 3 := isP (var 1) ≐ one ⟶ le (var 0) (var 1) ⟶ 
 
 private theorem nd₀ : ([] : List (Fm PTm 3)) ⊢[PRAAx] ndF := by
   refine ind _ ⟨trivial, le_QF _ _, trivial, trivial⟩ ?_ ?_
-  · simp only [Fm.subst_imp, Fm.subst_eq, subst_neg, subst_le, subst_dvd, subst_isP, subst_R, subst_ap2, Syn.subst_var,
-      Syn.inst_zero, Syn.inst_one, inst_two, ConciseIPRA.PTm.subst_zero, ConciseIPRA.PTm.subst_succ]
+  · simp only [Fm.subst_imp, Fm.subst_eq, subst_neg, subst_le, subst_isP, subst_ap2, Syn.subst_var, Syn.inst_zero,
+      Syn.inst_one, inst_two, ConciseIPRA.PTm.subst_zero, ConciseIPRA.PTm.subst_succ]
     exact .impI (.impI (nd_zero (prime_of_isP Prf.hyp1)))
-  · simp only [Fm.subst_imp, Fm.subst_eq, subst_neg, subst_le, subst_dvd, subst_isP, subst_R, subst_ap2, Syn.subst_var,
-      Syn.repl_zero, repl_one, repl_two, ConciseIPRA.PTm.subst_zero, ConciseIPRA.PTm.subst_succ]
+  · simp only [Fm.subst_imp, Fm.subst_eq, subst_neg, subst_le, subst_isP, subst_ap2, Syn.subst_var, Syn.repl_zero,
+      repl_one, repl_two, ConciseIPRA.PTm.subst_zero, ConciseIPRA.PTm.subst_succ]
     exact .impI (.impI (nd_ind_step Prf.hyp1 Prf.hyp0 Prf.hyp1.wk))
 
 /-- A prime `q ≥ N` does not divide `R_N(m)`. -/
 theorem not_dvd_R {q N : PTm n} (m : PTm n) (hq : Γ ⊢[PRAAx] prime q) (h : Γ ⊢[PRAAx] le N q) :
     Γ ⊢[PRAAx] neg (dvd q (R N m)) := by
   have i := inst (Γ := Γ) nd₀ (![N, q, m] : Fin 3 → PTm n)
-  simp only [ndF, Fm.subst_imp, Fm.subst_eq, subst_neg, subst_le, subst_dvd, subst_isP, subst_R, subst_ap2, Syn.subst_var,
+  simp only [ndF, Fm.subst_imp, Fm.subst_eq, subst_neg, subst_le, subst_isP, subst_ap2, Syn.subst_var,
     Matrix.cons_val_zero, Matrix.cons_val_one, Matrix.cons_val_two, Matrix.head_cons, Matrix.tail_cons,
     ConciseIPRA.PTm.subst_zero, ConciseIPRA.PTm.subst_succ] at i
   exact .impE (.impE i (isP_of_prime hq)) h
@@ -268,13 +266,11 @@ private abbrev invF : Fm PTm 2 := var 1 ≐ succ (pred (var 1)) ⟶ Inv (var 0) 
 
 private theorem inv₀ : ([] : List (Fm PTm 2)) ⊢[PRAAx] invF := by
   refine ind _ ⟨trivial, trivial, le_QF _ _, le_QF _ _⟩ ?_ ?_
-  · simp only [Fm.subst_imp, Fm.subst_eq, Fm.subst_and, Fm.subst_or, subst_le, subst_dvd, subst_lpf, subst_R,
-      subst_ap2, PTm.subst_pred, Syn.subst_var, Syn.inst_zero, Syn.inst_one, ConciseIPRA.PTm.subst_zero,
-      ConciseIPRA.PTm.subst_succ]
+  · simp only [Fm.subst_imp, Fm.subst_eq, Fm.subst_and, Fm.subst_or, subst_le, subst_ap2, PTm.subst_pred, Syn.subst_var,
+      Syn.inst_zero, Syn.inst_one, ConciseIPRA.PTm.subst_zero, ConciseIPRA.PTm.subst_succ]
     exact .impI (inv_zero _)
-  · simp only [Fm.subst_imp, Fm.subst_eq, Fm.subst_and, Fm.subst_or, subst_le, subst_dvd, subst_lpf, subst_R,
-      subst_ap2, PTm.subst_pred, Syn.subst_var, Syn.repl_zero, repl_one, ConciseIPRA.PTm.subst_zero,
-      ConciseIPRA.PTm.subst_succ]
+  · simp only [Fm.subst_imp, Fm.subst_eq, Fm.subst_and, Fm.subst_or, subst_le, subst_ap2, PTm.subst_pred, Syn.subst_var,
+      Syn.repl_zero, repl_one, ConciseIPRA.PTm.subst_zero, ConciseIPRA.PTm.subst_succ]
     refine .impI ?_
     exact .orE (isP_01 (var 0 : PTm 2)) (inv_case_zero Prf.hyp0 (Prf.impE Prf.hyp1.wk Prf.hyp1))
       (inv_case_one Prf.hyp1 Prf.hyp0 (not_dvd_R _ (prime_of_isP Prf.hyp0) (le_refl _))
@@ -282,9 +278,9 @@ private theorem inv₀ : ([] : List (Fm PTm 2)) ⊢[PRAAx] invF := by
 
 theorem inv_all {N m : PTm n} (hm : Γ ⊢[PRAAx] m ≐ succ (pred m)) : Γ ⊢[PRAAx] Inv N m := by
   have i := inst (Γ := Γ) inv₀ (![N, m] : Fin 2 → PTm n)
-  simp only [invF, Fm.subst_imp, Fm.subst_eq, Fm.subst_and, Fm.subst_or, subst_le, subst_dvd, subst_lpf, subst_R,
-    subst_ap2, PTm.subst_pred, Syn.subst_var, Matrix.cons_val_zero, Matrix.cons_val_one, Matrix.head_cons,
-    ConciseIPRA.PTm.subst_zero, ConciseIPRA.PTm.subst_succ] at i
+  simp only [invF, Fm.subst_imp, Fm.subst_eq, Fm.subst_and, Fm.subst_or, subst_le, subst_ap2, PTm.subst_pred,
+    Syn.subst_var, Matrix.cons_val_zero, Matrix.cons_val_one, ConciseIPRA.PTm.subst_zero,
+    ConciseIPRA.PTm.subst_succ] at i
   exact .impE i hm
 
 /-! ## Reconstruction and injectivity -/

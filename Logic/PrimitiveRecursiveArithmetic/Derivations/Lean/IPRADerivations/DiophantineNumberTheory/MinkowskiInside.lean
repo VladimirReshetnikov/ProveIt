@@ -124,10 +124,10 @@ theorem inside_at (Φ : Fm PTm 2) (N B x j q : PTm n)
     (hq : Γ ⊢[PRAAx] vectorGuard N q) (hb : Γ ⊢[PRAAx] boxContains N B j q) :
     Γ ⊢[PRAAx] holdsAt Φ (doubleVector N q) x := by
   have first := Prf.allE j h
-  simp only [insideGuarded,Fm.subst_imp,Fm.subst_all,subst_lt,MinkowskiWellFormed.subst_vectorGuard,
-    Foundations.SequenceComposition.subst_length,subst_boxContains,MinkowskiCenterVectors.subst_holdsAt,
-    subst_doubleVector,Syn.subst_var,Syn.up_zero,Syn.up_one,Syn.up_succ,Syn.inst_zero,Syn.inst_succ,
-    Syn.subst_shift,Syn.shift_subst,Syn.subst_inst_shift,Syn.subst_id] at first
+  simp only [Fm.subst_imp, Fm.subst_all, subst_lt, MinkowskiWellFormed.subst_vectorGuard,
+    Foundations.SequenceComposition.subst_length, subst_boxContains, MinkowskiCenterVectors.subst_holdsAt,
+    subst_doubleVector, Syn.subst_var, Syn.up_zero, Syn.up_one, Syn.up_succ, Syn.inst_zero, Syn.inst_succ,
+    Syn.subst_shift, Syn.subst_id] at first
   have second := Prf.allE q (Prf.impE first hj)
   have cancel (t : PTm n) : Syn.subst (Syn.inst q) (Syn.subst (fun i => Syn.shift (var i)) t) = t := by
     simpa only [Syn.shift,Syn.subst_var] using Syn.subst_inst_shift q t

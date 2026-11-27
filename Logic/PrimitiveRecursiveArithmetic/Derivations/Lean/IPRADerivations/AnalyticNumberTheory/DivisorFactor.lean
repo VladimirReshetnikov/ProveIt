@@ -14,8 +14,6 @@ The right side is rewritten as the triple sum `Σ_a Σ_b Σ_{d ≤ mN} [a ∣ m]
 vanishes on both sides).
 -/
 
-set_option linter.unusedSimpArgs false
-
 namespace LeanProofs.IPRA.AnalyticNumberTheory.DivisorFactor
 
 open_ipra exports
@@ -44,8 +42,7 @@ abbrev cval (a b d m N y : PTm n) : PTm n :=
   eqb (rem m a) zero * eqb (rem N b) zero * eqb (a * b) d * inst2 g d y
 
 theorem cC_eval (a b d m N y : PTm n) : Syn.subst ![a, b, d, m, N, y] (cC g) = cval g a b d m N y := by
-  simp only [cC, PTm.subst_mul, subst_eqb, subst_ap2, Syn.subst_var, inst2, Syn.subst_subst,
-    ConciseIPRA.PTm.subst_zero]
+  simp only [cC, PTm.subst_mul, subst_eqb, subst_ap2, Syn.subst_var, Syn.subst_subst, ConciseIPRA.PTm.subst_zero]
   refine congrArg _ ?_
   congr 1; funext k; fin_cases k <;> rfl
 
@@ -175,7 +172,7 @@ theorem pos_sh {x : PTm n} (h : Γ ⊢[PRAAx] x ≐ succ (pred x)) :
 theorem gcd_sh {m N : PTm n} (h : Γ ⊢[PRAAx] gcd m N ≐ one) :
     Γ.map Fm.shift ⊢[PRAAx] gcd (Syn.shift m) (Syn.shift N) ≐ one := by
   have e := h.shift
-  simp only [Fm.shift, Fm.subst_eq, subst_ex2, subst_ap2, ConciseIPRA.PTm.subst_succ, ConciseIPRA.PTm.subst_zero] at e
+  simp only [Fm.shift, Fm.subst_eq, subst_ex2, ConciseIPRA.PTm.subst_succ, ConciseIPRA.PTm.subst_zero] at e
   exact e
 
 /-- To prove a law on divisors of positive coprime inputs, use positivity and coprimality of each pair. -/

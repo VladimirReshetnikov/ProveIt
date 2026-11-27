@@ -14,8 +14,6 @@ For signed coefficients `a = a⁺ − a⁻` (two bodies), `h ≥ 2`, `r ≥ 1`:
   `PowerTransfer.transfer` with `t_d = A(m_d)` and `PowerDivisorPrefix.prefix_identity` for `a⁺` and `a⁻`.
 -/
 
-set_option linter.unusedSimpArgs false
-
 namespace LeanProofs.IPRA.AnalyticNumberTheory.PowerDivisorGrowth
 
 open_ipra exports
@@ -105,7 +103,7 @@ theorem forward_core {h r c : PTm n} (hh : Γ ⊢[PRAAx] le two h) (hr : Γ ⊢[
         (Syn.shift c * pw (quo (Syn.shift N) (pw (succ (var 0)) (Syn.shift h))) (succ (two * Syn.shift r))) := by
       have b := allE_shift hA (quo (Syn.shift N) (pw (succ (var 0)) (Syn.shift h)))
       simp only [subst_le, subst_ap2, PTm.subst_add, PTm.subst_monus, PTm.subst_mul, ConciseIPRA.PTm.subst_succ,
-        ConciseIPRA.PTm.subst_zero, subst_pairT, Syn.subst_var, Fin.cases_zero, subst_cons_shift] at b
+        ConciseIPRA.PTm.subst_zero, Syn.subst_var, Fin.cases_zero, subst_cons_shift] at b
       exact b.wk
     have e1 := btB_at (Γ := Λ) aP (var 0) (Syn.shift N) (Syn.shift h) (Syn.shift y)
     have e2 := btB_at (Γ := Λ) aN (var 0) (Syn.shift N) (Syn.shift h) (Syn.shift y)
@@ -411,7 +409,7 @@ theorem forward_all (aP aN : PTm 2) {y h k c : PTm n} {K C X K' C' : PTm (n + 1)
   subst hK hC hX hK' hC'
   refine .allI ?_
   have H1 := H.shift
-  simp only [GrowthS, Fm.shift, Fm.subst_all, Fm.subst_ex, subst_Mat, up3_v0, up3_v1, up3_v2, up2_v0, up2_v1, up2_v2, up1_v0, up1_v1, up1_v2, inst_v0, inst_v1, subst_up_shift_pal, Syn.subst_inst_shift, Syn.up_zero, upf_one, upf_two, Syn.subst_var, subst_sh, Fin.succ_zero_eq_one, Syn.shift_var, Syn.up_succ, Syn.inst_succ] at H1
+  simp only [Fm.shift, Fm.subst_all, subst_Mat, subst_up_shift_pal, Syn.up_zero, Syn.subst_var, subst_sh] at H1
   have e1 : Syn.shift (Syn.shift (succ (two * k))) = Syn.shift (succ (two * Syn.shift k)) := by
     simp [Syn.shift]
   rw [e1] at H1
@@ -425,8 +423,7 @@ theorem forward_all (aP aN : PTm 2) {y h k c : PTm n} {K C X K' C' : PTm (n + 1)
 theorem growth_forward (aP aN : PTm 2) {h : PTm n} (hh : Γ ⊢[PRAAx] le two h) (y : PTm n) :
     Γ ⊢[PRAAx] GrowthS (AB aP) (AB aN) y ⟶ GrowthS (BB aP) (BB aN) (pairT h y) := by
   refine all_ex_imp_at (succ (two * var 0)) (Cout (var 1) (var 0)) ?_
-  simp only [GrowthS, Fm.shift, Fm.subst_all, Fm.subst_ex, subst_Mat, up3_v0, up3_v1, up3_v2, up2_v0, up2_v1, up2_v2,
-    up1_v0, up1_v1, up1_v2, inst_v0, inst_v1, subst_up_shift_pal, Syn.subst_inst_shift, Syn.up_zero, upf_one, upf_two,
+  simp only [Fm.subst_all, subst_Mat, inst_v0, subst_up_shift_pal, Syn.subst_inst_shift, Syn.up_zero, upf_one, upf_two,
     Syn.subst_var, subst_sh, Fin.succ_zero_eq_one, Syn.shift_var, Syn.up_succ, Syn.inst_succ]
   exact forward_all aP aN (y := Syn.shift (Syn.shift y)) (h := Syn.shift (Syn.shift h)) (k := var 1) (c := var 0)
     (by simp [Syn.shift]) (by simp [Syn.shift]) (by simp [Syn.shift]) (by simp [Syn.shift]) (by simp [Syn.shift])
@@ -459,7 +456,7 @@ theorem backward_all (aP aN : PTm 2) {y h k c : PTm n} {X K C X' K' C' : PTm (n 
   subst hX hK hC hX' hK' hC'
   refine .allI ?_
   have H1 := H.shift
-  simp only [GrowthS, Fm.shift, Fm.subst_all, Fm.subst_ex, subst_Mat, up3_v0, up3_v1, up3_v2, up2_v0, up2_v1, up2_v2, up1_v0, up1_v1, up1_v2, inst_v0, inst_v1, subst_up_shift_pal, Syn.subst_inst_shift, Syn.up_zero, upf_one, upf_two, Syn.subst_var, subst_sh, Fin.succ_zero_eq_one, Syn.shift_var, Syn.up_succ, Syn.inst_succ] at H1
+  simp only [Fm.shift, Fm.subst_all, subst_Mat, subst_up_shift_pal, Syn.up_zero, Syn.subst_var, subst_sh] at H1
   have e1 : Syn.shift (Syn.shift (succ (two * k))) = Syn.shift (succ (two * Syn.shift k)) := by
     simp [Syn.shift]
   have e0 : Syn.shift (Syn.shift (pairT h y)) =
@@ -474,8 +471,7 @@ theorem backward_all (aP aN : PTm 2) {y h k c : PTm n} {X K C X' K' C' : PTm (n 
 theorem growth_backward (aP aN : PTm 2) {h : PTm n} (hh : Γ ⊢[PRAAx] le two h) (y : PTm n) :
     Γ ⊢[PRAAx] GrowthS (BB aP) (BB aN) (pairT h y) ⟶ GrowthS (AB aP) (AB aN) y := by
   refine all_ex_imp_at (succ (two * var 0)) (Cout (var 1) (var 0)) ?_
-  simp only [GrowthS, Fm.shift, Fm.subst_all, Fm.subst_ex, subst_Mat, up3_v0, up3_v1, up3_v2, up2_v0, up2_v1, up2_v2,
-    up1_v0, up1_v1, up1_v2, inst_v0, inst_v1, subst_up_shift_pal, Syn.subst_inst_shift, Syn.up_zero, upf_one, upf_two,
+  simp only [Fm.subst_all, subst_Mat, inst_v0, subst_up_shift_pal, Syn.subst_inst_shift, Syn.up_zero, upf_one, upf_two,
     Syn.subst_var, subst_sh, Fin.succ_zero_eq_one, Syn.shift_var, Syn.up_succ, Syn.inst_succ]
   exact backward_all aP aN (y := Syn.shift (Syn.shift y)) (h := Syn.shift (Syn.shift h)) (k := var 1) (c := var 0)
     (by simp [Syn.shift]) (by simp [Syn.shift]) (by simp [Syn.shift]) (by simp [Syn.shift]) (by simp [Syn.shift])

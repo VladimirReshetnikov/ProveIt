@@ -120,7 +120,7 @@ def argmin (score : PTm 2) (K x : PTm n) : PTm n :=
 
 @[simp] theorem subst_argmin {m : ℕ} (score : PTm 2) (K x : PTm n) (σ : Fin n → PTm m) :
     Syn.subst σ (argmin score K x) = argmin score (Syn.subst σ K) (Syn.subst σ x) := by
-  simp only [argmin, Search.Finite.subst_mu, subst_ap2, ConciseIPRA.PTm.subst_succ]
+  simp only [argmin, Search.Finite.subst_mu, ConciseIPRA.PTm.subst_succ]
   congr 2
   funext i
   cases i using Fin.cases with
@@ -132,9 +132,8 @@ def argmin (score : PTm 2) (K x : PTm n) : PTm n :=
 @[simp] theorem minimumTest_at (score : PTm 2) (i x minimum : PTm n) :
     Search.Finite.applyBody (minimumTest score) i ![x, minimum] =
       monus (inst2 score i x) minimum + monus minimum (inst2 score i x) := by
-  simp only [minimumTest, Search.Finite.applyBody, PTm.subst_add, PTm.subst_monus,
-    subst_inst2, Syn.subst_var, Fin.cases_zero, Fin.cases_succ,
-    Matrix.cons_val_zero, Matrix.cons_val_one, Matrix.head_cons, finCases_one, finCases_two]
+  simp only [minimumTest, Search.Finite.applyBody, PTm.subst_add, PTm.subst_monus, subst_inst2, Syn.subst_var,
+    Fin.cases_zero, Matrix.cons_val_zero, Matrix.cons_val_one, finCases_one, finCases_two]
 
 private theorem test_zero (score : PTm 2) {i x minimum : PTm n}
     (h : Γ ⊢[PRAAx] inst2 score i x ≐ minimum) :
@@ -303,8 +302,8 @@ theorem approximate_witness (net score residual : PTm 2) (domain : Fm PTm 2) (cl
   have hSelected : Γ ⊢[PRAAx] le (inst2 residual (selected net score K x) x)
       (inst2 score (argmin score K x) x + errorLower) := by
     have h := Prf.allE (argmin score K x) hEvaluationLower
-    simp only [Fm.subst_imp, subst_le, subst_inst2, subst_argmin, PTm.subst_add,
-      Syn.subst_var, Syn.inst_zero, Syn.subst_inst_shift] at h
+    simp only [Fm.subst_imp, subst_le, subst_inst2, PTm.subst_add, Syn.subst_var, Syn.inst_zero,
+      Syn.subst_inst_shift] at h
     exact Prf.impE h hIndex
   refine .exE (.impE hCoverage hWitnessDomain) ?_
   let coverCase := le (var 0) (Syn.shift K) ⋏

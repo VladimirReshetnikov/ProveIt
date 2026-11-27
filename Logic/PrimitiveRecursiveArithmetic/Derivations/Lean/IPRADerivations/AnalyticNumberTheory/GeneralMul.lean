@@ -16,8 +16,6 @@ With `e(q, x) = [q prime][q ∣ x]`:
   `rad(m) rad(n) ≥ 1`.
 -/
 
-set_option linter.unusedSimpArgs false
-
 namespace LeanProofs.IPRA.AnalyticNumberTheory.GeneralMul
 
 open_ipra exports
@@ -152,7 +150,7 @@ theorem pp_split (F : PTm 2) (hF : ∀ {k : ℕ} (q x y : PTm k), inst2 F q x = 
     refine (pw_add _ _ _).eqSymm.eqTrans (.eqTrans ?_ (pw_add _ _ _))
     refine congrAp2 powF ?_ (.eqRefl _)
     have e : Syn.shift (gcd m N) = gcd (Syn.shift m) (Syn.shift N) := by
-      simp only [Syn.shift, subst_ex2, ConciseIPRA.PTm.subst_succ, ConciseIPRA.PTm.subst_zero]
+      simp only [Syn.shift, subst_ex2, ConciseIPRA.PTm.subst_succ]
     rw [SumPhi.shift_mul', e]
     exact e_split (GcdFiber.shift_pos hm).wk (GcdFiber.shift_pos hN).wk _
   have s₁ := prod2_mul (Γ := Γ) (X3 F) (Y3 F) (succ (m * N)) (m * N) (gcd m N)

@@ -17,8 +17,6 @@ and `h(j) = 1` otherwise, and `P = ∏_{j<n} h(j)`:
 * `gcd(n, P) = 1`, so cancelling `P` gives `a^{φ(n)} ≡ 1`.
 -/
 
-set_option linter.unusedSimpArgs false
-
 namespace LeanProofs.IPRA.AnalyticNumberTheory.Euler
 
 open_ipra exports
@@ -142,12 +140,12 @@ abbrev q3 : PTm 3 := pw (var 1) e3
 abbrev hv (y N : PTm n) : PTm n := eqb (gcd y N) one * y + monus one (eqb (gcd y N) one)
 
 theorem inst3_e (y a N : PTm n) : inst3 e3 y a N = eqb (gcd y N) one := by
-  simp only [inst3, subst_eqb, subst_ex2, Syn.subst_var, Matrix.cons_val_zero, Matrix.cons_val_one,
-    Matrix.cons_val_two, Matrix.head_cons, Matrix.tail_cons, ConciseIPRA.PTm.subst_succ, ConciseIPRA.PTm.subst_zero]
+  simp only [inst3, subst_eqb, subst_ex2, Syn.subst_var, Matrix.cons_val_zero, Matrix.cons_val_two, Matrix.head_cons,
+    Matrix.tail_cons, ConciseIPRA.PTm.subst_succ, ConciseIPRA.PTm.subst_zero]
 theorem inst3_h (y a N : PTm n) : inst3 h3 y a N = hv y N := by
   simp only [inst3, PTm.subst_add, PTm.subst_mul, PTm.subst_monus, subst_eqb, subst_ex2, Syn.subst_var,
-    Matrix.cons_val_zero, Matrix.cons_val_one, Matrix.cons_val_two, Matrix.head_cons, Matrix.tail_cons,
-    ConciseIPRA.PTm.subst_succ, ConciseIPRA.PTm.subst_zero]
+    Matrix.cons_val_zero, Matrix.cons_val_two, Matrix.head_cons, Matrix.tail_cons, ConciseIPRA.PTm.subst_succ,
+    ConciseIPRA.PTm.subst_zero]
 theorem inst3_s (y a N : PTm n) : inst3 s3 y a N = rem (a * y) N := by
   simp [inst3]
 theorem inst3_t (b : PTm 2) (y a N : PTm n) : inst3 (t3 b) y a N = rem (inst2 b a N * y) N := by
@@ -408,10 +406,10 @@ abbrev b₂ : PTm 2 := pred (var 1) * b₁
 
 theorem inst2_b₁ (a N : PTm n) : inst2 b₁ a N = Bezout.cur one zero (succ N) a N := by
   simp only [inst2, Bezout.subst_cur, Syn.subst_var, Matrix.cons_val_zero, Matrix.cons_val_one,
-    Matrix.head_cons, ConciseIPRA.PTm.subst_succ]
+    ConciseIPRA.PTm.subst_succ]
 theorem inst2_b₂ (a N : PTm n) : inst2 b₂ a N = pred N * Bezout.cur one zero (succ N) a N := by
   simp only [inst2, PTm.subst_mul, PTm.subst_pred, Bezout.subst_cur, Syn.subst_var, Matrix.cons_val_zero,
-    Matrix.cons_val_one, Matrix.head_cons, ConciseIPRA.PTm.subst_succ]
+    Matrix.cons_val_one, ConciseIPRA.PTm.subst_succ]
 
 /-- `thm:euler` at arbitrary terms. -/
 theorem euler_at {a N : PTm n} (ha : Γ ⊢[PRAAx] gcd a N ≐ one) (hN : Γ ⊢[PRAAx] N ≐ succ (pred N)) :

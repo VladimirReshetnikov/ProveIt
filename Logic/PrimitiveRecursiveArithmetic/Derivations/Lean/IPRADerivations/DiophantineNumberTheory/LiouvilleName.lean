@@ -64,7 +64,7 @@ theorem P_zero : Γ ⊢[PRAAx] Pn (zero : PTm n) ≐ zero := by
 theorem P_succ (k : PTm n) : Γ ⊢[PRAAx] Pn (succ k) ≐ Pn k * pw (qn k) k + one := by
   have h := rec1_succ (Γ := Γ) zero lvStep k
   simp only [PTm.subst_add, PTm.subst_mul, subst_ap2, ConciseIPRA.PTm.subst_succ, ConciseIPRA.PTm.subst_zero,
-    Syn.subst_var, Matrix.cons_val_zero, Matrix.cons_val_one, Matrix.head_cons] at h
+    Syn.subst_var, Matrix.cons_val_zero, Matrix.cons_val_one] at h
   exact h
 
 /-- `q_{k+1} = q_k^k · q_k`. -/
@@ -209,9 +209,8 @@ theorem m_alg {m k t : PTm n} (e : Γ ⊢[PRAAx] m ≐ succ k + t) : Γ ⊢[PRAA
 `r_m − r_k + 1/q_m ≤ 2/q_{k+1}`. -/
 theorem tail_bound {m k : PTm n} (h : Γ ⊢[PRAAx] lt k m) : Γ ⊢[PRAAx] Tail m k := by
   have i := inst (Γ := Γ) tail_open (![monus m (succ k), k] : Fin 2 → PTm n)
-  simp only [tailF, subst_le, subst_ap1, subst_ap2, PTm.subst_add, PTm.subst_mul, Syn.subst_var,
-    Matrix.cons_val_zero, Matrix.cons_val_one, Matrix.head_cons, ConciseIPRA.PTm.subst_zero,
-    ConciseIPRA.PTm.subst_succ] at i
+  simp only [tailF, subst_le, subst_ap1, subst_ap2, PTm.subst_add, PTm.subst_mul, Syn.subst_var, Matrix.cons_val_zero,
+    Matrix.cons_val_one, ConciseIPRA.PTm.subst_zero, ConciseIPRA.PTm.subst_succ] at i
   exact tail_congr (m_alg (eq_add_of_le h)) i
 
 /-! ## Lowest terms -/

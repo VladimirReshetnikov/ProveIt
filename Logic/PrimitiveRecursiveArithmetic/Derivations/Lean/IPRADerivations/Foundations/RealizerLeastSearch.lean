@@ -58,7 +58,7 @@ ipra_subst test
   rw [Fm.subst_subst]
   congr 1
   funext j
-  fin_cases j <;> simp [Function.comp_def]
+  fin_cases j <;> simp
 @[simp] theorem subst_selected {m : ℕ} (σ : Fin n → PTm m) (X : Interface) (D : Code) (C q p : PTm n) :
     Syn.subst σ (selected X D C q p) = selected X D (Syn.subst σ C) (Syn.subst σ q) (Syn.subst σ p) := by simp [selected,BooleanizationCorollaries.first,Search.mu]
 
@@ -201,8 +201,8 @@ theorem no_hit_at (X : Interface) (D : Code) (C q p i : PTm n)
     (h : Γ ⊢[PRAAx] noHit X D C q p) (hi : Γ ⊢[PRAAx] lt i (ap2 D.bound q p)) :
     Γ ⊢[PRAAx] test X D C q p i ≐ zero := by
   have one := Prf.allE i h
-  simp only [noHit,Fm.subst_imp,Fm.subst_eq,subst_lt,subst_test,subst_ap2,
-    Syn.subst_var,Syn.inst_zero,Syn.subst_inst_shift,ConciseIPRA.PTm.subst_zero] at one
+  simp only [Fm.subst_imp, Fm.subst_eq, subst_lt, subst_test, subst_ap2, Syn.subst_var, Syn.inst_zero,
+    Syn.subst_inst_shift, ConciseIPRA.PTm.subst_zero] at one
   exact .impE one hi
 
 theorem selected_default (X : Interface) (D : Code) (C q p : PTm n)

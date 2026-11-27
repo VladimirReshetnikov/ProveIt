@@ -14,8 +14,6 @@ whose two arithmetic ingredients are proved here:
 * `floor_square_sum`: `Σ_{j≤N} ⌊x/j²⌋ ≤ 2x` — the integer form of `ζ(2) ≤ 2`, by telescoping `floor_step`.
 -/
 
-set_option linter.unusedSimpArgs false
-
 namespace LeanProofs.IPRA.AnalyticNumberTheory.FloorTelescope
 
 open_ipra exports
@@ -97,7 +95,7 @@ private theorem tel₀ : ([] : List (Fm PTm 2)) ⊢[PRAAx] telF := by
 theorem floor_square_sum (k x : PTm n) : Γ ⊢[PRAAx] le (ap2 (sumF qB) (succ k) x) (two * x) := by
   have h := inst (Γ := Γ) tel₀ (![k, x] : Fin 2 → PTm n)
   simp only [subst_le, subst_ap2, PTm.subst_add, PTm.subst_mul, Syn.subst_var, Matrix.cons_val_zero,
-    Matrix.cons_val_one, Matrix.head_cons, ConciseIPRA.PTm.subst_zero, ConciseIPRA.PTm.subst_succ] at h
+    Matrix.cons_val_one, ConciseIPRA.PTm.subst_zero, ConciseIPRA.PTm.subst_succ] at h
   exact le_trans (le_add_right _ _) h
 
 end LeanProofs.IPRA.AnalyticNumberTheory.FloorTelescope

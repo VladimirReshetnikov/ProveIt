@@ -17,8 +17,6 @@ with the number of terms as an iPRA variable and denominators cleared.
   `∑_{i<T−1} m^{T−2−i}` of `∑_{i<T−1} m^i` (`sum_reflect`).
 -/
 
-set_option linter.unusedSimpArgs false
-
 namespace LeanProofs.IPRA.AnalyticNumberTheory.GoldbachGeometric
 
 open_ipra exports
@@ -52,9 +50,9 @@ private theorem geom₀ : ([] : List (Fm PTm 2)) ⊢[PRAAx] geomF := by
 theorem geom_sum {x : PTm n} (hx : Γ ⊢[PRAAx] le one x) (I : PTm n) :
     Γ ⊢[PRAAx] pw x I ≐ monus x one * ap2 (sumF gB) I x + one := by
   have i := inst (Γ := Γ) geom₀ (![I, x] : Fin 2 → PTm n)
-  simp only [geomF, Fm.subst_imp, Fm.subst_eq, subst_le, subst_ap2, PTm.subst_mul, PTm.subst_add,
-    PTm.subst_monus, Syn.subst_var, Matrix.cons_val_zero, Matrix.cons_val_one, Matrix.head_cons,
-    ConciseIPRA.PTm.subst_zero, ConciseIPRA.PTm.subst_succ] at i
+  simp only [geomF, Fm.subst_imp, Fm.subst_eq, subst_le, subst_ap2, PTm.subst_mul, PTm.subst_add, PTm.subst_monus,
+    Syn.subst_var, Matrix.cons_val_zero, Matrix.cons_val_one, ConciseIPRA.PTm.subst_zero,
+    ConciseIPRA.PTm.subst_succ] at i
   exact .impE i hx
 
 theorem one_le_pw {r : PTm n} (hr : Γ ⊢[PRAAx] le one r) (s : PTm n) : Γ ⊢[PRAAx] le one (pw r s) :=

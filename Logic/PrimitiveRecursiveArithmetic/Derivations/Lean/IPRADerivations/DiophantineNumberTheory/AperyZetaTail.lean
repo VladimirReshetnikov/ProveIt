@@ -111,8 +111,7 @@ theorem zeta_tail (u v : PTm 2) {x r M' F : PTm k}
         two * (succ (Syn.shift M') + succ (Syn.var 0)) * (succ (Syn.shift M') + succ (Syn.var 0)) *
           inst2 v (succ (Syn.var 0)) (Syn.shift x) ≐ Syn.shift F) := by
       have a := Prf.allE (succ (Syn.var 0)) hv.shift
-      simp [Fm.shift, Syn.subst_shift, Syn.up_succ, ← Syn.shift_subst, Syn.subst_subst, subst_le,
-        subst_inst2] at a
+      simp [Syn.subst_shift, Syn.up_succ, Syn.subst_subst, subst_le, subst_inst2] at a
       exact a
     have hp0 := Prf.impE hv1.wk hl'
     have e : Δ ⊢[PRAAx] succ (succ (Syn.shift M') + Syn.var 0) ≐ succ (Syn.shift M') + succ (Syn.var 0) :=
@@ -124,7 +123,7 @@ theorem zeta_tail (u v : PTm 2) {x r M' F : PTm k}
   have t := telescope u v step
   have h0 := Prf.allE zero hv
   simp only [Fm.subst_imp, Fm.subst_eq, subst_le, subst_inst2, PTm.subst_add, PTm.subst_mul, Syn.subst_var,
-    Syn.inst_zero, Syn.subst_inst_shift, ConciseIPRA.PTm.subst_zero, ConciseIPRA.PTm.subst_succ, subst_two'] at h0
+    Syn.inst_zero, Syn.subst_inst_shift, ConciseIPRA.PTm.subst_zero, ConciseIPRA.PTm.subst_succ] at h0
   have e0 := natEq (Prf.impE h0 (zero_le r))
   ipra_le 2 * (𝔞 M' + 1) * (𝔞 M' + 1) * sl t + 2 * (𝔞 M' + 1) * (𝔞 M' + 1) * 𝔞 (inst2 v r x) using
     linear_combination -e0

@@ -91,7 +91,7 @@ theorem unique_step {a x y σ eW sx sy ω : ZT k} {q Nt K' qr : PTm k}
   have hT : ZT.toZ Γ (ev (pd P 0) (pt y)) * ZT.toZ Γ (x + -y) +
       ZT.toZ Γ (x + -y) * ZT.toZ Γ (x + -y) * ZT.toZ Γ (tq P (pt y) (pt (x + -y)) 0 0) =
       𝔞 (pw q Nt) * (ZT.toZ Γ sx - ZT.toZ Γ sy) := by
-    simp only [ZT.toZ_add, ZT.toZ_neg, pt]
+    simp only [ZT.toZ_add, ZT.toZ_neg]
     rw [ec] at eT
     linear_combination -eT - eV + ex - ey
   have hJ : ZT.toZ Γ (ev (pd P 0) (pt y)) - ZT.toZ Γ (ev (pd P 0) (pt a)) =

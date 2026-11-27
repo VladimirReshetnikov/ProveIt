@@ -121,8 +121,7 @@ theorem phi_period {P : PTm n} (hP : Γ ⊢[PRAAx] P ≐ succ (pred P)) (x : PTm
     Γ ⊢[PRAAx] Phi (x + P) P ≐ Phi x P + phi P := by
   have i := inst (Γ := Γ) per_open (![x, P] : Fin 2 → PTm n)
   simp only [perF, Fm.subst_imp, Fm.subst_eq, subst_ap2, PTm.subst_add, PTm.subst_pred, Syn.subst_var,
-    Matrix.cons_val_zero, Matrix.cons_val_one, Matrix.head_cons, ConciseIPRA.PTm.subst_zero,
-    ConciseIPRA.PTm.subst_succ] at i
+    Matrix.cons_val_zero, Matrix.cons_val_one, ConciseIPRA.PTm.subst_succ] at i
   exact .impE i hP
 
 end LeanProofs.IPRA.AnalyticNumberTheory.SievePeriod

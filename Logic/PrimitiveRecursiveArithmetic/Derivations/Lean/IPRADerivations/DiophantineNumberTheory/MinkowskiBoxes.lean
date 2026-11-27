@@ -58,7 +58,7 @@ def sides (N L U : PTm n) : Fm PTm n :=
 theorem side_at (N L U k : PTm n) (h : Γ ⊢[PRAAx] sides N L U)
     (hk : Γ ⊢[PRAAx] lt k N) : Γ ⊢[PRAAx] side L U k := by
   have all := Prf.allE k h
-  simp only [sides, Fm.subst_imp, subst_lt, subst_side, Syn.subst_var, Syn.inst_zero, Syn.subst_inst_shift] at all
+  simp only [Fm.subst_imp, subst_lt, subst_side, Syn.subst_var, Syn.inst_zero, Syn.subst_inst_shift] at all
   exact .impE all hk
 
 theorem width_positive (L U k : PTm n) (h : Γ ⊢[PRAAx] side L U k) :

@@ -264,7 +264,7 @@ theorem recover {r y K : PTm n} (hr : Γ ⊢[PRAAx] le one r) (hW : Γ ⊢[PRAAx
     have d := diff_bound (Γ := C) aP aN hr.wk hW.wk N
     have w : C ⊢[PRAAx] le (absd (Wv aP r y N) (Wv aN r y N)) (pw two K * uu r N) := by
       have b := Prf.allE N (hW.wk : C ⊢[PRAAx] _)
-      simp only [WBound, subst_le, subst_ap2, PTm.subst_add, PTm.subst_mul, PTm.subst_monus, subst_pairT,
+      simp only [subst_le, subst_ap2, PTm.subst_add, PTm.subst_mul, PTm.subst_monus, subst_pairT,
         LeanProofs.IPRA.PTm.subst_pred, ConciseIPRA.PTm.subst_succ, ConciseIPRA.PTm.subst_zero, Syn.subst_var,
         Syn.inst_zero, Syn.subst_inst_shift] at b
       exact b

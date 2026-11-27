@@ -15,8 +15,6 @@ Packet: `analytic-number-theory/robin_ipra_research_2026-11-19`, `paper/lcm_brid
   every `q` — the Weierstrass factor `1 − q^{−a_q−1}` against the factor `G` of `SigmaProduct.sigma_product`.
 -/
 
-set_option linter.unusedSimpArgs false
-
 namespace LeanProofs.IPRA.AnalyticNumberTheory.LcmBridgeExact
 
 open_ipra exports
