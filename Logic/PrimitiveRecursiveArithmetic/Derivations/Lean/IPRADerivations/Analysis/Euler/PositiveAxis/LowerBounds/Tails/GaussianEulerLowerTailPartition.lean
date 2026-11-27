@@ -149,4 +149,7 @@ theorem actual_lower_partition_width_closed : ([] : List (Fm PTm 0)) ⊢[PRAAx] 
     (totalWidth (var 0) (var 1) (var 2) (var 3) ≐ lowerWidth (var 1) (var 2) (var 3)*pw (var 0) (var 3)) :=
   closeUniv 4 (GaussianEulerLowerTailRootGrid.time_width _ _ _ _)
 
+@[simp] theorem subst_panelWidth {m : ℕ} (σ : Fin n → PTm m) (i H p q A : PTm n) :
+    Syn.subst σ (panelWidth i H p q A) = panelWidth (Syn.subst σ i) (Syn.subst σ H) (Syn.subst σ p) (Syn.subst σ q) (Syn.subst σ A) := by simp [panelWidth]
+
 end LeanProofs.IPRA.Analysis.GaussianEulerLowerTailPartition

@@ -27,23 +27,12 @@ open GaussianRationalHorner (qmul positive_product)
 open GaussianRationalMetric (bounded)
 open GaussianRationalReciprocal (bound_congr)
 open GaussianCoefficientNameBounds (unit unit_positive)
+open GaussianEulerCompactLowerTail (subst_rootDenominator subst_rootNumerator subst_timeDenominator subst_timeNumerator)
+open GaussianEulerLowerTailPartition (subst_panelWidth)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
-private theorem subst_rootDenominator {m : ℕ} (σ : Fin n → PTm m) (H q A R : PTm n) :
-    Syn.subst σ (rootDenominator H q A R) = rootDenominator (Syn.subst σ H) (Syn.subst σ q) (Syn.subst σ A) (Syn.subst σ R) :=
-  by simp [rootDenominator,GaussianGammaIntegralCutoffs.height,GaussianGammaIntegralCutoffs.tailCoefficient]
-private theorem subst_rootNumerator {m : ℕ} (σ : Fin n → PTm m) (i H p q : PTm n) :
-    Syn.subst σ (rootNumerator i H p q) = rootNumerator (Syn.subst σ i) (Syn.subst σ H) (Syn.subst σ p) (Syn.subst σ q) :=
-  by simp [rootNumerator,GaussianEulerLowerTailRootGrid.rootRatio]
-private theorem subst_timeNumerator {m : ℕ} (σ : Fin n → PTm m) (i H p q A : PTm n) :
-    Syn.subst σ (timeNumerator i H p q A) = timeNumerator (Syn.subst σ i) (Syn.subst σ H) (Syn.subst σ p) (Syn.subst σ q) (Syn.subst σ A) := by simp [timeNumerator,subst_rootNumerator]
-private theorem subst_timeDenominator {m : ℕ} (σ : Fin n → PTm m) (H q A R : PTm n) :
-    Syn.subst σ (timeDenominator H q A R) = timeDenominator (Syn.subst σ H) (Syn.subst σ q) (Syn.subst σ A) (Syn.subst σ R) := by simp [timeDenominator,subst_rootDenominator]
 attribute [local simp] subst_rootDenominator subst_rootNumerator subst_timeNumerator subst_timeDenominator
-
-@[simp] private theorem subst_panelWidth {m : ℕ} (σ : Fin n → PTm m) (i H p q A : PTm n) :
-    Syn.subst σ (panelWidth i H p q A) = panelWidth (Syn.subst σ i) (Syn.subst σ H) (Syn.subst σ p) (Syn.subst σ q) (Syn.subst σ A) := by simp [panelWidth]
 
 def gridData (s H p q k R x : PTm n) : PTm n := sampleData s (totalWidth H p q (succ k)) (timeNumerator zero H p q (succ k))
   (totalWidth H p q (succ k)) (timeDenominator H q (succ k) R) x

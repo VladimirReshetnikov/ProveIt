@@ -29,6 +29,7 @@ open GaussianPartitionedFiniteSum (block blockBody block_at)
 open GaussianRationalFiniteSum (sum multiplyBody multiply_body_at sum_index_congr sum_multiply)
 open GaussianRationalSyntheticDivision (qmul_congr)
 open GaussianUniformFiniteSumBound (summandsBounded uniform_sum_bound)
+open GaussianEulerCompactLowerTail renaming subst_rootDenominator → subst_rootDen, subst_rootNumerator → subst_rootNum, subst_timeDenominator → subst_timeDen, subst_timeNumerator → subst_timeNum
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 local notation "BlockNum" => GaussianEulerLowerBlockWeight.numerator
@@ -57,18 +58,6 @@ def rightBounds (F : PR 3) (x s N p q k R J : PTm n) : Fm PTm n :=
         unit (Syn.shift s)+num 3*pw (rootNumerator (succ (var 0)) (Syn.shift N) (Syn.shift p) (Syn.shift q)) (Syn.shift k)))
       (pw (rootNumerator (succ (var 0)) (Syn.shift N) (Syn.shift p) (Syn.shift q)) (Syn.shift k)*unit (Syn.shift s)))
 
-private theorem subst_rootNum {m : ℕ} (σ : Fin n → PTm m) (i N p q : PTm n) :
-    Syn.subst σ (rootNumerator i N p q) = rootNumerator (Syn.subst σ i) (Syn.subst σ N) (Syn.subst σ p) (Syn.subst σ q) := by
-  simp [rootNumerator,rootRatio]
-private theorem subst_rootDen {m : ℕ} (σ : Fin n → PTm m) (N q A R : PTm n) :
-    Syn.subst σ (rootDenominator N q A R) = rootDenominator (Syn.subst σ N) (Syn.subst σ q) (Syn.subst σ A) (Syn.subst σ R) := by
-  simp [rootDenominator,GaussianGammaIntegralCutoffs.height,GaussianGammaIntegralCutoffs.tailCoefficient,Products.fact]
-private theorem subst_timeNum {m : ℕ} (σ : Fin n → PTm m) (i N p q A : PTm n) :
-    Syn.subst σ (timeNumerator i N p q A) =
-      timeNumerator (Syn.subst σ i) (Syn.subst σ N) (Syn.subst σ p) (Syn.subst σ q) (Syn.subst σ A) := by simp [timeNumerator,subst_rootNum]
-private theorem subst_timeDen {m : ℕ} (σ : Fin n → PTm m) (N q A R : PTm n) :
-    Syn.subst σ (timeDenominator N q A R) =
-      timeDenominator (Syn.subst σ N) (Syn.subst σ q) (Syn.subst σ A) (Syn.subst σ R) := by simp [timeDenominator,subst_rootDen]
 private theorem subst_rightTime {m : ℕ} (σ : Fin n → PTm m) (i N p q A R : PTm n) :
     Syn.subst σ (rightTime i N p q A R) =
       rightTime (Syn.subst σ i) (Syn.subst σ N) (Syn.subst σ p) (Syn.subst σ q) (Syn.subst σ A) (Syn.subst σ R) := by

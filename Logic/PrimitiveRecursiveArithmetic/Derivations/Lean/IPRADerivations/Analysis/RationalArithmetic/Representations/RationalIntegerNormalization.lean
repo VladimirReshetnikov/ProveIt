@@ -209,4 +209,10 @@ theorem integer_normalization_closed :
           (ap3 normalizeF (var 0) (var 1) (var 4) ≐ integerCode (⟨var 2,var 3⟩ : ZT 5))) :=
   closeUniv 5 (.impI (.impI ((normalize_at _ _ _).eqTrans (normalize_integer _ _ _ Prf.hyp1 Prf.hyp0))))
 
+theorem normalize_unit_denominator (a : ZT n) : Γ ⊢[PRAAx] denominatorOf (normalize a one) ≐ one := by
+  have e := normalize_integer (Γ := Γ) a a one (le_refl one)
+    (ZT.derive (by simp only [ZT.toZ_mul,ZT.toZ_ofNat]; ipra_simps; ring))
+  exact (congrSucc (congrSnd e)).eqTrans (congrSucc (snd_pair (pairT
+    (RationalIntegerNormalization.positivePart a) (RationalIntegerNormalization.negativePart a)) zero))
+
 end LeanProofs.IPRA.Analysis.RationalIntegerNormalization

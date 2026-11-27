@@ -50,17 +50,17 @@ def weightedPanelBody : PTm 2 := multiplyBody (blockBody cutF (sampleBody evalua
 def panelData (s z R B N p q k : PTm n) : PTm n :=
   pairT (weightedPoint N p q k R) (pairT (cutData N p q (succ k)) (gridData s z R B N p q k))
 
-private theorem subst_timeNumerator {m : ℕ} (σ : Fin n → PTm m) (i N p q A : PTm n) :
+theorem subst_timeNumerator {m : ℕ} (σ : Fin n → PTm m) (i N p q A : PTm n) :
     Syn.subst σ (timeNumerator i N p q A) =
       timeNumerator (Syn.subst σ i) (Syn.subst σ N) (Syn.subst σ p) (Syn.subst σ q) (Syn.subst σ A) :=
   by simp [timeNumerator,rootNumerator,GaussianEulerLowerTailRootGrid.rootRatio]
-private theorem subst_timeDenominator {m : ℕ} (σ : Fin n → PTm m) (N q A R : PTm n) :
+theorem subst_timeDenominator {m : ℕ} (σ : Fin n → PTm m) (N q A R : PTm n) :
     Syn.subst σ (timeDenominator N q A R) = timeDenominator (Syn.subst σ N) (Syn.subst σ q) (Syn.subst σ A) (Syn.subst σ R) :=
   by simp [timeDenominator,rootDenominator,GaussianGammaIntegralCutoffs.height,GaussianGammaIntegralCutoffs.tailCoefficient,Products.fact]
-private theorem subst_rootDenominator {m : ℕ} (σ : Fin n → PTm m) (N q A R : PTm n) :
+theorem subst_rootDenominator {m : ℕ} (σ : Fin n → PTm m) (N q A R : PTm n) :
     Syn.subst σ (rootDenominator N q A R) = rootDenominator (Syn.subst σ N) (Syn.subst σ q) (Syn.subst σ A) (Syn.subst σ R) :=
   by simp [rootDenominator,GaussianGammaIntegralCutoffs.height,GaussianGammaIntegralCutoffs.tailCoefficient,Products.fact]
-private theorem subst_rootNumerator {m : ℕ} (σ : Fin n → PTm m) (i N p q : PTm n) :
+theorem subst_rootNumerator {m : ℕ} (σ : Fin n → PTm m) (i N p q : PTm n) :
     Syn.subst σ (rootNumerator i N p q) = rootNumerator (Syn.subst σ i) (Syn.subst σ N) (Syn.subst σ p) (Syn.subst σ q) :=
   by simp [rootNumerator,GaussianEulerLowerTailRootGrid.rootRatio]
 

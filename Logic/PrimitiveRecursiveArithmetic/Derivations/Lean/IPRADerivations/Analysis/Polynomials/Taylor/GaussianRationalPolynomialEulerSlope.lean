@@ -26,14 +26,9 @@ open GaussianRationalSumAlgebra (qadd_associative)
 open GaussianReciprocalHorner (qadd_commutative)
 open LeanProofs.IPRA.Foundations.MasterCertificate (entry)
 open LeanProofs.IPRA.Foundations.SequenceComposition (length)
+open GaussianRationalPolynomialBuffers renaming distribute_right → right_distribute
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
-
-private theorem right_distribute (a b t : PTm n) : Γ ⊢[PRAAx]
-    qmul (qadd a b) t ≐ qadd (qmul a t) (qmul b t) :=
-  (GaussianRationalPowerAlgebra.qmul_commutative _ _).eqTrans
-    ((GaussianRationalCoefficientScaling.qmul_add _ _ _).eqTrans
-      (qadd_congr (GaussianRationalPowerAlgebra.qmul_commutative _ _) (GaussianRationalPowerAlgebra.qmul_commutative _ _)))
 
 private theorem scale_sum (m a b : PTm n) : Γ ⊢[PRAAx]
     natScale m (qadd a b) ≐ qadd (natScale m a) (natScale m b) :=
