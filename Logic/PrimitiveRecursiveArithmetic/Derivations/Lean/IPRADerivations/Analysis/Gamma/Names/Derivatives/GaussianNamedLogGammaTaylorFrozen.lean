@@ -1,4 +1,4 @@
-import IPRADerivations.Analysis.Gamma.Digamma.LogGammaDerivative.GaussianLogGammaEulerNamedDigamma
+import IPRADerivations.Analysis.Gamma.Digamma.LogGammaDerivative.Named.GaussianLogGammaEulerNamedDigamma
 import IPRADerivations.Analysis.Gamma.Digamma.LogGammaDerivative.GaussianLogGammaEulerSampleDigamma
 import IPRADerivations.Analysis.Names.FiniteOperations.Products.Bounds.GaussianNamedMultiplyRate
 import IPRADerivations.Analysis.Exponential.PositiveAxis.NamedValues.GaussianSignedNameExponentialOrder

@@ -1,5 +1,5 @@
 import IPRADerivations.Analysis.Gamma.EulerProducts.LogGamma.Derivatives.GaussianLogGammaEulerSlopeContinuity
-import IPRADerivations.Analysis.Gamma.Digamma.LogGammaDerivative.GaussianLogGammaEulerDigammaFractionsCofinal
+import IPRADerivations.Analysis.Gamma.Digamma.LogGammaDerivative.Fractions.GaussianLogGammaEulerDigammaFractionsCofinal
 import IPRADerivations.Analysis.Names.Rates.Moduli.GaussianNamedLipschitzRate
 import IPRADerivations.Analysis.Names.Rates.Transport.GaussianNamedRateTransport
 

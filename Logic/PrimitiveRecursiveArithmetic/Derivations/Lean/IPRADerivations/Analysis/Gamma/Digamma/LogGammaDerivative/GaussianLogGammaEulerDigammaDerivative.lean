@@ -1,5 +1,5 @@
 import IPRADerivations.Analysis.Gamma.EulerProducts.LogGamma.Derivatives.GaussianLogGammaEulerDerivativeQuotient
-import IPRADerivations.Analysis.Gamma.Digamma.LogGammaDerivative.GaussianLogGammaEulerDigammaFractionsCofinal
+import IPRADerivations.Analysis.Gamma.Digamma.LogGammaDerivative.Fractions.GaussianLogGammaEulerDigammaFractionsCofinal
 
 /-!
 # The digamma series as the derivative of cofinal log-Gamma

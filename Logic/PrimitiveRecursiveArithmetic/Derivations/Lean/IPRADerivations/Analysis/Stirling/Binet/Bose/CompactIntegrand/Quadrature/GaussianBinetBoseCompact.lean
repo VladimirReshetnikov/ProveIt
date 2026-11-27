@@ -1,6 +1,6 @@
 import IPRADerivations.Analysis.Stirling.Binet.Oscillatory.Arctangent.Quadrature.GaussianBinetArctangentTimeRate
 import IPRADerivations.Analysis.Stirling.Binet.Bose.CompactIntegrand.DenominatorBounds.GaussianBinetBoseReciprocalTimeRate
-import IPRADerivations.Analysis.Euler.PowerScaling.Named.GaussianEulerNamedPowerScalingPowerFrozen
+import IPRADerivations.Analysis.Euler.PowerScaling.Named.Parameters.GaussianEulerNamedPowerScalingPowerFrozen
 
 /-!
 # The original second-Binet compact quadrature away from zero

@@ -1,4 +1,4 @@
-import IPRADerivations.Analysis.Euler.PowerScaling.Named.GaussianEulerNamedPowerScalingCutoff
+import IPRADerivations.Analysis.Euler.PowerScaling.Named.Exhaustion.GaussianEulerNamedPowerScalingCutoff
 
 /-!
 # The actual named power-damped Euler integral is the named Gamma product

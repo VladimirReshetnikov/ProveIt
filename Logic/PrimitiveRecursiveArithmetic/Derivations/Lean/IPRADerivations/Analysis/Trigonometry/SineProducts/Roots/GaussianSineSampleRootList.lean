@@ -1,6 +1,6 @@
 import IPRADerivations.Analysis.Trigonometry.Arctangent.DivisionAngles.GaussianArctangentDivisionAngleResidual
 import IPRADerivations.Analysis.RationalArithmetic.Representations.GaussianRationalSeparatedReconstruction
-import IPRADerivations.Analysis.Trigonometry.SineProducts.Roots.GaussianSineSquaredNormalization
+import IPRADerivations.Analysis.Trigonometry.SineProducts.Roots.Squared.GaussianSineSquaredNormalization
 
 /-!
 # The literal odd sine root sample list

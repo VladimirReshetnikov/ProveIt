@@ -1,4 +1,4 @@
-import IPRADerivations.Analysis.Gamma.Digamma.LogGammaDerivative.GaussianLogGammaEulerDigammaFractionsCofinal
+import IPRADerivations.Analysis.Gamma.Digamma.LogGammaDerivative.Fractions.GaussianLogGammaEulerDigammaFractionsCofinal
 import IPRADerivations.Analysis.Gamma.EulerProducts.LogGamma.Derivatives.GaussianLogGammaEulerLinearSlope
 import IPRADerivations.Analysis.Gamma.EulerProducts.LogGamma.NamedValues.GaussianLogGammaEulerPositiveAxis
 import IPRADerivations.Analysis.Gamma.Digamma.GaussianGammaDigammaSeries

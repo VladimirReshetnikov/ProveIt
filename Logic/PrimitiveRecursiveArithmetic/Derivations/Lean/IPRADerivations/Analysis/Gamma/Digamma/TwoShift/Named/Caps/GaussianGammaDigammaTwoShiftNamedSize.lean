@@ -1,5 +1,5 @@
 import IPRADerivations.Analysis.Gamma.Digamma.TwoShift.Named.Charts.GaussianGammaDigammaTwoShiftNamedWindow
-import IPRADerivations.Analysis.Euler.PowerScaling.Named.GaussianEulerNamedPowerScalingPowerFrozen
+import IPRADerivations.Analysis.Euler.PowerScaling.Named.Parameters.GaussianEulerNamedPowerScalingPowerFrozen
 import IPRADerivations.Analysis.Stirling.Expansions.OddSeries.GaussianStirlingOddCoefficients
 
 /-!

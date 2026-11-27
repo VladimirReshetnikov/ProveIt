@@ -1,4 +1,4 @@
-import IPRADerivations.Analysis.Gamma.Digamma.LogGammaDerivative.GaussianNamedLogGammaDigammaDerivative
+import IPRADerivations.Analysis.Gamma.Digamma.LogGammaDerivative.Named.GaussianNamedLogGammaDigammaDerivative
 import IPRADerivations.Analysis.Names.Apartness.GaussianNamedMinimumApartness
 
 /-!

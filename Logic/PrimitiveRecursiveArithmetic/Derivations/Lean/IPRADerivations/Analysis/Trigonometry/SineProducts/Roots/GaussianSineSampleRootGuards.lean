@@ -1,6 +1,6 @@
 import IPRADerivations.Analysis.Trigonometry.Arctangent.DivisionAngles.GaussianArctangentDivisionCayleyMargins
 import IPRADerivations.Analysis.Trigonometry.SineProducts.Roots.GaussianSineSampleRootList
-import IPRADerivations.Analysis.Trigonometry.SineProducts.Roots.GaussianSineSquaredRootSeparation
+import IPRADerivations.Analysis.Trigonometry.SineProducts.Roots.Squared.GaussianSineSquaredRootSeparation
 
 /-!
 # Uniform guards for the sampled odd sine roots

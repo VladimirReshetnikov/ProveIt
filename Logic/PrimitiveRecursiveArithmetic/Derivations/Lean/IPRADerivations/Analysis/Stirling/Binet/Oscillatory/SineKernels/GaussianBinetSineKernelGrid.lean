@@ -1,6 +1,6 @@
 import IPRADerivations.Analysis.Stirling.Binet.Oscillatory.SineKernels.GaussianBinetSineKernelFrequency
 import IPRADerivations.Analysis.Stirling.Binet.SecondFormula.FrozenKernels.GaussianBinetFrozenKernelRectangle
-import IPRADerivations.Analysis.Stirling.Binet.SecondFormula.WeightedSine.GaussianBinetSecondWeightedSineTranspose
+import IPRADerivations.Analysis.Stirling.Binet.SecondFormula.WeightedSine.Grid.GaussianBinetSecondWeightedSineTranspose
 
 /-!
 # Compare the exact transposed column sum with the weighted kernel rows

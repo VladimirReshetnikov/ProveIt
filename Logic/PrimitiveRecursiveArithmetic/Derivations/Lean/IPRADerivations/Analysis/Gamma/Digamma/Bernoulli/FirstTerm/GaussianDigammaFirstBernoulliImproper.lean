@@ -1,5 +1,5 @@
 import IPRADerivations.Analysis.Gamma.Digamma.Derivative.GaussianGammaDigammaEulerDerivative
-import IPRADerivations.Analysis.Gamma.Digamma.Bernoulli.FirstTerm.GaussianDigammaFirstBernoulliPrefix
+import IPRADerivations.Analysis.Gamma.Digamma.Bernoulli.FirstTerm.Telescoping.GaussianDigammaFirstBernoulliPrefix
 import IPRADerivations.Analysis.Gamma.Digamma.ElementaryBounds.GaussianGammaDigammaElementaryBounds
 import IPRADerivations.Analysis.Stirling.Bounds.Logarithmic.GaussianStirlingGlobalBounds
 

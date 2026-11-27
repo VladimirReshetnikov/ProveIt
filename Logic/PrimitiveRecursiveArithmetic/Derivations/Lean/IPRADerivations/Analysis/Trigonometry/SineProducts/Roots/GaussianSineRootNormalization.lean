@@ -1,4 +1,4 @@
-import IPRADerivations.Analysis.Trigonometry.SineProducts.Roots.GaussianSineSquaredTrace
+import IPRADerivations.Analysis.Trigonometry.SineProducts.Roots.Squared.GaussianSineSquaredTrace
 import IPRADerivations.Analysis.RationalArithmetic.OrderBounds.GaussianRationalLowerBounds
 
 /-!

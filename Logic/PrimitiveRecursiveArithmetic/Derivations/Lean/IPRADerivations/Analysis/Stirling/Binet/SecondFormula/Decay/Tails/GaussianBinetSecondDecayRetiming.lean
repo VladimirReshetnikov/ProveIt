@@ -1,4 +1,4 @@
-import IPRADerivations.Analysis.Stirling.Binet.SecondFormula.WeightedSine.GaussianBinetSecondWeightedSinePrefix
+import IPRADerivations.Analysis.Stirling.Binet.SecondFormula.WeightedSine.FrequencyRanges.GaussianBinetSecondWeightedSinePrefix
 
 /-!
 # Retiming the original frozen decay quadrature
