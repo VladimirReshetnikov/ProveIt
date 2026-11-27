@@ -182,8 +182,7 @@ theorem scaled_rational_bound {a b c d P : PTm n}
   have canonical : Γ ⊢[PRAAx] d ≐ succ (pred d) :=
     .orE (zero_or_succ d)
       (lt_irrefl zero _ (lt_congr (.eqRefl _) Prf.hyp0 positive.wk)) Prf.hyp0
-  exact mul_le_cancel (le_congr (congrMul canonical (.eqRefl _))
-    (congrMul canonical (.eqRefl _)) multiplied)
+  exact mul_le_cancel_at canonical multiplied
 
 /-- The exact rational center discrepancy after clearing its positive denominator. -/
 def regularBound (B : BallCodes) (N M s x : PTm n) : Fm PTm n :=

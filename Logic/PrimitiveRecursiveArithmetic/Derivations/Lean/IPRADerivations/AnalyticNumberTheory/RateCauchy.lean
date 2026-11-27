@@ -299,7 +299,7 @@ theorem final_g {r c y P Q : PTm n} (hr : Γ ⊢[PRAAx] le one r) (hP : Γ ⊢[P
       𝔞 (Ac r c * UU r P Q * Hh r P) + 𝔞 (Ac r c * UU r P Q * Hh r P) + 𝔞 (Ac r c * UU r P Q * Hh r P) +
       𝔞 (Ac r c * UU r P Q * Hh r P) + 𝔞 (Ac r c * UU r P Q * Hh r P) + 𝔞 (Ac r c * UU r P Q * Hh r P) +
       𝔞 (Ac r c * UU r P Q * Hh r Q * rem (jj r P) two) + 𝔞 (Ac r c * UU r P Q * Hh r Q * rem (jj r P) two)
-  exact mul_le_cancel (le_congr (congrMul hp (.eqRefl _)) (congrMul hp (.eqRefl _)) core)
+  exact mul_le_cancel_at hp core
 
 /-! ## The Cauchy estimate -/
 
@@ -384,7 +384,7 @@ theorem cauchy_le {r c y t P Q : PTm n} (hr : Γ ⊢[PRAAx] le one r) (hc : Γ �
   have hp : Γ ⊢[PRAAx] Hh r P ≐ succ (pred (Hh r P)) := pos_of_one_le hHP
   have fin : Γ ⊢[PRAAx] le (Hh r P * (pw two t * absd (XP aP aN r y P Q) (XN aP aN r y P Q))) (Hh r P * UU r P Q) := by
     ipra_le sl s1 + sl s2 + sl s3 + 𝔞 (pw two t * (Ac r c * UU r P Q)) + 𝔞 (pw two t * (Ac r c * UU r P Q))
-  exact mul_le_cancel (le_congr (congrMul hp (.eqRefl _)) (congrMul hp (.eqRefl _)) fin)
+  exact mul_le_cancel_at hp fin
 
 /-- `thm:rate` (3): both orders. -/
 theorem cauchy {r c y t P Q : PTm n} (hr : Γ ⊢[PRAAx] le one r) (hc : Γ ⊢[PRAAx] InM aP aN r c y)

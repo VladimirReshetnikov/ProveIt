@@ -38,7 +38,7 @@ private theorem small_order (A B C D : PTm n) (hA : Γ ⊢[PRAAx] le one A)
   have first : Γ ⊢[PRAAx] le (B*C) (A*C) := le_mul_mono hB (le_refl C)
   have e : Γ ⊢[PRAAx] A*D ≐ B*C := (by ipra_ring : Γ ⊢[PRAAx] A*D ≐ D*A).eqTrans h.eqSymm
   have next := le_congr e.eqSymm (.eqRefl _) first
-  exact mul_le_cancel (le_congr (congrMul a (.eqRefl D)) (congrMul a (.eqRefl C)) next)
+  exact mul_le_cancel_at a next
 
 private theorem large_order (A B C D : PTm n) (hC : Γ ⊢[PRAAx] le one C)
     (h : Γ ⊢[PRAAx] B*C ≐ D*A) (hB : Γ ⊢[PRAAx] lt A B) :

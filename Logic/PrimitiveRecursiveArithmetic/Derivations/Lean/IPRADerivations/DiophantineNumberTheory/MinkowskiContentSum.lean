@@ -126,8 +126,7 @@ theorem strict_count (C P Q : PTm 2) (N K x : PTm n)
   have reduced : le (count C N x) K :: Γ ⊢[PRAAx] le (K*numerator P Q N x) (K*denominator Q N x) :=
     le_congr id (mul_comm _ _) bound
   have opposite : le (count C N x) K :: Γ ⊢[PRAAx] le (numerator P Q N x) (denominator Q N x) :=
-    mul_le_cancel (le_congr (congrMul (positive_form hK.wk) (.eqRefl _))
-      (congrMul (positive_form hK.wk) (.eqRefl _)) reduced)
+    mul_le_cancel_at (positive_form hK.wk) reduced
   exact lt_irrefl _ _ (le_trans hW.wk opposite)
 
 theorem content_sum_closed (C P Q : PTm 2) : ([] : List (Fm PTm 0)) ⊢[PRAAx] univ 3

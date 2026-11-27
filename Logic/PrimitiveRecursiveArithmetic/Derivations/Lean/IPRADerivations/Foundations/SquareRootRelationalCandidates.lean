@@ -118,8 +118,7 @@ theorem candidate_in_grid (u v k : PTm n) (hv : Γ ⊢[PRAAx] le one v) : Γ ⊢
     le (candidate u v k) (cutoff u v k) := by
   have cleared := le_trans (candidate_linear_bound u v k hv) (ceiling_lower ((u+v)*unit k) v hv)
   have small : Γ ⊢[PRAAx] le (candidate u v k) (ceiling ((u+v)*unit k) v) :=
-    mul_le_cancel (le_congr (congrMul (positive_form hv) (.eqRefl _))
-      (congrMul (positive_form hv) (.eqRefl _)) cleared)
+    mul_le_cancel_at (positive_form hv) cleared
   exact le_trans small (le_succ_self _)
 
 theorem candidate_residual (u v k : PTm n) (hv : Γ ⊢[PRAAx] le one v) : Γ ⊢[PRAAx]

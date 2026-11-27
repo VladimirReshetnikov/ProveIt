@@ -119,7 +119,7 @@ theorem liminf_at (K : PTm n) :
       (fact (pw two (two * K)) * ProdP (pw two (two * K))) := by
     refine le_congr ?_ (.eqRefl _) (le_trans (le_mul_mono hd (le_refl (DenE (pw two (two * K))))) ed)
     ipra_ring
-  have c' := mul_le_cancel (le_congr (congrMul hF (.eqRefl _)) (congrMul hF (.eqRefl _)) c)
+  have c' := mul_le_cancel_at hF c
   refine le_trans (le_of_eq_add (d := pred (DenE (pw two (two * K)))) ?_) c'
   ipra_lc -Groth.ι (IPRA.Q.mk Γ K) * natEq (phi_A (succ (pw two (two * K)))) + natEq hD
 

@@ -202,7 +202,7 @@ theorem khinchin_k2 (Ψ Dm : PTm 2) {N C x : PTm n} (m : PTm n) (hC : Γ ⊢[PRA
         gridK Ψ Dm (succ (num 16383) * succ m) (pairT N (pairT C x))) := by
     ipra_le 𝔞 (pw two (succ m)) * sl hT + 𝔞 (gridK Ψ Dm (succ (num 16383) * succ m) (pairT N (pairT C x))) * sl pd
   have pos := DiophantineNumberTheory.FLTMultiples.pw_pos (Γ := Γ) (num 16383) (succ (num 16383) * succ m)
-  exact mul_le_cancel (le_congr (congrMul pos (.eqRefl _)) (congrMul pos (.eqRefl _)) hB)
+  exact mul_le_cancel_at pos hB
 
 /-- **(K2)** in the packet's form `|[0,1] ∖ U(N, m)| < 2^{−m}`: `2^m ρ_T < G_T`. -/
 theorem khinchin_k2_strict (Ψ Dm : PTm 2) {N C x : PTm n} (m : PTm n) (hC : Γ ⊢[PRAAx] le one C)

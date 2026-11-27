@@ -62,7 +62,7 @@ theorem pw_congr {a a' m m' : PTm N} (ha : Γ ⊢[PRAAx] a ≐ a') (hm : Γ ⊢[
 /-- Cancellation of a positive factor in `≤`. -/
 theorem le_cancel_pos {c a b : PTm N} (hc : Γ ⊢[PRAAx] c ≐ succ (pred c))
     (h : Γ ⊢[PRAAx] le (c * a) (c * b)) : Γ ⊢[PRAAx] le a b :=
-  mul_le_cancel (le_congr (congrMul hc (.eqRefl _)) (congrMul hc (.eqRefl _)) h)
+  mul_le_cancel_at hc h
 
 theorem le_mul_pos (u : PTm N) {v : PTm N} (hv : Γ ⊢[PRAAx] v ≐ succ (pred v)) :
     Γ ⊢[PRAAx] le u (u * v) := by

@@ -106,7 +106,7 @@ theorem ratio_b (as bs : List (PTm n)) (hlen : as.length ≤ bs.length + 1) {p q
     have c := cancel_b (pf.wk (ψ := p * shiftL as k ≐ succ (pred (p * shiftL as k))))
       (eq_add_of_le (H2.wk (ψ := p * shiftL as k ≐ succ (pred (p * shiftL as k)))))
     have hle := le_of_eq_add c
-    exact mul_le_cancel (le_congr (congrMul hpos (.eqRefl _)) (congrMul hpos (.eqRefl _)) hle)
+    exact mul_le_cancel_at hpos hle
 
 /-- For `a_i ≤ A ≤ k`: `k ∏ (a_i + k) ≤ k · k^{|as|} + (2^{|as|} − 1) A k^{|as|}`. -/
 theorem shift_upper (as : List (PTm n)) {A k : PTm n} (hAk : Γ ⊢[PRAAx] le A k) :
@@ -143,6 +143,6 @@ theorem threshold_b (as bs : List (PTm n)) (hlen : as.length ≤ bs.length + 1) 
       (le_congr (.eqRefl _) (by ipra_ring) h2)
   have kpos := pos_of_one_le' hk
   exact ratio_b as bs hlen hk
-    (mul_le_cancel (le_congr (congrMul kpos (.eqRefl _)) (congrMul kpos (.eqRefl _)) Hk))
+    (mul_le_cancel_at kpos Hk)
 
 end LeanProofs.IPRA.Analysis.HypergeometricRatioBound

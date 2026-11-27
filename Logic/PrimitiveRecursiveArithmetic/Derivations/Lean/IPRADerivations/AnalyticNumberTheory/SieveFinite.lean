@@ -77,6 +77,6 @@ theorem finite_sieve_of_bound {X P c : PTm n} (hq : Γ ⊢[PRAAx] le one (fstT P
   refine .orE (zero_or_succ (Asum P)) ?_ ?_
   · exact zero_case Prf.hyp0
   · have hA : ((Asum P ≐ succ (pred (Asum P))) :: Γ) ⊢[PRAAx] Asum P ≐ succ (pred (Asum P)) := Prf.hyp0
-    exact mul_le_cancel (le_congr (congrMul hA (.eqRefl _)) (congrMul hA (.eqRefl _)) M.wk)
+    exact mul_le_cancel_at hA M.wk
 
 end LeanProofs.IPRA.AnalyticNumberTheory.SieveFinite

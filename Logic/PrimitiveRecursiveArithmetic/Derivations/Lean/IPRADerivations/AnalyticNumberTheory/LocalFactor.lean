@@ -75,7 +75,7 @@ theorem local_step {m : PTm n}
       (pw (succ m) (succ (succ m)) * ((two * two) * pw (succ (succ m)) (succ (succ (succ m))))) := by
     refine le_congr (mul_comm _ _) ?_ (le_trans d h₁)
     ipra_ring
-  exact mul_le_cancel (le_congr (congrMul hp (.eqRefl _)) (congrMul hp (.eqRefl _)) h₂)
+  exact mul_le_cancel_at hp h₂
 
 /-- Variable `0 = p − 2`. -/
 private abbrev localF : Fm PTm 1 :=

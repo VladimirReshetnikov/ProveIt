@@ -385,7 +385,7 @@ theorem w_bound {r c y : PTm n} (hr : Γ ⊢[PRAAx] le one r) (hc : Γ ⊢[PRAAx
     ipra_le sl iv + sl rmA + sl rmA + 𝔞 (Ac r c * uu r (succ m)) + 𝔞 (Ac r c * uu r (succ m)) + 𝔞 (Ac r c * uu r (succ m)) +
       𝔞 (Ac r c * uu r (succ m)) + 𝔞 (Ac r c * uu r (succ m)) + 𝔞 (Ac r c * uu r (succ m))
   have hE' : Γ ⊢[PRAAx] le (Eab aP aN r y (succ m)) (eight * (Ac r c * uu r (succ m))) :=
-    mul_le_cancel (le_congr (congrMul hp (.eqRefl _)) (congrMul hp (.eqRefl _)) hE)
+    mul_le_cancel_at hp hE
   -- `|M| ≤ 2 A u`
   have hM0 := le_mul_mono hH (le_refl (Mab aP aN y (succ m)))
   have hM : Γ ⊢[PRAAx] le (Mab aP aN y (succ m)) (two * (Ac r c * uu r (succ m))) := by

@@ -67,7 +67,7 @@ theorem zle_cancel {k : PTm n} (hk : Γ ⊢[PRAAx] k ≐ succ (pred k)) {u v : Z
       ((k * v.pos + zero * v.neg) + (k * u.neg + zero * u.pos)) := h
   have h' : Γ ⊢[PRAAx] le (k * (u.pos + v.neg)) (k * (v.pos + u.neg)) :=
     le_congr (by ipra_ring) (by ipra_ring) h0
-  exact mul_le_cancel (le_congr (congrMul hk (.eqRefl _)) (congrMul hk (.eqRefl _)) h')
+  exact mul_le_cancel_at hk h'
 
 /-- `|z|² ≤ k²` gives `2 Re(ū z v) ≤ k (|u|² + |v|²)` for every natural `k`. -/
 theorem pair_free {k : PTm n} {z₁ z₂ : ZT n} (u₁ u₂ v₁ v₂ : ZT n)
@@ -275,7 +275,7 @@ theorem gram_bound (k : Fin ρ → Fin ρ → PTm n) (L : PTm n)
     refine .orE (zero_or_succ t) ?_ ?_
     · exact le_congr (Prf.hyp0 : ((t ≐ zero) :: Γ) ⊢[PRAAx] t ≐ zero).eqSymm (.eqRefl s) (zero_le s)
     · have ht' : ((t ≐ succ (pred t)) :: Γ) ⊢[PRAAx] t ≐ succ (pred t) := Prf.hyp0
-      exact mul_le_cancel (le_congr (congrMul ht' (.eqRefl _)) (congrMul ht' (.eqRefl _)) h3.wk)
+      exact mul_le_cancel_at ht' h3.wk
   refine zle_of_comb (sl hts) ?_ (nn_sl hts)
   simp only [sl_def, ZT.toZ_mul, ZT.toZ_ofNat, ZT.toZ_sumFin, ZT.toZ_add, ZT.toZ_sq]
   rw [ht, hs]

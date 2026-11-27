@@ -100,7 +100,7 @@ theorem psi_alg {C D lLn lLd Yn Yd An Ad ln ld tn td G R m c : PTm n}
     ipra_le 2 * 𝔞 (Yd * Ad * G * td * ld) * sl w1 + 2 * 𝔞 (R * Ad * G * D * td * ld) * sl mono +
       2 * 𝔞 (R * lLd * D * td) * sl pw + 2 * 𝔞 (R * lLd * Yd * G * D * ld) * sl hle +
       𝔞 (R * lLd * Yd * Ad * D * td * ld) * sl e1 + 𝔞 (lLd * Yd * Ad * G * D * td * ld) * sl e2
-  exact mul_le_cancel (le_congr (congrMul hM (.eqRefl _)) (congrMul hM (.eqRefl _)) cc)
+  exact mul_le_cancel_at hM cc
 
 /-- `lcm_bridge.tex`: `ψ(P) − ϑ(P) ≤ m log P` on the names, with the precision errors absorbed in `+1`:
 `C₁/D₁ ≤ Θ + m λ + 1`, `Θ = hi(log ∏_{p≤m²} p, K_θ)`, `λ = lo(log m², K₁)`. -/
@@ -147,7 +147,7 @@ theorem theta_hi {m Kθ : PTm n} (hm : Γ ⊢[PRAAx] le (num 16) m) (hK : Γ ⊢
       (loD (prim (m * m)) one Kθ * (num 4 * hiN (prim (m * m)) one Kθ)) := by
     ipra_le 𝔞 (hiD (prim (m * m)) one Kθ) * sl t + 4 * sl h
   have hp := loD_pos (Γ := Γ) (le_refl one) hPi1 Kθ
-  exact mul_le_cancel (le_congr (congrMul hp (.eqRefl _)) (congrMul hp (.eqRefl _)) c)
+  exact mul_le_cancel_at hp c
 
 abbrev four : PTm n := succ (succ (succ (succ zero)))
 

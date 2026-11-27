@@ -479,7 +479,7 @@ theorem harmonic_upper {m k : PTm n} (F : PTm n) (h : Γ ⊢[PRAAx] le (NumP m) 
   have c : Γ ⊢[PRAAx] le (DenE m * Harmonic.S m F) (DenE m * (pw (two * two) k * F)) := by
     refine le_congr (mul_comm _ _) ?_ (le_trans ed sb)
     ipra_ring
-  exact mul_le_cancel (le_congr (congrMul hD (.eqRefl _)) (congrMul hD (.eqRefl _)) c)
+  exact mul_le_cancel_at hD c
 
 /-- The witness `Wit(k) = 2^{2·4^k}`. -/
 abbrev Wit (k : PTm n) : PTm n := pw two (two * pw (two * two) k)

@@ -112,6 +112,6 @@ theorem half_ratio (as bs : List (PTm n)) (hlen : as.length ≤ bs.length) {z k 
     have c := cancel_alg (pf.wk (ψ := z * shiftL as k ≐ succ (pred (z * shiftL as k))))
       (eq_add_of_le (H.wk (ψ := z * shiftL as k ≐ succ (pred (z * shiftL as k)))))
     have hle := le_of_eq_add c
-    exact mul_le_cancel (le_congr (congrMul hpos (.eqRefl _)) (congrMul hpos (.eqRefl _)) hle)
+    exact mul_le_cancel_at hpos hle
 
 end LeanProofs.IPRA.Analysis.HypergeometricThreshold

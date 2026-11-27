@@ -103,6 +103,6 @@ theorem trace_final (d : PTm 2) {N x η ε : PTm n} (hs : Γ ⊢[PRAAx] stepPrem
   have b := le_congr (.eqRefl _) (congrAdd (.eqRefl _) (congrMul (pw_succ two j) (.eqRefl _))) (trace_bound d hs hj)
   have c := final_alg b h0
   have hp := DiophantineNumberTheory.FLTMultiples.pw_pos (Γ := Γ) one j
-  exact mul_le_cancel (le_congr (congrMul hp (.eqRefl _)) (congrMul hp (.eqRefl _)) c)
+  exact mul_le_cancel_at hp c
 
 end LeanProofs.IPRA.Analysis.InexactTrace

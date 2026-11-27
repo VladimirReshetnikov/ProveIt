@@ -91,6 +91,6 @@ theorem theta_sum_le_one (k : PTm n) : Γ ⊢[PRAAx] le (Sk k) (pw two (num 3 * 
   have pos := DiophantineNumberTheory.FLTMultiples.pw_pos (Γ := Γ) one k
   have hP : Γ ⊢[PRAAx] le (pw two k * Sk k) (pw two k * pw two (num 3 * (k * k))) := by
     ipra_le sl t + 𝔞 (pw two (num 3 * (k * k)))
-  exact mul_le_cancel (le_congr (congrMul pos (.eqRefl _)) (congrMul pos (.eqRefl _)) hP)
+  exact mul_le_cancel_at pos hP
 
 end LeanProofs.IPRA.AnalyticNumberTheory.ZetaThetaSum

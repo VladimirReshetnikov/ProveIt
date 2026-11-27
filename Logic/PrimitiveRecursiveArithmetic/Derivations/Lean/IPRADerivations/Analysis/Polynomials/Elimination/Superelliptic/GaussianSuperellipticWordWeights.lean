@@ -267,7 +267,7 @@ theorem word_degree_le (G m a d w : PTm n)
     le (candidatePrefix G m a d w m) (GaussianPolynomialWeightedDegree.weightedDegree G m a d) := by
   have h := le_congr (word_balance G m a d w hw hp).eqSymm (.eqRefl _) (weight_sum_bound G m a d w hInput hRows)
   have form := RationalIntegerNormalization.positive_form (.andE₁ hInput)
-  exact mul_le_cancel (le_congr (congrMul form (.eqRefl _)) (congrMul form (.eqRefl _)) h)
+  exact mul_le_cancel_at form h
 
 def matchSchema : PTm 6 := eqb (rowIndex (var 1) (var 4) (var 5))
   (GaussianPolynomialWeightedDegree.index (var 0) (var 1) (var 2) (var 3))

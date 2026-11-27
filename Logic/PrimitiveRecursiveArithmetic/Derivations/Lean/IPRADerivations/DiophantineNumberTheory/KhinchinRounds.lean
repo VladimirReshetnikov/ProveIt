@@ -68,7 +68,7 @@ theorem amplify (c m : PTm n) (R : PTm (n + 1))
       (pw (succ c) (succ c * succ m) * Syn.subst (Syn.inst zero) R) := by
     ipra_le 𝔞 (pw two (succ m)) * sl hc + 𝔞 (Syn.subst (Syn.inst zero) R) * sl pd
   have pos := DiophantineNumberTheory.FLTMultiples.pw_pos (Γ := Γ) c (succ c * succ m)
-  exact mul_le_cancel (le_congr (congrMul pos (.eqRefl _)) (congrMul pos (.eqRefl _)) hB)
+  exact mul_le_cancel_at pos hB
 
 /-- The packet's constants: `b₀ = 16384` and `T = b₀(m+1)` rounds give `R_T ≤ 2^{−(m+1)} R_0`. -/
 theorem amplify_b0 (m : PTm n) (R : PTm (n + 1))

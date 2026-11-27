@@ -93,7 +93,7 @@ theorem C_ge_D {m k : PTm n} (hm : Γ ⊢[PRAAx] le (num 16) m) : Γ ⊢[PRAAx] 
       367 * 𝔞 (D1 (lcmu (m * m)) k * loD (lcmu (m * m)) one (K1 (lcmu (m * m)) k))
   have hp := pos_mul (pos_of_one_le (by ipra_le 80 : Γ ⊢[PRAAx] le one (num 81 : PTm n)))
     (loD_pos (Γ := Γ) (le_refl one) hL1 (K1 (lcmu (m * m)) k))
-  exact mul_le_cancel (le_congr (congrMul hp (.eqRefl _)) (congrMul hp (.eqRefl _)) c)
+  exact mul_le_cancel_at hp c
 
 /-! ## Abstract algebra -/
 
@@ -114,7 +114,7 @@ theorem uh_alg {UHn UHd pn pd On Od Xn Xd An Ad Cn Cd hn hd c1 c2 kk R G : PTm n
       𝔞 (pd * Od * Xd * Cd * c2 * G * R * UHd) * sl b5 with
       (𝔞 Ad * 𝔞 Cd * 𝔞 G * 𝔞 R * 𝔞 UHd * 𝔞 c2 * 𝔞 hd * 𝔞 pd) * ev +
         (-𝔞 Ad * 𝔞 Cd * 𝔞 G * 𝔞 Od * 𝔞 R * 𝔞 UHd * 𝔞 Xd * 𝔞 hd * 𝔞 pd) * hc
-  exact mul_le_cancel (le_congr (congrMul hM (.eqRefl _)) (congrMul hM (.eqRefl _)) c)
+  exact mul_le_cancel_at hM c
 
 theorem hth_alg {Xn Xd ln ld Qn Qd Fn Fd Tn Td hn hd G : PTm n}
     (hM : Γ ⊢[PRAAx] Xd * Qd * Fd * G * Td ≐ succ (pred (Xd * Qd * Fd * G * Td)))
@@ -128,7 +128,7 @@ theorem hth_alg {Xn Xd ln ld Qn Qd Fn Fd Tn Td hn hd G : PTm n}
     ipra_le 54 * 𝔞 (ld * hd * Td) * sl sub + 27 * 𝔞 (ld * hd * Xd * Qd * G * Td) * sl four +
       54 * 𝔞 (ld * hd * Xd * Fd * G) * sl mono + 54 * 𝔞 (ld * Xd * Qd * Fd * G) * sl hle +
       2 * 𝔞 (ld * hd * Xd * Qd * Fd * Td) * sl hG with (54 * 𝔞 Fd * 𝔞 G * 𝔞 Qd * 𝔞 Td * 𝔞 hd) * ev
-  exact mul_le_cancel (le_congr (congrMul hM (.eqRefl _)) (congrMul hM (.eqRefl _)) c)
+  exact mul_le_cancel_at hM c
 
 theorem num_final {UHn UHd hn hd ln ld m tn td G R : PTm n}
     (hM : Γ ⊢[PRAAx] num 8503056 * m * tn * ld * G * R * td ≐ succ (pred (num 8503056 * m * tn * ld * G * R * td)))
@@ -144,7 +144,7 @@ theorem num_final {UHn UHd hn hd ln ld m tn td G R : PTm n}
       531441 * 𝔞 (G * UHd * hd * ld * m * td * tn) * sl hR + 8608032 * 𝔞 (G * R * UHd * hd * td * (ld + ln * m)) * sl hθ +
       1259712 * 𝔞 (G * R * UHd * m * td * tn) * sl F2 + 414720 * 𝔞 (G * R * UHd * hd * m * td * tn) * sl F3 +
       2152008 * 𝔞 (G * R * UHd * hd * ld * td * tn) * sl hm + 78555015 * 𝔞 (G * R * UHd * hd * ld * m * td * tn)
-  exact mul_le_cancel (le_congr (congrMul hM (.eqRefl _)) (congrMul hM (.eqRefl _)) c)
+  exact mul_le_cancel_at hM c
 
 /-! ## The loss -/
 
