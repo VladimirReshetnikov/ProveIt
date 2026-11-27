@@ -64,7 +64,7 @@ theorem scalar_order_bound (a N D : PTm n) (hD : Γ ⊢[PRAAx] le one D)
 
 def profileCap (m : ℕ) : PTm n := (numeratorOf (cap (n := n) m)).pos
 
-private theorem natural_cap (v : PTm n) : Γ ⊢[PRAAx] rationalLE v (fraction (numeratorOf v).pos one) := by
+theorem natural_cap (v : PTm n) : Γ ⊢[PRAAx] rationalLE v (fraction (numeratorOf v).pos one) := by
   let E := denominatorOf v
   let x := numeratorOf v
   have hE := denominator_positive (Γ := Γ) v

@@ -184,4 +184,10 @@ theorem original_integer_time_exponential_top_bound_closed : ([] : List (Fm PTm 
         (pw (var 5) (var 1)*GaussianCoefficientNameBounds.unit (var 0)+one) (GaussianCoefficientNameBounds.unit (var 0))) :=
   closeUniv 6 (.impI (original_integer_exponential_top_bound _ _ _ _ _ _ Prf.hyp0))
 
+theorem row_source (a b : PTm n) (ha : Γ ⊢[PRAAx] le one a) (hb : Γ ⊢[PRAAx] le one b) :
+    Γ ⊢[PRAAx] GaussianHarmonicIntegerExponential.source a b b a := by
+  have lower := le_congr (one_mul _) (mul_comm _ _) (mul_le_mul_right b ha)
+  have upper := le_congr (one_mul _) (mul_comm _ _) (mul_le_mul_right a hb)
+  exact .andI hb (.andI (.andI ha hb) (.andI lower upper))
+
 end LeanProofs.IPRA.Analysis.GaussianHarmonicIntegerExponential

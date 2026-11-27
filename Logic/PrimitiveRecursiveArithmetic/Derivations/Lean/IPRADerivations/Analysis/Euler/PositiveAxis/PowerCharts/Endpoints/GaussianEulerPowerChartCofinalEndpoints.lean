@@ -57,7 +57,7 @@ private theorem bounded_below_by_base (b m : PTm n)
     Γ ⊢[PRAAx] le b (pw b m) :=
   le_congr (pw_one b) (.eqRefl _) (GaussianFactorBudget.power_monotone_length b one m hb hm)
 
-private theorem one_le_two : Γ ⊢[PRAAx] le one two :=
+theorem one_le_two : Γ ⊢[PRAAx] le one two :=
   le_of_eq_add (d := one) (by ipra_ring)
 
 private alias right_one := Common.mul_one_right

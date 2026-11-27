@@ -28,6 +28,7 @@ open GaussianNamedFiniteProductFamily (regularRows)
 open GaussianNamedFiniteProductFamilyCongruence (equalRows)
 open GaussianNamedFiniteSumFamilyCongruence (family_sum_cross)
 open GaussianNameEquivalence (crossEquivalent cross_trans)
+open GaussianGammaInverseConjugation renaming subst_original_gamma_data → subst_gammaData
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
@@ -120,11 +121,6 @@ theorem finite_scaling (N z R B A : PTm n) (h : Γ ⊢[PRAAx] source z R B A) :
 def gammaBody : PTm 1 :=
   let x := var 0
   gammaData (fstT (fstT x)) (sndT (fstT x)) (fstT (sndT x)) (sndT (sndT x))
-
-@[simp] private theorem subst_gammaData {m : ℕ} (σ : Fin n → PTm m) (z R B A : PTm n) :
-    Syn.subst σ (gammaData z R B A) =
-      gammaData (Syn.subst σ z) (Syn.subst σ R) (Syn.subst σ B) (Syn.subst σ A) := by
-  simp [gammaData,GaussianGammaReciprocalInverse.gammaHeight]
 
 theorem gamma_at (z R B A : PTm n) :
     Γ ⊢[PRAAx] inst1 gammaBody (parameters z R B A) ≐ gammaData z R B A := by

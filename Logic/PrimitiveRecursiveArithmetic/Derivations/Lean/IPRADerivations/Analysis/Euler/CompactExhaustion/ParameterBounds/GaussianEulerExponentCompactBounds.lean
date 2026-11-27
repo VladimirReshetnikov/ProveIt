@@ -166,4 +166,8 @@ theorem actual_compact_Euler_exponent_bound_program_closed : ([] : List (Fm PTm 
     (run (var 0) (var 1) (var 2) (var 3) (var 4) (var 5) (var 6) (var 7) ≐ output (var 0) (var 1) (var 2) (var 3) (var 4) (var 5) (var 6) (var 7)) :=
   closeUniv 8 (program_at _ _ _ _ _ _ _ _)
 
+theorem scale_value_bound (c d : PTm n) (hd : Γ ⊢[PRAAx] le one d) : Γ ⊢[PRAAx] bounded (fraction c d) c one :=
+  GaussianEulerExponentCompactBounds.fraction_bound c d c hd
+    (le_congr (by ipra_ring) (by ipra_ring) (mul_le_mul_right c hd))
+
 end LeanProofs.IPRA.Analysis.GaussianEulerExponentCompactBounds

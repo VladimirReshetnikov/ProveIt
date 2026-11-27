@@ -31,6 +31,7 @@ open RationalHalfNinthProductLower (add_negative_cancel)
 open RationalNonnegativePowers (fraction_multiply)
 open RationalNormalForm (normalize_well_formed)
 open RationalSupMetric (numeratorOf denominatorOf)
+open GaussianStirlingAllOrderPanelPartsRows renaming natural_cap → integer_cap
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 local notation "𝔞" t:max => Groth.ι (IPRA.Q.mk Γ t)
@@ -50,22 +51,6 @@ theorem margin_den_positive (m e : ℕ) (A B : PTm n) (hA : Γ ⊢[PRAAx] le one
   exact positive_product _ _
     (positive_product _ _ (by ipra_le 31) (GaussianStirlingAllOrderCenteredBernoulli.denominator_positive _ _ h8))
     (GaussianStirlingAllOrderPairedWeight.gap_denominator_positive _ _ _ _ base)
-
-private theorem integer_cap (x : PTm n) :
-    Γ ⊢[PRAAx] rationalLE x (fraction (numeratorOf x).pos one) := by
-  let D := denominatorOf x
-  let p := (numeratorOf x).pos
-  let q := (numeratorOf x).neg
-  have hd := RationalArgmin.denominator_positive (Γ := Γ) x
-  apply order_of_representations _ _ (numeratorOf x) (ZT.ofNat p) D one
-    (RationalRepresentations.represents_self x) (fraction_represents _ _ (le_refl one)) hd (le_refl one)
-  apply zle_of_toZ (p*monus D one+q)
-  have e := natEq (eq_add_of_le hd)
-  simp only [ZT.toZ_mul,ZT.toZ_ofNat]
-  simp only [ZT.toZ]
-  dsimp only [p,q,D]
-  ipra_simps
-  linear_combination -𝔞((numeratorOf x).pos)*e
 
 private theorem halve_fraction (D : PTm n) (hD : Γ ⊢[PRAAx] le one D) :
     Γ ⊢[PRAAx] add (fraction one (two*D)) (fraction one (two*D)) ≐ fraction one D := by

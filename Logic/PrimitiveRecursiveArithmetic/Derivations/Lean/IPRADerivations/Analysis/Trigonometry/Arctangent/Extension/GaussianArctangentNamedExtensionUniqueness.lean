@@ -33,6 +33,7 @@ open GaussianRationalDistanceOrder (distance_congr distance_symmetric distance_r
 open GaussianRationalHorner (positive_product)
 open GaussianRationalMetric (distanceBounded)
 open RationalValueBounds (radius radius_mono radius_symmetric radius_triangle)
+open GaussianRobinMeshLogDecomposition renaming later_sample → observation_retime
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 local notation "𝔞" t:max => Groth.ι (IPRA.Q.mk Γ t)
@@ -48,13 +49,6 @@ private theorem selected_phase_radius (f a b : PR 2) (p x : PTm n)
   have d := partial_distance f p x _ _ s.andE₁ s.andE₂.andE₁ rep
   exact imaginary_coordinate_radius _ _ _ _ (unit_positive p)
     (dyadic_weaken _ _ _ p (clock p) (clock_later p) d)
-
-private theorem observation_retime (f : PR 2) (p q x : PTm n)
-    (hf : Γ ⊢[PRAAx] pointCN f x) (hq : Γ ⊢[PRAAx] le p q) :
-    Γ ⊢[PRAAx] distanceBounded (ap2 f p x) (ap2 f q x) two (unit p) := by
-  have hu := unit_monotone hq
-  exact distance_radius_mono _ _ _ _ _ _ (positive_product _ _ (unit_positive p) (unit_positive q)) (unit_positive p)
-    (by ipra_le 𝔞 (unit p)*sl hu) (point_at f x p q hf)
 
 private theorem same_denominator_radius_sum (a b c A C U : PTm n) (hU : Γ ⊢[PRAAx] le one U)
     (ha : Γ ⊢[PRAAx] radius a b A U) (hb : Γ ⊢[PRAAx] radius b c C U) :

@@ -17,7 +17,7 @@ namespace LeanProofs.IPRA.Analysis.GaussianEulerPowerChartUniformEndpoints
 
 open_ipra
 open GaussianEulerPositivePowerChart (parameters nameF data)
-open GaussianEulerPowerChartCofinalEndpoints (lowerDenominator upperNumerator physicalPanel)
+open GaussianEulerPowerChartCofinalEndpoints (lowerDenominator upperNumerator physicalPanel one_le_two)
 open GaussianEulerPowerChartExponentOrder (increasing_power decreasing_power scaled_order)
 open GaussianEulerPowerChartRationalPowers (original_chart_value chart_proper)
 open GaussianGammaCanonicalExponent (constantF)
@@ -41,9 +41,6 @@ def endpointOrder (e f d h S H C V : PTm n) : Fm PTm n :=
 
 def referenceBounds (d h S C V : PTm n) : Fm PTm n :=
   le (d*V) (h*(S*V)) ⋏ le (h*V) (d*(C*V))
-
-private theorem one_le_two : Γ ⊢[PRAAx] le one two :=
-  le_of_eq_add (d := one) (by ipra_ring)
 
 private alias right_one := Common.mul_one_right
 

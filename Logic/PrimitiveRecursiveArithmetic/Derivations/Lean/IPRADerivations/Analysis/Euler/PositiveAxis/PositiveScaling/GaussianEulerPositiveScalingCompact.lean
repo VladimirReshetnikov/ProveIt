@@ -35,6 +35,7 @@ open GaussianRationalMetric (bounded distanceBounded)
 open GaussianRationalDistanceOrder (distance_congr distance_radius_mono distance_symmetric distance_triangle_same)
 open GaussianCoefficientNameBounds (unit unit_positive)
 open GaussianExponentialReference (unit_monotone)
+open GaussianEulerExponentCompactBounds (scale_value_bound)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 local notation "𝔞" t:max => Groth.ι (Q.mk Γ t)
@@ -60,10 +61,6 @@ def diagonalCost (z R B a C E T c d : PTm n) : PTm n :=
 ipra_subst dampedDatum
 ipra_subst productDatum [scaleData]
 ipra_subst diagonalCost [factorBound, factorCost, scaleData]
-
-private theorem scale_value_bound (c d : PTm n) (hd : Γ ⊢[PRAAx] le one d) : Γ ⊢[PRAAx] bounded (fraction c d) c one :=
-  GaussianEulerExponentCompactBounds.fraction_bound c d c hd
-    (le_congr (by ipra_ring) (by ipra_ring) (mul_le_mul_right c hd))
 
 private theorem factor_drift (s t z B c d : PTm n) (h : Γ ⊢[PRAAx] GaussianEulerPositiveScalingConstant.source B c d)
     (hl : Γ ⊢[PRAAx] le t s) : Γ ⊢[PRAAx]

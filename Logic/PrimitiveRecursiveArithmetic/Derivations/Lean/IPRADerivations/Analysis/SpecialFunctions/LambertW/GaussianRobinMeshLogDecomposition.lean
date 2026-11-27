@@ -100,7 +100,7 @@ theorem named_arithmetic_error (p N : PTm n) (h : Γ ⊢[PRAAx] le one N) :
   exact distance_triangle_same _ _ _ _ _ _ (unit_positive p) first
     (sum_left_error _ _ (ap2 oddF p y) _ _ (unit_positive p) shifted)
 
-private theorem later_sample (f : PR 2) (p q x : PTm n) (h : Γ ⊢[PRAAx] pointCN f x)
+theorem later_sample (f : PR 2) (p q x : PTm n) (h : Γ ⊢[PRAAx] pointCN f x)
     (hpq : Γ ⊢[PRAAx] le p q) :
     Γ ⊢[PRAAx] distanceBounded (ap2 f p x) (ap2 f q x) two (unit p) := by
   have u := unit_positive (Γ := Γ) p
