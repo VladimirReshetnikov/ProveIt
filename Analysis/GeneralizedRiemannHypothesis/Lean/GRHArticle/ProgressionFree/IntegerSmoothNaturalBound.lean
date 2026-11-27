@@ -27,14 +27,16 @@ private theorem smoothFiber_admissible {A : Set ℕ} {integral : Bool} {Y r : �
       _ = (r*b)*(r*b) := by ring
   · exact fun h ↦ Nat.mul_dvd_mul_left r (hd h)
 
-private theorem smoothSubset_reciprocal_summable {Y : ℕ} {D : Set ℕ}
+/-- The reciprocals of any subset of the smooth numbers form a summable family. -/
+theorem smoothSubset_reciprocal_summable {Y : ℕ} {D : Set ℕ}
     (hD : D ⊆ Nat.smoothNumbers (Y+1)) : Summable (fun s : D ↦ (s.val:ℝ)⁻¹) := by
   let emb : D → Nat.smoothNumbers (Y+1) := fun x ↦ ⟨x.val,hD x.property⟩
   have he : Function.Injective emb :=
     fun _ _ h ↦ Subtype.ext (congrArg (fun x : Nat.smoothNumbers (Y+1) ↦ x.val) h)
   simpa only [Function.comp_def, emb] using (summable_reciprocal_smoothNumbers Y).comp_injective he
 
-private theorem smoothSubset_reciprocal_le {Y : ℕ} {D : Set ℕ}
+/-- The total weight of a smooth template is bounded by the full Euler product. -/
+theorem smoothSubset_reciprocal_le {Y : ℕ} {D : Set ℕ}
     (hD : D ⊆ Nat.smoothNumbers (Y+1)) :
     (∑' s : D, (s.val:ℝ)⁻¹) ≤ (integerSmoothDensityFactor Y)⁻¹ := by
   let emb : D → Nat.smoothNumbers (Y+1) := fun x ↦ ⟨x.val,hD x.property⟩

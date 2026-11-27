@@ -14,6 +14,7 @@ import GRHArticle.ProgressionFree.IntegerDensityExtrema
 import GRHArticle.ProgressionFree.IntegerFordBlocks
 import GRHArticle.ProgressionFree.IntegerFordDensity
 import GRHArticle.ProgressionFree.IntegerMcNewGaps
+import GRHArticle.ProgressionFree.IntegerNaturalDensityApproximation
 import GRHArticle.ProgressionFree.IntegerPrefix
 import GRHArticle.ProgressionFree.IntegerPrefixEighty
 import GRHArticle.ProgressionFree.IntegerPrefixEightyExact
@@ -24,6 +25,7 @@ import GRHArticle.ProgressionFree.IntegerRationalDensityGap
 import GRHArticle.ProgressionFree.IntegerReciprocalDensity
 import GRHArticle.ProgressionFree.IntegerRoughOptimalPrefix
 import GRHArticle.ProgressionFree.IntegerRoughPrefixIntervals
+import GRHArticle.ProgressionFree.IntegerRoughTemplateDensity
 import GRHArticle.ProgressionFree.IntegerSevenSmoothPacking
 import GRHArticle.ProgressionFree.IntegerSmoothFactorization
 import GRHArticle.ProgressionFree.IntegerSmoothNaturalBound
