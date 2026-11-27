@@ -22,7 +22,7 @@ open LeanProofs.IPRA.AnalyticNumberTheory.PhiLower (le_mul_mono)
 open GaussianRationalHorner (ofGaussian ofGaussian_represents represents positive_product)
 open GaussianRationalMetric (bounded distanceBounded qsub)
 open GaussianRationalReciprocal (bound_congr bounded_sum)
-open GaussianRationalDistanceOrder (distance_congr distance_symmetric distance_radius_mono)
+open GaussianRationalDistanceOrder (distance_congr distance_radius_mono distance_from_later_observations)
 open GaussianEuclideanDistanceName (pointCN)
 open ComplexLogarithmName (observation finiteNumerator finiteDenominator)
 open DyadicComplexLogarithm (unit precision)
@@ -142,17 +142,10 @@ theorem later_distance (s t z R N : PTm n) (h : Γ ⊢[PRAAx] source z R N) (hst
 theorem value_regularity (s t z R N : PTm n) (h : Γ ⊢[PRAAx] source z R N) : Γ ⊢[PRAAx]
     distanceBounded (value s z R N) (value t z R N)
       (GaussianCoefficientNameBounds.unit s+GaussianCoefficientNameBounds.unit t)
-      (GaussianCoefficientNameBounds.unit s*GaussianCoefficientNameBounds.unit t) := by
-  let U := GaussianCoefficientNameBounds.unit s
-  let V := GaussianCoefficientNameBounds.unit t
-  have us := GaussianCoefficientNameBounds.unit_positive (Γ := Γ) s
-  have ut := GaussianCoefficientNameBounds.unit_positive (Γ := Γ) t
-  refine .orE (lt_or_le s t) ?_ ?_
-  · exact distance_radius_mono _ _ _ _ _ _ us.wk (positive_product _ _ us.wk ut.wk)
-      (le_of_eq_add (d := U*U) (by ipra_ring))
-      (distance_symmetric _ _ _ _ us.wk (later_distance s t z R N h.wk (le_of_lt Prf.hyp0)))
-  · exact distance_radius_mono _ _ _ _ _ _ ut.wk (positive_product _ _ us.wk ut.wk)
-      (le_of_eq_add (d := V*V) (by ipra_ring)) (later_distance t s z R N h.wk Prf.hyp0)
+      (GaussianCoefficientNameBounds.unit s*GaussianCoefficientNameBounds.unit t) :=
+  distance_from_later_observations _ _ s t
+    (later_distance s t z R N h.wk Prf.hyp0)
+    (later_distance t s z R N h.wk Prf.hyp0)
 
 /-! The original observation code remains literal inside the PR2 sampler.
 Persistent data packs exactly(z,(R,N)); no alternate finite sampler. -/

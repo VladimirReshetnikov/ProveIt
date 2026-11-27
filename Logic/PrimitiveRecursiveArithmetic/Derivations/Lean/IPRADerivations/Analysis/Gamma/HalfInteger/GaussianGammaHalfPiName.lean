@@ -17,7 +17,8 @@ namespace LeanProofs.IPRA.Analysis.GaussianGammaHalfPiName
 open_ipra
 open GaussianGammaHalfWallisRate (wallisValue piGrid arctanError arctanDen gridSource finite_rate)
 open GaussianRationalMetric (distanceBounded)
-open GaussianRationalDistanceOrder (distance_congr distance_radius_mono distance_triangle_same distance_symmetric)
+open GaussianRationalDistanceOrder (distance_congr distance_radius_mono distance_triangle_same distance_symmetric
+  distance_of_ordered_observations)
 open GaussianRationalHorner (positive_product)
 open GaussianCoefficientNameBounds (unit unit_positive)
 open GaussianEuclideanDistanceName (pointCN)
@@ -93,12 +94,9 @@ theorem ordered_grid_coherence (p q : PTm n) (h : Γ ⊢[PRAAx] le p q) :
   exact distance_radius_mono _ _ _ _ _ _ hD (positive_product _ _ (unit_positive p) (unit_positive q)) cmp joined
 
 theorem grid_coherence (p q : PTm n) :
-    Γ ⊢[PRAAx] distanceBounded (observation p) (observation q) (unit p+unit q) (unit p*unit q) := by
-  refine .orE (le_total p q) ?_ ?_
-  · exact ordered_grid_coherence p q Prf.hyp0
-  · have hp := positive_product (Γ := (le q p)::Γ) _ _ (unit_positive q) (unit_positive p)
-    exact distance_congr (.eqRefl _) (.eqRefl _) (add_comm _ _) (mul_comm _ _)
-      (distance_symmetric _ _ _ _ hp (ordered_grid_coherence q p Prf.hyp0))
+    Γ ⊢[PRAAx] distanceBounded (observation p) (observation q) (unit p+unit q) (unit p*unit q) :=
+  distance_of_ordered_observations _ _ p q
+    (ordered_grid_coherence p q Prf.hyp0) (ordered_grid_coherence q p Prf.hyp0)
 
 private theorem observation_subst {k : ℕ} (σ : Fin n → PTm k) (p : PTm n) :
     Syn.subst σ (observation p) = observation (Syn.subst σ p) := by

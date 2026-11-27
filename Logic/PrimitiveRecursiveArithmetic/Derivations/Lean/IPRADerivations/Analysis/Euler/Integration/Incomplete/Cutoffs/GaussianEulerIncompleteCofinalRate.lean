@@ -138,13 +138,10 @@ theorem original_piece_observations (p q z R B A a b : PTm n)
     (ha : Γ ⊢[PRAAx] le one a) (hb : Γ ⊢[PRAAx] le one b) : Γ ⊢[PRAAx]
     distanceBounded (lowerSample p z R B A a b) (lowerSample q z R B A a b) (unit p+unit q) (unit p*unit q) ⋏
     distanceBounded (upperSample p z R B A a b) (upperSample q z R B A a b) (unit p+unit q) (unit p*unit q) := by
-  refine .orE (le_total p q) ?_ ?_
-  · exact ordered_observations p q z R B A a b h.wk ha.wk hb.wk Prf.hyp0
-  · have old := ordered_observations q p z R B A a b h.wk ha.wk hb.wk Prf.hyp0
-    have dp := positive_product (Γ := (le q p)::Γ) _ _ (unit_positive q) (unit_positive p)
-    exact .andI
-      (distance_congr (.eqRefl _) (.eqRefl _) (by ipra_ring) (by ipra_ring) (distance_symmetric _ _ _ _ dp old.andE₁))
-      (distance_congr (.eqRefl _) (.eqRefl _) (by ipra_ring) (by ipra_ring) (distance_symmetric _ _ _ _ dp old.andE₂))
+  have forward := ordered_observations p q z R B A a b h.wk ha.wk hb.wk Prf.hyp0
+  have reverse := ordered_observations q p z R B A a b h.wk ha.wk hb.wk Prf.hyp0
+  exact .andI (GaussianRationalDistanceOrder.distance_of_ordered_observations _ _ p q forward.andE₁ reverse.andE₁)
+    (GaussianRationalDistanceOrder.distance_of_ordered_observations _ _ p q forward.andE₂ reverse.andE₂)
 
 theorem sample_regularity (p q z R B A a b : PTm n) (h : Γ ⊢[PRAAx] source z R B A a b) : Γ ⊢[PRAAx]
     distanceBounded (lowerSample p z R B A a b) (lowerSample q z R B A a b) (unit p+unit q) (unit p*unit q) ⋏

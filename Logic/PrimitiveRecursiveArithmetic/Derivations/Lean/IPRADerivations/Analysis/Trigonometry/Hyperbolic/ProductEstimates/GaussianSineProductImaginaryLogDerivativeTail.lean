@@ -18,7 +18,7 @@ open LeanProofs.IPRA.AnalyticNumberTheory.PhiLower (le_mul_mono)
 open ComplexLogarithmRemainder (normSq normSq_code)
 open GaussianCoefficientNameBounds (bounded_radius_mono unit unit_positive)
 open GaussianEuclideanDistanceName (pointCN)
-open GaussianRationalDistanceOrder (distance_congr distance_radius_mono distance_symmetric)
+open GaussianRationalDistanceOrder (distance_congr distance_radius_mono distance_from_later_observations)
 open GaussianRationalHorner (ofGaussian_represents ofGaussian_canonical positive_product qzero qadd)
 open GaussianRationalMetric (bounded bounded_iff distanceBounded)
 open GaussianRationalReciprocal (bound_congr)
@@ -204,16 +204,10 @@ private theorem ordered (A B R p q : PTm n) (hB : Γ ⊢[PRAAx] le one B)
 
 theorem sample_pair (A B R p q : PTm n) (hB : Γ ⊢[PRAAx] le one B) (hA : Γ ⊢[PRAAx] le A (R*B)) :
     Γ ⊢[PRAAx] distanceBounded (ap2 nameF p (data A B R)) (ap2 nameF q (data A B R))
-      (unit p+unit q) (unit p*unit q) := by
-  have hp := unit_positive (Γ := Γ) p
-  have hq := unit_positive (Γ := Γ) q
-  have hD := positive_product _ _ hp hq
-  refine .orE (le_total p q) ?_ ?_
-  · exact distance_radius_mono _ _ _ _ _ _ hp.wk hD.wk
-      (le_of_eq_add (d := unit p*unit p) (by ipra_ring))
-      (distance_symmetric _ _ _ _ hp.wk (ordered A B R p q hB.wk hA.wk Prf.hyp0))
-  · exact distance_radius_mono _ _ _ _ _ _ hq.wk hD.wk
-      (le_of_eq_add (d := unit q*unit q) (by ipra_ring)) (ordered A B R q p hB.wk hA.wk Prf.hyp0)
+      (unit p+unit q) (unit p*unit q) :=
+  distance_from_later_observations _ _ p q
+    (ordered A B R p q hB.wk hA.wk Prf.hyp0)
+    (ordered A B R q p hB.wk hA.wk Prf.hyp0)
 
 theorem regular (A B R : PTm n) (hB : Γ ⊢[PRAAx] le one B) (hA : Γ ⊢[PRAAx] le A (R*B)) :
     Γ ⊢[PRAAx] pointCN nameF (data A B R) := by
