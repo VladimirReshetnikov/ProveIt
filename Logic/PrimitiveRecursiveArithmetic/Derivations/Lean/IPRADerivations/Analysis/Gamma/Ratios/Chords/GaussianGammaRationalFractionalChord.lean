@@ -53,15 +53,8 @@ theorem harmonic_regular (w a b : PTm n) (hs : Γ ⊢[PRAAx] source a b) :
   multiply_fast _ _ _ _ (constant_regular _) (GaussianHarmonicLogarithmName.name_regular a b hs)
 
 theorem natural_point_sum (r s w : PTm n) (e : Γ ⊢[PRAAx] r+s ≐ w) :
-    Γ ⊢[PRAAx] qadd (naturalPoint r) (naturalPoint s) ≐ naturalPoint w := by
-  apply canonical_unique _ _ (scale w oneCode) one (qadd_canonical _ _) (ofGaussian_canonical _ _ (le_refl _))
-    (le_refl _) _ (natural_point_represents _)
-  apply represents_congr (.eqRefl _) _ (.eqRefl _)
-    (qadd_represents _ _ _ _ _ (le_refl _) (natural_point_represents r) (natural_point_represents s))
-  have ei := natEq e
-  apply equal_of_values <;> simp only [re_add,im_add,re_scale,im_scale,re_one,im_one] <;> ipra_simps
-  · linear_combination ei
-  · ring
+    Γ ⊢[PRAAx] qadd (naturalPoint r) (naturalPoint s) ≐ naturalPoint w :=
+  (GaussianRationalNaturalScale.natural_point_add r s).eqTrans (GaussianRationalHorner.real_fraction_congr e (.eqRefl _))
 
 theorem scale_sum (f : PR 2) (r s w x : PTm n) (e : Γ ⊢[PRAAx] r+s ≐ w) (hf : Γ ⊢[PRAAx] pointCN f x) :
     Γ ⊢[PRAAx] crossEquivalent (addF (productF f) (productF f)) (productF f)

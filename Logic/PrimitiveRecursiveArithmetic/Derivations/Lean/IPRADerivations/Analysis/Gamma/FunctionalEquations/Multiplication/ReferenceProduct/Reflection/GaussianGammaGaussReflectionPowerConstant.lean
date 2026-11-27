@@ -48,13 +48,8 @@ theorem two_rows (N x : PTm n) : Γ ⊢[PRAAx] regularRows constantF twoBody N x
   .allI (.impI (constant_regular _))
 
 private theorem natural_times_two (k : PTm n) :
-    Γ ⊢[PRAAx] qmul (naturalPoint k) (naturalPoint two) ≐ naturalPoint (k*two) := by
-  have e : Γ ⊢[PRAAx] equal (mul (scale k oneCode) (scale two oneCode)) (scale (k*two) oneCode) := by
-    refine equal_trans (natural_product_value k (scale two oneCode)) ?_
-    apply equal_of_values <;> simp only [re_scale,im_scale] <;> ipra_simps <;> ring
-  exact canonical_unique _ _ _ one (qmul_canonical _ _) (ofGaussian_canonical _ _ (le_refl one)) (le_refl one)
-    (represents_congr (.eqRefl _) e (one_mul one) (qmul_represents _ _ _ _ _ _ (le_refl one) (le_refl one)
-      (natural_point_represents k) (natural_point_represents two))) (natural_point_represents _)
+    Γ ⊢[PRAAx] qmul (naturalPoint k) (naturalPoint two) ≐ naturalPoint (k*two) :=
+  GaussianRationalNaturalScale.natural_point_mul k two
 
 private def powerLaw (p N x : PTm n) : Fm PTm n :=
   sample familyF p N x ≐ naturalPoint (unit N)

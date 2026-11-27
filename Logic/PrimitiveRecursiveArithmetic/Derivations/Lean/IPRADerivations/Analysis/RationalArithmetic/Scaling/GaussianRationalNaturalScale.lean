@@ -51,6 +51,44 @@ theorem natural_product_value (t a : PTm n) : Γ ⊢[PRAAx]
     equal (mul (scale t oneCode) a) (scale t a) := by
   apply equal_of_values <;> simp only [re_mul,im_mul,re_scale,im_scale,re_one,im_one] <;> ring
 
+/-- The natural-point program at zero gives the canonical Gaussian zero. -/
+theorem natural_point_zero : Γ ⊢[PRAAx] naturalPoint (zero : PTm n) ≐ qzero := by
+  apply canonical_unique _ _ zeroCode one
+    (GaussianRationalHorner.ofGaussian_canonical _ _ (le_refl _))
+    (GaussianRationalHorner.ofGaussian_canonical _ _ (le_refl _)) (le_refl _)
+    _ (GaussianRationalHorner.zero_represents _)
+  apply represents_congr (.eqRefl _) _ (.eqRefl _) (natural_point_represents _)
+  apply equal_of_values <;>
+    simp only [re_scale,im_scale,re_one,im_one,re_zero,im_zero] <;> ipra_simps <;> ring
+
+/-- The natural-point program at one gives the canonical Gaussian one. -/
+theorem natural_point_one : Γ ⊢[PRAAx] naturalPoint (one : PTm n) ≐ ofGaussian oneCode one := by
+  apply canonical_unique _ _ oneCode one
+    (GaussianRationalHorner.ofGaussian_canonical _ _ (le_refl _))
+    (GaussianRationalHorner.ofGaussian_canonical _ _ (le_refl _)) (le_refl _)
+    _ (GaussianRationalHorner.ofGaussian_represents _ _ (le_refl _))
+  apply represents_congr (.eqRefl _) _ (.eqRefl _) (natural_point_represents _)
+  apply equal_of_values <;> simp only [re_scale,im_scale] <;> ipra_simps <;> ring
+
+theorem natural_point_add (a b : PTm n) : Γ ⊢[PRAAx]
+    qadd (naturalPoint a) (naturalPoint b) ≐ naturalPoint (a+b) := by
+  apply canonical_unique _ _ (scale (a+b) oneCode) one (GaussianRationalHorner.qadd_canonical _ _)
+    (GaussianRationalHorner.ofGaussian_canonical _ _ (le_refl _)) (le_refl _)
+    _ (natural_point_represents _)
+  apply represents_congr (.eqRefl _) _ (.eqRefl _)
+    (qadd_represents _ _ _ _ _ (le_refl _) (natural_point_represents a) (natural_point_represents b))
+  apply equal_of_values <;> simp only [re_add,im_add,re_scale,im_scale] <;> ipra_simps <;> ring
+
+theorem natural_point_mul (a b : PTm n) : Γ ⊢[PRAAx]
+    qmul (naturalPoint a) (naturalPoint b) ≐ naturalPoint (a*b) := by
+  have e : Γ ⊢[PRAAx] equal (mul (scale a oneCode) (scale b oneCode)) (scale (a*b) oneCode) := by
+    refine GaussianRootAlgebra.equal_trans (natural_product_value a (scale b oneCode)) ?_
+    apply equal_of_values <;> simp only [re_scale,im_scale] <;> ipra_simps <;> ring
+  exact canonical_unique _ _ _ one (GaussianRationalHorner.qmul_canonical _ _)
+    (GaussianRationalHorner.ofGaussian_canonical _ _ (le_refl _)) (le_refl _)
+    (represents_congr (.eqRefl _) e (one_mul one) (qmul_represents _ _ _ _ _ _ (le_refl one) (le_refl one)
+      (natural_point_represents a) (natural_point_represents b))) (natural_point_represents _)
+
 /-- The directly computed numerator scaling equals actual multiplication
 by the computed Gaussian natural point, for arbitrary raw input codes. -/
 theorem natScale_as_product (t q : PTm n) : Γ ⊢[PRAAx]

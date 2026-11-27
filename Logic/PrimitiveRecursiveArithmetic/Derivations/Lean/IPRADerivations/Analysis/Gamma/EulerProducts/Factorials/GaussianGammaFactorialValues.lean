@@ -138,25 +138,12 @@ theorem error_succ (i : PTm n) : Γ ⊢[PRAAx] error (succ i) ≐ succ i*error i
 theorem natural_congr {a b : PTm n} (h : Γ ⊢[PRAAx] a ≐ b) : Γ ⊢[PRAAx] naturalPoint a ≐ naturalPoint b :=
   GaussianRationalHorner.real_fraction_congr h (.eqRefl _)
 
-theorem natural_one : Γ ⊢[PRAAx] naturalPoint (one : PTm n) ≐ GaussianRationalSyntheticDivision.qone := by
-  apply canonical_unique _ _ _ one (GaussianRationalHorner.ofGaussian_canonical _ _ (le_refl _))
-    GaussianRationalSyntheticDivision.qone_canonical (le_refl _) _ (GaussianRationalHorner.ofGaussian_represents _ _ (le_refl _))
-  apply represents_congr (.eqRefl _) _ (.eqRefl _) (natural_point_represents one)
-  apply GaussianRootAlgebra.equal_of_values <;>
-    simp only [GaussianRootAlgebra.re_scale,GaussianRootAlgebra.im_scale,GaussianRootAlgebra.re_one,GaussianRootAlgebra.im_one]
-  all_goals ipra_simps; ring
+theorem natural_one : Γ ⊢[PRAAx] naturalPoint (one : PTm n) ≐ GaussianRationalSyntheticDivision.qone :=
+  GaussianRationalNaturalScale.natural_point_one
 
 theorem natural_product (a b : PTm n) : Γ ⊢[PRAAx]
-    GaussianRationalHorner.qmul (naturalPoint a) (naturalPoint b) ≐ naturalPoint (a*b) := by
-  have rep := GaussianRationalHorner.qmul_represents (Γ := Γ) _ _ _ _ _ _ (le_refl one) (le_refl one)
-    (natural_point_represents a) (natural_point_represents b)
-  apply canonical_unique _ _ _ one (GaussianRationalHorner.qmul_canonical _ _)
-    (GaussianRationalHorner.ofGaussian_canonical _ _ (le_refl _)) (le_refl _) _ (natural_point_represents _)
-  apply represents_congr (.eqRefl _) _ (one_mul one) rep
-  apply GaussianRootAlgebra.equal_of_values <;>
-    simp only [GaussianRootAlgebra.re_mul,GaussianRootAlgebra.im_mul,GaussianRootAlgebra.re_scale,GaussianRootAlgebra.im_scale,
-      GaussianRootAlgebra.re_one,GaussianRootAlgebra.im_one]
-  all_goals ipra_simps; ring
+    GaussianRationalHorner.qmul (naturalPoint a) (naturalPoint b) ≐ naturalPoint (a*b) :=
+  GaussianRationalNaturalScale.natural_point_mul a b
 
 theorem factorial_zero : Γ ⊢[PRAAx] factorialValue (zero : PTm n) ≐ GaussianRationalSyntheticDivision.qone :=
   (natural_congr (fact_zero zero)).eqTrans natural_one

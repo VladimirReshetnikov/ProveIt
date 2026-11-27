@@ -120,17 +120,11 @@ private theorem reciprocal_sum (N : PTm n) : Γ ⊢[PRAAx] rsum reciprocalBody N
   simpa only [Fm.subst_eq,GaussianRationalFiniteSum.subst_sum,GaussianGammaCanonicalExponent.subst_harmonicPoint,
     ConciseIPRA.PTm.subst_zero,Syn.subst_var,Syn.inst_zero] using h.allE N
 
-private theorem natural_zero : Γ ⊢[PRAAx] naturalPoint (zero : PTm n) ≐ qzero := by
-  refine canonical_unique _ _ zeroCode one (ofGaussian_canonical _ _ (le_refl one))
-    GaussianRationalSyntheticDivision.qzero_canonical (le_refl one) ?_ (GaussianRationalHorner.zero_represents one)
-  refine represents_congr (.eqRefl _) ?_ (.eqRefl _) (natural_point_represents zero)
-  apply equal_of_values <;> simp only [re_scale,im_scale,re_zero,im_zero] <;> ipra_simps <;> ring
+private theorem natural_zero : Γ ⊢[PRAAx] naturalPoint (zero : PTm n) ≐ qzero :=
+  GaussianRationalNaturalScale.natural_point_zero
 
-private theorem natural_one : Γ ⊢[PRAAx] naturalPoint (one : PTm n) ≐ qone := by
-  refine canonical_unique _ _ oneCode one (ofGaussian_canonical _ _ (le_refl one)) qone_canonical (le_refl one) ?_
-    (ofGaussian_represents oneCode one (le_refl one))
-  refine represents_congr (.eqRefl _) ?_ (.eqRefl _) (natural_point_represents one)
-  apply equal_of_values <;> simp only [re_scale,im_scale] <;> ipra_simps <;> ring
+private theorem natural_one : Γ ⊢[PRAAx] naturalPoint (one : PTm n) ≐ qone :=
+  GaussianRationalNaturalScale.natural_point_one
 
 private theorem unit_sum (N : PTm n) : Γ ⊢[PRAAx] rsum unitBody N zero ≐ naturalPoint N := by
   have h : Γ ⊢[PRAAx] .all (rsum unitBody (var 0) zero ≐ naturalPoint (var 0)) := by

@@ -84,28 +84,17 @@ private theorem negativeIndex_value (j : PTm n) : Γ ⊢[PRAAx]
   exact eq.eqTrans (GaussianRationalMatrixFiniteSums.negative_as_minusOne _)
 
 private theorem naturalPoint_mul (a b : PTm n) : Γ ⊢[PRAAx]
-    qmul (naturalPoint a) (naturalPoint b) ≐ naturalPoint (a*b) := by
-  have raw := qmul_represents (naturalPoint a) (naturalPoint b) (scale a oneCode) (scale b oneCode) one one
-    (le_refl (Γ := Γ) one) (le_refl one) (natural_point_represents a) (natural_point_represents b)
-  have same : Γ ⊢[PRAAx] equal (ComplexLogarithmRemainder.mul (scale a oneCode) (scale b oneCode))
-      (scale (a*b) oneCode) := by
-    apply equal_of_values <;> simp only [re_mul,im_mul,re_scale,im_scale,re_one,im_one] <;>
-      ipra_simps <;> ring
-  exact canonical_unique _ _ _ one (qmul_canonical _ _) (ofGaussian_canonical _ _ (le_refl one)) (le_refl _)
-    (represents_congr (.eqRefl _) same (one_mul _) raw) (natural_point_represents (a*b))
+    qmul (naturalPoint a) (naturalPoint b) ≐ naturalPoint (a*b) :=
+  GaussianRationalNaturalScale.natural_point_mul a b
 
 private theorem naturalPoint_congr {a b : PTm n} (h : Γ ⊢[PRAAx] a ≐ b) :
-    Γ ⊢[PRAAx] naturalPoint a ≐ naturalPoint b := by
-  ipra_congr (naturalPoint (var 0) : PTm 1) with [h]
+    Γ ⊢[PRAAx] naturalPoint a ≐ naturalPoint b :=
+  GaussianRationalHorner.real_fraction_congr h (.eqRefl _)
 
 theorem signedFactorial_zero : Γ ⊢[PRAAx] signedFactorial (zero : PTm n) ≐ qone := by
   have factEq := naturalPoint_congr (fact_zero (Γ := Γ) zero)
-  have nEq : Γ ⊢[PRAAx] naturalPoint (one : PTm n) ≐ qone := by
-    have same : Γ ⊢[PRAAx] equal (scale one oneCode) oneCode := by
-      apply equal_of_values <;> simp only [re_scale,im_scale,re_one,im_one] <;> ipra_simps <;> ring
-    exact canonical_unique _ _ _ one (ofGaussian_canonical _ _ (le_refl _)) qone_canonical (le_refl _)
-      (represents_congr (.eqRefl _) same (.eqRefl _) (natural_point_represents one))
-      (ofGaussian_represents _ _ (le_refl _))
+  have nEq : Γ ⊢[PRAAx] naturalPoint (one : PTm n) ≐ qone :=
+    GaussianRationalNaturalScale.natural_point_one
   exact (qmul_congr (power_zero minusOne) (factEq.eqTrans nEq)).eqTrans (qmul_one_right _ qone_canonical)
 
 theorem signedFactorial_succ (j : PTm n) : Γ ⊢[PRAAx]

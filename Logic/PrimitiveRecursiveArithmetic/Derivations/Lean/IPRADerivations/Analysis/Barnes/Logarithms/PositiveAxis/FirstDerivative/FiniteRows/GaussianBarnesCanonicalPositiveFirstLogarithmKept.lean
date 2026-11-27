@@ -63,8 +63,7 @@ private theorem slope_succ (z B N : PTm n) (hB : Γ ⊢[PRAAx] le one B) :
   let v := harmonicPoint N
   let w := reciprocalPoint N
   have one_value : Γ ⊢[PRAAx] naturalPoint (one : PTm n) ≐ qone :=
-    (GaussianEulerDecayFactorBounds.fraction_is_radius_point one one (le_refl one)).eqTrans
-      GaussianDominantPairAlgebra.radius_one
+    GaussianRationalNaturalScale.natural_point_one
   have size : Γ ⊢[PRAAx] naturalPoint (succ N) ≐ qadd (naturalPoint N) qone :=
     (GaussianGammaRationalFractionalChord.natural_point_sum N one (succ N) (by ipra_ring)).eqSymm.eqTrans
       (qadd_congr (.eqRefl _) one_value)

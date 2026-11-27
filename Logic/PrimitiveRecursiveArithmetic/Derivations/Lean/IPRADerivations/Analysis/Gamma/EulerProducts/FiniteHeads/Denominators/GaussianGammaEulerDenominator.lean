@@ -44,20 +44,12 @@ theorem denominator_succ (z B K : PTm n) : Γ ⊢[PRAAx]
     denominator z B (succ K) ≐ qmul (denominator z B K) (linear z B K) :=
   (product_succ _ _ _).eqTrans (qmul_congr (.eqRefl _) (linear_at K z B))
 
-theorem natural_one : Γ ⊢[PRAAx] naturalPoint (one : PTm n) ≐ qone := by
-  apply canonical_unique _ _ oneCode one (ofGaussian_canonical _ _ (le_refl _))
-    qone_canonical (le_refl _) (hrv := ofGaussian_represents _ _ (le_refl _))
-  apply represents_congr (.eqRefl _) ?_ (.eqRefl _) (natural_point_represents one)
-  apply equal_of_values <;> simp only [re_scale,im_scale] <;> ipra_simps <;> ring
+theorem natural_one : Γ ⊢[PRAAx] naturalPoint (one : PTm n) ≐ qone :=
+  GaussianRationalNaturalScale.natural_point_one
 
 theorem natural_multiply (a b : PTm n) : Γ ⊢[PRAAx]
-    qmul (naturalPoint a) (naturalPoint b) ≐ naturalPoint (a*b) := by
-  have raw := natScale_represents (Γ := Γ) a (naturalPoint b) (scale b oneCode) one (le_refl _) (natural_point_represents b)
-  have same := represents_congr (.eqRefl _) (b := scale (a*b) oneCode) (by
-    apply equal_of_values <;> simp only [re_scale,im_scale] <;> ipra_simps <;> ring) (.eqRefl _) raw
-  exact (natScale_as_product a (naturalPoint b)).eqSymm.eqTrans
-    (canonical_unique _ _ _ _ (natScale_canonical _ _) (ofGaussian_canonical _ _ (le_refl _))
-      (le_refl _) same (natural_point_represents (a*b)))
+    qmul (naturalPoint a) (naturalPoint b) ≐ naturalPoint (a*b) :=
+  GaussianRationalNaturalScale.natural_point_mul a b
 
 theorem factor_scaled (z B i : PTm n) (hB : Γ ⊢[PRAAx] le one B) : Γ ⊢[PRAAx]
     qmul (naturalPoint (succ i)) (factor i z B) ≐ linear z B (succ i) := by

@@ -123,11 +123,8 @@ theorem geometric_factorization (m z : PTm n) :
     (cancel.eqTrans ((qsub_congr (qsub_congr h (.eqRefl _)) (.eqRefl _)).eqTrans
       ((subtract_exchange _ _ _).eqTrans (qsub_congr (qsub_add_cancel P S (power_canonical z m)) (.eqRefl _))))))
 
-private theorem natural_point_zero : Γ ⊢[PRAAx] naturalPoint (zero : PTm n) ≐ qzero := by
-  apply canonical_unique _ _ zeroCode one (ofGaussian_canonical _ _ (le_refl _)) qzero_canonical
-    (le_refl _) _ (GaussianRationalHorner.zero_represents one)
-  apply represents_congr (.eqRefl _) _ (.eqRefl _) (natural_point_represents _)
-  apply equal_of_values <;> simp only [re_scale,im_scale,re_one,im_one,re_zero,im_zero] <;> ipra_simps <;> ring
+private theorem natural_point_zero : Γ ⊢[PRAAx] naturalPoint (zero : PTm n) ≐ qzero :=
+  GaussianRationalNaturalScale.natural_point_zero
 
 private theorem natural_point_step (j : PTm n) :
     Γ ⊢[PRAAx] qadd (naturalPoint j) qone ≐ naturalPoint (succ j) := by

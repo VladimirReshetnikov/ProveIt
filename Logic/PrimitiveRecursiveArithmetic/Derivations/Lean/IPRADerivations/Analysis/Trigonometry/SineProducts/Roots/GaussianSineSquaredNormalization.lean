@@ -35,42 +35,26 @@ private theorem point_canonical (a : PTm n) : Γ ⊢[PRAAx] canonical (naturalPo
   ofGaussian_canonical _ _ (le_refl _)
 
 private theorem point_congr {a b : PTm n} (h : Γ ⊢[PRAAx] a ≐ b) :
-    Γ ⊢[PRAAx] naturalPoint a ≐ naturalPoint b := by
-  simpa using Prf.eqCongr (naturalPoint (var 0) : PTm 1) (σ := ![a]) (σ' := ![b])
-    (fun i => by fin_cases i; exact h)
+    Γ ⊢[PRAAx] naturalPoint a ≐ naturalPoint b :=
+  GaussianRationalHorner.real_fraction_congr h (.eqRefl _)
 
-private theorem point_zero : Γ ⊢[PRAAx] naturalPoint (zero : PTm n) ≐ qzero := by
-  apply canonical_unique _ _ zeroCode one (point_canonical _) (ofGaussian_canonical _ _ (le_refl _))
-    (le_refl _) _ (zero_represents one)
-  apply represents_congr (.eqRefl _) _ (.eqRefl _) (natural_point_represents _)
-  apply equal_of_values <;> simp only [re_scale,im_scale,re_one,im_one,re_zero,im_zero] <;> ipra_simps <;> ring
+private theorem point_zero : Γ ⊢[PRAAx] naturalPoint (zero : PTm n) ≐ qzero :=
+  GaussianRationalNaturalScale.natural_point_zero
 
-private theorem point_one : Γ ⊢[PRAAx] naturalPoint (one : PTm n) ≐ qone := by
-  apply canonical_unique _ _ oneCode one (point_canonical _) (ofGaussian_canonical _ _ (le_refl _))
-    (le_refl _) _ (ofGaussian_represents _ _ (le_refl _))
-  apply represents_congr (.eqRefl _) _ (.eqRefl _) (natural_point_represents _)
-  apply equal_of_values <;> simp only [re_scale,im_scale,re_one,im_one] <;> ipra_simps <;> ring
+private theorem point_one : Γ ⊢[PRAAx] naturalPoint (one : PTm n) ≐ qone :=
+  GaussianRationalNaturalScale.natural_point_one
 
 private theorem point_add (a b : PTm n) :
-    Γ ⊢[PRAAx] qadd (naturalPoint a) (naturalPoint b) ≐ naturalPoint (a+b) := by
-  apply canonical_unique _ _ (scale (a+b) oneCode) one (qadd_canonical _ _) (point_canonical _)
-    (le_refl _) _ (natural_point_represents _)
-  apply represents_congr (.eqRefl _) _ (.eqRefl _)
-    (qadd_represents _ _ _ _ _ (le_refl _) (natural_point_represents a) (natural_point_represents b))
-  apply equal_of_values <;> simp only [re_add,im_add,re_scale,im_scale] <;> ipra_simps <;> ring
+    Γ ⊢[PRAAx] qadd (naturalPoint a) (naturalPoint b) ≐ naturalPoint (a+b) :=
+  GaussianRationalNaturalScale.natural_point_add a b
 
 private theorem four_at_trace_two : Γ ⊢[PRAAx]
     qmul twoPoint twoPoint ≐ naturalPoint (num 4 : PTm n) := by
   have hTwo : Γ ⊢[PRAAx] twoPoint ≐ naturalPoint two :=
     (qadd_congr point_one.eqSymm point_one.eqSymm).eqTrans
       ((point_add one one).eqTrans (point_congr (by ipra_ring)))
-  have rp := natScale_represents (Γ := Γ) two (naturalPoint two) (scale two oneCode) one
-      (le_refl _) (natural_point_represents two)
-  have hFour : Γ ⊢[PRAAx] qmul (naturalPoint two) (naturalPoint two) ≐ naturalPoint (num 4) := by
-    apply canonical_unique _ _ (scale (num 4) oneCode) one (qmul_canonical _ _) (point_canonical _)
-      (le_refl _) _ (natural_point_represents _)
-    apply represents_congr (natScale_as_product _ _) _ (.eqRefl _) rp
-    apply equal_of_values <;> simp only [re_scale,im_scale,re_one,im_one] <;> ipra_simps <;> ring
+  have hFour : Γ ⊢[PRAAx] qmul (naturalPoint two) (naturalPoint two) ≐ naturalPoint (num 4) :=
+    (GaussianRationalNaturalScale.natural_point_mul two two).eqTrans (point_congr (by ipra_ring))
   exact (qmul_congr hTwo hTwo).eqTrans hFour
 
 def countingLaw (k : PTm n) : Fm PTm n :=
