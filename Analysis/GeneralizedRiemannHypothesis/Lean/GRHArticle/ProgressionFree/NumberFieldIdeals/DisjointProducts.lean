@@ -16,28 +16,29 @@ open scoped nonZeroDivisors
 
 variable {K : Type*} [Field K] [NumberField K]
 
-private theorem countUpTo_iUnion {S : Set (Ideal (𝓞 K))⁰} (A : S → Set (Ideal (𝓞 K))⁰)
-    (hdis : Pairwise fun i j : S ↦ Disjoint ((i.val * ·) '' A i) ((j.val * ·) '' A j))
+private theorem countUpTo_iUnion {S : Type*} (J : S → (Ideal (𝓞 K))⁰) (hJ : Function.Injective J)
+    (A : S → Set (Ideal (𝓞 K))⁰)
+    (hdis : Pairwise fun i j : S ↦ Disjoint ((J i * ·) '' A i) ((J j * ·) '' A j))
     {X : ℝ} (hX : 0 ≤ X) :
-    (countUpTo (⋃ j : S, (j.val * ·) '' A j) X : ℝ) =
-      ∑' j : S, (countUpTo ((j.val * ·) '' A j) X : ℝ) := by
+    (countUpTo (⋃ j : S, (J j * ·) '' A j) X : ℝ) =
+      ∑' j : S, (countUpTo ((J j * ·) '' A j) X : ℝ) := by
   classical
   let ball := {I : (Ideal (𝓞 K))⁰ | (absNorm I.val : ℝ) ≤ X}
   have hf : ball.Finite := (finite_setOf_absNorm_le₀ (S := 𝓞 K) ⌊X⌋₊).subset
     fun _ hI ↦ (Nat.le_floor_iff hX).mpr hI
-  let T : Finset S := (hf.preimage (f := Subtype.val) Subtype.val_injective.injOn).toFinset
+  let T : Finset S := (hf.preimage (f := J) hJ.injOn).toFinset
   let F (B : Set (Ideal (𝓞 K))⁰) := (hf.subset (Set.inter_subset_right (s := B))).toFinset
   have hF (B : Set (Ideal (𝓞 K))⁰) : countUpTo B X = (F B).card :=
     Set.ncard_eq_toFinset_card (B ∩ ball) _
-  let E (j : S) := (j.val * ·) '' A j
+  let E (j : S) := (J j * ·) '' A j
   have hmem {j : S} {I : (Ideal (𝓞 K))⁰} (hI : I ∈ F (E j)) : j ∈ T := by
-    obtain ⟨⟨J,_,rfl⟩,hx⟩ := (Set.Finite.mem_toFinset _).mp hI
+    obtain ⟨⟨I',_,rfl⟩,hx⟩ := (Set.Finite.mem_toFinset _).mp hI
     apply (Set.Finite.mem_toFinset _).mpr
-    change (absNorm j.val.val : ℝ) ≤ X
-    change (absNorm (j.val*J).val : ℝ) ≤ X at hx
+    change (absNorm (J j).val : ℝ) ≤ X
+    change (absNorm (J j*I').val : ℝ) ≤ X at hx
     rw [Submonoid.coe_mul,map_mul,Nat.cast_mul] at hx
-    have hJ : (1:ℝ) ≤ absNorm J.val := by exact_mod_cast absNorm_pos_of_nonZeroDivisors J
-    exact (le_mul_of_one_le_right (Nat.cast_nonneg _) hJ).trans hx
+    have hI1 : (1:ℝ) ≤ absNorm I'.val := by exact_mod_cast absNorm_pos_of_nonZeroDivisors I'
+    exact (le_mul_of_one_le_right (Nat.cast_nonneg _) hI1).trans hx
   have hUnion : F (⋃ j : S, E j) = T.biUnion (fun j ↦ F (E j)) := by
     ext I
     simp only [F,Set.Finite.mem_toFinset,Set.mem_inter_iff,Set.mem_iUnion,mem_biUnion]
@@ -59,24 +60,33 @@ private theorem countUpTo_iUnion {S : Set (Ideal (𝓞 K))⁰} (A : S → Set (I
 
 /-- Density of pairwise disjoint ideal products with a summable family of
 reciprocal multiplier norms, including variable rules on the factors. -/
-theorem hasNaturalDensity_disjointProducts {S : Set (Ideal (𝓞 K))⁰} (A : S → Set (Ideal (𝓞 K))⁰)
+theorem hasNaturalDensity_disjointMulImages {S : Type*} (J : S → (Ideal (𝓞 K))⁰)
+    (hJ : Function.Injective J) (A : S → Set (Ideal (𝓞 K))⁰)
     {d : S → ℝ} (hA : ∀ j, HasNaturalDensity (A j) (d j))
-    (hdis : Pairwise fun i j : S ↦ Disjoint ((i.val * ·) '' A i) ((j.val * ·) '' A j))
-    (hS : Summable fun j : S ↦ (absNorm j.val.val : ℝ)⁻¹) :
-    HasNaturalDensity (⋃ j : S, (j.val * ·) '' A j) (∑' j : S, d j / absNorm j.val.val) := by
-  let E (j : S) := (j.val * ·) '' A j
+    (hdis : Pairwise fun i j : S ↦ Disjoint ((J i * ·) '' A i) ((J j * ·) '' A j))
+    (hS : Summable fun j : S ↦ (absNorm (J j).val : ℝ)⁻¹) :
+    HasNaturalDensity (⋃ j : S, (J j * ·) '' A j) (∑' j : S, d j / absNorm (J j).val) := by
+  let E (j : S) := (J j * ·) '' A j
   let f (X : ℝ) (j : S) := (countUpTo (E j) X : ℝ)/X
-  have hlim (j : S) : Tendsto (f · j) atTop (𝓝 ((d j / absNorm j.val.val) * dedekindZeta_residue K)) :=
-    (hasNaturalDensity_iff_tendsto_div _ _).mp ((hA j).mul_image j.val)
+  have hlim (j : S) : Tendsto (f · j) atTop (𝓝 ((d j / absNorm (J j).val) * dedekindZeta_residue K)) :=
+    (hasNaturalDensity_iff_tendsto_div _ _).mp ((hA j).mul_image (J j))
   obtain ⟨C,_,hC⟩ := exists_uniform_mul_image_bound (K := K)
-  have hbound : ∀ᶠ X in atTop, ∀ j : S, ‖f X j‖ ≤ C * (absNorm j.val.val : ℝ)⁻¹ := by
+  have hbound : ∀ᶠ X in atTop, ∀ j : S, ‖f X j‖ ≤ C * (absNorm (J j).val : ℝ)⁻¹ := by
     filter_upwards [eventually_gt_atTop (0:ℝ)] with X hX j
     rw [Real.norm_of_nonneg (by dsimp [f]; positivity), ← div_eq_mul_inv]
-    exact hC j.val (A j) X hX
+    exact hC (J j) (A j) X hX
   have hlim' := tendsto_tsum_of_dominated_convergence (hS.mul_left C) hlim hbound
   rw [tsum_mul_right] at hlim'
   apply (hasNaturalDensity_iff_tendsto_div _ _).mpr (hlim'.congr' ?_)
   filter_upwards [eventually_ge_atTop (0:ℝ)] with X hX
-  rw [countUpTo_iUnion A hdis hX,← tsum_div_const]
+  rw [countUpTo_iUnion J hJ A hdis hX,← tsum_div_const]
+
+/-- The version indexed directly by a set of ideals. -/
+theorem hasNaturalDensity_disjointProducts {S : Set (Ideal (𝓞 K))⁰} (A : S → Set (Ideal (𝓞 K))⁰)
+    {d : S → ℝ} (hA : ∀ j, HasNaturalDensity (A j) (d j))
+    (hdis : Pairwise fun i j : S ↦ Disjoint ((i.val * ·) '' A i) ((j.val * ·) '' A j))
+    (hS : Summable fun j : S ↦ (absNorm j.val.val : ℝ)⁻¹) :
+    HasNaturalDensity (⋃ j : S, (j.val * ·) '' A j) (∑' j : S, d j / absNorm j.val.val) :=
+  hasNaturalDensity_disjointMulImages Subtype.val Subtype.val_injective A hA hdis hS
 
 end GRHArticle.ProgressionFree.NumberFieldIdeals

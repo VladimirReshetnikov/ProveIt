@@ -21,7 +21,8 @@ private theorem not_dvd_other {p q : HeightOneSpectrum (𝓞 K)} (h : p ≠ q) :
     (Ideal.prime_of_isPrime q.ne_bot q.isPrime), associated_iff_eq]
   exact fun he ↦ h (HeightOneSpectrum.ext he)
 
-private theorem mem_powers_mul_iff (S : Finset (HeightOneSpectrum (𝓞 K)))
+/-- Factoring out the prescribed prime powers is equivalent to their exact divisibility conditions. -/
+theorem mem_roughIdeals_mul_image_iff (S : Finset (HeightOneSpectrum (𝓞 K)))
     (v : HeightOneSpectrum (𝓞 K) → ℕ) (I : (Ideal (𝓞 K))⁰) :
     I ∈ ((∏ p ∈ S, primeIdeal p ^ v p) * ·) '' roughIdeals S ↔
       ∀ p ∈ S, p.asIdeal ^ v p ∣ I.val ∧ ¬ p.asIdeal ^ (v p+1) ∣ I.val := by
@@ -68,6 +69,6 @@ theorem hasNaturalDensity_valuationCylinder (S : Finset (HeightOneSpectrum (𝓞
         p.asIdeal ^ v p ∣ I.val ∧ ¬ p.asIdeal ^ (v p+1) ∣ I.val}
       (∏ p ∈ S, ((1-(absNorm p.asIdeal : ℝ)⁻¹) * (absNorm p.asIdeal : ℝ)⁻¹ ^ v p)) := by
   convert hasNaturalDensity_exactPrimePowers S v using 1
-  exact Set.ext fun I ↦ (mem_powers_mul_iff S v I).symm
+  exact Set.ext fun I ↦ (mem_roughIdeals_mul_image_iff S v I).symm
 
 end GRHArticle.ProgressionFree.NumberFieldIdeals
