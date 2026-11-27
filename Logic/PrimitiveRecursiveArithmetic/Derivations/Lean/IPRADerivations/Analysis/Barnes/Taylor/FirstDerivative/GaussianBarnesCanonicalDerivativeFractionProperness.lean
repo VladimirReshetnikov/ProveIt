@@ -1,5 +1,5 @@
 import IPRADerivations.Analysis.Barnes.Taylor.FirstDerivative.Cofinal.GaussianBarnesCanonicalDerivativeCofinal
-import IPRADerivations.Analysis.Barnes.CanonicalProducts.GaussianBarnesCanonicalFiniteProperness
+import IPRADerivations.Analysis.Barnes.CanonicalProducts.FiniteProducts.GaussianBarnesCanonicalFiniteProperness
 import IPRADerivations.Analysis.Names.Arithmetic.GaussianNameConjugation
 
 /-!

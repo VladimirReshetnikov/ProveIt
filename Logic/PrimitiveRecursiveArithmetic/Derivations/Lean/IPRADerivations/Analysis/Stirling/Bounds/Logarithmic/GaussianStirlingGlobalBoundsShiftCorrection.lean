@@ -1,5 +1,5 @@
 import IPRADerivations.Analysis.Stirling.Bounds.Logarithmic.GaussianStirlingGlobalBoundsShiftArguments
-import IPRADerivations.Analysis.Euler.HarmonicLogarithms.GaussianHarmonicIntervalLinearRemainder
+import IPRADerivations.Analysis.Euler.HarmonicLogarithms.QuadraticBounds.GaussianHarmonicIntervalLinearRemainder
 import IPRADerivations.Analysis.Stirling.Duplication.GaussianStirlingDuplicationResidual
 
 /-!

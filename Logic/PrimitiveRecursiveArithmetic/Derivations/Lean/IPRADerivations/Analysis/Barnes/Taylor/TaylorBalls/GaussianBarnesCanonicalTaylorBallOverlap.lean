@@ -1,5 +1,5 @@
 import IPRADerivations.Analysis.Barnes.Taylor.TaylorBalls.GaussianBarnesCanonicalTaylorBall
-import IPRADerivations.Analysis.Barnes.CanonicalProducts.GaussianBarnesCanonicalProperness
+import IPRADerivations.Analysis.Barnes.CanonicalProducts.Values.GaussianBarnesCanonicalProperness
 
 /-!
 # Compare the stored Barnes Taylor values where two balls overlap

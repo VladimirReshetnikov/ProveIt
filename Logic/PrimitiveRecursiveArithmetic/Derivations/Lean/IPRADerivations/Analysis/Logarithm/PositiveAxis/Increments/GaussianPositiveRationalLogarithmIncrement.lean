@@ -1,4 +1,4 @@
-import IPRADerivations.Analysis.Euler.HarmonicLogarithms.GaussianHarmonicIntervalLinearRemainder
+import IPRADerivations.Analysis.Euler.HarmonicLogarithms.QuadraticBounds.GaussianHarmonicIntervalLinearRemainder
 import IPRADerivations.Analysis.Euler.CompactExhaustion.ParameterBounds.GaussianEulerExponentCompactBounds
 
 /-!

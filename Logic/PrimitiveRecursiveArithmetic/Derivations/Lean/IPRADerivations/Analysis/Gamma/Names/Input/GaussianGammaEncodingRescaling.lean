@@ -2,7 +2,7 @@ import IPRADerivations.Analysis.Gamma.Names.Input.GaussianGammaInputProperness
 import IPRADerivations.Analysis.Gamma.EulerProducts.Approximants.GaussianGammaEulerApproximationName
 import IPRADerivations.Analysis.Exponential.IntegerPowers.GaussianRobinMeshExponential
 import IPRADerivations.Analysis.Gamma.FunctionalEquations.Recurrence.GaussianGammaRepeatedShift
-import IPRADerivations.Analysis.Gamma.Names.PoleFree.GaussianGammaRadiusOverlap
+import IPRADerivations.Analysis.Gamma.Names.PoleFree.Regularity.GaussianGammaRadiusOverlap
 
 /-!
 # Positive encoding rescaling of the original Gamma reciprocal

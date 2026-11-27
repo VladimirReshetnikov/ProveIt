@@ -1,6 +1,6 @@
 import IPRADerivations.Analysis.Inequalities.WeightedComparison.GaussianWeightedMonomialBasis
 import IPRADerivations.Analysis.Polynomials.Representation.GaussianPolynomialWeightedDegree
-import IPRADerivations.Analysis.Polynomials.RootFinding.Reconstruction.GaussianRationalMonicReconstruction
+import IPRADerivations.Analysis.Polynomials.RootFinding.Reconstruction.MonicReduction.GaussianRationalMonicReconstruction
 
 /-!
 # Actual descending polynomial from finite annihilator coefficients

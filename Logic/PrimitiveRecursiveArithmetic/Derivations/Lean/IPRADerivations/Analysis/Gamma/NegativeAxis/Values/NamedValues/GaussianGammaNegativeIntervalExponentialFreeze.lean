@@ -3,7 +3,7 @@ import IPRADerivations.Analysis.Gamma.EulerProducts.Approximants.GaussianGammaFi
 import IPRADerivations.Analysis.Exponential.Names.Evaluators.GaussianExponentialRadiusIndependence
 import IPRADerivations.Analysis.Names.Rates.Perturbations.GaussianNamedDifferenceRate
 import IPRADerivations.Analysis.Names.Rates.Transport.GaussianNamedRateTransport
-import IPRADerivations.Analysis.Polynomials.RootFinding.Reconstruction.GaussianReconstructionRoots
+import IPRADerivations.Analysis.Polynomials.RootFinding.Reconstruction.RootProducts.GaussianReconstructionRoots
 
 /-!
 # Exponentiate a frozen logarithm with a uniform radius

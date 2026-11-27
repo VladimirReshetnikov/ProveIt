@@ -1,5 +1,5 @@
 import IPRADerivations.Analysis.Gamma.Poles.LocalFactors.GaussianGammaPoleMultiplier
-import IPRADerivations.Analysis.Gamma.Names.PoleFree.GaussianGammaRadiusOverlap
+import IPRADerivations.Analysis.Gamma.Names.PoleFree.Regularity.GaussianGammaRadiusOverlap
 
 /-!
 # The original local Gamma formula on the punctured disk

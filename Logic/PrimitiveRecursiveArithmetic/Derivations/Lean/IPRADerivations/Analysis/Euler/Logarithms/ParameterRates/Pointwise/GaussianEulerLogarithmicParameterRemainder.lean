@@ -1,5 +1,5 @@
 import IPRADerivations.Analysis.Euler.Derivatives.GaussianEulerParameterIncrementObservation
-import IPRADerivations.Analysis.Euler.Logarithms.Exhaustion.GaussianEulerLogarithmicClientRate
+import IPRADerivations.Analysis.Euler.Logarithms.Exhaustion.CompactClients.GaussianEulerLogarithmicClientRate
 
 /-!
 # Pointwise parameter Taylor error for the original logarithmic evaluator

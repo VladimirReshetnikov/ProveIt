@@ -1,4 +1,4 @@
-import IPRADerivations.Analysis.Stirling.Binet.Oscillatory.Arctangent.GaussianBinetArctangentCosineRectangle
+import IPRADerivations.Analysis.Stirling.Binet.Oscillatory.Arctangent.LaplaceTransforms.GaussianBinetArctangentCosineRectangle
 import IPRADerivations.Analysis.Integration.Quadrature.GaussianRationalQuadratureMean
 import IPRADerivations.Analysis.RationalArithmetic.FiniteSums.Reindexing.GaussianRationalFubini
 

@@ -1,4 +1,4 @@
-import IPRADerivations.Analysis.Barnes.CanonicalProducts.GaussianBarnesCanonicalValue
+import IPRADerivations.Analysis.Barnes.CanonicalProducts.Values.GaussianBarnesCanonicalValue
 
 /-!
 # A disk bound for the original fixed Barnes prefix

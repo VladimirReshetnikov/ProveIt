@@ -1,4 +1,4 @@
-import IPRADerivations.Analysis.Barnes.CanonicalProducts.GaussianBarnesCanonicalSingleExponential
+import IPRADerivations.Analysis.Barnes.CanonicalProducts.Values.GaussianBarnesCanonicalSingleExponential
 import IPRADerivations.Analysis.RationalArithmetic.FiniteSums.GaussianRationalFiniteSumAxis
 import IPRADerivations.Analysis.Stirling.GammaLogarithm.GaussianStirlingNames
 

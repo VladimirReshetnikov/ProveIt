@@ -1,5 +1,5 @@
 import IPRADerivations.Analysis.SpecialFunctions.DampingPower.Compact.GaussianNamedDampingPowerCompactPaid
-import IPRADerivations.Analysis.Polynomials.RootFinding.Reconstruction.GaussianReconstructionRoots
+import IPRADerivations.Analysis.Polynomials.RootFinding.Reconstruction.RootProducts.GaussianReconstructionRoots
 
 /-!
 # Transfer of uniform rational compact bounds to named parameters

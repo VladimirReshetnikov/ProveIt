@@ -1,7 +1,7 @@
 import IPRADerivations.Analysis.Gamma.EulerProducts.LogGamma.NamedValues.GaussianLogGammaEulerNamed
 import IPRADerivations.Analysis.Exponential.Names.Evaluators.GaussianNamedRadiusExponentialFreeze
 import IPRADerivations.Analysis.Gamma.EulerProducts.LogGamma.Exponentiation.GaussianLogGammaEulerExponentialFrozen
-import IPRADerivations.Analysis.Gamma.Names.PoleFree.GaussianGammaNamedHalfPlanePoleFree
+import IPRADerivations.Analysis.Gamma.Names.PoleFree.Regularity.GaussianGammaNamedHalfPlanePoleFree
 
 /-!
 # The exponential of the named right-half-plane log-Gamma

@@ -1,5 +1,5 @@
 import IPRADerivations.Analysis.Gamma.Digamma.NegativeAxis.GaussianGammaNegativeIntervalDigammaRate
-import IPRADerivations.Analysis.Gamma.CriticalPoints.NegativeIntervals.GaussianGammaNegativeCriticalLocationZero
+import IPRADerivations.Analysis.Gamma.CriticalPoints.NegativeIntervals.Location.GaussianGammaNegativeCriticalLocationZero
 
 /-!
 # The original normalized unit-step quotients at the negative critical location

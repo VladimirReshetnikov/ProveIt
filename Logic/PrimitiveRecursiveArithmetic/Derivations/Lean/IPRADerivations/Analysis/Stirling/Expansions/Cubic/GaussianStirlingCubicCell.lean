@@ -1,4 +1,4 @@
-import IPRADerivations.Analysis.Stirling.Telescoping.GaussianStirlingDifferenceBounds
+import IPRADerivations.Analysis.Stirling.Telescoping.Differences.GaussianStirlingDifferenceBounds
 import IPRADerivations.Analysis.Stirling.Bounds.Logarithmic.GaussianStirlingGlobalBoundsFinite
 
 /-!

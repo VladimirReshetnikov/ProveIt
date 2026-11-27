@@ -1,6 +1,6 @@
 import IPRADerivations.Analysis.Gamma.Digamma.Series.GaussianGammaDigammaReciprocalPair
 import IPRADerivations.Analysis.RationalArithmetic.Complex.GaussianRationalInverseQuadraticAlgebra
-import IPRADerivations.Analysis.Stirling.Telescoping.GaussianStirlingTailComparison
+import IPRADerivations.Analysis.Stirling.Telescoping.NamedTails.GaussianStirlingTailComparison
 import IPRADerivations.Analysis.Stirling.Bounds.Multiplicative.GaussianStirlingMultiplicativeBoundsLog
 import IPRADerivations.AnalyticNumberTheory.PhiLower
 

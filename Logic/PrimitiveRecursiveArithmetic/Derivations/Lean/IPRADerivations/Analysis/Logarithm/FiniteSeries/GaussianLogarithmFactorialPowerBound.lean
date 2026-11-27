@@ -1,6 +1,6 @@
 import IPRADerivations.Analysis.Exponential.PositiveAxis.FiniteEstimates.GaussianPositiveExponentialPowerTerm
 import IPRADerivations.Analysis.Logarithm.PositiveAxis.Bounds.GaussianUpperTimeLogarithmPower
-import IPRADerivations.Analysis.Euler.HarmonicLogarithms.GaussianHarmonicLogarithmPower
+import IPRADerivations.Analysis.Euler.HarmonicLogarithms.Algebra.GaussianHarmonicLogarithmPower
 import IPRADerivations.Analysis.Euler.Integration.Decay.GaussianEulerDecayFactorBounds
 
 /-!

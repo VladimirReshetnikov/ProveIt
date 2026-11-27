@@ -1,6 +1,6 @@
 import IPRADerivations.Analysis.Gamma.Digamma.TwoShift.Rational.LogDifferences.GaussianGammaDigammaTwoShiftSecants
 import IPRADerivations.Analysis.Gamma.Digamma.TwoShift.Rational.LogDifferences.GaussianGammaDigammaTwoShiftLogGap
-import IPRADerivations.Analysis.Stirling.Telescoping.GaussianStirlingTailComparison
+import IPRADerivations.Analysis.Stirling.Telescoping.NamedTails.GaussianStirlingTailComparison
 
 /-!
 # Finite normalized two-shift log-Gamma rate

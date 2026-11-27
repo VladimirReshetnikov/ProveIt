@@ -1,4 +1,4 @@
-import IPRADerivations.Analysis.Trigonometry.Arctangent.Cayley.GaussianArctangentCayleyProjections
+import IPRADerivations.Analysis.Trigonometry.Arctangent.Cayley.Coordinates.GaussianArctangentCayleyProjections
 import IPRADerivations.Analysis.Trigonometry.Arctangent.Inverse.GaussianArctangentInverseForward
 
 /-!

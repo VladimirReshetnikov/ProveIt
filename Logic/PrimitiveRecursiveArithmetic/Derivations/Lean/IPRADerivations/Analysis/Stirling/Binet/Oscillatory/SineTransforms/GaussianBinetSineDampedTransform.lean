@@ -1,6 +1,6 @@
 import IPRADerivations.Analysis.Stirling.Binet.Oscillatory.SineTransforms.GaussianBinetSineLaplaceResolvent
 import IPRADerivations.Analysis.Stirling.Binet.Oscillatory.GaussianBinetImaginaryExponentialScale
-import IPRADerivations.Analysis.Gamma.EulerProducts.LogGamma.Convergence.GaussianLogGammaEulerResidualRadius
+import IPRADerivations.Analysis.Gamma.EulerProducts.LogGamma.Convergence.ResidualBounds.GaussianLogGammaEulerResidualRadius
 
 /-!
 # The finite Laplace transform of the regularized sine quotient

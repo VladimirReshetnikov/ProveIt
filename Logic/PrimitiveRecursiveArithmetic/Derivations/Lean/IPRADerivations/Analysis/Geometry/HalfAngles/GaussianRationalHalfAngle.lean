@@ -5,7 +5,7 @@ import IPRADerivations.Analysis.RationalArithmetic.Distances.GaussianRationalL1
 import IPRADerivations.Analysis.RationalArithmetic.Complex.Circle.GaussianIntegerCircleProjection
 import IPRADerivations.Combinatorics.FiniteBijection
 import IPRADerivations.Analysis.RationalArithmetic.Powers.GaussianPowers.GaussianRationalPowerDifference
-import IPRADerivations.Analysis.Polynomials.RootFinding.Reconstruction.GaussianReconstructionRoots
+import IPRADerivations.Analysis.Polynomials.RootFinding.Reconstruction.RootProducts.GaussianReconstructionRoots
 
 /-!
 # An actual principal rational half-angle step

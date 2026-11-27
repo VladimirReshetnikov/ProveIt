@@ -1,4 +1,4 @@
-import IPRADerivations.Analysis.Euler.Logarithms.Exhaustion.GaussianNamedEulerLogarithmicFrozenRate
+import IPRADerivations.Analysis.Euler.Logarithms.Exhaustion.FrozenRates.GaussianNamedEulerLogarithmicFrozenRate
 
 /-!
 # Logarithmic parameter variation between two fixed certified complex names

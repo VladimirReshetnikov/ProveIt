@@ -1,7 +1,7 @@
 import IPRADerivations.Analysis.Beta.Partitions.Alignment.GaussianBetaSharpFiniteBinding
 import IPRADerivations.Analysis.Beta.Partitions.Schedules.GaussianBetaMiddleDyadicBudget
 import IPRADerivations.Analysis.Beta.Endpoints.Lower.GaussianBetaLowDyadicBudget
-import IPRADerivations.Analysis.Beta.Tails.GaussianBetaContiguousUpperTailBudget
+import IPRADerivations.Analysis.Beta.Tails.UpperTails.GaussianBetaContiguousUpperTailBudget
 
 /-!
 # Explicit common-cutoff schedules for the sharp finite Euler comparison

@@ -1,6 +1,6 @@
 import IPRADerivations.Analysis.Gamma.Digamma.GaussianGammaDigammaNative
 import IPRADerivations.Analysis.Gamma.Names.Input.GaussianGammaInputProperness
-import IPRADerivations.Analysis.Gamma.Names.PoleFree.GaussianGammaRadiusOverlap
+import IPRADerivations.Analysis.Gamma.Names.PoleFree.Regularity.GaussianGammaRadiusOverlap
 
 /-!
 # Rescaling positive rational inputs of the original digamma name

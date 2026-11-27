@@ -1,6 +1,6 @@
 import IPRADerivations.Analysis.Barnes.HeadProducts.Factors.GaussianBarnesCanonicalFactorApartness
 import IPRADerivations.Analysis.Names.Rates.Perturbations.GaussianNamedSmallPerturbationTransport
-import IPRADerivations.Analysis.Gamma.Digamma.TwoShift.Named.GaussianGammaDigammaTwoShiftNamedSize
+import IPRADerivations.Analysis.Gamma.Digamma.TwoShift.Named.Caps.GaussianGammaDigammaTwoShiftNamedSize
 
 /-!
 # Deflation of one original Barnes factor

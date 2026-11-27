@@ -1,6 +1,6 @@
 import IPRADerivations.Analysis.Barnes.FunctionalEquations.IntegerValues.GaussianBarnesCanonicalIntegerRecurrence
-import IPRADerivations.Analysis.Barnes.CanonicalProducts.GaussianBarnesCanonicalNormalization
-import IPRADerivations.Analysis.Barnes.CanonicalProducts.GaussianBarnesCanonicalProperness
+import IPRADerivations.Analysis.Barnes.CanonicalProducts.Values.GaussianBarnesCanonicalNormalization
+import IPRADerivations.Analysis.Barnes.CanonicalProducts.Values.GaussianBarnesCanonicalProperness
 import IPRADerivations.Analysis.Barnes.FunctionalEquations.IntegerValues.BarnesInteger
 
 /-!

@@ -1,6 +1,6 @@
-import IPRADerivations.Analysis.Barnes.Logarithms.PositiveAxis.ThirdDerivative.GaussianBarnesCanonicalThirdLogarithmRows
+import IPRADerivations.Analysis.Barnes.Logarithms.PositiveAxis.ThirdDerivative.CubicSeries.GaussianBarnesCanonicalThirdLogarithmRows
 import IPRADerivations.Analysis.Barnes.HeadProducts.ExponentialCorrections.GaussianBarnesCanonicalHeadExponentialFactors
-import IPRADerivations.Analysis.Euler.HarmonicLogarithms.GaussianHarmonicIntegerExponential
+import IPRADerivations.Analysis.Euler.HarmonicLogarithms.Algebra.GaussianHarmonicIntegerExponential
 
 /-!
 # Logarithm of the original kept Barnes powers

@@ -1,4 +1,4 @@
-import IPRADerivations.Analysis.Stirling.Telescoping.GaussianStirlingDifferenceAlgebra
+import IPRADerivations.Analysis.Stirling.Telescoping.Differences.GaussianStirlingDifferenceAlgebra
 import IPRADerivations.Analysis.Stirling.Duplication.GaussianStirlingNativeDuplication
 
 /-!

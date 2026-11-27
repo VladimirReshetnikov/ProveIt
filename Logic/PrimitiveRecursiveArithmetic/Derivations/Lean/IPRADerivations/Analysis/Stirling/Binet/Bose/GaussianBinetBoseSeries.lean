@@ -1,4 +1,4 @@
-import IPRADerivations.Analysis.Stirling.Binet.Bose.CompactIntegrand.GaussianBinetBoseGeometricRatio
+import IPRADerivations.Analysis.Stirling.Binet.Bose.CompactIntegrand.DenominatorBounds.GaussianBinetBoseGeometricRatio
 import IPRADerivations.Analysis.Geometry.GeometricBounds.GaussianRationalGeometricPowerTail
 import IPRADerivations.Analysis.Geometry.GeometricBounds.GaussianRationalInverseGeometric
 

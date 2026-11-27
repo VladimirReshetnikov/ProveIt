@@ -1,7 +1,7 @@
 import IPRADerivations.Analysis.Series.Bernoulli.BernoulliBounds
 import IPRADerivations.Analysis.RationalArithmetic.GoldenRatio.RationalPhiSharpQuintic
 import IPRADerivations.Analysis.Polynomials.CompanionMatrices.GaussianPolynomialMonicCompanion
-import IPRADerivations.Analysis.Exponential.FiniteSeries.GaussianRationalFiniteExponentialEuler
+import IPRADerivations.Analysis.Exponential.FiniteSeries.Products.GaussianRationalFiniteExponentialEuler
 
 /-!
 # The fixed-order multiplicative Stirling coefficients

@@ -1,4 +1,4 @@
-import IPRADerivations.Analysis.Gamma.EulerProducts.LogGamma.Convergence.GaussianLogGammaEulerResidualIntervalMajorant
+import IPRADerivations.Analysis.Gamma.EulerProducts.LogGamma.Convergence.Intervals.GaussianLogGammaEulerResidualIntervalMajorant
 import IPRADerivations.Analysis.RationalArithmetic.FiniteSums.WeightedSums.GaussianRationalSumMajorant
 
 /-!

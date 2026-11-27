@@ -1,4 +1,4 @@
-import IPRADerivations.Analysis.Beta.Tails.GaussianBetaKernelUpperTail
+import IPRADerivations.Analysis.Beta.Tails.UpperTails.GaussianBetaKernelUpperTail
 import IPRADerivations.Analysis.Euler.CompactExhaustion.Tails.GaussianEulerCompactUpperTail
 
 /-!

@@ -1,4 +1,4 @@
-import IPRADerivations.Analysis.Trigonometry.Arctangent.Cayley.GaussianArctangentCayleyTrig
+import IPRADerivations.Analysis.Trigonometry.Arctangent.Cayley.Coordinates.GaussianArctangentCayleyTrig
 import IPRADerivations.Analysis.Trigonometry.Arctangent.PartialSums.GaussianArctangentPartialExponential
 import IPRADerivations.Analysis.Gamma.FunctionalEquations.Recurrence.GaussianGammaEulerShift
 

@@ -1,7 +1,7 @@
 import IPRADerivations.Analysis.Barnes.Taylor.Grids.Differentiation.LocalEstimates.GaussianBarnesCanonicalTaylorDerivativeLocalContinuity
 import IPRADerivations.Analysis.Barnes.Taylor.Coefficients.GaussianBarnesCanonicalTaylorDerivativeChart
 import IPRADerivations.Analysis.Names.Differences.GaussianNamedIncrementChart
-import IPRADerivations.Analysis.Polynomials.RootFinding.Reconstruction.GaussianRationalFiniteRoots
+import IPRADerivations.Analysis.Polynomials.RootFinding.Reconstruction.RootProducts.GaussianRationalFiniteRoots
 
 /-!
 # Uniform continuity of every cofinal Barnes factorial name

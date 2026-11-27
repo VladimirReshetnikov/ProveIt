@@ -4,7 +4,7 @@ import IPRADerivations.Analysis.Exponential.Names.Derivatives.GaussianNamedExpon
 import IPRADerivations.Analysis.Gamma.FunctionalEquations.Recurrence.GaussianNamedGammaHalfShift
 import IPRADerivations.Analysis.Exponential.PositiveAxis.NamedValues.GaussianSignedNameExponentialOrder
 import IPRADerivations.Analysis.RationalArithmetic.FiniteProducts.PolynomialFactors.GaussianRationalLinearProduct
-import IPRADerivations.Analysis.Gamma.Digamma.TwoShift.Named.GaussianGammaDigammaTwoShiftNamedSize
+import IPRADerivations.Analysis.Gamma.Digamma.TwoShift.Named.Caps.GaussianGammaDigammaTwoShiftNamedSize
 
 /-!
 # First-order estimate for the finite Barnes correction exponential

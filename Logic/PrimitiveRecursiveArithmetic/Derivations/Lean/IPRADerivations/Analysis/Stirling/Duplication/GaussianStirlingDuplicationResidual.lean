@@ -1,7 +1,7 @@
 import IPRADerivations.Analysis.Stirling.Duplication.GaussianStirlingDuplicationLogs
-import IPRADerivations.Analysis.Stirling.Telescoping.GaussianStirlingRationalTelescopers
+import IPRADerivations.Analysis.Stirling.Telescoping.FiniteTelescopes.GaussianStirlingRationalTelescopers
 import IPRADerivations.Analysis.Stirling.GammaLogarithm.GaussianStirlingNames
-import IPRADerivations.Analysis.Euler.HarmonicLogarithms.GaussianHarmonicIntervalLinearRemainder
+import IPRADerivations.Analysis.Euler.HarmonicLogarithms.QuadraticBounds.GaussianHarmonicIntervalLinearRemainder
 
 /-!
 # The vanishing residual in Stirling's duplication identity

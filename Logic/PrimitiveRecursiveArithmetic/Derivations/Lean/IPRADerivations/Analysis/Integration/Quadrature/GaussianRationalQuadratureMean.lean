@@ -1,4 +1,4 @@
-import IPRADerivations.Analysis.Stirling.Binet.Oscillatory.Arctangent.GaussianBinetArctangentCosineLaplace
+import IPRADerivations.Analysis.Stirling.Binet.Oscillatory.Arctangent.LaplaceTransforms.GaussianBinetArctangentCosineLaplace
 import IPRADerivations.Analysis.Integration.RiemannSums.GaussianRationalRiemannRefinement
 
 /-!

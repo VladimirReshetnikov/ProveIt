@@ -1,4 +1,4 @@
-import IPRADerivations.Analysis.Euler.PositiveAxis.SharpRates.GaussianEulerSharpFiniteRate
+import IPRADerivations.Analysis.Euler.PositiveAxis.SharpRates.FiniteEstimates.GaussianEulerSharpFiniteRate
 import IPRADerivations.Analysis.Gamma.Integrals.GaussianEulerIntegralGammaIdentification
 
 /-!

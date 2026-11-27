@@ -1,5 +1,5 @@
 import IPRADerivations.Analysis.LinearAlgebra.Matrices.GaussianRationalMatrixFiniteSums
-import IPRADerivations.Analysis.Polynomials.RootFinding.Reconstruction.GaussianRationalFiniteRoots
+import IPRADerivations.Analysis.Polynomials.RootFinding.Reconstruction.RootProducts.GaussianRationalFiniteRoots
 import IPRADerivations.Analysis.RationalArithmetic.Representations.GaussianRationalValueEquality
 
 /-!

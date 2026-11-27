@@ -1,4 +1,4 @@
-import IPRADerivations.Analysis.Exponential.FiniteSeries.GaussianScalarExponentialOddTaylor
+import IPRADerivations.Analysis.Exponential.FiniteSeries.ScalarSeries.GaussianScalarExponentialOddTaylor
 import IPRADerivations.Analysis.Trigonometry.Sine.GaussianNamedSineFromExponential
 import IPRADerivations.Analysis.Trigonometry.Arctangent.Turns.GaussianArctangentExponentialPeriod
 

@@ -1,4 +1,4 @@
-import IPRADerivations.Analysis.Euler.PositiveAxis.SharpRates.GaussianEulerSharpDegreeSchedule
+import IPRADerivations.Analysis.Euler.PositiveAxis.SharpRates.Schedules.GaussianEulerSharpDegreeSchedule
 
 /-!
 # The sharp Euler split on the original dyadic grid

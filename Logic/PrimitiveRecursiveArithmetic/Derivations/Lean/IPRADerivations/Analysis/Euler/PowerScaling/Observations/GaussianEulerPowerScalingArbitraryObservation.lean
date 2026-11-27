@@ -1,5 +1,5 @@
 import IPRADerivations.Analysis.Euler.PowerScaling.Observations.GaussianEulerPowerScalingUniformObservation
-import IPRADerivations.Analysis.Euler.PositiveAxis.PowerCharts.Endpoints.GaussianEulerPowerChartEnclosingSchedule
+import IPRADerivations.Analysis.Euler.PositiveAxis.PowerCharts.Endpoints.Enclosures.GaussianEulerPowerChartEnclosingSchedule
 
 /-!
 # Original Euler quadrature observations on an arbitrary enclosing panel

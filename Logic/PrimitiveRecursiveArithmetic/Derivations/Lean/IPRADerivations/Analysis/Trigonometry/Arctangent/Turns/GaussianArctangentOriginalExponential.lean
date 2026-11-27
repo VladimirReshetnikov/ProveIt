@@ -1,5 +1,5 @@
-import IPRADerivations.Analysis.Trigonometry.Arctangent.Cayley.GaussianArctangentCayleyBudget
-import IPRADerivations.Analysis.Trigonometry.Arctangent.Cayley.GaussianArctangentCayleyTelescope
+import IPRADerivations.Analysis.Trigonometry.Arctangent.Cayley.FiniteTelescopes.GaussianArctangentCayleyBudget
+import IPRADerivations.Analysis.Trigonometry.Arctangent.Cayley.FiniteTelescopes.GaussianArctangentCayleyTelescope
 import IPRADerivations.Analysis.Trigonometry.Arctangent.Turns.GaussianArctangentExponentialPeriod
 
 /-!

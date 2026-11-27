@@ -1,5 +1,5 @@
 import IPRADerivations.Analysis.Euler.PositiveAxis.UpperBounds.GaussianEulerUpperPowerOrder
-import IPRADerivations.Analysis.Euler.HarmonicLogarithms.GaussianHarmonicIntegerExponential
+import IPRADerivations.Analysis.Euler.HarmonicLogarithms.Algebra.GaussianHarmonicIntegerExponential
 
 /-!
 # The ordered arguments are the original Euler power square and rational power

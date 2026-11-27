@@ -1,5 +1,5 @@
 import IPRADerivations.Analysis.Gamma.FunctionalEquations.Recurrence.GaussianGammaFunctionalEquation
-import IPRADerivations.Analysis.Gamma.Names.PoleFree.GaussianGammaRadiusOverlap
+import IPRADerivations.Analysis.Gamma.Names.PoleFree.Regularity.GaussianGammaRadiusOverlap
 import IPRADerivations.Analysis.Gamma.Names.Input.GaussianGammaInputProperness
 import IPRADerivations.Analysis.Exponential.IntegerPowers.GaussianRobinMeshExponential
 

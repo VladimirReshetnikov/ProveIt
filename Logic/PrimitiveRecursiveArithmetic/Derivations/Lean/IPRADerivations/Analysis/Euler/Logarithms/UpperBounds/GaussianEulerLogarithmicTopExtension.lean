@@ -1,4 +1,4 @@
-import IPRADerivations.Analysis.Euler.Logarithms.Exhaustion.GaussianEulerLogarithmicCutoffSplit
+import IPRADerivations.Analysis.Euler.Logarithms.Exhaustion.Cutoffs.GaussianEulerLogarithmicCutoffSplit
 import IPRADerivations.Analysis.Euler.Logarithms.UpperBounds.GaussianEulerLogarithmicUpperCutoffBudget
 
 /-!

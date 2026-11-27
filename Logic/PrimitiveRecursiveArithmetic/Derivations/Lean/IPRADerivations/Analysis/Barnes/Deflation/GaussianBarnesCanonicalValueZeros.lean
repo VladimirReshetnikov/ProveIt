@@ -1,4 +1,4 @@
-import IPRADerivations.Analysis.Barnes.CanonicalProducts.GaussianBarnesCanonicalValue
+import IPRADerivations.Analysis.Barnes.CanonicalProducts.Values.GaussianBarnesCanonicalValue
 import IPRADerivations.Analysis.Barnes.HeadProducts.GaussianBarnesCanonicalHeadApartness
 import IPRADerivations.Analysis.Barnes.Prefactors.GaussianBarnesCanonicalPrefactorInverse
 import IPRADerivations.Analysis.Barnes.TailControl.GaussianBarnesCanonicalTailApartness

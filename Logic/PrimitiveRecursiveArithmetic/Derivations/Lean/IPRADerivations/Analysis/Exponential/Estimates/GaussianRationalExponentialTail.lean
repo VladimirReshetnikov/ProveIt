@@ -1,5 +1,5 @@
 import IPRADerivations.Analysis.Exponential.Polynomials.Coefficients.GaussianFiniteExponentialWeightedNorm
-import IPRADerivations.Analysis.Exponential.FiniteSeries.ExponentialTail
+import IPRADerivations.Analysis.Exponential.FiniteSeries.ScalarSeries.ExponentialTail
 
 /-!
 # The actual Gaussian finite exponential and its scalar tail

@@ -1,4 +1,4 @@
-import IPRADerivations.Analysis.Gamma.NegativeAxis.Logarithms.GaussianGammaNegativeIntervalLogAbsoluteProperness
+import IPRADerivations.Analysis.Gamma.NegativeAxis.Logarithms.AbsoluteValues.GaussianGammaNegativeIntervalLogAbsoluteProperness
 import IPRADerivations.Analysis.Gamma.NegativeAxis.Input.GaussianGammaNegativeIntervalNamedInput
 import IPRADerivations.Analysis.Optimization.Convexity.Secants.RationalMultiplicativeConvexity
 

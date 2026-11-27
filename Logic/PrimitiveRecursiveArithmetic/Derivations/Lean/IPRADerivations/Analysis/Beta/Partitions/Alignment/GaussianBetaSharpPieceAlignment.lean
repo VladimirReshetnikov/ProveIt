@@ -1,7 +1,7 @@
 import IPRADerivations.Analysis.Beta.Partitions.Splits.GaussianBetaSharpAlignedThreeSplit
 import IPRADerivations.Analysis.Beta.Partitions.Schedules.GaussianBetaMiddleDyadicBudget
-import IPRADerivations.Analysis.Beta.Tails.GaussianBetaContiguousUpperTail
-import IPRADerivations.Analysis.Beta.Tails.GaussianBetaZeroExtendedGrid
+import IPRADerivations.Analysis.Beta.Tails.UpperTails.GaussianBetaContiguousUpperTail
+import IPRADerivations.Analysis.Beta.Tails.ZeroExtension.GaussianBetaZeroExtendedGrid
 
 /-!
 # Actual sharp three-piece grids aligned with their middle and tail bounds

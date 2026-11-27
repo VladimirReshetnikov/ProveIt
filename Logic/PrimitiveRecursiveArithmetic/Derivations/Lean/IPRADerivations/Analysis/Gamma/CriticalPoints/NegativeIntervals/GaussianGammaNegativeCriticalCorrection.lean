@@ -1,6 +1,6 @@
 import IPRADerivations.Analysis.Gamma.Digamma.Series.GaussianGammaDigammaReciprocalPair
 import IPRADerivations.Analysis.Gamma.Ratios.GaussianGammaRationalWendelBoundary
-import IPRADerivations.Analysis.Stirling.Telescoping.GaussianStirlingTailComparison
+import IPRADerivations.Analysis.Stirling.Telescoping.NamedTails.GaussianStirlingTailComparison
 import IPRADerivations.Analysis.Euler.PositiveAxis.PowerCharts.ImageGrids.Lattice.GaussianEulerPositivePowerChartCorrectedImage
 
 /-!

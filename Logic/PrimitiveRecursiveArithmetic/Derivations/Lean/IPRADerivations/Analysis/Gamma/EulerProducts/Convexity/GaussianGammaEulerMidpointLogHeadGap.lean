@@ -1,7 +1,7 @@
 import IPRADerivations.Analysis.Gamma.EulerProducts.Convexity.GaussianGammaEulerMidpointHeadGap
 import IPRADerivations.Analysis.Gamma.EulerProducts.Convexity.GaussianGammaEulerRationalLogConvexity
 import IPRADerivations.Analysis.Stirling.Bounds.Multiplicative.GaussianStirlingMultiplicativeBoundsLog
-import IPRADerivations.Analysis.Euler.PositiveAxis.PowerCharts.Endpoints.GaussianEulerPowerChartTimeOrder
+import IPRADerivations.Analysis.Euler.PositiveAxis.PowerCharts.Endpoints.Order.GaussianEulerPowerChartTimeOrder
 
 /-!
 # A rational logarithmic midpoint margin in finite Euler heads

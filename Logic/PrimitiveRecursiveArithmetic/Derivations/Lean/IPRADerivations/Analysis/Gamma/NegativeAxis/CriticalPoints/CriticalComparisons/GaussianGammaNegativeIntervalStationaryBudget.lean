@@ -1,4 +1,4 @@
-import IPRADerivations.Analysis.Gamma.NegativeAxis.Logarithms.GaussianGammaNegativeIntervalLogCenterVariation
+import IPRADerivations.Analysis.Gamma.NegativeAxis.Logarithms.NamedValues.GaussianGammaNegativeIntervalLogCenterVariation
 
 /-!
 # A base-independent stationary error coefficient for negative Gamma

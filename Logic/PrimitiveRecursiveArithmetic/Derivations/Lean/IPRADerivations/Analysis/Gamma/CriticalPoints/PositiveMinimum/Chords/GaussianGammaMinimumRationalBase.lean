@@ -1,6 +1,6 @@
 import IPRADerivations.Analysis.Gamma.Digamma.CriticalPoints.Location.GaussianGammaDigammaLocationProduct
 import IPRADerivations.Analysis.Gamma.CriticalPoints.PositiveMinimum.Chords.GaussianGammaMinimumCenterRate
-import IPRADerivations.Analysis.Stirling.Telescoping.GaussianStirlingRationalTelescopers
+import IPRADerivations.Analysis.Stirling.Telescoping.FiniteTelescopes.GaussianStirlingRationalTelescopers
 
 /-!
 # A common rational denominator for the Gamma minimum comparison

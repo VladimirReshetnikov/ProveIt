@@ -1,4 +1,4 @@
-import IPRADerivations.Analysis.Trigonometry.Arctangent.Cayley.GaussianArctangentCayleyStep
+import IPRADerivations.Analysis.Trigonometry.Arctangent.Cayley.FiniteTelescopes.GaussianArctangentCayleyStep
 import IPRADerivations.Analysis.Gamma.HalfInteger.GaussianGammaHalfPiName
 
 /-!

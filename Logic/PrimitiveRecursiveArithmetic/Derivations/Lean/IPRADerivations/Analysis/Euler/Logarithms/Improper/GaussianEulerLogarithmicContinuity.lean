@@ -1,4 +1,4 @@
-import IPRADerivations.Analysis.Euler.Logarithms.Exhaustion.GaussianEulerLogarithmicCertificateOverlap
+import IPRADerivations.Analysis.Euler.Logarithms.Exhaustion.Certificates.GaussianEulerLogarithmicCertificateOverlap
 import IPRADerivations.Analysis.Euler.Logarithms.ParameterRates.Compact.GaussianEulerLogarithmicCompactParameterRate
 import IPRADerivations.Analysis.Euler.Derivatives.GaussianEulerDerivativeParameterPath
 

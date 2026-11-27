@@ -1,6 +1,6 @@
 import IPRADerivations.Analysis.Stirling.AllOrders.Truncation.GaussianStirlingAllOrderReciprocalGridError
 import IPRADerivations.Analysis.Stirling.AllOrders.GaussianStirlingAllOrderEndpointError
-import IPRADerivations.Analysis.Stirling.AllOrders.FirstPanel.GaussianStirlingAllOrderFirstPanelReadback
+import IPRADerivations.Analysis.Stirling.AllOrders.FirstPanel.FiniteSums.GaussianStirlingAllOrderFirstPanelReadback
 import IPRADerivations.Analysis.Names.Differences.GaussianNamedDifference
 
 /-!

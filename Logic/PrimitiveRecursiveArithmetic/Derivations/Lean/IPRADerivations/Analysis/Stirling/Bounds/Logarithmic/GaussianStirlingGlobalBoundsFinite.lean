@@ -1,4 +1,4 @@
-import IPRADerivations.Analysis.Stirling.Telescoping.GaussianStirlingDifferenceBounds
+import IPRADerivations.Analysis.Stirling.Telescoping.Differences.GaussianStirlingDifferenceBounds
 
 /-!
 # Finite Stirling endpoint bounds with the first margin

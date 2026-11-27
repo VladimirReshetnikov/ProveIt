@@ -1,4 +1,4 @@
-import IPRADerivations.Analysis.Barnes.CanonicalProducts.GaussianBarnesCanonicalSingleExponential
+import IPRADerivations.Analysis.Barnes.CanonicalProducts.Values.GaussianBarnesCanonicalSingleExponential
 import IPRADerivations.Analysis.Gamma.Ratios.GaussianGammaRationalRatioBinding
 
 /-!

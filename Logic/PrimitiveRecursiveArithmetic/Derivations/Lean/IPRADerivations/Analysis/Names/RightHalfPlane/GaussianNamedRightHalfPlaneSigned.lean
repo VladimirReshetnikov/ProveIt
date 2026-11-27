@@ -1,6 +1,6 @@
 import IPRADerivations.Analysis.Names.RightHalfPlane.GaussianNamedRightHalfPlane
 import IPRADerivations.Analysis.Gamma.EulerProducts.LogGamma.FiniteHeads.GaussianLogGammaEulerHead
-import IPRADerivations.Analysis.Gamma.EulerProducts.LogGamma.Convergence.GaussianLogGammaEulerResidualDomain
+import IPRADerivations.Analysis.Gamma.EulerProducts.LogGamma.Convergence.ResidualBounds.GaussianLogGammaEulerResidualDomain
 import IPRADerivations.Analysis.Exponential.Names.Evaluators.GaussianExponentialReference
 
 /-!

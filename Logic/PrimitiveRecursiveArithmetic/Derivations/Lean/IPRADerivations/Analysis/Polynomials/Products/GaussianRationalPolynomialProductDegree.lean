@@ -1,5 +1,5 @@
 import IPRADerivations.Analysis.Polynomials.Representation.GaussianRationalPolynomialDegree
-import IPRADerivations.Analysis.Polynomials.RootFinding.Reconstruction.GaussianRationalMonicReconstruction
+import IPRADerivations.Analysis.Polynomials.RootFinding.Reconstruction.MonicReduction.GaussianRationalMonicReconstruction
 
 /-!
 # Actual convolution, leading coefficient and computed product degree

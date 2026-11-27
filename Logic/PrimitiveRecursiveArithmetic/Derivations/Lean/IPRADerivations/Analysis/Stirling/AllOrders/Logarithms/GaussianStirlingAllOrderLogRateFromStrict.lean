@@ -1,7 +1,7 @@
 import IPRADerivations.Analysis.Stirling.AllOrders.Logarithms.GaussianStirlingAllOrderLogRateTransport
 import IPRADerivations.Analysis.Stirling.Bounds.Multiplicative.GaussianStirlingMultiplicativeBoundsStrictOrder
 import IPRADerivations.Analysis.Names.Rates.Transport.GaussianNamedRateRadius
-import IPRADerivations.Analysis.Euler.PositiveAxis.PowerCharts.Endpoints.GaussianEulerPowerChartTimeOrder
+import IPRADerivations.Analysis.Euler.PositiveAxis.PowerCharts.Endpoints.Order.GaussianEulerPowerChartTimeOrder
 
 /-!
 # Both strict sign branches imply the original logarithm rate

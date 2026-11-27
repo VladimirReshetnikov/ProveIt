@@ -1,4 +1,4 @@
-import IPRADerivations.Analysis.Exponential.FiniteSeries.GaussianRationalFiniteExponentialEuler
+import IPRADerivations.Analysis.Exponential.FiniteSeries.Products.GaussianRationalFiniteExponentialEuler
 import IPRADerivations.Foundations.BoundedSyntaxInduction
 
 /-!

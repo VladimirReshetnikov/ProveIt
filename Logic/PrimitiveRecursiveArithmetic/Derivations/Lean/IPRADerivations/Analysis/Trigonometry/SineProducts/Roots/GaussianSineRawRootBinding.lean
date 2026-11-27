@@ -1,6 +1,6 @@
 import IPRADerivations.Analysis.Trigonometry.SineProducts.Scaling.GaussianSineProductScaledArgumentIdentity
 import IPRADerivations.Analysis.Trigonometry.Arctangent.DivisionAngles.GaussianArctangentDivisionAngleResidual
-import IPRADerivations.Analysis.Trigonometry.Arctangent.Cayley.GaussianArctangentNamedCayleyTrig
+import IPRADerivations.Analysis.Trigonometry.Arctangent.Cayley.NamedValues.GaussianArctangentNamedCayleyTrig
 
 /-!
 # Synchronized error for the sampled divided sine

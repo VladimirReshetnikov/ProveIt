@@ -1,5 +1,5 @@
 import IPRADerivations.Analysis.Barnes.Logarithms.FiniteRows.GaussianBarnesCanonicalLogRow
-import IPRADerivations.Analysis.Barnes.CanonicalProducts.GaussianBarnesCanonicalBase
+import IPRADerivations.Analysis.Barnes.CanonicalProducts.FiniteProducts.GaussianBarnesCanonicalBase
 import IPRADerivations.Analysis.Gamma.Poles.LocalFactors.GaussianGammaLocalPoleGuards
 import IPRADerivations.Analysis.Polynomials.Coefficients.GaussianRationalCoefficientScaling
 

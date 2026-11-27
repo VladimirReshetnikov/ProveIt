@@ -1,4 +1,4 @@
-import IPRADerivations.Analysis.Euler.Logarithms.Exhaustion.GaussianEulerLogarithmicFixedCutoff
+import IPRADerivations.Analysis.Euler.Logarithms.Exhaustion.FrozenRates.GaussianEulerLogarithmicFixedCutoff
 import IPRADerivations.Analysis.Euler.Derivatives.GaussianEulerDerivativeParameterPath
 import IPRADerivations.Analysis.Euler.Derivatives.GaussianEulerDerivativeSubdivisionBudget
 

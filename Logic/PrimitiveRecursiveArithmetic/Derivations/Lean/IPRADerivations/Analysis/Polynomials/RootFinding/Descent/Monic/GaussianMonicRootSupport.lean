@@ -1,5 +1,5 @@
 import IPRADerivations.Analysis.Polynomials.RootFinding.Descent.Monic.GaussianMonicRD
-import IPRADerivations.Analysis.Polynomials.RootFinding.Reconstruction.GaussianRootSupport
+import IPRADerivations.Analysis.Polynomials.RootFinding.Reconstruction.RootSupport.GaussianRootSupport
 
 /-!
 # Concrete collision-tolerant root-support names

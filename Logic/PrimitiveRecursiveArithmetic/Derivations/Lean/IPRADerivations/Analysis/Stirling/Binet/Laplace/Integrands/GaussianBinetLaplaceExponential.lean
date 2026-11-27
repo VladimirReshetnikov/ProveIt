@@ -1,7 +1,7 @@
 import IPRADerivations.Analysis.Stirling.Binet.Kernel.Bounds.GaussianBinetKernelTimeContinuity
 import IPRADerivations.Analysis.Exponential.Estimates.Magnitude.GaussianExponentialRealPartMajorant
 import IPRADerivations.Analysis.Euler.VerticalBounds.Integrands.GaussianEulerVerticalNormTransfer
-import IPRADerivations.Analysis.Gamma.EulerProducts.LogGamma.Convergence.GaussianLogGammaEulerResidualDomain
+import IPRADerivations.Analysis.Gamma.EulerProducts.LogGamma.Convergence.ResidualBounds.GaussianLogGammaEulerResidualDomain
 import IPRADerivations.Analysis.Names.FiniteOperations.Sums.GaussianNamedAddRate
 import IPRADerivations.Analysis.Exponential.PositiveAxis.NamedValues.GaussianSignedNameExponentialOrder
 

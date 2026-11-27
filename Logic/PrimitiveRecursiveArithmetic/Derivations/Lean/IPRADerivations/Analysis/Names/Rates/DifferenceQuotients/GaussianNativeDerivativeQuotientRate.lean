@@ -2,7 +2,7 @@ import IPRADerivations.Analysis.Names.Rates.DifferenceQuotients.GaussianNamedDif
 import IPRADerivations.Analysis.Names.Rates.Scaling.GaussianRationalConstantProductRate
 import IPRADerivations.Analysis.RationalArithmetic.Complex.GaussianL1
 import IPRADerivations.Analysis.Trigonometry.Arctangent.Turns.GaussianArctangentExponentialPeriod
-import IPRADerivations.Analysis.Gamma.Digamma.TwoShift.Named.GaussianGammaDigammaTwoShiftNamedSize
+import IPRADerivations.Analysis.Gamma.Digamma.TwoShift.Named.Caps.GaussianGammaDigammaTwoShiftNamedSize
 import IPRADerivations.Analysis.Names.Rates.Transport.GaussianNamedRateTransport
 
 /-!

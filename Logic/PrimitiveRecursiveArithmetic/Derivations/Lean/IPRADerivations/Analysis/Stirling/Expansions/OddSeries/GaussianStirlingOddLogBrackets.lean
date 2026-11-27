@@ -1,6 +1,6 @@
 import IPRADerivations.Analysis.Stirling.Expansions.OddSeries.GaussianStirlingOddGridTelescope
-import IPRADerivations.Analysis.Stirling.Telescoping.GaussianStirlingDifference
-import IPRADerivations.Analysis.Euler.HarmonicLogarithms.GaussianHarmonicLogarithmName
+import IPRADerivations.Analysis.Stirling.Telescoping.Differences.GaussianStirlingDifference
+import IPRADerivations.Analysis.Euler.HarmonicLogarithms.OrderedNames.GaussianHarmonicLogarithmName
 
 /-!
 # The unreduced odd series brackets the original logarithm

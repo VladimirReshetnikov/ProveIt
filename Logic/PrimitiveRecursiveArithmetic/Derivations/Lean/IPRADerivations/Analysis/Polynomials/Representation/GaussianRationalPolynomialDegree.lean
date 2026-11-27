@@ -1,5 +1,5 @@
-import IPRADerivations.Analysis.Polynomials.RootFinding.Reconstruction.GaussianRationalFiniteRoots
-import IPRADerivations.Analysis.Polynomials.RootFinding.Reconstruction.GaussianRationalMonicReduction
+import IPRADerivations.Analysis.Polynomials.RootFinding.Reconstruction.RootProducts.GaussianRationalFiniteRoots
+import IPRADerivations.Analysis.Polynomials.RootFinding.Reconstruction.MonicReduction.GaussianRationalMonicReduction
 
 /-!
 # Actual nonzero-coefficient scan, canonical trimming and computed degree

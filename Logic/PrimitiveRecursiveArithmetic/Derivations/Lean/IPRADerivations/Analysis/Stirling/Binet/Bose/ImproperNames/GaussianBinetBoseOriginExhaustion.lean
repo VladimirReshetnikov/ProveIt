@@ -1,4 +1,4 @@
-import IPRADerivations.Analysis.Stirling.Binet.Bose.CompactIntegrand.GaussianBinetBoseCompactAlignment
+import IPRADerivations.Analysis.Stirling.Binet.Bose.CompactIntegrand.Quadrature.GaussianBinetBoseCompactAlignment
 import IPRADerivations.Analysis.Names.Rates.Transport.GaussianNamedRateRadius
 import IPRADerivations.Analysis.Names.Rates.Transport.GaussianNamedRateTransport
 

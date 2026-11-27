@@ -1,6 +1,6 @@
 import IPRADerivations.Analysis.Gamma.Digamma.Comparison.Slopes.GaussianGammaDigammaReciprocalLipschitz
 import IPRADerivations.Analysis.Gamma.Digamma.GaussianGammaDigammaSeries
-import IPRADerivations.Analysis.Stirling.AllOrders.FirstPanel.GaussianStirlingAllOrderFirstPanelReadback
+import IPRADerivations.Analysis.Stirling.AllOrders.FirstPanel.FiniteSums.GaussianStirlingAllOrderFirstPanelReadback
 
 /-!
 # The exact finite digamma series inherits the reciprocal slope

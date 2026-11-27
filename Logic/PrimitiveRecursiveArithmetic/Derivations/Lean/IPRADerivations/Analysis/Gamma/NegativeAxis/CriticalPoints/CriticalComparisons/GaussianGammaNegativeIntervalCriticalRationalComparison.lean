@@ -1,6 +1,6 @@
 import IPRADerivations.Analysis.Gamma.NegativeAxis.CriticalPoints.CriticalComparisons.GaussianGammaNegativeIntervalCriticalComparison
 import IPRADerivations.Analysis.Gamma.NegativeAxis.Derivatives.CoefficientVariation.GaussianGammaNegativeIntervalDerivativeTargetRescale
-import IPRADerivations.Analysis.Gamma.NegativeAxis.Logarithms.GaussianGammaNegativeIntervalLogAbsoluteProperness
+import IPRADerivations.Analysis.Gamma.NegativeAxis.Logarithms.AbsoluteValues.GaussianGammaNegativeIntervalLogAbsoluteProperness
 import IPRADerivations.Analysis.Names.LogisticName
 
 /-!

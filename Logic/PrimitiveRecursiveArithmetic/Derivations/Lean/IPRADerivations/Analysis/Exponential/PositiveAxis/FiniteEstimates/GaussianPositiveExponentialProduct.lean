@@ -1,5 +1,5 @@
 import IPRADerivations.Analysis.RationalArithmetic.Complex.GaussianPositiveRealArithmetic
-import IPRADerivations.Analysis.Exponential.FiniteSeries.GaussianScalarExponentialProductLowDegrees
+import IPRADerivations.Analysis.Exponential.FiniteSeries.Products.GaussianScalarExponentialProductLowDegrees
 
 /-!
 # The positive high part of the original rectangular exponential product

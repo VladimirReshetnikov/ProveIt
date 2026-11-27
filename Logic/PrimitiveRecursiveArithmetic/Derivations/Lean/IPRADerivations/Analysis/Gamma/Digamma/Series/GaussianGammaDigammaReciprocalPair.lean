@@ -1,6 +1,6 @@
 import IPRADerivations.Analysis.Gamma.Digamma.Series.GaussianGammaDigammaFiniteSum
 import IPRADerivations.Analysis.Euler.PositiveAxis.PowerCharts.ImageGrids.Lattice.GaussianEulerPositivePowerChartImageWeights
-import IPRADerivations.Analysis.Stirling.Telescoping.GaussianStirlingRationalTelescopers
+import IPRADerivations.Analysis.Stirling.Telescoping.FiniteTelescopes.GaussianStirlingRationalTelescopers
 
 /-!
 # Exact pairwise differences of the original digamma reciprocal rows

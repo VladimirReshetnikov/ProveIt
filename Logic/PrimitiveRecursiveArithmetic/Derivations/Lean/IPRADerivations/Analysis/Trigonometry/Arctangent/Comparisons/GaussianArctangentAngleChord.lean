@@ -1,7 +1,7 @@
 import IPRADerivations.Analysis.Trigonometry.Arctangent.Inverse.GaussianArctangentInverseCorrectness
 import IPRADerivations.Analysis.Trigonometry.Arctangent.Comparisons.GaussianArctangentImaginaryOrderTransport
 import IPRADerivations.Analysis.Trigonometry.Arctangent.Extension.GaussianArctangentNamedChordExtension
-import IPRADerivations.Analysis.Trigonometry.Arctangent.Cayley.GaussianArctangentNamedCayleyTrig
+import IPRADerivations.Analysis.Trigonometry.Arctangent.Cayley.NamedValues.GaussianArctangentNamedCayleyTrig
 import IPRADerivations.Analysis.Trigonometry.Sine.GaussianNamedSineFromExponential
 
 /-!

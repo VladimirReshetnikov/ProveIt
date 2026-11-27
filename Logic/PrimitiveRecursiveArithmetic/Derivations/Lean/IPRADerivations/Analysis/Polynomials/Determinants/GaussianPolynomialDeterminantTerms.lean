@@ -1,7 +1,7 @@
 import IPRADerivations.Foundations.RuntimePermutationWords
 import IPRADerivations.Foundations.GuardedTotalization
 import IPRADerivations.Analysis.Polynomials.Products.GaussianRationalPolynomialProduct
-import IPRADerivations.Analysis.Polynomials.RootFinding.Reconstruction.GaussianRationalMonicReduction
+import IPRADerivations.Analysis.Polynomials.RootFinding.Reconstruction.MonicReduction.GaussianRationalMonicReduction
 import IPRADerivations.Analysis.Polynomials.Coefficients.GaussianRationalCoefficientScaling
 
 /-!

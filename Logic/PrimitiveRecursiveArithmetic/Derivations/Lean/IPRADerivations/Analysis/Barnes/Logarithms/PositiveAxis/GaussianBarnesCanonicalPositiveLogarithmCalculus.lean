@@ -1,6 +1,6 @@
-import IPRADerivations.Analysis.Barnes.Logarithms.PositiveAxis.FirstDerivative.GaussianBarnesCanonicalPositiveLogarithmDyadicDerivative
+import IPRADerivations.Analysis.Barnes.Logarithms.PositiveAxis.FirstDerivative.Cofinal.GaussianBarnesCanonicalPositiveLogarithmDyadicDerivative
 import IPRADerivations.Analysis.Barnes.Logarithms.PositiveAxis.SecondDerivative.GaussianBarnesCanonicalPositiveSecondDerivativeBinding
-import IPRADerivations.Analysis.Barnes.Logarithms.PositiveAxis.ThirdDerivative.GaussianBarnesCanonicalThirdDerivativeCofinalBinding
+import IPRADerivations.Analysis.Barnes.Logarithms.PositiveAxis.ThirdDerivative.Cofinal.GaussianBarnesCanonicalThirdDerivativeCofinalBinding
 
 /-! The original positive Barnes logarithm has three successive derivative names on the
 same certified chart. The third derivative is the original cofinal cubic series. -/

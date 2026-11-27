@@ -1,5 +1,5 @@
 import IPRADerivations.Analysis.Gamma.Names.Derivatives.GaussianGammaNamedRealDerivative
-import IPRADerivations.Analysis.Gamma.Names.PoleFree.GaussianGammaNamedPoleFreeIncrementSource
+import IPRADerivations.Analysis.Gamma.Names.PoleFree.DerivativeQuotients.GaussianGammaNamedPoleFreeIncrementSource
 import IPRADerivations.Analysis.Gamma.Names.Derivatives.GaussianGammaNamedRealDerivativeStep
 import IPRADerivations.Analysis.Gamma.NegativeAxis.CriticalPoints.NamedExtrema.GaussianGammaNegativeIntervalNamedCritical
 

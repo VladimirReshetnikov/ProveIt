@@ -1,5 +1,5 @@
 import IPRADerivations.Analysis.Exponential.PositiveAxis.FiniteEstimates.GaussianPositiveExponentialTermBound
-import IPRADerivations.Analysis.Exponential.FiniteSeries.GaussianScalarExponentialOddTaylor
+import IPRADerivations.Analysis.Exponential.FiniteSeries.ScalarSeries.GaussianScalarExponentialOddTaylor
 import IPRADerivations.Analysis.Trigonometry.Pi.GaussianPiRationalScale
 
 /-!

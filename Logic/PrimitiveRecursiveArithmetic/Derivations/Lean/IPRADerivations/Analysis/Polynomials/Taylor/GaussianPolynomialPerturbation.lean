@@ -1,4 +1,4 @@
-import IPRADerivations.Analysis.Polynomials.RootFinding.Reconstruction.GaussianRootProduct
+import IPRADerivations.Analysis.Polynomials.RootFinding.Reconstruction.RootProducts.GaussianRootProduct
 
 /-!
 # Runtime Horner perturbation from actual coefficient errors

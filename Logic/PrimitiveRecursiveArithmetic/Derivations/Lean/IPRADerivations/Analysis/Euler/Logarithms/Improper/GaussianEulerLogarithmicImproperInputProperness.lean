@@ -1,5 +1,5 @@
 import IPRADerivations.Analysis.Euler.Logarithms.Compact.GaussianEulerLogarithmicInputProperness
-import IPRADerivations.Analysis.Euler.Logarithms.Exhaustion.GaussianEulerLogarithmicCertificateOverlap
+import IPRADerivations.Analysis.Euler.Logarithms.Exhaustion.Certificates.GaussianEulerLogarithmicCertificateOverlap
 
 /-!
 # Equal encoded inputs give the same original logarithmic integral

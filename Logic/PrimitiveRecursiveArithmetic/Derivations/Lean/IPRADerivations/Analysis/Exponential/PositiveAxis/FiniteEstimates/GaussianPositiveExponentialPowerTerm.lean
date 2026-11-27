@@ -2,7 +2,7 @@ import IPRADerivations.Analysis.Exponential.PositiveAxis.FiniteEstimates.Gaussia
 import IPRADerivations.Analysis.FiniteOperations.FiniteProducts.GaussianPositiveScalarProductBound
 import IPRADerivations.Analysis.Euler.Integration.Incomplete.IntegerValues.GaussianEulerIncompleteFactorialPolynomial
 import IPRADerivations.Analysis.Names.Scaling.GaussianNamedNaturalScale
-import IPRADerivations.Analysis.Euler.HarmonicLogarithms.GaussianHarmonicLogarithmName
+import IPRADerivations.Analysis.Euler.HarmonicLogarithms.OrderedNames.GaussianHarmonicLogarithmName
 
 /-!
 # The actual factorial-term comparison for logarithmic lower tails

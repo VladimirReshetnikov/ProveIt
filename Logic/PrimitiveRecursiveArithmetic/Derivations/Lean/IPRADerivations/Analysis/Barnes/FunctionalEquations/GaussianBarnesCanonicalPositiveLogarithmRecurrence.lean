@@ -1,6 +1,6 @@
 import IPRADerivations.Analysis.Barnes.Logarithms.PositiveAxis.GaussianBarnesCanonicalPositiveLogarithmRealAxis
 import IPRADerivations.Analysis.Barnes.FunctionalEquations.Hyperfactorial.Recurrence.GaussianBarnesCanonicalHyperfactorialBarnesStep
-import IPRADerivations.Analysis.Barnes.CanonicalProducts.GaussianBarnesCanonicalNormalization
+import IPRADerivations.Analysis.Barnes.CanonicalProducts.Values.GaussianBarnesCanonicalNormalization
 
 /-! The real logarithm of the original Barnes value advances by the original real Log Gamma. -/
 

@@ -1,5 +1,5 @@
 import IPRADerivations.Analysis.Barnes.Growth.GaussianBarnesCanonicalDiskBound
-import IPRADerivations.Analysis.Barnes.CanonicalProducts.GaussianBarnesCanonicalProduct
+import IPRADerivations.Analysis.Barnes.CanonicalProducts.FiniteProducts.GaussianBarnesCanonicalProduct
 
 /-!
 # A uniform cutoff for Barnes values on a rational disk

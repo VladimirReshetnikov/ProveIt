@@ -1,5 +1,5 @@
 import IPRADerivations.Analysis.Stirling.Binet.Bose.LiteralTails.GaussianBinetBoseLiteralLate
-import IPRADerivations.Analysis.Stirling.Binet.Bose.CompactIntegrand.GaussianBinetBoseCompact
+import IPRADerivations.Analysis.Stirling.Binet.Bose.CompactIntegrand.Quadrature.GaussianBinetBoseCompact
 import IPRADerivations.Analysis.RationalArithmetic.Powers.GaussianCompactScalarMajorant
 
 /-!

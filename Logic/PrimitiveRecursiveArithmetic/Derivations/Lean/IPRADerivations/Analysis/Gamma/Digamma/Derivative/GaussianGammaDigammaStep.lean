@@ -1,6 +1,6 @@
 import IPRADerivations.Analysis.Gamma.Digamma.GaussianGammaDigammaNative
 import IPRADerivations.Analysis.Stirling.GammaLogarithm.GaussianStirlingGammaLogShift
-import IPRADerivations.Analysis.Stirling.Telescoping.GaussianStirlingRationalTelescopers
+import IPRADerivations.Analysis.Stirling.Telescoping.FiniteTelescopes.GaussianStirlingRationalTelescopers
 
 /-!
 # Positive rational steps in the original Gamma derivative

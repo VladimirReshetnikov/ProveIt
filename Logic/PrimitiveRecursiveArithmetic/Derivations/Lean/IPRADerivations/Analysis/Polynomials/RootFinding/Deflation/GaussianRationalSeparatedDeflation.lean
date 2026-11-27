@@ -1,4 +1,4 @@
-import IPRADerivations.Analysis.Polynomials.RootFinding.Reconstruction.GaussianRationalFiniteRoots
+import IPRADerivations.Analysis.Polynomials.RootFinding.Reconstruction.RootProducts.GaussianRationalFiniteRoots
 import IPRADerivations.Analysis.Names.Arithmetic.GaussianNameReciprocal
 
 /-!

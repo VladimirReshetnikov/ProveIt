@@ -1,6 +1,6 @@
 import IPRADerivations.Analysis.Trigonometry.SineProducts.Roots.GaussianSineSquaredPolynomial
 import IPRADerivations.Analysis.Trigonometry.Sine.GaussianNamedSineFromExponential
-import IPRADerivations.Analysis.Polynomials.RootFinding.Reconstruction.GaussianRationalFiniteRoots
+import IPRADerivations.Analysis.Polynomials.RootFinding.Reconstruction.RootProducts.GaussianRationalFiniteRoots
 
 /-!
 # The squared trace in the sine polynomial

@@ -1,4 +1,4 @@
-import IPRADerivations.Analysis.Trigonometry.Arctangent.Cayley.GaussianArctangentCayleySquareGap
+import IPRADerivations.Analysis.Trigonometry.Arctangent.Cayley.Coordinates.GaussianArctangentCayleySquareGap
 import IPRADerivations.Analysis.Trigonometry.SineProducts.Roots.GaussianSineSquaredTrace
 import IPRADerivations.Analysis.Names.Arithmetic.GaussianNameReciprocal
 

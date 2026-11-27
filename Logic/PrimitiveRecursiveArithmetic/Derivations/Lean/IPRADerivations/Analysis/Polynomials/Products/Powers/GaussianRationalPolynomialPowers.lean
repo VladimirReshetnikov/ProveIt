@@ -1,6 +1,6 @@
 import IPRADerivations.Analysis.Polynomials.Determinants.GaussianPolynomialDeterminantTerms
 import IPRADerivations.Analysis.Polynomials.Elimination.Vandermonde.GaussianRationalFiberVandermonde
-import IPRADerivations.Analysis.Polynomials.RootFinding.Reconstruction.GaussianRationalMonicReconstruction
+import IPRADerivations.Analysis.Polynomials.RootFinding.Reconstruction.MonicReduction.GaussianRationalMonicReconstruction
 import IPRADerivations.Analysis.RationalArithmetic.Complex.GaussianRationalReciprocal
 
 /-!

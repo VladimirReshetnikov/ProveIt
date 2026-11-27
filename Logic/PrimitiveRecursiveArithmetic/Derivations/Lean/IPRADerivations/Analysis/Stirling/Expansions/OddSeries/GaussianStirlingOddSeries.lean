@@ -1,4 +1,4 @@
-import IPRADerivations.Analysis.Stirling.Telescoping.GaussianStirlingDifference
+import IPRADerivations.Analysis.Stirling.Telescoping.Differences.GaussianStirlingDifference
 import IPRADerivations.Analysis.RationalArithmetic.FiniteSums.GaussianRationalFiniteSum
 
 /-!

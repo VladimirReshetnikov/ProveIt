@@ -1,4 +1,4 @@
-import IPRADerivations.Analysis.Stirling.Binet.Oscillatory.Arctangent.GaussianBinetArctangentSineUniform
+import IPRADerivations.Analysis.Stirling.Binet.Oscillatory.Arctangent.SineComparisons.GaussianBinetArctangentSineUniform
 import IPRADerivations.DiophantineNumberTheory.AperyMultibound
 
 /-!

@@ -1,7 +1,7 @@
 import IPRADerivations.Analysis.Gamma.EulerProducts.Approximants.GaussianGammaFiniteApproximantName
 import IPRADerivations.Analysis.Exponential.Names.Evaluators.GaussianExponentialRadiusIndependence
 import IPRADerivations.Analysis.Names.Rates.Reciprocals.GaussianNamedInverseRate
-import IPRADerivations.Analysis.Polynomials.RootFinding.Reconstruction.GaussianReconstructionRoots
+import IPRADerivations.Analysis.Polynomials.RootFinding.Reconstruction.RootProducts.GaussianReconstructionRoots
 
 /-!
 # Exponential comparison with a frozen named input

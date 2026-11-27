@@ -1,4 +1,4 @@
-import IPRADerivations.Analysis.Stirling.Binet.Oscillatory.Arctangent.GaussianBinetArctangentCosineLaplace
+import IPRADerivations.Analysis.Stirling.Binet.Oscillatory.Arctangent.LaplaceTransforms.GaussianBinetArctangentCosineLaplace
 import IPRADerivations.Analysis.Beta.EulerProducts.GaussianEulerBetaProductPascal
 import IPRADerivations.Analysis.Trigonometry.Sine.GaussianNamedSineFromExponential
 

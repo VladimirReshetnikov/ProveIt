@@ -1,5 +1,5 @@
 import IPRADerivations.Analysis.Stirling.Robbins.GaussianStirlingFactorialRobbinsExponential
-import IPRADerivations.Analysis.Euler.HarmonicLogarithms.GaussianHarmonicIntegerExponential
+import IPRADerivations.Analysis.Euler.HarmonicLogarithms.Algebra.GaussianHarmonicIntegerExponential
 
 /-!
 # Splitting the integer Stirling power

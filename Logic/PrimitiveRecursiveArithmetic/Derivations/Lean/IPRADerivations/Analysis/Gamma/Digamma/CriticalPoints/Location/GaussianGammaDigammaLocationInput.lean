@@ -1,6 +1,6 @@
 import IPRADerivations.Analysis.Gamma.Digamma.CriticalPoints.DyadicGrid.GaussianGammaDigammaDyadicLocation
 import IPRADerivations.Analysis.Gamma.Names.PositiveAxis.GaussianNamedGammaPositiveLower
-import IPRADerivations.Analysis.Euler.Logarithms.Exhaustion.GaussianNamedEulerLogarithmicFrozenRate
+import IPRADerivations.Analysis.Euler.Logarithms.Exhaustion.FrozenRates.GaussianNamedEulerLogarithmicFrozenRate
 import IPRADerivations.Analysis.Names.Rates.Transport.GaussianNamedRateTransport
 import IPRADerivations.Analysis.Exponential.Estimates.GaussianRationalExponentialTangent
 

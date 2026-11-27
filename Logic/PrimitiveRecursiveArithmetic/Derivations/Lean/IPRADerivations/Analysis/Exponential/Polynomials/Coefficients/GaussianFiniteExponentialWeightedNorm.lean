@@ -1,5 +1,5 @@
 import IPRADerivations.Analysis.Logarithm.FiniteSeries.Composition.GaussianFiniteLogarithmWeightedNorm
-import IPRADerivations.Analysis.Exponential.FiniteSeries.ExponentialMajorant
+import IPRADerivations.Analysis.Exponential.FiniteSeries.ScalarSeries.ExponentialMajorant
 
 /-!
 # The actual finite exponential's auxiliary-radius coefficient norm

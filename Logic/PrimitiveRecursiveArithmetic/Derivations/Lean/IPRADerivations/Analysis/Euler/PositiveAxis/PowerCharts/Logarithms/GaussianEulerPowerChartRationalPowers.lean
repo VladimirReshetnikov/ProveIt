@@ -1,8 +1,8 @@
 import IPRADerivations.Analysis.Euler.PositiveAxis.PowerCharts.GaussianEulerPositivePowerChartJacobian
 import IPRADerivations.Analysis.Euler.Integration.Parameters.GaussianEulerPowerInputProperness
 import IPRADerivations.Analysis.Euler.PositiveAxis.PowerCharts.Logarithms.GaussianEulerPositivePowerChartLogarithm
-import IPRADerivations.Analysis.Euler.HarmonicLogarithms.GaussianHarmonicLogarithmPower
-import IPRADerivations.Analysis.Euler.HarmonicLogarithms.GaussianHarmonicIntegerExponential
+import IPRADerivations.Analysis.Euler.HarmonicLogarithms.Algebra.GaussianHarmonicLogarithmPower
+import IPRADerivations.Analysis.Euler.HarmonicLogarithms.Algebra.GaussianHarmonicIntegerExponential
 import IPRADerivations.Analysis.Euler.Integration.Decay.Damping.GaussianEulerDampedTimeRate
 
 /-!

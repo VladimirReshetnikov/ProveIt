@@ -1,5 +1,5 @@
 import IPRADerivations.Analysis.Euler.PositiveAxis.PowerCharts.Logarithms.GaussianEulerPowerChartNamedLogarithm
-import IPRADerivations.Analysis.Euler.ExponentialSubstitution.GaussianEulerExponentialNamedKernelRate
+import IPRADerivations.Analysis.Euler.ExponentialSubstitution.Kernels.GaussianEulerExponentialNamedKernelRate
 
 /-!
 # The original Euler row at a frozen rational power-chart image

@@ -1,6 +1,6 @@
 import IPRADerivations.Analysis.Trigonometry.Arctangent.PartialSums.GaussianArctangentPartialQuadrature
 import IPRADerivations.Analysis.Trigonometry.Arctangent.Turns.GaussianArctangentQuarterExponential
-import IPRADerivations.Analysis.Trigonometry.Arctangent.Cayley.GaussianArctangentCayleyBudget
+import IPRADerivations.Analysis.Trigonometry.Arctangent.Cayley.FiniteTelescopes.GaussianArctangentCayleyBudget
 
 /-!
 # Agreement of the partial arctangent name with the original π endpoint

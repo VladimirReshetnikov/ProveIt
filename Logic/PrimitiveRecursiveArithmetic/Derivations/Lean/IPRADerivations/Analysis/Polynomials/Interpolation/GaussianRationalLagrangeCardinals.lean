@@ -1,5 +1,5 @@
 import IPRADerivations.Analysis.Polynomials.Elimination.Vandermonde.GaussianRationalFiberVandermonde
-import IPRADerivations.Analysis.Polynomials.RootFinding.Reconstruction.GaussianReconstructionRoots
+import IPRADerivations.Analysis.Polynomials.RootFinding.Reconstruction.RootProducts.GaussianReconstructionRoots
 
 /-!
 # Actual numerical Lagrange cardinal polynomials

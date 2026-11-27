@@ -1,6 +1,6 @@
 import IPRADerivations.Analysis.Gamma.NegativeAxis.Derivatives.Terminal.GaussianGammaNegativeIntervalNamedTerminalDerivative
 import IPRADerivations.Analysis.Gamma.Digamma.GaussianGammaDigammaNative
-import IPRADerivations.Analysis.Euler.Logarithms.Exhaustion.GaussianNamedEulerLogarithmicFrozenRate
+import IPRADerivations.Analysis.Euler.Logarithms.Exhaustion.FrozenRates.GaussianNamedEulerLogarithmicFrozenRate
 import IPRADerivations.Analysis.Euler.Logarithms.Improper.GaussianEulerLogarithmicImproperInputProperness
 
 /-!

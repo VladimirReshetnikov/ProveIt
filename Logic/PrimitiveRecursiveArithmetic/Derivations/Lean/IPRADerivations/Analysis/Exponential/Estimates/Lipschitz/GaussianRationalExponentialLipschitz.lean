@@ -1,6 +1,6 @@
 import IPRADerivations.Analysis.Exponential.Estimates.GaussianRationalExponentialTail
 import IPRADerivations.Analysis.Polynomials.Coefficients.Operations.GaussianPolynomialCoefficientDifferences
-import IPRADerivations.Analysis.Exponential.FiniteSeries.ExponentialSeries
+import IPRADerivations.Analysis.Exponential.FiniteSeries.ScalarSeries.ExponentialSeries
 
 /-!
 # Uniform Lipschitz bounds for the original finite scalar exponential

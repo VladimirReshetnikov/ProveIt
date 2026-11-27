@@ -1,5 +1,5 @@
 import IPRADerivations.Analysis.Barnes.Taylor.FirstDerivative.Prefactors.GaussianBarnesCanonicalPrefactorDerivative
-import IPRADerivations.Analysis.Barnes.CanonicalProducts.GaussianBarnesCanonicalFiniteProperness
+import IPRADerivations.Analysis.Barnes.CanonicalProducts.FiniteProducts.GaussianBarnesCanonicalFiniteProperness
 
 /-!
 # Rational presentation independence of the original Barnes prefactor derivative

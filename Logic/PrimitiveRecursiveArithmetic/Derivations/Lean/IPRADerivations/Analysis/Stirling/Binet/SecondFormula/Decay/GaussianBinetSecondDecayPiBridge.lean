@@ -1,5 +1,5 @@
 import IPRADerivations.Analysis.Stirling.Binet.SecondFormula.Decay.GaussianBinetSecondDecayPointwise
-import IPRADerivations.Analysis.Stirling.Binet.Bose.CompactIntegrand.GaussianBinetBoseExponential
+import IPRADerivations.Analysis.Stirling.Binet.Bose.CompactIntegrand.ExponentialScaling.GaussianBinetBoseExponential
 import IPRADerivations.Analysis.Stirling.Binet.Kernel.HyperbolicForm.GaussianBinetKernelImaginaryRatioCofinal
 
 /-!

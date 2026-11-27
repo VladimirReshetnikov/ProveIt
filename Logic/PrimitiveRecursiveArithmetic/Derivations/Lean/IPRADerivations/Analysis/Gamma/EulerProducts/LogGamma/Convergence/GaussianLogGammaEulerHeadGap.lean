@@ -1,5 +1,5 @@
-import IPRADerivations.Analysis.Gamma.EulerProducts.LogGamma.Convergence.GaussianLogGammaEulerResidualInterval
-import IPRADerivations.Analysis.Gamma.EulerProducts.LogGamma.Convergence.GaussianLogGammaEulerWeightedIntervalError
+import IPRADerivations.Analysis.Gamma.EulerProducts.LogGamma.Convergence.Intervals.GaussianLogGammaEulerResidualInterval
+import IPRADerivations.Analysis.Gamma.EulerProducts.LogGamma.Convergence.Intervals.GaussianLogGammaEulerWeightedIntervalError
 import IPRADerivations.Analysis.Integration.Partitions.GaussianRationalPanelTailDistance
 import IPRADerivations.Analysis.Names.Rates.Moduli.GaussianNamedLipschitzRate
 

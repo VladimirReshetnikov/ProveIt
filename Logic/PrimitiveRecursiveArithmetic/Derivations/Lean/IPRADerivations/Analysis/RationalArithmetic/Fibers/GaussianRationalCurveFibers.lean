@@ -1,6 +1,6 @@
 import IPRADerivations.Analysis.RationalArithmetic.Fibers.GaussianRationalFiberGrouping
 import IPRADerivations.Analysis.Polynomials.CompanionMatrices.GaussianPolynomialMonicCompanion
-import IPRADerivations.Analysis.Polynomials.RootFinding.Reconstruction.GaussianRationalFiniteRoots
+import IPRADerivations.Analysis.Polynomials.RootFinding.Reconstruction.RootProducts.GaussianRationalFiniteRoots
 
 /-!
 # Actual ordinate lists and specialized curve roots in each x fiber

@@ -1,6 +1,6 @@
 import IPRADerivations.Analysis.Barnes.Names.GaussianBarnesCanonicalNamedDemand
-import IPRADerivations.Analysis.Barnes.CanonicalProducts.GaussianBarnesCanonicalUniformContinuity
-import IPRADerivations.Analysis.Barnes.CanonicalProducts.GaussianBarnesCanonicalProperness
+import IPRADerivations.Analysis.Barnes.CanonicalProducts.Values.GaussianBarnesCanonicalUniformContinuity
+import IPRADerivations.Analysis.Barnes.CanonicalProducts.Values.GaussianBarnesCanonicalProperness
 
 /-!
 # The original Barnes evaluator on regular Gaussian names

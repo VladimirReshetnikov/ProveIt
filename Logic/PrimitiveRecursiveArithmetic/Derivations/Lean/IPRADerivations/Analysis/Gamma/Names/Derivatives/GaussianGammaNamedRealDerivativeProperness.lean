@@ -1,5 +1,5 @@
 import IPRADerivations.Analysis.Gamma.Names.PositiveAxis.GaussianGammaNamedRealCritical
-import IPRADerivations.Analysis.Gamma.Names.PoleFree.GaussianGammaNamedPoleFreeQuotientProperness
+import IPRADerivations.Analysis.Gamma.Names.PoleFree.DerivativeQuotients.GaussianGammaNamedPoleFreeQuotientProperness
 import IPRADerivations.Analysis.Names.Differences.GaussianNamedDyadicIncrement
 
 /-!

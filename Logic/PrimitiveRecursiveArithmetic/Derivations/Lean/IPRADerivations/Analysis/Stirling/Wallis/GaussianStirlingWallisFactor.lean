@@ -1,6 +1,6 @@
 import IPRADerivations.Analysis.Gamma.EulerProducts.Factorials.GaussianGammaHalfRisingFactorial
 import IPRADerivations.Analysis.Stirling.Wallis.GaussianGammaHalfWallisConvergence
-import IPRADerivations.Analysis.Stirling.Telescoping.GaussianStirlingRationalTelescopers
+import IPRADerivations.Analysis.Stirling.Telescoping.FiniteTelescopes.GaussianStirlingRationalTelescopers
 
 /-!
 # Exact rational factors for the integer-to-half-integer Stirling step

@@ -1,5 +1,5 @@
 import IPRADerivations.Analysis.Polynomials.Coefficients.Norms.GaussianCoefficientNormEntries
-import IPRADerivations.Analysis.Polynomials.RootFinding.Reconstruction.GaussianReconstructionRoots
+import IPRADerivations.Analysis.Polynomials.RootFinding.Reconstruction.RootProducts.GaussianReconstructionRoots
 
 /-!
 # Computed source bounds for Gaussian-rational coefficient names

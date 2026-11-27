@@ -1,7 +1,7 @@
 import IPRADerivations.Analysis.Stirling.Duplication.GaussianStirlingHalfStepAlgebra
 import IPRADerivations.Analysis.Stirling.Duplication.GaussianStirlingDuplicationConstant
 import IPRADerivations.Analysis.Stirling.Duplication.GaussianStirlingDuplicationResidual
-import IPRADerivations.Analysis.Stirling.Telescoping.GaussianStirlingRecurrence
+import IPRADerivations.Analysis.Stirling.Telescoping.Differences.GaussianStirlingRecurrence
 import IPRADerivations.Analysis.Stirling.Wallis.GaussianStirlingWallisLogIdentity
 
 /-!

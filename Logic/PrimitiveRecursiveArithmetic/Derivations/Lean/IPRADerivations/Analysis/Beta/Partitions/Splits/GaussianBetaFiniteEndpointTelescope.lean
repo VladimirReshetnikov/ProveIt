@@ -1,4 +1,4 @@
-import IPRADerivations.Analysis.Beta.Primitives.GaussianBetaPrimitiveGridUnscale
+import IPRADerivations.Analysis.Beta.Primitives.CompactGrids.GaussianBetaPrimitiveGridUnscale
 
 /-!
 # Finite beta telescope with an independent upper observation

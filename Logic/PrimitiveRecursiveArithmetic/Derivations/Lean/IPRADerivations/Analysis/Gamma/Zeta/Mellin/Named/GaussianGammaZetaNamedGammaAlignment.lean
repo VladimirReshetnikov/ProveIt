@@ -1,7 +1,7 @@
 import IPRADerivations.Analysis.Gamma.Zeta.GaussianGammaZetaNamedChart
 import IPRADerivations.Analysis.Gamma.Zeta.GaussianGammaZetaNamedInput
 import IPRADerivations.Analysis.Names.RightHalfPlane.GaussianNamedRightHalfPlaneDemandComparison
-import IPRADerivations.Analysis.Gamma.Names.PoleFree.GaussianGammaNamedPoleFreeEncoding
+import IPRADerivations.Analysis.Gamma.Names.PoleFree.Regularity.GaussianGammaNamedPoleFreeEncoding
 import IPRADerivations.Analysis.Gamma.NegativeAxis.Derivatives.Terminal.GaussianGammaNegativeIntervalNamedTerminalProperness
 
 /-!

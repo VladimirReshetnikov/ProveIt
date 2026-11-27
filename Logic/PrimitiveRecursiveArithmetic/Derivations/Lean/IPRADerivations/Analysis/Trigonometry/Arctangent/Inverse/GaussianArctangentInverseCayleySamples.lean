@@ -1,5 +1,5 @@
 import IPRADerivations.Analysis.Trigonometry.Arctangent.Inverse.GaussianArctangentNamedInverse
-import IPRADerivations.Analysis.Trigonometry.Arctangent.Cayley.GaussianArctangentCayleyProjections
+import IPRADerivations.Analysis.Trigonometry.Arctangent.Cayley.Coordinates.GaussianArctangentCayleyProjections
 
 /-!
 # Literal Cayley samples of the normalized inverse parameter

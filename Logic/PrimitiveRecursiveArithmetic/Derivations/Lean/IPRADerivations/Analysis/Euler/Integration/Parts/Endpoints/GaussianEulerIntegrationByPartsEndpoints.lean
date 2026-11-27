@@ -1,4 +1,4 @@
-import IPRADerivations.Analysis.Beta.Primitives.GaussianBetaPrimitiveLowerEndpoint
+import IPRADerivations.Analysis.Beta.Primitives.LowerEndpoints.GaussianBetaPrimitiveLowerEndpoint
 import IPRADerivations.Analysis.Euler.Integration.Parts.GaussianEulerIntegrationByPartsLinear
 import IPRADerivations.Analysis.Euler.PositiveAxis.UpperBounds.GaussianEulerUpperPowerBound
 

@@ -1,5 +1,5 @@
 import IPRADerivations.Analysis.Gamma.CriticalPoints.PositiveMinimum.FrozenInputs.GaussianGammaMinimumFreezeRational
-import IPRADerivations.Analysis.Euler.Logarithms.Exhaustion.GaussianNamedEulerLogarithmicFrozenRate
+import IPRADerivations.Analysis.Euler.Logarithms.Exhaustion.FrozenRates.GaussianNamedEulerLogarithmicFrozenRate
 import IPRADerivations.Analysis.Euler.Logarithms.Improper.GaussianEulerLogarithmicImproperInputProperness
 
 /-!

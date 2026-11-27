@@ -1,5 +1,5 @@
 import IPRADerivations.Analysis.Barnes.Names.GaussianBarnesCanonicalNamedFrozen
-import IPRADerivations.Analysis.Barnes.CanonicalProducts.GaussianBarnesCanonicalValueConjugation
+import IPRADerivations.Analysis.Barnes.CanonicalProducts.Values.GaussianBarnesCanonicalValueConjugation
 
 /-!
 # Conjugation of Barnes values on regular Gaussian names

@@ -1,6 +1,6 @@
 import IPRADerivations.Analysis.Barnes.FunctionalEquations.Glaisher.GaussianBarnesGlaisherFinite
 import IPRADerivations.Analysis.Stirling.GammaLogarithm.GaussianStirlingNames
-import IPRADerivations.Analysis.Stirling.Telescoping.GaussianStirlingRationalTelescopers
+import IPRADerivations.Analysis.Stirling.Telescoping.FiniteTelescopes.GaussianStirlingRationalTelescopers
 
 /-!
 # Exact rational coefficients of the leading Barnes asymptotic

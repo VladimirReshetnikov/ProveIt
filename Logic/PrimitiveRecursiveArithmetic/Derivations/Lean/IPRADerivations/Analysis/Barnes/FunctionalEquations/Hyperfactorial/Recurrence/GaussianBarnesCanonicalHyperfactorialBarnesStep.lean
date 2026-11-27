@@ -1,8 +1,8 @@
 import IPRADerivations.Analysis.Barnes.FunctionalEquations.Hyperfactorial.Recurrence.GaussianBarnesCanonicalHyperfactorialPowerStep
 import IPRADerivations.Analysis.Barnes.FunctionalEquations.GaussianBarnesCanonicalPoleFreeRecurrence
-import IPRADerivations.Analysis.Barnes.CanonicalProducts.GaussianBarnesCanonicalProperness
+import IPRADerivations.Analysis.Barnes.CanonicalProducts.Values.GaussianBarnesCanonicalProperness
 import IPRADerivations.Analysis.Gamma.EulerProducts.LogGamma.NamedValues.GaussianLogGammaEulerPositiveAxis
-import IPRADerivations.Analysis.Gamma.Names.PoleFree.GaussianGammaRadiusOverlap
+import IPRADerivations.Analysis.Gamma.Names.PoleFree.Regularity.GaussianGammaRadiusOverlap
 import IPRADerivations.Analysis.Gamma.Names.Input.GaussianGammaInputProperness
 
 /-! # The original Barnes denominator advances by the same Gamma multiplier -/

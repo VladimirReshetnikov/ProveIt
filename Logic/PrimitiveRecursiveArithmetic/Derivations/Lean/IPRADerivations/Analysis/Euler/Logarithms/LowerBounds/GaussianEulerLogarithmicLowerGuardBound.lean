@@ -1,4 +1,4 @@
-import IPRADerivations.Analysis.Euler.Logarithms.Exhaustion.GaussianEulerLogarithmicClientIndependence
+import IPRADerivations.Analysis.Euler.Logarithms.Exhaustion.CompactClients.GaussianEulerLogarithmicClientIndependence
 import IPRADerivations.Analysis.Euler.Logarithms.LowerBounds.GaussianEulerLogarithmicLowerCutoffBudget
 
 /-!

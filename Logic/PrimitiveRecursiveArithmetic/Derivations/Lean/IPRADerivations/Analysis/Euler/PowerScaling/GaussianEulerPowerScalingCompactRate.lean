@@ -1,5 +1,5 @@
 import IPRADerivations.Analysis.Euler.Integration.Decay.Damping.GaussianEulerDampedNamedIntegrand
-import IPRADerivations.Analysis.Euler.ExponentialSubstitution.GaussianEulerExponentialNamedKernelRate
+import IPRADerivations.Analysis.Euler.ExponentialSubstitution.Kernels.GaussianEulerExponentialNamedKernelRate
 import IPRADerivations.Analysis.Euler.Integration.Decay.Damping.GaussianEulerDampedTimeRate
 import IPRADerivations.Analysis.Names.Rates.Transport.GaussianNamedRateRadius
 

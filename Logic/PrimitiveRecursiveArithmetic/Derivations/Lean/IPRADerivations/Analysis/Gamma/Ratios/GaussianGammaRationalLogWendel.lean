@@ -1,5 +1,5 @@
 import IPRADerivations.Analysis.Gamma.Ratios.GaussianGammaRationalLogGautschi
-import IPRADerivations.Analysis.Euler.HarmonicLogarithms.GaussianHarmonicLogarithmProduct
+import IPRADerivations.Analysis.Euler.HarmonicLogarithms.Algebra.GaussianHarmonicLogarithmProduct
 
 /-!
 # The exact rational Wendel comparison in logarithms

@@ -1,4 +1,4 @@
-import IPRADerivations.Analysis.Euler.PositiveAxis.PowerCharts.Endpoints.GaussianEulerPowerChartUniformSchedule
+import IPRADerivations.Analysis.Euler.PositiveAxis.PowerCharts.Endpoints.Uniform.GaussianEulerPowerChartUniformSchedule
 import IPRADerivations.Analysis.Euler.PowerScaling.Exhaustion.GaussianEulerPowerScalingImproper
 
 /-!

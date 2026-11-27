@@ -1,4 +1,4 @@
-import IPRADerivations.Analysis.Gamma.Names.PoleFree.GaussianGammaNamedPoleFreeModulus
+import IPRADerivations.Analysis.Gamma.Names.PoleFree.Regularity.GaussianGammaNamedPoleFreeModulus
 import IPRADerivations.Foundations.FiniteQueryDemand
 import IPRADerivations.Analysis.Names.Rates.Transport.GaussianNamedRateRadius
 

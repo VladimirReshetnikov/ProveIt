@@ -1,5 +1,5 @@
 import IPRADerivations.Analysis.Geometry.Distances.GaussianEuclideanDistanceVariation
-import IPRADerivations.Analysis.Polynomials.RootFinding.Reconstruction.GaussianRootSupport
+import IPRADerivations.Analysis.Polynomials.RootFinding.Reconstruction.RootSupport.GaussianRootSupport
 import IPRADerivations.Analysis.Geometry.Distances.GaussianLinearDistanceName
 
 /-!

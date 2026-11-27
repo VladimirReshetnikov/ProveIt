@@ -1,6 +1,6 @@
 import IPRADerivations.Analysis.Gamma.Digamma.Bernoulli.FirstTerm.GaussianDigammaFirstBernoulliHarmonic
 import IPRADerivations.Analysis.Stirling.AllOrders.PowerIntegrals.GaussianStirlingAllOrderPowerIntegralPrefix
-import IPRADerivations.Analysis.Stirling.AllOrders.FirstPanel.GaussianStirlingAllOrderFirstPanelReadback
+import IPRADerivations.Analysis.Stirling.AllOrders.FirstPanel.FiniteSums.GaussianStirlingAllOrderFirstPanelReadback
 
 /-!
 # Explicit local reciprocal mass errors for the digamma panel

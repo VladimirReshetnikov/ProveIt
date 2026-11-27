@@ -4,7 +4,7 @@ import IPRADerivations.Analysis.Names.FiniteOperations.Sums.GaussianNamedFiniteS
 import IPRADerivations.Analysis.Gamma.BohrMollerup.Uniqueness.GaussianBohrMollerupDifferenceTransform
 import IPRADerivations.Analysis.Gamma.Ratios.GaussianGammaRationalRatioBinding
 import IPRADerivations.Analysis.Names.Differences.GaussianNamedStrictOrderDifference
-import IPRADerivations.Analysis.Gamma.EulerProducts.LogGamma.Convergence.GaussianLogGammaEulerResidualDomain
+import IPRADerivations.Analysis.Gamma.EulerProducts.LogGamma.Convergence.ResidualBounds.GaussianLogGammaEulerResidualDomain
 
 /-!
 # Finite Euler logarithm increments in the argument

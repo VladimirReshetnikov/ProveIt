@@ -1,7 +1,7 @@
 import IPRADerivations.Analysis.Barnes.FunctionalEquations.Glaisher.GaussianBarnesGlaisherFinite
 import IPRADerivations.Analysis.Barnes.FunctionalEquations.IntegerValues.BarnesInteger
 import IPRADerivations.Analysis.Beta.Endpoints.Upper.GaussianBetaUpperPowerCancellation
-import IPRADerivations.Analysis.Euler.HarmonicLogarithms.GaussianHarmonicLogarithmPower
+import IPRADerivations.Analysis.Euler.HarmonicLogarithms.Algebra.GaussianHarmonicLogarithmPower
 
 /-!
 # The finite weighted logarithm is the logarithm of the actual hyperfactorial

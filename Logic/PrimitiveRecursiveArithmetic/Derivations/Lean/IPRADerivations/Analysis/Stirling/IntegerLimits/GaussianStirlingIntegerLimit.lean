@@ -1,5 +1,5 @@
-import IPRADerivations.Analysis.Stirling.Telescoping.GaussianStirlingIntegerTail
-import IPRADerivations.Analysis.Euler.PositiveAxis.SharpRates.GaussianEulerSharpScheduledApproximation
+import IPRADerivations.Analysis.Stirling.Telescoping.NamedTails.GaussianStirlingIntegerTail
+import IPRADerivations.Analysis.Euler.PositiveAxis.SharpRates.Schedules.GaussianEulerSharpScheduledApproximation
 import IPRADerivations.Analysis.Polynomials.RootFinding.Adequacy.GaussianRootSchedule
 
 /-!

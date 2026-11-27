@@ -1,5 +1,5 @@
-import IPRADerivations.Analysis.Stirling.Binet.Bose.CompactIntegrand.GaussianBinetBoseCubicGap
-import IPRADerivations.Analysis.Stirling.Binet.Bose.CompactIntegrand.GaussianBinetBoseIntegrandBound
+import IPRADerivations.Analysis.Stirling.Binet.Bose.CompactIntegrand.DenominatorBounds.GaussianBinetBoseCubicGap
+import IPRADerivations.Analysis.Stirling.Binet.Bose.CompactIntegrand.Endpoint.GaussianBinetBoseIntegrandBound
 
 /-!
 # Inverse-square decay of the original second Binet integrand

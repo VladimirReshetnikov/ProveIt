@@ -1,6 +1,6 @@
 import IPRADerivations.Analysis.Polynomials.Products.LinearFactors.GaussianPolynomialLinearFactorCoefficients
 import IPRADerivations.Analysis.Gamma.Taylor.FinitePolynomials.GaussianGammaPolynomialConstantLinear
-import IPRADerivations.Analysis.Polynomials.RootFinding.Reconstruction.GaussianRationalFiniteRoots
+import IPRADerivations.Analysis.Polynomials.RootFinding.Reconstruction.RootProducts.GaussianRationalFiniteRoots
 
 /-!
 # The actual original Euler head quadratic coefficient

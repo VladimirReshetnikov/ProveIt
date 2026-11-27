@@ -1,7 +1,7 @@
 import IPRADerivations.Analysis.Polynomials.RootFinding.Adequacy.GaussianRootSchedule
 import IPRADerivations.Analysis.Geometry.Distances.GaussianEuclideanDistanceName
 import IPRADerivations.Analysis.RationalArithmetic.OrderBounds.SlackRemoval.GaussianRationalSlackRemoval
-import IPRADerivations.Analysis.Polynomials.RootFinding.Reconstruction.GaussianReconstructionRoots
+import IPRADerivations.Analysis.Polynomials.RootFinding.Reconstruction.RootProducts.GaussianReconstructionRoots
 
 /-!
 # Actual fast Gaussian names and finite envelope transfer

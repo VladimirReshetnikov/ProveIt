@@ -1,4 +1,4 @@
-import IPRADerivations.Analysis.Gamma.EulerProducts.LogGamma.Convergence.GaussianLogGammaEulerResidualRadius
+import IPRADerivations.Analysis.Gamma.EulerProducts.LogGamma.Convergence.ResidualBounds.GaussianLogGammaEulerResidualRadius
 import IPRADerivations.Analysis.Polynomials.RootFinding.FundamentalTheorem.Trajectory.GaussianGeneralFTATelescope
 import IPRADerivations.Analysis.Euler.Integration.Decay.Damping.GaussianEulerDampedTimeRate
 import IPRADerivations.Analysis.Names.Differences.GaussianNamedDifference

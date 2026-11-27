@@ -1,4 +1,4 @@
-import IPRADerivations.Analysis.Gamma.NegativeAxis.Logarithms.GaussianGammaNegativeIntervalLogStrongConvexity
+import IPRADerivations.Analysis.Gamma.NegativeAxis.Logarithms.Convexity.GaussianGammaNegativeIntervalLogStrongConvexity
 import IPRADerivations.Analysis.Gamma.CriticalPoints.PositiveMinimum.Chords.GaussianGammaMinimumChord
 import IPRADerivations.Analysis.Gamma.CriticalPoints.PositiveMinimum.Chords.GaussianGammaMinimumSignedStep
 

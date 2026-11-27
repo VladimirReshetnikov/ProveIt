@@ -1,6 +1,6 @@
 import IPRADerivations.Analysis.Euler.PositiveAxis.PowerCharts.Logarithms.GaussianEulerPositivePowerChartLogarithm
 import IPRADerivations.Analysis.Euler.PowerScaling.GaussianEulerPowerScalingParameter
-import IPRADerivations.Analysis.Euler.ExponentialSubstitution.GaussianEulerExponentialSubstitutionNamedKernel
+import IPRADerivations.Analysis.Euler.ExponentialSubstitution.Kernels.GaussianEulerExponentialSubstitutionNamedKernel
 
 /-!
 # Pointwise Gamma kernel for the original positive rational power chart

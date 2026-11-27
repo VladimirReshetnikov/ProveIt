@@ -1,4 +1,4 @@
-import IPRADerivations.Analysis.Euler.HarmonicLogarithms.GaussianHarmonicLogarithmName
+import IPRADerivations.Analysis.Euler.HarmonicLogarithms.OrderedNames.GaussianHarmonicLogarithmName
 import IPRADerivations.Analysis.Series.Harmonic.RationalHarmonicIntervalVariation
 
 /-!

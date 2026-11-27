@@ -1,6 +1,6 @@
 import IPRADerivations.Analysis.Gamma.NegativeAxis.GaussianGammaNegativeIntervalNative
 import IPRADerivations.Analysis.Euler.PositiveAxis.UnitTime.Named.GaussianNamedEulerUnitTime
-import IPRADerivations.Analysis.Gamma.Names.PoleFree.GaussianGammaRadiusOverlap
+import IPRADerivations.Analysis.Gamma.Names.PoleFree.Regularity.GaussianGammaRadiusOverlap
 
 /-!
 # Uniform native Gamma input for a shifted named real offset

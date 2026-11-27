@@ -1,5 +1,5 @@
 import IPRADerivations.Analysis.Beta.CompactKernels.Factors.GaussianBetaKernelExponential
-import IPRADerivations.Analysis.Euler.HarmonicLogarithms.GaussianHarmonicIntegerExponential
+import IPRADerivations.Analysis.Euler.HarmonicLogarithms.Algebra.GaussianHarmonicIntegerExponential
 
 /-!
 # Full-interval beta kernel positivity and dyadic refinement

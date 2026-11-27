@@ -1,6 +1,6 @@
 import IPRADerivations.Analysis.Barnes.FunctionalEquations.Hyperfactorial.Named.GaussianBarnesCanonicalNamedHyperfactorialPowerStep
 import IPRADerivations.Analysis.Barnes.FunctionalEquations.GaussianBarnesCanonicalNamedPoleFreeRecurrence
-import IPRADerivations.Analysis.Gamma.Names.PoleFree.GaussianGammaNamedPoleFreeProperness
+import IPRADerivations.Analysis.Gamma.Names.PoleFree.Regularity.GaussianGammaNamedPoleFreeProperness
 
 /-! # Matching the actual shifted Barnes denominator on named inputs -/
 

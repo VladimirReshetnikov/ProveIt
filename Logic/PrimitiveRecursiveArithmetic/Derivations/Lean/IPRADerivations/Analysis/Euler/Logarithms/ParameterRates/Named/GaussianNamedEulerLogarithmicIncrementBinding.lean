@@ -1,4 +1,4 @@
-import IPRADerivations.Analysis.Euler.Logarithms.Exhaustion.GaussianNamedEulerLogarithmicFrozenRate
+import IPRADerivations.Analysis.Euler.Logarithms.Exhaustion.FrozenRates.GaussianNamedEulerLogarithmicFrozenRate
 import IPRADerivations.Analysis.Gamma.Names.Derivatives.GaussianNamedGammaIncrementInput
 import IPRADerivations.Analysis.Names.Rates.Transport.GaussianNamedRateComposition
 

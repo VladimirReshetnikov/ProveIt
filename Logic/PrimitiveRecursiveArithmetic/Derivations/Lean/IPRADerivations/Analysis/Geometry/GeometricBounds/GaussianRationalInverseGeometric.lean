@@ -1,5 +1,5 @@
 import IPRADerivations.Analysis.Integration.Quadrature.GaussianRationalQuadratureDifference
-import IPRADerivations.Analysis.Polynomials.RootFinding.Reconstruction.GaussianReconstructionRoots
+import IPRADerivations.Analysis.Polynomials.RootFinding.Reconstruction.RootProducts.GaussianReconstructionRoots
 
 /-!
 # Exact finite geometric cancellation for a rational inverse pair

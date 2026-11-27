@@ -1,6 +1,6 @@
 import IPRADerivations.Analysis.Gamma.Digamma.Bernoulli.FirstTerm.GaussianDigammaFirstBernoulliEndpoints
 import IPRADerivations.Analysis.Gamma.Digamma.Bernoulli.FirstTerm.GaussianDigammaFirstBernoulliMassError
-import IPRADerivations.Analysis.Stirling.AllOrders.FirstPanel.GaussianStirlingAllOrderFirstPanelCommonMesh
+import IPRADerivations.Analysis.Stirling.AllOrders.FirstPanel.Estimates.GaussianStirlingAllOrderFirstPanelCommonMesh
 
 /-!
 # The original weighted digamma panel against its harmonic logarithm

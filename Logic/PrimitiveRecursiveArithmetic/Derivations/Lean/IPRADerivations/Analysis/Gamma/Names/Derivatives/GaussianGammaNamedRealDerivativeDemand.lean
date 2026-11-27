@@ -1,4 +1,4 @@
-import IPRADerivations.Analysis.Gamma.Names.PoleFree.GaussianGammaNamedPoleFreeRealAdmission
+import IPRADerivations.Analysis.Gamma.Names.PoleFree.RealCharts.GaussianGammaNamedPoleFreeRealAdmission
 import IPRADerivations.Analysis.Gamma.NegativeAxis.Derivatives.Terminal.GaussianGammaNegativeIntervalNamedTerminalDerivative
 
 /-!

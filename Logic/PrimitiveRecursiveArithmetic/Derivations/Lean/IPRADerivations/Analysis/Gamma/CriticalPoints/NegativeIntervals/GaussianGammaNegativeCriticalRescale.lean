@@ -1,4 +1,4 @@
-import IPRADerivations.Analysis.Gamma.CriticalPoints.NegativeIntervals.GaussianGammaNegativeCriticalEndpoints
+import IPRADerivations.Analysis.Gamma.CriticalPoints.NegativeIntervals.EndpointControl.GaussianGammaNegativeCriticalEndpoints
 import IPRADerivations.Analysis.Gamma.Digamma.Series.GaussianGammaDigammaRescale
 
 /-!

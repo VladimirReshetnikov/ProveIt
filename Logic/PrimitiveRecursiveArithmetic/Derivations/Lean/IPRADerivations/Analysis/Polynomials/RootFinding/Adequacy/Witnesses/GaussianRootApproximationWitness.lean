@@ -1,5 +1,5 @@
-import IPRADerivations.Analysis.Polynomials.RootFinding.Reconstruction.GaussianRootSupport
-import IPRADerivations.Analysis.Polynomials.RootFinding.Reconstruction.GaussianRootFiniteEvaluation
+import IPRADerivations.Analysis.Polynomials.RootFinding.Reconstruction.RootSupport.GaussianRootSupport
+import IPRADerivations.Analysis.Polynomials.RootFinding.Reconstruction.RootSupport.GaussianRootFiniteEvaluation
 import IPRADerivations.Analysis.Polynomials.RootFinding.Adequacy.GaussianRootAdequacySchedule
 import IPRADerivations.Analysis.Polynomials.Horner.Perturbation.GaussianRationalHornerLipschitz
 

@@ -1,7 +1,7 @@
 import IPRADerivations.Analysis.Trigonometry.Arctangent.DivisionAngles.GaussianArctangentDivisionInverseMargins
 import IPRADerivations.Analysis.Trigonometry.Arctangent.Inverse.GaussianArctangentInverseCayleySamples
 import IPRADerivations.Analysis.Trigonometry.Arctangent.DivisionAngles.GaussianArctangentDivisionAngleResidual
-import IPRADerivations.Analysis.Trigonometry.Arctangent.Cayley.GaussianArctangentCayleySineMargin
+import IPRADerivations.Analysis.Trigonometry.Arctangent.Cayley.Coordinates.GaussianArctangentCayleySineMargin
 
 /-!
 # Positive margins on the actual divided-angle Cayley observations

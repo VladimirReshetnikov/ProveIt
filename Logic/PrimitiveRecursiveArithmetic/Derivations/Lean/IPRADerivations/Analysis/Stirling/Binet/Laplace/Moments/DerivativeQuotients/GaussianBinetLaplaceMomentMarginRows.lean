@@ -3,7 +3,7 @@ import IPRADerivations.Analysis.Stirling.Binet.Laplace.Moments.Improper.Gaussian
 import IPRADerivations.Analysis.Names.Rates.Order.GaussianNamedRealOrderTransport
 import IPRADerivations.Analysis.FiniteOperations.FiniteProducts.GaussianPositiveScalarProductBound
 import IPRADerivations.Analysis.Optimization.Convexity.Moduli.RationalConvexEndpointBudget
-import IPRADerivations.Analysis.Gamma.EulerProducts.LogGamma.Convergence.GaussianLogGammaEulerResidualRadius
+import IPRADerivations.Analysis.Gamma.EulerProducts.LogGamma.Convergence.ResidualBounds.GaussianLogGammaEulerResidualRadius
 import IPRADerivations.Analysis.Stirling.Bounds.Multiplicative.GaussianStirlingMultiplicativeBoundsOrder
 
 /-!

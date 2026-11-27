@@ -1,5 +1,5 @@
 import IPRADerivations.Analysis.Beta.EulerProducts.GaussianBetaFiniteEulerComparison
-import IPRADerivations.Analysis.Beta.Primitives.GaussianBetaPrimitiveUniformLowerEndpoint
+import IPRADerivations.Analysis.Beta.Primitives.LowerEndpoints.GaussianBetaPrimitiveUniformLowerEndpoint
 
 /-!
 # Original finite beta quadrature at a degree-independent cutoff

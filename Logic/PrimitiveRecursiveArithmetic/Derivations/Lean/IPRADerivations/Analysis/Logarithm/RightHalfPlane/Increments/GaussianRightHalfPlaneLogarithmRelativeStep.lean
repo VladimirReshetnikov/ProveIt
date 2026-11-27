@@ -1,4 +1,4 @@
-import IPRADerivations.Analysis.Gamma.EulerProducts.LogGamma.Convergence.GaussianLogGammaEulerResidualRadius
+import IPRADerivations.Analysis.Gamma.EulerProducts.LogGamma.Convergence.ResidualBounds.GaussianLogGammaEulerResidualRadius
 import IPRADerivations.Analysis.Logarithm.Local.GaussianLocalLogarithmLinearRemainder
 import IPRADerivations.Analysis.Beta.EulerProducts.GaussianEulerBetaProductPascal
 

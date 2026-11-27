@@ -1,5 +1,5 @@
 import IPRADerivations.Analysis.Stirling.Binet.Oscillatory.FixedHorizons.GaussianBinetFixedHorizonDecay
-import IPRADerivations.Analysis.Stirling.Binet.Oscillatory.Arctangent.GaussianBinetArctangentPoleLaplace
+import IPRADerivations.Analysis.Stirling.Binet.Oscillatory.Arctangent.LaplaceTransforms.GaussianBinetArctangentPoleLaplace
 
 /-!
 # Original pole Laplace sums on a denominator-independent horizon
