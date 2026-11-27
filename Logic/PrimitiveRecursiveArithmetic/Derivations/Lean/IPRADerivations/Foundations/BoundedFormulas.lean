@@ -88,16 +88,14 @@ theorem bitAt_subst (A : BF) : ∀ {m k : ℕ} (σ : Fin m → PTm k) (y : PTm m
   | and A B ihA ihB => intro m k σ y; simp only [bitAt, PTm.subst_mul, ihA, ihB]
   | or A B ihA ihB =>
     intro m k σ y
-    simp only [bitAt, PTm.subst_monus, PTm.subst_add, ConciseIPRA.PTm.subst_succ,
-      ConciseIPRA.PTm.subst_zero, ihA, ihB]
+    ipra_ind_simp [bitAt, ihA, ihB]
   | not A ih =>
     intro m k σ y
-    simp only [bitAt, PTm.subst_monus, ConciseIPRA.PTm.subst_succ, ConciseIPRA.PTm.subst_zero, ih]
+    ipra_ind_simp [bitAt, ih]
   | all b A _ => intro m k σ y; simp only [bitAt, subst_ap2, at1_subst]
   | ex b A _ =>
     intro m k σ y
-    simp only [bitAt, PTm.subst_monus, ConciseIPRA.PTm.subst_succ, ConciseIPRA.PTm.subst_zero, subst_ap2,
-      at1_subst]
+    ipra_ind_simp [bitAt, subst_ap2, at1_subst]
 
 theorem inst2_body (A : BF) {m : ℕ} (i y : PTm m) : inst2 (body A) i y = bitAt A m (pairT i y) := by
   unfold inst2

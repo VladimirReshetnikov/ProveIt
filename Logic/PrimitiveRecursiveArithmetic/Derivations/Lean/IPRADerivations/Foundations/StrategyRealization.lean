@@ -56,9 +56,7 @@ theorem subst_check (P : Pattern) : ∀ {m k : ℕ} (σ : Fin m → PTm k) (c x 
   | leaf A => intro m k σ c x; exact bitAt_subst A σ x
   | ex b P ih =>
     intro m k σ c x
-    simp only [check, PTm.subst_mul, subst_eqb, PTm.subst_monus,
-      ConciseIPRA.PTm.subst_succ, ConciseIPRA.PTm.subst_zero,
-      subst_fstT, subst_sndT, at1_subst, subst_pairT, ih]
+    ipra_ind_simp [check, subst_eqb, subst_fstT, subst_sndT, at1_subst, subst_pairT, ih]
   | all b P _ =>
     intro m k σ c x
     simp only [check, PTm.subst_mul, subst_eqb, subst_fstT, at1_subst,
@@ -100,10 +98,8 @@ private abbrev allBody (P : Pattern) : PTm 2 :=
 private theorem allBody_at (P : Pattern) (code i x : PTm n) :
     Γ ⊢[PRAAx] inst2 (allBody P) i (pairT code x) ≐
       eqb (check P n (entry code i) (pairT i x)) one := by
-  simp only [allBody, inst2, subst_eqb, subst_check, subst_entry,
-    subst_fstT, subst_sndT, subst_pairT, Syn.subst_var,
-    Matrix.cons_val_zero, Matrix.cons_val_one, ConciseIPRA.PTm.subst_succ,
-    ConciseIPRA.PTm.subst_zero]
+  ipra_ind_simp [allBody, inst2, subst_eqb, subst_check, subst_entry, subst_fstT, subst_sndT, subst_pairT,
+    Matrix.cons_val_zero, Matrix.cons_val_one]
   exact eqb_congr
     (check_congr P (entry_congr (fst_pair _ _) (.eqRefl _))
       (pair_congr (.eqRefl _) (snd_pair _ _))) (.eqRefl _)

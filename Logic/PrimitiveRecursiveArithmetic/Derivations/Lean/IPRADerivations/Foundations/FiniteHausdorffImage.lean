@@ -91,10 +91,8 @@ def finiteLaw (d e : PR 3) (f : PR 2) (S T A B p : PTm n) : Fm PTm n :=
     (d e : PR 3) (f : PR 2) (S T A B p : PTm n) :
     (finiteLaw d e f S T A B p).subst σ =
       finiteLaw d e f (Syn.subst σ S) (Syn.subst σ T) (Syn.subst σ A) (Syn.subst σ B) (Syn.subst σ p) := by
-  simp only [finiteLaw, Fm.subst_all, Fm.subst_imp, subst_lt, subst_le, PTm.subst_mul,
-    subst_distance, subst_ap2, subst_entry, subst_length, Syn.subst_var,
-    Syn.up_zero, Syn.up_one, Syn.up_succ, Syn.subst_shift, Syn.shift_subst,
-    Syn.shift_var, Fin.succ_zero_eq_one]
+  ipra_ind_simp [finiteLaw, Fm.subst_all, subst_lt, subst_le, subst_distance, subst_ap2, subst_entry, subst_length,
+    Syn.up_zero, Syn.up_one, Syn.up_succ, Syn.subst_shift, Syn.shift_subst, Syn.shift_var, Fin.succ_zero_eq_one]
 
 /-- Instantiate a finite local law only at actually in-range supplied entries. -/
 theorem finiteLaw_at (d e : PR 3) (f : PR 2) {S T A B p : PTm n}

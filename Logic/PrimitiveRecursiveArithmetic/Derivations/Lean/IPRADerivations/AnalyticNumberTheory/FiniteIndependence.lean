@@ -152,8 +152,8 @@ theorem ev_at (m a b : PTm n) :
     Γ ⊢[PRAAx] inst2 evB m (pairT a b) ≐ eqb (rem m a) zero * eqb (gcd m b) one := by
   have e : inst2 evB m (pairT a b) =
       eqb (rem m (fstT (pairT a b))) zero * eqb (gcd m (sndT (pairT a b))) one := by
-    simp only [inst2, PTm.subst_mul, subst_eqb, subst_ex2, subst_ap2, subst_fstT, subst_sndT, Syn.subst_var,
-      Matrix.cons_val_zero, Matrix.cons_val_one, ConciseIPRA.PTm.subst_succ, ConciseIPRA.PTm.subst_zero]
+    ipra_ind_simp [inst2, subst_eqb, subst_ex2, subst_ap2, subst_fstT, subst_sndT, Matrix.cons_val_zero,
+      Matrix.cons_val_one]
   rw [e]
   exact congrMul (congrEqb' (congrAp2 remF (.eqRefl _) (fst_pair a b)) (.eqRefl _))
     (congrEqb' (congrGcd (.eqRefl _) (snd_pair a b)) (.eqRefl _))

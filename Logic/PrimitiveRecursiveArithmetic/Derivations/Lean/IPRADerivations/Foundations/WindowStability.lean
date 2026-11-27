@@ -93,11 +93,9 @@ theorem telescope_incr {a d : PTm 2} {N x c : PTm n}
       inst2 a (var 0) (Syn.shift x) + var 0 * Syn.shift c)
   have atBound : Γ ⊢[PRAAx] P.subst (Syn.inst N) := by
     refine qfIndUpTo N trivial ?_ ?_
-    · simp only [P, Fm.subst_eq, subst_ap2, subst_inst2, PTm.subst_add, PTm.subst_mul,
-        Syn.subst_var, Syn.inst_zero, Syn.subst_inst_shift, ConciseIPRA.PTm.subst_zero]
+    · ipra_ind_simp [P, subst_ap2, subst_inst2, Syn.subst_inst_shift]
       ipra_lc natEq (sum_zero (Γ := Γ) d x)
-    · simp only [P, Fm.subst_eq, subst_ap2, subst_inst2, PTm.subst_add, PTm.subst_mul,
-        Syn.subst_var, Syn.repl_zero, subst_repl_shift, ConciseIPRA.PTm.subst_zero]
+    · ipra_ind_simp [P, subst_ap2, subst_inst2, subst_repl_shift]
       exact .impI (incr_step (.impE hd.allOpen.wk.wk Prf.hyp0) Prf.hyp1)
   simpa [P] using atBound
 

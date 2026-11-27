@@ -163,13 +163,9 @@ theorem red_succ (k : PTm n) : Γ ⊢[PRAAx] Red D a (M (succ k) D a) (Dd (succ 
   have hall : Γ ⊢[PRAAx] Fm.all (Red (Syn.shift D) (Syn.shift a) (M (succ (var 0)) (Syn.shift D) (Syn.shift a))
       (Dd (succ (var 0)) (Syn.shift D) (Syn.shift a))) := by
     refine PRA.qfInd _ ⟨trivial, trivial, trivial, trivial, trivial, trivial, trivial⟩ ?_ ?_
-    · simp only [Red, Fm.subst_and, Fm.subst_eq, subst_le, subst_lt, subst_ap2, subst_pairT, subst_fstT, subst_sndT,
-        PTm.subst_add, PTm.subst_mul, PTm.subst_monus, Syn.subst_var, Syn.inst_zero, Syn.subst_inst_shift,
-        ConciseIPRA.PTm.subst_zero, ConciseIPRA.PTm.subst_succ]
+    · ipra_ind_simp [Red, subst_le, subst_lt, subst_ap2, subst_pairT, subst_fstT, subst_sndT, Syn.subst_inst_shift]
       exact red_one hA hB
-    · simp only [Red, Fm.subst_and, Fm.subst_eq, subst_le, subst_lt, subst_ap2, subst_pairT, subst_fstT, subst_sndT,
-        PTm.subst_add, PTm.subst_mul, PTm.subst_monus, Syn.subst_var, Syn.repl_zero, subst_repl_shift,
-        ConciseIPRA.PTm.subst_zero, ConciseIPRA.PTm.subst_succ]
+    · ipra_ind_simp [Red, subst_le, subst_lt, subst_ap2, subst_pairT, subst_fstT, subst_sndT, subst_repl_shift]
       exact red_step hA'.wk hB'.wk (k := var 0) Prf.hyp0
   have h := Prf.allE k hall
   simp only [Red, Fm.subst_and, Fm.subst_eq, subst_le, subst_lt, subst_ap2, subst_pairT, subst_fstT, subst_sndT,

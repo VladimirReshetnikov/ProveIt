@@ -172,10 +172,9 @@ def cover (d : PR 3) (S T r p : PTm n) : Fm PTm n :=
 @[simp] theorem subst_cover {m : ℕ} (σ : Fin n → PTm m) (d : PR 3) (S T r p : PTm n) :
     (cover d S T r p).subst σ =
       cover d (Syn.subst σ S) (Syn.subst σ T) (Syn.subst σ r) (Syn.subst σ p) := by
-  simp only [cover, Fm.subst_all, Fm.subst_imp, Fm.subst_ex, Fm.subst_and, subst_lt,
-    subst_le, subst_distance, MasterCertificate.subst_entry, SequenceComposition.subst_length,
-    Syn.subst_var, Syn.up_zero, Syn.up_succ, Syn.subst_shift, Syn.shift_subst,
-    Syn.up_one, Syn.shift_var, Fin.succ_zero_eq_one]
+  ipra_ind_simp [cover, Fm.subst_all, Fm.subst_ex, subst_lt, subst_le, subst_distance, MasterCertificate.subst_entry,
+    SequenceComposition.subst_length, Syn.up_zero, Syn.up_succ, Syn.subst_shift, Syn.shift_subst, Syn.up_one,
+    Syn.shift_var, Fin.succ_zero_eq_one]
 
 theorem coverSyntax_at (d : PR 3) (S T r p : PTm n) :
     (BoundedSyntax.formula (coverSyntax d)).subst ![S, T, r, p] = cover d S T r p := by

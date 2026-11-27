@@ -89,7 +89,7 @@ theorem fold_congr_mod (fold : PTm 2 → PR 2)
   have atBound : Γ ⊢[PRAAx] P.subst (Syn.inst N) := by
     refine qfIndUpTo N trivial ?_ ?_
     · simpa [P, rem] using congrAp2 remF base (.eqRefl M)
-    · simp only [P, Fm.subst_eq, subst_ap2, Syn.subst_var, Syn.repl_zero, subst_repl_shift]
+    · ipra_ind_simp [P, subst_ap2, subst_repl_shift]
       refine .impI ((congrAp2 remF (advance f (var 0) (Syn.shift x)) (.eqRefl _)).eqTrans ?_)
       exact (combine_congr (Common.pos_shift hM).wk.wk Prf.hyp1 (.impE h.allOpen.wk.wk Prf.hyp0)).eqTrans
         (congrAp2 remF (advance g (var 0) (Syn.shift y)) (.eqRefl _)).eqSymm
@@ -112,7 +112,7 @@ theorem rem_pow_congr {M x y : PTm n} (hM : Γ ⊢[PRAAx] M ≐ succ (pred M))
   have all : Γ ⊢[PRAAx] Fm.all P := by
     refine PRA.qfInd P trivial ?_ ?_
     · simpa [P, rem] using congrAp2 remF ((pw_zero x).eqTrans (pw_zero y).eqSymm) (.eqRefl M)
-    · simp only [P, Fm.subst_eq, subst_ap2, Syn.subst_var, Syn.repl_zero, subst_repl_shift]
+    · ipra_ind_simp [P, subst_ap2, subst_repl_shift]
       have factor : Γ.map Fm.shift ⊢[PRAAx] rem (Syn.shift x) (Syn.shift M) ≐ rem (Syn.shift y) (Syn.shift M) := by
         simpa [Fm.shift, Syn.shift] using h.shift
       exact (congrAp2 remF (pw_succ _ _) (.eqRefl _)).eqTrans
@@ -273,14 +273,12 @@ theorem crt_exists_at {A B r s : PTm n} (hA : Γ ⊢[PRAAx] A ≐ succ (pred A))
   · have key := bezout_reduced₁ (U := Bezout.cur one zero (succ B) A B) (V := Bezout.cur zero one (succ B) A B) hD.wk Prf.hyp0 hg.wk eA.wk eB.wk
     have core := exists_core hA.wk hB.wk eA.wk eB.wk key hb.wk hc'.wk
     refine .exI (witness A (succ (pred (gcd A B))) (Bezout.cur one zero (succ B) A B) (pred (quo B (succ (pred (gcd A B))))) r s) ?_
-    simp only [Fm.subst_and, Fm.subst_eq, subst_ap2, Syn.subst_var, Syn.inst_zero,
-      Syn.subst_inst_shift]
+    ipra_ind_simp [subst_ap2, Syn.subst_inst_shift]
     exact core
   · have key := bezout_reduced₂ (U := Bezout.cur one zero (succ B) A B) (V := Bezout.cur zero one (succ B) A B) hD.wk Prf.hyp0 hg.wk eA.wk eB.wk hb.wk
     have core := exists_core hA.wk hB.wk eA.wk eB.wk key hb.wk hc'.wk
     refine .exI (witness A (succ (pred (gcd A B))) (Bezout.cur one zero (succ B) A B * pred (quo B (succ (pred (gcd A B))))) (pred (quo B (succ (pred (gcd A B))))) r s) ?_
-    simp only [Fm.subst_and, Fm.subst_eq, subst_ap2, Syn.subst_var, Syn.inst_zero,
-      Syn.subst_inst_shift]
+    ipra_ind_simp [subst_ap2, Syn.subst_inst_shift]
     exact core
 
 /-- Uniqueness modulo `ℓ = a (b / g)`. -/

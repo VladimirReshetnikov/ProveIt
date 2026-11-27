@@ -47,13 +47,11 @@ theorem subst_lc {m : ℕ} (σ : Fin n → PTm m) (d e : PTm n) :
 
 theorem subst_cnt {m : ℕ} (σ : Fin n → PTm m) (X q l a : PTm n) :
     Syn.subst σ (cnt X q l a) = cnt (Syn.subst σ X) (Syn.subst σ q) (Syn.subst σ l) (Syn.subst σ a) := by
-  simp only [cnt, BrunCounting.A, SieveCount.par, subst_ap2, subst_pairT, LeanProofs.IPRA.PTm.subst_mul,
-    LeanProofs.IPRA.PTm.subst_pred, ConciseIPRA.PTm.subst_succ]
+  ipra_ind_simp [cnt, BrunCounting.A, SieveCount.par, subst_ap2, subst_pairT]
 
 theorem subst_ind {m : ℕ} (σ : Fin n → PTm m) (d e q a : PTm n) :
     Syn.subst σ (SievePairBound.ind d e q a) = SievePairBound.ind (Syn.subst σ d) (Syn.subst σ e) (Syn.subst σ q) (Syn.subst σ a) := by
-  simp only [SievePairBound.ind, LeanProofs.IPRA.PTm.subst_mul, subst_eqb, LeanProofs.IPRA.PTm.subst_monus, subst_gcd',
-    ConciseIPRA.PTm.subst_succ, ConciseIPRA.PTm.subst_zero]
+  ipra_ind_simp [SievePairBound.ind, subst_eqb, subst_gcd']
 
 theorem congrInd {d e q q' a a' : PTm n} (hq : Γ ⊢[PRAAx] q ≐ q') (ha : Γ ⊢[PRAAx] a ≐ a') :
     Γ ⊢[PRAAx] SievePairBound.ind d e q a ≐ SievePairBound.ind d e q' a' := by
@@ -114,33 +112,26 @@ theorem inst3_Am (i j x : PTm n) : inst3 (Am U V) i j x =
     SievePairBound.ind i j (fstT (sndT x)) (fstT (sndT (sndT x))) *
       (inst3 (wB U V) i j x * (fstT (sndT x) * (i * j) *
         cnt (fstT x) (fstT (sndT x)) (lc i j) (fstT (sndT (sndT x))))) := by
-  simp only [inst3, Am, SievePairBound.ind, lc, LeanProofs.IPRA.PTm.subst_mul, subst_eqb,
-    LeanProofs.IPRA.PTm.subst_monus, LeanProofs.IPRA.PTm.subst_pred, subst_gcd', subst_ap2, subst_pairT, subst_fstT,
-    subst_sndT, Syn.subst_var, Matrix.cons_val_zero, Matrix.cons_val_one, Matrix.cons_val_two, Matrix.head_cons,
-    Matrix.tail_cons, ConciseIPRA.PTm.subst_succ, ConciseIPRA.PTm.subst_zero]
+  ipra_ind_simp [inst3, Am, SievePairBound.ind, lc, subst_eqb, subst_gcd', subst_ap2, subst_pairT, subst_fstT,
+    subst_sndT, Matrix.cons_val_zero, Matrix.cons_val_one, Matrix.cons_val_two, Matrix.head_cons, Matrix.tail_cons]
 
 theorem inst3_Bm (i j x : PTm n) : inst3 (Bm U V) i j x =
     SievePairBound.ind i j (fstT (sndT x)) (fstT (sndT (sndT x))) *
       (inst3 (wB U V) i j x * (gcd i j * fstT x + fstT (sndT x) * (i * j))) := by
-  simp only [inst3, Bm, SievePairBound.ind, LeanProofs.IPRA.PTm.subst_mul, LeanProofs.IPRA.PTm.subst_add, subst_eqb,
-    LeanProofs.IPRA.PTm.subst_monus, subst_gcd', subst_fstT, subst_sndT, Syn.subst_var, Matrix.cons_val_zero,
-    Matrix.cons_val_one, Matrix.cons_val_two, Matrix.head_cons, Matrix.tail_cons, ConciseIPRA.PTm.subst_succ,
-    ConciseIPRA.PTm.subst_zero]
+  ipra_ind_simp [inst3, Bm, SievePairBound.ind, subst_eqb, subst_gcd', subst_fstT, subst_sndT, Matrix.cons_val_zero,
+    Matrix.cons_val_one, Matrix.cons_val_two, Matrix.head_cons, Matrix.tail_cons]
 
 theorem inst3_Cm (i j x : PTm n) : inst3 (Cm U V) i j x =
     SievePairBound.ind i j (fstT (sndT x)) (fstT (sndT (sndT x))) * (inst3 (wB U V) i j x * (gcd i j * fstT x)) := by
-  simp only [inst3, Cm, SievePairBound.ind, LeanProofs.IPRA.PTm.subst_mul, subst_eqb, LeanProofs.IPRA.PTm.subst_monus,
-    subst_gcd', subst_fstT, subst_sndT, Syn.subst_var, Matrix.cons_val_zero, Matrix.cons_val_one, Matrix.cons_val_two,
-    Matrix.head_cons, Matrix.tail_cons, ConciseIPRA.PTm.subst_succ, ConciseIPRA.PTm.subst_zero]
+  ipra_ind_simp [inst3, Cm, SievePairBound.ind, subst_eqb, subst_gcd', subst_fstT, subst_sndT, Matrix.cons_val_zero,
+    Matrix.cons_val_one, Matrix.cons_val_two, Matrix.head_cons, Matrix.tail_cons]
 
 theorem inst3_Dm (i j x : PTm n) : inst3 (Dm U V) i j x =
     SievePairBound.ind i j (fstT (sndT x)) (fstT (sndT (sndT x))) *
       (inst3 (wB U V) i j x * (fstT (sndT x) * (i * j) *
         cnt (fstT x) (fstT (sndT x)) (lc i j) (fstT (sndT (sndT x))) + fstT (sndT x) * (i * j))) := by
-  simp only [inst3, Dm, SievePairBound.ind, lc, LeanProofs.IPRA.PTm.subst_mul, LeanProofs.IPRA.PTm.subst_add, subst_eqb,
-    LeanProofs.IPRA.PTm.subst_monus, LeanProofs.IPRA.PTm.subst_pred, subst_gcd', subst_ap2, subst_pairT, subst_fstT,
-    subst_sndT, Syn.subst_var, Matrix.cons_val_zero, Matrix.cons_val_one, Matrix.cons_val_two, Matrix.head_cons,
-    Matrix.tail_cons, ConciseIPRA.PTm.subst_succ, ConciseIPRA.PTm.subst_zero]
+  ipra_ind_simp [inst3, Dm, SievePairBound.ind, lc, subst_eqb, subst_gcd', subst_ap2, subst_pairT, subst_fstT,
+    subst_sndT, Matrix.cons_val_zero, Matrix.cons_val_one, Matrix.cons_val_two, Matrix.head_cons, Matrix.tail_cons]
 
 /-! ## The summed bounds -/
 

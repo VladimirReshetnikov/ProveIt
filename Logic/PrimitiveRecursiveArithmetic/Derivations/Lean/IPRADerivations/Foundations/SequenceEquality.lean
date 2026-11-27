@@ -32,8 +32,7 @@ def agree (A B : PTm 2) (N x y : PTm n) : Fm PTm n :=
 
 @[simp] theorem subst_agree {m : ℕ} (σ : Fin n → PTm m) (A B : PTm 2) (N x y : PTm n) :
     (agree A B N x y).subst σ = agree A B (Syn.subst σ N) (Syn.subst σ x) (Syn.subst σ y) := by
-  simp only [agree,Fm.subst_all,Fm.subst_imp,Fm.subst_eq,subst_lt,subst_inst2,
-    Syn.subst_var,Syn.up_zero,Syn.up_succ,Syn.subst_shift,Syn.shift_subst]
+  ipra_ind_simp [agree, Fm.subst_all, subst_lt, subst_inst2, Syn.up_zero, Syn.up_succ, Syn.subst_shift, Syn.shift_subst]
 
 @[simp] theorem subst_stack {m : ℕ} (σ : Fin n → PTm m) (A : PTm 2) (N x : PTm n) :
     Syn.subst σ (stack A N x) = stack A (Syn.subst σ N) (Syn.subst σ x) := subst_ap2 _ _ _ _
@@ -52,7 +51,7 @@ theorem stack_equal (A B : PTm 2) (N x y : PTm n) (h : Γ ⊢[PRAAx] agree A B N
     refine qfIndUpTo N trivial ?_ ?_
     · simpa only [P,Fm.subst_eq,subst_stack,Syn.subst_var,Syn.inst_zero,Syn.subst_inst_shift]
         using (stack_zero (Γ := Γ) A x).eqTrans (stack_zero B y).eqSymm
-    · simp only [P,Fm.subst_eq,subst_stack,Syn.subst_var,Syn.repl_zero,subst_repl_shift]
+    · ipra_ind_simp [P, subst_stack, subst_repl_shift]
       refine .impI ?_
       let Δ := lt (var 0) (Syn.shift N) :: P :: Γ.map Fm.shift
       have contract : Γ.map Fm.shift ⊢[PRAAx] agree A B (Syn.shift N) (Syn.shift x) (Syn.shift y) := by

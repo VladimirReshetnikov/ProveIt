@@ -65,9 +65,8 @@ theorem inst2_cntB (p x : PTm n) : inst2 cntB p x = inJT p (xq x) (xα x) (xγ x
 
 theorem inst2_badB (p x : PTm n) :
     inst2 badB p x = inJT p (xq x) (xα x) (xγ x) (xβ x) * monus one (eqb (gcd p (xq x)) one) := by
-  simp only [inst2, badB, cntB, inJT, Signum.sg, PTm.subst_mul, PTm.subst_monus, subst_ex2,
-    Syn.subst_var, Matrix.cons_val_zero, Matrix.cons_val_one, ConciseIPRA.PTm.subst_succ,
-    ConciseIPRA.PTm.subst_zero, subst_eqb, subst_fstT, subst_sndT]
+  ipra_ind_simp [inst2, badB, cntB, inJT, Signum.sg, subst_ex2, Matrix.cons_val_zero, Matrix.cons_val_one, subst_eqb,
+    subst_fstT, subst_sndT]
 
 theorem inst3_aB (p d x : PTm n) :
     inst3 aB p d x = monus one (monus two d) * eqb (rem (xq x) d) zero * eqb (rem p d) zero *

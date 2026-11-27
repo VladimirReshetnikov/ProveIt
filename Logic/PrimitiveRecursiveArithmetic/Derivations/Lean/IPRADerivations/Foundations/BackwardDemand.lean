@@ -140,8 +140,7 @@ def localStep (A : BF) (D : PR 3) (N x : PTm n) : Fm PTm n :=
 @[simp] theorem subst_localStep {m : ℕ} (σ : Fin n → PTm m)
     (A : BF) (D : PR 3) (N x : PTm n) :
     (localStep A D N x).subst σ = localStep A D (Syn.subst σ N) (Syn.subst σ x) := by
-  simp only [localStep, Fm.subst_all, Fm.subst_imp, subst_lt, subst_observation,
-    subst_ap3, ConciseIPRA.PTm.subst_succ, Syn.subst_var, Syn.up_zero, Syn.up_succ,
+  ipra_ind_simp [localStep, Fm.subst_all, subst_lt, subst_observation, subst_ap3, Syn.up_zero, Syn.up_succ,
     Syn.subst_shift, Syn.shift_subst, Syn.up_one, Syn.shift_var, Fin.succ_zero_eq_one]
 
 theorem localStep_at (A : BF) (D : PR 3) {N x : PTm n}
@@ -165,11 +164,9 @@ theorem transfer (A : BF) (D : PR 3) (N K x : PTm n)
     (horizon D (Syn.shift N) (Syn.shift K) (var 0) (Syn.shift x)) (Syn.shift x) ≐ one
   have atEnd : Γ ⊢[PRAAx] P.subst (Syn.inst N) := by
     refine qfIndUpTo N trivial ?_ ?_
-    · simp only [P, Fm.subst_eq, subst_observationBit, subst_horizon, subst_one,
-        Syn.subst_var, Syn.inst_zero, Syn.subst_inst_shift]
+    · ipra_ind_simp [P, subst_observationBit, subst_horizon, subst_one, Syn.subst_inst_shift]
       exact bit_of_observation A _ _ _ hbase
-    · simp only [P, Fm.subst_eq, subst_observationBit, subst_horizon, subst_one,
-        Syn.subst_var, Syn.repl_zero, subst_repl_shift]
+    · ipra_ind_simp [P, subst_observationBit, subst_horizon, subst_one, subst_repl_shift]
       refine .impI ?_
       let Δ := lt (var 0) (Syn.shift N) :: P :: Γ.map Fm.shift
       have range : Δ ⊢[PRAAx] lt (var 0) (Syn.shift N) := Prf.hyp0
@@ -210,9 +207,8 @@ def globalStep (A : BF) (D : PR 3) (x : PTm n) : Fm PTm n :=
 
 @[simp] theorem subst_globalStep {m : ℕ} (σ : Fin n → PTm m) (A : BF) (D : PR 3) (x : PTm n) :
     (globalStep A D x).subst σ = globalStep A D (Syn.subst σ x) := by
-  simp only [globalStep, Fm.subst_all, Fm.subst_imp, subst_observation, subst_ap3,
-    ConciseIPRA.PTm.subst_succ, Syn.subst_var, Syn.up_zero, Syn.up_succ,
-    Syn.subst_shift, Syn.shift_subst, Syn.up_one, Syn.shift_var, Fin.succ_zero_eq_one]
+  ipra_ind_simp [globalStep, Fm.subst_all, subst_observation, subst_ap3, Syn.up_zero, Syn.up_succ, Syn.subst_shift,
+    Syn.shift_subst, Syn.up_one, Syn.shift_var, Fin.succ_zero_eq_one]
 
 theorem allBase_at (A : BF) {x : PTm n} (h : Γ ⊢[PRAAx] allBase A x) (k : PTm n) :
     Γ ⊢[PRAAx] observation A zero k x := by

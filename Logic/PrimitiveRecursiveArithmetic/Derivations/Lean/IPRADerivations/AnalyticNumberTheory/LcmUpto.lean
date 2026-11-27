@@ -95,8 +95,7 @@ theorem lcmu_zero : Γ ⊢[PRAAx] lcmu (zero : PTm n) ≐ one := by
 theorem lcmu_succ (N : PTm n) : Γ ⊢[PRAAx] lcmu (succ N) ≐ lcm (lcmu N) (succ N) := by
   have h := rec2_succ (Γ := Γ) (succ zero) lcmStep N zero
   have e : Syn.subst ![N, ap2 lcmuF N zero, zero] lcmStep = lcm (lcmu N) (succ N) := by
-    simp only [lcmStep, lcm, lcmu, subst_ap2, PTm.subst_mul, subst_ex2, Syn.subst_var, Matrix.cons_val_zero,
-      Matrix.cons_val_one, ConciseIPRA.PTm.subst_succ]
+    ipra_ind_simp [lcmStep, lcm, lcmu, subst_ap2, subst_ex2, Matrix.cons_val_zero, Matrix.cons_val_one]
   rw [e] at h; exact h
 
 theorem pos_of_lt_zero {X : PTm n} (h : Γ ⊢[PRAAx] lt zero X) : Γ ⊢[PRAAx] X ≐ succ (pred X) :=
@@ -120,9 +119,9 @@ private abbrev posF : Fm PTm 1 := lt zero (lcmu (var 0))
 
 private theorem pos₀ : ([] : List (Fm PTm 1)) ⊢[PRAAx] posF := by
   refine ind _ trivial ?_ ?_
-  · simp only [posF, subst_lt, subst_ap2, Syn.subst_var, Syn.inst_zero, ConciseIPRA.PTm.subst_zero]
+  · ipra_ind_simp [posF, subst_lt, subst_ap2]
     exact le_of_eq_add (d := zero) (lcmu_zero.eqTrans (add_zero _).eqSymm)
-  · simp only [posF, subst_lt, subst_ap2, Syn.subst_var, Syn.repl_zero, ConciseIPRA.PTm.subst_zero]
+  · ipra_ind_simp [posF, subst_lt, subst_ap2]
     exact lt_zero_of_pos ((lcmu_succ _).eqTrans ((lcm_pos (pos_of_lt_zero Prf.hyp0)
       (congrSucc (pred_succ _).eqSymm)).eqTrans (congrSucc (congrPred (lcmu_succ _).eqSymm))))
 
@@ -328,13 +327,11 @@ private abbrev psiF : Fm PTm 2 := Psi w (var 0) (var 1) ≐ Lw w (lcmu (var 0)) 
 
 private theorem psi₀ : ([] : List (Fm PTm 2)) ⊢[PRAAx] psiF w := by
   refine ind _ trivial ?_ ?_
-  · simp only [psiF, Psi, Fm.subst_eq, subst_ap2, subst_pairT, Syn.subst_var, Syn.inst_zero, Syn.inst_one,
-      ConciseIPRA.PTm.subst_zero, ConciseIPRA.PTm.subst_succ]
+  · ipra_ind_simp [psiF, Psi, subst_ap2, subst_pairT]
     refine ((sum_succ' _ _ _).eqTrans ((congrAdd (sum_zero _ _) (.eqRefl _)).eqTrans (zero_add _))).eqTrans ?_
     rw [inst2_LamB]
     exact (lam_zero w _).eqTrans ((congrLw w _ lcmu_zero).eqTrans (MuLambda.lw_one w _)).eqSymm
-  · simp only [psiF, Psi, Fm.subst_eq, subst_ap2, subst_pairT, Syn.subst_var, Syn.repl_zero, repl_one,
-      ConciseIPRA.PTm.subst_zero, ConciseIPRA.PTm.subst_succ]
+  · ipra_ind_simp [psiF, Psi, subst_ap2, subst_pairT]
     refine (sum_succ' _ _ _).eqTrans ?_
     rw [inst2_LamB]
     exact (congrAdd Prf.hyp0 (.eqRefl _)).eqTrans (lw_lcmu_succ w _ _).eqSymm

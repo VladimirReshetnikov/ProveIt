@@ -67,7 +67,7 @@ theorem gz_at (m D₁ D₂ A Ds K F : PTm n) :
         (inst2 DwB m (BlockSums.Y D₁ D₂ (pairT A Ds) (pairT K F)) *
           (monus (inst2 pzB m (BlockSums.Y D₁ D₂ (pairT A Ds) (pairT K F))) (inst2 fzB m (BlockSums.Y D₁ D₂ (pairT A Ds) (pairT K F))) +
             monus (inst2 fzB m (BlockSums.Y D₁ D₂ (pairT A Ds) (pairT K F))) (inst2 pzB m (BlockSums.Y D₁ D₂ (pairT A Ds) (pairT K F))))) := by
-    simp only [inst2, gzB, absd, PTm.subst_monus, PTm.subst_mul, PTm.subst_add]
+    ipra_ind_simp [inst2, gzB, absd]
   rw [raw]
   have ep := pz_at (Γ := Γ) m D₁ D₂ (pairT A Ds) K F
   have ef := fz_at (Γ := Γ) m D₁ D₂ (pairT A Ds) K F

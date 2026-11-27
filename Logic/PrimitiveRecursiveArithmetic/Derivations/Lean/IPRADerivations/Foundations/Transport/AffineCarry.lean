@@ -55,15 +55,11 @@ theorem stepSound (j L b x : PTm n)
 
 theorem carry_identity : ([] : List (Fm PTm 4)) ⊢[PRAAx] invariant := by
   refine ind invariant trivial ?_ ?_
-  · simp only [invariant, Fm.subst_eq, subst_carry, LeanProofs.IPRA.PTm.subst_add,
-      LeanProofs.IPRA.PTm.subst_mul, pw, subst_ap2, Syn.subst_var, Syn.inst_zero,
-      Syn.inst_one, inst_two, inst_three, LeanProofs.ConciseIPRA.PTm.subst_zero]
+  · ipra_ind_simp [invariant, subst_carry, pw, subst_ap2]
     refine (start _ _ _).eqTrans (Prf.eqSymm ?_)
     refine (congrAdd (start _ _ _) (congrMul (pw_zero _) (.eqRefl _))).eqTrans ?_
     exact (zero_add _).eqTrans (one_mul _)
-  · simp only [invariant, Fm.subst_eq, subst_carry, LeanProofs.IPRA.PTm.subst_add,
-      LeanProofs.IPRA.PTm.subst_mul, pw, subst_ap2, Syn.subst_var, Syn.repl_zero,
-      repl_one, repl_two, repl_three, LeanProofs.ConciseIPRA.PTm.subst_zero]
+  · ipra_ind_simp [invariant, subst_carry, pw, subst_ap2]
     exact stepSound _ _ _ _ Prf.hyp0
 
 theorem closedCarry : ([] : List (Fm PTm 0)) ⊢[PRAAx] univ 4 invariant :=

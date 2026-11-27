@@ -42,7 +42,7 @@ abbrev cval (a b d m N y : PTm n) : PTm n :=
   eqb (rem m a) zero * eqb (rem N b) zero * eqb (a * b) d * inst2 g d y
 
 theorem cC_eval (a b d m N y : PTm n) : Syn.subst ![a, b, d, m, N, y] (cC g) = cval g a b d m N y := by
-  simp only [cC, PTm.subst_mul, subst_eqb, subst_ap2, Syn.subst_var, Syn.subst_subst, ConciseIPRA.PTm.subst_zero]
+  ipra_ind_simp [cC, subst_eqb, subst_ap2, Syn.subst_subst]
   refine congrArg _ ?_
   congr 1; funext k; fin_cases k <;> rfl
 

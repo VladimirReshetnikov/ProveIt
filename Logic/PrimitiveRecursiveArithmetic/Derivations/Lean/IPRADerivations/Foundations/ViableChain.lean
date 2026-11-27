@@ -138,8 +138,7 @@ theorem chain_succ (t p : PTm k) :
   have h := rec2_succ (Γ := Γ) s (chainStep I) t p
   have e : Syn.subst ![t, ap2 (rec2 s (chainStep I)) t p, p] (chainStep I) =
       I.nxt (monus (I.h p) (succ t)) (chain I s t p) p := by
-    simp only [chainStep, subst_nxt, PTm.subst_monus, Instance.subst_h, Syn.subst_var,
-      ConciseIPRA.PTm.subst_succ]
+    ipra_ind_simp [chainStep, subst_nxt, Instance.subst_h]
     rfl
   rw [e] at h
   exact h

@@ -264,11 +264,9 @@ private abbrev invF : Fm PTm 2 := var 1 ≐ succ (pred (var 1)) ⟶ Inv (var 0) 
 
 private theorem inv₀ : ([] : List (Fm PTm 2)) ⊢[PRAAx] invF := by
   refine ind _ ⟨trivial, trivial, le_QF _ _, le_QF _ _⟩ ?_ ?_
-  · simp only [Fm.subst_imp, Fm.subst_eq, Fm.subst_and, Fm.subst_or, subst_le, subst_ap2, PTm.subst_pred, Syn.subst_var,
-      Syn.inst_zero, Syn.inst_one, ConciseIPRA.PTm.subst_zero, ConciseIPRA.PTm.subst_succ]
+  · ipra_ind_simp [subst_le, subst_ap2]
     exact .impI (inv_zero _)
-  · simp only [Fm.subst_imp, Fm.subst_eq, Fm.subst_and, Fm.subst_or, subst_le, subst_ap2, PTm.subst_pred, Syn.subst_var,
-      Syn.repl_zero, repl_one, ConciseIPRA.PTm.subst_zero, ConciseIPRA.PTm.subst_succ]
+  · ipra_ind_simp [subst_le, subst_ap2]
     refine .impI ?_
     exact .orE (isP_01 (var 0 : PTm 2)) (inv_case_zero Prf.hyp0 (Prf.impE Prf.hyp1.wk Prf.hyp1))
       (inv_case_one Prf.hyp1 Prf.hyp0 (not_dvd_R _ (prime_of_isP Prf.hyp0) (le_refl _))

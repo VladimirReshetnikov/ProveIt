@@ -161,8 +161,7 @@ theorem G_greatest {e s x N : PTm k} (he : Γ ⊢[PRAAx] e ≐ succ (pred e))
   have atEnd : Γ ⊢[PRAAx] P.subst (Syn.inst N) := by
     refine qfIndUpTo N trivial ?_ ?_
     · simpa [P] using dvd_congr (G_zero ω s x).eqSymm hse
-    · simp only [P, Fm.subst_eq, subst_ap2, subst_pairT, Syn.subst_var,
-        Syn.repl_zero, subst_repl_shift, ConciseIPRA.PTm.subst_zero]
+    · ipra_ind_simp [P, subst_ap2, subst_pairT, subst_repl_shift]
       refine .impI ?_
       have he' := he.shift
       rw [shift_pos'] at he'

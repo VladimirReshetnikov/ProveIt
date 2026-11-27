@@ -69,9 +69,8 @@ abbrev vB3 : PTm 3 := eqb (rem (var 2) (pw (var 1) (succ (var 0)))) zero
 abbrev vB : PTm 2 := lift3 vB3
 
 theorem inst3_vB (e p m : PTm n) : inst3 vB3 e p m = eqb (rem m (pw p (succ e))) zero := by
-  simp only [inst3, subst_eqb, subst_ap2, Syn.subst_var, Matrix.cons_val_zero, Matrix.cons_val_one,
-    Matrix.head_cons, Matrix.cons_val_two, Matrix.tail_cons, ConciseIPRA.PTm.subst_succ,
-    ConciseIPRA.PTm.subst_zero]
+  ipra_ind_simp [inst3, subst_eqb, subst_ap2, Matrix.cons_val_zero, Matrix.cons_val_one, Matrix.head_cons,
+    Matrix.cons_val_two, Matrix.tail_cons]
 
 theorem at_vB (e p m : PTm n) :
     Γ ⊢[PRAAx] inst2 vB e (pairT p m) ≐ eqb (rem m (pw p (succ e))) zero :=

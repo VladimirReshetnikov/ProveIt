@@ -51,8 +51,7 @@ theorem gv_all_zero (f : PTm 2) {N x : PTm k}
   have atEnd : Γ ⊢[PRAAx] P.subst (Syn.inst N) := by
     refine qfIndUpTo N trivial ?_ ?_
     · simpa [P] using gv_zero (Γ := Γ) f x
-    · simp only [P, Fm.subst_eq, subst_ap2, Syn.subst_var, Syn.repl_zero,
-        subst_repl_shift, ConciseIPRA.PTm.subst_zero]
+    · ipra_ind_simp [P, subst_ap2, subst_repl_shift]
       refine .impI ?_
       let Δ := lt (var 0) (Syn.shift N) :: P :: Γ.map Fm.shift
       have hf : Δ ⊢[PRAAx] inst2 f (var 0) (Syn.shift x) ≐ zero := .impE h.allOpen.wk.wk Prf.hyp0

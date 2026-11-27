@@ -51,8 +51,7 @@ variable {n : ℕ} {Γ : List (Fm PTm n)}
 abbrev wB (f : PTm 2) : PTm 2 := f * eqb (rem (var 1) (var 0)) zero
 
 theorem inst2_wB (f : PTm 2) (d P : PTm n) : inst2 (wB f) d P = inst2 f d P * eqb (rem P d) zero := by
-  simp only [inst2, PTm.subst_mul, subst_eqb, subst_ap2, Syn.subst_var, Matrix.cons_val_zero, Matrix.cons_val_one,
-    ConciseIPRA.PTm.subst_zero]
+  ipra_ind_simp [inst2, subst_eqb, subst_ap2, Matrix.cons_val_zero, Matrix.cons_val_one]
 
 theorem pt_alg {s bn bP bg F : PTm n} (h : Γ ⊢[PRAAx] bg ≐ bn * bP) :
     Γ ⊢[PRAAx] (s * bn) * ((F * bP) * one) ≐ (s * bg) * (F * one) := by
@@ -115,8 +114,7 @@ theorem legendre_pt (m P : PTm n) :
 abbrev coB : PTm 2 := sg (var 0) * eqb (gcd (var 0) (var 1)) one
 
 theorem inst2_coB (m P : PTm n) : inst2 coB m P = sg m * eqb (gcd m P) one := by
-  simp only [inst2, PTm.subst_mul, PTm.subst_monus, subst_eqb, subst_ex2, Syn.subst_var, Matrix.cons_val_zero,
-    Matrix.cons_val_one, ConciseIPRA.PTm.subst_succ, ConciseIPRA.PTm.subst_zero]
+  ipra_ind_simp [inst2, subst_eqb, subst_ex2, Matrix.cons_val_zero, Matrix.cons_val_one]
 
 /-- The summed identity: `∑_{m ≤ x} ((μ⁺ · [· ∣ P]) * 𝟏)(m) = #{1 ≤ m ≤ x : gcd(m, P) = 1} + ∑_{m ≤ x} (…⁻…)(m)`. -/
 theorem legendre_sum (x P : PTm n) :

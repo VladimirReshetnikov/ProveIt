@@ -67,11 +67,9 @@ theorem rise_all {N x : PTm n} (hno : Γ ⊢[PRAAx] NoW (riseB r) N x) :
     Γ ⊢[PRAAx] Fm.all (le (var 0) (Syn.shift N) ⟶
       le (inst2 r zero (Syn.shift x) + var 0) (inst2 r (var 0) (Syn.shift x))) := by
   refine qfIndAllUpTo N (le_QF _ _) ?_ ?_
-  · simp only [subst_le, subst_inst2, PTm.subst_add, Syn.subst_var, Syn.inst_zero,
-      Syn.subst_inst_shift, ConciseIPRA.PTm.subst_zero]
+  · ipra_ind_simp [subst_le, subst_inst2, Syn.subst_inst_shift]
     ipra_le 0
-  · simp only [subst_le, subst_inst2, PTm.subst_add, Syn.subst_var, Syn.repl_zero,
-      subst_repl_shift, ConciseIPRA.PTm.subst_zero]
+  · ipra_ind_simp [subst_le, subst_inst2, subst_repl_shift]
     exact .impI (rise_step r (.impE hno.allOpen.wk.wk Prf.hyp0) Prf.hyp1)
 
 /-- `lem:rise`: a nonrise below `N`, or `r(0) + N ≤ r(N)`. -/

@@ -45,8 +45,7 @@ theorem eigen_integral_gcd {b La s x N : PTm k} (hb : Γ ⊢[PRAAx] b ≐ succ (
     rw [shift_pos'] at hb'
     have hg' := hg.shift
     have eg : Fm.shift (gcd b La ≐ one) = (gcd (Syn.shift b) (Syn.shift La) ≐ one) := by
-      simp only [Fm.shift, Fm.subst_eq, subst_ex2, Syn.shift, ConciseIPRA.PTm.subst_succ,
-        ConciseIPRA.PTm.subst_zero]
+      ipra_ind_simp [Fm.shift, subst_ex2, Syn.shift]
     rw [eg] at hg'
     exact gauss hb'.wk hg'.wk (.impE hall.allOpen.wk Prf.hyp0)
   have d := G_greatest ω hb (gauss hb hg hseed) hall'

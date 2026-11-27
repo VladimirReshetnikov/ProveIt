@@ -131,8 +131,7 @@ theorem row_s (ha : ∀ {k : ℕ} {Δ : List (Fm PTm k)} (i p p' : PTm k), Δ �
     simpa [Fm.shift, Syn.shift] using hq.shift
   have hK : Syn.shift (eqb (rem d s) zero * (sg d * eqb (gcd d (fstT p)) one)) =
       eqb (rem (Syn.shift d) (Syn.shift s)) zero * (sg (Syn.shift d) * eqb (gcd (Syn.shift d) (fstT (Syn.shift p))) one) := by
-    simp only [Syn.shift, LeanProofs.IPRA.PTm.subst_mul, subst_eqb, LeanProofs.IPRA.PTm.subst_monus, subst_gcd',
-      subst_ap2, subst_fstT, ConciseIPRA.PTm.subst_succ, ConciseIPRA.PTm.subst_zero]
+    ipra_ind_simp [Syn.shift, subst_eqb, subst_gcd', subst_ap2, subst_fstT]
   have s1 : Syn.shift (pairT d (pairT one p)) = pairT (Syn.shift d) (pairT one (Syn.shift p)) := by
     simp [Syn.shift]
   have s2 : Syn.shift (pairT d (pairT s p)) = pairT (Syn.shift d) (pairT (Syn.shift s) (Syn.shift p)) := by

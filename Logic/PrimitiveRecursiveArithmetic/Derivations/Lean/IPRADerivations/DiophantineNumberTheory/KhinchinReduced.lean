@@ -64,9 +64,8 @@ abbrev redR (Q y : PTm n) : PTm n :=
 theorem inst2_copB (p x : PTm n) :
     inst2 copB p x = inJT p (xq x) (KhinchinBad.xα x) (KhinchinBad.xγ x) (KhinchinBad.xβ x) *
       eqb (gcd p (xq x)) one := by
-  simp only [inst2, copB, cntB, inJT, Signum.sg, PTm.subst_mul, PTm.subst_monus, subst_ex2,
-    Syn.subst_var, Matrix.cons_val_zero, Matrix.cons_val_one, ConciseIPRA.PTm.subst_succ,
-    ConciseIPRA.PTm.subst_zero, subst_eqb, subst_fstT, subst_sndT]
+  ipra_ind_simp [inst2, copB, cntB, inJT, Signum.sg, subst_ex2, Matrix.cons_val_zero, Matrix.cons_val_one, subst_eqb,
+    subst_fstT, subst_sndT]
 
 theorem inst2_cqB (q y : PTm n) : inst2 cqB q y = ap2 (sumF copB) (fstT y) (pairT q (sndT y)) := by
   simp [inst2, subst_ap2]

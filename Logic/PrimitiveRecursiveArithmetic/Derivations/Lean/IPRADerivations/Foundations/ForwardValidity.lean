@@ -43,8 +43,7 @@ theorem forward_all (v : PTm 2) {L x : PTm n} (h : Γ ⊢[PRAAx] Step v L x) :
   have atBound : Γ ⊢[PRAAx] P.subst (Syn.inst L) := by
     refine qfIndUpTo L trivial ?_ ?_
     · simpa [P] using prod_zero (Γ := Γ) v x
-    · simp only [P, Fm.subst_eq, subst_ap2, Syn.subst_var, Syn.repl_zero, subst_repl_shift,
-        ConciseIPRA.PTm.subst_zero, ConciseIPRA.PTm.subst_succ]
+    · ipra_ind_simp [P, subst_ap2, subst_repl_shift]
       refine .impI ?_
       let Δ := lt (Syn.var 0) (Syn.shift L) :: P :: Γ.map Fm.shift
       have ih : Δ ⊢[PRAAx] P := Prf.hyp1

@@ -254,11 +254,11 @@ abbrev ndB : PTm 2 := var 0 * monus gB (Syn.subst ![succ (var 0), var 1] gB)
 abbrev nuB : PTm 2 := var 0 * monus (Syn.subst ![succ (var 0), var 1] gB) gB
 
 theorem inst2_nd (k z : PTm n) : inst2 ndB k z = k * monus (inst2 gB k z) (inst2 gB (succ k) z) := by
-  simp only [ndB, inst2, PTm.subst_mul, PTm.subst_monus, Syn.subst_var]
+  ipra_ind_simp [ndB, inst2]
   rw [inst2_g1]; simp [inst2]
 
 theorem inst2_nu (k z : PTm n) : inst2 nuB k z = k * monus (inst2 gB (succ k) z) (inst2 gB k z) := by
-  simp only [nuB, inst2, PTm.subst_mul, PTm.subst_monus, Syn.subst_var]
+  ipra_ind_simp [nuB, inst2]
   rw [inst2_g1]; simp [inst2]
 
 theorem g_end {x K L : PTm n} : Γ ⊢[PRAAx] inst2 gB (succ x) (pairT x (pairT K (fact L))) ≐ zero := by

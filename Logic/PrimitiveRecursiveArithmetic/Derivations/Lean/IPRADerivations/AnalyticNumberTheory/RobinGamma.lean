@@ -241,7 +241,7 @@ theorem P_succ' (t x : PTm n) : Γ ⊢[PRAAx] Pt (succ t) x ≐ Pt t x * inst2 d
       simp only [inst2, Syn.subst_subst]; congr 1; funext k; fin_cases k <;> rfl
     have h2 : Syn.subst ![t, ap2 Pf t x, x] (Syn.subst ![var 0, var 2] nB) = inst2 nB t x := by
       simp only [inst2, Syn.subst_subst]; congr 1; funext k; fin_cases k <;> rfl
-    simp only [PTm.subst_add, PTm.subst_mul, h1, h2, subst_ap2, Syn.subst_var]
+    ipra_ind_simp [h1, h2, subst_ap2]
     rfl
   rw [e] at h
   exact h

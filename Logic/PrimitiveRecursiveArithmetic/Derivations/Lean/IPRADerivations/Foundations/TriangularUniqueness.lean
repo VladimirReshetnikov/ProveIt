@@ -66,8 +66,7 @@ def agree (N x : PTm k) : Fm PTm k :=
 
 @[simp] theorem subst_agree {m : ℕ} (σ : Fin k → PTm m) (N x : PTm k) :
     (agree y y' N x).subst σ = agree y y' (Syn.subst σ N) (Syn.subst σ x) := by
-  simp only [agree, Fm.subst_all, Fm.subst_imp, Fm.subst_eq, subst_lt, subst_inst2,
-    Syn.subst_var, Syn.up_zero, up_shift]
+  ipra_ind_simp [agree, Fm.subst_all, subst_lt, subst_inst2, Syn.up_zero, up_shift]
 
 theorem shift_agree (N x : PTm k) :
     Fm.shift (agree y y' N x) = agree y y' (Syn.shift N) (Syn.shift x) := by

@@ -47,12 +47,10 @@ theorem S_denom {m M0 L : PTm n} (hm : Γ ⊢[PRAAx] le m M0) (h2 : Γ ⊢[PRAAx
     fact (Syn.shift M0) * S (var 0) (fact (Syn.shift L)) ≐ fact (Syn.shift L) * S (var 0) (fact (Syn.shift M0))
   have atIndex : Γ ⊢[PRAAx] P.subst (Syn.inst m) := by
     refine qfIndAtMost hm trivial ?_ ?_
-    · simp only [P, Fm.subst_eq, subst_ap2, PTm.subst_mul, Syn.subst_var, Syn.inst_zero,
-        Syn.subst_inst_shift, ConciseIPRA.PTm.subst_zero]
+    · ipra_ind_simp [P, subst_ap2, Syn.subst_inst_shift]
       have a := natEq (sum_zero (Γ := Γ) hB (fact L))
       ipra_lc 𝔞 (fact M0) * a - 𝔞 (fact L) * natEq (sum_zero (Γ := Γ) hB (fact M0))
-    · simp only [P, Fm.subst_eq, subst_ap2, PTm.subst_mul, Syn.subst_var, Syn.repl_zero,
-        subst_repl_shift, ConciseIPRA.PTm.subst_zero]
+    · ipra_ind_simp [P, subst_ap2, subst_repl_shift]
       refine .impI ?_
       let Δ := lt (var 0) (Syn.shift M0) :: P :: Γ.map Fm.shift
       have ih := natEq (Prf.hyp1 : Δ ⊢[PRAAx] P)

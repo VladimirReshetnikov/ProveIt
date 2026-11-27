@@ -69,7 +69,7 @@ theorem sparse (K : PTm k) :
     refine PRA.qfInd _ (le_QF _ _) ?_ ?_
     · simpa only [subst_le, subst_ap2, Syn.subst_var, Syn.inst_zero, Syn.subst_inst_shift,
         ConciseIPRA.PTm.subst_zero, PTm.subst_num] using (sparse_zero (Γ := Γ))
-    · simp only [subst_le, subst_ap2, Syn.subst_var, Syn.repl_zero, ConciseIPRA.PTm.subst_zero, PTm.subst_num]
+    · ipra_ind_simp [subst_le, subst_ap2]
       have ih := sparse_step (Prf.hyp0 : (le (pw (lcmu (pw (num 42) (var 0))) (num 3))
         (pw (num 28) (pw (num 42) (var 0))) :: Γ.map Fm.shift) ⊢[PRAAx] _)
       have e : (le (pw (lcmu (pw (num 42) (var 0))) (num 3)) (pw (num 28) (pw (num 42) (var 0))) ::

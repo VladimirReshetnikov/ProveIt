@@ -51,8 +51,7 @@ theorem F_eq (p a : PTm n) : (formula nonsquare).subst ![p, a] = neg (Fm.ex (exF
 
 theorem exF_at (p a w : PTm n) :
     (exF p a).subst (Syn.inst w) = (lt w p ⋏ (rem (w * w) p ≐ rem a p)) := by
-  simp only [exF, Fm.subst_and, subst_lt, Fm.subst_eq, subst_ap2, PTm.subst_mul, Syn.subst_var, Syn.inst_zero,
-    Syn.subst_inst_shift]
+  ipra_ind_simp [exF, subst_lt, subst_ap2, Syn.subst_inst_shift]
 
 /-- No square root below `p`: the bounded formula holds. -/
 theorem nr_formula {p a : PTm n} (hnr : Γ ⊢[PRAAx] rb p a ≐ zero) : Γ ⊢[PRAAx] neg (Fm.ex (exF p a)) := by

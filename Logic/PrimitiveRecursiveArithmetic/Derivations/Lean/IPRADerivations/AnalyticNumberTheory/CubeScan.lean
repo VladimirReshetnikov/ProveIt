@@ -51,18 +51,15 @@ theorem inst2_subst {m : ℕ} (σ : Fin n → PTm m) (a b : PTm n) :
   simp only [inst2, Syn.subst_subst]; congr 1; funext k; fin_cases k <;> simp
 
 theorem clean_shift (y : PTm n) : Fm.shift (Clean e y) = Clean e (Syn.shift y) := by
-  simp only [Clean, Fm.shift, Fm.subst_all, Fm.subst_eq, inst2_subst, Syn.subst_var, Syn.up_zero,
-    subst_up_shift_pal, ConciseIPRA.PTm.subst_zero] <;> rfl
+  ipra_ind_simp [Clean, Fm.shift, Fm.subst_all, inst2_subst, Syn.up_zero, subst_up_shift_pal] <;> rfl
 
 theorem exneg_shift (y : PTm n) : Fm.shift (Fm.ex (neg (inst2 e (var 0) (Syn.shift y) ≐ zero))) =
     Fm.ex (neg (inst2 e (var 0) (Syn.shift (Syn.shift y)) ≐ zero)) := by
-  simp only [Fm.shift, Fm.subst_ex, subst_neg, Fm.subst_eq, inst2_subst, Syn.subst_var, Syn.up_zero,
-    subst_up_shift_pal, ConciseIPRA.PTm.subst_zero] <;> rfl
+  ipra_ind_simp [Fm.shift, Fm.subst_ex, subst_neg, inst2_subst, Syn.up_zero, subst_up_shift_pal] <;> rfl
 
 theorem exscan_shift (y : PTm n) : Fm.shift (Fm.ex (neg (exB e (var 0) (Syn.shift y) ≐ zero))) =
     Fm.ex (neg (exB e (var 0) (Syn.shift (Syn.shift y)) ≐ zero)) := by
-  simp only [Fm.shift, Fm.subst_ex, subst_neg, Fm.subst_eq, subst_ap2, PTm.subst_monus,
-    ConciseIPRA.PTm.subst_succ, ConciseIPRA.PTm.subst_zero, Syn.subst_var, Syn.up_zero, subst_up_shift_pal] <;> rfl
+  ipra_ind_simp [Fm.shift, Fm.subst_ex, subst_neg, subst_ap2, Syn.up_zero, subst_up_shift_pal] <;> rfl
 
 /-- A clean excess gives a clean scan at every horizon. -/
 theorem scan_of_clean {y N : PTm n} (h : Γ ⊢[PRAAx] Clean e y) : Γ ⊢[PRAAx] exB e N y ≐ zero := by
@@ -106,8 +103,7 @@ theorem cube_witness (y : PTm n) :
   · refine .exE Prf.hyp0 ?_
     rw [exscan_shift]
     refine .exI (succ (var 0)) ?_
-    simp only [subst_neg, Fm.subst_eq, subst_ap2, PTm.subst_monus, ConciseIPRA.PTm.subst_succ,
-      ConciseIPRA.PTm.subst_zero, Syn.subst_var, Syn.inst_zero, Syn.subst_inst_shift]
+    ipra_ind_simp [subst_neg, subst_ap2, Syn.subst_inst_shift]
     refine .impI ?_
     have h1 : ((exB e (succ (var 0)) (Syn.shift y) ≐ zero) :: neg (inst2 e (var 0) (Syn.shift y) ≐ zero) ::
         (Fm.ex (neg (inst2 e (var 0) (Syn.shift y) ≐ zero)) :: Γ).map Fm.shift) ⊢[PRAAx]
@@ -116,8 +112,7 @@ theorem cube_witness (y : PTm n) :
   · refine .exE Prf.hyp0 ?_
     rw [exneg_shift]
     refine .exI (wit e (var 0) (Syn.shift y)) ?_
-    simp only [subst_neg, Fm.subst_eq, inst2_subst, Syn.subst_var, Syn.inst_zero, Syn.subst_inst_shift,
-      ConciseIPRA.PTm.subst_zero]
+    ipra_ind_simp [subst_neg, inst2_subst, Syn.subst_inst_shift]
     have h1 : (neg (exB e (var 0) (Syn.shift y) ≐ zero) ::
         (Fm.ex (neg (exB e (var 0) (Syn.shift y) ≐ zero)) :: Γ).map Fm.shift) ⊢[PRAAx]
         neg (exB e (var 0) (Syn.shift y) ≐ zero) := Prf.hyp0

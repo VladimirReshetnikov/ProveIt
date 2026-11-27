@@ -108,10 +108,9 @@ def boxContains (N B j q : PTm n) : Fm PTm n :=
 
 @[simp] theorem subst_boxContains {k : ℕ} (σ : Fin n → PTm k) (N B j q : PTm n) :
     (boxContains N B j q).subst σ = boxContains (Syn.subst σ N) (Syn.subst σ B) (Syn.subst σ j) (Syn.subst σ q) := by
-  simp only [boxContains,Fm.subst_all,Fm.subst_imp,Fm.subst_and,subst_lt,
-    Analysis.RationalArgmin.subst_rationalLE,Foundations.MasterCertificate.subst_entry,
-    MinkowskiRationalBoxes.subst_lowerRow,MinkowskiRationalBoxes.subst_upperRow,
-    Syn.subst_var,Syn.up_zero,Syn.up_succ,Syn.subst_shift,Syn.shift_subst]
+  ipra_ind_simp [boxContains, Fm.subst_all, subst_lt, Analysis.RationalArgmin.subst_rationalLE,
+    Foundations.MasterCertificate.subst_entry, MinkowskiRationalBoxes.subst_lowerRow,
+    MinkowskiRationalBoxes.subst_upperRow, Syn.up_zero, Syn.up_succ, Syn.subst_shift, Syn.shift_subst]
 
 def insideGuarded (Φ : Fm PTm 2) (N B x : PTm n) : Fm PTm n :=
   .all (lt (var 0) (length (Syn.shift B)) ⟶

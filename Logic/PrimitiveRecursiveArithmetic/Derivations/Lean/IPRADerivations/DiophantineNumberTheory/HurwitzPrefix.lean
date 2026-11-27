@@ -97,9 +97,9 @@ theorem loop_agree (s0 Y W Z V N : PTm n)
     state (var 0) (Syn.shift s0) (Syn.shift Z) (Syn.shift V)
   have atEnd : Γ ⊢[PRAAx] P.subst (Syn.inst N) := by
     refine qfIndUpTo N trivial ?_ ?_
-    · simp only [P, Fm.subst_eq, subst_state, Syn.subst_var, Syn.inst_zero, Syn.subst_inst_shift]
+    · ipra_ind_simp [P, subst_state, Syn.subst_inst_shift]
       exact (state_zero _ _ _).eqTrans (state_zero _ _ _).eqSymm
-    · simp only [P, Fm.subst_eq, subst_state, Syn.subst_var, Syn.repl_zero, subst_repl_shift]
+    · ipra_ind_simp [P, subst_state, subst_repl_shift]
       refine .impI ?_
       let Θ := lt (var 0) (Syn.shift N) :: P :: Γ.map Fm.shift
       have hd : Θ ⊢[PRAAx]

@@ -98,8 +98,7 @@ theorem code_digit {V : PTm 2} {b x N j : PTm k} (hb : Γ ⊢[PRAAx] b ≐ succ 
       rem (quo (code V (Syn.shift b) (Syn.shift x) (succ (Syn.shift j) + var 0)) (pw (Syn.shift b) (Syn.shift j)))
         (Syn.shift b) ≐ inst2 V (Syn.shift j) (Syn.shift x)) := by
     refine PRA.qfInd _ ⟨le_QF _ _, trivial⟩ ?_ ?_
-    · simp only [Fm.subst_imp, Fm.subst_eq, subst_le, subst_ap2, subst_inst2, PTm.subst_add, subst_pairT, Syn.subst_var,
-        Syn.inst_zero, Syn.subst_inst_shift, ConciseIPRA.PTm.subst_succ]
+    · ipra_ind_simp [subst_le, subst_ap2, subst_inst2, subst_pairT, Syn.subst_inst_shift]
       refine .impI ?_
       let Δ := le (succ j + zero) N :: Γ
       have hjN : Δ ⊢[PRAAx] le j N := le_trans (le_succ_self _) ((le_congr (add_zero _) (.eqRefl _) Prf.hyp0))
@@ -110,8 +109,7 @@ theorem code_digit {V : PTm 2} {b x N j : PTm k} (hb : Γ ⊢[PRAAx] b ≐ succ 
       have u := dmu (pw_pos' hb.wk j) (z := code V b x (succ j + zero)) (q := inst2 V j x) (r := code V b x j)
         (by ipra_lc c) bl
       exact (congrAp2 remF (Prf.andE₁ u) (.eqRefl _)).eqTrans (rem_small hb.wk vj)
-    · simp only [Fm.subst_imp, Fm.subst_eq, subst_le, subst_ap2, subst_inst2, PTm.subst_add, subst_pairT, Syn.subst_var,
-        Syn.repl_zero, subst_repl_shift, ConciseIPRA.PTm.subst_succ]
+    · ipra_ind_simp [subst_le, subst_ap2, subst_inst2, subst_pairT, subst_repl_shift]
       refine .impI ?_
       let Δ := le (succ (Syn.shift j) + succ (var 0)) (Syn.shift N) ::
         (le (succ (Syn.shift j) + var 0) (Syn.shift N) ⟶

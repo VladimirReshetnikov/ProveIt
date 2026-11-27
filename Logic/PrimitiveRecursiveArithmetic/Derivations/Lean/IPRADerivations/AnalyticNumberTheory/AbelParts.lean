@@ -48,12 +48,12 @@ theorem inst2_agB (k y : PTm n) : inst2 (agB a g) k y = inst2 a k y * inst2 g k 
 
 theorem inst2_upB (k y : PTm n) :
     inst2 (upB a g) k y = ap2 (sumF a) (succ k) y * monus (inst2 g (succ k) y) (inst2 g k y) := by
-  simp only [upB, inst2, PTm.subst_mul, PTm.subst_monus, subst_ap2, ConciseIPRA.PTm.subst_succ, Syn.subst_var]
+  ipra_ind_simp [upB, inst2, subst_ap2]
   rw [inst2_g1]; simp [inst2]
 
 theorem inst2_dnB (k y : PTm n) :
     inst2 (dnB a g) k y = ap2 (sumF a) (succ k) y * monus (inst2 g k y) (inst2 g (succ k) y) := by
-  simp only [dnB, inst2, PTm.subst_mul, PTm.subst_monus, subst_ap2, ConciseIPRA.PTm.subst_succ, Syn.subst_var]
+  ipra_ind_simp [dnB, inst2, subst_ap2]
   rw [inst2_g1]; simp [inst2]
 
 /-- The invariant, over `0 = N`, `1 = y`. -/

@@ -46,13 +46,11 @@ def output (X : Interface) : Interface where
 ipra_subst observationBound
 @[simp] theorem subst_image {m : ℕ} (σ : Fin n → PTm m) (X : Interface) (v q p : PTm n) :
     (image X v q p).subst σ = image X (Syn.subst σ v) (Syn.subst σ q) (Syn.subst σ p) := by
-  simp only [image,Fm.subst_ex,Fm.subst_and,Fm.subst_eq,subst_valid,subst_ap3,Syn.subst_var,Syn.up_zero,
-    Syn.subst_shift,Syn.shift_subst,Syn.up_succ]
+  ipra_ind_simp [image, Fm.subst_ex, subst_valid, subst_ap3, Syn.up_zero, Syn.subst_shift, Syn.shift_subst, Syn.up_succ]
 @[simp] theorem subst_rawImage {m : ℕ} (σ : Fin n → PTm m) (X : Interface) (v q p : PTm n) :
     (rawImage X v q p).subst σ = rawImage X (Syn.subst σ v) (Syn.subst σ q) (Syn.subst σ p) := by
-  simp only [rawImage,Fm.subst_ex,Fm.subst_and,Fm.subst_eq,subst_lt,subst_ap2,subst_ap3,
-    ConciseIPRA.PTm.subst_succ,ConciseIPRA.PTm.subst_zero,Syn.subst_var,Syn.up_zero,
-    Syn.subst_shift,Syn.shift_subst,Syn.up_succ]
+  ipra_ind_simp [rawImage, Fm.subst_ex, subst_lt, subst_ap2, subst_ap3, Syn.up_zero, Syn.subst_shift, Syn.shift_subst,
+    Syn.up_succ]
 @[simp] theorem subst_outputTotal {m : ℕ} (σ : Fin n → PTm m) (X : Interface) (q p : PTm n) :
     (outputTotal X q p).subst σ = outputTotal X (Syn.subst σ q) (Syn.subst σ p) := by
   simp only [outputTotal,Fm.subst_ex,subst_valid,Syn.subst_var,Syn.up_zero,

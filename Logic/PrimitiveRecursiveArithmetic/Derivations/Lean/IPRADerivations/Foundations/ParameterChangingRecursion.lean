@@ -136,13 +136,11 @@ theorem forward_coherence (b : PR 2) (D : PR 3) (F : PR 4) (N K t x : PTm n)
       forward b D F (Syn.shift N) (ap3 D (Syn.shift N) (Syn.shift K) (Syn.shift x)) (var 0) (Syn.shift x)
   have atIndex : Γ ⊢[PRAAx] P.subst (Syn.inst t) := by
     refine qfIndAtMost ht trivial ?_ ?_
-    · simp only [P, Fm.subst_eq, subst_forward, subst_ap3, ConciseIPRA.PTm.subst_succ,
-        Syn.subst_var, Syn.inst_zero, Syn.subst_inst_shift]
+    · ipra_ind_simp [P, subst_forward, subst_ap3, Syn.subst_inst_shift]
       exact (forward_zero b D F (succ N) K x).eqTrans
         ((congrAp2 b (horizon_coherence D N K zero x (zero_le N)) (.eqRefl _)).eqTrans
           (forward_zero b D F N (ap3 D N K x) x).eqSymm)
-    · simp only [P, Fm.subst_eq, subst_forward, subst_ap3, ConciseIPRA.PTm.subst_succ,
-        Syn.subst_var, Syn.repl_zero, subst_repl_shift]
+    · ipra_ind_simp [P, subst_forward, subst_ap3, subst_repl_shift]
       refine .impI ?_
       let Δ := lt (var 0) (Syn.shift N) :: P :: Γ.map Fm.shift
       have range : Δ ⊢[PRAAx] lt (var 0) (Syn.shift N) := Prf.hyp0

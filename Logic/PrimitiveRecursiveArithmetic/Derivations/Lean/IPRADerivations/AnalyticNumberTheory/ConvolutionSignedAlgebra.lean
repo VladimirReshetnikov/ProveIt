@@ -130,9 +130,8 @@ private theorem subst_val {k : ℕ} (σ : Fin n → PTm k) (b : ZB) (i x : PTm n
 
 private theorem subst_multiplicative {k : ℕ} (σ : Fin n → PTm k) (f : ZB) (y : PTm n) :
     (multiplicative f y).subst σ = multiplicative f (Syn.subst σ y) := by
-  simp only [multiplicative, Fm.subst_and, Fm.subst_all, Fm.subst_imp, Fm.subst_eq, ZT.subst_eq, ZT.subst_mul,
-    ZT.subst_natLit, subst_le, subst_ex2, subst_up_shift', subst_val, PTm.subst_mul, Syn.subst_var,
-    Syn.up_one, Syn.up_zero, Syn.shift_var, ConciseIPRA.PTm.subst_succ, ConciseIPRA.PTm.subst_zero]
+  ipra_ind_simp [multiplicative, Fm.subst_all, ZT.subst_eq, ZT.subst_mul, ZT.subst_natLit, subst_le, subst_ex2,
+    subst_up_shift', subst_val, Syn.up_one, Syn.up_zero, Syn.shift_var]
   rfl
 
 private theorem multiplicative_shift {f : ZB} {y : PTm n} (h : Γ ⊢[PRAAx] multiplicative f y) :

@@ -197,8 +197,7 @@ abbrev aeB : PTm 2 := var 0 * totBody
 abbrev totSum (N : PTm n) : PTm n := ap2 (sumF aeB) N N
 
 theorem inst2_ae (y x : PTm n) : inst2 aeB y x = y * eqb (gcd y x) one := by
-  simp only [inst2, PTm.subst_mul, subst_eqb, subst_ex2, Syn.subst_var, Matrix.cons_val_zero, Matrix.cons_val_one,
-    ConciseIPRA.PTm.subst_succ, ConciseIPRA.PTm.subst_zero]
+  ipra_ind_simp [inst2, subst_eqb, subst_ex2, Matrix.cons_val_zero, Matrix.cons_val_one]
 
 section Perm
 

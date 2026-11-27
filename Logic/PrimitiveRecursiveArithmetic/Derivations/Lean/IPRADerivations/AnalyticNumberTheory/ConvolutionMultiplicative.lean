@@ -127,9 +127,8 @@ def multiplicative (f : PTm 2) (y : PTm n) : Fm PTm n :=
 
 private theorem subst_multiplicative {k : ℕ} (σ : Fin n → PTm k) (f : PTm 2) (y : PTm n) :
     (multiplicative f y).subst σ = multiplicative f (Syn.subst σ y) := by
-  simp only [multiplicative, Fm.subst_and, Fm.subst_all, Fm.subst_imp, Fm.subst_eq, subst_inst2,
-    subst_le, subst_ex2, subst_up_shift', PTm.subst_mul, Syn.subst_var, Syn.up_one, Syn.up_zero,
-    Syn.shift_var, ConciseIPRA.PTm.subst_succ, ConciseIPRA.PTm.subst_zero]
+  ipra_ind_simp [multiplicative, Fm.subst_all, subst_inst2, subst_le, subst_ex2, subst_up_shift', Syn.up_one,
+    Syn.up_zero, Syn.shift_var]
   rfl
 
 private theorem multiplicative_shift {f : PTm 2} {y : PTm n} (h : Γ ⊢[PRAAx] multiplicative f y) :

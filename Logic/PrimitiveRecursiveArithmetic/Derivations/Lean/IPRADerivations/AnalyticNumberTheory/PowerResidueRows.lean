@@ -110,9 +110,7 @@ theorem inst2_tw (m P : PTm n) :
 theorem twC_eval (m j q b h y : PTm n) :
     Syn.subst ![m, j, q, b, h, y] (twC a) = eqb (gcd (pw (succ j) h) q) one *
       (eqb (rem m q) (res (pw (succ j) h) q b) * inst2 a m y) := by
-  simp only [twC, PTm.subst_mul, PTm.subst_add, PTm.subst_monus, LeanProofs.IPRA.PTm.subst_pred, subst_eqb,
-    subst_ex2, subst_ap2, Bezout.subst_cur, ConciseIPRA.PTm.subst_succ, ConciseIPRA.PTm.subst_zero, Syn.subst_var,
-    inst2, Syn.subst_subst]
+  ipra_ind_simp [twC, subst_eqb, subst_ex2, subst_ap2, Bezout.subst_cur, inst2, Syn.subst_subst]
   refine congrArg _ (congrArg _ ?_)
   congr 1; funext k; fin_cases k <;> rfl
 
@@ -132,7 +130,7 @@ theorem tw_at (m j q b h y : PTm n) :
 
 theorem shift_res (j h q b : PTm n) :
     Syn.shift (res (pw (succ j) h) q b) = res (pw (succ (Syn.shift j)) (Syn.shift h)) (Syn.shift q) (Syn.shift b) := by
-  simp only [Syn.shift, PTm.subst_mul, PTm.subst_add, PTm.subst_monus, LeanProofs.IPRA.PTm.subst_pred, subst_eqb, subst_ex2, subst_ap2, Bezout.subst_cur, ConciseIPRA.PTm.subst_succ, ConciseIPRA.PTm.subst_zero]
+  ipra_ind_simp [Syn.shift, subst_eqb, subst_ex2, subst_ap2, Bezout.subst_cur]
 
 theorem shift_unit (j h q : PTm n) :
     Syn.shift (eqb (gcd (pw (succ j) h) q) one) = eqb (gcd (pw (succ (Syn.shift j)) (Syn.shift h)) (Syn.shift q)) one := by

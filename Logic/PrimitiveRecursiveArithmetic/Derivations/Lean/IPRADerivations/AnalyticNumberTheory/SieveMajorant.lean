@@ -144,7 +144,7 @@ theorem inst2_K1S (m z : PTm n) : inst2 (K1S UP UN) m z =
 
 theorem inst2_K2S (m z : PTm n) : inst2 (K2S UP UN) m z =
     (two * (inst2 (aT (lB UP)) m z * inst2 (aT (lB UN)) m z)) * inst2 S0 m z := by
-  simp only [inst2, K2S, LeanProofs.IPRA.PTm.subst_mul, ConciseIPRA.PTm.subst_succ, ConciseIPRA.PTm.subst_zero]
+  ipra_ind_simp [inst2, K2S]
 
 theorem K1S_at (m Z P : PTm n) :
     Γ ⊢[PRAAx] inst2 (K1S UP UN) m (pairT Z (pairT Z P)) ≐

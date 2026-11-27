@@ -149,7 +149,7 @@ theorem An_succ (t K : PTm n) : Γ ⊢[PRAAx] An (succ t) K ≐ An t K * dU (suc
       simp only [inst2, Syn.subst_subst]; congr 1; funext k; fin_cases k <;> rfl
     have h2 : Syn.subst ![t, ap2 accF t K, K] (Syn.subst ![var 0, var 2] nUB) = inst2 nUB t K := by
       simp only [inst2, Syn.subst_subst]; congr 1; funext k; fin_cases k <;> rfl
-    simp only [PTm.subst_add, PTm.subst_mul, h1, h2, subst_ap2, Syn.subst_var]
+    ipra_ind_simp [h1, h2, subst_ap2]
     rfl
   rw [e, inst2_nUB, inst2_dUB] at h
   exact h

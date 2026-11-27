@@ -105,14 +105,12 @@ theorem box_content_clears (N B j : PTm n) (h : Γ ⊢[PRAAx] rationalSides N B)
     pw (mesh (Syn.shift N) (Syn.shift B)) (var 0) * boxNumerator (var 0) (Syn.shift B) (Syn.shift j)
   have atBound : Γ ⊢[PRAAx] P.subst (Syn.inst N) := by
     refine qfIndUpTo N trivial ?_ ?_
-    · simp only [P, Fm.subst_eq, PTm.subst_mul, subst_boxDenominator,
-        subst_partialCount, subst_boxNumerator, subst_ap2, subst_mesh, Syn.subst_var,
-        Syn.inst_zero, Syn.subst_inst_shift]
+    · ipra_ind_simp [P, subst_boxDenominator, subst_partialCount, subst_boxNumerator, subst_ap2, subst_mesh,
+        Syn.subst_inst_shift]
       exact (congrMul (boxDenominator_zero _ _) (partialCount_zero _ _ _)).eqTrans
         (congrMul (pw_zero _) (boxNumerator_zero _ _)).eqSymm
-    · simp only [P, Fm.subst_eq, PTm.subst_mul, subst_boxDenominator,
-        subst_partialCount, subst_boxNumerator, subst_ap2, subst_mesh, Syn.subst_var,
-        Syn.repl_zero, subst_repl_shift]
+    · ipra_ind_simp [P, subst_boxDenominator, subst_partialCount, subst_boxNumerator, subst_ap2, subst_mesh,
+        subst_repl_shift]
       refine .impI ?_
       let Δ := lt (var 0) (Syn.shift N) :: P :: Γ.map Fm.shift
       have guards : Γ.map Fm.shift ⊢[PRAAx] rationalSides (Syn.shift N) (Syn.shift B) := by

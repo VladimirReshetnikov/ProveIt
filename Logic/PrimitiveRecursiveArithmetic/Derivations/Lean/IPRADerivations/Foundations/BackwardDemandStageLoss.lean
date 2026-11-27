@@ -82,11 +82,9 @@ theorem backward_conservation (loss : PR 2) (N K j x : PTm n) (hj : Γ ⊢[PRAAx
       Syn.shift K + prefixLoss loss (Syn.shift N) (Syn.shift x)
   have atIndex : Γ ⊢[PRAAx] P.subst (Syn.inst j) := by
     refine qfIndAtMost hj trivial ?_ ?_
-    · simp only [P, Fm.subst_eq, subst_backward, subst_prefix, PTm.subst_add, PTm.subst_monus,
-        Syn.subst_var, Syn.inst_zero, Syn.subst_inst_shift]
+    · ipra_ind_simp [P, subst_backward, subst_prefix, Syn.subst_inst_shift]
       exact congrAdd (backward_zero _ _ _ _) (congrAp2 (sumF (body loss)) (monus_zero N) (.eqRefl x))
-    · simp only [P, Fm.subst_eq, subst_backward, subst_prefix, PTm.subst_add, PTm.subst_monus,
-        Syn.subst_var, Syn.repl_zero, subst_repl_shift]
+    · ipra_ind_simp [P, subst_backward, subst_prefix, subst_repl_shift]
       exact .impI (conservation_step loss _ _ (var 0) _ Prf.hyp0 Prf.hyp1)
   simpa only [P, Fm.subst_eq, subst_backward, subst_prefix, PTm.subst_add, PTm.subst_monus,
     Syn.subst_var, Syn.inst_zero, Syn.subst_inst_shift] using atIndex

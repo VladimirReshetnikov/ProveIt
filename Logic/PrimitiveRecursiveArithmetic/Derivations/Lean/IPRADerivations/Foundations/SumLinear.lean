@@ -77,7 +77,7 @@ private abbrev triF : Fm PTm 2 :=
 private theorem tri₀ : ([] : List (Fm PTm 2)) ⊢[PRAAx] triF := by
   refine ind _ trivial ?_ ?_
   · ipra_lc [Fm.subst_eq, subst_ap2, PTm.subst_add, PTm.subst_mul, Syn.subst_var, Syn.inst_zero, Syn.inst_one, ConciseIPRA.PTm.subst_zero, ConciseIPRA.PTm.subst_succ] 2 * natEq (sum_zero (Γ := ([] : List (Fm PTm 1))) idB (var 0))
-  · simp only [Fm.subst_eq, subst_ap2, PTm.subst_add, PTm.subst_mul, Syn.subst_var, Syn.repl_zero, repl_one]
+  · ipra_ind_simp [subst_ap2]
     have ih : [triF] ⊢[PRAAx]
         ap2 (sumF idB) (var 0) (var 1) + ap2 (sumF idB) (var 0) (var 1) + var 0 ≐
           var 0 * var 0 := Prf.hyp0

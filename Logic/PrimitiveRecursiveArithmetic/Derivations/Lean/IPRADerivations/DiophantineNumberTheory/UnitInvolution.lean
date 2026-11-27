@@ -38,8 +38,7 @@ variable {n : ℕ} {Γ : List (Fm PTm n)}
 
 theorem subst_res {m : ℕ} (σ : Fin n → PTm m) (D q b : PTm n) :
     Syn.subst σ (res D q b) = res (Syn.subst σ D) (Syn.subst σ q) (Syn.subst σ b) := by
-  simp only [PTm.subst_mul, PTm.subst_add, PTm.subst_monus, LeanProofs.IPRA.PTm.subst_pred, subst_eqb, subst_ex2,
-    subst_ap2, Bezout.subst_cur, ConciseIPRA.PTm.subst_succ, ConciseIPRA.PTm.subst_zero]
+  ipra_ind_simp [subst_eqb, subst_ex2, subst_ap2, Bezout.subst_cur]
 
 /-- `res` over `0 = D`, `1 = q`, `2 = b`. -/
 abbrev res3 : PTm 3 := res (var 0) (var 1) (var 2)

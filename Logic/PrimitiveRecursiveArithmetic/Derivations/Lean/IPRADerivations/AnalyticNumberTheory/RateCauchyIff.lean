@@ -51,8 +51,7 @@ abbrev Rate3S (y : PTm n) : Fm PTm n :=
       (Syn.shift (Syn.shift (Syn.shift (Syn.shift (Syn.shift y))))) (var 4) (var 3) (var 2) (var 1) (var 0)))))))
 
 theorem inm_shift (r c y : PTm n) : Fm.shift (InM aP aN r c y) = InM aP aN (Syn.shift r) (Syn.shift c) (Syn.shift y) := by
-  simp only [InM, Fm.shift, Fm.subst_all, subst_le, subst_ap2, PTm.subst_add, PTm.subst_mul, PTm.subst_monus,
-    ConciseIPRA.PTm.subst_succ, ConciseIPRA.PTm.subst_zero, Syn.subst_var, Syn.up_zero, subst_up_shift_pal, subst_sh]
+  ipra_ind_simp [InM, Fm.shift, Fm.subst_all, subst_le, subst_ap2, Syn.up_zero, subst_up_shift_pal, subst_sh]
 
 /-- The modulus part of (1) ⇒ (3), under its three binders. -/
 theorem cauchy_all {y k c : PTm n} {X K C : PTm (n + 1)} {X3 k3 K3 : PTm (n + 3)}

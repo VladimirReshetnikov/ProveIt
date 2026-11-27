@@ -42,8 +42,7 @@ abbrev OkI (p : PTm n) (φ : Fm PTm n) : Fm PTm n :=
 
 theorem subst_OkI {m : ℕ} (σ : Fin n → PTm m) (p : PTm n) (φ : Fm PTm n) :
     (OkI p φ).subst σ = OkI (Syn.subst σ p) (φ.subst σ) := by
-  simp only [OkI, Fm.subst_imp, lt, subst_le, Fm.subst_eq, subst_ex2, subst_fstT, subst_sndT, subst_pairT,
-    ConciseIPRA.PTm.subst_succ, ConciseIPRA.PTm.subst_zero]
+  ipra_ind_simp [OkI, lt, subst_le, subst_ex2, subst_fstT, subst_sndT, subst_pairT]
 
 theorem up2_v0' {m k : ℕ} (σ : Fin m → PTm k) : Syn.subst (up (up σ)) (var 0 : PTm (m + 2)) = var 0 := rfl
 theorem up2_v1' {m k : ℕ} (σ : Fin m → PTm k) : Syn.subst (up (up σ)) (var 1 : PTm (m + 2)) = var 1 := rfl
@@ -172,8 +171,7 @@ theorem subst_InR {m : ℕ} (σ : Fin n → PTm m) (q y r c : PTm n) :
   rw [show InR aP aN q y r c = Fm.all (lt (var 0) (Syn.shift q) ⟶ (gcd (var 0) (Syn.shift q) ≐ one) ⟶
       InA (mask aP) (mask aN) (pairT (pairT (Syn.shift q) (var 0)) (Syn.shift y)) (Syn.shift r) (Syn.shift c)) from rfl,
     Fm.subst_all, Fm.subst_imp, Fm.subst_imp, subst_InA]
-  simp only [lt, subst_le, Fm.subst_eq, subst_ex2, subst_pairT, Syn.subst_var, Syn.up_zero, subst_up_shift_pal,
-    ConciseIPRA.PTm.subst_succ, ConciseIPRA.PTm.subst_zero]
+  ipra_ind_simp [lt, subst_le, subst_ex2, subst_pairT, Syn.up_zero, subst_up_shift_pal]
   try rfl
 
 /-- Forward: the `A` matrix at `2k + 1` gives the `B` matrix at `k` with the witness `C_r(c)`. -/

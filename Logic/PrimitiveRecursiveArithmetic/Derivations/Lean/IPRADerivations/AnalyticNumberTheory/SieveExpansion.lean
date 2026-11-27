@@ -58,9 +58,7 @@ def lB (U : PTm 2) : PTm 2 := var 0 * ((sg (var 0) * eqb (gcd (var 0) (fstT (var
 
 theorem inst2_lB (U : PTm 2) (d P : PTm n) :
     inst2 (lB U) d P = d * ((sg d * eqb (gcd d (fstT P)) one) * inst2 U d P) := by
-  simp only [inst2, lB, LeanProofs.IPRA.PTm.subst_mul, subst_eqb, LeanProofs.IPRA.PTm.subst_monus, subst_gcd',
-    subst_fstT, Syn.subst_var, Matrix.cons_val_zero, Matrix.cons_val_one, ConciseIPRA.PTm.subst_succ,
-    ConciseIPRA.PTm.subst_zero]
+  ipra_ind_simp [inst2, lB, subst_eqb, subst_gcd', subst_fstT, Matrix.cons_val_zero, Matrix.cons_val_one]
 
 /-! ## The nested count is the progression count at the least common multiple -/
 
@@ -79,8 +77,7 @@ theorem kn_cnt {d e P : PTm n} (X : PTm n) (hd : Γ ⊢[PRAAx] d ≐ succ (pred 
   have sh2 : Syn.shift (pairT (succ (pred (fstT P * lc d e))) (SieveCount.par (fstT P) (lc d e) (fstT (sndT P)))) =
       pairT (succ (pred (fstT (Syn.shift P) * lc (Syn.shift d) (Syn.shift e))))
         (SieveCount.par (fstT (Syn.shift P)) (lc (Syn.shift d) (Syn.shift e)) (fstT (sndT (Syn.shift P)))) := by
-    simp only [Syn.shift, SieveCount.par, subst_pairT, subst_fstT, subst_sndT, ConciseIPRA.PTm.subst_succ,
-      LeanProofs.IPRA.PTm.subst_pred, LeanProofs.IPRA.PTm.subst_mul, lc, subst_ap2, subst_gcd']
+    ipra_ind_simp [Syn.shift, SieveCount.par, subst_pairT, subst_fstT, subst_sndT, lc, subst_ap2, subst_gcd']
   rw [sh1, sh2]
   refine (K_pt cB (var 0) (Syn.shift e) (Syn.shift d) (Syn.shift P)).eqTrans ?_
   rw [inst2_cB]
@@ -171,9 +168,7 @@ def kT : PTm 1 :=
 theorem at1_kT (y : PTm n) : at1 kT y =
     (eqb (monus one (fstT (sndT y))) zero * eqb (gcd (fstT (sndT (sndT y))) (fstT (sndT y))) one) *
       fstT (sndT y) := by
-  simp only [at1, kT, LeanProofs.IPRA.PTm.subst_mul, subst_eqb, LeanProofs.IPRA.PTm.subst_monus, subst_gcd',
-    subst_fstT, subst_sndT, Syn.subst_var, Matrix.cons_val_zero, ConciseIPRA.PTm.subst_succ,
-    ConciseIPRA.PTm.subst_zero]
+  ipra_ind_simp [at1, kT, subst_eqb, subst_gcd', subst_fstT, subst_sndT, Matrix.cons_val_zero]
 
 /-- The summand identity at all terms: `Am(i, j, y) = χ q · Fb(i, j, y)`. -/
 theorem pair_id (i j y : PTm n) :

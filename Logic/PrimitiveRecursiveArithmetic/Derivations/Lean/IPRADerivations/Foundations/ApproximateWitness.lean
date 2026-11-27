@@ -53,10 +53,8 @@ theorem attaining_succ (score : PTm 2) (K x : PTm n) :
   have e : Syn.subst ![K, attaining score K x, x] (attainingStep score) =
       attaining score K x + sg (monus (Mn score K x) (inst2 score (succ K) x)) *
         monus (succ K) (attaining score K x) := by
-    simp only [attainingStep, PTm.subst_add, PTm.subst_mul, PTm.subst_monus,
-      step_score, subst_ap2, Syn.subst_var, Matrix.cons_val_zero, Matrix.cons_val_one,
-      Matrix.cons_val_two, Matrix.head_cons, Matrix.tail_cons,
-      ConciseIPRA.PTm.subst_succ, ConciseIPRA.PTm.subst_zero]
+    ipra_ind_simp [attainingStep, step_score, subst_ap2, Matrix.cons_val_zero, Matrix.cons_val_one, Matrix.cons_val_two,
+      Matrix.head_cons, Matrix.tail_cons]
   rw [e] at h
   exact h
 
@@ -132,8 +130,8 @@ def argmin (score : PTm 2) (K x : PTm n) : PTm n :=
 @[simp] theorem minimumTest_at (score : PTm 2) (i x minimum : PTm n) :
     Search.Finite.applyBody (minimumTest score) i ![x, minimum] =
       monus (inst2 score i x) minimum + monus minimum (inst2 score i x) := by
-  simp only [minimumTest, Search.Finite.applyBody, PTm.subst_add, PTm.subst_monus, subst_inst2, Syn.subst_var,
-    Fin.cases_zero, Matrix.cons_val_zero, Matrix.cons_val_one, finCases_one, finCases_two]
+  ipra_ind_simp [minimumTest, Search.Finite.applyBody, subst_inst2, Fin.cases_zero, Matrix.cons_val_zero,
+    Matrix.cons_val_one, finCases_one, finCases_two]
 
 private theorem test_zero (score : PTm 2) {i x minimum : PTm n}
     (h : Γ ⊢[PRAAx] inst2 score i x ≐ minimum) :
@@ -268,15 +266,13 @@ private theorem subst_under_binder {m : ℕ} (σ : Fin n → PTm m) (t : PTm n) 
     (K x error : PTm n) (σ : Fin n → PTm m) :
     (upperEvaluation net score residual K x error).subst σ =
       upperEvaluation net score residual (Syn.subst σ K) (Syn.subst σ x) (Syn.subst σ error) := by
-  simp only [upperEvaluation, Fm.subst_all, Fm.subst_imp, subst_le, subst_inst2,
-    PTm.subst_add, subst_under_binder, Syn.subst_var, Syn.up_zero]
+  ipra_ind_simp [upperEvaluation, Fm.subst_all, subst_le, subst_inst2, subst_under_binder, Syn.up_zero]
 
 @[simp] theorem subst_lowerEvaluation {m : ℕ} (net score residual : PTm 2)
     (K x error : PTm n) (σ : Fin n → PTm m) :
     (lowerEvaluation net score residual K x error).subst σ =
       lowerEvaluation net score residual (Syn.subst σ K) (Syn.subst σ x) (Syn.subst σ error) := by
-  simp only [lowerEvaluation, Fm.subst_all, Fm.subst_imp, subst_le, subst_inst2,
-    PTm.subst_add, subst_under_binder, Syn.subst_var, Syn.up_zero]
+  ipra_ind_simp [lowerEvaluation, Fm.subst_all, subst_le, subst_inst2, subst_under_binder, Syn.up_zero]
 
 /-- `thm:approx-witness`, with both evaluation-error contributions displayed.
 The coverage index, modulus and evaluation bounds are object-theory premises.

@@ -152,9 +152,8 @@ theorem Lc_succ (K y : PTm n) : Γ ⊢[PRAAx] Lc mB (succ K) y ≐ lcm (Lc mB K 
   have e : Syn.subst ![K, ap2 (rec2 (succ zero) (stepB mB)) K y, y] (stepB mB) =
       lcm (Lc mB K y) (inst2 (mS mB) K y) := by
     rw [mS_at]
-    simp only [stepB, lcm, Lc, mS, subst_ap2, PTm.subst_mul, subst_ex2, Syn.subst_var, sub02,
-      ConciseIPRA.PTm.subst_succ, Matrix.cons_val_zero, Matrix.cons_val_one, Matrix.cons_val_two,
-      Matrix.head_cons, Matrix.tail_cons]
+    ipra_ind_simp [stepB, lcm, Lc, mS, subst_ap2, subst_ex2, sub02, Matrix.cons_val_zero, Matrix.cons_val_one,
+      Matrix.cons_val_two, Matrix.head_cons, Matrix.tail_cons]
   rw [e] at h; exact h
 
 theorem Lc_pos (K y : PTm n) : Γ ⊢[PRAAx] Lc mB K y ≐ succ (pred (Lc mB K y)) := by
@@ -204,11 +203,11 @@ theorem Lc_cong {x z K y : PTm n}
     rem (Syn.shift x) (Lc mB (var 0) (Syn.shift y)) ≐ rem (Syn.shift z) (Lc mB (var 0) (Syn.shift y))
   have atBound : Γ ⊢[PRAAx] P.subst (Syn.inst K) := by
     refine qfIndUpTo K trivial ?_ ?_
-    · simp only [P, Fm.subst_eq, subst_ap2, Syn.subst_var, Syn.inst_zero, Syn.subst_inst_shift]
+    · ipra_ind_simp [P, subst_ap2, Syn.subst_inst_shift]
       have L0 := Lc_zero (Γ := Γ) mB y
       exact (congrAp2 remF (.eqRefl _) L0).eqTrans ((AnalyticNumberTheory.Euler.rem_one _).eqTrans
         ((AnalyticNumberTheory.Euler.rem_one _).eqSymm.eqTrans (congrAp2 remF (.eqRefl _) L0.eqSymm)))
-    · simp only [P, Fm.subst_eq, subst_ap2, Syn.subst_var, Syn.repl_zero, subst_repl_shift]
+    · ipra_ind_simp [P, subst_ap2, subst_repl_shift]
       refine .impI ?_
       let C := lt (var 0) (Syn.shift K) :: P :: Γ.map Fm.shift
       have hk := Prf.impE (h.allOpen.wk.wk : C ⊢[PRAAx] _) Prf.hyp0

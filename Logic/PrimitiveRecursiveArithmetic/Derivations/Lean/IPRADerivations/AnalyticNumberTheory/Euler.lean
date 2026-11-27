@@ -136,20 +136,19 @@ abbrev q3 : PTm 3 := pw (var 1) e3
 abbrev hv (y N : PTm n) : PTm n := eqb (gcd y N) one * y + monus one (eqb (gcd y N) one)
 
 theorem inst3_e (y a N : PTm n) : inst3 e3 y a N = eqb (gcd y N) one := by
-  simp only [inst3, subst_eqb, subst_ex2, Syn.subst_var, Matrix.cons_val_zero, Matrix.cons_val_two, Matrix.head_cons,
-    Matrix.tail_cons, ConciseIPRA.PTm.subst_succ, ConciseIPRA.PTm.subst_zero]
+  ipra_ind_simp [inst3, subst_eqb, subst_ex2, Matrix.cons_val_zero, Matrix.cons_val_two, Matrix.head_cons,
+    Matrix.tail_cons]
 theorem inst3_h (y a N : PTm n) : inst3 h3 y a N = hv y N := by
-  simp only [inst3, PTm.subst_add, PTm.subst_mul, PTm.subst_monus, subst_eqb, subst_ex2, Syn.subst_var,
-    Matrix.cons_val_zero, Matrix.cons_val_two, Matrix.head_cons, Matrix.tail_cons, ConciseIPRA.PTm.subst_succ,
-    ConciseIPRA.PTm.subst_zero]
+  ipra_ind_simp [inst3, subst_eqb, subst_ex2, Matrix.cons_val_zero, Matrix.cons_val_two, Matrix.head_cons,
+    Matrix.tail_cons]
 theorem inst3_s (y a N : PTm n) : inst3 s3 y a N = rem (a * y) N := by
   simp [inst3]
 theorem inst3_t (b : PTm 2) (y a N : PTm n) : inst3 (t3 b) y a N = rem (inst2 b a N * y) N := by
   simp only [inst3, t3, inst2, subst_ap2, PTm.subst_mul, Syn.subst_subst, Syn.subst_var]
   congr 3; funext k; fin_cases k <;> rfl
 theorem inst3_q (y a N : PTm n) : inst3 q3 y a N = pw a (eqb (gcd y N) one) := by
-  simp only [inst3, subst_ap2, subst_eqb, subst_ex2, Syn.subst_var, Matrix.cons_val_zero, Matrix.cons_val_one,
-    Matrix.cons_val_two, Matrix.head_cons, Matrix.tail_cons, ConciseIPRA.PTm.subst_succ, ConciseIPRA.PTm.subst_zero]
+  ipra_ind_simp [inst3, subst_ap2, subst_eqb, subst_ex2, Matrix.cons_val_zero, Matrix.cons_val_one, Matrix.cons_val_two,
+    Matrix.head_cons, Matrix.tail_cons]
 
 theorem hv_of_cop {y N : PTm n} (h : Γ ⊢[PRAAx] gcd y N ≐ one) : Γ ⊢[PRAAx] hv y N ≐ y := by
   have e := eqb_of_eq h
@@ -400,8 +399,7 @@ theorem inst2_b₁ (a N : PTm n) : inst2 b₁ a N = Bezout.cur one zero (succ N)
   simp only [inst2, Bezout.subst_cur, Syn.subst_var, Matrix.cons_val_zero, Matrix.cons_val_one,
     ConciseIPRA.PTm.subst_succ]
 theorem inst2_b₂ (a N : PTm n) : inst2 b₂ a N = pred N * Bezout.cur one zero (succ N) a N := by
-  simp only [inst2, PTm.subst_mul, PTm.subst_pred, Bezout.subst_cur, Syn.subst_var, Matrix.cons_val_zero,
-    Matrix.cons_val_one, ConciseIPRA.PTm.subst_succ]
+  ipra_ind_simp [inst2, Bezout.subst_cur, Matrix.cons_val_zero, Matrix.cons_val_one]
 
 /-- `thm:euler` at arbitrary terms. -/
 theorem euler_at {a N : PTm n} (ha : Γ ⊢[PRAAx] gcd a N ≐ one) (hN : Γ ⊢[PRAAx] N ≐ succ (pred N)) :

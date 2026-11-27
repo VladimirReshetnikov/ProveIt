@@ -116,8 +116,7 @@ theorem complete (H : PointData W R) {k : ℕ} {Δ : List (Fm PTm k)} {N p x : P
       (Syn.up (fun i => (Syn.var i.succ : PTm (k + 1))) i)) = Syn.repl (rank (KB W E) (Syn.var 0) (Syn.shift p)) := by
     funext i; refine Fin.cases ?_ (fun j => ?_) i <;> simp
   rw [eρ]
-  simp only [Fm.subst_and, subst_lt, rel_subst, subst_inst2, subst_sel, Syn.subst_var, Syn.repl_zero,
-    subst_repl_shift]
+  ipra_ind_simp [subst_lt, rel_subst, subst_inst2, subst_sel, subst_repl_shift]
   have er : Syn.shift (rank (KB W E) N p) = rank (KB W E) (Syn.shift N) (Syn.shift p) := by
     simp [Syn.shift, rank]
   rw [er]

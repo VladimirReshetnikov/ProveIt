@@ -225,8 +225,7 @@ abbrev wB : PTm 2 :=
 theorem inst2_w (q y : PTm n) :
     inst2 wB q y =
       sg q * sg (monus (phi q * Hq one (fstT y) (sndT y)) (q * Hq q (fstT y) (sndT y))) := by
-  simp only [inst2, PTm.subst_mul, PTm.subst_monus, subst_ap2, subst_pairT, subst_fstT, subst_sndT, Syn.subst_var,
-    Matrix.cons_val_zero, Matrix.cons_val_one, ConciseIPRA.PTm.subst_succ, ConciseIPRA.PTm.subst_zero]
+  ipra_ind_simp [inst2, subst_ap2, subst_pairT, subst_fstT, subst_sndT, Matrix.cons_val_zero, Matrix.cons_val_one]
 
 theorem viol_of {K A B : PTm n} (h : Γ ⊢[PRAAx] le A B) : Γ ⊢[PRAAx] sg K * sg (monus A B) ≐ zero :=
   (congrMul (.eqRefl _) ((congrSg h).eqTrans sg_zero)).eqTrans (mul_zero _)
@@ -284,8 +283,7 @@ theorem harm_factor {q : PTm n} (hq : Γ ⊢[PRAAx] q ≐ succ (pred q)) (F N : 
 abbrev hzB : PTm 2 := sg (var 0) * quo (var 1) (var 0)
 
 theorem inst2_hz (m F : PTm n) : inst2 hzB m F = sg m * quo F m := by
-  simp only [inst2, PTm.subst_mul, PTm.subst_monus, subst_ap2, Syn.subst_var, Matrix.cons_val_zero, Matrix.cons_val_one,
-    ConciseIPRA.PTm.subst_succ, ConciseIPRA.PTm.subst_zero]
+  ipra_ind_simp [inst2, subst_ap2, Matrix.cons_val_zero, Matrix.cons_val_one]
 
 /-- `∑_{1 ≤ m < N} ⌊F/m⌋`; at `F = z!`, `N = z + 1` it is `z! H_z`. -/
 abbrev Hz (F N : PTm n) : PTm n := ap2 (sumF hzB) N F
