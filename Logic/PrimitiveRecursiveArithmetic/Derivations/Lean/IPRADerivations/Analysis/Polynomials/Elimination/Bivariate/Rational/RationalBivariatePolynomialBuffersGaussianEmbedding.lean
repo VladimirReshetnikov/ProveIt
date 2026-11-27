@@ -23,6 +23,7 @@ open GaussianPolynomialMonicCompanion (rowShape row_shape_at)
 open LeanProofs.IPRA.Foundations.GuardedTotalization (sel sel_one sel_zero)
 open LeanProofs.IPRA.Foundations.MasterCertificate (entry sequence sequence_length sequence_decode subst_entry)
 open LeanProofs.IPRA.Foundations.SequenceComposition (length entry_congr)
+export GaussianBivariatePolynomialBuffers (pad_tail_index)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
@@ -65,8 +66,6 @@ theorem pad_body_at (G a dx dy r : PTm n) : Γ ⊢[PRAAx] inst2 padBody r (padDa
 theorem pad_length (G m a dx dy : PTm n) : Γ ⊢[PRAAx] length (pad G m a dx dy) ≐ dy+m := sequence_length _ _ _
 theorem pad_lookup (G m a dx dy r : PTm n) (hr : Γ ⊢[PRAAx] lt r (dy+m)) : Γ ⊢[PRAAx]
     entry (pad G m a dx dy) r ≐ padRow G a dx dy r := (sequence_decode padBody hr).eqTrans (pad_body_at _ _ _ _ _)
-theorem pad_tail_index (m dy r : PTm n) (hr : Γ ⊢[PRAAx] lt r (dy+m)) (hdy : Γ ⊢[PRAAx] le dy r) :
-    Γ ⊢[PRAAx] lt (monus r dy) m := GaussianBivariatePolynomialBuffers.pad_tail_index m dy r hr hdy
 
 theorem pad_row_length (G m a dx dy r : PTm n) (hG : Γ ⊢[PRAAx] rowShape G m a)
     (hr : Γ ⊢[PRAAx] lt r (dy+m)) : Γ ⊢[PRAAx] length (entry (pad G m a dx dy) r) ≐ succ (a+dx) := by

@@ -17,6 +17,7 @@ open_ipra
 open GaussianEulerPowerChartCofinalEndpoints (lowerDenominator upperNumerator)
 open GaussianEulerPowerChartCofinalSchedule (cutoffSize cutoff_guards)
 open GaussianRationalHorner (positive_product)
+open GaussianEulerPowerChartCofinalEndpoints renaming powered_bounds → power_from_base
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 local notation "𝔞" t:max => Groth.ι (Q.mk Γ t)
@@ -31,13 +32,6 @@ def lowerPrepared (a W E T D β : PTm n) : Fm PTm n :=
   let C := lowerSuffix a W E β
   le one C ⋏ (((a+W)+C ≐ E*β) ⋏ (le (a*D) E ⋏
     le (a+(W+C)) ((T+β)*E)))
-
-private theorem power_from_base (a V L : PTm n) (ha : Γ ⊢[PRAAx] le one a) (hV : Γ ⊢[PRAAx] le two V)
-    (hL : Γ ⊢[PRAAx] le one L) : Γ ⊢[PRAAx] le two (pw (a*V) L) := by
-  have grow : Γ ⊢[PRAAx] le V (a*V) := le_congr (one_mul V) (.eqRefl _) (mul_le_mul_right V ha)
-  have lo := le_trans hV grow
-  exact le_trans lo (le_congr (pw_one _) (.eqRefl _)
-    (GaussianFactorBudget.power_monotone_length (a*V) one L (le_trans (le_succ_self one) lo) hL))
 
 theorem physical_cutoffs_positive (j A R L S U : PTm n)
     (hL : Γ ⊢[PRAAx] le one L) (hS : Γ ⊢[PRAAx] le one S) (hU : Γ ⊢[PRAAx] le one U) :
