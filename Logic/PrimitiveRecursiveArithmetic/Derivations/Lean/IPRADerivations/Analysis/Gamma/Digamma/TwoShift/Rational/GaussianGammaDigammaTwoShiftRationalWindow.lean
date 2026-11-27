@@ -17,10 +17,8 @@ namespace LeanProofs.IPRA.Analysis.GaussianGammaDigammaTwoShiftRationalWindow
 open_ipra
 open GaussianCoefficientNameBounds (unit unit_positive)
 open GaussianGammaDigammaTwoShiftExactFiniteRate (raw_rate leftSlack rightSlack)
-open GaussianGammaDigammaTwoShiftFiniteRate (raw log_gap_at)
-open GaussianGammaDigammaTwoShiftWindow (low width numerator_mono low_gap)
-open GaussianHarmonicLogarithmName (sample nameF)
-open GaussianRationalDistanceOrder (distance_congr)
+open GaussianGammaDigammaTwoShiftFiniteRate (raw)
+open GaussianGammaDigammaTwoShiftWindow (low width numerator_mono boundary_sample_gaps)
 open GaussianRationalHorner (qzero positive_product)
 open GaussianStirlingGammaLogarithm (source)
 open RationalValueBounds (upper)
@@ -86,38 +84,7 @@ theorem forward_raw (p a b c d L : PTm n) (h : Γ ⊢[PRAAx] input a b c d L)
   have hbase := h.andE₂.andE₂.andE₁
   have hc := h.andE₂.andE₂.andE₂.andE₁
   have hd := h.andE₂.andE₂.andE₂.andE₂
-  have ed := low_split a b L d hbase hd
-  have ec := high_split a b L c d hbase hd (le_of_lt hlt)
-  have hUL : Γ ⊢[PRAAx] le a (u+k) :=
-    le_congr (.eqRefl _) (by
-      have e := natEq ed
-      unfold k
-      apply deriveNat
-      ipra_simps
-      linear_combination -e) hd.andE₁
-  have hU : Γ ⊢[PRAAx] le one u := by
-    refine le_trans hb ?_
-    unfold k at hUL
-    ipra_le sl hUL+sl hbase+sl hL
-  have hU3 : Γ ⊢[PRAAx] le a (num 3*u) := by
-    unfold k at hUL
-    ipra_le 3*sl hUL+2*sl hbase+sl hL
-  have hUH : Γ ⊢[PRAAx] le u (a+k) := by
-    have tu : Γ ⊢[PRAAx] le u d := le_congr (.eqRefl _) ed (le_add_right _ _)
-    unfold k
-    ipra_le sl tu+sl hd.andE₂+𝔞 b
-  have low := low_gap p a b u k ha hU hU3 hUL hUH
-  have hC := (positive_endpoint a b L c hb hbase hc).andE₁
-  have hC2 : Γ ⊢[PRAAx] le a (two*c) := by ipra_le 2*sl hc.andE₁+sl hbase+𝔞 b
-  have hCL : Γ ⊢[PRAAx] le a (c+k) := by unfold k; ipra_le sl hc.andE₁+𝔞 b
-  have hCH : Γ ⊢[PRAAx] le c (a+k) := by unfold k; ipra_le sl hc.andE₂+𝔞 b
-  have high := log_gap_at p a c b k ha hC hC2 hCL hCH
-  have hNear := distance_congr (congrAp2 nameF (.eqRefl _) (congrPairT ec.eqSymm (.eqRefl _)))
-    (.eqRefl _) (.eqRefl _) (.eqRefl _) high
-  have hr : Γ ⊢[PRAAx] le one r := by
-    have e := natEq (eq_add_of_le (le_of_lt hlt))
-    unfold r width
-    ipra_le sl hlt with -e
+  have gaps := boundary_sample_gaps p a b c d L ha hb hL hbase hc hd hlt
   have hD := positive_product _ _ (positive_product _ _ ha hb) (unit_positive p)
   have wr : Γ ⊢[PRAAx] le r (two*L) := width_le a L c d hc hd
   have major : Γ ⊢[PRAAx] le (r*(two*k)*U) (coefficient b L*U) := by
@@ -129,7 +96,8 @@ theorem forward_raw (p a b c d L : PTm n) (h : Γ ⊢[PRAAx] input a b c d L)
   have rs : Γ ⊢[PRAAx] le (rightSlack u b r*a) (cost b c d*(a*b)) := by
     dsimp only [cost]
     ipra_le 𝔞(rightSlack u b r)*𝔞(a)*sl hb+𝔞(leftSlack u b r)*𝔞(a)*𝔞(b)
-  have cut := raw_rate p a u b r (two*k) ha (.andI hU hb) hr low hNear
+  have cut := raw_rate p a u b r (two*k) ha gaps.andE₁ gaps.andE₂.andE₁
+    gaps.andE₂.andE₂.andE₁ gaps.andE₂.andE₂.andE₂
   exact .andI (numerator_mono _ _ _ _ _ hD (add_le_add₂ major ls) cut.andE₁)
     (numerator_mono _ _ _ _ _ hD (add_le_add₂ major rs) cut.andE₂)
 

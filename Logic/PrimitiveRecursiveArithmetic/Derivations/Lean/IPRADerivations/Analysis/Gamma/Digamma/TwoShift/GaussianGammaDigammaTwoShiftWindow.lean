@@ -87,6 +87,48 @@ theorem low_gap (p a b u k : PTm n)
       ipra_le sl h + Groth.ι (IPRA.Q.mk (le a u :: Γ) u)
     exact log_gap_at p a u b k ha.wk hu.wk h2 hA.wk hU.wk
 
+/-- Compare the logarithm samples at both endpoints of a shift window whose
+width bound has numerator `L` on the common denominator `b`. -/
+theorem boundary_sample_gaps (p a b c d L : PTm n)
+    (ha : Γ ⊢[PRAAx] le one a) (hb : Γ ⊢[PRAAx] le one b) (hL : Γ ⊢[PRAAx] le b L)
+    (hbase : Γ ⊢[PRAAx] le (two*L+b) a)
+    (hc : Γ ⊢[PRAAx] le a (c+L) ⋏ le c (a+L))
+    (hd : Γ ⊢[PRAAx] le a (d+L) ⋏ le d (a+L))
+    (hlt : Γ ⊢[PRAAx] lt d c) :
+    let u := low b d
+    let r := width c d
+    let k := two*(L+b)
+    Γ ⊢[PRAAx] source u b ⋏ (le one r ⋏
+      (distanceBounded (sample p u b) (sample p a b) k a ⋏
+       distanceBounded (sample p (u+b+r) b) (sample p a b) k a)) := by
+  let u := low b d
+  let r := width c d
+  let k := L+b
+  have b_le_d : Γ ⊢[PRAAx] le b d := by ipra_le sl hbase + sl hd.andE₁ + 𝔞 L
+  have ed : Γ ⊢[PRAAx] u+b ≐ d := (add_comm _ _).eqTrans (eq_add_of_le b_le_d).eqSymm
+  have ec : Γ ⊢[PRAAx] u+b+r ≐ c :=
+    (congrAdd ed (.eqRefl _)).eqTrans (eq_add_of_le (le_of_lt hlt)).eqSymm
+  have hUL : Γ ⊢[PRAAx] le a (u+(L+b)) :=
+    le_congr (.eqRefl _)
+      ((congrAdd ed (.eqRefl L)).eqSymm.eqTrans (by ipra_ring)) hd.andE₁
+  have b_le_u : Γ ⊢[PRAAx] le b u := by ipra_le sl hUL + sl hbase + sl hL
+  have hU := le_trans hb b_le_u
+  have hU3 : Γ ⊢[PRAAx] le a (num 3*u) := by ipra_le 3*sl hUL + 2*sl hbase + sl hL
+  have hUH : Γ ⊢[PRAAx] le u (a+k) := by
+    have tu : Γ ⊢[PRAAx] le u d := le_congr (.eqRefl _) ed (le_add_right _ _)
+    unfold k
+    ipra_le sl tu + sl hd.andE₂ + 𝔞 b
+  have low := low_gap p a b u k ha hU hU3 hUL hUH
+  have b_le_c : Γ ⊢[PRAAx] le b c := by ipra_le sl hbase + sl hc.andE₁ + 𝔞 L
+  have hC := le_trans hb b_le_c
+  have hC2 : Γ ⊢[PRAAx] le a (two*c) := by ipra_le 2*sl hc.andE₁ + sl hbase + 𝔞 b
+  have hCL : Γ ⊢[PRAAx] le a (c+k) := by unfold k; ipra_le sl hc.andE₁ + 𝔞 b
+  have hCH : Γ ⊢[PRAAx] le c (a+k) := by unfold k; ipra_le sl hc.andE₂ + 𝔞 b
+  have high := log_gap_at p a c b k ha hC hC2 hCL hCH
+  have hNear := distance_congr (congrAp2 nameF (.eqRefl _) (congrPairT ec.eqSymm (.eqRefl _)))
+    (.eqRefl _) (.eqRefl _) (.eqRefl _) high
+  exact .andI (.andI hU hb) (.andI (Common.one_le_monus_of_lt d c hlt) (.andI low hNear))
+
 theorem numerator_mono (q v E F D : PTm n) (hD : Γ ⊢[PRAAx] le one D)
     (hEF : Γ ⊢[PRAAx] le E F) (h : Γ ⊢[PRAAx] upper q v E D) : Γ ⊢[PRAAx] upper q v F D :=
   upper_mono _ _ _ _ _ _ hD h (le_mul_mono hEF (le_refl _))
@@ -98,7 +140,7 @@ theorem forward_raw (p a b c d A : PTm n) (h : Γ ⊢[PRAAx] input a b c d A)
        upper (fstT (raw p a (low b d) b (width c d))) (fstT qzero) (coefficient b A*unit p+cost b c d A*a) (a*unit p)) := by
   let u := low b d
   let r := width c d
-  let k := (A+one)*b
+  let k := A*b+b
   let M := two*A
   have ha := h.andE₁.andE₁
   have hb := h.andE₁.andE₂
@@ -106,40 +148,14 @@ theorem forward_raw (p a b c d A : PTm n) (h : Γ ⊢[PRAAx] input a b c d A)
   have hbase := h.andE₂.andE₂.andE₁
   have hc := h.andE₂.andE₂.andE₂.andE₁
   have hd := h.andE₂.andE₂.andE₂.andE₂
-  have ed := low_split a b A d hbase hd
-  have ec := high_split a b A c d hbase hd (le_of_lt hlt)
-  have hUL : Γ ⊢[PRAAx] le a (u+k) :=
-    le_congr (.eqRefl _) (by
-      have e := natEq ed
-      unfold k
-      apply deriveNat
-      ipra_simps
-      linear_combination -e) hd.andE₁
-  have hU : Γ ⊢[PRAAx] le one u := by
-    refine le_trans hb ?_
-    unfold k at hUL
-    ipra_le sl hUL + sl hbase + 𝔞 b*sl hA
-  have hU3 : Γ ⊢[PRAAx] le a (num 3*u) := by
-    unfold k at hUL
-    ipra_le 3*sl hUL + 2*sl hbase + 𝔞 b*sl hA
-  have hUH : Γ ⊢[PRAAx] le u (a+k) := by
-    have tu : Γ ⊢[PRAAx] le u d := le_congr (.eqRefl _) ed (le_add_right _ _)
-    unfold k
-    ipra_le sl tu + sl hd.andE₂ + 𝔞 b
-  have low := low_gap p a b u k ha hU hU3 hUL hUH
-  have hC := (positive_endpoint a b A c hb hbase hc).andE₁
-  have hC2 : Γ ⊢[PRAAx] le a (two*c) := by ipra_le 2*sl hc.andE₁ + sl hbase + 𝔞 b
-  have hCL : Γ ⊢[PRAAx] le a (c+k) := by unfold k; ipra_le sl hc.andE₁ + 𝔞 b
-  have hCH : Γ ⊢[PRAAx] le c (a+k) := by unfold k; ipra_le sl hc.andE₂ + 𝔞 b
-  have high := log_gap_at p a c b k ha hC hC2 hCL hCH
-  have hNear := distance_congr (congrAp2 nameF (.eqRefl _) (congrPairT ec.eqSymm (.eqRefl _)))
-    (.eqRefl _) (.eqRefl _) (.eqRefl _) high
-  have hr : Γ ⊢[PRAAx] le one r := by
-    have e := natEq (eq_add_of_le (le_of_lt hlt))
-    unfold r width
-    ipra_le sl hlt with -e
+  have hL : Γ ⊢[PRAAx] le b (A*b) :=
+    le_congr (one_mul _) (.eqRefl _) (mul_le_mul_right b hA)
+  have hScaled : Γ ⊢[PRAAx] le (two*(A*b)+b) a :=
+    le_congr (by ipra_ring) (.eqRefl _) hbase
+  have gaps := boundary_sample_gaps p a b c d (A*b) ha hb hL hScaled hc hd hlt
   have hD := positive_product _ _ ha (unit_positive p)
-  have cut := raw_rate p a u b r (two*k) M ha (.andI hU hb) hr (width_le a b A c d hc hd) low hNear
+  have cut := raw_rate p a u b r (two*k) M ha gaps.andE₁ gaps.andE₂.andE₁
+    (width_le a b A c d hc hd) gaps.andE₂.andE₂.andE₁ gaps.andE₂.andE₂.andE₂
   refine .andI ?_ ?_
   · exact numerator_mono _ _ _ _ _ hD
       (le_of_eq_add (d := rightError u b r M*a) (by unfold coefficient cost M k u r; ipra_ring)) cut.andE₁
