@@ -85,21 +85,13 @@ theorem Aq_dvd_mono {y y' : PTm n} (q : PTm n) (h : Γ ⊢[PRAAx] le y y') :
 theorem sm_core {K q : PTm n} (hK : Γ ⊢[PRAAx] le two K) (hc : Γ ⊢[PRAAx] gcd K q ≐ one)
     (hm : Γ ⊢[PRAAx] dvd (quo K (lpf K)) (pw (Aq (quo K (lpf K)) q) (quo K (lpf K)))) :
     Γ ⊢[PRAAx] dvd K (pw (Aq K q) K) := by
-  have hp := Prf.andE₁ (lpf_two hK)
-  have ppos := prime_eq_succ_pred hp
-  have hKpos : Γ ⊢[PRAAx] K ≐ succ (pred K) := eq_succ_pred (K_eq hK)
-  have mpos := cof_pos hK
-  have hlt := cof_lt hK
-  have hmK : Γ ⊢[PRAAx] le (quo K (lpf K)) K := le_trans (le_succ_self _) hlt
-  have hple : Γ ⊢[PRAAx] le (lpf K) K := dvd_le' ppos (Prf.andE₂ (lpf_two hK)) hKpos
-  have hcp : Γ ⊢[PRAAx] gcd (lpf K) q ≐ one := coprime_dvd_left ppos (Prf.andE₂ (lpf_two hK)) hc
-  have hpA : Γ ⊢[PRAAx] dvd (lpf K) (Aq K q) := prime_dvd_Aq hp hcp hple
-  have hmA : Γ ⊢[PRAAx] dvd (quo K (lpf K)) (pw (Aq K q) (quo K (lpf K))) :=
-    dvd_trans' mpos (pw_pos' (Aq_pos _ _) _) hm (pw_dvd_base _ (Aq_pos _ _) (Aq_dvd_mono q hmK))
-  have hprod := dvd_mul_mul ppos mpos hpA hmA
-  have h₁ : Γ ⊢[PRAAx] dvd K (pw (Aq K q) (succ (quo K (lpf K)))) :=
-    dvd_congr ((mul_comm _ _).eqTrans (pw_succ _ _).eqSymm) (dvd_congr_left (K_split hK).eqSymm hprod)
-  exact dvd_trans' hKpos (pw_pos' (Aq_pos _ _) _) h₁ (pw_dvd_exp (Aq_pos _ _) hlt)
+  have split := lpf_two hK
+  have hp := split.andE₁
+  have hpPos := prime_eq_succ_pred hp
+  have hpK := dvd_le' hpPos split.andE₂ (eq_succ_pred (K_eq hK))
+  have hcp := coprime_dvd_left hpPos split.andE₂ hc
+  exact Smooth.dvd_pow_of_lpf_and_cofactor hK (Aq_pos _ _) (Aq_pos _ _)
+    (prime_dvd_Aq hp hcp hpK) hm (Aq_dvd_mono q (le_of_lt (cof_lt hK)))
 
 /-! ## The strong induction -/
 

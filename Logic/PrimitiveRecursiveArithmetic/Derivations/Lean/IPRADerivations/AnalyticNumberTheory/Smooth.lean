@@ -104,24 +104,29 @@ theorem cof_lt : Γ ⊢[PRAAx] le (succ (quo K (lpf K))) K := by
   refine le_of_eq_add (d := pred (quo K (lpf K)) + monus (lpf K) two * quo K (lpf K)) ?_
   ipra_lc natEq (K_split hK) + Groth.ι (IPRA.Q.mk Γ (quo K (lpf K))) * natEq (eq_add_of_le hp2) + natEq (cof_pos hK)
 
+/-- Recombine the least prime factor and its cofactor in the larger power. -/
+theorem dvd_pow_of_lpf_and_cofactor {B C : PTm n}
+    (hB : Γ ⊢[PRAAx] B ≐ succ (pred B)) (hC : Γ ⊢[PRAAx] C ≐ succ (pred C))
+    (hp : Γ ⊢[PRAAx] dvd (lpf K) C)
+    (hm : Γ ⊢[PRAAx] dvd (quo K (lpf K)) (pw B (quo K (lpf K))))
+    (hBC : Γ ⊢[PRAAx] dvd B C) : Γ ⊢[PRAAx] dvd K (pw C K) := by
+  let m := quo K (lpf K)
+  have hmC : Γ ⊢[PRAAx] dvd m (pw C m) :=
+    dvd_trans' (cof_pos hK) (pw_pos' hB m) hm (pw_dvd_base m hB hBC)
+  have hd := dvd_mul_mul (prime_eq_succ_pred (lpf_two hK).andE₁) (cof_pos hK) hp hmC
+  have hStep : Γ ⊢[PRAAx] dvd K (pw C (succ m)) :=
+    dvd_congr ((mul_comm _ _).eqTrans (pw_succ _ _).eqSymm) (dvd_congr_left (K_split hK).eqSymm hd)
+  exact dvd_trans' (eq_succ_pred (K_eq hK)) (pw_pos' hC _) hStep (pw_dvd_exp hC (cof_lt hK))
+
 /-- The step of the strong induction. -/
 theorem sm_core (hm : Γ ⊢[PRAAx] dvd (quo K (lpf K)) (pw (A (succ (quo K (lpf K)))) (quo K (lpf K)))) :
     Γ ⊢[PRAAx] dvd K (pw (A (succ K)) K) := by
-  have hp := Prf.andE₁ (lpf_two hK)
-  have ppos := prime_eq_succ_pred hp
-  have hKpos : Γ ⊢[PRAAx] K ≐ succ (pred K) := eq_succ_pred (K_eq hK)
-  have mpos := cof_pos hK
-  have hlt := cof_lt hK
-  have hmK : Γ ⊢[PRAAx] le (quo K (lpf K)) K := le_trans (le_succ_self _) hlt
-  have hple : Γ ⊢[PRAAx] le (lpf K) K := dvd_le' ppos (Prf.andE₂ (lpf_two hK)) hKpos
-  have hpA : Γ ⊢[PRAAx] dvd (lpf K) (A (succ K)) := prime_dvd_A hp ((succ_monus_succ _ _).eqTrans hple)
-  have hmA : Γ ⊢[PRAAx] dvd (quo K (lpf K)) (pw (A (succ K)) (quo K (lpf K))) :=
-    dvd_trans' mpos (pw_pos' (A_pos _) _) hm
-      (pw_dvd_base _ (A_pos _) (A_dvd_mono ((succ_monus_succ _ _).eqTrans hmK)))
-  have hprod := dvd_mul_mul ppos mpos hpA hmA
-  have h₁ : Γ ⊢[PRAAx] dvd K (pw (A (succ K)) (succ (quo K (lpf K)))) :=
-    dvd_congr ((mul_comm _ _).eqTrans (pw_succ _ _).eqSymm) (dvd_congr_left (K_split hK).eqSymm hprod)
-  exact dvd_trans' hKpos (pw_pos' (A_pos _) _) h₁ (pw_dvd_exp (A_pos _) hlt)
+  have split := lpf_two hK
+  have hp := split.andE₁
+  have hpK := dvd_le' (prime_eq_succ_pred hp) split.andE₂ (eq_succ_pred (K_eq hK))
+  exact dvd_pow_of_lpf_and_cofactor hK (A_pos _) (A_pos _)
+    (prime_dvd_A hp (Order.lt_succ_of_le hpK)) hm
+    (A_dvd_mono (Order.lt_succ_of_le (le_of_lt (cof_lt hK))))
 
 end Peel
 
