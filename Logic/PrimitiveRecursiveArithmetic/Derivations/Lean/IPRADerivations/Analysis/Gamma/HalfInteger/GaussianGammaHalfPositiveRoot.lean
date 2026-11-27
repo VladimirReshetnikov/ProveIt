@@ -62,7 +62,7 @@ theorem lower_independent_at (p q : PTm n) : Γ ⊢[PRAAx]
       (lower_at q) (by ipra_le (Groth.ι (Q.mk Γ (unit q)))^2)
   exact upper_congr (hx.eqTrans hxr).eqSymm (.eqRefl _) (.eqRefl _) (.eqRefl _) u
 
-private theorem shift_gammaHalf : Syn.shift (gammaHalf : PTm n) = (gammaHalf : PTm (n+1)) := by
+theorem shift_gammaHalf : Syn.shift (gammaHalf : PTm n) = (gammaHalf : PTm (n+1)) := by
   simp [gammaHalf,Syn.shift,GaussianGammaReciprocalInverse.gammaData,
     GaussianGammaReciprocalInverse.gammaHeight,GaussianBoundedInverseApartness.height,
     GaussianBoundedInverseApartness.productError]

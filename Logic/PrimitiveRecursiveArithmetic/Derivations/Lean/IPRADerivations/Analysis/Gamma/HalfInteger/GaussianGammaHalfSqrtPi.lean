@@ -31,6 +31,7 @@ open GaussianEuclideanDistanceName (pointCN)
 open RationalSupMetric (denominatorOf numeratorOf)
 open GaussianPositiveRealArithmetic (sign numerator)
 open Products (fact)
+open GaussianGammaHalfPositiveRoot renaming shift_gammaHalf → shift_half
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 local notation "𝔞" t:max => Groth.ι (Q.mk _ t)
@@ -201,11 +202,6 @@ theorem axis_to_sqrt_at (p q x : PTm n) :
     distance_radius_mono _ _ _ _ _ _ pd (positive_product _ _ hP hQ)
       (by ipra_le 0 with (𝔞 P)^2*natEq (unit_root_clock (Γ := Γ) q)) total
   exact distance_congr (.eqRefl _) (sample_at q x).eqSymm (.eqRefl _) (.eqRefl _) narrowed
-
-private theorem shift_half : Syn.shift (gammaHalf : PTm n) = (gammaHalf : PTm (n+1)) := by
-  simp [gammaHalf,Syn.shift,GaussianGammaReciprocalInverse.gammaData,
-    GaussianGammaReciprocalInverse.gammaHeight,GaussianBoundedInverseApartness.height,
-    GaussianBoundedInverseApartness.productError]
 
 theorem axis_cross_sqrt (x : PTm n) : Γ ⊢[PRAAx] crossEquivalent realF nameF gammaHalf x := by
   refine .allI (.allI ?_)

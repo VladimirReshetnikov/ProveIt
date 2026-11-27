@@ -201,4 +201,12 @@ theorem affine_order_closed : ([] : List (Fm PTm 0)) ⊢[PRAAx] univ 4
   closeUniv 4 (.andI (.impI (negative_antitone _ _ Prf.hyp0))
     (.impI (.impI (midpoint_monotone _ _ _ _ Prf.hyp1 Prf.hyp0))))
 
+open RationalArithmetic (add)
+
+theorem add_shuffle (a b c d : PTm n) : Γ ⊢[PRAAx] add (add a b) (add c d) ≐ add (add a c) (add b d) :=
+  (add_associative a b (add c d)).eqTrans
+    ((add_congr (.eqRefl a) (add_associative b c d).eqSymm).eqTrans
+      ((add_congr (.eqRefl a) (add_congr (add_commutative b c) (.eqRefl d))).eqTrans
+        ((add_congr (.eqRefl a) (add_associative c b d)).eqTrans (add_associative a c (add b d)).eqSymm)))
+
 end LeanProofs.IPRA.Analysis.RationalAlgebra

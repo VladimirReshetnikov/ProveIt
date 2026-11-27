@@ -27,6 +27,7 @@ open GaussianRationalPowerAlgebra (qmul_commutative)
 open GaussianRationalReciprocal (qone power powerF power_zero power_succ)
 open GaussianRationalSyntheticDivision (qadd_congr qmul_congr qsub_congr qone_canonical)
 open GaussianReciprocalHorner (qmul_associative qadd_commutative qsub_add_cancel)
+open GaussianRationalPowerAlgebra renaming commute_nested → swap_inner
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
@@ -80,11 +81,6 @@ theorem sinc_difference_tail (z K : PTm n) :
     Γ ⊢[PRAAx] qsub (sincTaylor z (succ K)) qone ≐ sincTail z K :=
   (qsub_congr ((sinc_head_tail z K).eqTrans (qadd_commutative _ _)) (.eqRefl _)).eqTrans
     (qsub_add_cancel _ _ (GaussianRationalFiniteSum.sum_canonical _ _ _))
-
-private theorem swap_inner (a b c : PTm n) :
-    Γ ⊢[PRAAx] qmul a (qmul b c) ≐ qmul b (qmul a c) :=
-  (qmul_associative a b c).eqSymm.eqTrans
-    ((qmul_congr (qmul_commutative a b) (.eqRefl _)).eqTrans (qmul_associative b a c))
 
 theorem sine_term_factors (z j : PTm n) : Γ ⊢[PRAAx]
     signedTerm z j ≐ qmul z (sincTerm z j) := by

@@ -32,6 +32,7 @@ open RationalCubeMidpoint (fraction fraction_represents)
 open RationalValueBounds (positive_cancel)
 open LeanProofs.IPRA.AnalyticNumberTheory.PhiLower (le_mul_mono)
 open Products (fact)
+open GaussianArctangentDivisionAngles renaming prefix_ordinate → coordinate_represents
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 local notation "𝔞" t:max => Groth.ι (Q.mk Γ t)
@@ -54,14 +55,6 @@ theorem quarter_lower (p : PTm n) :
     le_congr (.eqRefl _) ((congrMul (.eqRefl _) endTotal).eqTrans (by ipra_ring))
       (le_trans (le_add_right (M*fact L) _) low)
   exact positive_cancel hs.andE₁ budget
-
-private theorem coordinate_represents {q N D : PTm n} (h : Γ ⊢[PRAAx] represents q (scale N imaginaryCode) D) :
-    Γ ⊢[PRAAx] RationalArithmetic.represents (sndT q) (ZT.ofNat N) D := by
-  apply scalar_congr (.eqRefl _) ?_ (.eqRefl _) h.andE₂
-  apply ZT.derive
-  simp only [im_scale, imaginaryCode, eval_im_code, ZT.toZ_ofNat]
-  ipra_simps
-  ring
 
 theorem angle_ordinate_represents (k m z p : PTm n) (hm : Γ ⊢[PRAAx] le one m) :
     Γ ⊢[PRAAx] RationalArithmetic.represents (ordinate k m z p) (ZT.ofNat (angleNumerator k p)) (angleDenominator m p) :=

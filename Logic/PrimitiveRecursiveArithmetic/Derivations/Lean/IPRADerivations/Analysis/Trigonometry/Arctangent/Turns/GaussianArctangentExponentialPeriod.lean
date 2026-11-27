@@ -204,18 +204,7 @@ theorem same_exp_different_radius_at (f : PR 2) (R S x p : PTm n)
   exact distance_triangle_same _ _ _ _ _ _ (unit_positive p)
     (distance_symmetric _ _ _ _ (unit_positive p) left) right
 
-theorem same_exp_different_radius (f : PR 2) (R S x : PTm n)
-    (hR : Γ ⊢[PRAAx] input f R x) (hS : Γ ⊢[PRAAx] input f S x) :
-    Γ ⊢[PRAAx] crossEquivalent (nameF f) (nameF f) (data R x) (data S x) := by
-  apply cross_of_diagonal_rate _ _ _ _ (one+one) (name_regular f R x hR) (name_regular f S x hS)
-  refine .allI ?_
-  have hR' : Γ.map Fm.shift ⊢[PRAAx] input f (Syn.shift R) (Syn.shift x) := by
-    simpa only [Fm.shift,GaussianRadiusExponentialName.subst_input,Syn.shift] using hR.shift
-  have hS' : Γ.map Fm.shift ⊢[PRAAx] input f (Syn.shift S) (Syn.shift x) := by
-    simpa only [Fm.shift,GaussianRadiusExponentialName.subst_input,Syn.shift] using hS.shift
-  simpa only [diagonalRate,GaussianRadiusExponentialName.subst_data,Syn.shift,PTm.subst_add,
-    PTm.subst_succ,PTm.subst_zero,sample] using
-    same_exp_different_radius_at f (Syn.shift R) (Syn.shift S) (Syn.shift x) (var 0) hR' hS'
+alias same_exp_different_radius := GaussianExponentialRadiusIndependence.same_input_cross
 
 theorem constant_one_cross (x : PTm n) :
     Γ ⊢[PRAAx] crossEquivalent constantF oneF qone x := by

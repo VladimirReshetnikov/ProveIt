@@ -111,7 +111,7 @@ theorem sample_represents (k m z p : PTm n) (hm : Γ ⊢[PRAAx] le one m) :
       ipra_simps <;> ring
   exact represents_congr (sample_at k m z p).eqSymm e (.eqRefl _) prod
 
-private theorem prefix_ordinate {q U D : PTm n} (h : Γ ⊢[PRAAx] represents q (scale U imaginaryCode) D) :
+theorem prefix_ordinate {q U D : PTm n} (h : Γ ⊢[PRAAx] represents q (scale U imaginaryCode) D) :
     Γ ⊢[PRAAx] RationalArithmetic.represents (sndT q) (ZT.ofNat U) D := by
   apply scalar_congr (.eqRefl _) ?_ (.eqRefl _) h.andE₂
   apply ZT.derive

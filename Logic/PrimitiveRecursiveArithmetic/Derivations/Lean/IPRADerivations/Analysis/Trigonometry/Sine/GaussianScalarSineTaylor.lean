@@ -32,6 +32,7 @@ open GaussianReciprocalHorner (qmul_associative)
 open GaussianInverseBinomialRows (negative_congr negative_product)
 open GaussianRootAlgebra (equal equal_of_values equal_refl re_add im_add re_scale im_scale re_neg im_neg re_one im_one)
 open ComplexLogarithmRemainder (code oneCode scale eval_re_code eval_im_code)
+open GaussianRationalPowerAlgebra renaming commute_nested → swap_inner
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
@@ -90,11 +91,6 @@ private theorem combine_multiplier (v : PTm n) :
   (GaussianRationalCoefficientScaling.qmul_add _ _ _).eqTrans
     ((GaussianRationalPolynomialBuffers.distribute_right _ _ _).eqSymm.eqTrans
       (qmul_congr twice_multiplier (.eqRefl _)))
-
-private theorem swap_inner (a b c : PTm n) :
-    Γ ⊢[PRAAx] qmul a (qmul b c) ≐ qmul b (qmul a c) :=
-  (qmul_associative a b c).eqSymm.eqTrans
-    ((qmul_congr (qmul_commutative a b) (.eqRefl _)).eqTrans (qmul_associative b a c))
 
 private theorem scale_odd_term (z j : PTm n) :
     Γ ⊢[PRAAx] qmul (qnegative imaginaryPoint) (scalarTerm (qmul imaginaryPoint z) (succ (two*j))) ≐
