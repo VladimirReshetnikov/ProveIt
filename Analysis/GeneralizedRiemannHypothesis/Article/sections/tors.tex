@@ -6,6 +6,7 @@
 \providecommand{\torsadj}{\operatorname{adj}}
 \providecommand{\torsFitt}{\operatorname{Fitt}}
 \providecommand{\torsZ}[2]{Z_{[#1,#2]}}
+\providecommand{\torsU}{\mathcal{U}}
 \providecommand{\torsfiles}[1]{\begin{itemize}[nosep,leftmargin=1.5em,label=--]\footnotesize #1\end{itemize}}
 
 Fix a prime $p$. An integral $p$-adic polynomial or a bounded power series is evaluated at
@@ -27,7 +28,11 @@ coefficients.
   exponent $h_0+\floor{Bp^{h_0-1}}$, where $B$ is the budget (\cref{tors:thm:selection}).
   This exponent is optimal by \cref{cost:thm:minimax}.
 \item If only nonvanishing is required, the interval of exponents shrinks to
-  $[h_*(r),h_*(r)+\floor{B}]$ (\cref{tors:thm:nonvanishing}).
+  $[h_*(r),h_*(r)+\floor{B}]$ (\cref{tors:thm:nonvanishing}). More generally, the exact
+  budget needed to force a zero at one of a prescribed set of unit powers on a shell is a
+  finite covering density, in every dimension (\cref{tors:thm:cover}); for the first two
+  powers this gives the optimal endpoint, except that for odd $\ord_p(2)$ and $2B\notin\Z$ it
+  is known only up to one (\cref{tors:thm:twopowers}).
 \item \emph{Separate} bounds for the members of a family, with unrestricted integral
   coefficients, require a positive tolerance. For a family of fixed cardinality the
   exponent is polynomial in the inverse tolerance, and for polynomials with algebraic
@@ -226,7 +231,12 @@ Result & Data & Conclusion at one torsion tuple $z$ & Sufficient upper exponent 
 \Cref{tors:thm:nonvanishing}
  & finite family over $\OO$, any $s$, witnesses of depth $r$, budget $B$
  & $F_i(z)\ne0$ for all $i$
- & $h_*(r)+\floor{B}$ (optimal for $s=1$)\\
+ & $h_*(r)+\floor{B}$ (optimal)\\
+\Cref{tors:thm:twopowers}
+ & as above, $p$ odd, $r\ge r_{h_0}$
+ & $F_i(z)\ne0$ and $F_i([2]z)\ne0$ for all $i$
+ & $h_0+\floor{2B}$, or $h_0+\floor{2B}-1$ if $\ord_p(2)$ is odd and $2B\in\Z_{>0}$ (optimal,
+   except for odd $\ord_p(2)$ and $2B\notin\Z$, where it is exact up to one)\\
 \Cref{tors:thm:fraction}
  & $n$ polynomials over $\overline{\Z}_p$, $G_\rho(g_i)\le B_i$, tolerances $\delta_i>0$
  & $v(g_i(z))\le G_\rho(g_i)+\delta_i$ for all $i$, for more than a fraction $1-\eta$ of
@@ -492,12 +502,14 @@ The endpoint in \cref{tors:cor:lt} is again optimal; the extremal polynomials, a
 groups of arbitrary finite height, are treated in \cref{sec:cost}.
 
 \subsection{Nonvanishing alone}\label{tors:sec:nonvanishing}
-\sources{grh_beyond_dirichlet_grh_2026-11-25; grh_quantitative_twists_2026-11-25}
+\sources{grh_beyond_dirichlet_grh_2026-11-25; grh_quantitative_twists_2026-11-25; dirichlet_li_recovery}
 
 When an application needs only $F_i(z)\ne0$, the interval of exponents can be shorter
 than in \cref{tors:thm:selection}: its length is $\floor{B}$ instead of
 $\floor{Bp^{h_0-1}}$. The proof is different. It divides by the polynomial whose roots
-are the points of the grid, and it treats all variables at once.
+are the points of the grid, and it treats all variables at once. The same method, applied
+to a product over the unit group, determines exactly the budget needed to force a zero at
+one of a prescribed set of unit powers on a shell (\cref{tors:thm:cover}).
 
 \begin{lemma}[Integral division by a distinguished polynomial]\label{tors:lem:division}
 Let $g(T)=T^d+a(T)\in\Zp[T]$ be monic of degree $d\ge1$, with $\deg a<d$ and every
@@ -527,25 +539,118 @@ the degree bound in $T_1$, since the operators then act on $T_2$ only. Continuin
 all variables gives \eqref{tors:eq:multidivision}.
 \end{proof}
 
+An integral series $P$ \emph{vanishes to order at least $M$} at a point $a$ of the open
+unit polydisc if all terms of total degree less than $M$ of its expansion in the increments
+$T_b-a_b$ vanish. A product of $M$ integral series that vanish at $a$ vanishes to order at
+least $M$ at $a$. The following multiplicity form of the grid lemma is the analogue for
+bounded series of the identity of Ball and Serra for polynomials over a field
+\cite[Theorem~3.1]{BallSerra2009Punctured}; here integral quotients are needed to retain
+the Gauss bound.
+
 \begin{lemma}[Vanishing on a finite product grid]\label{tors:lem:grid}
 In \cref{tors:lem:division} suppose that $g$ has $d$ distinct roots, forming a set
-$A\subset\Cp$, all of positive valuation. If an integral series $F$ vanishes at every
-point of $A^s$, then
+$A\subset\Cp$, all of positive valuation, and let $M\ge1$. If an integral series $P$
+vanishes to order at least $M$ at every point of $A^s$, then
 \[
-  F\in\bigl(g(T_1),\dots,g(T_s)\bigr)\,\OO[[T_1,\dots,T_s]].
+  P\in\bigl(g(T_1),\dots,g(T_s)\bigr)^M\,\OO[[T_1,\dots,T_s]],\qquad
+  G_\rho(P)\ge M\,G_\rho(g)\quad(\rho>0).
 \]
+For $M=1$: an integral series vanishing on $A^s$ lies in $(g(T_1),\dots,g(T_s))$.
 \end{lemma}
 
 \begin{proof}
-All series in \eqref{tors:eq:multidivision} converge on $A^s$, and every $g(T_a)$
-vanishes there, so $R$ vanishes on $A^s$. Since $R$ has degree less than $d$ in every
-variable, repeated interpolation in one variable gives $R=0$: fix all coordinates but the
-first, use the $d$ distinct roots, and repeat for the coefficient polynomials. No
-integrality of interpolation denominators is needed, because the integral quotients were
-produced before interpolation is used over the field.
+The polynomial $g^M$ satisfies the hypotheses of \cref{tors:lem:division}, since
+$g^M\equiv T^{dM}\pmod p$. Dividing successively in each variable by $g(T_b)^M$ gives
+$P=\sum_bg(T_b)^MQ_b+R$ with integral quotients and an integral polynomial $R$ of degree
+less than $Md$ in each variable. Expand $R$ uniquely by repeated monic division as
+\[
+  R=\sum_{0\le\beta_b<M}S_\beta(T)\prod_bg(T_b)^{\beta_b},\qquad \deg_{T_b}S_\beta<d ,
+\]
+with integral $S_\beta$. The terms $g(T_b)^MQ_b$ vanish to order at least $M$ on $A^s$, so
+$R$ does too. Induct on $k<M$ to show $S_\beta=0$ for $\abs\beta=k$. At $a\in A^s$, after all
+terms with $\abs\beta<k$ have disappeared, the homogeneous term of degree $k$ in the
+increments $X_b=T_b-a_b$ is $\sum_{\abs\beta=k}S_\beta(a)\prod_b(g'(a_b)X_b)^{\beta_b}$.
+Distinct monomials and simple roots force $S_\beta(a)=0$ for all such $\beta$, and
+interpolation in one coordinate at a time gives $S_\beta=0$ identically. The surviving
+terms have $\abs\beta\ge M$ and belong to the asserted power of the ideal. All multipliers
+are integral, so \cref{tors:lem:gauss}(a) gives the Gauss bound.
 \end{proof}
 
-\begin{theorem}[Explicit simultaneous nonvanishing; \stU]\label{tors:thm:nonvanishing}
+\paragraph{Unit powers and their covering densities.}
+For $h\ge1$ put $\torsU_h=(\Z/p^h\Z)^\times$. Let $S$ be a nonempty finite set of levels, and put
+$A_S=\bigcup_{h\in S}Z_h$, $H=\max S$ and $N=\#S$. Fix $s\ge1$, a depth
+$r\ge\max_{h\in S}r_h$, and a finite nonempty set $J$ of positive integers prime to $p$.
+For $z$ in the open unit polydisc and an integer $j$ write
+$[j]z=\bigl((1+z_b)^j-1\bigr)_{b=1}^s$; thus $F([j]z)=F^{[j]}(z)$ in the notation of
+\cref{tors:lem:powers}. An \emph{admissible family} is a finite collection of
+$F_i\in\OO[[T_1,\dots,T_s]]$ with witnesses $x_i\in\Cp^s$ of depth $r$ and finite total
+budget $B=\sum_iv(F_i(x_i))$. It \emph{blocks $A_S^s$ at the powers $J$} if for every
+$z\in A_S^s$ there are $i$ and $j\in J$ with $F_i([j]z)=0$. Let $C_s(S,J)$ be the infimum
+of the budgets of blocking families, with $r$ fixed. Let $J_h$ be the image of $J$ in
+$\torsU_h$ and define the covering number and the covering density
+\[
+  \tau_h=\min\bigl\{\#D:\ D\subseteq\torsU_h,\ (uJ_h)\cap D\ne\varnothing\text{ for every }
+  u\in\torsU_h\bigr\},\qquad c_h=\frac{\tau_h}{e_h}.
+\]
+Thus $DJ_h^{-1}=\torsU_h$. This is an ordinary finite covering number; exact factorizations
+of finite groups and the related $k$-radius sequence problem have their own literature
+\cite{BlackburnMcKee2012Constructing}.
+
+\begin{theorem}[Exact cost of blocking nonvanishing at unit powers; \stU]\label{tors:thm:cover}
+In the setting above, for a single shell $C_s(\set{h},J)=c_h$ in every dimension $s$. For
+every $S$,
+\[
+  C_1(S,J)=\sum_{h\in S}c_h,\qquad
+  \max_{t\in S}\bigl(\#(S\cap[1,t])\,c_t\bigr)\ \le\ C_s(S,J)\ \le\ \sum_{h\in S}c_h .
+\]
+In particular $C_s(S,J)=Nc$ in every dimension if $c_h=c$ for all $h\in S$. If $B<C_s(S,J)$,
+every admissible family of budget at most $B$ has a tuple $z\in A_S^s$ with
+$F_i([j]z)\ne0$ for all $i$ and all $j\in J$. In every exact formula above a blocking
+family exists at equality; it can be taken to be one polynomial in the first coordinate
+with the witness $0$. All formulas hold for every permitted depth $r$.
+\end{theorem}
+
+\begin{proof}
+Substitution by $[u]$ for $p\nmid u$ preserves $G_r$: the series $(1+T)^u-1$ and its
+compositional inverse $(1+T)^{1/u}-1$ have integral coefficients and zero constant term,
+because $1/u\in\Zp$ and binomial coefficients are continuous and integral on $\Zp$, so
+neither substitution can decrease $G_r$.
+
+Let $F=\prod_iF_i$ for a blocking family. The group $\torsU_H$ acts diagonally on $A_S^s$ by
+$z\mapsto[u]z$. The orbit of a tuple whose largest coordinate order exponent is $t$ is a copy
+of $\torsU_t$: a stabilizing element must be $1\bmod p^t$ because of the coordinate of that
+exact order, and this condition fixes the whole tuple. On the orbit the positions where $F$
+vanishes meet every translate $uJ_t$, so they number at least $\tau_t$. The inverse image
+of a cover under the reduction $\torsU_H\to\torsU_t$ is again a cover, hence $c_H\le c_t$.
+
+Choose a positive integer representative $u$ for each class in $\torsU_H$ and put
+$P(T)=\prod_{u\in\torsU_H}F([u]T)$. At each tuple of $A_S^s$ at least
+$(e_H/e_t)\tau_t\ge\tau_H$ factors vanish, so $P$ vanishes there to order at least
+$\tau_H$. Apply \cref{tors:lem:grid} with $g=\prod_{h\in S}\Phi_{p^h}(1+T)$, which is monic,
+congruent to a power of $T$ modulo $p$, and has the distinct roots $A_S$; by
+\eqref{tors:eq:gauss} $G_r(g)=\sum_{h\in S}e_hr_h=N$. With \cref{tors:lem:gauss} and
+\eqref{tors:eq:witness},
+\[
+  e_HB\ \ge\ e_HG_r(F)=G_r(P)\ \ge\ N\tau_H ,
+\]
+that is $B\ge Nc_H$. The same argument on $S\cap[1,t]$ proves each prefix bound.
+
+Conversely, choose a minimal cover $D_h\subseteq\torsU_h$ for each $h\in S$ and a root of unity
+$\xi_h$ of order $p^h$, and let
+\[
+  F_*(T)=\prod_{h\in S}\prod_{u\in D_h}\bigl(T_1-(\xi_h^u-1)\bigr).
+\]
+The first coordinate of every tuple of $A_S^s$ has a power $[j]$, $j\in J$, in the root
+set. At the witness $0$ the valuation is $\sum_h\#D_h\,r_h=\sum_hc_h$. In one variable a
+blocking product must itself vanish at $\tau_h$ or more distinct points of each shell
+$Z_h$, $h\in S$. An integral series vanishing at a point $a$ of positive valuation is
+divisible by $T-a$ with integral quotient, as follows from summing $(T^n-a^n)/(T-a)$
+termwise, and distinct roots persist after each division. Every extracted factor has
+$G_r(T-a)=r_h$, which proves the one-variable lower bound $\sum_hc_h$. All the stated
+equalities follow.
+\end{proof}
+
+\begin{corollary}[Explicit simultaneous nonvanishing; \stU]\label{tors:thm:nonvanishing}
 Let $s\ge1$, and consider integral series $F_1,\dots,F_n$ in the variables
 $T_1,\dots,T_s$. Let $x_i\in\Cp^s$ be witnesses of depth $r>0$ for the $F_i$ such that
 \[
@@ -558,39 +663,29 @@ $\zeta_a$ of exact order $p^{h_a}$ and $h_*(r)\le h_a\le H$, such that
 \]
 Thus $\zeta_a^{p^H}=1$ and $0<v(\zeta_a-1)\le r$. The exponent $H$ depends only on
 $p,r,B$; it does not depend on the number of variables, on the number of functions
-separately from their total budget, or on degrees.
-\end{theorem}
+separately from their total budget, or on degrees. It is optimal in every dimension.
+\end{corollary}
 
 \begin{proof}
-Write $h_*=h_*(r)$ and $L=H-h_*+1=\floor{B}+1$, and let
-\begin{equation}\label{tors:eq:gridpoly}
-  g(T)=\prod_{h=h_*}^{H}\Phi_{p^h}(1+T).
-\end{equation}
-Modulo $p$ one has $\Phi_{p^h}(1+T)\equiv T^{e_h}$, so $g$ is monic and its other
-coefficients are divisible by $p$. Its roots are distinct and form the set
-$A=\torsZ{h_*}{H}$, and each root of $\Phi_{p^h}(1+T)$ has valuation $r_h\le r$. By
-\eqref{tors:eq:gauss},
-\begin{equation}\label{tors:eq:gridcost}
-  G_r(g)=\sum_{h=h_*}^{H}e_h\,r_h=L>B .
-\end{equation}
-Let $F=\prod_iF_i$. By \cref{tors:lem:gauss} and \eqref{tors:eq:witness},
-$G_r(F)=\sum_iG_r(F_i)\le\sum_iv(F_i(x_i))\le B$. If the required tuple did not exist, at
-every point of $A^s$ at least one $F_i$ would vanish, so $F$ would vanish on $A^s$.
-\Cref{tors:lem:grid} would give $F=\sum_ag(T_a)Q_a$ with integral $Q_a$, and
-\cref{tors:lem:gauss}(a) with \eqref{tors:eq:gridcost} would imply $G_r(F)\ge L>B$, a
-contradiction.
+Take $J=\set1$ in \cref{tors:thm:cover}. Then $\tau_h=e_h$ and $c_h=1$ for every $h$, so
+the window $S=[h_*(r),H]$ of $N=\floor{B}+1>B$ shells has $C_s(S,\set1)=N$. If
+$\floor B\ge1$, the window of the first $\floor B$ of these shells is blocked at budget
+$\floor B\le B$, and if $\floor B=0$, the level $h_*(r)$ is the least one allowed.
 \end{proof}
 
+The case $M=1$ of \cref{tors:lem:grid} already gives the corollary directly: a product $F$
+vanishing on $\torsZ{h_*}{H}^s$ would satisfy
+$G_r(F)\ge G_r\bigl(\prod_{h=h_*}^H\Phi_{p^h}(1+T)\bigr)=H-h_*+1>B$.
+
 \begin{remark}[Sharpness and comparison]\label{tors:rem:nonvanishing}
-(1) For $s=1$ and one polynomial the exponent $h_*(r)+\floor{B}$ cannot be lowered when
-the selected roots must satisfy $0<v(\zeta-1)\le r$. Put $k=\floor{B}$. If $k\ge1$, the
-polynomial $F(T)=\prod_{h=h_*}^{h_*+k-1}\Phi_{p^h}(1+T)$ has the witness $x=0$ with
-$v(F(0))=v(p^k)=k\le B$, and it vanishes at every point of $\torsZ{h_*}{h_*+k-1}$. If
+(1) The blocker of \cref{tors:thm:cover} for $J=\set1$ is explicit. Put $k=\floor{B}$. If
+$k\ge1$, the polynomial $F(T)=\prod_{h=h_*}^{h_*+k-1}\Phi_{p^h}(1+T)$ has the witness $x=0$
+with $v(F(0))=v(p^k)=k\le B$, and it vanishes at every point of $\torsZ{h_*}{h_*+k-1}$. If
 $k=0$, the level $h_*$ is the least one allowed by the radial condition. More generally,
 for $h_0\le L$ and $\rho\ge r_{h_0}$ the polynomial $\prod_{h=h_0}^{L}\Phi_{p^h}(1+T)$ has
 $G_\rho=L-h_0+1$ and vanishes on $\torsZ{h_0}{L}$, so a linear dependence of the exponent
-on the budget is unavoidable. No optimality is claimed for the version with several
-powers in \cref{tors:prop:powers}(a).
+on the budget is unavoidable. For the version with several powers see
+\cref{tors:thm:twopowers}.
 
 (2) For $h_*(r)=1$, that is for $r\ge1/(p-1)$, \cref{tors:thm:nonvanishing} is contained
 in \cref{tors:cor:packets}(a), which gives the same exponent $1+\floor{B}$ together with
@@ -601,6 +696,11 @@ with $H=h_0$.
 
 (3) \Cref{tors:thm:nonvanishing} guarantees finite values, not values close to the
 witness valuations; that stronger conclusion is the subject of \cref{tors:sec:tolerance}.
+
+(4) In several variables a tuple may have coordinates of different orders, and its unit
+orbit is controlled by the largest of them; this is why the lower bound of
+\cref{tors:thm:cover} for mixed shells uses $c_t$ at a prefix endpoint. Powers divisible by
+$p$ move points between shells and lead to a different covering problem.
 \end{remark}
 
 \subsection{Separate bounds with a positive tolerance}\label{tors:sec:tolerance}
@@ -1344,7 +1444,7 @@ from every use of the selector in the source.
 \end{remark}
 
 \subsection{Simultaneous powers}\label{tors:sec:powers}
-\sources{grh_beyond_dirichlet_grh_2026-11-25; grh_quantitative_twists_2026-11-25; grh_exact_torsion_transfer_2026-11-25; grh_sharp_transfers_2026-11-25}
+\sources{grh_beyond_dirichlet_grh_2026-11-25; grh_quantitative_twists_2026-11-25; grh_exact_torsion_transfer_2026-11-25; grh_sharp_transfers_2026-11-25; dirichlet_li_recovery}
 
 The arithmetic construction needs one torsion tuple $\zeta$ that is good for the first
 $m$ powers $\zeta,\zeta^2,\dots,\zeta^m$ of a character. All selection theorems transfer
@@ -1432,6 +1532,83 @@ over $\OO$ because of truncation and algebraic approximation. In \textup{(d)} th
 tolerances for fixed $\#I$, $m$ and $s_0$, and its degree grows with $m$. Part
 \textup{(b)} is neither a prescribed-order statement nor a density statement for
 arithmetic characters of bounded conductor.
+
+\paragraph{Sharp endpoints for the first two powers.}
+For the powers $J=\set{1,a,\dots,a^{k-1}}$ of an integer $a\ge2$ prime to $p$, put
+$d_h=\ord_{p^h}(a)$. Every orbit of multiplication by $a$ on $\torsU_h$ is a cycle of length
+$d_h$, and a cover in the sense of \cref{tors:thm:cover} must meet every cyclic run of $k$
+consecutive positions. Its minimum size on a cycle is $\ceil{d_h/k}$: each marked position
+covers at most $k$ starts, and the positions $0,k,2k,\dots<d_h$ work also across the seam.
+Thus
+\begin{equation}\label{tors:eq:geomcover}
+  c_h=\frac{\ceil{d_h/k}}{d_h}.
+\end{equation}
+In particular, if $k\mid d_{h_0}$, then every window of $N$ consecutive shells beginning at
+$h_0$ has exact cost $N/k$ in every dimension. The case $J=\set{1,2}$ settles the endpoint
+of \cref{tors:prop:powers}(a) for $m=2$ at odd $p$.
+
+\begin{theorem}[Sharp endpoints for the first two powers; \stU]\label{tors:thm:twopowers}
+Let $p$ be odd, $J=\set{1,2}$, $h_0\ge1$ and $r\ge r_{h_0}$. Let $H_s(B)$ be the least
+endpoint $H\ge h_0$ such that every admissible family \textup{(}as in
+\cref{tors:thm:cover}\textup{)} of budget at most $B$ has a tuple
+$z\in\torsZ{h_0}{H}^s$ with $F_i(z)\ne0$ and $F_i([2]z)\ne0$ for all $i$. Let
+$d=\ord_p(2)$.
+\begin{enumerate}[label=\textup{(\alph*)}]
+\item If $d$ is even, $H_s(B)=h_0+\floor{2B}$ for every $B\ge0$.
+\item If $d$ is odd, $H_s(k/2)=h_0+k-1$ for every integer $k\ge1$, and $H_s(B)=h_0$ for
+  $0\le B<1/2$. For general $B$ with $\floor{2B}\ge1$,
+  \[
+    h_0+\floor{2B}-1\le H_s(B)\le h_0+\floor{2B}.
+  \]
+\item In one variable and for every $B$, $H_1(B)$ is the least $H$ such that
+  $\sum_{h=h_0}^H\ceil{d_h/2}/d_h>B$.
+\end{enumerate}
+\end{theorem}
+
+\begin{proof}
+Write $\lambda=\vp(2^d-1)$. For odd $p$ the binomial theorem gives
+$\vp((1+b)^p-1)=\vp(b)+1$ when $\vp(b)\ge1$, and exponentiation by an integer prime to $p$
+leaves this valuation unchanged. It follows that $d_h=d\,p^{\max(0,h-\lambda)}$, so all the
+orders $d_h$ have the parity of $d$. If $d$ is even, $c_h=1/2$ for all $h$ by
+\eqref{tors:eq:geomcover}, every window of $N$ shells has exact cost $N/2$ by
+\cref{tors:thm:cover}, and (a) follows.
+
+If $d$ is odd, $c_h=1/2+1/(2d_h)$, so $Nc_H>N/2$ on every nonempty window. The possible
+extra cost of the explicit blocker is uniformly bounded, since
+\[
+  \sum_{h\ge1}\frac1{d_h}=\frac{\lambda+1/(p-1)}{d}<1 ;
+\]
+indeed $p^\lambda\le2^d-1<p^d$ implies $\lambda\le d-1$. Thus a window of $N$ shells can be
+blocked with a budget strictly less than $(N+1)/2$, and cannot be blocked with budget
+$N/2$. For $B=k/2$ the window of $k$ shells always succeeds, whereas that of $k-1$ shells,
+if nonempty, can be blocked. For arbitrary $B$ take $k=\floor{2B}$: a window of $k+1$
+shells succeeds, while one of $k-1$ shells can be blocked. A single shell costs more than
+$1/2$. Part (c) is the one-variable formula of \cref{tors:thm:cover}.
+\end{proof}
+
+\begin{remark}[The endpoint of \cref{tors:prop:powers}(a) for $m=2$]\label{tors:rem:twopowers}
+In the normalization of \cref{tors:prop:powers}(a) take $h_0=h_*(r/2)$; then
+$r_{h_0}\le r/2\le r$, and the sufficient endpoint $h_*(r/2)+\floor{2B}$ of that
+proposition is $h_0+\floor{2B}$. By \cref{tors:thm:twopowers}, at a positive
+half-integral budget this endpoint is optimal exactly when $\ord_p(2)$ is even, in every
+dimension. Both cases occur for infinitely many primes: for $p\equiv7\pmod8$ the number $2$
+is a square and $(p-1)/2$ is odd, so $\ord_p(2)$ is odd; for $p\equiv3\pmod8$ the number
+$2$ is a nonsquare and $(p-1)/2$ is odd, so $\ord_p(2)$ is even. This follows from the
+supplementary law of quadratic reciprocity and Dirichlet's theorem on primes in
+progressions.
+\end{remark}
+
+\begin{example}\label{tors:ex:twopowers}
+At $p=7$ one has $d_h=3\cdot7^{h-1}$, and the shell densities for $J=\set{1,2}$ are
+$2/3$, $11/21$, $74/147$ for $h=1,2,3$. Take $h_0=1$. The first shell costs $2/3$ in every
+dimension. On the first two shells the exact one-variable cost is $2/3+11/21=25/21$. In
+every dimension a budget of $1$ already guarantees success on these two shells, since the
+orbit bound gives $2\cdot11/21>1$, while the first shell alone can be blocked. At $p=5$
+the first two shells together cost exactly $1$ in every dimension, and a third shell is
+necessary at that budget. Exhaustive checks of $69$ geometric-progression covers and of
+the unit orbit sizes of $512$ mixed tuples are recorded in
+\artifact{dirichlet_li_recovery/checks/torsion.txt}.
+\end{example}
 
 \subsection{Matrices, determinants and Fitting ideals}\label{tors:sec:matrices}
 \sources{grh_method_transfers_2026-11-25_1; grh_beyond_dirichlet_grh_2026-11-25; grh_quantitative_twists_2026-11-25; grh_exact_torsion_transfer_2026-11-25; grh_sharp_transfers_2026-11-25; grh_fixed_field_transfer_2026-11-25}
@@ -1749,7 +1926,7 @@ identity, the integral normalization and a nonzero witness with a known valuatio
 the selection theorems do not provide.
 
 \subsection{Open questions}\label{tors:sec:open}
-\sources{grh_quantitative_twists_2026-11-25; grh_fixed_field_transfer_2026-11-25; grh_beyond_dirichlet_grh_2026-11-25; grh_sharp_transfers_2026-11-25; grh_exact_torsion_transfer_2026-11-25}
+\sources{grh_quantitative_twists_2026-11-25; grh_fixed_field_transfer_2026-11-25; grh_beyond_dirichlet_grh_2026-11-25; grh_sharp_transfers_2026-11-25; grh_exact_torsion_transfer_2026-11-25; dirichlet_li_recovery}
 
 \begin{question}[Families of fixed cardinality]\label{tors:q:cardinality}
 For families of $n$ polynomials over $\OO$ with separate tolerances, determine the least
@@ -1768,8 +1945,13 @@ argument.
 \end{question}
 
 \begin{question}[Several powers]\label{tors:q:powers}
-Is the exponent $h_*(r/m)+\floor{mB}$ in \cref{tors:prop:powers}(a) optimal for $m\ge2$?
-The sharpness statement of \cref{tors:rem:nonvanishing} concerns $m=1$.
+For $m=2$ and odd $p$ the endpoint $h_*(r/2)+\floor{2B}$ of \cref{tors:prop:powers}(a) is
+optimal at positive half-integral budgets exactly when $\ord_p(2)$ is even
+(\cref{tors:thm:twopowers,tors:rem:twopowers}). Is the endpoint $h_*(r/m)+\floor{mB}$
+optimal for $m\ge3$, and what is the optimal endpoint when some of the powers $j\le m$ are
+divisible by $p$, in particular for $p=2$ and $m=2$? More generally, when the covering
+densities $c_h$ of \cref{tors:thm:cover} are not constant on $S$, is
+$\sum_{h\in S}c_h$ the exact mixed-shell cost $C_s(S,J)$ for every $s\ge2$?
 \end{question}
 
 \begin{question}[Arithmetic families]\label{tors:q:arithmetic}

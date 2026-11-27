@@ -33,30 +33,37 @@ factors play no role. Under \cref{src:thm:dgrh} the zeros are $\rho=\tfrac12+i\g
 $\gamma\in\R$, and both signs of $\gamma$ are listed for a complex character.
 
 \subsection{Three tools}\label{rec:sec:tools}
-\sources{dirichlet_li_rigidity; dirichlet_inverse_problems; one_gap_dirichlet_zeros; grh_zero_count_certificate; zeta_zero_moment_bounds; dirichlet_zeros_and_abelian_fields; local_euler_recovery; dirichlet_low_zero_identification}
+\sources{dirichlet_li_rigidity; dirichlet_inverse_problems; one_gap_dirichlet_zeros; grh_zero_count_certificate; zeta_zero_moment_bounds; dirichlet_zeros_and_abelian_fields; local_euler_recovery; dirichlet_low_zero_identification; dirichlet_li_recovery}
 
 The first tool turns a recovered zero multiset into a character, the second turns values of
 the completed function in the half-plane of absolute convergence into a positive spectral
 measure, and the third makes prime values of distinct characters almost orthogonal.
 
 \begin{lemma}[Zeros determine the character; \stU]\label{rec:lem:char}
-If two primitive Dirichlet $L$-functions have the same nontrivial zeros, with
-multiplicities, outside a bounded set, their characters are equal.
+Let $\mathcal C$ be a nonempty finite set of distinct primitive Dirichlet characters, let $m_\chi(\rho)$ be the
+multiplicity of $\rho$ as a nontrivial zero of $L(s,\chi)$, and let $b\in\C^{\mathcal C}$. If
+$\sum_{\chi\in\mathcal C}b_\chi m_\chi(\rho)=0$ at all but finitely many points $\rho$ of the union of the zero sets, then
+$b=0$. In particular two primitive Dirichlet $L$-functions with the same nontrivial zeros, with
+multiplicities, outside a bounded set have equal characters, and two finite products of primitive
+Dirichlet $L$-functions whose nontrivial zero multisets differ, after cancellation, in finitely many
+occurrences have the same factors with multiplicity.
 \end{lemma}
 
 \begin{proof}
-Let $\chi,\psi$ be the characters and $a$ the parity of $\chi$. Hadamard factorization of the
-order-one entire functions \eqref{rec:eq:completion} gives $\Xi_\chi/\Xi_\psi=e^{bs+c}R(s)$ for
-a rational function $R$: the common canonical factors cancel and the finitely many leftover
-factors have linear exponents. Put $H(s)=L(s,\chi)/L(s,\psi)$. Forming the quotient at $s+2$
-and at $s$ makes the exponential factor constant, and both gamma shifts are rational by
-$\Gamma(z+1)=z\Gamma(z)$. Hence $H(s+2)/H(s)$ is rational, including its constant prefactor.
-For real $\sigma\to\infty$ the Dirichlet series give $H(\sigma)=1+O(2^{-\sigma})$, and a rational
-function differing from one by $O(2^{-\sigma})$ on this ray is identically one, by its Laurent
-expansion at infinity. So $H$ has period $2$, and for $\Re s>1$,
-$H(s)=\lim_{j\to\infty}H(s+2j)=1$. Uniqueness of the coefficients of absolutely convergent
-Dirichlet series gives $\chi(n)=\psi(n)$ for every $n\ge1$, and primitivity identifies the
-characters and their conductors.
+The zeros of $\Xi_\chi$ in \eqref{rec:eq:completion} are exactly the nontrivial zeros, and the genus-one
+Hadamard formula gives
+$\Xi_\chi'/\Xi_\chi(s)=B_\chi+\sum_\rho m_\chi(\rho)\bigl(\frac1{s-\rho}+\frac1\rho\bigr)$, the paired summands converging
+normally away from their poles. Hence $\sum_\chi b_\chi\Xi_\chi'/\Xi_\chi$ is a constant plus finitely many simple
+fractions. Put $V(s)=\sum_\chi b_\chi L'(s,\chi)/L(s,\chi)$. The gamma factor contributes $\frac12(\Gamma'/\Gamma)((s+\kappa_\chi)/2)$, whose
+increment under $s\mapsto s+2$ is $1/(s+\kappa_\chi)$ by the gamma recurrence; the conductor contributes a constant and
+the factor $s(s-1)$ a rational function. So $V(s+2)-V(s)$ is rational. On the positive real axis it is
+$O(2^{-s})$, by absolute convergence of the logarithmic Euler series, and a rational function with this decay
+vanishes identically. Iterating the period to the right gives $V=0$ on $\Re s>1$. Uniqueness of Dirichlet
+series gives $\sum_\chi b_\chi\chi(p)=0$ at every prime $p$ coprime to the least common multiple $q$ of the
+conductors. Every reduced class modulo $q$ contains a prime, and distinct primitive characters induce distinct
+characters of $(\Z/q\Z)^\times$, so orthogonality gives $b=0$. The two special cases take $b$ equal to the
+difference of the indicator vectors, respectively of the multiplicity vectors of the factors; a bounded set
+contains finitely many zeros.
 \end{proof}
 
 \begin{remark}[Reading the character directly]\label{rec:rem:readchar}
@@ -168,8 +175,9 @@ signal for all characters at once;
 \cref{rec:prop:oriented} sharp upper limits on the grid $6^n$; \cref{rec:thm:dyadic} one complex
 sequence at the powers of two; \cref{rec:thm:mellin} sparse samples of split primes, with no hypothesis
 on zeros; \cref{rec:thm:liseparation} filtered and subsampled Li coefficients with sparse corruption
-and no hypothesis on zeros; \cref{rec:thm:liheat} one time slice of the exponentiated Li
-coefficients at an unknown time; \cref{rec:thm:oneinterval} the positions of zeros of high derivatives on
+and no hypothesis on zeros; \cref{rec:thm:liblock} finite blocks of exponentiated Li coefficients on an
+arithmetic progression, uniformly for bounded weights on a fixed finite set of characters, and its
+\cref{rec:thm:liheat} one time slice at an unknown time; \cref{rec:thm:oneinterval} the positions of zeros of high derivatives on
 one interval; \cref{rec:thm:localrecovery} poles in one triple-logarithmic window;
 \cref{rec:thm:localcoeff,rec:thm:localid} one window of complex zeros at a large height, uniformly in the
 conductor; \cref{rec:thm:operatorinverse} one prime frequency of the zeros of a differentiated
@@ -902,7 +910,7 @@ $p\nmid f$; every reduced class contains a prime, and orthogonality gives equali
 \end{proof}
 
 \subsection{The character from one Li heat kernel}\label{rec:sec:liheat}
-\sources{dirichlet_li_heat_kernel}
+\sources{dirichlet_li_heat_kernel; dirichlet_li_recovery}
 
 Exponentiating the complex Li coefficients gives a positive convolution semigroup on the circle
 $\mathbb T=\R/2\pi\Z$ whose jumps are the Cayley angles of the zeros; \cref{li:sec:univ} treats the
@@ -949,18 +957,88 @@ exponential is at most $e^{-ca\abs n}$, and the smaller modes give $O(\sqrt a)$ 
 Write $F_{\chi,t}(n)=e^{-t\lambda_\chi(n)}$. A sequence converges in natural density to $u$ if for each $\eps>0$ the
 proportion of $1\le n\le N$ with $\abs{u_n-u}>\eps$ tends to zero.
 
-\begin{lemma}[Finite zero discrepancies; \stU]\label{rec:lem:charprod}
-If two finite products of primitive Dirichlet $L$-functions have nontrivial zero multisets that differ,
-after cancellation, in finitely many occurrences, the products are equal.
-\end{lemma}
+\paragraph{Finite blocks on a progression.}
+Several characters, unknown positive or complex weights and an arithmetic progression of indices are
+treated at once. Write $z_\rho=1-1/\rho=e^{i\theta_\gamma}$ and $m_\chi(\rho)$ for the multiplicity, sums over $\rho$ running
+over distinct zeros. The count \eqref{rec:eq:licount} gives $\sum_\rho m_\chi(\rho)\abs{1-z_\rho}^2<\infty$, the starred first sum
+converges \cite{Lagarias2007Li}, and the only possible limit point of the $z_\rho$ on the circle is $1$. Fix a nonempty
+finite set $\mathcal C$ of distinct primitive characters, a stride $h\ge1$, a residue $0\le r<h$ and an integer $d\ge0$, and
+for $b\in\C^{\mathcal C}$ put
+\[
+ A_b(k)=\sum_{\chi\in\mathcal C}b_\chi\lambda_\chi(r+hk)\qquad(k\in\Z).
+\]
+For positive weights $\exp(-A_b)$ is a product of heat coefficients $F_{\chi,b_\chi}(r+hk)$; complex weights allow
+comparison and subtraction without choosing a branch of a complex power. A calibration polynomial $P$
+multiplies the observed sequence by $\exp(P(k))$; it includes an unknown normalization and rotation. Let
+$\Delta x(k)=x(k+1)-x(k)$.
+
+\begin{theorem}[Uniform separation on finite blocks; \stG]\label{rec:thm:liblock}
+Let $M>0$.
+\begin{enumerate}[label=\textup{(\roman*)}]
+\item There are an integer $W\ge1$ and $c>0$, depending only on $\mathcal C,h,r,d,M$, such that every interval $I$ of $W$
+consecutive positive integers and every $b$ with $\norm b_2\le M$ satisfy
+\begin{equation}\label{rec:eq:calibration}
+ \inf_{\substack{P\in\C[X]\\ \deg P\le d}}\ \max_{k\in I}\bigl\lvert\exp\bigl(-A_b(k)+P(k)\bigr)-1\bigr\rvert\ \ge\ c\norm b_2 .
+\end{equation}
+The same constants apply when a different calibration polynomial is fitted on each interval.
+\item With $j=\max(2,d+1)$ there are $L\ge1$ and $\eta_0>0$ such that for every $b$ with $0<\norm b_2\le M$ every block of
+$L$ consecutive integers contains $k$ with $\abs{\exp(-\Delta^jA_b(k))-1}\ge\eta_0\norm b_2$.
+\end{enumerate}
+\end{theorem}
+
+For a catalogue of $\abs{\mathcal C}$ characters every admissible $W$ satisfies $W\ge\abs{\mathcal C}+d+1$: on $W$ points the
+values of the polynomials of degree at most $d$ form a subspace of dimension $\min(d+1,W)$; if its codimension is
+smaller than $\abs{\mathcal C}$, the linear map $b\mapsto A_b|_I$ followed by the quotient has a nonzero kernel element,
+which can be scaled to norm at most $M$ and whose values can be interpolated to make the left side of
+\eqref{rec:eq:calibration} zero.
 
 \begin{proof}
-The proof of \cref{rec:lem:char} applies to the products of the completions: Hadamard factorization
-gives a quotient $e^{A+Bs}R(s)$ with $R$ rational, the gamma recurrence makes $D(s+2)/D(s)$ rational for the
-quotient $D$ of the uncompleted products, $D(\sigma)=1+O(2^{-\sigma})$ forces $D(s+2)=D(s)$, and $D=1$ on $\Re s>1$.
+The sequence $u_b=\Delta^jA_b$ has the absolutely convergent expansion
+\begin{equation}\label{rec:eq:pushprog}
+ u_b(k)=-\sum_zB_zz^r(z^h-1)^j(z^h)^k,\qquad B_{z_\rho}=\sum_{\chi\in\mathcal C}b_\chi m_\chi(\rho),
+\end{equation}
+since $\abs{z^h-1}\le h\abs{1-z}$ and $j\ge2$. So $u_b$ is uniformly almost periodic on $\Z$ and depends continuously
+on $b$ in the supremum norm. Suppose $\exp(-u_b(k))=1$ for all $k\in\Z$. Then $u_b$ takes values in $2\pi i\Z$, and an
+almost period with error less than $2\pi$ is an exact period $v\ge1$. By uniqueness of Fourier coefficients of
+finite measures on the circle, the measure in \eqref{rec:eq:pushprog}, grouped at $w=z^h$, is supported on $w^v=1$.
+Choose an open arc about $1$ on which $z\mapsto z^h$ is injective; finitely many atoms lie outside it. Removing
+their images and the $v$th roots of unity, above every remaining $w$ a contributing atom is the only preimage in the
+arc, its coefficient in \eqref{rec:eq:pushprog} vanishes and $w\ne1$, so $B_z=0$. The discarded set is finite with finite
+fibres, so $B_z=0$ except at finitely many $z$, and \cref{rec:lem:char} gives $b=0$. In particular $u_b\ne0$ when $b\ne0$.
+
+For $\norm a_2=1$ and $0\le s\le M$ put $g_{a,s}=(\exp(-su_a)-1)/s$ for $s>0$ and $g_{a,0}=-u_a$. These are uniformly almost
+periodic, $(a,s)\mapsto g_{a,s}$ is continuous into the bounded sequences with the supremum norm (at $s=0$ by the
+exponential series), and each is nonzero by the preceding paragraph. For a nonzero uniformly almost periodic
+sequence choose an index where its modulus exceeds $2\eta>0$; its translates by $\eta$-almost periods have bounded
+gaps, so an excursion above $\eta$ occurs in every interval of a fixed length, and the same length works with
+threshold $\eta/2$ throughout a supremum-norm neighbourhood. A finite subcover of the compact parameter space gives
+$L$ and $\eta_0$ as in (ii), since $\exp(-u_b)-1=sg_{a,s}$ for $b=sa$.
+
+For (i) write $R(k)=\exp(-A_b(k)+P(k))$. Since $\Delta^jP=0$,
+\[
+ \prod_{i=0}^jR(k+i)^{(-1)^{j-i}\binom ji}=\exp(-u_b(k)).
+\]
+This rational function of $j+1$ inputs equals $1$ at
+$(1,\dots,1)$, and on the closed polydisc $\abs{R_i-1}\le\frac12$ its first derivatives are bounded, so its distance from
+$1$ is at most $C_j\max_i\abs{R_i-1}$. Take $W=L+j$ and choose $k$ among the first $L$ positions of $I$ by (ii). Either some
+$\abs{R(k+i)-1}>\frac12$, or $\max_i\abs{R(k+i)-1}\ge(\eta_0/C_j)\norm b_2$. Take $c=\min(1/(2M),\eta_0/C_j)$.
 \end{proof}
 
-\begin{theorem}[One time slice determines the character; \stG]\label{rec:thm:liheat}
+Suppose two weighted lists from the fixed catalogue give sequences whose ratio, after calibration, differs from
+$1$ by at most $\eps$ on a block of length $W$. If their weight difference has norm at most $M$, it has norm at most
+$\eps/c$; at zero error the weights agree. At a common known time this recovers every factor multiplicity of a
+primitive product. If the time is unknown, the identifiable quantities are time times multiplicity: $P$ at time
+$at$ and $P^a$ at time $t$ give the same data for every positive integer $a$. For two individual finite mixtures
+take the union of their catalogues and choose $M$ after the weights are given. Consequently a sequence of blocks
+whose union has natural density zero determines a finite mixture, provided their lengths tend to infinity and
+the calibrated ratio tends to $1$ in relative measure on them with calibrations of fixed degree: for distinct
+mixtures every full subblock of length $W$ contains an error of at least $c\norm b_2$, a positive lower fraction. For
+example the modes $r+hk$ with $2^{i^2}\le k<2^{i^2}+i$, $i\ge1$, suffice in this asymptotic sense. These statements control
+relative errors of the Fourier coefficients, which may themselves be very small. Banks compares zero divisors
+of two distinct primitive characters of one conductor directly, through short height windows
+\cite{Banks2023Comparing}.
+
+\begin{corollary}[One time slice determines the character; \stG]\label{rec:thm:liheat}
 Let $\chi,\psi$ be primitive, $s,t>0$ and $\alpha\in\mathbb T$.
 \begin{enumerate}
 \item If $F_{\chi,t}(n)/(e^{in\alpha}F_{\psi,s}(n))\to1$ in natural density on the positive integers, then $s=t$, $\chi=\psi$ and $\alpha=0$.
@@ -970,38 +1048,89 @@ give the same moduli.
 Hence one exact time slice $p_{\chi,t}$, even restricted to a nonempty open arc and known only up to
 rotation, determines $t$ and $\chi$; if the orientation of the circle is also unknown, the ambiguity is
 exactly conjugation.
-\end{theorem}
+\end{corollary}
 
 \begin{proof}
-By \eqref{rec:eq:lagarias}, $t=\lim_n-2\log\abs{F_{\chi,t}(n)}/(n\log n)$, so in both cases $s=t$. Put
-$\Delta^2f(n)=f(n+1)-2f(n)+f(n-1)$ and
-\[
- D_n=\Delta^2(\lambda_\chi-\lambda_\psi)(n)=\int_{\mathbb T}e^{in\theta}\dd\eta(\theta),\qquad\eta=2(1-\cos\theta)(\nu_\chi-\nu_\psi),
-\]
-a finite atomic measure, so $(D_n)$ is a uniform limit of trigonometric polynomials and is uniformly almost
-periodic; its $\eps$-almost periods have bounded gaps, and continuous functions of it are almost periodic.
-In (i) the multiplicative second difference of the ratios removes the rotation and gives
-$e^{-tD_n}\to1$ in density. An almost periodic sequence converging in density to a constant equals it:
-a deviation recurs, within half its size, along shifts of bounded gaps, hence on a set of positive
-lower density. So $D_n\in(2\pi i/t)\Z$ for all $n$, an almost period of tolerance below $2\pi/t$ is an exact
-period $r\ge1$, and uniqueness of Fourier coefficients gives $(e^{ir\theta}-1)\eta=0$. The weight $2(1-\cos\theta)$
-vanishes only at $0$, which carries no zero angle, so the two zero multisets differ in finitely many
-occurrences, and \cref{rec:lem:charprod} with primitivity gives $\chi=\psi$. Then $e^{-in\alpha}\to1$ in density, so its
-Ces\`aro mean is one and $e^{i\alpha}=1$. In (ii), $\Re(\lambda_\chi-\lambda_\psi)(n)\to0$ in density, its second differences are
-almost periodic and vanish identically, so the symmetrizations of $\nu_\chi$ and $\nu_\psi$ agree off $0$; by
-\cref{rec:lem:charprod}, $L(s,\chi)L(s,\bar\chi)=L(s,\psi)L(s,\bar\psi)$, and comparing the coefficients at primes, Dirichlet's
-theorem and orthogonality give $\set{\chi,\bar\chi}=\set{\psi,\bar\psi}$. Conversely conjugation reflects the ordinates and
-conjugates $\lambda(n)$. Equality on an open arc extends to $\mathbb T$ by analyticity, and reflection of $y$ sends
-$p_{\chi,t}$ to $p_{\bar\chi,t}$.
+Apply \cref{rec:thm:liblock}(i) with $h=1$, $r=0$, $d=1$ and $M=\norm b_2$. In (i) take $\mathcal C=\set{\chi,\psi}$ and
+$b=(t,-s)$ if $\chi\ne\psi$, and $\mathcal C=\set\chi$, $b=t-s$ otherwise, and the calibration $P(k)=-ik\alpha$ for a real
+representative $\alpha$. If $b\ne0$, every interval of $W$ consecutive positive integers contains an index with
+$\abs{F_{\chi,t}/(e^{in\alpha}F_{\psi,s})-1}\ge c\norm b_2$, so these indices have lower density at least $1/W$, which contradicts
+the hypothesis. Hence $\chi=\psi$ and $s=t$, so $e^{-in\alpha}\to1$ in density, its Ces\`aro mean is one, and $e^{i\alpha}=1$.
+In (ii), conjugation reflects the ordinates, so $\lambda_{\bar\chi}(n)=\overline{\lambda_\chi(n)}$ and
+$\abs{F_{\chi,t}(n)}=\exp(-\frac t2(\lambda_\chi+\lambda_{\bar\chi})(n))$. The quotient of the moduli is $\exp(-A_b)$, with $P=0$, for
+$\mathcal C$ the set of distinct characters among $\chi,\bar\chi,\psi,\bar\psi$ and $b_\xi$ equal to $t/2$ times the number of
+occurrences of $\xi$ in the list $\chi,\bar\chi$ minus $s/2$ times its number in the list $\psi,\bar\psi$. Two conjugacy orbits
+are equal or disjoint; if they are disjoint $b\ne0$, and if they are equal $b=0$ only for $s=t$. The same density
+argument concludes, and conjugation gives the same moduli. Equality on an
+open arc extends to $\mathbb T$ by analyticity, and reflection of $y$ sends $p_{\chi,t}$ to $p_{\bar\chi,t}$.
 \end{proof}
 
 The relative form of the hypothesis is essential, since the high Fourier coefficients are extremely
 small; and a general circle semigroup can lose its generator at one time: unit jumps of rate $\pi/t$ at
 $\pi/2$, or at $-\pi/2$, have time-$t$ coefficients with ratio $\exp(2\pi i\sin(n\pi/2))=1$ \cite{HasebeHotta2022Additive}.
-Finite zero rigidity removes exactly this obstruction. The same proof, applied to
-$D=\Delta^2(t\lambda_\chi-s\lambda_\psi)$ and with $tN_\chi(T)-sN_\psi(T)=O(1)$ forcing $t=s$, shows that the bounded rotation-invariant
-sequence $F_{\chi,t}(n+1)F_{\chi,t}(n-1)/F_{\chi,t}(n)^2$ alone determines $t$ and $\chi$, and its modulus $t$ and the pair
-$\set{\chi,\bar\chi}$, also when two such observations agree only in density (\stG).
+\Cref{li:thm:times} describes all such losses for integral jump measures, and \cref{rec:lem:char} removes exactly
+this obstruction for Dirichlet zeros. By \cref{rec:thm:liblock}(ii) with $d=0$, applied to the same weights, the bounded
+rotation-invariant sequence $F_{\chi,t}(n+1)F_{\chi,t}(n-1)/F_{\chi,t}(n)^2$ alone determines $t$ and $\chi$, and its modulus $t$
+and the pair $\set{\chi,\bar\chi}$, also when two such observations agree only in density (\stG).
+
+\begin{theorem}[An explicit block for $\zeta$ and Dirichlet beta; \stG]\label{rec:thm:li255}
+Let $\beta(s)=L(s,\chi_{-4})$; the coefficients of $\zeta$ and $\beta$ are real, so their Li coefficients are real. For
+$0\le r<20$ write $A_{u,v}(k)=u\lambda_\zeta(r+20k)+v\lambda_\beta(r+20k)$. For every interval $I$ of $255$ consecutive positive
+integers, all real $u,v$ and every real affine function $P$,
+\[
+ \max_{k\in I}\abs{A_{u,v}(k)-P(k)}\ \ge\ \tfrac16\max(\abs u,\abs v).
+\]
+Consequently the logarithms of the heat-coefficient moduli of $\zeta^a\beta^b$ at time one, at these $255$ indices in any
+residue class modulo $20$, determine the nonnegative integers $a,b$ even in the presence of an unknown affine
+drift, and uniform errors strictly below $1/12$ in the logarithms permit at most one such pair.
+\end{theorem}
+
+\begin{proof}
+The first two positive ordinates of $\zeta$ lie in $(14.13,14.14)$ and $(21,22)$, and the first four of $\beta$ in
+$(6.02,6.03)$, $(10.24,10.25)$, $(12.98,13.00)$ and $(16.34,16.35)$, by the certified enclosures of FLINT
+\cite{FLINTZetaZeros} and the LMFDB zero list of $\chi_{-4}$ with its reliability statement \cite{LMFDBDirichletBeta}. Both
+spectra are symmetric and have no central zero. For $\gamma>0$ put $w(\gamma)=z_{1/2+i\gamma}^{20}=\exp(40i\arctan(1/(2\gamma)))$, and
+take as targets $w_\zeta,w_\beta$ the values at the first positive zero of each function. For either target $w_*$,
+\begin{equation}\label{rec:eq:boxes}
+ \abs{1-w_*}^2>5/3,\qquad\abs{w-w_*}>3/25\quad\text{at every other folded zero of the two spectra}.
+\end{equation}
+In increasing order of positive ordinate the real parts of the first four folded frequencies of the union lie in
+$(-.987,-.984)$, $(-.373,-.369)$, $(.030,.034)$ and $(.155,.157)$, the fourth belonging to $\zeta$, and all remaining
+positive ordinates give real part greater than $.340$. Conjugate frequencies have the same real part, and the
+absolute imaginary parts at the two targets exceed $.16$ and $.98$, which separates each from its conjugate. For
+$\gamma\ge10$ the angle in the exponential decreases in $(0,\pi)$, so its cosine increases; on the first interval the angle
+lies between $\pi$ and $3\pi/2$. Rational endpoint evaluations of $((\gamma^2-\frac14+i\gamma)/(\gamma^2+\frac14))^{20}$ prove all these
+bounds.
+
+With multiplicity in each sum, the two completed functional equations give
+\begin{equation}\label{rec:eq:bothmass}
+ \sum_{\rho\text{ of }\zeta}\frac1{\abs\rho^2}+\sum_{\rho\text{ of }\beta}\frac1{\abs\rho^2}=2-2\log\pi+2\frac{\beta'(1)}{\beta(1)}<\frac12 .
+\end{equation}
+Indeed, for either real completion $\Xi$ the difference of its logarithmic derivatives at $1$ and $0$ is $2\Xi'(1)/\Xi(1)$
+by symmetry, and the Hadamard expansion gives the same difference as $\sum1/(\rho(1-\rho))=\sum1/\abs\rho^2$ by
+\cref{src:thm:dgrh}. For $\zeta$ the expression is $2+\recgE-\log(4\pi)$ and for $\beta$ it is $\log(4/\pi)-\recgE+2\beta'(1)/\beta(1)$. For the
+strict bound use $\beta(1)=\pi/4>0.78$, $\log\pi>1.14$ and $\beta'(1)<0.30$; the alternating series for $\beta'(1)$ is bounded above
+by its five terms from $\log3/3$ through $\log11/11$, and termwise differentiation at $1$ follows from uniform
+convergence of the alternating derivative series on a real neighbourhood of $1$.
+
+Let $D(k)=A_{u,v}(k+1)-2A_{u,v}(k)+A_{u,v}(k-1)$ and $B=\max(\abs u,\abs v)>0$. The Fourier series of $D$ has an atom at
+$w=z^{20}$ for each zero, with coefficient $-b_\rho z^r\abs{1-w}^2$, $b_\rho$ the scalar $u$ or $v$ times the multiplicity. By
+$\abs{1-z^{20}}\le20\abs{1-z}$ and \eqref{rec:eq:bothmass} the absolute coefficients sum to less than $200B$, and the target
+of a scalar of modulus $B$ has coefficient of modulus greater than $5B/3$ by \eqref{rec:eq:boxes}. Let
+$K(X)=(64^{-1}\sum_{i=0}^{63}X^i)^4=\sum_{i=0}^{252}a_iX^i$, with nonnegative coefficients of sum one. In
+$\sum_ia_i\bar w_*^{\,i}D(k_0+i)$ the target contributes its full coefficient times a unit factor, and every other frequency is
+multiplied in modulus by at most $(25/96)^4$, by the geometric sum and \eqref{rec:eq:boxes}. Since $200(25/96)^4<1$, the
+average has modulus greater than $2B/3$, so some $\abs{D(k_0+i)}>2B/3$. An affine function has zero second difference,
+and the absolute coefficient sum of a second difference is $4$, so one of the $255$ indices from $k_0-1$ to $k_0+253$ has
+$\abs{A_{u,v}-P}>B/6$. For two integer pairs the difference has $B\ge1$, and two fits with errors strictly below $1/12$
+would contradict the inequality. The rational inequalities and frequency enclosures are checked in exact
+arithmetic:
+\begin{center}
+\artifact{dirichlet_li_recovery/checks/window.txt}
+\end{center}
+\end{proof}
+
+The count $255$ is sufficient; its optimality is not known.
 
 \paragraph{Heights at sums of zero angles.}
 Let $S_0=\set0$ and $S_j$ the set of sums modulo $2\pi$ of at most $j$ zero angles, a compact set. For
@@ -5134,7 +5263,7 @@ Shortest positive averages on the logarithmic scale that annihilate prescribed z
 their use as filters for Dirichlet prime sums, are treated in \cref{sec:fil}.
 
 \subsection{Open questions}\label{rec:sec:open}
-\sources{dirichlet_inverse_problems; dirichlet_li_rigidity; dirichlet_zero_packet_homometry; dirichlet_zero_recovery; large_kernels_and_dirichlet_zeros; one_gap_dirichlet_zeros; prime_pole_windows; prime_power_rigidity; prime_zero_reconstruction; quadratic_spectra; three_scale_reconstruction; grh_zero_count_certificate; zeta_zero_moment_bounds; grh_periods_sampling_and_zeros; dirichlet-grh-research; grh-torsion-and-zero-data; dirichlet_low_zero_identification; dirichlet_zeros_and_abelian_fields; local_euler_recovery; robust_dirichlet_spectra_2026-11-26; dirichlet_packet_reconstruction; dirichlet_prime_frequency_inverse; prime_observations_and_progression_free_sets; translated_dirichlet_zero_divisors; dirichlet-character-zero-windows; dirichlet-zero-reconstruction; dirichlet_zero_windows; dirichlet-zero-windows; dirichlet_li_heat_kernel; grh_positive_spectral_extensions_2026-11-27; dirichlet-zero-multiplicity-and-reconstruction; dirichlet-zero-recovery; euler-packet-rigidity; odd-order-euler-factor-matching; odd_prime_order_euler_packets; cubic_quintic_euler_agreement; odd_euler_agreement; odd_prime_euler_agreement; odd_prime_euler_agreement_2; odd_prime_euler_packets; prime_exponent_euler_agreement; prime_order_euler_agreement; grh_cubic_matching_and_precision_2026-11-27}
+\sources{dirichlet_inverse_problems; dirichlet_li_rigidity; dirichlet_zero_packet_homometry; dirichlet_zero_recovery; large_kernels_and_dirichlet_zeros; one_gap_dirichlet_zeros; prime_pole_windows; prime_power_rigidity; prime_zero_reconstruction; quadratic_spectra; three_scale_reconstruction; grh_zero_count_certificate; zeta_zero_moment_bounds; grh_periods_sampling_and_zeros; dirichlet-grh-research; grh-torsion-and-zero-data; dirichlet_low_zero_identification; dirichlet_zeros_and_abelian_fields; local_euler_recovery; robust_dirichlet_spectra_2026-11-26; dirichlet_packet_reconstruction; dirichlet_prime_frequency_inverse; prime_observations_and_progression_free_sets; translated_dirichlet_zero_divisors; dirichlet-character-zero-windows; dirichlet-zero-reconstruction; dirichlet_zero_windows; dirichlet-zero-windows; dirichlet_li_heat_kernel; grh_positive_spectral_extensions_2026-11-27; dirichlet-zero-multiplicity-and-reconstruction; dirichlet-zero-recovery; euler-packet-rigidity; odd-order-euler-factor-matching; odd_prime_order_euler_packets; cubic_quintic_euler_agreement; odd_euler_agreement; odd_prime_euler_agreement; odd_prime_euler_agreement_2; odd_prime_euler_packets; prime_exponent_euler_agreement; prime_order_euler_agreement; grh_cubic_matching_and_precision_2026-11-27; dirichlet_li_recovery}
 
 \begin{enumerate}
 \item \emph{Effective versions.} The limits in \cref{rec:thm:universal,rec:thm:factorial,rec:thm:threescale,rec:thm:primepower,rec:thm:liseparation,rec:thm:dyadic,rec:thm:mellin,rec:thm:operatorinverse}
@@ -5225,8 +5354,11 @@ separated at a single prime frequency as in \cref{rec:thm:primefreq}, and which 
 than every inverse power of $\log T$? Do the universal encoding and the positive-residue
 reconstructions extend to families for which the corresponding Riemann hypothesis is known?
 \Cref{src:thm:dgrh} does not supply it.
-\item \emph{Li heat kernels.} Can \cref{rec:thm:liheat} give practical bounds on the number and precision of
-Fourier modes that suffice for all characters of conductor at most $Q$? After subtracting $L\log L/\log2$ in
+\item \emph{Li heat kernels.} \Cref{rec:thm:liblock} gives a finite block length $W$ and a Lipschitz constant $c$ for
+every fixed finite set of characters, stride, residue and calibration degree, but only qualitatively, and
+\cref{rec:thm:li255} makes them explicit for $\zeta$ and $\beta$ with $255$ modes. Can $W$ and $c$ be computed uniformly
+from the largest conductor, the stride and the calibration degree, so as to bound the number and precision of
+modes that suffice for all characters of conductor at most $Q$? Is $255$ optimal in \cref{rec:thm:li255}? After subtracting $L\log L/\log2$ in
 \cref{rec:thm:litypical}, what is the next term of the typical negative log-density? (The Hausdorff
 dimension of the set with a prescribed decay rate is given by \cref{li:thm:spectrum}.) Which equal products of Cayley
 factors $1-1/\rho$ from different tuples of zeros can be proved, beyond the extremal construction of

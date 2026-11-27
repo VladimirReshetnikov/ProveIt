@@ -1565,7 +1565,7 @@ invariants $s,r,t_0,t_1$ put
 \]
 with the first term read as zero if $d=0$. Then, uniformly in $M$,
 \begin{gather*}
- q^{ab}\spnP\bigl(M(g)=M\bigr)=1+q^{-2n}K(M)+O(q^{-4n}),\
+ q^{ab}\spnP\bigl(M(g)=M\bigr)=1+q^{-2n}K(M)+O(q^{-4n}),\\
  \spnTV\bigl(M(g),Z\bigr)=\frac{q^{-2n}}{2q^{ab}}\sum_M\abs{K(M)}+O(q^{-4n}),
 \end{gather*}
 where $Z$ is uniform on $\spnMat_{a,b}(\F_q)$. For every $n$ and all $a,b\ge1$,
@@ -1618,7 +1618,7 @@ test sees the same first-order bias whatever the two forms. The constants in
 dimension $2n$, \cref{spn:thm:symplectic} gives only the exponent
 $(2n+1-a-b)/2$, but uniformly in the frame sizes, and
 \cref{spn:thm:symplectic-exact} shows that the fixed-size rate cannot persist
-when $a$ and $b$ grow with $n$. \Cref{spn:thm:complement-boundary,spn:thm:balanced}
+when $a$ and $b$ grow with $n$. \Cref{spn:thm:complement-boundary,spn:thm:offset-profile}
 identify positive limits when the target frame, or both frames, are
 nondegenerate and grow, and \cref{spn:thm:padic-lifting} shows that the first
 correction persists at every congruence precision over a local ring.
@@ -2027,12 +2027,16 @@ $q\le5$ and $n\le16$.\footnote{\raggedright\artifact{grh_extensions_2026-11-27/c
 
 %======================================================================
 \subsection{Nondegenerate frames: residual forms and rank blindness}\label{spn:sec:nondegenerate}
-\sources{exact_symplectic_compressions_2026-11-26; symplectic_compression_2026-11-26_2; nondegenerate_symplectic_blocks_2026-11-27}
+\sources{exact_symplectic_compressions_2026-11-26; symplectic_compression_2026-11-26_2; nondegenerate_symplectic_blocks_2026-11-27; uniform_symplectic_blocks; rectangular_symplectic_blocks; grh_uniform_extensions_2026-11-27; grh-two-open-questions}
 
 When the target frame is nondegenerate, the observed matrix fixes the component of the source
 frame along the target, and what remains is one alternating Gram matrix in the orthogonal
 complement. This reduction gives exact likelihoods and limiting distances in regimes where the
-target frame, or both frames, grow with the ambient dimension. The notation is that of
+target frame, or both frames, grow with the ambient dimension: for a fixed source, and for two
+nondegenerate frames at every offset from complementary dimension, uniformly in the aspect
+ratio. For complementary frames the rank, the residual defect and their joint law have sharp
+first-order expansions, uniform in the shape, while the full matrix stays a fixed distance from
+uniform. The notation is that of
 \cref{spn:sec:complete-law}: $V$ has dimension $2n$, $Y$ is an $a$-frame with Gram matrix $H_1$,
 $X_0$ is a $b$-frame with Gram matrix $H_0$, $M(g)=Y^{\spnT}JgX_0$, and $Z$ is uniform on
 $\spnMat_{a,b}(\F_q)$. Throughout $H_1$ is nonsingular, so $a$ is even, and $2c=2n-a$ is the
@@ -2231,10 +2235,214 @@ $4$ & $63/64$ & $7/16$ & $133/1024$ & $553/16384$\\
 For a symplectic plane as source the exact finite-$s$ laws, including the optimal rank-only
 test, are in \cref{spn:prop:plane-rank}.
 
+\paragraph{Nondegenerate frames at every offset.}
+Now let both $H_1$ and $H_0$ be nonsingular, so that $a$ and $b$ are even, put $h=b/2$, and call
+\[
+ e=c-h=n-\tfrac{a+b}{2}
+\]
+the \emph{offset}: $2e$ is the ambient dimension left over after both frames are counted, and
+$e=0$ exactly when $a+b=2n$. Frames exist exactly when $c\ge0$, that is $e\ge-h$. Put
+$F_v(G)=q^{D_b}\spnP(G_v=G)$ for $G\in\spnAlt_b(\F_q)$. Since $T_vP$ is uniform for invertible
+$P$, $F_v$ is constant on congruence classes, hence a function of $\rank G$, and by
+\cref{spn:prop:residual} the likelihood of $M$ is $F_c(S(M))/\Pi_{n,b}$.
+
+\begin{lemma}[Monotone Gram densities; \stU]\label{spn:lem:gram-monotone}
+For all $v\ge0$ and $b\ge1$, $F_v(G)$ is a nonincreasing function of $\rank G$.
+\end{lemma}
+
+\begin{proof}
+Passing from $G_v$ to $G_{v+1}$ adds $u\wedge w=uw^{\spnT}-wu^{\spnT}$ for independent uniform
+$u,w\in\F_q^b$. This increment is symmetric in law under negation, so
+$F_{v+1}(G)=\spnE F_v(G+u\wedge w)$: the update of densities is the transition operator of the
+walk $G\mapsto G+u\wedge w$. By congruence invariance the half-rank of the walk is a Markov chain,
+and one step changes the rank by at most two. Let $G$ have rank $2i$, column space $L$, and put
+$f=b-2i$. The rank increases exactly when $u,w$ are independent modulo $L$: then a complement of
+$L$ containing $u,w$ exhibits the two extra ranks in a separate block, and otherwise the new
+column space lies in a space of dimension at most $2i+1$. Thus the upward probability is
+$p_i^+=(1-q^{-f})(1-q^{1-f})$, which vanishes for $f\le1$. A decrease from rank $2i+2$ requires
+both vectors in the column space $L'$ of the current matrix: for a nonzero increment, equality
+in $\rank G'\le\rank(G'+u\wedge w)+\rank(u\wedge w)$ forces the column space of $u\wedge w$
+into $L'$. On $L'$ the block $B'$ of $G'$ is invertible, and the determinant of the updated block
+divided by $\det B'$ is $(1+w^{\spnT}B'^{-1}u)^2$, also in characteristic two; given $u\ne0$,
+singularity prescribes one value of a nonzero linear functional of $w$. Hence, for $f\ge2$,
+\[
+ p_{i+1}^-=q^{-2(f-2)-1}\bigl(1-q^{-2(i+1)}\bigr)\le q^{1-f}\le1-p_i^+ .
+\]
+So for adjacent starting states the probability of crossing their common boundary is ordered,
+at every other threshold the ordering is automatic, and the transition operator preserves
+nonincreasing functions of the half-rank. The initial density $F_0$, supported at rank zero,
+is nonincreasing; iterate.
+\end{proof}
+
+\begin{theorem}[The exact test at every offset; \stU]\label{spn:thm:offset-test}
+Let $H_0,H_1$ be nonsingular with offset $e$.
+\begin{enumerate}
+\item If $e\ge0$, the likelihood $q^{ab}\spnP(M(g)=M)$ is less than one exactly when $S(M)$ is
+nonsingular, where it equals
+\[
+ \alpha_e=\frac{\eta_{b/2+e}\,\eta_{a/2+e}}{\eta_e\,\eta_{(a+b)/2+e}} .
+\]
+Hence $\set{S(M)\text{ singular}}$ is an exactly optimal distinguishing event and
+$\spnTV(M(g),Z)=(1-\alpha_e)\,\spnP\bigl(S(Z)\text{ nonsingular}\bigr)$.
+\item If $e=-r<0$, then $M$ has positive probability exactly when $\dim\ker S(M)\ge2r$, its
+likelihood is then greater than one, and
+$\spnTV(M(g),Z)=\spnP\bigl(\dim\ker S(Z)<2r\bigr)$.
+\end{enumerate}
+\end{theorem}
+
+\begin{proof}
+Splitting off symplectic pairs, a nonsingular $b$-form has
+$\prod_{i=0}^{h-1}(q^{2(v-i)}-1)q^{2(v-i)-1}$ realizations as $T^{\spnT}J_vT$ when $v\ge h$, so
+$F_v(G)=\eta_v/\eta_{v-h}$ at nonsingular $G$; in particular $\Pi_{n,b}=\eta_n/\eta_{n-h}$.
+
+Let $e\ge0$, so $c=h+e$ and $n-h=a/2+e$. At a nonsingular residual the likelihood is
+$(\eta_c/\eta_{c-h})(\eta_{n-h}/\eta_n)=\alpha_e$, which is less than one because each of the $h$
+factors of $\eta_{h+e}/\eta_e$ has smaller index than the corresponding factor of
+$\eta_{h+a/2+e}/\eta_{a/2+e}$. At nullity two, after $h-1$ symplectic pairs have been embedded,
+the remaining two vectors lie in a symplectic space of dimension $f=2e+2$ and must pair to zero;
+there are $q^f+(q^f-1)q^{f-1}$ such pairs against $(q^f-1)q^{f-1}$ with a prescribed nonzero
+pairing, so the density there is
+\[
+ \frac{\eta_{h+e}}{\eta_e}\Bigl(1+\frac{q}{q^{2e+2}-1}\Bigr).
+\]
+With $u=q^{-2e}\le1$ the product in front is at least $1-u/(q^2-1)$, and
+$(1-u/(q^2-1))(1+qu/(q^2-u))-1$ has the sign of $q^3-q^2-q-(q-1)u\ge q^3-q^2-2q+1>0$. Division
+by $\Pi_{n,b}\le1$ only increases the likelihood, and \cref{spn:lem:gram-monotone} extends the
+strict inequality to every larger nullity. So all deficient mass lies on the nonsingular
+residuals, where the likelihood is the constant $\alpha_e$.
+
+Let $e=-r<0$, so $c=h-r$ and residual ranks are at most $2c$ (\cref{spn:prop:residual}). At rank
+exactly $2c$ a realizing $T$ must have kernel equal to the radical and induce a symplectic
+isomorphism on the quotient, so $F_c(G)=q^{D_b-2cb}\abs{\Sp_{2c}(\F_q)}=q^{r(2r-1)}\eta_c$, and
+$q^{r(2r-1)}\eta_c\ge q\bigl(1-1/(q^2-1)\bigr)>1$. By \cref{spn:lem:gram-monotone} the likelihood
+exceeds one on the whole support, and every other matrix has likelihood zero. The distance is the
+uniform mass of the complement of the support.
+\end{proof}
+
+For complementary frames ($e=0$) this is the sign statement of \cref{spn:thm:balanced} below,
+which in addition gives the likelihood at every corank. To evaluate either distance exactly, note
+that the independent row pairs of $Z$ add independent uniform wedges to $H_0$, so the half-rank of
+$S(Z)$ is the chain of the proof of \cref{spn:lem:gram-monotone} started at $h$, with
+$p_i^+=(1-q^{-f})(1-q^{1-f})$ and $p_i^-=q^{-2f-1}(1-q^{-2i})$ at state $i$, $f=b-2i$, run for $a/2$
+steps; this needs $O(ab)$ rational operations.
+
+Let $\lambda_b(j)$ be the probability that a uniform element of $\spnAlt_b(\F_q)$ has nullity $j$.
+Choosing the radical and a nonsingular form on the quotient gives
+\begin{equation}\label{spn:eq:finite-alt}
+ \lambda_b(2k)=q^{-k(2k-1)}\frac{\gamma_b}{\gamma_{2k}\,\eta_{h-k}}\qquad(0\le k\le h),
+\end{equation}
+and $\lambda_b$ vanishes at odd arguments; in particular $\lambda_b(0)=\theta_h$.
+
+\begin{lemma}[Corank mixing with its first term; \stU]\label{spn:lem:corank-mix}
+Let $a,b$ be positive and even and $H_0,H_1$ nonsingular. Then
+\[
+ \spnTV\bigl(\dim\ker S(Z),\dim\ker U_{\spnAlt}\bigr)\le\tfrac12q^{-a}\sqrt{\theta_h^{-1}-1}.
+\]
+More precisely, with
+\[
+ H_b(j)=\frac{(q+1)q^b-q^{b+j}-q}{q(q^2-1)(q^{b-1}-1)},
+\]
+one has
+$\sum_j\bigl|\spnP(\dim\ker S(Z)=j)-\lambda_b(j)\bigl(1+q^{-a}H_b(j)\bigr)\bigr|
+\le q^{-2a}\sqrt{\theta_h^{-1}-1}$.
+\end{lemma}
+
+\begin{proof}
+Let $\nu$ be the uniform law on the nonsingular orbit, of uniform mass $\theta_h$, with density
+$f=\mathbf 1_{\mathrm{nonsing}}/\theta_h$. By \cref{spn:lem:alt-gram}, $Z^{\spnT}H_1^{-1}Z$ has the
+law of $G_{a/2}$, which is congruence invariant, so replacing $H_0$ by an independent $B_0\sim\nu$
+does not change the corank law of the translate, and the law of $B_0+G_{a/2}$ is congruence
+invariant. Its density is the convolution of $f$ with the law of $G_{a/2}$, whose Fourier transform
+at $W$ is $q^{-(a/2)\rank W}$ (\cref{spn:lem:alt-gram}). So convolution multiplies every
+nonconstant coefficient by at most $q^{-a}$ and every coefficient of rank at least four by at most
+$q^{-2a}$. By Parseval the nonconstant coefficients of $f$ have squared sum $\theta_h^{-1}-1$, and
+Cauchy--Schwarz bounds the mean absolute error by its root mean square. This proves the first bound,
+and the second up to evaluation of the rank-two terms.
+
+Every rank-two $W$ is $u\wedge w$ for independent $u,w$, in exactly $\abs{\SL_2(\F_q)}=q(q^2-1)$
+ways, and its character at $B$ is $\psi(u^{\spnT}Bw)$. At $B$ of nullity $j$, the sum of
+$\psi(u^{\spnT}Bw)$ over all ordered pairs is $q^{b+j}$, and the $(q+1)q^b-q$ dependent pairs
+each contribute one, so the sum of the rank-two characters at $B$ is
+$K(B)=(q^{b+j}-(q+1)q^b+q)/(q(q^2-1))$. By transitivity the rank-two coefficients of $f$ are all
+equal, to $K$ at a nonsingular matrix divided by $K(0)$, that is $-1/(q^{b-1}-1)$; $K$ is real.
+Multiplication by $q^{-a}$ gives exactly $q^{-a}H_b(j)$, and summing the absolute error over the
+corank classes proves the second bound.
+\end{proof}
+
+\begin{theorem}[Uniform limiting profile; \stU]\label{spn:thm:offset-profile}
+Fix $q$. For all positive even $a,b$, all admissible offsets $e$ and all nonsingular $H_0,H_1$,
+\[
+ \bigl|\spnTV\bigl(M(g),Z\bigr)-\mathcal D_q(e)\bigr|\le C_q\bigl(q^{-a}+q^{-b}\bigr),\qquad
+ \mathcal D_q(e)=
+ \begin{cases}
+ \theta_\infty\bigl(1-\eta_\infty/\eta_e\bigr),&e\ge0,\\[2pt]
+ \displaystyle\sum_{j=0}^{-e-1}\frac{\theta_\infty q^{-j(2j-1)}}{\gamma_{2j}},&e<0,
+ \end{cases}
+\]
+with $C_q$ depending only on $q$. In particular, when $a,b\to\infty$ the distance tends to
+$\mathcal D_q(e)$ at every fixed offset, to $\Delta_q=\theta_\infty(1-\eta_\infty)$ at $e=0$ in
+every aspect ratio, and $\mathcal D_q(e)\to0$ as $e\to+\infty$ and $\mathcal D_q(e)\to1$ as
+$e\to-\infty$.
+\end{theorem}
+
+\begin{proof}
+For $e\ge0$, \cref{spn:lem:corank-mix} gives
+$\spnP(S(Z)\text{ nonsingular})=\theta_h+O_q(q^{-a})$, and the product tails give
+$\theta_h=\theta_\infty+O_q(q^{-b})$ and, using $\abs{\eta_j-\eta_\infty}\le q^{-2j}/(q^2-1)$ and
+the positive lower bound on all denominators,
+$\alpha_e=\eta_\infty/\eta_e+O_q(q^{-a}+q^{-b})$ uniformly in $e\ge0$; insert these in
+\cref{spn:thm:offset-test}. For $e<0$, let $\lambda_q(2j)=\theta_\infty q^{-j(2j-1)}/\gamma_{2j}$.
+The finite probabilities \eqref{spn:eq:finite-alt} are at most $C_qq^{-j(2j-1)}$, so
+$\sum\lambda_q=1$ by dominated convergence, and the product tails with
+$\abs{\gamma_b-\gamma_\infty}\le q^{-b}/(q-1)$ give
+$\abs{\lambda_b(2j)-\lambda_q(2j)}\le C_qq^{-b}(1+q^{2j})\lambda_q(2j)$, also for $j>h$; the right
+side has total $O_q(q^{-b})$. Apply \cref{spn:lem:corank-mix} and part~(2) of
+\cref{spn:thm:offset-test} to the event $\dim\ker S(Z)<2r$.
+\end{proof}
+
+\begin{corollary}[First correction off the boundary; \stU]\label{spn:cor:offset-first}
+Let $e\ge0$, $A_e=\eta_\infty/\eta_e$, $u=q^{-2e}$ and $w=q^{-a}+q^{-b}$. Uniformly in all such
+dimensions,
+\[
+ \spnTV\bigl(M(g),Z\bigr)=\mathcal D_q(e)+\frac{\theta_\infty}{q^2-1}\bigl[q(1-A_e)-uA_e\bigr]w
+ +O_q(uw^2).
+\]
+If $e,a,b\to\infty$ at any relative rates, then
+$\spnTV(M(g),Z)\sim\theta_\infty q^{-2e}/(q^2-1)$.
+\end{corollary}
+
+\begin{proof}
+$H_b(0)=(q^b-1)/((q^2-1)(q^{b-1}-1))=q/(q^2-1)+O_q(q^{-b})$, so \cref{spn:lem:corank-mix} and the
+first-order expansion of $\theta_h$ give
+$\spnP(S(Z)\text{ nonsingular})=\theta_\infty[1+qw/(q^2-1)]+O_q(w^2)$. Likewise
+$\alpha_e=A_e[1+uw/(q^2-1)]+O_q(uw^2)$: the three product tails in $\alpha_e$ have first-order
+sizes $uq^{-b}/(q^2-1)$, $uq^{-a}/(q^2-1)$ and $O_q(uq^{-a-b})$, and
+$\prod(1-t_i)=1-\sum t_i+O((\sum t_i)^2)$ with uniformly positive denominators. Since
+$1-A_e=O_q(u)$, substitution in \cref{spn:thm:offset-test} proves the expansion, and
+$1-A_e=u/(q^2-1)+O_q(u^2)$ gives the last assertion.
+\end{proof}
+
+Over $\F_2$ the limiting distances at $e=-1,0,1$ are about $0.41942$, $0.13063$ and $0.03437$, so a
+change of two in the ambient dimension survives the limit in which both observed dimensions grow.
+Rounded to six places, \cref{spn:thm:offset-profile} gives:
+\begin{center}\small
+\begin{tabular}{lrrrrrr}
+\toprule
+ & $e=-2$ & $e=-1$ & $e=0$ & $e=1$ & $e=2$ & $e=3$\\
+\midrule
+$q=2$ & $0.978652$ & $0.419422$ & $0.130634$ & $0.034372$ & $0.008702$ & $0.002182$\\
+$q=3$ & $0.998445$ & $0.639005$ & $0.078878$ & $0.008863$ & $0.000986$ & $0.000110$\\
+$q=5$ & $0.999933$ & $0.793335$ & $0.033003$ & $0.001322$ & $0.000053$ & $0.000002$\\
+\bottomrule
+\end{tabular}
+\end{center}
+At $e=-1$ the limit is $\theta_\infty$. Twenty-seven parameter choices over $\F_2$ and $\F_3$ were
+checked by independently counting row pairs with a prescribed alternating Gram
+matrix.\footnote{\artifact{grh-two-open-questions/symplectic/verification.json}}
+
 \paragraph{Complementary nondegenerate frames.}
-Now let both $H_1$ and $H_0$ be nonsingular and $a+b=2n$, so that $(\spnim Y)^\perp$ has the
-dimension $b=2c$ of the source. Neither frame is Lagrangian. Write $h=b/2$ and let $2\ell$ be the
-corank of $S(M)$.
+Now let $e=0$, that is $a+b=2n$, so that $(\spnim Y)^\perp$ has the dimension $b=2c$ of the source.
+Neither frame is Lagrangian. Write $h=b/2$ and let $2\ell$ be the corank of $S(M)$.
 
 \begin{theorem}[The residual singularity test is optimal; \stU]\label{spn:thm:balanced}
 For every $M\in\spnMat_{a,b}(\F_q)$,
@@ -2276,14 +2484,12 @@ For $q=3$ and $a=b=2$ the likelihoods are $99/80$ and $9/10$, as in \cref{spn:th
 while the distance between the two rank laws is only $11/270$ against $19/270$ for the matrices:
 matrices of determinants one and two have full rank but lie on opposite sides of the threshold.
 
-\begin{corollary}[Persistent dependence for every complementary pair; \stU]\label{spn:cor:balanced-lower}
+\begin{corollary}[An explicit lower bound for every complementary pair; \stU]\label{spn:cor:balanced-lower}
 For all positive even $a,b$ with $a+b=2n$,
 \[
  \spnTV\bigl(M(g),Z\bigr)\ge\Bigl(1-\frac{\eta_h}{\Pi_{n,b}}\Bigr)
- \Bigl(1-\frac{q(1-q^{-a})(1-q^{-b})}{q^2-1}\Bigr),
+ \Bigl(1-\frac{q(1-q^{-a})(1-q^{-b})}{q^2-1}\Bigr).
 \]
-and whenever $a,b\to\infty$, in any proportion,
-$\liminf\spnTV(M(g),Z)\ge(1-\eta_\infty)\bigl(1-q/(q^2-1)\bigr)>0$.
 \end{corollary}
 
 \begin{proof}
@@ -2295,60 +2501,169 @@ the first entry vanishes identically. Hence $\spnP(x\in\operatorname{rad}S(Z))=(
 and summing over $x$ gives
 $\spnE\bigl(q^{\dim\operatorname{rad}S(Z)}-1\bigr)=q(1-q^{-a})(1-q^{-b})$. A singular
 alternating matrix of even size has nullity at least two, so $S(Z)$ is singular with probability
-at most this expectation divided by $q^2-1$. Apply \cref{spn:thm:balanced}, and note that
-$\eta_h\to\eta_\infty$ and $\Pi_{n,b}\to1$ as $a,b\to\infty$.
+at most this expectation divided by $q^2-1$. Apply \cref{spn:thm:balanced}.
 \end{proof}
 
-\paragraph{Increasingly tall blocks.} Put
-\begin{equation}\label{spn:eq:Delta-q}
- \Delta_q=\theta_\infty(1-\eta_\infty)=\theta_\infty-\gamma_\infty>0 .
+\paragraph{Complementary frames, uniformly in the aspect ratio.}
+For complementary frames the rank law, the residual-defect law and the full-matrix law have
+first-order expansions whose errors are uniform in the shape. Let $a,b\ge2$ be even, write
+$J_a$ and $J_b$ for nonsingular alternating matrices of sizes $a$ and $b$, let $g$ be uniform in the
+symplectic group of $V=(\F_q^a,J_a)\perp(\F_q^b,J_b)$, and write the image under $g$ of the
+coordinate frame of the second summand as
+\begin{equation}\label{spn:eq:block-frame}
+ \begin{pmatrix}A\\B\end{pmatrix},\qquad A\in\spnMat_{a,b}(\F_q),\quad B\in\spnMat_b(\F_q),\qquad
+ A^{\spnT}J_aA+B^{\spnT}J_bB=J_b .
 \end{equation}
+With $Y$ and $X_0$ the coordinate frames of the two summands, $H_1=J_a$, $H_0=J_b$, $M(g)=J_aA$ and
+$S(J_aA)=\Lambda(A)$, where
+\[
+ \Lambda(M)=J_b-M^{\spnT}J_aM ;
+\]
+so this is the case $e=0$ of the preceding paragraphs, $\spnTV(M(g),Z)=\spnTV(A,U)$, and
+$\eta_h/\Pi_{n,b}=\alpha_{a,b}=\eta_{a/2}\eta_{b/2}/\eta_{(a+b)/2}$. For $a=b$, with all position
+coordinates first, the first summand would instead be Lagrangian, as in \cref{spn:sec:lagrangian}.
+Let $U$ be uniform on $\spnMat_{a,b}(\F_q)$ and $T$ uniform on $\spnAlt_b(\F_q)$, and put
+\[
+ K_A=\dim\ker A,\quad K_U=\dim\ker U,\quad R_U=\dim\ker\Lambda(U),\quad R_T=\dim\ker T,
+\]
+and $d=a-b$, $\tau=q^{-b}$, $\sigma=q^{-a}$.
+Rank and nullity have the same distances. The limiting nullity laws of independent-entry
+rectangular and alternating matrices, and the signed sequences describing the corrections, are
+\begin{gather}
+ \pi_d(k)=\frac{\gamma_\infty q^{-k(k+d)}}{\gamma_k\gamma_{k+d}},\qquad
+ \lambda_q(2k)=\frac{\theta_\infty q^{-k(2k-1)}}{\gamma_{2k}},\qquad \lambda_q(2k+1)=0,
+ \label{spn:eq:limit-laws}\\
+ \xi_d(k)=\frac{1+q^{-d}-q^k}{q-1}\,\pi_d(k),\qquad
+ \zeta_q(k)=\frac{q+1-q^k}{q^2-1}\,\lambda_q(k).\label{spn:eq:signed-laws}
+\end{gather}
+Both signed sequences have total mass zero and their only positive mass is at zero, so
+\begin{equation}\label{spn:eq:signed-norms}
+ \tfrac12\norm{\xi_d}_1=\xi_d(0)=\frac{q^{-d}\gamma_\infty}{(q-1)\gamma_d},\qquad
+ \tfrac12\norm{\zeta_q}_1=\zeta_q(0)=\frac{q\theta_\infty}{q^2-1};
+\end{equation}
+see \eqref{spn:eq:signed-moments} below. Finally put
+\[
+ c_q=\frac{\theta_\infty}{q^2-1}\bigl(q-(q+1)\eta_\infty\bigr)<0 .
+\]
 
-\begin{theorem}[Rank blindness for complementary nondegenerate frames; \stU]\label{spn:thm:nondeg-blind}
-In the setting of \cref{spn:thm:balanced}, let $b\to\infty$ and $a-b\to\infty$. Then
-\[
- \spnTV\bigl(\rank M(g),\rank Z\bigr)\le\frac{q^b-1}{q-1}
- \Bigl(q^{-a}+\frac{q^b-1}{q^{a+b}-1}\Bigr)=O_q(q^{b-a})\longrightarrow0,
-\]
-\[
- \spnTV\bigl(M(g),Z\bigr)\longrightarrow\Delta_q ,
-\]
-and the residual singularity test attains the full distance at every finite stage. For
-instance $\Delta_2=0.1306343467085051764310563857\ldots$.
+\begin{theorem}[Uniform rank and defect laws; \stU]\label{spn:thm:uniform-marginals}
+There is $C_q<\infty$, depending only on $q$, such that for all even $a\ge b\ge2$
+\begin{gather*}
+ \norm{\mathcal L(K_A)-\mathcal L(K_U)-\tau\xi_d}_1\le C_q\,q^{-a-b},\\
+ \norm{\mathcal L(R_U)-\mathcal L(R_T)-\sigma\zeta_q}_1\le C_q\,q^{-a-b}.
+\end{gather*}
+Consequently
+\begin{gather*}
+ \spnTV(\rank A,\rank U)=\frac{\gamma_\infty}{(q-1)\gamma_{a-b}}\,q^{-a}+O_q(q^{-a-b}),\\
+ \spnTV(R_U,R_T)=\frac{q\theta_\infty}{q^2-1}\,q^{-a}+O_q(q^{-a-b}),
+\end{gather*}
+and as $b\to\infty$ the test for full column rank is asymptotically optimal among all tests that
+use only the rank.
 \end{theorem}
 
-\begin{proof}
-For the full matrix apply \cref{spn:lem:alt-gram} with $2v=a$ and $Q=H_1^{-1}$: the law of
-$Z^{\spnT}H_1^{-1}Z$, and hence of its translate $S(Z)$, approaches $U_{\spnAlt}$ as $a-b\to\infty$.
-A uniform alternating matrix of size $b=2h$ is nonsingular with probability
-$A_b(h)q^{-D_b}=\theta_h$ by \eqref{spn:eq:alt-rank-count}, so
-$\spnP(S(Z)\text{ nonsingular})\to\theta_\infty$. Also $\eta_h\to\eta_\infty$ and
-$\Pi_{n,b}\to1$, since its factors start at $a/2+1$; \cref{spn:thm:balanced} gives the limit,
-which is positive because $\eta_\infty<1$.
+The coefficient of $q^{-a}$ in the rank distance lies between $\gamma_\infty/(q-1)$ and $1/(q-1)$,
+so the relative error is $O_q(q^{-b})$ even when $a-b$ grows arbitrarily fast; a remainder
+$O_q(q^{-2b})$ would not have this property. For $a=b$ the correction $\tau\xi_0$ has
+$\xi_0(k)=(2-q^k)\pi_0(k)/(q-1)$. Thus the rank of the block is exponentially close in law to that
+of a uniform matrix, at the sharp rate $q^{-\max(a,b)}$, and the nullity of the quadratic
+expression $\Lambda(U)$, whose entries are dependent, follows the alternating law to first order.
 
-For the ranks, the domain has $(q^b-1)/(q-1)$ lines. A fixed nonzero vector lies in the kernel of
-$Z$ with probability $q^{-a}$. Its image under $gX_0$ is uniform among the nonzero vectors of $V$,
-and it is killed by $Y^{\spnT}J$ exactly when it lies in $(\spnim Y)^\perp$, of dimension $b$,
-which has probability $(q^b-1)/(q^{a+b}-1)$. Union bounds over lines and comparison of both rank
-laws with the point mass at full column rank give the bound.
-\end{proof}
+\begin{remark}[An explicit rank bound for arbitrary frames]\label{spn:rem:rank-union}
+In the setting of \cref{spn:thm:balanced}, with arbitrary complementary nondegenerate frames
+$Y$ and $X_0$, at every size
+\[
+ \spnTV\bigl(\rank M(g),\rank Z\bigr)\le\frac{q^b-1}{q-1}\Bigl(q^{-a}+\frac{q^b-1}{q^{a+b}-1}\Bigr)
+ =O_q(q^{b-a}),
+\]
+and for the coordinate frames this reads $\spnTV(\rank A,\rank U)$. Indeed, the domain has
+$(q^b-1)/(q-1)$ lines. A fixed nonzero vector lies in the kernel of $Z$ with probability $q^{-a}$.
+Its image under $gX_0$ is uniform among the nonzero vectors of $V$, and it is killed by
+$Y^{\spnT}J$ exactly when it lies in $(\spnim Y)^\perp$, of dimension $b$, which has probability
+$(q^b-1)/(q^{a+b}-1)$. Union bounds over lines and comparison of both rank laws with the point
+mass at full column rank give the bound. In particular the rank of $M(g)$ carries no information
+in the limit $a-b\to\infty$, for every choice of frames.
+\end{remark}
 
-With equal prior probabilities the best probability of identifying the model from the whole
-matrix is $(1+\spnTV)/2$, which tends to $0.5653171734\ldots$ over $\F_2$, while every procedure
-that uses only the rank, randomized or not, has success probability tending to $1/2$.
+\begin{theorem}[Uniform full-matrix law; \stU]\label{spn:thm:uniform-full}
+For all positive even $a,b$:
+\begin{enumerate}
+\item $\spnTV(A,U)=(1-\alpha_{a,b})\spnP\bigl(\Lambda(U)\text{ nonsingular}\bigr)
+=(\alpha_{a,b}^{-1}-1)\spnP(B\text{ invertible})$;
+\item if $a\ge b$, then $\spnTV(A,U)=(1-\eta_{b/2})\theta_{b/2}+c_q\,q^{-a}+O_q(q^{-a-b})$;
+\item $\spnTV(A,U)=\Delta_q+c_q(q^{-a}+q^{-b})+O_q\bigl((q^{-a}+q^{-b})^2\bigr)$, without
+ordering $a$ and $b$.
+\end{enumerate}
+In particular $\spnTV(A,U)\to\Delta_q>0$ whenever $\min(a,b)\to\infty$, in every aspect ratio,
+while every rank statistic loses its power. For instance
+$\Delta_2=0.1306343467085051764310563857\ldots$.
+\end{theorem}
+
+The finite-product baseline in (2) matters for very tall blocks: its error is $O_q(q^{-a-b})$,
+whereas replacing it by $\Delta_q$ introduces a term of order $q^{-2b}$. With equal prior
+probabilities the best probability of identifying the model from the whole matrix is
+$\frac12+\frac12\spnTV(A,U)$, attained by declaring the symplectic model when
+$\det(J_b-M^{\spnT}J_aM)=0$; it tends to $0.5653171734\ldots$ over $\F_2$. The best success
+probability of any procedure that uses only the rank, randomized or not, is
+$\frac12+\gamma_\infty q^{-a}/(2(q-1)\gamma_{a-b})+O_q(q^{-a-b})$ for $a\ge b$.
+
+\begin{remark}[A fixed source]\label{spn:rem:fixed-source}
+If $b$ is fixed and $a\to\infty$, (1) gives $\spnTV(A,U)\to\theta_{b/2}(1-\eta_{b/2})$, since
+$\alpha_{a,b}\to\eta_{b/2}$ and $\Lambda(U)$ becomes uniform among alternating matrices
+(\cref{spn:lem:alt-gram}). Both dimensions must therefore grow for the universal constant
+$\Delta_q$. Comparing with \cref{spn:thm:complement-boundary} at $c=b/2$ identifies the complement
+discrepancy $\Delta_{q,b,b/2}=\theta_{b/2}(1-\eta_{b/2})$, in agreement with the values $1/8$ and
+$133/1024$ of the table there. By \cite[Theorem~4.9]{DeBoeckVandeVoorde2024Anzahl}, which counts
+nondegenerate subspaces disjoint from a given one, the probability in (1) also has the positive-term
+form
+\[
+ \spnP\bigl(\Lambda(U)\text{ nonsingular}\bigr)
+ =\sum_{m=0}^{h}\theta_{h-m}\,\frac{\eta_h}{\eta_m\eta_{h-m}}\,q^{-(a+1)m},
+\]
+since $\Lambda(A)=B^{\spnT}J_bB$ is nonsingular exactly when the image of the source frame is
+disjoint from the first summand. Its terms $m=0,1$ reproduce the first-order expansion of
+\eqref{spn:eq:defect-zero} below.
+\end{remark}
+
+\begin{theorem}[Joint law of ordinary and residual nullities; \stU]\label{spn:thm:joint-defect}
+Let $P_K$ and $P_R$ be the finite laws of $K_U$ and $R_U$. Uniformly for even $a\ge b\ge2$,
+\[
+ \norm{\mathcal L(K_U,R_U)-P_K\otimes P_R+\tau(q^2-1)\,\xi_d\otimes\zeta_q}_1\le C_q\,q^{-a-b},
+\]
+and consequently
+\[
+ \spnTV\bigl(\mathcal L(K_U,R_U),P_K\otimes P_R\bigr)
+ =\frac{2q\theta_\infty\gamma_\infty}{(q-1)\gamma_{a-b}}\,q^{-a}+O_q(q^{-a-b}).
+\]
+\end{theorem}
+
+Centering at the true finite marginals measures the dependence itself rather than a mixture of
+dependence and marginal convergence. The negative sign of the leading tensor at $(0,0)$ says that
+$U$ and $\Lambda(U)$ are simultaneously of full rank slightly less often than independence
+predicts.
+
+\begin{corollary}[Two bits carry the leading dependence; \stU]\label{spn:cor:xor}
+Let $E=\set{K_U=0}$, $F=\set{R_U=0}$ and $X=E\mathbin{\triangle}F$. Then
+\begin{gather*}
+ \operatorname{Cov}(\mathbf 1_E,\mathbf 1_F)
+ =-\frac{q\theta_\infty\gamma_\infty}{(q-1)\gamma_{a-b}}\,q^{-a}+O_q(q^{-a-b}),\\
+ \mathcal L(K_U,R_U)(X)-(P_K\otimes P_R)(X)
+ =\spnTV\bigl(\mathcal L(K_U,R_U),P_K\otimes P_R\bigr)+O_q(q^{-a-b}),
+\end{gather*}
+so the test that exactly one of $U$ and $\Lambda(U)$ has full rank is asymptotically optimal for
+detecting their dependence.
+\end{corollary}
 
 \begin{remark}[Finite enclosures]\label{spn:rem:enclosure}
-Let $a\ge b$, and let $\eps_{a,b}$ be the right side of the second bound in
-\cref{spn:lem:alt-gram} with $2v=a$. Then
+By \cref{spn:lem:corank-mix} with $\eps_{a,b}=\frac12q^{-a}\sqrt{\theta_h^{-1}-1}$ and
+\cref{spn:thm:uniform-full}(1),
 \[
- \Bigl(1-\frac{\eta_h}{\Pi_{n,b}}\Bigr)\max(0,\theta_h-\eps_{a,b})\le
- \spnTV\bigl(M(g),Z\bigr)\le
- \Bigl(1-\frac{\eta_h}{\Pi_{n,b}}\Bigr)\min(1,\theta_h+\eps_{a,b}),
+ (1-\alpha_{a,b})\max(0,\theta_h-\eps_{a,b})\le
+ \spnTV(A,U)\le(1-\alpha_{a,b})\min(1,\theta_h+\eps_{a,b})
 \]
-with no hypothesis beyond those of \cref{spn:thm:balanced}. For the constants, after $L$ factors
-the tails are $\sum_{j>L}q^{-2j}=q^{-2L}/(q^2-1)$ and
-$\sum_{j>L}q^{-(2j-1)}=q^{1-2L}/(q^2-1)$; a finite product times one minus its tail is a lower
-bound and the finite product an upper bound. With $L=48$ and outward rounding this gives:
+for all positive even $a,b$. For the constants, after $L$ factors the tails are
+$\sum_{j>L}q^{-2j}=q^{-2L}/(q^2-1)$ and $\sum_{j>L}q^{-(2j-1)}=q^{1-2L}/(q^2-1)$; a finite product
+times one minus its tail is a lower bound and the finite product an upper bound. With $L=48$ and
+outward rounding this gives:
 \begin{center}\small
 \begin{tabular}{rlrl}
 \toprule
@@ -2360,230 +2675,327 @@ $4$ & $0.04897471703346141005$ & $9$ & $0.01109398786238867742$\\
 \bottomrule
 \end{tabular}
 \end{center}
-At $q=2$, $(a,b)=(6,2)$ and ambient dimension eight the full distance is $273/2176$ and the rank
-distance $399/34816$.
 \end{remark}
 
-\paragraph{Square blocks.}
-The case $a=b$ has the same limit, with sharp rates for both statistics. Let $n=2m\ge2$, let $J$
-be a nondegenerate alternating $n\times n$ matrix, let $g$ be uniform in the symplectic group of
-$V=(\F_q^n,J)\perp(\F_q^n,J)$, and write its first $n$ columns as $(A;B)$ with
-$A,B\in\spnMat_n(\F_q)$. Let $U$ be uniform on $\spnMat_n(\F_q)$, let $T$ be uniform on
-$\spnAlt_n(\F_q)$, and put
-\[
- \Lambda(M)=J-M^{\spnT}JM,\qquad \alpha_n=\frac{\eta_m^2}{\eta_{2m}},\qquad
- F(k)=\sum_{d=k}^{2k}\spnqbin{2k}{d}{q}\frac{q^{-d(d+1)/2}}{\eta_{d-k}} .
-\]
-With $Y=X_0$ the first $n$ coordinate vectors, $H_1=H_0=J$, $M(g)=JA$ and $S(JA)=\Lambda(A)$, so
-this is the case $a=b=n$ of \cref{spn:thm:balanced}, with $\eta_h/\Pi_{n,n}=\alpha_n$. Each half
-of the decomposition is nondegenerate; with all position coordinates first, the first half would
-instead be Lagrangian, as in \cref{spn:sec:lagrangian}. The limiting nullity laws of square and of
-alternating matrices are
-\[
- \pi_q(k)=\frac{\gamma_\infty q^{-k^2}}{\gamma_k^2},\qquad
- \lambda_q(2k)=\frac{\theta_\infty q^{-k(2k-1)}}{\gamma_{2k}},\qquad \lambda_q(2k+1)=0,
-\]
-and we use the signed sequences
-\[
- \xi_q(k)=\frac{2-q^k}{q-1}\pi_q(k),\qquad
- \zeta_q(2k)=\frac{q+1-q^{2k}}{q^2-1}\lambda_q(2k),\qquad \zeta_q(2k+1)=0.
-\]
+The proofs occupy the rest of this subsection.
 
-\begin{theorem}[Square nondegenerate blocks; \stU]\label{spn:thm:square-block}
-Over every finite field:
-\begin{enumerate}
-\item The likelihood of $M$ is $\alpha_nF(k)$, where $2k$ is the nullity of $\Lambda(M)$; it is
-less than one exactly when $k=0$. The event $\set{\Lambda(M)\text{ singular}}$ is exactly
-optimal, and
-\[
- \spnTV(A,U)=(1-\alpha_n)\spnP\bigl(\Lambda(U)\text{ nonsingular}\bigr)
- =(\alpha_n^{-1}-1)\spnP(A\text{ invertible}).
-\]
-\item The nullity laws satisfy
-\[
- \sum_{k\ge0}\Bigl|\spnP(\dim\ker A=k)-\spnP(\dim\ker U=k)-q^{-n}\xi_q(k)\Bigr|=O_q(q^{-2n}),
-\]
-and consequently
-$\spnTV(\dim\ker A,\dim\ker U)=\dfrac{\gamma_\infty}{q-1}q^{-n}+O_q(q^{-2n})$.
-\item The full matrix laws satisfy
-\[
- \spnTV(A,U)=\Delta_q+\frac{2\theta_\infty}{q^2-1}\bigl(q-(q+1)\eta_\infty\bigr)q^{-n}+O_q(q^{-2n}),
-\]
-and the coefficient of $q^{-n}$ is negative.
-\end{enumerate}
-The constants implied by $O_q$ depend only on $q$.
-\end{theorem}
-
-\begin{theorem}[Sharp universality of the quadratic defect; \stU]\label{spn:thm:defect-universality}
-With $U$ and $T$ as above,
-\[
- \sum_{k\ge0}\Bigl|\spnP(\dim\ker\Lambda(U)=k)-\spnP(\dim\ker T=k)-q^{-n}\zeta_q(k)\Bigr|
- =O_q(q^{-2n}),
-\]
-and consequently
-$\spnTV(\dim\ker\Lambda(U),\dim\ker T)=\dfrac{q\theta_\infty}{q^2-1}q^{-n}+O_q(q^{-2n})$.
-\end{theorem}
-
-Thus the rank of $A$ is exponentially close in law to the rank of a uniform matrix, while one
-determinant, that of $J-A^{\spnT}JA$, keeps a fixed advantage; and the nullity of the quadratic
-expression $J-U^{\spnT}JU$, whose entries are dependent, follows the alternating law to first
-order. The ordinary kernel-isotropy obstruction of \cref{spn:thm:rank-blind} is replaced by this
-residual form. The proofs occupy the rest of this paragraph.
-
-\begin{proof}[Proof of \cref{spn:thm:square-block}(1)]
-The likelihood and the first expression for the distance are \cref{spn:thm:balanced}; its
-sign analysis gives $\alpha_nF(0)=\alpha_n<1$ and $\alpha_nF(k)>1$ for $k\ge1$. The Gram
-condition $A^{\spnT}JA+B^{\spnT}JB=J$ says $\Lambda(A)=B^{\spnT}JB$, which is nonsingular exactly
-when $B$ is invertible. Exchanging the two summands preserves the form, so $A$ and $B$ have the
-same law, and
-$\alpha_n\spnP(\Lambda(U)\text{ nonsingular})=\spnP(\Lambda(A)\text{ nonsingular})
-=\spnP(A\text{ invertible})$.
-\end{proof}
-
-\emph{Kernel moments.} For $0\le j\le n$ and $0\le2s\le j$ the number of $j$-subspaces of
-$(\F_q^n,J)$ on which $J$ restricts to rank $2s$ is
+\emph{Kernel moments.} For $0\le j\le b$ and $0\le2s\le j$ the number of $j$-subspaces of
+$(\F_q^b,J_b)$ on which $J_b$ restricts to rank $2s$ is
 \begin{equation}\label{spn:eq:type-count}
- N_n(j,s)=\frac{\spnEmb_m(j,s)}{\abs{\Sp_{2s}(\F_q)}\,\abs{\GL_{j-2s}(\F_q)}\,q^{2s(j-2s)}},
+ N_b(j,s)=\frac{\spnEmb_{b/2}(j,s)}{\abs{\Sp_{2s}(\F_q)}\,\abs{\GL_{j-2s}(\F_q)}\,q^{2s(j-2s)}},
 \end{equation}
 since the isometries of such a subspace are the block matrices
 $\left(\begin{smallmatrix}P&0\\R&S\end{smallmatrix}\right)$ with $P\in\Sp_{2s}$, $S\in\GL_{j-2s}$
 and $R$ arbitrary. Write $\spnqbin{x}{j}{q}$ for the number of $j$-subspaces of an
-$x$-dimensional space, so that $\spnE\spnqbin{\dim\ker A}{j}{q}$ counts expected
-$j$-subspaces of the kernel.
+$x$-dimensional space, so that $\spnE\spnqbin{K}{j}{q}$ is the expected number of $j$-subspaces of
+a kernel of dimension $K$.
 
 \begin{lemma}[Kernel moments; \stU]\label{spn:lem:block-moments}
-For $0\le j\le n$,
+For $0\le j\le b$,
 \begin{gather*}
- \mu_j=\spnE\spnqbin{\dim\ker A}{j}{q}=\sum_sN_n(j,s)\frac{\spnEmb_m(j,s)}{\spnEmb_n(j,s)},\qquad
- \mu_j^0=\spnE\spnqbin{\dim\ker U}{j}{q}=\spnqbin{n}{j}{q}q^{-nj},\\
- \nu_j=\spnE\spnqbin{\dim\ker\Lambda(U)}{j}{q}=q^{-2nj+j^2}\sum_sN_n(j,s)\spnEmb_m(j,s),\\
- \nu_j^0=\spnE\spnqbin{\dim\ker T}{j}{q}=\spnqbin{n}{j}{q}q^{-nj+j(j+1)/2}.
+ \mu_j=\spnE\spnqbin{K_A}{j}{q}=\sum_sN_b(j,s)\frac{\spnEmb_{b/2}(j,s)}{\spnEmb_{(a+b)/2}(j,s)},\qquad
+ \mu_j^0=\spnE\spnqbin{K_U}{j}{q}=\spnqbin{b}{j}{q}q^{-aj},\\
+ \nu_j=\spnE\spnqbin{R_U}{j}{q}=q^{-(a+b)j+j^2}\sum_sN_b(j,s)\spnEmb_{a/2}(j,s),\qquad
+ \nu_j^0=\spnE\spnqbin{R_T}{j}{q}=\spnqbin{b}{j}{q}q^{-bj+j(j+1)/2}.
 \end{gather*}
 \end{lemma}
 
 \begin{proof}
-A source $j$-subspace of restricted rank $2s$ is carried to a uniform one of the
-$\spnEmb_n(j,s)$ frames with its Gram matrix, and $A$ kills it exactly when that image lies in
-the second summand, which allows $\spnEmb_m(j,s)$ frames. For $U$, killing a $j$-subspace imposes
-$nj$ independent conditions. For the defect, fix a $j$-subspace $K$ of restricted rank $2s$. If
-$K\subseteq\ker\Lambda(U)$ and $Ux=0$ with $x\in K$, then $x^{\spnT}Jy=(Ux)^{\spnT}J(Uy)=0$ for all
-$y$, so $x=0$; thus $U|_K$ is an isometric injection, with $\spnEmb_m(j,s)$ choices, and then each
-of $n-j$ complementary basis vectors has $j$ independent prescribed pairings and $q^{n-j}$
-images. Dividing by $q^{n^2}$ gives $\nu_j$. For $T$, killing a $j$-subspace imposes
-$nj-j(j+1)/2$ independent conditions.
+The frame \eqref{spn:eq:block-frame} is injective, since its Gram matrix $J_b$ is nonsingular, and
+uniform among the frames with that Gram matrix (\cref{spn:lem:gram-frames}). A source $j$-subspace
+of restricted rank $2s$ is therefore carried to a uniform one of the $\spnEmb_{(a+b)/2}(j,s)$
+frames with its Gram matrix, and $A$ kills it exactly when that image lies in the second summand,
+which allows $\spnEmb_{b/2}(j,s)$ frames. For $U$, killing a $j$-subspace imposes $aj$ independent
+conditions. For the defect, fix a $j$-subspace $K$ of restricted rank $2s$. If
+$K\subseteq\ker\Lambda(U)$ and $Ux=0$ with $x\in K$, then
+$x^{\spnT}J_by=(Ux)^{\spnT}J_a(Uy)=0$ for all $y$, so $x=0$; thus $U|_K$ is an isometric
+injection, with $\spnEmb_{a/2}(j,s)$ choices, and then each of $b-j$ complementary basis vectors
+has $j$ independent prescribed pairings and $q^{a-j}$ images. Dividing by $q^{ab}$ gives $\nu_j$.
+For $T$, killing a $j$-subspace imposes $bj-j(j+1)/2$ independent conditions.
 \end{proof}
 
-Put $\tau=q^{-n}$, $m_j=q^{-j^2}/\gamma_j$ and $m'_j=q^{-j(j-1)/2}/\gamma_j$. For $D\in\set{n,2n}$
-let $\Phi_D(j,s)=\prod_{i=D/2-j+s+1}^{D/2}(1-q^{-2i})$ on the feasible range $j-s\le D/2$ and
+Put $m_j^{(d)}=q^{-j(j+d)}/\gamma_j$, $m'_j=q^{-j(j-1)/2}/\gamma_j$ and $Q_j=(q^j-1)/(q-1)$. For even
+$D$ let $\Phi_D(j,s)=\prod_{i=D/2-j+s+1}^{D/2}(1-q^{-2i})$ on the feasible range $j-s\le D/2$ and
 $\Phi_D(j,s)=0$ otherwise, so that $\spnEmb_{D/2}(j,s)=q^{Dj-\binom j2}\Phi_D(j,s)$ by
 \eqref{spn:eq:E-count}. Let $H$ be uniform on $\spnAlt_j(\F_q)$ with rank $2s$ and put
 $W(H)=(q^{2(j-s)}-1)/(q^2-1)$. A rank type of $H$ has probability
-\[
- \frac{\abs{\GL_j(\F_q)}}{q^{\binom j2}\abs{\Sp_{2s}(\F_q)}\abs{\GL_{j-2s}(\F_q)}q^{2s(j-2s)}},
-\]
-and substitution in \cref{spn:lem:block-moments} gives
+$\abs{\GL_j(\F_q)}/\bigl(q^{\binom j2}\abs{\Sp_{2s}(\F_q)}\abs{\GL_{j-2s}(\F_q)}q^{2s(j-2s)}\bigr)$,
+so $N_b(j,s)=q^{j(b-j)}\gamma_j^{-1}\spnP(\rank H=2s)\,\Phi_b(j,s)$, and
+\cref{spn:lem:block-moments} becomes
 \begin{equation}\label{spn:eq:unified-moments}
- \mu_j=m_j\spnE_H\frac{\Phi_n^2}{\Phi_{2n}},\quad \mu_j^0=m_j\spnE_H\Phi_n,\quad
- \nu_j=m'_j\spnE_H\Phi_n^2,\quad \nu_j^0=m'_j\spnE_H\Phi_n,
+ \mu_j=m_j^{(d)}\spnE_H\frac{\Phi_b^2}{\Phi_{a+b}},\quad \mu_j^0=m_j^{(d)}\spnE_H\Phi_b,\quad
+ \nu_j=m'_j\spnE_H\Phi_a\Phi_b,\quad \nu_j^0=m'_j\spnE_H\Phi_b,
 \end{equation}
-with $\Phi_D=\Phi_D(j,s)$. On the feasible range the omitted factors of $\Phi_n$ sum to exactly
-$\tau W(H)$ and those of $\Phi_{2n}$ to at most $\tau^2q^{2j}/(q^2-1)$; on the infeasible range
-$\Phi_n=0$ and $\tau W(H)\ge1$. Hence, uniformly for $j\le n$,
-$\Phi_n=1-\tau W(H)+O_q(\tau^2q^{4j})$ and $\Phi_{2n}=1+O_q(\tau^2q^{2j})$, with
-$\Phi_{2n}\ge\eta_\infty$, so
+with $\Phi_D=\Phi_D(j,s)$; for $j\le b\le a$ every type is feasible in dimension $a+b$ and
+$\Phi_{a+b}\ge\eta_\infty$. On the feasible range the omitted factors of $\Phi_D$ sum to exactly
+$q^{-D}W(H)$, so $0\le\prod(1-x_i)-1+\sum x_i\le\frac12(\sum x_i)^2$ gives
+$0\le1-\Phi_D\le q^{-D}W(H)$ and $\Phi_D=1-q^{-D}W(H)+O_q(q^{-2D}q^{4j})$; on the infeasible range
+$\Phi_D=0$ and $q^{-D}W(H)\ge1$, and the same bounds hold. A fixed nonzero vector is killed by $H$
+with probability $q^{-(j-1)}$, so $\spnE_Hq^{\dim\ker H}=1+(q^j-1)q^{1-j}$ and, as
+$2(j-s)=j+\dim\ker H$, $\spnE_HW(H)=Q_j$. Writing
+$\Phi_b^2/\Phi_{a+b}-\Phi_b=(\Phi_b-1)+(\Phi_b-1)^2+\Phi_b^2(\Phi_{a+b}^{-1}-1)$ with
+$\abs{\Phi_{a+b}^{-1}-1}\le\eta_\infty^{-1}\sigma\tau W$, and
+$\Phi_b(\Phi_a-1)=(\Phi_a-1)+(\Phi_b-1)(\Phi_a-1)$ with $\sigma\le\tau$, gives for $1\le j\le b$
 \begin{equation}\label{spn:eq:first-moment-expansion}
- \mu_j-\mu_j^0=-\tau m_j\frac{q^j-1}{q-1}+O_q(\tau^2m_jq^{4j}),\qquad
- \nu_j-\nu_j^0=-\tau m'_j\frac{q^j-1}{q-1}+O_q(\tau^2m'_jq^{4j}),
+ \mu_j-\mu_j^0=-\tau m_j^{(d)}Q_j+O_q\Bigl(\sigma\tau\frac{q^{-j^2+4j}}{\gamma_j}\Bigr),\qquad
+ \nu_j-\nu_j^0=-\sigma m'_jQ_j+O_q(\sigma\tau m'_jq^{4j}),
 \end{equation}
-because a fixed nonzero vector is killed by $H$ with probability $q^{-(j-1)}$, so
-$\spnE_Hq^{\dim\ker H}=1+(q^j-1)q^{1-j}$ and $\spnE_HW(H)=(q^j-1)/(q-1)$.
+while both differences vanish at $j=0$. The first remainder is where uniformity in $d$ enters: the
+available bound $\tau^2m_j^{(d)}q^{4j}$ is at most $\sigma\tau q^{-j^2+4j}/\gamma_j$ because
+$q^{-jd}\le q^{-d}$ for $j\ge1$ and $\tau^2q^{-d}=\sigma\tau$.
 
-The Gaussian moments of $\pi_q$ and $\lambda_q$ are $m_j$ and $m'_j$; this follows from the
-displayed formulas by counting matrices of fixed rank, or forms with a fixed radical, and letting
-the size tend to infinity, the tails justifying termwise limits. The identity
-$(q^x-q^j)\spnqbin xjq=q^j(q^{j+1}-1)\spnqbin x{j+1}q$ and the relations
-$(q^{j+1}-1)m_{j+1}=q^{-j}m_j$, $(q^{j+1}-1)m'_{j+1}=qm'_j$ show that the tilted laws
-$(q^k-1)\pi_q(k)$ and $q^k\lambda_q(k)/(q+1)$ have Gaussian moments $q^jm_j$ and $q^jm'_j$.
-Consequently
-\begin{equation}\label{spn:eq:signed-moments}
- \sum_k\spnqbin kjq\xi_q(k)=-m_j\frac{q^j-1}{q-1},\qquad
- \sum_k\spnqbin kjq\zeta_q(k)=-m'_j\frac{q^j-1}{q-1},
+Counting matrices by their kernel, and alternating forms by their radical, the nullity of a uniform
+$(m+d)\times m$ matrix has the law
+\begin{equation}\label{spn:eq:finite-rect}
+ \pi_{m,d}(k)=q^{-k(k+d)}\frac{\gamma_{m+d}\gamma_m}{\gamma_k\gamma_{k+d}\gamma_{m-k}}\qquad
+ (0\le k\le m),
 \end{equation}
-matching the first-order terms of \eqref{spn:eq:first-moment-expansion}.
+and \eqref{spn:eq:finite-alt} holds; their tails are at most $C_qq^{-k(k+d)}$ and
+$C_qq^{-k(2k-1)}$, so the limits \eqref{spn:eq:limit-laws} are probability laws whose Gaussian
+moments $\sum_k\spnqbin kjq\pi_d(k)=m_j^{(d)}$ and $\sum_k\spnqbin kjq\lambda_q(k)=m'_j$ are the
+limits of the finite kernel counts $\spnqbin mjqq^{-(m+d)j}$ and $\spnqbin{2h}jqq^{-2hj+j(j+1)/2}$.
+The identity $(q^k-q^j)\spnqbin kjq=q^j(q^{j+1}-1)\spnqbin k{j+1}q$ and the relations
+$(q^{j+1}-1)m_{j+1}^{(d)}=q^{-j-d}m_j^{(d)}$, $(q^{j+1}-1)m'_{j+1}=qm'_j$ show that the
+$q^k$-tilted moments of $\pi_d$ and $\lambda_q$ are $(q^j+q^{-d})m_j^{(d)}$ and $(q+1)q^jm'_j$, so
+\begin{equation}\label{spn:eq:signed-moments}
+ \sum_k\spnqbin kjq\xi_d(k)=-m_j^{(d)}Q_j,\qquad
+ \sum_k\spnqbin kjq\zeta_q(k)=-m'_jQ_j,
+\end{equation}
+matching the first-order terms of \eqref{spn:eq:first-moment-expansion}; the case $j=0$ gives
+total mass zero, and $1+q^{-d}-q^k\le0$ for $k\ge1$ and $q+1-q^k<0$ for $k\ge2$ give
+\eqref{spn:eq:signed-norms}.
 
 \begin{lemma}[Interpolation; \stU]\label{spn:lem:interpolation}
-For $0\le k\le n$ let $L_{k,n}(x)=\prod_{0\le j\le n,\,j\ne k}(x-q^j)/(q^k-q^j)$, which equals the
-indicator of $\set{z=k}$ at $x=q^z$, $0\le z\le n$. Then
-$\abs{[x^i]L_{k,n}}\le\gamma_\infty^{-3}q^{-k(k+1)/2}q^{-i(i-1)/2}$ for every $i$. The analogous
-polynomial $L^{\mathrm{ev}}_{k,m}$ on the grid $1,q^2,\dots,q^{2m}$, indicating nullity $2k$,
-satisfies $\abs{[x^i]L^{\mathrm{ev}}_{k,m}}\le\eta_\infty^{-3}q^{-k(k+1)}q^{-i(i-1)}$.
+For $0\le k\le N$ let $L_{k,N}(x)=\prod_{0\le j\le N,\,j\ne k}(x-q^j)/(q^k-q^j)$, which equals the
+indicator of $\set{z=k}$ at $x=q^z$, $0\le z\le N$, and let $L^{\mathrm{ev}}_{k,h}$ be the analogous
+polynomial on the grid $1,q^2,\dots,q^{2h}$, indicating nullity $2k$. Then for every $i$
+\[
+ \abs{[x^i]L_{k,N}}\le\gamma_\infty^{-3}q^{-k(k+1)/2}q^{-i(i-1)/2},\qquad
+ \abs{[x^i]L^{\mathrm{ev}}_{k,h}}\le\eta_\infty^{-3}q^{-k(k+1)}q^{-i(i-1)},
+\]
+and for $z>N$, respectively even $z>2h$,
+\[
+ \abs{L_{k,N}(q^z)}\le\gamma_\infty^{-2}q^{Nz-N(N+1)/2-k(k-1)/2},\qquad
+ \abs{L^{\mathrm{ev}}_{k,h}(q^z)}\le\eta_\infty^{-2}q^{hz-h(h+1)-k(k-1)}.
+\]
 \end{lemma}
 
 \begin{proof}
-Writing the factors as multiples of $1-xq^{-j}$, the constant prefactor of $L_{k,n}$ has
-absolute value $q^{-k(k+1)/2}/(\gamma_k\gamma_{n-k})$. The sum of the products of $i$ distinct
+Writing the factors as multiples of $1-xq^{-j}$, the constant prefactor of $L_{k,N}$ has
+absolute value $q^{-k(k+1)/2}/(\gamma_k\gamma_{N-k})$. The sum of the products of $i$ distinct
 members of $1,q^{-1},q^{-2},\dots$ is $q^{-i(i-1)/2}/\gamma_i$, by removing the staircase
 $0,1,\dots,i-1$ and summing the nonnegative gaps; this bounds the coefficients after one index is
-omitted. Replacing $q$ by $q^2$ gives the even case.
+omitted. For the values, bound each numerator factor by $q^z$ and use
+$\prod_{j\ne k}\abs{q^k-q^j}=q^{N(N+1)/2+k(k-1)/2}\gamma_k\gamma_{N-k}$. Replacing $q$ by $q^2$ gives
+the even case.
 \end{proof}
 
-\begin{proof}[Proof of \cref{spn:thm:square-block}(2) and \cref{spn:thm:defect-universality}]
 Counting maps $\F_q^i\to\F_q^z$ by their images gives
-$q^{iz}=\sum_{j=0}^i\bigl(\prod_{h=0}^{j-1}(q^i-q^h)\bigr)\spnqbin zjq$. Let $\rho$ be the signed
-measure $\mathcal L(\dim\ker A)-\mathcal L(\dim\ker U)-\tau\xi_q$. By
-\eqref{spn:eq:first-moment-expansion} and \eqref{spn:eq:signed-moments}, for $i\le n$ its $i$th
-power moment $\int q^{iz}\,\dd\rho$ is at most
-$C_q\tau^2\sum_{j\le i}q^{-j^2+(i+4)j}\le C'_q\tau^2q^{(i+4)^2/4}$ in absolute value, by completing
-the square. Pairing with the coefficients of $L_{k,n}$ (\cref{spn:lem:interpolation}) leaves a
-convergent series with exponent $-i^2/4+5i/2+4$, so for $k\le n$ the mass of $\rho$ at $k$ is
-$O_q(\tau^2q^{-k(k+1)/2})$, apart from the contribution of $\xi_q$ beyond the grid. For $z>n$,
-$\abs{L_{k,n}(q^z)}\le\gamma_\infty^{-2}q^{nz-n(n+1)/2-k(k-1)/2}$ and
-$\abs{\xi_q(z)}\le C_qq^{-z^2+z}$, so this contribution summed over $z>n$ and $k\le n$ is
-$O_q(q^{-n(n+1)/2})$, and after multiplication by $\tau$ it is $O_q(\tau^2)$; the masses of
-$\tau\xi_q$ beyond $n$ are smaller still. Summing over $k$ proves the expansion in
-\cref{spn:thm:square-block}(2).
+\begin{equation}\label{spn:eq:power-conversion}
+ q^{iz}=\sum_{j=0}^i\Bigl(\prod_{r=0}^{j-1}(q^i-q^r)\Bigr)\spnqbin zjq .
+\end{equation}
 
-For the defect, the corresponding power-moment remainder is at most $C_q\tau^2q^{i(i+9)/2}$, and
-the even-grid coefficients leave the convergent exponent $-i^2/2+11i/2$. At even $z>n$,
-$\abs{L^{\mathrm{ev}}_{k,m}(q^z)}\le\eta_\infty^{-2}q^{mz-m(m+1)-k(k-1)}$ and
-$\abs{\zeta_q(z)}\le C_qq^{-z(z-3)/2}$, so the contribution beyond the grid is
-$O_q(q^{-n-n^2/4+1})$ after multiplication by $\tau$, which is $O_q(\tau^2)$ for large $n$; the
-finitely many small $n$ are absorbed in the constant.
+\begin{proof}[Proof of \cref{spn:thm:uniform-marginals}]
+Let $\rho=\mathcal L(K_A)-\mathcal L(K_U)-\tau\xi_d$. By \eqref{spn:eq:first-moment-expansion} and
+\eqref{spn:eq:signed-moments} its $j$th Gaussian moment vanishes at $j=0$ and is at most
+$C_q\sigma\tau q^{-j^2+4j}$ for $1\le j\le b$, so by \eqref{spn:eq:power-conversion} its $i$th power
+moment, $i\le b$, is at most $C_q\sigma\tau\sum_{j\le i}q^{-j^2+(i+4)j}\le C'_q\sigma\tau q^{(i+4)^2/4}$
+in absolute value. Pairing with the coefficients of $L_{k,b}$ leaves the convergent exponent
+$-i^2/4+5i/2+4$, so $\abs{\sum_zL_{k,b}(q^z)\rho(z)}\le C_q\sigma\tau q^{-k(k+1)/2}$. Beyond the grid
+only $-\tau\xi_d$ survives, and $\abs{\xi_d(z)}\le C_qq^{-d}q^{-z^2+z}$ for $z\ge1$ uniformly in $d$;
+with $z=b+1+t$ the tail bound of \cref{spn:lem:interpolation} leaves the exponent $-(b+1)t-t^2$, so
+$\sum_{k\le b}\abs{\sum_{z>b}L_{k,b}(q^z)\xi_d(z)}\le C_qq^{-d}q^{-b(b+1)/2}$, and after
+multiplication by $\tau$ this is $O_q(\sigma\tau)$; so is the mass $\tau\sum_{z>b}\abs{\xi_d(z)}$.
+Summing over $k$ proves the rank expansion.
 
-Both signed sequences have total mass zero (the case $j=0$ of \eqref{spn:eq:signed-moments}). The
-only positive mass of $\xi_q$ is at $k=0$, of size $\gamma_\infty/(q-1)$, since $2-q^k\le0$ for
-$k\ge1$; that of $\zeta_q$ is at $k=0$, of size $q\theta_\infty/(q^2-1)$. As
-$\bigl|\frac12\sum\abs{x+y}-\frac12\sum\abs x\bigr|\le\frac12\sum\abs y$, the two distances
-follow.
+For the defect let $\rho'=\mathcal L(R_U)-\mathcal L(R_T)-\sigma\zeta_q$, supported on even
+nullities. For $i\le h$ its power-moment remainder is at most
+$C_q\sigma\tau\sum_{j\le i}q^{-j(j-1)/2+(i+4)j}\le C'_q\sigma\tau q^{i(i+9)/2}$, the terms increasing
+by a factor at least $q^5$ up to $j=i$, and the even-grid coefficients leave the convergent exponent
+$-i^2/2+11i/2$, so $\abs{\sum_zL^{\mathrm{ev}}_{k,h}(q^z)\rho'(z)}\le C_q\sigma\tau q^{-k(k+1)}$. For
+even $z\ge2$, $\abs{\zeta_q(z)}\le C_qq^{-z(z-3)/2}$; with $z=2h+2+2t$ the exponent of the
+interpolated tail is $1-h^2$ at $t=0$ and decreases quadratically, so after multiplication by
+$\sigma$ the tail is at most $C_q\sigma q^{1-h^2}\le C'_q\sigma q^{-2h}=C'_q\sigma\tau$, because
+$1-h^2+2h\le2$; the direct tail mass is smaller. This proves the defect expansion.
+
+Finally $\abs{\frac12\norm{x+y}_1-\frac12\norm x_1}\le\frac12\norm y_1$ and
+\eqref{spn:eq:signed-norms} give the two distances, and since the only positive mass of $\xi_d$ is
+at zero, the event of full column rank attains the leading term.
 \end{proof}
 
-\begin{proof}[Proof of \cref{spn:thm:square-block}(3)]
-The product tails give $\alpha_n=\eta_\infty(1+2\tau/(q^2-1)+O_q(\tau^2))$, and part (2) gives
-$\spnP(A\text{ invertible})=\gamma_n+\tau\xi_q(0)+O_q(\tau^2)
-=\gamma_\infty(1+2\tau/(q-1)+O_q(\tau^2))$. Insert these in part (1). The coefficient of $\tau$
-is negative because $\eta_\infty>q/(q+1)$: for $q>2$ this follows from
+\begin{proof}[Proof of \cref{spn:thm:uniform-full}]
+Part~(1) is \cref{spn:thm:balanced}. The Gram condition \eqref{spn:eq:block-frame} says
+$\Lambda(A)=B^{\spnT}J_bB$, which is nonsingular exactly when $B$ is invertible, and on that event the
+likelihood is the constant $\alpha_{a,b}$, so
+$\spnP(B\text{ invertible})=\alpha_{a,b}\spnP(\Lambda(U)\text{ nonsingular})$.
+
+For (2) let $a\ge b$. Since $\spnP(R_T=0)=\theta_{b/2}$, \cref{spn:thm:uniform-marginals} at
+nullity zero gives
+\begin{equation}\label{spn:eq:defect-zero}
+ \spnP\bigl(\Lambda(U)\text{ nonsingular}\bigr)=\theta_{b/2}+\sigma\frac{q\theta_\infty}{q^2-1}
+ +O_q(\sigma\tau).
+\end{equation}
+The ratio $\eta_{a/2}/\eta_{(a+b)/2}$ is the reciprocal of a product whose omitted factors sum to
+$\sigma(1-\tau)/(q^2-1)$, so $\alpha_{a,b}=\eta_{b/2}\bigl(1+\sigma/(q^2-1)+O_q(\sigma\tau)\bigr)$.
+Substituting in (1),
+\[
+ \spnTV(A,U)=(1-\eta_{b/2})\theta_{b/2}
+ +\frac{\sigma}{q^2-1}\bigl((1-\eta_{b/2})q\theta_\infty-\eta_{b/2}\theta_{b/2}\bigr)+O_q(\sigma\tau),
+\]
+and replacing the finite products in the coefficient by their limits costs $O_q(\sigma\tau)$.
+The product tails give $\eta_{b/2}=\eta_\infty(1+\tau/(q^2-1)+O_q(\tau^2))$ and
+$\theta_{b/2}=\theta_\infty(1+q\tau/(q^2-1)+O_q(\tau^2))$, hence
+$(1-\eta_{b/2})\theta_{b/2}=\Delta_q+c_q\tau+O_q(\tau^2)$, which is (3) for $a\ge b$; (3) without
+ordering is also the case $e=0$ of \cref{spn:cor:offset-first}, and the transpose of
+$Y^{\spnT}JgX_0$ is $-X_0^{\spnT}Jg^{-1}Y$ with $g^{-1}$ again uniform. Finally
+$c_q<0$ because $\eta_\infty>q/(q+1)$: for $q>2$ this follows from
 $\eta_\infty\ge(q^2-2)/(q^2-1)$, and for $q=2$ the product inequality is strict, so
 $\eta_\infty>2/3$.
 \end{proof}
 
-The defect nullity is classical to first order, but the full Gram matrix $U^{\spnT}JU$ is not
-asymptotically uniform among alternating matrices: its likelihood relative to $T$ at corank $2k$
-is $\eta_mF(k)$, which depends on $k$ for all $n$. The proof above counts kernels of the
-translated defect directly. Conditional on $K\subseteq\ker\Lambda(U)$ for a $j$-subspace $K$ of
-restricted rank $2s$, the nullity of $U$ has the law of the nullity of a uniform square matrix of
-size $n-2j+2s$; inverting in $j$ gives the joint law of the two nullities, and tilting it by the
-likelihood recovers the law of $\dim\ker A$ by a second route.
+For the joint law, the conditioning that defines the defect moments leaves an independent uniform
+matrix of smaller size.
 
-For $q=2$ and $n=24$ the exact rank distance is $1.72131\cdot10^{-8}$, and the full
-distance is $0.1306343456$. Exhaustive enumeration of all pairs $(A,B)$ gives, for
-$(q,n)$ equal to $(2,2)$, $(2,4)$, $(3,2)$, $(4,2)$ and $(5,2)$, full distances $1/8$, $6767/52224$, $19/270$, $49/1088$,
-$101/3250$ and rank distances $1/8$, $1087/52224$, $11/270$, $19/1088$, $29/3250$, the case
-$q=4$ in genuine $\F_4$ arithmetic; exact rational evaluation of the laws, moment inversion and
-the joint-law reconstruction cover all even $n\le24$ for $q\in\set{2,3,4,5}$. For the rectangular
-theorems, enumeration of $329{,}957$ frame pairs over $\F_2$, $\F_3$ and $\F_4$ checks the
-boundary likelihood signs and the optimal-test identity, and enumeration over $\F_2$ and $\F_3$
-checks \cref{spn:thm:complement-boundary} on $85$ Gram-matrix comparisons and $5$ exact boundary
-distances.\footnote{\raggedright\artifact{nondegenerate_symplectic_blocks_2026-11-27/results/exhaustive.json},
+\begin{lemma}[Finite rectangular nullity laws; \stU]\label{spn:lem:finite-rect}
+For all integers $m,d\ge0$,
+$\norm{\pi_{m,d}-\pi_d-q^{-m}\xi_d}_1\le C_q\,q^{-2m-d}$.
+\end{lemma}
+
+\begin{proof}
+Put $t=q^{-m}$ and $\epsilon=q^{-d}$. For $0\le k\le m$,
+$\pi_{m,d}(k)/\pi_d(k)=\prod_{i=m-k+1}^m(1-q^{-i})/\prod_{i>m+d}(1-q^{-i})$, and the product
+inequality gives
+$\pi_{m,d}(k)/\pi_d(k)=1+t(1+\epsilon-q^k)/(q-1)+O_q\bigl(t^2((q^k-1)^2+\epsilon(q^k-1)+\epsilon^2)\bigr)$
+uniformly, every reciprocal product being at most $\gamma_\infty^{-1}$. At $k=0$ the error is
+$O_q(t^2\epsilon^2)$, and for $k\ge1$, $\pi_d(k)\le C_q\epsilon q^{-k^2}$, so the weighted errors
+sum to $O_q(t^2\epsilon)$. For $k>m$ the finite law vanishes, and
+$\pi_d(k)\le C_q\epsilon q^{-k^2}$, $\abs{\xi_d(k)}\le C_q\epsilon q^{-k^2+k}$ bound the tails of
+$\pi_d+t\xi_d$ by $C_qt^2\epsilon$.
+\end{proof}
+
+\begin{lemma}[Conditioning on a residual radical; \stU]\label{spn:lem:conditional}
+Let $K\le\F_q^b$ be a $j$-subspace on which $J_b$ has rank $2s$. Whenever the event has positive
+probability, the conditional law of $\dim\ker U$ given $K\subseteq\ker\Lambda(U)$ is
+$\pi_{b-2j+2s,d}$.
+\end{lemma}
+
+\begin{proof}
+Write $K=S\oplus R$ with $S$ nondegenerate of dimension $2s$ and $R$ the radical, of dimension
+$r=j-2s$; choose dual partners $R^*$ and complete to
+$\F_q^b=S\perp(R\oplus R^*)\perp W_0$ with $\dim W_0=b-2j+2s$. The condition says
+$\langle Ux,Uy\rangle_a=\langle x,y\rangle_b$ for $x\in K$ and all $y$, so $U|_K$ is an isometric
+injection, as in \cref{spn:lem:block-moments}. Fix it, and make the corresponding choices in the
+target, with residual space $W_1$ of dimension $a-2j+2s$. In the decompositions ordered as
+$S,R,R^*,W_0$ and $U(S),U(R),U(R)^*,W_1$ the admissible extensions are exactly
+\[
+ U=\begin{pmatrix}I_{2s}&0&0&0\\0&I_r&C&E\\0&0&I_r&0\\0&0&G&F\end{pmatrix}
+\]
+with $C,E,G,F$ arbitrary: pairings with $S$ fix the first block row and pairings with $R$ fix the
+third, and nothing constrains pairings between two vectors outside $K$. So the free entries are
+independent and uniform, and $t\mapsto(0,-Et,0,t)$ identifies $\ker F$ with $\ker U$, where $F$ is a
+uniform $(a-2j+2s)\times(b-2j+2s)$ matrix. This law does not depend on the chosen injection.
+\end{proof}
+
+\begin{proof}[Proof of \cref{spn:thm:joint-defect}]
+Let $\mathcal C=\mathcal L(K_U,R_U)-P_K\otimes P_R$, and regard its Gaussian moment in the second
+coordinate as an element $v_j$ of $\ell^1(\N_0)$ in the first. By \cref{spn:lem:conditional} and
+the count behind $\nu_j$, for $j\le h$, where every type is feasible,
+\[
+ v_j=m'_j\spnE_H\bigl[\Phi_a\Phi_b\,(\pi_{b-r,d}-\pi_{b,d})\bigr],\qquad r=2(j-s),
+\]
+since $P_K=\pi_{b,d}$; also $v_0=0$. By \cref{spn:lem:finite-rect},
+$\pi_{b-r,d}-\pi_{b,d}=\tau(q^r-1)\xi_d+O_{\ell^1}(\sigma\tau q^{2r})$ with constants depending only on
+$q$. Replacing $\Phi_a\Phi_b$ by one in the leading term costs
+$O_{\ell^1}(\sigma\tau m'_jq^{4j})$, since $\norm{\xi_d}_1=O_q(q^{-d})$,
+$1-\Phi_a\Phi_b\le2\tau W$ and $q^r-1=(q^2-1)W$; and $\spnE_HW=Q_j$. Hence
+\[
+ v_j=\tau(q^2-1)Q_jm'_j\,\xi_d+O_{\ell^1}(\sigma\tau m'_jq^{4j}),
+\]
+and by \eqref{spn:eq:signed-moments} the leading term is the Gaussian moment of
+$-\tau(q^2-1)\xi_d\otimes\zeta_q$. The interpolation estimates used for the defect law hold
+verbatim for sequences with values in a normed space, with norms in place of absolute values. So
+the even-grid argument applies to $\mathcal C+\tau(q^2-1)\xi_d\otimes\zeta_q$ with values in
+$\ell^1(\N_0)$: its Gaussian moment errors have the bounds used for $\rho'$, and its tail beyond the
+grid is multiplied by $\tau\norm{\xi_d}_1=O_q(\sigma)$, contributing
+$O_q(\sigma q^{1-h^2})=O_q(\sigma\tau)$. The first coordinate is already summed in the norm, so no
+second inversion is needed. This proves the expansion. Half the $\ell^1$ norm of the leading
+tensor is $\frac12\tau(q^2-1)\norm{\xi_d}_1\norm{\zeta_q}_1$, which by \eqref{spn:eq:signed-norms}
+is the stated leading term.
+\end{proof}
+
+A second proof computes the mixed Gaussian moments directly: by \cref{spn:lem:conditional},
+$\spnE\bigl[\spnqbin{K_U}iq\spnqbin{R_U}jq\bigr]=m_i^{(d)}m'_j\spnE_H\bigl[\Phi_a\Phi_b
+\Psi_{b-2j+2s}(i)\bigr]$ with $\Psi_D(i)=\prod_{r<i}(1-q^{r-D})$, and two interpolations, on the
+ordinary and on the even grid, recover the joint law with the same remainder.
+
+\begin{proof}[Proof of \cref{spn:cor:xor}]
+The $(0,0)$ entry of the expansion gives
+$\operatorname{Cov}(\mathbf 1_E,\mathbf 1_F)=\mathcal C(E\cap F)=-\tau(q^2-1)\xi_d(0)\zeta_q(0)
++O_q(\sigma\tau)$. Since $\mathcal C$ has zero marginals, $\mathcal C(E\cap F^c)=\mathcal C(E^c\cap
+F)=-\mathcal C(E\cap F)$, so $\mathcal C(X)=-2\mathcal C(E\cap F)$, which is the leading term of
+\cref{spn:thm:joint-defect}.
+\end{proof}
+
+For $a=b$ the Gram matrix $U^{\spnT}J_aU$ itself is not asymptotically uniform among alternating
+matrices: its density relative to $T$ at corank $2k$ is $\eta_{b/2}F(k)$, with $F(k)$ the sum in
+\cref{spn:thm:balanced}, which depends on $k$ for all $b$; for $a-b\to\infty$ it is
+(\cref{spn:lem:alt-gram}). Tilting the joint law by the likelihood recovers the law of $K_A$ by a
+second route.
+
+\paragraph{Exact checks.} Exact rational evaluation of the laws by the subspace counts and
+triangular moment inversion, exact joint laws by mixed moments, and element-level enumeration of
+all pairs $(A,B)$ in small cases, grouping $B$ by $B^{\spnT}J_bB$ and not using the embedding or
+moment formulas, agree with the theorems in every case tested; the cases $q=4$ use genuine $\F_4$
+arithmetic. Enumerated cases give:
+\begin{center}\small
+\begin{tabular}{rrrccc}
+\toprule
+$q$&$a$&$b$&$\spnTV(A,U)$&$\spnTV(\rank A,\rank U)$&$\spnTV(\mathcal L(K_U,R_U),P_K\otimes P_R)$\\
+\midrule
+$2$&$2$&$2$&$1/8$&$1/8$&$15/32$\\
+$2$&$4$&$2$&$85/672$&$115/2688$&$345/2048$\\
+$2$&$4$&$4$&$6767/52224$&$1087/52224$&$1959705/33554432$\\
+$2$&$6$&$2$&$273/2176$&$399/34816$&$5985/131072$\\
+$3$&$2$&$2$&$19/270$&$11/270$&$176/729$\\
+$3$&$4$&$2$&$1630/22113$&$1070/199017$&$17120/531441$\\
+$4$&$4$&$2$&$13073/279552$&$5423/4472832$&\\
+\bottomrule
+\end{tabular}
+\end{center}
+and for $(q,a,b)$ equal to $(4,2,2)$ and $(5,2,2)$ the full and rank distances are $49/1088$,
+$19/1088$ and $101/3250$, $29/3250$. Over $\F_2$ along the gap-two sequence the exact distances
+are:
+\begin{center}\small
+\begin{tabular}{rrll}
+\toprule
+$a$&$b$&$\spnTV(\rank A,\rank U)$&$\spnTV(A,U)$\\
+\midrule
+$6$&$4$&$1.1816321888\cdot10^{-2}$&$0.129825251831$\\
+$10$&$8$&$7.5131145533\cdot10^{-4}$&$0.130589162483$\\
+$18$&$16$&$2.9376932110\cdot10^{-6}$&$0.130634171739$\\
+$26$&$24$&$1.1475407711\cdot10^{-8}$&$0.130634346025$\\
+$50$&$48$&$6.8398761046\cdot10^{-16}$&$0.130634346709$\\
+\bottomrule
+\end{tabular}
+\end{center}
+For the binary $26\times24$ block the leading rank term of \cref{spn:thm:uniform-marginals} differs
+from the exact rank distance by a relative $1.49\cdot10^{-8}$, the defect distance is
+$4.1666\cdot10^{-9}$ and the joint-versus-product distance $1.9252\cdot10^{-8}$. For binary
+$48\times24$ and $64\times32$ blocks the rank distances are $3.5527\cdot10^{-15}$ and
+$5.4210\cdot10^{-20}$, while the full distances are $0.1306343462$ and $0.1306343467$; for $q=2$
+and $a=b=24$ the rank distance is $1.72131\cdot10^{-8}$. Enumeration of $329{,}957$ frame pairs
+over $\F_2$, $\F_3$ and $\F_4$ checks the likelihood signs and the optimal-test identity, and
+enumeration over $\F_2$ and $\F_3$ checks \cref{spn:thm:complement-boundary} on $85$ Gram-matrix
+comparisons and $5$ exact boundary
+distances.\footnote{\raggedright\artifact{uniform_symplectic_blocks/results/exhaustive_results.json},
+\artifact{uniform_symplectic_blocks/results/exact_distances.csv},
+\artifact{rectangular_symplectic_blocks/results/exact_laws.json},
+\artifact{rectangular_symplectic_blocks/results/joint_exact.json},
+\artifact{rectangular_symplectic_blocks/results/independent_enumeration.json},
+\artifact{rectangular_symplectic_blocks/results/constant_enclosures.json},
+\artifact{grh_uniform_extensions_2026-11-27/data/symplectic_checks.csv},
+\artifact{grh_uniform_extensions_2026-11-27/data/symplectic_verification.json},
+\artifact{nondegenerate_symplectic_blocks_2026-11-27/results/exhaustive.json},
 \artifact{nondegenerate_symplectic_blocks_2026-11-27/results/exact_distances.csv},
 \artifact{nondegenerate_symplectic_blocks_2026-11-27/results/limiting_constants.json},
 \artifact{exact_symplectic_compressions_2026-11-26/results/exhaustive_checks.json},
@@ -2592,8 +3004,8 @@ distances.\footnote{\raggedright\artifact{nondegenerate_symplectic_blocks_2026-1
 Sharp convergence of classical rank laws is due to \cite{Fulman2015Stein}; exact
 rank-intersection counts for pairs of alternating matrices are in \cite{PottSchmidtZhou2016Pairs},
 direct sums of nondegenerate spaces are studied in \cite{GlasbyNiemeyerPraeger2022Random}, and
-\cite{DeBoeckVandeVoorde2024Anzahl} contains antecedents for the single probability
-$\spnP(A\text{ invertible})$.
+\cite{DeBoeckVandeVoorde2024Anzahl} contains the counts behind the scalar probability
+$\spnP(\Lambda(U)\text{ nonsingular})$ and the single probability $\spnP(B\text{ invertible})$.
 
 %======================================================================
 \subsection{A symplectic pair at every congruence precision}\label{spn:sec:padic}
@@ -4862,15 +5274,20 @@ limiting distance from the uniform matrix law is known for fixed frames
 (\cref{spn:thm:first-correction}), isotropic pairs (\cref{spn:thm:symplectic-exact}),
 Lagrangian targets (\cref{spn:thm:rank-blind,spn:thm:growing-form}), wide Lagrangian projections of
 nondegenerate sources (\cref{spn:thm:wide-separation}), a fixed source with a
-nondegenerate target of fixed codimension (\cref{spn:thm:complement-boundary}), and
-complementary nondegenerate frames that are square or increasingly tall
-(\cref{spn:thm:nondeg-blind,spn:thm:square-block}). Determine it in the remaining regimes, where
-frame dimensions, radicals and the complement dimension grow simultaneously; a closed answer
-would need the law of the triple $(s,t_0,t_1)$ under a uniform rectangular matrix. Already for
-complementary nondegenerate frames with $a-b$ fixed and positive only the lower bound of
-\cref{spn:cor:balanced-lower} is available. Over a complete discrete valuation ring, determine
-the complete local density when both frames contain several symplectic pairs, so that the
-residual form is a matrix rather than a scalar, and the frame types for which the distance at
+nondegenerate target of fixed codimension (\cref{spn:thm:complement-boundary}), and two
+growing nondegenerate frames at every offset from complementary dimension, uniformly in the
+aspect ratio (\cref{spn:thm:offset-profile,spn:thm:uniform-full}). Determine it in the remaining
+regimes, where frames with growing radicals and the complement dimension grow simultaneously; a
+closed answer would need the law of the triple $(s,t_0,t_1)$ under a uniform rectangular matrix,
+and the optimal thresholds of \cref{spn:thm:offset-test} have no known analogue there, because a
+prescribed degenerate Gram form can be realized by a noninjective map and the reduction of
+\cref{spn:prop:residual} must then retain an injectivity constraint. For complementary
+nondegenerate frames, the exactly optimal rank-only test at finite size, and whether the two-bit
+test of \cref{spn:cor:xor} is exactly optimal at finite size, are not determined. Over a complete
+discrete valuation ring, determine
+the complete local density and the optimal test when both frames contain several symplectic
+pairs, so that the residual form is a matrix rather than a scalar and its rank over the residue
+field forgets the higher elementary divisors, and the frame types for which the distance at
 the first digit persists at all precisions (\cref{spn:thm:padic} treats one source pair, where it
 persists; \cref{spn:rem:padic-endpoint} and the Lagrangian projections of \cref{spn:thm:local-five},
 where it grows with each digit, show that persistence is not automatic). For wide blocks, the

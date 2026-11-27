@@ -2240,7 +2240,7 @@ $(U_2,U_1)\equiv(13,5)\pmod{16}$ on $64$ vertices
 (\artifact{spanning-tree-unit-stabilization/verification.txt}).
 
 \subsection{Exact spectral tests for Grover walks}\label{gra:sec:grover}
-\sources{Effective_Graph_Towers}
+\sources{Effective_Graph_Towers; dirichlet_li_recovery}
 
 A Grover walk on a finite graph acts on its directed edges. From an arc
 ending at $v$, the amplitude to each outgoing arc is $2/\deg(v)$, with $1$
@@ -2280,6 +2280,39 @@ starting level. The leading spectral asymptotics in
 \cite[Theorem~4.3]{AkahoriHayashiSuzuki2026Grover} allow more general
 coefficient and voltage data.
 
+\paragraph{Fourier blocks of a Cayley graph.}
+Let $G$ be a finite abelian group and $s_1,\dots,s_d$ a generating list, $d\ge2$. The
+Cayley graph has one labelled pair of arcs for $s_i,-s_i$ at every vertex, even if their
+endpoints coincide. For a character $\chi$ write $X_i=\chi(s_i)$ and $C(x)=x+x^{-1}$. The
+Grover coin is $2ee^*-I$ on the $2d$ directions, where $e=(1,\dots,1)/\sqrt{2d}$. In the
+Fourier block of $\chi$ the arc reversal and the shift combine to give the involution
+$\sigma$ whose $i$-th pair has matrix
+$\left(\begin{smallmatrix}0&X_i\\X_i^{-1}&0\end{smallmatrix}\right)$, and the walk on this
+block is $U=\sigma(2ee^*-I)$. Its characteristic polynomial is
+\begin{equation}\label{gra:eq:groverblock}
+ (z^2-1)^{d-1}\bigl(z^2-Tz+1\bigr),\qquad T=\frac1d\sum_{i=1}^dC(X_i).
+\end{equation}
+Indeed $\det(zI+\sigma)=(z^2-1)^d$, and the rank-one determinant identity multiplies this
+by $1-2e^*(zI+\sigma)^{-1}\sigma e$. Since $(zI+\sigma)^{-1}\sigma=(z\sigma-I)/(z^2-1)$ and
+$2e^*\sigma e=T$, the identity follows first away from $\pm1$, then polynomially
+everywhere. Each character thus contributes $d-1$ copies of each of $1$ and $-1$; the
+remaining degree-two factor is its \emph{quadratic block}. Both roots of a quadratic block
+have finite order or neither has. Since the walk is unitary, the periodic subspace is the
+direct sum of all root-of-unity eigenspaces.
+
+\begin{lemma}[Periodic quadratic blocks]\label[lemma]{gra:lem:groverint}
+The quadratic block of $\chi$ is periodic if and only if $T$ is an algebraic integer.
+\end{lemma}
+
+\begin{proof}
+If $w$ is a root of unity, $w+w^{-1}$ is integral. Conversely, the roots of $z^2-Tz+1$ are
+algebraic integers when $T$ is integral. Every conjugate of $T$ is an average of numbers
+$C(Y_i)$ with $\abs{Y_i}=1$, hence is real and lies in $[-2,2]$, so every conjugate of
+either root has modulus one. Kronecker's theorem gives the claim: the coefficients of the
+monic polynomials whose roots are the $n$-th powers of all conjugates are bounded
+integers, so these powers range over a finite set and a nonzero root has finite order.
+\end{proof}
+
 \paragraph{The ternary square grid.}
 Take the square torus with side $3^n$, $N=9^n$ vertices, and the four
 directional arcs at each vertex, including at $n=0$. Set
@@ -2288,8 +2321,8 @@ $S(X,Y)=4-X-X^{-1}-Y-Y^{-1}$. The characteristic polynomial is
  \det(AI-U_n)=(A^2-1)^N\prod_{X,Y\in\gramu_{3^n}}
  \Bigl((A-1)^2+\tfrac A2S(X,Y)\Bigr).
 \end{equation}
-Indeed each of the $N$ character blocks has the two factors $A^2-1$ and
-$A^2+1-(A/2)(X+X^{-1}+Y+Y^{-1})$ by the Grover spectral factorisation.
+Indeed, by \eqref{gra:eq:groverblock} with $d=2$, each of the $N$ character blocks has the
+two factors $A^2-1$ and $A^2+1-(A/2)(X+X^{-1}+Y+Y^{-1})$.
 
 \begin{theorem}[All-level determinant formula; \stU]\label{gra:thm:grover}
 For every $n\ge0$ and every integer $a\ne\pm1$,
@@ -2324,39 +2357,202 @@ The file \artifact{Effective_Graph_Towers/grover_results.txt} records
 sample values; for example, at $a=4$ the successive values for $n=0,1,2$
 are $3,19,115$.
 
-\begin{proposition}[Periodic states on an odd rectangular grid; \stU]\label[proposition]{gra:prop:periodic}
+\paragraph{Periodic modes at odd prime-power exponent.}
+Remark~6.5 of \cite{AkahoriHayashiSuzuki2026Grover} identifies root-of-unity occurrence
+with torsion zeros of a spectral resultant and proposes studying periodic eigenvalues
+through a reduced polynomial derived from $A^r-1$ after removing the factors at $\pm1$.
+The following results classify the periodic quadratic blocks and count them. Let $p$ be an
+odd prime, $q=p^h$ with $h\ge1$, and suppose that the exponent of $G$ divides $q$. Write
+$H=\gramu_p\subset\gramu_q$, and let $c(x)$ be the multiplicity of $x$ among the $2d$
+entries $X_i,X_i^{-1}$. Call a tuple \emph{aligned} if there is a $u\in\gramu_q$ such that
+every $X_i$ belongs to $\set{u,u^{-1}}$. For a coset $A$ of $H$ let $\triv_A$ denote its
+indicator as a function on $\gramu_q$.
+
+\begin{theorem}[Periodic blocks at odd prime-power exponent; \stU]\label{gra:thm:groverodd}
+A quadratic block is periodic exactly in the following cases.
+\begin{enumerate}[label=\textup{(\arabic*)}]
+\item The tuple is aligned. Its quadratic roots are $u,u^{-1}$, including the double
+  root $1$ at the trivial character.
+\item For $k=0$ or $1$ there are nonnegative integers $n_A$ such that
+  \[
+   c=kd\,\triv_{\set1}+\sum_{A\in\gramu_q/H}n_A\triv_A .
+  \]
+  Then $p\mid d$ and $T=k$. The roots are the two primitive fourth roots of unity for
+  $k=0$, and the two primitive sixth roots of unity for $k=1$.
+\end{enumerate}
+In particular, if $p\nmid d$, every periodic quadratic block comes from a character taking
+the same value, up to inversion, on all the steps. Both additional traces $T=0,1$ occur
+on the standard $d$-torus of every side length $p^h$ when $p\mid d$.
+\end{theorem}
+
+\begin{proof}
+Let $s=q/p$, let $\zeta$ be a primitive $q$-th root of unity, and write $c_j=c(\zeta^j)$
+for $0\le j<q$. The ring of integers of $\Q(\zeta)$ is $\Z[\zeta]$
+\cite[Chapter~2]{Washington1997Introduction}. The cyclotomic relation
+$\Phi_q(x)=1+x^s+\dots+x^{(p-1)s}$ expresses the last power in each list $\zeta^{a+js}$,
+$0\le j<p$, $0\le a<s$, as minus the sum of its predecessors, and the surviving powers
+form an integral power basis. Thus the coordinates of $dT=\sum_xc(x)x$ are
+$c_{a+js}-c_{a+(p-1)s}$, $j<p-1$, and $T$ is integral precisely when the counts are
+congruent modulo $d$ on each coset of $H$.
+
+For $x\ne1$ at most one of $X_i,X_i^{-1}$ equals $x$, since $q$ is odd; if $c(x)=d$, then
+all $X_i$ lie in $\set{x,x^{-1}}$. For a nonaligned tuple we therefore have $0\le c(x)<d$
+for $x\ne1$, and congruence on each coset gives equality on every coset other than $H$. In
+$H$ let $r$ be the common value on the nonidentity elements. Then $c(1)-r=kd$ with
+$0\le k\le2$, because $-d<c(1)-r\le2d$. The case $k=2$ forces every $X_i=1$. The other two
+cases give the asserted decomposition. Each coset sums to zero as a set of complex
+numbers, so $T=k$; summing the multiplicities instead gives $2d=kd+p\sum_An_A$, and
+$p\mid d$ for $k=0,1$. The same identities prove sufficiency, and in the aligned case
+$T=C(u)$.
+
+For sharpness take $d=mp$. On the standard torus all character coordinates can be
+prescribed independently. For $k=0$ prescribe $m$ coordinates equal to $1$ and $2m$
+coordinates from each nontrivial inverse pair in $H$, choosing either member in each
+coordinate; this uses $mp$ coordinates and gives $c(x)=2m$ throughout $H$. For $k=1$
+prescribe $m(p+1)/2$ coordinates equal to $1$ and $m$ from each nontrivial inverse pair in
+$H$; this gives $c(1)=d+m$ and $c(x)=m$ for $x\in H\setminus\set1$.
+\end{proof}
+
+\begin{corollary}[Periodic subspace of a $p$-power torus with $p\nmid d$; \stU]\label[corollary]{gra:cor:groverdim}
+For the rectangular torus with $d$ side lengths $L_i$ that are powers of $p$, suppose
+$p\nmid d$. With $V=\prod_iL_i$ and $g=\gcd_iL_i$, the periodic subspace has dimension
+\[
+ 2(d-1)V+2+2^d(g-1),
+\]
+and the walk restricted to this subspace has exact order $2g$.
+\end{corollary}
+
+\begin{proof}
+By \cref{gra:thm:groverodd} only aligned tuples contribute, and an aligned nontrivial tuple
+takes values in $\set{u,u^{-1}}$ with $u\in\gramu_g$. For each $u\in\gramu_g\setminus\set1$,
+precisely $2^d$ tuples in $\set{u,u^{-1}}^d$ contribute $u$ once. The trivial tuple
+contributes $1$ twice. Add the constant factors of \eqref{gra:eq:groverblock}. The
+eigenvalues include $-1$ and all $g$-th roots of unity, giving order $2g$ since $g$ is odd.
+\end{proof}
+
+For the standard torus $G=(\Z/q\Z)^d$ let $M_k(q)$ be the number of characters with $T=k$,
+for $k=0,1$. Since the two corresponding roots are distinct, this is also the multiplicity
+of \emph{each} of them.
+
+\begin{theorem}[Growth of the additional multiplicities; \stU]\label{gra:thm:grovercount}
+Let $d=mp$ for an odd prime $p$. Put $B=(q/p-1)/2$, $v=m\bmod2\in\set{0,1}$ and
+$s=\floor{m/2}$. For $q=p^h$, $h\ge1$, the numbers $M_0(q)$ and $M_1(q)$ are polynomials
+in $B$ of degrees $m$ and $s$. Their leading terms in the binomial basis are respectively
+\[
+ 2^d d!\binom Bm,\qquad \frac{2^{ps+(p-1)v/2}\,d!}{((d+v)/2)!}\binom Bs .
+\]
+In particular $M_0(q)\sim2^dd!\,q^m/\bigl(m!(2p)^m\bigr)$.
+\end{theorem}
+
+\begin{proof}
+Outside $H$ there are $B$ inverse-paired pairs of cosets, each of which contains $p$
+inverse pairs of elements. For $T=k$ each of these $p$ pairs must carry the same number
+$t_j$ of coordinates, because each coordinate on an inverse pair contributes one to each of
+its two counts. In the central coset each of the $(p-1)/2$ nonidentity inverse pairs carries
+$r$ coordinates, and the identity carries $a_0=(r+kd)/2$. Thus
+\[
+ d=a_0+(p-1)r/2+p\sum_{j=1}^Bt_j .
+\]
+For $k=0$ this reads $m=r/2+\sum_jt_j$, with $r$ even; for $k=1$ it reads
+$m=r+2\sum_jt_j$. These conditions are sufficient by \cref{gra:thm:groverodd}. No aligned
+tuple has either trace, since $q$ is odd and the roots belonging to these traces have even
+order.
+
+For fixed $r$ and an ordered list of the positive $t_j$ on $b$ selected coset pairs (in
+any fixed order), the number of tuples is
+\begin{equation}\label{gra:eq:groverweights}
+ \binom Bb\,\frac{d!\,2^{d-a_0}}{a_0!\,(r!)^{(p-1)/2}\prod_{j=1}^{b}(t_j!)^{p}} .
+\end{equation}
+Here the multinomial factor assigns coordinates, and each nonidentity coordinate allows two
+choices of sign. Summing \eqref{gra:eq:groverweights} over all admissible $r$, $b$ and
+ordered positive lists is an exact formula. It is a polynomial in $B$, since $b\le m$ for
+$k=0$ and $b\le s$ for $k=1$. Equality in the first degree bound requires $r=0$ and all
+positive $t_j=1$. Equality in the second requires $r=v$ and all positive $t_j=1$: if $m$
+is odd, $r$ must be odd. Substitution gives both leading terms.
+\end{proof}
+
+\begin{example}[Dimension six at $p=3$]\label[example]{gra:ex:groversix}
+For $p=3$, $d=6$ and $B=(q/3-1)/2$ the complete formulas are
+\[
+ M_0(q)=240+17280B+46080\binom B2,\qquad M_1(q)=60+960B .
+\]
+At $q=9$ there are $17520$ copies of each primitive fourth root and $1020$ of each
+primitive sixth root. The number of aligned nontrivial quadratic modes grows only linearly
+in $q$ for fixed $d$, so this family has an exceptional quadratic contribution of order
+$q^2$ in a tower whose constant modes have order $q^6$. The multiplicities, and the
+classification against exact cyclotomic reduction, are checked for ten triples
+$(q,p,d)$, among them $(27,3,6)$, $(5,5,5)$ and $(7,7,7)$, in
+\artifact{dirichlet_li_recovery/checks/grover.txt}; for instance at $(27,3,6)$ the counts
+are $345840$ and $3900$, and at $(7,7,7)$ they are $40320$ and $1680$.
+\end{example}
+
+\paragraph{Two pairs of steps at arbitrary exponent.}
+For a two-generated finite abelian group the parity restriction on the exponent can be
+removed, and the answer takes a different form. The test also follows from the
+rational-angle cosine product equation treated by Speyer \cite{Speyer2023Answer}, via the
+cosine addition formula; the valuation proof below covers arbitrary two-generator
+quotients.
+
+\begin{theorem}[Two pairs of steps; \stU]\label{gra:thm:grovertwo}
+For $d=2$ write $X=X_1$ and $Y=X_2$. The periodic quadratic blocks are exactly those in the
+following table, with overlaps counted once.
+\begin{center}\small
+\begin{tabular}{ll}\toprule
+Condition & Quadratic eigenvalues\\\midrule
+$Y\in\set{X,X^{-1}}$ & $X,X^{-1}$\\
+$Y\in\set{-X,-X^{-1}}$ & $i,-i$\\
+one coordinate equals $1$, the other is $i$ or $-i$ & primitive sixth roots\\
+one coordinate equals $-1$, the other is $i$ or $-i$ & primitive third roots\\
+\bottomrule\end{tabular}
+\end{center}
+\end{theorem}
+
+\begin{proof}
+By \cref{gra:lem:groverint} the block is periodic if and only if $(C(X)+C(Y))/2$ is
+integral, and only primes above $2$ enter this test. Modulo the ideal $(2)$ the numerator
+equals $C(X)-C(Y)=(X-Y)(X-Y^{-1})/X$. Normalize $v(2)=1$ at any prime above $2$ in a
+cyclotomic field containing $X,Y$. For a root of unity $u$, $v(1-u)=+\infty$ when $u=1$,
+$v(1-u)=2^{1-a}$ when the order of $u$ is $2^a>1$, and $v(1-u)=0$ when its order has a
+nontrivial odd part. Indeed odd-order roots keep their order in residue characteristic two
+(apply the geometric sum to any nontrivial odd-order root reducing to one), and $2$-power
+roots reduce to one; for a primitive $2^a$-th root $u$ all $1-u^j$ with $j$ odd have equal
+valuation by the geometric sum, and their product over the odd classes modulo $2^a$ is
+$\Phi_{2^a}(1)=2$. Consequently the test is $v(1-X/Y)+v(1-XY)\ge1$. It holds if either
+argument $X/Y$, $XY$ is $1$ or $-1$. Otherwise it holds exactly when both are primitive
+fourth roots, as all remaining summands are at most $1/2$. In that case one of $X,Y$ equals
+$\pm1$ and the other $\pm i$: their squares are the product and the quotient of those two
+primitive fourth roots and have opposite signs. Substitution in \eqref{gra:eq:groverblock}
+gives the table.
+\end{proof}
+
+On a $4\times4$ torus all sixteen character tuples qualify. The four tuples with
+$X,Y\in\set{i,-i}$ also satisfy the second condition and contribute their two roots only
+once. The walk is periodic of exact order $12$. For odd rectangular tori only the first
+row remains:
+
+\begin{corollary}[Periodic states on an odd rectangular grid; \stU]\label[corollary]{gra:prop:periodic}
 Let the side lengths $L,M$ of a rectangular torus be odd, $N=LM$ and
 $g=\gcd(L,M)$. In addition to the eigenvalues $1$ and $-1$ of the Grover
 walk, of multiplicities $N+2$ and $N$ respectively, the root-of-unity
 eigenvalues are precisely the nontrivial $g$-th roots of unity, each of
 multiplicity four. Thus the periodic subspace has dimension $2LM+4g-2$,
 and the restriction of the walk to it has exact period $2g$.
-\end{proposition}
-
-This counts the entire periodic subspace; Remark~6.5 of
-\cite{AkahoriHayashiSuzuki2026Grover} proposes studying periodic
-eigenvalues through a reduced polynomial derived from $A^r-1$ after
-removing the factors at $\pm1$.
+\end{corollary}
 
 \begin{proof}
-A root of unity $w$ in a quadratic block must satisfy
-\[
- 2(w+w^{-1})=X+X^{-1}+Y+Y^{-1}.
-\]
-This is a special case of the rational-angle cosine equation treated by
-Speyer \cite{Speyer2023Answer}; on an odd rectangular grid a short residue
-argument suffices. Reduce in the common cyclotomic field at a prime above
-$2$. The residue of $Y$ must solve the quadratic with roots the residues of
-$X,X^{-1}$. Distinct roots of odd order stay distinct under this
-reduction: if a nontrivial odd-order root $u$ reduced to $1$, its
-vanishing geometric sum would reduce to its odd order, which is nonzero.
-Hence $Y=X$ or $Y=X^{-1}$, and substitution forces $w=X$ or $X^{-1}$. For
-a nontrivial $g$-th root $w$, the four pairs in $\{w,w^{-1}\}^2$ each
-contribute one simple root. For $w=1$ only $(1,1)$ contributes the extra
-double root, and for $w=-1$ no quadratic block contributes. The unitary
-walk is diagonalisable, so these algebraic multiplicities count
-dimensions.
+All character values have odd order, so they are never $\pm i$ or $-1$, and $-X^{\pm1}$
+has even order. By \cref{gra:thm:grovertwo} only the first row occurs, so $Y=X^{\pm1}$
+with $X\in\gramu_L$ and $Y\in\gramu_M$, whence $X\in\gramu_g$, and the quadratic roots are
+$X,X^{-1}$. For a nontrivial $g$-th root $w$, the four pairs in $\set{w,w^{-1}}^2$ each
+contribute one simple root $w$. For $w=1$ only $(1,1)$ contributes, with the extra double
+root, and for $w=-1$ no quadratic block contributes. The constant factors of
+\eqref{gra:eq:groverblock} give $N$ copies of each of $\pm1$. The unitary walk is
+diagonalisable, so these algebraic multiplicities count dimensions.
 \end{proof}
+
+For prime-power side lengths and any $d$ prime to $p$, \cref{gra:cor:groverdim} gives the
+same count in higher dimension; for $p\mid d$ the additional modes of
+\cref{gra:thm:groverodd} appear, with the multiplicities of \cref{gra:thm:grovercount}.
 
 \subsection{Optimal signings of square cycles}\label{gra:sec:cycles}
 \sources{grh_transfers_cycle_signings_and_lubin_tate; grh_transfer_advances_2026-11-26}

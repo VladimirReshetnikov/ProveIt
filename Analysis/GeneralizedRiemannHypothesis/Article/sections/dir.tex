@@ -3991,15 +3991,19 @@ random unrestricted subset sums in finite abelian groups \cite{ErdosRenyi1965Pro
 Tang study the second-order term of that threshold \cite{MaTang2026Erdos}.
 
 \subsection{Disjoint products of small primes in one modulus}\label{dir:sec:disjoint}
-\sources{disjoint-prime-products; grh_quadratic_fibre}
+\sources{disjoint-prime-products; grh_quadratic_fibre; grh_quarter_density}
 
 How can a few extra primes change which products are possible? If every retained prime is a
 quadratic residue modulo an odd prime except one nonresidue, that prime can go into either of two
 products or stay unused, so each product separately can have either sign but the two can never both
 be negative; a second nonresidue removes this joint obstruction, although the four sign patterns
 still have different probabilities. This subsection describes every attainable tuple of several
-disjoint products above quarter density, with a sharp coverage threshold and an exact criterion for
-uniform counts. It also answers the question of \cref{dir:sec:products} whether the distance from a
+disjoint products at retained density at least one quarter, with sharp coverage thresholds, and above
+quarter density an exact criterion for uniform counts. At any fixed density the support is decided by
+a zero-sum completion problem in a bounded quotient, solved in polynomial time once the quotient is
+known; at density one quarter the two quotients of order four need, respectively, three quadratic
+projections and four linear inequalities with an additional parity cut, and for every odd number of
+products a single joint pattern can be missing although every proper marginal is full. It also answers the question of \cref{dir:sec:products} whether the distance from a
 quadratic fibre can replace a fixed density margin above one half: the right quantity is the number of
 minority primes times the relative quota, and for one product the counts on both sign classes follow a
 binomial law with relative error $O(1/h)$, which is sharp (\cref{dir:thm:fibre}).
@@ -4047,13 +4051,249 @@ primes, of which there are only $O(L^2/\log L)$.
 \end{proof}
 
 For $r=1$ this sharpens the relative asymptotic of \cref{dir:thm:quotient} to $1+O(q^{-A})$ when $B$
-may depend on $A$. Above quarter density $d\le3$, and the projected law can be decided by closed tests.
+may depend on $A$.
+
+\paragraph{Zero-sum completion in the quotient.}
+By \cref{dir:thm:disjoint-growing} the support of $X$ is that of the projected allocation problem in
+$\Gamma=\widehat{H_\tau}$, a group of order $d\le\floor{1/a}$, written additively. This is a finite
+problem about coloured items. Let $m$ labelled items carry colours in a finite abelian group $\Gamma$ of
+order $d$, to be partitioned into a reserve block $0$ and recorded blocks $1,\dots,r$ with quotas
+$n_0,\dots,n_r$, $\sum_jn_j=m$. Translating all colours by a fixed $b\in\Gamma$ makes $b$ the baseline
+$0$; the corrected target of block $j$ is its original target minus $n_jb$, and $c_a$ is the number of
+items of translated colour $a$.
+
+\begin{lemma}[Short witnesses; \stU]\label{dir:lem:shortwitness}
+Every multiset of nonzero colours summing to $z$ contains a submultiset of length at most $d-1$
+summing to $z$; for $z=0$ the empty multiset suffices.
+\end{lemma}
+
+\begin{proof}
+Delete nonempty zero-sum submultisets while one exists; this preserves the sum. If the remainder had
+length at least $d$, two of its first $d+1$ partial sums, the empty one included, would coincide, and
+the terms between them would form a nonempty zero-sum subsequence.
+\end{proof}
+
+\begin{theorem}[Quota-free reduction; \stU]\label{dir:thm:packing}
+Assume
+\[
+ n_j\ge d-1\quad(1\le j\le r),\qquad n_0\ge M_\Gamma:=\sum_{a\ne0}(\ord a-1),\qquad c_0\ge(d-1)(r+1).
+\]
+Then the following are equivalent:
+\begin{enumerate}[label=\textup{(\alph*)}]
+\item some partition of all items with these quotas has recorded colour sums equal to the corrected
+targets $z_1,\dots,z_r$;
+\item there are pairwise disjoint multisets of nonzero-colour items, the $j$th summing to $z_j$, with no
+quotas imposed and unused items allowed;
+\item the multisets of \textup{(b)} can be chosen of length at most $d-1$.
+\end{enumerate}
+The passage from \textup{(c)} to \textup{(a)} is constructive; no search over complete partitions is needed.
+\end{theorem}
+
+\begin{proof}
+Deleting the zero-colour items of each recorded block of (a) gives (b), and \cref{dir:lem:shortwitness}
+gives (c). Given (c), place each witness in its recorded block, which it fits since $n_j\ge d-1$. For each
+nonzero colour $a$ split its unused items into packets of $\ord a$ items, each of sum zero, and one
+leftover group of fewer than $\ord a$ items; all leftover groups fit in the reserve since $n_0\ge M_\Gamma$.
+Distribute the full packets, in any order, to any block with enough remaining capacity. If a packet of
+size $s\le d$ does not fit, every block has remaining capacity at most $s-1$, so the total remaining
+capacity is at most $(s-1)(r+1)\le(d-1)(r+1)$; but it equals the number of unplaced items, which include all
+$c_0$ zero-colour items and the $s>0$ items of the pending packet, contradicting $c_0\ge(d-1)(r+1)$. Fill
+the remaining places with zero-colour items; no recorded sum changes. For $d=1$ there are no nonzero
+colours.
+\end{proof}
+
+\begin{lemma}[Direct matches first; \stU]\label{dir:lem:direct}
+For $a\ne0$ let $t_a$ be the number of recorded blocks with corrected target $a$. If \textup{(b)} of
+\cref{dir:thm:packing} is feasible, it is feasible with $\min(c_a,t_a)$ singleton witnesses of colour $a$
+for every $a\ne0$. The remaining witnesses then serve only targets of colours with $t_a>c_a$ and use only
+items of colours with $c_a>t_a$.
+\end{lemma}
+
+\begin{proof}
+Take the witnesses of zero targets empty and, among all feasible collections, one with the largest number
+of singleton witnesses. Suppose fewer than $\min(c_a,t_a)$ singletons have colour $a$. Then some target $a$
+has a non-singleton witness $W$, and some item $x$ of colour $a$ is not a singleton witness. If $x$ is
+unused or lies in $W$, replace $W$ by $\set x$; if $x$ lies in another non-singleton witness $V$, replace $W$
+by $\set x$ and $V$ by $(V\setminus\set x)\cup W$, which has the sum of $V$ because $W$ sums to $a$. The
+witnesses stay disjoint, no singleton is lost and one is gained, a contradiction. After all direct
+matches, a colour with $c_a\le t_a$ has no items left and one with $c_a\ge t_a$ no targets left.
+\end{proof}
+
+\begin{corollary}[Exact support at any positive density; \stG]\label{dir:cor:anydensity}
+In the setting of \cref{dir:thm:disjoint-growing}, colour each $p\in S$ by $\pi(p)\in\Gamma$, let $b$ be a
+most frequent colour, and for $g\in G^r$ put $z_j=\pi(g_j)-n_jb$. For all large $q$, the target $g$ lies in
+the support of $X$ if and only if condition \textup{(b)} of \cref{dir:thm:packing} holds for
+$(z_1,\dots,z_r)$, and then $\dirP(X=g)$ is given by \cref{dir:thm:disjoint-growing}. For fixed $d$, given
+the colour counts and the targets, this is decided in $O_d\bigl(r(1+(d-1)r)^{d-1}\bigr)$ operations on
+small integers, and a witness allocation is reconstructed from stored predecessors and the proof of
+\cref{dir:thm:packing}.
+\end{corollary}
+
+\begin{proof}
+A most frequent colour has $c_0\ge m/d\ge(r+1)h/d$, every quota is at least $h\ge BL$, and
+$M_\Gamma\le d(d-1)$ with $d\le\floor{1/a}$, so the hypotheses of \cref{dir:thm:packing} hold for large $q$.
+The support of $X$ is the inverse image of $\supp\nu$, and $\pi^r(g)\in\supp\nu$ is condition (a) for the
+colouring by $\pi$. For the algorithm list, for each $z\in\Gamma$, the vectors $e\in\Z_{\ge0}^{\Gamma\setminus\set0}$
+with $\sum_ae_a\le d-1$ and $\sum_ae_aa=z$, only $e=0$ for $z=0$; cap each nonzero supply at $(d-1)r$, the
+most that short witnesses can use; and block by block add the candidate vectors to the reachable vectors of
+used counts, discarding those above the capped supply. There are at most $(1+(d-1)r)^{d-1}$ states, and the
+final set is nonempty exactly when (c) holds.
+\end{proof}
+
+The procedure presupposes the quotient; it does not compute $H_\tau$ from the retained primes.
+
+\paragraph{Quotients of order at most four.}
+For cyclic $\Gamma$ label the colours by their natural residues, and in $C_2\times C_2$ label the nonzero
+elements $1,2,3$ with $1+2=3$. Write $c_1,c_2,c_3$ for the supplies of the nonzero translated colours and
+$\ell_1,\ell_2,\ell_3$ for the numbers of recorded blocks with corrected targets $1,2,3$ (only the indices
+that occur in $\Gamma$).
+
+\begin{theorem}[Quota-free criteria in groups of order at most four; \stU]\label{dir:thm:smallquotients}
+Condition \textup{(b)} of \cref{dir:thm:packing} holds if and only if:
+\begin{enumerate}[label=\textup{(\alph*)}]
+\item always for the trivial group; $c_1\ge\ell_1$ for $C_2$; and for $C_3$
+\[
+ 2c_1+c_2\ge2\ell_1+\ell_2,\qquad c_1+2c_2\ge\ell_1+2\ell_2 ;
+\]
+\item for $C_2\times C_2$,
+\begin{equation}\label{dir:eq:klein}
+ c_1+c_2\ge\ell_1+\ell_2,\qquad c_1+c_3\ge\ell_1+\ell_3,\qquad c_2+c_3\ge\ell_2+\ell_3 ;
+\end{equation}
+\item for $C_4$, the four inequalities
+\begin{equation}\label{dir:eq:cyclic4}
+\begin{gathered}
+ c_1+c_3\ge\ell_1+\ell_3,\qquad 3c_1+2c_2+c_3\ge3\ell_1+2\ell_2+\ell_3,\\
+ c_1+2c_2+3c_3\ge\ell_1+2\ell_2+3\ell_3,\qquad c_1+2c_2+c_3\ge\ell_1+2\ell_2+\ell_3,
+\end{gathered}
+\end{equation}
+and, only when $\ell_2>c_2$, $\ell_1\le c_1$ and $\ell_3\le c_3$, the parity cut
+\begin{equation}\label{dir:eq:paritycut}
+ \floor{(c_1-\ell_1)/2}+\floor{(c_3-\ell_3)/2}\ge\ell_2-c_2 .
+\end{equation}
+\end{enumerate}
+\end{theorem}
+
+\begin{proof}
+By \cref{dir:lem:shortwitness} the witnesses may be taken zero-sum free, and by \cref{dir:lem:direct} with
+all direct matches made.
+
+(a) For $C_2$ each nonzero target needs a nonzero item. In $C_3$ a zero-sum-free witness of sum $1$ is
+$\set1$ or $\set{2,2}$, and of sum $2$ is $\set2$ or $\set{1,1}$; with the weights $(2,1)$ on the colours
+$(1,2)$ every witness of sum $1$ weighs at least two and every witness of sum $2$ at least one, which gives
+the first inequality, and the weights $(1,2)$ give the second. Conversely both colours cannot be deficient,
+by either inequality. If $c_1<\ell_1$, each of the $\ell_1-c_1$ unmatched targets $1$ needs two items of
+colour $2$, and the first inequality is exactly $c_2-\ell_2\ge2(\ell_1-c_1)$; the case $c_2<\ell_2$ is
+symmetric, and otherwise direct matching suffices.
+
+(b) A zero-sum-free witness of a nonzero sum in $C_2\times C_2$ is the singleton of that colour or the pair of
+the other two nonzero colours, since equal colours cancel and the three nonzero elements sum to zero. Each
+pair sum, say $c_1+c_2$, counts the items with nonzero image under the homomorphism to $C_2$ with kernel
+$\set{0,3}$, and each target $1$ or $2$ needs such an item; this gives necessity. Two deficient colours
+violate the inequality of their pair. If, say, $c_1<\ell_1$, the first two inequalities give
+$c_2-\ell_2\ge\ell_1-c_1$ and $c_3-\ell_3\ge\ell_1-c_1$, and one surplus $2$ with one surplus $3$ serves each
+unmatched target $1$; the other cases are symmetric.
+
+(c) As $1+3$ and $2+2$ are zero sums, the zero-sum-free multisets of nonzero sum in $C_4$ are
+\begin{center}\small
+\begin{tabular}{@{}cl@{}}
+\toprule
+target & minimal witnesses\\
+\midrule
+$1$ & $\set1,\ \set{2,3},\ \set{3,3,3}$\\
+$2$ & $\set2,\ \set{1,1},\ \set{3,3}$\\
+$3$ & $\set3,\ \set{1,2},\ \set{1,1,1}$\\
+\bottomrule
+\end{tabular}
+\end{center}
+\emph{Necessity.} For each of the cost vectors $(1,0,1)$, $(3,2,1)$, $(1,2,3)$, $(1,2,1)$ on the colours
+$1,2,3$, every witness in the table costs at least the cost of its sum; summing over disjoint witnesses
+gives \eqref{dir:eq:cyclic4}. In the active case of the parity cut, direct matching serves every odd target
+and uses all items of colour $2$, and each of the $\ell_2-c_2$ remaining targets $2$ needs a pair of equal odd
+colours from the surplus; there are at most the left side of \eqref{dir:eq:paritycut} such pairs.
+
+\emph{Sufficiency.} After direct matching put $U=c_1-\ell_1$, $V=c_2-\ell_2$, $W=c_3-\ell_3$. If none is
+negative, direct matching suffices. If only $U<0$, put $D=-U$; the first two inequalities give $W\ge D$ and
+$2V+W\ge3D$, so $x=\min(V,D)$ unmatched targets $1$ can be served by $\set{2,3}$ and the other $D-x$ by
+$\set{3,3,3}$, using $3D-2x\le W$ items of colour $3$; only $W<0$ is symmetric. If only $V<0$, the parity cut
+supplies $-V$ disjoint pairs of equal odd colours. Negative $U$ and $W$ together violate the first
+inequality. If $V,W<0$, the third inequality gives $U\ge2(-V)+3(-W)$, and the deficient targets $2$ and $3$ are
+served by $\set{1,1}$ and $\set{1,1,1}$; if $U,V<0$, the second gives $W\ge3(-U)+2(-V)$, and $\set{3,3,3}$ and
+$\set{3,3}$ serve. All allocations respect the supplies, and \cref{dir:thm:packing} completes them to the
+quotas.
+\end{proof}
+
+The Klein case is detected by its three quadratic projections, whereas the parity cut in $C_4$ is a genuinely
+integral condition. In its active case put $D=\ell_2-c_2$, $U=c_1-\ell_1\ge0$, $W=c_3-\ell_3\ge0$; the fourth
+inequality of \eqref{dir:eq:cyclic4} is $U+W\ge2D$, and given it the cut fails exactly when $U,W$ are both odd
+and $U+W=2D$. So all the linear tests can pass at an unreachable target, already for $(c_1,c_2,c_3)=(1,0,1)$
+and $(\ell_1,\ell_2,\ell_3)=(0,1,0)$.
+
+\begin{theorem}[Coverage capacities; \stU]\label{dir:thm:capacity}
+All corrected vectors in $\Gamma^r$ satisfy \textup{(b)} of \cref{dir:thm:packing} if and only if $r\le R_\Gamma$,
+where
+\begin{center}\small
+\begin{tabular}{@{}ll@{}}
+\toprule
+$\Gamma$ & $R_\Gamma$\\
+\midrule
+$C_2$ & $c_1$\\
+$C_3$ & $\floor{\min(2c_1+c_2,\,c_1+2c_2)/2}$\\
+$C_2\times C_2$ & $\min(c_1+c_2,\,c_1+c_3,\,c_2+c_3)$\\
+$C_4$ & $\min\bigl\{c_1+c_3,\ \floor{(3c_1+2c_2+c_3)/3},\ \floor{(c_1+2c_2+3c_3)/3},\ c_2+\floor{c_1/2}+\floor{c_3/2}\bigr\}$\\
+\bottomrule
+\end{tabular}
+\end{center}
+and $R_\Gamma=\infty$ for the trivial group. The constant corrected target vectors alone decide this.
+\end{theorem}
+
+\begin{proof}
+For $C_2$, $C_3$ and $C_2\times C_2$ maximize the right sides of the linear tests over histograms with total at
+most $r$; a maximizer is a constant nonzero vector, and the bounds are the ones listed. For $C_4$ the constant
+vectors with entries $1$ and $3$ force $c_1+c_3\ge r$, $3c_1+2c_2+c_3\ge3r$ and $c_1+2c_2+3c_3\ge3r$, and the
+constant vector with entries $2$ forces $c_2+\floor{c_1/2}+\floor{c_3/2}\ge r$ by the parity cut. Conversely
+these four bounds give the first three inequalities of \eqref{dir:eq:cyclic4} for every histogram, since
+$\ell_1+\ell_2+\ell_3\le r$, and the fourth since $c_1+2c_2+c_3\ge2r\ge\ell_1+2\ell_2+\ell_3$; in the active case
+of the cut,
+\[
+ \floor{(c_1-\ell_1)/2}+\floor{(c_3-\ell_3)/2}\ge\floor{c_1/2}+\floor{c_3/2}-\ell_1-\ell_3\ge r-c_2-\ell_1-\ell_3\ge\ell_2-c_2 .
+\]
+\cref{dir:thm:smallquotients} completes the proof.
+\end{proof}
+
+\begin{theorem}[Exact support at quarter density; \stG]\label{dir:thm:quarter}
+Fix $A>0$. There are $B,C>0$ such that for all large $q$, every $S\subseteq\mathcal P$ with $m\ge N/4$, every
+$r\ge1$ and all quotas with $h\ge BL$ the following hold. The quotient $\Gamma=\widehat{H_\tau}$ has order
+$d\le4$, depends only on $S$, and with $b$ and $z_j$ as in \cref{dir:cor:anydensity} a target $g\in G^r$
+occurs if and only if the histogram of $(z_1,\dots,z_r)$ passes the test of \cref{dir:thm:smallquotients} for
+$\Gamma$; at every occupied $g$ the relative count is that of \cref{dir:thm:disjoint-growing}. Equivalently,
+without determining $\Gamma$: $g$ occurs if and only if, for every character $\chi$ of exact order $2$, $3$
+or $4$, the test of \cref{dir:thm:smallquotients} for the cyclic group $\chi(G)$ passes for the colouring
+$p\mapsto\chi(p)$ of $S$, with a most frequent value $b_\chi$ of $\chi$ on $S$ as baseline and corrected
+targets $\chi(g_j)b_\chi^{-n_j}$. Balanced quotas allow $r\asymp L/\log L$.
+\end{theorem}
+
+\begin{proof}
+The first form is \cref{dir:cor:anydensity} with $a=1/4$ and \cref{dir:thm:smallquotients}. In the second,
+necessity follows by projection: an allocation realizing $g$ maps under $\chi$ to an allocation of the
+$\chi$-coloured primes with the same quotas, and the implication from (a) to (b) in \cref{dir:thm:packing}
+needs no hypotheses. For sufficiency, if $\Gamma$ is cyclic a generator of $H_\tau$ is among the tested
+characters, its most frequent value is the image of a most frequent colour, and its test is the quotient
+test. If $\Gamma=C_2\times C_2$, each inequality of \eqref{dir:eq:klein} is the test of one of the three
+quadratic characters in $H_\tau$ with the image of $b$ as baseline. If that image is not a most frequent
+value of the character, or is one of two tied values, at least $m/2\ge r$ primes are nonzero in that
+projection and the inequality holds trivially; otherwise it is the tested condition. The growth of $r$ is
+that of \cref{dir:thm:disjoint-growing}.
+\end{proof}
+
+The second form uses only characters of order at most four, but enumerating them for composite $q$ is not
+claimed to take time polynomial in $\log q$.
+
 For a character $\chi$ of order $2$ or $3$ choose a most frequent value $b$ of $\chi$ on $S$, put
 $s_\chi=\#\set{p\in S:\chi(p)\ne b}$, and for a target $g\in G^r$ call $w_j=\chi(g_j)b^{-n_j}$ its
-corrected values; let $\omega=e^{2\pi i/3}$.
+corrected values; let $\omega=e^{2\pi i/3}$. Above quarter density the tests take the following closed form.
 
-\begin{theorem}[Exact support above quarter density; \stG]\label{dir:thm:disjoint-support}
-Let $1/4<a\le1$ and fix $r$. A target $g\in G^r$ occurs if and only if, for every character of order
+\begin{corollary}[Exact support above quarter density; \stG]\label{dir:thm:disjoint-support}
+Let $1/4<a\le1$. A target $g\in G^r$ occurs if and only if, for every character of order
 two, the number of $j$ with $w_j=-1$ is at most $s_\chi$, and for every character of order three,
 with $u=\#\set{p\in S:\chi(p)=b\omega}$, $v=\#\set{p\in S:\chi(p)=b\omega^{-1}}$ and $i,j$ the numbers of
 corrected entries equal to $\omega$ and $\omega^{-1}$,
@@ -4065,36 +4305,16 @@ In particular $X$ covers all of $G^r$ if and only if
  s_\chi\ge r\quad(\operatorname{ord}\chi=2),\qquad u+v+\min(u,v)\ge2r\quad(\operatorname{ord}\chi=3).
 \]
 For $a>1/3$ the quadratic tests alone suffice, and ties for $b$ may be broken arbitrarily. These
-tests and thresholds also hold throughout the growing range of \cref{dir:thm:disjoint-growing}.
-\end{theorem}
+tests and thresholds hold for fixed $r$ and throughout the growing range of \cref{dir:thm:disjoint-growing}.
+\end{corollary}
 
 \begin{proof}
-Necessity follows by projecting under each character. Conversely $d\le3$, and for $a>1/3$ even
-$d\le2$. If $d>1$, a generator $\chi$ of $H_\tau$ maps $G$ onto the $d$th roots of unity, the tests
-apply to it, and it suffices by \cref{dir:thm:disjoint-growing} to give the projected target positive
-mass; if $d=1$ every tuple occurs. Call the primes outside the most frequent class of $\chi$
-exceptional. The allocations below need only $n_0\ge2r$, every recorded quota at least two, and at least
-$2r$ primes of class $b$, which hold for large $q$ since $h\ge BL\ge2r$ and a most frequent class has
-at least $m/3$ primes.
-
-\emph{Order two.} Each requested minus sign uses an exceptional prime. If $s_\chi<r$ and at most
-$s_\chi$ minus signs are requested, give one exceptional prime to each such block, put the other
-exceptions in the reserve, and fill the quotas from class $b$. If $s_\chi\ge r$, put $r$ exceptional
-primes in the reserve and one prime of class $b$ in each recorded block, fill the rest arbitrarily,
-and swap the reserved pair of any block whose sign must change; the swaps have disjoint supports.
-
-\emph{Order three.} Call an exceptional prime positive or negative as its value divided by $b$ is
-$\omega$ or $\omega^{-1}$, with costs two and one. A block with target $\omega$ costs at least two, since
-one negative prime has the wrong value, and a target $\omega^{-1}$ costs at least one; reversing the
-costs gives the other inequality. If $u+v<2r$ all unused exceptional primes fit in the reserve: if
-$u\ge i$ and $v\ge j$ supply each target directly; if $u<i$ supply $u$ positive targets directly and
-use two negative primes for each of the other $i-u$, which the first inequality,
-$v\ge2(i-u)+j$, permits; the case $v<j$ is symmetric; fill the rest from class $b$. If $u+v\ge2r$ put
-$2r$ exceptional primes in the reserve and two primes of class $b$ in each recorded block, pair the
-reserved exceptions with these, two pairs per block, and swap: for two nonzero changes in $\Z/3$ the
-subset sums give the whole group, so independent swaps reach every target. Maximizing $2i+j$ and
-$i+2j$ over $i+j\le r$ gives $2r$, which yields the coverage thresholds. In the growing range the
-same allocations apply, since the quotas hold $2r$ exceptional primes and $m/3\ge2r$.
+For $a>1/4$ the Gram argument gives $d\le3$, and $d\le2$ for $a>1/3$, so $\Gamma$ is cyclic of order at most
+three. The displayed tests are those of \cref{dir:thm:smallquotients}(a) for the colouring by $\chi$, and the
+argument of \cref{dir:thm:quarter} (necessity by projection, sufficiency through a generator of $H_\tau$)
+applies with \cref{dir:cor:anydensity} at density $a$. Since $\min(2u+v,u+2v)=u+v+\min(u,v)$, the coverage
+thresholds are those of \cref{dir:thm:capacity}, again necessary for every character by projection and
+sufficient for a generator.
 \end{proof}
 
 For $a>1/3$ and $s=\min_{\operatorname{ord}\chi=2}s_\chi$, a minimizing character generates $H_\tau$ when
@@ -4103,7 +4323,61 @@ $s<r$, since its bias is $1-2s/m>1-\tau$, so
  \abs{\supp X}=\Bigl(\frac{\abs G}2\Bigr)^r\sum_{j=0}^{\min(r,s)}\binom rj ;
 \]
 for $s=r-1$ every proper marginal has full support while the joint law misses one sign class. For
-$r=1$ the theorem is the criterion of \cref{dir:rem:thresholds}.
+$r=1$ the corollary is the criterion of \cref{dir:rem:thresholds}. In the same way, when $\Gamma$ has order
+four, each corrected quotient vector is a translate of one quotient target and has $(\abs G/4)^r$ lifts, all
+attained, so
+\[
+ \abs{\supp X}=\Bigl(\frac{\abs G}4\Bigr)^r\sum_{(\ell_1,\ell_2,\ell_3)\in\mathcal H_r}
+ \frac{r!}{\ell_1!\,\ell_2!\,\ell_3!\,(r-\ell_1-\ell_2-\ell_3)!},
+\]
+with $\mathcal H_r$ the set of histograms with $\ell_1+\ell_2+\ell_3\le r$ passing the test of
+\cref{dir:thm:smallquotients}; the sum has at most $\binom{r+3}3$ terms.
+
+\paragraph{Sharpness at quarter retention.}
+\begin{proposition}[One missing pattern at every odd arity; \stU]\label{dir:prop:missing}
+Let $\Gamma=C_4$, $r$ odd, $c_1=c_3=r$ and $c_2=0$. Exactly one corrected vector in $\Gamma^r$ fails
+\textup{(b)} of \cref{dir:thm:packing}, the vector with every entry $2$. Every proper subset of the
+coordinates of any vector extends to a vector satisfying \textup{(b)}, and the four inequalities
+\eqref{dir:eq:cyclic4} hold at the missing vector.
+\end{proposition}
+
+\begin{proof}
+The four linear inequalities hold for every histogram with total at most $r$, so only the parity cut can fail,
+and only for $\ell_2>0$. Since $r$ is odd,
+$\floor{(r-\ell_1)/2}+\floor{(r-\ell_3)/2}=r-1-\floor{\ell_1/2}-\floor{\ell_3/2}$. If $\ell_1+\ell_3\ge1$ then
+$\ell_1+\ell_3-\floor{\ell_1/2}-\floor{\ell_3/2}\ge1$, so this is at least $r-\ell_1-\ell_3\ge\ell_2$; if
+$\ell_1=\ell_3=0$ the cut holds if and only if $\ell_2\le r-1$. So only $(0,r,0)$ fails, and setting an
+unrecorded coordinate to zero extends a proper marginal.
+\end{proof}
+
+\begin{corollary}[An arithmetic instance of the parity cut; \stG]\label{dir:cor:paritycut}
+There is $c>0$ such that for all large primes $q\equiv1\pmod4$ and every odd $r\le cL/\log L$ some retained set
+of exactly $\ceil{N/4}$ primes and some quotas with $h\ge BL$ have the following property: every proper
+marginal of $X$ has full support, and exactly $(\abs G/4)^r$ tuples, forming one Cartesian product of quartic
+residue classes, are missing, although all four inequalities \eqref{dir:eq:cyclic4} hold at their projected
+target.
+\end{corollary}
+
+\begin{proof}
+Take a character $\theta$ of order four. By Fourier inversion and \cref{dir:lem:bias} each of its four value
+classes in $\mathcal P$ has at least $(1-3\eps)N/4$ primes, and a largest one, of value $b$, at least
+$\ceil{N/4}$. Retain $\ceil{N/4}-2r$ primes of value $b$ and $r$ primes of each of the values $bi$ and $bi^3$,
+none of value $-b$. For large $q$ these choices exist, $2r/m\to0$, $b$ is the unique most frequent value, and
+$\theta$ has bias $1-2r/m>1-\tau$ on $S$, so $H_\tau$ contains the cyclic group of order four generated by
+$\theta$ and, having order at most four, equals it. Balanced quotas with $h\ge BL$ exist in the stated range of
+$r$. \Cref{dir:prop:missing,dir:thm:quarter} give the assertions; in a proper marginal a residue tuple is
+extended by giving an omitted coordinate corrected colour zero.
+\end{proof}
+
+Thus at the threshold itself the obstruction is arithmetic and is not detected by any of the linear
+inequalities. A cruder failure already defeats the tests of \cref{dir:thm:disjoint-support}. Take primes
+$q\equiv5\pmod{12}$: there is one quadratic character, none of order three, and a character $\theta$ of order
+four. Retain a most frequent quartic class $c$, with at least $N/4$ primes, and exactly $r$ primes of the class
+$ic$, which has $\gg N$ primes by expanding its indicator in $1,\theta,\theta^2,\theta^3$ and \cref{dir:lem:bias}.
+The quadratic character has $r$ minority primes, so every test of \cref{dir:thm:disjoint-support} passes, but
+prescribing $\theta(g_j)c^{-n_j}=-1$ in every recorded block needs two exceptional primes per block; in the
+notation of \cref{dir:thm:smallquotients} this is $c_1=\ell_2=r$, which violates the third inequality of
+\eqref{dir:eq:cyclic4}. So the tests of order two and three cease to suffice at $a=1/4$.
 
 For the probabilities on the support put
 \[
@@ -4163,6 +4437,39 @@ $\abs G^r\dirP(X=g)-1$ against a unit phase, so it is at most $D_q$; conversely 
 $D_q$ by the $d^r-1\le3^r-1$ nontrivial coefficients inside the quotient and the $q^{-2}$ bound for all
 others.
 \end{proof}
+
+The comparison with independent placement also holds in total variation, uniformly in the number of
+blocks, when the exceptions are few. Let $\Gamma$ have any fixed order, translate the colours by a most
+frequent one, let $s=m-c_0$ be the number of exceptional primes, and let $\nu_{\mathrm{corr}}$ be the law of
+the corrected projected block sums. Let $\widetilde\nu$ be the law obtained by putting each exceptional prime
+independently into block $j$ with probability $n_j/m$, ignoring the baseline primes, and summing the
+exceptional colours of each recorded block.
+
+\begin{proposition}[Sparse exceptions, uniformly in $r$; \stU]\label{dir:prop:sparseexc}
+With $(m)_s=m(m-1)\cdots(m-s+1)$,
+\[
+ d_{\mathrm{TV}}(\nu_{\mathrm{corr}},\widetilde\nu)\le1-\frac{(m)_s}{m^s}\le\frac{s(s-1)}{2m}
+\]
+for every $r$ and all quotas.
+\end{proposition}
+
+\begin{proof}
+Regard block $j$ as $n_j$ slots. Under a uniform allocation the slots of the $s$ labelled exceptions have the
+law of $s$ independent uniform slots conditioned to be distinct. The total variation distance between a law
+and its conditioning on an event of positive probability is the probability of the complement, here at most
+$\binom s2/m$. Mapping slot positions to block sums does not increase total variation.
+\end{proof}
+
+The Fourier coefficient of $\widetilde\nu$ at $\boldsymbol\psi\in\widehat\Gamma^r$ is exactly
+\[
+ \prod_{a\ne0}\Bigl(\frac{n_0}m+\sum_{j=1}^r\frac{n_j}m\psi_j(a)\Bigr)^{c_a},
+\]
+so for $s=o(\sqrt m)$ the colour counts $c_a$ and the relative quotas alone determine the leading profile of
+the projected law, without the identities of the primes. Since the relative error of
+\cref{dir:thm:disjoint-growing} gives total variation at most $q^{-A}/2$ between the law of $X$ and the uniform
+lifting of its quotient law, the uniform lifting of the independent-exception model is within
+$q^{-A}/2+s(s-1)/(2m)$ of the law of $X$, after undoing the translation. In \cref{dir:cor:paritycut},
+$s=2r=O(L/\log L)$ and $m\asymp L^2/\log L$, so this error is $O(1/\log L)$.
 
 \paragraph{One product: the quadratic-fibre law.}
 For one product above density one third the single possibly large mode can be computed exactly and
@@ -4315,14 +4622,6 @@ $\max h\abs{P_{m,s}(h)-(1-2t)^s}=2/3$, and at $m=h^2$, $h=640$, the quantity $h(
 within $7\cdot10^{-4}$ of the limiting correction for $\lambda_0=0.5,1,2$.
 \dirfiles{\artifact{grh_quadratic_fibre/verification.txt}, \artifact{grh_quadratic_fibre/critical_window.csv}}
 
-\paragraph{Sharpness at quarter retention.}
-Take primes $q\equiv5\pmod{12}$: there is one quadratic character, none of order three, and a
-character $\theta$ of order four. Retain a most frequent quartic class $c$, with at least $N/4$
-primes, and exactly $r$ primes of the class $ic$, which has $\gg N$ primes by expanding its indicator
-in $1,\theta,\theta^2,\theta^3$ and \cref{dir:lem:bias}. The quadratic character has $r$ minority primes,
-so every test of \cref{dir:thm:disjoint-support} passes, but prescribing $\theta(g_j)c^{-n_j}=-1$ in
-every recorded block needs two exceptional primes per block. So the tests cease to suffice at $a=1/4$.
-
 \begin{example}\label{dir:ex:disjoint}
 Modulo $11$ keep the smallest $18-s$ residue primes and $s$ nonresidue primes up to $199$, excluding
 $11$; modulo $13$ use the smallest requested numbers of primes up to $239$ in the three classes
@@ -4348,15 +4647,24 @@ support than two of the same type. Urn checks cover $2\,464$ binary cases, $15\,
 coefficients and $104\,505$ cubic target vectors; the table repair is checked on $28\,183$ pairs of
 tables, and for moduli $15,21$ with quotas $7,7$ exactly the $48$ of $96$ unit pairs with
 $g_1g_2\equiv2\pmod3$ occur, with $65$ to $80$ representations each.
+For $C_4$ and $C_2\times C_2$ the criteria of \cref{dir:thm:smallquotients,dir:thm:capacity} agree with an
+allocation oracle that sends one item at a time to a block or the reserve and uses neither the
+inequalities nor the witness table, in $479\,682$ support and $10\,206$ coverage comparisons with every
+supply from $0$ to $8$ and $1$ to $7$ recorded blocks; $5\,280$ fixed-quota targets were also checked
+against enumeration of colour-count tables and the dynamic program of \cref{dir:cor:anydensity},
+the construction of \cref{dir:thm:packing} in $2\,564$ comparisons with the fixed-quota oracle, and
+\cref{dir:prop:missing} for odd $r\le23$.
 \dirfiles{\artifact{disjoint-prime-products/checks/results.txt},
-\artifact{disjoint-prime-products/checks/repair_results.txt}}
+\artifact{disjoint-prime-products/checks/repair_results.txt},
+\artifact{grh_quarter_density/verification.txt}}
 \end{example}
 
 Squarefree smooth representatives of single classes go back to Booker and Pomerance
 \cite{BookerPomerance2017Squarefree}; common short prime lists for Boolean subset products are due to
 Klurman, Shparlinski and Ter\"av\"ainen and to Hughes
 \cite{KlurmanShparlinskiTeravainen2026Generation,Hughes2026Few}, and fixed-cardinality subset sums of
-an abelian group are treated by Pach \cite{Pach2025Equidistribution}.
+an abelian group are treated by Pach \cite{Pach2025Equidistribution}. Zero-sum-free sequences in random
+subsets of cyclic groups are studied in \cite{LeeOh2023ZeroSum}.
 
 \subsection{Rainbow routing with small prime multipliers}\label{dir:sec:routing}
 \sources{grh_prime_routing_2026-11-27}
@@ -4529,14 +4837,16 @@ Small-prime Cayley expansion of $(\Z/q\Z)^\times$ under GRH is due to Jao, Mille
 linkages with globally distinct primes.
 
 \subsection{Primes with a prescribed majority of quadratic signs}\label{dir:sec:signs}
-\sources{hermite_thresholds_and_quadratic_primes; hermite_threshold_research}
+\sources{hermite_thresholds_and_quadratic_primes; hermite_threshold_research; prime_cubature_grh_2026-11-27}
 
 Let $q_1,\dots,q_k\le Y$ be distinct odd primes and prescribe a sign for each Legendre symbol
 $\legendre p{q_i}$. How small a prime realizes more than half of the prescribed signs? Under
 \cref{src:thm:dgrh}, a prime $p\ll k^3\log^2(2Y)$ realizes more than $k/2+\sqrt k/4$ of them,
 and $p\ll k^5\log^2(2Y)$ realizes more than $k/2+3\sqrt k/4$. The powers of $k$ come from an
 extremal problem on the cube with no arithmetic input, which is solved first, including the exact
-lattice oscillation of the leading constant at the Hermite thresholds.
+lattice oscillation of the leading constant at the Hermite thresholds. Conversely, a rational law on the primes
+of one dyadic interval can make $r$ quadratic signs exactly $k$-wise independent, robustly under
+adversarial deletions, at a height $O_k(r^{2k}\log^2(2Y))$ (\cref{dir:thm:cubature}).
 
 \paragraph{A missing Hamming ball.}
 For $u\in\set{-1,1}^k$ put $X(u)=k^{-1/2}\sum_iu_i$ and $u_A=\prod_{i\in A}u_i$ for
@@ -4934,15 +5244,242 @@ The dual small-bias problem appears for read-once formulas in \cite{BazziNahas20
 small-bias laws on few central layers in \cite{DerksenIvanovLeeViola2025Pseudorandomness}, and
 integers with prescribed Legendre symbols in \cite{HansonVaughanZhang2016Least}.
 
+\paragraph{Exactly independent prime laws after erasures.}
+A single prime realizes a sign pattern only approximately; a probability law on the primes of one dyadic
+interval can make the quadratic signs exactly $k$-wise independent, with weights comparable to a smooth
+baseline on every prime that survives an adversarial deletion, at a height polynomial in the number of
+signs for each fixed $k$. Here the number of signs is $r$ and the degree is $k$. Let $q_1,\dots,q_r\le Y$ be
+distinct odd primes, $1\le k\le r$, and put
+\[
+ V(n,k)=\sum_{j=0}^k\binom nj\quad(0\le k\le n),\quad V(n,-1)=0,\qquad
+ b(t)=\begin{cases}30(t-1)^2(2-t)^2,&1<t<2,\\0,&\text{otherwise},\end{cases}
+\]
+so that $b\ge0$, $\int b=1$ and $\norm b_\infty=15/8$. For an integer $X\ge2$ let $\mathcal P_X$ be the set of
+primes $X<p<2X$ other than the $q_i$, $u(p)=(\legendre{q_1}p,\dots,\legendre{q_r}p)$ and
+$\mu(p)=b(p/X)/\sum_{l\in\mathcal P_X}b(l/X)$; for $S\subseteq\mathcal P_X$ of positive mass put
+$\mu_S=\mu|_S/\mu(S)$. Let $\mathcal U$ be the uniform law on $\set{-1,1}^r$ and $u_A=\prod_{i\in A}u_i$,
+$u_\varnothing=1$.
+
+\begin{theorem}[Prime cubature after erasures; \stG]\label{dir:thm:cubature}
+For each $k\ge1$ there is an effective $C_k>0$ such that for all $r\ge k$, all distinct odd primes
+$q_1,\dots,q_r\le Y$, and all
+\[
+ 0\le\delta\le c_k:=\frac1{1024\cdot9^k},\qquad X\ge C_k\bigl(V+\delta V^2\bigr)^2\log^2(2Y),\qquad V=V(r,k),
+\]
+the set $\mathcal P_X$ is nonempty and, simultaneously for every $S\subseteq\mathcal P_X$ with
+$\mu(\mathcal P_X\setminus S)\le\delta$, there are positive rational weights $w_p$ on $S$ with
+\begin{equation}\label{dir:eq:cubature}
+ \tfrac34\mu_S(p)\le w_p\le\tfrac54\mu_S(p),\qquad
+ \sum_{p\in S}w_pu_A(p)=\begin{cases}1,&A=\varnothing,\\0,&1\le\abs A\le k.\end{cases}
+\end{equation}
+In particular, for every $B\subseteq[r]$ with $\abs B\le k$ and every $v\in\set{-1,1}^B$, the primes $p\in S$ with
+$\legendre{q_i}p=v_i$ for $i\in B$ have total weight exactly $2^{-\abs B}$. The same holds for the signs
+$\legendre p{q_i}$, at a cutoff of the same order.
+\end{theorem}
+
+For fixed $k$ the height is $O_k(r^{2k}\log^2(2Y))$ without deletions and $O_k(r^{4k}\log^2(2Y))$ at a fixed
+admissible deletion fraction, the crossover being at $\delta\asymp1/V$; finding a prime in every full sign
+cell would need a height exponential in $r$. The constant $C_k$ is not evaluated.
+
+\begin{corollary}[Sparse designs, entropy and deletion by count; \stG]\label{dir:cor:cubature}
+Under the hypotheses of \cref{dir:thm:cubature}:
+\begin{enumerate}[label=\textup{(\alph*)}]
+\item some exact rational design, that is nonnegative weights satisfying the moment equations of
+\eqref{dir:eq:cubature}, is supported on at most $V(r,k)$ surviving primes, and every exact design has at least
+$V(r,\floor{k/2})$ distinct sign vectors in its support \textup{(}\stU\textup{)};
+\item the weights of \eqref{dir:eq:cubature} satisfy $\max_pw_p\ll\log X/X$, so their min-entropy is at least
+$\log_2(X/\log X)-O(1)$;
+\item there is an absolute $K\ge1$ such that the theorem holds for the deletion of any $\tau\abs{\mathcal P_X}$
+primes, chosen adversarially, with $\tau\le c_k/K$, on replacing $\delta$ in the cutoff by $K\tau$.
+\end{enumerate}
+\end{corollary}
+
+The arithmetic enters only through a small truncated parity bias, and the rest is a finite theorem. For a
+positive probability law $\mu$ on a finite labelled set $\Omega$ with a map $u\colon\Omega\to\set{-1,1}^r$
+(repeated values allowed) put $\epsilon=\max_{1\le\abs A\le\min(4k,r)}\abs{\dirE_\mu u_A}$.
+
+\begin{lemma}[Three norm bounds; \stU]\label{dir:lem:cubnorms}
+If $f=\sum_{\abs A\le k}a_Au_A$ is real with $\dirE_{\mathcal U}f^2=1$ and $V=V(r,k)$, then
+\[
+ \abs{\dirE_\mu f-\dirE_{\mathcal U}f}\le\epsilon\sqrt V,\qquad 1-\epsilon V\le\dirE_\mu f^2\le1+\epsilon V,\qquad
+ \dirE_\mu f^4\le9^k+\epsilon V^2 .
+\]
+\end{lemma}
+
+\begin{proof}
+The $u_A$ are orthonormal for $\mathcal U$, so $\sum_Aa_A^2=1$, and with $L(f)=\sum_A\abs{a_A}$ one has
+$L(f)\le\sqrt V$ and $L(fg)\le L(f)L(g)$. For a polynomial $g$ of degree at most $4k$,
+$\abs{\dirE_\mu g-\dirE_{\mathcal U}g}\le\epsilon L(g)$, which gives the first two bounds and bounds the
+fourth-moment discrepancy by $\epsilon V^2$. Finally $(\dirE_{\mathcal U}f^4)^{1/2}\le\sum_A3^{\abs A}a_A^2$ by
+induction on the coordinates: writing $f=g+u_rh$ with weighted coefficient sums $G,H'$ for $g,h$, the odd
+terms in $u_r$ vanish and
+$\dirE f^4=\dirE g^4+6\dirE g^2h^2+\dirE h^4\le G^2+6GH'+H'^2\le(G+3H')^2$ by Cauchy--Schwarz. As the degree
+is at most $k$, $\dirE_{\mathcal U}f^4\le9^k$.
+\end{proof}
+
+\begin{lemma}[Box criterion; \stU]\label{dir:lem:box}
+Let $v_x=(u_A(x))_{\abs A\le k}\in\R^{V}$ and $e_0=(1,0,\dots,0)$. For a probability law $\nu$ on $S$ and
+$0<\eta<1$ there are weights $w_x\in[(1-\eta)\nu(x),(1+\eta)\nu(x)]$ with $\sum_xw_xv_x=e_0$ if and only if
+$\abs{\dirE_{\mathcal U}f-\dirE_\nu f}\le\eta\dirE_\nu\abs f$ for every real $f$ of degree at most $k$.
+\end{lemma}
+
+\begin{proof}
+The correction $e_0-\sum_x\nu(x)v_x$ must lie in the compact convex set
+$Z=\set{\sum_xt_x\nu(x)v_x:\abs{t_x}\le\eta}$, whose support function in the direction $a$ is
+$\eta\sum_x\nu(x)\abs{a\cdot v_x}$. With $f=a\cdot v$ one has $a\cdot e_0=\dirE_{\mathcal U}f$ and
+$a\cdot\sum_x\nu(x)v_x=\dirE_\nu f$, so the separation criterion in the directions $\pm a$ is the stated
+inequality. The constant coordinate makes the total weight one.
+\end{proof}
+
+\begin{theorem}[Bounded-density repair; \stU]\label{dir:thm:cubrepair}
+Let $V=V(r,k)$ and $H=9^k+\epsilon V^2$. If
+\[
+ \epsilon\le\frac1{32\cdot3^kV}\qquad\text{and}\qquad\mu(\Omega\setminus S)\le\frac1{512H},
+\]
+then some probability law $w$ on $S$ satisfies \eqref{dir:eq:cubature} with points of $\Omega$ in place of
+primes, and $w$ can be taken rational when $\mu$ is. It suffices that
+$\mu(\Omega\setminus S)\le\delta$ with $\delta\le1/(1024\cdot9^k)$, $\epsilon\le1/(32\cdot3^kV)$ and
+$\delta\epsilon V^2\le1/1024$.
+\end{theorem}
+
+\begin{proof}
+Put $R=\Omega\setminus S$ and $d=\mu(R)$. By \cref{dir:lem:box} with $\nu=\mu_S$ and $\eta=1/4$ it suffices,
+by homogeneity, to treat $\norm f_{L^2(\mathcal U)}=1$. With $g=f-\dirE_{\mathcal U}f$, so that
+$\norm g_{L^2(\mathcal U)}\le1$, \cref{dir:lem:cubnorms} and Cauchy--Schwarz give
+\[
+ (1-d)\abs{\dirE_{\mu_S}f-\dirE_{\mathcal U}f}=\abs{\dirE_\mu g-\dirE_\mu(\mathbf 1_Rg)}\le\epsilon\sqrt V+\sqrt{2d},
+\]
+and, since $\dirE f^2\le(\dirE\abs f)^{2/3}(\dirE f^4)^{1/3}$,
+\[
+ (1-d)\dirE_{\mu_S}\abs f\ge\frac{(1-\epsilon V)^{3/2}}{\sqrt H}-\sqrt{2d}.
+\]
+Under the hypotheses $\epsilon V\le1/8$, $\epsilon^2VH=\epsilon^2V9^k+\epsilon^3V^3<1/256$ and
+$\sqrt{2dH}\le1/16$, so the first quantity is at most $1/(8\sqrt H)$ and the second at least $1/(2\sqrt H)$, as
+$(7/8)^{3/2}-1/16>1/2$; their ratio is at most $1/4$. For rational $\mu$ the feasible set is a nonempty
+bounded rational polytope and has a rational vertex. The last sentence follows from $\delta H\le1/512$.
+\end{proof}
+
+The proof controls signed averages and fourth moments, not the total variation distance from $\mathcal U$:
+the law can live on far fewer than $2^r$ points, no prime in each full sign cell is needed, and positivity on
+every surviving point is stronger than membership of the target in the convex hull.
+
+\begin{lemma}[A rational bump estimate; \stG]\label{dir:lem:bump}
+For $X\ge2$ and a primitive real character $\chi$ of conductor $f$, the zeta case $f=1$ included,
+\[
+ \sum_pb(p/X)\chi(p)=\frac1{\log X}\Bigl(\mathbf 1_{f=1}XI_X+O\bigl(\sqrt X\log(2f)\bigr)\Bigr),\qquad
+ I_X=\int_1^2b(t)\frac{\log X}{\log(Xt)}\,dt\in[\tfrac12,1],
+\]
+with an absolute implied constant.
+\end{lemma}
+
+\begin{proof}
+Let $h_X(t)=b(t)\log X/\log(Xt)$ on $(1,2)$, zero elsewhere. Its derivatives through order three are bounded
+on the interior uniformly in $X\ge2$, and $h_X$ and $h_X'$ vanish at both endpoints, so integration by parts in
+$\log t$ gives $\abs{\widehat h_X(\sigma+it)}\ll(1+\abs t)^{-3}$ for $-1/2\le\sigma\le2$, uniformly in $X$, for
+the Mellin transform $\widehat h_X(s)=\int_1^2h_X(t)t^{s-1}\,dt$. Shift the integral of
+$-(L'/L)(s,\chi)X^s\widehat h_X(s)$ from $\Re s=2$ to $\Re s=-1/2$: the pole gives $XI_X$ for $f=1$; by
+\cref{src:thm:dgrh} and the local zero count $O(\log(2f(\abs t+2)))$ the zeros contribute $O(\sqrt X\log(2f))$; a
+trivial zero at $0$ contributes $O(1)$; and the functional equation bounds the new vertical integral by
+$O(X^{-1/2}\log(2f))$. Higher prime powers contribute $\sum_{j\ge2}\vartheta((2X)^{1/j})\ll\sqrt X$, and on
+primes $\log p\,h_X(p/X)=\log X\,b(p/X)$. The bounds on $I_X$ follow from $\log X\le\log(Xt)\le2\log X$.
+\end{proof}
+
+\begin{lemma}[Truncated bias of the prime pool; \stG]\label{dir:lem:primebias}
+For each $k\ge1$ there is an effective $B_k$ such that, if $X\ge B_kr^2\log^2(2Y)$, then $\mathcal P_X$ is
+nonempty, the law $\mu$ has truncated parity bias $\epsilon\le B_k\log(2Y)/\sqrt X$, and
+$Z_X=\sum_{p\in\mathcal P_X}b(p/X)\gg X/\log X$ and $\abs{\mathcal P_X}\ll X/\log X$, the last two with absolute
+constants after enlarging the lower bound on $X$ by an absolute factor.
+\end{lemma}
+
+\begin{proof}
+For odd $p\nmid q_i$, $p\mapsto\legendre{q_i}p$ is induced by the primitive Kronecker character of
+discriminant $q_i$ or $4q_i$ as $q_i\equiv1$ or $3\pmod4$. For $A\ne\varnothing$ the product $u_A$ is induced by
+the nonprincipal primitive character of conductor $f_A=\prod_{i\in A}q_i$ or $4f_A$; for $\legendre p{q_i}$ the
+Chinese remainder theorem gives conductor $\prod_{i\in A}q_i$. For $\abs A\le4k$, $\log(2f_A)\ll k\log(2Y)$.
+Excluding the $q_i$ costs $O(r\log(2Y))$ before division by $\log X$, since an excluded prime in $(X,2X)$
+satisfies $X<q_i\le Y$. By \cref{dir:lem:bump} the principal sum is $XI_X+O(\sqrt X+r\log(2Y))$, at least
+$X/4$ at this height, and each nonempty parity sum is $O_k(\sqrt X\log(2Y)+r\log(2Y))$; divide. Chebyshev's
+bound gives the count.
+\end{proof}
+
+\begin{proof}[Proof of \cref{dir:thm:cubature}]
+As $V\ge r+1$, a large $C_k$ gives the height of \cref{dir:lem:primebias} and
+$\epsilon\le1/(32\cdot3^kV+1024\delta V^2)$, which implies the conditions of the last sentence of
+\cref{dir:thm:cubrepair}, also for $\delta=0$. The baseline is rational for integral $X$ and positive on every
+prime of the open interval. The cell weights follow by expanding $2^{-\abs B}\prod_{i\in B}(1+v_iu_i)$.
+\end{proof}
+
+\begin{proof}[Proof of \cref{dir:cor:cubature}]
+(a) The exact designs form a rational polytope $\set{w\ge0:\sum_pw_pv_p=e_0}$; at a vertex the columns in
+the support are linearly independent, as a dependence would allow a perturbation in both directions, so there
+are at most $V(r,k)$ of them. The Walsh monomials of degree at most $\floor{k/2}$ are orthonormal for any exact
+design, as their pairwise products have degree at most $k$, so their number is at most the number of distinct
+sign vectors in the support. (b) By \cref{dir:lem:primebias}, $\mu(p)\ll\log X/X$; renormalization after a
+deletion multiplies it by at most $(1-c_k)^{-1}$, and \eqref{dir:eq:cubature} by at most $5/4$. (c) A set of
+$\tau\abs{\mathcal P_X}$ primes has mass at most $\tau\abs{\mathcal P_X}\norm b_\infty/Z_X\le K\tau$.
+\end{proof}
+
+The deletion scale is sharp up to constants in degree one, for laws on the cube controlled only by their biases
+through degree four.
+
+\begin{theorem}[Three-layer obstruction; \stU]\label{dir:thm:threelayer}
+Let $r\ge7$ be odd and $\ell\le r$ an odd integer with $\ell^2\ge6r$. There is a rational exchangeable law $\mu$
+on $\set{-1,1}^r$ whose one- and two-coordinate parity moments vanish and whose largest parity bias through
+degree four is $\asymp\ell^2/r^3$, such that deleting a set of mass $d\asymp r/\ell^2$ leaves a support carrying
+no probability law with vanishing first moments. In particular $d\,\epsilon r^2\asymp1$, with absolute
+constants.
+\end{theorem}
+
+\begin{proof}
+Write $T=\sum_iu_i$ and let $\mu$ be uniform on each of the layers $T=1,\ell,-\ell$, with masses
+$1-\lambda,\alpha,\beta$, where
+\[
+ \lambda=\frac{r-1}{\ell^2-1},\qquad\alpha=\frac12\Bigl(\lambda-\frac{1-\lambda}\ell\Bigr),\qquad
+ \beta=\frac12\Bigl(\lambda+\frac{1-\lambda}\ell\Bigr);
+\]
+$\alpha\ge0$ is equivalent to $\ell\le r$. Then $\dirE T=0$, $\dirE T^2=r$, $\dirE T^3=r-\ell^2$ and
+$\dirE T^4=r+(r-1)\ell^2$. The common parity moment $m_j$ of $j$ distinct coordinates is the coefficient of $z^j$
+in $(1+z)^{(r+T)/2}(1-z)^{(r-T)/2}$ divided by $\binom rj$, so
+\begin{gather*}
+ m_1=\frac{\dirE T}r,\qquad m_2=\frac{\dirE T^2-r}{r(r-1)},\qquad m_3=\frac{\dirE T^3-(3r-2)\dirE T}{r(r-1)(r-2)},\\
+ m_4=\frac{\dirE T^4-(6r-8)\dirE T^2+3r(r-2)}{r(r-1)(r-2)(r-3)},
+\end{gather*}
+which gives $m_1=m_2=0$, $m_3=(r-\ell^2)/(r(r-1)(r-2))$ and $m_4=(\ell^2-3r)/(r(r-2)(r-3))$, both of order
+$\ell^2/r^3$ since $6r\le\ell^2\le r^2$. Delete the layer $T=-\ell$, of mass $\beta\in[\lambda/2,\lambda]$. On the
+remaining layers $T\ge1$, so every probability law there has $\dirE T>0$.
+\end{proof}
+
+As $\ell$ grows from order $\sqrt r$ to $r$ the obstruction passes from a constant deletion fraction at bias of
+order $r^{-2}$ to deletion of order $r^{-1}$ at bias of order $r^{-1}$, matching the scale
+$\delta\epsilon V^2\asymp1$ of \cref{dir:thm:cubrepair} for $k=1$, $V=r+1$. It does not show that the
+prime-height exponent of \cref{dir:thm:cubature} is sharp.
+
+\begin{example}\label{dir:ex:cubature}
+For $r=8$, $k=2$, $(q_i)=(3,5,7,11,13,17,19,23)$ and $X=100000$, delete primes whose first two signs are $+1$,
+largest bump weights first, until the deleted mass reaches $0.02$, which exceeds $c_2$. Of the $8392$ primes of
+the pool $94$ are deleted, and the $37$ moment equations of \eqref{dir:eq:cubature} hold exactly on the $8298$
+survivors with weights between $0.8758$ and $1.1929$ times the renormalized baseline, computed from the
+integer weights $(p-X)^2(2X-p)^2$ in rational arithmetic; the layer-moment formulas of the proof of
+\cref{dir:thm:threelayer} were checked in $906$ cases.
+\dirfiles{\artifact{prime_cubature_grh_2026-11-27/certificate.json},
+\artifact{prime_cubature_grh_2026-11-27/verification.txt}}
+\end{example}
+
+Small-bias spaces and almost $k$-wise independence go back to \cite{NaorNaor1993SmallBias}, Fourier complexity in
+effective Chebotarev bounds to \cite{Bellaiche2016Chebotarev}, and exact positive cubature and stable randomized
+cubature are studied in \cite{Glaubitz2023Positive,MiglioratiNobile2022Stable}.
+
 \subsection{Prime samples as codes for sparse character sums}\label{dir:sec:codes}
-\sources{prime_character_codes_2026-11-27; prime_sparse_recovery_2026-11-27; prime_sparse_recovery_2026-11-27_2; grh_prime_fingerprints_2026-11-27}
+\sources{prime_character_codes_2026-11-27; prime_sparse_recovery_2026-11-27; prime_sparse_recovery_2026-11-27_2; grh_prime_fingerprints_2026-11-27; prime_legendre_codes_2026-11-27}
 
 \Cref{dir:thm:signs} finds one prime realizing a prescribed sign word. Conversely, the values of
 characters at one fixed short list of small primes can identify every sparse combination of
 characters, even after an adversary corrupts a fraction of the values; \cref{rec:cor:dict} does this
 for single characters. The optimal corruption fraction is set by subgroups of characters, and the
 sampling input is the almost-orthogonality of characters on small primes given by
-\cref{src:thm:dgrh}.
+\cref{src:thm:dgrh}. The subsection ends with binary linear codes whose generator matrices are
+Legendre symbols between two lists of primes, with both distances near the Gilbert--Varshamov
+thresholds at a prime height $O(n^2\log^2n)$ (\cref{dir:thm:legendrecodes}).
 
 For $q\ge2$ let $G_q=(\Z/q\Z)^\times$, with characters extended by zero off the units. For a finite set
 $S$ of distinct primes put $S_q=\set{p\in S:p\nmid q}$ and $n_q=\abs{S_q}$. Let $\mathcal X_Q$ be the set of
@@ -5355,8 +5892,218 @@ Sparse recovery from corrupted measurements and coherence bounds are treated in
 linear codes in \cite{GuruswamiHastadKopparty2011List}; here the messages are characters of bounded
 conductor and each coordinate is an evaluation at a distinct small prime.
 
+\paragraph{Binary codes from Legendre symbols between two prime lists.}
+For disjoint lists $Q=(q_1,\dots,q_r)$ and $P=(p_1,\dots,p_n)$ of odd primes, without repetitions within either
+list, put
+\[
+ A=A(Q,P)\in\F_2^{r\times n},\qquad A_{ij}=\frac{1-\legendre{p_j}{q_i}}2\bmod2,
+\]
+and let $C=\set{uA:u\in\F_2^r}$ and $C^\perp=\set{v\in\F_2^n:Av^t=0}$, with minimum nonzero Hamming weights
+$d(C)$ and $d(C^\perp)$. Let $\mathsf H_2$ be the binary entropy, inverted on $[0,1/2]$, and for $I\subseteq[r]$,
+$J\subseteq[n]$ put $\Delta_A(I,J)=\min(\abs I,\abs J)-\rank A_{I,J}$ and $\Delta(A)=\max_{I,J}\Delta_A(I,J)$, the
+rank of an empty matrix being zero; the rank condition is uniform over all $2^{r+n}$ rectangles. For $S\subseteq[r]$
+the sign word $\sigma_S(j)=\prod_{i\in S}\legendre{p_j}{q_i}$ is the codeword of the indicator of $S$ with each
+bit $e$ replaced by $(-1)^e$.
+
+\begin{theorem}[Legendre codes at a near-quadratic prime cutoff; \stG]\label{dir:thm:legendrecodes}
+Fix $0<R<1$, $0<\delta,\delta^\perp<1/2$ and $\tau>0$ with $\mathsf H_2(\delta)<1-R$ and
+$\mathsf H_2(\delta^\perp)<R$. There is $K$, depending only on these parameters, such that for every large $n$,
+with $r=\floor{Rn}$ and $X=\ceil{Kn^2\log^2n}$, there are distinct primes $q_i\in(X,2X)$ and $p_j\in(3X,6X)$
+with
+\[
+ \rank A=r,\qquad d(C)\ge\ceil{\delta n},\qquad d(C^\perp)\ge\ceil{\delta^\perp n},\qquad\Delta(A)<\ceil{\tau n};
+\]
+under the sampling law of \cref{dir:prop:legendrefinite}, conditioned on no repeated prime, the failure
+probability is exponentially small in $n$.
+\end{theorem}
+
+\begin{theorem}[Approaching both Gilbert--Varshamov thresholds; \stG]\label{dir:thm:legendrelimit}
+Fix $0<R<1$ and $\eta>0$, and let $X=\ceil{n^{2+\eta}}$ and $r=\floor{Rn}$. Primes in the intervals of
+\cref{dir:thm:legendrecodes} can be chosen with $\rank A=r$,
+\[
+ \frac{d(C)}n\ge\mathsf H_2^{-1}(1-R)-o(1),\qquad\frac{d(C^\perp)}n\ge\mathsf H_2^{-1}(R)-o(1),\qquad
+ \Delta(A)<\ceil{cn/\log_2n}
+\]
+for any fixed $c>2(R+\log_23)/\eta$; the success probability of the no-repeat sampling law tends to one.
+\end{theorem}
+
+\begin{theorem}[Fixed row primes; \stG]\label{dir:thm:legendreprefix}
+Fix $0<R<1$, let $r=\floor{Rn}$ and let $q_i$ be the $i$th odd prime. For every large $n$ there are $n$ distinct
+primes $p_j\in(X,2X)$, $X=\ceil{r^3(\log r)^4}$, such that $\rank A=r$, the two distances satisfy the bounds of
+\cref{dir:thm:legendrelimit}, and $\Delta(A)<\ceil{cn/\log_2n}$ for any fixed $c>2(R+\log_23)$; the success
+probability of $n$ independent draws from $\mu_X$ conditioned on distinctness tends to one.
+\end{theorem}
+
+\begin{corollary}[Robust identification and exact local uniformity; \stG]\label{dir:cor:legendre}
+For the primes of \cref{dir:thm:legendrecodes}, distinct subsets $S\subseteq[r]$ give sign words differing at
+at least $\ceil{\delta n}$ column primes, so $S$ is determined by its sign word with at most
+$\floor{(\ceil{\delta n}-1)/2}$ sign errors. For $J\subseteq[n]$ with $\abs J<\ceil{\delta^\perp n}$, every sign pattern
+on $J$ occurs for exactly $2^{r-\abs J}$ subsets $S$. For arbitrary $I,J$ the subsets $S\subseteq I$ realize exactly
+$2^{\rank A_{I,J}}$ patterns on $J$, each $2^{\abs I-\rank A_{I,J}}$ times, hence at least
+$2^{\min(\abs I,\abs J)-\Delta(A)}$ patterns.
+\end{corollary}
+
+\begin{proof}
+The codeword of a nonzero difference has weight at least $d(C)$, and Hamming balls of radius below
+$d(C)/2$ are disjoint. The projection to the coordinates $J$ is onto exactly when the columns in $J$ are
+independent, since otherwise a nonzero dual word is supported in $J$. The general count is rank--nullity for
+$\F_2^I\to\F_2^J$.
+\end{proof}
+
+The entropy thresholds are the classical random-code bounds \cite{GuruswamiRudraSudan2022Essential}, and the
+unrestricted Gilbert--Varshamov bound is not improved; the content is the prime height. Quadratic-residue cyclic
+codes, and Paley matrices built from $\legendre{j-i}p$ for one fixed $p$, are different constructions: here rows
+and columns are labelled by primes and the denominator of the symbol varies.
+
+\begin{lemma}[A rational window; \stG]\label{dir:lem:window}
+Let $w(t)=(t-1)^4(2-t)^4$ on $[1,2]$, zero elsewhere, $W_X=\sum_pw(p/X)$ and $\mu_X(p)=w(p/X)/W_X$. There are
+absolute $B_0,B_1,X_0$ such that for $X\ge X_0$ and every primitive nonprincipal character $\chi$ of conductor
+$D$, with no restriction on $D$,
+\[
+ \abs{\dirE_{p\sim\mu_X}\chi(p)}\le B_0\frac{\log(2DX)}{\sqrt X},\qquad\max_p\mu_X(p)\le B_1\frac{\log X}X .
+\]
+\end{lemma}
+
+\begin{proof}
+By the prime number theorem $W_X\sim(X/\log X)\int_1^2w=X/(630\log X)$, which gives the second bound. For
+$g_X(t)=w(t)/\log(Xt)$ on $[1,2]$ the Mellin transform $G_X$ satisfies
+$\abs{G_X(\sigma+it)}\ll(1+\abs t)^{-3}/\log X$ for $-1/2\le\sigma\le2$, by three integrations by parts in
+$\log t$, as $w$ and its first three derivatives vanish at the endpoints. The explicit formula obtained by
+shifting from $\Re s=2$ to $\Re s=-1/2$ gives
+$\sum_m\Lambda(m)\chi(m)g_X(m/X)=-\sum_\rho X^\rho G_X(\rho)+O(1/\log X+\log(2D)/(\sqrt X\log X))$, the possible
+trivial zero at $0$ included in the error and no residue at $1$. By \cref{src:thm:dgrh} and the unit-interval
+zero count $\ll\log(2D(k+2))$ the zero sum is $\ll\sqrt X\log(2D)/\log X$. Prime powers with exponent at least two
+cost $O(\sqrt X)$, and dividing by $W_X$ gives the first bound.
+\end{proof}
+
+\begin{lemma}[Small bias and affine subspaces; \stU]\label{dir:lem:affine}
+If a random $Z\in\F_2^a$ has $\abs{\dirE(-1)^{u\cdot Z}}\le\eps$ for all $u\ne0$, then every affine subspace $U$ of
+codimension $b$ has $\dirP(Z\in U)\le2^{-b}+(1-2^{-b})\eps$.
+\end{lemma}
+
+\begin{proof}
+For $U=z+U_0$ expand $\mathbf 1_U=2^{-b}\sum_{u\in U_0^\perp}(-1)^{u\cdot(Z-z)}$ and isolate $u=0$.
+\end{proof}
+
+\begin{lemma}[All rectangles at once; \stU]\label{dir:lem:rectangle}
+If an $r\times n$ random binary matrix has independent columns, each with bias at most $\eps$ on every nonzero
+linear character, then $\dirP(\Delta(A)\ge h)\le2^r3^n(2^{-h}+\eps)^h$ for every $h\ge1$.
+\end{lemma}
+
+\begin{proof}
+Fix $I,J$ with $a=\abs I$, $b=\abs J$, $\min(a,b)\ge h$. A defect at least $h$ means rank at most
+$t=\min(a,b)-h$, so some set $T\subseteq J$ of $t$ columns spans the columns of $A_{I,J}$ (pad a basis). Given the
+columns in $T$, their span in $\F_2^a$ has codimension at least $h$, and the restriction to $I$ of every other
+column still has bias at most $\eps$; by \cref{dir:lem:affine} and independence all $b-t\ge h$ other columns of
+$J$ lie in the span with probability at most $(2^{-h}+\eps)^h$. There are $2^r$ choices of $I$, and assigning
+each column to $T$, $J\setminus T$ or the complement of $J$ gives at most $3^n$ pairs $(J,T)$.
+\end{proof}
+
+\begin{proposition}[Finite two-sided failure bound; \stG]\label{dir:prop:legendrefinite}
+Fix $1\le r\le n$, $1\le a,b\le n$ and $h\ge1$. Draw $r$ independent primes from $\mu_X$ and $n$ independent
+primes from $\mu_{3X}$, independently, and let $\mathcal D$ be the event of no repetition in either list. For
+$X\ge X_0$ there is an absolute $B$ such that, with
+\[
+ \eps=B\frac{n\log(12X)}{\sqrt X},\qquad M=\binom r2B_1\frac{\log X}X+\binom n2B_1\frac{\log(3X)}{3X},
+\]
+the probability that one of $\mathcal D$, $\rank A=r$, $d(C)\ge a$, $d(C^\perp)\ge b$, $\Delta(A)<h$ fails is at most
+\[
+ M+2^{r-n}V(n,a-1)(1+\eps)^n+2^{-r}\bigl(V(n,b-1)-1\bigr)(1+\eps)^r+2^r3^n(2^{-h}+\eps)^h,
+\]
+and if $M<1$ the conditional probability of a matrix failure given $\mathcal D$ is at most the sum of the last three
+terms divided by $1-M$.
+\end{proposition}
+
+\begin{proof}
+A collision of two independent draws from $\mu$ has probability $\sum_p\mu(p)^2\le\max_p\mu(p)$, so
+$\dirP(\mathcal D^c)\le M$ by \cref{dir:lem:window}. Conditionally on distinct row primes, for $u\ne0$ the column
+character $(-1)^{u\cdot A_{*,j}}=\prod_{u_i=1}\legendre{p_j}{q_i}$ is primitive and nonprincipal of conductor
+$\prod_{u_i=1}q_i$, with logarithm at most $r\log(2X)$, so each bit of $uA$ is $1$ with probability at most
+$(1+\eps)/2$, independently over the columns, and
+$\dirP(\exists u\ne0:\mathrm{wt}(uA)<a)\le(2^r-1)V(n,a-1)((1+\eps)/2)^n$; as $a\ge1$ this event contains rank
+deficiency. \Cref{dir:lem:rectangle} gives the rectangle term. Conditionally on distinct column primes, for
+$v\ne0$ let $m_v=\prod_{v_j=1}p_j$ and $D_v=m_v$ or $4m_v$ as $m_v\equiv1$ or $3\pmod4$; then
+$(-1)^{(Av^t)_i}=\legendre{m_v}{q_i}=\chi_{D_v}(q_i)$ with $\chi_{D_v}$ primitive and nonprincipal, accounting
+for the reciprocity sign, and $\log D_v\le\log4+n\log(6X)$, so $\dirP(Av^t=0)\le((1+\eps)/2)^r$; a union bound over
+the $V(n,b-1)-1$ nonzero $v$ of weight below $b$ gives the dual term. On $\mathcal D$ each failure event intersected
+with $\mathcal D$ is bounded by its bound under the corresponding conditioning; summing and adding
+$\dirP(\mathcal D^c)$ gives the claim.
+\end{proof}
+
+\begin{proof}[Proof of \cref{dir:thm:legendrecodes,dir:thm:legendrelimit}]
+For the first, take $a=\ceil{\delta n}$, $b=\ceil{\delta^\perp n}$, $h=\ceil{\tau n}$. At $X=\ceil{Kn^2\log^2n}$,
+$M=O(1/\log n)$ and $\eps\le3B/\sqrt K$ for large $n$. With $g_1=1-R-\mathsf H_2(\delta)$ and
+$g_2=R-\mathsf H_2(\delta^\perp)$, choose $K$ so large that $\eps\le e_0$, where $0<e_0<1/2$ satisfies
+$\log_2(1+e_0)<g_1/2$, $R\log_2(1+e_0)<g_2/2$ and $\tau\log_2(1/(2e_0))>R+\log_23+1$. Since
+$V(n,k)\le2^{n\mathsf H_2(k/n)}$ for $k\le n/2$, the primal and dual terms are $2^{-\Omega(n)}$, and the rectangle
+term is at most $2^{r+n\log_23}(2e_0)^h\le2^{-n}$. For the second, $M=O(n^{-\eta}\log n)$ and
+$\eps=O_\eta(n^{-\eta/2}\log n)$; take $\gamma_n=n^{-\min(\eta,1)/4}$,
+$a=\ceil{n\mathsf H_2^{-1}(1-R-\gamma_n)}$, $b=\ceil{n\mathsf H_2^{-1}(R-\gamma_n)}$ and
+$h=\ceil{cn/\log_2n}$. Then $\eps=o(\gamma_n)$, the primal and dual terms are $2^{-n\gamma_n(1+o(1))}$ up to a
+constant factor, and $2^r3^n(2^{-h}+\eps)^h\le2^{n(R+\log_23-c\eta/2+o(1))}=o(1)$; continuity of
+$\mathsf H_2^{-1}$ gives the distances.
+\end{proof}
+
+With the row primes fixed, a bias bound for single columns no longer controls the dual distance; short dual
+relations are excluded deterministically by a second use of \cref{src:thm:dgrh}.
+
+\begin{lemma}[No short dual relations; \stG]\label{dir:lem:shortrelations}
+In the setting of \cref{dir:thm:legendreprefix} there is an absolute $c_0>0$ such that for all large $r$ and any
+distinct column primes in $(X,2X)$, every set of between $1$ and $H=\floor{c_0\sqrt{r/\log r}}$ columns of $A$ has
+nonzero sum.
+\end{lemma}
+
+\begin{proof}
+Let $S$ be such a set, $s=\abs S$, $m=\prod_{j\in S}p_j$ and $D=m$ or $4m$ its fundamental discriminant, so that
+$\chi_D$ is primitive and nonprincipal as $m$ is squarefree and not a square. A zero column sum means
+$\chi_D(q_i)=1$ for $i\le r$. With $y=q_r\sim r\log r$, for large $r$ one has $X>y$ and every prime in $(y/2,y)$ is a
+row prime, so the mean of $\chi_D$ under $\mu_{y/2}$ would be one; but \cref{dir:lem:window} bounds it by
+$\ll\log(2Dy)/\sqrt y\ll(s+1)\log r/\sqrt{r\log r}$, which is below $1/2$ for $s\le H$ when $c_0$ is small.
+\end{proof}
+
+\begin{proof}[Proof of \cref{dir:thm:legendreprefix}]
+Since $\log\prod_iq_i=O(r\log r)$, \cref{dir:lem:window} gives column bias $\eps=O(r\log r/\sqrt X)=O(r^{-1/2}/\log r)$,
+and repetitions have probability $O(n^2\log X/X)=o(1)$. The primal distance and the rectangle ranks follow as in
+\cref{dir:prop:legendrefinite} with $\gamma_n=n^{-1/4}$, $a=\ceil{n\mathsf H_2^{-1}(1-R-\gamma_n)}$ and
+$h=\ceil{cn/\log_2n}$, the rectangle bound being $2^{n(R+\log_23-c/2+o(1))}$. For the dual, with
+$b=\ceil{n\mathsf H_2^{-1}(R-\gamma_n)}$, \cref{dir:lem:shortrelations} excludes on the no-repeat event every nonzero
+$v$ of weight at most $H$; for a fixed set of $s>H$ columns, independence and Fourier inversion on $\F_2^r$ give
+$\dirP(\sum_{j\in S}A_{*,j}=0)\le2^{-r}+\eps^s$, so relations with $H<s<b$ have probability at most
+$2^{-r}V(n,b-1)+\sum_{s>H}(en\eps/s)^s$. The first term is $O(2^{-n\gamma_n})$, and with
+$\alpha_n=en\eps/(H+1)=O_R(1/\sqrt{\log r})$ the sum is at most $\alpha_n^{H+1}/(1-\alpha_n)=o(1)$. Adding the
+collision probability and dividing by $1-o(1)$ for the conditioning completes the proof.
+\end{proof}
+
+The proofs give a Monte Carlo construction: rejection sampling from the exact rational laws $\mu_X$, $\mu_{3X}$
+produces a good matrix with probability $1-2^{-\Omega(n)}$ for fixed entropy gaps and $\tau$, but certifying the
+distances or the worst rectangle may take time exponential in $n$, and no efficient decoder is claimed. Neither
+the prime cutoff nor the rectangle defect is shown to be optimal.
+
+\begin{example}\label{dir:ex:legendre}
+Exact row reduction and complete weight enumerators, checked by the MacWilliams identities
+\cite{MacWilliamsSloane1977Theory}, certify
+\begin{center}\small
+\begin{tabular}{@{}rrrrrl@{}}
+\toprule
+$n$ & $r$ & $d(C)$ & $d(C^\perp)$ & $X$ & row primes\\
+\midrule
+$12$ & $6$ & $3$ & $3$ & $300$ & sampled from $(X,2X)$\\
+$24$ & $12$ & $5$ & $5$ & $1500$ & sampled from $(X,2X)$\\
+$32$ & $16$ & $5$ & $5$ & $3000$ & sampled from $(X,2X)$\\
+$24$ & $12$ & $5$ & $4$ & $2500$ & first $12$ odd primes\\
+\bottomrule
+\end{tabular}
+\end{center}
+with column primes in $(3X,6X)$ and every matrix of full rank $r$; for the first, all $2^{18}=262\,144$
+rectangles were examined and the largest rank defect is $3$. These are selected witnesses, not estimates of
+the success probability.
+\dirfiles{\artifact{prime_legendre_codes_2026-11-27/examples.json},
+\artifact{prime_legendre_codes_2026-11-27/examples_summary.csv},
+\artifact{prime_legendre_codes_2026-11-27/checks.txt}}
+\end{example}
+
 \subsection{Open questions}\label{dir:sec:open}
-\sources{grh-transfer; grh-lean-transfers; grh-arithmetic-transfers; grh_cm_prime_applications; grh-exponent-six-and-transfers; dirichlet-grh-research; squarefree_prime_products; orthogonal_nullity_and_prime_products; squarefree_factorizations; hermite_thresholds_and_quadratic_primes; disjoint-prime-products; entropy_optimal_prime_factorizations_2026-11-27; grh_entropy_products_2026-11-27; grh_growing_factorizations; grh_quadratic_fibre; grh_prime_routing_2026-11-27; prime_character_codes_2026-11-27; prime_sparse_recovery_2026-11-27; prime_sparse_recovery_2026-11-27_2; grh_prime_fingerprints_2026-11-27; hermite_threshold_research}
+\sources{grh-transfer; grh-lean-transfers; grh-arithmetic-transfers; grh_cm_prime_applications; grh-exponent-six-and-transfers; dirichlet-grh-research; squarefree_prime_products; orthogonal_nullity_and_prime_products; squarefree_factorizations; hermite_thresholds_and_quadratic_primes; disjoint-prime-products; entropy_optimal_prime_factorizations_2026-11-27; grh_entropy_products_2026-11-27; grh_growing_factorizations; grh_quadratic_fibre; grh_prime_routing_2026-11-27; prime_character_codes_2026-11-27; prime_sparse_recovery_2026-11-27; prime_sparse_recovery_2026-11-27_2; grh_prime_fingerprints_2026-11-27; hermite_threshold_research; grh_quarter_density; prime_cubature_grh_2026-11-27; prime_legendre_codes_2026-11-27}
 
 \begin{enumerate}
 \item \emph{The least pair sum.} For $n$ outside Euler's list let $b(n)$ be the
@@ -5422,11 +6169,10 @@ conductor and each coordinate is an evaluation at a distinct small prime.
  $(A-1)/(A(A-2))$ under Dirichlet GRH be lowered to $1/(A-1)$ for every modulus? For one product
  above density one third, what happens when $\min(k,m-k)=o(\log q)$, and below density one third
  which higher-order fibre statistics replace Theorem~\ref{dir:thm:fibre}?
-\item \emph{Density one quarter.} At retained density $1/4$ the quotient of
- Theorem~\ref{dir:thm:disjoint-growing} can have order four, cyclic or of exponent two. What are the
- exact support inequalities for disjoint products in these two cases? For growing $r$, which
- statistics determine the approach to uniformity across the occupied quotient classes, beyond the
- relative counts within each class?
+\item \emph{Mixing at density one quarter.} The support at retained density $1/4$ is given by
+ Theorem~\ref{dir:thm:quarter}. For growing $r$, which statistics determine the approach to uniformity
+ across the occupied quotient classes, beyond the relative counts within each class, once the number of
+ exceptional primes is not $o(\sqrt m)$ as in Proposition~\ref{dir:prop:sparseexc}?
 \item \emph{Constants for factorizations.} For one tuple of moduli and coverage alone the leading
  constant is the entropy threshold of Theorem~\ref{dir:thm:entropy}. What is the second-order term,
  between the lower bound of order $\log\log M$ and the upper bound $O(\log M/\log B)$, and can a fixed
@@ -5446,7 +6192,8 @@ conductor and each coordinate is an evaluation at a distinct small prime.
  and~\ref{dir:thm:signswindow}, and is there an arithmetic lower bound for the least prime?
 \item \emph{Computing the quotient.} Can the bounded quotient of Theorem~\ref{dir:thm:quotient}
  be computed from the retained primes in time polynomial in $\log q$, without enumerating the
- characters modulo $q$?
+ characters modulo $q$? Once it is known, Corollary~\ref{dir:cor:anydensity} decides the support of
+ disjoint products in polynomial time.
 \item \emph{Routing capacity.} At the cutoff $C(\log q)^2$, Corollary~\ref{dir:cor:routing} routes
  $\gg\log q/\log\log q$ disjoint pairs while the counting bound allows $O(\log q)$; what is the
  capacity? Can the constant $2/(A-2)$ in the length bound of Theorem~\ref{dir:thm:routing} be lowered
@@ -5456,5 +6203,11 @@ conductor and each coordinate is an evaluation at a distinct small prime.
  corruption fraction, and is the cost $s^6$ of exact rigidity necessary? For moduli without a
  subgroup of characters of order $2k$ the minimum distance may exceed the coherence bound; can a
  tractable decoder use this? Is prime height $(\log Q)^2$ necessary for the fingerprints of
- Theorem~\ref{dir:thm:fingerprint}, and how small can the list size be near capacity?
+ Theorem~\ref{dir:thm:fingerprint}, and how small can the list size be near capacity? Are the prime
+ cutoff $O(n^2\log^2n)$ and the rectangle defect of Theorem~\ref{dir:thm:legendrecodes} optimal for
+ Legendre codes?
+\item \emph{Prime designs.} Can the height exponent of Theorem~\ref{dir:thm:cubature} be lowered at a fixed
+ positive deletion fraction, is there a sharp obstruction in degree $k\ge2$ analogous to
+ Theorem~\ref{dir:thm:threelayer}, and can the bounded reweighting be replaced by equal weights on distinct
+ primes?
 \end{enumerate}

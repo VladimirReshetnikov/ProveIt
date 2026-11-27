@@ -38,7 +38,9 @@ $\log D$ when Dirichlet GRH is used (\cref{smd:thm:growth}), with weaker uncondi
 bounds (\cref{smd:thm:uncond,smd:thm:nearfull}); and it exhibits infinite families of orders
 for which the trivial bound \eqref{smd:eq:trivial} is an equality
 (\cref{smd:thm:dyadic,smd:thm:gaussian}), among them fourteen orders of degrees six and seven
-(\cref{smd:thm:seven}). It also determines the exact number of roots that a polynomial with
+(\cref{smd:thm:seven}) and the orders of every prime conductor below $456{,}193$ in
+$\Q(i)$; for integer disk depths the factorial criterion is refined by a trace condition
+(\cref{smd:thm:trace}). It also determines the exact number of roots that a polynomial with
 at most six terms can have in a deep multiplicative $p$-adic disk
 (\cref{smd:thm:rootcount,smd:thm:sixroot}).
 
@@ -1555,8 +1557,8 @@ $1-(4/7)(7/13)=9/13$.
 This is a near-equality for the minimum over all multiples of $H_\Delta$, of arbitrary
 degree. The density is that of the sufficient congruence conditions.
 
-\subsection{Orders with full support: a criterion and two dyadic families}\label{smd:sec:full}
-{\raggedright\sources{grh_cm_sparse_equations; grh_sparse_singular_moduli; grh_transfers_singular_moduli_and_symmetric_powers}}
+\subsection{Orders with full support: criteria and two dyadic families}\label{smd:sec:full}
+{\raggedright\sources{grh_cm_sparse_equations; grh_sparse_singular_moduli; grh_transfers_singular_moduli_and_symmetric_powers; gaussian-singular-moduli}}
 
 The equality $s(\Delta)=h(\Delta)+1$ means that \emph{every} choice of $h$ distinct
 nonnegative powers of a singular modulus $\alpha$ of discriminant $\Delta$ is a basis of
@@ -1645,31 +1647,134 @@ its number of terms.
 \smdcert{a numerical check of the factorial inequalities for the first four members of
 family (a), \artifact{grh_sparse_singular_moduli/checks/check_exact_family.py}.}
 
-\subsection{Full support for Gaussian prime conductors}\label{smd:sec:gaussian}
-{\raggedright\sources{grh_transfers_singular_moduli_and_symmetric_powers; grh_sparse_singular_moduli}}
+The interval condition \eqref{smd:eq:G2} fails as soon as $v_p(h)\ge b$, because the
+one-term interval $\set h$ violates it. For integer depths this one interval can be
+replaced by a condition on the sum of the logarithms of the points. For integers
+$u<h\le v$ call $w(v)-w(u)=\sum_{t=u+1}^{v}(b-v_p(t))$ the \emph{cost} of the crossing
+from $u$ to $v$; it corresponds to the interval $[u+1,v]$ through $h$, and
+\eqref{smd:eq:G2} asks that every crossing have positive cost. The crossing from $h-1$ to
+$h$ is singled out.
 
-For a rational prime $\ell$ let $j_\ell$ be a singular modulus with endomorphism order
-$\Z+\ell\Z[i]$, of discriminant $-4\ell^2$. Its degree is $h=(\ell-\sigma)/2$ for
-$\ell$ odd, where $\sigma=\chi_{-4}(\ell)=\pm1$, since $\Z[i]$ has class number one and the
-unit index is two.
-
-\begin{theorem}[Gaussian prime conductors; \stU]\label{smd:thm:gaussian}
-The primes $\ell$ with $s(-4\ell^2)=h(-4\ell^2)+1$ form a set of lower relative
-natural density greater than $0.999818260107372245$ among all primes.
+\begin{theorem}[Trace criterion; \stU]\label{smd:thm:trace}
+Let $K/\Q_p$ be a finite extension with valuation ring $\OO$ and $v_p(p)=1$, let $b$ be a
+positive integer with $b>1/(p-1)$, and let $z_1,\dots,z_h$ be distinct elements of
+$a(1+p^b\OO)$ for some $a\ne0$. Suppose that every interval $I$ of positive integers
+containing $h$ with $\abs I\ge2$ satisfies
+\begin{equation}\label{smd:eq:window}
+ \sum_{k\in I}v_p(k)<b\abs I .
+\end{equation}
+If
+\begin{equation}\label{smd:eq:trace}
+ v_p\Bigl(\sum_{i=1}^{h}\log(z_i/a)\Bigr)>v_p(h),
+\end{equation}
+then $\det(z_i^{n_j})_{i,j\le h}\ne0$ for all integers $0\le n_1<\dots<n_h$; equivalently,
+no nonzero polynomial with at most $h$ terms vanishes at all the $z_i$. Condition
+\eqref{smd:eq:trace} holds automatically when $v_p(h)<b$.
 \end{theorem}
 
-The proof places all conjugates in common multiplicative disks at $2$, $3$ and $7$, of
-relative depths $4$, $3$ and $2$, and applies \cref{smd:lem:criterion} at each of the
-three primes. The exact density of the full-support set is not determined.
+\begin{proof}
+Put $w(k)=bk-v_p(k!)$, $\mathcal B=\set{0,1,\dots,h-1}$ and
+$x_i=p^{-b}\log(z_i/a)\in\OO$. The $x_i$ are distinct, by the inverse relation between
+logarithm and exponential on this disk. Divide column $j$ by $a^{n_j}$, leaving the entries
+$\exp(p^bx_in_j)$. Write $V(t)=\prod_{i<j}(t_j-t_i)$ for the ordinary Vandermonde
+determinant, and divide the determinant of these exponentials by the nonzero factor
+\[
+ V(x)V(n)\,\frac{p^{b\binom h2}}{\prod_{k=0}^{h-1}k!} .
+\]
+For an increasing set $M=\set{m_0<\dots<m_{h-1}}$ of nonnegative integers define
+$S_M(t)=\det(t_i^{m_j})/V(t)$, with columns indexed from zero. This is a polynomial with
+integral coefficients, because each factor $t_j-t_i$ divides the integral alternant and the
+factors are pairwise relatively prime; it is the Schur polynomial given by the bialternant
+formula. Cauchy--Binet applied to the truncated exponential, followed by a limit, gives the
+normalized determinant as
+\begin{equation}\label{smd:eq:CB}
+ \sum_M S_M(x)S_M(n)\,p^{\,b(\sum M-\sum\mathcal B)}\,
+ \frac{\prod_{k\in\mathcal B}k!}{\prod_{m\in M}m!},
+\end{equation}
+where $\sum M$ denotes the sum of the elements of $M$. The scalar has valuation
+$\sum_{m\in M}w(m)-\sum_{k\in\mathcal B}w(k)$. As $w(k)\ge(b-1/(p-1))k$, only finitely many
+sets $M$ have this valuation below a given bound. Thus the sum converges, and the limit of
+the finite determinant identities is valid.
+
+For $M=\mathcal B$ the summand is $1$. Write $U=\mathcal B\setminus M$ and
+$W=M\setminus\mathcal B$. The scalar valuation for $M$ is the sum of the crossing costs for
+any bijection $U\to W$. If $\abs U\ge2$, the bijection can be chosen to avoid
+$h-1\mapsto h$, by swapping two images whenever the chosen matching uses that pair. Every
+resulting cost is a positive integer by \eqref{smd:eq:window}. A single replacement also
+costs at least one unless it is the exceptional crossing. For that crossing
+$S_M(t)=\sum_it_i$, the degree-one Schur polynomial; this follows also by expanding
+$\prod_i(T-t_i)$ and replacing the last column of the ordinary Vandermonde matrix by the
+$h$th powers. The exceptional summand is exactly
+\[
+ \frac{p^b}{h}\Bigl(\sum_ix_i\Bigr)\Bigl(\sum_jn_j\Bigr)
+ =\frac1h\Bigl(\sum_i\log(z_i/a)\Bigr)\Bigl(\sum_jn_j\Bigr).
+\]
+Under \eqref{smd:eq:trace} it has positive valuation. The series \eqref{smd:eq:CB} is
+therefore one plus an element of the maximal ideal, and it is nonzero. Finally, every
+logarithm has valuation at least $b$, which proves the automatic case. A vanishing
+determinant and a polynomial with at most $h$ terms vanishing at all $z_i$ give each other,
+after enlarging a smaller set of exponents to $h$ of them.
+\end{proof}
+
+When $v_p(h)<b$, condition \eqref{smd:eq:window} together with the singleton is exactly
+\eqref{smd:eq:G2}, so for integer depths the theorem contains \cref{smd:lem:criterion};
+the lemma is kept for rational depths. The matching argument permits a nonpositive, even a
+negative, cost at the singleton. This is used at $p=2$ with $b=4$ and $v_2(h)=5$ in
+\cref{smd:thm:admissible}.
+
+\begin{example}[A tie can give an actual sparse relation]\label[example]{smd:ex:tie}
+Take $p=7$, $b=2$, $h=49$, choose $z_i=1+49i$ for $1\le i\le48$, and set
+$z_{49}=-\sum_{i=1}^{48}z_i$. These are distinct elements of $1+49\Z_7$, since
+$-48\equiv1\pmod{49}$. They satisfy \eqref{smd:eq:window}: for $2\le r\le49$ the
+valuation sum is at most $r+1$, and for $r\ge50$ it is at most $r/6+\log_7(49+r)<2r$.
+Nevertheless $\prod_i(X-z_i)$ has vanishing coefficient of $X^{48}$, hence at most $49$
+terms. Here $\sum_i\log z_i\equiv\sum_i(z_i-1)=-49\pmod{343}$, so \eqref{smd:eq:trace}
+fails with equality. Thus the disk and the long intervals alone permit exactly the
+cancellation that the trace hypothesis rules out.
+\end{example}
+
+\subsection{Full support for Gaussian prime conductors}\label{smd:sec:gaussian}
+{\raggedright\sources{grh_transfers_singular_moduli_and_symmetric_powers; grh_sparse_singular_moduli; gaussian-singular-moduli}}
+
+For a rational prime $\ell$ let $j_\ell$ be a singular modulus with endomorphism order
+$\Z+\ell\Z[i]$, of discriminant $-4\ell^2$. For $\ell$ odd put $\eps=\chi_{-4}(\ell)=\pm1$,
+so that $\eps=1$ exactly when $\ell\equiv1\pmod4$. Since $\Z[i]$ has class number one and
+the unit index is two, the degree is $h=(\ell-\eps)/2$, an even integer. Write
+$j_1,\dots,j_h$ for the conjugates.
+
+\begin{theorem}[Gaussian prime conductors; \stU]\label{smd:thm:gaussian}
+The primes $\ell$ with $s(-4\ell^2)=h(-4\ell^2)+1$ form a set of lower relative natural
+density greater than $0.9999969821615212$ among all primes. The equality holds for every
+prime $\ell<456{,}193$. In particular,
+\[
+\begin{array}{rrr}
+\toprule
+\ell & h & s(-4\ell^2)\\ \midrule
+42{,}337 & 21{,}168 & 21{,}169\\
+84{,}673 & 42{,}336 & 42{,}337\\ \bottomrule
+\end{array}
+\]
+\end{theorem}
+
+At $\ell=84{,}673$, for example, an annihilator of $j_\ell$ with $42{,}336$ terms is
+impossible whatever its degree: every rational polynomial multiple of the ring class
+polynomial has at least $42{,}337$ terms. The proof places all conjugates in common
+multiplicative disks at $2$, $3$ and $7$, of relative depths $4$, $3$ and $2$
+(\cref{smd:lem:gaussdisks}). Where the interval condition \eqref{smd:eq:G2} fails only at
+the singleton $\set h$, the trace criterion \cref{smd:thm:trace} applies; the trace of the
+conjugates is given by a Hecke operator (\cref{smd:lem:hecke}) and controlled by
+congruences for the coefficients of $E_8/E_6$
+(\cref{smd:prop:oddtraces,smd:prop:dyadictrace}). Whether the full-support set has a
+density, and its value, are not determined.
 
 \begin{lemma}[Common disks]\label[lemma]{smd:lem:gaussdisks}
-Let $\ell\notin\set{2,3,7}$ be prime. In a suitable finite extension of $\Q_p$ with
-valuation ring $\OO$, the $h$ conjugates of $j_\ell$ satisfy
-\[
+Let $\ell$ be an odd prime and $p\in\set{2,3,7}$ with $p\ne\ell$. In a suitable finite
+extension of $\Q_p$ with valuation ring $\OO$, the $h$ conjugates of $j_\ell$ satisfy
+\begin{gather*}
  \frac{j}{1728}\in1+7^2\OO\quad(p=7),\qquad
- \frac{j}{1728}\in1+3^3\OO\quad(p=3),\qquad
- \frac{j}{j'}\in1+2^4\OO\quad(p=2)
-\]
+ \frac{j}{1728}\in1+3^3\OO\quad(p=3),\\
+ \frac{j}{j'}\in1+2^4\OO,\quad\frac{j}{1728}\in1+2^3\OO\quad(p=2)
+\end{gather*}
 for any two conjugates $j,j'$ in the last case.
 \end{lemma}
 
@@ -1679,7 +1784,8 @@ subgroup of order $\ell$. Indeed its CM lattice corresponds to an invertible ide
 the order. Passing from $I$ to $I\Z[i]$ gives index $\ell$, as follows locally from
 invertibility. The extended lattice is principal, so the resulting curve has invariant
 $1728$, and the dual isogeny gives the desired quotient; see \cite{Sutherland2012Isogeny}
-for this lattice description.
+for this lattice description. Each of the following arguments uses only $p\ne\ell$ at its
+own prime.
 
 \emph{The primes $3$ and $7$.} At $p=3,7$ the curve $E_0$ has good reduction. A finite
 unramified extension contains all its $\ell$-torsion, since the torsion of order prime to
@@ -1734,11 +1840,12 @@ $v(B_H^2-B_J^2)\ge6$.
 Put $s_H=27B_H^2/(4A_H^3)$. Then $v(s_H)\ge3$ and $v(s_H-s_J)\ge4$: replacing $B_H^2$ by
 $B_J^2$ costs at least four in valuation after division by $4$, while
 $v(A_H^{-3}-A_J^{-3})\ge1$. The identity $j(E_0/H)=1728/(1+s_H)$ proves
-\eqref{smd:eq:G0}.
+\eqref{smd:eq:G0}, and $v(s_H)\ge3$ gives $j(E_0/H)/1728\in1+2^3\OO$.
 \end{proof}
 
-Fixing any one of the quotient invariants $j_*$ therefore puts all $h$ conjugates in
-$j_*(1+16\OO)$; the centre is algebraic, which \cref{smd:lem:disk} allows.
+Fixing any one of the conjugates $j_*$ therefore puts all $h$ conjugates in
+$j_*(1+16\OO)$, with $j_*/1728\in1+8\OO$; the centre is algebraic, which
+\cref{smd:lem:disk,smd:thm:trace} allow.
 
 \begin{remark}[Sharpness of the depth at $2$]\label[remark]{smd:rem:depth2}
 The depth four in \eqref{smd:eq:G0} is sharp when the assertion ranges over all odd prime
@@ -1751,28 +1858,252 @@ both $1+Y$ are units. The corresponding pair attains equality in \eqref{smd:eq:G
 \artifact{grh_transfers_singular_moduli_and_symmetric_powers/quotient_check.py}.}
 \end{remark}
 
-\begin{proof}[Proof of \cref{smd:thm:gaussian}]
-Discard $\ell=2,3,7$. For $(p,b)\in\set{(2,4),(3,3),(7,2)}$ say that $\ell$ \emph{passes
-the test at $p$} if \eqref{smd:eq:G2} holds for $h=(\ell-\sigma)/2$ with these $p$ and
-$b$. By \cref{smd:lem:gaussdisks,smd:lem:criterion}, a prime passing at least one of the
-three tests has $s(-4\ell^2)=h+1$.
+Define $F(q)=E_8(q)/E_6(q)=\sum_{n\ge0}a_nq^n$, where
+$E_k=1-(2k/B_k)\sum_{n\ge1}\sigma_{k-1}(n)q^n$ is the normalized Eisenstein series, $B_k$
+the Bernoulli number and $\sigma_j(n)=\sum_{d\mid n}d^j$. Thus $a_0=1$ and $a_1=984$.
+Congruences between series below hold coefficientwise.
 
-\emph{Finite densities.} Fix $\sigma$. For lengths $\abs I\le R$, and omitting the
-finitely many $h<R$, the test \eqref{smd:eq:G2} depends only on $h\bmod p^{bR}$. For an
-odd $p$ the admissible classes of $h$ modulo $p^a$ are those with $p\nmid2h+\sigma$. For
-$p=2$ they are exactly the even classes: $\ell=2h+\sigma\equiv\sigma\pmod4$, and all such
-classes correspond to invertible classes of $\ell$ modulo $2^{a+1}$ with that sign. In all
-three cases each admissible class has conditional density $1/\varphi(p^a)$, by the prime
-number theorem in arithmetic progressions. Hence the set of primes of sign $\sigma$
-satisfying \eqref{smd:eq:G2} for all intervals of length at most $R$ has a relative
-density $d_{p,R}$. Reflection $h\mapsto-h$ and reversal of intervals show that $d_{p,R}$
-is the same for either $\sigma$.
+\begin{lemma}[Hecke trace]\label[lemma]{smd:lem:hecke}
+For each odd prime $\ell$ one has the identity of rational integers
+\begin{equation}\label{smd:eq:hecke}
+ 2\sum_{i=1}^{h}(j_i-1728)=a_\ell-984(\ell+1).
+\end{equation}
+\end{lemma}
+
+\begin{proof}
+The weight-zero Hecke formula of Asai, Kaneko and Ninomiya, evaluated at $\tau=i$,
+identifies $a_\ell$ with the sum of $j(E/H)-744$ over the $\ell+1$ cyclic subgroups $H$ of
+order $\ell$ of $E=\C/\Z[i]$ \cite[eq.~(5), Cor.~4]{Asai1997Zeros}. Indeed their Faber
+generating series at $j(i)=1728$ is $E_4^2/E_6=F$. Subtract $984(\ell+1)$ to centre each
+summand at $1728$.
+
+Multiplication by $i$ fixes $1+\eps$ lines in $E[\ell]$, by its characteristic polynomial
+$T^2+1$. The corresponding quotient lattices are fractional Gaussian ideals and are
+principal, giving $j=1728$. On the remaining lines the action has orbits of size two, since
+$i^2=-1$ fixes every line, and each orbit gives a single isomorphism class of quotients.
+Every class of conductor $\ell$ occurs: for an invertible $\Z+\ell\Z[i]$-ideal $I$,
+enlargement to $I\Z[i]$ has index $\ell$ (locally by invertibility) and is principal, and
+the dual isogeny realizes $\C/I$ as a quotient of $E$. There are exactly
+$(\ell-\eps)/2=h$ nonfixed orbits and $h$ distinct classes. This proves the multiplicity
+two in \eqref{smd:eq:hecke}.
+\end{proof}
+
+\begin{proposition}[Coefficient congruences at $7$ and $3$; \stU]\label[proposition]{smd:prop:oddtraces}
+For every positive integer $n$,
+\begin{align*}
+ a_n&\equiv690\,\sigma_1(n)+294\,n^2\sigma_3(n)\pmod{343}&&(7\nmid n),\\
+ a_n&\equiv(12+972\,n^3)\,\sigma_1(n)\pmod{2187}&&(3\nmid n).
+\end{align*}
+In particular, for a prime $\ell\ne7$, $a_\ell\equiv984(\ell+1)\pmod{343}$ holds precisely
+when $\ell\equiv\pm1\pmod7$; for a prime $\ell\ne3$, $a_\ell\equiv984(\ell+1)\pmod{2187}$
+holds precisely when $\ell\equiv1\pmod3$ or $\ell\equiv-1\pmod9$.
+\end{proposition}
+
+\begin{proof}
+Set $\Delta=q\prod_{m\ge1}(1-q^m)^{24}=\sum_{n\ge1}\tau(n)q^n$ and $\theta=q\,d/dq$. The
+identities $E_8=E_4^2$, $E_8E_6=E_{14}$ and
+\[
+ E_8E_6^2=E_{20}+b_{20}\Delta E_8,\qquad
+ E_8E_6^3=E_{26}+b_{26}\Delta E_{14}
+\]
+follow from the one-dimensionality of the level-one spaces $M_8,M_{14}$ and of the cusp
+spaces $S_{20}=\Delta M_8$, $S_{26}=\Delta M_{14}$. Put $c_k=[q]E_k$. The Bernoulli
+formula and comparison of first coefficients give
+\[
+ \begin{array}{c|rr}
+ k&c_k&b_k\\ \hline
+ 20&13200/174611&-92207808/174611\\
+ 26&-24/657931&-678984768/657931
+ \end{array}
+\]
+Indeed $c_{20}+b_{20}=480-2\cdot504=-528$ and $c_{26}+b_{26}=480-3\cdot504=-1032$. The
+denominators are units at both primes. The Euler product gives $\theta\Delta=E_2\Delta$.
+
+\emph{The prime seven.} Since $E_6\equiv1\pmod7$, expanding $1/E_6$ through degree two in
+$1-E_6$ gives $F\equiv3E_8-3E_{14}+E_8E_6^2\pmod{343}$. Here $c_{20}\equiv207$ and
+$b_{20}\equiv294=6\cdot49\pmod{343}$, so the coefficients of $\Delta E_8$ are needed only
+modulo $7$. Fermat's congruence $d^7\equiv d\pmod7$ and $480\equiv-24\pmod7$ give
+$E_8\equiv E_2\pmod7$. Ramanujan's differential identity $3\theta E_4=E_2E_4-E_6$ now
+yields
+\[
+ 3\theta E_4\equiv E_4^3-E_6^2=1728\Delta\pmod7 .
+\]
+As $3\cdot240\equiv1728\not\equiv0\pmod7$, comparison gives
+$\tau(n)\equiv n\sigma_3(n)\pmod7$. Thus $[q^n](\Delta E_8)\equiv n^2\sigma_3(n)\pmod7$.
+
+For $7\nmid n$ each $d\mid n$ is a unit. Its contribution to $[q^n](3E_8-3E_{14}+E_{20})$
+is $d(1440u+72u^2+207u^3)$ modulo $343$, with $u=d^6=1+t$ and $7\mid t$. After subtracting
+its value at $u=1$, the parenthesis is $2205t+693t^2+207t^3$, divisible by $343$ since
+$2205=45\cdot49$ and $693=99\cdot7$. The value at $u=1$ is $1719\equiv690\pmod{343}$.
+Summing over $d\mid n$ and adding the cusp term proves the first assertion. For a prime
+$\ell\ne7$ the defect is
+\[
+ a_\ell-984(1+\ell)\equiv294(\ell-1)(\ell+1)(\ell^3+\ell+1)\pmod{343}.
+\]
+The last factor at $0,1,\dots,6$ has residues $1,3,4,3,6,5,6$ modulo $7$, so the claimed
+criterion follows.
+
+\emph{The prime three.} Here $E_6\equiv1\pmod9$. Expanding $1/E_6$ through degree three in
+$1-E_6$ gives
+\[
+ F\equiv4E_8-6E_{14}+4E_8E_6^2-E_8E_6^3\pmod{2187},
+\]
+since $9^4$ is divisible by $3^7=2187$. By the table,
+\[
+ (4c_8,-6c_{14},4c_{20},-c_{26})\equiv(1920,144,1290,1032),\qquad
+ 4b_{20}\equiv972,\quad b_{26}\equiv0\pmod{2187};
+\]
+in fact $v_3(b_{26})=9$. As $972=4\cdot3^5$, it suffices to evaluate $\Delta E_8$ modulo
+$9$. Since $480\equiv-24\equiv3\pmod9$ and $d^7\equiv d\pmod3$ for every integer $d$, we
+have $E_8\equiv E_2\pmod9$. Consequently $[q^n](\Delta E_8)\equiv n\tau(n)\pmod9$. Bambah
+and Chowla proved $\tau(n)\equiv n^2\sigma_7(n)\pmod{27}$
+\cite[eq.~(16)]{Bambah1947Congruence}. For $3\nmid n$ every divisor $d$ satisfies
+$d^6\equiv1\pmod9$, so $n\tau(n)\equiv n^3\sigma_1(n)\pmod9$.
+
+For each such divisor, its Eisenstein contribution modulo $2187$ equals
+$d(1920u+144u^2+1290u^3+1032u^4)$, with $u=d^6=1+t$ and $9\mid t$. Subtracting the value at
+$u=1$ gives $10206t+10206t^2+5418t^3+1032t^4$. This is zero modulo $2187$, since
+$10206=14\cdot729$ and $9\mid5418$. The value at $u=1$ is $4386\equiv12\pmod{2187}$.
+Adding the cusp contribution proves the second congruence. At a prime $\ell\ne3$ the defect
+is $972(\ell^3-1)(\ell+1)$. If $\ell\equiv1\pmod3$, then $\ell^3\equiv1\pmod9$. If
+$\ell\equiv-1\pmod3$, then $\ell^3-1$ is a unit at $3$. This gives the stated criterion.
+\end{proof}
+
+\begin{proposition}[Dyadic coefficient congruence; \stU]\label[proposition]{smd:prop:dyadictrace}
+The largest positive integer $M$ such that $a_n\equiv984\,\sigma_1(n)\pmod M$ for every odd
+positive integer $n$ is $516{,}096=2^{13}\cdot3^2\cdot7$.
+\end{proposition}
+
+\begin{proof}
+Since $E_2=1-24\sum_{n\ge1}\sigma_1(n)q^n$ and $41\cdot24=984$, the claim concerns the odd
+part of $F+41E_2$. For a series $A=A(q)$ denote $A(-q)$ by $A^-$ and its odd part $(A-A^-)/2$ by
+$A^{\mathrm{odd}}$. Put
+\[
+ G=(F+41E_2)^{\mathrm{odd}}E_6E_6^-
+ =\frac{E_8E_6^--E_8^-E_6}{2}+41\,E_2^{\mathrm{odd}}E_6E_6^- .
+\]
+This is a holomorphic modular form of weight $14$ on $\Gamma_0(4)$ with integral Fourier
+coefficients. To see holomorphy directly, the identity
+$\sigma_j(2m)=(1+2^j)\sigma_j(m)-2^j\sigma_j(m/2)$, where $\sigma_j(m/2)=0$ for odd $m$,
+shows that
+\[
+ E_k^-=-E_k(z)+2(1+2^{k-1})E_k(2z)-2^kE_k(4z)\qquad(k=6,8).
+\]
+The corresponding expression $E_2^{\mathrm{odd}}=E_2(z)-3E_2(2z)+2E_2(4z)$ is the
+difference of $E_2(z)-2E_2(2z)$ and $E_2(2z)-2E_2(4z)$, both holomorphic of weight two on
+$\Gamma_0(4)$. The integrality of the coefficients follows also from the defining
+expression.
+
+The index of $\Gamma_0(4)$ in $\SL_2(\Z)$ is $6$, giving the Sturm bound
+$\floor{14\cdot6/12}=7$. Hence for any proposed modulus it suffices to check through $q^7$.
+The even series $E_6E_6^-$ has constant term $1$ and an integral inverse, so the test
+through $q^7$ is equivalent to checking the coefficients at $n=1,3,5,7$ of
+$(F+41E_2)^{\mathrm{odd}}$. These are respectively
+\[
+ 0,\qquad307077120,\qquad88062998446080,\qquad25252184242734317568 .
+\]
+They follow by coefficient comparison in $E_6F=E_8$, and have greatest common divisor
+$516096$. Sturm's theorem \cite{Sturm1987Congruence}, applied at each prime divisor and
+iterated for its powers, proves the claimed congruence, and the same four integers prove
+optimality.
+\end{proof}
+
+Keep the three pairs $(p,b)\in\set{(2,4),(3,3),(7,2)}$. For $h>0$
+call the pair at $p$ \emph{admissible} for $h$ if \eqref{smd:eq:window} holds and
+\begin{equation}\label{smd:eq:allowed}
+ v_2(h)\le5\quad(p=2),\qquad v_3(h)\le3\quad(p=3),\qquad v_7(h)\le2\quad(p=7).
+\end{equation}
+When $v_p(h)<b$ admissibility is exactly the interval condition \eqref{smd:eq:G2}, the
+\emph{strict test} at $p$.
+
+\begin{theorem}[Arithmetic test for full support; \stU]\label{smd:thm:admissible}
+Let $\ell$ be an odd prime. If one of the three pairs with $p\ne\ell$ is admissible for
+$h=(\ell-\eps)/2$, then $s(-4\ell^2)=h+1$.
+\end{theorem}
+
+\begin{proof}
+For $v_p(h)<b$, use the automatic case of \cref{smd:thm:trace} with
+\cref{smd:lem:gaussdisks}. Otherwise consider first $p=3,7$. If $v_3(h)=3$, then
+$\ell=2h+\eps\equiv\pm1\pmod{27}$, and \cref{smd:prop:oddtraces} with \eqref{smd:eq:hecke}
+gives
+\[
+ v_3\Bigl(\sum_i(j_i/1728-1)\Bigr)\ge7-v_3(2\cdot1728)=4 .
+\]
+If $v_7(h)=2$, then $\ell\equiv\pm1\pmod{49}$, and the corresponding bound is $3$. For
+$t\in p^b\OO$ the terms of $\log(1+t)-t$ have valuations at least
+$\min_{k\ge2}(kb-v_p(k))>b$ for both odd pairs. Thus, with centre $a=1728$, the sum of the
+logarithms has valuation greater than $b=v_p(h)$, as \eqref{smd:eq:trace} requires.
+
+At $2$ choose the centre $a=j_*$, one of the conjugates. For $u_i=j_i/j_*-1$,
+\[
+ \sum_iu_i=\frac{\sum_i(j_i-1728)}{j_*}+h\Bigl(\frac{1728}{j_*}-1\Bigr).
+\]
+The first term has valuation at least $13-1-6=6$ by \cref{smd:lem:hecke} and
+\cref{smd:prop:dyadictrace}, since $v_2(j_*)=v_2(1728)=6$. The second has valuation at
+least $v_2(h)+3\ge7$ when $v_2(h)\in\set{4,5}$, by the last assertion of
+\cref{smd:lem:gaussdisks}. Every $u_i$ has valuation at least $4$, so
+$v_2(\log(1+u_i)-u_i)\ge7$. Consequently $v_2(\sum_i\log(j_i/j_*))\ge6>v_2(h)$ in both
+remaining cases. \Cref{smd:thm:trace} applied to the $h$ distinct conjugates and
+\eqref{smd:eq:trivial} finish the proof.
+\end{proof}
+
+\begin{corollary}[Two conductors without a search; \stU]\label[corollary]{smd:cor:twoconductors}
+One has $s(-4\cdot42337^2)=21{,}169$ and $s(-4\cdot84673^2)=42{,}337$. More generally,
+every odd prime $\ell\ne7$ with $v_7(h)=2$ and $h<7^{92}-49$ satisfies
+$s(-4\ell^2)=h+1$.
+\end{corollary}
+
+\begin{proof}
+Both conductors are primes $\equiv1\pmod4$, with degrees $h=2^4\cdot3^3\cdot7^2$ and
+$2^5\cdot3^3\cdot7^2$, so the singleton $\set h$ fails each of the three strict tests. To
+verify admissibility at $7$, let an interval through $h$ have length $r$. For $2\le r\le49$
+the integer $h$ is its only multiple of $49$, so the sum of the valuations is at most
+$2+r-1<2r$. For $r\ge50$, counting multiples of $7^a$ gives the upper bound
+\[
+ r/6+\log_7(h+r)<2r,
+\]
+since $h+r<7^r$ at $r=50$ for both degrees and the inequality persists as $r$ increases.
+\Cref{smd:thm:admissible} gives both values. For the general statement, intervals of
+length $2\le r\le49$ pass as before. If an interval of length $r\ge50$ fails, some member
+has valuation at least $\ceil{11r/6}$, by counting multiples as above; hence
+$h\ge7^{\ceil{11r/6}}-r+1\ge7^{92}-49$.
+\end{proof}
+
+As an independent check, the coefficients themselves are $a_\ell\equiv4272$, $429$, $155$
+modulo $8192$, $2187$, $343$ for $\ell=42{,}337$, and $a_\ell\equiv6576$, $1077$, $57$ for
+$\ell=84{,}673$; in each case these are the residues of $984(\ell+1)$.
+\smdcert{\artifact{gaussian-singular-moduli/check.py}, which forms $E_8/E_6$ modulo $8192$,
+$2187$ and $343$ through index $84{,}673$ and checks the three coefficient congruences at
+every eligible index up to that cutoff, with output
+\artifact{gaussian-singular-moduli/verification.txt}.}
+
+\begin{proof}[Proof of \cref{smd:thm:gaussian}]
+The conductor $2$ is handled directly: the order of discriminant $-16$ has class number one
+and its singular modulus is nonzero, so $s(-16)=2$. For odd $\ell$ we bound from below the
+density of primes satisfying the hypothesis of \cref{smd:thm:admissible}. In this proof a
+test concerns only the arithmetic value $h=(\ell-\eps)/2$; omitting the finitely many
+conductors equal to an auxiliary prime has no effect on densities, and the conductors $3$
+and $7$ are covered by the census of \cref{smd:rem:missed}, which uses auxiliary primes
+different from themselves. Say that $\ell$ \emph{passes the strict test at $p$} if
+\eqref{smd:eq:G2} holds for $h$ with the pair $(p,b)$, and \emph{passes the enhanced test
+at $p$} if that pair is admissible for $h$.
+
+\emph{Finite densities.} Fix $\eps$. For lengths $\abs I\le R$, and omitting the finitely
+many $h<R$, the strict test depends only on $h\bmod p^{bR}$, because any entry of valuation
+at least $bR$ already makes the containing interval fail. For an odd $p$ the admissible
+classes of $h$ modulo $p^a$ are those with $p\nmid2h+\eps$. For $p=2$ they are exactly the
+even classes: $\ell=2h+\eps\equiv\eps\pmod4$, and all such classes correspond to invertible
+classes of $\ell$ modulo $2^{a+1}$ with that sign. In all three cases each admissible class
+has conditional density $1/\varphi(p^a)$, by the prime number theorem in arithmetic
+progressions. Hence the set of primes of sign $\eps$ satisfying \eqref{smd:eq:G2} for all
+intervals of length at most $R$ has a relative density $d_{p,R}$. Reflection $h\mapsto-h$
+and reversal of intervals show that $d_{p,R}$ is the same for either sign.
 
 \emph{The tail.} If an interval of length $r$ violates \eqref{smd:eq:G2} and its greatest
 valuation is $\mu$, counting multiples of $p^a$ for $1\le a\le\mu$ bounds the sum of
 valuations by $r/(p-1)+\mu$. Consequently some $h+j$ with $\abs j\le r-1$ is divisible by
 \[
- q_r=p^{\ceil{(b-1/(p-1))r}} .
+ q_r=p^{e(r)},\qquad e(r)=\ceil{(b-1/(p-1))r} .
 \]
 For fixed $r$ the conditional upper density of this event is at most
 $u_r=(2r-1)/\varphi(q_r)$. To sum these bounds, let $X$ be the cutoff for $\ell$. For
@@ -1780,7 +2111,7 @@ $q_r\le\sqrt X$ the Brun--Titchmarsh inequality \cite{Montgomery1973Large} bound
 number of primes in each relevant invertible residue class by
 $O(X/(\varphi(q_r)\log X))$, with an absolute constant. The modulus is $q_r$ for odd $p$
 after dropping the condition modulo $4$, and $2q_r$ for $p=2$, because
-$\ell=2h+\sigma$; in the latter case $2q_r\le2\sqrt X$ still gives
+$\ell=2h+\eps$; in the latter case $2q_r\le2\sqrt X$ still gives
 $\log(X/(2q_r))\gg\log X$. Since only $\ell=p$ can occupy a noninvertible class, dropping
 that prime and dividing by the number of primes of each sign gives a uniform tail bounded
 by an absolute multiple of $\sum_{r>T}u_r$. For $q_r>\sqrt X$, a positive multiple of
@@ -1788,24 +2119,49 @@ $p^{\floor{\log_p\sqrt X}}$ occurs among the $h+j$. The inequality
 $(b-1/(p-1))r\le\log_p(h+r)$ forces $r=O(\log X)$: when $r>h$ it fails, since
 $h+r<2r$ and $2r\le2^r<p^{(b-1/(p-1))r}$, and otherwise $h+r\ll X$. There are
 $O(\sqrt X\log X)$ possibilities for a multiple and an offset, which is negligible
-compared with the number of primes. Taking limits at fixed $T$ and then $T\to\infty$
-proves that the density $d_p$ of primes passing the test at $p$ exists and that
+compared with the number of primes. Applying the fixed-length union bound on $R<r\le L$
+and then letting $L\to\infty$ shows that the density $d_p^0$ of primes passing the strict
+test at $p$ exists and that
 \begin{equation}\label{smd:eq:G3}
- 0\le d_{p,R}-d_p\le\sum_{r>R}u_r .
+ 0\le d_{p,R}-d_p^0\le\sum_{r>R}u_r\le T_p(R),\qquad
+ T_p(R)=\frac{\sum_{r=R+1}^{R+p-1}u_r}{1-u_{R+p}/u_{R+1}},
 \end{equation}
-
-\emph{Exact certificate.} The finite density is computed as follows. Start with the
-$p-1$ admissible classes modulo $p$. In a class modulo $p^a$, evaluate all relevant
-valuations truncated at $a$. If any interval sum already reaches $br$, discard the class.
-If no valuation is truncated, accept the class. Otherwise visit all $p$ lifts. The process
-terminates by depth $bR$, since a truncated term at that depth already violates a length
-at most $R$ containing that term and the centre. To bound \eqref{smd:eq:G3}, group its
-terms in successive blocks of length $p-1$: for $r\ge R+1$ the ratio
+whenever the denominator is positive. For the last inequality, $e(r+p-1)-e(r)=b(p-1)-1$,
+so the ratio
 \[
  \frac{u_{r+p-1}}{u_r}=\frac{2r+2p-3}{2r-1}\,p^{-(b(p-1)-1)}
 \]
-is decreasing, and a geometric sum bounds the whole tail by its first block. All
-operations use rational arithmetic.
+decreases with $r$, and grouping the terms in blocks of length $p-1$ gives a geometric
+bound by the first block. The same tail estimate bounds the density of primes at which some
+length $r>R$ violates the interval inequality inside any congruence-defined subset.
+
+\emph{The added strata.} The enhanced test at $p$ differs from the strict one only on the
+stratum $v_p(h)=b$, and at $p=2$ also on $v_2(h)=5$; these strata are disjoint from the
+strict test, which fails at the singleton. If $v_p(h)=b$, every interval through $h$ of
+length $2\le r\le p^b$ contains no other multiple of $p^b$, and its valuation sum is at most
+$b+(r-1)(b-1)<br$. Conditional on either sign, $v_p(h)=b$ has density $p^{-b}$: for odd $p$
+this is $1/\varphi(p^b)-1/\varphi(p^{b+1})$, and at $2$ the same formula with the
+restriction to even $h$ gives $1/8-1/16=1/16$. On the stratum $v_2(h)=5$, of density
+$1/32$, take $2\le r\le32$: the valuations away from $h$ sum to at most $v_2((r-1)!)$,
+because the offsets form two consecutive strings of absolute values beginning at one and
+$a!\,c!$ divides $(a+c)!$; the full sum is at most $5+v_2((r-1)!)\le r+3<4r$. Hence only
+lengths $r>p^b$, respectively $r>32$, can fail on these strata, and
+\begin{align*}
+ d_{p,R}-T_p(R)&\le d_p^0\le d_{p,R},\\
+ p^{-b}-T_p(p^b)&\le\text{density added by }v_p(h)=b\le p^{-b},\\
+ 1/32-T_2(32)&\le\text{density added by }v_2(h)=5\le1/32 .
+\end{align*}
+All these densities exist by the finite congruence description and the tail estimate
+applied to the difference between truncated and unbounded events. Let $d_p$ be the density
+of primes passing the enhanced test at $p$.
+
+\emph{Exact certificate.} The finite density $d_{p,R}$ is computed as follows. Start with
+the $p-1$ admissible classes modulo $p$. In a class
+modulo $p^a$, evaluate all relevant valuations truncated at $a$. If any interval sum already
+reaches $br$, discard the class. If no valuation is truncated, accept the class. Otherwise
+visit all $p$ lifts with equal weight. The process terminates by depth $bR$, since a
+truncated term at that depth already violates a length at most $R$ containing that term
+and the centre. All operations use rational arithmetic.
 \begin{center}
 \begin{tabular}{cclc}
 \toprule
@@ -1819,18 +2175,28 @@ $p$ & $R$ & $d_{p,R}$ & Tail upper bound\\
 \end{center}
 
 \emph{The union.} At fixed sign the three finite congruence tests are independent, by the
-Chinese remainder theorem and the prime number theorem in progressions. Passing to the
-limits using \eqref{smd:eq:G3}, the density of primes passing at least one test is
-$d=1-(1-d_2)(1-d_3)(1-d_7)$. It is the same for both signs and satisfies
+Chinese remainder theorem and the prime number theorem in progressions, and the same limit
+argument gives the density $d=1-(1-d_2)(1-d_3)(1-d_7)$ of primes passing at least one
+enhanced test; it is the same for both signs. For the strict tests alone the corresponding
+density lies in
 \[
- 0.9998182601073722452943<d<0.9998182601073722456678 .
+ [\,0.9998182601073722452943,\ 0.9998182601073722456678\,],
 \]
-Every prime counted by $d$ gives full support.
+and substituting the fractions, the added masses and the rational tail bounds gives
+\[
+ 0.9999969821615212063649\le d\le0.9999969821615212094683 .
+\]
+These endpoints enclose the density of the sufficient criterion of
+\cref{smd:thm:admissible}; the lower endpoint proves the density assertion. The finite
+assertion is the census of \cref{smd:rem:missed}.
 \end{proof}
 
 \smdcert{\artifact{grh_transfers_singular_moduli_and_symmetric_powers/check_density.py},
 with output
-\artifact{grh_transfers_singular_moduli_and_symmetric_powers/checks/check_density.txt}.}
+\artifact{grh_transfers_singular_moduli_and_symmetric_powers/checks/check_density.txt}, for
+the strict tests; \artifact{gaussian-singular-moduli/density.py}, which recomputes the three
+fractions and the tail bounds and adds the strata, with output in
+\artifact{gaussian-singular-moduli/verification.txt}.}
 
 \begin{example}[Individual conductors]\label[example]{smd:ex:conductors}
 For $\ell=197$ the degree is $98$. The one-term interval $\set{98}$ fails
@@ -1845,21 +2211,32 @@ while $7\nmid54$, and for $r\ge2$ one has $r/6+\log_7(54+r)<2r$. Every $54$ dist
 powers of $j_{107}$ form a basis.
 
 The conductor $15877$ shows the contribution of the prime $2$. It is prime and
-$h=7938=2\cdot3^4\cdot7^2$, so both odd-prime tests fail on the singleton $\set h$. The
-largest sums of $2$-adic valuations of intervals through $7938$ of lengths $1,2,3,4$ are
-$1,1,9,9$, each smaller than four times the length. For every $r\ge5$ the sum is at most
-$r+\log_2(7938+r)<4r$, since $7938+5<2^{15}$ and the inequality persists on increasing
-$r$. Thus any $7938$ distinct nonnegative powers of this singular modulus form a basis.
+$h=7938=2\cdot3^4\cdot7^2$, so both odd-prime strict tests fail on the singleton $\set h$.
+The largest sums of $2$-adic valuations of intervals through $7938$ of lengths $1,2,3,4$
+are $1,1,9,9$, each smaller than four times the length. For every $r\ge5$ the sum is at
+most $r+\log_2(7938+r)<4r$, since $7938+5<2^{15}$ and the inequality persists on
+increasing $r$. Thus any $7938$ distinct nonnegative powers of this singular modulus form a
+basis.
 \end{example}
 
-\begin{remark}[Conductors up to $100{,}000$]\label[remark]{smd:rem:missed}
-Among the $9{,}589$ primes $\ell\le100{,}000$ other than $2,3,7$, exactly $9{,}587$ pass
-at least one test, and the two odd primes alone certify $9{,}575$; for a given $h$ the
-direct check of \eqref{smd:eq:G1} can stop as soon as $n(b-1/(p-1))>bh$. The first conductor missed by all three tests is $\ell=42{,}337$,
-with $h=21{,}168=16\cdot27\cdot49$: the singleton $\set h$ defeats all three tests. The
-other is $\ell=84{,}673$, with $h=42{,}336$. The exact least support in these two cases is
-not determined.
-\smdcert{\artifact{grh_transfers_singular_moduli_and_symmetric_powers/checks/conductors.txt}.}
+\begin{remark}[Conductors below $456{,}193$]\label[remark]{smd:rem:missed}
+To verify a single positive $h$, enumerate lengths beginning at $r=2$ and stop as soon as
+$p^{e(r)}>h+r-1$; the inequality then persists, since $e(r)$ increases by at least one at
+each step for the three pairs. For each remaining length test precisely the positive
+intervals containing $h$. Among the $9{,}589$ primes $\ell\le100{,}000$ other than
+$2,3,7$, exactly $9{,}587$ pass at least one strict test, and the two odd primes alone
+certify $9{,}575$. The two conductors missed by all three strict tests are $\ell=42{,}337$
+and $\ell=84{,}673$, where the singleton $\set h$ defeats all three; they are settled by
+\cref{smd:cor:twoconductors}, and among the $9{,}592$ primes up to $100{,}000$ the enhanced
+test leaves no exception. Extending the scan, every one of the $38{,}178$ primes below
+$456{,}193$ passes an enhanced test at an auxiliary prime different from itself or is the
+conductor $2$. The prime $456{,}193$ has $h=228{,}096$, with $v_2(h)=8$ and $v_3(h)=4$
+beyond the ranges \eqref{smd:eq:allowed}, while the interval $[h-1,h]$ has $7$-adic
+valuation sum $4$, equal to twice its length. It is the first conductor undecided by the
+criterion.
+\smdcert{\artifact{grh_transfers_singular_moduli_and_symmetric_powers/checks/conductors.txt}
+for the strict tests; \artifact{gaussian-singular-moduli/check.py}, with output
+\artifact{gaussian-singular-moduli/verification.txt}, for the enhanced census.}
 \end{remark}
 
 \subsection{The discriminant \texorpdfstring{$-87$}{-87}: powers and residue patterns}\label{smd:sec:powered}
@@ -1940,7 +2317,7 @@ modulo $32$ and the multiset count \artifact{padic-six-term/verify_87.py}, with 
 \artifact{padic-six-term/verification_87.txt}.}
 
 \subsection{Open questions}\label{smd:sec:open}
-{\raggedright\sources{grh_sparse_singular_moduli; grh_cm_sparse_equations; grh_transfers_singular_moduli_and_symmetric_powers; grh_transfer_bridges_2026-11-25; singular-modulus-support; singular_moduli_seven_terms_2026-11-26; padic-six-term}}
+{\raggedright\sources{grh_sparse_singular_moduli; grh_cm_sparse_equations; grh_transfers_singular_moduli_and_symmetric_powers; grh_transfer_bridges_2026-11-25; singular-modulus-support; singular_moduli_seven_terms_2026-11-26; padic-six-term; gaussian-singular-moduli}}
 
 \begin{question}[Six terms]\label{smd:q:six}
 Does every singular modulus of degree $h\ge6$ require at least seven terms, that is, does
@@ -1963,11 +2340,15 @@ one only on the family of density $9/13$.
 \end{question}
 
 \begin{question}[Gaussian prime conductors]\label{smd:q:density}
-Is the relative density of primes $\ell$ with $s(-4\ell^2)=h+1$ equal to one? What is
-$s(-4\ell^2)$ for $\ell=42{,}337$ and $\ell=84{,}673$? At these conductors all three
-first-difference tests fail at the central integer. A tied coefficient valuation leaves
-room for a nonzero generalized Vandermonde determinant, and its leading residue for the
-actual CM points is a more precise target than the valuations of the factorials alone.
+Does the set of primes $\ell$ with $s(-4\ell^2)=h+1$ have a relative density, and is it
+equal to one? The criterion of \cref{smd:thm:admissible} certifies a set of density in
+$[0.99999698216152120636,\,0.99999698216152120947]$ and leaves a set of positive density
+outside it, the first member being $\ell=456{,}193$; a failure of the criterion gives no
+polynomial relation. For a degree with several nonpositive crossings, which symmetric
+polynomials in the normalized logarithms survive in the reduction of \eqref{smd:eq:CB}?
+\Cref{smd:thm:trace} uses only the first power sum, and higher power sums are accessible in
+principle through Hecke traces of polynomials in $j$. Can sufficiently many such
+reductions settle the density-one question?
 \end{question}
 
 \begin{question}[Other CM isogeny classes]\label{smd:q:isogeny}
