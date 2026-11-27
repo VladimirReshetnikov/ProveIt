@@ -63,8 +63,7 @@ theorem above_alg {s t v D : PTm n} (e1 : Γ ⊢[PRAAx] s ≐ t + v) (e2 : Γ �
     (e3 : Γ ⊢[PRAAx] t * t ≐ succ D) : Γ ⊢[PRAAx] succ (two * (t * v) + v * v) ≐ zero := by
   ipra_lc natEq e2 - natEq e3 - (𝔞 s + 𝔞 t + 𝔞 v) * natEq e1
 
-theorem zero_of_le_zero {X : PTm n} (h : Γ ⊢[PRAAx] le X zero) : Γ ⊢[PRAAx] X ≐ zero :=
-  (monus_zero X).eqSymm.eqTrans h
+alias zero_of_le_zero := LeanProofs.IPRA.AnalyticNumberTheory.EulerDomination.eq_zero_of_le_zero
 
 /-- **`t² − 1` is not a square** for `t ≥ 2`. -/
 theorem nonsquare {t s : PTm n} (h2 : Γ ⊢[PRAAx] le two t) :

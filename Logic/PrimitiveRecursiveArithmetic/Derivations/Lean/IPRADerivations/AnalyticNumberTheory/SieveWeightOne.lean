@@ -40,15 +40,12 @@ open LeanProofs.IPRA.AnalyticNumberTheory.SieveWeightRows (sg_idem uB inst2_uB)
 open LeanProofs.IPRA.AnalyticNumberTheory.SieveWeightValues (YP YN YP_at YN_at muP_idem muN_idem mu_disj)
 open LeanProofs.IPRA.AnalyticNumberTheory.SieveWeightForm (UPw UNw kyB inst2_kyB)
 open LeanProofs.IPRA.Probability.Independence (row_pt sum_scale)
+export RSA (quo_one)
+export LeanProofs.IPRA.Common (one_pos)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
 /-! ## Facts at `1` -/
-
-theorem one_pos : Γ ⊢[PRAAx] (one : PTm n) ≐ succ (pred one) := congrSucc (pred_succ _).eqSymm
-
-theorem quo_one (N : PTm n) : Γ ⊢[PRAAx] quo N one ≐ N :=
-  quo_eq (q := N) (r := zero) one_pos (by ipra_ring) (le_refl _)
 
 /-- `μ⁺(1) = 1`. -/
 theorem muP_one : Γ ⊢[PRAAx] muP (succ one) (one : PTm n) ≐ one := by

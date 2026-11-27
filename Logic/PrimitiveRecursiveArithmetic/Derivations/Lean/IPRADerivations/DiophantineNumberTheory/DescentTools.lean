@@ -41,9 +41,7 @@ theorem gcd_tools {a : PTm n} (b : PTm n) (ha : Γ ⊢[PRAAx] a ≐ succ (pred a
   .andI (gcd_pos ha) (.andI (gcd_dvd' ha) (bezout_at a b))
 
 /-- (2): `gcd(a, b) = 1` and `a ∣ b c` give `a ∣ c`. -/
-theorem gauss_tool {a b c : PTm n} (ha : Γ ⊢[PRAAx] a ≐ succ (pred a)) (hg : Γ ⊢[PRAAx] gcd a b ≐ one)
-    (h : Γ ⊢[PRAAx] dvd a (b * c)) : Γ ⊢[PRAAx] dvd a c :=
-  gauss ha hg h
+alias gauss_tool := Coprime.gauss
 
 /-- (3): `d² ∣ c²` with `d ≥ 1` gives `d ∣ c`. -/
 theorem sq_dvd_tool {d c : PTm n} (hd : Γ ⊢[PRAAx] d ≐ succ (pred d)) (h : Γ ⊢[PRAAx] dvd (d * d) (c * c)) :

@@ -53,7 +53,7 @@ def quinticNormFormula : Fm PTm 4 :=
     (pow5 (ZT.sq t - ZT.natLit 5 * ZT.sq s))
 
 theorem quintic_norm : ([] : List (Fm PTm 0)) ⊢[PRAAx] univ 4 quinticNormFormula :=
-  closeUniv 4 (ZT.derive (by simp [quinticNormFormula, F, G]; ring))
+  closeUniv 4 (ZT.derive (by simp [F, G]; ring))
 
 end Quintic
 
@@ -75,7 +75,7 @@ def fermatTriangleFormula : Fm PTm 4 :=
     (ZT.sq (pow4 pm + pow4 pn))
 
 theorem fermat_triangle : ([] : List (Fm PTm 0)) ⊢[PRAAx] univ 4 fermatTriangleFormula :=
-  closeUniv 4 (ZT.derive (by simp [fermatTriangleFormula]; ring))
+  closeUniv 4 (ZT.derive (by simp; ring))
 
 end Pythagorean
 

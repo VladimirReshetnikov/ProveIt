@@ -29,11 +29,9 @@ open LeanProofs.IPRA.AnalyticNumberTheory.Fermat (subst_up_shift')
 open LeanProofs.IPRA.AnalyticNumberTheory.PNTStageStep (pos_of_one_le)
 open LeanProofs.IPRA.Probability.Independence (sum_scale shift_inst2)
 open LeanProofs.IPRA.Signum (sg sg_zero)
+open SumPhi renaming shift_mul' → shift_product
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
-
-private theorem shift_product (m N : PTm n) : Syn.shift (m * N) = Syn.shift m * Syn.shift N := by
-  simp [Syn.shift]
 
 private theorem inner_point (f g : PTm 2) {m N y a b : PTm n}
     (hm : Γ ⊢[PRAAx] m ≐ succ (pred m)) (hN : Γ ⊢[PRAAx] N ≐ succ (pred N))

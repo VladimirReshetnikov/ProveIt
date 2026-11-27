@@ -19,6 +19,7 @@ namespace LeanProofs.IPRA.Foundations.CloseExtrema
 open_ipra exports
 open LeanProofs.IPRA.Probability.Minkowski (monus_le_of_le_add)
 open LeanProofs.IPRA.Analysis.Observation.PrefixObject (larger larger_le le_larger_left le_larger_right)
+open LeanProofs.IPRA.Common renaming le_add_monus → le_add_monus'
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
@@ -72,14 +73,6 @@ private theorem min_up {e a b c d : PTm n} (h : Γ ⊢[PRAAx] le a (b + e)) (k :
 theorem close_min {e a b c d : PTm n} (h : Γ ⊢[PRAAx] close e a b) (k : Γ ⊢[PRAAx] close e c d) :
     Γ ⊢[PRAAx] close e (meet a c) (meet b d) :=
   .andI (min_up h.andE₁ k.andE₁) (min_up h.andE₂ k.andE₂)
-
-/-- `B ≤ b + (B ∸ b)`. -/
-private theorem le_add_monus' (B b : PTm n) : Γ ⊢[PRAAx] le B (b + monus B b) := by
-  refine .orE (le_total b B) ?_ ?_
-  · have e := natEq (eq_add_of_le (Prf.hyp0 : (le b B :: Γ) ⊢[PRAAx] le b B))
-    ipra_le 0 with e
-  · have h : (le B b :: Γ) ⊢[PRAAx] le B b := Prf.hyp0
-    ipra_le sl h + 𝔟 (monus B b)
 
 private theorem compl_up {e a b B : PTm n} (h : Γ ⊢[PRAAx] le b (a + e)) :
     Γ ⊢[PRAAx] le (monus B a) (monus B b + e) := by

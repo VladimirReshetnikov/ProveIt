@@ -31,14 +31,9 @@ open LeanProofs.IPRA.DiophantineNumberTheory.NorthcottNatural (congrEqb gv_congr
 open LeanProofs.IPRA.Foundations.FilteredEnumeration (rank sel sel_spec sel_rank rank_lt_size)
 open LeanProofs.IPRA.Foundations.BoundedReflection (allB all_intro all_reflect all_cases)
 open LeanProofs.IPRA.Combinatorics.BinomialTheorem (congrPw)
+export NorthcottNatural (gv_congr_all)
 
 variable {k : ℕ} {Γ : List (Fm PTm k)}
-
-/-- Pointwise-equal vectors have equal prefix gcds, for every prefix `M ≤ N`. -/
-theorem gv_congr_all (f g : PTm 2) {N x y : PTm k}
-    (h : Γ ⊢[PRAAx] Fm.all (lt (var 0) (Syn.shift N) ⟶ inst2 f (var 0) (Syn.shift x) ≐ inst2 g (var 0) (Syn.shift y))) :
-    Γ ⊢[PRAAx] Fm.all (le (var 0) (Syn.shift N) ⟶ gv f (var 0) (Syn.shift x) ≐ gv g (var 0) (Syn.shift y)) :=
-  NorthcottNatural.gv_congr_all f g h
 
 /-- The base `2B + 1`. -/
 abbrev bse (B : PTm k) : PTm k := succ (two * B)

@@ -84,13 +84,7 @@ theorem prod_exp (G : PTm 2) (N x : PTm n) :
   simpa [Syn.subst_inst_shift, Syn.inst_zero] using h2
 
 /-- `2^a = 2^b → a = b`. -/
-theorem exp_inj {a b : PTm n} (h : Γ ⊢[PRAAx] pw two a ≐ pw two b) : Γ ⊢[PRAAx] a ≐ b := by
-  refine .orE (lt_or_le a b) ?_ ?_
-  · exact lt_irrefl (pw two b) _ (lt_congr h.wk (.eqRefl _)
-      (pw_lt_exp (le_refl two) (Prf.hyp0 (Γ := Γ) (φ := lt a b))))
-  · refine .orE (lt_or_eq_of_le (Prf.hyp0 (Γ := Γ) (φ := le b a))) ?_ Prf.hyp0.eqSymm
-    exact lt_irrefl (pw two a) _ (lt_congr h.wk.wk.eqSymm (.eqRefl _)
-      (pw_lt_exp (le_refl two) (Prf.hyp0 (Γ := le b a :: Γ) (φ := lt b a))))
+alias exp_inj := LeanProofs.IPRA.AnalyticNumberTheory.Totatives.pw_two_inj
 
 /-! ## Sums over a permuted range -/
 

@@ -43,7 +43,7 @@ variable {n : ℕ} {Γ : List (Fm PTm n)}
 
 /-! ## Divisibility from valuations -/
 
-theorem one_pos' : Γ ⊢[PRAAx] (one : PTm n) ≐ succ (pred one) := congrSucc (pred_succ _).eqSymm
+alias one_pos' := LeanProofs.IPRA.Common.one_pos
 
 theorem f_dvd {i a b : PTm n} (h : Γ ⊢[PRAAx] isP i ≐ one ⟶ le (val i a) (val i b)) :
     Γ ⊢[PRAAx] dvd (pw i (isP i * val i a)) (pw i (isP i * val i b)) := by

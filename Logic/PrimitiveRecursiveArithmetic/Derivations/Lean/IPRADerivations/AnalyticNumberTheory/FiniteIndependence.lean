@@ -77,8 +77,7 @@ theorem tot_period {b : PTm n} (hb : Γ ⊢[PRAAx] b ≐ succ (pred b)) (x : PTm
     Matrix.cons_val_zero, Matrix.cons_val_one, ConciseIPRA.PTm.subst_succ] at i
   exact .impE i hb
 
-theorem mul_succ_alg (b c : PTm n) : Γ ⊢[PRAAx] b * succ c ≐ b * c + b := by
-  ipra_ring
+alias mul_succ_alg := LeanProofs.IPRA.mul_succ
 
 theorem blk_alg {U' U ph c : PTm n} (a : Γ ⊢[PRAAx] U' ≐ U + ph) (ih : Γ ⊢[PRAAx] U ≐ c * ph) :
     Γ ⊢[PRAAx] U' ≐ succ c * ph := by
@@ -193,8 +192,7 @@ theorem joint_count {a b : PTm n} (ha : Γ ⊢[PRAAx] a ≐ succ (pred a)) (hb :
   exact s.eqTrans ((reindex_eq totBody (a * (b * c)) ha).eqTrans
     ((congrAp2 (sumF totBody) (cM_mul ha (b * c)) (.eqRefl _)).eqTrans (tot_blocks hb c)))
 
-theorem comm_alg (a b c : PTm n) : Γ ⊢[PRAAx] a * (b * c) ≐ b * (a * c) := by
-  ipra_ring
+alias comm_alg := LeanProofs.IPRA.DiophantineNumberTheory.GaussProduct.shuffle
 
 /-- `#{m < a b c : gcd(m, b) = 1} = a c φ(b)`. -/
 theorem coprime_count {b : PTm n} (hb : Γ ⊢[PRAAx] b ≐ succ (pred b)) (a c : PTm n) :

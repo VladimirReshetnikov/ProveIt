@@ -43,8 +43,7 @@ variable {n : ℕ} {Γ : List (Fm PTm n)}
 theorem shift_add (a b : PTm n) : Syn.shift (a + b) = Syn.shift a + Syn.shift b := by
   simp [Syn.shift]
 
-theorem shift_pw (a m : PTm n) : Syn.shift (pw a m) = pw (Syn.shift a) (Syn.shift m) := by
-  simp [Syn.shift]
+alias shift_pw := LeanProofs.IPRA.AnalyticNumberTheory.PhiEvenPow.shift_pw'
 
 /-- `C(n, a + k) x^k y^{c−k}`, over `0 = k`, `1 = ⟨n, ⟨x, ⟨y, ⟨a, c⟩⟩⟩⟩`. -/
 abbrev gbody : PTm 2 :=

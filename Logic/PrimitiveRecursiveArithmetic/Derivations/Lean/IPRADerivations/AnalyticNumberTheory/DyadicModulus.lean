@@ -26,6 +26,7 @@ namespace LeanProofs.IPRA.AnalyticNumberTheory.DyadicModulus
 
 open_ipra exports
 open LeanProofs.IPRA.Algebra.PowerDifference (gd geom_sum)
+export LeanProofs.IPRA.Common (two_pos)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
@@ -53,8 +54,6 @@ theorem floor_bound {r q ρ k : PTm n} (hk : Γ ⊢[PRAAx] le (num 8 * succ r) k
     ipra_lc 8 * natEq (eq_add_of_le (Prf.hyp0 : (lt q (succ r) :: Γ) ⊢[PRAAx] le (succ q) (succ r))) - natEq hd' +
       natEq (eq_add_of_le hρ')
   exact not_succ_le_self k _ (le_trans big hk')
-
-theorem two_pos : Γ ⊢[PRAAx] (two : PTm n) ≐ succ (pred two) := pos_of_eq_succ (.eqRefl _)
 
 /-- `r + 1 ≤ q` gives `2 · 2^r ≤ 2^q`. -/
 theorem dyadic_rate {r q : PTm n} (h : Γ ⊢[PRAAx] le (succ r) q) :

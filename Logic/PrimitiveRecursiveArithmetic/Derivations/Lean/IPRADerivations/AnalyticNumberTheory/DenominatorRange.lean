@@ -99,15 +99,12 @@ theorem W_at (t a L z : PTm n) :
 
 /-! ## Small facts -/
 
-theorem leI_one {t z : PTm n} (h : Γ ⊢[PRAAx] le t z) : Γ ⊢[PRAAx] monus one (monus t z) ≐ one :=
-  (congrMonus (.eqRefl _) h).eqTrans (monus_zero one)
+alias leI_one := BlockSums.ind1
 
 theorem lt_alg {t z d : PTm n} (e : Γ ⊢[PRAAx] t ≐ succ z + d) : Γ ⊢[PRAAx] t ≐ z + succ d := by
   ipra_lc natEq e
 
-theorem leI_zero {t z : PTm n} (h : Γ ⊢[PRAAx] lt z t) : Γ ⊢[PRAAx] monus one (monus t z) ≐ zero := by
-  have m : Γ ⊢[PRAAx] monus t z ≐ succ (monus t (succ z)) := monus_of_eq (lt_alg (eq_add_of_le h))
-  exact (congrMonus (.eqRefl _) m).eqTrans ((succ_monus_succ _ _).eqTrans (zero_monus _))
+alias leI_zero := BlockSums.ind0
 
 /-- `⌊N/p⌋ < N` for `N ≥ 1` and `p ≥ 2`. -/
 theorem quo_lt {N p : PTm n} (hN : Γ ⊢[PRAAx] N ≐ succ (pred N)) (hp2 : Γ ⊢[PRAAx] le two p) :

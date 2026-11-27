@@ -33,10 +33,9 @@ namespace LeanProofs.IPRA.AnalyticNumberTheory.EtaSchedule
 open_ipra exports
 open LeanProofs.IPRA.Analysis.Products (fact)
 open LeanProofs.IPRA.Analysis.ExponentialSeries (fact_succ' fact_zero')
+export LeanProofs.IPRA.Common (two_pos)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
-
-theorem two_pos : Γ ⊢[PRAAx] (two : PTm n) ≐ succ (pred two) := congrSucc (pred_succ _).eqSymm
 
 /-! ## The factorial lower bound from the final half of the factors -/
 
@@ -50,18 +49,18 @@ theorem fs_step {h i : PTm n} (ih : Γ ⊢[PRAAx] le (fact h * pw h i) (fact (h 
 theorem fact_shift (h i : PTm n) : Γ ⊢[PRAAx] le (fact h * pw h i) (fact (h + i)) := by
   have hall : Γ ⊢[PRAAx] Fm.all (le (fact (Syn.shift h) * pw (Syn.shift h) (var 0)) (fact (Syn.shift h + var 0))) := by
     refine PRA.qfInd _ trivial ?_ ?_
-    · simp only [subst_le, subst_ap2, PTm.subst_mul, PTm.subst_add, Syn.subst_var, Syn.inst_zero,
-        Syn.subst_inst_shift, ConciseIPRA.PTm.subst_zero, ConciseIPRA.PTm.subst_succ]
+    · simp only [subst_le, subst_ap2, PTm.subst_mul, PTm.subst_add, Syn.subst_var, Syn.inst_zero, Syn.subst_inst_shift,
+        ConciseIPRA.PTm.subst_zero]
       refine le_of_eq_add (d := zero) ?_
       ipra_lc natEq (congrAp2 factF (add_zero h) (.eqRefl zero)) - 𝔞 (fact h) * natEq (pw_zero h)
-    · simp only [subst_le, subst_ap2, PTm.subst_mul, PTm.subst_add, Syn.subst_var, Syn.repl_zero,
-        subst_repl_shift, ConciseIPRA.PTm.subst_zero, ConciseIPRA.PTm.subst_succ]
+    · simp only [subst_le, subst_ap2, PTm.subst_mul, PTm.subst_add, Syn.subst_var, Syn.repl_zero, subst_repl_shift,
+        ConciseIPRA.PTm.subst_zero]
       let D : List (Fm PTm (n + 1)) :=
         le (fact (Syn.shift h) * pw (Syn.shift h) (var 0)) (fact (Syn.shift h + var 0)) :: Γ.map Fm.shift
       exact fs_step (Prf.hyp0 : D ⊢[PRAAx] _)
   have r := Prf.allE i hall
-  simp only [subst_le, subst_ap2, PTm.subst_mul, PTm.subst_add, Syn.subst_var, Syn.inst_zero,
-    Syn.subst_inst_shift, ConciseIPRA.PTm.subst_zero, ConciseIPRA.PTm.subst_succ] at r
+  simp only [subst_le, subst_ap2, PTm.subst_mul, PTm.subst_add, Syn.subst_var, Syn.inst_zero, Syn.subst_inst_shift,
+    ConciseIPRA.PTm.subst_zero] at r
   exact r
 
 /-- `2^q D^{2h+1} ≤ (2h+1)!` for `D ≥ 1`, `2D² ≤ h`, `q ≤ h`: `2^q D^{2h+1} ≤ (2D²)^{h+1} ≤ h^{h+1} ≤ h! h^{h+1}

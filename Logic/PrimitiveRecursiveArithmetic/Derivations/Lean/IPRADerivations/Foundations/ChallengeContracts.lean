@@ -251,9 +251,8 @@ theorem idArrow_laws (A : Contract) : idArrow.Laws A A where
   loc := fun {k Γ x v} _ _ hq => by
     rw [idArrow_f]
     have e := Prf.allE (zero : PTm k) hq
-    simp only [Fm.subst_imp, subst_lt, subst_ans, idArrow_c, idArrow_q, Syn.subst_var,
-      Syn.inst_zero, Syn.subst_inst_shift, ConciseIPRA.PTm.subst_succ,
-      ConciseIPRA.PTm.subst_zero] at e
+    simp only [Fm.subst_imp, subst_lt, subst_ans, idArrow_c, idArrow_q, Syn.subst_var, Syn.inst_zero,
+      Syn.subst_inst_shift] at e
     exact .impE e (le_refl _)
 
 /-! ## Composition: the demand formula (D) -/

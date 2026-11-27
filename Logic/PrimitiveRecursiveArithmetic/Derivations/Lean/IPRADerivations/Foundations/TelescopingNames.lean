@@ -65,11 +65,9 @@ theorem tel_all (h0 : Γ ⊢[PRAAx] inst2 D zero x ≐ zero)
       (inst2 D (var 0) (Syn.shift x) + inst2 s (var 0) (Syn.shift x)))) :
     Γ ⊢[PRAAx] Fm.all (le (inst2 D (var 0) (Syn.shift x)) (ap2 (sumF s) (var 0) (Syn.shift x))) := by
   refine PRA.qfInd _ (le_QF _ _) ?_ ?_
-  · simp only [subst_le, subst_ap2, subst_inst2, Syn.subst_var, Syn.inst_zero, Syn.subst_inst_shift,
-      ConciseIPRA.PTm.subst_zero, ConciseIPRA.PTm.subst_succ]
+  · simp only [subst_le, subst_ap2, subst_inst2, Syn.subst_var, Syn.inst_zero, Syn.subst_inst_shift]
     exact tel_base h0
-  · simp only [subst_le, subst_ap2, subst_inst2, Syn.subst_var, Syn.repl_zero, subst_repl_shift,
-      ConciseIPRA.PTm.subst_zero, ConciseIPRA.PTm.subst_succ]
+  · simp only [subst_le, subst_ap2, subst_inst2, Syn.subst_var, Syn.repl_zero, subst_repl_shift]
     exact tel_step hstep.allOpen.wk Prf.hyp0
 
 /-- The triangle inequality telescopes: `D(k) ≤ ∑_{i<k} s(i)`. -/
@@ -78,8 +76,7 @@ theorem telescope (h0 : Γ ⊢[PRAAx] inst2 D zero x ≐ zero)
       (inst2 D (var 0) (Syn.shift x) + inst2 s (var 0) (Syn.shift x))))
     (k : PTm n) : Γ ⊢[PRAAx] le (inst2 D k x) (ap2 (sumF s) k x) := by
   have a := Prf.allE k (tel_all h0 hstep)
-  simp only [subst_le, subst_ap2, subst_inst2, Syn.subst_var, Syn.inst_zero, Syn.subst_inst_shift,
-    ConciseIPRA.PTm.subst_zero, ConciseIPRA.PTm.subst_succ] at a
+  simp only [subst_le, subst_ap2, subst_inst2, Syn.subst_var, Syn.inst_zero, Syn.subst_inst_shift] at a
   exact a
 
 /-- `thm:regular-name`: a motion budget `∑_{i<k} s(i) ≤ B` bounds the distance, `D(k) ≤ B`. -/

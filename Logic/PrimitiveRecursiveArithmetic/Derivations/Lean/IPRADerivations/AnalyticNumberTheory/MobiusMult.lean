@@ -71,8 +71,7 @@ theorem cop_val {q a b : PTm n} (hq : Γ ⊢[PRAAx] prime q) (ha : Γ ⊢[PRAAx]
   have v1 : C ⊢[PRAAx] val q (gcd a b) ≐ zero := (congrVal (.eqRefl q) hab.wk.wk).eqTrans (val_one h2q)
   exact not_succ_le_self zero _ (le_congr (.eqRefl _) v1 g)
 
-theorem distrib (i s t : PTm n) : Γ ⊢[PRAAx] i * (s + t) ≐ i * s + i * t := by
-  ipra_ring
+alias distrib := LeanProofs.IPRA.mul_add
 
 theorem om_pt_cop {q a b : PTm n} (ha : Γ ⊢[PRAAx] a ≐ succ (pred a)) (hb : Γ ⊢[PRAAx] b ≐ succ (pred b))
     (hab : Γ ⊢[PRAAx] gcd a b ≐ one) : Γ ⊢[PRAAx] inst2 omB q (a * b) ≐ inst2 omB q a + inst2 omB q b := by

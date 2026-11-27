@@ -71,8 +71,8 @@ theorem G_zero : Γ ⊢[PRAAx] Gs (zero : PTm n) ≐ zero := by
 
 theorem G_succ (J : PTm n) : Γ ⊢[PRAAx] Gs (succ J) ≐ Gs J + Gs J + succ (succ zero) := by
   have h := rec2_succ (Γ := Γ) zero gStep J zero
-  simp only [PTm.subst_add, ConciseIPRA.PTm.subst_succ, ConciseIPRA.PTm.subst_zero, Syn.subst_var,
-    Matrix.cons_val_zero, Matrix.cons_val_one, Matrix.head_cons, Matrix.cons_val_two, Matrix.tail_cons] at h
+  simp only [PTm.subst_add, ConciseIPRA.PTm.subst_succ, ConciseIPRA.PTm.subst_zero, Syn.subst_var, Matrix.cons_val_zero,
+    Matrix.cons_val_one] at h
   exact h
 
 theorem R_zero : Γ ⊢[PRAAx] Rs (zero : PTm n) ≐ zero := by
@@ -80,8 +80,7 @@ theorem R_zero : Γ ⊢[PRAAx] Rs (zero : PTm n) ≐ zero := by
 
 theorem R_succ (J : PTm n) : Γ ⊢[PRAAx] Rs (succ J) ≐ Rs J + Rs J + (succ J + succ J) := by
   have h := rec2_succ (Γ := Γ) zero rStep J zero
-  simp only [PTm.subst_add, ConciseIPRA.PTm.subst_succ, ConciseIPRA.PTm.subst_zero, Syn.subst_var,
-    Matrix.cons_val_zero, Matrix.cons_val_one, Matrix.head_cons, Matrix.cons_val_two, Matrix.tail_cons] at h
+  simp only [PTm.subst_add, ConciseIPRA.PTm.subst_succ, Syn.subst_var, Matrix.cons_val_zero, Matrix.cons_val_one] at h
   exact h
 
 /-! ## The explicit remainders -/

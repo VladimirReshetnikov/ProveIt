@@ -231,9 +231,7 @@ theorem inst2_w (q y : PTm n) :
 theorem viol_of {K A B : PTm n} (h : Γ ⊢[PRAAx] le A B) : Γ ⊢[PRAAx] sg K * sg (monus A B) ≐ zero :=
   (congrMul (.eqRefl _) ((congrSg h).eqTrans sg_zero)).eqTrans (mul_zero _)
 
-theorem one_fac {s X : PTm n} (hs : Γ ⊢[PRAAx] s ≐ one) (h : Γ ⊢[PRAAx] s * X ≐ zero) :
-    Γ ⊢[PRAAx] X ≐ zero := by
-  ipra_lc natEq h - 𝔞 X * natEq hs
+alias one_fac := DenominatorRange.one_mul_zero
 
 theorem of_viol {K A B : PTm n} (hK : Γ ⊢[PRAAx] K ≐ succ (pred K))
     (h : Γ ⊢[PRAAx] sg K * sg (monus A B) ≐ zero) : Γ ⊢[PRAAx] le A B :=

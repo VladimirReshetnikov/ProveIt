@@ -73,15 +73,15 @@ theorem perturbed (e : PTm 2) {a d R η x : PTm n} (j : PTm n)
   have hall : Γ ⊢[PRAAx] Fm.all (pInv e (Syn.shift a) (Syn.shift d) (Syn.shift R) (Syn.shift η)
       (Syn.shift x) (var 0)) := by
     refine PRA.qfInd _ (le_QF _ _) ?_ ?_
-    · simp only [pInv, subst_le, PTm.subst_add, PTm.subst_mul, subst_ap2, subst_inst2, Syn.subst_var,
-        Syn.inst_zero, Syn.subst_inst_shift, ConciseIPRA.PTm.subst_zero, ConciseIPRA.PTm.subst_succ]
+    · simp only [pInv, subst_le, PTm.subst_add, PTm.subst_mul, subst_ap2, subst_inst2, Syn.subst_var, Syn.inst_zero,
+        Syn.subst_inst_shift, ConciseIPRA.PTm.subst_succ]
       have p0 := natEq (pw_zero (Γ := Γ) (a + d))
       have p1 := natEq (pw_succ (Γ := Γ) (a + d) zero)
       have q0 := natEq (pw_zero (Γ := Γ) a)
       ipra_le 𝔟 d * sl h0 + 𝔟 (a + d) * 𝔟 η using
         rw [p1, p0, q0]; ring
-    · simp only [pInv, subst_le, PTm.subst_add, PTm.subst_mul, subst_ap2, subst_inst2, Syn.subst_var,
-        Syn.repl_zero, subst_repl_shift, ConciseIPRA.PTm.subst_zero, ConciseIPRA.PTm.subst_succ]
+    · simp only [pInv, subst_le, PTm.subst_add, PTm.subst_mul, subst_ap2, subst_inst2, Syn.subst_var, Syn.repl_zero,
+        subst_repl_shift, ConciseIPRA.PTm.subst_succ]
       let a' := Syn.shift a
       let d' := Syn.shift d
       let R' := Syn.shift R

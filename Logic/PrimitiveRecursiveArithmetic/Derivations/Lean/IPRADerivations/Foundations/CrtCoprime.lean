@@ -226,7 +226,7 @@ theorem found {x K y : PTm n} (hx1 : Γ ⊢[PRAAx] rem x (L mB K y) ≐ rem (X m
     Γ ⊢[PRAAx] (V mB aB (X mB aB (succ K) y) (succ K) y ≐ zero) ⋏ lt (X mB aB (succ K) y) (L mB (succ K) y) :=
   found_with_bound mB aB (prodF (mS mB)) (fun j y => L_pos mB j y) (fun hi => m_dvd mB hi) hx1 hx2 hV
 
-theorem rem_one' (t : PTm n) : Γ ⊢[PRAAx] rem t one ≐ zero := AnalyticNumberTheory.Euler.rem_one t
+alias rem_one' := LeanProofs.IPRA.AnalyticNumberTheory.Euler.rem_one
 
 /-- The induction step. -/
 theorem step {K y : PTm n}

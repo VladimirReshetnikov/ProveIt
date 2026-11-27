@@ -24,8 +24,6 @@ The pattern was used ad hoc before (`AnalyticNumberTheory/EulerProduct`, with th
 `1 ∸ [LHS = RHS]`); `sum_zero_elim` recovers the induction hypothesis at each `i < N`.
 -/
 
-set_option linter.unusedSimpArgs false
-
 namespace LeanProofs.IPRA
 
 open LeanProofs.ConciseIPRA
@@ -55,7 +53,7 @@ theorem strong_ind (v : PTm 2)
     (N x : PTm n) : Γ ⊢[PRAAx] inst2 v N x ≐ zero := by
   have h := inst (Γ := Γ) (strong_sum v step) (![succ N, x] : Fin 2 → PTm n)
   simp only [Fm.subst_eq, subst_ap2, Syn.subst_var, Matrix.cons_val_zero, Matrix.cons_val_one,
-    Matrix.head_cons, ConciseIPRA.PTm.subst_succ, ConciseIPRA.PTm.subst_zero] at h
+    ConciseIPRA.PTm.subst_zero] at h
   exact sum_zero_elim_last v h
 
 end LeanProofs.IPRA

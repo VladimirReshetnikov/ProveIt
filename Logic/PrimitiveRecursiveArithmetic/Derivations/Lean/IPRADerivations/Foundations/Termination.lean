@@ -65,9 +65,8 @@ theorem r_succ (k s₀ : PTm n) :
     Γ ⊢[PRAAx] r done step (succ k) s₀ ≐ dn done (r done step k s₀) * r done step k s₀
       + monus one (dn done (r done step k s₀)) * ap1 step (r done step k s₀) := by
   have h := rec2_succ (Γ := Γ) (var 0) (runStep done step) k s₀
-  simp only [PTm.subst_add, PTm.subst_mul, PTm.subst_monus, subst_ap1, Syn.subst_var,
-    ConciseIPRA.PTm.subst_succ, ConciseIPRA.PTm.subst_zero, Matrix.cons_val_one,
-    Matrix.head_cons] at h
+  simp only [PTm.subst_add, PTm.subst_mul, PTm.subst_monus, subst_ap1, Syn.subst_var, ConciseIPRA.PTm.subst_succ,
+    ConciseIPRA.PTm.subst_zero, Matrix.cons_val_one] at h
   exact h
 
 theorem sg_cases (x : PTm n) : Γ ⊢[PRAAx] (sg x ≐ zero) ⋎ (sg x ≐ one) := by
@@ -114,20 +113,17 @@ theorem termination : ([] : List (Fm PTm 0)) ⊢[PRAAx] univ 1 (terminationFormu
   refine closeUniv 1 (.impI ?_)
   have hall : [decrease done step m] ⊢[PRAAx] Fm.all (invariant done step m) := by
     refine PRA.qfInd _ ⟨trivial, le_QF _ _⟩ ?_ ?_
-    · simp only [Fm.subst_or, Fm.subst_eq, subst_le, PTm.subst_add, PTm.subst_monus, subst_ap1,
-        subst_ap2, Syn.subst_var, Syn.inst_zero, Syn.inst_succ, ConciseIPRA.PTm.subst_zero,
-        ConciseIPRA.PTm.subst_succ, Fin.succ_zero_eq_one]
+    · simp only [Fm.subst_or, Fm.subst_eq, subst_le, PTm.subst_add, PTm.subst_monus, subst_ap1, subst_ap2,
+        Syn.subst_var, Syn.inst_zero, ConciseIPRA.PTm.subst_zero, ConciseIPRA.PTm.subst_succ]
       refine .orI₂ (le_congr ?_ (.eqRefl _) (le_refl _))
       exact (congrAp1 m (r_zero _)).eqSymm.eqTrans (add_zero _).eqSymm
-    · simp only [Fm.subst_or, Fm.subst_eq, subst_le, PTm.subst_add, PTm.subst_monus, subst_ap1,
-        subst_ap2, Syn.subst_var, Syn.repl_zero, Syn.repl_succ, repl_one,
-        ConciseIPRA.PTm.subst_zero, ConciseIPRA.PTm.subst_succ, List.map_cons, List.map_nil,
-        shift_decrease]
+    · simp only [Fm.subst_or, Fm.subst_eq, subst_le, PTm.subst_add, PTm.subst_monus, subst_ap1, subst_ap2,
+        Syn.subst_var, Syn.repl_zero, repl_one, ConciseIPRA.PTm.subst_zero, ConciseIPRA.PTm.subst_succ, List.map_cons,
+        List.map_nil, shift_decrease]
       exact step_case
   have h := Prf.allE (succ (ap1 m (var 0))) hall
-  simp only [Fm.subst_or, Fm.subst_eq, subst_le, PTm.subst_add, PTm.subst_monus, subst_ap1,
-    subst_ap2, Syn.subst_var, Syn.inst_zero, Syn.inst_succ, ConciseIPRA.PTm.subst_zero,
-    ConciseIPRA.PTm.subst_succ, Fin.succ_zero_eq_one] at h
+  simp only [Fm.subst_or, Fm.subst_eq, subst_le, PTm.subst_add, PTm.subst_monus, subst_ap1, subst_ap2, Syn.subst_var,
+    Syn.inst_zero, ConciseIPRA.PTm.subst_zero, ConciseIPRA.PTm.subst_succ] at h
   refine .orE h Prf.hyp0 ?_
   exact not_succ_le_self _ _ (le_trans (le_add_left _ _) Prf.hyp0)
 

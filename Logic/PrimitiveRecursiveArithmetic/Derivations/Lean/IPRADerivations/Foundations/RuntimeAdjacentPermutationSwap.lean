@@ -518,7 +518,7 @@ def deltaData (a b v : PTm n) : PTm n := pairT a (pairT b v)
 def deltaTable : PTm 3 := pairDelta (var 0) (var 1) (fstT (var 2)) (fstT (sndT (var 2)))*sndT (sndT (var 2))
 ipra_subst deltaData
 alias eqb_congr := Common.congrEqb
-theorem eqb_symmetric (a b : PTm n) : Γ ⊢[PRAAx] eqb a b ≐ eqb b a := congrMonus (.eqRefl _) (add_comm _ _)
+alias eqb_symmetric := LeanProofs.IPRA.AnalyticNumberTheory.EulerProduct.eqb_comm'
 theorem delta_table_at (a b v i l : PTm n) : Γ ⊢[PRAAx]
     inst3 deltaTable i l (deltaData a b v) ≐ pairDelta i l a b*v := by
   simp only [deltaTable,inst3,PTm.subst_mul,subst_pairDelta,subst_fstT,subst_sndT,Syn.subst_var,
