@@ -127,8 +127,7 @@ private theorem sampled_root_upper (p k J x : PTm n) (hk : Γ ⊢[PRAAx] le k J)
   have first := upper_congr (congrFst (constant_at p c)) (.eqRefl _) (.eqRefl _) (.eqRefl _)
     (real_order_at constantF f c d p p s)
   have left : Γ ⊢[PRAAx] upper (fstT c) (fstT u) two U :=
-    upper_mono _ _ _ _ _ _ (positive_product _ _ hU hU) first
-      (le_of_eq_add (d := ConciseIPRA.PTm.zero) (by ipra_ring))
+    RationalValueBounds.upper_two_errors_same hU first
   have raw := raw_root_error_later p (GaussianSineSampleRootGuards.clock p J) k J x hk
     (GaussianSineSampleRootGuards.clock_later p J)
   have right : Γ ⊢[PRAAx] upper (fstT u) (fstT v) (num 9) U :=

@@ -92,9 +92,8 @@ private theorem raw_gamma_order (t a c b D : PTm n) (ha : Γ ⊢[PRAAx] source a
     (gamma_regular _ _ ha) (gamma_regular _ _ (neighbor_source c b D hc hD))
   have left := scalar_upper _ _ _ _ hp (distance_symmetric _ _ _ _ hp hL)
   have right := scalar_upper _ _ _ _ hp hR
-  have middle := upper_mono _ _ _ _ two (unit t) (positive_product _ _ hp hp)
+  have middle := RationalValueBounds.upper_two_errors_same hp
     (real_order_at GF GF (innerProductData a c b D) (outerProductData a c b D) t t (gamma_comparison a c b D ha hc hac hD))
-    (le_of_eq_add (d := zero) (by ipra_ring))
   have chain := upper_triangle _ _ _ _ _ _ _ (upper_triangle _ _ _ _ _ _ _ left middle) right
   exact upper_mono _ _ _ _ _ _ (positive_product _ _ (positive_product _ _ hp hp) hp) chain
     (le_of_eq_add (d := zero) (by unfold gammaCost; ipra_ring))
@@ -208,9 +207,8 @@ theorem diagonal_order (p a c b : PTm n) (ha : Γ ⊢[PRAAx] source a b) (hc : �
     (distance_congr (qmul_commutative _ _) (.eqRefl _) (.eqRefl _) (.eqRefl _) raw)
   have swap := GaussianNameRingLaws.multiply_commutative IF gammaF (derivativeData c b) (gammaData a b)
     (derivative_regular _ _ hc) (gamma_regular _ _ ha)
-  have hswap := upper_mono _ _ _ _ two (unit p) (positive_product _ _ hp hp)
+  have hswap := RationalValueBounds.upper_two_errors_same hp
     (scalar_upper _ _ _ _ (positive_product _ _ hp hp) (GaussianNameEquivalence.cross_at _ _ _ _ p p swap))
-    (le_of_eq_add (d := zero) (by ipra_ring))
   have tail := upper_triangle _ _ _ _ _ _ _ r hswap
   have res := upper_triangle _ _ _ _ _ _ _ (upper_triangle _ _ _ _ _ _ _ l mid) tail
   exact upper_mono _ _ _ _ _ _ (positive_product _ _ (positive_product _ _ hp hp) (positive_product _ _ hp hp)) res

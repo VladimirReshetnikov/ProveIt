@@ -66,8 +66,7 @@ theorem bias_real (r j : PTm n) (hr : Γ ⊢[PRAAx] axis r) :
 theorem biased_order_at (f g : PR 2) (x y j : PTm n) (h : Γ ⊢[PRAAx] realOrder f g x y) : Γ ⊢[PRAAx]
     RationalArgmin.rationalLE (fstT (ap2 f j x)) (fstT (bias (ap2 g j y) j)) := by
   have hp := unit_positive (Γ := Γ) j
-  have h0 := upper_mono _ _ _ _ two (unit j) (positive_product _ _ hp hp)
-    (real_order_at f g x y j j h) (le_of_eq_add (d := zero) (by ipra_ring))
+  have h0 := RationalValueBounds.upper_two_errors_same hp (real_order_at f g x y j j h)
   let u := fstT (ap2 g j y)
   let v := fstT (fraction two (unit j))
   let w := GaussianEuclideanDistanceName.fraction two (unit j)

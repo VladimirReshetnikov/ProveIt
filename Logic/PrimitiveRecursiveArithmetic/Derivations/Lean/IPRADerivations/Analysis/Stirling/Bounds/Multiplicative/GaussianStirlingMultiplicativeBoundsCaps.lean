@@ -44,8 +44,8 @@ private theorem constant_order_exact (a b : PTm n) (h : Γ ⊢[PRAAx] realOrder 
     (.eqRefl _) (.eqRefl _) (real_order_at constantF constantF a b p p h)
   have slack : Γ ⊢[PRAAx] upperSlack x y zero one two p := by
     unfold upperSlack
-    exact upper_mono _ _ _ _ _ _ (positive_product _ _ hp hp) first
-      (le_of_eq_add (d := zero) (by ipra_ring))
+    exact RationalValueBounds.upper_congr (.eqRefl _) (.eqRefl _) (by ipra_ring) (one_mul _).eqSymm
+      (RationalValueBounds.upper_two_errors_same hp first)
   have exactBound := remove_upper_slack x y zero one two slack
   exact le_congr (by unfold RationalValueBounds.crossLeft RationalArgmin.left; ipra_ring)
     (by unfold RationalValueBounds.crossLeft RationalArgmin.left; ipra_ring) exactBound

@@ -97,16 +97,14 @@ private theorem observation (f g : PR 2) (V x y p : PTm n)
   have sbFixed := GaussianCoefficientNameBounds.bounded_radius_mono _ two W two one hw (le_refl one)
     (le_congr (by ipra_ring) (by ipra_ring) (mul_le_mul_right two hw)) sb
   have yb : Γ ⊢[PRAAx] bounded Y R one := bounded_sum_one bb sbFixed
-  have ineq := upper_mono _ _ _ _ two W (positive_product _ _ hw hw) (real_order_at f g x y t t ho)
-    (le_of_eq_add (d := zero) (by dsimp only [W]; ipra_ring))
+  have ineq := RationalValueBounds.upper_two_errors_same hw (real_order_at f g x y t t ho)
   have shiftOrder := RationalConvexEndpointBudget.order_of_upper (fstT A) (fstT B) two W hw ineq
   have read := (RationalGaussianRealPart.real_add B S).eqTrans
     (RationalAlgebra.add_congr (.eqRefl (fstT B)) (fraction_real_part two W hw))
   have cmp := RationalArgmin.rationalLE_congr (.eqRefl _) read.eqSymm shiftOrder
   have middle := real_order_at _ _ _ _ p p
     (GaussianSignedNameExponentialOrder.constant_real_order A Y R ar yReal arB yb cmp)
-  have first := upper_mono _ _ _ _ two P (positive_product _ _ hp hp) middle
-    (le_of_eq_add (d := zero) (by dsimp [P]; ipra_ring))
+  have first := RationalValueBounds.upper_two_errors_same hp middle
   have raw := (GaussianReconstructionRoots.distance_zero_iff S two W hw).andE₂.impE sb
   have difference : Γ ⊢[PRAAx] distanceBounded Y B two W :=
     distance_congr (.eqRefl _) (GaussianReciprocalHorner.qadd_zero_right B br.andE₁)

@@ -113,9 +113,8 @@ theorem raw_weighted_order (p a c b : PTm n) (ha : Γ ⊢[PRAAx] source a b) (hc
   have order := GaussianNamedRealOrderTransport.transport _ _ _ _ _ _ _ _ (left_cross a c b ha hc)
     (cross_symm _ _ _ _ (right_cross a c b ha hc))
     (GaussianGammaDigammaDerivativeProductOrder.derivative_product_order a c b ha hc hac)
-  have middle := upper_mono _ _ _ _ two (unit p) (positive_product _ _ hp hp)
+  have middle := RationalValueBounds.upper_two_errors_same hp
     (real_order_at weightedF weightedF (leftData a c b) (rightData a c b) p p order)
-    (le_of_eq_add (d := zero) (by ipra_ring))
   exact upper_mono _ _ _ _ _ _ (positive_product _ _ (positive_product _ _ hp hp) hp)
     (upper_triangle _ _ _ _ _ _ _ (upper_triangle _ _ _ _ _ _ _ left middle) right)
     (le_of_eq_add (d := zero) (by unfold productCost; ipra_ring))

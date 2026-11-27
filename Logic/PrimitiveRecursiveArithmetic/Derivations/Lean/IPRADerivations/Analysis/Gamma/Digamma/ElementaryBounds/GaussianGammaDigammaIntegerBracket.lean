@@ -142,8 +142,7 @@ theorem raw_bounds (p a b N : PTm n) (hs : Γ ⊢[PRAAx] source a b) (hN : Γ �
     (by unfold s index; ipra_le sl hs.andE₁)
   have small (a b : PTm n) (h : Γ ⊢[PRAAx] realOrder DF DF a b) : Γ ⊢[PRAAx]
       upper (fstT (ap2 DF p a)) (fstT (ap2 DF p b)) two (unit p) :=
-    upper_mono _ _ _ _ two (unit p) (positive_product _ _ hp hp)
-      (real_order_at DF DF a b p p h) (le_of_eq_add (d := zero) (by ipra_ring))
+    RationalValueBounds.upper_two_errors_same hp (real_order_at DF DF a b p p h)
   have ec := edge_distance p N a hN
   exact .andI (cofinal_chain p N a _ _ _ _ hN (small x u hHi) ec (small l y hL))
     (cofinal_chain p N a _ _ _ _ hN (small y u hR) ec (small l x hLo))

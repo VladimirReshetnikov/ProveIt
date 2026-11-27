@@ -76,9 +76,8 @@ theorem weighted_at (p t r s x y z : PTm n)
       (weightedCost t r s x y z) (unit p) := by
   have hp := unit_positive (Γ := Γ) p
   have first := scalar_upper _ _ _ _ hp (distance_symmetric _ _ _ _ hp (scale_observation t x p hx))
-  have middle := upper_mono _ _ _ _ two (unit p) (positive_product _ _ hp hp)
+  have middle := RationalValueBounds.upper_two_errors_same hp
     (real_order_at G (addF G G) (gd t x) (addData (gd r y) (gd s z)) p p h)
-    (le_of_eq_add (d := zero) (by ipra_ring))
   have addError := GaussianNameRingLaws.add_sample_error G G (gd r y) (gd s z) p
     (scaled_regular r y hy) (scaled_regular s z hz)
   have sumError := sum_distance _ _ _ _ _ _ _ hp (scale_observation r y p hy) (scale_observation s z p hz)

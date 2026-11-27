@@ -131,11 +131,11 @@ private theorem named_distance_zero (p i N : PTm n) (hi : Γ ⊢[PRAAx] le one i
   have lower : Γ ⊢[PRAAx] upper (fstT Z) (fstT W) two U := by
     have raw := real_order_at C G Z X p p h.andE₁
     have e := upper_congr (congrFst (constant_at p Z)) (.eqRefl _) (.eqRefl _) (.eqRefl _) raw
-    exact upper_mono _ _ _ _ two U (positive_product _ _ hp hp) e (by ipra_le 0)
+    exact RationalValueBounds.upper_two_errors_same hp e
   have higher : Γ ⊢[PRAAx] upper (fstT W) (fstT M) two U := by
     have raw := real_order_at G C X M p p h.andE₂
     have e := upper_congr (.eqRefl _) (congrFst (constant_at p M)) (.eqRefl _) (.eqRefl _) raw
-    exact upper_mono _ _ _ _ two U (positive_product _ _ hp hp) e (by ipra_le 0)
+    exact RationalValueBounds.upper_two_errors_same hp e
   have low : Γ ⊢[PRAAx] upper (fstT Z) (fstT W) (U+two*D) (D*U) :=
     upper_mono _ _ _ _ _ _ hp lower (by ipra_le 𝔞 U*𝔞 U)
   have high : Γ ⊢[PRAAx] upper (fstT W) (fstT Z) (U+two*D) (D*U) :=

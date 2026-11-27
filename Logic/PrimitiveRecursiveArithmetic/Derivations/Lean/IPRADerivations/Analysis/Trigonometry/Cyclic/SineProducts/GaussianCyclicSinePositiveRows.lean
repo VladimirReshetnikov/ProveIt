@@ -48,7 +48,7 @@ private theorem divided_sine_at (p r m x : PTm n) (h : Γ ⊢[PRAAx] source r m)
   have hp := unit_positive (Γ := Γ) p
   have raw := upper_congr (congrFst (constant_at p a)) (.eqRefl _) (.eqRefl _) (.eqRefl _)
     (real_order_at constantF (GaussianNamedSineFromExponential.sineF D) a d p p (sine_lower r m x h))
-  exact upper_mono _ _ _ _ _ _ (positive_product _ _ hp hp) raw (le_of_eq_add (d := zero) (by ipra_ring))
+  exact RationalValueBounds.upper_two_errors_same hp raw
 
 theorem first_half_upper (p r m x : PTm n) (h : Γ ⊢[PRAAx] source r m) :
     Γ ⊢[PRAAx] upper (fstT (coefficient r m)) (fstT (realSine p r m x)) (num 14) (unit p) := by

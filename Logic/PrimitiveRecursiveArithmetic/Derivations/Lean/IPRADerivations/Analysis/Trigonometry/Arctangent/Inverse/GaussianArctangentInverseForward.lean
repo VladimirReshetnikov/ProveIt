@@ -68,12 +68,6 @@ theorem imaginary_order_at (f g : PR 2) (x y p q : PTm n) (h : Γ ⊢[PRAAx] ima
     GaussianCoefficientNameBounds.subst_unit, PTm.subst_add, PTm.subst_mul,
     Syn.subst_var, Syn.inst_zero, Syn.inst_succ, Syn.subst_inst_shift] using hfirst.allE q
 
-private theorem same_precision (a b p : PTm n)
-    (h : Γ ⊢[PRAAx] upper a b (unit p+unit p) (unit p*unit p)) :
-    Γ ⊢[PRAAx] upper a b two (unit p) :=
-  upper_mono _ _ _ _ _ _ (positive_product _ _ (unit_positive p) (unit_positive p)) h
-    (le_congr (by ipra_ring) (.eqRefl _) (le_refl (two*(unit p*unit p))))
-
 theorem upper_sum_same (a b c A C B : PTm n) (hB : Γ ⊢[PRAAx] le one B)
     (ha : Γ ⊢[PRAAx] upper a b A B) (hb : Γ ⊢[PRAAx] upper b c C B) :
     Γ ⊢[PRAAx] upper a c (A+C) B :=
@@ -147,7 +141,7 @@ private theorem negative_branch (f : PR 2) (p x z : PTm n) (h : Γ ⊢[PRAAx] in
     (hn : Γ ⊢[PRAAx] le (numeratorOf (ordinate f p x)).pos (numeratorOf (ordinate f p x)).neg) :
     Γ ⊢[PRAAx] radius (sndT (nativeValue (index f p x) (mesh p))) (ordinate f p x) (num 7) (unit p) := by
   have e := (nativeValue_congr (mesh p) (nonpositive_index_zero f p x hn)).eqTrans (prefix_zero _ _)
-  have low := same_precision _ _ p (imaginary_order_at zeroF f z x p p h.andE₂.andE₁)
+  have low := RationalValueBounds.upper_two_errors_same (unit_positive p) (imaginary_order_at zeroF f z x p p h.andE₂.andE₁)
   have lo := upper_congr (congrSnd (zero_at p z)) (.eqRefl _) (.eqRefl _) (.eqRefl _) low
   have lhs := upper_mono _ _ two (unit p) (num 7) (unit p) (unit_positive p) lo (by ipra_le 5*𝔞 (unit p))
   have rhs := upper_of_order _ _ (num 7) (unit p) (nonpositive_ordinate f p x hn)
@@ -201,7 +195,7 @@ private theorem above_branch (f : PR 2) (p x z : PTm n) (h : Γ ⊢[PRAAx] input
     exact comparison_of_cleared _ _ _ _ _ _ (GaussianRationalPolynomialExponential.factorial_positive L) hD hp
       (nonnegative_ordinate f p x hs) (le_congr (by ipra_ring) (.eqRefl _) hl)
   have low := upper_of_order _ _ (num 7) (unit p) exactOrder
-  have top := same_precision _ _ p (imaginary_order_at f quarterF x z p p h.andE₂.andE₂)
+  have top := RationalValueBounds.upper_two_errors_same (unit_positive p) (imaginary_order_at f quarterF x z p p h.andE₂.andE₂)
   have upperRaw := upper_sum_same r b a two (num 5) (unit p) (unit_positive p) top
     (upper_of_radius _ _ _ _ (endpoint_radius p z))
   have top' : Γ ⊢[PRAAx] upper r a (num 7) (unit p) :=

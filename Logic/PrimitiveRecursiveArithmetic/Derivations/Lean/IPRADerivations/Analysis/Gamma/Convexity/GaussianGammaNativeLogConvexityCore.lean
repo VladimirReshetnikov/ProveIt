@@ -119,8 +119,7 @@ theorem observation (a d b r s K C p : PTm n)
     (distance_triangle_same _ _ _ _ _ _ Upos sc (distance_symmetric _ _ _ _ Upos gadd))
   have mid := real_order_at P (addF P P) (centerData N a d b r s) (weightedData N a d b r s) p p
     (GaussianGammaEulerRationalLogConvexity.weighted_convexity N a d b r s pos ha hd hb)
-  have normalized := upper_mono _ _ _ _ two (unit p) (positive_product _ _ Upos Upos) mid
-    (le_of_eq_add (d := ConciseIPRA.PTm.zero) (by ipra_ring))
+  have normalized := RationalValueBounds.upper_two_errors_same Upos mid
   have l := coordinate_upper _ _ _ p (distance_symmetric _ _ _ _ Upos center)
   have e := coordinate_upper _ _ _ p sum
   have hp := unit_positive (Γ := Γ) p

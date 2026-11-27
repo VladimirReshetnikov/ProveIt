@@ -79,7 +79,7 @@ private theorem endpoint_left_upper (p : PTm n) : Γ ⊢[PRAAx]
   have h : Γ ⊢[PRAAx] upper (sample t N zero) (fstT c) (N+N) (N*N) :=
     upper_congr (.eqRefl _) (congrFst (constant_at t c)) (.eqRefl _) (.eqRefl _)
       (real_order_at DF constantF x c t t ord)
-  exact upper_mono _ _ _ _ _ _ (positive_product _ _ reg reg) h (by ipra_le 0)
+  exact RationalValueBounds.upper_two_errors_same reg h
 
 private theorem endpoint_right_lower (p : PTm n) : Γ ⊢[PRAAx]
     upper (fstT quarter) (sample (clock p) (grid p) (grid p)) two (grid p) := by
@@ -94,7 +94,7 @@ private theorem endpoint_right_lower (p : PTm n) : Γ ⊢[PRAAx]
   have h : Γ ⊢[PRAAx] upper (fstT c) (sample t N N) (N+N) (N*N) :=
     upper_congr (congrFst (constant_at t c)) (.eqRefl _) (.eqRefl _) (.eqRefl _)
       (real_order_at constantF DF c x t t ord)
-  exact upper_mono _ _ _ _ _ _ (positive_product _ _ reg reg) h (by ipra_le 0)
+  exact RationalValueBounds.upper_two_errors_same reg h
 
 private theorem grid_upper (p i j : PTm n) (h : Γ ⊢[PRAAx] le i j) : Γ ⊢[PRAAx]
     upper (sample (clock p) (grid p) j) (sample (clock p) (grid p) i)

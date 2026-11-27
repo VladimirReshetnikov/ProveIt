@@ -120,8 +120,7 @@ theorem original_diagonal (f g : PR 2) (p x y A B : PTm n) (hf : Γ ⊢[PRAAx] s
     .andI h1.andE₁ (le_trans h1.andE₂.andE₁ (mul_le_mul_right a (le_add_right _ _)))
   have w2 : Γ ⊢[PRAAx] GaussianGammaDigammaCompactLipschitz.window c d K :=
     .andI h2.andE₁ (le_trans h2.andE₂.andE₁ (mul_le_mul_right c (le_add_left _ _)))
-  have midRaw := upper_mono _ _ _ _ two (unit k) (positive_product _ _ hk hk) (real_order_at f g x y k k ho)
-    (le_of_eq_add (d := zero) (by unfold two; ipra_ring))
+  have midRaw := RationalValueBounds.upper_two_errors_same hk (real_order_at f g x y k k ho)
   have order := upper_congr (congrFst (fraction_at f k x A hf fl)) (congrFst (fraction_at g k y B hg gr))
     (.eqRefl _) (.eqRefl _) midRaw
   have mid := native_observation a b c d p k K w1 w2 (le_add_right _ _) order

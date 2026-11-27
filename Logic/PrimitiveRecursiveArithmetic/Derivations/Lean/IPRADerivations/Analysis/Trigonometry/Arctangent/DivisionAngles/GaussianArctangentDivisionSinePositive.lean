@@ -117,9 +117,7 @@ private theorem diagonal_bound (k m z p : PTm n) (h : Γ ⊢[PRAAx] source k m) 
     upper_mono _ _ (U+V) (U*V) two U hUV (upper_of_radius _ _ _ _ d') (by ipra_le 𝔞 U*sl hUUV)
   have chord := GaussianArctangentAngleChord.original_chord nameF X z (interval_input k m z h) (imaginary_samples k m z h.andE₁)
   have middle : Γ ⊢[PRAAx] upper (sndT y) (sndT H) two U :=
-    upper_mono _ _ (U+U) (U*U) two U (positive_product _ _ hU hU)
-      (imaginary_order_at _ _ _ _ p p chord)
-      (le_congr (by ipra_ring) (.eqRefl _) (le_refl _))
+    RationalValueBounds.upper_two_errors_same hU (imaginary_order_at _ _ _ _ p p chord)
   have readback := multiply_sample_error (sineF nameF) quarterF (chordSineData k m z) z p
     (sine_regular _ _ _ (chord_exp_input k m z h)) (quarter_regular z)
   have rightBound := upper_of_radius _ _ _ _ (imaginary_coordinate_radius _ _ _ _ hU readback)

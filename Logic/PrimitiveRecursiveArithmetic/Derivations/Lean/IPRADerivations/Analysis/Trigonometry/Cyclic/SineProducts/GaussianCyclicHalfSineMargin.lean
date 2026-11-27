@@ -47,8 +47,7 @@ private theorem chord_at (p d m x : PTm n) (h : Γ ⊢[PRAAx] source d m) :
   have hp := unit_positive (Γ := Γ) p
   have raw := upper_congr (congrFst (constant_at p a)) (.eqRefl _) (.eqRefl _) (.eqRefl _)
     (real_order_at constantF (sineF D) a d' p p (sine_lower d m x h))
-  exact upper_mono _ _ _ _ _ _ (positive_product _ _ hp hp) raw
-    (le_of_eq_add (d := zero) (by ipra_ring))
+  exact RationalValueBounds.upper_two_errors_same hp raw
 
 theorem sine_lower_at (p d m x : PTm n) (h : Γ ⊢[PRAAx] source d m)
     (hd : Γ ⊢[PRAAx] le one d) (hp : Γ ⊢[PRAAx] le (two*m) (unit p)) :

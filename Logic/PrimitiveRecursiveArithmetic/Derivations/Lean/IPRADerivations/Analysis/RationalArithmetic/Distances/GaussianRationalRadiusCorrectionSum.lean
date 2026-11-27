@@ -56,9 +56,8 @@ theorem correction_upper (v P Q : PTm n) (hP : Γ ⊢[PRAAx] le one P) (hQ : Γ 
 
 theorem diagonal_correction_upper (v u : PTm n) : Γ ⊢[PRAAx]
     upper (fstT (radius u u v)) (fstT v) two (unit u) :=
-  RationalValueBounds.upper_mono _ _ _ _ _ _ (positive_product _ _ (unit_positive u) (unit_positive u))
+  RationalValueBounds.upper_two_errors_same (unit_positive u)
     (correction_upper v (unit u) (unit u) (unit_positive u) (unit_positive u))
-    (le_of_eq_add (d := zero) (by ipra_ring))
 
 theorem sum_correction_upper (v w u : PTm n) : Γ ⊢[PRAAx]
     upper (fstT (qadd (radius u u v) (radius u u w))) (fstT (qadd v w)) (num 4) (unit u) := by

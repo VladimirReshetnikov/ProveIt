@@ -178,6 +178,12 @@ theorem upper_cancel (a b A B c : PTm n) (hc : Γ ⊢[PRAAx] le one c)
     (h : Γ ⊢[PRAAx] upper a b (c*A) (c*B)) : Γ ⊢[PRAAx] upper a b A B :=
   positive_cancel hc (le_congr (by ipra_ring) (by ipra_ring) h)
 
+/-- Normalize two unit errors observed at a common positive denominator. -/
+theorem upper_two_errors_same {a b D : PTm n} (hD : Γ ⊢[PRAAx] le one D)
+    (h : Γ ⊢[PRAAx] upper a b (D+D) (D*D)) : Γ ⊢[PRAAx] upper a b two D :=
+  upper_cancel a b two D D hD
+    (upper_congr (.eqRefl _) (.eqRefl _) (by ipra_ring) (.eqRefl _) h)
+
 theorem radius_cancel (a b A B c : PTm n) (hc : Γ ⊢[PRAAx] le one c)
     (h : Γ ⊢[PRAAx] radius a b (c*A) (c*B)) : Γ ⊢[PRAAx] radius a b A B :=
   positive_cancel hc (le_congr (by ipra_ring) (by ipra_ring) h)
