@@ -103,10 +103,7 @@ theorem first_term (A B : PTm n) (hA : Γ ⊢[PRAAx] le one A) (hB : Γ ⊢[PRAA
       apply deriveNat
       ipra_simps
       linear_combination natEq (eval s)
-    have e := Prf.eqCongr (Γ := Γ) (Ax := PRAAx) (fraction (var 0) (var 1) : PTm 2)
-      (σ := ![two*Pv zero B, GaussianRobinOddLogarithm.oddIndex zero*Pv zero s]) (σ' := ![P,s])
-      (fun i => by fin_cases i; exact ea; exact eb)
-    simpa [GaussianRobinOddLogarithm.term,GaussianRobinOddLogarithm.fraction,GaussianPositiveRationalLogarithm.fraction] using e
+    exact GaussianRationalHorner.real_fraction_congr ea eb
   have e : Γ ⊢[PRAAx] fraction (s*P) (P*s) ≐ fraction (P*s) (P*s) :=
     fraction_equal _ _ _ _ (positive_product _ _ hP hs) (positive_product _ _ hP hs) (by ipra_ring)
   exact (qmul_congr (.eqRefl _) term).eqTrans ((fraction_product s P P s hP hs).eqTrans

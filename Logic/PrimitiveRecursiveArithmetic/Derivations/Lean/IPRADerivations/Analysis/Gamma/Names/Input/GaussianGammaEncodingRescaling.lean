@@ -42,8 +42,8 @@ theorem fraction_rescale (z B E : PTm n) (hB : Γ ⊢[PRAAx] le one B) (hE : Γ 
     (GaussianRationalHorner.ofGaussian_represents (scale E z) (E*B) hEB) represented
 
 theorem fraction_denominator_congr (z B C : PTm n) (e : Γ ⊢[PRAAx] B ≐ C) : Γ ⊢[PRAAx]
-    ofGaussian z B ≐ ofGaussian z C := by
-  ipra_congr (ofGaussian (var 0) (var 1) : PTm 2) with [.eqRefl z, e]
+    ofGaussian z B ≐ ofGaussian z C :=
+  GaussianRationalHorner.ofGaussian_congr (.eqRefl z) e
 
 theorem factor_rescale (z B E i : PTm n) (hB : Γ ⊢[PRAAx] le one B) (hE : Γ ⊢[PRAAx] le one E) : Γ ⊢[PRAAx]
     factor i (scale E z) (E*B) ≐ factor i z B :=
