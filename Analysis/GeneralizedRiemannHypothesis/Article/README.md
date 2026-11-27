@@ -1,7 +1,7 @@
 # Merged article
 
-[`article.pdf`](article.pdf) merges 194 delivered research reports into one article of
-895 pages, *Beyond the Riemann hypothesis
+[`article.pdf`](article.pdf) merges the 209 research reports under
+[`../Research`](../Research/) into one article of 982 pages, *Beyond the Riemann hypothesis
 for Dirichlet L-functions: consequences, transfers and limits*. Each result is stated once,
 in the strongest form the reports prove. A result that follows from a stronger or more
 general result of the collection, with hypotheses no stronger, is left out, and so is
@@ -14,11 +14,6 @@ theorem, RH and GRH for Dirichlet L-functions as stated in the external Lean dev
 `lsernau/grh-lean`, is taken as given. Every result carries one of three marks:
 *unconditional*, *uses Dirichlet GRH*, or *reduction; the target estimate is open*. No
 result of the last kind proves a new Riemann hypothesis or any named conjecture.
-
-The reports were removed from the working tree once merged. They are in the history under
-`Analysis/GeneralizedRiemannHypothesis/Research/`: the first 103 at commit `10802a6b36`, the next 17 at commit `f2f9fd7531`, the next 11 at commit `64f3896557`, the next 11 at commit `fd9a9cb2bd`, the next 42 at commit `f6b5955e13` and the last 10 at commit `7f951e1dfd`.
-Packet names are unique, so the article's citations of delivered files, and the packet
-and file columns of the provenance tables, each refer to exactly one of these commits.
 
 ## Files
 
@@ -35,27 +30,27 @@ and file columns of the provenance tables, each refer to exactly one of these co
 
 | Part | Section | File | Results | Unconditional | Uses GRH | Reductions |
 |---|---|---|---:|---:|---:|---:|
-| I | The source theorem and its transferable mechanism | [`src.tex`](sections/src.tex) | 10 | 9 | 1 | 1 |
-| I | One-sided analytic criteria | [`ana.tex`](sections/ana.tex) | 91 | 64 | 19 | 0 |
+| I | The source theorem and its transferable mechanism | [`src.tex`](sections/src.tex) | 15 | 14 | 1 | 1 |
+| I | One-sided analytic criteria | [`ana.tex`](sections/ana.tex) | 99 | 71 | 21 | 0 |
 | I | Li coefficients, moment pencils and positivity certificates | [`li.tex`](sections/li.tex) | 76 | 44 | 34 | 0 |
 | II | Nonabelian zero detection: general reductions | [`nab.tex`](sections/nab.tex) | 41 | 24 | 10 | 10 |
 | II | Detectors for specific Galois groups and fields | [`grp.tex`](sections/grp.tex) | 45 | 28 | 1 | 17 |
 | II | Degree-two targets: Artin, Hecke and modular L-functions | [`hec.tex`](sections/hec.tex) | 39 | 20 | 3 | 14 |
-| III | Zeros, Euler products and prime races under Dirichlet GRH | [`zer.tex`](sections/zer.tex) | 116 | 37 | 77 | 1 |
-| III | Recovering zeros and characters from prime data | [`rec.tex`](sections/rec.tex) | 155 | 72 | 90 | 0 |
-| III | Positive filters that cancel zeros | [`fil.tex`](sections/fil.tex) | 56 | 43 | 16 | 0 |
-| III | Direct arithmetic consequences of Dirichlet GRH | [`dir.tex`](sections/dir.tex) | 153 | 77 | 90 | 0 |
+| III | Zeros, Euler products and prime races under Dirichlet GRH | [`zer.tex`](sections/zer.tex) | 142 | 47 | 93 | 1 |
+| III | Recovering zeros and characters from prime data | [`rec.tex`](sections/rec.tex) | 172 | 86 | 93 | 0 |
+| III | Positive filters that cancel zeros | [`fil.tex`](sections/fil.tex) | 63 | 50 | 16 | 0 |
+| III | Direct arithmetic consequences of Dirichlet GRH | [`dir.tex`](sections/dir.tex) | 158 | 80 | 92 | 0 |
 | III | Imaginary quadratic fields of class-group exponent six and seven | [`cls.tex`](sections/cls.tex) | 13 | 7 | 6 | 0 |
-| III | Sparse equations for singular moduli | [`smd.tex`](sections/smd.tex) | 43 | 25 | 2 | 0 |
+| III | Sparse equations for singular moduli | [`smd.tex`](sections/smd.tex) | 48 | 30 | 2 | 0 |
 | IV | Progression-free sets in polynomial rings and finite rings; additive constraints | [`gpp.tex`](sections/gpp.tex) | 34 | 34 | 0 | 0 |
 | IV | Progression-free sets of integers and of ideals | [`gpi.tex`](sections/gpi.tex) | 28 | 22 | 0 | 0 |
-| IV | Graph towers, spanning-tree valuations and signed cycles | [`gra.tex`](sections/gra.tex) | 44 | 37 | 0 | 0 |
+| IV | Graph towers, spanning-tree valuations and signed cycles | [`gra.tex`](sections/gra.tex) | 57 | 49 | 0 | 0 |
 | V | Torsion specialization: selection theorems | [`tors.tex`](sections/tors.tex) | 30 | 18 | 0 | 0 |
 | V | Torsion specialization: exact costs, obstructions and coefficient fields | [`cost.tex`](sections/cost.tex) | 40 | 29 | 1 | 0 |
 | V | Lubin–Tate branches, jet recovery and Fleck congruences | [`lub.tex`](sections/lub.tex) | 42 | 38 | 0 | 0 |
 | VI | The Selmer, Galois-cohomology and K-theory interface | [`sel.tex`](sections/sel.tex) | 44 | 39 | 0 | 0 |
-| VI | Spanning, frames, auxiliary characters and matrix statistics | [`spn.tex`](sections/spn.tex) | 100 | 96 | 1 | 0 |
-| | Total | | 1200 | 763 | 351 | 43 |
+| VI | Spanning, frames, auxiliary characters and matrix statistics | [`spn.tex`](sections/spn.tex) | 135 | 132 | 1 | 0 |
+| | Total | | 1321 | 862 | 374 | 43 |
 
 "Results" counts theorems, propositions, corollaries and lemmas. The status columns count
 the marks in theorem headings; lemmas and corollaries are often unmarked, so the status

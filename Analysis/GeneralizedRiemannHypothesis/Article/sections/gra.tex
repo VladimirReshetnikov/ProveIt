@@ -8,6 +8,8 @@
 \providecommand{\gracut}{\vartheta}
 \providecommand{\graunit}{\operatorname{unit}_p}
 \providecommand{\grafiles}[1]{\begin{center}\footnotesize#1\end{center}}
+\providecommand{\graJac}{\operatorname{Jac}}
+\providecommand{\grahat}[1]{\widehat{#1}}
 
 The results of this section are unconditional and use no hypothesis on zeros
 of $L$-functions. They take from the source proof (\cref{src:sec:mechanism})
@@ -25,7 +27,10 @@ Galois stabilisers and the cyclotomic reciprocity map, and treats towers
 with nonabelian $p$-adic analytic deck groups. A third, purely methodological,
 transfer (rotation, and exclusion of zeros from one half-plane by a
 positivity certificate) locates the zeros of a family of Ehrhart
-polynomials in \cref{gra:sec:ehrhart}.
+polynomials in \cref{gra:sec:ehrhart}. Finally, the quadratic character
+projection of \cref{li:lem:norm}, applied on a finite abelian group and on
+its dual, determines the least periods of oriented Cayley walks in
+\cref{gra:sec:cayley}.
 
 \subsection{Voltage towers and conductor shells}\label{gra:sec:setting}
 {\raggedright
@@ -1009,7 +1014,7 @@ in accordance with the linear range $m\ge\max(3,p)$ of
 
 \subsection{The largest moment coefficient in rank two}\label{gra:sec:extremal}
 {\raggedright
-\sources{grh_transfers_lubin_tate_and_graph_towers; grh_transfer_extensions_2026-11-26; grh_method_transfers_graph_towers_and_finite_rings; short_tower_distributions_2026-11-27; five_step_graph_towers_2026-11-26; five_step_sharpness_2026-11-27; seven_step_graph_towers_2026-11-27}
+\sources{grh_transfers_lubin_tate_and_graph_towers; grh_transfer_extensions_2026-11-26; grh_method_transfers_graph_towers_and_finite_rings; short_tower_distributions_2026-11-27; five_step_graph_towers_2026-11-26; five_step_sharpness_2026-11-27; seven_step_graph_towers_2026-11-27; five_step_refinement_2026-11-27; sparse-padic-roots-and-graph-towers}
 }
 
 How divisible by $p$ can the spanning-tree count of a connected abelian
@@ -1381,6 +1386,290 @@ sixteen primes from $11$ to $509$, computed from both rulings with a
 separate chart count of $C$, agree with \cref{gra:thm:fourdist}:
 \grafiles{\artifact{short_tower_distributions_2026-11-27/verification.txt}}
 
+\paragraph{The curve $C$ and the complete four-step census.}
+The count $c_p$ is governed by two fixed elliptic curves over $\Q$, and
+this gives the distribution of $\graA$ over all row planes, including those
+with $M_1\ne0$. Put
+\[
+ E_1:\ y^2=x(x+2)(x-1),\qquad E_2:\ y^2=x(x-1)(x-4),
+\]
+and for $p\ge5$ let $a_p=p+1-\#E_1(\F_p)$ and $b_p=p+1-\#E_2(\F_p)$.
+
+\begin{theorem}[The Jacobian of the moment curve; \stU]\label{gra:thm:jacobian}
+Let $C\subset\graP^3$ be the curve $\sum_ix_i^2=\sum_ix_i^4=0$ of the proof
+of \cref{gra:thm:four}. Then $\graJac(C)\sim_\Q E_1^6\times E_2^3$. For every
+$p\ge5$ the zeta function of $C/\F_p$ has numerator
+$(1-a_pT+pT^2)^6(1-b_pT+pT^2)^3$; in particular
+\[
+ c_p=\#C(\F_p)=p+1-6a_p-3b_p .
+\]
+\end{theorem}
+
+\begin{proof}
+The curve is smooth of genus nine in characteristic zero and at every
+$p\ge5$, by the argument in the proof of \cref{gra:thm:four}. Put
+$y_i=x_i^2$. The image is the conic $Y_0:\sum y_i=\sum y_i^2=0$, and the
+cover $C\to Y_0$ has group $G=\{\pm1\}^4/\{\pm(1,1,1,1)\}$ of order eight,
+as is seen on the open set with no coordinate zero. Its seven nontrivial
+characters are indexed by the six pairs and the full set of four indices.
+For an even subset $I$ the corresponding quotient double cover has equation
+$t^2=\prod_{i\in I}y_i$ over $Y_0$, read homogeneously with $t$ of weight
+$\abs I/2$. Each coordinate line meets $Y_0$ in two simple points, and the
+four pairs are disjoint: with one coordinate zero, the other three are
+proportional to the three cube roots of unity in some order, and two zero
+coordinates are impossible. Riemann--Hurwitz gives genus one for each pair
+cover and genus three for the full cover $H$.
+
+Quotient differentials pull back to the subspace invariant under the
+quotient subgroup, by descent for regular differentials on smooth curves
+in characteristic zero. Since the $G$-invariant part is zero, the pair and
+full-cover subspaces occupy distinct character spaces, and their
+dimensions add to nine. The sum of the seven pullbacks on Jacobians is
+therefore an isogeny defined over $\Q$, and rational permutations identify
+the six pair covers.
+
+In the chart $y_1+y_2=1$ let $v=y_1-y_2$ and $w=y_3-y_4$; then
+$y_3+y_4=-1$ and $v^2+w^2=-2$. On the pair cover for $\{1,2\}$ take $h=2t$,
+so $h^2=1-v^2$. The map $(v,w,h)\mapsto(v^2,vwh)$ takes values on $E_1$ and
+is nonconstant; it extends to a morphism of smooth projective curves, and
+the induced map on Jacobians is a rational isogeny, even if the source has
+no rational base point. On $H$ take $h=4t$, so $h^2=(1-v^2)(v^2+3)$. The
+double transposition $\sigma=(12)(34)$ negates $v,w$ and fixes $h$. With
+$s=v^2+1$,
+\[
+ (vwh)^2=(s^2-1)(s^2-4),\qquad(v,w,h)\longmapsto(s^2,svwh)\in E_2 ,
+\]
+a nonconstant map factoring through $H/\langle\sigma\rangle$. On the conic,
+in the coordinates $(y_1+y_2,y_1-y_2,y_3-y_4)$, $\sigma$ fixes exactly the
+two points with $y_1+y_2=0$; both lie off the branch divisor, and the lift
+fixes both points above each because $t$ has even weight. So $\sigma$ has
+four fixed points on $H$ and Riemann--Hurwitz gives genus one for the
+quotient. The three nonidentity elements of the double-transposition Klein
+group $V$ are conjugate by rational permutations, so all three quotients
+have genus one. If $m_0$ is the dimension of the $V$-invariant
+differentials and $m_1,m_2,m_3$ those of the other characters, then
+$m_0+m_i=1$ and $m_0+m_1+m_2+m_3=3$, so $m_0=0$ and $m_i=1$. The three
+pullbacks give $\graJac(H)\sim_\Q E_2^3$. Good reduction of all three curves
+at $p\ge5$ and invariance of the Frobenius polynomial under isogeny give
+the remaining assertions.
+\end{proof}
+
+The Hasse bounds for $E_1$ and $E_2$ give $\abs{c_p-p-1}\le18\sqrt p$, the
+bound used in the proof of \cref{gra:thm:four}. Substituting
+$(y_i)=(l+m+n,l-m-n,-l+m-n,-l-m+n)$ turns the conic into
+$l^2+m^2+n^2=0$, on which $\prod_iy_i=2(l^4+m^4+n^4)$; this identifies
+$H$ with the central quadratic twist by $-1$ of the model of
+\cite[Eq.~(1.4.1)]{Arora2016Twisting}, after rescaling the coordinate of
+weight two, and the explicit map fixes the twist of $E_2$ in the trace
+formula. The geometric multiplicity pattern $3+6$ for a genus-nine curve
+with automorphism group of order $192$, and the decomposition of the
+octahedral genus-three curve into an elliptic cube, are due to Paulhus
+\cite[\S\S3.2.4, 4.2]{Paulhus2008Decomposing}; Arora et al.\ analysed the
+rational twists of that genus-three curve \cite{Arora2016Twisting}. The
+rational quotient maps above are what fix the signs of the twists.
+
+\begin{corollary}[Diagonal twists; \stU]\label[corollary]{gra:cor:twists}
+For nonzero $d_1,\dots,d_4\in\Q$ let $C_{\boldsymbol d}$ be the curve
+$\sum_id_ix_i^2=\sum_id_i^2x_i^4=0$, and write $E^{(u)}$ for the quadratic
+twist by $u$. Then
+\[
+ \graJac(C_{\boldsymbol d})\sim_\Q\prod_{i<j}E_1^{(d_id_j)}\times
+ \bigl(E_2^{(d_1d_2d_3d_4)}\bigr)^3 .
+\]
+\end{corollary}
+
+\begin{proof}
+Over the field generated by the $\sqrt{d_i}$ the substitution
+$x_i\mapsto\sqrt{d_i}x_i$ identifies the curves, and its descent action is
+a coordinate sign change. On the factor for $I$ this acts by the product of
+the signs indexed by $I$, since the deck involution acts by $-1$ on its
+differentials, hence on its Jacobian (the quotient being the conic). This
+is exactly twisting by $\prod_{i\in I}d_i$, and the same sign acts on all
+three elliptic factors of $\graJac(H)$.
+\end{proof}
+
+For $p\ge5$ with all $d_i$ units, let $k$ be the number of nonsquare $d_i$
+modulo $p$. The Frobenius trace on the twisted Jacobian is $6a_p+3b_p$,
+$-3b_p$ or $-2a_p+3b_p$ according as $\min(k,4-k)=0,1,2$; in the middle
+case the sixfold contribution disappears from the trace.
+
+Put $\ell=p+1$, $\iota=\mathbf 1_{p\equiv1\pmod8}$, $c=c_p$ and
+$\delta=48\iota$. The rational points of the split quadric
+$Q:\sum_ix_i^2=0$ form an $\ell\times\ell$ grid, with $2\ell$ generator
+lines, two through each point. Give the points of $Q\setminus C$,
+$C\setminus D$ and $D$ (the depth-four points of the proof of
+\cref{gra:thm:fourdist}) the weights $r-1=1,2,3$, and encode them by
+\[
+ F(z)=(\ell^2-c)z+(c-\delta)z^2+\delta z^3,\qquad
+ \operatorname{Pairs}(h)(z)=\frac{h(z)^2-h(z^2)}2 ,
+\]
+so that $\operatorname{Pairs}$ counts unordered pairs of distinct weighted
+points. For the four types of generator line let $f_j$ record its points,
+$n_j$ its multiplicity and $e_j$ its total weight:
+\begin{center}\small\upshape
+\begin{tabular}{llrr}
+\toprule
+type $j$ & $f_j(z)$ & $n_j$ & $e_j$\\
+\midrule
+$0$ & $\ell z$ & $2\ell-12\iota-c/2$ & $\ell$\\
+$B$ & $(\ell-4)z+4z^2$ & $(c-\delta)/2$ & $\ell+4$\\
+$D_2$ & $(\ell-2)z+2z^3$ & $24\iota$ & $\ell+4$\\
+$D_4$ & $(\ell-4)z+4z^3$ & $12\iota$ & $\ell+8$\\
+\bottomrule
+\end{tabular}
+\end{center}
+
+\begin{theorem}[Distribution of $\graA$ over all four-step row planes; \stU]\label{gra:thm:census}
+For $p>8$ let $\Gamma_p(z)=\sum_Wz^{\graA(W)/2-\ell}$, the sum over all
+two-dimensional $W\subset\F_p^4$. Then
+\[
+ \Gamma_p(z)=\frac{p^2(p-1)^2}2+(p-1)F(z)+\operatorname{Pairs}(F)(z)
+ +\sum_jn_j\bigl(z^{e_j}-\operatorname{Pairs}(f_j)(z)\bigr).
+\]
+Thus the coefficient of $z^k$ is the number of row planes with
+$\graA=2(p+1+k)$, and by \cref{gra:thm:jacobian} the only arithmetic input
+is the pair $(a_p,b_p)$. Since every row plane has exactly
+$\abs{\mathrm{GL}_2(\F_p)}$ ordered bases, this is also the law of $\graA$,
+and by \cref{gra:thm:moments} of $v_p(\kappa_n)$ at every level, for a
+uniformly random spanning residue matrix with four columns.
+\end{theorem}
+
+\begin{proof}
+The generator table is the content of \cref{gra:thm:fourdist} and its
+proof: the generators through $D$ are of types $D_4$ and $D_2$, each point
+of $D$ lying on one of each, and the generators avoiding $D$ carry zero or
+four points of $C$, each point of $C\setminus D$ lying on two of them. Each
+row plane corresponds to a projective line, and its exponent in $\Gamma_p$
+is the sum of $r(P)-1$ over its rational points; points off $Q$ have depth
+one. On a line that is not a generator the sum comes only from its
+intersection with $Q$. Every pair of distinct points of $Q$ spans one
+secant unless its line is a generator, and no pair lies on two generators;
+this gives $\operatorname{Pairs}(F)-\sum_jn_j\operatorname{Pairs}(f_j)$. The
+tangent plane at a point of $Q$ contains $p+1$ lines through it, and
+removing its two generators leaves $p-1$ tangents, which gives $(p-1)F$.
+Each point of $Q$ is joined to $p^2$ others outside its two generators, so
+there are $\ell^2p^2/2$ secants. Subtracting these, the $\ell^2(p-1)$
+tangents and the $2\ell$ generators from the $(p^2+1)(p^2+p+1)$ lines of
+$\graP^3$ leaves $p^2(p-1)^2/2$ external lines, of exponent zero. Adding
+the generators themselves proves the formula.
+\end{proof}
+
+At $p=17$ one has $a_p=-6$, $b_p=2$, so $c=\delta=48$: every one of the
+$36$ generators meets $D$, $24$ have $\graA=80$ and $12$ have $\graA=88$,
+and the latter give $v_{17}(\kappa_n)=88(17^n-1)/16-2n$. At $p=13$,
+$c=32$ and $\delta=0$, so $16$ of the $28$ generators have $\graA=64$ and
+$12$ have $\graA=56$. As $p\to\infty$ the external lines account for a
+proportion of all row planes tending to $1/2$, all with $\graA=2(p+1)$, and
+the secants through two points of $Q\setminus C$ for another proportion
+tending to $1/2$, all with $\graA=2(p+1)+4$; the remaining secants involve
+one of the $O(p)$ points of $C$ and number $O(p^3)$.
+
+\begin{theorem}[A congruence modulo $192$; \stU]\label{gra:thm:c192}
+Let $J_p=1$ if $-2$ is a square modulo $p$ and both $-1\pm\sqrt{-2}$ are
+squares in $\F_p$, and $J_p=0$ otherwise. For $p\ge5$,
+\[
+ c_p\equiv32\cdot\mathbf 1_{p\equiv1\pmod3}+48\cdot\mathbf 1_{p\equiv1\pmod8}
+ +96J_p\pmod{192}.
+\]
+For every modulus $M$, even among the primes $p\equiv1\pmod{24M}$, the two
+possible values $80$ and $176$ of $c_p$ modulo $192$ each occur with
+relative density $1/2$.
+\end{theorem}
+
+\begin{proof}
+The projective signed permutations, a group of order $8\cdot24=192$, act on
+$C(\F_p)$. For $y_i=x_i^2$ the polynomial with these four roots is
+$T^4-e_3T+e_4$, by the two equations and Newton's identities. If
+$e_3e_4\ne0$, a rescaling preserving the multiset of the $y_i$ has cube and
+fourth power equal to one, so it is the identity on the squares; when the
+four squares are distinct and nonzero the projective stabiliser is trivial
+and the orbit has size $192$. There are three disjoint exceptions. If
+$e_4=0$, the squares are projectively $0,1,\omega,\omega^2$ with $\omega$ a
+primitive cube root of unity: four choices of the zero, two orderings after
+scaling a chosen nonzero coordinate to one, and four sign choices give $32$
+points when $3\mid p-1$. If $e_3=0$, these are the $48\iota$ points of
+depth four (the same roots-of-unity count works at $p=5,7$). In the
+remaining case of a repeated root the squares scale to
+$1,1,-1+\sqrt{-2},-1-\sqrt{-2}$, since the sum and the sum of squares force
+the last two to be the roots of $T^2+2T+3$; these are distinct and differ
+from $0,1$ for $p\ge5$. Six choices of the equal pair, two orders of the
+remaining values and eight sign choices give $96J_p$.
+
+For the density let $\alpha,\beta=-1\pm\sqrt{-2}$ and
+$K=\Q(\sqrt{-2},\sqrt\alpha,\sqrt\beta)$, the splitting field of
+$T^4+2T^2+3$. The classes of $\alpha$, $\beta$ are independent modulo
+squares in $\Q(\sqrt{-2})$: their norms are $3$, and $\alpha\beta=3$ is not
+a square there. Hence $\operatorname{Gal}(K/\Q)$ is dihedral of order
+eight; conjugation exchanges the two square roots and the two independent
+sign changes, and the commutator changes both signs, so the largest
+abelian subfield is $L=\Q(\sqrt{-2},\sqrt3)\subset\Q(\zeta_{24})$. For
+$p\ge5$, $J_p=1$ exactly when $p$ splits completely in $K$. With
+$F=\Q(\zeta_{24M})$ one has $K\cap F=L$; in $KF$ the subgroup fixing $F$ has
+order two and is central, being identified by restriction with the
+commutator subgroup of $\operatorname{Gal}(K/\Q)$. The Chebotarev density
+theorem gives equal densities to its two elements among the primes that
+split in $F$, and the congruence gives the two residues.
+\end{proof}
+
+\begin{corollary}[Fluctuations of the middle class; \stU]\label[corollary]{gra:cor:fluct}
+Let $N_p=c_p/2$ be the number of generators with $\graA=4(p+1)+8$, and
+$T_p=(N_p-(p+1)/2)/\sqrt p$. As $p$ ranges over the primes $p>8$, $T_p$ has
+limiting distribution $-3X-\frac32Y$, where $X,Y$ are independent with
+density $\sqrt{4-x^2}/(2\pi)$ on $[-2,2]$; its limiting mean is $0$ and its
+limiting variance $45/4$, and
+\[
+ \liminf_{p\to\infty}T_p=-9,\qquad\limsup_{p\to\infty}T_p=9 .
+\]
+The proportion of the $2(p+1)$ generators in this class tends to $1/4$, and
+it is above $1/4$ on a set of primes of density $1/2$ and below it on a set
+of density $1/2$.
+\end{corollary}
+
+\begin{proof}
+By \cref{gra:thm:fourdist} and \cref{gra:thm:jacobian},
+$T_p=-(6a_p+3b_p)/(2\sqrt p)$. The $j$-invariants of $E_1,E_2$ are
+$21952/9$ and $35152/9$; they are not integers, so neither curve has
+complex multiplication. At $p=7$ the traces are $-4$ and $0$, so $E_1$ is
+ordinary and $E_2$ supersingular there, which excludes even a geometric
+isogeny, since isogenies specialise at primes of good reduction and
+preserve this distinction. Thus the two non-CM weight-two newforms are not
+twist-equivalent, and the joint Sato--Tate theorem
+\cite[Theorem~1.2]{Thorner2021Effective} gives independent semicircle
+limits for $a_p/\sqrt p$ and $b_p/\sqrt p$. Each has mean zero and variance
+one. The product measure gives positive mass arbitrarily near each corner
+of its square, and the Hasse bounds give $\abs{T_p}\le9$. Symmetry and
+continuity of the limit give the density statements.
+\end{proof}
+
+\begin{proposition}[Mean and variance in every rank; \stU]\label[proposition]{gra:prop:meanvar}
+Let $p>8$, $1\le k\le4$, and let $W$ be a uniformly random
+$k$-dimensional row space of four step columns, with
+$\graA=2\sum_{P\in\graP(W)}r(P)$. Put $u_j=(p^j-1)/(p-1)$,
+\[
+ \rho=\frac{u_k}{u_4},\qquad\tau=\frac{u_ku_{k-1}}{u_4u_3},\qquad
+ U=\ell^2+c+\delta,\qquad V=\ell^2+3c+5\delta .
+\]
+Then
+\[
+ \mathbb E[\graA]=2u_k+2\rho U,\qquad
+ \operatorname{Var}(\graA)=4\bigl[(\rho-\tau)V+(\tau-\rho^2)U^2\bigr].
+\]
+\end{proposition}
+
+\begin{proof}
+By double counting and transitivity, a fixed point of $\graP^3$ lies in
+$\graP(W)$ with probability $\rho$, and a fixed ordered pair of distinct
+points with probability $\tau$. The sums over $\graP^3$ of the weights
+$r(P)-1$ and of their squares are $U$ and $V$, by the three types of points
+on $Q$. Expanding the first and second moments of
+$\graA/2=u_k+\sum_{P\in\graP(W)}(r(P)-1)$ gives the formulas.
+\end{proof}
+
+\noindent The census is compared with direct row-space enumeration, and the
+two elliptic character sums with point counts from the defining equations,
+in
+\grafiles{\artifact{sparse-padic-roots-and-graph-towers/graph/verification.txt}}
+
 \paragraph{Five steps.}
 For $m=5$ the bound \eqref{gra:eq:tbound} is $4(p+1)+24$.
 
@@ -1400,8 +1689,11 @@ every $n\ge1$
 \]
 \item At $p=31$ the maximum is $148=4(p+1)+20$, attained by one orbit,
 represented by $((1,1),(2,29),(4,8),(8,16),(16,27))$.
-\item For every other prime $p>10$, $\graA(S)\le4(p+1)+18$, and
-$\graA(S)\le4(p+1)+16$ if $p\not\equiv1\pmod{10}$.
+\item For every other prime $p>10$, $\graA(S)\le4(p+1)+16$.
+\item Let $p\ne11,31$. If exactly one direction has depth five, then
+$\graA(S)\le4(p+1)+14$. This value is attained for infinitely many primes
+$p\equiv1\pmod{10}$ by lists with exactly one direction of depth five whose
+steps are nonzero and distinct up to sign, hence by simple towers.
 \item If $p\equiv1\pmod{10}$ and $\xi$ has order five modulo $p$, the steps
 $(\xi^i,\xi^{2i})$, $0\le i<5$, give $\graA=4(p+1)+12$.
 \end{enumerate}
@@ -1441,7 +1733,7 @@ $\epsilon_0=1$, forces all five signs to be positive. Then $i+\sigma(i)$
 is a permutation modulo five, which leaves $\sigma(i)=ki\bmod5$ with
 $k=1,2,3$. For $k=1$ the rows coincide. For $k=2,3$ a geometric sum gives
 $M_2=20X^3Y$ or $20XY^3$, so only the axes are exceptional, both of depth
-five, with excess $12$; for $k=2$ this is (d).
+five, with excess $12$; for $k=2$ this is (e).
 
 For the four exceptional primes, evaluating the $384$ cases at one
 primitive fifth root $z$ per prime gives the following complete list of
@@ -1462,8 +1754,10 @@ $p$ & $z$ & exceptional depths, with multiplicities\\
 Hence four depth-five directions occur only at $p=11$. At $p=31$ the best
 excess with two or more depth-five directions is $20$, while at most one
 such direction allows only $18$. At the other primes two or more
-depth-five directions give excess at most $16$. This proves the bounds in
-(a)--(c).
+depth-five directions give excess at most $16$, and at most $12$ outside
+$p\in\{11,31,101,131\}$. This proves the bounds in (a) and (b), and proves
+(c) except when exactly one direction has depth five; outside $p=11,31$
+that case is covered by the bound in (d), proved below.
 
 For the orbits take each ordered independent pair of columns and both
 relative signs, map the pair to the coordinate basis, take the smaller
@@ -1480,6 +1774,93 @@ $(0,1)$, the residues of $M_2$ are
 and at each of its four zeros $(M_3,M_4,M_5)\equiv(0,0,5)$. Thus
 $\graA=2(8\cdot2+4\cdot5)=72$. The steps are nonzero and distinct up to
 sign modulo eleven, and \cref{gra:thm:moments} gives the layer formula.
+
+It remains to prove (d). Let $p\equiv1\pmod{10}$, $p\ne11,31$, and suppose
+that $M_1=0$ and exactly one direction has depth five. As above, after
+scaling, reordering and signing the columns, its projection row is
+$a=(1,z,z^2,z^3,z^4)$ with $z$ of order five. The componentwise powers
+$a^j=(z^{ij})_{0\le i<5}$, $0\le j<5$, form a basis of $\F_p^5$, and
+$a\cdot a^j=\sum_iz^{i(j+1)}$ is $5$ for $j=4$ and $0$ otherwise. A second
+row $b=\sum_j\beta_ja^j$ of the row plane satisfies $a\cdot b=b\cdot b=0$.
+The first condition gives $\beta_4=0$, and subtracting a multiple of $a$,
+which does not change the row plane, gives $\beta_1=0$. Writing
+$b=Ba^0+Ca^2+Da^3$, the second condition is $B^2+2CD=0$. If $C=0$, then
+$B=0$ and $b$ is proportional to $a^3$. Otherwise scale $b$ to
+\[
+ b=\theta a^0+a^2-\tfrac12\theta^2a^3 .
+\]
+The rows $b=a^3$ and $b=a^2$ (the case $\theta=0$) are the cases $k=3,2$
+above, with two directions of depth five; so $\theta\ne0$.
+
+The other directions have projection rows $b+va$, $v\in\F_p$. In the
+algebra with $X^5=1$ put
+\[
+ U=2\theta+2vX+2X^2-\theta^2X^3 ,
+\]
+whose evaluation at $X=z^i$ is $2(b+va)_i$. Since $\sum_iz^{ik}$ is $5$ or
+$0$, the moment $M_j$ at $b+va$ is a nonzero scalar multiple of the
+constant coefficient of $U^{2j}$. Let $f$ and $g$ be the constant
+coefficients of $U^4$ and $U^6$, and put $\varsigma=\theta^5$. Exact
+expansion and division give
+\[
+\begin{split}
+ f&=64v^3-96\theta^3v^2-8\theta(\varsigma-24)v-56\theta^4,\qquad g\equiv3R\pmod f,\\
+ R&=\theta(128+352\varsigma+367\varsigma^2)
+   +\theta^3(-768-1122\varsigma+53\varsigma^2)v+(320+670\varsigma^2)v^2 .
+\end{split}
+\]
+Thus the finite exceptional directions are the at most three roots of $f$,
+and a root has depth at least four exactly when it is also a root of $R$.
+The greatest common divisor of the three pairwise resultants in
+$\varsigma$ of the coefficient quadratics of $R$ is $2^95^411^2$, so $R$ is
+not identically zero in $v$. If two distinct roots of $f$ were roots of
+$R$, then $R$ would be quadratic and divide $f$. Multiplying the remainder
+of $f$ modulo $R$ by the square of the leading coefficient of $R$ gives
+$-32\theta^4P(\varsigma)-32\theta Q(\varsigma)v$, where
+\[
+\begin{aligned}
+ P&=252928+489984\varsigma+1480832\varsigma^2+78716\varsigma^3+9003\varsigma^4,\\
+ Q&=-532480-191488\varsigma-4536064\varsigma^2-283272\varsigma^3
+   +291464\varsigma^4+77\varsigma^5 .
+\end{aligned}
+\]
+The absolute resultant of $P$ and $Q$ is
+$2^{42}5^{24}11^{10}13^231^2\cdot761\cdot1297$, and the only one of its
+prime factors that is $1\bmod10$, besides $11$ and $31$, is $761$. At
+$p=761$ a direct check over all nonzero $\theta$ finds no common root of
+$f$ and $R$. Consequently at most one of the three finite exceptional
+directions has depth four, and the excess is at most $6+4+2+2=14$.
+
+For attainment, the exact identities
+\[
+ \operatorname{Res}_v(f,R)=-1024\theta^3C_0(\theta^5),\qquad
+ \operatorname{disc}_v(f)=65536\theta^3D_0(\theta^5)
+\]
+hold with
+\[
+\begin{split}
+ C_0(\varsigma)={}&-354418688-419381248\varsigma-3296137216\varsigma^2
+ -3222697984\varsigma^3+881034240\varsigma^4\\
+ &+7486204\varsigma^5-75721176\varsigma^6+151118\varsigma^7+77\varsigma^8,\\
+ D_0(\varsigma)={}&-27648+21492\varsigma-4356\varsigma^2+11\varsigma^3 .
+\end{split}
+\]
+Here $C_0$ is nonconstant with nonzero constant term, and $C_0,D_0$ are
+coprime, since their reductions modulo three have unchanged degrees and are
+coprime. Choose $\theta\ne0$ in characteristic zero with $C_0(\theta^5)=0$.
+Then $D_0(\theta^5)\ne0$, so $f$ has three distinct roots, and exactly one
+of them is a root of $R$, by the preceding remainders. Take a Galois number field containing
+$\theta$, the three roots and a primitive fifth root of unity. By the
+Chebotarev density theorem infinitely many primes split completely in it,
+and all of them are $1\bmod10$. Discard the finitely many primes at which
+these identities, nonvanishings and distinctness fail to reduce. The
+reduced finite roots give two directions of depth three and one of depth
+at least four. After also excluding $11,31,101,131$, two depth-five
+directions would allow excess at most $12$, whereas this pattern already
+gives at least $16$ if its last finite depth were five; so that depth is
+exactly four and $\graA=4(p+1)+14$. The first row has five distinct signed
+classes $\pm z^i$, so the steps are nonzero and distinct up to sign, and
+the towers are simple.
 \end{proof}
 
 The multiplication determinants agree with Sylvester resultants in all
@@ -1518,6 +1899,91 @@ distinct nonzero signed classes, so
 $\max_Sv_{131}(\kappa_n(S))=540(131^n-1)/130-2n$, also among simple
 towers:
 \grafiles{\artifact{five_step_sharpness_2026-11-27/benchmark_131.txt}}
+The polynomial identities in the proof of (d), the modular test at
+$p=761$ and the witnesses below are checked in
+\grafiles{\artifact{five_step_refinement_2026-11-27/symbolic.txt}}
+The same complementary-key search, run at the fifteen primes from $103$ to
+$181$, gives the following maxima of $\graA$; at each of these primes the
+maximum over lists with nonzero residues equals the maximum over simple
+towers, and every maximum exceeds the ceiling $2(p+1)+16$ for $M_1\ne0$.
+These values are finite verifications; simple witnesses and normalisation
+counts are in
+\grafiles{\artifact{five_step_refinement_2026-11-27/small_benchmarks.txt}}
+\begin{center}\small\upshape
+\begin{tabular}{rrr@{\qquad}rrr@{\qquad}rrr}
+\toprule
+$p$ & all & nonzero & $p$ & all & nonzero & $p$ & all & nonzero\\
+\midrule
+103 & 424 & 424 & 137 & 568 & 562 & 163 & 664 & 664\\
+107 & 440 & 440 & 139 & 568 & 568 & 167 & 680 & 680\\
+109 & 448 & 448 & 149 & 608 & 608 & 173 & 708 & 708\\
+113 & 472 & 466 & 151 & 620 & 620 & 179 & 728 & 728\\
+127 & 520 & 520 & 157 & 640 & 640 & 181 & 740 & 740\\
+\bottomrule
+\end{tabular}
+\end{center}
+
+\begin{proposition}[Exact maxima at six larger primes; \stU, finite verification]\label[proposition]{gra:prop:fivelarge}
+For five steps the maxima of $\graA(S)$ over all residue lists and over
+lists with nonzero residues are:
+\begin{center}\small\upshape
+\begin{tabular}{rrrrr}
+\toprule
+$p$ & $z$ & $\theta$ & all residues & nonzero residues, also simple\\
+\midrule
+761  & --  & --   & 3064 & 3060\\
+1031 & 264 & 381  & 4142 & 4142\\
+1511 & 534 & 593  & 6062 & 6062\\
+1571 & 382 & 213  & 6302 & 6302\\
+2281 & 342 & 170  & 9144 & 9142\\
+2351 & 207 & 1124 & 9422 & 9422\\
+\bottomrule
+\end{tabular}
+\end{center}
+For the five rows with parameters, the row plane spanned by
+$a=(z^i)_{0\le i<5}$ and $b=\theta a^0+a^2-\frac12\theta^2a^3$ is a simple
+witness for the value in the last column. For example, at $p=1031$ the
+exact maximal valuation is $4142(1031^n-1)/1030-2n$ for every $n\ge1$.
+\end{proposition}
+
+\begin{proof}
+If the quartic $M_2$ has four directions of depth at least four, the row
+plane meets the curve
+$C_5:\sum_ix_i^2=\sum_ix_i^4=\sum_ix_i^6=0$ in $\graP^4$ in four points,
+and conversely its intersections with $C_5$ are exactly the directions of
+depth at least four. To enumerate $C_5(\F_p)$, use a permutation to put a
+nonzero coordinate first and scale it to $1$. For squared second and third
+coordinates $\alpha,\beta$, the squared last two coordinates have sum
+$\sigma=-1-\alpha-\beta$ and product
+$\tau=(\sigma^2+1+\alpha^2+\beta^2)/2$. The third power sum vanishes
+exactly when $\sigma^3-3\sigma\tau+1+\alpha^3+\beta^3=0$; test this
+identity and then whether both roots of $T^2-\sigma T+\tau$ are squares
+(zero allowed). This exhausts the points after restoring permutations and
+signs. For each first point up to those symmetries, pair it with every
+distinct orthogonal second point; the span is isotropic, and evaluating
+its remaining projective directions gives its full count of points of
+$C_5$.
+
+At $1031,1511,1571,2351$ no such plane has four points of $C_5$, so the
+case without a depth-five direction gives excess at most $14$; by
+\cref{gra:thm:fivestep}(d) and the certificate for two or more depth-five
+directions the other cases give at most $14$, and the stated witness
+attains $14$ by a direct moment check. At $2281$ every plane with four
+points of $C_5$ has a zero step, so the same holds when all residues are
+nonzero. At $761$ every plane with nonzero steps has at most two points of
+$C_5$, so a plane without a depth-five direction has excess at most $12$.
+With exactly one depth-five direction the modular check at $761$ in the
+proof of \cref{gra:thm:fivestep}(d) excludes any other direction of depth
+four, again giving at most $12$, and two or more give at most $12$ by the
+certificate. The simple family of \cref{gra:thm:fivestep}(e) attains $12$.
+At $761$ and $2281$, which are $1\bmod8$, appending a zero step to an
+optimal four-step list (\cref{gra:thm:four}) attains excess $16$, the
+general ceiling of \cref{gra:thm:fivestep}(c).
+\end{proof}
+
+The search counts, which are for inspected pairs of points rather than
+plane orbits, are in
+\grafiles{\artifact{five_step_refinement_2026-11-27/depth_four.txt}}
 
 \paragraph{Seven steps and prime step counts.}
 For $m=7$ the bound \eqref{gra:eq:tbound} is $6(p+1)+48$.
@@ -2554,6 +3020,326 @@ For prime-power side lengths and any $d$ prime to $p$, \cref{gra:cor:groverdim} 
 same count in higher dimension; for $p\mid d$ the additional modes of
 \cref{gra:thm:groverodd} appear, with the multiplicities of \cref{gra:thm:grovercount}.
 
+\subsection{Least periods of oriented Cayley walks}\label{gra:sec:cayley}
+\sources{grh_cayley_and_filters}
+
+The character projection of \cref{li:lem:norm}, which fixes the least size
+of a collision of one-time heat observations in \cref{li:thm:dist}, also
+determines how fast a continuous-time walk on an oriented abelian Cayley
+graph can return. Let $G$ be a finite abelian group, written additively,
+of order $N$ and exponent $n$. A set $P\subset G$ with $P\cap(-P)=\emptyset$
+defines the arrows $x\to x+p$, $p\in P$; this is a simple oriented Cayley
+graph, nonempty if $P\ne\emptyset$, and every vertex has outdegree
+$k=\abs P$. Put $b=\mathbf 1_P-\mathbf 1_{-P}$ and $S_{x,y}=b(y-x)$, so $S$
+is the skew adjacency matrix, and consider the evolution $U(t)=\exp(tS)$.
+The entries $0,\pm1$ fix the time scale. The walk \emph{returns} at $t>0$
+if $U(t)=I$; since the constant vector is fixed, a scalar return matrix is
+the identity, and by translation invariance a return at one vertex up to
+phase already gives a scalar return. All connection sets are allowed,
+including disconnected graphs; every fastest graph will be connected.
+
+For a negative fundamental discriminant $d=-f$ let $\chi=\chi_d$ be the
+primitive odd quadratic character of conductor $f$, extended by zero to
+nonunits, and $\tau=\sum_{u\bmod f}\chi(u)\zeta_f^u=\sqrt d=i\sqrt f$ its
+Gauss sum; then $\sum_u\chi(u)\zeta_f^{ju}=\chi(j)\tau$ and
+$\sigma_v(\tau)=\chi(v)\tau$ for $\sigma_v(\zeta_J)=\zeta_J^v$
+\cite{Davenport2000Multiplicative}. Write $C_m=\Z/m\Z$ and $U_m=C_m^\times$.
+
+\begin{theorem}[Period list and least outdegree; \stU]\label{gra:thm:cayleyperiods}
+The least positive periods of nonempty simple oriented Cayley graphs on $G$
+are exactly the numbers
+\[
+ \frac{2\pi}{a\sqrt f},\qquad -f\text{ a negative fundamental discriminant},\quad
+ f\mid n,\quad a\in\Z_{\ge1},\quad af\mid N .
+\]
+At each listed period the least outdegree is $a\varphi(f)/2$. This is also
+the least outdegree under the weaker requirement that all eigenvalues of
+$S$ lie in $a\sqrt d\,\Z$, and under that requirement every connected
+component has order divisible by $af$.
+\end{theorem}
+
+\begin{theorem}[Fastest return and all attaining orientations; \stU]\label{gra:thm:cayleyfast}
+Let $\mathcal F(G)$ consist of $4$ if $4\mid n$ and of the primes $p\mid n$
+with $p\equiv3\pmod4$. If $\mathcal F(G)$ is empty, no nonempty simple
+oriented Cayley graph on $G$ is periodic. Otherwise let $f_0=\min\mathcal
+F(G)$ and $\chi=\chi_{-f_0}$. The fastest return is
+\[
+ T_*(G)=\frac{2\pi\sqrt{f_0}}N ,
+\]
+and up to reversing every arrow the attaining symbols are exactly
+\begin{enumerate}[label=\textup{(\roman*)}]
+\item $b(x)=\chi(j(x))$ for a surjective homomorphism $j:G\to C_{f_0}$;
+\item when $f_0$ is odd, $b(x)=(-1)^{j(x)}\chi(j(x))$ for a surjective
+homomorphism $j:G\to C_{2f_0}$.
+\end{enumerate}
+If $c_m$ is the number of cyclic subgroups of order $m$ of the dual group
+$\widehat G$, the number of attaining symbols on the labelled group,
+counting reversals separately, is
+$2c_{f_0}+2\cdot\mathbf 1_{f_0\text{ odd}}\,c_{2f_0}$. Every attaining graph
+is connected and has outdegree $N\varphi(f_0)/(2f_0)$.
+\end{theorem}
+
+For example, on $C_3\times C_3$ the fastest return is $2\pi\sqrt3/9$:
+choose one of the four subgroups of order three and join every vertex of
+each coset to every vertex of the next coset in a cyclic order of the three
+cosets. The four kernels and two cyclic orders give all eight fastest
+walks, and a spectral spacing $3\sqrt3$ occurs although every element has
+order at most three.
+
+Godsil and Zhang characterise the oriented abelian Cayley graphs whose
+eigenvalues are integral multiples of $\sqrt\Delta$ through Galois orbits
+\cite[Theorem~8.1]{GodsilZhang2024Oriented}; Kadyan and Bhattacharjya
+treat integral mixed circulants \cite{KadyanBhattacharjya2023Integral};
+Song gives eigenvalue formulas for oriented circulants and period and
+transfer criteria for a given circulant \cite{Song2026Perfect}.
+\Cref{gra:thm:cayleyperiods,gra:thm:cayleyfast} instead optimise the
+spectral divisor over all oriented Cayley graphs on a fixed host.
+
+Let $X$ be a finite abelian group and $J$ a common multiple of its exponent
+and $f$. For $c:X\to\C$ write $\widehat c(\psi)=\sum_xc(x)\psi(x)$ for
+$\psi\in\widehat X$; with $X\cong\widehat{\widehat X}$ the double transform
+is $\widehat{\widehat c}(x)=\abs Xc(-x)$. Say that $c$ \emph{transforms by}
+$\chi$ if $c(vx)=\chi(v)c(x)$ for all $v\in U_J$.
+
+\begin{lemma}[Integrality on the group and its dual]\label[lemma]{gra:lem:cayleydual}
+If an integer-valued $c$ on $X$ transforms by $\chi$, then
+\begin{equation}\label{gra:eq:cayleydual}
+ \widehat c(\psi)\in\tau\Z,\qquad
+ \abs{\widehat c(\psi)}\le\frac{\sqrt f}{\varphi(f)}\sum_{x\in X}\abs{c(x)},
+\end{equation}
+and $\widehat c/\tau$ also transforms by $\chi$. Conversely, if the
+transform of an integral $c$ takes values in $\tau\Q$, then $c$ transforms
+by $\chi$. Every orbit of $U_J$ in the support of such a $c$ consists of the
+$\varphi(m)$ generators of one cyclic subgroup of an order $m$ with
+$f\mid m$.
+\end{lemma}
+
+\begin{proof}
+At an element $x$ of order $m$ with $c(x)\ne0$, $\chi$ must be trivial on
+its stabiliser, the kernel of $U_J\to U_m$; by primitivity this means
+$f\mid m$. For $w=\psi(x)$ of order $l\mid m$ the orbit of $x$ contributes
+$c(x)\varphi(m)P(w)$ to $\widehat c(\psi)$, with $P$ the projection of
+\cref{li:lem:norm} for $Q=J$. By \eqref{li:eq:projection} this lies in
+$\tau\Z$, since $\varphi(l)\mid\varphi(m)$, and the bound of
+\cref{li:lem:norm} summed over orbits gives \eqref{gra:eq:cayleydual}.
+Changing variables gives $\widehat c(\psi^v)=\chi(v)\widehat c(\psi)$.
+Conversely, if $\widehat c$ takes values in $\tau\Q$, integrality of $c$
+gives $\widehat c(\psi^v)=\sigma_v(\widehat c(\psi))=\chi(v)\widehat
+c(\psi)$, and Fourier inversion gives the equivariance on $X$. Equality in
+\eqref{gra:eq:cayleydual} at a nonzero value forces
+$\abs{P(\psi(x))}=\sqrt f/\varphi(f)$ at every occupied $x$.
+\end{proof}
+
+\begin{proof}[Proof of \cref{gra:thm:cayleyperiods}]
+The characters diagonalise $S$ with eigenvalues $\lambda_\psi=\widehat
+b(\psi)$. Suppose they all lie in $a\tau\Z$. Then $b$ transforms by $\chi$
+by \cref{gra:lem:cayleydual}, and $f\mid n$ because $b\ne0$. The normalised
+spectrum $v(\psi)=\lambda_\psi/(a\tau)$ is integral and transforms by $\chi$
+on $\widehat G$, and a second application of the lemma gives
+\begin{equation}\label{gra:eq:bidual}
+ \widehat v(x)=\frac N{a\tau}\,b(-x)\in\tau\Z .
+\end{equation}
+At a point with $b(-x)=1$ division by $\tau$ gives $-N/(af)\in\Z$.
+Moreover some $\abs{\lambda_\psi}\ge a\sqrt f$, so
+\eqref{gra:eq:cayleydual} with $\sum\abs b=2k$ gives $2k\ge a\varphi(f)$.
+The graph is a disjoint union of translates of the connected graph on the
+subgroup generated by $P$, with the same spectrum on each component, so
+the component order is divisible by $af$.
+
+Conversely let $f\mid n$ and $af\mid N$. Choose an element of order $f$;
+the quotient by its cyclic subgroup has a subgroup of order $a$, and its
+inverse image is a subgroup $H$ of order $af$ and exponent divisible by
+$f$, whose largest invariant factor gives a surjection $j:H\to C_f$. Put
+\begin{equation}\label{gra:eq:cayleyconstruct}
+ b(x)=\chi(j(x))\ (x\in H),\qquad b(x)=0\ (x\notin H).
+\end{equation}
+This is a simple oriented symbol since $\chi(-1)=-1$, and
+$k=a\varphi(f)/2$. On $H$, a character nontrivial on $\ker j$ has
+eigenvalue zero, and a character trivial there has the form
+$\zeta_f^{uj(\cdot)}$ and eigenvalue $a\chi(u)\tau$; so the additive span of
+the eigenvalues is exactly $a\tau\Z$. The support generates $H$, as it
+contains $j^{-1}(1)$.
+
+To exhaust the periods, suppose $\exp(TS)=I$. The eigenvalues lie in
+$(2\pi i/T)\Z$, and their integral span has a generator $\beta$ on the
+positive imaginary axis, which lies in $\Q(\zeta_n)$ by B\'ezout's
+identity. The Galois group permutes the character-indexed eigenvalues,
+hence acts on $\beta$ by signs, and complex conjugation reverses its sign,
+so $\Q(\beta)$ is imaginary quadratic. If $d=-f$ is its discriminant, then
+$\beta$ is a positive rational multiple of $\tau$; \cref{gra:lem:cayleydual}
+puts every eigenvalue in $\tau\Z$, so $\beta=a\tau$ with $a\in\Z_{\ge1}$.
+The least period is $2\pi/(a\sqrt f)$, since the normalised eigenvalues
+have greatest common divisor one, and the field and the positive generator
+recover $f$ and $a$.
+\end{proof}
+
+\begin{corollary}[Duality of minimum-outdegree graphs; \stU]\label[corollary]{gra:cor:cayleyduality}
+Let $M=N/(af)$. The map $b\mapsto v=\widehat b/(a\tau)$ is a bijection from
+the minimum-outdegree symbols for $(G,f,a)$ to those for $(\widehat G,f,M)$,
+and applying it twice recovers $b$. At the minimum
+\[
+ \operatorname{spec}S=\{0,\pm a\sqrt d\},\qquad S^3=-a^2fS,\qquad
+ \rank S=M\varphi(f).
+\]
+\end{corollary}
+
+\begin{proof}
+At the minimum the upper and lower bounds on each nonzero
+$\abs{\lambda_\psi}$ coincide, so $v$ has entries $0,\pm1$ and is odd by
+conjugation. Parseval gives $\sum\abs{\lambda_\psi}^2=Na\varphi(f)$, so $v$
+is nonzero at $M\varphi(f)$ characters. As $b$ is odd and $\tau^2=-f$,
+\eqref{gra:eq:bidual} reads $\widehat v=M\tau b$; thus $v$ attains the dual
+minimum and the reverse normalised transform is $b$. Diagonalisation gives
+the cubic equation and the rank.
+\end{proof}
+
+\begin{proof}[Proof of \cref{gra:thm:cayleyfast}]
+At conductor $f$ the largest spacing is $(N/f)\sqrt f=N/\sqrt f$, so the
+fastest return uses the least admissible $f$. Every even negative
+fundamental discriminant has absolute value divisible by four, and every
+odd one has squarefree absolute value $\equiv3\pmod4$, hence divisible by a
+prime $p\equiv3\pmod4$; conversely $-4$ and each such $-p$ are fundamental.
+This identifies $f_0$, and forces $f=f_0$ and $a=N/f$ at the fastest
+return.
+
+Every fastest graph attains the least outdegree. With $v$ as in
+\eqref{gra:eq:bidual}, Parseval and $b(0)=0$ give
+\[
+ 0<\sum_{\psi\in\widehat G}v(\psi)^2=\frac{N\sum_xb(x)^2}{a^2f}=\frac{2k}a<f .
+\]
+Here $f$ is prime or four, so $f\le2\varphi(f)$. Each nonzero orbit
+contributes $c^2\varphi(m)$ with $c\in\Z\setminus\{0\}$ and $f\mid m$, and
+$\varphi(m)$ is a multiple of $\varphi(f)$; so only one orbit occurs, of
+size $\varphi(f)$ and amplitude $\pm1$. Writing $m=fh$ and $h=h_1h_2$ with
+$h_1$ supported on the primes of $f$ and $(h_2,f)=1$, one has
+$\varphi(fh)/\varphi(f)=h_1\varphi(h_2)$, so $\varphi(fh)=\varphi(f)$ forces
+$h=1$, or $h=2$ with $f$ odd.
+
+Choose a generator $\psi_0$ of this cyclic dual subgroup of order $m$ and
+write $\psi_0(x)=\zeta_m^{j(x)}$ for a surjection $j:G\to C_m$. Then
+$v(\psi_0^u)=\pm\chi(u)$ on the orbit, and inversion gives, up to one
+overall sign,
+\[
+ b(x)=\frac{a\tau}N\sum_{u\in U_m}\chi(u)\zeta_m^{-uj(x)} .
+\]
+For $m=f$ this is $\chi(j(x))$ up to sign. For $m=2f$ with $f$ odd, every
+$u\in U_{2f}$ is odd and $\zeta_{2f}^u=-\zeta_f^{2^{-1}u}$, with $2^{-1}$
+computed modulo $f$, and reduction identifies $U_{2f}$ with $U_f$; the
+Gauss sum gives $(-1)^{j(x)}\chi(j(x))$ up to sign. Conversely this
+inversion constructs a simple oriented symbol in each case, with normalised
+eigenvalues $\pm1$ on the chosen orbit and zero elsewhere. Distinct orbits
+give distinct symbols, and on each orbit exactly two signs occur.
+Connectivity follows from the component divisibility of
+\cref{gra:thm:cayleyperiods} and $af=N$.
+\end{proof}
+
+\begin{center}\small\upshape
+\begin{tabular}{lrrrr}
+\toprule
+group & $f_0$ & fastest return & outdegree & labelled symbols\\
+\midrule
+$C_3\times C_3$ & 3 & $2\pi\sqrt3/9$ & 3 & 8\\
+$C_{12}$ & 3 & $\pi\sqrt3/6$ & 4 & 4\\
+$C_4\times C_4$ & 4 & $\pi/4$ & 4 & 12\\
+$C_7\times C_7$ & 7 & $2\pi\sqrt7/49$ & 21 & 16\\
+$C_5\times C_5$ & -- & none & -- & 0\\
+\bottomrule
+\end{tabular}
+\end{center}
+Here $c_m$ is the number of elements of exact order $m$ in $\widehat G$
+divided by $\varphi(m)$. On $C_{12}$ the four fastest symbols come from two
+different character orders and their reversals. An exhaustive check of the
+$334{,}780$ connection sets on $24$ finite abelian groups, in cyclotomic
+integer arithmetic, finds $8{,}820$ nonempty periodic sets, and the observed
+spacings, least outdegrees and fastest symbols agree with
+\cref{gra:thm:cayleyperiods,gra:thm:cayleyfast}:
+\grafiles{\artifact{grh_cayley_and_filters/cayley/exhaustion.json}}
+
+\begin{proposition}[Minimum degree at conductors three and four; \stU]\label[proposition]{gra:prop:cayleycoset}
+For $d=-4$ on any finite abelian host, and for $d=-3$ on a host of odd
+order, the symbols of least outdegree with spacing $a\sqrt d$ are exactly
+those with
+\[
+ P=x+K,\qquad\abs K=a,\qquad\ord_{G/K}(x+K)=f .
+\]
+Each connected component is obtained from a directed $f$-cycle by
+replacing its vertices with $a$ independent vertices and its arrows with
+all arrows between consecutive parts.
+\end{proposition}
+
+\begin{proof}
+Here $\varphi(f)=2$ and $\abs P=a$. For $f=4$ every active character, one
+with $\lambda_\psi\ne0$, satisfies
+$2a=\abs{\lambda_\psi}=2\abs{\sum_{p\in P}\Im\psi(p)}$, so $\psi$ is
+constant on $P$, with value $i$ or $-i$. For $f=3$ every active character
+attains equality in \eqref{gra:eq:cayleydual}, so by \cref{li:lem:norm} and
+\cref{gra:lem:cayleydual} each $\psi(p)$ has order three or six; odd group
+order excludes six. Each imaginary part is then $\pm\sqrt3/2$, and
+$\abs{\lambda_\psi}=a\sqrt3$ forces all signs to agree, so again $\psi$ is
+constant on $P$.
+
+Put $K=\langle P-P\rangle$. All active characters are trivial on $K$, so by
+inversion $b$ and its positive set are invariant under translation by $K$,
+and since $P$ lies in one coset, $P=x+K$. For characters of $G/K$ the
+eigenvalues are $a(z-\bar z)$ with $z=\psi(x+K)$, and since restriction of
+characters to a subgroup is onto, $z$ ranges over all roots of unity of
+order dividing $o=\ord_{G/K}(x+K)$. For $f=4$ the allowed imaginary parts
+are $0,\pm1$, so $o=4$, as some eigenvalue is nonzero; for $f=3$ on an odd
+host only cube roots of unity are allowed, so $o=3$. Conversely, summing
+over the coset gives exactly the required spacing. The cosets of $K$ in
+$\langle K,x\rangle$ give the directed cycle.
+\end{proof}
+
+For a walk on $N$ vertices, \emph{instantaneous uniform mixing} at time $t$
+means that every entry of $U(t)$ has modulus $N^{-1/2}$, and \emph{perfect
+transfer} from $x$ to $y\ne x$ means that $U(t)e_x$ is a unimodular scalar
+times $e_y$. Translation invariance and the fixed constant vector force the
+whole matrix at such a time to be a translation, with scalar one.
+
+\begin{corollary}[Mixing and transfer at the fastest period; \stU]\label[corollary]{gra:cor:cayleymixing}
+Among the fastest walks of \cref{gra:thm:cayleyfast}, only the directed
+four-cycle admits uniform mixing, at the times $T/4$ and $3T/4$ modulo its
+period $T$. Perfect transfer between distinct vertices occurs exactly for
+the directed three-cycle and four-cycle, first at the times $T/3$ and
+$T/2$ respectively.
+\end{corollary}
+
+\begin{proof}
+Each fastest symbol is pulled back from a cyclic quotient of order $q=f_0$
+or $2f_0$. Order the vertices by fibres, each of size $m=N/q$. If $V(s)$ is
+the evolution on the quotient, then
+\[
+ U(t)=I+\bigl(V(mt)-I_q\bigr)\otimes J_m/m ,
+\]
+with $J_m$ the all-ones matrix, by exponentiating $S_q\otimes J_m$ on the
+fibre-constant subspace and its orthogonal complement. If $m>1$, a
+diagonal entry and a different entry in its own fibre differ by one, and
+uniform mixing would force both real entries to have absolute value
+$N^{-1/2}$, hence $N=4$; the hosts of order four have no fastest graph with
+$m>1$. Transfer between different fibres is impossible since the entry has
+absolute value at most $1/m$; within a fibre, an off-diagonal entry of
+absolute value one requires $m=2$ and a diagonal entry $-1$ of $V$, which
+an orthogonal matrix fixing the all-ones vector cannot have, since the rest
+of that row would vanish.
+
+Now let $m=1$. If $q$ is an odd prime or twice an odd prime, uniform mixing
+would give a real Hadamard matrix of order $q$; but a real Hadamard matrix
+of order greater than two has order divisible by four (normalise the first
+row to ones, split the columns by the signs of the second row, and use
+orthogonality of a third row to see that each half has even size). On the
+directed four-cycle the entries of a row are, up to signs and order,
+$(1+\cos2t)/2$, $(1-\cos2t)/2$ and twice $\sin(2t)/2$, which gives exactly
+the stated mixing times, as $T=\pi$. For transfer on $C_p$ with $p$ an odd
+prime, a nonidentity translation has $p$ distinct eigenvalues, while the
+fastest walk has at most three by \cref{gra:cor:cayleyduality}; so $p=3$,
+where the two nontrivial Fourier phases are $\exp(\pm i\sqrt3\,t)$ and the
+first nonidentity translation occurs at $T/3$. On $C_4$ the Fourier mode
+of order two is fixed, so only translation by two is possible, first at
+$T/2$. On the parity-twisted $C_{2p}$ with $p$ odd only primitive
+frequencies are active, and a translation fixing the frequencies $2$ and
+$p$ has displacement divisible by $2p$, so it is the identity.
+\end{proof}
+
 \subsection{Optimal signings of square cycles}\label{gra:sec:cycles}
 \sources{grh_transfers_cycle_signings_and_lubin_tate; grh_transfer_advances_2026-11-26}
 
@@ -3234,7 +4020,7 @@ with \eqref{gra:eq:rotated}; see
 
 \subsection{Open questions}\label{gra:sec:open}
 {\raggedright
-\sources{Effective_Graph_Towers; grh_method_transfers_graph_towers_and_finite_rings; grh_method_transfers; grh_transfers_lubin_tate_and_graph_towers; grh_transfer_extensions_2026-11-26; grh_transfers_cycle_signings_and_lubin_tate; grh_transfer_advances_2026-11-26; five_step_graph_towers_2026-11-26; five_step_sharpness_2026-11-27; seven_step_graph_towers_2026-11-27}
+\sources{Effective_Graph_Towers; grh_method_transfers_graph_towers_and_finite_rings; grh_method_transfers; grh_transfers_lubin_tate_and_graph_towers; grh_transfer_extensions_2026-11-26; grh_transfers_cycle_signings_and_lubin_tate; grh_transfer_advances_2026-11-26; five_step_graph_towers_2026-11-26; five_step_sharpness_2026-11-27; seven_step_graph_towers_2026-11-27; five_step_refinement_2026-11-27; sparse-padic-roots-and-graph-towers; grh_cayley_and_filters}
 }
 
 \begin{enumerate}
@@ -3266,19 +4052,37 @@ matters.
 $\graA(S)$ is known for three steps at every $p>6$ (\cref{gra:thm:three}),
 for four steps at every $p>8$ (\cref{gra:thm:four}), for even $m$ at the
 primes with $2m\mid p-1$ (\cref{gra:cor:layers}), and for five steps at
-$p=11,31$, at the primes up to $101$ and at $131$ (\cref{gra:thm:fivestep}).
-Determine the five-step maximum at the other primes; for
-$p\equiv1\pmod{10}$ it lies between $4(p+1)+12$ and $4(p+1)+18$. Determine
+$p=11,31$, at every prime up to $181$ and at $761$, $1031$, $1511$,
+$1571$, $2281$, $2351$ (\cref{gra:thm:fivestep,gra:prop:fivelarge}).
+Determine the five-step maximum at the other primes; outside $p=11,31$ it
+is at most $4(p+1)+16$, and for $p\equiv1\pmod{10}$ at least $4(p+1)+12$,
+with $4(p+1)+14$ attained by simple towers at infinitely many such primes.
+Determine
 the seven-step maximum at general $p>14$, where it is at most $6(p+1)+38$
 (\cref{gra:thm:seven}), the maximum for even $m\ge6$ with $2m\nmid p-1$,
 and the exact maximum for general odd $m$ and $p$.
-\item \emph{Distributions.} For three steps, and for four steps with
-$M_1=0$, the distribution of $\graA$ over row planes is given by
-\cref{gra:thm:three,gra:thm:fourdist} through point counts of a conic and
-of the curve $C$. Which root configurations of the quartic, sextic and
-higher directional moments can occur on a single plane for $m\ge5$? In
-higher dimension, can the distribution of $\graA$ for random step lists be
-expressed through point counts of the successive moment varieties?
+\item \emph{Distributions.} For three and four steps the distribution of
+$\graA$ over all row planes is given by
+\cref{gra:thm:three,gra:thm:census} through point counts of a conic and of
+the curve $C$, that is, through the traces of $E_1$ and $E_2$
+(\cref{gra:thm:jacobian}); for four steps the mean and variance are known
+in every rank (\cref{gra:prop:meanvar}). Determine the rank-three
+four-step distribution, where each row space cuts out a plane section of
+$C$ and the incidence of several special points on one plane matters.
+Which root configurations of the quartic, sextic and higher directional
+moments can occur on a single plane for $m\ge5$? In higher dimension, can
+the distribution of $\graA$ for random step lists be expressed through
+point counts of the successive moment varieties, and which higher moment
+curves have equally explicit rational elliptic factors?
+\item \emph{Oriented Cayley walks.} For a prescribed conductor $f$ and
+spacing $a\sqrt{-f}$, what is the least outdegree of a periodic oriented
+Cayley graph that is connected on the whole host?
+\Cref{gra:prop:cayleycoset} shows that this requirement can change the
+answer of \cref{gra:thm:cayleyperiods}. For larger conductors, which
+connection sets attain the degree bound on hosts of order greater than
+$af$? \Cref{gra:cor:cayleyduality} constrains them by a duality, the
+spectrum and the rank. Nonabelian groups would require control of
+higher-dimensional irreducible representations.
 \item \emph{Square cycles at lengths incompatible with period eight.}
 What are the exact optima of \cref{gra:sec:cycles} at large lengths
 incompatible with period eight? The first undetermined even length is

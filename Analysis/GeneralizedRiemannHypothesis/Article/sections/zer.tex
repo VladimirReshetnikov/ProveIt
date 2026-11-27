@@ -7,6 +7,7 @@
 \providecommand{\zerconv}{\operatorname{conv}}
 \providecommand{\zerdiag}{\operatorname{diag}}
 \providecommand{\zerSym}{\mathfrak{D}}
+\providecommand{\zerLog}{\operatorname{Log}}
 
 This section collects the consequences of \cref{src:thm:dgrh} that are statements about the
 zeros themselves and about the prime sums they govern: sharp partial Euler products on the
@@ -2773,7 +2774,7 @@ This kernel is the prime error itself; the autocorrelation of the prime error at
 behaves differently and is treated next.
 
 \subsection{Merging scales: a cubic logarithmic law}\label{zer:sec:coalesce}
-\sources{prime_scale_coalescence_2026-11-26; dirichlet-zero-multiplicity-and-reconstruction; grh-two-open-questions}
+\sources{prime_scale_coalescence_2026-11-26; dirichlet-zero-multiplicity-and-reconstruction; grh-two-open-questions; dirichlet-coupled-zeros-and-prime-variances}
 
 \Cref{zer:thm:coercive} keeps the scales fixed. For the zeta function the rate at which the
 covariance degenerates as the scales merge is determined exactly up to a bounded factor. Let
@@ -3333,6 +3334,244 @@ bound on $r$, and $r\le(1.3208-1)/2=0.1604$. At a determining shape $\kappa(T)$ 
 exceptional one $\omega\ge\omega_*$ by \cref{zer:prop:firstres}. The numerical value is enclosed in
 \artifact{grh-two-open-questions/zero-stencils/checks.txt}.
 \end{proof}
+
+\paragraph{Five equally spaced observations.}
+On the nodes $0,1,2,3,4$ write $P(z)=\sum_{j=0}^4c_jz^j$ for a stencil, so that $P(1)=P'(1)=0$, and put
+$b_k=k^3\sum_{j=0}^{4-k}c_jc_{j+k}$, so that
+$\zerSym_c(\xi)=b_1+b_22^{i\xi}+b_33^{i\xi}+b_44^{i\xi}$. A \emph{missing positive frequency} is an $\omega>0$
+with $\zerSym_c(\omega)=0$; by \cref{zer:thm:stencilbank} the stencil is determining exactly when there is
+none, and at a missing frequency the perturbation $\cos(\omega\log x)$ of the leading density is invisible
+to the variance. Put $\alpha=\log3/\log2$.
+
+\begin{theorem}[Five consecutive observations; \stU]\label{zer:thm:fivepoint}
+If $b_3=0$, there are infinitely many missing positive frequencies when $b_1+b_2z+b_4z^2$ has a root on the
+unit circle, and none otherwise. If $b_3\ne0$, solve
+\begin{equation}\label{zer:eq:fivequad}
+ 4b_1b_4X^2+2b_2(b_1+b_4)X+(b_1-b_4)^2+b_2^2-b_3^2=0 .
+\end{equation}
+For each distinct real root $-1<X<1$ put $z=X+i\sqrt{1-X^2}=e^{i\theta}$ with $0<\theta<\pi$, and
+$w=-(b_1+b_2z+b_4z^2)/b_3=e^{i\phi}$; count the root once exactly when
+\begin{equation}\label{zer:eq:fivegroup}
+ \frac{\phi-\alpha\theta}{2\pi}\in\Z+\alpha\Z .
+\end{equation}
+The resulting count is the exact number of missing positive frequencies, and it is at most two. If
+$\phi-\alpha\theta=2\pi(\alpha m-n)$ with integers $m,n$, the corresponding frequency is $\abs{\theta+2\pi m}/\log2$.
+\end{theorem}
+\begin{proof}
+The cancellations give $\sum_{i,j}c_ic_j(i-j)^2=0$, that is $b_1+b_2/2+b_3/3+b_4/4=0$, and
+$\zerSym_c(0)=6\mathcal B(c)>0$. When $b_3=0$ the symbol is periodic in $\xi$ with period $2\pi/\log2$, which gives
+the first assertion. When $b_3\ne0$ let $z=2^{i\xi}$, $w=3^{i\xi}$. The equation $\zerSym_c(\xi)=0$ determines
+$w$ from $z$, and on $\abs z=1$ the condition $\abs w=1$ expands to \eqref{zer:eq:fivequad} with $X=\Re z$. This
+quadratic does not vanish identically: otherwise $\abs{b_1+b_2z+b_4z^2}$ would be constant $\abs{b_3}$ on the
+circle, so the polynomial would be a monomial, since the autocorrelation at the difference of its extreme
+degrees is the product of the extreme coefficients; and for a monomial the linear relation above forces
+the coefficient and $b_3$ to have distinct magnitudes, the associated distance $1,2$ or $4$ differing from
+$3$. If $z$ were real, $w$ would be real, making $\xi\log2$ and $\xi\log3$ multiples of $\pi$, so $\xi=0$ by
+irrationality of $\alpha$, which is excluded. For each interior root the two choices of $z$ give conjugate
+configurations. Simultaneous lifts of the upper one require $\xi\log2=\theta+2\pi m$ and
+$\xi\log3=\phi+2\pi n$, compatible exactly when \eqref{zer:eq:fivegroup} holds; irrationality allows at most
+one pair $(m,n)$, conjugation accounts for the negative frequency, and distinct roots give distinct
+positive frequencies.
+\end{proof}
+
+The dyadic five-point contrast above has $b_3=0$: its symbol is $(1+2^{i\xi})\zerSym_{(1,-2,1)}(\xi)$, and it misses
+exactly the odd multiples of $\pi/\log2$.
+
+\begin{theorem}[Two missing frequencies; \stU]\label{zer:thm:fivetwo}
+Let $P_{s,t}(z)=(1-z)^2(1+sz+tz^2)$. In an open neighbourhood of $(s,t)=(8,14)$ every stencil has five nonzero
+coefficients and $b_3\ne0$, the shapes missing exactly two positive frequencies form a countable dense subset,
+the shapes missing exactly one are dense, and almost every shape misses none.
+\end{theorem}
+\begin{proof}
+At the centre the coefficients are $(1,6,-1,-20,14)$, the vector $(b_1,b_2,b_3,b_4)$ is
+$(-260,-1080,1728,896)$, and the two
+roots of \eqref{zer:eq:fivequad} lie in $(-0.895,-0.894)$ and $(-0.580,-0.579)$. Near the centre both roots and
+the phases $\theta_k,\phi_k$ of their upper configurations are real analytic, and the map
+$(s,t)\mapsto(\phi_1-\alpha\theta_1,\phi_2-\alpha\theta_2)$ has Jacobian determinant in $(-0.008,-0.007)$ at the
+centre. To verify this, write $[u,v]=\Re u\Im v-\Im u\Re v$ and put $U=i(b_2z+2b_4z^2)$, $V=ib_3w$ and
+$Q=b_1'+b_2'z+b_3'w+b_4'z^2$ at each solution, a prime denoting a parameter derivative; then
+$U\theta'+V\phi'=-Q$ and $\phi'-\alpha\theta'=(-[U,Q]+\alpha[Q,V])/[U,V]$. The coefficient derivatives in the order
+$s,t$ are $(41,-352,405,0)$ and $(-60,16,108,64)$, and rational interval substitution gives the entries, roots
+in increasing order,
+\[
+ \begin{pmatrix}(0.0405,0.0408)&(-0.129,-0.128)\\(-0.0161,-0.0158)&(-0.144,-0.142)\end{pmatrix},
+\]
+with $[U,V]\ne0$ in both rows; square roots are enclosed between consecutive multiples of $10^{-12}$ and
+$1.5849<\alpha<1.5850$ by integer powers in
+\begin{center}{\small\artifact{dirichlet-coupled-zeros-and-prime-variances/five_node_filters/check_five_nodes.py}}.\end{center}
+The inverse
+function theorem identifies a neighbourhood of the centre with an open set of phase mismatches. The group
+$2\pi(\Z+\alpha\Z)$ is countable and dense, so its square cuts out a countable dense set of parameters
+passing both tests, the points with exactly one coordinate in it are dense, and the union of the two
+families of coordinate lines has measure zero, also after the local change of variables.
+\end{proof}
+
+So a five-point variance can converge on a spectrum with two independently adjustable invisible
+oscillations: with missing frequencies $\omega_1,\omega_2$, a leading density proportional to
+$1+a\cos(\omega_1\log x)+b\cos(\omega_2\log x)$, $\abs a+\abs b<1$, leaves the variance unchanged while the counting
+statistic retains both terms, with factors $(1+i\omega_k)^{-1}$ in complex form. Whether the ratio of the two
+frequencies has a special arithmetic nature is not known.
+
+\paragraph{How finely must the scales be sampled?}
+Call a stencil \emph{elliptic} if $\inf_{\xi\in\R}\abs{\zerSym_c(\xi)}>0$; every three-point stencil is elliptic
+by the domination in \cref{zer:thm:inversemeasure}, and so is every four-point shape outside $\overline I$ in
+\cref{zer:thm:fourpoint}. Write $a(T)=\pi A(T)/(T\log T)$.
+
+\begin{theorem}[Exact mesh condition; \stU]\label{zer:thm:mesh}
+Let $h_n\downarrow0$ and let $c$ be elliptic. The equivalence
+\[
+ U_c(h_n)/\tau(h_n)\to d\,\mathcal B(c)\iff a(T)\to d
+\]
+holds for every admissible positive measure $A$ and every finite $d\ge0$ if and only if
+$\log(h_n/h_{n+1})\to0$. If the mesh condition fails, there is even a discrete counterexample
+$A=2\sum_xm_x^2\delta_x$ with $m_x\in\set{1,2}$ whose ordinary count has the two Riemann--von Mangoldt main
+terms, for which the sampled variances converge and $a(T)$ does not. The same holds under the weaker
+assumption $\abs{\zerSym_c(\xi)}\ge c_0(1+\abs\xi)^{-N}$.
+\end{theorem}
+
+Put $k(s)=e^{-3s}\Phi(e^s)$ and $g_c(s)=e^sK_c(e^s)$; by \eqref{zer:eq:stencilcomp}, with $r_{ij}=u_j-u_i$,
+\begin{equation}\label{zer:eq:logkernel}
+ g_c(s)=2\sum_{i<j}c_ic_jr_{ij}^3\,k(s+\log r_{ij}),
+\end{equation}
+both kernels having exponentially decreasing envelopes at both ends. With $\check g(s)=g(-s)$ and
+$\widehat f(\xi)=\int f(s)e^{-is\xi}\,\dd s$,
+\begin{equation}\label{zer:eq:gammamult}
+ \widehat{\check k}(\xi)=\int_0^\infty\Phi(x)x^{-4+i\xi}\,\dd x=\frac\pi{2\Gamma(4-i\xi)\cosh(\pi\xi/2)},\qquad
+ \widehat{\check g_c}(\xi)=2\zerSym_c(-\xi)\widehat{\check k}(\xi):
+\end{equation}
+two integrations by parts reduce the first integral to $(\varsigma(\varsigma-1))^{-1}\int_0^\infty(1-\cos x)x^{1-\varsigma}\,\dd x$ at
+$\varsigma=3-i\xi$, and for $0<\Re v<2$ the Laplace representation gives
+$\int_0^\infty(1-\cos x)x^{-1-v}\,\dd x=\pi/(2\Gamma(1+v)\sin(\pi v/2))$; take $v=\varsigma-2$.
+
+\begin{lemma}[Prescribing a localized response; \stU]\label{zer:lem:invert}
+For every real $\phi\in C_c^\infty(\R)$ there is a real Schwartz function $f$ with $\check k*f=\phi$, and, if $c$
+satisfies the polynomial lower bound, a real Schwartz $f$ with $\check g_c*f=\phi$.
+\end{lemma}
+\begin{proof}
+Divide $\widehat\phi$ by the multiplier in \eqref{zer:eq:gammamult}. Stirling's formula gives
+$\abs{\Gamma(4-i\xi)\cosh(\pi\xi/2)}\ll(1+\abs\xi)^{7/2}$ on the real axis and a polynomial bound in a narrow strip,
+so Cauchy's estimate bounds every derivative polynomially; the exponential sum has bounded derivatives, so
+the lower bound controls the derivatives of its reciprocal. The quotient is Schwartz, and Hermitian symmetry
+makes $f$ real.
+\end{proof}
+
+\begin{lemma}[Local perturbations; \stU]\label{zer:lem:pulse}
+Let $x_j\to\infty$ be separated by at least one with $x_{j+1}-x_j\to\infty$, let $f$ be real Schwartz,
+$b(t)=\sum_jf(t-x_j)$, $0<q_0<1$, and $\eps>0$ so small that $q=q_0+\eps b\in(0,1)$. With
+$\lambda(x)=(2\pi)^{-1}\log(x/(2\pi))$ and $\dd A(x)=2(1+q(\log x))\lambda(x)\,\dd x$ on $x\ge10$, as $t\to\infty$,
+\begin{gather*}
+ \frac{U_c(e^{-t})}{\tau(e^{-t})}=(1+q_0)\mathcal B(c)+\frac\eps\pi(\check g_c*b)(t)+O\bigl(t^{-1}(1+\norm b_\infty)\bigr),\\
+ a(e^t)=1+q_0+\eps(\mathcal H*b)(t)+O\bigl(t^{-1}(1+\norm b_\infty)\bigr),
+\end{gather*}
+with $\mathcal H(s)=e^{-s}\mathbf 1_{s\ge0}$. For $f\ne0$ the second expression has at least two distinct
+subsequential limits.
+\end{lemma}
+\begin{proof}
+The separation bounds sums of translates of $(1+\abs t)^{-2}$. For the first formula substitute $x=e^{t+s}$ and
+use the finite first absolute moments of $g_c$; the lower tail is exponentially small. For the second
+substitute $x=e^{t-s}$ and use $\int\mathcal H=\int s\mathcal H(s)\,\dd s=1$. Convolution by $\mathcal H$, with
+multiplier $(1+i\xi)^{-1}$, preserves Schwartz functions and is injective; choose $v$ with
+$(\mathcal H*f)(v)\ne0$. At $x_j+v$ the other translates contribute $o(1)$, and at $(x_j+x_{j+1})/2$ the total is
+$o(1)$, so the two limits differ.
+\end{proof}
+
+\begin{proof}[Proof of \cref{zer:thm:mesh}]
+If the logarithmic gaps tend to zero, \cref{zer:thm:stencilbank} gives the equivalence. Otherwise there are
+$\delta>0$ and centres $x_j$ of intervals of length $2\delta$ missed by all $-\log h_n$, with spacings tending
+to infinity. Choose a nonzero real smooth $\phi$ supported in $(-\delta,\delta)$, apply \cref{zer:lem:invert}
+with $g_c$, and sum translates; Fubini is justified by $g_c\in L^1$ and the uniform bound on the translates of
+$\abs f$. Then $\check g_c*b=\sum_j\phi(\cdot-x_j)$ vanishes at every sample, and \cref{zer:lem:pulse} gives the
+two behaviours. The discrete version is the construction below.
+\end{proof}
+
+\begin{theorem}[Several stencils and grids; \stU]\label{zer:thm:bankmesh}
+For each of finitely many stencils $c$ let $S_c\subset[0,\infty)$ be its observed log-times $t=\log(1/h)$, and
+put $\mathcal E=\bigcup_c\bigcup_{i<j,\,c_ic_j\ne0}(S_c-\log r_{ij})$. If $\mathcal E$ misses intervals of some fixed
+positive length at arbitrarily large heights, there is a single positive measure, also realizable with integer
+multiplicities as below, for which every stencil along its own observations has normalized variance tending to
+$(1+q_0)\mathcal B(c)$, while $a(T)$ has no limit. This holds whenever each $S_c$ is locally finite with
+$\limsup_T\#(S_c\cap[0,T])/T<\infty$; in particular the ratios and offsets of finitely many geometric grids may
+be chosen independently.
+\end{theorem}
+\begin{proof}
+Choose the centres and $\phi$ inside gaps of $\mathcal E$ and apply \cref{zer:lem:invert} with the common kernel
+$k$. By \eqref{zer:eq:logkernel}, $\check g_c*b(t)=2\sum_{i<j}c_ic_jr_{ij}^3\sum_m\phi(t-\log r_{ij}-x_m)$, which
+vanishes on $S_c$, and \cref{zer:lem:pulse} applies. Under the density hypothesis the finite union of
+translates has bounded average count per unit length; if its late gaps were all shorter than every fixed
+$\delta$, its lower average count would exceed $1/(2\delta)$ for every $\delta$.
+\end{proof}
+
+For integer multiplicities in both theorems, take $\eps$ smaller so that $q$ stays away from $0$ and $1$ and run
+the construction of \cref{zer:prop:discrete} with $q(\log x)$ in place of $q(x)$: the ordinary count is
+$\frac T{2\pi}\log\frac T{2\pi}-\frac T{2\pi}+O(1)$, the cumulative function of $2\sum_xm_x^2\delta_x$ differs from
+$A(T)$ by $O(1)$, and integration by parts and the zeta denominator cost $O(h^4)$ in $U_c(h)$. These spectra
+keep the two classical counting terms; realizing them as zeros of an Euler product would need further
+arithmetic input. The counterexamples have $d=1+q_0>1$; for the value $d=1$, positivity of the excess
+$m_\gamma(m_\gamma-1)$ makes a coarse mesh suffice, as in \cref{zer:thm:coalesceinverse}(ii).
+
+\paragraph{A rate for the inversion.}
+A rate for the variance at all small scales gives a rate for the sharp count, even for a measure with atoms.
+Use the three-point stencil on the nodes $(0,a,L)$, $L=a+b$, with weights $(b,-L,a)$, so that
+$\mathcal B(c)=a^2b^2L/3$ by \cref{zer:thm:inversemeasure}.
+
+\begin{theorem}[Quantitative inversion for every three-point stencil; \stU]\label{zer:thm:rate}
+Let $0<\delta\le1$ and $d\ge0$, and suppose that for all sufficiently small $h>0$
+\[
+ U_c(h)=d\,\mathcal B(c)h^3\log(1/h)+O\bigl(h^3(\log(1/h))^{1-\delta}\bigr).
+\]
+Then $\pi A(T)/(T\log T)=d+O((\log T)^{-\delta/4})$ as $T\to\infty$, the implied constant depending on the
+spacings, $d$, $\delta$, the starting scale, the bound in the hypothesis and the mass on a fixed compact
+interval.
+\end{theorem}
+
+\begin{proof}
+Write $K=K_c$. Since $K(0)=a^2b^2L^2/4>0$, integration over $[0,\eps_0/h]$ gives $A(X)\ll(1+X)\log(2+X)$.
+Compare $A$ with $\dd A_0(x)=(d/\pi)\mathbf 1_{[1,\infty)}(x)\log x\,\dd x$: from $K(x)\ll\min(1,x^{-4})$,
+$\int_0^\infty K(y)\abs{\log y}\,\dd y<\infty$ and $\int_0^h\abs{\log(y/h)}\,\dd y=h$, one gets
+$U_{c,A_0}(h)=d\,\mathcal B(c)h^3\log(1/h)+O(h^3)$. For $\sigma=A-A_0$ put
+\[
+ R(t)=\int_0^\infty\frac{\cos(tx)-1+(tx)^2/2}{x^4}\,\dd\sigma(x),\qquad r(t)=R(t)/t^3\quad(t>0),
+\]
+the integrand having continuous value $t^4/24$ at zero and being $O(\min(\abs{tx}^4,\abs{tx}^2))$. Splitting at
+$1/t$ and integrating the tail by parts gives $\abs{r(t)}\ll1+\log(1/t)$ for small $t$, and $\abs{R(t)}\ll_{t_0}t^4$
+for $t\ge t_0$. Expanding the variance cancels the constant and quadratic terms: with
+$u(h)=(U_c(h)-U_{c,A_0}(h))/h^3$,
+\[
+ r(t)=\frac{u(t/L)}{2abL^3}+\frac{a^2}{L^2}r(at/L)+\frac{b^2}{L^2}r(bt/L),
+\]
+with coefficient sum $\rho=(a^2+b^2)/L^2<1$. With $p=1-\delta$ and $C_0=\log(L/\min(a,b))$, after $j$ substitutions
+the forcing terms total $O(\rho^j(1+\log(1/t)+jC_0)^p)$ for $t<t_0$, and the unreplaced remainder
+$O(\rho^j(1+\log(1/t)+jC_0))$ tends to zero; so $\abs{R(t)}\ll t^3(1+\log(1/t))^{1-\delta}$ for $0<t<t_0$.
+
+Put $\dd\sigma_T(x)=\pi\,\dd\sigma(Tx)/(T\log T)$, with transform $R_T(t)=\pi T^3R(t/T)/\log T$. Then
+$\abs{R_T(t)}\ll\abs t^3(\log T)^{-\delta}$ for $1\le\abs t\le t_0T$, the same times $1+\abs{\log\abs t}$ for
+$\abs t<1$, and $\abs{R_T(t)}\ll\abs t^4/(T\log T)$ for $\abs t\ge t_0T$. For even smooth compactly supported real
+$f$, with $\widehat g(t)=\int g(x)e^{-itx}\,\dd x$,
+\[
+ \int_0^\infty f\,\dd\sigma_T=\frac1{2\pi}\int_\R R_T(t)\,\widehat{x^4f}(t)\,\dd t,
+\]
+since $g=x^4f$ has $g(0)=g''(0)=0$, so the subtracted Taylor terms leave the inverse Fourier integral unchanged;
+Fubini follows from the numerator bound and the rapid decay of $\widehat g$. Mollify the indicators of
+$[-1+\eps,1-\eps]$ and $[-1-\eps,1+\eps]$ at width $\eps<\tfrac14$ to get $f_-\le\mathbf 1_{[-1,1]}\le f_+$ with
+$\abs{\widehat{x^4f_\pm}(t)}\ll_N(1+\abs t)^{-1}(1+\eps\abs t)^{-N}$. The part $\abs t\le t_0T$ of the integral is
+$O((\log T)^{-\delta}\eps^{-3})$, and for $\eps=(\log T)^{-\delta/4}$ and $N=8$ the tail is
+$O(\eps^{-8}T^{-5}/\log T)$. The smooth tests against the rescaled $A_0$ differ from its interval count by
+$O(\eps)$, positivity of $A$ sandwiches its count, and $\pi A_0(T)/(T\log T)=d+O(1/\log T)$.
+\end{proof}
+
+\begin{corollary}[A count remainder from a variance remainder; \stG, with the variance remainder as a hypothesis]\label{zer:cor:ratezeta}
+For a three-point stencil, if $V_c(h)=d\,\mathcal B(c)h^3\log(1/h)+O(h^3(\log(1/h))^{1-\delta})$ with
+$0<\delta\le1$, then $2\pi M_2(T)=dT\log T+O(T(\log T)^{1-\delta/4})$; a measured remainder $O(h^3)$ gives
+$O(T(\log T)^{3/4})$.
+\end{corollary}
+\begin{proof}
+Apply \cref{zer:thm:rate} to $A=2\sum_{\gamma>0}m_\gamma^2\delta_\gamma$; the change from $\gamma^4$ to
+$(\tfrac14+\gamma^2)^2$ costs $O(h^4)$, as before \cref{zer:thm:coalesceinverse}.
+\end{proof}
+
+Establishing such a remainder for the actual zeta zeros is a further arithmetic problem, and the exponent
+$\delta/4$, which comes from smoothing an interval of relative width $\eps$, is not claimed optimal; for Fourier
+Tauberian estimates for monotone counting functions see \cite{Safarov2001Fourier}.
 
 \paragraph{Residue classes.}
 Fix $q$, let $\chi$ run over the $n_q$ characters modulo $q$, with the multiplicities $m_\chi(\gamma)$ of the
@@ -4789,7 +5028,7 @@ and $(s-1)\zeta(s)$.
 \end{example}
 
 \subsection{Graph-coupled real-rooted functions}\label{zer:sec:graph}
-\sources{graph_coupled_zeros_2026-11-26; grh_exact_extensions_2026-11-27; grh_path_rigidity_2026-11-27; grh_inverse_spectral_2026-11-27}
+\sources{graph_coupled_zeros_2026-11-26; grh_exact_extensions_2026-11-27; grh_path_rigidity_2026-11-27; grh_inverse_spectral_2026-11-27; coupled-dirichlet-inverse-spectrum; dirichlet-coupled-zeros-and-prime-variances}
 
 This subsection is a statement about real-rooted polynomials and real canonical products; the
 only arithmetic input is that \cref{src:thm:dgrh} makes the phase-normalized completed Dirichlet
@@ -4801,9 +5040,11 @@ electrical invariant of the graph independent of the input zeros. The ingredient
 the matrix-forest identity \cite{ChebotarevShamis2023Forest}, compressions representing critical
 points \cite{Pereira2003Differentiators}, preservation of real zeros \cite{BorceaBranden2009LeeYang},
 matrix-valued Herglotz theory \cite{Reiffenstein2022Interlacing} and rank-one inverse identities
-\cite{SimonovWoracek2024Local}. Conversely, for distinct characters of one parity the zeros of the
-coupled function determine all principal minors of the coupling, uniformly from a finite window and
-after finitely many erasures (\cref{zer:thm:tailrigid,zer:thm:window,zer:cor:graphrecover}).
+\cite{SimonovWoracek2024Local}. Conversely, the zeros of the coupled function determine an unknown
+list of characters of any parities and all principal minors of the coupling (grouped sums of them when
+labels repeat): uniformly from a finite window for a known list, by an exact and Lipschitz-stable linear
+decoder, and from the positive ordinates when the competitor misses them at only $o(T)$ distinct
+ordinates below $T$ (\cref{zer:thm:window,zer:thm:decode,zer:thm:stabledecoder,zer:cor:blindall}).
 
 \paragraph{The polynomial construction.}
 Let $G$ be a connected undirected graph on $n\ge2$ labelled vertices with positive edge
@@ -5263,107 +5504,132 @@ complementary matrix at $0$ is the path Laplacian of nullity one, and $0$ is a s
 $\mathcal H_{a,b}$ by \eqref{zer:eq:collision}; directly,
 $\mathcal H_{a,b}'(0)=abF_3(0)F_4(0)F_5(0)\sum_q(F_q'/F_q)'(0)<0$.
 
-\paragraph{The inverse problem: the coupling from a corrupted zero set.}
-\Cref{zer:cor:graphdirichlet} is a forward statement. Conversely, for distinct characters of one
-parity the zeros of $\mathcal P_A$ determine every principal minor of $A$, even after finitely many
-of them are corrupted, and a bounded window of zeros suffices uniformly. Fix $n\ge1$ and pairwise
-distinct primitive nonprincipal characters $\chi_1,\dots,\chi_n$ of conductors $q_i$ and common
-parity $a$, complex characters allowed, let $F_i=F_{\chi_i}$ be as in \eqref{zer:eq:phasereal} with
-arbitrary phases $\eta_i$, $g_i=F_i'/F_i$, and
+\paragraph{The inverse problem: characters and coupling from the zeros.}
+\Cref{zer:cor:graphdirichlet} is a forward statement. Conversely, the zeros of $\mathcal P_A$ determine
+the unknown list of characters and the principal minors of the coupling, grouped when labels repeat.
+Parities may be mixed, the zeta input is allowed, a known list is read from a uniform finite window
+after a bounded number of erasures, the coefficients are decoded by linear algebra even with false
+observations, the decoder is Lipschitz stable under displacement of the observed ordinates, and an
+unknown list is recovered from the positive ordinates even when the competitor misses the observed
+zeros at $o(T)$ distinct ordinates below $T$.
+
+Let $\mathcal X=(\chi_1,\dots,\chi_n)$ be a list of primitive characters, repetitions allowed, where
+the character of conductor one stands for $F_\zeta$; let $F_i=F_{\chi_i}$ be as in
+\eqref{zer:eq:phasereal} with arbitrary phases, $g_i=F_i'/F_i$, $Q_{\mathcal X}=\prod_iq_i$,
+$S_{\mathcal X}(m)=\sum_i\chi_i(m)$, and for a Hermitian $A$ let $\mathcal P_A=\mathcal P_{\mathcal X,A}$ be
+\eqref{zer:eq:PA} and $\nu_A(\gamma)=\ord_\gamma\mathcal P_A$. Changing a phase multiplies $\mathcal P_A$ by
+$\pm1$. Let $\psi_1,\dots,\psi_h$ be the distinct labels, $m_j$ the number of vertices carrying $\psi_j$,
+$m=(m_1,\dots,m_h)$, and $j(i)$ the label index of vertex $i$; inequalities between multi-indices are
+componentwise. Put
+\begin{equation}\label{zer:eq:groupD}
+ D_A(X)=\det\bigl(A+\zerdiag(X_{j(1)},\dots,X_{j(n)})\bigr)=\sum_{0\le\alpha\le m}c_\alpha(A)X^\alpha,\qquad c_m=1,
+\end{equation}
+so that $c_\alpha(A)$ is the sum of the principal minors $\det A[J]$ over the $J$ whose complement has
+$\alpha_\ell$ vertices of each label $\psi_\ell$, and
 \[
- E_S=\prod_{i\in S}F_i'\prod_{i\notin S}F_i\quad(S\subseteq[n]),\qquad
- \mathcal P_A=\sum_{S\subseteq[n]}\det A[S^c]\,E_S,\qquad
- \mathcal V=\operatorname{span}_\C\set{E_S:S\subsetneq[n]},
+ E_\alpha=\prod_{j=1}^h(F'_{\psi_j})^{\alpha_j}F_{\psi_j}^{m_j-\alpha_j},\quad
+ \mathcal P_A=\sum_\alpha c_\alpha(A)E_\alpha,\quad
+ V_\ell=\Bigl\{\sum_{\alpha\ne m}q_\alpha E_\alpha:\ q_\alpha\in\C[z],\ \deg q_\alpha\le\ell\Bigr\},
 \]
-as in \eqref{zer:eq:PA}; the coefficient of $E_{[n]}$ is $1$, and changing a phase multiplies every
-$E_S$ by the same sign. The labelled list of characters is known. For nonzero entire $f,h$ and an
-interval $I$ let
+with $\mathcal V=V_0$. For distinct labels $m=(1,\dots,1)$, the coefficient of $\prod_{i\notin J}X_i$ is
+$\det A[J]$, and $\mathcal P_A=\sum_S\det A[S^c]E_S$ as in \eqref{zer:eq:PA}. If all labels coincide,
+$D_A(X)=\det(A+XI)$, so even the exact zero set retains only the eigenvalues of $A$. For nonzero entire
+$f,h$ and an interval $I$ let
 \[
  \Delta_I(f,h)=\sum_{x\in I}\max\set{\ord_xf-\ord_xh,0},
 \]
-the one-sided count of multiplicities of real zeros of $f$ missing from $h$, possibly $+\infty$ for
-$I=\R$; additional zeros of $h$ are not penalized.
+the one-sided count of multiplicities of real zeros of $f$ missing from $h$, possibly $+\infty$;
+additional zeros of $h$ are not penalized.
 
-\begin{lemma}[Algebraic independence of the logarithmic derivatives; \stU]\label{zer:lem:algindep}
-The functions $g_1,\dots,g_n$ are algebraically independent over $\C$. In particular the $2^n$
-functions $E_S$ are linearly independent.
+\begin{lemma}[Independence on a vertical line; \stU]\label{zer:lem:algindep}
+Let $\psi_1,\dots,\psi_h$ be distinct primitive characters, the conductor-one character and both parities
+allowed, and $g_j=F_{\psi_j}'/F_{\psi_j}$. On the line $s=2+it$, $z=(s-\tfrac12)/i$, a polynomial
+$P\in\C[X_1,\dots,X_h]$ with $P(g_1(z),\dots,g_h(z))\to0$ as $t\to+\infty$ is zero. In particular the
+$g_j$ are algebraically independent over $\C(z)$, the functions $L'(s,\psi_j)/L(s,\psi_j)$ are
+algebraically independent over $\C$, and the functions $E_\alpha$, $0\le\alpha\le m$, are linearly
+independent over $\C(z)$.
 \end{lemma}
-
 \begin{proof}
-Write $s=\frac12+iz$ and $\psi=\Gamma'/\Gamma$. In $\Re s>1$ the Euler product gives
+Write $\Psi=\Gamma'/\Gamma$. The Euler product and the uniform digamma asymptotic give, for $t\ge1$,
 \[
- g_j=u(s)+c_j+D_j(s),\qquad u(s)=\tfrac i2\psi\bigl(\tfrac{s+a}2\bigr),\quad
- c_j=\tfrac i2\log(q_j/\pi),\quad D_j(s)=-i\sum_{m\ge2}\Lambda(m)\chi_j(m)m^{-s},
+ g_j(z)=u(t)+c_j+D_j(t)+O((1+t)^{-1}),\qquad u(t)=\tfrac i2\log\frac{2+it}2,\quad c_j=\tfrac i2\log(q_j/\pi),
 \]
-with the same $u$ for all $j$ by the common parity; along the positive real axis
-$u(s)\sim\frac i2\log(s/2)$. Let $P$ have total degree $d$, and replace $u(s)$ by an independent
-variable $U$:
-\begin{equation}\label{zer:eq:polydirgraph}
- P\bigl(U+c_1+D_1(s),\dots,U+c_n+D_n(s)\bigr)=\sum_{m\ge1}b_m(U)m^{-s},\qquad\deg b_m\le d,
-\end{equation}
-with $\sum_m\norm{b_m}_1m^{-2}<\infty$ for the coefficient sum $\norm{\cdot}_1$, by expanding the
-monomials and convolving absolutely convergent series. If $P(g_1,\dots,g_n)=0$ and some $b_m\ne0$, take
-the least such $m_0$ and multiply \eqref{zer:eq:polydirgraph} at $U=u(s)$ by $m_0^s$ for real $s\ge2$. The
-tail is at most $(1+\abs{u(s)})^dm_0^2(m_0/(m_0+1))^{s-2}\sum_{m>m_0}\norm{b_m}_1m^{-2}\to0$, while a
-nonzero polynomial $b_{m_0}$ does not tend to zero along $u(s)$ as $\abs{u(s)}\to\infty$; so every $b_m$
-vanishes. If $P\ne0$ and $d=0$, this contradicts $b_1\ne0$. Otherwise let $P_d$ be the top homogeneous
-part and $\mathcal B$ its symmetric $d$-linear polarization, $\mathcal B(v,\dots,v)=P_d(v)$. For
-distinct primes $p_1,\dots,p_d$ and $m=p_1\cdots p_d$, each $D_j$ is supported on prime powers, so only
-terms using $d$ factors $D_j$, all from $P_d$, contribute to $m^{-s}$:
+with $D_j(t)=-i\sum_{k\ge2}\Lambda(k)\psi_j(k)k^{-2-it}$: the difference between $\Psi((s+a_j)/2)$ and
+$\log(s/2)$ is $O(1/t)$ for either parity, and for $q_j=1$ the two extra logarithmic derivatives of
+$s(s-1)$ also have that size. Each $D_j$ is a uniform limit of trigonometric polynomials by absolute
+convergence.
+
+For $d=\deg P$, replacing the $g_j$ by $u+c_j+D_j$ changes $P(g)$ by $o(1)$, since $\abs u=O(\log(2+t))$.
+Expanding in $u$ gives $\sum_{k=0}^du^kf_k(t)=o(1)$, where the $f_k$ are bounded uniform limits of
+trigonometric polynomials. Such a function with limit zero at $+\infty$ vanishes identically:
+simultaneous recurrence of the finitely many phases of a uniform approximant gives arbitrarily large
+translations arbitrarily close to periods. Since $\abs u\to\infty$, division by $u^d$ forces
+$f_d(t)\to0$, hence $f_d=0$, and descending induction gives $f_0=P(c_1+D_1,\dots,c_h+D_h)=0$.
+
+For $d>0$ let $\mathcal B$ polarize the top homogeneous term $P_d$ of $P$, with
+$\mathcal B(x,\dots,x)=P_d(x)$, and extract the Fourier coefficient at $-\log k$ for $k=p_1\cdots p_d$ a
+product of distinct primes; uniform absolute convergence permits termwise means. Each $D_j$ is
+supported on prime powers, so only products from $P_d$ choosing one prime per factor contribute, and
+the coefficient is
 \[
- b_m=d!\,(-i)^d\Bigl(\prod_k\log p_k\Bigr)\mathcal B(v(p_1),\dots,v(p_d)),\qquad
- v(p)=(\chi_1(p),\dots,\chi_n(p)).
+ k^{-2}d!\,(-i)^d\prod_{r=1}^d\log p_r\;\mathcal B(v(p_1),\dots,v(p_d)),\qquad v(p)=(\psi_j(p))_{j=1}^h.
 \]
-With $Q=\lcm(q_1,\dots,q_n)$ the induced characters modulo $Q$ are distinct, so by orthogonality the
-vectors $v(b)$, $b\in(\Z/Q\Z)^\times$, span $\C^n$, and Dirichlet's theorem realizes any ordered $d$-tuple
-of them by distinct primes. Multilinearity gives $\mathcal B=0$, contradicting $P_d\ne0$. Finally, a
-linear relation among the $E_S$, divided by $\prod_iF_i$, is a relation among distinct squarefree
-monomials in the $g_i$.
+The distinct primitive characters induce distinct characters on the units modulo
+$Q=\lcm(q_1,\dots,q_h)$, so by orthogonality the vectors of character values span $\C^h$, and Dirichlet's
+theorem supplies distinct primes realizing any prescribed tuple of unit classes, repeated classes
+included. Multilinearity gives $\mathcal B=0$, a contradiction; a constant polynomial tending to zero is
+zero. The same argument applied to a polynomial in the $c_j+D_j$ gives the independence of the
+$L'/L(s,\psi_j)=iD_j$, after an affine change of variables.
+
+Finally, clear denominators of a putative relation over $\C(z)$ and write it as
+$\sum_{r=0}^bz^rP_r(g)=0$ with $P_b\ne0$. On the line $z=t-3i/2$, every lower term after division by $z^b$
+is $O(t^{-1}(1+\log t)^{D})$ for some fixed $D$, so $P_b(g)\to0$, which is impossible. A linear relation
+among the $E_\alpha$, divided by $\prod_iF_i$, is a relation among distinct monomials $\prod_jg_j^{\alpha_j}$.
 \end{proof}
 
 Ordinary linear independence of the $g_i$ would not suffice to recover determinants.
 
 \begin{lemma}[Growth outside a strip; \stU]\label{zer:lem:outside}
-Fix a Hermitian $A$ and $H\in\mathcal V$. Uniformly for $\abs{\Im z}\ge3/2$ and $\abs z\to\infty$,
-$H(z)/\mathcal P_A(z)=O(1/\log\abs z)$. If $H\ne0$, the quotient $H/\mathcal P_A$ is not a rational
-function.
+Fix a Hermitian $A$, an integer $\ell\ge0$ and $H\in V_\ell$. Uniformly for $\abs{\Im z}\ge3/2$ and
+$\abs z\to\infty$, $H(z)/\mathcal P_A(z)=O((1+\abs z)^\ell/\log\abs z)$. If $H\ne0$, the quotient
+$H/\mathcal P_A$ is not a rational function.
 \end{lemma}
 
 \begin{proof}
-Write $H=(\prod_iF_i)P(g_1,\dots,g_n)$ with $P$ multiaffine of total degree at most $n-1$. On
-$\Im z\le-3/2$ one has $\Re s\ge2$, the $F_i$ do not vanish, the $D_i(s)$ are uniformly bounded, and
-$u(s)=\frac i2\log((s+a)/2)+O(1/\abs s)$ with $\abs{u(s)}\asymp\log\abs s$. Hence $g_i=u+O(1)$,
-$\det(A+\zerdiag(g_i))=u^n(1+O(1/\abs u))$ and $P(g)=O((1+\abs u)^{n-1})$; realness of the $F_i$ gives the
-same on $\Im z\ge3/2$. On the ray $z=-i(s-\frac12)$, $s\to+\infty$, $D_i(s)=O(2^{-s})$. With
-$p_0(U)=P(U+c_1,\dots,U+c_n)$, either $p_0\ne0$ has degree $k\le n-1$ and $H/\mathcal P_A$ is asymptotic to a
-nonzero constant times $(\log s)^{k-n}$, or $p_0=0$ and $H/\mathcal P_A=O(2^{-s}(1+\log s)^{n-1}/(\log s)^n)$.
-A nonzero rational function tending to zero on the ray is asymptotic to $cs^{-j}$ with $j\ge1$, $c\ne0$,
-which neither case allows, and $H/\mathcal P_A\not\equiv0$.
+For $\Im z\le-3/2$ one has $\Re s\ge2$; uniform Stirling asymptotics and the bounded logarithmic
+derivative series there give $g_j(z)=\tfrac i2\log(s/2)+O(1)$ as $\abs s\to\infty$, for either parity.
+All terms of $D_A$ below $X^m$ have total degree at most $n-1$, so its leading value is
+$(\tfrac i2\log(s/2))^n(1+O(1/\log\abs s))$, which gives the bound; conjugation gives the same bound on
+$\Im z\ge3/2$, conjugating the coefficients of $H$ when necessary. If $H/\mathcal P_A=r$ were rational,
+dividing $H=r\mathcal P_A$ by $\prod_iF_i$ would give the relation
+$\sum_{\alpha\ne m}q_\alpha g^\alpha=r\,D_A(g)$ over $\C(z)$, in which the coefficient of $g^m$ is $0$ on
+the left and $r\ne0$ on the right, contrary to \cref{zer:lem:algindep}.
 \end{proof}
 
 \begin{lemma}[Finitely many poles force rationality; \stU]\label{zer:lem:invrational}
-If $0\ne H\in\mathcal V$ and $H/\mathcal P_A$ has only finitely many poles, then $H/\mathcal P_A$ is
+If $0\ne H\in V_\ell$ and $H/\mathcal P_A$ has only finitely many poles in $\C$, then $H/\mathcal P_A$ is
 rational.
 \end{lemma}
 
 \begin{proof}
-Let $W$ be the monic polynomial of degree $m$ cancelling the poles with their orders, and $J=WH/\mathcal P_A$.
+Let $W$ be the monic polynomial of degree $w$ cancelling the poles with their orders, and $J=WH/\mathcal P_A$.
 The zero divisor of $\mathcal P_A$ is contained in that of $WH$, so by Hadamard factorization
 \cite{Boas1954Entire} $J$ is a linear exponential times a canonical product of genus at most one over a
 submultiset of the zeros of $WH$, whose counting function is $O_\eps(r^{1+\eps})$ by Jensen; thus $J$ is
-entire of order at most one. By \cref{zer:lem:outside}, $J=O((1+\abs z)^m)$ outside the strip
-$\abs{\Im z}<3/2$. Inside, for real $b>3/2$ the function $U=J/(z-ib)^m$ is bounded on the boundary lines
-and of finite order on the strip; for $0<\kappa<\pi/3$ and $\delta>0$ the factor
+entire of order at most one. By \cref{zer:lem:outside}, $J=O((1+\abs z)^{b})$ with $b=w+\ell$ outside the
+strip $\abs{\Im z}<3/2$. Inside, for real $\beta>3/2$ the function $U=J/(z-i\beta)^{b}$ is bounded on the
+boundary lines and of finite order on the strip; for $0<\kappa<\pi/3$ and $\delta>0$ the factor
 $\exp(-\delta\cosh(\kappa z))$, whose exponent has real part at least $\cos(3\kappa/2)\cosh(\kappa\Re z)>0$
 there, does not increase the boundary bound and makes the vertical sides of long rectangles tend to zero.
-The maximum principle and $\delta\downarrow0$ give $J=O((1+\abs z)^m)$ on $\C$, so $J$ is a polynomial by
+The maximum principle and $\delta\downarrow0$ give $J=O((1+\abs z)^{b})$ on $\C$, so $J$ is a polynomial by
 Cauchy's estimates.
 \end{proof}
 
 \begin{theorem}[Tail divisor rigidity; \stG]\label{zer:thm:tailrigid}
-For every Hermitian $A$ and every nonzero $H\in\mathcal V$, $\Delta_\R(\mathcal P_A,H)=+\infty$. Hence, for
-Hermitian $A,B$, $\Delta_\R(\mathcal P_A,\mathcal P_B)<\infty$ implies $\mathcal P_A=\mathcal P_B$ and
-$\det A[J]=\det B[J]$ for every $J\subseteq[n]$; conversely equal principal minors give discrepancy zero.
+For every Hermitian $A$, every $\ell\ge0$ and every nonzero $H\in V_\ell$, $\Delta_\R(\mathcal P_A,H)=+\infty$.
+Hence, for Hermitian $A,B$ on the same list, $\Delta_\R(\mathcal P_A,\mathcal P_B)<\infty$ holds if and only
+if $D_A=D_B$, that is $\mathcal P_A=\mathcal P_B$; for distinct labels this means
+$\det A[J]=\det B[J]$ for every $J\subseteq[n]$.
 \end{theorem}
 
 \begin{proof}
@@ -5372,38 +5638,38 @@ then $H/\mathcal P_A$ has finitely many poles and is rational by \cref{zer:lem:i
 \cref{zer:lem:outside}. For $A,B$ put $H=\mathcal P_B-\mathcal P_A\in\mathcal V$; if $H\ne0$ then
 $\ord_xH\ge\min(\ord_x\mathcal P_A,\ord_x\mathcal P_B)$, so $\Delta_\R(\mathcal P_A,H)\le\Delta_\R(\mathcal P_A,\mathcal P_B)<\infty$,
 a contradiction. So $\mathcal P_A=\mathcal P_B$, and \cref{zer:lem:algindep} applied to the expansion in the
-$E_S$ gives the minors.
+$E_\alpha$ gives $D_A=D_B$; the converse is trivial.
 \end{proof}
 
 \begin{theorem}[Uniform finite-window erasure correction; \stG]\label{zer:thm:window}
-For every $M\ge0$ and integer $K\ge0$ there is a finite $T=T(\chi_1,\dots,\chi_n;M,K)$ such that
-$\Delta_{[-T,T]}(\mathcal P_A,H)>K$ for all Hermitian $A$ with $\norm A\le M$ and all nonzero
-$H\in\mathcal V$. In particular, if $B$ is any Hermitian matrix, with no bound on its norm, and
-$\Delta_{[-T,T]}(\mathcal P_A,\mathcal P_B)\le K$, then $A$ and $B$ have the same principal minors. The
-argument does not give a numerical value of $T$.
+Fix the list $\mathcal X$. For every $M\ge0$ and integers $K,\ell\ge0$ there is a finite
+$T_0=T_0(\mathcal X;M,K,\ell)$ such that $\Delta_{[-T_0,T_0]}(\mathcal P_A,H)>K$ for all Hermitian $A$ with
+$\norm A\le M$ and all nonzero $H\in V_\ell$. In particular, if $B$ is any Hermitian matrix on the same
+list, with no bound on its norm, and $\Delta_{[-T_0,T_0]}(\mathcal P_A,\mathcal P_B)\le K$ for the window with
+$\ell=0$, then $D_A=D_B$.
 \end{theorem}
 
 \begin{proof}
-Otherwise, for every $j$ there are a Hermitian matrix $A_j$ with $\norm{A_j}\le M$ and a nonzero
-$H_j\in\mathcal V$ with $\Delta_{[-j,j]}(\mathcal P_{A_j},H_j)\le K$. Normalize the coefficient vector of $H_j$ in the independent
-basis $(E_S)_{S\subsetneq[n]}$; along a subsequence $A_j\to A_*$ and $H_j\to H_*\ne0$ locally uniformly,
-and $\mathcal P_{A_j}\to\mathcal P_{A_*}\not\equiv0$. For any finite set $X$ of distinct zeros of
-$\mathcal P_{A_*}$ take small disjoint discs about them whose boundaries avoid the zeros of both limits. By
-Rouch\'e's theorem, for large $j$ the zero counts of $\mathcal P_{A_j}$ and $H_j$ in each disc equal those of
-the limits; the zeros of $\mathcal P_{A_j}$ are real and eventually in $[-j,j]$, so the disc about $x$
-contributes at least $\max(\ord_x\mathcal P_{A_*}-\ord_xH_*,0)$ missing multiplicities. Summing,
-\[
- \sum_{x\in X}\max(\ord_x\mathcal P_{A_*}-\ord_xH_*,0)\le K
-\]
-for every $X$, contradicting
-\cref{zer:thm:tailrigid}. The last assertion follows with $H=\mathcal P_B-\mathcal P_A$ as before.
+Otherwise, for every $j$ there are a Hermitian $A_j$ with $\norm{A_j}\le M$ and $H_j\in V_\ell$ with unit
+coefficient vector and $\Delta_{[-j,j]}(\mathcal P_{A_j},H_j)\le K$. By finite-dimensional compactness, along a
+subsequence $A_j\to A_*$ and $H_j\to H_*$ locally uniformly; independence (\cref{zer:lem:algindep}) gives
+$H_*\ne0$ and $\mathcal P_{A_*}\ne0$. By \cref{zer:thm:tailrigid} finitely many zeros of $\mathcal P_{A_*}$
+carry excess over $H_*$ exceeding $K$. Take disjoint small discs about them, enclosing no other zero of
+either limit, with boundaries free of zeros. Rouch\'e's theorem fixes the counts of $\mathcal P_{A_j}$ and
+$H_j$ in these discs for all large $j$; every zero of $\mathcal P_{A_j}$ there is real and eventually in
+$[-j,j]$, so the sum of the positive differences of the disc counts is a lower bound for
+$\Delta_{[-j,j]}(\mathcal P_{A_j},H_j)$, a contradiction. Finally $\mathcal P_B-\mathcal P_A\in V_0$ vanishes to
+at least the common multiplicity at every zero, so separation applied to this difference, if nonzero,
+proves the last assertion.
 \end{proof}
 
 \begin{corollary}[Recovery of a labelled weighted graph; \stG]\label{zer:cor:graphrecover}
-For real symmetric $A,B$ the conclusions of \cref{zer:thm:tailrigid,zer:thm:window} hold if and only if
-$B=DAD$ for a diagonal $D$ with entries $\pm1$. If $A,B$ are Laplacians of labelled graphs with
-nonnegative weights, then $A=B$. Thus the weighted graph is determined by any cofinite submultiset of
-the zeros of $\mathcal P_{L_G}$, or by a sufficiently long window after at most $K$ missing
+Let the labels be distinct. For real symmetric $A,B$ the conclusions of
+\cref{zer:thm:tailrigid,zer:thm:window} hold if and only if $B=DAD$ for a diagonal $D$ with entries
+$\pm1$. If $A,B$ are Laplacians of labelled graphs with nonnegative weights, then $A=B$: the one-vertex
+minors give the weighted degrees and, for $i\ne j$, the weight is
+$w_{ij}=\sqrt{L_{ii}L_{jj}-\det L[\set{i,j}]}$. Thus the weighted graph is determined by any cofinite
+submultiset of the zeros of $\mathcal P_{L_G}$, or by a sufficiently long window after at most $K$ missing
 multiplicities, with no bound on the competitor's weights.
 \end{corollary}
 
@@ -5420,35 +5686,574 @@ nonpositive, so their magnitudes determine them. This is a case of the theorem o
 \end{proof}
 
 For signed symmetric matrices the switching ambiguity is unavoidable, since $D$ commutes with both
-diagonal matrices in \eqref{zer:eq:PA}; a signed triangle with zero diagonal and unit edge magnitudes
-has $\det(A+\zerdiag(X_i))=X_1X_2X_3-X_1-X_2-X_3+2\sigma$ with $\sigma$ the cycle sign, so the zeros detect
-cycle signs but not vertex switches. For complex Hermitian matrices the assertion is exactly
-principal-minor recovery. For the even quadratic characters $\chi_5,\chi_8,\chi_{12}$ and the path
+diagonal matrices in \eqref{zer:eq:PA}; for a general Hermitian matrix, diagonal unitary conjugation and
+entrywise conjugation already preserve all principal minors, and the invariant recovered is their full
+vector. A signed triangle with zero diagonal and unit edge magnitudes has
+$\det(A+\zerdiag(X_i))=X_1X_2X_3-X_1-X_2-X_3+2\sigma$ with $\sigma$ the cycle sign, so the zeros detect cycle
+signs but not vertex switches. For the even quadratic characters $\chi_5,\chi_8,\chi_{12}$ and the path
 Laplacian $L(a,b)$ with weights $a,b$ on the edges $12,23$,
 $\det(L(a,b)+\zerdiag(X_i))=X_1X_2X_3+aX_2X_3+(a+b)X_1X_3+bX_1X_2+ab(X_1+X_2+X_3)$; the Laplacians
-$L(2,3)$ and $L(3,2)$ have the same ordinary spectrum, but by \cref{zer:cor:graphrecover} their
-character-labelled coupled zero sets differ in infinitely many multiplicities in each direction.
+$L(2,3)$ and $L(3,2)$ have the same ordinary spectrum, but their character-labelled coupled zero sets
+differ, in each direction, at $\gg T$ distinct positive ordinates below $T$, by
+\cref{zer:thm:localcoupled} below. The same holds for the mixed-parity labels
+$\chi_{-3},\chi_{-4},\chi_5$ of $\mathcal H_{a,b}$, and by \cref{zer:cor:blindall} the zeros of
+$\mathcal H_{a,b}$ identify all three characters, the middle one and both weights, against competing
+triples of distinct characters of arbitrary conductors.
 
-\begin{remark}[Decoding]\label{zer:rem:decode}
-With unknowns $c_S=\det A[S^c]$, $S\subsetneq[n]$, a zero $x$ observed with multiplicity $m$ gives the
-linear equations $\sum_Sc_SE_S^{(r)}(x)=-E_{[n]}^{(r)}(x)$, $0\le r<m$. If the observations are a
-submultiset of the zeros in the window $[-T,T]$ of \cref{zer:thm:window} missing at most $K$
-multiplicities, the system is consistent and has trivial kernel, since a kernel vector would be a
-nonzero $H\in\mathcal V$ vanishing to the observed orders; so the observation matrix has full column rank
-$2^n-1$ after any permitted erasures, and the two-element minors then give the graph. If the
-observations also contain false zeros, and the received multiset is within symmetric-difference
-distance $k$ of the true window multiset and of a competitor's, the two are within $2k$, so the window
-for $K=2k$ forces equal principal minors; trying all removals of at most $k$ multiplicities is an exact,
-not an efficient, decoder. Unconditionally, by \cref{zer:lem:algindep} the values of
-$\mathcal P_A/\prod_iF_i$ at $2^n-1$ suitable points $z=-i(s-\frac12)$, $s>1$, determine the minors by linear
-algebra; for $\chi_5,\chi_8,\chi_{12}$ and the path with weights $2,3$, $100$-digit evaluation at
-$s=2,\dots,8$ recovered the seven coefficients to about $5.5\cdot10^{-95}$, and an exhaustive check of the
-$729$ zero-diagonal symmetric four-vertex matrices with entries in $\set{-1,0,1}$ found $108$ classes, the
-same for switching and for principal minors (\artifact{grh_inverse_spectral_2026-11-27/checks.txt}).
+\paragraph{The prime frequencies of the coupled divisor.}
+On the line $\Re s=\sigma>1$ put $b=\sigma-\tfrac12$, $P(s)=\mathcal P_A(-i(s-\tfrac12))$ and
+\begin{equation}\label{zer:eq:poissonH}
+ H_A(t)=\Re\frac{P'(\sigma+it)}{P(\sigma+it)}=\sum_\gamma\nu_A(\gamma)\frac{b}{b^2+(t-\gamma)^2},
+\end{equation}
+the sum over the distinct real zeros of $\mathcal P_A$: the real Hadamard product of $\mathcal P_A$ in $z$,
+differentiated in $s$, gives \eqref{zer:eq:poissonH}, since the real exponential slope and each genus-one
+correction become purely imaginary, and a zero at $z=0$ contributes the same Poisson term per copy.
+
+\begin{theorem}[Landau formula for the coupled divisor; \stG]\label{zer:thm:coupledlandau}
+For fixed real $x>1$ and $T\to\infty$,
+\begin{equation}\label{zer:eq:coupledlandau}
+ \frac1T\sum_{0<\gamma\le T}\nu_A(\gamma)x^{i\gamma}=-\frac{\Lambda(x)}{2\pi\sqrt x}S_{\mathcal X}(x)
+ +O_{\mathcal X,A,x}\bigl((\log T)^{-1}\bigr),
+\end{equation}
+where the main term vanishes unless $x=p^k$ with $p$ prime and $k\ge1$, and then $\Lambda(x)=\log p$. With
+$N_A(T)=\sum_{0<\gamma\le T}\nu_A(\gamma)$,
+\begin{equation}\label{zer:eq:coupledcount}
+ N_A(T)=\frac{nT}{2\pi}\Bigl(\log\frac T{2\pi}-1\Bigr)+\frac T{2\pi}\log Q_{\mathcal X}+O_{\mathcal X,A}(T/\log T).
+\end{equation}
+\end{theorem}
+\begin{proof}
+Take $\sigma=2$, $b=\tfrac32$. Stirling's formula for the digamma function gives, with
+$U=\tfrac i2\log(s/2)$ and the principal logarithm, uniformly as $\abs t\to\infty$ on $s=2+it$,
+\[
+ g_j(-i(s-\tfrac12))=U+\tfrac i2\log(q_j/\pi)+iL_j'(s)/L_j(s)+O(1/\abs t),
+\]
+with $L_j=L(s,\chi_j)$; for the conductor-one input the extra term $i(1/s+1/(s-1))$ belongs to the error
+and its derivative is $O(\abs t^{-2})$. These logarithmic derivatives and their first derivatives are
+bounded on $\Re s=2$ by absolute convergence of their Euler series, and the differentiated gamma term is
+$O(1/\abs t)$. The matrix $A+\zerdiag(g_j)$ is $UI+O(1)$, so its inverse has norm $O(1/\log\abs t)$, and
+Jacobi's determinant identity bounds the $s$-logarithmic derivative of the determinant factor by
+$O(1/\log\abs t)$. Thus, with $D_{\mathcal X}=\sum_jL_j'/L_j$,
+\begin{equation}\label{zer:eq:cline}
+ H_A(t)=\frac n2\log\frac{\abs t}{2\pi}+\frac12\log Q_{\mathcal X}+\Re D_{\mathcal X}(2+it)+O(1/\log\abs t),
+\end{equation}
+and \eqref{zer:eq:poissonH} with positivity gives $\sum_{u\le\gamma\le u+1}\nu_A(\gamma)\ll\log(2+\abs u)$
+uniformly on $\R$. For fixed real $\omega$, using the Fourier transform of $b/(b^2+t^2)$,
+\begin{equation}\label{zer:eq:unsmooth}
+ \int_0^TH_A(t)e^{i\omega t}\,\dd t=\pi e^{-b\abs\omega}\sum_{0<\gamma\le T}\nu_A(\gamma)e^{i\omega\gamma}+O\bigl(\log^2(2+T)\bigr):
+\end{equation}
+for $-T\le\gamma\le2T$, replacing the integral for each zero by its full-line value times
+$\mathbf 1_{(0,T]}(\gamma)$ costs $O((1+\abs\gamma)^{-1}+(1+\abs{T-\gamma})^{-1})$, which summed over unit
+intervals costs $O(\log^2(2+T))$; outside this range the cost is $O(T/\gamma^2)$ and the local count makes
+the tail $O(\log(2+T))$. This also justifies the exchanges.
+
+At $\omega=\log x>0$ the logarithmic and constant terms of \eqref{zer:eq:cline} integrate to
+$O_x(\log(2+T))$ by integration by parts. In the absolutely convergent series
+$D_{\mathcal X}(s)=-\sum_{k\ge2}\Lambda(k)S_{\mathcal X}(k)k^{-s}$ the frequency $-\log x$ has coefficient
+$-\Lambda(x)S_{\mathcal X}(x)x^{-2}$ if $x$ is a prime power, halved by taking the real part; every other
+frequency contributes $O_x(1)$ in total after integration, since the nonzero numbers $\abs{\log(x/k)}$
+for integers $k\ne x$ are bounded away from zero at fixed $x$, and the conjugate frequencies have the same
+property. The integrated remainder is $O(T/\log T)$. Dividing \eqref{zer:eq:unsmooth} by $\pi Tx^{-b}$
+proves \eqref{zer:eq:coupledlandau}. At $\omega=0$ the series has zero mean with integrated error $O(1)$,
+and integration of the logarithm gives \eqref{zer:eq:coupledcount}.
+\end{proof}
+
+The leading term does not depend on the coupling: every prime frequency of the coupled zeros retains
+the sum of the character values. This transfers the classical formula of Landau
+\cite{Landau1911Nullstellen,KaczorowskiLanguascoPerelli2000Note} to the determinant, which generally has no
+known Euler product. For two lists $\mathcal X,\mathcal Y$ and couplings $A,B$ write $X=Z_{\mathcal X,A}$ and
+$Y=Z_{\mathcal Y,B}$ for the zero multisets and
+\[
+ M_{X\to Y}(T)=\sum_{0<\gamma\le T}\bigl(\operatorname{mult}_X(\gamma)-\operatorname{mult}_Y(\gamma)\bigr)_+,
+\]
+the sum over distinct ordinates; an unattached additional zero of $Y$ costs nothing.
+
+\begin{theorem}[Unknown character lists; \stG]\label{zer:thm:blindlabels}
+Suppose $\mathcal Y$ has at most as many entries as $\mathcal X$. If
+$\liminf_{T\to\infty}M_{X\to Y}(T)/T=0$, the lists have the same entries with the same multiplicities, up
+to permutation. For equal list lengths, every finite set $S$ of primes gives
+\begin{equation}\label{zer:eq:witness}
+ \liminf_{T\to\infty}\frac{M_{X\to Y}(T)}T\ge\frac1{2^{\abs S+1}\pi}\Bigl(\sum_{p\in S}\abs{S_{\mathcal Y}(p)-S_{\mathcal X}(p)}\frac{\log p}{\sqrt p}-\log\frac{Q_{\mathcal Y}}{Q_{\mathcal X}}\Bigr),
+\end{equation}
+and for unequal multisets of equal length the right side is strictly positive for some $S$, in either
+comparison direction. No conductor bound or list of candidate characters is required.
+\end{theorem}
+\begin{proof}
+If $\mathcal Y$ has fewer characters, $M_{X\to Y}(T)\ge N_X(T)-N_Y(T)\gg T\log T$ by \eqref{zer:eq:coupledcount}.
+For equal lengths write $\delta(p)=S_{\mathcal Y}(p)-S_{\mathcal X}(p)$ and $\theta_p=\arg\delta(p)$ when
+$\delta(p)\ne0$, arbitrary otherwise, and form the nonnegative trigonometric polynomial
+\[
+ W(t)=\prod_{p\in S}\bigl(1+\cos(t\log p-\theta_p)\bigr),\qquad0\le W\le2^{\abs S}.
+\]
+Unique factorization makes its constant coefficient $1$, and its other frequencies are $\log r$ for
+$r=\prod_{p\in S}p^{\eps_p}$, $\eps_p\in\set{-1,0,1}$; only $r=p$ and $r=1/p$ can be a prime power or its
+reciprocal. For $r=p$ the coefficient is $e^{-i\theta_p}/2$, and the $r=1/p$ sum of a real measure is the
+conjugate of the one at $p$. Hence \eqref{zer:eq:coupledlandau} and \eqref{zer:eq:coupledcount} give
+\[
+ \lim_{T\to\infty}\frac1T\Bigl(\sum_{\gamma\in Y\cap(0,T]}W(\gamma)-\sum_{\gamma\in X\cap(0,T]}W(\gamma)\Bigr)
+ =\frac1{2\pi}\Bigl(\log\frac{Q_{\mathcal Y}}{Q_{\mathcal X}}-\sum_{p\in S}\abs{\delta(p)}\frac{\log p}{\sqrt p}\Bigr),
+\]
+and the expression before the limit is at least $-2^{\abs S}M_{X\to Y}(T)/T$, which gives
+\eqref{zer:eq:witness}. Distinct primitive characters induce distinct characters on the unit group of a
+common modulus, so unequal multisets give $\delta\ne0$ on some reduced residue class, where $\abs\delta$ is
+constant; the reciprocal primes in that class have divergent sum, and $(\log p)/\sqrt p\ge1/p$, so the
+prime sum in \eqref{zer:eq:witness} exceeds any prescribed number. Interchanging the lists gives the other
+direction.
+\end{proof}
+
+For instance $\mathcal X=(\chi_{-4},\chi_5)$ and $\mathcal Y=(\chi_{-3},\chi_5)$ share their even character,
+the odd characters take the values $-1$ and $1$ at $7$, and $S=\set7$ gives
+\begin{gather*}
+ \liminf\frac{M_{X\to Y}(T)}T\ge\frac{2\log7/\sqrt7+\log(4/3)}{4\pi}>0.1399,\\
+ \liminf\frac{M_{Y\to X}(T)}T\ge\frac{2\log7/\sqrt7-\log(4/3)}{4\pi}>0.0941,
+\end{gather*}
+for every pair of Hermitian $2\times2$ couplings; ordinary zero counts have the larger scale $T\log T$.
+
+\begin{corollary}[Sublinear symmetric corruption; \stG]\label{zer:cor:noise}
+For any two couplings, with $D(T)=\sum_{0<\gamma\le T}\abs{\nu_A(\gamma)-\nu_B(\gamma)}$,
+\[
+ \liminf_{T\to\infty}\frac{D(T)}T\ge\sup_{p\text{ prime}}\frac{\log p}{2\pi\sqrt p}\abs{S_{\mathcal X}(p)-S_{\mathcal Y}(p)},
+\]
+which is positive whenever the label multisets differ, whatever their sizes and conductors. Hence the
+positive ordinates after insertions and deletions of total size $o(T)$ through height $T$ determine the
+list size, by \eqref{zer:eq:coupledcount}, and the multiset of labels, assuming exact positions of the
+retained entries.
+\end{corollary}
+\begin{proof}
+Each changed multiplicity alters a trace sum by at most one in modulus, so sublinear corruption preserves
+every limit in \eqref{zer:eq:coupledlandau}; subtract the two formulas at a prime and take the supremum.
+If all prime contrasts vanish, use primes in every unit class of a common modulus and orthogonality. The
+leading coefficient in \eqref{zer:eq:coupledcount} gives $n$.
+\end{proof}
+
+For one-sided contamination the separate prime means can change; the positivity argument of
+\cref{zer:thm:blindlabels} treats that case directly.
+
+\paragraph{The coupling at lower order.}
+When the label multisets agree, every prime main term agrees, and the coupling appears in a negative
+power of $\log t$. For a formal variable $U$, an indeterminate $w\in\C^h$ and the all-ones vector
+$\mathbf 1$, both $D_A(U\mathbf 1+w)$ and $D_B(U\mathbf 1+w)$ are monic of degree $n$ in $U$; expand
+\begin{equation}\label{zer:eq:couplinglog}
+ \log\frac{D_A(U\mathbf 1+w)}{D_B(U\mathbf 1+w)}=\sum_{r\ge1}h_r(w)U^{-r}
+\end{equation}
+with zero constant term. For distinct labels
+$h_r(w)=\tfrac{(-1)^{r+1}}r\tr[(A+\zerdiag w)^r-(B+\zerdiag w)^r]$.
+
+\begin{theorem}[The coupling signal; \stG]\label{zer:thm:couplinggap}
+Let $A,B$ be couplings on the same list with $D_A\ne D_B$.
+\begin{enumerate}[label=\textup{(\roman*)}]
+\item There is a first index $j$ at which $h_j$ is nonconstant, and $j\le n+1$. For distinct labels, if $r$
+is the least size of an unequal principal minor, then $j\le\min\set{n+1,2r}$; for Laplacians of graphs with
+nonnegative weights $j\le\min\set{n+1,4}$.
+\item With $H_A,H_B$ as in \eqref{zer:eq:poissonH} on a fixed line $\Re s=\sigma>1$,
+\begin{equation}\label{zer:eq:gapsig}
+ H_A(t)-H_B(t)=(\log t)^{-j}f(t)+O((\log t)^{-j-1}),\qquad t\to+\infty,
+\end{equation}
+where $f$ is a nonzero real uniformly almost periodic function of mean zero.
+\item There are an integer $m\ge2$ and $c_m\ne0$ with
+\[
+ \sum_{0<\gamma\le T}\bigl(\nu_A(\gamma)-\nu_B(\gamma)\bigr)m^{i\gamma}=c_m\frac T{(\log T)^j}+O\Bigl(\frac T{(\log T)^{j+1}}\Bigr).
+\]
+\end{enumerate}
+The constants depend on both matrices, the labels and $m$.
+\end{theorem}
+
+\begin{proof}
+(i) The series \eqref{zer:eq:couplinglog} converges for large $\abs U$, locally uniformly in $w$, with
+termwise derivatives. Its first nonzero index is $k_0=n-\ell_0\le n$, where $\ell_0\le n-1$ is the
+$U$-degree of $D_A(U\mathbf 1+w)-D_B(U\mathbf 1+w)$, which is nonzero (evaluate at $U=0$). If $h_{k_0}$ is a
+nonzero constant $c$, replacing $w$ by $w+v\mathbf 1$ is the same as replacing $U$ by $U+v$, and the next
+power gives $h_{k_0+1}(w+v\mathbf 1)=h_{k_0+1}(w)-k_0cv$; so $j\le n+1$. For distinct labels put
+$v_i=(U+w_i)^{-1}$; then $D_A(U\mathbf 1+w)/\prod_i(U+w_i)=1+\sum_{I\ne\varnothing}\det A[I]\prod_{i\in I}v_i$,
+and in the logarithm of the ratio all monomials in $v$ of degree below $r$ vanish, the homogeneous degree-$r$
+part being $\sum_{\abs I=r}(\det A[I]-\det B[I])\prod_{i\in I}v_i$. At order $U^{-2r}$ a monomial of
+$v$-degree $d$ yields a polynomial homogeneous in $w$ of degree $2r-d$, so the coefficient of
+$\prod_{i\in I}w_i$ in $h_{2r}$ is $(-1)^r(\det A[I]-\det B[I])$, nonzero for some $r$-set $I$. For
+Laplacians the diagonal entries are the one-vertex minors and
+$\det A[\set{i,k}]=A_{ii}A_{kk}-\abs{A_{ik}}^2$ with $A_{ik}\le0$ fixes every weight, so $r\le2$.
+
+(ii) Put $D_\ell(s)=iL'(s,\psi_\ell)/L(s,\psi_\ell)$ and $c_\ell=\tfrac i2\log(q_\ell/\pi)$. The squarefree-prime
+argument of \cref{zer:lem:algindep} shows that $h_j(c+D(s))$ is a nonconstant Dirichlet series. Write
+$U=\tfrac i2\log(s/2)$ and $g_{\psi_\ell}(-i(s-\tfrac12))=U+y_\ell(s)$; Stirling's formula and its derivative
+give $y_\ell=c_\ell+D_\ell+O(t^{-1})$ and $y_\ell'=D_\ell'+O(t^{-1})$, $'$ meaning $\dd/\dd s$, with $y,y'$
+bounded. The product of the inputs cancels in $P_A/P_B$. Differentiate \eqref{zer:eq:couplinglog} at
+$(U,y(s))$: lower coefficients are constant, $U'=O(t^{-1})$, and the differentiated tails converge
+uniformly, so
+\[
+ \frac{P_A'}{P_A}-\frac{P_B'}{P_B}=U^{-j}\frac{\dd}{\dd s}h_j(c+D(s))+O((\log t)^{-j-1})+O(t^{-1}),
+\]
+and $U=\tfrac i2\log t+O(1)$ gives \eqref{zer:eq:gapsig} with
+$f(t)=\Re[(2/i)^j\tfrac{\dd}{\dd s}h_j(c+D(s))]_{s=\sigma+it}$. The series inside has only frequencies
+$-\log k$, $k\ge2$, converges absolutely on $\Re s>1$ after differentiation, and has a nonzero coefficient;
+taking the real part cannot cancel it against its conjugate, which sits at the opposite frequency.
+
+(iii) Take $\sigma=2$ and fix $m$ with nonzero coefficient $a_m$ in $\tfrac{\dd}{\dd s}h_j(c+D(s))=\sum_ka_kk^{-s}$.
+In the real part of $(2/i)^j\sum_ka_kk^{-2-it}$ the coefficient at frequency $-\log m$ is
+$(2/i)^ja_mm^{-2}/2$, the conjugate series having only positive frequencies. With $v(t)=(\log t)^{-j}$, each
+nonresonant integral $\int_3^Tv(t)e^{i\lambda t}\,\dd t$ is $O_j(1/\abs\lambda)$ by integration by parts, the
+nonzero frequency gaps being bounded below for fixed $m$, and the resonant integral is
+$T/(\log T)^j+O(T/(\log T)^{j+1})$. Absolute summability gives
+\[
+ \int_0^Te^{it\log m}(H_A-H_B)(t)\,\dd t=\frac{(2/i)^ja_m}{2m^2}\frac T{(\log T)^j}+O\Bigl(\frac T{(\log T)^{j+1}}\Bigr),
+\]
+and \eqref{zer:eq:unsmooth} for both couplings, whose error is absorbed, gives (iii) with
+$c_m=(2/i)^ja_m/(2\pi\sqrt m)$.
+\end{proof}
+
+By the triangle inequality, (iii) gives each one-sided multiplicity discrepancy on $(0,T]$ of order at
+least $T/(\log T)^j$, and positivity in \eqref{zer:eq:gapsig} gives the same on windows $[T/2,3T]$;
+\cref{zer:thm:localcoupled} below improves both to $\gg T$ distinct ordinates.
+
+\begin{example}[Orders $n+1$ and $4$]\label{zer:ex:couplingorders}
+For $n\ge3$ give an $n$-cycle edge signs $+1$ and zero diagonal, and reverse one edge sign for $B$, with the
+same labels. Every proper induced subgraph is a forest, on which a diagonal sign change removes any
+prescribed edge signs, so all proper principal minors agree; in the full determinant only the two
+orientations of the cycle are affected, so $D_A-D_B=C=4(-1)^{n-1}$. The coefficient of $U^{n-1}$ in
+$D_B(U\mathbf 1+w)$ is $\sum_iw_{j(i)}$, so \eqref{zer:eq:couplinglog} begins
+$CU^{-n}-C(\sum_iw_{j(i)})U^{-(n+1)}$: the constant at order $n$ contributes only through $U'=O(1/t)$, and
+$j=n+1$ even with distinct labels, the last possible order. For the triangle with the quadratic characters
+of discriminants $-3,-4,5$, whose values at $2$ are $-1,0,-1$, one has $C=4$, $h_4=-4(w_1+w_2+w_3)$, $a_2=8i(\log2)^2$, and
+\[
+ \sum_{0<\gamma\le T}(\nu_A(\gamma)-\nu_B(\gamma))2^{i\gamma}=\frac{64i(\log2)^2}{\pi\sqrt2}\frac T{(\log T)^4}+O\Bigl(\frac T{(\log T)^5}\Bigr),
+\]
+while the prime traces and all proper principal minors of the pair agree. The principal-minor identity is
+verified in exact arithmetic for $3\le n\le8$ in
+\begin{center}\artifact{coupled-dirichlet-inverse-spectrum/checks/cycle_traces.py}\\
+(record \artifact{coupled-dirichlet-inverse-spectrum/checks/cycle_result.json}).\end{center}
+
+For order four with positive weights and equal ordinary spectra, attach in cyclic order the characters
+of discriminants $-3,-4,5,8$ (two odd, two even) to a $4$-cycle with conductances $1,2,1,2$, and let $B$
+interchange $1$ and $2$ on every edge. The Laplacians are conjugate by a cyclic permutation, and
+$p_A(y)-p_B(y)=3(y_1-y_3)(y_2-y_4)$ for $p_A(y)=\det(A+\zerdiag y)$: all diagonal entries are $3$, the
+complementary quadratic coefficient is $9-w^2$ on an edge and $9$ on a nonedge, the three-vertex minors of
+a connected Laplacian agree and both full determinants vanish. The difference is invariant under a
+common translation, so \eqref{zer:eq:couplinglog} begins at $U^{-4}$ with the nonconstant coefficient
+$3(y_1-y_3)(y_2-y_4)$, and $j=4=2r$. All sixteen coefficients are checked in integer arithmetic in
+\artifact{dirichlet-coupled-zeros-and-prime-variances/coupled_zeros/verify_cycle.py}.
+\end{example}
+
+\paragraph{Distinct discrepancies in short windows.}
+For multisets $X,Y$ of real ordinates and an interval $I$ put
+\[
+ d_+(I)=\#\set{\gamma\in I:\operatorname{mult}_X(\gamma)>\operatorname{mult}_Y(\gamma)},\qquad
+ d_-(I)=\#\set{\gamma\in I:\operatorname{mult}_X(\gamma)<\operatorname{mult}_Y(\gamma)},
+\]
+so that a shared ordinate contributes one discrepancy if its multiplicities differ.
+
+\begin{theorem}[Distinct discrepancies in short windows; \stG]\label{zer:thm:localcoupled}
+Compare $X=Z_{\mathcal X,A}$ and $Y=Z_{\mathcal Y,B}$ for lists of the same size. Suppose either that their
+character multisets differ and each list consists of distinct characters, or that they agree and, after matching the labels, $D_A\ne D_B$ (for distinct
+labels: some principal minor differs). There are $c_0,C,T_0>0$ depending on the two models such that for
+every $T\ge T_0$ and $C\sqrt{\log\log T}\le H\le T/2$,
+\[
+ \min\set{d_+([T-H,T+H]),d_-([T-H,T+H])}\ge c_0H ,
+\]
+and the interval even contains $\gg H$ distinct ordinates, in increasing order, on which the direction of
+excess alternates. For every $b_0>1/\pi$ each direction occurs at least once in
+$[T-b_0\log\log\log T,T+b_0\log\log\log T]$ for all sufficiently large $T$.
+\end{theorem}
+
+\begin{proof}
+Let $\nu=X-Y$ as a signed point measure, choose $\sigma>1$, $b=\sigma-\tfrac12$, $K_b(t)=b/(b^2+t^2)$, and
+write $H_b=K_b*\nu=H_A-H_B$ by \eqref{zer:eq:poissonH}. In the same-label case \eqref{zer:eq:gapsig} gives
+$H_b(t)=(\log t)^{-j}f_\sigma(t)+O((\log t)^{-j-1})$ with $f_\sigma$ real uniformly almost periodic, nonzero
+and of mean zero; the nonzero Dirichlet coefficient remains nonzero on every such line. For unequal
+multisets set $j=0$ and subtract \eqref{zer:eq:cline} on the line $\Re s=\sigma$, which holds there by the
+same proof:
+\[
+ f_\sigma(t)=\tfrac12\log(Q_{\mathcal X}/Q_{\mathcal Y})+\Re\sum_{k\ge2}\Lambda(k)\bigl(S_{\mathcal Y}(k)-S_{\mathcal X}(k)\bigr)k^{-\sigma-it}.
+\]
+In both cases $H_b(t)=O(\log(2+\abs t))$ globally.
+
+Use $\widehat w(\xi)=\int w(t)e^{-i\xi t}\,\dd t$ and two even unit-mass densities: a Gaussian
+$w(t)=(\lambda/\pi)^{1/2}e^{-\lambda t^2}$, and a normalized $e^{-L\cosh(kt)}$ with $k<\pi/(2b)$. For either,
+define an integrable real kernel $h$ by $\widehat h(\xi)=\pi^{-1}e^{b\abs\xi}\widehat w(\xi)$. For the
+Gaussian, $\widehat w$ and all its derivatives have Gaussian decay. In the second case choose
+$b<\beta<\pi/(2k)$ and shift the Fourier contour for $w(t)$, $tw(t)$, $t^2w(t)$ to height $\pm\beta$, where
+they decay doubly exponentially since $\cos(k\beta)>0$; the multiplier and its first two derivatives are
+then exponentially bounded at both infinities, continuous and piecewise smooth at zero, and two
+integrations by parts on the half-lines give $h(v)=O((1+\abs v)^{-2})$. As $\widehat K_b=\pi e^{-b\abs\xi}$,
+$h*K_b=w$. The bound $K_b*\abs\nu(u)\ll\log(2+\abs u)$ permits absolute convolution, so $w*\nu=h*H_b$.
+Replacing $\log(t-v)$ by $\log t+O(t^{-1/2})$ for $\abs v\le\sqrt t$, the discarded tails being
+$O(t^{-1/2}\log(2+t))$,
+\begin{equation}\label{zer:eq:locsmoothed}
+ (w*\nu)(t)=(\log t)^{-j}G_w(t)+O((\log t)^{-j-1}),\qquad G_w=h*f_\sigma ,
+\end{equation}
+with $G_w$ real uniformly almost periodic. For common labels its mean is zero; the Gaussian multiplier never
+vanishes, so $G_w$ has a nonzero Bohr coefficient, and for the second family $\widehat w(\xi)\to1$ pointwise as
+$L\to\infty$, so a large $L$ preserves any one nonzero coefficient.
+
+For different multisets let $\delta(p)=S_{\mathcal Y}(p)-S_{\mathcal X}(p)$. The mean of $G_w$ is
+$\log(Q_{\mathcal X}/Q_{\mathcal Y})/(2\pi)$, its coefficient at $-\log p$ is
+$\delta(p)(\log p)\widehat w(\log p)/(2\pi\sqrt p)$, and the other nonconstant frequencies are signed
+logarithms of prime powers. With the Riesz products of the proof of \cref{zer:thm:blindlabels}, phases
+chosen in the two opposite directions, the means of $G_w$ times the two nonnegative trigonometric
+polynomials are
+\[
+ \frac1{2\pi}\Bigl(\log(Q_{\mathcal X}/Q_{\mathcal Y})\pm\sum_{p\in S}\frac{\log p}{\sqrt p}\abs{\delta(p)\widehat w(\log p)}\Bigr),
+\]
+the coefficients at $\pm\log p$ of a Riesz product having modulus $\tfrac12$ and the two conjugate terms
+adding. Choose $S$ to exceed the conductor term by a strict margin when $\widehat w=1$, then $\lambda$ (or
+$L$) large enough to preserve the margin; this gives a positive and a negative value of $G_w$. In the
+common-label case the same follows from zero mean, since a nonzero nonnegative uniformly almost-periodic
+function has positive mean. So there are $a_0>0$ and $D<\infty$ such that every interval of length $D$
+contains points with $G_w>2a_0$ and with $G_w<-2a_0$, by translating one point of each sign by relatively
+dense approximate periods; in successive blocks of length $D$ select samples of alternating sign, whose
+values in \eqref{zer:eq:locsmoothed} have magnitude at least $a_0(\log t)^{-j}$ at large heights.
+
+For the Gaussian and $I=[T-H,T+H]$, at $t$ in the middle half of $I$ the contribution of atoms outside $I$ is
+$O(\log(2+T)e^{-c_1H^2})$, by the unit-interval bound summed over distances $m\ge H/2-1$; for
+$H\ge C\sqrt{\log\log T}$ with $C$ large this is $o((\log T)^{-j})$. So the Gaussian sum over the atoms in
+$I$ alone has $\gg H$ alternating samples. Multiplying it by $e^{\lambda t^2}$ gives a constant times
+$E(t)=\sum_\gamma b_\gamma e^{2\lambda\gamma t}$ with $\operatorname{sign}b_\gamma=\operatorname{sign}\nu(\set\gamma)$.
+An exponential sum with increasing real exponents has at most as many distinct real zeros as sign changes
+of its ordered nonzero coefficients: with no sign change this is immediate; otherwise take $q$ between two
+successive exponents at a sign change, and $E\mapsto e^{qt}(e^{-qt}E)'$ multiplies each coefficient by its
+exponent minus $q$, removing exactly one sign change, while Rolle's theorem removes at most one zero. This
+is an instance of Schoenberg's variation-diminishing property \cite{Schoenberg1948Variation}. Hence the
+ordered atoms of $I$ have $\gg H$ sign changes, giving the alternating sequence and the bound in both
+directions.
+
+For the shorter window take $\sigma>1$ close to $1$ and $k<\pi/(2b)$ close to its endpoint so that
+$kb_0>1$, and use the second density. The positive and negative sample points can be taken within $D$ of
+$T$; for either, the mass from ordinates outside the window is
+$O(\log(2+T)\exp\set{-c_2\exp(kb_0\log\log\log T)})=o((\log T)^{-j})$, so the signs persist after
+truncation, and positivity of $w$ forces an atom of each sign in the window.
+\end{proof}
+
+\begin{corollary}[Blind recovery from positive ordinates; \stG]\label{zer:cor:blindall}
+Let $\mathcal X$ have $n$ distinct primitive characters, of arbitrary parities and conductors, and let the
+competitor $(\mathcal Y,B)$ have at most $n$ distinct ones. If $\liminf_{T\to\infty}d_+((0,T])/T=0$, the two label
+multisets coincide and, after matching, $D_A=D_B$; for distinct labels all corresponding principal minors
+agree, and for weighted graph Laplacians with nonnegative weights every edge weight is identified. In
+particular this holds if the competitor misses $o(T)$ multiplicities of the positive zeros of
+$\mathcal P_A$ through height $T$, whatever its additional zeros.
+\end{corollary}
+\begin{proof}
+For fewer competing labels \eqref{zer:eq:coupledcount} gives $\gg T\log T$ missing multiplicities, and the
+unit-interval bound allows at most $O(\log(2+T))$ at each ordinate, so $d_+((0,T])\gg T$. At equal size,
+if the multisets differ or the grouped polynomials differ after matching, apply
+\cref{zer:thm:localcoupled} with centre $2T/3$ and radius $T/3$. Finally the one- and two-vertex minors
+give $A_{ii}$ and $\abs{A_{ij}}$, and the off-diagonal signs of a Laplacian are fixed.
+\end{proof}
+
+The vertex bound is sharp for one-sided observation: a coupling of larger size can contain the given one
+as a block-diagonal summand with further labels, inheriting every zero, because the determinant and the
+product of the vertex completions both factor. With symmetric corruption the size is recovered as well
+(\cref{zer:cor:noise}). Under \cref{src:thm:dgrh} the corollary contains the finite-discrepancy
+statements on the whole line for unknown lists, and gives order $T$ for each one-sided discrepancy in
+place of the order $T/(\log T)^{n+1}$ that a fixed-frequency trace yields. The local theorem is the
+coupled analogue of the triple-logarithmic windows for products of ordinary Dirichlet functions in
+\cref{rec:thm:bothsigns}; here the informative oscillation first appears in a negative power of $\log T$.
+
+Without \cref{src:thm:dgrh}, the same conclusion holds for complex zero data at equal size. This locates
+where the passage from complex zeros to signed real ordinates uses the critical-line input: only to infer
+poles from missing real zeros.
+
+\begin{theorem}[Labels from the complex divisor; \stU]\label{zer:thm:complexdivisor}
+Let $A,B$ be Hermitian couplings on lists $\mathcal A,\mathcal B$ of primitive characters of the same size $n$,
+the conductor-one character and repetitions allowed. If
+$\sum_{x\in\C}\max\set{\ord_x\mathcal P_A-\ord_x\mathcal P_B,0}<\infty$, then the
+character multisets coincide and, after relabelling, $D_A=D_B$.
+\end{theorem}
+
+\begin{proof}
+Put $C_A(s)=\mathcal P_A((s-\tfrac12)/i)$ and define $C_B$ in the same way. For a list $\mathcal L$ let
+$a_{\mathcal L}$ be the sum of its parities and $h_{\mathcal L}$ the number of copies of the conductor-one
+label, and put
+\[
+ c=\tfrac12\log(Q_{\mathcal B}/Q_{\mathcal A}),\qquad\beta=\tfrac12(a_{\mathcal B}-a_{\mathcal A})+2(h_{\mathcal B}-h_{\mathcal A}),\qquad
+ G(s)=\frac{\prod_{\chi\in\mathcal B}L(s,\chi)}{\prod_{\chi\in\mathcal A}L(s,\chi)} .
+\]
+The hypothesis supplies a monic polynomial $W$ cancelling all poles of $C_B/C_A$ with their orders. Let
+$w=\deg W$, $e=w+\beta$ and $E=WC_B/C_A$; as in \cref{zer:lem:invrational}, $E$ is entire of order at most
+one. Uniformly for $\Re s\ge2$ and $\abs s\to\infty$ there is a fixed $d\ne0$ with
+\begin{equation}\label{zer:eq:blindasym}
+ E(s)=d\,e^{cs}s^eG(s)\bigl(1+O(1/\log\abs s)\bigr),
+\end{equation}
+with the principal logarithm: divide each determinant by the product of its completions, so that both
+normalized determinants have leading term $(\tfrac i2\log(s/2))^n$ with relative error $O(1/\log\abs s)$;
+in the ratio of completion products the equal numbers of gamma factors cancel their common part,
+$\Gamma((s+1)/2)/\Gamma(s/2)=(s/2)^{1/2}(1+O(1/\abs s))$, each conductor-one occurrence contributes two
+powers through $s(s-1)$, the conductor exponentials give $e^{cs}$, the polynomial gives
+$s^w(1+O(1/\abs s))$, and constants go into $d$.
+
+With $\kappa=\abs c$, boundedness of $G$ on $\Re s\ge2$ gives $\abs{E(s)}\ll(1+\abs s)^ee^{c\Re s}$ there.
+Realness of $\mathcal P_A,\mathcal P_B$ gives $\abs{C_j(1-\overline s)}=\abs{C_j(s)}$, hence
+$\abs{E(s)}\ll(1+\abs s)^ee^{c(1-\Re s)}$ on $\Re s\le-1$. In the strip consider $E(s)/(s+3)^e$, bounded on
+both vertical boundaries; for $0<\alpha<\pi/3$ apply the maximum principle on expanding rectangles to it
+times $\exp[-\delta\cos(\alpha(s-\tfrac12))]$, whose exponent has real part at least
+$\cos(3\alpha/2)\cosh(\alpha\Im s)$ in the strip, and let $\delta\downarrow0$. So
+$\abs{E(s)}\le C(1+\abs s)^e\exp(\kappa\abs{\Re s})$ on $\C$.
+
+Choose $T_j\to\infty$ with $p^{-iT_j}\to1$ for every prime $p$ and $e^{icT_j}\to1$, by compactness of finite
+tori and a diagonal choice. Absolute convergence gives $G(s+iT_j)\to G(s)$ locally uniformly on $\Re s>1$,
+and the entire functions $T_j^{-e}E(s+iT_j)$ are locally bounded, so a subsequence converges to an entire
+$H$ with $\abs{H(s)}\le Ce^{\kappa\abs{\Re s}}$ and $H(s)=d_0e^{cs}G(s)$ on $\Re s\ge2$, $d_0=de^{i\pi e/2}\ne0$.
+Write $G(s)=\sum_kb_kk^{-s}$ and, for fixed $k$, $\lambda=c-\log k$. On $\Re s=2$ the vertical mean of
+$H(s)e^{-\lambda s}$ is $d_0b_k$; by the rectangle with sides on $\Re s=2$ and $\Re s=-u$ and the global
+bound, the same mean holds on $\Re s=-u$ for every $u>0$, so $\abs{d_0b_k}\le Ce^{(\kappa+\lambda)u}$. Letting
+$u\to\infty$, $G$ is a Dirichlet polynomial supported on $k\le\max(1,Q_{\mathcal B}/Q_{\mathcal A})$. In
+particular its prime coefficients $b_p=S_{\mathcal B}(p)-S_{\mathcal A}(p)$ vanish for all large primes,
+so the two character sums agree on every unit class of a common modulus and orthogonality identifies the
+multisets. After matching, $H=\mathcal P_B-\mathcal P_A\in\mathcal V$ has $\ord_xH\ge\min(\ord_x\mathcal P_A,\ord_x\mathcal P_B)$,
+so $H/\mathcal P_A$ has finitely many poles; by \cref{zer:lem:invrational,zer:lem:outside}, $H=0$.
+\end{proof}
+
+\begin{corollary}[Finite windows for a bounded catalogue; \stG]\label{zer:cor:catalogue}
+Fix a finite catalogue of primitive characters, a maximum list size $N$, a norm bound $M$ and an integer
+$K\ge0$. There is $T<\infty$ such that, for all lists from the catalogue with $n_B\le n_A\le N$ and all
+couplings with $\norm A,\norm B\le M$, if at most $K$ zero multiplicities of $\mathcal P_A$ in $[-T,T]$ are
+missing from $\mathcal P_B$, then the lists coincide as multisets and $D_A=D_B$ after relabelling.
+\end{corollary}
+\begin{proof}
+If no window excluded unequal multisets uniformly, take counterexamples on $[-j,j]$; finitely many lists
+and compactness of the matrix balls give a subsequence with fixed distinct multisets and convergent
+matrices, both limiting determinants nonzero with real zeros. Around finitely many distinct limit zeros
+of the first, take disjoint discs whose closures contain no other zeros of either limit and whose
+boundaries avoid them; Rouch\'e's theorem preserves the counts, so the sum of positive parts of the
+differences is at most $K$. Exhausting the zeros gives one-sided discrepancy at most $K$ on $\R$,
+contrary to \cref{zer:thm:blindlabels}. Once the multisets agree, take the largest threshold of
+\cref{zer:thm:window} over the finitely many lists.
+\end{proof}
+
+\paragraph{Decoding and stability.}
+Let the character list be known, let $K$ bound deleted and $\ell$ bound inserted multiplicities in the
+window $[-T_0,T_0]$ of \cref{zer:thm:window} for $(M,K,\ell)$, a spurious extra copy at a genuine zero
+counting as one insertion, and let the received multiset be $Y=Z+J$, where $Z$ consists of the true zeros
+of $\mathcal P_A$ in the window after at most $K$ deletions and $\abs J\le\ell$. The decoder receives only
+$Y$. Put $d=\prod_j(m_j+1)-1$.
+
+\begin{theorem}[Exact decoding by linear equations; \stG]\label{zer:thm:decode}
+Let $\norm A\le M$. Seek a monic polynomial $W$ of degree $\ell$ and polynomials $Q_\alpha$ of degree at most
+$\ell$ with
+\[
+ \Bigl(WE_m+\sum_{\alpha\ne m}Q_\alpha E_\alpha\Bigr)^{(r)}(y)=0\qquad(y\in\supp Y,\ 0\le r<\operatorname{mult}_Y(y)).
+\]
+The system is consistent, and every solution has $Q_\alpha=c_\alpha(A)W$, so the coefficient of $z^\ell$ in
+$Q_\alpha$ is $c_\alpha(A)$. No search over corrupted positions is needed.
+\end{theorem}
+\begin{proof}
+$W=z^{\ell-\abs J}\prod_{y\in J}(z-y)$, with multiplicities, and $Q_\alpha=c_\alpha W$ are feasible. For any
+solution, the fitted function minus $W\mathcal P_A$ lies in $V_\ell$ and vanishes to the retained orders along
+$Z$, so it misses at most $K$ multiplicities of $\mathcal P_A$ in the window; by \cref{zer:thm:window} it
+vanishes identically, and \cref{zer:lem:algindep} gives the identities coefficient by coefficient.
+\end{proof}
+
+There are $\abs Y$ equations and $\ell+d(\ell+1)$ unknowns; once exact jet values are available, assembly
+and Gaussian elimination take polynomially many arithmetic operations, in a model with exact real or
+complex arithmetic and zero tests; nothing is asserted about the bit cost of computing transcendental
+ordinates. For distinct labels $d=2^n-1$. Spare error budget may leave $W$ nonunique.
+
+\begin{remark}[Certifying a window]\label{zer:rem:windowsearch}
+The affine solution set is found by linear algebra; testing $Q_\alpha=c_\alpha W$ on one solution and the
+homogeneous identities on a basis of directions certifies a candidate under the corruption model even in a
+shorter window, and enlarging the window with complete observations eventually makes the test succeed.
+A sufficient $T_0$ in \cref{zer:thm:window} is also computable, for a fixed list, integer budgets and a
+rational bound $M$, by a terminating (potentially very slow) search that needs no oracle for real zero
+locations. Enclose the norm ball in finitely many rational boxes of Hermitian matrices, and normalize a
+coefficient of greatest modulus of $H\in V_\ell$ to one, the others in $[-1,1]$; every parameter pair
+$(A,H)$ has finitely many disjoint rational rectangles, with boundaries free of zeros, on which
+$\sum_D\max\set{N_D(\mathcal P_A)-N_D(H),0}>K$, and these counts persist in a parameter neighbourhood.
+Enumerate rational parameter boxes, rectangles, boundary meshes and precisions; certify by convergent
+interval enclosures that each mesh segment has image in an open disc excluding zero, uniformly on the
+box, and compute the winding at a rational representative by a polygon whose vertices are enclosed in the
+same discs; dovetail until the retained boxes cover the compact charts, and output any integer larger than
+the absolute real parts of all rectangle vertices used. Effective enclosures of the completed functions
+on compact sets follow from the theta integrals split by the functional equation, or from Hurwitz-zeta
+expressions with Euler--Maclaurin bounds, with derivatives by Cauchy's formula. Compactness gives
+termination, and reality of the zeros converts rectangle discrepancies into the real-window bound. The
+same search on pairs from a finite catalogue gives \cref{zer:cor:catalogue}. No practical analytic bound
+on $T_0$ in terms of the conductors is known.
 \end{remark}
 
+For stability fix the labelled list, $M$, $K$ and $\ell$, let $T_0$ be as in \cref{zer:thm:window}, put
+$T=T_0+1$, and use Euclidean norms of polynomial coefficient vectors in increasing monomial order; the norm
+on $V_\ell$ is well defined by \cref{zer:lem:algindep}. For a finite real multiset $D$ of $b$ points with
+multiplicity let $p_D(z)=\prod_{x\in D}(z-x)$, and let $I_Df$ be the polynomial of degree less than $b$ with
+$f-I_Df$ divisible by $p_D$ among entire functions ($I_\varnothing f=0$).
+
+\begin{lemma}[Stable interpolation; \stU]\label{zer:lem:stableinterp}
+Fix $B_0$ and $U$, and let all nodes lie in $[-U,U]$ with $b\le B_0$. If $D,D'$ have the same size and can be
+paired within distance $\delta$, then $\norm{I_Df-I_{D'}f}\le C\delta\max_{\abs w=U+2}\abs{f(w)}$. If
+$D\subseteq Y$ as multisets with $\abs Y\le B_0$, then $\norm{I_Df}\le C'\norm{I_Yf}$. Both constants depend only
+on $B_0,U$.
+\end{lemma}
+\begin{proof}
+On the circle $\abs w=U+2$,
+$I_Df(z)=\frac1{2\pi i}\oint f(w)\frac{p_D(w)-p_D(z)}{(w-z)p_D(w)}\,\dd w$, a polynomial of degree less than $b$
+whose difference from $f$ is a holomorphic multiple of $p_D$ near the nodes. Each kernel coefficient has
+bounded first derivatives in the node variables on the compact box, since $\abs{p_D(w)}\ge2^b$; this
+proves the first assertion, collisions included. For the second, $I_Df=I_D(I_Yf)$ by divisibility, and the
+integral is bounded on polynomials of degree less than $B_0$ with unit coefficient norm.
+\end{proof}
+
+\begin{lemma}[A uniform floor; \stG]\label{zer:lem:stablefloor}
+There is $a>0$ such that for all $\norm A\le M$, every multiset $Z$ obtained from the zeros of $\mathcal P_A$
+in $[-T,T]$ by at most $K$ deletions, and every $H=\sum_{\alpha\ne m}h_\alpha E_\alpha\in V_\ell$,
+$\norm{I_ZH}\ge a\norm{(h_\alpha)_{\alpha\ne m}}$.
+\end{lemma}
+\begin{proof}
+The number of zeros of $\mathcal P_A$ in $[-T,T]$ is uniformly bounded, by local uniform convergence along
+convergent subsequences of matrices and Rouch\'e's theorem on a circle enclosing the interval. If the
+inequality failed, take $A_j\to A_*$, unit coefficient vectors converging to one defining $H_*$, and $Z_j$
+with $I_{Z_j}H_j\to0$, of common cardinality with ordered nodes converging to $Z_*$; the integral formula
+gives $I_{Z_*}H_*=0$. Around each zero of $\mathcal P_{A_*}$ in $[-T_0,T_0]$ take a small disc with real
+diameter inside $(-T,T)$ and boundary avoiding the zeros of $\mathcal P_{A_*}$ and $Z_*$; for large $j$ the
+counts of $\mathcal P_{A_j}$ there equal those of $\mathcal P_{A_*}$, all real, so $Z_*$ contains all but at
+most $K$ multiplicities of the zeros of $\mathcal P_{A_*}$ in $[-T_0,T_0]$, and $p_{Z_*}\mid H_*$ contradicts
+the choice of $T_0$.
+\end{proof}
+
+\begin{theorem}[Lipschitz stability of the decoder; \stG]\label{zer:thm:stabledecoder}
+Let $\norm A\le M$ and $0\le\delta\le1$. Erase at most $K$ zeros of $\mathcal P_A$ in $[-T,T]$, displace each
+retained one by at most $\delta$, and insert at most $\ell$ arbitrary points in $[-T-1,T+1]$; let $Y$ be the
+result, with no information about the matching. There are $R_0,C$ depending only on the list, $M,K,\ell,T$
+such that any minimizer of $\norm{I_Y(WE_m+\sum_{\alpha\ne m}Q_\alpha E_\alpha)}$ over monic $W$ of degree
+$\ell$ and $\deg Q_\alpha\le\ell$, with joint coefficient norm at most $R_0$, gives $\widehat c_\alpha=[z^\ell]Q_\alpha$
+with
+\[
+ \bigl\|(\widehat c_\alpha-c_\alpha(A))_{\alpha\ne m}\bigr\|\le C\delta .
+\]
+The minimization is convex in $\ell+d(\ell+1)$ scalar coefficients. Repeated zeros may split into separate
+reported locations, and distinct zeros may be reported at one location.
+\end{theorem}
+\begin{proof}
+Choose $R_0$ to contain all vectors $(W_*,(c_\alpha(A)W_*)_\alpha)$ for $\norm A\le M$ and monic $W_*$ of degree
+$\ell$ with roots in $[-T-1,T+1]$; for the actual insertions take $W_*=z^{\ell-\abs J}p_J$. With $Z$ the
+retained zeros before displacement, $p_{Z\cup J}$ divides $W_*\mathcal P_A$ and $Z\cup J$ pairs with $Y$
+within $\delta$, so \cref{zer:lem:stableinterp} gives this feasible vector residual at most $C_1\delta$, and a
+minimizer exists and does at least as well. For its fitted function $G$ and the displaced genuine part
+$Z'\subseteq Y$, the second interpolation bound gives $\norm{I_{Z'}G}\le C_2\delta$, and the first, with $G$
+uniformly bounded on the circle, gives $\norm{I_ZG}\le C_3\delta$. Since $I_Z(W\mathcal P_A)=0$,
+$H=G-W\mathcal P_A=\sum(Q_\alpha-c_\alpha(A)W)E_\alpha$ obeys the same bound, and \cref{zer:lem:stablefloor} gives
+$\norm{(Q_\alpha-c_\alpha(A)W)_{\alpha\ne m}}\le(C_3/a)\delta$; take the coefficient of $z^\ell$.
+\end{proof}
+
+The constants are existential and give no numerical condition number; the contour representation makes the
+bound uniform over collisions, whereas unscaled point-evaluation rows can be conditioned very differently.
+
+\begin{remark}[Decoding experiments and unconditional interpolation]\label{zer:rem:decode}
+Unconditionally, by \cref{zer:lem:algindep}, the values of $\mathcal P_A/\prod_iF_i$ at $d$ suitable points
+$z=-i(s-\tfrac12)$, $s>1$, determine the coefficients $c_\alpha(A)$ by linear algebra. For
+$\chi_5,\chi_8,\chi_{12}$ and the path with weights $2,3$, $100$-digit evaluation at $s=2,\dots,8$ recovered
+the seven coefficients to about $5.5\cdot10^{-95}$, and an exhaustive check of the $729$ zero-diagonal
+symmetric four-vertex matrices with entries in $\set{-1,0,1}$ found $108$ classes, the same for switching
+and for principal minors (\artifact{grh_inverse_spectral_2026-11-27/checks.txt}). For the mixed-parity pair of
+the quadratic characters modulo $3$ (odd) and $5$ (even) with $A=\begin{psmallmatrix}2&1\\1&3\end{psmallmatrix}$,
+$D_A=X_1X_2+3X_1+2X_2+5$, a $45$-digit computation refined nine zeros, deleted the one near
+$10.50530281214$ and inserted $4.25$; the system of \cref{zer:thm:decode} returned the location $4.25$ and the
+coefficients $3,2,5$ with normalized residual about $2.4\cdot10^{-45}$ (selected roots only; no completeness
+or window length is certified). An exact rational polynomial model with one deletion, three insertions and
+one excess multiplicity gave an affine system of rank $15$, locator $z(z+1)(z-87)$ and the same coefficients; scripts and records:
+\begin{center}\artifact{coupled-dirichlet-inverse-spectrum/checks/dirichlet_locator.py},\\
+\artifact{coupled-dirichlet-inverse-spectrum/checks/exact_locator.py},\\
+\artifact{coupled-dirichlet-inverse-spectrum/checks/dirichlet_result.json},\\
+\artifact{coupled-dirichlet-inverse-spectrum/checks/exact_result.json}.\end{center}
+\end{remark}
+
+
 \subsection{Transport of infinitely many zeros and local Cauchy laws}\label{zer:sec:transport}
-\sources{dirichlet_zero_transport_2026-11-26; graph_coupled_zeros_2026-11-26}
+\sources{dirichlet_zero_transport_2026-11-26; graph_coupled_zeros_2026-11-26; dirichlet-sharp-window-transport}
 
 The resistance formula \eqref{zer:eq:resistance} concerns finite polynomials, and an unregularized
 sum of the displacements of all zeros of the completed functions diverges. The correct objects are
@@ -5460,7 +6265,10 @@ windows that may shrink arbitrarily fast. The spectral-shift mechanism is classi
 \cite{BehrndtGesztesyNakamura2018Spectral,Reiffenstein2022Interlacing}; weak Cauchy limits for the
 logarithmic derivative of $\xi$ are due to Sodin and to Najnudel and Nikeghbali
 \cite{Sodin2018Critical,NajnudelNikeghbali2026Cauchy}, and Cauchy laws for Herglotz boundary values
-to Aizenman and Warzel \cite{AizenmanWarzel2015Cauchy}. No simplicity, spacing, independence or
+to Aizenman and Warzel \cite{AizenmanWarzel2015Cauchy}. On every interval in $[T,2T]$ the displacement
+equals an explicit integral up to an error uniform in the dimension, the conductors and both matrices,
+which gives a relative Cauchy law for every Borel set of values, a finite part for the infinite transport,
+and an expansion to every order on sharp windows. No simplicity, spacing, independence or
 pair-correlation hypothesis is used.
 
 \paragraph{Setting.}
@@ -5590,8 +6398,8 @@ any zero. The floating-point diagnostics of the normalized transforms, and exact
 identity on polynomial inputs with repeated and shared roots, are in
 \artifact{dirichlet_zero_transport_2026-11-26/code/verify_transport.py} (record
 \artifact{dirichlet_zero_transport_2026-11-26/data/verification.json}). The expansion is for the
-smoothed displacement; it is not asserted term by term for the window integrals, and no microscopic
-spacing law follows.
+smoothed displacement; its sharp-window counterpart, with a real shift of $A$, is
+\cref{zer:cor:sharpexp}, and no microscopic spacing law follows.
 
 \paragraph{The squared ordinate.}
 Suppose the inputs are even, write $\ord_0F_i=2m_i$ and $F_i(z)=z^{2m_i}G_i(z^2)$, so that $G_i(0)\ne0$;
@@ -5697,11 +6505,243 @@ $a_T=\alpha_T\log T/2$, $b_T=\beta_T\log T/2$, and the last with $a_T=-\eps(T)$,
 \end{proof}
 
 A weak Cauchy limit gives no relative error for intervals whose length tends to zero, in particular
-for a length $e^{-T}$; the statement concerns a continuous sampling variable and says nothing about
-what a discrete grid resolves.
+for a length $e^{-T}$; \cref{zer:thm:uniformcauchy} below gives one, also on short time intervals. The
+statements concern a continuous sampling variable and say nothing about what a discrete grid resolves.
+
+\paragraph{Sharp windows.}
+The macroscopic law and the local Cauchy law have a sharp-interval form with a dimension-free endpoint
+error. Keep the setting above with $B\succeq0$, now allowed to be zero, and put, for $t>2\pi/q$,
+\[
+ d_q(t)=\tfrac12\log\frac{qt}{2\pi},\qquad p_{q,t}(v)=\frac1\pi\frac{d_q(t)}{(v+\pi/4)^2+d_q(t)^2},\qquad
+ p^*_{q,T}(v)=\frac1\pi\frac{d_q(T)}{v^2+d_q(T)^2},
+\]
+two probability densities; write $p(E)=\int_Ep$. For a diagonal $Z$ with $\Im Z\prec0$ define
+\begin{equation}\label{zer:eq:phaseTheta}
+ \Theta(Z)=\int_0^1\tr\bigl(B(A+uB+Z)^{-1}\bigr)\,\dd u,
+\end{equation}
+a logarithm of $\det(A+B+Z)/\det(A+Z)$ fixed for all ranks; $\Theta(\zerdiag g_i(z))=\mathcal L_{A,B}(z)$ in the
+upper half-plane by \cref{zer:thm:shift}. Let $D(t)=\zerdiag(d_{q_i}(t))$, $D=D(T)$, $d=\min_iD_{ii}$, and
+\[
+ \Omega=\Im\Theta(-iD),\qquad \rho(t)=\pi^{-1}\Im\Theta\bigl(-\tfrac\pi4I-iD(t)\bigr),
+\]
+so that $\Omega>0$ if $B\ne0$. With $A'=D^{-1/2}AD^{-1/2}$, $B'=D^{-1/2}BD^{-1/2}$ and $X=A'+uB'$, congruence
+invariance of \eqref{zer:eq:phaseTheta} gives
+\begin{equation}\label{zer:eq:Omega}
+ \Omega=\int_0^1\tr\bigl(B'(I+X^2)^{-1}\bigr)\,\dd u=\tr\bigl(\arctan(A'+B')-\arctan A'\bigr).
+\end{equation}
+
+\begin{theorem}[Sharp interval estimate; \stG]\label{zer:thm:sharpinterval}
+There are absolute constants $T_0,C$ such that for all $T\ge T_0$ and all intervals $I\subseteq[T,2T]$,
+\[
+ \Bigl|\int_I\sigma_{A,B}(t)\,\dd t-\int_I\rho(t)\,\dd t\Bigr|\le C\frac\Omega{\log d},\qquad
+ \pi\rho(t)=\Omega\bigl(1+O(d^{-1})\bigr)\quad(T\le t\le2T),
+\]
+the implied constant also absolute: nothing depends on $n$, the characters, the conductors, $A$ or $B$,
+which may all vary with $T$.
+\end{theorem}
+
+For fixed data and $B\ne0$, $\Omega\sim2\tr(B)/\log T$, so the error is $O(1/(\log T\log\log T))$ for every
+endpoint pair in a dyadic interval; uniformity in $A$ and $B$ is what gives the much finer error for a rare
+scalar event below. The proof uses three estimates. Write $Z'=D^{-1/2}ZD^{-1/2}$.
+
+\begin{lemma}[Comparing resolvents; \stU]\label{zer:lem:resolvent}
+If $\norm{Z_k'+iI}\le\tfrac12$ for $k=1,2$, then $\abs{\Theta(Z_1)-\Theta(Z_2)}\le4\Omega\norm{Z_1'-Z_2'}$; in
+particular $\Im\Theta(Z_1)\ll\Omega$.
+\end{lemma}
+\begin{proof}
+Let $R_*=(X-iI)^{-1}$ and $R_k=(X+Z_k')^{-1}$. Factoring the inverse with $\norm{R_*}\le1$ gives
+$\norm{R_kB'^{1/2}}_{\mathrm{HS}}\le2\norm{R_*B'^{1/2}}_{\mathrm{HS}}$, and the adjoints obey the same bound since
+$R_*$ is normal with $R_*^*R_*=(I+X^2)^{-1}$. In $R_1-R_2=R_1(Z_2'-Z_1')R_2$ apply the Hilbert--Schmidt
+Cauchy--Schwarz inequality with $B'^{1/2}$ on the two outside factors; the square of the reference norm
+integrates to $\Omega$ by \eqref{zer:eq:Omega}. For the last assertion take $Z_2=-iD$.
+\end{proof}
+
+Put $G(z)=\zerdiag(g_i(z))$ and, with the principal logarithm $\zerLog$,
+\[G_0(z)=-i\,\zerdiag\bigl(\tfrac12\log(q_i/(2\pi))+\tfrac12\zerLog(-iz)\bigr),\]
+whose boundary value at $t>0$ is
+$-\tfrac\pi4I-iD(t)$, the real shift coming from the argument of $-it$. Let $Y=2+4\log(2T)$.
+
+\begin{lemma}[A rectangle estimate near the real axis; \stG]\label{zer:lem:strip}
+There are absolute $c,C_0>0$ such that for $T\ge T_0$, $T\le t\le2T$, $h=C_0/\log d$ and $z=t+iy$,
+\[
+ \norm{D^{-1/2}(G-G_0)(z)D^{-1/2}}\ll\begin{cases}e^{-cy\log d}+d^{-1}&(h\le y\le1),\\(T^{-1}+2^{-y})/d&(1\le y\le Y).\end{cases}
+\]
+Each normalized matrix $G(z)$, $G_0(z)$ is within $\tfrac12$ of $-iI$ in norm for $h\le y\le Y$, and so is
+$G_0$ down to $y=0$.
+\end{lemma}
+\begin{proof}
+Set $s=\tfrac12-iz$. The functional equation gives $g_j(z)=-i\Lambda'_{\overline\chi_j}(s)/\Lambda_{\overline\chi_j}(s)$, with
+$\xi$ in the zeta case. For $y\ge1$ the logarithmic derivative of the Euler product is $O(2^{-y})$ uniformly
+in the character, since $\sum_{k\ge2}\Lambda(k)k^{-3/2}<\infty$, the gamma part is
+$\tfrac12\log(q_j/\pi)+\tfrac12\psi((s+a_j)/2)$, and $\psi(w)=\zerLog w+O(1/\abs w)$; so
+$g_j=(G_0)_{jj}+O(\abs z^{-1}+2^{-y})$, the rational terms of $\xi$ obeying the same bound. This is the second
+case, and on the rectangle $G_0+iD=O(1)$ uniformly since $Y=O(\log T)$.
+
+With $d_j=D_{jj}$, the Cayley transform $w_j=(g_j+id_j)/(g_j-id_j)$ is holomorphic with modulus at most one above
+the real axis, its real poles being removable, and $\abs{w_j(x+i)}\le K/d_j$ for $\abs{x-t}\le1$ by the
+second case. On the rectangle $\abs{x-t}\le1$, $0\le y\le1$ the harmonic function
+$v=\cos(\pi(x-t)/2)\sinh(\pi y/2)/\sinh(\pi/2)$ vanishes on the sides and bottom and lies in $[0,1]$ on the top,
+so the maximum principle applied to $\log\abs{w_j}+v\log(d_j/K)$ gives $\abs{w_j(t+iy)}\le\exp(-cy\log d_j)$. With
+$C_0$ large, inverting the Cayley transform gives $\abs{g_j/d_j+i}\le2\abs{w_j}/(1-\abs{w_j})\le\tfrac12$ for
+$h\le y\le1$, and the first case. Increasing $T_0$ so that $2h<1$ gives the remaining norm assertions.
+\end{proof}
+
+The smoothing is removed by the kernel
+\[
+ K_h(s)=2P_h(s)-P_{2h}(s)=\frac{6h^3}{\pi(s^2+h^2)(s^2+4h^2)},\qquad P_y(s)=\frac y{\pi(s^2+y^2)},
+\]
+which is nonnegative with integral one and tail $\int_r^\infty K_h\ll\min(1,(h/r)^3)\ll hP_h(r)$. For
+$I=[a,b]$, a change between $\mathbf 1_I(s)$ and $\mathbf 1_I(s-u)$ requires crossing $a$ or $b$, so for every
+bounded nonnegative $f$
+\begin{equation}\label{zer:eq:clip}
+ \Bigl|\int_I(f-K_h*f)\Bigr|\ll h\bigl((P_h*f)(a)+(P_h*f)(b)\bigr);
+\end{equation}
+the extra decay of $K_h$ is essential in this comparison with $P_h$.
+
+\begin{proof}[Proof of \cref{zer:thm:sharpinterval}]
+Take $h$ from \cref{zer:lem:strip}. By the Poisson formula of \cref{zer:thm:shift},
+$(P_y*\sigma_{A,B})(x)=\pi^{-1}\Im\Theta(G(x+iy))$, so \eqref{zer:eq:clip} and \cref{zer:lem:resolvent} show that
+replacing $\sigma_{A,B}$ by $K_h*\sigma_{A,B}$ costs $O(h\Omega)$; its integral is $\pi^{-1}$ times the imaginary
+part of the horizontal integrals of $\Theta(G)$ at heights $h,2h$ with coefficients $2,-1$. For
+$J(z)=\Theta(G(z))-\Theta(G_0(z))$ and $\eta\in\set{h,2h}$, integrate $J$, holomorphic there, around
+$[a,b]+i[\eta,Y]$. By \cref{zer:lem:resolvent,zer:lem:strip} each vertical side costs
+\[
+ C\Omega\Bigl(\int_h^1(e^{-cy\log d}+d^{-1})\,\dd y+d^{-1}\int_1^Y(T^{-1}+2^{-y})\,\dd y\Bigr)\ll\Omega/\log d,
+\]
+and the top costs $O(\Omega/d)$ since $b-a\le T$ and $T2^{-Y}\le1$; Cauchy's theorem bounds the bottom
+integral by $O(\Omega/\log d)$. This bounds an integral of the arithmetic remainder over a long interval by
+its values near the endpoints. Finally $\norm{D^{-1/2}(G_0(t+i\eta)-G_0(t))D^{-1/2}}\ll\eta/(Td)$, so the
+integrated change is $O(\Omega\eta/d)$; the coefficients $2,-1$ sum to one, leaving $\int_I\rho$. The pointwise
+formula follows from \cref{zer:lem:resolvent}, since $\norm{D^{-1/2}(G_0(t)+iD)D^{-1/2}}\ll1/d$.
+\end{proof}
+
+\begin{theorem}[Uniform local Cauchy law; \stG]\label{zer:thm:uniformcauchy}
+Let $F$ be one of the functions \eqref{zer:eq:phasereal}, of conductor $q$, $g=F'/F$, and $d=d_q(T)$. For all
+sufficiently large $T$, every interval $I\subseteq[T,2T]$ of length $H$ and every Borel set $E\subseteq\R$,
+\[
+ \Bigl|\,\abs{\set{t\in I:g(t)\in E}}-\int_Ip_{q,t}(E)\,\dd t\Bigr|\le\frac C{\log d}\,p^*_{q,T}(E),
+\]
+with absolute $C$ and threshold. In particular, if $H>0$ and $p^*_{q,T}(E)>0$, the probability that $g(t)\in E$
+for uniform $t\in I$ is $p^*_{q,T}(E)\bigl(1+O(d^{-1}+(H\log d)^{-1})\bigr)$.
+\end{theorem}
+\begin{proof}
+For $E=(u,v)$ take $n=1$, $A=-v$, $B=v-u$; outside a discrete set $\sigma_{A,B}=\mathbf 1_{\set{u<g<v}}$, and direct
+integration of \eqref{zer:eq:phaseTheta} gives $\Omega=\pi p^*_{q,T}((u,v))$ and $\rho(t)=p_{q,t}((u,v))$. Apply
+\cref{zer:thm:sharpinterval}. The occupation and model measures are finite and give interval endpoints
+zero mass, $g$ being nonconstant meromorphic; by additivity the two inequalities extend to finite disjoint
+unions of intervals and then by the monotone class theorem to Borel sets. The pointwise part of
+\cref{zer:thm:sharpinterval} gives the relative form on intervals, extended in the same way.
+\end{proof}
+
+For example, for $F_\zeta$, $I=[T,T+H]$ with $H=(\log\log T)^{-1/2}$ and $E=[e^T,e^T+e^{-T}]$, the set of
+$t\in I$ with $g(t)\in E$ has length asymptotic to $Hd_1(T)e^{-3T}/\pi$, although both the time interval and the
+proportion tend to zero. For $0<u<v$ the theorem implies \cref{zer:thm:localcauchy}, by splitting $[uT,vT]$ into boundedly many
+intervals $I\subseteq[T',2T']$, on each of which $p^*_{q,T'}(E)$ is asymptotic to the model density there.
+On each pole-free component of $I$, $g'(x)=-\sum_\gamma m_\gamma/(x-\gamma)^2<0$, so the occupation measure has
+density $w_I(v)=\sum_{x\in I^\circ:g(x)=v}1/\abs{g'(x)}$, and the theorem is equivalent to
+$\abs{w_I(v)-\int_Ip_{q,t}(v)\,\dd t}\le Cp^*_{q,T}(v)/\log d$ for almost every $v$, and at every $v$ different
+from the finite values of $g$ at the endpoints: for $v=0$ a weighted count of critical points of $F$, for other
+levels of zeros of $F'-vF$. With $E=(v,\infty)$ and endpoints not poles, $v\abs{\set{x\in I:g(x)>v}}\to\sum_{\gamma\in I}m_\gamma$
+as $v\to\infty$, since $g(x)=m_\gamma/(x-\gamma)+O(1)$ at each pole, and multiplying by $v$ gives
+\[
+ \Bigl|\sum_{\gamma\in I}m_\gamma-\frac1\pi\int_Id_q(t)\,\dd t\Bigr|\ll\frac d{\log d},
+\]
+the order of the classical bound for the zero count under GRH, for which sharper constants are known
+\cite{CarneiroChandeeMilinovich2015Note}; here the whole value line is treated in one measure inequality.
+
+\begin{theorem}[Convergent displacement remainder; \stG]\label{zer:thm:finitepart}
+Fix the inputs and $A,B$ with $B\succeq0$, and $t_0$ so large that $D(t)\succ0$ for $t\ge t_0$. There is a real
+constant $C(t_0)$ with
+\[
+ \int_{t_0}^T\sigma_{A,B}(t)\,\dd t=\int_{t_0}^T\rho(t)\,\dd t+C(t_0)+O\Bigl(\frac1{\log T\log\log T}\Bigr).
+\]
+For $B\ne0$ the improper integral defining $C(t_0)$ converges only conditionally.
+\end{theorem}
+
+A dyadic summation of \cref{zer:thm:sharpinterval} would give the divergent series $\sum_k1/(k\log k)$; a separate
+contour argument makes the bound uniform from $a$ to every $b\ge a$.
+
+\begin{proof}
+Implied constants may depend on the data. Put $G_1(z)=G_0(z)+C_1/z$ with $C_1$ diagonal and real entries
+$c_j=a_j/2-\tfrac14+2\cdot\mathbf 1\set{F_j=F_\zeta}$, $a_\zeta=0$: inserting $\psi(w)=\zerLog w-1/(2w)+O(\abs w^{-2})$ at
+$w=(\tfrac12+a_j-iz)/2$, and $-i(1/s+1/(s-1))=2/z+O(\abs z^{-2})$ for the zeta polynomial, gives
+$\norm{G(z)-G_1(z)}\ll2^{-y}+\abs z^{-2}$ uniformly for $x=\Re z$ large and $y=\Im z\ge1$.
+
+Take $a$ large and $h=C_2/\log\log a$ with $C_2$ a large constant. For every $t\ge a$ the proof of
+\cref{zer:lem:strip}, frozen at $T=t$, applies for $h\le y\le1$, and the resolvent calculation with scale
+$\ell_t=\tfrac12\log t$ gives
+$\abs{\Theta(G(t+iy))-\Theta(G_1(t+iy))}\ll e^{-cy\log\log t}/\log t+(\log t)^{-2}$, since $\Omega_t\ll1/\log t$ and $C_1/z=O(1/t)$.
+For $y\ge1$ the imaginary parts of $G,G_1$ are at most $-c\log\abs z\,I$, so the phase difference is
+$O((2^{-y}+\abs z^{-2})/(\log\abs z)^2)$. Integrating in $y$ costs $O(1/(\log t\log\log t))$ at each endpoint.
+For finite $b\ge a$, move the horizontal integrals of $\Theta(G)-\Theta(G_1)$ at heights $h,2h$ to infinity:
+the top edge tends to zero and the vertical edges have the bounds just proved, uniformly in $b$. The
+clipping error \eqref{zer:eq:clip} is $O(h/\log a)$, and moving $\Theta(G_1)$ from height $h$ or $2h$ to the
+boundary costs $O(h\int_a^b\dd t/(t(\log t)^2))=O(h/\log a)$, since $G_1'(t+iy)=O(1/t)$ and differentiating the
+inverse supplies two factors $O(1/\log t)$. Finally both inverses $(A+uB+G_k(t))^{-1}$, $k=0,1$, equal
+$iI/\ell_t+O(\ell_t^{-2})$ uniformly in $u$, so
+$\Theta(G_1(t))-\Theta(G_0(t))=\tr(BC_1)/(t\ell_t^2)+O(1/(t\ell_t^3))$, whose leading term is real; its imaginary part
+costs $O(1/(\log a)^2)$ after integration. Hence $\sup_{b\ge a}\abs{\int_a^b(\sigma_{A,B}-\rho)}\ll(\log a\log\log a)^{-1}$,
+and the Cauchy criterion gives the theorem. For $B\ne0$, $\rho(t)\sim\tr B/(\pi\ell_t)$, so eventually
+$0<\rho<\tfrac12$ with divergent integral, while $\sigma_{A,B}$ is integer valued, so $\abs{\sigma_{A,B}-\rho}\ge\rho$.
+\end{proof}
+
+\begin{corollary}[Coefficients on a sharp window; \stG]\label{zer:cor:sharpexp}
+Fix the data, let $\mathsf C=\zerdiag(\kappa_i)$ as in \cref{zer:thm:transportexp}, $A_*=A-\tfrac\pi4I$ and
+$U=\mathsf C+iA_*$. For every fixed $m\ge1$,
+\[
+ \pi\rho(t)=\sum_{k=1}^m\frac{(-1)^{k+1}}{k\ell_t^k}\Im\tr\bigl((U+iB)^k-U^k\bigr)+O_m(\ell_t^{-m-1}),
+\]
+and for $[a,b]\subseteq[T,2T]$ of length $H$, the integral of the sum divided by $\pi$ approximates
+$\int_a^b\sigma_{A,B}$ with error $O_m\bigl(H/(\log T)^{m+1}+1/(\log T\log\log T)\bigr)$. The first three
+numerators, signs and factors $1/k$ included, are
+\[
+ \tr B,\qquad-\tr(\mathsf CB),\qquad\tr(\mathsf C^2B)-\tr(A_*^2B)-\tr(A_*B^2)-\tfrac13\tr(B^3).
+\]
+\end{corollary}
+\begin{proof}
+$A+G_0(t)=-i\ell_t(I+U/\ell_t)$; expand the matrix logarithm near the identity, the scalar factors cancelling
+in the difference, and combine with \cref{zer:thm:sharpinterval}; cyclicity of the trace suffices, with no
+commutativity.
+\end{proof}
+
+So on $[T,2T]$ the window integrals have an expansion to every fixed order; it is the radial expansion of
+\cref{zer:thm:transportexp} with $A$ replaced by $A-\tfrac\pi4I$, the real shift first visible in the third
+coefficient.
+
+For the zeta input with $A=0$, $B=1$ the old and new outputs are $F'$ and $F'+F$, and within each gap between
+distinct zeros of $F$ the strictly decreasing $g$ runs from $+\infty$ to $-\infty$, so the contribution is the
+distance from the solution of $g=0$ to that of $g=-1$, and
+$\rho(t)=\pi^{-1}\bigl(\arctan\frac{1-\pi/4}{d_1(t)}-\arctan\frac{-\pi/4}{d_1(t)}\bigr)$. Grouping the first $23$ gaps,
+with no fitted parameter:
+\begin{center}\small
+\begin{tabular}{rrrr}
+\toprule
+zero indices at the endpoints&measured length&$\int_I\rho$&difference\\\midrule
+1 and 8&10.904081&10.451136&0.452945\\
+8 and 16&6.415915&6.237236&0.178679\\
+16 and 24&4.776198&4.726985&0.049213\\
+\bottomrule
+\end{tabular}
+\end{center}
+For instance the first gap runs from $14.13472514$ to $21.02203964$, with crossings $15.58570859$ and
+$18.99408372$. These are floating-point illustrations at low height; exact rational checks of the kernel
+identity and of the first three coefficients on two noncommuting examples are the third file of
+\begin{center}\artifact{dirichlet-sharp-window-transport/checks/example.py},\\
+\artifact{dirichlet-sharp-window-transport/checks/example.json},\\
+\artifact{dirichlet-sharp-window-transport/checks/check_identities.py}.\end{center}
+
+The scale $1/\log d$ is the limit of arguments based only on the Cayley-transform bound: for
+$g_k(z)=\cot(kz/2)$, which maps the upper half-plane into the lower one with $(g_k+i)/(g_k-i)=e^{ikz}$ and
+distance $O(e^{-k})$ from $-i$ at height one, the event $0<g_k<1$ fills an interval of length $\pi/(2k)$ in each
+period $2\pi/k$, its Cauchy probability is $\tfrac14$, and taking that interval as the window gives discrepancy
+$3\pi/(8k)$, of exact order $1/\log d$ with $d=e^k$. The optimal arithmetic scale is open (\cref{zer:sec:open}).
+The quantitative sharp-interval remainder, uniform after weighting by the size of the matrix phase, and the
+finite part are new relative to the weak Cauchy limits and the Herglotz value-distribution theory
+\cite{Sodin2018Critical,NajnudelNikeghbali2026Cauchy,Pearson1994Value,AizenmanWarzel2015Cauchy}, whose relation to
+the matrix spectral shift is classical \cite{BehrndtMalamudNeidhardt2008Scattering}.
 
 \subsection{Open questions}\label{zer:sec:open}
-{\emergencystretch=6em\sources{grh-transfer; grh_transfers; dirichlet-grh-research; exponent_seven_and_grh_transfers; grh-torsion-and-zero-data; grh-methods-polynomial-density; grh_cm_four_terms_and_prime_bias; grh_method_transfers_2026-11-26; grh_multiscale_covariance; multiscale_prime_fluctuations; grh_spectral_rigidity; grh_filtered_prime_races; grh_prime_error_balancing; prime_peak_rigidity; sparse_grh_balanced_windows; sharp_multiscale_prime_windows; prime_scale_coalescence_2026-11-26; Gaussian_prime_races; prime_endpoints_and_symplectic_compressions; graph_coupled_zeros_2026-11-26; grh_extensions_2026-11-27; grh_exact_extensions_2026-11-27; grh_path_rigidity_2026-11-27; dirichlet-zero-multiplicity-and-reconstruction; grh_inverse_spectral_2026-11-27; grh-two-open-questions}}
+{\emergencystretch=6em\sources{grh-transfer; grh_transfers; dirichlet-grh-research; exponent_seven_and_grh_transfers; grh-torsion-and-zero-data; grh-methods-polynomial-density; grh_cm_four_terms_and_prime_bias; grh_method_transfers_2026-11-26; grh_multiscale_covariance; multiscale_prime_fluctuations; grh_spectral_rigidity; grh_filtered_prime_races; grh_prime_error_balancing; prime_peak_rigidity; sparse_grh_balanced_windows; sharp_multiscale_prime_windows; prime_scale_coalescence_2026-11-26; Gaussian_prime_races; prime_endpoints_and_symplectic_compressions; graph_coupled_zeros_2026-11-26; grh_extensions_2026-11-27; grh_exact_extensions_2026-11-27; grh_path_rigidity_2026-11-27; dirichlet-zero-multiplicity-and-reconstruction; grh_inverse_spectral_2026-11-27; grh-two-open-questions; coupled-dirichlet-inverse-spectrum; dirichlet-coupled-zeros-and-prime-variances; dirichlet-sharp-window-transport}}
 
 \begin{enumerate}
 \item \emph{Fixed-height Euler products.} Can $F_0(v)/v$ in \eqref{zer:eq:single} be
@@ -5743,14 +6783,18 @@ upper factor in \cref{zer:lem:localM2}, now at most $1.3208$, over all arithmeti
 $M_2(T)\sim\kappa T\log T/(2\pi)$ hold, as \cref{zer:prop:kappa} requires (equivalently, by
 \cref{zer:thm:coalesceinverse}, does one three-point variance have a normalized limit)? What are the
 exact leading constants of the residue-class matrix, which by \cref{zer:thm:identityclass} are the
-limits of the folded pair counts? Can a quantitative error term for the variance give an effective
-error term for $M_2(T)$? A family of stencils characterizes all finite limits exactly when its symbols
-have no common real zero (\cref{zer:thm:stencilbank}), and \cref{zer:thm:fourpoint} classifies four
-consecutive observations. For five equally spaced observations the symbol involves the dependent
-phases $2^{i\xi}$, $4^{i\xi}$ together with $3^{i\xi}$: which shapes miss more than one positive frequency? For
-$\zeta$ itself, can arithmetic constraints beyond \cref{zer:lem:localM2} exclude a nonconstant tangent
-density in \cref{zer:thm:missingfreq}? That would remove the exceptional shapes from
-\cref{zer:thm:coalesceinverse}(i).
+limits of the folded pair counts? \Cref{zer:thm:rate} turns a variance remainder with relative saving
+$(\log(1/h))^{-\delta}$ into a count remainder with saving $(\log T)^{-\delta/4}$: is $\delta/4$ optimal, and
+can such a remainder be proved for $\zeta$? Families of stencils characterize all finite limits exactly
+when their symbols have no common real zero (\cref{zer:thm:stencilbank}), on meshes whose logarithmic gaps
+tend to zero, which is necessary for elliptic stencils (\cref{zer:thm:mesh}); four and five equally spaced
+observations are classified by \cref{zer:thm:fourpoint,zer:thm:fivepoint}. Which small-divisor conditions on
+symbols with arbitrarily small values suffice for the exact mesh characterization, and what condition is
+necessary and sufficient for asynchronously sampled families whose individual meshes have gaps while the
+set $\mathcal E$ of \cref{zer:thm:bankmesh} has none? For $\zeta$ itself, can arithmetic constraints on
+multiple zeros beyond \cref{zer:lem:localM2} exclude a nonconstant tangent density in
+\cref{zer:thm:missingfreq}, or the pulses of \cref{zer:thm:mesh}? That would remove the exceptional shapes
+from \cref{zer:thm:coalesceinverse}(i).
 \item \emph{Beyond covariance.} Can the convex-hull statements be upgraded to the interior of the
 actual limiting support, to every ordering of the unsmoothed counts, or to inclusivity of
 ordinary prime races, without a hypothesis on the ordinates? Which nonlinear constraints hold on
@@ -5798,9 +6842,19 @@ graph is prescribed, for instance a path or a tree, or with edge caps or integra
 lower bounds of \cref{zer:thm:minimax} remain valid, but equality needs the displayed optimizer), and
 which graph is optimal for a particular
 arithmetic packet of zeros rather than for the worst case given the degrees?
-\item \emph{The inverse problem beyond one parity.} Do \cref{zer:thm:tailrigid,zer:thm:window} hold for
-characters of mixed parity, where a second digamma function enters \cref{zer:lem:algindep}, or when the
-labelled list of characters is unknown? Give an effective window length $T$ in \cref{zer:thm:window},
-a decoder polynomial in the observation size, and robustness under small perturbations of the observed
-ordinates; classify the Hermitian matrices with equal principal minors that the zeros cannot separate.
+\item \emph{The inverse problem.} Mixed parities, unknown lists, decoding and robustness are settled by
+\cref{zer:thm:window,zer:cor:blindall,zer:thm:decode,zer:thm:stabledecoder}, and a sufficient window is
+computable (\cref{zer:rem:windowsearch}). Can the first sufficient window of \cref{zer:thm:window} be bounded
+explicitly by a useful function of the conductors, the matrix norm and the corruption budgets, together with
+the stability constant of \cref{zer:thm:stabledecoder}? What height and precision suffice when every reported
+ordinate is rounded? Can the edge weights alone be recovered in time polynomial in the number of vertices?
+What is the strongest discrepancy constant obtainable in \eqref{zer:eq:witness} from the Landau coefficients
+and the counts, over all primes and nonnegative trigonometric polynomials, and can it be determined uniformly
+for conductors up to a bound? Classify the Hermitian matrices with equal principal minors, which the zeros
+cannot separate.
+\item \emph{Sharp transport.} Can the finite part $C(t_0)$ of \cref{zer:thm:finitepart} be computed to
+certified accuracy for a concrete pair of couplings, with explicit constants in the tail? Does the endpoint
+estimate of \cref{zer:thm:sharpinterval} hold for windows at the mean-spacing scale outside a controlled
+exceptional set of heights, and what is the optimal arithmetic scale, given that arguments using only the
+Cayley-transform bound stop at $1/\log d$?
 \end{enumerate}

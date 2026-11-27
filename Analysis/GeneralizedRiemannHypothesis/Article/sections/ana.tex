@@ -3295,7 +3295,7 @@ $\det H=(u\bar u)^2(u-\bar u)^2=-11226235159675972800/61^{24}<0$ for $u=(\gamma-
 \artifact{sparse_dirichlet_zero_tests/checks/verification.txt}.
 
 \subsection{A small-deviation law for sums over zeros}\label{ana:sec:smalldev}
-{\raggedright\sources{rh_sampling_and_small_deviations_2026-11-26; dirichlet_spectral_conditioning_2026-11-27}}
+{\raggedright\sources{rh_sampling_and_small_deviations_2026-11-26; dirichlet_spectral_conditioning_2026-11-27; spectral_extremes_2026-11-27}}
 
 Sums over zeros with weights $1/\gamma^2$ also occur as random variables. Let $\gamma_j>0$ be a
 multiset with $N(T)=\#\set{j:\gamma_j\le T}\sim T\log T/(2\pi)$, and suppose that for
@@ -3402,7 +3402,9 @@ of zeros, pair correlation or central nonvanishing is used.
 \Cref{ana:thm:gammasum} gives the size of the lower tail. Its conditional structure is as
 follows: the small value is shared among the spectral coordinates along a deterministic profile,
 with Brownian-bridge fluctuations, an independent exponential slack at the boundary, and a sharp
-threshold for the number of low coordinates that look like independent gamma variables. The
+threshold for the number of low coordinates that look like independent gamma variables, while the
+largest individual terms form a marked Poisson process at a lower height, independent of the whole
+bulk path. The
 probability statements hold for every regularly varying spectrum; \cref{src:thm:dgrh} enters only
 to identify the law with a reciprocal completed $L$-function.
 
@@ -3451,8 +3453,9 @@ the same holds with $X$ in place of $x$.
 
 The centring $m_x(c)$ is the exact tilted mean; replacing it by its leading term is in general
 false on the fluctuation scale (\cref{ana:rem:centring}). At $c=\infty$ the standardized value is
-$-Y_x/(t\sigma_x)$, so total variation is claimed only at finite cutoffs, and no functional limit
-theorem is asserted.
+$-Y_x/(t\sigma_x)$, so total variation is claimed only at finite cutoffs. Convergence in law of the
+whole bulk path, jointly with the largest individual terms, is \cref{ana:thm:functional}; it is not a
+total-variation statement, since the finite paths jump and the limit is continuous.
 
 \begin{lemma}[Spectral sums; \stU]\label{ana:lem:specsums}
 For $q>\alpha/p$, $N(u)^{-1}\sum_j(1+(\gamma_j/u)^p)^{-q}\to C_q$, also with sum and integral restricted
@@ -3488,7 +3491,8 @@ initial summands small.
 Let $I=(a,b]$ with $0\le a<b\le\infty$, delete any fixed finite set of indices, and put
 $Z_{I,u}=\varsigma^{-1}\sum_{\gamma_j/u\in I}a_j(\widetilde G_j-\theta)$. For large $u$ it has a
 continuous density $f_{I,u}$, and $f_{I,u}\to\varphi_{\lambda_I}$ uniformly and in $L^1$, where
-$\lambda_I=C_2^{-1}\int_I\alpha r^{\alpha-1}(1+r^p)^{-2}\,\dd r$. The same holds for the whole spectrum
+$\lambda_I=C_2^{-1}\int_I\alpha r^{\alpha-1}(1+r^p)^{-2}\,\dd r$. If a single index $j$ is deleted, the
+convergence is uniform also in $j$. The same holds for the whole spectrum
 with a lower block $\set{\gamma_j\le h(u)}$ removed, if $h=o(u)$, with limiting variance $1$.
 \end{lemma}
 
@@ -3504,7 +3508,9 @@ $\abs{\phi_{I,u}(z)}=\prod_I(1+z^2a_j^2/\varsigma^2)^{-\theta/2}\le(1+Az^2/n)^{-
 deletion. This is at most $\exp(-ADz^2/(1+A))$ for $\abs z\le\sqrt n$, and
 $\int_{\sqrt n}^\infty(1+Az^2/n)^{-Dn}\dd z\le C\sqrt n(1+A)^{-Dn/2}\to0$. Hence the characteristic
 functions converge in $L^1$, Fourier inversion gives uniform convergence of densities, and Scheff\'e's
-lemma gives $L^1$ convergence. For a deleted block, $h\le\delta u$ eventually gives
+lemma gives $L^1$ convergence. Deleting one index changes the variance fraction by at most
+$\theta/\varsigma^2$ and leaves at least $dN(u)-1$ indices in $[a',b']$, whatever the index, so all
+these bounds are uniform in it. For a deleted block, $h\le\delta u$ eventually gives
 $\limsup N(h)/N(u)\le\delta^\alpha$, so the removed variance $\theta N(h)$ is $o(\varsigma^2)$, and the
 interval $[u,2u]$ still supplies the envelope.
 \end{proof}
@@ -3582,6 +3588,24 @@ the Hellinger affinity $\prod_{J_u}(2\sqrt{1+s_j}/(2+s_j))^\theta=\exp(-\tau_u^2
 and bounds $1-d_{\mathrm{TV}}$. Passing to subsequences in $[0,\infty]$ gives the formula in general;
 the triangle inequality and (i) give (ii), and tensoring with the same exponential law preserves total
 variation. (iii) is \cref{ana:lem:specsums}.
+\end{proof}
+
+A single coordinate, at any height, is never much more likely under the conditioning than under the
+tilted law.
+
+\begin{lemma}[Uniform marginal domination; \stU]\label{ana:lem:margdom}
+Uniformly in the index $j$ and in Borel sets $E\subseteq(0,\infty)$,
+\[
+ \anaPr\bigl(tG_j/\gamma_j^p\in E\bigm| X\le x\bigr)\le(1+o(1))\,\anaPr_t\bigl(tG_j/\gamma_j^p\in E\bigr).
+\]
+In particular the factor is at most $2$ for all sufficiently large $u$.
+\end{lemma}
+
+\begin{proof}
+Apply \eqref{ana:eq:blockratio} to the block $\set j$, with $g_u$ the density of the standardized
+complementary sum, and integrate over the slack. The resulting marginal likelihood ratio is at most
+$\sup g_u/(\varsigma D_u)$. By \cref{ana:lem:band} with one index deleted, $\sup g_u\to\varphi_1(0)$
+uniformly in $j$, and $\varsigma D_u\to\varphi_1(0)$ by \eqref{ana:eq:Du}.
 \end{proof}
 
 Put $\mathcal D(\rho)=2\bigl[\Phi\bigl(\sqrt{-\log(1-\rho)/\rho}\bigr)-
@@ -3719,8 +3743,369 @@ limit $\anaPr(Z\ge-z)$, and $v_1(1-v_1)=\frac14-\frac1{\pi^2}$. \Cref{ana:lem:ce
 scale, and Taylor expansion at $c=1$ with $J(1)=-G$, $J'(1)=0$ gives the expansion of $c_\ell$.
 \end{proof}
 
+\paragraph{The largest contributions.}
+Return to a general regularly varying spectrum, with $\alpha<p$ and $\theta>0$ as before. The
+statements above concern fixed coordinates and macroscopic bands; the largest individual terms
+\[
+ \varrho_j=\frac{tG_j}{\gamma_j^p}=a_j\widetilde G_j
+\]
+live at a different height. Under $\anaPr_t$ the $\varrho_j$ are independent gamma variables of shape
+$\theta$ and rate $1+(\gamma_j/u)^p$. Let $\bar F_\theta(a)=\Gamma(\theta)^{-1}\int_a^\infty s^{\theta-1}e^{-s}\,\dd s$
+be the gamma survival function, and define $b_u>0$ and $v_u$ by
+\begin{equation}\label{ana:eq:extcentre}
+ \mathcal I_u(b):=\sum_j\bar F_\theta\bigl(b[1+(\gamma_j/u)^p]\bigr)=\sum_j\anaPr_t(\varrho_j>b),\qquad
+ \mathcal I_u(b_u)=1,\qquad v_u=\frac u{b_u^{1/p}} .
+\end{equation}
+The series converges uniformly on compact subsets of $(0,\infty)$, and $\mathcal I_u$ is continuous and
+strictly decreasing from $\infty$ at $0$ to $0$ at $\infty$, so $b_u$ is well defined. Let
+$\nu_{\alpha,p}$ be the probability law on $(0,\infty)$ with density
+\[
+ \nu_{\alpha,p}(\dd y)=\frac p{\Gamma(\alpha/p)}\,y^{\alpha-1}e^{-y^p}\,\dd y ,
+\]
+so that $Z\sim\nu_{\alpha,p}$ if and only if $Z^p\sim\mathrm{Gamma}(\alpha/p,1)$. Since
+$\sum_j\varrho_j<\infty$ the maximum is attained, and it is unique almost surely, also after
+conditioning; order the terms as $\varrho_{I_1}>\varrho_{I_2}>\cdots$ and put
+\[
+ \Pi_x=\sum_j\delta_{(\varrho_j-b_u,\ \gamma_j/v_u)} .
+\]
+
+\begin{theorem}[Conditional marked extremes; \stU]\label{ana:thm:extremes}
+\begin{enumerate}[label=\textup{(\roman*)}]
+\item $b_u\sim\log N(u)$, and $\dfrac{\Gamma(1+\alpha/p)}{\Gamma(\theta)}N(v_u)\,b_u^{\theta-1}e^{-b_u}\to1$.
+\item Conditionally on $X\le x$, $\Pi_x$ converges to a Poisson point process $\Pi$ on
+ $\R\times(0,\infty)$ of intensity $e^{-z}\dd z\,\nu_{\alpha,p}(\dd y)$; the convergence includes the
+ finite configuration of atoms above any fixed level in the first coordinate. Jointly $Y_x\Rightarrow E_0$,
+ exponential of rate $1$ and independent of $\Pi$.
+\item For every fixed $k$, conditionally on $X\le x$,
+\[
+ \Bigl(\bigl(\varrho_{I_i}-b_u,\ (\gamma_{I_i}/v_u)^p\bigr)_{i\le k},\ Y_x\Bigr)\Longrightarrow
+ \Bigl(\bigl(-\log(E_1+\dots+E_i),\ H_i\bigr)_{i\le k},\ E_0\Bigr),
+\]
+ where $E_0,E_1,\dots$ are independent exponential variables of rate $1$, $H_1,H_2,\dots$ are independent
+ $\mathrm{Gamma}(\alpha/p,1)$ variables, and the two families are independent. In particular
+ $\anaPr(\max_j\varrho_j-b_u\le z\mid X\le x)\to\exp(-e^{-z})$, and the limiting height of the maximizer
+ is independent of this Gumbel fluctuation and of the slack.
+\end{enumerate}
+\end{theorem}
+
+The location law does not depend on the gamma shape $\theta$. The marks converge only in law: their
+finite-$u$ distributions are discrete. As before, all randomness is in the weights $G_j$.
+
+\begin{lemma}[Centre and marked intensities; \stU]\label{ana:lem:extintensity}
+Part (i) of \cref{ana:thm:extremes} holds. For every $z\in\R$ and every interval $E\subseteq(0,\infty)$,
+whose endpoints may be $0$ or $\infty$,
+\[
+ \sum_{\gamma_j/v_u\in E}\anaPr_t(\varrho_j>b_u+z)\to e^{-z}\nu_{\alpha,p}(E),\qquad
+ \max_j\anaPr_t(\varrho_j>b_u+z)\to0 .
+\]
+\end{lemma}
+
+\begin{proof}
+For fixed $b>0$ the first $N(u)$ terms give $\mathcal I_u(b)\ge N(u)\bar F_\theta(2b)\to\infty$, so
+$b_u\to\infty$. With $\beta=\max(\theta-1,0)$ the elementary gamma tail bound gives, for $b\ge1$,
+$\mathcal I_u(b)\le Cb^\beta e^{-b}\sum_j(1+(\gamma_j/u)^p)^\beta e^{-(\gamma_j/u)^p}\le C'N(u)b^\beta e^{-b}$,
+by the dyadic counting of \cref{ana:lem:specsums} with an exponentially decaying integrand. At the root
+this gives first $b_u=O(\log N(u))$ and then $b_u\le\log N(u)+O(\log\log N(u))$. For fixed $\eps>0$,
+$1=\mathcal I_u(b_u)\ge N(\eps u)\bar F_\theta((1+\eps^p)b_u)$, and
+$\bar F_\theta(a)\sim a^{\theta-1}e^{-a}/\Gamma(\theta)$, $N(\eps u)\sim\eps^\alpha N(u)$ give
+$\liminf b_u/\log N(u)\ge(1+\eps^p)^{-1}$; so $b_u\sim\log N(u)$ and $v_u\to\infty$.
+
+For $y=\gamma_j/v_u$ and $q=b_u+z$ the argument of the tail is exactly
+$q[1+(\gamma_j/u)^p]=b_u+z+(1+z/b_u)y^p$. Uniformly for $y$ in bounded intervals,
+\[
+ \frac{\bar F_\theta(b_u+z+(1+z/b_u)y^p)}{b_u^{\theta-1}e^{-b_u}/\Gamma(\theta)}\to e^{-z-y^p},
+\]
+and for fixed $z$ and large $u$ the quotient is at most $C_z(1+y^p)^{\max(\theta-1,0)}e^{-y^p/2}$ on the
+whole half-line, by the tail bound for arguments at least $b_u/2$ (for $\theta<1$ the power factor is
+bounded since the argument divided by $b_u$ is at least $1/2$). The measures
+$N(v_u)^{-1}\sum_j\delta_{\gamma_j/v_u}$ converge to $\alpha y^{\alpha-1}\dd y$, with mass below $\eps$
+tending to $\eps^\alpha$, and the exponential envelope with a dyadic regular-variation bound gives
+uniformly small tails. Hence
+\[
+ \mathcal I_u(b_u+z)\sim\frac{N(v_u)b_u^{\theta-1}e^{-b_u}}{\Gamma(\theta)}e^{-z}
+ \int_0^\infty\alpha y^{\alpha-1}e^{-y^p}\,\dd y
+ =\frac{\Gamma(1+\alpha/p)}{\Gamma(\theta)}N(v_u)b_u^{\theta-1}e^{-b_u}e^{-z},
+\]
+and the same with the integral restricted to $E$. At $z=0$ the left side is $1$, which is the second
+assertion of (i); division gives the marked limit. Each exceedance probability is at most
+$\bar F_\theta(b_u+z)\to0$.
+\end{proof}
+
+\begin{proof}[Proof of \cref{ana:thm:extremes}]
+Under $\anaPr_t$ the coordinates are independent. The joint generating function of the counts in
+disjoint rectangles is a product of factors $1+\sum_\ell p_{j,\ell}(w_\ell-1)$; its logarithm differs
+from the linear terms by at most $C(\max_j\sum_\ell p_{j,\ell})\sum_{j,\ell}p_{j,\ell}=o(1)$, and the
+linear terms converge to the Poisson intensities by \cref{ana:lem:extintensity}. The same argument with
+$1-e^{-f}$ gives convergence of Laplace functionals for nonnegative continuous $f$ of compact support.
+
+Fix $R<\infty$. The atoms with mark at most $R$ are determined by the block $\gamma_j\le Rv_u$, and
+$Rv_u/u=R/b_u^{1/p}\to0$, so \cref{ana:thm:block}(i) transfers their tilted law to the conditional law,
+jointly with an independent exponential slack. By \cref{ana:lem:margdom}, a union bound and
+\cref{ana:lem:extintensity}, for every fixed $z_0$,
+\[
+ \limsup_{u\to\infty}\anaPr\bigl(\exists j:\varrho_j-b_u>z_0,\ \gamma_j/v_u>R\bigm| X\le x\bigr)
+ \le2e^{-z_0}\nu_{\alpha,p}((R,\infty)),
+\]
+which tends to $0$ as $R\to\infty$; marks below $\eps$ are excluded in the same way as $\eps\downarrow0$.
+So the truncated limits extend to the full marked process and keep their independence from the slack.
+The same bound gives $\limsup\anaPr(\max_j\varrho_j-b_u>A\mid X\le x)\le2e^{-A}$; and restricting marks to
+a compact interval $I$ with $\nu_{\alpha,p}(I)>0$, the number of atoms above $-A$ tends to a Poisson
+variable of mean $e^A\nu_{\alpha,p}(I)$, which is less than $k$ with probability tending to $0$ as
+$A\to\infty$. This justifies ordering the top $k$ atoms. Under $w=e^{-z}$ the unmarked intensity becomes
+Lebesgue measure on $(0,\infty)$, whose ordered points are $E_1,E_1+E_2,\dots$; the product intensity makes
+the marks independent with law $\nu_{\alpha,p}$ and independent of the arrival times, and taking $p$th
+powers of the marks gives (iii).
+\end{proof}
+
+For arbitrary regular variation $N(u/b^{1/p})\sim N(u)b^{-\alpha/p}$ may fail, because the multiplier
+$b^{-1/p}$ tends to $0$; the implicit centre \eqref{ana:eq:extcentre} avoids this. An explicit centre
+uses a reduced counting scale.
+
+\begin{corollary}[Centre from a reduced counting scale; \stU]\label{ana:cor:extcentre}
+Let $L_u=\log N(u)$ and $n_u^*=N(u/L_u^{1/p})$. Then
+\[
+ b_u=\log n_u^*+(\theta-1)\log\log n_u^*+\log\frac{\Gamma(1+\alpha/p)}{\Gamma(\theta)}+o(1).
+\]
+If moreover $N(u/L_u^{1/p})\sim N(u)L_u^{-\alpha/p}$, for instance if $N(T)\sim cT^\alpha(\log T)^\beta$ with
+fixed $c>0$ and $\beta\in\R$, then
+\begin{equation}\label{ana:eq:elemcentre}
+ b_u=\log N(u)+\Bigl(\theta-1-\frac\alpha p\Bigr)\log\log N(u)+\log\frac{\Gamma(1+\alpha/p)}{\Gamma(\theta)}+o(1).
+\end{equation}
+\end{corollary}
+
+\begin{proof}
+Since $b_u/L_u\to1$, the uniform convergence theorem for regularly varying functions
+\cite{BinghamGoldieTeugels1987Regular} gives $N(v_u)/n_u^*\to1$; also $\log n_u^*/\log N(u)\to1$. Taking
+logarithms in \cref{ana:thm:extremes}(i) gives the first formula. The additional hypothesis gives
+$\log n_u^*=\log N(u)-(\alpha/p)\log\log N(u)+o(1)$.
+\end{proof}
+
+\begin{remark}[The reduced scale is needed]\label{ana:rem:slowcount}
+Fix $c\ne0$. The integer part of an eventually increasing function
+$N(T)\sim T^\alpha\exp(c\log T/\log\log T)$ is the counting function of a locally finite positive spectrum,
+regularly varying of index $\alpha$. With $a=\log u$ and $\delta=p^{-1}\log L_u=p^{-1}\log a+O(1)$ one has
+$(a-\delta)/\log(a-\delta)-a/\log a\to-1/p$, so $N(u/L_u^{1/p})/(N(u)L_u^{-\alpha/p})\to e^{-c/p}$, and the
+exact centre is the right side of \eqref{ana:eq:elemcentre} minus $c/p$, up to $o(1)$. Omitting the
+reduced scale can thus move the Gumbel location by a nonzero constant.
+\end{remark}
+
+\begin{corollary}[The largest terms come from a band of vanishing mass; \stU]\label{ana:cor:vanishingmass}
+Let $v_u=o(h(u))$ and $h(u)=o(u)$. For every fixed $k$, conditionally on $X\le x$,
+\[
+ \anaPr\bigl(\gamma_{I_1},\dots,\gamma_{I_k}\le h(u)\bigm| X\le x\bigr)\to1,\qquad
+ \frac1X\sum_{\gamma_j\le h(u)}\frac{G_j}{\gamma_j^p}\to0,\qquad
+ \frac{\max_jG_j/\gamma_j^p}X\sim\frac{b_u}{\theta C_1N(u)}
+\]
+in conditional probability.
+\end{corollary}
+
+\begin{proof}
+Tightness of the top $k$ marks and $h/v_u\to\infty$ give the first claim. By \cref{ana:lem:margdom}
+the conditional mean of $\sum_{\gamma_j\le h}\varrho_j$ is at most $2\theta N(h)=o(N(u))$, while
+$tX=tx-Y_x$ with $tx\sim\theta C_1N(u)$ and $Y_x$ tight; Markov's inequality gives the second claim. The
+Gumbel limit gives $\max_j\varrho_j/b_u\to1$.
+\end{proof}
+
+\paragraph{The whole bulk path.}
+The variance clock $V$ is continuous and strictly increasing from $0$ to $1$. With $V^{-1}(0)=0$ and
+$V^{-1}(1)=\infty$ put
+\[
+ \mathcal B_x(s)=\frac1\varsigma\sum_{\gamma_j\le uV^{-1}(s)}(\varrho_j-\theta a_j)
+ =\frac{X_x(V^{-1}(s))-m_x(V^{-1}(s))}{\sigma_x},\qquad0\le s\le1 .
+\]
+The series converges absolutely almost surely, so $\mathcal B_x\in D[0,1]$, and
+$\mathcal B_x(1)=-Y_x/\varsigma$.
+
+\begin{theorem}[Functional bridge, independent of the extremes; \stU]\label{ana:thm:functional}
+Conditionally on $X\le x$,
+\[
+ (\Pi_x,\mathcal B_x,Y_x)\Longrightarrow(\Pi,B,E_0),
+\]
+with $\Pi$ as in \cref{ana:thm:extremes}, $B$ a standard Brownian bridge, $E_0$ exponential of rate $1$,
+the three independent, and $D[0,1]$ carrying the Skorokhod $J_1$ topology. The top-$k$ convergence of
+\cref{ana:thm:extremes}(iii) holds jointly with, and independently of, the bulk path.
+\end{theorem}
+
+\begin{proof}
+\emph{Finitely many cutoffs.} Fix $0<c_1<\dots<c_m$, let $h=Rv_u=o(u)$ be a lower block, put
+$\delta=\varsigma^{-1}\sum_{\gamma_j\le h}(\varrho_j-\theta a_j)$, and split the complement into the bands
+$(h,c_1u],(c_1u,c_2u],\dots,(c_mu,\infty)$. By \cref{ana:lem:band} their standardized sums have independent
+tilted densities $f_{i,u}\to\varphi_{\lambda_i}$ uniformly and in $L^1$, with $\lambda_i=V(c_i)-V(c_{i-1})$,
+$\lambda_{m+1}=1-V(c_m)$, $V(c_0)=0$; removing $h=o(u)$ from the first band changes neither its variance
+nor its Fourier envelope. With $w_1=\mathcal B_x(V(c_1))$ and $w_i=\mathcal B_x(V(c_i))-\mathcal B_x(V(c_{i-1}))$,
+the conditional density relative to the tilted block law times Lebesgue measure in $(w,y)$ is, as in
+\eqref{ana:eq:blockratio},
+\[
+ \frac{e^{-y}\anaone_{y\ge0}}{\varsigma D_u}f_{1,u}(w_1-\delta)\prod_{i=2}^mf_{i,u}(w_i)\,
+ f_{m+1,u}\Bigl(-\frac y\varsigma-\sum_{i\le m}w_i\Bigr).
+\]
+Under the tilted block law $\delta\to0$ in probability. Replace the last density by its normal limit
+using uniform convergence, and the first $m$ in turn using $L^1$ convergence (the last one being bounded);
+translation continuity in $L^1$ handles $\delta$, and the bounded derivative of the last normal density
+handles $y/\varsigma$. With \eqref{ana:eq:Du} this gives convergence in total variation to the product of
+the tilted block law, $\mathrm{Exp}(1)$ and the Gaussian-bridge density
+$\varphi_1(0)^{-1}\prod_{i\le m}\varphi_{\lambda_i}(w_i)\varphi_{\lambda_{m+1}}(-\sum_iw_i)$, as in the proof of
+\cref{ana:thm:condlaw}. The tilted Poisson limit for the block and the restoration of large marks from the
+proof of \cref{ana:thm:extremes} then give
+$(\Pi_x,(\mathcal B_x(V(c_i)))_i,Y_x)\Rightarrow(\Pi,(B(V(c_i)))_i,E_0)$, with independent components.
+
+\emph{The tilted functional limit.} Under $\anaPr_t$, $\mathcal B_x$ has independent centred increments
+and cumulative variance $V_u(s)=\theta\varsigma^{-2}\sum_{\gamma_j\le uV^{-1}(s)}a_j^2$. By
+\cref{ana:lem:specsums}, $V_u(s)\to s$ for every $s$, and monotonicity gives
+$\eta_u=\sup_s\abs{V_u(s)-s}\to0$. Group equal ordinates: if $\lambda$ occurs $m_\lambda$ times, its jump
+is $(a_\lambda/\varsigma)(\mathrm{Gamma}(m_\lambda\theta,1)-m_\lambda\theta)$ with variance
+$v_\lambda=m_\lambda\theta a_\lambda^2/\varsigma^2\le2\eta_u$. The fourth central moment of a unit-rate
+gamma variable of shape $k$ is $3k^2+6k$, so the fourth moments of the jumps sum to
+$3\sum_\lambda v_\lambda^2+6\theta\varsigma^{-4}\sum_ja_j^4\le3\max_\lambda v_\lambda+6\varsigma^{-2}\to0$;
+the Lindeberg condition holds even with multiplicities varying with height, and the triangular-array
+functional central limit theorem \cite{Whitt2007Proofs} gives a Brownian motion. Directly: partition
+$[0,1]$ into $m$ equal intervals; the increment on each has variance at most $m^{-1}+2\eta_u$, and the
+fourth cumulants sum to at most $6\varsigma^{-2}$. The $L^4$ martingale maximal inequality on each interval
+gives, for the modulus $\omega(f,\delta)=\sup_{\abs{s-s'}\le\delta}\abs{f(s)-f(s')}$,
+\[
+ \anaPr_t\bigl(\omega(\mathcal B_x,m^{-1})>\eps\bigr)\le C\eps^{-4}\bigl(m^{-1}+2\eta_u+\varsigma^{-2}\bigr);
+\]
+near $s=1$ truncate the row and pass to the $L^4$ limit.
+
+\emph{Transfer on initial intervals.} Fix $r<1$. The coordinates with $\gamma_j\le uV^{-1}(r)$ form a
+prefix; the standardized complementary sum has a density with bounded supremum (keep a fixed band beyond
+$V^{-1}(r)$ and use the Fourier envelope of \cref{ana:lem:band}; convolution does not increase a
+supremum). The marginal form of \eqref{ana:eq:blockratio} and $\varsigma D_u\to\varphi_1(0)>0$ give
+$\anaPr(E\mid X\le x)\le C_r\anaPr_t(E)$ for all events $E$ of the prefix and all large $u$, so tilted
+tightness on $[0,r]$ transfers.
+
+\emph{The endpoint.} For $r\ge1/2$ the complement of the tail $\gamma_j>uV^{-1}(r)$ contains the fixed band
+$(V^{-1}(1/4),V^{-1}(1/2)]$, so the same argument gives a constant $C_0$, independent of $r\ge1/2$ and of
+large $u$, with $\anaPr(E\mid X\le x)\le C_0\anaPr_t(E)$ for events of the tail. The $L^2$ maximal
+inequality for the reversed tail (truncate, then pass to the limit) gives
+\[
+ \anaPr\Bigl(\sup_{s\ge r}\abs{\mathcal B_x(1)-\mathcal B_x(s)}>\eps\Bigm| X\le x\Bigr)
+ \le\frac{4C_0}{\eps^2}\bigl(1-r+\eta_u\bigr),
+\]
+which is small for $u\to\infty$ and then $r\uparrow1$. With the modulus on $[0,r]$ (insert the value at $r$
+for pairs straddling it) this proves tightness on $[0,1]$ with continuous subsequential limits, and
+$\mathcal B_x(1)=-Y_x/\varsigma\to0$.
+
+\emph{Identification.} Marginal tightness gives joint tightness; evaluation at fixed times is continuous
+at continuous limits, and the finite-dimensional limits of the first step, with the endpoint values $0$,
+identify every subsequential limit as $(\Pi,B,E_0)$ with independent components. The tail bounds of the
+proof of \cref{ana:thm:extremes} allow the top-$k$ map jointly.
+\end{proof}
+
+\paragraph{Dirichlet spectra.}
+Take the spectrum of \cref{ana:cor:fourfifths}: the positive ordinates, with multiplicity, of an even
+product $H$ of $d$ completed degree-one factors with central zeros removed, so that by
+\cref{src:thm:dgrh} $\anaEx e^{-tX}=(H(0)/H(\sqrt t))^\theta$ for $X=\sum_jG_j/\gamma_j^2$, and
+$p=2$, $\alpha=1$, $N(T)\sim\frac d{2\pi}T\log T$ \cite{BennettMartinOBryantRechnitzer2021Counting}.
+
+\begin{corollary}[Half-normal height of the largest Dirichlet contribution; \stG]\label{ana:cor:dirextremes}
+With the exact saddle $u=\sqrt t$, the centre
+\[
+ b_u=\log u+\Bigl(\theta-\frac12\Bigr)\log\log u+\log\frac d{4\sqrt\pi\,\Gamma(\theta)}+o(1)
+\]
+is valid, and conditionally on $X\le x$
+\[
+ u^2\max_j\frac{G_j}{\gamma_j^2}-b_u\Longrightarrow G,\qquad
+ \frac{\sqrt{b_u}\,\gamma_{I_1}}u\Longrightarrow Z,
+\]
+where $\anaPr(G\le z)=e^{-e^{-z}}$ and $\anaPr(Z\in\dd y)=\frac2{\sqrt\pi}e^{-y^2}\anaone_{y>0}\,\dd y$,
+jointly with $u^2(x-X)\Rightarrow E_0$ and with the bridge of \cref{ana:thm:functional} (for which
+$V(c)=\frac2\pi(\arctan c+\frac c{1+c^2})$), all four limits independent. Thus $Z$ is the absolute value of
+a centred normal variable of variance $1/2$, and
+\[
+ x\sim\frac{\theta d\log u}{4u},\qquad\frac{\max_jG_j/\gamma_j^2}X\sim\frac4{\theta d\,u}
+\]
+in conditional probability. For $\zeta$ with exponential weights ($d=\theta=1$) and
+$b_0(u)=\log u+\frac12\log\log u-\log(4\sqrt\pi)$, this reads
+$\bigl(u^2\max_jE_j/\gamma_j^2-b_0(u),\ \sqrt{\log u}\,\gamma_{I_1}/u,\ u^2(x-X)\bigr)\Rightarrow(G,Z,E_0)$.
+\end{corollary}
+
+\begin{proof}
+Here $C_1=\pi/2$ and $C_2=\pi/4$. Substituting $N(u)\sim du\log u/(2\pi)$ into \eqref{ana:eq:elemcentre},
+with $\Gamma(3/2)=\sqrt\pi/2$, gives the centre, and $\nu_{1,2}$ is the displayed half-normal law. The
+saddle asymptotic is \cref{ana:cor:fourfifths}, and the ratio follows from
+\cref{ana:cor:vanishingmass}. Since $b_u\sim\log u$, $\sqrt{b_u}$ may be replaced by $\sqrt{\log u}$.
+\end{proof}
+
+So about half the mass lies below height $u$ (the profile is $A(c)=\frac2\pi\arctan c$), while the largest
+term sits at height of order $u/\sqrt{\log u}$. With $h=u/(\log u)^{1/4}$, \cref{ana:cor:vanishingmass}
+shows that every fixed number of largest terms lies below $h$ with probability tending to $1$, although
+the mass below $h$ is a vanishing fraction of $X$.
+
+The elementary centre converges slowly. For exponential weights a two-term count gives a much sharper
+implicit centre, with an explicit enclosure; this concerns the deterministic normalization only and
+gives no rate for the conditional limit.
+
+\begin{proposition}[Heat-trace centring; \stU]\label{ana:prop:refinedcentre}
+Let $p=2$, $\theta=1$, and $N(T)=c_NT(\log T+a_N-1)+O(\log(T+2))$ with fixed $c_N>0$ and $a_N$. Put
+$k_N=c_N\sqrt\pi/2$ and $\kappa_N=a_N-\gamma_{\mathrm E}/2-\log2$, and let $B_u$ be the unique solution in
+$0<B<u^2e^{2\kappa_N}$ of
+\begin{equation}\label{ana:eq:refinedroot}
+ e^B\sqrt B=k_Nu\Bigl[\log\frac u{\sqrt B}+\kappa_N\Bigr].
+\end{equation}
+Then $B_u\sim\log u$ and $b_u=B_u+O(\sqrt{\log u}/u)$. Explicitly, let $R(T)=N(T)-c_NT(\log T+a_N-1)$,
+$R(0)=0$. If $\abs{R(T)}\le C\log(T+2)$ for all $T\ge0$, put $v_B=u/\sqrt{B_u}$ and
+$\eps_u=Ce^{-B_u}[\log(v_B+2)+\sqrt\pi/2]$; whenever $\eps_u<1$,
+\[
+ B_u+\log(1-\eps_u)\le b_u\le B_u+\log(1+\eps_u).
+\]
+If instead $\abs{R(T)}\le C_0$ for all $T$, the same holds with $\eps_u=C_0e^{-B_u}$, and
+$b_u-B_u=O(1/(u\sqrt{\log u}))$.
+\end{proposition}
+
+\begin{proof}
+Let $\mathcal H(v)=\sum_je^{-(\gamma_j/v)^2}$. Stieltjes integration gives
+\[
+ \mathcal H(v)=c_N\int_0^\infty e^{-(T/v)^2}(\log T+a_N)\,\dd T+\frac2{v^2}\int_0^\infty Te^{-(T/v)^2}R(T)\,\dd T
+ =k_Nv(\log v+\kappa_N)+\mathcal R(v),
+\]
+the boundary terms vanishing since $R(0)=0$; here $\int_0^\infty e^{-y^2}\log y\,\dd y=\frac{\sqrt\pi}2(-\frac{\gamma_{\mathrm E}}2-\log2)$,
+by differentiating $\int_0^\infty y^{s-1}e^{-y^2}\dd y=\Gamma(s/2)/2$ at $s=1$ with
+$\psi(1/2)=-\gamma_{\mathrm E}-2\log2$. Since $vy+2\le(v+2)(1+y)$ and $\log(1+y)\le y$,
+$\abs{\mathcal R(v)}\le2C\int_0^\infty ye^{-y^2}\log(vy+2)\,\dd y\le C[\log(v+2)+\sqrt\pi/2]$, and
+$\abs{\mathcal R(v)}\le C_0$ under a bounded error. (An asymptotic count extends to a global logarithmic
+bound by enlarging $C$ on a compact interval.) For $\theta=1$, $\mathcal I_u(q)=e^{-q}\mathcal H(u/\sqrt q)$.
+The function $F_u(q)=e^{-q}k_Nuq^{-1/2}(\log u-\frac12\log q+\kappa_N)$ is positive on
+$(0,u^2e^{2\kappa_N})$, runs from $\infty$ to $0$, and has
+$(\log F_u)'=-1-\frac1{2q}-\frac1{2q(\log u-\frac12\log q+\kappa_N)}<0$, so $F_u(B)=1$, which is
+\eqref{ana:eq:refinedroot}, has one root; $F_u(a\log u)\sim k_Na^{-1/2}u^{1-a}\sqrt{\log u}$ gives
+$B_u\sim\log u$. At $q=B_u$ one gets $\abs{\mathcal I_u(B_u)-1}\le\eps_u$. Termwise,
+\[
+ \frac{\dd}{\dd q}\log\mathcal I_u(q)=-\frac{\sum_j[1+(\gamma_j/u)^2]e^{-q[1+(\gamma_j/u)^2]}}{\sum_je^{-q[1+(\gamma_j/u)^2]}}\le-1,
+\]
+so $0\le b_u-B_u\le\log\mathcal I_u(B_u)$ if $\mathcal I_u(B_u)\ge1$ and $0\le B_u-b_u\le-\log\mathcal I_u(B_u)$
+otherwise, which is the enclosure. Finally \eqref{ana:eq:refinedroot} gives
+$e^{-B_u}=1/(k_Nv_B(\log v_B+\kappa_N))$, so $\eps_u=O(1/v_B)=O(\sqrt{\log u}/u)$, and
+$O(1/(v_B\log v_B))=O(1/(u\sqrt{\log u}))$ under a bounded error.
+\end{proof}
+
+Writing $L=\log u$, expansion of \eqref{ana:eq:refinedroot} gives
+$B_u=L+\frac12\log L+\log k_N+(\kappa_N-\frac34\log L-\frac12\log k_N)/L+O((\log L)^2/L^2)$, which explains
+the slow approach to the elementary centre.
+
+\begin{remark}[Conductor dependence of the centre; \stG]\label{ana:rem:conductorcentre}
+For the product of \cref{ana:cor:dirextremes} let $\mathcal Q=\prod_{\ell\le d}q_\ell$ be the product of
+the conductors, conjugate factors counted separately and $\zeta$ given conductor $1$. The two-term zero
+counts give $c_N=d/(2\pi)$ and $a_N=(\log\mathcal Q)/d-\log(2\pi)$, unchanged by removing finitely many
+central zeros, so for exponential weights $B_u$ is the root with positive bracket of
+\[
+ e^B\sqrt B=\frac{du}{4\sqrt\pi}\Bigl[\log\Bigl(\frac{\mathcal Q^{1/d}u}{4\pi\sqrt B}\Bigr)-\frac{\gamma_{\mathrm E}}2\Bigr],\qquad
+ b_u=B_u+O_H\Bigl(\frac{\sqrt{\log u}}u\Bigr).
+\]
+The estimate is for a fixed product; no uniformity in the conductor or the degree is claimed.
+\end{remark}
+
+On the synthetic spectrum $\gamma_j=2\pi j/W(j/e)$ ($W$ the Lambert function), whose count differs from
+$\frac T{2\pi}(\log\frac T{2\pi}-1)$ by at most $1$, the numerically computed exact centre at $u=10^5$ is
+$10.40117$; it differs from the elementary centre by $0.375$ and from $B_u$ by $1.4\cdot10^{-5}$, inside
+the enclosure with $\eps_u=e^{-B_u}$ (floating-point diagnostics, not interval certificates; these are not
+zeta zeros); see \artifact{spectral_extremes_2026-11-27/results/refined_center_validation.json}.
+
 Conditioning small Gaussian norms and conditional bridge limits for weighted sums have classical
-precedents \cite{VanCampenhoutCover1981Maximum,MayerWolfZeitouni1993Probability,SobolevShklyaev2020Large}.
+precedents \cite{VanCampenhoutCover1981Maximum,MayerWolfZeitouni1993Probability,SobolevShklyaev2020Large};
+Gumbel limits for maxima of gamma variables are classical \cite{BoseDasguptaMaulik2008Maxima}, and
+extremal Fourier intensities with power-law rates, without a small-total constraint, are studied in
+\cite{GyorgyiHoldsworthPortelliRacz2003Statistics}.
 All randomness here comes from the gamma weights; nothing is asserted about randomness, spacing,
 simplicity or independence of the zeros, and no uniformity in a growing conductor or degree is
 claimed.
@@ -3871,10 +4256,13 @@ many data with bounded errors when ordinates are close?
 \end{question}
 
 \begin{question}[Conditional laws at finite saddles]\label{ana:q:condlaw}
-\Cref{ana:thm:condlaw,ana:thm:block,ana:cor:fourfifths,ana:thm:medianheight} are limit theorems for a
-fixed function. Give explicit error bounds in the saddle $u$ for the total-variation transitions, which
-Monte Carlo comparisons show to be slow, and versions uniform in the conductor or in the degree $d$ of
-the product.
+\Cref{ana:thm:condlaw,ana:thm:block,ana:cor:fourfifths,ana:thm:medianheight,ana:thm:extremes,ana:thm:functional}
+are limit theorems for a fixed function. Give explicit error bounds in the saddle $u$ for the
+total-variation transitions, which Monte Carlo comparisons show to be slow, and rates for the marked
+extreme limit of \cref{ana:cor:dirextremes}; under regular variation alone no rate is available, and for
+exponential weights only the deterministic centre has an effective enclosure
+(\cref{ana:prop:refinedcentre}). Give versions uniform in the conductor or in the degree $d$ of the
+product.
 \end{question}
 
 \begin{question}[Hankel tests]\label{ana:q:hankel}
