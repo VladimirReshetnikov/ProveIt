@@ -32,6 +32,8 @@ open GaussianSineProductImaginaryLogDerivative
   (axisNumerator derivative derivative_succ derivative_zero factor factorDerivative factor_value product
     rationalReal realNumerator squareDenominator)
 open GaussianSineProductName (sine_product_succ)
+open GaussianRationalPolynomialBuffers renaming distribute_right → mul_add_right
+open GaussianRationalPowerAlgebra renaming commute_nested → mul_swap_middle
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
@@ -112,13 +114,6 @@ theorem factor_increment (i A B C : PTm n) (hB : Γ ⊢[PRAAx] le one B) :
     (qadd_congr (factor_value i A B hB) delta).eqTrans
     ((real_add_same (E+A*A) (C*(two*A+C)) E hE).eqTrans (real_congr (by ipra_ring)))
   exact (factor_value i (A+C) B hB).eqTrans rhs.eqSymm
-
-private theorem mul_add_right (a b c : PTm n) : Γ ⊢[PRAAx] qmul (qadd a b) c ≐ qadd (qmul a c) (qmul b c) :=
-  (qmul_commutative _ _).eqTrans ((qmul_add c a b).eqTrans (qadd_congr (qmul_commutative c a) (qmul_commutative c b)))
-
-private theorem mul_swap_middle (a b c : PTm n) : Γ ⊢[PRAAx] qmul a (qmul b c) ≐ qmul b (qmul a c) :=
-  (qmul_associative a b c).eqSymm.eqTrans
-    ((qmul_congr (qmul_commutative a b) (.eqRefl c)).eqTrans (qmul_associative b a c))
 
 private theorem advance (P D V F G d e h : PTm n)
     (hG : Γ ⊢[PRAAx] G ≐ qadd F (qmul h (qadd d (qmul h e)))) : Γ ⊢[PRAAx]

@@ -204,4 +204,9 @@ theorem rational_power_program_closed : ([] : List (Fm PTm 0)) ⊢[PRAAx] univ 3
     (.andI ((returned_composed_power _ _ _).eqTrans (power_composition _ _ _))
       (.andI (returned_left_power _ _ _) (returned_right_power _ _ _)))))
 
+open GaussianReciprocalHorner (qmul_associative)
+
+theorem commute_nested (a b c : PTm n) : Γ ⊢[PRAAx] qmul a (qmul b c) ≐ qmul b (qmul a c) :=
+  (qmul_associative a b c).eqSymm.eqTrans ((qmul_congr (qmul_commutative a b) (.eqRefl c)).eqTrans (qmul_associative b a c))
+
 end LeanProofs.IPRA.Analysis.GaussianRationalPowerAlgebra
