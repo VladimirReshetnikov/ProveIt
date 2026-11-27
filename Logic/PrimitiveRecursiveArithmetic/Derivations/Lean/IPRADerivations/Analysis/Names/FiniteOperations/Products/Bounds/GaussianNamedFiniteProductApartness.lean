@@ -67,7 +67,7 @@ theorem weaken_margin (q D E : PTm n) (hd : Γ ⊢[PRAAx] le one D) (he : Γ ⊢
   exact lower_from_representation q a K one E hp (le_trans hd he) rep
     (le_trans r (le_mul_mono (le_mul_mono he he) (le_refl (normSq a))))
 
-private theorem unit_margin : Γ ⊢[PRAAx] lower (qone : PTm n) one :=
+theorem unit_margin : Γ ⊢[PRAAx] lower (qone : PTm n) one :=
   lower_from_representation _ oneCode one one one (le_refl _) (le_refl _) (ofGaussian_represents _ _ (le_refl _))
     (le_congr (by ipra_ring) (congrMul (.eqRefl _) normSq_one).eqSymm (le_refl _))
 

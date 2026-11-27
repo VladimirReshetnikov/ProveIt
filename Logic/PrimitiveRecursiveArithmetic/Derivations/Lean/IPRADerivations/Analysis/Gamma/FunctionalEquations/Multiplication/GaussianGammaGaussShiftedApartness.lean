@@ -29,6 +29,7 @@ open GaussianRationalMetric (bounded)
 open GaussianRationalLowerBounds (lower_from_representation)
 open GaussianRationalPowerAlgebra (qmul_commutative)
 open GaussianRationalReciprocal (qone reciprocal reciprocal_canonical reciprocal_identity)
+open GaussianNamedFiniteProductApartness renaming unit_margin → unit_lower
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
@@ -49,10 +50,6 @@ theorem majorant_positive (R : PTm n) (hR : Γ ⊢[PRAAx] le one R) : Γ ⊢[PRA
 
 theorem row_denominator_positive (R : PTm n) : Γ ⊢[PRAAx] le one (rowDenominator R) :=
   majorant_positive (R+one) (le_add_left one R)
-
-private theorem unit_lower : Γ ⊢[PRAAx] lower (qone : PTm n) one :=
-  lower_from_representation _ oneCode one one one (le_refl _) (le_refl _) (ofGaussian_represents _ _ (le_refl _))
-    (le_congr (by ipra_ring) (congrMul (.eqRefl _) normSq_one).eqSymm (le_refl _))
 
 theorem gamma_observation_lower (p z R B a d : PTm n)
     (h : Γ ⊢[PRAAx] GaussianGammaReciprocalInverse.source z R B a d) :

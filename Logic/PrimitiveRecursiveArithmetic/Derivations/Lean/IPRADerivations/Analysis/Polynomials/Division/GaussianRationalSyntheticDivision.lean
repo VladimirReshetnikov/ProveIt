@@ -397,4 +397,18 @@ theorem rational_synthetic_program_closed : ([] : List (Fm PTm 0)) ⊢[PRAAx] un
         ((length (quotient (var 0) (var 1) (var 2)) ≐ var 2) ⋏ canonicalCoefficients (quotient (var 0) (var 1) (var 2))))) :=
   closeUniv 3 (.andI (output_quotient _ _ _) (.andI (output_remainder _ _ _) (.andI (quotient_length _ _ _) (quotient_canonical _ _ _))))
 
+open GaussianRootAlgebra (im_neg re_neg)
+open GaussianRationalMetric (qnegative qnegative_canonical qnegative_represents)
+
+theorem reverse_difference (a b : PTm n) : Γ ⊢[PRAAx] qsub b a ≐ qnegative (qsub a b) := by
+  let E := rawDen a*rawDen b
+  have hE := positive_product _ _ (raw_den_positive (Γ := Γ) a) (raw_den_positive b)
+  have ha := rescale_to a (rawGaussian a) (rawDen a) (rawDen b) E (raw_represents (Γ := Γ) a) (.eqRefl _)
+  have hb := rescale_to b (rawGaussian b) (rawDen b) (rawDen a) E (raw_represents (Γ := Γ) b) (mul_comm _ _)
+  have l := qsub_represents _ _ _ _ _ hE hb ha
+  have r := qnegative_represents _ _ _ (qsub_represents _ _ _ _ _ hE ha hb)
+  apply canonical_unique _ _ _ E (qsub_canonical _ _) (qnegative_canonical _) hE (hrv := r)
+  apply represents_congr (.eqRefl _) (hAB := .eqRefl _) (h := l)
+  apply equal_of_values <;> simp only [re_sub,im_sub,re_neg,im_neg] <;> ring
+
 end LeanProofs.IPRA.Analysis.GaussianRationalSyntheticDivision

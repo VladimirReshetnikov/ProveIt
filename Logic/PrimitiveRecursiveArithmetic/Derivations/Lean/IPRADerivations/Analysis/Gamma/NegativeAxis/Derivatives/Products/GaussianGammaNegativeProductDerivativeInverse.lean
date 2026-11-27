@@ -21,7 +21,7 @@ open GaussianRationalL1 (rawGaussian rawDen raw_den_positive raw_represents)
 open GaussianRationalMetric (bounded distanceBounded qnegative qnegative_canonical qnegative_represents qsub qsub_canonical qsub_represents)
 open GaussianRationalPowerAlgebra (qmul_commutative)
 open GaussianRationalReciprocal (bound_congr bounded_negative bounded_product)
-open GaussianRationalSyntheticDivision (qmul_congr qsub_congr qone rescale_to)
+open GaussianRationalSyntheticDivision (qmul_congr qsub_congr qone rescale_to reverse_difference)
 open GaussianReciprocalHorner (qmul_associative qmul_one_right)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
@@ -29,21 +29,6 @@ variable {n : ℕ} {Γ : List (Fm PTm n)}
 def inverseCoefficient (c1 c0 pDelta : PTm n) : PTm n := qmul (qmul c1 c0) (qnegative pDelta)
 
 ipra_subst inverseCoefficient
-
-private theorem reverse_difference (a b : PTm n) : Γ ⊢[PRAAx] qsub b a ≐ qnegative (qsub a b) := by
-  let A := rawGaussian a
-  let B := rawGaussian b
-  let D := rawDen a*rawDen b
-  have hp : Γ ⊢[PRAAx] le one D := positive_product _ _ (raw_den_positive a) (raw_den_positive b)
-  have ha := rescale_to a A (rawDen a) (rawDen b) D (raw_represents (Γ := Γ) a) (.eqRefl D)
-  have hb := rescale_to b B (rawDen b) (rawDen a) D (raw_represents (Γ := Γ) b) (mul_comm _ _)
-  have right := qnegative_represents _ _ _ (qsub_represents _ _ _ _ D hp ha hb)
-  have left := qsub_represents _ _ _ _ D hp hb ha
-  apply canonical_unique _ _ _ D (qsub_canonical _ _) (qnegative_canonical _) hp left
-  apply represents_congr (.eqRefl _) (hAB := .eqRefl _) (h := right)
-  apply GaussianRootAlgebra.equal_of_values <;>
-    simp only [GaussianRootAlgebra.re_neg, GaussianRootAlgebra.im_neg,
-      GaussianRootAlgebra.re_sub, GaussianRootAlgebra.im_sub] <;> ring
 
 theorem inverse_gap (p1 p0 c1 c0 : PTm n)
     (hc1 : Γ ⊢[PRAAx] canonical c1) (hc0 : Γ ⊢[PRAAx] canonical c0)
