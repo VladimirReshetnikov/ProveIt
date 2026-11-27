@@ -31,7 +31,9 @@ theorem primeBlockProbability_nonneg {P : Finset ℕ} (hP : ∀ p ∈ P, p.Prime
   · rw [reciprocalExponentMass_eq_tsum_subtype]
     exact tsum_nonneg fun _ ↦ reciprocalExponentWeight_nonneg (fun _ ↦ by positivity) _
 
-private theorem hasNaturalDensity_mixedBlockRule (S : Finset (Finset ℕ))
+/-- Add finitely many independent prime rules to disjoint exceptional blocks.
+The new primes must avoid the union of the exceptional blocks. -/
+theorem hasNaturalDensity_mixedBlockRule (S : Finset (Finset ℕ))
     (rules : (P : Finset ℕ) → Set (↥P → ℕ)) (G : Set ℕ) (T : Finset ℕ)
     (hS : ∀ P ∈ S, ∀ p ∈ P, p.Prime) (hpair : (S : Set (Finset ℕ)).PairwiseDisjoint id)
     (hT : ∀ p ∈ T, p.Prime) (hdis : Disjoint T (S.biUnion id)) :
