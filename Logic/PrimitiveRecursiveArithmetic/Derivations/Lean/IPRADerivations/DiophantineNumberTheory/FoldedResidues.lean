@@ -151,18 +151,14 @@ theorem two_absurd {s p k : PTm n} (φ : Fm PTm n) (hs2 : Γ ⊢[PRAAx] lt s (tw
 /-- A positive multiple of `p` below `2p` is `p`. -/
 theorem eq_of_dvd_lt_two {s p : PTm n} (hp1 : Γ ⊢[PRAAx] p ≐ succ (pred p)) (hd : Γ ⊢[PRAAx] rem s p ≐ zero)
     (hs1 : Γ ⊢[PRAAx] s ≐ succ (pred s)) (hs2 : Γ ⊢[PRAAx] lt s (two * p)) : Γ ⊢[PRAAx] s ≐ p := by
-  have e : Γ ⊢[PRAAx] s ≐ p * quo s p := eq_of_dvd' hp1 hd
-  refine .orE (zero_or_succ (quo s p)) ?_ ?_
-  · have z : ((quo s p ≐ zero) :: Γ) ⊢[PRAAx] s ≐ zero :=
-      e.wk.eqTrans ((congrMul (.eqRefl _) Prf.hyp0).eqTrans (mul_zero _))
-    exact succ_ne_zero' _ (hs1.wk.eqSymm.eqTrans z)
-  · refine .orE (zero_or_succ (pred (quo s p))) ?_ ?_
-    · have k1 : ((pred (quo s p) ≐ zero) :: (quo s p ≐ succ (pred (quo s p))) :: Γ) ⊢[PRAAx] quo s p ≐ one :=
-        Prf.hyp1.eqTrans (congrSucc Prf.hyp0)
-      exact e.wk.wk.eqTrans ((congrMul (.eqRefl _) k1).eqTrans (by ipra_ring))
-    · have k2 : ((pred (quo s p) ≐ succ (pred (pred (quo s p)))) :: (quo s p ≐ succ (pred (quo s p))) :: Γ)
-          ⊢[PRAAx] quo s p ≐ succ (succ (pred (pred (quo s p)))) := Prf.hyp1.eqTrans (congrSucc Prf.hyp0)
-      exact two_absurd _ hs2.wk.wk (e.wk.wk.eqTrans (congrMul (.eqRefl _) k2))
+  let q := quo s p
+  have e : Γ ⊢[PRAAx] s ≐ p * q := eq_of_dvd' hp1 hd
+  have hq := DiophantineNumberTheory.Coprime.pos_of_eq_mul hs1 e
+  refine .orE (zero_or_succ (pred q)) ?_ ?_
+  · have k1 := (hq.wk (ψ := pred q ≐ zero)).eqTrans (congrSucc Prf.hyp0)
+    exact e.wk.eqTrans ((congrMul (.eqRefl _) k1).eqTrans (by ipra_ring))
+  · have k2 := (hq.wk (ψ := pred q ≐ succ (pred (pred q)))).eqTrans (congrSucc Prf.hyp0)
+    exact two_absurd _ hs2.wk (e.wk.eqTrans (congrMul (.eqRefl _) k2))
 
 /-! ## Multiplication by the inverse undoes the fold -/
 

@@ -134,10 +134,7 @@ theorem fiber_bwd {k a : PTm n} (hk : Γ ⊢[PRAAx] k ≐ d * a) (H : Γ ⊢[PRA
   have ddk : Γ ⊢[PRAAx] dvd d k := dvd_of_eq' hd (w := a) hk
   have ddm : Γ ⊢[PRAAx] dvd d (d * m) := dvd_of_eq' hd (w := m) (.eqRefl _)
   have eG := eq_of_dvd' hd (gcd_greatest' hd ddk ddm)
-  have hh : Γ ⊢[PRAAx] quo (gcd k (d * m)) d ≐ succ (pred (quo (gcd k (d * m)) d)) := by
-    refine .orE (zero_or_succ (quo (gcd k (d * m)) d)) ?_ Prf.hyp0
-    exact succ_ne_zero' _ (hG.wk.eqSymm.eqTrans (eG.wk.eqTrans ((congrMul (.eqRefl _) Prf.hyp0).eqTrans
-      (mul_zero _))))
+  have hh := DiophantineNumberTheory.Coprime.pos_of_eq_mul hG eG
   have dhk := dvd_congr hk (dvd_congr_left eG (Prf.andE₁ hGd))
   have dhm := dvd_congr_left eG (Prf.andE₂ hGd)
   have h₁ := eq_one_of_dvd_one hh (dvd_congr H (gcd_greatest' hh (dvd_cancel hd hh dhk) (dvd_cancel hd hh dhm)))

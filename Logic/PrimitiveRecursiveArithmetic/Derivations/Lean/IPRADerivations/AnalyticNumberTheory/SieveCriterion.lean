@@ -55,22 +55,10 @@ theorem cof_two (hne : Γ ⊢[PRAAx] neg (lpf m ≐ m)) : Γ ⊢[PRAAx] le two (
   have hm1 := p_pos h2
   have hl1 := p_pos (prime_two (lpf_prime' h2))
   have e := eq_of_dvd' hl1 (lpf_dvd' h2)
-  refine .orE (zero_or_succ (quo m (lpf m))) ?_ ?_
-  · have mz := zero_cof e.wk (Prf.hyp0 (Γ := Γ) (φ := quo m (lpf m) ≐ zero))
-    exact succ_ne_zero' _ (a := pred m) (hm1.wk.eqSymm.eqTrans mz)
-  · refine .orE (zero_or_succ (pred (quo m (lpf m)))) ?_ ?_
-    · let C : List (Fm PTm n) :=
-        (pred (quo m (lpf m)) ≐ zero) :: (quo m (lpf m) ≐ succ (pred (quo m (lpf m)))) :: Γ
-      have hc : C ⊢[PRAAx] quo m (lpf m) ≐ succ (pred (quo m (lpf m))) := Prf.hyp1
-      have hp : C ⊢[PRAAx] pred (quo m (lpf m)) ≐ zero := Prf.hyp0
-      have ew : C ⊢[PRAAx] m ≐ lpf m * quo m (lpf m) := e.wk.wk
-      exact .botE _ (.impE hne.wk.wk (one_cof ew hc hp))
-    · let C : List (Fm PTm n) :=
-        (pred (quo m (lpf m)) ≐ succ (pred (pred (quo m (lpf m))))) ::
-          (quo m (lpf m) ≐ succ (pred (quo m (lpf m)))) :: Γ
-      have hc : C ⊢[PRAAx] quo m (lpf m) ≐ succ (pred (quo m (lpf m))) := Prf.hyp1
-      have hp : C ⊢[PRAAx] pred (quo m (lpf m)) ≐ succ (pred (pred (quo m (lpf m)))) := Prf.hyp0
-      exact two_le_ss hc hp
+  have hc := DiophantineNumberTheory.Coprime.pos_of_eq_mul hm1 e
+  refine .orE (zero_or_succ (pred (quo m (lpf m)))) ?_ ?_
+  · exact .botE _ (.impE hne.wk (one_cof e.wk hc.wk Prf.hyp0))
+  · exact two_le_ss hc.wk Prf.hyp0
 
 /-- **A composite number has a small least factor**: if `ℓ(m) ≠ m` then `ℓ(m)² ≤ m`. -/
 theorem lpf_sq_le (hne : Γ ⊢[PRAAx] neg (lpf m ≐ m)) : Γ ⊢[PRAAx] le (lpf m * lpf m) m := by

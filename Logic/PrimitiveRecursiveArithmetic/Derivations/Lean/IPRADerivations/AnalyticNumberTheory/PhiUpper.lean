@@ -115,9 +115,7 @@ theorem quo_sq : Γ ⊢[PRAAx] le N (quo N (lpf N) * quo N (lpf N)) := by
   have hp1 := AnalyticNumberTheory.Euler.N_pos hp2
   have hNp := AnalyticNumberTheory.Euler.N_pos hN
   have hNe := eq_of_dvd' hp1 (Prf.andE₂ lf)
-  have hq : Γ ⊢[PRAAx] quo N (lpf N) ≐ succ (pred (quo N (lpf N))) := by
-    refine .orE (zero_or_succ (quo N (lpf N))) ?_ Prf.hyp0
-    exact succ_ne_zero' _ (hNp.wk.eqSymm.eqTrans (hNe.wk.eqTrans ((congrMul (.eqRefl _) Prf.hyp0).eqTrans (mul_zero _))))
+  have hq := DiophantineNumberTheory.Coprime.pos_of_eq_mul hNp hNe
   have lmin := lpf_min hNp hd hdv
   -- `q ≥ 2`: `q = 1` would make `n = p ≤ d < n`.
   have hq2 : Γ ⊢[PRAAx] le two (quo N (lpf N)) := by

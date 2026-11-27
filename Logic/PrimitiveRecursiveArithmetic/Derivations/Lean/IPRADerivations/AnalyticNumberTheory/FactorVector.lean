@@ -123,10 +123,8 @@ theorem good_congr {N c c' : PTm n} (e : Γ ⊢[PRAAx] c ≐ c') (h : Γ ⊢[PRA
   .orE h (.orI₁ (le_congr e.wk (.eqRefl _) Prf.hyp0)) (.orI₂ (le_congr (.eqRefl _) (lpf_congr e.wk) Prf.hyp0))
 
 theorem pos_right {x a b : PTm n} (hx : Γ ⊢[PRAAx] x ≐ succ (pred x)) (h : Γ ⊢[PRAAx] x ≐ a * b) :
-    Γ ⊢[PRAAx] b ≐ succ (pred b) := by
-  refine .orE (zero_or_succ b) ?_ Prf.hyp0
-  have z : ((b ≐ zero) :: Γ) ⊢[PRAAx] x ≐ zero := h.wk.eqTrans ((congrMul (.eqRefl _) Prf.hyp0).eqTrans (mul_zero _))
-  exact succ_ne_zero' _ (hx.wk.eqSymm.eqTrans z)
+    Γ ⊢[PRAAx] b ≐ succ (pred b) :=
+  DiophantineNumberTheory.Coprime.pos_of_eq_mul hx h
 
 theorem zero_good {N c : PTm n} (h0 : Γ ⊢[PRAAx] isP N ≐ zero) (hc : Γ ⊢[PRAAx] good N c) :
     Γ ⊢[PRAAx] good (succ N) c := by

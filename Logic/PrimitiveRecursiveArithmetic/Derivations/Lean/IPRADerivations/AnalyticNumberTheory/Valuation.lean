@@ -142,10 +142,8 @@ theorem val_eq_succ_pred_of_dvd {p m : PTm n} (hp : Γ ⊢[PRAAx] le two p)
 /-- A positive input has a positive cofactor. -/
 theorem cof_eq_succ_pred {p m : PTm n} (hp : Γ ⊢[PRAAx] le two p)
     (hm : Γ ⊢[PRAAx] m ≐ succ (pred m)) :
-    Γ ⊢[PRAAx] quo m (pw p (val p m)) ≐ succ (pred (quo m (pw p (val p m)))) := by
-  refine .orE (zero_or_succ (quo m (pw p (val p m)))) ?_ Prf.hyp0
-  exact succ_ne_zero' _ (hm.wk.eqSymm.eqTrans
-    ((cof_eq (m := m) hp).wk.eqTrans ((congrMul (.eqRefl _) Prf.hyp0).eqTrans (mul_zero _))))
+    Γ ⊢[PRAAx] quo m (pw p (val p m)) ≐ succ (pred (quo m (pw p (val p m)))) :=
+  DiophantineNumberTheory.Coprime.pos_of_eq_mul hm (cof_eq hp)
 
 /-- The cofactor's remainder modulo its removed base is positive. -/
 theorem cof_rem_eq_succ_pred {p m : PTm n} (hp : Γ ⊢[PRAAx] le two p)

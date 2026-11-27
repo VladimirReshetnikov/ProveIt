@@ -91,10 +91,8 @@ theorem lpf_two : Γ ⊢[PRAAx] prime (lpf K) ⋏ dvd (lpf K) K := by
 theorem K_split : Γ ⊢[PRAAx] K ≐ lpf K * quo K (lpf K) :=
   eq_of_dvd' (prime_eq_succ_pred (Prf.andE₁ (lpf_two hK))) (Prf.andE₂ (lpf_two hK))
 
-theorem cof_pos : Γ ⊢[PRAAx] quo K (lpf K) ≐ succ (pred (quo K (lpf K))) := by
-  refine .orE (zero_or_succ (quo K (lpf K))) ?_ Prf.hyp0
-  refine succ_ne_zero' _ (a := succ (monus K two)) ?_
-  exact (K_eq hK).wk.eqSymm.eqTrans ((K_split hK).wk.eqTrans ((congrMul (.eqRefl _) Prf.hyp0).eqTrans (mul_zero _)))
+theorem cof_pos : Γ ⊢[PRAAx] quo K (lpf K) ≐ succ (pred (quo K (lpf K))) :=
+  DiophantineNumberTheory.Coprime.pos_of_eq_mul (Common.pos_of_succ (K_eq hK)) (K_split hK)
 
 theorem cof_lt : Γ ⊢[PRAAx] le (succ (quo K (lpf K))) K := by
   have hp2 : Γ ⊢[PRAAx] le two (lpf K) := by

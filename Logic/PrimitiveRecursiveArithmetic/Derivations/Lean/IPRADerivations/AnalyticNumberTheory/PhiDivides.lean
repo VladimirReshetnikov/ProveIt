@@ -76,10 +76,7 @@ theorem viol_ge2 (z' : PTm n) (hV : Γ ⊢[PRAAx] ap2 (sumF violB) (succ (succ z
   have hq2 : Γ ⊢[PRAAx] le two (lpf (succ (succ z'))) := by unfold prime at hq; exact Prf.andE₁ hq
   have hNe := eq_of_dvd' hq' (Prf.andE₁ (lpf_dvd (Γ := Γ) z'))
   -- `c″ = c / q ≥ 1` and `c″ < c`.
-  have hc : Γ ⊢[PRAAx] quo (succ (succ z')) (lpf (succ (succ z'))) ≐
-      succ (pred (quo (succ (succ z')) (lpf (succ (succ z'))))) := by
-    refine .orE (zero_or_succ (quo (succ (succ z')) (lpf (succ (succ z'))))) ?_ Prf.hyp0
-    exact succ_ne_zero' _ (hNe.wk.eqTrans ((congrMul (.eqRefl _) Prf.hyp0).eqTrans (mul_zero _)))
+  have hc := DiophantineNumberTheory.Coprime.pos_of_eq_mul (Common.succ_pos (succ z')) hNe
   have hlt : Γ ⊢[PRAAx] lt (quo (succ (succ z')) (lpf (succ (succ z')))) (succ (succ z')) := by
     refine le_of_eq_add (d := pred (quo (succ (succ z')) (lpf (succ (succ z')))) +
       monus (lpf (succ (succ z'))) two * quo (succ (succ z')) (lpf (succ (succ z')))) ?_

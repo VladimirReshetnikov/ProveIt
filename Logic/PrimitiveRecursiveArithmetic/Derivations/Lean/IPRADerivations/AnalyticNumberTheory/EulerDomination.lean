@@ -105,10 +105,7 @@ theorem ptA {p a L F m : PTm n} (hp : Γ ⊢[PRAAx] prime p) :
 
 theorem quo_pos_of {m p : PTm n} (hm : Γ ⊢[PRAAx] m ≐ p * quo m p) (mpos : Γ ⊢[PRAAx] m ≐ succ (pred m)) :
     Γ ⊢[PRAAx] quo m p ≐ succ (pred (quo m p)) :=
-  .orE (zero_or_succ (quo m p))
-    (succ_ne_zero' _ (a := pred m)
-      (mpos.wk.eqSymm.eqTrans (hm.wk.eqTrans ((congrMul (.eqRefl _) Prf.hyp0).eqTrans (mul_zero _)))))
-    Prf.hyp0
+  DiophantineNumberTheory.Coprime.pos_of_eq_mul mpos hm
 
 theorem ptB_dvd {p a L F m : PTm n} (hm : Γ ⊢[PRAAx] m ≐ p * quo m p) (mpos : Γ ⊢[PRAAx] m ≐ succ (pred m))
     (hdX : Γ ⊢[PRAAx] dvd m (pw (a * p) L)) :
