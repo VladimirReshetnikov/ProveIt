@@ -33,7 +33,7 @@ theorem quo_mul_le {x q : PTm n} (hq : Γ ⊢[PRAAx] q ≐ succ (pred q)) : Γ �
 /-- Cancel a factor `b = succ (pred b)`. -/
 theorem cancel {b u v : PTm n} (hb : Γ ⊢[PRAAx] b ≐ succ (pred b)) (h : Γ ⊢[PRAAx] le (b * u) (b * v)) :
     Γ ⊢[PRAAx] le u v :=
-  mul_le_cancel (le_congr (congrMul hb (.eqRefl _)) (congrMul hb (.eqRefl _)) h)
+  mul_le_cancel_at hb h
 
 /-- `p/q ∈ (α/β, γ/β)` with the margins `Lβ ≤ Tα`, `Tγ + wβ ≤ Hβ` gives `L ≤ ⌊Tp/q⌋` and `⌊Tp/q⌋ + w ≤ H`. -/
 theorem scale_margin {T p q α β γ L H w : PTm n} (hq : Γ ⊢[PRAAx] q ≐ succ (pred q))

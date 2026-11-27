@@ -101,12 +101,8 @@ theorem central_binomial : ([] : List (Fm PTm 0)) ⊢[PRAAx] univ 1 centralFormu
 /-! ## Catalan numbers -/
 
 theorem mul_cancel {D X Y : PTm m} (hD : Γ ⊢[PRAAx] D ≐ succ (pred D)) (h : Γ ⊢[PRAAx] D * X ≐ D * Y) :
-    Γ ⊢[PRAAx] X ≐ Y := by
-  have h₁ : Γ ⊢[PRAAx] le (succ (pred D) * X) (succ (pred D) * Y) :=
-    le_congr (congrMul hD (.eqRefl _)) (congrMul hD (.eqRefl _)) (le_congr (.eqRefl _) h (le_refl _))
-  have h₂ : Γ ⊢[PRAAx] le (succ (pred D) * Y) (succ (pred D) * X) :=
-    le_congr (congrMul hD (.eqRefl _)) (congrMul hD (.eqRefl _)) (le_congr (.eqRefl _) h.eqSymm (le_refl _))
-  exact le_antisymm (mul_le_cancel h₁) (mul_le_cancel h₂)
+    Γ ⊢[PRAAx] X ≐ Y :=
+  mul_eq_cancel_at hD h
 
 /-- With `n = m + 1` and `N = 2n`: `C₁ = C(N, n)`, `C₂ = C(N, n + 1)`; variable `0 = m`. -/
 abbrev N : PTm 1 := two * succ (var 0)

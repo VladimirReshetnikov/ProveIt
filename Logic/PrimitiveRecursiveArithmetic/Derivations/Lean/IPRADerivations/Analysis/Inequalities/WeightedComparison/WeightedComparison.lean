@@ -76,10 +76,8 @@ theorem ldisj_elim {α : Type} {φ : α → Fm PTm n} {χ : Fm PTm n} : {L : Lis
 
 /-- Cancelling a positive factor. -/
 theorem cancel_w {w a b : PTm n} (hw : Γ ⊢[PRAAx] le one w) (h : Γ ⊢[PRAAx] le (w * a) (w * b)) :
-    Γ ⊢[PRAAx] le a b := by
-  have h' : Γ ⊢[PRAAx] le (succ (monus w one) * a) (succ (monus w one) * b) := by
-    ipra_le sl h with (𝔟 a - 𝔟 b) * natEq (eq_add_of_le hw)
-  exact mul_le_cancel h'
+    Γ ⊢[PRAAx] le a b :=
+  Common.mul_cancel_le hw h
 
 /-- `δ_j / w_j ≤ δ_i / w_i`, cross-multiplied. -/
 def R (δ w : Fin m → PTm n) (j i : Fin m) : Fm PTm n := le (δ j * w i) (δ i * w j)

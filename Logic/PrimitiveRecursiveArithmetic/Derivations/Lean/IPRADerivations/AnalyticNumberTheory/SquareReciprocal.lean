@@ -36,19 +36,13 @@ theorem inst2_sq (i F : PTm n) : inst2 sqB i F = quo F (succ i * succ i) := by s
 
 /-- `N A ≤ N B`, `N ≥ 1` give `A ≤ B`. -/
 theorem cancel_le {Γ : List (Fm PTm n)} {N A B : PTm n} (hN : Γ ⊢[PRAAx] N ≐ succ (pred N))
-    (h : Γ ⊢[PRAAx] le (N * A) (N * B)) : Γ ⊢[PRAAx] le A B := by
-  refine .orE (lt_or_le B A) ?_ Prf.hyp0
-  let Δ : List (Fm PTm n) := lt B A :: Γ
-  refine .botE _ (succ_ne_zero (a := pred N + N * monus A (succ B) + monus (N * B) (N * A)) ?_)
-  ipra_lc -natEq (eq_add_of_le (Γ := Δ) h.wk) - 𝔞 N * natEq (eq_add_of_le (Γ := Δ) Prf.hyp0) - natEq (Γ := Δ) hN.wk
+    (h : Γ ⊢[PRAAx] le (N * A) (N * B)) : Γ ⊢[PRAAx] le A B :=
+  mul_le_cancel_at hN h
 
 /-- `(N+1)² ⌊F/(N+1)²⌋ ≤ F`. -/
 theorem sq_quo_le {Γ : List (Fm PTm n)} (N F : PTm n) :
-    Γ ⊢[PRAAx] le (succ N * succ N * quo F (succ N * succ N)) F := by
-  have hK : Γ ⊢[PRAAx] succ N * succ N ≐ succ (N + N * succ N) := by ipra_ring
-  have d := div_mod_at (Γ := Γ) (x := F) hK
-  refine le_of_eq_add (d := rem F (succ N * succ N)) ?_
-  ipra_lc natEq (Prf.andE₁ d)
+    Γ ⊢[PRAAx] le (succ N * succ N * quo F (succ N * succ N)) F :=
+  Division.mul_quo_le (x := F) (Common.pos_mul (Common.succ_pos N) (Common.succ_pos N))
 
 /-- The invariant at `N = M + 2`: `4N T(N) + 4F ≤ 7NF`. -/
 def sqInv (M F : PTm n) : Fm PTm n :=

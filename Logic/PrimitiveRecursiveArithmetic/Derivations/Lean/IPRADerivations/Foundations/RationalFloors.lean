@@ -49,9 +49,8 @@ theorem quo_far {A B r s Dn E cr cs : PTm n} (hr : Γ ⊢[PRAAx] r ≐ succ cr) 
   have bound := mul_le_mul_right r (Division.mul_quo_le (x := B) hs)
   have lower : Γ ⊢[PRAAx] le (s * (r * (quo B s + Dn))) (B * r + Dn * (r * s)) :=
     le_congr (by ipra_ring) (.eqRefl _) (add_le_add_right (Dn * (r * s)) bound)
-  have scaled := le_trans lower (le_of_eq_add ((mul_comm s A).eqTrans h))
   exact Division.le_quo_of_mul_le hr
-    (mul_le_cancel (le_congr (congrMul hs (.eqRefl _)) (congrMul hs (.eqRefl _)) scaled))
+    (mul_le_cancel_at hs (le_trans lower (le_of_eq_add ((mul_comm s A).eqTrans h))))
 
 /-- `A/r < B/s + 1` gives `⌊A/r⌋ ≤ ⌊B/s⌋ + 1`. -/
 theorem quo_le_succ {A B r s cr cs : PTm n} (hr : Γ ⊢[PRAAx] r ≐ succ cr) (hs : Γ ⊢[PRAAx] s ≐ succ cs)

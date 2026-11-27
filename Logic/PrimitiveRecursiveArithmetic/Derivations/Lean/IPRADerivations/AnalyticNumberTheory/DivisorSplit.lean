@@ -29,12 +29,8 @@ variable {n : ℕ} {Γ : List (Fm PTm n)}
 /-! ## Cancellation and positivity -/
 
 theorem mul_cancel {a x y : PTm n} (ha : Γ ⊢[PRAAx] a ≐ succ (pred a)) (h : Γ ⊢[PRAAx] a * x ≐ a * y) :
-    Γ ⊢[PRAAx] x ≐ y := by
-  have l1 : Γ ⊢[PRAAx] le (succ (pred a) * x) (succ (pred a) * y) :=
-    le_congr (congrMul ha (.eqRefl _)) (congrMul ha (.eqRefl _)) (le_congr (.eqRefl _) h (le_refl _))
-  have l2 : Γ ⊢[PRAAx] le (succ (pred a) * y) (succ (pred a) * x) :=
-    le_congr (congrMul ha (.eqRefl _)) (congrMul ha (.eqRefl _)) (le_congr (.eqRefl _) h.eqSymm (le_refl _))
-  exact le_antisymm (mul_le_cancel l1) (mul_le_cancel l2)
+    Γ ⊢[PRAAx] x ≐ y :=
+  mul_eq_cancel_at ha h
 
 /-- A divisor of a positive number is positive. -/
 theorem pos_of_dvd {a m : PTm n} (hm : Γ ⊢[PRAAx] m ≐ succ (pred m)) (h : Γ ⊢[PRAAx] dvd a m) :

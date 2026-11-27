@@ -29,13 +29,8 @@ local notation "𝔟" t:max => Groth.ι (IPRA.Q.mk _ t)
 
 /-- A positive factor cancels: `c ≥ 1` and `c x ≤ c y` give `x ≤ y`. -/
 theorem mul_cancel_le {c x y : PTm n} (hc : Γ ⊢[PRAAx] le (succ zero) c) (h : Γ ⊢[PRAAx] le (c * x) (c * y)) :
-    Γ ⊢[PRAAx] le x y := by
-  refine .orE (lt_or_le y x) ?_ Prf.hyp0
-  have hlt : (lt y x :: Γ) ⊢[PRAAx] le (succ y) x := Prf.hyp0
-  have h' := h.wk (ψ := lt y x)
-  have hc' := hc.wk (ψ := lt y x)
-  refine not_succ_le_self (c * y) _ ?_
-  ipra_le sl h' + 𝔟 c * sl hlt + sl hc'
+    Γ ⊢[PRAAx] le x y :=
+  Common.mul_cancel_le hc h
 
 /-- A positive numeral is at least one. -/
 theorem num_pos {m : ℕ} (hm : 1 ≤ m) : Γ ⊢[PRAAx] le (succ zero) (num m : PTm n) := by

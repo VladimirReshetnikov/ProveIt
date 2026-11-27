@@ -106,13 +106,12 @@ theorem mul_le_mul {a b c d : PTm n} (h₁ : Γ ⊢[PRAAx] le a b) (h₂ : Γ �
 /-- Cancellation of a positive factor in `≤`. -/
 theorem mul_cancel_le {c a b : PTm n} (hc : Γ ⊢[PRAAx] le one c) (h : Γ ⊢[PRAAx] le (c * a) (c * b)) :
     Γ ⊢[PRAAx] le a b :=
-  mul_le_cancel (le_congr (congrMul (pos_of_one_le hc) (.eqRefl _)) (congrMul (pos_of_one_le hc) (.eqRefl _)) h)
+  mul_le_cancel_at (pos_of_one_le hc) h
 
 /-- Cancellation of a positive factor in an equation. -/
 theorem mul_cancel_eq {c a b : PTm n} (hc : Γ ⊢[PRAAx] c ≐ succ (pred c)) (h : Γ ⊢[PRAAx] c * a ≐ c * b) :
     Γ ⊢[PRAAx] a ≐ b :=
-  le_antisymm (mul_cancel_le (one_le_of_pos hc) (le_congr (.eqRefl _) h (le_refl _)))
-    (mul_cancel_le (one_le_of_pos hc) (le_congr (.eqRefl _) h.eqSymm (le_refl _)))
+  mul_eq_cancel_at hc h
 
 theorem two_mul_cancel {a b : PTm n} (h : Γ ⊢[PRAAx] two * a ≐ two * b) : Γ ⊢[PRAAx] a ≐ b :=
   mul_cancel_eq (succ_pos _) h

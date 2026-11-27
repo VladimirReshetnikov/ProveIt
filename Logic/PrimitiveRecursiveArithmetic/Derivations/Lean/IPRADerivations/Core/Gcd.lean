@@ -79,6 +79,17 @@ theorem mul_le_cancel {d' a b : PTm n} (h : Γ ⊢[PRAAx] le (succ d' * a) (succ
   refine withEq w fun e => ?_
   apply deriveNat; ipra_simps; rw [e]; ring
 
+/-- Cancel a factor known to be a successor. -/
+theorem mul_le_cancel_at {d c a b : PTm n} (hd : Γ ⊢[PRAAx] d ≐ succ c)
+    (h : Γ ⊢[PRAAx] le (d * a) (d * b)) : Γ ⊢[PRAAx] le a b :=
+  mul_le_cancel (le_congr (congrMul hd (.eqRefl _)) (congrMul hd (.eqRefl _)) h)
+
+/-- Cancel the same positive factor in an equality of products. -/
+theorem mul_eq_cancel_at {d c a b : PTm n} (hd : Γ ⊢[PRAAx] d ≐ succ c)
+    (h : Γ ⊢[PRAAx] d * a ≐ d * b) : Γ ⊢[PRAAx] a ≐ b :=
+  le_antisymm (mul_le_cancel_at hd (le_congr (.eqRefl _) h (le_refl _)))
+    (mul_le_cancel_at hd (le_congr (.eqRefl _) h.eqSymm (le_refl _)))
+
 /-- `d ∣ x + y` and `d ∣ y` give `d ∣ x`. -/
 theorem dvd_sub {d' x y : PTm n} (hxy : Γ ⊢[PRAAx] dvd (succ d') (x + y))
     (hy : Γ ⊢[PRAAx] dvd (succ d') y) : Γ ⊢[PRAAx] dvd (succ d') x := by

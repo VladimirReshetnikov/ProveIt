@@ -85,8 +85,7 @@ theorem ten (d : PTm n) : Γ ⊢[PRAAx] le (pw (d + num 39) (num 6)) (pw two (d 
 
 theorem cancel_r {c a b : PTm n} (hc : Γ ⊢[PRAAx] c ≐ succ (pred c)) (h : Γ ⊢[PRAAx] le (a * c) (b * c)) :
     Γ ⊢[PRAAx] le a b :=
-  mul_le_cancel (d' := pred c) (le_congr ((mul_comm a c).eqTrans (congrMul hc (.eqRefl a)))
-    ((mul_comm b c).eqTrans (congrMul hc (.eqRefl b))) h)
+  mul_le_cancel_at hc (le_congr (mul_comm a c) (mul_comm b c) h)
 
 /-- The estimate (9): from `4^x ≤ u^e 4^m` and `3m ≤ 2x`: `4^x ≤ u^{3e}`. -/
 theorem cube {x u e m : PTm n} (G0 : Γ ⊢[PRAAx] le (pw two (two * x)) (pw u e * pw two (two * m)))
