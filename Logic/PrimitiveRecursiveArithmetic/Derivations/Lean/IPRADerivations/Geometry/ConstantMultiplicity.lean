@@ -79,18 +79,12 @@ abbrev propF (F x : PTm n) : Fm PTm (n + 1) :=
 /-- All faces agree with the root. -/
 theorem propagate {F x : PTm n} (H : Γ ⊢[PRAAx] treeHyp c par F x) :
     Γ ⊢[PRAAx] allB (eqB c) F x ≐ one := by
-  have hall : Γ ⊢[PRAAx] Fm.all (propF c F x) := by
-    refine PRA.qfInd _ ⟨le_QF _ _, trivial⟩ ?_ ?_
-    · simpa using .impI (allB_zero (Γ := le zero F :: Γ) (eqB c) x)
-    · have st : (propF c F x :: Γ.map Fm.shift) ⊢[PRAAx] le (succ (var 0)) (Syn.shift F) ⟶
-          (allB (eqB c) (succ (var 0)) (Syn.shift x) ≐ one) :=
-        .impI (prop_step c par (.impE Prf.hyp1 (le_trans (le_succ_self _) Prf.hyp0))
-          (.impE H.allOpen.wk.wk Prf.hyp0))
-      simpa [subst_repl_shift, Syn.repl_zero] using st
-  have h2 := Prf.allE F hall
-  have h3 : Γ ⊢[PRAAx] le F F ⟶ (allB (eqB c) F x ≐ one) := by
-    simpa [Syn.subst_inst_shift, Syn.inst_zero] using h2
-  exact .impE h3 (le_refl F)
+  let invariant := allB (eqB c) (var 0) (Syn.shift x) ≐ one
+  suffices result : Γ ⊢[PRAAx] invariant.subst (Syn.inst F) by simpa [invariant] using result
+  refine qfIndUpTo F trivial ?_ ?_
+  · simpa [invariant] using allB_zero (Γ := Γ) (eqB c) x
+  · simp [invariant]
+    exact .impI (prop_step c par Prf.hyp1 (.impE H.allOpen.wk.wk Prf.hyp0))
 
 /-- `lem:constantmultiplicity`: every coefficient equals the coefficient of the root. -/
 theorem constant_multiplicity {F x j : PTm n} (H : Γ ⊢[PRAAx] treeHyp c par F x)

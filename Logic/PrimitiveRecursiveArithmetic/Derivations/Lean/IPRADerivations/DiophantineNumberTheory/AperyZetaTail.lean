@@ -72,31 +72,19 @@ theorem telescope (u v : PTm 2) {x r : PTm k}
       le (inst2 u (Syn.var 0) (Syn.shift x) + inst2 v (succ (Syn.var 0)) (Syn.shift x))
         (inst2 v (Syn.var 0) (Syn.shift x)))) :
     Γ ⊢[PRAAx] le (ap2 (sumF u) r x + inst2 v r x) (inst2 v zero x) := by
-  have hall : Γ ⊢[PRAAx] Fm.all (le (Syn.var 0) (Syn.shift r) ⟶
-      le (ap2 (sumF u) (Syn.var 0) (Syn.shift x) + inst2 v (Syn.var 0) (Syn.shift x))
-        (inst2 v zero (Syn.shift x))) := by
-    refine PRA.qfInd _ ⟨le_QF _ _, le_QF _ _⟩ ?_ ?_
-    · simp only [Fm.subst_imp, subst_le, subst_ap2, subst_inst2, PTm.subst_add, Syn.subst_var, Syn.inst_zero,
-        Syn.subst_inst_shift, ConciseIPRA.PTm.subst_zero]
-      refine .impI ?_
-      have z := natEq (sum_zero (Γ := le zero r :: Γ) u x)
-      ipra_le 0 using rw [z]; ring
-    · simp only [Fm.subst_imp, subst_le, subst_ap2, subst_inst2, PTm.subst_add, Syn.subst_var, Syn.repl_zero,
-        subst_repl_shift, ConciseIPRA.PTm.subst_zero, ConciseIPRA.PTm.subst_succ]
-      refine .impI ?_
-      let Δ : List (Fm PTm (k + 1)) := le (succ (Syn.var 0)) (Syn.shift r) ::
-        (le (Syn.var 0) (Syn.shift r) ⟶ le (ap2 (sumF u) (Syn.var 0) (Syn.shift x) +
-          inst2 v (Syn.var 0) (Syn.shift x)) (inst2 v zero (Syn.shift x))) :: Γ.map Fm.shift
-      have hk : Δ ⊢[PRAAx] le (succ (Syn.var 0)) (Syn.shift r) := Prf.hyp0
-      have ih : Δ ⊢[PRAAx] le (ap2 (sumF u) (Syn.var 0) (Syn.shift x) + inst2 v (Syn.var 0) (Syn.shift x))
-          (inst2 v zero (Syn.shift x)) := Prf.impE Prf.hyp1 (le_trans (le_succ_self _) hk)
-      have st := Prf.impE h.allOpen.wk.wk hk
-      have es := natEq (sum_succ' (Γ := Δ) u (Syn.var 0) (Syn.shift x))
-      ipra_le sl ih + sl st using rw [es]; ring
-  have h2 := Prf.allE r hall
-  simp only [Fm.subst_imp, subst_le, subst_ap2, subst_inst2, PTm.subst_add, Syn.subst_var, Syn.inst_zero,
-    Syn.subst_inst_shift, ConciseIPRA.PTm.subst_zero] at h2
-  exact .impE h2 (le_refl r)
+  let invariant := le (ap2 (sumF u) (Syn.var 0) (Syn.shift x) + inst2 v (Syn.var 0) (Syn.shift x))
+    (inst2 v zero (Syn.shift x))
+  suffices result : Γ ⊢[PRAAx] invariant.subst (Syn.inst r) by simpa [invariant] using result
+  refine qfIndUpTo r (le_QF _ _) ?_ ?_
+  · simpa [invariant] using le_congr
+      ((congrAdd (sum_zero (Γ := Γ) u x) (.eqRefl _)).eqTrans (zero_add _)).eqSymm (.eqRefl _) (le_refl (inst2 v zero x))
+  · simp [invariant]
+    refine .impI ?_
+    let Δ := lt (Syn.var 0) (Syn.shift r) :: invariant :: Γ.map Fm.shift
+    have ih : Δ ⊢[PRAAx] invariant := Prf.hyp1
+    have st := Prf.impE h.allOpen.wk.wk (Prf.hyp0 : Δ ⊢[PRAAx] lt (Syn.var 0) (Syn.shift r))
+    have es := natEq (sum_succ' (Γ := Δ) u (Syn.var 0) (Syn.shift x))
+    ipra_le sl ih + sl st using rw [es]; ring
 
 /-- `eq:zeta-tail` with `M = M' + 1`, `T = M + r`: if `(M+1+i)³ u(i) = F` for `i < r` and
 `2 (M+i)² v(i) = F` for `i ≤ r`, then `2M² ∑_{i<r} u(i) ≤ F`, i.e. `Z_T − Z_M ≤ 1/(2M²)`. -/

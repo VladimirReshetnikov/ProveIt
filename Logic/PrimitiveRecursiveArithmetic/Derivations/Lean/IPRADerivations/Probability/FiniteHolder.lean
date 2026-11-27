@@ -70,16 +70,7 @@ theorem lin3_le {f g h : PTm 2} {c₀ c₁ c₂ N x : PTm n}
       le (Syn.shift c₀ * inst2 f (var 0) (Syn.shift x))
         (Syn.shift c₁ * inst2 g (var 0) (Syn.shift x) + Syn.shift c₂ * inst2 h (var 0) (Syn.shift x)))) :
     Γ ⊢[PRAAx] LinF f g h c₀ c₁ c₂ N x := by
-  have hall : Γ ⊢[PRAAx] Fm.all (le (var 0) (Syn.shift N) ⟶
-      LinF f g h (Syn.shift c₀) (Syn.shift c₁) (Syn.shift c₂) (var 0) (Syn.shift x)) := by
-    ipra_qfind (⟨le_QF _ _, le_QF _ _⟩) [subst_le, subst_ap2]
-    · exact .impI (lin_base f g h c₀ c₁ c₂ x)
-    · exact .impI (lin_step (Prf.impE hb.allOpen.wk.wk Prf.hyp0)
-        (Prf.impE Prf.hyp1 (le_trans (le_succ_self _) Prf.hyp0)))
-  have h := Prf.allE N hall
-  simp only [Fm.subst_imp, subst_le, subst_ap2, PTm.subst_add, PTm.subst_mul, Syn.subst_var, Syn.inst_zero,
-    Syn.subst_inst_shift, ConciseIPRA.PTm.subst_zero, ConciseIPRA.PTm.subst_succ] at h
-  exact .impE h (le_refl N)
+  exact sum_scaled_le_weighted_pair f g h c₀ c₁ c₂ x x x N hb
 
 /-! ## Young's inequality for conjugate exponents `k/i`, `k/j` -/
 

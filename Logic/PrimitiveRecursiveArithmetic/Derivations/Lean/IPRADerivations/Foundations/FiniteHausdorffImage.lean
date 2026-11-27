@@ -53,30 +53,15 @@ theorem scaled_maximum_bound (body : PTm 2) (N x B R : PTm n)
     (h : Γ ⊢[PRAAx] .all (lt (var 0) (Syn.shift N) ⟶
       le (Syn.shift B*inst2 body (var 0) (Syn.shift x)) (Syn.shift R))) :
     Γ ⊢[PRAAx] le (B*finiteMaximum body N x) R := by
-  have all : Γ ⊢[PRAAx] .all (le (var 0) (Syn.shift N) ⟶
-      le (Syn.shift B*finiteMaximum body (var 0) (Syn.shift x)) (Syn.shift R)) := by
-    refine PRA.qfInd _ ⟨le_QF _ _, le_QF _ _⟩ ?_ ?_
-    · simp only [Fm.subst_imp, subst_le, PTm.subst_mul, subst_finiteMaximum,
-        Syn.subst_var, Syn.inst_zero, Syn.subst_inst_shift]
-      exact .impI (le_congr ((congrMul (.eqRefl _) (finiteMaximum_zero body x)).eqTrans (mul_zero B)).eqSymm
-        (.eqRefl _) (zero_le R))
-    · simp only [Fm.subst_imp, subst_le, PTm.subst_mul, subst_finiteMaximum,
-        Syn.subst_var, Syn.repl_zero, subst_repl_shift]
-      refine .impI ?_
-      let Δ : List (Fm PTm (n+1)) := le (succ (var 0)) (Syn.shift N) ::
-        (le (var 0) (Syn.shift N) ⟶
-          le (Syn.shift B*finiteMaximum body (var 0) (Syn.shift x)) (Syn.shift R)) :: Γ.map Fm.shift
-      have old : Δ ⊢[PRAAx] le (Syn.shift B*finiteMaximum body (var 0) (Syn.shift x)) (Syn.shift R) :=
-        .impE Prf.hyp1 (le_trans (le_succ_self _) Prf.hyp0)
-      have next : Δ ⊢[PRAAx] le (Syn.shift B*inst2 body (var 0) (Syn.shift x)) (Syn.shift R) :=
-        .impE h.allOpen.wk.wk Prf.hyp0
-      exact le_congr
-        ((congrMul (.eqRefl _) (finiteMaximum_succ body _ _)).eqTrans (scale_maximum _ _ _)).eqSymm
-        (.eqRefl _) (maximum_le old next)
-  have contract : Γ ⊢[PRAAx] le N N ⟶ le (B*finiteMaximum body N x) R := by
-    simpa only [Fm.subst_imp, subst_le, PTm.subst_mul, subst_finiteMaximum,
-      Syn.subst_var, Syn.inst_zero, Syn.subst_inst_shift] using Prf.allE N all
-  exact .impE contract (le_refl N)
+  let invariant := le (Syn.shift B*finiteMaximum body (var 0) (Syn.shift x)) (Syn.shift R)
+  suffices result : Γ ⊢[PRAAx] invariant.subst (Syn.inst N) by simpa [invariant] using result
+  refine qfIndUpTo N (le_QF _ _) ?_ ?_
+  · simpa [invariant] using le_congr
+      ((congrMul (.eqRefl B) (finiteMaximum_zero body x)).eqTrans (mul_zero B)).eqSymm
+      (.eqRefl R) (zero_le (Γ := Γ) R)
+  · simp [invariant]
+    refine .impI (le_congr ?_ (.eqRefl _) (maximum_le Prf.hyp1 (.impE h.allOpen.wk.wk Prf.hyp0)))
+    exact ((congrMul (.eqRefl _) (finiteMaximum_succ body _ _)).eqTrans (scale_maximum _ _ _)).eqSymm
 
 /-- Weighted directed distance follows from the actual weighted point minima. -/
 theorem weighted_directed_bound (d : PR 3) (S T B R p : PTm n)

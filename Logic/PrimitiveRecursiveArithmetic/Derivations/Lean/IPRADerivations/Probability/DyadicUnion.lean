@@ -51,15 +51,11 @@ theorem dyadic_union {P : PTm 2} {c K B x J : PTm n}
     (hb : Γ ⊢[PRAAx] Fm.all (lt (var 0) (Syn.shift J) ⟶
       le (two * Syn.shift c * pw two (Syn.shift K + var 0) * inst2 P (var 0) (Syn.shift x)) (Syn.shift B))) :
     Γ ⊢[PRAAx] UF P c K B J x := by
-  have hall : Γ ⊢[PRAAx] Fm.all (le (var 0) (Syn.shift J) ⟶
-      UF P (Syn.shift c) (Syn.shift K) (Syn.shift B) (var 0) (Syn.shift x)) := by
-    ipra_qfind (⟨le_QF _ _, le_QF _ _⟩) [subst_le, subst_ap2]
-    · exact .impI (union_base P c K B x)
-    · exact .impI (union_step (Prf.impE hb.allOpen.wk.wk Prf.hyp0)
-        (Prf.impE Prf.hyp1 (le_trans (le_succ_self _) Prf.hyp0)))
-  have h := Prf.allE J hall
-  simp only [Fm.subst_imp, subst_le, subst_ap2, PTm.subst_add, PTm.subst_mul, Syn.subst_var, Syn.inst_zero,
-    Syn.subst_inst_shift, ConciseIPRA.PTm.subst_zero, ConciseIPRA.PTm.subst_succ] at h
-  exact .impE h (le_refl J)
+  let invariant := UF P (Syn.shift c) (Syn.shift K) (Syn.shift B) (var 0) (Syn.shift x)
+  suffices result : Γ ⊢[PRAAx] invariant.subst (Syn.inst J) by simpa [invariant] using result
+  refine qfIndUpTo J (le_QF _ _) ?_ ?_
+  · simpa [invariant] using union_base (Γ := Γ) P c K B x
+  · simp [invariant]
+    exact .impI (union_step (.impE hb.allOpen.wk.wk Prf.hyp0) Prf.hyp1)
 
 end LeanProofs.IPRA.Probability.DyadicUnion

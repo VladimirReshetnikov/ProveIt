@@ -141,24 +141,12 @@ theorem code_lt (r d : PTm 2) (x m : PTm n)
     (hb : Γ ⊢[PRAAx] Fm.all (lt (var 0) (Syn.shift m) ⟶
       lt (inst2 d (var 0) (Syn.shift x)) (inst2 r (var 0) (Syn.shift x)))) :
     Γ ⊢[PRAAx] lt (Cd r d m x) (Pl r m x) := by
-  have hall : Γ ⊢[PRAAx] Fm.all (le (var 0) (Syn.shift m) ⟶
-      lt (Cd r d (var 0) (Syn.shift x)) (Pl r (var 0) (Syn.shift x))) := by
-    refine PRA.qfInd _ ⟨le_QF _ _, lt_QF _ _⟩ ?_ ?_
-    · simp only [Fm.subst_imp, subst_le, subst_lt, subst_ap2, Syn.subst_var, Syn.inst_zero,
-        Syn.subst_inst_shift, ConciseIPRA.PTm.subst_zero]
-      exact .impI (lt_base r d x)
-    · simp only [Fm.subst_imp, subst_le, subst_lt, subst_ap2, Syn.subst_var, Syn.repl_zero, subst_repl_shift,
-        ConciseIPRA.PTm.subst_zero, ConciseIPRA.PTm.subst_succ]
-      have hf := hb.allOpen
-      refine .impI ?_
-      have hk : (le (succ (var 0)) (Syn.shift m) ::
-          (le (var 0) (Syn.shift m) ⟶ lt (Cd r d (var 0) (Syn.shift x)) (Pl r (var 0) (Syn.shift x))) ::
-          Γ.map Fm.shift) ⊢[PRAAx] le (succ (var 0)) (Syn.shift m) := Prf.hyp0
-      exact lt_step (Prf.impE hf.wk.wk hk) (Prf.impE Prf.hyp1 (le_trans (le_succ_self _) hk))
-  have h2 := Prf.allE m hall
-  simp only [Fm.subst_imp, subst_le, subst_lt, subst_ap2, Syn.subst_var, Syn.inst_zero,
-    Syn.subst_inst_shift, ConciseIPRA.PTm.subst_zero] at h2
-  exact .impE h2 (le_refl m)
+  let invariant := lt (Cd r d (var 0) (Syn.shift x)) (Pl r (var 0) (Syn.shift x))
+  suffices result : Γ ⊢[PRAAx] invariant.subst (Syn.inst m) by simpa [invariant] using result
+  refine qfIndUpTo m (lt_QF _ _) ?_ ?_
+  · simpa [invariant] using lt_base (Γ := Γ) r d x
+  · simp [invariant]
+    exact .impI (lt_step (.impE hb.allOpen.wk.wk Prf.hyp0) Prf.hyp1)
 
 /-! ## Decoding -/
 
