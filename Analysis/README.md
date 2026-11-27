@@ -48,14 +48,12 @@ and Coq proofs; the Fabius project is currently a Lean statement formalization.
   openai/math construction under a nested Apache-2.0 licence, keeps its
   delivered layout, and is not formalized.
 - [`GeneralizedRiemannHypothesis/`](GeneralizedRiemannHypothesis/), opened on 26 November
-  2026, holds 61 delivered research packets on results beyond GRH for Dirichlet
-  L-functions, one directory per archive under `Research/`. By their own account they
-  start from the external Lean development `lsernau/grh-lean`. They are placed as
-  delivered from [`docs/incoming`](../docs/incoming/README.md): nothing was rerun,
-  reviewed or formalized, and their `.lean` files are not part of the Lake package.
-  [`Article/article.pdf`](GeneralizedRiemannHypothesis/Article/article.pdf) merges them
-  into one article, with each result stated once in its strongest form and results implied
-  by stronger ones left out.
+  2026, holds [`Article/article.pdf`](GeneralizedRiemannHypothesis/Article/article.pdf),
+  an article that merges 103 delivered research reports on results beyond GRH for
+  Dirichlet L-functions, each result stated once in its strongest form. By their own
+  account the reports start from the external Lean development `lsernau/grh-lean`.
+  Nothing was rerun, reviewed or formalized. The reports themselves were removed after the
+  merge and remain in the history (commit `10802a6b36`).
 
 The Coq developments are mathematical ports rather than generated
 translations. The tiny-exponent proof uses `coq-interval`; the trigonometric
