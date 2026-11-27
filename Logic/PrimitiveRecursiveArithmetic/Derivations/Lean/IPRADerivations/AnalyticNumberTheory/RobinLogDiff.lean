@@ -94,6 +94,6 @@ theorem low_ge {p s W : PTm n} (hs : Γ ⊢[PRAAx] s ≐ succ (pred s)) (hWp : �
         2 * 𝔞 (Lv (succ j) zero) * 𝔞 (Pv (succ j) s) * (𝔞 s) ^ 2 * p0 - 𝔞 (Nz (succ j) p s) * q1 -
         𝔞 (Nz (succ j) p s) * (𝔞 s) ^ 2 * q0
   have hp : Γ ⊢[PRAAx] s * s ≐ succ (pred (s * s)) := Combinatorics.Binomial.pos_mul hs hs
-  exact mul_le_cancel (le_congr (congrMul hp (.eqRefl _)) (congrMul hp (.eqRefl _)) c)
+  exact mul_le_cancel_at hp c
 
 end LeanProofs.IPRA.AnalyticNumberTheory.RobinLogDiff

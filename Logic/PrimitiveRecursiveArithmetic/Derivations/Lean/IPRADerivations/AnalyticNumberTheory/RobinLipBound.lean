@@ -41,7 +41,7 @@ theorem S_le {p s W : PTm n} (hs : Γ ⊢[PRAAx] s ≐ succ (pred s)) (hWp : Γ 
   have c : Γ ⊢[PRAAx] le (Ud K p s W * (Nz K p s * W)) (Ud K p s W * (two * p * s * Dz K p s)) := by
     ipra_le 𝔞 W * sl lu + 𝔞 (Dz K p s) * sl ul
   have hp := Ud_pos hs hWp K p
-  exact mul_le_cancel (le_congr (congrMul hp (.eqRefl _)) (congrMul hp (.eqRefl _)) c)
+  exact mul_le_cancel_at hp c
 
 /-! ## `lo(q) ≤ q − 1` -/
 
@@ -61,7 +61,7 @@ theorem q1_alg {e N3 D3 Nr Dr a b P d : PTm n}
       𝔞 ((two * two * (b * P) * a) * (b * P) * b * e * Dr) * sl h3 + 8 * 𝔞 ((b * P) * b * D3) * sl hS +
       16 * 𝔞 (b * D3 * Dr * d * d * (b * P)) with
       ((32 * 𝔞 D3 * 𝔞 Dr * (𝔞 P) ^ 2 * 𝔞 a * (𝔞 b) ^ 2) + (32 * 𝔞 D3 * 𝔞 Dr * (𝔞 P) ^ 2 * (𝔞 b) ^ 2 * 𝔞 d) + (-32 * 𝔞 D3 * 𝔞 Dr * 𝔞 P * (𝔞 b) ^ 2 * 𝔞 d * 𝔞 (pred P)) + (-16 * 𝔞 D3 * 𝔞 Dr * 𝔞 P * (𝔞 b) ^ 2 * 𝔞 d)) * ea + ((32 * 𝔞 D3 * 𝔞 Dr * (𝔞 P) ^ 2 * (𝔞 b) ^ 3 * 𝔞 d) + (32 * 𝔞 D3 * 𝔞 Dr * 𝔞 P * (𝔞 b) ^ 2 * (𝔞 d) ^ 2)) * ep
-  exact mul_le_cancel (le_congr (congrMul hM (.eqRefl _)) (congrMul hM (.eqRefl _)) c)
+  exact mul_le_cancel_at hM c
 
 /-- `lo(a/b, K) ≤ a/b − 1`, cleared: `loN·b + b·loD ≤ a·loD`. -/
 theorem lo_le_pred {a b : PTm n} (hb : Γ ⊢[PRAAx] le one b) (hab : Γ ⊢[PRAAx] le b a) (K : PTm n) :
@@ -122,7 +122,7 @@ theorem pow_alg {Xn Xd Xn1 Xd1 Yn Yd An Ad Ln Ld G c j : PTm n} (hM : Γ ⊢[PRA
   have c' : Γ ⊢[PRAAx] le (Xd * Yd * (Xn1 * Ad * Ld * G))
       (Xd * Yd * (An * Xd1 * Ld * G + succ j * Ln * Xd1 * Ad * G + succ j * c * Xd1 * Ad * Ld)) := by
     ipra_le 𝔞 (Yd * Xd1) * sl inv + 𝔞 (Xd1 * Ad) * sl sub with (𝔞 Ad * 𝔞 G * 𝔞 Ld * 𝔞 Xd) * ev
-  exact mul_le_cancel (le_congr (congrMul hM (.eqRefl _)) (congrMul hM (.eqRefl _)) c')
+  exact mul_le_cancel_at hM c'
 
 theorem pow_base {X0n X0d An Ad Ln Ld G c : PTm n} (ev : Γ ⊢[PRAAx] X0n * Ad ≐ An * X0d) :
     Γ ⊢[PRAAx] le (X0n * Ad * Ld * G) (An * X0d * Ld * G + zero * Ln * X0d * Ad * G + zero * c * X0d * Ad * Ld) := by

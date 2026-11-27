@@ -30,7 +30,7 @@ theorem comp_alg {hN' hD' lN' lD' lN lD A D R : PTm n} (hM : Γ ⊢[PRAAx] lD' �
     Γ ⊢[PRAAx] le (R * (hN' * lD * A)) (R * (lN * hD' * A + D * lD * hD') + hD' * lD * A) := by
   have c : Γ ⊢[PRAAx] le (lD' * (R * (hN' * lD * A))) (lD' * (R * (lN * hD' * A + D * lD * hD') + hD' * lD * A)) := by
     ipra_le 𝔞 (lD * A) * sl w + 𝔞 (R * hD') * sl l
-  exact mul_le_cancel (le_congr (congrMul hM (.eqRefl _)) (congrMul hM (.eqRefl _)) c)
+  exact mul_le_cancel_at hM c
 
 /-- The composed width: `hi(log x', K') − lo(log x, K') ≤ (x' − x)/x + 2^{−k}` at `K' = k + e(x') + 4`, cleared:
 `2^k·hiN'·loD·(ab') ≤ 2^k(loN·hiD'·(ab') + Δ·loD·hiD') + hiD'·loD·(ab')`. -/

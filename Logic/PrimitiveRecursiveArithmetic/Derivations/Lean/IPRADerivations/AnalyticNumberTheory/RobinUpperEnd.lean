@@ -176,7 +176,7 @@ theorem glo_le_one (t K j : PTm n) : Γ ⊢[PRAAx] le (gloN t K) (gloD t K) := b
   have m2 := le_mul_mono h (le_refl (gloD t K))
   have l : Γ ⊢[PRAAx] le (ghiD t (succ (succ j)) * (num 12 * gloN t K)) (ghiD t (succ (succ j)) * (num 12 * gloD t K)) := by
     ipra_le sl m1 + sl m2 + 5 * 𝔞 (ghiD t (succ (succ j)) * gloD t K)
-  have l' := mul_le_cancel (le_congr (congrMul (ghiD_pos _ _) (.eqRefl _)) (congrMul (ghiD_pos _ _) (.eqRefl _)) l)
+  have l' := mul_le_cancel_at (ghiD_pos _ _) l
   exact mul_le_cancel (d' := num 11) l'
 
 /-- `γ_hi ≤ 1`. -/
@@ -214,7 +214,7 @@ theorem e_le_three {p q : PTm n} (hq : Γ ⊢[PRAAx] q ≐ succ (pred q)) (hpq :
     ipra_le sl h + 2 * 𝔞 (Ed K q) * sl hpq with
       -(𝔞 q * 𝔞 (Fv K) * 𝔞 (pw q K)) * E0 - 2 * 𝔞 (Fv K) * 𝔞 (pw q K) * P1 +
         𝔞 (Ev K p q) * 𝔞 (pw q (succ zero)) * F1 + 𝔞 (Ev K p q) * Q1
-  exact mul_le_cancel (le_congr (congrMul hq (.eqRefl _)) (congrMul hq (.eqRefl _)) c)
+  exact mul_le_cancel_at hq c
 
 /-! ## Positivity of the logarithm numerators -/
 
@@ -306,7 +306,7 @@ theorem cancel_le {x y z w : PTm n} (hz : Γ ⊢[PRAAx] z ≐ succ (pred z)) (h1
     (h2 : Γ ⊢[PRAAx] le (w * x) (y * z)) : Γ ⊢[PRAAx] le x y := by
   have m := le_mul_mono h1 (le_refl x)
   have c : Γ ⊢[PRAAx] le (z * x) (z * y) := by ipra_le sl m + sl h2
-  exact mul_le_cancel (le_congr (congrMul hz (.eqRefl _)) (congrMul hz (.eqRefl _)) c)
+  exact mul_le_cancel_at hz c
 
 theorem comm2 {a b c d : PTm n} (h : Γ ⊢[PRAAx] le (a * b) (c * d)) : Γ ⊢[PRAAx] le (b * a) (d * c) := by ipra_le sl h
 

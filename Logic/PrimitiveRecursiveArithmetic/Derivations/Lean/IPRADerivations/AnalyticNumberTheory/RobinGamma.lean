@@ -280,7 +280,7 @@ theorem t_step {m t j : PTm n} (hm : Γ ⊢[PRAAx] le one m) (ih : Γ ⊢[PRAAx]
         (Pt t (pairT m (succ (succ j))) * dd (m + t) (succ (succ j)) + nn (m + t) (succ (succ j)) * Qt t (pairT m (succ (succ j)))) + m * m * (Qt t (pairT m (succ (succ j))) * dd (m + t) (succ (succ j)))))
       ((m + t) * (m + t) * (succ (m + t) * succ (m + t) * (Qt t (pairT m (succ (succ j))) * dd (m + t) (succ (succ j))))) := by
     ipra_le sl h1 + sl h2
-  have c := mul_le_cancel (le_congr (congrMul hp (.eqRefl _)) (congrMul hp (.eqRefl _)) fin)
+  have c := mul_le_cancel_at hp fin
   have eM : Γ ⊢[PRAAx] m + succ t ≐ succ (m + t) := by ipra_ring
   refine le_congr ?_ ?_ c
   · exact (congrAdd (congrMul (congrMul (.eqRefl _) (congrMul eM eM)).eqSymm eP'.eqSymm)

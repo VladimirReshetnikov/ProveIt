@@ -102,6 +102,6 @@ theorem logI_width {a b : PTm n} (hb : Γ ⊢[PRAAx] le one b) (hab : Γ ⊢[PRA
       (num 4 * succ (two * Kp a b k) * Pv (Kp a b k) c3 *
         (pw two k * (loN a b (Kp a b k) * hiD a b (Kp a b k)) + hiD a b (Kp a b k) * loD a b (Kp a b k))) := by
     ipra_le sl m1 + sl m2
-  exact mul_le_cancel (le_congr (congrMul hp (.eqRefl _)) (congrMul hp (.eqRefl _)) c)
+  exact mul_le_cancel_at hp c
 
 end LeanProofs.IPRA.AnalyticNumberTheory.RobinLogWidth

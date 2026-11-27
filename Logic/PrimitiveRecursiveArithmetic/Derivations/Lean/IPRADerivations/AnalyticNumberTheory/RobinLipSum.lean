@@ -123,7 +123,7 @@ theorem rs_alg {Xn Xd Xn1 Xd1 Yn Yd Yn1 Yd1 Xn0 Xd0 Yn0 Yd0 U k i α β γ δ G 
       𝔞 (Yd * Yd1 * Xd0 * Yd0 * (U + succ i * k) * U * G * (γ * γ) * (δ * δ)) * sl tu +
       𝔞 (Xd * Xd1 * Xd0 * Yd0 * U * α * β) * sl tl +
       𝔞 (Xd * Yd * α * β * (γ * γ) * (δ * δ) * Xd1 * Yd1 * Xd0 * Yd0 * (U + succ i * k) * k * k * i)
-  exact mul_le_cancel (le_congr (congrMul hM (.eqRefl _)) (congrMul hM (.eqRefl _)) c)
+  exact mul_le_cancel_at hM c
 
 theorem le_shift {a b : PTm n} (h : Γ ⊢[PRAAx] le a b) : (Γ.map Fm.shift) ⊢[PRAAx] le (Syn.shift a) (Syn.shift b) :=
   LeanProofs.IPRA.Order.shift_le h
@@ -204,7 +204,7 @@ theorem conv {Xn Xd Yn Yd Xn0 Xd0 Yn0 Yd0 u U G k N Pn Pd Qn Qd Rn Rd Sn Sd : PT
       (Xd * Yd * Xd0 * Yd0 * u * (Qn * Pd * Sd * Rd * (U * G) + Rn * Pd * Sd * Qd * (U * G) +
         (k * G + N * k) * (Pd * Sd * Qd * Rd))) := by
     ipra_le 𝔞 (Pd * Sd * Qd * Rd) * sl inv + 𝔞 (Pd * Sd * Qd * Rd * Xd * Yd * Xd0 * Yd0 * U * G * k) with ((𝔞 G * 𝔞 Qd * 𝔞 Rd * 𝔞 Sd * 𝔞 U * 𝔞 Xd0 * 𝔞 Yd * 𝔞 Yd0 * 𝔞 u)) * eX + ((-𝔞 G * 𝔞 Pd * 𝔞 Rd * 𝔞 Sd * 𝔞 U * 𝔞 Xd * 𝔞 Yd * 𝔞 Yd0 * 𝔞 u)) * eX0 + ((-𝔞 G * 𝔞 Pd * 𝔞 Qd * 𝔞 Sd * 𝔞 U * 𝔞 Xd * 𝔞 Xd0 * 𝔞 Yd0 * 𝔞 u)) * eY + ((𝔞 G * 𝔞 Pd * 𝔞 Qd * 𝔞 Rd * 𝔞 U * 𝔞 Xd * 𝔞 Xd0 * 𝔞 Yd * 𝔞 u)) * eY0
-  exact mul_le_cancel (le_congr (congrMul hM (.eqRefl _)) (congrMul hM (.eqRefl _)) c)
+  exact mul_le_cancel_at hM c
 
 /-- Decidability of the order removes a vanishing error: `(E + 1) L ≤ (E + 1) R + E` gives `L ≤ R`. -/
 theorem lim_le {L R E : PTm n} (h : Γ ⊢[PRAAx] le (succ E * L) (succ E * R + E)) : Γ ⊢[PRAAx] le L R := by

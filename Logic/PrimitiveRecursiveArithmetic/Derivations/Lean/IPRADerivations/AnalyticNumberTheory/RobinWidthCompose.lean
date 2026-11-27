@@ -57,7 +57,7 @@ theorem fin_alg {TN TD EN' ED' HN HD LN LD N R P X Y : PTm n} (hM : Γ ⊢[PRAAx
   have c : Γ ⊢[PRAAx] le (Y * R * (P * (TN * HN) * (ED' * LD))) (Y * R * (P * (EN' * LN) * (TD * HD) + (TD * HD) * (ED' * LD))) := by
     ipra_le 𝔞 (TD * HD * ED' * LD) * sl h6 + 𝔞 (P * HD * LD * N * R) * sl h2 + 𝔞 (P * HD * Y * R) * sl h4 * sl h5 +
       𝔞 (P * ED' * Y * TN) * sl h1 + 3 * 𝔞 (P * HD * ED' * LD * Y) * sl h3
-  exact mul_le_cancel (le_congr (congrMul hM (.eqRefl _)) (congrMul hM (.eqRefl _)) c)
+  exact mul_le_cancel_at hM c
 
 theorem w1_alg {HN HD aN aD hN2 hD2 LN LD A1' D1' Dx R : PTm n}
     (hM : Γ ⊢[PRAAx] aD * hD2 * A1' * D1' ≐ succ (pred (aD * hD2 * A1' * D1')))
@@ -68,7 +68,7 @@ theorem w1_alg {HN HD aN aD hN2 hD2 LN LD A1' D1' Dx R : PTm n}
   have c : Γ ⊢[PRAAx] le (aD * hD2 * A1' * D1' * (HN * LD * R)) (aD * hD2 * A1' * D1' * (LN * HD * R + num 3 * HD * LD)) := by
     ipra_le 𝔞 (LD * hD2) * sl comp + 𝔞 (HD * LD * R * A1' * D1') * sl lh + 𝔞 (HD * aD * A1' * D1') * sl w2 +
       𝔞 (HD * LD * aD * hD2) * sl wx
-  exact mul_le_cancel (le_congr (congrMul hM (.eqRefl _)) (congrMul hM (.eqRefl _)) c)
+  exact mul_le_cancel_at hM c
 
 theorem wx_alg {C B A D Dx R : PTm n} (w0 : Γ ⊢[PRAAx] le (R * (C * B)) (R * (A * D) + D * B))
     (hBA : Γ ⊢[PRAAx] le B A) (hDx : Γ ⊢[PRAAx] C * B ≐ A * D + Dx) : Γ ⊢[PRAAx] le (R * Dx) (D * A) := by
@@ -80,7 +80,7 @@ theorem x2_alg {C B A D R : PTm n} (hR : Γ ⊢[PRAAx] R ≐ succ (pred R)) (w0 
   have e := natEq hR
   have c : Γ ⊢[PRAAx] le (R * (C * B)) (R * (two * (A * D))) := by
     ipra_le sl w0 + 𝔞 D * sl hBA + 𝔞 (pred R * D * A) with (𝔞 D * 𝔞 A) * e
-  exact mul_le_cancel (le_congr (congrMul hR (.eqRefl _)) (congrMul hR (.eqRefl _)) c)
+  exact mul_le_cancel_at hR c
 
 theorem tail_alg {E F Fp Q0 Q1 P1 q K : PTm n} (eF : Γ ⊢[PRAAx] Fp ≐ succ K * F) (eQ : Γ ⊢[PRAAx] Q1 ≐ Q0 * q)
     (w : Γ ⊢[PRAAx] le P1 Q1) :
@@ -109,19 +109,19 @@ theorem exp_alg {TN TD Eu El F Q Qp q qp d K1 Eu0 F0 Q0 Fp Z W : PTm n}
     ipra_le 𝔞 (Q0 * Z * q * qp * Qp) * sl tail + 𝔞 (Q0 * Fp * Z * TD) * sl lip + 𝔞 (Q * Fp * Z * TD * K1 * Qp * d) * sl three +
       3 * 𝔞 (Q * Q0 * Fp * TD * F * Qp) * sl gw with
       (3 * 𝔞 Fp * 𝔞 Q * 𝔞 Q0 * 𝔞 Qp * 𝔞 TD * 𝔞 Z * 𝔞 d) * eF + (𝔞 Eu0 * 𝔞 Fp * 𝔞 K1 * 𝔞 Qp * 𝔞 TD * 𝔞 Z * 𝔞 d) * eQ
-  exact mul_le_cancel (le_congr (congrMul hM (.eqRefl _)) (congrMul hM (.eqRefl _)) c)
+  exact mul_le_cancel_at hM c
 
 theorem t5_alg {TN TD Eu F Q Fp : PTm n} (hM : Γ ⊢[PRAAx] F * Q * Fp ≐ succ (pred (F * Q * Fp)))
     (tail : Γ ⊢[PRAAx] le (TN * (F * Q) * Fp) (Eu * TD * Fp + two * TD * (F * Q)))
     (e3 : Γ ⊢[PRAAx] le Eu (num 3 * (F * Q))) (hFp : Γ ⊢[PRAAx] le one Fp) : Γ ⊢[PRAAx] le TN (num 5 * TD) := by
   have c : Γ ⊢[PRAAx] le (F * Q * Fp * TN) (F * Q * Fp * (num 5 * TD)) := by
     ipra_le sl tail + 𝔞 (TD * Fp) * sl e3 + 2 * 𝔞 (TD * F * Q) * sl hFp
-  exact mul_le_cancel (le_congr (congrMul hM (.eqRefl _)) (congrMul hM (.eqRefl _)) c)
+  exact mul_le_cancel_at hM c
 
 theorem ll_alg {LN LD A B N : PTm n} (hB : Γ ⊢[PRAAx] B ≐ succ (pred B)) (s1 : Γ ⊢[PRAAx] le (LN * B + B * LD) (A * LD))
     (s2 : Γ ⊢[PRAAx] le (A * one + one * B) (N * B)) : Γ ⊢[PRAAx] le LN (N * LD) := by
   have c : Γ ⊢[PRAAx] le (B * LN) (B * (N * LD)) := by ipra_le sl s1 + 𝔞 LD * sl s2 + 2 * 𝔞 (B * LD)
-  exact mul_le_cancel (le_congr (congrMul hB (.eqRefl _)) (congrMul hB (.eqRefl _)) c)
+  exact mul_le_cancel_at hB c
 
 /-! ## The program at `n ≥ 4` -/
 
@@ -141,7 +141,7 @@ theorem hBA {N k : PTm n} (hN : Γ ⊢[PRAAx] le (num 4) N) : Γ ⊢[PRAAx] le (
   have c : Γ ⊢[PRAAx] le (num 81 * B1 N k) (num 81 * A1 N k) := by
     ipra_le sl lg + 56 * 𝔞 (B1 N k) * sl h2 + 31 * 𝔞 (B1 N k)
   have hp := pos_of_one_le (Γ := Γ) (by ipra_le 80 : Γ ⊢[PRAAx] le one (num 81 : PTm n))
-  exact mul_le_cancel (le_congr (congrMul hp (.eqRefl _)) (congrMul hp (.eqRefl _)) c)
+  exact mul_le_cancel_at hp c
 
 theorem hAD {N k : PTm n} (hN : Γ ⊢[PRAAx] le (num 4) N) :
     Γ ⊢[PRAAx] le (A1 N k * D1 N k) (C1 N k * B1 N k) :=
@@ -152,7 +152,7 @@ theorem hDC {N k : PTm n} (hN : Γ ⊢[PRAAx] le (num 4) N) : Γ ⊢[PRAAx] le (
   have b := hBA (k := k) hN
   have c : Γ ⊢[PRAAx] le (B1 N k * D1 N k) (B1 N k * C1 N k) := by ipra_le sl h + 𝔞 (D1 N k) * sl b
   have hp := loD_pos (Γ := Γ) (le_refl one) (n_one' hN) (K1 N k)
-  exact mul_le_cancel (le_congr (congrMul hp (.eqRefl _)) (congrMul hp (.eqRefl _)) c)
+  exact mul_le_cancel_at hp c
 
 /-- The double logarithm: `UH ≤ LL + 3·2^{−r}`, cleared. -/
 theorem w1 {N k : PTm n} (hN : Γ ⊢[PRAAx] le (num 4) N) :
@@ -192,7 +192,7 @@ theorem hu1 (N k : PTm n) : Γ ⊢[PRAAx] le (gHn N k) (gHd N k) := by
   have g := gamma_hi_le (Γ := Γ) (tg N k) (two * rr N k)
   have c : Γ ⊢[PRAAx] le (num 12 * gHn N k) (num 12 * gHd N k) := by ipra_le sl g + 5 * 𝔞 (gHd N k)
   have hp := pos_of_one_le (Γ := Γ) (by ipra_le 11 : Γ ⊢[PRAAx] le one (num 12 : PTm n))
-  exact mul_le_cancel (le_congr (congrMul hp (.eqRefl _)) (congrMul hp (.eqRefl _)) c)
+  exact mul_le_cancel_at hp c
 
 /-- `U(n, k) − L(n, k) ≤ 2^{−k}` for `n ≥ 4`, cleared: `2^k·Uup·Ld ≤ 2^k·Lp·Uud + Uud·Ld`. -/
 theorem width {N k : PTm n} (hN : Γ ⊢[PRAAx] le (num 4) N) :

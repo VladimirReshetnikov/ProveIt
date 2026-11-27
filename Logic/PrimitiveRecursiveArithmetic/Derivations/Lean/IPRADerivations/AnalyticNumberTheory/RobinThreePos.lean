@@ -192,7 +192,7 @@ theorem scale1 {x y A B : PTm n} (hx : Γ ⊢[PRAAx] x ≐ num 11843615287223742
   have hp : Γ ⊢[PRAAx] y ≐ succ (pred y) := pos_of_one_le (by ipra_le 139272992628296954202458 with ey)
   have c : Γ ⊢[PRAAx] le (y * (num 17 * B)) (y * (two * A)) := by
     ipra_le 2 * sl hm + 1082182763700340264773 * 𝔞 B with 2 * 𝔞 B * ex - 17 * 𝔞 B * ey
-  exact mul_le_cancel (le_congr (congrMul hp (.eqRefl _)) (congrMul hp (.eqRefl _)) c)
+  exact mul_le_cancel_at hp c
 
 theorem scale2 {x y A B : PTm n} (hx : Γ ⊢[PRAAx] x ≐ num 182706948864) (hy : Γ ⊢[PRAAx] y ≐ num 85589104491)
     (hm : Γ ⊢[PRAAx] le (x * B) (A * y)) : Γ ⊢[PRAAx] le (num 1067 * B) (num 500 * A) := by
@@ -201,7 +201,7 @@ theorem scale2 {x y A B : PTm n} (hx : Γ ⊢[PRAAx] x ≐ num 182706948864) (hy
   have hp : Γ ⊢[PRAAx] y ≐ succ (pred y) := pos_of_one_le (by ipra_le 85589104490 with ey)
   have c : Γ ⊢[PRAAx] le (y * (num 1067 * B)) (y * (num 500 * A)) := by
     ipra_le 500 * sl hm + 29899940103 * 𝔞 B with 500 * 𝔞 B * ex - 1067 * 𝔞 B * ey
-  exact mul_le_cancel (le_congr (congrMul hp (.eqRefl _)) (congrMul hp (.eqRefl _)) c)
+  exact mul_le_cancel_at hp c
 
 theorem scale3 {x y A B : PTm n} (hx : Γ ⊢[PRAAx] x ≐ num 3571304) (hy : Γ ⊢[PRAAx] y ≐ num 2016840)
     (hm : Γ ⊢[PRAAx] le (x * B) (A * y)) : Γ ⊢[PRAAx] le (num 17707 * B) (num 10000 * A) := by
@@ -210,7 +210,7 @@ theorem scale3 {x y A B : PTm n} (hx : Γ ⊢[PRAAx] x ≐ num 3571304) (hy : Γ
   have hp : Γ ⊢[PRAAx] y ≐ succ (pred y) := pos_of_one_le (by ipra_le 2016839 with ey)
   have c : Γ ⊢[PRAAx] le (y * (num 17707 * B)) (y * (num 10000 * A)) := by
     ipra_le 10000 * sl hm + 854120 * 𝔞 B with 10000 * 𝔞 B * ex - 17707 * 𝔞 B * ey
-  exact mul_le_cancel (le_congr (congrMul hp (.eqRefl _)) (congrMul hp (.eqRefl _)) c)
+  exact mul_le_cancel_at hp c
 
 /-- `(17707/10000)(1067/500) > 15/4`. -/
 theorem final_comb {X1 Y1 X2 Y2 : PTm n} (he : Γ ⊢[PRAAx] le (num 17707 * X1) (num 10000 * Y1))

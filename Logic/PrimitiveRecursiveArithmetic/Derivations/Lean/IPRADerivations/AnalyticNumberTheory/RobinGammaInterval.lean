@@ -115,7 +115,7 @@ theorem term_lower {m j u D : PTm n} (hm : Γ ⊢[PRAAx] le one m)
     ipra_le 𝔞 D * sl nest' + 𝔞 (succ (two * succ (succ j)) * Dz (succ (succ j)) one (sv m)) * sl hc with
       -(5 * (4 * 𝔞 m * (𝔞 m + 1)) * 𝔞 (Lv k2 zero) * 𝔞 (Pv k2 (sv m)) * 𝔞 D) * e
   have hp := Ud_pos (Γ := Γ) (sv_pos m) (Wv_pos hm) k2 one
-  exact mul_le_cancel (le_congr (congrMul hp (.eqRefl _)) (congrMul hp (.eqRefl _)) c)
+  exact mul_le_cancel_at hp c
 
 /-! ## The accumulated sums -/
 
@@ -289,6 +289,6 @@ theorem gamma_lower (i j : PTm n) :
   have c : Γ ⊢[PRAAx] le (Ad t3 (succ (succ j)) * Ad (t3 + i) (succ (succ j)))
       (Ad t3 (succ (succ j)) * (num 14 * An (t3 + i) (succ (succ j)))) := by
     ipra_le sl m1 + 14 * sl m
-  exact mul_le_cancel (le_congr (congrMul hp (.eqRefl _)) (congrMul hp (.eqRefl _)) c)
+  exact mul_le_cancel_at hp c
 
 end LeanProofs.IPRA.AnalyticNumberTheory.RobinGammaInterval

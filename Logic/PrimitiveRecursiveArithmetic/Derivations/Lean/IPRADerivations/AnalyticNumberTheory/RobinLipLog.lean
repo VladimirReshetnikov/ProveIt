@@ -46,7 +46,7 @@ theorem same_up {e e' N3 D3 Nr Dr Nr' Dr' a b' P P' D : PTm n} (hP : Γ ⊢[PRAA
   have c : Γ ⊢[PRAAx] le (P * ((e' * N3 * Dr' + Nr' * D3) * (D3 * Dr) * (a * b')))
       (P * ((e * N3 * Dr + Nr * D3) * (D3 * Dr') * (a * b') + D * (D3 * Dr) * (D3 * Dr'))) := by
     ipra_le 𝔞 (D3 * D3) * sl p with ((-𝔞 D3 * 𝔞 Dr * 𝔞 Dr' * 𝔞 N3 * 𝔞 P * 𝔞 a * 𝔞 b')) * e1 + (((𝔞 D3) ^ 2 * 𝔞 Dr * 𝔞 Nr' * 𝔞 a * 𝔞 b') + (-(𝔞 D3) ^ 2 * 𝔞 Dr' * 𝔞 Nr * 𝔞 a * 𝔞 b')) * e2
-  exact mul_le_cancel (le_congr (congrMul hP (.eqRefl _)) (congrMul hP (.eqRefl _)) c)
+  exact mul_le_cancel_at hP c
 
 theorem same_low {e e' N3 D3 Nr Dr Nr' Dr' a b a' b' P P' D G : PTm n} (hP : Γ ⊢[PRAAx] P ≐ succ (pred P))
     (e1 : Γ ⊢[PRAAx] e' ≐ e) (e2 : Γ ⊢[PRAAx] P' ≐ P)
@@ -63,7 +63,7 @@ theorem same_low {e e' N3 D3 Nr Dr Nr' Dr' a b a' b' P P' D G : PTm n} (hP : Γ 
         D * (D3 * Dr) * (D3 * Dr') * (a' * b))) := by
     ipra_le 𝔞 (D3 * D3) * sl p with ((𝔞 D3 * 𝔞 Dr * 𝔞 Dr' * 𝔞 G * 𝔞 N3 * (𝔞 P) ^ 2 * 𝔞 a * 𝔞 a' * 𝔞 b * 𝔞 b')) * e1 + ((𝔞 D * (𝔞 D3) ^ 2 * 𝔞 Dr * 𝔞 Dr' * 𝔞 G * 𝔞 P * 𝔞 a * 𝔞 b') + (-(𝔞 D3) ^ 2 * 𝔞 Dr * 𝔞 G * 𝔞 Nr' * 𝔞 P * 𝔞 a * 𝔞 a' * 𝔞 b * 𝔞 b') + ((𝔞 D3) ^ 2 * 𝔞 Dr' * 𝔞 G * 𝔞 Nr * 𝔞 P * 𝔞 a * 𝔞 a' * 𝔞 b * 𝔞 b')) * e2
   have hPP := pos_mul hP hP
-  exact mul_le_cancel (le_congr (congrMul hPP (.eqRefl _)) (congrMul hPP (.eqRefl _)) c)
+  exact mul_le_cancel_at hPP c
 
 theorem adj_up {e e' N3 D3 Nr Dr Nr' Dr' N0 D0 a b a' b' P P' D Dy1 Dy2 : PTm n}
     (hM : Γ ⊢[PRAAx] D0 * (b' * P') ≐ succ (pred (D0 * (b' * P'))))
@@ -84,7 +84,7 @@ theorem adj_up {e e' N3 D3 Nr Dr Nr' Dr' N0 D0 a b a' b' P P' D Dy1 Dy2 : PTm n}
       (D0 * (b' * P') * ((e * N3 * Dr + Nr * D3) * (D3 * Dr') * (a * b') + D * (D3 * Dr) * (D3 * Dr'))) := by
     ipra_le 𝔞 (D3 * Dr' * b' * D0 * (b' * P')) * sl p1 + 𝔞 (D3 * D3 * Dr * a * b') * sl p2 +
       𝔞 (D3 * D3 * Dr * Dr' * D0 * b' * Dy1 * Dy2) with ((-𝔞 D0 * 𝔞 D3 * 𝔞 Dr * 𝔞 Dr' * 𝔞 N3 * 𝔞 P' * 𝔞 a * (𝔞 b') ^ 2)) * e1 + ((-(𝔞 D3) ^ 2 * 𝔞 Dr * 𝔞 Dr' * 𝔞 P' * 𝔞 a * (𝔞 b') ^ 2)) * e0 + ((𝔞 D * 𝔞 D0 * (𝔞 D3) ^ 2 * 𝔞 Dr * 𝔞 Dr' * 𝔞 b') + (-𝔞 D0 * (𝔞 D3) ^ 2 * 𝔞 Dr * 𝔞 Dr' * 𝔞 Dy1 * (𝔞 b') ^ 2) + (2 * 𝔞 D0 * (𝔞 D3) ^ 2 * 𝔞 Dr * 𝔞 Dr' * 𝔞 P * 𝔞 b * (𝔞 b') ^ 2)) * e2 + ((-2 * 𝔞 D0 * (𝔞 D3) ^ 2 * 𝔞 Dr * 𝔞 Dr' * 𝔞 P * 𝔞 b')) * eD + ((𝔞 D0 * (𝔞 D3) ^ 2 * 𝔞 Dr * 𝔞 Dr' * 𝔞 Dy2 * 𝔞 b') + (2 * 𝔞 D0 * (𝔞 D3) ^ 2 * 𝔞 Dr * 𝔞 Dr' * 𝔞 P * (𝔞 b') ^ 2)) * h1 + ((2 * 𝔞 D0 * (𝔞 D3) ^ 2 * 𝔞 Dr * 𝔞 Dr' * 𝔞 P * 𝔞 b * 𝔞 b')) * h2
-  exact mul_le_cancel (le_congr (congrMul hM (.eqRefl _)) (congrMul hM (.eqRefl _)) c)
+  exact mul_le_cancel_at hM c
 
 theorem adj_low {e e' N3 D3 Nr Dr Nr' Dr' N0 D0 a b a' b' P P' D Dy1 Dy2 G : PTm n}
     (hM : Γ ⊢[PRAAx] two * (b * P) * (b' * P') * D0 ≐ succ (pred (two * (b * P) * (b' * P') * D0)))
@@ -111,7 +111,7 @@ theorem adj_low {e e' N3 D3 Nr Dr Nr' Dr' N0 D0 a b a' b' P P' D Dy1 Dy2 G : PTm
     ipra_le 𝔞 (D3 * Dr' * a' * b * b' * (b' * P') * D0) * sl q1 + 𝔞 (D3 * D3 * Dr * b * a * b' * two * (b * P)) * sl q2 +
       𝔞 (D3 * D3 * Dr * Dr' * b * a * b' * G * (b' * P') * D0 * Dy1 * Dy2) +
       𝔞 (D3 * D3 * Dr * Dr' * a' * b * b' * two * (b * P) * D0 * Dy1 * Dy2) with ((2 * 𝔞 D0 * 𝔞 D3 * 𝔞 Dr * 𝔞 Dr' * 𝔞 G * 𝔞 N3 * 𝔞 P * 𝔞 P' * 𝔞 a * 𝔞 a' * (𝔞 b) ^ 2 * (𝔞 b') ^ 2)) * e1 + ((2 * (𝔞 D3) ^ 2 * 𝔞 Dr * 𝔞 Dr' * 𝔞 G * 𝔞 P * 𝔞 P' * 𝔞 a * 𝔞 a' * (𝔞 b) ^ 2 * (𝔞 b') ^ 2)) * e0 + ((-2 * 𝔞 D * 𝔞 D0 * (𝔞 D3) ^ 2 * 𝔞 Dr * 𝔞 Dr' * 𝔞 G * 𝔞 P * 𝔞 a * 𝔞 b * (𝔞 b') ^ 2) + (2 * 𝔞 D * 𝔞 D0 * (𝔞 D3) ^ 2 * 𝔞 Dr * 𝔞 Dr' * 𝔞 P * 𝔞 a' * (𝔞 b) ^ 2 * 𝔞 b') + (-𝔞 D0 * (𝔞 D3) ^ 2 * 𝔞 Dr * 𝔞 Dr' * 𝔞 Dy1 * 𝔞 Dy2 * 𝔞 G * 𝔞 a * 𝔞 b * (𝔞 b') ^ 2) + (𝔞 D0 * (𝔞 D3) ^ 2 * 𝔞 Dr * 𝔞 Dr' * 𝔞 Dy1 * 𝔞 G * 𝔞 a * 𝔞 a' * 𝔞 b * (𝔞 b') ^ 2) + (-2 * 𝔞 D0 * (𝔞 D3) ^ 2 * 𝔞 Dr * 𝔞 Dr' * 𝔞 Dy1 * 𝔞 P * 𝔞 a' * (𝔞 b) ^ 2 * (𝔞 b') ^ 2) + (2 * 𝔞 D0 * (𝔞 D3) ^ 2 * 𝔞 Dr * 𝔞 Dr' * 𝔞 Dy2 * 𝔞 G * 𝔞 P * 𝔞 a * (𝔞 b) ^ 2 * (𝔞 b') ^ 2) + (-2 * 𝔞 D0 * (𝔞 D3) ^ 2 * 𝔞 Dr * 𝔞 Dr' * 𝔞 G * 𝔞 P * (𝔞 a) ^ 2 * 𝔞 b * (𝔞 b') ^ 3) + (4 * 𝔞 D0 * (𝔞 D3) ^ 2 * 𝔞 Dr * 𝔞 Dr' * (𝔞 P) ^ 2 * 𝔞 a' * (𝔞 b) ^ 3 * (𝔞 b') ^ 2)) * e2 + ((4 * 𝔞 D0 * (𝔞 D3) ^ 2 * 𝔞 Dr * 𝔞 Dr' * 𝔞 G * (𝔞 P) ^ 2 * 𝔞 a * 𝔞 b * (𝔞 b') ^ 2) + (-4 * 𝔞 D0 * (𝔞 D3) ^ 2 * 𝔞 Dr * 𝔞 Dr' * (𝔞 P) ^ 2 * 𝔞 a' * (𝔞 b) ^ 2 * 𝔞 b')) * eD + ((2 * 𝔞 D0 * (𝔞 D3) ^ 2 * 𝔞 Dr * 𝔞 Dr' * 𝔞 Dy2 * 𝔞 G * 𝔞 P * 𝔞 a * 𝔞 b * (𝔞 b') ^ 2) + (2 * 𝔞 D0 * (𝔞 D3) ^ 2 * 𝔞 Dr * 𝔞 Dr' * 𝔞 Dy2 * 𝔞 P * 𝔞 a' * (𝔞 b) ^ 2 * 𝔞 b') + (-2 * 𝔞 D0 * (𝔞 D3) ^ 2 * 𝔞 Dr * 𝔞 Dr' * 𝔞 G * 𝔞 P * 𝔞 a * 𝔞 a' * 𝔞 b * (𝔞 b') ^ 2) + (4 * 𝔞 D0 * (𝔞 D3) ^ 2 * 𝔞 Dr * 𝔞 Dr' * (𝔞 P) ^ 2 * 𝔞 a' * (𝔞 b) ^ 2 * (𝔞 b') ^ 2)) * h1 + ((-2 * 𝔞 D0 * (𝔞 D3) ^ 2 * 𝔞 Dr * 𝔞 Dr' * 𝔞 G * 𝔞 P * (𝔞 a) ^ 2 * 𝔞 b * (𝔞 b') ^ 2) + (4 * 𝔞 D0 * (𝔞 D3) ^ 2 * 𝔞 Dr * 𝔞 Dr' * (𝔞 P) ^ 2 * 𝔞 a' * (𝔞 b) ^ 3 * 𝔞 b')) * h2
-  exact mul_le_cancel (le_congr (congrMul hM (.eqRefl _)) (congrMul hM (.eqRefl _)) c)
+  exact mul_le_cancel_at hM c
 
 /-! ## Binary exponents of nearby arguments -/
 

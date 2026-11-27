@@ -81,7 +81,7 @@ theorem arg_up {a B d s a' B' d' s' Dy : PTm n} (hB : Γ ⊢[PRAAx] le one B) (h
   have hp : Γ ⊢[PRAAx] s * (two * two * B' * a') ≐ succ (pred (s * (two * two * B' * a'))) := by
     have m := le_mul_mono hs1 (le_mul_mono hB' ha1)
     exact pos_of_one_le (by ipra_le sl m + 3 * 𝔞 (s * B' * a'))
-  exact mul_le_cancel (le_congr (congrMul hp (.eqRefl _)) (congrMul hp (.eqRefl _)) c)
+  exact mul_le_cancel_at hp c
 
 /-- `S_K(z(y)) + Δ/(a'B) ≤ S_K(z(y')) + Δ/(aB' 9^K)` for `y ≤ 2`. -/
 theorem arg_low {a B d s a' B' d' s' Dy : PTm n} (hB : Γ ⊢[PRAAx] le one B) (hB' : Γ ⊢[PRAAx] le one B')
@@ -128,7 +128,7 @@ theorem arg_low {a B d s a' B' d' s' Dy : PTm n} (hB : Γ ⊢[PRAAx] le one B) (
   have hp : Γ ⊢[PRAAx] s' * (two * two * B * a) ≐ succ (pred (s' * (two * two * B * a))) := by
     have m' := le_mul_mono hs1 (le_mul_mono hB ha1)
     exact pos_of_one_le (by ipra_le sl m' + 3 * 𝔞 (s' * B * a))
-  exact mul_le_cancel (le_congr (congrMul hp (.eqRefl _)) (congrMul hp (.eqRefl _)) c)
+  exact mul_le_cancel_at hp c
 
 end LeanProofs.IPRA.AnalyticNumberTheory.RobinLipArg
 
