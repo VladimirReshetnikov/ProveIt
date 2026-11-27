@@ -146,8 +146,8 @@ theorem zero_or_zero_of_mul {x y : PTm n} (h : Γ ⊢[PRAAx] x * y ≐ zero) :
 /-- Each factor of a nonzero product is nonzero. -/
 theorem Order.factors_ne_zero {a b : PTm n} (h : Γ ⊢[PRAAx] neg (a * b ≐ zero)) :
     Γ ⊢[PRAAx] neg (a ≐ zero) ⋏ neg (b ≐ zero) :=
-  .andI (.impI (.impE h.wk ((congrMul Prf.hyp0 (.eqRefl _)).eqTrans (zero_mul _))))
-    (.impI (.impE h.wk ((congrMul (.eqRefl _) Prf.hyp0).eqTrans (mul_zero _))))
+  .andI (.impI (.impE h.wk (mul_eq_zero_of_left Prf.hyp0)))
+    (.impI (.impE h.wk (mul_eq_zero_of_right Prf.hyp0)))
 
 /-- An equality preserves nonzeroness. -/
 theorem Order.ne_zero_congr {a b : PTm n} (e : Γ ⊢[PRAAx] a ≐ b)

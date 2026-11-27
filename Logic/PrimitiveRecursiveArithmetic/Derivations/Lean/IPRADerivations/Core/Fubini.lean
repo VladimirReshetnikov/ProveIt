@@ -152,12 +152,12 @@ variable (G : PTm 2) {N c x : PTm n}
 theorem dstep_above (ihB : Γ ⊢[PRAAx] le N c ⟶ (dS G N c x ≐ zero)) (h : Γ ⊢[PRAAx] le (succ N) c) :
     Γ ⊢[PRAAx] dS G (succ N) c x ≐ zero :=
   (dS_succ G N c x).eqTrans ((congrAdd (Prf.impE ihB (le_trans (le_succ_self N) h))
-    ((congrMul (eqb_zero_of_gt h) (.eqRefl _)).eqTrans (zero_mul _))).eqTrans (add_zero _))
+    (mul_eq_zero_of_left (eqb_zero_of_gt h))).eqTrans (add_zero _))
 
 theorem dstep_lt (ihA : Γ ⊢[PRAAx] lt c N ⟶ (dS G N c x ≐ inst2 G c x)) (h : Γ ⊢[PRAAx] lt c N) :
     Γ ⊢[PRAAx] dS G (succ N) c x ≐ inst2 G c x :=
   (dS_succ G N c x).eqTrans ((congrAdd (Prf.impE ihA h)
-    ((congrMul (eqb_zero_of_lt h) (.eqRefl _)).eqTrans (zero_mul _))).eqTrans (add_zero _))
+    (mul_eq_zero_of_left (eqb_zero_of_lt h))).eqTrans (add_zero _))
 
 theorem dstep_eq (ihB : Γ ⊢[PRAAx] le N c ⟶ (dS G N c x ≐ zero)) (h : Γ ⊢[PRAAx] c ≐ N) :
     Γ ⊢[PRAAx] dS G (succ N) c x ≐ inst2 G c x :=

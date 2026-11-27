@@ -105,7 +105,7 @@ theorem sum_eq_pow (f : PTm 2) (N x : PTm n) {a b : PTm n} (hb : Γ ⊢[PRAAx] b
   have atBound : Γ ⊢[PRAAx] P.subst (Syn.inst N) := by
     refine qfIndUpTo N trivial ?_ ?_
     · have base : Γ ⊢[PRAAx] a * ap2 (sumF f) zero x + one ≐ pw b zero :=
-        (congrAdd ((congrMul (.eqRefl _) (sum_zero f x)).eqTrans (mul_zero _)) (.eqRefl _)).eqTrans
+        (congrAdd (mul_eq_zero_of_right (sum_zero f x)) (.eqRefl _)).eqTrans
           ((zero_add one).eqTrans (pw_zero b).eqSymm)
       simpa [P] using base
     · simp only [P, Fm.subst_eq, PTm.subst_add, PTm.subst_mul, subst_ap2,

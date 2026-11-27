@@ -417,8 +417,7 @@ theorem ab_le {j k M D y : PTm n} (hQ : Γ ⊢[PRAAx] allB (oB A Nb) M y ≐ one
   refine .orE (lt_or_le M k) ?_ ?_
   · have z : (lt M k :: Γ) ⊢[PRAAx]
         (gle k M * inst2 A (monus M k) y) * inst2 A (monus (succ (M + D)) j) y ≐ zero :=
-      (congrMul ((congrMul (gle_above Prf.hyp0) (.eqRefl _)).eqTrans (zero_mul _))
-        (.eqRefl _)).eqTrans (zero_mul _)
+      mul_eq_zero_of_left (mul_eq_zero_of_left (gle_above Prf.hyp0))
     exact le_congr z.eqSymm (.eqRefl _) (zero_le _)
   · have hkM : (le k M :: Γ) ⊢[PRAAx] le k M := Prf.hyp0
     have hjM : (le k M :: Γ) ⊢[PRAAx] le j M := le_trans (le_trans (le_succ_self j) hjk.wk) hkM
@@ -560,7 +559,7 @@ theorem shift_monus (a b : PTm n) : Syn.shift (monus a b) = monus (Syn.shift a) 
 
 theorem al_zero {j M m y : PTm n} (h : Γ ⊢[PRAAx] le (succ M) j) :
     Γ ⊢[PRAAx] inst2 (alB A) j (pairT M (pairT m y)) ≐ zero :=
-  (al_at A j M m y).eqTrans ((congrMul (gle_above h) (.eqRefl _)).eqTrans (zero_mul _))
+  (al_at A j M m y).eqTrans (mul_eq_zero_of_left (gle_above h))
 
 theorem al_one {j M m y : PTm n} (h : Γ ⊢[PRAAx] le j M) :
     Γ ⊢[PRAAx] inst2 (alB A) j (pairT M (pairT m y)) ≐ inst2 A (monus M j) y :=
@@ -576,7 +575,7 @@ theorem sum_P (hyp : Hyp X A Nb) {M m y : PTm n} (hMm : Γ ⊢[PRAAx] le M m)
     refine sum_trunc _ (lt_succ_of_le hMm) (.allI (.impI (.impI ?_)))
     simp only [shift_pair, shift_succ]
     rw [pB, inst2_mul]
-    exact (congrMul (.eqRefl _) (al_zero Prf.hyp0)).eqTrans (mul_zero _)
+    exact mul_eq_zero_of_right (al_zero Prf.hyp0)
   have c : Γ ⊢[PRAAx] ap2 (sumF (pB X A)) (succ M) (pairT M (pairT m y)) ≐
       ap2 (sumF (recB X A)) (succ M) (pairT M y) := by
     refine sum_congr_bounded _ _ _ _ _ (.allI (.impI ?_))
@@ -596,7 +595,7 @@ theorem sum_R (hyp : Hyp X A Nb) {M m y : PTm n} (hMm : Γ ⊢[PRAAx] le M m)
     refine sum_trunc _ (lt_succ_of_le hMm) (.allI (.impI (.impI ?_)))
     simp only [shift_pair, shift_succ]
     rw [rB, inst2_mul]
-    exact (congrMul (.eqRefl _) (al_zero Prf.hyp0)).eqTrans (mul_zero _)
+    exact mul_eq_zero_of_right (al_zero Prf.hyp0)
   have c : Γ ⊢[PRAAx] ap2 (sumF (rB X A)) (succ M) (pairT M (pairT m y)) ≐
       ap2 (sumF (idB X A)) (succ M) (pairT M y) := by
     refine sum_congr_bounded _ _ _ _ _ (.allI (.impI ?_))

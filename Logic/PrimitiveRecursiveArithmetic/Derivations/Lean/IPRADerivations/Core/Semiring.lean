@@ -100,6 +100,14 @@ private theorem mul_zero₀ : ([] : List (Fm PTm 1)) ⊢[PRAAx] var 0 * zero ≐
 theorem mul_zero (a : PTm n) : Γ ⊢[PRAAx] a * zero ≐ zero := by
   simpa using inst (Γ := Γ) mul_zero₀ ![a]
 
+/-- A product is zero when its left factor is zero. -/
+theorem mul_eq_zero_of_left {a b : PTm n} (h : Γ ⊢[PRAAx] a ≐ zero) : Γ ⊢[PRAAx] a * b ≐ zero :=
+  (congrMul h (.eqRefl b)).eqTrans (zero_mul b)
+
+/-- A product is zero when its right factor is zero. -/
+theorem mul_eq_zero_of_right {a b : PTm n} (h : Γ ⊢[PRAAx] b ≐ zero) : Γ ⊢[PRAAx] a * b ≐ zero :=
+  (congrMul (.eqRefl a) h).eqTrans (mul_zero a)
+
 private theorem mul_succ₀ :
     ([] : List (Fm PTm 2)) ⊢[PRAAx] var 0 * succ (var 1) ≐ var 0 * var 1 + var 0 := by
   refine ind _ trivial ?_ ?_

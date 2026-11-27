@@ -142,7 +142,7 @@ private theorem monus_maxmul₀ : ([] : List (Fm PTm 2)) ⊢[PRAAx] mmF := by
     refine .andI ?_ ?_
     · exact (add_zero _).eqTrans <| (monus_zero _).eqTrans <|
         ((congrAdd (zero_monus _) (.eqRefl _)).eqTrans (zero_add _)).eqSymm
-    · exact (congrMul (.eqRefl _) (zero_monus _)).eqTrans (mul_zero _)
+    · exact mul_eq_zero_of_right (zero_monus _)
   · ipra_subst'
     -- context: [mmF]; write X = a ∸ b, Y = b ∸ a
     have hM : [mmF] ⊢[PRAAx] monus (var 1) (var 0) + var 0 ≐ monus (var 0) (var 1) + var 1 :=
@@ -165,7 +165,7 @@ private theorem monus_maxmul₀ : ([] : List (Fm PTm 2)) ⊢[PRAAx] mmF := by
       · refine (congrAdd hX' (.eqRefl _)).eqTrans <| (zero_add _).eqTrans ?_
         refine .eqTrans ?_ (congrAdd hY' (.eqRefl _)).eqSymm
         exact (congrSucc hb).eqTrans (succ_add _ _).eqSymm
-      · exact (congrMul hX' (.eqRefl _)).eqTrans (zero_mul _)
+      · exact mul_eq_zero_of_left hX'
     · -- Case X = S c with c = pred X.
       have hX : (ΔB : List (Fm PTm 2)) ⊢[PRAAx] monus (var 1) (var 0) ≐ succ (pred (monus (var 1) (var 0))) := Prf.hyp0
       have hX' : (ΔB : List (Fm PTm 2)) ⊢[PRAAx] monus (var 1) (succ (var 0)) ≐ pred (monus (var 1) (var 0)) :=
@@ -188,7 +188,7 @@ private theorem monus_maxmul₀ : ([] : List (Fm PTm 2)) ⊢[PRAAx] mmF := by
       · refine (congrAdd hX' (.eqRefl _)).eqTrans <| (add_succ _ _).eqTrans ?_
         refine .eqTrans ?_ ((congrAdd hY' (.eqRefl _)).eqTrans (zero_add _)).eqSymm
         exact ha.eqSymm
-      · exact (congrMul (.eqRefl _) hY').eqTrans (mul_zero _)
+      · exact mul_eq_zero_of_right hY'
 
 theorem monus_max (a b : PTm n) : Γ ⊢[PRAAx] monus a b + b ≐ monus b a + a := by
   have h := inst (Γ := Γ) monus_maxmul₀ (![b, a] : Fin 2 → PTm n)

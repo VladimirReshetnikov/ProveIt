@@ -111,8 +111,7 @@ alias le_zero_of := Common.le_of_eq_zero
 /-- `a · w [X ≥ a] ≤ w X`. -/
 theorem markov_pt (a w X : PTm n) : Γ ⊢[PRAAx] le (a * (w * geI a X)) (w * X) :=
   .orE (lt_or_le X a)
-    (le_zero_of ((congrMul (.eqRefl _) ((congrMul (.eqRefl _) (geI_false Prf.hyp0)).eqTrans (mul_zero _))).eqTrans
-      (mul_zero _)))
+    (le_zero_of (mul_eq_zero_of_right (mul_eq_zero_of_right (geI_false Prf.hyp0))))
     (le_congr ((congrMul (.eqRefl a) ((congrMul (.eqRefl w) (geI_true Prf.hyp0)).eqTrans (mul_one' _))).eqTrans
         (mul_comm _ _)).eqSymm (.eqRefl _)
       (le_mul_mono (le_refl w) Prf.hyp0))
@@ -120,8 +119,7 @@ theorem markov_pt (a w X : PTm n) : Γ ⊢[PRAAx] le (a * (w * geI a X)) (w * X)
 /-- `a² · w [D ≥ a] ≤ w D²`. -/
 theorem chebyshev_pt (a w D : PTm n) : Γ ⊢[PRAAx] le (a * a * (w * geI a D)) (w * (D * D)) :=
   .orE (lt_or_le D a)
-    (le_zero_of ((congrMul (.eqRefl _) ((congrMul (.eqRefl _) (geI_false Prf.hyp0)).eqTrans (mul_zero _))).eqTrans
-      (mul_zero _)))
+    (le_zero_of (mul_eq_zero_of_right (mul_eq_zero_of_right (geI_false Prf.hyp0))))
     (le_congr ((congrMul (.eqRefl (a * a)) ((congrMul (.eqRefl w) (geI_true Prf.hyp0)).eqTrans (mul_one' _))).eqTrans
         (mul_comm _ _)).eqSymm (.eqRefl _)
       (le_mul_mono (le_refl w) (sq_le_sq Prf.hyp0)))

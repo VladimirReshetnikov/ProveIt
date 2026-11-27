@@ -109,9 +109,9 @@ theorem zero_step (f : PTm 2) {N i x : PTm n}
     Γ ⊢[PRAAx] lt i (succ N) ⟶ ((inst2 f i x ≐ zero) ⟶ (ap2 (prodF f) (succ N) x ≐ zero)) := by
   refine .impI (.impI (.orE (Order.lt_succ_cases Prf.hyp1) ?_ ?_))
   · exact (prod_succ f N x).eqTrans
-      ((congrMul (Prf.impE (Prf.impE ih.wk.wk.wk Prf.hyp0) Prf.hyp1) (.eqRefl _)).eqTrans (zero_mul _))
+      (mul_eq_zero_of_left (Prf.impE (Prf.impE ih.wk.wk.wk Prf.hyp0) Prf.hyp1))
   · exact (prod_succ f N x).eqTrans
-      ((congrMul (.eqRefl _) ((congrInst2 f Prf.hyp0.eqSymm (.eqRefl _)).eqTrans Prf.hyp1)).eqTrans (mul_zero _))
+      (mul_eq_zero_of_right ((congrInst2 f Prf.hyp0.eqSymm (.eqRefl _)).eqTrans Prf.hyp1))
 
 /-- Variables: `0 = N`, `1 = i`, `2 = x`. -/
 private abbrev prodZeroF (f : PTm 2) : Fm PTm 3 :=

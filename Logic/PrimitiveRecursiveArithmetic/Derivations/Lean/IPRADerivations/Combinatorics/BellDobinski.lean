@@ -57,9 +57,9 @@ theorem ff_gb {N k i : PTm n} (hk : Γ ⊢[PRAAx] le k N) :
   refine .orE (lt_or_le k i) ?_ ?_
   · -- `i > k`: both sides vanish.
     have z : (lt k i :: Γ) ⊢[PRAAx] gb k i ≐ zero := gb_above Prf.hyp0
-    refine (congrMul (.eqRefl _) z).eqTrans ((mul_zero _).eqTrans ?_)
+    refine (mul_eq_zero_of_right z).eqTrans ?_
     refine .orE (lt_or_le N i) ?_ ?_
-    · exact ((congrMul (gb_above Prf.hyp0) (.eqRefl _)).eqTrans (zero_mul _)).eqSymm
+    · exact (mul_eq_zero_of_left (gb_above Prf.hyp0)).eqSymm
     · have hki := (Prf.hyp1 : (le i N :: lt k i :: Γ) ⊢[PRAAx] lt k i)
       have e2 := natEq (eq_add_of_le hki)
       have e3 := natEq (eq_add_of_le (Prf.hyp0 : (le i N :: lt k i :: Γ) ⊢[PRAAx] le i N))
@@ -67,7 +67,7 @@ theorem ff_gb {N k i : PTm n} (hk : Γ ⊢[PRAAx] le k N) :
         monus_of_eq (by apply deriveNat; ipra_simps; linear_combination e3 + e2)
       have l : (le i N :: lt k i :: Γ) ⊢[PRAAx] lt (monus N i) (monus N k) :=
         le_of_eq_add (d := monus i (succ k)) mk
-      exact ((congrMul (.eqRefl _) (ff_zero_above l)).eqTrans (mul_zero _)).eqSymm
+      exact (mul_eq_zero_of_right (ff_zero_above l)).eqSymm
   · -- `i ≤ k ≤ N`.
     have hik : (le i k :: Γ) ⊢[PRAAx] le i k := Prf.hyp0
     have hiN : (le i k :: Γ) ⊢[PRAAx] le i N := le_trans hik hk.wk
@@ -137,13 +137,11 @@ theorem tail_zero (a : PTm 3) (ha : ∀ {m : ℕ} {Δ : List (Fm PTm m)} {K i N 
 
 theorem aP_tail {m : ℕ} {Δ : List (Fm PTm m)} {K i N : PTm m} (hk : Δ ⊢[PRAAx] le K N) (hi : Δ ⊢[PRAAx] lt K i) :
     Δ ⊢[PRAAx] inst3 aP K i N ≐ zero :=
-  (pt_e hk).eqTrans ((congrMul (.eqRefl _) ((eB_at _ _ _).eqTrans ((congrMul (.eqRefl _)
-    ((congrMul (gb_above hi) (.eqRefl _)).eqTrans (zero_mul _))).eqTrans (mul_zero _)))).eqTrans (mul_zero _))
+  (pt_e hk).eqTrans (mul_eq_zero_of_right ((eB_at _ _ _).eqTrans (mul_eq_zero_of_right (mul_eq_zero_of_left (gb_above hi)))))
 
 theorem aM_tail {m : ℕ} {Δ : List (Fm PTm m)} {K i N : PTm m} (hk : Δ ⊢[PRAAx] le K N) (hi : Δ ⊢[PRAAx] lt K i) :
     Δ ⊢[PRAAx] inst3 aM K i N ≐ zero :=
-  (pt_o hk).eqTrans ((congrMul (.eqRefl _) ((StirlingInclusion.oB_at _ _ _).eqTrans ((congrMul (.eqRefl _)
-    ((congrMul (gb_above hi) (.eqRefl _)).eqTrans (zero_mul _))).eqTrans (mul_zero _)))).eqTrans (mul_zero _))
+  (pt_o hk).eqTrans (mul_eq_zero_of_right ((StirlingInclusion.oB_at _ _ _).eqTrans (mul_eq_zero_of_right (mul_eq_zero_of_left (gb_above hi)))))
 
 /-- `(n)_{n−k} E⁺(n, k) = ∑_{i ≤ n} [k − i even] C(n, i) iⁿ (n − i)_{n−k}` for `k ≤ n`. -/
 theorem scaled_e {N K : PTm n} (hk : Γ ⊢[PRAAx] le K N) :
@@ -209,7 +207,7 @@ theorem reindex_e {i N : PTm n} (hi : Γ ⊢[PRAAx] le i N) :
   refine (congrAdd (sum_zero_of_bounded _ _ _ (.allI (.impI ?_))) (sum_congr_bounded _ _ _ _ _ (.allI (.impI ?_)))).eqTrans
     (zero_add _)
   · simp only [shift_pairT]
-    exact (rPB_at _ _ _).eqTrans ((congrMul (.eqRefl _) (ff_below (le_shift hi).wk Prf.hyp0)).eqTrans (mul_zero _))
+    exact (rPB_at _ _ _).eqTrans (mul_eq_zero_of_right (ff_below (le_shift hi).wk Prf.hyp0))
   · simp only [shift_pairT]
     rw [inst2_offB]
     have e : inst2 dpB (var 0) (Syn.shift (monus N i)) =
@@ -227,7 +225,7 @@ theorem reindex_o {i N : PTm n} (hi : Γ ⊢[PRAAx] le i N) :
   refine (congrAdd (sum_zero_of_bounded _ _ _ (.allI (.impI ?_))) (sum_congr_bounded _ _ _ _ _ (.allI (.impI ?_)))).eqTrans
     (zero_add _)
   · simp only [shift_pairT]
-    exact (rMB_at _ _ _).eqTrans ((congrMul (.eqRefl _) (ff_below (le_shift hi).wk Prf.hyp0)).eqTrans (mul_zero _))
+    exact (rMB_at _ _ _).eqTrans (mul_eq_zero_of_right (ff_below (le_shift hi).wk Prf.hyp0))
   · simp only [shift_pairT]
     rw [inst2_offB]
     have e : inst2 dmB (var 0) (Syn.shift (monus N i)) =

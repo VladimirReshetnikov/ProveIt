@@ -90,9 +90,9 @@ abbrev dS (N A B x : PTm n) : PTm n := ap2 (sumF (dvB w X)) N (pairT A (pairT B 
 theorem dv_base (A B x : PTm n) :
     Γ ⊢[PRAAx] dS w X zero A B x + (A * B + A * B) * ap2 (sumF (w * X)) zero x ≐
       A * A * ap2 (sumF (w * (X * X))) zero x + B * B * ap2 (sumF w) zero x :=
-  (congrAdd (sum_zero _ _) ((congrMul (.eqRefl _) (sum_zero _ _)).eqTrans (mul_zero _))).eqTrans
-    ((add_zero _).eqTrans (.eqSymm ((congrAdd ((congrMul (.eqRefl _) (sum_zero _ _)).eqTrans (mul_zero _))
-      ((congrMul (.eqRefl _) (sum_zero _ _)).eqTrans (mul_zero _))).eqTrans (add_zero _))))
+  (congrAdd (sum_zero _ _) (mul_eq_zero_of_right (sum_zero _ _))).eqTrans
+    ((add_zero _).eqTrans (.eqSymm ((congrAdd (mul_eq_zero_of_right (sum_zero _ _))
+      (mul_eq_zero_of_right (sum_zero _ _))).eqTrans (add_zero _))))
 
 theorem dv_step {N A B x : PTm n}
     (ih : Γ ⊢[PRAAx] dS w X N A B x + (A * B + A * B) * ap2 (sumF (w * X)) N x ≐

@@ -133,7 +133,7 @@ theorem e_step_zero {k : PTm n} {ps : Fin 2 → PTm n} (h : Γ ⊢[PRAAx] ey k p
   · refine (congrAdd (congrMul hs (.eqRefl _)) (congrMul ((congrMonus (.eqRefl _) hs).eqTrans
       (monus_zero _)) (.eqRefl _))).eqTrans ?_
     exact (congrAdd (zero_mul _) (one_mul _)).eqTrans (zero_add _)
-  · exact (congrMul hs (.eqRefl _)).eqTrans (zero_mul _)
+  · exact mul_eq_zero_of_left hs
 
 theorem e_step_succ {k c : PTm n} {ps : Fin 2 → PTm n} (h : Γ ⊢[PRAAx] ey k ps ≐ succ c) :
     Γ ⊢[PRAAx] (ex (succ k) ps ≐ ey k ps) ⋏ (ey (succ k) ps ≐ rem (ex k ps) (ey k ps)) := by

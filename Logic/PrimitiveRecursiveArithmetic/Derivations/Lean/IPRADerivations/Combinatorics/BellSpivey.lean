@@ -135,9 +135,8 @@ theorem conv_inner (N i x : PTm n) : Γ ⊢[PRAAx] CV N i x ≐ gb N i * pw (suc
         simpa [Fm.shift, Syn.shift] using hl.shift
       have gz : _ ⊢[PRAAx] gb (var 0) (Syn.shift i) ≐ zero :=
         gb_above (le_trans ((succ_monus_succ _ _).eqTrans hk) hl'.wk)
-      exact (cv_at _ _ _ _).eqTrans ((congrMul ((congrMul (.eqRefl _) gz).eqTrans (mul_zero _)) (.eqRefl _)).eqTrans
-        (zero_mul _))
-    · exact ((congrMul (gb_above hl) (.eqRefl _)).eqTrans (zero_mul _)).eqSymm
+      exact (cv_at _ _ _ _).eqTrans (mul_eq_zero_of_left (mul_eq_zero_of_right gz))
+    · exact (mul_eq_zero_of_left (gb_above hl)).eqSymm
   · have hi : (le i N :: Γ) ⊢[PRAAx] le i N := Prf.hyp0
     have eS : (le i N :: Γ) ⊢[PRAAx] succ N ≐ i + succ (monus N i) := by
       ipra_lc natEq (eq_add_of_le hi)
@@ -148,8 +147,7 @@ theorem conv_inner (N i x : PTm n) : Γ ⊢[PRAAx] CV N i x ≐ gb N i * pw (suc
       rw [LeanProofs.IPRA.Combinatorics.BinomialTwo.shift_y, inst2_z]
       have gz : (lt (var 0) (Syn.shift i) :: (le i N :: Γ).map Fm.shift) ⊢[PRAAx] gb (var 0) (Syn.shift i) ≐ zero :=
         gb_above Prf.hyp0
-      exact (cv_at _ _ _ _).eqTrans ((congrMul ((congrMul (.eqRefl _) gz).eqTrans (mul_zero _)) (.eqRefl _)).eqTrans
-        (zero_mul _))
+      exact (cv_at _ _ _ _).eqTrans (mul_eq_zero_of_left (mul_eq_zero_of_right gz))
     have hs : (le i N :: Γ) ⊢[PRAAx] ap2 (sumF (offB cvB)) (succ (monus N i)) (pairT i (pairT N (pairT i x))) ≐
         gb N i * S (monus N i) one x := by
       refine sum_scale _ _ _ _ _ _ (.allI (.impI ?_))
@@ -216,7 +214,7 @@ theorem bi_ext {k N : PTm n} (h : Γ ⊢[PRAAx] le k N) :
     (zsum _ _)
   rw [shift_y, inst2_z, inst2_offB, inst2_bi, shift_succ]
   refine (congrMul (congrGb (snd_pair _ _) (congrAdd (fst_pair _ _) (.eqRefl _))) (.eqRefl _)).eqTrans ?_
-  exact (congrMul (gb_above (le_add_right _ _)) (.eqRefl _)).eqTrans (zero_mul _)
+  exact mul_eq_zero_of_left (gb_above (le_add_right _ _))
 
 /-- `a(k, i, ⟨N, j⟩) = C(N, k) j^{N−k} · C(k, i) B_i`. -/
 abbrev a3 : PTm 3 := gb (fstT (var 2)) (var 0) * pw (sndT (var 2)) (monus (fstT (var 2)) (var 0)) *
@@ -313,10 +311,8 @@ theorem hpt (k N j : PTm n) : Γ ⊢[PRAAx] inst2 hB k (pairT N j) ≐ j * inst2
     refine (congrMul (congrMul (.eqRefl _) ((congrPw (.eqRefl _) e).eqTrans (pw_succ _ _))) (.eqRefl _)).eqTrans ?_
     ipra_ring
   · have z : (le N k :: Γ) ⊢[PRAAx] gb N (succ k) ≐ zero := gb_above (Common.succ_le_succ Prf.hyp0)
-    refine ((congrMul (congrMul z (.eqRefl _)) (.eqRefl _)).eqTrans ?_).eqTrans
-      (congrMul (.eqRefl _) (congrMul (congrMul z (.eqRefl _)) (.eqRefl _))).eqSymm
-    exact (congrMul (zero_mul _) (.eqRefl _)).eqTrans ((zero_mul _).eqTrans
-      ((mul_zero _).eqSymm.eqTrans (congrMul (.eqRefl _) ((congrMul (zero_mul _) (.eqRefl _)).eqTrans (zero_mul _)).eqSymm)))
+    exact (mul_eq_zero_of_left (mul_eq_zero_of_left z)).eqTrans
+      (mul_eq_zero_of_right (mul_eq_zero_of_left (mul_eq_zero_of_left z))).eqSymm
 
 theorem g_zero_term (N j : PTm n) : Γ ⊢[PRAAx] inst2 gB zero (pairT N j) ≐ pw j N :=
   (g_at _ _ _).eqTrans ((congrMul ((congrMul (gb_zero N) (congrPw (.eqRefl _) (monus_zero N))).eqTrans (one_mul _))
@@ -328,8 +324,7 @@ theorem G_split (N j : PTm n) :
   have ext : Γ ⊢[PRAAx] ap2 (sumF gB) (succ (succ N)) (pairT N j) ≐ G N j := by
     refine (sum_succ' gB (succ N) (pairT N j)).eqTrans ?_
     refine (congrAdd (.eqRefl _) ((g_at _ _ _).eqTrans ?_)).eqTrans (add_zero _)
-    exact (congrMul ((congrMul (gb_above (le_refl (succ N))) (.eqRefl _)).eqTrans (zero_mul _)) (.eqRefl _)).eqTrans
-      (zero_mul _)
+    exact mul_eq_zero_of_left (mul_eq_zero_of_left (gb_above (le_refl (succ N))))
   exact ext.eqSymm.eqTrans ((sum_shift gB (succ N) (pairT N j)).eqTrans (congrAdd (g_zero_term N j) (.eqRefl _)))
 
 /-- `G(n + 1, j) = j G(n, j) + G(n, j + 1)`. -/
@@ -357,10 +352,8 @@ theorem G_zero (N : PTm n) : Γ ⊢[PRAAx] G N zero ≐ bell N := by
     have e : (lt (var 0) (Syn.shift N) :: Γ.map Fm.shift) ⊢[PRAAx]
         monus (Syn.shift N) (var 0) ≐ succ (monus (Syn.shift N) (succ (var 0))) :=
       Common.monus_succ_of_lt Prf.hyp0
-    refine (g_at _ _ _).eqTrans ?_
-    refine (congrMul (congrMul (.eqRefl _) ((congrPw (.eqRefl _) e).eqTrans ((pw_succ _ _).eqTrans (mul_zero _))))
-      (.eqRefl _)).eqTrans ?_
-    exact (congrMul (mul_zero _) (.eqRefl _)).eqTrans (zero_mul _)
+    exact (g_at _ _ _).eqTrans (mul_eq_zero_of_left (mul_eq_zero_of_right
+      ((congrPw (.eqRefl _) e).eqTrans ((pw_succ _ _).eqTrans (mul_zero _)))))
   refine (congrAdd z ((g_at _ _ _).eqTrans ?_)).eqTrans (zero_add _)
   refine (congrMul ((congrMul (gb_self N) (congrPw (.eqRefl _) (monus_self N))).eqTrans ((congrMul (.eqRefl _)
     (pw_zero _)).eqTrans (one_mul _))) (.eqRefl _)).eqTrans (one_mul _)
@@ -424,9 +417,9 @@ theorem u31 (m N : PTm n) :
     Γ ⊢[PRAAx] ap2 (sumF u3B) (succ m) (pairT m N) ≐ ap2 (sumF u1B) (succ m) (pairT m N) := by
   have ext : Γ ⊢[PRAAx] ap2 (sumF u3B) (succ (succ m)) (pairT m N) ≐ ap2 (sumF u3B) (succ m) (pairT m N) := by
     refine (sum_succ' _ _ _).eqTrans ((congrAdd (.eqRefl _) ((u3_at _ _ _).eqTrans ?_)).eqTrans (add_zero _))
-    exact (congrMul (stir_above (le_refl _)) (.eqRefl _)).eqTrans (zero_mul _)
+    exact mul_eq_zero_of_left (stir_above (le_refl _))
   have z : Γ ⊢[PRAAx] inst2 u3B zero (pairT m N) ≐ zero :=
-    (u3_at _ _ _).eqTrans ((congrMul (.eqRefl _) (zero_mul _)).eqTrans (mul_zero _))
+    (u3_at _ _ _).eqTrans (mul_eq_zero_of_right (zero_mul _))
   have sh : Γ ⊢[PRAAx] ap2 (sumF (shiftBody u3B)) (succ m) (pairT m N) ≐ ap2 (sumF u1B) (succ m) (pairT m N) := by
     refine sum_congr_bounded _ _ _ _ _ (.allI (.impI ?_))
     simp only [shift_y]
@@ -439,7 +432,7 @@ theorem u31 (m N : PTm n) :
 theorem F_succ (N m : PTm n) : Γ ⊢[PRAAx] F N (succ m) ≐ F (succ N) m := by
   have s := sum_shift (Γ := Γ) fB (succ m) (pairT (succ m) N)
   have z : Γ ⊢[PRAAx] inst2 fB zero (pairT (succ m) N) ≐ zero :=
-    (f_at _ _ _).eqTrans ((congrMul (stir_succ_zero _) (.eqRefl _)).eqTrans (zero_mul _))
+    (f_at _ _ _).eqTrans (mul_eq_zero_of_left (stir_succ_zero _))
   have hl : Γ ⊢[PRAAx] ap2 (sumF (shiftBody fB)) (succ m) (pairT (succ m) N) ≐
       ap2 (sumF (addBody u1B u2B)) (succ m) (pairT m N) := by
     refine sum_congr_bounded _ _ _ _ _ (.allI (.impI ?_))
