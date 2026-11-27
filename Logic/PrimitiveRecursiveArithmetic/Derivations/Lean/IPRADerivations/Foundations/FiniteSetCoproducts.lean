@@ -89,32 +89,15 @@ abbrev copairc (n m c f g : PTm k) : PTm k :=
 theorem cpT_at (x n c f g : PTm k) :
     Γ ⊢[PRAAx] inst2 cpT x (pairT n (pairT c (pairT f g))) ≐
       sg (monus n x) * dg c x f + monus one (sg (monus n x)) * dg c (monus x n) g := by
-  have e₁ : inst2 cpT x (pairT n (pairT c (pairT f g))) =
-      Syn.subst ![x, fstT (pairT n (pairT c (pairT f g))),
-          fstT (sndT (pairT n (pairT c (pairT f g)))),
-          fstT (sndT (sndT (pairT n (pairT c (pairT f g))))),
-          sndT (sndT (sndT (pairT n (pairT c (pairT f g)))))]
-        (sg (monus (var 1 : PTm 5) (var 0)) * dg (var 2) (var 0) (var 3) +
-          monus one (sg (monus (var 1) (var 0))) * dg (var 2) (monus (var 0) (var 1)) (var 4)) := by
-    show Syn.subst ![x, pairT n (pairT c (pairT f g))] cpT = _
-    simp [cpT]
-  have e₂ : sg (monus n x) * dg c x f + monus one (sg (monus n x)) * dg c (monus x n) g =
-      Syn.subst ![x, n, c, f, g]
-        (sg (monus (var 1 : PTm 5) (var 0)) * dg (var 2) (var 0) (var 3) +
-          monus one (sg (monus (var 1) (var 0))) * dg (var 2) (monus (var 0) (var 1)) (var 4)) := by
-    simp
-  rw [e₁, e₂]
-  have s₁ : Γ ⊢[PRAAx] sndT (pairT n (pairT c (pairT f g))) ≐ pairT c (pairT f g) :=
-    snd_pair _ _
-  have s₂ : Γ ⊢[PRAAx] sndT (sndT (pairT n (pairT c (pairT f g)))) ≐ pairT f g :=
-    (congrSnd s₁).eqTrans (snd_pair _ _)
-  exact Prf.eqCongr _ fun l => by
-    fin_cases l
-    · exact .eqRefl _
-    · exact fst_pair _ _
-    · exact (congrFst s₁).eqTrans (fst_pair _ _)
-    · exact (congrFst s₂).eqTrans (fst_pair _ _)
-    · exact (congrSnd s₂).eqTrans (snd_pair _ _)
+  let body : PTm 5 := (sg (monus (var 1 : PTm 5) (var 0)) * dg (var 2) (var 0) (var 3) +
+      monus one (sg (monus (var 1) (var 0))) * dg (var 2) (monus (var 0) (var 1)) (var 4))
+  have packed : cpT =
+      Syn.subst (Matrix.vecCons (var 0) (pairVectorField 3 (var 1))) body := by
+    simp [body, cpT, pairVectorField, sg]
+  have value : sg (monus n x) * dg c x f + monus one (sg (monus n x)) * dg c (monus x n) g = Syn.subst ![x, n, c, f, g] body := by
+    simp [body, sg]
+  rw [inst2, packed, value]
+  exact subst_pairVector_eq body x ![n, c, f, g]
 
 /-- The concatenated entry on the left half. -/
 theorem cp_entry_lt {x n c f g : PTm k} (hx : Γ ⊢[PRAAx] lt x n) :

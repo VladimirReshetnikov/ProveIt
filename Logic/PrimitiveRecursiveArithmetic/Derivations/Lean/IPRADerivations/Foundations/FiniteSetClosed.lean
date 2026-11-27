@@ -90,29 +90,9 @@ def ciT : PTm 2 :=
 
 theorem ciT_at (j i n m h : PTm k) :
     Γ ⊢[PRAAx] inst2 ciT j (pairT i (pairT n (pairT m h))) ≐ dg m (i * n + j) h := by
-  have e₁ : inst2 ciT j (pairT i (pairT n (pairT m h))) =
-      Syn.subst ![j, fstT (pairT i (pairT n (pairT m h))),
-          fstT (sndT (pairT i (pairT n (pairT m h)))),
-          fstT (sndT (sndT (pairT i (pairT n (pairT m h))))),
-          sndT (sndT (sndT (pairT i (pairT n (pairT m h)))))]
-        (dg (var 3 : PTm 5) (var 1 * var 2 + var 0) (var 4)) := by
-    show Syn.subst ![j, pairT i (pairT n (pairT m h))] ciT = _
-    simp [ciT]
-  have e₂ : dg m (i * n + j) h =
-      Syn.subst ![j, i, n, m, h] (dg (var 3 : PTm 5) (var 1 * var 2 + var 0) (var 4)) := by
-    simp
-  rw [e₁, e₂]
-  have s₁ : Γ ⊢[PRAAx] sndT (pairT i (pairT n (pairT m h))) ≐ pairT n (pairT m h) :=
-    snd_pair _ _
-  have s₂ : Γ ⊢[PRAAx] sndT (sndT (pairT i (pairT n (pairT m h)))) ≐ pairT m h :=
-    (congrSnd s₁).eqTrans (snd_pair _ _)
-  exact Prf.eqCongr _ fun l => by
-    fin_cases l
-    · exact .eqRefl _
-    · exact fst_pair _ _
-    · exact (congrFst s₁).eqTrans (fst_pair _ _)
-    · exact (congrFst s₂).eqTrans (fst_pair _ _)
-    · exact (congrSnd s₂).eqTrans (snd_pair _ _)
+  simpa [inst2, ciT, pairVector, pairVectorField, Syn.subst_subst] using
+    subst_pairVector_eq (Γ := Γ) (dg (var 3 : PTm 5) (var 1 * var 2 + var 0) (var 4))
+      j ![i, n, m, h]
 
 /-- The transposed entry: the code of the row `j ↦ ev(h, i n + j)`; variables `0 = i`,
 `1 = ⟨n, ⟨m, h⟩⟩`. -/

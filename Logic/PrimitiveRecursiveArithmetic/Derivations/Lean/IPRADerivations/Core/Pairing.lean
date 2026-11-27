@@ -253,6 +253,18 @@ theorem pairVectorField_eq (k : ℕ) (entries : Fin (k + 1) → PTm n) {z : PTm 
     · exact h.fstE
     · exact ih (fun j => entries j.succ) h.sndE j
 
+/-- Substituting a packed argument reads back the components in their original order. -/
+theorem subst_pairVector_eq {k : ℕ} (body : PTm (k + 2)) (p : PTm n)
+    (entries : Fin (k + 1) → PTm n) :
+    Γ ⊢[PRAAx] Syn.subst ![p, pairVector k entries]
+        (Syn.subst (Matrix.vecCons (var 0) (pairVectorField k (var 1))) body) ≐
+      Syn.subst (Matrix.vecCons p entries) body := by
+  rw [Syn.subst_subst]
+  exact Prf.eqCongr body fun i => by
+    refine Fin.cases (.eqRefl _) (fun j => ?_) i
+    simp only [Matrix.cons_val_succ, subst_pairVectorField, Syn.subst_var, Matrix.cons_val_one]
+    exact pairVectorField_eq k entries (.eqRefl _) j
+
 /-! ## Simultaneous recursion -/
 
 section Simultaneous

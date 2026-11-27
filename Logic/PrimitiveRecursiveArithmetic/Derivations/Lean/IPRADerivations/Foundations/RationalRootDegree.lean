@@ -134,27 +134,14 @@ def tB : PTm 2 :=
 theorem tB_at (i p q d x : PTm k) :
     Γ ⊢[PRAAx] inst2 (tB a) i (pairT p (pairT q (pairT d x))) ≐
       inst2 a i x * pw p i * pw q (monus d i) := by
-  have e₁ : inst2 (tB a) i (pairT p (pairT q (pairT d x))) =
-      Syn.subst ![i, fstT (pairT p (pairT q (pairT d x))),
-          fstT (sndT (pairT p (pairT q (pairT d x)))),
-          fstT (sndT (sndT (pairT p (pairT q (pairT d x))))),
-          sndT (sndT (sndT (pairT p (pairT q (pairT d x)))))] (tG a) := by
-    simp only [inst2, tB, Syn.subst_subst]
-    congr 1; funext j; fin_cases j <;> simp
-  have e₂ : inst2 a i x * pw p i * pw q (monus d i) = Syn.subst ![i, p, q, d, x] (tG a) := by
-    simp [tG]
-  rw [e₁, e₂]
-  have s₁ : Γ ⊢[PRAAx] sndT (pairT p (pairT q (pairT d x))) ≐ pairT q (pairT d x) :=
-    snd_pair _ _
-  have s₂ : Γ ⊢[PRAAx] sndT (sndT (pairT p (pairT q (pairT d x)))) ≐ pairT d x :=
-    (congrSnd s₁).eqTrans (snd_pair _ _)
-  exact Prf.eqCongr _ fun l => by
-    fin_cases l
-    · exact .eqRefl _
-    · exact fst_pair _ _
-    · exact (congrFst s₁).eqTrans (fst_pair _ _)
-    · exact (congrFst s₂).eqTrans (fst_pair _ _)
-    · exact (congrSnd s₂).eqTrans (snd_pair _ _)
+  let body : PTm 5 := (tG a)
+  have packed : tB a =
+      Syn.subst (Matrix.vecCons (var 0) (pairVectorField 3 (var 1))) body := by
+    simp [body, tB, tG, pairVectorField]
+  have value : inst2 a i x * pw p i * pw q (monus d i) = Syn.subst ![i, p, q, d, x] body := by
+    simp [body, tG]
+  rw [inst2, packed, value]
+  exact subst_pairVector_eq body i ![p, q, d, x]
 
 /-- The partial sum `∑_{i<N} a(i, x) p^i q^{d ∸ i}`. -/
 abbrev P (N p q d x : PTm k) : PTm k := ap2 (sumF (tB a)) N (pairT p (pairT q (pairT d x)))

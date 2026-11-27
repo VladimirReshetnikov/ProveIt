@@ -200,31 +200,15 @@ theorem t0_at (a p : PTm k) : inst2 I.t0 a p = sg (I.g (I.h p) a p) := by
 theorem f_at (b a j R p : PTm k) :
     Γ ⊢[PRAAx] inst2 I.f b (pairT a (pairT j (pairT R p))) ≐
       I.t (monus (I.h p) (succ j)) a b p * dg two b R := by
-  have e₁ : inst2 I.f b (pairT a (pairT j (pairT R p))) =
-      Syn.subst ![b, fstT (pairT a (pairT j (pairT R p))),
-          fstT (sndT (pairT a (pairT j (pairT R p)))),
-          fstT (sndT (sndT (pairT a (pairT j (pairT R p))))),
-          sndT (sndT (sndT (pairT a (pairT j (pairT R p)))))]
-        (I.t (monus (I.h (var 4 : PTm 5)) (succ (var 2))) (var 1) (var 0) (var 4) *
-          dg two (var 0) (var 3)) := by
-    show Syn.subst ![b, pairT a (pairT j (pairT R p))] I.f = _
-    simp [Instance.f]
-  have e₂ : I.t (monus (I.h p) (succ j)) a b p * dg two b R =
-      Syn.subst ![b, a, j, R, p]
-        (I.t (monus (I.h (var 4 : PTm 5)) (succ (var 2))) (var 1) (var 0) (var 4) *
-          dg two (var 0) (var 3)) := by simp
-  rw [e₁, e₂]
-  have s₁ : Γ ⊢[PRAAx] sndT (pairT a (pairT j (pairT R p))) ≐ pairT j (pairT R p) :=
-    snd_pair _ _
-  have s₂ : Γ ⊢[PRAAx] sndT (sndT (pairT a (pairT j (pairT R p)))) ≐ pairT R p :=
-    (congrSnd s₁).eqTrans (snd_pair _ _)
-  exact Prf.eqCongr _ fun l => by
-    fin_cases l
-    · exact .eqRefl _
-    · exact fst_pair _ _
-    · exact (congrFst s₁).eqTrans (fst_pair _ _)
-    · exact (congrFst s₂).eqTrans (fst_pair _ _)
-    · exact (congrSnd s₂).eqTrans (snd_pair _ _)
+  let body : PTm 5 := (I.t (monus (I.h (var 4 : PTm 5)) (succ (var 2))) (var 1) (var 0) (var 4) *
+      dg two (var 0) (var 3))
+  have packed : I.f =
+      Syn.subst (Matrix.vecCons (var 0) (pairVectorField 3 (var 1))) body := by
+    simp [body, Instance.f, pairVectorField]
+  have value : I.t (monus (I.h p) (succ j)) a b p * dg two b R = Syn.subst ![b, a, j, R, p] body := by
+    simp [body]
+  rw [inst2, packed, value]
+  exact subst_pairVector_eq body b ![a, j, R, p]
 
 theorem tb_at (a j R p : PTm k) :
     Γ ⊢[PRAAx] inst2 I.tb a (pairT j (pairT R p)) ≐

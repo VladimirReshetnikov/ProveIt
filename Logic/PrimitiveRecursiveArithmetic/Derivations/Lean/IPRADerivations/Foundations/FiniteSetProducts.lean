@@ -55,29 +55,14 @@ abbrev pairc (z n m f g : PTm k) : PTm k := code prT z (n * m) (pairT n (pairT m
 
 theorem prT_at (t n m f g : PTm k) :
     Γ ⊢[PRAAx] inst2 prT t (pairT n (pairT m (pairT f g))) ≐ dg n t f * m + dg m t g := by
-  have e₁ : inst2 prT t (pairT n (pairT m (pairT f g))) =
-      Syn.subst ![t, fstT (pairT n (pairT m (pairT f g))),
-          fstT (sndT (pairT n (pairT m (pairT f g)))),
-          fstT (sndT (sndT (pairT n (pairT m (pairT f g))))),
-          sndT (sndT (sndT (pairT n (pairT m (pairT f g)))))]
-        (dg (var 1 : PTm 5) (var 0) (var 3) * var 2 + dg (var 2) (var 0) (var 4)) := by
-    show Syn.subst ![t, pairT n (pairT m (pairT f g))] prT = _
-    simp [prT]
-  have e₂ : dg n t f * m + dg m t g =
-      Syn.subst ![t, n, m, f, g]
-        (dg (var 1 : PTm 5) (var 0) (var 3) * var 2 + dg (var 2) (var 0) (var 4)) := by simp
-  rw [e₁, e₂]
-  have s₁ : Γ ⊢[PRAAx] sndT (pairT n (pairT m (pairT f g))) ≐ pairT m (pairT f g) :=
-    snd_pair _ _
-  have s₂ : Γ ⊢[PRAAx] sndT (sndT (pairT n (pairT m (pairT f g)))) ≐ pairT f g :=
-    (congrSnd s₁).eqTrans (snd_pair _ _)
-  exact Prf.eqCongr _ fun l => by
-    fin_cases l
-    · exact .eqRefl _
-    · exact fst_pair _ _
-    · exact (congrFst s₁).eqTrans (fst_pair _ _)
-    · exact (congrFst s₂).eqTrans (fst_pair _ _)
-    · exact (congrSnd s₂).eqTrans (snd_pair _ _)
+  let body : PTm 5 := (dg (var 1 : PTm 5) (var 0) (var 3) * var 2 + dg (var 2) (var 0) (var 4))
+  have packed : prT =
+      Syn.subst (Matrix.vecCons (var 0) (pairVectorField 3 (var 1))) body := by
+    simp [body, prT, pairVectorField]
+  have value : dg n t f * m + dg m t g = Syn.subst ![t, n, m, f, g] body := by
+    simp [body]
+  rw [inst2, packed, value]
+  exact subst_pairVector_eq body t ![n, m, f, g]
 
 theorem shift_mul' (a b : PTm k) : Syn.shift (a * b) = Syn.shift a * Syn.shift b := by
   simp [Syn.shift]

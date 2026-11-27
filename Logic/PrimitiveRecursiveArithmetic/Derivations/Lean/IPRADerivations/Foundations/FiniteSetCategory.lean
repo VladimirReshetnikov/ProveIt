@@ -83,29 +83,9 @@ abbrev cmpc (a b d g f : PTm k) : PTm k := code cmT a d (pairT b (pairT d (pairT
 
 theorem cmT_at (j b d g f : PTm k) :
     Γ ⊢[PRAAx] inst2 cmT j (pairT b (pairT d (pairT g f))) ≐ dg d (dg b j f) g := by
-  have e₁ : inst2 cmT j (pairT b (pairT d (pairT g f))) =
-      Syn.subst ![j, fstT (pairT b (pairT d (pairT g f))),
-          fstT (sndT (pairT b (pairT d (pairT g f)))),
-          fstT (sndT (sndT (pairT b (pairT d (pairT g f))))),
-          sndT (sndT (sndT (pairT b (pairT d (pairT g f)))))]
-        (dg (var 2 : PTm 5) (dg (var 1) (var 0) (var 4)) (var 3)) := by
-    show Syn.subst ![j, pairT b (pairT d (pairT g f))] cmT = _
-    simp [cmT]
-  have e₂ : dg d (dg b j f) g =
-      Syn.subst ![j, b, d, g, f] (dg (var 2 : PTm 5) (dg (var 1) (var 0) (var 4)) (var 3)) := by
-    simp
-  rw [e₁, e₂]
-  have s₁ : Γ ⊢[PRAAx] sndT (pairT b (pairT d (pairT g f))) ≐ pairT d (pairT g f) :=
-    snd_pair _ _
-  have s₂ : Γ ⊢[PRAAx] sndT (sndT (pairT b (pairT d (pairT g f)))) ≐ pairT g f :=
-    (congrSnd s₁).eqTrans (snd_pair _ _)
-  exact Prf.eqCongr _ fun l => by
-    fin_cases l
-    · exact .eqRefl _
-    · exact fst_pair _ _
-    · exact (congrFst s₁).eqTrans (fst_pair _ _)
-    · exact (congrFst s₂).eqTrans (fst_pair _ _)
-    · exact (congrSnd s₂).eqTrans (snd_pair _ _)
+  simpa [inst2, cmT, pairVector, pairVectorField, Syn.subst_subst] using
+    subst_pairVector_eq (Γ := Γ) (dg (var 2 : PTm 5) (dg (var 1) (var 0) (var 4)) (var 3))
+      j ![b, d, g, f]
 
 theorem shift_idc (a : PTm k) : Syn.shift (idc a) = idc (Syn.shift a) := by simp [Syn.shift]
 

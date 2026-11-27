@@ -52,25 +52,9 @@ def bd4 (X : PTm 5) : PTm 2 :=
 theorem bd4_at (X : PTm 5) (j L m d u : PTm k) :
     Γ ⊢[PRAAx] inst2 (bd4 X) j (pairT L (pairT m (pairT d u))) ≐
       Syn.subst ![j, L, m, d, u] X := by
-  have e₁ : inst2 (bd4 X) j (pairT L (pairT m (pairT d u))) =
-      Syn.subst ![j, fstT (pairT L (pairT m (pairT d u))),
-        fstT (sndT (pairT L (pairT m (pairT d u)))),
-        fstT (sndT (sndT (pairT L (pairT m (pairT d u))))),
-        sndT (sndT (sndT (pairT L (pairT m (pairT d u)))))] X := by
-    simp only [inst2, bd4, Syn.subst_subst]
-    congr 1; funext l; fin_cases l <;> simp
-  rw [e₁]
-  have s₁ : Γ ⊢[PRAAx] sndT (pairT L (pairT m (pairT d u))) ≐ pairT m (pairT d u) :=
-    snd_pair _ _
-  have s₂ : Γ ⊢[PRAAx] sndT (sndT (pairT L (pairT m (pairT d u)))) ≐ pairT d u :=
-    (congrSnd s₁).eqTrans (snd_pair _ _)
-  exact Prf.eqCongr _ fun l => by
-    fin_cases l
-    · exact .eqRefl _
-    · exact fst_pair _ _
-    · exact (congrFst s₁).eqTrans (fst_pair _ _)
-    · exact (congrFst s₂).eqTrans (fst_pair _ _)
-    · exact (congrSnd s₂).eqTrans (snd_pair _ _)
+  simpa [inst2, bd4, pairVector, pairVectorField, Syn.subst_subst] using
+    subst_pairVector_eq (Γ := Γ) X
+      j ![L, m, d, u]
 
 /-- `σ(j) = (L + m d ∸ d j) mod m`; variables `0 = j`, `1 = L`, `2 = m`, `3 = d`, `4 = u`. -/
 def SG : PTm 5 := rem (monus (var 1 + var 2 * var 3) (var 3 * var 0)) (var 2)
