@@ -35,7 +35,7 @@ open GaussianRationalMetric (bounded distanceBounded qsub qsub_canonical bounded
 open GaussianRationalConjugation (point point_bound)
 open GaussianRationalImaginaryChord (sine twiceSine sine_bound sine_recode conjugate_chord_square reverse_chord_square)
 open GaussianRationalNormSquareTransport (value product_value)
-open GaussianRationalReciprocal (qone qone_bounded bound_congr bounded_product bounded_difference bounded_sum)
+open GaussianRationalReciprocal (qone qone_bounded bound_congr bounded_product bounded_difference_one bounded_sum)
 open GaussianRationalSyntheticDivision (qmul_congr)
 open GaussianRationalDistanceOrder (distance_congr distance_symmetric distance_triangle_same)
 open GaussianRationalPowerDifference (distance_refl_zero bounded_sum_one)
@@ -90,8 +90,7 @@ theorem doubled_sine_bound (p r m x : PTm n) (h : Γ ⊢[PRAAx] source r m) :
 
 theorem chord_bound (p r m x : PTm n) (h : Γ ⊢[PRAAx] source r m) :
     Γ ⊢[PRAAx] bounded (chord p r m x) chordRadius one :=
-  bound_congr (.eqRefl _) (by unfold chordRadius; ipra_ring) (by ipra_ring)
-    (bounded_difference _ _ _ _ _ _ (le_refl one) (le_refl one) qone_bounded (sample_bound p r m x h))
+  bounded_difference_one qone_bounded (sample_bound p r m x h)
 
 private theorem conjugate_error (p r m x : PTm n) (h : Γ ⊢[PRAAx] source r m) :
     Γ ⊢[PRAAx] distanceBounded
@@ -184,11 +183,10 @@ theorem square_error (p r m x : PTm n) (h : Γ ⊢[PRAAx] source r m) :
   have hp := unit_positive (Γ := Γ) p
   have hu := sample_bound p r M x (half_source r m h)
   have hd : Γ ⊢[PRAAx] bounded d chordRadius one :=
-    bound_congr (.eqRefl _) (by unfold chordRadius; ipra_ring) (by ipra_ring)
-      (bounded_difference _ _ _ _ _ _ (le_refl one) (le_refl one) (sample_bound p r m x h) qone_bounded)
+    bound_congr (.eqRefl _) (add_comm _ _) (.eqRefl _)
+      (bounded_difference_one (sample_bound p r m x h) qone_bounded)
   have hv : Γ ⊢[PRAAx] bounded v (H+H) one :=
-    bound_congr (.eqRefl _) (by ipra_ring) (by ipra_ring)
-      (bounded_difference _ _ _ _ _ _ (le_refl one) (le_refl one) hu (point_bound _ _ _ (le_refl one) hu))
+    bounded_difference_one hu (point_bound _ _ _ (le_refl one) hu)
   have hcomp : Γ ⊢[PRAAx] bounded (qmul u v) compareRadius one :=
     bound_congr (.eqRefl _) (.eqRefl _) (by ipra_ring)
       (bounded_product _ _ _ _ _ _ (le_refl one) (le_refl one) hu hv)
