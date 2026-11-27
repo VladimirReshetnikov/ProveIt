@@ -133,7 +133,7 @@ theorem equivalent (A B : PTm n) (hB : Γ ⊢[PRAAx] le one B) :
     simpa only [φ,GaussianNameEquivalence.subst_crossEquivalent,GaussianBinetKernelWeightedBridge.subst_data,
       GaussianBinetWeightedExponential.subst_data,Syn.subst_var,Syn.inst_zero,Syn.subst_inst_shift] using Prf.eqSubst1 φ e hz
   · have ha : (A ≐ succ (pred A))::Γ ⊢[PRAAx] le one A :=
-      le_congr (.eqRefl _) Prf.hyp0.eqSymm (zero_lt_succ _)
+      Order.zero_lt_of_eq_succ Prf.hyp0
     exact GaussianBinetKernelWeightedBridge.positive_time_bridge A B ha hB.wk
 
 theorem weighted_regular (A B : PTm n) (hB : Γ ⊢[PRAAx] le one B) :

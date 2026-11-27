@@ -84,7 +84,7 @@ theorem certificates (q D R T K E : PTm n)
         ((congrAdd (congrMul (.eqRefl B) Prf.hyp0) (.eqRefl r)).eqTrans (by ipra_ring))
       have bN : Δ ⊢[PRAAx] le B N := le_trans (le_of_eq_add (d := B) (by ipra_ring)) cover.wk
       exact le_lt_absurd _ (le_congr (.eqRefl B) eqr bN) division.andE₂.wk
-    · exact le_congr (.eqRefl one) Prf.hyp0.eqSymm (zero_lt_succ (pred c))
+    · exact Order.zero_lt_of_eq_succ Prf.hyp0
   have first : Γ ⊢[PRAAx] le (B*c) N := le_congr (.eqRefl _) division.andE₁.eqSymm (le_add_right _ _)
   have left : Γ ⊢[PRAAx] le (succ c) (two*c) := by
     have q : Γ ⊢[PRAAx] le (c+one) (two*c) := by ipra_le sl hc
