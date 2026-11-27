@@ -31,7 +31,7 @@ open LeanProofs.IPRA.Combinatorics.FibonacciGcd (docagne)
 open LeanProofs.IPRA.DiophantineNumberTheory.PellModular (digit_lt digit_eq)
 open LeanProofs.IPRA.AnalyticNumberTheory.Multiplicative (rem_lt')
 open LeanProofs.IPRA.AnalyticNumberTheory.GcdFiber (div_eq)
-open LeanProofs.IPRA.Foundations.ChineseRemainder (rem_eq_of_eq)
+open LeanProofs.IPRA.Foundations.ChineseRemainder (rem_eq_of_eq rem_mul_right_congr rem_mul_congr_both)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
@@ -55,6 +55,20 @@ theorem cong_lin {x y d : PTm n} (hd : Γ ⊢[PRAAx] d ≐ succ (pred d)) (h : �
     Γ ⊢[PRAAx] x + d * quo y d ≐ y + d * quo x d := by
   ipra_lc natEq (div_eq (j := x) hd) - natEq (div_eq (j := y) hd) + natEq h
 
+private theorem rem_add_congr {a b c e d : PTm n} (hd : Γ ⊢[PRAAx] d ≐ succ (pred d))
+    (h₁ : Γ ⊢[PRAAx] rem a d ≐ rem b d) (h₂ : Γ ⊢[PRAAx] rem c d ≐ rem e d) :
+    Γ ⊢[PRAAx] rem (a + c) d ≐ rem (b + e) d := by
+  refine rem_eq_of_eq hd (k₁ := quo b d + quo e d) (k₂ := quo a d + quo c d) ?_
+  ipra_lc natEq (cong_lin hd h₁) + natEq (cong_lin hd h₂)
+
+/-- Compare the missing summands in two balances with congruent known terms. -/
+private theorem rem_of_balanced_add {x y a b c e d : PTm n} (hd : Γ ⊢[PRAAx] d ≐ succ (pred d))
+    (hx : Γ ⊢[PRAAx] x + a ≐ b) (hy : Γ ⊢[PRAAx] y + c ≐ e)
+    (ha : Γ ⊢[PRAAx] rem a d ≐ rem c d) (hb : Γ ⊢[PRAAx] rem b d ≐ rem e d) :
+    Γ ⊢[PRAAx] rem x d ≐ rem y d := by
+  refine rem_eq_of_eq hd (k₁ := quo e d + quo a d) (k₂ := quo b d + quo c d) ?_
+  ipra_lc natEq hx - natEq hy + natEq (cong_lin hd hb) - natEq (cong_lin hd ha)
+
 /-! ## The return to `(0, 1)` -/
 
 theorem doc_t {i j t : PTm n} (hj : Γ ⊢[PRAAx] j ≐ i + t) : Γ ⊢[PRAAx] fib j * fibS i + par i * fib t ≐ fibS j * fib i + monus one (par i) * fib t :=
@@ -68,6 +82,18 @@ theorem doc_t1 {i j t : PTm n} (hj : Γ ⊢[PRAAx] j ≐ i + t) : Γ ⊢[PRAAx] 
     𝔞 (fib i) * natEq ((congrFibS es).eqTrans (fibS_succ j)) -
     (𝔞 (par i) - 𝔞 (monus one (par i))) * natEq (fib_succ (Γ := Γ) t)
 
+private theorem cross_product_congr {i j d : PTm n} (hd : Γ ⊢[PRAAx] d ≐ succ (pred d))
+    (e₁ : Γ ⊢[PRAAx] rem (fib j) d ≐ rem (fib i) d) (e₂ : Γ ⊢[PRAAx] rem (fibS j) d ≐ rem (fibS i) d) :
+    Γ ⊢[PRAAx] rem (fib j * fibS i) d ≐ rem (fibS j * fib i) d :=
+  (rem_mul_right_congr (fibS i) hd e₁).eqTrans
+    ((congrAp2 remF (mul_comm _ _) (.eqRefl _)).eqTrans (rem_mul_right_congr (fib i) hd e₂).eqSymm)
+
+private theorem next_products_congr {i j d : PTm n} (hd : Γ ⊢[PRAAx] d ≐ succ (pred d))
+    (e₁ : Γ ⊢[PRAAx] rem (fib j) d ≐ rem (fib i) d) (e₂ : Γ ⊢[PRAAx] rem (fibS j) d ≐ rem (fibS i) d) :
+    Γ ⊢[PRAAx] (rem (fibS j * fibS i) d ≐ rem (fibS i * fibS i) d) ⋏
+      (rem ((fibS j + fib j) * fib i) d ≐ rem ((fibS i + fib i) * fib i) d) :=
+  .andI (rem_mul_right_congr (fibS i) hd e₂) (rem_mul_right_congr (fib i) hd (rem_add_congr hd e₂ e₁))
+
 section Return
 
 variable {d i j t : PTm n} (hd : Γ ⊢[PRAAx] d ≐ succ (pred d)) (hj : Γ ⊢[PRAAx] j ≐ i + t)
@@ -75,50 +101,30 @@ variable {d i j t : PTm n} (hd : Γ ⊢[PRAAx] d ≐ succ (pred d)) (hj : Γ ⊢
 include hd hj e₁ e₂
 
 theorem rz_even (hp : Γ ⊢[PRAAx] par i ≐ zero) : Γ ⊢[PRAAx] rem (fib t) d ≐ rem zero d := by
-  have f₁ := natEq (div_eq (j := fib i) hd); have f₁' := natEq (div_eq (j := fib j) hd)
-  have f₂ := natEq (div_eq (j := fibS i) hd); have f₂' := natEq (div_eq (j := fibS j) hd)
-  have r₁ := natEq e₁; have r₂ := natEq e₂
-  have hp' := natEq hp; have hq := natEq ((congrMonus (.eqRefl (one : PTm n)) hp).eqTrans (monus_zero one))
-  refine rem_eq_of_eq hd (k₁ := d * quo (fibS j) d * quo (fib i) d + quo (fibS j) d * rem (fib i) d +
-    rem (fibS i) d * quo (fib i) d) (k₂ := d * quo (fib j) d * quo (fibS i) d + quo (fib j) d * rem (fibS i) d +
-    rem (fib i) d * quo (fibS i) d) ?_
-  ipra_lc -natEq (doc_t hj) - 𝔞 (fib t) * hq + 𝔞 (fib t) * hp' + 𝔞 (fibS i) * f₁' +
-    (𝔞 d * 𝔞 (quo (fib j) d) + 𝔞 (rem (fib j) d)) * f₂ + (𝔞 d * 𝔞 (quo (fibS i) d) + 𝔞 (rem (fibS i) d)) * r₁ -
-    𝔞 (fib i) * f₂' - (𝔞 d * 𝔞 (quo (fibS j) d) + 𝔞 (rem (fibS j) d)) * f₁ -
-    (𝔞 d * 𝔞 (quo (fib i) d) + 𝔞 (rem (fib i) d)) * r₂
+  have hq := (congrMonus (.eqRefl (one : PTm n)) hp).eqTrans (monus_zero one)
+  refine rem_of_balanced_add hd (a := fibS j * fib i) (b := fib j * fibS i) ?_
+    (zero_add _) (cross_product_congr hd e₁ e₂).eqSymm (.eqRefl _)
+  ipra_lc -natEq (doc_t hj) + 𝔞 (fib t) * (natEq hp - natEq hq)
 
 theorem rz_odd (hp : Γ ⊢[PRAAx] par i ≐ one) : Γ ⊢[PRAAx] rem (fib t) d ≐ rem zero d := by
-  have f₁ := natEq (div_eq (j := fib i) hd); have f₁' := natEq (div_eq (j := fib j) hd)
-  have f₂ := natEq (div_eq (j := fibS i) hd); have f₂' := natEq (div_eq (j := fibS j) hd)
-  have r₁ := natEq e₁; have r₂ := natEq e₂
-  have hp' := natEq hp; have hq := natEq ((congrMonus (.eqRefl (one : PTm n)) hp).eqTrans (monus_self one))
-  refine rem_eq_of_eq hd (k₂ := d * quo (fibS j) d * quo (fib i) d + quo (fibS j) d * rem (fib i) d +
-    rem (fibS i) d * quo (fib i) d) (k₁ := d * quo (fib j) d * quo (fibS i) d + quo (fib j) d * rem (fibS i) d +
-    rem (fib i) d * quo (fibS i) d) ?_
-  ipra_lc natEq (doc_t hj) - 𝔞 (fib t) * hp' + 𝔞 (fib t) * hq -
-    (𝔞 (fibS i) * f₁' + (𝔞 d * 𝔞 (quo (fib j) d) + 𝔞 (rem (fib j) d)) * f₂ + (𝔞 d * 𝔞 (quo (fibS i) d) + 𝔞 (rem (fibS i) d)) * r₁ - 𝔞 (fib i) * f₂' - (𝔞 d * 𝔞 (quo (fibS j) d) + 𝔞 (rem (fibS j) d)) * f₁ - (𝔞 d * 𝔞 (quo (fib i) d) + 𝔞 (rem (fib i) d)) * r₂)
+  have hq := (congrMonus (.eqRefl (one : PTm n)) hp).eqTrans (monus_self one)
+  refine rem_of_balanced_add hd (a := fib j * fibS i) (b := fibS j * fib i) ?_
+    (zero_add _) (cross_product_congr hd e₁ e₂) (.eqRefl _)
+  ipra_lc natEq (doc_t hj) + 𝔞 (fib t) * (natEq hq - natEq hp)
 
 theorem ro_even (hp : Γ ⊢[PRAAx] par i ≐ zero) : Γ ⊢[PRAAx] rem (fibS t) d ≐ rem one d := by
-  have cas := natEq (cassini (Γ := Γ) i); have cs := natEq (fibS_succ (Γ := Γ) i)
-  have f₁ := natEq (div_eq (j := fib i) hd); have f₁' := natEq (div_eq (j := fib j) hd)
-  have f₂ := natEq (div_eq (j := fibS i) hd); have f₂' := natEq (div_eq (j := fibS j) hd)
-  have r₁ := natEq e₁; have r₂ := natEq e₂
-  have hp' := natEq hp; have hq := natEq ((congrMonus (.eqRefl (one : PTm n)) hp).eqTrans (monus_zero one))
-  refine rem_eq_of_eq hd (k₁ := quo (fibS i) d * fibS i + quo (fibS j) d * fib i + quo (fib j) d * fib i)
-    (k₂ := quo (fibS j) d * fibS i + quo (fibS i) d * fib i + quo (fib i) d * fib i) ?_
-  ipra_lc -natEq (doc_t1 hj) + 𝔞 (fibS t) * hp' - 𝔞 (fibS t) * hq - cas + 𝔞 (fib i) * cs + hq - hp' +
-    (𝔞 (fibS i) - 𝔞 (fib i)) * (f₂' - f₂ + r₂) - 𝔞 (fib i) * (f₁' - f₁ + r₁)
+  have hq := (congrMonus (.eqRefl (one : PTm n)) hp).eqTrans (monus_zero one)
+  have r := next_products_congr hd e₁ e₂
+  refine rem_of_balanced_add hd ?_ ?_ r.andE₂ r.andE₁
+  · ipra_lc -natEq (doc_t1 hj) + 𝔞 (fibS t) * (natEq hp - natEq hq)
+  · ipra_lc natEq (cassini i) - 𝔞 (fib i) * natEq (fibS_succ i) + natEq hp - natEq hq
 
 theorem ro_odd (hp : Γ ⊢[PRAAx] par i ≐ one) : Γ ⊢[PRAAx] rem (fibS t) d ≐ rem one d := by
-  have cas := natEq (cassini (Γ := Γ) i); have cs := natEq (fibS_succ (Γ := Γ) i)
-  have f₁ := natEq (div_eq (j := fib i) hd); have f₁' := natEq (div_eq (j := fib j) hd)
-  have f₂ := natEq (div_eq (j := fibS i) hd); have f₂' := natEq (div_eq (j := fibS j) hd)
-  have r₁ := natEq e₁; have r₂ := natEq e₂
-  have hp' := natEq hp; have hq := natEq ((congrMonus (.eqRefl (one : PTm n)) hp).eqTrans (monus_self one))
-  refine rem_eq_of_eq hd (k₁ := quo (fibS i) d * fib i + quo (fib i) d * fib i + quo (fibS j) d * fibS i)
-    (k₂ := quo (fibS j) d * fib i + quo (fib j) d * fib i + quo (fibS i) d * fibS i) ?_
-  ipra_lc natEq (doc_t1 hj) - 𝔞 (fibS t) * hp' + 𝔞 (fibS t) * hq + cas - 𝔞 (fib i) * cs - hq + hp' +
-    (𝔞 (fib i) - 𝔞 (fibS i)) * (f₂' - f₂ + r₂) + 𝔞 (fib i) * (f₁' - f₁ + r₁)
+  have hq := (congrMonus (.eqRefl (one : PTm n)) hp).eqTrans (monus_self one)
+  have r := next_products_congr hd e₁ e₂
+  refine rem_of_balanced_add hd ?_ ?_ r.andE₁ r.andE₂
+  · ipra_lc natEq (doc_t1 hj) + 𝔞 (fibS t) * (natEq hq - natEq hp)
+  · ipra_lc -natEq (cassini i) + 𝔞 (fib i) * natEq (fibS_succ i) + natEq hq - natEq hp
 
 /-- `F_t ≡ 0`. -/
 theorem ret_zero : Γ ⊢[PRAAx] rem (fib t) d ≐ rem zero d :=
@@ -146,39 +152,28 @@ theorem period_return {d : PTm n} (hd : Γ ⊢[PRAAx] d ≐ succ (pred d)) :
   have dg := digit_eq hd (rem_lt' hd _) (rem_lt' hd _) ec.eqSymm
   have hJ : Γ ⊢[PRAAx] Pigeonhole.phpJ sigB (d * d) d ≐ Pigeonhole.phpI sigB (d * d) d + tPer d :=
     eq_add_of_le (le_of_lt hlt)
-  refine .andI ?_ (.andI ?_ (.andI (ret_zero hd hJ (Prf.andE₁ dg) (Prf.andE₂ dg))
-    (ret_one hd hJ (Prf.andE₁ dg) (Prf.andE₂ dg))))
-  · refine le_of_eq_add (d := monus (Pigeonhole.phpJ sigB (d * d) d) (succ (Pigeonhole.phpI sigB (d * d) d))) ?_
-    ipra_lc natEq (eq_add_of_le hlt) - natEq hJ
-  · exact le_trans (le_of_eq_add (d := Pigeonhole.phpI sigB (d * d) d) (hJ.eqTrans (add_comm _ _))) hJK
+  exact .andI (Common.one_le_monus_of_lt _ _ hlt) (.andI (le_trans (Common.monus_le_self _ _) hJK)
+    (.andI (ret_zero hd hJ dg.andE₁ dg.andE₂) (ret_one hd hJ dg.andE₁ dg.andE₂)))
 
 /-- (19): `1 ≤ t ≤ d²`, and `F_{n+t} ≡ F_n`, `F_{n+t+1} ≡ F_{n+1}`, `L_{n+t} ≡ L_n (mod d)` for every `n`. -/
 theorem fib_period {d : PTm n} (hd : Γ ⊢[PRAAx] d ≐ succ (pred d)) (N : PTm n) :
     Γ ⊢[PRAAx] le one (tPer d) ⋏ (le (tPer d) (d * d) ⋏
       ((rem (fib (tPer d + N)) d ≐ rem (fib N) d) ⋏ ((rem (fibS (tPer d + N)) d ≐ rem (fibS N) d) ⋏
         (rem (luc (tPer d + N)) d ≐ rem (luc N) d)))) := by
-  have R := period_return hd
-  -- `u = quo F_t`, `u' = quo 0`, `v = quo F_{t+1}`, `v' = quo 1`.
-  have P1 : Γ ⊢[PRAAx] fib (tPer d + N) + d * (quo zero d * fibS N + quo one d * fib N + quo (fib (tPer d)) d * fib N) ≐
-      fib N + d * (quo (fib (tPer d)) d * fibS N + quo (fibS (tPer d)) d * fib N + quo zero d * fib N) := by
-    ipra_lc natEq (fib_add_sym (Γ := Γ) (tPer d) N) +
-      (𝔞 (fibS N) - 𝔞 (fib N)) * natEq (cong_lin hd (Prf.andE₁ (Prf.andE₂ (Prf.andE₂ R)))) +
-      𝔞 (fib N) * natEq (cong_lin hd (Prf.andE₂ (Prf.andE₂ (Prf.andE₂ R))))
-  have P2 : Γ ⊢[PRAAx] fibS (tPer d + N) + d * (quo one d * fibS N + quo zero d * fib N) ≐
-      fibS N + d * (quo (fibS (tPer d)) d * fibS N + quo (fib (tPer d)) d * fib N) := by
-    ipra_lc natEq (fibS_add (Γ := Γ) (tPer d) N) +
-      𝔞 (fibS N) * natEq (cong_lin hd (Prf.andE₂ (Prf.andE₂ (Prf.andE₂ R)))) +
-      𝔞 (fib N) * natEq (cong_lin hd (Prf.andE₁ (Prf.andE₂ (Prf.andE₂ R))))
-  have p₁ := natEq P1; have p₂ := natEq P2
-  have l₁ := natEq (luc_eq (Γ := Γ) (tPer d + N)); have l₂ := natEq (luc_eq (Γ := Γ) N)
-  have L : Γ ⊢[PRAAx] rem (luc (tPer d + N)) d ≐ rem (luc N) d := by
-    refine rem_eq_of_eq hd (k₁ := two * (quo one d * fibS N + quo zero d * fib N) +
-      (quo (fib (tPer d)) d * fibS N + quo (fibS (tPer d)) d * fib N + quo zero d * fib N))
-      (k₂ := two * (quo (fibS (tPer d)) d * fibS N + quo (fib (tPer d)) d * fib N) +
-        (quo zero d * fibS N + quo one d * fib N + quo (fib (tPer d)) d * fib N)) ?_
-    ipra_lc l₁ - l₂ - p₁ + 2 * p₂
-  exact .andI (Prf.andE₁ R) (.andI (Prf.andE₁ (Prf.andE₂ R)) (.andI (rem_eq_of_eq hd P1)
-    (.andI (rem_eq_of_eq hd P2) L)))
+  let t := tPer d
+  have h := period_return hd
+  have r := h.andE₂.andE₂
+  have atN : Γ ⊢[PRAAx] rem (fib (t + N)) d ≐ rem (fib N) d :=
+    rem_of_balanced_add hd (fib_add_sym t N) (by ipra_ring)
+      (rem_mul_right_congr (fib N) hd r.andE₁)
+      (rem_add_congr hd (rem_mul_right_congr (fibS N) hd r.andE₁) (rem_mul_right_congr (fib N) hd r.andE₂))
+  have afterN : Γ ⊢[PRAAx] rem (fibS (t + N)) d ≐ rem (fibS N) d :=
+    (congrAp2 remF (fibS_add t N) (.eqRefl _)).eqTrans
+      ((rem_add_congr hd (rem_mul_right_congr (fibS N) hd r.andE₂) (rem_mul_right_congr (fib N) hd r.andE₁)).eqTrans
+        (congrAp2 remF (by ipra_ring) (.eqRefl _)))
+  have lucas := rem_of_balanced_add hd (luc_eq (t + N)) (luc_eq N) atN
+    (rem_mul_congr_both hd (.eqRefl _) afterN)
+  exact .andI h.andE₁ (.andI h.andE₂.andE₁ (.andI atN (.andI afterN lucas)))
 
 /-- (19), closed: variables `0 = d − 1`, `1 = n`. -/
 abbrev fibPeriodFormula : Fm PTm 2 :=
