@@ -91,8 +91,8 @@ theorem weighted_total_comparison (cut : PR 2) (f g : PTm 2) (K d x y A B w H D 
     (h0 : Γ ⊢[PRAAx] ap2 cut zero d ≐ zero) (hr : Γ ⊢[PRAAx] blockAgreement cut f g K d x y A B)
     (hw : Γ ⊢[PRAAx] bounded w H D) : Γ ⊢[PRAAx]
     distanceBounded (qmul w (sum f (ap2 cut K d) x)) (qmul w (sum (coarseBody cut g) K (pairT d y))) (H*(ap2 cut K d*A)) (D*B) :=
-  GaussianRationalReciprocal.bound_congr (GaussianRationalRoundedPower.multiplication_difference w _ _).eqSymm (.eqRefl _) (.eqRefl _)
-    (GaussianRationalReciprocal.bounded_product _ _ H D _ B hD hB hw (original_comparison cut f g K d x y A B hB hm h0 hr))
+  GaussianRationalRoundedPower.distance_mul_left hD hB hw
+    (original_comparison cut f g K d x y A B hB hm h0 hr)
 
 theorem unit_weight_bound (M : PTm n) (hM : Γ ⊢[PRAAx] le one M) : Γ ⊢[PRAAx] bounded (unitWeight M) one M := by
   have eq := Prf.eqCongr (Ax := PRAAx) (Γ := Γ) (GaussianRationalHorner.ofGaussian (var 0) (var 1) : PTm 2)

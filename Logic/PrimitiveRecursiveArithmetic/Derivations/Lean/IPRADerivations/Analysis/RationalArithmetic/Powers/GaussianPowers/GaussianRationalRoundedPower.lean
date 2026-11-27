@@ -55,11 +55,27 @@ theorem multiplication_difference (t u v : PTm n) : Γ ⊢[PRAAx]
       ((qadd_congr (qmul_zero_left u) (.eqRefl _)).eqTrans
         (qzero_add _ (GaussianRationalHorner.qmul_canonical _ _))))
 
+/-- Left multiplication scales a distance bound by the factor's norm bound. -/
+theorem distance_mul_left {t u v C D A B : PTm n}
+    (hD : Γ ⊢[PRAAx] le one D) (hB : Γ ⊢[PRAAx] le one B)
+    (ht : Γ ⊢[PRAAx] bounded t C D) (hd : Γ ⊢[PRAAx] distanceBounded u v A B) :
+    Γ ⊢[PRAAx] distanceBounded (qmul t u) (qmul t v) (C*A) (D*B) :=
+  bound_congr (multiplication_difference t u v).eqSymm (.eqRefl _) (.eqRefl _)
+    (GaussianRationalReciprocal.bounded_product t (qsub u v) C D A B hD hB ht hd)
+
+/-- A unit-denominator factor bound preserves the distance denominator. -/
+theorem distance_mul_left_one {t u v C A B : PTm n}
+    (hB : Γ ⊢[PRAAx] le one B)
+    (ht : Γ ⊢[PRAAx] bounded t C one) (hd : Γ ⊢[PRAAx] distanceBounded u v A B) :
+    Γ ⊢[PRAAx] distanceBounded (qmul t u) (qmul t v) (C*A) B :=
+  bound_congr (multiplication_difference t u v).eqSymm (.eqRefl _) (.eqRefl _)
+    (GaussianRationalReciprocal.bounded_product_one_left hB ht hd)
+
 theorem multiply_distance_bound (t u v A B : PTm n) (hB : Γ ⊢[PRAAx] le one B)
     (ht : Γ ⊢[PRAAx] bounded t one one) (hd : Γ ⊢[PRAAx] distanceBounded u v A B) :
     Γ ⊢[PRAAx] distanceBounded (qmul t u) (qmul t v) A B :=
-  bound_congr (multiplication_difference t u v).eqSymm (one_mul A) (one_mul B)
-    (GaussianRationalReciprocal.bounded_product _ _ _ _ _ _ (le_refl one) hB ht hd)
+  distance_congr (.eqRefl _) (.eqRefl _) (one_mul A) (.eqRefl _)
+    (distance_mul_left_one hB ht hd)
 
 theorem power_near_one (q A B r : PTm n) (hB : Γ ⊢[PRAAx] le one B)
     (hUnit : Γ ⊢[PRAAx] qnormSq q ≐ fraction one one)

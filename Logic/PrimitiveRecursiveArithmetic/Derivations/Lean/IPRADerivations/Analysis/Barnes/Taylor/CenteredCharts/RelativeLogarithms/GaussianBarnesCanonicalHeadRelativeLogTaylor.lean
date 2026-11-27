@@ -71,8 +71,7 @@ def source (z h R B H N M : PTm n) : Fm PTm n :=
 private theorem scale_distance (t u v M A B : PTm n) (hB : Γ ⊢[PRAAx] le one B)
     (ht : Γ ⊢[PRAAx] bounded t M one) (hd : Γ ⊢[PRAAx] distanceBounded u v A B) : Γ ⊢[PRAAx]
     distanceBounded (qmul t u) (qmul t v) (M*A) B :=
-  bound_congr (GaussianRationalRoundedPower.multiplication_difference t u v).eqSymm (.eqRefl _) (one_mul B)
-    (bounded_product _ _ _ _ _ _ (le_refl one) hB ht hd)
+  GaussianRationalRoundedPower.distance_mul_left_one hB ht hd
 
 private theorem quadratic_coefficient_bound : Γ ⊢[PRAAx] bounded (coefficient (one : PTm n)) one one :=
   GaussianCoefficientNameBounds.bounded_radius_mono _ _ _ _ _ (le_succ_self one) (le_refl one)

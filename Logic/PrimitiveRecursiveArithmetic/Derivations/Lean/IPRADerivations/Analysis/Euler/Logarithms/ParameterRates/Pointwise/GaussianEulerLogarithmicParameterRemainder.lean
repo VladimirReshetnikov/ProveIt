@@ -49,8 +49,7 @@ ipra_subst input
 private theorem multiply_distance (c u v M A D : PTm n) (hD : Γ ⊢[PRAAx] le one D)
     (hc : Γ ⊢[PRAAx] GaussianRationalMetric.bounded c M one) (hd : Γ ⊢[PRAAx] distanceBounded u v A D) : Γ ⊢[PRAAx]
     distanceBounded (qmul c u) (qmul c v) (M*A) D :=
-  bound_congr (GaussianRationalRoundedPower.multiplication_difference _ _ _).eqSymm (.eqRefl _) (by ipra_ring)
-    (bounded_product _ _ _ _ _ _ (le_refl one) hD hc hd)
+  GaussianRationalRoundedPower.distance_mul_left_one hD hc hd
 
 private theorem multiply_right_distance (u v c M A D : PTm n) (hD : Γ ⊢[PRAAx] le one D)
     (hc : Γ ⊢[PRAAx] GaussianRationalMetric.bounded c M one) (hd : Γ ⊢[PRAAx] distanceBounded u v A D) : Γ ⊢[PRAAx]

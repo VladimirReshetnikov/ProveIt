@@ -68,9 +68,7 @@ private theorem multiply_distance (c a b U V A B : PTm n)
     (hV : Γ ⊢[PRAAx] le one V) (hB : Γ ⊢[PRAAx] le one B)
     (hc : Γ ⊢[PRAAx] bounded c U V) (hab : Γ ⊢[PRAAx] distanceBounded a b A B) :
     Γ ⊢[PRAAx] distanceBounded (qmul c a) (qmul c b) (U*A) (V*B) :=
-  GaussianRationalReciprocal.bound_congr
-    (GaussianRationalRoundedPower.multiplication_difference c a b).eqSymm (.eqRefl _) (.eqRefl _)
-    (GaussianRationalReciprocal.bounded_product _ _ _ _ _ _ hV hB hc hab)
+  GaussianRationalRoundedPower.distance_mul_left hV hB hc hab
 
 def prefixDistance (f g : PTm 2) (x y C E H M j : PTm n) : Fm PTm n :=
   distanceBounded (qprod f j x) (qprod g j y) (pw (prefixNumerator j) C*errorNumerator E H j)

@@ -71,8 +71,7 @@ theorem name_regular (f g : PR 2) (x y h D : PTm n) (hs : Γ ⊢[PRAAx] input f 
 theorem scale_distance (a u v K A B : PTm n) (hB : Γ ⊢[PRAAx] le one B)
     (ha : Γ ⊢[PRAAx] bounded a K one) (hd : Γ ⊢[PRAAx] distanceBounded u v A B) : Γ ⊢[PRAAx]
     distanceBounded (qmul a u) (qmul a v) (K*A) B :=
-  bound_congr (GaussianRationalRoundedPower.multiplication_difference a u v).eqSymm (.eqRefl _) (one_mul _)
-    (bounded_product _ _ K one A B (le_refl one) hB ha hd)
+  GaussianRationalRoundedPower.distance_mul_left_one hB ha hd
 
 theorem sample_error (f g : PR 2) (p x y h D : PTm n) (hs : Γ ⊢[PRAAx] input f g x y h D) : Γ ⊢[PRAAx]
     distanceBounded (ap2 (nameF f g) p (data f g x y h D)) (raw f g p p x y h D) (cost f g x y h D) (unit p) := by

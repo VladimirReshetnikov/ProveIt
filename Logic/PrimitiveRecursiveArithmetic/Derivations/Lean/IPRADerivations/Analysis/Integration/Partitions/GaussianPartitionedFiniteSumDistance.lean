@@ -104,8 +104,8 @@ theorem weighted_comparison (cut : PR 2) (f g : PTm 2) (K d x y A B H w M D : PT
     (h0 : Γ ⊢[PRAAx] ap2 cut zero d ≐ zero) (hr : Γ ⊢[PRAAx] blockAgreement cut f g K d x y A B)
     (hb : Γ ⊢[PRAAx] blockBound cut K d H) (hw : Γ ⊢[PRAAx] bounded w M D) : Γ ⊢[PRAAx]
     distanceBounded (qmul w (sum f (ap2 cut K d) x)) (qmul w (sum (coarseBody cut g) K (pairT d y))) (M*(K*(H*A))) (D*B) :=
-  GaussianRationalReciprocal.bound_congr (GaussianRationalRoundedPower.multiplication_difference w _ _).eqSymm (.eqRefl _) (.eqRefl _)
-    (GaussianRationalReciprocal.bounded_product _ _ M D _ B hD hB hw (original_comparison cut f g K d x y A B H hB hm h0 hr hb))
+  GaussianRationalRoundedPower.distance_mul_left hD hB hw
+    (original_comparison cut f g K d x y A B H hB hm h0 hr hb)
 
 theorem actual_original_partitioned_finite_distance_closed (cut : PR 2) (f g : PTm 2) : ([] : List (Fm PTm 0)) ⊢[PRAAx] univ 7
     ((le one (var 5) ⋏ (increasing cut (var 1) ⋏ (ap2 cut zero (var 1) ≐ zero ⋏

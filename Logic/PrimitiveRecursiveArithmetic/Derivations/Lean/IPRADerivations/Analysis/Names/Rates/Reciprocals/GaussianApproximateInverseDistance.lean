@@ -48,8 +48,7 @@ theorem unit_product_distance (q U : PTm n) (hU : Γ ⊢[PRAAx] le one U) : Γ �
 theorem multiply_distance (c u v A E F : PTm n) (hF : Γ ⊢[PRAAx] le one F)
     (hc : Γ ⊢[PRAAx] bounded c A one) (h : Γ ⊢[PRAAx] distanceBounded u v E F) : Γ ⊢[PRAAx]
     distanceBounded (qmul c u) (qmul c v) (A*E) F :=
-  GaussianRationalReciprocal.bound_congr (GaussianRationalRoundedPower.multiplication_difference c u v).eqSymm
-    (.eqRefl _) (one_mul F) (GaussianRationalReciprocal.bounded_product _ _ _ _ _ _ (le_refl one) hF hc h)
+  GaussianRationalRoundedPower.distance_mul_left_one hF hc h
 
 theorem left_rearrange (i j q : PTm n) : Γ ⊢[PRAAx]
     qmul i (qmul q j) ≐ qmul (qmul i j) q :=

@@ -77,8 +77,7 @@ private theorem fixed_mul_distance (c a b C X D : PTm n)
     (hD : Γ ⊢[PRAAx] le one D) (hc : Γ ⊢[PRAAx] bounded c C one)
     (h : Γ ⊢[PRAAx] distanceBounded a b X D) :
     Γ ⊢[PRAAx] distanceBounded (qmul c a) (qmul c b) (C*X) D :=
-  bound_congr (GaussianRationalRoundedPower.multiplication_difference c a b).eqSymm (.eqRefl _) (one_mul D)
-    (bounded_product c _ C one X D (le_refl one) hD hc h)
+  GaussianRationalRoundedPower.distance_mul_left_one hD hc h
 
 private theorem to_twice_at (a b p q : PTm n) (hpq : Γ ⊢[PRAAx] le p q)
     (h : Γ ⊢[PRAAx] distanceBounded a b (unit p+unit q) (unit p*unit q)) :

@@ -98,8 +98,7 @@ private theorem scaled_distance (w u v A B H E : PTm n)
     (hB : Γ ⊢[PRAAx] le one B) (hE : Γ ⊢[PRAAx] le one E)
     (hw : Γ ⊢[PRAAx] bounded w A B) (h : Γ ⊢[PRAAx] distanceBounded u v H E) :
     Γ ⊢[PRAAx] distanceBounded (qmul w u) (qmul w v) (A*H) (B*E) :=
-  bound_congr (GaussianRationalRoundedPower.multiplication_difference w u v).eqSymm
-    (.eqRefl _) (.eqRefl _) (bounded_product _ _ _ _ _ _ hB hE hw h)
+  GaussianRationalRoundedPower.distance_mul_left hB hE hw h
 
 private theorem rational_time_bound (A B : PTm n) (hB : Γ ⊢[PRAAx] le one B) :
     Γ ⊢[PRAAx] bounded (fraction A B) A B :=

@@ -69,9 +69,7 @@ theorem original_row_error (cut : PR 2) (g w : PTm 2) (K d y M H A D i : PTm n)
   have left := (multiply_body_at (coarseBody cut g) (fraction one M) i (pairT d y)).eqTrans
     ((qmul_congr (.eqRefl _) (coarse_at cut g i d y)).eqTrans (original_rescale M _ value hM))
   have raw : Γ ⊢[PRAAx] distanceBounded (qmul value u) (qmul value v) (H*A) D :=
-    GaussianRationalReciprocal.bound_congr (GaussianRationalRoundedPower.multiplication_difference value u v).eqSymm
-      (.eqRefl _) (.eqRefl _)
-      (GaussianRationalReciprocal.bounded_product_one_left hD hs.andE₁ hs.andE₂)
+    GaussianRationalRoundedPower.distance_mul_left_one hD hs.andE₁ hs.andE₂
   have right : inst2 (qmul g w) i y = qmul value v := by simp [inst2,value,v]
   rw [right]
   exact distance_congr left.eqSymm (.eqRefl _) (.eqRefl _) (.eqRefl _) raw
