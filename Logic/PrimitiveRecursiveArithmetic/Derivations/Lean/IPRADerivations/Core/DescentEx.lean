@@ -16,7 +16,7 @@ set_option linter.unusedSimpArgs false
 namespace LeanProofs.IPRA.DescentEx
 
 open LeanProofs.ConciseIPRA LeanProofs.IPRA
-open LeanProofs.IPRA.Descent (T outerBody innerF inst2_outer)
+open LeanProofs.IPRA.Descent (T count_zero_of_term_zero no_solution_below)
 open Syn
 open scoped Fm
 open ConciseIPRA.PTm (app zero succ)
@@ -65,20 +65,12 @@ private theorem term_zero (H : Hyps χ β) :
             T χ β (var 1) ≐ zero] : List (Fm PTm 2))))) ⊢[PRAAx] T χ β (var 3) ≐ zero := by
       apply Prf.hyp
       simp [Fm.shift, Syn.shift]
-    have hinner := sum_zero_elim (outerBody χ β) hT (Prf.andE₂ Prf.hyp0)
-    rw [inst2_outer] at hinner
-    refine .botE _ (succ_ne_zero (a := zero) ((Prf.andE₁ Prf.hyp0).eqSymm.eqTrans ?_))
-    exact sum_zero_elim χ hinner (bound H (Prf.andE₁ Prf.hyp0))
+    exact .botE _ (no_solution_below hT (Prf.andE₂ Prf.hyp0) (Prf.andE₁ Prf.hyp0)
+      (bound H (Prf.andE₁ Prf.hyp0)))
 
 /-- `T(N) = 0` for every `N`. -/
-theorem count_zero (H : Hyps χ β) : ([] : List (Fm PTm 1)) ⊢[PRAAx] T χ β (var 0) ≐ zero := by
-  ipra_ind [subst_ap2]
-  · exact sum_zero _ _
-  · refine (sum_succ' (outerBody χ β) (var 0) zero).eqTrans ?_
-    rw [inst2_outer]
-    refine (congrAdd Prf.hyp0 ?_).eqTrans (add_zero _)
-    refine sum_zero_of_all χ (var 0) (.allI ?_) _
-    simpa [Fm.shift, Syn.shift] using term_zero H
+theorem count_zero (H : Hyps χ β) : ([] : List (Fm PTm 1)) ⊢[PRAAx] T χ β (var 0) ≐ zero :=
+  count_zero_of_term_zero (term_zero H)
 
 /-- Infinite descent: `χ(a, b) = 1` is refutable. -/
 theorem descent (H : Hyps χ β) :
@@ -87,9 +79,6 @@ theorem descent (H : Hyps χ β) :
       T χ β (succ (var 1)) ≐ zero := by
     simpa using inst (Γ := [inst2 χ (var 0) (var 1) ≐ one]) (count_zero H)
       (![succ (var 1)] : Fin 1 → PTm 2)
-  have hinner := sum_zero_elim (outerBody χ β) hT ((succ_monus_succ _ _).eqTrans (le_refl _))
-  rw [inst2_outer] at hinner
-  have hz := sum_zero_elim χ hinner (bound H Prf.hyp0)
-  exact succ_ne_zero (a := zero) (Prf.hyp0.eqSymm.eqTrans hz)
+  exact no_solution_below hT ((succ_monus_succ _ _).eqTrans (le_refl _)) Prf.hyp0 H.hb
 
 end LeanProofs.IPRA.DescentEx

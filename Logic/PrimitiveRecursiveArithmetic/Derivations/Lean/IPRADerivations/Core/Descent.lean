@@ -74,6 +74,27 @@ private theorem bound (H : Hyps χ β a' b') {Δ : List (Fm PTm 2)} {a b : PTm 2
     ConciseIPRA.PTm.subst_zero] at i
   exact .impE i h
 
+/-- A zero count below `N` rules out a solution whose second coordinate is below `N`. -/
+theorem no_solution_below {a b N : PTm n}
+    (hT : Γ ⊢[PRAAx] T χ β N ≐ zero) (hlt : Γ ⊢[PRAAx] lt b N)
+    (ha : Γ ⊢[PRAAx] inst2 χ a b ≐ one) (hb : Γ ⊢[PRAAx] lt a (inst1 β b)) :
+    Γ ⊢[PRAAx] Fm.bot := by
+  have hinner := sum_zero_elim (outerBody χ β) hT hlt
+  rw [inst2_outer] at hinner
+  exact succ_ne_zero (a := zero) (ha.eqSymm.eqTrans (sum_zero_elim χ hinner hb))
+
+/-- If a zero count at `b` makes every term in row `b` vanish, all counts are zero. -/
+theorem count_zero_of_term_zero
+    (hzero : ([T χ β (var 1) ≐ zero] : List (Fm PTm 2)) ⊢[PRAAx] inst2 χ (var 0) (var 1) ≐ zero) :
+    ([] : List (Fm PTm 1)) ⊢[PRAAx] T χ β (var 0) ≐ zero := by
+  ipra_ind [subst_ap2]
+  · exact sum_zero _ _
+  · refine (sum_succ' (outerBody χ β) (var 0) zero).eqTrans ?_
+    rw [inst2_outer]
+    refine (congrAdd Prf.hyp0 ?_).eqTrans (add_zero _)
+    refine sum_zero_of_all χ (var 0) (.allI ?_) _
+    simpa [Fm.shift, Syn.shift] using hzero
+
 /-- In the context `T(b) = 0`: `χ(a, b) = 0`. -/
 private theorem term_zero (H : Hyps χ β a' b') :
     ([T χ β (var 1) ≐ zero] : List (Fm PTm 2)) ⊢[PRAAx] inst2 χ (var 0) (var 1) ≐ zero := by
@@ -90,20 +111,11 @@ private theorem term_zero (H : Hyps χ β a' b') :
         rcases hψ with rfl | rfl
         · exact Prf.hyp0
         · exact Prf.hyp1)
-    have hinner := sum_zero_elim (outerBody χ β) hyp2 (Prf.andE₂ hs)
-    rw [inst2_outer] at hinner
-    have hz := sum_zero_elim χ hinner (bound H (Prf.andE₁ hs))
-    exact succ_ne_zero (a := zero) ((Prf.andE₁ hs).eqSymm.eqTrans hz)
+    exact no_solution_below hyp2 hs.andE₂ hs.andE₁ (bound H hs.andE₁)
 
 /-- `T(N) = 0` for every `N`. -/
-theorem count_zero (H : Hyps χ β a' b') : ([] : List (Fm PTm 1)) ⊢[PRAAx] T χ β (var 0) ≐ zero := by
-  ipra_ind [subst_ap2]
-  · exact sum_zero _ _
-  · refine (sum_succ' (outerBody χ β) (var 0) zero).eqTrans ?_
-    rw [inst2_outer]
-    refine (congrAdd Prf.hyp0 ?_).eqTrans (add_zero _)
-    refine sum_zero_of_all χ (var 0) (.allI ?_) _
-    simpa [Fm.shift, Syn.shift] using term_zero H
+theorem count_zero (H : Hyps χ β a' b') : ([] : List (Fm PTm 1)) ⊢[PRAAx] T χ β (var 0) ≐ zero :=
+  count_zero_of_term_zero (term_zero H)
 
 /-- Infinite descent: `χ(a, b) = 1` is refutable. -/
 theorem descent (H : Hyps χ β a' b') :
@@ -112,10 +124,7 @@ theorem descent (H : Hyps χ β a' b') :
       T χ β (succ (var 1)) ≐ zero := by
     simpa using inst (Γ := [inst2 χ (var 0) (var 1) ≐ one]) (count_zero H)
       (![succ (var 1)] : Fin 1 → PTm 2)
-  have hinner := sum_zero_elim (outerBody χ β) hT ((succ_monus_succ _ _).eqTrans (le_refl _))
-  rw [inst2_outer] at hinner
-  have hz := sum_zero_elim χ hinner (bound H Prf.hyp0)
-  exact succ_ne_zero (a := zero) (Prf.hyp0.eqSymm.eqTrans hz)
+  exact no_solution_below hT ((succ_monus_succ _ _).eqTrans (le_refl _)) Prf.hyp0 H.hb
 
 end Descent
 
