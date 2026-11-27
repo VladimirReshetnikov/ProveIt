@@ -75,7 +75,7 @@ private theorem reciprocal_of_representation (q δ D E : PTm n)
     refine .orE (zero_or_succ M) ?_ ?_
     · exact lt_zero_absurd _
         (le_congr (.eqRefl _) ((congrMul (.eqRefl _) Prf.hyp0).eqTrans (mul_zero _)) positive.wk)
-    · exact le_congr (.eqRefl _) Prf.hyp0.eqSymm (zero_lt_succ _)
+    · exact Order.zero_lt_of_eq_succ Prf.hyp0
   have inverseNorm : Γ ⊢[PRAAx] normSq (inverseNumerator q) ≐ (r*r)*M :=
     (normSq_scale r (conjugate v)).eqTrans (congrMul (.eqRefl _) (norm_conjugate v))
   exact .andI hM ((bounded_iff (reciprocal q) (inverseNumerator q) M D E hM hE

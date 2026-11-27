@@ -42,7 +42,7 @@ ipra_subst commonSample
 ipra_subst sample
 
 theorem factorial_positive (L : PTm n) : Γ ⊢[PRAAx] le one (fact L) :=
-  le_congr (.eqRefl _) (fact_pos L).eqSymm (zero_lt_succ _)
+  Order.zero_lt_of_eq_succ (fact_pos L)
 
 theorem common_value (N K L : PTm n) : Γ ⊢[PRAAx] represents (commonSample N K L) (numerator N K L) (fact L) :=
   RationalIntegerNormalization.normalize_preserves_value _ _ (factorial_positive L)

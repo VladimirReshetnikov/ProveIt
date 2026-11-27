@@ -59,7 +59,7 @@ theorem original_half_rising (N : PTm n) : Γ ⊢[PRAAx] law N := by
   simpa only [subst_law,Syn.subst_var,Syn.inst_zero] using all.allE N
 
 theorem factorial_positive (N : PTm n) : Γ ⊢[PRAAx] le one (Products.fact N) :=
-  le_congr (.eqRefl _) (AnalyticNumberTheory.Primes.fact_pos N).eqSymm (zero_lt_succ _)
+  Order.zero_lt_of_eq_succ (AnalyticNumberTheory.Primes.fact_pos N)
 
 theorem factorial_formula (N : PTm n) : Γ ⊢[PRAAx] value N ≐ factorialValue N := by
   let U := unit N

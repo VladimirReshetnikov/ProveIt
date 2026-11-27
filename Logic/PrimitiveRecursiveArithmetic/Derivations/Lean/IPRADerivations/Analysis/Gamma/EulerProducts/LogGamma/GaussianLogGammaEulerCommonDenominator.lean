@@ -181,7 +181,7 @@ theorem punctured (q r R S K : PTm n)
     have zeroDistance := (cleared_distance q r R S K zero one hq.wk hr.wk (le_refl one)).iffMpr
       (le_congr e.eqSymm (by ipra_ring) (le_refl zero))
     exact .botE _ (.impE hne.wk zeroDistance)
-  · exact le_congr (.eqRefl _) Prf.hyp0.eqSymm (zero_lt_succ _)
+  · exact Order.zero_lt_of_eq_succ Prf.hyp0
 
 theorem radius_from_distance (q r R S K P Qd : PTm n)
     (hq : Γ ⊢[PRAAx] certificate q R K) (hr : Γ ⊢[PRAAx] certificate r S K)
@@ -221,7 +221,7 @@ theorem continuity_radius_from_distance (q r R S K P Qd : PTm n)
     exact .andI (le_congr hz.eqSymm sq.eqSymm (le_refl zero)) (le_congr mul.eqSymm (.eqRefl _) (zero_le _))
   · let Δ := (normSq δ ≐ succ (pred (normSq δ))) :: Γ
     have hs : Δ ⊢[PRAAx] normSq δ ≐ succ (pred (normSq δ)) := Prf.hyp0
-    have hn : Δ ⊢[PRAAx] le one (normSq δ) := le_congr (.eqRefl _) hs.eqSymm (zero_lt_succ _)
+    have hn : Δ ⊢[PRAAx] le one (normSq δ) := Order.zero_lt_of_eq_succ hs
     have e : Δ ⊢[PRAAx] continuityRadius δ ≐ stepRadius δ :=
       select_zero _ _ _ (eqb_zero_of_gt hn)
     exact .andI (le_congr (.eqRefl _) (congrMul e.eqSymm e.eqSymm)

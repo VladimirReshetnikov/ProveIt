@@ -69,7 +69,7 @@ theorem interior_step (N r : PTm n) (hr : Γ ⊢[PRAAx] le r N) : Γ ⊢[PRAAx]
             (GaussianGammaLinearCoefficient.monomial_leading qone))
       exact GaussianRationalHorner.canonical_congr source GaussianRationalSyntheticDivision.qone_canonical
     · have pos : ((N ≐ succ (pred N)) :: Γ) ⊢[PRAAx] le one N :=
-        le_congr (.eqRefl one) Prf.hyp0.eqSymm (zero_lt_succ (pred N))
+        Order.zero_lt_of_eq_succ Prf.hyp0
       exact positive_entry_canonical N r pos (le_trans hr.wk (le_succ_self N))
   exact (entry_congr (GaussianGammaEulerHeadPolynomial.polynomial_succ N) (.eqRefl (succ r))).eqTrans
     (raw.eqTrans ((qadd_congr

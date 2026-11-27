@@ -220,7 +220,7 @@ theorem half_disk_strict (R N : PTm n) (hN : Γ ⊢[PRAAx] le one N)
   refine .orE (zero_or_succ R) ?_ ?_
   · exact le_congr (congrSucc Prf.hyp0).eqSymm (.eqRefl _) hN.wk
   · have hp : ((R ≐ succ (PTm.pred R)) :: Γ) ⊢[PRAAx] le one R :=
-      le_congr (.eqRefl _) Prf.hyp0.eqSymm (zero_lt_succ _)
+      Order.zero_lt_of_eq_succ Prf.hyp0
     have step : ((R ≐ succ (PTm.pred R)) :: Γ) ⊢[PRAAx] le (succ R) (two*R) :=
       le_congr (by ipra_ring) (by ipra_ring) (add_le_add₂ (le_refl R) hp)
     exact le_trans step hR.wk

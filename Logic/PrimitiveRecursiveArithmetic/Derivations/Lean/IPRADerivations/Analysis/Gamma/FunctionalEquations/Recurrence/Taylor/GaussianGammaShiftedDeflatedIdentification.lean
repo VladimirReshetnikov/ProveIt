@@ -49,7 +49,7 @@ theorem original_cross (z R B d : PTm n) (h : Γ ⊢[PRAAx] source z R B) : Γ �
   refine .orE (zero_or_succ (normSq z)) ?_ ?_
   · exact original_zero_cross z R B d h.wk Prf.hyp0
   · exact GaussianGammaShiftedDeflatedName.original_cross z R B d
-      (.andI h.wk (le_congr (.eqRefl _) Prf.hyp0.eqSymm (zero_lt_succ (PTm.pred (normSq z)))))
+      (.andI h.wk (Order.zero_lt_of_eq_succ Prf.hyp0))
 
 theorem name_regular (z R B d : PTm n) (h : Γ ⊢[PRAAx] source z R B) : Γ ⊢[PRAAx] pointCN nameF (nameData z R B d) := by
   have actual := original_cross z R B d h

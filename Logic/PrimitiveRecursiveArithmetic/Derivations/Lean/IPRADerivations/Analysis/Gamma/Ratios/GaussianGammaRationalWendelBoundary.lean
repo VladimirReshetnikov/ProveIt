@@ -210,8 +210,8 @@ theorem weak_order (a b r s : PTm n) (ha : Γ ⊢[PRAAx] le one a) (hb : Γ ⊢[
   · have er : (r ≐ zero) :: Γ ⊢[PRAAx] r ≐ zero := Prf.hyp0
     have es := hs.wk.eqTrans ((congrAdd er (.eqRefl s)).eqTrans (zero_add s))
     exact weak_of_endpoint a b r s (endpoint_congr a b zero b r s er.eqSymm es (at_zero _ _ ha.wk hb.wk))
-  · have hr := le_congr (.eqRefl _) (Prf.hyp0 : (r ≐ ConciseIPRA.PTm.succ (LeanProofs.IPRA.PTm.pred r)) :: Γ ⊢[PRAAx]
-      r ≐ ConciseIPRA.PTm.succ (LeanProofs.IPRA.PTm.pred r)).eqSymm (zero_lt_succ _)
+  · have hr := Order.zero_lt_of_eq_succ (Prf.hyp0 : (r ≐ ConciseIPRA.PTm.succ (LeanProofs.IPRA.PTm.pred r)) :: Γ ⊢[PRAAx]
+      r ≐ ConciseIPRA.PTm.succ (LeanProofs.IPRA.PTm.pred r))
     refine .orE (zero_or_succ s) ?_ ?_
     · have es : (s ≐ zero) :: (r ≐ ConciseIPRA.PTm.succ (LeanProofs.IPRA.PTm.pred r)) :: Γ ⊢[PRAAx] s ≐ zero := Prf.hyp0
       have er := hs.wk.wk.eqTrans ((congrAdd (.eqRefl r) es).eqTrans (add_zero r))
@@ -219,7 +219,7 @@ theorem weak_order (a b r s : PTm n) (ha : Γ ⊢[PRAAx] le one a) (hb : Γ ⊢[
     · have es : (s ≐ ConciseIPRA.PTm.succ (LeanProofs.IPRA.PTm.pred s)) ::
           (r ≐ ConciseIPRA.PTm.succ (LeanProofs.IPRA.PTm.pred r)) :: Γ ⊢[PRAAx]
             s ≐ ConciseIPRA.PTm.succ (LeanProofs.IPRA.PTm.pred s) := Prf.hyp0
-      have hp := le_congr (.eqRefl _) es.eqSymm (zero_lt_succ _)
+      have hp := Order.zero_lt_of_eq_succ es
       have h := wendel_order a b r s ha.wk.wk hb.wk.wk hr.wk hp hs.wk.wk
       exact .andI h.andE₁.andE₁ h.andE₂.andE₁
 

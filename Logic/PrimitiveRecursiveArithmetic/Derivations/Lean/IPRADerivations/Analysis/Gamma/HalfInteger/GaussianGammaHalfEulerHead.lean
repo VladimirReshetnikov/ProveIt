@@ -38,7 +38,7 @@ ipra_subst inverse
 ipra_subst law
 
 theorem numerator_positive (N : PTm n) : Γ ⊢[PRAAx] le one (numerator N) :=
-  le_congr (.eqRefl _) (LeanProofs.IPRA.Probability.NormalMoments.df_pos (succ N)).eqSymm (zero_lt_succ _)
+  Order.zero_lt_of_eq_succ (LeanProofs.IPRA.Probability.NormalMoments.df_pos (succ N))
 theorem denominator_positive (N : PTm n) : Γ ⊢[PRAAx] le one (denominator N) :=
   positive_product _ _ (zero_lt_succ one) (le_congr (.eqRefl _) (edf_eq N).eqSymm
     (positive_product _ _ (unit_positive N) (GaussianGammaHalfRisingFactorial.factorial_positive N)))

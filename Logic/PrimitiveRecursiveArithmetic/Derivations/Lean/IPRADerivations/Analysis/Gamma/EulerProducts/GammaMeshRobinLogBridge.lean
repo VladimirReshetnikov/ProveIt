@@ -57,7 +57,7 @@ ipra_subst rightSum
 
 theorem grid_denominator_positive (Q k i : PTm n) (hQ : Γ ⊢[PRAAx] le one Q) :
     Γ ⊢[PRAAx] le one (gridDenominator Q k i) :=
-  le_congr (.eqRefl _) (loD_pos hQ (le_add_right Q i) k).eqSymm (zero_lt_succ _)
+  Order.zero_lt_of_eq_succ (loD_pos hQ (le_add_right Q i) k)
 
 theorem left_zero (Q F : PTm n) : Γ ⊢[PRAAx] leftSum Q zero F ≐ zero := sum_zero _ _
 theorem right_zero (Q F : PTm n) : Γ ⊢[PRAAx] rightSum Q zero F ≐ zero := sum_zero _ _
@@ -217,7 +217,7 @@ def gridValue (Q k i : PTm n) : PTm n := RationalCubeMidpoint.fraction (gridNume
 def robinValue (N k : PTm n) : PTm n := RationalCubeMidpoint.fraction (loN N one k) (loD N one k)
 
 theorem robin_denominator_positive (N k : PTm n) (hN : Γ ⊢[PRAAx] le one N) : Γ ⊢[PRAAx] le one (loD N one k) :=
-  le_congr (.eqRefl _) (loD_pos (le_refl one) hN k).eqSymm (zero_lt_succ _)
+  Order.zero_lt_of_eq_succ (loD_pos (le_refl one) hN k)
 
 theorem terminal_grid_value (N Q k : PTm n) (hN : Γ ⊢[PRAAx] le one N)
     (hQ : Γ ⊢[PRAAx] le one Q) : Γ ⊢[PRAAx] gridValue Q k (count N Q) ≐ robinValue N k := by

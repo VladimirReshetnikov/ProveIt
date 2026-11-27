@@ -81,7 +81,7 @@ theorem widths_total (p q A R : PTm n) (h : Γ ⊢[PRAAx] le p q) : Γ ⊢[PRAAx
 theorem gap_positive (p q : PTm n) (h : Γ ⊢[PRAAx] lt p q) : Γ ⊢[PRAAx] le one (delta p q) := by
   have e : Γ ⊢[PRAAx] q ≐ p+succ (monus q (succ p)) := (eq_add_of_le h).eqTrans (by ipra_ring)
   have g := (congrMonus e (.eqRefl p)).eqTrans (add_monus' (succ (monus q (succ p))) p)
-  exact le_congr (.eqRefl _) g.eqSymm (zero_lt_succ _)
+  exact Order.zero_lt_of_eq_succ g
 
 theorem width_positive (p A R : PTm n) : Γ ⊢[PRAAx] le one (width p A R) := by
   have tp : Γ ⊢[PRAAx] le two (top p A R) :=

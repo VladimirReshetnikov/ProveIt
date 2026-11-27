@@ -87,8 +87,7 @@ theorem original_entry_at (z B N i : PTm n) (hB : Γ ⊢[PRAAx] le one B) (hi : 
 theorem falling_canonical (z B N : PTm n) : Γ ⊢[PRAAx] canonical (fallingProduct z B N) :=
   GaussianGammaRepeatedShift.prefix_canonical _ _ _
 theorem factorial_positive (N : PTm n) : Γ ⊢[PRAAx] le one (Products.fact N) :=
-  le_congr (.eqRefl _) (AnalyticNumberTheory.Primes.fact_pos N).eqSymm
-    (zero_lt_succ (LeanProofs.IPRA.PTm.pred (Products.fact N)))
+  Order.zero_lt_of_eq_succ (AnalyticNumberTheory.Primes.fact_pos N)
 theorem factorial_inverse_unit (N : PTm n) : Γ ⊢[PRAAx]
     qmul (naturalPoint (Products.fact N)) (factorialInverse N) ≐ qone := by
   have scaled : Γ ⊢[PRAAx] GaussianRationalNaturalScale.natScale (Products.fact N) (factorialInverse N) ≐ qone :=

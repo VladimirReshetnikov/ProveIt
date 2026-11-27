@@ -143,7 +143,7 @@ theorem log_weak (a b r s : PTm n) (ha : Γ ⊢[PRAAx] le one a) (hb : Γ ⊢[PR
     have h : (r ≐ zero) :: Γ ⊢[PRAAx] logEndpoint a b zero b := Prf.andI (lower_zero_step a b ha.wk hb.wk) (relative_zero_step a b ha.wk hb.wk)
     exact log_weak_of_endpoint a b r s (log_endpoint_congr a b zero b r s er.eqSymm es h)
   · have er : (r ≐ succ (pred r)) :: Γ ⊢[PRAAx] r ≐ succ (pred r) := Prf.hyp0
-    have hr := le_congr (.eqRefl _) er.eqSymm (zero_lt_succ _)
+    have hr := Order.zero_lt_of_eq_succ er
     refine .orE (zero_or_succ s) ?_ ?_
     · have es : (s ≐ zero) :: (r ≐ succ (pred r)) :: Γ ⊢[PRAAx] s ≐ zero := Prf.hyp0
       have er' := e.wk.wk.eqTrans ((congrAdd (.eqRefl r) es).eqTrans (add_zero r))
@@ -153,7 +153,7 @@ theorem log_weak (a b r s : PTm n) (ha : Γ ⊢[PRAAx] le one a) (hb : Γ ⊢[PR
           (relative_full_step a b ha.wk.wk hb.wk.wk)
       exact log_weak_of_endpoint a b r s (log_endpoint_congr a b b zero r s er' es.eqSymm h)
     · have es : (s ≐ succ (pred s)) :: (r ≐ succ (pred r)) :: Γ ⊢[PRAAx] s ≐ succ (pred s) := Prf.hyp0
-      have hs := le_congr (.eqRefl _) es.eqSymm (zero_lt_succ _)
+      have hs := Order.zero_lt_of_eq_succ es
       exact .andI
         (GaussianGammaRationalLogWendel.lower a b r s ha.wk.wk hb.wk.wk hr.wk hs e.wk.wk).andE₁
         (GaussianGammaRationalLogWendel.upper a b r s ha.wk.wk hb.wk.wk hr.wk hs e.wk.wk).andE₁

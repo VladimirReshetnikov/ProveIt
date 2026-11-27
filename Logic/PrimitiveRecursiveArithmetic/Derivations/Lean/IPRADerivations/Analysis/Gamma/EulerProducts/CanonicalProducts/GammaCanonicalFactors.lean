@@ -349,7 +349,7 @@ theorem tailDenominator_positive (B N r L : PTm n) (hB : Γ ⊢[PRAAx] le one B)
     have b : Γ.map Fm.shift ⊢[PRAAx] le one (Syn.shift B) := by simpa [Fm.shift, Syn.shift] using hB.shift
     simpa only [Syn.shift, subst_denominatorData] using
       tail_denominator_body_positive (Syn.shift B) (Syn.shift N) (Syn.shift L) (var 0) b.wk
-  exact le_congr (.eqRefl _) eq.eqSymm (zero_lt_succ _)
+  exact Order.zero_lt_of_eq_succ eq
 
 /-- Every actual quotient multiplier in the finite query clears its denominator exactly. -/
 theorem tail_quotient_clears (B N r L i : PTm n) (hB : Γ ⊢[PRAAx] le one B)
