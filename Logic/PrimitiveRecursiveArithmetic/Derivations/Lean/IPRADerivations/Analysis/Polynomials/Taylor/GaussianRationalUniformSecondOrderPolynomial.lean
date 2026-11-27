@@ -92,8 +92,7 @@ private theorem coefficient_at (C t N U M i : PTm n) (hC : Γ ⊢[PRAAx] coeffic
     have v := size_prefix C t M U (succ j) hC.wk ht.wk cap
     have grow : (le one i :: Γ) ⊢[PRAAx] le (geometric U (succ j)) (geometric U (succ N)) :=
       Foundations.DisjointSums.prefix_mono AnalyticNumberTheory.GoldbachGeometric.gB U (le_trans jN (le_succ_self N))
-    exact GaussianCoefficientNameBounds.bounded_radius_mono _ _ _ _ _ (le_refl one) (le_refl one)
-      (le_congr (by ipra_ring) (by unfold coefficientCap; ipra_ring) (Common.mul_le_mul (le_refl M) grow))
+    exact GaussianCoefficientNameBounds.bounded_radius_mono_one (Common.mul_le_mul (le_refl M) grow)
       (bound_congr row.eqSymm (.eqRefl _) (.eqRefl _) v)
 
 theorem quotient_cap (C t N U M : PTm n) (hC : Γ ⊢[PRAAx] coefficientBounds C M)

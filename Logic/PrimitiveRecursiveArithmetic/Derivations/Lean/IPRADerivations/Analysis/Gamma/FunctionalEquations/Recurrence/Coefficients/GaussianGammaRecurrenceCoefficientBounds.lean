@@ -62,8 +62,7 @@ theorem full_bound_below_maximum (e m : PTm n) (hm : Γ ⊢[PRAAx] le m e) : Γ 
 
 theorem original_full_weight_sample_bound (p e m : PTm n) (hm : Γ ⊢[PRAAx] le m e) : Γ ⊢[PRAAx]
     bounded (weight p zero m) (uniformWeightBound e) one :=
-  GaussianCoefficientNameBounds.bounded_radius_mono _ _ _ _ _ (le_refl one) (le_refl one)
-    (le_congr (by unfold fullBound; ipra_ring) (by ipra_ring) (full_bound_below_maximum e m hm))
+  GaussianCoefficientNameBounds.bounded_radius_mono_one (full_bound_below_maximum e m hm)
     (GaussianGammaRecurrenceWeightName.sample_bound p zero m)
 
 theorem original_Gamma_fixed_coefficient_sample_mass_bound_closed : ([] : List (Fm PTm 0)) ⊢[PRAAx] univ 3

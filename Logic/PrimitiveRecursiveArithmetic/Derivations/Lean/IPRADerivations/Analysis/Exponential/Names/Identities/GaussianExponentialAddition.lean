@@ -64,11 +64,9 @@ theorem product_precision_budget (L p : PTm n) (hL : Γ ⊢[PRAAx] le one L) :
 theorem unit_near_bound (q r A p : PTm n) (hc : Γ ⊢[PRAAx] canonical q)
     (hr : Γ ⊢[PRAAx] bounded r A one) (h : Γ ⊢[PRAAx] distanceBounded q r one (unit p)) :
     Γ ⊢[PRAAx] bounded q (A+one) one := by
-  have d := distance_radius_mono _ _ _ _ _ _ (unit_positive p) (le_refl one)
-    (le_congr (by ipra_ring) (one_mul _).eqSymm (unit_positive p)) h
-  have sum := GaussianRationalReciprocal.bounded_sum r (GaussianRationalMetric.qsub q r)
-    A one one one (le_refl _) (le_refl _) hr d
-  exact bound_congr (GaussianRationalLinearProduct.add_sub_right r q hc) (by ipra_ring) (one_mul _) sum
+  have d := GaussianRationalDistanceOrder.distance_radius_mono_den (le_refl one) (unit_positive p) h
+  exact bound_congr (GaussianRationalLinearProduct.add_sub_right r q hc) (.eqRefl _) (.eqRefl _)
+    (GaussianRationalPowerDifference.bounded_sum_one hr d)
 
 theorem same_precision (f g : PR 2) (R x y p : PTm n) (hR : Γ ⊢[PRAAx] le one R)
     (hf : Γ ⊢[PRAAx] input f R x) (hg : Γ ⊢[PRAAx] input g R y) :

@@ -137,10 +137,9 @@ theorem norm_rows (p N x : PTm n) : Γ ⊢[PRAAx] rowBoundsAt (normF chordF) p N
     chord_bound _ _ _ _ (index_source j i Prf.hyp0)
   have b := bound_congr (chord_at t j y i).eqSymm (.eqRefl _) (.eqRefl _) h
   have c : Δ ⊢[PRAAx] bounded (value q) (chordRadius*chordRadius) one :=
-    bound_congr (.eqRefl _) (.eqRefl _) (by ipra_ring)
-      (bounded_product _ _ _ _ _ _ (le_refl one) (le_refl one) b (point_bound _ _ _ (le_refl one) b))
-  have d : Δ ⊢[PRAAx] bounded (value q) radius one := bounded_radius_mono _ _ _ _ _ (le_refl one) (le_refl one)
-    (le_congr (by ipra_ring) (by unfold radius; ipra_ring) (le_add_right (chordRadius*chordRadius) sineSquareRadius)) c
+    GaussianRationalReciprocal.bounded_product_one b (point_bound _ _ _ (le_refl one) b)
+  have d : Δ ⊢[PRAAx] bounded (value q) radius one :=
+    GaussianCoefficientNameBounds.bounded_radius_mono_one (le_add_right (chordRadius*chordRadius) sineSquareRadius) c
   simpa [rowBoundsAt,Syn.shift,t,j,y,i,Δ,radius,chordRadius,sineSquareRadius,twiceSineRadius,one] using
     bound_congr (norm_at chordF t i (data j y)).eqSymm (.eqRefl _) (.eqRefl _) d
 
@@ -156,10 +155,9 @@ theorem square_rows (p N x : PTm n) : Γ ⊢[PRAAx] rowBoundsAt (squareF sineF) 
     doubled_sine_bound _ _ _ _ (index_source j i Prf.hyp0)
   have b := bound_congr (sine_at t j y i).eqSymm (.eqRefl _) (.eqRefl _) h
   have c : Δ ⊢[PRAAx] bounded (qmul q q) sineSquareRadius one :=
-    bound_congr (.eqRefl _) (.eqRefl _) (by ipra_ring)
-      (bounded_product _ _ _ _ _ _ (le_refl one) (le_refl one) b b)
-  have d : Δ ⊢[PRAAx] bounded (qmul q q) radius one := bounded_radius_mono _ _ _ _ _ (le_refl one) (le_refl one)
-    (le_congr (by ipra_ring) (by unfold radius; ipra_ring) (le_add_left sineSquareRadius (chordRadius*chordRadius))) c
+    GaussianRationalReciprocal.bounded_product_one b b
+  have d : Δ ⊢[PRAAx] bounded (qmul q q) radius one :=
+    GaussianCoefficientNameBounds.bounded_radius_mono_one (le_add_left sineSquareRadius (chordRadius*chordRadius)) c
   simpa [rowBoundsAt,Syn.shift,t,j,y,i,Δ,radius,chordRadius,sineSquareRadius,twiceSineRadius,one] using
     bound_congr (square_at sineF t i (data j y)).eqSymm (.eqRefl _) (.eqRefl _) d
 

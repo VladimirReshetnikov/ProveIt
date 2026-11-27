@@ -53,8 +53,8 @@ theorem exponentiated_scaled (w R B K : PTm n) (h : Γ ⊢[PRAAx] source w R B K
   have e : Γ ⊢[PRAAx] crossEquivalent (E L) constantF (ed one x) c :=
     GaussianLocalLogarithmMultiplicativeIncrement.exponential_base_cross w (R*B) (B*K) hs
   have hc : Γ ⊢[PRAAx] GaussianRationalMetric.bounded c two one :=
-    bound_congr (.eqRefl _) (by ipra_ring) (by ipra_ring)
-      (bounded_sum qone a one one one one (le_refl _) (le_refl _) qone_bounded
+    bound_congr (.eqRefl _) (succ_eq_add_one one).eqSymm (.eqRefl _)
+      (GaussianRationalPowerDifference.bounded_sum_one qone_bounded
         (GaussianLocalLogarithmLinearRemainder.linear_unit_bound _ _ _ hs))
   have scaled : Γ ⊢[PRAAx] GaussianRadiusExponentialName.input scaledF A d :=
     GaussianNamedNaturalScale.exponential_input L K K one x ix (le_refl K)

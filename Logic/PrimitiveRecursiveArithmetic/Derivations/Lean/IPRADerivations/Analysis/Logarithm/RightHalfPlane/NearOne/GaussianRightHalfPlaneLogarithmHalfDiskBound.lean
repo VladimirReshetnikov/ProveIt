@@ -121,8 +121,8 @@ theorem sample_bound (p A B D neg R : PTm n) (h : Γ ⊢[PRAAx] source A B D neg
     bounded_radius_mono _ _ _ _ _ h.andE₁.andE₁.andE₁ (le_refl one)
       (le_congr (by ipra_ring) (by ipra_ring) bA) phase
   have r := radial_bound j A B D neg R h (le_trans hp (le_add_right _ _))
-  have total := bounded_sum (ap2 radialF j x) (ap2 phaseF j y) one one one one (le_refl _) (le_refl _) r upper
-  exact bound_congr (GaussianExponentialReference.add_sample radialF phaseF x y p).eqSymm (by ipra_ring) (one_mul _) total
+  exact bound_congr (GaussianExponentialReference.add_sample radialF phaseF x y p).eqSymm
+    (succ_eq_add_one one).eqSymm (.eqRefl _) (GaussianRationalPowerDifference.bounded_sum_one r upper)
 
 /-- The same canonical logarithm and same Mercator name coincide on the
 original native half disk, including its boundary. -/

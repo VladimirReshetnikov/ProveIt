@@ -83,8 +83,7 @@ theorem coefficient_lower (z B : PTm n) (hB : Γ ⊢[PRAAx] le one B)
   linear_combination e
 
 theorem reference_bound (R : PTm n) : Γ ⊢[PRAAx] bounded (reference : PTm n) (amplification R) one :=
-  GaussianCoefficientNameBounds.bounded_radius_mono _ _ one _ one (le_refl one) (le_refl one)
-    (le_congr (by ipra_ring) (by unfold amplification; ipra_ring) (le_add_left one R))
+  GaussianCoefficientNameBounds.bounded_radius_mono_one (le_add_left one R)
     (GaussianRationalReciprocal.bounded_negative qone one one (le_refl one) GaussianRationalReciprocal.qone_bounded)
 
 theorem sample_order_at (p z R B a b : PTm n) (h : Γ ⊢[PRAAx] source z R B a b) : Γ ⊢[PRAAx]

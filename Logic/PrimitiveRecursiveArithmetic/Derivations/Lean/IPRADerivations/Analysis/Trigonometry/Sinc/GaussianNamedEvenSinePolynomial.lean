@@ -78,11 +78,10 @@ theorem reciprocal_pair_sine_bound (f : PR 2) (p R x : PTm n) (hf : Γ ⊢[PRAAx
     Γ ⊢[PRAAx] bounded (sineValue (positive f p R x) (negative f p R x)) (sineDisk f R x) one := by
   let C := disk R+inverseDisk f R x
   have hd : Γ ⊢[PRAAx] bounded (GaussianRationalMetric.qsub (positive f p R x) (negative f p R x)) C one :=
-    bound_congr (.eqRefl _) (by dsimp only [C]; ipra_ring) (one_mul one)
-      (bounded_difference _ _ _ _ _ _ (le_refl one) (le_refl one) (positive_bound f p R x hf) (negative_bound f p R x hf))
+    GaussianRationalReciprocal.bounded_difference_one (positive_bound f p R x hf) (negative_bound f p R x hf)
   have hs : Γ ⊢[PRAAx] bounded (sineValue (positive f p R x) (negative f p R x)) C one :=
-    bound_congr (.eqRefl _) (one_mul C) (one_mul one)
-      (bounded_product multiplier _ one one C one (le_refl one) (le_refl one) multiplier_unit_bound hd)
+    bound_congr (.eqRefl _) (one_mul C) (.eqRefl _)
+      (GaussianRationalReciprocal.bounded_product_one multiplier_unit_bound hd)
   exact bounded_radius_mono_one (le_add_left _ _) hs
 
 theorem polynomial_regular (f : PR 2) (J R x z : PTm n) (hf : Γ ⊢[PRAAx] input f R x) :

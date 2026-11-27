@@ -118,8 +118,8 @@ private theorem sampled_step_bound (f g : PR 2) (x y M R k : PTm n)
   have hfR : Γ ⊢[PRAAx] le (U f x) R := hf.andE₂
   have left := bounded_radius_mono_one hgR (sample_bound g y k hg.andE₁.andE₁)
   have right := bounded_radius_mono_one hfR (sample_bound f x k hf.andE₁.andE₁)
-  exact GaussianRationalReciprocal.bound_congr (.eqRefl _) (by ipra_ring) (by ipra_ring)
-    (GaussianRationalReciprocal.bounded_difference _ _ _ _ _ _ (le_refl one) (le_refl one) left right)
+  exact GaussianRationalReciprocal.bound_congr (.eqRefl _) (by ipra_ring) (.eqRefl _)
+    (GaussianRationalReciprocal.bounded_difference_one left right)
 
 private theorem zero_rate_cross (F G : PR 2) (x y : PTm n)
     (hr : Γ ⊢[PRAAx] independentRate F G x y zero one) :

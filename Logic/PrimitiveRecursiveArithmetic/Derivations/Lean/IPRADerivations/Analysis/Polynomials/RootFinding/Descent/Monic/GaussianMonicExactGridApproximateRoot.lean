@@ -65,11 +65,10 @@ theorem rounded_variation (C N A p q : PTm n) (h : Γ ⊢[PRAAx] input C N A p q
   have old := witness_disk C N A p q h
   have new := GaussianRationalSquareGrid.nearest_bound (radius A) (mesh C N A p q) (witness C N p q) hm old
   have rootU : Γ ⊢[PRAAx] bounded (witness C N p q) (disk A) one :=
-    bounded_radius_mono _ _ _ _ _ (le_refl one) (le_refl one)
-      (by unfold disk; exact le_congr (by ipra_ring) (by ipra_ring) (le_of_eq_add (a := radius A) (b := two*radius A+one) (d := radius A+one) (by ipra_ring))) old
+    GaussianCoefficientNameBounds.bounded_radius_mono_one
+      (le_of_eq_add (a := radius A) (b := disk A) (d := radius A+one) (by unfold disk; ipra_ring)) old
   have roundU : Γ ⊢[PRAAx] bounded (rounded C N A p q) (disk A) one :=
-    bounded_radius_mono _ _ _ _ _ (le_refl one) (le_refl one)
-      (le_congr (by ipra_ring) (by unfold disk; ipra_ring) (le_succ_self (two*radius A))) new
+    GaussianCoefficientNameBounds.bounded_radius_mono_one (le_add_right (two*radius A) one) new
   exact GaussianRationalDerivativeSum.mesh_evaluation_bound C N (disk A) (witness C N p q) (rounded C N A p q) p q
     (input_length _ _ _ _ _ h) rootU roundU (input_numerator _ _ _ _ _ h) (input_denominator _ _ _ _ _ h)
     (GaussianRationalSquareGrid.nearest_distance (radius A) (mesh C N A p q) (witness C N p q) hm old)

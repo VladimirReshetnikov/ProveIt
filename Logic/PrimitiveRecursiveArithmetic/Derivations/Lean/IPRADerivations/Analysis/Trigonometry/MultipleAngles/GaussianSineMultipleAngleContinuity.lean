@@ -72,15 +72,14 @@ private theorem step (S T M A B k : PTm n) (hB : Γ ⊢[PRAAx] le one B)
       (hval : Γ ⊢[PRAAx] bounded (value U k) W one) :
       Γ ⊢[PRAAx] bounded (previous U (succ k)) X one ⋏ bounded (value U (succ k)) X one := by
     have first := bounded_radius_mono_one grow hval
-    have product := bound_congr (.eqRefl _) (.eqRefl _) (one_mul one)
-      (bounded_product _ _ _ _ _ _ (le_refl one) (le_refl one) hu hval)
+    have product := GaussianRationalReciprocal.bounded_product_one hu hval
     have next : Γ ⊢[PRAAx] bounded (value U (succ k)) (M*W+W) one :=
-      bound_congr (value_succ U k).eqSymm (by ipra_ring) (one_mul one)
-      (bounded_difference _ _ _ _ _ _ (le_refl one) (le_refl one) product hprev)
-    have cmp : Γ ⊢[PRAAx] le ((M*W+W)*one) (X*one) :=
-      le_of_eq_add (d := W) ((congrMul advance (.eqRefl _)).eqTrans (by ipra_ring))
+      bound_congr (value_succ U k).eqSymm (.eqRefl _) (.eqRefl _)
+        (GaussianRationalReciprocal.bounded_difference_one product hprev)
+    have cmp : Γ ⊢[PRAAx] le (M*W+W) X :=
+      le_of_eq_add (d := W) (advance.eqTrans (by ipra_ring))
     exact .andI (bound_congr (previous_succ U k).eqSymm (.eqRefl _) (.eqRefl _) first)
-      (bounded_radius_mono _ _ _ _ _ (le_refl one) (le_refl one) cmp next)
+      (bounded_radius_mono_one cmp next)
   have oldS := h.andE₁.andE₁
   have oldT := h.andE₁.andE₂
   have dif := h.andE₂

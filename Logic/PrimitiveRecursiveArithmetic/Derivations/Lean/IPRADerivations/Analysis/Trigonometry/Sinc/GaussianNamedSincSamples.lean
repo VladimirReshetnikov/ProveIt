@@ -139,18 +139,15 @@ theorem sample_bound (f : PR 2) (R x p : PTm n) (h : Γ ⊢[PRAAx] input f R x) 
   refine .orE (norm_cases a one one) ?_ ?_
   · have b := unit_disk_sinc_bound (Γ := bounded a one one :: Γ) a (pred (cutoff R p)) Prf.hyp0
     have near := bound_congr (value_nonempty f R x p).eqSymm (.eqRefl _) (.eqRefl _) b
-    exact bounded_radius_mono _ _ _ _ _ (le_refl one) (le_refl one)
-      (le_congr (by ipra_ring) (by unfold sampleSize; dsimp only [A]; ipra_ring) (le_add_left two A)) near
+    exact GaussianCoefficientNameBounds.bounded_radius_mono_one (le_add_left two A) near
   · have inv := GaussianRationalLowerBounds.inverse_bound (Γ := lower a one one :: Γ)
       a one one (le_refl one) (le_refl one) Prf.hyp0
-    have prod := bounded_product (reciprocal a) (sineValue f R x p) one one A one
-      (le_refl one) (le_refl one) inv (sine_value_bound f R x p h.wk)
+    have prod := GaussianRationalReciprocal.bounded_product_one inv (sine_value_bound f R x p h.wk)
     have e : lower a one one :: Γ ⊢[PRAAx] qmul (reciprocal a) (sineValue f R x p) ≐ v :=
       (qmul_congr (.eqRefl _) (product_at f R x p).eqSymm).eqTrans
       (cancel_factor a v one (le_refl one) Prf.hyp0 (value_canonical f R x p))
-    exact bounded_radius_mono _ _ _ _ _ (le_refl one) (le_refl one)
-      (le_congr (by ipra_ring) (by unfold sampleSize; dsimp only [A]; ipra_ring) (le_add_right A two))
-      (bound_congr e (one_mul A) (one_mul one) prod)
+    exact GaussianCoefficientNameBounds.bounded_radius_mono_one (le_add_right A two)
+      (bound_congr e (one_mul A) (.eqRefl _) prod)
 
 theorem common_late_distance (f : PR 2) (x p r s : PTm n) (h : Γ ⊢[PRAAx] pointCN f x)
     (hr : Γ ⊢[PRAAx] le p r) (hs : Γ ⊢[PRAAx] le p s) :

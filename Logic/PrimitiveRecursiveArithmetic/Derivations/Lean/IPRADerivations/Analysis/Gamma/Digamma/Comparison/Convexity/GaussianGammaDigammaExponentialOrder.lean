@@ -122,8 +122,7 @@ theorem exp_order_at (f g : PR 2) (x y p q : PTm n) (hf : Γ ⊢[PRAAx] pointCN 
   have gi : Γ ⊢[PRAAx] E g R y := GaussianExponentialRadiusIndependence.input_widen g _ _ y
     (GaussianGammaFiniteApproximantName.exponential_input g y hg) (le_trans (le_add_right _ _) (le_add_left _ _))
   have vb : Γ ⊢[PRAAx] bounded v R one :=
-    GaussianCoefficientNameBounds.bounded_radius_mono v (U g y+two) one R one (le_refl one) (le_refl one)
-      (le_congr (by ipra_ring) (by dsimp only [R,radius]; ipra_ring) (le_add_left (U g y+two) (U f x))) (bias_bound g y j hg)
+    GaussianCoefficientNameBounds.bounded_radius_mono_one (le_add_left (U g y+two) (U f x)) (bias_bound g y j hg)
   have ir : Γ ⊢[PRAAx] independentRate (nameF g) (nameF constantF) (data R y) (data R v) (factor R*num 3) (unit j) :=
     GaussianRadiusExponentialLipschitzRate.independent_rate g constantF R y v (num 3) (unit j)
       (.andI hj (.andI gi (.andI (constant_input _ _ vb) (bias_rate g y j hg))))

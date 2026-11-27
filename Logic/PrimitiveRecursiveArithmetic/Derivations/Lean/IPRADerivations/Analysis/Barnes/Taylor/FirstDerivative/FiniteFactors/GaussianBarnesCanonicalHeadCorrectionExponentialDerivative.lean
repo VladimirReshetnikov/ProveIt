@@ -105,8 +105,8 @@ theorem exponent_bound (z B N R : PTm n) (hB : Γ ⊢[PRAAx] le one B)
   have c := bounded_product_one (GaussianNamedNaturalScale.natural_point_bound N) p
   have d := bounded_difference_one b c
   exact bound_congr (total_formula z B N hB).eqSymm (.eqRefl _) (.eqRefl _)
-    (bounded_radius_mono _ _ _ _ _ (le_refl one) (le_refl one)
-      (le_congr (by ipra_ring) (by unfold exponentRadius; ipra_ring) (le_add_left (N*(R+R*R)) one)) d)
+    (GaussianCoefficientNameBounds.bounded_radius_mono_one
+      (le_congr (by ipra_ring) (.eqRefl _) (le_add_left (N*(R+R*R)) one)) d)
 
 theorem slope_bound (z B N R : PTm n) (hB : Γ ⊢[PRAAx] le one B)
     (hz : Γ ⊢[PRAAx] ComplexLogarithmRemainder.bounded z (R*B)) :

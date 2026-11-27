@@ -88,8 +88,7 @@ theorem power_bound (c A E i : PTm n) (hc : Γ ⊢[PRAAx] bounded c A one) (hi :
     (le_congr (.eqRefl _) (add_comm _ _) (le_add_right one A)) hi
   have base : Γ ⊢[PRAAx] bounded c (A+one) one := GaussianCoefficientNameBounds.bounded_radius_mono_one (le_add_right A one) hc
   have old := GaussianRationalPowerDifference.bounded_power_integer c (A+one) i base
-  exact GaussianCoefficientNameBounds.bounded_radius_mono _ _ _ _ _ (le_refl one) (le_refl one)
-    (le_congr (by ipra_ring) (by unfold powerBudget; ipra_ring) grow) old
+  exact GaussianCoefficientNameBounds.bounded_radius_mono_one grow old
 
 theorem successor_exponential (f : PR 2) (E i R x c A : PTm n) (h : Γ ⊢[PRAAx] input f R x c A)
     (hi : Γ ⊢[PRAAx] le (succ i) E) : Γ ⊢[PRAAx]
