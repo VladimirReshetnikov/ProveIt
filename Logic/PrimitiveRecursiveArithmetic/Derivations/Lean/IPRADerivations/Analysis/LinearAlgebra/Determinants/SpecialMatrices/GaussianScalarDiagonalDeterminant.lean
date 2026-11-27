@@ -1,4 +1,4 @@
-import IPRADerivations.Analysis.LinearAlgebra.Determinants.GaussianScalarIdentityDeterminant
+import IPRADerivations.Analysis.LinearAlgebra.Determinants.SpecialMatrices.GaussianScalarIdentityDeterminant
 
 /-!
 # Actual diagonal row scaling and its numerical scalar determinant

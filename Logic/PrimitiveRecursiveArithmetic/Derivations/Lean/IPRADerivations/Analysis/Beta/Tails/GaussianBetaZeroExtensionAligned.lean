@@ -1,5 +1,5 @@
 import IPRADerivations.Analysis.Beta.Tails.GaussianBetaZeroExtension
-import IPRADerivations.Analysis.Beta.CompactKernels.GaussianBetaKernelCompactModulus
+import IPRADerivations.Analysis.Beta.CompactKernels.Regularity.GaussianBetaKernelCompactModulus
 import IPRADerivations.Analysis.Integration.CompactGrids.GaussianCompactAlignedTime
 
 /-!

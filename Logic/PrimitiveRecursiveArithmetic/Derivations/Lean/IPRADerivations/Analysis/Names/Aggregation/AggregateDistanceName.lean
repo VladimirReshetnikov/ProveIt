@@ -1,4 +1,4 @@
-import IPRADerivations.Analysis.RationalArithmetic.Distances.RationalPointDistanceVariation
+import IPRADerivations.Analysis.RationalArithmetic.Distances.Scalar.RationalPointDistanceVariation
 import IPRADerivations.Analysis.Optimization.Aggregates.AggregateOptimization
 
 /-!

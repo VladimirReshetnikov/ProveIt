@@ -1,6 +1,6 @@
 import IPRADerivations.Analysis.Beta.CompactKernels.GaussianBetaKernelDomination
 import IPRADerivations.Analysis.FiniteOperations.FiniteProducts.GaussianPositiveScalarProductBound
-import IPRADerivations.Analysis.Beta.CompactKernels.GaussianBetaKernelGridComparison
+import IPRADerivations.Analysis.Beta.CompactKernels.Regularity.GaussianBetaKernelGridComparison
 
 /-!
 # The literal weighted beta kernel has the original upper-tail majorant

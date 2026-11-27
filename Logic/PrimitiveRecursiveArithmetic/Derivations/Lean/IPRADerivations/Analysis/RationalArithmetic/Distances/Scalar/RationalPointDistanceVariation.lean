@@ -1,4 +1,4 @@
-import IPRADerivations.Analysis.RationalArithmetic.Distances.RationalPointDistance
+import IPRADerivations.Analysis.RationalArithmetic.Distances.Scalar.RationalPointDistance
 import IPRADerivations.Analysis.RationalArithmetic.Intervals.RationalHausdorffConcat
 import IPRADerivations.Analysis.RationalArithmetic.OrderBounds.RationalValueBounds
 

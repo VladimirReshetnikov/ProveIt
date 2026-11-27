@@ -1,6 +1,6 @@
 import IPRADerivations.Analysis.Polynomials.RootFinding.GaussianLowerRootQuadratureBound
 import IPRADerivations.Analysis.Beta.Endpoints.Lower.GaussianBetaKernelLowerTransformedPower
-import IPRADerivations.Analysis.Beta.CompactKernels.GaussianBetaKernelCompactModulus
+import IPRADerivations.Analysis.Beta.CompactKernels.Regularity.GaussianBetaKernelCompactModulus
 import IPRADerivations.Analysis.Euler.PositiveAxis.LowerBounds.Tails.GaussianEulerLowerTailFiniteBudget
 
 /-!

@@ -1,4 +1,4 @@
-import IPRADerivations.Analysis.Beta.CompactKernels.GaussianBetaKernelGridComparison
+import IPRADerivations.Analysis.Beta.CompactKernels.Regularity.GaussianBetaKernelGridComparison
 import IPRADerivations.Analysis.Euler.CompactExhaustion.Grids.GaussianEulerCompactAdditivity
 
 /-!

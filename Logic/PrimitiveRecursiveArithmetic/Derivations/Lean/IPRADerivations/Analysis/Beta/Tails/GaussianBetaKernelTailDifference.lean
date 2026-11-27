@@ -1,4 +1,4 @@
-import IPRADerivations.Analysis.Beta.CompactKernels.GaussianBetaKernelDecayDampedError
+import IPRADerivations.Analysis.Beta.CompactKernels.Damping.GaussianBetaKernelDecayDampedError
 import IPRADerivations.Analysis.Beta.Tails.GaussianBetaKernelUpperTail
 
 /-!

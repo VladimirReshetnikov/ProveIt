@@ -1,7 +1,7 @@
 import IPRADerivations.Analysis.Polynomials.Taylor.GaussianTimeWeightedPolynomialIncrement
 import IPRADerivations.Analysis.Polynomials.Taylor.GaussianRationalPolynomialEulerSlope
 import IPRADerivations.Analysis.Euler.Integration.Parameters.GaussianEulerPowerIncrement
-import IPRADerivations.Analysis.Beta.CompactKernels.GaussianBetaKernelGridComparison
+import IPRADerivations.Analysis.Beta.CompactKernels.Regularity.GaussianBetaKernelGridComparison
 
 /-!
 # Exact linear part of the original beta primitive on a rational time grid

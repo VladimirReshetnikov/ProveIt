@@ -1,6 +1,6 @@
 import IPRADerivations.Analysis.Euler.PositiveAxis.UnitSubstitution.Endpoints.GaussianEulerUnitSubstitutionOrdinaryEndpoints
 import IPRADerivations.Analysis.RationalArithmetic.Embeddings.RationalGaussianRealPart
-import IPRADerivations.Analysis.RationalArithmetic.Distances.RationalNativeFractionDisplacement
+import IPRADerivations.Analysis.RationalArithmetic.Distances.Scalar.RationalNativeFractionDisplacement
 
 /-!
 # Cofinal containment of every proper rational unit panel

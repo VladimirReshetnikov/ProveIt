@@ -1,4 +1,4 @@
-import IPRADerivations.Analysis.Beta.CompactKernels.GaussianBetaKernelDampedRefinement
+import IPRADerivations.Analysis.Beta.CompactKernels.Damping.GaussianBetaKernelDampedRefinement
 import IPRADerivations.Analysis.Beta.CompactKernels.GaussianBetaKernelDomination
 import IPRADerivations.Analysis.Euler.Integration.Decay.GaussianEulerDecayOrder
 import IPRADerivations.Analysis.RationalArithmetic.Representations.RationalUpperRepresentation

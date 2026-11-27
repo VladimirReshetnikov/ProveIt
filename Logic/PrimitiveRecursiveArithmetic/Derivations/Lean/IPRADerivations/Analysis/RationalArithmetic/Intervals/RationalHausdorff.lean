@@ -1,4 +1,4 @@
-import IPRADerivations.Analysis.RationalArithmetic.Distances.RationalSupMetric
+import IPRADerivations.Analysis.RationalArithmetic.Distances.Scalar.RationalSupMetric
 import IPRADerivations.Foundations.FiniteHausdorffImage
 import IPRADerivations.Foundations.RealizerComposition
 

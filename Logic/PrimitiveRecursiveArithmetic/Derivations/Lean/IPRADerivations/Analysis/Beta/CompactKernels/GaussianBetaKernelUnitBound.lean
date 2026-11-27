@@ -1,4 +1,4 @@
-import IPRADerivations.Analysis.Beta.CompactKernels.GaussianBetaKernelRefinement
+import IPRADerivations.Analysis.Beta.CompactKernels.Regularity.GaussianBetaKernelRefinement
 
 /-!
 # The actual beta kernel is bounded by one on its full support

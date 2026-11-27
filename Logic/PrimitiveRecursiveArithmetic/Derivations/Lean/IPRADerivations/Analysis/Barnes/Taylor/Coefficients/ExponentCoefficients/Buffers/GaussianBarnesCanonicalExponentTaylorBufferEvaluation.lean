@@ -1,4 +1,4 @@
-import IPRADerivations.Analysis.Barnes.Taylor.Coefficients.ExponentCoefficients.GaussianBarnesCanonicalExponentTaylorBuffer
+import IPRADerivations.Analysis.Barnes.Taylor.Coefficients.ExponentCoefficients.Buffers.GaussianBarnesCanonicalExponentTaylorBuffer
 import IPRADerivations.Analysis.Polynomials.Elimination.Bivariate.GaussianBivariatePowerExpansion
 import IPRADerivations.Analysis.LinearAlgebra.Matrices.GaussianRationalMatrixFiniteSums
 

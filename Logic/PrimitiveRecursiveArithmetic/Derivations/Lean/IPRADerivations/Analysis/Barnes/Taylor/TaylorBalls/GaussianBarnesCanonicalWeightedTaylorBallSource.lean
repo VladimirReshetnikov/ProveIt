@@ -1,4 +1,4 @@
-import IPRADerivations.Analysis.Barnes.Taylor.Coefficients.ExponentCoefficients.GaussianBarnesCanonicalExponentTaylorWeightedMass
+import IPRADerivations.Analysis.Barnes.Taylor.Coefficients.ExponentCoefficients.CoefficientBounds.GaussianBarnesCanonicalExponentTaylorWeightedMass
 import IPRADerivations.Analysis.Barnes.Taylor.RelativeExpansions.CorrectedMercator.GaussianBarnesCanonicalCorrectedMercatorCofinal
 
 /-!

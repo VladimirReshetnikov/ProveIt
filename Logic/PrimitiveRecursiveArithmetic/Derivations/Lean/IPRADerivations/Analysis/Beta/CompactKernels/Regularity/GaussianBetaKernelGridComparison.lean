@@ -1,4 +1,4 @@
-import IPRADerivations.Analysis.Beta.CompactKernels.GaussianBetaKernelExponential
+import IPRADerivations.Analysis.Beta.CompactKernels.Factors.GaussianBetaKernelExponential
 import IPRADerivations.Analysis.Euler.CompactExhaustion.ParameterBounds.GaussianEulerCompactProductComparison
 import IPRADerivations.Analysis.RationalArithmetic.Powers.GaussianCompactScalarMajorant
 import IPRADerivations.Analysis.Euler.CompactExhaustion.Names.GaussianEulerImproperName

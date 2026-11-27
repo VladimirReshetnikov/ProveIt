@@ -1,6 +1,6 @@
 import IPRADerivations.Analysis.RationalArithmetic.OrderBounds.RationalValueBounds
 import IPRADerivations.Analysis.Optimization.RationalArgmin
-import IPRADerivations.Analysis.RationalArithmetic.Distances.RationalPointDistance
+import IPRADerivations.Analysis.RationalArithmetic.Distances.Scalar.RationalPointDistance
 import IPRADerivations.Analysis.RationalArithmetic.OrderBounds.RationalClosure
 import IPRADerivations.Foundations.BoundedSyntax
 

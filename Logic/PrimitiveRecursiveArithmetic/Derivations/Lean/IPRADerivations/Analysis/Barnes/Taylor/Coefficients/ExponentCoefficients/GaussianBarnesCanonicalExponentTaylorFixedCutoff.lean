@@ -1,4 +1,4 @@
-import IPRADerivations.Analysis.Barnes.Taylor.Coefficients.ExponentCoefficients.GaussianBarnesCanonicalExponentTaylorCoefficientMassGap
+import IPRADerivations.Analysis.Barnes.Taylor.Coefficients.ExponentCoefficients.CoefficientBounds.GaussianBarnesCanonicalExponentTaylorCoefficientMassGap
 
 /-!
 # Retiming the stored Barnes exponent at a fixed finite tail cutoff

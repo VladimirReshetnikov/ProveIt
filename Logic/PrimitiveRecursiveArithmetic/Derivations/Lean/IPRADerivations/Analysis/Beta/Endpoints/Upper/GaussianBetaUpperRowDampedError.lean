@@ -1,5 +1,5 @@
-import IPRADerivations.Analysis.Beta.CompactKernels.GaussianBetaKernelDecayDampedError
-import IPRADerivations.Analysis.Beta.CompactKernels.GaussianBetaKernelGridComparison
+import IPRADerivations.Analysis.Beta.CompactKernels.Damping.GaussianBetaKernelDecayDampedError
+import IPRADerivations.Analysis.Beta.CompactKernels.Regularity.GaussianBetaKernelGridComparison
 import IPRADerivations.Analysis.Euler.PositiveAxis.UpperBounds.GaussianEulerUpperPowerBound
 import IPRADerivations.Analysis.Beta.CompactKernels.GaussianBetaKernelUnitBound
 

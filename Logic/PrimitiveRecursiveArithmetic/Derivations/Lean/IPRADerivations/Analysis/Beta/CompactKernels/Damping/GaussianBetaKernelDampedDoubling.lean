@@ -1,4 +1,4 @@
-import IPRADerivations.Analysis.Beta.CompactKernels.GaussianBetaKernelRefinement
+import IPRADerivations.Analysis.Beta.CompactKernels.Regularity.GaussianBetaKernelRefinement
 import IPRADerivations.Analysis.RationalArithmetic.Intervals.RationalIntervalArithmeticPrecision
 import IPRADerivations.Analysis.Optimization.CubeInfimum.RationalCubeInfimumIntervals
 

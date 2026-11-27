@@ -1,5 +1,5 @@
 import IPRADerivations.Analysis.LinearAlgebra.Cofactors.RationalCofactorVector
-import IPRADerivations.Analysis.LinearAlgebra.Determinants.GaussianScalarDeterminantLaplace
+import IPRADerivations.Analysis.LinearAlgebra.Determinants.Expansions.GaussianScalarDeterminantLaplace
 
 /-!
 # Ordered support and the common cofactor sign of the actual vector

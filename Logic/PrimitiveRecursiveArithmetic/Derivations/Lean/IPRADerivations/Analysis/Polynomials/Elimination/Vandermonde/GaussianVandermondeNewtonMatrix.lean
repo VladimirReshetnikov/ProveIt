@@ -1,5 +1,5 @@
 import IPRADerivations.Analysis.Polynomials.Elimination.Vandermonde.GaussianVandermondeNewtonPolynomials
-import IPRADerivations.Analysis.LinearAlgebra.Determinants.GaussianScalarTriangularDeterminant
+import IPRADerivations.Analysis.LinearAlgebra.Determinants.SpecialMatrices.GaussianScalarTriangularDeterminant
 import IPRADerivations.Analysis.LinearAlgebra.Determinants.GaussianScalarDeterminantMultiplication
 
 /-!

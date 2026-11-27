@@ -1,4 +1,4 @@
-import IPRADerivations.Analysis.Beta.CompactKernels.GaussianBetaKernelExponential
+import IPRADerivations.Analysis.Beta.CompactKernels.Factors.GaussianBetaKernelExponential
 import IPRADerivations.Analysis.Euler.HarmonicLogarithms.GaussianHarmonicIntegerExponential
 
 /-!

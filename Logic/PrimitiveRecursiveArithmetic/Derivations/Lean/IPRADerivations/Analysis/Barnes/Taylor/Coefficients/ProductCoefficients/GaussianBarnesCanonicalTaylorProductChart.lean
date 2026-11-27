@@ -1,5 +1,5 @@
 import IPRADerivations.Analysis.Barnes.Taylor.CenteredCharts.GaussianBarnesCanonicalCenteredHeadChart
-import IPRADerivations.Analysis.Barnes.Taylor.Coefficients.ExponentCoefficients.GaussianBarnesCanonicalExponentTaylorBufferProperness
+import IPRADerivations.Analysis.Barnes.Taylor.Coefficients.ExponentCoefficients.Buffers.GaussianBarnesCanonicalExponentTaylorBufferProperness
 import IPRADerivations.Analysis.Barnes.Taylor.Coefficients.ProductCoefficients.GaussianBarnesCanonicalTaylorProductCoefficientCauchy
 
 /-!

@@ -1,5 +1,5 @@
 import IPRADerivations.Analysis.RationalArithmetic.Spans.Minors.RationalMinorOrderTransport
-import IPRADerivations.Analysis.LinearAlgebra.Determinants.GaussianScalarDeterminantLastRowTransport
+import IPRADerivations.Analysis.LinearAlgebra.Determinants.Expansions.GaussianScalarDeterminantLastRowTransport
 
 /-!
 # Actual bordered rows at the selected maximum minor

@@ -120,6 +120,10 @@ The Lean modules in this directory construct derivations in the object theory. T
 | [Stirling integration by parts](Stirling/AllOrders/PanelParts/) | [cofinal estimates](Stirling/AllOrders/PanelParts/Cofinal/), [discrete identities](Stirling/AllOrders/PanelParts/DiscreteIdentities/), [finite panels](Stirling/AllOrders/PanelParts/FinitePanels/), [outer sums](Stirling/AllOrders/PanelParts/OuterSums/) |
 | [Global Stirling bounds](Stirling/Bounds/) | [logarithmic](Stirling/Bounds/Logarithmic/), [multiplicative](Stirling/Bounds/Multiplicative/) |
 | [Arctangent](Trigonometry/Arctangent/) | [chord and slope comparisons](Trigonometry/Arctangent/Comparisons/), [angle turns](Trigonometry/Arctangent/Turns/) |
+| [Barnes Taylor exponent coefficients](Barnes/Taylor/Coefficients/ExponentCoefficients/) | [Finite buffers and Horner evaluation](Barnes/Taylor/Coefficients/ExponentCoefficients/Buffers/) and [mass and coefficient bounds](Barnes/Taylor/Coefficients/ExponentCoefficients/CoefficientBounds/) |
+| [Beta compact kernels](Beta/CompactKernels/) | [Damping estimates](Beta/CompactKernels/Damping/), [regularity and mesh comparisons](Beta/CompactKernels/Regularity/), and [exponential and logarithmic factors](Beta/CompactKernels/Factors/) |
+| [Scalar determinants](LinearAlgebra/Determinants/) | [Laplace and last-row expansions](LinearAlgebra/Determinants/Expansions/) and [diagonal, identity, and triangular matrices](LinearAlgebra/Determinants/SpecialMatrices/) |
+| [Rational distances](RationalArithmetic/Distances/) | [Scalar fractions, distances, and the sup metric](RationalArithmetic/Distances/Scalar/) alongside Gaussian rational distances |
 
 Import a file using its path within the Lean library. For example, `IPRADerivations.Analysis.Gamma.BohrMollerup.Named.GaussianBohrMollerupNamedGamma` contains `LeanProofs.IPRA.Analysis.GaussianBohrMollerupNamedGamma.actual_named_Bohr_Mollerup_Gamma_closed`.
 

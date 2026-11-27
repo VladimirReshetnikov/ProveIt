@@ -1,6 +1,6 @@
-import IPRADerivations.Analysis.Beta.CompactKernels.GaussianBetaKernelLipschitz
+import IPRADerivations.Analysis.Beta.CompactKernels.Regularity.GaussianBetaKernelLipschitz
 import IPRADerivations.Analysis.Euler.CompactExhaustion.ParameterBounds.GaussianEulerCompactPowerVariation
-import IPRADerivations.Analysis.Beta.CompactKernels.GaussianBetaKernelGridComparison
+import IPRADerivations.Analysis.Beta.CompactKernels.Regularity.GaussianBetaKernelGridComparison
 
 /-!
 # A degree-independent compact time modulus for original beta rows

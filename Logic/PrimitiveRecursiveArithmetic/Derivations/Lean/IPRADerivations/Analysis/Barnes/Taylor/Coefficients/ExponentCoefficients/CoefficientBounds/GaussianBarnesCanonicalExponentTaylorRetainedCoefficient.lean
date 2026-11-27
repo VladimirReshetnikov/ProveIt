@@ -1,4 +1,4 @@
-import IPRADerivations.Analysis.Barnes.Taylor.Coefficients.ExponentCoefficients.GaussianBarnesCanonicalExponentTaylorCoefficientCauchy
+import IPRADerivations.Analysis.Barnes.Taylor.Coefficients.ExponentCoefficients.CoefficientBounds.GaussianBarnesCanonicalExponentTaylorCoefficientCauchy
 import IPRADerivations.Analysis.Names.Order.GaussianFastValueCut
 
 /-!

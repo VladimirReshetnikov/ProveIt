@@ -1,4 +1,4 @@
-import IPRADerivations.Analysis.Beta.CompactKernels.GaussianBetaKernelDampedDoubling
+import IPRADerivations.Analysis.Beta.CompactKernels.Damping.GaussianBetaKernelDampedDoubling
 
 /-!
 # Actual finite dyadic telescope of the beta relative error

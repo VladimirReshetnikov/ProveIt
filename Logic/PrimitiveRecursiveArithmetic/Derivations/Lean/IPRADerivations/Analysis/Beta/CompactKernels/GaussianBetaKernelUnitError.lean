@@ -1,4 +1,4 @@
-import IPRADerivations.Analysis.Beta.CompactKernels.GaussianBetaKernelDecayDampedError
+import IPRADerivations.Analysis.Beta.CompactKernels.Damping.GaussianBetaKernelDecayDampedError
 
 /-!
 # The original beta kernel has quadratic error with unit majorant

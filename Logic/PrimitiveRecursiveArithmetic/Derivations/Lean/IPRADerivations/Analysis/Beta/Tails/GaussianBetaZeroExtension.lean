@@ -1,5 +1,5 @@
-import IPRADerivations.Analysis.Beta.CompactKernels.GaussianBetaKernelGridComparison
-import IPRADerivations.Analysis.Beta.CompactKernels.GaussianBetaKernelRefinement
+import IPRADerivations.Analysis.Beta.CompactKernels.Regularity.GaussianBetaKernelGridComparison
+import IPRADerivations.Analysis.Beta.CompactKernels.Regularity.GaussianBetaKernelRefinement
 import IPRADerivations.AnalyticNumberTheory.WeightedMangoldt
 
 /-!

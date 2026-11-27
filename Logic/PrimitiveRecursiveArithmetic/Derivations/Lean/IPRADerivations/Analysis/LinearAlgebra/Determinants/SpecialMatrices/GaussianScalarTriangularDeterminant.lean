@@ -1,4 +1,4 @@
-import IPRADerivations.Analysis.LinearAlgebra.Determinants.GaussianScalarIdentityDeterminant
+import IPRADerivations.Analysis.LinearAlgebra.Determinants.SpecialMatrices.GaussianScalarIdentityDeterminant
 import IPRADerivations.Foundations.RuntimePermutationDigitSum
 
 /-!

@@ -1,6 +1,6 @@
 import IPRADerivations.Analysis.Beta.CompactKernels.GaussianBetaKernelUnitBound
 import IPRADerivations.Analysis.Euler.PositiveAxis.LowerBounds.Powers.GaussianEulerLowerTransformedPower
-import IPRADerivations.Analysis.Beta.CompactKernels.GaussianBetaKernelGridComparison
+import IPRADerivations.Analysis.Beta.CompactKernels.Regularity.GaussianBetaKernelGridComparison
 
 /-!
 # Original lower-time beta rows at transformed rational times

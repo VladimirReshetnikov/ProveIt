@@ -1,4 +1,4 @@
-import IPRADerivations.Analysis.LinearAlgebra.Determinants.GaussianScalarTriangularDeterminant
+import IPRADerivations.Analysis.LinearAlgebra.Determinants.SpecialMatrices.GaussianScalarTriangularDeterminant
 
 /-!
 # Actual left elimination of the completed Vandermonde table

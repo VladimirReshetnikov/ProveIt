@@ -1,4 +1,4 @@
-import IPRADerivations.Analysis.RationalArithmetic.Distances.RationalSupMetric
+import IPRADerivations.Analysis.RationalArithmetic.Distances.Scalar.RationalSupMetric
 
 /-!
 # Actual least minimization of independently denominated signed rationals

@@ -1,5 +1,5 @@
 import IPRADerivations.Analysis.Names.LogisticName
-import IPRADerivations.Analysis.RationalArithmetic.Distances.RationalSupMetric
+import IPRADerivations.Analysis.RationalArithmetic.Distances.Scalar.RationalSupMetric
 import IPRADerivations.AnalyticNumberTheory.Order
 
 /-!

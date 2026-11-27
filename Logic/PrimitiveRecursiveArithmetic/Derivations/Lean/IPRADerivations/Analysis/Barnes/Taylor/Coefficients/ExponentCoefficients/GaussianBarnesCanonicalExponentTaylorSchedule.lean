@@ -1,4 +1,4 @@
-import IPRADerivations.Analysis.Barnes.Taylor.Coefficients.ExponentCoefficients.GaussianBarnesCanonicalExponentTaylorHorner
+import IPRADerivations.Analysis.Barnes.Taylor.Coefficients.ExponentCoefficients.Buffers.GaussianBarnesCanonicalExponentTaylorHorner
 import IPRADerivations.Analysis.Names.Order.GaussianFastValueCut
 
 /-!

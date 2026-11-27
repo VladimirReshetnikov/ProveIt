@@ -1,4 +1,4 @@
-import IPRADerivations.Analysis.Barnes.Taylor.Coefficients.ExponentCoefficients.GaussianBarnesCanonicalExponentTaylorRetainedCoefficient
+import IPRADerivations.Analysis.Barnes.Taylor.Coefficients.ExponentCoefficients.CoefficientBounds.GaussianBarnesCanonicalExponentTaylorRetainedCoefficient
 import IPRADerivations.Analysis.Polynomials.Coefficients.Norms.GaussianCoefficientUniformNorm
 
 /-!

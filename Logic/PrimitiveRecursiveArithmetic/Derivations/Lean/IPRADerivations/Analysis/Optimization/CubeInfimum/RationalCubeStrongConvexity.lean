@@ -1,7 +1,7 @@
 import IPRADerivations.Analysis.RationalArithmetic.Grids.RationalCubeMidpoint
 import IPRADerivations.Analysis.RationalArithmetic.Grids.RationalCubeCoherentMinimizer
 import IPRADerivations.Foundations.StrongConvexity
-import IPRADerivations.Analysis.RationalArithmetic.Distances.RationalPointDistanceVariation
+import IPRADerivations.Analysis.RationalArithmetic.Distances.Scalar.RationalPointDistanceVariation
 
 /-!
 # The original finite midpoint-drop estimate on actual cube points

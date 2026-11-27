@@ -1,4 +1,4 @@
-import IPRADerivations.Analysis.LinearAlgebra.Determinants.GaussianScalarDeterminantExpansion
+import IPRADerivations.Analysis.LinearAlgebra.Determinants.Expansions.GaussianScalarDeterminantExpansion
 import IPRADerivations.Analysis.LinearAlgebra.Determinants.GaussianScalarColumnSelection
 import IPRADerivations.Analysis.RationalArithmetic.FiniteSums.Reindexing.GaussianRationalBlockSums
 
