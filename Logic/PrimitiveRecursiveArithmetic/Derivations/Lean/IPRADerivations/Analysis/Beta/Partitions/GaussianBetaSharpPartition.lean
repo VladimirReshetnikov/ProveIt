@@ -60,6 +60,28 @@ theorem exact_partition (k A R N : PTm n) (h : Γ ⊢[PRAAx] source k A R N) :
   exact .andI (eq_add_of_le (eta_den_positive k A R)).eqSymm
     (.andI (eq_add_of_le mid.andE₁).eqSymm (.andI (eq_add_of_le mid.andE₂).eqSymm (eq_add_of_le out).eqSymm))
 
+/-- The low strip is nonempty as soon as the dyadic denominator is even. -/
+theorem low_width_positive (k A R : PTm n) (hA : Γ ⊢[PRAAx] le one A) :
+    Γ ⊢[PRAAx] le one (lowWidth k A R) := by
+  have even := even_denominator (Γ := Γ) k A R hA
+  have denTwo : Γ ⊢[PRAAx] le two (etaDen k A R) :=
+    le_congr (one_mul two) ((mul_comm _ _).eqTrans even.eqSymm) (mul_le_mul_right two (unit_positive _))
+  have boundary : Γ ⊢[PRAAx] one+lowWidth k A R ≐ etaDen k A R :=
+    (eq_add_of_le (eta_den_positive k A R)).eqSymm
+  have endpoint := natEq boundary
+  ipra_simps
+  ipra_le sl denTwo using
+    linear_combination endpoint
+
+/-- Bound the middle strip by the full upper endpoint count. -/
+theorem middle_width_bound (k A R N : PTm n) (h : Γ ⊢[PRAAx] source k A R N) :
+    Γ ⊢[PRAAx] le (middleWidth k A R N) (etaDen k A R*top k A R) := by
+  have endpoint := (exact_partition k A R N h).andE₂.andE₁
+  have halfBound := (half_boundary_order k A R N h.andE₁ h.andE₂.andE₁).andE₂
+  have fullBound := mul_le_mul_left (etaDen k A R) h.andE₂.andE₂
+  exact le_trans (le_add_left (middleWidth k A R N) (etaDen k A R))
+    (le_trans (le_congr endpoint.eqSymm (.eqRefl _) halfBound) fullBound)
+
 theorem half_point_fraction (k A R N : PTm n) (hA : Γ ⊢[PRAAx] le one A) :
     Γ ⊢[PRAAx] fraction (halfPoint k A R N) (etaDen k A R) ≐ fraction N two :=
   (fraction_congr _ _ _ _ (.eqRefl _) ((even_denominator k A R hA).eqTrans (mul_comm _ _))).eqTrans

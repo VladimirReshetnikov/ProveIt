@@ -15,14 +15,13 @@ namespace LeanProofs.IPRA.Analysis.GaussianBetaSharpNaturalDegreeSchedule
 
 open_ipra
 open GaussianBetaSharpCofinalSchedule (cutoff factor supportCount minimumH minimumPrecision
-  cutoff_bounds mesh_budgets factor_positive support_width_positive finite_binding_time_budget)
-open GaussianCoefficientNameBounds (unit unit_positive)
+  cutoff_bounds factor_positive support_cells_from_degree middle_time_budget_from_partition)
+open GaussianCoefficientNameBounds (unit)
 open GaussianGammaIntegralCutoffs (etaDen top)
 open GaussianBetaSharpPartition (lowWidth middleWidth)
 open GaussianRationalHorner (positive_product)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
-local notation "𝔞" t:max => Groth.ι (IPRA.Q.mk Γ t)
 
 def source (z R B A N : PTm n) : Fm PTm n :=
   GaussianEulerLowerPowerCoefficients.source z R B A ⋏ le two N
@@ -37,46 +36,22 @@ theorem original_partition (t z R B A N : PTm n) (h : Γ ⊢[PRAAx] source z R B
 theorem support_cells (t H z R B A N : PTm n)
     (h : Γ ⊢[PRAAx] source z R B A N)
     (hH : Γ ⊢[PRAAx] le (minimumH t z R B A N) H) : Γ ⊢[PRAAx]
-    le (GaussianBetaFiniteEulerAtCutoff.minimumCells t (cutoff t A N) z R B A N) (supportCount t H A R N) := by
-  have positive := support_width_positive (etaDen (cutoff t A N) A R) N
-    (GaussianGammaIntegralCutoffs.eta_den_positive _ _ _) h.andE₂
-  have grow : Γ ⊢[PRAAx] le (factor t H A R N) (supportCount t H A R N) :=
-    le_congr (one_mul _) (.eqRefl _) (mul_le_mul_right (factor t H A R N) positive)
-  exact le_trans (mesh_budgets t H z R B A N hH).andE₂.andE₁ grow
+    le (GaussianBetaFiniteEulerAtCutoff.minimumCells t (cutoff t A N) z R B A N) (supportCount t H A R N) :=
+  support_cells_from_degree t H z R B A N h.andE₂ hH
 
 theorem low_count_positive (t H z R B A N : PTm n)
     (h : Γ ⊢[PRAAx] source z R B A N)
     (hH : Γ ⊢[PRAAx] le (minimumH t z R B A N) H) : Γ ⊢[PRAAx]
-    le one (lowWidth (cutoff t A N) A R*factor t H A R N) := by
-  let k := cutoff t A N
-  have even := GaussianBetaSharpPartition.even_denominator (Γ := Γ) k A R h.andE₁.andE₁
-  have twoBound : Γ ⊢[PRAAx] le two (etaDen k A R) :=
-    le_congr (one_mul two) ((mul_comm _ _).eqTrans even.eqSymm)
-      (mul_le_mul_right two (unit_positive (LeanProofs.IPRA.PTm.monus (A*GaussianGammaIntegralCutoffs.height k A R) one)))
-  have endpoint := (GaussianBetaSharpPartition.exact_partition k A R N (original_partition t z R B A N h)).andE₁
-  have widthPos : Γ ⊢[PRAAx] le one (lowWidth k A R) := by
-    have eq := natEq endpoint
-    ipra_simps
-    ipra_le sl twoBound using
-      linear_combination eq
-  exact positive_product _ _ widthPos (factor_positive t H z R B A N hH)
+    le one (lowWidth (cutoff t A N) A R*factor t H A R N) :=
+  positive_product _ _
+    (GaussianBetaSharpPartition.low_width_positive (cutoff t A N) A R h.andE₁.andE₁)
+    (factor_positive t H z R B A N hH)
 
 theorem middle_time_budget (p t H z R B A N : PTm n)
     (h : Γ ⊢[PRAAx] source z R B A N)
     (hp : Γ ⊢[PRAAx] le (minimumPrecision t H z R B A N) p) : Γ ⊢[PRAAx]
-    le (two*middleWidth (cutoff t A N) A R N*unit t) (etaDen (cutoff t A N) A R*unit p) := by
-  let k := cutoff t A N
-  let C := middleWidth k A R N
-  let E := etaDen k A R
-  have part := original_partition t z R B A N h
-  have endpoint := (GaussianBetaSharpPartition.exact_partition k A R N part).andE₂.andE₁
-  have halfBound := (GaussianBetaSharpPartition.half_boundary_order k A R N part.andE₁ part.andE₂.andE₁).andE₂
-  have right : Γ ⊢[PRAAx] le (E*N) (E*top k A R) :=
-    mul_le_mul_left E part.andE₂.andE₂
-  have width : Γ ⊢[PRAAx] le C (E*top k A R) := le_trans (le_add_left C E)
-    (le_trans (le_congr endpoint.eqSymm (.eqRefl _) halfBound) right)
-  have clock := finite_binding_time_budget p t H z R B A N hp
-  ipra_le (𝔞 E)*sl clock+(2*𝔞(unit t))*sl width
+    le (two*middleWidth (cutoff t A N) A R N*unit t) (etaDen (cutoff t A N) A R*unit p) :=
+  middle_time_budget_from_partition p t H z R B A N (original_partition t z R B A N h) hp
 
 theorem tail_source (t H z R B A N : PTm n)
     (h : Γ ⊢[PRAAx] source z R B A N)
