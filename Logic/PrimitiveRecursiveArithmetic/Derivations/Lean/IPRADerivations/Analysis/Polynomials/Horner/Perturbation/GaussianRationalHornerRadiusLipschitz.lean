@@ -141,21 +141,17 @@ theorem size_prefix (C w A U V k : PTm n)
     (hV : Γ ⊢[PRAAx] le one V) (hC : Γ ⊢[PRAAx] coefficientBounds C A)
     (hw : Γ ⊢[PRAAx] bounded w U V) (hk : Γ ⊢[PRAAx] le k (length C)) : Γ ⊢[PRAAx]
     bounded (horner C w k) (A*geometric U V k) (pw V k) := by
-  have cShift : Γ.map Fm.shift ⊢[PRAAx] coefficientBounds (Syn.shift C) (Syn.shift A) := by
-    simpa only [Fm.shift,GaussianEuclideanResidualRadius.subst_coefficientBounds,Syn.shift] using hC.shift
-  have wShift : Γ.map Fm.shift ⊢[PRAAx] bounded (Syn.shift w) (Syn.shift U) (Syn.shift V) := by
-    simpa only [Fm.shift,GaussianRationalMetric.subst_bounded,Syn.shift] using hw.shift
-  have vShift : Γ.map Fm.shift ⊢[PRAAx] le one (Syn.shift V) := by
-    simpa only [Fm.shift,subst_le,ConciseIPRA.PTm.subst_succ,ConciseIPRA.PTm.subst_zero,Syn.shift] using hV.shift
-  have all : Γ ⊢[PRAAx] .all (sizeLaw (Syn.shift C) (Syn.shift w) (Syn.shift A) (Syn.shift U) (Syn.shift V) (var 0)) := by
-    ipra_qfind (⟨le_QF _ _,le_QF _ _⟩) [subst_sizeLaw]
-    · exact .impI (size_zero C w A U V).wk
-    · refine .impI ?_
-      exact size_step _ _ _ _ _ _ vShift.wk.wk cShift.wk.wk wShift.wk.wk Prf.hyp0
-        (.impE Prf.hyp1 (le_trans (le_succ_self _) Prf.hyp0))
-  have rule : Γ ⊢[PRAAx] sizeLaw C w A U V k := by
-    simpa only [subst_sizeLaw,Syn.subst_var,Syn.inst_zero,Syn.subst_inst_shift] using all.allE k
-  exact .impE rule hk
+  let invariant := bounded (horner (Syn.shift C) (Syn.shift w) (var 0))
+    (Syn.shift A * geometric (Syn.shift U) (Syn.shift V) (var 0)) (pw (Syn.shift V) (var 0))
+  have coefficients : Γ.map Fm.shift ⊢[PRAAx] coefficientBounds (Syn.shift C) (Syn.shift A) := by
+    simpa only [Fm.shift, GaussianEuclideanResidualRadius.subst_coefficientBounds, Syn.shift] using hC.shift
+  have atIndex : Γ ⊢[PRAAx] invariant.subst (Syn.inst k) := by
+    refine qfIndAtMost hk (le_QF _ _) ?_ ?_
+    · simpa [invariant] using size_zero (Γ := Γ) C w A U V
+    · simp [invariant, show Syn.shift (length C) = length (Syn.shift C) by simp [Syn.shift]]
+      exact .impI (size_step _ _ _ _ _ _ (Order.shift_one_le hV).wk.wk coefficients.wk.wk
+        (GaussianRationalMetric.shift_bounded hw).wk.wk Prf.hyp0 Prf.hyp1)
+  simpa [invariant] using atIndex
 
 def constantNumerator (N U V A : PTm n) : PTm n := A*weighted U V N
 
@@ -219,30 +215,23 @@ theorem difference_prefix (C z w N U V A p q k : PTm n)
     (hq : Γ ⊢[PRAAx] le one q) (hzw : Γ ⊢[PRAAx] distanceBounded z w p q)
     (hk : Γ ⊢[PRAAx] le k N) : Γ ⊢[PRAAx]
     distanceBounded (horner C z (succ k)) (horner C w (succ k)) (constantNumerator k U V A*p) (pw V k*q) := by
-  have lenShift : Γ.map Fm.shift ⊢[PRAAx] length (Syn.shift C) ≐ succ (Syn.shift N) := by
-    simpa only [Fm.shift,Fm.subst_eq,subst_length,ConciseIPRA.PTm.subst_succ,Syn.shift] using hLen.shift
-  have cShift : Γ.map Fm.shift ⊢[PRAAx] coefficientBounds (Syn.shift C) (Syn.shift A) := by
-    simpa only [Fm.shift,GaussianEuclideanResidualRadius.subst_coefficientBounds,Syn.shift] using hC.shift
-  have vShift : Γ.map Fm.shift ⊢[PRAAx] le one (Syn.shift V) := by
-    simpa only [Fm.shift,subst_le,ConciseIPRA.PTm.subst_succ,ConciseIPRA.PTm.subst_zero,Syn.shift] using hV.shift
-  have zShift : Γ.map Fm.shift ⊢[PRAAx] bounded (Syn.shift z) (Syn.shift U) (Syn.shift V) := by
-    simpa only [Fm.shift,GaussianRationalMetric.subst_bounded,Syn.shift] using hz.shift
-  have wShift : Γ.map Fm.shift ⊢[PRAAx] bounded (Syn.shift w) (Syn.shift U) (Syn.shift V) := by
-    simpa only [Fm.shift,GaussianRationalMetric.subst_bounded,Syn.shift] using hw.shift
-  have qShift : Γ.map Fm.shift ⊢[PRAAx] le one (Syn.shift q) := by
-    simpa only [Fm.shift,subst_le,ConciseIPRA.PTm.subst_succ,ConciseIPRA.PTm.subst_zero,Syn.shift] using hq.shift
-  have zwShift : Γ.map Fm.shift ⊢[PRAAx] distanceBounded (Syn.shift z) (Syn.shift w) (Syn.shift p) (Syn.shift q) := by
-    simpa only [Fm.shift,GaussianRationalMetric.subst_distanceBounded,Syn.shift] using hzw.shift
-  have all : Γ ⊢[PRAAx] .all (differenceLaw (Syn.shift C) (Syn.shift z) (Syn.shift w) (Syn.shift N)
-      (Syn.shift U) (Syn.shift V) (Syn.shift A) (Syn.shift p) (Syn.shift q) (var 0)) := by
-    ipra_qfind (⟨le_QF _ _,le_QF _ _⟩) [subst_differenceLaw]
-    · exact .impI (difference_zero C z w U V A p q hq).wk
-    · refine .impI ?_
-      exact difference_step _ _ _ _ _ _ _ _ _ _ lenShift.wk.wk cShift.wk.wk vShift.wk.wk zShift.wk.wk wShift.wk.wk
-        qShift.wk.wk zwShift.wk.wk Prf.hyp0 (.impE Prf.hyp1 (le_trans (le_succ_self _) Prf.hyp0))
-  have rule : Γ ⊢[PRAAx] differenceLaw C z w N U V A p q k := by
-    simpa only [subst_differenceLaw,Syn.subst_var,Syn.inst_zero,Syn.subst_inst_shift] using all.allE k
-  exact .impE rule hk
+  let invariant := distanceBounded (horner (Syn.shift C) (Syn.shift z) (succ (var 0)))
+    (horner (Syn.shift C) (Syn.shift w) (succ (var 0)))
+    (constantNumerator (var 0) (Syn.shift U) (Syn.shift V) (Syn.shift A) * Syn.shift p)
+    (pw (Syn.shift V) (var 0) * Syn.shift q)
+  have shape : Γ.map Fm.shift ⊢[PRAAx] length (Syn.shift C) ≐ succ (Syn.shift N) := by
+    simpa only [Fm.shift, Fm.subst_eq, subst_length, ConciseIPRA.PTm.subst_succ, Syn.shift] using hLen.shift
+  have coefficients : Γ.map Fm.shift ⊢[PRAAx] coefficientBounds (Syn.shift C) (Syn.shift A) := by
+    simpa only [Fm.shift, GaussianEuclideanResidualRadius.subst_coefficientBounds, Syn.shift] using hC.shift
+  have atIndex : Γ ⊢[PRAAx] invariant.subst (Syn.inst k) := by
+    refine qfIndAtMost hk (le_QF _ _) ?_ ?_
+    · simpa [invariant] using difference_zero C z w U V A p q hq
+    · simp [invariant]
+      exact .impI (difference_step _ _ _ _ _ _ _ _ _ _ shape.wk.wk coefficients.wk.wk
+        (Order.shift_one_le hV).wk.wk (GaussianRationalMetric.shift_bounded hz).wk.wk
+        (GaussianRationalMetric.shift_bounded hw).wk.wk (Order.shift_one_le hq).wk.wk
+        (GaussianRationalMetric.shift_distanceBounded hzw).wk.wk Prf.hyp0 Prf.hyp1)
+  simpa [invariant] using atIndex
 
 /-- Exact source A sum_(i=1..N) i (U/V)^(i-1) times the original
 point distance. The actual sum numerator has the common denominator V^N. -/

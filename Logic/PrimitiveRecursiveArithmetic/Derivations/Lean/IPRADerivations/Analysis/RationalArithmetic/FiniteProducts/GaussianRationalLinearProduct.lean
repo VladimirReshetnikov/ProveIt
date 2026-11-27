@@ -164,52 +164,36 @@ theorem root_prefix_step (C z N k : PTm n) (hC : Γ ⊢[PRAAx] length C ≐ N)
 theorem root_prefix (C z N k : PTm n) (hC : Γ ⊢[PRAAx] length C ≐ N)
     (hcanon : Γ ⊢[PRAAx] canonicalCoefficients C) (hk : Γ ⊢[PRAAx] le k N) : Γ ⊢[PRAAx]
     horner (linear C z N) z (succ k) ≐ padded C N k := by
-  have all : Γ ⊢[PRAAx] .all (le (var 0) (Syn.shift N) ⟶
-      (horner (linear (Syn.shift C) (Syn.shift z) (Syn.shift N)) (Syn.shift z) (succ (var 0)) ≐
-        padded (Syn.shift C) (Syn.shift N) (var 0))) := by
-    ipra_qfind (⟨le_QF _ _,trivial⟩) [subst_le, GaussianRationalHorner.subst_horner, subst_linear, subst_padded]
-    · exact .impI (root_prefix_zero C z N hC hcanon).wk
-    · refine .impI ?_
-      let IH := le (var 0) (Syn.shift N) ⟶
-        (horner (linear (Syn.shift C) (Syn.shift z) (Syn.shift N)) (Syn.shift z) (succ (var 0)) ≐
-          padded (Syn.shift C) (Syn.shift N) (var 0))
-      let Δ := le (succ (var 0)) (Syn.shift N) :: IH :: Γ.map Fm.shift
+  let invariant := horner (linear (Syn.shift C) (Syn.shift z) (Syn.shift N)) (Syn.shift z) (succ (var 0)) ≐
+    padded (Syn.shift C) (Syn.shift N) (var 0)
+  have atIndex : Γ ⊢[PRAAx] invariant.subst (Syn.inst k) := by
+    refine qfIndAtMost hk trivial ?_ ?_
+    · simpa [invariant] using root_prefix_zero (Γ := Γ) C z N hC hcanon
+    · ipra_ind_simp [invariant, GaussianRationalHorner.subst_horner, subst_linear, subst_padded, subst_repl_shift]
+      refine .impI ?_
       have shape : Γ.map Fm.shift ⊢[PRAAx] length (Syn.shift C) ≐ Syn.shift N := by
-        simpa only [Fm.shift,Fm.subst_eq,subst_length,Syn.shift] using hC.shift
+        simpa only [Fm.shift, Fm.subst_eq, subst_length, Syn.shift] using hC.shift
       have canon : Γ.map Fm.shift ⊢[PRAAx] canonicalCoefficients (Syn.shift C) := by
-        simpa only [Fm.shift,GaussianRationalSyntheticDivision.subst_canonicalCoefficients,Syn.shift] using hcanon.shift
-      have ih : Δ ⊢[PRAAx] horner (linear (Syn.shift C) (Syn.shift z) (Syn.shift N)) (Syn.shift z) (succ (var 0)) ≐
-          padded (Syn.shift C) (Syn.shift N) (var 0) := .impE Prf.hyp1 (le_trans (le_succ_self _) Prf.hyp0)
-      exact root_prefix_step _ _ _ _ shape.wk.wk canon.wk.wk Prf.hyp0 ih
-  have inst : Γ ⊢[PRAAx] le k N ⟶ (horner (linear C z N) z (succ k) ≐ padded C N k) := by
-    simpa only [Fm.subst_imp,Fm.subst_eq,subst_le,GaussianRationalHorner.subst_horner,
-      subst_linear,subst_padded,ConciseIPRA.PTm.subst_succ,Syn.subst_var,Syn.inst_zero,Syn.subst_inst_shift] using all.allE k
-  exact .impE inst hk
+        simpa only [Fm.shift, GaussianRationalSyntheticDivision.subst_canonicalCoefficients, Syn.shift] using hcanon.shift
+      exact root_prefix_step _ _ _ _ shape.wk.wk canon.wk.wk Prf.hyp0 Prf.hyp1
+  simpa [invariant] using atIndex
 
 /-- Extensionality of actual Horner programs from in-range literal entries;
 no extensionality of arbitrary outer sequence encodings is assumed. -/
 theorem horner_ext (C D y N k : PTm n)
     (h : Γ ⊢[PRAAx] .all (lt (var 0) (Syn.shift N) ⟶ entry (Syn.shift C) (var 0) ≐ entry (Syn.shift D) (var 0)))
     (hk : Γ ⊢[PRAAx] le k N) : Γ ⊢[PRAAx] horner C y k ≐ horner D y k := by
-  have all : Γ ⊢[PRAAx] .all (le (var 0) (Syn.shift N) ⟶
-      (horner (Syn.shift C) (Syn.shift y) (var 0) ≐ horner (Syn.shift D) (Syn.shift y) (var 0))) := by
-    ipra_qfind (⟨le_QF _ _,trivial⟩) [subst_le, GaussianRationalHorner.subst_horner]
-    · exact .impI ((GaussianRationalHorner.horner_zero C y).eqTrans (GaussianRationalHorner.horner_zero D y).eqSymm)
-    · refine .impI ?_
-      let IH := le (var 0) (Syn.shift N) ⟶
-        (horner (Syn.shift C) (Syn.shift y) (var 0) ≐ horner (Syn.shift D) (Syn.shift y) (var 0))
-      let Δ := le (succ (var 0)) (Syn.shift N) :: IH :: Γ.map Fm.shift
-      have ih : Δ ⊢[PRAAx] horner (Syn.shift C) (Syn.shift y) (var 0) ≐ horner (Syn.shift D) (Syn.shift y) (var 0) :=
-        .impE Prf.hyp1 (le_trans (le_succ_self _) Prf.hyp0)
-      have coefficient : Δ ⊢[PRAAx] entry (Syn.shift C) (var 0) ≐ entry (Syn.shift D) (var 0) :=
-        .impE h.allOpen.wk.wk Prf.hyp0
+  let invariant := horner (Syn.shift C) (Syn.shift y) (var 0) ≐ horner (Syn.shift D) (Syn.shift y) (var 0)
+  have atIndex : Γ ⊢[PRAAx] invariant.subst (Syn.inst k) := by
+    refine qfIndAtMost hk trivial ?_ ?_
+    · simpa [invariant] using
+        (GaussianRationalHorner.horner_zero (Γ := Γ) C y).eqTrans (GaussianRationalHorner.horner_zero D y).eqSymm
+    · ipra_ind_simp [invariant, GaussianRationalHorner.subst_horner, subst_repl_shift]
+      refine .impI ?_
       exact (GaussianRationalHorner.horner_succ _ _ _).eqTrans
-        ((qadd_congr (qmul_congr ih (.eqRefl _)) coefficient).eqTrans
+        ((qadd_congr (qmul_congr Prf.hyp1 (.eqRefl _)) (.impE h.allOpen.wk.wk Prf.hyp0)).eqTrans
           (GaussianRationalHorner.horner_succ _ _ _).eqSymm)
-  have inst : Γ ⊢[PRAAx] le k N ⟶ (horner C y k ≐ horner D y k) := by
-    simpa only [Fm.subst_imp,Fm.subst_eq,subst_le,GaussianRationalHorner.subst_horner,
-      Syn.subst_var,Syn.inst_zero,Syn.subst_inst_shift] using all.allE k
-  exact .impE inst hk
+  simpa [invariant] using atIndex
 
 theorem inverse_entries (C z N : PTm n) (hC : Γ ⊢[PRAAx] length C ≐ N)
     (hcanon : Γ ⊢[PRAAx] canonicalCoefficients C) : Γ ⊢[PRAAx]

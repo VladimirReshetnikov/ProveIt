@@ -85,29 +85,23 @@ theorem prefix_bounds (P Q : PTm 2) (N A B x k : PTm n)
     (h : Γ ⊢[PRAAx] allLarge P Q N A B x) (hk : Γ ⊢[PRAAx] le k N) :
     Γ ⊢[PRAAx] le one (scaledProduct P k B x) ⋏
       le (scaledProduct Q k A x) (scaledProduct P k B x) := by
-  have all : Γ ⊢[PRAAx] .all (le (var 0) (Syn.shift N) ⟶
-      (le one (scaledProduct P (var 0) (Syn.shift B) (Syn.shift x)) ⋏
-        le (scaledProduct Q (var 0) (Syn.shift A) (Syn.shift x)) (scaledProduct P (var 0) (Syn.shift B) (Syn.shift x)))) := by
-    ipra_qfind (⟨le_QF _ _,le_QF _ _,le_QF _ _⟩) [subst_le, subst_scaledProduct]
-    · exact .impI (.andI (le_congr (.eqRefl _) (scaled_product_zero P B x).eqSymm (le_refl _))
-        (le_congr (scaled_product_zero Q A x).eqSymm (scaled_product_zero P B x).eqSymm (le_refl _)))
-    · refine .impI ?_
-      let Δ : List (Fm PTm (n+1)) := le (succ (var 0)) (Syn.shift N) ::
-        (le (var 0) (Syn.shift N) ⟶
-          (le one (scaledProduct P (var 0) (Syn.shift B) (Syn.shift x)) ⋏
-            le (scaledProduct Q (var 0) (Syn.shift A) (Syn.shift x)) (scaledProduct P (var 0) (Syn.shift B) (Syn.shift x)))) :: Γ.map Fm.shift
-      have old : Δ ⊢[PRAAx] le one (scaledProduct P (var 0) (Syn.shift B) (Syn.shift x)) ⋏
-          le (scaledProduct Q (var 0) (Syn.shift A) (Syn.shift x)) (scaledProduct P (var 0) (Syn.shift B) (Syn.shift x)) :=
-        .impE Prf.hyp1 (le_trans (le_succ_self _) Prf.hyp0)
+  let invariant := le one (scaledProduct P (var 0) (Syn.shift B) (Syn.shift x)) ⋏
+    le (scaledProduct Q (var 0) (Syn.shift A) (Syn.shift x)) (scaledProduct P (var 0) (Syn.shift B) (Syn.shift x))
+  have atIndex : Γ ⊢[PRAAx] invariant.subst (Syn.inst k) := by
+    refine qfIndAtMost hk ⟨le_QF _ _, le_QF _ _⟩ ?_ ?_
+    · ipra_ind_simp [invariant, subst_le, subst_scaledProduct, Syn.subst_inst_shift]
+      exact .andI (le_congr (.eqRefl _) (scaled_product_zero P B x).eqSymm (le_refl _))
+        (le_congr (scaled_product_zero Q A x).eqSymm (scaled_product_zero P B x).eqSymm (le_refl _))
+    · ipra_ind_simp [invariant, subst_le, subst_scaledProduct, subst_repl_shift]
+      refine .impI ?_
+      let Δ := lt (var 0) (Syn.shift N) :: invariant :: Γ.map Fm.shift
+      have previous : Δ ⊢[PRAAx] invariant := Prf.hyp1
       have contract : Δ ⊢[PRAAx] allLarge P Q (Syn.shift N) (Syn.shift A) (Syn.shift B) (Syn.shift x) := by
-        simpa only [Fm.shift,subst_allLarge,Syn.shift] using h.shift.wk.wk
+        simpa only [Fm.shift, subst_allLarge, Syn.shift] using h.shift.wk.wk
       have strict := strict_step P Q (var 0) (Syn.shift A) (Syn.shift B) (Syn.shift x)
-        (Prf.andE₁ old) (Prf.andE₂ old) (large_at P Q _ _ _ _ _ contract Prf.hyp0)
+        (Prf.andE₁ previous) (Prf.andE₂ previous) (large_at P Q _ _ _ _ _ contract Prf.hyp0)
       exact .andI (lt_of_le_of_lt (zero_le _) strict) (le_of_lt strict)
-  have inst := Prf.allE k all
-  simp only [Fm.subst_imp,Fm.subst_and,subst_le,subst_scaledProduct,Syn.subst_var,Syn.inst_zero,
-    Syn.subst_inst_shift,ConciseIPRA.PTm.subst_zero,ConciseIPRA.PTm.subst_succ] at inst
-  exact .impE inst hk
+  simpa [invariant, one] using atIndex
 
 /-- Strict product comparison, including a zero threshold A. -/
 theorem strict_product (P Q : PTm 2) (N A B x : PTm n)

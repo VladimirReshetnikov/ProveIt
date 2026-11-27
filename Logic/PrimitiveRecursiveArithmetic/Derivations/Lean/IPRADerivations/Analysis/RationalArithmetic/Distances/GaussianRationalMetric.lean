@@ -49,6 +49,21 @@ ipra_subst squaredTolerance
 ipra_subst bounded
 ipra_subst distanceBounded
 
+/-- Shift a magnitude bound under one new object-language variable. -/
+theorem shift_bounded {q A B : PTm n} (h : Γ ⊢[PRAAx] bounded q A B) :
+    Γ.map Fm.shift ⊢[PRAAx] bounded (Syn.shift q) (Syn.shift A) (Syn.shift B) := by
+  simpa only [Fm.shift, subst_bounded, Syn.shift] using h.shift
+
+/-- Shift a magnitude bound with unit denominator. -/
+theorem shift_bounded_one {q A : PTm n} (h : Γ ⊢[PRAAx] bounded q A one) :
+    Γ.map Fm.shift ⊢[PRAAx] bounded (Syn.shift q) (Syn.shift A) one := by
+  simpa only [Syn.shift, one, ConciseIPRA.PTm.subst_succ, ConciseIPRA.PTm.subst_zero] using shift_bounded h
+
+/-- Shift a distance bound under one new object-language variable. -/
+theorem shift_distanceBounded {q r A B : PTm n} (h : Γ ⊢[PRAAx] distanceBounded q r A B) :
+    Γ.map Fm.shift ⊢[PRAAx] distanceBounded (Syn.shift q) (Syn.shift r) (Syn.shift A) (Syn.shift B) := by
+  simpa only [Fm.shift, subst_distanceBounded, Syn.shift] using h.shift
+
 theorem qnegative_canonical (q : PTm n) : Γ ⊢[PRAAx] canonical (qnegative q) :=
   canonical_pair _ _ (RationalArithmetic.negative_guard _) (RationalArithmetic.negative_guard _)
 theorem qsub_canonical (q r : PTm n) : Γ ⊢[PRAAx] canonical (qsub q r) := qadd_canonical _ _

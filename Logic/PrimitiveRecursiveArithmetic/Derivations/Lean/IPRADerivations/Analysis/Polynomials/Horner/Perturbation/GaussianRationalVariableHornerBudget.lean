@@ -95,14 +95,14 @@ theorem size_step (C U w k : PTm n) (hw : Γ ⊢[PRAAx] bounded w U one)
 
 theorem size_prefix (C U w k : PTm n) (hw : Γ ⊢[PRAAx] bounded w U one) (hk : Γ ⊢[PRAAx] le k (length C)) : Γ ⊢[PRAAx]
     bounded (horner C w k) (size C U k) (denominator C) := by
-  have shifted : Γ.map Fm.shift ⊢[PRAAx] bounded (Syn.shift w) (Syn.shift U) one := by simpa [Fm.shift,Syn.shift,one] using hw.shift
-  have all : Γ ⊢[PRAAx] .all (sizeLaw (Syn.shift C) (Syn.shift U) (Syn.shift w) (var 0)) := by
-    ipra_qfind (⟨le_QF _ _,le_QF _ _⟩) [subst_sizeLaw]
-    · exact .impI (size_base C U w).wk
-    · refine .impI ?_
-      exact size_step _ _ _ _ shifted.wk.wk Prf.hyp0 (.impE Prf.hyp1 (le_trans (le_succ_self _) Prf.hyp0))
-  have rule : Γ ⊢[PRAAx] sizeLaw C U w k := by simpa only [subst_sizeLaw,Syn.subst_var,Syn.inst_zero,Syn.subst_inst_shift] using all.allE k
-  exact .impE rule hk
+  let invariant := bounded (horner (Syn.shift C) (Syn.shift w) (var 0))
+    (size (Syn.shift C) (Syn.shift U) (var 0)) (denominator (Syn.shift C))
+  have atIndex : Γ ⊢[PRAAx] invariant.subst (Syn.inst k) := by
+    refine qfIndAtMost hk (le_QF _ _) ?_ ?_
+    · simpa [invariant] using size_base (Γ := Γ) C U w
+    · simp [invariant, show Syn.shift (length C) = length (Syn.shift C) by simp [Syn.shift]]
+      exact .impI (size_step _ _ _ _ (GaussianRationalMetric.shift_bounded_one hw).wk.wk Prf.hyp0 Prf.hyp1)
+  simpa [invariant] using atIndex
 
 def variationLaw (C U z w p q k : PTm n) : Fm PTm n := le k (length C) ⟶
   distanceBounded (horner C z k) (horner C w k) (variation C U k*p) (denominator C*q)
@@ -132,18 +132,17 @@ theorem variation_step (C U z w p q k : PTm n) (hz : Γ ⊢[PRAAx] bounded z U o
 theorem variation_prefix (C U z w p q k : PTm n) (hz : Γ ⊢[PRAAx] bounded z U one) (hw : Γ ⊢[PRAAx] bounded w U one)
     (hq : Γ ⊢[PRAAx] le one q) (hzw : Γ ⊢[PRAAx] distanceBounded z w p q) (hk : Γ ⊢[PRAAx] le k (length C)) : Γ ⊢[PRAAx]
     distanceBounded (horner C z k) (horner C w k) (variation C U k*p) (denominator C*q) := by
-  have zs : Γ.map Fm.shift ⊢[PRAAx] bounded (Syn.shift z) (Syn.shift U) one := by simpa [Fm.shift,Syn.shift,one] using hz.shift
-  have ws : Γ.map Fm.shift ⊢[PRAAx] bounded (Syn.shift w) (Syn.shift U) one := by simpa [Fm.shift,Syn.shift,one] using hw.shift
-  have qs : Γ.map Fm.shift ⊢[PRAAx] le one (Syn.shift q) := by simpa [Fm.shift,Syn.shift,one] using hq.shift
-  have zw : Γ.map Fm.shift ⊢[PRAAx] distanceBounded (Syn.shift z) (Syn.shift w) (Syn.shift p) (Syn.shift q) := by simpa [Fm.shift,Syn.shift] using hzw.shift
-  have all : Γ ⊢[PRAAx] .all (variationLaw (Syn.shift C) (Syn.shift U) (Syn.shift z) (Syn.shift w) (Syn.shift p) (Syn.shift q) (var 0)) := by
-    ipra_qfind (⟨le_QF _ _,le_QF _ _⟩) [subst_variationLaw]
-    · exact .impI (variation_base C U z w p q hq).wk
-    · refine .impI ?_
-      exact variation_step _ _ _ _ _ _ _ zs.wk.wk ws.wk.wk qs.wk.wk zw.wk.wk Prf.hyp0
-        (.impE Prf.hyp1 (le_trans (le_succ_self _) Prf.hyp0))
-  have rule : Γ ⊢[PRAAx] variationLaw C U z w p q k := by simpa only [subst_variationLaw,Syn.subst_var,Syn.inst_zero,Syn.subst_inst_shift] using all.allE k
-  exact .impE rule hk
+  let invariant := distanceBounded (horner (Syn.shift C) (Syn.shift z) (var 0))
+    (horner (Syn.shift C) (Syn.shift w) (var 0)) (variation (Syn.shift C) (Syn.shift U) (var 0) * Syn.shift p)
+    (denominator (Syn.shift C) * Syn.shift q)
+  have atIndex : Γ ⊢[PRAAx] invariant.subst (Syn.inst k) := by
+    refine qfIndAtMost hk (le_QF _ _) ?_ ?_
+    · simpa [invariant] using variation_base C U z w p q hq
+    · simp [invariant, show Syn.shift (length C) = length (Syn.shift C) by simp [Syn.shift]]
+      exact .impI (variation_step _ _ _ _ _ _ _
+        (GaussianRationalMetric.shift_bounded_one hz).wk.wk (GaussianRationalMetric.shift_bounded_one hw).wk.wk
+        (Order.shift_one_le hq).wk.wk (GaussianRationalMetric.shift_distanceBounded hzw).wk.wk Prf.hyp0 Prf.hyp1)
+  simpa [invariant] using atIndex
 
 theorem evaluation_bound (C N U z w p q : PTm n) (hLen : Γ ⊢[PRAAx] length C ≐ succ N)
     (hz : Γ ⊢[PRAAx] bounded z U one) (hw : Γ ⊢[PRAAx] bounded w U one) (hq : Γ ⊢[PRAAx] le one q)
