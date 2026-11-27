@@ -100,50 +100,12 @@ theorem tbpB_at (i h y : PTm n) :
 /-- `Σ_{j<N} A(⌊N/(j+1)^h⌋, ⟨j, y⟩) = Σ_{i<N} b_h(i+1)` for `h ≥ 1`. -/
 theorem twist_prefix {h : PTm n} (hh : Γ ⊢[PRAAx] le one h) (N y : PTm n) :
     Γ ⊢[PRAAx] tBt a N h y ≐ tBpre a N h y := by
-  have hall : Γ ⊢[PRAAx] Fm.all (tBt a (var 0) (Syn.shift h) (Syn.shift y) ≐
-      tBpre a (var 0) (Syn.shift h) (Syn.shift y)) := by
-    refine PRA.qfInd _ trivial ?_ ?_
-    · simp only [Fm.subst_eq, subst_ap2, subst_pairT, Syn.subst_var, Syn.inst_zero, Syn.subst_inst_shift]
-      exact (sum_zero _ _).eqTrans (sum_zero _ _).eqSymm
-    · simp only [Fm.subst_eq, subst_ap2, subst_pairT, ConciseIPRA.PTm.subst_succ, Syn.subst_var, Syn.repl_zero,
-        subst_repl_shift]
-      let φ : Fm PTm (n + 1) := tBt a (var 0) (Syn.shift h) (Syn.shift y) ≐ tBpre a (var 0) (Syn.shift h) (Syn.shift y)
-      let Δ : List (Fm PTm (n + 1)) := φ :: Γ.map Fm.shift
-      have ih : Δ ⊢[PRAAx] φ := Prf.hyp0
-      have hh' : Δ ⊢[PRAAx] le one (Syn.shift h) := by
-        have b : (Γ.map Fm.shift) ⊢[PRAAx] le one (Syn.shift h) := by simpa [Fm.shift, Syn.shift] using hh.shift
-        exact b.wk
-      have hp : Δ ⊢[PRAAx] Syn.shift h ≐ succ (pred (Syn.shift h)) := pos_of_one_le hh'
-      have sp : Δ ⊢[PRAAx] ap2 (sumF (tbtB a)) (succ (var 0)) (pairT (pairT (succ (var 0)) (Syn.shift h)) (Syn.shift y)) ≐
-          ap2 (sumF (tbtB a)) (succ (var 0)) (pairT (pairT (var 0) (Syn.shift h)) (Syn.shift y)) +
-            ap2 (sumF (tcB a)) (succ (var 0)) (pairT (pairT (succ (var 0)) (Syn.shift h)) (Syn.shift y)) := by
-        refine sum_add2 (tbtB a) (tcB a) (tbtB a) (.allI (.impI ?_))
-        rw [show Syn.shift (pairT (pairT (succ (var 0)) (Syn.shift h)) (Syn.shift y)) =
-            pairT (pairT (succ (var 1)) (Syn.shift (Syn.shift h))) (Syn.shift (Syn.shift y)) by simp [Syn.shift],
-          show Syn.shift (pairT (pairT (var 0) (Syn.shift h)) (Syn.shift y)) =
-            pairT (pairT (var 1) (Syn.shift (Syn.shift h))) (Syn.shift (Syn.shift y)) by simp [Syn.shift]]
-        let Λ : List (Fm PTm (n + 2)) := lt (var 0) (Syn.shift (succ (var 0))) :: Δ.map Fm.shift
-        have hq : Λ ⊢[PRAAx] pw (succ (var 0)) (Syn.shift (Syn.shift h)) ≐
-            succ (pred (pw (succ (var 0)) (Syn.shift (Syn.shift h)))) :=
-          pos_of_one_le (one_le_pw' (by ipra_le 𝔞 (var 0)) _)
-        refine (tbtB_at a _ _ _ _).eqTrans ((step_pt a hq).eqTrans ?_)
-        exact congrAdd (tbtB_at a _ _ _ _).eqSymm (tcB_at a _ _ _ _).eqSymm
-      have hlt : Δ ⊢[PRAAx] lt (var 0) (pw (succ (var 0)) (Syn.shift h)) := by
-        have s := le_self_pw (Γ := Δ) (var 0) (pred (Syn.shift h))
-        exact le_congr (.eqRefl _) (congrAp2 powF hp.eqSymm (.eqRefl _)) s
-      have hq0 : Δ ⊢[PRAAx] pw (succ (var 0)) (Syn.shift h) ≐ succ (pred (pw (succ (var 0)) (Syn.shift h))) :=
-        pos_of_one_le (one_le_pw' (by ipra_le 𝔞 (var 0)) _)
-      have last : Δ ⊢[PRAAx] inst2 (tbtB a) (var 0) (pairT (pairT (var 0) (Syn.shift h)) (Syn.shift y)) ≐ zero :=
-        (tbtB_at a _ _ _ _).eqTrans ((congrAp2 _ (quo_small hq0 hlt) (.eqRefl _)).eqTrans (sum_zero _ _))
-      have s1 : Δ ⊢[PRAAx] ap2 (sumF (tbtB a)) (succ (var 0)) (pairT (pairT (var 0) (Syn.shift h)) (Syn.shift y)) ≐
-          tBt a (var 0) (Syn.shift h) (Syn.shift y) :=
-        (sum_succ _ _ _).eqTrans ((congrAdd (.eqRefl _) last).eqTrans (add_zero _))
-      have s2 : Δ ⊢[PRAAx] tBpre a (succ (var 0)) (Syn.shift h) (Syn.shift y) ≐
-          tBpre a (var 0) (Syn.shift h) (Syn.shift y) + tbval a (succ (var 0)) (Syn.shift h) (Syn.shift y) :=
-        (sum_succ _ _ _).eqTrans (congrAdd (.eqRefl _) (tbpB_at a _ _ _))
-      exact sp.eqTrans ((congrAdd (s1.eqTrans ih) (.eqRefl _)).eqTrans s2.eqSymm)
-  have r := Prf.allE N hall
-  simpa [Syn.subst_inst_shift] using r
+  refine PowerDivisorPrefix.prefix_identity_of a (tbtB a) (tcB a) (tbpB a)
+    (pairT (var 0) (var 1)) ?_ ?_ (tbpB_at a) hh N y
+  · intro m Δ j M h' y'
+    simpa [inst2] using tbtB_at (Γ := Δ) a j M h' y'
+  · intro m Δ j M h' y'
+    simpa [inst2] using tcB_at (Γ := Δ) a j M h' y'
 
 end LeanProofs.IPRA.AnalyticNumberTheory.PowerTwistPrefix
 

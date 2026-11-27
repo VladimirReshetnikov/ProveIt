@@ -129,27 +129,33 @@ theorem step_pt {N q y : PTm n} (hq : Γ ⊢[PRAAx] q ≐ succ (pred q)) :
 
 /-! ## The prefix identity -/
 
-/-- `Σ_{d<N} A(⌊N/(d+1)^h⌋) = Σ_{i<N} b_h(i+1)` for `h ≥ 1`. -/
-theorem prefix_identity {h : PTm n} (hh : Γ ⊢[PRAAx] le one h) (N y : PTm n) :
-    Γ ⊢[PRAAx] Bt a N h y ≐ Bpre a N h y := by
-  have hall : Γ ⊢[PRAAx] Fm.all (Bt a (var 0) (Syn.shift h) (Syn.shift y) ≐ Bpre a (var 0) (Syn.shift h) (Syn.shift y)) := by
-    refine PRA.qfInd _ trivial ?_ ?_
-    · simp only [Fm.subst_eq, subst_ap2, subst_pairT, Syn.subst_var, Syn.inst_zero, Syn.subst_inst_shift]
-      exact (sum_zero _ _).eqTrans (sum_zero _ _).eqSymm
-    · simp only [Fm.subst_eq, subst_ap2, subst_pairT, ConciseIPRA.PTm.subst_succ, Syn.subst_var, Syn.repl_zero,
-        subst_repl_shift]
-      let φ : Fm PTm (n + 1) := Bt a (var 0) (Syn.shift h) (Syn.shift y) ≐ Bpre a (var 0) (Syn.shift h) (Syn.shift y)
+/-- The prefix identity also allows each divisor index to supply its own parameter. -/
+theorem prefix_identity_of (outer correction prefixBody param : PTm 2)
+    (outerAt : ∀ {m : ℕ} {Δ : List (Fm PTm m)} (j M h y : PTm m), Δ ⊢[PRAAx]
+      inst2 outer j (pairT (pairT M h) y) ≐ Apre a (quo M (pw (succ j) h)) (inst2 param j y))
+    (correctionAt : ∀ {m : ℕ} {Δ : List (Fm PTm m)} (j M h y : PTm m), Δ ⊢[PRAAx]
+      inst2 correction j (pairT (pairT M h) y) ≐
+        eqb (rem M (pw (succ j) h)) zero * inst2 a (quo M (pw (succ j) h)) (inst2 param j y))
+    (prefixAt : ∀ {m : ℕ} {Δ : List (Fm PTm m)} (i h y : PTm m), Δ ⊢[PRAAx]
+      inst2 prefixBody i (pairT h y) ≐ ap2 (sumF correction) (succ i) (pairT (pairT (succ i) h) y))
+    {h : PTm n} (hh : Γ ⊢[PRAAx] le one h) (N y : PTm n) :
+    Γ ⊢[PRAAx] ap2 (sumF outer) N (pairT (pairT N h) y) ≐ ap2 (sumF prefixBody) N (pairT h y) := by
+  have hall : Γ ⊢[PRAAx] Fm.all (ap2 (sumF outer) (var 0) (pairT (pairT (var 0) (Syn.shift h)) (Syn.shift y)) ≐
+      ap2 (sumF prefixBody) (var 0) (pairT (Syn.shift h) (Syn.shift y))) := by
+    ipra_qfind [subst_ap2, subst_pairT]
+    · exact (sum_zero _ _).eqTrans (sum_zero _ _).eqSymm
+    · let φ : Fm PTm (n + 1) := ap2 (sumF outer) (var 0) (pairT (pairT (var 0) (Syn.shift h)) (Syn.shift y)) ≐
+        ap2 (sumF prefixBody) (var 0) (pairT (Syn.shift h) (Syn.shift y))
       let Δ : List (Fm PTm (n + 1)) := φ :: Γ.map Fm.shift
       have ih : Δ ⊢[PRAAx] φ := Prf.hyp0
-      have hh' : Δ ⊢[PRAAx] le one (Syn.shift h) := by
-        have b : (Γ.map Fm.shift) ⊢[PRAAx] le one (Syn.shift h) := by simpa [Fm.shift, Syn.shift] using hh.shift
-        exact b.wk
-      have hp : Δ ⊢[PRAAx] Syn.shift h ≐ succ (pred (Syn.shift h)) := pos_of_one_le hh'
-      -- split each term of `Bt(N+1)`
-      have sp : Δ ⊢[PRAAx] ap2 (sumF (btB a)) (succ (var 0)) (pairT (pairT (succ (var 0)) (Syn.shift h)) (Syn.shift y)) ≐
-          ap2 (sumF (btB a)) (succ (var 0)) (pairT (pairT (var 0) (Syn.shift h)) (Syn.shift y)) +
-            ap2 (sumF (cB a)) (succ (var 0)) (pairT (pairT (succ (var 0)) (Syn.shift h)) (Syn.shift y)) := by
-        refine sum_add2 (btB a) (cB a) (btB a) (.allI (.impI ?_))
+      have hShift : Γ.map Fm.shift ⊢[PRAAx] le one (Syn.shift h) := by
+        simpa [Fm.shift, Syn.shift] using hh.shift
+      have hp : Δ ⊢[PRAAx] Syn.shift h ≐ succ (pred (Syn.shift h)) := pos_of_one_le hShift.wk
+      have split : Δ ⊢[PRAAx]
+          ap2 (sumF outer) (succ (var 0)) (pairT (pairT (succ (var 0)) (Syn.shift h)) (Syn.shift y)) ≐
+          ap2 (sumF outer) (succ (var 0)) (pairT (pairT (var 0) (Syn.shift h)) (Syn.shift y)) +
+            ap2 (sumF correction) (succ (var 0)) (pairT (pairT (succ (var 0)) (Syn.shift h)) (Syn.shift y)) := by
+        refine sum_add2 outer correction outer (.allI (.impI ?_))
         rw [show Syn.shift (pairT (pairT (succ (var 0)) (Syn.shift h)) (Syn.shift y)) =
             pairT (pairT (succ (var 1)) (Syn.shift (Syn.shift h))) (Syn.shift (Syn.shift y)) by simp [Syn.shift],
           show Syn.shift (pairT (pairT (var 0) (Syn.shift h)) (Syn.shift y)) =
@@ -158,25 +164,28 @@ theorem prefix_identity {h : PTm n} (hh : Γ ⊢[PRAAx] le one h) (N y : PTm n) 
         have hq : Λ ⊢[PRAAx] pw (succ (var 0)) (Syn.shift (Syn.shift h)) ≐
             succ (pred (pw (succ (var 0)) (Syn.shift (Syn.shift h)))) :=
           pos_of_one_le (one_le_pw' (by ipra_le 𝔞 (var 0)) _)
-        refine (btB_at a _ _ _ _).eqTrans ((step_pt a hq).eqTrans ?_)
-        exact congrAdd (btB_at a _ _ _ _).eqSymm (cB_at a _ _ _ _).eqSymm
-      -- the new term `d = N` of `Bt(N)` vanishes
-      have hlt : Δ ⊢[PRAAx] lt (var 0) (pw (succ (var 0)) (Syn.shift h)) := by
-        have s := le_self_pw (Γ := Δ) (var 0) (pred (Syn.shift h))
-        exact le_congr (.eqRefl _) (congrAp2 powF hp.eqSymm (.eqRefl _)) s
-      have hq0 : Δ ⊢[PRAAx] pw (succ (var 0)) (Syn.shift h) ≐ succ (pred (pw (succ (var 0)) (Syn.shift h))) :=
+        refine (outerAt _ _ _ _).eqTrans ((step_pt a hq).eqTrans ?_)
+        exact congrAdd (outerAt _ _ _ _).eqSymm (correctionAt _ _ _ _).eqSymm
+      have hlt : Δ ⊢[PRAAx] lt (var 0) (pw (succ (var 0)) (Syn.shift h)) :=
+        le_congr (.eqRefl _) (congrAp2 powF hp.eqSymm (.eqRefl _)) (le_self_pw _ _)
+      have hq : Δ ⊢[PRAAx] pw (succ (var 0)) (Syn.shift h) ≐ succ (pred (pw (succ (var 0)) (Syn.shift h))) :=
         pos_of_one_le (one_le_pw' (by ipra_le 𝔞 (var 0)) _)
-      have last : Δ ⊢[PRAAx] inst2 (btB a) (var 0) (pairT (pairT (var 0) (Syn.shift h)) (Syn.shift y)) ≐ zero :=
-        (btB_at a _ _ _ _).eqTrans ((congrAp2 _ (quo_small hq0 hlt) (.eqRefl _)).eqTrans (sum_zero _ _))
-      have s1 : Δ ⊢[PRAAx] ap2 (sumF (btB a)) (succ (var 0)) (pairT (pairT (var 0) (Syn.shift h)) (Syn.shift y)) ≐
-          Bt a (var 0) (Syn.shift h) (Syn.shift y) :=
-        (sum_succ _ _ _).eqTrans ((congrAdd (.eqRefl _) last).eqTrans (add_zero _))
-      have s2 : Δ ⊢[PRAAx] Bpre a (succ (var 0)) (Syn.shift h) (Syn.shift y) ≐
-          Bpre a (var 0) (Syn.shift h) (Syn.shift y) + bval a (succ (var 0)) (Syn.shift h) (Syn.shift y) :=
-        (sum_succ _ _ _).eqTrans (congrAdd (.eqRefl _) (bpB_at a _ _ _))
-      exact sp.eqTrans ((congrAdd (s1.eqTrans ih) (.eqRefl _)).eqTrans s2.eqSymm)
-  have r := Prf.allE N hall
-  simpa [Syn.subst_inst_shift] using r
+      have last : Δ ⊢[PRAAx] inst2 outer (var 0) (pairT (pairT (var 0) (Syn.shift h)) (Syn.shift y)) ≐ zero :=
+        (outerAt _ _ _ _).eqTrans ((congrAp2 _ (quo_small hq hlt) (.eqRefl _)).eqTrans (sum_zero _ _))
+      have oldSum := (sum_succ _ _ _).eqTrans ((congrAdd (.eqRefl _) last).eqTrans (add_zero _))
+      have nextPrefix := (sum_succ (Γ := Δ) prefixBody (var 0) (pairT (Syn.shift h) (Syn.shift y))).eqTrans
+        (congrAdd (.eqRefl _) (prefixAt (var 0) (Syn.shift h) (Syn.shift y)))
+      exact split.eqTrans ((congrAdd (oldSum.eqTrans ih) (.eqRefl _)).eqTrans nextPrefix.eqSymm)
+  simpa [Syn.subst_inst_shift] using hall.allE N
+
+/-- `Σ_{d<N} A(⌊N/(d+1)^h⌋) = Σ_{i<N} b_h(i+1)` for `h ≥ 1`. -/
+theorem prefix_identity {h : PTm n} (hh : Γ ⊢[PRAAx] le one h) (N y : PTm n) :
+    Γ ⊢[PRAAx] Bt a N h y ≐ Bpre a N h y := by
+  refine prefix_identity_of a (btB a) (cB a) (bpB a) (var 1) ?_ ?_ (bpB_at a) hh N y
+  · intro m Δ j M h' y'
+    simpa [inst2] using btB_at (Γ := Δ) a j M h' y'
+  · intro m Δ j M h' y'
+    simpa [inst2] using cB_at (Γ := Δ) a j M h' y'
 
 end LeanProofs.IPRA.AnalyticNumberTheory.PowerDivisorPrefix
 
