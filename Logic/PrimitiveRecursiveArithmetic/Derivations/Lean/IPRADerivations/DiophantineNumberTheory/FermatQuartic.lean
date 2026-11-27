@@ -166,23 +166,25 @@ theorem h01 : ([] : List (Fm PTm 2)) ⊢[PRAAx]
   rw [inst2_chi]
   exact zo_mul (zo_eqb _ _) (zo_mul (zo_sg _) (zo_mul (zo_sg _) (zo_eqb _ _)))
 
+/-- With a positive left summand whenever the guard is positive, the guarded
+test for a zero sum vanishes. -/
+theorem guarded_sum_eqb_zero {x a b : PTm n}
+    (ha : (x ≐ succ (pred x)) :: Γ ⊢[PRAAx] a ≐ succ (pred a)) :
+    Γ ⊢[PRAAx] sg x * eqb (a + b) (zero * zero) ≐ zero := by
+  refine .orE (zero_or_succ x) ?_ ?_
+  · exact (congrMul ((congrSg Prf.hyp0).eqTrans sg_zero) (.eqRefl _)).eqTrans (zero_mul _)
+  · have hne : (x ≐ succ (pred x)) :: Γ ⊢[PRAAx] neg (a + b ≐ zero * zero) :=
+      .impI (succ_ne_zero' _ (ha.wk.eqSymm.eqTrans (add_eq_zero_left (Prf.hyp0.eqTrans (mul_zero _)))))
+    exact (congrMul (.eqRefl _) (eqb_of_ne hne)).eqTrans (mul_zero _)
+
 theorem h0 : ([] : List (Fm PTm 2)) ⊢[PRAAx] inst2 chiF (var 0) zero ≐ zero := by
   rw [inst2_chi]
-  refine .orE (zero_or_succ (fstT (var 0 : PTm 2))) ?_ ?_
-  · have e : ([fstT (var 0 : PTm 2) ≐ zero] : List (Fm PTm 2)) ⊢[PRAAx] sg (fstT (var 0)) ≐ zero :=
-      (congrSg Prf.hyp0).eqTrans sg_zero
-    refine withEq e fun h => ?_
-    apply deriveNat; ipra_simps; rw [h]; ring
-  · have hf : ([fstT (var 0 : PTm 2) ≐ succ (pred (fstT (var 0)))] : List (Fm PTm 2)) ⊢[PRAAx]
-        fstT (var 0) ≐ succ (pred (fstT (var 0))) := Prf.hyp0
-    have h4 := pos_mul (pos_mul hf hf) (pos_mul hf hf)
-    have hne : ((fstT (var 0 : PTm 2) ≐ succ (pred (fstT (var 0)))) :: []) ⊢[PRAAx]
-        neg (q4 (fstT (var 0)) + q4 (sndT (var 0)) ≐ zero * zero) := by
-      refine .impI ?_
-      exact succ_ne_zero' _ (h4.wk.eqSymm.eqTrans (add_eq_zero_left (Prf.hyp0.eqTrans (mul_zero _))))
-    have e := eqb_of_ne hne
-    refine withEq e fun h => ?_
-    apply deriveNat; ipra_simps; rw [h]; ring
+  let x := fstT (var 0 : PTm 2)
+  let y := sndT (var 0 : PTm 2)
+  have hx : ([x ≐ succ (pred x)] : List (Fm PTm 2)) ⊢[PRAAx] x ≐ succ (pred x) := Prf.hyp0
+  have h2 := pos_mul hx hx
+  have h := guarded_sum_eqb_zero (b := q4 y) (pos_mul h2 h2)
+  ipra_lc Groth.ι (IPRA.Q.mk [] (eqb (var 0) (pairT x y) * sg y)) * natEq h
 
 theorem hb : ([inst2 chiF (var 0) (var 1) ≐ one] : List (Fm PTm 2)) ⊢[PRAAx]
     lt (var 0) (inst1 betaF (var 1)) := by

@@ -335,21 +335,13 @@ theorem h01 : ([] : List (Fm PTm 2)) ⊢[PRAAx]
 
 theorem h0 : ([] : List (Fm PTm 2)) ⊢[PRAAx] inst2 chiF (var 0) zero ≐ zero := by
   rw [inst2_chi]
-  refine .orE (zero_or_succ (fstT (var 0 : PTm 2))) ?_ ?_
-  · have e : ([fstT (var 0 : PTm 2) ≐ zero] : List (Fm PTm 2)) ⊢[PRAAx] sg (fstT (var 0)) ≐ zero :=
-      (congrSg Prf.hyp0).eqTrans sg_zero
-    refine withEq e fun h => ?_
-    apply deriveNat; ipra_simps; rw [h]; ring
-  · have hf : ([fstT (var 0 : PTm 2) ≐ succ (pred (fstT (var 0)))] : List (Fm PTm 2)) ⊢[PRAAx]
-        fstT (var 0) ≐ succ (pred (fstT (var 0))) := Prf.hyp0
-    have h2 := pos_mul hf hf
-    have hne : ((fstT (var 0 : PTm 2) ≐ succ (pred (fstT (var 0)))) :: []) ⊢[PRAAx]
-        neg (fstT (var 0) * fstT (var 0) + fstT (sndT (var 0)) * fstT (sndT (var 0)) ≐ zero * zero) := by
-      refine .impI ?_
-      exact succ_ne_zero' _ (h2.wk.eqSymm.eqTrans (add_eq_zero_left (Prf.hyp0.eqTrans (mul_zero _))))
-    have e := eqb_of_ne hne
-    refine withEq e fun h => ?_
-    apply deriveNat; ipra_simps; rw [h]; ring
+  let x := fstT (var 0 : PTm 2)
+  let y := fstT (sndT (var 0 : PTm 2))
+  let z := sndT (sndT (var 0 : PTm 2))
+  have hx : ([x ≐ succ (pred x)] : List (Fm PTm 2)) ⊢[PRAAx] x ≐ succ (pred x) := Prf.hyp0
+  have h := FermatQuartic.guarded_sum_eqb_zero (b := y * y) (pos_mul hx hx)
+  ipra_lc Groth.ι (IPRA.Q.mk [] (eqb (var 0) (pairT x (pairT y z)) * sg y * sg z *
+    eqb (x * y) (two * (z * z)))) * natEq h
 
 alias le_add_mono := Common.add_le_add
 
