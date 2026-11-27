@@ -70,7 +70,6 @@ private theorem scaled_log_rate (p r x : PTm n) (hn : Γ ⊢[PRAAx] le (num 6) (
     (multiply_at constantF H c d p).eqTrans (recode_congr (qmul_congr (constant_at q c) (.eqRefl _)))
   have clocks : Γ ⊢[PRAAx] le U V := GaussianExponentialReference.unit_monotone (le_add_right p _)
   have close : Γ ⊢[PRAAx] le ((num 12*V+num 29*a)*(a*U)) ((num 12*U+num 29*a)*(a*V)) := by
-    let 𝔞 := fun t : PTm n => Groth.ι (IPRA.Q.mk Γ t)
     ipra_le 29*(𝔞 a)^2*sl clocks
   exact distance_congr read.eqSymm (.eqRefl _) (.eqRefl _) (.eqRefl _)
     (distance_radius_mono _ _ _ _ _ _ hE hD close (recode_left_distance _ _ _ _ hE atClock))

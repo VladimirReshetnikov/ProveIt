@@ -31,7 +31,6 @@ private theorem mixed_succ (q a b c : PTm n) (h : Γ ⊢[PRAAx] mixedIncrement q
   have hc := pw_le_pw q (le_add_right a c : Γ ⊢[PRAAx] le a (a+c))
   change Γ ⊢[PRAAx] le (pw (a+b) (succ q)+pw (a+c) (succ q)) (pw (a+b+c) (succ q)+pw a (succ q))
   refine le_congr (congrAdd (pw_succ _ _) (pw_succ _ _)).eqSymm (congrAdd (pw_succ _ _) (pw_succ _ _)).eqSymm ?_
-  let 𝔞 := fun t : PTm n => Groth.ι (IPRA.Q.mk Γ t)
   ipra_le (𝔞 a+𝔞 b+𝔞 c)*sl h+𝔞 c*sl hb+𝔞 b*sl hc
 
 theorem mixed_gap (q a b c : PTm n) : Γ ⊢[PRAAx] mixedIncrement q a b c := by

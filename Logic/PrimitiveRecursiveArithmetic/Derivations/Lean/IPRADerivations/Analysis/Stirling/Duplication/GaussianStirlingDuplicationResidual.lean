@@ -163,14 +163,12 @@ theorem uniform_sample_bound (p a b : PTm n) (hs : Γ ⊢[PRAAx] source a b) :
   have paid : Γ ⊢[PRAAx] distanceBounded (ap2 nameF s (nameData a b)) qzero (b*U+A) D := by
     apply distance_radius_mono _ _ _ _ _ _ hS hD ?_ (sample_bound s a b hs)
     change Γ ⊢[PRAAx] le ((b*b*V+num 4*a*Z)*(num 4*a*U)) ((b*U+num 4*a)*(num 4*a*b*V))
-    let 𝔞 := fun t : PTm n => Groth.ι (IPRA.Q.mk Γ t)
     ipra_le 16*(𝔞 a)^2*sl cap
   have clocks : Γ ⊢[PRAAx] le U V := GaussianExponentialReference.unit_monotone (le_add_right p Z)
   have earlier : Γ ⊢[PRAAx] distanceBounded (ap2 nameF p (nameData a b)) (ap2 nameF s (nameData a b)) (two*A) D := by
     apply distance_radius_mono _ _ _ _ _ _ (positive_product _ _ hU hV) hD ?_
       (GaussianNameEquivalence.point_at nameF (nameData a b) p s (name_regular a b hs))
     change Γ ⊢[PRAAx] le ((U+V)*(A*U)) ((two*A)*(U*V))
-    let 𝔞 := fun t : PTm n => Groth.ι (IPRA.Q.mk Γ t)
     ipra_le (𝔞 A*𝔞 U)*sl clocks
   exact distance_congr (.eqRefl _) (.eqRefl _) (by unfold uniformNumerator; dsimp [U,A]; ipra_ring) (.eqRefl _)
     (distance_triangle_same _ _ _ _ _ _ hD earlier paid)
