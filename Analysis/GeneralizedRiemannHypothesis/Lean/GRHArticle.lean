@@ -48,6 +48,7 @@ import GRHArticle.ProgressionFree.IntegerRoughOptimalPrefix
 import GRHArticle.ProgressionFree.IntegerRoughPrefixIntervals
 import GRHArticle.ProgressionFree.IntegerRoughTemplateDensity
 import GRHArticle.ProgressionFree.IntegerSevenSmoothPacking
+import GRHArticle.ProgressionFree.IntegerSharedDeletion
 import GRHArticle.ProgressionFree.IntegerSmoothFactorization
 import GRHArticle.ProgressionFree.IntegerSmoothIndependence
 import GRHArticle.ProgressionFree.IntegerSmoothNaturalBound
@@ -102,6 +103,7 @@ import GRHArticle.ProgressionFree.Rankin
 import GRHArticle.ProgressionFree.RankinApproximation
 import GRHArticle.ProgressionFree.RankinTruncation
 import GRHArticle.ProgressionFree.SatelliteProfiles
+import GRHArticle.ProgressionFree.SharedDeletionProgressions
 import GRHArticle.SingularModuli.BaseChange
 import GRHArticle.SingularModuli.Binomial
 import GRHArticle.SingularModuli.CMHeckeDiagonal
