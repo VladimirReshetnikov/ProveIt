@@ -72,9 +72,8 @@ theorem defect_sum (u e : PTm 2) {x A B K : PTm n}
         ConciseIPRA.PTm.subst_succ]
       have z := natEq (sum_zero (Γ := Γ) e x)
       ipra_le 0 using rw [z]; ring
-    · simp only [P, subst_le, subst_ap2, subst_inst2, PTm.subst_add, PTm.subst_mul,
-        PTm.subst_monus, Syn.subst_var, Syn.repl_zero, subst_repl_shift, ConciseIPRA.PTm.subst_zero,
-        ConciseIPRA.PTm.subst_succ]
+    · simp only [P, subst_le, subst_ap2, subst_inst2, PTm.subst_add, PTm.subst_mul, Syn.subst_var, Syn.repl_zero,
+        subst_repl_shift, ConciseIPRA.PTm.subst_zero, ConciseIPRA.PTm.subst_succ]
       exact .impI (defect_step (.impE hm.allOpen.wk.wk Prf.hyp0)
         (.impE hc.allOpen.wk.wk Prf.hyp0) Prf.hyp1)
   simpa [P] using atBound

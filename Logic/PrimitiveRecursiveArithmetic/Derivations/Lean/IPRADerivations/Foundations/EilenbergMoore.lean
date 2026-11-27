@@ -82,12 +82,7 @@ theorem free_mult {a : PTm n} (ha : Γ ⊢[PRAAx] C.obj a) :
 
 include LC LD FL FR AL in
 /-- `T(f) : (Ta, μ_a) → (Tb, μ_b)` is an algebra morphism. -/
-theorem free_morphism {a b f : PTm n} (ha : Γ ⊢[PRAAx] C.obj a) (hb : Γ ⊢[PRAAx] C.obj b)
-    (hf : Γ ⊢[PRAAx] C.hom a b f) :
-    Γ ⊢[PRAAx] C.eqv (A.RL (A.RL a)) (A.RL b)
-      (C.comp (A.RL (A.RL a)) (A.RL a) (A.RL b) (Tm A a b f) (mu A a))
-      (C.comp (A.RL (A.RL a)) (A.RL (A.RL b)) (A.RL b) (mu A b) (Tm A (A.RL a) (A.RL b) (Tm A a b f))) :=
-  mu_nat LC LD FL FR AL ha hb hf
+alias free_morphism := KleisliIdentity.mu_nat
 
 include LC LD FL FR AL in
 /-- For an algebra `(b, k)` and `g : a → b`, `k T(g) : (Ta, μ_a) → (b, k)` is an algebra morphism. -/

@@ -24,16 +24,13 @@ open LeanProofs.IPRA.DiophantineNumberTheory.Coprime
 open LeanProofs.IPRA.AnalyticNumberTheory.GcdFiber (shift_pos)
 open LeanProofs.IPRA.AnalyticNumberTheory.Multiplicative (rem_lt' rem_eq' zero_lt' rem_rem_mul cop_left cop_right
   cop_both gcd_rem shift_lt)
+export RSA (quo_one)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
 theorem rem_small {a M : PTm n} (hM : Γ ⊢[PRAAx] M ≐ succ (pred M)) (ha : Γ ⊢[PRAAx] lt a M) :
     Γ ⊢[PRAAx] rem a M ≐ a :=
   rem_eq' hM (q := zero) (by ipra_ring) ha
-
-theorem quo_one (N : PTm n) : Γ ⊢[PRAAx] quo N one ≐ N := by
-  have h1 : Γ ⊢[PRAAx] (one : PTm n) ≐ succ (pred one) := (congrSucc (pred_succ _)).eqSymm
-  exact quo_eq h1 (q := N) (r := zero) (by ipra_ring) (zero_lt' h1)
 
 section CRT
 

@@ -119,9 +119,7 @@ def cK : PTm 2 := Syn.subst ![var 0, sndT (sndT (var 1))] act
 /-- The cell `⌊(A_i − a)/s⌋`. -/
 def gK : PTm 2 := quo (monus (Syn.subst ![var 0, sndT (sndT (var 1))] A) (fstT (var 1))) (fstT (sndT (var 1)))
 
-theorem sub_ss (f : PTm 2) (i X : PTm n) :
-    Syn.subst ![i, X] (Syn.subst ![var 0, sndT (sndT (var 1))] f) = inst2 f i (sndT (sndT X)) := by
-  simp [subst_reindex2]
+alias sub_ss := IntervalPacking.sub3
 
 theorem inst2_cK (i X : PTm n) : inst2 (cK act) i X = inst2 act i (sndT (sndT X)) := by
   simp only [cK]; exact sub_ss act i X

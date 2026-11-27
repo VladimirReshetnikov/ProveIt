@@ -23,6 +23,7 @@ open LeanProofs.IPRA.AnalyticNumberTheory.DivisorFactor
 open LeanProofs.IPRA.AnalyticNumberTheory.Fermat (subst_up_shift')
 open LeanProofs.IPRA.AnalyticNumberTheory.PNTStageStep (pos_of_one_le)
 open LeanProofs.IPRA.Foundations.SignedSumScale (sum_scale)
+open SumPhi renaming shift_mul' → shift_product
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
@@ -133,9 +134,6 @@ private theorem right_point (f g : ZB) {a b m N y : PTm n}
     rw [inner_val, ZT.toZ_mul, weight_false f g (y := y) hb,
       natEq (eqb_of_ne hb), Q.mk_zero, map_zero]
     ring
-
-private theorem shift_product (m N : PTm n) : Syn.shift (m * N) = Syn.shift m * Syn.shift N := by
-  simp [Syn.shift]
 
 private theorem shift_val (w : ZB) (i x : PTm n) :
     (w.val i x).subst (fun j => var j.succ) = w.val (Syn.shift i) (Syn.shift x) :=

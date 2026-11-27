@@ -46,8 +46,7 @@ theorem inst2_G (q N : PTm n) : inst2 G q N = monus (pw q (succ (val q N))) one 
 theorem monus_succ_one (x : PTm n) : Γ ⊢[PRAAx] monus (succ x) one ≐ x :=
   (succ_monus_succ _ _).eqTrans (monus_zero _)
 
-theorem two_le_prime' {p : PTm n} (hp : Γ ⊢[PRAAx] prime p) : Γ ⊢[PRAAx] le two p := by
-  have h := hp; unfold prime at h; exact Prf.andE₁ h
+alias two_le_prime' := Mobius.prime_two
 
 /-! ## Valuations along `n = p^a m` -/
 

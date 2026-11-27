@@ -36,6 +36,7 @@ open LeanProofs.IPRA.AnalyticNumberTheory.PowerCleared (A Dn pB dB pBt dBt A_suc
 open LeanProofs.IPRA.AnalyticNumberTheory.Smooth (smooth_all)
 open LeanProofs.IPRA.AnalyticNumberTheory.Primes (fact_pos)
 open LeanProofs.IPRA.Analysis.Products (fact)
+export RSA (quo_one)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
@@ -75,8 +76,7 @@ theorem term_le_of {a b L F m : PTm n} (h : Γ ⊢[PRAAx] dvd m (pw a L) ⟶ dvd
     (le_congr (term_pos hm.wk (eq_of_eqb Prf.hyp0)).eqSymm
       (term_pos hm.wk (Prf.impE h.wk (eq_of_eqb Prf.hyp0))).eqSymm (le_refl _))
 
-theorem neg_of_eqb_zero {x y : PTm n} (h : Γ ⊢[PRAAx] eqb x y ≐ zero) : Γ ⊢[PRAAx] neg (x ≐ y) :=
-  .impI (succ_ne_zero' _ (a := zero) ((eqb_of_eq Prf.hyp0).eqSymm.eqTrans h.wk))
+alias neg_of_eqb_zero := Valuation.ne_of_eqb_zero
 
 /-! ## The two pointwise inequalities -/
 
@@ -169,9 +169,6 @@ theorem Sm_succ (a L F N : PTm n) : Γ ⊢[PRAAx] Sm a L F (succ N) ≐ Sm a L F
 
 theorem eq_zero_of_le_zero {x : PTm n} (h : Γ ⊢[PRAAx] le x zero) : Γ ⊢[PRAAx] x ≐ zero :=
   (monus_zero x).eqSymm.eqTrans h
-
-theorem quo_one (F : PTm n) : Γ ⊢[PRAAx] quo F one ≐ F :=
-  quo_eq (congrSucc (pred_succ _).eqSymm) (q := F) (r := zero) (by ipra_ring) (le_refl _)
 
 theorem two_add (x : PTm n) : Γ ⊢[PRAAx] two + x ≐ succ (succ x) := by ipra_ring
 

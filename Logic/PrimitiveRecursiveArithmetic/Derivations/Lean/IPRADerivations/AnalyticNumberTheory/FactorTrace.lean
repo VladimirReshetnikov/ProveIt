@@ -43,8 +43,7 @@ theorem tr_succ (i N : PTm n) : Γ ⊢[PRAAx] trT (succ i) N ≐ stepT (trT i N)
 
 /-! ## The step -/
 
-theorem lpf_two (x : PTm n) : Γ ⊢[PRAAx] le two (lpf x) :=
-  (succ_monus_succ _ _).eqTrans ((succ_monus_succ _ _).eqTrans (zero_monus _))
+alias lpf_two := Valuation.two_le_lpf
 
 theorem lpf_pos (x : PTm n) : Γ ⊢[PRAAx] lpf x ≐ succ (pred (lpf x)) := congrSucc (pred_succ _).eqSymm
 

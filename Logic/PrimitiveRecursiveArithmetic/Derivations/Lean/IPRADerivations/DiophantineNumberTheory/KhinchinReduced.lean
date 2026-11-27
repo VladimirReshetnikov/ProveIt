@@ -43,6 +43,7 @@ open LeanProofs.IPRA.DiophantineNumberTheory.KhinchinBad (xq inJT cntB badB inst
 open LeanProofs.IPRA.DiophantineNumberTheory.KhinchinBadSum (cB inst2_cB bqB inst2_bqB cnt_zero cnt_dS inst2_aK)
 open LeanProofs.IPRA.DiophantineNumberTheory.KhinchinBadBound (bad_bound)
 open LeanProofs.IPRA.DiophantineNumberTheory.KhinchinLattice (aK latticeA lattice_core)
+export LeanProofs.IPRA.Common (two_pos)
 
 set_option autoImplicit false
 
@@ -209,8 +210,6 @@ theorem upper_aux {R A D α γ B Q : PTm n} (h1 : Γ ⊢[PRAAx] le R A)
     with (-(𝔞 Q * (𝔞 Q + 1))) * e
 
 /-! ## (K3) -/
-
-theorem two_pos : Γ ⊢[PRAAx] (two : PTm n) ≐ succ (pred two) := congrSucc (pred_succ _).eqSymm
 
 /-- (K3): for `J* = (α/β, γ/β)`, `α ≤ γ ≤ β = b₀ + 1`, `D = γ − α`, `Q = 2^k ≤ M` and (K4) `Dk ≥ 256β`,
 the reduced fractions `p/q ∈ J*` with `⌊Q/4⌋ < q ≤ Q` satisfy `DQ² ≤ 16β#𝓡` and `β#𝓡 ≤ 2DQ²`,

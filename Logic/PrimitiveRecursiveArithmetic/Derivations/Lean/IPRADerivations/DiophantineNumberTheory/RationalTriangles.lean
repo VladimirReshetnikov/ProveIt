@@ -61,9 +61,7 @@ theorem no_area_one {a₁ a₂ b₁ b₂ c₁ c₂ : PTm n}
   ipra_lc natEq h₂
 
 /-- `cor:quartic-obstruction`: `x⁴ − y⁴ = z²` has no positive solutions. -/
-theorem quartic_obstruction {x y z : PTm n} (hx : Γ ⊢[PRAAx] x ≐ succ (pred x)) (hy : Γ ⊢[PRAAx] y ≐ succ (pred y))
-    (hz : Γ ⊢[PRAAx] z ≐ succ (pred z)) (h : Γ ⊢[PRAAx] q4 y + z * z ≐ q4 x) : Γ ⊢[PRAAx] Fm.bot :=
-  fourth_difference hx hy hz h
+alias quartic_obstruction := FermatQuarticPoints.fourth_difference
 
 /-- `cor:quartic-obstruction`, second part: `a⁴ + b⁴ = c⁴` has no positive solutions (`c⁴ − a⁴ = (b²)²`). -/
 theorem quartic_fermat {a b c : PTm n} (ha : Γ ⊢[PRAAx] a ≐ succ (pred a)) (hb : Γ ⊢[PRAAx] b ≐ succ (pred b))

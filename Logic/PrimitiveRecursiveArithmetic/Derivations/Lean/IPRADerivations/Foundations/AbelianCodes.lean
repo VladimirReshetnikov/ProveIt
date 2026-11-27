@@ -85,8 +85,7 @@ theorem smul_add (hA : Assoc G) (hC : Comm G) (hI : IdL G e) (a b X : PTm n) :
     · simp only [Fm.subst_eq, subst_ap2, subst_inst2, PTm.subst_add, Syn.subst_var, Syn.inst_zero, Syn.subst_inst_shift]
       refine (congrSmul (add_zero _) (.eqRefl _)).eqTrans ?_
       exact (hI _).eqSymm.eqTrans ((hC _ _).eqTrans (congrOp G (.eqRefl _) (smul_zero _).eqSymm))
-    · simp only [Fm.subst_eq, subst_ap2, subst_inst2, PTm.subst_add, Syn.subst_var, Syn.repl_zero, subst_repl_shift,
-        ConciseIPRA.PTm.subst_succ]
+    · simp only [Fm.subst_eq, subst_ap2, subst_inst2, PTm.subst_add, Syn.subst_var, Syn.repl_zero, subst_repl_shift]
       have e1 : ((smul G e (Syn.shift a + var 0) (Syn.shift X) ≐
           op G (smul G e (Syn.shift a) (Syn.shift X)) (smul G e (var 0) (Syn.shift X))) :: Γ.map Fm.shift) ⊢[PRAAx]
           Syn.shift a + succ (var 0) ≐ succ (Syn.shift a + var 0) := by ipra_ring
@@ -103,10 +102,9 @@ theorem smul_mul (hA : Assoc G) (hC : Comm G) (hI : IdL G e) (a b X : PTm n) :
   have hall : Γ ⊢[PRAAx] Fm.all (smul G e (Syn.shift b * var 0) (Syn.shift X) ≐
       smul G e (var 0) (smul G e (Syn.shift b) (Syn.shift X))) := by
     refine PRA.qfInd _ trivial ?_ ?_
-    · simp only [Fm.subst_eq, subst_ap2, subst_inst2, PTm.subst_mul, Syn.subst_var, Syn.inst_zero, Syn.subst_inst_shift]
+    · simp only [Fm.subst_eq, subst_ap2, PTm.subst_mul, Syn.subst_var, Syn.inst_zero, Syn.subst_inst_shift]
       exact (congrSmul (mul_zero _) (.eqRefl _)).eqTrans ((smul_zero _).eqTrans (smul_zero _).eqSymm)
-    · simp only [Fm.subst_eq, subst_ap2, subst_inst2, PTm.subst_mul, Syn.subst_var, Syn.repl_zero, subst_repl_shift,
-        ConciseIPRA.PTm.subst_succ]
+    · simp only [Fm.subst_eq, subst_ap2, PTm.subst_mul, Syn.subst_var, Syn.repl_zero, subst_repl_shift]
       have e1 : ((smul G e (Syn.shift b * var 0) (Syn.shift X) ≐
           smul G e (var 0) (smul G e (Syn.shift b) (Syn.shift X))) :: Γ.map Fm.shift) ⊢[PRAAx]
           Syn.shift b * succ (var 0) ≐ Syn.shift b * var 0 + Syn.shift b := by ipra_ring

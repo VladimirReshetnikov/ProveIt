@@ -191,7 +191,7 @@ end R
 
 /-! ## The local factor -/
 
-theorem two_pos'' : Γ ⊢[PRAAx] (two : PTm n) ≐ succ (pred two) := congrSucc (pred_succ _).eqSymm
+alias two_pos'' := LeanProofs.IPRA.Common.two_pos
 
 /-- `2 ∣ φ(p^{k+1})` for an odd prime `p`. -/
 theorem phi_ppow_even {p : PTm n} (hp : Γ ⊢[PRAAx] prime p) (hodd : Γ ⊢[PRAAx] rem p two ≐ one) (k : PTm n) :

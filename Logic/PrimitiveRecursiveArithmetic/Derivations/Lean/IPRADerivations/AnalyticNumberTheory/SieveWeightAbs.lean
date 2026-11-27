@@ -44,6 +44,7 @@ open LeanProofs.IPRA.AnalyticNumberTheory.SievePrimes (sg_le_one eqb_le1)
 open LeanProofs.IPRA.AnalyticNumberTheory.SieveWeightRows (uB inst2_uB)
 open LeanProofs.IPRA.AnalyticNumberTheory.SieveWeightValues (YP YN eqb_zero_one)
 open LeanProofs.IPRA.Probability.Independence (row_pt)
+export PowerDivisorGrowth (mu_sum_le)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
@@ -82,9 +83,6 @@ theorem drop_le {D k W A : PTm n} (hk : Γ ⊢[PRAAx] le k one) (h : Γ ⊢[PRAA
   ipra_le sl h + 𝔞 D * 𝔞 W * sl hk
 
 /-! ## `μ⁺ + μ⁻ ≤ 1` -/
-
-theorem mu_sum_le (N x : PTm n) : Γ ⊢[PRAAx] le (muP N x + muN N x) one :=
-  scaled_le (eqb_le1 _ _) (ind_sum_le (eqb_le1 _ _) (eqb_le1 _ _) (eqb_zero_one _))
 
 theorem a_sum_le (i p : PTm n) : Γ ⊢[PRAAx] le (inst2 aPB i p + inst2 aNB i p) one := by
   rw [inst2_aP, inst2_aN]

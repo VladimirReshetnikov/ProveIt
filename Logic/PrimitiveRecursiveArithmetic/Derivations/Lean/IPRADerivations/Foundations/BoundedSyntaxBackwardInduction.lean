@@ -86,9 +86,7 @@ theorem reverse_successor (N t : PTm n) (ht : Γ ⊢[PRAAx] lt t N) : Γ ⊢[PRA
     (eq_add_of_le ht).eqTrans (by ipra_ring)
   exact ((congrMonus e (.eqRefl t)).eqTrans (add_monus _ _)).eqSymm
 
-theorem reverse_strict (N t : PTm n) (ht : Γ ⊢[PRAAx] lt t N) : Γ ⊢[PRAAx]
-    lt (monus N (succ t)) N :=
-  le_of_eq_add ((eq_add_of_le ht).eqTrans (by ipra_ring))
+alias reverse_strict := LeanProofs.IPRA.Common.monus_succ_lt
 
 def localStep (A : BFm (n+1)) (N : PTm n) : Fm PTm n :=
   .all (lt (var 0) (Syn.shift N) ⟶

@@ -176,9 +176,7 @@ theorem cnt_dS (k M s : PTm n) :
     (sg_congr (congrMonus hv.eqSymm (congrMul (.eqRefl _) hβ.eqSymm)))
 
 /-- `Q + 1 + (d − 1) = d (⌊Q/d⌋ + 1) + (Q mod d)`, with atoms. -/
-theorem quo_add_aux {Q d u r e : PTm n} (h1 : Γ ⊢[PRAAx] Q ≐ d * u + r) (h2 : Γ ⊢[PRAAx] d ≐ succ e) :
-    Γ ⊢[PRAAx] succ Q + e ≐ d * succ u + r :=
-  AnalyticNumberTheory.Totient.succ_add_of_div_eq h1 h2
+alias quo_add_aux := LeanProofs.IPRA.AnalyticNumberTheory.Totient.succ_add_of_div_eq
 
 /-- `#{q < Q + 1 : d ∣ q} = ⌊Q/d⌋ + 1` for `d ≥ 1`. -/
 theorem multiples_upto {Q d : PTm n} (hd : Γ ⊢[PRAAx] d ≐ succ (pred d)) :

@@ -72,9 +72,7 @@ def mtB : PTm 2 :=
       (Syn.subst ![var 0, sndT (sndT (var 1))] hi2) *
     monus (Syn.subst ![var 0, sndT (sndT (var 1))] hi2) (Syn.subst ![var 0, sndT (sndT (var 1))] lo2)
 
-theorem sub_ss (f : PTm 2) (j w : PTm n) :
-    Syn.subst ![j, w] (Syn.subst ![var 0, sndT (sndT (var 1))] f) = inst2 f j (sndT (sndT w)) := by
-  simp [subst_reindex2]
+alias sub_ss := IntervalPacking.sub3
 
 theorem inst2_mtB (j w : PTm n) : inst2 (mtB lo2 hi2) j w =
     meet (fstT w) (fstT (sndT w)) (inst2 lo2 j (sndT (sndT w))) (inst2 hi2 j (sndT (sndT w))) *

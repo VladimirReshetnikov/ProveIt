@@ -46,13 +46,12 @@ theorem sum_linear (A B E F : PTm 2) {N lam al kap be x : PTm k}
       N * kap + be * ap2 (sumF E) N x + ap2 (sumF F) N x := by
   have hall : Γ ⊢[PRAAx] Fm.all (linF A B E F N lam al kap be x) := by
     refine PRA.qfInd _ ⟨le_QF _ _, trivial⟩ ?_ ?_
-    · simp only [Fm.subst_imp, Fm.subst_eq, subst_le, subst_ap2, PTm.subst_add, PTm.subst_mul,
-        Syn.subst_var, Syn.inst_zero, Syn.subst_inst_shift, ConciseIPRA.PTm.subst_zero]
+    · simp only [Fm.subst_imp, Fm.subst_eq, subst_le, subst_ap2, PTm.subst_add, PTm.subst_mul, Syn.subst_var,
+        Syn.inst_zero, Syn.subst_inst_shift]
       refine .impI ?_
       ipra_lc natEq (sum_zero A x) + 𝔞 al * natEq (sum_zero B x) - 𝔞 be * natEq (sum_zero E x) - natEq (sum_zero F x)
-    · simp only [Fm.subst_imp, Fm.subst_eq, subst_le, subst_ap2, PTm.subst_add, PTm.subst_mul,
-        Syn.subst_var, Syn.repl_zero, subst_repl_shift, ConciseIPRA.PTm.subst_zero,
-        ConciseIPRA.PTm.subst_succ]
+    · simp only [Fm.subst_imp, Fm.subst_eq, subst_le, subst_ap2, PTm.subst_add, PTm.subst_mul, Syn.subst_var,
+        Syn.repl_zero, subst_repl_shift]
       refine .impI ?_
       have hm : (le (succ (var 0)) (Syn.shift N) :: linF A B E F N lam al kap be x ::
           Γ.map Fm.shift) ⊢[PRAAx] le (var 0) (Syn.shift N) :=
@@ -64,8 +63,8 @@ theorem sum_linear (A B E F : PTm 2) {N lam al kap be x : PTm k}
         natEq (Prf.impE Prf.hyp1 hm) +
         natEq (Prf.impE h.allOpen.wk.wk (Prf.hyp0 (Γ := linF A B E F N lam al kap be x :: Γ.map Fm.shift) (φ := le (succ (var 0)) (Syn.shift N))))
   have h2 := Prf.allE N hall
-  simp only [Fm.subst_imp, Fm.subst_eq, subst_le, subst_ap2, PTm.subst_add, PTm.subst_mul,
-    Syn.subst_var, Syn.inst_zero, Syn.subst_inst_shift, ConciseIPRA.PTm.subst_zero] at h2
+  simp only [Fm.subst_imp, Fm.subst_eq, subst_le, subst_ap2, PTm.subst_add, PTm.subst_mul, Syn.subst_var, Syn.inst_zero,
+    Syn.subst_inst_shift] at h2
   exact .impE h2 (le_refl N)
 
 /-! ## The triangular sum -/
@@ -82,8 +81,7 @@ private abbrev triF : Fm PTm 2 :=
 private theorem tri₀ : ([] : List (Fm PTm 2)) ⊢[PRAAx] triF := by
   refine ind _ trivial ?_ ?_
   · ipra_lc [Fm.subst_eq, subst_ap2, PTm.subst_add, PTm.subst_mul, Syn.subst_var, Syn.inst_zero, Syn.inst_one, ConciseIPRA.PTm.subst_zero, ConciseIPRA.PTm.subst_succ] 2 * natEq (sum_zero (Γ := ([] : List (Fm PTm 1))) idB (var 0))
-  · simp only [Fm.subst_eq, subst_ap2, PTm.subst_add, PTm.subst_mul, Syn.subst_var,
-      Syn.repl_zero, repl_one, ConciseIPRA.PTm.subst_zero, ConciseIPRA.PTm.subst_succ]
+  · simp only [Fm.subst_eq, subst_ap2, PTm.subst_add, PTm.subst_mul, Syn.subst_var, Syn.repl_zero, repl_one]
     have ih : [triF] ⊢[PRAAx]
         ap2 (sumF idB) (var 0) (var 1) + ap2 (sumF idB) (var 0) (var 1) + var 0 ≐
           var 0 * var 0 := Prf.hyp0

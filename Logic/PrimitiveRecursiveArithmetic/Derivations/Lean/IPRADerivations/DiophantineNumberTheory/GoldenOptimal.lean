@@ -44,10 +44,7 @@ theorem absurd_one_zero (φ : Fm PTm n) (h : Γ ⊢[PRAAx] le one zero) : Γ ⊢
   succ_ne_zero' φ (a := zero) ((monus_zero _).eqSymm.eqTrans h)
 
 /-- `N A = N B`, `N ≥ 1` give `A = B`. -/
-theorem cancel_eq {N A B : PTm n} (hN : Γ ⊢[PRAAx] N ≐ succ (pred N)) (h : Γ ⊢[PRAAx] N * A ≐ N * B) :
-    Γ ⊢[PRAAx] A ≐ B :=
-  le_antisymm (cancel_le hN (le_congr (.eqRefl _) h (le_refl _)))
-    (cancel_le hN (le_congr (.eqRefl _) h.eqSymm (le_refl _)))
+alias cancel_eq := LeanProofs.IPRA.Common.mul_cancel_eq
 
 /-- `t ≐ succ e` gives `t ≐ succ (pred t)`. -/
 theorem pos_of_eq {t e : PTm n} (h : Γ ⊢[PRAAx] t ≐ succ e) : Γ ⊢[PRAAx] t ≐ succ (pred t) :=
@@ -109,7 +106,7 @@ ipra_subst nInv [subst_ap2]
 theorem nInv_QF (j p q : PTm n) : (nInv j p q).QF := by
   unfold nInv; exact ⟨trivial, trivial, trivial⟩
 
-theorem pw_two_pos (j : PTm n) : Γ ⊢[PRAAx] pw two j ≐ succ (pred (pw two j)) := pw_pos one j
+alias pw_two_pos := LeanProofs.IPRA.AnalyticNumberTheory.Harmonic.pw2_pos
 
 /-- The induction step. -/
 theorem descent_step {j p q : PTm n} (ih : Γ ⊢[PRAAx] nInv j p q) : Γ ⊢[PRAAx] nInv (succ j) p q := by

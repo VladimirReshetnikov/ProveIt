@@ -30,8 +30,7 @@ set_option autoImplicit false
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
-theorem two_le_prime {p : PTm n} (hp : Γ ⊢[PRAAx] prime p) : Γ ⊢[PRAAx] le two p := by
-  have h := hp; unfold prime at h; exact Prf.andE₁ h
+alias two_le_prime := Mobius.prime_two
 
 /-- Powers of distinct primes are coprime. -/
 theorem cop_pows {p q : PTm n} (hp : Γ ⊢[PRAAx] prime p) (hq : Γ ⊢[PRAAx] prime q) (hne : Γ ⊢[PRAAx] lt p q)

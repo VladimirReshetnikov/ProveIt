@@ -56,9 +56,7 @@ theorem pc_le (x : PTm n) : Γ ⊢[PRAAx] le (pc x) x := by
 
 /-! ## The primes of a window -/
 
-theorem mul_pos_ge {X P : PTm n} (hP : Γ ⊢[PRAAx] P ≐ succ (pred P)) : Γ ⊢[PRAAx] le X (X * P) := by
-  refine le_of_eq_add (d := X * pred P) ?_
-  ipra_lc 𝔞 X * natEq hP
+alias mul_pos_ge := WeightedSplit.kle
 
 alias mul_one_r := Common.mul_one_right
 

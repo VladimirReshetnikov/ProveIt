@@ -32,14 +32,9 @@ open LeanProofs.IPRA.AnalyticNumberTheory.Order (pw_rem_congr pw_one_base phi_po
 open LeanProofs.IPRA.AnalyticNumberTheory.PhiDivides (phi_divides_at)
 open LeanProofs.IPRA.AnalyticNumberTheory.PowerCleared (pw_lt_pw pw_le_exp)
 open LeanProofs.IPRA.AnalyticNumberTheory.CrtBijection (rem_small)
+export LeanProofs.IPRA.Common (one_pos pos_shift)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
-
-theorem pos_shift {x : PTm n} (h : Γ ⊢[PRAAx] x ≐ succ (pred x)) :
-    Γ.map Fm.shift ⊢[PRAAx] Syn.shift x ≐ succ (pred (Syn.shift x)) :=
-  Common.pos_shift h
-
-theorem one_pos : Γ ⊢[PRAAx] (one : PTm n) ≐ succ (pred one) := (congrSucc (pred_succ _)).eqSymm
 
 /-- A unit factor cancels: `x w ≡ y w (mod C)`, `gcd(w, C) = 1` give `x ≡ y`. -/
 theorem cancel {C w x y : PTm n} (hC : Γ ⊢[PRAAx] C ≐ succ (pred C)) (hw : Γ ⊢[PRAAx] gcd w C ≐ one)

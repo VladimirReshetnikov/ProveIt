@@ -29,11 +29,7 @@ set_option autoImplicit false
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
-theorem hyp_shift_succ {N : PTm n} :
-    (lt (var 0) (Syn.shift (succ N)) :: Γ.map Fm.shift) ⊢[PRAAx] lt (var 0) (succ (Syn.shift N)) := by
-  have h0 : (lt (var 0) (Syn.shift (succ N)) :: Γ.map Fm.shift) ⊢[PRAAx] lt (var 0) (Syn.shift (succ N)) := Prf.hyp0
-  have e : Syn.shift (succ N) = succ (Syn.shift N) := by simp [Syn.shift]
-  rw [e] at h0 ⊢; exact h0
+alias hyp_shift_succ := BlockFloor.hyp_succ
 
 /-- `T_F(D) = Σ_{n≤D} F⌊x/n⌋` for `D ≤ x`. -/
 theorem t_f_prefix {x D K F : PTm n} (hD : Γ ⊢[PRAAx] le D x) :

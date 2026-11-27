@@ -24,6 +24,7 @@ namespace LeanProofs.IPRA.DiophantineNumberTheory.MinkowskiMixedRadix
 open_ipra exports
 open LeanProofs.IPRA.Foundations.MasterCertificate (entry subst_entry)
 open LeanProofs.IPRA.DiophantineNumberTheory.SignedEuclidean (natural_divmod positive_form)
+export LeanProofs.IPRA.AnalyticNumberTheory.Euler (rem_one)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
@@ -85,10 +86,6 @@ theorem rem_small (i P : PTm n) (hP : Γ ⊢[PRAAx] le one P)
   have split := natural_divmod i P hP
   exact Prf.andE₂ (euclid_unique ((Prf.andE₁ split).eqSymm.eqTrans
     (by ipra_ring : Γ ⊢[PRAAx] i ≐ P*zero+i)) (Prf.andE₂ split) hi)
-
-theorem rem_one (i : PTm n) : Γ ⊢[PRAAx] rem i one ≐ zero := by
-  have h : Γ ⊢[PRAAx] lt (rem i one) one := Prf.andE₂ (natural_divmod i one (le_refl one))
-  exact (monus_zero _).eqSymm.eqTrans ((succ_monus_succ _ _).eqSymm.eqTrans h)
 
 /-- Exact prefix decomposition; the arithmetic is proved from two actual
 natural divmods and uniqueness, including either radix equal to one. -/

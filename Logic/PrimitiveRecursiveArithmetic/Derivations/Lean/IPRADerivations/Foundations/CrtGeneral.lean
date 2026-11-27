@@ -208,7 +208,7 @@ theorem found {x K y : PTm n} (hx1 : Γ ⊢[PRAAx] rem x (Lc mB K y) ≐ rem (X 
   CrtCoprime.found_with_bound mB aB (rec2 (succ zero) (CrtLcm.stepB mB))
     (fun j y => Lc_pos mB j y) (fun hi => m_dvd_Lc mB hi) hx1 hx2 hV
 
-theorem rem_one' (t : PTm n) : Γ ⊢[PRAAx] rem t one ≐ zero := AnalyticNumberTheory.Euler.rem_one t
+alias rem_one' := LeanProofs.IPRA.AnalyticNumberTheory.Euler.rem_one
 
 theorem step {K y : PTm n}
     (ih : Γ ⊢[PRAAx] (C mB aB K y ≐ zero) ⟶ ((CrtCoprime.V mB aB (X mB aB K y) K y ≐ zero) ⋏ lt (X mB aB K y) (Lc mB K y)))

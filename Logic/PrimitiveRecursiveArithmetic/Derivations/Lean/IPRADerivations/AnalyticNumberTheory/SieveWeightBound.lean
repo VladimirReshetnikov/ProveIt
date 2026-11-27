@@ -50,8 +50,7 @@ variable {n : ℕ} {Γ : List (Fm PTm n)}
 
 /-! ## Certificates over opaque terms -/
 
-theorem dist3 (k a b : PTm n) : Γ ⊢[PRAAx] k * (a + b) ≐ k * a + k * b := by
-  ipra_ring
+alias dist3 := LeanProofs.IPRA.mul_add
 
 theorem ind_drop {k h : PTm n} (hk : Γ ⊢[PRAAx] le k one) : Γ ⊢[PRAAx] le (k * h) h := by
   ipra_le 𝔞 h * sl hk

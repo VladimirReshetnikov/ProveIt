@@ -43,7 +43,7 @@ variable {n : ℕ} {Γ : List (Fm PTm n)}
 /-- `σ = ⌊ℓ/(64q)⌋`. -/
 abbrev sgm (p x : PTm n) : PTm n := quo (ell x) (num 64 * succ p)
 
-theorem p2 : Γ ⊢[PRAAx] (two : PTm n) ≐ succ (pred two) := pos_of_one_le (le_succ_self one)
+alias p2 := LeanProofs.IPRA.Common.two_pos
 
 /-- The growth facts of the cut exponent from `ℓ ≥ 131136 q³`. -/
 theorem sgm_facts {p x : PTm n} (hl : Γ ⊢[PRAAx] le (num 131136 * Q3 p) (ell x)) :

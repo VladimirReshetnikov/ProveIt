@@ -46,6 +46,7 @@ open LeanProofs.IPRA.DiophantineNumberTheory.KhinchinBlockGeo (s_facts w_le_s pa
 open LeanProofs.IPRA.DiophantineNumberTheory.KhinchinBlockScales (Xt Qk Kk yk bB uB b_bit scale_E scale_inter
   u_at pw_mono2)
 open LeanProofs.IPRA.DiophantineNumberTheory.KhinchinBlockArith (block_arith)
+export LeanProofs.IPRA.AnalyticNumberTheory.Harmonic (pw2_pos)
 
 set_option autoImplicit false
 
@@ -105,9 +106,6 @@ theorem k_bounds (wb : PTm 2) {k B K0 M R G α γ b0 : PTm n} (hk : Γ ⊢[PRAAx
     (by ipra_le sl l2 with (𝔞 b0 + 1) * eE - 2 * 𝔞 (monus γ α) * eU)
 
 /-! ## One ordered pair of scales -/
-
-theorem pw2_pos (j : PTm n) : Γ ⊢[PRAAx] pw two j ≐ succ (pred (pw two j)) :=
-  DiophantineNumberTheory.FLTMultiples.pw_pos one j
 
 /-- `Q_ℓ² ≤ T` for `Q_ℓ ≤ R`, `R² ≤ G`. -/
 theorem q2_le_T {Q R G : PTm n} (hQR : Γ ⊢[PRAAx] le Q R) (hRG : Γ ⊢[PRAAx] le (R * R) G) :

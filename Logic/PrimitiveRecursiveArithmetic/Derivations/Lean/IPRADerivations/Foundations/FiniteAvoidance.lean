@@ -46,10 +46,7 @@ theorem shift_pair (a b : PTm n) : Syn.shift (pairT a b) = pairT (Syn.shift a) (
   simp [Syn.shift]
 
 /-- `sg v = 0` gives `v = 0`. -/
-theorem zero_of_sg {v : PTm n} (h : Γ ⊢[PRAAx] sg v ≐ zero) : Γ ⊢[PRAAx] v ≐ zero :=
-  .orE (zero_or_succ v) Prf.hyp0 (Foundations.BoundedReflection.one_ne_zero _
-    (((congrMonus (.eqRefl _) (congrMonus (.eqRefl _) Prf.hyp0)).eqTrans
-      (sg_succ (pred v))).eqSymm.eqTrans h.wk))
+alias zero_of_sg := LeanProofs.IPRA.AnalyticNumberTheory.PhiDivides.sg_zero_inv
 
 variable (bad : PTm 3)
 

@@ -185,7 +185,7 @@ theorem ll_le {N k : PTm n} (hN : Γ ⊢[PRAAx] le (num 4) N) : Γ ⊢[PRAAx] le
 
 /-! ## The exponential part -/
 
-theorem assoc3 (a b c : PTm n) : Γ ⊢[PRAAx] a * b * c ≐ a * (b * c) := by ipra_ring
+alias assoc3 := LeanProofs.IPRA.mul_assoc
 
 /-- `γ_hi ≤ 1` on the names. -/
 theorem hu1 (N k : PTm n) : Γ ⊢[PRAAx] le (gHn N k) (gHd N k) := by

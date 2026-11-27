@@ -90,8 +90,7 @@ abbrev o2B : PTm 2 := rem (var 0) two * monus one (eqb (var 0) one) * monus one 
 theorem inst2_o2 (M x : PTm n) : inst2 o2B M x = rem M two * monus one (eqb M one) * monus one (eqb M three) *
     sg (monus (two * M) (phi M * phi M)) := by simp [inst2]
 
-theorem not_one {M a : PTm n} (h : Γ ⊢[PRAAx] neg (M ≐ a)) : Γ ⊢[PRAAx] monus one (eqb M a) ≐ one :=
-  Common.eqb_compl_one_of_ne h
+alias not_one := LeanProofs.IPRA.Common.eqb_compl_one_of_ne
 
 /-- Reading the claim off a vanishing term. -/
 theorem o2_read {M x : PTm n} (hodd : Γ ⊢[PRAAx] rem M two ≐ one) (h1 : Γ ⊢[PRAAx] neg (M ≐ one))

@@ -70,8 +70,7 @@ theorem cop_A {p M : PTm n} (hp : Γ ⊢[PRAAx] prime p) (h : Γ ⊢[PRAAx] le M
 
 /-! ## `φ` of the primorial -/
 
-theorem congrPhi {x y : PTm n} (h : Γ ⊢[PRAAx] x ≐ y) : Γ ⊢[PRAAx] phi x ≐ phi y :=
-  congrAp2 (sumF totBody) h h
+alias congrPhi := PhiTwo.phi_congr'
 
 theorem phiA_step0 {N : PTm n} (ih : Γ ⊢[PRAAx] phi (A N) ≐ Dn N) (h0 : Γ ⊢[PRAAx] isP N ≐ zero) :
     Γ ⊢[PRAAx] phi (A (succ N)) ≐ Dn (succ N) :=

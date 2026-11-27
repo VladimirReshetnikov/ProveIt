@@ -22,10 +22,9 @@ namespace LeanProofs.IPRA.AnalyticNumberTheory.PerfectNumbers
 open_ipra exports
 open LeanProofs.IPRA.AnalyticNumberTheory.SigmaPrimePower (sig_congr pos_pw sig_one sigma_step sigma_pow)
 open LeanProofs.IPRA.AnalyticNumberTheory.Mobius (prime_two)
+export LeanProofs.IPRA.Common (two_pos)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
-
-theorem two_pos : Γ ⊢[PRAAx] (two : PTm n) ≐ succ (pred two) := congrSucc (pred_succ _).eqSymm
 
 alias mul_one_r := Common.mul_one_right
 

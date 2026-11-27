@@ -31,9 +31,7 @@ theorem pw_mul (x e d : PTm n) : Γ ⊢[PRAAx] pw (pw x e) d ≐ pw x (e * d) :=
 /-! ## Congruences -/
 
 /-- `x ≡ y (mod M)` gives `x c ≡ y c (mod M)`. -/
-theorem rem_mul_congr {M x y : PTm n} (c : PTm n) (hM : Γ ⊢[PRAAx] M ≐ succ (pred M))
-    (h : Γ ⊢[PRAAx] rem x M ≐ rem y M) : Γ ⊢[PRAAx] rem (x * c) M ≐ rem (y * c) M :=
-  Foundations.ChineseRemainder.rem_mul_right_congr c hM h
+alias rem_mul_congr := LeanProofs.IPRA.Foundations.ChineseRemainder.rem_mul_right_congr
 
 /-! ## `x^{1 + k(p - 1)} ≡ x (mod p)` -/
 

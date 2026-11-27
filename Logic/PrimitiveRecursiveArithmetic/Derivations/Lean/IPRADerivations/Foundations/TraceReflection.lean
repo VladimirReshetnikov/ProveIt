@@ -88,17 +88,15 @@ theorem trace_at (H : Obligations init step fuel Inv G A) (u : PTm n) (hG : Δ �
     Δ ⊢[PRAAx] A2 A (Run init step (Syn.subst ![u] fuel) u) u := by
   have hall : Δ ⊢[PRAAx] Fm.all (I3 Inv (var 0) (Run init step (var 0) (Syn.shift u)) (Syn.shift u)) := by
     refine PRA.qfInd _ (subst_QF' H.qf _) ?_ ?_
-    · simp only [subst_I3, Syn.subst_var, Syn.inst_zero, subst_Run, Syn.subst_shift, Syn.inst, Fin.cases_succ,
-        Syn.subst_id, ConciseIPRA.PTm.subst_zero]
+    · simp only [subst_I3, Syn.subst_var, subst_Run, Syn.subst_shift, Syn.inst, Fin.cases_succ, Syn.subst_id]
       have b := inst (Γ := Δ) H.base ![u]
-      simp only [Fm.subst_imp, subst_Pat, subst_I3, Syn.subst_var, Matrix.cons_val_zero,
-        ConciseIPRA.PTm.subst_zero, Syn.subst_subst] at b
+      simp only [Fm.subst_imp, subst_I3, Syn.subst_var, Matrix.cons_val_zero, ConciseIPRA.PTm.subst_zero,
+        Syn.subst_subst] at b
       have e : (fun j => Syn.subst ![u] (![var 0] j : PTm 1)) = ![u] := by funext j; fin_cases j; rfl
       rw [e] at b
       simp only [Fin.cases_zero]
       exact I3_congr (run_zero u).eqSymm (Prf.impE b hG)
-    · simp only [subst_I3, Syn.subst_var, Syn.repl_zero, subst_Run, Syn.subst_shift, Syn.repl, Fin.cases_succ,
-        Syn.subst_id, ConciseIPRA.PTm.subst_succ, Fin.cases_zero]
+    · simp only [subst_I3, Syn.subst_var, subst_Run, Syn.subst_shift, Syn.repl, Fin.cases_succ, Fin.cases_zero]
       have g : (Δ.map Fm.shift) ⊢[PRAAx] Pat G (Syn.shift u) := by
         have g := hG.shift
         simp only [Fm.shift, subst_Pat] at g
@@ -109,11 +107,11 @@ theorem trace_at (H : Obligations init step fuel Inv G A) (u : PTm n) (hG : Δ �
         Matrix.cons_val_two, Matrix.head_cons, Matrix.tail_cons, ConciseIPRA.PTm.subst_succ] at st
       exact I3_congr (run_succ _ _).eqSymm (Prf.impE (Prf.impE st g.wk) Prf.hyp0)
   have i := Prf.allE (Syn.subst ![u] fuel) hall
-  simp only [subst_I3, Syn.subst_var, Syn.inst_zero, subst_Run, Syn.subst_shift, Syn.inst, Fin.cases_succ,
-    Syn.subst_id, Fin.cases_zero] at i
+  simp only [subst_I3, Syn.subst_var, subst_Run, Syn.subst_shift, Syn.inst, Fin.cases_succ, Syn.subst_id,
+    Fin.cases_zero] at i
   have f := inst (Γ := Δ) H.final ![Run init step (Syn.subst ![u] fuel) u, u]
-  simp only [Fm.subst_imp, subst_Pat, subst_I3, subst_A2, Syn.subst_var, Matrix.cons_val_zero,
-    Matrix.cons_val_one, Matrix.head_cons, Syn.subst_subst] at f
+  simp only [Fm.subst_imp, subst_Pat, subst_I3, subst_A2, Syn.subst_var, Matrix.cons_val_zero, Matrix.cons_val_one,
+    Syn.subst_subst] at f
   have e : (fun j => Syn.subst ![Run init step (Syn.subst ![u] fuel) u, u] (![var 1] j : PTm 2)) = ![u] := by
     funext j; fin_cases j; rfl
   rw [e] at f

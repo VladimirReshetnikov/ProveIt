@@ -158,8 +158,7 @@ private theorem scale₀ : ([] : List (Fm PTm 3)) ⊢[PRAAx] scaleF α := by
   refine ind _ trivial ?_ ?_
   · ipra_lc [Fm.subst_eq, subst_ap2, subst_pairT, PTm.subst_mul, Syn.subst_var, Syn.inst_zero, Syn.inst_one, inst_two, ConciseIPRA.PTm.subst_zero, ConciseIPRA.PTm.subst_succ] natEq (sum_zero (Γ := ([] : List (Fm PTm 2))) (mB α) (pairT (var 0) (var 1))) -
       𝔞 (var 0 : PTm 2) * natEq (sum_zero (Γ := ([] : List (Fm PTm 2))) α (var 1))
-  · simp only [Fm.subst_eq, subst_ap2, subst_pairT, PTm.subst_mul, Syn.subst_var, Syn.repl_zero,
-      repl_one, repl_two, ConciseIPRA.PTm.subst_zero, ConciseIPRA.PTm.subst_succ]
+  · simp only [Fm.subst_eq, subst_ap2, subst_pairT, PTm.subst_mul, Syn.subst_var, Syn.repl_zero, repl_one, repl_two]
     have ih : [scaleF α] ⊢[PRAAx] ap2 (sumF (mB α)) (var 0) (pairT (var 1) (var 2)) ≐
         var 1 * ap2 (sumF α) (var 0) (var 2) := Prf.hyp0
     ipra_lc natEq (sum_succ' (Γ := [scaleF α]) (mB α) (var 0) (pairT (var 1) (var 2))) + natEq ih +
