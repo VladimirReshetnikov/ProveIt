@@ -143,6 +143,17 @@ theorem zero_or_zero_of_mul {x y : PTm n} (h : Γ ⊢[PRAAx] x * y ≐ zero) :
   refine .orE (zero_or_succ x) (.orI₁ Prf.hyp0) (.orI₂ (eq_zero_of_succ_mul (c := pred x) ?_))
   exact (congrMul Prf.hyp0 (.eqRefl y)).eqSymm.eqTrans h.wk
 
+/-- Each factor of a nonzero product is nonzero. -/
+theorem Order.factors_ne_zero {a b : PTm n} (h : Γ ⊢[PRAAx] neg (a * b ≐ zero)) :
+    Γ ⊢[PRAAx] neg (a ≐ zero) ⋏ neg (b ≐ zero) :=
+  .andI (.impI (.impE h.wk ((congrMul Prf.hyp0 (.eqRefl _)).eqTrans (zero_mul _))))
+    (.impI (.impE h.wk ((congrMul (.eqRefl _) Prf.hyp0).eqTrans (mul_zero _))))
+
+/-- An equality preserves nonzeroness. -/
+theorem Order.ne_zero_congr {a b : PTm n} (e : Γ ⊢[PRAAx] a ≐ b)
+    (h : Γ ⊢[PRAAx] neg (a ≐ zero)) : Γ ⊢[PRAAx] neg (b ≐ zero) :=
+  .impI (.impE h.wk (e.wk.eqTrans Prf.hyp0))
+
 theorem le_total (a b : PTm n) : Γ ⊢[PRAAx] le a b ⋎ le b a :=
   zero_or_zero_of_mul (monus_mul a b)
 

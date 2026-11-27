@@ -57,11 +57,8 @@ theorem kept_of (T : PTm 2) {e b N q : PTm k} (hg : Γ ⊢[PRAAx] gv digB N (pai
   exact .impI (succ_ne_zero' _ (v.wk.eqSymm.eqTrans Prf.hyp0))
 
 theorem factors_of_kept (T : PTm 2) {e b N q : PTm k} (h : Γ ⊢[PRAAx] neg (inst2 (kL T) e (prm b N q) ≐ zero)) :
-    Γ ⊢[PRAAx] neg (eqb (gv digB N (pairT b e)) one ≐ zero) ⋏ neg (eqb (inst2 T e q) zero ≐ zero) := by
-  have k := kL_at (Γ := Γ) T e b N q
-  refine .andI (.impI ?_) (.impI ?_)
-  · exact Prf.impE h.wk (k.wk.eqTrans ((congrMul Prf.hyp0 (.eqRefl _)).eqTrans (zero_mul _)))
-  · exact Prf.impE h.wk (k.wk.eqTrans ((congrMul (.eqRefl _) Prf.hyp0).eqTrans (mul_zero _)))
+    Γ ⊢[PRAAx] neg (eqb (gv digB N (pairT b e)) one ≐ zero) ⋏ neg (eqb (inst2 T e q) zero ≐ zero) :=
+  Order.factors_ne_zero (Order.ne_zero_congr (kL_at T e b N q) h)
 
 /-- Every listed code is a visit with primitive digit vector on the locus. -/
 theorem locus_sound (T : PTm 2) {b N q r : PTm k}

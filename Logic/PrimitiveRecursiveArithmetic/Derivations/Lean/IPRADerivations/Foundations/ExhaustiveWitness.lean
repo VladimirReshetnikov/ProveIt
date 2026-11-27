@@ -55,11 +55,11 @@ theorem ne_mul {s t : PTm k} (hs : Γ ⊢[PRAAx] neg (s ≐ zero)) (ht : Γ ⊢[
 
 theorem ne_of_mul_left {s t : PTm k} (h : Γ ⊢[PRAAx] neg (s * t ≐ zero)) :
     Γ ⊢[PRAAx] neg (s ≐ zero) :=
-  .impI (.impE h.wk ((congrMul Prf.hyp0 (.eqRefl _)).eqTrans (zero_mul _)))
+  (Order.factors_ne_zero h).andE₁
 
 theorem ne_of_mul_right {s t : PTm k} (h : Γ ⊢[PRAAx] neg (s * t ≐ zero)) :
     Γ ⊢[PRAAx] neg (t ≐ zero) :=
-  .impI (.impE h.wk ((congrMul (.eqRefl _) Prf.hyp0).eqTrans (mul_zero _)))
+  (Order.factors_ne_zero h).andE₂
 
 /-! ## Bounded existential bits -/
 

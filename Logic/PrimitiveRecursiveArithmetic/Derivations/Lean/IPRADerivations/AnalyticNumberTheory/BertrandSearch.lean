@@ -96,10 +96,10 @@ abbrev spec (x : PTm k) : Fm PTm k :=
 /-- Unpack a nonzero test into the lower bound and object-level primality. -/
 theorem decode {i x : PTm k} (h : Γ ⊢[PRAAx] neg (monus i x * isP i ≐ zero)) :
     Γ ⊢[PRAAx] lt x i ⋏ prime i := by
+  have factors := Order.factors_ne_zero h
   refine .andI (.orE (lt_or_le x i) Prf.hyp0 ?_) (prime_of_isP ?_)
-  · exact .botE _ (.impE h.wk ((congrMul Prf.hyp0 (.eqRefl _)).eqTrans (zero_mul _)))
-  · refine .orE (isP_01 i) ?_ Prf.hyp0
-    exact .botE _ (.impE h.wk ((congrMul (.eqRefl _) Prf.hyp0).eqTrans (mul_zero _)))
+  · exact .botE _ (.impE factors.andE₁.wk Prf.hyp0)
+  · exact .orE (isP_01 i) (.botE _ (.impE factors.andE₂.wk Prf.hyp0)) Prf.hyp0
 
 theorem select_of_found {x : PTm k} (h : Γ ⊢[PRAAx] found x ≐ one) :
     Γ ⊢[PRAAx] spec x := by

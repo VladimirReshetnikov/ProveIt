@@ -77,7 +77,7 @@ abbrev height (B₁ y : PTm k) : PTm k := mx one (mx B₁ (Mx V (rank K₁ (box 
 /-- A negated equation, transported along an equation of terms. -/
 theorem neg_congr {s t : PTm k} (e : Γ ⊢[PRAAx] s ≐ t) (h : Γ ⊢[PRAAx] neg (s ≐ zero)) :
     Γ ⊢[PRAAx] neg (t ≐ zero) :=
-  .impI (.impE h.wk (e.wk.eqTrans Prf.hyp0))
+  Order.ne_zero_congr e h
 
 /-- Soundness: a listed pair passes the first test and, in its block, the second test. -/
 theorem inter_sound {r j B₁ y : PTm k} (hr : Γ ⊢[PRAAx] lt r (rank K₁ (box B₁) y))

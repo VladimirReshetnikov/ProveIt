@@ -36,7 +36,7 @@ variable {n : ℕ} {Γ : List (Fm PTm n)}
 /-- `a = b` and `a ≠ 0` give `b ≠ 0`. -/
 theorem ne_transport {a b : PTm n} (h : Γ ⊢[PRAAx] a ≐ b) (ha : Γ ⊢[PRAAx] neg (a ≐ zero)) :
     Γ ⊢[PRAAx] neg (b ≐ zero) :=
-  .impI (.impE ha.wk (h.wk.eqTrans Prf.hyp0))
+  Order.ne_zero_congr h ha
 
 /-- The least witness is at most every witness. -/
 theorem wit_le_of (f : PTm 2) {N k x : PTm n} (hk : Γ ⊢[PRAAx] neg (inst2 f k x ≐ zero)) :

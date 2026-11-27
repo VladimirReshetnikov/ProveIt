@@ -278,9 +278,8 @@ theorem V_unfold {j a p : PTm k} (ha : Γ ⊢[PRAAx] lt a (I.bd (monus (I.h p) (
     .impI (.impE (Prf.andE₂ w).wk ((f_at I _ a j (I.row j p) p).eqTrans Prf.hyp0))
   refine .andI ?_ (.andI (.andE₁ w) (.andI ?_ ?_))
   · exact .impI (one_ne_zero _ (hs.wk.eqSymm.eqTrans (sg_of_zero Prf.hyp0)))
-  · exact .impI (.impE hne.wk ((congrMul Prf.hyp0 (.eqRefl _)).eqTrans (zero_mul _)))
-  · refine one_of_ne (bit_of_lt_two (dg_lt two_pos _ _)) (.impI (.impE hne.wk ?_))
-    exact (congrMul (.eqRefl _) Prf.hyp0).eqTrans (mul_zero _)
+  · exact (Order.factors_ne_zero hne).andE₁
+  · exact one_of_ne (bit_of_lt_two (dg_lt two_pos _ _)) (Order.factors_ne_zero hne).andE₂
 
 /-- Viability folds one level: a compatible viable candidate of the next level makes a
 locally valid candidate viable. -/

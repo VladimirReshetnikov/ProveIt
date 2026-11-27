@@ -158,10 +158,10 @@ theorem q3_intro {n d : PTm k} (hd : Γ ⊢[PRAAx] prime d) (hdv : Γ ⊢[PRAAx]
     ((succ_monus_succ _ _).eqTrans hle)
 
 theorem ne_left {a b : PTm k} (h : Γ ⊢[PRAAx] neg (a * b ≐ zero)) : Γ ⊢[PRAAx] neg (a ≐ zero) :=
-  .impI (.impE h.wk ((congrMul Prf.hyp0 (.eqRefl _)).eqTrans (zero_mul _)))
+  (Order.factors_ne_zero h).andE₁
 
 theorem ne_right {a b : PTm k} (h : Γ ⊢[PRAAx] neg (a * b ≐ zero)) : Γ ⊢[PRAAx] neg (b ≐ zero) :=
-  .impI (.impE h.wk ((congrMul (.eqRefl _) Prf.hyp0).eqTrans (mul_zero _)))
+  (Order.factors_ne_zero h).andE₂
 
 theorem eq_of_eqb_ne {a b : PTm k} (h : Γ ⊢[PRAAx] neg (eqb a b ≐ zero)) : Γ ⊢[PRAAx] a ≐ b := by
   refine .orE (eqb_cases a b) ?_ ?_

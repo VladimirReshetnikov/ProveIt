@@ -105,11 +105,10 @@ theorem signed_sound {B N r : PTm k} (hr : Γ ⊢[PRAAx] lt r (rank kS (pw (bse 
   have s := sel_spec kS hr
   have k := Prf.andE₁ (Prf.andE₂ s)
   have kk := kS_at (Γ := Γ) (sel kS r (pw (bse B) N) (pairT B N)) B N
-  have f1 : Γ ⊢[PRAAx] neg (eqb (gv mgB N (pairT B (sel kS r (pw (bse B) N) (pairT B N)))) one ≐ zero) :=
-    .impI (Prf.impE k.wk (kk.wk.eqTrans ((congrMul Prf.hyp0 (.eqRefl _)).eqTrans (zero_mul _))))
-  have f2 : Γ ⊢[PRAAx] allB tS N (pairT B (sel kS r (pw (bse B) N) (pairT B N))) ≐ one := by
-    refine .orE (all_cases tS N _) ?_ Prf.hyp0
-    exact .botE _ (Prf.impE k.wk (kk.wk.eqTrans ((congrMul (.eqRefl _) Prf.hyp0).eqTrans (mul_zero _))))
+  have factors := Order.factors_ne_zero (Order.ne_zero_congr kk k)
+  have f1 := factors.andE₁
+  have f2 : Γ ⊢[PRAAx] allB tS N (pairT B (sel kS r (pw (bse B) N) (pairT B N))) ≐ one :=
+    .orE (all_cases tS N _) (.botE _ (.impE factors.andE₂.wk Prf.hyp0)) Prf.hyp0
   exact .andI (Prf.andE₁ s) (.andI (eq_of_eqb_ne f1) (all_reflect tS f2))
 
 /-- The list is duplicate-free. -/

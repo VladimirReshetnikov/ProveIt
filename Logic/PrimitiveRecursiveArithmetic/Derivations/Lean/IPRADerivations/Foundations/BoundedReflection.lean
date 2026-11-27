@@ -314,9 +314,8 @@ theorem least_positive_witness (f : PTm 2) (test : PTm n → PTm n) {N x seed ne
     refine .orE (zero_or_succ m) ?_ (Common.one_le_of_pos Prf.hyp0)
     exact .botE _ (.impE hne.wk ((congrMul ((Common.congrSg Prf.hyp0).eqTrans sg_zero) (.eqRefl _)).eqTrans
       (zero_mul _)))
-  have htest : Γ ⊢[PRAAx] test m ≐ one := by
-    refine .orE bits ?_ Prf.hyp0
-    exact .botE _ (.impE hne.wk ((congrMul (.eqRefl _) Prf.hyp0).eqTrans (mul_zero _)))
+  have htest : Γ ⊢[PRAAx] test m ≐ one :=
+    .orE bits (.botE _ (.impE (Order.factors_ne_zero hne).andE₂.wk Prf.hyp0)) Prf.hyp0
   refine .andI (.orE (lt_or_eq_of_le hpos) ?_ Prf.hyp0.eqSymm) htest
   have lower := descend found.andE₁.wk htest.wk
   exact .botE _ (.impE (signum_guard_nonzero (read next) lower.andE₂.andE₁ lower.andE₁)

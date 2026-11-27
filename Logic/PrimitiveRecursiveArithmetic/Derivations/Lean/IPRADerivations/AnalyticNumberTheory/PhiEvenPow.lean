@@ -207,10 +207,10 @@ theorem inst2_find (q N : PTm n) : inst2 findB q N = eqb (inst2 oddB q N) zero :
 abbrev wit (N : PTm n) : PTm n := Search.mu findB (succ N) N
 
 theorem ne_zero_left {x y : PTm n} (h : Γ ⊢[PRAAx] neg (x * y ≐ zero)) : Γ ⊢[PRAAx] neg (x ≐ zero) :=
-  .impI (.impE h.wk ((congrMul Prf.hyp0 (.eqRefl _)).eqTrans (zero_mul _)))
+  (Order.factors_ne_zero h).andE₁
 
 theorem ne_zero_right {x y : PTm n} (h : Γ ⊢[PRAAx] neg (x * y ≐ zero)) : Γ ⊢[PRAAx] neg (y ≐ zero) :=
-  .impI (.impE h.wk ((congrMul (.eqRefl _) Prf.hyp0).eqTrans (mul_zero _)))
+  (Order.factors_ne_zero h).andE₂
 
 /-- `x < 2` and `x ≠ 0` give `x = 1`. -/
 theorem eq_one_of_lt_two {x : PTm n} (h₁ : Γ ⊢[PRAAx] lt x two) (h₂ : Γ ⊢[PRAAx] neg (x ≐ zero)) :
