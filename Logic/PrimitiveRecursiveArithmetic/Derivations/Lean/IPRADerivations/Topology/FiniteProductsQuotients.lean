@@ -82,21 +82,6 @@ theorem pair_mono_iff {relZ : Fin m → Fin m → Prop} (f : Fin m → Fin k) (g
 def qEdge (relX : Fin k → Fin k → Prop) (q : Fin k → Fin l) (a b : Fin l) : Prop :=
   ∃ x x', q x = a ∧ q x' = b ∧ relX x x'
 
-/-- If `q⁻¹V` is open, `V` is upward along every path of generating edges. -/
-theorem quotient_open {q : Fin k → Fin l} {V : Fin l → Fm PTm n} (hV : IsOpen relX Γ (fun x => V (q x)))
-    {a b : Fin l} (h : Relation.ReflTransGen (qEdge relX q) a b) : Γ ⊢[PRAAx] V a ⟶ V b := by
-  induction h with
-  | refl => exact .impI Prf.hyp0
-  | tail _ e ih =>
-    obtain ⟨x, x', rfl, rfl, hxx'⟩ := e
-    exact .impI (.impE (hV x x' hxx').wk (.impE ih.wk Prf.hyp0))
-
-/-- Conversely, upwardness along the closure makes `q⁻¹V` open. -/
-theorem quotient_open_of {q : Fin k → Fin l} {V : Fin l → Fm PTm n}
-    (h : ∀ a b, Relation.ReflTransGen (qEdge relX q) a b → (Γ ⊢[PRAAx] V a ⟶ V b)) :
-    IsOpen relX Γ (fun x => V (q x)) := fun x x' hxx' =>
-  h _ _ (Relation.ReflTransGen.single ⟨x, x', rfl, rfl, hxx'⟩)
-
 /-- `g` preserves the generated preorder exactly when `g ∘ q` is monotone. -/
 theorem quotient_map_mono {relZ : Fin m → Fin m → Prop} (hreflZ : ∀ z, relZ z z)
     (htransZ : ∀ z z' z'', relZ z z' → relZ z' z'' → relZ z z'') (q : Fin k → Fin l) (g : Fin l → Fin m) :
@@ -108,6 +93,18 @@ theorem quotient_map_mono {relZ : Fin m → Fin m → Prop} (hreflZ : ∀ z, rel
   | tail _ e ih =>
     obtain ⟨x, x', rfl, rfl, hxx'⟩ := e
     exact htransZ _ _ _ ih (h x x' hxx')
+
+/-- If `q⁻¹V` is open, `V` is upward along every path of generating edges. -/
+theorem quotient_open {q : Fin k → Fin l} {V : Fin l → Fm PTm n} (hV : IsOpen relX Γ (fun x => V (q x)))
+    {a b : Fin l} (h : Relation.ReflTransGen (qEdge relX q) a b) : Γ ⊢[PRAAx] V a ⟶ V b :=
+  (quotient_map_mono (relZ := fun a b => Γ ⊢[PRAAx] V a ⟶ V b)
+    (fun _ => .impI Prf.hyp0) (fun _ _ _ => Prf.impTrans) q id).2 hV a b h
+
+/-- Conversely, upwardness along the closure makes `q⁻¹V` open. -/
+theorem quotient_open_of {q : Fin k → Fin l} {V : Fin l → Fm PTm n}
+    (h : ∀ a b, Relation.ReflTransGen (qEdge relX q) a b → (Γ ⊢[PRAAx] V a ⟶ V b)) :
+    IsOpen relX Γ (fun x => V (q x)) := fun x x' hxx' =>
+  h _ _ (Relation.ReflTransGen.single ⟨x, x', rfl, rfl, hxx'⟩)
 
 /-! ## F12 -/
 
