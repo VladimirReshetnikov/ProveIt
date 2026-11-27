@@ -106,39 +106,40 @@ theorem sample_error (p A D : PTm n) (hA : Γ ⊢[PRAAx] le one A) (hD : Γ ⊢[
     (distance_triangle_same (qsub (ap2 G p a) (ap2 G p b)) v (ap2 L p (ld A D))
       (num 6) two U hu (distance_symmetric _ _ _ _ hu hr) he)
 
-private theorem cell_error (i p N A D : PTm n)
+private theorem cell_error (i p N A W D : PTm n)
     (hN : Γ ⊢[PRAAx] le one N) (hA : Γ ⊢[PRAAx] le one A) (hD : Γ ⊢[PRAAx] le one D) :
     Γ ⊢[PRAAx] distanceBounded
       (inst2 (GaussianRationalQuadratureDifference.differenceBody (sampleBody logGammaEvaluator)
         (sampleBody logGammaEvaluator)) i
-          (pairT (sampleData p N (A+D) D D zero) (sampleData p N A D D zero)))
-      (inst2 (sampleBody logEvaluator) i (sampleData p N A D D zero)) (num 8) (unit p) := by
-  let a := A*N+D*i
+          (pairT (sampleData p N (A+D) W D zero) (sampleData p N A W D zero)))
+      (inst2 (sampleBody logEvaluator) i (sampleData p N A W D zero)) (num 8) (unit p) := by
+  let a := A*N+W*i
   let d := D*N
   have ha : Γ ⊢[PRAAx] le one a :=
-    le_trans (positive_product A N hA hN) (le_add_right (A*N) (D*i))
+    le_trans (positive_product A N hA hN) (le_add_right (A*N) (W*i))
   have hd : Γ ⊢[PRAAx] le one d := positive_product D N hD hN
-  have e : Γ ⊢[PRAAx] grid i N (A+D) D D ≐ pairT (a+d) d :=
+  have e : Γ ⊢[PRAAx] grid i N (A+D) W D ≐ pairT (a+d) d :=
     congrPairT (by dsimp only [a,d]; ipra_ring) (.eqRefl _)
-  have e₁ := (sample_body_at logGammaEvaluator i p N (A+D) D D zero).eqTrans
+  have e₁ := (sample_body_at logGammaEvaluator i p N (A+D) W D zero).eqTrans
     ((congrAp3 logGammaEvaluator (.eqRefl p) e (.eqRefl zero)).eqTrans (log_gamma_at p (a+d) d zero))
-  have e₂ := (sample_body_at (Γ := Γ) logGammaEvaluator i p N A D D zero).eqTrans (log_gamma_at p a d zero)
-  have e₃ := (sample_body_at (Γ := Γ) logEvaluator i p N A D D zero).eqTrans (log_at p a d zero)
+  have e₂ := (sample_body_at (Γ := Γ) logGammaEvaluator i p N A W D zero).eqTrans (log_gamma_at p a d zero)
+  have e₃ := (sample_body_at (Γ := Γ) logEvaluator i p N A W D zero).eqTrans (log_at p a d zero)
   have ed := (GaussianRationalQuadratureDifference.difference_body_at (sampleBody logGammaEvaluator)
-    (sampleBody logGammaEvaluator) i (sampleData p N (A+D) D D zero) (sampleData p N A D D zero)).eqTrans
+    (sampleBody logGammaEvaluator) i (sampleData p N (A+D) W D zero) (sampleData p N A W D zero)).eqTrans
       (GaussianRationalSyntheticDivision.qsub_congr e₁ e₂)
   exact distance_congr ed.eqSymm e₃.eqSymm (.eqRefl _) (.eqRefl _) (sample_error p a d ha hd)
 
-theorem quadrature_error (p N A D : PTm n)
+/-- The shifted log-Gamma recurrence on a strip of width `W/D`. -/
+theorem strip_quadrature_error (p N A W D : PTm n)
     (hN : Γ ⊢[PRAAx] le one N) (hA : Γ ⊢[PRAAx] le one A) (hD : Γ ⊢[PRAAx] le one D) :
     Γ ⊢[PRAAx] distanceBounded
-      (qsub (quadrature logGammaEvaluator p N (A+D) D D zero)
-        (quadrature logGammaEvaluator p N A D D zero))
-      (quadrature logEvaluator p N A D D zero) (num 8) (unit p) := by
+      (qsub (quadrature logGammaEvaluator p N (A+D) W D zero)
+        (quadrature logGammaEvaluator p N A W D zero))
+      (quadrature logEvaluator p N A W D zero) (W*num 8) (D*unit p) := by
   let g := sampleBody logGammaEvaluator
   let f := GaussianRationalQuadratureDifference.differenceBody g g
-  let x := sampleData p N (A+D) D D zero
-  let y := sampleData p N A D D zero
+  let x := sampleData p N (A+D) W D zero
+  let y := sampleData p N A W D zero
   have rows : Γ ⊢[PRAAx] termsDistance f (sampleBody logEvaluator) N (pairT x y) y (num 8) (unit p) := by
     refine .allI (.impI ?_)
     let s (v : PTm n) := Syn.shift v
@@ -149,14 +150,21 @@ theorem quadrature_error (p N A D : PTm n)
     simpa only [f,g,x,y,s,Δ,Syn.shift,subst_pairT,GaussianCompactRiemannName.subst_sampleData,
       PTm.subst_add,ConciseIPRA.PTm.subst_zero,LeanProofs.IPRA.PTm.subst_num,
       GaussianCoefficientNameBounds.subst_unit] using
-      cell_error (var 0) (s p) (s N) (s A) (s D) sn sa sd
-  have hu := unit_positive (Γ := Γ) p
+      cell_error (var 0) (s p) (s N) (s A) (s W) (s D) sn sa sd
   have raw := GaussianCompactScalarMajorant.common_mesh_distance f (sampleBody logEvaluator) N
-    (pairT x y) y D D (num 8) (unit p) hN hD hu rows
-  have reduced := distance_radius_mono _ _ _ _ (num 8) (unit p) (positive_product _ _ hD hu) hu
-    (le_of_eq_add (d := zero) (by ipra_ring)) raw
-  exact distance_congr (GaussianRationalQuadratureDifference.weighted_difference g g N x y D D).eqSymm
-    (.eqRefl _) (.eqRefl _) (.eqRefl _) reduced
+    (pairT x y) y W D (num 8) (unit p) hN hD (unit_positive p) rows
+  exact distance_congr (GaussianRationalQuadratureDifference.weighted_difference g g N x y W D).eqSymm
+    (.eqRefl _) (.eqRefl _) (.eqRefl _) raw
+
+theorem quadrature_error (p N A D : PTm n)
+    (hN : Γ ⊢[PRAAx] le one N) (hA : Γ ⊢[PRAAx] le one A) (hD : Γ ⊢[PRAAx] le one D) :
+    Γ ⊢[PRAAx] distanceBounded
+      (qsub (quadrature logGammaEvaluator p N (A+D) D D zero)
+        (quadrature logGammaEvaluator p N A D D zero))
+      (quadrature logEvaluator p N A D D zero) (num 8) (unit p) := by
+  have hu := unit_positive (Γ := Γ) p
+  exact distance_radius_mono _ _ _ _ (num 8) (unit p) (positive_product _ _ hD hu) hu
+    (le_of_eq_add (d := zero) (by ipra_ring)) (strip_quadrature_error p N A D D hN hA hD)
 
 theorem actual_real_log_Gamma_adjacent_unit_quadratures_closed :
     ([] : List (Fm PTm 0)) ⊢[PRAAx] univ 4
