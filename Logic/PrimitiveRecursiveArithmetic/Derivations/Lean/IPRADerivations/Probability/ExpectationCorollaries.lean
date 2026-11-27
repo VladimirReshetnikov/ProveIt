@@ -117,18 +117,8 @@ theorem var_zero (w X : PTm 2) {N x i : PTm n}
 
 /-! ## Power Markov and the three-quarters bound -/
 
-theorem pw_mono {a b : PTm n} (h : Γ ⊢[PRAAx] le a b) (r : PTm n) : Γ ⊢[PRAAx] le (pw a r) (pw b r) := by
-  have h' : Γ.map Fm.shift ⊢[PRAAx] le (Syn.shift a) (Syn.shift b) := by
-    have e := h.shift
-    simp only [Fm.shift, subst_le] at e
-    simpa [Syn.shift] using e
-  have hall : Γ ⊢[PRAAx] Fm.all (le (pw (Syn.shift a) (var 0)) (pw (Syn.shift b) (var 0))) := by
-    ipra_qfind [subst_le, subst_ap2]
-    · exact le_congr (pw_zero _).eqSymm (pw_zero _).eqSymm (le_refl _)
-    · exact le_congr (pw_succ _ _).eqSymm (pw_succ _ _).eqSymm (le_mul_mono Prf.hyp0 h'.wk)
-  have i := Prf.allE r hall
-  simp only [subst_le, subst_ap2, Syn.subst_var, Syn.inst_zero, Syn.subst_inst_shift, ConciseIPRA.PTm.subst_zero] at i
-  exact i
+theorem pw_mono {a b : PTm n} (h : Γ ⊢[PRAAx] le a b) (r : PTm n) : Γ ⊢[PRAAx] le (pw a r) (pw b r) :=
+  pw_le_pw r h
 
 theorem power_pt (a X w r : PTm n) : Γ ⊢[PRAAx] le (pw a r * (w * geI a X)) (w * pw X r) := by
   refine .orE (lt_or_le X a) ?_ ?_

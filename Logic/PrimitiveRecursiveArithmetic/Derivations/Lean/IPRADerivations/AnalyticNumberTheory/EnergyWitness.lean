@@ -31,9 +31,8 @@ variable {n : ℕ} {Γ : List (Fm PTm n)}
 theorem pw_sq (a r : PTm n) : Γ ⊢[PRAAx] pw (a * a) r ≐ pw a (r + r) :=
   (pw_mul_base a a r).eqTrans (pw_add a r r).eqSymm
 
-theorem pw_fact_pos (N m : PTm n) : Γ ⊢[PRAAx] pw (fact N) m ≐ succ (pred (pw (fact N) m)) := by
-  have c := congrPw (Γ := Γ) (fact_pos N) (.eqRefl m)
-  exact c.eqTrans ((pw_pos _ _).eqTrans (congrSucc (congrPred c.eqSymm)))
+theorem pw_fact_pos (N m : PTm n) : Γ ⊢[PRAAx] pw (fact N) m ≐ succ (pred (pw (fact N) m)) :=
+  Common.pos_pw (fact_pos N) m
 
 /-- Abstract step: `P₁ ≤ P₂`, `P₁ = A B`, `P₂ = E Q`, `Q ≤ c A R` give `A B ≤ A (E c R)`. -/
 theorem witness_alg {A B E Qr c R P₁ P₂ : PTm n} (pr : Γ ⊢[PRAAx] le P₁ P₂) (e₁ : Γ ⊢[PRAAx] P₁ ≐ A * B)

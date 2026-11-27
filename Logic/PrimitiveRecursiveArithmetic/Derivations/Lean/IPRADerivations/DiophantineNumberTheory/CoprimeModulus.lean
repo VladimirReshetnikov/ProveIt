@@ -114,7 +114,7 @@ theorem pw_sq (R q : PTm n) : Γ ⊢[PRAAx] pw (R * R) q ≐ pw R (two * q) := b
 /-- `(R²)^q > 0` for `R ≥ 1`. -/
 theorem sq_pow_pos {R : PTm n} (hR : Γ ⊢[PRAAx] R ≐ succ (pred R)) (q : PTm n) :
     Γ ⊢[PRAAx] pw (R * R) q ≐ succ (pred (pw (R * R) q)) :=
-  pos_of_eq_succ ((congrAp2 powF (.eqRefl q) (pos_mul' hR hR)).eqTrans (pw_pos (pred (R * R)) q))
+  Common.pos_pw (Common.pos_mul hR hR) q
 
 /-- `(2.2)`: `4 A R^p < (p − 1)!` for `p = 2q + 1`, `q = M (4R² + 4AR + 1)`, `M, R ≥ 1`. -/
 theorem factorial_estimate {M A R : PTm n} (hM : Γ ⊢[PRAAx] M ≐ succ (pred M))

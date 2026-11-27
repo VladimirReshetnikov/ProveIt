@@ -26,9 +26,8 @@ theorem positive_form (D : PTm n) (h : Γ ⊢[PRAAx] le one D) : Γ ⊢[PRAAx] D
   refine .orE (zero_or_succ D) ?_ Prf.hyp0
   exact not_succ_le_self zero _ (le_congr (.eqRefl _) Prf.hyp0 h.wk)
 
-theorem power_positive (m d : PTm n) (hm : Γ ⊢[PRAAx] le one m) : Γ ⊢[PRAAx] le one (pw m d) := by
-  have base := congrAp2 powF (.eqRefl d) (positive_form m hm)
-  exact le_congr (.eqRefl _) (base.eqTrans (DiophantineNumberTheory.FLTMultiples.pw_pos (pred m) d)).eqSymm (zero_lt_succ _)
+theorem power_positive (m d : PTm n) (hm : Γ ⊢[PRAAx] le one m) : Γ ⊢[PRAAx] le one (pw m d) :=
+  pw_one_le hm d
 
 /-- The actual quotient/remainder equations at any genuinely positive divisor. -/
 theorem divide_spec (D z : PTm n) (hD : Γ ⊢[PRAAx] le one D) : Γ ⊢[PRAAx]

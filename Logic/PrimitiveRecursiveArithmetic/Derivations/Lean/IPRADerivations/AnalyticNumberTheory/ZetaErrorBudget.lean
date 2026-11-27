@@ -28,9 +28,8 @@ set_option autoImplicit false
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
 /-- `a ≤ b` gives `2^a ≤ 2^b`. -/
-theorem pw2_mono {a b : PTm n} (h : Γ ⊢[PRAAx] le a b) : Γ ⊢[PRAAx] le (pw two a) (pw two b) := by
-  have hz : ∀ t : PTm n, Γ ⊢[PRAAx] zero + t ≐ t := fun t => by apply deriveNat; ipra_simps; try ring
-  exact le_congr (congrPw2 (hz a)) (congrPw2 (hz b)) (pw_mono2 (K0 := zero) h)
+theorem pw2_mono {a b : PTm n} (h : Γ ⊢[PRAAx] le a b) : Γ ⊢[PRAAx] le (pw two a) (pw two b) :=
+  pw_le_pw_exp (le_succ_self one) h
 
 /-- `x ≤ 2^L` and `L + c ≤ E` give `x 2^c ≤ 2^E`. -/
 theorem pow_absorb {x L c E : PTm n} (hx : Γ ⊢[PRAAx] le x (pw two L)) (hE : Γ ⊢[PRAAx] le (L + c) E) :

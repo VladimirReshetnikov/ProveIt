@@ -230,14 +230,8 @@ end Bodies
 
 /-! ## Exponent monotonicity -/
 
-theorem pw_mono2 {K0 k B : PTm n} (h : Γ ⊢[PRAAx] le k B) : Γ ⊢[PRAAx] le (pw two (K0 + k)) (pw two (K0 + B)) := by
-  have e := eq_add_of_le h
-  have hs : Γ ⊢[PRAAx] K0 + B ≐ (K0 + k) + monus B k := by
-    ipra_lc natEq e
-  have ea := natEq ((KhinchinBlockGeo.congrPw2 hs).eqTrans (pw_add (Γ := Γ) two (K0 + k) (monus B k)))
-  have hp := DiophantineNumberTheory.FLTMultiples.pw_pos (Γ := Γ) one (monus B k)
-  have ep := natEq hp
-  ipra_le 𝔞 (pw two (K0 + k)) * 𝔞 (pred (pw two (monus B k))) with ea + 𝔞 (pw two (K0 + k)) * ep
+theorem pw_mono2 {K0 k B : PTm n} (h : Γ ⊢[PRAAx] le k B) : Γ ⊢[PRAAx] le (pw two (K0 + k)) (pw two (K0 + B)) :=
+  pw_le_pw_exp (le_succ_self one) (add_le_add_left K0 h)
 
 end LeanProofs.IPRA.DiophantineNumberTheory.KhinchinBlockScales
 

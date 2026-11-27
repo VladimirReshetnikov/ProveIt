@@ -40,9 +40,8 @@ def budget (D R δ k : PTm n) : PTm n := D*k*pw R (pred k)*δ
 ipra_subst residual
 ipra_subst budget
 
-theorem power_positive (R k : PTm n) (hR : Γ ⊢[PRAAx] le one R) : Γ ⊢[PRAAx] le one (pw R k) := by
-  have h := AnalyticNumberTheory.Valuation.pw_pos' (Analysis.RationalIntegerNormalization.positive_form hR) k
-  exact le_congr (.eqRefl _) h.eqSymm (zero_lt_succ _)
+theorem power_positive (R k : PTm n) (hR : Γ ⊢[PRAAx] le one R) : Γ ⊢[PRAAx] le one (pw R k) :=
+  pw_one_le hR k
 
 theorem budget_zero (D R δ : PTm n) : Γ ⊢[PRAAx] budget D R δ zero ≐ zero := by unfold budget; ipra_ring
 

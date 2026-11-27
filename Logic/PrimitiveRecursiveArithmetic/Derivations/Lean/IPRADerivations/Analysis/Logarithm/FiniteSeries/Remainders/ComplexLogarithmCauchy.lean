@@ -294,18 +294,8 @@ theorem dyadic_coefficient (R N L : PTm n) (hN : Γ ⊢[PRAAx] le (two * R) N) :
     using Prf.allE L all
 
 theorem power_positive (N k : PTm n) (hN : Γ ⊢[PRAAx] le one N) :
-    Γ ⊢[PRAAx] le one (pw N k) := by
-  have all : Γ ⊢[PRAAx] .all (le one (pw (Syn.shift N) (var 0))) := by
-    ipra_qfind (le_QF _ _) [subst_le, subst_ap2]
-    · exact le_congr (.eqRefl _) (pw_zero N).eqSymm (le_refl one)
-    · have shifted : Γ.map Fm.shift ⊢[PRAAx] le one (Syn.shift N) := by
-        simpa [Fm.shift, Syn.shift] using hN.shift
-      have b : (le one (pw (Syn.shift N) (var 0))) :: Γ.map Fm.shift ⊢[PRAAx]
-          le (one * one) (pw (Syn.shift N) (var 0) * Syn.shift N) :=
-        le_mul_mono Prf.hyp0 shifted.wk
-      exact le_congr (one_mul one) (pw_succ _ _).eqSymm b
-  simpa only [subst_le, subst_ap2, Syn.subst_var, Syn.inst_zero, Syn.subst_inst_shift,
-    ConciseIPRA.PTm.subst_succ, ConciseIPRA.PTm.subst_zero] using Prf.allE k all
+    Γ ⊢[PRAAx] le one (pw N k) :=
+  pw_one_le hN k
 
 private alias cancel_positive := Common.mul_cancel_le
 
