@@ -18,9 +18,10 @@ namespace LeanProofs.IPRA.Analysis.GaussianGammaDigammaSlopeLower
 open_ipra
 open GaussianCoefficientNameBounds (unit unit_positive)
 open GaussianGammaCanonicalExponent (constantF constant_at constant_regular)
+open GaussianGammaDigammaEulerDerivative (cutoff_distance)
 open GaussianGammaDigammaFiniteSum (reciprocalSum)
 open GaussianGammaDigammaSlopeLowerFinite (domain margin sources cutoff_order)
-open GaussianGammaFiniteApproximantName (logF log_regular)
+open GaussianGammaFiniteApproximantName (logF)
 open GaussianNameArithmetic (addF addData add_fast)
 open GaussianNameRingLaws (add_sample_error sum_left_error)
 open GaussianNamedPositiveExponentialOrder (realOrder real_order_at scalar_coordinate_distance)
@@ -28,37 +29,19 @@ open GaussianNamedRealOrderEnvelope (envelope order_from_envelope)
 open GaussianRationalDistanceOrder (distance_congr distance_radius_mono distance_symmetric distance_triangle_same)
 open GaussianRationalHorner (qadd positive_product)
 open GaussianRationalMetric (qsub distanceBounded)
-open GaussianRationalSyntheticDivision (qadd_congr qsub_congr)
+open GaussianRationalSyntheticDivision (qadd_congr)
 open GaussianStirlingGammaLogarithm (source)
 open RationalValueBounds (upper upper_of_radius upper_order_right upper_triangle upper_mono)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 local notation "DF" => GaussianGammaDigammaNative.nameF
 local notation "dd" => GaussianGammaDigammaNative.data
-local notation "EF" => GaussianGammaDigammaEulerDerivative.nameF
 
 def lowerF : PR 2 := addF DF constantF
 
 def lowerData (a c b : PTm n) : PTm n := addData (dd a b) (margin a c b)
 
 ipra_subst lowerData
-
-private theorem cutoff_distance (p a b : PTm n) (hs : Γ ⊢[PRAAx] source a b) :
-    Γ ⊢[PRAAx] distanceBounded (ap2 DF p (dd a b))
-      (qsub (ap2 logF p (unit p)) (reciprocalSum a b (succ (unit p)))) (a+num 10) (unit p) := by
-  let N := unit p
-  let R := reciprocalSum a b (succ N)
-  have hp := unit_positive (Γ := Γ) p
-  have actual := GaussianGammaDigammaEulerDerivative.original_rate a b N hs hp
-  have diag := GaussianNamedInverseRate.diagonal_rate DF EF _ _ _ N p hp actual
-  have smaller := distance_radius_mono _ _ _ _ (a+num 4) N (positive_product _ _ hp hp) hp
-    (le_of_eq_add (d := zero) (by
-      unfold N GaussianGammaDigammaEulerDerivative.rateCoefficient
-      ipra_ring)) diag
-  have raw := distance_congr (.eqRefl _) (qsub_congr (.eqRefl _) (constant_at p R)) (.eqRefl _) (.eqRefl _)
-    (GaussianNamedDifference.sample_error logF constantF N R p (log_regular N hp) (constant_regular R))
-  exact distance_congr (.eqRefl _) (.eqRefl _) (by ipra_ring) (.eqRefl _)
-    (distance_triangle_same _ _ _ _ _ N hp smaller raw)
 
 theorem sample_envelope (p a c b : PTm n) (h : Γ ⊢[PRAAx] domain a c b) :
     Γ ⊢[PRAAx] upper (fstT (ap2 lowerF p (lowerData a c b))) (fstT (ap2 DF p (dd c b)))
@@ -74,8 +57,10 @@ theorem sample_envelope (p a c b : PTm n) (h : Γ ⊢[PRAAx] domain a c b) :
       GaussianNameRingLaws.three N :=
     distance_congr (.eqRefl _) (qadd_congr (.eqRefl _) (constant_at p m)) (.eqRefl _) (.eqRefl _)
       (add_sample_error DF constantF (dd a b) m p (GaussianGammaDigammaNative.name_regular a b src.andE₁) (constant_regular m))
-  have hA : Γ ⊢[PRAAx] distanceBounded (ap2 DF p (dd a b)) A (a+num 10) N := cutoff_distance p a b src.andE₁
-  have hC : Γ ⊢[PRAAx] distanceBounded (ap2 DF p (dd c b)) C (c+num 10) N := cutoff_distance p c b src.andE₂
+  have hA : Γ ⊢[PRAAx] distanceBounded (ap2 DF p (dd a b)) A (a+num 10) N :=
+    cutoff_distance p a b N src.andE₁ (le_refl _)
+  have hC : Γ ⊢[PRAAx] distanceBounded (ap2 DF p (dd c b)) C (c+num 10) N :=
+    cutoff_distance p c b N src.andE₂ (le_refl _)
   have first := distance_triangle_same _ _ _ _ _ N hp addRaw (sum_left_error _ _ m _ N hp hA)
   have left := upper_order_right _ _ _ _ _
     (upper_of_radius _ _ _ _ (scalar_coordinate_distance _ _ _ _ hp first)) (cutoff_order a c b N T h)

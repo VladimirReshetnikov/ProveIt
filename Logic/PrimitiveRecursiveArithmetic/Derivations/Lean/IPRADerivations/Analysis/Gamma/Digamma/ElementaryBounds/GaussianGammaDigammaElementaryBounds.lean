@@ -1,3 +1,4 @@
+import IPRADerivations.Analysis.Gamma.Digamma.Derivative.GaussianGammaDigammaEulerDerivative
 import IPRADerivations.Analysis.Gamma.Digamma.ElementaryBounds.GaussianGammaDigammaHarmonicLogBalance
 import IPRADerivations.Analysis.Names.Order.GaussianNamedRealOrderEnvelope
 
@@ -19,10 +20,11 @@ open_ipra
 open GaussianCoefficientNameBounds (unit unit_positive)
 open GaussianEuclideanDistanceName (pointCN)
 open GaussianGammaCanonicalExponent (constantF constant_at constant_regular)
+open GaussianGammaDigammaEulerDerivative (cutoff_distance)
 open GaussianGammaDigammaFiniteSum (index reciprocalSum)
 open GaussianGammaDigammaHarmonicCells (halfReciprocal point_fraction_represents)
 open GaussianGammaDigammaHarmonicPrefix (prefixCell endpointPair prefix_bounds)
-open GaussianGammaFiniteApproximantName (logF log_regular)
+open GaussianGammaFiniteApproximantName (logF)
 open GaussianHarmonicLogarithmName (sample sample_at)
 open GaussianHarmonicLogarithmProduct (mesh mesh_later)
 open GaussianNamedDifference (difference_distance sample_error)
@@ -45,8 +47,6 @@ open RationalValueBounds (upper upper_of_radius upper_order_right upper_triangle
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 local notation "DF" => GaussianGammaDigammaNative.nameF
 local notation "dd" => GaussianGammaDigammaNative.data
-local notation "EF" => GaussianGammaDigammaEulerDerivative.nameF
-local notation "ed" => GaussianGammaDigammaEulerDerivative.data
 local notation "HF" => GaussianHarmonicLogarithmName.nameF
 local notation "hd" => GaussianHarmonicLogarithmName.data
 
@@ -111,23 +111,6 @@ private theorem cutoff_order (p a b N : PTm n) (hs : Γ ⊢[PRAAx] source a b) :
     (rationalLE_congr (congrFst (subtract_sum V M r).eqSymm) (.eqRefl _) (sub_antitone V R (qadd M r) hr))
     (rationalLE_congr (.eqRefl _) (congrFst (subtract_sum V M h).eqSymm) (sub_antitone V (qadd M h) R ht))
 
-private theorem cutoff_distance (p a b : PTm n) (hs : Γ ⊢[PRAAx] source a b) :
-    Γ ⊢[PRAAx] distanceBounded (ap2 DF p (dd a b))
-      (qsub (ap2 logF p (unit p)) (reciprocalSum a b (succ (unit p)))) (a+num 10) (unit p) := by
-  let N := unit p
-  let R := reciprocalSum a b (succ N)
-  have hp := unit_positive (Γ := Γ) p
-  have actual := GaussianGammaDigammaEulerDerivative.original_rate a b N hs hp
-  have diag := GaussianNamedInverseRate.diagonal_rate DF EF _ _ _ N p hp actual
-  have smaller := distance_radius_mono _ _ _ _ (a+num 4) N (positive_product _ _ hp hp) hp
-    (le_of_eq_add (d := zero) (by
-      unfold N GaussianGammaDigammaEulerDerivative.rateCoefficient
-      ipra_ring)) diag
-  have raw := distance_congr (.eqRefl _) (qsub_congr (.eqRefl _) (constant_at p R)) (.eqRefl _) (.eqRefl _)
-    (sample_error logF constantF N R p (log_regular N hp) (constant_regular R))
-  exact distance_congr (.eqRefl _) (.eqRefl _) (by ipra_ring) (.eqRefl _)
-    (distance_triangle_same _ _ _ _ _ N hp smaller raw)
-
 private theorem endpoint_distance (p a b c : PTm n) (hs : Γ ⊢[PRAAx] source a b) :
     Γ ⊢[PRAAx] distanceBounded (ap2 nameF p (GaussianNamedDifference.data (hd a b) c))
       (qsub (qsub (ap2 logF p (unit p)) (sample p (index a b (unit p)) a)) c) (a+num 16) (unit p) := by
@@ -156,7 +139,7 @@ theorem sample_envelope (p a b : PTm n) (hs : Γ ⊢[PRAAx] source a b) :
       (upper (fstT (ap2 DF p (dd a b))) (fstT (ap2 nameF p (upperData a b))) (two*a+num 26) (unit p)) := by
   have hp := unit_positive (Γ := Γ) p
   have h := cutoff_order p a b (unit p) hs
-  have e := cutoff_distance p a b hs
+  have e := cutoff_distance p a b (unit p) hs (le_refl _)
   exact .andI
     (RationalValueBounds.upper_congr (.eqRefl _) (.eqRefl _) (by ipra_ring) (.eqRefl _)
       (order_with_errors _ _ _ _ _ _ _ hp (endpoint_distance p a b (fraction b a) hs) e h.andE₁))

@@ -24,7 +24,7 @@ open GaussianGammaFiniteApproximantName (logF log_regular)
 open GaussianGammaLogHarmonicName (fixedF fixed_regular sum_sample_at)
 open GaussianNameRingLaws (three)
 open GaussianNamedDifference (difference_distance)
-open GaussianNamedInverseRate (independentRate)
+open GaussianNamedInverseRate (diagonal_rate independentRate)
 open GaussianPositiveRationalLogarithm (fraction)
 open GaussianRationalDistanceOrder (distance_congr distance_radius_mono distance_symmetric distance_triangle_same)
 open GaussianRationalHorner (qadd positive_product)
@@ -169,6 +169,24 @@ theorem original_rate (a b N : PTm n) (hs : Γ ⊢[PRAAx] source a b) (hN : Γ �
     (GaussianNamedLipschitzRate.diagonalDenominator (Syn.shift N) (var 0))
   simp only [Syn.shift,GaussianGammaDigammaNative.subst_data,subst_data,subst_budget,subst_rateCoefficient]
   exact sample_error (var 0) (Syn.shift a) (Syn.shift b) (Syn.shift N) hh hn
+
+/-- Bound the literal logarithm minus the reciprocal prefix at any sufficiently late cutoff. -/
+theorem cutoff_distance (p a b N : PTm n) (hs : Γ ⊢[PRAAx] source a b)
+    (hLater : Γ ⊢[PRAAx] le (unit p) N) :
+    Γ ⊢[PRAAx] distanceBounded (ap2 DF p (dd a b)) (qsub (ap2 logF p N) (reciprocalSum a b (succ N)))
+      (a+num 10) (unit p) := by
+  let R := reciprocalSum a b (succ N)
+  have hp := unit_positive (Γ := Γ) p
+  have hN := le_trans hp hLater
+  have diagonal := diagonal_rate DF nameF _ _ _ N p hN (original_rate a b N hs hN)
+  have compare : Γ ⊢[PRAAx] le ((rateCoefficient a*unit p+two*N)*unit p) ((a+num 4)*(N*unit p)) :=
+    le_congr (by unfold rateCoefficient; ipra_ring) (by ipra_ring)
+      (add_le_add_right (two*N*unit p) (mul_le_mul_left ((a+two)*unit p) hLater))
+  have smaller := distance_radius_mono _ _ _ _ _ _ (positive_product _ _ hN hp) hp compare diagonal
+  have raw := distance_congr (.eqRefl _) (qsub_congr (.eqRefl _) (constant_at p R)) (.eqRefl _) (.eqRefl _)
+    (GaussianNamedDifference.sample_error logF constantF N R p (log_regular N hN) (constant_regular R))
+  exact distance_congr (.eqRefl _) (.eqRefl _) (by ipra_ring) (.eqRefl _)
+    (distance_triangle_same _ _ _ _ _ _ hp smaller raw)
 
 theorem actual_original_finite_euler_digamma_slope_closed : ([] : List (Fm PTm 0)) ⊢[PRAAx] univ 3
     (source (var 0) (var 1) ⟶ le one (var 2) ⟶ independentRate DF nameF (dd (var 0) (var 1))
