@@ -1,0 +1,153 @@
+\section{A local Cauchy theorem on arbitrarily shrinking intervals}
+\label{sec:local-cauchy}
+
+The scalar part of the preceding proof admits parameters that change with
+$T$.  This produces a local limit theorem rather than only a weak limit.
+It is also the most direct statement of the result for a single classical
+special function.
+
+Fix one of the completed Dirichlet functions $F$ from
+Section~\ref{sec:setup}, and put $g=F'/F$.  On the real line away from
+the zeros of $F$, the function $g$ is real.  Let $u<v$ be fixed real
+numbers and let $U_T$ be uniform on $[uT,vT]$.  Define
+\begin{equation}\label{eq:normalized-random-variable}
+ Z_T=\frac{2}{\log T}\frac{F'(U_T)}{F(U_T)}.
+\end{equation}
+The undefined values at zeros are a null event and may be assigned
+arbitrarily.
+
+\begin{theorem}[Arbitrarily fine local Cauchy law]\label{thm:local-cauchy}
+Let $\alpha_T<\beta_T$ be any two real-valued functions of $T$ such that
+\[
+ \alpha_T\longrightarrow c,\qquad\beta_T\longrightarrow c
+       \quad\text{for some fixed }c\in\mathbb R.
+\]
+There is no lower bound on the positive width $\beta_T-\alpha_T$.
+Then
+\begin{equation}\label{eq:local-cauchy-law}
+ \boxed{\displaystyle
+  \Pr\{\alpha_T<Z_T<\beta_T\}
+      \sim\frac{\beta_T-\alpha_T}{\pi(1+c^2)}.}
+\end{equation}
+Equivalently, if $a_T<b_T$, $\delta_T=b_T-a_T>0$, and
+$a_T/\log T,b_T/\log T\to d\in\mathbb R$, then
+\begin{equation}\label{eq:raw-local-law}
+ \boxed{\displaystyle
+ \left|\left\{t\in[uT,vT]:a_T<g(t)<b_T\right\}\right|
+ \sim\frac{2(v-u)}{\pi(1+4d^2)}
+                    \frac{\delta_T T}{\log T}.}
+\end{equation}
+Vertical bars denote Lebesgue measure, not a number of sample points.
+All characters and conductors remain fixed.
+\end{theorem}
+
+\begin{proof}
+We prove \eqref{eq:raw-local-law}.  For each $T$, define in the upper
+half-plane
+\begin{equation}\label{eq:moving-band-log}
+ f_T(z)=\int_{a_T}^{b_T}\frac{ds}{g(z)-s}.
+\end{equation}
+Since $\operatorname{Im}g(z)<0$, the integrand has positive imaginary
+part.  This is the analytic branch of
+$\log[(g(z)-a_T)/(g(z)-b_T)]$ with imaginary part between $0$ and $\pi$.
+For almost every real $x$, its limiting imaginary part is
+\[
+ \operatorname{Im}f_T(x+i0)
+        =\pi\,\boldsymbol1_{\{a_T<g(x)<b_T\}}.
+\]
+For example this follows directly by taking the limit of
+\[
+ \operatorname{Im}\frac1{g(z)-s}
+        =\frac{-\operatorname{Im}g(z)}
+                     {(\operatorname{Re}g(z)-s)^2+(\operatorname{Im}g(z))^2}
+\]
+in the finite $s$-integral.  The exceptional endpoints and poles are
+discrete.  The bounded harmonic Poisson formula therefore applies
+exactly, for every $T$.
+
+By Lemma~\ref{ut:radial}, uniformly on compact subsets of the upper
+half-plane,
+\[
+ \frac{g(Tz)}{\log T}\longrightarrow-\frac i2.
+\]
+Every $s$ between $a_T$ and $b_T$ satisfies $s/\log T\to d$, uniformly
+over that interval.  Dividing \eqref{eq:moving-band-log} by its length
+thus gives
+\begin{equation}\label{eq:band-harmonic-limit}
+ \frac{\log T}{\delta_T}f_T(Tz)
+       =\frac1{\delta_T}\int_{a_T}^{b_T}
+               \frac{ds}{g(Tz)/\log T-s/\log T}
+       \longrightarrow\frac1{-d-i/2}.
+\end{equation}
+The denominators stay uniformly away from zero.  This averaging argument
+does not divide an uncontrolled error by $\delta_T$: the error is uniform
+\emph{inside the integral}, and its integral is $\delta_T$ times that
+uniform error.  Hence no restriction on how quickly $\delta_T$ tends to
+zero enters the proof.
+
+Introduce the positive measures
+\[
+ d\mu_T(x)=\frac{\log T}{\delta_T}
+       \boldsymbol1_{\{a_T<g(Tx)<b_T\}}\,dx.
+\]
+Their Poisson transforms, by \eqref{eq:band-harmonic-limit}, tend at every
+upper-half-plane point to
+\[
+ \operatorname{Im}\frac1{-d-i/2}=\frac2{1+4d^2}.
+\]
+The compactness, tail bound, and Poisson uniqueness argument in the
+proof of Theorem~\ref{ut:main} uses only positivity and convergence of
+these transforms.  It applies to the present $T$-dependent measures as
+well, giving
+\[
+ d\mu_T(x)\longrightarrow\frac2{\pi(1+4d^2)}\,dx
+\]
+vaguely.  In more detail, the transform at $iR$ bounds the mass on
+$[-R,R]$; the kernel inequality in that proof bounds all tail transforms
+by $O(1/R)$; every subsequential limit then has the displayed constant
+Poisson transform, determining it uniquely.  The continuous limiting
+density permits taking the mass of $[u,v]$.  This is
+\eqref{eq:raw-local-law}.
+
+Finally set $a_T=\alpha_T\log T/2$ and
+$b_T=\beta_T\log T/2$.  Then $d=c/2$.  Divide the resulting measure
+by the length $(v-u)T$ of the sampling interval to obtain
+\eqref{eq:local-cauchy-law}.
+\end{proof}
+
+\begin{corollary}[Exact asymptotic for rare near-stationarity]
+\label{cor:rare-flatness}
+For every function $\varepsilon(T)>0$ with
+$\varepsilon(T)=o(\log T)$,
+\begin{equation}\label{eq:near-stationarity}
+ \boxed{\displaystyle
+ \left|\left\{t\in[T,2T]:
+           \left|\frac{F'(t)}{F(t)}\right|<\varepsilon(T)\right\}\right|
+        \sim\frac{4\varepsilon(T)T}{\pi\log T}.}
+\end{equation}
+This applies, for example, to $\varepsilon(T)=e^{-T}$.
+For the Riemann input, $F(t)=\Xi(t)=\xi(1/2+it)$.
+\end{corollary}
+\begin{proof}
+Take $a_T=-\varepsilon(T)$ and $b_T=\varepsilon(T)$, so $d=0$ and
+$\delta_T=2\varepsilon(T)$, in \eqref{eq:raw-local-law}.
+\end{proof}
+
+\paragraph{What is stronger than a weak Cauchy law.}
+Weak convergence controls probabilities of fixed intervals whose
+boundaries have limiting measure zero.  It supplies no relative error
+for an interval with length tending to zero, especially a length as
+small as $e^{-T}$.  Theorem~\ref{thm:local-cauchy} gives that relative
+asymptotic directly.  It concerns a continuous sampling variable; it
+does not claim that a discrete sampling grid resolves exponentially
+short intervals.
+
+Scalar weak Cauchy limits for zeta logarithmic derivatives have already
+been studied by Sodin and, more recently, Najnudel and
+Nikeghbali~\cite{sodin,najnudel}.  The latter's Theorem~1.1 gives the
+weak Cauchy law, while its introduction distinguishes the available
+comparison estimate from a rate of convergence to that law.  Our
+proof uses the established real-zero setting and a positive bounded
+phase to obtain the stronger moving-interval statement.  We claim
+the derivation and comparison recorded here, not the invention of
+the underlying Cauchy phenomenon.

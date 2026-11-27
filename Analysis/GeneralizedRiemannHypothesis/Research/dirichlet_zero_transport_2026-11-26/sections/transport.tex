@@ -1,0 +1,442 @@
+% Standalone mathematical section. Requires amsmath,amssymb,amsthm.
+% Uses theorem, lemma, corollary, proposition, remark environments.
+% Citation keys, if added by parent: BGN2018, Reiffenstein2022, DLMF.
+\section{A universal law for the displacement of infinitely many zeros}
+\label{sec:universal-transport}
+
+This section supplies the convergence and regularization missing from the
+earlier graph-coupled-zero construction. The basic spectral-shift mechanism
+is classical; see \cite{bgn,reiffenstein}. The contribution developed here is its arithmetic asymptotic:
+the total zero displacement has an explicit universal leading coefficient,
+and every coefficient of its Poisson-smoothed expansion is a finite matrix
+trace. No simplicity, zero-spacing, linear-independence, or pair-correlation
+assumption is used.
+
+\subsection{Inputs and a canonical measure of displacement}
+\label{sec:setup}
+
+Let $F_1,\ldots,F_n$ be phase-real primitive completed Dirichlet functions,
+allowing repetitions and the pole-removed zeta completion. Thus, for a
+primitive nonprincipal character $\chi$ of conductor $q$ and parity $a$,
+\[
+ \Lambda_\chi(s)=(q/\pi)^{(s+a)/2}\Gamma((s+a)/2)L(s,\chi),
+ \qquad F_\chi(z)=\eta_\chi^{-1}\Lambda_\chi(1/2+iz),
+ \qquad \eta_\chi^2=\varepsilon_\chi.
+\]
+For zeta set $q=1$ and
+\[
+ F_\zeta(z)=\xi(1/2+iz),\qquad
+ \xi(s)=\tfrac12s(s-1)\pi^{-s/2}\Gamma(s/2)\zeta(s).
+\]
+The functional equation makes each $F_i$ real entire, including for complex
+characters. Invoke the Dirichlet zero-location theorem to conclude that
+all its zeros are real. Its order-one canonical product gives, off those
+zeros,
+\[
+ g_i(z)=\frac{F_i'(z)}{F_i(z)},\qquad
+ \operatorname{Im}g_i(z)<0\quad(\operatorname{Im}z>0).
+\]
+Indeed, with zeros listed with multiplicity,
+\[
+ \operatorname{Im}g_i(x+iy)
+   =-y\sum_{\rho\in\mathcal Z(F_i)}\frac1{|x+iy-\rho|^2}<0.
+\]
+The real constant from the canonical product does not affect this formula;
+the series converges locally uniformly away from the zeros.
+
+For a fixed Hermitian $n\times n$ matrix $A$, define
+\begin{align}
+ P_A(z)&=\det\!\left(\operatorname{diag}(F_i(z))A+
+                           \operatorname{diag}(F_i'(z))\right),
+             \label{ut:defPA}\\
+ M_A(z)&=A+\operatorname{diag}(g_i(z)). \label{ut:defMA}
+\end{align}
+The first expression is entire and real: its principal-minor expansion
+has real coefficients multiplying products of real entire functions.
+Away from the input zeros,
+$P_A=(\prod_iF_i)\det M_A$. Since $\operatorname{Im}M_A\prec0$ in the
+upper half-plane, $M_A$ is invertible there. Consequently $P_A$ is nonzero
+and all its zeros are real.
+
+Fix $0\ne B\succeq0$ Hermitian, of rank $r$, and set $A_1=A+B$.
+At real $x$ avoiding all input and output zeros, define
+\begin{equation}\label{ut:defshift}
+ \sigma_{A,B}(x)=n_+(M_{A+B}(x))-n_+(M_A(x)).
+\end{equation}
+Values on the excluded discrete set are immaterial for integration.
+Here $n_+$ counts strictly positive eigenvalues with multiplicity.
+Since $B\succeq0$ and has rank $r$,
+\begin{equation}\label{ut:shiftbound}
+       0\leq\sigma_{A,B}(x)\leq r.
+\end{equation}
+This is the canonical rightward zero-crossing count. In particular, it
+avoids the ambiguous subtraction of two infinite zero-counting functions.
+
+\begin{theorem}[Exact displacement measure and trace identity]
+\label{ut:exact}
+There is a holomorphic logarithm $\mathcal L_{A,B}$ on the upper
+half-plane satisfying
+\[
+ e^{\mathcal L_{A,B}(z)}=\frac{P_{A+B}(z)}{P_A(z)},\qquad
+ 0<\operatorname{Im}\mathcal L_{A,B}(z)<r\pi,
+ \qquad \mathcal L_{A,B}(iy)\longrightarrow0\quad(y\to\infty).
+\]
+Its boundary imaginary part is $\pi\sigma_{A,B}$ almost everywhere, and
+\begin{equation}\label{ut:poisson}
+ \boxed{\quad
+ \int_{\mathbb R}\frac{y^2\sigma_{A,B}(t)}{t^2+y^2}\,dt
+       =y\operatorname{Im}\mathcal L_{A,B}(iy)
+       \quad(y>0).\quad}
+\end{equation}
+More generally,
+\begin{equation}\label{ut:poisson-general}
+ \operatorname{Im}\mathcal L_{A,B}(x+iy)
+     =\int_{\mathbb R}\frac{y\sigma_{A,B}(t)}{(t-x)^2+y^2}\,dt.
+\end{equation}
+Writing $\nu_A$ for the locally finite zero-counting measure of $P_A$,
+including multiplicity, one has the distributional equality
+\begin{equation}\label{ut:distribution}
+         d\sigma_{A,B}=d\nu_A-d\nu_{A+B}.
+\end{equation}
+Consequently every $\varphi\in C_c^1(\mathbb R)$ satisfies the exact,
+finite identity
+\begin{equation}\label{ut:testtrace}
+ \sum_{P_{A+B}(\beta)=0}\!\operatorname{ord}_\beta(P_{A+B})\varphi(\beta)
+ -\sum_{P_A(\alpha)=0}\!\operatorname{ord}_\alpha(P_A)\varphi(\alpha)
+   =\int_{\mathbb R}\varphi'(t)\sigma_{A,B}(t)\,dt.
+\end{equation}
+Common zeros cancel with their exact multiplicities.
+\end{theorem}
+
+\begin{proof}
+Write $B=VV^*$ with $V$ an $n\times r$ matrix of full column rank. Set
+\[
+ H(z)=V^*M_A(z)^{-1}V.
+\]
+For every invertible matrix $M$,
+\[
+ \operatorname{Im}(M^{-1})
+       =-M^{-*}(\operatorname{Im}M)M^{-1}.
+\]
+Thus $\operatorname{Im}H(z)\succ0$ in the upper half-plane. The eigenvalues
+of $I_r+H(z)$ all lie in that half-plane, so its principal matrix logarithm
+is holomorphic. Put
+\[
+ \mathcal L_{A,B}(z)=\operatorname{tr}\log(I_r+H(z)).
+\]
+The sum of the principal arguments of its $r$ eigenvalues lies strictly
+between $0$ and $r\pi$. The determinant lemma gives
+$e^{\mathcal L_{A,B}}=\det M_{A+B}/\det M_A=P_{A+B}/P_A$.
+The asymptotic lemma below gives $H(iy)=O(1/\log y)$ and hence the asserted
+normalization at infinity.
+
+At a real regular point $x$, the matrices $M_A(x)$ and $H(x)$ are Hermitian.
+Approach from the upper half-plane. Each negative eigenvalue of $I+H(x)$
+has limiting argument $\pi$ and each positive eigenvalue has limiting
+argument zero. Therefore
+\[
+ \pi^{-1}\operatorname{Im}\mathcal L_{A,B}(x+i0)=n_-(I_r+H(x)).
+\]
+To identify this with \eqref{ut:defshift}, take the inertia of
+\[
+ \begin{pmatrix}M_A(x)&V\\ V^*&-I_r\end{pmatrix}
+\]
+using its two Schur complements. They give, respectively,
+$n_+(M_A(x))+n_-(I_r+H(x))$ and $n_+(M_A(x)+B)$.
+This proves the boundary formula.
+
+The imaginary part of $\mathcal L_{A,B}$ is a bounded harmonic function
+on the upper half-plane. The Poisson representation for bounded harmonic
+functions gives \eqref{ut:poisson-general}. There is no additional linear
+term or singular boundary measure: bounded harmonic functions are the
+Poisson extensions of their bounded almost-everywhere boundary values.
+This proves \eqref{ut:poisson} as well; its integral is absolutely finite
+by \eqref{ut:shiftbound}.
+
+For completeness, multiplicities in \eqref{ut:distribution} can be read
+directly from the entire quotient, without a simplicity assumption.
+At a real $x_0$, locally write
+\[
+ \frac{P_{A+B}(z)}{P_A(z)}=(z-x_0)^k a(z),\qquad
+ k=\operatorname{ord}_{x_0}P_{A+B}-\operatorname{ord}_{x_0}P_A,
+\]
+with $a$ analytic, real and nonzero near $x_0$. The boundary argument
+of $\log(z-x_0)$ drops by $\pi$ when crossing $x_0$ from left to right.
+Hence $\sigma_{A,B}$ jumps by $-k$. Away from this discrete divisor it
+is locally constant. These are precisely the atoms of
+$\nu_A-\nu_{A+B}$. Integration by parts gives \eqref{ut:testtrace}.
+\end{proof}
+
+\begin{remark}[Why this measures motion rather than just a count]
+For a rank-one addition, $1+H(z)$ is a scalar meromorphic function with
+positive imaginary part. Its real poles and zeros interlace after common
+factors are canceled. The set where its boundary value is negative is a
+disjoint union of intervals from an old zero to the following new zero;
+$\sigma_{A,B}$ is their indicator. Thus its integral over a window is
+the total length of the moving-zero intervals clipped to that window.
+For general $B$, decompose it into $r$ positive rank-one terms and apply
+this observation successively. The crossing counts add and telescope
+to \eqref{ut:defshift}, so their total is independent of this decomposition.
+No separately divergent sum $\sum\beta-\sum\alpha$ is used.
+\end{remark}
+
+\subsection{Arithmetic input at large complex arguments}
+
+Put
+\begin{equation}\label{ut:conductorconstants}
+ c_i=\tfrac12\log\!\left(\frac{q_i}{2\pi}\right),\qquad
+ C=\operatorname{diag}(c_1,\ldots,c_n),\qquad
+ \ell_y=\tfrac12\log y.
+\end{equation}
+
+\begin{lemma}[Uniform radial logarithmic derivative]\label{ut:radial}
+For every compact subset $K$ of the upper half-plane,
+\begin{equation}\label{ut:radial-asymptotic}
+ g_i(Tz)=-i\left(\tfrac12\log T+c_i+\tfrac12\log(-iz)\right)
+                    +O_K(T^{-1})\qquad(z\in K).
+\end{equation}
+The logarithm is the principal one; $-iz$ is in the right half-plane.
+In particular
+\begin{equation}\label{ut:imag-asymptotic}
+ g_i(iy)=-i(\ell_y+c_i)+O(y^{-1}).
+\end{equation}
+All conductors, characters, and matrices are fixed as $T$ or $y$ tends
+to infinity.
+\end{lemma}
+
+\begin{proof}
+For a primitive nonprincipal character the functional equation gives
+\[
+ g_i(Tz)=-i\frac{\Lambda_{\overline\chi}'(1/2-iTz)}
+                         {\Lambda_{\overline\chi}(1/2-iTz)}.
+\]
+Write $s=1/2-iTz$. Uniformly for $z\in K$, $\operatorname{Re}s$ tends
+linearly to $+\infty$ and $s$ stays in a closed subsector of the right
+half-plane. Logarithmic differentiation of the completion gives
+\[
+ \frac{\Lambda_{\overline\chi}'(s)}{\Lambda_{\overline\chi}(s)}
+ =\tfrac12\log(q_i/\pi)
+       +\tfrac12\psi((s+a_i)/2)
+       +\frac{L'(s,\overline\chi)}{L(s,\overline\chi)}.
+\]
+The functional equation and completion are standard \cite{dlmfdirichlet}.
+The absolutely convergent Euler-product logarithmic derivative is
+exponentially small in $\operatorname{Re}s$. The uniform Stirling
+expansion $\psi(w)=\log w+O(|w|^{-1})$ gives
+\[
+ \tfrac12\log T+c_i+\tfrac12\log(-iz)+O_K(T^{-1}).
+\]
+For zeta, logarithmic differentiation of the pole-removing factor adds
+$1/s+1/(s-1)=O_K(T^{-1})$, so the same formula holds with $q_i=1$.
+\end{proof}
+
+\subsection{The macroscopic transport law}
+
+\begin{theorem}[Universal macroscopic zero transport]\label{ut:main}
+With the preceding fixed inputs, matrices, and $0\ne B\succeq0$, the
+positive measures
+\begin{equation}\label{ut:weaklimit}
+   (\log T)\sigma_{A,B}(Tu)\,du
+        \ \longrightarrow\ \frac{2\operatorname{tr}B}{\pi}\,du
+        \qquad(T\to\infty)
+\end{equation}
+converge against every continuous compactly supported test function on
+$\mathbb R$. Consequently, for every fixed pair $a<b$,
+\begin{equation}\label{ut:windowlaw}
+ \boxed{\quad
+ \int_{aT}^{bT}\sigma_{A,B}(x)\,dx
+       \sim \frac{2\operatorname{tr}B}{\pi}(b-a)
+                          \frac{T}{\log T}.
+ \quad}
+\end{equation}
+In particular,
+\begin{equation}\label{ut:symmetriclaw}
+ \int_{-T}^{T}\sigma_{A,B}(x)\,dx
+       \sim\frac{4\operatorname{tr}B}{\pi}\frac{T}{\log T}.
+\end{equation}
+For a graph edge of added conductance $h>0$, take
+$B=h(e_a-e_b)(e_a-e_b)^*$; then $\operatorname{tr}B=2h$, and the
+coefficient in \eqref{ut:symmetriclaw} is $8h/\pi$.
+Thus the unregularized total positive displacement is infinite, with a
+precise growth law. Its leading coefficient depends on neither the
+initial graph nor the characters, conductors, or individual zero spacings.
+\end{theorem}
+
+\begin{proof}
+Write $b=\operatorname{tr}B>0$. Lemma~\ref{ut:radial} gives, uniformly on
+compact subsets of the upper half-plane,
+\[
+ M_A(Tz)=-\tfrac i2(\log T)I+O(1),\qquad
+ M_A(Tz)^{-1}=\frac{2i}{\log T}I+O((\log T)^{-2}).
+\]
+The defining principal logarithm therefore yields
+\begin{equation}\label{ut:harmonic-limit}
+ (\log T)\operatorname{Im}\mathcal L_{A,B}(Tz)
+                       \longrightarrow 2b.
+\end{equation}
+Let $d\mu_T(u)=(\log T)\sigma_{A,B}(Tu)\,du$. Changing variables in
+\eqref{ut:poisson-general} shows that, for every $x\in\mathbb R$, $y>0$,
+\begin{equation}\label{ut:scaled-poisson}
+ \int_{\mathbb R}\frac{y}{(u-x)^2+y^2}\,d\mu_T(u)
+        =(\log T)\operatorname{Im}\mathcal L_{A,B}(T(x+iy))
+        \longrightarrow 2b.
+\end{equation}
+We justify passage from these positive transforms to measures explicitly.
+For fixed $R>0$, the kernel $R/(u^2+R^2)$ is at least $1/(2R)$ on
+$[-R,R]$. Hence the masses $\mu_T([-R,R])$ are uniformly bounded for
+all sufficiently large $T$. Every sequence $T\to\infty$ has a vaguely
+convergent subsequence, with positive locally finite limit $\mu$.
+
+The Poisson transforms also have uniformly negligible tails in the
+required iterated-limit sense. Fix $x,y$ and take $R>2|x|+2y$.
+For $|u|\ge R$,
+\[
+ \frac{y}{(u-x)^2+y^2}
+       \leq\frac{4y}{u^2}
+       \leq\frac{8y}{R}\frac{R}{u^2+R^2}.
+\]
+Thus \eqref{ut:scaled-poisson}, evaluated at $iR$, gives
+\[
+ \limsup_{T\to\infty}
+ \int_{|u|\ge R}\frac{y}{(u-x)^2+y^2}\,d\mu_T(u)
+             \leq\frac{16by}{R}.
+\]
+It follows, first using compact cutoffs and then letting $R\to\infty$,
+that every subsequential limit satisfies
+\[
+ \int_{\mathbb R}\frac{y}{(u-x)^2+y^2}\,d\mu(u)=2b
+                       \qquad(x\in\mathbb R, y>0).
+\]
+Uniqueness of the Poisson representation gives
+$d\mu=(2b/\pi)\,du$. One may see this without a representation theorem
+by integrating against a smooth compactly supported function of $x$ and
+letting $y\downarrow0$; the normalized Poisson kernels form an approximate
+identity, giving $\int\varphi\,d\mu=(2b/\pi)\int\varphi$.
+Since every subsequential limit is this same measure,
+\eqref{ut:weaklimit} follows. The limiting measure has no atoms at $a,b$,
+so compact-interval masses converge as well. Changing variables once more
+proves \eqref{ut:windowlaw}; the other assertions follow immediately.
+\end{proof}
+
+\subsection{All orders, including the first conductor and graph corrections}
+
+Define the finite Poisson-smoothed displacement
+\[
+ \mathfrak D_{A,B}(y)
+       =\int_{\mathbb R}\frac{y^2\sigma_{A,B}(t)}{t^2+y^2}\,dt.
+\]
+
+\begin{theorem}[Complete expansion]\label{ut:expansion}
+For every fixed positive integer $m$,
+\begin{equation}\label{ut:allorders}
+ \boxed{\quad
+ \frac{\mathfrak D_{A,B}(y)}y
+   =\sum_{k=1}^{m}\frac{(-1)^{k+1}}{k\ell_y^k}
+        \operatorname{Im}\operatorname{tr}
+        \left((C+i(A+B))^k-(C+iA)^k\right)
+        +O(\ell_y^{-m-1}).\quad}
+\end{equation}
+In particular,
+\begin{align}
+ \frac{\mathfrak D_{A,B}(y)}y
+  &=\frac{\operatorname{tr}B}{\ell_y}
+       -\frac{\operatorname{tr}(CB)}{\ell_y^2}
+       +\frac{\kappa_3(A,B,C)}{\ell_y^3}
+       +O(\ell_y^{-4}),\label{ut:threeorders}\\
+ \kappa_3(A,B,C)
+  &=\operatorname{tr}(C^2B)
+       -\frac13\operatorname{tr}\left((A+B)^3-A^3\right)\notag\\
+  &=\operatorname{tr}(C^2B)-\operatorname{tr}(A^2B)
+       -\operatorname{tr}(AB^2)-\tfrac13\operatorname{tr}(B^3).
+       \label{ut:thirdcoefficient}
+\end{align}
+The matrices need not commute. The first correction records conductor
+data; the initial coupling first appears in the third displayed order.
+\end{theorem}
+
+\begin{proof}
+By \eqref{ut:imag-asymptotic},
+\[
+ M_A(iy)=-i\ell_y\left(I+\frac{C+iA}{\ell_y}
+                                      +O((y\ell_y)^{-1})\right).
+\]
+Use the convergent matrix logarithm series at $I$ for sufficiently large
+$y$, take traces, and subtract the expressions for $A+B$ and $A$.
+The factors $(-i\ell_y)^n$ cancel. Both logarithms use the branch tending
+to zero after this cancellation, agreeing with $\mathcal L_{A,B}(iy)$.
+The error from the $O(y^{-1})$ arithmetic remainder is
+$O((y\ell_y)^{-1})$, smaller than every fixed negative power of $\ell_y$.
+The usual power-series remainder gives \eqref{ut:allorders}.
+
+For the first three terms use cyclicity of trace:
+\[
+ \operatorname{Im}\operatorname{tr}(C+iA)=\operatorname{tr}A,
+\]
+\[
+ \operatorname{Im}\operatorname{tr}(C+iA)^2=2\operatorname{tr}(CA),
+ \quad
+ \operatorname{Im}\operatorname{tr}(C+iA)^3
+             =3\operatorname{tr}(C^2A)-\operatorname{tr}(A^3).
+\]
+All displayed traces of Hermitian products are real. Expanding the cubic
+difference under the trace proves \eqref{ut:thirdcoefficient}.
+\end{proof}
+
+\begin{corollary}[Explicit single-edge correction]
+For $A=L$ a graph Laplacian and $B=hvv^*$ with $v=e_a-e_b$,
+\begin{align*}
+ \frac{\mathfrak D_{L,B}(y)}y
+ ={}&\frac{2h}{\ell_y}-\frac{h(c_a+c_b)}{\ell_y^2}\\
+ &+\frac{h(c_a^2+c_b^2)-h\|Lv\|^2
+            -2h^2v^*Lv-\frac83h^3}{\ell_y^3}
+       +O(\ell_y^{-4}).
+\end{align*}
+\end{corollary}
+
+\subsection{An exactly computable two-vertex example}
+
+Place the same zeta input $F(z)=\xi(1/2+iz)$ at two vertices joined by
+an edge of conductance $w>0$. Then
+\[
+ P_w(z)=F'(z)\bigl(F'(z)+2wF(z)\bigr).
+\]
+Increasing the conductance by $h>0$ leaves the $F'$ factor unchanged.
+Put
+\[
+ a(y)=\frac{\xi'(1/2+y)}{\xi(1/2+y)}>0\qquad(y>0).
+\]
+Its positivity also follows from the real-zero product. Functional
+symmetry gives $g(iy)=-ia(y)$, and the exact determinant identity reduces
+to the explicit formula
+\begin{equation}\label{ut:twovertex}
+ \boxed{\quad
+ \mathfrak D_{w,h}(y)
+  =y\left[\arctan\!\left(\frac{2(w+h)}{a(y)}\right)
+             -\arctan\!\left(\frac{2w}{a(y)}\right)\right].
+ \quad}
+\end{equation}
+For $y>1/2$, one can evaluate this without locating any zeros, using
+\[
+ a(y)=\frac1s+\frac1{s-1}-\frac12\log\pi
+           +\frac12\psi(s/2)+\frac{\zeta'(s)}{\zeta(s)},
+          \qquad s=y+\tfrac12.
+\]
+Equation \eqref{ut:twovertex} is exact. The associated unsmoothed
+transport obeys
+\[
+ \int_{-T}^{T}\sigma_{w,h}(x)\,dx
+                  \sim\frac{8h}{\pi}\frac{T}{\log T}.
+\]
+This example provides an independent sign and normalization check for
+both universal constants and all the matrix-trace coefficients.
+
+\paragraph{Precise scope.}
+The results concern the explicitly constructed entire determinants.
+They do not identify a new Euler product or an automorphic $L$-function.
+The zero-location theorem is used solely to supply positive spectral
+shift; the asymptotic at imaginary arguments follows independently from
+the functional equation, the gamma factor, and absolute convergence on
+the right. All limits fix the conductors and the coupling matrices.
+The proofs do not imply a microscopic spacing law, and the smoothed
+higher-order expansion is not asserted term by term for the unsmoothed
+window integral.

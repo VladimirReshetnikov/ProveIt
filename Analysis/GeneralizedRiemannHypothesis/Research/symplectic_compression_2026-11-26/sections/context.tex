@@ -1,0 +1,49 @@
+\section{From the supplied proof to a finite geometric problem}
+\label{sec:context}
+
+\subsection{What was inspected}
+
+The source is \texttt{lsernau/grh-lean} at commit
+\texttt{72fead102f663d5c7a407964a13dc0cf9d977207}. Its public statements assert the Riemann hypothesis and GRH for Dirichlet $L$-functions, including imprimitive characters. The exported statements do not assert arbitrary Artin or automorphic GRH. The repository describes a Lean~4 development with axiom dependencies \texttt{propext}, \texttt{Classical.choice}, and \texttt{Quot.sound}; its reported compiler and independent-kernel checks were not rerun for this note \cite{grh}.
+
+The supplied Wikipedia page describes the November 2026 announcement and the relationship between critical-line zeros and prime-counting errors \cite{wiki}. It provides orientation; the exact scope and transferable mechanism used here come from the source files. The new theorem below uses no analytic statement about $L$-functions.
+
+The ProveIt comparison is pinned to commit \texttt{041d80325417}
+(the full identifier appears in the references). Its index contains 61 organized packets and a merged article. Its nested incoming directory contains 48 additional archives. The latter were read from cached bytes whose Git blob hashes were checked against the current repository. The merged article explicitly describes itself as a consolidation rather than an independent verification \cite{proveit}.
+
+\subsection{The source mechanism}
+
+The reading guide organizes the analytic proof around three inputs: short integral forms, enough independent forms obtained through a second moment, and a lower bound for a twisted Gram determinant. A common main term cancels in the upper and lower estimates. The resulting one-sided prime remainder bound is converted into zero exclusion through a Landau argument and a choice of quadratic twist. The files \texttt{New/Reduction/MainInequality.lean} and \texttt{New/Reduction/Zeros/Criterion.lean} expose those two final interfaces \cite{grh}.
+
+The present transfer begins earlier, in
+\texttt{New/Spanning/SecondMoment/PositiveType.lean}. In mathematical notation, its finite-field statement is as follows. Let $G$ be a finite group, $\pi:G\to\GL_N(\F_q)$ a representation, and $A_0,A_1$ two $N\times m$ matrices. Let $\Theta:G\to\mathbb R_{\ge0}$ be of positive type, so that
+\[
+ \Theta(a^{-1}b)=\langle u_a,u_b\rangle
+\]
+for a family of vectors in a complex Hilbert space. If each nonzero source vector has weighted stabilizer mass at most $Y$, both under $\pi$ on the first frame and under its contragredient on the second, then
+\begin{equation}\label{eq:source-bound}
+ q\sum_{\det(A_1^{\mathsf T}\pi(g)A_0)=0}\Theta(g)
+ \le 2\sum_g\Theta(g)+q^{m+N/2}Y.
+\end{equation}
+The proof realizes a bilinear additive-character sum as an inner product of orbit sums. Their squared norms are stabilizer masses. Cauchy--Schwarz and finite Fourier orthogonality then count kernel vectors.
+
+This gives a concrete question independent of RH: when a group acts on a finite vector space, what does a small matrix of pairings reveal about that action? The source controls singularity. ProveIt already develops full-law Fourier estimates and higher kernel moments. Here we calculate the entire law for uniform symplectic actions by counting its fibers exactly.
+
+\subsection{The precise increment over ProveIt}
+
+The merged article's symplectic section gives a generic estimate and an exact isotropic boundary law. In our ambient-dimension notation, its generic bound is
+\[
+ d_{\mathrm{TV}}\bigl(\mathcal L(Y^{\mathsf T}JgX_0),U_{a,b}\bigr)
+ \le Cq^{-(2n+1-a-b)/2},\qquad a+b\le2n,
+\]
+where $U_{a,b}$ is the uniform distribution on all $a\times b$ matrices. Its Question \texttt{spn:q:symplectic} asks for the effects of general restricted alternating forms \cite{proveit}.
+
+The later packet \emph{Symplectic rank blindness} computes exact matrix likelihoods for a Lagrangian projection and arbitrary input form. It also shows that rank statistics can become asymptotically unable to distinguish distributions whose full matrix laws remain separated. Its stated remaining case has both compressed spaces arbitrary \cite{rankblind}.
+
+Theorem~\ref{thm:complete-law} allows arbitrary forms on \emph{both} frames and arbitrary rectangular sizes. It additionally retains the dimension of their intersection. Theorem~\ref{thm:minimum-dimension} extracts the exact realizability obstruction, and Section~\ref{sec:asymptotics} determines the sharp correction to uniformity for fixed frame sizes. This settles the missing exact finite-dimensional extension; it does not classify every regime in which the two sizes grow with the ambient dimension.
+
+\subsection{Classical ingredients and novelty boundary}
+
+The proof rests on standard symplectic basis extension, prescribed-Gram frame counts, and Gaussian binomial coefficients. In particular, classifying a tuple by its kernel and induced form is classical: Guralnick, Larsen, and Tiep use precisely this orbit mechanism in Lemma~2.6 \cite{glt}. The new calculation here imposes separate injectivity on two blocks, evaluates the resulting transverse-kernel coefficient, and turns it into a joint probability law and a sharp realization formula.
+
+Related finite-geometry work counts pairs of subspaces with specified disjointness and nondegeneracy properties \cite{deboeck}; form-prescribed uniform sampling is studied in \cite{ishizuka}; symplectic refinements of rectangular-matrix association schemes appear in \cite{zhang}. Those comparisons keep the novelty claim specific. The combined theorem was not located in the targeted search and is absent from the inspected ProveIt predecessors. No claim is made that the underlying orbit classification or symplectic geometry is new.

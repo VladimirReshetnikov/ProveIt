@@ -1,0 +1,486 @@
+\documentclass[11pt,letterpaper]{article}
+\usepackage[T1]{fontenc}
+\usepackage{lmodern,microtype,amsmath,amssymb,amsthm,booktabs,xcolor}
+\usepackage[margin=0.94in,top=0.83in,bottom=0.85in,headheight=14pt]{geometry}
+\usepackage{fancyhdr}
+\usepackage[colorlinks=true,linkcolor=teal!70!black,urlcolor=teal!70!black,citecolor=teal!70!black]{hyperref}
+\newtheorem{theorem}{Theorem}
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{corollary}[theorem]{Corollary}
+\newcommand{\C}{\mathbb C}\newcommand{\R}{\mathbb R}
+\newcommand{\Z}{\mathbb Z}\newcommand{\A}{\mathcal A}
+\newcommand{\rpart}{\operatorname{Re}}\newcommand{\ipart}{\operatorname{Im}}
+\newcommand{\dd}{\mathrm d}\newcommand{\ii}{\mathrm i}
+\definecolor{ink}{HTML}{16384A}
+\pagestyle{fancy}\fancyhf{}\lhead{\small\color{ink}Prime frequencies of differentiated Dirichlet completions}\rhead{\small Research note}\cfoot{\thepage}
+\setlength{\emergencystretch}{1.5em}
+\hypersetup{pdftitle={Hearing a differential operator and a conductor at one prime},pdfauthor={OpenAI}}
+\begin{document}
+\thispagestyle{plain}
+\noindent{\sffamily\small\bfseries\color{teal!70!black} ANALYTIC NUMBER THEORY\hfill NOVEMBER 2026}
+\medskip
+
+\noindent{\LARGE\bfseries\color{ink}Hearing a differential operator and a conductor at one prime\par}
+\medskip
+\noindent Given the zeros of a derivative, can one tell which derivative was taken?
+For a primitive Dirichlet character $\chi$, consider the entire completion
+$\Xi_\chi(s)$ and the zeros of $P(\dd/\dd s)\Xi_\chi(s)$, where the monic
+polynomial $P$ has purely imaginary roots. We prove that the frequency of a single unramified prime
+in these zero ordinates determines $P$. If $\deg P>0$, the same
+measurement determines the conductor of $\chi$, even when it is unknown.
+The measurable quantity is a rational shift quotient of $P$ to every
+order in $1/\log T$. For degree $d$, the coefficient at order $d+1$
+completes the reconstruction, and examples show that this last coefficient
+can be necessary. As a local consequence, any two distinct primitive-character
+and monic-operator pairs have different zero multisets in every sufficiently
+high interval of length $C\log\log T$, with a constant depending on the pair.
+
+\section{What one prime measures}
+Let $q$ be the conductor, $a\in\{0,1\}$ the parity, and set
+\[
+ A(s)=(q/\pi)^{(s+a)/2}\Gamma((s+a)/2),\qquad \Xi_\chi(s)=A(s)L(s,\chi).
+\]
+For the conductor-one character take $a=0$ and include $s(s-1)/2$ in $A$,
+so that $\Xi_1=\xi$ is entire. Here the argument of $\Xi_\chi$ is always
+$s$, including when it is differentiated. Write $D=\dd/\dd s$, let
+$P(X)=\prod_{j=1}^d(X-\ii\alpha_j)$ with $\alpha_j\in\R$, and allow $P=1$.
+Put $F=P(D)\Xi_\chi$. Its zeros are $1/2+\ii\gamma$ with $\gamma\in\R$,
+as shown in Section~\ref{sec:line}. All sums count multiplicity.
+
+For a fixed prime $p$, set $h=\log p$ and define the observable
+\begin{equation}\label{obs}
+ S_p(T,H)=\frac{\sqrt{2\pi p}}{H}\sum_\gamma
+      \exp\!\left(-\frac{(\gamma-T)^2}{2H^2}+\ii h\gamma\right).
+\end{equation}
+Negative ordinates are included. For $T\to+\infty$ their contribution
+is negligible in the windows below. For a complex character the sign of the
+ordinate and the sign of the phase matter. Put
+\begin{equation}\label{coord}
+ z=\tfrac12\log(T/(2\pi))+\ii\pi/4,\qquad
+ c=\tfrac12\log q,\qquad Q(X)=P(X+c).
+\end{equation}
+\begin{theorem}[Prime-frequency formula]\label{th:trace}
+For fixed $\chi,P,p$ there is $\eta_p>0$ such that, uniformly for
+$1\le H\le T^{2/3}$ as $T\to+\infty$,
+\begin{equation}\label{trace}
+ S_p(T,H)=-h\chi(p)\frac{Q(z-h)}{Q(z)}
+              +O_{\chi,P,p}\!\left(T^{-1/5}+ (\log T)e^{-\eta_p H^2}\right).
+\end{equation}
+In particular $H=\log\log T$ gives an error $o((\log T)^{-k})$ for
+every fixed $k$. The formula includes $p\mid q$, where $\chi(p)=0$.
+\end{theorem}
+\begin{theorem}[One-prime reconstruction]\label{th:inverse}
+Fix a prime $p\nmid q$. The values of \eqref{obs} with $H=\log\log T$
+along any unbounded sequence $T\to\infty$ determine $\chi(p)$ and the
+monic $P$. For $d>0$ they also determine $q$. In the expansion in $1/z$,
+the constant term determines $\chi(p)$, the first correction gives $d$,
+and the second gives $q$ for $d>0$. Terms through $z^{-d-1}$ suffice
+for all coefficients of $P$. For each $d\ge1$, terms only through
+$z^{-d}$ can agree for distinct operators of degree $d$, even with $q$
+and $\chi$ fixed.
+\end{theorem}
+The theorem uses exact asymptotic data. It imposes no simplicity or
+spacing assumption on zeros. The leading coefficient of an arbitrary
+nonzero $P$ multiplies the entire function and is invisible to its zeros,
+which explains the monic normalization. If $P=1$, all the inverse-log
+coefficients beyond the constant vanish, irrespective of the conductor.
+
+\section{Critical-line zeros after differentiation}\label{sec:line}
+The arithmetic input is the critical-line theorem for primitive Dirichlet
+$L$-functions from \cite{lean}. Classical completion, the Euler product,
+Stirling's formula and the Dirichlet zero count are used in their ordinary
+forms \cite{dav,bmor}. In particular the zeros of the entire completion
+are precisely the nontrivial zeros. The functional equation is
+$\Xi_\chi(s)=\varepsilon_\chi\overline{\Xi_\chi(1-\bar s)}$ with
+$|\varepsilon_\chi|=1$.
+\begin{lemma}\label{interlace}
+$F$ has order at most one and every zero lies on $\rpart s=1/2$.
+Its number of ordinates in $[u,u+1]$ is $O_{\chi,P}(\log(2+|u|))$.
+Moreover $F(s)=(-1)^d\varepsilon_\chi\overline{F(1-\bar s)}$.
+\end{lemma}
+\begin{proof}
+Take a unit square root of $\varepsilon_\chi$ and divide
+$\Xi_\chi(1/2+\ii w)$ by it. This is a real entire function $f(w)$
+of order at most one, with only real zeros. The usual Dirichlet zero
+count gives infinitely many zeros on both tails and the indicated unit
+interval bound for $f$. By the genus-one Hadamard product,
+\[
+ \frac{f'(w)}{f(w)}
+   =B+\frac{m_0}{w}
+     +\sum_{t\ne0}m_t\left(\frac1{w-t}+\frac1t\right),
+ \qquad B\in\R .
+\]
+Here $t$ runs over distinct nonzero zeros, $m_t$ is their multiplicity and
+$\sum_{t\ne0}m_t/t^2<\infty$. The imaginary part of the displayed
+expression is $-\ipart(w)\sum_t m_t/|w-t|^2$. Consequently
+$(\dd/\dd w+\alpha)f$ has only real zeros for real $\alpha$. At a zero
+of order $m$ it retains multiplicity $m-1$. In each intervening gap
+$f'/f$ decreases strictly from $+\infty$ to $-\infty$, giving one
+additional simple zero. The interval counts on half-open intervals
+therefore differ by at most one after each step. Closed unit intervals
+are covered by slightly longer half-open intervals. Derivatives preserve
+the order bound by Cauchy's estimate, and there are still infinitely
+many zeros in both directions. Each $D-\ii\alpha$ corresponds to
+$-\ii(\dd/\dd w+\alpha)$. Induction proves the zero assertions. The
+last identity follows by conjugation and the chain rule for each factor.
+\end{proof}
+
+\section{Proof of the prime-frequency formula}
+We give the contour and coefficient computations separately. The choice
+of a prime makes the coefficient calculation particularly short.
+\subsection{Freezing the gamma factor}
+Fix the edge $\sigma=2$. In the Banach algebra $\A_2$ of coefficient
+sequences with $\|u\|=\sum |u_n|n^{-2}<\infty$, the product is Dirichlet
+convolution. Evaluation at $2+\ii t$ has norm at most one. Write
+$g=z+c$ and introduce the two Dirichlet series, with $g$ held fixed,
+\[
+ U_g(s)=\sum_{n\ge1}\chi(n)P(g-\log n)n^{-s},\qquad
+ V_g(s)=-\sum_{n\ge1}\chi(n)(\log n)P(g-\log n)n^{-s}.
+\]
+The coefficients of $U_g/g^d$ tend in $\A_2$ to those of $L(s,\chi)$
+with error $O(1/|g|)$ by polynomial expansion and summability of log
+powers. $L^{-1}$ belongs to $\A_2$ by the Euler product. A Neumann
+series thus yields $\|U_g^{-1}\|=O(|g|^{-d})$. Since
+$\|V_g\|=O(|g|^d)$, the series
+\[
+ B_g=V_g/U_g=\sum_{n\ge1} b_n(g)n^{-s}
+ \quad\text{satisfies}\quad \|B_g\|=O(1).
+\]
+The coefficient at $1$ is zero. Comparing coefficients in $B_g U_g=V_g$
+at the prime $p$ gives the exact identity
+\begin{equation}\label{prime}
+ b_p(g)=-(\log p)\chi(p)\frac{P(g-\log p)}{P(g)}.
+\end{equation}
+
+For $s=2+\ii t$ and $|t-T|\le T^{3/4}$, Stirling's differentiated
+formula on this vertical strip gives
+\[
+  A'/A=g+O(T^{-1/4}),\qquad
+  (A'/A)^{(j)}=O_j(T^{-j})\quad(j\ge1).
+\]
+The error includes the variation of $\log t$ across the interval. The
+extra factor in conductor one changes $A'/A$ by $O(T^{-1})$.
+By induction using $A^{(k+1)}/A=(A^{(k)}/A)'+(A'/A)(A^{(k)}/A)$,
+$A^{(k)}/A$ is $(A'/A)^k$ plus terms containing at least one differentiated
+logarithmic derivative. Hence for each fixed $k$,
+$A^{(k)}/A=g^k+O_k(T^{-1/4}(1+|g|)^k)$.
+In $F/A$ apply $P(D-\log n)$ to $A$ term by term. The corresponding
+calculation in $F'/A$ uses $(D-\log n)P(D-\log n)$. The coefficient
+errors after replacing $D$ acting on $A$ by $g$ are bounded in $\A_2$
+by $O(T^{-1/4}(1+|g|)^{d+1})$ for both expressions, since
+$\sum n^{-2}(1+\log n)^{d+1}$ converges. The frozen expressions are
+respectively $U_g$ and $gU_g+V_g$. The inverse bound above gives
+$|U_g(2+\ii t)|\gg |g|^d$. Division, absorbing fixed powers of
+$\log T$ into $T^{1/20}$, proves
+\begin{equation}\label{freeze}
+ F'/F(2+\ii t)=g+B_g(2+\ii t)+O(T^{-1/5}).
+\end{equation}
+Using Stirling at each height separately gives
+$F'/F(2+\ii t)=O(\log(2+|t|))$ globally. For negative heights the
+imaginary term in $g$ changes sign, and compact intervals are bounded by
+Lemma~\ref{interlace}.
+
+\subsection{Selecting a single Dirichlet coefficient}
+Apply the residue theorem on the edges $\sigma=2,-1$ to $(F'/F)(s)K(s)$,
+where
+\[
+ K(s)=p^s\exp((s-1/2-\ii T)^2/(2H^2)).
+\]
+Multiply the resulting zero sum by $\sqrt{2\pi}/H$. Its value is exactly
+$S_p(T,H)$. On each vertical edge the oriented integral is consequently
+the integral in $t$ divided by $\sqrt{2\pi}H$, with the left edge
+subtracted. To justify removing the horizontal edges, select heights
+tending to $+\infty$ and $-\infty$ that stay $\gg1/\log(2+|t|)$ from
+every zero ordinate; this follows from Lemma~\ref{interlace} by deleting
+small intervals in each unit interval. The logarithmic derivative there
+is $O(\log^2(2+|t|))$ across the rectangle. Indeed, the genus-one sum
+at ordinates $|\gamma|\le 2|t|$ is bounded by unit shells about $t$
+using the count in the lemma, with the nearest shell bounded separately.
+Its regularizing terms sum to $O(\log^2(2+|t|))$. The complementary tail
+is $O(|t|\sum_{|\gamma|>2|t|}m_\gamma/\gamma^2)=O(\log(2+|t|))$,
+where here $\gamma$ indexes distinct ordinates. The Gaussian then kills
+both horizontal integrals. The same count proves absolute convergence
+of the sum in \eqref{obs}.
+
+On the right edge substitute \eqref{freeze}; on the left use
+$(F'/F)(-1+\ii t)=-\overline{(F'/F)(2+\ii t)}$. Since
+$H\le T^{2/3}$ the discarded Gaussian tails $|t-T|>T^{3/4}$ are
+smaller than any inverse power of $T$, by the global edge bound and
+the uniform norm of $B_g$. The integrated freezing error is $O(T^{-1/5})$.
+For a term with frequency $v$ on an edge $\sigma$ the normalized
+Gaussian integral, stripping constant factors from that term, is exactly
+\[
+ \frac1{\sqrt{2\pi}H}\int_{\R}e^{\ii vt}
+   e^{(\sigma-1/2+\ii(t-T))^2/(2H^2)}\,\dd t
+   =e^{\ii vT}e^{-H^2v^2/2-(\sigma-1/2)v}.
+\]
+On the right $v=\log(p/n)$ and on the left $v=\log(pn)$ for the
+conjugate series. The constant terms $g,\bar g$ have $v=h$. There is
+one resonance, the right-edge term $n=p$; its edge factor $p^2p^{-2}$ is
+one. All other frequencies have modulus at least $\delta=\log(1+1/p)$.
+For either edge and $H\ge1$ the Gaussian multiplier is bounded by
+$C\exp(-H^2 v^2/4)$, by completing the square in the remaining exponent.
+The total discarded contribution is $O((\log T)e^{-\delta^2H^2/4})$
+using the norm of $B_g$. Inserting \eqref{prime} proves
+Theorem~\ref{th:trace}, for example with $\eta_p=\delta^2/4$.
+
+\section{Inverting the shift quotient}
+Divide the measured expansion by its limit $-h\chi(p)$, which is
+nonzero at every unramified prime. Write the result as
+$1+\sum_{j\ge1}r_jz^{-j}$. Successive coefficients are uniquely recovered
+by subtracting known terms, multiplying by $z^j$ and passing to the
+limit. Theorem~\ref{th:trace} permits this along any unbounded sequence.
+For $Q=X^d+a_1X^{d-1}+\cdots+a_d$, direct expansion gives
+\begin{equation}\label{jet}
+ r_1=-dh,\qquad r_2=\tbinom d2 h^2+h a_1\quad(d\ge1).
+\end{equation}
+The roots of $Q$ are $-c+\ii\alpha_j$. In particular
+$\rpart a_1=dc$, whence an explicit conductor formula is
+\begin{equation}\label{cond}
+ q=\exp\!\left(\frac{2}{dh}\rpart\left[r_2-\tbinom d2 h^2\right]\right).
+\end{equation}
+
+For the higher coefficients, suppose $Q_1,Q_2$ are monic of the same
+degree and their first difference is $\Delta a_j$ in position $j$.
+Then $Q_1/Q_2=1+\Delta a_j z^{-j}+O(z^{-j-1})$. Taking a logarithm
+near infinity and subtracting its expansions at $z-h$ and $z$ shows
+\begin{equation}\label{tri}
+ \frac{Q_1(z-h)}{Q_1(z)}-\frac{Q_2(z-h)}{Q_2(z)}
+       =jh\,\Delta a_j\,z^{-j-1}+O(z^{-j-2}).
+\end{equation}
+Indeed the difference of each subsequent Laurent monomial gains one
+inverse power. Exponentiating preserves the first nonzero difference
+since both shift quotients tend to one. To compute $a_j$, form a trial
+polynomial with the previously recovered coefficients and all remaining
+coefficients zero. Subtract its coefficient at $z^{-j-1}$ from $r_{j+1}$
+and divide by $jh$. This recovers $Q$ and hence $P(X)=Q(X-c)$.
+
+To prove sharpness, let $f(x)=\prod_{j=1}^d(x-j)$. For sufficiently small
+nonzero real $t$, $f+t$ also has $d$ simple real roots, by preserving the
+signs at both ends of disjoint intervals about the old roots. Set
+$P_1(X)=\ii^d f(X/\ii)$ and $P_2(X)=\ii^d(f(X/\ii)+t)$.
+The polynomial difference is constant, and translation by $c$ preserves it.
+Equation~\eqref{tri} gives equality through $z^{-d}$ and inequality
+at $z^{-d-1}$. This proves Theorem~\ref{th:inverse}.
+
+\paragraph{A quadratic character example.}
+Take the quadratic character modulo $5$, $p=2$ and
+$P(X)=(X-2\ii)(X+\ii)=X^2-\ii X+2$. Then $h=\log 2$,
+$\chi(2)=-1$, $a_1=2c-\ii$, $a_2=c^2-\ii c+2$. The limit of $S_2$
+is $+h$. Its normalized first correction $-2h$ gives degree two, and
+$r_2=h^2+(2c-\ii)h$ gives $q=5$ by \eqref{cond}. The third correction
+$(2a_2-a_1^2)h-a_1h^2$ gives $a_2$ and finishes the reconstruction.
+The script \texttt{check\_algebra.py} performs these operations exactly.
+
+\section{How local is the information?}
+The Gaussian in \eqref{obs} uses every ordinate. For any prescribed
+finite order of accuracy the observations can be confined to an interval.
+\begin{corollary}\label{local}
+For every fixed $k\ge0$ there exist $A,B>0$ such that the sum
+\eqref{obs} with $H=A\sqrt{\log\log T}$, restricted to
+$|\gamma-T|\le B\log\log T$, equals the rational main term in \eqref{trace}
+up to $o((\log T)^{-k})$.
+For two distinct pairs $(\chi_1,P_1),(\chi_2,P_2)$ as in
+Theorem~\ref{th:trace}, there is $C>0$ such that their zero ordinates
+differ as multisets in $[T-C\log\log T,T+C\log\log T]$ for every
+sufficiently large $T$. In $[X,2X]$ there are consequently
+$\gg X/\log\log X$ unmatched zero occurrences, counted with multiplicity.
+The constants here may depend on both pairs.
+\end{corollary}
+\begin{proof}
+Take $\eta_p A^2>k+2$. Write $L=\log\log T$ and $R=BL$.
+By the local zero count and summation in unit intervals, for $1\le H\le
+T^{2/3}$ the sum of $e^{-(\gamma-T)^2/(4H^2)}$ is $O(H\log T)$:
+for $|\gamma-T|\le T$ use the bound $O(\log T)$ per interval, and
+beyond $T$ use Gaussian decay against $\log(2+|\gamma|)$.
+Pulling out $e^{-R^2/(4H^2)}$ from the original Gaussian bounds the
+normalized omitted tail by $O((\log T)e^{-B^2 L/(4A^2)})$.
+Take $B^2/(4A^2)>k+2$.
+
+Distinct primitive characters have different values at some prime.
+Otherwise complete multiplicativity makes the underlying arithmetic
+functions equal, with the same primitive conductor and character.
+At such a prime the constant terms differ. For equal characters choose
+any unramified prime. Different monic polynomials then give different
+quotients at a finite order $k$ by \eqref{jet} and \eqref{tri}. In each
+case the trace difference has a first term of size
+$\asymp(\log T)^{-k}$, including $k=0$ for different characters.
+A common multiset on the truncated interval would give identical
+truncated traces. This contradicts the first assertion. Finally pack
+$\gg X/\log\log X$ disjoint intervals of the stated size inside
+$[X,2X]$. Each contains a discrepancy of at least one in integer
+multiplicity.
+\end{proof}
+One prime need not distinguish characters that agree there. For instance,
+distinct primitive characters of the same conductor with identical
+values at $p$ give the same rational term for a fixed $P$. Across all primes
+the leading terms determine the character. The short-interval conclusion
+allows the discrepant ordinate to be a common zero of different multiplicity.
+
+\paragraph{Finite-height estimation.}
+Suppose $d$ is known and put $m=d+1$. At centers $T^j$ for
+$j=1,\ldots,m+1$, use the truncated sums above with sufficiently large
+accuracy, say $k=m+1$. At each center the main term through degree $m$
+in $1/z$ has residual $O((\log T)^{-m-1})$. Put $L_0=\log T$. The
+nodes $L_0/z(T^j)$ tend to $2/j$; the associated fixed-size Vandermonde
+matrices have uniformly bounded inverses. Interpolating the $m+1$ sums
+therefore estimates the coefficient of $z^{-k'}$ with error
+$O(L_0^{k'-m-1})$ for $0\le k'\le m$, after multiplying the
+interpolated coefficients by $L_0^{k'}$. At an unramified prime the
+estimated constant is bounded away from zero, so division and the
+triangular inversion above yield consistent coefficient estimates.
+For $d>0$ the estimated conductor eventually rounds to the correct
+integer. This is an asymptotic assertion; constants depend on the
+fixed data and no universal numerical height threshold is claimed.
+
+\section{A version using full complex zeros}
+There is also an independent route when the observations give both
+coordinates of each zero. It clarifies the precise role of Dirichlet GRH.
+\begin{theorem}\label{complex}
+Without using the critical-line theorem, form the sum
+\[
+ \widetilde S_p(T,H)=\frac{\sqrt{2\pi}}{H}
+ \sum_{F(\rho)=0}p^\rho\exp\big((\rho-1/2-\ii T)^2/(2H^2)\big)
+\]
+over full complex zeros with multiplicity. Formula~\eqref{trace} and
+the reconstruction of Theorem~\ref{th:inverse} hold for this sum.
+Corollary~\ref{local} holds for complex zero multisets with ordinates
+in the indicated intervals.
+\end{theorem}
+\begin{proof}
+We supply the two replacements for Lemma~\ref{interlace}. First the
+zeros of $\Xi_\chi$ lie in $0\le\rpart s\le1$, by the Euler product and
+functional equation. In the $w$ coordinate of that lemma this is
+$|\ipart w|\le1/2$. For a real entire function of order at most one
+with its zeros $v$ in that strip, group the genus-one product in conjugate
+pairs. The regularizing constants have zero imaginary part when paired.
+Consequently
+\[
+ \ipart(f'/f)(w)=-\sum_v\frac{\ipart w-\ipart v}{|w-v|^2},
+\]
+including the contribution at zero. This series is absolutely convergent
+at points off the zero set. If there is at least one zero, the sum has
+strict sign in either exterior half-plane, so $f'+\alpha f$ cannot vanish
+there. A zero-free intermediate function of order at most one is an
+exponential of a linear polynomial and its transform is either zero-free
+or identically zero. The latter is excluded at each step by the right-edge
+estimate $|P(D)\Xi_\chi(2+\ii t)/A(2+\ii t)|\gg(\log |t|)^d$ for the
+corresponding partial product, established in the freezing calculation
+by $U_g^{-1}$ without any zero-location assumption. This proves strip
+confinement through all factors.
+
+Second, on a disk of radius $5$ centered at $2+\ii u$, for large $|u|$,
+the supremum of $|F|$ is $\ll e^{-\pi|u|/4}(2+|u|)^M$ for fixed $M$.
+This follows from the polynomial vertical-strip growth of $L$, Stirling
+on a slightly larger disk, and Cauchy's derivative estimate. At the
+center, the same right-edge lower bound and Stirling give
+$|F|\gg e^{-\pi|u|/4}(2+|u|)^{-M}$ after increasing $M$.
+Jensen's formula between radii $3$ and $5$ gives $O(\log(2+|u|))$
+zeros in the disk of radius $3$, covering the strip segment at heights
+$u$ through $u+1$. Compact heights cause no difficulty. With strip
+confinement and this count, the horizontal contour bounds follow by the
+same unit-shell estimate. Reflection still gives the left edge.
+The residues are now the summands of $\widetilde S_p$. Their absolute
+values before normalization are bounded by
+$p\exp(1/(8H^2))e^{-(\ipart\rho-T)^2/(2H^2)}$, so the truncation
+proof also applies. All remaining calculations concern the right edge
+or the polynomial and carry over verbatim.
+\end{proof}
+
+\section{Comparison with sources and numerical checks}
+\paragraph{The formal input and ProveIt.}
+At commit \texttt{72fead102f66}, the file \texttt{grh/src/Main.lean}
+exports \texttt{riemannHypothesis}, which proves the proposition
+\texttt{RiemannHypothesis} from Mathlib. Its primitive-character theorem
+is \texttt{LFunction\_\allowbreak eq\_\allowbreak zero\_\allowbreak re\_\allowbreak of\_\allowbreak isPrimitive}.
+The file also exports half-plane nonvanishing for all Dirichlet characters
+\cite{lean}.
+One bridge in the development uses a one-sided estimate for smoothed
+twisted prime sums to exclude off-line zeros. Here the direction of
+inquiry is reversed: a smoothed sum over the zeros of a differentiated
+completion reveals a prime coefficient. We use the exported zero-location
+result, the functional equation, and the Euler product. The Lean
+development reports its own kernel and independent checks. This note is
+a mathematical proof on paper; the upstream build was not replayed here.
+
+The requested ProveIt index at \texttt{2c45d198070f} describes 61 research
+packets and states their archival status \cite{proveit}. Among the additional
+incoming archives, \texttt{grh\_spectral\_rigidity.zip} studies weighted
+ordinary zero divisors, and \texttt{prime\_zero\_reconstruction.zip}
+studies the recovery of zero data from a signal assembled from primes.
+In the present inverse problem the unknown is the operator applied to the
+completed function before its zeros are observed. The requested Wikipedia
+article discusses the November 2026 formal proof and the classical
+relation between prime oscillations and zeta zeros \cite{wiki}.
+
+\paragraph{Published precedents.}
+Farmer and Gonek's analysis of $\xi'$ already contains the degree-one
+prime correction \cite[Lemma 3.1]{fg}. Malik and Roy give Landau-type
+formulas for $\xi^{(m)}$ with uniformity in $m$ \cite[Theorem 1.3]{mr}.
+Srinivas proves a $\log\log T$ short-interval distinction for ordinary
+Selberg-class functions under the hypotheses in his theorem \cite{sr};
+Banks gives a conductor-dependent comparison for primitive characters
+\cite{banks}. These precedents concern central ingredients here.
+What we have not located in them or the inspected ProveIt work is the
+recovery of an unknown polynomial and unknown conductor from one
+unramified frequency, with the sharp finite order of reconstruction,
+or the associated short-interval comparison for two different operators
+on the same completion. Priority for these statements remains open to
+further bibliographic review.
+
+\paragraph{Numerical example.}
+For $P(X)=X$ in conductor one, \eqref{trace} predicts
+$-h(1-h/z)$. Two direct sums at $p=3$ give the following values.
+\begin{center}\small
+\begin{tabular}{rrrrl}
+\toprule
+$T$ & $H$ & $\xi'$ ordinates & \multicolumn{1}{c}{Observed $S_3$} &
+\multicolumn{1}{c}{Predicted} \\
+\midrule
+1500&45&626& $-0.691166-0.116778\ii$ & $-0.691271-0.116860\ii$ \\
+6000&90&1572& $-0.764319-0.076509\ii$ & $-0.764334-0.076524\ii$ \\
+\bottomrule
+\end{tabular}
+\end{center}
+The corresponding sums for $P=1$ are $-1.098612$ to six decimal places
+in both windows, as predicted by $-\log 3$. The script
+\texttt{zero\_example.py} uses Euler--Maclaurin on the critical line,
+checks the number of sign-change brackets against an independent
+\texttt{mpmath} zero count, solves for the critical points between
+successive zeros of $\xi$, and retains the ordinates within $8H$.
+Its output is a floating-point check of the sign, normalization and
+first-derivative correction. The algebra script separately checks the
+triangular inverse and the last-coefficient examples.
+
+\paragraph{Further questions.}
+Can the length $C\log\log T$ be replaced by a bounded length for
+two different operators on the same completion? How small can the
+constants in the finite-height inverse problem be made uniformly in
+the degree and conductor? For higher-degree $L$-functions, the
+archimedean logarithmic derivative introduces several gamma parameters.
+Which of them can be separated at a single prime frequency, and which
+require accuracy finer than every inverse power of $\log T$?
+
+\begin{thebibliography}{99}\small
+\bibitem{lean} L. Alp\"oge, \emph{GRH for Dirichlet $L$-functions, in Lean 4},
+\href{https://github.com/lsernau/grh-lean/tree/72fead102f663d5c7a407964a13dc0cf9d977207}{pinned repository},
+\href{https://github.com/lsernau/grh-lean/blob/72fead102f663d5c7a407964a13dc0cf9d977207/grh/src/Main.lean}{theorem exports}.
+\bibitem{proveit} V. Reshetnikov, \emph{ProveIt, Generalized Riemann Hypothesis},
+\href{https://github.com/VladimirReshetnikov/ProveIt/tree/2c45d198070f93209d6f0faa2d387ef0a2c4e72c/Analysis/GeneralizedRiemannHypothesis}{directory and provenance index}.
+\bibitem{wiki} Wikipedia contributors, \emph{Riemann hypothesis},
+\href{https://en.wikipedia.org/wiki/Riemann_hypothesis}{article}, consulted November 2026.
+\bibitem{dav} H. Davenport, \emph{Multiplicative Number Theory}, 3rd ed.,
+revised by H. L. Montgomery, Springer, 2000, chapters 9--16.
+\bibitem{bmor} M. A. Bennett, G. Martin, K. O'Bryant and A. Rechnitzer,
+\href{https://doi.org/10.1090/mcom/3599}{Counting zeros of Dirichlet $L$-functions},
+Math. Comp. 90 (2021), 1455--1482.
+\bibitem{fg} D. W. Farmer and S. M. Gonek,
+\href{https://arxiv.org/abs/0803.0425}{Pair correlation of the zeros of the derivative of the Riemann $\xi$-function}, preprint (2008). Published with Y. Lee in \href{https://doi.org/10.1112/jlms/jdu026}{J. London Math. Soc. 90 (2014), 241--269}.
+\bibitem{mr} A. Malik and A. Roy,
+\href{https://doi.org/10.1515/forum-2018-0081}{On the distribution of zeros of derivatives of the Riemann $\xi$-function}, Forum Math. 32 (2020), 1--22.
+\bibitem{sr} K. Srinivas,
+\href{https://www.imsc.res.in/~srini/publication/recent/selberg.pdf}{Distinct zeros of functions in the Selberg class}, Acta Arith. 103 (2002), 201--207.
+\bibitem{banks} W. D. Banks,
+\href{https://arxiv.org/abs/2302.07073}{Comparing zeros of distinct Dirichlet $L$-functions}, arXiv:2302.07073, version 2 (2024).
+\end{thebibliography}
+\end{document}

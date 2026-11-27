@@ -1,0 +1,232 @@
+\documentclass[11pt]{article}
+\usepackage[T1]{fontenc}
+\usepackage{lmodern,amsmath,amssymb,amsthm,mathtools,microtype}
+\usepackage[margin=1.00in]{geometry}
+\usepackage[hidelinks]{hyperref}
+\usepackage{enumitem}
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{corollary}[theorem]{Corollary}
+\DeclareMathOperator*{\Res}{Res}
+\newcommand{\eps}{\varepsilon}
+\newcommand{\R}{\mathbb R}
+\newcommand{\C}{\mathbb C}
+\newcommand{\ord}{\operatorname{ord}}
+\title{Recovering zeta zeros from sparse observations\\ of completely split primes}
+\author{Research note}
+\date{November 2026}
+\begin{document}
+\maketitle
+\begin{abstract}
+Fix a modulus $q$. A single weighted sum over ordinary primes $p\equiv1\pmod q$ is observed at $O(\log X\log\log X)$ radii up to $X$. We prove that these observations determine every nontrivial zero of $\prod_{\chi\bmod q}L(s,\chi)$ with multiplicity. The exponential growth rate of the centered samples gives the precise rightmost zero abscissa, with no hypothesis on zeros. The proof combines an everywhere nonvanishing Mellin multiplier with double-exponential vertical decay and high-order interpolation on a logarithmic grid. The interpolation error decays faster than every exponential in the logarithmic radius. The observations may be restricted to any fixed power interval $[x^{1-\delta},x^{1+\delta}]$, $0<\delta\le1$, with a corresponding choice of multiplier. A permutation-character calculation extends the result to the rational primes splitting completely in every finite Galois extension of $\mathbb Q$, including nonabelian extensions.
+\end{abstract}
+
+\section{The arithmetic measurement}
+
+Write $\varphi=\varphi(q)$, take $q\ge1$, and include the trivial character for $q=1$. Define
+\[
+ H(s)=\exp[-\cos(s-1)],\qquad
+ K(u)=\frac{e^u}{\pi}\int_0^\infty e^{-\cosh v}\cos(uv)\,dv .
+\]
+All logs without subscripts are natural. At logarithmic radius $t=\log x$ the observation and its centered version are
+\begin{equation}\label{eq:obs}
+ P_q(t)=\varphi\sum_{p\equiv1\bmod q}(\log p)K(t-\log p),
+ \qquad E_q(t)=P_q(t)-e^{t-1}.
+\end{equation}
+Only primes enter the sum. The analytic weight has infinite support. Thus the observation at $x$ can depend on primes above $x$. Our count measures the number of sampled radii. Section~5 proves the same conclusions for explicit finite sums and gives a version supported on an arbitrarily narrow fixed power interval.
+
+For $j\ge1$, let $h_j=[64(j+1)]^{-1}$ and use the explicit sample set
+\begin{equation}\label{eq:grid}
+ \mathcal T=\bigcup_{j\ge1}\bigl(h_j\mathbb Z\cap[2^{j-1},2^{j+2}]\bigr).
+\end{equation}
+The expanded intervals provide neighboring grid points for interpolation at each block boundary. The sum of their individual counts up to logarithmic radius $T$ is $O(T\log(2+T))$, by summing $O((j+1)2^j)$ for $2^{j-1}\le T$. Define
+\[
+ Z_q(s)=\prod_{\chi\bmod q}L(s,\chi),\quad
+ \Theta_q=\sup\{\Re\rho:Z_q(\rho)=0,\ 0<\Re\rho<1\}.
+\]
+The zeros in this strip form a multiset with multiplicity summed over characters. The functional equations of the inducing primitive characters give reflection symmetry across the critical line and $1/2\le\Theta_q\le1$. The principal character supplies the nontrivial zeta zeros.
+
+\begin{theorem}\label{thm:main}
+For every fixed $q$ the following unconditional identity holds:
+\[
+ \limsup_{\substack{t\to\infty\\t\in\mathcal T}}
+       \frac{\log(1+|E_q(t)|)}{t}=\Theta_q .
+\]
+Consequently GRH for all Dirichlet characters modulo $q$ is equivalent to $E_q(t)=O_q(e^{t/2})$ on $\mathcal T$. It is also equivalent to the bound $O_{q,\eps}(e^{(1/2+\eps)t})$ there for every $\eps>0$. The exact sample values determine the whole multiset of zeros in $0<\Re s<1$. If each observation is perturbed by $O(e^{\alpha t})$ with $\alpha<1$, the poles and their residues in $\Re s>\max(1/2,\alpha)$ still follow from the perturbed data. For $\alpha<1/2$ the whole multiset is preserved, including the central point.
+\end{theorem}
+
+The recovery assertion means a determination from an infinite sequence by meromorphic continuation and residues. It does not supply a finite decision procedure. Multiplicity of an individual character at a zero shared by several factors is aggregated by this measurement.
+
+\section{The interpolation estimate}
+
+The fast decay of the Fourier integrand is essential to the choice of mesh. On the closed strip $0\le\sigma\le2$,
+\[
+ |H(\sigma+iv)|=\exp[-\cos(\sigma-1)\cosh v]
+           \le\exp[-\cos(1)\cosh v].
+\]
+Contour translation in this strip gives
+\[
+ K(u)=\frac{1}{2\pi i}\int_{\Re s=c}H(s)e^{su}\,ds
+ \qquad(0\le c\le2),
+\]
+with upward orientation. In particular $K(u)=O(e^{2u})$ for $u\le0$, proving absolute convergence in~\eqref{eq:obs}. Set
+\[
+ A_q(s)=\varphi\sum_{p\equiv1\bmod q}(\log p)p^{-s}
+ \qquad (\Re s>1).
+\]
+Termwise integration on $c\in(1,2]$ shows $P_q$ is the inverse bilateral Laplace transform of $H A_q$ on this line.
+
+\begin{lemma}\label{lem:derivative}
+For $u\ge0$ and all sufficiently large integers $k$,
+\[
+ |E_q^{(k)}(u)|\ll_q e^{2u}(10\log(k+2))^k .
+\]
+\end{lemma}
+\begin{proof}
+Differentiate under the integral on $\Re s=2$; $A_q$ is bounded on this line. Write $a=\cos(1)$, $L=\log(k+2)$. On $|v|\le2L$, the contribution to $\int |2+iv|^k e^{-a\cosh v}dv$ is at most $(2+2L)^k\int e^{-a\cosh v}dv$. For $v\ge 2L$ and large $k$, we have $k\log(2+v)\le kv\le ae^v/4$. The last inequality holds at $2L$ for large $k$ and $e^v/v$ increases thereafter. The remaining integral is bounded by a constant times $\int_0^\infty\exp(-ae^v/4)dv$. Negative $v$ gives the same estimate. The derivative of the centering term is $e^{u-1}$. These estimates imply the claim.
+\end{proof}
+
+For $t$ sufficiently large let $j=\lfloor\log_2 t\rfloor$, $h=h_j$,
+$N=\lfloor t\sqrt{\log(t+2)}\rfloor$, $k=2N+1$ and $b=\lfloor t/h\rfloor$. Interpolate arbitrary sample data $y$ at the $k$ nodes
+\[
+ u_i=h(b+i),\qquad -N\le i\le N ,
+\]
+and denote the value at $t$ of the degree-$\le2N$ interpolating polynomial by $I[y](t)$. Take $I[y](t)=0$ on a fixed initial bounded interval covering all $t$ where this prescription could reach outside its block. Since $(N+1)h=O(t/\sqrt{\log t})=o(t)$, all the indicated nodes belong to $\mathcal T$ for sufficiently large $t$. The resulting function is measurable and locally bounded for locally finite data, since node choices change finitely many times on compact intervals.
+
+\begin{lemma}\label{lem:interp}
+There is $c_0>0$ such that
+\[
+ E_q(t)-I[E_q](t)=O_q\!\left(\exp[-c_0t\sqrt{\log t}]\right).
+\]
+If the data perturbation satisfies $|\eta(u)|\le C e^{\alpha u}$ on $\mathcal T$, then $I[\eta](t)=O_{\eps}(e^{(\alpha+\eps)t})$ for every $\eps>0$.
+\end{lemma}
+\begin{proof}
+For $\theta=t/h-b\in(0,1)$ the numerator of the common Lagrange product satisfies
+\[
+ \left|\prod_{r=-N}^N(\theta-r)\right|
+ \le\theta(1-\theta)(N+1)!N!.
+\]
+The denominator for the $i$th basis value has modulus
+$|\theta-i|(N+i)!(N-i)!\ge |\theta-i|(N!)^2$.
+Since $\theta(1-\theta)\le|\theta-i|$, each basis value is at most $N+1$ in absolute value. When $\theta=0$ this bound follows by interpolation at a node. Thus $I$ has pointwise coefficient norm in $\ell^1$ at most $(2N+1)(N+1)$. Every node is $t+o(t)$ uniformly in $i$, proving the perturbation estimate for any real $\alpha$.
+
+The real-variable interpolation remainder applies to the real function $E_q$. Using Lemma~\ref{lem:derivative}, $|t-u_i|\le kh$ and $k!\ge(k/e)^k$ yields
+\[
+ |E_q(t)-I[E_q](t)|
+ \ll_q \exp(2t+o(t))\bigl(10 e h\log(k+2)\bigr)^k .
+\]
+Here $\log(k+2)/(j+1)\to\log 2$, so the parenthesis tends to
+$10e\log(2)/64<1/3$. As $k\sim2t\sqrt{\log t}$, this proves the stated estimate.
+\end{proof}
+
+\section{Analytic continuation from ordinary primes}
+
+Let $G=(\mathbb Z/q\mathbb Z)^\times$ and $J=\{a\in G:a^2=1\}$. For $q=1$ take $G$ to be the one-element group. With $\Lambda$ the von Mangoldt function, orthogonality gives
+\begin{align*}
+ D(s)&=-Z_q'(s)/Z_q(s)
+       =\varphi\sum_{n\equiv1\bmod q}\Lambda(n)n^{-s},\\
+ B_J(w)&=\sum_{\chi\bmod q}
+      \left(\sum_{a\in J}\overline{\chi(a)}\right)
+                  \frac{-L'(w,\chi)}{L(w,\chi)}
+       =\varphi\sum_{n\bmod q\,\in J}\Lambda(n)n^{-w}
+\end{align*}
+in their half-planes of absolute convergence. For $\Re s>1$ expand $D(s)$ in powers of primes. Removing exponents $1$ and $2$ leaves an absolutely and locally uniformly convergent series for $\Re s>1/3$. The difference between $B_J(2s)$ and its first-prime-power terms converges absolutely for $\Re s>1/4$. These assertions follow from $\sum_{n\ge2}(\log n)n^{-d\sigma}/(1-2^{-\sigma})<\infty$ whenever $d\sigma>1$. Consequently there is a holomorphic $U$ on $\Re s>1/3$ such that
+\begin{equation}\label{eq:prime}
+ A_q(s)=D(s)-B_J(2s)+U(s).
+\end{equation}
+$B_J$ is regular on $\Re w\ge1$ except for its pole at $1$ of residue $|J|$. This uses the classical nonvanishing of Dirichlet $L$-functions on $\Re w=1$ and the single simple pole of the principal character. In $0<\Re s<1$ the imprimitive Euler factors have no zeros, and $D$ has residue $-\ord_\rho Z_q$ at a zero $\rho$. At an ordinate $\rho$ with $1/2\le\Re\rho<1$, Eq.~\eqref{eq:prime} therefore gives
+\begin{equation}\label{eq:mult}
+ \Res_{s=\rho} A_q(s)=-\ord_\rho Z_q-
+               \tfrac12|J|\,\mathbf1_{\rho=1/2}.
+\end{equation}
+At a regular point the residue in this formula is zero. The same expression covers a possible real central zero and the unavoidable contribution of prime squares. In particular the prime series always has a pole at $1/2$.
+
+Choose $1<\sigma<2$. For $t\le0$, $P_q(t)=O_q(e^{2t})$, and for $t\ge0$ one has $P_q(t)=O_{q,c}(e^{ct})$ for each $1<c<\sigma$, both by contour integration. Fourier inversion for $e^{-\sigma t}P_q(t)$ gives
+\[
+ \int_{-\infty}^\infty P_q(t)e^{-st}dt=H(s)A_q(s)\qquad(1<\Re s<2).
+\]
+For instance, $H(\sigma+iv)A_q(\sigma+iv)$ is smooth and rapidly decreasing along the integration line, by absolute convergence after any fixed number of differentiations. Splitting the integral at $0$ now gives
+\begin{equation}\label{eq:lap}
+ \int_0^\infty E_q(t)e^{-st}dt
+  =H(s)A_q(s)-\frac{e^{-1}}{s-1}-V_q(s),
+ \quad V_q(s)=\int_{-\infty}^0 P_q(t)e^{-st}dt .
+\end{equation}
+$V_q$ is holomorphic on $\Re s<2$. Lemma~\ref{lem:interp} shows that replacing $E_q$ on the left of~\eqref{eq:lap} by $I[E_q]$ changes the result by an entire function. Thus the meromorphic continuation of the Laplace transform of the reconstructed samples has residue $H(\rho)\Res_\rho A_q$ for $1/2\le\Re\rho<1$. Division by $H(\rho)$ is always allowed. Formula~\eqref{eq:mult} recovers each multiplicity in this half-strip. Reflection $\rho\mapsto1-\overline\rho$ gives the remaining multiplicities. For perturbed data, the change in the left side is holomorphic on $\Re s>\alpha$, by the second assertion of Lemma~\ref{lem:interp}. This proves the recovery assertions of Theorem~\ref{thm:main}.
+
+\section{Determining the exact growth exponent}
+
+Let $b$ denote the sampled limsup in Theorem~\ref{thm:main}. It is finite by integration at $\Re s=2$. For every $\eps>0$, the sample values are $O(e^{(b+\eps)t})$, so Lemma~\ref{lem:interp} gives the continuous bound $E_q(t)=O(e^{(b+2\eps)t})$. Equation~\eqref{eq:lap} then gives a holomorphic continuation of its left side to $\Re s>b$. By~\eqref{eq:mult} and $H(\rho)\ne0$, every zero strictly to the right of $1/2$ forces $b\ge\Re\rho$, and the pole at $1/2$ forces $b\ge1/2$. Thus $b\ge\Theta_q$.
+
+For the reverse inequality first assume $\Theta_q<1$ and choose $\Theta_q<d<1$. In $d\le\Re s\le2$, the function $D(s)$ is holomorphic except for its simple pole at $1$, and is $O_{q,d}(\log^2(2+|\Im s|))$ at $|\Im s|\ge2$. Here one may use the classical local partial fraction estimate for $L'/L$ and the bound $O_q(\log(2+|v|))$ on zeros with $|\Im\rho-v|\le1$; each zero denominator is bounded below by $d-\Theta_q$. These inputs follow from the completed Hadamard product and Stirling's formula (see Davenport~\cite{davenport}, Chs.~12, 15--17). Imprimitive Euler factors have bounded logarithmic derivatives on this strip. Also $D(s)-A_q(s)$ is bounded on $\Re s\ge d$ by the absolutely convergent sum over prime powers of exponent at least two. Shifting the integral for $P_q(t)$ to $d$ crosses the simple pole at $1$ with contribution $H(1)e^t=e^{t-1}$. The horizontal integrals tend to zero by double-exponential decay of $H$, and the shifted integral is $O_{q,d}(e^{dt})$. Taking $d\downarrow\Theta_q$ proves $b\le\Theta_q$. If $\Theta_q=1$, integrate on $1+\eps$ for arbitrarily small positive $\eps$. For the exact endpoint under GRH take $1/3<d<1/2$. In~\eqref{eq:prime} the square term $B_J(2s)$ has no poles in $\Re s\ge d$ except at $1/2$, since $2d>1/2$. On $\Re s=d$ all zero denominators for $D(s)$ and $B_J(2s)$ stay a fixed distance from zero, and $U$ is bounded there by its absolute series. Shift the inversion contour through the nontrivial zeros using positive and negative heights tending to infinity and separated by $\gg_q 1/\log(2+|v|)$ from every ordinate of a zero of $Z_q$ in the adjacent unit intervals. Such heights exist by the unit-interval zero count. The same local partial fraction estimate controls $D$ on these horizontals; $B_J(2s)$ is uniformly separated from its zero poles throughout. The residues give, with absolute convergence,
+\[
+ E_q(t)=-e^{t/2}\left(\frac{|J|}{2}H(1/2)
+ +\sum_{\Re\rho=1/2} H(\rho)e^{it\Im\rho}\right)+O_{q,d}(e^{dt}),
+\]
+where the sum runs over the multiset. Double-exponential decay of $H$ and the unit-interval zero count bound the bracket uniformly in $t$. This proves the exact endpoint bound and completes the proof.
+
+\section{Finite observations in a prescribed power interval}
+
+For the original $K$ discard primes outside $x^{1/3}\le p\le x^2$. Translating its defining contour to $c=0$ gives $K(u)=O(1)$ for $u>0$, so the lower tail costs $O_q(x^{1/3}\log x)$. On $c=2$ the upper tail costs
+\[
+ O_q\left(x^2\sum_{n>x^2}\frac{\log n}{n^2}\right)=O_q(\log x).
+\]
+These perturbations have exponent less than $1/2$. All zero multiplicities, the limsup, and the endpoint equivalence in Theorem~\ref{thm:main} therefore hold for this finite sum.
+
+\begin{corollary}\label{cor:finite}
+Fix any $0<\delta\le1$ and put $a=1/\delta$. Form a finite measurement using only $x^{1-\delta}\le p\le x^{1+\delta}$, $p\equiv1\bmod q$, with the weight and sample mesh
+\[
+ K_a(u)=\frac{a e^u}{\pi}\int_0^\infty e^{-\cosh v}\cos(auv)\,dv,
+ \qquad h_{j,a}=\frac1{64a(j+1)} .
+\]
+With the same centering $x/e$, Theorem~\ref{thm:main} holds for this measurement. There are $O_\delta(\log X\log\log X)$ sampled radii through $X$.
+\end{corollary}
+\begin{proof}
+The multiplier is $H_a(s)=\exp[-\cos((s-1)/a)]$. It is nonzero everywhere and its vertical decay is bounded by $\exp[-\cos(1)\cosh(v/a)]$ in the strip $1-a\le\Re s\le1+a$. On the line $c=2$, substituting $v=aw$ in Lemma~\ref{lem:derivative} yields the bound $O_{q,a}(e^{2u}(10a\log(k+2))^k)$ since $a\ge1$. The mesh compensates for this factor, so Lemma~\ref{lem:interp} holds with $a$ fixed. The continuation, residue and growth proofs are identical. Translate the $K_a$-contour to $1-a$ for small primes and $1+a$ for large primes. The discarded tails are bounded by
+\begin{align*}
+ &x^{1-a}\sum_{n\le x^{1-\delta}}n^{a-1}\log n
+ +x^{1+a}\sum_{n>x^{1+\delta}}n^{-1-a}\log n\\
+ &\hspace{3em}\ll_a x^{1-a\delta}\log(2x)=\log(2x).
+\end{align*}
+This alters the reconstructed Laplace transform by a holomorphic function on $\Re s>0$. It also preserves all exponential growth rates at least $1/2$.
+\end{proof}
+
+\section{Nonabelian splitting fields}
+
+Let $L/\mathbb Q$ be any finite Galois extension, $G=\mathrm{Gal}(L/\mathbb Q)$, and $n=|G|$. An observation uses only rational primes unramified and splitting completely in $L$. Replace the factor $\varphi(q)$ in~\eqref{eq:obs} by $n$ and write $\Theta_L$ for the supremum of the real parts of the nontrivial zeros of the Dedekind zeta function $\zeta_L$.
+
+\begin{theorem}\label{thm:galois}
+The conclusions of Theorem~\ref{thm:main} and Corollary~\ref{cor:finite} hold for these completely split primes, with $Z_q$ and $\Theta_q$ replaced by $\zeta_L$ and $\Theta_L$. The central residue correction is half the number of elements of $G$ of order dividing two. The theorem applies to every $L$ on the same grid for a given $\delta$.
+\end{theorem}
+\begin{proof}
+For unramified $p$ let $g_p$ represent Frobenius. Write $D_F=-\zeta_F'/\zeta_F$ for any intermediate field $F$. The Euler expansion of $D_{L^C}$ at an unramified $p$ has coefficient at $p^m$ equal to $(\log p)\pi_C(g_p^m)$, where $\pi_C(g)$ counts the fixed cosets of $g$ on $G/C$. Indeed each cycle of $g_p$ of length $f$ corresponds to a prime ideal of residue degree $f$, and contributes $f\log p$ exactly when $f\mid m$. For $C=\{1\}$ the character is $\mathrm{reg}(g)=n\mathbf1_{g=1}$. Logarithmic derivatives of local factors at the finitely many ramified primes are holomorphic and bounded on $\Re s\ge b$ for each $b>0$.
+
+Write $r$ for the number of order-two subgroups and consider the class-function identity
+\[
+ n\mathbf1_{g^2=1}=2\sum_{|C|=2}\pi_C(g)+(1-r)\mathrm{reg}(g).
+\]
+At $g=1$ this is numerical. If $g$ has order two, each $x\in G$ has $x^{-1}gx$ in exactly one order-two subgroup. Dividing the total count $n$ by two counts the fixed cosets across all $C$. For other nonidentity $g$ every term vanishes. Consequently the logarithmic derivative combination
+\[
+ B(w)=2\sum_{|C|=2}D_{L^C}(w)+(1-r)D_L(w)
+\]
+has first-prime coefficient $n(\log p)\mathbf1_{g_p^2=1}$. It has residue $2r+1-r=1+r$ at $w=1$, and is regular elsewhere on $\Re w=1$ by classical nonvanishing. For $A(s)=n\sum_{p\,{\rm split}}(\log p)p^{-s}$, removing the first two prime-power layers of $D_L(s)$ now gives $A(s)=D_L(s)-B(2s)+U_L(s)$ with $U_L$ holomorphic and bounded on every $\Re s\ge b>1/3$, exactly as in~\eqref{eq:prime}. Thus~\eqref{eq:mult} holds with $\ord\zeta_L$ and $|J|=1+r$. The Laplace reconstruction and the upper bound for exponents $d>\Theta_L$ carry over. The local partial fraction estimate and unit-interval zero bound for fixed Dedekind zeta functions follow from the completed Hadamard product, as in the Dirichlet case; see~\cite{lo}.
+
+For the exact endpoint, assume the critical-line hypothesis for $\zeta_L$. Every $L/L^C$ occurring in $B$ is quadratic. Its relative zeta quotient $\zeta_L/\zeta_{L^C}$ is entire by the quadratic Hecke factorization (also a case of the Aramata--Brauer theorem~\cite{brauer}). Thus every nontrivial zero of these $\zeta_{L^C}$ lies on the critical line, and the contour shift through that line in Section~4 works verbatim. Corollary~\ref{cor:finite} uses only a bound on the prime coefficients and therefore applies as well.
+\end{proof}
+
+For example, take $L$ to be the splitting field of $T^3-2$. Its group is $S_3$ since the cubic is irreducible and its discriminant $-108$ is a nonsquare. At each $p>3$, complete splitting means that the polynomial has three distinct roots modulo $p$. Hence this single congruence test selects all primes needed for the measurement, and the central correction is $(1+3)/2=2$. This gives a sparse finite-observation criterion for RH of the degree-six splitting field, whose zeta function contains a two-dimensional Artin factor.
+
+\section{Comparison and further questions}
+
+Bauer's theorem already determines a finite Galois field from its set of completely split primes (Neukirch, \emph{Algebraic Number Theory}, Ch.~VII, p.~548). Here only weighted aggregates are observed, with an explicit perturbation threshold for zero recovery. The arithmetic input is classical: orthogonality packages a family of logarithmic derivatives into a single prime-power residue class, and a nonvanishing Mellin weight preserves residues. The added conclusion concerns ordinary-prime observations restricted simultaneously to one residue class and to the explicit radii~\eqref{eq:grid}. High derivative bounds and a stable central evaluation of a high-degree interpolant preserve the Laplace singularities. This statement counts information in ideal exact samples. In particular $|H(\sigma+i\gamma)|=\exp[-\cos(\sigma-1)\cosh\gamma]$ can make a high zero very difficult to detect at finite precision.
+
+The ProveIt note on torsion and prime sampling~\cite{proveit} gives a one-sided test on each prescribed power grid $x=m^k$ and a substantially thinner generic-base result. Under a critical-line hypothesis it also extracts multiplicities by Weyl averages at $x_n=2^n3^{n^2}$. Its thin fixed sequence uses $O(\sqrt{\log X})$ observations up to $X$ for that conditional extraction. Here the critical line is itself detected, and the recovery covers zeros off the line. The present theorem uses one fixed multiplier and an aggregate of ordinary primes. It also retains multiplicities on the critical line through the explicit square-prime correction~\eqref{eq:mult}. We do not know whether the exact sampling and recovery theorem above has appeared elsewhere.
+
+Without a critical-line hypothesis, can a single fixed weight on an explicit grid of $O(\log X)$ radii retain the entire nontrivial zero divisor for every finite Galois field? A uniform grid $t=nh$ gives identical samples for pure frequencies $\gamma$ and $\gamma+2\pi/h$. The shrinking mesh in~\eqref{eq:grid} avoids this issue without any hypothesis on zero ordinates. A further question is which finite-height recovery bounds are possible under a prescribed absolute precision, in view of the decay of $H$.
+
+\begin{thebibliography}{9}
+\bibitem{davenport} H. Davenport, \emph{Multiplicative Number Theory}, 3rd ed., revised by H. L. Montgomery, Springer, 2000, Chs.~12, 15--17 and 19--20. \href{https://doi.org/10.1007/978-1-4757-5927-3}{doi:10.1007/978-1-4757-5927-3}.
+\bibitem{lo} J. C. Lagarias and A. M. Odlyzko, \emph{Effective versions of the Chebotarev density theorem}, in \emph{Algebraic Number Fields}, Academic Press, 1977, 409--464. \href{https://www-users.cse.umn.edu/~odlyzko/doc/zeta.html}{Author's publication archive}.
+\bibitem{brauer} S. Gun, S. Hazra and D. Sahu, \emph{On holomorphy and non-vanishing of Artin $L$-functions}, Monatsh. Math. 206 (2025), 853--883, discussion in Section~1. \href{https://doi.org/10.1007/s00605-025-02060-7}{doi:10.1007/s00605-025-02060-7}.
+\bibitem{proveit} V. Reshetnikov, \emph{ProveIt}, Generalized Riemann Hypothesis research collection, note on torsion and prime sampling. Revision \texttt{2c45d198070f}. \href{https://github.com/VladimirReshetnikov/ProveIt/blob/2c45d198070f93209d6f0faa2d387ef0a2c4e72c/Analysis/GeneralizedRiemannHypothesis/Research/grh-torsion-and-prime-sampling/sections/powers.tex}{Power-grid theorem} and \href{https://github.com/VladimirReshetnikov/ProveIt/blob/2c45d198070f93209d6f0faa2d387ef0a2c4e72c/Analysis/GeneralizedRiemannHypothesis/Research/grh-torsion-and-prime-sampling/sections/simplicity.tex}{multiplicity criterion}.
+\end{thebibliography}
+\end{document}

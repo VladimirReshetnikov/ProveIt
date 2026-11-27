@@ -1,0 +1,256 @@
+\documentclass[11pt,letterpaper]{article}
+\usepackage[T1]{fontenc}
+\usepackage{lmodern,microtype,amsmath,amssymb,amsthm,booktabs}
+\usepackage[margin=0.93in,top=0.84in,bottom=0.85in]{geometry}
+\usepackage[dvipsnames]{xcolor}
+\usepackage[colorlinks=true,linkcolor=MidnightBlue,urlcolor=MidnightBlue,citecolor=MidnightBlue]{hyperref}
+\usepackage{enumitem,fancyhdr}
+\setlist{nosep,topsep=4pt}
+\pagestyle{fancy}\fancyhf{}\fancyhead[L]{\small\sffamily Dirichlet zero packets}\fancyhead[R]{\small\sffamily Reconstruction from differences}\fancyfoot[C]{\thepage}
+\setlength{\headheight}{15pt}\setlength{\emergencystretch}{1.4em}\raggedbottom
+\newtheorem{theorem}{Theorem}\newtheorem{lemma}[theorem]{Lemma}\newtheorem{corollary}[theorem]{Corollary}\newtheorem{proposition}[theorem]{Proposition}
+\newcommand{\Z}{\mathbb Z}\newcommand{\Q}{\mathbb Q}\newcommand{\C}{\mathbb C}
+\newcommand{\D}{\mathcal D}\newcommand{\U}{\mathcal U}
+\DeclareMathOperator{\lcm}{lcm}
+\hypersetup{pdftitle={How many zero-difference measurements determine a Dirichlet packet?},pdfauthor={OpenAI}}
+\begin{document}
+\thispagestyle{plain}
+\noindent{\sffamily\small\color{MidnightBlue} ANALYTIC NUMBER THEORY AND FINITE FOURIER ANALYSIS\hfill 26 NOVEMBER 2026}
+\begin{center}\vspace{3pt}
+{\LARGE\bfseries How many zero-difference measurements\\[2pt] determine a Dirichlet packet?}
+\end{center}
+\begin{abstract}
+At an unramified prime, the twists in a product of Dirichlet $L$-functions give a histogram on a cyclic group of order $E$. Differences of zero ordinates give access to balanced products of its Fourier coefficients. For a histogram of known mass, we determine the exact worst-case number of individual complex products needed to recover it up to rotation. A fixed list needs one product per nontrivial divisor of $E$ and one per pair of those divisors with a common prime factor. Our list attains this minimum using measurements of order at most six, and also minimizes the maximum order. Adaptive measurements need exactly one per nontrivial divisor. Every lower-bound example can occur in a family of primitive Dirichlet characters.
+\end{abstract}
+
+\section{The measurement and the answer}
+Write $C_E=\Z/E\Z$, $\zeta_d=e^{2\pi i/d}$. An unknown histogram $f:C_E\to\Z_{\ge0}$ has known mass $m=\sum_x f(x)$. Put
+\[
+ F(k)=\sum_{x\in C_E} f(x)\zeta_E^{kx}.
+\]
+One measurement returns one exact complex number $\prod_{i=1}^s F(k_i)$ for prescribed residues with $\sum_i k_i=0$ in $C_E$. Its \emph{order} is $s$. We omit zero residues since $F(0)=m$. Rotation of the histogram through $t$ multiplies $F(k)$ by $\zeta_E^{kt}$, so every measurement is rotation-invariant. The problem is to determine the rotation class. The count is uniform over known masses. Additions or arbitrary encodings of several products are outside this measurement model.
+
+\begin{theorem}\label{th:main}
+Let $\D=\{d:d\mid E,\ d>1\}$ and let $I$ be the set of unordered pairs $\{d,e\}\subset\D$ with $\gcd(d,e)>1$. The least sizes of a fixed separating list and of a deterministic adaptive procedure in the worst case are, respectively,
+\[
+ \boxed{N_{\rm fixed}=|\D|+|I|,\qquad N_{\rm adaptive}=|\D|=\tau(E)-1.}
+\]
+There is a fixed list of this minimum size with order at most six at every measurement. The lower bounds hold with unrestricted orders and even at the single common mass $m=2E^2$. For $E=1$ the two counts are zero.
+\end{theorem}
+
+If $E=\prod p^{a_p}$, the fixed count is $(\tau(E)^2+\tau(E)-1-\tau(E^2))/2$. Indeed $\tau(E^2)=\prod_p(2a_p+1)$ counts ordered coprime divisor pairs including $1$. Thus for $E=p^r$ the fixed and adaptive counts are $r(r+1)/2$ and $r$. For $E=30$ they are $22$ and $7$. The lower bounds allow vanishing coefficients, which occur naturally in integer histograms.
+
+\newpage
+\section{One measurement for each Fourier order}
+For $d\in\D$ set $k_d=E/d$, $\alpha_d=F(k_d)$ and $K_d=\Q(\zeta_d)$. The indices of additive order $d$ are $uk_d$ with $u\in\U_d=(\Z/d\Z)^\times$. They comprise a single Galois orbit. If $\sigma_u(\zeta_d)=\zeta_d^u$, then
+\begin{equation}\label{eq:galois}
+ F(uk_d)=\sigma_u(\alpha_d).
+\end{equation}
+Consequently either every coefficient in this orbit vanishes, or every one is nonzero. Call $d$ active in the latter case. Rotation through $t$ sends $\alpha_d$ to $\zeta_d^t\alpha_d$.
+
+\begin{lemma}\label{lem:factor}
+Suppose $a>b\ge 0$, and $u_1,\ldots,u_b\in\U_d$. The map
+\[
+ P(\alpha)=\alpha^a\prod_{j=1}^b\sigma_{u_j}(\alpha)
+\]
+vanishes exactly at zero. If $P(\alpha)=P(\beta)\ne0$, then $z=\beta/\alpha$ is a root of unity in $K_d$. If $d$ and $a+b$ are both odd, $z\in\mu_d$.
+\end{lemma}
+\begin{proof}
+Apply every $\sigma_v$ to $P(z)=1$. The exponent matrix of the resulting multiplicative relations on the conjugates of $z$ is $A=aI+\sum_j P_j$, where $P_j$ are permutation matrices. If $Ax=0$, the sup norm gives $a\|x\|_\infty\le b\|x\|_\infty$. Hence $\det A\ne0$ and the adjugate relations give $z^{\det A}=1$. The roots of unity in $K_d$ are $\mu_d$ for even $d$ and $\mu_{2d}$ for odd $d$. For completeness, if a root has order $n$, then $\Q(\zeta_{\lcm(n,d)})=K_d$, so $\varphi(\lcm(n,d))=\varphi(d)$; the prime-power formula for $\varphi$ gives the assertion. For odd $d$ any extra root equals $-\zeta_d^t$, whose image under $P$ lies in $-\mu_d$ when $a+b$ is odd, and cannot equal $1$.
+\end{proof}
+
+We use the following elementary fact. Every residue modulo an odd $d$, and every even residue modulo an even $d$, is a sum of two units. To express $h$ as $u+(h-u)$, avoid $0,h$ modulo each odd prime dividing $d$ and choose $u$ odd if $2\mid d$. The Chinese remainder theorem permits all these choices. At even $d$, an odd target is therefore a sum of at most three units, by removing $1$ first.
+
+For each $d$ choose one of the following lists of units modulo $d$. The actual Fourier indices are these units times $k_d$. Each row sums to zero modulo $d$.
+\begin{center}\small
+\begin{tabular}{lll}
+\toprule
+Order $d$ of the indices & Units in the measurement & Number of factors $c_d$\\\midrule
+$d=2$ & $1,-1$ & $2$\\
+$d>1$ odd & $1,1,-2$ & $3$\\
+$d>2$ even, $3\nmid d$ & $1,1,1,-3$ & $4$\\
+$6\mid d$ & $1,1,1,1,u,v$, with $u+v=-4$ & $6$\\\bottomrule
+\end{tabular}
+\end{center}
+The row for $2$ gives the square of a real number. In all other rows Lemma~\ref{lem:factor} applies. Equality of measurements gives equal activity and, on each active order, a unique relative phase $t_d\bmod d$ with $\beta_d=\zeta_d^{t_d}\alpha_d$. Conversely every such phase preserves the row. Thus only the consistency of these local phases remains to be tested.
+
+\newpage
+\section{Matching the phases and proving minimality}
+Fix $\{d,e\}\in I$ and write $g=\gcd(d,e)$. In order $d$ choose units whose sum is $d/g\pmod d$. In order $e$ choose units whose sum is $-e/g\pmod e$. The corresponding indices have total sum zero in $C_E$. We may take exactly the following number of units on the side of order $n\in\{d,e\}$:
+\[
+ \ell(n,g)=
+ \begin{cases}
+ 1,&n=g,\\
+ 3,&n>g,\ n\text{ even and }n/g\text{ odd},\\
+ 2,&\text{otherwise}.
+ \end{cases}
+\]
+This follows from the unit-sum fact above, using the single unit $\pm1$ for $n=g$. If both orders are active, shifting them by $t_d,t_e$ changes this product by
+\[
+ \exp\bigl(2\pi i(t_d-t_e)/g\bigr).
+\]
+So the one product enforces $t_d\equiv t_e\pmod g$. If either order is inactive the product vanishes, and there is no phase to match there. The generalized Chinese remainder theorem gives a simultaneous $t$ on all active orders: at each prime take the congruence with highest exponent, and combine the resulting coprime congruences. Equation~\eqref{eq:galois} and Fourier inversion give a rotation of the whole histogram. This proves the fixed upper bound, including the order-six bound.
+
+\paragraph{Why every listed type of observation is necessary.}
+Write $C_d(x)=\sum_{u\in\U_d}\zeta_d^{ux}$ for the Ramanujan sum. It is an integer (a Galois-invariant algebraic integer), of absolute value at most $\varphi(d)$, with Fourier support precisely the indices of order $d$. Its transform on that support is $E$, by orthogonality. All the histograms below have the same mass $2E^2$; their constant part is $M=2E$.
+
+\begin{enumerate}
+\item To distinguish $M$ from $M+C_d$, some measurement must have all its nonconstant indices of order $d$. Any other nonconstant product is zero on both inputs. This forces $|\D|$ different products. On the adaptive path taken by $M$, it forces the same $|\D|$ tests, since an untested input would follow the identical path.
+\item For $g=\gcd(d,e)>1$, compare $M+C_d(x)+C_e(x)$ with $M+C_d(x)+C_e(x-1)$. A common shift would have to be $0\bmod d$ and $1\bmod e$, an impossibility. Single-order products agree, and products using any further order vanish. Thus every fixed list must contain a product whose set of orders is exactly $\{d,e\}$. These requirements are distinct for distinct pairs.
+\end{enumerate}
+The constant $M$ suffices for nonnegativity since each of the two added terms has absolute value at most $E$. This proves both count lower bounds. The quantifier on $m$ matters. At $m=1$, for example, there is only one orbit and no measurements are needed.
+
+\paragraph{An explicit five-product example.}
+For $E=15$, the following rows of integer indices already sum to zero:
+\[
+ (5,5,-10),\ (3,3,-6),\ (1,1,-2),\ (1,4,-5),\ (1,2,-3).
+\]
+The first three cover orders $3,5,15$. The last two compare order $15$ with orders $3$ and $5$. Orders $3$ and $5$ admit arbitrary simultaneous rotations by the ordinary Chinese remainder theorem.
+
+\newpage
+\section{The fixed list minimizes the maximum order as well}
+\begin{theorem}\label{th:degree}
+For $E>1$, the least possible maximum measurement order among all separating lists, with no restriction on length, equals
+\[
+ s_*(E)=\max\bigl(\{c_d:d\in\D\}\ \cup\
+   \{\ell(d,g)+\ell(e,g):\{d,e\}\in I,\ g=\gcd(d,e)\}\bigr).
+\]
+The fixed list of Theorem~\ref{th:main} attains both minima simultaneously.
+\end{theorem}
+\begin{proof}
+It suffices to prove the lower bound for each term. To realize arbitrary nonzero entries $\alpha\in K_d$ on just one order, first multiply all conjugates by a common positive integer to make them algebraic integers. A rational integer-valued inverse construction is
+\[
+ f_\alpha(x)=M+\operatorname{Tr}_{K_d/\Q}\bigl(A\alpha\,\zeta_d^{-x}\bigr).
+\]
+It has Fourier entry $EA\alpha$ at $k_d$ and its conjugates at the other order-$d$ indices. For finitely many proposed inputs choose a common $A$ and $M$ large enough for integrality and nonnegativity. They then have equal mass.
+
+For $d>2$ choose $b\in K_d$ of modulus one at every embedding, with $b$ not a root of unity. For example the values $(n+\zeta_d)/(n+\zeta_d^{-1})$ for integers $n\ge2$ are distinct, and $K_d$ has finitely many roots of unity. Compare $\alpha=1$ and $\alpha=b$. All balanced quadratic products agree since the two indices are negatives. For even $d$, a balanced product using only order $d$ must have even length since its units are odd. This also rules out cubic recovery for even $d>2$. For $d=2$ no single nonconstant index is balanced.
+
+If $6\mid d$, choose such a $b$ in $K_6\subseteq K_d$. A unit $u\bmod d$ acts on $b$ as $b$ or $b^{-1}$ according as $u\equiv 1$ or $-1\pmod6$. In a balanced row, the number of positive signs minus negative signs is a multiple of six. At length less than six the difference is zero. The two histograms are therefore indistinguishable by every shorter product. They are inequivalent because $b$ is not a root of unity.
+
+For the pair $d,e$, use the previous two-order examples with the $e$-part shifted by $1$ if $g$ is odd and by $g/2$ if $g$ is even. In either case the inputs are inequivalent. In a distinguishing row the partial index sum from the $d$-part is a nonzero element of the intersection of the cyclic subgroups of orders $d,e$, hence is $jE/g$. For even $g$, $j$ must be odd to detect the shift $g/2$. A single index of order $n>g$ cannot belong to that intersection. Moreover, if $n>g$ is even and $n/g$ is odd, then $g$ is even and the local unit sum is $\pm jn/g$ modulo $n$, an odd residue. It takes an odd number of units, at least three. These are exactly the lower bounds $\ell(n,g)$ for the two sides.
+\end{proof}
+The full-deck reconstruction order for finite abelian groups is classical \cite{Pebody,CO}. The point here is to attain it at the same time as the minimum number of individual products. At $E=30$, for instance, orders $6$ and $10$ meet in order $2$, and one must be able to compare the relative parity of their shifts. Each side needs three factors. This obstruction persists even if every product of order at most five is available.
+
+\newpage
+\section{Adaptive measurements}
+To prove the remaining upper bound of Theorem~\ref{th:main}, process the nontrivial divisors in any fixed order. After a step, retain one representative for the assigned values of all processed active orders $S$. Any two inputs compatible with the transcript up to that point agree there after a common rotation. Write $L=\lcm(S)$, taking $L=1$ if $S$ is empty. The rotations fixing the representative are precisely the multiples of $L$.
+
+For the next order $d$ put $g=\gcd(d,L)$, $h=d/g$. In $C_E$, the old active indices $k_e$ generate the subgroup of order $L$, which contains $-E/g$. Choose old indices, with repetitions and negative signs allowed, summing to $-E/g$. Let $B$ be the product of the corresponding Fourier coefficients. It is computable from the retained representative and is nonzero. The empty product suffices when $g=1$. Ask for the single balanced measurement
+\[
+                      F(k_d)^h B .
+\]
+A zero answer declares $d$ inactive. Otherwise align the old values to their retained representative and divide by $B$. The resulting $h$th power determines $\alpha_d$ up to $\mu_h$. Rotations by multiples of $L$ act on $\alpha_d$ through exactly $\mu_h$, since $\zeta_d^L$ has order $h$. Thus all possible extensions are one orbit under the remaining rotations. We can retain any consistent extension. For an explicit, finite implementation one may enumerate histograms of the known mass. This proves the induction, with one product per divisor independent of the answers. Complexity here counts measurements; it imposes no running-time bound on decoding.
+
+\begin{proposition}\label{prop:adapt}
+The optimal adaptive count can be attained with every order at most $6+3\omega(E)$, where $\omega(E)$ counts the distinct prime factors. For an odd prime power, order three suffices at the optimal count, and for a power of two, order four suffices.
+\end{proposition}
+\begin{proof}
+Replace $F(k_d)^h$ by an unbalanced local product of the same total index $E/g$. For odd $d$ take $a=3$. For even $d$ take $a=3$ for odd $h$, $a=4$ for even $h$. Write $h-a=u+v\pmod d$ with two units as above. Use
+\[
+                  P(\alpha_d)=\alpha_d^a\sigma_u(\alpha_d)\sigma_v(\alpha_d).
+\]
+If nonzero values agree, Lemma~\ref{lem:factor} gives a ratio in $\mu_d$, since the number of factors is odd whenever $d$ is odd. On $\mu_d$ this map is the $h$th power, hence the exact ambiguity is again $\mu_h$. It takes at most six factors. For the old product, decompose $-E/g$ in the cyclic group into its primary components, one for each prime $p\mid g$. The component of order $p^{v_p(g)}$ belongs to an active cyclic subgroup of order $e$ with $v_p(e)\ge v_p(g)$. Inside that subgroup the component is a sum of at most three order-$e$ indices, by the unit-sum fact. This gives the asserted bound.
+
+For $E=p^r$, examine divisors in descending order until the largest active order $D$ is found, using its pure measurement. These tests have order at most three for odd $p$, and at most four for $p=2$. For each smaller $d$, one order-$d$ index and two indices of order $D$ suffice. Indeed $D/d$ is divisible by $p$, and $1$ and $D/d-1$ are both units modulo $D$. Their sum gives $k_d$ after multiplication by $k_D$. Pair them with $-k_d$; the already known nonzero factors determine $F(-k_d)$ in the chosen phase. If all orders are inactive the histogram is uniform.
+\end{proof}
+
+\newpage
+\section{When the packet mass removes the phase ambiguity}
+Small packets and certain integral histograms require fewer measurements. Call the rows in Section~2 the \emph{pure measurements}, since each uses a single order. Denote convolution on $C_E$ by $*$ and by $A_f$ the integer matrix taking $v$ to $f*v$.
+
+\begin{proposition}\label{prop:unit}
+Suppose $\gcd(\det A_f,E)=1$ and $E>1$. Among integral histograms of the same positive mass, the pure measurements alone determine $f$ up to rotation. In particular this holds for $E=p^r$ whenever $p\nmid m$.
+\end{proposition}
+\begin{proof}
+The Fourier eigenvalues of $A_f$ are the $F(k)$, so all are nonzero. If a second histogram $b$ gives the same pure measurements, its Fourier transform $G$ satisfies $G(k)/F(k)\in\mu_E$ for every $k$, with value $1$ at zero. Let $v$ be the inverse Fourier transform of the ratio. From $A_fv=b$ we have $(\det A_f)v\in\Z^E$ by the adjugate, and hence $v$ is rational. The inverse Fourier sum gives $Ev\in\Z^E$: each coordinate is a rational algebraic integer. B\'ezout's identity yields $v\in\Z^E$. Parseval now gives
+\[
+       \sum_x v(x)^2=E^{-1}\sum_k |G(k)/F(k)|^2=1,
+       \qquad \sum_x v(x)=1.
+\]
+Thus $v$ is a positive point mass and $b=f*v$ is a rotation. When $E=p^r$, the group algebra modulo $p$ is $\mathbb F_p[X]/((X-1)^E)$. The image of $f$ there has value $m\ne0\pmod p$ at $1$, so it is a unit. Convolution is invertible modulo $p$ and $p\nmid\det A_f$.
+\end{proof}
+
+\begin{theorem}\label{th:small}
+Let $E=p^r$ for a prime $p$ and $r\ge2$. The single pure measurement at the indices of additive order $E$ distinguishes all rotation classes of given positive mass $m$ exactly for $m\le p$.
+\end{theorem}
+\begin{proof}
+Equality of the top measurement means the coefficients $F(1)$ agree after one rotation, including when both are zero. The polynomial difference of the two aligned histograms, of degree $<E$, is divisible in $\Z[X]$ by
+\[
+       \Phi_E(X)=1+X^{E/p}+\cdots+X^{(p-1)E/p}.
+\]
+The quotient has degree $<E/p$. Hence the coefficient difference is constant on each fiber modulo $E/p$. A nonzero difference of total mass zero has at least one positive and one negative fiber. Each positive fiber costs at least $p$ units of mass in the first histogram; the same holds for negative fibers in the second. This excludes a nonzero difference for $m<p$. If $m=p$, the two histograms must be indicators of one whole fiber each, which are translates.
+
+For $m>p$, choose distinct fibers $U,V$. Compare $(m-p)\mathbf1_{\{0\}}+\mathbf1_U$ with $(m-p)\mathbf1_{\{0\}}+\mathbf1_V$. Their transforms at $1$ both equal $m-p\ne0$, because the Fourier sum on a whole fiber vanishes. They have the same top measurement, but a translating shift would have to fix their nonzero coefficient at $1$, forcing the identity. The histograms are distinct.
+\end{proof}
+For example, at $E=27$ the worst-case fixed count is six. For a known mass of three, one cubic already works. For mass four, the same cubic fails, although the three pure cubics together still suffice by Proposition~\ref{prop:unit}. A mass-one histogram has just one rotation class.
+
+\newpage
+\section{What one sees in a window of Dirichlet zeros}
+Fix a modulus $Q$, a character $\psi$ and a subgroup $H$ of characters of exponent $E$. A packet $A$ consists of $m$ twists $\psi h$, $h\in H$, with repetitions allowed. Suppose the factors occurring are primitive of conductor $Q$. Fix a prime $p\nmid Q$. Its histogram $f$ records the multiplicities of $h(p)=\zeta_E^x$. If the possible $h(p)$ form a proper subgroup, one may use its order in place of $E$.
+
+Pool the positive zero ordinates of the factors in the interval $(T,T+Y)$, with multiplicity. Define
+\[
+ S(t)=\frac1Y\sum_{T<\gamma<T+Y}e^{it\gamma}.
+\]
+Under the Dirichlet critical-line theorem \cite{Lean}, the Landau formula of Banks \cite[Theorem 1.2]{Banks} gives, for each fixed nonzero integer $k$ and fixed $Q,p,m$, as $T\to\infty$ with $1\le Y\le T$,
+\begin{equation}\label{eq:landau}
+ S(k\log p)=-\frac{\log p}{2\pi p^{|k|/2}}\,\psi(p)^k F(k)
+       +O_{Q,p,k,m}\!\left(\frac{\log(2QT)}{Y}\right).
+\end{equation}
+For $k>0$, put $x=p^k$ in the sum of $x^\rho$ and use $x^\rho=\sqrt{x}\,e^{i\gamma\log x}$. For $k<0$, conjugate the positive-frequency sum. The fixed-$x$ error in Banks's formula is $O_{Q,x}(\log(2QT))$. We can always choose integer lifts with $p^{|k|}>2$ for every slot, which also avoids any endpoint issue in the stated range for $x$.
+
+Lift each balanced row from $C_E$ to nonzero integers $k_1,\ldots,k_s$ with sum \emph{exactly} zero. Add multiples of $E$ to the first $s-1$ indices and balance the last, avoiding any finite list of forbidden values. The product $\prod S(k_j\log p)$ depends only on the mutual differences of the observed ordinates: expand it over ordered tuples and subtract the last ordinate from every phase. The unknown factors $\psi(p)^{k_j}$ cancel. Dividing by $\prod_j[-\log p/(2\pi p^{|k_j|/2})]$ gives an approximation to $\prod F(k_j)$. For $Y\ge\log(2QT)$ its error is $O_{Q,p,m,\mathbf k}(\log(2QT)/Y)$ by the product expansion. The same argument for $(0,T]$, with normalization $1/T$, gives the exact product as a limit. Restricting to formulas at one prime is the local question posed in \cite{Packet}.
+
+\begin{corollary}\label{cor:window}
+Fix $Q,p,E$ and a positive mass $m$. There is a constant $C$ such that for all sufficiently large $T$, the fixed list applied to relative ordinates in \emph{every} window $(T,T+C\log(2QT))$ determines the local histogram up to rotation.
+\end{corollary}
+\begin{proof}
+For $E>2$ distinct products in the same row of length $s\le6$ differ by at least
+\[
+                   (2m^s)^{-(\varphi(E)-2)/2}.
+\]
+Indeed, the difference is a nonzero algebraic integer of $K_E$. Each conjugate has modulus at most $2m^s$, and the chosen complex embedding and its conjugate contribute the squared modulus in its nonzero integer norm. For $E=2$ distinct products are integers at distance at least one. Choose $C$ large enough for every row error to be less than half its separation. Round within the finite candidate set for that row, and apply Theorem~\ref{th:main}. For $E=1$ the mass already gives the histogram.
+\end{proof}
+The required constant depends on the chosen lifts and can be large. The counting lower bounds concern exact limiting products. At finite height a measurement also contains the remainder in \eqref{eq:landau}.
+
+\newpage
+\section{Arithmetic sharpness and scope}
+The count obstructions occur at an actual prime. Choose a prime $Q\equiv1\pmod{2E}$, a generator $\psi$ of the character group modulo $Q$ and its subgroup $H$ of order $E$. The coset $\psi H$ omits the principal character, so all its factors are primitive. Choose a prime $p$ in a primitive-root class modulo $Q$. Dirichlet's theorem supplies both primes. Evaluation $H\to\mu_E$ at $p$ is a bijection. Thus every nonnegative integer histogram is realized by a packet in this one family. Recovery up to rotation at this prime is precisely recovery up to a common twist in $H$ for this family.
+
+For a general $H$, the experiment recovers a local multiset. When observations are available at a prime in every unit class and $\gcd(m,E)=1$, the local rotations yield one global twist, as in \cite{Packet}. To see this, write $D_A=\prod_{h\in A}h$ for the product of the twist factors only. If $v_a$ is the local rotation relating packets $A,B$ at class $a$, then $v_a^m=(D_B/D_A)(a)$. Raising to the inverse of $m$ modulo $E$ supplies the single character realizing all $v_a$. Character orthogonality recovers the packet multiplicities. Without this condition the local theorem still applies; the source packet gives examples of globally different packets having identical balanced data everywhere.
+
+\paragraph{Relation to the sources.}
+The linked RH article describes the critical line and its connection to prime distribution \cite{Wiki}. The readable Lean project exports the general Dirichlet zero-location statement used in \eqref{eq:landau}; the published verification record covers its build and kernel checks \cite{Lean,Check}. We inspected the source statements. The proofs in this note are mathematical arguments and have not been formalized in Lean. The ProveIt homometry note gives the reduction to cyclic reconstruction, the odd-prime diagonal cubic, and the coprime global consequence \cite{Packet}. Its question about a shortest local measurement list at composite exponent is the starting point here.
+
+Gr\"unbaum and Moore already use Fourier orders, compatibility of shifts, and two-order obstructions in cyclic reconstruction \cite{GM}. Pebody determines the least sufficient order of full decks \cite{Pebody}. Casper and Orozco reconstruct rational functions from higher correlations through cyclotomic orbits and relations \cite{CO}. Schefler, Zhao and Zhong determine smallest separating monomial sets for complex cyclic regular representations, with separate Fourier coordinates in their count \cite[Prop.~4.8]{SZZ}. The common-divisor obstruction here is closely related to theirs. Our proposed contribution is the exact count on Galois orbits of integer histograms, simultaneous attainment with the optimal order, the adaptive count, and their realization in every sufficiently large logarithmic window of Dirichlet zeros. The cited results establish important components of the argument. A priority claim for this combination would require a broader literature review.
+
+\paragraph{Further questions.}
+For a fixed small mass, determine the exact counts as functions of $(E,m)$; the worst-case constructions use large masses. Determine the least maximum order at the optimal adaptive count for a general $E$. For the logarithmic-window result, minimize the height constant by choosing short integer lifts and exploiting the actual separation among feasible values, especially for small $m$.
+\newpage
+\section*{A worked arithmetic example}
+Take $E=30$, $Q=61$ and $p=2$. The residue of $2$ generates the units modulo $61$; its powers with exponents $30,20,12$ are $60,47,9\pmod{61}$, respectively. Choose $\psi(2)=\zeta_{60}$ and $H=\langle\psi^2\rangle$. The two histograms
+\[
+      f(x)=60+C_6(x)+C_{10}(x),\qquad
+      b(x)=60+C_6(x)+C_{10}(x-1)
+\]
+specify multiplicities of the $30$ primitive characters $\psi^{1+2x}$, for packets of mass $1800$ each. Their transforms coincide on order $6$, where the value is $30$, and differ on order $10$ by a unit shift. All products through order five agree by the parity argument of Theorem~\ref{th:degree}. For a sextic, take the signed indices
+\[
+                       (5,5,5,3,3,-21).
+\]
+The first three slots have order six. The last three have order ten, with relative phase $\zeta_{10}^{1+1-7}=-1$. The normalized limiting products are $+729{,}000{,}000$ and $-729{,}000{,}000$. This example shows which arithmetic information first becomes visible at order six.
+
+\paragraph{Verification.}
+The supplied programs use exact integer arithmetic in cyclotomic rings. They check fixed schedules for $2\le E\le300$, the example above, and finite classifications by both fixed and adaptive transcripts. The bounded-order adaptive check also tests the Chinese-remainder construction on 291,702 configurations. The scripts and their recorded outputs accompany the source. These are finite checks; the uniform statements follow from the proofs.
+\begin{thebibliography}{9}\small\raggedright\setlength{\itemsep}{1pt}
+\bibitem{Lean} L. Sernau and collaborators, \href{https://github.com/lsernau/grh-lean/blob/72fead102f663d5c7a407964a13dc0cf9d977207/grh/src/Main.lean}{\emph{GRH for Dirichlet $L$-functions, in Lean 4}}, commit \texttt{72fead10}, November 2026. See also \texttt{grh/src/Statements.lean}.
+\bibitem{Check} A. V. Sutherland, \href{https://math.mit.edu/~drew/shortgrh/}{\emph{Verification files for the shorter Lean proof of RH and GRH}}, November 2026.
+\bibitem{Wiki} Wikipedia contributors, \href{https://en.wikipedia.org/wiki/Riemann_hypothesis}{\emph{Riemann hypothesis}}, consulted 26 November 2026.
+\bibitem{Packet} V. Reshetnikov's ProveIt collection, \href{https://github.com/VladimirReshetnikov/ProveIt/blob/b29490a150d3947b114d6c9daf3398300537eb64/Analysis/GeneralizedRiemannHypothesis/Research/dirichlet_zero_packet_homometry/zero_packets.tex}{\emph{What zero differences forget about Dirichlet characters}}, source blob \texttt{337ff7d5}, especially the final research questions.
+\bibitem{Banks} W. D. Banks, \href{https://arxiv.org/abs/2302.07073}{Comparing zeros of distinct Dirichlet $L$-functions}, \emph{Publ. Math. Debrecen} \textbf{106} (2025), 327--335.
+\bibitem{GM} F. A. Gr\"unbaum and C. C. Moore, \href{https://doi.org/10.1107/S0108767394009827}{The use of higher-order invariants in the determination of generalized Patterson cyclotomic sets}, \emph{Acta Cryst. A} \textbf{51} (1995), 310--323.
+\bibitem{Pebody} L. Pebody, \href{https://doi.org/10.1017/S0963548303005807}{The reconstructibility of finite abelian groups}, \emph{Combin. Probab. Comput.} \textbf{13} (2004), 867--892.
+\bibitem{CO} W. R. Casper and B. Orozco, \href{https://arxiv.org/abs/2503.21022}{Reconstructing rational functions on finite abelian groups with higher autocorrelations}, arXiv:2503.21022.
+\bibitem{SZZ} B. Schefler, K. Zhao and Q. Zhong, \href{https://arxiv.org/abs/2509.16097}{On separating sets of polynomial invariants of finite abelian group actions}, arXiv:2509.16097.
+\end{thebibliography}
+\end{document}

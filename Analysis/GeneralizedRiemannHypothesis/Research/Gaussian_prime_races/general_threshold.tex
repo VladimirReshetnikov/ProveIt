@@ -1,0 +1,94 @@
+\section{The transition for every pair of residue classes}
+\label{sec:generalthreshold}
+
+Fix distinct $a,b\in G$ and write $B_h(t)=\mathcal P_a(t)-\mathcal P_b(t)$.
+Its limiting mean
+\[
+ M=b_0(a)-b_0(b)-\frac{r_q(a)-r_q(b)}{2d}
+\]
+is independent of $h$. This includes possible central zeros.
+\begin{theorem}\label{th:generaltransition}
+If $M=0$, both signs of $B_h$ occur with positive logarithmic density
+for every $h>0$. If $M\ne0$, there is a unique $h_*(a,b)>0$ below
+which both signs have positive logarithmic density. Above it,
+$\operatorname{sgn}(M) B_h$ is bounded below by a positive constant
+at all sufficiently late times. At the threshold this oriented race
+is positive with logarithmic density one and has lower limit zero.
+\end{theorem}
+
+\begin{proof}
+Write $f_h$ for the prime-only difference on the phase group $H$,
+so $B_h(t)=f_h(\theta_t)+o(1)$ as $t\to\infty$ for fixed $h$.
+The semigroup argument of Theorem~\ref{th:transition} shows that
+$\min_H f_h$ is strictly increasing and $\max_H f_h$ strictly decreasing:
+Lemma~\ref{le:rank} ensures nonconstancy at every $h$.
+Both extrema are continuous and converge to $M$ as $h\to\infty$.
+
+To determine the other endpoint, take a prime $p\nmid q$ and put
+$t_p=\log p$. We claim
+\[
+ f_h(\theta_{t_p})=
+ \frac{\log p}{\sqrt{4\pi h p}}
+  \bigl(\mathbf 1_{p\equiv a\,(q)}-\mathbf 1_{p\equiv b\,(q)}\bigr)
+       +O_{p,q}(1) \qquad (h\downarrow0).
+\]
+This statement concerns the limiting phase function at the fixed time
+$t_p$. To prove it, form the tempered distribution
+$U_\chi(t)=-\sum_\gamma m_\chi(\gamma)e^{i\gamma t}$
+over all signed ordinates, including zero. Temperedness follows from
+the zero count. On the open half-line $t>0$, the explicit formula
+for the primitive inducer gives the distribution identity
+\[
+ U_\chi=
+ \sum_{n\ge2}\frac{\Lambda(n)\chi^*(n)}{\sqrt n}\,\delta_{\log n}
+ -\delta_\chi e^{t/2}
+ +\sum_{\omega\ {\rm trivial}}e^{(\omega-1/2)t}.
+\]
+The last sum runs over the actual trivial zeros of $L(s,\chi^*)$,
+with multiplicity, and converges locally to an analytic function.
+Indeed test on $\phi\in C_c^\infty(0,\infty)$ and insert
+$\int\phi(t)e^{(s-1/2)t}\,dt$ in the logarithmic-derivative contour
+of Proposition~\ref{pr:explicit}. Fourier inversion on $\Re s=2$
+gives the prime-power atoms. Shift first to $\Re s=-N-1/2$ for an
+integer $N$, taking admissible horizontal heights as in that proposition.
+The poles and zeros give the terms displayed. On the new line the
+functional equation and Stirling's estimate away from trivial zeros
+bound $L'/L$ by $O_q(\log(2+N+|\Im s|))$. Integration by parts in the
+test transform yields vertical decay of arbitrary fixed order with a
+polynomial cost in $N$, times $e^{-N\inf\operatorname{supp}\phi}$.
+The vertical remainder therefore vanishes as $N\to\infty$.
+
+Take the character combination for $a-b$ and subtract the constant
+prime-square shift. Convolution with $k_h$ gives exactly
+$f_h(\theta_t)$ by its absolutely convergent Fourier series. Near
+$t_p$ the distribution is a smooth function plus one point mass;
+character orthogonality gives the coefficient in the claimed formula,
+since $p\nmid q$. Localize by a smooth cutoff equal to one near $t_p$.
+The smooth term contributes $O(1)$. The complementary tempered
+distribution contributes $o(1)$ because every Schwartz seminorm of the
+Gaussian translated to $t_p$ and multiplied by the complementary
+cutoff tends to zero exponentially in $1/h$. This proves the claim.
+
+Each of $a$ and $b$ contains a prime. Evaluating at one from each
+class proves that the maximum tends to $+\infty$ and the minimum
+to $-\infty$ as $h\downarrow0$. If $M\ne0$, orient the race by its
+sign and apply strict monotonicity of the minimum. Every nonempty open
+sign set has positive Haar mass, while a level set has zero mass by
+Theorem~\ref{th:local}. This gives all density and endpoint assertions,
+including the zero-mean case by nonconstancy.
+\end{proof}
+
+\begin{corollary}[Inversion symmetry]\label{cor:inversion}
+If $a\ne a^{-1}$, each class in the prime race $a$ versus $a^{-1}$
+leads with logarithmic density exactly $1/2$ for every $h>0$.
+In particular this holds for $2$ versus $3$ modulo $5$.
+\end{corollary}
+\begin{proof}
+The character formula gives
+$b_\gamma(a^{-1})=\overline{b_\gamma(a)}$ for each signed ordinate,
+and $b_0$ is real. Inversion bijects the square roots of $a$ with
+those of $a^{-1}$. Thus $z\mapsto\overline z$ exchanges the two
+prime-only coordinates on $H$, including their constant terms.
+This group involution preserves Haar measure and reverses the
+difference. The tie set has measure zero by Theorem~\ref{th:local}.
+\end{proof}

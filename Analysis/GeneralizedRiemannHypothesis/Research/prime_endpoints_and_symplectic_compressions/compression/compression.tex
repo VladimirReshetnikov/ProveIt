@@ -1,0 +1,114 @@
+\documentclass[10pt]{article}
+\usepackage[margin=0.97in]{geometry}
+\usepackage{amsmath,amssymb,amsthm,booktabs}
+\usepackage[colorlinks=true,linkcolor=blue!50!black,urlcolor=blue!50!black,citecolor=blue!50!black]{hyperref}
+\usepackage{xcolor}
+\newtheorem{theorem}{Theorem}
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{corollary}[theorem]{Corollary}
+\DeclareMathOperator{\radic}{rad}
+\DeclareMathOperator{\rk}{rank}
+\DeclareMathOperator{\Sp}{Sp}
+\DeclareMathOperator{\GL}{GL}
+\newcommand{\F}{\mathbb F_q}
+\newcommand{\gb}[2]{\genfrac{[}{]}{0pt}{}{#1}{#2}_{q}}
+\title{The exact law of a rectangular compression\\of a finite symplectic matrix}
+\author{}
+\date{November 26, 2026}
+\begin{document}
+\maketitle
+\begin{abstract}
+Given two arbitrary framed subspaces of a finite symplectic space, we compute the probability of every matrix of pairings between one fixed frame and a uniformly random symplectic translate of the other. The answer is a positive finite sum determined, for fixed restricted alternating forms, by just three ranks or nullities. It gives an exact support test and the conditional distribution of the dimension of intersection. This answers the finite-law alternative of the general-compression question in the ProveIt GRH article. The result is unconditional and includes characteristic two.
+\end{abstract}
+\section{The law and its support}
+
+Let $V$ be a $2N$-dimensional space over the finite field $\F$, with nondegenerate alternating form $\omega$, and $q$ any prime power. Let $A=\F^a$, $B=\F^b$. Fix injective maps $X_0:A\to V$, $Y_0:B\to V$. Write $H=X_0^*\omega$, $J=Y_0^*\omega$ for their Gram matrices and take $g$ uniformly from $\Sp(V)$. We seek the law of the $b\times a$ matrix
+\[
+ M(g)_{ji}=\omega(Y_0 e_j,gX_0 e_i).
+\]
+Every independent collection of $b$ output functionals arises this way by nondegeneracy. The subspaces may have arbitrary dimensions, intersection and restricted forms. An alternating matrix here has zero diagonal also in characteristic two.
+
+For a proposed value $M$, put $\ell=a+b$, and form its joint Gram matrix
+\[
+ C=\begin{pmatrix}H&-M^{\mathsf T}\\ M&J\end{pmatrix},\qquad
+ R=\radic C=\ker C,\qquad 2s=\rk C,\qquad h=\ell-2s .
+\]
+Identify $A,B$ with their respective direct summands in $A\oplus B$. Set $P=R\cap A$, $T=R\cap B$, $p=\dim P$, $t=\dim T$, $u=h-p-t$. Thus $P=\ker H\cap\ker M$ and $T=\ker J\cap\ker M^{\mathsf T}$. The symbols $\gb{n}{k}$ and $G_e$ denote the number of $k$-subspaces of $\F^n$ and the size of $\GL_e(\F)$:
+\[
+ \gb{n}{k}=\prod_{i=0}^{k-1}\frac{q^n-q^i}{q^k-q^i},
+ \qquad G_e=\prod_{i=0}^{e-1}(q^e-q^i).
+\]
+Take $\gb{n}{k}=0$ outside $0\le k\le n$ and every empty product as one.
+
+Let $E(v,j)$ count the isometric linear embeddings of a fixed $v$-space of alternating rank $2j$ into $V$. For $r=v-2j$, put $E(v,j)=0$ if $r<0$ or $j+r>N$. Otherwise
+\begin{equation}\label{eq:E}
+ E(v,j)=
+ \prod_{i=0}^{j-1}(q^{2(N-i)}-1)q^{2(N-i)-1}
+ \prod_{i=0}^{r-1}(q^{2(N-j)-i}-q^i).
+\end{equation}
+
+\begin{theorem}\label{thm:main}
+For each $M\in\F^{b\times a}$,
+\begin{align}
+ \Pr(M(g)=M)
+ &=\frac{\displaystyle\sum_{e=0}^{\min(p,t)}\sum_{k=0}^{u}
+     K_{e,k}\,E(\ell-e-k,s)}
+        {E(a,\rk H/2)\,E(b,\rk J/2)},\label{eq:main}\\
+ K_{e,k}
+ &=\gb{p}{e}\gb{t}{e}G_e\gb{u}{k}\,q^{k(p+t-e)}.\label{eq:K}
+\end{align}
+Its support consists exactly of those $M$ satisfying
+\begin{equation}\label{eq:support}
+                s+\max(p,t)\le N.
+\end{equation}
+For fixed $N,q,H,J$, the triple $(s,p,t)$ determines the likelihood of $M$. To obtain the joint probability of $M$ and
+$\dim(gX_0A\cap Y_0B)=d$, restrict the numerator of \eqref{eq:main} to $e+k=d$.
+\end{theorem}
+
+The ProveIt article \cite{article} asks for this law in its section on spanning, under the label \texttt{spn:q:symplectic}. The article gives separate theorems for isotropic boundary families and a Lagrangian output with arbitrary source form. Formula \eqref{eq:main} covers both arbitrary restricted forms at finite size. It also gives exact total variation distance from uniform by summing $\tfrac12|\Pr(M(g)=M)-q^{-ab}|$ over all $M$. A closed limiting profile for general growing families remains a separate asymptotic question. The arithmetic context concerns ranks of projected families of translates. The calculation here uses finite symplectic geometry throughout.
+
+\section{Counting the compatible frame pairs}
+
+First we justify \eqref{eq:E} and the uniform frame model. A basis of a $v$-space of alternating rank $2j$ consists of $j$ symplectic pairs and $r$ radical vectors. At the $i$th pair, after removing $i$ earlier planes, there are $q^{2(N-i)}-1$ choices for the first vector, and $q^{2(N-i)-1}$ choices for a partner having pairing one. The remaining radical vectors must form an independent isotropic frame in dimension $2(N-j)$. After $i$ of these have been chosen, the orthogonal complement of their span contains $q^{2(N-j)-i}$ vectors, of which $q^i$ are in the span. This proves \eqref{eq:E} and the embedding criterion $j+r\le N$.
+
+Two embeddings of a domain with the same Gram form are related by an element of $\Sp(V)$. To see this directly, use the paired basis just constructed. In the orthogonal complement of its nondegenerate part, take the first radical vector $z_1$. Independence of the functionals $\omega(z_i,-)$ permits choosing a partner pairing to one with $z_1$ and to zero with each later $z_i$. Remove that hyperbolic plane and continue. Complete the remaining orthogonal complement by symplectic pairs. Mapping the resulting full bases to one another extends the prescribed isometry. This is the alternating instance of Witt extension \cite{witt}. Consequently $gX_0$ is uniform on its $E(a,\rk H/2)$ embeddings.
+
+Let $g_1,g_2$ be independent uniform symplectic maps and set $X=g_1X_0$, $Y=g_2Y_0$. Their cross-pairing and intersection dimension have the required joint law, since $g_2^{-1}g_1$ is uniform. Thus the denominator in \eqref{eq:main} counts all ordered frame pairs with equal weight.
+
+For each such pair define $L:A\oplus B\to V$ by $L(x,y)=Xx+Yy$. Its Gram form is $C$ precisely when its cross-pairing is $M$. Its kernel $D$ lies in $R$ and satisfies $D\cap A=D\cap B=0$ by injectivity of both restrictions. Conversely, for any such $D$, the pairs with that kernel are in bijection with isometric embeddings of $(A\oplus B)/D$ into $V$. This correspondence retains the original frames in their given bases. The quotient has dimension $\ell-d$ and rank $2s$, for $d=\dim D$. The linear map $(x,y)\mapsto Xx=-Yy$ on $D$ is an isomorphism onto $XA\cap YB$. It therefore suffices to count admissible $D$ of each dimension.
+
+Choose a complement $U$ so that $R=P\oplus T\oplus U$. Write $S=D\cap(P\oplus T)$ and $K=\operatorname{pr}_U D$. The conditions $D\cap A=D\cap B=0$ are equivalent to $S\cap P=S\cap T=0$, since $D\subset R$. Both coordinate projections of $S$ are injective. Thus $S$ is the graph of an isomorphism between an $e$-subspace of $P$ and an $e$-subspace of $T$, with precisely $\gb{p}{e}\gb{t}{e}G_e$ choices. For $K$ of dimension $k$ there are $\gb{u}{k}$ choices. With $S$ and $K$ fixed, $D/S$ is the graph of an arbitrary linear map $K\to(P\oplus T)/S$, giving the final factor of \eqref{eq:K}. Now $d=e+k$, proving the sum and the intersection refinement.
+
+Finally $d$ can be as large as $u+\min(p,t)=h-\max(p,t)$ and this maximum occurs in the kernel count. The quotient with kernel dimension $d$ has radical dimension $h-d$. Its embedding count is positive precisely when $s+h-d\le N$. Testing this inequality at the largest attainable $d$ gives \eqref{eq:support} and completes the proof.
+
+\section{Two nondegenerate planes}
+
+Let $V$ be the orthogonal direct sum of two symplectic planes. Take $H=J=J_2=\left(\begin{smallmatrix}0&1\\-1&0\end{smallmatrix}\right)$ and choose $Y_0$ as the first coordinate plane in its standard basis. Both test spaces are non-Lagrangian. Write $X=(U;D)$ in the two planes. Then $M=J_2U$, so $\det M=\det U$. Since $U^{\mathsf T}J_2U=(\det U)J_2$, the only remaining condition is $\det D=1-\det M$. It guarantees injectivity of $X$, whose pullback form is nondegenerate. The denominator is $E(2,1)=(q^4-1)q^3$. The likelihood is therefore
+\[
+ \Pr(M(g)=M)=\frac{1}{(q^4-1)q^3}
+ \begin{cases}
+ q^3+q^2-q,&\det M=1,\\
+ q(q^2-1),&\det M\ne1 .
+ \end{cases}
+\]
+Indeed, each nonzero determinant has $|\mathrm{SL}_2(\F)|=q(q^2-1)$ representatives, while the zero determinant has $q^4-|\GL_2(\F)|$ representatives. For $q>2$ even full-rank matrices can have different probabilities. For $q=3$ each of the 24 determinant-one matrices has probability $33/2160$, and each of the remaining 57 has probability $24/2160$. The only positive excess over $q^{-4}$ occurs at determinant one. Summing it gives exact total variation
+\[
+ d_{\rm TV}=\frac{q^3-q^2+1}{q^3(q^2+1)} .
+\]
+This example admits a two-line determinant calculation, while arbitrary degenerate input and output forms require keeping track of joint kernels.
+
+\paragraph{Verification.}
+Run \texttt{python3 verify.py} for exhaustive comparisons at $q=2,3$. The program counts the independent frames of prescribed Gram matrix in ambient dimensions two, four and six. At a fixed target it compares the predicted count against enumeration for every possible output matrix, including values of probability zero. Its cases include two three-dimensional degenerate frames in dimension four, with exactly 174 of the 512 binary matrices supported. The accompanying \texttt{verification.txt} records the output. These finite checks supplement the general proof.
+
+\paragraph{Scope and further questions.}
+The theorem settles a question posed explicitly by the cited article. The counting ingredients are classical. Priority of the exact likelihood in the full literature on finite classical groups has not been established. The statistic $(s,p,t)$ reduces evaluation of one likelihood to matrix ranks and a finite sum. To obtain a compact formula for the limiting total variation along a specified sequence of dimensions and forms, one would also need the distribution of this triple under a uniform rectangular matrix.
+
+\begin{thebibliography}{9}
+\bibitem{article}
+V. Reshetnikov, \emph{Beyond the Riemann hypothesis for Dirichlet $L$-functions: consequences, transfers and limits}, ProveIt, revision \texttt{10802a6b360d}, 2026.
+\href{https://github.com/VladimirReshetnikov/ProveIt/blob/10802a6b360d5cdce48698261bc305e57a934b1f/Analysis/GeneralizedRiemannHypothesis/Article/sections/spn.tex\#L3156-L3161}{Question on general symplectic compressions}.
+\bibitem{witt}
+D. Sprehn and N. Wahl, \emph{Forms over fields and Witt's lemma}, Mathematica Scandinavica, Theorem 3.4.
+\href{https://doi.org/10.7146/math.scand.a-120488}{doi:10.7146/math.scand.a-120488}.
+\end{thebibliography}
+\end{document}

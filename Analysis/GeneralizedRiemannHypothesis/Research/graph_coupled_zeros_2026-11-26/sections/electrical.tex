@@ -1,0 +1,351 @@
+% Standalone section: requires amsmath,amssymb,amsthm.
+% The parent document should provide theorem, lemma, corollary, remark environments.
+\section{An electrical transport theorem for real zeros}\label{sec:electrical}
+
+Fix a connected undirected graph on $n\geq2$ labelled vertices, with positive
+edge conductances.  Parallel edges may be combined by adding conductances.
+Let $L$ be its weighted Laplacian, $L^+$ its Moore--Penrose inverse, and
+\[
+ \tau(G)=\sum_{T\text{ spanning tree}}\prod_{e\in T}w_e,
+ \qquad
+ R_{ij}=(e_i-e_j)^{\mathsf T}L^+(e_i-e_j).
+\]
+Thus $R_{ij}$ is the effective resistance between vertices $i$ and $j$.
+At vertex $i$, place a monic real-rooted polynomial $p_i$ of degree
+$d_i\geq1$, and put $N=d_1+\cdots+d_n$.
+Repeated roots, including roots shared by different vertices, are allowed.
+
+A rooted spanning forest consists of a spanning forest together with a
+choice of one root in each of its tree components.  Write $\mathcal R(F)$
+for its roots.  Define the following polynomial without any divisions:
+\begin{equation}\label{eq:forest-polynomial}
+ \mathcal P_G(z)=
+ \sum_{F\text{ rooted spanning forest}}
+ \left(\prod_{e\in F}w_e\right)
+ \left(\prod_{i\in\mathcal R(F)}p_i'(z)\right)
+ \left(\prod_{i\notin\mathcal R(F)}p_i(z)\right).
+\end{equation}
+The empty edge set is included, and contributes $\prod_i p_i'$.
+The constructions below show that $\mathcal P_G$ is never the zero
+polynomial and has degree $N-1$.
+
+List the roots of the input polynomials, with multiplicity and in vertex
+blocks, as $r_1,\ldots,r_N$.  Set
+\[
+ \Lambda=\operatorname{diag}(r_1,\ldots,r_N),\qquad
+ V_{ai}=\begin{cases}1&\text{root }a\text{ belongs to }p_i,\\0&\text{otherwise},\end{cases}
+ \qquad Q=I_N-\frac{\boldsymbol 1_N\boldsymbol 1_N^{\mathsf T}}{N}.
+\]
+Here $V$ has $N$ rows and $n$ columns.  Let
+$H=\boldsymbol 1_N^\perp$ and use restriction to $H$ whenever a determinant
+or eigenvalue of a compressed matrix is taken.  Define
+\[
+ A_\infty=(Q\Lambda Q)|_H,\qquad
+ B_G=(QV L^+V^{\mathsf T}Q)|_H,\qquad K_G=A_\infty-B_G.
+\]
+
+\begin{theorem}[Exact compression and electrical transport]\label{thm:electrical}
+The following identity holds for every complex $z$:
+\begin{equation}\label{eq:compression-identity}
+ \boxed{\quad\mathcal P_G(z)=N\tau(G)\det_H(zI_H-K_G).\quad}
+\end{equation}
+In particular $\mathcal P_G$ has exactly $N-1$ real zeros, with multiplicity.
+Let these zeros be $\lambda_1\leq\cdots\leq\lambda_{N-1}$, and let
+$\beta_1\leq\cdots\leq\beta_{N-1}$ be the zeros of
+$(\prod_i p_i)'$.  Then
+\begin{equation}\label{eq:root-upper-bound}
+ 0\leq\beta_k-\lambda_k\leq\|B_G\|\qquad(1\leq k\leq N-1),
+\end{equation}
+and
+\begin{equation}\label{eq:resistance-sum}
+ \boxed{\quad
+ \sum_{k=1}^{N-1}(\beta_k-\lambda_k)
+ =\frac1N\sum_{i<j}d_i d_jR_{ij}.
+ \quad}
+\end{equation}
+Consequently the empirical probability measures
+\[
+ \mu_G=\frac1{N-1}\sum_k\delta_{\lambda_k},\qquad
+ \nu=\frac1{N-1}\sum_k\delta_{\beta_k}
+\]
+satisfy the exact optimal-transport formula
+\begin{equation}\label{eq:wasserstein-exact}
+ \boxed{\quad W_1(\mu_G,\nu)
+ =\frac{\sum_{i<j}d_i d_jR_{ij}}{N(N-1)}.\quad}
+\end{equation}
+Here $W_1$ denotes the minimum average distance needed to transport one
+probability measure into the other.  The value in
+\eqref{eq:wasserstein-exact} is independent of every input root location.
+The bound $W_\infty(\mu_G,\nu)\leq\|B_G\|$ is sharp over the permitted
+input polynomials, even with the graph and the degrees fixed.
+\end{theorem}
+
+\begin{proof}
+We first establish the elementary forest determinant identity
+\begin{equation}\label{eq:forest-det}
+ \det(L+\operatorname{diag}(x_1,\ldots,x_n))
+ =\sum_{F\text{ rooted spanning forest}}
+   \left(\prod_{e\in F}w_e\right)\prod_{i\in\mathcal R(F)}x_i.
+\end{equation}
+One proof adds a new vertex $0$ and an edge of weight $x_i$ from $0$ to
+each vertex $i$.  The matrix-tree theorem identifies the left side with
+the spanning-tree polynomial of the enlarged graph.  Removing $0$ from
+such a tree leaves a spanning forest; each component has exactly one
+vertex formerly adjacent to $0$, which becomes its root.  This is a
+weight-preserving bijection.  Since it proves a polynomial identity, no
+sign assumption on the variables $x_i$ is required.
+
+Away from the input roots, substitute $x_i=p_i'/p_i$ in
+\eqref{eq:forest-det} and multiply by $p=\prod_i p_i$.  This gives
+\begin{equation}\label{eq:meromorphic-determinant}
+ \mathcal P_G(z)=p(z)
+ \det\left(L+\operatorname{diag}\left(\frac{p_i'(z)}{p_i(z)}\right)\right).
+\end{equation}
+By the definition of $V$ and $\Lambda$,
+\[
+ V^{\mathsf T}(zI_N-\Lambda)^{-1}V
+  =\operatorname{diag}\left(\frac{p_i'(z)}{p_i(z)}\right).
+\]
+The Schur complement of the upper-left block therefore yields the
+polynomial identity
+\begin{equation}\label{eq:bordered-determinant}
+ \mathcal P_G(z)=
+ \det\begin{pmatrix}zI_N-\Lambda&V\\-V^{\mathsf T}&L\end{pmatrix}.
+\end{equation}
+It suffices to establish this first for $z$ outside the finite input
+zero set, because both sides are polynomials.
+
+Choose an orthonormal basis of $\mathbb R^n$ starting with
+$u=\boldsymbol1_n/\sqrt n$ and otherwise consisting of Laplacian
+eigenvectors.  Eliminate the positive-eigenvalue block of $L$ in
+\eqref{eq:bordered-determinant}.  The result is
+\[
+ \det{}'(L)
+ \det\begin{pmatrix}
+ zI_N-\Lambda+VL^+V^{\mathsf T}&Vu\\
+ -u^{\mathsf T}V^{\mathsf T}&0
+ \end{pmatrix},
+\]
+where $\det{}'(L)$ is the product of the $n-1$ positive eigenvalues.
+The identity $Vu=\boldsymbol1_N/\sqrt n$ gives
+$\|Vu\|^2=N/n$ and $(Vu)^\perp=H$.
+For any $N\times N$ matrix $C$ and any nonzero real vector $b$,
+\[
+ \det\begin{pmatrix}C&b\\-b^{\mathsf T}&0\end{pmatrix}
+   =\|b\|^2\det_{b^\perp}(P_{b^\perp}C|_{b^\perp}).
+\]
+Indeed, in a basis ending with $b/\|b\|$, expansion along the last row
+and then the last column gives this equality, including its positive
+sign.  Finally $\det{}'(L)=n\tau(G)$ by the matrix-tree theorem.
+Together these facts prove \eqref{eq:compression-identity}.
+
+The matrix $K_G$ is real symmetric.  Also $B_G\succeq0$ because
+$L^+\succeq0$.  The usual compression identity for derivatives gives
+\begin{equation}\label{eq:differentiator}
+ \det_H(zI_H-A_\infty)=\frac1N p'(z).
+\end{equation}
+For completeness, if $e=\boldsymbol1_N/\sqrt N$, the cofactor formula
+for a compression says that the left side is
+$p(z)e^{\mathsf T}(zI_N-\Lambda)^{-1}e$ whenever the inverse exists.
+This is $p(z)N^{-1}\sum_a(z-r_a)^{-1}=p'(z)/N$; polynomial
+continuation proves the identity everywhere.  The min--max principle
+applied to
+$A_\infty-\|B_G\|I_H\preceq K_G\preceq A_\infty$
+now proves \eqref{eq:root-upper-bound}.
+
+Put $d=(d_1,\ldots,d_n)^{\mathsf T}$ and
+$D=\operatorname{diag}(d_1,\ldots,d_n)$.  Since
+$V^{\mathsf T}V=D$ and $V^{\mathsf T}\boldsymbol1_N=d$,
+\begin{align*}
+ \sum_k(\beta_k-\lambda_k)
+ &=\operatorname{tr}B_G
+ =\operatorname{tr}\left[L^+\left(D-\frac{dd^{\mathsf T}}N\right)\right]\\
+ &=\sum_i d_i(L^+)_{ii}-\frac1N d^{\mathsf T}L^+d
+ =\frac1N\sum_{i<j}d_i d_jR_{ij}.
+\end{align*}
+The last equality follows by expanding
+$R_{ij}=(L^+)_{ii}+(L^+)_{jj}-2(L^+)_{ij}$.
+For equal-weight measures on the line, an optimal coupling matches
+the atoms in increasing order.  Alternatively, the ordered matching
+attains the difference of the means here because
+$\lambda_k\leq\beta_k$, and every coupling has average distance at
+least the absolute difference of the means.  This proves
+\eqref{eq:wasserstein-exact} directly.
+
+The ordered matching also proves the $W_\infty$ bound.  To prove
+sharpness choose $p_i(z)=(z-c)^{d_i}$ for a common real $c$.
+Then $A_\infty=cI_H$; hence the largest displacement is exactly
+the largest eigenvalue of $B_G$, namely $\|B_G\|$.
+\end{proof}
+
+\begin{corollary}[Electrical barycentre law]\label{cor:barycentre}
+The mean of the $N-1$ graph zeros is
+\begin{equation}\label{eq:barycentre}
+ \frac1{N-1}\sum_k\lambda_k
+  =\frac1N\sum_{a=1}^N r_a
+   -\frac{\sum_{i<j}d_i d_jR_{ij}}{N(N-1)}.
+\end{equation}
+\end{corollary}
+\begin{proof}
+The trace of $A_\infty$ is
+$\operatorname{tr}\Lambda-N^{-1}\boldsymbol1_N^{\mathsf T}\Lambda\boldsymbol1_N
+=(N-1)N^{-1}\sum_a r_a$.  Substitute this in
+\eqref{eq:resistance-sum}.
+\end{proof}
+
+\section{Adding one edge: exact root motion}\label{sec:edge-motion}
+
+An edge may be strengthened or inserted.  Fix distinct vertices $a,b$,
+put $b_e=e_a-e_b$, and let $L_h=L+h b_e b_e^{\mathsf T}$ for $h\geq0$.
+Define quantities using the original connected graph:
+\[
+ R_e=b_e^{\mathsf T}L^+b_e>0,\qquad
+ q_e=QV L^+b_e\in H,\qquad
+ \alpha(h)=\frac{h}{1+hR_e}.
+\]
+
+\begin{theorem}[Exact edge law]\label{thm:edge-law}
+The associated symmetric matrices satisfy
+\begin{equation}\label{eq:rank-one-edge}
+ \boxed{\quad K_{G_h}=K_G+\frac{h}{1+hR_e}q_e q_e^{\mathsf T}.\quad}
+\end{equation}
+In particular the ordered graph zeros obey
+\[
+ \lambda_k(G)\leq\lambda_k(G_h)\leq\lambda_{k+1}(G)
+ \quad(1\leq k<N-1),\qquad
+ \lambda_{N-1}(G)\leq\lambda_{N-1}(G_h).
+\]
+Their total displacement is exactly
+\begin{equation}\label{eq:edge-total-displacement}
+ \boxed{\quad
+ \sum_{k=1}^{N-1}\bigl(\lambda_k(G_h)-\lambda_k(G)\bigr)
+ =\frac{h}{1+hR_e}\|q_e\|^2.
+ \quad}
+\end{equation}
+This is strictly positive for $h>0$ and does not depend on the input
+root locations.  Equivalently,
+\[
+ W_1(\mu_G,\mu_{G_h})
+ =\frac{h\,\|q_e\|^2}{(N-1)(1+hR_e)}.
+\]
+At a simple eigenvalue, for a normalized real eigenvector $u_k(h)$,
+\begin{equation}\label{eq:edge-velocity}
+ \frac{d\lambda_k(G_h)}{dh}
+ =\frac{|u_k(h)^{\mathsf T}q_e|^2}{(1+hR_e)^2}.
+\end{equation}
+The total displacement is bounded above by $\|q_e\|^2/R_e$ and
+approaches this value as the new conductance tends to infinity.
+\end{theorem}
+
+\begin{proof}
+On $\boldsymbol1_n^\perp$, the matrix $L$ is positive definite.  The
+rank-one inverse identity on that subspace gives
+\[
+ L_h^+=L^+-\frac{h}{1+hR_e}
+                 L^+b_e b_e^{\mathsf T}L^+.
+\]
+Both sides vanish on $\boldsymbol1_n$, so this is also an identity
+on $\mathbb R^n$.  Substitution in the definition of $K_G$ proves
+\eqref{eq:rank-one-edge}.  Eigenvalue monotonicity and rank-one
+interlacing give the displayed inequalities.  Taking traces proves
+\eqref{eq:edge-total-displacement}, and ordered matching proves the
+$W_1$ formula.
+
+To check strict positivity, suppose $QV L^+b_e=0$ and write
+$x=L^+b_e\in\boldsymbol1_n^\perp$.  Then $Vx$ is constant on all
+$N$ coordinates.  As every vertex block is nonempty, all coordinates
+of $x$ are equal.  Hence $x=0$, contradicting $Lx=b_e\ne0$.
+Thus $q_e\ne0$.  Finally, differentiating the rank-one matrix
+identity at a simple eigenvalue yields
+\eqref{eq:edge-velocity}, since $\alpha'(h)=(1+hR_e)^{-2}$.
+\end{proof}
+
+\begin{remark}[Everything in the displacement budget is electrical]
+The vector $q_e$ need not be formed in the $N$-dimensional root space:
+\[
+ \|q_e\|^2=b_e^{\mathsf T}L^+
+      \left(D-\frac{dd^{\mathsf T}}N\right)L^+b_e.
+\]
+Thus the budget is determined by the graph, the chosen edge, and the
+input degrees.  Eigenvectors and the actual zero locations determine
+how that fixed budget is distributed among individual zeros.
+\end{remark}
+
+\section{A monotone bridge between two derivative constructions}
+
+Scale every conductance by $t>0$ and write $\lambda_k(t)$ for the
+zeros of the resulting graph polynomial.  Since $(tL)^+=t^{-1}L^+$,
+\begin{equation}\label{eq:uniform-scale}
+ K_t=A_\infty-t^{-1}B_G.
+\end{equation}
+All $N-1$ ordered zeros are nondecreasing with $t$, and they tend to the zeros
+of $(\prod_i p_i)'$ as $t\to\infty$.  More precisely,
+\[
+ 0\leq\beta_k-\lambda_k(t)\leq\frac{\|B_G\|}{t},\qquad
+ W_1(\mu_{tG},\nu)=
+ \frac{\sum_{i<j}d_i d_jR_{ij}}{tN(N-1)}.
+\]
+There is also a precise small-coupling limit.
+
+\begin{corollary}[Small-coupling limit]\label{cor:small-coupling}
+Exactly $n-1$ graph zeros tend to $-\infty$ as $t\downarrow0$.
+The other $N-n$ zeros tend, with multiplicity and in increasing order,
+to the zeros of $\prod_i p_i'$.  When $N=n$, this latter list is empty.
+\end{corollary}
+\begin{proof}
+On $H$, the matrix $B_G$ has kernel $\ker V^{\mathsf T}$.
+Indeed $v^{\mathsf T}B_Gv=0$ is equivalent to
+$V^{\mathsf T}v\in\operatorname{span}(\boldsymbol1_n)$; because
+$v\perp\boldsymbol1_N$, the sum of the coordinates of
+$V^{\mathsf T}v$ is zero, so the latter vector must vanish.
+The map $V$ has rank $n$, and hence $B_G$ has rank $n-1$ on $H$.
+In the orthogonal decomposition
+$H=\operatorname{ran}B_G\oplus\ker B_G$, write
+\[
+ K_t=\begin{pmatrix}A_{11}-t^{-1}B_1&A_{12}\\
+ A_{21}&A_{22}\end{pmatrix},\qquad B_1\succ0.
+\]
+The first $n-1$ eigenvalues tend to $-\infty$ by min--max.
+For $z$ in any fixed bounded set, the inverse of
+$zI-A_{11}+t^{-1}B_1$ is $O(t)$, uniformly as $t\downarrow0$.
+The complementary Schur determinant therefore tends to
+$\det(zI-A_{22})$.  Thus the remaining $N-n$ eigenvalues tend to
+the eigenvalues of $A_{22}$, including multiplicity.  This also follows
+by applying polynomial continuity to the Schur determinant and using
+interlacing to keep these eigenvalues bounded.
+
+Finally $\ker V^{\mathsf T}$ is the direct sum, over the vertex blocks,
+of the subspaces whose coordinates sum to zero.  The compression of
+$\Lambda$ to these subspaces has characteristic polynomial
+$\prod_i(p_i'/d_i)$ by \eqref{eq:differentiator} applied separately
+to each block.  These are exactly the asserted finite limiting zeros.
+\end{proof}
+
+\section{An exact three-vertex example}\label{sec:exact-example}
+
+Put $p_1(z)=z+1$, $p_2(z)=z$, and $p_3(z)=z-1$ on a three-vertex
+path, with each of its two edges having conductance $t>0$.  Enumerating
+the rooted forests gives
+\[
+ \mathcal P_t(z)=1+4tz+t^2(3z^2-1),\qquad
+ \lambda_\pm(t)=\frac{-2\pm\sqrt{1+3t^2}}{3t}.
+\]
+Both zeros increase to $\pm1/\sqrt3$, the zeros of
+$(z^3-z)'$.  The three pairwise effective resistances are
+$1/t,1/t,2/t$.  The exact transport distance is therefore
+\[
+ W_1(\mu_t,\nu)=\frac{2}{3t}.
+\]
+At $t=1$, the graph polynomial is $z(3z+4)$, whose zeros are
+$-4/3$ and $0$.  Thus the real-zero theorem does not assert containment
+in the interval of the original roots: one new zero lies to the left
+of all three input roots.  What is controlled exactly is its ordered
+displacement from the zeros of the derivative of their product.
+
+\paragraph{Scope.}
+All trace, barycentre and transport formulas in this section concern
+finite polynomials.  Applying a formally infinite sum to completed
+$L$-functions would require a separate convergence or renormalization
+theorem.  The entire-function real-zero and local collision results
+do not require such a sum and can be proved directly from logarithmic
+derivatives.

@@ -1,0 +1,85 @@
+Prime isolation from a finite window of zeta zeros
+================================================
+
+Run the deterministic example with
+
+    python prime_window_demo.py
+
+Python 3, NumPy and SciPy are required. The file zeta_ordinates.txt
+contains consecutive positive zero ordinates numbered by mpmath.zetazero
+starting at 1. To recompute it with 23 working decimal digits, install
+mpmath and pass --regenerate-zeros. The table is numerical input to this
+illustration. The paper's analytic proof is independent of the table.
+
+Character matrix. The primitive root 2 modulo 5 defines four characters
+by chi_j(2)=i^j, j=0,1,2,3. The prime list 11,2,19,3 represents the
+residue classes 1,2,4,3, in this order. The determinant of the resulting
+four-by-four matrix is -16i. Its entries and all the small Gaussian
+integer intermediates in the determinant calculation are exact.
+
+Smooth filter. Write k for the density of the convolution of the unit
+mass profile exp(-cosh u)/(2 K_0(1)) with six copies of the uniform
+probability measure on [-12,12]. The sixfold compact factor is a
+B-spline supported on [-72,72]. The full convolution k is entire.
+Its Fourier transform, with convention integral f(t) exp(-i t xi) dt,
+is the Fourier transform of the normalized profile times
+(sin(12xi)/(12xi))^6. For T=105 and L=log p, define
+
+    h(t)=k(t-T) [exp(i(t-T)L) - khat(L)].
+
+Then integral h = 0 exactly. This uses the same mean subtraction as the rank proof. For the Riemann zeta function, define
+
+    Z = sum of h(gamma) over zeros,
+    A = integral h(t) [Re digamma(1/4+it/2)-log pi] dt/(2pi),
+    P = h(i/2)+h(-i/2),
+    Q = sum_{n>=2} Lambda(n) [hhat(log n)+hhat(-log n)]/(2pi sqrt(n)).
+
+The explicit formula gives Z=A+P-Q when the ordinates are taken on the
+critical line (in general replace gamma by (rho-1/2)/i). The displayed
+zero-side output is -D(Z-A-P), and the prime-side output is D Q, with
+D=2 pi sqrt(p) exp(i T L)/log p. Isolating just the filter's unit peak
+at n=p would yield the value 1. The observed deviation from 1 measures
+the finite bandwidth, including leakage and mean subtraction.
+
+Finite calculation. The closed window [27,183] contains consecutive
+zeros #4 through #70, with their adjacent exterior ordinates equal to
+25.010857580 and 184.874467848. The script uses these 67 ordinates in Z
+and the same interval for A. For real t beyond the window, the kernel
+samples the core at distances at least 6 from its center after any of the
+compact shifts. The program uses Gauss-Legendre integration over [-6,6]
+for the core, composite Simpson quadrature of mesh 0.05 for A, and all
+prime powers through 100000 for Q. Pole terms are negligible at this T.
+The comparison uses floating-point arithmetic without interval error
+certificates. It tests the numerical formula and the signs/phases for
+two primes at one modest height. The theorem's limiting window size
+and its threshold in T play no role in these numerical settings.
+
+Expected values (final digits vary slightly between platforms)
+
+    p   zero-side estimate, corrected            distance to 1
+    2   1.0000128068 + 0.0000843336i             0.00008530
+    3   1.0000083678 - 0.0000502525i             0.00005094
+
+The independent prime-side sums agree with the zero-side estimates to
+within 6e-15 on the tested platform. Increasing the prime-power limit to
+300000 and halving the mesh to 0.025 gives the same displayed estimates.
+The same run reports the zero-only estimates before subtraction of A+P.
+
+Height-dependent filter used in the paper
+-----------------------------------------
+
+    python prime_window_demo.py --paper-kernel
+
+This option uses the normalized profile sech(u)^2/(1+cosh(pi u)/M)^M
+with M=ceil(10 log log 105)=16, followed by four uniform probability
+measures on [-18,18]. The radius is exactly 72+asinh(16)/pi, approximately
+73.1035. The 63 positive zeros in this window have indices 5 through 67.
+The same mean-zero calculation gives
+
+    p   zero-side estimate, corrected            distance to 1
+    2   1.0000371404 + 0.0002278423i             0.0002308
+    3   1.0001891521 + 0.0003124664i             0.0003653
+
+The prime-side discrepancies were below 8e-12 at both numerical settings
+described above. This run is a finite check of the paper's cutoff and
+Fourier phases with a different subtraction of the constant component.

@@ -1,0 +1,85 @@
+\section{Verification, reproducibility, and formalization}
+
+\subsection{What was checked}
+
+The human proof establishes the universal statements.  The computational
+checks are independent finite checks of the normalization, signs,
+repeated-root behavior, and edge-update formulas that are easy to get
+wrong in this calculation.
+
+The script \path{code/verify_graph.py} works with exact rational matrices
+and polynomials in SymPy.  It forms the graph polynomial directly as
+\[
+ \det\bigl(L\diag(p_1,\ldots,p_n)+\diag(p_1',\ldots,p_n')\bigr)
+\]
+and compares it with the characteristic polynomial of the independently
+constructed compressed matrix.  The check uses the ambient $N$-dimensional
+matrix, which annihilates $\boldsymbol1_N$, and divides its characteristic
+polynomial by the corresponding extra factor $z$.  This avoids choosing
+an approximate orthonormal basis.
+
+The recorded runs check six base examples: two one-vertex derivative
+identities (including a constant output) as boundary checks, a two-vertex graph, a path with a tuned
+shared-root collision, a triangle with mixed multiplicities, and a
+four-cycle with common roots.  Four positive edge updates test both
+strengthening an existing edge and inserting an absent one.  Each checks
+the exact rank-one matrix identity, tree-weight normalization, and trace
+displacement.  The collision formula is checked at every distinct input
+root in each example.  All recorded checks passed.
+
+The plots use numerical eigenvalues of symmetric matrices and are labelled
+as illustrations.  Their underlying data and formulas are included.  They
+are not interval-certified numerical computations of Dirichlet zeros.
+
+\subsection{Reproduction}
+
+From this directory, run:
+\begin{verbatim}
+python3 code/verify_graph.py
+python3 code/illustrate.py
+latexmk -pdf -interaction=nonstopmode -halt-on-error report.tex
+\end{verbatim}
+The first command writes exact JSON results to \path{checks/graph_checks.json};
+its console output was recorded in \path{checks/graph_checks.txt}.
+The second produces the plot PDFs, PNGs, and CSV data.
+\path{requirements.txt} records the Python package versions used here.
+The PDF was compiled with pdfLaTeX and rendered for visual inspection.
+
+\subsection{A dependency plan for Lean}
+
+The new theorems are not supplied as Lean-checked results.  A useful
+formalization order would be the following.
+\begin{enumerate}
+ \item Define the graph derivative polynomial by the division-free
+ principal-minor expansion.  Prove equality with the polynomial matrix
+ determinant.  This separates algebra from graph combinatorics.
+ \item Prove the bordered-determinant/compression identity for a real
+ diagonal matrix and a block-incidence map $V$.  Define $L^+$ by its
+ inverse on $\boldsymbol1^\perp$; no analytic generalized-inverse theory
+ is necessary for this finite statement.
+ \item Derive ordered eigenvalue monotonicity, the trace identity, and the
+ rank-one update.  The transport formula can first be stated as the
+ explicit sum of ordered displacements, avoiding any measure theory.
+ \item Add the rooted-forest interpretation through the matrix-tree
+ theorem.  The electrical resistance formula is then a finite identity
+ in $L^+$ and the integer degree vector.
+ \item For entire functions, formalize the locally uniform logarithmic
+ derivative expansion and the strict imaginary-part inequality.  Prove
+ the collision lemma for a Hermitian analytic matrix with negative
+ definite derivative on its kernel.
+ \item Instantiate the entire theorem with phase-real primitive
+ Dirichlet completions, importing the upstream zero-location statement.
+\end{enumerate}
+This plan does not replace an executable proof file, and no unproved
+placeholder is represented as a completed formalization.
+
+\subsection{Remaining mathematical questions}
+
+The finite transport law suggests two precise further problems.  First,
+can one choose a canonical regularization of the displacement of
+\emph{all} completed Dirichlet zeros and obtain an infinite analogue of
+the resistance formula?  Second, which graph optimizes a chosen maximum
+zero displacement subject to a conductance budget and prescribed input
+degrees?  The first needs a genuine convergence argument; the second
+leads to minimizing the largest eigenvalue of $B_G$.  Neither is needed
+for the proved results above, and neither is claimed solved here.

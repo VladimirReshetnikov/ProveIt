@@ -1,0 +1,193 @@
+\documentclass[11pt]{article}
+\usepackage[letterpaper,margin=1.0in]{geometry}
+\usepackage[T1]{fontenc}
+\usepackage{lmodern,amsmath,amssymb,amsthm,microtype,xcolor,hyperref}
+\definecolor{ink}{HTML}{183E54}
+\hypersetup{colorlinks=true,linkcolor=ink,citecolor=ink,urlcolor=ink,pdftitle={A density improvement over the greedy geometric-progression-free set at every length}}
+\newtheorem{theorem}{Theorem}
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{corollary}[theorem]{Corollary}
+\newcommand{\N}{\mathbb N}
+\newcommand{\dens}{\operatorname{dens}}
+\newcommand{\updens}{\overline{\operatorname{dens}}}
+\newcommand{\GP}{\mathcal G_k}
+\newcommand{\weight}{\mathcal W}
+\newcommand{\pgref}[2]{\href{https://github.com/VladimirReshetnikov/ProveIt/blob/2c45d198070f93209d6f0faa2d387ef0a2c4e72c/Analysis/GeneralizedRiemannHypothesis/Research/#1}{#2}}
+\setlength{\parindent}{1.3em}
+\begin{document}
+\begin{center}
+{\LARGE\bfseries A density improvement over the greedy\\[3pt] geometric-progression-free set at every length}\par
+\vspace{7pt}
+{\small Research note\quad$\cdot$\quad November 2026}
+\end{center}
+
+\begin{abstract}
+Brown and Gordon asked whether a set of positive integers avoiding geometric progressions can have ordinary natural density greater than that of the greedy sequence. For every length $k\ge3$ we construct such a set by coupling prime valuations. The construction works for all positive rational ratios and applies directly at composite lengths, where the greedy exponent set has no known general digit formula. More generally, every fixed bound on the number of primes that can be tested jointly in disjoint blocks imposes a strict density loss. We give an effective approximation to the unrestricted supremum. We can prescribe small independent density increases in individual reduced residue classes. The starting point is an earlier three-term construction in the supplied ProveIt collection.
+\end{abstract}
+
+\section{The greedy benchmark}
+
+A \emph{$k$-progression} consists of the distinct positive integers $a,ar,\ldots,ar^{k-1}$, with $r\in\mathbb Q_{>0}$ and $r\ne1$. Let $G_k\subset\mathbb Z_{\ge0}$ be the set obtained by scanning nonnegative integers in order and retaining an exponent if it creates no nonconstant length-$k$ arithmetic progression among the retained exponents. Define
+\[
+    \GP=\{n\ge1 : v_p(n)\in G_k\ \text{for every prime }p\}.
+\]
+Valuations turn geometric progressions into arithmetic progressions. Thus $\GP$ avoids $k$-progressions. It is also the greedy set of positive integers with this property. Indeed, if a candidate integer $s$ has some exponents outside $G_k$, every such exponent $e$ was rejected at the end of an arithmetic progression $e-(k-1)d,\ldots,e-d,e$, with $d>0$ and the earlier entries in $G_k$. Use one such progression independently at each bad prime and keep the good exponents constant. The resulting $k-1$ proper divisors of $s$ belong to $\GP$ and complete a geometric progression ending at $s$. This proves the greedy characterization by induction.
+
+Brown and Gordon proved that $\GP$ maximizes density among constructions using a common progression-free exponent set separately at each prime. After their Theorem 3 they asked whether a set outside this class can have greater density~\cite{BG}. Here density means the ordinary limit of the proportion up to $x$ as $x\to\infty$.
+\begin{theorem}\label{main}
+For every integer $k\ge3$ there is a set $A_k\subset\N_{>0}$ avoiding all $k$-progressions for which
+\[
+                    \dens(A_k)>\dens(\GP).
+\]
+It suffices to change the joint rule on finitely many primes. The construction can be carried out beyond any prescribed finite set of primes.
+\end{theorem}
+
+\section{One shared deletion and the exact density change}
+
+Fix $k$ and write $b=k-2$, so $0,1,\ldots,b\in G_k$ and $b+1\notin G_k$. Choose a marker prime $\ell$ and a finite nonempty set $B$ of other primes. Write $S=\{\ell\}\cup B$ and $C_S=G_k^{S}$ for the original exponent vectors on these primes. The following instructions define the replacement $F_S$.
+
+\begin{enumerate}
+\item Delete all old vectors with every satellite exponent $v_q=b$ for $q\in B$, for every old marker exponent $v_\ell\in G_k$.
+\item For each $q\in B$, also delete the old vectors with $v_q\ge b+2$ and every other satellite exponent equal to $b$.
+\item For each $q\in B$, add the one vector with $v_\ell=v_q=b+1$ and all other satellite exponents equal to $b$.
+\end{enumerate}
+
+\begin{lemma}\label{avoid}
+The set $F_S$ contains no nonconstant length-$k$ arithmetic progression of exponent vectors, for arbitrary signed integer step vectors.
+\end{lemma}
+\begin{proof}
+A progression consisting solely of old vectors is constant in every coordinate. If at least two terms are new, the marker exponent takes the value $b+1$ twice and is therefore constant. Every term must then be new. Each satellite takes at most two values on the new vectors, hence is also constant since $k\ge3$.
+
+Suppose exactly one term is new, indexed by $q$. At each satellite other than $q$, all $k$ entries of the progression belong to $G_k$, including the new entry $b$. Those coordinates are constant at $b$. In this slice all surviving old entries at $q$ lie between $0$ and $b-1$. Indeed, $b$ was deleted by the first rule, $b+1$ was absent originally, and the second rule removed the higher entries. At $q$ the new entry is $b+1=k-1$. A nonconstant length-$k$ arithmetic progression in $[0,k-1]$ uses all $k$ integers, including the missing value $b$. A constant one cannot have both an old and a new entry. This proves the claim.
+\end{proof}
+
+For a finite set $T$ of primes use the reciprocal weight
+\[
+ \weight_T(F)=\sum_{e\in F}\prod_{p\in T}p^{-e_p},\qquad c_T=\prod_{p\in T}(1-1/p).
+\]
+The integers whose $T$-valuations lie in $F$ have natural density $c_T\weight_T(F)$. Finite boxes follow from the Chinese remainder theorem. Exponents beyond a cutoff $m$ cost at most $\sum_{p\in T}p^{-m}$ in upper density, proving the formula for arbitrary $F$.
+
+Write $H_p=\sum_{e\in G_k}p^{-e}$ and $W=\prod_{q\in B}q^{-b}$. The deletion families are disjoint. Direct summation gives
+\begin{align}
+ \frac{\weight_S(F_S)-\weight_S(C_S)}{W}
+    &=\ell^{-(k-1)}\sum_{q\in B}\frac1q
+       -H_\ell\left(1+\sum_{q\in B}\sum_{\substack{e\in G_k\\ e\ge b+2}} q^{b-e}\right).\label{gain}
+\end{align}
+The second term in magnitude is at most
+\[
+       \frac{1}{1-1/\ell}\left(1+\sum_{q\in B}\frac1{q(q-1)}\right)
+       \le4 .
+\]
+Here $\sum_{j\ge2}1/[j(j-1)]=1$. Euler's divergence theorem lets us choose $B$ beyond any prescribed finite set with $\sum_{q\in B}1/q>5\ell^{k-1}$. The excess in~\eqref{gain} is then greater than $1$. For example, at length $4$ with marker $2$ the old satellite baseline is $2$, the new exceptional exponent is $3$, and a reciprocal sum greater than $40$ suffices. This threshold makes an existence statement; the resulting improvement can be extremely small.
+
+\begin{proof}[Completion of Theorem~\ref{main}]
+Require $F_S$ on $S$ and use $G_k$ separately at every other prime. In a $k$-progression every coordinate would be constant by Lemma~\ref{avoid} and the definition of $G_k$. Its ratio would equal $1$.
+
+The density multiplier contributed by primes outside $S$ is
+\[
+      D_{\mathrm{out}}=\prod_{p\notin S}(1-1/p)H_p >0.
+\]
+Indeed, each factor is at least $1-p^{-(k-1)}$ because $0,\ldots,k-2$ are permitted. Ignoring primes $p>Y$ introduces counting error at most $x\sum_{p>Y}p^{-(k-1)}$ up to $x$, since a violation requires $p^{k-1}\mid n$. Finite-prime independence and this tail bound prove that the natural density exists. Its excess over the original density equals
+$c_S D_{\mathrm{out}}(\weight_S(F_S)-\weight_S(C_S))>0$. The marker and satellites can all avoid any prescribed finite set.
+\end{proof}
+
+\section{The cost of bounding the number of coupled primes}
+
+Allow an arbitrary partition of the primes into blocks of size at most $d$. In each block use an arbitrary set of exponent vectors. Admit a positive integer precisely when it passes every block test. Let $\alpha_{k,d}$ be the supremum of \emph{upper} densities of progression-free sets of this form. Write $\alpha_k$ for the supremum of ordinary natural densities over all $k$-progression-free sets. The partition is allowed to vary with the competitor. A nonempty progression-free product has progression-free local rules: change the coordinates of an admitted integer in just one finite block to realize any putative local progression. Conversely, local progression avoidance suffices.
+
+\begin{theorem}\label{block}
+For all $k\ge3$ and $d\ge1$ one has
+\[
+ \alpha_{k,1}=\dens(\GP),\qquad
+ 0<\alpha_k-\alpha_{k,d}\le
+    \frac{(p_{d+1}-1)^{-(k-2)}}{k-2},
+\]
+where $p_j$ is the $j$th prime. Every $\alpha_{k,d}$ is attained by a set with ordinary natural density that uses the greedy rule off finitely many primes. The numbers $\alpha_{k,d}$ and $\alpha_k$ are uniformly computable in their integer parameters.
+\end{theorem}
+
+\begin{proof}
+Consider a block $T$ satisfying $c_T\ge1/2$. For a progression-free rule $F$ charge each allowed nongreedy smooth integer $s$ to one missing greedy proper divisor $t$. Such a divisor exists by the greedy witness in Section 1, applied within $T$. Distinct integers charged to the same $t$ have distinct nontrivial $T$-smooth quotients $s/t$. Their combined reciprocal weight is at most
+\[
+                   t^{-1}(c_T^{-1}-1)\le t^{-1}.
+\]
+Summing gives $\weight_T(F)\le\weight_T(G_k^T)$. This applies to every singleton, proving the width-one formula by finite-prime upper bounds and the convergent greedy product.
+
+Call a block with $c_T<1/2$ exceptional. If all its primes exceed $4d$ then $\log c_T^{-1}\le\sum_{p\in T}1/(p-1)\le1/4$, a contradiction. There are therefore at most $\pi(4d)$ exceptional blocks, using at most $h=d\pi(4d)$ primes. Replace all other blocks with the greedy rule. The original upper density is bounded by the probability of passing any finite collection of original blocks. Exhaust the partition by finite collections containing every exceptional block, and use the weight comparison in the other blocks. The limit of the new products is the natural density of the modified set by the preceding tail estimate. Thus the replacement dominates the original upper density.
+
+For fixed finite $T$ the optimum of $\weight_T$ is attained: take a pointwise convergent subsequence of indicators of a maximizing sequence on the countable exponent lattice. Progression avoidance passes to the limit, and reciprocal weights are summable. To attain $\alpha_{k,d}$, begin with a maximizing sequence in the reduced form above. Pass to a subsequence where the number of exceptional primes and the partition of their ordered positions are fixed. Each label is then either constant on a further subsequence or tends to infinity. Setting all the escaping labels to valuation zero costs at most the sum of their reciprocals, which tends to zero. In each block the resulting slice on the fixed labels is progression-free. Replace each such slice by an optimal rule and let every other prime use $G_k$. This fixed construction dominates the limiting densities: before releasing the zero restrictions it dominates the corresponding sliced sets, and $0\in G_k$ allows the restrictions to be released. This proves attainment.
+
+Use an optimizer of this form. Off its finitely many exceptional labels, Theorem~\ref{main} improves the greedy rule on a disjoint finite set. The unchanged block factors have positive product since the optimizer dominates $\GP$, which has positive density. Consequently this gains a strictly positive amount in ordinary natural density.
+
+For the upper estimate on the gap, put $Y=p_{d+1}-1$, $P=\{p\le Y\}$ and $M=\max_F\weight_P(F)$ over progression-free rules. In any unrestricted progression-free set $A$, integers with fixed $P$-rough part $u$ have a progression-free set of smooth parts. Summing reciprocals gives
+\[
+ \sum_{\substack{n\le x\\n\in A}}\frac1n
+ \le M\sum_{\substack{u\le x\\ (u,\prod_{p\in P}p)=1}}\frac1u
+ = Mc_P\log x+O_P(M).
+\]
+The last estimate is finite inclusion--exclusion. Partial summation gives $\dens(A)\le Mc_P$ whenever the natural density exists. Use an optimizing $P$-block and greedy singletons outside $P$. This gives
+\[
+  \alpha_{k,d}\ge Mc_P\prod_{p>Y}(1-p^{-(k-1)}),\qquad Mc_P\le1.
+\]
+The stated bound follows from $1-\prod(1-x_j)\le\sum x_j$ and $\sum_{j>Y}j^{-(k-1)}\le Y^{-(k-2)}/(k-2)$.
+
+Finally, freezing all exceptional primes above $Z$ to zero costs at most $h/Z$. Release these primes to use the greedy rule as above. To approximate the result, enumerate all partitions of the primes up to $Z$ of width at most $d$. In each block truncate exponents below $m$, enumerate all subsets of the finite box and maximize among progression-free subsets. Extending truncated rules by excluding higher exponents preserves admissibility and loses at most $\sum_{p\le Z}p^{-m}$. The greedy factors on the remaining primes can be evaluated to arbitrary certified accuracy by the same exponent truncation and the convergent $\sum_{p>U}p^{-(k-1)}$ bound. These explicit errors give a uniform algorithm for $\alpha_{k,d}$. The gap estimate yields one for $\alpha_k$.
+\end{proof}
+
+\section{Independent density gains in residue classes}
+
+The same finite replacement can be confined to one prescribed reduced residue class. In fact its gain can be set independently in each such class. Write $[a]_m=\{n\ge1:n\equiv a\pmod m\}$, and measure densities relative to all positive integers.
+
+\begin{theorem}\label{residues}
+Given $k\ge3$ and $m\ge2$, there is an $\eta=\eta(k,m)>0$ with the following property. For any real numbers $0\le t_a\le\eta$ indexed by the reduced residue classes modulo $m$, there exists a $k$-progression-free set $A$ with
+\[
+ \dens(A\cap[a]_m)=\dens(\GP\cap[a]_m)+t_a
+       \qquad ((a,m)=1).
+\]
+One may require pointwise agreement with $\GP$ on all nonreduced classes and on every class where $t_a=0$.
+\end{theorem}
+
+\begin{proof}
+Choose the marker and all satellites congruent to $1\pmod m$. The Dirichlet series identity from character orthogonality and Euler products gives
+\[
+ \sum_{p\equiv1\bmod m}p^{-s}
+ =\frac1{\varphi(m)}\log\frac1{s-1}+O_m(1)
+ \qquad(s\downarrow1).
+\]
+Here the principal character contributes the pole of $\zeta$, the other Dirichlet $L$-functions are nonzero at $1$, and the prime powers of exponent at least two give bounded terms~\cite{dirichlet}. Thus the ordinary reciprocal sum in this class diverges, and one can achieve $\Delta=\weight_S(F_S)-\weight_S(C_S)>0$.
+
+Every positive integer has a unique factorization $n=hs$ with $s$ its $S$-smooth part and $h$ coprime to all primes in $S$. Every such $s$ is $1\pmod m$. Require the valuations of $h$ outside $S$ to belong to $G_k$. For reduced $a$, the set $H_a$ of eligible $h$ in $[a]_m$ has density
+\[
+       \gamma=\frac{c_S}{m}
+          \prod_{\substack{p\notin S\\ p\nmid m}}(1-1/p)H_p>0.
+\]
+Indeed the target congruence fixes valuation zero at every prime dividing $m$. All other finite valuation conditions are independent of it by the Chinese remainder theorem. The tail estimate from Theorem~\ref{main} justifies the limit. In particular $\gamma$ is independent of $a$.
+
+Take $\eta=\gamma\Delta$ and $\lambda_a=t_a/\eta$. In the ordered sequence $H_a=\{h_1<h_2<\cdots\}$ mark $h_j$ precisely when $\lfloor j\lambda_a\rfloor>\lfloor(j-1)\lambda_a\rfloor$. The marked set has density $\gamma\lambda_a$, since exactly $\lfloor J\lambda_a\rfloor$ of its first $J$ candidates are marked. No rough part in a nonreduced class is marked. At a marked $h$ use the new rule $F_S$ for $s$. At every other eligible $h$ use the old rule $C_S$.
+
+In any $k$-progression outside-$S$ valuations would be constant, so the rough part $h$ would be fixed throughout. Both available rules on its fiber are progression-free. Since $s\equiv1\pmod m$, all integers in this fiber are in the same class as $h$. For each fixed smooth $s$, scaling a set of rough parts by $s$ divides its density by $s$. The fibers indexed by distinct smooth parts are disjoint, and the contribution from $s>T$ is at most $\sum_{s>T,\;S\text{-smooth}}1/s\to0$ in upper density. Summing thus gives a gain of $\gamma\lambda_a\Delta=t_a$ in $[a]_m$, with the asserted pointwise agreement elsewhere.
+\end{proof}
+
+\section{Precedents and open quantitative questions}
+
+Riddell obtained higher densities than Rankin's original benchmark for $k\ge4$~\cite{riddell}. Brown and Gordon used the stronger greedy benchmark and explicitly asked about going beyond it~\cite{BG}. McNew's Conjecture 7.2 focuses on ordinary natural density at length three~\cite{mcnew}.
+
+The supplied ProveIt packet \emph{A counterexample to McNew's geometric-progression conjecture} uses a shared deletion at length three~\cite{pro}. A second packet gives the bounded-width obstruction and small-width optimality at length three~\cite{blocks}. Theorem~\ref{main} extends the exact-valuation argument to all lengths with a single proof. The key at composite length is that the consecutive initial interval $[0,k-2]$ and the missing $k-1$ suffice. The general greedy witness in Section 1 also replaces the ternary-digit charging argument in the bounded-width theorem. The class of forbidden ratios throughout both results is all positive rational ratios. The congruence refinement in Theorem~\ref{residues} uses the classical nonvanishing of Dirichlet $L$-functions at $1$. All three results hold independently of RH and Dirichlet GRH.
+
+The comparison in this note includes the sources below and targeted searches for longer-length improvements on the Brown--Gordon greedy sequence. These searches did not identify a prior all-length proof against that benchmark. Global priority remains unverified. Quantitatively, what is the smallest block size $d$ that already improves on width one at a given $k$? Can a tractable finite witness yield a visible improvement over the quoted greedy density $0.89537\ldots$ at length four? The tiny gain proved here leaves both questions open.
+
+For a finite check, run \texttt{python3 check\_progressions.py}. For each $3\le k\le9$ it enumerates every directed $k$-term progression in the three-dimensional exponent box $[0,2k+1]^3$, checks that none survives the edited rule, and verifies the truncated version of~\eqref{gain} by independent exact rational sums. These boxes test the construction at the primes $2,3,5$. Positivity for a sufficiently large prime set follows from the analytic argument.
+
+\begingroup\small\raggedright
+\begin{thebibliography}{9}
+\bibitem{BG} B. E. Brown and D. M. Gordon, \emph{On sequences without geometric progressions}, Math. Comp. 65 (1996), 1749--1754, Theorem 3 and the subsequent question.
+\href{https://doi.org/10.1090/S0025-5718-96-00765-X}{doi:10.1090/S0025-5718-96-00765-X}.
+\bibitem{riddell} J. Riddell, \emph{Sets of integers containing no $n$ terms in geometric progression}, Glasgow Math. J. 10 (1969), 137--146.
+\href{https://doi.org/10.1017/S0017089500000690}{doi:10.1017/S0017089500000690}.
+\bibitem{mcnew} N. McNew, \emph{On sets of integers which contain no three terms in geometric progression}, Math. Comp. 84 (2015), 2893--2910.
+\href{https://arxiv.org/abs/1310.2277}{arXiv:1310.2277}.
+\bibitem{dirichlet} A. V. Sutherland, \emph{Dirichlet $L$-functions, primes in arithmetic progressions}, MIT 18.785, Fall 2021, \href{https://math.mit.edu/classes/18.785/2021fa/LectureNotes18.pdf}{Lecture 18, Section 18.4}.
+\bibitem{pro} ProveIt research packet, \emph{A counterexample to McNew's geometric-progression conjecture}, \pgref{mcnew_counterexample_and_grh_transfers/rankin.tex}{exact-valuation construction at length three}, November 2026.
+\bibitem{blocks} ProveIt research packet, \emph{Prime-exponent patterns and $p$-adic branch precision}, \pgref{grh_prime_patterns_and_branch_precision/prime_blocks.tex}{bounded prime blocks at length three}, November 2026. Both repository links pin commit \texttt{2c45d198070f93209d6f0faa2d387ef0a2c4e72c}.
+\end{thebibliography}
+\endgroup
+\end{document}

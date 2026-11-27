@@ -1,0 +1,76 @@
+\documentclass[11pt,a4paper]{article}
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage{lmodern,microtype}
+\usepackage[a4paper,margin=27mm,headheight=15pt]{geometry}
+\usepackage{amsmath,amssymb,amsthm,mathtools,bm}
+\usepackage{booktabs,array,longtable,graphicx,xcolor}
+\usepackage{enumitem,fancyhdr}
+\usepackage[hyphens]{url}
+\usepackage[colorlinks=true,linkcolor=blue!45!black,citecolor=blue!45!black,urlcolor=blue!55!black]{hyperref}
+\usepackage[nameinlink,noabbrev]{cleveref}
+\definecolor{ink}{HTML}{133247}
+\definecolor{accent}{HTML}{007F86}
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{corollary}[theorem]{Corollary}
+\theoremstyle{definition}
+\newtheorem{definition}[theorem]{Definition}
+\newtheorem{example}[theorem]{Example}
+\theoremstyle{remark}
+\newtheorem{remark}[theorem]{Remark}
+\DeclareMathOperator{\rank}{rank}
+\DeclareMathOperator{\rad}{rad}
+\DeclareMathOperator{\im}{im}
+\DeclareMathOperator{\Sp}{Sp}
+\DeclareMathOperator{\GL}{GL}
+\DeclareMathOperator{\Mat}{Mat}
+\DeclareMathOperator{\TV}{TV}
+\newcommand{\F}{\mathbb F}
+\newcommand{\E}{\mathcal E}
+\newcommand{\gb}[2]{\genfrac{[}{]}{0pt}{}{#1}{#2}_q}
+\setlength{\emergencystretch}{2em}
+\setlength{\parskip}{3pt}
+\setcounter{tocdepth}{1}
+\setlist{itemsep=2pt,topsep=4pt}
+\pagestyle{fancy}
+\fancyhf{}
+\fancyhead[L]{\small\color{ink}Exact symplectic compression laws}
+\fancyhead[R]{\small Research note}
+\fancyfoot[C]{\thepage}
+\hypersetup{pdftitle={Exact symplectic compression laws},pdfauthor={Research prepared for Vladimir Reshetnikov},pdfsubject={Arbitrary frames, minimal realization dimension, and sharp finite-field asymptotics}}
+
+\begin{document}
+\begin{center}
+{\small\sffamily\color{accent}FINITE GEOMETRY \quad / \quad RANDOM MATRICES \quad / \quad GRH METHOD TRANSFER}\par
+\vspace{9mm}
+{\LARGE\bfseries\color{ink}Exact symplectic compression laws}\par
+\vspace{3mm}
+{\large Arbitrary frames, minimal dimension, and sharp asymptotics}\par
+\vspace{7mm}
+Research prepared for Vladimir Reshetnikov\par
+26 November 2026
+\end{center}
+\vspace{4mm}
+
+\begin{abstract}
+We determine the complete distribution of $Y^{\mathsf T}JgX_0$ when $g$ is uniform in a finite symplectic group and the two fixed injective frames have arbitrary prescribed alternating Gram matrices. The answer depends on three easily computed integers: half the rank of the combined Gram matrix and the dimensions of its radical inside the two coordinate blocks. An explicit positive sum counts possible relation spaces; multiplying by the classical prescribed-frame count gives the joint law of the observed matrix and the intersection dimension of the two frames. In particular, prescribed internal and cross pairings have an injective two-frame realization in smallest possible ambient dimension $2(s+\max(t_0,t_1))$.
+
+For fixed frame dimensions and fixed field, we compute the first correction to independent uniform entries. The full total variation distance is asymptotic to an explicit positive constant times $q^{-2n}$, where the ambient dimension is $2n$. An exact two-plane example shows that equal-rank matrices can have different likelihoods and identifies the optimal distinguishing event. All results include characteristic two.
+
+The finite-field compression method inside \texttt{grh-lean} motivates this work. The result extends the supplied ProveIt calculations from isotropic or Lagrangian output to two arbitrary restricted forms. Its proof is unconditional and uses classical finite symplectic geometry. The exact extension and its consequences are new relative to the inspected collection; worldwide publication priority is not established. Independent exhaustive enumeration and an executable minimum-dimension construction accompany the proof.
+\end{abstract}
+
+\vspace{2mm}
+\noindent\textbf{Main results.} The complete joint law is Theorem~\ref{thm:complete-law}; the minimum-dimension formula is Theorem~\ref{thm:minimum-dimension}; sharp fixed-size asymptotics and an exactly solved example follow in Section~\ref{sec:asymptotics}.
+\tableofcontents
+\newpage
+
+\input{sections/context.tex}
+\input{sections/complete_law.tex}
+\input{sections/asymptotics.tex}
+\input{sections/computation.tex}
+\input{sections/limitations.tex}
+\input{sections/bibliography.tex}
+\end{document}

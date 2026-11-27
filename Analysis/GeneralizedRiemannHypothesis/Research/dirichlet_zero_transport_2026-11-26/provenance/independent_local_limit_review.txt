@@ -1,0 +1,81 @@
+ADVERSARIAL MATHEMATICAL REVIEW
+File reviewed: output/dirichlet_zero_transport/sections/local_cauchy.tex
+Dependencies checked: sections/transport.tex, especially Lemma ut:radial
+and the compactness/tail proof of Theorem ut:main.
+
+Conclusion: the stated arbitrary shrinking-band theorem and the
+epsilon(T)=exp(-T) corollary are mathematically sound. No substantive
+correction is needed. The proof is self-contained relative to the cited
+radial lemma and positive-Poisson scaling argument in transport.tex.
+
+1. Analytic branch and boundary indicator
+For each T and Im z>0, Im g(z)<0. Thus
+ f_T(z) = integral_[a_T,b_T] 1/(g(z)-s) ds
+is analytic and has imaginary part strictly between 0 and pi, because
+its imaginary part is the integral of a positive Cauchy kernel over a
+finite real interval. It exponentiates to (g-a_T)/(g-b_T). At almost
+every real point its imaginary part is exactly pi times the indicator
+of a_T<g<b_T. The excluded level-set endpoints and poles are discrete.
+There is therefore an exact bounded-harmonic Poisson representation,
+with no additional singular boundary measure or linear y term.
+
+2. Arbitrarily small widths cause no error amplification
+The potentially dangerous operation is division by delta_T=b_T-a_T.
+The proof handles this correctly by keeping the integral representation:
+ (log T/delta_T) f_T(Tz)
+   = average_[a_T,b_T] 1/(g(Tz)/log T - s/log T).
+For every fixed upper-half-plane compact set, all denominators tend
+uniformly to -d-i/2, which is nonzero. The integrand error is uniform
+over the entire shrinking s-interval. Its integral is delta_T times
+that error. Consequently division by delta_T does not amplify it.
+No lower bound on delta_T, numerical resolution assumption, or rate of
+convergence is concealed here. delta_T=exp(-T), or smaller, is allowed.
+
+3. Positive Poisson transforms really imply the required local masses
+The normalized measures are positive, although their densities may be
+very large. The transform at iR bounds their masses on [-R,R], producing
+vague compactness. The kernel comparison for |x|>R bounds the tail of
+any fixed Poisson transform by O(1/R) times its transform at iR. The
+latter converges to a constant independent of R. Thus mass escaping
+to infinity cannot create an extra linear harmonic term. Every vague
+subsequential limit has the same constant Poisson transform and hence
+is the constant Lebesgue measure. Because that measure gives endpoints
+zero mass, interval masses converge. This argument is valid for an
+arbitrary T-dependent family of positive measures, not just a dilation
+of one fixed density. It therefore covers the moving value bands.
+
+Counterexample mechanisms considered and excluded:
+- Tiny intervals magnifying an absolute approximation error: excluded
+  by taking a normalized integral average before any approximation.
+- Escaping positive mass with an unseen harmonic contribution: excluded
+  by the iR tail estimate, which tends to zero as R tends to infinity.
+- Narrow resonant peaks or endpoint effects: any macroscopic limiting
+  concentration would contradict uniqueness of the constant Poisson
+  transform; interval boundaries are null for the limiting measure.
+- Arbitrary signed cancellation: unavailable, since all normalized
+  measures here are nonnegative. The positivity assumption is essential.
+
+4. Constants and normalization
+Im 1/(-d-i/2) = 2/(1+4d^2). The Poisson kernel integrates to pi,
+so the limiting spatial density is 2/[pi(1+4d^2)]. This gives
+ |{t in [uT,vT]: a_T<g(t)<b_T}|
+   ~ 2(v-u) delta_T T/[pi(1+4d^2) log T].
+For Z_T=2g(U_T)/log T, set a_T=alpha_T log T/2 and
+b_T=beta_T log T/2. Then d=c/2 and delta_T=(beta_T-alpha_T)log T/2.
+Division by (v-u)T gives exactly
+ P(alpha_T<Z_T<beta_T) ~ (beta_T-alpha_T)/[pi(1+c^2)].
+For a_T=-epsilon(T), b_T=epsilon(T), and epsilon=o(log T),
+d=0 and delta_T=2epsilon(T), giving
+ |{t in [T,2T]: |g(t)|<epsilon(T)}|
+    ~ 4epsilon(T)T/[pi log T].
+All factors of two and pi in the reviewed file are correct.
+
+5. Scope
+The statement concerns Lebesgue measure under continuous sampling,
+not counts on a discrete grid. The manuscript says this explicitly.
+It relies on the real-zero/strict half-plane sign supplied by RH/GRH
+for the specified fixed completed functions. It does not follow from
+weak Cauchy convergence alone, and the manuscript correctly distinguishes
+the local relative asymptotic from that earlier result. This review
+validates the argument; it does not independently establish worldwide
+historical priority.

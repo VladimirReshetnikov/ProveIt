@@ -1,0 +1,153 @@
+PROVEIT REPOSITORY SURVEY — 26 NOVEMBER 2026 (America/Los_Angeles)
+
+Repository: VladimirReshetnikov/ProveIt
+Pinned main commit: 041d8032541746f2ac2e686fbe437f8092771670
+Commit UTC timestamp: 2026-11-27T00:16:22Z
+Scope: Analysis/GeneralizedRiemannHypothesis
+Pinned URL:
+https://github.com/VladimirReshetnikov/ProveIt/tree/041d8032541746f2ac2e686fbe437f8092771670/Analysis/GeneralizedRiemannHypothesis
+
+1. REPOSITORY STATUS AND REVIEW SCOPE
+
+The directory README describes 61 older imported research packets, containing
+1,795 files (408 TeX, 88 PDF, 272 Lean, 1,027 other files). It explicitly says
+that importing these files is not review, rerunning, formalization, or an
+assertion that their claims have been checked. The imported Lean files are
+not included in the repository's root Lake package. The Article directory is
+an editorial merge into a 499-page article, with 558 labeled statements; its
+categories distinguish unconditional results, uses of Dirichlet GRH, and
+reductions that remain open. These are the repository's descriptions, not
+independently verified proof counts.
+
+The important additional corpus is docs/incoming: at the pin above it has
+48 ZIP packets, beyond the older 61. The graph packet's own comparison
+inspected the 61 older README files and the 39 incoming ZIPs then present.
+Our review read the current root README; the Article zero and spectral-prime
+sections; the graph and robust-spectrum packets in detail; and the README,
+main theorem descriptions, and relevant searches in the seven additional
+incoming packets newer than that graph survey. It is not a full audit of
+every proof in all 109 packets.
+
+Snapshots saved here:
+README.upstream.md, article_zer.tex, article_spn.tex, docs_tree.json, nine
+incoming ZIPs, and text-bearing extracted files under newer/.
+source_manifest.json records archive sizes, Git blob SHA-1 verification,
+SHA-256 digests, and pinned URLs. No remote files were modified.
+
+2. DIRECT PREDECESSOR: GRAPH-COUPLED ZEROS
+
+Archive path:
+docs/incoming/graph_coupled_zeros_2026-11-26.zip
+Pinned URL:
+https://github.com/VladimirReshetnikov/ProveIt/blob/041d8032541746f2ac2e686fbe437f8092771670/Analysis/GeneralizedRiemannHypothesis/docs/incoming/graph_coupled_zeros_2026-11-26.zip
+Git blob: fc5ac27fb077b2b1eb9e2ac98d31db2971edd5e9
+Local wrapper: newer/graph_coupled_zeros/
+
+sections/electrical.tex:
+- Theorem 'Exact compression and electrical transport', label thm:electrical.
+  For connected weighted graph Laplacian L and monic real-rooted p_i of
+  degrees d_i, N=sum d_i, the rooted-forest determinant
+  P_G=det(L diag(p_i)+diag(p_i')) is N tau(G) times the characteristic
+  polynomial of a rank-(N-1) Hermitian compression K_G. Its roots lie to
+  the left of those of (product_i p_i)' in ordered coupling. Their total
+  displacement is sum_{i<j} d_i d_j R_ij/N, where R is effective resistance.
+  The normalized W_1 distance is that expression divided by N-1.
+- Corollary 'Electrical barycentre law', label cor:barycentre.
+- Theorem 'Exact edge law', label thm:edge-law. Adding conductance h to
+  an edge with incidence b gives a positive rank-one update
+  K_{G+h}=K_G+h qq^*/(1+h b^*L^+b), q=QV L^+b. It gives exact total root
+  displacement and ordered rightward motion.
+- Corollary 'Small-coupling limit', label cor:small-coupling.
+
+sections/entire.tex:
+- Theorem 'Real zeros under Hermitian coupling', thm:entire-real-zeros.
+  For genus-one real entire inputs F_i with only real zeros, Hermitian A
+  preserves real zeros in P_A=det(diag(F_i)A+diag(F_i')).
+- Theorem 'Exact collision order', thm:collision-order. At an input zero,
+  it combines reduced input multiplicities with nullity of the complementary
+  principal block of A+diag(F_i'/F_i).
+- Theorem 'Exact zero-count identity', thm:entire-count. On regular
+  endpoints, N_{P_A}(a,b)=sum_i N_{F_i}(a,b)+n_+(M_A(a))-n_+(M_A(b)); hence
+  a discrepancy at most n. This is already an infinite-spectrum theorem.
+- Corollary 'Velocity of a simple zero', cor:entire-velocity.
+- Corollary 'Graph-coupled completed Dirichlet functions',
+  cor:dirichlet-graphs, applies the preceding results via Dirichlet GRH.
+
+The explicit open problem is in sections/verification.tex: finding a
+canonical regularization of all completed Dirichlet zero displacements
+that gives an infinite analogue of the resistance identity. The text also
+asks for optimal maximum displacement under a conductance budget. It does
+not assert a convergent unweighted sum over all Dirichlet zeros; sections
+electrical.tex and entire.tex explicitly warn that the finite identity
+cannot be extended to that infinite sum without a convergence argument.
+
+Consequently the new spectral-shift asymptotic should cite this packet as
+the direct predecessor, reuse its real-zero and count theorems as prior
+work, and explain precisely how the nonnegative displacement density,
+Poisson regularization, and arithmetic growth settle the first open issue.
+
+3. ALREADY-DEVELOPED NEIGHBORING TOPICS
+
+The graph packet's provenance/prior_comparison.md and the robust packet's
+evidence/source_survey.txt provide extensive comparisons across earlier
+research; these source comparisons were used to avoid reproducing their
+results. Existing directions include Li/Ritz zero recovery, moment/Hankel
+certificates, simplicity and zero enclosures, sparse logarithmic-derivative
+tests, finite phase or binomial count certificates, damaged-residue error
+correction, prime-window spectra/covariances/filtering, nonlinear mixing,
+and finite-field rank-statistic blindness. Older graph-tower packets concern
+p-adic spanning-tree valuations, not the graph-coupled-root transport law.
+
+docs/incoming/robust_dirichlet_spectra_2026-11-26.zip:
+Already extends spectral identification to all primitive complex Dirichlet
+characters, with a low uniform distinguishing height and robust matching
+allowing inserted/deleted zeros and bounded-Lipschitz perturbations. This
+is not an appropriate new direction for the current task.
+
+Seven further packets inspected:
+- dirichlet_prime_frequency_inverse.zip: recover an unknown polynomial
+  differential operator and conductor from the zeros at one prime
+  frequency, with all inverse-logarithmic coefficients and sharp finite
+  reconstruction order. It studies P(D_s)Xi with purely imaginary roots
+  of P; it does not give cumulative graph-root displacement. Its published
+  precedents include Farmer–Gonek and Malik–Roy on derivative zeros.
+- hermite_thresholds_and_quadratic_primes.zip: sharp missing-Hamming-ball
+  parity bias, near-minimizer rigidity, quadratic prime estimates.
+- large_kernels_and_dirichlet_zeros.zip: rare exceptional orthogonal
+  principal kernels, uniqueness/saturation, and optimal progression
+  observations for bounded zero multiplicities.
+- li_sampling_and_curvature.zip: universal Li detection by sampled
+  indices, torus recurrence, polynomial intersectivity and unit roots,
+  and certified arithmetic sign patterns.
+- prime_observations_and_progression_free_sets.zip: reconstruct Dedekind
+  zeros from sparse splitting-prime samples; dyadic decoding/aliasing;
+  improvements for progression-free sets.
+- ramified_branch_recovery.zip: formal-series branch error correction,
+  sharp jet precision, and contact-tree optimization.
+- squarefree_prime_products.zip: small-prime cutoff under deletions,
+  quotient reachability, short products, simultaneous moduli.
+
+Targeted searches in these extracted sources for spectral shifts,
+regularization, root displacement, rooted forests, and graph coupling did
+not locate the proposed T/log T cumulative-transport law. This is an
+absence in the inspected material, not a proof of publication priority.
+
+4. NOVELTY POSITION
+
+The meaningful candidate extension is the arithmetic theorem for positive
+Hermitian changes B of M_A=A+diag(F_i'/F_i): the bounded nonnegative integer
+function xi=n_+(M_{A+B})-n_+(M_A) is a root-displacement density with exact
+Poisson log-determinant representation and cumulative mass
+integral_{-T}^T xi(t)dt ~ 4 tr(B) T/(pi log T).
+For a strengthened graph edge of conductance h, tr(B)=2h, giving 8h/pi.
+The coefficient is independent of the background network and the chosen
+primitive Dirichlet characters. Its divergence also rules out a finite
+unweighted total displacement for nonzero B.
+
+Basic Hermitian real-zero preservation, interlacing, spectral shifts,
+log-determinant representation, and Karamata theory are established
+background. The arithmetic coefficient, all-orders Poisson expansion,
+and the stated resolution of the direct predecessor's infinite-transport
+problem are the candidate new contribution. Publication priority remains
+unverified. See novelty_literature.txt for precise primary-source contrasts,
+including the substantial scalar Cauchy-law precedents.
