@@ -173,8 +173,7 @@ theorem from_alpha_input (u v w base D P Q : PTm n)
   from_alpha u v w base D P Q (Prf.andE₁ hInput) (Prf.andE₁ (Prf.andE₂ hInput))
     (Prf.andE₁ (Prf.andE₂ (Prf.andE₂ hInput))) (Prf.andE₂ (Prf.andE₂ (Prf.andE₂ hInput))) h0 h1 h2
 
-theorem norm_congr {a b : PTm n} (h : Γ ⊢[PRAAx] a ≐ b) : Γ ⊢[PRAAx] qnormSq a ≐ qnormSq b := by
-  ipra_congr (qnormSq (var 0) : PTm 1) with [h]
+alias norm_congr := GaussianRationalProductWitness.qnormSq_congr
 
 /-- Literal output/evaluator equalities transport the actual sum bound. -/
 theorem budget_of_sum {u v w z base D : PTm n} (hSum : Γ ⊢[PRAAx] sum u v w ≐ z)

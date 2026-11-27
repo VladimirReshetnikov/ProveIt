@@ -20,7 +20,7 @@ open RationalAlgebra (multiply_congr)
 open RationalArithmetic (multiply_monotone)
 open RationalArgmin (rationalLE rationalLE_congr)
 open RationalNonnegativePowers (fraction_congr fraction_multiply)
-open RationalReciprocalPowerTail (potential)
+open RationalReciprocalPowerTail (potential potential_two)
 open RationalSumLinearity (scaledBody scaled_term sum_homogeneous)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
@@ -46,10 +46,6 @@ theorem term_at (N i : PTm n) : Γ ⊢[PRAAx] inst2 body i (data N) ≐
   exact scale.eqTrans ((multiply_congr (.eqRefl _) row).eqTrans
     ((fraction_multiply one eight one (k*k) eight_positive (positive_product _ _ hk hk)).eqTrans
       (fraction_congr (one_mul _) (.eqRefl _))))
-
-private theorem potential_two (N : PTm n) : Γ ⊢[PRAAx] potential two N ≐ fraction one N :=
-  fraction_congr (.eqRefl _) ((congrMul (pred_succ one) (congrAp2 powF (pred_succ one) (.eqRefl N))).eqTrans
-    ((one_mul _).eqTrans (pw_one N)))
 
 theorem bound (N r : PTm n) (hN : Γ ⊢[PRAAx] le one N) :
     Γ ⊢[PRAAx] rationalLE (sum N r) (fraction one (eight*N)) := by

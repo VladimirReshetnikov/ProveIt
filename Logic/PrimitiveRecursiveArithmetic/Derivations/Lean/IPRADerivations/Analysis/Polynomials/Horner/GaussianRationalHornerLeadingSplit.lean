@@ -23,6 +23,7 @@ open GaussianRationalSyntheticCoefficientValues (qadd_recode_right qmul_recode_l
 open GaussianRationalSyntheticDivision (first_prefix qadd_congr qmul_congr)
 open GaussianReciprocalHorner (qadd_zero_right qmul_associative qmul_one_right)
 open GaussianTranslatedNonconstant (recode recode_canonical)
+open GaussianRationalPolynomialBuffers renaming distribute_right → multiply_added
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
@@ -45,11 +46,6 @@ theorem lower_at (C j i : PTm n) (hi : Γ ⊢[PRAAx] lt i j) :
     Γ ⊢[PRAAx] entry (lowerCoefficients C j) i ≐ recode (entry C (succ i)) :=
   (tail_lookup _ _ _ _ hi).eqTrans (GaussianTranslatedNonconstant.recode_congr
     (entry_congr (.eqRefl _) (by ipra_ring)))
-
-private theorem multiply_added (a b w : PTm n) :
-    Γ ⊢[PRAAx] qmul (qadd a b) w ≐ qadd (qmul a w) (qmul b w) :=
-  (qmul_commutative _ _).eqTrans ((GaussianRationalCoefficientScaling.qmul_add _ _ _).eqTrans
-    (qadd_congr (qmul_commutative _ _) (qmul_commutative _ _)))
 
 private theorem leading_succ (C w j : PTm n) :
     Γ ⊢[PRAAx] qmul (leadingTerm C w j) w ≐ leadingTerm C w (succ j) :=

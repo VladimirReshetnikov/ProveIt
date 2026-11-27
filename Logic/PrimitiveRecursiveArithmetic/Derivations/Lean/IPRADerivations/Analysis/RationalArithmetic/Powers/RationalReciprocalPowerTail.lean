@@ -276,4 +276,8 @@ theorem actual_returned_C17_finite_bounds_closed : ([] : List (Fm PTm 0)) ⊢[PR
   closeUniv 3 (.impI (.impI (.andI (returned_nonnegative _ _ _ Prf.hyp1 Prf.hyp0)
     (returned_bound _ _ _ Prf.hyp1 Prf.hyp0))))
 
+theorem potential_two (N : PTm n) : Γ ⊢[PRAAx] potential two N ≐ fraction one N :=
+  fraction_congr (.eqRefl _) ((congrMul (pred_succ one) (congrAp2 powF (pred_succ one) (.eqRefl N))).eqTrans
+    ((one_mul _).eqTrans (pw_one N)))
+
 end LeanProofs.IPRA.Analysis.RationalReciprocalPowerTail
