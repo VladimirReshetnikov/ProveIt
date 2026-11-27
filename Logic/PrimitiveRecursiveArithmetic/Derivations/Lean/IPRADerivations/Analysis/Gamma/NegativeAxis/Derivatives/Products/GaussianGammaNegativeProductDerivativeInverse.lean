@@ -20,7 +20,7 @@ open GaussianRationalHorner (canonical canonical_unique positive_product qmul re
 open GaussianRationalL1 (rawGaussian rawDen raw_den_positive raw_represents)
 open GaussianRationalMetric (bounded distanceBounded qnegative qnegative_canonical qnegative_represents qsub qsub_canonical qsub_represents)
 open GaussianRationalPowerAlgebra (qmul_commutative)
-open GaussianRationalReciprocal (bound_congr bounded_negative bounded_product)
+open GaussianRationalReciprocal (bound_congr bounded_negative bounded_product bounded_product_one)
 open GaussianRationalSyntheticDivision (qmul_congr qsub_congr qone rescale_to reverse_difference)
 open GaussianReciprocalHorner (qmul_associative qmul_one_right)
 
@@ -66,8 +66,7 @@ theorem inverse_gap_bound (p1 p0 c1 c0 H A D : PTm n)
     (hD : Γ ⊢[PRAAx] le one D) (hd : Γ ⊢[PRAAx] distanceBounded p1 p0 A D) :
     Γ ⊢[PRAAx] distanceBounded c1 c0 (H*H*A) D := by
   have hProduct : Γ ⊢[PRAAx] bounded (qmul c1 c0) (H*H) one :=
-    bound_congr (.eqRefl _) (.eqRefl _) (by ipra_ring)
-      (bounded_product c1 c0 H one H one (le_refl _) (le_refl _) hb1 hb0)
+    bounded_product_one hb1 hb0
   exact bound_congr (inverse_gap p1 p0 c1 c0 hc1 hc0 hi1 hi0).eqSymm (.eqRefl _) (by ipra_ring)
     (bounded_product (qmul c1 c0) (qnegative (qsub p1 p0)) (H*H) one A D
       (le_refl _) hD hProduct (bounded_negative _ _ _ hD hd))
@@ -85,8 +84,7 @@ theorem inverse_coefficient_rate (c1 c0 pDelta pPrime H V A B D : PTm n)
   let k0 := qmul c0 c0
   let v := qnegative pPrime
   have hk : Γ ⊢[PRAAx] bounded k (H*H) one :=
-    bound_congr (.eqRefl _) (.eqRefl _) (by ipra_ring)
-      (bounded_product c1 c0 H one H one (le_refl _) (le_refl _) hb1 hb0)
+    bounded_product_one hb1 hb0
   have hv := bounded_negative pPrime V one (le_refl _) hp
   have scale := GaussianNamedDifferenceQuotient.scale_distance k _ _ (H*H) A D hD hk
     (GaussianNamedDifference.negative_distance _ _ _ _ hD hd)
