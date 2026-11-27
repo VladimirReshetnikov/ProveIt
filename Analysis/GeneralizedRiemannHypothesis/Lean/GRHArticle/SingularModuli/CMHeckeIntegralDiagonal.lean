@@ -99,10 +99,20 @@ private theorem value_clearedSeriesPolynomialEvaluation (P : Polynomial ℂ)
     · rw [Finset.sum_range_succ, mul_pow, pow_succ']
       ring
 
+/-- The prime diagonal cleared in the coordinate `q^(1/p)`, with its sign
+normalized to have constant coefficient one. -/
+noncomputable def primeHeckeDiagonalSeries (p : ℕ+) : ℂ⟦X⟧ :=
+  let m : ℕ := p
+  let A := expand m p.pos.ne' (castSeries JSeries)
+  let B := expand (m*m) (mul_ne_zero p.pos.ne' p.pos.ne') (castSeries JSeries)
+  (B - X ^ (m*m-m) * A) *
+    ∏ t : ZMod m, (A - C (ZMod.stdAddChar (-t)) * X ^ (m-1) *
+      rescale (ZMod.stdAddChar t) (castSeries JSeries))
+
 private theorem integralHeckeDiagonal_representation (p : ℕ+) [hp : Fact (Nat.Prime (p : ℕ))]
     (P : Polynomial ℂ) (hmonic : P.Monic) (hdeg : P.natDegree = 2 * (p : ℕ))
     (hP : ∀ z : ℍ, P.eval (j z) = -analyticPrimeHeckeDiagonal p z) :
-    ∃ F : ℤ⟦X⟧, castSeries F =
+    ∃ F : ℤ⟦X⟧, castSeries F = primeHeckeDiagonalSeries p ∧ castSeries F =
       clearedSeriesPolynomialEvaluation P (p : ℕ)
         (castSeries (expand (p : ℕ) p.pos.ne' JSeries)) (2 * (p : ℕ)) := by
   let m : ℕ := p
@@ -112,7 +122,10 @@ private theorem integralHeckeDiagonal_representation (p : ℕ+) [hp : Fact (Nat.
   let B : ℤ⟦X⟧ := expand (m * m) (mul_ne_zero hm₀ hm₀) JSeries
   obtain ⟨F, hF⟩ := exists_integral_primeRootProduct m A JSeries (m - 1)
   let G : ℤ⟦X⟧ := (B - X ^ (m * m - m) * A) * F
-  refine ⟨G, ?_⟩
+  have hG : castSeries G = primeHeckeDiagonalSeries p := by
+    simp only [G, map_mul, map_sub, map_pow, map_X, hF, A, B, map_expand,
+      primeHeckeDiagonalSeries, m]
+  refine ⟨G,hG, ?_⟩
   obtain ⟨r, hr, hr₁, hJ⟩ := exists_value_integralNormalizedJExpansion
   apply eq_of_powerSeriesValues hr
   intro u hu
@@ -224,13 +237,25 @@ private theorem integralHeckeDiagonal_representation (p : ℕ+) [hp : Fact (Nat.
     rw [two_mul, pow_add]
     ring
 
+/-- A polynomial that represents the negative prime diagonal gives the
+explicit formal series upon clearing the poles at the cusp. -/
+theorem primeHeckeDiagonalSeries_eq_clearedSeriesPolynomialEvaluation (p : ℕ+)
+    [Fact (Nat.Prime (p : ℕ))] (P : Polynomial ℂ) (hmonic : P.Monic)
+    (hdeg : P.natDegree = 2 * (p : ℕ))
+    (hP : ∀ z : ℍ, P.eval (j z) = -analyticPrimeHeckeDiagonal p z) :
+    primeHeckeDiagonalSeries p =
+      clearedSeriesPolynomialEvaluation P (p : ℕ)
+        (expand (p : ℕ) p.pos.ne' (castSeries JSeries)) (2 * (p : ℕ)) := by
+  obtain ⟨F, hs, hF⟩ := integralHeckeDiagonal_representation p P hmonic hdeg hP
+  rw [← hs, hF, map_expand]
+
 /-- The prime Hecke diagonal, with its sign normalized to be monic, is a
 polynomial over the integers of degree exactly `2*p`. -/
 theorem exists_int_monic_analyticPrimeHeckeDiagonal (p : ℕ+) [Fact (Nat.Prime (p : ℕ))] :
     ∃ P : Polynomial ℤ, P.Monic ∧ P.natDegree = 2 * (p : ℕ) ∧
       ∀ z : ℍ, Polynomial.aeval (j z) P = -analyticPrimeHeckeDiagonal p z := by
   obtain ⟨P, hmonic, hdeg, hP⟩ := exists_monic_poly_analyticPrimeHeckeDiagonal p
-  obtain ⟨F, hF⟩ := integralHeckeDiagonal_representation p P hmonic hdeg hP
+  obtain ⟨F, _, hF⟩ := integralHeckeDiagonal_representation p P hmonic hdeg hP
   obtain ⟨Q, hQ⟩ := exists_intPolynomial_of_clearedSeriesPolynomialEvaluation P p.pos.ne'
     (expand (p : ℕ) p.pos.ne' JSeries) (by simp [constantCoeff_integralNormalizedJExpansion])
     (2 * (p : ℕ)) hdeg.le F hF
