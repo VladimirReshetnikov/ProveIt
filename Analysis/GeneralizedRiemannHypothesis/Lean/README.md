@@ -40,6 +40,8 @@ Each entry below identifies the part of the article covered by the Lean statemen
 
 [QuarticAnalyticNumeric.lean](GRHArticle/SingularModuli/QuarticAnalyticNumeric.lean) certifies the denominators at all eight forms. [QuarticAnalyticEnclosure.lean](GRHArticle/SingularModuli/QuarticAnalyticEnclosure.lean) then encloses all ten coefficients of the two analytic quartics and gives the integer rounding criterion for their identification with the printed polynomials.
 
+[ClassPolynomialRealDescent.lean](GRHArticle/SingularModuli/ClassPolynomialRealDescent.lean) proves that every analytic class polynomial has real coefficients, by pairing reduced forms under complex conjugation. [CMHeckeDiagonal.lean](GRHArticle/SingularModuli/CMHeckeDiagonal.lean) proves that the four singular moduli in each quartic example are roots of their analytic Hecke orbit polynomials, at levels 59 and 17 respectively.
+
 The five-term classification still needs the CM reduction, bounds on the conjugates
 to place them in the disks, and finite certificates from the
 [singular-moduli section](../Article/sections/smd.tex).

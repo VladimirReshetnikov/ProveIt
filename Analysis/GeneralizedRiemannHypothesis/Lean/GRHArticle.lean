@@ -96,9 +96,11 @@ import GRHArticle.ProgressionFree.RankinTruncation
 import GRHArticle.ProgressionFree.SatelliteProfiles
 import GRHArticle.SingularModuli.BaseChange
 import GRHArticle.SingularModuli.Binomial
+import GRHArticle.SingularModuli.CMHeckeDiagonal
 import GRHArticle.SingularModuli.CMPoints
 import GRHArticle.SingularModuli.ClassPolynomialConstants
 import GRHArticle.SingularModuli.ClassPolynomialQEnclosure
+import GRHArticle.SingularModuli.ClassPolynomialRealDescent
 import GRHArticle.SingularModuli.ClassPolynomialRootEnclosure
 import GRHArticle.SingularModuli.ClassPolynomialTruncation
 import GRHArticle.SingularModuli.ConductorBound
