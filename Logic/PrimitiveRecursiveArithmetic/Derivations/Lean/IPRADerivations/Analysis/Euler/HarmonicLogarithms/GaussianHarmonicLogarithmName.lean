@@ -22,7 +22,8 @@ open_ipra
 open GaussianPositiveRationalLogarithm (source logF name_regular)
 open GaussianCoefficientNameBounds (unit unit_positive)
 open GaussianRationalMetric (distanceBounded)
-open GaussianRationalDistanceOrder (distance_congr distance_radius_mono distance_triangle_same distance_symmetric)
+open GaussianRationalDistanceOrder
+  (distance_congr distance_radius_mono distance_triangle_same distance_symmetric distance_through_product_denominator)
 open GaussianRationalHorner (positive_product qzero)
 open GaussianEuclideanDistanceName (pointCN)
 open GaussianNameEquivalence (crossEquivalent)
@@ -88,24 +89,19 @@ theorem cross_original (a b : PTm n) (hs : Γ ⊢[PRAAx] source a b) : Γ ⊢[PR
 
 theorem regular_observations (p q a b : PTm n) (hs : Γ ⊢[PRAAx] source a b) : Γ ⊢[PRAAx]
     distanceBounded (sample p a b) (sample q a b) (unit p+unit q) (unit p*unit q) := by
-  let U := unit (clock p)
-  let V := unit (clock q)
-  have positive := positive_product (Γ := Γ) _ _ (unit_positive (clock p)) (unit_positive (clock q))
-  have left := distance_radius_mono _ _ _ _ (num 8*V) (U*V) (unit_positive (clock p)) positive
-    (le_of_eq_add (d := zero) (by dsimp [U,V]; ipra_ring))
-    (distance_symmetric _ _ _ _ (unit_positive (clock p)) (original_sample_error p a b hs))
-  have right := distance_radius_mono _ _ _ _ (num 8*U) (U*V) (unit_positive (clock q)) positive
-    (le_of_eq_add (d := zero) (by dsimp [U,V]; ipra_ring)) (original_sample_error q a b hs)
+  have hp := unit_positive (Γ := Γ) (clock p)
+  have hq := unit_positive (Γ := Γ) (clock q)
+  have positive := positive_product _ _ hp hq
   have middle := GaussianNameEquivalence.point_at logF (GaussianPositiveRationalLogarithm.data a b)
     (clock p) (clock q) (name_regular a b hs)
-  have joined := distance_triangle_same _ _ _ _ _ _ positive (distance_triangle_same _ _ _ _ _ _ positive left middle) right
+  have joined := distance_through_product_denominator hp hq
+    (distance_symmetric _ _ _ _ hp (original_sample_error p a b hs)) middle (original_sample_error q a b hs)
   apply distance_radius_mono _ _ _ _ _ _ positive (positive_product _ _ (unit_positive p) (unit_positive q)) _ joined
   have ep := natEq (clock_unit (Γ := Γ) p)
   have eq := natEq (clock_unit (Γ := Γ) q)
   refine le_of_eq_add (d := scale*unit p*unit q*(unit p+unit q)*PTm.monus scale (num 9)) ?_
   have es := natEq (eq_add_of_le (scale_nine (Γ := Γ)))
   apply deriveNat
-  dsimp only [U,V]
   ipra_simps
   rw [ep,eq]
   rw [es]

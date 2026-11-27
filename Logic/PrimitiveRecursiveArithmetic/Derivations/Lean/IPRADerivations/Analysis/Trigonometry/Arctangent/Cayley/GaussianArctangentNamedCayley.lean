@@ -25,7 +25,8 @@ open GaussianEuclideanDistanceName (pointCN)
 open GaussianGammaCanonicalExponent (constant_at)
 open GaussianNameEquivalence (crossEquivalent cross_to_diagonal diagonal_at point_at)
 open GaussianNamedDiagonalRate (diagonalRate cross_of_diagonal_rate)
-open GaussianRationalDistanceOrder (distance_congr distance_radius_mono distance_symmetric distance_triangle_same)
+open GaussianRationalDistanceOrder
+  (distance_congr distance_radius_mono distance_symmetric distance_triangle_same distance_through_product_denominator)
 open GaussianRationalHorner (canonical ofGaussian_canonical positive_product)
 open GaussianRationalMetric (bounded distanceBounded)
 open GaussianRationalPolynomialExponential (scalarSum)
@@ -105,20 +106,12 @@ theorem raw_distance (f : PR 2) (p x : PTm n) :
 private theorem raw_regularity_at (f : PR 2) (p q x : PTm n) (hf : Γ ⊢[PRAAx] pointCN f x) :
     Γ ⊢[PRAAx] distanceBounded (ap2 (rawF f) p x) (ap2 (rawF f) q x)
       (modulus*(unit p+unit q)) (unit p*unit q) := by
-  let P := unit p
-  let Q := unit q
   have hp := unit_positive (Γ := Γ) p
-  have hq := unit_positive (Γ := Γ) q
-  have hPQ := positive_product P Q hp hq
-  have first := distance_radius_mono _ _ (num 3) P (num 3*Q) (P*Q) hp hPQ
-    (le_of_eq_add (d := zero) (by ipra_ring))
-    (distance_symmetric _ _ _ _ hp (raw_distance f p x))
   have middle := point_at _ _ p q (exp_regular f x hf)
-  have last := distance_radius_mono _ _ (num 3) Q (num 3*P) (P*Q) hq hPQ
-    (le_of_eq_add (d := zero) (by ipra_ring)) (raw_distance f q x)
   exact distance_congr (raw_at f p x).eqSymm (raw_at f q x).eqSymm
-    (by dsimp only [P,Q]; unfold modulus; ipra_ring) (.eqRefl _)
-    (distance_triangle_same _ _ _ _ _ _ hPQ (distance_triangle_same _ _ _ _ _ _ hPQ first middle) last)
+    (by unfold modulus; ipra_ring) (.eqRefl _)
+    (distance_through_product_denominator hp (unit_positive q)
+      (distance_symmetric _ _ _ _ hp (raw_distance f p x)) middle (raw_distance f q x))
 
 theorem raw_regularity (f : PR 2) (x : PTm n) (hf : Γ ⊢[PRAAx] pointCN f x) :
     Γ ⊢[PRAAx] GaussianFastValueCut.regular (rawF f) modulus x := by

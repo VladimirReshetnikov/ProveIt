@@ -163,6 +163,21 @@ theorem distance_triangle_scaled_left {x y z A B C D : PTm n}
   exact distance_triangle_same _ _ _ _ _ _ den
     (distance_radius_mono _ _ _ _ _ _ hB den (le_of_eq_add (d := zero) (by ipra_ring)) left) right
 
+/-- Join three distance bounds when the middle denominator is the product of the two outer denominators. -/
+theorem distance_through_product_denominator {x u v y A B L M N : PTm n}
+    (hA : Γ ⊢[PRAAx] le one A) (hB : Γ ⊢[PRAAx] le one B)
+    (left : Γ ⊢[PRAAx] distanceBounded x u L A)
+    (middle : Γ ⊢[PRAAx] distanceBounded u v M (A*B))
+    (right : Γ ⊢[PRAAx] distanceBounded v y N B) :
+    Γ ⊢[PRAAx] distanceBounded x y (L*B+M+N*A) (A*B) := by
+  have den := positive_product _ _ hA hB
+  have first := distance_radius_mono _ _ _ _ (L*B) (A*B) hA den
+    (le_of_eq_add (d := zero) (by ipra_ring)) left
+  have last := distance_radius_mono _ _ _ _ (N*A) (A*B) hB den
+    (le_of_eq_add (d := zero) (by ipra_ring)) right
+  exact distance_triangle_same _ _ _ _ _ _ den
+    (distance_triangle_same _ _ _ _ _ _ den first middle) last
+
 /-- Compare two observations through approximating model values at a common observation denominator. -/
 theorem distance_from_model_comparison {x y u v : PTm n} (A D U L M : PTm n)
     (hD : Γ ⊢[PRAAx] le one D) (hU : Γ ⊢[PRAAx] le one U)

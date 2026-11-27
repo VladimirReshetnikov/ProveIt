@@ -22,7 +22,8 @@ open GaussianRationalHorner (qzero qmul canonical canonical_unique represents_co
   ofGaussian_represents positive_product)
 open GaussianRationalMetric (qsub qnegative qnegative_canonical qnegative_represents bounded distanceBounded)
 open GaussianRationalReciprocal (bound_congr bounded_product bounded_negative)
-open GaussianRationalDistanceOrder (distance_congr distance_symmetric distance_radius_mono distance_triangle_same)
+open GaussianRationalDistanceOrder
+  (distance_congr distance_symmetric distance_triangle_same distance_through_product_denominator)
 open GaussianRationalSyntheticDivision (qzero_add)
 open GaussianRadiusExponentialName (input data nameF name_regular index inputPrecision sample bounded_samples_at)
 open GaussianGammaCanonicalExponent (constantF constant_at constant_regular)
@@ -168,24 +169,14 @@ theorem raw_at (f : PR 2) (R x p : PTm n) :
 private theorem raw_regular_at (f : PR 2) (R x p q : PTm n) (hf : Γ ⊢[PRAAx] input f R x) :
     Γ ⊢[PRAAx] distanceBounded (ap2 (rawF f) p (rawData R x)) (ap2 (rawF f) q (rawData R x))
       ((budget f R x+one)*(unit p+unit q)) (unit p*unit q) := by
-  let P := unit p
-  let Q := unit q
-  let B := budget f R x
   let g := imaginaryF f
   let d := sineData g R x
   have hP := unit_positive (Γ := Γ) p
-  have hQ := unit_positive (Γ := Γ) q
-  have den := positive_product _ _ hP hQ
-  have left := distance_radius_mono _ _ B P (B*Q) (P*Q) hP den
-    (le_of_eq_add (d := ConciseIPRA.PTm.zero) (by ipra_ring))
-    (distance_symmetric _ _ _ _ hP (finite_taylor_error f R x p hf))
-  have right := distance_radius_mono _ _ B Q (B*P) (P*Q) hQ den
-    (le_of_eq_add (d := ConciseIPRA.PTm.zero) (by ipra_ring)) (finite_taylor_error f R x q hf)
   have mid := point_at (sineF g) d p q (sine_regular g R x (imaginary_input f R x hf))
-  have result := distance_triangle_same _ _ _ _ _ _ den
-    (distance_triangle_same _ _ _ _ _ _ den left mid) right
-  exact distance_congr (raw_at f R x p).eqSymm (raw_at f R x q).eqSymm
-    (by dsimp only [B,P,Q]; ipra_ring) (.eqRefl _) result
+  have result := distance_through_product_denominator hP (unit_positive q)
+    (distance_symmetric _ _ _ _ hP (finite_taylor_error f R x p hf)) mid
+    (finite_taylor_error f R x q hf)
+  exact distance_congr (raw_at f R x p).eqSymm (raw_at f R x q).eqSymm (by ipra_ring) (.eqRefl _) result
 
 theorem raw_regular (f : PR 2) (R x : PTm n) (hf : Γ ⊢[PRAAx] input f R x) :
     Γ ⊢[PRAAx] GaussianFastValueCut.regular (rawF f) (budget f R x+one) (rawData R x) := by

@@ -24,7 +24,8 @@ open GaussianStirlingGlobalBounds (steps translatedPoint endpoint_close remainde
 open GaussianStirlingGlobalBoundsTranslatedRate (translated_rate)
 open GaussianStirlingGammaFractionalIncrement (increment_rate)
 open GaussianRationalMetric (distanceBounded)
-open GaussianRationalDistanceOrder (distance_congr distance_radius_mono distance_symmetric distance_triangle_same)
+open GaussianRationalDistanceOrder
+  (distance_congr distance_radius_mono distance_symmetric distance_triangle_same distance_through_product_denominator)
 open GaussianRationalHorner (positive_product)
 open GaussianNameEquivalence (crossEquivalent cross_at point_at)
 open GaussianEuclideanDistanceName (pointCN)
@@ -80,18 +81,12 @@ theorem cutoff_error (p A B x : PTm n) (h : Γ ⊢[PRAAx] source A B) :
 
 private theorem raw_observations (p q A B x : PTm n) (h : Γ ⊢[PRAAx] source A B) :
     Γ ⊢[PRAAx] distanceBounded (raw p A B) (raw q A B) (num 47*(unit p+unit q)) (unit p*unit q) := by
-  let u := unit p
-  let v := unit q
-  let d := u*v
-  have hu := unit_positive (Γ := Γ) p
-  have hv := unit_positive (Γ := Γ) q
-  have hd := positive_product _ _ hu hv
-  have a := distance_radius_mono _ _ _ _ (num 46*v) d hu hd (by unfold d; ipra_le 0) (cutoff_error p A B x h)
-  have b := point_at remainderF (remainderData A B x) p q (remainder_regular A B x h)
-  have c := distance_radius_mono _ _ _ _ (num 46*u) d hv hd (by unfold d; ipra_le 0)
-    (distance_symmetric _ _ _ _ hv (cutoff_error q A B x h))
-  exact distance_congr (.eqRefl _) (.eqRefl _) (by unfold u v; ipra_ring) (.eqRefl _)
-    (distance_triangle_same _ _ _ _ _ _ hd (distance_triangle_same _ _ _ _ _ _ hd a b) c)
+  have hp := unit_positive (Γ := Γ) p
+  have mid := point_at remainderF (remainderData A B x) p q (remainder_regular A B x h)
+  exact distance_congr (.eqRefl _) (.eqRefl _) (by ipra_ring) (.eqRefl _)
+    (distance_through_product_denominator hp (unit_positive q)
+      (cutoff_error p A B x h) mid
+      (distance_symmetric _ _ _ _ (unit_positive q) (cutoff_error q A B x h)))
 
 theorem raw_regular (A B x : PTm n) (h : Γ ⊢[PRAAx] source A B) :
     Γ ⊢[PRAAx] GaussianFastValueCut.regular rawF (num 47) (rawData A B) := by

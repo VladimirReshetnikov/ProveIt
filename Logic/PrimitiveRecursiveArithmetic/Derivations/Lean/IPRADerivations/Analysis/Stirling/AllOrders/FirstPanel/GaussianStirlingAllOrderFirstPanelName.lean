@@ -22,7 +22,8 @@ open GaussianEuclideanDistanceName (pointCN)
 open GaussianNameEquivalence (crossEquivalent point_at)
 open GaussianRationalHorner (positive_product)
 open GaussianRationalMetric (distanceBounded)
-open GaussianRationalDistanceOrder (distance_congr distance_symmetric distance_radius_mono distance_triangle_same)
+open GaussianRationalDistanceOrder
+  (distance_congr distance_symmetric distance_radius_mono distance_triangle_same distance_through_product_denominator)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 local notation "𝔞" t:max => Groth.ι (IPRA.Q.mk Γ t)
@@ -100,17 +101,15 @@ theorem point_regular (A B k p q : PTm n) (hA : Γ ⊢[PRAAx] le one A) (hB : Γ
   have hD := positive_product _ _ (unit_positive (Γ := Γ) t) (unit_positive v)
   have hP := positive_product _ _ (unit_positive (Γ := Γ) p) (unit_positive q)
   have hU := le_trans hA (le_add_right A (B*k))
-  have first := distance_radius_mono _ _ _ _ (N*unit v) D (unit_positive t) hD (by unfold D; ipra_le 0)
-    (observation_distance A B k t hA hB)
   have mid := point_at dF x t v (GaussianStirlingDifference.name_regular U B hU hB)
-  have lastRaw := distance_symmetric _ _ _ _ (unit_positive v) (observation_distance A B k v hA hB)
-  have last := distance_radius_mono _ _ _ _ (N*unit t) D (unit_positive v) hD (by unfold D; ipra_le 0) lastRaw
+  have joined := distance_through_product_denominator (unit_positive t) (unit_positive v)
+    (observation_distance A B k t hA hB) mid
+    (distance_symmetric _ _ _ _ (unit_positive v) (observation_distance A B k v hA hB))
   have ht : Γ ⊢[PRAAx] le (succ N*unit p) (unit t) := query_budget (succ N) p
   have hv : Γ ⊢[PRAAx] le (succ N*unit q) (unit v) := query_budget (succ N) q
   have cost : Γ ⊢[PRAAx] le (((N*unit v+(unit t+unit v))+N*unit t)*(unit p*unit q)) ((unit p+unit q)*D) := by
     unfold D
     ipra_le 𝔞(unit v)*𝔞(unit q)*sl ht+𝔞(unit t)*𝔞(unit p)*sl hv
-  have joined := distance_triangle_same _ _ _ _ _ _ hD (distance_triangle_same _ _ _ _ _ _ hD first mid) last
   exact distance_congr (name_at A B k p).eqSymm (name_at A B k q).eqSymm (.eqRefl _) (.eqRefl _)
     (distance_radius_mono _ _ _ _ _ _ hD hP cost joined)
 

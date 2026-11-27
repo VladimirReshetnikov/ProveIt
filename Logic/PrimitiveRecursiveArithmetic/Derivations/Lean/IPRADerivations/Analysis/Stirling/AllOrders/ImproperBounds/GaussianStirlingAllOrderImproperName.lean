@@ -19,8 +19,8 @@ open GaussianCoefficientNameBounds (unit unit_positive)
 open GaussianStirlingNames (source)
 open GaussianStirlingAllOrderPanelPartsBinding (requiredMesh prefixAt radius actual_prefix_distance)
 open GaussianRationalMetric (distanceBounded)
-open GaussianRationalDistanceOrder (distance_congr distance_radius_mono distance_symmetric distance_triangle_same)
-open GaussianRationalHorner (positive_product)
+open GaussianRationalDistanceOrder
+  (distance_congr distance_symmetric distance_triangle_same distance_through_product_denominator)
 open GaussianFastValueCut (regular)
 open GaussianEuclideanDistanceName (pointCN)
 open GaussianNameEquivalence (crossEquivalent point_at)
@@ -60,19 +60,12 @@ theorem raw_distance (m : ℕ) (p A B x : PTm n) (hs : Γ ⊢[PRAAx] source A B)
 
 theorem raw_observations (m : ℕ) (p q A B x : PTm n) (hs : Γ ⊢[PRAAx] source A B) :
     Γ ⊢[PRAAx] distanceBounded (raw m p A B) (raw m q A B) (rate m B*(unit p+unit q)) (unit p*unit q) := by
-  let u := unit p
-  let v := unit q
-  let d := u*v
-  let r := radius m B
-  have hu := unit_positive (Γ := Γ) p
-  have hv := unit_positive (Γ := Γ) q
-  have hd := positive_product _ _ hu hv
-  have a := distance_radius_mono _ _ _ _ (r*v) d hu hd (by unfold d; ipra_le 0) (raw_distance m p A B x hs)
-  have b := point_at (T m) (TData m A B x) p q (GaussianStirlingAllOrderPanelPartsNames.name_regular m A B x hs)
-  have c := distance_radius_mono _ _ _ _ (r*u) d hv hd (by unfold d; ipra_le 0)
-    (distance_symmetric _ _ _ _ hv (raw_distance m q A B x hs))
-  exact distance_congr (.eqRefl _) (.eqRefl _) (by unfold u v r rate; ipra_ring) (.eqRefl _)
-    (distance_triangle_same _ _ _ _ _ _ hd (distance_triangle_same _ _ _ _ _ _ hd a b) c)
+  have hp := unit_positive (Γ := Γ) p
+  have mid := point_at (T m) (TData m A B x) p q (GaussianStirlingAllOrderPanelPartsNames.name_regular m A B x hs)
+  exact distance_congr (.eqRefl _) (.eqRefl _) (by unfold rate; ipra_ring) (.eqRefl _)
+    (distance_through_product_denominator hp (unit_positive q)
+      (raw_distance m p A B x hs) mid
+      (distance_symmetric _ _ _ _ (unit_positive q) (raw_distance m q A B x hs)))
 
 theorem raw_regular (m : ℕ) (A B x : PTm n) (hs : Γ ⊢[PRAAx] source A B) :
     Γ ⊢[PRAAx] regular (rawF m) (rate m B) (rawData A B) := by

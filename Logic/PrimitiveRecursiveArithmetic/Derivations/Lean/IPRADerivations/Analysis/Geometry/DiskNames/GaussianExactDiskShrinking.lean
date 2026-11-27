@@ -23,7 +23,8 @@ open GaussianRationalMetric (bounded distanceBounded)
 open GaussianCoefficientNameBounds (unit unit_positive)
 open GaussianRootAlgebra (equal_of_values re_sub im_sub re_scale im_scale re_mul im_mul re_one im_one)
 open ComplexLogarithmRemainder (scale oneCode normSq)
-open GaussianRationalDistanceOrder (distance_congr distance_radius_mono distance_triangle_same distance_symmetric)
+open GaussianRationalDistanceOrder
+  (distance_congr distance_radius_mono distance_triangle_same distance_symmetric distance_through_product_denominator)
 open GaussianEuclideanDistanceName (pointCN)
 open GaussianNameEquivalence (crossEquivalent)
 open GaussianFastValueCut (rawEnvelope raw_envelope_at)
@@ -128,15 +129,10 @@ theorem raw_regularity (f : PR 2) (s t x A B C : PTm n) (hB : Γ ⊢[PRAAx] le o
     (hc : Γ ⊢[PRAAx] pointCN f x) (he : Γ ⊢[PRAAx] rawEnvelope f x A B C) : Γ ⊢[PRAAx]
     distanceBounded (rawValue f s x A B C) (rawValue f t x A B C)
       ((C+two)*(unit s+unit t)) (unit s*unit t) := by
-  have hp := positive_product (Γ := Γ) _ _ (unit_positive s) (unit_positive t)
-  have left := distance_radius_mono _ _ _ _ ((C+one)*unit t) (unit s*unit t) (unit_positive s) hp
-    (le_of_eq_add (d := zero) (by ipra_ring)) (raw_distance f s x A B C hB he)
-  have right := distance_radius_mono _ _ _ _ ((C+one)*unit s) (unit s*unit t) (unit_positive t) hp
-    (le_of_eq_add (d := zero) (by ipra_ring))
-    (distance_symmetric _ _ _ _ (unit_positive t) (raw_distance f t x A B C hB he))
   exact distance_congr (.eqRefl _) (.eqRefl _) (by ipra_ring) (.eqRefl _)
-    (distance_triangle_same _ _ _ _ _ _ hp
-      (distance_triangle_same _ _ _ _ _ _ hp left (GaussianNameEquivalence.point_at f x s t hc)) right)
+    (distance_through_product_denominator (unit_positive s) (unit_positive t)
+      (raw_distance f s x A B C hB he) (GaussianNameEquivalence.point_at f x s t hc)
+      (distance_symmetric _ _ _ _ (unit_positive t) (raw_distance f t x A B C hB he)))
 
 theorem value_bound (f : PR 2) (p x A B C : PTm n) (hB : Γ ⊢[PRAAx] le one B)
     (he : Γ ⊢[PRAAx] rawEnvelope f x A B C) : Γ ⊢[PRAAx] bounded (value f p x A B C) A B :=
