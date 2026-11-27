@@ -37,23 +37,8 @@ theorem term_at (a b j : PTm n) : Γ ⊢[PRAAx] inst2 termBody j (pairT a b) ≐
   exact qsub_congr (GaussianGammaDigammaStep.unit_step_value (succ j) (zero_lt_succ j)) (reciprocal_entry a b j)
 
 theorem subtract_add_exchange (x y u v : PTm n) : Γ ⊢[PRAAx]
-    qadd (qsub x y) (qsub u v) ≐ qsub (qadd x u) (qadd y v) := by
-  let E := remainingDen x y u v
-  have he := remaining_den_positive (Γ := Γ) x y u v
-  have hx := rescale_to x (rawGaussian x) (rawDen x) (rawDen y*rawDen u*rawDen v) E
-    (raw_represents (Γ := Γ) x) (by unfold E remainingDen; ipra_ring)
-  have hy := rescale_to y (rawGaussian y) (rawDen y) (rawDen x*rawDen u*rawDen v) E
-    (raw_represents (Γ := Γ) y) (by unfold E remainingDen; ipra_ring)
-  have hu := rescale_to u (rawGaussian u) (rawDen u) (rawDen x*rawDen y*rawDen v) E
-    (raw_represents (Γ := Γ) u) (by unfold E remainingDen; ipra_ring)
-  have hv := rescale_to v (rawGaussian v) (rawDen v) (rawDen x*rawDen y*rawDen u) E
-    (raw_represents (Γ := Γ) v) (by unfold E remainingDen; ipra_ring)
-  have left := qadd_represents _ _ _ _ _ he (qsub_represents _ _ _ _ _ he hx hy) (qsub_represents _ _ _ _ _ he hu hv)
-  have right := qsub_represents _ _ _ _ _ he (qadd_represents _ _ _ _ _ he hx hu) (qadd_represents _ _ _ _ _ he hy hv)
-  apply canonical_unique _ _ _ _ (GaussianRationalHorner.qadd_canonical _ _) (qsub_canonical _ _) he (hrv := right)
-  apply represents_congr (.eqRefl _) _ (.eqRefl _) left
-  apply GaussianRootAlgebra.equal_of_values <;>
-    simp only [GaussianRootAlgebra.re_sub,GaussianRootAlgebra.im_sub,GaussianRootAlgebra.re_add,GaussianRootAlgebra.im_add] <;> ring
+    qadd (qsub x y) (qsub u v) ≐ qsub (qadd x u) (qadd y v) :=
+  (GaussianNameArithmetic.sum_difference x y u v).eqSymm
 
 def equality (a b N : PTm n) : Fm PTm n := partialSum a b N ≐ partialValue a b N
 ipra_subst equality

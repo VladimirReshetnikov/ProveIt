@@ -31,24 +31,8 @@ open GaussianRootAlgebra (equal_of_values re_sub im_sub)
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
 theorem rational_shuffle (a b c d : PTm n) :
-    Γ ⊢[PRAAx] qsub (qsub a b) (qsub c d) ≐ qsub (qsub a c) (qsub b d) := by
-  let E := rawDen a*rawDen b*rawDen c*rawDen d
-  have p : Γ ⊢[PRAAx] le one E :=
-    positive_product _ _ (positive_product _ _ (positive_product _ _ (raw_den_positive a) (raw_den_positive b))
-      (raw_den_positive c)) (raw_den_positive d)
-  have a' := rescale_to a (rawGaussian a) (rawDen a) (rawDen b*rawDen c*rawDen d) E (raw_represents (Γ := Γ) a)
-    (by dsimp only [E]; ipra_ring)
-  have b' := rescale_to b (rawGaussian b) (rawDen b) (rawDen a*rawDen c*rawDen d) E (raw_represents (Γ := Γ) b)
-    (by dsimp only [E]; ipra_ring)
-  have c' := rescale_to c (rawGaussian c) (rawDen c) (rawDen a*rawDen b*rawDen d) E (raw_represents (Γ := Γ) c)
-    (by dsimp only [E]; ipra_ring)
-  have d' := rescale_to d (rawGaussian d) (rawDen d) (rawDen a*rawDen b*rawDen c) E (raw_represents (Γ := Γ) d)
-    (by dsimp only [E]; ipra_ring)
-  have l := qsub_represents _ _ _ _ _ p (qsub_represents _ _ _ _ _ p a' b') (qsub_represents _ _ _ _ _ p c' d')
-  have r := qsub_represents _ _ _ _ _ p (qsub_represents _ _ _ _ _ p a' c') (qsub_represents _ _ _ _ _ p b' d')
-  apply canonical_unique _ _ _ E (qsub_canonical _ _) (qsub_canonical _ _) p (hrv := r)
-  apply represents_congr (.eqRefl _) (hAB := .eqRefl _) (h := l)
-  apply equal_of_values <;> simp only [re_sub,im_sub] <;> ring
+    Γ ⊢[PRAAx] qsub (qsub a b) (qsub c d) ≐ qsub (qsub a c) (qsub b d) :=
+  GaussianFastValueCut.difference_identity a b c d
 
 private theorem double_difference_at (f g h k : PR 2) (x y u v p : PTm n)
     (hf : Γ ⊢[PRAAx] pointCN f x) (hg : Γ ⊢[PRAAx] pointCN g y)
