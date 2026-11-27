@@ -225,7 +225,7 @@ theorem low_bound (wb : PTm 2) {l B K0 M R G α γ b0 : PTm n}
       (by simpa [Fm.shift, Syn.shift] using sh hQM) (by simpa [Fm.shift, Syn.shift] using sh hQR)
       (by simpa [Fm.shift, Syn.shift] using sh hK4) (by simpa [Fm.shift, Syn.shift] using sh hRG)
       (by simpa [Fm.shift, Syn.shift, shift_inst2'] using sh hWl)
-    convert p using 2 <;> simp [Syn.shift, shift_inst2']
+    convert p using 2 <;> simp [Syn.shift]
 
 /-! ## The block -/
 
@@ -268,12 +268,12 @@ theorem block_cover (wb : PTm 2) {B K0 M R G α γ b0 : PTm n}
     (by simpa [Fm.shift, Syn.shift] using sh hRG) hW0
   -- the five summed estimates
   have h1 := sum_le_lin1 (Γ := Γ) (uB wb) (pB (bB wb)) (monus γ α) (num 16 * succ b0) X (pairT T' X) B
-    (.allI (.impI (by convert Prf.andE₁ kb using 2 <;> simp [X, T', Syn.shift, shift_inst2'])))
+    (.allI (.impI (by convert Prf.andE₁ kb using 2 <;> simp [X, T', Syn.shift])))
   have h2 := sum_le_lin1 (Γ := Γ) (pB (bB wb)) (uB wb) (succ b0) (num 2 * monus γ α) (pairT T' X) X B
-    (.allI (.impI (by convert Prf.andE₂ kb using 2 <;> simp [X, T', Syn.shift, shift_inst2'])))
+    (.allI (.impI (by convert Prf.andE₂ kb using 2 <;> simp [X, T', Syn.shift])))
   have h3 := sum_le_lin (Γ := Γ) (lowB (bB wb)) (DiophantineNumberTheory.KhinchinMoment.crB (uB wb)) (uB wb)
     (num 3 * succ b0 * (fact R * G)) (num 12 * monus γ α) (num 5 * monus γ α * (fact R * G)) (pairT T' X) X X B
-    (.allI (.impI (by convert lb using 2 <;> simp [X, T', Syn.shift, shift_inst2'])))
+    (.allI (.impI (by convert lb using 2 <;> simp [X, T', Syn.shift])))
   have h4 := DiophantineNumberTheory.KhinchinMoment.cross_le (Γ := Γ) (uB wb) B X
   have cs := cs_moment (Γ := Γ) (bB wb) T' B X
   have fu := fubini (Γ := Γ) (bB wb) T' B X

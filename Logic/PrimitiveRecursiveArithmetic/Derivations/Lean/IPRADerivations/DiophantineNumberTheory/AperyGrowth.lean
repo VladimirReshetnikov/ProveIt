@@ -99,8 +99,8 @@ theorem grow_pow (U : PTm k) : Γ ⊢[PRAAx] le (pw (num 32) U) (apery (num 48 +
         ipra_le 𝔞 (pred (apery (num 48 + zero))) using linear_combination p' - z
       simpa only [subst_le, subst_ap2, PTm.subst_add, Syn.subst_var, Syn.inst_zero, Syn.subst_inst_shift,
         ConciseIPRA.PTm.subst_zero, ConciseIPRA.PTm.subst_succ, PTm.subst_num] using base
-    · simp only [subst_le, subst_ap2, PTm.subst_add, Syn.subst_var, Syn.repl_zero, subst_repl_shift,
-        ConciseIPRA.PTm.subst_zero, ConciseIPRA.PTm.subst_succ, PTm.subst_num]
+    · simp only [subst_le, subst_ap2, PTm.subst_add, Syn.subst_var, Syn.repl_zero, ConciseIPRA.PTm.subst_succ,
+        PTm.subst_num]
       let Δ := le (pw (num 32) (var 0 : PTm (k + 1))) (apery (num 48 + var 0)) :: Γ.map Fm.shift
       have ih : Δ ⊢[PRAAx] le (pw (num 32) (var 0)) (apery (num 48 + var 0)) := Prf.hyp0
       have g := grow_step (Γ := Δ) (m := num 47 + var 0) (by ipra_le 𝔞 (var 0 : PTm (k + 1)))

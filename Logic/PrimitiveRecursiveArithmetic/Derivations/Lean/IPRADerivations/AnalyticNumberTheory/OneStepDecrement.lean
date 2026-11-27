@@ -25,8 +25,6 @@ logarithms are harmonic (`u_m = S(Km) − S(K)`) and enter only through powers o
   of the unknown region `m < Y` (con:global), the Selberg remainders and the block errors.
 -/
 
-set_option linter.unusedSimpArgs false
-
 namespace LeanProofs.IPRA.AnalyticNumberTheory.OneStepDecrement
 
 open_ipra exports
@@ -136,9 +134,9 @@ theorem onblock_of_stage {x Y Ds A K L E0 N : PTm n} (hNY : Γ ⊢[PRAAx] le (N 
   have hNY' : (Γ.map Fm.shift) ⊢[PRAAx] le (Syn.shift N * Syn.shift Y) (Syn.shift x) := by
     simpa [Fm.shift, Syn.shift] using hNY.shift
   have a := Prf.allE (quo (Syn.shift x) (var 0)) hst.shift
-  simp only [Stage, Fm.shift, Fm.subst_all, Fm.subst_imp, Fm.subst_eq, subst_le, subst_lt, subst_ap2,
-    PTm.subst_mul, PTm.subst_add, PTm.subst_monus, ConciseIPRA.PTm.subst_succ, ConciseIPRA.PTm.subst_zero,
-    Syn.subst_var, Syn.up_zero, Syn.inst_zero, subst_up_shift_pal, Syn.subst_inst_shift] at a
+  simp only [Fm.subst_imp, subst_le, subst_lt, subst_ap2, PTm.subst_mul, PTm.subst_add, PTm.subst_monus,
+    ConciseIPRA.PTm.subst_succ, ConciseIPRA.PTm.subst_zero, Syn.subst_var, Syn.up_zero, Syn.inst_zero,
+    subst_up_shift_pal, Syn.subst_inst_shift] at a
   have a' : (Γ.map Fm.shift) ⊢[PRAAx] lt (quo (Syn.shift x) (var 0)) (succ (Syn.shift x)) ⟶
       (le (Syn.shift Y) (quo (Syn.shift x) (var 0)) ⟶
         le (Syn.shift Ds * absd (Psi wt (quo (Syn.shift x) (var 0)) (pairT (Syn.shift K) (fact (Syn.shift L))))

@@ -37,8 +37,8 @@ theorem Nz_p0 (K s : PTm n) : Γ ⊢[PRAAx] Nz K zero s ≐ zero := by
     · simp only [Fm.subst_eq, subst_ap2, subst_pairT, ConciseIPRA.PTm.subst_zero, Syn.subst_var, Syn.inst_zero,
         Syn.subst_inst_shift]
       exact Nz_zero _ _
-    · simp only [Fm.subst_eq, subst_ap2, subst_pairT, ConciseIPRA.PTm.subst_succ, ConciseIPRA.PTm.subst_zero,
-        Syn.subst_var, Syn.repl_zero, subst_repl_shift]
+    · simp only [Fm.subst_eq, subst_ap2, subst_pairT, ConciseIPRA.PTm.subst_zero, Syn.subst_var, Syn.repl_zero,
+        subst_repl_shift]
       let Δ : List (Fm PTm (n + 1)) := (Nz (var 0) zero (Syn.shift s) ≐ zero) :: Γ.map Fm.shift
       ipra_lc natEq (Nz_succ (var 0) zero (Syn.shift s)) +
         (2 * 𝔞 (var 0 : PTm (n + 1)) + 1) * (𝔞 (Syn.shift s)) ^ 2 * natEq (Prf.hyp0 : Δ ⊢[PRAAx] Nz (var 0) zero (Syn.shift s) ≐ zero) +

@@ -31,8 +31,6 @@ from the search specification:
   primitive-recursive witness `wit f N x`.
 -/
 
-set_option linter.unusedSimpArgs false
-
 namespace LeanProofs.IPRA.Foundations.BoundedReflection
 
 open_ipra exports
@@ -157,8 +155,7 @@ private theorem aes₀ : ([] : List (Fm PTm 2)) ⊢[PRAAx] aesF f := by
 /-- `∏_{i<N} sg f(i, x) = [μ(N) = N]`: the product bit is the success bit of the search. -/
 theorem all_eq_search (N x : PTm n) : Γ ⊢[PRAAx] allB f N x ≐ eqb (mu f N x) N := by
   have h := inst (Γ := Γ) (aes₀ f) (![N, x] : Fin 2 → PTm n)
-  simp only [Fm.subst_eq, subst_ap2, subst_eqb, Syn.subst_var, Matrix.cons_val_zero, Matrix.cons_val_one,
-    Matrix.head_cons] at h
+  simp only [Fm.subst_eq, subst_ap2, subst_eqb, Syn.subst_var, Matrix.cons_val_zero, Matrix.cons_val_one] at h
   exact h
 
 /-- The bit is `0` or `1`. -/

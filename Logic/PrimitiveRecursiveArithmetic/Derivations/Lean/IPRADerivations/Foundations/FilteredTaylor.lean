@@ -46,7 +46,7 @@ def zsum : {d : ℕ} → (Fin d → ZT k) → ZT k
   | _ + 1, f => f 0 + zsum (fun i => f i.succ)
 
 theorem toZ_zsum : {d : ℕ} → (f : Fin d → ZT k) → ZT.toZ Γ (zsum f) = ∑ i, ZT.toZ Γ (f i)
-  | 0, _ => by simp [zsum, toZ_zero]
+  | 0, _ => by simp [zsum]
   | _ + 1, f => by
     rw [zsum, ZT.toZ_add, toZ_zsum (fun i => f i.succ), Fin.sum_univ_succ]
 
@@ -62,7 +62,7 @@ variable {x y v : Fin d → ZT k}
 /-- `∇e(x)·v = ∑_j v_j ∂_j e(x)`. -/
 theorem dv_eq (e : PE d) : ZT.toZ Γ (dv e x v) = ∑ j, ZT.toZ Γ (v j) * ZT.toZ Γ (ev (pd e j) x) := by
   induction e with
-  | const p q => simp [dv, pd, ev, toZ_const, toZ_zero]
+  | const p q => simp [dv, pd, ev, toZ_const]
   | var i =>
     simp only [dv, pd]
     rw [Finset.sum_eq_single i]
@@ -91,8 +91,8 @@ def tq : PE d → (Fin d → ZT k) → (Fin d → ZT k) → Fin d → Fin d → 
 theorem taylor_exact (e : PE d) :
     ZT.toZ Γ (Analysis.PolynomialRemainder.rem e x v) = ∑ i, ∑ j, ZT.toZ Γ (v i) * ZT.toZ Γ (v j) * ZT.toZ Γ (tq e x v i j) := by
   induction e with
-  | const p q => simp [Analysis.PolynomialRemainder.rem, ev, dv, tq, toZ_const, toZ_zero]
-  | var i => simp [Analysis.PolynomialRemainder.rem, ev, dv, tq, toZ_zero]
+  | const p q => simp [Analysis.PolynomialRemainder.rem, ev, dv, tq, toZ_const]
+  | var i => simp [Analysis.PolynomialRemainder.rem, ev, dv, tq]
   | add f g ihf ihg =>
     have hf := ihf; have hg := ihg
     simp only [Analysis.PolynomialRemainder.rem, ZT.toZ_sub] at hf hg
@@ -139,12 +139,12 @@ def ls : PE d → (Fin d → ZT k) → (Fin d → ZT k) → Fin d → ZT k
 theorem diff_exact (e : PE d) :
     ZT.toZ Γ (ev e x - ev e y) = ∑ i, (ZT.toZ Γ (x i) - ZT.toZ Γ (y i)) * ZT.toZ Γ (ls e x y i) := by
   induction e with
-  | const p q => simp [ev, ls, toZ_const, toZ_zero]
+  | const p q => simp [ev, ls, toZ_const]
   | var i =>
     simp only [ev, ls, ZT.toZ_sub]
     rw [Finset.sum_eq_single i]
     · simp [toZ_const]
-    · intro j _ hj; simp [Ne.symm hj, toZ_zero]
+    · intro j _ hj; simp [Ne.symm hj]
     · simp
   | add f g ihf ihg =>
     simp only [ZT.toZ_sub] at ihf ihg

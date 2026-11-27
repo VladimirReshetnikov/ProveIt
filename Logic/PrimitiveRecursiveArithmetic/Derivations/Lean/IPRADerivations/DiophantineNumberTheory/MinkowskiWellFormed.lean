@@ -148,9 +148,8 @@ theorem midpoint_guarded_at (Φ : Fm PTm 2) (N C D x : PTm n)
     (hΦC : Γ ⊢[PRAAx] holdsAt Φ C x) (hΦD : Γ ⊢[PRAAx] holdsAt Φ D x) :
     Γ ⊢[PRAAx] holdsAt Φ (midpointVector N C D) x := by
   have first := Prf.allE C h
-  simp only [midpointGuarded,Fm.subst_all,Fm.subst_imp,subst_vectorGuard,subst_holdsAt,
-    subst_midpointVector,Syn.subst_var,Syn.up_zero,Syn.up_one,Syn.up_succ,
-    Syn.inst_succ,Syn.subst_shift,Syn.shift_subst] at first
+  simp only [Fm.subst_all, Fm.subst_imp, subst_vectorGuard, subst_holdsAt, subst_midpointVector, Syn.subst_var,
+    Syn.up_zero, Syn.up_one, Syn.up_succ, Syn.inst_succ, Syn.subst_shift] at first
   have second := Prf.allE D first
   have cancel (t : PTm n) : Syn.subst (Syn.inst D) (Syn.subst (fun i => Syn.shift (var i)) t) = t := by
     simpa only [Syn.shift,Syn.subst_var] using Syn.subst_inst_shift D t

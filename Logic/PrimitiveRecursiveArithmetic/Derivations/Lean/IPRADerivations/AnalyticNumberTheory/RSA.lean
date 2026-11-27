@@ -14,8 +14,6 @@ As in the paper, nonunits need no separate case: `x^{1 + k(p-1)} ≡ x (mod p)` 
 `gcd(p, q) = 1`, combines the congruences modulo `p` and modulo `q`.
 -/
 
-set_option linter.unusedSimpArgs false
-
 namespace LeanProofs.IPRA.AnalyticNumberTheory.RSA
 
 open_ipra exports
@@ -57,7 +55,7 @@ theorem fermat_pow {p : PTm n} (hp : Γ ⊢[PRAAx] prime p) (x k : PTm n) :
       rem (Syn.shift x) (Syn.shift p)) := by
     refine PRA.qfInd _ trivial ?_ ?_
     · simp only [Fm.subst_eq, subst_ap2, PTm.subst_mul, PTm.subst_pred, Syn.subst_var, Syn.inst_zero,
-        Syn.subst_inst_shift, ConciseIPRA.PTm.subst_zero, ConciseIPRA.PTm.subst_succ]
+        Syn.subst_inst_shift, ConciseIPRA.PTm.subst_succ]
       have e : Γ ⊢[PRAAx] pw x (succ (zero * pred p)) ≐ x :=
         (congrPw (.eqRefl _) (congrSucc (zero_mul _))).eqTrans (pw_one _)
       exact congrAp2 remF e (.eqRefl _)

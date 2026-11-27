@@ -26,8 +26,6 @@ denominator `L²`, the terms are `u_i = [i prime] ⌊L²/i^{v_i(L)+1}⌋` (`uB`)
   `T(m²) ≤ 4/m` through which the loss enters the bridge.
 -/
 
-set_option linter.unusedSimpArgs false
-
 namespace LeanProofs.IPRA.AnalyticNumberTheory.LcmBridgeLoss
 
 open_ipra exports
@@ -109,17 +107,17 @@ theorem phase1 (N P : PTm n) : Γ ⊢[PRAAx] le (P * U N P) (N * LD P) := by
   have hall : Γ ⊢[PRAAx] Fm.all (le (Syn.shift P * U (var 0) (Syn.shift P)) (var 0 * LD (Syn.shift P))) := by
     refine PRA.qfInd _ trivial ?_ ?_
     · simp only [subst_le, subst_ap2, PTm.subst_mul, Syn.subst_var, Syn.inst_zero, Syn.subst_inst_shift,
-        ConciseIPRA.PTm.subst_zero, ConciseIPRA.PTm.subst_succ]
+        ConciseIPRA.PTm.subst_zero]
       refine le_of_eq_add (d := zero) ?_
       ipra_lc (-(𝔞 P)) * natEq (sum_zero uB P)
     · simp only [subst_le, subst_ap2, PTm.subst_mul, Syn.subst_var, Syn.repl_zero, subst_repl_shift,
-        ConciseIPRA.PTm.subst_zero, ConciseIPRA.PTm.subst_succ]
+        ConciseIPRA.PTm.subst_zero]
       let D : List (Fm PTm (n + 1)) :=
         le (Syn.shift P * U (var 0) (Syn.shift P)) (var 0 * LD (Syn.shift P)) :: Γ.map Fm.shift
       exact p1_step (Prf.hyp0 : D ⊢[PRAAx] _)
   have r := Prf.allE N hall
   simp only [subst_le, subst_ap2, PTm.subst_mul, Syn.subst_var, Syn.inst_zero, Syn.subst_inst_shift,
-    ConciseIPRA.PTm.subst_zero, ConciseIPRA.PTm.subst_succ] at r
+    ConciseIPRA.PTm.subst_zero] at r
   exact r
 
 /-! ## The telescoping invariant -/

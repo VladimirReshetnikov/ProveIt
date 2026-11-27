@@ -118,8 +118,7 @@ theorem shifted :
       ((Γ.map Fm.shift) ⊢[PRAAx] gcd (Syn.shift a) (Syn.shift b) ≐ one) :=
   ⟨by simpa [Fm.shift, Syn.shift] using ha.shift, by simpa [Fm.shift, Syn.shift] using hb.shift, by
     have e := hab.shift
-    simp only [Fm.shift, Fm.subst_eq, subst_ex2, subst_ap2, ConciseIPRA.PTm.subst_succ,
-      ConciseIPRA.PTm.subst_zero] at e
+    simp only [Fm.shift, Fm.subst_eq, subst_ex2, ConciseIPRA.PTm.subst_succ, ConciseIPRA.PTm.subst_zero] at e
     exact e⟩
 
 /-- **`ω_N(ab) = ω_N(a) + ω_N(b)`** for coprime `a, b ≥ 1`. -/
@@ -173,18 +172,16 @@ abbrev ParF (x y : PTm n) : Fm PTm n :=
 theorem par_add (x y : PTm n) : Γ ⊢[PRAAx] ParF x y := by
   have hall : Γ ⊢[PRAAx] Fm.all (ParF (Syn.shift x) (var 0)) := by
     refine PRA.qfInd _ ⟨trivial, trivial⟩ ?_ ?_
-    · simp only [ParF, Fm.subst_and, Fm.subst_eq, subst_eqb, subst_ap2, PTm.subst_add, PTm.subst_mul,
-        PTm.subst_monus, Syn.subst_var, Syn.inst_zero, Syn.subst_inst_shift, ConciseIPRA.PTm.subst_succ,
-        ConciseIPRA.PTm.subst_zero]
+    · simp only [ParF, Fm.subst_and, Fm.subst_eq, subst_eqb, subst_ap2, PTm.subst_add, PTm.subst_mul, Syn.subst_var,
+        Syn.inst_zero, Syn.subst_inst_shift, ConciseIPRA.PTm.subst_succ, ConciseIPRA.PTm.subst_zero]
       have r0 := rem_zero_two (Γ := Γ) (n := n)
       have e0 : Γ ⊢[PRAAx] ev (zero : PTm n) ≐ one := (congrEqb' r0 (.eqRefl _)).eqTrans (eqb_of_eq (.eqRefl _))
       have o0 : Γ ⊢[PRAAx] od (zero : PTm n) ≐ zero := (congrEqb' r0 (.eqRefl _)).eqTrans (eqb_of_ne zero_ne_one')
       have ex : Γ ⊢[PRAAx] ev (x + zero) ≐ ev x := congrEqb' (congrAp2 remF (add_zero x) (.eqRefl _)) (.eqRefl _)
       have ox : Γ ⊢[PRAAx] od (x + zero) ≐ od x := congrEqb' (congrAp2 remF (add_zero x) (.eqRefl _)) (.eqRefl _)
       exact par_base_alg ex ox e0 o0
-    · simp only [ParF, Fm.subst_and, Fm.subst_eq, subst_eqb, subst_ap2, PTm.subst_add, PTm.subst_mul,
-        PTm.subst_monus, Syn.subst_var, Syn.repl_zero, subst_repl_shift, ConciseIPRA.PTm.subst_succ,
-        ConciseIPRA.PTm.subst_zero]
+    · simp only [ParF, Fm.subst_and, Fm.subst_eq, subst_eqb, subst_ap2, PTm.subst_add, PTm.subst_mul, Syn.subst_var,
+        Syn.repl_zero, subst_repl_shift, ConciseIPRA.PTm.subst_succ, ConciseIPRA.PTm.subst_zero]
       let C : List (Fm PTm (n + 1)) := ParF (Syn.shift x) (var 0) :: Γ.map Fm.shift
       have ih : C ⊢[PRAAx] ParF (Syn.shift x) (var 0) := Prf.hyp0
       have es : C ⊢[PRAAx] Syn.shift x + succ (var 0) ≐ succ (Syn.shift x + var 0) := add_succ _ _
@@ -196,9 +193,8 @@ theorem par_add (x y : PTm n) : Γ ⊢[PRAAx] ParF x y := by
         (congrEqb' (congrAp2 remF es (.eqRefl _)) (.eqRefl _)).eqTrans (Prf.andE₂ ps)
       exact par_step_alg pe po (Prf.andE₁ ih) (Prf.andE₂ ih) (Prf.andE₁ py) (Prf.andE₂ py)
   have h2 := Prf.allE y hall
-  simp only [ParF, Fm.subst_and, Fm.subst_eq, subst_eqb, subst_ap2, PTm.subst_add, PTm.subst_mul,
-    PTm.subst_monus, Syn.subst_var, Syn.inst_zero, Syn.subst_inst_shift, ConciseIPRA.PTm.subst_succ,
-    ConciseIPRA.PTm.subst_zero] at h2
+  simp only [ParF, Fm.subst_and, Fm.subst_eq, subst_eqb, subst_ap2, PTm.subst_add, PTm.subst_mul, Syn.subst_var,
+    Syn.inst_zero, Syn.subst_inst_shift, ConciseIPRA.PTm.subst_succ, ConciseIPRA.PTm.subst_zero] at h2
   exact h2
 
 /-- `[x + y = 0] = [x = 0][y = 0]`. -/

@@ -17,8 +17,6 @@ exactly `Λ_w` (`key_inner`, the third form of `thm:lambda-mobius` extended to `
 divisor involution (`div_swap`) turns it into the stated orientation.
 -/
 
-set_option linter.unusedSimpArgs false
-
 namespace LeanProofs.IPRA.AnalyticNumberTheory.MuLambda
 
 open_ipra exports
@@ -137,7 +135,7 @@ theorem iv_rl {k N : PTm n} (hkN : Γ ⊢[PRAAx] le (succ k) (succ N)) :
   have hs : Syn.shift (succ k) = succ (Syn.shift k) := by simp [Syn.shift]
   have hkN' : Γ.map Fm.shift ⊢[PRAAx] le (succ (Syn.shift k)) (succ (Syn.shift N)) := by
     have e := hkN.shift
-    simp only [Fm.shift, subst_le, ConciseIPRA.PTm.subst_succ, ConciseIPRA.PTm.subst_zero] at e
+    simp only [Fm.shift, subst_le, ConciseIPRA.PTm.subst_succ] at e
     exact e
   have pt : (lt (var 0) (Syn.shift (succ k)) :: Γ.map Fm.shift) ⊢[PRAAx]
       (inst2 (ivB (fP w)) (var 0) (pairT (Syn.shift k) (Syn.shift N)) ≐ inst2 (RLP w) (var 0) (Syn.shift k)) ⋏

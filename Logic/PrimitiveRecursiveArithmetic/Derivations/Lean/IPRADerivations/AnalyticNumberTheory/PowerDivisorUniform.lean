@@ -17,8 +17,6 @@ after the constant).
 * `growth_uniform_iff`: `GrowthS A ↔ GrowthU`, using `PowerDivisorGrowth.growth_backward` at `h = 2`.
 -/
 
-set_option linter.unusedSimpArgs false
-
 namespace LeanProofs.IPRA.AnalyticNumberTheory.PowerDivisorUniform
 
 open_ipra exports
@@ -44,23 +42,20 @@ theorem forward_allU (aP aN : PTm 2) {y k c : PTm n} {K C : PTm (n + 1)} {X K' C
   subst hK hC hX hK' hC'
   refine .allI ?_
   have H1 := H.shift
-  simp only [GrowthS, Fm.shift, Fm.subst_all, Fm.subst_ex, subst_Mat, up3_v0, up3_v1, up3_v2, up2_v0, up2_v1, up2_v2,
-    up1_v0, up1_v1, up1_v2, inst_v0, inst_v1, subst_up_shift_pal, Syn.subst_inst_shift, Syn.up_zero, upf_one, upf_two,
-    Syn.subst_var, subst_sh, Fin.succ_zero_eq_one, Syn.shift_var, Syn.up_succ, Syn.inst_succ, upf_three] at H1
+  simp only [Fm.shift, Fm.subst_all, subst_Mat, subst_up_shift_pal, Syn.up_zero, Syn.subst_var, subst_sh] at H1
   exact forward_all aP aN (y := Syn.shift y) (h := succ (succ (var 0))) (k := Syn.shift k) (c := Syn.shift c)
-    (by simp [Syn.shift, upf_one, upf_two, upf_three, inst_v0, inst_v1]) (by simp [Syn.shift, upf_one, upf_two, upf_three, inst_v0, inst_v1]) (by simp [Syn.shift, upf_one, upf_two, upf_three, inst_v0, inst_v1]) (by simp [Syn.shift, upf_one, upf_two, upf_three, inst_v0, inst_v1]) (by simp [Syn.shift, upf_one, upf_two, upf_three, inst_v0, inst_v1])
+    (by simp [Syn.shift]) (by simp [Syn.shift]) (by simp [Syn.shift]) (by simp [Syn.shift]) (by simp [Syn.shift])
     (by ipra_le 𝔞 (var 0)) H1
 
 /-- `A ⇒ uniform B`. -/
 theorem growth_forwardU (aP aN : PTm 2) (y : PTm n) :
     Γ ⊢[PRAAx] GrowthS (AB aP) (AB aN) y ⟶ GrowthU aP aN y := by
   refine all_ex_imp_at (succ (two * var 0)) (Cout (var 1) (var 0)) ?_
-  simp only [GrowthS, Fm.shift, Fm.subst_all, Fm.subst_ex, subst_Mat, up3_v0, up3_v1, up3_v2, up2_v0, up2_v1, up2_v2,
-    up1_v0, up1_v1, up1_v2, inst_v0, inst_v1, subst_up_shift_pal, Syn.subst_inst_shift, Syn.up_zero, upf_one, upf_two,
-    Syn.subst_var, subst_sh, Fin.succ_zero_eq_one, Syn.shift_var, Syn.up_succ, Syn.inst_succ, upf_three, GrowthU,
-    subst_pairT, ConciseIPRA.PTm.subst_succ]
+  simp only [Fm.subst_all, subst_Mat, inst_v0, subst_up_shift_pal, Syn.subst_inst_shift, Syn.up_zero, upf_one, upf_two,
+    Syn.subst_var, subst_sh, Fin.succ_zero_eq_one, Syn.shift_var, Syn.up_succ, Syn.inst_succ, upf_three, subst_pairT,
+    ConciseIPRA.PTm.subst_succ]
   exact forward_allU aP aN (y := Syn.shift (Syn.shift y)) (k := var 1) (c := var 0)
-    (by simp [Syn.shift, upf_one, upf_two, upf_three, inst_v0, inst_v1]) (by simp [Syn.shift, upf_one, upf_two, upf_three, inst_v0, inst_v1]) (by simp [Syn.shift, upf_one, upf_two, upf_three, inst_v0, inst_v1]) (by simp [Syn.shift, upf_one, upf_two, upf_three, inst_v0, inst_v1]) (by simp [Syn.shift, upf_one, upf_two, upf_three, inst_v0, inst_v1])
+    (by simp [Syn.shift]) (by simp [Syn.shift]) (by simp [Syn.shift]) (by simp [Syn.shift]) (by simp [Syn.shift])
     Prf.hyp0
 
 /-- Specializing the exponent to `h = 2`. -/
@@ -71,8 +66,8 @@ theorem spec_all (aP aN : PTm 2) {Y K0 C0 : PTm n} {X0 K0' C0' : PTm (n + 2)} {X
     Γ ⊢[PRAAx] Fm.all (Mat (BB aP) (BB aN) X K C (var 0)) := by
   subst hX0 hK0 hC0 hX hK hC
   have b := Prf.allE zero H
-  simp only [Fm.subst_all, subst_Mat, up1_v0, up1_v1, inst_v0, subst_up_shift_pal, Syn.subst_inst_shift, subst_pairT,
-    ConciseIPRA.PTm.subst_succ, Syn.subst_var, Syn.up_zero] at b
+  simp only [Fm.subst_all, subst_Mat, subst_up_shift_pal, Syn.subst_inst_shift, subst_pairT, ConciseIPRA.PTm.subst_succ,
+    Syn.subst_var, Syn.up_zero] at b
   have e : Syn.shift (pairT two Y) = pairT (succ (succ (Syn.shift zero))) (Syn.shift Y) := by simp [Syn.shift]
   rw [e]
   exact b
@@ -81,12 +76,11 @@ theorem spec_all (aP aN : PTm 2) {Y K0 C0 : PTm n} {X0 K0' C0' : PTm (n + 2)} {X
 theorem uniform_spec (aP aN : PTm 2) (y : PTm n) :
     Γ ⊢[PRAAx] GrowthU aP aN y ⟶ GrowthS (BB aP) (BB aN) (pairT two y) := by
   refine all_ex_imp (var 0) ?_
-  simp only [GrowthS, Fm.shift, Fm.subst_all, Fm.subst_ex, subst_Mat, up3_v0, up3_v1, up3_v2, up2_v0, up2_v1, up2_v2,
-    up1_v0, up1_v1, up1_v2, inst_v0, inst_v1, subst_up_shift_pal, Syn.subst_inst_shift, Syn.up_zero, upf_one, upf_two,
-    Syn.subst_var, subst_sh, Fin.succ_zero_eq_one, Syn.shift_var, Syn.up_succ, Syn.inst_succ, upf_three]
+  simp only [Fm.subst_all, subst_Mat, inst_v0, subst_up_shift_pal, Syn.subst_inst_shift, Syn.up_zero, upf_one, upf_two,
+    Syn.subst_var, subst_sh, Fin.succ_zero_eq_one, Syn.shift_var, Syn.up_succ, Syn.inst_succ]
   exact spec_all aP aN (Y := Syn.shift (Syn.shift y)) (K0 := var 1) (C0 := var 0)
-    (by simp [Syn.shift, upf_one, upf_two, upf_three, inst_v0, inst_v1]) (by simp [Syn.shift, upf_one, upf_two, upf_three, inst_v0, inst_v1]) (by simp [Syn.shift, upf_one, upf_two, upf_three, inst_v0, inst_v1]) (by simp [Syn.shift, upf_one, upf_two, upf_three, inst_v0, inst_v1]) (by simp [Syn.shift, upf_one, upf_two, upf_three, inst_v0, inst_v1])
-    (by simp [Syn.shift, upf_one, upf_two, upf_three, inst_v0, inst_v1]) Prf.hyp0
+    (by simp [Syn.shift]) (by simp [Syn.shift]) (by simp [Syn.shift]) (by simp [Syn.shift]) (by simp [Syn.shift])
+    (by simp [Syn.shift]) Prf.hyp0
 
 /-- `thm:powerdivisor`, the uniform form: `(∀k ∃c ∀N |A(N)|^{2(k+1)} ≤ cN^{k+2}) ↔
 (∀k ∃c ∀z ∀N |B_{z+2}(N)|^{2(k+1)} ≤ cN^{k+2})`, one witness `C_r(c)` for every exponent. -/

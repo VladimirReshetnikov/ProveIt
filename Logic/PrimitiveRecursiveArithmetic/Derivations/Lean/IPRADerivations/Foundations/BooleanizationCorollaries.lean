@@ -19,8 +19,6 @@ Corollaries of the bounded-formula compiler (`Foundations/BoundedFormulas`) and 
   `first_found`, `first_before`).
 -/
 
-set_option linter.unusedSimpArgs false
-
 namespace LeanProofs.IPRA.Foundations.BooleanizationCorollaries
 
 open_ipra exports
@@ -83,8 +81,8 @@ theorem least_none_of {x : PTm m}
     .orE (bf_cases P _) (.botE _ (BoundedReflection.one_ne_zero _
       ((monus_zero one).eqSymm.eqTrans ((congrMonus (.eqRefl one) Prf.hyp0.eqSymm).eqTrans z.wk)))) Prf.hyp0
   have i := Prf.allE (bfWit B P x) (h.wk (ψ := lt (bfWit B P x) (at1 B x)))
-  simp only [Fm.subst_imp, subst_lt, subst_neg, Syn.subst_var, Syn.inst_zero, fmAt_subst, subst_pairT, Syn.subst_shift,
-    Syn.inst, Fin.cases_succ, Syn.subst_id] at i
+  simp only [Fm.subst_imp, subst_lt, subst_neg, Syn.subst_var, fmAt_subst, subst_pairT, Syn.subst_shift, Syn.inst,
+    Fin.cases_succ, Syn.subst_id] at i
   exact .botE _ (.impE (.impE i Prf.hyp0) (.impE (reflect P _).2.1 one))
 
 /-- `thm:least-search`, failure: if the search returns `B`, no index below `B` satisfies `P`. -/

@@ -18,8 +18,6 @@ a prime `p > N` with `p ≡ 1 (mod 4)` and `p ≤ (N!)² + 1`; both selections a
 * `prime_three_mod_four`: `q3 (4 N! ∸ 1)` is a prime `> N`, `≡ 3 (mod 4)`, and at most `4 N! − 1`.
 -/
 
-set_option linter.unusedSimpArgs false
-
 namespace LeanProofs.IPRA.AnalyticNumberTheory.PrimesModFour
 
 open_ipra exports
@@ -139,7 +137,7 @@ abbrev qB : PTm 2 :=
 
 theorem inst2_qB (d n : PTm k) : inst2 qB d n =
     isP d * (eqb (rem n d) zero * eqb (rem d (two * two)) (succ two)) := by
-  simp [inst2, subst_isP]
+  simp [inst2]
 
 /-- The bit of "`n` has a prime divisor `≡ 3 (mod 4)`". -/
 abbrev Q3 (n : PTm k) : PTm k := exB qB (succ n) n

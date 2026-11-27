@@ -106,9 +106,8 @@ theorem exp_all
       PTm.subst_add, PTm.subst_mul, Syn.subst_var, Syn.inst_zero, Syn.subst_inst_shift,
       ConciseIPRA.PTm.subst_zero]
     exact .impI (.andI (lt_of_pos (prod_zero r y)) (exp_base r y))
-  · simp only [Fm.subst_imp, Fm.subst_and, Fm.subst_eq, subst_le, subst_lt, subst_ap2, subst_fstT,
-      PTm.subst_add, PTm.subst_mul, Syn.subst_var, Syn.repl_zero, subst_repl_shift,
-      ConciseIPRA.PTm.subst_zero, ConciseIPRA.PTm.subst_succ]
+  · simp only [Fm.subst_imp, Fm.subst_and, Fm.subst_eq, subst_le, subst_lt, subst_ap2, subst_fstT, PTm.subst_add,
+      PTm.subst_mul, Syn.subst_var, Syn.repl_zero, subst_repl_shift, ConciseIPRA.PTm.subst_zero]
     exact .impI (inv_step Prf.hyp0 (Prf.impE hpos.allOpen.wk.wk Prf.hyp0) Prf.hyp1)
 
 theorem exp_at

@@ -73,7 +73,7 @@ abbrev chB : PTm 2 := sg (monus (quo (var 1) (succ (var 0))) (quo (var 1) (succ 
 theorem inst2_chB (i N : PTm n) :
     inst2 chB i N = sg (monus (quo N (succ i)) (quo N (succ (succ i)))) := by
   simp only [inst2, PTm.subst_monus, subst_ap2, Syn.subst_var, Matrix.cons_val_zero, Matrix.cons_val_one,
-    Matrix.head_cons, ConciseIPRA.PTm.subst_succ, ConciseIPRA.PTm.subst_zero]
+    ConciseIPRA.PTm.subst_succ, ConciseIPRA.PTm.subst_zero]
 
 /-- The number of changes among the indices `i < x`. -/
 abbrev Dc (x N : PTm n) : PTm n := ap2 (sumF chB) x N
@@ -125,9 +125,8 @@ theorem tele_open : ([] : List (Fm PTm 3)) ⊢[PRAAx] teleF := by
 theorem tele (k s N : PTm n) :
     Γ ⊢[PRAAx] le (Dc (s + k) N + quo N (succ (s + k))) (Dc s N + quo N (succ s)) := by
   have i := inst (Γ := Γ) tele_open (![k, s, N] : Fin 3 → PTm n)
-  simp only [teleF, subst_le, subst_ap2, PTm.subst_add, Syn.subst_var, Matrix.cons_val_zero,
-    Matrix.cons_val_one, Matrix.cons_val_two, Matrix.head_cons, Matrix.tail_cons,
-    ConciseIPRA.PTm.subst_zero, ConciseIPRA.PTm.subst_succ] at i
+  simp only [teleF, subst_le, subst_ap2, PTm.subst_add, Syn.subst_var, Matrix.cons_val_zero, Matrix.cons_val_one,
+    Matrix.cons_val_two, Matrix.head_cons, Matrix.tail_cons, ConciseIPRA.PTm.subst_succ] at i
   exact i
 
 theorem sq_succ (s : PTm n) : Γ ⊢[PRAAx] (s + one) * (s + one) ≐ succ s * succ s := by

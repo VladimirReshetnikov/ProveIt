@@ -176,8 +176,8 @@ theorem midpoint_closed_at (Φ : Fm PTm 1) (N C D : PTm n) (h : Γ ⊢[PRAAx] mi
     (hC : Γ ⊢[PRAAx] holds Φ C) (hD : Γ ⊢[PRAAx] holds Φ D) :
     Γ ⊢[PRAAx] holds Φ (midpointVector N C D) := by
   have first := Prf.allE C h
-  simp only [midpointClosed,Fm.subst_all,Fm.subst_imp,subst_holds,subst_midpointVector,
-    Syn.subst_var,Syn.up_zero,Syn.up_one,Syn.up_succ,Syn.inst_succ,Syn.subst_shift,Syn.shift_subst] at first
+  simp only [Fm.subst_all, Fm.subst_imp, subst_holds, subst_midpointVector, Syn.subst_var, Syn.up_zero, Syn.up_one,
+    Syn.up_succ, Syn.inst_succ, Syn.subst_shift] at first
   have second := Prf.allE D first
   have cancel : Syn.subst (Syn.inst D) (Syn.subst (fun i => Syn.shift (var i)) N) = N := by
     simpa only [Syn.shift,Syn.subst_var] using Syn.subst_inst_shift D N
@@ -320,8 +320,8 @@ theorem midpoint_at_parameter (Φ : Fm PTm 2) (N x C D : PTm n)
     (h : Γ ⊢[PRAAx] midpointClosedAt Φ N x) (hC : Γ ⊢[PRAAx] holdsAt Φ C x)
     (hD : Γ ⊢[PRAAx] holdsAt Φ D x) : Γ ⊢[PRAAx] holdsAt Φ (midpointVector N C D) x := by
   have first := Prf.allE C h
-  simp only [midpointClosedAt,Fm.subst_all,Fm.subst_imp,subst_holdsAt,subst_midpointVector,
-    Syn.subst_var,Syn.up_zero,Syn.up_one,Syn.up_succ,Syn.inst_succ,Syn.subst_shift,Syn.shift_subst] at first
+  simp only [Fm.subst_all, Fm.subst_imp, subst_holdsAt, subst_midpointVector, Syn.subst_var, Syn.up_zero, Syn.up_one,
+    Syn.up_succ, Syn.inst_succ, Syn.subst_shift] at first
   have second := Prf.allE D first
   have rule : Γ ⊢[PRAAx] holdsAt Φ C x ⟶ holdsAt Φ D x ⟶ holdsAt Φ (midpointVector N C D) x := by
     simpa only [Fm.subst_imp,subst_holdsAt,subst_midpointVector,Syn.subst_var,
@@ -360,9 +360,8 @@ theorem shaped_midpoint_at (Φ : Fm PTm 2) (N x C D : PTm n)
     (hD_len : Γ ⊢[PRAAx] length D ≐ N) (hC : Γ ⊢[PRAAx] holdsAt Φ C x)
     (hD : Γ ⊢[PRAAx] holdsAt Φ D x) : Γ ⊢[PRAAx] holdsAt Φ (midpointVector N C D) x := by
   have first := Prf.allE C h
-  simp only [shapedMidpointClosedAt,Fm.subst_all,Fm.subst_imp,Fm.subst_eq,
-    Foundations.SequenceComposition.subst_length,subst_holdsAt,subst_midpointVector,
-    Syn.subst_var,Syn.up_zero,Syn.up_one,Syn.up_succ,Syn.inst_succ,Syn.subst_shift,Syn.shift_subst] at first
+  simp only [Fm.subst_all, Fm.subst_imp, Fm.subst_eq, Foundations.SequenceComposition.subst_length, subst_holdsAt,
+    subst_midpointVector, Syn.subst_var, Syn.up_zero, Syn.up_one, Syn.up_succ, Syn.inst_succ, Syn.subst_shift] at first
   have second := Prf.allE D first
   have rule : Γ ⊢[PRAAx] (length C ≐ N) ⟶ (length D ≐ N) ⟶ holdsAt Φ C x ⟶ holdsAt Φ D x ⟶
       holdsAt Φ (midpointVector N C D) x := by

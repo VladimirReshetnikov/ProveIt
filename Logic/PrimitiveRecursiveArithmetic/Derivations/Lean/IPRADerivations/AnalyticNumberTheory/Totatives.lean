@@ -19,8 +19,6 @@ Sums are permuted by exponentiating: `∏ 2^{f(σ i)} = ∏ 2^{f(i)}` (`Permutat
 `x ↦ 2^x` is injective (`sum_perm`).
 -/
 
-set_option linter.unusedSimpArgs false
-
 namespace LeanProofs.IPRA.AnalyticNumberTheory.Totatives
 
 open_ipra exports
@@ -199,8 +197,8 @@ abbrev aeB : PTm 2 := var 0 * totBody
 abbrev totSum (N : PTm n) : PTm n := ap2 (sumF aeB) N N
 
 theorem inst2_ae (y x : PTm n) : inst2 aeB y x = y * eqb (gcd y x) one := by
-  simp only [inst2, PTm.subst_mul, subst_eqb, subst_ex2, Syn.subst_var, Matrix.cons_val_zero,
-    Matrix.cons_val_one, Matrix.head_cons, ConciseIPRA.PTm.subst_succ, ConciseIPRA.PTm.subst_zero]
+  simp only [inst2, PTm.subst_mul, subst_eqb, subst_ex2, Syn.subst_var, Matrix.cons_val_zero, Matrix.cons_val_one,
+    ConciseIPRA.PTm.subst_succ, ConciseIPRA.PTm.subst_zero]
 
 section Perm
 

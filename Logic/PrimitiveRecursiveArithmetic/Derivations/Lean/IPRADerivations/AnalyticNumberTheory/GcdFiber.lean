@@ -13,8 +13,6 @@ for `d ≥ 1` and `m ≥ 1`, `#{k < dm : gcd(k, dm) = d} = φ(m)`.
   `dh ∣ da → h ∣ a`.
 -/
 
-set_option linter.unusedSimpArgs false
-
 namespace LeanProofs.IPRA.AnalyticNumberTheory.GcdFiber
 
 open_ipra exports
@@ -172,9 +170,8 @@ end Point
 abbrev gB : PTm 3 := eqb (gcd (var 0) (var 1)) (var 2)
 
 theorem inst3_gB (k N d : PTm n) : inst3 gB k N d = eqb (gcd k N) d := by
-  simp only [inst3, subst_eqb, subst_ex2, Syn.subst_var, Matrix.cons_val_zero, Matrix.cons_val_one,
-    Matrix.head_cons, Matrix.cons_val_two, Matrix.tail_cons, ConciseIPRA.PTm.subst_succ,
-    ConciseIPRA.PTm.subst_zero]
+  simp only [inst3, subst_eqb, subst_ex2, Syn.subst_var, Matrix.cons_val_zero, Matrix.cons_val_one, Matrix.head_cons,
+    Matrix.cons_val_two, Matrix.tail_cons, ConciseIPRA.PTm.subst_succ]
 
 theorem shift_pos {d : PTm n} (h : Γ ⊢[PRAAx] d ≐ succ (pred d)) :
     Γ.map Fm.shift ⊢[PRAAx] Syn.shift d ≐ succ (pred (Syn.shift d)) :=

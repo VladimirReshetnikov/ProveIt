@@ -43,8 +43,7 @@ theorem gcd_congr' {a a' b b' : PTm k} (h₁ : Γ ⊢[PRAAx] a ≐ a') (h₂ : �
     Γ ⊢[PRAAx] gcd a b ≐ gcd a' b' := by
   have h := Prf.eqCongr (Γ := Γ) (gcd (var 0) (var 1) : PTm 2) (σ := ![a, b]) (σ' := ![a', b'])
     (fun j => by fin_cases j <;> assumption)
-  simp only [subst_ex2, Syn.subst_var, Matrix.cons_val_zero, Matrix.cons_val_one,
-    Matrix.head_cons, ConciseIPRA.PTm.subst_succ] at h
+  simp only [subst_ex2, Syn.subst_var, Matrix.cons_val_zero, Matrix.cons_val_one, ConciseIPRA.PTm.subst_succ] at h
   exact h
 
 theorem shift_pos' (e : PTm k) :

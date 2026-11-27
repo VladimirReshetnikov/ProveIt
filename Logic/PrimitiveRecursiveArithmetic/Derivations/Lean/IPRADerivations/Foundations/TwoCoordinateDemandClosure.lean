@@ -175,9 +175,8 @@ theorem result_prefixed (B C : PTm n) : Γ ⊢[PRAAx] prefixed operator two (res
 theorem result_stable_at (B C i : PTm n) (hi : Γ ⊢[PRAAx] lt i two) : Γ ⊢[PRAAx]
     entry (result B C) i ≐ entry (orbit B C (succ (B+C))) i := by
   have h := Prf.allE i (closure_stable (Γ := Γ) (maps B C) (monotone B C))
-  simp only [coordinatesEQ,Fm.subst_imp,Fm.subst_eq,subst_lt,MasterCertificate.subst_entry,
-    subst_iterate,subst_rank,subst_vector,subst_pairT,subst_two,Syn.subst_var,Syn.inst_zero,
-    Syn.subst_inst_shift,ConciseIPRA.PTm.subst_succ] at h
+  simp only [Fm.subst_imp, Fm.subst_eq, subst_lt, MasterCertificate.subst_entry, Syn.subst_var, Syn.inst_zero,
+    Syn.subst_inst_shift] at h
   exact (entry_congr (rank_stage B C).eqSymm (.eqRefl _)).eqTrans
     ((Prf.impE h hi).eqTrans (entry_congr (rank_next_stage B C) (.eqRefl _)))
 theorem result_least (B C e : PTm n) (he : Γ ⊢[PRAAx] ordered two e (vector B C))

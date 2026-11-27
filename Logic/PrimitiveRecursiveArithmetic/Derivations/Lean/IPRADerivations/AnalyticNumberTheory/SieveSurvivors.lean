@@ -239,9 +239,9 @@ theorem surv_open : ([] : List (Fm PTm 2)) ⊢[PRAAx] survF := by
 theorem survivors {x z : PTm n} (hB : Γ ⊢[PRAAx] lt x (succ z * succ z)) :
     Γ ⊢[PRAAx] ap2 (sumF coB) (succ x) (pri z) + pc (mn x z) ≐ sg x + pc x := by
   have i := inst (Γ := Γ) surv_open (![x, z] : Fin 2 → PTm n)
-  simp only [survF, Fm.subst_imp, Fm.subst_eq, subst_lt, subst_ap2, PTm.subst_add, PTm.subst_mul,
-    PTm.subst_monus, Syn.subst_var, Matrix.cons_val_zero, Matrix.cons_val_one, Matrix.head_cons,
-    ConciseIPRA.PTm.subst_zero, ConciseIPRA.PTm.subst_succ] at i
+  simp only [survF, Fm.subst_imp, Fm.subst_eq, subst_lt, subst_ap2, PTm.subst_add, PTm.subst_mul, PTm.subst_monus,
+    Syn.subst_var, Matrix.cons_val_zero, Matrix.cons_val_one, ConciseIPRA.PTm.subst_zero,
+    ConciseIPRA.PTm.subst_succ] at i
   exact .impE i hB
 
 /-! ## Legendre's formula -/

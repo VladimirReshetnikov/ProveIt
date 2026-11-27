@@ -197,16 +197,15 @@ theorem invariant (a b j : PTm n) : Γ ⊢[PRAAx] (Z j a b ≐ zero) ⟶ Inv j a
     refine PRA.qfInd _ ⟨trivial, trivial, trivial, le_QF _ _⟩ ?_ ?_
     · simp only [Fm.subst_imp, Fm.subst_and, Fm.subst_eq, subst_le, subst_ap2, subst_pairT, PTm.subst_add,
         PTm.subst_mul, subst_sim₁, subst_sim₂, vec2, Syn.subst_var, Syn.inst_zero, Syn.subst_inst_shift,
-        ConciseIPRA.PTm.subst_zero, ConciseIPRA.PTm.subst_succ]
+        ConciseIPRA.PTm.subst_zero]
       exact .impI (by simpa using inv_zero (Γ := (Z zero a b ≐ zero) :: Γ) a b)
     · simp only [Fm.subst_imp, Fm.subst_and, Fm.subst_eq, subst_le, subst_ap2, subst_pairT, PTm.subst_add,
         PTm.subst_mul, subst_sim₁, subst_sim₂, vec2, Syn.subst_var, Syn.repl_zero, subst_repl_shift,
-        ConciseIPRA.PTm.subst_zero, ConciseIPRA.PTm.subst_succ]
+        ConciseIPRA.PTm.subst_zero]
       exact .impI (inv_succ Prf.hyp1 Prf.hyp0)
   have h2 := Prf.allE j hall
-  simp only [Fm.subst_imp, Fm.subst_and, Fm.subst_eq, subst_le, subst_ap2, subst_pairT, PTm.subst_add,
-    PTm.subst_mul, subst_sim₁, subst_sim₂, vec2, Syn.subst_var, Syn.inst_zero, Syn.subst_inst_shift,
-    ConciseIPRA.PTm.subst_zero, ConciseIPRA.PTm.subst_succ] at h2
+  simp only [Fm.subst_imp, Fm.subst_and, Fm.subst_eq, subst_le, subst_ap2, subst_pairT, PTm.subst_add, PTm.subst_mul,
+    subst_sim₁, subst_sim₂, vec2, Syn.subst_var, Syn.inst_zero, Syn.subst_inst_shift, ConciseIPRA.PTm.subst_zero] at h2
   exact h2
 
 /-! ## The expansion -/

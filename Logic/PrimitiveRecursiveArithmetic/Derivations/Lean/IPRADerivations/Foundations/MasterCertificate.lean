@@ -133,9 +133,8 @@ private theorem lookup_open (values : PTm 2) : ([] : List (Fm PTm 3)) ⊢[PRAAx]
 theorem sequence_decode (values : PTm 2) {N i x : PTm n} (hi : Γ ⊢[PRAAx] lt i N) :
     Γ ⊢[PRAAx] entry (sequence values N x) i ≐ inst2 values i x := by
   have h := inst (Γ := Γ) (lookup_open values) (![N, i, x] : Fin 3 → PTm n)
-  simp only [lookupFormula, rawEntry, Fm.subst_imp, Fm.subst_eq, subst_lt, subst_fstT,
-    subst_drop, subst_ap2, subst_inst2, PTm.subst_monus, Syn.subst_var,
-    Matrix.cons_val_zero, Matrix.cons_val_one, Matrix.cons_val_two, Matrix.head_cons,
+  simp only [lookupFormula, rawEntry, Fm.subst_imp, Fm.subst_eq, subst_lt, subst_fstT, subst_ap2, subst_inst2,
+    PTm.subst_monus, Syn.subst_var, Matrix.cons_val_zero, Matrix.cons_val_one, Matrix.cons_val_two, Matrix.head_cons,
     Matrix.tail_cons, ConciseIPRA.PTm.subst_succ] at h
   exact (entry_sequence values N i x).eqTrans (Prf.impE h hi)
 

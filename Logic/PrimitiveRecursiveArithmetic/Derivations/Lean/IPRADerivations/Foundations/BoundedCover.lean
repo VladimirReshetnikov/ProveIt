@@ -45,8 +45,7 @@ theorem cover_at {m : ℕ} {Δ : List (Fm PTm m)}
   simp only [Syn.subst_var, Matrix.cons_val_zero] at e₁
   have c := bf_choice N C x e₁
   have e₂ := inst (Γ := Δ) h₂ ![bfWit N C x, x]
-  simp only [Fm.subst_imp, subst_lt, Syn.subst_var, Matrix.cons_val_zero, Matrix.cons_val_one,
-    Matrix.head_cons, at1_inst2, fmAt_inst2, Fm.subst_subst] at e₂
+  simp only [Fm.subst_imp, subst_lt, Syn.subst_var, Matrix.cons_val_zero, at1_inst2, fmAt_inst2, Fm.subst_subst] at e₂
   have eP : P.subst (fun j => Syn.subst ![bfWit N C x, x] (![var 1] j : PTm 2)) = P.subst ![x] := by
     congr 1; funext j; fin_cases j; rfl
   rw [eP] at e₂
@@ -79,8 +78,7 @@ theorem composition {m : ℕ} {Δ : List (Fm PTm m)}
   simp only [Syn.subst_var, Matrix.cons_val_zero] at e₁
   have c := bf_choice B R x e₁
   have e₂ := inst (Γ := Δ) h₂ ![bfWit B R x, x]
-  simp only [Fm.subst_imp, subst_lt, Syn.subst_var, Matrix.cons_val_zero, Matrix.cons_val_one,
-    Matrix.head_cons, at1_inst2, fmAt_inst2] at e₂
+  simp only [Fm.subst_imp, subst_lt, Syn.subst_var, Matrix.cons_val_zero, at1_inst2, fmAt_inst2] at e₂
   have d := bf_choice D S _ (Prf.impE (Prf.impE e₂ (Prf.andE₁ c)) (Prf.andE₂ c))
   exact .andI (Prf.andE₂ c) (Prf.andE₂ d)
 

@@ -17,8 +17,6 @@ any length with natural entries (`GcdList.gv` is `g`).
 * `gv_quotients`: if `g ≥ 1` then `gcd(q_0, …, q_{N−1}) = 1`, i.e. the quotient vector is primitive.
 -/
 
-set_option linter.unusedSimpArgs false
-
 namespace LeanProofs.IPRA.DiophantineNumberTheory.GcdNormalize
 
 open_ipra exports
@@ -32,8 +30,7 @@ theorem congrGcd {a a' b b' : PTm k} (h₁ : Γ ⊢[PRAAx] a ≐ a') (h₂ : Γ 
     Γ ⊢[PRAAx] gcd a b ≐ gcd a' b' := by
   have h := Prf.eqCongr (Γ := Γ) (gcd (var 0) (var 1) : PTm 2) (σ := ![a, b]) (σ' := ![a', b'])
     (fun j => by fin_cases j <;> assumption)
-  simp only [subst_ex2, Syn.subst_var, Matrix.cons_val_zero, Matrix.cons_val_one, Matrix.head_cons,
-    ConciseIPRA.PTm.subst_succ] at h
+  simp only [subst_ex2, Syn.subst_var, Matrix.cons_val_zero, Matrix.cons_val_one, ConciseIPRA.PTm.subst_succ] at h
   exact h
 
 theorem quo_le_of {x g q : PTm k} (hg : Γ ⊢[PRAAx] g ≐ succ (pred g)) (h : Γ ⊢[PRAAx] x ≐ g * q) :

@@ -76,7 +76,7 @@ theorem gate_at {E : PTm 2} {N x K δ j : PTm n} (h0 : Γ ⊢[PRAAx] le (inst2 E
     (hj : Γ ⊢[PRAAx] le j N) : Γ ⊢[PRAAx] le (inst2 E j x) (pw (succ (succ K)) j * δ) := by
   have a := Prf.allE j (gate_all h0 hrec)
   simp only [Fm.subst_imp, subst_le, subst_ap2, subst_inst2, PTm.subst_mul, Syn.subst_var, Syn.inst_zero,
-    Syn.subst_inst_shift, ConciseIPRA.PTm.subst_zero, ConciseIPRA.PTm.subst_succ] at a
+    Syn.subst_inst_shift, ConciseIPRA.PTm.subst_succ] at a
   exact Prf.impE a hj
 
 end LeanProofs.IPRA.Foundations.PrecisionGate

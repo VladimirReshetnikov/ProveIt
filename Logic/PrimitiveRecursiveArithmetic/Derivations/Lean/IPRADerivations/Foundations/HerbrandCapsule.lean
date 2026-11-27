@@ -51,8 +51,8 @@ def codeBound (f : PTm 2) (N x : PTm n) : PTm n :=
   rfl
 @[simp] theorem subst_contains {m : ℕ} (σ : Fin n → PTm m) (A : Fm PTm 2) (W q : PTm n) :
     (contains A W q).subst σ = contains A (Syn.subst σ W) (Syn.subst σ q) := by
-  simp only [contains,Fm.subst_ex,Fm.subst_and,subst_lt,SequenceComposition.subst_length,subst_memberAt,
-    MasterCertificate.subst_entry,Syn.subst_var,Syn.up_zero,Syn.subst_shift,Syn.shift_subst,Syn.up_succ,BoundedFormulas.subst_up_shift']
+  simp only [contains, Fm.subst_ex, Fm.subst_and, subst_lt, SequenceComposition.subst_length, subst_memberAt,
+    MasterCertificate.subst_entry, Syn.subst_var, Syn.up_zero, Syn.subst_shift, Syn.shift_subst, Syn.up_succ]
 @[simp] theorem subst_candidates {m : ℕ} (σ : Fin n → PTm m) (f : PTm 2) (N x : PTm n) :
     Syn.subst σ (candidates f N x) = candidates f (Syn.subst σ N) (Syn.subst σ x) := by simp [candidates]
 ipra_subst valueCap
@@ -106,14 +106,14 @@ def verifierF (A : BFm 2) : PR 2 := BoundedSyntax.bitF (checkerFormula A)
 def check (A : BFm 2) (W q : PTm n) : PTm n := ap2 (verifierF A) W q
 theorem checker_meaning (A : BFm 2) (W q : PTm n) :
     (BoundedSyntax.formula (checkerFormula A)).subst ![W,q] = contains (BoundedSyntax.formula A) W q := by
-  simp only [checkerFormula,BoundedSyntax.formula,BoundedSyntax.formula_subst,Fm.subst_ex,Fm.subst_and,
-    subst_lt,SequenceComposition.subst_length,Fm.subst_subst,MasterCertificate.subst_entry,contains,memberAt]
+  simp only [checkerFormula, BoundedSyntax.formula, BoundedSyntax.formula_subst, Fm.subst_ex, Fm.subst_and, subst_lt,
+    Fm.subst_subst, contains, memberAt]
   apply congrArg Fm.ex
   congr 1
   · simp [Syn.up,Syn.shift]
   · congr 1
     funext i
-    fin_cases i <;> simp [Syn.up,Syn.shift,Function.comp_def]
+    fin_cases i <;> simp [Syn.up, Syn.shift]
 
 theorem check_reflection (A : BFm 2) (W q : PTm n) : Γ ⊢[PRAAx]
     Fm.iff (check A W q ≐ one) (contains (BoundedSyntax.formula A) W q) := by

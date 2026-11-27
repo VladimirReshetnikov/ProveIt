@@ -17,8 +17,6 @@ Packet: `diophantine-number-theory/flt_ipra`, Theorem `thm:four`:
   the bound `⟨x, y⟩ < (2z)² + z + 1`.
 -/
 
-set_option linter.unusedSimpArgs false
-
 namespace LeanProofs.IPRA.DiophantineNumberTheory.FermatQuartic
 
 open_ipra exports
@@ -236,9 +234,8 @@ theorem fermat_quartic : ([] : List (Fm PTm 0)) ⊢[PRAAx] univ 3 quarticFormula
     .andI (congrSucc (pred_succ _).eqSymm) (.andI (congrSucc (pred_succ _).eqSymm) Prf.hyp0)
   have d := inst (Γ := [q4 (succ (var 0)) + q4 (succ (var 1)) ≐ var 2 * var 2])
     (.impI (DescentEx.descent hyps)) (![pairT (succ (var 0)) (succ (var 1)), var 2] : Fin 2 → PTm 3)
-  simp only [Fm.subst_imp, Fm.subst_eq, subst_inst2, Syn.subst_var, Matrix.cons_val_zero,
-    Matrix.cons_val_one, Matrix.head_cons, ConciseIPRA.PTm.subst_succ, ConciseIPRA.PTm.subst_zero,
-    Fm.subst_bot] at d
+  simp only [Fm.subst_imp, Fm.subst_eq, subst_inst2, Syn.subst_var, Matrix.cons_val_zero, Matrix.cons_val_one,
+    ConciseIPRA.PTm.subst_succ, ConciseIPRA.PTm.subst_zero, Fm.subst_bot] at d
   exact .impE d (chi_of_sol hs)
 
 /-- `FLT(4)`: `x, y ≥ 1 → x⁴ + y⁴ ≠ z⁴`. -/

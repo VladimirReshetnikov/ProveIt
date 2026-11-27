@@ -142,8 +142,8 @@ theorem master_values_at (X : Interface) {demands C p i : PTm n}
     (h : Γ ⊢[PRAAx] masterValues X demands C p) (hi : Γ ⊢[PRAAx] lt i (length demands)) :
     Γ ⊢[PRAAx] valid X (entry C i) (entry demands i) p := by
   have h' := Prf.allE i h
-  simp only [masterValues, Fm.subst_imp, subst_lt, subst_valid, SequenceComposition.subst_length,
-    MasterCertificate.subst_entry, Syn.subst_var, Syn.inst_zero, Syn.subst_inst_shift] at h'
+  simp only [Fm.subst_imp, subst_lt, subst_valid, SequenceComposition.subst_length, MasterCertificate.subst_entry,
+    Syn.subst_var, Syn.inst_zero, Syn.subst_inst_shift] at h'
   exact Prf.impE h' hi
 
 /-- The exclusive bound is a computed canonical sequence of pointwise caps,
@@ -398,8 +398,8 @@ theorem specialize_at (A : Fm PTm 2) {outer p j : PTm n}
     (h : Γ ⊢[PRAAx] specializeAll A outer p) (hj : Γ ⊢[PRAAx] lt j (length outer)) :
     Γ ⊢[PRAAx] queryAt A (entry outer j) p := by
   have one := Prf.allE j h
-  simp only [specializeAll, Fm.subst_imp, subst_lt, subst_queryAt, SequenceComposition.subst_length,
-    MasterCertificate.subst_entry, Syn.subst_var, Syn.inst_zero, Syn.subst_inst_shift] at one
+  simp only [Fm.subst_imp, subst_lt, subst_queryAt, SequenceComposition.subst_length, MasterCertificate.subst_entry,
+    Syn.subst_var, Syn.inst_zero, Syn.subst_inst_shift] at one
   exact Prf.impE one hj
 
 def masterRelated (X : Interface) (demands C C' p : PTm n) : Fm PTm n :=
@@ -419,8 +419,8 @@ theorem master_related_at (X : Interface) {demands C C' p i : PTm n}
     (h : Γ ⊢[PRAAx] masterRelated X demands C C' p) (hi : Γ ⊢[PRAAx] lt i (length demands)) :
     Γ ⊢[PRAAx] related X (entry C i) (entry C' i) (entry demands i) p := by
   have one := Prf.allE i h
-  simp only [masterRelated, Fm.subst_imp, subst_lt, subst_related, SequenceComposition.subst_length,
-    MasterCertificate.subst_entry, Syn.subst_var, Syn.inst_zero, Syn.subst_inst_shift] at one
+  simp only [Fm.subst_imp, subst_lt, subst_related, SequenceComposition.subst_length, MasterCertificate.subst_entry,
+    Syn.subst_var, Syn.inst_zero, Syn.subst_inst_shift] at one
   exact Prf.impE one hi
 
 theorem related_congr (X : Interface) {c c' d d' q q' p p' : PTm n}
@@ -455,7 +455,7 @@ theorem cut3 {A B C D : Fm PTm n} (h : [A, B, C] ⊢[PRAAx] D)
     (ha : Γ ⊢[PRAAx] A) (hb : Γ ⊢[PRAAx] B) (hc : Γ ⊢[PRAAx] C) : Γ ⊢[PRAAx] D := by
   apply h.trans
   intro E he
-  simp only [List.mem_cons, List.mem_singleton, List.not_mem_nil, or_false] at he
+  simp only [List.mem_cons, List.not_mem_nil, or_false] at he
   rcases he with rfl | rfl | rfl <;> assumption
 
 theorem Realizer.applySound {X Y : Interface} (R : Realizer X Y) (C q p : PTm n)
@@ -484,7 +484,7 @@ theorem Realizer.applyStable {X Y : Interface} (R : Realizer X Y) (C C' q p : PT
       Syn.subst_subst, Function.comp_def] using R.stable.subst ![C, C', q, p]
   apply hLocal.trans
   intro E he
-  simp only [List.mem_cons, List.mem_singleton, List.not_mem_nil, or_false] at he
+  simp only [List.mem_cons, List.not_mem_nil, or_false] at he
   rcases he with rfl | rfl | rfl | rfl | rfl <;> assumption
 
 theorem extracted_master_related (X : Interface) (inner : PR 2) (outer C C' p j : PTm n)
@@ -897,7 +897,7 @@ theorem ObservationInvariant.apply {X : Interface} (law : ObservationInvariant X
     simpa using law.proof.subst ![c, c', q, p]
   apply hLocal.trans
   intro A hA
-  simp only [List.mem_cons, List.mem_singleton, List.not_mem_nil, or_false] at hA
+  simp only [List.mem_cons, List.not_mem_nil, or_false] at hA
   rcases hA with rfl | rfl <;> assumption
 
 theorem Realizer.certificate_independent {X Y : Interface} (R : Realizer X Y) (law : ObservationInvariant Y)

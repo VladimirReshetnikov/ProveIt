@@ -63,10 +63,10 @@ theorem exp_lip {p q p' q' d : PTm n} (hd : Γ ⊢[PRAAx] p * q' ≐ p' * q + d)
   have hall : Γ ⊢[PRAAx] Fm.all (LF (var 0) (Syn.shift p) (Syn.shift q) (Syn.shift p') (Syn.shift q') (Syn.shift d)) := by
     refine PRA.qfInd _ (le_QF _ _) ?_ ?_
     · simp only [subst_le, subst_ap2, subst_pairT, PTm.subst_add, PTm.subst_mul, ConciseIPRA.PTm.subst_succ,
-        ConciseIPRA.PTm.subst_zero, Syn.subst_var, Syn.inst_zero, Syn.subst_inst_shift]
+        Syn.subst_var, Syn.inst_zero, Syn.subst_inst_shift]
       exact lf_zero hd
     · simp only [subst_le, subst_ap2, subst_pairT, PTm.subst_add, PTm.subst_mul, ConciseIPRA.PTm.subst_succ,
-        ConciseIPRA.PTm.subst_zero, Syn.subst_var, Syn.repl_zero, subst_repl_shift]
+        Syn.subst_var, Syn.repl_zero, subst_repl_shift]
       have hd' : (LF (var 0) (Syn.shift p) (Syn.shift q) (Syn.shift p') (Syn.shift q') (Syn.shift d) :: Γ.map Fm.shift)
           ⊢[PRAAx] Syn.shift p * Syn.shift q' ≐ Syn.shift p' * Syn.shift q + Syn.shift d := by
         have b := hd.shift
@@ -74,8 +74,8 @@ theorem exp_lip {p q p' q' d : PTm n} (hd : Γ ⊢[PRAAx] p * q' ≐ p' * q + d)
         exact b.wk
       exact lf_step hd' Prf.hyp0
   have r := Prf.allE K hall
-  simp only [subst_le, subst_ap2, subst_pairT, PTm.subst_add, PTm.subst_mul, ConciseIPRA.PTm.subst_succ,
-    ConciseIPRA.PTm.subst_zero, Syn.subst_var, Syn.inst_zero, Syn.subst_inst_shift] at r
+  simp only [subst_le, subst_ap2, subst_pairT, PTm.subst_add, PTm.subst_mul, ConciseIPRA.PTm.subst_succ, Syn.subst_var,
+    Syn.inst_zero, Syn.subst_inst_shift] at r
   exact r
 
 end LeanProofs.IPRA.AnalyticNumberTheory.RobinExpWidth

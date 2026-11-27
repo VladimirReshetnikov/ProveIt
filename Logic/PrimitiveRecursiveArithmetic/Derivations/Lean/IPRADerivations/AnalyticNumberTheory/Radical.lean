@@ -14,8 +14,6 @@ Packet: `analytic-number-theory/von_mangoldt_totient_ipra_2026-11-15`, Theorem `
 * `radical_identity`: combine with `EulerProduct.euler_product_at`.
 -/
 
-set_option linter.unusedSimpArgs false
-
 namespace LeanProofs.IPRA.AnalyticNumberTheory.Radical
 
 open_ipra exports

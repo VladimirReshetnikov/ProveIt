@@ -18,8 +18,6 @@ For natural vectors (bodies `V(i, x)`):
   induction on the number of terms or factors.
 -/
 
-set_option linter.unusedSimpArgs false
-
 namespace LeanProofs.IPRA.DiophantineNumberTheory.ModularCertificate
 
 open_ipra exports

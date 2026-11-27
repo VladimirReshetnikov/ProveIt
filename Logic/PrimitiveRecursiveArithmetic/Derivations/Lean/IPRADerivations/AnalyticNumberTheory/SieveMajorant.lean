@@ -98,7 +98,7 @@ def S0 : PTm 2 :=
 
 theorem inst2_S0 (m z : PTm n) :
     inst2 S0 m z = inst2 cB m (sndT (sndT z)) * eqb (ap2 (sumF rB) (fstT z) m) zero := by
-  simp [inst2, S0, Syn.subst_subst]
+  simp [inst2, S0]
 
 theorem S0_at (m Z P : PTm n) :
     Γ ⊢[PRAAx] inst2 S0 m (pairT Z (pairT Z P)) ≐ inst2 cB m P * rgh Z m := by

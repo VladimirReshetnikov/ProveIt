@@ -27,8 +27,6 @@ a slack `c`: `d_i = a_{i+1} + c − a_i`.
 The candidate starts `n_i`, the choice of `K` and the final margin are not derived here.
 -/
 
-set_option linter.unusedSimpArgs false
-
 namespace LeanProofs.IPRA.Foundations.WindowStability
 
 open_ipra exports

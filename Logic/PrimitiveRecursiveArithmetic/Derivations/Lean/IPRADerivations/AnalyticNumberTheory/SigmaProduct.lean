@@ -19,8 +19,6 @@ depends on `n` through the valuation, so `EulerProduct.pp_peel` is generalized (
 least prime factor (as in `Radical.phi_rad`), with `SigmaMult.sigma_mul` and `SigmaPrimePower.sigma_pow`.
 -/
 
-set_option linter.unusedSimpArgs false
-
 namespace LeanProofs.IPRA.AnalyticNumberTheory.SigmaProduct
 
 open_ipra exports

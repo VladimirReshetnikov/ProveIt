@@ -283,14 +283,14 @@ ipra_subst strictSorted [Syn.subst_shift, Syn.shift_subst]
 theorem sorted_at (m w i : PTm n) (h : Γ ⊢[PRAAx] sorted m w) (hi : Γ ⊢[PRAAx] lt (succ i) m) :
     Γ ⊢[PRAAx] le (RuntimePermutationWords.digit m w i) (RuntimePermutationWords.digit m w (succ i)) := by
   have hh := h.allE i
-  simp only [sorted,Fm.subst_imp,subst_lt,subst_le,ConciseIPRA.PTm.subst_succ,RuntimePermutationWords.subst_digit,
-    Syn.subst_var,Syn.inst_zero,Syn.subst_inst_shift] at hh
+  simp only [Fm.subst_imp, subst_lt, subst_le, ConciseIPRA.PTm.subst_succ, RuntimePermutationWords.subst_digit,
+    Syn.subst_var, Syn.inst_zero, Syn.subst_inst_shift] at hh
   exact .impE hh hi
 theorem strict_at (m w i : PTm n) (h : Γ ⊢[PRAAx] strictSorted m w) (hi : Γ ⊢[PRAAx] lt (succ i) m) :
     Γ ⊢[PRAAx] lt (RuntimePermutationWords.digit m w i) (RuntimePermutationWords.digit m w (succ i)) := by
   have hh := h.allE i
-  simp only [strictSorted,Fm.subst_imp,subst_lt,ConciseIPRA.PTm.subst_succ,RuntimePermutationWords.subst_digit,
-    Syn.subst_var,Syn.inst_zero,Syn.subst_inst_shift] at hh
+  simp only [Fm.subst_imp, subst_lt, ConciseIPRA.PTm.subst_succ, RuntimePermutationWords.subst_digit, Syn.subst_var,
+    Syn.inst_zero, Syn.subst_inst_shift] at hh
   exact .impE hh hi
 theorem final_sorted (m w : PTm n) (hw : Γ ⊢[PRAAx] lt w (RuntimePermutationWords.horizon m)) :
     Γ ⊢[PRAAx] sorted m (final m w) := by

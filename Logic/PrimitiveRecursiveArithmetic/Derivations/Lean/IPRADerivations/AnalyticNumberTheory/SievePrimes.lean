@@ -136,7 +136,7 @@ theorem prime_pt {m Z c : PTm n} (hc : Γ ⊢[PRAAx] le c one) :
 def piB : PTm 2 := Syn.subst ![var 0, sndT (sndT (var 1))] cB * isP (var 0)
 
 theorem inst2_piB (m z : PTm n) : inst2 piB m z = inst2 cB m (sndT (sndT z)) * isP m := by
-  simp [inst2, piB, Syn.subst_subst, FactorVector.subst_isP]
+  simp [inst2, piB]
 
 theorem piB_at (m Z P : PTm n) :
     Γ ⊢[PRAAx] inst2 piB m (pairT Z (pairT Z P)) ≐ inst2 cB m P * isP m := by

@@ -15,8 +15,6 @@ product test, `a_i ≤ b_i` makes every factor at least `s ≥ 1`. If `a_i > b_i
 * `inner_pos`, `prod_forward`, `prod_backward`, `sym_char`: `(∀i<m a_i ≤ b_i) ↔ 1 ≤ Π_{t<U} Π_{i<m} |t+1+b_i−a_i|`.
 -/
 
-set_option linter.unusedSimpArgs false
-
 namespace LeanProofs.IPRA.AnalyticNumberTheory.SymmetricProduct
 
 open_ipra exports

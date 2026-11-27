@@ -100,14 +100,14 @@ theorem pre (k N : PTm n) : Γ ⊢[PRAAx] Pre (uv a' (succ k) N) (co a' (succ N)
       (uv a' (var 0) (succ (Syn.shift N)))) := by
     refine PRA.qfInd _ (pre_QF _ _ _) ?_ ?_
     · simp only [subst_Pre, subst_uv, subst_ap1, Syn.subst_var, Syn.inst_zero, Syn.subst_inst_shift,
-        ConciseIPRA.PTm.subst_succ, ConciseIPRA.PTm.subst_zero]
+        ConciseIPRA.PTm.subst_succ]
       exact pre_base N
     · simp only [subst_Pre, subst_uv, subst_ap1, Syn.subst_var, Syn.repl_zero, subst_repl_shift,
-        ConciseIPRA.PTm.subst_succ, ConciseIPRA.PTm.subst_zero]
+        ConciseIPRA.PTm.subst_succ]
       exact pre_step Prf.hyp0
   have h2 := Prf.allE k hall
   simp only [subst_Pre, subst_uv, subst_ap1, Syn.subst_var, Syn.inst_zero, Syn.subst_inst_shift,
-    ConciseIPRA.PTm.subst_succ, ConciseIPRA.PTm.subst_zero] at h2
+    ConciseIPRA.PTm.subst_succ] at h2
   exact h2
 
 /-! ## The nested fraction -/
@@ -227,13 +227,11 @@ theorem tail_succ {j m : PTm n} (hj : Γ ⊢[PRAAx] lt (succ j) m)
 
 theorem tail_all (m : PTm n) : Γ ⊢[PRAAx] Fm.all (TailF (a' := a') (var 0) (Syn.shift m)) := by
   refine PRA.qfInd _ ⟨lt_QF _ _, trivial, trivial⟩ ?_ ?_
-  · simp only [TailF, Fm.subst_imp, Fm.subst_and, Fm.subst_eq, subst_lt, subst_bk, subst_uv, subst_fstT,
-      subst_sndT, subst_ap2, PTm.subst_monus, subst_le, Syn.subst_var, Syn.inst_zero, Syn.subst_inst_shift, ConciseIPRA.PTm.subst_succ,
-      ConciseIPRA.PTm.subst_zero]
+  · simp only [TailF, Fm.subst_imp, Fm.subst_and, Fm.subst_eq, subst_lt, subst_fstT, subst_sndT, subst_ap2,
+      PTm.subst_monus, Syn.subst_var, Syn.inst_zero, Syn.subst_inst_shift, ConciseIPRA.PTm.subst_succ]
     exact .impI (tail_zero Prf.hyp0)
-  · simp only [TailF, Fm.subst_imp, Fm.subst_and, Fm.subst_eq, subst_lt, subst_bk, subst_uv, subst_fstT,
-      subst_sndT, subst_ap2, PTm.subst_monus, subst_le, Syn.subst_var, Syn.repl_zero, subst_repl_shift, ConciseIPRA.PTm.subst_succ,
-      ConciseIPRA.PTm.subst_zero]
+  · simp only [TailF, Fm.subst_imp, Fm.subst_and, Fm.subst_eq, subst_lt, subst_fstT, subst_sndT, subst_ap2,
+      PTm.subst_monus, Syn.subst_var, Syn.repl_zero, subst_repl_shift, ConciseIPRA.PTm.subst_succ]
     refine .impI ?_
     let Θ : List (Fm PTm (n + 1)) := lt (succ (var 0)) (Syn.shift m) ::
       TailF (a' := a') (var 0) (Syn.shift m) :: Γ.map Fm.shift
@@ -246,9 +244,8 @@ theorem bk_tail {j m : PTm n} (h : Γ ⊢[PRAAx] lt j m) :
     Γ ⊢[PRAAx] (fstT (bk a' j m) ≐ sP (uv a' (succ j) (monus m (succ j)))) ⋏
       (sndT (bk a' j m) ≐ sQ (uv a' (succ j) (monus m (succ j)))) := by
   have h2 := Prf.allE j (tail_all (Γ := Γ) (a' := a') m)
-  simp only [TailF, Fm.subst_imp, Fm.subst_and, Fm.subst_eq, subst_lt, subst_bk, subst_uv, subst_fstT,
-    subst_sndT, subst_ap2, PTm.subst_monus, subst_le, Syn.subst_var, Syn.inst_zero, Syn.subst_inst_shift, ConciseIPRA.PTm.subst_succ,
-    ConciseIPRA.PTm.subst_zero] at h2
+  simp only [TailF, Fm.subst_imp, Fm.subst_and, Fm.subst_eq, subst_lt, subst_fstT, subst_sndT, subst_ap2,
+    PTm.subst_monus, Syn.subst_var, Syn.inst_zero, Syn.subst_inst_shift, ConciseIPRA.PTm.subst_succ] at h2
   exact .impE h2 h
 
 theorem last_alg {F S A X Y U V a0 x1 x2 x3 x4 : PTm n} (hb1 : Γ ⊢[PRAAx] F ≐ A * X + Y) (hb2 : Γ ⊢[PRAAx] S ≐ X)

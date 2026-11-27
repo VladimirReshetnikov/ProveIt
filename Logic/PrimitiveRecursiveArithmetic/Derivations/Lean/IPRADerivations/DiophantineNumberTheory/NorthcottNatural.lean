@@ -58,8 +58,7 @@ theorem gv_congr (f g : PTm 2) {N x y : PTm k}
     (h : Γ ⊢[PRAAx] Fm.all (lt (var 0) (Syn.shift N) ⟶ inst2 f (var 0) (Syn.shift x) ≐ inst2 g (var 0) (Syn.shift y))) :
     Γ ⊢[PRAAx] gv f N x ≐ gv g N y := by
   have h2 := Prf.allE N (gv_congr_all f g h)
-  simp only [Fm.subst_imp, Fm.subst_eq, subst_le, subst_ap2, Syn.subst_var, Syn.inst_zero, Syn.subst_inst_shift,
-    ConciseIPRA.PTm.subst_zero, ConciseIPRA.PTm.subst_succ] at h2
+  simp only [Fm.subst_imp, Fm.subst_eq, subst_le, subst_ap2, Syn.subst_var, Syn.inst_zero, Syn.subst_inst_shift] at h2
   exact Prf.impE h2 (le_refl N)
 
 alias congrEqb := Common.congrEqb

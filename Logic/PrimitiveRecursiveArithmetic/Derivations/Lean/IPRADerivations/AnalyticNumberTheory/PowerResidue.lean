@@ -17,8 +17,6 @@ For a modulus `q ≥ 2` and a unit `D` (`gcd(D, q) = 1`):
 * `cop_pw`: `gcd(d, q) = 1` gives `gcd(d^h, q) = 1`, and `cop_of_sol`: `D m ≡ b` with `b` reduced forces `gcd(D, q) = 1`.
 -/
 
-set_option linter.unusedSimpArgs false
-
 namespace LeanProofs.IPRA.AnalyticNumberTheory.PowerResidue
 
 open_ipra exports

@@ -141,7 +141,7 @@ theorem shift_res (j h q b : PTm n) :
 
 theorem shift_unit (j h q : PTm n) :
     Syn.shift (eqb (gcd (pw (succ j) h) q) one) = eqb (gcd (pw (succ (Syn.shift j)) (Syn.shift h)) (Syn.shift q)) one := by
-  simp only [Syn.shift, PTm.subst_mul, PTm.subst_add, PTm.subst_monus, LeanProofs.IPRA.PTm.subst_pred, subst_eqb, subst_ex2, subst_ap2, Bezout.subst_cur, ConciseIPRA.PTm.subst_succ, ConciseIPRA.PTm.subst_zero]
+  simp only [Syn.shift, subst_eqb, subst_ex2, subst_ap2, ConciseIPRA.PTm.subst_succ, ConciseIPRA.PTm.subst_zero]
 
 /-- The twisted prefix: `A_tw(M, ⟨j, X⟩) = [gcd(D, q) = 1] · A_{q,b_D}(M)`, `D = (j+1)^h`. -/
 theorem tw_A (M j q b h y : PTm n) :
@@ -185,7 +185,7 @@ theorem hyps_shift {q b : PTm n} (hq : Γ ⊢[PRAAx] le two q) (hb : Γ ⊢[PRAA
     simp only [Fm.shift, subst_le, ConciseIPRA.PTm.subst_succ, ConciseIPRA.PTm.subst_zero] at e
     exact e
   · have e := hb.shift
-    simp only [Fm.shift, lt, subst_le, ConciseIPRA.PTm.subst_succ, ConciseIPRA.PTm.subst_zero] at e
+    simp only [Fm.shift, lt, subst_le, ConciseIPRA.PTm.subst_succ] at e
     exact e
   · have e := hc.shift
     simp only [Fm.shift, Fm.subst_eq, subst_ex2, ConciseIPRA.PTm.subst_succ, ConciseIPRA.PTm.subst_zero] at e

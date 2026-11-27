@@ -17,8 +17,6 @@ Packet: `analytic-number-theory/von_mangoldt_totient_ipra_2026-11-15`, Lemma `le
   form of `thm:lcm-quotient`.
 -/
 
-set_option linter.unusedSimpArgs false
-
 namespace LeanProofs.IPRA.AnalyticNumberTheory.LcmUpto
 
 open_ipra exports
@@ -98,8 +96,7 @@ theorem lcmu_succ (N : PTm n) : Γ ⊢[PRAAx] lcmu (succ N) ≐ lcm (lcmu N) (su
   have h := rec2_succ (Γ := Γ) (succ zero) lcmStep N zero
   have e : Syn.subst ![N, ap2 lcmuF N zero, zero] lcmStep = lcm (lcmu N) (succ N) := by
     simp only [lcmStep, lcm, lcmu, subst_ap2, PTm.subst_mul, subst_ex2, Syn.subst_var, Matrix.cons_val_zero,
-      Matrix.cons_val_one, Matrix.cons_val_two, Matrix.head_cons, Matrix.tail_cons,
-      ConciseIPRA.PTm.subst_succ, ConciseIPRA.PTm.subst_zero]
+      Matrix.cons_val_one, ConciseIPRA.PTm.subst_succ]
   rw [e] at h; exact h
 
 theorem pos_of_lt_zero {X : PTm n} (h : Γ ⊢[PRAAx] lt zero X) : Γ ⊢[PRAAx] X ≐ succ (pred X) :=
@@ -125,8 +122,7 @@ private theorem pos₀ : ([] : List (Fm PTm 1)) ⊢[PRAAx] posF := by
   refine ind _ trivial ?_ ?_
   · simp only [posF, subst_lt, subst_ap2, Syn.subst_var, Syn.inst_zero, ConciseIPRA.PTm.subst_zero]
     exact le_of_eq_add (d := zero) (lcmu_zero.eqTrans (add_zero _).eqSymm)
-  · simp only [posF, subst_lt, subst_ap2, Syn.subst_var, Syn.repl_zero, ConciseIPRA.PTm.subst_zero,
-      ConciseIPRA.PTm.subst_succ]
+  · simp only [posF, subst_lt, subst_ap2, Syn.subst_var, Syn.repl_zero, ConciseIPRA.PTm.subst_zero]
     exact lt_zero_of_pos ((lcmu_succ _).eqTrans ((lcm_pos (pos_of_lt_zero Prf.hyp0)
       (congrSucc (pred_succ _).eqSymm)).eqTrans (congrSucc (congrPred (lcmu_succ _).eqSymm))))
 
@@ -227,7 +223,7 @@ private abbrev lvF : Fm PTm 2 := isP (var 1) ≐ one ⟶ Inv (var 1) (var 0)
 
 theorem subst_Inv {m : ℕ} (σ : Fin n → PTm m) (p N : PTm n) :
     (Inv p N).subst σ = Inv (Syn.subst σ p) (Syn.subst σ N) := by
-  simp [Inv, FactorVector.subst_val]
+  simp [Inv]
 
 private theorem lv₀ : ([] : List (Fm PTm 2)) ⊢[PRAAx] lvF := by
   refine ind _ ⟨trivial, trivial, trivial⟩ ?_ ?_
@@ -244,7 +240,7 @@ i.e. `e = max {a : p^a ≤ N}`. -/
 theorem lcm_valuation {p : PTm n} (hp : Γ ⊢[PRAAx] prime p) (N : PTm n) : Γ ⊢[PRAAx] Inv p N := by
   have i := inst (Γ := Γ) lv₀ (![N, p] : Fin 2 → PTm n)
   simp only [lvF, Fm.subst_imp, Fm.subst_eq, subst_Inv, FactorVector.subst_isP, Syn.subst_var, Matrix.cons_val_zero,
-    Matrix.cons_val_one, Matrix.head_cons, ConciseIPRA.PTm.subst_zero, ConciseIPRA.PTm.subst_succ] at i
+    Matrix.cons_val_one, ConciseIPRA.PTm.subst_zero, ConciseIPRA.PTm.subst_succ] at i
   exact Prf.impE i (Valuation.isP_of_prime hp)
 
 /-- `thm:lcm-quotient`, valuation form: `v_p(lcm(1, …, N+1)) = v_p(lcm(1, …, N)) + [N + 1 is a positive

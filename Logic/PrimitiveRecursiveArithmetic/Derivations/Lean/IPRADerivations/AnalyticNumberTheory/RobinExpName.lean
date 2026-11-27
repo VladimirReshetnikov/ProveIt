@@ -211,15 +211,13 @@ theorem e_mono {p q p' q' : PTm n} (hx : Γ ⊢[PRAAx] le (p * q') (p' * q)) (K 
     Γ ⊢[PRAAx] le (Ev K p q * Ed K q') (Ev K p' q' * Ed K q) := by
   have hall : Γ ⊢[PRAAx] Fm.all (EM (var 0) (Syn.shift p) (Syn.shift q) (Syn.shift p') (Syn.shift q')) := by
     refine PRA.qfInd _ (le_QF _ _) ?_ ?_
-    · simp only [subst_le, subst_ap2, subst_pairT, PTm.subst_add, PTm.subst_mul, ConciseIPRA.PTm.subst_succ,
-        ConciseIPRA.PTm.subst_zero, Syn.subst_var, Syn.inst_zero, Syn.subst_inst_shift]
+    · simp only [subst_le, subst_ap2, subst_pairT, PTm.subst_mul, Syn.subst_var, Syn.inst_zero, Syn.subst_inst_shift]
       have a := natEq (E_zero (Γ := Γ) p q)
       have b := natEq (E_zero (Γ := Γ) p' q')
       have c := natEq (pw_zero (Γ := Γ) q)
       have d := natEq (pw_zero (Γ := Γ) q')
       ipra_le 0 with 𝔞 (pw q zero) * b - 𝔞 (pw q' zero) * a + c - d
-    · simp only [subst_le, subst_ap2, subst_pairT, PTm.subst_add, PTm.subst_mul, ConciseIPRA.PTm.subst_succ,
-        ConciseIPRA.PTm.subst_zero, Syn.subst_var, Syn.repl_zero, subst_repl_shift]
+    · simp only [subst_le, subst_ap2, subst_pairT, PTm.subst_mul, Syn.subst_var, Syn.repl_zero, subst_repl_shift]
       have hx' : (EM (var 0) (Syn.shift p) (Syn.shift q) (Syn.shift p') (Syn.shift q') :: Γ.map Fm.shift) ⊢[PRAAx]
           le (Syn.shift p * Syn.shift q') (Syn.shift p' * Syn.shift q) := by
         have b := hx.shift
@@ -227,8 +225,7 @@ theorem e_mono {p q p' q' : PTm n} (hx : Γ ⊢[PRAAx] le (p * q') (p' * q)) (K 
         exact b.wk
       exact em_step hx' Prf.hyp0
   have r := Prf.allE K hall
-  simp only [subst_le, subst_ap2, subst_pairT, PTm.subst_add, PTm.subst_mul, ConciseIPRA.PTm.subst_succ,
-    ConciseIPRA.PTm.subst_zero, Syn.subst_var, Syn.inst_zero, Syn.subst_inst_shift] at r
+  simp only [subst_le, subst_ap2, subst_pairT, PTm.subst_mul, Syn.subst_var, Syn.inst_zero, Syn.subst_inst_shift] at r
   ipra_le 𝔞 (Fv K) * sl r
 
 end LeanProofs.IPRA.AnalyticNumberTheory.RobinExpName

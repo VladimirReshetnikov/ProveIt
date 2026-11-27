@@ -79,8 +79,8 @@ theorem rise_alternative (N x : PTm n) :
     Γ ⊢[PRAAx] ExW (riseB r) N x ⋎ le (inst2 r zero x + N) (inst2 r N x) := by
   refine .orE (decision (f := riseB r) N x) (.orI₁ Prf.hyp0) (.orI₂ ?_)
   have a := Prf.allE N (rise_all r (Prf.hyp0 : (NoW (riseB r) N x :: Γ) ⊢[PRAAx] NoW (riseB r) N x))
-  simp only [Fm.subst_imp, subst_le, subst_inst2, PTm.subst_add, Syn.subst_var, Syn.inst_zero,
-    Syn.subst_inst_shift, ConciseIPRA.PTm.subst_zero, ConciseIPRA.PTm.subst_succ] at a
+  simp only [Fm.subst_imp, subst_le, subst_inst2, PTm.subst_add, Syn.subst_var, Syn.inst_zero, Syn.subst_inst_shift,
+    ConciseIPRA.PTm.subst_zero] at a
   exact .impE a (le_refl N)
 
 /-- `lem:rise`, second part: `r(B + 1) ≤ B` forces a nonrise at some `i ≤ B`. -/

@@ -219,7 +219,7 @@ theorem generation (P : PTm n) :
       refine (congrOp G (congrSmul (congrPw (.eqRefl _) k0) q0) a0).eqTrans ?_
       exact (congrOp G one1 (.eqRefl _)).eqTrans ((hC _ _).eqTrans (hI _))
     · rw [subst_invF]
-      simp only [Syn.subst_var, Syn.repl_zero, subst_repl_shift, ConciseIPRA.PTm.subst_succ]
+      simp only [Syn.subst_var, Syn.repl_zero, subst_repl_shift]
       exact inv_step hA hC hI hDesc Prf.hyp0
   have hhgt : Γ ⊢[PRAAx] Fm.all (hgtF G e T m H D I R (var 0) (Syn.shift P)) := by
     refine PRA.qfInd _ ⟨le_QF _ _, le_QF _ _⟩ ?_ ?_
@@ -229,7 +229,7 @@ theorem generation (P : PTm n) :
       exact .orI₂ (le_congr (congrAdd (congrAp1 H q0).eqSymm (.eqRefl _)) (.eqRefl _)
         (le_congr (add_zero _).eqSymm (.eqRefl _) (le_refl _)))
     · rw [subst_hgtF]
-      simp only [Syn.subst_var, Syn.repl_zero, subst_repl_shift, ConciseIPRA.PTm.subst_succ]
+      simp only [Syn.subst_var, Syn.repl_zero, subst_repl_shift]
       exact hgt_step hDec Prf.hyp0
   have i2 := Prf.allE (ap1 H P) hinv
   rw [subst_invF] at i2; simp only [Syn.subst_var, Syn.inst_zero, Syn.subst_inst_shift] at i2

@@ -193,7 +193,7 @@ theorem weighted_dimension {L m' d' : PTm k}
   have rb := natEq (sum_linear (bd TG) (zero : PTm 2) (bd QG) (bd RG)
     (N := succ m') (lam := zero) (al := zero) (kap := zero) (be := succ m')
     (x := pairT L (pairT (succ m') (succ d'))) (Γ := Γ) (.allI (.impI (by
-      simp only [shift_pairT, sh_zero, sh_succ, sh_add, sh_mul, inst2_zB]
+      simp only [shift_pairT, sh_zero, sh_succ, inst2_zB]
       exact ptB _ _ _ _))))
   have hL' := hL.shift
   have eL : Fm.shift (le (succ d' * m') (L + succ m')) =
@@ -203,7 +203,7 @@ theorem weighted_dimension {L m' d' : PTm k}
   have rc := natEq (sum_linear (bd CG) (zero : PTm 2) (bd QG) (zero : PTm 2)
     (N := succ m') (lam := succ d') (al := zero) (kap := one) (be := one)
     (x := pairT L (pairT (succ m') (succ d'))) (Γ := Γ) (.allI (.impI (by
-      simp only [shift_pairT, sh_zero, sh_succ, sh_add, sh_mul, inst2_zB]
+      simp only [shift_pairT, sh_zero, sh_succ, inst2_zB]
       exact ptC Prf.hyp0 hL'.wk))))
   refine mul_cancel (d' := m') ?_
   ipra_lc (2 * (𝔞 m' + 1)) * rc +

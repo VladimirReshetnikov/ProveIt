@@ -17,8 +17,6 @@ i.e. `|ψ_w(x)/F − x| ≤ (1/q + 2/D) x`. The size conditions of the contracti
 `le_fact` (`L ≤ L!`) and elementary polynomial comparisons.
 -/
 
-set_option linter.unusedSimpArgs false
-
 namespace LeanProofs.IPRA.AnalyticNumberTheory.PsiModulus
 
 open_ipra exports
@@ -86,9 +84,8 @@ theorem psi_modulus {p x : PTm n} (hx : Γ ⊢[PRAAx] le (pw two (sT (Jst p) (Dq
     hKxL hxL hxK (by ipra_le (𝔞 x + 1) ^ 4 * ((𝔞 x + 1) ^ 4 + 𝔞 (pw two (two * (two * x)))))
     (le_trans (le_trans (by ipra_le 2 * 𝔞 x ^ 5 + 8 * 𝔞 x ^ 4 + 12 * 𝔞 x ^ 3 + 8 * 𝔞 x ^ 2) h2K) hLf) (le_trans h2K hLf) (le_trans hF4 hLf)
   have a := Prf.allE x st
-  simp only [Stage, Fm.subst_imp, subst_le, subst_lt, subst_ap2, PTm.subst_mul, PTm.subst_add, PTm.subst_monus,
-    ConciseIPRA.PTm.subst_succ, ConciseIPRA.PTm.subst_zero, Syn.subst_var, Syn.inst_zero, Syn.subst_inst_shift,
-    subst_pairT] at a
+  simp only [Fm.subst_imp, subst_le, subst_lt, subst_ap2, PTm.subst_mul, PTm.subst_add, PTm.subst_monus,
+    ConciseIPRA.PTm.subst_succ, Syn.subst_var, Syn.inst_zero, Syn.subst_inst_shift] at a
   exact Prf.impE (Prf.impE a (le_refl _)) hx
 
 end LeanProofs.IPRA.AnalyticNumberTheory.PsiModulus

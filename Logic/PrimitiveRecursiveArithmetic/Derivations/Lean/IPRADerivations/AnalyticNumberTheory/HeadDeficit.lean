@@ -21,8 +21,6 @@ block deficits of `BlockDeficitMain` can be inserted below it.
 * `hd_pt`: the exact pointwise identity `D·body + 2F u g = 2AF·u F m`.
 -/
 
-set_option linter.unusedSimpArgs false
-
 namespace LeanProofs.IPRA.AnalyticNumberTheory.HeadDeficit
 
 open_ipra exports
@@ -182,9 +180,9 @@ theorem head_deficit (hK : Γ ⊢[PRAAx] le one K) (hL : Γ ⊢[PRAAx] le (K * s
         show Syn.shift (two * fact L) = two * fact (Syn.shift L) by simp [Syn.shift]]
       have hv : (lt (var 0) (Syn.shift M) :: Γ.map Fm.shift) ⊢[PRAAx] lt (var 0) (Syn.shift M) := Prf.hyp0
       have a := Prf.allE (quo (Syn.shift x) (succ (succ (var 0)))) hst.shift
-      simp only [Stage, Fm.shift, Fm.subst_all, Fm.subst_imp, Fm.subst_eq, subst_le, subst_lt, subst_ap2,
-        PTm.subst_mul, PTm.subst_add, PTm.subst_monus, ConciseIPRA.PTm.subst_succ, ConciseIPRA.PTm.subst_zero,
-        Syn.subst_var, Syn.up_zero, Syn.inst_zero, subst_up_shift_pal, Syn.subst_inst_shift] at a
+      simp only [Fm.subst_imp, subst_le, subst_lt, subst_ap2, PTm.subst_mul, PTm.subst_add, PTm.subst_monus,
+        ConciseIPRA.PTm.subst_succ, ConciseIPRA.PTm.subst_zero, Syn.subst_var, Syn.up_zero, Syn.inst_zero,
+        subst_up_shift_pal, Syn.subst_inst_shift] at a
       have h1 : (lt (var 0) (Syn.shift M) :: Γ.map Fm.shift) ⊢[PRAAx]
           lt (quo (Syn.shift x) (succ (succ (var 0)))) (succ (Syn.shift x)) :=
         (succ_monus_succ _ _).eqTrans (LeanProofs.IPRA.AnalyticNumberTheory.DivisorHyperbola.quo_le_self

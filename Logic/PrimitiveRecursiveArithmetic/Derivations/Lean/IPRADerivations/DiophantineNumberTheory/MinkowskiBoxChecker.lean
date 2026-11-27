@@ -85,8 +85,8 @@ theorem separation_formula (B i j k : PTm n) :
     formula (separationSyntax B i j k) = rationalSeparationAt B i j k := rfl
 
 theorem disjoint_formula (N B : PTm n) : formula (disjointSyntax N B) = rationalDisjoint N B := by
-  simp only [disjointSyntax,formula,rationalDisjoint,rationalSeparated,separation_formula,
-    Syn.shift,subst_length,Syn.subst_var,Syn.shift_var]
+  simp only [disjointSyntax, formula, rationalDisjoint, rationalSeparated, separation_formula, Syn.shift, subst_length,
+    Syn.subst_var]
   rfl
 
 theorem certificate_formula (N B : PTm n) : formula (certificateSyntax N B) = boxOK N B := by

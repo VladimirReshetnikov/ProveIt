@@ -96,7 +96,7 @@ alias sg_le_one := Common.sg_le_one
 theorem count_le (K : PTm 2) (P p : PTm n) : Γ ⊢[PRAAx] le (count K P p) P := by
   have all : Γ ⊢[PRAAx] .all (le (count K (var 0) (Syn.shift p)) (var 0)) := by
     refine PRA.qfInd _ (le_QF _ _) ?_ ?_
-    · simp only [Fm.subst_eq,Fm.subst_imp,subst_le,subst_count,Syn.subst_var,Syn.inst_zero,Syn.subst_inst_shift]
+    · simp only [subst_le, subst_count, Syn.subst_var, Syn.inst_zero, Syn.subst_inst_shift]
       exact le_congr (FilteredEnumeration.rank_zero K p).eqSymm (.eqRefl _) (le_refl zero)
     · simp only [subst_le,subst_count,Syn.subst_var,Syn.repl_zero,subst_repl_shift]
       exact le_congr (FilteredEnumeration.rank_succ K _ _).eqSymm (succ_eq_add_one _).eqSymm

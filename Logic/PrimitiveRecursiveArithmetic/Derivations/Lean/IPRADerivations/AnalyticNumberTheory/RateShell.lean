@@ -315,9 +315,8 @@ abbrev InM (r c y : PTm n) : Fm PTm n :=
 theorem inM_at {r c y : PTm n} (hc : Γ ⊢[PRAAx] InM aP aN r c y) (N : PTm n) :
     Γ ⊢[PRAAx] le (pw (Mab aP aN y N) (k4 r)) (c * pw N (succ (two * r))) := by
   have b := Prf.allE N hc
-  simp only [InM, subst_le, subst_ap2, PTm.subst_add, PTm.subst_mul, PTm.subst_monus, subst_pairT,
-    LeanProofs.IPRA.PTm.subst_pred, ConciseIPRA.PTm.subst_succ, ConciseIPRA.PTm.subst_zero, Syn.subst_var,
-    Syn.inst_zero, Syn.subst_inst_shift] at b
+  simp only [subst_le, subst_ap2, PTm.subst_add, PTm.subst_mul, PTm.subst_monus, ConciseIPRA.PTm.subst_succ,
+    ConciseIPRA.PTm.subst_zero, Syn.subst_var, Syn.inst_zero, Syn.subst_inst_shift] at b
   exact b
 
 /-- `Inv(m+1)` for every `m`. -/
@@ -340,9 +339,8 @@ theorem inv_all {r c y : PTm n} (hr : Γ ⊢[PRAAx] le one r) (hc : Γ ⊢[PRAAx
       have hc' : Δ ⊢[PRAAx] InM aP aN (Syn.shift r) (Syn.shift c) (Syn.shift y) := by
         have b : (Γ.map Fm.shift) ⊢[PRAAx] InM aP aN (Syn.shift r) (Syn.shift c) (Syn.shift y) := by
           have h := hc.shift
-          simp only [InM, Fm.shift, Fm.subst_all, subst_le, subst_ap2, PTm.subst_add, PTm.subst_mul,
-            PTm.subst_monus, LeanProofs.IPRA.PTm.subst_pred, ConciseIPRA.PTm.subst_succ, ConciseIPRA.PTm.subst_zero,
-            Syn.subst_var, Syn.up_zero, subst_up_shift_pal,
+          simp only [InM, Fm.shift, Fm.subst_all, subst_le, subst_ap2, PTm.subst_add, PTm.subst_mul, PTm.subst_monus,
+            ConciseIPRA.PTm.subst_succ, ConciseIPRA.PTm.subst_zero, Syn.subst_var, Syn.up_zero, subst_up_shift_pal,
             LeanProofs.IPRA.AnalyticNumberTheory.PowerDivisorGrowth.subst_sh] at h
           exact h
         exact b.wk
@@ -414,9 +412,8 @@ theorem w_all {r c y : PTm n} (hr : Γ ⊢[PRAAx] le one r) (hc : Γ ⊢[PRAAx] 
   have hr' : (Γ.map Fm.shift) ⊢[PRAAx] le one (Syn.shift r) := by simpa [Fm.shift, Syn.shift] using hr.shift
   have hc' : (Γ.map Fm.shift) ⊢[PRAAx] InM aP aN (Syn.shift r) (Syn.shift c) (Syn.shift y) := by
     have h := hc.shift
-    simp only [InM, Fm.shift, Fm.subst_all, subst_le, subst_ap2, PTm.subst_add, PTm.subst_mul,
-      PTm.subst_monus, LeanProofs.IPRA.PTm.subst_pred, ConciseIPRA.PTm.subst_succ, ConciseIPRA.PTm.subst_zero,
-      Syn.subst_var, Syn.up_zero, subst_up_shift_pal,
+    simp only [InM, Fm.shift, Fm.subst_all, subst_le, subst_ap2, PTm.subst_add, PTm.subst_mul, PTm.subst_monus,
+      ConciseIPRA.PTm.subst_succ, ConciseIPRA.PTm.subst_zero, Syn.subst_var, Syn.up_zero, subst_up_shift_pal,
       LeanProofs.IPRA.AnalyticNumberTheory.PowerDivisorGrowth.subst_sh] at h
     exact h
   refine .orE (lt_or_le zero (var 0)) ?_ ?_

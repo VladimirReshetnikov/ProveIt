@@ -44,7 +44,7 @@ theorem sg_isP (d : PTm n) : Γ ⊢[PRAAx] sg d * isP d ≐ isP d := by
 abbrev PFB : PTm 2 := isP (var 0) * quo (var 1) (var 0)
 
 theorem inst2_PFB (d x : PTm n) : inst2 PFB d x = isP d * quo x d := by
-  simp [inst2, FactorVector.subst_isP]
+  simp [inst2]
 
 /-- The term of the floor sum at the weight `[prime]`. -/
 theorem prime_term (d x y : PTm n) : Γ ⊢[PRAAx] inst2 (RB piB one) d (pairT x y) ≐ inst2 PFB d x := by

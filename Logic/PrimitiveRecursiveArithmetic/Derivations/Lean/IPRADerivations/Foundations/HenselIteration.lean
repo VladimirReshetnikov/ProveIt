@@ -67,9 +67,9 @@ theorem step_eqs {a b σ ω eW : ZT k} {q K' : PTm k}
     ZT.toZ_natLit, Nat.cast_one, Fin.sum_univ_one, pt, jac] at eJ eS eP eT eD eV
   simp only [Q.mk_mul, map_mul] at eK eK1
   refine .andI (ZT.derive ?_) (ZT.derive ?_)
-  · simp only [stepZ, pt, ZT.toZ_add, ZT.toZ_neg, ZT.toZ_mul, ZT.toZ_ofNat]
+  · simp only [stepZ, ZT.toZ_add, ZT.toZ_neg, ZT.toZ_mul, ZT.toZ_ofNat]
     linear_combination (-ZT.toZ Γ U) * eP + eS + (-ZT.toZ Γ U * ZT.toZ Γ ω) * eK
-  · simp only [stepZ, pt, ZT.toZ_add, ZT.toZ_neg, ZT.toZ_mul, ZT.toZ_ofNat]
+  · simp only [stepZ, ZT.toZ_add, ZT.toZ_neg, ZT.toZ_mul, ZT.toZ_ofNat]
     set zU := ZT.toZ Γ U
     set zw := ZT.toZ Γ ω
     set zs := ZT.toZ Γ σ

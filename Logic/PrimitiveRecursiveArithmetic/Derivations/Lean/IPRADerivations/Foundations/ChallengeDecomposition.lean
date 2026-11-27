@@ -84,8 +84,8 @@ theorem challenge_B_e {a z : PTm m} (h : Δ ⊢[PRAAx] neg (fmAt (Ctr Q Z E R) m
     Prf.andE₂ (challenge_B_q Q Z E R h)
   have nT : Δ ⊢[PRAAx] neg (fmAt (T E R) m (pairT z (pairT (q0 Q Z E R a) a))) := by
     refine .impI (.impE nU.wk (Prf.exI z ?_))
-    simp only [Fm.subst_and, subst_lt, fmAt_subst, subst_pairT, Syn.subst_var, Syn.inst_zero, Syn.subst_shift,
-      Syn.inst, Fin.cases_succ, Syn.subst_id]
+    simp only [Fm.subst_and, subst_lt, fmAt_subst, subst_pairT, Syn.subst_var, Syn.subst_shift, Syn.inst,
+      Fin.cases_succ, Syn.subst_id]
     exact .andI hz.wk Prf.hyp0
   have b : Δ ⊢[PRAAx] BoundedReflection.allB (body R) (at1 E (pairT z (pairT (q0 Q Z E R a) a)))
       (pairT z (pairT (q0 Q Z E R a) a)) ≐ zero := bit_zero_of_neg _ nT

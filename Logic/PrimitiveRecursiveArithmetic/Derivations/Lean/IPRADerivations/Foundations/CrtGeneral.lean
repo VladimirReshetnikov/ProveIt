@@ -167,15 +167,15 @@ theorem gcd_dvd_G (K J y : PTm n) :
       (G mB (var 0) (Syn.shift J) (Syn.shift y))) := by
     refine PRA.qfInd _ trivial ?_ ?_
     · simp only [subst_dvd, subst_ap2, subst_ex2, subst_pairT, subst_inst2, Syn.subst_var, Syn.inst_zero,
-        Syn.subst_inst_shift, ConciseIPRA.PTm.subst_zero, ConciseIPRA.PTm.subst_succ]
+        Syn.subst_inst_shift, ConciseIPRA.PTm.subst_succ]
       exact dvd_congr_left (DiophantineNumberTheory.QuarticStep.congrGcd (Lc_zero mB y) (.eqRefl _)).eqSymm
         (gcd_one_dvd _ _)
     · simp only [subst_dvd, subst_ap2, subst_ex2, subst_pairT, subst_inst2, Syn.subst_var, Syn.repl_zero,
-        subst_repl_shift, ConciseIPRA.PTm.subst_zero, ConciseIPRA.PTm.subst_succ]
+        subst_repl_shift, ConciseIPRA.PTm.subst_succ]
       exact gd_step mB Prf.hyp0
   have h2 := Prf.allE K hall
   simp only [subst_dvd, subst_ap2, subst_ex2, subst_pairT, subst_inst2, Syn.subst_var, Syn.inst_zero,
-    Syn.subst_inst_shift, ConciseIPRA.PTm.subst_zero, ConciseIPRA.PTm.subst_succ] at h2
+    Syn.subst_inst_shift, ConciseIPRA.PTm.subst_succ] at h2
   exact h2
 
 /-! ## The search and the step -/

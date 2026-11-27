@@ -181,13 +181,13 @@ theorem claim_succ {j m u v : PTm n} (hj : Γ ⊢[PRAAx] lt (succ j) m)
 theorem claim_all (m u v : PTm n) :
     Γ ⊢[PRAAx] Fm.all (TailT (a' := a') (var 0) (Syn.shift m) (Syn.shift u) (Syn.shift v)) := by
   refine PRA.qfInd _ ⟨lt_QF _ _, trivial, trivial⟩ ?_ ?_
-  · simp only [TailT, Fm.subst_imp, Fm.subst_and, Fm.subst_eq, subst_lt, subst_le, subst_bt, subst_uv, subst_fstT,
-      subst_sndT, subst_pairT, subst_ap2, PTm.subst_monus, PTm.subst_add, PTm.subst_mul, Syn.subst_var, Syn.inst_zero,
-      Syn.subst_inst_shift, ConciseIPRA.PTm.subst_succ, ConciseIPRA.PTm.subst_zero]
+  · simp only [TailT, Fm.subst_imp, Fm.subst_and, Fm.subst_eq, subst_lt, subst_fstT, subst_sndT, subst_pairT, subst_ap2,
+      PTm.subst_monus, PTm.subst_add, PTm.subst_mul, Syn.subst_var, Syn.inst_zero, Syn.subst_inst_shift,
+      ConciseIPRA.PTm.subst_succ]
     exact .impI (claim_zero Prf.hyp0)
-  · simp only [TailT, Fm.subst_imp, Fm.subst_and, Fm.subst_eq, subst_lt, subst_le, subst_bt, subst_uv, subst_fstT,
-      subst_sndT, subst_pairT, subst_ap2, PTm.subst_monus, PTm.subst_add, PTm.subst_mul, Syn.subst_var, Syn.repl_zero,
-      subst_repl_shift, ConciseIPRA.PTm.subst_succ, ConciseIPRA.PTm.subst_zero]
+  · simp only [TailT, Fm.subst_imp, Fm.subst_and, Fm.subst_eq, subst_lt, subst_fstT, subst_sndT, subst_pairT, subst_ap2,
+      PTm.subst_monus, PTm.subst_add, PTm.subst_mul, Syn.subst_var, Syn.repl_zero, subst_repl_shift,
+      ConciseIPRA.PTm.subst_succ]
     refine .impI ?_
     let Θ : List (Fm PTm (n + 1)) := lt (succ (var 0)) (Syn.shift m) ::
       TailT (a' := a') (var 0) (Syn.shift m) (Syn.shift u) (Syn.shift v) :: Γ.map Fm.shift
@@ -202,9 +202,9 @@ theorem bt_claim {j m u v : PTm n} (h : Γ ⊢[PRAAx] lt j m) :
       (sndT (bt a' (succ j) m u v) ≐ sQ (uv a' (succ j) (monus m (succ j))) * u +
         sQ' (uv a' (succ j) (monus m (succ j))) * v) := by
   have h2 := Prf.allE j (claim_all (Γ := Γ) (a' := a') m u v)
-  simp only [TailT, Fm.subst_imp, Fm.subst_and, Fm.subst_eq, subst_lt, subst_le, subst_bt, subst_uv, subst_fstT,
-    subst_sndT, subst_pairT, subst_ap2, PTm.subst_monus, PTm.subst_add, PTm.subst_mul, Syn.subst_var, Syn.inst_zero,
-    Syn.subst_inst_shift, ConciseIPRA.PTm.subst_succ, ConciseIPRA.PTm.subst_zero] at h2
+  simp only [TailT, Fm.subst_imp, Fm.subst_and, Fm.subst_eq, subst_lt, subst_fstT, subst_sndT, subst_pairT, subst_ap2,
+    PTm.subst_monus, PTm.subst_add, PTm.subst_mul, Syn.subst_var, Syn.inst_zero, Syn.subst_inst_shift,
+    ConciseIPRA.PTm.subst_succ] at h2
   exact .impE h2 h
 
 /-- **`dio:cf-error`, the identification**: `[a_0; …, a_m, u/v] = (u p_m + v p_{m−1}, u q_m + v q_{m−1})`. -/

@@ -54,11 +54,9 @@ def Em : PTm 3 :=
 
 theorem inst3_Em (i j x : PTm n) : inst3 (Em U V) i j x =
     SievePairBound.ind i j (fstT (sndT x)) (fstT (sndT (sndT x))) * (inst3 (wB U V) i j x * (fstT (sndT x) * (i * j))) := by
-  simp only [inst3, Em, SievePairBound.ind, lc, LeanProofs.IPRA.PTm.subst_mul, LeanProofs.IPRA.PTm.subst_add,
-    subst_eqb, LeanProofs.IPRA.PTm.subst_monus, LeanProofs.IPRA.PTm.subst_pred, subst_gcd', subst_cnt, subst_ap2,
-    subst_pairT, subst_fstT, subst_sndT, Syn.subst_var, Matrix.cons_val_zero, Matrix.cons_val_one,
-    Matrix.cons_val_two, Matrix.head_cons, Matrix.tail_cons, ConciseIPRA.PTm.subst_succ,
-    ConciseIPRA.PTm.subst_zero]
+  simp only [inst3, Em, SievePairBound.ind, LeanProofs.IPRA.PTm.subst_mul, subst_eqb, LeanProofs.IPRA.PTm.subst_monus,
+    subst_gcd', subst_fstT, subst_sndT, Syn.subst_var, Matrix.cons_val_zero, Matrix.cons_val_one, Matrix.cons_val_two,
+    Matrix.head_cons, Matrix.tail_cons, ConciseIPRA.PTm.subst_succ, ConciseIPRA.PTm.subst_zero]
 
 theorem Bm_pt (i j x : PTm n) : Γ ⊢[PRAAx] inst3 (Bm U V) i j x ≐ inst3 (Cm U V + Em U V) i j x := by
   rw [inst3_add', inst3_Bm, inst3_Cm, inst3_Em]

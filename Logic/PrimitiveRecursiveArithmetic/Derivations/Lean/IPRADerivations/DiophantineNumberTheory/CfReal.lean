@@ -297,8 +297,7 @@ theorem lin (N k : PTm n) : Γ ⊢[PRAAx] Lin4 (cv a' (N + k)) (cv a' N) (uv a' 
     · simp only [subst_Lin4, subst_cv, subst_uv, PTm.subst_add, Syn.subst_var, Syn.inst_zero,
         Syn.subst_inst_shift]
       exact lin_base N
-    · simp only [subst_Lin4, subst_cv, subst_uv, PTm.subst_add, Syn.subst_var, Syn.repl_zero,
-        subst_repl_shift, ConciseIPRA.PTm.subst_succ]
+    · simp only [subst_Lin4, subst_cv, subst_uv, PTm.subst_add, Syn.subst_var, Syn.repl_zero, subst_repl_shift]
       exact lin_step ((congrAp2 _ (add_succ _ _) (.eqRefl _)).eqTrans (cv_succ _)) (uv_succ _ _) Prf.hyp0
   have h2 := Prf.allE k hall
   simp only [subst_Lin4, subst_cv, subst_uv, PTm.subst_add, Syn.subst_var, Syn.inst_zero,
@@ -324,7 +323,7 @@ theorem det (m : PTm n) : Γ ⊢[PRAAx] Det (cv a' m) := by
       obtain ⟨_, p2, p3, p4⟩ := proj_matrix (cv_zero (Γ := Γ) (a' := a'))
       unfold Det
       exact det_base p2 p3 p4
-    · simp only [subst_Det, subst_cv, Syn.subst_var, Syn.repl_zero, ConciseIPRA.PTm.subst_succ]
+    · simp only [subst_Det, subst_cv, Syn.subst_var, Syn.repl_zero]
       exact det_step (cv_succ _) Prf.hyp0
   have h2 := Prf.allE m hall
   simp only [subst_Det, subst_cv, Syn.subst_var, Syn.inst_zero] at h2
@@ -338,8 +337,7 @@ theorem jinv (k N : PTm n) : Γ ⊢[PRAAx] Jf (uv a' k N) := by
       obtain ⟨p1, p2, p3, p4⟩ := proj_matrix (uv_zero (Γ := Γ) (a' := a') N)
       unfold Jf
       exact j_base p1 p2 p3 p4
-    · simp only [subst_Jf, subst_uv, Syn.subst_var, Syn.repl_zero, subst_repl_shift,
-        ConciseIPRA.PTm.subst_succ]
+    · simp only [subst_Jf, subst_uv, Syn.subst_var, Syn.repl_zero, subst_repl_shift]
       obtain ⟨g1, g2, g3, g4⟩ := proj_nx (uv_succ (Γ := (Jf (uv a' (var 0) (Syn.shift N)) :: Γ.map Fm.shift))
         (a' := a') (var 0) (Syn.shift N))
       have ih : (Jf (uv a' (var 0) (Syn.shift N)) :: Γ.map Fm.shift) ⊢[PRAAx] Jf (uv a' (var 0) (Syn.shift N)) :=
@@ -379,22 +377,22 @@ theorem two_step (m : PTm n) : Γ ⊢[PRAAx] le (two * sQ (cv a' m)) (sQ (cv a' 
 theorem q_pow (k : PTm n) : Γ ⊢[PRAAx] le (pw two (succ k)) (sQ (cv a' (idx k))) := by
   have hall : Γ ⊢[PRAAx] Fm.all (le (pw two (succ (var 0))) (sQ (cv a' (idx (var 0))))) := by
     refine PRA.qfInd _ (le_QF _ _) ?_ ?_
-    · simp only [subst_le, subst_ap2, subst_cv, subst_fstT, subst_sndT, PTm.subst_add, Syn.subst_var,
-        Syn.inst_zero, ConciseIPRA.PTm.subst_succ, ConciseIPRA.PTm.subst_zero]
+    · simp only [subst_le, subst_ap2, subst_fstT, subst_sndT, PTm.subst_add, Syn.subst_var, Syn.inst_zero,
+        ConciseIPRA.PTm.subst_succ, ConciseIPRA.PTm.subst_zero]
       obtain ⟨_, p2, _, _⟩ := proj_matrix (cv_zero (Γ := Γ) (a' := a'))
       have q0 : Γ ⊢[PRAAx] sQ (cv a' (zero + zero)) ≐ one :=
         (congrFst (congrSnd (congrAp2 _ (add_zero zero) (.eqRefl _)))).eqTrans p2
       exact pow_base_alg (pw_succ two zero) (pw_zero two) (two_step (zero + zero)) q0
-    · simp only [subst_le, subst_ap2, subst_cv, subst_fstT, subst_sndT, PTm.subst_add, Syn.subst_var,
-        Syn.repl_zero, ConciseIPRA.PTm.subst_succ, ConciseIPRA.PTm.subst_zero]
+    · simp only [subst_le, subst_ap2, subst_fstT, subst_sndT, PTm.subst_add, Syn.subst_var, Syn.repl_zero,
+        ConciseIPRA.PTm.subst_succ, ConciseIPRA.PTm.subst_zero]
       have eI : (le (pw two (succ (var 0))) (sQ (cv a' (idx (var 0)))) :: Γ.map Fm.shift) ⊢[PRAAx]
           idx (succ (var 0)) ≐ succ (succ (idx (var 0))) := by
         ipra_ring
       exact pow_step_alg Prf.hyp0 (pw_succ two _) (two_step _)
         (congrFst (congrSnd (congrAp2 _ eI (.eqRefl _))))
   have h2 := Prf.allE k hall
-  simp only [subst_le, subst_ap2, subst_cv, subst_fstT, subst_sndT, PTm.subst_add, Syn.subst_var,
-    Syn.inst_zero, Syn.subst_inst_shift, ConciseIPRA.PTm.subst_succ, ConciseIPRA.PTm.subst_zero] at h2
+  simp only [subst_le, subst_ap2, subst_fstT, subst_sndT, PTm.subst_add, Syn.subst_var, Syn.inst_zero,
+    ConciseIPRA.PTm.subst_succ, ConciseIPRA.PTm.subst_zero] at h2
   exact h2
 
 /-! ## Growth of the denominators (`dio:continuants`) -/
@@ -441,21 +439,21 @@ theorem q_lt_succ (m : PTm n) : Γ ⊢[PRAAx] lt (sQ (cv a' (succ m))) (sQ (cv a
 theorem q_pow_even (k : PTm n) : Γ ⊢[PRAAx] le (pw two k) (sQ (cv a' (k + k))) := by
   have hall : Γ ⊢[PRAAx] Fm.all (le (pw two (var 0)) (sQ (cv a' (var 0 + var 0)))) := by
     refine PRA.qfInd _ (le_QF _ _) ?_ ?_
-    · simp only [subst_le, subst_ap2, subst_cv, subst_fstT, subst_sndT, PTm.subst_add, Syn.subst_var,
-        Syn.inst_zero, ConciseIPRA.PTm.subst_succ, ConciseIPRA.PTm.subst_zero]
+    · simp only [subst_le, subst_ap2, subst_fstT, subst_sndT, PTm.subst_add, Syn.subst_var, Syn.inst_zero,
+        ConciseIPRA.PTm.subst_succ, ConciseIPRA.PTm.subst_zero]
       have q0 : Γ ⊢[PRAAx] sQ (cv a' (zero + zero)) ≐ one :=
         (congrFst (congrSnd (congrAp2 _ (add_zero zero) (.eqRefl _)))).eqTrans (q_zero (a' := a'))
       exact le_congr (pw_zero two).eqSymm q0.eqSymm (le_refl _)
-    · simp only [subst_le, subst_ap2, subst_cv, subst_fstT, subst_sndT, PTm.subst_add, Syn.subst_var,
-        Syn.repl_zero, ConciseIPRA.PTm.subst_succ, ConciseIPRA.PTm.subst_zero]
+    · simp only [subst_le, subst_ap2, subst_fstT, subst_sndT, PTm.subst_add, Syn.subst_var, Syn.repl_zero,
+        ConciseIPRA.PTm.subst_succ, ConciseIPRA.PTm.subst_zero]
       have eI : (le (pw two (var 0)) (sQ (cv a' (var 0 + var 0))) :: Γ.map Fm.shift) ⊢[PRAAx]
           succ (var 0) + succ (var 0) ≐ succ (succ (var 0 + var 0)) := by
         ipra_ring
       exact pow_step_alg Prf.hyp0 (pw_succ two _) (two_step _)
         (congrFst (congrSnd (congrAp2 _ eI (.eqRefl _))))
   have h2 := Prf.allE k hall
-  simp only [subst_le, subst_ap2, subst_cv, subst_fstT, subst_sndT, PTm.subst_add, Syn.subst_var,
-    Syn.inst_zero, Syn.subst_inst_shift, ConciseIPRA.PTm.subst_succ, ConciseIPRA.PTm.subst_zero] at h2
+  simp only [subst_le, subst_ap2, subst_fstT, subst_sndT, PTm.subst_add, Syn.subst_var, Syn.inst_zero,
+    ConciseIPRA.PTm.subst_succ, ConciseIPRA.PTm.subst_zero] at h2
   exact h2
 
 /-- **`dio:cf-real`, the rational name**: for `k ≤ l` and `r_k = p_{2k+2}/q_{2k+2}`,

@@ -165,8 +165,8 @@ theorem Y_dvd_mul {u v D g : PTm n} (hg : Γ ⊢[PRAAx] PY u v D g ≐ succ (pre
         Syn.subst_inst_shift, ConciseIPRA.PTm.subst_zero]
       exact dvd_congr ((Y_zero u v D).eqSymm.eqTrans (congrPY u v D (zero_mul _).eqSymm))
         (rem_zero _)
-    · simp only [Fm.subst_eq, subst_ap2, subst_PY, PTm.subst_mul, Syn.subst_var, Syn.repl_zero,
-        subst_repl_shift, ConciseIPRA.PTm.subst_succ, ConciseIPRA.PTm.subst_zero]
+    · simp only [Fm.subst_eq, subst_ap2, subst_PY, PTm.subst_mul, Syn.subst_var, Syn.repl_zero, subst_repl_shift,
+        ConciseIPRA.PTm.subst_zero]
       have e : (dvd (PY (Syn.shift u) (Syn.shift v) (Syn.shift D) (Syn.shift g))
           (PY (Syn.shift u) (Syn.shift v) (Syn.shift D) (var 0 * Syn.shift g)) :: Γ.map Fm.shift) ⊢[PRAAx]
           PY (Syn.shift u) (Syn.shift v) (Syn.shift D) (succ (var 0) * Syn.shift g) ≐

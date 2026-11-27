@@ -13,8 +13,6 @@ With `n = 4k`, a solution gives `(xᵏ)⁴ + (yᵏ)⁴ = (zᵏ)⁴` with `xᵏ, 
 `pw_pos`). The case `n = 0` is included (`1 + 1 ≠ 1`).
 -/
 
-set_option linter.unusedSimpArgs false
-
 namespace LeanProofs.IPRA.DiophantineNumberTheory.FLTMultiples
 
 open_ipra exports
@@ -67,10 +65,8 @@ theorem flt_multiple_of_four : ([] : List (Fm PTm 0)) ⊢[PRAAx] univ 4 fltFourF
       dvd (two * two) (var 0)]) (Prf.allOpen (Prf.allOpen (Prf.allOpen flt4)))
     (![pred (pw (succ (var 1)) (quo (var 0) (two * two))), pred (pw (succ (var 2)) (quo (var 0) (two * two))),
       pw (var 3) (quo (var 0) (two * two))] : Fin 3 → PTm 4)
-  simp only [flt4Formula, Fm.subst_imp, Fm.subst_eq, subst_neg, PTm.subst_mul, PTm.subst_add,
-    PTm.subst_pred, subst_ap2, Syn.subst_var, Matrix.cons_val_zero, Matrix.cons_val_one,
-    Matrix.cons_val_two, Matrix.head_cons, Matrix.tail_cons, ConciseIPRA.PTm.subst_succ,
-    ConciseIPRA.PTm.subst_zero, Fm.subst_bot] at F
+  simp only [flt4Formula, Fm.subst_eq, subst_neg, PTm.subst_mul, PTm.subst_add, Syn.subst_var, Matrix.cons_val_zero,
+    Matrix.cons_val_one, Matrix.cons_val_two, Matrix.head_cons, Matrix.tail_cons, ConciseIPRA.PTm.subst_succ] at F
   refine .impE F ?_
   have qX := congrMul (congrMul X X) (congrMul X X)
   have qY := congrMul (congrMul Y Y) (congrMul Y Y)
