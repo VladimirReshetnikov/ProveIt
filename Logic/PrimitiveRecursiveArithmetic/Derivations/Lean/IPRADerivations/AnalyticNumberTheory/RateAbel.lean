@@ -139,6 +139,13 @@ theorem M_succ (y N : PTm n) : Γ ⊢[PRAAx] Mv a y (succ N) ≐ Mv a y N + inst
   rw [e] at h
   exact h
 
+/-- At one, the weighted prefix and the unweighted prefix are the same summand. -/
+private theorem weighted_prefix_one (r y : PTm n) : Γ ⊢[PRAAx] Wv a r y one ≐ Mv a y one := by
+  have w := W_succ (Γ := Γ) a r y zero
+  rw [← inst2_shiftBody a zero y] at w
+  have z := (congrMul (.eqRefl (rho r zero)) (W_zero (Γ := Γ) a r y)).eqTrans (mul_zero _)
+  exact w.eqTrans (((congrAdd z (.eqRefl _)).eqTrans (zero_add _)).eqTrans (sum_singleton _ _).eqSymm)
+
 /-! ## Recovering the growth bound -/
 
 variable (aP aN : PTm 2)
@@ -188,19 +195,18 @@ theorem diff_step {r y K N : PTm n} (hr : Γ ⊢[PRAAx] le one r) (hN : Γ ⊢[P
   · ipra_le sl h1 + sl m1 with mN + wP - mP - wN + q1 - q2 + q3
   · ipra_le sl h2 + sl m2 with mP + wN - mN - wP + q2 - q1 + q3
 
-/-- The first step `N = 0`: `M(1) = W(1) = a(1)`. -/
-theorem diff_one (r y K : PTm n) : Γ ⊢[PRAAx] DiffF aP aN r y K one := by
-  have mP := natEq (M_succ (Γ := Γ) aP y zero)
-  have mN := natEq (M_succ (Γ := Γ) aN y zero)
-  have wP := natEq (W_succ (Γ := Γ) aP r y zero)
-  have wN := natEq (W_succ (Γ := Γ) aN r y zero)
-  have m0P := natEq (sum_zero (Γ := Γ) (shiftBody aP) y)
-  have m0N := natEq (sum_zero (Γ := Γ) (shiftBody aN) y)
-  have z1 := natEq ((congrMul (.eqRefl (rho r zero)) (W_zero (Γ := Γ) aP r y)).eqTrans (mul_zero _))
-  have z2 := natEq ((congrMul (.eqRefl (rho r zero)) (W_zero (Γ := Γ) aN r y)).eqTrans (mul_zero _))
+/-- The two signed prefixes agree at the first step. -/
+theorem prefix_difference_one (r y : PTm n) :
+    Γ ⊢[PRAAx] le (absd (Mv aP y one + Wv aN r y one) (Mv aN y one + Wv aP r y one)) zero := by
+  have hp := natEq (weighted_prefix_one (Γ := Γ) aP r y)
+  have hn := natEq (weighted_prefix_one (Γ := Γ) aN r y)
   refine absd_le ?_ ?_
-  · ipra_le 𝔞 (pw two K * uu r one) with mN + wP - mP - wN + m0N - m0P + z1 - z2
-  · ipra_le 𝔞 (pw two K * uu r one) with mP + wN - mN - wP + m0P - m0N + z2 - z1
+  · ipra_le 0 with hp - hn
+  · ipra_le 0 with hn - hp
+
+/-- The first step `N = 0`: `M(1) = W(1) = a(1)`. -/
+theorem diff_one (r y K : PTm n) : Γ ⊢[PRAAx] DiffF aP aN r y K one :=
+  le_trans (prefix_difference_one aP aN r y) (zero_le _)
 
 /-- `|M(N) − W(N)| ≤ 2^K u_N` for every `N`, from `|W(i)| ≤ 2^K u_i` for every `i`. -/
 theorem diff_bound {r y K : PTm n} (hr : Γ ⊢[PRAAx] le one r) (hW : Γ ⊢[PRAAx] WBound aP aN r y K) (N : PTm n) :

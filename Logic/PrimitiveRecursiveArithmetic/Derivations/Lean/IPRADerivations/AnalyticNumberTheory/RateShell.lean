@@ -284,18 +284,8 @@ theorem inv_step {r c y N : PTm n} (hr : Γ ⊢[PRAAx] le one r) (hN : Γ ⊢[PR
 /-! ## The start of the induction -/
 
 /-- `E(1) = 0`. -/
-theorem e_one (r y : PTm n) : Γ ⊢[PRAAx] le (Eab aP aN r y one) zero := by
-  have mP := natEq (M_succ (Γ := Γ) aP y zero)
-  have mN := natEq (M_succ (Γ := Γ) aN y zero)
-  have wP := natEq (W_succ (Γ := Γ) aP r y zero)
-  have wN := natEq (W_succ (Γ := Γ) aN r y zero)
-  have m0P := natEq (sum_zero (Γ := Γ) (shiftBody aP) y)
-  have m0N := natEq (sum_zero (Γ := Γ) (shiftBody aN) y)
-  have z1 := natEq ((congrMul (.eqRefl (rho r zero)) (W_zero (Γ := Γ) aP r y)).eqTrans (mul_zero _))
-  have z2 := natEq ((congrMul (.eqRefl (rho r zero)) (W_zero (Γ := Γ) aN r y)).eqTrans (mul_zero _))
-  refine absd_le ?_ ?_
-  · ipra_le 0 with mN + wP - mP - wN + m0N - m0P + z1 - z2
-  · ipra_le 0 with mP + wN - mN - wP + m0P - m0N + z2 - z1
+theorem e_one (r y : PTm n) : Γ ⊢[PRAAx] le (Eab aP aN r y one) zero :=
+  prefix_difference_one aP aN r y
 
 theorem jj_one {r : PTm n} (hr : Γ ⊢[PRAAx] le one r) : Γ ⊢[PRAAx] jj r one ≐ zero :=
   (congrAp2 quoF lg_one (.eqRefl _)).eqTrans
