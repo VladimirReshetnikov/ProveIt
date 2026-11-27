@@ -112,41 +112,14 @@ private theorem observation_budget (L H p q : PTm n) (spend : Γ ⊢[PRAAx] le (
     congrMul (congrMul (.eqRefl _) du) (.eqRefl _)
   exact le_congr (congrMul rn (.eqRefl _)).eqSymm (congrMul (.eqRefl _) rd).eqSymm scalar
 
-private theorem sample_congr (p z R B A c d z' R' B' A' c' d' : PTm n)
-    (hz : Γ ⊢[PRAAx] z ≐ z') (hR : Γ ⊢[PRAAx] R ≐ R') (hB : Γ ⊢[PRAAx] B ≐ B')
-    (hA : Γ ⊢[PRAAx] A ≐ A') (hc : Γ ⊢[PRAAx] c ≐ c') (hd : Γ ⊢[PRAAx] d ≐ d') : Γ ⊢[PRAAx]
-    sample p z R B A c d ≐ sample p z' R' B' A' c' d' := by
-  have e1 : Γ ⊢[PRAAx] sample p z R B A c d ≐ sample p z' R B A c d := by
-    simpa only [subst_sample,Syn.subst_var,Syn.inst_zero,Syn.subst_inst_shift] using
-      Prf.eqCongr1 (sample (Syn.shift p) (var 0) (Syn.shift R) (Syn.shift B) (Syn.shift A) (Syn.shift c) (Syn.shift d)) hz
-  have e2 : Γ ⊢[PRAAx] sample p z' R B A c d ≐ sample p z' R' B A c d := by
-    simpa only [subst_sample,Syn.subst_var,Syn.inst_zero,Syn.subst_inst_shift] using
-      Prf.eqCongr1 (sample (Syn.shift p) (Syn.shift z') (var 0) (Syn.shift B) (Syn.shift A) (Syn.shift c) (Syn.shift d)) hR
-  have e3 : Γ ⊢[PRAAx] sample p z' R' B A c d ≐ sample p z' R' B' A c d := by
-    simpa only [subst_sample,Syn.subst_var,Syn.inst_zero,Syn.subst_inst_shift] using
-      Prf.eqCongr1 (sample (Syn.shift p) (Syn.shift z') (Syn.shift R') (var 0) (Syn.shift A) (Syn.shift c) (Syn.shift d)) hB
-  have e4 : Γ ⊢[PRAAx] sample p z' R' B' A c d ≐ sample p z' R' B' A' c d := by
-    simpa only [subst_sample,Syn.subst_var,Syn.inst_zero,Syn.subst_inst_shift] using
-      Prf.eqCongr1 (sample (Syn.shift p) (Syn.shift z') (Syn.shift R') (Syn.shift B') (var 0) (Syn.shift c) (Syn.shift d)) hA
-  have e5 : Γ ⊢[PRAAx] sample p z' R' B' A' c d ≐ sample p z' R' B' A' c' d := by
-    simpa only [subst_sample,Syn.subst_var,Syn.inst_zero,Syn.subst_inst_shift] using
-      Prf.eqCongr1 (sample (Syn.shift p) (Syn.shift z') (Syn.shift R') (Syn.shift B') (Syn.shift A') (var 0) (Syn.shift d)) hc
-  have e6 : Γ ⊢[PRAAx] sample p z' R' B' A' c' d ≐ sample p z' R' B' A' c' d' := by
-    simpa only [subst_sample,Syn.subst_var,Syn.inst_zero,Syn.subst_inst_shift] using
-      Prf.eqCongr1 (sample (Syn.shift p) (Syn.shift z') (Syn.shift R') (Syn.shift B') (Syn.shift A') (Syn.shift c') (var 0)) hd
-  exact e1.eqTrans (e2.eqTrans (e3.eqTrans (e4.eqTrans (e5.eqTrans e6))))
-
 theorem name_at (p z R B A c d : PTm n) : Γ ⊢[PRAAx] ap2 nameF p (data z R B A c d) ≐ sample p z R B A c d := by
-  have program : Γ ⊢[PRAAx] ap2 nameF p (data z R B A c d) ≐ reader p (data z R B A c d) := by
-    simpa [nameF,ap2] using toPR_eq (Γ := Γ) (reader (var 0) (var 1) : PTm 2) ![p,data z R B A c d]
-  have left := fst_pair (Γ := Γ) (pairT z R) (pairT (pairT B A) (pairT c d))
-  have right := snd_pair (Γ := Γ) (pairT z R) (pairT (pairT B A) (pairT c d))
-  have middle := (congrFst right).eqTrans (fst_pair (pairT B A) (pairT c d))
-  have last := (congrSnd right).eqTrans (snd_pair (pairT B A) (pairT c d))
-  exact program.eqTrans (sample_congr p _ _ _ _ _ _ _ _ _ _ _ _
-    left.fstE left.sndE
-    middle.fstE middle.sndE
-    last.fstE last.sndE)
+  have read := toPR_pairVector_eq (Γ := Γ)
+    (sample (var 0) (fstT (var 1)) (sndT (var 1)) (fstT (var 2)) (sndT (var 2))
+      (fstT (var 3)) (sndT (var 3)) : PTm 4) p ![pairT z R, pairT B A, pairT c d]
+  simp only [subst_sample, subst_fstT, subst_sndT, Syn.subst_var] at read
+  refine read.eqTrans ?_
+  ipra_congr (sample (var 0) (var 1) (var 2) (var 3) (var 4) (var 5) (var 6) : PTm 7) with
+    [.eqRefl p, fst_pair z R, snd_pair z R, fst_pair B A, snd_pair B A, fst_pair c d, snd_pair c d]
 
 theorem compact_cross (k z R B A c d : PTm n) (h : Γ ⊢[PRAAx] source z R B A c d) : Γ ⊢[PRAAx]
     crossEquivalent Damped (multiplyF inverseF Compact) (compactData k z R B A c d)
