@@ -24,7 +24,7 @@ open GaussianCoefficientNameBounds (unit unit_positive bounded_radius_mono)
 open GaussianCompactRiemannName (quadrature mesh precision)
 open GaussianEuclideanDistanceName (pointCN)
 open GaussianNamedInverseRate (rate_at)
-open GaussianRationalDistanceOrder (distance_congr distance_radius_mono distance_symmetric distance_triangle_same)
+open GaussianRationalDistanceOrder (distance_congr distance_radius_mono distance_symmetric distance_triangle_same distance_two_errors_same)
 open GaussianRationalHorner (positive_product)
 open GaussianRationalMetric (bounded distanceBounded)
 open GaussianRationalReciprocal (bound_congr)
@@ -90,8 +90,7 @@ theorem cofinal_refinement_error (p q M K j X D R L : PTm n)
     (hL : Γ ⊢[PRAAx] le (cutoff p j D) L) :
     Γ ⊢[PRAAx] distanceBounded (ap2 nameF p (data j X D R)) (prefixGrid q M j X D R L) (num 3) (unit p) := by
   have hp := unit_positive (Γ := Γ) p
-  have first := distance_radius_mono _ _ _ _ two (unit p) (positive_product _ _ hp hp) hp
-    (le_of_eq_add (d := zero) (by ipra_ring)) (late_observations p p j X D R L h hL)
+  have first := distance_two_errors_same hp (late_observations p p j X D R L h hL)
   have second := distance_symmetric _ _ _ _ hp (refinement_error p q M K j X D R L h hK hM hq)
   exact distance_congr (.eqRefl _) (.eqRefl _) (by ipra_ring) (.eqRefl _)
     (distance_triangle_same _ _ _ _ _ _ hp first second)

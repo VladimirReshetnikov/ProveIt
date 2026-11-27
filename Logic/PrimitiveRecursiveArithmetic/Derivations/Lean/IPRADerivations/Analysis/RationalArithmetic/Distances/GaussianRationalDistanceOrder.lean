@@ -78,6 +78,12 @@ theorem distance_two_errors (z w B C D : PTm n)
   exact le_congr (by ipra_ring) (by ipra_ring)
     (add_le_add₂ (mul_le_mul_right B hDC) (mul_le_mul_right C hDB))
 
+/-- Reduce the two error allowances from the same denominator to a single radius. -/
+theorem distance_two_errors_same {z w D : PTm n} (hD : Γ ⊢[PRAAx] le one D)
+    (h : Γ ⊢[PRAAx] distanceBounded z w (D+D) (D*D)) :
+    Γ ⊢[PRAAx] distanceBounded z w two D :=
+  distance_two_errors z w D D D hD hD hD (le_refl D) (le_refl D) h
+
 /-- Combine two ordered cases for independent observations, reversing the
 samples and the radius factors in the second case. -/
 theorem distance_of_ordered_observations (z w p q : PTm n)

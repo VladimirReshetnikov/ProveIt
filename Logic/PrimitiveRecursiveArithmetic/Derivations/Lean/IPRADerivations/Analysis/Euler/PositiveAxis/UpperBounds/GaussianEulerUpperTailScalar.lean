@@ -22,7 +22,7 @@ open GaussianEulerHalfDecayReference (scalar numerator denominator denominator_p
 open GaussianEuclideanDistanceName (fraction)
 open GaussianRationalSumMajorant (majorized from_representation)
 open GaussianRationalHorner (qadd qmul scalar_congr positive_product)
-open GaussianRationalDistanceOrder (distance_triangle_same distance_congr distance_radius_mono)
+open GaussianRationalDistanceOrder (distance_triangle_same distance_congr distance_two_errors_same)
 open GaussianRationalMetric (bounded distanceBounded)
 open GaussianRationalReciprocal (bound_congr)
 open GaussianCoefficientNameBounds (unit unit_positive bounded_radius_mono)
@@ -108,9 +108,7 @@ theorem scalar_majorant_scaled_reference_error (p R a b : PTm n) (hb : Γ ⊢[PR
       (GaussianRationalSyntheticDivision.qadd_sub_cancel _ _ (embed_canonical _))).eqSymm
       (.eqRefl _) (.eqRefl _) (bound_congr (fraction_embedding _ _ hU).eqSymm (.eqRefl _) (.eqRefl _)
         (radius_bounded _ _ hU))
-  have decay := distance_radius_mono y (halfSample p a b) (U+U) (U*U) two U
-    (positive_product _ _ hU hU) hU (le_of_eq_add (d := zero) (by ipra_ring))
-    (decay_reference_error p p a b hb)
+  have decay := distance_two_errors_same hU (decay_reference_error p p a b hb)
   have far : Γ ⊢[PRAAx] distanceBounded a₁ a₂ (M*two) U :=
     GaussianApproximateInverseDistance.multiply_distance r y _ M two U hU
       (radius_bounded M one (le_refl one)) decay

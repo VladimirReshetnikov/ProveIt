@@ -29,7 +29,7 @@ open GaussianEulerCutoffCauchyComparison (combined)
 open GaussianCoefficientNameBounds (unit unit_positive)
 open GaussianRationalHorner (positive_product qzero qadd)
 open GaussianRationalMetric (bounded distanceBounded)
-open GaussianRationalDistanceOrder (distance_congr distance_radius_mono distance_triangle_same)
+open GaussianRationalDistanceOrder (distance_congr distance_radius_mono distance_triangle_same distance_two_errors_same)
 open GaussianNameEquivalence (cross_at cross_symm cross_trans)
 open GaussianNamedInverseRate (independentRate rate_at rateNumerator rateDenominator)
 open GaussianRationalSlackRemoval (precision slack slack_removal_at)
@@ -53,8 +53,7 @@ private theorem fst_zero : Γ ⊢[PRAAx] fstT (qzero : PTm n) ≐ scalarZero :=
 private theorem same_query (x y t : PTm n) (h : Γ ⊢[PRAAx] distanceBounded x y (unit t+unit t) (unit t*unit t)) :
     Γ ⊢[PRAAx] upper (fstT x) (fstT y) two (unit t) := by
   have u := unit_positive (Γ := Γ) t
-  have dist := distance_radius_mono x y _ _ two (unit t) (positive_product _ _ u u) u
-    (le_congr (.eqRefl _) (by ipra_ring) (le_refl _)) h
+  have dist := distance_two_errors_same u h
   exact upper_of_radius _ _ _ _ (scalar_coordinate_distance _ _ _ _ u dist)
 
 private theorem real_prefix_scaled (t z R B A k j a b : PTm n)

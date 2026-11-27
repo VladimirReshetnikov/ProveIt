@@ -140,9 +140,7 @@ theorem diagonal_to_cross (f g : PR 2) (x y : PTm n)
 theorem cross_diagonal_at {f g : PR 2} {x y : PTm n} (p : PTm n)
     (hEq : Γ ⊢[PRAAx] crossEquivalent f g x y) :
     Γ ⊢[PRAAx] distanceBounded (ap2 f p x) (ap2 g p y) two (unit p) :=
-  distance_radius_mono _ _ _ _ _ _
-    (positive_product _ _ (unit_positive p) (unit_positive p)) (unit_positive p)
-    (le_of_eq_add (d := zero) (by ipra_ring)) (cross_at f g x y p p hEq)
+  GaussianRationalDistanceOrder.distance_two_errors_same (unit_positive p) (cross_at f g x y p p hEq)
 
 theorem cross_to_diagonal (f g : PR 2) (x y : PTm n)
     (hEq : Γ ⊢[PRAAx] crossEquivalent f g x y) : Γ ⊢[PRAAx] diagonalEquivalent f g x y :=

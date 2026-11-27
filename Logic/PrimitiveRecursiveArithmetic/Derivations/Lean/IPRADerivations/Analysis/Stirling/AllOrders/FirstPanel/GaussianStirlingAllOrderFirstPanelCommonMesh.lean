@@ -17,8 +17,8 @@ namespace LeanProofs.IPRA.Analysis.GaussianStirlingAllOrderFirstPanelCommonMesh
 open_ipra
 open GaussianCoefficientNameBounds (unit unit_positive)
 open GaussianRationalMetric (bounded distanceBounded)
-open GaussianRationalDistanceOrder (distance_congr distance_radius_mono distance_symmetric distance_triangle_same)
-open GaussianRationalHorner (positive_product qzero qadd qmul)
+open GaussianRationalDistanceOrder (distance_congr distance_radius_mono distance_symmetric distance_triangle_same distance_two_errors_same)
+open GaussianRationalHorner (positive_product)
 open GaussianRationalPowerDifference (distance_refl_zero)
 open GaussianStirlingAllOrderFirstPanelReadback (halfPanel harmonic_distance)
 open GaussianStirlingAllOrderFirstPanelName (clock name_at point_cross)
@@ -126,8 +126,7 @@ theorem original_difference_at (A B Q k p : PTm n)
     exact le_add_right _ _
   have hr := le_trans (GaussianExponentialReference.unit_monotone ht) (mesh_large a B t)
   have h := half_panel_comparison A B Q R k p hA hB hQ hr
-  have h' := distance_radius_mono _ _ _ _ two (unit p) (positive_product _ _ hp hp) hp
-    (by ipra_le 0) (point_cross A B k p p hA hB)
+  have h' := distance_two_errors_same hp (point_cross A B k p p hA hB)
   exact distance_triangle_same _ _ _ _ _ _ hp h
     (distance_congr (name_at A B k p) (.eqRefl _) (.eqRefl _) (.eqRefl _) h')
 

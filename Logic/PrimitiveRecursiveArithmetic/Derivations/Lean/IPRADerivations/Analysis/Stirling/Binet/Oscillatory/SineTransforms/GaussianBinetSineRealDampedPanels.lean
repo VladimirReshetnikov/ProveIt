@@ -25,8 +25,8 @@ open GaussianCoefficientNameBounds (unit unit_positive)
 open GaussianEulerDecayMesh (observation)
 open GaussianLogGammaEulerHead (argument)
 open GaussianLogGammaEulerResidualDomain (source)
-open GaussianRationalDistanceOrder (distance_congr distance_radius_mono distance_triangle_same)
-open GaussianRationalHorner (positive_product qmul)
+open GaussianRationalDistanceOrder (distance_congr distance_triangle_same distance_two_errors_same)
+open GaussianRationalHorner (qmul)
 open GaussianRationalMetric (bounded distanceBounded qnegative qsub)
 open GaussianRationalPowerAlgebra (qmul_commutative)
 open GaussianRationalReciprocal (bound_congr bounded_negative bounded_product bounded_sum)
@@ -72,8 +72,7 @@ theorem real_panel_error (p X D A B a b R U T : PTm n)
   let v := quotient p a b (U*T) A B
   have h := unit_positive (Γ := Γ) p
   have observed : Γ ⊢[PRAAx] distanceBounded e d two H :=
-    distance_radius_mono _ _ (H+H) (H*H) two H (positive_product _ _ h h) h
-      (le_of_eq_add (d := zero) (by ipra_ring)) (GaussianBinetSineDampedAxis.same_observation p p X D a b R T hz hb ht)
+    distance_two_errors_same h (GaussianBinetSineDampedAxis.same_observation p p X D a b R T hz hb ht)
   have first := panel_error p X zero D zero A B a b R U T hz hA hB hb hU ht
   have last : Γ ⊢[PRAAx] distanceBounded (targetPanel p X zero D zero A B a b R U T) (value p X D A B a b U T)
       ((B*num 4)*two) H :=

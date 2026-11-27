@@ -24,9 +24,9 @@ open GaussianGammaCanonicalExponent (constantF constant_at constant_regular)
 open GaussianNameArithmetic (multiplyF multiplyData multiplyModulus addF addData add_fast multiply_fast)
 open GaussianNameEquivalence (crossEquivalent cross_at)
 open GaussianEulerIntegrandName (sample)
-open GaussianRationalHorner (positive_product ofGaussian qadd qmul)
+open GaussianRationalHorner (ofGaussian qadd qmul)
 open GaussianRationalMetric (bounded distanceBounded qsub qnegative)
-open GaussianRationalDistanceOrder (distance_congr distance_radius_mono distance_symmetric distance_triangle_same)
+open GaussianRationalDistanceOrder (distance_congr distance_radius_mono distance_symmetric distance_triangle_same distance_two_errors_same)
 open GaussianCoefficientNameBounds (unit unit_positive)
 open GaussianEuclideanDistanceName (pointCN)
 
@@ -57,8 +57,7 @@ private theorem at_base_radius (t c R x x' y v : PTm n) (hC : Γ ⊢[PRAAx] boun
     distanceBounded (qsub (qmul c x) y) v (num 5*R+num 13) (unit t) := by
   have hT := unit_positive (Γ := Γ) t
   have same := GaussianRationalPowerDifference.distance_refl_zero (Γ := Γ) y (unit t) hT
-  have reduced := distance_radius_mono _ _ _ _ two (unit t) (positive_product _ _ hT hT) hT
-    (le_of_eq_add (d := zero) (by ipra_ring)) hX
+  have reduced := distance_two_errors_same hT hX
   have prod := GaussianApproximateInverseDistance.multiply_distance c _ _ R two (unit t) hT hC reduced
   have shift := GaussianNamedDifference.difference_distance _ _ _ _ _ _ _ hT prod same
   exact distance_congr (.eqRefl _) (.eqRefl _) (by ipra_ring) (.eqRefl _)

@@ -21,9 +21,9 @@ open_ipra
 open GaussianBinetKernelRows (inputData rowF rowBody row_at row_sample regular_rows)
 open GaussianBinetKernelTail (finiteF finiteData)
 open GaussianCoefficientNameBounds (unit unit_positive bounded_radius_mono)
-open GaussianRationalDistanceOrder (distance_congr distance_radius_mono distance_symmetric distance_triangle_same)
+open GaussianRationalDistanceOrder (distance_congr distance_symmetric distance_triangle_same distance_two_errors_same)
 open GaussianRationalFiniteSum (sum multiplyBody multiply_body_at sum_multiply)
-open GaussianRationalHorner (positive_product qmul)
+open GaussianRationalHorner (qmul)
 open GaussianRationalMetric (bounded distanceBounded)
 open GaussianRationalRiemannRefinement (termsDistance sum_distance)
 open GaussianRootApproximationWitness (pointBounds)
@@ -59,8 +59,7 @@ theorem kernel_error (p k N A B : PTm n) (hB : Γ ⊢[PRAAx] le one B)
   have frozen := GaussianNamedFiniteSumFamilySplit.finite_sample_distance rowF rowBody k p N (inputData A B)
     (regular_rows N A B hB) hk
   have tail := GaussianBinetKernelCofinal.late_observations p p N A B hN hB
-  have tail' := distance_radius_mono _ _ _ _ two (unit p) (positive_product _ _ hp hp) hp
-    (le_of_eq_add (d := ConciseIPRA.PTm.zero) (by ipra_ring)) tail
+  have tail' := distance_two_errors_same hp tail
   exact distance_congr (.eqRefl _) (.eqRefl _) (by ipra_ring) (.eqRefl _)
     (distance_triangle_same _ _ _ _ _ _ hp frozen (distance_symmetric _ _ _ _ hp tail'))
 

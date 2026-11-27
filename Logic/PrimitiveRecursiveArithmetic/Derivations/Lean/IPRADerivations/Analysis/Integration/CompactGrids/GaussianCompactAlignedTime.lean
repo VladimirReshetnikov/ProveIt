@@ -17,7 +17,7 @@ namespace LeanProofs.IPRA.Analysis.GaussianCompactAlignedTime
 open_ipra
 open GaussianCompactRiemannName (inside value sampledModulus sampled_modulus_at shift_sampled_modulus)
 open GaussianRationalMetric (distanceBounded)
-open GaussianRationalDistanceOrder (distance_congr distance_radius_mono)
+open GaussianRationalDistanceOrder (distance_congr distance_two_errors_same)
 open GaussianCoefficientNameBounds (unit unit_positive)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
@@ -50,9 +50,7 @@ theorem equal_value_at (F : PR 3) (s a C E x t u : PTm n)
   have metric := distance_congr he.eqSymm (.eqRefl _) (.eqRefl zero) (.eqRefl one)
     (GaussianRationalPowerDifference.distance_refl_zero (value u) one (le_refl one))
   have raw := aligned_at F s s a C E x t u h ht hu metric
-  exact distance_radius_mono _ _ _ _ two (unit s)
-    (GaussianRationalHorner.positive_product _ _ (unit_positive s) (unit_positive s)) (unit_positive s)
-    (le_of_eq_add (d := zero) (by ipra_ring)) raw
+  exact distance_two_errors_same (unit_positive s) raw
 
 theorem modulus_observations (F : PR 3) (p q a C E L x t u : PTm n)
     (h : Γ ⊢[PRAAx] sampledModulus F a C E L x) (ht : Γ ⊢[PRAAx] inside a C E t) (hu : Γ ⊢[PRAAx] inside a C E u)

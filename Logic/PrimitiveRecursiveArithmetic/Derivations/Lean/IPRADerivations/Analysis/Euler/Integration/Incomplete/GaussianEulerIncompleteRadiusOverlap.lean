@@ -20,8 +20,7 @@ open GaussianEulerIncompleteRadiusAlignment (cutoff)
 open GaussianNameEquivalence (crossEquivalent)
 open GaussianCoefficientNameBounds (unit unit_positive)
 open GaussianRationalMetric (distanceBounded)
-open GaussianRationalDistanceOrder (distance_congr distance_radius_mono distance_symmetric distance_triangle_same)
-open GaussianRationalHorner (positive_product)
+open GaussianRationalDistanceOrder (distance_congr distance_symmetric distance_triangle_same distance_two_errors_same)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
@@ -34,8 +33,7 @@ private theorem compare (t x u v y : PTm n) (hl : Γ ⊢[PRAAx] distanceBounded 
     (hm : Γ ⊢[PRAAx] distanceBounded u v (unit t+unit t) (unit t*unit t))
     (hr : Γ ⊢[PRAAx] distanceBounded y v (num 3) (unit t)) : Γ ⊢[PRAAx] distanceBounded x y (num 8) (unit t) := by
   have hT := unit_positive (Γ := Γ) t
-  have mid := distance_radius_mono _ _ _ _ two (unit t) (positive_product _ _ hT hT) hT
-    (le_of_eq_add (d := zero) (by ipra_ring)) hm
+  have mid := distance_two_errors_same hT hm
   exact distance_congr (.eqRefl _) (.eqRefl _) (by ipra_ring) (.eqRefl _)
     (distance_triangle_same x u y _ _ _ hT hl
       (distance_triangle_same u v y _ _ _ hT mid (distance_symmetric _ _ _ _ hT hr)))
