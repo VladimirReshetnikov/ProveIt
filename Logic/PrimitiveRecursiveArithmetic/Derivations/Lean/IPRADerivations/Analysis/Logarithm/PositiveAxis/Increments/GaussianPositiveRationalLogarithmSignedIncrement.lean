@@ -46,10 +46,6 @@ def budget (p q R A D T : PTm n) : PTm n :=
   (two*((R*A)*(R*A)))*(unit p*unit q)+(T*(D*D))*(unit p+unit q)
 def denominator (p q D : PTm n) : PTm n := (D*D)*(unit p*unit q)
 
-private theorem fraction_congr {a b c d : PTm n}
-    (h : Γ ⊢[PRAAx] a ≐ c) (k : Γ ⊢[PRAAx] b ≐ d) : Γ ⊢[PRAAx] fraction a b ≐ fraction c d :=
-  GaussianCompactRiemannName.fraction_congr _ _ _ _ h k
-
 private theorem fraction_step (a k b : PTm n) (hb : Γ ⊢[PRAAx] le one b) :
     Γ ⊢[PRAAx] qsub (fraction (a+k) b) (fraction a b) ≐ fraction k b :=
   (qsub_congr (fraction_add_same a k b hb).eqSymm (.eqRefl _)).eqTrans
@@ -73,7 +69,7 @@ private theorem ratio_distance (a c k : PTm n) (ha : Γ ⊢[PRAAx] le one a)
   have sizes : Γ ⊢[PRAAx] k*a ≐ k*c+k*k := by
     exact (congrMul (.eqRefl k) he).eqTrans (by ipra_ring)
   have diff : Γ ⊢[PRAAx] qsub (fraction k c) (fraction k a) ≐ fraction (k*k) E :=
-    (qsub_congr (first.eqTrans (fraction_congr sizes (.eqRefl _))) second).eqTrans (fraction_step _ _ _ hE)
+    (qsub_congr (first.eqTrans (GaussianRationalHorner.real_fraction_congr sizes (.eqRefl _))) second).eqTrans (fraction_step _ _ _ hE)
   have norm : Γ ⊢[PRAAx] ComplexLogarithmRemainder.normSq (scale (k*k) oneCode) ≐ (k*k)*(k*k) :=
     (normSq_scale _ _).eqTrans ((congrMul (.eqRefl _) normSq_one).eqTrans (by ipra_ring))
   apply bound_congr diff.eqSymm (.eqRefl _) (.eqRefl _)
@@ -108,7 +104,7 @@ private theorem increasing (p q a c b R A D : PTm n)
   have dx : Γ ⊢[PRAAx] increment p q a b k ≐ observed p q a b c b :=
     qsub_congr (sample_congr p b he.eqSymm) (.eqRefl _)
   have dy : Γ ⊢[PRAAx] linear a b c b ≐ fraction k a :=
-    (qmul_congr ((qsub_congr (fraction_congr he (.eqRefl _)) (.eqRefl _)).eqTrans (fraction_step _ _ _ hb))
+    (qmul_congr ((qsub_congr (GaussianRationalHorner.real_fraction_congr he (.eqRefl _)) (.eqRefl _)).eqTrans (fraction_step _ _ _ hb))
       (.eqRefl _)).eqTrans ((fraction_product _ _ _ _ hb ha).eqTrans (fraction_equal _ _ _ _ (positive_product _ _ hb ha) ha (by ipra_ring)))
   have dh := positive_product _ _ (positive_product _ _ hD hD) (positive_product _ _ (unit_positive (Γ := Γ) p) (unit_positive q))
   exact distance_radius_mono_same dh (le_of_eq_add (d := (R*A)*(R*A)*(unit p*unit q)) (by unfold budget; ipra_ring))
@@ -137,7 +133,7 @@ private theorem decreasing (p q a c b R A D : PTm n)
   have dx : Γ ⊢[PRAAx] qnegative (increment q p c b k) ≐ observed p q a b c b :=
     (reversed_difference _ _).eqTrans (qsub_congr (.eqRefl _) (sample_congr q b he.eqSymm))
   have stepEq : Γ ⊢[PRAAx] qsub (fraction a b) (fraction c b) ≐ fraction k b :=
-    (qsub_congr (fraction_congr he (.eqRefl _)) (.eqRefl _)).eqTrans (fraction_step _ _ _ hb)
+    (qsub_congr (GaussianRationalHorner.real_fraction_congr he (.eqRefl _)) (.eqRefl _)).eqTrans (fraction_step _ _ _ hb)
   have reverseStep : Γ ⊢[PRAAx] qsub (fraction c b) (fraction a b) ≐ qnegative (fraction k b) :=
     (reversed_difference (fraction a b) (fraction c b)).eqSymm.eqTrans
       (RationalGaussianEmbedding.negative_congr stepEq)
