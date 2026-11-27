@@ -1,6 +1,4 @@
 import IPRADerivations.AnalyticNumberTheory.GcdFiber
-import IPRADerivations.DiophantineNumberTheory.Coprime
-import IPRADerivations.Core.Header
 
 /-!
 # Case split on a positive divisor
@@ -18,19 +16,16 @@ only a positive divisor `d` of `N` has to be treated; there `N = d (N/d)`, and f
 
 namespace LeanProofs.IPRA.AnalyticNumberTheory.DivisorCases
 
-open_ipra
-open LeanProofs.IPRA.DiophantineNumberTheory.Coprime (eq_of_dvd' pos_of_eq_mul)
+open_ipra exports
 open LeanProofs.IPRA.Signum (sg sg_zero)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
-
-local notation "𝔞" t:max => Groth.ι (IPRA.Q.mk _ t)
 
 /-- `N/d ≤ N` for `d ≥ 1`. -/
 theorem quo_lt' {d N : PTm n} (hd : Γ ⊢[PRAAx] d ≐ succ (pred d)) : Γ ⊢[PRAAx] lt (quo N d) (succ N) := by
   have dv := natEq (GcdFiber.div_eq (j := N) hd); have wp := natEq hd
   refine (succ_monus_succ _ _).eqTrans (le_of_eq_add (d := pred d * quo N d + rem N d) ?_)
-  apply deriveNat; ipra_simps; linear_combination dv + 𝔞 (quo N d) * wp
+  ipra_lc dv + 𝔞 (quo N d) * wp
 
 /-- Either the divisor indicator `[d ≥ 1][d ∣ N]` vanishes, or `d` is a positive divisor of `N`. -/
 theorem divisor_orE {d N : PTm n} {φ : Fm PTm n}
@@ -47,9 +42,7 @@ theorem divisor_congr {d N A B : PTm n} (X : PTm n)
     (h : ((rem N d ≐ zero) :: (d ≐ succ (pred d)) :: Γ) ⊢[PRAAx] A ≐ B) :
     Γ ⊢[PRAAx] ((sg d * eqb (rem N d) zero) * X) * A ≐ ((sg d * eqb (rem N d) zero) * X) * B := by
   refine divisor_orE (d := d) (N := N) ?_ (congrMul (.eqRefl _) h)
-  have z := natEq (Prf.hyp0 : ((sg d * eqb (rem N d) zero ≐ zero) :: Γ) ⊢[PRAAx] _)
-  apply deriveNat; ipra_simps
-  linear_combination 𝔞 X * (𝔞 A - 𝔞 B) * z
+  ipra_lc 𝔞 X * (𝔞 A - 𝔞 B) * natEq (Prf.hyp0 : ((sg d * eqb (rem N d) zero ≐ zero) :: Γ) ⊢[PRAAx] _)
 
 /-- `divisor_congr` for `N ≥ 1`: the cofactor of a positive divisor satisfies `1 ≤ N/d ≤ N`. -/
 theorem divisor_quo_congr {d N A B : PTm n} (X : PTm n) (hN : Γ ⊢[PRAAx] N ≐ succ (pred N))

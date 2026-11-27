@@ -1,8 +1,5 @@
 import IPRADerivations.AnalyticNumberTheory.DenominatorPrimeStep
 import IPRADerivations.AnalyticNumberTheory.LcmBridgeTransfer
-import IPRADerivations.Foundations.CrossingSearch
-import IPRADerivations.Core.CertificateTactics
-import IPRADerivations.Core.Header
 
 /-!
 # The comparison `S_a ≤ G_a` on a whole range, one prime at a time
@@ -30,27 +27,18 @@ The proof is a course-of-values induction on the range, written as the ordinary 
 * **`range_step`**; `le_of_Cz`: `C_z(a) = 0` gives `S_a(t) ≤ G_a(t)` for `t ≤ z`.
 -/
 
-set_option linter.unusedSimpArgs false
-
 namespace LeanProofs.IPRA.AnalyticNumberTheory.DenominatorRange
 
-open_ipra
+open_ipra exports
 open LeanProofs.IPRA.Analysis.Products (fact)
-open LeanProofs.IPRA.AnalyticNumberTheory.Primes (prime)
-open LeanProofs.IPRA.AnalyticNumberTheory.Valuation (isP prime_of_isP isP_of_prime)
 open LeanProofs.IPRA.AnalyticNumberTheory.FactorVector (subst_isP one_le_pos)
 open LeanProofs.IPRA.AnalyticNumberTheory.Mobius (prime_two zero_mul_l)
-open LeanProofs.IPRA.AnalyticNumberTheory.ValuationMul (p_pos)
-open LeanProofs.IPRA.AnalyticNumberTheory.GcdFiber (div_eq)
 open LeanProofs.IPRA.AnalyticNumberTheory.EulerDomination (Sm gB Sm_succ term_zero le_zero_of)
 open LeanProofs.IPRA.AnalyticNumberTheory.TotientSumStep (Gs GtB)
 open LeanProofs.IPRA.AnalyticNumberTheory.DenominatorPrimeStep (prime_step quo_le)
 open LeanProofs.IPRA.AnalyticNumberTheory.LcmBridgeTransfer (inst2_mul)
-open LeanProofs.IPRA.Foundations.CrossingSearch (monus_of_eq)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
-
-local notation "𝔞" t:max => Groth.ι (IPRA.Q.mk _ t)
 
 /-! ## The violation bodies -/
 
@@ -64,8 +52,7 @@ theorem inst2_VaB (t y : PTm n) : inst2 VaB t y =
     monus (ap2 (sumF gB) (succ t) (pairT (fstT y) (pairT (fstT (sndT y)) (fact (sndT (sndT y))))))
       (ap2 (sumF GtB) (succ t) (pairT (fstT y) (sndT (sndT y)))) := by
   simp only [inst2, PTm.subst_monus, subst_ap2, subst_pairT, subst_fstT, subst_sndT, Syn.subst_var,
-    Matrix.cons_val_zero, Matrix.cons_val_one, Matrix.head_cons, ConciseIPRA.PTm.subst_succ,
-    ConciseIPRA.PTm.subst_zero]
+    Matrix.cons_val_zero, Matrix.cons_val_one, ConciseIPRA.PTm.subst_succ, ConciseIPRA.PTm.subst_zero]
 
 /-- The parameter `⟨a, ⟨L, z⟩⟩`. -/
 abbrev P3 (a L z : PTm n) : PTm n := pairT a (pairT L z)
@@ -101,7 +88,7 @@ theorem inst2_WB (t y : PTm n) :
   have e : inst2 (monus one (monus (var 0) (sndT (sndT (var 1)))) : PTm 2) t y =
       monus one (monus t (sndT (sndT y))) := by
     simp only [inst2, PTm.subst_monus, subst_sndT, Syn.subst_var, Matrix.cons_val_zero, Matrix.cons_val_one,
-      Matrix.head_cons, ConciseIPRA.PTm.subst_succ, ConciseIPRA.PTm.subst_zero]
+      ConciseIPRA.PTm.subst_succ, ConciseIPRA.PTm.subst_zero]
   rw [inst2_mul, e]
 
 theorem W_at (t a L z : PTm n) :
@@ -181,13 +168,11 @@ abbrev rngF : Fm PTm 5 :=
 
 theorem rng_open : ([] : List (Fm PTm 5)) ⊢[PRAAx] rngF := by
   refine ind _ ⟨trivial, trivial, trivial, trivial⟩ ?_ ?_
-  · simp only [Fm.subst_imp, Fm.subst_eq, subst_isP, Syn.subst_var, Syn.inst_zero, Syn.inst_one, inst_two,
-      inst_three, inst_four]
+  · simp only [Fm.subst_imp, Fm.subst_eq, subst_isP, Syn.subst_var, Syn.inst_one]
     simp only [subst_ex2, subst_ap2, subst_pairT, PTm.subst_mul, Syn.subst_var, Syn.inst_zero, Syn.inst_one,
       inst_two, inst_three, inst_four, ConciseIPRA.PTm.subst_zero, ConciseIPRA.PTm.subst_succ]
     exact .impI (.impI (.impI (sum_zero WB _)))
-  · simp only [Fm.subst_imp, Fm.subst_eq, subst_isP, Syn.subst_var, Syn.repl_zero, repl_one, repl_two,
-      repl_three, repl_four]
+  · simp only [Fm.subst_imp, Fm.subst_eq, subst_isP, Syn.subst_var, repl_one]
     simp only [subst_ex2, subst_ap2, subst_pairT, PTm.subst_mul, Syn.subst_var, Syn.repl_zero, repl_one,
       repl_two, repl_three, repl_four, ConciseIPRA.PTm.subst_zero, ConciseIPRA.PTm.subst_succ]
     exact .impI (.impI (.impI (W_succ (prime_of_isP hyp2) Prf.hyp1 Prf.hyp0
@@ -198,9 +183,7 @@ theorem range_all {p a L z : PTm n} (hp : Γ ⊢[PRAAx] prime p) (hc : Γ ⊢[PR
     (hA : Γ ⊢[PRAAx] Cz a L z ≐ zero) (N : PTm n) :
     Γ ⊢[PRAAx] ap2 (sumF WB) N (P3 (a * p) L z) ≐ zero := by
   have i := inst (Γ := Γ) rng_open (![N, p, a, L, z] : Fin 5 → PTm n)
-  simp only [rngF, Fm.subst_imp, Fm.subst_eq, subst_isP, Syn.subst_var, Matrix.cons_val_zero,
-    Matrix.cons_val_one, Matrix.cons_val_two, Matrix.cons_val_three, Matrix.cons_val_four, Matrix.head_cons,
-    Matrix.tail_cons] at i
+  simp only [rngF, Fm.subst_imp, Fm.subst_eq, subst_isP, Syn.subst_var, Matrix.cons_val_zero, Matrix.cons_val_one] at i
   simp only [subst_ex2, subst_ap2, subst_pairT, PTm.subst_mul, Syn.subst_var, Matrix.cons_val_zero,
     Matrix.cons_val_one, Matrix.cons_val_two, Matrix.cons_val_three, Matrix.cons_val_four, Matrix.head_cons,
     Matrix.tail_cons, ConciseIPRA.PTm.subst_zero, ConciseIPRA.PTm.subst_succ] at i

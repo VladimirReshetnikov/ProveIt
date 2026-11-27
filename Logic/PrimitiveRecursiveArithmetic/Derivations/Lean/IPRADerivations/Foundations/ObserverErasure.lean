@@ -1,7 +1,6 @@
 import IPRADerivations.Foundations.LeastBoundedWitness
 import IPRADerivations.Core.OrderCertificates
 import IPRADerivations.Foundations.IterationFusion
-import IPRADerivations.Core.Header
 
 /-!
 # Erasing the choice of a certificate behind a stable observer
@@ -42,13 +41,10 @@ Statements, for a totality premise `∃ a < N. f(a, x) = 0`:
 The composition with a downstream modulus and the regular-name statements are not derived here.
 -/
 
-set_option linter.unusedSimpArgs false
-
 namespace LeanProofs.IPRA.Foundations.ObserverErasure
 
-open_ipra
+open_ipra exports
 open LeanProofs.IPRA.Search (mu)
-open LeanProofs.IPRA.Foundations.LeastBoundedWitness (ExW lt_of_exists)
 open LeanProofs.IPRA.Foundations.IterationFusion (rel subst_rel)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}

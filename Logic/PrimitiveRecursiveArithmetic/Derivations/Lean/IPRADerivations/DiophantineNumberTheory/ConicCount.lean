@@ -1,5 +1,4 @@
 import IPRADerivations.DiophantineNumberTheory.AperyWronskian
-import IPRADerivations.Core.Header
 
 /-!
 # The counting estimates of a pointed conic
@@ -16,11 +15,9 @@ numbers supplied by the bijection of `thm:conic-param` and the height bounds of 
   `N² ≤ 4 N_q` (`lem:conic-coprime-count`, `4G(N) ≥ N²`, with `G(N) ≤ N_q`), `B ≤ 16 A N_q`;
 -/
 
-set_option linter.unusedSimpArgs false
-
 namespace LeanProofs.IPRA.DiophantineNumberTheory.ConicCount
 
-open_ipra
+open_ipra exports
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 

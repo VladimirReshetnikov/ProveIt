@@ -1,9 +1,6 @@
 import IPRADerivations.AnalyticNumberTheory.BertrandCentral
 import IPRADerivations.AnalyticNumberTheory.PrimorialLower
 import IPRADerivations.Foundations.StrongInduction
-import IPRADerivations.Core.LinearCombination
-import IPRADerivations.Core.CommonLemmas
-import IPRADerivations.Core.Header
 
 /-!
 # Bertrand's postulate: the product of the primes up to `r` is at most `4^r`
@@ -29,26 +26,18 @@ The paper treats even and odd `r` separately (`P(2a) = P(2a − 1)`); here both 
 divisibility `pri_dvd` at the even argument `2m`.
 -/
 
-set_option linter.unusedSimpArgs false
-
 namespace LeanProofs.IPRA.AnalyticNumberTheory.PrimorialUpper
 
-open_ipra
-open LeanProofs.IPRA.AnalyticNumberTheory.Primes (prime)
+open_ipra exports
 open LeanProofs.IPRA.AnalyticNumberTheory.Valuation (val isP isP_01 prime_of_isP isP_of_prime pw_pos')
 open LeanProofs.IPRA.AnalyticNumberTheory.FactorVector (f_zero f_one f_pos one_le_pos two_eq)
-open LeanProofs.IPRA.AnalyticNumberTheory.LcmUpto (lcmu lcm_valuation)
 open LeanProofs.IPRA.AnalyticNumberTheory.BinomialLcm (dvd_of_val_le PE XE val_PE inst2_XE inst2_PE PE_pos
   binom_val_ge)
 open LeanProofs.IPRA.AnalyticNumberTheory.PrimorialLower (prim inst2_one)
 open LeanProofs.IPRA.AnalyticNumberTheory.ChebyshevBounds (two_pos')
 open LeanProofs.IPRA.AnalyticNumberTheory.Mobius (prime_two congrSg isP_zero)
-open LeanProofs.IPRA.AnalyticNumberTheory.ValuationMul (p_pos val_mul val_unique val_congr)
-open LeanProofs.IPRA.AnalyticNumberTheory.PowerCleared (pw_le_exp)
-open LeanProofs.IPRA.AnalyticNumberTheory.PhiLower (le_mul_mono)
 open LeanProofs.IPRA.AnalyticNumberTheory.Totatives (sg_lt sg_le)
 open LeanProofs.IPRA.AnalyticNumberTheory.BertrandCentral (cb_succ_odd odd_binom_le odd_binom_pos)
-open LeanProofs.IPRA.DiophantineNumberTheory.Coprime (dvd_le')
 open LeanProofs.IPRA.Combinatorics.Catalan (cb)
 open LeanProofs.IPRA.Combinatorics.Binomial (binom pos_mul)
 open LeanProofs.IPRA.Combinatorics.BinomialTheorem (congrPw)
@@ -56,8 +45,6 @@ open LeanProofs.IPRA.Probability.ProductReplacement (prod_succ')
 open LeanProofs.IPRA.Signum (sg sg_zero sg_succ)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
-
-local notation "𝔞" t:max => Groth.ι (IPRA.Q.mk _ t)
 
 /-! ## The product of the primes up to `r` -/
 
@@ -323,3 +310,5 @@ theorem primorial_le (P : PTm n) : Γ ⊢[PRAAx] le (prim P) (pw two (two * P)) 
   le_congr (prim_eq P).eqSymm (.eqRefl _) (pri_le P)
 
 end LeanProofs.IPRA.AnalyticNumberTheory.PrimorialUpper
+
+export_ipra AnalyticNumberTheory.PrimorialUpper (pri pri_pos sg_le1)

@@ -27,7 +27,7 @@ The bisection that constructs the root name (`lem:bisect`) is the construction o
 
 namespace LeanProofs.IPRA.Foundations.StableCubicRoot
 
-open_ipra
+open_ipra exports
 
 /-! ## The identities -/
 

@@ -1,11 +1,6 @@
 import IPRADerivations.AnalyticNumberTheory.SieveWeightAbs
 import IPRADerivations.AnalyticNumberTheory.SieveWeightStep
-import IPRADerivations.AnalyticNumberTheory.FactorVector
-import IPRADerivations.AnalyticNumberTheory.FactorialLambda
 import IPRADerivations.Foundations.StrongInduction
-import IPRADerivations.Core.CertificateTactics
-import IPRADerivations.Core.CommonLemmas
-import IPRADerivations.Core.Header
 
 /-!
 # The weight bound of the Selberg sieve
@@ -39,30 +34,19 @@ The step function of `strong_ind` is quantified over all contexts and cannot ass
 * `bound_step`, `v_step`: the induction step.
 -/
 
-set_option linter.unusedSimpArgs false
-
 namespace LeanProofs.IPRA.AnalyticNumberTheory.SieveWeightBound
 
-open_ipra
+open_ipra exports
 open LeanProofs.IPRA.Signum (sg sg_zero sg_succ)
-open LeanProofs.IPRA.AnalyticNumberTheory.Primes (prime lpf)
-open LeanProofs.IPRA.AnalyticNumberTheory.ValuationMul (p_pos)
 open LeanProofs.IPRA.AnalyticNumberTheory.Mobius (prime_two congrSg zero_mul_l)
-open LeanProofs.IPRA.AnalyticNumberTheory.FactorVector (lpf_prime' lpf_dvd')
-open LeanProofs.IPRA.AnalyticNumberTheory.FactorialLambda (sum_add2)
 open LeanProofs.IPRA.AnalyticNumberTheory.SieveDiagonal (Ab Ab_at)
 open LeanProofs.IPRA.AnalyticNumberTheory.SieveExpansion (lB)
 open LeanProofs.IPRA.AnalyticNumberTheory.SievePrimes (sg_le_one eqb_le1)
 open LeanProofs.IPRA.AnalyticNumberTheory.SieveWeightValues (YP YN)
-open LeanProofs.IPRA.AnalyticNumberTheory.SieveWeightForm (UPw UNw)
-open LeanProofs.IPRA.AnalyticNumberTheory.SieveWeightOne (Asum)
 open LeanProofs.IPRA.AnalyticNumberTheory.SieveWeightAbs (wS inst2_wS mul_le_one weights_le)
 open LeanProofs.IPRA.AnalyticNumberTheory.SieveWeightStep (habs hv Ab_h prime_step zero_le_of)
-open LeanProofs.IPRA.DiophantineNumberTheory.Coprime (eq_of_dvd')
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
-
-local notation "𝔞" t:max => Groth.ι (IPRA.Q.mk _ t)
 
 /-! ## Certificates over opaque terms -/
 

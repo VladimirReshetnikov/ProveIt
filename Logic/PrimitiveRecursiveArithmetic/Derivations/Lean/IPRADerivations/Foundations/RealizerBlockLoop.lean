@@ -1,7 +1,5 @@
 import IPRADerivations.Foundations.RealizerMasterInterface
 import IPRADerivations.Foundations.RealizerLoop
-import IPRADerivations.Core.SubstCommand
-import IPRADerivations.Core.Header
 
 /-!
 # A source bounded fold with variable blocks of input queries
@@ -15,11 +13,10 @@ queries and certificate-dependent producer scopes remain separate extensions.
 -/
 
 set_option autoImplicit false
-set_option linter.unusedSimpArgs false
 
 namespace LeanProofs.IPRA.Foundations.RealizerBlockLoop
 
-open_ipra
+open_ipra exports
 open LeanProofs.IPRA.Foundations.RealizerComposition
 open LeanProofs.IPRA.Foundations.MasterCertificate (entry sequence)
 open LeanProofs.IPRA.Foundations.SequenceComposition (length flatMap block prefixSum)

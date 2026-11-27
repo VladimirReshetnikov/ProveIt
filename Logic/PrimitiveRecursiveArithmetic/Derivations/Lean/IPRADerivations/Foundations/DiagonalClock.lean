@@ -1,5 +1,4 @@
 import IPRADerivations.Foundations.ClockMajorants
-import IPRADerivations.Core.Header
 
 /-!
 # The exponential clock of the diagonal language
@@ -13,14 +12,10 @@ fixed deterministic machine computes `D(w)` in at most `2^{K(|w|+1)^2}` transiti
   `A (n + T + 1)^4 ≤ 16 A 2^{4q} ≤ 2^{(4 + 16A) q}`, the paper's constant "`K = 4 + 16A` works".
 -/
 
-set_option linter.unusedSimpArgs false
-
 namespace LeanProofs.IPRA.Foundations.DiagonalClock
 
-open_ipra
+open_ipra exports
 open LeanProofs.IPRA.Foundations.ClockMajorants (pw_mono_exp)
-open LeanProofs.IPRA.DiophantineNumberTheory.AperyMultibound (pw_num)
-open LeanProofs.IPRA.AnalyticNumberTheory.RSA (pw_mul)
 open LeanProofs.IPRA.Analysis.RationalClosure (succ_le_two_pow)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}

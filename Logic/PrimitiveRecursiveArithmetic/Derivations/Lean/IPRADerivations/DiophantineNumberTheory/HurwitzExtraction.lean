@@ -1,8 +1,5 @@
 import IPRADerivations.DiophantineNumberTheory.HurwitzMargin
-import IPRADerivations.Core.OrderCertificates
 import IPRADerivations.Foundations.IntervalPacking
-import IPRADerivations.Core.LinearCombination
-import IPRADerivations.Core.Header
 
 /-!
 # Bounded-precision extraction of a continued-fraction digit (`hurwitz_khinchin_ipra`)
@@ -25,14 +22,11 @@ in the wrong case `6 L_n dd' ≤ L_n dd'` would follow, against `L_n dd' ≥ 1`.
 
 namespace LeanProofs.IPRA.DiophantineNumberTheory.HurwitzExtraction
 
-open_ipra
-open LeanProofs.IPRA.Foundations.IntervalPacking (absurd_one_zero')
+open_ipra exports
 
 set_option autoImplicit false
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
-
-local notation "𝔞" t:max => Groth.ι (IPRA.Q.mk _ t)
 
 /-- `|x − y| = (x ∸ y) + (y ∸ x)`. -/
 abbrev adist (x y : PTm n) : PTm n := monus x y + monus y x
@@ -129,7 +123,6 @@ For the convergents `P/Q`, `P'/Q'` (determinant `P'Q − PQ' = ±1`) and two rat
 
 /-- `a + d = b + c` gives `|a − b| = |c − d|`. -/
 theorem adist_of_eq {a b c d : PTm n} (h : Γ ⊢[PRAAx] a + d ≐ b + c) : Γ ⊢[PRAAx] adist a b ≐ adist c d := by
-  have e := natEq h
   refine .orE (le_total a b) ?_ ?_
   · let Θ : List (Fm PTm n) := le a b :: Γ
     have hab : Θ ⊢[PRAAx] le a b := Prf.hyp0
@@ -140,9 +133,7 @@ theorem adist_of_eq {a b c d : PTm n} (h : Γ ⊢[PRAAx] a + d ≐ b + c) : Γ �
     have e2 := natEq (Prf.andE₂ q1)
     have e3 := natEq (Prf.andE₁ q2)
     have e4 := natEq (Prf.andE₂ q2)
-    have e' := natEq (h.wk : Θ ⊢[PRAAx] _)
-    apply deriveNat; ipra_simps
-    linear_combination e1 - e2 - e3 + e4 - e'
+    ipra_lc e1 - e2 - e3 + e4 - natEq (h.wk : Θ ⊢[PRAAx] _)
   · let Θ : List (Fm PTm n) := le b a :: Γ
     have hba : Θ ⊢[PRAAx] le b a := Prf.hyp0
     have hdc : Θ ⊢[PRAAx] le d c := by have e' := natEq (h.wk : Θ ⊢[PRAAx] _); ipra_le sl hba with e'
@@ -152,9 +143,7 @@ theorem adist_of_eq {a b c d : PTm n} (h : Γ ⊢[PRAAx] a + d ≐ b + c) : Γ �
     have e2 := natEq (Prf.andE₂ q1)
     have e3 := natEq (Prf.andE₁ q2)
     have e4 := natEq (Prf.andE₂ q2)
-    have e' := natEq (h.wk : Θ ⊢[PRAAx] _)
-    apply deriveNat; ipra_simps
-    linear_combination e1 - e2 - e3 + e4 + e'
+    ipra_lc e1 - e2 - e3 + e4 + natEq (h.wk : Θ ⊢[PRAAx] _)
 
 /-- The determinant identity in the region `Qx > P`, `P' > Q'x` (both approximations on the same side),
 for `P'Q = PQ' + 1`: `A Dn' + VY = A' Dn + WZ`. -/

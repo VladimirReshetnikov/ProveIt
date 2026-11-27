@@ -1,6 +1,5 @@
 import IPRADerivations.DiophantineNumberTheory.SimultaneousWidths
 import IPRADerivations.DiophantineNumberTheory.AperyMultibound
-import IPRADerivations.Core.Header
 
 /-!
 # The skew-grid count for simultaneous Dirichlet approximation
@@ -20,14 +19,10 @@ The proof multiplies by `c H^d`: the power difference `(Mk)^d − (HB)^d = (Mk �
 `cancel_pos` cancels the positive factor `H^d`.
 -/
 
-set_option linter.unusedSimpArgs false
-
 namespace LeanProofs.IPRA.DiophantineNumberTheory.SimultaneousGrid
 
-open_ipra
+open_ipra exports
 open LeanProofs.IPRA.Algebra.PowerDifference (gd power_diff gd_le)
-open LeanProofs.IPRA.AnalyticNumberTheory.Order (pw_one_base)
-open LeanProofs.IPRA.DiophantineNumberTheory.AperyMultibound (mul_pw)
 open LeanProofs.IPRA.DiophantineNumberTheory.SimultaneousWidths (cPred cT HT hT aT)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
@@ -85,3 +80,5 @@ theorem grid_count {N' d' k B : PTm n}
   exact cancel_pos hh (mul_le_cancel (d' := cPred N') main)
 
 end LeanProofs.IPRA.DiophantineNumberTheory.SimultaneousGrid
+
+export_ipra DiophantineNumberTheory.SimultaneousGrid (one_le_pw_of)

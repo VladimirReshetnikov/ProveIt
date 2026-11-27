@@ -1,8 +1,4 @@
 import IPRADerivations.AnalyticNumberTheory.SymmetryInstances
-import IPRADerivations.AnalyticNumberTheory.DivisorSwapP
-import IPRADerivations.Probability.Independence
-import IPRADerivations.Core.LinearCombination
-import IPRADerivations.Core.Header
 
 /-!
 # Möbius inversion over multiples (the sieve inversion)
@@ -26,29 +22,19 @@ With `u_d = λ_d / d` and the signed pair `μ = μ⁺ − μ⁻`, the check is, 
 * `dual_inversion`: the double sum, exchanged by `Core/Fubini.fubini`; the term `[r = s]` selects `y_s`.
 -/
 
-set_option linter.unusedSimpArgs false
-
 namespace LeanProofs.IPRA.AnalyticNumberTheory.SieveInversion
 
-open_ipra
+open_ipra exports
 open LeanProofs.IPRA.Signum (sg sg_zero)
 open LeanProofs.IPRA.AnalyticNumberTheory.Mobius (congrSg zero_mul_l congrEqb' one_inst)
 open LeanProofs.IPRA.AnalyticNumberTheory.MobiusBounds (sum_ext shift_pos)
-open LeanProofs.IPRA.AnalyticNumberTheory.MobiusInversion (eqb_rem_big)
 open LeanProofs.IPRA.AnalyticNumberTheory.DirichletLeibniz (cvB conv cv_at)
-open LeanProofs.IPRA.AnalyticNumberTheory.ConvolutionAssoc (cvF inst2_cvF sg_pos)
 open LeanProofs.IPRA.AnalyticNumberTheory.DivisorSwapP (conv_comm)
 open LeanProofs.IPRA.AnalyticNumberTheory.MobiusSummatory (gS inst2_gS pt_n)
-open LeanProofs.IPRA.AnalyticNumberTheory.SymmetrySum (aPB aNB)
 open LeanProofs.IPRA.AnalyticNumberTheory.SymmetryInstances (dvdB inst2_dvdB)
-open LeanProofs.IPRA.AnalyticNumberTheory.EulerProduct (eqb_comm')
-open LeanProofs.IPRA.AnalyticNumberTheory.FactorialLambda (sum_add2)
-open LeanProofs.IPRA.DiophantineNumberTheory.Coprime (eq_of_dvd' pos_of_eq_mul)
 open LeanProofs.IPRA.Probability.Independence (col_pt sum_scale dsum)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
-
-local notation "𝔞" t:max => Groth.ι (IPRA.Q.mk _ t)
 
 /-! ## `[s ∣ k]` as a convolution -/
 
@@ -254,3 +240,5 @@ theorem dual_inversion {Z s p : PTm n} (hs : Γ ⊢[PRAAx] s ≐ succ (pred s)) 
 end Inversion
 
 end LeanProofs.IPRA.AnalyticNumberTheory.SieveInversion
+
+export_ipra AnalyticNumberTheory.SieveInversion (inst2_hS wB_at)

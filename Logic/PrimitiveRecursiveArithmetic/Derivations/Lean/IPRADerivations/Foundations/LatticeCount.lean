@@ -1,9 +1,6 @@
 import IPRADerivations.Foundations.IntervalCover
-import IPRADerivations.Core.Gcd
-import IPRADerivations.Core.LinearCombination
 import IPRADerivations.Core.CommonLemmas
 import IPRADerivations.Core.SubstCommand
-import IPRADerivations.Core.Header
 
 /-!
 # Counting integers in intervals
@@ -19,15 +16,13 @@ The body reads its endpoints from the pair parameter `⟨lo, hi⟩`.
 
 namespace LeanProofs.IPRA.Foundations.LatticeCount
 
-open_ipra
+open_ipra exports
 open LeanProofs.IPRA.Signum (sg sg_zero sg_succ)
 open LeanProofs.IPRA.Foundations.IntervalCover (cnt)
 
 set_option autoImplicit false
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
-
-local notation "𝔞" t:max => Groth.ι (IPRA.Q.mk _ t)
 
 /-- `[lo ≤ c < hi]` in `(c, ⟨lo, hi⟩)`. -/
 abbrev icB : PTm 2 := cnt (fstT (var 1)) (sndT (var 1)) (var 0)
@@ -52,8 +47,7 @@ theorem monus_succ_split (T lo : PTm n) :
     have e := eq_add_of_le (Γ := Δ) Prf.hyp0
     have hm : Δ ⊢[PRAAx] monus lo T ≐ succ (monus lo (succ T)) := by
       refine (congrMonus (?_ : _ ⊢[PRAAx] lo ≐ T + succ (monus lo (succ T))) (.eqRefl _)).eqTrans (add_monus' _ _)
-      have a := natEq e
-      apply deriveNat; ipra_simps; linear_combination a
+      ipra_lc natEq e
     have h1 : Δ ⊢[PRAAx] monus one (monus lo T) ≐ zero :=
       (congrMonus (.eqRefl _) hm).eqTrans ((succ_monus_succ _ _).eqTrans (zero_monus _))
     exact (congrAdd h0 h1).eqTrans ((add_zero _).eqTrans (Prf.hyp0 : Δ ⊢[PRAAx] lt T lo).eqSymm)
@@ -63,8 +57,7 @@ theorem monus_succ_split (T lo : PTm n) :
     have hT := eq_add_of_le (Γ := Δ) Prf.hyp0
     have e : Δ ⊢[PRAAx] monus (succ T) lo ≐ succ (monus T lo) := by
       refine (congrMonus (?_ : _ ⊢[PRAAx] succ T ≐ lo + succ (monus T lo)) (.eqRefl _)).eqTrans (add_monus' _ _)
-      have a := natEq hT
-      apply deriveNat; ipra_simps; linear_combination a
+      ipra_lc natEq hT
     exact (congrAdd (.eqRefl _) h1).eqTrans ((succ_eq_add_one _).eqSymm.eqTrans e.eqSymm)
 
 /-- The invariant of `exact_count`. -/
@@ -143,9 +136,7 @@ theorem floor_ind (hβ : Γ ⊢[PRAAx] β ≐ succ b0) :
       refine (congrMonus (?_ : _ ⊢[PRAAx] p * β ≐ u + succ (monus β (succ (rem u β)) + β * monus p (succ (quo u β))))
         (.eqRefl _)).eqTrans (add_monus' _ _)
       have eu' := natEq (Γ := Δ) (Prf.andE₁ d).wk
-      have er' := natEq (Γ := Δ) (eq_add_of_le (Prf.andE₂ d)).wk
-      apply deriveNat; ipra_simps
-      linear_combination er' - eu' + 𝔞 β * ep
+      ipra_lc natEq (Γ := Δ) (eq_add_of_le (Prf.andE₂ d)).wk - eu' + 𝔞 β * ep
     have h0 : Δ ⊢[PRAAx] monus (succ (quo u β)) p ≐ zero := Prf.hyp0
     exact ((congrMonus (.eqRefl _) (congrMonus (.eqRefl _) hm)).eqTrans (sg_succ _)).eqTrans
       ((congrMonus (.eqRefl _) h0).eqTrans (monus_zero _)).eqSymm
@@ -257,7 +248,7 @@ theorem dilated_bounds (B : PTm n) (hβ : Γ ⊢[PRAAx] β ≐ succ b0) (hB : Γ
     have eR' := natEq (Γ := Δ) (eq_add_of_le (Prf.andE₂ dv)).wk
     refine .andI (le_of_eq_add (d := monus v u + β) ?_)
       (le_of_eq_add (d := β * monus (quo u β) (quo (v + b0) β) + rem u β + monus β (succ (rem (v + b0) β)) + succ b0) ?_)
-    · ipra_lc natEq (eq_add_of_le (Γ := Δ) huv.wk) - 𝔞 β * natEq (hds.wk.eqTrans h0)
+    · ipra_lc natEq (eq_add_of_le huv.wk) - 𝔞 β * natEq (hds.wk.eqTrans h0)
     · ipra_lc 𝔞 β * natEq (hds.wk.eqTrans h0) +
         𝔞 β * natEq (eq_add_of_le (Γ := Δ) ((succ_monus_succ _ _).eqSymm.eqTrans Prf.hyp0)) + eu' - ew' + eR'
   · -- `⌊u/β⌋ + 1 ≤ ⌈v/β⌉`: the count is `D = Q − q − 1`
@@ -269,9 +260,11 @@ theorem dilated_bounds (B : PTm n) (hβ : Γ ⊢[PRAAx] β ≐ succ b0) (hB : Γ
     have eb' := natEq (Γ := Δ) hβ.wk
     refine .andI (le_of_eq_add (d := two + monus β (succ (rem u β)) + rem (v + b0) β) ?_)
       (le_of_eq_add (d := monus β (succ (rem (v + b0) β)) + rem u β) ?_)
-    · ipra_lc eb' + er' + ew' - eu' + 𝔞 β * natEq (eq_add_of_le (Γ := Δ) Prf.hyp0) - 𝔞 β * natEq (Γ := Δ) hds.wk
-    · ipra_lc eR' - eb' - ew' + eu' - 𝔞 β * natEq (eq_add_of_le (Γ := Δ) Prf.hyp0) + 𝔞 β * natEq (Γ := Δ) hds.wk
+    · ipra_lc eb' + er' + ew' - eu' + 𝔞 β * natEq (eq_add_of_le Prf.hyp0) - 𝔞 β * natEq (Γ := Δ) hds.wk
+    · ipra_lc eR' - eb' - ew' + eu' - 𝔞 β * natEq (eq_add_of_le Prf.hyp0) + 𝔞 β * natEq (Γ := Δ) hds.wk
 
 end Dilated
 
 end LeanProofs.IPRA.Foundations.LatticeCount
+
+export_ipra Foundations.LatticeCount (exact_count icB icS)

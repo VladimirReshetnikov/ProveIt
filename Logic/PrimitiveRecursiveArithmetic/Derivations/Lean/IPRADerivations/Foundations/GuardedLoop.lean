@@ -1,5 +1,4 @@
 import IPRADerivations.Foundations.TraceReflection
-import IPRADerivations.Core.Header
 
 /-!
 # The guarded loop rule
@@ -17,11 +16,9 @@ formula `t ≤ N(u) → I(t, S(t, u), u)`: it is trace reflection (`Foundations/
 guarded invariant.
 -/
 
-set_option linter.unusedSimpArgs false
-
 namespace LeanProofs.IPRA.Foundations.GuardedLoop
 
-open_ipra
+open_ipra exports
 open LeanProofs.IPRA.ClockedDescent (Pat subst_Pat)
 open LeanProofs.IPRA.Foundations.TraceReflection
 

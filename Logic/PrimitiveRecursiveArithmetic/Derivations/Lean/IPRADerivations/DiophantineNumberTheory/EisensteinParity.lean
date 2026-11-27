@@ -1,9 +1,5 @@
 import IPRADerivations.DiophantineNumberTheory.RectangleCount
-import IPRADerivations.AnalyticNumberTheory.GcdFiber
-import IPRADerivations.AnalyticNumberTheory.FactorialLambda
 import IPRADerivations.AnalyticNumberTheory.ConvolutionAssoc
-import IPRADerivations.Core.LinearCombination
-import IPRADerivations.Core.Header
 
 /-!
 # The parity conversion in Eisenstein's lemma
@@ -33,25 +29,15 @@ Eisenstein's lemma itself is not derived.
 * `total_alg`: the final identity `(S + N) + 2 h (S + N) = 2 (a' B + W)` over opaque terms.
 -/
 
-set_option linter.unusedSimpArgs false
-
 namespace LeanProofs.IPRA.DiophantineNumberTheory.EisensteinParity
 
-open_ipra
+open_ipra exports
 open LeanProofs.IPRA.Signum (sg sg_zero)
-open LeanProofs.IPRA.AnalyticNumberTheory.Mobius (congrSg)
-open LeanProofs.IPRA.AnalyticNumberTheory.ConvolutionAssoc (sg_pos)
-open LeanProofs.IPRA.AnalyticNumberTheory.GcdFiber (div_eq)
-open LeanProofs.IPRA.AnalyticNumberTheory.Multiplicative (rem_lt' sum2_lift)
 open LeanProofs.IPRA.AnalyticNumberTheory.Euler (lift3 at_pair)
-open LeanProofs.IPRA.AnalyticNumberTheory.FactorialLambda (sum_add2)
-open LeanProofs.IPRA.DiophantineNumberTheory.QuadraticReciprocityGoal (floorSum)
 open LeanProofs.IPRA.DiophantineNumberTheory.RectangleCount (fsB inst3_fsB)
 open LeanProofs.IPRA.Probability.Independence (sum_scale)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
-
-local notation "𝔞" t:max => Groth.ι (IPRA.Q.mk _ t)
 
 /-! ## The values -/
 

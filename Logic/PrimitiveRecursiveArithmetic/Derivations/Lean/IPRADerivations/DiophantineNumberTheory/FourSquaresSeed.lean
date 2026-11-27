@@ -1,8 +1,5 @@
 import IPRADerivations.DiophantineNumberTheory.ThueGrid
 import IPRADerivations.AnalyticNumberTheory.ConvolutionAssoc
-import IPRADerivations.AnalyticNumberTheory.Totatives
-import IPRADerivations.Core.LinearCombination
-import IPRADerivations.Core.Header
 
 /-!
 # Four squares: a small multiple of an odd prime of the form `a² + b² + 1`
@@ -23,25 +20,17 @@ witnesses (`Core/Pigeonhole`) returns `I < J ≤ p` with equal labels.
 * `sa`, `sb`, `seed`: the two terms and the statement.
 -/
 
-set_option linter.unusedSimpArgs false
-
 namespace LeanProofs.IPRA.DiophantineNumberTheory.FourSquaresSeed
 
-open_ipra
-open LeanProofs.IPRA.AnalyticNumberTheory.Primes (prime)
+open_ipra exports
 open LeanProofs.IPRA.AnalyticNumberTheory.Mobius (prime_two)
-open LeanProofs.IPRA.AnalyticNumberTheory.ValuationMul (p_pos)
-open LeanProofs.IPRA.AnalyticNumberTheory.Multiplicative (rem_lt')
 open LeanProofs.IPRA.AnalyticNumberTheory.ConvolutionAssoc (rem_small)
 open LeanProofs.IPRA.AnalyticNumberTheory.Totatives (sg_lt sg_le)
 open LeanProofs.IPRA.DiophantineNumberTheory.ModularCertificate (rem_add_mul rem_add_congr shift_pos)
-open LeanProofs.IPRA.DiophantineNumberTheory.ThueGrid (rem_cancel)
 open LeanProofs.IPRA.Pigeonhole (phpI phpJ pigeonhole)
 open LeanProofs.IPRA.Signum (sg)
 
 variable {k : ℕ} {Γ : List (Fm PTm k)}
-
-local notation "𝔞" t:max => Groth.ι (IPRA.Q.mk _ t)
 
 /-! ## Squares below `p/2` are distinct modulo `p` -/
 

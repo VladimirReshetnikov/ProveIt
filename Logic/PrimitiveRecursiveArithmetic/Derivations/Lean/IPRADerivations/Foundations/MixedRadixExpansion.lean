@@ -1,6 +1,5 @@
 import IPRADerivations.Foundations.MixedRadix
 import IPRADerivations.Combinatorics.LegendreDigits
-import IPRADerivations.Core.Header
 
 /-!
 # Mixed-radix expansion of a number
@@ -30,11 +29,9 @@ Two further statements of the STRIVE packet (`paper/sections/04_mixed_radix.tex`
   codes have equal digits.
 -/
 
-set_option linter.unusedSimpArgs false
-
 namespace LeanProofs.IPRA.Foundations.MixedRadixExpansion
 
-open_ipra
+open_ipra exports
 open LeanProofs.IPRA.Foundations.MixedRadix
 open LeanProofs.IPRA.Combinatorics.LegendreDigits (dm quo_quo quo_small pos_mul')
 

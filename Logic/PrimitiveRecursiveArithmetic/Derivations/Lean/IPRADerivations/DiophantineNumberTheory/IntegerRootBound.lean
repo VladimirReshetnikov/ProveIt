@@ -1,9 +1,5 @@
-import IPRADerivations.Core.Powers
-import IPRADerivations.Core.Gcd
 import IPRADerivations.DiophantineNumberTheory.FLTMultiples
 import IPRADerivations.Core.OrderCertificates
-import IPRADerivations.Core.LinearCombination
-import IPRADerivations.Core.Header
 
 /-!
 # An integer root bound
@@ -26,12 +22,9 @@ The triangle inequality from the signed equation and the case `x = 0` are not re
 (`DiophantineNumberTheory/RungeProduct` has the integer absolute value and its triangle inequality).
 -/
 
-set_option linter.unusedSimpArgs false
-
 namespace LeanProofs.IPRA.DiophantineNumberTheory.IntegerRootBound
 
-open_ipra
-open LeanProofs.IPRA.DiophantineNumberTheory.FLTMultiples (pw_pos)
+open_ipra exports
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 

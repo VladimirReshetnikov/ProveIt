@@ -1,9 +1,6 @@
 import IPRADerivations.Core.Pigeonhole
-import IPRADerivations.Core.OrderCertificates
 import IPRADerivations.DiophantineNumberTheory.ModularCertificate
 import IPRADerivations.Foundations.BoundedReflection
-import IPRADerivations.Core.LinearCombination
-import IPRADerivations.Core.Header
 
 /-!
 # A modular root of `−1` gives a sum of two squares
@@ -32,20 +29,15 @@ with equal labels, and `x = |u_J − u_I|`, `y = |v_J − v_I|` satisfy `x² + y
 The outputs are not sorted (the paper returns `min`, `max`).
 -/
 
-set_option linter.unusedSimpArgs false
-
 namespace LeanProofs.IPRA.DiophantineNumberTheory.ThueGrid
 
-open_ipra
-open LeanProofs.IPRA.AnalyticNumberTheory.Multiplicative (rem_lt')
+open_ipra exports
 open LeanProofs.IPRA.Combinatorics.LegendreDigits (dm)
 open LeanProofs.IPRA.DiophantineNumberTheory.ModularCertificate (rem_add_mul rem_add_congr rem_mul_congr2 shift_pos)
 open LeanProofs.IPRA.Foundations.BoundedReflection (eqb_cases eq_of_eqb one_ne_zero)
 open LeanProofs.IPRA.Pigeonhole (phpI phpJ pigeonhole)
 
 variable {k : ℕ} {Γ : List (Fm PTm k)}
-
-local notation "𝔞" t:max => Groth.ι (IPRA.Q.mk _ t)
 
 /-! ## Absolute differences -/
 
@@ -56,12 +48,10 @@ theorem ad_cases (a b : PTm k) : Γ ⊢[PRAAx] (b ≐ a + ad a b) ⋎ (a ≐ b +
   refine .orE (le_total a b) ?_ ?_
   · have hz : (le a b :: Γ) ⊢[PRAAx] monus a b ≐ zero := Prf.hyp0
     have z := natEq hz
-    have e := natEq (eq_add_of_le (Prf.hyp0 (Γ := Γ) (φ := le a b)))
-    exact .orI₁ (by apply deriveNat; ipra_simps; linear_combination e - z)
+    exact .orI₁ (by ipra_lc natEq (eq_add_of_le (Prf.hyp0 (Γ := Γ) (φ := le a b))) - z)
   · have hz : (le b a :: Γ) ⊢[PRAAx] monus b a ≐ zero := Prf.hyp0
     have z := natEq hz
-    have e := natEq (eq_add_of_le (Prf.hyp0 (Γ := Γ) (φ := le b a)))
-    exact .orI₂ (by apply deriveNat; ipra_simps; linear_combination e - z)
+    exact .orI₂ (by ipra_lc natEq (eq_add_of_le (Prf.hyp0 (Γ := Γ) (φ := le b a))) - z)
 
 /-- A vanishing difference identifies the two numbers. -/
 theorem eq_of_zero {a a' X : PTm k} (hx : Γ ⊢[PRAAx] (a' ≐ a + X) ⋎ (a ≐ a' + X))
@@ -202,9 +192,7 @@ theorem finish {n h X Y : PTm k} (hn : Γ ⊢[PRAAx] n ≐ succ (pred n)) (hlo :
         (φ := quo (X * X + Y * Y) n ≐ one))
       have dS' : ((quo (X * X + Y * Y) n ≐ one) :: lt (quo (X * X + Y * Y) n) two :: Γ) ⊢[PRAAx]
           X * X + Y * Y ≐ n * quo (X * X + Y * Y) n + zero := dS.wk.wk
-      have dSn := natEq dS'
-      apply deriveNat; ipra_simps
-      linear_combination dSn + 𝔞 n * q1
+      ipra_lc natEq dS' + 𝔞 n * q1
   · -- the quotient is at least `2`
     have hq : (le two (quo (X * X + Y * Y) n) :: Γ) ⊢[PRAAx] le two (quo (X * X + Y * Y) n) := Prf.hyp0
     have dSn := natEq (dS.wk (ψ := le two (quo (X * X + Y * Y) n)))
@@ -335,3 +323,5 @@ theorem root_to_squares {n t : PTm k} (hn : Γ ⊢[PRAAx] n ≐ succ (pred n))
     exact sq_case m0 e1 (eq_of_eqb e1)
 
 end LeanProofs.IPRA.DiophantineNumberTheory.ThueGrid
+
+export_ipra DiophantineNumberTheory.ThueGrid (rem_cancel)

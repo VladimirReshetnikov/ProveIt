@@ -1,10 +1,5 @@
-import IPRADerivations.AnalyticNumberTheory.Euler
 import IPRADerivations.Foundations.SignedSums
-import IPRADerivations.Combinatorics.BinomialTheorem
-import IPRADerivations.Core.Fubini
-import IPRADerivations.Core.ProdLemmas
 import IPRADerivations.AnalyticNumberTheory.Mobius
-import IPRADerivations.Core.CommonLemmas
 
 /-!
 # Products of powers with a constant base, and delta products
@@ -20,8 +15,6 @@ Framework layer (first use: Wilson's product and Euler's criterion for
   constant, and `Σ_{i<N} [c = i] = 1`.
 -/
 
-set_option linter.unusedSimpArgs false
-
 namespace LeanProofs.IPRA
 
 open LeanProofs.ConciseIPRA
@@ -30,7 +23,6 @@ open LeanProofs.IPRA.Combinatorics.BinomialTheorem (congrPw)
 open Syn
 open scoped Fm
 open ConciseIPRA.PTm (app zero succ)
-open LeanProofs.IPRA.PTm (num monus pred)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 

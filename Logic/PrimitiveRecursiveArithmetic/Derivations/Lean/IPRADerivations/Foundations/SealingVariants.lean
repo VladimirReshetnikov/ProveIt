@@ -1,5 +1,4 @@
 import IPRADerivations.Foundations.StructuralRules
-import IPRADerivations.Core.Header
 
 /-!
 # Variants of certificate sealing
@@ -21,7 +20,7 @@ existential elimination of the deduction kernel (`StructuralRules.existential_se
 
 namespace LeanProofs.IPRA.Foundations.SealingVariants
 
-open_ipra
+open_ipra exports
 open LeanProofs.IPRA.Foundations.StructuralRules (existential_sealing)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}

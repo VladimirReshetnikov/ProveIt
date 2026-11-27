@@ -1,7 +1,4 @@
 import IPRADerivations.AnalyticNumberTheory.LogRefinement
-import IPRADerivations.Core.Gcd
-import IPRADerivations.Core.CommonLemmas
-import IPRADerivations.Core.Header
 
 /-!
 # The finite stage implication preserves the table (`pnt_ipra_constructive_2026-11-14`)
@@ -27,14 +24,11 @@ Both are slack certificates followed by cancellation of the positive factor (`M`
 
 namespace LeanProofs.IPRA.AnalyticNumberTheory.PNTStageStep
 
-open_ipra
-open LeanProofs.IPRA.AnalyticNumberTheory.LogRefinement (pos_of_eq)
+open_ipra exports
 
 set_option autoImplicit false
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
-
-local notation "𝔞" t:max => Groth.ι (IPRA.Q.mk _ t)
 
 /-- `1 ≤ c` gives `c = (c − 1) + 1`. -/
 alias pos_of_one_le := Common.pos_of_one_le
@@ -65,3 +59,5 @@ theorem lower_preserve {D M B nn W Ln Pn : PTm n} (hD1 : Γ ⊢[PRAAx] le one D)
     𝔞 M * 𝔞 W * (64 * 𝔞 D * 𝔞 nn + 127 * sl hD1 + 124)
 
 end LeanProofs.IPRA.AnalyticNumberTheory.PNTStageStep
+
+export_ipra AnalyticNumberTheory.PNTStageStep (cancel_pos)

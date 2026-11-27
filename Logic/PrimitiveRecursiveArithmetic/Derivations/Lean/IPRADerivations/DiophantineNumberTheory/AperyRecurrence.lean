@@ -1,11 +1,6 @@
 import IPRADerivations.DiophantineNumberTheory.AperyNumbers
 import IPRADerivations.Combinatorics.CatalanBallot
 import IPRADerivations.Probability.BinomialLaw
-import IPRADerivations.Core.SumSplit
-import IPRADerivations.Core.ProdLemmas
-import IPRADerivations.Core.LinearCombination
-import IPRADerivations.Core.InductionTactic
-import IPRADerivations.Core.Header
 
 /-!
 # The Apéry recurrence
@@ -38,11 +33,9 @@ double poles of `R_n`), with no rational functions:
 The sequence `b_n`, the Wronskian and the irrationality argument are not formalized.
 -/
 
-set_option linter.unusedSimpArgs false
-
 namespace LeanProofs.IPRA.DiophantineNumberTheory.AperyRecurrence
 
-open_ipra
+open_ipra exports
 open LeanProofs.IPRA.Combinatorics.Binomial (binom)
 open LeanProofs.IPRA.Combinatorics.BinomialIdentities (binom_eq mul_cancel)
 open LeanProofs.IPRA.Combinatorics.Stirling (gle gle_of_le)
@@ -54,8 +47,6 @@ open LeanProofs.IPRA.Probability.BinomialLaw (absorption)
 open LeanProofs.IPRA.DiophantineNumberTheory.AperyNumbers (apB inst2_ap apery)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
-
-local notation "𝔞" t:max => Groth.ι (IPRA.Q.mk _ t)
 
 /-! ## Ratios of guarded binomial coefficients -/
 
@@ -241,9 +232,9 @@ abbrev phiR {n : ℕ} (m K : PTm n) : PTm n :=
   Pn (succ m) * Ssum K (succ m) + sig (succ m) K * bb (succ m) K + tau (succ m) * bb (succ m) zero
 
 theorem phi_base (m : PTm n) : Γ ⊢[PRAAx] phiL m zero ≐ phiR m zero := by
-  ipra_lc (𝔞 m + 2) ^ 3 * natEq (sum_zero (Γ := Γ) (shiftBody bbB) (succ (succ m))) +
-    (𝔞 m + 1) ^ 3 * natEq (sum_zero (Γ := Γ) (shiftBody bbB) m) -
-    (2 * (𝔞 m + 1) + 1) * (17 * (𝔞 m + 1) ^ 2 + 17 * (𝔞 m + 1) + 5) * natEq (sum_zero (Γ := Γ) (shiftBody bbB) (succ m))
+  ipra_lc (𝔞 m + 2) ^ 3 * natEq (sum_zero (shiftBody bbB) (succ (succ m))) +
+    (𝔞 m + 1) ^ 3 * natEq (sum_zero (shiftBody bbB) m) -
+    (2 * (𝔞 m + 1) + 1) * (17 * (𝔞 m + 1) ^ 2 + 17 * (𝔞 m + 1) + 5) * natEq (sum_zero (shiftBody bbB) (succ m))
 
 theorem phi_step {m K : PTm n} (ih : Γ ⊢[PRAAx] phiL m K ≐ phiR m K) :
     Γ ⊢[PRAAx] phiL m (succ K) ≐ phiR m (succ K) := by
@@ -252,7 +243,7 @@ theorem phi_step {m K : PTm n} (ih : Γ ⊢[PRAAx] phiL m K ≐ phiR m K) :
   have s₃ := sum_succ' (Γ := Γ) (shiftBody bbB) K (succ m)
   rw [inst2_shiftBody, inst2_bb] at s₁ s₂ s₃
   ipra_lc natEq ih + (𝔞 m + 2) ^ 3 * natEq s₁ + (𝔞 m + 1) ^ 3 * natEq s₂ -
-    (2 * (𝔞 m + 1) + 1) * (17 * (𝔞 m + 1) ^ 2 + 17 * (𝔞 m + 1) + 5) * natEq s₃ + natEq (pt (Γ := Γ) m K)
+    (2 * (𝔞 m + 1) + 1) * (17 * (𝔞 m + 1) ^ 2 + 17 * (𝔞 m + 1) + 5) * natEq s₃ + natEq (pt m K)
 
 /-- Variables: `0 = K`, `1 = m`. -/
 private abbrev phiF : Fm PTm 2 := phiL (var 1) (var 0) ≐ phiR (var 1) (var 0)
@@ -305,12 +296,12 @@ theorem apery_split {N K : PTm n} (h : Γ ⊢[PRAAx] le N K) :
 theorem apery_rec (m : PTm n) :
     Γ ⊢[PRAAx] cube (succ (succ m)) * apery (succ (succ m)) + cube (succ m) * apery m ≐
       Pn (succ m) * apery (succ m) := by
-  ipra_lc (𝔞 m + 2) ^ 3 * natEq (apery_split (Γ := Γ) (le_refl (succ (succ m)))) +
-    (𝔞 m + 1) ^ 3 * natEq (apery_split (Γ := Γ) (le_trans (le_succ_self m) (le_succ_self (succ m)))) -
-    (2 * (𝔞 m + 1) + 1) * (17 * (𝔞 m + 1) ^ 2 + 17 * (𝔞 m + 1) + 5) * natEq (apery_split (Γ := Γ) (le_succ_self (succ m))) +
-    (𝔞 m + 2) ^ 3 * natEq (bb_zero (Γ := Γ) (succ (succ m))) + (𝔞 m + 1) ^ 3 * natEq (bb_zero (Γ := Γ) m) +
-    (4 * (2 * (𝔞 m + 1) + 1) ^ 3 - (2 * (𝔞 m + 1) + 1) * (17 * (𝔞 m + 1) ^ 2 + 17 * (𝔞 m + 1) + 5)) * natEq (bb_zero (Γ := Γ) (succ m)) +
-    natEq (phi (Γ := Γ) m (succ (succ m))) +
-    (4 * (2 * (𝔞 m + 1) + 1) * ((𝔞 m + 2) * (2 * (𝔞 m + 2) + 1)) - 4 * (2 * (𝔞 m + 1) + 1) ^ 3) * natEq (bb_above (Γ := Γ) (le_refl (succ (succ m))))
+  ipra_lc (𝔞 m + 2) ^ 3 * natEq (apery_split (le_refl (succ (succ m)))) +
+    (𝔞 m + 1) ^ 3 * natEq (apery_split (le_trans (le_succ_self m) (le_succ_self (succ m)))) -
+    (2 * (𝔞 m + 1) + 1) * (17 * (𝔞 m + 1) ^ 2 + 17 * (𝔞 m + 1) + 5) * natEq (apery_split (le_succ_self (succ m))) +
+    (𝔞 m + 2) ^ 3 * natEq (bb_zero (succ (succ m))) + (𝔞 m + 1) ^ 3 * natEq (bb_zero m) +
+    (4 * (2 * (𝔞 m + 1) + 1) ^ 3 - (2 * (𝔞 m + 1) + 1) * (17 * (𝔞 m + 1) ^ 2 + 17 * (𝔞 m + 1) + 5)) * natEq (bb_zero (succ m)) +
+    natEq (phi m (succ (succ m))) +
+    (4 * (2 * (𝔞 m + 1) + 1) * ((𝔞 m + 2) * (2 * (𝔞 m + 2) + 1)) - 4 * (2 * (𝔞 m + 1) + 1) ^ 3) * natEq (bb_above (le_refl (succ (succ m))))
 
 end LeanProofs.IPRA.DiophantineNumberTheory.AperyRecurrence

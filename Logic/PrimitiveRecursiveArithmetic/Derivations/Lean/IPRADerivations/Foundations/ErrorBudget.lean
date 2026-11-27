@@ -21,11 +21,9 @@ The certificate is explicit: `∑_v W_v δ_v − ∑_u b_u e_u = ∑_v W_v s_v +
 slacks of the two hypotheses, by one exchange of a double sum. The graph may be cyclic.
 -/
 
-set_option linter.unusedSimpArgs false
-
 namespace LeanProofs.IPRA.Foundations.ErrorBudget
 
-open_ipra
+open_ipra exports
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
@@ -89,3 +87,5 @@ theorem budget {k : ℕ} (e δ b W : Fin k → PTm n) (L : Fin k → Fin k → P
     (fun v u => Groth.ι (Q.mk Γ (L v u))) hs ht
 
 end LeanProofs.IPRA.Foundations.ErrorBudget
+
+export_ipra Foundations.ErrorBudget (nsum toG_nsum)

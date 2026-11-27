@@ -25,31 +25,22 @@ set_option linter.unusedSimpArgs false
 
 namespace LeanProofs.IPRA.AnalyticNumberTheory.HeadDeficit
 
-open_ipra
+open_ipra exports
 open LeanProofs.IPRA.AnalyticNumberTheory.Harmonic (S hB)
 open LeanProofs.IPRA.AnalyticNumberTheory.HarmonicChebyshev (wt)
-open LeanProofs.IPRA.AnalyticNumberTheory.HarmonicMertens (le_scale)
 open LeanProofs.IPRA.AnalyticNumberTheory.HarmonicLogSquareSum (U)
-open LeanProofs.IPRA.AnalyticNumberTheory.LcmUpto (Psi)
-open LeanProofs.IPRA.AnalyticNumberTheory.AbsDiff (absd)
-open LeanProofs.IPRA.AnalyticNumberTheory.WeightedSplit (hRB_at)
 open LeanProofs.IPRA.AnalyticNumberTheory.SummatoryCompose (hRB)
 open LeanProofs.IPRA.AnalyticNumberTheory.ContractionMain (mtB main_term)
 open LeanProofs.IPRA.AnalyticNumberTheory.ContractionSplit (wbB Bd body_at mt_at head_eq Stage)
 open LeanProofs.IPRA.AnalyticNumberTheory.BlockSums (biB bi_at)
 open LeanProofs.IPRA.AnalyticNumberTheory.BlockDeficit (gzB gz_at bv bv_in bv_above)
 open LeanProofs.IPRA.AnalyticNumberTheory.PointDeficit (dg)
-open LeanProofs.IPRA.Foundations.ProductSumDomination (sum_trunc)
-open LeanProofs.IPRA.AnalyticNumberTheory.Mobius (zero_mul_l)
-open LeanProofs.IPRA.AnalyticNumberTheory.DivisorHarmonic (shift_fact')
 open LeanProofs.IPRA.Analysis.Products (fact)
 open LeanProofs.IPRA.Signum (sg sg_zero sg_succ)
 
 set_option autoImplicit false
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
-
-local notation "𝔞" t:max => Groth.ι (IPRA.Q.mk _ t)
 
 /-! ## Summing with separate parameters -/
 
@@ -221,3 +212,5 @@ theorem head_deficit (hK : Γ ⊢[PRAAx] le one K) (hL : Γ ⊢[PRAAx] le (K * s
 end Main
 
 end LeanProofs.IPRA.AnalyticNumberTheory.HeadDeficit
+
+export_ipra AnalyticNumberTheory.HeadDeficit (hgB)

@@ -22,7 +22,7 @@ set_option linter.unusedSimpArgs false
 
 namespace LeanProofs.IPRA.AnalyticNumberTheory.Primes
 
-open_ipra
+open_ipra exports
 open LeanProofs.IPRA.Analysis.Products (fact)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
@@ -161,3 +161,5 @@ theorem euclid : ([] : List (Fm PTm 0)) ⊢[PRAAx] univ 1 euclidFormula := by
   exact not_dvd_one (p' := μz (succ (succ (pred (fact (var 0)))))) _ (dvd_sub h₃ h₁)
 
 end LeanProofs.IPRA.AnalyticNumberTheory.Primes
+
+export_ipra AnalyticNumberTheory.Primes (dvd_fact eq_succ_pred lpf lpf_dvd lpf_prime prime)

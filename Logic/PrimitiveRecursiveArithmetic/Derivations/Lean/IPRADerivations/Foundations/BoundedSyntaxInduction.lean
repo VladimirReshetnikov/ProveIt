@@ -1,5 +1,4 @@
 import IPRADerivations.Foundations.BoundedSyntax
-import IPRADerivations.Core.Header
 
 /-!
 # Bounded-formula induction through the actual Boolean compiler
@@ -12,11 +11,10 @@ hypotheses are preserved and may contain arbitrary formulas.
 -/
 
 set_option autoImplicit false
-set_option linter.unusedSimpArgs false
 
 namespace LeanProofs.IPRA.Foundations.BoundedSyntaxInduction
 
-open_ipra
+open_ipra exports
 open LeanProofs.IPRA.Foundations.BoundedSyntax
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}

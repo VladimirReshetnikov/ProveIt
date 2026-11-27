@@ -1,10 +1,5 @@
-import IPRADerivations.AnalyticNumberTheory.Order
-import IPRADerivations.AnalyticNumberTheory.PhiDivides
 import IPRADerivations.AnalyticNumberTheory.PowerCleared
-import IPRADerivations.AnalyticNumberTheory.LocalFactor
 import IPRADerivations.AnalyticNumberTheory.CrtBijection
-import IPRADerivations.Core.LinearCombination
-import IPRADerivations.Core.Header
 
 /-!
 # The `aⁿ + bⁿ` totient congruence
@@ -26,26 +21,16 @@ the set of exponents `E = {k : Aᵏ ≡ Bᵏ (mod C)}`, `C = Aⁿ + Bⁿ`, for c
   `φ(C) ∣ φ(aⁿ + bⁿ)` (`PhiDivides`) and `n ∣ φ(aⁿ + bⁿ)`.
 -/
 
-set_option linter.unusedSimpArgs false
-
 namespace LeanProofs.IPRA.AnalyticNumberTheory.PlusPower
 
-open_ipra
-open LeanProofs.IPRA.Combinatorics.Binomial (pos_mul)
+open_ipra exports
 open LeanProofs.IPRA.Combinatorics.BinomialTheorem (congrPw)
-open LeanProofs.IPRA.Foundations.ChineseRemainder (gcd_pos rem_eq_of_eq)
 open LeanProofs.IPRA.DiophantineNumberTheory.Coprime
 open LeanProofs.IPRA.DiophantineNumberTheory.QuarticStep (congrGcd)
-open LeanProofs.IPRA.AnalyticNumberTheory.RSA (rem_mul_congr pw_mul)
 open LeanProofs.IPRA.AnalyticNumberTheory.Totient (phi)
-open LeanProofs.IPRA.AnalyticNumberTheory.Euler (euler_at)
 open LeanProofs.IPRA.AnalyticNumberTheory.Order (pw_rem_congr pw_one_base phi_pos gcd_pos_right gcd_eq_one_of_dvd)
 open LeanProofs.IPRA.AnalyticNumberTheory.PhiDivides (phi_divides_at)
 open LeanProofs.IPRA.AnalyticNumberTheory.PowerCleared (pw_lt_pw pw_le_exp)
-open LeanProofs.IPRA.AnalyticNumberTheory.LocalFactor (pw_mul_base)
-open LeanProofs.IPRA.AnalyticNumberTheory.Valuation (pw_pos')
-open LeanProofs.IPRA.AnalyticNumberTheory.GcdFiber (div_eq)
-open LeanProofs.IPRA.AnalyticNumberTheory.Multiplicative (rem_lt')
 open LeanProofs.IPRA.AnalyticNumberTheory.CrtBijection (rem_small)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
@@ -141,7 +126,7 @@ theorem small_not_mem {A B N k : PTm n} (φ : Fm PTm n) (hA : Γ ⊢[PRAAx] A �
     (hkn : Γ ⊢[PRAAx] le k N) (h : Γ ⊢[PRAAx] mem A B (pw A N + pw B N) k) : Γ ⊢[PRAAx] φ := by
   have pA := natEq (pw_pos' hA N); have pB := natEq (pw_pos' hB N)
   have hC : Γ ⊢[PRAAx] pw A N + pw B N ≐ succ (pred (pw A N + pw B N)) :=
-    AnalyticNumberTheory.Primes.eq_succ_pred (y := pw A N + pred (pw B N)) (by apply deriveNat; ipra_simps; linear_combination pB)
+    AnalyticNumberTheory.Primes.eq_succ_pred (y := pw A N + pred (pw B N)) (by ipra_lc pB)
   have la : Γ ⊢[PRAAx] lt (pw A k) (pw A N + pw B N) := by
     have m := natEq (eq_add_of_le (pw_le_exp hA hkn))
     refine le_of_eq_add (d := monus (pw A N) (pw A k) + pred (pw B N)) ?_
@@ -165,13 +150,13 @@ theorem two_n_dvd {A B N : PTm n} (hA : Γ ⊢[PRAAx] A ≐ succ (pred A)) (hB :
     Γ ⊢[PRAAx] dvd (two * N) (phi (pw A N + pw B N)) := by
   have pB := natEq (pw_pos' hB N)
   have hC : Γ ⊢[PRAAx] pw A N + pw B N ≐ succ (pred (pw A N + pw B N)) :=
-    AnalyticNumberTheory.Primes.eq_succ_pred (y := pw A N + pred (pw B N)) (by apply deriveNat; ipra_simps; linear_combination pB)
+    AnalyticNumberTheory.Primes.eq_succ_pred (y := pw A N + pred (pw B N)) (by ipra_lc pB)
   have hBC : Γ ⊢[PRAAx] gcd B (pw A N + pw B N) ≐ one := cop_sum hB hN (gcd_comm_one hB hAB)
   have hAC : Γ ⊢[PRAAx] gcd A (pw A N + pw B N) ≐ one :=
     (congrGcd (.eqRefl _) (add_comm _ _)).eqTrans (cop_sum hA hN hAB)
   have h2N : Γ ⊢[PRAAx] two * N ≐ succ (pred (two * N)) :=
     AnalyticNumberTheory.Primes.eq_succ_pred (y := succ (two * pred N))
-      (by have e := natEq hN; apply deriveNat; ipra_simps; linear_combination 2 * e)
+      (by ipra_lc 2 * natEq hN)
   -- `φ(C) = 2n q + s`.
   have dv := div_eq (j := phi (pw A N + pw B N)) h2N
   have sl := rem_lt' h2N (phi (pw A N + pw B N))
@@ -207,9 +192,9 @@ theorem two_n_dvd {A B N : PTm n} (hA : Γ ⊢[PRAAx] A ≐ succ (pred A)) (hB :
             (congrAp2 remF (congrPw (.eqRefl _) e2) (.eqRefl _))))
       have ht : C' ⊢[PRAAx] monus (two * N) (rem (phi (pw A N + pw B N)) (two * N)) ≐ succ (pred (monus (two * N) (rem (phi (pw A N + pw B N)) (two * N)))) :=
         AnalyticNumberTheory.Primes.eq_succ_pred (y := monus (two * N) (succ (rem (phi (pw A N + pw B N)) (two * N))))
-          (by apply deriveNat; ipra_simps; linear_combination f2 - f3)
+          (by ipra_lc f2 - f3)
       have htn : C' ⊢[PRAAx] le (monus (two * N) (rem (phi (pw A N + pw B N)) (two * N))) N :=
-        le_of_eq_add (d := succ (monus (rem (phi (pw A N + pw B N)) (two * N)) (succ N))) (by apply deriveNat; ipra_simps; linear_combination f1 + f3)
+        le_of_eq_add (d := succ (monus (rem (phi (pw A N + pw B N)) (two * N)) (succ N))) (by ipra_lc f1 + f3)
       exact small_not_mem _ hA.wk.wk hB.wk.wk hne.wk.wk ht htn mt
 
 /-- `thm:plus-power`: for distinct `a, b ≥ 1` and `n ≥ 1`, `n ∣ φ(aⁿ + bⁿ)`. -/
@@ -229,17 +214,18 @@ theorem plus_power {a b N : PTm n} (ha : Γ ⊢[PRAAx] a ≐ succ (pred a)) (hb 
   have pB := natEq (pw_pos' hB N)
   have hC : Γ ⊢[PRAAx] (pw (quo a (gcd a b)) N + pw (quo b (gcd a b)) N) ≐ succ (pred (pw (quo a (gcd a b)) N + pw (quo b (gcd a b)) N)) :=
     AnalyticNumberTheory.Primes.eq_succ_pred (y := pw (quo a (gcd a b)) N + pred (pw (quo b (gcd a b)) N))
-      (by apply deriveNat; ipra_simps; linear_combination pB)
+      (by ipra_lc pB)
   have hφ := phi_pos hC
   have nφ : Γ ⊢[PRAAx] dvd N (phi (pw (quo a (gcd a b)) N + pw (quo b (gcd a b)) N)) := by
     have e := natEq (eq_of_dvd' (AnalyticNumberTheory.Primes.eq_succ_pred (y := succ (two * pred N))
-      (by have e := natEq hN; apply deriveNat; ipra_simps; linear_combination 2 * e)) t)
-    exact dvd_of_eq' hN (w := two * quo (phi (pw (quo a (gcd a b)) N + pw (quo b (gcd a b)) N)) (two * N)) (by apply deriveNat; ipra_simps; linear_combination e)
+      (by ipra_lc 2 * natEq hN)) t)
+    exact dvd_of_eq' hN (w := two * quo (phi (pw (quo a (gcd a b)) N + pw (quo b (gcd a b)) N)) (two * N)) (by ipra_lc e)
   have sum : Γ ⊢[PRAAx] pw a N + pw b N ≐ (pw (quo a (gcd a b)) N + pw (quo b (gcd a b)) N) * pw (gcd a b) N := by
     have x := natEq ((congrPw eA (.eqRefl N)).eqTrans (pw_mul_base _ _ _))
-    have y := natEq ((congrPw eB (.eqRefl N)).eqTrans (pw_mul_base _ _ _))
-    apply deriveNat; ipra_simps; linear_combination x + y
+    ipra_lc x + natEq ((congrPw eB (.eqRefl N)).eqTrans (pw_mul_base _ _ _))
   have dC := phi_divides_at hC (dvd_of_eq' hC sum)
   exact dvd_trans' hN hφ nφ dC
 
 end LeanProofs.IPRA.AnalyticNumberTheory.PlusPower
+
+export_ipra AnalyticNumberTheory.PlusPower (cop_pow)

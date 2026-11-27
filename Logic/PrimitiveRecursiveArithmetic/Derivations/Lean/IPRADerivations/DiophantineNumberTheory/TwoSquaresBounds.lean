@@ -1,7 +1,5 @@
 import IPRADerivations.DiophantineNumberTheory.TwoSquaresByDescent
 import IPRADerivations.AnalyticNumberTheory.PrimeGaps
-import IPRADerivations.Core.CertificateTactics
-import IPRADerivations.Core.Header
 
 /-!
 # Fermat's two-square theorem: sorted bounds and the biconditional
@@ -29,24 +27,16 @@ Here:
   (`TwoSquaresByDescent.T`).
 -/
 
-set_option linter.unusedSimpArgs false
-
 namespace LeanProofs.IPRA.DiophantineNumberTheory.TwoSquaresBounds
 
-open_ipra
-open LeanProofs.IPRA.AnalyticNumberTheory.Primes (prime)
+open_ipra exports
 open LeanProofs.IPRA.AnalyticNumberTheory.Mobius (prime_two)
-open LeanProofs.IPRA.AnalyticNumberTheory.ValuationMul (p_pos)
 open LeanProofs.IPRA.AnalyticNumberTheory.FactorVector (one_le_pos)
 open LeanProofs.IPRA.AnalyticNumberTheory.PrimeGaps (prime_no_divisor)
-open LeanProofs.IPRA.DiophantineNumberTheory.Coprime (dvd_of_eq')
 open LeanProofs.IPRA.DiophantineNumberTheory.FermatTwoSquares (Aw Bw fermat_witness fermat_converse_open)
 open LeanProofs.IPRA.DiophantineNumberTheory.TwoSquaresByDescent (T rep_intro rep_elim)
-open LeanProofs.IPRA.Foundations.CrossingSearch (monus_of_eq)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
-
-local notation "𝔞" t:max => Groth.ι (IPRA.Q.mk _ t)
 
 /-! ## A prime is not a square -/
 

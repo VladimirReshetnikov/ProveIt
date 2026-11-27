@@ -1,7 +1,5 @@
 import IPRADerivations.Foundations.PointList
 import IPRADerivations.Probability.UnionUtility
-import IPRADerivations.Core.OrderCertificates
-import IPRADerivations.Core.Header
 
 /-!
 # Height bounds and complete solution lists
@@ -27,11 +25,9 @@ below `H + 1` (`Foundations/FilteredEnumeration`):
   `ht(x) ≤ M`.
 -/
 
-set_option linter.unusedSimpArgs false
-
 namespace LeanProofs.IPRA.Foundations.BoundList
 
-open_ipra
+open_ipra exports
 open LeanProofs.IPRA.Foundations.FilteredEnumeration (rank sel sel_spec sel_rank rank_lt_size)
 open LeanProofs.IPRA.Foundations.PointList (bit_one)
 open LeanProofs.IPRA.Foundations.BoundedReflection (one_ne_zero)

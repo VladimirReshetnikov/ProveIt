@@ -1,5 +1,4 @@
 import IPRADerivations.AnalyticNumberTheory.Order
-import IPRADerivations.Core.Header
 
 /-!
 # The order of a residue divides exactly the exponents of the identity
@@ -15,13 +14,10 @@ Packet: `diophantine-number-theory/number_theory_ipra_2026-11-22`, `chapters/ele
 * **`pow_of_order_dvd`**: `ord(a, N) ∣ t` gives `a^t ≡ 1 (mod N)`.
 -/
 
-set_option linter.unusedSimpArgs false
-
 namespace LeanProofs.IPRA.AnalyticNumberTheory.OrderDivides
 
-open_ipra
+open_ipra exports
 open LeanProofs.IPRA.Combinatorics.BinomialTheorem (congrPw)
-open LeanProofs.IPRA.AnalyticNumberTheory.RSA (rem_mul_congr pw_mul)
 open LeanProofs.IPRA.AnalyticNumberTheory.Order (mu ord order_cong order_minimal pw_rem_congr pw_one_base)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}

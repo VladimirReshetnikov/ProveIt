@@ -1,10 +1,6 @@
 import IPRADerivations.AnalyticNumberTheory.CubeScan
-import IPRADerivations.AnalyticNumberTheory.SumPhi
-import IPRADerivations.AnalyticNumberTheory.Order
-import IPRADerivations.AnalyticNumberTheory.PowerCleared
 import IPRADerivations.AnalyticNumberTheory.HarmonicMertens
 import IPRADerivations.DiophantineNumberTheory.KhinchinBlock
-import IPRADerivations.Core.Header
 
 /-!
 # Symmetric tests on a whole prefix (`riemann_ipra_prime_criteria_2026-11-20`, Theorem `thm:symmetric-prefix`)
@@ -21,21 +17,14 @@ For arbitrary data bodies `a(i, y)`, `b(i, y)` (parameters packed into `y`):
   `a_j > b_j` gives `z_j ≥ h + 1`, and its single term `(m+1)^{h+1} = (m+1)(m+1)^h` already exceeds the allowance.
 -/
 
-set_option linter.unusedSimpArgs false
-
 namespace LeanProofs.IPRA.AnalyticNumberTheory.SymmetricPrefix
 
-open_ipra
-open LeanProofs.IPRA.AnalyticNumberTheory.HarmonicMertens (le_scale)
-open LeanProofs.IPRA.AnalyticNumberTheory.PowerCleared (pw_le_exp)
+open_ipra exports
 open LeanProofs.IPRA.AnalyticNumberTheory.SumPhi (sum_ones)
-open LeanProofs.IPRA.DiophantineNumberTheory.KhinchinBlock (sum_le_lin1)
 
 set_option autoImplicit false
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
-
-local notation "𝔞" t:max => Groth.ι (IPRA.Q.mk _ t)
 
 /-- A summand is at most the partial sum containing it. -/
 theorem term_le_sum (f : PTm 2) {j m x : PTm n} (h : Γ ⊢[PRAAx] lt j m) :

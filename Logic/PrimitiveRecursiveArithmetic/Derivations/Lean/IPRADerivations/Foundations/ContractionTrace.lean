@@ -1,5 +1,4 @@
 import IPRADerivations.Core.OrderCertificates
-import IPRADerivations.Core.Powers
 import IPRADerivations.Core.BoundedSums
 import IPRADerivations.Core.Gcd
 import IPRADerivations.Core.Header
@@ -29,11 +28,9 @@ With the contraction factor `q = a/b < 1` cleared (naturals `a < b`) and distanc
 The coefficient-error DAG is not derived here.
 -/
 
-set_option linter.unusedSimpArgs false
-
 namespace LeanProofs.IPRA.Foundations.ContractionTrace
 
-open_ipra
+open_ipra exports
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 

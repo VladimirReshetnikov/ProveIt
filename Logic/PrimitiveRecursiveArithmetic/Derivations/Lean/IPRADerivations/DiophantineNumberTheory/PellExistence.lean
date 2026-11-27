@@ -1,7 +1,5 @@
 import IPRADerivations.DiophantineNumberTheory.PellSequence
 import IPRADerivations.DiophantineNumberTheory.PellCollision
-import IPRADerivations.Core.Pigeonhole
-import IPRADerivations.Core.Header
 
 /-!
 # Uniform bounded Pell existence
@@ -23,20 +21,14 @@ equal sign of the norm, equal `a = |p² − D q²|` and equal residues modulo `a
 * **`pell_existence`**.
 -/
 
-set_option linter.unusedSimpArgs false
-
 namespace LeanProofs.IPRA.DiophantineNumberTheory.PellExistence
 
-open_ipra
+open_ipra exports
 open LeanProofs.IPRA.DiophantineNumberTheory.PellApprox (Qv Cv pv qv pell_approx)
 open LeanProofs.IPRA.DiophantineNumberTheory.PellSequence
 open LeanProofs.IPRA.DiophantineNumberTheory.PellCollision (collision_pos collision_neg N1p N2p N1n N2n)
-open LeanProofs.IPRA.AnalyticNumberTheory.Multiplicative (rem_lt')
-open LeanProofs.IPRA.AnalyticNumberTheory.PhiLower (le_mul_mono)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
-
-local notation "𝔞" t:max => Groth.ι (IPRA.Q.mk _ t)
 
 /-! ## The constants and the statement -/
 
@@ -56,9 +48,7 @@ abbrev box (D H : PTm n) : Fm PTm n :=
 
 theorem sh2 (x H : PTm n) : Syn.subst (Syn.up (Syn.inst x)) (Syn.shift (Syn.shift H)) = Syn.shift H := by
   rw [Syn.subst_shift, Syn.subst_shift]
-  first
-  | simp [Syn.shift]
-  | (simp; rfl)
+  simp [Syn.shift]
 
 theorem box_intro {D H x y : PTm n} (h : Γ ⊢[PRAAx] (le two x ⋏ le x H) ⋏ ((le one y ⋏ le y H) ⋏
     (x * x ≐ D * (y * y) + one))) : Γ ⊢[PRAAx] box D H := by
@@ -208,7 +198,6 @@ theorem pell_existence {D : PTm n} (hD : Γ ⊢[PRAAx] le two D) (hns : Γ ⊢[P
   have hlt := q_lt hD hns hij
   have ha := A_pos hD hns i
   have eS := Prf.andE₁ s2
-  have U' : Γ ⊢[PRAAx] Hv D ≐ num 4 * (succ D * succ D) * (succ (Uv D) * succ (Uv D)) := .eqRefl _
   refine .orE (norm_cases i D) ?_ ?_
   · refine .orE (norm_cases j D) ?_ ?_
     · have hi : (NP j D :: NP i D :: Γ) ⊢[PRAAx] pS i D * pS i D ≐ D * (qS i D * qS i D) + A i D :=

@@ -1,6 +1,5 @@
 import IPRADerivations.AnalyticNumberTheory.RobinThreePos
 import IPRADerivations.AnalyticNumberTheory.RobinGammaUpper
-import IPRADerivations.Core.Header
 
 /-!
 # The upper end `U(n, k)`, `Neg`, and the incompatibility of `Pos` and `Neg` (`robin_ipra_research_2026-11-19`, `eq:neg`)
@@ -22,11 +21,9 @@ The upper end `U(n, k) = (Up − Um)/Ud` is the upper corner of the same program
 * `pos_neg`: `Pos(n, k)` and `Neg(n, k')` are contradictory.
 -/
 
-set_option linter.unusedSimpArgs false
-
 namespace LeanProofs.IPRA.AnalyticNumberTheory.RobinUpperEnd
 
-open_ipra
+open_ipra exports
 open LeanProofs.IPRA.AnalyticNumberTheory.RobinGamma (Lv Pv sv Wv nn dd Pt Qt P_succ' Q_succ dB_at nB_at)
 open LeanProofs.IPRA.AnalyticNumberTheory.RobinLogName (Nz Nz_succ frac_trans L_pos)
 open LeanProofs.IPRA.AnalyticNumberTheory.RobinLogInterval
@@ -38,19 +35,14 @@ open LeanProofs.IPRA.AnalyticNumberTheory.RobinExpName
   (Ev Ed Fv Tn Td E_zero F_succ F_zero exp_name e_up e_mono Ed_pos Td_pos Ed_congr Ev_congr Tn_congr Td_congr)
 open LeanProofs.IPRA.AnalyticNumberTheory.RobinThreePos
   (one_le_of_pos branch rr K1 A1 B1 K2 LLn LLd K2' LHn LHd tg Kg gN gD Ke EN ED cnd Lp Lm Ld Pos)
-open LeanProofs.IPRA.AnalyticNumberTheory.SigmaMult (sig)
-open LeanProofs.IPRA.AnalyticNumberTheory.PhiLower (le_mul_mono)
 open LeanProofs.IPRA.AnalyticNumberTheory.PNTStageStep (pos_of_one_le)
 open LeanProofs.IPRA.AnalyticNumberTheory.ChebyshevBounds (two_pos')
-open LeanProofs.IPRA.AnalyticNumberTheory.SigmaPrimePower (pos_pw)
 open LeanProofs.IPRA.Combinatorics.Binomial (pos_mul)
 open LeanProofs.IPRA.Signum (sg sg_succ)
 
 set_option autoImplicit false
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
-
-local notation "𝔞" t:max => Groth.ι (IPRA.Q.mk _ t)
 
 /-! ## Euler's constant across `t` -/
 
@@ -345,7 +337,6 @@ theorem lu {N : PTm n} (hN : Γ ⊢[PRAAx] le two N) (k k' : PTm n) :
   have hD1 : Γ ⊢[PRAAx] le one (D1 N k') := one_le_of_pos (hiD_pos h1 hN1 (K1 N k'))
   have hAC : Γ ⊢[PRAAx] le (A1 N k * D1 N k') (C1 N k' * B1 N k) := lo_le_hi_any h1 hN1 (K1 N k) (K1 N k')
   -- the γ and exponential factors
-  have hgD : Γ ⊢[PRAAx] gD N k ≐ succ (pred (gD N k)) := gloD_pos _ _
   have hgD' : Γ ⊢[PRAAx] gD N k' ≐ succ (pred (gD N k')) := gloD_pos _ _
   have hgH' : Γ ⊢[PRAAx] gHd N k' ≐ succ (pred (gHd N k')) := ghiD_pos _ _
   refine .orE (lt_or_le (A1 N k) (B1 N k)) ?_ ?_

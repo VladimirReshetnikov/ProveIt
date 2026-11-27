@@ -1,5 +1,4 @@
 import IPRADerivations.Foundations.BoundedSyntaxInduction
-import IPRADerivations.Core.Header
 
 /-!
 # Backward induction for the actual arity-indexed bounded syntax
@@ -12,11 +11,10 @@ counter, queried index and other numerical parameters remain internal.
 -/
 
 set_option autoImplicit false
-set_option linter.unusedSimpArgs false
 
 namespace LeanProofs.IPRA.Foundations.BoundedSyntaxBackwardInduction
 
-open_ipra
+open_ipra exports
 open LeanProofs.IPRA.Foundations.BoundedSyntax
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}

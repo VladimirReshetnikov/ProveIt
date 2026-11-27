@@ -1,8 +1,5 @@
 import IPRADerivations.Core.IntOrder
 import IPRADerivations.Probability.MedianWeighted
-import IPRADerivations.Core.LinearCombination
-import IPRADerivations.Core.SubstCommand
-import IPRADerivations.Core.Header
 
 /-!
 # Exactness from a gap
@@ -24,17 +21,13 @@ absolute value of an integer term is the natural-number term `|u| = ad u⁺ u⁻
 * `gap_decide`: under the disjunction, `z = 0` holds exactly when `2 |q| < δ`.
 -/
 
-set_option linter.unusedSimpArgs false
-
 namespace LeanProofs.IPRA.Foundations.GapDecision
 
-open_ipra
+open_ipra exports
 open LeanProofs.IPRA.Probability.Variance (ad ad_sq)
 open LeanProofs.IPRA.Probability.MedianWeighted (ad_add_le)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
-
-local notation "𝔞" t:max => Groth.ι (IPRA.Q.mk _ t)
 
 /-- `|u|` for an integer term, as a natural-number term. -/
 abbrev zabs (u : ZT n) : PTm n := ad u.pos u.neg
@@ -68,7 +61,7 @@ theorem gap_zero (hz : Γ ⊢[PRAAx] ZT.eq z (ZT.natLit 0)) (hq : Γ ⊢[PRAAx] 
     Γ ⊢[PRAAx] lt (two * zabs q) δ := by
   have z0 := ZT.toZ_eq hz
   refine le_trans (le_of_eq_add (d := zabs (q - z)) ?_) hq
-  ipra_lc -2 * natEq (zabs_congr (Γ := Γ) (u := q) (v := q - z) (by rw [ZT.toZ_sub, z0]; simp))
+  ipra_lc -2 * natEq (zabs_congr (u := q) (v := q - z) (by rw [ZT.toZ_sub, z0]; simp))
 
 /-- The branch `|z| ≥ δ`: `3 |q − z| < δ` gives `δ < 2 |q|`. -/
 theorem gap_far (hz : Γ ⊢[PRAAx] le δ (zabs z)) (hq : Γ ⊢[PRAAx] lt (num 3 * zabs (q - z)) δ) :
@@ -97,3 +90,5 @@ theorem gap_decide (hz : Γ ⊢[PRAAx] ZT.eq z (ZT.natLit 0) ⋎ le δ (zabs z))
   ipra_ring
 
 end LeanProofs.IPRA.Foundations.GapDecision
+
+export_ipra Foundations.GapDecision (zabs zabs_congr zabs_neg zabs_sq zabs_tri)

@@ -1,6 +1,5 @@
 import IPRADerivations.DiophantineNumberTheory.AperySparse
 import IPRADerivations.DiophantineNumberTheory.AperyGrowth
-import IPRADerivations.Core.Header
 
 /-!
 # The explicit index of the Apéry argument
@@ -19,25 +18,17 @@ positive denominator.
   (`AperySparse.sparse`, `AperyGrowth.grow_pow`).
 -/
 
-set_option linter.unusedSimpArgs false
-
 namespace LeanProofs.IPRA.DiophantineNumberTheory.AperyIndex
 
-open_ipra
+open_ipra exports
 open LeanProofs.IPRA.DiophantineNumberTheory.AperyMultibound (pw_num num_lt)
 open LeanProofs.IPRA.DiophantineNumberTheory.AperyMultinomial (base_split)
 open LeanProofs.IPRA.DiophantineNumberTheory.AperySparse (sparse)
 open LeanProofs.IPRA.DiophantineNumberTheory.AperyGrowth (grow_pow congrApery)
-open LeanProofs.IPRA.DiophantineNumberTheory.AperyNumbers (apery)
-open LeanProofs.IPRA.AnalyticNumberTheory.RSA (pw_mul)
-open LeanProofs.IPRA.AnalyticNumberTheory.LcmUpto (lcmu)
-open LeanProofs.IPRA.AnalyticNumberTheory.Valuation (pw_pos' lt_pw)
 open LeanProofs.IPRA.Combinatorics.Binomial (pos_mul)
 open LeanProofs.IPRA.Combinatorics.BinomialTheorem (congrPw)
 
 variable {k : ℕ} {Γ : List (Fm PTm k)}
-
-local notation "𝔞" t:max => Groth.ι (IPRA.Q.mk _ t)
 
 /-- `8 q 28^N 2^240 < 32^N` when `6(q + 243) ≤ N`. -/
 theorem key {q N : PTm k} (hN : Γ ⊢[PRAAx] le (num 6 * (q + num 243)) N) :

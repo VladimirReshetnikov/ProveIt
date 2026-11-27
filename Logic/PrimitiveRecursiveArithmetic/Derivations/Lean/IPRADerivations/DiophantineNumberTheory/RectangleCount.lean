@@ -1,11 +1,6 @@
 import IPRADerivations.DiophantineNumberTheory.QuadraticReciprocityGoal
-import IPRADerivations.DiophantineNumberTheory.Coprime
 import IPRADerivations.AnalyticNumberTheory.DivisorHyperbola
-import IPRADerivations.AnalyticNumberTheory.Multiplicative
 import IPRADerivations.AnalyticNumberTheory.Mobius
-import IPRADerivations.Probability.Independence
-import IPRADerivations.Core.OrderCertificates
-import IPRADerivations.Core.Header
 
 /-!
 # The lattice count of quadratic reciprocity
@@ -32,24 +27,17 @@ Proof. Count the points `(i + 1, j + 1)` of the rectangle `i < P`, `j < Q` below
 Eisenstein's lemma itself (`eisenstein p a`), the other premise of `close_from_counts`, is not derived here.
 -/
 
-set_option linter.unusedSimpArgs false
-
 namespace LeanProofs.IPRA.DiophantineNumberTheory.RectangleCount
 
-open_ipra
+open_ipra exports
 open LeanProofs.IPRA.AnalyticNumberTheory.DivisorHyperbola (leI leI_one leI_zero IB IB_at row_count)
-open LeanProofs.IPRA.AnalyticNumberTheory.Multiplicative (sum2_lift)
 open LeanProofs.IPRA.AnalyticNumberTheory.Euler (lift3 at_pair shift_cop)
 open LeanProofs.IPRA.AnalyticNumberTheory.SumPhi (sum_ones)
-open LeanProofs.IPRA.AnalyticNumberTheory.Mobius (one_inst)
-open LeanProofs.IPRA.DiophantineNumberTheory.Coprime (gauss dvd_of_eq' dvd_le' gcd_comm_one)
 open LeanProofs.IPRA.DiophantineNumberTheory.QuadraticReciprocityGoal (floorSum rectangle)
 open LeanProofs.IPRA.Probability.Independence (dsum dsum_rows dsum_congr dsum_add pmB inst3_pmB sum_mul_sum
   inst3_add' row_pt col_pt)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
-
-local notation "𝔞" t:max => Groth.ι (IPRA.Q.mk _ t)
 
 /-! ## The quotient bound and the diagonal -/
 

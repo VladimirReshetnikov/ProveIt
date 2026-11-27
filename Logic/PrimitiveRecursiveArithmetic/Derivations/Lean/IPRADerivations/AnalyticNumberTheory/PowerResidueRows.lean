@@ -1,8 +1,5 @@
 import IPRADerivations.AnalyticNumberTheory.PowerResidue
 import IPRADerivations.AnalyticNumberTheory.PowerTwistPrefix
-import IPRADerivations.Probability.Lotus
-import IPRADerivations.Combinatorics.Binomial
-import IPRADerivations.Core.Header
 
 /-!
 # Progression rows along perfect powers (`riemann_ipra_prime_criteria_2026-11-20`, `thm:powerdivisor`)
@@ -25,27 +22,21 @@ For a modulus `q ≥ 2` and a reduced residue `b < q`:
   `PowerTwistPrefix.tBt (tw a)`, by `term_core` under the two sums and `PowerTwistPrefix.twist_prefix`.
 -/
 
-set_option linter.unusedSimpArgs false
-
 namespace LeanProofs.IPRA.AnalyticNumberTheory.PowerResidueRows
 
-open_ipra
+open_ipra exports
 open LeanProofs.IPRA.AnalyticNumberTheory.PowerDivisorPrefix (Apre cB bval cB_at)
 open LeanProofs.IPRA.AnalyticNumberTheory.PowerTwistPrefix (tBt tBpre tbval tcB tbpB tcB_at tbpB_at twist_prefix)
 open LeanProofs.IPRA.AnalyticNumberTheory.PowerResidue (res inv ind_transport)
 open LeanProofs.IPRA.AnalyticNumberTheory.Euler (rem_small)
 open LeanProofs.IPRA.Probability.Lotus (cmB inst2_cmB sum_const_mul)
 open LeanProofs.IPRA.Combinatorics.Binomial (eq_of_rem_zero)
-open LeanProofs.IPRA.Foundations.BoundedReflection (eqb_cases eq_of_eqb)
 open LeanProofs.IPRA.AnalyticNumberTheory.PNTStageStep (pos_of_one_le)
-open LeanProofs.IPRA.AnalyticNumberTheory.BlockChain (one_le_pw')
 open LeanProofs.IPRA.AnalyticNumberTheory.Mobius (congrEqb')
 
 set_option autoImplicit false
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
-
-local notation "𝔞" t:max => Groth.ι (IPRA.Q.mk _ t)
 
 variable (a : PTm 2)
 

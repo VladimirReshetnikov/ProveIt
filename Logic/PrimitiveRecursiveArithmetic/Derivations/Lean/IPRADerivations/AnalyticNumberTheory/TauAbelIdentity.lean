@@ -1,9 +1,6 @@
 import IPRADerivations.AnalyticNumberTheory.DivisorSwapP
 import IPRADerivations.AnalyticNumberTheory.TauLogAbel
 import IPRADerivations.AnalyticNumberTheory.ConvSummatory
-import IPRADerivations.Core.LinearCombination
-import IPRADerivations.Core.InductionTactic
-import IPRADerivations.Core.Header
 
 /-!
 # The divisor count and the Abel identity for `T(y)` (`pnt_ipra_constructive_2026-11-14`, `sb:divisor-approx`)
@@ -18,17 +15,13 @@ Packet: `analytic-number-theory/pnt_ipra_constructive_2026-11-14`, `selberg.tex`
 * `abel_tau`: `Σ_{n≤N} τ(n) u_n + A(N) = D(N) u_N` — the finite partial summation, by one QF induction.
 -/
 
-set_option linter.unusedSimpArgs false
-
 namespace LeanProofs.IPRA.AnalyticNumberTheory.TauAbelIdentity
 
-open_ipra
+open_ipra exports
 open LeanProofs.IPRA.AnalyticNumberTheory.Harmonic (S hB inst2_h)
-open LeanProofs.IPRA.AnalyticNumberTheory.Mobius (congrSg zero_mul_l)
 open LeanProofs.IPRA.AnalyticNumberTheory.HarmonicLogSquareSum (U U_paired U_zero U_increment_mul)
 open LeanProofs.IPRA.AnalyticNumberTheory.TauLogAbel (As A_succ)
 open LeanProofs.IPRA.AnalyticNumberTheory.DirichletLeibniz (cvB conv cv_at)
-open LeanProofs.IPRA.AnalyticNumberTheory.ConvolutionAssoc (cvF inst2_cvF)
 open LeanProofs.IPRA.AnalyticNumberTheory.ConvSummatory (bS inst2_bS RB RB_at conv_summatory)
 open LeanProofs.IPRA.AnalyticNumberTheory.SumPhi (sum_ones)
 open LeanProofs.IPRA.Signum (sg sg_zero sg_succ)
@@ -36,8 +29,6 @@ open LeanProofs.IPRA.Signum (sg sg_zero sg_succ)
 set_option autoImplicit false
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
-
-local notation "𝔞" t:max => Groth.ι (IPRA.Q.mk _ t)
 
 /-! ## `Σ τ = D` -/
 
@@ -66,14 +57,13 @@ theorem tau_sum (N y : PTm n) : Γ ⊢[PRAAx] ap2 (sumF (cvF one one)) (succ N) 
     refine (congrMul ((congrMul (sg_succ _) (.eqRefl _)).eqTrans (by ipra_ring))
       (sum_ones _ _)).eqTrans (one_mul _)
   have e1 := natEq cs; have e2 := natEq (congrAp2 (Γ := Γ) (sumF (RB one one)) rg (.eqRefl (pairT N y)))
-  have e3 := natEq sp; have e4 := natEq h0; have e5 := natEq tl
-  apply deriveNat; ipra_simps; linear_combination e1 + e2 + e3 + e4 + e5
+  ipra_lc e1 + e2 + natEq sp + natEq h0 + natEq tl
 
 /-- `D(N + 1) = D(N) + τ(N + 1)`. -/
 theorem tau_succ (N y : PTm n) : Γ ⊢[PRAAx] S (succ N) (succ N) ≐ S N N + conv one one (succ N) y := by
   have s := sum_succ' (Γ := Γ) (cvF one one) (succ N) y
   rw [inst2_cvF] at s
-  ipra_lc -natEq (tau_sum (Γ := Γ) (succ N) y) + natEq s + natEq (tau_sum (Γ := Γ) N y)
+  ipra_lc -natEq (tau_sum (succ N) y) + natEq s + natEq (tau_sum N y)
 
 /-! ## The Abel identity -/
 

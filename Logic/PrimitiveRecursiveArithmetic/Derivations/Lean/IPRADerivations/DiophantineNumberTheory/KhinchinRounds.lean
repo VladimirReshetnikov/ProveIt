@@ -1,6 +1,4 @@
 import IPRADerivations.DiophantineNumberTheory.KhinchinAmplify
-import IPRADerivations.Core.Gcd
-import IPRADerivations.Core.Header
 
 /-!
 # The rounds of the (K2) amplification (`hurwitz_khinchin_ipra`)
@@ -21,14 +19,12 @@ round variable `0` and `b = c + 1` (the packet's `c = 16383`), cleared of denomi
 
 namespace LeanProofs.IPRA.DiophantineNumberTheory.KhinchinRounds
 
-open_ipra
+open_ipra exports
 open LeanProofs.IPRA.DiophantineNumberTheory.KhinchinAmplify (half_bound pow_amp)
 
 set_option autoImplicit false
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
-
-local notation "𝔞" t:max => Groth.ι (IPRA.Q.mk _ t)
 
 /-- A residual sequence `R_j` (the term `R` in the round variable `0`) with `b R_{j+1} ≤ c R_j` for every round
 `j < T` satisfies `b^T R_T ≤ c^T R_0`. -/

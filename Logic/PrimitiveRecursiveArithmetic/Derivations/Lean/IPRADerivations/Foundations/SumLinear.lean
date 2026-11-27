@@ -1,7 +1,5 @@
 import IPRADerivations.Core.SumOrder
 import IPRADerivations.Core.SumReflect
-import IPRADerivations.Core.Pairing
-import IPRADerivations.Core.LinearCombination
 import IPRADerivations.Core.Header
 
 /-!
@@ -21,15 +19,11 @@ The summation step, separated from the particular equations:
   evaluation, so that bodies can be written as terms in four variables.
 -/
 
-set_option linter.unusedSimpArgs false
-
 namespace LeanProofs.IPRA.Foundations.SumLinear
 
-open_ipra
+open_ipra exports
 
 variable {k : ℕ} {Γ : List (Fm PTm k)}
-
-local notation "𝔞" t:max => Groth.ι (IPRA.Q.mk _ t)
 
 /-! ## A pointwise linear relation, summed -/
 
@@ -55,8 +49,7 @@ theorem sum_linear (A B E F : PTm 2) {N lam al kap be x : PTm k}
     · simp only [Fm.subst_imp, Fm.subst_eq, subst_le, subst_ap2, PTm.subst_add, PTm.subst_mul,
         Syn.subst_var, Syn.inst_zero, Syn.subst_inst_shift, ConciseIPRA.PTm.subst_zero]
       refine .impI ?_
-      ipra_lc natEq (sum_zero (Γ := le zero N :: Γ) A x) + 𝔞 al * natEq (sum_zero (Γ := le zero N :: Γ) B x) -
-        𝔞 be * natEq (sum_zero (Γ := le zero N :: Γ) E x) - natEq (sum_zero (Γ := le zero N :: Γ) F x)
+      ipra_lc natEq (sum_zero A x) + 𝔞 al * natEq (sum_zero B x) - 𝔞 be * natEq (sum_zero E x) - natEq (sum_zero F x)
     · simp only [Fm.subst_imp, Fm.subst_eq, subst_le, subst_ap2, PTm.subst_add, PTm.subst_mul,
         Syn.subst_var, Syn.repl_zero, subst_repl_shift, ConciseIPRA.PTm.subst_zero,
         ConciseIPRA.PTm.subst_succ]

@@ -1,7 +1,4 @@
 import IPRADerivations.DiophantineNumberTheory.SquareArea
-import IPRADerivations.DiophantineNumberTheory.FermatQuartic
-import IPRADerivations.Core.LinearCombination
-import IPRADerivations.Core.Header
 
 /-!
 # The rational points of the Fermat quartic
@@ -23,19 +20,15 @@ The other lemmas of the section are derived in the `mordell_weil_ipra` modules:
 `thm:fq-no-area` (`DiophantineNumberTheory/SquareArea`).
 -/
 
-set_option linter.unusedSimpArgs false
-
 namespace LeanProofs.IPRA.DiophantineNumberTheory.FermatQuarticPoints
 
-open_ipra
+open_ipra exports
 open LeanProofs.IPRA.DiophantineNumberTheory.QuarticStep (q4)
 open LeanProofs.IPRA.DiophantineNumberTheory.Coprime (sq_inj dvd_self' one_le_of_pos)
 open LeanProofs.IPRA.Combinatorics.Binomial (pos_mul)
 open LeanProofs.IPRA.AnalyticNumberTheory.PhiDouble (two_pos')
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
-
-local notation "𝔞" t:max => Groth.ι (IPRA.Q.mk _ t)
 
 /-- No square-area triangle, at arbitrary terms. -/
 theorem no_square_area {a b c s : PTm n} (ha : Γ ⊢[PRAAx] a ≐ succ (pred a)) (hb : Γ ⊢[PRAAx] b ≐ succ (pred b))

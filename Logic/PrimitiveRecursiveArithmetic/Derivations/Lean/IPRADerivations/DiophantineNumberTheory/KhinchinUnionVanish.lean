@@ -1,5 +1,4 @@
 import IPRADerivations.DiophantineNumberTheory.KhinchinBlockLocal
-import IPRADerivations.Core.Header
 
 /-!
 # The block's union bit vanishes outside its cell, uniformly (`hurwitz_khinchin_ipra`)
@@ -19,7 +18,7 @@ Both instantiate `block_out` under the cell binder, with its margin hypotheses t
 
 namespace LeanProofs.IPRA.DiophantineNumberTheory.KhinchinUnionVanish
 
-open_ipra
+open_ipra exports
 open LeanProofs.IPRA.Signum (sg)
 open LeanProofs.IPRA.Analysis.Products (fact)
 open LeanProofs.IPRA.DiophantineNumberTheory.KhinchinBlockScales (Xt bB)
@@ -28,8 +27,6 @@ open LeanProofs.IPRA.DiophantineNumberTheory.KhinchinBlockLocal (block_out)
 set_option autoImplicit false
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
-
-local notation "𝔞" t:max => Groth.ι (IPRA.Q.mk _ t)
 
 /-- The margin hypothesis of `block_out`, one binder deeper. -/
 theorem hH_shift (wb : PTm 2) {B K0 M R G α γ b0 H : PTm n}

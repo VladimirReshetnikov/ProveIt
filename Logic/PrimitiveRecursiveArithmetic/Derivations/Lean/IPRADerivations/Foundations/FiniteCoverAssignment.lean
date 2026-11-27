@@ -1,8 +1,4 @@
 import IPRADerivations.Foundations.FiniteFiberGrouping
-import IPRADerivations.Core.SumOrder
-import IPRADerivations.Core.CongruenceTactic
-import IPRADerivations.Core.SubstCommand
-import IPRADerivations.Core.Header
 
 /-!
 # Actual first-cover assignment and the finite covering count
@@ -16,11 +12,10 @@ bound. No assignment, partition or returned-count law is supplied.
 -/
 
 set_option autoImplicit false
-set_option linter.unusedSimpArgs false
 
 namespace LeanProofs.IPRA.Foundations.FiniteCoverAssignment
 
-open_ipra
+open_ipra exports
 open MasterCertificate (entry sequence sequence_length sequence_decode subst_entry)
 open SequenceComposition (length subst_length entry_congr)
 open BoundedReflection (wit ex_intro ex_elim ex_least)

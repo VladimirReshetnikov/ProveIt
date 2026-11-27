@@ -1,8 +1,4 @@
 import IPRADerivations.Foundations.SequenceComposition
-import IPRADerivations.Foundations.BoundedFormulas
-import IPRADerivations.Core.CommonLemmas
-import IPRADerivations.Core.SubstCommand
-import IPRADerivations.Core.Header
 
 /-!
 # Composition of bounded finite-query certificate realizers
@@ -29,11 +25,9 @@ kernel of FIBER `thm:composition`; concrete metric instances and translation
 of arbitrary compiler graphs remain separate.
 -/
 
-set_option linter.unusedSimpArgs false
-
 namespace LeanProofs.IPRA.Foundations.RealizerComposition
 
-open_ipra
+open_ipra exports
 open LeanProofs.IPRA.Foundations.MasterCertificate
   (sequence stack stack_zero stack_succ sequence_length sequence_decode entry)
 open LeanProofs.IPRA.Foundations.SequenceComposition
@@ -41,8 +35,6 @@ open LeanProofs.IPRA.Foundations.SequenceComposition
 open LeanProofs.IPRA.Foundations.BoundedReflection
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
-
-local notation "𝔞" t:max => Groth.ι (IPRA.Q.mk _ t)
 
 def ap4 (f : PR 4) (a b c d : PTm n) : PTm n := app f ![a, b, c, d]
 

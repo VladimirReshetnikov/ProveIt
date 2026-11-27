@@ -1,7 +1,5 @@
 import IPRADerivations.Foundations.ChainViability
 import IPRADerivations.Foundations.SequenceComposition
-import IPRADerivations.Core.SubstCommand
-import IPRADerivations.Core.Header
 
 /-!
 # Actual coded finite viable chains
@@ -20,11 +18,10 @@ sequence-code, level and remaining-level arguments are internal numbers.
 -/
 
 set_option autoImplicit false
-set_option linter.unusedSimpArgs false
 
 namespace LeanProofs.IPRA.Foundations.CodedViableChain
 
-open_ipra
+open_ipra exports
 open LeanProofs.IPRA.Foundations.BackwardViability
 open LeanProofs.IPRA.Foundations.BackwardViability.Instance
 open LeanProofs.IPRA.Foundations.ViableChain

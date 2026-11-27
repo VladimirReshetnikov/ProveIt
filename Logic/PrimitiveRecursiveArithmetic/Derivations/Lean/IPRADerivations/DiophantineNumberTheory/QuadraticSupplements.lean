@@ -1,5 +1,4 @@
 import IPRADerivations.DiophantineNumberTheory.QuadraticReciprocity
-import IPRADerivations.Core.Header
 
 /-!
 # The first supplementary law and the square-root witnesses
@@ -23,26 +22,18 @@ bounded search (`QuadraticReciprocity.sign_eq`):
 The second supplementary law `eq:two` is derived in `SecondSupplement`.
 -/
 
-set_option linter.unusedSimpArgs false
-
 namespace LeanProofs.IPRA.DiophantineNumberTheory.QuadraticSupplements
 
-open_ipra
-open LeanProofs.IPRA.AnalyticNumberTheory.Primes (prime)
-open LeanProofs.IPRA.AnalyticNumberTheory.ValuationMul (p_pos)
+open_ipra exports
 open LeanProofs.IPRA.AnalyticNumberTheory.Mobius (prime_two)
 open LeanProofs.IPRA.AnalyticNumberTheory.ConvolutionAssoc (rem_small)
 open LeanProofs.IPRA.Combinatorics.BinomialTheorem (congrPw)
-open LeanProofs.IPRA.DiophantineNumberTheory.Coprime (gcd_comm_one)
-open LeanProofs.IPRA.DiophantineNumberTheory.ModularCertificate (rem_mul_congr2)
-open LeanProofs.IPRA.DiophantineNumberTheory.QuadraticReciprocityGoal (signBit)
 open LeanProofs.IPRA.DiophantineNumberTheory.UnitInvolution (unit_of_lt)
 open LeanProofs.IPRA.DiophantineNumberTheory.PairProduct (sqB sq_search_witness sq_search_no_root)
-open LeanProofs.IPRA.DiophantineNumberTheory.WilsonProduct (pred_lt pred_pos)
+open LeanProofs.IPRA.DiophantineNumberTheory.WilsonProduct (pred_pos)
 open LeanProofs.IPRA.DiophantineNumberTheory.ResidueFacts (neg_pow)
-open LeanProofs.IPRA.DiophantineNumberTheory.GaussLemma (rb euler_nr euler_res pred_ne_one)
-open LeanProofs.IPRA.DiophantineNumberTheory.QuadraticReciprocity (sign_eq)
-open LeanProofs.IPRA.Foundations.BoundedReflection (wit ex_cases one_ne_zero)
+open LeanProofs.IPRA.DiophantineNumberTheory.GaussLemma (rb euler_nr euler_res)
+open LeanProofs.IPRA.Foundations.BoundedReflection (wit one_ne_zero)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
@@ -139,3 +130,5 @@ theorem short_root {p a t : PTm n} (hp : Γ ⊢[PRAAx] prime p) (hodd : Γ ⊢[P
   exact s1.eqTrans ((congrAp2 remF e (.eqRefl _)).eqTrans (s2.eqTrans (congrAp2 remF (one_mul a) (.eqRefl _))))
 
 end LeanProofs.IPRA.DiophantineNumberTheory.QuadraticSupplements
+
+export_ipra DiophantineNumberTheory.QuadraticSupplements (minus_one_law)

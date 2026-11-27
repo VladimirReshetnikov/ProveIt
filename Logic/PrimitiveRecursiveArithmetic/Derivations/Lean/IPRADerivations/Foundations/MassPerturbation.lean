@@ -1,6 +1,5 @@
 import IPRADerivations.Probability.MedianWeighted
 import IPRADerivations.Core.OrderCertificates
-import IPRADerivations.Core.Header
 
 /-!
 # Nonexpansive expectation and mass perturbation
@@ -20,11 +19,9 @@ weights, on a common scale):
 * `mass_perturbation`: with `g ≤ B`, `|∑ w f − ∑ v g| ≤ ∑ w e + B ∑ |w − v|`.
 -/
 
-set_option linter.unusedSimpArgs false
-
 namespace LeanProofs.IPRA.Foundations.MassPerturbation
 
-open_ipra
+open_ipra exports
 open LeanProofs.IPRA.Probability.Variance (ad)
 open LeanProofs.IPRA.Probability.MedianWeighted (ad_le_of le_add_ad ad_add_le)
 

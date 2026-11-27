@@ -1,6 +1,4 @@
 import IPRADerivations.AnalyticNumberTheory.GcdPhiSum
-import IPRADerivations.Probability.Independence
-import IPRADerivations.Core.Header
 
 /-!
 # The diagonalization of the Selberg quadratic form
@@ -23,11 +21,9 @@ for arbitrary natural bodies `u`, `v` (signed weights are differences of such bo
 * `diag_term`: each summand `pB a2 (r)` is the product `(Σ_d A_d(r)) (Σ_e B_e(r))` (`sum_mul_sum`).
 -/
 
-set_option linter.unusedSimpArgs false
-
 namespace LeanProofs.IPRA.AnalyticNumberTheory.SieveDiagonal
 
-open_ipra
+open_ipra exports
 open LeanProofs.IPRA.Signum (sg sg_zero)
 open LeanProofs.IPRA.AnalyticNumberTheory.Mobius (congrSg congrEqb')
 open LeanProofs.IPRA.AnalyticNumberTheory.Totient (phi totBody)
@@ -256,3 +252,5 @@ theorem diag_term (r N y Z : PTm n) :
 end Diagonal
 
 end LeanProofs.IPRA.AnalyticNumberTheory.SieveDiagonal
+
+export_ipra AnalyticNumberTheory.SieveDiagonal (Ab_at)

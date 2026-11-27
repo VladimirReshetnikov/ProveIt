@@ -1,8 +1,5 @@
 import IPRADerivations.AnalyticNumberTheory.SieveRough
 import IPRADerivations.AnalyticNumberTheory.SieveExpansion
-import IPRADerivations.Analysis.RationalArithmetic.Powers.PowerSums
-import IPRADerivations.Core.CertificateTactics
-import IPRADerivations.Core.Header
 
 /-!
 # The quadratic majorant, summed over the progression
@@ -32,13 +29,10 @@ where `S = Σ_{m<X} c(m) ρ(m)` and `N^{st} = Σ_{m<X} c(m) T^t(m) T^s(m)` are t
 Every `m` with no divisor in `[2, Z)` is counted by `S`; in particular the primes `m ≥ Z` of the progression.
 -/
 
-set_option linter.unusedSimpArgs false
-
 namespace LeanProofs.IPRA.AnalyticNumberTheory.SieveMajorant
 
-open_ipra
+open_ipra exports
 open LeanProofs.IPRA.AnalyticNumberTheory.Mobius (congrEqb')
-open LeanProofs.IPRA.AnalyticNumberTheory.PhiLower (le_mul_mono)
 open LeanProofs.IPRA.AnalyticNumberTheory.DivisorExchange (dvB LW)
 open LeanProofs.IPRA.AnalyticNumberTheory.SieveSquare (sqL_pt)
 open LeanProofs.IPRA.AnalyticNumberTheory.SieveExpansion (cB lB inst2_lB)
@@ -47,8 +41,6 @@ open LeanProofs.IPRA.Analysis.PowerSums (sum_le)
 open LeanProofs.IPRA.Probability.Independence (sum_scale)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
-
-local notation "𝔞" t:max => Groth.ι (IPRA.Q.mk _ t)
 
 /-! ## Algebra over opaque terms -/
 

@@ -1,8 +1,6 @@
 import IPRADerivations.Foundations.RuntimeWordAppend
 import IPRADerivations.Foundations.FiniteFiberGrouping
 import IPRADerivations.Foundations.GuardedTotalization
-import IPRADerivations.Core.SubstCommand
-import IPRADerivations.Core.Header
 
 /-!
 # A cyclic permutation and its wrap bit
@@ -16,7 +14,7 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Foundations.RuntimeCyclicPermutation
 
-open_ipra
+open_ipra exports
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
@@ -98,7 +96,6 @@ theorem rotation_injective (m k i j : PTm n) (hk : Γ ⊢[PRAAx] lt k m)
     · exact inject_same_wrap _ _ _ _ hm.wk.wk hr.wk.wk (Prf.hyp1.eqTrans Prf.hyp0.eqSymm)
 
 open MasterCertificate (entry sequence sequence_decode sequence_length subst_sequence)
-open SequenceComposition (length)
 
 def rotationBody : PTm 2 := rotation (fstT (var 1)) (sndT (var 1)) (var 0)
 def rotationTable (m k : PTm n) : PTm n := sequence rotationBody m (pairT m k)
@@ -378,3 +375,5 @@ theorem actual_inverse_correct_closed : ([] : List (Fm PTm 0)) ⊢[PRAAx] univ 3
   closeUniv 3 (.impI (.impI (inverse_correct _ _ _ Prf.hyp1 Prf.hyp0)))
 
 end LeanProofs.IPRA.Foundations.RuntimeCyclicPermutation
+
+export_ipra Foundations.RuntimeCyclicPermutation (inverseIndex wrap)

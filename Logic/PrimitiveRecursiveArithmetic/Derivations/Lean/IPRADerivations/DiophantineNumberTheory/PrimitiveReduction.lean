@@ -1,8 +1,4 @@
-import IPRADerivations.DiophantineNumberTheory.Coprime
-import IPRADerivations.DiophantineNumberTheory.QuarticStep
 import IPRADerivations.AnalyticNumberTheory.Smooth
-import IPRADerivations.AnalyticNumberTheory.Totient
-import IPRADerivations.Core.Header
 
 /-!
 # Primitive reduction
@@ -20,25 +16,16 @@ Packet: `flt_ipra`, `sections/foundations.tex`, Lemma `lem:primitive`.
 No prime factorization is used: the arguments are gcd computations and Gauss's lemma.
 -/
 
-set_option linter.unusedSimpArgs false
-
 namespace LeanProofs.IPRA.DiophantineNumberTheory.PrimitiveReduction
 
-open_ipra
+open_ipra exports
 open LeanProofs.IPRA.Combinatorics.Binomial (pos_mul)
 open LeanProofs.IPRA.Combinatorics.BinomialIdentities (mul_cancel)
-open LeanProofs.IPRA.Foundations.ChineseRemainder (gcd_pos)
 open LeanProofs.IPRA.DiophantineNumberTheory.Coprime
-open LeanProofs.IPRA.AnalyticNumberTheory.Valuation (pw_pos')
-open LeanProofs.IPRA.AnalyticNumberTheory.LocalFactor (pw_mul_base)
-open LeanProofs.IPRA.AnalyticNumberTheory.Smooth (pw_dvd_base)
-open LeanProofs.IPRA.AnalyticNumberTheory.Totient (coprime_pow)
 open LeanProofs.IPRA.Combinatorics.BinomialTheorem (congrPw)
 open LeanProofs.IPRA.DiophantineNumberTheory.QuarticStep (q4)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
-
-local notation "𝔞" t:max => Groth.ι (IPRA.Q.mk _ t)
 
 /-- `dⁿ ∣ zⁿ → d ∣ z` for `d, z, n ≥ 1`. -/
 theorem dvd_of_pw_dvd_pw {d z e : PTm n} (hd : Γ ⊢[PRAAx] d ≐ succ (pred d)) (hz : Γ ⊢[PRAAx] z ≐ succ (pred z))
@@ -54,16 +41,12 @@ theorem dvd_of_pw_dvd_pw {d z e : PTm n} (hd : Γ ⊢[PRAAx] d ≐ succ (pred d)
   have pd := (congrPw eD (.eqRefl e)).eqTrans (pw_mul_base _ _ e)
   have e₁ : Γ ⊢[PRAAx] pw (gcd d z) e * pw (quo z (gcd d z)) e ≐
       pw (gcd d z) e * (pw (quo d (gcd d z)) e * quo (pw z e) (pw d e)) := by
-    have a := natEq ew; have b := natEq pz; have c := natEq pd
-    apply deriveNat; ipra_simps
-    linear_combination a - b + 𝔞 (quo (pw z e) (pw d e)) * c
+    ipra_lc natEq ew - natEq pz + 𝔞 (quo (pw z e) (pw d e)) * natEq pd
   have e₂ := mul_cancel (pw_pos' hg e) e₁
   have ps := (congrPw (.eqRefl (quo d (gcd d z))) he).eqTrans (pw_succ _ _)
   have hdv : Γ ⊢[PRAAx] dvd (quo d (gcd d z)) (pw (quo z (gcd d z)) e) := by
     refine dvd_of_eq' hd₁ (w := pw (quo d (gcd d z)) (pred e) * quo (pw z e) (pw d e)) ?_
-    have a := natEq e₂; have b := natEq ps
-    apply deriveNat; ipra_simps
-    linear_combination a + 𝔞 (quo (pw z e) (pw d e)) * b
+    ipra_lc natEq e₂ + 𝔞 (quo (pw z e) (pw d e)) * natEq ps
   have d1 := eq_one_of_coprime_dvd hd₁ (coprime_pow hd₁ hcop e) hdv
   have ed : Γ ⊢[PRAAx] gcd d z ≐ d :=
     ((mul_comm _ _).eqTrans (one_mul _)).eqSymm.eqTrans ((congrMul (.eqRefl _) d1.eqSymm).eqTrans eD.eqSymm)
@@ -101,7 +84,7 @@ theorem z_pos : Γ ⊢[PRAAx] z ≐ succ (pred z) := by
   have px := pw_pos' (Γ := (z ≐ zero) :: Γ) hx.wk e
   have hz := h.wk.eqTrans ((congrPw Prf.hyp0 (.eqRefl e)).eqTrans (pw_zero_base he.wk))
   have a := natEq hz; have b := natEq px
-  exact succ_ne_zero' _ (a := pred (pw x e) + pw y e) (by apply deriveNat; ipra_simps; linear_combination a - b)
+  exact succ_ne_zero' _ (a := pred (pw x e) + pw y e) (by ipra_lc a - b)
 
 /-- `d = gcd(x, y)` divides `z`. -/
 theorem prim_dvd : Γ ⊢[PRAAx] dvd (gcd x y) z := by
@@ -118,9 +101,7 @@ theorem prim_eq : Γ ⊢[PRAAx] pw (quo x (gcd x y)) e + pw (quo y (gcd x y)) e 
   have ey := (congrPw (eq_of_dvd' hg (Prf.andE₂ hgd)) (.eqRefl e)).eqTrans (pw_mul_base _ _ e)
   have ez := (congrPw (eq_of_dvd' hg (prim_dvd hx hy he h)) (.eqRefl e)).eqTrans (pw_mul_base _ _ e)
   refine mul_cancel (pw_pos' hg e) ?_
-  have a := natEq ex; have b := natEq ey; have c := natEq ez; have d := natEq h
-  apply deriveNat; ipra_simps
-  linear_combination c - a - b + d
+  ipra_lc natEq ez - natEq ex - natEq ey + natEq h
 
 omit he h in
 theorem prim_xy : Γ ⊢[PRAAx] gcd (quo x (gcd x y)) (quo y (gcd x y)) ≐ one := coprime_quotients hx

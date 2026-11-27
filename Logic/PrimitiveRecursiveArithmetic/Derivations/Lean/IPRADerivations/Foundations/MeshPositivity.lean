@@ -1,4 +1,3 @@
-import IPRADerivations.Core.Division
 import IPRADerivations.Core.Gcd
 import IPRADerivations.Core.OrderCertificates
 import IPRADerivations.Core.Header
@@ -26,11 +25,9 @@ For `d` coordinates the grid index is taken in each coordinate. The represented 
 and the quantification over all rational points are data of the application.
 -/
 
-set_option linter.unusedSimpArgs false
-
 namespace LeanProofs.IPRA.Foundations.MeshPositivity
 
-open_ipra
+open_ipra exports
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 

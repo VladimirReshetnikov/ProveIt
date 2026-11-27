@@ -1,7 +1,5 @@
 import IPRADerivations.DiophantineNumberTheory.PellGcd
 import IPRADerivations.Core.Pigeonhole
-import IPRADerivations.Core.LinearCombination
-import IPRADerivations.Core.Header
 
 /-!
 # Pell powers return to `(1, 0)` modulo `h`
@@ -14,17 +12,11 @@ at `i₀ < j₀`; with `t = j₀ − i₀`, the exact identities `X_t + D Y_i Y_
 `Y_t + X_j Y_i = X_i Y_j` (addition formula and norm) turn equal residues into the congruences.
 -/
 
-set_option linter.unusedSimpArgs false
-
 namespace LeanProofs.IPRA.DiophantineNumberTheory.PellModular
 
-open_ipra
-open LeanProofs.IPRA.Combinatorics.Binomial (pos_mul)
+open_ipra exports
 open LeanProofs.IPRA.Combinatorics.BinomialIdentities (mul_cancel)
 open LeanProofs.IPRA.DiophantineNumberTheory.PellGcd
-open LeanProofs.IPRA.AnalyticNumberTheory.Multiplicative (rem_eq' rem_lt' zero_lt')
-open LeanProofs.IPRA.AnalyticNumberTheory.GcdFiber (div_eq)
-open LeanProofs.IPRA.Foundations.ChineseRemainder (rem_eq_of_eq)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
@@ -140,9 +132,7 @@ theorem pell_modular_at :
     refine le_of_eq_add (d := monus (Pigeonhole.phpJ sigB (h * h) (code h u v D))
       (succ (Pigeonhole.phpI sigB (h * h) (code h u v D)))) ?_
     have w := natEq (eq_add_of_le hlt)
-    have t := natEq ((eq_add_of_le (le_of_lt hlt)).eqTrans (add_comm _ _))
-    apply deriveNat; ipra_simps
-    linear_combination w - t
+    ipra_lc w - natEq ((eq_add_of_le (le_of_lt hlt)).eqTrans (add_comm _ _))
   · exact le_trans (le_of_eq_add (d := Pigeonhole.phpI sigB (h * h) (code h u v D)) hJ) hJK
   · refine rem_eq_of_eq hh
       (k₁ := PX u v D (Pigeonhole.phpI sigB (h * h) (code h u v D)) *

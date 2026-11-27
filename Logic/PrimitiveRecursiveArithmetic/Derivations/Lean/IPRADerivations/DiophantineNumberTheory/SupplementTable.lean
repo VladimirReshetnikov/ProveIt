@@ -1,8 +1,5 @@
 import IPRADerivations.DiophantineNumberTheory.SecondSupplement
 import IPRADerivations.DiophantineNumberTheory.QuadraticSupplements
-import IPRADerivations.Combinatorics.BinomialIdentities
-import IPRADerivations.Core.CertificateTactics
-import IPRADerivations.Core.Header
 
 /-!
 # The supplementary signs by `p mod 8`
@@ -28,21 +25,13 @@ a prime `p`:
 In each case `h = 4t + r` and `h (h + 1)/2` is written as `2Y` or `2Y + 1` with an explicit polynomial `Y` in `t`.
 -/
 
-set_option linter.unusedSimpArgs false
-
 namespace LeanProofs.IPRA.DiophantineNumberTheory.SupplementTable
 
-open_ipra
-open LeanProofs.IPRA.AnalyticNumberTheory.Primes (prime)
-open LeanProofs.IPRA.AnalyticNumberTheory.Totient (quo_eq)
+open_ipra exports
 open LeanProofs.IPRA.AnalyticNumberTheory.PhiDouble (two_pos')
-open LeanProofs.IPRA.DiophantineNumberTheory.QuadraticReciprocityGoal (signBit)
-open LeanProofs.IPRA.DiophantineNumberTheory.QuadraticSupplements (minus_one_law)
 open LeanProofs.IPRA.DiophantineNumberTheory.SecondSupplement (two_law)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
-
-local notation "𝔞" t:max => Groth.ι (IPRA.Q.mk _ t)
 
 /-! ## The laws at a given half -/
 

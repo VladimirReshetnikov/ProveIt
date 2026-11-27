@@ -1,10 +1,6 @@
-import IPRADerivations.Combinatorics.FiniteBijection
-import IPRADerivations.AnalyticNumberTheory.SumPhi
 import IPRADerivations.Core.OrderCertificates
 import IPRADerivations.AnalyticNumberTheory.Mobius
 import IPRADerivations.Topology.StaggeredGrids
-import IPRADerivations.Probability.Independence
-import IPRADerivations.Core.Header
 
 /-!
 # Counting through an injection
@@ -30,19 +26,16 @@ separated by `Q⁻²`, so an interval of length `λ` contains at most `λQ² + 1
 
 namespace LeanProofs.IPRA.Foundations.InjectionCount
 
-open_ipra
+open_ipra exports
 open LeanProofs.IPRA.Signum (sg sg_zero sg_succ)
 open LeanProofs.IPRA.Combinatorics.FiniteBijection (sg_bit shift_inst2')
 open LeanProofs.IPRA.AnalyticNumberTheory.SumPhi (sum_ones)
 open LeanProofs.IPRA.Topology.StaggeredGrids (eqb01' eq_of_eqb congrEqb')
-open LeanProofs.IPRA.AnalyticNumberTheory.Mobius (congrSg)
 open LeanProofs.IPRA.Probability.Independence (sum_scale)
 
 set_option autoImplicit false
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
-
-local notation "𝔞" t:max => Groth.ι (IPRA.Q.mk _ t)
 
 section Inj
 

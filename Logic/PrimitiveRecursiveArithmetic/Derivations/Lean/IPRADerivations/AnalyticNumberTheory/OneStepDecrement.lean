@@ -1,5 +1,4 @@
 import IPRADerivations.AnalyticNumberTheory.OneStepRaw
-import IPRADerivations.Core.Header
 
 /-!
 # The one-step decrement (`pnt_ipra_constructive_2026-11-14`, Lemma `con:one-step`)
@@ -30,31 +29,21 @@ set_option linter.unusedSimpArgs false
 
 namespace LeanProofs.IPRA.AnalyticNumberTheory.OneStepDecrement
 
-open_ipra
+open_ipra exports
 open LeanProofs.IPRA.AnalyticNumberTheory.Harmonic (S hB)
 open LeanProofs.IPRA.AnalyticNumberTheory.HarmonicChebyshev (S_mono wt)
-open LeanProofs.IPRA.AnalyticNumberTheory.HarmonicMertens (le_scale)
 open LeanProofs.IPRA.AnalyticNumberTheory.HarmonicLogSquareSum (U)
 open LeanProofs.IPRA.AnalyticNumberTheory.HarmonicLogPow2 (S_pow2)
-open LeanProofs.IPRA.AnalyticNumberTheory.Doubling (S_pow2_lower)
-open LeanProofs.IPRA.AnalyticNumberTheory.BlockChain (one_le_pw' u_mono)
 open LeanProofs.IPRA.AnalyticNumberTheory.BlockTests (one_le_mul)
-open LeanProofs.IPRA.AnalyticNumberTheory.BlockDeficit (OnBlock stg)
-open LeanProofs.IPRA.AnalyticNumberTheory.ContractionSplit (Stage)
 open LeanProofs.IPRA.AnalyticNumberTheory.OneStepRaw (one_step_raw)
 open LeanProofs.IPRA.AnalyticNumberTheory.WeightedBound (psiB qB inst2_psiB inst2_qB)
 open LeanProofs.IPRA.AnalyticNumberTheory.FourthRootSum (Q4)
-open LeanProofs.IPRA.AnalyticNumberTheory.AbsDiff (absd scale_absd)
-open LeanProofs.IPRA.AnalyticNumberTheory.LcmUpto (Psi)
 open LeanProofs.IPRA.AnalyticNumberTheory.PNTStageStep (pos_of_one_le cancel_pos)
-open LeanProofs.IPRA.AnalyticNumberTheory.SymmetryPointwise (quo_mul_le)
 open LeanProofs.IPRA.Analysis.Products (fact)
 
 set_option autoImplicit false
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
-
-local notation "𝔞" t:max => Groth.ι (IPRA.Q.mk _ t)
 
 /-! ## Harmonic logarithms of powers of two -/
 

@@ -1,8 +1,6 @@
 import IPRADerivations.Core.Gcd
 import IPRADerivations.Core.SumOrder
 import IPRADerivations.Core.SumReflect
-import IPRADerivations.Core.Pairing
-import IPRADerivations.Core.LinearCombination
 import IPRADerivations.Core.InductionTactic
 import IPRADerivations.Core.Header
 
@@ -36,15 +34,11 @@ the maximizing index by a bounded scan, the integrality of `λ` for a variable d
 `cor:eigenvalue-grid`.
 -/
 
-set_option linter.unusedSimpArgs false
-
 namespace LeanProofs.IPRA.Foundations.EigenvalueBound
 
-open_ipra
+open_ipra exports
 
 variable {k : ℕ} {Γ : List (Fm PTm k)}
-
-local notation "𝔞" t:max => Groth.ι (IPRA.Q.mk _ t)
 
 /-! ## Absolute differences -/
 

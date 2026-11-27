@@ -1,6 +1,5 @@
 import IPRADerivations.AnalyticNumberTheory.MertensTotient
 import IPRADerivations.AnalyticNumberTheory.PiTheta
-import IPRADerivations.Core.Header
 
 /-!
 # The sum of the number of prime divisors
@@ -20,17 +19,11 @@ summatory identity `MertensTotient.floor_summatory` at the weight `[prime]`.
 The identity for `Ω` and the comparison with `∑ 1/p` are not derived here.
 -/
 
-set_option linter.unusedSimpArgs false
-
 namespace LeanProofs.IPRA.AnalyticNumberTheory.OmegaMean
 
-open_ipra
-open LeanProofs.IPRA.AnalyticNumberTheory.Valuation (isP)
-open LeanProofs.IPRA.AnalyticNumberTheory.Mobius (congrSg zero_mul_l isP_zero congrIsP)
-open LeanProofs.IPRA.AnalyticNumberTheory.ConvolutionAssoc (cvF sg_pos)
+open_ipra exports
 open LeanProofs.IPRA.AnalyticNumberTheory.ConvSummatory (RB)
 open LeanProofs.IPRA.AnalyticNumberTheory.PiTheta (piB inst2_piB)
-open LeanProofs.IPRA.AnalyticNumberTheory.MertensTotient (floor_term floor_summatory)
 open LeanProofs.IPRA.Signum (sg sg_zero sg_succ)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}

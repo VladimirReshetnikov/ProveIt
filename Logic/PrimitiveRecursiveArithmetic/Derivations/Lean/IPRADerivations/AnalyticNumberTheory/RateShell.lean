@@ -1,9 +1,4 @@
 import IPRADerivations.AnalyticNumberTheory.RateAbel
-import IPRADerivations.Geometry.HypercubeSplit
-import IPRADerivations.AnalyticNumberTheory.SummatoryPhi
-import IPRADerivations.AnalyticNumberTheory.TotientCorollaries
-import IPRADerivations.Core.LinearCombination
-import IPRADerivations.Core.Header
 
 /-!
 # Shell arithmetic for the weighted series (`riemann_ipra_equivalences_2026-11-20`, `thm:rate`, (1) ⇒ (2))
@@ -19,32 +14,18 @@ this implies `|M(i)| ≤ (c+1)2^{r(j+1)+⌈(j+1)/2⌉}`. Raise to `4r` to verify
   compare as `4r⌊j/2⌋ + 2r(2r+1)(j+1) ≤ 4r(r+1)(j+1)`, i.e. `2⌊j/2⌋ ≤ j + 1`.
 -/
 
-set_option linter.unusedSimpArgs false
-
 namespace LeanProofs.IPRA.AnalyticNumberTheory.RateShell
 
-open_ipra
+open_ipra exports
 open LeanProofs.IPRA.AnalyticNumberTheory.RateAbel
-open LeanProofs.IPRA.AnalyticNumberTheory.StepParams (ell clog_bracket)
 open LeanProofs.IPRA.Geometry.HypercubeSplit (exp_le_of_pw_le)
-open LeanProofs.IPRA.AnalyticNumberTheory.SummatoryPhi (quo_succ)
-open LeanProofs.IPRA.AnalyticNumberTheory.TotientCorollaries (eqb_le_one)
-open LeanProofs.IPRA.DiophantineNumberTheory.Dirichlet (quo_mono)
-open LeanProofs.IPRA.AnalyticNumberTheory.PowerCleared (pw_le_exp pw_le_cancel)
-open LeanProofs.IPRA.AnalyticNumberTheory.RSA (pw_mul)
-open LeanProofs.IPRA.AnalyticNumberTheory.LocalFactor (pw_mul_base)
-open LeanProofs.IPRA.AnalyticNumberTheory.BlockChain (one_le_pw')
 open LeanProofs.IPRA.AnalyticNumberTheory.PNTStageStep (pos_of_one_le)
-open LeanProofs.IPRA.AnalyticNumberTheory.AbsDiff (absd absd_le le_absd_l le_absd_r)
-open LeanProofs.IPRA.AnalyticNumberTheory.PhiLower (le_mul_mono)
 open LeanProofs.IPRA.Combinatorics.BinomialTheorem (congrPw)
 open LeanProofs.IPRA.AnalyticNumberTheory.PowerTransfer (k4)
 
 set_option autoImplicit false
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
-
-local notation "𝔞" t:max => Groth.ι (IPRA.Q.mk _ t)
 
 /-! ## The floor logarithm along `N` -/
 
@@ -133,8 +114,7 @@ theorem half_succ {j : PTm n} :
   · let C : List (Fm PTm n) := lt (rem j two) one :: Γ
     have r0 : C ⊢[PRAAx] rem j two ≐ zero := (monus_zero _).eqSymm.eqTrans ((succ_monus_succ _ _).eqSymm.eqTrans Prf.hyp0)
     have f := natEq (Γ := C) e.wk
-    have z := natEq (Γ := C) r0
-    have hz : C ⊢[PRAAx] succ j ≐ two * quo j two + one := by apply deriveNat; ipra_simps; linear_combination f + z
+    have hz : C ⊢[PRAAx] succ j ≐ two * quo j two + one := by ipra_lc f + natEq (Γ := C) r0
     refine .orI₁ (.andI r0 (.andI ?_ ?_))
     · exact LeanProofs.IPRA.AnalyticNumberTheory.Totient.quo_eq two_pos hz (by ipra_le 0)
     · exact LeanProofs.IPRA.AnalyticNumberTheory.Multiplicative.rem_eq' two_pos hz (by ipra_le 0)

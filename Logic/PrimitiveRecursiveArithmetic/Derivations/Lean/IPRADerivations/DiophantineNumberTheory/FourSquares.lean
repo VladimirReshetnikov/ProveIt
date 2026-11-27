@@ -1,9 +1,6 @@
 import IPRADerivations.DiophantineNumberTheory.FourSquaresDescent
 import IPRADerivations.DiophantineNumberTheory.FourSquaresSeed
 import IPRADerivations.DiophantineNumberTheory.FermatTwoSquares
-import IPRADerivations.Foundations.StrongInduction
-import IPRADerivations.Core.CertificateTactics
-import IPRADerivations.Core.Header
 
 /-!
 # Lagrange's four-square theorem with primitive recursive witnesses
@@ -30,27 +27,19 @@ summing to `n` (a bounded search); the theorem is that the search succeeds for e
 * `four_squares`, `W_le`, and the closed sentence **`lagrange`**.
 -/
 
-set_option linter.unusedSimpArgs false
-
 namespace LeanProofs.IPRA.DiophantineNumberTheory.FourSquares
 
-open_ipra
-open LeanProofs.IPRA.AnalyticNumberTheory.Primes (prime lpf)
+open_ipra exports
 open LeanProofs.IPRA.AnalyticNumberTheory.FactorVector (one_le_pos lpf_prime' lpf_dvd')
 open LeanProofs.IPRA.AnalyticNumberTheory.Mobius (prime_two congrEqb')
-open LeanProofs.IPRA.AnalyticNumberTheory.ValuationMul (p_pos)
 open LeanProofs.IPRA.Combinatorics.LegendreDigits (dm dmu)
 open LeanProofs.IPRA.DiophantineNumberTheory.FourSquaresAlgebra
 open LeanProofs.IPRA.DiophantineNumberTheory.FourSquaresDescent (Af sf Uf mq descent)
 open LeanProofs.IPRA.DiophantineNumberTheory.FourSquaresSeed (sa sb seed)
-open LeanProofs.IPRA.DiophantineNumberTheory.FermatTwoSquares (odd_of_prime_ne_two)
-open LeanProofs.IPRA.Foundations.BoundedReflection (exB wit ex_cases ex_intro ex_elim eqb_cases
-  eq_of_eqb one_ne_zero signum_guard_nonzero least_positive_witness)
+open LeanProofs.IPRA.Foundations.BoundedReflection (wit one_ne_zero signum_guard_nonzero least_positive_witness)
 open LeanProofs.IPRA.Signum (sg)
 
 variable {k : ℕ} {Γ : List (Fm PTm k)}
-
-local notation "𝔞" t:max => Groth.ι (IPRA.Q.mk _ t)
 
 /-! ## Four digits -/
 
@@ -174,7 +163,7 @@ theorem rep_odd_prime {p : PTm k} (hp : Γ ⊢[PRAAx] prime p) (ep : Γ ⊢[PRAA
     refine .orE (zero_or_succ (quo (sa p * sa p + (sb p * sb p + one)) p)) ?_ (one_le_pos Prf.hyp0)
     have esn' := natEq (es.wk (ψ := quo (sa p * sa p + (sb p * sb p + one)) p ≐ zero))
     refine succ_ne_zero' (a := sa p * sa p + sb p * sb p) _ ?_
-    ipra_lc esn' + 𝔞 p * natEq (Prf.hyp0 (Γ := Γ) (φ := quo (sa p * sa p + (sb p * sb p + one)) p ≐ zero))
+    ipra_lc esn' + 𝔞 p * natEq (Prf.hyp0 (φ := quo (sa p * sa p + (sb p * sb p + one)) p ≐ zero))
   have m0lt : Γ ⊢[PRAAx] lt (quo (sa p * sa p + (sb p * sb p + one)) p) p := by
     refine .orE (lt_or_le (quo (sa p * sa p + (sb p * sb p + one)) p) p) Prf.hyp0 ?_
     have hle : (le p (quo (sa p * sa p + (sb p * sb p + one)) p) :: Γ) ⊢[PRAAx]
@@ -206,7 +195,7 @@ theorem rep_prime {p : PTm k} (hp : Γ ⊢[PRAAx] prime p) : Γ ⊢[PRAAx] R p �
     exact rep_odd_prime hp.wk ((half_par p).eqTrans (congrAdd (.eqRefl _) po))
   · have e2 := natEq (eq_of_eqb (Prf.hyp0 (Γ := Γ) (φ := eqb p two ≐ one)))
     exact rep_intro (a := one) (b := one) (c := zero) (d := zero)
-      (by apply deriveNat; ipra_simps; linear_combination -e2)
+      (by ipra_lc -e2)
 
 /-! ## Every number -/
 
@@ -237,10 +226,10 @@ theorem step {N x : PTm k} (hS : Γ ⊢[PRAAx] ap2 (sumF vR) N x ≐ zero) : Γ 
     · refine .orE (lt_succ_cases (Prf.hyp0 (Γ := lt N two :: Γ) (φ := lt N one))) (lt_zero_absurd _ Prf.hyp0) ?_
       have nz := natEq (Prf.hyp0 (Γ := lt N one :: lt N two :: Γ) (φ := N ≐ zero))
       exact rep_intro (a := zero) (b := zero) (c := zero) (d := zero)
-        (by apply deriveNat; ipra_simps; linear_combination -nz)
+        (by ipra_lc -nz)
     · have n1 := natEq (Prf.hyp0 (Γ := lt N two :: Γ) (φ := N ≐ one))
       exact rep_intro (a := one) (b := zero) (c := zero) (d := zero)
-        (by apply deriveNat; ipra_simps; linear_combination -n1)
+        (by ipra_lc -n1)
   · have hN2 : (le two N :: Γ) ⊢[PRAAx] le two N := Prf.hyp0
     have hp := lpf_prime' hN2
     have hp2 := prime_two hp

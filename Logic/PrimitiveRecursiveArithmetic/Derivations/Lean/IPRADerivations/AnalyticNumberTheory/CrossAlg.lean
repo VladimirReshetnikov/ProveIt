@@ -1,5 +1,4 @@
 import IPRADerivations.AnalyticNumberTheory.PNTStageStep
-import IPRADerivations.Core.Header
 
 /-!
 # The arithmetic of the crossing case (`pnt_ipra_constructive_2026-11-14`, `con:deficit`)
@@ -18,18 +17,13 @@ and mass `M_c`. From
 `AF(Am_u + 8Dm_v r_U + 8D r_V + 8D m_v + 8D)`) and cancels it.
 -/
 
-set_option linter.unusedSimpArgs false
-
 namespace LeanProofs.IPRA.AnalyticNumberTheory.CrossAlg
 
-open_ipra
-open LeanProofs.IPRA.AnalyticNumberTheory.PNTStageStep (cancel_pos)
+open_ipra exports
 
 set_option autoImplicit false
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
-
-local notation "𝔞" t:max => Groth.ι (IPRA.Q.mk _ t)
 
 /-- The crossing-case arithmetic. -/
 theorem crossC_alg {G Gc Mc mu mv du dv b c t q x F A Ds rU rV D2 Q1 : PTm n}

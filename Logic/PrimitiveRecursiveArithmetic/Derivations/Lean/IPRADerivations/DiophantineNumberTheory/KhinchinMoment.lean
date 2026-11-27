@@ -1,7 +1,4 @@
-import IPRADerivations.Core.Powers
-import IPRADerivations.Core.Parity
 import IPRADerivations.Core.SumLemmas
-import IPRADerivations.Core.BoundedSums
 import IPRADerivations.Core.OrderCertificates
 import IPRADerivations.Core.LinearCombination
 import IPRADerivations.Core.SubstCommand
@@ -23,13 +20,11 @@ Both are quantifier-free inductions on the number of terms.
 
 namespace LeanProofs.IPRA.DiophantineNumberTheory.KhinchinMoment
 
-open_ipra
+open_ipra exports
 
 set_option autoImplicit false
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
-
-local notation "𝔞" t:max => Groth.ι (IPRA.Q.mk _ t)
 
 /-! ## The square of a sum -/
 
@@ -64,8 +59,7 @@ theorem sq_step {N x : PTm n} (ih : Γ ⊢[PRAAx] sqInv t N x) : Γ ⊢[PRAAx] s
   rw [inst2_crB] at e3
   show Γ ⊢[PRAAx] ap2 (sumF t) (succ N) x * ap2 (sumF t) (succ N) x ≐
     ap2 (sumF (t2B t)) (succ N) x + two * ap2 (sumF (crB t)) (succ N) x
-  ipra_lc e0 +
-    (𝔞 (ap2 (sumF t) (succ N) x) + 𝔞 (ap2 (sumF t) N x) + 𝔞 (inst2 t N x)) * natEq (sum_succ' (Γ := Γ) t N x) - e2 -
+  ipra_lc e0 + (𝔞 (ap2 (sumF t) (succ N) x) + 𝔞 (ap2 (sumF t) N x) + 𝔞 (inst2 t N x)) * natEq (sum_succ' t N x) - e2 -
     2 * e3
 
 /-- `(Σ_{ℓ<N} t_ℓ)² = Σ_{ℓ<N} t_ℓ² + 2 Σ_{ℓ<N} t_ℓ (Σ_{k<ℓ} t_k)`. -/
@@ -77,8 +71,7 @@ theorem sq_sum (N x : PTm n) :
       simp only [Syn.subst_var, Syn.inst_zero, Syn.subst_inst_shift]
       have a := natEq (sum_zero (Γ := Γ) t x)
       show Γ ⊢[PRAAx] ap2 (sumF t) zero x * ap2 (sumF t) zero x ≐ ap2 (sumF (t2B t)) zero x + two * ap2 (sumF (crB t)) zero x
-      ipra_lc (𝔞 (ap2 (sumF t) zero x)) * a - natEq (sum_zero (Γ := Γ) (t2B t) x) -
-        2 * natEq (sum_zero (Γ := Γ) (crB t) x)
+      ipra_lc (𝔞 (ap2 (sumF t) zero x)) * a - natEq (sum_zero (t2B t) x) - 2 * natEq (sum_zero (crB t) x)
     · rw [subst_sqInv]
       simp only [Syn.subst_var, Syn.repl_zero, subst_repl_shift]
       exact sq_step t Prf.hyp0
@@ -113,7 +106,7 @@ theorem geo (J x : PTm n) : Γ ⊢[PRAAx] num 3 * ap2 (sumF g4B) J x + one ≐ p
       simp only [Syn.subst_var, Syn.inst_zero, Syn.subst_inst_shift]
       have a := natEq (sum_zero (Γ := Γ) g4B x)
       show Γ ⊢[PRAAx] num 3 * ap2 (sumF g4B) zero x + one ≐ pw (num 4) zero
-      ipra_lc 3 * a - natEq (pw_zero (Γ := Γ) (num 4 : PTm n))
+      ipra_lc 3 * a - natEq (pw_zero (num 4 : PTm n))
     · rw [subst_geoInv]
       simp only [Syn.subst_var, Syn.repl_zero, subst_repl_shift]
       let Δ : List (Fm PTm (n + 1)) := geoInv (var 0) (Syn.shift x) :: Γ.map Fm.shift
@@ -121,7 +114,7 @@ theorem geo (J x : PTm n) : Γ ⊢[PRAAx] num 3 * ap2 (sumF g4B) J x + one ≐ p
       rw [show inst2 g4B (var 0 : PTm (n + 1)) (Syn.shift x) = pw (num 4) (var 0) by simp [inst2]] at e1
       show Δ ⊢[PRAAx] num 3 * ap2 (sumF g4B) (succ (var 0)) (Syn.shift x) + one ≐ pw (num 4) (succ (var 0))
       ipra_lc 4 * natEq (Prf.hyp0 : Δ ⊢[PRAAx] num 3 * ap2 (sumF g4B) (var 0) (Syn.shift x) + one ≐ pw (num 4) (var 0)) +
-        3 * e1 - natEq (pw_succ (Γ := Δ) (num 4 : PTm (n + 1)) (var 0)) -
+        3 * e1 - natEq (pw_succ (num 4 : PTm (n + 1)) (var 0)) -
         3 * natEq (Prf.hyp0 : Δ ⊢[PRAAx] num 3 * ap2 (sumF g4B) (var 0) (Syn.shift x) + one ≐ pw (num 4) (var 0))
   have a := Prf.allE J hall
   rw [subst_geoInv] at a

@@ -1,9 +1,4 @@
 import IPRADerivations.DiophantineNumberTheory.GaussLemma
-import IPRADerivations.DiophantineNumberTheory.FoldedPermutation
-import IPRADerivations.DiophantineNumberTheory.RectangleCount
-import IPRADerivations.DiophantineNumberTheory.QuadraticReciprocityGoal
-import IPRADerivations.Foundations.BoundedSyntax
-import IPRADerivations.Core.Header
 
 /-!
 # Eisenstein's lemma and the law of quadratic reciprocity
@@ -29,17 +24,13 @@ The supplementary laws (`eq:minusone`, `eq:two`) and the square-root witness sta
 derived.
 -/
 
-set_option linter.unusedSimpArgs false
-
 namespace LeanProofs.IPRA.DiophantineNumberTheory.QuadraticReciprocity
 
-open_ipra
-open LeanProofs.IPRA.AnalyticNumberTheory.Primes (prime)
+open_ipra exports
 open LeanProofs.IPRA.AnalyticNumberTheory.Mobius (not_dvd_prime)
 open LeanProofs.IPRA.DiophantineNumberTheory.QuadraticReciprocityGoal (nonsquare signBit floorSum eisenstein
   rectangle assumptions sentence close_from_counts)
 open LeanProofs.IPRA.DiophantineNumberTheory.RectangleCount (rectangle_of_odd)
-open LeanProofs.IPRA.DiophantineNumberTheory.EisensteinParity (eB)
 open LeanProofs.IPRA.DiophantineNumberTheory.FoldedPermutation (floor_gauss_parity)
 open LeanProofs.IPRA.DiophantineNumberTheory.PairProduct (sqB sq_search_witness sq_search_no_root)
 open LeanProofs.IPRA.DiophantineNumberTheory.GaussLemma (rb gauss_lemma)
@@ -125,3 +116,5 @@ theorem quadratic_reciprocity : ([] : List (Fm PTm 0)) ⊢[PRAAx] sentence := by
   exact close_from_counts h1 h2 h3
 
 end LeanProofs.IPRA.DiophantineNumberTheory.QuadraticReciprocity
+
+export_ipra DiophantineNumberTheory.QuadraticReciprocity (sign_eq)

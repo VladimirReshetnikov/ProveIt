@@ -1,7 +1,5 @@
 import IPRADerivations.Geometry.DesarguesInternal
 import IPRADerivations.Probability.MedianWeighted
-import IPRADerivations.Core.LinearCombination
-import IPRADerivations.Core.Header
 
 /-!
 # Absolute values of integer terms and the Runge product bound
@@ -18,18 +16,14 @@ For an integer term `x = x⁺ − x⁻` (`ZT`), `|x| = za x = (x⁺ ∸ x⁻) + 
   (`half_le_max`).
 -/
 
-set_option linter.unusedSimpArgs false
-
 namespace LeanProofs.IPRA.DiophantineNumberTheory.RungeProduct
 
-open_ipra
+open_ipra exports
 open LeanProofs.IPRA.Geometry.CevaMenelaus (nz)
 open LeanProofs.IPRA.Geometry.DesarguesInternal (zt_dich nz_absurd)
 open LeanProofs.IPRA.Probability.MedianWeighted (ad_add_le)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
-
-local notation "𝔞" t:max => Groth.ι (IPRA.Q.mk _ t)
 
 /-- `|x|`. -/
 abbrev za (x : ZT n) : PTm n := monus x.pos x.neg + monus x.neg x.pos
@@ -180,3 +174,5 @@ theorem half_le_max {u v z : ZT n} (hz : Γ ⊢[PRAAx] ZT.eq (v - u) (ZT.natLit 
     exact le_congr (.eqRefl _) (by ipra_ring) (add_le_add₂ (le_refl _) Prf.hyp0)
 
 end LeanProofs.IPRA.DiophantineNumberTheory.RungeProduct
+
+export_ipra DiophantineNumberTheory.RungeProduct (D_congr D_mul)

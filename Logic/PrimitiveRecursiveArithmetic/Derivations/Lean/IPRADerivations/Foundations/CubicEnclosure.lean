@@ -1,5 +1,4 @@
 import IPRADerivations.Foundations.CubicBisection
-import IPRADerivations.Core.Header
 
 /-!
 # The certified enclosure of the cubic root
@@ -34,12 +33,9 @@ uniqueness of the represented root (`Foundations/StableCubicRoot` for rational r
 here.
 -/
 
-set_option linter.unusedSimpArgs false
-
 namespace LeanProofs.IPRA.Foundations.CubicEnclosure
 
-open_ipra
-open LeanProofs.IPRA.Foundations.TraceReflection (Run)
+open_ipra exports
 open LeanProofs.IPRA.Foundations.BisectionInvariant (bStep)
 open LeanProofs.IPRA.Foundations.CubicBisection (cinit cc cubic_bisection cubic_bracket cubic_nested width_fuel)
 

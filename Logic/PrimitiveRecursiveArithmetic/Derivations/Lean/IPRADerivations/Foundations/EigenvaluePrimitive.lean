@@ -1,5 +1,4 @@
 import IPRADerivations.Foundations.PrimitiveScaling
-import IPRADerivations.Core.Header
 
 /-!
 # Integrality of an eigenvalue from a primitive eigenvector (`ipra_presentations_to_witnesses`, `lem:integer-eigenvalue`)
@@ -21,12 +20,9 @@ the bounded quantifier; then `b ∣ G_N` by `G_greatest`. No Bezout coefficients
 are needed.
 -/
 
-set_option linter.unusedSimpArgs false
-
 namespace LeanProofs.IPRA.Foundations.EigenvaluePrimitive
 
-open_ipra
-open LeanProofs.IPRA.DiophantineNumberTheory.Coprime (gauss eq_one_of_dvd_one)
+open_ipra exports
 open LeanProofs.IPRA.Foundations.PrimitiveScaling
 
 variable {k : ℕ} {Γ : List (Fm PTm k)}

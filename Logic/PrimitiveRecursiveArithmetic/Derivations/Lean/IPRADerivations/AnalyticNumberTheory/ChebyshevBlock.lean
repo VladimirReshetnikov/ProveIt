@@ -1,9 +1,4 @@
 import IPRADerivations.AnalyticNumberTheory.HyperbolaSwap
-import IPRADerivations.AnalyticNumberTheory.FactorialLambda
-import IPRADerivations.Probability.Variance
-import IPRADerivations.Core.LinearCombination
-import IPRADerivations.Core.Reindex
-import IPRADerivations.Core.Header
 
 /-!
 # The Chebyshev block identity (`pnt_ipra_constructive_2026-11-14`, `con:signed`)
@@ -24,22 +19,16 @@ difference of two levels `D₁ ≤ D₂` gives the block sum as `Σ_n (Λ(n) −
 * `block_id`.
 -/
 
-set_option linter.unusedSimpArgs false
-
 namespace LeanProofs.IPRA.AnalyticNumberTheory.ChebyshevBlock
 
-open_ipra
+open_ipra exports
 open LeanProofs.IPRA.AnalyticNumberTheory.ConvSummatory (RB RB_at bS inst2_bS Bs)
-open LeanProofs.IPRA.AnalyticNumberTheory.HyperbolaSwap (hyp_swap)
-open LeanProofs.IPRA.AnalyticNumberTheory.FactorialLambda (sum_add2)
 open LeanProofs.IPRA.Probability.Variance (sum_const_of)
 open LeanProofs.IPRA.Signum (sg)
 
 set_option autoImplicit false
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
-
-local notation "𝔞" t:max => Groth.ι (IPRA.Q.mk _ t)
 
 theorem dist_alg {s B M q : PTm n} (h : Γ ⊢[PRAAx] B + M ≐ q) : Γ ⊢[PRAAx] s * B + s * M ≐ s * q := by
   ipra_lc 𝔞 s * natEq h

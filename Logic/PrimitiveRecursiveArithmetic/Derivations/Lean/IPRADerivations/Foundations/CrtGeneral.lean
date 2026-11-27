@@ -1,5 +1,4 @@
 import IPRADerivations.Foundations.CrtLcm
-import IPRADerivations.Core.Header
 
 /-!
 # The Chinese remainder theorem for a finite system
@@ -25,22 +24,14 @@ modulo `m_i`) are given by bodies, `i < K`. With `L = Lc K y = lcm(m_0, …, m_{
 * **`crt_unique`**: two solutions below `L` are equal.
 -/
 
-set_option linter.unusedSimpArgs false
-
 namespace LeanProofs.IPRA.Foundations.CrtGeneral
 
-open_ipra
-open LeanProofs.IPRA.AnalyticNumberTheory.TotientCorollaries (lcm)
+open_ipra exports
 open LeanProofs.IPRA.AnalyticNumberTheory.LcmUpto (lcm_pos)
-open LeanProofs.IPRA.AnalyticNumberTheory.MobiusBounds (shift_pos)
-open LeanProofs.IPRA.AnalyticNumberTheory.EulerProduct (eq_of_viol)
-open LeanProofs.IPRA.AnalyticNumberTheory.FactorVector (subst_dvd)
-open LeanProofs.IPRA.Foundations.ChineseRemainder (gcd_pos crt_exists_at)
 open LeanProofs.IPRA.Foundations.CrtCoprime (mS m_pos fB rem_down left_zero right_zero)
 open LeanProofs.IPRA.Foundations.CrtLcm (Lc Lc_zero Lc_succ Lc_pos m_dvd_Lc Lc_cong lcm_mono dist_dvd
   dvd_lcm_left dvd_lcm_right lcm_dvd_of)
 open LeanProofs.IPRA.Combinatorics.LegendreDigits (dmu)
-open LeanProofs.IPRA.DiophantineNumberTheory.Coprime (gcd_dvd' dvd_of_eq' dvd_trans')
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 

@@ -1,7 +1,5 @@
 import IPRADerivations.DiophantineNumberTheory.FermatQuartic
 import IPRADerivations.AnalyticNumberTheory.RSA
-import IPRADerivations.Core.InductionTactic
-import IPRADerivations.Core.Header
 
 /-!
 # Fermat's Last Theorem for exponents divisible by 4
@@ -19,11 +17,9 @@ set_option linter.unusedSimpArgs false
 
 namespace LeanProofs.IPRA.DiophantineNumberTheory.FLTMultiples
 
-open_ipra
+open_ipra exports
 open LeanProofs.IPRA.Combinatorics.Binomial (pos_mul)
 open LeanProofs.IPRA.Combinatorics.BinomialTheorem (congrPw)
-open LeanProofs.IPRA.AnalyticNumberTheory.RSA (pw_mul)
-open LeanProofs.IPRA.AnalyticNumberTheory.Primes (eq_succ_pred)
 open LeanProofs.IPRA.DiophantineNumberTheory.Coprime
 open LeanProofs.IPRA.DiophantineNumberTheory.Pythagoras (two_pos)
 open LeanProofs.IPRA.DiophantineNumberTheory.QuarticStep (q4)
@@ -93,3 +89,5 @@ theorem flt_multiple_of_four : ([] : List (Fm PTm 0)) ⊢[PRAAx] univ 4 fltFourF
     (Prf.hyp0.eqTrans (pw_lift hN)))
 
 end LeanProofs.IPRA.DiophantineNumberTheory.FLTMultiples
+
+export_ipra DiophantineNumberTheory.FLTMultiples (pw_pos)

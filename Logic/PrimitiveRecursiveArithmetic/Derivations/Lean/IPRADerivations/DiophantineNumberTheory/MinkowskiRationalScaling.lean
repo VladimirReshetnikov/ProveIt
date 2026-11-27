@@ -1,9 +1,4 @@
 import IPRADerivations.Analysis.Optimization.RationalArgmin
-import IPRADerivations.Analysis.RationalArithmetic.Distances.RationalSupMetric
-import IPRADerivations.Core.LinearCombination
-import IPRADerivations.Core.CommonLemmas
-import IPRADerivations.Core.SubstCommand
-import IPRADerivations.Core.Header
 
 /-!
 # Exact signed rational endpoint clearing for Minkowski boxes
@@ -19,17 +14,14 @@ RationalSupMetric product/quotient programs on its actual endpoint pool.
 -/
 
 set_option autoImplicit false
-set_option linter.unusedSimpArgs false
 
 namespace LeanProofs.IPRA.DiophantineNumberTheory.MinkowskiRationalScaling
 
-open_ipra
+open_ipra exports
 open LeanProofs.IPRA.Analysis.RationalSupMetric (numeratorOf denominatorOf subst_numeratorOf subst_denominatorOf)
 open LeanProofs.IPRA.Analysis.RationalArgmin (left rationalLE denominator_positive subst_left)
-open LeanProofs.IPRA.AnalyticNumberTheory.PhiLower (le_mul_mono)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
-local notation "𝔞" t:max => Groth.ι (IPRA.Q.mk _ t)
 
 def rationalLT (a b : PTm n) : Fm PTm n := lt (left a b) (left b a)
 def scaled (a c : PTm n) : ZT n := ⟨(numeratorOf a).pos*c,(numeratorOf a).neg*c⟩
@@ -120,3 +112,5 @@ theorem weak_clear_closed :
     Prf.hyp1.wk.wk Prf.hyp1.wk Prf.hyp1 Prf.hyp0)))))
 
 end LeanProofs.IPRA.DiophantineNumberTheory.MinkowskiRationalScaling
+
+export_ipra DiophantineNumberTheory.MinkowskiRationalScaling (rationalLT)

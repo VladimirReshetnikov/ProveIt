@@ -1,8 +1,5 @@
 import IPRADerivations.AnalyticNumberTheory.LcmBridgeExact
 import IPRADerivations.AnalyticNumberTheory.RobinUpperEnd
-import IPRADerivations.Analysis.FiniteOperations.FiniteProducts.WeierstrassProduct
-import IPRADerivations.Core.LinearCombination
-import IPRADerivations.Core.Header
 
 /-!
 # The finite counterexample transfer of the lcm bridge, product form
@@ -27,30 +24,21 @@ Pieces: the Weierstrass inequality over the range `q ≤ L` of `EulerProduct.PP`
 `∏ (q^{a_q+1})^{e(q)} = L · Π` (`y_eq`, via `FactorVector.reconstruct`).
 -/
 
-set_option linter.unusedSimpArgs false
-
 namespace LeanProofs.IPRA.AnalyticNumberTheory.LcmBridgeTransfer
 
-open_ipra
-open LeanProofs.IPRA.AnalyticNumberTheory.Primes (prime)
+open_ipra exports
 open LeanProofs.IPRA.AnalyticNumberTheory.Valuation (val isP isP_01 prime_of_isP pw_pos')
-open LeanProofs.IPRA.AnalyticNumberTheory.LcmUpto (lcmu lcmu_pos lcm_valuation)
 open LeanProofs.IPRA.AnalyticNumberTheory.LcmBridgeLoss (LD uB U inst2_uB u_le loss_sum)
 open LeanProofs.IPRA.AnalyticNumberTheory.LcmBridgeExact (prod_mul eL e_low e_high factor_id)
 open LeanProofs.IPRA.AnalyticNumberTheory.EulerProduct (PP eB inst2_e F₂ mul_one')
 open LeanProofs.IPRA.AnalyticNumberTheory.SigmaProduct (G inst2_G sigma_product monus_succ_one)
-open LeanProofs.IPRA.AnalyticNumberTheory.SigmaMult (sig)
 open LeanProofs.IPRA.AnalyticNumberTheory.RobinUpperEnd (NegR Uup Uud Uum uud_pos)
 open LeanProofs.IPRA.AnalyticNumberTheory.FactorVector (fB reconstruct one_le_pos)
 open LeanProofs.IPRA.AnalyticNumberTheory.Mobius (prime_two congrSg)
-open LeanProofs.IPRA.AnalyticNumberTheory.ValuationMul (p_pos)
-open LeanProofs.IPRA.AnalyticNumberTheory.PhiLower (le_mul_mono)
 open LeanProofs.IPRA.Geometry.HypercubeSplit (le_cancel_pos)
 open LeanProofs.IPRA.Signum (sg sg_succ)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
-
-local notation "𝔞" t:max => Groth.ι (IPRA.Q.mk _ t)
 
 /-- `q^{v_q(L)+1}`, as in `LcmBridgeLoss.ex` (a local name: `LeanProofs.IPRA.ex` is the existential). -/
 abbrev ex (i P : PTm n) : PTm n := pw i (succ (val i (lcmu P)))
@@ -138,7 +126,7 @@ theorem w_alg {m D N Us C : PTm n} (hD : Γ ⊢[PRAAx] D ≐ succ (pred D))
     Γ ⊢[PRAAx] le (m * pw D N) (m * C + two * pw D N) := by
   refine le_cancel_pos hD (le_of_eq_add (d := m * monus (pw D N * Us + D * C) (pw D (succ N)) +
     pw D N * monus (two * D) (m * Us)) ?_)
-  ipra_lc 𝔞 m * natEq (eq_add_of_le W) + 𝔞 (pw D N) * natEq (eq_add_of_le hL) + 𝔞 m * natEq (pw_succ (Γ := Γ) D N)
+  ipra_lc 𝔞 m * natEq (eq_add_of_le W) + 𝔞 (pw D N) * natEq (eq_add_of_le hL) + 𝔞 m * natEq (pw_succ D N)
 
 theorem w_range {m : PTm n} (hm : Γ ⊢[PRAAx] m ≐ succ (pred m)) :
     Γ ⊢[PRAAx] le (m * pw (LD (m * m)) (succ (lcmu (m * m))))
@@ -270,8 +258,7 @@ theorem transfer {m k : PTm n} (hm : Γ ⊢[PRAAx] le two m)
   have hP := Combinatorics.Binomial.pos_mul hm1 hm1
   have hLp := lcmu_pos (Γ := Γ) (m * m)
   have hmP : Γ ⊢[PRAAx] le m (m * m) := by
-    have e := natEq hm1
-    exact le_of_eq_add (d := m * pred m) (by apply deriveNat; ipra_simps; linear_combination 𝔞 m * e)
+    exact le_of_eq_add (d := m * pred m) (by ipra_lc 𝔞 m * natEq hm1)
   have hL2 : Γ ⊢[PRAAx] le two (lcmu (m * m)) := le_trans hm (le_trans hmP (le_lcmu hP))
   -- `m Y ≤ m ∏G + 2 Y`, `Y = L Π`
   have w := w_range hm1

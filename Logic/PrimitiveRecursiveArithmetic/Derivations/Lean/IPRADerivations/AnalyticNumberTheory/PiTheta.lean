@@ -1,7 +1,4 @@
 import IPRADerivations.AnalyticNumberTheory.PsiModulus
-import IPRADerivations.AnalyticNumberTheory.PrimePowerMangoldt
-import IPRADerivations.AnalyticNumberTheory.SumPhi
-import IPRADerivations.Core.Header
 
 /-!
 # Primes against prime powers (`pnt_ipra_constructive_2026-11-14`, §"From the Chebyshev estimate to prime counting")
@@ -18,30 +15,20 @@ mesh `K` over `F` (`HarmonicChebyshev.wt`, read at `z = (K, F)`):
 * `pi_cheb`: `π(x) u_Y ≤ θ(x) + (Y + 1) u_Y`, the Chebyshev bound `π(x) ≤ Y + 1 + θ(x)/u_Y`.
 -/
 
-set_option linter.unusedSimpArgs false
-
 namespace LeanProofs.IPRA.AnalyticNumberTheory.PiTheta
 
-open_ipra
+open_ipra exports
 open LeanProofs.IPRA.AnalyticNumberTheory.Harmonic (S hB)
 open LeanProofs.IPRA.AnalyticNumberTheory.HarmonicChebyshev (wt inst2_wt S_mono)
-open LeanProofs.IPRA.AnalyticNumberTheory.HarmonicMertens (le_scale)
 open LeanProofs.IPRA.AnalyticNumberTheory.HarmonicLogSquareSum (U)
-open LeanProofs.IPRA.AnalyticNumberTheory.BlockChain (u_mono)
-open LeanProofs.IPRA.AnalyticNumberTheory.WeightedMangoldt (lamB Lam)
 open LeanProofs.IPRA.AnalyticNumberTheory.PrimePowerMangoldt (lam_pw')
-open LeanProofs.IPRA.AnalyticNumberTheory.Valuation (isP isP_01 prime_of_isP)
-open LeanProofs.IPRA.AnalyticNumberTheory.LcmUpto (Psi LamB inst2_LamB)
 open LeanProofs.IPRA.AnalyticNumberTheory.SumPhi (sum_ones)
 open LeanProofs.IPRA.DiophantineNumberTheory.KhinchinBlock (sum_le_lin sum_le_lin1)
 open LeanProofs.IPRA.AnalyticNumberTheory.PNTStageStep (pos_of_one_le)
-open LeanProofs.IPRA.Analysis.Products (fact)
 
 set_option autoImplicit false
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
-
-local notation "𝔞" t:max => Groth.ι (IPRA.Q.mk _ t)
 
 /-! ## The sums -/
 
@@ -138,8 +125,7 @@ theorem theta_le_pi (x K F : PTm n) :
 /-- The tail `Y < d ≤ x` of a prime sum, as a sum from `Y + 1`. -/
 theorem split_at {g : PTm 2} {x Y : PTm n} (z : PTm n) (hYx : Γ ⊢[PRAAx] le Y x) :
     Γ ⊢[PRAAx] ap2 (sumF g) (succ x) z ≐ ap2 (sumF g) (succ Y) z + ap2 (sumF (offB g)) (monus x Y) (pairT (succ Y) z) := by
-  have a := natEq (eq_add_of_le hYx)
-  have ex : Γ ⊢[PRAAx] succ x ≐ succ Y + monus x Y := by apply deriveNat; ipra_simps; linear_combination a
+  have ex : Γ ⊢[PRAAx] succ x ≐ succ Y + monus x Y := by ipra_lc natEq (eq_add_of_le hYx)
   exact (congrAp2 (sumF g) ex (.eqRefl _)).eqTrans (sum_split g (succ Y) (monus x Y) z)
 
 /-- `π(Y) ≤ Y + 1`. -/
@@ -216,3 +202,5 @@ theorem pi_cheb (hYx : Γ ⊢[PRAAx] le Y x) :
 end Tails
 
 end LeanProofs.IPRA.AnalyticNumberTheory.PiTheta
+
+export_ipra AnalyticNumberTheory.PiTheta (inst2_piB)

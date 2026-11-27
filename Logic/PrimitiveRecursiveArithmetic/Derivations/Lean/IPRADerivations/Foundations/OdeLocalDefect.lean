@@ -29,11 +29,9 @@ The polygon slopes, the polynomial bound `lem:ode-polybound` behind the affine e
 `n = p + c` are not derived here.
 -/
 
-set_option linter.unusedSimpArgs false
-
 namespace LeanProofs.IPRA.Foundations.OdeLocalDefect
 
-open_ipra
+open_ipra exports
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 

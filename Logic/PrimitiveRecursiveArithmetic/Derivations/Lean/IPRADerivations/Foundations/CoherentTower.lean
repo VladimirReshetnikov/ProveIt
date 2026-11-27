@@ -1,9 +1,5 @@
 import IPRADerivations.Foundations.BoundedReflection
 import IPRADerivations.Foundations.FiniteSetExponential
-import IPRADerivations.Core.LinearCombination
-import IPRADerivations.Core.CommonLemmas
-import IPRADerivations.Core.InductionTactic
-import IPRADerivations.Core.Header
 
 /-!
 # Coherent points from bounded surjective liftings (`ipra_categorical_methods`, `thm:tower`)
@@ -40,18 +36,13 @@ Instance with every hypothesis discharged: the full binary tree, `A_n = [2^n]` w
 truncation `c ↦ c mod 2^n` (`binary`, `binary_lifting`, `binary_closed`).
 -/
 
-set_option linter.unusedSimpArgs false
-
 namespace LeanProofs.IPRA.Foundations.CoherentTower
 
-open_ipra
+open_ipra exports
 open LeanProofs.IPRA.Foundations.BoundedReflection (wit bounded_choice one_ne_zero)
 open LeanProofs.IPRA.Foundations.FiniteSetExponential (rem_of_lt)
-open LeanProofs.IPRA.AnalyticNumberTheory.Valuation (pw_pos' eq_of_eqb_ne)
 
 variable {k : ℕ} {Γ : List (Fm PTm k)}
-
-local notation "𝔞" t:max => Groth.ι (IPRA.Q.mk _ t)
 
 /-! ## Two general rules -/
 
@@ -265,7 +256,7 @@ theorem two_pos : Γ ⊢[PRAAx] (two : PTm k) ≐ succ (pred two) :=
 theorem lt_pw_succ {a n : PTm k} (h : Γ ⊢[PRAAx] lt a (pw two n)) :
     Γ ⊢[PRAAx] lt a (pw two (succ n)) := by
   refine le_of_eq_add (d := pw two n + monus (pw two n) (succ a)) ?_
-  ipra_lc natEq (pw_succ (Γ := Γ) two n) + natEq (eq_add_of_le h)
+  ipra_lc natEq (pw_succ two n) + natEq (eq_add_of_le h)
 
 /-- The lifting contract of the binary tree: a word of length `n` is its own lift. -/
 theorem binary_lifting : binary.Lifting := by
@@ -292,3 +283,5 @@ theorem binary_closed : ([] : List (Fm PTm 0)) ⊢[PRAAx] univ 2
 end Binary
 
 end LeanProofs.IPRA.Foundations.CoherentTower
+
+export_ipra Foundations.CoherentTower (ex_mono)

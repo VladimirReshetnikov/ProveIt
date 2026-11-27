@@ -1,6 +1,4 @@
 import IPRADerivations.Foundations.IntervalPacking
-import IPRADerivations.AnalyticNumberTheory.EulerDomination
-import IPRADerivations.Core.Header
 
 /-!
 # The intersection of two grid intervals
@@ -22,20 +20,17 @@ when they do, the count is at most the cells of `J` (`IntervalCover.count_le`).
 
 namespace LeanProofs.IPRA.Foundations.IntervalIntersection
 
-open_ipra
+open_ipra exports
 open LeanProofs.IPRA.Signum (sg sg_zero sg_succ)
 open LeanProofs.IPRA.Combinatorics.FiniteBijection (sg_bit)
 open LeanProofs.IPRA.Foundations.IntervalCover (cnt indB inst3_indB count_le colSum)
 open LeanProofs.IPRA.Foundations.IntervalAdditive (cnt_bit)
 open LeanProofs.IPRA.Foundations.IntervalPacking (cnt_one sg_one_of_lt)
-open LeanProofs.IPRA.AnalyticNumberTheory.Mobius (congrSg)
 open LeanProofs.IPRA.AnalyticNumberTheory.EulerDomination (sg_le_one)
 
 set_option autoImplicit false
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
-
-local notation "𝔞" t:max => Groth.ι (IPRA.Q.mk _ t)
 
 /-- `meet(I, J) = [lo < hi][lo' < hi][lo < hi']`. -/
 abbrev meet (lo hi lo' hi' : PTm n) : PTm n := sg (monus hi lo) * sg (monus hi lo') * sg (monus hi' lo)

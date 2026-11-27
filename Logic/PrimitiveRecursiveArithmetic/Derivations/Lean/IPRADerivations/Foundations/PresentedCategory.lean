@@ -41,7 +41,7 @@ No excluded middle and no induction is used beyond what the supplied laws themse
 
 namespace LeanProofs.IPRA.Foundations.PresentedCategory
 
-open_ipra
+open_ipra exports
 
 /-- A presentation of a category by formulas and terms of iPRA. -/
 structure Pres where

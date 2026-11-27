@@ -1,9 +1,5 @@
 import IPRADerivations.Foundations.HurwitzProduct
 import IPRADerivations.Foundations.BoundedFormulas
-import IPRADerivations.AnalyticNumberTheory.Valuation
-import IPRADerivations.Core.CommonLemmas
-import IPRADerivations.Core.InductionTactic
-import IPRADerivations.Core.Header
 
 /-!
 # Uniqueness for triangular recurrences (`ipra_coherent_methods_2026-11-15`, `thm:hurwitz-ode`)
@@ -37,21 +33,15 @@ evaluator of coded polynomial expressions over the Hurwitz algebra) and compatib
 shortening of the coefficient input.
 -/
 
-set_option linter.unusedSimpArgs false
-
 namespace LeanProofs.IPRA.Foundations.TriangularUniqueness
 
-open_ipra
+open_ipra exports
 open LeanProofs.IPRA.Foundations.BoundedReflection
   (allB allB_zero allB_succ all_elim all_reflect)
-open LeanProofs.IPRA.Foundations.BoundedFormulas (sg_of_pos)
-open LeanProofs.IPRA.AnalyticNumberTheory.Valuation (eq_of_eqb_ne)
 open LeanProofs.IPRA.Foundations.HurwitzProduct
 open LeanProofs.IPRA.Combinatorics.BinomialTransform (bgB)
 
 variable {k : ℕ} {Γ : List (Fm PTm k)}
-
-local notation "𝔞" t:max => Groth.ι (IPRA.Q.mk _ t)
 
 private theorem up_shift {m j : ℕ} (σ : Fin m → PTm j) (t : PTm m) :
     Syn.subst (Syn.up σ) (Syn.shift t) = Syn.shift (Syn.subst σ t) := by

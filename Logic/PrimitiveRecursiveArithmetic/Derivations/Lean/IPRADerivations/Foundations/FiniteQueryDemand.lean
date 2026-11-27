@@ -1,7 +1,6 @@
 import IPRADerivations.Foundations.BackwardDemand
 import IPRADerivations.Foundations.BoundedSyntax
 import IPRADerivations.Foundations.DemandClosure
-import IPRADerivations.Core.Header
 
 /-!
 # Observational induction with variable finite query families
@@ -19,11 +18,9 @@ formula. The local prefix transfer is derived from the multiple-query
 contract and actual envelope inequalities.
 -/
 
-set_option linter.unusedSimpArgs false
-
 namespace LeanProofs.IPRA.Foundations.FiniteQueryDemand
 
-open_ipra
+open_ipra exports
 open LeanProofs.IPRA.Foundations.DemandClosure
   (maximum subst_maximum maximum_left maximum_right maximum_le)
 
@@ -405,3 +402,5 @@ theorem finite_query_envelope (m : PR 3) (q : PR 4) :
 #print axioms finite_query_envelope
 
 end LeanProofs.IPRA.Foundations.FiniteQueryDemand
+
+export_ipra Foundations.FiniteQueryDemand (finiteMaximum finiteMaximum_at subst_finiteMaximum)

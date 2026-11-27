@@ -1,6 +1,4 @@
 import IPRADerivations.DiophantineNumberTheory.PellNegDescent
-import IPRADerivations.Core.LinearCombination
-import IPRADerivations.Core.Header
 
 /-!
 # Uniform descent for the generalized Pell equation `x² − Dy² = N`
@@ -23,11 +21,9 @@ of `w = y² − (A²K + 1) ≥ 0` (from `y > AK`, `K ≥ 1`):
   `(Bx)² − ((A−1)y)² = 1 + y² + w + K(1 + (D−1)B²) + 2(A−2)y²`.
 -/
 
-set_option linter.unusedSimpArgs false
-
 namespace LeanProofs.IPRA.DiophantineNumberTheory.PellGenDescent
 
-open_ipra
+open_ipra exports
 open LeanProofs.IPRA.Combinatorics.Binomial (pos_mul)
 open LeanProofs.IPRA.DiophantineNumberTheory.Coprime
 open LeanProofs.IPRA.DiophantineNumberTheory.PellDescent (lt_of_sq_lt A_pos rr tt residual_norm_balance positive_residual)
@@ -116,9 +112,7 @@ theorem neg_y (hB : Γ ⊢[PRAAx] B ≐ succ (pred B)) (hD : Γ ⊢[PRAAx] D ≐
     Γ ⊢[PRAAx] lt (pred A * y) (B * x) := by
   have hA2 : Γ ⊢[PRAAx] lt one A := by
     refine lt_of_sq_lt (le_of_eq_add (d := pred (D * (B * B))) ?_)
-    have h₁ := natEq hA; have h₂ := natEq (pos_mul hD (pos_mul hB hB))
-    apply deriveNat; ipra_simps
-    linear_combination h₁ + h₂
+    ipra_lc natEq hA + natEq (pos_mul hD (pos_mul hB hB))
   refine lt_of_sq_lt (le_of_eq_add (d := y * y + monus (y * y) (succ (A * A * K)) +
     K * succ (pred D * (B * B)) + two * (monus A (succ one) * (y * y))) ?_)
   have h₁ := natEq hA; have h₂ := natEq hx; have h₃ := natEq (eq_add_of_le (sq_gap hK hy))

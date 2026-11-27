@@ -1,7 +1,4 @@
 import IPRADerivations.AnalyticNumberTheory.PsiTheta
-import IPRADerivations.AnalyticNumberTheory.LogRefinement
-import IPRADerivations.Core.LinearCombination
-import IPRADerivations.Core.Header
 
 /-!
 # Changing the mesh and the denominator of the harmonic logarithm (`pnt_ipra_constructive_2026-11-14`)
@@ -20,25 +17,17 @@ rational bounds:
   at most `⌊F/K⌋`, resp. `⌊F/N⌋`.
 -/
 
-set_option linter.unusedSimpArgs false
-
 namespace LeanProofs.IPRA.AnalyticNumberTheory.MeshChange
 
-open_ipra
+open_ipra exports
 open LeanProofs.IPRA.AnalyticNumberTheory.Harmonic (S hB)
-open LeanProofs.IPRA.AnalyticNumberTheory.HarmonicChebyshev (S_mono)
-open LeanProofs.IPRA.AnalyticNumberTheory.HarmonicMertens (le_scale)
 open LeanProofs.IPRA.AnalyticNumberTheory.HarmonicLogSquareSum (S_succ)
-open LeanProofs.IPRA.AnalyticNumberTheory.LogRefinement (log_refine)
-open LeanProofs.IPRA.AnalyticNumberTheory.Primes (dvd_fact)
 open LeanProofs.IPRA.AnalyticNumberTheory.PNTStageStep (pos_of_one_le)
 open LeanProofs.IPRA.Analysis.Products (fact)
 
 set_option autoImplicit false
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
-
-local notation "𝔞" t:max => Groth.ι (IPRA.Q.mk _ t)
 
 /-! ## The denominator -/
 
@@ -60,8 +49,7 @@ theorem S_denom {m M0 L : PTm n} (hm : Γ ⊢[PRAAx] le m M0) (h2 : Γ ⊢[PRAAx
         Syn.subst_inst_shift, ConciseIPRA.PTm.subst_succ, ConciseIPRA.PTm.subst_zero]
       refine .impI ?_
       have a := natEq (sum_zero (Γ := le zero M0 :: Γ) hB (fact L))
-      have b := natEq (sum_zero (Γ := le zero M0 :: Γ) hB (fact M0))
-      apply deriveNat; ipra_simps; linear_combination 𝔞 (fact M0) * a - 𝔞 (fact L) * b
+      ipra_lc 𝔞 (fact M0) * a - 𝔞 (fact L) * natEq (sum_zero (Γ := le zero M0 :: Γ) hB (fact M0))
     · simp only [Fm.subst_imp, Fm.subst_eq, subst_le, subst_ap2, PTm.subst_mul, Syn.subst_var, Syn.repl_zero,
         subst_repl_shift, ConciseIPRA.PTm.subst_succ, ConciseIPRA.PTm.subst_zero]
       refine .impI ?_
@@ -74,8 +62,7 @@ theorem S_denom {m M0 L : PTm n} (hm : Γ ⊢[PRAAx] le m M0) (h2 : Γ ⊢[PRAAx
       have q := natEq (quo_scale hs h2'.wk.wk)
       have a := natEq (S_succ (Γ := Δ) (var 0) (fact (Syn.shift L)))
       have b := natEq (S_succ (Γ := Δ) (var 0) (fact (Syn.shift M0)))
-      apply deriveNat; ipra_simps
-      linear_combination ih + q + 𝔞 (fact (Syn.shift M0)) * a - 𝔞 (fact (Syn.shift L)) * b
+      ipra_lc ih + q + 𝔞 (fact (Syn.shift M0)) * a - 𝔞 (fact (Syn.shift L)) * b
   have h := Prf.allE m hall
   simp only [Fm.subst_imp, Fm.subst_eq, subst_le, subst_ap2, PTm.subst_mul, Syn.subst_var, Syn.inst_zero,
     Syn.subst_inst_shift, ConciseIPRA.PTm.subst_succ, ConciseIPRA.PTm.subst_zero] at h
@@ -134,3 +121,5 @@ theorem mesh_change {N : PTm n} (hN : Γ ⊢[PRAAx] le one N) (hK : Γ ⊢[PRAAx
 end Mesh
 
 end LeanProofs.IPRA.AnalyticNumberTheory.MeshChange
+
+export_ipra AnalyticNumberTheory.MeshChange (S_denom)

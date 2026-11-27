@@ -1,6 +1,5 @@
 import IPRADerivations.DiophantineNumberTheory.MinkowskiPigeonhole
 import IPRADerivations.DiophantineNumberTheory.MinkowskiResidues
-import IPRADerivations.Core.Header
 
 /-!
 # Actual pure finite signed-mesh extraction
@@ -24,11 +23,10 @@ positive dimension.
 -/
 
 set_option autoImplicit false
-set_option linter.unusedSimpArgs false
 
 namespace LeanProofs.IPRA.DiophantineNumberTheory.MinkowskiMesh
 
-open_ipra
+open_ipra exports
 open LeanProofs.IPRA.Foundations.MasterCertificate
   (entry sequence sequence_length sequence_decode subst_entry subst_sequence)
 open LeanProofs.IPRA.Foundations.SequenceComposition (length subst_length entry_congr)

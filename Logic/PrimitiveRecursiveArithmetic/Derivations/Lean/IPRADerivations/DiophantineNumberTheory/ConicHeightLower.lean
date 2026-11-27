@@ -1,6 +1,5 @@
 import IPRADerivations.DiophantineNumberTheory.ConicLower
 import IPRADerivations.DiophantineNumberTheory.SimultaneousGrid
-import IPRADerivations.Core.Header
 
 /-!
 # The lower inequality of the conic height theorem, with signs
@@ -20,11 +19,9 @@ The estimate `|r s²| ≤ D T_0` is `ConicLower.lower_s` (`lower_t` for `|t| = S
 * `height_lower`: the assembly, `S² ≤ 2PD Ht(Φ(T)) = K Ht(Φ(T))`.
 -/
 
-set_option linter.unusedSimpArgs false
-
 namespace LeanProofs.IPRA.DiophantineNumberTheory.ConicHeightLower
 
-open_ipra
+open_ipra exports
 open LeanProofs.IPRA.Analysis.PolynomialRemainder (AbsLe abs_hi abs_lo abs_add abs_mul)
 open LeanProofs.IPRA.DiophantineNumberTheory.ConicHeight (abs_neg)
 open LeanProofs.IPRA.DiophantineNumberTheory.SimultaneousGrid (cancel_pos)
@@ -52,7 +49,6 @@ theorem prod_sign {r s : ZT n} {ρ S : PTm n}
     (hr : Γ ⊢[PRAAx] ZT.eq r (ZT.ofNat ρ) ⋎ ZT.eq r (-(ZT.ofNat ρ)))
     (hs : Γ ⊢[PRAAx] ZT.eq (s * s) (ZT.ofNat (S * S))) :
     Γ ⊢[PRAAx] ZT.eq (r * s * s) (ZT.ofNat (ρ * (S * S))) ⋎ ZT.eq (r * s * s) (-(ZT.ofNat (ρ * (S * S)))) := by
-  have es := ZT.toZ_eq hs
   refine .orE hr ?_ ?_
   · refine .orI₁ ?_
     have e := ZT.toZ_eq (Prf.hyp0 : (ZT.eq r (ZT.ofNat ρ) :: Γ) ⊢[PRAAx] _)

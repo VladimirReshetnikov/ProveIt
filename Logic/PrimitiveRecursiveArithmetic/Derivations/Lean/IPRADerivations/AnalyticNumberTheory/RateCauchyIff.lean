@@ -1,5 +1,4 @@
 import IPRADerivations.AnalyticNumberTheory.RateCauchy
-import IPRADerivations.Core.Header
 
 /-!
 # The Cauchy-modulus form of `thm:rate` (`riemann_ipra_equivalences_2026-11-20`, `thm:rate` (1) ⇔ (3))
@@ -16,25 +15,20 @@ there is `K` satisfying the preceding prefix bound and `P, Q ≥ 2^{4r(t+K)} ⟹
 * `rate3_iff`: `(1) ↔ (3)` in object iPRA.
 -/
 
-set_option linter.unusedSimpArgs false
-
 namespace LeanProofs.IPRA.AnalyticNumberTheory.RateCauchyIff
 
-open_ipra
+open_ipra exports
 open LeanProofs.IPRA.AnalyticNumberTheory.RateAbel
 open LeanProofs.IPRA.AnalyticNumberTheory.RateShell
 open LeanProofs.IPRA.AnalyticNumberTheory.RateIff
 open LeanProofs.IPRA.AnalyticNumberTheory.RateCauchy
 open LeanProofs.IPRA.AnalyticNumberTheory.PowerDivisorGrowth
 open LeanProofs.IPRA.AnalyticNumberTheory.PowerTransfer (k4)
-open LeanProofs.IPRA.AnalyticNumberTheory.AbsDiff (absd)
 open LeanProofs.IPRA.Combinatorics.BinomialTheorem (congrPw)
 
 set_option autoImplicit false
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
-
-local notation "𝔞" t:max => Groth.ι (IPRA.Q.mk _ t)
 
 variable (aP aN : PTm 2)
 
@@ -93,23 +87,11 @@ theorem cauchy_all {y k c : PTm n} {X K C : PTm (n + 1)} {X3 k3 K3 : PTm (n + 3)
 /-- `thm:rate` (1) ⇒ (3). -/
 theorem growth_to_rate3 (y : PTm n) :
     Γ ⊢[PRAAx] GrowthS (AB aP) (AB aN) y ⟶ Rate3S aP aN y := by
-  refine .impI (.allI ?_)
-  have hG : ((GrowthS (AB aP) (AB aN) y :: Γ).map Fm.shift) ⊢[PRAAx] Fm.shift (GrowthS (AB aP) (AB aN) y) :=
-    (Prf.hyp0 : (GrowthS (AB aP) (AB aN) y :: Γ) ⊢[PRAAx] _).shift
-  have hk := Prf.allE (succ (two * var 0)) hG
-  simp only [GrowthS, Fm.shift, Fm.subst_all, Fm.subst_ex, subst_Mat, up3_v0, up3_v1, up3_v2, up2_v0, up2_v1,
-    up2_v2, up1_v0, up1_v1, up1_v2, inst_v0, inst_v1, subst_up_shift_pal, Syn.subst_inst_shift, Syn.up_zero, upf_one,
-    upf_two, Syn.subst_var, subst_sh, Fin.succ_zero_eq_one, Syn.shift_var, Syn.up_succ, Syn.inst_succ] at hk
-  refine .exE hk ?_
-  simp only [Rate3S, Fm.shift, Fm.subst_all, Fm.subst_ex, Fm.subst_and, subst_RMat, subst_CMat, up3_v0, up3_v1,
-    up3_v2, up2_v0, up2_v1, up2_v2, up1_v0, up1_v1, up1_v2, inst_v0, inst_v1, subst_up_shift_pal,
-    Syn.subst_inst_shift, Syn.up_zero, upf_one, upf_two, Syn.subst_var, subst_sh, Fin.succ_zero_eq_one, Syn.shift_var,
-    Syn.up_succ, Syn.inst_succ, LeanProofs.IPRA.AnalyticNumberTheory.PowerDivisorUniform.upf_three, upf_four]
-  refine .exI (Kc (succ (var 1)) (var 0)) ?_
-  simp only [Fm.subst_all, Fm.subst_and, subst_RMat, subst_CMat, up3_v0, up3_v1, up3_v2, up2_v0, up2_v1, up2_v2,
+  refine all_ex_imp_at (succ (two * var 0)) (Kc (succ (var 1)) (var 0)) ?_
+  simp only [GrowthS, Fm.shift, Fm.subst_all, Fm.subst_ex, subst_Mat, up3_v0, up3_v1, up3_v2, up2_v0, up2_v1, up2_v2,
     up1_v0, up1_v1, up1_v2, inst_v0, inst_v1, subst_up_shift_pal, Syn.subst_inst_shift, Syn.up_zero, upf_one, upf_two,
-    Syn.subst_var, subst_sh, Fin.succ_zero_eq_one, Syn.shift_var, Syn.up_succ, Syn.inst_succ,
-    LeanProofs.IPRA.AnalyticNumberTheory.PowerDivisorUniform.upf_three, upf_four]
+    Syn.subst_var, subst_sh, Fin.succ_zero_eq_one, Syn.shift_var, Syn.up_succ, Syn.inst_succ, Rate3S, Fm.subst_and,
+    subst_RMat, subst_CMat, LeanProofs.IPRA.AnalyticNumberTheory.PowerDivisorUniform.upf_three, upf_four]
   refine .andI ?_ ?_
   · exact fwd_all aP aN (y := Syn.shift (Syn.shift y)) (k := var 1) (c := var 0)
       (by simp [Syn.shift]) (by simp [Syn.shift]) (by simp [Syn.shift]) (by simp [Syn.shift]) (by simp [Syn.shift])
@@ -127,16 +109,10 @@ theorem rmat_eq {X k K X' k' K' : PTm (n + 1)} (hX : X = X') (hk : k = k') (hK :
 
 /-- `thm:rate` (3) ⇒ (2). -/
 theorem rate3_to_rate (y : PTm n) : Γ ⊢[PRAAx] Rate3S aP aN y ⟶ RateS aP aN y := by
-  refine .impI (.allI ?_)
-  have hk := (Prf.hyp0 : (Rate3S aP aN y :: Γ) ⊢[PRAAx] Rate3S aP aN y).allOpen
-  refine .exE hk ?_
-  simp only [RateS, Fm.shift, Fm.subst_all, Fm.subst_ex, subst_RMat, up3_v0, up3_v1, up3_v2, up2_v0, up2_v1,
-    up2_v2, up1_v0, up1_v1, up1_v2, inst_v0, inst_v1, subst_up_shift_pal, Syn.subst_inst_shift, Syn.up_zero, upf_one,
-    upf_two, Syn.subst_var, subst_sh, Fin.succ_zero_eq_one, Syn.shift_var, Syn.up_succ, Syn.inst_succ]
-  refine .exI (var 0) ?_
-  simp only [Fm.subst_all, subst_RMat, up3_v0, up3_v1, up3_v2, up2_v0, up2_v1, up2_v2, up1_v0, up1_v1, up1_v2,
-    inst_v0, inst_v1, subst_up_shift_pal, Syn.subst_inst_shift, Syn.up_zero, upf_one, upf_two, Syn.subst_var,
-    subst_sh, Fin.succ_zero_eq_one, Syn.shift_var, Syn.up_succ, Syn.inst_succ]
+  refine all_ex_imp (var 0) ?_
+  simp only [RateS, Fm.shift, Fm.subst_all, Fm.subst_ex, subst_RMat, up3_v0, up3_v1, up3_v2, up2_v0, up2_v1, up2_v2,
+    up1_v0, up1_v1, up1_v2, inst_v0, inst_v1, subst_up_shift_pal, Syn.subst_inst_shift, Syn.up_zero, upf_one, upf_two,
+    Syn.subst_var, subst_sh, Fin.succ_zero_eq_one, Syn.shift_var, Syn.up_succ, Syn.inst_succ]
   exact rmat_eq aP aN (by simp [Syn.shift]) (by simp [Syn.shift]) (by simp [Syn.shift]) (Prf.andE₁ Prf.hyp0)
 
 /-- `thm:rate`, (1) ↔ (3): growth is equivalent to bounded weighted sums with the explicit Cauchy modulus

@@ -1,7 +1,5 @@
 import IPRADerivations.Core.OrderCertificates
-import IPRADerivations.Core.Powers
 import IPRADerivations.DiophantineNumberTheory.FLTMultiples
-import IPRADerivations.Core.Header
 
 /-!
 # A precision budget for a finite arithmetic table
@@ -25,12 +23,9 @@ The side condition "errors at most one", which keeps the second operands within 
 comparison of `L^{N+1} δ` with `2^{-s}` are hypotheses of the application.
 -/
 
-set_option linter.unusedSimpArgs false
-
 namespace LeanProofs.IPRA.Foundations.PrecisionGate
 
-open_ipra
-open LeanProofs.IPRA.DiophantineNumberTheory.FLTMultiples (pw_pos)
+open_ipra exports
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 

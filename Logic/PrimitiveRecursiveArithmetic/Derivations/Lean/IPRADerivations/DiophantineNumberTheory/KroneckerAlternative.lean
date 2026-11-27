@@ -1,7 +1,5 @@
 import IPRADerivations.Geometry.TriangularNorm
 import IPRADerivations.Core.OrderCertificates
-import IPRADerivations.Core.LinearCombination
-import IPRADerivations.Core.Header
 
 /-!
 # The obstruction alternative and the `√2` gap
@@ -23,16 +21,12 @@ otherwise its power of two would have both odd and even parity ... Therefore `|2
 * `sqrt2_gap`: for `h ≥ 1`, `p² < 2h²` or `2h² < p²` (signs do not matter for squares).
 -/
 
-set_option linter.unusedSimpArgs false
-
 namespace LeanProofs.IPRA.DiophantineNumberTheory.KroneckerAlternative
 
-open_ipra
+open_ipra exports
 open LeanProofs.IPRA.Geometry.TriangularNorm (no_sqrt2)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
-
-local notation "𝔞" t:max => Groth.ι (IPRA.Q.mk _ t)
 
 /-- `thm:alternative`: `ρ(hβ) > 1/16`. -/
 theorem alt_rho {Q C u l e ρ : PTm n} (H1 : Γ ⊢[PRAAx] le (num 64 * succ C * e) Q)

@@ -1,9 +1,8 @@
-import IPRADerivations.Core.Tactic
 import IPRADerivations.Core.Evaluation
-import IPRADerivations.Core.Pairing
 import IPRADerivations.Core.Parity
 import IPRADerivations.Core.Signum
 import Mathlib.Algebra.BigOperators.Fin
+import IPRADerivations.Core.Header
 
 /-!
 # Finite sums and products of terms indexed in the metatheory
@@ -256,3 +255,5 @@ theorem ftsum_congr {ι : Type} [Fintype ι] {f g : ι → PTm n} (h : ∀ i, Γ
   exact Finset.sum_congr rfl (fun i _ => Q.sound (h i))
 
 end LeanProofs.IPRA.Foundations.TermSums
+
+export_ipra Foundations.TermSums (fsum)

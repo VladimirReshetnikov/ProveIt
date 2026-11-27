@@ -1,7 +1,5 @@
 import IPRADerivations.Foundations.GuardedTrace
 import IPRADerivations.Foundations.LeastBoundedWitness
-import IPRADerivations.Core.Descent
-import IPRADerivations.Core.Header
 
 /-!
 # Finite dependent choice from seriality
@@ -34,13 +32,10 @@ The induction is the guarded loop of `Foundations/GuardedTrace` (the seriality p
 below the horizon), and every choice is a bounded least search; no choice principle is used.
 -/
 
-set_option linter.unusedSimpArgs false
-
 namespace LeanProofs.IPRA.Foundations.SerialChoice
 
-open_ipra
+open_ipra exports
 open LeanProofs.IPRA.Search (mu)
-open LeanProofs.IPRA.Foundations.LeastBoundedWitness (ExW lt_of_exists)
 open LeanProofs.IPRA.Foundations.TraceReflection (Run I3 subst_I3 run_succ)
 open LeanProofs.IPRA.Foundations.GuardedTrace (guarded_trace_all)
 

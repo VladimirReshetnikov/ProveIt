@@ -1,8 +1,4 @@
 import IPRADerivations.DiophantineNumberTheory.HurwitzLoop
-import IPRADerivations.AnalyticNumberTheory.PhiLower
-import IPRADerivations.Core.LinearCombination
-import IPRADerivations.Core.SubstCommand
-import IPRADerivations.Core.Header
 
 /-!
 # A primitive recursive continued-fraction real
@@ -31,17 +27,12 @@ state `cv m = ⟨p_m, q_m, p_{m−1}, q_{m−1}⟩` starts at `⟨a_0, 1, 1, 0�
   denominators.
 -/
 
-set_option linter.unusedSimpArgs false
-
 namespace LeanProofs.IPRA.DiophantineNumberTheory.CfReal
 
-open_ipra
+open_ipra exports
 open LeanProofs.IPRA.DiophantineNumberTheory.HurwitzLoop (sP sQ sP' sQ' st proj_st)
-open LeanProofs.IPRA.AnalyticNumberTheory.PhiLower (le_mul_mono)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
-
-local notation "𝔞" t:max => Groth.ι (IPRA.Q.mk _ t)
 
 /-! ## The step and its algebra -/
 
@@ -270,10 +261,7 @@ variable {a'}
   simp [uv]
 
 theorem cv_zero : Γ ⊢[PRAAx] cv a' zero ≐ st (ap1 a' zero) one one zero := by
-  have h := rec2_zero (Γ := Γ) (cvInit a') (cvStep a') zero
-  first
-  | simpa using h
-  | exact h
+  simpa using rec2_zero (Γ := Γ) (cvInit a') (cvStep a') zero
 
 theorem cv_succ (m : PTm n) : Γ ⊢[PRAAx] cv a' (succ m) ≐ nx (co a' (succ m)) (cv a' m) := by
   have h := rec2_succ (Γ := Γ) (cvInit a') (cvStep a') m zero
@@ -283,10 +271,7 @@ theorem cv_succ (m : PTm n) : Γ ⊢[PRAAx] cv a' (succ m) ≐ nx (co a' (succ m
   rw [e] at h; exact h
 
 theorem uv_zero (N : PTm n) : Γ ⊢[PRAAx] uv a' zero N ≐ st one zero zero one := by
-  have h := rec2_zero (Γ := Γ) uvInit (uvStep a') N
-  first
-  | simpa using h
-  | exact h
+  simpa using rec2_zero (Γ := Γ) uvInit (uvStep a') N
 
 theorem uv_succ (k N : PTm n) : Γ ⊢[PRAAx] uv a' (succ k) N ≐ nx (co a' (succ (N + k))) (uv a' k N) := by
   have h := rec2_succ (Γ := Γ) uvInit (uvStep a') k N

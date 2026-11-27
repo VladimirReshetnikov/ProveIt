@@ -21,7 +21,7 @@ derivations, for arbitrary formulas of iPRA, with `iff A B = (A ⟶ B) ⋏ (B �
 
 namespace LeanProofs.IPRA.Foundations.RichardsonLogic
 
-open_ipra
+open_ipra exports
 open LeanProofs.IPRA.Foundations.QuantifierTransport (pushEx)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
@@ -76,3 +76,5 @@ theorem identity_equivalence {S O : Fm PTm (n + 1)} {fw bw : PTm (n + 1)}
   neg_iff_of_iff (witness_equivalence forwardCorrect backwardCorrect)
 
 end LeanProofs.IPRA.Foundations.RichardsonLogic
+
+export_ipra Foundations.RichardsonLogic (iffF)

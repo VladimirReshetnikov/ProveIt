@@ -1,6 +1,5 @@
 import IPRADerivations.Analysis.Polynomials.Taylor.PolynomialRemainder
 import Mathlib.Algebra.BigOperators.Fin
-import IPRADerivations.Core.Header
 
 /-!
 # Exact polynomial difference and Taylor identities
@@ -24,11 +23,9 @@ expression `e : PE d` (`Analysis/PolynomialRemainder`, integer terms `ZT`):
   `q^{2K} ∑ w_i w_j tq_{ij}`; this is the Taylor hypothesis assumed by `Foundations/FilteredLiftingStep`.
 -/
 
-set_option linter.unusedSimpArgs false
-
 namespace LeanProofs.IPRA.Foundations.FilteredTaylor
 
-open_ipra
+open_ipra exports
 open LeanProofs.IPRA.Analysis.PolynomialRemainder
 
 variable {k d : ℕ} {Γ : List (Fm PTm k)}
@@ -200,3 +197,5 @@ theorem taylor_power {q K : PTm k} {w : Fin d → ZT k} (e : PE d)
   ring
 
 end LeanProofs.IPRA.Foundations.FilteredTaylor
+
+export_ipra Foundations.FilteredTaylor (diff_exact dv_eq taylor_exact)

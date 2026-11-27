@@ -3,12 +3,6 @@ import IPRADerivations.Analysis.RationalArithmetic.RationalAlgebra
 import IPRADerivations.Analysis.Inequalities.WeightedComparison.GaussianWeightedErrorBudget
 import IPRADerivations.Foundations.BoundedSyntaxInduction
 import IPRADerivations.Foundations.BoundedEnumeration
-import IPRADerivations.Core.SumLemmas
-import IPRADerivations.Foundations.RealizerComposition
-import IPRADerivations.Core.CongruenceTactic
-import IPRADerivations.Core.LinearCombination
-import IPRADerivations.Core.SubstCommand
-import IPRADerivations.Core.Header
 
 /-!
 # Actual rational budgets on finite topologically ordered dependency graphs
@@ -28,11 +22,10 @@ producer assumes no such bound.
 -/
 
 set_option autoImplicit false
-set_option linter.unusedSimpArgs false
 
 namespace LeanProofs.IPRA.Foundations.PrecisionCostDAG
 
-open_ipra
+open_ipra exports
 open LeanProofs.IPRA.Foundations.MasterCertificate (sequence entry)
 open LeanProofs.IPRA.Foundations.SequenceComposition
   (length empty append append_length append_left append_right entry_congr)

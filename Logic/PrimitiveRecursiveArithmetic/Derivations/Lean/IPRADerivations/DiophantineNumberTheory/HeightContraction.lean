@@ -1,10 +1,5 @@
-import IPRADerivations.Core.Powers
-import IPRADerivations.Core.Gcd
-import IPRADerivations.Core.Parity
 import IPRADerivations.AnalyticNumberTheory.PhiLower
-import IPRADerivations.DiophantineNumberTheory.FLTMultiples
 import IPRADerivations.Core.OrderCertificates
-import IPRADerivations.Core.Header
 
 /-!
 # The natural-number height contraction of a descent step
@@ -24,13 +19,9 @@ The multiplicative estimate `H(Q)⁴ ≤ D H(P)²` (from the duplication and tra
 definition of the logarithmic height `h` by binary length are inputs; the case `h(Q) = 0` is trivial.
 -/
 
-set_option linter.unusedSimpArgs false
-
 namespace LeanProofs.IPRA.DiophantineNumberTheory.HeightContraction
 
-open_ipra
-open LeanProofs.IPRA.AnalyticNumberTheory.PhiLower (le_mul_mono)
-open LeanProofs.IPRA.DiophantineNumberTheory.FLTMultiples (pw_pos)
+open_ipra exports
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 

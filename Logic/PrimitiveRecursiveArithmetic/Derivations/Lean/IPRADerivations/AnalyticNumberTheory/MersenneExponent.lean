@@ -1,7 +1,6 @@
 import IPRADerivations.AnalyticNumberTheory.GoldbachGeometric
 import IPRADerivations.AnalyticNumberTheory.ValuationMul
 import IPRADerivations.Core.CertificateTactics
-import IPRADerivations.Core.Header
 
 /-!
 # A Mersenne prime has a prime exponent
@@ -16,16 +15,9 @@ the constructed divisor lies in the properly excluded interval of a prime
 
 namespace LeanProofs.IPRA.AnalyticNumberTheory.MersenneExponent
 
-open_ipra
-open LeanProofs.IPRA.AnalyticNumberTheory.Fermat (prime_shift)
+open_ipra exports
 open LeanProofs.IPRA.AnalyticNumberTheory.GoldbachGeometric (gB geom_sum one_le_pw)
-open LeanProofs.IPRA.AnalyticNumberTheory.PowerCleared (pw_le_exp)
-open LeanProofs.IPRA.AnalyticNumberTheory.Primes (prime)
-open LeanProofs.IPRA.AnalyticNumberTheory.RSA (pw_mul)
-open LeanProofs.IPRA.AnalyticNumberTheory.ValuationMul (p_pos)
 open LeanProofs.IPRA.Combinatorics.BinomialTheorem (congrPw)
-open LeanProofs.IPRA.DiophantineNumberTheory.Coprime (dvd_of_eq' eq_of_dvd')
-open LeanProofs.IPRA.DiophantineNumberTheory.FLTMultiples (pw_pos)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
@@ -39,8 +31,7 @@ theorem two_le_mersenne {d : PTm n} (hd : Γ ⊢[PRAAx] le two d) :
     Γ ⊢[PRAAx] le two (mersenne d) := by
   have three_le_four : Γ ⊢[PRAAx] le (succ two) (pw two two) := by
     refine le_of_eq_add (d := one) ?_
-    ipra_lc natEq (pw_succ (Γ := Γ) (two : PTm n) one) +
-      2 * natEq (pw_one (Γ := Γ) (two : PTm n))
+    ipra_lc natEq (pw_succ (two : PTm n) one) + 2 * natEq (pw_one (two : PTm n))
   have bound := le_trans three_le_four (pw_le_exp (p_pos (le_refl two)) hd)
   exact (succ_monus_succ two (mersenne d)).eqSymm.eqTrans
     (le_congr (.eqRefl _) (succ_mersenne d).eqSymm bound)
@@ -49,7 +40,7 @@ theorem mersenne_lt {d e : PTm n} (h : Γ ⊢[PRAAx] lt d e) :
     Γ ⊢[PRAAx] lt (mersenne d) (mersenne e) := by
   have gain : Γ ⊢[PRAAx] le (succ (pw two d)) (pw two (succ d)) := by
     refine le_of_eq_add (d := mersenne d) ?_
-    ipra_lc natEq (pw_succ (Γ := Γ) two d) - natEq (succ_mersenne (Γ := Γ) d)
+    ipra_lc natEq (pw_succ two d) - natEq (succ_mersenne d)
   have bound := le_trans gain (pw_le_exp (p_pos (le_refl two)) h)
   exact (succ_monus_succ (succ (mersenne d)) (mersenne e)).eqSymm.eqTrans
     (le_congr (congrSucc (succ_mersenne d)).eqSymm (succ_mersenne e).eqSymm bound)

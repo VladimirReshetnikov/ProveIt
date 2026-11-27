@@ -1,5 +1,4 @@
 import IPRADerivations.Foundations.BoundedDescent
-import IPRADerivations.Core.Header
 
 /-!
 # Reflection of relational viability certificates
@@ -30,12 +29,9 @@ The extracted path follows `nx` and stops at terminal nodes: `step(v) = H(v) v +
   postcondition (`BoundedDescent.terminal`).
 -/
 
-set_option linter.unusedSimpArgs false
-
 namespace LeanProofs.IPRA.Foundations.RelationalCertificate
 
-open_ipra
-open LeanProofs.IPRA.Foundations.IterationFusion (app1 iter congrApp1)
+open_ipra exports
 open LeanProofs.IPRA.Foundations.BoundedDescent (Descent descent_inv terminal)
 open LeanProofs.IPRA.Foundations.BoundedReflection (one_ne_zero)
 

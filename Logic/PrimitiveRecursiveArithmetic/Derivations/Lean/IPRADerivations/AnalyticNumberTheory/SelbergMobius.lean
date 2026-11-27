@@ -1,8 +1,5 @@
 import IPRADerivations.AnalyticNumberTheory.ConvolutionAssoc
 import IPRADerivations.AnalyticNumberTheory.MangoldtMobius
-import IPRADerivations.Core.LinearCombination
-import IPRADerivations.AnalyticNumberTheory.DivisorCases
-import IPRADerivations.Core.Header
 
 /-!
 # Selberg's exact symmetry identity `μ * L² = Λ * Λ + 𝒟Λ` (`pnt_ipra_constructive_2026-11-14`)
@@ -24,7 +21,7 @@ the inversion is `[d ∣ N] μ^±(d) L_w(N/d)²` (`row_sq_mob`, as `MangoldtMobi
 
 namespace LeanProofs.IPRA.AnalyticNumberTheory.SelbergMobius
 
-open_ipra
+open_ipra exports
 open LeanProofs.IPRA.AnalyticNumberTheory.Mobius
 open LeanProofs.IPRA.AnalyticNumberTheory.MobiusBounds (sum_ext shift_pos)
 open LeanProofs.IPRA.AnalyticNumberTheory.MobiusInversion (aP aN inst3_aP inst3_aN mobius_inversion eqb_rem_big)
@@ -32,15 +29,11 @@ open LeanProofs.IPRA.AnalyticNumberTheory.WeightedMangoldt
 open LeanProofs.IPRA.AnalyticNumberTheory.DirichletLeibniz (cvB conv DwB inst2_DwB cv_at)
 open LeanProofs.IPRA.AnalyticNumberTheory.SelbergLeibniz (lamF inst2_lamF)
 open LeanProofs.IPRA.AnalyticNumberTheory.ConvolutionAssoc (cvF inst2_cvF selberg_divisor)
-open LeanProofs.IPRA.DiophantineNumberTheory.Coprime (eq_of_dvd' pos_of_eq_mul)
-open LeanProofs.IPRA.Probability.Independence (sum_scale)
 open LeanProofs.IPRA.Signum (sg sg_zero sg_succ)
 
 set_option autoImplicit false
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
-
-local notation "𝔞" t:max => Groth.ι (IPRA.Q.mk _ t)
 
 section Selberg
 

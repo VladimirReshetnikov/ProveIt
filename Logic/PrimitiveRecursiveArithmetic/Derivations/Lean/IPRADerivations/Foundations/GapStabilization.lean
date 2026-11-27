@@ -1,6 +1,5 @@
 import IPRADerivations.Foundations.ApproximateWitness
 import IPRADerivations.Core.OrderCertificates
-import IPRADerivations.Core.Header
 
 /-!
 # Gap stabilization of approximate minimizers
@@ -33,11 +32,9 @@ Both use the decidability of equality (`eq_or_ne`) in place of the papers' argum
   rational test `2A < δ` decides the alternative: `2A < δ` gives `X = 0`, and `δ ≤ 2A` gives `δ ≤ X`.
 -/
 
-set_option linter.unusedSimpArgs false
-
 namespace LeanProofs.IPRA.Foundations.GapStabilization
 
-open_ipra
+open_ipra exports
 open LeanProofs.IPRA.Foundations.ApproximateWitness (argmin argmin_spec argmin_minimal)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}

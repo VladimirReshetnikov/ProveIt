@@ -1,8 +1,5 @@
 import IPRADerivations.AnalyticNumberTheory.BlockFamily
 import IPRADerivations.AnalyticNumberTheory.Doubling
-import IPRADerivations.AnalyticNumberTheory.PowerCleared
-import IPRADerivations.AnalyticNumberTheory.Order
-import IPRADerivations.Core.Header
 
 /-!
 # The chain of geometric blocks (`pnt_ipra_constructive_2026-11-14`, `con:one-step`)
@@ -20,28 +17,18 @@ by quantifier-free induction on the number of blocks: each step splits the weigh
 and the error weight from above by `u_{E_k} ≤ u_N`. The step algebra is the generic `step_alg` over opaque terms.
 -/
 
-set_option linter.unusedSimpArgs false
-
 namespace LeanProofs.IPRA.AnalyticNumberTheory.BlockChain
 
-open_ipra
+open_ipra exports
 open LeanProofs.IPRA.AnalyticNumberTheory.Harmonic (S hB)
-open LeanProofs.IPRA.AnalyticNumberTheory.HarmonicChebyshev (S_mono)
-open LeanProofs.IPRA.AnalyticNumberTheory.HarmonicMertens (le_scale)
 open LeanProofs.IPRA.AnalyticNumberTheory.HarmonicLogSquareSum (U)
-open LeanProofs.IPRA.AnalyticNumberTheory.BlockDeficit (gzB Bs')
-open LeanProofs.IPRA.AnalyticNumberTheory.HeadDeficit (hgB)
 open LeanProofs.IPRA.AnalyticNumberTheory.BlockFamily (Lay hg_split hg_weight monus_le_monus)
-open LeanProofs.IPRA.AnalyticNumberTheory.PowerCleared (pw_le_exp)
-open LeanProofs.IPRA.AnalyticNumberTheory.Order (pw_one_base)
 open LeanProofs.IPRA.AnalyticNumberTheory.PNTStageStep (pos_of_one_le)
 open LeanProofs.IPRA.Analysis.Products (fact)
 
 set_option autoImplicit false
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
-
-local notation "𝔞" t:max => Groth.ι (IPRA.Q.mk _ t)
 
 /-! ## Geometric block ends and monotone weights -/
 
@@ -139,3 +126,5 @@ theorem chain_sum {x E0 Q B N A Ds K L c0 C1 c2 : PTm n} (hQ : Γ ⊢[PRAAx] le 
   exact .impE h (le_refl B)
 
 end LeanProofs.IPRA.AnalyticNumberTheory.BlockChain
+
+export_ipra AnalyticNumberTheory.BlockChain (one_le_pw' u_mono)

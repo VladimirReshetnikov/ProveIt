@@ -1,6 +1,4 @@
 import IPRADerivations.AnalyticNumberTheory.MobiusFloor
-import IPRADerivations.Core.LinearCombination
-import IPRADerivations.Core.Header
 
 /-!
 # The recursion of the Mertens function
@@ -19,19 +17,13 @@ With `M = M⁺ − M⁻` (`MobiusFloor.MP`, `MN`) and the sums over `2 ≤ a ≤
 * **`mertens_recursion`**: the identity above, from `MobiusFloor.mertens_floor`.
 -/
 
-set_option linter.unusedSimpArgs false
-
 namespace LeanProofs.IPRA.AnalyticNumberTheory.MertensRecursion
 
-open_ipra
-open LeanProofs.IPRA.AnalyticNumberTheory.Mobius (zero_mul_l)
-open LeanProofs.IPRA.AnalyticNumberTheory.ConvolutionAssoc (sg_pos)
+open_ipra exports
 open LeanProofs.IPRA.AnalyticNumberTheory.MobiusFloor (MP MN GPB GNB inst2_GPB inst2_GNB mertens_floor)
 open LeanProofs.IPRA.Signum (sg sg_zero sg_succ)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
-
-local notation "𝔞" t:max => Groth.ι (IPRA.Q.mk _ t)
 
 /-- `∑_{a<2} G(a) = G(0) + G(1)`. -/
 theorem head2 (G : PTm 2) (x : PTm n) : Γ ⊢[PRAAx] ap2 (sumF G) two x ≐ inst2 G zero x + inst2 G one x :=

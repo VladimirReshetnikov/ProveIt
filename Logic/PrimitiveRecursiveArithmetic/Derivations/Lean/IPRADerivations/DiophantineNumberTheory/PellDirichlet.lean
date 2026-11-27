@@ -1,7 +1,5 @@
 import IPRADerivations.DiophantineNumberTheory.PellCFStep
 import IPRADerivations.Core.Pigeonhole
-import IPRADerivations.Core.LinearCombination
-import IPRADerivations.Core.Header
 
 /-!
 # The finite Dirichlet construction for `√D`
@@ -17,21 +15,15 @@ square-root subadditivity `sqrt_add_le`/`sqrt_add_lt`: from `u² ≤ v² D` and 
 `(u + b)² ≤ (v + d)² D` (since `(ub)² ≤ (v d D)²`), and the strict dual.
 -/
 
-set_option linter.unusedSimpArgs false
-
 namespace LeanProofs.IPRA.DiophantineNumberTheory.PellDirichlet
 
-open_ipra
-open LeanProofs.IPRA.AnalyticNumberTheory.PhiLower (le_mul_mono)
-open LeanProofs.IPRA.DiophantineNumberTheory.SquareArea (le_add_mono)
+open_ipra exports
 open LeanProofs.IPRA.DiophantineNumberTheory.Coprime (le_of_sq_le)
 open LeanProofs.IPRA.Geometry.HypercubeSplit (le_cancel_pos)
 open LeanProofs.IPRA.DiophantineNumberTheory.PellCFStep (lt_of_sq_lt pos_of_le_one one_le_of_pos le_add_monus_l)
 open LeanProofs.IPRA.Combinatorics.Binomial (pos_mul)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
-
-local notation "𝔞" t:max => Groth.ι (IPRA.Q.mk _ t)
 
 /-! ## Square roots -/
 
@@ -112,7 +104,7 @@ theorem dirichlet {D Q : PTm n} (hD : Γ ⊢[PRAAx] D ≐ succ (pred D)) (hQ : �
     have e := eq_add_of_le (Prf.andE₁ wb)
     refine lt_congr (bB_at _ _ _).eqSymm (.eqRefl _) (le_of_add_le_add_right (c := Syn.shift Q * tj (Syn.shift D) (var 0)) ?_)
     refine le_congr ?_ ?_ (Prf.andE₂ wb)
-    · have x := natEq e; apply deriveNat; ipra_simps; linear_combination x
+    · ipra_lc natEq e
     · ipra_ring
   have ph := Pigeonhole.pigeonhole (S := bB) hr
   have hIJ := Prf.andE₁ ph
@@ -131,8 +123,7 @@ theorem dirichlet {D Q : PTm n} (hD : Γ ⊢[PRAAx] D ≐ succ (pred D)) (hQ : �
   have eWI := eq_add_of_le wI
   have eWJ := eq_add_of_le wJ
   have eW : Γ ⊢[PRAAx] wj D Q (Jz D Q) ≐ wj D Q (Iz D Q) + Q * dp D Q := by
-    have x := natEq eWI; have y := natEq eWJ; have z := natEq bI; have t := natEq eT
-    apply deriveNat; ipra_simps; linear_combination y - x + 𝔞 Q * t - z
+    ipra_lc natEq eWJ - natEq eWI + 𝔞 Q * natEq eT - natEq bI
   -- Square-root facts at `I` and `J`, in the form `x² ≤ y² D`.
   have sqI : Γ ⊢[PRAAx] le (wj D Q (Iz D Q) * wj D Q (Iz D Q)) (Q * Iz D Q * (Q * Iz D Q) * D) :=
     le_congr (.eqRefl _) (by ipra_ring) (isqrt_le _)
@@ -143,14 +134,14 @@ theorem dirichlet {D Q : PTm n} (hD : Γ ⊢[PRAAx] D ≐ succ (pred D)) (hQ : �
   have ltJ : Γ ⊢[PRAAx] lt (Q * Jz D Q * (Q * Jz D Q) * D) ((wj D Q (Jz D Q) + one) * (wj D Q (Jz D Q) + one)) :=
     lt_congr (by ipra_ring) (.eqRefl _) (lt_isqrt_succ_sq _)
   have eQJ : Γ ⊢[PRAAx] Q * dq D Q + Q * Iz D Q ≐ Q * Jz D Q := by
-    have x := natEq eJ; apply deriveNat; ipra_simps; linear_combination -𝔞 Q * x
+    ipra_lc -𝔞 Q * natEq eJ
   -- The upper error bound.
   have hU : Γ ⊢[PRAAx] lt (Q * dq D Q * (Q * dq D Q) * D) ((Q * dp D Q + one) * (Q * dp D Q + one)) := by
     refine .orE (lt_or_le (Q * dq D Q * (Q * dq D Q) * D) ((Q * dp D Q + one) * (Q * dp D Q + one))) Prf.hyp0 ?_
     let C := le ((Q * dp D Q + one) * (Q * dp D Q + one)) (Q * dq D Q * (Q * dq D Q) * D) :: Γ
     have sa := sqrt_add_le (Prf.hyp0 : C ⊢[PRAAx] _) sqI.wk
     have e1 : C ⊢[PRAAx] Q * dp D Q + one + wj D Q (Iz D Q) ≐ wj D Q (Jz D Q) + one := by
-      have x := natEq (eW.wk : C ⊢[PRAAx] _); apply deriveNat; ipra_simps; linear_combination -x
+      ipra_lc -natEq (eW.wk : C ⊢[PRAAx] _)
     refine le_lt_absurd _ (le_congr (congrMul e1 e1) (congrMul (congrMul eQJ.wk eQJ.wk) (.eqRefl _)) sa) ltJ.wk
   -- `p ≥ 1`.
   have hD1 := one_le_of_pos hD
@@ -160,7 +151,7 @@ theorem dirichlet {D Q : PTm n} (hD : Γ ⊢[PRAAx] D ≐ succ (pred D)) (hQ : �
     refine one_le_of_pos (.orE (zero_or_succ (dp D Q)) ?_ Prf.hyp0)
     let C := (dp D Q ≐ zero) :: Γ
     have z : C ⊢[PRAAx] (Q * dp D Q + one) * (Q * dp D Q + one) ≐ one := by
-      have x := natEq (Prf.hyp0 : C ⊢[PRAAx] _); apply deriveNat; ipra_simps; linear_combination (𝔞 Q * 𝔞 Q * 𝔞 (dp D Q) + 2 * 𝔞 Q) * x
+      ipra_lc (𝔞 Q * 𝔞 Q * 𝔞 (dp D Q) + 2 * 𝔞 Q) * natEq (Prf.hyp0 : C ⊢[PRAAx] _)
     have u := lt_congr (.eqRefl _) z hU.wk
     exact not_succ_le_self _ _ (le_trans u (one_le_of_pos hqq.wk))
   -- The lower error bound.
@@ -179,8 +170,7 @@ theorem dirichlet {D Q : PTm n} (hD : Γ ⊢[PRAAx] D ≐ succ (pred D)) (hQ : �
       let C' := le (Q * dq D Q * (Q * dq D Q) * D) (pred (Q * dp D Q) * pred (Q * dp D Q)) :: C
       have sa := sqrt_add_lt (Prf.hyp0 : C' ⊢[PRAAx] _) ltI.wk.wk
       have e1 : C' ⊢[PRAAx] pred (Q * dp D Q) + (wj D Q (Iz D Q) + one) ≐ wj D Q (Jz D Q) := by
-        have x := natEq (eW.wk.wk : C' ⊢[PRAAx] _); have y := natEq (Prf.hyp1 : C' ⊢[PRAAx] _)
-        apply deriveNat; ipra_simps; linear_combination -x - y
+        ipra_lc -natEq (eW.wk.wk : C' ⊢[PRAAx] _) - natEq (Prf.hyp1 : C' ⊢[PRAAx] _)
       exact le_lt_absurd _ sqJ.wk.wk (lt_congr (congrMul (congrMul eQJ.wk.wk eQJ.wk.wk) (.eqRefl _)) (congrMul e1 e1) sa)
   -- `p ≤ D q`.
   have hpD : Γ ⊢[PRAAx] le (dp D Q) (D * dq D Q) := by

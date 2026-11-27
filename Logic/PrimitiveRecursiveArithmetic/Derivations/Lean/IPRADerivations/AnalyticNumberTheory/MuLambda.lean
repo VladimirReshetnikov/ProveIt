@@ -1,8 +1,4 @@
 import IPRADerivations.AnalyticNumberTheory.MangoldtMobius
-import IPRADerivations.Core.LinearCombination
-import IPRADerivations.AnalyticNumberTheory.DivisorCases
-import IPRADerivations.Core.Reindex
-import IPRADerivations.Core.Header
 
 /-!
 # The Möbius–Mangoldt convolution
@@ -25,20 +21,16 @@ set_option linter.unusedSimpArgs false
 
 namespace LeanProofs.IPRA.AnalyticNumberTheory.MuLambda
 
-open_ipra
+open_ipra exports
 open LeanProofs.IPRA.AnalyticNumberTheory.Mobius
 open LeanProofs.IPRA.AnalyticNumberTheory.MobiusBounds (sum_ext shift_pos mu_bound)
 open LeanProofs.IPRA.AnalyticNumberTheory.MobiusInversion (aP aN inst3_aP inst3_aN mobius_inversion eqb_rem_big)
 open LeanProofs.IPRA.AnalyticNumberTheory.WeightedMangoldt
-open LeanProofs.IPRA.AnalyticNumberTheory.FactorialLambda (sum_add2)
 open LeanProofs.IPRA.AnalyticNumberTheory.MangoldtMobius
-open LeanProofs.IPRA.DiophantineNumberTheory.Coprime (eq_of_dvd' pos_of_eq_mul)
 open LeanProofs.IPRA.Probability.Independence (sum_scale)
 open LeanProofs.IPRA.Signum (sg sg_zero sg_succ)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
-
-local notation "𝔞" t:max => Groth.ι (IPRA.Q.mk _ t)
 
 /-- `∑_{i < 2} B(i, x) = 0` when both terms vanish. -/
 theorem sum_two_zero (B : PTm 2) {x : PTm n} (h0 : Γ ⊢[PRAAx] inst2 B zero x ≐ zero)

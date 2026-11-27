@@ -1,8 +1,5 @@
 import IPRADerivations.Foundations.SquareRootRelationalCandidates
 import IPRADerivations.Foundations.ViableChainSelection
-import IPRADerivations.Core.CongruenceTactic
-import IPRADerivations.Core.SubstCommand
-import IPRADerivations.Core.Header
 
 /-!
 # Actual certified finite relational square-root paths
@@ -21,11 +18,10 @@ selection. All rational inputs, levels, horizons, codes and indices are internal
 -/
 
 set_option autoImplicit false
-set_option linter.unusedSimpArgs false
 
 namespace LeanProofs.IPRA.Foundations.SquareRootRelationalCertificate
 
-open_ipra
+open_ipra exports
 open LeanProofs.IPRA.Foundations.BackwardViability
 open LeanProofs.IPRA.Foundations.BackwardViability.Instance
 open LeanProofs.IPRA.Foundations.MasterCertificate (sequence entry)

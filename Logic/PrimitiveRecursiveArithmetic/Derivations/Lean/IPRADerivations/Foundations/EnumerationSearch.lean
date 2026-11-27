@@ -1,5 +1,4 @@
 import IPRADerivations.Foundations.BoundedEnumeration
-import IPRADerivations.Core.Header
 
 /-!
 # Complete search through an enumeration
@@ -28,7 +27,7 @@ indices (`sel_strict`), not in the values.
 
 namespace LeanProofs.IPRA.Foundations.EnumerationSearch
 
-open_ipra
+open_ipra exports
 open LeanProofs.IPRA.Foundations.FilteredEnumeration (rank sel)
 open LeanProofs.IPRA.Foundations.BoundedEnumeration (vb hL inst2_hL listed entry)
 

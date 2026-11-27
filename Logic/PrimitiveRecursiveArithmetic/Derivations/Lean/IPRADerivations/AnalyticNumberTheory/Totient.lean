@@ -1,9 +1,5 @@
 import IPRADerivations.AnalyticNumberTheory.Fermat
 import IPRADerivations.DiophantineNumberTheory.Coprime
-import IPRADerivations.Core.LinearCombination
-import IPRADerivations.Core.CommonLemmas
-import IPRADerivations.Core.InductionTactic
-import IPRADerivations.Core.Header
 
 /-!
 # Euler's totient at prime powers
@@ -25,12 +21,10 @@ set_option linter.unusedSimpArgs false
 
 namespace LeanProofs.IPRA.AnalyticNumberTheory.Totient
 
-open_ipra
-open LeanProofs.IPRA.AnalyticNumberTheory.Primes (prime)
+open_ipra exports
 open LeanProofs.IPRA.AnalyticNumberTheory.Fermat (prime_shift subst_prime)
 open LeanProofs.IPRA.Combinatorics.Binomial (pos_mul)
 open LeanProofs.IPRA.Combinatorics.BinomialTheorem (congrPw)
-open LeanProofs.IPRA.Foundations.ChineseRemainder (gcd_pos)
 open LeanProofs.IPRA.DiophantineNumberTheory.Coprime
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
@@ -133,9 +127,7 @@ theorem quo_step {j p : PTm n} (hp : Γ ⊢[PRAAx] p ≐ succ (pred p)) :
     have q₂ := quo_eq (Γ := (rem j p ≐ zero) :: Γ) (z := succ j + pred p) (q := quo j p + one) (r := zero) hp.wk (by
       have h₁ := natEq (ej.wk (ψ := rem j p ≐ zero))
       have h₂ := natEq (Prf.hyp0 : ((rem j p ≐ zero) :: Γ) ⊢[PRAAx] _)
-      have h₃ := natEq (hp.wk (ψ := rem j p ≐ zero))
-      apply deriveNat; ipra_simps
-      linear_combination h₁ + h₂ - h₃)
+      ipra_lc h₁ + h₂ - natEq (hp.wk (ψ := rem j p ≐ zero)))
       (le_congr (.eqRefl _) hp.wk.eqSymm (le_of_eq_add (d := pred p) (by ipra_ring)))
     exact q₂.eqTrans (congrAdd q₁.eqSymm (eqb_of_eq Prf.hyp0).eqSymm)
   · -- `p ∤ j`: both quotients are `quo j p + 1`.
@@ -145,16 +137,12 @@ theorem quo_step {j p : PTm n} (hp : Γ ⊢[PRAAx] p ≐ succ (pred p)) :
       (r := pred (rem j p)) hp.wk (by
       have h₁ := natEq (ej.wk (ψ := rem j p ≐ succ (pred (rem j p))))
       have h₂ := natEq (Prf.hyp0 : ((rem j p ≐ succ (pred (rem j p))) :: Γ) ⊢[PRAAx] _)
-      have h₃ := natEq (hp.wk (ψ := rem j p ≐ succ (pred (rem j p))))
-      apply deriveNat; ipra_simps
-      linear_combination h₁ + h₂ - h₃)
+      ipra_lc h₁ + h₂ - natEq (hp.wk (ψ := rem j p ≐ succ (pred (rem j p)))))
       (lt_of_le_of_lt (le_congr (.eqRefl _) Prf.hyp0.eqSymm (le_succ_self _)) hr.wk)
     have q₂ := quo_eq (Γ := (rem j p ≐ succ (pred (rem j p))) :: Γ) (z := succ j + pred p) (q := quo j p + one)
       (r := rem j p) hp.wk (by
       have h₁ := natEq (ej.wk (ψ := rem j p ≐ succ (pred (rem j p))))
-      have h₃ := natEq (hp.wk (ψ := rem j p ≐ succ (pred (rem j p))))
-      apply deriveNat; ipra_simps
-      linear_combination h₁ - h₃) hr.wk
+      ipra_lc h₁ - natEq (hp.wk (ψ := rem j p ≐ succ (pred (rem j p))))) hr.wk
     exact q₂.eqTrans (q₁.eqSymm.eqTrans ((add_zero _).eqSymm.eqTrans
       (congrAdd (.eqRefl _) (eqb_of_ne hne).eqSymm)))
 
@@ -220,3 +208,6 @@ theorem totient_prime_power : ([] : List (Fm PTm 0)) ⊢[PRAAx] univ 2 totientFo
   closeUniv 2 (.impI (totient_prime_power_at Prf.hyp0))
 
 end LeanProofs.IPRA.AnalyticNumberTheory.Totient
+
+export_ipra AnalyticNumberTheory.Totient (coprime_pow count_multiples inst2_tot mulBody pred_lt quo_eq totBody
+  totient_prime_power_at)

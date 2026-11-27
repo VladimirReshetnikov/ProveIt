@@ -1,8 +1,4 @@
 import IPRADerivations.Foundations.RuntimeAdjacentPermutationSwap
-import IPRADerivations.Core.OrderCertificates
-import IPRADerivations.Core.CongruenceTactic
-import IPRADerivations.Core.SubstCommand
-import IPRADerivations.Core.Header
 
 /-!
 # Actual bounded adjacent sorting of numerical words
@@ -14,14 +10,12 @@ No Analysis object, external finite rank or abstract permutation is used.
 -/
 
 set_option autoImplicit false
-set_option linter.unusedSimpArgs false
 
 namespace LeanProofs.IPRA.Foundations.RuntimeWordSorting
 
-open_ipra
+open_ipra exports
 open LeanProofs.IPRA.Foundations.BoundedSyntax (BFm formula)
 open LeanProofs.IPRA.Foundations.GuardedTotalization (sel sel_zero sel_one)
-open LeanProofs.IPRA.Foundations.MasterCertificate (entry subst_entry)
 
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
@@ -351,10 +345,7 @@ theorem strict_identity_at (m w i : PTm n) (h : Γ ⊢[PRAAx] strictSorted m w)
     exact le_trans (le_add_left i (RuntimePermutationWords.digit m w zero)) (le_congr (.eqRefl _) he hg)
   have hd : Γ ⊢[PRAAx] m ≐ succ i+monus m (succ i) := eq_add_of_le hi
   have he : Γ ⊢[PRAAx] i+monus m (succ i)+one ≐ m := by
-    have ee := natEq hd
-    apply deriveNat
-    ipra_simps
-    linear_combination -ee
+    ipra_lc -natEq hd
   have hb : Γ ⊢[PRAAx] lt (i+monus m (succ i)) m :=
     le_congr (succ_eq_add_one _).eqSymm he (le_refl _)
   have ht := strict_gap m w i (monus m (succ i)) h hb

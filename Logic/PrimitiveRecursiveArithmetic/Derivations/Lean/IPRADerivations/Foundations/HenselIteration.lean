@@ -1,5 +1,4 @@
 import IPRADerivations.Foundations.FilteredTaylor
-import IPRADerivations.Core.Header
 
 /-!
 # The precision invariant of filtered lifting for one polynomial equation over `ℤ`
@@ -26,11 +25,9 @@ The iteration is uniform in the metalevel `r` (each `b_r` is an explicit integer
 system case (matrices) are `Foundations/FilteredLiftingStep`.
 -/
 
-set_option linter.unusedSimpArgs false
-
 namespace LeanProofs.IPRA.Foundations.HenselIteration
 
-open_ipra
+open_ipra exports
 open LeanProofs.IPRA.Analysis.PolynomialRemainder (PE ev dv)
 open LeanProofs.IPRA.Foundations.FilteredTaylor (pd tq ls taylor_exact diff_exact dv_eq)
 

@@ -1,5 +1,4 @@
 import IPRADerivations.AnalyticNumberTheory.AbsDiff
-import IPRADerivations.Core.Header
 
 /-!
 # The pointwise deficit inequalities (`pnt_ipra_constructive_2026-11-14`, `con:deficit`)
@@ -14,18 +13,13 @@ on a stretch where `|r| < a/2`, `a − |r| ≥ a/2`. With `z = r(m) = (ψ(m) −
 * `def_mid`: `2D|P − Q| ≤ AQ` gives `AQ ≤ 2g`.
 -/
 
-set_option linter.unusedSimpArgs false
-
 namespace LeanProofs.IPRA.AnalyticNumberTheory.PointDeficit
 
-open_ipra
-open LeanProofs.IPRA.AnalyticNumberTheory.AbsDiff (absd)
+open_ipra exports
 
 set_option autoImplicit false
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
-
-local notation "𝔞" t:max => Groth.ι (IPRA.Q.mk _ t)
 
 /-- The deficit term `AQ ∸ D|P − Q|`. -/
 abbrev dg (A D P Q : PTm n) : PTm n := monus (A * Q) (D * absd P Q)
@@ -41,7 +35,6 @@ theorem absd_le' {P Q : PTm n} (h : Γ ⊢[PRAAx] le P Q) : Γ ⊢[PRAAx] absd P
 theorem def_lo {A D P Q : PTm n} (hs : Γ ⊢[PRAAx] le (D * absd P Q) (A * Q))
     (hh : Γ ⊢[PRAAx] le (two * (D * monus P Q)) (A * Q)) :
     Γ ⊢[PRAAx] le (A * Q + D * P) (num 3 * dg A D P Q + D * Q) := by
-  have eg := natEq (eq_add_of_le hs)
   refine .orE (le_total Q P) ?_ ?_
   · have ea := natEq (absd_ge (Γ := ((le Q P) :: Γ)) Prf.hyp0)
     have ep := natEq (eq_add_of_le (Prf.hyp0 : ((le Q P) :: Γ) ⊢[PRAAx] le Q P))

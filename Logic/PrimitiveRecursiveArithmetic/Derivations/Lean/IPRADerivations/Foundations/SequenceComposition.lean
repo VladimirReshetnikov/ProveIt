@@ -1,9 +1,5 @@
 import IPRADerivations.Foundations.MasterCertificate
-import IPRADerivations.Core.MultiSums
 import IPRADerivations.Core.CongruenceTactic
-import IPRADerivations.Core.LinearCombination
-import IPRADerivations.Core.SubstCommand
-import IPRADerivations.Core.Header
 
 /-!
 # Actual sequence append and runtime demand flattening
@@ -18,18 +14,14 @@ These are the finite list-arithmetic prerequisites for the FIBER composition
 theorem. The full certificate composition theorem is not asserted here.
 -/
 
-set_option linter.unusedSimpArgs false
-
 namespace LeanProofs.IPRA.Foundations.SequenceComposition
 
-open_ipra
+open_ipra exports
 open LeanProofs.IPRA.Foundations.MasterCertificate (sequence entry sequence_length sequence_decode)
 open LeanProofs.IPRA.Signum (sg)
 open LeanProofs.IPRA.AnalyticNumberTheory.Totatives (sg_lt sg_le)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
-
-local notation "𝔞" t:max => Groth.ι (IPRA.Q.mk _ t)
 
 def length (a : PTm n) : PTm n := fstT a
 def empty : PTm n := pairT zero zero
@@ -470,3 +462,5 @@ theorem zero_length_inner_block (inner : PR 2) :
 #print axioms zero_length_inner_block
 
 end LeanProofs.IPRA.Foundations.SequenceComposition
+
+export_ipra Foundations.SequenceComposition (add_lt_left append_left append_right)

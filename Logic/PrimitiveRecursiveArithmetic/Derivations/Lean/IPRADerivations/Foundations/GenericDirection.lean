@@ -1,6 +1,5 @@
 import IPRADerivations.Foundations.VandermondeDeterminant
 import IPRADerivations.Foundations.IntersectionEnumeration
-import IPRADerivations.Core.Header
 
 /-!
 # A bounded generic direction (`ipra_resources_and_elimination_2026-11-15`, `lem:elim-shear`)
@@ -31,11 +30,9 @@ scan as a primitive recursive function of the arrays.
 
 namespace LeanProofs.IPRA.Foundations.GenericDirection
 
-open_ipra
+open_ipra exports
 open LeanProofs.IPRA.Foundations.NullVectorDeterminant
-open LeanProofs.IPRA.Foundations.EliminationRoot (vpow)
 open LeanProofs.IPRA.Foundations.VandermondeDeterminant (root_bound ne_congr)
-open LeanProofs.IPRA.Foundations.IntersectionEnumeration (disjFin)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 

@@ -1,5 +1,4 @@
 import IPRADerivations.AnalyticNumberTheory.PowerDivisorGrowth
-import IPRADerivations.Core.Header
 
 /-!
 # Euler's constant without an unspecified convergence rate (`robin_ipra_research_2026-11-19`, `lem:gamma`)
@@ -28,19 +27,14 @@ The identification of the limit name with the usual Euler constant (and `log` wi
 interpretation stated in the packet; at `m₀ = 1` the estimate gives `1/2 ≤ γ ≤ 7/12`.
 -/
 
-set_option linter.unusedSimpArgs false
-
 namespace LeanProofs.IPRA.AnalyticNumberTheory.RobinGamma
 
-open_ipra
+open_ipra exports
 open LeanProofs.IPRA.AnalyticNumberTheory.PNTStageStep (pos_of_one_le)
-open LeanProofs.IPRA.AnalyticNumberTheory.PhiLower (le_mul_mono)
 
 set_option autoImplicit false
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
-
-local notation "𝔞" t:max => Groth.ι (IPRA.Q.mk _ t)
 
 /-! ## The cleared truncations -/
 
@@ -119,7 +113,6 @@ theorem q_inv (m K : PTm n) : Γ ⊢[PRAAx] QF m K := by
     refine PRA.qfInd _ (le_QF _ _) ?_ ?_
     · simp only [Fm.subst_eq, subst_le, subst_ap2, PTm.subst_add, PTm.subst_mul, ConciseIPRA.PTm.subst_succ,
         ConciseIPRA.PTm.subst_zero, Syn.subst_var, Syn.inst_zero, Syn.subst_inst_shift]
-      have hN := natEq (N_zero (Γ := Γ) (sv m))
       have hL := L_zero (Γ := Γ) (sv m)
       have e2 := natEq (congrMul (congrMul (.eqRefl two) hL) (.eqRefl (sv m * sv m)))
       have e3 := natEq (congrMul (.eqRefl (two * sv m)) (congrMul hL (P_zero (Γ := Γ) (sv m))))
@@ -315,3 +308,5 @@ theorem gamma_tail {m : PTm n} (hm : Γ ⊢[PRAAx] le one m) (j t : PTm n) : Γ 
   simpa [Syn.subst_inst_shift] using r
 
 end LeanProofs.IPRA.AnalyticNumberTheory.RobinGamma
+
+export_ipra AnalyticNumberTheory.RobinGamma (L_succ L_zero P_succ P_zero)

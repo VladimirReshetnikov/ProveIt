@@ -1,12 +1,4 @@
 import IPRADerivations.AnalyticNumberTheory.DenominatorRange
-import IPRADerivations.AnalyticNumberTheory.BinomialLcm
-import IPRADerivations.AnalyticNumberTheory.EulerProduct
-import IPRADerivations.AnalyticNumberTheory.RSA
-import IPRADerivations.Probability.ProductReplacement
-import IPRADerivations.Foundations.BoundedReflection
-import IPRADerivations.Core.CommonLemmas
-import IPRADerivations.Core.InductionTactic
-import IPRADerivations.Core.Header
 
 /-!
 # The comparison `S ≤ G` for the product of the primes coprime to `q`
@@ -32,27 +24,20 @@ sum over the squarefree `d ≤ z` coprime to `q`; these two identifications and 
 derived here.
 -/
 
-set_option linter.unusedSimpArgs false
-
 namespace LeanProofs.IPRA.AnalyticNumberTheory.DenominatorModulus
 
-open_ipra
+open_ipra exports
 open LeanProofs.IPRA.Analysis.Products (fact)
-open LeanProofs.IPRA.AnalyticNumberTheory.Primes (prime)
 open LeanProofs.IPRA.AnalyticNumberTheory.Totient (phi totBody inst2_tot)
 open LeanProofs.IPRA.AnalyticNumberTheory.Valuation (val isP isP_01 prime_of_isP val_not_dvd)
-open LeanProofs.IPRA.AnalyticNumberTheory.FactorVector (f_zero f_one)
 open LeanProofs.IPRA.AnalyticNumberTheory.Mobius (prime_two congrSg isP_zero)
 open LeanProofs.IPRA.AnalyticNumberTheory.BinomialLcm (PE XE inst2_PE inst2_XE PE_pos val_PE)
-open LeanProofs.IPRA.AnalyticNumberTheory.EulerProduct (phi_one)
 open LeanProofs.IPRA.AnalyticNumberTheory.RSA (quo_one)
 open LeanProofs.IPRA.AnalyticNumberTheory.EulerDomination (Sm gB base_le le_zero_of)
 open LeanProofs.IPRA.AnalyticNumberTheory.TotientTermStep (gt gt_dvd)
 open LeanProofs.IPRA.AnalyticNumberTheory.TotientSumStep (Gs GtB Gt_at)
 open LeanProofs.IPRA.AnalyticNumberTheory.DenominatorRange (VaB Cz P3 Va_at le_of_Cz range_step S_zero)
 open LeanProofs.IPRA.Combinatorics.BinomialTheorem (congrPw)
-open LeanProofs.IPRA.DiophantineNumberTheory.Coprime (dvd_self')
-open LeanProofs.IPRA.Foundations.BoundedReflection (eqb_cases eq_of_eqb)
 open LeanProofs.IPRA.Probability.ProductReplacement (prod_succ')
 open LeanProofs.IPRA.Signum (sg sg_zero sg_succ)
 

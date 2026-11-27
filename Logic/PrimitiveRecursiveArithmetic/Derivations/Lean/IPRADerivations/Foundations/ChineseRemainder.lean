@@ -1,7 +1,5 @@
 import IPRADerivations.Core.EuclidLemma
 import IPRADerivations.Combinatorics.BinomialIdentities
-import IPRADerivations.Core.LinearCombination
-import IPRADerivations.Core.Header
 
 /-!
 # The two-modulus Chinese remainder theorem
@@ -23,11 +21,9 @@ Bézout case by `b' - 1`), and `t = P (β + α (b' - 1))`, where `r = g α + ρ`
 `b' ∣ a' k` and, multiplying the Bézout relation by `k`, `b' ∣ k`, so `ℓ ∣ z`.
 -/
 
-set_option linter.unusedSimpArgs false
-
 namespace LeanProofs.IPRA.Foundations.ChineseRemainder
 
-open_ipra
+open_ipra exports
 open LeanProofs.IPRA.Combinatorics.Binomial (pos_mul)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
@@ -40,7 +36,7 @@ theorem rem_eq_of_eq' {M' x y k₁ k₂ : PTm n} (h : Γ ⊢[PRAAx] x + succ M' 
   have dx := div_mod (Γ := Γ) x M'
   have dy := div_mod (Γ := Γ) y M'
   have u₁ := div_mod_unique (z := x + succ M' * k₁) (q := quo x (succ M') + k₁)
-    (by refine withEq (Prf.andE₁ dx) fun e => ?_; apply deriveNat; ipra_simps; linear_combination e)
+    (by refine withEq (Prf.andE₁ dx) fun e => ?_; ipra_lc e)
     (Prf.andE₂ dx)
   have u₂ := div_mod_unique (z := x + succ M' * k₁) (q := quo y (succ M') + k₂)
     (by
@@ -97,12 +93,8 @@ theorem bezout_reduced₂ {g A B D a' b' c U V : PTm n} (hD : Γ ⊢[PRAAx] D �
     Γ ⊢[PRAAx] (U * c) * a' + b' * one ≐ one + (V * c) * b' := by
   have k : Γ ⊢[PRAAx] one + U * a' ≐ V * b' := by
     refine Combinatorics.BinomialIdentities.mul_cancel hD ?_
-    have h₁ := natEq h; have h₂ := natEq hg; have h₃ := natEq eA; have h₄ := natEq eB
-    apply deriveNat; ipra_simps
-    linear_combination h₁ - h₂ - Groth.ι (IPRA.Q.mk Γ U) * h₃ + Groth.ι (IPRA.Q.mk Γ V) * h₄
-  have h₁ := natEq k; have h₂ := natEq hb
-  apply deriveNat; ipra_simps
-  linear_combination Groth.ι (IPRA.Q.mk Γ c) * h₁ + h₂
+    ipra_lc natEq h - natEq hg - Groth.ι (IPRA.Q.mk Γ U) * natEq eA + Groth.ι (IPRA.Q.mk Γ V) * natEq eB
+  ipra_lc Groth.ι (IPRA.Q.mk Γ c) * natEq k + natEq hb
 
 /-- `A k = z = B w` with `A = D a'`, `B = D b'`. -/
 theorem unique_alg₁ {A A₁ B B₁ D a' b' z k w : PTm n}
@@ -285,3 +277,5 @@ theorem crt_unique : ([] : List (Fm PTm 0)) ⊢[PRAAx] univ 4 crtUniqueFormula :
     (Prf.andE₁ Prf.hyp0) (Prf.andE₂ Prf.hyp0)))
 
 end LeanProofs.IPRA.Foundations.ChineseRemainder
+
+export_ipra Foundations.ChineseRemainder (crt_exists_at crt_unique_at gcd_pos rem_eq_of_eq)

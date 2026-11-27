@@ -1,9 +1,6 @@
 import IPRADerivations.Core.OrderCertificates
-import IPRADerivations.AnalyticNumberTheory.Mobius
 import IPRADerivations.AnalyticNumberTheory.FactorialLambda
 import IPRADerivations.AnalyticNumberTheory.ValuationAdd
-import IPRADerivations.Core.LinearCombination
-import IPRADerivations.Core.Header
 
 /-!
 # The Möbius function is multiplicative
@@ -25,25 +22,18 @@ For `a, b ≥ 1` with `gcd(a, b) = 1` and every `N`:
   `μ(ab) = μ(a) μ(b)`.
 -/
 
-set_option linter.unusedSimpArgs false
-
 namespace LeanProofs.IPRA.AnalyticNumberTheory.MobiusMult
 
-open_ipra
-open LeanProofs.IPRA.AnalyticNumberTheory.Primes (prime)
+open_ipra exports
 open LeanProofs.IPRA.AnalyticNumberTheory.Valuation (val isP isP_01 prime_of_isP)
 open LeanProofs.IPRA.AnalyticNumberTheory.ValuationMul (val_mul val_one)
 open LeanProofs.IPRA.AnalyticNumberTheory.ValuationAdd (val_gcd_ge)
 open LeanProofs.IPRA.AnalyticNumberTheory.Mobius (om sq muP muN omB sqB inst2_om inst2_sq zero_mul_l congrSg
   congrEqb' congrVal par_succ shift_mul' one_ne_zero' zero_ne_one')
-open LeanProofs.IPRA.AnalyticNumberTheory.FactorialLambda (sum_add2)
-open LeanProofs.IPRA.AnalyticNumberTheory.Multiplicative (rem_eq' zero_lt')
 open LeanProofs.IPRA.AnalyticNumberTheory.PhiDouble (two_pos')
 open LeanProofs.IPRA.Signum (sg sg_zero sg_succ)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
-
-local notation "𝔞" t:max => Groth.ι (IPRA.Q.mk _ t)
 
 /-! ## Pointwise -/
 

@@ -1,5 +1,4 @@
 import IPRADerivations.Foundations.FiniteCoverSkeleton
-import IPRADerivations.Core.Header
 
 /-!
 # Quotients of finite sets by least representatives (`ipra_categorical_methods`, Section 4)
@@ -36,11 +35,9 @@ recurrence and its path invariant), so this is the quotient by a supplied equiva
 the colimit of an arbitrary finite diagram; and the compaction of the representatives to `[q]`.
 -/
 
-set_option linter.unusedSimpArgs false
-
 namespace LeanProofs.IPRA.Foundations.FiniteQuotient
 
-open_ipra
+open_ipra exports
 open LeanProofs.IPRA.Foundations.BoundedReflection (eqb_cases eq_of_eqb one_ne_zero)
 open LeanProofs.IPRA.Foundations.FiniteCoverSkeleton
 

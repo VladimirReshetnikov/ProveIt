@@ -1,6 +1,5 @@
 import IPRADerivations.DiophantineNumberTheory.MinkowskiRationalContent
 import IPRADerivations.DiophantineNumberTheory.MinkowskiGuardChecker
-import IPRADerivations.Core.Header
 
 /-!
 # The original rational box-certificate checker
@@ -14,18 +13,16 @@ formulas.  Checker acceptance supplies the proved actual rational-mesh
 extraction theorem.  Geometric `Inside` remains a separate formula input.
 -/
 
-set_option linter.unusedSimpArgs false
 set_option maxRecDepth 8192
 
 namespace LeanProofs.IPRA.DiophantineNumberTheory.MinkowskiBoxChecker
 
-open_ipra
+open_ipra exports
 open LeanProofs.IPRA.Foundations
 open LeanProofs.IPRA.Foundations.BoundedSyntax
 open LeanProofs.IPRA.Foundations.MasterCertificate (entry sequence subst_entry subst_sequence)
 open LeanProofs.IPRA.Foundations.SequenceComposition (length subst_length)
 open LeanProofs.IPRA.Analysis.RationalArgmin (left rationalLE)
-open LeanProofs.IPRA.DiophantineNumberTheory.MinkowskiRationalScaling (rationalLT)
 open LeanProofs.IPRA.DiophantineNumberTheory.MinkowskiRationalBoxes
   (lowerRow upperRow mesh integerBoxes rationalSide rationalSides rationalSeparationAt rationalSeparated rationalDisjoint)
 open LeanProofs.IPRA.DiophantineNumberTheory.MinkowskiRationalContent

@@ -1,10 +1,5 @@
 import IPRADerivations.DiophantineNumberTheory.KhinchinBlockScales
-import IPRADerivations.Probability.FiniteCauchySchwarz
 import IPRADerivations.Foundations.BoundedReflection
-import IPRADerivations.DiophantineNumberTheory.FLTMultiples
-import IPRADerivations.Core.LinearCombination
-import IPRADerivations.Core.SubstCommand
-import IPRADerivations.Core.Header
 
 /-!
 # The elementary estimates of the zeta finite contract (`zeta_functional_equation_ipra`)
@@ -26,16 +21,12 @@ estimates justifying the constants". Cleared of denominators:
 
 namespace LeanProofs.IPRA.AnalyticNumberTheory.ZetaFiniteContract
 
-open_ipra
-open LeanProofs.IPRA.DiophantineNumberTheory.KhinchinBlockGeo (congrPw2)
-open LeanProofs.IPRA.DiophantineNumberTheory.KhinchinBlockScales (pw_mono2)
+open_ipra exports
 open LeanProofs.IPRA.Probability.FiniteCauchySchwarz (dist dist_sq)
 
 set_option autoImplicit false
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
-
-local notation "𝔞" t:max => Groth.ι (IPRA.Q.mk _ t)
 
 /-! ## `n² ≤ 4^{n−1}` and the theta terms -/
 
@@ -108,7 +99,7 @@ theorem geo8 (J x : PTm n) : Γ ⊢[PRAAx] num 7 * ap2 (sumF g8B) J x + one ≐ 
       simp only [Syn.subst_var, Syn.inst_zero, Syn.subst_inst_shift]
       have a := natEq (sum_zero (Γ := Γ) g8B x)
       show Γ ⊢[PRAAx] num 7 * ap2 (sumF g8B) zero x + one ≐ pw (num 8) zero
-      ipra_lc 7 * a - natEq (pw_zero (Γ := Γ) (num 8 : PTm n))
+      ipra_lc 7 * a - natEq (pw_zero (num 8 : PTm n))
     · rw [subst_geo8Inv]
       simp only [Syn.subst_var, Syn.repl_zero, subst_repl_shift]
       let Δ : List (Fm PTm (n + 1)) := geo8Inv (var 0) (Syn.shift x) :: Γ.map Fm.shift
@@ -116,7 +107,7 @@ theorem geo8 (J x : PTm n) : Γ ⊢[PRAAx] num 7 * ap2 (sumF g8B) J x + one ≐ 
       rw [show inst2 g8B (var 0 : PTm (n + 1)) (Syn.shift x) = pw (num 8) (var 0) by simp [inst2]] at e1
       show Δ ⊢[PRAAx] num 7 * ap2 (sumF g8B) (succ (var 0)) (Syn.shift x) + one ≐ pw (num 8) (succ (var 0))
       ipra_lc 8 * natEq (Prf.hyp0 : Δ ⊢[PRAAx] num 7 * ap2 (sumF g8B) (var 0) (Syn.shift x) + one ≐ pw (num 8) (var 0)) +
-        7 * e1 - natEq (pw_succ (Γ := Δ) (num 8 : PTm (n + 1)) (var 0)) -
+        7 * e1 - natEq (pw_succ (num 8 : PTm (n + 1)) (var 0)) -
         7 * natEq (Prf.hyp0 : Δ ⊢[PRAAx] num 7 * ap2 (sumF g8B) (var 0) (Syn.shift x) + one ≐ pw (num 8) (var 0))
   have a := Prf.allE J hall
   rw [subst_geo8Inv] at a
@@ -222,3 +213,5 @@ theorem clog_least {j x : PTm n} (hj : Γ ⊢[PRAAx] lt j (clog x)) : Γ ⊢[PRA
   exact LeanProofs.IPRA.Foundations.IntervalPacking.lt_of_monus_pos z
 
 end LeanProofs.IPRA.AnalyticNumberTheory.ZetaFiniteContract
+
+export_ipra AnalyticNumberTheory.ZetaFiniteContract (clog clog_spec le_pow_self)

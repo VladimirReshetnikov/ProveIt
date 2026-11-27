@@ -1,7 +1,5 @@
 import IPRADerivations.DiophantineNumberTheory.MinkowskiSlabLinearity
 import IPRADerivations.DiophantineNumberTheory.MinkowskiCertificate
-import IPRADerivations.Core.LinearCombination
-import IPRADerivations.Core.Header
 
 /-!
 # A numerical rational slab certificate for the actual Minkowski extractor
@@ -17,14 +15,12 @@ rows. Forming those rows from a physical basis B and checking nonzero Bz
 are separate physical-coordinate obligations.
 -/
 
-set_option linter.unusedSimpArgs false
 set_option maxRecDepth 8192
 
 namespace LeanProofs.IPRA.DiophantineNumberTheory.MinkowskiSlabCertificate
 
-open_ipra
+open_ipra exports
 open LeanProofs.IPRA.Analysis
-open LeanProofs.IPRA.Analysis.RationalSupMetric (numeratorOf denominatorOf)
 open LeanProofs.IPRA.Analysis.RationalArithmetic (multiply represents multiply_guard multiply_value)
 open LeanProofs.IPRA.Analysis.RationalRepresentations (represents_self represents_multiply)
 open LeanProofs.IPRA.Analysis.RationalAlgebra (multiply_congr positive_product)

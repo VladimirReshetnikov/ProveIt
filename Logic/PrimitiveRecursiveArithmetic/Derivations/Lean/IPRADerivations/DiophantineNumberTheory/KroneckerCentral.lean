@@ -1,6 +1,4 @@
 import IPRADerivations.DiophantineNumberTheory.KroneckerBinomialLower
-import IPRADerivations.Combinatorics.Catalan
-import IPRADerivations.Core.Header
 
 /-!
 # The constant Fourier coefficient of the Kronecker kernel
@@ -14,13 +12,10 @@ the constant coefficient obeys `c₀ ≥ (2r+1)^{−d} = A^{−1}`". Cleared of 
 * `constant_coeff`: `(4^r)^d ≤ (2r+1)^d C(2r, r)^d`, i.e. `c₀ = (C(2r, r)/4^r)^d ≥ (2r+1)^{−d} = 1/A`.
 -/
 
-set_option linter.unusedSimpArgs false
-
 namespace LeanProofs.IPRA.DiophantineNumberTheory.KroneckerCentral
 
-open_ipra
+open_ipra exports
 open LeanProofs.IPRA.Combinatorics.Catalan (cb cb_zero cb_rec)
-open LeanProofs.IPRA.DiophantineNumberTheory.AperyMultibound (mul_pw)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 

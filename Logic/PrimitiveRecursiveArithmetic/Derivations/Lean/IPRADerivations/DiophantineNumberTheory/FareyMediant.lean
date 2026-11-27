@@ -1,6 +1,4 @@
 import IPRADerivations.DiophantineNumberTheory.Coprime
-import IPRADerivations.Core.LinearCombination
-import IPRADerivations.Core.Header
 
 /-!
 # Farey separation and the mediant
@@ -19,16 +17,11 @@ the cross products.
   `b (a + c) − a (b + d) = 1`.
 -/
 
-set_option linter.unusedSimpArgs false
-
 namespace LeanProofs.IPRA.DiophantineNumberTheory.FareyMediant
 
-open_ipra
-open LeanProofs.IPRA.DiophantineNumberTheory.Coprime (dvd_mul' dvd_sub' eq_one_of_dvd_one)
+open_ipra exports
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
-
-local notation "𝔞" t:max => Groth.ι (IPRA.Q.mk _ t)
 
 /-- **Farey separation**: for `b c = a d + 1`, a fraction `p/q` with `a/b < p/q < c/d` has `q ≥ b + d`. -/
 theorem farey_separation {a b c d p q : PTm n} (hdet : Γ ⊢[PRAAx] b * c ≐ a * d + one)

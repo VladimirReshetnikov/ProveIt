@@ -1,11 +1,6 @@
-import IPRADerivations.Core.Permutation
 import IPRADerivations.AnalyticNumberTheory.WeightedMangoldt
-import IPRADerivations.Foundations.ProductSumDomination
 import IPRADerivations.Combinatorics.CoefficientLogConcave
-import IPRADerivations.Probability.Variance
 import IPRADerivations.Foundations.FiniteAMGM
-import IPRADerivations.Core.LinearCombination
-import IPRADerivations.Core.Header
 
 /-!
 # Sums over a permuted range, and the total-degree audit of the elimination polynomial
@@ -35,24 +30,19 @@ Not derived: the determinant expansion of the elimination polynomial itself, and
 terms of degree at most `de` has degree at most `de`.
 -/
 
-set_option linter.unusedSimpArgs false
-
 namespace LeanProofs.IPRA.Foundations.EliminationDegree
 
-open_ipra
+open_ipra exports
 open LeanProofs.IPRA.Permutation (FS rangeAll invAll retAll prod_perm)
 open LeanProofs.IPRA.Combinatorics.Stirling (gle gle_of_le gle_above)
 open LeanProofs.IPRA.Combinatorics.CoefficientLogConcave (inst2_mul inst2_monus inst2_ap2)
 open LeanProofs.IPRA.Combinatorics.CatalanPowers (shift_pair shift_succ)
 open LeanProofs.IPRA.Combinatorics.BinomialTheorem (congrPw)
 open LeanProofs.IPRA.AnalyticNumberTheory.WeightedMangoldt (pw_lt_exp)
-open LeanProofs.IPRA.Foundations.ProductSumDomination (sum_trunc)
 open LeanProofs.IPRA.Foundations.FiniteAMGM (prod_succ'')
 open LeanProofs.IPRA.Probability.Variance (sum_const_of)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
-
-local notation "𝔞" t:max => Groth.ι (IPRA.Q.mk _ t)
 
 /-! ## Sums through exponentials -/
 
@@ -183,8 +173,7 @@ theorem elim_degree {β S τ : PTm 2} {d e x : PTm n}
     refine sum_congr_bounded _ _ _ _ _ (.allI (.impI ?_))
     rw [inst2_var0, inst2_var0]
     exact .eqRefl _
-  ipra_lc -natEq (sum_add (Γ := Γ) β S (e + d) x) + natEq B +
-    natEq (sum_add (Γ := Γ) (var 0 : PTm 2) dlB (e + d) (pairT d e)) + natEq D - natEq (sum_perm_id hr hinv hret) +
-    natEq (dl_sum (Γ := Γ) d e)
+  ipra_lc -natEq (sum_add β S (e + d) x) + natEq B + natEq (sum_add (var 0 : PTm 2) dlB (e + d) (pairT d e)) + natEq D -
+    natEq (sum_perm_id hr hinv hret) + natEq (dl_sum d e)
 
 end LeanProofs.IPRA.Foundations.EliminationDegree

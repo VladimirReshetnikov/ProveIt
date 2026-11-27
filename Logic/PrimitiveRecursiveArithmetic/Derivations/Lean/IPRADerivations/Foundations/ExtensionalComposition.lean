@@ -1,6 +1,4 @@
 import IPRADerivations.Foundations.TraceReflection
-import IPRADerivations.Core.Descent
-import IPRADerivations.Core.Header
 
 /-!
 # Composition of extensional contracts
@@ -26,11 +24,9 @@ with `q, c, c'` free.
 No property of the equivalences is used.
 -/
 
-set_option linter.unusedSimpArgs false
-
 namespace LeanProofs.IPRA.Foundations.ExtensionalComposition
 
-open_ipra
+open_ipra exports
 open LeanProofs.IPRA.Foundations.TraceReflection (I3 subst_I3)
 
 variable {EX EY EZ : Fm PTm 3} {C D dC dD : PTm 1}

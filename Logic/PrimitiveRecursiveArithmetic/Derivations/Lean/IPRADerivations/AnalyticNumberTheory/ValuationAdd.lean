@@ -1,7 +1,4 @@
 import IPRADerivations.AnalyticNumberTheory.WeightedMangoldt
-import IPRADerivations.AnalyticNumberTheory.ValuationMul
-import IPRADerivations.Core.LinearCombination
-import IPRADerivations.Core.Header
 
 /-!
 # The valuation of a sum
@@ -19,22 +16,14 @@ one is `min(k, ·)`. The product law is `ValuationMul.val_mul`.
   bounds (`el:valuation` of the same packet).
 -/
 
-set_option linter.unusedSimpArgs false
-
 namespace LeanProofs.IPRA.AnalyticNumberTheory.ValuationAdd
 
-open_ipra
-open LeanProofs.IPRA.AnalyticNumberTheory.Primes (prime)
+open_ipra exports
 open LeanProofs.IPRA.AnalyticNumberTheory.Mobius (prime_two)
 open LeanProofs.IPRA.AnalyticNumberTheory.Valuation (val val_dvd val_not_dvd cof_eq cof_not_dvd pw_pos')
-open LeanProofs.IPRA.AnalyticNumberTheory.ValuationMul (p_pos val_unique)
 open LeanProofs.IPRA.AnalyticNumberTheory.WeightedMangoldt (pw_dvd_pw)
-open LeanProofs.IPRA.DiophantineNumberTheory.Coprime (dvd_trans' dvd_add' dvd_sub' dvd_of_eq' gcd_dvd' gcd_greatest')
-open LeanProofs.IPRA.Foundations.ChineseRemainder (gcd_pos)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
-
-local notation "𝔞" t:max => Groth.ι (IPRA.Q.mk _ t)
 
 /-! ## Divisibility by a power and the valuation -/
 
@@ -73,8 +62,7 @@ theorem sum_alg {a b Pr Ps u v Pw p : PTm n} (ea : Γ ⊢[PRAAx] a ≐ Pr * u) (
 
 theorem pos_add {a b : PTm n} (ha : Γ ⊢[PRAAx] a ≐ succ (pred a)) :
     Γ ⊢[PRAAx] a + b ≐ succ (pred (a + b)) := by
-  have x := natEq ha
-  exact pos_of_eq_succ (c := pred a + b) (by apply deriveNat; ipra_simps; linear_combination x)
+  exact pos_of_eq_succ (c := pred a + b) (by ipra_lc natEq ha)
 
 /-- **Equality for different valuations**: for a prime `p` and `a ≥ 1` with `v_p(a) < v_p(b)`,
 `v_p(a + b) = v_p(a)`. -/

@@ -1,5 +1,4 @@
 import IPRADerivations.AnalyticNumberTheory.SymmetryBound
-import IPRADerivations.Core.Header
 
 /-!
 # The natural distance `|a − b|` (`pnt_ipra_constructive_2026-11-14`, towards `sb:weighted-sum`)
@@ -16,19 +15,13 @@ need the distance as a term. This module develops its order calculus once:
 * `absd_sum`: `|Σ f − Σ g| ≤ Σ |f − g|` for two sum bodies with a common parameter.
 -/
 
-set_option linter.unusedSimpArgs false
-
 namespace LeanProofs.IPRA.AnalyticNumberTheory.AbsDiff
 
-open_ipra
-open LeanProofs.IPRA.AnalyticNumberTheory.HarmonicMertens (le_scale)
-open LeanProofs.IPRA.AnalyticNumberTheory.FactorialLambda (sum_add2)
+open_ipra exports
 
 set_option autoImplicit false
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
-
-local notation "𝔞" t:max => Groth.ι (IPRA.Q.mk _ t)
 
 /-- `|a − b| = (a ∸ b) + (b ∸ a)`. -/
 abbrev absd (a b : PTm n) : PTm n := monus a b + monus b a
@@ -120,3 +113,5 @@ theorem absd_sum (f g : PTm 2) (N y : PTm n) :
   exact absd_le (by ipra_le sl p with e) (by ipra_le sl q with e')
 
 end LeanProofs.IPRA.AnalyticNumberTheory.AbsDiff
+
+export_ipra AnalyticNumberTheory.AbsDiff (absd absd_le absd_sum adB inst2_adB le_absd_l le_absd_r scale_absd)

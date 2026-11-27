@@ -1,6 +1,5 @@
 import IPRADerivations.Algebra.PowerDifference
 import IPRADerivations.Core.OrderCertificates
-import IPRADerivations.Core.Header
 
 /-!
 # Rational widths with a surplus for simultaneous Dirichlet approximation
@@ -19,13 +18,10 @@ rational widths with a surplus". With `X = N + 1/2`, `g = 1/(N(2N+1))`, `H = 4dN
 Here `N = N' + 1`, `d = d' + 1` and `c = 8N'² + 20N' + 12`.
 -/
 
-set_option linter.unusedSimpArgs false
-
 namespace LeanProofs.IPRA.DiophantineNumberTheory.SimultaneousWidths
 
-open_ipra
+open_ipra exports
 open LeanProofs.IPRA.Algebra.PowerDifference (gd power_diff gd_le)
-open LeanProofs.IPRA.AnalyticNumberTheory.Order (pw_one_base)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 

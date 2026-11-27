@@ -1,5 +1,4 @@
 import IPRADerivations.Foundations.IntervalPacking
-import IPRADerivations.Core.Header
 
 /-!
 # Packings from pointwise hypotheses
@@ -18,12 +17,11 @@ The conclusion is the packing identity `measure = w Σ_{j<K} [act_j]`.
 
 namespace LeanProofs.IPRA.Foundations.PackingPointwise
 
-open_ipra
+open_ipra exports
 open LeanProofs.IPRA.Signum (sg sg_zero sg_succ)
 open LeanProofs.IPRA.Foundations.IntervalCover (cnt measure lenB)
 open LeanProofs.IPRA.Foundations.IntervalAdditive (outB inst2_outB)
 open LeanProofs.IPRA.Foundations.IntervalPacking (loB hiB inst2_hiB spB inst2_spB srB inst2_srB acB packing)
-open LeanProofs.IPRA.AnalyticNumberTheory.Mobius (congrSg)
 
 set_option autoImplicit false
 

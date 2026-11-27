@@ -1,7 +1,6 @@
 import IPRADerivations.DiophantineNumberTheory.KhinchinMargin
 import IPRADerivations.AnalyticNumberTheory.LogRefinement
 import IPRADerivations.Foundations.CrossingSearch
-import IPRADerivations.Core.Header
 
 /-!
 # The parameters of one coarse cell (`hurwitz_khinchin_ipra`, assembling (K2))
@@ -21,16 +20,12 @@ grid is `T = rG` and the cell is the fine range `[rg, r(g+1))`. Its block uses t
 
 namespace LeanProofs.IPRA.DiophantineNumberTheory.KhinchinCellParams
 
-open_ipra
-open LeanProofs.IPRA.DiophantineNumberTheory.KhinchinMargin (cancel)
+open_ipra exports
 open LeanProofs.IPRA.AnalyticNumberTheory.LogRefinement (pos_of_eq)
-open LeanProofs.IPRA.Foundations.CrossingSearch (monus_of_eq)
 
 set_option autoImplicit false
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
-
-local notation "𝔞" t:max => Groth.ι (IPRA.Q.mk _ t)
 
 /-- `α = 4g + 1`. -/
 abbrev αc (g : PTm n) : PTm n := num 4 * g + one
@@ -76,3 +71,5 @@ theorem cell_hH {Q w r g p : PTm n} (hW : Γ ⊢[PRAAx] le (num 4 * (Q * Q) * w)
   ipra_le (𝔞 p + 1) * sl h
 
 end LeanProofs.IPRA.DiophantineNumberTheory.KhinchinCellParams
+
+export_ipra DiophantineNumberTheory.KhinchinCellParams (b0c)

@@ -1,8 +1,5 @@
 import IPRADerivations.AnalyticNumberTheory.WeightedBound
 import IPRADerivations.AnalyticNumberTheory.AbelParts
-import IPRADerivations.AnalyticNumberTheory.SumReindex
-import IPRADerivations.Core.LinearCombination
-import IPRADerivations.Core.Header
 
 /-!
 # The variation of `|R(x/n)|` (`pnt_ipra_constructive_2026-11-14`, `sb:weighted-sum`)
@@ -19,43 +16,29 @@ Packet: `analytic-number-theory/pnt_ipra_constructive_2026-11-14`, `selberg.tex`
 * `variation`: `Σ_{n≤x} n |g_n − g_{n+1}| ≤ 5x (u_x + F)` (`harm_one`: `S(x, F) ≤ u_x + F`).
 -/
 
-set_option linter.unusedSimpArgs false
 set_option linter.unusedSectionVars false
 
 namespace LeanProofs.IPRA.AnalyticNumberTheory.WeightedVariation
 
-open_ipra
+open_ipra exports
 open LeanProofs.IPRA.AnalyticNumberTheory.Harmonic (S hB inst2_h quo_anti)
 open LeanProofs.IPRA.AnalyticNumberTheory.HarmonicChebyshev (wt)
-open LeanProofs.IPRA.AnalyticNumberTheory.HarmonicMertens (le_scale)
 open LeanProofs.IPRA.AnalyticNumberTheory.HarmonicLogSquareSum (U)
-open LeanProofs.IPRA.AnalyticNumberTheory.HarmonicLogSum (fact_quo)
-open LeanProofs.IPRA.AnalyticNumberTheory.LcmUpto (Psi LamB pos_of_lt_zero lt_zero_of_pos)
-open LeanProofs.IPRA.AnalyticNumberTheory.SumReindex (sum_le_bound)
 open LeanProofs.IPRA.AnalyticNumberTheory.AbsDiff (absd absd_le le_absd_l le_absd_r absd_symm absd_triangle adB inst2_adB)
 open LeanProofs.IPRA.AnalyticNumberTheory.AbelParts (agB upB dnB inst2_agB inst2_upB inst2_dnB inst2_g1 abel_parts)
 open LeanProofs.IPRA.AnalyticNumberTheory.WeightedBound (psiB qB inst2_psiB inst2_qB)
-open LeanProofs.IPRA.AnalyticNumberTheory.WeightedSplit (inst2_add)
-open LeanProofs.IPRA.AnalyticNumberTheory.ChebyshevAbel (psi_k)
 open LeanProofs.IPRA.AnalyticNumberTheory.ComparisonEnvelope (harm_one)
 open LeanProofs.IPRA.AnalyticNumberTheory.ErrorEquation (eU')
-open LeanProofs.IPRA.AnalyticNumberTheory.SymmetryPointwise (le_Q4)
-open LeanProofs.IPRA.AnalyticNumberTheory.SymmetryInstances (bs_shift)
 open LeanProofs.IPRA.AnalyticNumberTheory.FourthRootSum (Q4)
 open LeanProofs.IPRA.AnalyticNumberTheory.ConvSummatory (Bs inst2_bS)
-open LeanProofs.IPRA.AnalyticNumberTheory.Mobius (congrSg zero_mul_l)
-open LeanProofs.IPRA.AnalyticNumberTheory.DivisorHarmonic (shift_fact')
 open LeanProofs.IPRA.Probability.Lotus (cmB sum_const_mul)
 open LeanProofs.IPRA.Probability.Independence (cm_pt)
-open LeanProofs.IPRA.Foundations.AuxiliaryEnvelope (sum_le_const)
 open LeanProofs.IPRA.Analysis.Products (fact)
 open LeanProofs.IPRA.Signum (sg sg_zero sg_succ)
 
 set_option autoImplicit false
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
-
-local notation "𝔞" t:max => Groth.ι (IPRA.Q.mk _ t)
 
 /-! ## Elementary facts -/
 
@@ -193,7 +176,6 @@ theorem var_le (x K L : PTm n) :
 theorem dn_eq (x K L : PTm n) :
     Γ ⊢[PRAAx] ap2 (sumF ndhB) (succ x) (pairT x (pairT K (fact L))) ≐
       ap2 (sumF (agB sgB hB)) (succ x) (pairT x (pairT K (fact L))) := by
-  have sg := natEq (sg_sum (Γ := Γ) x (pairT x (pairT K (fact L))))
   -- the upward part vanishes
   have up : Γ ⊢[PRAAx] le (ap2 (sumF (upB sgB hB)) (succ x) (pairT x (pairT K (fact L)))) (succ x * zero) :=
     sum_le_const _ (.allI (.impI (by
@@ -215,8 +197,8 @@ theorem dn_eq (x K L : PTm n) :
     (succ x) (.allI (.impI (by
       rw [inst2_ndh, inst2_dnB]
       exact congrMul (sg_sum _ _).eqSymm (.eqRefl _))))
-  ipra_lc natEq c - natEq (abel_parts (Γ := Γ) sgB hB x (pairT x (pairT K (fact L)))) -
-    𝔞 (ap2 (sumF sgB) (succ x) (pairT x (pairT K (fact L)))) * natEq (h_end (Γ := Γ) (x := x) (K := K) (L := L)) +
+  ipra_lc natEq c - natEq (abel_parts sgB hB x (pairT x (pairT K (fact L)))) -
+    𝔞 (ap2 (sumF sgB) (succ x) (pairT x (pairT K (fact L)))) * natEq (h_end (x := x) (K := K) (L := L)) +
     natEq (le_antisymm (le_congr (.eqRefl _) (mul_zero _) up) (zero_le _))
 
 /-! ## `Σ h_n ≤ 5x S(x, F)` -/

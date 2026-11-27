@@ -1,7 +1,4 @@
 import IPRADerivations.AnalyticNumberTheory.SymmetrySum
-import IPRADerivations.Core.LinearCombination
-import IPRADerivations.AnalyticNumberTheory.DivisorCases
-import IPRADerivations.Core.Header
 
 /-!
 # Summed Möbius inversion for any body (`pnt_ipra_constructive_2026-11-14`, towards `sb:symmetry-bound`)
@@ -20,29 +17,20 @@ nonnegative parts, each of the form `F = g * 𝟏`; for such parts the summed in
 * `mobius_summatory`: summed over `n ≤ x` and reversed by `ConvSummatory.conv_summatory`.
 -/
 
-set_option linter.unusedSimpArgs false
-
 namespace LeanProofs.IPRA.AnalyticNumberTheory.MobiusSummatory
 
-open_ipra
+open_ipra exports
 open LeanProofs.IPRA.AnalyticNumberTheory.Mobius
 open LeanProofs.IPRA.AnalyticNumberTheory.MobiusBounds (sum_ext shift_pos mu_bound congrMu)
-open LeanProofs.IPRA.AnalyticNumberTheory.MobiusInversion (eqb_rem_big)
 open LeanProofs.IPRA.AnalyticNumberTheory.MobiusInversionP (aP aN inst3_aP inst3_aN mobius_inversion_p)
 open LeanProofs.IPRA.AnalyticNumberTheory.DirichletLeibniz (cvB conv cv_at)
-open LeanProofs.IPRA.AnalyticNumberTheory.ConvolutionAssoc (cvF inst2_cvF)
-open LeanProofs.IPRA.AnalyticNumberTheory.FactorialLambda (sum_add2)
 open LeanProofs.IPRA.AnalyticNumberTheory.ConvSummatory (RB conv_summatory)
 open LeanProofs.IPRA.AnalyticNumberTheory.SymmetrySum (aPB aNB inst2_aP inst2_aN row_alg row_zero)
-open LeanProofs.IPRA.DiophantineNumberTheory.Coprime (eq_of_dvd' pos_of_eq_mul)
-open LeanProofs.IPRA.Probability.Independence (sum_scale)
 open LeanProofs.IPRA.Signum (sg sg_zero sg_succ)
 
 set_option autoImplicit false
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
-
-local notation "𝔞" t:max => Groth.ι (IPRA.Q.mk _ t)
 
 section Summatory
 
@@ -179,8 +167,7 @@ theorem pt_n (N y : PTm n) :
       refine (sum_succ' _ _ _).eqTrans ((congrAdd (sum_zero _ _) (cv_at _ _ _ _ _)).eqTrans ?_)
       exact (congrAdd (.eqRefl _) (zero_mul_l (zero_mul_l sg_zero _) _)).eqTrans (add_zero _)
     have g0 : C ⊢[PRAAx] sg N * inst2 g N y ≐ zero := zero_mul_l ((congrSg h0).eqTrans sg_zero) _
-    have a := natEq (cz aPB); have b := natEq (cz aNB); have c := natEq g0
-    apply deriveNat; ipra_simps; linear_combination a - b - c
+    ipra_lc natEq (cz aPB) - natEq (cz aNB) - natEq g0
   · let C : List (Fm PTm n) := (N ≐ succ (pred N)) :: Γ
     have hN : C ⊢[PRAAx] fstT (pairT N y) ≐ succ (pred (fstT (pairT N y))) :=
       ConvolutionAssoc.pos_of_eq ((fst_pair _ _).eqTrans Prf.hyp0)
@@ -204,3 +191,5 @@ theorem mobius_summatory (x y : PTm n) :
 end Summatory
 
 end LeanProofs.IPRA.AnalyticNumberTheory.MobiusSummatory
+
+export_ipra AnalyticNumberTheory.MobiusSummatory (inst2_gS mobius_summatory)

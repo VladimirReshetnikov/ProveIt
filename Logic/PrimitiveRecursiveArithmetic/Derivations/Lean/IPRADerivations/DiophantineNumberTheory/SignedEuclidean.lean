@@ -1,8 +1,5 @@
 import IPRADerivations.Core.IntCancel
 import IPRADerivations.AnalyticNumberTheory.Totatives
-import IPRADerivations.Core.LinearCombination
-import IPRADerivations.Core.SubstCommand
-import IPRADerivations.Core.Header
 
 /-!
 # Actual Euclidean division of signed integer pairs
@@ -24,11 +21,10 @@ do not identify two potentially different natural-pair representations.
 -/
 
 set_option autoImplicit false
-set_option linter.unusedSimpArgs false
 
 namespace LeanProofs.IPRA.DiophantineNumberTheory.SignedEuclidean
 
-open_ipra
+open_ipra exports
 open LeanProofs.IPRA.Signum (sg)
 open LeanProofs.IPRA.AnalyticNumberTheory.Totatives (sg_lt sg_le)
 
@@ -290,3 +286,5 @@ theorem program_modulus_one_closed :
     (ZT.toZ_eq (quotient_one (Γ := []) (decode (var 0 : PTm 1))))
 
 end LeanProofs.IPRA.DiophantineNumberTheory.SignedEuclidean
+
+export_ipra DiophantineNumberTheory.SignedEuclidean (decode)

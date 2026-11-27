@@ -1,6 +1,5 @@
 import IPRADerivations.Foundations.FilteredEnumeration
 import IPRADerivations.Core.OrderCertificates
-import IPRADerivations.Core.Header
 
 /-!
 # Bounded point-list correctness
@@ -23,15 +22,11 @@ rank and select of `Foundations/FilteredEnumeration` (no list code is needed). T
   `∃ r < ℓ, L[r] ∼ x`.
 -/
 
-set_option linter.unusedSimpArgs false
-
 namespace LeanProofs.IPRA.Foundations.PointList
 
-open_ipra
+open_ipra exports
 open LeanProofs.IPRA.Foundations.FilteredEnumeration (rank sel sel_spec sel_rank rank_lt_size)
 open LeanProofs.IPRA.Foundations.BoundedReflection (one_ne_zero)
-
-local notation "𝔞" t:max => Groth.ι (IPRA.Q.mk _ t)
 
 variable (W E : PTm 2) (R : Fm PTm 2)
 

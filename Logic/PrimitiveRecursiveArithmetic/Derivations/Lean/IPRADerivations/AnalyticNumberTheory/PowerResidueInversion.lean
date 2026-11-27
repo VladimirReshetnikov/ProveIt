@@ -1,6 +1,4 @@
-import IPRADerivations.AnalyticNumberTheory.PowerAbstractInversion
 import IPRADerivations.AnalyticNumberTheory.PowerResidueRows
-import IPRADerivations.Core.Header
 
 /-!
 # Möbius inversion for progression rows (`riemann_ipra_prime_criteria_2026-11-20`, `thm:powerdivisor`)
@@ -24,38 +22,27 @@ For `q ≥ 2`, a reduced residue `b < q`, `h ≥ 1` and the parameter `P = ⟨�
   `A_{q,b}(N) = Σ_{d≤N} μ(d) [gcd(d^h,q)=1] B_{h;q,b_{d^h}}(⌊N/d^h⌋)` (`PowerAbstractInversion.inversion_g`).
 -/
 
-set_option linter.unusedSimpArgs false
-
 namespace LeanProofs.IPRA.AnalyticNumberTheory.PowerResidueInversion
 
-open_ipra
+open_ipra exports
 open LeanProofs.IPRA.AnalyticNumberTheory.PowerAbstractInversion
 open LeanProofs.IPRA.AnalyticNumberTheory.PowerResidueRows
 open LeanProofs.IPRA.AnalyticNumberTheory.PowerResidue (res res_lt res_cop res_comp res_unique gcd_one_left)
 open LeanProofs.IPRA.AnalyticNumberTheory.Euler (cop_mul cop_of_mul)
 open LeanProofs.IPRA.AnalyticNumberTheory.PowerTwistPrefix (tBt tbtB tbtB_at)
-open LeanProofs.IPRA.AnalyticNumberTheory.PowerDivisorPrefix (Apre)
 open LeanProofs.IPRA.AnalyticNumberTheory.PowerDivisorInversion (Zp wP wN)
 open LeanProofs.IPRA.AnalyticNumberTheory.PowerDivisorRow (sum_cut lt_succ_pw pw_pos1)
-open LeanProofs.IPRA.AnalyticNumberTheory.ConvolutionAssoc (quo_quo)
-open LeanProofs.IPRA.AnalyticNumberTheory.LocalFactor (pw_mul_base)
 open LeanProofs.IPRA.Combinatorics.LegendreDigits (quo_small)
 open LeanProofs.IPRA.AnalyticNumberTheory.PNTStageStep (pos_of_one_le)
-open LeanProofs.IPRA.AnalyticNumberTheory.BlockChain (one_le_pw')
 open LeanProofs.IPRA.AnalyticNumberTheory.Mobius (congrEqb' congrSg)
-open LeanProofs.IPRA.Foundations.BoundedReflection (eqb_cases eq_of_eqb)
 open LeanProofs.IPRA.Signum (sg sg_zero sg_succ)
 open LeanProofs.IPRA.DiophantineNumberTheory.QuarticStep (congrGcd)
 open LeanProofs.IPRA.AnalyticNumberTheory.DivisorSwap (quo_lt')
-open LeanProofs.IPRA.AnalyticNumberTheory.LogRefinement (quo_mul)
-open LeanProofs.IPRA.AnalyticNumberTheory.Order (pw_one_base)
 open LeanProofs.IPRA.Combinatorics.Binomial (eq_of_rem_zero)
 
 set_option autoImplicit false
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
-
-local notation "𝔞" t:max => Groth.ι (IPRA.Q.mk _ t)
 
 variable (a : PTm 2)
 

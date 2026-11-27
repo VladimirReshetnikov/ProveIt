@@ -1,5 +1,4 @@
 import IPRADerivations.Foundations.Adjunction
-import IPRADerivations.Core.Header
 
 /-!
 # An equivalence from explicit splittings (`ipra_categorical_methods`, Section 4)
@@ -39,7 +38,7 @@ functor with the identity splitting (`idFun_laws`, `idSplit_laws`).
 
 namespace LeanProofs.IPRA.Foundations.SplitEquivalence
 
-open_ipra
+open_ipra exports
 open LeanProofs.IPRA.Foundations.PresentedCategory
 open LeanProofs.IPRA.Foundations.Adjunction
 

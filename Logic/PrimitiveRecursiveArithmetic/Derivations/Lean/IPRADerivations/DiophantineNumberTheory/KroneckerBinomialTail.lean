@@ -1,6 +1,5 @@
 import IPRADerivations.DiophantineNumberTheory.KroneckerKernel
 import IPRADerivations.Combinatorics.BinomialTwo
-import IPRADerivations.Core.Header
 
 /-!
 # The binomial tail of the Kronecker kernel
@@ -16,14 +15,10 @@ before `eq:kernel-tail`: with `δ = t^{−2}`,
   `T^{r−k} ≥ 1` cancels.
 -/
 
-set_option linter.unusedSimpArgs false
-
 namespace LeanProofs.IPRA.DiophantineNumberTheory.KroneckerBinomialTail
 
-open_ipra
-open LeanProofs.IPRA.DiophantineNumberTheory.AperyMultibound (mul_pw)
+open_ipra exports
 open LeanProofs.IPRA.DiophantineNumberTheory.SimultaneousGrid (one_le_pw_of cancel_pos)
-open LeanProofs.IPRA.AnalyticNumberTheory.Order (pw_one_base)
 open LeanProofs.IPRA.Combinatorics.Vandermonde (gb)
 open LeanProofs.IPRA.Combinatorics.BinomialTwo (bt S bt_at binomial_two)
 open LeanProofs.IPRA.Combinatorics.BinomialTheorem (congrPw)

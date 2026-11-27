@@ -1,9 +1,5 @@
 import IPRADerivations.DiophantineNumberTheory.SignedLine
 import IPRADerivations.DiophantineNumberTheory.NorthcottLocus
-import IPRADerivations.Foundations.BoundedReflection
-import IPRADerivations.Core.LinearCombination
-import IPRADerivations.Core.CommonLemmas
-import IPRADerivations.Core.Header
 
 /-!
 # Signed primitive representatives in every dimension
@@ -25,11 +21,9 @@ vectors vanish below `i_0` and are positive at `i_0`; the cross equations with `
 * `signed_vector_unique`: two normalized signed vectors on the same projective point are equal.
 -/
 
-set_option linter.unusedSimpArgs false
-
 namespace LeanProofs.IPRA.DiophantineNumberTheory.SignedVector
 
-open_ipra
+open_ipra exports
 open LeanProofs.IPRA.DiophantineNumberTheory.SignedLine (sv crossF cross_nat case_00 case_11 le_zero_eq)
 open LeanProofs.IPRA.DiophantineNumberTheory.GcdList (gv)
 open LeanProofs.IPRA.DiophantineNumberTheory.GcdNormalize (gv_all_zero)
@@ -39,8 +33,6 @@ open LeanProofs.IPRA.Foundations.BoundedReflection (exB wit ex_cases ex_elim ex_
 open LeanProofs.IPRA.Combinatorics.BinomialIdentities (mul_cancel)
 
 variable {k : ℕ} {Γ : List (Fm PTm k)}
-
-local notation "𝔞" t:max => Groth.ι (IPRA.Q.mk _ t)
 
 section Pairs
 variable {sa ma sb mb sc mc sd md : PTm k}
@@ -74,8 +66,7 @@ alias right_zero := Common.add_eq_zero_right
 /-- `p ≥ 1` and `p q = 0` give `q = 0`. -/
 theorem zero_of_mul {p q : PTm k} (hp : Γ ⊢[PRAAx] p ≐ succ (pred p)) (h : Γ ⊢[PRAAx] p * q ≐ zero) :
     Γ ⊢[PRAAx] q ≐ zero := by
-  have e := natEq h
-  exact mul_cancel hp (by apply deriveNat; ipra_simps; linear_combination e)
+  exact mul_cancel hp (by ipra_lc natEq h)
 
 theorem not_one_le_zero {x : PTm k} (h1 : Γ ⊢[PRAAx] le one x) (h0 : Γ ⊢[PRAAx] x ≐ zero) {φ : Fm PTm k} :
     Γ ⊢[PRAAx] φ :=
@@ -96,8 +87,7 @@ theorem index_rel (ha : Γ ⊢[PRAAx] sa ≐ zero) (hc : Γ ⊢[PRAAx] sc ≐ ze
       exact not_one_le_zero (le_congr Prf.hyp0 (.eqRefl _) ldd.wk.wk) d0
   · refine .orE bd.wk ?_ ?_
     · have s := sum_10 ha.wk.wk hc.wk.wk Prf.hyp1 Prf.hyp0 h.wk.wk
-      have e := natEq (right_zero s)
-      have b0 := zero_of_mul (q := mb) pc.wk.wk (by apply deriveNat; ipra_simps; linear_combination e)
+      have b0 := zero_of_mul (q := mb) pc.wk.wk (by ipra_lc natEq (right_zero s))
       exact not_one_le_zero (le_congr Prf.hyp1 (.eqRefl _) lbb.wk.wk) b0
     · exact .andI (case_11 ha.wk.wk hc.wk.wk Prf.hyp1 Prf.hyp0 h.wk.wk) (Prf.hyp1.eqTrans Prf.hyp0.eqSymm)
 
@@ -105,10 +95,7 @@ theorem index_rel (ha : Γ ⊢[PRAAx] sa ≐ zero) (hc : Γ ⊢[PRAAx] sc ≐ ze
 theorem d_zero_b (ha : Γ ⊢[PRAAx] sa ≐ zero) (pa : Γ ⊢[PRAAx] ma ≐ succ (pred ma))
     (hb : Γ ⊢[PRAAx] sb ≐ zero) (mb0 : Γ ⊢[PRAAx] mb ≐ zero) (bd : Γ ⊢[PRAAx] (sd ≐ zero) ⋎ (sd ≐ one))
     (h : Γ ⊢[PRAAx] crossF sa ma sb mb sc mc sd md) : Γ ⊢[PRAAx] md ≐ zero := by
-  have e := natEq (cross_nat h)
   have za := natEq ha; have zb := natEq hb; have m0 := natEq mb0
-  have ua := natEq ((congrMonus (.eqRefl one) ha).eqTrans (monus_zero (Γ := Γ) one))
-  have ub := natEq ((congrMonus (.eqRefl one) hb).eqTrans (monus_zero (Γ := Γ) one))
   refine zero_of_mul pa (.orE bd ?_ ?_)
   · have zd := natEq (Prf.hyp0 : ((sd ≐ zero) :: Γ) ⊢[PRAAx] sd ≐ zero)
     have ud := natEq ((congrMonus (.eqRefl one) (Prf.hyp0 : ((sd ≐ zero) :: Γ) ⊢[PRAAx] sd ≐ zero)).eqTrans

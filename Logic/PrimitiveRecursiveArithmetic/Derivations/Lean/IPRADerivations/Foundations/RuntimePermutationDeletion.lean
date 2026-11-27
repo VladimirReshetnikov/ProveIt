@@ -1,9 +1,6 @@
 import IPRADerivations.Foundations.RuntimePermutationSums
 import IPRADerivations.Foundations.RuntimeWordAppend
 import IPRADerivations.Foundations.InjectionCount
-import IPRADerivations.Core.CongruenceTactic
-import IPRADerivations.Core.SubstCommand
-import IPRADerivations.Core.Header
 
 /-!
 # Actual deletion of the maximum digit of a numerical permutation word
@@ -19,7 +16,7 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Foundations.RuntimePermutationDeletion
 
-open_ipra
+open_ipra exports
 open RuntimePermutationWords (digit horizon permutationBit word encode tuple range distinct entriesEqual)
 open LeanProofs.IPRA.Foundations.MasterCertificate (entry sequence sequence_length sequence_decode)
 open LeanProofs.IPRA.Foundations.SequenceComposition (length entry_congr)
@@ -318,3 +315,5 @@ theorem actual_returned_packed_bound_closed : ([] : List (Fm PTm 0)) ⊢[PRAAx] 
   closeUniv 2 (.impI (.impI (returned_packed_bound _ _ Prf.hyp1 Prf.hyp0)))
 
 end LeanProofs.IPRA.Foundations.RuntimePermutationDeletion
+
+export_ipra Foundations.RuntimePermutationDeletion (maximumPosition slot_after slot_before slot_bound)

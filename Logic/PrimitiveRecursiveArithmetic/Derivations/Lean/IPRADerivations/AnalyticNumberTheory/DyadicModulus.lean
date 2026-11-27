@@ -1,9 +1,6 @@
 import IPRADerivations.Algebra.PowerDifference
 import IPRADerivations.AnalyticNumberTheory.PowerCleared
-import IPRADerivations.AnalyticNumberTheory.RSA
 import IPRADerivations.Core.ProdLemmas
-import IPRADerivations.Core.LinearCombination
-import IPRADerivations.Core.Header
 
 /-!
 # Dyadic arithmetic of the analytic moduli
@@ -25,19 +22,12 @@ The divergence side of (D2), a block `2^(a−1) < n ≤ 2^a` contributing at lea
 `σ = 1`, is `AnalyticNumberTheory/Harmonic`. The analytic estimates themselves are not formalized.
 -/
 
-set_option linter.unusedSimpArgs false
-
 namespace LeanProofs.IPRA.AnalyticNumberTheory.DyadicModulus
 
-open_ipra
+open_ipra exports
 open LeanProofs.IPRA.Algebra.PowerDifference (gd geom_sum)
-open LeanProofs.IPRA.AnalyticNumberTheory.PowerCleared (pw_le_exp)
-open LeanProofs.IPRA.AnalyticNumberTheory.RSA (pw_mul)
-open LeanProofs.IPRA.AnalyticNumberTheory.LocalFactor (pw_mul_base)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
-
-local notation "𝔞" t:max => Groth.ι (IPRA.Q.mk _ t)
 
 /-- `2^100 (2^14 (r + 1))^10 = 2^240 (r + 1)^10`. -/
 theorem modulus_exponent (r : PTm n) :
@@ -47,7 +37,7 @@ theorem modulus_exponent (r : PTm n) :
     apply deriveNat; ipra_simps; norm_num
   have e₂ : Γ ⊢[PRAAx] (num 100 + num 140 : PTm n) ≐ num 240 := by
     apply deriveNat; ipra_simps; norm_num
-  ipra_lc 𝔞(pw two (num 100)) * natEq (pw_mul_base (Γ := Γ) (pw two (num 14)) (succ r) (num 10)) +
+  ipra_lc 𝔞(pw two (num 100)) * natEq (pw_mul_base (pw two (num 14)) (succ r) (num 10)) +
     𝔞(pw two (num 100)) * 𝔞(pw (succ r) (num 10)) * natEq ((pw_mul (Γ := Γ) two (num 14) (num 10)).eqTrans (congrAp2 powF e₁ (.eqRefl two))) -
     𝔞(pw (succ r) (num 10)) * natEq ((congrAp2 powF e₂.eqSymm (.eqRefl (two : PTm n))).eqTrans (pw_add (Γ := Γ) two (num 100) (num 140)))
 
@@ -79,6 +69,6 @@ theorem theta_rate {r q ρ k : PTm n} (hk : Γ ⊢[PRAAx] le (num 8 * succ r) k)
 /-- `1 + ∑_{j<R} 2^j = 2^R`. -/
 theorem geom_two (R : PTm n) : Γ ⊢[PRAAx] succ (gd two one R) ≐ pw two R := by
   refine add_right_cancel (c := gd two one R) ?_
-  ipra_lc -natEq (geom_sum (Γ := Γ) two R)
+  ipra_lc -natEq (geom_sum two R)
 
 end LeanProofs.IPRA.AnalyticNumberTheory.DyadicModulus

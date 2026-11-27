@@ -1,5 +1,4 @@
 import IPRADerivations.AnalyticNumberTheory.Multiplicative
-import IPRADerivations.Core.Header
 
 /-!
 # The constructive Chinese remainder bijection
@@ -17,15 +16,11 @@ For `m, n ≥ 1` with `gcd(m, n) = 1`, the map `x ↦ (x mod m, x mod n)` is a b
 * `crt_reduced`, `crt_reduced_inv`: `gcd(x, mn) = 1` iff `gcd(x mod m, m) = gcd(x mod n, n) = 1`.
 -/
 
-set_option linter.unusedSimpArgs false
-
 namespace LeanProofs.IPRA.AnalyticNumberTheory.CrtBijection
 
-open_ipra
+open_ipra exports
 open LeanProofs.IPRA.Combinatorics.Binomial (pos_mul)
 open LeanProofs.IPRA.DiophantineNumberTheory.Coprime
-open LeanProofs.IPRA.Foundations.ChineseRemainder (crt_exists_at crt_unique_at)
-open LeanProofs.IPRA.AnalyticNumberTheory.Totient (quo_eq)
 open LeanProofs.IPRA.AnalyticNumberTheory.GcdFiber (shift_pos)
 open LeanProofs.IPRA.AnalyticNumberTheory.Multiplicative (rem_lt' rem_eq' zero_lt' rem_rem_mul cop_left cop_right
   cop_both gcd_rem shift_lt)
@@ -80,8 +75,7 @@ theorem crt_surj (hc : Γ ⊢[PRAAx] gcd m N ≐ one) {a b : PTm n} (ha : Γ ⊢
   have e₂ := (Prf.andE₂ rr).eqTrans ((Prf.andE₂ h).eqTrans (rem_small hN'.wk hb'.wk))
   have hl := rem_lt' (Γ := C) (pos_mul hm'.wk hN'.wk) (var 0)
   refine .exI (rem (var 0) (Syn.shift m * Syn.shift N)) ?_
-  simp only [Fm.shift, Fm.subst, Fm.subst_and, Fm.subst_eq, subst_lt, subst_le, subst_ap2, PTm.subst_mul,
-    Syn.subst_var, Syn.inst_zero, Syn.subst_inst_shift, ConciseIPRA.PTm.subst_succ, ConciseIPRA.PTm.subst_zero]
+  simp only [Fm.subst, Fm.subst_and, subst_lt, subst_ap2, Syn.subst_var]
   have g := Prf.andI hl (Prf.andI e₁ e₂)
   simp [Syn.shift, Syn.subst_subst]
   exact g

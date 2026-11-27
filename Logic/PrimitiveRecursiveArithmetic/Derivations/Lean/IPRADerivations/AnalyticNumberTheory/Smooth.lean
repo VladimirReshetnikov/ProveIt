@@ -1,7 +1,4 @@
 import IPRADerivations.AnalyticNumberTheory.SumReindex
-import IPRADerivations.Core.LinearCombination
-import IPRADerivations.Core.InductionTactic
-import IPRADerivations.Core.Header
 
 /-!
 # Every `m ≤ N` divides a power of the primorial
@@ -21,18 +18,13 @@ set_option linter.unusedSimpArgs false
 
 namespace LeanProofs.IPRA.AnalyticNumberTheory.Smooth
 
-open_ipra
+open_ipra exports
 open LeanProofs.IPRA.Combinatorics.Binomial (pos_mul)
 open LeanProofs.IPRA.Combinatorics.BinomialTheorem (congrPw)
 open LeanProofs.IPRA.DiophantineNumberTheory.Coprime
 open LeanProofs.IPRA.DiophantineNumberTheory.FermatQuartic (congrSg)
 open LeanProofs.IPRA.Algebra.CubeRootTwo (sg sg_zero sg_succ)
-open LeanProofs.IPRA.AnalyticNumberTheory.PhiDivides (sg_zero_inv)
-open LeanProofs.IPRA.AnalyticNumberTheory.Primes (lpf lpf_dvd lpf_prime prime eq_succ_pred)
-open LeanProofs.IPRA.AnalyticNumberTheory.Valuation (lpf_congr prime_congr pw_pos')
-open LeanProofs.IPRA.AnalyticNumberTheory.LocalFactor (pw_mul_base)
 open LeanProofs.IPRA.AnalyticNumberTheory.PowerCleared (A pB pBt A_succ A_pos pBt_one)
-open LeanProofs.IPRA.AnalyticNumberTheory.Valuation (isP_of_prime)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
@@ -193,3 +185,5 @@ theorem smooth_all {m N : PTm n} (hm : Γ ⊢[PRAAx] m ≐ succ (pred m)) (h : �
     (pw_dvd_exp (A_pos _) h)
 
 end LeanProofs.IPRA.AnalyticNumberTheory.Smooth
+
+export_ipra AnalyticNumberTheory.Smooth (pw_dvd_base)

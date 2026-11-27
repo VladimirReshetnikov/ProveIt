@@ -1,8 +1,5 @@
 import IPRADerivations.Core.OrderCertificates
-import IPRADerivations.Core.BoundedSums
-import IPRADerivations.Core.Gcd
 import IPRADerivations.AnalyticNumberTheory.PhiLower
-import IPRADerivations.Core.Header
 
 /-!
 # Finite zeta tails
@@ -23,12 +20,9 @@ Denominators are cleared by a common multiple `F` with exact quotients (the conv
   `Z_T − Z_M ≤ 1/(2M²)`; nonnegativity is that of natural numbers.
 -/
 
-set_option linter.unusedSimpArgs false
-
 namespace LeanProofs.IPRA.DiophantineNumberTheory.AperyZetaTail
 
-open_ipra
-open LeanProofs.IPRA.AnalyticNumberTheory.PhiLower (le_mul_mono)
+open_ipra exports
 
 variable {k : ℕ} {Γ : List (Fm PTm k)}
 

@@ -1,8 +1,5 @@
 import IPRADerivations.AnalyticNumberTheory.Mobius
-import IPRADerivations.AnalyticNumberTheory.Fermat
 import IPRADerivations.DiophantineNumberTheory.ModularCertificate
-import IPRADerivations.AnalyticNumberTheory.ValuationMul
-import IPRADerivations.Core.Header
 
 /-!
 # The Frobenius identity for two numbers
@@ -19,16 +16,10 @@ congruence is `Fermat.freshman`. For two natural numbers the congruence follows 
 The coefficientwise identity for finite polynomials modulo `p` is not derived.
 -/
 
-set_option linter.unusedSimpArgs false
-
 namespace LeanProofs.IPRA.AnalyticNumberTheory.FrobeniusSum
 
-open_ipra
-open LeanProofs.IPRA.AnalyticNumberTheory.Primes (prime)
+open_ipra exports
 open LeanProofs.IPRA.AnalyticNumberTheory.Mobius (prime_two)
-open LeanProofs.IPRA.AnalyticNumberTheory.ValuationMul (p_pos)
-open LeanProofs.IPRA.AnalyticNumberTheory.Fermat (fermat_at)
-open LeanProofs.IPRA.DiophantineNumberTheory.ModularCertificate (rem_add_congr)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 

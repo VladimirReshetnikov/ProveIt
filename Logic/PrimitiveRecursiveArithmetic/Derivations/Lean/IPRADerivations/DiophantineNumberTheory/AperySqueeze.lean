@@ -1,7 +1,4 @@
 import IPRADerivations.DiophantineNumberTheory.EllipticSearch
-import IPRADerivations.Core.IntOrder
-import IPRADerivations.Core.LinearCombination
-import IPRADerivations.Core.Header
 
 /-!
 # The finite rational squeeze
@@ -19,11 +16,9 @@ cleared by `uvK`:
   `x` and `y` interchanged.)
 -/
 
-set_option linter.unusedSimpArgs false
-
 namespace LeanProofs.IPRA.DiophantineNumberTheory.AperySqueeze
 
-open_ipra
+open_ipra exports
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 

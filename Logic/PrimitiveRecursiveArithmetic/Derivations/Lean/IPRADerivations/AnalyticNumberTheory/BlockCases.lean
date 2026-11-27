@@ -1,7 +1,6 @@
 import IPRADerivations.AnalyticNumberTheory.BlockTests
 import IPRADerivations.AnalyticNumberTheory.ContractionMain
 import IPRADerivations.Foundations.WindowStability
-import IPRADerivations.Core.Header
 
 /-!
 # The first two cases of the block deficit (`pnt_ipra_constructive_2026-11-14`, `con:deficit`)
@@ -21,13 +20,10 @@ satisfies the uniform bound
 The certificates are exact: `16D·(case) + 16D²·(mean) + 16DA·(mass) + 16DAx·(length) + Fx·(H₀)`.
 -/
 
-set_option linter.unusedSimpArgs false
-
 namespace LeanProofs.IPRA.AnalyticNumberTheory.BlockCases
 
-open_ipra
+open_ipra exports
 open LeanProofs.IPRA.AnalyticNumberTheory.Harmonic (S hB inst2_h quo_anti)
-open LeanProofs.IPRA.AnalyticNumberTheory.HarmonicMertens (le_scale)
 open LeanProofs.IPRA.AnalyticNumberTheory.SummatoryCompose (hRB)
 open LeanProofs.IPRA.AnalyticNumberTheory.BlockSums (biB pzB fzB block_mean_upper block_mean_lower)
 open LeanProofs.IPRA.AnalyticNumberTheory.BlockMass (mass_lower)
@@ -35,17 +31,12 @@ open LeanProofs.IPRA.AnalyticNumberTheory.BlockDeficit (gzB gz_at term_at tw bv 
   case_lo_sum case_hi_sum)
 open LeanProofs.IPRA.AnalyticNumberTheory.ContractionMain (fq_le)
 open LeanProofs.IPRA.AnalyticNumberTheory.PNTStageStep (pos_of_one_le)
-open LeanProofs.IPRA.AnalyticNumberTheory.Mobius (congrSg)
-open LeanProofs.IPRA.Foundations.WindowStability (sum_lower)
-open LeanProofs.IPRA.AnalyticNumberTheory.DivisorHarmonic (shift_fact')
 open LeanProofs.IPRA.Analysis.Products (fact)
 open LeanProofs.IPRA.Signum (sg sg_succ)
 
 set_option autoImplicit false
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
-
-local notation "𝔞" t:max => Groth.ι (IPRA.Q.mk _ t)
 
 /-- `S(b) ≥ S(a) + (b − a)⌊F/b⌋` for `a ≤ b`. -/
 theorem S_gap {a b : PTm n} (F : PTm n) (hab : Γ ⊢[PRAAx] le a b) :

@@ -1,6 +1,4 @@
 import IPRADerivations.AnalyticNumberTheory.TauLogAbel
-import IPRADerivations.Core.InductionTactic
-import IPRADerivations.Core.Header
 
 /-!
 # Floor telescoping and the cube identity (`pnt_ipra_constructive_2026-11-14`, towards `sb:symmetry`)
@@ -20,18 +18,13 @@ set_option linter.unusedSimpArgs false
 
 namespace LeanProofs.IPRA.AnalyticNumberTheory.FloorTelescope
 
-open_ipra
-open LeanProofs.IPRA.AnalyticNumberTheory.HarmonicMertens (le_scale)
+open_ipra exports
 open LeanProofs.IPRA.AnalyticNumberTheory.TauLogAbel (quo_one')
-open LeanProofs.IPRA.AnalyticNumberTheory.SumReindex (le_quo_of_mul_le)
 open LeanProofs.IPRA.DiophantineNumberTheory.HurwitzLoop (quo_mul_le)
-open LeanProofs.IPRA.AnalyticNumberTheory.LcmUpto (pos_of_lt_zero)
 
 set_option autoImplicit false
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
-
-local notation "𝔞" t:max => Groth.ι (IPRA.Q.mk _ t)
 
 /-! ## The cube identity -/
 
@@ -46,12 +39,11 @@ private abbrev cubeF : Fm PTm 2 := ap2 (sumF cB) (var 0) (var 1) ≐ var 0 * var
 private theorem cube₀ : ([] : List (Fm PTm 2)) ⊢[PRAAx] cubeF := by
   ipra_ind [subst_ap2]
   · have e := natEq (sum_zero (Γ := ([] : List (Fm PTm 1))) cB (var 0))
-    apply deriveNat; ipra_simps; linear_combination e
+    ipra_lc e
   · have ih := natEq (Prf.hyp0 : [cubeF] ⊢[PRAAx] cubeF)
     have s := sum_succ' (Γ := [cubeF]) cB (var 0) (var 1)
     rw [inst2_cB] at s
-    have e := natEq s
-    apply deriveNat; ipra_simps; linear_combination e + ih
+    ipra_lc natEq s + ih
 
 /-- `Σ_{j<N} (3j² + 3j + 1) = N³`. -/
 theorem cube_sum (N x : PTm n) : Γ ⊢[PRAAx] ap2 (sumF cB) N x ≐ N * N * N := by

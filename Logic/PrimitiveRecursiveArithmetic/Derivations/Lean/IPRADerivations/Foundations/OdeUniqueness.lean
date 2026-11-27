@@ -1,8 +1,6 @@
 import IPRADerivations.Foundations.DiscreteGronwall
 import IPRADerivations.Probability.MedianWeighted
 import IPRADerivations.Foundations.EigenvalueBound
-import IPRADerivations.Core.OrderCertificates
-import IPRADerivations.Core.Header
 
 /-!
 # Quantitative uniqueness of controlled flows at the nodes
@@ -37,18 +35,14 @@ The choice of `N` and `p` from a requested accuracy and the passage to equality 
 families (regularity and reindexing) are not derived here.
 -/
 
-set_option linter.unusedSimpArgs false
-
 namespace LeanProofs.IPRA.Foundations.OdeUniqueness
 
-open_ipra
+open_ipra exports
 open LeanProofs.IPRA.Probability.Variance (ad sum_const_of)
 open LeanProofs.IPRA.Foundations.EigenvalueBound (ad_le_of le_add_ad)
 open LeanProofs.IPRA.Foundations.DiscreteGronwall (gronwall_three)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
-
-local notation "𝔞" t:max => Groth.ι (IPRA.Q.mk _ t)
 
 /-! ## One step -/
 

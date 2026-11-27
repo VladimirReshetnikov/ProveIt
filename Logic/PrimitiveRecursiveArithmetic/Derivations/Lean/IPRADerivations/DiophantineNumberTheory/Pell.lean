@@ -14,7 +14,7 @@ import IPRADerivations.Core.Header
 
 namespace LeanProofs.IPRA.DiophantineNumberTheory.Pell
 
-open_ipra
+open_ipra exports
 
 section Brahmagupta
 

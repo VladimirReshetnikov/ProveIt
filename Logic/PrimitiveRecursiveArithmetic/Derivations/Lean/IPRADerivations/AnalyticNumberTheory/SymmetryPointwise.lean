@@ -1,7 +1,5 @@
 import IPRADerivations.AnalyticNumberTheory.SymmetryInstances
 import IPRADerivations.AnalyticNumberTheory.WeightBridge
-import IPRADerivations.Core.CommonLemmas
-import IPRADerivations.Core.Header
 
 /-!
 # The comparison at one inner endpoint (`pnt_ipra_constructive_2026-11-14`, `sb:symmetry`)
@@ -24,14 +22,11 @@ two logarithm bridges: `WeightBridge` for the squares, and `tw_le_tu`/`tu_le_tw`
 `Σ τ u` (`L_w(j) ≤ u_j ≤ L_w(j) + j ⌊F/K⌋`). The choice `K ≥ (x+1)⁴` makes every `⌊F/K⌋` error at most `F`.
 -/
 
-set_option linter.unusedSimpArgs false
-
 namespace LeanProofs.IPRA.AnalyticNumberTheory.SymmetryPointwise
 
-open_ipra
+open_ipra exports
 open LeanProofs.IPRA.AnalyticNumberTheory.Harmonic (S hB)
 open LeanProofs.IPRA.AnalyticNumberTheory.HarmonicChebyshev (S_mono wt)
-open LeanProofs.IPRA.AnalyticNumberTheory.HarmonicMertens (le_scale)
 open LeanProofs.IPRA.AnalyticNumberTheory.HarmonicLogSquareSum (U Qs)
 open LeanProofs.IPRA.AnalyticNumberTheory.TauLogAbel (As CT)
 open LeanProofs.IPRA.AnalyticNumberTheory.TauAbelIdentity (tuB tuB_at abel_tau)
@@ -43,29 +38,19 @@ open LeanProofs.IPRA.AnalyticNumberTheory.SymmetrySum (bL)
 open LeanProofs.IPRA.AnalyticNumberTheory.ConvSummatory (bS inst2_bS Bs)
 open LeanProofs.IPRA.AnalyticNumberTheory.SymmetryInstances (bs_shift conv_zero twB inst2_twB)
 open LeanProofs.IPRA.AnalyticNumberTheory.DirichletLeibniz (cvB conv inst2_cvB)
-open LeanProofs.IPRA.AnalyticNumberTheory.Mobius (one_inst zero_mul_l)
-open LeanProofs.IPRA.AnalyticNumberTheory.DivisorHarmonic (shift_fact')
 open LeanProofs.IPRA.AnalyticNumberTheory.EulerDomination (sg_le_one)
-open LeanProofs.IPRA.AnalyticNumberTheory.TotientCorollaries (eqb_le_one)
-open LeanProofs.IPRA.AnalyticNumberTheory.LcmUpto (pos_of_lt_zero)
-open LeanProofs.IPRA.Foundations.AuxiliaryEnvelope (sum_le_const)
-open LeanProofs.IPRA.AnalyticNumberTheory.WeightedMangoldt (Lw)
 open LeanProofs.IPRA.Analysis.Products (fact)
-open LeanProofs.IPRA.Signum (sg)
 
 set_option autoImplicit false
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
-
-local notation "𝔞" t:max => Groth.ι (IPRA.Q.mk _ t)
 
 /-! ## Elementary bounds -/
 
 /-- `⌊x/q⌋ q ≤ x`. -/
 theorem quo_mul_le {x q : PTm n} (hq : Γ ⊢[PRAAx] q ≐ succ (pred q)) : Γ ⊢[PRAAx] le (quo x q * q) x := by
   have d := div_mod_at (Γ := Γ) (x := x) hq
-  have e := natEq (Prf.andE₁ d)
-  exact le_of_eq_add (d := rem x q) (by apply deriveNat; ipra_simps; linear_combination e)
+  exact le_of_eq_add (d := rem x q) (by ipra_lc natEq (Prf.andE₁ d))
 
 /-- `τ(N) ≤ N + 1`. -/
 theorem tau_le (N y : PTm n) : Γ ⊢[PRAAx] le (conv one one N y) (succ N) := by
@@ -210,3 +195,5 @@ theorem point_lower {k K L x : PTm n} (h : Hyp k K L x Γ) :
   ipra_le sl bl + sl cl + sl ev + sl tu + sl cb + 𝔞 (fact L) * 𝔞 (fact L) with -(𝔞 (fact L) * ab)
 
 end LeanProofs.IPRA.AnalyticNumberTheory.SymmetryPointwise
+
+export_ipra AnalyticNumberTheory.SymmetryPointwise (le_Q4 quo_mul_le)

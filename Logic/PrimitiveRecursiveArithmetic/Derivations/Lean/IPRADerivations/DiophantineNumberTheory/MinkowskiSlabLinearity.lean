@@ -19,12 +19,11 @@ the doubled-coordinate Inside checker and specialized extraction remain
 separate; no geometric closure or output membership is a premise here.
 -/
 
-set_option linter.unusedSimpArgs false
 set_option maxRecDepth 8192
 
 namespace LeanProofs.IPRA.DiophantineNumberTheory.MinkowskiSlabLinearity
 
-open_ipra
+open_ipra exports
 open LeanProofs.IPRA.Foundations.MasterCertificate (entry subst_entry)
 open LeanProofs.IPRA.Foundations.SequenceComposition (length subst_length)
 open LeanProofs.IPRA.Analysis.RationalArithmetic (multiply negative recode recode_equal)

@@ -1,4 +1,3 @@
-import IPRADerivations.Core.Division
 import IPRADerivations.Core.Gcd
 import IPRADerivations.Core.OrderCertificates
 import IPRADerivations.Core.Header
@@ -33,11 +32,9 @@ The bisection name itself (`lem:bisect`), the represented-input adapter and the 
 derived here; for the cubic chart of the corollary see `Foundations/StableCubicRoot`.
 -/
 
-set_option linter.unusedSimpArgs false
-
 namespace LeanProofs.IPRA.Foundations.UniformCertificates
 
-open_ipra
+open_ipra exports
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 

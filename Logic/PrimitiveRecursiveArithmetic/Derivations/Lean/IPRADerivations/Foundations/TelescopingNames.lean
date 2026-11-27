@@ -1,6 +1,5 @@
 import IPRADerivations.Core.OrderCertificates
 import IPRADerivations.Core.BoundedSums
-import IPRADerivations.Core.Pairing
 import IPRADerivations.Core.Header
 
 /-!
@@ -38,11 +37,9 @@ regular name `r_k = a_{T(k)}`. The construction of the clouds from shrinking via
 PFIG `thm:adjacent-coherence` are not derived here.
 -/
 
-set_option linter.unusedSimpArgs false
-
 namespace LeanProofs.IPRA.Foundations.TelescopingNames
 
-open_ipra
+open_ipra exports
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 

@@ -1,7 +1,5 @@
 import IPRADerivations.DiophantineNumberTheory.Coprime
 import IPRADerivations.Geometry.PlatonicSolids
-import IPRADerivations.Core.LinearCombination
-import IPRADerivations.Core.Header
 
 /-!
 # An empty conic detected by a prime-power obstruction
@@ -20,18 +18,13 @@ Squares do not see signs, so natural coordinates suffice.
 * `no_primitive`: no solution has `gcd(gcd(x, y), z) = 1`.
 -/
 
-set_option linter.unusedSimpArgs false
-
 namespace LeanProofs.IPRA.DiophantineNumberTheory.ConicEmpty
 
-open_ipra
+open_ipra exports
 open LeanProofs.IPRA.Combinatorics.BinomialIdentities (mul_cancel)
-open LeanProofs.IPRA.DiophantineNumberTheory.Coprime (gcd_greatest')
 open LeanProofs.IPRA.Geometry.PlatonicSolids (lt_three_cases)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
-
-local notation "𝔞" t:max => Groth.ι (IPRA.Q.mk _ t)
 
 theorem one_lt_three : Γ ⊢[PRAAx] lt (num 1) (num 3) :=
   (le_of_eq_add (d := num 1) (by apply deriveNat; ipra_simps <;> ring) : Γ ⊢[PRAAx] le (succ (num 1)) (num 3))

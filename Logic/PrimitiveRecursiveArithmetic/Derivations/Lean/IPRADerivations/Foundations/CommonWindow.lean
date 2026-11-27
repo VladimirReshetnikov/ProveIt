@@ -1,6 +1,5 @@
 import IPRADerivations.Foundations.WindowStability
 import IPRADerivations.Foundations.ApproximateWitness
-import IPRADerivations.Core.Header
 
 /-!
 # A common window from additive finite budgets: the two counting steps
@@ -25,15 +24,11 @@ the summation over the components are not derived here; `Foundations/FiniteAvoid
 double count.
 -/
 
-set_option linter.unusedSimpArgs false
-
 namespace LeanProofs.IPRA.Foundations.CommonWindow
 
-open_ipra
+open_ipra exports
 open LeanProofs.IPRA.Probability.FiniteLaws (Mn mn_le)
 open LeanProofs.IPRA.Foundations.FrontierSoundness (shift_succ' le_of_lt_succ')
-open LeanProofs.IPRA.Foundations.WindowStability (sum_lower)
-open LeanProofs.IPRA.Foundations.ApproximateWitness (argmin argmin_spec)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 

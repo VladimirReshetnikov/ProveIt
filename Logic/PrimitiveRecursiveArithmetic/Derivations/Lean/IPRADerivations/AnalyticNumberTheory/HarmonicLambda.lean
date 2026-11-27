@@ -1,7 +1,4 @@
 import IPRADerivations.AnalyticNumberTheory.ChebyshevBounds
-import IPRADerivations.AnalyticNumberTheory.BinomialThree
-import IPRADerivations.Core.LinearCombination
-import IPRADerivations.Core.Header
 
 /-!
 # The harmonic Mangoldt sum, integer form
@@ -20,22 +17,14 @@ With `w = log` and `ψ(N) ≤ 4N log 2` (`ChebyshevBounds.lcmu_upper` with `thm:
 displayed bounds; the passage to real logarithms is not formalized.
 -/
 
-set_option linter.unusedSimpArgs false
-
 namespace LeanProofs.IPRA.AnalyticNumberTheory.HarmonicLambda
 
-open_ipra
+open_ipra exports
 open LeanProofs.IPRA.AnalyticNumberTheory.WeightedMangoldt (lamB Lam Lw)
-open LeanProofs.IPRA.AnalyticNumberTheory.FactorialLambda (FLB FL_at lam_zero factorial_lambda sum_add2)
-open LeanProofs.IPRA.AnalyticNumberTheory.LcmUpto (LamB Psi inst2_LamB)
-open LeanProofs.IPRA.AnalyticNumberTheory.PhiLower (le_mul_mono)
-open LeanProofs.IPRA.DiophantineNumberTheory.Coprime (eq_of_dvd')
 open LeanProofs.IPRA.Probability.Independence (sum_scale)
 open LeanProofs.IPRA.Analysis.Products (fact)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
-
-local notation "𝔞" t:max => Groth.ι (IPRA.Q.mk _ t)
 
 /-! ## `N! ≤ N^N ≤ 3^N N!` -/
 

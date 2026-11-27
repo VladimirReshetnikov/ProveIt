@@ -1,10 +1,6 @@
 import IPRADerivations.Foundations.CrtCoprime
-import IPRADerivations.AnalyticNumberTheory.LcmUpto
 import IPRADerivations.AnalyticNumberTheory.BinomialLcm
 import IPRADerivations.AnalyticNumberTheory.ValuationAdd
-import IPRADerivations.Core.LinearCombination
-import IPRADerivations.Core.CommonLemmas
-import IPRADerivations.Core.Header
 
 /-!
 # Least common multiples of finite families
@@ -25,27 +21,17 @@ With `lcm(A, B) = ⌊AB / gcd(A, B)⌋` (`TotientCorollaries.lcm`):
   every `i < K` gives `x ≡ z (mod Lc K)`; the hypothesis is the universally quantified formula).
 -/
 
-set_option linter.unusedSimpArgs false
-
 namespace LeanProofs.IPRA.Foundations.CrtLcm
 
-open_ipra
-open LeanProofs.IPRA.AnalyticNumberTheory.Primes (prime)
+open_ipra exports
 open LeanProofs.IPRA.AnalyticNumberTheory.Valuation (val isP prime_of_isP)
 open LeanProofs.IPRA.AnalyticNumberTheory.Mobius (prime_two)
 open LeanProofs.IPRA.AnalyticNumberTheory.MobiusBounds (shift_pos)
-open LeanProofs.IPRA.AnalyticNumberTheory.TotientCorollaries (lcm lcm_eq)
 open LeanProofs.IPRA.AnalyticNumberTheory.LcmUpto (lcm_pos val_lcm)
-open LeanProofs.IPRA.AnalyticNumberTheory.BinomialLcm (dvd_of_val_le)
 open LeanProofs.IPRA.AnalyticNumberTheory.ValuationAdd (val_gcd_le val_gcd_ge)
-open LeanProofs.IPRA.Foundations.ChineseRemainder (gcd_pos crt_unique_at)
 open LeanProofs.IPRA.Foundations.CrtCoprime (mS mS_at m_pos)
-open LeanProofs.IPRA.AnalyticNumberTheory.FactorVector (subst_dvd)
-open LeanProofs.IPRA.DiophantineNumberTheory.Coprime (eq_of_dvd' gcd_dvd' dvd_of_eq' dvd_trans')
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
-
-local notation "𝔞" t:max => Groth.ι (IPRA.Q.mk _ t)
 
 alias mul_one_r := Common.mul_one_right
 

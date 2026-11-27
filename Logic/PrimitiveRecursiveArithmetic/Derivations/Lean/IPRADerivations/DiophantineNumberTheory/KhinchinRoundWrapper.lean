@@ -1,6 +1,5 @@
 import IPRADerivations.DiophantineNumberTheory.KhinchinCellBridge
 import IPRADerivations.DiophantineNumberTheory.KhinchinRoundCounts
-import IPRADerivations.Core.Header
 
 /-!
 # One (K2) round from the cells' block counts (`hurwitz_khinchin_ipra`)
@@ -20,19 +19,14 @@ The round theorem itself (`16384 R_{j+1} ≤ 16383 r R_j` from the per-cell bloc
 
 namespace LeanProofs.IPRA.DiophantineNumberTheory.KhinchinRoundWrapper
 
-open_ipra
+open_ipra exports
 open LeanProofs.IPRA.Signum (sg)
-open LeanProofs.IPRA.Analysis.Products (fact)
 open LeanProofs.IPRA.DiophantineNumberTheory.KhinchinBlockScales (Xt bB)
 open LeanProofs.IPRA.DiophantineNumberTheory.KhinchinCellParams (αc γc b0c)
-open LeanProofs.IPRA.DiophantineNumberTheory.KhinchinCellBridge (cell_bridge)
-open LeanProofs.IPRA.DiophantineNumberTheory.KhinchinRoundCounts (round_from_counts rsB wB)
 
 set_option autoImplicit false
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
-
-local notation "𝔞" t:max => Groth.ι (IPRA.Q.mk _ t)
 
 /-- The packed round parameters `⟨r, ⟨B, ⟨K₀, ⟨M, ⟨R, ⟨G', p⟩⟩⟩⟩⟩⟩`. -/
 abbrev px (r B K0 M R G' p : PTm n) : PTm n :=

@@ -1,5 +1,4 @@
 import IPRADerivations.AnalyticNumberTheory.RobinGammaInterval
-import IPRADerivations.Core.Header
 
 /-!
 # The Euler-constant enclosure and its consistency (`robin_ipra_research_2026-11-19`, `lem:gamma`)
@@ -22,25 +21,19 @@ built from `RobinGamma`'s partial sums `P_t/Q_t = Σ_{i<t} δ_{K'}(1 + i)` of th
   `γ_lo ≥ 1/2`. So every enclosure lies in `[1/2, 7/12]`.
 -/
 
-set_option linter.unusedSimpArgs false
-
 namespace LeanProofs.IPRA.AnalyticNumberTheory.RobinGammaUpper
 
-open_ipra
+open_ipra exports
 open LeanProofs.IPRA.AnalyticNumberTheory.RobinGamma
   (Lf Lv Pv sv Wv Nv nn dd n_eq Pt Qt Pf dB nB P_succ' P_zero' Q_succ dB_at nB_at gamma_tail)
 open LeanProofs.IPRA.AnalyticNumberTheory.RobinLogName
   (Nz Dz Un Ud Lz log_name low_up L_eq N_bridge frac_trans Dz_pos Ud_pos Nz_congr Dz_congr Un_congr Ud_congr)
 open LeanProofs.IPRA.AnalyticNumberTheory.RobinGammaInterval
   (nU dU Xm nU_eq s_sq sv_pos Wv_pos An Ad An_zero An_succ Ad_zero Ad_succ)
-open LeanProofs.IPRA.AnalyticNumberTheory.PhiLower (le_mul_mono)
-open LeanProofs.IPRA.AnalyticNumberTheory.PNTStageStep (pos_of_one_le)
 
 set_option autoImplicit false
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
-
-local notation "𝔞" t:max => Groth.ι (IPRA.Q.mk _ t)
 
 /-! ## Termwise comparison -/
 

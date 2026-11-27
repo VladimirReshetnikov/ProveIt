@@ -1,4 +1,3 @@
-import IPRADerivations.Core.Division
 import IPRADerivations.Core.OrderCertificates
 import IPRADerivations.Core.Gcd
 import IPRADerivations.Core.Header
@@ -19,11 +18,9 @@ The floors are the quotients `quo j a` of `Core/Division` (`j = a ⌊j/a⌋ + (j
   `j mod 42 = j`, so `42 · sum ≤ 41 j`).
 -/
 
-set_option linter.unusedSimpArgs false
-
 namespace LeanProofs.IPRA.DiophantineNumberTheory.AperyFloor
 
-open_ipra
+open_ipra exports
 
 variable {k : ℕ} {Γ : List (Fm PTm k)}
 

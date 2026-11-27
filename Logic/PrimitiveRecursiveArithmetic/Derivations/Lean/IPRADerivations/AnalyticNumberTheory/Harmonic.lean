@@ -1,8 +1,5 @@
 import IPRADerivations.AnalyticNumberTheory.PhiPowTwo
 import IPRADerivations.DiophantineNumberTheory.Hurwitz
-import IPRADerivations.Core.LinearCombination
-import IPRADerivations.Core.InductionTactic
-import IPRADerivations.Core.Header
 
 /-!
 # The dyadic lower bound for harmonic numbers
@@ -20,19 +17,11 @@ Write `S(N, F) = ∑_{i<N} ⌊F/(i+1)⌋`. Floors only help a lower bound, and o
 * `harmonic_dyadic`: `(1 + t) N! ≤ NumH_N` for `N = 2^{2t}`, as `2^{2t} ∣ (2^{2t})!`.
 -/
 
-set_option linter.unusedSimpArgs false
-
 namespace LeanProofs.IPRA.AnalyticNumberTheory.Harmonic
 
-open_ipra
-open LeanProofs.IPRA.Combinatorics.Binomial (pos_mul)
+open_ipra exports
 open LeanProofs.IPRA.DiophantineNumberTheory.Coprime
-open LeanProofs.IPRA.AnalyticNumberTheory.GcdFiber (div_eq)
-open LeanProofs.IPRA.AnalyticNumberTheory.Totient (quo_eq)
-open LeanProofs.IPRA.AnalyticNumberTheory.Multiplicative (rem_lt')
-open LeanProofs.IPRA.AnalyticNumberTheory.Valuation (pw_pos')
 open LeanProofs.IPRA.AnalyticNumberTheory.PhiDouble (two_pos')
-open LeanProofs.IPRA.AnalyticNumberTheory.Primes (dvd_fact eq_succ_pred)
 open LeanProofs.IPRA.Analysis.Products (fact)
 open LeanProofs.IPRA.DiophantineNumberTheory.Hurwitz (add_le_add)
 
@@ -78,7 +67,7 @@ theorem block_step {d F j : PTm n}
     exact .eqRefl _
   have hle : Γ ⊢[PRAAx] le (succ (pw two j + d)) (pw two (succ j)) := by
     refine le_of_eq_add (d := monus (pw two j) (succ d)) ?_
-    ipra_lc natEq (pw_succ (Γ := Γ) two j) + natEq (eq_add_of_le h)
+    ipra_lc natEq (pw_succ two j) + natEq (eq_add_of_le h)
   have hq := quo_anti (F := F) (congrSucc (pred_succ _).eqSymm) hle
   refine le_congr ?_ e.eqSymm (add_le_add ihd hq)
   ipra_ring
@@ -124,7 +113,7 @@ theorem dyadic_step {j F : PTm n}
   refine le_of_eq_add (d := monus (two * S (pw two j) F) ((two + j) * F) +
     two * monus (S (pw two j + pw two j) F) (S (pw two j) F + pw two j * quo F (pw two (succ j)))) ?_
   ipra_lc 2 * e₃ + e₁ + 2 * e₂ - natEq (eq_of_dvd' hp' h) -
-    Groth.ι (IPRA.Q.mk _ (quo F (pw two (succ j)))) * natEq (pw_succ (Γ := Γ) two j)
+    Groth.ι (IPRA.Q.mk _ (quo F (pw two (succ j)))) * natEq (pw_succ two j)
 
 /-- Variables: `0 = j`, `1 = F`. -/
 private abbrev dyadicF : Fm PTm 2 :=
@@ -169,3 +158,5 @@ theorem harmonic_dyadic_closed : ([] : List (Fm PTm 0)) ⊢[PRAAx] univ 1 dyadic
   closeUniv 1 (harmonic_dyadic _)
 
 end LeanProofs.IPRA.AnalyticNumberTheory.Harmonic
+
+export_ipra AnalyticNumberTheory.Harmonic (inst2_h quo_anti)

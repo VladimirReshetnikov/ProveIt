@@ -1,5 +1,4 @@
 import IPRADerivations.DiophantineNumberTheory.KhinchinGapRound
-import IPRADerivations.Core.Header
 
 /-!
 # One (K2) round on a refining grid (`hurwitz_khinchin_ipra`)
@@ -25,14 +24,11 @@ newly covered fine cells of block `g` (`rs_g + cv_g = r`):
 
 namespace LeanProofs.IPRA.DiophantineNumberTheory.KhinchinGridRound
 
-open_ipra
-open LeanProofs.IPRA.DiophantineNumberTheory.KhinchinBlock (sum_le_lin1)
+open_ipra exports
 
 set_option autoImplicit false
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
-
-local notation "𝔞" t:max => Groth.ι (IPRA.Q.mk _ t)
 
 /-- A bit `w ≤ 1` is `0` or `1`. -/
 theorem bit_cases {w : PTm n} (hw : Γ ⊢[PRAAx] le w one) : Γ ⊢[PRAAx] (w ≐ zero) ⋎ (w ≐ one) := by

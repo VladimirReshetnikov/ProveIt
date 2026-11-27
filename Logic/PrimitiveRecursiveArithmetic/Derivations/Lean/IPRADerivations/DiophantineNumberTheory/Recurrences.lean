@@ -20,11 +20,9 @@ theorems quantified over the index inside iPRA and derived by induction.
   consecutive Fibonacci numbers, `(F_{n+1}² − F_{n+1} F_n − F_n²)² = 1`.
 -/
 
-set_option linter.unusedSimpArgs false
-
 namespace LeanProofs.IPRA.DiophantineNumberTheory.Recurrences
 
-open_ipra
+open_ipra exports
 
 /-- Substitution normal forms for the formulas of this file. -/
 macro "rec_subst" : tactic =>
@@ -246,3 +244,5 @@ theorem fibonacci_norm : ([] : List (Fm PTm 0)) ⊢[PRAAx] univ 1 fibNormFormula
 end Fibonacci
 
 end LeanProofs.IPRA.DiophantineNumberTheory.Recurrences
+
+export_ipra DiophantineNumberTheory.Recurrences (pellX pellY)

@@ -1,6 +1,5 @@
 import IPRADerivations.AnalyticNumberTheory.SymmetricMoment
 import IPRADerivations.AnalyticNumberTheory.BlockTests
-import IPRADerivations.Core.Header
 
 /-!
 # The product test on a whole prefix (`riemann_ipra_prime_criteria_2026-11-20`, `thm:symmetric-prefix`, eq:sym-char)
@@ -19,19 +18,15 @@ set_option linter.unusedSimpArgs false
 
 namespace LeanProofs.IPRA.AnalyticNumberTheory.SymmetricProduct
 
-open_ipra
-open LeanProofs.IPRA.AnalyticNumberTheory.AbsDiff (absd le_absd_l)
+open_ipra exports
 open LeanProofs.IPRA.AnalyticNumberTheory.BlockTests (one_le_mul)
 open LeanProofs.IPRA.AnalyticNumberTheory.SymmetricPrefix (term_le_sum Below)
 open LeanProofs.IPRA.AnalyticNumberTheory.CubeScan (inst2_subst)
 open LeanProofs.IPRA.AnalyticNumberTheory.PNTStageStep (pos_of_one_le)
-open LeanProofs.IPRA.AnalyticNumberTheory.Mobius (zero_mul_l)
 
 set_option autoImplicit false
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
-
-local notation "𝔞" t:max => Groth.ι (IPRA.Q.mk _ t)
 
 /-! ## Products of factors -/
 

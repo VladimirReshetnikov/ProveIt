@@ -1,8 +1,6 @@
 import IPRADerivations.AnalyticNumberTheory.DivisorHarmonic
 import IPRADerivations.AnalyticNumberTheory.HarmonicMertens
 import IPRADerivations.DiophantineNumberTheory.HurwitzLoop
-import IPRADerivations.Core.LinearCombination
-import IPRADerivations.Core.Header
 
 /-!
 # The divisor bound for the harmonic logarithm (`pnt_ipra_constructive_2026-11-14`, `sb:divisor-bound`)
@@ -23,26 +21,18 @@ so `|D(y) − yλ_K(y) − (2c − 1)y| ≤ 11m ≤ 11√y`. The inputs are `Div
 (`D(y) = 2yH_m − m² + e`), `superadd`/`subadd` at `(m, m)`, and `m⌊F/m⌋ ≤ F`.
 -/
 
-set_option linter.unusedSimpArgs false
-
 namespace LeanProofs.IPRA.AnalyticNumberTheory.DivisorBound
 
-open_ipra
+open_ipra exports
 open LeanProofs.IPRA.AnalyticNumberTheory.Harmonic (S hB inst2_h)
-open LeanProofs.IPRA.AnalyticNumberTheory.LogRefinement (log_refine)
-open LeanProofs.IPRA.AnalyticNumberTheory.LogElementary (log_upper)
 open LeanProofs.IPRA.AnalyticNumberTheory.HarmonicChebyshev (S_mono superadd)
-open LeanProofs.IPRA.AnalyticNumberTheory.HarmonicMertens (subadd le_scale)
 open LeanProofs.IPRA.AnalyticNumberTheory.DivisorHarmonic (divisor_harmonic)
-open LeanProofs.IPRA.AnalyticNumberTheory.LcmUpto (pos_of_lt_zero)
 open LeanProofs.IPRA.DiophantineNumberTheory.HurwitzLoop (quo_mul_le)
 open LeanProofs.IPRA.Analysis.Products (fact)
 
 set_option autoImplicit false
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
-
-local notation "𝔞" t:max => Groth.ι (IPRA.Q.mk _ t)
 
 /-- `0 ≤ η_m ≤ 1/m`: `S(X) + S(Km) ≤ S(KX) + S(m)` and `S(KX) + S(m) ≤ S(Km) + S(X) + ⌊F/m⌋`. -/
 theorem eta_bounds {m X K L : PTm n} (hm : Γ ⊢[PRAAx] le one m) (hmX : Γ ⊢[PRAAx] le m X)

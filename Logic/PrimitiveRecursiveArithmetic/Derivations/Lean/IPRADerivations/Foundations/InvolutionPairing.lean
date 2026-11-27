@@ -1,9 +1,4 @@
-import IPRADerivations.AnalyticNumberTheory.Totatives
 import IPRADerivations.AnalyticNumberTheory.LcmBridgeExact
-import IPRADerivations.AnalyticNumberTheory.LocalFactor
-import IPRADerivations.AnalyticNumberTheory.SumPhi
-import IPRADerivations.Combinatorics.BinomialTheorem
-import IPRADerivations.Core.Header
 
 /-!
 # Pairing along an involution
@@ -30,16 +25,11 @@ contributes the product `F(i) F(σ(i))` once, and every fixed point contributes 
 * `tri_sum`, `tri_pw`: `L + G + E = 1` and `f^L f^G f^E = f`.
 -/
 
-set_option linter.unusedSimpArgs false
-
 namespace LeanProofs.IPRA.Foundations.InvolutionPairing
 
-open_ipra
+open_ipra exports
 open LeanProofs.IPRA.Signum (sg sg_zero)
-open LeanProofs.IPRA.AnalyticNumberTheory.Mobius (congrSg one_inst inst2_mulB)
 open LeanProofs.IPRA.AnalyticNumberTheory.Totatives (sum_perm sg_lt sg_le)
-open LeanProofs.IPRA.AnalyticNumberTheory.LcmBridgeExact (prod_mul)
-open LeanProofs.IPRA.AnalyticNumberTheory.LocalFactor (pw_mul_base)
 open LeanProofs.IPRA.AnalyticNumberTheory.SumPhi (sum_ones)
 open LeanProofs.IPRA.Combinatorics.BinomialTheorem (congrPw)
 

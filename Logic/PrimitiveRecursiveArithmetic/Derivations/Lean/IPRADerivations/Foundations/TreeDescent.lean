@@ -1,6 +1,4 @@
 import IPRADerivations.Analysis.Names.Rates.ErrorBudgets
-import IPRADerivations.Core.LinearCombination
-import IPRADerivations.Core.Header
 
 /-!
 # Observational descent along a rooted spanning tree
@@ -25,11 +23,9 @@ Both are quantifier-free inductions on the number of parent steps, with the inva
 `dep(anc(v, j)) + j = dep v`.
 -/
 
-set_option linter.unusedSimpArgs false
-
 namespace LeanProofs.IPRA.Foundations.TreeDescent
 
-open_ipra
+open_ipra exports
 open LeanProofs.IPRA.Probability.Variance (ad)
 open LeanProofs.IPRA.Analysis.ErrorBudgets (ad_tri congrAd')
 

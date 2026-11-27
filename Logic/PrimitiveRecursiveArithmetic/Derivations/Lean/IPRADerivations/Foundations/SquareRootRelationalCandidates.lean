@@ -1,14 +1,6 @@
 import IPRADerivations.Foundations.SquareRootNames
-import IPRADerivations.Foundations.BoundedEnumeration
 import IPRADerivations.Foundations.FilteredEnumerationCode
-import IPRADerivations.Foundations.CodedViableChain
-import IPRADerivations.Analysis.Polynomials.RootFinding.Descent.GaussianDescentClockArithmetic
-import IPRADerivations.Analysis.RationalArithmetic.Representations.RationalRepresentations
 import IPRADerivations.Analysis.Geometry.Distances.GaussianEuclideanDistanceName
-import IPRADerivations.Probability.Variance
-import IPRADerivations.Core.CongruenceTactic
-import IPRADerivations.Core.SubstCommand
-import IPRADerivations.Core.Header
 
 /-!
 # Actual finite rational square-root candidates
@@ -26,19 +18,16 @@ bracket v*c^2<=u*K^2<=v*(c+1)^2 suffices for the unchanged local residual.
 -/
 
 set_option autoImplicit false
-set_option linter.unusedSimpArgs false
 
 namespace LeanProofs.IPRA.Foundations.SquareRootRelationalCandidates
 
-open_ipra
-open LeanProofs.IPRA.AnalyticNumberTheory.PhiLower (le_mul_mono)
+open_ipra exports
 open LeanProofs.IPRA.Analysis.RationalIntegerNormalization (positive_form)
 open LeanProofs.IPRA.Analysis.GaussianDescentClockArithmetic (ceiling ceiling_lower)
 open LeanProofs.IPRA.Foundations.MasterCertificate (sequence entry stack)
 open LeanProofs.IPRA.Foundations.SequenceComposition (length entry_congr)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
-local notation "𝔞" t:max => Groth.ι (IPRA.Q.mk _ t)
 
 def unit (k : PTm n) : PTm n := pw two k
 def three : PTm n := two+one

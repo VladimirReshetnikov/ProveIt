@@ -1,6 +1,4 @@
 import IPRADerivations.Foundations.MixedRadixGrid
-import IPRADerivations.Foundations.FilteredEnumeration
-import IPRADerivations.Core.Header
 
 /-!
 # Limits of finite diagrams of finite sets (`ipra_categorical_methods`, "Finite limits, including equalizers and pullbacks")
@@ -39,11 +37,10 @@ colimits by bounded equivalence closure for a general diagram (the coequalizer i
 
 namespace LeanProofs.IPRA.Foundations.FiniteLimits
 
-open_ipra
+open_ipra exports
 open LeanProofs.IPRA.Foundations.MixedRadixGrid
   (prodT code dig code_lt dig_congr dig_code dig_lt code_dig grid_complete)
 open LeanProofs.IPRA.Foundations.FilteredEnumeration (rank sel sel_spec)
-open LeanProofs.IPRA.Foundations.BoundedReflection (sgB)
 
 variable {k : ℕ} {Γ : List (Fm PTm k)}
 

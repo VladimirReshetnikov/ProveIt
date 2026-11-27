@@ -1,11 +1,7 @@
 import IPRADerivations.DiophantineNumberTheory.PellDescent
 import IPRADerivations.DiophantineNumberTheory.Recurrences
-import IPRADerivations.Core.Bezout
 import IPRADerivations.AnalyticNumberTheory.Fermat
 import IPRADerivations.Algebra.CubeRootTwo
-import IPRADerivations.Core.LinearCombination
-import IPRADerivations.Core.SubstCommand
-import IPRADerivations.Core.Header
 
 /-!
 # All solutions of Pell's equation
@@ -24,12 +20,9 @@ quantifier-free invariant `(x, y) = uᶜ (r, t)`, `r² = 1 + D t²`, `t = 0 ∨ 
 `c ≤ k` is proved by induction on the stage `k`. At stage `y` the residual is `(1, 0)`.
 -/
 
-set_option linter.unusedSimpArgs false
-
 namespace LeanProofs.IPRA.DiophantineNumberTheory.PellAll
 
-open_ipra
-open LeanProofs.IPRA.Combinatorics.Binomial (pos_mul)
+open_ipra exports
 open LeanProofs.IPRA.DiophantineNumberTheory.Coprime
 open LeanProofs.IPRA.DiophantineNumberTheory.PellDescent
 open LeanProofs.IPRA.Algebra.CubeRootTwo (sg sg_zero sg_succ)
@@ -300,3 +293,5 @@ where
   hyp3 {Δ : List (Fm PTm 5)} {a b c φ : Fm PTm 5} : (a :: b :: c :: φ :: Δ) ⊢[PRAAx] φ := Prf.hyp (by simp)
 
 end LeanProofs.IPRA.DiophantineNumberTheory.PellAll
+
+export_ipra DiophantineNumberTheory.PellAll (minimal)

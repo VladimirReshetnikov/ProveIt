@@ -1,5 +1,4 @@
 import IPRADerivations.AnalyticNumberTheory.RateShell
-import IPRADerivations.Core.Header
 
 /-!
 # Growth and bounded weighted series are equivalent in iPRA (`riemann_ipra_equivalences_2026-11-20`, `thm:rate`)
@@ -19,23 +18,17 @@ Here `r = k + 1`, `S_r(N) = W(N)/u_N` (`RateAbel.Wv`), and the sentences are
 * `rate_iff`: `(1) ↔ (2)` in object iPRA, for arbitrary signed coefficient bodies.
 -/
 
-set_option linter.unusedSimpArgs false
-
 namespace LeanProofs.IPRA.AnalyticNumberTheory.RateIff
 
-open_ipra
+open_ipra exports
 open LeanProofs.IPRA.AnalyticNumberTheory.RateAbel
 open LeanProofs.IPRA.AnalyticNumberTheory.RateShell
 open LeanProofs.IPRA.AnalyticNumberTheory.PowerDivisorGrowth
-open LeanProofs.IPRA.AnalyticNumberTheory.PowerTransfer (k4)
-open LeanProofs.IPRA.AnalyticNumberTheory.AbsDiff (absd)
 open LeanProofs.IPRA.Combinatorics.BinomialTheorem (congrPw)
 
 set_option autoImplicit false
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
-
-local notation "𝔞" t:max => Groth.ι (IPRA.Q.mk _ t)
 
 variable (aP aN : PTm 2)
 
@@ -78,16 +71,10 @@ theorem back_all {y k K : PTm n} {X Kk KK X' K' C' : PTm (n + 1)}
 /-- `thm:rate` (2) ⇒ (1). -/
 theorem rate_to_growth (y : PTm n) :
     Γ ⊢[PRAAx] RateS aP aN y ⟶ GrowthS (AB aP) (AB aN) y := by
-  refine .impI (.allI ?_)
-  have hk := (Prf.hyp0 : (RateS aP aN y :: Γ) ⊢[PRAAx] RateS aP aN y).allOpen
-  refine .exE hk ?_
-  simp only [GrowthS, Fm.shift, Fm.subst_all, Fm.subst_ex, subst_Mat, up3_v0, up3_v1, up3_v2, up2_v0, up2_v1,
-    up2_v2, up1_v0, up1_v1, up1_v2, inst_v0, inst_v1, subst_up_shift_pal, Syn.subst_inst_shift, Syn.up_zero, upf_one,
-    upf_two, Syn.subst_var, subst_sh, Fin.succ_zero_eq_one, Syn.shift_var, Syn.up_succ, Syn.inst_succ]
-  refine .exI (Crec (var 1) (var 0)) ?_
-  simp only [Fm.subst_all, subst_Mat, up3_v0, up3_v1, up3_v2, up2_v0, up2_v1, up2_v2, up1_v0, up1_v1, up1_v2,
-    inst_v0, inst_v1, subst_up_shift_pal, Syn.subst_inst_shift, Syn.up_zero, upf_one, upf_two, Syn.subst_var,
-    subst_sh, Fin.succ_zero_eq_one, Syn.shift_var, Syn.up_succ, Syn.inst_succ]
+  refine all_ex_imp (Crec (var 1) (var 0)) ?_
+  simp only [GrowthS, Fm.shift, Fm.subst_all, Fm.subst_ex, subst_Mat, up3_v0, up3_v1, up3_v2, up2_v0, up2_v1, up2_v2,
+    up1_v0, up1_v1, up1_v2, inst_v0, inst_v1, subst_up_shift_pal, Syn.subst_inst_shift, Syn.up_zero, upf_one, upf_two,
+    Syn.subst_var, subst_sh, Fin.succ_zero_eq_one, Syn.shift_var, Syn.up_succ, Syn.inst_succ]
   exact back_all aP aN (y := Syn.shift (Syn.shift y)) (k := var 1) (K := var 0)
     (by simp [Syn.shift]) (by simp [Syn.shift]) (by simp [Syn.shift]) (by simp [Syn.shift]) (by simp [Syn.shift])
     (by simp [Syn.shift]) Prf.hyp0
@@ -117,21 +104,10 @@ theorem fwd_all {y k c : PTm n} {X K C X' Kk KK : PTm (n + 1)}
 /-- `thm:rate` (1) ⇒ (2). -/
 theorem growth_to_rate (y : PTm n) :
     Γ ⊢[PRAAx] GrowthS (AB aP) (AB aN) y ⟶ RateS aP aN y := by
-  refine .impI (.allI ?_)
-  have hG : ((GrowthS (AB aP) (AB aN) y :: Γ).map Fm.shift) ⊢[PRAAx] Fm.shift (GrowthS (AB aP) (AB aN) y) :=
-    (Prf.hyp0 : (GrowthS (AB aP) (AB aN) y :: Γ) ⊢[PRAAx] _).shift
-  have hk := Prf.allE (succ (two * var 0)) hG
-  simp only [GrowthS, Fm.shift, Fm.subst_all, Fm.subst_ex, subst_Mat, up3_v0, up3_v1, up3_v2, up2_v0, up2_v1,
-    up2_v2, up1_v0, up1_v1, up1_v2, inst_v0, inst_v1, subst_up_shift_pal, Syn.subst_inst_shift, Syn.up_zero, upf_one,
-    upf_two, Syn.subst_var, subst_sh, Fin.succ_zero_eq_one, Syn.shift_var, Syn.up_succ, Syn.inst_succ] at hk
-  refine .exE hk ?_
-  simp only [RateS, Fm.shift, Fm.subst_all, Fm.subst_ex, subst_RMat, up3_v0, up3_v1, up3_v2, up2_v0, up2_v1,
-    up2_v2, up1_v0, up1_v1, up1_v2, inst_v0, inst_v1, subst_up_shift_pal, Syn.subst_inst_shift, Syn.up_zero, upf_one,
-    upf_two, Syn.subst_var, subst_sh, Fin.succ_zero_eq_one, Syn.shift_var, Syn.up_succ, Syn.inst_succ]
-  refine .exI (Kc (succ (var 1)) (var 0)) ?_
-  simp only [Fm.subst_all, subst_RMat, up3_v0, up3_v1, up3_v2, up2_v0, up2_v1, up2_v2, up1_v0, up1_v1, up1_v2,
-    inst_v0, inst_v1, subst_up_shift_pal, Syn.subst_inst_shift, Syn.up_zero, upf_one, upf_two, Syn.subst_var,
-    subst_sh, Fin.succ_zero_eq_one, Syn.shift_var, Syn.up_succ, Syn.inst_succ]
+  refine all_ex_imp_at (succ (two * var 0)) (Kc (succ (var 1)) (var 0)) ?_
+  simp only [GrowthS, Fm.shift, Fm.subst_all, Fm.subst_ex, subst_Mat, up3_v0, up3_v1, up3_v2, up2_v0, up2_v1, up2_v2,
+    up1_v0, up1_v1, up1_v2, inst_v0, inst_v1, subst_up_shift_pal, Syn.subst_inst_shift, Syn.up_zero, upf_one, upf_two,
+    Syn.subst_var, subst_sh, Fin.succ_zero_eq_one, Syn.shift_var, Syn.up_succ, Syn.inst_succ, RateS, subst_RMat]
   exact fwd_all aP aN (y := Syn.shift (Syn.shift y)) (k := var 1) (c := var 0)
     (by simp [Syn.shift]) (by simp [Syn.shift]) (by simp [Syn.shift]) (by simp [Syn.shift]) (by simp [Syn.shift])
     (by simp [Syn.shift]) Prf.hyp0

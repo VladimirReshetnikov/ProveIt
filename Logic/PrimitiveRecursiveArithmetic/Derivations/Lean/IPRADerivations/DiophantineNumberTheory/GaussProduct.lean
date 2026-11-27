@@ -1,11 +1,8 @@
 import IPRADerivations.DiophantineNumberTheory.FoldedPermutation
 import IPRADerivations.AnalyticNumberTheory.LcmBridgeExact
 import IPRADerivations.Combinatorics.BellTouchard
-import IPRADerivations.Combinatorics.BinomialTheorem
 import IPRADerivations.Foundations.SignedSums
 import IPRADerivations.Core.CertificateTactics
-import IPRADerivations.Core.CommonLemmas
-import IPRADerivations.Core.Header
 
 /-!
 # Gauss's product
@@ -43,32 +40,23 @@ symbol `signBit`.
 * `cancel_unit`: `u x ≡ u y (mod p)` gives `x ≡ y` for `gcd(u, p) = 1`.
 -/
 
-set_option linter.unusedSimpArgs false
-
 namespace LeanProofs.IPRA.DiophantineNumberTheory.GaussProduct
 
-open_ipra
+open_ipra exports
 open LeanProofs.IPRA.Signum (sg sg_zero)
 open LeanProofs.IPRA.Analysis.Products (fact)
 open LeanProofs.IPRA.AnalyticNumberTheory.Primes (prime fact_pos)
-open LeanProofs.IPRA.AnalyticNumberTheory.ValuationMul (p_pos)
 open LeanProofs.IPRA.AnalyticNumberTheory.Mobius (congrSg prime_two inst2_mulB)
 open LeanProofs.IPRA.AnalyticNumberTheory.ConvolutionAssoc (sg_pos rem_small)
-open LeanProofs.IPRA.AnalyticNumberTheory.Multiplicative (rem_lt')
 open LeanProofs.IPRA.AnalyticNumberTheory.Euler (shift_cop prod_pw)
-open LeanProofs.IPRA.AnalyticNumberTheory.LcmBridgeExact (prod_mul)
 open LeanProofs.IPRA.AnalyticNumberTheory.PowerResidue (inv inv_spec inv_cop mul_inv_rem)
 open LeanProofs.IPRA.Combinatorics.BinomialTheorem (congrPw)
-open LeanProofs.IPRA.DiophantineNumberTheory.Coprime (gcd_comm_one)
-open LeanProofs.IPRA.DiophantineNumberTheory.ModularCertificate (rem_add_mul rem_mul_congr2 prod_congr_mod)
 open LeanProofs.IPRA.DiophantineNumberTheory.FoldedResidues (fold fold_small fold_large rem_pos)
 open LeanProofs.IPRA.DiophantineNumberTheory.FoldedPermutation (bF congrBF sB tB perm_data b_eq_succ_s)
 open LeanProofs.IPRA.DiophantineNumberTheory.EisensteinParity (rV eV bV rB eB bB mB idB inst2_rB inst2_eB inst2_bB
   inst2_mB inst2_idB)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
-
-local notation "𝔞" t:max => Groth.ι (IPRA.Q.mk _ t)
 
 /-! ## The pointwise congruence -/
 

@@ -1,8 +1,5 @@
 import IPRADerivations.Analysis.RationalArithmetic.Representations.RationalIntegerNormalization
 import IPRADerivations.Analysis.Optimization.RationalArgmin
-import IPRADerivations.Core.LinearCombination
-import IPRADerivations.Core.SubstCommand
-import IPRADerivations.Core.Header
 
 /-!
 # Literal normalized midpoint cancellation for Minkowski cell centers
@@ -14,18 +11,14 @@ center and the negation of the other is literally the canonical code of `z`.
 This permits equality replacement in an arbitrary membership formula.
 -/
 
-set_option linter.unusedSimpArgs false
-
 namespace LeanProofs.IPRA.DiophantineNumberTheory.MinkowskiCenters
 
-open_ipra
+open_ipra exports
 open LeanProofs.IPRA.Analysis.RationalIntegerNormalization
 open LeanProofs.IPRA.Analysis.RationalSupMetric (numeratorOf denominatorOf)
 open LeanProofs.IPRA.Analysis.RationalArgmin (denominator_positive)
-open LeanProofs.IPRA.AnalyticNumberTheory.PhiLower (le_mul_mono)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
-local notation "𝔞" t:max => Groth.ι (IPRA.Q.mk _ t)
 
 def centerNumerator (a : ZT n) : ZT n := ZT.ofNat two*a+ZT.ofNat one
 def center (a : ZT n) (m : PTm n) : PTm n := normalize (centerNumerator a) m
@@ -78,7 +71,7 @@ theorem midpoint_input_integer (a b z : ZT n) (m : PTm n) (hm : Γ ⊢[PRAAx] le
   have positive : Γ ⊢[PRAAx] le one (m*denominatorOf (center b m)) :=
     le_congr (one_mul one) (.eqRefl _) (le_mul_mono hm (denominator_positive _))
   apply integer_cancel (m*denominatorOf (center b m)) _ _ positive
-  ipra_lc [centerNumerator, midpointNumerator, midpointDenominator] -(𝔞(denominatorOf (center b m))*𝔞(denominatorOf (opposite (center b m))))*ZT.toZ_eq (center_value (Γ := Γ) a m hm)+ (𝔞(denominatorOf (center a m))*𝔞(denominatorOf (opposite (center b m))))*ZT.toZ_eq (center_value (Γ := Γ) b m hm)- (𝔞 m*𝔞(denominatorOf (center a m)))*ZT.toZ_eq (opposite_value (Γ := Γ) (center b m))+ (2*𝔞(denominatorOf (center a m))*𝔞(denominatorOf (center b m))*𝔞(denominatorOf (opposite (center b m))))*ZT.toZ_eq h
+  ipra_lc [centerNumerator, midpointNumerator, midpointDenominator] -(𝔞(denominatorOf (center b m))*𝔞(denominatorOf (opposite (center b m))))*ZT.toZ_eq (center_value a m hm)+ (𝔞(denominatorOf (center a m))*𝔞(denominatorOf (opposite (center b m))))*ZT.toZ_eq (center_value b m hm)- (𝔞 m*𝔞(denominatorOf (center a m)))*ZT.toZ_eq (opposite_value (center b m))+ (2*𝔞(denominatorOf (center a m))*𝔞(denominatorOf (center b m))*𝔞(denominatorOf (opposite (center b m))))*ZT.toZ_eq h
 
 /-- This conclusion is equality of actual natural codes. -/
 theorem midpoint_code_integer (a b z : ZT n) (m : PTm n) (hm : Γ ⊢[PRAAx] le one m)

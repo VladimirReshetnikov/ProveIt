@@ -1,7 +1,4 @@
 import IPRADerivations.AnalyticNumberTheory.PrimeRank
-import IPRADerivations.Core.CertificateTactics
-import IPRADerivations.Core.InductionTactic
-import IPRADerivations.Core.Header
 
 /-!
 # Arbitrarily long runs of composite numbers
@@ -17,22 +14,14 @@ inverse rank": "Arbitrarily long constant stretches also have PR witnesses ... e
   `[N! + 1, N! + N]`.
 -/
 
-set_option linter.unusedSimpArgs false
-
 namespace LeanProofs.IPRA.AnalyticNumberTheory.PrimeGaps
 
-open_ipra
+open_ipra exports
 open LeanProofs.IPRA.Analysis.Products (fact)
 open LeanProofs.IPRA.AnalyticNumberTheory.Primes (prime dvd_fact fact_pos)
-open LeanProofs.IPRA.AnalyticNumberTheory.Valuation (isP isP_01 prime_of_isP)
-open LeanProofs.IPRA.AnalyticNumberTheory.Mobius (congrIsP)
-open LeanProofs.IPRA.AnalyticNumberTheory.ValuationMul (p_pos)
 open LeanProofs.IPRA.AnalyticNumberTheory.PrimeRank (pc pc_succ congrPc pc_step_le succ_le_succ)
-open LeanProofs.IPRA.DiophantineNumberTheory.Coprime (dvd_add')
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
-
-local notation "𝔞" t:max => Groth.ι (IPRA.Q.mk _ t)
 
 /-- A prime has no divisor `d` with `2 ≤ d < p`. -/
 theorem prime_no_divisor {p d : PTm n} (hp : Γ ⊢[PRAAx] prime p) (h2 : Γ ⊢[PRAAx] le two d)

@@ -1,8 +1,5 @@
 import IPRADerivations.Foundations.DiscreteGronwall
 import IPRADerivations.Probability.Variance
-import IPRADerivations.Core.Parity
-import IPRADerivations.Core.Gcd
-import IPRADerivations.Core.Header
 
 /-!
 # The refinement estimate for Euler polygons and its Cauchy consequence
@@ -25,14 +22,11 @@ geometry of the polygons, `lem:ode-polybound`) is a hypothesis.
   `2^k D(k) + 2C ≤ 2^k · 2C`, i.e. `D(k) ≤ 2C − 2C/2^k`; no infinite sum occurs.
 -/
 
-set_option linter.unusedSimpArgs false
-
 namespace LeanProofs.IPRA.Foundations.OdeRefinement
 
-open_ipra
+open_ipra exports
 open LeanProofs.IPRA.Foundations.DiscreteGronwall (gronwall_three)
 open LeanProofs.IPRA.Probability.Variance (sum_const_of)
-open LeanProofs.IPRA.AnalyticNumberTheory.Valuation (pw_pos')
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 

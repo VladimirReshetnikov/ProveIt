@@ -1,6 +1,4 @@
 import IPRADerivations.AnalyticNumberTheory.PhiLower
-import IPRADerivations.Core.LinearCombination
-import IPRADerivations.Core.Header
 
 /-!
 # Solutions of `φ(n) = 2`
@@ -13,19 +11,14 @@ Packet: `analytic-number-theory/von_mangoldt_totient_ipra_2026-11-15`, Theorem `
   (`PhiLower.phi_sq_odd`) bounds `m` when `φ(m) ∈ {1, 2}`, and `φ(n) = 2^{a−1} φ(m)` forces `a ≤ 2`.
 -/
 
-set_option linter.unusedSimpArgs false
-
 namespace LeanProofs.IPRA.AnalyticNumberTheory.PhiTwo
 
-open_ipra
+open_ipra exports
 open LeanProofs.IPRA.Combinatorics.Binomial (pos_mul)
 open LeanProofs.IPRA.Combinatorics.BinomialIdentities (mul_cancel)
 open LeanProofs.IPRA.DiophantineNumberTheory.Coprime
-open LeanProofs.IPRA.AnalyticNumberTheory.Totient (phi totBody)
-open LeanProofs.IPRA.AnalyticNumberTheory.Primes (lpf lpf_dvd lpf_prime prime eq_succ_pred)
-open LeanProofs.IPRA.AnalyticNumberTheory.Multiplicative (rem_eq' rem_lt' zero_lt')
+open LeanProofs.IPRA.AnalyticNumberTheory.Totient (phi)
 open LeanProofs.IPRA.AnalyticNumberTheory.PhiDouble (two_pos' phi_two odd_cop)
-open LeanProofs.IPRA.AnalyticNumberTheory.EulerProduct (phi_one)
 open LeanProofs.IPRA.AnalyticNumberTheory.TotientCorollaries (phi_zero)
 open LeanProofs.IPRA.AnalyticNumberTheory.Valuation
 open LeanProofs.IPRA.AnalyticNumberTheory.Radical (phi_prime)

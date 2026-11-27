@@ -1,8 +1,4 @@
-import IPRADerivations.DiophantineNumberTheory.AperyMultibound
 import IPRADerivations.DiophantineNumberTheory.SimultaneousGrid
-import IPRADerivations.AnalyticNumberTheory.RSA
-import IPRADerivations.Core.OrderCertificates
-import IPRADerivations.Core.Header
 
 /-!
 # Integer error amplification for randomized algorithms
@@ -24,14 +20,10 @@ The integer part, with all quantities object terms (`M, F, B, k, m` arbitrary; p
   `amplification_window` at `m = 8(k + 1)`, `r = 16(k + 1) + 1`.
 -/
 
-set_option linter.unusedSimpArgs false
-
 namespace LeanProofs.IPRA.Foundations.ErrorAmplification
 
-open_ipra
-open LeanProofs.IPRA.DiophantineNumberTheory.AperyMultibound (mul_pw pw_num)
+open_ipra exports
 open LeanProofs.IPRA.DiophantineNumberTheory.SimultaneousGrid (cancel_pos one_le_pw_of)
-open LeanProofs.IPRA.AnalyticNumberTheory.RSA (pw_mul)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 

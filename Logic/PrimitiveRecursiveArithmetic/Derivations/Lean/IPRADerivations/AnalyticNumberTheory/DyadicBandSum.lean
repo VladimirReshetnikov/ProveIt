@@ -1,7 +1,6 @@
 import IPRADerivations.Core.PolynomialImplications
 import IPRADerivations.Core.OrderCertificates
 import IPRADerivations.Core.Parity
-import IPRADerivations.Core.Powers
 import IPRADerivations.Core.InductionTactic
 import IPRADerivations.Core.Header
 
@@ -29,11 +28,9 @@ The zero count `eq:coarse-count`, the logarithm bounds and the analytic statemen
 derived.
 -/
 
-set_option linter.unusedSimpArgs false
-
 namespace LeanProofs.IPRA.AnalyticNumberTheory.DyadicBandSum
 
-open_ipra
+open_ipra exports
 
 /-! ## The 3–4–1 polynomial -/
 

@@ -1,7 +1,4 @@
 import IPRADerivations.AnalyticNumberTheory.HarmonicLogSum
-import IPRADerivations.Core.LinearCombination
-import IPRADerivations.Core.InductionTactic
-import IPRADerivations.Core.Header
 
 /-!
 # The square-logarithm sum for the harmonic logarithm (`pnt_ipra_constructive_2026-11-14`, `sb:log-square-sum`)
@@ -22,25 +19,15 @@ One QF induction on `N = k + 1` (the step `0 → 1` is excluded: `λ(0)` is mean
 `Q(N+1) = Q(N) + u'²`, `S(N+1) = S(N) + q`).
 -/
 
-set_option linter.unusedSimpArgs false
-
 namespace LeanProofs.IPRA.AnalyticNumberTheory.HarmonicLogSquareSum
 
-open_ipra
+open_ipra exports
 open LeanProofs.IPRA.AnalyticNumberTheory.Harmonic (S hB inst2_h)
-open LeanProofs.IPRA.AnalyticNumberTheory.HarmonicChebyshev (S_mono)
-open LeanProofs.IPRA.AnalyticNumberTheory.HarmonicMertens (le_scale)
-open LeanProofs.IPRA.AnalyticNumberTheory.HarmonicMertensLower (delta_le)
-open LeanProofs.IPRA.AnalyticNumberTheory.HarmonicLogSum (inc_lower fact_quo)
-open LeanProofs.IPRA.AnalyticNumberTheory.Totient (quo_eq)
-open LeanProofs.IPRA.AnalyticNumberTheory.LcmUpto (pos_of_lt_zero)
 open LeanProofs.IPRA.Analysis.Products (fact)
 
 set_option autoImplicit false
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
-
-local notation "𝔞" t:max => Groth.ι (IPRA.Q.mk _ t)
 
 /-- `u_N = F λ_K(N) = S(KN) ∸ S(K)`. -/
 abbrev U (N K F : PTm n) : PTm n := monus (S (K * N) F) (S K F)

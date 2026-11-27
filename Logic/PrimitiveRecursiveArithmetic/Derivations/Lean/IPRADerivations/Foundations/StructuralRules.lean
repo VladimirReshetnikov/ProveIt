@@ -1,4 +1,3 @@
-import IPRADerivations.Core.Basic
 import IPRADerivations.Core.Header
 
 /-!
@@ -31,7 +30,7 @@ formalized here.
 
 namespace LeanProofs.IPRA.Foundations.StructuralRules
 
-open_ipra
+open_ipra exports
 
 variable {n : ℕ} {Γ Δ : List (Fm PTm n)}
 

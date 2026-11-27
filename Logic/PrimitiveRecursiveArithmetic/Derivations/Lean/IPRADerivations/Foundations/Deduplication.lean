@@ -1,5 +1,4 @@
 import IPRADerivations.Foundations.FiniteCoverSkeleton
-import IPRADerivations.Core.Header
 
 /-!
 # Removing duplicates from a finite list (`ipra_presentations_to_witnesses`, `prop:reconstruction`)
@@ -27,11 +26,9 @@ index is an index). The compaction of the kept indices to an initial segment is 
 `Foundations/FilteredEnumeration`.
 -/
 
-set_option linter.unusedSimpArgs false
-
 namespace LeanProofs.IPRA.Foundations.Deduplication
 
-open_ipra
+open_ipra exports
 open LeanProofs.IPRA.Foundations.FiniteCoverSkeleton
 
 variable {k : ℕ} {Γ : List (Fm PTm k)}

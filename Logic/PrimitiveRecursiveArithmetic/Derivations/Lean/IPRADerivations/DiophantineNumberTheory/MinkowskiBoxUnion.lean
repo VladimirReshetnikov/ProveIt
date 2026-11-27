@@ -1,6 +1,5 @@
 import IPRADerivations.DiophantineNumberTheory.MinkowskiBoxes
 import IPRADerivations.Core.Fubini
-import IPRADerivations.Core.Header
 
 /-!
 # Actual global indexing and separation of concatenated integer boxes
@@ -15,17 +14,15 @@ geometric membership/volume producer remain separate.
 -/
 
 set_option autoImplicit false
-set_option linter.unusedSimpArgs false
 
 namespace LeanProofs.IPRA.DiophantineNumberTheory.MinkowskiBoxUnion
 
-open_ipra
+open_ipra exports
 open LeanProofs.IPRA.Foundations.MasterCertificate (entry subst_entry)
 open LeanProofs.IPRA.Foundations.SequenceComposition (length subst_length entry_congr)
 open LeanProofs.IPRA.DiophantineNumberTheory.MinkowskiBoxes
   (points point count sides side_at inside insideAt point_inside_at prefixCount boxes
     subst_prefixCount subst_boxes subst_count subst_sides subst_point)
-open LeanProofs.IPRA.DiophantineNumberTheory.SignedEuclidean (decode)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 

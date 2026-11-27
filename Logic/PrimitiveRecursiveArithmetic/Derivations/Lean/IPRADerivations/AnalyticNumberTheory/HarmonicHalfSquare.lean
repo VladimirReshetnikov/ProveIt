@@ -1,9 +1,4 @@
 import IPRADerivations.AnalyticNumberTheory.ChebyshevAbel
-import IPRADerivations.AnalyticNumberTheory.FloorTelescope
-import IPRADerivations.AnalyticNumberTheory.SumReindex
-import IPRADerivations.Core.LinearCombination
-import IPRADerivations.Core.InductionTactic
-import IPRADerivations.Core.Header
 
 /-!
 # `Σ log k / k = (log x)²/2 + O(1)` exactly (`pnt_ipra_constructive_2026-11-14`, `con:one-step`)
@@ -21,25 +16,17 @@ remainder:
   `Σ_{j≥1} ⌊F²/j²⌋ ≤ 2F²` (`FloorTelescope.floor_square_sum`).
 -/
 
-set_option linter.unusedSimpArgs false
-
 namespace LeanProofs.IPRA.AnalyticNumberTheory.HarmonicHalfSquare
 
-open_ipra
+open_ipra exports
 open LeanProofs.IPRA.AnalyticNumberTheory.Harmonic (S hB)
-open LeanProofs.IPRA.AnalyticNumberTheory.HarmonicMertens (le_scale)
 open LeanProofs.IPRA.AnalyticNumberTheory.HarmonicLogSquareSum (U U_paired delta_paired U_increment)
 open LeanProofs.IPRA.AnalyticNumberTheory.ChebyshevAbel (dlt_k)
-open LeanProofs.IPRA.AnalyticNumberTheory.ComparisonEnvelope (le_mul2)
 open LeanProofs.IPRA.AnalyticNumberTheory.FloorTelescope (qB inst2_qB floor_square_sum)
-open LeanProofs.IPRA.AnalyticNumberTheory.SumReindex (le_quo_of_mul_le)
-open LeanProofs.IPRA.AnalyticNumberTheory.DivisorHarmonic (shift_fact')
 
 set_option autoImplicit false
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
-
-local notation "𝔞" t:max => Groth.ι (IPRA.Q.mk _ t)
 
 /-- `Δ_{j+2} = S(K(j+2)) − S(K(j+1))` with parameter `(K, F)`. -/
 abbrev dlB : PTm 2 :=

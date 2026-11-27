@@ -21,8 +21,6 @@ primitive-recursive witness `wit e N y`.
 All arithmetic inductions are the quantifier-free ones inside `BoundedReflection`.
 -/
 
-set_option linter.unusedSimpArgs false
-
 namespace LeanProofs.IPRA.AnalyticNumberTheory.CubeScan
 
 open LeanProofs.ConciseIPRA LeanProofs.IPRA
@@ -85,9 +83,8 @@ theorem cube_clean (y : PTm n) : Γ ⊢[PRAAx] Fm.iff (Clean e y) (ScanClean e y
     rw [clean_shift] at h
     exact scan_of_clean e h
   · have h0 := Prf.allE (succ (var 0)) (Prf.hyp0 : (ScanClean e y :: Γ) ⊢[PRAAx] ScanClean e y).shift
-    simp only [Fm.subst_eq, subst_ap2, PTm.subst_add, PTm.subst_monus, ConciseIPRA.PTm.subst_succ,
-      ConciseIPRA.PTm.subst_zero, Syn.subst_var, Syn.up_zero, Syn.inst_zero, subst_up_shift_pal,
-      Syn.subst_inst_shift] at h0
+    simp only [Fm.subst_eq, subst_ap2, PTm.subst_monus, ConciseIPRA.PTm.subst_succ, ConciseIPRA.PTm.subst_zero,
+      Syn.subst_var, Syn.up_zero, Syn.inst_zero, subst_up_shift_pal, Syn.subst_inst_shift] at h0
     exact clean_of_scan e h0 (le_refl _)
 
 theorem cube_shift (g : PTm (n + 1)) (y : PTm n) : Γ ⊢[PRAAx] Fm.iff (Clean e y) (ScanCleanG e g y) := by
@@ -165,7 +162,6 @@ theorem product_certificate (y : PTm n) :
       Vc e (succ (var 0)) (Syn.shift y) ≐ one := h1'
   have h1 := natEq h1''
   have s := natEq (v_succ (Γ := (Fm.all (Vc e (var 0) (Syn.shift y) ≐ one) :: Γ).map Fm.shift) e (var 0) (Syn.shift y))
-  apply deriveNat; ipra_simps
-  linear_combination h1 - s - (𝔞 (inst2 e (var 0) (Syn.shift y)) + 1) * h0
+  ipra_lc h1 - s - (𝔞 (inst2 e (var 0) (Syn.shift y)) + 1) * h0
 
 end LeanProofs.IPRA.AnalyticNumberTheory.CubeScan

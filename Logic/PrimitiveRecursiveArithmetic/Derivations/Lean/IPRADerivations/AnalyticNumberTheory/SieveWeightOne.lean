@@ -1,7 +1,4 @@
 import IPRADerivations.AnalyticNumberTheory.SieveWeightForm
-import IPRADerivations.AnalyticNumberTheory.PowerResidue
-import IPRADerivations.Core.CertificateTactics
-import IPRADerivations.Core.Header
 
 /-!
 # The explicit sieve weights at `d = 1`
@@ -29,21 +26,14 @@ the second from the summand at `r = 1`: `G ≥ 1`.
 * `muP_one`, `YP_one`: `μ⁺(1) = 1` and `Y⁺_1 = z!`.
 -/
 
-set_option linter.unusedSimpArgs false
-
 namespace LeanProofs.IPRA.AnalyticNumberTheory.SieveWeightOne
 
-open_ipra
+open_ipra exports
 open LeanProofs.IPRA.Signum (sg sg_zero)
 open LeanProofs.IPRA.Analysis.Products (fact)
 open LeanProofs.IPRA.AnalyticNumberTheory.Mobius (muP muN om_two_one sq_two_one congrSg zero_mul_l congrEqb')
-open LeanProofs.IPRA.AnalyticNumberTheory.ConvolutionAssoc (sg_pos)
-open LeanProofs.IPRA.AnalyticNumberTheory.DirichletLeibniz (cvB cv_at)
 open LeanProofs.IPRA.AnalyticNumberTheory.SymmetryInstances (rem_one)
 open LeanProofs.IPRA.AnalyticNumberTheory.Totient (phi quo_eq)
-open LeanProofs.IPRA.AnalyticNumberTheory.EulerProduct (phi_one)
-open LeanProofs.IPRA.AnalyticNumberTheory.PowerResidue (gcd_one_left)
-open LeanProofs.IPRA.AnalyticNumberTheory.SymmetrySum (aPB aNB inst2_aP inst2_aN)
 open LeanProofs.IPRA.AnalyticNumberTheory.SieveInversion (hS inst2_hS wB wB_at)
 open LeanProofs.IPRA.AnalyticNumberTheory.SieveExpansion (lB inst2_lB)
 open LeanProofs.IPRA.AnalyticNumberTheory.SieveWeightRows (sg_idem uB inst2_uB)
@@ -52,8 +42,6 @@ open LeanProofs.IPRA.AnalyticNumberTheory.SieveWeightForm (UPw UNw kyB inst2_kyB
 open LeanProofs.IPRA.Probability.Independence (row_pt sum_scale)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
-
-local notation "𝔞" t:max => Groth.ι (IPRA.Q.mk _ t)
 
 /-! ## Facts at `1` -/
 
@@ -193,3 +181,5 @@ theorem A_ge {P : PTm n} (hz : Γ ⊢[PRAAx] le one (sndT (sndT P))) :
   exact le_trans (le_congr (YP_one P) (.eqRefl _) (term_le_sum YP (x := P) h1)) (le_add_right _ _)
 
 end LeanProofs.IPRA.AnalyticNumberTheory.SieveWeightOne
+
+export_ipra AnalyticNumberTheory.SieveWeightOne (Asum)

@@ -1,7 +1,5 @@
 import IPRADerivations.DiophantineNumberTheory.PellAll
 import IPRADerivations.AnalyticNumberTheory.FactorVector
-import IPRADerivations.Core.LinearCombination
-import IPRADerivations.Core.Header
 
 /-!
 # An explicit Pell family: `D = t² − 1`
@@ -19,18 +17,14 @@ With `D = pred (t · t)`:
   `c = C(y) ≤ y` of `PellAll.pell_all_at`.
 -/
 
-set_option linter.unusedSimpArgs false
-
 namespace LeanProofs.IPRA.DiophantineNumberTheory.PellFamily
 
-open_ipra
+open_ipra exports
 open LeanProofs.IPRA.Combinatorics.Binomial (pos_mul)
 open LeanProofs.IPRA.AnalyticNumberTheory.FactorVector (one_le_pos)
 open LeanProofs.IPRA.DiophantineNumberTheory.PellAll (minimal pell_all_at Xp Yp C p3)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
-
-local notation "𝔞" t:max => Groth.ι (IPRA.Q.mk _ t)
 
 /-! ## The solution `(t, 1)` -/
 

@@ -1,7 +1,4 @@
 import IPRADerivations.Core.IntOrder
-import IPRADerivations.Core.Gcd
-import IPRADerivations.Core.CommonLemmas
-import IPRADerivations.Core.Header
 
 /-!
 # Quantitative uniqueness from strong convexity
@@ -26,16 +23,11 @@ quantitative uniqueness lemmas; construction of a regular minimizer name
 also needs the packet's domain, midpoint and approximation certificates.
 -/
 
-set_option linter.unusedSimpArgs false
-
 namespace LeanProofs.IPRA.Foundations.StrongConvexity
 
-open_ipra
-open LeanProofs.IPRA.AnalyticNumberTheory.PhiLower (le_mul_mono)
+open_ipra exports
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
-
-local notation "𝔞" t:max => Groth.ι (IPRA.Q.mk _ t)
 
 /-- A natural slack for the integer inequality `u ≤ v`. -/
 private def slack (u v : ZT n) : PTm n :=

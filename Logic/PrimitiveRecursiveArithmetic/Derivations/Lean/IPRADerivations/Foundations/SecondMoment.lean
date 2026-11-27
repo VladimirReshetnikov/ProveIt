@@ -1,11 +1,6 @@
 import IPRADerivations.Probability.FiniteCauchySchwarz
-import IPRADerivations.Probability.Independence
-import IPRADerivations.Foundations.IntervalCover
 import IPRADerivations.AnalyticNumberTheory.Mobius
-import IPRADerivations.Combinatorics.FiniteBijection
 import IPRADerivations.DiophantineNumberTheory.KhinchinMoment
-import IPRADerivations.Core.LinearCombination
-import IPRADerivations.Core.Header
 
 /-!
 # The second-moment method on a finite grid
@@ -28,9 +23,8 @@ For a family of cell sets `b(c, k, x)`, `k < B`, on the cells `c < T`, with `F(c
 
 namespace LeanProofs.IPRA.Foundations.SecondMoment
 
-open_ipra
+open_ipra exports
 open LeanProofs.IPRA.Signum (sg sg_zero sg_succ)
-open LeanProofs.IPRA.AnalyticNumberTheory.Mobius (congrSg)
 open LeanProofs.IPRA.Probability.FiniteCauchySchwarz (wvB wv2B inst2_wvB inst2_wv2B cauchy_schwarz)
 open LeanProofs.IPRA.Probability.Independence (sum_scale)
 open LeanProofs.IPRA.Combinatorics.FiniteBijection (shift_inst2')
@@ -38,8 +32,6 @@ open LeanProofs.IPRA.Combinatorics.FiniteBijection (shift_inst2')
 set_option autoImplicit false
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
-
-local notation "𝔞" t:max => Groth.ι (IPRA.Q.mk _ t)
 
 /-- `[y > 0] y = y`. -/
 theorem sg_mul_self (y : PTm n) : Γ ⊢[PRAAx] sg y * y ≐ y := by
@@ -68,7 +60,7 @@ theorem cs_moment (T B x : PTm n) :
       ap2 (sumF (oB b * oB b)) T (pairT B x) := by
     refine sum_congr_bounded _ _ _ _ _ (.allI (.impI ?_))
     rw [inst2_wv2B, inst2_sgF, inst2_FF]
-    ipra_lc 𝔞 (inst2 (oB b) (var 0) (Syn.shift (pairT B x))) * natEq (sg_mul_self (Γ := lt (var 0) (Syn.shift T) :: Γ.map Fm.shift) (inst2 (oB b) (var 0) (Syn.shift (pairT B x))))
+    ipra_lc 𝔞 (inst2 (oB b) (var 0) (Syn.shift (pairT B x))) * natEq (sg_mul_self (inst2 (oB b) (var 0) (Syn.shift (pairT B x))))
   exact le_congr (congrMul e1 e1) (congrMul (.eqRefl _) e2) cs
 
 /-! ## The pair expansion of `Σ_c F²` -/

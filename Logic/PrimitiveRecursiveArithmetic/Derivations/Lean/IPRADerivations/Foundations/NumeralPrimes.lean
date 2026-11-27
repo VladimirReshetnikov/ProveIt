@@ -1,9 +1,6 @@
 import IPRADerivations.AnalyticNumberTheory.ValuationMul
 import IPRADerivations.Foundations.BoundedDecision
 import IPRADerivations.Core.OrderCertificates
-import IPRADerivations.Core.LinearCombination
-import IPRADerivations.Core.CommonLemmas
-import IPRADerivations.Core.Header
 
 /-!
 # Primality of numerals by trial division
@@ -32,15 +29,11 @@ set_option linter.unusedSimpArgs false
 
 namespace LeanProofs.IPRA.Foundations.NumeralPrimes
 
-open_ipra
-open LeanProofs.IPRA.AnalyticNumberTheory.Primes (prime)
-open LeanProofs.IPRA.AnalyticNumberTheory.ValuationMul (p_pos)
+open_ipra exports
 open LeanProofs.IPRA.Combinatorics.LegendreDigits (dm dmu)
 open LeanProofs.IPRA.Foundations.BoundedDecision (cases_num)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
-
-local notation "𝔞" t:max => Groth.ι (IPRA.Q.mk _ t)
 
 /-! ## Numerals -/
 
@@ -149,3 +142,5 @@ theorem prime_num (p r : ℕ) (hp2 : 2 ≤ p) (hr : p < (r + 1) * (r + 1))
   exact no_divisor p r hr hnd (.hyp (by simp)) (.hyp (by simp)) Prf.hyp0
 
 end LeanProofs.IPRA.Foundations.NumeralPrimes
+
+export_ipra Foundations.NumeralPrimes (num_le num_lt)

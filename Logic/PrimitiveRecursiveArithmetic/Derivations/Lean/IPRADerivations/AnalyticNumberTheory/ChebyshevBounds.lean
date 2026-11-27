@@ -1,8 +1,5 @@
 import IPRADerivations.AnalyticNumberTheory.BinomialLcm
 import IPRADerivations.Probability.MedianOfMedians
-import IPRADerivations.DiophantineNumberTheory.QuarticStep
-import IPRADerivations.Core.LinearCombination
-import IPRADerivations.Core.Header
 
 /-!
 # Explicit Chebyshev bounds, integer form
@@ -22,32 +19,22 @@ Since `ψ(N) = log lcm(1, …, N)` (`thm:psi-lcm`), the logarithmic bounds are t
 The passage to real logarithms (rational approximations of `log 2`) is not formalized.
 -/
 
-set_option linter.unusedSimpArgs false
-
 namespace LeanProofs.IPRA.AnalyticNumberTheory.ChebyshevBounds
 
-open_ipra
-open LeanProofs.IPRA.AnalyticNumberTheory.Primes (prime)
+open_ipra exports
 open LeanProofs.IPRA.AnalyticNumberTheory.Valuation (val isP isP_01 prime_of_isP isP_of_prime pw_pos')
 open LeanProofs.IPRA.AnalyticNumberTheory.FactorVector (subst_dvd one_le_pos)
 open LeanProofs.IPRA.AnalyticNumberTheory.LcmUpto (lcmu lcmu_pos lcmu_dvd lcmu_succ lcmu_zero lcm_valuation)
-open LeanProofs.IPRA.AnalyticNumberTheory.TotientCorollaries (lcm)
 open LeanProofs.IPRA.AnalyticNumberTheory.BinomialLcm (dvd_of_val_le Pw PE cB XE val_PE inst2_XE inst2_cB
   window_dvd central_dvd_lcm PE_pos)
 open LeanProofs.IPRA.AnalyticNumberTheory.Mobius (prime_two congrSg)
-open LeanProofs.IPRA.AnalyticNumberTheory.ValuationMul (p_pos val_mul)
-open LeanProofs.IPRA.DiophantineNumberTheory.Coprime (dvd_trans' dvd_le' dvd_self' eq_one_of_dvd_one gcd_dvd')
-open LeanProofs.IPRA.Foundations.ChineseRemainder (gcd_pos)
 open LeanProofs.IPRA.Combinatorics.Catalan (cb)
 open LeanProofs.IPRA.Combinatorics.Binomial (binom)
 open LeanProofs.IPRA.AnalyticNumberTheory.Totatives (sg_lt sg_le)
-open LeanProofs.IPRA.AnalyticNumberTheory.PhiLower (le_mul_mono)
 open LeanProofs.IPRA.Geometry.HypercubeSplit (le_cancel_pos)
 open LeanProofs.IPRA.Signum (sg sg_zero sg_succ)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
-
-local notation "𝔞" t:max => Groth.ι (IPRA.Q.mk _ t)
 
 /-! ## Monotonicity of `lcm(1, …, N)` -/
 
@@ -58,7 +45,7 @@ theorem lcmu_dvd_add (a d : PTm n) : Γ ⊢[PRAAx] dvd (lcmu a) (lcmu (a + d)) :
         ConciseIPRA.PTm.subst_zero]
       exact (congrAp2 remF (congrAp2 LcmUpto.lcmuF (add_zero _) (.eqRefl _)) (.eqRefl _)).eqTrans (dvd_self' (lcmu_pos a))
     · simp only [subst_dvd, subst_ap2, PTm.subst_add, Syn.subst_var, Syn.repl_zero, subst_repl_shift,
-        ConciseIPRA.PTm.subst_zero, ConciseIPRA.PTm.subst_succ]
+        ConciseIPRA.PTm.subst_zero]
       let D : List (Fm PTm (n + 1)) := dvd (lcmu (Syn.shift a)) (lcmu (Syn.shift a + var 0)) :: Γ.map Fm.shift
       have h2 := Prf.andE₁ (lcmu_dvd (Γ := D) (Syn.shift a + var 0))
       have e : D ⊢[PRAAx] lcmu (Syn.shift a + succ (var 0)) ≐ lcmu (succ (Syn.shift a + var 0)) :=
@@ -195,12 +182,12 @@ theorem upper_step {m x : PTm n} (hS : Γ ⊢[PRAAx] ap2 (sumF QB) m x ≐ zero)
     have sp := natEq spos
     have r1 := natEq (eq_add_of_le rl)
     have tl : C ⊢[PRAAx] lt (quo m two + rem m two) m :=
-      le_of_eq_add (d := pred (quo m two)) (by apply deriveNat; ipra_simps; linear_combination dv + sp)
+      le_of_eq_add (d := pred (quo m two)) (by ipra_lc dv + sp)
     have mt : C ⊢[PRAAx] le m (two * (quo m two + rem m two)) :=
-      le_of_eq_add (d := rem m two) (by apply deriveNat; ipra_simps; linear_combination -dv)
+      le_of_eq_add (d := rem m two) (by ipra_lc -dv)
     have ex : C ⊢[PRAAx] le (two * (two * (quo m two + rem m two)) + two * (quo m two + rem m two)) (two * (two * m)) :=
       le_of_eq_add (d := two * (pred (quo m two) + monus one (rem m two)))
-        (by apply deriveNat; ipra_simps; linear_combination 4 * dv + 2 * sp + 2 * r1)
+        (by ipra_lc 4 * dv + 2 * sp + 2 * r1)
     have ih := sum_zero_elim QB hS.wk tl
     rw [inst2_QB] at ih
     exact le_trans (lcmu_le mt) (le_trans (double_lcm _) (le_trans (mul_le_mul_right _ ih)
@@ -224,8 +211,7 @@ theorem two_pow_ge {N : PTm n} (h : Γ ⊢[PRAAx] le (succ two) N) : Γ ⊢[PRAA
         ConciseIPRA.PTm.subst_zero, ConciseIPRA.PTm.subst_succ]
       have p3 := natEq ((pw_succ (Γ := Γ) two (succ (succ zero))).eqTrans (congrMul ((pw_succ two (succ zero)).eqTrans
         (congrMul ((pw_succ two zero).eqTrans (congrMul (pw_zero two) (.eqRefl _))) (.eqRefl _))) (.eqRefl _)))
-      have a := natEq (congrAp2 powF (add_zero (Γ := Γ) (succ two)) (.eqRefl two))
-      exact le_of_eq_add (d := one) (by apply deriveNat; ipra_simps; linear_combination a + p3)
+      exact le_of_eq_add (d := one) (by ipra_lc natEq (congrAp2 powF (add_zero (Γ := Γ) (succ two)) (.eqRefl two)) + p3)
     · simp only [subst_le, subst_ap2, PTm.subst_add, PTm.subst_mul, Syn.subst_var, Syn.repl_zero,
         ConciseIPRA.PTm.subst_zero, ConciseIPRA.PTm.subst_succ]
       let D : List (Fm PTm (n + 1)) := le (succ (two * (succ two + var 0))) (pw two (succ two + var 0)) :: Γ.map Fm.shift
@@ -269,7 +255,7 @@ theorem lcmu_lower {x : PTm n} (h : Γ ⊢[PRAAx] le (succ (succ (succ (succ two
   have l3 : Γ ⊢[PRAAx] le x (quo x two + (quo x two + quo x two)) := by
     have e3 := natEq (eq_add_of_le s3)
     exact le_of_eq_add (d := monus one (rem x two) + monus (quo x two) (succ two) + two)
-      (by apply deriveNat; ipra_simps; linear_combination -dv + r1 + e3)
+      (by ipra_lc -dv + r1 + e3)
   have b := le_trans (lcmu_lower2 s3) (lcmu_le l2)
   refine le_trans (PowerCleared.pw_le_exp two_pos' l3) ?_
   refine le_congr ((congrMul (.eqRefl _) (pw_add _ _ _)).eqSymm.eqTrans (pw_add _ _ _).eqSymm) (.eqRefl _) ?_

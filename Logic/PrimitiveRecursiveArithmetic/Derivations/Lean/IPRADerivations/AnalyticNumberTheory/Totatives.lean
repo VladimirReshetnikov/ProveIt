@@ -1,8 +1,5 @@
 import IPRADerivations.AnalyticNumberTheory.OrderPower
 import IPRADerivations.Analysis.RationalArithmetic.Powers.PowerSums
-import IPRADerivations.Core.LinearCombination
-import IPRADerivations.Core.InductionTactic
-import IPRADerivations.Core.Header
 
 /-!
 # The totatives under `a ↦ n − a`
@@ -26,11 +23,10 @@ set_option linter.unusedSimpArgs false
 
 namespace LeanProofs.IPRA.AnalyticNumberTheory.Totatives
 
-open_ipra
+open_ipra exports
 open LeanProofs.IPRA.Algebra.CubeRootTwo (sg sg_zero sg_succ)
 open LeanProofs.IPRA.Combinatorics.Binomial (pos_mul)
 open LeanProofs.IPRA.Combinatorics.BinomialTheorem (congrPw)
-open LeanProofs.IPRA.Foundations.ChineseRemainder (gcd_pos rem_eq_of_eq)
 open LeanProofs.IPRA.DiophantineNumberTheory.Coprime
 open LeanProofs.IPRA.DiophantineNumberTheory.QuarticStep (congrGcd)
 open LeanProofs.IPRA.AnalyticNumberTheory.Totient (phi totBody inst2_tot)
@@ -364,3 +360,5 @@ theorem phi_even : ([] : List (Fm PTm 0)) ⊢[PRAAx] univ 1 phiEvenFormula :=
   closeUniv 1 (phi_even_at (le_of_eq_add (d := var 0) (by ipra_ring)))
 
 end LeanProofs.IPRA.AnalyticNumberTheory.Totatives
+
+export_ipra AnalyticNumberTheory.Totatives (monus_succ_of_lt sg_lt)

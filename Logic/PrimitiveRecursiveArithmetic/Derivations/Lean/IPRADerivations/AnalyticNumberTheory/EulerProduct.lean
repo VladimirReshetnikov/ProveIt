@@ -1,8 +1,4 @@
 import IPRADerivations.AnalyticNumberTheory.PhiEvenPow
-import IPRADerivations.Core.LinearCombination
-import IPRADerivations.Core.CommonLemmas
-import IPRADerivations.Core.InductionTactic
-import IPRADerivations.Core.Header
 
 /-!
 # The Euler product for `φ`
@@ -23,20 +19,16 @@ set_option linter.unusedSimpArgs false
 
 namespace LeanProofs.IPRA.AnalyticNumberTheory.EulerProduct
 
-open_ipra
+open_ipra exports
 open LeanProofs.IPRA.Algebra.CubeRootTwo (sg sg_zero sg_succ)
 open LeanProofs.IPRA.Combinatorics.Binomial (pos_mul)
 open LeanProofs.IPRA.DiophantineNumberTheory.Coprime
 open LeanProofs.IPRA.AnalyticNumberTheory.Totient (phi totBody inst2_tot coprime_pow totient_prime_power_at)
-open LeanProofs.IPRA.AnalyticNumberTheory.Primes (lpf lpf_dvd lpf_prime prime eq_succ_pred)
 open LeanProofs.IPRA.AnalyticNumberTheory.Euler (congrEqb rem_one)
-open LeanProofs.IPRA.AnalyticNumberTheory.RSA (gcd_distinct_primes)
 open LeanProofs.IPRA.AnalyticNumberTheory.GcdFiber (eqb_iff shift_pos)
 open LeanProofs.IPRA.AnalyticNumberTheory.SumPhi (shift_eq' shift_mul')
-open LeanProofs.IPRA.AnalyticNumberTheory.Multiplicative (rem_eq' rem_lt' zero_lt')
 open LeanProofs.IPRA.AnalyticNumberTheory.Valuation
 open LeanProofs.IPRA.AnalyticNumberTheory.PhiEvenPow (isP_congr p_dvd_n shift_pw' shift_rpos)
-open LeanProofs.IPRA.AnalyticNumberTheory.Fermat (prime_shift)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
@@ -249,15 +241,11 @@ theorem eu_found {N p x : PTm n} (hN : Γ ⊢[PRAAx] N ≐ succ (pred N)) (hp : 
   have hPp : Γ ⊢[PRAAx] le two (pw p (val p N)) := by
     refine le_trans hp2 (le_of_eq_add (d := pred (pw p (pred (val p N))) * p) ?_)
     have e₁ := natEq ((congrAp2 powF ha (.eqRefl p)).eqTrans (pw_succ p (pred (val p N))))
-    have e₂ := natEq (pw_pos' hp1 (pred (val p N)))
-    apply deriveNat; ipra_simps
-    linear_combination e₁ + Groth.ι (Q.mk _ p) * e₂
+    ipra_lc e₁ + Groth.ι (Q.mk _ p) * natEq (pw_pos' hp1 (pred (val p N)))
   have hlt : Γ ⊢[PRAAx] lt (quo N (pw p (val p N))) N := by
     refine le_of_eq_add (d := pred (quo N (pw p (val p N))) +
       monus (pw p (val p N)) two * quo N (pw p (val p N))) ?_
-    have e₁ := natEq hNe; have e₂ := natEq (eq_add_of_le hPp); have e₃ := natEq hm
-    apply deriveNat; ipra_simps
-    linear_combination e₁ + Groth.ι (Q.mk _ (quo N (pw p (val p N)))) * e₂ + e₃
+    ipra_lc natEq hNe + Groth.ι (Q.mk _ (quo N (pw p (val p N)))) * natEq (eq_add_of_le hPp) + natEq hm
   -- The induction hypothesis at `m`.
   have h₀ := sum_zero_elim euB hV hlt
   rw [inst2_eu] at h₀
@@ -333,3 +321,5 @@ theorem euler_product : ([] : List (Fm PTm 0)) ⊢[PRAAx] univ 1 eulerProductFor
   closeUniv 1 (euler_product_at (var 0))
 
 end LeanProofs.IPRA.AnalyticNumberTheory.EulerProduct
+
+export_ipra AnalyticNumberTheory.EulerProduct (eq_of_viol eqb_comm' phi_one viol_of_eq)

@@ -1,5 +1,4 @@
 import IPRADerivations.Foundations.TriangularUniqueness
-import IPRADerivations.Core.Header
 
 /-!
 # The Hurwitz examples determine their solutions (`ipra_coherent_methods_2026-11-15`)
@@ -20,11 +19,9 @@ In both cases the solution is produced without dividing by a factorial, and uniq
 packet's bounded-prefix induction.
 -/
 
-set_option linter.unusedSimpArgs false
-
 namespace LeanProofs.IPRA.Foundations.HurwitzUniqueness
 
-open_ipra
+open_ipra exports
 open LeanProofs.IPRA.Analysis.Products (fact)
 open LeanProofs.IPRA.Combinatorics.Bell (bell bell_zero)
 open LeanProofs.IPRA.Combinatorics.BinomialTransform (bgB)

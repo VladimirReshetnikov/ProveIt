@@ -1,12 +1,7 @@
 import IPRADerivations.DiophantineNumberTheory.SquareArea
 import IPRADerivations.Geometry.HypercubeSplit
-import IPRADerivations.Combinatorics.Binomial
-import IPRADerivations.Combinatorics.BinomialIdentities
 import IPRADerivations.Combinatorics.Bell
 import IPRADerivations.Core.BlockSum
-import IPRADerivations.Core.LinearCombination
-import IPRADerivations.Core.CommonLemmas
-import IPRADerivations.Core.Header
 
 /-!
 # Reduced states of the continued fraction of `√D`
@@ -29,19 +24,13 @@ The proof follows the packet with `t = (a + m) mod d`: `c ≥ 1` (since `d ≤ a
 are `d < d' + 2m'` and `d' < d + 2m'`, obtained from `d ∸ m' ≤ m` and `d + m' ≥ a + 1`.
 -/
 
-set_option linter.unusedSimpArgs false
-
 namespace LeanProofs.IPRA.DiophantineNumberTheory.PellCFStep
 
-open_ipra
-open LeanProofs.IPRA.AnalyticNumberTheory.PhiLower (le_mul_mono)
-open LeanProofs.IPRA.DiophantineNumberTheory.SquareArea (le_add_mono)
+open_ipra exports
 open LeanProofs.IPRA.Geometry.HypercubeSplit (le_cancel_pos)
 open LeanProofs.IPRA.Combinatorics.Binomial (quo_of_eq)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
-
-local notation "𝔞" t:max => Groth.ι (IPRA.Q.mk _ t)
 
 /-! ## Order helpers -/
 
@@ -56,7 +45,7 @@ alias one_le_of_pos := Common.one_le_of_pos
 /-- `a ≤ b + (a ∸ b)`. -/
 theorem le_add_monus_l (a b : PTm n) : Γ ⊢[PRAAx] le a (b + monus a b) := by
   refine le_of_eq_add (d := monus b a) ?_
-  ipra_lc natEq (monus_max (Γ := Γ) a b)
+  ipra_lc natEq (monus_max a b)
 
 /-- `x ≤ a` gives `x² < D` when `a² < D`. -/
 theorem sq_lt_of_le {x a D : PTm n} (hA : Γ ⊢[PRAAx] lt (a * a) D) (h : Γ ⊢[PRAAx] le x a) :
@@ -128,14 +117,12 @@ theorem step_closure (hA : Γ ⊢[PRAAx] lt (a * a) D) (hB : Γ ⊢[PRAAx] lt D 
     refine .orE (zero_or_succ (cD a m d)) ?_ Prf.hyp0
     let C := (cD a m d ≐ zero) :: Γ
     have e : C ⊢[PRAAx] rem (a + m) d ≐ a + m := by
-      have x := natEq (eDiv.wk : C ⊢[PRAAx] _); have z := natEq (Prf.hyp0 : C ⊢[PRAAx] _)
-      apply deriveNat; ipra_simps; linear_combination x - 𝔞 d * z
+      ipra_lc natEq (eDiv.wk : C ⊢[PRAAx] _) - 𝔞 d * natEq (Prf.hyp0 : C ⊢[PRAAx] _)
     exact le_lt_absurd _ hdam.wk (lt_congr e (.eqRefl _) htd.wk)
   -- `d + t ≤ a + m`.
   have hdt : Γ ⊢[PRAAx] le (rem (a + m) d + d) (a + m) := by
     refine le_of_eq_add (d := pred (cD a m d) * d) ?_
-    have x := natEq eDiv; have z := natEq hc
-    apply deriveNat; ipra_simps; linear_combination -x + 𝔞 d * z
+    ipra_lc -natEq eDiv + 𝔞 d * natEq hc
   -- `t ≤ a`.
   have hta : Γ ⊢[PRAAx] le (rem (a + m) d) a := by
     refine .orE (le_total d m) ?_ ?_
@@ -145,8 +132,7 @@ theorem step_closure (hA : Γ ⊢[PRAAx] lt (a * a) D) (hB : Γ ⊢[PRAAx] lt D 
   -- `m' = a − t` and `d c = m' + m`.
   have eA := eq_add_of_le hta
   have hdc : Γ ⊢[PRAAx] d * cD a m d ≐ monus a (rem (a + m) d) + m := by
-    have x := natEq eDiv; have y := natEq eA
-    apply deriveNat; ipra_simps; linear_combination x + y
+    ipra_lc natEq eDiv + natEq eA
   have hmS : Γ ⊢[PRAAx] mS a m d ≐ monus a (rem (a + m) d) :=
     (congrMonus hdc (.eqRefl _)).eqTrans (add_monus _ _)
   have ex1 : Γ ⊢[PRAAx] d * cD a m d ≐ mS a m d + m := hdc.eqTrans (congrAdd hmS.eqSymm (.eqRefl _))
@@ -161,17 +147,13 @@ theorem step_closure (hA : Γ ⊢[PRAAx] lt (a * a) D) (hB : Γ ⊢[PRAAx] lt D 
         (D + (two * (mS a m d * m) + m * m)) := add_le_add_right _ (le_of_lt hmSD)
     refine le_congr ?_ ?_ base
     · have x := natEq ex1
-      apply deriveNat; ipra_simps
-      linear_combination -(𝔞 d * 𝔞 (cD a m d) + 𝔞 (mS a m d) + 𝔞 m) * x
+      ipra_lc -(𝔞 d * 𝔞 (cD a m d) + 𝔞 (mS a m d) + 𝔞 m) * x
     · have x := natEq ex1; have y := natEq De
-      apply deriveNat; ipra_simps
-      linear_combination y - 2 * 𝔞 m * x
+      ipra_lc y - 2 * 𝔞 m * x
   have eK := eq_add_of_le hle
   have Dk : Γ ⊢[PRAAx] D ≐ mS a m d * mS a m d + d * monus (quo (monus D (m * m)) d + two * cD a m d * m)
       (d * cD a m d * cD a m d) := by
-    have x := natEq ex1; have y := natEq De; have z := natEq eK
-    apply deriveNat; ipra_simps
-    linear_combination y + 𝔞 d * z + (𝔞 d * 𝔞 (cD a m d) + 𝔞 (mS a m d) + 𝔞 m - 2 * 𝔞 m) * x
+    ipra_lc natEq De + 𝔞 d * natEq eK + (𝔞 d * 𝔞 (cD a m d) + 𝔞 (mS a m d) + 𝔞 m - 2 * 𝔞 m) * natEq ex1
   have hdS : Γ ⊢[PRAAx] dS D a m d ≐ monus (quo (monus D (m * m)) d + two * cD a m d * m) (d * cD a m d * cD a m d) :=
     quo_of_eq hd ((congrMonus Dk (.eqRefl _)).eqTrans (add_monus' _ _))
   have ex2 : Γ ⊢[PRAAx] D ≐ mS a m d * mS a m d + d * dS D a m d := Dk.eqTrans (congrAdd (.eqRefl _) (congrMul (.eqRefl _) hdS.eqSymm))
@@ -180,31 +162,29 @@ theorem step_closure (hA : Γ ⊢[PRAAx] lt (a * a) D) (hB : Γ ⊢[PRAAx] lt D 
     refine .orE (zero_or_succ (dS D a m d)) ?_ Prf.hyp0
     let C := (dS D a m d ≐ zero) :: Γ
     have e : C ⊢[PRAAx] D ≐ mS a m d * mS a m d := by
-      have x := natEq (ex2.wk : C ⊢[PRAAx] _); have z := natEq (Prf.hyp0 : C ⊢[PRAAx] _)
-      apply deriveNat; ipra_simps; linear_combination x + 𝔞 d * z
+      ipra_lc natEq (ex2.wk : C ⊢[PRAAx] _) + 𝔞 d * natEq (Prf.hyp0 : C ⊢[PRAAx] _)
     exact not_succ_le_self _ _ (le_congr (.eqRefl _) e hmSD.wk)
   -- New `R1`: `d < d' + 2 m'`, hence `D < (d' + m')²`.
   have hR1' : Γ ⊢[PRAAx] lt D ((dS D a m d + mS a m d) * (dS D a m d + mS a m d)) := by
     have key : Γ ⊢[PRAAx] lt d (dS D a m d + two * mS a m d) := by
       refine .orE (le_total d (mS a m d)) ?_ ?_
       · refine lt_of_le_of_lt Prf.hyp0 (le_of_eq_add (d := pred (dS D a m d) + mS a m d) ?_)
-        have z := natEq (hdSp.wk : (le d (mS a m d) :: Γ) ⊢[PRAAx] _)
-        apply deriveNat; ipra_simps; linear_combination z
+        ipra_lc natEq (hdSp.wk : (le d (mS a m d) :: Γ) ⊢[PRAAx] _)
       · let C := le (mS a m d) d :: Γ
         have eu := eq_add_of_le (Prf.hyp0 : C ⊢[PRAAx] le (mS a m d) d)
         -- `u = d ∸ m' ≤ m`, so `u² < D`.
         have hu : C ⊢[PRAAx] le (monus d (mS a m d)) m := by
           refine le_of_add_le_add_right (c := mS a m d) ?_
           refine le_congr (a := d) (b := d * cD a m d) ?_ ?_ (le_of_eq_add (d := pred (cD a m d) * d) ?_)
-          · have x := natEq eu; apply deriveNat; ipra_simps; linear_combination x
+          · ipra_lc natEq eu
           · exact (ex1.wk : C ⊢[PRAAx] _).eqTrans (add_comm _ _)
           · have z := natEq (hc.wk : C ⊢[PRAAx] _)
-            apply deriveNat; ipra_simps; linear_combination 𝔞 d * z
+            ipra_lc 𝔞 d * z
         have huD : C ⊢[PRAAx] lt (monus d (mS a m d) * monus d (mS a m d)) D := sq_lt_of_le hA.wk (le_trans hu hm.wk)
         refine .orE (lt_or_le (monus d (mS a m d)) (mS a m d + dS D a m d)) ?_ ?_
         · refine le_congr ?_ ?_ (add_le_add_right (mS a m d) Prf.hyp0)
           · have x := natEq (eu.wk : (lt (monus d (mS a m d)) (mS a m d + dS D a m d) :: C) ⊢[PRAAx] _)
-            apply deriveNat; ipra_simps; linear_combination -x
+            ipra_lc -x
           · ipra_ring
         · let C' := le (mS a m d + dS D a m d) (monus d (mS a m d)) :: C
           have h₁ : C' ⊢[PRAAx] le (mS a m d * (mS a m d + dS D a m d)) (mS a m d * monus d (mS a m d)) :=
@@ -213,20 +193,17 @@ theorem step_closure (hA : Γ ⊢[PRAAx] lt (a * a) D) (hB : Γ ⊢[PRAAx] lt D 
               (monus d (mS a m d) * monus d (mS a m d)) := le_mul_mono (le_refl _) Prf.hyp0
           have tot := le_trans (le_add_mono h₁ (le_refl (monus d (mS a m d) * dS D a m d))) (le_congr ?_ (.eqRefl _) h₂)
           · refine le_lt_absurd _ (le_congr ?_ (.eqRefl _) tot) huD.wk
-            have x := natEq (ex2.wk.wk : C' ⊢[PRAAx] _); have y := natEq (eu.wk : C' ⊢[PRAAx] _)
-            apply deriveNat; ipra_simps
-            linear_combination -x - 𝔞 (dS D a m d) * y
+            ipra_lc -natEq (ex2.wk.wk : C' ⊢[PRAAx] _) - 𝔞 (dS D a m d) * natEq (eu.wk : C' ⊢[PRAAx] _)
           · ipra_ring
     refine lt_of_lt_of_le (b := D + dS D a m d) ?_ ?_
-    · exact le_of_eq_add (d := pred (dS D a m d)) (by have z := natEq hdSp; apply deriveNat; ipra_simps; linear_combination z)
+    · exact le_of_eq_add (d := pred (dS D a m d)) (by ipra_lc natEq hdSp)
     · refine le_congr ?_ ?_ (add_le_add_right (mS a m d * mS a m d) (le_mul_mono (le_refl (dS D a m d)) key))
-      · have x := natEq ex2; apply deriveNat; ipra_simps; linear_combination -x
+      · ipra_lc -natEq ex2
       · ipra_ring
   -- New `R2`: `d' < d + 2 m'` (from `D < (d + m')²`), hence `(d' ∸ m')² < D`.
   have hdm1 : Γ ⊢[PRAAx] le (succ a) (d + mS a m d) := by
     refine le_of_eq_add (d := monus d (succ (rem (a + m) d))) ?_
-    have x := natEq (eq_add_of_le htd); have y := natEq hmS; have z := natEq eA
-    apply deriveNat; ipra_simps; linear_combination x + y - z
+    ipra_lc natEq (eq_add_of_le htd) + natEq hmS - natEq eA
   have hDdm : Γ ⊢[PRAAx] lt D ((d + mS a m d) * (d + mS a m d)) := lt_sq_of_ge hB hdm1
   have key2 : Γ ⊢[PRAAx] lt (dS D a m d) (d + two * mS a m d) := by
     refine .orE (lt_or_le (dS D a m d) (d + two * mS a m d)) Prf.hyp0 ?_
@@ -235,7 +212,7 @@ theorem step_closure (hA : Γ ⊢[PRAAx] lt (a * a) D) (hB : Γ ⊢[PRAAx] lt D 
     have m2 := add_le_add_right (mS a m d * mS a m d) m1
     refine le_lt_absurd _ (le_congr ?_ ?_ m2) hDdm.wk
     · ipra_ring
-    · have x := natEq (ex2.wk : C ⊢[PRAAx] _); apply deriveNat; ipra_simps; linear_combination -x
+    · ipra_lc -natEq (ex2.wk : C ⊢[PRAAx] _)
   have hR2' : Γ ⊢[PRAAx] lt (monus (dS D a m d) (mS a m d) * monus (dS D a m d) (mS a m d)) D := by
     refine .orE (le_total (dS D a m d) (mS a m d)) ?_ ?_
     · let C := le (dS D a m d) (mS a m d) :: Γ
@@ -261,7 +238,7 @@ theorem step_closure (hA : Γ ⊢[PRAAx] lt (a * a) D) (hB : Γ ⊢[PRAAx] lt D 
           (add_le_add_right (d * monus (dS D a m d) (mS a m d)) hmv))
         · ipra_ring
         · ipra_ring
-        · have y := natEq (ex2.wk : C ⊢[PRAAx] _); apply deriveNat; ipra_simps; linear_combination -y - 𝔞 d * x
+        · ipra_lc -natEq (ex2.wk : C ⊢[PRAAx] _) - 𝔞 d * x
       refine .orE (zero_or_succ (monus (dS D a m d) (mS a m d))) ?_ ?_
       · let C' := (monus (dS D a m d) (mS a m d) ≐ zero) :: C
         have z : C' ⊢[PRAAx] monus (dS D a m d) (mS a m d) ≐ zero := Prf.hyp0
@@ -271,7 +248,7 @@ theorem step_closure (hA : Γ ⊢[PRAAx] lt (a * a) D) (hB : Γ ⊢[PRAAx] lt D 
           monus (dS D a m d) (mS a m d)) ?_ hsum.wk
         refine le_of_eq_add (d := pred (monus (dS D a m d) (mS a m d))) ?_
         have z := natEq (Prf.hyp0 : ((monus (dS D a m d) (mS a m d) ≐ succ (pred (monus (dS D a m d) (mS a m d)))) :: C) ⊢[PRAAx] _)
-        apply deriveNat; ipra_simps; linear_combination z
+        ipra_lc z
   -- Assembly.
   have hdS2 : Γ ⊢[PRAAx] le (dS D a m d) (two * a) := by
     have u := le_of_sq_lt hB hR2'
@@ -323,12 +300,12 @@ theorem start_reduced (hA : Γ ⊢[PRAAx] lt (a * a) D) (hB : Γ ⊢[PRAAx] lt D
   have e1 := natEq (eq_add_of_le hA)
   have hd1 : Γ ⊢[PRAAx] le one (monus D (a * a)) :=
     le_of_eq_add (d := monus D (succ (a * a))) (by
-      have y := natEq eD; apply deriveNat; ipra_simps; linear_combination -y + e1)
+      ipra_lc -natEq eD + e1)
   have hd2 : Γ ⊢[PRAAx] le (monus D (a * a)) (two * a) := by
     have hB' : Γ ⊢[PRAAx] le D (a * a + two * a) :=
       le_of_lt_succ' (lt_congr (.eqRefl _) (by ipra_ring) hB)
     refine le_of_add_le_add_right (c := a * a) (le_congr ?_ ?_ hB')
-    · have y := natEq eD; apply deriveNat; ipra_simps; linear_combination y
+    · ipra_lc natEq eD
     · ipra_ring
   have R : Γ ⊢[PRAAx] Red D a a (monus D (a * a)) := by
     refine .andI (le_refl _) (.andI hd1 (.andI hd2 (.andI (le_of_lt hA) (.andI ?_ (.andI ?_ ?_)))))
@@ -341,8 +318,7 @@ theorem start_reduced (hA : Γ ⊢[PRAAx] lt (a * a) D) (hB : Γ ⊢[PRAAx] lt D
   · exact (by ipra_ring : Γ ⊢[PRAAx] one * cD a zero one ≐ cD a zero one + zero).eqTrans
       (congrAdd (hc.eqTrans hm.eqSymm) (.eqRefl _))
   · have x := natEq eD; have y := natEq hm; have z := natEq hd
-    apply deriveNat; ipra_simps
-    linear_combination x - (𝔞 (mS a zero one) + 𝔞 a) * y - z
+    ipra_lc x - (𝔞 (mS a zero one) + 𝔞 a) * y - z
 
 /-- A reduced state is recovered from its successor: `m = a − ((a + m') mod d)`. -/
 theorem pred_recover (hA : Γ ⊢[PRAAx] lt (a * a) D) (hB : Γ ⊢[PRAAx] lt D (succ a * succ a))
@@ -358,11 +334,10 @@ theorem pred_recover (hA : Γ ⊢[PRAAx] lt (a * a) D) (hB : Γ ⊢[PRAAx] lt D 
   have eA := eq_add_of_le hm
   have hlt : Γ ⊢[PRAAx] lt (monus a m) d := by
     refine le_of_add_le_add_right (c := m) (le_congr ?_ (.eqRefl _) had)
-    have x := natEq eA; apply deriveNat; ipra_simps; linear_combination x
+    ipra_lc natEq eA
   have q := Prf.andE₂ (BlockSum.qr_block (i := cD a m d) hd hlt)
   have e : Γ ⊢[PRAAx] a + mS a m d ≐ cD a m d * d + monus a m := by
-    have x := natEq ex1; have y := natEq eA
-    apply deriveNat; ipra_simps; linear_combination -x + y
+    ipra_lc -natEq ex1 + natEq eA
   have r : Γ ⊢[PRAAx] rem (a + mS a m d) d ≐ monus a m := (congrAp2 remF e (.eqRefl _)).eqTrans q
   exact (Combinatorics.Bell.monus_monus hm).eqSymm.eqTrans (congrMonus (.eqRefl _) r.eqSymm)
 

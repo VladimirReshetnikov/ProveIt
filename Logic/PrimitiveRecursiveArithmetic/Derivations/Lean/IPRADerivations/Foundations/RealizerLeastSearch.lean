@@ -1,7 +1,5 @@
 import IPRADerivations.Foundations.RealizerMasterInterface
 import IPRADerivations.Foundations.BoundedSelection
-import IPRADerivations.Core.SubstCommand
-import IPRADerivations.Core.Header
 
 /-!
 # An actual reflected least-search node over interface observations
@@ -19,11 +17,10 @@ unrolling and certificate-dependent producer scopes remain separate.
 -/
 
 set_option autoImplicit false
-set_option linter.unusedSimpArgs false
 
 namespace LeanProofs.IPRA.Foundations.RealizerLeastSearch
 
-open_ipra
+open_ipra exports
 open LeanProofs.IPRA.Foundations.RealizerComposition
 open LeanProofs.IPRA.Foundations.MasterCertificate (entry sequence)
 open LeanProofs.IPRA.Foundations.SequenceComposition (length)

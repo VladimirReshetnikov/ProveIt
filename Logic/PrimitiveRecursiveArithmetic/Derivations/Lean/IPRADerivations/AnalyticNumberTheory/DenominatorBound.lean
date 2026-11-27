@@ -1,14 +1,5 @@
 import IPRADerivations.AnalyticNumberTheory.DenominatorSquarefree
 import IPRADerivations.AnalyticNumberTheory.FiniteSieve
-import IPRADerivations.AnalyticNumberTheory.PhiPower
-import IPRADerivations.AnalyticNumberTheory.GoldbachPhi
-import IPRADerivations.AnalyticNumberTheory.EulerProduct
-import IPRADerivations.AnalyticNumberTheory.SumReindex
-import IPRADerivations.Probability.Independence
-import IPRADerivations.Core.OrderCertificates
-import IPRADerivations.Foundations.StrongInduction
-import IPRADerivations.Core.CertificateTactics
-import IPRADerivations.Core.Header
 
 /-!
 # The denominator bound `G_q(z) ≥ (φ(q)/q) H_z` and the second sieve inequality
@@ -39,46 +30,30 @@ With `H^{(a)}(N) = ∑_{1 ≤ m < N} [gcd(m, a) = 1] ⌊F/m⌋` (`DenominatorSmo
 The modulus is any `q ≥ 1`, as in the first inequality `FiniteSieve.finite_sieve`.
 -/
 
-set_option linter.unusedSimpArgs false
-
 namespace LeanProofs.IPRA.AnalyticNumberTheory.DenominatorBound
 
-open_ipra
+open_ipra exports
 open LeanProofs.IPRA.Analysis.Products (fact)
-open LeanProofs.IPRA.AnalyticNumberTheory.Primes (prime lpf)
 open LeanProofs.IPRA.AnalyticNumberTheory.Totient (phi totBody)
 open LeanProofs.IPRA.AnalyticNumberTheory.Mobius (congrSg congrEqb' zero_mul_l)
 open LeanProofs.IPRA.AnalyticNumberTheory.MobiusBounds (shift_pos)
 open LeanProofs.IPRA.AnalyticNumberTheory.SumPhi (shift_eq' shift_mul' shift_rem')
-open LeanProofs.IPRA.AnalyticNumberTheory.GcdFiber (div_eq)
-open LeanProofs.IPRA.AnalyticNumberTheory.PhiLower (le_mul_mono)
-open LeanProofs.IPRA.AnalyticNumberTheory.PhiDivides (sg_zero_inv)
 open LeanProofs.IPRA.AnalyticNumberTheory.PhiPower (pow_point phi_mul_pow_at)
-open LeanProofs.IPRA.AnalyticNumberTheory.Multiplicative (phi_mul_at)
-open LeanProofs.IPRA.AnalyticNumberTheory.EulerProduct (phi_one)
 open LeanProofs.IPRA.AnalyticNumberTheory.Smooth (lpf_two K_split cof_pos cof_lt)
 open LeanProofs.IPRA.AnalyticNumberTheory.SumReindex (riB inst2_riB reindex_le le_quo_of_mul_le)
 open LeanProofs.IPRA.AnalyticNumberTheory.FactorialLambda (fB sB inst2_fB inst2_sB sum_add2)
 open LeanProofs.IPRA.AnalyticNumberTheory.EulerDomination (le_zero_of)
-open LeanProofs.IPRA.AnalyticNumberTheory.SievePrimes (piB)
-open LeanProofs.IPRA.AnalyticNumberTheory.SieveWeightOne (Asum)
 open LeanProofs.IPRA.AnalyticNumberTheory.FiniteSieve (finite_sieve)
 open LeanProofs.IPRA.AnalyticNumberTheory.DenominatorRange (P3 P3_L P3_z)
 open LeanProofs.IPRA.AnalyticNumberTheory.DenominatorSmooth (sum_le2 two_alg hqB hq_at Hq)
 open LeanProofs.IPRA.AnalyticNumberTheory.DenominatorSquarefree (Hq_le_Asum)
 open LeanProofs.IPRA.Probability.Lotus (cmB sum_const_mul)
 open LeanProofs.IPRA.Probability.Independence (cm_pt)
-open LeanProofs.IPRA.DiophantineNumberTheory.Coprime (dvd_of_eq' eq_of_dvd' gcd_dvd' eq_one_of_dvd_one
-  gcd_comm_one coprime_mul coprime_dvd_left pos_of_eq_mul)
 open LeanProofs.IPRA.DiophantineNumberTheory.QuarticStep (congrGcd)
 open LeanProofs.IPRA.DiophantineNumberTheory.Hurwitz (add_le_add)
-open LeanProofs.IPRA.Foundations.ChineseRemainder (gcd_pos)
-open LeanProofs.IPRA.Foundations.BoundedReflection (eqb_cases eq_of_eqb)
 open LeanProofs.IPRA.Signum (sg sg_zero sg_succ)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
-
-local notation "𝔞" t:max => Groth.ι (IPRA.Q.mk _ t)
 
 /-! ## A sum bounded by two sums -/
 
@@ -258,9 +233,8 @@ abbrev wB : PTm 2 :=
 theorem inst2_w (q y : PTm n) :
     inst2 wB q y =
       sg q * sg (monus (phi q * Hq one (fstT y) (sndT y)) (q * Hq q (fstT y) (sndT y))) := by
-  simp only [inst2, PTm.subst_mul, PTm.subst_monus, subst_ap2, subst_pairT, subst_fstT, subst_sndT,
-    Syn.subst_var, Matrix.cons_val_zero, Matrix.cons_val_one, Matrix.head_cons, ConciseIPRA.PTm.subst_succ,
-    ConciseIPRA.PTm.subst_zero]
+  simp only [inst2, PTm.subst_mul, PTm.subst_monus, subst_ap2, subst_pairT, subst_fstT, subst_sndT, Syn.subst_var,
+    Matrix.cons_val_zero, Matrix.cons_val_one, ConciseIPRA.PTm.subst_succ, ConciseIPRA.PTm.subst_zero]
 
 theorem viol_of {K A B : PTm n} (h : Γ ⊢[PRAAx] le A B) : Γ ⊢[PRAAx] sg K * sg (monus A B) ≐ zero :=
   (congrMul (.eqRefl _) ((congrSg h).eqTrans sg_zero)).eqTrans (mul_zero _)
@@ -320,8 +294,8 @@ theorem harm_factor {q : PTm n} (hq : Γ ⊢[PRAAx] q ≐ succ (pred q)) (F N : 
 abbrev hzB : PTm 2 := sg (var 0) * quo (var 1) (var 0)
 
 theorem inst2_hz (m F : PTm n) : inst2 hzB m F = sg m * quo F m := by
-  simp only [inst2, PTm.subst_mul, PTm.subst_monus, subst_ap2, Syn.subst_var, Matrix.cons_val_zero,
-    Matrix.cons_val_one, Matrix.head_cons, ConciseIPRA.PTm.subst_succ, ConciseIPRA.PTm.subst_zero]
+  simp only [inst2, PTm.subst_mul, PTm.subst_monus, subst_ap2, Syn.subst_var, Matrix.cons_val_zero, Matrix.cons_val_one,
+    ConciseIPRA.PTm.subst_succ, ConciseIPRA.PTm.subst_zero]
 
 /-- `∑_{1 ≤ m < N} ⌊F/m⌋`; at `F = z!`, `N = z + 1` it is `z! H_z`. -/
 abbrev Hz (F N : PTm n) : PTm n := ap2 (sumF hzB) N F

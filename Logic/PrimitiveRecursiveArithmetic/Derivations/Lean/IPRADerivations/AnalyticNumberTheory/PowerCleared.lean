@@ -1,7 +1,4 @@
 import IPRADerivations.AnalyticNumberTheory.LocalFactor
-import IPRADerivations.Core.LinearCombination
-import IPRADerivations.Core.InductionTactic
-import IPRADerivations.Core.Header
 
 /-!
 # The power-cleared Euler product estimate
@@ -22,21 +19,13 @@ Packet: `analytic-number-theory/prime_reciprocal_ipra_2026-11-15`, Lemmas `lem:p
 Reusable: `pw_lt_pw` (strict monotonicity of `x ↦ x^{k+1}`), `pw_le_cancel`, `pw_le_exp`.
 -/
 
-set_option linter.unusedSimpArgs false
-
 namespace LeanProofs.IPRA.AnalyticNumberTheory.PowerCleared
 
-open_ipra
+open_ipra exports
 open LeanProofs.IPRA.Combinatorics.Binomial (pos_mul)
 open LeanProofs.IPRA.Combinatorics.BinomialTheorem (congrPw)
 open LeanProofs.IPRA.DiophantineNumberTheory.Coprime
-open LeanProofs.IPRA.DiophantineNumberTheory.FLTMultiples (pw_pos)
-open LeanProofs.IPRA.AnalyticNumberTheory.RSA (pw_mul)
-open LeanProofs.IPRA.AnalyticNumberTheory.Valuation (isP isP_01 prime_of_isP pw_pos')
-open LeanProofs.IPRA.AnalyticNumberTheory.Order (pw_one_base)
-open LeanProofs.IPRA.AnalyticNumberTheory.PhiLower (le_mul_mono)
 open LeanProofs.IPRA.AnalyticNumberTheory.PhiDouble (two_pos')
-open LeanProofs.IPRA.AnalyticNumberTheory.Primes (prime eq_succ_pred)
 open LeanProofs.IPRA.AnalyticNumberTheory.LocalFactor (pw_mul_base local_factor)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
@@ -48,9 +37,8 @@ theorem pw_lt_pw {a b : PTm n} (k : PTm n) (h : Γ ⊢[PRAAx] lt b a) :
     Γ ⊢[PRAAx] lt (pw b (succ k)) (pw a (succ k)) := by
   refine le_trans ?_ (pw_le_pw (succ k) h)
   refine le_of_eq_add (d := monus (pw (succ b) k) (pw b k) * b + pred (pw (succ b) k)) ?_
-  ipra_lc natEq (pw_succ (Γ := Γ) (succ b) k) - natEq (pw_succ (Γ := Γ) b k) +
-    Groth.ι (IPRA.Q.mk Γ b) * natEq (eq_add_of_le (pw_le_pw (Γ := Γ) k (le_succ_self b))) +
-    natEq (pw_pos (Γ := Γ) b k)
+  ipra_lc natEq (pw_succ (succ b) k) - natEq (pw_succ b k) + Groth.ι (IPRA.Q.mk Γ b) *
+    natEq (eq_add_of_le (pw_le_pw (Γ := Γ) k (le_succ_self b))) + natEq (pw_pos b k)
 
 /-- `a^{k+1} ≤ b^{k+1} → a ≤ b`. -/
 theorem pw_le_cancel {a b k : PTm n} (h : Γ ⊢[PRAAx] le (pw a (succ k)) (pw b (succ k))) :
@@ -250,3 +238,5 @@ theorem sum_bounds_closed : ([] : List (Fm PTm 0)) ⊢[PRAAx] univ 2 sumBoundsFo
   closeUniv 2 (.andI (power_cleared _) (.impI (sum_bounds_product Prf.hyp0)))
 
 end LeanProofs.IPRA.AnalyticNumberTheory.PowerCleared
+
+export_ipra AnalyticNumberTheory.PowerCleared (ProdP pBt pBt_one pw_le_cancel pw_le_exp)

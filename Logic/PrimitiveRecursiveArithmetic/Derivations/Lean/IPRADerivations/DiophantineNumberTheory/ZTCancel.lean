@@ -1,6 +1,4 @@
 import IPRADerivations.DiophantineNumberTheory.ConicGcd
-import IPRADerivations.Core.LinearCombination
-import IPRADerivations.Core.Header
 
 /-!
 # Cancellation of nonzero integers
@@ -15,16 +13,12 @@ natural terms) have no zero divisors.
 * `zt_no_zero_div`: `r x = 0` and `r ≠ 0` give `x = 0`.
 -/
 
-set_option linter.unusedSimpArgs false
-
 namespace LeanProofs.IPRA.DiophantineNumberTheory.ZTCancel
 
-open_ipra
+open_ipra exports
 open LeanProofs.IPRA.Combinatorics.BinomialIdentities (mul_cancel)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
-
-local notation "𝔞" t:max => Groth.ι (IPRA.Q.mk _ t)
 
 /-- `r x = r y` with `r ≠ 0` gives `x = y`. -/
 theorem zt_cancel {r x y : ZT n} (hr : Γ ⊢[PRAAx] neg (ZT.eq r (ZT.natLit 0)))
@@ -63,3 +57,5 @@ theorem zt_no_zero_div {r x : ZT n} (hr : Γ ⊢[PRAAx] neg (ZT.eq r (ZT.natLit 
   rw [e]; push_cast; ring
 
 end LeanProofs.IPRA.DiophantineNumberTheory.ZTCancel
+
+export_ipra DiophantineNumberTheory.ZTCancel (zt_no_zero_div)

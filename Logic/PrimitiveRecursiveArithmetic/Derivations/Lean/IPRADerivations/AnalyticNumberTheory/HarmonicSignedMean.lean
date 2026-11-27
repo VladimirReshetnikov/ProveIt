@@ -1,7 +1,5 @@
 import IPRADerivations.AnalyticNumberTheory.HarmonicMertensLower
 import IPRADerivations.DiophantineNumberTheory.HurwitzLoop
-import IPRADerivations.Core.LinearCombination
-import IPRADerivations.Core.Header
 
 /-!
 # The signed logarithmic mean for the harmonic logarithm (`pnt_ipra_constructive_2026-11-14`, `con:signed`)
@@ -20,24 +18,19 @@ So `|Q(N)| ≤ 6` and `|Q(b) − Q(a)| ≤ 12 ≤ 20` for all integer endpoints 
 `sb:signed-integral`. The inputs are `mertens_upper`, `mertens_lower` and `psi_le`.
 -/
 
-set_option linter.unusedSimpArgs false
-
 namespace LeanProofs.IPRA.AnalyticNumberTheory.HarmonicSignedMean
 
-open_ipra
+open_ipra exports
 open LeanProofs.IPRA.AnalyticNumberTheory.Harmonic (S hB)
 open LeanProofs.IPRA.AnalyticNumberTheory.HarmonicChebyshev (wt psi_le)
 open LeanProofs.IPRA.AnalyticNumberTheory.HarmonicMertens (le_scale mertens_upper)
 open LeanProofs.IPRA.AnalyticNumberTheory.HarmonicMertensLower (mertens_lower)
 open LeanProofs.IPRA.AnalyticNumberTheory.HarmonicLambda (Sw)
-open LeanProofs.IPRA.AnalyticNumberTheory.LcmUpto (Psi pos_of_lt_zero)
 open LeanProofs.IPRA.Analysis.Products (fact)
 
 set_option autoImplicit false
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
-
-local notation "𝔞" t:max => Groth.ι (IPRA.Q.mk _ t)
 
 /-- `N ⌊F/M⌋ ≤ F` for `1 ≤ N ≤ M`. -/
 theorem nq_le {N M F : PTm n} (hM : Γ ⊢[PRAAx] le one M) (hNM : Γ ⊢[PRAAx] le N M) :

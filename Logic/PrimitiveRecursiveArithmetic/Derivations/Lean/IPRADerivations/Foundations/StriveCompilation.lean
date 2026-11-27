@@ -1,5 +1,4 @@
 import IPRADerivations.Foundations.BoundedFormulas
-import IPRADerivations.Core.Header
 
 /-!
 # Bounded-formula compilation with certificate checkers
@@ -26,11 +25,9 @@ not constructed here.
 * `cplus_complete`, `cminus_complete`: (6.6), (6.7).
 -/
 
-set_option linter.unusedSimpArgs false
-
 namespace LeanProofs.IPRA.Foundations.StriveCompilation
 
-open_ipra
+open_ipra exports
 open LeanProofs.IPRA.Foundations.BoundedFormulas (BF bitAt fmAt bf_reflect bf_cases)
 open LeanProofs.IPRA.Foundations.BoundedReflection (eqb_cases eq_of_eqb one_ne_zero)
 

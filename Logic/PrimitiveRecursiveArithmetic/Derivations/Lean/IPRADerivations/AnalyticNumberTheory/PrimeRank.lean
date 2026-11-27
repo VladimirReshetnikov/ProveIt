@@ -1,11 +1,6 @@
 import IPRADerivations.AnalyticNumberTheory.PrimesModFour
 import IPRADerivations.AnalyticNumberTheory.PiTheta
 import IPRADerivations.Foundations.IterationFusion
-import IPRADerivations.Foundations.CrossingSearch
-import IPRADerivations.Core.CertificateTactics
-import IPRADerivations.Core.CommonLemmas
-import IPRADerivations.Core.InductionTactic
-import IPRADerivations.Core.Header
 
 /-!
 # Rank and inverse rank of the primes
@@ -28,27 +23,18 @@ Packet: `analytic-number-theory/prime-counting-ipra`, `sections/foundations.tex`
 * `pk_of_prime`, `prime_of_pk`: `p_{π(x)} = x` for prime `x`, and every value `p_k`, `k ≥ 1`, is prime.
 -/
 
-set_option linter.unusedSimpArgs false
-
 namespace LeanProofs.IPRA.AnalyticNumberTheory.PrimeRank
 
-open_ipra
+open_ipra exports
 open LeanProofs.IPRA.Analysis.Products (fact)
 open LeanProofs.IPRA.AnalyticNumberTheory.Primes (prime lpf fact_pos)
-open LeanProofs.IPRA.AnalyticNumberTheory.Valuation (isP isP_01 prime_of_isP isP_of_prime prime_congr)
-open LeanProofs.IPRA.AnalyticNumberTheory.FactorVector (lpf_prime' lpf_dvd')
 open LeanProofs.IPRA.AnalyticNumberTheory.Mobius (prime_two)
-open LeanProofs.IPRA.AnalyticNumberTheory.ValuationMul (p_pos)
 open LeanProofs.IPRA.AnalyticNumberTheory.PiTheta (piB inst2_piB Pi)
 open LeanProofs.IPRA.AnalyticNumberTheory.PrimesModFour (gt_of_dvd)
-open LeanProofs.IPRA.DiophantineNumberTheory.Coprime (dvd_le')
 open LeanProofs.IPRA.Foundations.BoundedReflection (exB wit ex_intro ex_elim ex_least)
 open LeanProofs.IPRA.Foundations.CrossingSearch (wit_le_of)
-open LeanProofs.IPRA.Foundations.IterationFusion (iter iter_zero iter_succ app1)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
-
-local notation "𝔞" t:max => Groth.ι (IPRA.Q.mk _ t)
 
 /-! ## Order helpers -/
 
@@ -275,3 +261,5 @@ theorem prime_of_pk {x k : PTm n} (h : Γ ⊢[PRAAx] pk (succ k) ≐ x) : Γ ⊢
   prime_congr h (Prf.andE₂ (pk_rank k))
 
 end LeanProofs.IPRA.AnalyticNumberTheory.PrimeRank
+
+export_ipra AnalyticNumberTheory.PrimeRank (congrPc pc_succ pc_zero)

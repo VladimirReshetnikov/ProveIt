@@ -1,10 +1,5 @@
 import IPRADerivations.Core.SquareLayers
-import IPRADerivations.AnalyticNumberTheory.Totatives
-import IPRADerivations.AnalyticNumberTheory.EulerProduct
 import IPRADerivations.AnalyticNumberTheory.Mobius
-import IPRADerivations.DiophantineNumberTheory.QuarticStep
-import IPRADerivations.Core.LinearCombination
-import IPRADerivations.Core.Header
 
 /-!
 # Counting coprime pairs
@@ -22,33 +17,24 @@ pairs `(a, b)` and `(b, a)` with `a < b`, each counted by `φ(b)` once `b ≥ 2`
 * `coprime_pairs`: `C_N + 1 = 2 ∑_{b ≤ N} φ(b)` for `N ≥ 1`.
 -/
 
-set_option linter.unusedSimpArgs false
-
 namespace LeanProofs.IPRA.AnalyticNumberTheory.CoprimePairs
 
-open_ipra
+open_ipra exports
 open LeanProofs.IPRA.SquareLayers
 open LeanProofs.IPRA.AnalyticNumberTheory.Totient (phi totBody)
-open LeanProofs.IPRA.AnalyticNumberTheory.EulerProduct (phi_one eqb_comm')
 open LeanProofs.IPRA.AnalyticNumberTheory.Mobius (congrSg zero_mul_l congrEqb' one_ne_zero' zero_ne_one')
-open LeanProofs.IPRA.DiophantineNumberTheory.Coprime (gcd_comm_one eq_one_of_dvd_one gcd_dvd' gcd_greatest'
-  dvd_self')
 open LeanProofs.IPRA.DiophantineNumberTheory.QuarticStep (congrGcd)
-open LeanProofs.IPRA.Foundations.ChineseRemainder (gcd_pos)
 open LeanProofs.IPRA.Probability.Independence (sum_scale)
 open LeanProofs.IPRA.Signum (sg sg_zero sg_succ)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
-
-local notation "𝔞" t:max => Groth.ι (IPRA.Q.mk _ t)
 
 /-- `[i, j ≥ 1][gcd(i, j) = 1]`, over `0 = i`, `1 = j`, `2 = x` (unused). -/
 abbrev gB3 : PTm 3 := (sg (var 0) * sg (var 1)) * eqb (gcd (var 0) (var 1)) one
 
 theorem inst3_g (i j x : PTm n) : inst3 gB3 i j x = (sg i * sg j) * eqb (gcd i j) one := by
   simp only [inst3, PTm.subst_mul, PTm.subst_monus, subst_eqb, subst_ex2, Syn.subst_var, Matrix.cons_val_zero,
-    Matrix.cons_val_one, Matrix.cons_val_two, Matrix.head_cons, Matrix.tail_cons, ConciseIPRA.PTm.subst_succ,
-    ConciseIPRA.PTm.subst_zero]
+    Matrix.cons_val_one, ConciseIPRA.PTm.subst_succ, ConciseIPRA.PTm.subst_zero]
 
 theorem cop_symm (i j : PTm n) :
     Γ ⊢[PRAAx] (sg i * sg j) * eqb (gcd i j) one ≐ (sg j * sg i) * eqb (gcd j i) one := by
@@ -131,7 +117,6 @@ theorem layer (b x : PTm n) :
     refine sum_congr_bounded _ _ _ _ _ (.allI (.impI ?_))
     rw [inst2_rowB, inst2_colB, inst3_g, inst3_g]
     exact cop_symm _ _
-  have r := natEq rc
   refine .orE (zero_or_succ b) ?_ ?_
   · let C : List (Fm PTm n) := (b ≐ zero) :: Γ
     have h0 : C ⊢[PRAAx] b ≐ zero := Prf.hyp0
@@ -147,9 +132,6 @@ theorem layer (b x : PTm n) :
       (𝔞 (sg b) + 0) * 𝔞 (eqb (gcd b b) one) * e₃
   · let C : List (Fm PTm n) := (b ≐ succ (pred b)) :: Γ
     have hb : C ⊢[PRAAx] b ≐ succ (pred b) := Prf.hyp0
-    have cp := natEq (col_phi (x := x) hb)
-    have sb := natEq ((congrSg hb).eqTrans (sg_succ _) : C ⊢[PRAAx] sg b ≐ one)
-    have r' := natEq (rc.wk : C ⊢[PRAAx] _)
     refine .orE (lt_or_le one b) ?_ ?_
     · let D : List (Fm PTm n) := lt one b :: C
       have h2 : D ⊢[PRAAx] le two b := Prf.hyp0
@@ -159,9 +141,7 @@ theorem layer (b x : PTm n) :
         D ⊢[PRAAx] eqb b one ≐ zero)
       have cp' := natEq ((col_phi (x := x) hb).wk : D ⊢[PRAAx] _)
       have r'' := natEq (rc.wk.wk : D ⊢[PRAAx] _)
-      have sb' := natEq (((congrSg hb).eqTrans (sg_succ _)).wk : D ⊢[PRAAx] sg b ≐ one)
-      apply deriveNat; ipra_simps
-      linear_combination 2 * cp' + r'' + q + 𝔞 (sg b) * 𝔞 (sg b) * gs - 2 * ez
+      ipra_lc 2 * cp' + r'' + q + 𝔞 (sg b) * 𝔞 (sg b) * gs - 2 * ez
     · let D : List (Fm PTm n) := le b one :: C
       have e1 : D ⊢[PRAAx] b ≐ one := le_antisymm Prf.hyp0 (LeanProofs.IPRA.DiophantineNumberTheory.Coprime.one_le_of_pos hb.wk)
       have c1 : D ⊢[PRAAx] ap2 (sumF (colB gB3)) b (pairT b x) ≐ zero := by
@@ -211,7 +191,7 @@ theorem coprime_pairs {N : PTm n} (hN : Γ ⊢[PRAAx] N ≐ succ (pred N)) :
         (by ipra_ring))
     · exact (succ_monus_succ _ _).eqTrans (LeanProofs.IPRA.DiophantineNumberTheory.Coprime.one_le_of_pos hN)
     · simp [inst2]; exact .eqRefl _
-  ipra_lc natEq (square_layers (Γ := Γ) gB3 (succ N) zero) + natEq lay -
-    natEq (sum_add (Γ := Γ) (LB gB3) (eqb (var 0) one) (succ N) zero) + natEq sc - natEq dl
+  ipra_lc natEq (square_layers gB3 (succ N) zero) + natEq lay -
+    natEq (sum_add (LB gB3) (eqb (var 0) one) (succ N) zero) + natEq sc - natEq dl
 
 end LeanProofs.IPRA.AnalyticNumberTheory.CoprimePairs

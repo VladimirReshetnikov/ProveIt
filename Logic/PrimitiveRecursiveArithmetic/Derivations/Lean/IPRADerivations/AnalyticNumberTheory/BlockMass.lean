@@ -1,6 +1,4 @@
 import IPRADerivations.AnalyticNumberTheory.BlockSums
-import IPRADerivations.Core.LinearCombination
-import IPRADerivations.Core.Header
 
 /-!
 # The mass of a block of divisors (`pnt_ipra_constructive_2026-11-14`, `con:deficit`)
@@ -14,11 +12,9 @@ deficit on a block is compared with its length, `∫_s^{s+H} a dt = aH`. Discret
   for `D₁ ≤ D₂ ≤ x`, `D₂ ≤ L` (`BlockFloor.f_sum` at both ends, `BlockSums.block_f`).
 -/
 
-set_option linter.unusedSimpArgs false
-
 namespace LeanProofs.IPRA.AnalyticNumberTheory.BlockMass
 
-open_ipra
+open_ipra exports
 open LeanProofs.IPRA.AnalyticNumberTheory.Harmonic (S)
 open LeanProofs.IPRA.AnalyticNumberTheory.SummatoryCompose (hRB)
 open LeanProofs.IPRA.AnalyticNumberTheory.ConvSummatory (RB RB_at)
@@ -26,15 +22,12 @@ open LeanProofs.IPRA.AnalyticNumberTheory.ChebyshevBlock (iB gB gB_at)
 open LeanProofs.IPRA.AnalyticNumberTheory.BlockFloor (fB fB_at f_sum)
 open LeanProofs.IPRA.AnalyticNumberTheory.BlockMean (T)
 open LeanProofs.IPRA.AnalyticNumberTheory.BlockSums (Y biB fzB ia_at ind0 ind1 bs_f block_f)
-open LeanProofs.IPRA.Foundations.ProductSumDomination (sum_trunc)
 open LeanProofs.IPRA.Analysis.Products (fact)
 open LeanProofs.IPRA.Signum (sg)
 
 set_option autoImplicit false
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
-
-local notation "𝔞" t:max => Groth.ι (IPRA.Q.mk _ t)
 
 theorem hyp_shift_succ {N : PTm n} :
     (lt (var 0) (Syn.shift (succ N)) :: Γ.map Fm.shift) ⊢[PRAAx] lt (var 0) (succ (Syn.shift N)) := by

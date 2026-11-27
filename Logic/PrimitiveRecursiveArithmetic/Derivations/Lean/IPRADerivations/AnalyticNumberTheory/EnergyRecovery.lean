@@ -2,9 +2,6 @@ import IPRADerivations.AnalyticNumberTheory.EnergyJordan
 import IPRADerivations.AnalyticNumberTheory.EnergyMobius
 import IPRADerivations.Analysis.Inequalities.Weighted.WeightedCauchySchwarz
 import IPRADerivations.AnalyticNumberTheory.AbsDiff
-import IPRADerivations.Core.LinearCombination
-import IPRADerivations.Core.CommonLemmas
-import IPRADerivations.Core.Header
 
 /-!
 # Recovery of `M` from the energy: `(N!)² M(N)² ≤ 8 Q_N` (`thm:energy`)
@@ -29,29 +26,21 @@ The cleared Cauchy–Schwarz data (`Analysis.WeightedCauchySchwarz.weighted_cs`)
 * `energy_recovery`: `(N!)⁴ M(N)² ≤ (Σ a b)² ≤ Q_N · 8F`, and one factor `F` cancels.
 -/
 
-set_option linter.unusedSimpArgs false
-
 namespace LeanProofs.IPRA.AnalyticNumberTheory.EnergyRecovery
 
-open_ipra
+open_ipra exports
 open LeanProofs.IPRA.AnalyticNumberTheory.EnergyMobius (muS subst_muS tB gM mtS inst2_mtS posB negB mobius_energy
   quo_one)
 open LeanProofs.IPRA.AnalyticNumberTheory.EnergyJordan (J2 jordan_quarter pos_succ)
-open LeanProofs.IPRA.AnalyticNumberTheory.AbsDiff (absd absd_le le_absd_l le_absd_r scale_absd absd_sum adB inst2_adB)
 open LeanProofs.IPRA.Analysis.WeightedCauchySchwarz (weighted_cs)
-open LeanProofs.IPRA.AnalyticNumberTheory.PhiLower (le_mul_mono)
 open LeanProofs.IPRA.AnalyticNumberTheory.SquareReciprocal (sqB inst2_sq square_bound sqInv cancel_le T_succ)
 open LeanProofs.IPRA.AnalyticNumberTheory.Primes (dvd_fact fact_pos)
 open LeanProofs.IPRA.AnalyticNumberTheory.Mobius (muP muN inst2_mulB)
-open LeanProofs.IPRA.DiophantineNumberTheory.Coprime (eq_of_dvd')
 open LeanProofs.IPRA.Combinatorics.Binomial (pos_mul)
 open LeanProofs.IPRA.Probability.Independence (sum_scale)
-open LeanProofs.IPRA.AnalyticNumberTheory.Totient (quo_eq)
 open LeanProofs.IPRA.Analysis.Products (fact)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
-
-local notation "𝔞" t:max => Groth.ι (IPRA.Q.mk _ t)
 
 /-! ## The bodies, over `0 = d'` (`d = d' + 1`), `1 = X = ⟨N, x⟩` -/
 
@@ -116,9 +105,7 @@ theorem sq_alg {D f q : PTm n} (hf : Γ ⊢[PRAAx] f ≐ D * q) : Γ ⊢[PRAAx] 
 
 theorem sq_alg' {D f q Qt : PTm n} (hf : Γ ⊢[PRAAx] f ≐ D * q) (hq : Γ ⊢[PRAAx] Qt ≐ q * q) :
     Γ ⊢[PRAAx] (D * D) * Qt ≐ f * f := by
-  have e := natEq hf; have e' := natEq hq
-  apply deriveNat; ipra_simps
-  linear_combination 𝔞 D * 𝔞 D * e' - (𝔞 f + 𝔞 D * 𝔞 q) * e
+  ipra_lc 𝔞 D * 𝔞 D * natEq hq - (𝔞 f + 𝔞 D * 𝔞 q) * natEq hf
 
 /-- `d² ⌊(N!)²/d²⌋ = (N!)²` for `1 ≤ d ≤ N`. -/
 theorem sq_exact {d' N : PTm n} (h : Γ ⊢[PRAAx] le (succ d') N) :

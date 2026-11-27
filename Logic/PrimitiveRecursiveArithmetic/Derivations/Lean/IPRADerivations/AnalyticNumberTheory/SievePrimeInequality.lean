@@ -1,6 +1,5 @@
 import IPRADerivations.AnalyticNumberTheory.SieveInequality
 import IPRADerivations.AnalyticNumberTheory.SievePrimes
-import IPRADerivations.Core.Header
 
 /-!
 # The sieve inequality for the primes of a progression, for arbitrary signed weights
@@ -26,11 +25,9 @@ The weights are still arbitrary here; `thm:finite-sieve` is this inequality at t
 `eq:explicit-sieve-weights`, whose evaluation (`λ_1 = 1`, `Q = 1/G`, `|λ_d| ≤ 1`) is not derived.
 -/
 
-set_option linter.unusedSimpArgs false
-
 namespace LeanProofs.IPRA.AnalyticNumberTheory.SievePrimeInequality
 
-open_ipra
+open_ipra exports
 open LeanProofs.IPRA.AnalyticNumberTheory.SieveExpansion (lB)
 open LeanProofs.IPRA.AnalyticNumberTheory.SieveClosedForms (gU sgV)
 open LeanProofs.IPRA.AnalyticNumberTheory.SieveMajorant (S0 amgm)
@@ -40,8 +37,6 @@ open LeanProofs.IPRA.AnalyticNumberTheory.SieveDiagonal (Lb)
 open LeanProofs.IPRA.Probability.Independence (dsum)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
-
-local notation "𝔞" t:max => Groth.ι (IPRA.Q.mk _ t)
 
 /-- The combination over opaque terms: from the sieve inequality for `S`, `π ≤ S + Z` and `2ab ≤ a² + b²`. -/
 theorem combine {q X Z S π a b Goff Gdiag L : PTm n}

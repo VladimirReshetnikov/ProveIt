@@ -1,7 +1,5 @@
 import IPRADerivations.AnalyticNumberTheory.LogElementary
-import IPRADerivations.Core.Gcd
 import IPRADerivations.DiophantineNumberTheory.KhinchinAmplify
-import IPRADerivations.Core.Header
 
 /-!
 # The one-sided regularity of `r` at rational points (`pnt_ipra_constructive_2026-11-14`, `con:decline`)
@@ -25,15 +23,13 @@ with `1 − x/y ≤ L/F`:
 
 namespace LeanProofs.IPRA.AnalyticNumberTheory.PNTDecline
 
-open_ipra
+open_ipra exports
 open LeanProofs.IPRA.AnalyticNumberTheory.Harmonic (S hB)
 open LeanProofs.IPRA.AnalyticNumberTheory.LogElementary (log_lower)
 
 set_option autoImplicit false
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
-
-local notation "𝔞" t:max => Groth.ι (IPRA.Q.mk _ t)
 
 /-- `ψ(y)/y ≥ ψ(x)/x − 4 L/F` for `y = x + T`, from `ψ(x) ≤ ψ(y)`, `ψ(x) ≤ 4x` and `1 − x/y ≤ L/F`. -/
 theorem decline_rat {x T P Q F L : PTm n} (hPQ : Γ ⊢[PRAAx] le P Q) (hP : Γ ⊢[PRAAx] le P (num 4 * x))

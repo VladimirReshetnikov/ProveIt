@@ -1,9 +1,6 @@
 import IPRADerivations.AnalyticNumberTheory.BlockFloor
 import IPRADerivations.AnalyticNumberTheory.PNTStageStep
 import IPRADerivations.Foundations.ProductSumDomination
-import IPRADerivations.Core.LinearCombination
-import IPRADerivations.Core.Reindex
-import IPRADerivations.Core.Header
 
 /-!
 # Truncating the excess sum of the Chebyshev block identity (`pnt_ipra_constructive_2026-11-14`, `con:signed`)
@@ -20,24 +17,14 @@ and there `⌊x/n⌋ ≥ D`, so
 * `d_lam`: `Σ_{n≤P} D Λ(n) = D ψ(P)`; `d_f`: `Σ_{n≤P} D F = D (F P)`.
 -/
 
-set_option linter.unusedSimpArgs false
-
 namespace LeanProofs.IPRA.AnalyticNumberTheory.BlockTrunc
 
-open_ipra
+open_ipra exports
 open LeanProofs.IPRA.AnalyticNumberTheory.HarmonicChebyshev (wt)
-open LeanProofs.IPRA.AnalyticNumberTheory.LcmUpto (Psi LamB inst2_LamB)
-open LeanProofs.IPRA.AnalyticNumberTheory.WeightedMangoldt (Lam)
 open LeanProofs.IPRA.AnalyticNumberTheory.WeightedBound (sg_lam)
 open LeanProofs.IPRA.AnalyticNumberTheory.ChebyshevBlock (eB gB eB_at gB_at)
 open LeanProofs.IPRA.AnalyticNumberTheory.BlockFloor (lB fB lB_at fB_at)
 open LeanProofs.IPRA.AnalyticNumberTheory.PNTStageStep (cancel_pos pos_of_one_le)
-open LeanProofs.IPRA.AnalyticNumberTheory.SumReindex (le_quo_of_mul_le)
-open LeanProofs.IPRA.AnalyticNumberTheory.HarmonicMertens (le_scale)
-open LeanProofs.IPRA.AnalyticNumberTheory.Mobius (zero_mul_l congrSg)
-open LeanProofs.IPRA.Foundations.ProductSumDomination (sum_trunc)
-open LeanProofs.IPRA.AnalyticNumberTheory.DivisorHarmonic (shift_fact')
-open LeanProofs.IPRA.AnalyticNumberTheory.FactorialLambda (sum_add2)
 open LeanProofs.IPRA.Probability.Variance (sum_const_of)
 open LeanProofs.IPRA.Probability.Independence (sum_scale)
 open LeanProofs.IPRA.Analysis.Products (fact)
@@ -46,8 +33,6 @@ open LeanProofs.IPRA.Signum (sg sg_zero sg_succ)
 set_option autoImplicit false
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
-
-local notation "𝔞" t:max => Groth.ι (IPRA.Q.mk _ t)
 
 /-- `⌊x/k⌋ ≤ D` for `D ≥ 1` and `k ≥ ⌊x/D⌋ + 1`. -/
 theorem quo_le_of_gt {x D k : PTm n} (hD : Γ ⊢[PRAAx] le one D) (hk : Γ ⊢[PRAAx] le (succ (quo x D)) k) :
@@ -149,8 +134,7 @@ theorem d_f (N x D K L : PTm n) :
   refine (sum_shift _ _ _).eqTrans ?_
   have z0 : Γ ⊢[PRAAx] inst2 (dB fB) zero (pairT x (pairT D (pairT K (fact L)))) ≐ zero :=
     (dB_at _ _ _ _ _).eqTrans (by
-      have s := natEq (sg_zero (Γ := Γ)); apply deriveNat; ipra_simps
-      linear_combination 𝔞 D * 𝔞 (inst2 fB zero (pairT D (pairT K (fact L)))) * s)
+      ipra_lc 𝔞 D * 𝔞 (inst2 fB zero (pairT D (pairT K (fact L)))) * natEq (sg_zero))
   have c := sum_const_of (Γ := Γ) (shiftBody (dB fB)) N (D * fact L) (pairT x (pairT D (pairT K (fact L))))
     (.allI (.impI (by
       rw [inst2_shiftBody]

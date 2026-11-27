@@ -1,13 +1,6 @@
-import IPRADerivations.AnalyticNumberTheory.DivisorHyperbola
-import IPRADerivations.AnalyticNumberTheory.SumReindex
 import IPRADerivations.AnalyticNumberTheory.PrimorialUpper
 import IPRADerivations.AnalyticNumberTheory.FourthRootSum
 import IPRADerivations.AnalyticNumberTheory.MobiusFloor
-import IPRADerivations.Analysis.RationalArithmetic.Powers.PowerSums
-import IPRADerivations.Core.LinearCombination
-import IPRADerivations.Core.CommonLemmas
-import IPRADerivations.Core.InductionTactic
-import IPRADerivations.Core.Header
 
 /-!
 # Quotient blocks
@@ -27,26 +20,15 @@ quotient `q` are exactly `q_N(q + 1) < a ≤ q_N(q)`", with `q_N(a) = ⌊N/a⌋`
   times for `a ≤ ⌊√N⌋`, and afterwards it is at most `⌊√N⌋` and nonincreasing.
 -/
 
-set_option linter.unusedSimpArgs false
-
 namespace LeanProofs.IPRA.AnalyticNumberTheory.QuotientBlocks
 
-open_ipra
+open_ipra exports
 open LeanProofs.IPRA.Analysis.PowerSums (sum_le)
-open LeanProofs.IPRA.AnalyticNumberTheory.Harmonic (quo_anti)
-open LeanProofs.IPRA.AnalyticNumberTheory.GcdFiber (div_eq)
 open LeanProofs.IPRA.AnalyticNumberTheory.SumPhi (sum_ones)
-open LeanProofs.IPRA.AnalyticNumberTheory.SumReindex (le_quo_of_mul_le)
 open LeanProofs.IPRA.AnalyticNumberTheory.DivisorHyperbola (row_short)
-open LeanProofs.IPRA.AnalyticNumberTheory.PrimorialUpper (sg_le1)
-open LeanProofs.IPRA.AnalyticNumberTheory.FourthRootSum (isqrt_le_self)
-open LeanProofs.IPRA.AnalyticNumberTheory.MobiusFloor (inst2_oneB)
-open LeanProofs.IPRA.AnalyticNumberTheory.Mobius (congrSg)
 open LeanProofs.IPRA.Signum (sg sg_zero sg_succ)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
-
-local notation "𝔞" t:max => Groth.ι (IPRA.Q.mk _ t)
 
 /-! ## The block of a quotient -/
 

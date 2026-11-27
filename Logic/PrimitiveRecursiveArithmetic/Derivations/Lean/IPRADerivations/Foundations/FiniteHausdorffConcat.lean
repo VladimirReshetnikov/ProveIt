@@ -1,5 +1,4 @@
 import IPRADerivations.Foundations.FiniteHausdorff
-import IPRADerivations.Core.Header
 
 /-!
 # Concatenation of actual finite Hausdorff lists
@@ -11,11 +10,10 @@ estimate is supplied as a premise. Repeated entries are allowed.
 -/
 
 set_option autoImplicit false
-set_option linter.unusedSimpArgs false
 
 namespace LeanProofs.IPRA.Foundations.FiniteHausdorffConcat
 
-open_ipra
+open_ipra exports
 open LeanProofs.IPRA.Foundations.FiniteHausdorff
 open LeanProofs.IPRA.Foundations.SequenceComposition
   (length append append_length append_left append_right append_right_at add_lt_left)

@@ -1,7 +1,4 @@
 import IPRADerivations.Foundations.ViableChain
-import IPRADerivations.Core.CommonLemmas
-import IPRADerivations.Core.InductionTactic
-import IPRADerivations.Core.Header
 
 /-!
 # An admissible chain makes its start viable (`ipra_evidence_framework`)
@@ -27,20 +24,15 @@ both directions of the packet's equivalence for chains presented by terms. An eq
 with a bounded existential over coded chains is not stated.
 -/
 
-set_option linter.unusedSimpArgs false
-
 namespace LeanProofs.IPRA.Foundations.ChainViability
 
-open_ipra
+open_ipra exports
 open LeanProofs.IPRA.Signum (sg)
 open LeanProofs.IPRA.Foundations.BackwardViability
 open LeanProofs.IPRA.Foundations.BackwardViability.Instance
 open LeanProofs.IPRA.Foundations.ViableChain
-open LeanProofs.IPRA.Foundations.FiniteGluing (sg_of_ne)
 
 variable {k : ℕ} {Γ : List (Fm PTm k)}
-
-local notation "𝔞" t:max => Groth.ι (IPRA.Q.mk _ t)
 
 /-- `h ∸ j ≤ h`. -/
 alias monus_le := Common.monus_le_self
@@ -48,8 +40,7 @@ alias monus_le := Common.monus_le_self
 /-- `h ∸ (j + 1) < h` for `j < h`. -/
 theorem monus_succ_lt {h j : PTm k} (hj : Γ ⊢[PRAAx] lt j h) :
     Γ ⊢[PRAAx] lt (monus h (succ j)) h := by
-  have e := natEq (eq_add_of_le hj)
-  exact le_of_eq_add (d := j) (by apply deriveNat; ipra_simps; linear_combination e)
+  exact le_of_eq_add (d := j) (by ipra_lc natEq (eq_add_of_le hj))
 
 /-- A chain `c(t, p)` with supplied derivations of its bounds and of all local and edge
 tests. -/
@@ -125,3 +116,5 @@ theorem start_viable (A : Admissible I c) (p : PTm k) :
 end Converse
 
 end LeanProofs.IPRA.Foundations.ChainViability
+
+export_ipra Foundations.ChainViability (monus_le)

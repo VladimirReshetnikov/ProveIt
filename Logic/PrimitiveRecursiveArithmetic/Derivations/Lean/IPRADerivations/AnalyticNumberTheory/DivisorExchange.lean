@@ -1,7 +1,5 @@
-import IPRADerivations.Probability.Independence
 import IPRADerivations.AnalyticNumberTheory.Mobius
 import IPRADerivations.Core.Reindex
-import IPRADerivations.Core.Header
 
 /-!
 # Exchanging a weighted sum with a sum over divisors
@@ -24,11 +22,9 @@ The indicator is `[n mod d = 0]`; a body `u` that vanishes at `d = 0` restricts 
 again a body in `n`, the lemma iterates: `mdB (mdB c)` is `c(n) [d ∣ n] [e ∣ n]`.
 -/
 
-set_option linter.unusedSimpArgs false
-
 namespace LeanProofs.IPRA.AnalyticNumberTheory.DivisorExchange
 
-open_ipra
+open_ipra exports
 open LeanProofs.IPRA.AnalyticNumberTheory.Mobius (congrEqb')
 open LeanProofs.IPRA.Probability.Independence (row_pt col_pt sum_scale shift_inst2)
 
@@ -165,3 +161,5 @@ theorem div_exchange (X Z y : PTm n) :
 end Exchange
 
 end LeanProofs.IPRA.AnalyticNumberTheory.DivisorExchange
+
+export_ipra AnalyticNumberTheory.DivisorExchange (dvB)

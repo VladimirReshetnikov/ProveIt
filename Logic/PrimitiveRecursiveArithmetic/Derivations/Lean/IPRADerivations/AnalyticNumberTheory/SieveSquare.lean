@@ -1,7 +1,6 @@
 import IPRADerivations.AnalyticNumberTheory.DivisorExchange
 import IPRADerivations.Foundations.SignedSums
 import IPRADerivations.Core.CertificateTactics
-import IPRADerivations.Core.Header
 
 /-!
 # Expanding a product of two divisor sums over a weighted range
@@ -25,16 +24,12 @@ by two applications of `DivisorExchange.div_exchange`: first with the weight `c(
 * `Tsnd`: a divisor sum does not depend on an extra parameter component.
 -/
 
-set_option linter.unusedSimpArgs false
-
 namespace LeanProofs.IPRA.AnalyticNumberTheory.SieveSquare
 
-open_ipra
+open_ipra exports
 open LeanProofs.IPRA.AnalyticNumberTheory.DivisorExchange (dvB dvB_at mdB mdB_at LW LW_at RW RW_at div_exchange)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
-
-local notation "𝔞" t:max => Groth.ι (IPRA.Q.mk _ t)
 
 /-- `(C T) E = (C E) T'` for `T' = T`. -/
 theorem sw {C T T' E : PTm n} (h : Γ ⊢[PRAAx] T' ≐ T) : Γ ⊢[PRAAx] (C * T) * E ≐ (C * E) * T' := by

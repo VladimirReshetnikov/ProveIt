@@ -1,6 +1,5 @@
 import IPRADerivations.Probability.UnionUtility
 import IPRADerivations.Core.OrderCertificates
-import IPRADerivations.Core.Header
 
 /-!
 # Robust control: overlapping branches and robust pivots
@@ -24,11 +23,9 @@ Rationals are numerators over a common denominator; `|x − a| ≤ e` is the pai
   (`Probability/UnionUtility`), whose maximality is derived rather than assumed.
 -/
 
-set_option linter.unusedSimpArgs false
-
 namespace LeanProofs.IPRA.Foundations.RobustControl
 
-open_ipra
+open_ipra exports
 open LeanProofs.IPRA.Probability.UnionUtility (Ag argmax)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}

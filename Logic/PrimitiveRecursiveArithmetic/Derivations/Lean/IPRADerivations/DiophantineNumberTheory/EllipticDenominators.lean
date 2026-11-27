@@ -1,6 +1,4 @@
 import IPRADerivations.DiophantineNumberTheory.SignedLine
-import IPRADerivations.Core.LinearCombination
-import IPRADerivations.Core.Header
 
 /-!
 # Square and cube denominators on an elliptic curve
@@ -21,11 +19,9 @@ given as `T + u q = a³ + w q`:
 * `denominators`: `c² q³ = T e²` (i.e. `y² = T/q³`) gives `c² = T`, `q = d²`, `e = d³`.
 -/
 
-set_option linter.unusedSimpArgs false
-
 namespace LeanProofs.IPRA.DiophantineNumberTheory.EllipticDenominators
 
-open_ipra
+open_ipra exports
 open LeanProofs.IPRA.DiophantineNumberTheory.Coprime (eq_of_dvd' dvd_of_eq' dvd_sub' dvd_add' dvd_mul' gcd_dvd'
   gcd_greatest' eq_one_of_dvd_one gcd_comm_one coprime_mul dvd_of_sq_dvd_sq dvd_self' pos_of_eq_mul)
 open LeanProofs.IPRA.DiophantineNumberTheory.ProjectiveNormalize (norm_unique)
@@ -33,11 +29,8 @@ open LeanProofs.IPRA.DiophantineNumberTheory.SignedLine (one_of_gcd_zero)
 open LeanProofs.IPRA.DiophantineNumberTheory.GcdNormalize (congrGcd)
 open LeanProofs.IPRA.Combinatorics.BinomialIdentities (mul_cancel)
 open LeanProofs.IPRA.Combinatorics.Binomial (pos_mul)
-open LeanProofs.IPRA.Foundations.ChineseRemainder (gcd_pos)
 
 variable {k : ℕ} {Γ : List (Fm PTm k)}
-
-local notation "𝔞" t:max => Groth.ι (IPRA.Q.mk _ t)
 
 theorem gcd_zero_right (a : PTm k) : Γ ⊢[PRAAx] gcd a zero ≐ a :=
   (Prf.andE₁ (e_step_zero (ey_zero (Γ := Γ) a (zero : PTm k)))).eqTrans (ex_zero a zero)
@@ -139,7 +132,7 @@ theorem denominators {a q T u w c e : PTm k} (hq : Γ ⊢[PRAAx] q ≐ succ (pre
   have g2 := coprime_cube hq (coprime_T hq haq hT)
   have x := natEq hy
   have u1 := norm_unique (pos_mul he he) (pos_mul (pos_mul hq hq) hq) g1 g2
-    (by apply deriveNat; ipra_simps; linear_combination -x)
+    (by ipra_lc -x)
   exact .andI (Prf.andE₂ u1) (sq_cube hq (Prf.andE₁ u1))
 
 end LeanProofs.IPRA.DiophantineNumberTheory.EllipticDenominators

@@ -1,8 +1,5 @@
 import IPRADerivations.Core.Search
-import IPRADerivations.Core.Powers
 import IPRADerivations.Foundations.Adjunction
-import IPRADerivations.Core.LinearCombination
-import IPRADerivations.Core.Header
 
 /-!
 # Square roots without zero testing (`ipra_evidence_framework`, worked example)
@@ -32,17 +29,13 @@ The finite relational name `L_n(a)`, its residual bound and the compatibility re
 the packet are not formalized.
 -/
 
-set_option linter.unusedSimpArgs false
-
 namespace LeanProofs.IPRA.Foundations.SquareRootNames
 
-open_ipra
+open_ipra exports
 open LeanProofs.IPRA.Search (mu search_found search_minimal)
 open LeanProofs.IPRA.Foundations.Adjunction (par_le_one)
 
 variable {k : ℕ} {Γ : List (Fm PTm k)}
-
-local notation "𝔞" t:max => Groth.ι (IPRA.Q.mk _ t)
 
 /-- The defect `u · (2^n)² ∸ j² · v`, zero exactly when `j² ≥ (u / v) · 4^n`; variables
 `0 = j`, `1 = ⟨u, ⟨v, n⟩⟩`. -/
@@ -88,10 +81,8 @@ theorem f_of_le {j u v n : PTm k} (h : Γ ⊢[PRAAx] le (u * (pw two n * pw two 
 theorem top_cross {u v n : PTm k} (hv : Γ ⊢[PRAAx] v ≐ succ (pred v)) :
     Γ ⊢[PRAAx] le (u * (pw two n * pw two n))
       (succ (u * pw two n) * succ (u * pw two n) * v) := by
-  have ev := natEq hv
   refine .orE (zero_or_succ u) ?_ ?_
   · have eu := natEq (Prf.hyp0 (Γ := Γ) (φ := u ≐ zero))
-    have ev' := natEq (hv.wk (ψ := u ≐ zero))
     refine le_of_eq_add (d := succ (u * pw two n) * succ (u * pw two n) * v) ?_
     ipra_lc (-(𝔞 (pw two n) * 𝔞 (pw two n))) * eu
   · have eu := natEq (Prf.hyp0 (Γ := Γ) (φ := u ≐ succ (pred u)))
@@ -129,7 +120,7 @@ theorem sqrt_upper {u v : PTm k} (hv : Γ ⊢[PRAAx] v ≐ succ (pred v)) (n : P
 
 private theorem half_up (j' : PTm k) : Γ ⊢[PRAAx] le j' (two * half (succ j')) := by
   refine le_of_eq_add (d := monus one (par (succ j'))) ?_
-  ipra_lc natEq (eq_add_of_le (par_le_one (Γ := Γ) (succ j'))) - natEq (half_par (Γ := Γ) (succ j'))
+  ipra_lc natEq (eq_add_of_le (par_le_one (Γ := Γ) (succ j'))) - natEq (half_par (succ j'))
 
 private theorem half_lt {j j' : PTm k} (h : Γ ⊢[PRAAx] lt (succ j') (two * j)) :
     Γ ⊢[PRAAx] lt (half (succ j')) j := by

@@ -19,7 +19,7 @@ It does not assert extensionality of arbitrary or malformed sequence codes.
 
 namespace LeanProofs.IPRA.Foundations.SequenceEquality
 
-open_ipra
+open_ipra exports
 open LeanProofs.IPRA.Foundations.MasterCertificate
   (stack stack_zero stack_succ sequence)
 
@@ -77,3 +77,5 @@ theorem constructed_sequence_equality (A B : PTm 2) :
 #print axioms constructed_sequence_equality
 
 end LeanProofs.IPRA.Foundations.SequenceEquality
+
+export_ipra Foundations.SequenceEquality (sequence_equal)

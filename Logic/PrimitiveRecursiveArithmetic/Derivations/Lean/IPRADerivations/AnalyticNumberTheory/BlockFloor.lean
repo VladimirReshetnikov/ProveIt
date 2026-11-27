@@ -1,9 +1,6 @@
 import IPRADerivations.AnalyticNumberTheory.ChebyshevBlock
 import IPRADerivations.AnalyticNumberTheory.HarmonicSignedMean
 import IPRADerivations.AnalyticNumberTheory.WeightedBound
-import IPRADerivations.DiophantineNumberTheory.KhinchinBlock
-import IPRADerivations.Core.CommonLemmas
-import IPRADerivations.Core.Header
 
 /-!
 # Floor comparisons for the signed block mean (`pnt_ipra_constructive_2026-11-14`, `con:signed`)
@@ -19,24 +16,14 @@ sums `Σ_{n≤P} Λ(n)⌊x/n⌋` and `Σ_{n≤P} F⌊x/n⌋` occur; they are com
 * `f_sum_lo`, `f_sum_hi`: `Σ_{n≤P} F⌊x/n⌋ ≤ x S(P, F) ≤ Σ_{n≤P} F⌊x/n⌋ + P F` for `F = L!`, `P ≤ L`.
 -/
 
-set_option linter.unusedSimpArgs false
-
 namespace LeanProofs.IPRA.AnalyticNumberTheory.BlockFloor
 
-open_ipra
+open_ipra exports
 open LeanProofs.IPRA.AnalyticNumberTheory.Harmonic (S hB inst2_h)
 open LeanProofs.IPRA.AnalyticNumberTheory.HarmonicChebyshev (wt)
-open LeanProofs.IPRA.AnalyticNumberTheory.HarmonicMertens (le_scale)
 open LeanProofs.IPRA.AnalyticNumberTheory.HarmonicLambda (AB AB_at Sw)
-open LeanProofs.IPRA.AnalyticNumberTheory.HarmonicLogSum (fact_quo)
-open LeanProofs.IPRA.AnalyticNumberTheory.LcmUpto (Psi LamB inst2_LamB)
-open LeanProofs.IPRA.AnalyticNumberTheory.WeightedMangoldt (Lam)
-open LeanProofs.IPRA.AnalyticNumberTheory.FactorialLambda (lam_zero)
-open LeanProofs.IPRA.AnalyticNumberTheory.WeightedSplit (lamW)
 open LeanProofs.IPRA.AnalyticNumberTheory.ChebyshevBlock (gB gB_at)
-open LeanProofs.IPRA.AnalyticNumberTheory.DivisorHarmonic (shift_fact')
 open LeanProofs.IPRA.AnalyticNumberTheory.ConvSummatory (shift_succ_x)
-open LeanProofs.IPRA.AnalyticNumberTheory.Mobius (zero_mul_l congrSg)
 open LeanProofs.IPRA.DiophantineNumberTheory.KhinchinBlock (sum_le_lin sum_le_lin1)
 open LeanProofs.IPRA.Probability.Variance (sum_one)
 open LeanProofs.IPRA.Analysis.Products (fact)
@@ -45,8 +32,6 @@ open LeanProofs.IPRA.Signum (sg sg_zero sg_succ)
 set_option autoImplicit false
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
-
-local notation "𝔞" t:max => Groth.ι (IPRA.Q.mk _ t)
 
 /-- `Λ(n)` read from the parameter `y = (D, z)`. -/
 abbrev lB : PTm 2 := Syn.subst ![var 0, sndT (var 1)] lamW
@@ -90,8 +75,6 @@ alias le_of_lt_succ := Common.le_of_lt_succ
 
 theorem lam_body_lo {k x P D z : PTm n} (hk : Γ ⊢[PRAAx] lt k (succ P)) :
     Γ ⊢[PRAAx] le (fact P * inst2 (gB lB) k (pairT x (pairT D z))) (x * inst2 (AB wt) k (pairT P z)) := by
-  have eW := natEq (lq_at (Γ := Γ) k x D z)
-  have eA := natEq (AB_at (Γ := Γ) wt k P z)
   refine .orE (zero_or_succ k) ?_ ?_
   · have s := natEq ((congrSg (Prf.hyp0 : ((k ≐ zero) :: Γ) ⊢[PRAAx] k ≐ zero)).eqTrans sg_zero)
     have eW' := natEq (lq_at (Γ := ((k ≐ zero) :: Γ)) k x D z)
@@ -191,3 +174,5 @@ theorem f_sum {x P D K L : PTm n} (hPL : Γ ⊢[PRAAx] le P L) :
   exact .andI (by ipra_le sl lo with sh) (by ipra_le sl hi with sh - 𝔞 (fact L) * o)
 
 end LeanProofs.IPRA.AnalyticNumberTheory.BlockFloor
+
+export_ipra AnalyticNumberTheory.BlockFloor (fB_at)

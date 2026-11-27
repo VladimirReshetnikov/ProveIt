@@ -1,11 +1,6 @@
 import IPRADerivations.AnalyticNumberTheory.ValuationExt
 import IPRADerivations.AnalyticNumberTheory.MertensChebyshev
-import IPRADerivations.AnalyticNumberTheory.LcmUpto
 import IPRADerivations.Foundations.MixedRadix
-import IPRADerivations.Combinatorics.Binomial
-import IPRADerivations.Core.LinearCombination
-import IPRADerivations.Core.CommonLemmas
-import IPRADerivations.Core.Header
 
 /-!
 # The product form of the Chebyshev identity for the Mertens function
@@ -30,29 +25,19 @@ With `M = M⁺ − M⁻` (`MobiusFloor.MP`, `MN`) and `P^±(N) = ∏_{a=1}^{N} a
 * the equality follows by `ValuationExt.val_ext`.
 -/
 
-set_option linter.unusedSimpArgs false
-
 namespace LeanProofs.IPRA.AnalyticNumberTheory.MertensLcm
 
-open_ipra
-open LeanProofs.IPRA.AnalyticNumberTheory.Primes (prime)
+open_ipra exports
 open LeanProofs.IPRA.AnalyticNumberTheory.Valuation (val isP prime_of_isP pw_pos')
-open LeanProofs.IPRA.AnalyticNumberTheory.Mobius (congrSg zero_mul_l)
-open LeanProofs.IPRA.AnalyticNumberTheory.MobiusBounds (shift_pos)
 open LeanProofs.IPRA.AnalyticNumberTheory.ConvSummatory (Bs bS inst2_bS RB)
-open LeanProofs.IPRA.AnalyticNumberTheory.SymmetrySum (aPB aNB inst2_aP inst2_aN)
 open LeanProofs.IPRA.AnalyticNumberTheory.MobiusSummatory (gS inst2_gS)
 open LeanProofs.IPRA.AnalyticNumberTheory.WeightedMangoldt (Lw Lam ellB lamB)
-open LeanProofs.IPRA.AnalyticNumberTheory.FactorialLambda (lw_mul congrLw lam_zero)
 open LeanProofs.IPRA.AnalyticNumberTheory.MuLambda (lw_one)
-open LeanProofs.IPRA.AnalyticNumberTheory.LcmUpto (lcmu lcmu_pos psi_lcm Psi LamB inst2_LamB)
 open LeanProofs.IPRA.AnalyticNumberTheory.MertensChebyshev (LwB chebyshev_mertens mertens_term)
 open LeanProofs.IPRA.AnalyticNumberTheory.ValuationExt (val_ext dW lw_delta lw_pow)
 open LeanProofs.IPRA.Signum (sg sg_zero sg_succ)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
-
-local notation "𝔞" t:max => Groth.ι (IPRA.Q.mk _ t)
 
 /-! ## The products -/
 

@@ -1,7 +1,5 @@
 import IPRADerivations.AnalyticNumberTheory.MobiusSummatory
 import IPRADerivations.AnalyticNumberTheory.TauAbelIdentity
-import IPRADerivations.Core.LinearCombination
-import IPRADerivations.Core.Header
 
 /-!
 # The three comparison inversions (`pnt_ipra_constructive_2026-11-14`, `sb:comparison-convolution`)
@@ -19,32 +17,24 @@ one for each of `g = L_w`, `g = 𝟏` and `g = ε`. This module evaluates the si
 * `sum_sg_one`: `Σ_{1≤n≤x} 𝟏(n) = x`; `sum_sg_eps`: `Σ_{1≤n≤x} ε(n) = 1` for `x ≥ 1`.
 -/
 
-set_option linter.unusedSimpArgs false
-
 namespace LeanProofs.IPRA.AnalyticNumberTheory.SymmetryInstances
 
-open_ipra
+open_ipra exports
 open LeanProofs.IPRA.AnalyticNumberTheory.Harmonic (S hB)
 open LeanProofs.IPRA.AnalyticNumberTheory.Mobius (congrSg zero_mul_l congrEqb' one_inst)
 open LeanProofs.IPRA.AnalyticNumberTheory.HarmonicChebyshev (wt)
 open LeanProofs.IPRA.AnalyticNumberTheory.DirichletLeibniz (cvB conv cv_at DwB inst2_cvB)
-open LeanProofs.IPRA.AnalyticNumberTheory.ConvolutionAssoc (cvF inst2_cvF)
 open LeanProofs.IPRA.AnalyticNumberTheory.ConvSummatory (bS inst2_bS Bs)
 open LeanProofs.IPRA.AnalyticNumberTheory.MobiusSummatory (gS inst2_gS)
 open LeanProofs.IPRA.AnalyticNumberTheory.TauAbelIdentity (tau_sum)
 open LeanProofs.IPRA.AnalyticNumberTheory.DivisorSwapP (tau_lw)
 open LeanProofs.IPRA.AnalyticNumberTheory.WeightedMangoldt (Lw)
-open LeanProofs.IPRA.AnalyticNumberTheory.FactorialLambda (sum_add2)
-open LeanProofs.IPRA.AnalyticNumberTheory.EulerProduct (eqb_comm')
-open LeanProofs.IPRA.AnalyticNumberTheory.Multiplicative (rem_eq')
 open LeanProofs.IPRA.AnalyticNumberTheory.SumPhi (sum_ones)
 open LeanProofs.IPRA.Signum (sg sg_zero sg_succ)
 
 set_option autoImplicit false
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
-
-local notation "𝔞" t:max => Groth.ι (IPRA.Q.mk _ t)
 
 /-! ## Shifting a sum and the empty convolution -/
 
@@ -66,7 +56,7 @@ theorem shift_one'' : Syn.shift (one : PTm n) = one := by simp [Syn.shift]
 theorem tau_bs (m y : PTm n) : Γ ⊢[PRAAx] Bs (cvF one one) m y ≐ S m m := by
   have s := bs_shift (Γ := Γ) (cvF one one) m y
   rw [inst2_cvF] at s
-  ipra_lc -natEq s + natEq (tau_sum (Γ := Γ) m y) - natEq (conv_zero (Γ := Γ) one one y)
+  ipra_lc -natEq s + natEq (tau_sum m y) - natEq (conv_zero one one y)
 
 /-! ## `g = ε` -/
 
@@ -143,7 +133,7 @@ theorem sum_sg_one (x y : PTm n) : Γ ⊢[PRAAx] ap2 (sumF (gS one)) (succ x) y 
     refine (sum_congr_bounded _ one _ y _ (.allI (.impI ?_))).eqTrans (sum_ones _ y)
     rw [inst2_bS, inst2_gS, one_inst, one_inst]
     exact (congrMul (sg_succ _) (.eqRefl _)).eqTrans (one_mul _)
-  ipra_lc natEq s + natEq t + natEq (sg_zero (Γ := Γ))
+  ipra_lc natEq s + natEq t + natEq (sg_zero)
 
 /-- `[n ≥ 1]`, the delta body for `ε`. -/
 abbrev sgB : PTm 2 := sg (var 0)
@@ -161,3 +151,5 @@ theorem sum_sg_eps {x : PTm n} (y : PTm n) (hx : Γ ⊢[PRAAx] le one x) :
   ipra_lc -𝔞 (sg (var 0)) * natEq ((congrEqb' (fst_pair (Γ := (lt (var 0) (Syn.shift (succ x)) :: Γ.map Fm.shift)) one (Syn.shift y)) (.eqRefl (var 0))).eqTrans (eqb_comm' _ _))
 
 end LeanProofs.IPRA.AnalyticNumberTheory.SymmetryInstances
+
+export_ipra AnalyticNumberTheory.SymmetryInstances (bs_shift conv_zero epsB)

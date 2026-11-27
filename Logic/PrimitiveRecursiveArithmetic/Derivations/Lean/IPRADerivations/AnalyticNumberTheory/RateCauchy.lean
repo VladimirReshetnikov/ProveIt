@@ -1,5 +1,4 @@
 import IPRADerivations.AnalyticNumberTheory.RateIff
-import IPRADerivations.Core.Header
 
 /-!
 # The explicit Cauchy modulus of the weighted series (`riemann_ipra_equivalences_2026-11-20`, `thm:rate` (3))
@@ -14,26 +13,18 @@ and `Q` telescopes against `F(j) = −2^{−⌊j/2⌋}(8 − 2(j mod 2))`; clear
 invariant `GInv`, which gives `2^{h_P}|G(Q)| ≤ 10 A u_P u_Q` with `A = (c+1)2^r`.
 -/
 
-set_option linter.unusedSimpArgs false
-
 namespace LeanProofs.IPRA.AnalyticNumberTheory.RateCauchy
 
-open_ipra
+open_ipra exports
 open LeanProofs.IPRA.AnalyticNumberTheory.RateAbel
 open LeanProofs.IPRA.AnalyticNumberTheory.RateShell
-open LeanProofs.IPRA.AnalyticNumberTheory.AbsDiff (absd absd_le le_absd_l le_absd_r)
-open LeanProofs.IPRA.AnalyticNumberTheory.PhiLower (le_mul_mono)
 open LeanProofs.IPRA.AnalyticNumberTheory.PNTStageStep (pos_of_one_le)
-open LeanProofs.IPRA.AnalyticNumberTheory.BlockChain (one_le_pw')
 open LeanProofs.IPRA.Combinatorics.BinomialTheorem (congrPw)
 open LeanProofs.IPRA.AnalyticNumberTheory.PowerTransfer (k4)
-open LeanProofs.IPRA.AnalyticNumberTheory.PowerCleared (pw_le_exp)
 
 set_option autoImplicit false
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
-
-local notation "𝔞" t:max => Groth.ι (IPRA.Q.mk _ t)
 
 variable (aP aN : PTm 2)
 

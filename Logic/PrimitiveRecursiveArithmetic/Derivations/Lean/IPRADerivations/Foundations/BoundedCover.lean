@@ -1,5 +1,4 @@
 import IPRADerivations.Foundations.BoundedFormulas
-import IPRADerivations.Core.Header
 
 /-!
 # Guarded finite covers and composed bounded searches
@@ -16,11 +15,9 @@ over bounded formulas `BF` (`Foundations/BoundedFormulas`) with packed parameter
   `w(x) = bfWit B R x` and `v(x) = bfWit D S ⟨w(x), x⟩` satisfy `R(⟨w, x⟩) ∧ S(⟨v, ⟨w, x⟩⟩)`.
 -/
 
-set_option linter.unusedSimpArgs false
-
 namespace LeanProofs.IPRA.Foundations.BoundedCover
 
-open_ipra
+open_ipra exports
 open LeanProofs.IPRA.Foundations.BoundedFormulas
 
 /-- Instantiating a two-variable open premise at `![i, x]`. -/

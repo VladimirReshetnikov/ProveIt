@@ -1,7 +1,4 @@
 import IPRADerivations.Foundations.BackwardDemand
-import IPRADerivations.Core.CommonLemmas
-import IPRADerivations.Core.InductionTactic
-import IPRADerivations.Core.Header
 
 /-!
 # Predetermined demand recursion (`ipra_resources_and_elimination_2026-11-15`, `lem:horizon`, `thm:demand`)
@@ -36,11 +33,9 @@ are arbitrary terms:
 Not derived: `thm:term-compile` (the internal correctness of the term compiler).
 -/
 
-set_option linter.unusedSimpArgs false
-
 namespace LeanProofs.IPRA.Foundations.DemandRecursion
 
-open_ipra
+open_ipra exports
 open LeanProofs.IPRA.Foundations.BackwardDemand
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}

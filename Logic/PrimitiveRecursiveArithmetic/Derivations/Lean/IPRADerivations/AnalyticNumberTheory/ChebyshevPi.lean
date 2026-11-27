@@ -1,9 +1,4 @@
-import IPRADerivations.AnalyticNumberTheory.PrimorialLower
 import IPRADerivations.AnalyticNumberTheory.PrimeRank
-import IPRADerivations.AnalyticNumberTheory.WeightedMangoldt
-import IPRADerivations.Core.CertificateTactics
-import IPRADerivations.Core.InductionTactic
-import IPRADerivations.Core.Header
 
 /-!
 # An integer Chebyshev lower bound for the prime count
@@ -31,32 +26,21 @@ With `L_P = lcm(1, …, P)` (`LcmUpto.lcmu`) and `π = PrimeRank.pc`:
   `an:chebyshev` in the same packet (there for `K ≥ 3`; here for every `K ≥ 1`).
 -/
 
-set_option linter.unusedSimpArgs false
-
 namespace LeanProofs.IPRA.AnalyticNumberTheory.ChebyshevPi
 
-open_ipra
-open LeanProofs.IPRA.AnalyticNumberTheory.Primes (prime)
+open_ipra exports
 open LeanProofs.IPRA.AnalyticNumberTheory.Valuation (val isP isP_01 prime_of_isP isP_of_prime pw_pos')
 open LeanProofs.IPRA.AnalyticNumberTheory.FactorVector (f_zero f_one one_le_pos)
-open LeanProofs.IPRA.AnalyticNumberTheory.LcmUpto (lcmu lcmu_pos lcm_valuation)
 open LeanProofs.IPRA.AnalyticNumberTheory.BinomialLcm (dvd_of_val_le PE XE val_PE inst2_XE inst2_PE PE_pos)
 open LeanProofs.IPRA.AnalyticNumberTheory.Mobius (prime_two congrSg)
-open LeanProofs.IPRA.AnalyticNumberTheory.ValuationMul (p_pos)
 open LeanProofs.IPRA.AnalyticNumberTheory.PrimorialLower (vB inst2_vB Sm factor_le two_pow_lcm)
 open LeanProofs.IPRA.AnalyticNumberTheory.PrimeRank (pc pc_zero pc_succ congrPc)
 open LeanProofs.IPRA.AnalyticNumberTheory.ChebyshevBounds (two_pos')
-open LeanProofs.IPRA.AnalyticNumberTheory.BinomialLcm (central_dvd_lcm)
 open LeanProofs.IPRA.Combinatorics.Catalan (cb cat cb_zero cat_spec cat_telescope)
 open LeanProofs.IPRA.Combinatorics.CentralBinomial (central_pos)
-open LeanProofs.IPRA.DiophantineNumberTheory.Coprime (dvd_le')
-open LeanProofs.IPRA.AnalyticNumberTheory.Totatives (sg_lt)
-open LeanProofs.IPRA.AnalyticNumberTheory.PhiLower (le_mul_mono)
 open LeanProofs.IPRA.Signum (sg sg_zero sg_succ)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
-
-local notation "𝔞" t:max => Groth.ι (IPRA.Q.mk _ t)
 
 /-! ## The prime powers of `lcm(1, …, P)` -/
 

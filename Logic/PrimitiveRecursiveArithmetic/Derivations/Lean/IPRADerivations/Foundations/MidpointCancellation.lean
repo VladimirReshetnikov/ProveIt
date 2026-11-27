@@ -1,6 +1,5 @@
 import IPRADerivations.Foundations.StrongConvexity
 import IPRADerivations.Core.OrderCertificates
-import IPRADerivations.Core.Header
 
 /-! Imported from the packet `foundations/ipra_general_framework_2026-11-19`, `lean/QuantitativeElimination/MidpointCancellation.lean`: the namespace is placed under `LeanProofs.IPRA.Foundations` and the `#print axioms` lines are dropped (the library audits axioms in `Checks/Axioms.lean`). -/
 
@@ -19,15 +18,12 @@ object inequalities. The full cloud selector is a separate target.
 -/
 
 set_option autoImplicit false
-set_option linter.unusedSimpArgs false
 
 namespace LeanProofs.IPRA.Foundations.MidpointCancellation
 
-open_ipra
+open_ipra exports
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
-
-local notation "𝔞" t:max => Groth.ι (IPRA.Q.mk _ t)
 
 /-- A natural witness for a signed inequality. -/
 private def slack (u v : ZT n) : PTm n :=

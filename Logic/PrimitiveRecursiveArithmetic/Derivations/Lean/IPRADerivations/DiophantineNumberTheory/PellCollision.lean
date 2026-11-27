@@ -1,11 +1,5 @@
-import IPRADerivations.DiophantineNumberTheory.Coprime
-import IPRADerivations.Foundations.ChineseRemainder
 import IPRADerivations.Combinatorics.LegendreDigits
-import IPRADerivations.Combinatorics.BinomialIdentities
 import IPRADerivations.Core.OrderCertificates
-import IPRADerivations.Core.LinearCombination
-import IPRADerivations.Core.CommonLemmas
-import IPRADerivations.Core.Header
 
 /-!
 # Two pairs of equal norm give a Pell solution
@@ -28,20 +22,15 @@ In both cases `a ∣ N₁`, `a ∣ N₂` (an explicit ring certificate from `p_j
 and `x ≤ N₁`, `y ≤ N₂`.
 -/
 
-set_option linter.unusedSimpArgs false
-
 namespace LeanProofs.IPRA.DiophantineNumberTheory.PellCollision
 
-open_ipra
-open LeanProofs.IPRA.Foundations.ChineseRemainder (rem_eq_of_eq)
+open_ipra exports
 open LeanProofs.IPRA.Combinatorics.LegendreDigits (dm)
 open LeanProofs.IPRA.Combinatorics.BinomialIdentities (mul_cancel)
 open LeanProofs.IPRA.Combinatorics.Binomial (pos_mul)
 open LeanProofs.IPRA.DiophantineNumberTheory.Coprime (le_of_sq_le eq_of_dvd' pos_of_eq_mul one_le_of_pos)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
-
-local notation "𝔞" t:max => Groth.ι (IPRA.Q.mk _ t)
 
 /-! ## Common tools -/
 

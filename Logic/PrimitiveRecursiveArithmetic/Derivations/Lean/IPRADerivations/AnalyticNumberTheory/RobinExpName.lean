@@ -1,6 +1,4 @@
 import IPRADerivations.AnalyticNumberTheory.RobinLogName
-import IPRADerivations.AnalyticNumberTheory.LocalFactor
-import IPRADerivations.Core.Header
 
 /-!
 # Nested exponential names (`robin_ipra_research_2026-11-19`, `eq:exptail`)
@@ -21,21 +19,14 @@ For a rational `x = p/q`, `q ≥ 1`, with cleared denominators (`F_K = K!`, `Fv`
 * `e_mono`: `E_K` is monotone in `x` (the packet's "monotonicity gives `E_K(l) ≤ e^x`").
 -/
 
-set_option linter.unusedSimpArgs false
-
 namespace LeanProofs.IPRA.AnalyticNumberTheory.RobinExpName
 
-open_ipra
-open LeanProofs.IPRA.AnalyticNumberTheory.RobinLogName (frac_trans)
-open LeanProofs.IPRA.AnalyticNumberTheory.PhiLower (le_mul_mono)
+open_ipra exports
 open LeanProofs.IPRA.Combinatorics.Binomial (pos_mul)
-open LeanProofs.IPRA.AnalyticNumberTheory.SigmaPrimePower (pos_pw)
 
 set_option autoImplicit false
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
-
-local notation "𝔞" t:max => Groth.ι (IPRA.Q.mk _ t)
 
 /-! ## Factorials and numerators -/
 

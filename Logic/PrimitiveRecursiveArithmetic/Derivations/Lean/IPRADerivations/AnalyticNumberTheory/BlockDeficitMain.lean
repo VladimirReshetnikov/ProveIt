@@ -1,6 +1,4 @@
 import IPRADerivations.AnalyticNumberTheory.BlockDispatch
-import IPRADerivations.Core.LinearCombination
-import IPRADerivations.Core.Header
 
 /-!
 # The finite block deficit (`pnt_ipra_constructive_2026-11-14`, Lemma `con:deficit`)
@@ -19,13 +17,10 @@ half (`case_B`), or both, when `CrossingSearch.crossing` gives the crossing pair
 hypothesis `interior`).
 -/
 
-set_option linter.unusedSimpArgs false
-
 namespace LeanProofs.IPRA.AnalyticNumberTheory.BlockDeficitMain
 
-open_ipra
+open_ipra exports
 open LeanProofs.IPRA.AnalyticNumberTheory.Harmonic (S)
-open LeanProofs.IPRA.AnalyticNumberTheory.HarmonicMertens (le_scale)
 open LeanProofs.IPRA.AnalyticNumberTheory.BlockTests (four hiB loB)
 open LeanProofs.IPRA.AnalyticNumberTheory.BlockDeficit (gzB OnBlock stg Pm Qm Bs')
 open LeanProofs.IPRA.AnalyticNumberTheory.BlockCases (case_A case_B block_mono)
@@ -33,14 +28,11 @@ open LeanProofs.IPRA.AnalyticNumberTheory.BlockCross (case_C_core)
 open LeanProofs.IPRA.AnalyticNumberTheory.BlockDispatch (off_at mid_fail hi_pass lo_pass onblock_A onblock_B Pl Psh)
 open LeanProofs.IPRA.Foundations.BoundedReflection (exB wit ex_cases ex_elim)
 open LeanProofs.IPRA.Foundations.CrossingSearch (uT vT crossing between_not_high between_not_low u_ge ne_transport)
-open LeanProofs.IPRA.AnalyticNumberTheory.AbsDiff (absd)
 open LeanProofs.IPRA.Analysis.Products (fact)
 
 set_option autoImplicit false
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
-
-local notation "𝔞" t:max => Groth.ι (IPRA.Q.mk _ t)
 
 /-- The crossing searches run from the base `D₁ + 1`. -/
 abbrev PP (x D₁ D₂ A Ds K L : PTm n) : PTm n := pairT (succ D₁) (Pl x D₁ D₂ A Ds K L)
@@ -102,7 +94,6 @@ theorem interior (hi0 : Γ ⊢[PRAAx] neg (inst2 (offB loB) i0 (PP x D₁ D₂ A
     (u_ge (offB loB) (offB hiB) (j0 := Syn.shift j0) hi0').wk.wk.wk
   have ei := eq_add_of_le (le_trans (le_add_right (succ (Syn.shift D₁)) _) (le_of_lt hA))
   have e1 := natEq ei
-  have e2 := natEq (eq_add_of_le hA)
   have ps : (le (var 0) (Syn.shift (pred (succ D₁ + vT (offB hiB) i0 j0 (PP x D₁ D₂ A Ds K L)))) ::
       lt (Syn.shift (succ D₁ + uT (offB loB) (offB hiB) i0 j0 (PP x D₁ D₂ A Ds K L))) (var 0) ::
       lt (var 0) (Syn.shift (succ x)) :: Γ.map Fm.shift) ⊢[PRAAx]

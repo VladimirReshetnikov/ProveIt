@@ -1,7 +1,4 @@
 import IPRADerivations.AnalyticNumberTheory.PhiTwo
-import IPRADerivations.Core.LinearCombination
-import IPRADerivations.Core.InductionTactic
-import IPRADerivations.Core.Header
 
 /-!
 # The sharp lower bound `φ(n)² ≥ n` for `n ∉ {2, 6}`
@@ -21,15 +18,12 @@ set_option linter.unusedSimpArgs false
 
 namespace LeanProofs.IPRA.AnalyticNumberTheory.PhiLowerSharp
 
-open_ipra
+open_ipra exports
 open LeanProofs.IPRA.Algebra.CubeRootTwo (sg sg_zero sg_succ)
-open LeanProofs.IPRA.Combinatorics.Binomial (pos_mul)
 open LeanProofs.IPRA.DiophantineNumberTheory.Coprime
 open LeanProofs.IPRA.AnalyticNumberTheory.Totient (phi)
 open LeanProofs.IPRA.AnalyticNumberTheory.Primes (lpf μz lpfBody lpf_dvd lpf_prime prime eq_succ_pred)
-open LeanProofs.IPRA.AnalyticNumberTheory.Multiplicative (rem_eq' rem_lt' zero_lt')
 open LeanProofs.IPRA.AnalyticNumberTheory.PhiDouble (two_pos')
-open LeanProofs.IPRA.AnalyticNumberTheory.PhiEvenPow (eq_one_of_lt_two)
 open LeanProofs.IPRA.AnalyticNumberTheory.Valuation
 open LeanProofs.IPRA.AnalyticNumberTheory.PhiLower
 open LeanProofs.IPRA.AnalyticNumberTheory.PhiTwo (three four six phi_congr')
@@ -66,9 +60,7 @@ theorem ppow_sq2_three {p : PTm n} (hp : Γ ⊢[PRAAx] prime p) (hp3 : Γ ⊢[PR
   have hq := pw_pos' (prime_eq_succ_pred hp) j
   have hpQ : Γ ⊢[PRAAx] le p (pw p (succ j)) := by
     refine le_of_eq_add (d := pred (pw p j) * p) ?_
-    have e₁ := natEq (pw_succ (Γ := Γ) p j); have e₂ := natEq hq
-    apply deriveNat; ipra_simps
-    linear_combination e₁ + Groth.ι (Q.mk _ p) * e₂
+    ipra_lc natEq (pw_succ p j) + Groth.ι (Q.mk _ p) * natEq hq
   have h3Q := le_congr hp3 (.eqRefl _) hpQ
   have e₁ := natEq (phi_ppow hp (succ j))
   have e₂ := natEq (pw_succ (Γ := Γ) p (succ j))

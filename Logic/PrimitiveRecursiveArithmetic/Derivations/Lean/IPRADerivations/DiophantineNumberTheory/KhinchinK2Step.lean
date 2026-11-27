@@ -1,10 +1,6 @@
 import IPRADerivations.DiophantineNumberTheory.KhinchinK2Widths
 import IPRADerivations.DiophantineNumberTheory.KhinchinK2RoundZ
-import IPRADerivations.Foundations.FiniteSetExponential
 import IPRADerivations.Foundations.BlockPartitionSum
-import IPRADerivations.Core.LinearCombination
-import IPRADerivations.Core.SubstCommand
-import IPRADerivations.Core.Header
 
 /-!
 # One complete (K2) round from `ψ` and `D` (`hurwitz_khinchin_ipra`)
@@ -30,7 +26,7 @@ code `c` (`w_g = ⌊c/2^g⌋ mod 2`, `evB`). Every cell, uncovered or not, recei
 
 namespace LeanProofs.IPRA.DiophantineNumberTheory.KhinchinK2Step
 
-open_ipra
+open_ipra exports
 open LeanProofs.IPRA.Signum (sg)
 open LeanProofs.IPRA.Analysis.Products (fact)
 open LeanProofs.IPRA.AnalyticNumberTheory.Primes (fact_pos)
@@ -38,7 +34,6 @@ open LeanProofs.IPRA.AnalyticNumberTheory.LogRefinement (pos_of_eq)
 open LeanProofs.IPRA.Combinatorics.FiniteBijection (shift_inst2')
 open LeanProofs.IPRA.Foundations.FiniteSetExponential (code ev_curry_of_lt dg_lt pair_fst pair_snd)
 open LeanProofs.IPRA.Foundations.BlockPartitionSum (blockB inst2_blockB block_sum)
-open LeanProofs.IPRA.Foundations.CrossingSearch (monus_of_eq)
 open LeanProofs.IPRA.DiophantineNumberTheory.KhinchinBlockScales (Xt Qk bB pw_mono2)
 open LeanProofs.IPRA.DiophantineNumberTheory.KhinchinCellParams (αc γc b0c cell_hH)
 open LeanProofs.IPRA.DiophantineNumberTheory.KhinchinMargin (monus_le')
@@ -52,8 +47,6 @@ open LeanProofs.IPRA.DiophantineNumberTheory.KhinchinK2Widths (monoF kdF shift_m
 set_option autoImplicit false
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
-
-local notation "𝔞" t:max => Groth.ι (IPRA.Q.mk _ t)
 
 /-! ## The round's data -/
 
@@ -338,8 +331,7 @@ theorem chain (wb : PTm 2) {p r X : PTm n} (hr : Γ ⊢[PRAAx] r ≐ succ (pred 
   have s3 : Γ ⊢[PRAAx] ap2 (sumF (tB wb)) (r * succ p) X ≐ ap2 (sumF (tB wb)) (inst2 eB (succ p) X) X := by
     refine congrAp2 _ ?_ (.eqRefl _)
     rw [inst2_eB]
-    have e' := natEq er
-    apply deriveNat; ipra_simps; linear_combination -(𝔞 p + 1) * e'
+    ipra_lc -(𝔞 p + 1) * natEq er
   have h0 : Γ ⊢[PRAAx] inst2 eB zero X ≐ zero := by
     rw [inst2_eB]; ipra_ring
   have hmono : Γ ⊢[PRAAx] Fm.all (lt (var 0) (Syn.shift (succ p)) ⟶

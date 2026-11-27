@@ -1,6 +1,5 @@
 import IPRADerivations.AnalyticNumberTheory.SieveBilinear
 import IPRADerivations.AnalyticNumberTheory.SieveDiagonal
-import IPRADerivations.Core.Header
 
 /-!
 # The main term and the error term of the bilinear sieve estimate
@@ -23,11 +22,9 @@ indicators are absorbed into the weights:
 `χ = [2 ≤ q][gcd(a, q) = 1]`; both closed forms hold at all terms, by `Foundations/DoubleSumScale.dsum_scale`.
 -/
 
-set_option linter.unusedSimpArgs false
-
 namespace LeanProofs.IPRA.AnalyticNumberTheory.SieveClosedForms
 
-open_ipra
+open_ipra exports
 open LeanProofs.IPRA.Signum (sg)
 open LeanProofs.IPRA.AnalyticNumberTheory.Mobius (congrEqb')
 open LeanProofs.IPRA.AnalyticNumberTheory.SievePairSum (subst_gcd' Cm inst3_Cm inst3_wB)
@@ -154,3 +151,5 @@ theorem bil_ge {X Z P : PTm n} (hq : Γ ⊢[PRAAx] le one (fstT P))
 end Forms
 
 end LeanProofs.IPRA.AnalyticNumberTheory.SieveClosedForms
+
+export_ipra AnalyticNumberTheory.SieveClosedForms (inst2_gU sgV)

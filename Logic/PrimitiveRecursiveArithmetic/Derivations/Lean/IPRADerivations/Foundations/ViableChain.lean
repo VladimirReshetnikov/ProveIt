@@ -1,7 +1,4 @@
 import IPRADerivations.Foundations.BackwardViability
-import IPRADerivations.Core.LinearCombination
-import IPRADerivations.Core.InductionTactic
-import IPRADerivations.Core.Header
 
 /-!
 # The certified finite chain (`ipra_evidence_framework`, "certified finite chain")
@@ -35,22 +32,16 @@ of its own rows; it transfers the certified chain, as the packet states.
 `h ∸ (h ∸ (t + 1)) = t + 1` and `(h ∸ (t + 1)) + 1 = h ∸ t`.
 -/
 
-set_option linter.unusedSimpArgs false
-
 namespace LeanProofs.IPRA.Foundations.ViableChain
 
-open_ipra
+open_ipra exports
 open LeanProofs.IPRA.Signum (sg)
-open LeanProofs.IPRA.Probability.ProductPower (dg)
 open LeanProofs.IPRA.Combinatorics.BinomialTheorem (congrPw)
 open LeanProofs.IPRA.Foundations.BackwardViability
 open LeanProofs.IPRA.Foundations.BackwardViability.Instance
 open LeanProofs.IPRA.Foundations.BoundedReflection (sg_cases one_ne_zero)
-open LeanProofs.IPRA.Foundations.BoundedFormulas (sg_of_zero)
 
 variable {k : ℕ} {Γ : List (Fm PTm k)}
-
-local notation "𝔞" t:max => Groth.ι (IPRA.Q.mk _ t)
 
 /-! ## Truncated subtraction below the horizon -/
 
@@ -64,7 +55,7 @@ theorem monus_sub {t h : PTm k} (ht : Γ ⊢[PRAAx] lt t h) :
     Γ ⊢[PRAAx] monus h (monus h (succ t)) ≐ succ t := by
   have e₁ := natEq (eq_add_of_le ht)
   have hd : Γ ⊢[PRAAx] le (monus h (succ t)) h :=
-    le_of_eq_add (d := succ t) (by apply deriveNat; ipra_simps; linear_combination e₁)
+    le_of_eq_add (d := succ t) (by ipra_lc e₁)
   ipra_lc e₁ - natEq (eq_add_of_le hd)
 
 /-- `h ∸ ((h ∸ (t + 1)) + 1) = t` for `t < h`. -/
@@ -72,7 +63,7 @@ theorem monus_succ_sub {t h : PTm k} (ht : Γ ⊢[PRAAx] lt t h) :
     Γ ⊢[PRAAx] monus h (succ (monus h (succ t))) ≐ t := by
   have e₁ := natEq (eq_add_of_le ht)
   have hd : Γ ⊢[PRAAx] le (succ (monus h (succ t))) h :=
-    le_of_eq_add (d := t) (by apply deriveNat; ipra_simps; linear_combination e₁)
+    le_of_eq_add (d := t) (by ipra_lc e₁)
   ipra_lc e₁ - natEq (eq_add_of_le hd)
 
 /-! ## Congruence of the instance terms -/

@@ -1,8 +1,5 @@
 import IPRADerivations.Foundations.BoundedReflection
-import IPRADerivations.AnalyticNumberTheory.DivisorHyperbola
 import IPRADerivations.AnalyticNumberTheory.MertensTotient
-import IPRADerivations.Core.LinearCombination
-import IPRADerivations.Core.Header
 
 /-!
 # The parity of the divisor function
@@ -27,25 +24,16 @@ identity `D(x) + m² = 2 ∑_{d ≤ m} ⌊x/d⌋`, `m = ⌊√x⌋` (`DivisorHyp
 The squarefree decomposition and the parity of `σ` in `el:squareparity` are not derived.
 -/
 
-set_option linter.unusedSimpArgs false
-
 namespace LeanProofs.IPRA.AnalyticNumberTheory.TauParity
 
-open_ipra
+open_ipra exports
 open LeanProofs.IPRA.AnalyticNumberTheory.Harmonic (S hB inst2_h)
 open LeanProofs.IPRA.AnalyticNumberTheory.DivisorHyperbola (hyperbola)
 open LeanProofs.IPRA.AnalyticNumberTheory.DirichletLeibniz (conv)
-open LeanProofs.IPRA.AnalyticNumberTheory.ConvolutionAssoc (cvF inst2_cvF)
 open LeanProofs.IPRA.AnalyticNumberTheory.ConvSummatory (RB)
-open LeanProofs.IPRA.AnalyticNumberTheory.MertensTotient (floor_summatory floor_term)
-open LeanProofs.IPRA.AnalyticNumberTheory.MobiusFloor (inst2_oneB)
-open LeanProofs.IPRA.AnalyticNumberTheory.Mobius (zero_mul_l)
-open LeanProofs.IPRA.Foundations.BoundedReflection (eqb_cases eq_of_eqb)
 open LeanProofs.IPRA.Signum (sg sg_zero sg_succ)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
-
-local notation "𝔞" t:max => Groth.ι (IPRA.Q.mk _ t)
 
 /-! ## The divisor function and its summatory function -/
 

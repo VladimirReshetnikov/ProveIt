@@ -1,8 +1,5 @@
 import IPRADerivations.DiophantineNumberTheory.KhinchinScale
 import IPRADerivations.Foundations.SumFlatten
-import IPRADerivations.AnalyticNumberTheory.EulerDomination
-import IPRADerivations.AnalyticNumberTheory.TotientCorollaries
-import IPRADerivations.Core.Header
 
 /-!
 # The active members of one Khinchin scale are the reduced fractions `𝓡_k(J)` (`hurwitz_khinchin_ipra`, (K8))
@@ -28,13 +25,12 @@ after rescaling by `T`).
 
 namespace LeanProofs.IPRA.DiophantineNumberTheory.KhinchinScaleCount
 
-open_ipra
+open_ipra exports
 open LeanProofs.IPRA.Signum (sg sg_zero sg_succ)
 open LeanProofs.IPRA.AnalyticNumberTheory.Mobius (congrSg congrEqb')
 open LeanProofs.IPRA.DiophantineNumberTheory.QuarticStep (congrGcd)
 open LeanProofs.IPRA.Analysis.Products (fact)
 open LeanProofs.IPRA.AnalyticNumberTheory.EulerDomination (sg_le_one)
-open LeanProofs.IPRA.AnalyticNumberTheory.TotientCorollaries (eqb_le_one)
 open LeanProofs.IPRA.Foundations.IntervalAdditive (sg_of_le_one)
 open LeanProofs.IPRA.Foundations.IntervalCover (measure)
 open LeanProofs.IPRA.Foundations.IntervalPacking (loB hiB acB)
@@ -47,8 +43,6 @@ open LeanProofs.IPRA.DiophantineNumberTheory.KhinchinScale (tup AK actK dec actC
 set_option autoImplicit false
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
-
-local notation "𝔞" t:max => Groth.ι (IPRA.Q.mk _ t)
 
 /-- The tail `⟨Q', T, α, γ, β⟩` of the parameter tuple. -/
 abbrev tl (Q' T α γ β : PTm n) : PTm n := pairT Q' (pairT T (pairT α (pairT γ β)))

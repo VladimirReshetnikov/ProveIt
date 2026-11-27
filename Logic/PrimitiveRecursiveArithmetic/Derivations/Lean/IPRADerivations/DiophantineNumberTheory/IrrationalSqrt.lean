@@ -1,5 +1,4 @@
 import IPRADerivations.DiophantineNumberTheory.Coprime
-import IPRADerivations.Core.Header
 
 /-!
 # No rational square root of a nonsquare
@@ -11,14 +10,11 @@ Reduce by `g = gcd(q, p)`: `q = g s`, `p = g r`, `gcd(s, r) = 1`, and `r² = D s
 `s ∣ r²`, so `s ∣ r` by Gauss's lemma, hence `s = 1` and `D = r²`, so `isqrt D = r`.
 -/
 
-set_option linter.unusedSimpArgs false
-
 namespace LeanProofs.IPRA.DiophantineNumberTheory.IrrationalSqrt
 
-open_ipra
+open_ipra exports
 open LeanProofs.IPRA.Combinatorics.Binomial (pos_mul)
 open LeanProofs.IPRA.Combinatorics.BinomialIdentities (mul_cancel)
-open LeanProofs.IPRA.Foundations.ChineseRemainder (gcd_pos)
 open LeanProofs.IPRA.DiophantineNumberTheory.Coprime
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}

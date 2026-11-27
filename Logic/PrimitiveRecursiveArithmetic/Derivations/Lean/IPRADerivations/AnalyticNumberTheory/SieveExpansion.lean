@@ -1,7 +1,6 @@
 import IPRADerivations.AnalyticNumberTheory.SievePairSum
 import IPRADerivations.AnalyticNumberTheory.SieveSquare
 import IPRADerivations.Foundations.DoubleSumScale
-import IPRADerivations.Core.Header
 
 /-!
 # The expanded square over a progression as a double sum of pair counts
@@ -31,15 +30,11 @@ the range of `SieveCount`.
 * `expansion`: `Foundations/DoubleSumScale.dsum_scale`, `Independence.dsum_rows` and `SieveSquare.square_exchange`.
 -/
 
-set_option linter.unusedSimpArgs false
-
 namespace LeanProofs.IPRA.AnalyticNumberTheory.SieveExpansion
 
-open_ipra
+open_ipra exports
 open LeanProofs.IPRA.Signum (sg sg_zero)
 open LeanProofs.IPRA.AnalyticNumberTheory.Mobius (congrSg zero_mul_l congrEqb')
-open LeanProofs.IPRA.AnalyticNumberTheory.ConvolutionAssoc (sg_pos)
-open LeanProofs.IPRA.AnalyticNumberTheory.BrunCounting (gB)
 open LeanProofs.IPRA.AnalyticNumberTheory.SieveCount (fB cnt)
 open LeanProofs.IPRA.AnalyticNumberTheory.SievePairCount (lc pair_pt)
 open LeanProofs.IPRA.AnalyticNumberTheory.SievePairSum (subst_gcd' subst_lc Am inst3_Am inst3_wB)
@@ -49,8 +44,6 @@ open LeanProofs.IPRA.Foundations.DoubleSumScale (at1 dsum_scale)
 open LeanProofs.IPRA.Probability.Independence (row_pt sum_scale dsum dsum_rows shift_inst2)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
-
-local notation "𝔞" t:max => Groth.ι (IPRA.Q.mk _ t)
 
 /-! ## The progression indicator and the weights -/
 
@@ -225,3 +218,5 @@ theorem expansion (X Z P : PTm n) :
 end Expansion
 
 end LeanProofs.IPRA.AnalyticNumberTheory.SieveExpansion
+
+export_ipra AnalyticNumberTheory.SieveExpansion (inst2_lB)

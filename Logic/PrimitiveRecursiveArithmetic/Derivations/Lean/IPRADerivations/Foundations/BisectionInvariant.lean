@@ -1,8 +1,6 @@
 import IPRADerivations.Foundations.TraceReflection
 import IPRADerivations.Foundations.BoundedFormulas
-import IPRADerivations.Core.Pairing
 import IPRADerivations.Core.OrderCertificates
-import IPRADerivations.Core.Header
 
 /-!
 # The bisection invariant
@@ -37,14 +35,11 @@ which is decidable. `bis_nested`: for `ℓ ≤ u` the next interval lies inside 
 `u′ ≤ 2u` on the next scale). The regular name of the root is not derived here.
 -/
 
-set_option linter.unusedSimpArgs false
-
 namespace LeanProofs.IPRA.Foundations.BisectionInvariant
 
-open_ipra
+open_ipra exports
 open LeanProofs.IPRA.ClockedDescent (subst_QF')
 open LeanProofs.IPRA.Signum (sg)
-open LeanProofs.IPRA.Foundations.BoundedFormulas (sg_of_pos sg_of_zero)
 open LeanProofs.IPRA.Foundations.TraceReflection (Run I3 subst_I3 run_zero run_succ)
 
 variable {k : ℕ} {Γ : List (Fm PTm k)} {c : PTm 3}
@@ -169,9 +164,7 @@ theorem bis_step
       (.andI (I3_congr₁ Hi eU.eqSymm (hHi2 _ t x hh.wk)) ?_)
     have k₁ := natEq eL
     have k₂ := natEq eU
-    have k₃ := natEq (hw.wk (ψ := cAt c (fstT s + sndT s) t x ≐ zero))
-    apply deriveNat; ipra_simps
-    linear_combination k₂ - k₁ + k₃
+    ipra_lc k₂ - k₁ + natEq (hw.wk (ψ := cAt c (fstT s + sndT s) t x ≐ zero))
   · have h1 : ((cAt c (fstT s + sndT s) t x ≐ succ (pred (cAt c (fstT s + sndT s) t x))) :: Γ) ⊢[PRAAx]
         cAt c (fstT s + sndT s) t x ≐ succ (pred (cAt c (fstT s + sndT s) t x)) := Prf.hyp0
     have st := step_hi h1
@@ -183,8 +176,7 @@ theorem bis_step
     have k₂ := natEq eU
     have k₃ := natEq (hw.wk
       (ψ := cAt c (fstT s + sndT s) t x ≐ succ (pred (cAt c (fstT s + sndT s) t x))))
-    apply deriveNat; ipra_simps
-    linear_combination k₂ - k₁ + k₃
+    ipra_lc k₂ - k₁ + k₃
 
 /-- The bisection invariant at every stage. -/
 theorem bisection_invariant (hLoQF : Lo.QF) (hHiQF : Hi.QF)

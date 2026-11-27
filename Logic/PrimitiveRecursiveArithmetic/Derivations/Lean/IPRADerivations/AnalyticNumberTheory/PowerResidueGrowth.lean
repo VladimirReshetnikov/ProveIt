@@ -1,5 +1,4 @@
 import IPRADerivations.AnalyticNumberTheory.PowerResidueBackward
-import IPRADerivations.Core.Header
 
 /-!
 # The progression-row growth equivalence (`riemann_ipra_prime_criteria_2026-11-20`, `thm:powerdivisor`)
@@ -20,27 +19,20 @@ evaluated at `⟨p, z⟩`:
   `PowerResidueBackward.backward_res_core`).
 -/
 
-set_option linter.unusedSimpArgs false
-
 namespace LeanProofs.IPRA.AnalyticNumberTheory.PowerResidueGrowth
 
-open_ipra
+open_ipra exports
 open LeanProofs.IPRA.AnalyticNumberTheory.PowerResidueForward (InR subst_InA forward_res_core)
 open LeanProofs.IPRA.AnalyticNumberTheory.PowerResidueBackward (backward_res_core)
 open LeanProofs.IPRA.AnalyticNumberTheory.PowerResidueRows (mask bvB Xp MB)
-open LeanProofs.IPRA.AnalyticNumberTheory.PowerDivisorPrefix (Apre)
 open LeanProofs.IPRA.AnalyticNumberTheory.PowerDivisorGrowth (InA Mat subst_Mat AB inst2_AB Cout exps allE_shift
-  subst_cons_shift two_le_shift subst_sh)
-open LeanProofs.IPRA.AnalyticNumberTheory.PowerTransfer (k4 r8)
-open LeanProofs.IPRA.AnalyticNumberTheory.AbsDiff (absd)
+  subst_cons_shift two_le_shift subst_sh all_ex_imp_at)
 open LeanProofs.IPRA.Combinatorics.BinomialTheorem (congrPw)
 open LeanProofs.IPRA.DiophantineNumberTheory.QuarticStep (congrGcd)
 
 set_option autoImplicit false
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
-
-local notation "𝔞" t:max => Groth.ι (IPRA.Q.mk _ t)
 
 /-! ## Residue codes and the sentences -/
 
@@ -265,43 +257,23 @@ theorem bwd_AF_eq {y h k c X K C X' K' C' : PTm n} (hX : X = pairT h y) (hK : K 
 theorem growth_res_forward {h : PTm n} (hh : Γ ⊢[PRAAx] le two h) (y : PTm n) :
     Γ ⊢[PRAAx] GrowthP (AB (mask aP)) (AB (mask aN)) y ⟶
       GrowthP (AB (mask (bvB aP))) (AB (mask (bvB aN))) (pairT h y) := by
-  refine .impI (.allI ?_)
-  have hG : ((GrowthP (AB (mask aP)) (AB (mask aN)) y :: Γ).map Fm.shift) ⊢[PRAAx]
-      Fm.shift (GrowthP (AB (mask aP)) (AB (mask aN)) y) :=
-    (Prf.hyp0 : (GrowthP (AB (mask aP)) (AB (mask aN)) y :: Γ) ⊢[PRAAx] _).shift
-  have hk := Prf.allE (succ (two * var 0)) hG
-  simp only [GrowthP, Fm.shift, Fm.subst_all, Fm.subst_ex, subst_AF, subst_up_shift_pal, Syn.subst_inst_shift,
-    up1_v0', up1_v1', up2_v0', up2_v1', Syn.subst_var, subst_sh, Syn.up_zero, Syn.inst_zero] at hk
-  refine .exE hk ?_
-  simp only [GrowthP, Fm.shift, Fm.subst_ex, subst_AF, subst_up_shift_pal, Syn.subst_inst_shift, up1_v0', up1_v1',
-    Syn.subst_var, subst_sh, Syn.up_zero, Syn.shift_var]
-  refine .exI (Cout (var 1) (var 0)) ?_
-  simp only [subst_AF, subst_up_shift_pal, Syn.subst_inst_shift, Syn.subst_var, subst_sh, Syn.inst_zero,
-    Syn.inst_succ, Syn.shift_var]
+  refine all_ex_imp_at (succ (two * var 0)) (Cout (var 1) (var 0)) ?_
+  simp only [GrowthP, Fm.shift, Fm.subst_all, Fm.subst_ex, subst_AF, subst_up_shift_pal, Syn.subst_inst_shift, up1_v0',
+    up1_v1', up2_v0', up2_v1', Syn.subst_var, subst_sh, Syn.up_zero, Syn.inst_zero, Syn.shift_var, Syn.inst_succ]
   exact fwd_AF_eq aP aN (y := Syn.shift (Syn.shift y)) (h := Syn.shift (Syn.shift h)) (k := var 1) (c := var 0)
     (by simp [Syn.shift]) (by simp [Syn.shift]) (by simp [Syn.shift]) (by simp [Syn.shift]) (by simp [Syn.shift])
-    (by simp [Syn.shift]) (two_le_shift (two_le_shift hh)).wk.wk Prf.hyp0
+    (by simp [Syn.shift]) (two_le_shift (two_le_shift hh)).wk Prf.hyp0
 
 /-- `thm:powerdivisor`, progression rows, `B_h ⇒ A`. -/
 theorem growth_res_backward {h : PTm n} (hh : Γ ⊢[PRAAx] le two h) (y : PTm n) :
     Γ ⊢[PRAAx] GrowthP (AB (mask (bvB aP))) (AB (mask (bvB aN))) (pairT h y) ⟶
       GrowthP (AB (mask aP)) (AB (mask aN)) y := by
-  refine .impI (.allI ?_)
-  have hG : ((GrowthP (AB (mask (bvB aP))) (AB (mask (bvB aN))) (pairT h y) :: Γ).map Fm.shift) ⊢[PRAAx]
-      Fm.shift (GrowthP (AB (mask (bvB aP))) (AB (mask (bvB aN))) (pairT h y)) :=
-    (Prf.hyp0 : (GrowthP (AB (mask (bvB aP))) (AB (mask (bvB aN))) (pairT h y) :: Γ) ⊢[PRAAx] _).shift
-  have hk := Prf.allE (succ (two * var 0)) hG
-  simp only [GrowthP, Fm.shift, Fm.subst_all, Fm.subst_ex, subst_AF, subst_up_shift_pal, Syn.subst_inst_shift,
-    up1_v0', up1_v1', up2_v0', up2_v1', Syn.subst_var, subst_sh, Syn.up_zero, Syn.inst_zero] at hk
-  refine .exE hk ?_
-  simp only [GrowthP, Fm.shift, Fm.subst_ex, subst_AF, subst_up_shift_pal, Syn.subst_inst_shift, up1_v0', up1_v1',
-    Syn.subst_var, subst_sh, Syn.up_zero, Syn.shift_var]
-  refine .exI (Cout (var 1) (var 0)) ?_
-  simp only [subst_AF, subst_up_shift_pal, Syn.subst_inst_shift, Syn.subst_var, subst_sh, Syn.inst_zero,
-    Syn.inst_succ, Syn.shift_var]
+  refine all_ex_imp_at (succ (two * var 0)) (Cout (var 1) (var 0)) ?_
+  simp only [GrowthP, Fm.shift, Fm.subst_all, Fm.subst_ex, subst_AF, subst_up_shift_pal, Syn.subst_inst_shift, up1_v0',
+    up1_v1', up2_v0', up2_v1', Syn.subst_var, subst_sh, Syn.up_zero, Syn.inst_zero, Syn.shift_var, Syn.inst_succ]
   exact bwd_AF_eq aP aN (y := Syn.shift (Syn.shift y)) (h := Syn.shift (Syn.shift h)) (k := var 1) (c := var 0)
     (by simp [Syn.shift]) (by simp [Syn.shift]) (by simp [Syn.shift]) (by simp [Syn.shift]) (by simp [Syn.shift])
-    (by simp [Syn.shift]) (two_le_shift (two_le_shift hh)).wk.wk Prf.hyp0
+    (by simp [Syn.shift]) (two_le_shift (two_le_shift hh)).wk Prf.hyp0
 
 /-- `thm:powerdivisor`, progression rows (exponent `h ≥ 2`, signed coefficients `a = a⁺ − a⁻`): in object iPRA,
 `(∀k ∃c ∀⟨q,b⟩ reduced ∀N |A_{q,b}(N)|^{2(k+1)} ≤ cN^{k+2}) ↔ (∀k ∃c ∀⟨q,b⟩ reduced ∀N |B_{h;q,b}(N)|^{2(k+1)} ≤ cN^{k+2})`,

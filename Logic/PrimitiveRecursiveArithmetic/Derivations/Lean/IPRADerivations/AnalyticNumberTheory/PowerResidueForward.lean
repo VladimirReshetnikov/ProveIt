@@ -1,7 +1,5 @@
 import IPRADerivations.AnalyticNumberTheory.PowerResidueRows
-import IPRADerivations.AnalyticNumberTheory.PowerDivisorGrowth
 import IPRADerivations.DiophantineNumberTheory.PrimitiveReduction
-import IPRADerivations.Core.Header
 
 /-!
 # The forward transfer for progression rows (`riemann_ipra_prime_criteria_2026-11-20`, `thm:powerdivisor`)
@@ -21,29 +19,21 @@ use `t_d = 0` at an excluded residue."
   `PowerTransfer.transfer`.
 -/
 
-set_option linter.unusedSimpArgs false
-
 namespace LeanProofs.IPRA.AnalyticNumberTheory.PowerResidueForward
 
-open_ipra
-open LeanProofs.IPRA.AnalyticNumberTheory.PowerDivisorPrefix (Apre)
+open_ipra exports
 open LeanProofs.IPRA.AnalyticNumberTheory.PowerTwistPrefix (tBt tbtB tbtB_at)
-open LeanProofs.IPRA.AnalyticNumberTheory.PowerResidue (res res_lt res_cop)
 open LeanProofs.IPRA.AnalyticNumberTheory.PowerResidueRows
 open LeanProofs.IPRA.AnalyticNumberTheory.PowerDivisorGrowth (InA mqB mq_at arg_bound allE_shift subst_cons_shift)
 open LeanProofs.IPRA.AnalyticNumberTheory.PowerDivisorInversion (Zp)
 open LeanProofs.IPRA.AnalyticNumberTheory.PowerTransfer (transfer TermBound k4 r8)
-open LeanProofs.IPRA.Foundations.BoundedReflection (eqb_cases eq_of_eqb)
 open LeanProofs.IPRA.AnalyticNumberTheory.PNTStageStep (pos_of_one_le)
 open LeanProofs.IPRA.DiophantineNumberTheory.PrimitiveReduction (pw_zero_base)
-open LeanProofs.IPRA.AnalyticNumberTheory.AbsDiff (absd)
 open LeanProofs.IPRA.Combinatorics.BinomialTheorem (congrPw)
 
 set_option autoImplicit false
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
-
-local notation "𝔞" t:max => Groth.ι (IPRA.Q.mk _ t)
 
 variable (aP aN : PTm 2)
 

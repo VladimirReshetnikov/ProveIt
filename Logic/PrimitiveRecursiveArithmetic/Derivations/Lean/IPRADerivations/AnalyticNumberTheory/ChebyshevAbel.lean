@@ -1,7 +1,4 @@
 import IPRADerivations.AnalyticNumberTheory.SymmetryBound
-import IPRADerivations.Core.LinearCombination
-import IPRADerivations.Core.InductionTactic
-import IPRADerivations.Core.Header
 
 /-!
 # Partial summation against the harmonic logarithm (`pnt_ipra_constructive_2026-11-14`, `sb:error-equation`)
@@ -18,37 +15,22 @@ is nonnegative and at most `4x` by (`sb:chebyshev-bound`)." With the harmonic lo
 * `lw_u_lo`, `lw_u_hi`, `lam_bridge`: `Σ Λ L_w ≤ Σ Λ u ≤ Σ Λ L_w + 4F²` for `(x+1)⁴ ≤ K`.
 -/
 
-set_option linter.unusedSimpArgs false
-
 namespace LeanProofs.IPRA.AnalyticNumberTheory.ChebyshevAbel
 
-open_ipra
+open_ipra exports
 open LeanProofs.IPRA.AnalyticNumberTheory.Harmonic (S hB)
 open LeanProofs.IPRA.AnalyticNumberTheory.HarmonicChebyshev (S_mono wt psi_le)
-open LeanProofs.IPRA.AnalyticNumberTheory.HarmonicMertens (le_scale)
-open LeanProofs.IPRA.AnalyticNumberTheory.HarmonicMertensLower (delta_le)
 open LeanProofs.IPRA.AnalyticNumberTheory.HarmonicLogSquareSum (U U_paired delta_paired U_increment_mul)
-open LeanProofs.IPRA.AnalyticNumberTheory.LcmUpto (Psi LamB inst2_LamB pos_of_lt_zero)
 open LeanProofs.IPRA.AnalyticNumberTheory.WeightedMangoldt (Lam Lw)
-open LeanProofs.IPRA.AnalyticNumberTheory.FactorialLambda (lam_zero)
-open LeanProofs.IPRA.AnalyticNumberTheory.WeightBridge (lw_le_u u_le_lw sum_le_add_const)
-open LeanProofs.IPRA.AnalyticNumberTheory.SymmetryInstances (bs_shift)
 open LeanProofs.IPRA.AnalyticNumberTheory.SymmetryPointwise (le_succ' quo_mul_le)
 open LeanProofs.IPRA.AnalyticNumberTheory.FourthRootSum (Q4)
-open LeanProofs.IPRA.AnalyticNumberTheory.ComparisonEnvelope (le_mul2)
 open LeanProofs.IPRA.AnalyticNumberTheory.ConvSummatory (bS inst2_bS Bs)
-open LeanProofs.IPRA.AnalyticNumberTheory.Valuation (pw_pos')
 open LeanProofs.IPRA.AnalyticNumberTheory.ChebyshevBounds (two_pos')
-open LeanProofs.IPRA.AnalyticNumberTheory.Mobius (zero_mul_l)
-open LeanProofs.IPRA.AnalyticNumberTheory.DivisorHarmonic (shift_fact')
-open LeanProofs.IPRA.Foundations.AuxiliaryEnvelope (sum_le_const)
 open LeanProofs.IPRA.Analysis.Products (fact)
 
 set_option autoImplicit false
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
-
-local notation "𝔞" t:max => Groth.ι (IPRA.Q.mk _ t)
 
 /-! ## The generic Abel identity -/
 
@@ -91,10 +73,9 @@ theorem U_zero (K F : PTm n) : Γ ⊢[PRAAx] U zero K F ≐ zero :=
   HarmonicLogSquareSum.U_zero K F
 
 theorem ab_zero (K F : PTm n) : Γ ⊢[PRAAx] Ab a zero K F := by
-  ipra_lc natEq (sum_succ' (Γ := Γ) (auB a) zero (pairT K F)) + natEq (sum_zero (Γ := Γ) (auB a) (pairT K F)) +
+  ipra_lc natEq (sum_succ' (auB a) zero (pairT K F)) + natEq (sum_zero (auB a) (pairT K F)) +
     natEq ((auB_at (Γ := Γ) a zero K F).eqTrans ((congrMul (.eqRefl _) (U_zero K F)).eqTrans (mul_zero _))) +
-    natEq (sum_zero (Γ := Γ) (adB a) (pairT K F)) -
-    𝔞 (ap2 (sumF a) (succ zero) (pairT K F)) * natEq (U_zero (Γ := Γ) K F)
+    natEq (sum_zero (adB a) (pairT K F)) - 𝔞 (ap2 (sumF a) (succ zero) (pairT K F)) * natEq (U_zero K F)
 
 theorem ab_step {N K F : PTm n} (h0 : Γ ⊢[PRAAx] inst2 a zero (pairT K F) ≐ zero) (ih : Γ ⊢[PRAAx] Ab a N K F) :
     Γ ⊢[PRAAx] Ab a (succ N) K F := by
@@ -270,3 +251,5 @@ theorem lam_bridge {x K L : PTm n} (hK : Γ ⊢[PRAAx] le one K) (hx4 : Γ ⊢[P
   ipra_le sl h + sl q
 
 end LeanProofs.IPRA.AnalyticNumberTheory.ChebyshevAbel
+
+export_ipra AnalyticNumberTheory.ChebyshevAbel (psi_k pw_exp_le)

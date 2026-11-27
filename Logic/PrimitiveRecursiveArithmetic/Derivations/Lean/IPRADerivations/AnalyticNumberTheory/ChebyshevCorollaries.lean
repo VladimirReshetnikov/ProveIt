@@ -1,7 +1,4 @@
 import IPRADerivations.AnalyticNumberTheory.ChebyshevUpper
-import IPRADerivations.Core.CertificateTactics
-import IPRADerivations.Core.CommonLemmas
-import IPRADerivations.Core.Header
 
 /-!
 # Two corollaries of the Chebyshev bounds
@@ -22,22 +19,16 @@ import IPRADerivations.Core.Header
   from `ChebyshevUpper.cheb_upper_b` (`b π(N) ≤ 13 N`).
 -/
 
-set_option linter.unusedSimpArgs false
-
 namespace LeanProofs.IPRA.AnalyticNumberTheory.ChebyshevCorollaries
 
-open_ipra
-open LeanProofs.IPRA.AnalyticNumberTheory.Valuation (pw_pos')
+open_ipra exports
 open LeanProofs.IPRA.AnalyticNumberTheory.FactorVector (one_le_pos)
 open LeanProofs.IPRA.AnalyticNumberTheory.PrimeRank (pc)
 open LeanProofs.IPRA.AnalyticNumberTheory.PrimorialUpper (pri pri_pos pri_step pri_two_le congrPri)
 open LeanProofs.IPRA.AnalyticNumberTheory.ChebyshevUpper (cheb_upper_b)
 open LeanProofs.IPRA.AnalyticNumberTheory.ChebyshevBounds (two_pos')
-open LeanProofs.IPRA.AnalyticNumberTheory.PhiLower (le_mul_mono)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
-
-local notation "𝔞" t:max => Groth.ι (IPRA.Q.mk _ t)
 
 /-! ## The product of the primes of `(n, 2n]` -/
 

@@ -1,6 +1,4 @@
 import IPRADerivations.AnalyticNumberTheory.TotientCorollaries
-import IPRADerivations.Core.LinearCombination
-import IPRADerivations.Core.Header
 
 /-!
 # `gcd · lcm = ab`
@@ -16,10 +14,7 @@ With `lcm(a, b) = ab / gcd(a, b)` (`TotientCorollaries.lcm`) the quotient is exa
 
 namespace LeanProofs.IPRA.AnalyticNumberTheory.GcdLcm
 
-open_ipra
-open LeanProofs.IPRA.AnalyticNumberTheory.TotientCorollaries (lcm lcm_eq)
-open LeanProofs.IPRA.DiophantineNumberTheory.Coprime (gcd_dvd' eq_of_dvd')
-open LeanProofs.IPRA.Foundations.ChineseRemainder (gcd_pos)
+open_ipra exports
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 

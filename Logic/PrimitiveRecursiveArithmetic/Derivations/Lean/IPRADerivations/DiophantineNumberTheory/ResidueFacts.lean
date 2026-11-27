@@ -1,17 +1,6 @@
-import IPRADerivations.AnalyticNumberTheory.Euler
-import IPRADerivations.AnalyticNumberTheory.Order
-import IPRADerivations.AnalyticNumberTheory.Radical
-import IPRADerivations.AnalyticNumberTheory.RSA
-import IPRADerivations.AnalyticNumberTheory.GcdFiber
 import IPRADerivations.AnalyticNumberTheory.ConvolutionAssoc
-import IPRADerivations.AnalyticNumberTheory.Mobius
 import IPRADerivations.DiophantineNumberTheory.ModularCertificate
-import IPRADerivations.DiophantineNumberTheory.Coprime
-import IPRADerivations.Combinatorics.BinomialTheorem
 import IPRADerivations.Core.ParityArith
-import IPRADerivations.Core.LinearCombination
-import IPRADerivations.Core.CommonLemmas
-import IPRADerivations.Core.Header
 
 /-!
 # Three facts about residues modulo a prime
@@ -32,28 +21,16 @@ With `−1` represented by the residue `p − 1`:
 Euler's criterion for nonresidues is not derived here.
 -/
 
-set_option linter.unusedSimpArgs false
-
 namespace LeanProofs.IPRA.DiophantineNumberTheory.ResidueFacts
 
-open_ipra
-open LeanProofs.IPRA.AnalyticNumberTheory.Primes (prime)
-open LeanProofs.IPRA.AnalyticNumberTheory.ValuationMul (p_pos)
+open_ipra exports
 open LeanProofs.IPRA.AnalyticNumberTheory.Mobius (prime_two)
 open LeanProofs.IPRA.AnalyticNumberTheory.ConvolutionAssoc (rem_small)
-open LeanProofs.IPRA.AnalyticNumberTheory.GcdFiber (div_eq)
 open LeanProofs.IPRA.AnalyticNumberTheory.Totient (phi)
-open LeanProofs.IPRA.AnalyticNumberTheory.Euler (euler_at)
-open LeanProofs.IPRA.AnalyticNumberTheory.Order (pw_rem_congr pw_one_base)
 open LeanProofs.IPRA.AnalyticNumberTheory.Radical (phi_prime)
-open LeanProofs.IPRA.AnalyticNumberTheory.RSA (pw_mul)
 open LeanProofs.IPRA.Combinatorics.BinomialTheorem (congrPw)
-open LeanProofs.IPRA.DiophantineNumberTheory.Coprime (gauss dvd_le' dvd_of_eq')
-open LeanProofs.IPRA.DiophantineNumberTheory.ModularCertificate (rem_add_mul rem_mul_congr2)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
-
-local notation "𝔞" t:max => Groth.ι (IPRA.Q.mk _ t)
 
 /-! ## Powers of `p − 1` -/
 

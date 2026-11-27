@@ -1,7 +1,4 @@
-import IPRADerivations.Foundations.InjectionCount
 import IPRADerivations.Foundations.IntervalPacking
-import IPRADerivations.AnalyticNumberTheory.SumReindex
-import IPRADerivations.Core.Header
 
 /-!
 # Separated points in a window
@@ -23,21 +20,17 @@ from the activity bits.
 
 namespace LeanProofs.IPRA.Foundations.SeparatedCount
 
-open_ipra
+open_ipra exports
 open LeanProofs.IPRA.Signum (sg sg_zero sg_succ)
 open LeanProofs.IPRA.Combinatorics.FiniteBijection (sg_bit)
 open LeanProofs.IPRA.Topology.StaggeredGrids (eqb01' eq_of_eqb)
 open LeanProofs.IPRA.AnalyticNumberTheory.Mobius (congrSg congrEqb')
-open LeanProofs.IPRA.AnalyticNumberTheory.SumReindex (le_quo_of_mul_le)
 open LeanProofs.IPRA.Foundations.InjectionCount (clB inst2_clB rowCB inst2_rowCB coll vB inst2_vB viol sgB
   inst2_sgB injection_count)
-open LeanProofs.IPRA.Foundations.IntervalPacking (acB absurd_one_zero')
 
 set_option autoImplicit false
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
-
-local notation "𝔞" t:max => Groth.ι (IPRA.Q.mk _ t)
 
 /-! ## Pointwise -/
 

@@ -17,11 +17,9 @@ state), with the step inequalities as one object-level premise over `i < N`:
   the premise outside the induction matrix.
 -/
 
-set_option linter.unusedSimpArgs false
-
 namespace LeanProofs.IPRA.Foundations.AmortizedPotential
 
-open_ipra
+open_ipra exports
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 

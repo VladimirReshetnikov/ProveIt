@@ -1,4 +1,3 @@
-import IPRADerivations.Core.Basic
 import IPRADerivations.Core.Header
 
 /-!
@@ -25,11 +24,9 @@ output is accepted exactly when it is a well-indexed plan.
 `V(c) ⊢ ∃ d W(c, d)` and a consumer `V(c), W(c, d) ⊢ G` compile to `Γ ⊢ G` (the dependent sealing pattern).
 -/
 
-set_option linter.unusedSimpArgs false
-
 namespace LeanProofs.IPRA.Foundations.ProofPlan
 
-open_ipra
+open_ipra exports
 
 /-- The indexed plan language. -/
 inductive Plan : {n : ℕ} → List (Fm PTm n) → Fm PTm n → Type

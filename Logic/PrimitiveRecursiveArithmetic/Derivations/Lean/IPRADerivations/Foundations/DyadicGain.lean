@@ -1,6 +1,5 @@
 import IPRADerivations.Analysis.RationalArithmetic.OrderBounds.RationalClosure
 import IPRADerivations.Core.OrderCertificates
-import IPRADerivations.Core.Header
 
 /-!
 # The dyadic extension schedule of quantitative dense actions
@@ -15,11 +14,9 @@ most `2^{−(p+2)}`), cleared of the dyadic denominators:
 * `gain_at_precision`: `B ≤ c` gives `B 2^{p+2} ≤ 2^{p+c+2}`, i.e. `B 2^{−(p+c+2)} ≤ 2^{−(p+2)}`.
 -/
 
-set_option linter.unusedSimpArgs false
-
 namespace LeanProofs.IPRA.Foundations.DyadicGain
 
-open_ipra
+open_ipra exports
 open LeanProofs.IPRA.Analysis.RationalClosure (succ_le_two_pow)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}

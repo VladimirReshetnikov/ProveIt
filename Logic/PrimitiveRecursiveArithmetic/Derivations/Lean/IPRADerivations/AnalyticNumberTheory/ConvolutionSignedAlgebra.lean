@@ -1,6 +1,5 @@
 import IPRADerivations.AnalyticNumberTheory.ConvolutionSigned
 import IPRADerivations.AnalyticNumberTheory.MobiusInversionReverse
-import IPRADerivations.Core.Header
 
 /-!
 # Finite Dirichlet convolution on integer-valued bodies
@@ -13,18 +12,15 @@ representation of an iterated convolution reads back the original
 
 namespace LeanProofs.IPRA.AnalyticNumberTheory.ConvolutionSignedAlgebra
 
-open_ipra
+open_ipra exports
 open LeanProofs.IPRA.AnalyticNumberTheory.ConvolutionSigned
   (weight convolution productLaw convolution_product convolution_at_one)
-open LeanProofs.IPRA.AnalyticNumberTheory.ConvolutionAssoc (cvF inst2_cvF conv_assoc)
 open LeanProofs.IPRA.AnalyticNumberTheory.DirichletLeibniz (cvB conv inst2_cvB)
 open LeanProofs.IPRA.AnalyticNumberTheory.DivisorFactor (pos_sh gcd_sh)
-open LeanProofs.IPRA.AnalyticNumberTheory.DivisorSplit (pos_of_dvd)
 open LeanProofs.IPRA.AnalyticNumberTheory.Fermat (subst_up_shift')
 open LeanProofs.IPRA.AnalyticNumberTheory.HyperbolaSwap (conv_comm0)
 open LeanProofs.IPRA.AnalyticNumberTheory.MobiusInversionReverse (conv_add_l conv_add_r conv_unit)
 open LeanProofs.IPRA.AnalyticNumberTheory.PNTStageStep (pos_of_one_le)
-open LeanProofs.IPRA.AnalyticNumberTheory.SymmetryInstances (epsB)
 open LeanProofs.IPRA.DiophantineNumberTheory.Coprime (coprime_dvd_left gcd_comm_one one_le_of_pos)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
@@ -42,9 +38,8 @@ theorem toZ_convolution (f g : ZB) (N y : PTm n) :
     ZT.toZ Γ (convolution f g N y) =
       𝔞 (conv f.pos g.pos N y) + 𝔞 (conv f.neg g.neg N y) -
         𝔞 (conv f.pos g.neg N y) - 𝔞 (conv f.neg g.pos N y) := by
-  ipra_lc [convolution, weight, ZB.toZ_sum]
-    natEq (sum_add (Γ := Γ) (cvB f.pos g.pos) (cvB f.neg g.neg) (succ N) (pairT N y)) -
-      natEq (sum_add (Γ := Γ) (cvB f.pos g.neg) (cvB f.neg g.pos) (succ N) (pairT N y))
+  ipra_lc [convolution, weight, ZB.toZ_sum] natEq (sum_add (cvB f.pos g.pos) (cvB f.neg g.neg) (succ N) (pairT N y)) -
+    natEq (sum_add (cvB f.pos g.neg) (cvB f.neg g.pos) (succ N) (pairT N y))
 
 theorem body_value (f g : ZB) (N y : PTm n) :
     Γ ⊢[PRAAx] ZT.eq ((productBody f g).val N y) (convolution f g N y) := by

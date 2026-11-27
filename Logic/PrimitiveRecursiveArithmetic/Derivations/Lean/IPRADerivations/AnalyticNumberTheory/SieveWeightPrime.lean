@@ -1,10 +1,4 @@
 import IPRADerivations.AnalyticNumberTheory.SieveWeightValues
-import IPRADerivations.AnalyticNumberTheory.MobiusBounds
-import IPRADerivations.AnalyticNumberTheory.Radical
-import IPRADerivations.AnalyticNumberTheory.Multiplicative
-import IPRADerivations.AnalyticNumberTheory.DivisorSplit
-import IPRADerivations.Core.CertificateTactics
-import IPRADerivations.Core.Header
 
 /-!
 # The vector of the explicit sieve weights at `k p` for a prime `p`
@@ -29,33 +23,22 @@ inequality is needed for the weight bound.
 * `val_pos`, `val_zero'`: `v_p(a) ≥ 1` when `p ∣ a`, and `v_p(a) = 0` when `p ∤ a`, for `a ≥ 1`.
 -/
 
-set_option linter.unusedSimpArgs false
-
 namespace LeanProofs.IPRA.AnalyticNumberTheory.SieveWeightPrime
 
-open_ipra
+open_ipra exports
 open LeanProofs.IPRA.Signum (sg sg_zero)
 open LeanProofs.IPRA.Analysis.Products (fact)
-open LeanProofs.IPRA.AnalyticNumberTheory.Primes (prime)
 open LeanProofs.IPRA.AnalyticNumberTheory.Valuation (val)
-open LeanProofs.IPRA.AnalyticNumberTheory.ValuationMul (val_unique p_pos)
 open LeanProofs.IPRA.AnalyticNumberTheory.Mobius (muP muN prime_two swap kill congrSg zero_mul_l)
-open LeanProofs.IPRA.AnalyticNumberTheory.MobiusBounds (mu_bound)
-open LeanProofs.IPRA.AnalyticNumberTheory.ConvolutionAssoc (sg_pos)
 open LeanProofs.IPRA.AnalyticNumberTheory.Totient (phi totBody)
 open LeanProofs.IPRA.AnalyticNumberTheory.Radical (phi_prime)
-open LeanProofs.IPRA.AnalyticNumberTheory.Multiplicative (phi_mul_at)
 open LeanProofs.IPRA.AnalyticNumberTheory.DivisorSplit (mul_cancel)
 open LeanProofs.IPRA.AnalyticNumberTheory.CoprimeModulus (cop_of_mul pos_of_one_le)
-open LeanProofs.IPRA.AnalyticNumberTheory.SieveWeightFacts (phi_quo)
 open LeanProofs.IPRA.AnalyticNumberTheory.SieveWeightValues (YP YN YP_at YN_at)
-open LeanProofs.IPRA.DiophantineNumberTheory.Coprime (gcd_comm_one)
 open LeanProofs.IPRA.DiophantineNumberTheory.QuarticStep (congrGcd)
 open LeanProofs.IPRA.Combinatorics.BinomialTheorem (congrPw)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
-
-local notation "𝔞" t:max => Groth.ι (IPRA.Q.mk _ t)
 
 /-! ## Valuation and divisibility -/
 

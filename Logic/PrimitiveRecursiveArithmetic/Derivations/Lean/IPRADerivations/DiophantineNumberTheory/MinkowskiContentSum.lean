@@ -1,6 +1,4 @@
 import IPRADerivations.Analysis.RationalArithmetic.Representations.RationalNormalForm
-import IPRADerivations.Core.ProdLemmas
-import IPRADerivations.Core.Header
 
 /-!
 # Exact clearing of the actual rational box-content sum
@@ -17,17 +15,13 @@ threshold identity is an input.  The rational-box application must derive
 the pointwise identities for its actual product widths.
 -/
 
-set_option linter.unusedSimpArgs false
-
 namespace LeanProofs.IPRA.DiophantineNumberTheory.MinkowskiContentSum
 
-open_ipra
+open_ipra exports
 open LeanProofs.IPRA.Analysis.RationalIntegerNormalization (positive_form)
 open LeanProofs.IPRA.DiophantineNumberTheory.Coprime (one_le_of_pos)
-open LeanProofs.IPRA.AnalyticNumberTheory.PhiLower (le_mul_mono)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
-local notation "𝔞" t:max => Groth.ι (IPRA.Q.mk _ t)
 
 def denominator (Q : PTm 2) (N x : PTm n) : PTm n := ap2 (prodF Q) N x
 def count (C : PTm 2) (N x : PTm n) : PTm n := ap2 (sumF C) N x

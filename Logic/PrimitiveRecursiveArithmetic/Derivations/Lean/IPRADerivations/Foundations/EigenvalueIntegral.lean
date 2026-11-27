@@ -1,8 +1,6 @@
 import IPRADerivations.Foundations.EigenvalueBound
 import IPRADerivations.Foundations.RationalRootConstant
 import IPRADerivations.Core.ProdLemmas
-import IPRADerivations.Core.LinearCombination
-import IPRADerivations.Core.Header
 
 /-!
 # Integrality of a rational eigenvalue in every dimension (`ipra_presentations_to_witnesses`, `lem:integer-eigenvalue`)
@@ -28,18 +26,13 @@ construction of the primitive vector and of its Bezout coefficients (the precedi
 packet) and `cor:eigenvalue-grid` are not derived.
 -/
 
-set_option linter.unusedSimpArgs false
-
 namespace LeanProofs.IPRA.Foundations.EigenvalueIntegral
 
-open_ipra
-open LeanProofs.IPRA.Foundations.RationalRootDegree (Bez euclid)
+open_ipra exports
 open LeanProofs.IPRA.Foundations.RationalRootConstant (dvd_le shift_succ₁)
 open LeanProofs.IPRA.Foundations.EigenvalueBound (wB inst2_wB mB mB_at sum_scale)
 
 variable {k : ℕ} {Γ : List (Fm PTm k)}
-
-local notation "𝔞" t:max => Groth.ι (IPRA.Q.mk _ t)
 
 variable (e ω : PTm 2)
 
@@ -69,8 +62,8 @@ theorem pt {j b' x : PTm k} (hd : Γ ⊢[PRAAx] dvd (succ b') (inst2 ω j x)) :
     Γ ⊢[PRAAx] inst2 (wB e ω) j x ≐
       inst2 (mB (gB e ω)) j (pairT (succ b') (pairT (succ b') x)) := by
   rw [inst2_wB]
-  ipra_lc 𝔞 (inst2 e j x) * natEq (eq_of_dvd hd) - natEq (mB_at (Γ := Γ) (gB e ω) j (succ b') (pairT (succ b') x)) -
-    (𝔞 b' + 1) * natEq (gB_at (Γ := Γ) e ω j (succ b') x)
+  ipra_lc 𝔞 (inst2 e j x) * natEq (eq_of_dvd hd) - natEq (mB_at (gB e ω) j (succ b') (pairT (succ b') x)) -
+    (𝔞 b' + 1) * natEq (gB_at e ω j (succ b') x)
 
 /-- `∑_{j<D} e_j ω_j = b ∑_{j<D} e_j ⌊ω_j / b⌋` when `b ∣ ω_j` for `j < D`. -/
 theorem sum_div {D b' x : PTm k}

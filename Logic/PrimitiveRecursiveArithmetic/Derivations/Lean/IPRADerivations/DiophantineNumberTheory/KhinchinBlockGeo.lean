@@ -1,10 +1,6 @@
 import IPRADerivations.DiophantineNumberTheory.KhinchinMoment
 import IPRADerivations.DiophantineNumberTheory.FractionCount
-import IPRADerivations.AnalyticNumberTheory.SumReindex
 import IPRADerivations.Core.CongruenceTactic
-import IPRADerivations.Core.LinearCombination
-import IPRADerivations.Core.SubstCommand
-import IPRADerivations.Core.Header
 
 /-!
 # The per-pair and geometric estimates of the Khinchin block (`hurwitz_khinchin_ipra`, (K9)–(K11))
@@ -22,14 +18,11 @@ intervals of `E_k(J)` … We used only `2Σ_{k<ℓ} t_k t_ℓ ≤ S²` and the f
 
 namespace LeanProofs.IPRA.DiophantineNumberTheory.KhinchinBlockGeo
 
-open_ipra
-open LeanProofs.IPRA.AnalyticNumberTheory.SumReindex (le_quo_of_mul_le)
+open_ipra exports
 
 set_option autoImplicit false
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
-
-local notation "𝔞" t:max => Groth.ι (IPRA.Q.mk _ t)
 
 /-- The separation `s = ⌊T/Q²⌋`: `Q²s ≤ T ≤ 2Q²s` and `s ≥ 1` for `1 ≤ Q² ≤ T`. -/
 theorem s_facts {Q T : PTm n} (hQ : Γ ⊢[PRAAx] Q * Q ≐ succ (pred (Q * Q))) (hT : Γ ⊢[PRAAx] le (Q * Q) T) :
@@ -107,3 +100,5 @@ theorem geo2 (J K0 : PTm n) :
   exact a
 
 end LeanProofs.IPRA.DiophantineNumberTheory.KhinchinBlockGeo
+
+export_ipra DiophantineNumberTheory.KhinchinBlockGeo (congrPw2)

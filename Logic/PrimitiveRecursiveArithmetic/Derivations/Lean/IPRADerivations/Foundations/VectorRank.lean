@@ -1,4 +1,3 @@
-import IPRADerivations.Core.SumLemmas
 import IPRADerivations.Core.OrderCertificates
 import IPRADerivations.Analysis.RationalArithmetic.Powers.PowerSums
 import IPRADerivations.Core.Header
@@ -31,11 +30,9 @@ Together with an extensionality rule for the coding of states (equal coordinates
 packed-vector states. That final assembly depends on the chosen coding and is not carried out here.
 -/
 
-set_option linter.unusedSimpArgs false
-
 namespace LeanProofs.IPRA.Foundations.VectorRank
 
-open_ipra
+open_ipra exports
 open LeanProofs.IPRA.Analysis.PowerSums (sum_le)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}

@@ -2,9 +2,6 @@ import IPRADerivations.Core.SumSplit
 import IPRADerivations.Foundations.RationalRootConstant
 import IPRADerivations.Foundations.EigenvalueBound
 import IPRADerivations.DiophantineNumberTheory.FLTMultiples
-import IPRADerivations.Combinatorics.BinomialIdentities
-import IPRADerivations.Core.LinearCombination
-import IPRADerivations.Core.Header
 
 /-!
 # Rational roots: removing the factor `T^e` (`ipra_presentations_to_witnesses`, `lem:norm-rational-roots`; `ipra_resources_and_elimination_2026-11-15`, `lem:elim-rational-roots`)
@@ -36,20 +33,15 @@ scans that find the first and last nonzero coefficient indices, and clearing the
 of a rational polynomial.
 -/
 
-set_option linter.unusedSimpArgs false
-
 namespace LeanProofs.IPRA.Foundations.RationalRootFactor
 
-open_ipra
+open_ipra exports
 open LeanProofs.IPRA.Combinatorics.BinomialTheorem (congrPw)
 open LeanProofs.IPRA.Combinatorics.BinomialIdentities (mul_cancel)
 open LeanProofs.IPRA.Foundations.RationalRootDegree (tB tB_at P)
 open LeanProofs.IPRA.Foundations.EigenvalueBound (mB mB_at sum_scale)
-open LeanProofs.IPRA.DiophantineNumberTheory.FLTMultiples (pw_pos)
 
 variable {k : ℕ} {Γ : List (Fm PTm k)}
-
-local notation "𝔞" t:max => Groth.ι (IPRA.Q.mk _ t)
 
 theorem shift_pairT₁ (s t : PTm k) : Syn.shift (pairT s t) = pairT (Syn.shift s) (Syn.shift t) := by
   simp [Syn.shift]
@@ -90,11 +82,11 @@ theorem high_pt (j p q e m x : PTm k) :
         inst2 (tB a) (e + j) (pairT p (pairT q (pairT (e + m) x))) :=
     congrInst2 (tB a) (congrAdd (fst_pair _ _) (.eqRefl _)) (snd_pair _ _)
   ipra_lc natEq (l₀.eqTrans (tB_at a (e + j) p q (e + m) x)) -
-    natEq (mB_at (Γ := Γ) (tB (shC a)) j (pw p e) (pairT p (pairT q (pairT m (pairT e x))))) +
-    𝔞 (inst2 a (e + j) x) * 𝔞 (pw q (monus (e + m) (e + j))) * natEq (pw_add (Γ := Γ) p e j) +
-    𝔞 (inst2 a (e + j) x) * 𝔞 (pw p e) * 𝔞 (pw p j) * natEq (congrPw (Γ := Γ) (.eqRefl q) ((congrMonus (add_comm e m) (add_comm e j)).eqTrans (monus_add_add m j e))) -
-    𝔞 (pw p e) * natEq (tB_at (Γ := Γ) (shC a) j p q m (pairT e x)) -
-    𝔞 (pw p e) * 𝔞 (pw p j) * 𝔞 (pw q (monus m j)) * natEq (shC_at (Γ := Γ) a j e x)
+    natEq (mB_at (tB (shC a)) j (pw p e) (pairT p (pairT q (pairT m (pairT e x))))) +
+    𝔞 (inst2 a (e + j) x) * 𝔞 (pw q (monus (e + m) (e + j))) * natEq (pw_add p e j) +
+    𝔞 (inst2 a (e + j) x) * 𝔞 (pw p e) * 𝔞 (pw p j) * natEq (congrPw (.eqRefl q) ((congrMonus (add_comm e m) (add_comm e j)).eqTrans (monus_add_add m j e))) -
+    𝔞 (pw p e) * natEq (tB_at (shC a) j p q m (pairT e x)) -
+    𝔞 (pw p e) * 𝔞 (pw p j) * 𝔞 (pw q (monus m j)) * natEq (shC_at a j e x)
 
 variable (b : PTm 2)
 
@@ -102,8 +94,7 @@ variable (b : PTm 2)
 theorem low_pt {i p q d x : PTm k} (h : Γ ⊢[PRAAx] inst2 a i x ≐ inst2 b i x) :
     Γ ⊢[PRAAx] inst2 (tB a) i (pairT p (pairT q (pairT d x))) ≐
       inst2 (tB b) i (pairT p (pairT q (pairT d x))) := by
-  ipra_lc natEq (tB_at (Γ := Γ) a i p q d x) - natEq (tB_at (Γ := Γ) b i p q d x) +
-    𝔞 (pw p i) * 𝔞 (pw q (monus d i)) * natEq h
+  ipra_lc natEq (tB_at a i p q d x) - natEq (tB_at b i p q d x) + 𝔞 (pw p i) * 𝔞 (pw q (monus d i)) * natEq h
 
 /-- The homogeneous sum, split at the factor `T^e`. -/
 theorem decompose (p q e m x : PTm k) :
@@ -141,7 +132,6 @@ theorem factor_out {p' q e m x : PTm k}
     simp only [shift_pairT₁, shift_add₁, shift_succ₁]
     exact low_pt a b (.impE hlow.allOpen.wk Prf.hyp0)
   refine mul_cancel (D := pw (succ p') e) (pw_pos p' e) ?_
-  ipra_lc natEq hE - natEq (decompose (Γ := Γ) a (succ p') q e m x) + natEq (decompose (Γ := Γ) b (succ p') q e m x) -
-    natEq hl
+  ipra_lc natEq hE - natEq (decompose a (succ p') q e m x) + natEq (decompose b (succ p') q e m x) - natEq hl
 
 end LeanProofs.IPRA.Foundations.RationalRootFactor

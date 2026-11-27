@@ -1,6 +1,5 @@
 import IPRADerivations.Probability.EventAlgebraMetric
 import IPRADerivations.Probability.Minkowski
-import IPRADerivations.Core.Header
 
 /-!
 # Closeness of finite observations through maxima, minima and complements
@@ -15,14 +14,11 @@ values of finite observations on a common scale), with maximum `larger` and mini
 * `close_complement`: `close e a b` gives `close e (B ∸ a) (B ∸ b)`.
 -/
 
-set_option linter.unusedSimpArgs false
-
 namespace LeanProofs.IPRA.Foundations.CloseExtrema
 
-open_ipra
+open_ipra exports
 open LeanProofs.IPRA.Probability.Minkowski (monus_le_of_le_add)
 open LeanProofs.IPRA.Analysis.Observation.PrefixObject (larger larger_le le_larger_left le_larger_right)
-open LeanProofs.IPRA.Foundations.FiniteObservations.MetricKernel (meet meet_left meet_right meet_le_left meet_le_right)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 

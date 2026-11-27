@@ -1,7 +1,6 @@
 import IPRADerivations.AnalyticNumberTheory.BlockCases
 import IPRADerivations.AnalyticNumberTheory.CrossAlg
 import IPRADerivations.AnalyticNumberTheory.WeightedVariation
-import IPRADerivations.Core.Header
 
 /-!
 # The crossing case of the block deficit (`pnt_ipra_constructive_2026-11-14`, `con:deficit`)
@@ -19,18 +18,12 @@ via `BlockDeficit.case_mid_sum` on the interior, `BlockCases.mass_interior`, `Bl
 `BlockCases.block_mono` and `CrossAlg.crossC_alg`.
 -/
 
-set_option linter.unusedSimpArgs false
-
 namespace LeanProofs.IPRA.AnalyticNumberTheory.BlockCross
 
-open_ipra
+open_ipra exports
 open LeanProofs.IPRA.AnalyticNumberTheory.Harmonic (S quo_anti)
 open LeanProofs.IPRA.AnalyticNumberTheory.HarmonicChebyshev (wt)
-open LeanProofs.IPRA.AnalyticNumberTheory.LcmUpto (Psi)
-open LeanProofs.IPRA.AnalyticNumberTheory.AbsDiff (absd)
-open LeanProofs.IPRA.AnalyticNumberTheory.ChebyshevAbel (psi_k)
 open LeanProofs.IPRA.AnalyticNumberTheory.WeightedVariation (psi_le_le)
-open LeanProofs.IPRA.AnalyticNumberTheory.SumReindex (le_quo_of_mul_le)
 open LeanProofs.IPRA.AnalyticNumberTheory.BlockDeficit (gzB OnBlock Pm Qm Bs' case_mid_sum)
 open LeanProofs.IPRA.AnalyticNumberTheory.BlockTests (four cross_gap)
 open LeanProofs.IPRA.AnalyticNumberTheory.BlockCases (mass_interior block_mono)
@@ -41,8 +34,6 @@ open LeanProofs.IPRA.Analysis.Products (fact)
 set_option autoImplicit false
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
-
-local notation "𝔞" t:max => Groth.ι (IPRA.Q.mk _ t)
 
 /-- `1 ≤ ⌊x/d⌋` for `1 ≤ d ≤ x`. -/
 theorem one_le_quo {x d : PTm n} (hd : Γ ⊢[PRAAx] le one d) (hdx : Γ ⊢[PRAAx] le d x) :

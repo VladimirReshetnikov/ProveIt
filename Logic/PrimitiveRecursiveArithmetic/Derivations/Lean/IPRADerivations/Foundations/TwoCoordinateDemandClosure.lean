@@ -1,9 +1,6 @@
 import IPRADerivations.Foundations.DemandClosure
 import IPRADerivations.Foundations.ChainViability
 import IPRADerivations.Foundations.SequenceComposition
-import IPRADerivations.Core.CommonLemmas
-import IPRADerivations.Core.SubstCommand
-import IPRADerivations.Core.Header
 
 /-!
 # A concrete cyclic two-coordinate demand closure
@@ -16,11 +13,10 @@ data. This is a cyclic precision-demand instance, not certificate execution.
 -/
 
 set_option autoImplicit false
-set_option linter.unusedSimpArgs false
 
 namespace LeanProofs.IPRA.Foundations.TwoCoordinateDemandClosure
 
-open_ipra
+open_ipra exports
 open LeanProofs.IPRA.Foundations.DemandClosure
 open LeanProofs.IPRA.Foundations.MasterCertificate (entry sequence)
 open LeanProofs.IPRA.Foundations.SequenceComposition (length entry_congr)

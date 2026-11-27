@@ -1,10 +1,7 @@
 import IPRADerivations.AnalyticNumberTheory.RobinLipBound
-import IPRADerivations.AnalyticNumberTheory.RobinUpperEnd
 import IPRADerivations.AnalyticNumberTheory.RobinLogWidth
 import IPRADerivations.AnalyticNumberTheory.LcmBridgeSide
 import IPRADerivations.AnalyticNumberTheory.LcmBridgeTransfer
-import IPRADerivations.Core.LinearCombination
-import IPRADerivations.Core.Header
 
 /-!
 # `ψ ≤ ϑ + m log P` on the logarithm names (`robin_ipra_research_2026-11-19`, `paper/lcm_bridge.tex`)
@@ -24,11 +21,9 @@ frontier": "Only primes `p ≤ m` contribute to `ψ(P) − ϑ(P)` … `0 ≤ ψ(
 * `pw_mono_exp`, `eb_ge`: monotonicity of `p^a` in `a`, and `2^j ≤ a ⇒ j ≤ e(a)`.
 -/
 
-set_option linter.unusedSimpArgs false
-
 namespace LeanProofs.IPRA.AnalyticNumberTheory.LcmBridgeDPsi
 
-open_ipra
+open_ipra exports
 open LeanProofs.IPRA.AnalyticNumberTheory.RobinLipName (Rv)
 open LeanProofs.IPRA.AnalyticNumberTheory.RobinLipSum (one_le_mul one_le_of_pos')
 open LeanProofs.IPRA.AnalyticNumberTheory.RobinLipBound (lo_pow)
@@ -37,19 +32,14 @@ open LeanProofs.IPRA.AnalyticNumberTheory.RobinLogInterval
 open LeanProofs.IPRA.AnalyticNumberTheory.RobinThreePos (rr K1 pw_lit)
 open LeanProofs.IPRA.AnalyticNumberTheory.RobinUpperEnd (C1 D1)
 open LeanProofs.IPRA.AnalyticNumberTheory.RobinGammaInterval (k2)
-open LeanProofs.IPRA.AnalyticNumberTheory.LcmUpto (lcmu lcmu_pos)
 open LeanProofs.IPRA.AnalyticNumberTheory.PrimorialLower (prim prim_pos lcm_primorial)
-open LeanProofs.IPRA.AnalyticNumberTheory.PhiLower (le_mul_mono)
 open LeanProofs.IPRA.AnalyticNumberTheory.PNTStageStep (pos_of_one_le)
-open LeanProofs.IPRA.AnalyticNumberTheory.Valuation (pw_pos')
 open LeanProofs.IPRA.AnalyticNumberTheory.ChebyshevBounds (two_pos')
 open LeanProofs.IPRA.Combinatorics.Binomial (pos_mul)
 
 set_option autoImplicit false
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
-
-local notation "𝔞" t:max => Groth.ι (IPRA.Q.mk _ t)
 
 /-! ## Powers and exponents -/
 
@@ -166,10 +156,9 @@ theorem theta_hi {m Kθ : PTm n} (hm : Γ ⊢[PRAAx] le (num 16) m) (hK : Γ ⊢
 abbrev four : PTm n := succ (succ (succ (succ zero)))
 
 theorem pw2_4 : Γ ⊢[PRAAx] pw two (four : PTm n) ≐ (num 16 : PTm n) := by
-  ipra_lc natEq (pw_succ (Γ := Γ) (two : PTm n) (succ (succ (succ zero)))) +
-    2 * natEq (pw_succ (Γ := Γ) (two : PTm n) (succ (succ zero))) +
-    4 * natEq (pw_succ (Γ := Γ) (two : PTm n) (succ zero)) + 8 * natEq (pw_succ (Γ := Γ) (two : PTm n) zero) +
-    16 * natEq (pw_zero (Γ := Γ) (two : PTm n))
+  ipra_lc natEq (pw_succ (two : PTm n) (succ (succ (succ zero)))) + 2 *
+    natEq (pw_succ (two : PTm n) (succ (succ zero))) + 4 * natEq (pw_succ (two : PTm n) (succ zero)) + 8 *
+    natEq (pw_succ (two : PTm n) zero) + 16 * natEq (pw_zero (two : PTm n))
 
 theorem pw_two_eight : Γ ⊢[PRAAx] pw two ((four : PTm n) + four) ≐ (num 256 : PTm n) :=
   (pw_add _ _ _).eqTrans ((congrMul pw2_4 pw2_4).eqTrans (by ipra_ring))

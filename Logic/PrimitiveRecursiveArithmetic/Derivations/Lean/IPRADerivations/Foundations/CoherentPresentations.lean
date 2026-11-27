@@ -1,6 +1,4 @@
 import IPRADerivations.Probability.ProductPower
-import IPRADerivations.Core.LinearCombination
-import IPRADerivations.Core.Header
 
 /-!
 # Finite uniqueness supplies coherence (`ipra_coherent_methods_2026-11-15`, `thm:coherence`)
@@ -28,18 +26,13 @@ reduces to the smaller modulus; the restriction law is `rem_rem`:
 `(x mod 2^m) mod 2^n = x mod 2^n` for `n ≤ m`. The closed sentence is `binary_coherence`.
 -/
 
-set_option linter.unusedSimpArgs false
-
 namespace LeanProofs.IPRA.Foundations.CoherentPresentations
 
-open_ipra
+open_ipra exports
 open LeanProofs.IPRA.Probability.ProductPower (rem_shift div_eq')
 open LeanProofs.IPRA.Combinatorics.BinomialTheorem (congrPw)
-open LeanProofs.IPRA.AnalyticNumberTheory.Valuation (pw_pos')
 
 variable {k : ℕ} {Γ : List (Fm PTm k)}
-
-local notation "𝔞" t:max => Groth.ι (IPRA.Q.mk _ t)
 
 /-- A presentation of finite data at each precision, with a producer. -/
 structure Refinement where
@@ -104,7 +97,7 @@ theorem rem_rem {x n m : PTm k} (h : Γ ⊢[PRAAx] le n m) :
   -- `x = (⌊x / 2^m⌋ · 2^{m−n}) · 2^n + (x mod 2^m)`
   have ex : Γ ⊢[PRAAx] x ≐
       (quo x (pw two m) * pw two (monus m n)) * pw two n + rem x (pw two m) := by
-    ipra_lc natEq (div_eq' (Γ := Γ) (t := x) (pw_pos' two_pos m)) + 𝔞 (quo x (pw two m)) * natEq hm
+    ipra_lc natEq (div_eq' (t := x) (pw_pos' two_pos m)) + 𝔞 (quo x (pw two m)) * natEq hm
   exact ((congrAp2 remF ex (.eqRefl _)).eqTrans (rem_shift (pw_pos' two_pos n))).eqSymm
 
 /-- Residues modulo `2^n`: `C(x, n, z)` is `z = x mod 2^n`, the equivalence is equality, and

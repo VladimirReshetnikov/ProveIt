@@ -1,7 +1,4 @@
 import IPRADerivations.DiophantineNumberTheory.ZTCancel
-import IPRADerivations.DiophantineNumberTheory.ConicLower
-import IPRADerivations.Core.LinearCombination
-import IPRADerivations.Core.Header
 
 /-!
 # `L` and `R` have no common projective zero
@@ -17,17 +14,12 @@ conclusion has been obtained without a resultant theorem." It is used in `thm:co
   `ZTCancel.zt_no_zero_div`).
 -/
 
-set_option linter.unusedSimpArgs false
-
 namespace LeanProofs.IPRA.DiophantineNumberTheory.ConicNonzero
 
-open_ipra
+open_ipra exports
 open LeanProofs.IPRA.DiophantineNumberTheory.ConicIdentities (Form)
-open LeanProofs.IPRA.DiophantineNumberTheory.ZTCancel (zt_no_zero_div)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
-
-local notation "𝔞" t:max => Groth.ι (IPRA.Q.mk _ t)
 
 /-- An integer term is `0` or not. -/
 theorem zt_dec (s : ZT n) : Γ ⊢[PRAAx] ZT.eq s (ZT.natLit 0) ⋎ neg (ZT.eq s (ZT.natLit 0)) := by
@@ -35,15 +27,13 @@ theorem zt_dec (s : ZT n) : Γ ⊢[PRAAx] ZT.eq s (ZT.natLit 0) ⋎ neg (ZT.eq s
   · refine .orI₂ (.impI ?_)
     have hl : (ZT.eq s (ZT.natLit 0) :: lt s.neg s.pos :: Γ) ⊢[PRAAx] le (succ s.neg) s.pos := Prf.hyp1
     have e : (ZT.eq s (ZT.natLit 0) :: lt s.neg s.pos :: Γ) ⊢[PRAAx] s.pos + zero ≐ num 0 + s.neg := Prf.hyp0
-    have e' := natEq e
-    exact not_succ_le_self s.neg _ (le_congr (.eqRefl _) (by apply deriveNat; ipra_simps; linear_combination e') hl)
+    exact not_succ_le_self s.neg _ (le_congr (.eqRefl _) (by ipra_lc natEq e) hl)
   · refine .orE (lt_or_le s.pos s.neg) ?_ ?_
     · refine .orI₂ (.impI ?_)
       have hl : (ZT.eq s (ZT.natLit 0) :: lt s.pos s.neg :: le s.pos s.neg :: Γ) ⊢[PRAAx] le (succ s.pos) s.neg := Prf.hyp1
       have e : (ZT.eq s (ZT.natLit 0) :: lt s.pos s.neg :: le s.pos s.neg :: Γ) ⊢[PRAAx] s.pos + zero ≐ num 0 + s.neg :=
         Prf.hyp0
-      have e' := natEq e
-      exact not_succ_le_self s.pos _ (le_congr (.eqRefl _) (by apply deriveNat; ipra_simps; linear_combination -e') hl)
+      exact not_succ_le_self s.pos _ (le_congr (.eqRefl _) (by ipra_lc -natEq e) hl)
     · refine .orI₁ ?_
       have eq := le_antisymm (Prf.hyp0 : (le s.neg s.pos :: le s.pos s.neg :: Γ) ⊢[PRAAx] le s.neg s.pos)
         (Prf.hyp1 : (le s.neg s.pos :: le s.pos s.neg :: Γ) ⊢[PRAAx] le s.pos s.neg)

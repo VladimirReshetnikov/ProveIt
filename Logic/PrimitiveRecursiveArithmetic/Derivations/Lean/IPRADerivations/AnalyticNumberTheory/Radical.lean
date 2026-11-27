@@ -1,7 +1,4 @@
 import IPRADerivations.AnalyticNumberTheory.EulerProduct
-import IPRADerivations.Core.LinearCombination
-import IPRADerivations.Core.InductionTactic
-import IPRADerivations.Core.Header
 
 /-!
 # The radical identity
@@ -21,12 +18,11 @@ set_option linter.unusedSimpArgs false
 
 namespace LeanProofs.IPRA.AnalyticNumberTheory.Radical
 
-open_ipra
+open_ipra exports
 open LeanProofs.IPRA.Algebra.CubeRootTwo (sg sg_zero sg_succ)
 open LeanProofs.IPRA.Combinatorics.Binomial (pos_mul)
 open LeanProofs.IPRA.DiophantineNumberTheory.Coprime
 open LeanProofs.IPRA.AnalyticNumberTheory.Totient (phi totBody coprime_pow totient_prime_power_at)
-open LeanProofs.IPRA.AnalyticNumberTheory.Primes (lpf lpf_dvd lpf_prime prime eq_succ_pred)
 open LeanProofs.IPRA.AnalyticNumberTheory.Valuation
 open LeanProofs.IPRA.AnalyticNumberTheory.EulerProduct
 
@@ -68,14 +64,10 @@ theorem cof_lt : Γ ⊢[PRAAx] lt (quo N (pw p (val p N))) N := by
   have hPp : Γ ⊢[PRAAx] le two (pw p (val p N)) := by
     refine le_trans hp2 (le_of_eq_add (d := pred (pw p (pred (val p N))) * p) ?_)
     have e₁ := natEq ((congrAp2 powF ha (.eqRefl p)).eqTrans (pw_succ p (pred (val p N))))
-    have e₂ := natEq (pw_pos' hp1 (pred (val p N)))
-    apply deriveNat; ipra_simps
-    linear_combination e₁ + Groth.ι (Q.mk _ p) * e₂
+    ipra_lc e₁ + Groth.ι (Q.mk _ p) * natEq (pw_pos' hp1 (pred (val p N)))
   refine le_of_eq_add (d := pred (quo N (pw p (val p N))) +
     monus (pw p (val p N)) two * quo N (pw p (val p N))) ?_
-  have e₁ := natEq hNe; have e₂ := natEq (eq_add_of_le hPp); have e₃ := natEq hm
-  apply deriveNat; ipra_simps
-  linear_combination e₁ + Groth.ι (Q.mk _ (quo N (pw p (val p N)))) * e₂ + e₃
+  ipra_lc natEq hNe + Groth.ι (Q.mk _ (quo N (pw p (val p N)))) * natEq (eq_add_of_le hPp) + natEq hm
 
 end PeelData
 
@@ -255,3 +247,5 @@ theorem radical_identity : ([] : List (Fm PTm 0)) ⊢[PRAAx] univ 1 radicalFormu
   closeUniv 1 (radical_identity_at (var 0))
 
 end LeanProofs.IPRA.AnalyticNumberTheory.Radical
+
+export_ipra AnalyticNumberTheory.Radical (cof_rem_pos two_le_of_prime val_pos)

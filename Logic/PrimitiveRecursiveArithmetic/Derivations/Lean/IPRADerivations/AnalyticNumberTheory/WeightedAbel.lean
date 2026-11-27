@@ -1,5 +1,4 @@
 import IPRADerivations.AnalyticNumberTheory.WeightedVariation
-import IPRADerivations.Core.Header
 
 /-!
 # Selberg's weighted inequality (`pnt_ipra_constructive_2026-11-14`, `sb:weighted-sum`)
@@ -17,17 +16,13 @@ bound for `g_n = |R(x/n)|` (`WeightedVariation.variation`). Scaled by `F = L!` w
 * `weighted_sum`: `|ψ(x) − Fx| u_x² ≤ 2F Σ_{n≤x} u_n |ψ(⌊x/n⌋) − F⌊x/n⌋| + 19222 F² x u_x + 11070 F³ x`.
 -/
 
-set_option linter.unusedSimpArgs false
 set_option linter.unusedSectionVars false
 
 namespace LeanProofs.IPRA.AnalyticNumberTheory.WeightedAbel
 
-open_ipra
-open LeanProofs.IPRA.AnalyticNumberTheory.Harmonic (S hB)
+open_ipra exports
 open LeanProofs.IPRA.AnalyticNumberTheory.HarmonicChebyshev (wt)
-open LeanProofs.IPRA.AnalyticNumberTheory.HarmonicMertens (le_scale)
 open LeanProofs.IPRA.AnalyticNumberTheory.HarmonicLogSquareSum (U)
-open LeanProofs.IPRA.AnalyticNumberTheory.LcmUpto (Psi LamB pos_of_lt_zero lt_zero_of_pos)
 open LeanProofs.IPRA.AnalyticNumberTheory.WeightedMangoldt (Lam Lw)
 open LeanProofs.IPRA.AnalyticNumberTheory.AbsDiff (absd absd_le le_absd_l le_absd_r absd_scale adB inst2_adB absd_sum)
 open LeanProofs.IPRA.AnalyticNumberTheory.AbelParts (agB upB dnB inst2_agB inst2_upB inst2_dnB inst2_g1 abel_parts)
@@ -40,15 +35,9 @@ open LeanProofs.IPRA.AnalyticNumberTheory.ChebyshevAbel (auB lwB lam_bridge pw_e
 open LeanProofs.IPRA.AnalyticNumberTheory.SymmetryBound (gL Aw Ls symmetry_upper symmetry_lower)
 open LeanProofs.IPRA.AnalyticNumberTheory.SymmetrySum (GxB inst2_GxB)
 open LeanProofs.IPRA.AnalyticNumberTheory.SymmetryPointwise (quo_mul_le le_Q4 Q4_mono)
-open LeanProofs.IPRA.AnalyticNumberTheory.SymmetryInstances (conv_zero)
 open LeanProofs.IPRA.AnalyticNumberTheory.MobiusSummatory (gS inst2_gS)
 open LeanProofs.IPRA.AnalyticNumberTheory.ErrorEquation (inst2_gL)
-open LeanProofs.IPRA.AnalyticNumberTheory.WeightBridge (lw_le_u u_le_lw sum_le_add_const)
 open LeanProofs.IPRA.AnalyticNumberTheory.FourthRootSum (Q4)
-open LeanProofs.IPRA.AnalyticNumberTheory.ConvolutionAssoc (cvF inst2_cvF)
-open LeanProofs.IPRA.AnalyticNumberTheory.FactorialLambda (sum_add2)
-open LeanProofs.IPRA.AnalyticNumberTheory.Mobius (congrSg zero_mul_l)
-open LeanProofs.IPRA.AnalyticNumberTheory.DivisorHarmonic (shift_fact')
 open LeanProofs.IPRA.Probability.Lotus (cmB sum_const_mul)
 open LeanProofs.IPRA.Probability.Independence (cm_pt)
 open LeanProofs.IPRA.Analysis.Products (fact)
@@ -57,8 +46,6 @@ open LeanProofs.IPRA.Signum (sg sg_zero sg_succ)
 set_option autoImplicit false
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
-
-local notation "𝔞" t:max => Groth.ι (IPRA.Q.mk _ t)
 
 /-! ## Coefficients and their partial sums -/
 

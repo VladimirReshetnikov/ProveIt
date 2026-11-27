@@ -1,7 +1,4 @@
 import IPRADerivations.AnalyticNumberTheory.AbsDiff
-import IPRADerivations.Core.LinearCombination
-import IPRADerivations.Core.InductionTactic
-import IPRADerivations.Core.Header
 
 /-!
 # Finite summation by parts with signed increments (`pnt_ipra_constructive_2026-11-14`, `sb:finite-abel`)
@@ -17,27 +14,21 @@ value bodies `a`, `g` with `A(n) = Σ_{k≤n} a(k)`:
 (`abel_parts`, one closed QF induction; `max_eq`: `b + (c ∸ b) = c + (b ∸ c)`).
 -/
 
-set_option linter.unusedSimpArgs false
-
 namespace LeanProofs.IPRA.AnalyticNumberTheory.AbelParts
 
-open_ipra
+open_ipra exports
 
 set_option autoImplicit false
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
-local notation "𝔞" t:max => Groth.ι (IPRA.Q.mk _ t)
-
 /-- `b + (c ∸ b) = c + (b ∸ c)` (both are `max(b, c)`). -/
 theorem max_eq (b c : PTm n) : Γ ⊢[PRAAx] b + monus c b ≐ c + monus b c := by
   refine .orE (le_total b c) ?_ ?_
   · have h : (le b c :: Γ) ⊢[PRAAx] le b c := Prf.hyp0
-    have e := natEq (eq_add_of_le h); have z := natEq h
-    apply deriveNat; ipra_simps; linear_combination -e - z
+    ipra_lc -natEq (eq_add_of_le h) - natEq h
   · have h : (le c b :: Γ) ⊢[PRAAx] le c b := Prf.hyp0
-    have e := natEq (eq_add_of_le h); have z := natEq h
-    apply deriveNat; ipra_simps; linear_combination e + z
+    ipra_lc natEq (eq_add_of_le h) + natEq h
 
 section Parts
 
@@ -79,9 +70,8 @@ theorem parts_step {N y : PTm n} (ih : Γ ⊢[PRAAx]
   have s1 := sum_succ' (Γ := Γ) (agB a g) (succ N) y; rw [inst2_agB] at s1
   have s2 := sum_succ' (Γ := Γ) (upB a g) (succ N) y; rw [inst2_upB] at s2
   have s3 := sum_succ' (Γ := Γ) (dnB a g) (succ N) y; rw [inst2_dnB] at s3
-  ipra_lc natEq s1 + natEq s2 - natEq s3 + natEq ih -
-    𝔞 (inst2 g (succ N) y) * natEq (sum_succ' (Γ := Γ) a (succ N) y) +
-    𝔞 (ap2 (sumF a) (succ (succ N)) y) * natEq (max_eq (Γ := Γ) (inst2 g (succ N) y) (inst2 g (succ (succ N)) y))
+  ipra_lc natEq s1 + natEq s2 - natEq s3 + natEq ih - 𝔞 (inst2 g (succ N) y) * natEq (sum_succ' a (succ N) y) +
+    𝔞 (ap2 (sumF a) (succ (succ N)) y) * natEq (max_eq (inst2 g (succ N) y) (inst2 g (succ (succ N)) y))
 
 theorem parts_zero (y : PTm n) :
     Γ ⊢[PRAAx] ap2 (sumF (agB a g)) (succ zero) y + ap2 (sumF (upB a g)) (succ zero) y ≐
@@ -90,10 +80,9 @@ theorem parts_zero (y : PTm n) :
   have s2 := sum_succ' (Γ := Γ) (upB a g) zero y; rw [inst2_upB] at s2
   have s3 := sum_succ' (Γ := Γ) (dnB a g) zero y; rw [inst2_dnB] at s3
   have s4 := sum_succ' (Γ := Γ) a zero y
-  ipra_lc natEq s1 + natEq s2 - natEq s3 + natEq (sum_zero (Γ := Γ) (agB a g) y) +
-    natEq (sum_zero (Γ := Γ) (upB a g) y) - natEq (sum_zero (Γ := Γ) (dnB a g) y) -
-    𝔞 (inst2 g zero y) * (natEq s4 + natEq (sum_zero (Γ := Γ) a y)) +
-    𝔞 (ap2 (sumF a) (succ zero) y) * natEq (max_eq (Γ := Γ) (inst2 g zero y) (inst2 g (succ zero) y))
+  ipra_lc natEq s1 + natEq s2 - natEq s3 + natEq (sum_zero (agB a g) y) + natEq (sum_zero (upB a g) y) -
+    natEq (sum_zero (dnB a g) y) - 𝔞 (inst2 g zero y) * (natEq s4 + natEq (sum_zero a y)) +
+    𝔞 (ap2 (sumF a) (succ zero) y) * natEq (max_eq (inst2 g zero y) (inst2 g (succ zero) y))
 
 private theorem parts₀ : ([] : List (Fm PTm 2)) ⊢[PRAAx] partsF a g := by
   ipra_ind [subst_ap2, subst_inst2]

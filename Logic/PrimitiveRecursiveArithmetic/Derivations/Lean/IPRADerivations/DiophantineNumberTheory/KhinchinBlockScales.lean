@@ -1,8 +1,6 @@
 import IPRADerivations.DiophantineNumberTheory.KhinchinOverlap
 import IPRADerivations.DiophantineNumberTheory.KhinchinBlockGeo
 import IPRADerivations.Foundations.SecondMoment
-import IPRADerivations.DiophantineNumberTheory.FLTMultiples
-import IPRADerivations.Core.Header
 
 /-!
 # The scales of a Khinchin block as one family (`hurwitz_khinchin_ipra`, (K10)–(K11))
@@ -27,10 +25,9 @@ The block is the family of scales `k < B` with `Q_k = 2^{K₀+k}`, `Q'_k = ⌊Q_
 
 namespace LeanProofs.IPRA.DiophantineNumberTheory.KhinchinBlockScales
 
-open_ipra
+open_ipra exports
 open LeanProofs.IPRA.Signum (sg sg_zero sg_succ)
 open LeanProofs.IPRA.Combinatorics.FiniteBijection (sg_bit shift_inst2')
-open LeanProofs.IPRA.AnalyticNumberTheory.Mobius (congrSg)
 open LeanProofs.IPRA.Analysis.Products (fact)
 open LeanProofs.IPRA.Foundations.IntervalCover (covB measure)
 open LeanProofs.IPRA.Foundations.IntervalPacking (loB hiB)
@@ -41,8 +38,6 @@ open LeanProofs.IPRA.DiophantineNumberTheory.KhinchinScale (tup AK actK)
 set_option autoImplicit false
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
-
-local notation "𝔞" t:max => Groth.ι (IPRA.Q.mk _ t)
 
 /-! ## The packed parameters -/
 
@@ -238,10 +233,12 @@ end Bodies
 theorem pw_mono2 {K0 k B : PTm n} (h : Γ ⊢[PRAAx] le k B) : Γ ⊢[PRAAx] le (pw two (K0 + k)) (pw two (K0 + B)) := by
   have e := eq_add_of_le h
   have hs : Γ ⊢[PRAAx] K0 + B ≐ (K0 + k) + monus B k := by
-    have e' := natEq e; apply deriveNat; ipra_simps; linear_combination e'
+    ipra_lc natEq e
   have ea := natEq ((KhinchinBlockGeo.congrPw2 hs).eqTrans (pw_add (Γ := Γ) two (K0 + k) (monus B k)))
   have hp := DiophantineNumberTheory.FLTMultiples.pw_pos (Γ := Γ) one (monus B k)
   have ep := natEq hp
   ipra_le 𝔞 (pw two (K0 + k)) * 𝔞 (pred (pw two (monus B k))) with ea + 𝔞 (pw two (K0 + k)) * ep
 
 end LeanProofs.IPRA.DiophantineNumberTheory.KhinchinBlockScales
+
+export_ipra DiophantineNumberTheory.KhinchinBlockScales (pw_mono2)

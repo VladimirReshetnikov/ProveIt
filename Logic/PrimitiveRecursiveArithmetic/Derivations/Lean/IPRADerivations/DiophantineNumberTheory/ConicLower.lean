@@ -1,5 +1,4 @@
 import IPRADerivations.DiophantineNumberTheory.ConicHeight
-import IPRADerivations.Core.Header
 
 /-!
 # The lower height estimate of the conic parametrization
@@ -18,11 +17,9 @@ With `|s|, |t| ≤ S`, `|R(s, t)| ≤ T_0`, `|L(s, t)| ≤ Λ` and bounds `μ, �
 With `S Λ ≤ T_0` these are `|r| S² ≤ D_s T_0` and `|r| S² ≤ D_t T_0` at the coordinate attaining `S`.
 -/
 
-set_option linter.unusedSimpArgs false
-
 namespace LeanProofs.IPRA.DiophantineNumberTheory.ConicLower
 
-open_ipra
+open_ipra exports
 open LeanProofs.IPRA.DiophantineNumberTheory.ConicIdentities (Form)
 open LeanProofs.IPRA.DiophantineNumberTheory.ConicHeight (abs_neg)
 open LeanProofs.IPRA.Analysis.PolynomialRemainder (AbsLe abs_congr abs_add abs_mul)

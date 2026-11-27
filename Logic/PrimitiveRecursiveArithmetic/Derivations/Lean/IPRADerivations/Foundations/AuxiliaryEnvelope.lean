@@ -1,8 +1,5 @@
-import IPRADerivations.Probability.Lotus
 import IPRADerivations.Probability.Variance
 import IPRADerivations.Core.SumOrder
-import IPRADerivations.Core.CommonLemmas
-import IPRADerivations.Core.Header
 
 /-!
 # The cardinality bounds of the auxiliary envelope (`ipra_resources_and_elimination_2026-11-15`, `thm:elim-envelope`)
@@ -38,7 +35,7 @@ enumeration of the coefficient box `𝓑(e, H)` as a list.
 
 namespace LeanProofs.IPRA.Foundations.AuxiliaryEnvelope
 
-open_ipra
+open_ipra exports
 open LeanProofs.IPRA.Probability.Lotus (vB pvB inst2_pvB pushforward_total)
 open LeanProofs.IPRA.Probability.Variance (sum_one sum_const_of)
 
@@ -109,3 +106,5 @@ theorem cover_card {M d e x : PTm n} (N : PTm n)
 end Fibre
 
 end LeanProofs.IPRA.Foundations.AuxiliaryEnvelope
+
+export_ipra Foundations.AuxiliaryEnvelope (sum_le_const)

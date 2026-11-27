@@ -1,10 +1,4 @@
-import IPRADerivations.Core.Gcd
-import IPRADerivations.Core.Pairing
-import IPRADerivations.Core.BoundedSums
 import IPRADerivations.Combinatorics.BinomialTheorem
-import IPRADerivations.Core.LinearCombination
-import IPRADerivations.Core.InductionTactic
-import IPRADerivations.Core.Header
 
 /-!
 # Rational roots in every degree (`ipra_presentations_to_witnesses`, `lem:norm-rational-roots`)
@@ -37,16 +31,12 @@ exchanged; the reversal identity of the two sums is not derived. The scan over c
 and the completeness of the root list are not derived either.
 -/
 
-set_option linter.unusedSimpArgs false
-
 namespace LeanProofs.IPRA.Foundations.RationalRootDegree
 
-open_ipra
+open_ipra exports
 open LeanProofs.IPRA.Combinatorics.BinomialTheorem (congrPw)
 
 variable {k : ℕ} {Γ : List (Fm PTm k)}
-
-local notation "𝔞" t:max => Groth.ι (IPRA.Q.mk _ t)
 
 theorem inst_five {n : ℕ} (t : PTm (n + 5)) : Syn.inst t 5 = (var 4 : PTm (n + 5)) :=
   inst_succ t 4
@@ -67,7 +57,7 @@ theorem euclid_pos {m' r u v c : PTm k} (hB : Γ ⊢[PRAAx] u * succ m' ≐ v * 
     (h : Γ ⊢[PRAAx] dvd (succ m') (c * r)) : Γ ⊢[PRAAx] dvd (succ m') c := by
   have b := natEq hB
   have h₁ : Γ ⊢[PRAAx] dvd (succ m') (c + c * r * v) :=
-    dvd_of_eq (w := u * c) (by apply deriveNat; ipra_simps; linear_combination (-𝔞 c) * b)
+    dvd_of_eq (w := u * c) (by ipra_lc (-𝔞 c) * b)
   exact dvd_sub h₁ (dvd_mul v h)
 
 theorem euclid_neg {m' r u v c : PTm k} (hB : Γ ⊢[PRAAx] u * succ m' + one ≐ v * r)
@@ -172,7 +162,7 @@ abbrev P (N p q d x : PTm k) : PTm k := ap2 (sumF (tB a)) N (pairT p (pairT q (p
 /-- The top term: `a(d, x) p^d q^0 = a(d, x) p^d`. -/
 theorem top_at (p q d x : PTm k) :
     Γ ⊢[PRAAx] inst2 (tB a) d (pairT p (pairT q (pairT d x))) ≐ inst2 a d x * pw p d := by
-  ipra_lc natEq (tB_at (Γ := Γ) a d p q d x) +
+  ipra_lc natEq (tB_at a d p q d x) +
     𝔞 (inst2 a d x) * 𝔞 (pw p d) * natEq ((congrPw (.eqRefl q) (le_refl (Γ := Γ) d)).eqTrans (pw_zero q))
 
 theorem low_step {N p q' d x : PTm k} (hN : Γ ⊢[PRAAx] lt N d)
@@ -187,7 +177,7 @@ theorem low_step {N p q' d x : PTm k} (hN : Γ ⊢[PRAAx] lt N d)
   have hterm : Γ ⊢[PRAAx] dvd (succ q')
       (inst2 (tB a) N (pairT p (pairT (succ q') (pairT d x)))) :=
     dvd_of_eq (w := inst2 a N x * pw p N * pw (succ q') (monus d (succ N))) (by
-      ipra_lc natEq (tB_at (Γ := Γ) a N p (succ q') d x) + 𝔞 (inst2 a N x) * 𝔞 (pw p N) * pk)
+      ipra_lc natEq (tB_at a N p (succ q') d x) + 𝔞 (inst2 a N x) * 𝔞 (pw p N) * pk)
   exact dvd_congr (sum_succ' (tB a) N _).eqSymm (dvd_add ih hterm)
 
 /-- Variables: `0 = N`, `1 = p`, `2 = q'`, `3 = d`, `4 = x`. -/
@@ -254,3 +244,5 @@ theorem leading_dvd {p q' u v d x : PTm k} (hB : Γ ⊢[PRAAx] Bez q' p u v)
     ipra_lc -z
 
 end LeanProofs.IPRA.Foundations.RationalRootDegree
+
+export_ipra Foundations.RationalRootDegree (Bez euclid)

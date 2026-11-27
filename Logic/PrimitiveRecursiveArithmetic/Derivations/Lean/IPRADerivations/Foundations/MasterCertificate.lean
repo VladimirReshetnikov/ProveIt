@@ -1,9 +1,6 @@
 import IPRADerivations.Foundations.BoundedFormulas
 import IPRADerivations.Core.ClockedDescent
 import IPRADerivations.AnalyticNumberTheory.Totatives
-import IPRADerivations.Core.CommonLemmas
-import IPRADerivations.Core.InductionTactic
-import IPRADerivations.Core.Header
 
 /-!
 # Finite master certificates
@@ -21,13 +18,10 @@ entry below the master length. All witnesses and the sequence code are
 primitive recursive.
 -/
 
-set_option linter.unusedSimpArgs false
-
 namespace LeanProofs.IPRA.Foundations.MasterCertificate
 
-open_ipra
+open_ipra exports
 open LeanProofs.IPRA.Foundations.BoundedFormulas
-open LeanProofs.IPRA.AnalyticNumberTheory.Totatives (monus_succ_of_lt)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
@@ -223,3 +217,5 @@ theorem master_closed (b : PTm 1) (A : BF) :
   closeUniv 2 (.impI (master_valid b A (var 0) (var 1) Prf.hyp0))
 
 end LeanProofs.IPRA.Foundations.MasterCertificate
+
+export_ipra Foundations.MasterCertificate (sequence_decode sequence_length stack stack_succ stack_zero subst_sequence)

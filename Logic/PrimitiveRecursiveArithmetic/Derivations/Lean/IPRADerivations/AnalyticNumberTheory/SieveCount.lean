@@ -1,12 +1,6 @@
 import IPRADerivations.AnalyticNumberTheory.BrunCounting
 import IPRADerivations.AnalyticNumberTheory.PowerResidue
-import IPRADerivations.AnalyticNumberTheory.Multiplicative
-import IPRADerivations.AnalyticNumberTheory.ConvolutionAssoc
-import IPRADerivations.AnalyticNumberTheory.EulerProduct
 import IPRADerivations.AnalyticNumberTheory.CoprimeModulus
-import IPRADerivations.Core.LinearCombination
-import IPRADerivations.Core.CommonLemmas
-import IPRADerivations.Core.Header
 
 /-!
 # Counting a progression inside the multiples of `l` (the sieve counting step)
@@ -32,25 +26,18 @@ For `q ≥ 2` the residue `a` is a unit modulo `q`, so the term `n = 0` is not c
 * `count_le`, `count_ge`: `BrunCounting.count_upper`, `count_lower` at `ρ = 1`.
 -/
 
-set_option linter.unusedSimpArgs false
-
 namespace LeanProofs.IPRA.AnalyticNumberTheory.SieveCount
 
-open_ipra
+open_ipra exports
 open LeanProofs.IPRA.AnalyticNumberTheory.BrunCounting (gB g_at A count_upper count_lower)
 open LeanProofs.IPRA.AnalyticNumberTheory.PowerResidue (res res_lt ind_transport)
 open LeanProofs.IPRA.AnalyticNumberTheory.CoprimeModulus (pos_of_one_le two_le_of_ne)
 open LeanProofs.IPRA.AnalyticNumberTheory.SumReindex (riB inst2_riB reindex_eq cM)
-open LeanProofs.IPRA.AnalyticNumberTheory.Totient (mulBody count_multiples quo_eq)
 open LeanProofs.IPRA.AnalyticNumberTheory.Multiplicative (rem_rem_mul)
 open LeanProofs.IPRA.AnalyticNumberTheory.ConvolutionAssoc (pos_of_eq rem_small)
 open LeanProofs.IPRA.AnalyticNumberTheory.Mobius (congrEqb' zero_mul_l one_inst)
-open LeanProofs.IPRA.AnalyticNumberTheory.EulerProduct (eqb_comm')
-open LeanProofs.IPRA.DiophantineNumberTheory.Coprime (eq_of_dvd')
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
-
-local notation "𝔞" t:max => Groth.ι (IPRA.Q.mk _ t)
 
 /-! ## Bodies -/
 

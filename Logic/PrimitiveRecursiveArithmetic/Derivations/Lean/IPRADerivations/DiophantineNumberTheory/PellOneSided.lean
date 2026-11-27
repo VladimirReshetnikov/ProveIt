@@ -1,7 +1,5 @@
 import IPRADerivations.DiophantineNumberTheory.PellGcd
 import IPRADerivations.DiophantineNumberTheory.PellDescent
-import IPRADerivations.Core.LinearCombination
-import IPRADerivations.Core.Header
 
 /-!
 # One-sided optimality of Pell approximants
@@ -17,13 +15,10 @@ Both are square comparisons with explicit surpluses:
 `(pY)² − (Xq)² = (p² − Dq² − 1)Y² + (Y² − q²)` and `(Rq)² − (pT)² = (Dq² − p² − 1)T² + (T² − q²)`.
 -/
 
-set_option linter.unusedSimpArgs false
-
 namespace LeanProofs.IPRA.DiophantineNumberTheory.PellOneSided
 
-open_ipra
+open_ipra exports
 open LeanProofs.IPRA.DiophantineNumberTheory.Coprime
-open LeanProofs.IPRA.DiophantineNumberTheory.PellDescent (lt_of_sq_lt)
 open LeanProofs.IPRA.DiophantineNumberTheory.PellGcd (PX PY pell_norm)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}

@@ -1,11 +1,5 @@
 import IPRADerivations.AnalyticNumberTheory.FloorTelescope
-import IPRADerivations.AnalyticNumberTheory.DivisorHyperbola
-import IPRADerivations.Foundations.LatticeCount
-import IPRADerivations.Foundations.AuxiliaryEnvelope
-import IPRADerivations.Core.Fubini
-import IPRADerivations.Core.SumSplit
 import IPRADerivations.DiophantineNumberTheory.KhinchinBlock
-import IPRADerivations.Core.Header
 
 /-!
 # The fourth-root layer-cake sum (`pnt_ipra_constructive_2026-11-14`, towards `sb:symmetry`)
@@ -26,29 +20,18 @@ since `√z (log z + 1) ≲ (qr(z) + 1)³`. The proof is a layer-cake count:
   `Σ_J ⌊x/J²⌋ ≤ 2x` (`FloorTelescope.floor_square_sum`).
 -/
 
-set_option linter.unusedSimpArgs false
-
 namespace LeanProofs.IPRA.AnalyticNumberTheory.FourthRootSum
 
-open_ipra
-open LeanProofs.IPRA.AnalyticNumberTheory.HarmonicMertens (le_scale)
+open_ipra exports
 open LeanProofs.IPRA.AnalyticNumberTheory.FloorTelescope (cB inst2_cB cube_sum qB inst2_qB floor_square_sum)
-open LeanProofs.IPRA.AnalyticNumberTheory.SumReindex (le_quo_of_mul_le)
 open LeanProofs.IPRA.DiophantineNumberTheory.HurwitzLoop (quo_mul_le)
 open LeanProofs.IPRA.AnalyticNumberTheory.DivisorHyperbola (quo_le_self sg_one)
-open LeanProofs.IPRA.AnalyticNumberTheory.LcmUpto (pos_of_lt_zero)
-open LeanProofs.IPRA.Foundations.LatticeCount (icB icS exact_count)
 open LeanProofs.IPRA.Foundations.IntervalCover (cnt)
-open LeanProofs.IPRA.Foundations.AuxiliaryEnvelope (sum_le_const)
-open LeanProofs.IPRA.Signum (sg)
-open LeanProofs.IPRA.DiophantineNumberTheory.KhinchinBlock (sum_le_lin1)
 open LeanProofs.IPRA.Probability.Independence (sum_scale)
 
 set_option autoImplicit false
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
-
-local notation "𝔞" t:max => Groth.ι (IPRA.Q.mk _ t)
 
 /-- The integer fourth root `⌊√⌊√z⌋⌋`. -/
 abbrev qr (z : PTm n) : PTm n := isqrt (isqrt z)
@@ -274,3 +257,5 @@ theorem fourth_root_sum (x : PTm n) :
     e2 + e3 + e4 + e5 + e6 + e7 + e8 - 7 * e9
 
 end LeanProofs.IPRA.AnalyticNumberTheory.FourthRootSum
+
+export_ipra AnalyticNumberTheory.FourthRootSum (isqrt_le_self)

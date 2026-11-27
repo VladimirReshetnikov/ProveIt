@@ -1,6 +1,5 @@
 import IPRADerivations.Foundations.LeastBoundedWitness
 import IPRADerivations.Core.OrderCertificates
-import IPRADerivations.Core.Header
 
 /-!
 # The finite rise alternative
@@ -21,11 +20,9 @@ For a sequence body `r(i, x)`:
 The nonrise index is the least one, `mu (riseB r) N x`, by the search of `Core/Search`.
 -/
 
-set_option linter.unusedSimpArgs false
-
 namespace LeanProofs.IPRA.Foundations.RiseAlternative
 
-open_ipra
+open_ipra exports
 open LeanProofs.IPRA.Foundations.LeastBoundedWitness (ExW NoW decision)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)} (r : PTm 2)

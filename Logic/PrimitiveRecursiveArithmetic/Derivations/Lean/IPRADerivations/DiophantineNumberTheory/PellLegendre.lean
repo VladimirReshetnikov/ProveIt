@@ -1,6 +1,5 @@
 import IPRADerivations.DiophantineNumberTheory.RungeProduct
 import IPRADerivations.Core.OrderCertificates
-import IPRADerivations.Core.Header
 
 /-!
 # Legendre's theorem in finite form
@@ -23,11 +22,9 @@ and `e′ = τp_n − q_nσ`:
 The convergents, the choice of `n` and the best-approximation lemma itself are inputs.
 -/
 
-set_option linter.unusedSimpArgs false
-
 namespace LeanProofs.IPRA.DiophantineNumberTheory.PellLegendre
 
-open_ipra
+open_ipra exports
 open LeanProofs.IPRA.DiophantineNumberTheory.RungeProduct (za D_congr D_neg D_add_le D_mul)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}

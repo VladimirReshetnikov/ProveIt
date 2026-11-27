@@ -1,5 +1,4 @@
 import IPRADerivations.AnalyticNumberTheory.TauLogAbel
-import IPRADerivations.Core.Header
 
 /-!
 # The comparison-function error (`pnt_ipra_constructive_2026-11-14`, `sb:comparison-error`)
@@ -24,25 +23,18 @@ and by `2C ≥ 0`, `TauLogAbel.tau_abel`, `HarmonicLogSquareSum.log_square_sum`)
 polynomial residuals, which vanish identically.
 -/
 
-set_option linter.unusedSimpArgs false
-
 namespace LeanProofs.IPRA.AnalyticNumberTheory.SelbergComparison
 
-open_ipra
+open_ipra exports
 open LeanProofs.IPRA.AnalyticNumberTheory.Harmonic (S hB)
-open LeanProofs.IPRA.AnalyticNumberTheory.HarmonicChebyshev (S_mono)
-open LeanProofs.IPRA.AnalyticNumberTheory.HarmonicMertens (le_scale)
 open LeanProofs.IPRA.AnalyticNumberTheory.HarmonicLogSquareSum (U Qs log_square_sum)
 open LeanProofs.IPRA.AnalyticNumberTheory.DivisorBound (divisor_upper divisor_lower)
 open LeanProofs.IPRA.AnalyticNumberTheory.TauLogAbel (As CT Tm tau_abel c_nonneg isqrt_pos)
-open LeanProofs.IPRA.AnalyticNumberTheory.LcmUpto (pos_of_lt_zero)
 open LeanProofs.IPRA.Analysis.Products (fact)
 
 set_option autoImplicit false
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
-
-local notation "𝔞" t:max => Groth.ι (IPRA.Q.mk _ t)
 
 /-- `16T`, `19T`, `22T` as terms. -/
 abbrev c16 (T : PTm n) : PTm n := two * (two * (two * (two * T)))

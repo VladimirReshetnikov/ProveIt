@@ -1,10 +1,5 @@
-import IPRADerivations.Core.Division
-import IPRADerivations.Core.OrderCertificates
-import IPRADerivations.Core.SumLemmas
 import IPRADerivations.Probability.FiniteLaws
 import IPRADerivations.Foundations.FrontierSoundness
-import IPRADerivations.Core.LinearCombination
-import IPRADerivations.Core.Header
 
 /-!
 # Finite-window stability: the two selection arguments
@@ -36,7 +31,7 @@ set_option linter.unusedSimpArgs false
 
 namespace LeanProofs.IPRA.Foundations.WindowStability
 
-open_ipra
+open_ipra exports
 open LeanProofs.IPRA.Probability.FiniteLaws (Mn mn_le)
 open LeanProofs.IPRA.Foundations.FrontierSoundness (shift_succ' le_of_lt_succ')
 
@@ -96,7 +91,7 @@ theorem incr_step {a d : PTm 2} {k x c : PTm n}
     (hd : Γ ⊢[PRAAx] inst2 d k x + inst2 a k x ≐ inst2 a (succ k) x + c)
     (ih : Γ ⊢[PRAAx] ap2 (sumF d) k x + inst2 a zero x ≐ inst2 a k x + k * c) :
     Γ ⊢[PRAAx] ap2 (sumF d) (succ k) x + inst2 a zero x ≐ inst2 a (succ k) x + succ k * c := by
-  ipra_lc natEq (sum_succ' (Γ := Γ) d k x) + natEq hd + natEq ih
+  ipra_lc natEq (sum_succ' d k x) + natEq hd + natEq ih
 
 theorem incr_guard {a d : PTm 2} {k x c N : PTm n} (hkN : Γ ⊢[PRAAx] le (succ k) N)
     (hd : Γ ⊢[PRAAx] inst2 d k x + inst2 a k x ≐ inst2 a (succ k) x + c)
@@ -141,3 +136,5 @@ theorem min_gap {a d : PTm 2} {K' x c : PTm n}
   ipra_le sl hlow using linear_combination -e
 
 end LeanProofs.IPRA.Foundations.WindowStability
+
+export_ipra Foundations.WindowStability (sum_lower)

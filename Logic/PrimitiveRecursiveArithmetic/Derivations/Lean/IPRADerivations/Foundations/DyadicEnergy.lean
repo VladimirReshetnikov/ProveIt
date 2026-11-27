@@ -1,7 +1,5 @@
 import IPRADerivations.Probability.Variance
 import IPRADerivations.Core.OrderCertificates
-import IPRADerivations.Core.LinearCombination
-import IPRADerivations.Core.Header
 
 /-!
 # Dyadic energy identities
@@ -20,11 +18,9 @@ Object-level derivations, cleared of the denominators `2` and `4` of the average
   `∑ w (f − g)² = ∑ w f² − ∑ w g²`, the conditional-expectation energy identity.
 -/
 
-set_option linter.unusedSimpArgs false
-
 namespace LeanProofs.IPRA.Foundations.DyadicEnergy
 
-open_ipra
+open_ipra exports
 open LeanProofs.IPRA.Probability.Variance (ad ad_sq)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
@@ -70,6 +66,6 @@ theorem orthogonal_energy (w f g : α → ZT n) (L : List α)
     (hcross : Γ ⊢[PRAAx] ZT.eq (zsum (fun r => w r * (f r * g r)) L) (zsum (fun r => w r * (g r * g r)) L)) :
     Γ ⊢[PRAAx] ZT.eq (zsum (fun r => w r * ((f r - g r) * (f r - g r))) L)
       (zsum (fun r => w r * (f r * f r)) L - zsum (fun r => w r * (g r * g r)) L) := by
-  ipra_lc ZT.toZ_eq (square_expansion (Γ := Γ) w f g L) - 2 * ZT.toZ_eq hcross
+  ipra_lc ZT.toZ_eq (square_expansion w f g L) - 2 * ZT.toZ_eq hcross
 
 end LeanProofs.IPRA.Foundations.DyadicEnergy

@@ -1,6 +1,3 @@
-import IPRADerivations.Core.Order
-import IPRADerivations.Core.Tactic
-import IPRADerivations.Core.Pairing
 import IPRADerivations.Core.Parity
 import IPRADerivations.Core.LinearCombination
 import IPRADerivations.Core.SubstCommand
@@ -34,13 +31,11 @@ The hypotheses `1 ≤ u ≤ v` of the packet are not needed for the conclusion.
 
 namespace LeanProofs.IPRA.DiophantineNumberTheory.HurwitzDenominator
 
-open_ipra
+open_ipra exports
 
 set_option autoImplicit false
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
-
-local notation "𝔞" t:max => Groth.ι (IPRA.Q.mk _ t)
 
 /-- `S² > 5` for `S = (u² + v²)/(uv)`, cleared: `5u²v² < (u² + v²)²`. -/
 def goodPair (u v : PTm n) : Fm PTm n := lt (num 5 * (u * u) * (v * v)) ((u * u + v * v) * (u * u + v * v))
@@ -63,39 +58,32 @@ theorem unit_of_mul {u X Y : PTm n} (h : Γ ⊢[PRAAx] u * X ≐ u * Y + one) : 
     refine .orE (zero_or_succ u) ?_ ?_
     · refine .botE _ (succ_ne_zero (a := zero) ?_)
       have e0 := natEq (Prf.hyp0 (Γ := Δ) (φ := u ≐ zero))
-      have es := natEq hsum.wk (Γ := (u ≐ zero) :: Δ)
-      apply deriveNat; ipra_simps; linear_combination -es + (1 + 𝔞 (monus X (succ Y))) * e0
+      ipra_lc -natEq hsum.wk (Γ := (u ≐ zero) :: Δ) + (1 + 𝔞 (monus X (succ Y))) * e0
     · have es := natEq hsum.wk (Γ := (u ≐ succ (pred u)) :: Δ)
       have hz : ((u ≐ succ (pred u)) :: Δ) ⊢[PRAAx] pred u + u * monus X (succ Y) ≐ zero := by
-        ipra_lc es - natEq (Prf.hyp0 (Γ := Δ) (φ := u ≐ succ (pred u)))
+        ipra_lc es - natEq (Prf.hyp0 (φ := u ≐ succ (pred u)))
       exact Prf.hyp0.eqTrans (congrSucc (add_eq_zero_left hz))
   · -- `Y = X + g`, so `0 = u g + 1`
     refine .botE _ (succ_ne_zero (a := u * monus Y X) ?_)
     have eY := natEq (eq_add_of_le (Γ := le X Y :: Γ) Prf.hyp0)
-    have eh := natEq (Γ := le X Y :: Γ) h.wk
-    apply deriveNat; ipra_simps; linear_combination -eh - 𝔞 u * eY
+    ipra_lc -natEq (Γ := le X Y :: Γ) h.wk - 𝔞 u * eY
 
 /-- `v² = v + 1` has no natural solution. -/
 theorem no_golden_unit {v : PTm n} (h : Γ ⊢[PRAAx] v * v ≐ v + one) : Γ ⊢[PRAAx] Fm.bot := by
   refine .orE (zero_or_succ v) ?_ ?_
   · refine succ_ne_zero (a := zero) ?_
     have e := natEq h.wk (Γ := (v ≐ zero) :: Γ)
-    have ev := natEq (Prf.hyp0 (Γ := Γ) (φ := v ≐ zero))
-    apply deriveNat; ipra_simps; linear_combination -e + (𝔞 v - 1) * ev
+    ipra_lc -e + (𝔞 v - 1) * natEq (Prf.hyp0 (φ := v ≐ zero))
   · let Δ : List (Fm PTm n) := (v ≐ succ (pred v)) :: Γ
     refine .orE (zero_or_succ (pred v)) ?_ ?_
     · refine succ_ne_zero (a := zero) ?_
       have e := natEq h.wk.wk (Γ := (pred v ≐ zero) :: Δ)
       have e1 := natEq (show ((pred v ≐ zero) :: Δ) ⊢[PRAAx] v ≐ succ (pred v) from Prf.hyp1)
-      have e2 := natEq (Prf.hyp0 (Γ := Δ) (φ := pred v ≐ zero))
-      apply deriveNat; ipra_simps
-      linear_combination -e + 𝔞 v * e1 + 𝔞 v * e2
+      ipra_lc -e + 𝔞 v * e1 + 𝔞 v * natEq (Prf.hyp0 (φ := pred v ≐ zero))
     · refine succ_ne_zero (a := pred (pred v) * pred (pred v) + num 3 * pred (pred v)) ?_
       have e := natEq h.wk.wk (Γ := (pred v ≐ succ (pred (pred v))) :: Δ)
       have e1 := natEq (show ((pred v ≐ succ (pred (pred v))) :: Δ) ⊢[PRAAx] v ≐ succ (pred v) from Prf.hyp1)
-      have e2 := natEq (Prf.hyp0 (Γ := Δ) (φ := pred v ≐ succ (pred (pred v))))
-      apply deriveNat; ipra_simps
-      linear_combination e - (𝔞 v + 𝔞 (pred (pred v)) + 1) * (e1 + e2)
+      ipra_lc e - (𝔞 v + 𝔞 (pred (pred v)) + 1) * (e1 + natEq (Prf.hyp0 (φ := pred v ≐ succ (pred (pred v)))))
 
 /-- The denominator lemma: `u + v ≤ w` and the determinant `r v − t u = ±1` give
 `goodPair u v ∨ goodPair v w`, the choice made by comparing `v²` with `uv + u²`. -/
@@ -105,8 +93,7 @@ theorem denominator_core {u v w r t : PTm n} (hw : Γ ⊢[PRAAx] le (u + v) w)
   refine .orE (lt_or_le (u * v + u * u) (v * v)) ?_ ?_
   · -- `h > 0`: choose `S₀`
     refine .orI₁ (good_of_gap (e := monus (v * v) (succ (u * v + u * u))) ?_)
-    have e := natEq (eq_add_of_le (Γ := lt (u * v + u * u) (v * v) :: Γ) Prf.hyp0)
-    apply deriveNat; ipra_simps; linear_combination e
+    ipra_lc natEq (eq_add_of_le (Γ := lt (u * v + u * u) (v * v) :: Γ) Prf.hyp0)
   · let Δ : List (Fm PTm n) := le (v * v) (u * v + u * u) :: Γ
     refine .orE (lt_or_le (v * v) (u * v + u * u)) ?_ ?_
     · -- `h < 0`: choose `S₁`
@@ -124,13 +111,11 @@ theorem denominator_core {u v w r t : PTm n} (hw : Γ ⊢[PRAAx] le (u + v) w)
         · refine unit_of_mul (X := r * r * (u + v)) (Y := t * t * u + two * t) ?_
           have eq' := natEq heq.wk (Γ := (r * v ≐ t * u + one) :: Δ')
           have hd := natEq (Prf.hyp0 (Γ := Δ') (φ := r * v ≐ t * u + one))
-          apply deriveNat; ipra_simps
-          linear_combination -(𝔞 r * 𝔞 r) * eq' + (𝔞 r * 𝔞 v + 𝔞 t * 𝔞 u + 1) * hd
+          ipra_lc -(𝔞 r * 𝔞 r) * eq' + (𝔞 r * 𝔞 v + 𝔞 t * 𝔞 u + 1) * hd
         · refine unit_of_mul (X := r * r * (u + v) + two * t) (Y := t * t * u) ?_
           have eq' := natEq heq.wk (Γ := (t * u ≐ r * v + one) :: Δ')
           have hd := natEq (Prf.hyp0 (Γ := Δ') (φ := t * u ≐ r * v + one))
-          apply deriveNat; ipra_simps
-          linear_combination -(𝔞 r * 𝔞 r) * eq' + (1 - 𝔞 t * 𝔞 u - 𝔞 r * 𝔞 v) * hd
+          ipra_lc -(𝔞 r * 𝔞 r) * eq' + (1 - 𝔞 t * 𝔞 u - 𝔞 r * 𝔞 v) * hd
       refine no_golden_unit (v := v) ?_
       ipra_lc natEq heq + (𝔞 v + 𝔞 u + 1) * natEq hu
 

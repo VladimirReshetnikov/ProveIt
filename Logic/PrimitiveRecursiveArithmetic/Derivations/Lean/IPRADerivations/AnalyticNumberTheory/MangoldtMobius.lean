@@ -1,8 +1,5 @@
 import IPRADerivations.AnalyticNumberTheory.FactorialLambda
 import IPRADerivations.AnalyticNumberTheory.DivisorSwap
-import IPRADerivations.Core.LinearCombination
-import IPRADerivations.AnalyticNumberTheory.DivisorCases
-import IPRADerivations.Core.Header
 
 /-!
 # Möbius forms of the weighted von Mangoldt function
@@ -20,23 +17,18 @@ for a weight `w` on primes (here with its parameter fixed to `0`),
   divisor involution `d ↔ N/d` (`DivisorSwap.div_swap`).
 -/
 
-set_option linter.unusedSimpArgs false
-
 namespace LeanProofs.IPRA.AnalyticNumberTheory.MangoldtMobius
 
-open_ipra
+open_ipra exports
 open LeanProofs.IPRA.AnalyticNumberTheory.Mobius
 open LeanProofs.IPRA.AnalyticNumberTheory.MobiusBounds (sum_ext shift_pos)
 open LeanProofs.IPRA.AnalyticNumberTheory.MobiusInversion (aP aN inst3_aP inst3_aN mobius_inversion eqb_rem_big)
 open LeanProofs.IPRA.AnalyticNumberTheory.WeightedMangoldt
 open LeanProofs.IPRA.AnalyticNumberTheory.FactorialLambda (DB_at congrLw lw_mul)
-open LeanProofs.IPRA.DiophantineNumberTheory.Coprime (eq_of_dvd' pos_of_eq_mul)
 open LeanProofs.IPRA.Probability.Independence (sum_scale)
 open LeanProofs.IPRA.Signum (sg sg_zero sg_succ)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
-
-local notation "𝔞" t:max => Groth.ι (IPRA.Q.mk _ t)
 
 section Forms
 
@@ -144,9 +136,7 @@ theorem lambda_mobius_neg {N : PTm n} (hN : Γ ⊢[PRAAx] le two N) :
   have aN' := natEq (sum_add (Γ := Γ) (QLN w) (RLN w) (succ N) N)
   have lm := natEq (lambda_mobius w hp)
   have mc := natEq (mobius_cancel hN)
-  have e₁ := natEq sP; have e₂ := natEq sN
-  apply deriveNat; ipra_simps
-  linear_combination -lm - aP' + aN' + e₁ - e₂ + 𝔞 (Lw w N zero) * mc
+  ipra_lc -lm - aP' + aN' + natEq sP - natEq sN + 𝔞 (Lw w N zero) * mc
 
 /-- `μ^±_{N+1}(a) L_w(b)`, over `0 = a`, `1 = b`, `2 = N`. -/
 abbrev mlP : PTm 3 := muP (succ (var 2)) (var 0) * ap2 (sumF (ellB w)) (succ (var 1)) (pairT (var 1) zero)

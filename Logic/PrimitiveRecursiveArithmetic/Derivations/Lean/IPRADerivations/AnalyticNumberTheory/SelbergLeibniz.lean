@@ -1,5 +1,4 @@
 import IPRADerivations.AnalyticNumberTheory.DirichletLeibniz
-import IPRADerivations.Core.Header
 
 /-!
 # The Leibniz step of Selberg's symmetry formula (`pnt_ipra_constructive_2026-11-14`)
@@ -25,7 +24,7 @@ derived here.
 
 namespace LeanProofs.IPRA.AnalyticNumberTheory.SelbergLeibniz
 
-open_ipra
+open_ipra exports
 open LeanProofs.IPRA.AnalyticNumberTheory.WeightedMangoldt
 open LeanProofs.IPRA.AnalyticNumberTheory.DirichletLeibniz (cvB conv DwB inst2_cvB inst2_DwB cv_at dirichlet_leibniz)
 open LeanProofs.IPRA.AnalyticNumberTheory.Mobius (congrEqb')
@@ -74,3 +73,5 @@ theorem tau_leibniz {m y : PTm n} (hm : Γ ⊢[PRAAx] m ≐ succ (pred m)) :
 end Selberg
 
 end LeanProofs.IPRA.AnalyticNumberTheory.SelbergLeibniz
+
+export_ipra AnalyticNumberTheory.SelbergLeibniz (lamF)

@@ -1,7 +1,4 @@
 import IPRADerivations.AnalyticNumberTheory.HarmonicMertens
-import IPRADerivations.Core.LinearCombination
-import IPRADerivations.Core.InductionTactic
-import IPRADerivations.Core.Header
 
 /-!
 # Mertens' lower bound for the harmonic logarithm (`pnt_ipra_constructive_2026-11-14`)
@@ -20,11 +17,9 @@ inequality `sb:mertens-bound` (`|∑_{n≤x} Λ(n)/n − log x| ≤ 6`), lower h
   `HarmonicLambda.harmonic_sandwich`.
 -/
 
-set_option linter.unusedSimpArgs false
-
 namespace LeanProofs.IPRA.AnalyticNumberTheory.HarmonicMertensLower
 
-open_ipra
+open_ipra exports
 open LeanProofs.IPRA.AnalyticNumberTheory.Harmonic (S hB)
 open LeanProofs.IPRA.AnalyticNumberTheory.LogElementary (log_upper)
 open LeanProofs.IPRA.AnalyticNumberTheory.HarmonicChebyshev
@@ -33,15 +28,11 @@ open LeanProofs.IPRA.AnalyticNumberTheory.HarmonicMertens (subadd le_scale)
 open LeanProofs.IPRA.AnalyticNumberTheory.HarmonicLambda (Sw harmonic_sandwich)
 open LeanProofs.IPRA.AnalyticNumberTheory.FactorTrace (trT tr_zero lpf_pos)
 open LeanProofs.IPRA.AnalyticNumberTheory.WeightedMangoldt (Lw)
-open LeanProofs.IPRA.AnalyticNumberTheory.FactorialLambda (congrLw lw_mul)
-open LeanProofs.IPRA.AnalyticNumberTheory.LcmUpto (pos_of_lt_zero lt_zero_of_pos)
 open LeanProofs.IPRA.Analysis.Products (fact)
 
 set_option autoImplicit false
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
-
-local notation "𝔞" t:max => Groth.ι (IPRA.Q.mk _ t)
 
 /-! ## `λ_M(m) ≤ L_w(m) + m/M` along the trace -/
 
@@ -164,3 +155,5 @@ theorem mertens_lower {N M L : PTm n} (hN : Γ ⊢[PRAAx] le one N) (hM : Γ ⊢
   exact le_congr (congrMul hNp (.eqRefl _)) (congrMul hNp (.eqRefl _)) c
 
 end LeanProofs.IPRA.AnalyticNumberTheory.HarmonicMertensLower
+
+export_ipra AnalyticNumberTheory.HarmonicMertensLower (delta_le)

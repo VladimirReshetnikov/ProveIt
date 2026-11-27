@@ -1,9 +1,4 @@
 import IPRADerivations.AnalyticNumberTheory.PowerDivisorPrefix
-import IPRADerivations.AnalyticNumberTheory.ConvolutionAssoc
-import IPRADerivations.AnalyticNumberTheory.SumReindex
-import IPRADerivations.AnalyticNumberTheory.LogRefinement
-import IPRADerivations.Core.LinearCombination
-import IPRADerivations.Core.Header
 
 /-!
 # One row of the inversion along perfect powers (`riemann_ipra_prime_criteria_2026-11-20`, `thm:powerdivisor`)
@@ -23,31 +18,19 @@ For a coefficient body `a`, `h ≥ 1`, `d ≥ 1` and `G(m) = A(⌊N/m^h⌋)` (`G
   `m > N` vanish (`m^h ≥ m > N`).
 -/
 
-set_option linter.unusedSimpArgs false
-
 namespace LeanProofs.IPRA.AnalyticNumberTheory.PowerDivisorRow
 
-open_ipra
+open_ipra exports
 open LeanProofs.IPRA.AnalyticNumberTheory.PowerDivisorPrefix
-open LeanProofs.IPRA.AnalyticNumberTheory.ConvolutionAssoc (quo_quo multiples_upto)
 open LeanProofs.IPRA.AnalyticNumberTheory.SumReindex (riB inst2_riB reindex_eq cM)
-open LeanProofs.IPRA.AnalyticNumberTheory.LogRefinement (quo_mul)
-open LeanProofs.IPRA.AnalyticNumberTheory.LocalFactor (pw_mul_base)
 open LeanProofs.IPRA.Combinatorics.LegendreDigits (quo_small)
 open LeanProofs.IPRA.AnalyticNumberTheory.PNTStageStep (pos_of_one_le)
-open LeanProofs.IPRA.AnalyticNumberTheory.BlockChain (one_le_pw')
-open LeanProofs.IPRA.AnalyticNumberTheory.PowerBudget (mul_one')
 open LeanProofs.IPRA.AnalyticNumberTheory.Mobius (congrEqb' congrSg)
-open LeanProofs.IPRA.Foundations.BoundedReflection (eqb_cases)
 open LeanProofs.IPRA.Signum (sg sg_zero sg_succ)
-open LeanProofs.IPRA.AnalyticNumberTheory.Totient (quo_eq)
-open LeanProofs.IPRA.AnalyticNumberTheory.GcdFiber (div_eq)
 
 set_option autoImplicit false
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
-
-local notation "𝔞" t:max => Groth.ι (IPRA.Q.mk _ t)
 
 /-! ## Cutting a sum -/
 
@@ -192,10 +175,6 @@ theorem row_identity {d h : PTm n} (hd : Γ ⊢[PRAAx] d ≐ succ (pred d)) (hh 
     have hd' : Λ ⊢[PRAAx] Syn.shift d ≐ succ (pred (Syn.shift d)) := by
       have b : (Γ.map Fm.shift) ⊢[PRAAx] Syn.shift d ≐ succ (pred (Syn.shift d)) := by
         simpa [Fm.shift, Syn.shift] using hd.shift
-      exact b.wk
-    have hp' : Λ ⊢[PRAAx] Syn.shift h ≐ succ (pred (Syn.shift h)) := by
-      have b : (Γ.map Fm.shift) ⊢[PRAAx] Syn.shift h ≐ succ (pred (Syn.shift h)) := by
-        simpa [Fm.shift, Syn.shift] using hp.shift
       exact b.wk
     refine (btB_at a _ _ _ _).eqTrans ((row_G a hd' (Syn.shift N) (var 0) (Syn.shift y)).eqTrans ?_)
     exact ((one_mul _).eqSymm.eqTrans (congrMul (sg_succ _).eqSymm (.eqRefl _))).eqTrans (hB_at a _ _ _ _ _).eqSymm

@@ -1,6 +1,4 @@
 import IPRADerivations.AnalyticNumberTheory.LcmBridgeDPsi
-import IPRADerivations.Core.LinearCombination
-import IPRADerivations.Core.Header
 
 /-!
 # The loss `D(m²) ≤ 8/m` and the `ϑ`-form of the lcm-bridge transfer (`robin_ipra_research_2026-11-19`)
@@ -26,11 +24,9 @@ On the names, for `m ≥ 16`, `P = m²`, `L = lcm(1, …, P)`:
 `[e^γ]_hi = EhN/EhD` is the exponential upper name of the Robin upper end at `(L, k)`.
 -/
 
-set_option linter.unusedSimpArgs false
-
 namespace LeanProofs.IPRA.AnalyticNumberTheory.LcmBridgeDLoss
 
-open_ipra
+open_ipra exports
 open LeanProofs.IPRA.AnalyticNumberTheory.RobinLipName (Rv)
 open LeanProofs.IPRA.AnalyticNumberTheory.RobinLipSum (one_le_mul one_le_of_pos' lo_val lo_sub_up)
 open LeanProofs.IPRA.AnalyticNumberTheory.RobinLipBound (lo_le_pred lo_four)
@@ -40,29 +36,21 @@ open LeanProofs.IPRA.AnalyticNumberTheory.RobinLogInterval
 open LeanProofs.IPRA.AnalyticNumberTheory.RobinThreePos (rr K1)
 open LeanProofs.IPRA.AnalyticNumberTheory.RobinUpperEnd (C1 D1 K3 UHn UHd EhN EhD cndU Uup Uud NegR)
 open LeanProofs.IPRA.AnalyticNumberTheory.RobinGammaInterval (k2)
-open LeanProofs.IPRA.AnalyticNumberTheory.LcmUpto (lcmu lcmu_pos)
-open LeanProofs.IPRA.AnalyticNumberTheory.PrimorialLower (prim prim_pos)
 open LeanProofs.IPRA.AnalyticNumberTheory.EulerProduct (PP F₂)
-open LeanProofs.IPRA.AnalyticNumberTheory.PhiLower (le_mul_mono)
 open LeanProofs.IPRA.AnalyticNumberTheory.PNTStageStep (pos_of_one_le)
-open LeanProofs.IPRA.AnalyticNumberTheory.Valuation (pw_pos')
 open LeanProofs.IPRA.AnalyticNumberTheory.ChebyshevBounds (two_pos')
 open LeanProofs.IPRA.Combinatorics.Binomial (pos_mul)
-open LeanProofs.IPRA.Signum (sg)
 
 set_option autoImplicit false
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
-local notation "𝔞" t:max => Groth.ι (IPRA.Q.mk _ t)
-
 /-! ## Numerical facts -/
 
 theorem pw3_4 : Γ ⊢[PRAAx] pw c3 (succ (succ (succ (succ zero)))) ≐ (num 81 : PTm n) := by
-  ipra_lc natEq (pw_succ (Γ := Γ) (c3 : PTm n) (succ (succ (succ zero)))) +
-    3 * natEq (pw_succ (Γ := Γ) (c3 : PTm n) (succ (succ zero))) +
-    9 * natEq (pw_succ (Γ := Γ) (c3 : PTm n) (succ zero)) + 27 * natEq (pw_succ (Γ := Γ) (c3 : PTm n) zero) +
-    81 * natEq (pw_zero (Γ := Γ) (c3 : PTm n))
+  ipra_lc natEq (pw_succ (c3 : PTm n) (succ (succ (succ zero)))) + 3 * natEq (pw_succ (c3 : PTm n) (succ (succ zero))) +
+    9 * natEq (pw_succ (c3 : PTm n) (succ zero)) + 27 * natEq (pw_succ (c3 : PTm n) zero) + 81 *
+    natEq (pw_zero (c3 : PTm n))
 
 /-- `9^K ≥ 81` for `K ≥ 2`. -/
 theorem G81 {K : PTm n} (hK : Γ ⊢[PRAAx] le two K) : Γ ⊢[PRAAx] le (num 81) (Rv K c3) := by
@@ -181,7 +169,6 @@ theorem hth_le {m k Kθ Kh : PTm n} (hm : Γ ⊢[PRAAx] le (num 16) m) (hK : Γ 
         hiD (hiN (prim (m * m)) one Kθ) (hiD (prim (m * m)) one Kθ) Kh)
       (num 54 * hiN (hiN (prim (m * m)) one Kθ) (hiD (prim (m * m)) one Kθ) Kh * loD (m * m) one (K1 (lcmu (m * m)) k) +
         num 83 * loD (m * m) one (K1 (lcmu (m * m)) k) * hiD (hiN (prim (m * m)) one Kθ) (hiD (prim (m * m)) one Kθ) Kh) := by
-  have hm2 : Γ ⊢[PRAAx] le two m := le_trans (by ipra_le 14) hm
   have hθ := theta_hi hm hK
   have m2 := le_mul_mono hm hm
   have hPi1 : Γ ⊢[PRAAx] le one (prim (m * m)) := one_le_of_pos' (prim_pos _)

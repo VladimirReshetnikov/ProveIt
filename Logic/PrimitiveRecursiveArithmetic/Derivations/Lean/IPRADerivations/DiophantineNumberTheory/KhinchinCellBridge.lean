@@ -1,7 +1,6 @@
 import IPRADerivations.DiophantineNumberTheory.KhinchinUnionVanish
 import IPRADerivations.DiophantineNumberTheory.KhinchinCellCount
 import IPRADerivations.DiophantineNumberTheory.KhinchinCellParams
-import IPRADerivations.Core.Header
 
 /-!
 # From a cell's block count to its round count (`hurwitz_khinchin_ipra`)
@@ -20,7 +19,7 @@ For coarse cell `g < G = p + 1` with the parameters of `KhinchinCellParams` (`α
 
 namespace LeanProofs.IPRA.DiophantineNumberTheory.KhinchinCellBridge
 
-open_ipra
+open_ipra exports
 open LeanProofs.IPRA.Signum (sg)
 open LeanProofs.IPRA.Analysis.Products (fact)
 open LeanProofs.IPRA.DiophantineNumberTheory.KhinchinBlockScales (Xt bB)
@@ -31,8 +30,6 @@ open LeanProofs.IPRA.DiophantineNumberTheory.KhinchinCellParams (αc γc b0c cel
 set_option autoImplicit false
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
-
-local notation "𝔞" t:max => Groth.ι (IPRA.Q.mk _ t)
 
 /-- One cell: the block count and the margins give `r ≤ 16384 Σ_{k<r} sg(⋃)(rg + k)`. -/
 theorem cell_bridge (wb : PTm 2) {B K0 M R G' g p r : PTm n}

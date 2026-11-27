@@ -1,6 +1,5 @@
 import IPRADerivations.AnalyticNumberTheory.PowerResidueInversion
 import IPRADerivations.AnalyticNumberTheory.PowerResidueForward
-import IPRADerivations.Core.Header
 
 /-!
 # The backward transfer for progression rows (`riemann_ipra_prime_criteria_2026-11-20`, `thm:powerdivisor`)
@@ -20,25 +19,18 @@ For signed bodies `a⁺, a⁻`, `q ≥ 2`, a reduced residue `b < q` and `h ≥ 
   `PowerResidueInversion.inversion_res` and `PowerTransfer.transfer`.
 -/
 
-set_option linter.unusedSimpArgs false
-
 namespace LeanProofs.IPRA.AnalyticNumberTheory.PowerResidueBackward
 
-open_ipra
+open_ipra exports
 open LeanProofs.IPRA.AnalyticNumberTheory.PowerAbstractInversion (rBg RSg inst2_rBg)
 open LeanProofs.IPRA.AnalyticNumberTheory.PowerResidueInversion (Rt Rt_at inversion_res)
 open LeanProofs.IPRA.AnalyticNumberTheory.PowerResidueForward (InR inR_at)
 open LeanProofs.IPRA.AnalyticNumberTheory.PowerResidueRows (mask bvB Xp MB hyps_shift)
-open LeanProofs.IPRA.AnalyticNumberTheory.PowerResidue (res res_lt res_cop)
-open LeanProofs.IPRA.AnalyticNumberTheory.PowerDivisorPrefix (Apre)
 open LeanProofs.IPRA.AnalyticNumberTheory.PowerDivisorInversion (Zp wP wN)
 open LeanProofs.IPRA.AnalyticNumberTheory.PowerDivisorGrowth (InA mqB mq_at arg_bound mPB mNB mu_at inst2_wP_succ
   mu_mix mu_sum_le)
 open LeanProofs.IPRA.AnalyticNumberTheory.PowerTransfer (transfer TermBound k4 r8)
-open LeanProofs.IPRA.AnalyticNumberTheory.AbsDiff (absd absd_le le_absd_l le_absd_r)
 open LeanProofs.IPRA.Combinatorics.BinomialTheorem (congrPw)
-open LeanProofs.IPRA.AnalyticNumberTheory.FactorialLambda (sum_add2)
-open LeanProofs.IPRA.Foundations.BoundedReflection (eqb_cases eq_of_eqb)
 open LeanProofs.IPRA.AnalyticNumberTheory.PNTStageStep (pos_of_one_le)
 open LeanProofs.IPRA.DiophantineNumberTheory.PrimitiveReduction (pw_zero_base)
 open LeanProofs.IPRA.Signum (sg sg_zero sg_succ)
@@ -47,8 +39,6 @@ open LeanProofs.IPRA.AnalyticNumberTheory.Mobius (muP muN)
 set_option autoImplicit false
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
-
-local notation "𝔞" t:max => Groth.ι (IPRA.Q.mk _ t)
 
 /-- `|uX − uY|^K ≤ R` for an indicator `u`, given the bound at `u = 1` (`K ≥ 1`). -/
 theorem unit_pow {u X Y K R : PTm n} (hK : Γ ⊢[PRAAx] le one K) (hu : Γ ⊢[PRAAx] (u ≐ zero) ⋎ (u ≐ one))

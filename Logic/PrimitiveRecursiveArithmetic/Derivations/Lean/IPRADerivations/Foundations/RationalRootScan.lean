@@ -1,8 +1,5 @@
-import IPRADerivations.Foundations.RationalRootConstant
 import IPRADerivations.Foundations.EigenvalueGrid
 import IPRADerivations.Foundations.FilteredEnumeration
-import IPRADerivations.Core.LinearCombination
-import IPRADerivations.Core.Header
 
 /-!
 # The bounded rational-root scan (`ipra_presentations_to_witnesses`, `lem:norm-rational-roots`)
@@ -46,15 +43,12 @@ factor `T^e`, and the evaluation of `K` as a primitive recursive program on coef
 
 namespace LeanProofs.IPRA.Foundations.RationalRootScan
 
-open_ipra
+open_ipra exports
 open LeanProofs.IPRA.Foundations.RationalRootDegree (Bez euclid P tB top_at)
 open LeanProofs.IPRA.Foundations.RationalRootConstant (num_bound den_bound)
-open LeanProofs.IPRA.Foundations.BoundedReflection (sgB)
 open LeanProofs.IPRA.Foundations.FilteredEnumeration (rank sel sel_spec sel_rank rank_lt_size)
 
 variable {k : ℕ} {Γ : List (Fm PTm k)}
-
-local notation "𝔞" t:max => Groth.ι (IPRA.Q.mk _ t)
 
 /-! ## The height bound -/
 
@@ -109,9 +103,9 @@ theorem zero_root_den {q' u v : PTm k} (hB : Γ ⊢[PRAAx] Bez q' zero u v) :
 /-- The homogeneous sum of degree `0` is its constant coefficient. -/
 theorem const_eval (a : PTm 2) (p q x : PTm k) :
     Γ ⊢[PRAAx] P a (succ zero) p q zero x ≐ inst2 a zero x := by
-  ipra_lc natEq (sum_succ' (Γ := Γ) (tB a) zero (pairT p (pairT q (pairT zero x)))) +
-    natEq (sum_zero (Γ := Γ) (tB a) (pairT p (pairT q (pairT zero x)))) + natEq (top_at (Γ := Γ) a p q zero x) +
-    𝔞 (inst2 a zero x) * natEq (pw_zero (Γ := Γ) p)
+  ipra_lc natEq (sum_succ' (tB a) zero (pairT p (pairT q (pairT zero x)))) +
+    natEq (sum_zero (tB a) (pairT p (pairT q (pairT zero x)))) + natEq (top_at a p q zero x) +
+    𝔞 (inst2 a zero x) * natEq (pw_zero p)
 
 /-- "For `d = 0`, this contradicts `c_0 ≠ 0`": the cleared equation of degree `0` says
 `a_0 = b_0`. -/

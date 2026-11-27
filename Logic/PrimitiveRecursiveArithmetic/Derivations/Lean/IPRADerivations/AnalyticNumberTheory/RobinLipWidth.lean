@@ -1,6 +1,5 @@
 import IPRADerivations.AnalyticNumberTheory.RobinLipLog
 import IPRADerivations.AnalyticNumberTheory.RobinLogWidth
-import IPRADerivations.Core.Header
 
 /-!
 # The width of a composed logarithm interval (`robin_ipra_research_2026-11-19`, §"Composing the double logarithm")
@@ -15,19 +14,15 @@ constant `2`. The double-log interval therefore has width at most `4·2^{−r}`.
   (`RobinLipLog.lo_lip_up`); the width of the upper end is `RobinLogWidth.logI_width`.
 -/
 
-set_option linter.unusedSimpArgs false
-
 namespace LeanProofs.IPRA.AnalyticNumberTheory.RobinLipWidth
 
-open_ipra
+open_ipra exports
 open LeanProofs.IPRA.AnalyticNumberTheory.RobinLipLog (lo_lip_up)
 open LeanProofs.IPRA.AnalyticNumberTheory.RobinLogInterval (Kp loN loD hiN hiD loD_pos)
 
 set_option autoImplicit false
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
-
-local notation "𝔞" t:max => Groth.ι (IPRA.Q.mk _ t)
 
 theorem comp_alg {hN' hD' lN' lD' lN lD A D R : PTm n} (hM : Γ ⊢[PRAAx] lD' ≐ succ (pred lD'))
     (w : Γ ⊢[PRAAx] le (R * (hN' * lD')) (R * (lN' * hD') + hD' * lD'))

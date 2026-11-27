@@ -1,6 +1,5 @@
 import IPRADerivations.Foundations.WindowStability
 import IPRADerivations.Foundations.ApproximateWitness
-import IPRADerivations.Core.Header
 
 /-!
 # The represented finite window: the selected endpoints
@@ -26,15 +25,10 @@ that are used. The candidate starts, the choice of `K` against the bound `B` and
 arithmetic of the application.
 -/
 
-set_option linter.unusedSimpArgs false
-
 namespace LeanProofs.IPRA.Foundations.RealWindow
 
-open_ipra
-open LeanProofs.IPRA.Probability.FiniteLaws (Mn)
-open LeanProofs.IPRA.Foundations.ApproximateWitness (argmin argmin_spec)
+open_ipra exports
 open LeanProofs.IPRA.Foundations.WindowStability (min_gap)
-open LeanProofs.IPRA.Foundations.FrontierSoundness (lt_succ_of_le')
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 

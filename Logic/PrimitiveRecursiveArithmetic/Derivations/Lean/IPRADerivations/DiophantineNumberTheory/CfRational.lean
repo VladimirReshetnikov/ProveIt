@@ -1,13 +1,5 @@
-import IPRADerivations.Core.Pairing
-import IPRADerivations.Core.Search
-import IPRADerivations.Core.OrderCertificates
-import IPRADerivations.AnalyticNumberTheory.GcdFiber
-import IPRADerivations.AnalyticNumberTheory.Multiplicative
 import IPRADerivations.Foundations.CrtCoprime
 import IPRADerivations.AnalyticNumberTheory.CoprimeModulus
-import IPRADerivations.AnalyticNumberTheory.Smooth
-import IPRADerivations.Core.LinearCombination
-import IPRADerivations.Core.Header
 
 /-!
 # Finite continued fractions of rationals
@@ -35,18 +27,12 @@ Packet: `diophantine-number-theory/number_theory_ipra_2026-11-22`, `chapters/dio
 The uniqueness of the canonical expansion is not derived here.
 -/
 
-set_option linter.unusedSimpArgs false
-
 namespace LeanProofs.IPRA.DiophantineNumberTheory.CfRational
 
-open_ipra
-open LeanProofs.IPRA.AnalyticNumberTheory.GcdFiber (div_eq)
-open LeanProofs.IPRA.AnalyticNumberTheory.Multiplicative (rem_lt')
+open_ipra exports
 open LeanProofs.IPRA.Foundations.CrtCoprime (left_zero right_zero)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
-
-local notation "𝔞" t:max => Groth.ι (IPRA.Q.mk _ t)
 
 theorem vec2 {m : ℕ} (σ : Fin m → PTm n) (u v : PTm m) :
     (fun k => Syn.subst σ ((![u, v] : Fin 2 → PTm m) k)) = ![Syn.subst σ u, Syn.subst σ v] := by
@@ -297,7 +283,6 @@ theorem EB_pos {a b j : PTm n} (hj : Γ ⊢[PRAAx] lt j (M a b)) : Γ ⊢[PRAAx]
   exact .botE _ (.impE ne.wk ((f_at _ _ _).eqTrans Prf.hyp0))
 
 theorem Z_below {a b j : PTm n} (hj : Γ ⊢[PRAAx] le j (M a b)) : Γ ⊢[PRAAx] Z j a b ≐ zero := by
-  have e := eq_add_of_le hj
   have s := AnalyticNumberTheory.SumReindex.sum_le_bound (Γ := Γ) zB (x := pairT a b) hj
   exact (monus_zero _).eqSymm.eqTrans (le_congr (.eqRefl _) (Z_M a b) s)
 
@@ -360,8 +345,7 @@ theorem cf_last {a b : PTm n} (h2 : Γ ⊢[PRAAx] le two (M a b)) :
   have h1 : Γ ⊢[PRAAx] pred (M a b) ≐ succ (pred (pred (M a b))) := by
     have x := natEq (eq_add_of_le h2)
     refine AnalyticNumberTheory.Primes.eq_succ_pred (y := monus (M a b) two) ?_
-    have y := natEq eM
-    apply deriveNat; ipra_simps; linear_combination x - y
+    ipra_lc x - natEq eM
   have hB := EB_pos hj
   have lt' := EB_lt_EA hj h1
   -- the last remainder vanishes: `EA j = EB j · cf j`

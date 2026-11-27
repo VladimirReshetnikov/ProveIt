@@ -1,6 +1,5 @@
 import IPRADerivations.Foundations.ErrorBudget
 import IPRADerivations.Probability.Variance
-import IPRADerivations.Core.Header
 
 /-!
 # Integration is invariant under certified partition refinement
@@ -19,12 +18,9 @@ observation `f` of natural terms on the coarse cells:
   is unchanged.
 -/
 
-set_option linter.unusedSimpArgs false
-
 namespace LeanProofs.IPRA.Foundations.PartitionRefinement
 
-open_ipra
-open LeanProofs.IPRA.Foundations.ErrorBudget (nsum toG_nsum)
+open_ipra exports
 open LeanProofs.IPRA.Probability.Variance (ad)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}

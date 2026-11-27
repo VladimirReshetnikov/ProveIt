@@ -1,5 +1,4 @@
 import IPRADerivations.Foundations.BoundedFormulas
-import IPRADerivations.Core.Header
 
 /-!
 # The two-class obstruction (`ipra_categorical_methods`, `thm:no-two-class-skeleton`)
@@ -28,14 +27,11 @@ uniformly in `e`, is a statement of computability theory about the fixed simulat
 an iPRA sentence; it is not formalized. What is derived is the reduction it rests on.
 -/
 
-set_option linter.unusedSimpArgs false
-
 namespace LeanProofs.IPRA.Foundations.TwoClassObstruction
 
-open_ipra
+open_ipra exports
 open LeanProofs.IPRA.Signum (sg)
 open LeanProofs.IPRA.Foundations.BoundedReflection (sg_cases one_ne_zero)
-open LeanProofs.IPRA.Foundations.BoundedFormulas (sg_of_pos sg_of_zero)
 
 variable {k : ℕ} {Γ : List (Fm PTm k)}
 

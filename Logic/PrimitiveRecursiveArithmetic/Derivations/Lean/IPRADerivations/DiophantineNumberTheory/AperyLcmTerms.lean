@@ -1,6 +1,5 @@
 import IPRADerivations.DiophantineNumberTheory.AperyFloor
 import IPRADerivations.DiophantineNumberTheory.AperyMultibound
-import IPRADerivations.Core.Header
 
 /-!
 # The Legendre terms of the Apéry multinomial
@@ -16,16 +15,12 @@ Packet: `diophantine-number-theory/apery_ipra`, Lemma `lem:lcm-div` ("The divisi
 * `terms_lt`: if `m < q` and `1 ≤ ⌊42m/q⌋`, the inequality is strict (`J ≤ 41`, `AperyFloor.floor_sum_lt`).
 -/
 
-set_option linter.unusedSimpArgs false
-
 namespace LeanProofs.IPRA.DiophantineNumberTheory.AperyLcmTerms
 
-open_ipra
+open_ipra exports
 open LeanProofs.IPRA.DiophantineNumberTheory.AperyFloor (floors floor_sum_le floor_sum_lt)
 
 variable {k : ℕ} {Γ : List (Fm PTm k)}
-
-local notation "𝔞" t:max => Groth.ι (IPRA.Q.mk _ t)
 
 /-- `⌊⌊cY/q⌋/c⌋ = ⌊Y/q⌋` for `c = c' + 1`, `q = q' + 1`. -/
 theorem floor_comp (c' Y q' : PTm k) :
@@ -42,7 +37,6 @@ theorem floor_comp (c' Y q' : PTm k) :
     refine mul_le_cancel (d' := c') ?_
     ipra_le (𝔞 q' + 1) * 𝔞 (rem (quo (succ c' * Y) (succ q')) (succ c')) + 𝔞 (rem (succ c' * Y) (succ q')) using
       linear_combination e1 + (𝔞 q' + 1) * e2
-  have et := natEq (eq_add_of_le hqA)
   -- `t < q`
   have ht : Γ ⊢[PRAAx] lt (monus Y (succ q' * quo (quo (succ c' * Y) (succ q')) (succ c'))) (succ q') := by
     refine .orE (lt_or_le (monus Y (succ q' * quo (quo (succ c' * Y) (succ q')) (succ c'))) (succ q'))

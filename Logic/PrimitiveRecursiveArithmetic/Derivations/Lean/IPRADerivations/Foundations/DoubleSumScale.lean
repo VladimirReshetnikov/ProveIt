@@ -1,5 +1,4 @@
 import IPRADerivations.Probability.Independence
-import IPRADerivations.Core.Header
 
 /-!
 # A factor that depends only on the parameter leaves a double sum
@@ -16,11 +15,9 @@ applies under both summation binders; `at1 k y` is the value of `k` at `y`, and 
 The proof is `Independence.sum_scale` on each row and then on the row sums.
 -/
 
-set_option linter.unusedSimpArgs false
-
 namespace LeanProofs.IPRA.Foundations.DoubleSumScale
 
-open_ipra
+open_ipra exports
 open LeanProofs.IPRA.Probability.Independence (row_pt sum_scale dsum)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
@@ -50,3 +47,5 @@ theorem dsum_scale (h f : PTm 3) (k : PTm 1)
   exact (oB_at h _ _ _).eqTrans ((row_scale h f k hp _ _ _).eqTrans (congrMul (.eqRefl _) (oB_at f _ _ _).eqSymm))
 
 end LeanProofs.IPRA.Foundations.DoubleSumScale
+
+export_ipra Foundations.DoubleSumScale (at1)

@@ -1,8 +1,4 @@
 import IPRADerivations.AnalyticNumberTheory.LcmBridgeTheta
-import IPRADerivations.AnalyticNumberTheory.StepParams
-import IPRADerivations.Core.LinearCombination
-import IPRADerivations.Core.InductionTactic
-import IPRADerivations.Core.Header
 
 /-!
 # `ϑ(m²) ≥ m²/4` for every `m ≥ 16` on the logarithm names
@@ -22,35 +18,27 @@ by cases on `t`, with `2^{t−1} < m` (`clog_least`):
 `theta_m16`: `lo(∏_{p≤m²} p, K) ≥ m²/4` for every `m ≥ 16` and every precision `K ≥ 2`.
 -/
 
-set_option linter.unusedSimpArgs false
-
 namespace LeanProofs.IPRA.AnalyticNumberTheory.LcmBridgeSide
 
-open_ipra
+open_ipra exports
 open LeanProofs.IPRA.AnalyticNumberTheory.LcmBridgeTheta (theta_lower two_pos)
-open LeanProofs.IPRA.AnalyticNumberTheory.RobinLogInterval (loN loD)
 open LeanProofs.IPRA.AnalyticNumberTheory.RobinGammaInterval (k2)
-open LeanProofs.IPRA.AnalyticNumberTheory.PrimorialLower (prim)
 open LeanProofs.IPRA.AnalyticNumberTheory.ZetaFiniteContract (clog clog_spec clog_least)
-open LeanProofs.IPRA.AnalyticNumberTheory.PhiLower (le_mul_mono)
 open LeanProofs.IPRA.AnalyticNumberTheory.PNTStageStep (pos_of_one_le)
-open LeanProofs.IPRA.AnalyticNumberTheory.Valuation (pw_pos')
 open LeanProofs.IPRA.Geometry.HypercubeSplit (le_cancel_pos)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
-
-local notation "𝔞" t:max => Groth.ι (IPRA.Q.mk _ t)
 
 /-! ## `5w + 32 ≤ 32 · 2^w` -/
 
 theorem l32_base : Γ ⊢[PRAAx] le (num 5 * (zero : PTm n) + num 32) (num 32 * pw two zero) := by
   refine le_of_eq_add (d := zero) ?_
-  ipra_lc 32 * natEq (pw_zero (Γ := Γ) (two : PTm n))
+  ipra_lc 32 * natEq (pw_zero (two : PTm n))
 
 theorem l32_step {r : PTm n} (ih : Γ ⊢[PRAAx] le (num 5 * r + num 32) (num 32 * pw two r)) :
     Γ ⊢[PRAAx] le (num 5 * succ r + num 32) (num 32 * pw two (succ r)) := by
   refine le_of_eq_add (d := two * monus (num 32 * pw two r) (num 5 * r + num 32) + num 5 * r + num 27) ?_
-  ipra_lc 32 * natEq (pw_succ (Γ := Γ) two r) + 2 * natEq (eq_add_of_le ih)
+  ipra_lc 32 * natEq (pw_succ two r) + 2 * natEq (eq_add_of_le ih)
 
 private abbrev l32F : Fm PTm 1 := le (num 5 * var 0 + num 32) (num 32 * pw two (var 0))
 
@@ -67,14 +55,13 @@ theorem l32 (w : PTm n) : Γ ⊢[PRAAx] le (num 5 * w + num 32) (num 32 * pw two
 /-- `2^{w+5} = 32 · 2^w`, by five steps. -/
 theorem pw5 (w : PTm n) :
     Γ ⊢[PRAAx] pw two (succ (succ (succ (succ (succ w))))) ≐ num 32 * pw two w := by
-  ipra_lc natEq (pw_succ (Γ := Γ) two (succ (succ (succ (succ w))))) +
-    2 * natEq (pw_succ (Γ := Γ) two (succ (succ (succ w)))) + 4 * natEq (pw_succ (Γ := Γ) two (succ (succ w))) +
-    8 * natEq (pw_succ (Γ := Γ) two (succ w)) + 16 * natEq (pw_succ (Γ := Γ) two w)
+  ipra_lc natEq (pw_succ two (succ (succ (succ (succ w))))) + 2 * natEq (pw_succ two (succ (succ (succ w)))) + 4 *
+    natEq (pw_succ two (succ (succ w))) + 8 * natEq (pw_succ two (succ w)) + 16 * natEq (pw_succ two w)
 
 /-- `2^{w+4} = 16 · 2^w`. -/
 theorem pw4 (w : PTm n) : Γ ⊢[PRAAx] pw two (succ (succ (succ (succ w)))) ≐ num 16 * pw two w := by
-  ipra_lc natEq (pw_succ (Γ := Γ) two (succ (succ (succ w)))) + 2 * natEq (pw_succ (Γ := Γ) two (succ (succ w))) +
-    4 * natEq (pw_succ (Γ := Γ) two (succ w)) + 8 * natEq (pw_succ (Γ := Γ) two w)
+  ipra_lc natEq (pw_succ two (succ (succ (succ w)))) + 2 * natEq (pw_succ two (succ (succ w))) +
+    4 * natEq (pw_succ two (succ w)) + 8 * natEq (pw_succ two w)
 
 /-! ## The side condition at `t = λ(m)` -/
 
@@ -125,7 +112,7 @@ theorem side_cond {m : PTm n} (hm : Γ ⊢[PRAAx] le (num 16) m) :
     have h17 : C1 ⊢[PRAAx] le (num 17) m := by
       refine le_of_eq_add (d := num 16 * pred (pw two (monus (clog m) (num 5))) +
         monus m (succ (num 16 * pw two (monus (clog m) (num 5))))) ?_
-      ipra_lc natEq (eq_add_of_le b1) + 16 * natEq (pw_pos' (Γ := C1) two_pos (monus (clog m) (num 5)))
+      ipra_lc natEq (eq_add_of_le b1) + 16 * natEq (pw_pos' two_pos (monus (clog m) (num 5)))
     exact case5 h17 Prf.hyp0
   · -- `t ≥ 6`: `5t + 3 ≤ m`
     let C2 : List (Fm PTm n) := le (num 6) (clog m) :: C

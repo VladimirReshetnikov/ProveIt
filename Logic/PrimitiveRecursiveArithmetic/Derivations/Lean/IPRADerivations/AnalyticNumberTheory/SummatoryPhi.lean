@@ -1,8 +1,5 @@
 import IPRADerivations.AnalyticNumberTheory.CoprimePairs
 import IPRADerivations.AnalyticNumberTheory.MobiusInversion
-import IPRADerivations.Core.LinearCombination
-import IPRADerivations.Core.InductionTactic
-import IPRADerivations.Core.Header
 
 /-!
 # The summatory floor-square identity
@@ -21,38 +18,31 @@ Instead of the triple sum over `(a, b, d)`, both sides are compared by their inc
   `CoprimePairs.coprime_pairs` both sides also equal the coprime-pair count `C_N`.
 -/
 
-set_option linter.unusedSimpArgs false
-
 namespace LeanProofs.IPRA.AnalyticNumberTheory.SummatoryPhi
 
-open_ipra
+open_ipra exports
 open LeanProofs.IPRA.AnalyticNumberTheory.Mobius
 open LeanProofs.IPRA.AnalyticNumberTheory.MobiusBounds (mu_bound shift_pos)
-open LeanProofs.IPRA.AnalyticNumberTheory.Multiplicative (rem_eq' rem_lt' zero_lt')
-open LeanProofs.IPRA.AnalyticNumberTheory.GcdFiber (div_eq)
 open LeanProofs.IPRA.AnalyticNumberTheory.Totient (quo_eq phi totBody)
 open LeanProofs.IPRA.Signum (sg sg_zero sg_succ)
 open LeanProofs.IPRA.Probability.Independence (sum_scale)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
-local notation "𝔞" t:max => Groth.ι (IPRA.Q.mk _ t)
-
 /-! ## Floor arithmetic -/
 
 /-- `⌊(N+1)/d⌋ = ⌊N/d⌋ + [d ∣ N+1]` for `d ≥ 1`. -/
 theorem quo_succ {N d : PTm n} (hd : Γ ⊢[PRAAx] d ≐ succ (pred d)) :
     Γ ⊢[PRAAx] quo (succ N) d ≐ quo N d + eqb (rem (succ N) d) zero := by
-  have dv := natEq (div_eq (j := N) hd)
   have rl := rem_lt' hd N
   refine .orE (lt_or_le (succ (rem N d)) d) ?_ ?_
   · let C : List (Fm PTm n) := lt (succ (rem N d)) d :: Γ
     have h : C ⊢[PRAAx] lt (succ (rem N d)) d := Prf.hyp0
     have dv' := natEq ((div_eq (j := N) hd).wk : C ⊢[PRAAx] _)
     have q : C ⊢[PRAAx] quo (succ N) d ≐ quo N d :=
-      quo_eq hd.wk (r := succ (rem N d)) (by apply deriveNat; ipra_simps; linear_combination dv') h
+      quo_eq hd.wk (r := succ (rem N d)) (by ipra_lc dv') h
     have r : C ⊢[PRAAx] rem (succ N) d ≐ succ (rem N d) :=
-      rem_eq' hd.wk (q := quo N d) (by apply deriveNat; ipra_simps; linear_combination dv') h
+      rem_eq' hd.wk (q := quo N d) (by ipra_lc dv') h
     have e : C ⊢[PRAAx] eqb (rem (succ N) d) zero ≐ zero :=
       (congrEqb' r (.eqRefl _)).eqTrans (eqb_of_ne (.impI (succ_ne_zero' _ Prf.hyp0)))
     exact q.eqTrans ((add_zero _).eqSymm.eqTrans (congrAdd (.eqRefl _) e.eqSymm))
@@ -61,9 +51,9 @@ theorem quo_succ {N d : PTm n} (hd : Γ ⊢[PRAAx] d ≐ succ (pred d)) :
     have dv' := natEq ((div_eq (j := N) hd).wk : C ⊢[PRAAx] _)
     have a := natEq e₁
     have q : C ⊢[PRAAx] quo (succ N) d ≐ succ (quo N d) :=
-      quo_eq hd.wk (r := zero) (by apply deriveNat; ipra_simps; linear_combination dv' + a) (zero_lt' hd.wk)
+      quo_eq hd.wk (r := zero) (by ipra_lc dv' + a) (zero_lt' hd.wk)
     have r : C ⊢[PRAAx] rem (succ N) d ≐ zero :=
-      rem_eq' hd.wk (q := succ (quo N d)) (by apply deriveNat; ipra_simps; linear_combination dv' + a) (zero_lt' hd.wk)
+      rem_eq' hd.wk (q := succ (quo N d)) (by ipra_lc dv' + a) (zero_lt' hd.wk)
     have e : C ⊢[PRAAx] eqb (rem (succ N) d) zero ≐ one := eqb_of_eq r
     exact q.eqTrans ((succ_eq_add_one _).eqTrans (congrAdd (.eqRefl _) e.eqSymm))
 
@@ -78,7 +68,7 @@ theorem eqb_sq (a b : PTm n) : Γ ⊢[PRAAx] eqb a b * eqb a b ≐ eqb a b := by
     have h' := natEq h
     have z : C ⊢[PRAAx] monus one (eqb a b) + pred (eqb a b) ≐ zero := by
       have e : C ⊢[PRAAx] succ (monus one (eqb a b) + pred (eqb a b)) ≐ succ zero := by
-        ipra_lc natEq (eqb_split (Γ := C) a b) - h'
+        ipra_lc natEq (eqb_split a b) - h'
       exact (pred_succ _).eqSymm.eqTrans ((congrPred e).eqTrans (pred_succ _))
     have p0 := add_eq_zero_right z
     have e1 : C ⊢[PRAAx] eqb a b ≐ one := h.eqTrans (congrSucc p0)
@@ -122,7 +112,7 @@ theorem sq_step {N d : PTm n} (X : PTm n) (hd : Γ ⊢[PRAAx] d ≐ succ (pred d
     Γ ⊢[PRAAx] X * (quo (succ N) d * quo (succ N) d) ≐
       X * (quo N d * quo N d) + X * (eqb (rem (succ N) d) zero * (two * quo N d + one)) := by
   ipra_lc 𝔞 X * (𝔞 (quo (succ N) d) + 𝔞 (quo N d) + 𝔞 (eqb (rem (succ N) d) zero)) * natEq (quo_succ (N := N) hd) +
-    𝔞 X * natEq (eqb_sq (Γ := Γ) (rem (succ N) d) zero)
+    𝔞 X * natEq (eqb_sq (rem (succ N) d) zero)
 
 theorem sg_zero_case {d : PTm n} (h : Γ ⊢[PRAAx] d ≐ zero) (Y Z : PTm n) : Γ ⊢[PRAAx] (sg d * Y) * Z ≐ zero :=
   zero_mul_l (zero_mul_l ((congrSg h).eqTrans sg_zero) Y) Z
@@ -164,8 +154,8 @@ theorem D_step (N : PTm n) :
   have c₁ := natEq (sum_succ' (Γ := Γ) DPB (succ N) N); have c₂ := natEq (sum_succ' (Γ := Γ) DNB (succ N) N)
   have z₁ := natEq tP; have z₂ := natEq tN
   refine .andI ?_ ?_
-  · ipra_lc a₁ + natEq (sum_add (Γ := Γ) DPB IPB (succ (succ N)) N) + c₁ + z₁
-  · ipra_lc a₂ + natEq (sum_add (Γ := Γ) DNB INB (succ (succ N)) N) + c₂ + z₂
+  · ipra_lc a₁ + natEq (sum_add DPB IPB (succ (succ N)) N) + c₁ + z₁
+  · ipra_lc a₂ + natEq (sum_add DNB INB (succ (succ N)) N) + c₂ + z₂
 
 /-! ## The increment as a Möbius sum -/
 
@@ -244,8 +234,8 @@ theorem inc_sum (N : PTm n) :
     exact Prf.andE₂ (inc_pt hl)
   have b₁ := natEq pP; have b₂ := natEq pN; have c₁ := natEq sP; have c₂ := natEq sN
   refine .andI ?_ ?_
-  · ipra_lc -natEq (sum_add (Γ := Γ) IPB PBs (succ (succ N)) N) - b₁ + c₁
-  · ipra_lc -natEq (sum_add (Γ := Γ) INB NBs (succ (succ N)) N) - b₂ + c₂
+  · ipra_lc -natEq (sum_add IPB PBs (succ (succ N)) N) - b₁ + c₁
+  · ipra_lc -natEq (sum_add INB NBs (succ (succ N)) N) - b₂ + c₂
 
 /-- `∑_{d ∣ M} μ⁺(d) = ∑_{d ∣ M} μ⁻(d) + [M = 1]` for `M ≥ 1`. -/
 theorem pb_cancel {M : PTm n} (hM : Γ ⊢[PRAAx] M ≐ succ (pred M)) :
@@ -279,8 +269,8 @@ theorem sp_step {N : PTm n}
   have ph := sum_succ' (Γ := Γ) PhiB (succ N) zero
   rw [inst2_Phi] at ph
   ipra_lc natEq (Prf.andE₁ ds) - natEq (Prf.andE₂ ds) + natEq ih + natEq (Prf.andE₁ is) - natEq (Prf.andE₂ is) -
-    natEq (pb_cancel hM) + 2 * natEq (MobiusInversion.phi_mobius hM) - natEq (eqb_sg (Γ := Γ) N) - 2 * natEq ph +
-    natEq (sg_succ (Γ := Γ) N)
+    natEq (pb_cancel hM) + 2 * natEq (MobiusInversion.phi_mobius hM) - natEq (eqb_sg N) - 2 * natEq ph +
+    natEq (sg_succ N)
 
 /-- Variable: `0 = N`. -/
 private abbrev spF : Fm PTm 1 :=
@@ -299,9 +289,7 @@ private theorem sp_base : Γ ⊢[PRAAx] ap2 (sumF DPB) (succ zero) (zero : PTm n
   have t₁ := natEq ((show inst2 DPB zero (zero : PTm n) = _ from inst2_DP _ _) ▸ sg_zero_case (Γ := Γ) (.eqRefl zero) _ _)
   have t₂ := natEq ((show inst2 DNB zero (zero : PTm n) = _ from inst2_DN _ _) ▸ sg_zero_case (Γ := Γ) (.eqRefl zero) _ _)
   have p0 := natEq (sum_zero (Γ := Γ) totBody (zero : PTm n))
-  have s0 := natEq (sg_zero (Γ := Γ) (n := n))
-  apply deriveNat; ipra_simps
-  linear_combination a - b + z₁ - z₂ + t₁ - t₂ + s0 - 2 * c' - 2 * z₃ - 2 * p0
+  ipra_lc a - b + z₁ - z₂ + t₁ - t₂ + natEq (sg_zero (n := n)) - 2 * c' - 2 * z₃ - 2 * p0
 
 private theorem sp₀ : ([] : List (Fm PTm 1)) ⊢[PRAAx] spF := by
   ipra_ind [subst_ap2]

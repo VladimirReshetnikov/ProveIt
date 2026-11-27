@@ -1,6 +1,5 @@
 import IPRADerivations.Foundations.GuardedLoop
 import IPRADerivations.Foundations.StrategyRealization
-import IPRADerivations.Core.Header
 
 /-!
 # A typed acyclic FIBER proof compiler
@@ -23,11 +22,9 @@ Residuals in a `bind` body are guarded by the newly established input formula.
 Only the selected branch's or reached body's producers must therefore hold.
 -/
 
-set_option linter.unusedSimpArgs false
-
 namespace LeanProofs.IPRA.Foundations.FiberCompiler
 
-open_ipra
+open_ipra exports
 open LeanProofs.IPRA.Foundations.BoundedFormulas
 open LeanProofs.IPRA.Foundations.TraceReflection (Run A2)
 open LeanProofs.IPRA.ClockedDescent (Pat)

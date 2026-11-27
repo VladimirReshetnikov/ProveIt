@@ -1,8 +1,5 @@
 import IPRADerivations.AnalyticNumberTheory.DivisorSwap
-import IPRADerivations.AnalyticNumberTheory.SelbergLeibniz
 import IPRADerivations.AnalyticNumberTheory.ConvolutionAssoc
-import IPRADerivations.Core.LinearCombination
-import IPRADerivations.Core.Header
 
 /-!
 # The divisor involution with a parameter, and commutativity of convolution (`pnt_ipra_constructive_2026-11-14`)
@@ -16,25 +13,17 @@ derives from it
   `μ * (τ log) = 2 log` in `selberg.tex`, Lemma `sb:symmetry` ("`𝒟τ = 2L * 𝟏`").
 -/
 
-set_option linter.unusedSimpArgs false
-
 namespace LeanProofs.IPRA.AnalyticNumberTheory.DivisorSwapP
 
-open_ipra
+open_ipra exports
 open LeanProofs.IPRA.AnalyticNumberTheory.Mobius
-open LeanProofs.IPRA.AnalyticNumberTheory.MobiusBounds (shift_pos)
-open LeanProofs.IPRA.AnalyticNumberTheory.DivisorSwap (zt zt_symm quo_lt')
 open LeanProofs.IPRA.AnalyticNumberTheory.DirichletLeibniz (cvB conv DwB inst2_cvB)
 open LeanProofs.IPRA.AnalyticNumberTheory.SelbergLeibniz (tau_leibniz)
 open LeanProofs.IPRA.AnalyticNumberTheory.WeightedMangoldt (Lw)
-open LeanProofs.IPRA.Probability.Independence (sum_scale)
-open LeanProofs.IPRA.Signum (sg sg_zero sg_succ)
 
 set_option autoImplicit false
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
-
-local notation "𝔞" t:max => Groth.ι (IPRA.Q.mk _ t)
 
 /-! ## Commutativity of the convolution -/
 
@@ -67,6 +56,6 @@ theorem conv_comm (f g : PTm 2) {m y : PTm n} (hm : Γ ⊢[PRAAx] m ≐ succ (pr
 /-- `τ(m) L_w(m, y) = 2 (L_w * 𝟏)(m, y)` for `m ≥ 1`. -/
 theorem tau_lw (w : PTm 2) {m y : PTm n} (hm : Γ ⊢[PRAAx] m ≐ succ (pred m)) :
     Γ ⊢[PRAAx] Lw w m y * conv one one m y ≐ two * conv (DwB w one) one m y := by
-  ipra_lc natEq (tau_leibniz (Γ := Γ) w (y := y) hm) + natEq (conv_comm (Γ := Γ) one (DwB w one) (y := y) hm)
+  ipra_lc natEq (tau_leibniz w (y := y) hm) + natEq (conv_comm one (DwB w one) (y := y) hm)
 
 end LeanProofs.IPRA.AnalyticNumberTheory.DivisorSwapP

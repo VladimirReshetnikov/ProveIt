@@ -1,6 +1,5 @@
 import IPRADerivations.Foundations.BoundedFormulas
 import IPRADerivations.AnalyticNumberTheory.Valuation
-import IPRADerivations.Core.Header
 
 /-!
 # Uniform finite gluing (`ipra_categorical_methods`, `thm:finite-glue`)
@@ -38,14 +37,11 @@ The choice of the first covering patch affects the term `glue` but not its value
 `glue_restrict` it equals every section defined at `x`.
 -/
 
-set_option linter.unusedSimpArgs false
-
 namespace LeanProofs.IPRA.Foundations.FiniteGluing
 
-open_ipra
+open_ipra exports
 open LeanProofs.IPRA.Signum (sg)
 open LeanProofs.IPRA.Foundations.BoundedReflection
-open LeanProofs.IPRA.Foundations.BoundedFormulas (sg_of_pos)
 
 variable {k : ℕ} {Γ : List (Fm PTm k)}
 
@@ -241,3 +237,5 @@ theorem gluing_closed : ([] : List (Fm PTm 0)) ⊢[PRAAx] univ 5
 end Glue
 
 end LeanProofs.IPRA.Foundations.FiniteGluing
+
+export_ipra Foundations.FiniteGluing (sg_of_ne)

@@ -1,6 +1,4 @@
 import IPRADerivations.AnalyticNumberTheory.PhiPower
-import IPRADerivations.Core.InductionTactic
-import IPRADerivations.Core.Header
 
 /-!
 # Divisibility monotonicity of the totient
@@ -19,14 +17,12 @@ set_option linter.unusedSimpArgs false
 
 namespace LeanProofs.IPRA.AnalyticNumberTheory.PhiDivides
 
-open_ipra
+open_ipra exports
 open LeanProofs.IPRA.Algebra.CubeRootTwo (sg sg_zero sg_succ)
 open LeanProofs.IPRA.Combinatorics.Binomial (pos_mul)
 open LeanProofs.IPRA.DiophantineNumberTheory.Coprime
 open LeanProofs.IPRA.AnalyticNumberTheory.Totient (phi totBody)
-open LeanProofs.IPRA.AnalyticNumberTheory.Primes (lpf lpf_dvd lpf_prime prime eq_succ_pred)
 open LeanProofs.IPRA.AnalyticNumberTheory.Order (phi_pos)
-open LeanProofs.IPRA.AnalyticNumberTheory.Multiplicative (phi_mul_at rem_eq' zero_lt')
 open LeanProofs.IPRA.AnalyticNumberTheory.PhiPower (phi_mul_pow_at)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
@@ -90,8 +86,7 @@ theorem viol_ge2 (z' : PTm n) (hV : Γ ⊢[PRAAx] ap2 (sumF violB) (succ (succ z
     refine le_of_eq_add (d := pred (quo (succ (succ z')) (lpf (succ (succ z')))) +
       monus (lpf (succ (succ z'))) two * quo (succ (succ z')) (lpf (succ (succ z')))) ?_
     have h₁ := natEq hNe; have h₂ := natEq hc; have h₃ := natEq (eq_add_of_le hq2)
-    apply deriveNat; ipra_simps
-    linear_combination h₁ + h₂ + Groth.ι (Q.mk _ (quo (succ (succ z')) (lpf (succ (succ z'))))) * h₃
+    ipra_lc h₁ + h₂ + Groth.ι (Q.mk _ (quo (succ (succ z')) (lpf (succ (succ z'))))) * h₃
   -- `φ(a) ∣ φ(a c″)` from the count.
   have h₀ := sum_zero_elim violB hV hlt
   rw [inst2_viol] at h₀
@@ -101,8 +96,7 @@ theorem viol_ge2 (z' : PTm n) (hV : Γ ⊢[PRAAx] ap2 (sumF violB) (succ (succ z
   have d₂ := peel hX hq
   have e : Γ ⊢[PRAAx] A * quo (succ (succ z')) (lpf (succ (succ z'))) * lpf (succ (succ z')) ≐
       A * succ (succ z') := by
-    have h₁ := natEq hNe
-    apply deriveNat; ipra_simps; linear_combination -Groth.ι (Q.mk _ A) * h₁
+    ipra_lc -Groth.ι (Q.mk _ A) * natEq hNe
   exact dvd_trans' (phi_pos hA) (phi_pos hX) d₁ (dvd_congr (congrAp2 (sumF totBody) e e) d₂)
 
 theorem viol_step {N : PTm n} (hV : Γ ⊢[PRAAx] ap2 (sumF violB) N A ≐ zero) :
@@ -158,3 +152,5 @@ theorem phi_divides : ([] : List (Fm PTm 0)) ⊢[PRAAx] univ 2 phiDividesFormula
   closeUniv 2 (.impI (phi_divides_at (congrSucc (pred_succ _).eqSymm) Prf.hyp0))
 
 end LeanProofs.IPRA.AnalyticNumberTheory.PhiDivides
+
+export_ipra AnalyticNumberTheory.PhiDivides (sg_zero_inv)

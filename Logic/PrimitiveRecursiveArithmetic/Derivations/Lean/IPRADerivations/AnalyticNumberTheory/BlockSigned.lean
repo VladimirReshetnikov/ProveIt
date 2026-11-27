@@ -1,7 +1,4 @@
 import IPRADerivations.AnalyticNumberTheory.BlockTrunc
-import IPRADerivations.AnalyticNumberTheory.LogRefinement
-import IPRADerivations.AnalyticNumberTheory.ChebyshevAbel
-import IPRADerivations.Core.Header
 
 /-!
 # The signed mean of the excess sums (`pnt_ipra_constructive_2026-11-14`, `con:signed`)
@@ -26,31 +23,21 @@ The two final certificates (`excess_upper`, `excess_lower`) were found by elimin
 `E_Λ, E_F, x, D` (exact rational elimination; residual zero).
 -/
 
-set_option linter.unusedSimpArgs false
-
 namespace LeanProofs.IPRA.AnalyticNumberTheory.BlockSigned
 
-open_ipra
+open_ipra exports
 open LeanProofs.IPRA.AnalyticNumberTheory.Harmonic (S hB inst2_h)
 open LeanProofs.IPRA.AnalyticNumberTheory.HarmonicChebyshev (wt S_mono)
-open LeanProofs.IPRA.AnalyticNumberTheory.HarmonicMertens (le_scale)
-open LeanProofs.IPRA.AnalyticNumberTheory.HarmonicLambda (Sw)
 open LeanProofs.IPRA.AnalyticNumberTheory.HarmonicSignedMean (signed_upper signed_lower)
-open LeanProofs.IPRA.AnalyticNumberTheory.LogRefinement (log_refine quo_mul)
-open LeanProofs.IPRA.AnalyticNumberTheory.LcmUpto (Psi)
-open LeanProofs.IPRA.AnalyticNumberTheory.ChebyshevAbel (psi_k pw_exp_le)
 open LeanProofs.IPRA.AnalyticNumberTheory.ChebyshevBlock (eB gB)
 open LeanProofs.IPRA.AnalyticNumberTheory.BlockFloor (lB fB lam_sum_lo lam_sum_hi f_sum)
 open LeanProofs.IPRA.AnalyticNumberTheory.BlockTrunc (dB e_trunc e_split d_lam d_f)
 open LeanProofs.IPRA.AnalyticNumberTheory.PNTStageStep (cancel_pos pos_of_one_le)
-open LeanProofs.IPRA.AnalyticNumberTheory.SumReindex (le_quo_of_mul_le)
 open LeanProofs.IPRA.Analysis.Products (fact)
 
 set_option autoImplicit false
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
-
-local notation "𝔞" t:max => Groth.ι (IPRA.Q.mk _ t)
 
 /-- `H_P − 1 ≤ λ_K(P) ≤ H_P`: `S(KP) ≤ S(K) + S(P)` and `S(P) + S(K) ≤ S(KP) + F`, `F = L!`. -/
 theorem log_pair {P K L : PTm n} (hP1 : Γ ⊢[PRAAx] le one P) (hK1 : Γ ⊢[PRAAx] le one K)
@@ -71,7 +58,7 @@ theorem log_pair {P K L : PTm n} (hP1 : Γ ⊢[PRAAx] le one P) (hK1 : Γ ⊢[PR
   have c1 := natEq ((sum_singleton hB (fact L)).eqTrans q1)
   have c0 := natEq (sum_zero (Γ := Γ) hB (fact L))
   have m := S_mono (Γ := Γ) (fact L) (le_of_eq_add (d := one) (b := P) (a := zero + pred P)
-    (by have e := natEq hP'; apply deriveNat; ipra_simps; linear_combination e))
+    (by ipra_lc natEq hP'))
   refine .andI ?_ ?_
   · ipra_le sl (Prf.andE₂ lr) + sl m with cKP + c0 - cK
   · ipra_le sl (Prf.andE₁ lr) with cP + cK - cKP - c1
@@ -115,8 +102,7 @@ theorem excess_upper :
   have hPx := p_le_x (x := x) hD1
   have hKP : Γ ⊢[PRAAx] le (K * quo x D) L := le_trans (le_scale K hPx) hKx
   have hPL : Γ ⊢[PRAAx] le (quo x D) L := by
-    have w := natEq (eq_add_of_le hK1)
-    exact le_trans (le_of_eq_add (d := monus K one * quo x D) (by apply deriveNat; ipra_simps; linear_combination 𝔞 (quo x D) * w)) hKP
+    exact le_trans (le_of_eq_add (d := monus K one * quo x D) (by ipra_lc 𝔞 (quo x D) * natEq (eq_add_of_le hK1))) hKP
   have h2 : Γ ⊢[PRAAx] le (K * pw two (two * (two * quo x D))) L :=
     le_trans (le_scale K (pw_exp_le (le_scale two (le_scale two hPx)))) hP
   have e1 := natEq (e_lam (Γ := Γ) (x := x) (pairT K (fact L)) hD1)
@@ -150,8 +136,7 @@ theorem excess_lower :
   have hPx := p_le_x (x := x) hD1
   have hKP : Γ ⊢[PRAAx] le (K * quo x D) L := le_trans (le_scale K hPx) hKx
   have hPL : Γ ⊢[PRAAx] le (quo x D) L := by
-    have w := natEq (eq_add_of_le hK1)
-    exact le_trans (le_of_eq_add (d := monus K one * quo x D) (by apply deriveNat; ipra_simps; linear_combination 𝔞 (quo x D) * w)) hKP
+    exact le_trans (le_of_eq_add (d := monus K one * quo x D) (by ipra_lc 𝔞 (quo x D) * natEq (eq_add_of_le hK1))) hKP
   have h2 : Γ ⊢[PRAAx] le (K * pw two (two * (two * quo x D))) L :=
     le_trans (le_scale K (pw_exp_le (le_scale two (le_scale two hPx)))) hP
   have e1 := natEq (e_lam (Γ := Γ) (x := x) (pairT K (fact L)) hD1)

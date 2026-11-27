@@ -1,10 +1,6 @@
 import IPRADerivations.Foundations.MixedRadixExpansion
 import IPRADerivations.Foundations.FilteredEnumerationCode
 import IPRADerivations.Foundations.BoundedSyntaxInduction
-import IPRADerivations.Core.Parity
-import IPRADerivations.Core.CongruenceTactic
-import IPRADerivations.Core.SubstCommand
-import IPRADerivations.Core.Header
 
 /-!
 # Numeric permutation words for the runtime determinant
@@ -17,11 +13,10 @@ matching the source word enumeration. This file uses Foundations/Core only.
 -/
 
 set_option autoImplicit false
-set_option linter.unusedSimpArgs false
 
 namespace LeanProofs.IPRA.Foundations.RuntimePermutationWords
 
-open_ipra
+open_ipra exports
 open LeanProofs.IPRA.Foundations.MasterCertificate (entry sequence sequence_length sequence_decode subst_entry)
 open LeanProofs.IPRA.Foundations.SequenceComposition (length subst_length entry_congr)
 open LeanProofs.IPRA.Foundations.BoundedSyntax (BFm formula)
@@ -479,3 +474,5 @@ theorem actual_stored_scan_closed : ([] : List (Fm PTm 0)) ⊢[PRAAx] univ 2
   closeUniv 2 (.andI (returned_words_length _ _) (returned_size_bound _ _))
 
 end LeanProofs.IPRA.Foundations.RuntimePermutationWords
+
+export_ipra Foundations.RuntimePermutationWords (digit_bound permutationBit words)

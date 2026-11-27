@@ -1,9 +1,5 @@
 import IPRADerivations.AnalyticNumberTheory.OrderOfPower
-import IPRADerivations.AnalyticNumberTheory.LocalFactor
 import IPRADerivations.DiophantineNumberTheory.ModularCertificate
-import IPRADerivations.Core.LinearCombination
-import IPRADerivations.Core.CommonLemmas
-import IPRADerivations.Core.Header
 
 /-!
 # The order of a product with coprime orders
@@ -22,23 +18,14 @@ It holds for every modulus `M ≥ 1` and units `u, v ≥ 1` (`gcd(u, M) = gcd(v,
 * **`ord_mul_coprime`**: `ord(uv, M) = ord(u, M) · ord(v, M)`.
 -/
 
-set_option linter.unusedSimpArgs false
-
 namespace LeanProofs.IPRA.AnalyticNumberTheory.OrderProduct
 
-open_ipra
-open LeanProofs.IPRA.AnalyticNumberTheory.RSA (pw_mul)
+open_ipra exports
 open LeanProofs.IPRA.AnalyticNumberTheory.Order (ord order_cong pw_rem_congr pw_one_base)
 open LeanProofs.IPRA.AnalyticNumberTheory.OrderDivides (order_dvd_of_pow pow_of_order_dvd)
-open LeanProofs.IPRA.AnalyticNumberTheory.LocalFactor (pw_mul_base)
-open LeanProofs.IPRA.DiophantineNumberTheory.ModularCertificate (rem_mul_congr2)
 open LeanProofs.IPRA.Combinatorics.Binomial (pos_mul)
-open LeanProofs.IPRA.DiophantineNumberTheory.Coprime (dvd_of_eq' eq_of_dvd' dvd_le' gcd_comm_one coprime_mul)
-open LeanProofs.IPRA.DiophantineNumberTheory.ConicGcd (dvd_of_coprime_pair)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
-
-local notation "𝔞" t:max => Groth.ι (IPRA.Q.mk _ t)
 
 /-- `x · 1 = x`. -/
 alias mul_one' := Common.mul_one_right

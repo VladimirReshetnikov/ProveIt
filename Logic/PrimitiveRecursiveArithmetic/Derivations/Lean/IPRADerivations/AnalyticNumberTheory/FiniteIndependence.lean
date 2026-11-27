@@ -1,9 +1,4 @@
 import IPRADerivations.AnalyticNumberTheory.SievePeriod
-import IPRADerivations.AnalyticNumberTheory.SumReindex
-import IPRADerivations.Foundations.BoundedReflection
-import IPRADerivations.Core.CertificateTactics
-import IPRADerivations.Core.InductionTactic
-import IPRADerivations.Core.Header
 
 /-!
 # Exact finite independence of divisibility events
@@ -30,11 +25,9 @@ The packet's proof is the Chinese remainder bijection; here the multiples of `a`
 (`SumReindex.reindex_eq`) and the residues modulo `b` are counted by periodicity.
 -/
 
-set_option linter.unusedSimpArgs false
-
 namespace LeanProofs.IPRA.AnalyticNumberTheory.FiniteIndependence
 
-open_ipra
+open_ipra exports
 open LeanProofs.IPRA.AnalyticNumberTheory.Totient (phi totBody inst2_tot count_multiples quo_eq)
 open LeanProofs.IPRA.AnalyticNumberTheory.Mobius (congrEqb' zero_mul_l)
 open LeanProofs.IPRA.AnalyticNumberTheory.MobiusBounds (shift_pos)
@@ -42,14 +35,10 @@ open LeanProofs.IPRA.AnalyticNumberTheory.SumReindex (riB inst2_riB reindex_eq c
 open LeanProofs.IPRA.AnalyticNumberTheory.SieveRecursion (shift_cop)
 open LeanProofs.IPRA.AnalyticNumberTheory.SievePeriod (cop_period step_alg)
 open LeanProofs.IPRA.Combinatorics.Binomial (pos_mul)
-open LeanProofs.IPRA.DiophantineNumberTheory.Coprime (dvd_of_eq' eq_of_dvd' gcd_comm_one pos_of_eq_mul
-  coprime_dvd_left coprime_mul)
 open LeanProofs.IPRA.DiophantineNumberTheory.QuarticStep (congrGcd)
 open LeanProofs.IPRA.Foundations.BoundedReflection (eqb_cases eq_of_eqb one_ne_zero)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
-
-local notation "𝔞" t:max => Groth.ι (IPRA.Q.mk _ t)
 
 /-! ## Residues coprime to `b` -/
 

@@ -1,7 +1,5 @@
 import IPRADerivations.Foundations.AbelianCodes
 import IPRADerivations.AnalyticNumberTheory.Totatives
-import IPRADerivations.Core.LinearCombination
-import IPRADerivations.Core.Header
 
 /-!
 # Finite generation from a computable reducing step
@@ -24,11 +22,9 @@ multiples `m^k r_{i(Q)}`.
 * `generation`: `P = m^k Q + A` with `h(Q) ≤ T` and `A` the accumulated generator multiples.
 -/
 
-set_option linter.unusedSimpArgs false
-
 namespace LeanProofs.IPRA.Foundations.GenerationDescent
 
-open_ipra
+open_ipra exports
 open LeanProofs.IPRA.Foundations.AbelianCodes (op Assoc Comm IdL congrOp smul smulF congrSmul smul_op smul_mul)
 open LeanProofs.IPRA.Signum (sg)
 open LeanProofs.IPRA.AnalyticNumberTheory.Totatives (sg_lt sg_le)

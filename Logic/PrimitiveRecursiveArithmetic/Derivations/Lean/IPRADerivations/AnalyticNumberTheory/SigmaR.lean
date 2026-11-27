@@ -1,8 +1,4 @@
 import IPRADerivations.AnalyticNumberTheory.SigmaPrimePower
-import IPRADerivations.AnalyticNumberTheory.LocalFactor
-import IPRADerivations.AnalyticNumberTheory.Order
-import IPRADerivations.Core.CommonLemmas
-import IPRADerivations.Core.Header
 
 /-!
 # The divisor functions `τ` and `σ_r`
@@ -26,36 +22,23 @@ With multiplicativity these give the value at every `n` from its prime powers; t
 the factorization is derived for `σ` in `SigmaProduct.sigma_product`.
 -/
 
-set_option linter.unusedSimpArgs false
-
 namespace LeanProofs.IPRA.AnalyticNumberTheory.SigmaR
 
-open_ipra
+open_ipra exports
 open LeanProofs.IPRA.AnalyticNumberTheory.SigmaMult (sB sig inst2_sB)
 open LeanProofs.IPRA.AnalyticNumberTheory.SigmaPrimePower (dvd_scale rest_pt pos_pw sh_pw sh_P)
 open LeanProofs.IPRA.AnalyticNumberTheory.DivisorFactor (Xp lB_at riB_at rB_at divisor_factor inst2_v1)
-open LeanProofs.IPRA.AnalyticNumberTheory.LocalFactor (pw_mul_base)
-open LeanProofs.IPRA.AnalyticNumberTheory.Order (pw_one_base)
 open LeanProofs.IPRA.DiophantineNumberTheory.Coprime (one_le_of_pos)
 open LeanProofs.IPRA.Combinatorics.Binomial (pos_mul eq_of_rem_zero)
-open LeanProofs.IPRA.DiophantineNumberTheory.GcdList (rem_by_zero)
-open LeanProofs.IPRA.Foundations.BoundedReflection (eqb_cases eq_of_eqb)
 open LeanProofs.IPRA.Probability.Lotus (cmB inst2_cmB sum_const_mul)
 open LeanProofs.IPRA.AnalyticNumberTheory.Mobius (congrEqb')
 open LeanProofs.IPRA.AnalyticNumberTheory.SumReindex (inst2_riB reindex_eq cM)
-open LeanProofs.IPRA.AnalyticNumberTheory.ConvolutionAssoc (multiples_upto)
-open LeanProofs.IPRA.AnalyticNumberTheory.LogRefinement (quo_mul)
-open LeanProofs.IPRA.AnalyticNumberTheory.Fermat (prime_shift)
-open LeanProofs.IPRA.AnalyticNumberTheory.Primes (prime)
-open LeanProofs.IPRA.AnalyticNumberTheory.FactorialLambda (sum_add2)
 open LeanProofs.IPRA.AnalyticNumberTheory.Euler (rem_one)
 open LeanProofs.IPRA.AnalyticNumberTheory.SumPhi (shift_mul')
 
 set_option autoImplicit false
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
-
-local notation "𝔞" t:max => Groth.ι (IPRA.Q.mk _ t)
 
 /-! ## The bodies -/
 
@@ -95,8 +78,7 @@ theorem cm_at (k c K r : PTm n) :
     (congrAp2 powF ((congrSnd s).eqTrans (snd_pair _ _)) (.eqRefl _)))
 
 theorem scale_alg {E A B C : PTm n} (h : Γ ⊢[PRAAx] A ≐ B * C) : Γ ⊢[PRAAx] E * A ≐ B * (E * C) := by
-  have x := natEq h
-  apply deriveNat; ipra_simps; linear_combination 𝔞 E * x
+  ipra_lc 𝔞 E * natEq h
 
 /-! ## Multiplicativity -/
 
@@ -184,13 +166,11 @@ theorem nrB_at (d p P r : PTm n) :
 
 theorem split_alg0 {X b mb H : PTm n} (hb : Γ ⊢[PRAAx] b ≐ zero) (hm : Γ ⊢[PRAAx] mb ≐ one) :
     Γ ⊢[PRAAx] X ≐ b * H + mb * X := by
-  have eb := natEq hb; have em := natEq hm
-  apply deriveNat; ipra_simps; linear_combination -(𝔞 H * eb) - 𝔞 X * em
+  ipra_lc -(𝔞 H * natEq hb) - 𝔞 X * natEq hm
 
 theorem split_alg1 {X b mb H : PTm n} (hb : Γ ⊢[PRAAx] b ≐ one) (hm : Γ ⊢[PRAAx] mb ≐ zero)
     (hH : Γ ⊢[PRAAx] H ≐ X) : Γ ⊢[PRAAx] X ≐ b * H + mb * X := by
-  have eb := natEq hb; have em := natEq hm; have eh := natEq hH
-  apply deriveNat; ipra_simps; linear_combination -(𝔞 H * eb) - eh - 𝔞 X * em
+  ipra_lc -(𝔞 H * natEq hb) - natEq hH - 𝔞 X * natEq hm
 
 /-- `[d ∣ pQ] d^r = [p ∣ d] h(d/p) + (1 − [p ∣ d]) [d ∣ pQ] d^r`. -/
 theorem split_core {p Q : PTm n} (hp : Γ ⊢[PRAAx] p ≐ succ (pred p)) (d r : PTm n) :
@@ -226,16 +206,13 @@ theorem mult_pt {p Q : PTm n} (hp : Γ ⊢[PRAAx] p ≐ succ (pred p)) (hQ : Γ 
     ((scale_alg (pw_mul_base p k r)).eqTrans (cm_at k (pw p r) Q r).eqSymm))
 
 theorem bit_alg {m E d w : PTm n} (h : Γ ⊢[PRAAx] d ≐ w) : Γ ⊢[PRAAx] m * (E * w) ≐ m * (E * d) := by
-  have x := natEq h
-  apply deriveNat; ipra_simps; linear_combination -(𝔞 m * 𝔞 E * x)
+  ipra_lc -(𝔞 m * 𝔞 E * natEq h)
 
 theorem zero_alg {m E w : PTm n} (h : Γ ⊢[PRAAx] m * E ≐ zero) : Γ ⊢[PRAAx] m * (E * w) ≐ zero := by
-  have x := natEq h
-  apply deriveNat; ipra_simps; linear_combination 𝔞 w * x
+  ipra_lc 𝔞 w * natEq h
 
 theorem rot_alg {m E d : PTm n} (h : Γ ⊢[PRAAx] m * (E * d) ≐ zero) : Γ ⊢[PRAAx] (m * E) * d ≐ zero := by
-  have x := natEq h
-  apply deriveNat; ipra_simps; linear_combination x
+  ipra_lc natEq h
 
 /-- The non-multiples of `p` dividing `p · p^a`, with the weight `d^r`: only `d = 1`. -/
 theorem rest_w {p : PTm n} (hp : Γ ⊢[PRAAx] prime p) (a d r : PTm n) :
@@ -343,8 +320,7 @@ theorem sigr_succ {p : PTm n} (hp : Γ ⊢[PRAAx] prime p) (a r : PTm n) :
 
 theorem tau_alg {S S1 P a : PTm n} (h : Γ ⊢[PRAAx] S1 ≐ P * S + one) (hP : Γ ⊢[PRAAx] P ≐ one)
     (ih : Γ ⊢[PRAAx] S ≐ succ a) : Γ ⊢[PRAAx] S1 ≐ succ (succ a) := by
-  have x := natEq h; have y := natEq hP; have z := natEq ih
-  apply deriveNat; ipra_simps; linear_combination x + 𝔞 S * y + z
+  ipra_lc natEq h + 𝔞 S * natEq hP + natEq ih
 
 /-- **`τ(p^a) = a + 1`** for a prime `p` (`τ = σ_0`). -/
 theorem tau_pow {p : PTm n} (hp : Γ ⊢[PRAAx] prime p) (a : PTm n) : Γ ⊢[PRAAx] sigr zero (pw p a) ≐ succ a := by
@@ -384,13 +360,11 @@ theorem geo_zero (x : PTm n) : Γ ⊢[PRAAx] geo x zero ≐ one := by
 
 theorem rev_base_alg {G0 G1 P1 P0 x : PTm n} (s1 : Γ ⊢[PRAAx] G1 ≐ G0 + P1) (g0 : Γ ⊢[PRAAx] G0 ≐ one)
     (p1 : Γ ⊢[PRAAx] P1 ≐ P0 * x) (p0 : Γ ⊢[PRAAx] P0 ≐ one) : Γ ⊢[PRAAx] G1 ≐ x * G0 + one := by
-  have a := natEq s1; have b := natEq g0; have c := natEq p1; have d := natEq p0
-  apply deriveNat; ipra_simps; linear_combination a + (1 - 𝔞 x) * b + c + 𝔞 x * d
+  ipra_lc natEq s1 + (1 - 𝔞 x) * natEq g0 + natEq p1 + 𝔞 x * natEq p0
 
 theorem rev_step_alg {G0 G1 G2 P1 P2 x : PTm n} (s2 : Γ ⊢[PRAAx] G2 ≐ G1 + P2) (p2 : Γ ⊢[PRAAx] P2 ≐ P1 * x)
     (ih : Γ ⊢[PRAAx] G1 ≐ x * G0 + one) (s1 : Γ ⊢[PRAAx] G1 ≐ G0 + P1) : Γ ⊢[PRAAx] G2 ≐ x * G1 + one := by
-  have a := natEq s2; have b := natEq p2; have c := natEq ih; have d := natEq s1
-  apply deriveNat; ipra_simps; linear_combination a + b + c - 𝔞 x * d
+  ipra_lc natEq s2 + natEq p2 + natEq ih - 𝔞 x * natEq s1
 
 /-- `geo x (a + 1) = x · geo x a + 1`. -/
 theorem geo_rev (x a : PTm n) : Γ ⊢[PRAAx] geo x (succ a) ≐ x * geo x a + one := by

@@ -1,5 +1,4 @@
 import IPRADerivations.Foundations.BackwardDemand
-import IPRADerivations.Core.Header
 
 /-!
 # Compile predetermined parameter-changing recursion
@@ -21,11 +20,9 @@ contract is supplied as a premise. Bounds `t≤N` are retained exactly where
 the truncated-subtraction schedule comparison requires them.
 -/
 
-set_option linter.unusedSimpArgs false
-
 namespace LeanProofs.IPRA.Foundations.ParameterChangingRecursion
 
-open_ipra
+open_ipra exports
 open LeanProofs.IPRA.Foundations.BackwardDemand
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}

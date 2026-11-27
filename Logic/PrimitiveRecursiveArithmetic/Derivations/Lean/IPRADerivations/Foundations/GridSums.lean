@@ -1,7 +1,4 @@
-import IPRADerivations.Core.SumLemmas
-import IPRADerivations.Core.Pairing
 import IPRADerivations.Core.Fubini
-import IPRADerivations.Core.Tactic
 import IPRADerivations.Core.LinearCombination
 import IPRADerivations.Core.Header
 
@@ -37,7 +34,7 @@ hypotheses.
 
 namespace LeanProofs.IPRA.Foundations.GridSums
 
-open_ipra
+open_ipra exports
 
 variable {n : ℕ}
 

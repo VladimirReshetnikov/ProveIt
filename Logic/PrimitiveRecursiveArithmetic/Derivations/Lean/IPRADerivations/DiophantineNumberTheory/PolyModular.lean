@@ -1,6 +1,5 @@
 import IPRADerivations.DiophantineNumberTheory.ModularCertificate
 import IPRADerivations.DiophantineNumberTheory.DigitCode
-import IPRADerivations.Core.Header
 
 /-!
 # Polynomial systems and the modular certificate
@@ -19,15 +18,12 @@ with natural coefficients, and `F(v) = 0` reads `P⁺(v) = P⁻(v)`.
   solution excludes every primitive (natural) solution.
 -/
 
-set_option linter.unusedSimpArgs false
-
 namespace LeanProofs.IPRA.DiophantineNumberTheory.PolyModular
 
-open_ipra
+open_ipra exports
 open LeanProofs.IPRA.DiophantineNumberTheory.ModularCertificate (unimodular rem_mul_congr2 sum_congr_mod
   prod_congr_mod shift_pos)
 open LeanProofs.IPRA.DiophantineNumberTheory.GcdList (gv)
-open LeanProofs.IPRA.DiophantineNumberTheory.GcdUnique (sh sh_inst)
 open LeanProofs.IPRA.DiophantineNumberTheory.DigitCode (rem_small)
 open LeanProofs.IPRA.Combinatorics.LegendreDigits (dm)
 open LeanProofs.IPRA.Combinatorics.BinomialTheorem (congrPw)

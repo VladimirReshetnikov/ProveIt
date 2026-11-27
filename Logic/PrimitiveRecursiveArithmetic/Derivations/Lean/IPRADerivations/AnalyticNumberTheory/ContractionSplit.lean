@@ -1,7 +1,5 @@
 import IPRADerivations.AnalyticNumberTheory.ContractionMain
 import IPRADerivations.AnalyticNumberTheory.WeightedAbel
-import IPRADerivations.Core.LinearCombination
-import IPRADerivations.Core.Header
 
 /-!
 # Splitting the weighted sum of the contraction (`pnt_ipra_constructive_2026-11-14`, `con:one-step`)
@@ -21,29 +19,19 @@ the sum `W(x) = Σ_{1≤d≤x} 2F u_d |R(⌊x/d⌋)|`, `R(m) = ψ(m) − Fm`, `F
 The stage hypothesis is an iPRA formula `∀m < x + 1. Y ≤ m → D|R(m)| ≤ AFm`, instantiated under the sum binder.
 -/
 
-set_option linter.unusedSimpArgs false
-
 namespace LeanProofs.IPRA.AnalyticNumberTheory.ContractionSplit
 
-open_ipra
+open_ipra exports
 open LeanProofs.IPRA.AnalyticNumberTheory.Harmonic (S hB)
 open LeanProofs.IPRA.AnalyticNumberTheory.HarmonicChebyshev (wt)
-open LeanProofs.IPRA.AnalyticNumberTheory.HarmonicMertens (le_scale)
 open LeanProofs.IPRA.AnalyticNumberTheory.HarmonicLogSquareSum (U)
-open LeanProofs.IPRA.AnalyticNumberTheory.LcmUpto (Psi LamB pos_of_lt_zero)
-open LeanProofs.IPRA.AnalyticNumberTheory.AbsDiff (absd absd_le adB inst2_adB)
 open LeanProofs.IPRA.AnalyticNumberTheory.WeightedBound (psiB qB inst2_psiB inst2_qB)
 open LeanProofs.IPRA.AnalyticNumberTheory.WeightedSplit (uw uw_at hRB_at)
 open LeanProofs.IPRA.AnalyticNumberTheory.WeightedAbel (a2 inst2_a2)
 open LeanProofs.IPRA.AnalyticNumberTheory.SummatoryCompose (hRB)
-open LeanProofs.IPRA.AnalyticNumberTheory.ChebyshevAbel (psi_k)
-open LeanProofs.IPRA.AnalyticNumberTheory.DivisorHyperbola (quo_le_self)
-open LeanProofs.IPRA.AnalyticNumberTheory.SumReindex (le_quo_of_mul_le)
 open LeanProofs.IPRA.AnalyticNumberTheory.HarmonicHalfSquare (udB ddB dlB u2B Dl dl_at u2_at half_square dd_le)
 open LeanProofs.IPRA.AnalyticNumberTheory.ContractionMain (dl_ge fq_le mtB inst2_mtB main_term)
-open LeanProofs.IPRA.AnalyticNumberTheory.DivisorHarmonic (shift_fact')
 open LeanProofs.IPRA.AnalyticNumberTheory.ConvSummatory (shift_succ_x)
-open LeanProofs.IPRA.AnalyticNumberTheory.Mobius (zero_mul_l)
 open LeanProofs.IPRA.Probability.Lotus (cmB sum_const_mul)
 open LeanProofs.IPRA.Probability.Independence (cm_pt)
 open LeanProofs.IPRA.Analysis.Products (fact)
@@ -52,8 +40,6 @@ open LeanProofs.IPRA.Signum (sg sg_zero sg_succ)
 set_option autoImplicit false
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
-
-local notation "𝔞" t:max => Groth.ι (IPRA.Q.mk _ t)
 
 /-- The weighted-sum body `[d ≥ 1] 2F u_d |ψ(⌊x/d⌋) − F⌊x/d⌋|` over `0 = d`, `1 = (x, (K, F))`. -/
 abbrev wbB : PTm 2 := hRB (adB psiB qB) a2
@@ -144,9 +130,9 @@ theorem head_bound {M x K L D A Y : PTm n} (hK : Γ ⊢[PRAAx] le one K) (hL : �
       rw [inst2_shiftBody, inst2_shiftBody]
       have hv : (lt (var 0) (Syn.shift M) :: Γ.map Fm.shift) ⊢[PRAAx] lt (var 0) (Syn.shift M) := Prf.hyp0
       have a := Prf.allE (quo (Syn.shift x) (succ (succ (var 0)))) hst.shift
-      simp only [Stage, Fm.shift, Fm.subst_all, Fm.subst_imp, Fm.subst_eq, subst_le, subst_lt, subst_ap2,
-        PTm.subst_mul, PTm.subst_add, PTm.subst_monus, ConciseIPRA.PTm.subst_succ, ConciseIPRA.PTm.subst_zero,
-        Syn.subst_var, Syn.up_zero, Syn.inst_zero, subst_up_shift_pal, Syn.subst_inst_shift] at a
+      simp only [Fm.subst_imp, subst_le, subst_lt, subst_ap2, PTm.subst_mul, PTm.subst_add, PTm.subst_monus,
+        ConciseIPRA.PTm.subst_succ, ConciseIPRA.PTm.subst_zero, Syn.subst_var, Syn.up_zero, Syn.inst_zero,
+        subst_up_shift_pal, Syn.subst_inst_shift] at a
       have h1 : (lt (var 0) (Syn.shift M) :: Γ.map Fm.shift) ⊢[PRAAx]
           lt (quo (Syn.shift x) (succ (succ (var 0)))) (succ (Syn.shift x)) :=
         (succ_monus_succ _ _).eqTrans (quo_le_self (succ (var 0)) (Syn.shift x))
@@ -282,3 +268,5 @@ theorem no_growth {M x K L D A Y : PTm n} (hK : Γ ⊢[PRAAx] le one K)
   ipra_le sl h + sl t with 𝔞 D * sp
 
 end LeanProofs.IPRA.AnalyticNumberTheory.ContractionSplit
+
+export_ipra AnalyticNumberTheory.ContractionSplit (Stage)

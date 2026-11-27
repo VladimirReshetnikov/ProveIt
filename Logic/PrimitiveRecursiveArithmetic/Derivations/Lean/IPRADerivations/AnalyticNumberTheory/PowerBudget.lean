@@ -1,15 +1,6 @@
 import IPRADerivations.AnalyticNumberTheory.SymmetricProduct
-import IPRADerivations.Probability.Lotus
-import IPRADerivations.Probability.Variance
-import IPRADerivations.Foundations.AuxiliaryEnvelope
-import IPRADerivations.Foundations.IntervalPacking
-import IPRADerivations.AnalyticNumberTheory.LocalFactor
-import IPRADerivations.AnalyticNumberTheory.RSA
 import IPRADerivations.Topology.CollisionScales
 import IPRADerivations.AnalyticNumberTheory.BlockChain
-import IPRADerivations.Core.CommonLemmas
-import IPRADerivations.Core.Reindex
-import IPRADerivations.Core.Header
 
 /-!
 # The harmonic budget and the logarithm absorption (`riemann_ipra_prime_criteria_2026-11-20`, `thm:powerdivisor`)
@@ -31,29 +22,18 @@ For a body `v(i, z)` with `(i+1) v(i, z) ≤ X` for every `i` (`Budget`):
   (`lt_pw_two`), `(ab)^k = a^k b^k` (`pw_mul_base`), `(2^z)^k = 2^{zk}` (`pw_mul`) and `zk ≤ e` (`pw_le_exp`).
 -/
 
-set_option linter.unusedSimpArgs false
-
 namespace LeanProofs.IPRA.AnalyticNumberTheory.PowerBudget
 
-open_ipra
+open_ipra exports
 open LeanProofs.IPRA.Probability.Lotus (cmB inst2_cmB sum_const_mul)
-open LeanProofs.IPRA.Foundations.AuxiliaryEnvelope (sum_le_const)
 open LeanProofs.IPRA.Foundations.IntervalPacking (sg_one_of_lt)
-open LeanProofs.IPRA.AnalyticNumberTheory.LocalFactor (pw_mul_base)
-open LeanProofs.IPRA.AnalyticNumberTheory.RSA (pw_mul)
-open LeanProofs.IPRA.AnalyticNumberTheory.PowerCleared (pw_le_exp)
 open LeanProofs.IPRA.Topology.CollisionScales (lt_pw_two)
-open LeanProofs.IPRA.AnalyticNumberTheory.BlockChain (one_le_pw')
 open LeanProofs.IPRA.AnalyticNumberTheory.PNTStageStep (pos_of_one_le)
-open LeanProofs.IPRA.Combinatorics.BinomialTheorem (congrPw)
 open LeanProofs.IPRA.Signum (sg sg_zero)
-open LeanProofs.IPRA.AnalyticNumberTheory.Mobius (congrSg)
 
 set_option autoImplicit false
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
-
-local notation "𝔞" t:max => Groth.ι (IPRA.Q.mk _ t)
 
 alias mul_one' := Common.mul_one_right
 

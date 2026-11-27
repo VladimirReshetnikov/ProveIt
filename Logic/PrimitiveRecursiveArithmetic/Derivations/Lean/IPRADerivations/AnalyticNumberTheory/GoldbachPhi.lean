@@ -1,6 +1,4 @@
 import IPRADerivations.AnalyticNumberTheory.Totient
-import IPRADerivations.Core.LinearCombination
-import IPRADerivations.Core.Header
 
 /-!
 # Goldbach's statement gives totient sums
@@ -14,12 +12,9 @@ The implication is constructive and witness-producing: a Goldbach decomposition
 (`phi_prime`, the case `k = 0` of `Totient.totient_prime_power_at`). It does not prove Goldbach.
 -/
 
-set_option linter.unusedSimpArgs false
-
 namespace LeanProofs.IPRA.AnalyticNumberTheory.GoldbachPhi
 
-open_ipra
-open LeanProofs.IPRA.AnalyticNumberTheory.Primes (prime)
+open_ipra exports
 open LeanProofs.IPRA.AnalyticNumberTheory.Totient (phi totBody totient_prime_power_at)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}

@@ -1,7 +1,6 @@
 import IPRADerivations.Foundations.GridSumsContext
 import IPRADerivations.Core.SumOrder
 import IPRADerivations.Probability.Variance
-import IPRADerivations.Core.Header
 
 /-!
 # Grid sums: inequalities, the cells of the grid, and constant summands
@@ -22,11 +21,10 @@ statements). First use: the finite Stokes inequality on a cube
 -/
 
 set_option autoImplicit false
-set_option linter.unusedSimpArgs false
 
 namespace LeanProofs.IPRA.Foundations.GridSumsOrder
 
-open_ipra
+open_ipra exports
 open LeanProofs.IPRA.Foundations.GridSums
 open LeanProofs.IPRA.Foundations.GridSumsContext
 open LeanProofs.IPRA.Foundations.TermSums (lsum fsum)

@@ -1,5 +1,4 @@
 import IPRADerivations.AnalyticNumberTheory.SigmaPrimePower
-import IPRADerivations.Core.Header
 
 /-!
 # Robin's inequality with at most three prime factors: the arithmetic core (`robin_ipra_research_2026-11-19`, `thm:three`)
@@ -21,26 +20,15 @@ i.e. `A(n) = σ(n)/n < 15/4`. The proof: the prime powers are pairwise coprime (
 monotone, is the packet's real-number certificate and is not derived.
 -/
 
-set_option linter.unusedSimpArgs false
-
 namespace LeanProofs.IPRA.AnalyticNumberTheory.RobinThree
 
-open_ipra
-open LeanProofs.IPRA.AnalyticNumberTheory.SigmaMult (sig sigma_mul)
-open LeanProofs.IPRA.AnalyticNumberTheory.SigmaPrimePower (sigma_pow pos_pw)
-open LeanProofs.IPRA.AnalyticNumberTheory.Primes (prime)
-open LeanProofs.IPRA.AnalyticNumberTheory.RSA (gcd_distinct_primes)
-open LeanProofs.IPRA.AnalyticNumberTheory.PlusPower (cop_pow)
-open LeanProofs.IPRA.DiophantineNumberTheory.Coprime (gcd_comm_one coprime_mul)
+open_ipra exports
 open LeanProofs.IPRA.Combinatorics.Binomial (pos_mul rem_zero_of_eq)
-open LeanProofs.IPRA.AnalyticNumberTheory.PhiLower (le_mul_mono)
 open LeanProofs.IPRA.AnalyticNumberTheory.PNTStageStep (pos_of_one_le)
 
 set_option autoImplicit false
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
-
-local notation "𝔞" t:max => Groth.ι (IPRA.Q.mk _ t)
 
 theorem two_le_prime {p : PTm n} (hp : Γ ⊢[PRAAx] prime p) : Γ ⊢[PRAAx] le two p := by
   have h := hp; unfold prime at h; exact Prf.andE₁ h

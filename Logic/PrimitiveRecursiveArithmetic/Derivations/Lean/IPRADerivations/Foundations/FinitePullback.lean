@@ -1,6 +1,5 @@
 import IPRADerivations.Foundations.FilteredEnumeration
 import IPRADerivations.Foundations.FiniteSetExponential
-import IPRADerivations.Core.Header
 
 /-!
 # Pullbacks of finite sets (`ipra_categorical_methods`, finite limits)
@@ -26,15 +25,12 @@ mediator. The Chinese remainder square of the packet (`Foundations/ChineseRemain
 pullback of this kind with an explicit closed-form mediator.
 -/
 
-set_option linter.unusedSimpArgs false
-
 namespace LeanProofs.IPRA.Foundations.FinitePullback
 
-open_ipra
+open_ipra exports
 open LeanProofs.IPRA.Foundations.FilteredEnumeration
 open LeanProofs.IPRA.Foundations.FiniteSetExponential
   (pair_lt pair_fst pair_snd pair_eta fst_lt snd_lt)
-open LeanProofs.IPRA.Foundations.BoundedReflection (sgB)
 
 variable {k : ℕ} {Γ : List (Fm PTm k)}
 

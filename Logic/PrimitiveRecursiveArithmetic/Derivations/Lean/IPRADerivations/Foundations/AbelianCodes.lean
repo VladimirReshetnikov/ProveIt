@@ -18,11 +18,9 @@ theorem. Natural multiples are defined by primitive recursion: `0·X = e`, `(n +
 * `smul_mul`: `(b a)·X = a·(b·X)`.
 -/
 
-set_option linter.unusedSimpArgs false
-
 namespace LeanProofs.IPRA.Foundations.AbelianCodes
 
-open_ipra
+open_ipra exports
 
 /-- The group operation `G(a, b)`. -/
 abbrev op (G : PTm 2) {n : ℕ} (a b : PTm n) : PTm n := inst2 G a b

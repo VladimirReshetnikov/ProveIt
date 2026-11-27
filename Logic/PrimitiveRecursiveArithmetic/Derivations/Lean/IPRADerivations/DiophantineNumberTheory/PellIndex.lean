@@ -1,7 +1,5 @@
 import IPRADerivations.DiophantineNumberTheory.PellAll
 import IPRADerivations.Core.SumOrder
-import IPRADerivations.Core.LinearCombination
-import IPRADerivations.Core.Header
 
 /-!
 # The index of a Pell solution
@@ -19,16 +17,12 @@ For the powers `(X_m, Y_m) = (A, B)^m` of `Recurrences` (with `A, B ≥ 1`):
   `1 ≤ c ≤ x`, and it is the only index with `y = Y_m`.
 -/
 
-set_option linter.unusedSimpArgs false
-
 namespace LeanProofs.IPRA.DiophantineNumberTheory.PellIndex
 
-open_ipra
+open_ipra exports
 open LeanProofs.IPRA.DiophantineNumberTheory.PellAll (pell_all_at minimal C p3 Xp Yp)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
-
-local notation "𝔞" t:max => Groth.ι (IPRA.Q.mk _ t)
 
 theorem X_succ (m : PTm n) (ps : Fin 3 → PTm n) :
     Γ ⊢[PRAAx] Xp (succ m) ps ≐ ps 0 * Xp m ps + ps 2 * (ps 1 * Yp m ps) :=
@@ -55,7 +49,7 @@ include hA hB
 theorem X_step {m : PTm n} (ih : Γ ⊢[PRAAx] le one (Xp m ps)) : Γ ⊢[PRAAx] le one (Xp (succ m) ps) := by
   have a := natEq (eq_add_of_le hA); have x := natEq (eq_add_of_le ih)
   refine le_of_eq_add (d := monus (Xp m ps) one + monus (ps 0) one * Xp m ps + ps 2 * (ps 1 * Yp m ps)) ?_
-  ipra_lc natEq (X_succ (Γ := Γ) m ps) + 𝔞 (Xp m ps) * a + x
+  ipra_lc natEq (X_succ m ps) + 𝔞 (Xp m ps) * a + x
 
 /-- `X_m ≥ 1`. -/
 theorem X_pos (m : PTm n) : Γ ⊢[PRAAx] le one (Xp m ps) := by
@@ -75,7 +69,7 @@ theorem X_pos (m : PTm n) : Γ ⊢[PRAAx] le one (Xp m ps) := by
 theorem Y_step (m : PTm n) : Γ ⊢[PRAAx] le (succ (Yp m ps)) (Yp (succ m) ps) := by
   have a := natEq (eq_add_of_le hA); have b := natEq (eq_add_of_le hB)
   refine le_of_eq_add (d := monus (ps 1) one * Xp m ps + monus (Xp m ps) one + monus (ps 0) one * Yp m ps) ?_
-  ipra_lc natEq (Y_succ (Γ := Γ) m ps) + 𝔞 (Xp m ps) * b + natEq (eq_add_of_le (X_pos hA hB m)) + 𝔞 (Yp m ps) * a
+  ipra_lc natEq (Y_succ m ps) + 𝔞 (Xp m ps) * b + natEq (eq_add_of_le (X_pos hA hB m)) + 𝔞 (Yp m ps) * a
 
 /-- `Y_m + k ≤ Y_{m+k}`. -/
 theorem Y_mono (m k : PTm n) : Γ ⊢[PRAAx] le (Yp m ps + k) (Yp (m + k) ps) := by
@@ -104,7 +98,7 @@ theorem lt_index_absurd {m m' : PTm n} (φ : Fm PTm n) (hlt : Γ ⊢[PRAAx] lt m
   have l := le_congr (.eqRefl _) (congrYp ps e.eqSymm) mono
   have e' := natEq (eq_add_of_le hlt); have e'' := natEq e
   have pos : Γ ⊢[PRAAx] le one (monus m' m) :=
-    le_of_eq_add (d := monus m' (succ m)) (by apply deriveNat; ipra_simps; linear_combination e' - e'')
+    le_of_eq_add (d := monus m' (succ m)) (by ipra_lc e' - e'')
   have l2 : Γ ⊢[PRAAx] le (succ (Yp m ps)) (Yp m' ps) :=
     le_trans (le_congr (by ipra_ring) (.eqRefl _) (add_le_add₂ (le_refl _) pos)) l
   exact lt_irrefl _ _ (le_congr (.eqRefl _) h.eqSymm l2)
@@ -130,7 +124,7 @@ include hA in
 theorem A_pos : Γ ⊢[PRAAx] le one (ps 0) := by
   refine .orE (zero_or_succ (ps 0)) ?_ (DiophantineNumberTheory.Coprime.one_le_of_pos Prf.hyp0)
   have a := natEq (hA.wk (ψ := ps 0 ≐ zero)); have z := natEq (Prf.hyp0 : ((ps 0 ≐ zero) :: Γ) ⊢[PRAAx] ps 0 ≐ zero)
-  exact succ_ne_zero' _ (a := ps 2 * (ps 1 * ps 1)) (by apply deriveNat; ipra_simps; linear_combination -a + (𝔞 (ps 0) + 0) * z)
+  exact succ_ne_zero' _ (a := ps 2 * (ps 1 * ps 1)) (by ipra_lc -a + (𝔞 (ps 0) + 0) * z)
 
 include hA hB hmin hx hy hD in
 /-- `lem:stormer-pell-powers`: `(x, y) = (x_c, y_c)` with `1 ≤ c ≤ x`. -/

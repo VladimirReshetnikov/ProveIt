@@ -1,8 +1,4 @@
-import IPRADerivations.DiophantineNumberTheory.QuarticStep
-import IPRADerivations.Core.EuclidLemma
 import IPRADerivations.AnalyticNumberTheory.PhiLower
-import IPRADerivations.Core.LinearCombination
-import IPRADerivations.Core.Header
 
 /-!
 # The gcd tools and the primitive Pythagorean parametrization
@@ -25,22 +21,15 @@ Packet: `diophantine-number-theory/diophantine_geometry_ipra`, Lemmas `lem:desce
 * `pyth_unique`: any `m', n'` with `B + n'² = m'²`, `C = m'² + n'²` equal `m, n`.
 -/
 
-set_option linter.unusedSimpArgs false
-
 namespace LeanProofs.IPRA.DiophantineNumberTheory.DescentTools
 
-open_ipra
-open LeanProofs.IPRA.Combinatorics.Binomial (pos_mul)
+open_ipra exports
 open LeanProofs.IPRA.Combinatorics.BinomialIdentities (mul_cancel)
-open LeanProofs.IPRA.Foundations.ChineseRemainder (gcd_pos)
 open LeanProofs.IPRA.DiophantineNumberTheory.Coprime
 open LeanProofs.IPRA.DiophantineNumberTheory.Pythagoras (pm pn pyth_at two_pos)
 open LeanProofs.IPRA.DiophantineNumberTheory.QuarticStep (odd_sq_sum not_both_even)
-open LeanProofs.IPRA.AnalyticNumberTheory.PhiLower (le_mul_mono)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
-
-local notation "𝔞" t:max => Groth.ι (IPRA.Q.mk _ t)
 
 /-! ## The gcd tools -/
 

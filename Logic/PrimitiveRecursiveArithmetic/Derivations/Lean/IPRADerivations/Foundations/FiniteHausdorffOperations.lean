@@ -1,6 +1,4 @@
 import IPRADerivations.Foundations.FiniteHausdorff
-import IPRADerivations.Probability.Variance
-import IPRADerivations.Core.Header
 
 /-!
 # Images and distance observations of actual finite aggregates
@@ -14,11 +12,10 @@ scale as in `FiniteHausdorff`.
 -/
 
 set_option autoImplicit false
-set_option linter.unusedSimpArgs false
 
 namespace LeanProofs.IPRA.Foundations.FiniteHausdorffOperations
 
-open_ipra
+open_ipra exports
 open LeanProofs.IPRA.Foundations.FiniteHausdorff
 open LeanProofs.IPRA.Foundations.SequenceComposition (length)
 open LeanProofs.IPRA.Foundations.MasterCertificate (entry sequence sequence_length sequence_decode)

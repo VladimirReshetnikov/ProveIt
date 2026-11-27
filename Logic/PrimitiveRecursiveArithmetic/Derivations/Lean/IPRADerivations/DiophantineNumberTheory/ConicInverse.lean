@@ -1,5 +1,4 @@
 import IPRADerivations.DiophantineNumberTheory.ConicNonzero
-import IPRADerivations.Core.Header
 
 /-!
 # The inverse of the conic parametrization
@@ -19,13 +18,10 @@ the inverse and the recovery of every parameter. For a transformed conic point `
 * `tangent_emm_ne_zero`, `tangent_t_zero`: "if `ℓ = 0`, then `m ≠ 0`, `t = 0`" (from `r ≠ 0`).
 -/
 
-set_option linter.unusedSimpArgs false
-
 namespace LeanProofs.IPRA.DiophantineNumberTheory.ConicInverse
 
-open_ipra
+open_ipra exports
 open LeanProofs.IPRA.DiophantineNumberTheory.ConicIdentities (Form)
-open LeanProofs.IPRA.DiophantineNumberTheory.ZTCancel (zt_no_zero_div)
 open LeanProofs.IPRA.DiophantineNumberTheory.ConicNonzero (no_common_zero)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}

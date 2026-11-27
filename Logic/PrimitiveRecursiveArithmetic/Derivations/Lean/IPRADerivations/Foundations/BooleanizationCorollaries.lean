@@ -1,5 +1,4 @@
 import IPRADerivations.Foundations.BoundedFormulas
-import IPRADerivations.Core.Header
 
 /-!
 # Booleanization, least bounded search and the least-success invariant
@@ -24,7 +23,7 @@ set_option linter.unusedSimpArgs false
 
 namespace LeanProofs.IPRA.Foundations.BooleanizationCorollaries
 
-open_ipra
+open_ipra exports
 open LeanProofs.IPRA.Foundations.BoundedFormulas
 
 variable {m : ℕ} {Δ : List (Fm PTm m)}

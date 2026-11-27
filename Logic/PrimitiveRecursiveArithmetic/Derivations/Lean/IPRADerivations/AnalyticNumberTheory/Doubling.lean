@@ -1,6 +1,4 @@
 import IPRADerivations.AnalyticNumberTheory.BlockCases
-import IPRADerivations.AnalyticNumberTheory.HarmonicLogPow2
-import IPRADerivations.Core.Header
 
 /-!
 # Harmonic lengths of dyadic blocks (`pnt_ipra_constructive_2026-11-14`, `con:block-length`)
@@ -14,11 +12,9 @@ the contraction have logarithmic length `H ≥ 512q`. Discretely a block of divi
 * `S_pow2_lower`: `2S(M) + mF ≤ 2S(M 2^m) + 2M 2^m`, by quantifier-free induction on `m`.
 -/
 
-set_option linter.unusedSimpArgs false
-
 namespace LeanProofs.IPRA.AnalyticNumberTheory.Doubling
 
-open_ipra
+open_ipra exports
 open LeanProofs.IPRA.AnalyticNumberTheory.Harmonic (S hB pw2_pos)
 open LeanProofs.IPRA.AnalyticNumberTheory.BlockCases (S_gap)
 open LeanProofs.IPRA.AnalyticNumberTheory.PNTStageStep (pos_of_one_le)
@@ -26,8 +22,6 @@ open LeanProofs.IPRA.AnalyticNumberTheory.PNTStageStep (pos_of_one_le)
 set_option autoImplicit false
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
-
-local notation "𝔞" t:max => Groth.ι (IPRA.Q.mk _ t)
 
 /-- `2S(K) + F + 1 ≤ 2S(2K) + 2K` for `K ≥ 1`: a doubling adds at least `F/2 − K` to the harmonic length. -/
 theorem S_double_lower {K : PTm n} (F : PTm n) (hK : Γ ⊢[PRAAx] le one K) :
@@ -50,8 +44,7 @@ theorem S_pow2_lower {M : PTm n} (F m : PTm n) (hM : Γ ⊢[PRAAx] le one M) :
     · simp only [subst_le, subst_ap2, PTm.subst_add, PTm.subst_mul, Syn.subst_var, Syn.inst_zero,
         Syn.subst_inst_shift, ConciseIPRA.PTm.subst_succ, ConciseIPRA.PTm.subst_zero]
       have e0 : Γ ⊢[PRAAx] M * pw two zero ≐ M := by
-        have a := natEq (pw_zero (Γ := Γ) (two : PTm n))
-        apply deriveNat; ipra_simps; linear_combination 𝔞 M * a
+        ipra_lc 𝔞 M * natEq (pw_zero (two : PTm n))
       have e := natEq (congrAp2 (Γ := Γ) (sumF hB) e0 (.eqRefl F))
       have e0' := natEq e0
       ipra_le 2 * 𝔞 M with -2 * e - 2 * e0'
@@ -70,8 +63,7 @@ theorem S_pow2_lower {M : PTm n} (F m : PTm n) (hM : Γ ⊢[PRAAx] le one M) :
       have sd := S_double_lower (Γ := Δ) (Syn.shift F) hp
       have ek : Δ ⊢[PRAAx] Syn.shift M * pw two (succ (var 0)) ≐
           Syn.shift M * pw two (var 0) + Syn.shift M * pw two (var 0) := by
-        have a := natEq (pw_succ (Γ := Δ) two (var 0))
-        apply deriveNat; ipra_simps; linear_combination 𝔞 (Syn.shift M) * a
+        ipra_lc 𝔞 (Syn.shift M) * natEq (pw_succ (Γ := Δ) two (var 0))
       have e := natEq (congrAp2 (Γ := Δ) (sumF hB) ek (.eqRefl (Syn.shift F)))
       have ek' := natEq ek
       ipra_le sl ih + sl sd + 1 with 2 * e + 2 * ek'
@@ -81,3 +73,5 @@ theorem S_pow2_lower {M : PTm n} (F m : PTm n) (hM : Γ ⊢[PRAAx] le one M) :
   exact h
 
 end LeanProofs.IPRA.AnalyticNumberTheory.Doubling
+
+export_ipra AnalyticNumberTheory.Doubling (S_pow2_lower)

@@ -1,7 +1,4 @@
 import IPRADerivations.AnalyticNumberTheory.Euler
-import IPRADerivations.Core.Search
-import IPRADerivations.Core.InductionTactic
-import IPRADerivations.Core.Header
 
 /-!
 # The multiplicative order
@@ -18,17 +15,13 @@ For `gcd(a, n) = 1`, the order `ord(a, n) = μ + 1`, where `μ` is the least `i 
   modulo `aᵐ − 1` is exactly `m`.
 -/
 
-set_option linter.unusedSimpArgs false
-
 namespace LeanProofs.IPRA.AnalyticNumberTheory.Order
 
-open_ipra
+open_ipra exports
 open LeanProofs.IPRA.Algebra.CubeRootTwo (sg sg_zero sg_succ)
 open LeanProofs.IPRA.Combinatorics.Binomial (pos_mul)
 open LeanProofs.IPRA.Combinatorics.BinomialTheorem (congrPw)
-open LeanProofs.IPRA.Foundations.ChineseRemainder (gcd_pos rem_eq_of_eq)
 open LeanProofs.IPRA.DiophantineNumberTheory.Coprime
-open LeanProofs.IPRA.AnalyticNumberTheory.RSA (rem_mul_congr pw_mul)
 open LeanProofs.IPRA.AnalyticNumberTheory.Totient (phi totBody inst2_tot pred_lt)
 open LeanProofs.IPRA.AnalyticNumberTheory.Euler (congrEqb rem_small rem_lt N_pos rem_one euler_at)
 
@@ -190,3 +183,5 @@ theorem order_divides_totient : ([] : List (Fm PTm 0)) ⊢[PRAAx] univ 2 orderFo
   closeUniv 2 (.impI (.impI (.andI (order_cong Prf.hyp1 Prf.hyp0) (order_dvd_totient Prf.hyp1 Prf.hyp0))))
 
 end LeanProofs.IPRA.AnalyticNumberTheory.Order
+
+export_ipra AnalyticNumberTheory.Order (gcd_pos_right order_cong pw_one_base pw_rem_congr)

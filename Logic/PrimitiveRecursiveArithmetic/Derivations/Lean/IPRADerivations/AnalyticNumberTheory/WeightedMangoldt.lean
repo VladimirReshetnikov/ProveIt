@@ -1,7 +1,4 @@
 import IPRADerivations.AnalyticNumberTheory.MobiusInversion
-import IPRADerivations.AnalyticNumberTheory.PowerCleared
-import IPRADerivations.Core.LinearCombination
-import IPRADerivations.Core.Header
 
 /-!
 # The weighted von Mangoldt function
@@ -23,26 +20,20 @@ For a weight body `w(q, y)` on primes:
   divisors and the sum over primes (`row_lam`, `col_lam`).
 -/
 
-set_option linter.unusedSimpArgs false
-
 namespace LeanProofs.IPRA.AnalyticNumberTheory.WeightedMangoldt
 
-open_ipra
+open_ipra exports
 open LeanProofs.IPRA.AnalyticNumberTheory.Mobius
 open LeanProofs.IPRA.AnalyticNumberTheory.MobiusBounds (sum_ext shift_pos val_big)
 open LeanProofs.IPRA.AnalyticNumberTheory.Valuation (val isP isP_01 isP_of_prime prime_of_isP pw_pos')
 open LeanProofs.IPRA.AnalyticNumberTheory.ValuationMul (val_unique not_dvd_one p_pos)
-open LeanProofs.IPRA.AnalyticNumberTheory.PowerCleared (pw_le_exp)
 open LeanProofs.IPRA.DiophantineNumberTheory.Coprime (dvd_of_eq' eq_of_dvd' dvd_trans' dvd_le' one_le_of_pos)
 open LeanProofs.IPRA.Combinatorics.BinomialTheorem (congrPw)
 open LeanProofs.IPRA.Signum (sg sg_zero sg_succ)
-open LeanProofs.IPRA.AnalyticNumberTheory.EulerProduct (eqb_comm')
 open LeanProofs.IPRA.AnalyticNumberTheory.MobiusInversion (shift_inst2)
 open LeanProofs.IPRA.Probability.Independence (sum_scale)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
-
-local notation "𝔞" t:max => Groth.ι (IPRA.Q.mk _ t)
 
 /-! ## Powers of a fixed base -/
 
@@ -489,3 +480,5 @@ theorem lambda_divsum {m y : PTm n} (hm : Γ ⊢[PRAAx] m ≐ succ (pred m)) :
 end Divsum
 
 end LeanProofs.IPRA.AnalyticNumberTheory.WeightedMangoldt
+
+export_ipra AnalyticNumberTheory.WeightedMangoldt (Lam ellB lamB)

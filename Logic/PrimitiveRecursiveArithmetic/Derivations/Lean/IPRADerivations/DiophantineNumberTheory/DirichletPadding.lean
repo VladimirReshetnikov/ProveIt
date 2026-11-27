@@ -1,5 +1,4 @@
 import IPRADerivations.DiophantineNumberTheory.DirichletReal
-import IPRADerivations.Core.Header
 
 /-!
 # Unbounded denominators by padding
@@ -19,18 +18,12 @@ With `q₀ = q₀' + 1 ≤ N` and `v = ⌊B/q₀⌋ + 1`:
   i.e. `q |q a − p| < 1`, which is `|a − p/q| < 1/q²` at every precision of the name.
 -/
 
-set_option linter.unusedSimpArgs false
-
 namespace LeanProofs.IPRA.DiophantineNumberTheory.DirichletPadding
 
-open_ipra
+open_ipra exports
 open LeanProofs.IPRA.Analysis.PolynomialRemainder (AbsLe abs_mul abs_congr)
-open LeanProofs.IPRA.DiophantineNumberTheory.DirichletReal (abs_nat)
-open LeanProofs.IPRA.AnalyticNumberTheory.PhiLower (le_mul_mono)
 
 variable {k : ℕ} {Γ : List (Fm PTm k)}
-
-local notation "𝔞" t:max => Groth.ι (IPRA.Q.mk _ t)
 
 /-- The padding factor `v = ⌊B/q₀⌋ + 1`. -/
 abbrev vF (B q₀' : PTm k) : PTm k := succ (quo B (succ q₀'))

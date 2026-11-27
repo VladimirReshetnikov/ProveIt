@@ -1,8 +1,4 @@
-import IPRADerivations.AnalyticNumberTheory.FactorVector
-import IPRADerivations.AnalyticNumberTheory.FactorialLambda
 import IPRADerivations.AnalyticNumberTheory.MuLambda
-import IPRADerivations.Core.Fubini
-import IPRADerivations.Core.Header
 
 /-!
 # Valuations determine a positive number; the weight of a power
@@ -19,14 +15,10 @@ rationals is `∏ a^{M(q_N(a))} = lcm(1, …, N)`").
 * **`lw_pow`**: `L_w(a^e) = e · L_w(a)` for `a ≥ 1` and every weight `w`.
 -/
 
-set_option linter.unusedSimpArgs false
-
 namespace LeanProofs.IPRA.AnalyticNumberTheory.ValuationExt
 
-open_ipra
-open LeanProofs.IPRA.AnalyticNumberTheory.Primes (prime)
+open_ipra exports
 open LeanProofs.IPRA.AnalyticNumberTheory.Valuation (val isP isP_01 isP_of_prime pw_pos')
-open LeanProofs.IPRA.AnalyticNumberTheory.Mobius (zero_mul_l)
 open LeanProofs.IPRA.AnalyticNumberTheory.MobiusBounds (shift_pos val_big)
 open LeanProofs.IPRA.AnalyticNumberTheory.FactorVector (R reconstruct)
 open LeanProofs.IPRA.AnalyticNumberTheory.WeightedMangoldt (Lw ellB)

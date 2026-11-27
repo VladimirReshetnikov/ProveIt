@@ -1,8 +1,5 @@
 import IPRADerivations.Foundations.ApproximateWitness
-import IPRADerivations.Core.Signum
 import IPRADerivations.Core.OrderCertificates
-import IPRADerivations.Core.LinearCombination
-import IPRADerivations.Core.Header
 
 /-!
 # Finite minimization over admissible candidates
@@ -25,11 +22,9 @@ The hypotheses on `m` and `c` are families of derivations (one for each index `i
 are schemas; the scan itself is one primitive-recursive term.
 -/
 
-set_option linter.unusedSimpArgs false
-
 namespace LeanProofs.IPRA.Foundations.FilteredMinimization
 
-open_ipra
+open_ipra exports
 open LeanProofs.IPRA.Signum (sg sg_zero sg_succ)
 open LeanProofs.IPRA.Foundations.ApproximateWitness (argmin argmin_spec argmin_minimal argmin_tie)
 

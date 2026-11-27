@@ -1,11 +1,5 @@
 import IPRADerivations.DiophantineNumberTheory.FourSquaresAlgebra
-import IPRADerivations.AnalyticNumberTheory.PhiUpper
-import IPRADerivations.AnalyticNumberTheory.FactorVector
 import IPRADerivations.AnalyticNumberTheory.Mobius
-import IPRADerivations.AnalyticNumberTheory.ValuationMul
-import IPRADerivations.AnalyticNumberTheory.Totatives
-import IPRADerivations.Core.LinearCombination
-import IPRADerivations.Core.Header
 
 /-!
 # Four squares: one step of the descent
@@ -26,27 +20,19 @@ For each coordinate, `r = x mod m`, and the signed residue of least absolute val
 * `descent`: the statement, with the tuple of `FourSquaresAlgebra.descent_alg`.
 -/
 
-set_option linter.unusedSimpArgs false
-
 namespace LeanProofs.IPRA.DiophantineNumberTheory.FourSquaresDescent
 
-open_ipra
-open LeanProofs.IPRA.AnalyticNumberTheory.Primes (prime)
+open_ipra exports
 open LeanProofs.IPRA.AnalyticNumberTheory.Valuation (lpf_of_prime)
 open LeanProofs.IPRA.AnalyticNumberTheory.FactorVector (one_le_pos)
 open LeanProofs.IPRA.AnalyticNumberTheory.Mobius (prime_two)
-open LeanProofs.IPRA.AnalyticNumberTheory.ValuationMul (p_pos)
-open LeanProofs.IPRA.AnalyticNumberTheory.PhiUpper (lpf_min)
 open LeanProofs.IPRA.AnalyticNumberTheory.Totatives (sg_lt sg_le)
 open LeanProofs.IPRA.Combinatorics.BinomialIdentities (mul_cancel)
 open LeanProofs.IPRA.Combinatorics.LegendreDigits (dm)
-open LeanProofs.IPRA.DiophantineNumberTheory.ModularCertificate (rem_add_mul)
 open LeanProofs.IPRA.DiophantineNumberTheory.FourSquaresAlgebra
 open LeanProofs.IPRA.Signum (sg)
 
 variable {k : ℕ} {Γ : List (Fm PTm k)}
-
-local notation "𝔞" t:max => Groth.ι (IPRA.Q.mk _ t)
 
 /-! ## The signed residue of least absolute value -/
 
@@ -156,8 +142,7 @@ theorem dvd_of_eq_mul {m p K : PTm k} (hm : Γ ⊢[PRAAx] m ≐ succ (pred m)) (
 
 theorem dvd_of_add_mul {m A P Q : PTm k} (hm : Γ ⊢[PRAAx] m ≐ succ (pred m))
     (h : Γ ⊢[PRAAx] A + m * P ≐ m * Q) : Γ ⊢[PRAAx] dvd m A := by
-  have hn := natEq h
-  have e : Γ ⊢[PRAAx] m * P + A ≐ m * Q + zero := by apply deriveNat; ipra_simps; linear_combination hn
+  have e : Γ ⊢[PRAAx] m * P + A ≐ m * Q + zero := by ipra_lc natEq h
   exact (rem_add_mul hm P A).eqSymm.eqTrans
     ((congrAp2 remF e (.eqRefl _)).eqTrans ((rem_add_mul hm Q zero).eqTrans (rem_zero m)))
 
@@ -262,7 +247,7 @@ theorem mq_pos {p : PTm k} (hp : Γ ⊢[PRAAx] prime p) (hm2 : Γ ⊢[PRAAx] le 
   have n2 := norm_eq hm n1
   refine .orE (zero_or_succ (mq x m)) ?_ (one_le_pos Prf.hyp0)
   have z : ((mq x m ≐ zero) :: Γ) ⊢[PRAAx] N4 (Af x m 0) (Af x m 1) (Af x m 2) (Af x m 3) ≐ zero := by
-    ipra_lc natEq (n2.wk (ψ := mq x m ≐ zero)) + 𝔞 m * natEq (Prf.hyp0 (Γ := Γ) (φ := mq x m ≐ zero))
+    ipra_lc natEq (n2.wk (ψ := mq x m ≐ zero)) + 𝔞 m * natEq (Prf.hyp0 (φ := mq x m ≐ zero))
   have a0 : ∀ i : Fin 4, ((mq x m ≐ zero) :: Γ) ⊢[PRAAx] Af x m i ≐ zero := fun i => by
     fin_cases i
     · exact zero_of_le_zero (le_N4_1 z)
@@ -303,22 +288,22 @@ theorem mq_lt {p : PTm k} (hp : Γ ⊢[PRAAx] prime p) (hm2 : Γ ⊢[PRAAx] le t
       refine .orE (lt_or_eq_of_le (hA' 0)) ?_ Prf.hyp0
       have n2n := natEq (n2'.wk (ψ := lt (Af x m 0) (half m)))
       exact .botE _ (tie_one Prf.hyp0 (hA' 1).wk (hA' 2).wk (hA' 3).wk h1.wk hle.wk.wk
-        (by apply deriveNat; ipra_simps; linear_combination n2n) em.wk)
+        (by ipra_lc n2n) em.wk)
     have t1 : ((par m ≐ zero) :: le m (mq x m) :: Γ) ⊢[PRAAx] Af x m 1 ≐ half m := by
       refine .orE (lt_or_eq_of_le (hA' 1)) ?_ Prf.hyp0
       have n2n := natEq (n2'.wk (ψ := lt (Af x m 1) (half m)))
       exact .botE _ (tie_one Prf.hyp0 (hA' 0).wk (hA' 2).wk (hA' 3).wk h1.wk hle.wk.wk
-        (by apply deriveNat; ipra_simps; linear_combination n2n) em.wk)
+        (by ipra_lc n2n) em.wk)
     have t2 : ((par m ≐ zero) :: le m (mq x m) :: Γ) ⊢[PRAAx] Af x m 2 ≐ half m := by
       refine .orE (lt_or_eq_of_le (hA' 2)) ?_ Prf.hyp0
       have n2n := natEq (n2'.wk (ψ := lt (Af x m 2) (half m)))
       exact .botE _ (tie_one Prf.hyp0 (hA' 0).wk (hA' 1).wk (hA' 3).wk h1.wk hle.wk.wk
-        (by apply deriveNat; ipra_simps; linear_combination n2n) em.wk)
+        (by ipra_lc n2n) em.wk)
     have t3 : ((par m ≐ zero) :: le m (mq x m) :: Γ) ⊢[PRAAx] Af x m 3 ≐ half m := by
       refine .orE (lt_or_eq_of_le (hA' 3)) ?_ Prf.hyp0
       have n2n := natEq (n2'.wk (ψ := lt (Af x m 3) (half m)))
       exact .botE _ (tie_one Prf.hyp0 (hA' 0).wk (hA' 1).wk (hA' 2).wk h1.wk hle.wk.wk
-        (by apply deriveNat; ipra_simps; linear_combination n2n) em.wk)
+        (by ipra_lc n2n) em.wk)
     have tA : ∀ i : Fin 4, ((par m ≐ zero) :: le m (mq x m) :: Γ) ⊢[PRAAx] Af x m i ≐ half m := fun i => by
       fin_cases i
       exacts [t0, t1, t2, t3]

@@ -1,8 +1,4 @@
 import IPRADerivations.Foundations.CodedViableChain
-import IPRADerivations.Core.CongruenceTactic
-import IPRADerivations.Core.LinearCombination
-import IPRADerivations.Core.SubstCommand
-import IPRADerivations.Core.Header
 
 /-!
 # Coded viable suffixes at an arbitrary numerical level
@@ -13,9 +9,8 @@ level. The converse checks an arbitrary numerical sequence by object formulas
 and genuine QF induction, without an external admissibility rule bundle.
 -/
 set_option autoImplicit false
-set_option linter.unusedSimpArgs false
 namespace LeanProofs.IPRA.Foundations.CodedViableSuffix
-open_ipra
+open_ipra exports
 open LeanProofs.IPRA.Foundations.BackwardViability
 open LeanProofs.IPRA.Foundations.BackwardViability.Instance
 open LeanProofs.IPRA.Foundations.ViableChain

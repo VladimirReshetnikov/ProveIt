@@ -1,10 +1,4 @@
 import IPRADerivations.AnalyticNumberTheory.ChebyshevPi
-import IPRADerivations.AnalyticNumberTheory.PrimorialUpper
-import IPRADerivations.Topology.CollisionScales
-import IPRADerivations.Core.CertificateTactics
-import IPRADerivations.Core.CommonLemmas
-import IPRADerivations.Core.InductionTactic
-import IPRADerivations.Core.Header
 
 /-!
 # The dyadic Chebyshev upper bound for the prime count
@@ -33,22 +27,16 @@ The Proposition "Integer Chebyshev bounds" of `prime-counting-ipra` in its own f
   (`2^m ≤ C(2m, m) ≤ (2m)^{π(2m)} ≤ N^{π(N)} ≤ 2^{(b+1) π(N)}` at `m = ⌊N/2⌋`).
 -/
 
-set_option linter.unusedSimpArgs false
-
 namespace LeanProofs.IPRA.AnalyticNumberTheory.ChebyshevUpper
 
-open_ipra
-open LeanProofs.IPRA.AnalyticNumberTheory.Valuation (isP)
+open_ipra exports
 open LeanProofs.IPRA.AnalyticNumberTheory.PrimeRank (pc pc_zero pc_succ pc_step_le congrPc succ_le_succ pc_mono)
 open LeanProofs.IPRA.AnalyticNumberTheory.PrimorialUpper (pri pri_pos pri_succ pri_le congrPri)
 open LeanProofs.IPRA.AnalyticNumberTheory.ChebyshevPi (exp_le_of_pw_le cb_lower cb_le_pi)
 open LeanProofs.IPRA.AnalyticNumberTheory.ChebyshevBounds (two_pos')
-open LeanProofs.IPRA.AnalyticNumberTheory.PhiLower (le_mul_mono)
 open LeanProofs.IPRA.Topology.CollisionScales (lt_pw_two)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
-
-local notation "𝔞" t:max => Groth.ι (IPRA.Q.mk _ t)
 
 /-! ## `π(x) ≤ x` -/
 
@@ -222,8 +210,7 @@ theorem le_three_half {b h r : PTm n} (e : Γ ⊢[PRAAx] b ≐ two * h + r) (hr 
     have h0 : ((h ≐ zero) :: Γ) ⊢[PRAAx] h ≐ zero := Prf.hyp0
     have br : ((h ≐ zero) :: Γ) ⊢[PRAAx] b ≐ r := by
       have ew : ((h ≐ zero) :: Γ) ⊢[PRAAx] b ≐ two * h + r := e.wk
-      have a := natEq ew; have z := natEq h0
-      apply deriveNat; ipra_simps; linear_combination a + 2 * z
+      ipra_lc natEq ew + 2 * natEq h0
     have l : ((h ≐ zero) :: Γ) ⊢[PRAAx] lt one r := le_congr (.eqRefl _) br hb.wk
     exact le_lt_absurd _ hr.wk l
   · have hp : ((h ≐ succ (pred h)) :: Γ) ⊢[PRAAx] h ≐ succ (pred h) := Prf.hyp0

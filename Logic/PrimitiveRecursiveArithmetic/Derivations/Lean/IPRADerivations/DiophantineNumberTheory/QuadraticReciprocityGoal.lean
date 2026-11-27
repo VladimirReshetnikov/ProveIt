@@ -1,9 +1,6 @@
 import IPRADerivations.AnalyticNumberTheory.Primes
-import IPRADerivations.Core.Division
-import IPRADerivations.Core.MultiSums
 import IPRADerivations.Core.ParityArith
 import IPRADerivations.Foundations.BoundedSyntax
-import IPRADerivations.Core.Header
 
 /-!
 # Quadratic reciprocity: the object sentence and its assembly from the two counts
@@ -25,11 +22,8 @@ Eisenstein's lemma and the rectangle count are hypotheses here; they, the supple
 witness statements of the packet are not derived.
 -/
 
-set_option linter.unusedSimpArgs false
-
 namespace LeanProofs.IPRA.DiophantineNumberTheory.QuadraticReciprocityGoal
-open_ipra
-open LeanProofs.IPRA.AnalyticNumberTheory.Primes (prime)
+open_ipra exports
 open LeanProofs.IPRA.Foundations.BoundedSyntax
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
@@ -94,3 +88,5 @@ theorem close_from_counts
   exact closeUniv 2 (Prf.impI (assemble P Q hp hq hr))
 
 end LeanProofs.IPRA.DiophantineNumberTheory.QuadraticReciprocityGoal
+
+export_ipra DiophantineNumberTheory.QuadraticReciprocityGoal (floorSum signBit)

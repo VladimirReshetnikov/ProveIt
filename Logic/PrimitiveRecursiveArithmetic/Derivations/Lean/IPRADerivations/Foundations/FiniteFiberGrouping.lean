@@ -1,9 +1,4 @@
 import IPRADerivations.Foundations.FilteredEnumerationCode
-import IPRADerivations.Core.Fubini
-import IPRADerivations.Core.CongruenceTactic
-import IPRADerivations.Core.CommonLemmas
-import IPRADerivations.Core.SubstCommand
-import IPRADerivations.Core.Header
 
 /-!
 # Actual first-occurrence grouping of finite input positions
@@ -16,11 +11,10 @@ input. This generic key grouping asserts no curve or multiplicity theorem.
 -/
 
 set_option autoImplicit false
-set_option linter.unusedSimpArgs false
 
 namespace LeanProofs.IPRA.Foundations.FiniteFiberGrouping
 
-open_ipra
+open_ipra exports
 open LeanProofs.IPRA.Foundations.MasterCertificate (entry sequence)
 open LeanProofs.IPRA.Foundations.SequenceComposition (length entry_congr)
 open LeanProofs.IPRA.Foundations.BoundedReflection (wit ex_intro ex_elim ex_least eqb_cases eq_of_eqb one_ne_zero)

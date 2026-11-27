@@ -1,6 +1,4 @@
 import IPRADerivations.Foundations.MasterCertificate
-import IPRADerivations.Core.CommonLemmas
-import IPRADerivations.Core.Header
 
 /-!
 # Realizing fixed bounded strategies
@@ -17,11 +15,9 @@ strategy codes and runtime data internal to iPRA. Dependent bounds and leaves
 read the preceding moves from the packed parameter.
 -/
 
-set_option linter.unusedSimpArgs false
-
 namespace LeanProofs.IPRA.Foundations.StrategyRealization
 
-open_ipra
+open_ipra exports
 open LeanProofs.IPRA.Foundations.BoundedFormulas
 open LeanProofs.IPRA.Foundations.BoundedReflection
 open LeanProofs.IPRA.Foundations.MasterCertificate (entry subst_entry)

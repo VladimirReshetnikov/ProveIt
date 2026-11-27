@@ -1,8 +1,6 @@
 import IPRADerivations.AnalyticNumberTheory.StageAdvance
 import IPRADerivations.AnalyticNumberTheory.PNTThresholds
 import IPRADerivations.Foundations.BoundedSyntaxInduction
-import IPRADerivations.Core.SubstCommand
-import IPRADerivations.Core.Header
 
 /-!
 # The finite induction over stages (`pnt_ipra_constructive_2026-11-14`, §"The induction predicate is a bounded
@@ -25,33 +23,21 @@ With `q = p + 1`, `D = 2^{20} q³` (`PNTThresholds.Dq`):
 * `stages`: the stage bound with `A_J` from `2^{s_J}` to `X`, for every ceiling `X` and mesh/denominator sizes.
 -/
 
-set_option linter.unusedSimpArgs false
-
 namespace LeanProofs.IPRA.AnalyticNumberTheory.StageInduction
 
-open_ipra
+open_ipra exports
 open LeanProofs.IPRA.AnalyticNumberTheory.HarmonicChebyshev (wt psi_le)
-open LeanProofs.IPRA.AnalyticNumberTheory.HarmonicMertens (le_scale)
-open LeanProofs.IPRA.AnalyticNumberTheory.BlockChain (one_le_pw')
-open LeanProofs.IPRA.AnalyticNumberTheory.ContractionSplit (Stage)
-open LeanProofs.IPRA.AnalyticNumberTheory.StepCondition (mul_le2)
 open LeanProofs.IPRA.AnalyticNumberTheory.StepAt (Pq stage_mono)
 open LeanProofs.IPRA.AnalyticNumberTheory.StageAdvance (sN stage_advance p4_mono)
 open LeanProofs.IPRA.AnalyticNumberTheory.PNTThresholds (Dq Q3)
-open LeanProofs.IPRA.AnalyticNumberTheory.ZetaFiniteContract (le_pow_self)
 open LeanProofs.IPRA.AnalyticNumberTheory.FourthRootSum (Q4)
-open LeanProofs.IPRA.AnalyticNumberTheory.AbsDiff (absd absd_le)
-open LeanProofs.IPRA.AnalyticNumberTheory.LcmUpto (Psi)
 open LeanProofs.IPRA.AnalyticNumberTheory.PNTStageStep (pos_of_one_le cancel_pos)
-open LeanProofs.IPRA.AnalyticNumberTheory.PowerCleared (pw_le_exp)
 open LeanProofs.IPRA.Foundations.BoundedSyntax (BFm formula)
 open LeanProofs.IPRA.Analysis.Products (fact)
 
 set_option autoImplicit false
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
-
-local notation "𝔞" t:max => Groth.ι (IPRA.Q.mk _ t)
 
 /-! ## Levels -/
 
@@ -138,7 +124,6 @@ theorem s_ge (j D : PTm n) : Γ ⊢[PRAAx] le (D + num 1600) (sT j D) := by
         subst_repl_shift]
       let Δ : List (Fm PTm (n + 1)) := le (Syn.shift D + num 1600) (sT (var 0) (Syn.shift D)) :: Γ.map Fm.shift
       have ih : Δ ⊢[PRAAx] le (Syn.shift D + num 1600) (sT (var 0) (Syn.shift D)) := Prf.hyp0
-      have e := natEq (s_succ (Γ := Δ) (var 0) (Syn.shift D))
       have g : Δ ⊢[PRAAx] le (sT (var 0) (Syn.shift D)) (sN (Syn.shift D) (Aj (var 0) (Syn.shift D))
           (sT (var 0) (Syn.shift D))) := le_trans (le_add_right _ _) (le_trans (le_two_mul _) (le_add_right _ _))
       exact le_trans ih (le_congr (.eqRefl _) (s_succ _ _).eqSymm g)
@@ -285,3 +270,5 @@ theorem stages {p X K L : PTm n}
   exact .impE rule (le_refl _)
 
 end LeanProofs.IPRA.AnalyticNumberTheory.StageInduction
+
+export_ipra AnalyticNumberTheory.StageInduction (Jst)

@@ -1,8 +1,6 @@
 import IPRADerivations.AnalyticNumberTheory.PerfectDivisorBounds
 import IPRADerivations.AnalyticNumberTheory.MersenneExponent
 import IPRADerivations.AnalyticNumberTheory.ValuationAdd
-import IPRADerivations.AnalyticNumberTheory.FactorVector
-import IPRADerivations.Core.Header
 
 /-!
 # The Euclid–Euler characterization of even perfect numbers
@@ -24,27 +22,20 @@ Mersenne exponent theorem.
 
 namespace LeanProofs.IPRA.AnalyticNumberTheory.EvenPerfectConverse
 
-open_ipra
+open_ipra exports
 open LeanProofs.IPRA.AnalyticNumberTheory.FactorVector (val_le)
 open LeanProofs.IPRA.AnalyticNumberTheory.MersenneExponent
   (mersenne succ_mersenne two_le_mersenne prime_exponent)
 open LeanProofs.IPRA.AnalyticNumberTheory.PerfectDivisorBounds (sigma_three sigma_gap prime_of_sigma)
 open LeanProofs.IPRA.AnalyticNumberTheory.PerfectNumbers (euclid_perfect sig_two_pow mul_one_r)
 open LeanProofs.IPRA.AnalyticNumberTheory.PhiLower (prime_two)
-open LeanProofs.IPRA.AnalyticNumberTheory.Primes (prime)
-open LeanProofs.IPRA.AnalyticNumberTheory.SigmaMult (sig sigma_mul)
-open LeanProofs.IPRA.AnalyticNumberTheory.SigmaPrimePower (sig_congr)
-open LeanProofs.IPRA.AnalyticNumberTheory.Totient (coprime_pow)
 open LeanProofs.IPRA.AnalyticNumberTheory.Valuation (val cof_eq cof_not_dvd pw_val_pos)
 open LeanProofs.IPRA.AnalyticNumberTheory.ValuationAdd (le_val_of_dvd)
-open LeanProofs.IPRA.AnalyticNumberTheory.ValuationMul (p_pos)
 open LeanProofs.IPRA.Combinatorics.BinomialIdentities (mul_cancel)
 open LeanProofs.IPRA.DiophantineNumberTheory.Coprime
   (dvd_of_eq' eq_of_dvd' dvd_sub' gcd_comm_one one_le_of_pos pos_of_eq_mul)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
-
-local notation "𝔞" t:max => Groth.ι (IPRA.Q.mk _ t)
 
 private theorem lt_quotient {q m t : PTm n} (hq : Γ ⊢[PRAAx] le two q)
     (ht : Γ ⊢[PRAAx] t ≐ succ (pred t)) (h : Γ ⊢[PRAAx] m ≐ q * t) :

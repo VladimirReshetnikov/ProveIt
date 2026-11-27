@@ -1,7 +1,4 @@
 import IPRADerivations.AnalyticNumberTheory.ChebyshevCorollaries
-import IPRADerivations.Core.CertificateTactics
-import IPRADerivations.Core.CommonLemmas
-import IPRADerivations.Core.Header
 
 /-!
 # Golomb's theorem with a bounded witness
@@ -23,24 +20,16 @@ The packet's bound `B(k) = 2k(a + 2^a) + 1` and the count of all solutions are n
 from the Chebyshev estimate.
 -/
 
-set_option linter.unusedSimpArgs false
-
 namespace LeanProofs.IPRA.AnalyticNumberTheory.GolombSolution
 
-open_ipra
-open LeanProofs.IPRA.AnalyticNumberTheory.Valuation (isP isP_of_prime pw_pos')
-open LeanProofs.IPRA.AnalyticNumberTheory.ValuationMul (p_pos)
-open LeanProofs.IPRA.AnalyticNumberTheory.FactorVector (one_le_pos)
+open_ipra exports
 open LeanProofs.IPRA.AnalyticNumberTheory.PiTheta (piB)
 open LeanProofs.IPRA.AnalyticNumberTheory.PrimeRank (pc pc_zero pc_succ pc_mono isP_small congrPc)
 open LeanProofs.IPRA.AnalyticNumberTheory.ChebyshevCorollaries (pi_density)
 open LeanProofs.IPRA.AnalyticNumberTheory.ChebyshevBounds (two_pos')
-open LeanProofs.IPRA.AnalyticNumberTheory.PhiLower (le_mul_mono)
 open LeanProofs.IPRA.Foundations.BoundedReflection (exB wit ex_intro ex_elim ex_least)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
-
-local notation "𝔞" t:max => Groth.ι (IPRA.Q.mk _ t)
 
 /-- `π(2) = 1`. -/
 theorem pc_two : Γ ⊢[PRAAx] pc (two : PTm n) ≐ one :=

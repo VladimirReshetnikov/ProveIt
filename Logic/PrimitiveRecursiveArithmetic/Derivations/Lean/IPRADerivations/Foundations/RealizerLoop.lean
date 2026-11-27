@@ -1,7 +1,5 @@
 import IPRADerivations.Foundations.RealizerGraph
 import IPRADerivations.Foundations.FiberCompiler
-import IPRADerivations.Core.SubstCommand
-import IPRADerivations.Core.Header
 
 /-!
 # A bounded runtime fold with actual finite-query metadata
@@ -18,11 +16,9 @@ remain explicit outside induction. Adaptive state-dependent demands and
 variable blocks of demands per stage are not implemented here.
 -/
 
-set_option linter.unusedSimpArgs false
-
 namespace LeanProofs.IPRA.Foundations.RealizerLoop
 
-open_ipra
+open_ipra exports
 open LeanProofs.IPRA.Foundations.RealizerComposition
 open LeanProofs.IPRA.Foundations.MasterCertificate (sequence entry sequence_decode)
 open LeanProofs.IPRA.Foundations.SequenceComposition (length)

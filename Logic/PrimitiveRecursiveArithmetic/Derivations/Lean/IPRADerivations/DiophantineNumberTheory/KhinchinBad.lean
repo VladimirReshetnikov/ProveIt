@@ -1,9 +1,7 @@
 import IPRADerivations.DiophantineNumberTheory.KhinchinSieve
 import IPRADerivations.AnalyticNumberTheory.SumReindex
-import IPRADerivations.Core.MultiSums
 import IPRADerivations.Probability.Independence
 import IPRADerivations.DiophantineNumberTheory.HurwitzMargin
-import IPRADerivations.Core.Header
 
 /-!
 # The bad pairs of one denominator (`hurwitz_khinchin_ipra`, (K3))
@@ -22,10 +20,8 @@ The parameters are packed as `x = ⟨q, ⟨α, ⟨γ, β⟩⟩⟩`.
 
 namespace LeanProofs.IPRA.DiophantineNumberTheory.KhinchinBad
 
-open_ipra
+open_ipra exports
 open LeanProofs.IPRA.Signum (sg sg_zero sg_succ)
-open LeanProofs.IPRA.DiophantineNumberTheory.Coprime (dvd_le')
-open LeanProofs.IPRA.AnalyticNumberTheory.Order (gcd_pos_right)
 open LeanProofs.IPRA.AnalyticNumberTheory.SumReindex (riB inst2_riB reindex_le)
 open LeanProofs.IPRA.Topology.StaggeredGrids (eqb01' eq_of_eqb congrEqb')
 open LeanProofs.IPRA.Probability.Independence (sum_scale)
@@ -35,8 +31,6 @@ open LeanProofs.IPRA.DiophantineNumberTheory.KhinchinSieve (inJ_scale)
 set_option autoImplicit false
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
-
-local notation "𝔞" t:max => Groth.ι (IPRA.Q.mk _ t)
 
 /-! ## Bodies -/
 
@@ -259,3 +253,5 @@ theorem bad_le {M x : PTm n} (hq : Γ ⊢[PRAAx] xq x ≐ succ (pred (xq x))) :
   exact le_trans s1 (le_congr s2.eqSymm (.eqRefl _) s3)
 
 end LeanProofs.IPRA.DiophantineNumberTheory.KhinchinBad
+
+export_ipra DiophantineNumberTheory.KhinchinBad (inJT)

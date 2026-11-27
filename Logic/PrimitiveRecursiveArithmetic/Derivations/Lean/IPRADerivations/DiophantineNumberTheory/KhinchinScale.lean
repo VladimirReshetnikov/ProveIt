@@ -1,9 +1,6 @@
 import IPRADerivations.DiophantineNumberTheory.KhinchinSeparated
 import IPRADerivations.Foundations.PackingPointwise
-import IPRADerivations.AnalyticNumberTheory.Primes
 import IPRADerivations.AnalyticNumberTheory.DivisorHyperbola
-import IPRADerivations.Core.LinearCombination
-import IPRADerivations.Core.Header
 
 /-!
 # The measure of one Khinchin scale (`hurwitz_khinchin_ipra`, (K8))
@@ -30,13 +27,10 @@ of 7-variable core terms, decoded by one `Prf.eqCongr` (`conv`).
 
 namespace LeanProofs.IPRA.DiophantineNumberTheory.KhinchinScale
 
-open_ipra
+open_ipra exports
 open LeanProofs.IPRA.Signum (sg sg_zero sg_succ)
 open LeanProofs.IPRA.Combinatorics.FiniteBijection (sg_bit)
-open LeanProofs.IPRA.AnalyticNumberTheory.Mobius (congrSg)
 open LeanProofs.IPRA.Analysis.Products (fact)
-open LeanProofs.IPRA.AnalyticNumberTheory.Primes (dvd_fact)
-open LeanProofs.IPRA.AnalyticNumberTheory.DivisorHyperbola (quo_le_self)
 open LeanProofs.IPRA.Foundations.IntervalCover (measure)
 open LeanProofs.IPRA.Foundations.IntervalPacking (loB hiB acB absurd_one_zero')
 open LeanProofs.IPRA.Foundations.PackingPointwise (packing_pt)
@@ -45,8 +39,6 @@ open LeanProofs.IPRA.DiophantineNumberTheory.KhinchinSeparated (actv sep_pair)
 set_option autoImplicit false
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
-
-local notation "𝔞" t:max => Groth.ι (IPRA.Q.mk _ t)
 
 /-! ## The members, explicitly -/
 
@@ -284,3 +276,5 @@ theorem scale_measure {M Q Q' R G w α γ β : PTm n} (hM : Γ ⊢[PRAAx] M ≐ 
       (congrSg (congrMonus (congrAdd Aa (.eqRefl _)) Ab))
 
 end LeanProofs.IPRA.DiophantineNumberTheory.KhinchinScale
+
+export_ipra DiophantineNumberTheory.KhinchinScale (actK tup)

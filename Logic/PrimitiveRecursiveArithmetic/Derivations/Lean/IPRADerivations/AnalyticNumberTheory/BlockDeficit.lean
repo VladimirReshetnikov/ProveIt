@@ -18,30 +18,19 @@ The block hypotheses are iPRA formulas `∀d < x + 1. D₁ < d → d ≤ D₂ �
 `sum_le_two` sums a pointwise inequality with two bodies on each side.
 -/
 
-set_option linter.unusedSimpArgs false
-
 namespace LeanProofs.IPRA.AnalyticNumberTheory.BlockDeficit
 
-open_ipra
+open_ipra exports
 open LeanProofs.IPRA.AnalyticNumberTheory.HarmonicChebyshev (wt)
-open LeanProofs.IPRA.AnalyticNumberTheory.HarmonicMertens (le_scale)
-open LeanProofs.IPRA.AnalyticNumberTheory.LcmUpto (Psi)
-open LeanProofs.IPRA.AnalyticNumberTheory.AbsDiff (absd)
-open LeanProofs.IPRA.AnalyticNumberTheory.WeightedSplit (hRB_at)
 open LeanProofs.IPRA.AnalyticNumberTheory.SummatoryCompose (hRB)
 open LeanProofs.IPRA.AnalyticNumberTheory.PointDeficit (dg def_lo def_hi def_mid)
 open LeanProofs.IPRA.AnalyticNumberTheory.BlockSums (Y biB pzB fzB bi_at pz_at fz_at ind0 ind1)
 open LeanProofs.IPRA.Analysis.Products (fact)
 open LeanProofs.IPRA.Signum (sg sg_succ)
-open LeanProofs.IPRA.AnalyticNumberTheory.Mobius (congrSg)
-open LeanProofs.IPRA.AnalyticNumberTheory.DivisorHarmonic (shift_fact')
-open LeanProofs.IPRA.DiophantineNumberTheory.KhinchinBlock (sum_le_lin1)
 
 set_option autoImplicit false
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
-
-local notation "𝔞" t:max => Groth.ι (IPRA.Q.mk _ t)
 
 /-! ## Summing a two-body inequality -/
 
@@ -274,3 +263,5 @@ theorem case_mid_sum (h12 : Γ ⊢[PRAAx] le D₁ D₂)
 end Cases
 
 end LeanProofs.IPRA.AnalyticNumberTheory.BlockDeficit
+
+export_ipra AnalyticNumberTheory.BlockDeficit (Bs' OnBlock bv_in gzB gz_at stg)

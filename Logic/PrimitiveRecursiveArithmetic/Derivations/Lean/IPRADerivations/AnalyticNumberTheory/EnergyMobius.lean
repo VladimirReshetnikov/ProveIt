@@ -1,7 +1,4 @@
 import IPRADerivations.AnalyticNumberTheory.MobiusBounds
-import IPRADerivations.Probability.Independence
-import IPRADerivations.Core.LinearCombination
-import IPRADerivations.Core.Header
 
 /-!
 # Divisor inversion for the energy statistic (`thm:energy`, recovery direction)
@@ -26,21 +23,16 @@ cleared term is `g^±(i) = ⌊N!/k⌋ M^±(⌊N/k⌋, x)`, so `T^±(d) = Σ_{d�
 i.e. `Σ_{d≤N} μ(d) T'_d = N! M(N)`. No floor matters for the identity itself; only `⌊N!/1⌋ = N!` is used.
 -/
 
-set_option linter.unusedSimpArgs false
-
 namespace LeanProofs.IPRA.AnalyticNumberTheory.EnergyMobius
 
-open_ipra
+open_ipra exports
 open LeanProofs.IPRA.AnalyticNumberTheory.Mobius (muP muN lB inst2_lB inst2_mulB congrEqb' zero_mul_l)
 open LeanProofs.IPRA.AnalyticNumberTheory.MobiusBounds (GP GN inst2_GP inst2_GN congrMu cancel_gen)
 open LeanProofs.IPRA.Analysis.Products (fact)
 open LeanProofs.IPRA.Probability.Independence (dsum dsum_rows sum_scale row_pt col_pt shift_inst2 inst3_mul')
-open LeanProofs.IPRA.AnalyticNumberTheory.Totient (quo_eq)
 open LeanProofs.IPRA.Signum (sg sg_zero sg_succ)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
-
-local notation "𝔞" t:max => Groth.ι (IPRA.Q.mk _ t)
 
 /-! ## Signed Möbius values -/
 
@@ -166,8 +158,8 @@ theorem col_cancel {i Z : PTm n} (hi : Γ ⊢[PRAAx] lt i (fstT Z)) :
   have cg : Γ ⊢[PRAAx] ap2 (sumF (GS true)) (succ (fstT Z)) (pairT (succ (fstT Z)) (succ i)) ≐
       ap2 (sumF (GS false)) (succ (fstT Z)) (pairT (succ (fstT Z)) (succ i)) + eqb (succ i) one :=
     cancel_gen hk hle hle
-  ipra_lc natEq (col_eq (Γ := Γ) g true i Z) - natEq (col_eq (Γ := Γ) g false i Z) +
-    𝔞 (inst2 g i Z) * (-natEq (sum_shift (Γ := Γ) (GS true) (fstT Z) (pairT (succ (fstT Z)) (succ i))) + natEq (sum_shift (Γ := Γ) (GS false) (fstT Z) (pairT (succ (fstT Z)) (succ i))) - z1 + z2 + natEq cg)
+  ipra_lc natEq (col_eq g true i Z) - natEq (col_eq g false i Z) +
+    𝔞 (inst2 g i Z) * (-natEq (sum_shift (GS true) (fstT Z) (pairT (succ (fstT Z)) (succ i))) + natEq (sum_shift (GS false) (fstT Z) (pairT (succ (fstT Z)) (succ i))) - z1 + z2 + natEq cg)
 
 /-- `g(i, snd y) [i + 1 = 1]`. -/
 def dlB : PTm 2 := lB g * eqb (succ (var 0)) one
@@ -262,8 +254,8 @@ theorem mobius_energy (Mp Mn : PTm 2) {N x : PTm n} (hN : Γ ⊢[PRAAx] N ≐ su
   have f := fst_pair (Γ := Γ) N x
   have hZ : Γ ⊢[PRAAx] fstT (pairT N x) ≐ succ (pred (fstT (pairT N x))) :=
     f.eqTrans (hN.eqTrans (congrSucc (congrPred f.eqSymm)))
-  ipra_lc natEq (sum_add (Γ := Γ) (mtS (gM Mp) true) (mtS (gM Mn) false) N (pairT N x)) -
-    natEq (sum_add (Γ := Γ) (mtS (gM Mp) false) (mtS (gM Mn) true) N (pairT N x)) +
+  ipra_lc natEq (sum_add (mtS (gM Mp) true) (mtS (gM Mn) false) N (pairT N x)) -
+    natEq (sum_add (mtS (gM Mp) false) (mtS (gM Mn) true) N (pairT N x)) +
     natEq ((congrAp2 (sumF (mtS (gM Mp) true)) f.eqSymm (.eqRefl _)).eqTrans ((mobius_rows (gM Mp) hZ).eqTrans (congrAdd (congrAp2 (sumF (mtS (gM Mp) false)) f (.eqRefl _)) (gM_zero Mp N x)))) -
     natEq ((congrAp2 (sumF (mtS (gM Mn) true)) f.eqSymm (.eqRefl _)).eqTrans ((mobius_rows (gM Mn) hZ).eqTrans (congrAdd (congrAp2 (sumF (mtS (gM Mn) false)) f (.eqRefl _)) (gM_zero Mn N x))))
 

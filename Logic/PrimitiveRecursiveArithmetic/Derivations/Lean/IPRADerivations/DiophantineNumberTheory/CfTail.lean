@@ -1,6 +1,4 @@
 import IPRADerivations.DiophantineNumberTheory.CfValue
-import IPRADerivations.Core.LinearCombination
-import IPRADerivations.Core.Header
 
 /-!
 # The nested fraction with a rational tail
@@ -16,20 +14,16 @@ For `t = u/v` the nested fraction `[a_0; …, a_m, u/v]` is evaluated from the i
   matrix column, which `ContinuedFractionTail` (`err_even`, `err_odd`, …) takes as its value.
 -/
 
-set_option linter.unusedSimpArgs false
-
 namespace LeanProofs.IPRA.DiophantineNumberTheory.CfTail
 
-open_ipra
-open LeanProofs.IPRA.DiophantineNumberTheory.HurwitzLoop (sP sQ sP' sQ' st)
+open_ipra exports
+open LeanProofs.IPRA.DiophantineNumberTheory.HurwitzLoop (sP sQ st)
 open LeanProofs.IPRA.DiophantineNumberTheory.CfReal (nx proj_matrix proj_nx co cv uv cv_zero cv_succ uv_zero uv_succ lin_origin Lin4
   subst_cv subst_uv)
 open LeanProofs.IPRA.DiophantineNumberTheory.CfValue (Pre Av congrSg' tail_step_data monus_one)
 open LeanProofs.IPRA.Signum (sg sg_zero sg_succ)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
-
-local notation "𝔞" t:max => Groth.ι (IPRA.Q.mk _ t)
 
 /-! ## Algebra -/
 
@@ -228,8 +222,7 @@ theorem ext_value (m u v : PTm n) :
     have e0 : Θ ⊢[PRAAx] monus m zero ≐ zero := (monus_zero m).eqTrans hm
     have hA : Θ ⊢[PRAAx] Av a' (monus (fstT (pairT m (pairT u v))) zero) ≐ ap1 a' zero := by
       have x := natEq ((coef_eq (Γ := Θ) (a' := a') (u := u) (v := v) m zero).eqTrans (congrAv e0))
-      have y := natEq (sg_zero (Γ := Θ) (n := n))
-      apply deriveNat; ipra_simps; linear_combination x + y
+      ipra_lc x + natEq (sg_zero (Γ := Θ) (n := n))
     have ec : Θ ⊢[PRAAx] cv a' m ≐ st (ap1 a' zero) one one zero := (congrAp2 _ hm (.eqRefl _)).eqTrans cv_zero
     obtain ⟨c1, c2, c3, c4⟩ := proj_matrix ec
     have r := tb_zero_alg b1 b2 hA hX hY c1 c2 c3 c4
@@ -251,8 +244,7 @@ theorem ext_value (m u v : PTm n) :
     have e0 : Θ ⊢[PRAAx] monus m (succ (pred m)) ≐ zero := (congrMonus (.eqRefl _) hm.eqSymm).eqTrans (monus_self _)
     have hA : Θ ⊢[PRAAx] Av a' (monus (fstT (pairT m (pairT u v))) (succ (pred m))) ≐ ap1 a' zero := by
       have x := natEq ((coef_eq (Γ := Θ) (a' := a') (u := u) (v := v) m (succ (pred m))).eqTrans (congrAv e0))
-      have y := natEq (sg_zero (Γ := Θ) (n := n))
-      apply deriveNat; ipra_simps; linear_combination x + y
+      ipra_lc x + natEq (sg_zero (Γ := Θ) (n := n))
     have eU : Θ ⊢[PRAAx] uv a' (succ (pred m)) (monus m (succ (pred m))) ≐ uv a' m zero :=
       congrAp2 _ hm.eqSymm e0
     have X := (Prf.andE₁ T).eqTrans (congrAdd (congrMul (congrFst eU) (.eqRefl _))

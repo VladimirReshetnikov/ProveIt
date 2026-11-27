@@ -1,5 +1,4 @@
 import IPRADerivations.Core.Evaluation
-import IPRADerivations.Core.Order
 import IPRADerivations.Core.Pairing
 import IPRADerivations.Core.Signum
 import IPRADerivations.Core.Header
@@ -27,7 +26,7 @@ uniform in the context and in the terms `σ`.
 
 namespace LeanProofs.IPRA.Foundations.BoundedDecision
 
-open_ipra
+open_ipra exports
 
 variable {n : ℕ}
 

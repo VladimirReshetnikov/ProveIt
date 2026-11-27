@@ -1,7 +1,6 @@
 import IPRADerivations.Core.ProdLemmas
 import IPRADerivations.Foundations.BoundedReflection
 import IPRADerivations.Core.OrderCertificates
-import IPRADerivations.Core.Header
 
 /-!
 # The Boolean table of a finite query trace
@@ -26,11 +25,9 @@ With the table fields as bits `g(i, x) ∈ {0, 1}`, `i < L`, and `GoodTable = �
   quantified induction formula.
 -/
 
-set_option linter.unusedSimpArgs false
-
 namespace LeanProofs.IPRA.Foundations.FiniteQueryTable
 
-open_ipra
+open_ipra exports
 open LeanProofs.IPRA.Foundations.BoundedReflection (one_ne_zero)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}

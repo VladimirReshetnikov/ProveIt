@@ -1,8 +1,5 @@
 import IPRADerivations.AnalyticNumberTheory.WeightedMangoldt
 import IPRADerivations.AnalyticNumberTheory.SummatoryPhi
-import IPRADerivations.Core.LinearCombination
-import IPRADerivations.Core.InductionTactic
-import IPRADerivations.Core.Header
 
 /-!
 # The factorial identity for the weighted von Mangoldt function
@@ -18,23 +15,18 @@ Packet: `analytic-number-theory/von_mangoldt_totient_ipra_2026-11-15`, Theorem `
   (`WeightedMangoldt.lambda_divsum`), and `L_w((N+1)!) = L_w(N!) + L_w(N+1)` by additivity.
 -/
 
-set_option linter.unusedSimpArgs false
-
 namespace LeanProofs.IPRA.AnalyticNumberTheory.FactorialLambda
 
-open_ipra
+open_ipra exports
 open LeanProofs.IPRA.AnalyticNumberTheory.Mobius
 open LeanProofs.IPRA.AnalyticNumberTheory.MobiusBounds (sum_ext shift_pos val_big)
 open LeanProofs.IPRA.AnalyticNumberTheory.WeightedMangoldt
 open LeanProofs.IPRA.AnalyticNumberTheory.Valuation (val isP isP_01 prime_of_isP)
-open LeanProofs.IPRA.AnalyticNumberTheory.ValuationMul (val_mul)
 open LeanProofs.IPRA.Analysis.Products (fact)
 open LeanProofs.IPRA.Signum (sg sg_zero sg_succ)
 open LeanProofs.IPRA.AnalyticNumberTheory.Primes (fact_pos)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
-
-local notation "𝔞" t:max => Groth.ι (IPRA.Q.mk _ t)
 
 /-! ## Sums with different parameters -/
 
@@ -101,9 +93,9 @@ theorem lw_mul {a b y : PTm n} (ha : Γ ⊢[PRAAx] a ≐ succ (pred a)) (hb : Γ
     Γ ⊢[PRAAx] Lw w (a * b) y ≐ Lw w a y + Lw w b y := by
   have wa := natEq ha; have wb := natEq hb
   have la : Γ ⊢[PRAAx] le (succ a) (succ (a * b)) :=
-    (succ_monus_succ _ _).eqTrans (le_of_eq_add (d := a * pred b) (by apply deriveNat; ipra_simps; linear_combination 𝔞 a * wb))
+    (succ_monus_succ _ _).eqTrans (le_of_eq_add (d := a * pred b) (by ipra_lc 𝔞 a * wb))
   have lb : Γ ⊢[PRAAx] le (succ b) (succ (a * b)) :=
-    (succ_monus_succ _ _).eqTrans (le_of_eq_add (d := pred a * b) (by apply deriveNat; ipra_simps; linear_combination 𝔞 b * wa))
+    (succ_monus_succ _ _).eqTrans (le_of_eq_add (d := pred a * b) (by ipra_lc 𝔞 b * wa))
   have ha' := shift_pos ha; have hb' := shift_pos hb
   refine (sum_add2 (ellB w) (ellB w) (ellB w) (x := pairT a y) (x' := pairT b y) (.allI (.impI ?_))).eqTrans
     (congrAdd (lw_ext w ha la) (lw_ext w hb lb))
@@ -208,3 +200,6 @@ theorem factorial_lambda (N y : PTm n) :
 end Factorial
 
 end LeanProofs.IPRA.AnalyticNumberTheory.FactorialLambda
+
+export_ipra AnalyticNumberTheory.FactorialLambda (FLB FL_at congrLw factorial_lambda inst2_fB lam_zero lw_mul
+  sum_add2)

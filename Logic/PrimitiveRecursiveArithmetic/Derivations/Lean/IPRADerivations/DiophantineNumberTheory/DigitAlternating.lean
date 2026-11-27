@@ -1,10 +1,5 @@
-import IPRADerivations.Combinatorics.LegendreDigits
 import IPRADerivations.DiophantineNumberTheory.ModularCertificate
-import IPRADerivations.AnalyticNumberTheory.RSA
 import IPRADerivations.AnalyticNumberTheory.ValuationMul
-import IPRADerivations.Core.LinearCombination
-import IPRADerivations.Core.InductionTactic
-import IPRADerivations.Core.Header
 
 /-!
 # The alternating digit rule modulo `b + 1`
@@ -25,19 +20,12 @@ parity of the index, so every statement is an equation of natural numbers:
   `(n + ∑_{j<n, odd} d_j) mod (b + 1) = (∑_{j<n, even} d_j) mod (b + 1)`.
 -/
 
-set_option linter.unusedSimpArgs false
-
 namespace LeanProofs.IPRA.DiophantineNumberTheory.DigitAlternating
 
-open_ipra
-open LeanProofs.IPRA.AnalyticNumberTheory.Valuation (lt_pw pw_pos')
-open LeanProofs.IPRA.AnalyticNumberTheory.ValuationMul (p_pos)
+open_ipra exports
 open LeanProofs.IPRA.Combinatorics.LegendreDigits (qB' dB_at qB'_at digit_step quo_small)
-open LeanProofs.IPRA.DiophantineNumberTheory.ModularCertificate (rem_add_mul)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
-
-local notation "𝔞" t:max => Groth.ι (IPRA.Q.mk _ t)
 
 /-! ## The four bodies -/
 

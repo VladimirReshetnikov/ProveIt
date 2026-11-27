@@ -1,6 +1,5 @@
 import IPRADerivations.AnalyticNumberTheory.WeightedReorder
 import IPRADerivations.AnalyticNumberTheory.FactorialError
-import IPRADerivations.Core.Header
 
 /-!
 # The weighted identity for one monotone function (`pnt_ipra_constructive_2026-11-14`, `sb:weighted-sum`)
@@ -20,24 +19,15 @@ separately (`f = ψ` and `f = F · id` in the application). With the harmonic lo
   `HarmonicChebyshev.superadd` and `HarmonicMertens.subadd`).
 -/
 
-set_option linter.unusedSimpArgs false
-
 namespace LeanProofs.IPRA.AnalyticNumberTheory.WeightedSplit
 
-open_ipra
+open_ipra exports
 open LeanProofs.IPRA.AnalyticNumberTheory.Harmonic (S hB)
 open LeanProofs.IPRA.AnalyticNumberTheory.HarmonicChebyshev (S_mono wt superadd)
-open LeanProofs.IPRA.AnalyticNumberTheory.HarmonicMertens (le_scale subadd)
 open LeanProofs.IPRA.AnalyticNumberTheory.HarmonicLogSquareSum (U)
-open LeanProofs.IPRA.AnalyticNumberTheory.LcmUpto (pos_of_lt_zero lt_zero_of_pos)
-open LeanProofs.IPRA.AnalyticNumberTheory.SelbergLeibniz (lamF)
 open LeanProofs.IPRA.AnalyticNumberTheory.SummatoryCompose (Mono hRB inst2_hRB)
 open LeanProofs.IPRA.AnalyticNumberTheory.WeightedReorder (S1B inst2_S1 reorder)
 open LeanProofs.IPRA.AnalyticNumberTheory.SymmetryBound (quo_pos)
-open LeanProofs.IPRA.AnalyticNumberTheory.ConvolutionAssoc (cvF)
-open LeanProofs.IPRA.AnalyticNumberTheory.FactorialLambda (sum_add2)
-open LeanProofs.IPRA.AnalyticNumberTheory.DivisorHarmonic (shift_fact')
-open LeanProofs.IPRA.AnalyticNumberTheory.Mobius (congrSg)
 open LeanProofs.IPRA.Probability.Lotus (cmB sum_const_mul)
 open LeanProofs.IPRA.Probability.Independence (cm_pt)
 open LeanProofs.IPRA.Analysis.Products (fact)
@@ -47,13 +37,10 @@ set_option autoImplicit false
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
-local notation "𝔞" t:max => Groth.ι (IPRA.Q.mk _ t)
-
 /-! ## Splitting the logarithm -/
 
 theorem kle {K a : PTm n} (ha : Γ ⊢[PRAAx] a ≐ succ (pred a)) : Γ ⊢[PRAAx] le K (K * a) := by
-  have w := natEq ha
-  exact le_of_eq_add (d := K * pred a) (by apply deriveNat; ipra_simps; linear_combination 𝔞 K * w)
+  exact le_of_eq_add (d := K * pred a) (by ipra_lc 𝔞 K * natEq ha)
 
 theorem eSU {K a : PTm n} (F : PTm n) (ha : Γ ⊢[PRAAx] a ≐ succ (pred a)) :
     Γ ⊢[PRAAx] S (K * a) F ≐ S K F + U a K F :=
@@ -304,3 +291,5 @@ theorem fid_hi :
 end Sum
 
 end LeanProofs.IPRA.AnalyticNumberTheory.WeightedSplit
+
+export_ipra AnalyticNumberTheory.WeightedSplit (hRB_at inst2_add lamW uw_at)

@@ -1,12 +1,6 @@
-import IPRADerivations.Core.Parity
 import IPRADerivations.Core.OrderCertificates
 import IPRADerivations.Topology.CollisionScales
-import IPRADerivations.DiophantineNumberTheory.FLTMultiples
 import IPRADerivations.AnalyticNumberTheory.SquareReciprocal
-import IPRADerivations.AnalyticNumberTheory.Totient
-import IPRADerivations.Core.LinearCombination
-import IPRADerivations.Core.SubstCommand
-import IPRADerivations.Core.Header
 
 /-!
 # Optimality of `1/√5` for the golden ratio (`hurwitz_khinchin_ipra`)
@@ -36,17 +30,12 @@ squaring `NK + a² < s(2p − q)` and `(2p − q)² = 4N + 5q²` give `(NK − a
 
 namespace LeanProofs.IPRA.DiophantineNumberTheory.GoldenOptimal
 
-open_ipra
+open_ipra exports
 open LeanProofs.IPRA.Topology.CollisionScales (lt_pw_two)
-open LeanProofs.IPRA.DiophantineNumberTheory.FLTMultiples (pw_pos)
-open LeanProofs.IPRA.AnalyticNumberTheory.SquareReciprocal (cancel_le)
-open LeanProofs.IPRA.AnalyticNumberTheory.Totient (quo_eq)
 
 set_option autoImplicit false
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
-
-local notation "𝔞" t:max => Groth.ι (IPRA.Q.mk _ t)
 
 /-! ## Small tools -/
 
@@ -140,8 +129,7 @@ theorem descent_step {j p q : PTm n} (ih : Γ ⊢[PRAAx] nInv j p q) : Γ ⊢[PR
   have hPQ : Δ ⊢[PRAAx] quo p (pw two j) * quo p (pw two j) ≐
       quo p (pw two j) * quo q (pw two j) + quo q (pw two j) * quo q (pw two j) := by
     refine cancel_eq hN ?_
-    have e := natEq ((congrMul dp dp).eqSymm.eqTrans (hE.eqTrans (congrAdd (congrMul dp dq) (congrMul dq dq))))
-    apply deriveNat; ipra_simps; linear_combination e
+    ipra_lc natEq ((congrMul dp dp).eqSymm.eqTrans (hE.eqTrans (congrAdd (congrMul dp dq) (congrMul dq dq))))
   have ev := both_even hPQ
   have hB := pw_two_pos (Γ := Δ) (succ j)
   have es := pw_succ (Γ := Δ) two j
@@ -186,7 +174,6 @@ theorem descent (j p q : PTm n) : Γ ⊢[PRAAx] nInv j p q := by
 theorem golden_norm {p q : PTm n} (φ : Fm PTm n) (hq : Γ ⊢[PRAAx] le one q)
     (h : Γ ⊢[PRAAx] p * p ≐ p * q + q * q) : Γ ⊢[PRAAx] φ := by
   have d := Prf.andE₂ (Prf.impE (descent q p q) h)
-  have ed := natEq d
   have hlt := lt_pw_two (Γ := Γ) q
   refine .orE (zero_or_succ (quo q (pw two q))) ?_ ?_
   · have e0 := natEq (Prf.hyp0 : ((quo q (pw two q) ≐ zero) :: Γ) ⊢[PRAAx] quo q (pw two q) ≐ zero)

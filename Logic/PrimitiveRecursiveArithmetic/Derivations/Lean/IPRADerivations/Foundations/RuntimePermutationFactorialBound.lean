@@ -1,7 +1,5 @@
 import IPRADerivations.Foundations.RuntimePermutationDeletion
 import IPRADerivations.Topology.InjectionBound
-import IPRADerivations.Core.SubstCommand
-import IPRADerivations.Core.Header
 
 /-!
 # The retained runtime permutation count is bounded by the actual factorial
@@ -18,7 +16,7 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Foundations.RuntimePermutationFactorialBound
 
-open_ipra
+open_ipra exports
 open RuntimePermutationWords (count words horizon permutationBit)
 open LeanProofs.IPRA.Foundations.MasterCertificate (entry)
 open LeanProofs.IPRA.Foundations.RuntimePermutationDeletion (packed packed_bound packed_unique)
@@ -103,3 +101,5 @@ theorem actual_returned_factorial_bound_closed : ([] : List (Fm PTm 0)) ⊢[PRAA
     (le (fstT (run (var 0))) (sndT (run (var 0)))) := closeUniv 1 (returned_bound _)
 
 end LeanProofs.IPRA.Foundations.RuntimePermutationFactorialBound
+
+export_ipra Foundations.RuntimePermutationFactorialBound (count_factorial_bound factorial)

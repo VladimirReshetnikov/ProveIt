@@ -1,7 +1,6 @@
 import IPRADerivations.Core.Fubini
 import IPRADerivations.Core.SumOrder
 import IPRADerivations.Core.Signum
-import IPRADerivations.Core.LinearCombination
 import IPRADerivations.Core.Header
 
 /-!
@@ -28,14 +27,12 @@ The proof of `subadditive`: a covered cell is counted at most by the number of m
 
 namespace LeanProofs.IPRA.Foundations.IntervalCover
 
-open_ipra
+open_ipra exports
 open LeanProofs.IPRA.Signum (sg sg_zero sg_succ)
 
 set_option autoImplicit false
 
 variable {n : ℕ}
-
-local notation "𝔞" t:max => Groth.ι (IPRA.Q.mk _ t)
 
 /-! ## One interval -/
 
@@ -88,7 +85,7 @@ theorem count_step {S T lo hi : PTm n} (h1 : Γ ⊢[PRAAx] le S (monus T lo)) (h
       let β : PTm n := monus hi (succ T)
       have e1 : Δ' ⊢[PRAAx] monus (succ T) lo ≐ succ α := by
         refine (congrMonus (?_ : _ ⊢[PRAAx] succ T ≐ lo + succ α) (.eqRefl _)).eqTrans (add_monus' _ _)
-        ipra_lc natEq (eq_add_of_le (Γ := Δ') Prf.hyp1)
+        ipra_lc natEq (eq_add_of_le Prf.hyp1)
       have e2 : Δ' ⊢[PRAAx] monus hi lo ≐ succ (α + β) := by
         refine (congrMonus (?_ : _ ⊢[PRAAx] hi ≐ lo + succ (α + β)) (.eqRefl _)).eqTrans (add_monus' _ _)
         ipra_lc natEq (eq_add_of_le (Γ := Δ') Prf.hyp0) + natEq (eq_add_of_le (Γ := Δ') Prf.hyp1)
@@ -226,3 +223,5 @@ theorem union_le (a : PTm 3) {Γ : List (Fm PTm n)} (T K x : PTm n) :
   exact le_congr (.eqRefl _) (fubini (Γ := Γ) a T K x) s1
 
 end LeanProofs.IPRA.Foundations.IntervalCover
+
+export_ipra Foundations.IntervalCover (covB indB inst3_indB lenB)

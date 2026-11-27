@@ -1,8 +1,5 @@
 import IPRADerivations.Foundations.BoundedDescent
 import IPRADerivations.Foundations.TraceClosure
-import IPRADerivations.Core.MultiSums
-import IPRADerivations.Core.OrderCertificates
-import IPRADerivations.Core.Header
 
 /-!
 # Finite descent with an explicit range, with a guarded step
@@ -29,19 +26,13 @@ invariant `h(x_t) ≤ h(x) − t` is only maintained while the height is positiv
 The descent hypothesis is `Hyp`, two rules over all contexts.
 -/
 
-set_option linter.unusedSimpArgs false
-
 namespace LeanProofs.IPRA.Foundations.GuardedDescent
 
-open_ipra
-open LeanProofs.IPRA.Foundations.IterationFusion (app1 iter congrApp1)
+open_ipra exports
 open LeanProofs.IPRA.Foundations.BoundedDescent (Descent descent_inv terminal)
 open LeanProofs.IPRA.Foundations.TraceClosure (branchStep app1_branchStep)
-open LeanProofs.IPRA.Foundations.BoundedReflection (eq_of_eqb)
 
 variable {k : ℕ} {Γ : List (Fm PTm k)}
-
-local notation "𝔞" t:max => Groth.ι (IPRA.Q.mk _ t)
 
 /-- The descent hypothesis: `H(x) = 1 ∧ h(x) > 0 ⟹ H(T x) = 1 ∧ h(T x) < h(x)`. -/
 structure Hyp (T h V : PTm 1) : Prop where

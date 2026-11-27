@@ -1,5 +1,4 @@
 import IPRADerivations.DiophantineNumberTheory.AperySqueeze
-import IPRADerivations.Core.Header
 
 /-!
 # The Wronskian step of the Apéry recurrence
@@ -16,11 +15,9 @@ any common denominator, since the identity is homogeneous):
 * `wronskian_base`: `a_0 b_1 − a_1 b_0 = 1·6 − 5·0 = 6`.
 -/
 
-set_option linter.unusedSimpArgs false
-
 namespace LeanProofs.IPRA.DiophantineNumberTheory.AperyWronskian
 
-open_ipra
+open_ipra exports
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 

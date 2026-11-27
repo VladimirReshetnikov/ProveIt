@@ -1,17 +1,6 @@
 import IPRADerivations.AnalyticNumberTheory.ConvolutionAssoc
-import IPRADerivations.AnalyticNumberTheory.RSA
-import IPRADerivations.AnalyticNumberTheory.Valuation
-import IPRADerivations.Combinatorics.BinomialTheorem
-import IPRADerivations.Core.OrderCertificates
-import IPRADerivations.AnalyticNumberTheory.PowerCleared
-import IPRADerivations.AnalyticNumberTheory.FactorVector
 import IPRADerivations.AnalyticNumberTheory.PlusPower
-import IPRADerivations.AnalyticNumberTheory.Multiplicative
 import IPRADerivations.DiophantineNumberTheory.ModularCertificate
-import IPRADerivations.DiophantineNumberTheory.QuarticStep
-import IPRADerivations.Core.LinearCombination
-import IPRADerivations.Core.InductionTactic
-import IPRADerivations.Core.Header
 
 /-!
 # The rational name of Liouville's number
@@ -37,29 +26,17 @@ are cleared of denominators.
 * **`liouville_gap`**: `2 q_k^h < q_{k+1}` for `h ≤ k`, i.e. `2 · 10^{−(k+1)!} < q_k^{−h}`.
 -/
 
-set_option linter.unusedSimpArgs false
-
 namespace LeanProofs.IPRA.DiophantineNumberTheory.LiouvilleName
 
-open_ipra
+open_ipra exports
 open LeanProofs.IPRA.Analysis.Products (fact)
 open LeanProofs.IPRA.AnalyticNumberTheory.Primes (fact_pos)
-open LeanProofs.IPRA.AnalyticNumberTheory.RSA (pw_mul)
-open LeanProofs.IPRA.AnalyticNumberTheory.Valuation (pw_pos')
 open LeanProofs.IPRA.Combinatorics.BinomialTheorem (congrPw)
-open LeanProofs.IPRA.AnalyticNumberTheory.PowerCleared (pw_le_exp)
 open LeanProofs.IPRA.AnalyticNumberTheory.FactorVector (one_le_pos)
-open LeanProofs.IPRA.AnalyticNumberTheory.PlusPower (cop_pow)
-open LeanProofs.IPRA.AnalyticNumberTheory.Multiplicative (gcd_rem)
 open LeanProofs.IPRA.AnalyticNumberTheory.ConvolutionAssoc (rem_small)
-open LeanProofs.IPRA.DiophantineNumberTheory.ModularCertificate (rem_add_mul)
 open LeanProofs.IPRA.DiophantineNumberTheory.QuarticStep (congrGcd)
-open LeanProofs.IPRA.DiophantineNumberTheory.Coprime (gcd_dvd' eq_one_of_dvd_one)
-open LeanProofs.IPRA.Foundations.ChineseRemainder (gcd_pos)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
-
-local notation "𝔞" t:max => Groth.ι (IPRA.Q.mk _ t)
 
 /-! ## The definitions -/
 

@@ -1,6 +1,4 @@
 import IPRADerivations.AnalyticNumberTheory.BlockChain
-import IPRADerivations.Core.LinearCombination
-import IPRADerivations.Core.Header
 
 /-!
 # Every dyadic block carries the deficit (`pnt_ipra_constructive_2026-11-14`, `con:one-step`)
@@ -17,30 +15,19 @@ hypothesis of `BlockChain.chain_sum` (`blocks_of`) and the chain bound (`chain_d
 All size conditions are global (`x ≤ K`, `K x^x ≤ L`, …): every quotient `⌊x/d⌋` is at most `x`.
 -/
 
-set_option linter.unusedSimpArgs false
-
 namespace LeanProofs.IPRA.AnalyticNumberTheory.BlockInstance
 
-open_ipra
+open_ipra exports
 open LeanProofs.IPRA.AnalyticNumberTheory.Harmonic (S hB quo_anti)
-open LeanProofs.IPRA.AnalyticNumberTheory.HarmonicMertens (le_scale)
 open LeanProofs.IPRA.AnalyticNumberTheory.HarmonicLogSquareSum (U)
-open LeanProofs.IPRA.AnalyticNumberTheory.BlockDeficit (gzB Bs' OnBlock stg)
 open LeanProofs.IPRA.AnalyticNumberTheory.BlockDeficitMain (Concl block_deficit)
-open LeanProofs.IPRA.AnalyticNumberTheory.HeadDeficit (hgB)
-open LeanProofs.IPRA.AnalyticNumberTheory.BlockFamily (Lay)
 open LeanProofs.IPRA.AnalyticNumberTheory.BlockChain (one_le_pw' e0_le ek_le Blocks chain_sum)
-open LeanProofs.IPRA.AnalyticNumberTheory.Doubling (S_pow2_lower)
-open LeanProofs.IPRA.AnalyticNumberTheory.PowerCleared (pw_le_exp)
 open LeanProofs.IPRA.AnalyticNumberTheory.PNTStageStep (pos_of_one_le)
-open LeanProofs.IPRA.AnalyticNumberTheory.DivisorHyperbola (quo_le_self)
 open LeanProofs.IPRA.Analysis.Products (fact)
 
 set_option autoImplicit false
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
-
-local notation "𝔞" t:max => Groth.ι (IPRA.Q.mk _ t)
 
 /-! ## Size and length facts -/
 
@@ -94,8 +81,7 @@ theorem block_at (hk : Γ ⊢[PRAAx] lt k B) (hE0 : Γ ⊢[PRAAx] le one E0)
   have h1 : Γ ⊢[PRAAx] le one (E0 * pw (pw two (h + h)) k) := le_trans hE0 (e0_le hQ k)
   have h1h := e0_le (E0 := E0 * pw (pw two (h + h)) k) h12 h
   have e12 : Γ ⊢[PRAAx] E0 * pw (pw two (h + h)) (succ k) ≐ E0 * pw (pw two (h + h)) k * pw two h * pw two h := by
-    ipra_lc 𝔞 E0 * natEq (pw_succ (Γ := Γ) (pw two (h + h)) k) +
-      𝔞 E0 * 𝔞 (pw (pw two (h + h)) k) * natEq (pw_add (Γ := Γ) two h h)
+    ipra_lc 𝔞 E0 * natEq (pw_succ (pw two (h + h)) k) + 𝔞 E0 * 𝔞 (pw (pw two (h + h)) k) * natEq (pw_add two h h)
   have hh2 := le_congr (.eqRefl _) e12.eqSymm (e0_le (E0 := E0 * pw (pw two (h + h)) k * pw two h) h12 h)
   have hEN := le_trans (ek_le (E0 := E0) hQ hk') hBN
   have hEB := le_trans hEN hNx

@@ -13,11 +13,9 @@ are covered, and `j` is a variable of the formula. The proof is induction on `j`
 for the invariant `j ≤ q_j ∧ j + 1 ≤ q_j + q_{j−1} ∧ 1 ≤ q_j`.
 -/
 
-set_option linter.unusedSimpArgs false
-
 namespace LeanProofs.IPRA.DiophantineNumberTheory.Hurwitz
 
-open_ipra
+open_ipra exports
 
 variable (a' : PR 1) {n : ℕ} {Γ : List (Fm PTm n)}
 

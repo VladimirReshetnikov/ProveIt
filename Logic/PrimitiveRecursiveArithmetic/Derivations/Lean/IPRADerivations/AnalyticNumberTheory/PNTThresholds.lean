@@ -1,7 +1,4 @@
 import IPRADerivations.AnalyticNumberTheory.ZetaPrecision
-import IPRADerivations.Core.LinearCombination
-import IPRADerivations.Core.SubstCommand
-import IPRADerivations.Core.Header
 
 /-!
 # The integer thresholds and the closed modulus of the PNT contraction (`pnt_ipra_constructive_2026-11-14`)
@@ -23,16 +20,13 @@ No numeral power is evaluated: `16m ≤ 2^m` comes from `(k + 1)² ≤ 4^k` (`Ze
 
 namespace LeanProofs.IPRA.AnalyticNumberTheory.PNTThresholds
 
-open_ipra
+open_ipra exports
 open LeanProofs.IPRA.AnalyticNumberTheory.ZetaFiniteContract (le_pow_self sq_le_pow)
 open LeanProofs.IPRA.AnalyticNumberTheory.ZetaErrorBudget (pw2_mono)
-open LeanProofs.IPRA.DiophantineNumberTheory.KhinchinBlockGeo (congrPw2)
 
 set_option autoImplicit false
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
-
-local notation "𝔞" t:max => Groth.ι (IPRA.Q.mk _ t)
 
 /-! ## Parameters (`q = p + 1`) -/
 
@@ -166,7 +160,7 @@ theorem J_le (p : PTm n) : Γ ⊢[PRAAx] le (Jq p) (num 4 * Dq p) :=
 /-- `a_J = 4 − J/D = 1/q`, cleared: `q (4D − J) = D`. -/
 theorem levels_end (p : PTm n) : Γ ⊢[PRAAx] succ p * monus (num 4 * Dq p) (Jq p) ≐ Dq p := by
   have hle := J_le (Γ := Γ) p
-  ipra_lc (𝔞 p + 1) * (natEq (J_spec (Γ := Γ) p) - natEq (eq_add_of_le hle))
+  ipra_lc (𝔞 p + 1) * (natEq (J_spec p) - natEq (eq_add_of_le hle))
 
 /-- The modulus at the final level: `P_J ≤ N_ψ(q) = 2^{2^{D²+1}}`. -/
 theorem modulus_J (p : PTm n) :

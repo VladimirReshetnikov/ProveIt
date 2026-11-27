@@ -1,7 +1,5 @@
-import IPRADerivations.Core.OrderCertificates
 import IPRADerivations.Foundations.IterationFusion
 import IPRADerivations.Foundations.CoherentTower
-import IPRADerivations.Core.Header
 
 /-!
 # Sign guards, diameter composition and independent certificates
@@ -37,13 +35,9 @@ Three small observer rules of the framework packets.
   window base, the contract at that base (`finite_consumer_at`).
 -/
 
-set_option linter.unusedSimpArgs false
-
 namespace LeanProofs.IPRA.Foundations.ObserverGuards
 
-open_ipra
-open LeanProofs.IPRA.Foundations.IterationFusion (app1 subst_app1)
-open LeanProofs.IPRA.Foundations.CoherentTower (ex_mono)
+open_ipra exports
 
 variable {k : ℕ} {Γ : List (Fm PTm k)}
 

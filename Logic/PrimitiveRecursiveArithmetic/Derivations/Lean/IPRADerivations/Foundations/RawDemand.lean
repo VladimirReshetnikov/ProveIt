@@ -1,7 +1,5 @@
 import IPRADerivations.Foundations.FiniteStabilization
 import IPRADerivations.Foundations.ReverseDemand
-import IPRADerivations.Probability.Ninther
-import IPRADerivations.Core.Header
 
 /-!
 # Raw demand adequacy of the capped closure
@@ -26,14 +24,10 @@ update is `T(r) = min(C, max(max(s, r), d(r)))`, and no overflow is `d(r) ≤ C`
 Several coordinates (the packed vector with its join and rank) are not treated here.
 -/
 
-set_option linter.unusedSimpArgs false
-
 namespace LeanProofs.IPRA.Foundations.RawDemand
 
-open_ipra
-open LeanProofs.IPRA.Foundations.IterationFusion (app1 iter)
+open_ipra exports
 open LeanProofs.IPRA.Foundations.FiniteStabilization (capped_closure_least)
-open LeanProofs.IPRA.Foundations.ReverseDemand (le_mx_left le_mx_right mx_lub)
 open LeanProofs.IPRA.Probability.Ninther (mx mn mn_le mn_ge)
 
 variable {k : ℕ} {Γ : List (Fm PTm k)}

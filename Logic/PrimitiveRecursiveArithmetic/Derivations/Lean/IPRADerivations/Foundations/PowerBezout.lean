@@ -1,8 +1,4 @@
-import IPRADerivations.Combinatorics.BinomialTwo
 import IPRADerivations.Combinatorics.CatalanPowers
-import IPRADerivations.Core.SumSplit
-import IPRADerivations.Core.LinearCombination
-import IPRADerivations.Core.Header
 
 /-!
 # Bézout witnesses for two coprime powers
@@ -32,11 +28,9 @@ common power factored out of each part.
 Not derived: the product over several points and the degree comparison of `thm:elim-bezout`.
 -/
 
-set_option linter.unusedSimpArgs false
-
 namespace LeanProofs.IPRA.Foundations.PowerBezout
 
-open_ipra
+open_ipra exports
 open LeanProofs.IPRA.Combinatorics.Vandermonde (gb congrGb)
 open LeanProofs.IPRA.Combinatorics.BinomialTheorem (congrPw)
 open LeanProofs.IPRA.Combinatorics.BinomialTwo (bt bt_at binomial_two)
@@ -45,8 +39,6 @@ open LeanProofs.IPRA.Combinatorics.BellTouchardPower (le_of_lt_succ)
 open LeanProofs.IPRA.Probability.Independence (sum_scale)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
-
-local notation "𝔞" t:max => Groth.ι (IPRA.Q.mk _ t)
 
 theorem shift_add (a b : PTm n) : Syn.shift (a + b) = Syn.shift a + Syn.shift b := by
   simp [Syn.shift]

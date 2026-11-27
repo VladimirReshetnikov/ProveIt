@@ -1,9 +1,6 @@
 import IPRADerivations.Combinatorics.Catalan
 import IPRADerivations.AnalyticNumberTheory.LocalFactor
 import IPRADerivations.Core.ProdLemmas
-import IPRADerivations.Core.LinearCombination
-import IPRADerivations.Core.InductionTactic
-import IPRADerivations.Core.Header
 
 /-!
 # The Apéry numbers: first values and growth
@@ -25,17 +22,12 @@ The Apéry recurrence is derived in `DiophantineNumberTheory/AperyRecurrence`. T
 `b_n` and the irrationality argument are not formalized.
 -/
 
-set_option linter.unusedSimpArgs false
-
 namespace LeanProofs.IPRA.DiophantineNumberTheory.AperyNumbers
 
-open_ipra
-open LeanProofs.IPRA.Analysis.Products (fact)
+open_ipra exports
 open LeanProofs.IPRA.Combinatorics.Binomial (binom)
 open LeanProofs.IPRA.Combinatorics.BinomialIdentities (binom_zero' binom_self')
 open LeanProofs.IPRA.Combinatorics.Catalan (cb cb_zero cb_rec)
-open LeanProofs.IPRA.AnalyticNumberTheory.PhiLower (le_mul_mono)
-open LeanProofs.IPRA.AnalyticNumberTheory.LocalFactor (pw_mul_base)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
@@ -140,7 +132,7 @@ theorem apery_zero : Γ ⊢[PRAAx] apery (zero : PTm n) ≐ one :=
   (sum_singleton apB zero).eqTrans (apery_first_term zero)
 
 theorem cb_one : Γ ⊢[PRAAx] cb (one : PTm n) ≐ two := by
-  ipra_lc natEq (cb_rec (Γ := Γ) (zero : PTm n)) + 2 * natEq (cb_zero (Γ := Γ))
+  ipra_lc natEq (cb_rec (zero : PTm n)) + 2 * natEq (cb_zero)
 
 /-- `a_1 = 5`. -/
 theorem apery_one : Γ ⊢[PRAAx] apery (one : PTm n) ≐ two * two + one := by
@@ -149,3 +141,5 @@ theorem apery_one : Γ ⊢[PRAAx] apery (one : PTm n) ≐ two * two + one := by
     ((congrAdd (apery_first_term one) t₁).eqTrans (add_comm _ _))
 
 end LeanProofs.IPRA.DiophantineNumberTheory.AperyNumbers
+
+export_ipra DiophantineNumberTheory.AperyNumbers (apery)

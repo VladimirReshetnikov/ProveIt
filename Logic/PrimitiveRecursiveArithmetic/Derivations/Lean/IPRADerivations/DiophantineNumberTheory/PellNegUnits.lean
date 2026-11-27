@@ -1,8 +1,5 @@
 import IPRADerivations.DiophantineNumberTheory.PellAll
 import IPRADerivations.AnalyticNumberTheory.PhiLower
-import IPRADerivations.Combinatorics.BinomialIdentities
-import IPRADerivations.Core.LinearCombination
-import IPRADerivations.Core.Header
 
 /-!
 # Negative units square to the fundamental unit
@@ -22,16 +19,13 @@ If `t ≥ 1`, minimality gives `t ≥ B` and then `r² = 1 + Dt² ≥ A²`, so
 `Y = Br + At ≥ 2AB`; but `R < A` (from `R² + 2 ≤ A²`) and `T ≤ B` give `RT < AB`, i.e. `Y < 2AB`.
 -/
 
-set_option linter.unusedSimpArgs false
-
 namespace LeanProofs.IPRA.DiophantineNumberTheory.PellNegUnits
 
-open_ipra
+open_ipra exports
 open LeanProofs.IPRA.Combinatorics.Binomial (pos_mul)
 open LeanProofs.IPRA.DiophantineNumberTheory.Coprime
 open LeanProofs.IPRA.DiophantineNumberTheory.PellDescent (lt_of_sq_lt unit_descent rr tt)
 open LeanProofs.IPRA.DiophantineNumberTheory.PellAll (minimal minimal_at)
-open LeanProofs.IPRA.AnalyticNumberTheory.PhiLower (le_mul_mono)
 open LeanProofs.IPRA.Combinatorics.BinomialIdentities (mul_cancel)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}

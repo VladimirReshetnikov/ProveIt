@@ -1,7 +1,4 @@
 import IPRADerivations.DiophantineNumberTheory.Coprime
-import IPRADerivations.Core.LinearCombination
-import IPRADerivations.Core.CommonLemmas
-import IPRADerivations.Core.Header
 
 /-!
 # Positive unit descent for Pell's equation
@@ -18,11 +15,9 @@ The inequalities come from exact square identities, as in the paper:
 `(Bx)² = ((A - 1) y)² + B² + 2 (A - 1) y²`, together with `le_of_sq_le`.
 -/
 
-set_option linter.unusedSimpArgs false
-
 namespace LeanProofs.IPRA.DiophantineNumberTheory.PellDescent
 
-open_ipra
+open_ipra exports
 open LeanProofs.IPRA.Combinatorics.Binomial (pos_mul)
 open LeanProofs.IPRA.DiophantineNumberTheory.Coprime
 
@@ -116,3 +111,5 @@ theorem unit_descent {A B D x y : PTm n} (hA : Γ ⊢[PRAAx] A * A ≐ one + D *
   ipra_lc natEq (residual_norm_balance hA lr lt') + natEq hx
 
 end LeanProofs.IPRA.DiophantineNumberTheory.PellDescent
+
+export_ipra DiophantineNumberTheory.PellDescent (lt_of_sq_lt)

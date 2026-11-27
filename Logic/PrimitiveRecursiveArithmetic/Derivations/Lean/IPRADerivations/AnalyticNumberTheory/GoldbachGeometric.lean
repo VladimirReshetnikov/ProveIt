@@ -1,13 +1,6 @@
 import IPRADerivations.Core.SumReflect
-import IPRADerivations.Core.BoundedSums
-import IPRADerivations.Core.Powers
-import IPRADerivations.AnalyticNumberTheory.RSA
 import IPRADerivations.AnalyticNumberTheory.PowerCleared
-import IPRADerivations.AnalyticNumberTheory.Order
 import IPRADerivations.Core.ProdLemmas
-import IPRADerivations.Core.LinearCombination
-import IPRADerivations.Core.InductionTactic
-import IPRADerivations.Core.Header
 
 /-!
 # Finite geometric expansions for the Goldbach–Euler theorem
@@ -28,13 +21,9 @@ set_option linter.unusedSimpArgs false
 
 namespace LeanProofs.IPRA.AnalyticNumberTheory.GoldbachGeometric
 
-open_ipra
-open LeanProofs.IPRA.AnalyticNumberTheory.RSA (pw_mul)
-open LeanProofs.IPRA.AnalyticNumberTheory.PowerCleared (pw_le_exp)
+open_ipra exports
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
-
-local notation "𝔞" t:max => Groth.ι (IPRA.Q.mk _ t)
 
 /-- `x^i`; variables `0 = i`, `1 = x`. -/
 abbrev gB : PTm 2 := pw (var 1) (var 0)
@@ -47,9 +36,7 @@ theorem geom_step {x I : PTm n} (hx : Γ ⊢[PRAAx] le one x)
   have s := sum_succ' (Γ := Γ) gB I x
   rw [inst2_gB] at s
   have s' := natEq s; have i' := natEq ih; have p := natEq (pw_succ (Γ := Γ) x I)
-  have e := natEq (eq_add_of_le hx)
-  apply deriveNat; ipra_simps
-  linear_combination p - 𝔞 (monus x one) * s' + i' + 𝔞 (pw x I) * e
+  ipra_lc p - 𝔞 (monus x one) * s' + i' + 𝔞 (pw x I) * natEq (eq_add_of_le hx)
 
 /-- Variables `0 = I`, `1 = x`. -/
 private abbrev geomF : Fm PTm 2 :=

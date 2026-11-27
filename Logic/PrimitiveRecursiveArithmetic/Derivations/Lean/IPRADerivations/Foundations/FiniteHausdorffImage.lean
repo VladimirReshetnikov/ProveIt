@@ -1,5 +1,4 @@
 import IPRADerivations.Foundations.FiniteHausdorffOperations
-import IPRADerivations.Core.Header
 
 /-!
 # Weighted Hausdorff image bounds from finite-pair laws
@@ -17,11 +16,10 @@ positive source/target common rational scales are accommodated by replacing
 -/
 
 set_option autoImplicit false
-set_option linter.unusedSimpArgs false
 
 namespace LeanProofs.IPRA.Foundations.FiniteHausdorffImage
 
-open_ipra
+open_ipra exports
 open LeanProofs.IPRA.Foundations.FiniteHausdorff
 open LeanProofs.IPRA.Foundations.FiniteHausdorffOperations
   (mapList map_length map_lookup subst_mapList)
@@ -31,7 +29,6 @@ open LeanProofs.IPRA.Foundations.DemandClosure
   (maximum subst_maximum maximum_left maximum_right maximum_le)
 open LeanProofs.IPRA.Foundations.MasterCertificate (entry subst_entry)
 open LeanProofs.IPRA.Foundations.SequenceComposition (length subst_length)
-open LeanProofs.IPRA.AnalyticNumberTheory.PhiLower (le_mul_mono)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 

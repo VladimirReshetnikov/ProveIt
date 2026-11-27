@@ -1,13 +1,6 @@
 import IPRADerivations.Combinatorics.BinomialTwo
-import IPRADerivations.Combinatorics.BinomialIdentities
-import IPRADerivations.AnalyticNumberTheory.Order
-import IPRADerivations.AnalyticNumberTheory.Valuation
 import IPRADerivations.Probability.SortingBound
 import IPRADerivations.Geometry.HypercubeSplit
-import IPRADerivations.Core.LinearCombination
-import IPRADerivations.Core.CommonLemmas
-import IPRADerivations.Core.InductionTactic
-import IPRADerivations.Core.Header
 
 /-!
 # The binomial bound `(1 + 1/a)^a ≤ 3`
@@ -25,25 +18,18 @@ series.
 * `binomial_three` (`lem:binomial-three`): `(a + 1)^a ≤ 3 a^a`.
 -/
 
-set_option linter.unusedSimpArgs false
-
 namespace LeanProofs.IPRA.AnalyticNumberTheory.BinomialThree
 
-open_ipra
-open LeanProofs.IPRA.AnalyticNumberTheory.PhiLower (le_mul_mono)
+open_ipra exports
 open LeanProofs.IPRA.Combinatorics.Binomial (binom bden)
 open LeanProofs.IPRA.Combinatorics.BinomialIdentities (binom_eq)
 open LeanProofs.IPRA.Combinatorics.Vandermonde (gb gb_above)
 open LeanProofs.IPRA.Combinatorics.Stirling (gle_of_le)
 open LeanProofs.IPRA.Combinatorics.BinomialTwo (bt bt_at S binomial_two)
-open LeanProofs.IPRA.AnalyticNumberTheory.Order (pw_one_base)
-open LeanProofs.IPRA.AnalyticNumberTheory.Valuation (lt_pw)
 open LeanProofs.IPRA.Probability.SortingBound (fct fact_pos le_one_succ)
 open LeanProofs.IPRA.Geometry.HypercubeSplit (le_cancel_pos)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
-
-local notation "𝔞" t:max => Groth.ι (IPRA.Q.mk _ t)
 
 alias pos_of_one_le := Common.pos_of_one_le
 
@@ -70,7 +56,7 @@ theorem fl_step {m k : PTm n} (ih : Γ ⊢[PRAAx] le (ap2 factF (m + k) zero) (a
     pw_le_pw _ (le_of_eq_add (d := one) (by ipra_ring))
   refine le_congr ((congrAp2 factF (add_succ _ _) (.eqRefl _)).eqTrans (fact_succ _ _)).eqSymm ?_
     (le_mul_mono (le_trans ih (le_mul_mono (le_refl _) hle)) (le_refl (succ (m + k))))
-  ipra_lc -𝔞 (ap2 factF m zero) * natEq (pw_succ (Γ := Γ) (m + succ k) k)
+  ipra_lc -𝔞 (ap2 factF m zero) * natEq (pw_succ (m + succ k) k)
 
 /-- Variables: `0 = k`, `1 = m`. -/
 private abbrev flF : Fm PTm 2 :=
@@ -139,7 +125,7 @@ theorem geom_step {K a : PTm n}
   refine le_of_eq_add (d := two * monus (two * pw a a * pw two K)
       (pw two K * ap2 (sumF (shiftBody bt)) K (pairT a (pairT one a)) + two * pw a a) +
     two * monus (pw a a) (pw two K * inst2 bt (succ K) (pairT a (pairT one a)))) ?_
-  ipra_lc (2 * 𝔞 (pw a a) - 𝔞 (ap2 (sumF (shiftBody bt)) (succ K) (pairT a (pairT one a)))) * natEq (pw_succ (Γ := Γ) two K) -
+  ipra_lc (2 * 𝔞 (pw a a) - 𝔞 (ap2 (sumF (shiftBody bt)) (succ K) (pairT a (pairT one a)))) * natEq (pw_succ two K) -
     2 * 𝔞 (pw two K) * s' + 2 * natEq (eq_add_of_le ih) + 2 * natEq (eq_add_of_le (term_bound (Γ := Γ) K a))
 
 /-- Variables: `0 = K`, `1 = a`. -/
@@ -176,7 +162,7 @@ theorem binomial_three (a : PTm n) : Γ ⊢[PRAAx] le (pw (succ a) a) (num 3 * p
     ipra_ring
   have e₁ := natEq bin; have e₂ := natEq sh; have e₃ := natEq t0
   refine le_of_eq_add (d := monus (two * pw a a) (ap2 (sumF (shiftBody bt)) a (pairT a (pairT one a)))) ?_
-  ipra_lc natEq (LeanProofs.IPRA.Combinatorics.BinomialTheorem.congrPw (Γ := Γ) (show Γ ⊢[PRAAx] one + a ≐ succ a by ipra_ring) (.eqRefl a)) +
+  ipra_lc natEq (LeanProofs.IPRA.Combinatorics.BinomialTheorem.congrPw (show Γ ⊢[PRAAx] one + a ≐ succ a by ipra_ring) (.eqRefl a)) +
     e₁ - e₂ - e₃ + natEq (eq_add_of_le sb)
 
 end LeanProofs.IPRA.AnalyticNumberTheory.BinomialThree

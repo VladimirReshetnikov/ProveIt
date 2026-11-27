@@ -1,8 +1,5 @@
 import IPRADerivations.Foundations.BoundedReflection
 import IPRADerivations.AnalyticNumberTheory.Valuation
-import IPRADerivations.Core.Descent
-import IPRADerivations.Core.Pairing
-import IPRADerivations.Core.Header
 
 /-!
 # Finite reconstruction (`ipra_presentations_to_witnesses`, `prop:reconstruction`)
@@ -30,13 +27,10 @@ The other direction of "exactly the valid objects" is the filter test itself: an
 only if `V` holds of it. The removal of duplicates, with its prefix invariant, is not derived.
 -/
 
-set_option linter.unusedSimpArgs false
-
 namespace LeanProofs.IPRA.Foundations.FiniteReconstruction
 
-open_ipra
+open_ipra exports
 open LeanProofs.IPRA.Foundations.BoundedReflection (exB wit ex_elim)
-open LeanProofs.IPRA.AnalyticNumberTheory.Valuation (eq_of_eqb_ne)
 
 variable {k : ℕ} {Γ : List (Fm PTm k)}
 

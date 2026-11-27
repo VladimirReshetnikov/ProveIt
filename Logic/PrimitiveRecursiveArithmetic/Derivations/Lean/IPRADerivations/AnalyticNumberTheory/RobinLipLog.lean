@@ -1,8 +1,4 @@
 import IPRADerivations.AnalyticNumberTheory.RobinLipArg
-import IPRADerivations.AnalyticNumberTheory.RobinLogInterval
-import IPRADerivations.Core.LinearCombination
-import IPRADerivations.Core.CommonLemmas
-import IPRADerivations.Core.Header
 
 /-!
 # Two-sided Lipschitz bounds for the lower names of `LogI` (`robin_ipra_research_2026-11-19`)
@@ -20,28 +16,21 @@ point (`y → 2`, then `1 → y'`), and the two pieces are combined by `(2 − y
 abstract cleared-fraction lemmas (`same_up`, `same_low`, `adj_up`, `adj_low`).
 -/
 
-set_option linter.unusedSimpArgs false
-
 namespace LeanProofs.IPRA.AnalyticNumberTheory.RobinLipLog
 
-open_ipra
-open LeanProofs.IPRA.AnalyticNumberTheory.RobinGamma (Lv Pv)
+open_ipra exports
 open LeanProofs.IPRA.AnalyticNumberTheory.RobinLogName (Nz Dz Lz Dz_pos)
 open LeanProofs.IPRA.AnalyticNumberTheory.RobinLipName (Rv)
 open LeanProofs.IPRA.AnalyticNumberTheory.RobinLipArg (Nz_p0 arg_up arg_low)
 open LeanProofs.IPRA.AnalyticNumberTheory.RobinLogInterval
   (eb eb_spec exp_le Bt dt st c3 a_eq one_le_Bt loN loD)
-open LeanProofs.IPRA.AnalyticNumberTheory.PhiLower (le_mul_mono)
 open LeanProofs.IPRA.AnalyticNumberTheory.PNTStageStep (pos_of_one_le)
 open LeanProofs.IPRA.AnalyticNumberTheory.ChebyshevBounds (two_pos')
-open LeanProofs.IPRA.AnalyticNumberTheory.Valuation (pw_pos')
 open LeanProofs.IPRA.Combinatorics.Binomial (pos_mul)
 
 set_option autoImplicit false
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
-
-local notation "𝔞" t:max => Groth.ι (IPRA.Q.mk _ t)
 
 alias mul1 := Common.mul_one_right
 
@@ -160,7 +149,6 @@ theorem lo_lip_up {a b a' b' D : PTm n} (hb : Γ ⊢[PRAAx] le one b) (hab : Γ 
     Γ ⊢[PRAAx] le (loN a' b' K * loD a b K * (a * b')) (loN a b K * loD a' b' K * (a * b') + D * loD a b K * loD a' b' K) := by
   have st2 := exp_step hb hab hb' hab' hD h2
   have s := eb_spec hb hab
-  have eD := natEq hD
   have hBb := one_le_Bt (a := a) hb
   have hBb' := one_le_Bt (a := a') hb'
   refine .orE (lt_or_eq_of_le (Prf.andE₁ st2)) ?_ ?_

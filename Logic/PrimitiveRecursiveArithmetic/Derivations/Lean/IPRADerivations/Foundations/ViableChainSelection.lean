@@ -1,6 +1,4 @@
 import IPRADerivations.Foundations.CodedViableChain
-import IPRADerivations.Core.SubstCommand
-import IPRADerivations.Core.Header
 
 /-!
 # Automatic initial selection and tagged coded viable chains
@@ -17,11 +15,10 @@ internal; only the fixed finite compatibility instance is external syntax.
 -/
 
 set_option autoImplicit false
-set_option linter.unusedSimpArgs false
 
 namespace LeanProofs.IPRA.Foundations.ViableChainSelection
 
-open_ipra
+open_ipra exports
 open LeanProofs.IPRA.Foundations.BackwardViability
 open LeanProofs.IPRA.Foundations.BackwardViability.Instance
 open LeanProofs.IPRA.Foundations.ViableChain (start)

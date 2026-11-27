@@ -1,7 +1,5 @@
 import IPRADerivations.Analysis.RationalArithmetic.Representations.RationalNormalForm
 import IPRADerivations.DiophantineNumberTheory.MinkowskiCenterVectors
-import IPRADerivations.Core.LinearCombination
-import IPRADerivations.Core.Header
 
 /-!
 # Canonical vector guards in Minkowski's arbitrary-formula scheme
@@ -18,21 +16,17 @@ This is the guard adapter.  It does not supply the rational box/volume
 frontend or the original `Inside` certificate.
 -/
 
-set_option linter.unusedSimpArgs false
-
 namespace LeanProofs.IPRA.DiophantineNumberTheory.MinkowskiWellFormed
 
-open_ipra
+open_ipra exports
 open LeanProofs.IPRA.Analysis LeanProofs.IPRA.Foundations
 open LeanProofs.IPRA.Analysis.RationalIntegerNormalization (normalize integerCode normalize_integer)
 open LeanProofs.IPRA.Analysis.RationalNormalForm (wellFormed normalize_well_formed)
-open LeanProofs.IPRA.Analysis.RationalSupMetric (numeratorOf denominatorOf)
 open LeanProofs.IPRA.DiophantineNumberTheory.MinkowskiCenters
   (center opposite midpoint centerNumerator midpointNumerator midpointDenominator midpoint_denominator_positive)
 open LeanProofs.IPRA.DiophantineNumberTheory.MinkowskiCenterVectors
 open LeanProofs.IPRA.Foundations.MasterCertificate (entry sequence sequence_length sequence_decode)
 open LeanProofs.IPRA.Foundations.SequenceComposition (length)
-open LeanProofs.IPRA.Foundations.SequenceEquality (sequence_equal)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 

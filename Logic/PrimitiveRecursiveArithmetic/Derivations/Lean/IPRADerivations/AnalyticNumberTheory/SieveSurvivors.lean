@@ -1,13 +1,7 @@
 import IPRADerivations.AnalyticNumberTheory.LegendreSieve
-import IPRADerivations.AnalyticNumberTheory.PrimorialUpper
 import IPRADerivations.AnalyticNumberTheory.PrimeRank
 import IPRADerivations.AnalyticNumberTheory.SieveCriterion
 import IPRADerivations.AnalyticNumberTheory.ValuationAdd
-import IPRADerivations.AnalyticNumberTheory.FourthRootSum
-import IPRADerivations.Foundations.CrossingSearch
-import IPRADerivations.Core.CertificateTactics
-import IPRADerivations.Core.InductionTactic
-import IPRADerivations.Core.Header
 
 /-!
 # The survivors of the sieve, and Legendre's formula for `π`
@@ -33,12 +27,9 @@ squares, without real square roots."
   `π(x) = ∑_{d ∣ P(√x)} μ(d) ⌊x/d⌋ + π(√x) − 1`.
 -/
 
-set_option linter.unusedSimpArgs false
-
 namespace LeanProofs.IPRA.AnalyticNumberTheory.SieveSurvivors
 
-open_ipra
-open LeanProofs.IPRA.AnalyticNumberTheory.Primes (prime lpf)
+open_ipra exports
 open LeanProofs.IPRA.AnalyticNumberTheory.Valuation (val isP isP_01 prime_of_isP isP_of_prime)
 open LeanProofs.IPRA.AnalyticNumberTheory.ValuationMul (p_pos not_dvd_one)
 open LeanProofs.IPRA.AnalyticNumberTheory.ValuationAdd (le_val_of_dvd dvd_of_le_val)
@@ -47,21 +38,13 @@ open LeanProofs.IPRA.AnalyticNumberTheory.FactorVector (lpf_prime' lpf_dvd' one_
 open LeanProofs.IPRA.AnalyticNumberTheory.SieveCriterion (lpf_sq_le prime_of_lpf_eq)
 open LeanProofs.IPRA.AnalyticNumberTheory.PrimorialUpper (pri pri_pos val_pri)
 open LeanProofs.IPRA.AnalyticNumberTheory.PrimeRank (pc pc_zero pc_succ isP_small congrPc)
-open LeanProofs.IPRA.AnalyticNumberTheory.ConvolutionAssoc (sg_pos)
 open LeanProofs.IPRA.AnalyticNumberTheory.BinomialThree (pos_of_one_le)
 open LeanProofs.IPRA.AnalyticNumberTheory.ConvSummatory (RB)
-open LeanProofs.IPRA.AnalyticNumberTheory.SymmetrySum (aPB aNB)
 open LeanProofs.IPRA.AnalyticNumberTheory.LegendreSieve (wB coB inst2_coB legendre_sieve)
-open LeanProofs.IPRA.AnalyticNumberTheory.FourthRootSum (isqrt_le_self)
-open LeanProofs.IPRA.DiophantineNumberTheory.Coprime (gcd_greatest' gcd_dvd' dvd_le' eq_one_of_dvd_one)
-open LeanProofs.IPRA.Foundations.ChineseRemainder (gcd_pos)
-open LeanProofs.IPRA.Foundations.CrossingSearch (monus_of_eq)
 open LeanProofs.IPRA.Foundations.BoundedReflection (one_ne_zero)
 open LeanProofs.IPRA.Signum (sg sg_zero sg_succ)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
-
-local notation "𝔞" t:max => Groth.ι (IPRA.Q.mk _ t)
 
 /-! ## The prime divisors of the primorial -/
 
@@ -147,18 +130,15 @@ theorem pc_one : Γ ⊢[PRAAx] pc (one : PTm n) ≐ zero :=
 theorem pt0_alg {T M' E I M : PTm n} (a : Γ ⊢[PRAAx] T ≐ one) (b : Γ ⊢[PRAAx] M' ≐ zero)
     (c : Γ ⊢[PRAAx] E ≐ one) (d : Γ ⊢[PRAAx] I ≐ zero) (e : Γ ⊢[PRAAx] M ≐ zero) :
     Γ ⊢[PRAAx] T + M' ≐ (E + I) + M := by
-  have a' := natEq a; have b' := natEq b; have c' := natEq c; have d' := natEq d; have e' := natEq e
-  apply deriveNat; ipra_simps; linear_combination a' + b' - c' - d' - e'
+  ipra_lc natEq a + natEq b - natEq c - natEq d - natEq e
 
 theorem pt1_alg {T I M' M E Z : PTm n} (a : Γ ⊢[PRAAx] T ≐ I) (b : Γ ⊢[PRAAx] M' ≐ Z)
     (c : Γ ⊢[PRAAx] E ≐ zero) (d : Γ ⊢[PRAAx] M ≐ Z) : Γ ⊢[PRAAx] T + M' ≐ (E + I) + M := by
-  have a' := natEq a; have b' := natEq b; have c' := natEq c; have d' := natEq d
-  apply deriveNat; ipra_simps; linear_combination a' + b' - c' - d'
+  ipra_lc natEq a + natEq b - natEq c - natEq d
 
 theorem pt2_alg {T M' px I E M : PTm n} (a : Γ ⊢[PRAAx] T ≐ zero) (b : Γ ⊢[PRAAx] M' ≐ px + I)
     (c : Γ ⊢[PRAAx] E ≐ zero) (d : Γ ⊢[PRAAx] M ≐ px) : Γ ⊢[PRAAx] T + M' ≐ (E + I) + M := by
-  have a' := natEq a; have b' := natEq b; have c' := natEq c; have d' := natEq d
-  apply deriveNat; ipra_simps; linear_combination a' + b' - c' - d'
+  ipra_lc natEq a + natEq b - natEq c - natEq d
 
 /-- The term at `m = x + 1`: `[gcd(m, P(z)) = 1] + π(min(m, z)) = [m = 1] + [m prime] + π(min(m − 1, z))`
 for `m < (z + 1)²`. -/
@@ -226,8 +206,7 @@ theorem fin_alg {U' U s1 T M' E I M sx px px' : PTm n} (a : Γ ⊢[PRAAx] U' ≐
     (b : Γ ⊢[PRAAx] s1 ≐ one) (c : Γ ⊢[PRAAx] T + M' ≐ (E + I) + M) (d : Γ ⊢[PRAAx] U + M ≐ sx + px)
     (e : Γ ⊢[PRAAx] sx + E ≐ one) (f : Γ ⊢[PRAAx] px' ≐ px + I) : Γ ⊢[PRAAx] U' + M' ≐ s1 + px' := by
   have a' := natEq a; have b' := natEq b; have c' := natEq c; have d' := natEq d; have e' := natEq e
-  have f' := natEq f
-  apply deriveNat; ipra_simps; linear_combination a' + (𝔞 T - 1) * b' + c' + d' + e' - f'
+  ipra_lc a' + (𝔞 T - 1) * b' + c' + d' + e' - natEq f
 
 /-! ## The induction on `x` -/
 

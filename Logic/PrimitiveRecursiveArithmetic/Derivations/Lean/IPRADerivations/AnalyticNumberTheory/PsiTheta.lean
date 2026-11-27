@@ -1,5 +1,4 @@
 import IPRADerivations.AnalyticNumberTheory.PiTheta
-import IPRADerivations.Core.Header
 
 /-!
 # Prime powers of exponent at least two (`pnt_ipra_constructive_2026-11-14`, Lemma `lem:pi-conversion`)
@@ -16,34 +15,22 @@ Packet: `analytic-number-theory/pnt_ipra_constructive_2026-11-14`, `pnt_ipra.tex
   (`ell_low`), above `r` at most once (`ell_mid`).
 -/
 
-set_option linter.unusedSimpArgs false
-
 namespace LeanProofs.IPRA.AnalyticNumberTheory.PsiTheta
 
-open_ipra
+open_ipra exports
 open LeanProofs.IPRA.AnalyticNumberTheory.HarmonicChebyshev (wt)
-open LeanProofs.IPRA.AnalyticNumberTheory.HarmonicMertens (le_scale)
 open LeanProofs.IPRA.AnalyticNumberTheory.HarmonicLogSquareSum (U)
 open LeanProofs.IPRA.AnalyticNumberTheory.WeightedMangoldt (ellB Lw inst2_ell)
 open LeanProofs.IPRA.AnalyticNumberTheory.Valuation (isP isP_01 prime_of_isP val)
 open LeanProofs.IPRA.AnalyticNumberTheory.LcmUpto (Psi lcmu lcmuF lcm_valuation lcmu_dvd lcmu_pos psi_lcm)
 open LeanProofs.IPRA.AnalyticNumberTheory.MobiusBounds (sum_ext)
-open LeanProofs.IPRA.AnalyticNumberTheory.Primes (prime)
 open LeanProofs.IPRA.AnalyticNumberTheory.Mobius (prime_two congrVal zero_mul_l)
 open LeanProofs.IPRA.AnalyticNumberTheory.PiTheta (thB inst2_thB Theta split_at wt_at)
-open LeanProofs.IPRA.AnalyticNumberTheory.StepCondition (mul_le2)
-open LeanProofs.IPRA.DiophantineNumberTheory.KhinchinBlock (sum_le_lin1)
-open LeanProofs.IPRA.DiophantineNumberTheory.Coprime (dvd_le')
-open LeanProofs.IPRA.Foundations.BoundedFormulas (sg_of_pos)
 open LeanProofs.IPRA.AnalyticNumberTheory.PNTStageStep (pos_of_one_le)
-open LeanProofs.IPRA.AnalyticNumberTheory.PowerCleared (pw_le_exp)
-open LeanProofs.IPRA.Signum (sg)
 
 set_option autoImplicit false
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
-
-local notation "𝔞" t:max => Groth.ι (IPRA.Q.mk _ t)
 
 /-! ## The valuation of the initial lcm -/
 

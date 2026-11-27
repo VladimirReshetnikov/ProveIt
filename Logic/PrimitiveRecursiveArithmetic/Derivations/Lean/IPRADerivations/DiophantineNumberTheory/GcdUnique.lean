@@ -1,7 +1,5 @@
 import IPRADerivations.DiophantineNumberTheory.GcdNormalize
 import IPRADerivations.DiophantineNumberTheory.ProjectiveVectorUnique
-import IPRADerivations.Core.LinearCombination
-import IPRADerivations.Core.Header
 
 /-!
 # Uniqueness of gcd-primitive representatives in every dimension
@@ -19,22 +17,15 @@ For each index `j`, with `v_i w_j = v_j w_i` for all `i < N`:
 * `index_eq`: the per-index argument; `vector_unique_gcd`: `v = w`.
 -/
 
-set_option linter.unusedSimpArgs false
-
 namespace LeanProofs.IPRA.DiophantineNumberTheory.GcdUnique
 
-open_ipra
+open_ipra exports
 open LeanProofs.IPRA.DiophantineNumberTheory.GcdList (gv gv_greatest)
 open LeanProofs.IPRA.DiophantineNumberTheory.GcdNormalize (gv_all_zero)
 open LeanProofs.IPRA.DiophantineNumberTheory.ProjectiveVectorUnique (propJ propAll propJ_symm shift_mul2)
-open LeanProofs.IPRA.DiophantineNumberTheory.Coprime (eq_of_dvd' dvd_of_eq' gauss coprime_quotients
-  eq_one_of_dvd_one gcd_comm_one pos_of_eq_mul gcd_dvd')
 open LeanProofs.IPRA.Combinatorics.BinomialIdentities (mul_cancel)
-open LeanProofs.IPRA.Foundations.ChineseRemainder (gcd_pos)
 
 variable {k : ℕ} {Γ : List (Fm PTm k)}
-
-local notation "𝔞" t:max => Groth.ι (IPRA.Q.mk _ t)
 
 theorem sh {a b : PTm k} (h : Γ ⊢[PRAAx] a ≐ b) : Γ.map Fm.shift ⊢[PRAAx] Syn.shift a ≐ Syn.shift b := h.shift
 

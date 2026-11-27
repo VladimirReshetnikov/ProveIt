@@ -1,8 +1,4 @@
-import IPRADerivations.Foundations.RealizerComposition
 import IPRADerivations.Foundations.RealizerProduct
-import IPRADerivations.Core.LinearCombination
-import IPRADerivations.Core.SubstCommand
-import IPRADerivations.Core.Header
 
 /-!
 # A typed acyclic program frontend for bounded finite-query realizers
@@ -20,19 +16,15 @@ of `RealizerComposition`. Translation of the remaining source node kinds,
 cyclic closure/unrolling and arbitrary external master adapters remain separate.
 -/
 
-set_option linter.unusedSimpArgs false
-
 namespace LeanProofs.IPRA.Foundations.RealizerGraph
 
-open_ipra
+open_ipra exports
 open LeanProofs.IPRA.Foundations.RealizerComposition
 open LeanProofs.IPRA.Foundations.BoundedReflection (eqb_cases one_ne_zero)
 open LeanProofs.IPRA.Foundations.MasterCertificate (sequence entry)
 open LeanProofs.IPRA.Foundations.SequenceComposition (length block prefixSum flatMap)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
-
-local notation "𝔞" t:max => Groth.ι (IPRA.Q.mk _ t)
 
 /-- Raw code metadata contain no final target proof. -/
 structure Code where

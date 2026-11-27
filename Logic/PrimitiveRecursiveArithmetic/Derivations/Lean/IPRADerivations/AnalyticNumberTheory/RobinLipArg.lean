@@ -1,7 +1,5 @@
 import IPRADerivations.AnalyticNumberTheory.RobinLipName
 import IPRADerivations.AnalyticNumberTheory.RobinLogInterval
-import IPRADerivations.Core.LinearCombination
-import IPRADerivations.Core.Header
 
 /-!
 # Lipschitz bounds for the reduced logarithm names (`robin_ipra_research_2026-11-19`, §"Explicit interval arithmetic")
@@ -18,23 +16,18 @@ The first is `2(z' − z)/(1 − z'²) = (y' − y)(y' + 1)/(y'(y + 1)) ≤ (y' 
 `2(z' − z)/(1 − z²) ≥ (y' − y)/y'` and the truncation error `z^{2K} ≤ 9^{−K}` from `z ≤ 1/3`.
 -/
 
-set_option linter.unusedSimpArgs false
-
 namespace LeanProofs.IPRA.AnalyticNumberTheory.RobinLipArg
 
-open_ipra
+open_ipra exports
 open LeanProofs.IPRA.AnalyticNumberTheory.RobinGamma (Lv L_zero L_succ Pv P_succ P_zero)
 open LeanProofs.IPRA.AnalyticNumberTheory.RobinLogName (Nz Nz_zero Nz_succ Dz Lz)
 open LeanProofs.IPRA.AnalyticNumberTheory.RobinLipName (Rv lip_up lip_low)
 open LeanProofs.IPRA.AnalyticNumberTheory.RobinLogInterval (c3)
-open LeanProofs.IPRA.AnalyticNumberTheory.PhiLower (le_mul_mono)
 open LeanProofs.IPRA.AnalyticNumberTheory.PNTStageStep (pos_of_one_le)
 
 set_option autoImplicit false
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
-
-local notation "𝔞" t:max => Groth.ι (IPRA.Q.mk _ t)
 
 /-! ## `S_K(0) = 0` -/
 
@@ -47,9 +40,9 @@ theorem Nz_p0 (K s : PTm n) : Γ ⊢[PRAAx] Nz K zero s ≐ zero := by
     · simp only [Fm.subst_eq, subst_ap2, subst_pairT, ConciseIPRA.PTm.subst_succ, ConciseIPRA.PTm.subst_zero,
         Syn.subst_var, Syn.repl_zero, subst_repl_shift]
       let Δ : List (Fm PTm (n + 1)) := (Nz (var 0) zero (Syn.shift s) ≐ zero) :: Γ.map Fm.shift
-      ipra_lc natEq (Nz_succ (Γ := Δ) (var 0) zero (Syn.shift s)) +
+      ipra_lc natEq (Nz_succ (var 0) zero (Syn.shift s)) +
         (2 * 𝔞 (var 0 : PTm (n + 1)) + 1) * (𝔞 (Syn.shift s)) ^ 2 * natEq (Prf.hyp0 : Δ ⊢[PRAAx] Nz (var 0) zero (Syn.shift s) ≐ zero) +
-        2 * 𝔞 (Lv (var 0 : PTm (n + 1)) zero) * (𝔞 (Syn.shift s)) ^ 2 * natEq (pw_succ (Γ := Δ) (zero : PTm (n + 1)) (two * var 0))
+        2 * 𝔞 (Lv (var 0 : PTm (n + 1)) zero) * (𝔞 (Syn.shift s)) ^ 2 * natEq (pw_succ (zero : PTm (n + 1)) (two * var 0))
   have r := Prf.allE K hall
   simpa [Syn.subst_inst_shift] using r
 
@@ -138,3 +131,5 @@ theorem arg_low {a B d s a' B' d' s' Dy : PTm n} (hB : Γ ⊢[PRAAx] le one B) (
   exact mul_le_cancel (le_congr (congrMul hp (.eqRefl _)) (congrMul hp (.eqRefl _)) c)
 
 end LeanProofs.IPRA.AnalyticNumberTheory.RobinLipArg
+
+export_ipra AnalyticNumberTheory.RobinLipArg (Nz_p0)

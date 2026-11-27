@@ -2,8 +2,6 @@ import IPRADerivations.AnalyticNumberTheory.RobinThree
 import IPRADerivations.AnalyticNumberTheory.RobinLogInterval
 import IPRADerivations.AnalyticNumberTheory.RobinGammaInterval
 import IPRADerivations.AnalyticNumberTheory.RobinExpName
-import IPRADerivations.Core.CommonLemmas
-import IPRADerivations.Core.Header
 
 /-!
 # `thm:three` as `Pos` certificates (`robin_ipra_research_2026-11-19`, §"Composing the double logarithm", `eq:pos`)
@@ -33,11 +31,9 @@ nesting (`exp_name`) down to three closed cross-multiplications (`lo5041`, `lo17
 `p < q < r` and `n = p^a q^b r^c ≥ 5041`, `Pos(n, k)` for every precision `k`.
 -/
 
-set_option linter.unusedSimpArgs false
-
 namespace LeanProofs.IPRA.AnalyticNumberTheory.RobinThreePos
 
-open_ipra
+open_ipra exports
 open LeanProofs.IPRA.AnalyticNumberTheory.RobinGamma (Lv L_zero Pv P_succ P_zero)
 open LeanProofs.IPRA.AnalyticNumberTheory.RobinLogName (Nz Nz_zero Nz_succ Lz frac_trans)
 open LeanProofs.IPRA.AnalyticNumberTheory.RobinLogInterval
@@ -46,20 +42,14 @@ open LeanProofs.IPRA.AnalyticNumberTheory.RobinGammaInterval (k2 L_one L_two Pv_
 open LeanProofs.IPRA.AnalyticNumberTheory.RobinExpName
   (Ev Ed Fv E_zero E_succ F_zero F_succ exp_name e_mono Ed_pos Ed_congr Ev_congr)
 open LeanProofs.IPRA.AnalyticNumberTheory.RobinThree (three_core)
-open LeanProofs.IPRA.AnalyticNumberTheory.SigmaMult (sig)
-open LeanProofs.IPRA.AnalyticNumberTheory.Primes (prime)
-open LeanProofs.IPRA.AnalyticNumberTheory.PhiLower (le_mul_mono)
 open LeanProofs.IPRA.AnalyticNumberTheory.PNTStageStep (pos_of_one_le)
 open LeanProofs.IPRA.AnalyticNumberTheory.ChebyshevBounds (two_pos')
-open LeanProofs.IPRA.AnalyticNumberTheory.Valuation (pw_pos')
 open LeanProofs.IPRA.Combinatorics.Binomial (pos_mul)
 open LeanProofs.IPRA.Signum (sg sg_zero)
 
 set_option autoImplicit false
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
-
-local notation "𝔞" t:max => Groth.ι (IPRA.Q.mk _ t)
 
 /-! ## Closed evaluation -/
 

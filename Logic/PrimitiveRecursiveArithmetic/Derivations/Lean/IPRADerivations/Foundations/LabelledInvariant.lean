@@ -1,5 +1,4 @@
 import IPRADerivations.Core.BoundedSums
-import IPRADerivations.Core.Order
 import IPRADerivations.Core.Header
 
 /-!
@@ -31,7 +30,7 @@ output projections are metalevel constructions and are not formalized here.
 
 namespace LeanProofs.IPRA.Foundations.LabelledInvariant
 
-open_ipra
+open_ipra exports
 
 variable {n : ℕ}
 

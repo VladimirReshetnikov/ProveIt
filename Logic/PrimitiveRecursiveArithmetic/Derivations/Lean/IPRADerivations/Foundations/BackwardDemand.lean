@@ -1,7 +1,4 @@
 import IPRADerivations.Foundations.MasterCertificate
-import IPRADerivations.Foundations.BoundedFormulas
-import IPRADerivations.Core.CommonLemmas
-import IPRADerivations.Core.Header
 
 /-!
 # Backward schedules for nonmonotone finite observations
@@ -20,11 +17,9 @@ bit guarded by `stage ≤ N`. The local-step premise remains an external
 quantified contract. No monotonicity of the demands or observations occurs.
 -/
 
-set_option linter.unusedSimpArgs false
-
 namespace LeanProofs.IPRA.Foundations.BackwardDemand
 
-open_ipra
+open_ipra exports
 open LeanProofs.IPRA.Foundations.BoundedFormulas
 open LeanProofs.IPRA.AnalyticNumberTheory.Totatives (split_lt monus_succ_of_lt)
 

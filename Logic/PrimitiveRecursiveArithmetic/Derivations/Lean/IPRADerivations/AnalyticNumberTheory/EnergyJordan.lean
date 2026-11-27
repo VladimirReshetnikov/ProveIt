@@ -1,10 +1,6 @@
 import IPRADerivations.Core.BlockSum
 import IPRADerivations.Probability.Independence
 import IPRADerivations.AnalyticNumberTheory.SquareReciprocal
-import IPRADerivations.AnalyticNumberTheory.SumPhi
-import IPRADerivations.Core.LinearCombination
-import IPRADerivations.Core.CommonLemmas
-import IPRADerivations.Core.Header
 
 /-!
 # The Jordan count `J₂(d) ≥ d²/4` (`thm:energy`, recovery direction)
@@ -27,23 +23,16 @@ at most `d² Σ_{t=2}^d 1/t²` bad pairs. … Hence `J_2(d) ≥ d²/4`, also for
   `(d+1) d² ≤ (d+1) · 4 J₂(d)`, hence `d² ≤ 4 J₂(d)`. No separate case `d = 1` is needed.
 -/
 
-set_option linter.unusedSimpArgs false
-
 namespace LeanProofs.IPRA.AnalyticNumberTheory.EnergyJordan
 
-open_ipra
+open_ipra exports
 open LeanProofs.IPRA.BlockSum (flatB flat_at flatten)
 open LeanProofs.IPRA.Probability.Independence (dsum sum_scale sum_mul_sum pmB inst3_pmB row_pt col_pt)
-open LeanProofs.IPRA.AnalyticNumberTheory.Totient (mulBody count_multiples quo_eq)
 open LeanProofs.IPRA.AnalyticNumberTheory.SquareReciprocal (sqB inst2_sq square_bound sqInv cancel_le)
 open LeanProofs.IPRA.AnalyticNumberTheory.SumPhi (sum_ones)
-open LeanProofs.IPRA.DiophantineNumberTheory.Coprime (gcd_dvd' dvd_trans' dvd_le' eq_of_dvd')
-open LeanProofs.IPRA.Foundations.ChineseRemainder (gcd_pos)
 open LeanProofs.IPRA.Combinatorics.Binomial (pos_mul)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
-
-local notation "𝔞" t:max => Groth.ι (IPRA.Q.mk _ t)
 
 /-! ## The count -/
 

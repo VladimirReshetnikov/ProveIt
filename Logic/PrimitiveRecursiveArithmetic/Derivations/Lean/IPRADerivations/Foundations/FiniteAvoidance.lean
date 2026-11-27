@@ -1,10 +1,5 @@
-import IPRADerivations.Core.Fubini
-import IPRADerivations.Core.MultiSums
-import IPRADerivations.Core.SumOrder
-import IPRADerivations.Probability.Variance
 import IPRADerivations.Foundations.BoundedReflection
 import IPRADerivations.Foundations.AuxiliaryEnvelope
-import IPRADerivations.Core.Header
 
 /-!
 # Finite avoidance by counting (`platonic_solids_ipra`, `lem:height`)
@@ -38,14 +33,11 @@ polynomial of degree at most two has at most two roots among the candidates; for
 number of candidates this is `Foundations/GenericDirection.some_nonroot`).
 -/
 
-set_option linter.unusedSimpArgs false
-
 namespace LeanProofs.IPRA.Foundations.FiniteAvoidance
 
-open_ipra
+open_ipra exports
 open LeanProofs.IPRA.Foundations.BoundedReflection (exB wit ex_cases ex_elim ex_none
   zero_of_compl_ne)
-open LeanProofs.IPRA.Foundations.AuxiliaryEnvelope (sum_le_const)
 open LeanProofs.IPRA.Probability.Variance (sum_one)
 open LeanProofs.IPRA.Signum (sg sg_succ)
 
