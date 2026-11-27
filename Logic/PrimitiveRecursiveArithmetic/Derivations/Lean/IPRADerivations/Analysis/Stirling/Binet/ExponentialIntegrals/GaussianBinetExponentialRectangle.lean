@@ -101,9 +101,8 @@ theorem weighted_row (i p q S T N M : PTm n) :
   have weight : Γ ⊢[PRAAx] fraction one M ≐ GaussianRationalRiemannRefinement.weight one one M :=
     GaussianCompactRiemannName.fraction_congr _ _ _ _ (.eqRefl _) (one_mul M).eqSymm
   exact (qmul_congr (.eqRefl _) read).eqTrans
-    ((qmul_associative _ _ _).eqSymm.eqTrans
-      ((qmul_congr (qmul_commutative (fraction one M) c) (.eqRefl _)).eqTrans
-        ((qmul_associative _ _ _).eqTrans (qmul_congr (.eqRefl _) (qmul_congr weight (.eqRefl _))))))
+    ((GaussianRationalPowerAlgebra.commute_nested (fraction one M) c _).eqTrans
+       (qmul_congr (.eqRefl _) (qmul_congr weight (.eqRefl _))))
 
 def outerEntry (i p q S T N M : PTm n) : PTm n := qmul (L p q S (T*i) N) (Q p M (T*i) N)
 def outerBody : PTm 2 := outerEntry (var 0) (field0 (var 1)) (field1 (var 1)) (field2 (var 1))
