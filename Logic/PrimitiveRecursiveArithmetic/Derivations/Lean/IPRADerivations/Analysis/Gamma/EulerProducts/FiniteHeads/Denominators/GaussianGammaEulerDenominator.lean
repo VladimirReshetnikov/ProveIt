@@ -96,10 +96,9 @@ theorem denominator_normalization (z B N : PTm n) (hB : Γ ⊢[PRAAx] le one B) 
   have hb : Γ.map Fm.shift ⊢[PRAAx] le one (Syn.shift B) := by
     simpa [Fm.shift,Syn.shift,one] using hB.shift
   have all : Γ ⊢[PRAAx] .all (normalization (Syn.shift z) (Syn.shift B) (var 0)) := by
-    refine PRA.qfInd _ trivial ?_ ?_
-    · simpa only [subst_normalization,Syn.subst_var,Syn.inst_zero,Syn.subst_inst_shift] using normalization_zero z B hB
-    · simp only [subst_normalization,Syn.subst_var,Syn.repl_zero,subst_repl_shift]
-      exact normalization_step _ _ _ hb.wk Prf.hyp0
+    ipra_qfind [subst_normalization]
+    · exact normalization_zero z B hB
+    · exact normalization_step _ _ _ hb.wk Prf.hyp0
   simpa only [subst_normalization,Syn.subst_var,Syn.inst_zero,Syn.subst_inst_shift] using all.allE N
 
 theorem original_euler_denominator_normalization_closed : ([] : List (Fm PTm 0)) ⊢[PRAAx] univ 3

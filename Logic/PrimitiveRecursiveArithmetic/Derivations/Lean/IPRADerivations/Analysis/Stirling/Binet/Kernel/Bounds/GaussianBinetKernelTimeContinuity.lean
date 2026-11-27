@@ -130,14 +130,12 @@ theorem prefix_distance (p N A B a b T E D : PTm n) (h : Γ ⊢[PRAAx] source A 
   have hs : Γ.map Fm.shift ⊢[PRAAx] source (sh A) (sh B) (sh a) (sh b) (sh T) (sh E) (sh D) := by
     simpa only [Fm.shift, Syn.shift, sh, subst_source] using h.shift
   have all : Γ ⊢[PRAAx] .all (prefixLaw (sh p) (var 0) (sh A) (sh B) (sh a) (sh b) (sh T) (sh E) (sh D)) := by
-    refine PRA.qfInd _ trivial ?_ ?_
-    · simp only [subst_prefixLaw,Syn.subst_var,Syn.inst_zero,sh,Syn.subst_inst_shift]
-      have hD := positive_product _ _ h.andE₂.andE₂.andE₁ (zero_lt_succ zero)
+    ipra_qfind [subst_prefixLaw, sh]
+    · have hD := positive_product _ _ h.andE₂.andE₂.andE₁ (zero_lt_succ zero)
       exact distance_congr (GaussianRationalFiniteSum.sum_zero observedBody (pairT p (inputData A B))).eqSymm
         (GaussianRationalFiniteSum.sum_zero observedBody (pairT p (inputData a b))).eqSymm
         (by ipra_ring) (.eqRefl _) (GaussianRationalPowerDifference.distance_refl_zero qzero (D*succ zero) hD)
-    · simp only [subst_prefixLaw,Syn.subst_var,Syn.repl_zero,sh,subst_repl_shift]
-      exact prefix_step (sh p) (var 0) (sh A) (sh B) (sh a) (sh b) (sh T) (sh E) (sh D) hs.wk Prf.hyp0
+    · exact prefix_step (sh p) (var 0) (sh A) (sh B) (sh a) (sh b) (sh T) (sh E) (sh D) hs.wk Prf.hyp0
   change Γ ⊢[PRAAx] prefixLaw p N A B a b T E D
   simpa only [subst_prefixLaw,Syn.subst_var,Syn.inst_zero,sh,Syn.subst_inst_shift] using all.allE N
 

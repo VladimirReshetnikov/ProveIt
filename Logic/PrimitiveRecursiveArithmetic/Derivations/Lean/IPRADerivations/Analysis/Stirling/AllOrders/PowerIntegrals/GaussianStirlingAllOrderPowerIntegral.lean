@@ -105,10 +105,9 @@ private theorem lower_succ (m N L : PTm n) (hm : Γ ⊢[PRAAx] le two m)
 
 theorem lower_bound (m N L : PTm n) (hm : Γ ⊢[PRAAx] le two m) : Γ ⊢[PRAAx] lowerLaw m N L := by
   have all : Γ ⊢[PRAAx] .all (lowerLaw (Syn.shift m) (Syn.shift N) (var 0)) := by
-    refine PRA.qfInd _ trivial ?_ ?_
-    · simpa only [subst_lowerLaw,Syn.subst_var,Syn.inst_zero,Syn.subst_inst_shift] using lower_zero m N hm
-    · simp only [subst_lowerLaw,subst_repl_shift]
-      have hms : Γ.map Fm.shift ⊢[PRAAx] le two (Syn.shift m) := by simpa [Fm.shift,Syn.shift] using hm.shift
+    ipra_qfind [subst_lowerLaw]
+    · exact lower_zero m N hm
+    · have hms : Γ.map Fm.shift ⊢[PRAAx] le two (Syn.shift m) := by simpa [Fm.shift,Syn.shift] using hm.shift
       exact lower_succ (Syn.shift m) (Syn.shift N) (var 0) hms.wk Prf.hyp0
   simpa only [subst_lowerLaw,Syn.subst_var,Syn.inst_zero,Syn.subst_inst_shift] using all.allE L
 

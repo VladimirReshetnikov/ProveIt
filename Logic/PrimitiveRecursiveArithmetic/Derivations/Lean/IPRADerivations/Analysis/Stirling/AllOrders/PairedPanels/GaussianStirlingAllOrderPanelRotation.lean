@@ -54,10 +54,9 @@ private theorem rotate_succ (f : PTm 2) (N x : PTm n) (ih : Γ ⊢[PRAAx] rotati
 
 theorem rotate (f : PTm 2) (N x : PTm n) : Γ ⊢[PRAAx] rotationLaw f N x := by
   have all : Γ ⊢[PRAAx] .all (rotationLaw f (var 0) (Syn.shift x)) := by
-    refine PRA.qfInd _ trivial ?_ ?_
-    · simpa only [subst_rotationLaw,Syn.subst_var,Syn.inst_zero,Syn.subst_inst_shift] using rotate_zero (Γ := Γ) f x
-    · simp only [subst_rotationLaw,subst_repl_shift]
-      exact rotate_succ f (var 0) (Syn.shift x) Prf.hyp0
+    ipra_qfind [subst_rotationLaw]
+    · exact rotate_zero (Γ := Γ) f x
+    · exact rotate_succ f (var 0) (Syn.shift x) Prf.hyp0
   simpa only [subst_rotationLaw,Syn.subst_var,Syn.inst_zero,Syn.subst_inst_shift] using all.allE N
 
 theorem rotate_zero_endpoints (f : PTm 2) (N x : PTm n)

@@ -31,12 +31,9 @@ private theorem zero_power (k : PTm n) : Γ ⊢[PRAAx] Pv k zero ≐ zero := by
 
 private theorem zero_argument (K s : PTm n) : Γ ⊢[PRAAx] Nz K zero s ≐ zero := by
   have all : Γ ⊢[PRAAx] .all (Nz (var 0) zero (Syn.shift s) ≐ zero) := by
-    refine PRA.qfInd _ trivial ?_ ?_
-    · simpa only [Fm.subst_eq,subst_ap2,subst_pairT,ConciseIPRA.PTm.subst_zero,Syn.subst_var,
-        Syn.inst_zero,Syn.subst_inst_shift] using Nz_zero (Γ := Γ) zero s
-    · simp only [Fm.subst_eq,subst_ap2,subst_pairT,ConciseIPRA.PTm.subst_zero,Syn.subst_var,
-        Syn.repl_zero,subst_repl_shift]
-      let Δ := (Nz (var 0) zero (Syn.shift s) ≐ zero) :: Γ.map Fm.shift
+    ipra_qfind [subst_ap2, subst_pairT]
+    · exact Nz_zero (Γ := Γ) zero s
+    · let Δ := (Nz (var 0) zero (Syn.shift s) ≐ zero) :: Γ.map Fm.shift
       have e := natEq (Nz_succ (Γ := Δ) (var 0) zero (Syn.shift s))
       have h := natEq (Prf.hyp0 : Δ ⊢[PRAAx] _)
       have z := natEq (zero_power (Γ := Δ) (var 0))

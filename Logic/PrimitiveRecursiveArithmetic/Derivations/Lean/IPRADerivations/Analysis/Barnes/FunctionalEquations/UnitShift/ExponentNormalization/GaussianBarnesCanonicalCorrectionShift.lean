@@ -107,13 +107,9 @@ private theorem unit_at (i x : PTm n) : inst2 unitBody i x = qone := by
 
 private theorem reciprocal_sum (N : PTm n) : Γ ⊢[PRAAx] rsum reciprocalBody N zero ≐ harmonicPoint N := by
   have h : Γ ⊢[PRAAx] .all (rsum reciprocalBody (var 0) zero ≐ harmonicPoint (var 0)) := by
-    refine PRA.qfInd _ trivial ?_ ?_
-    · simp only [Fm.subst_eq,GaussianRationalFiniteSum.subst_sum,GaussianGammaCanonicalExponent.subst_harmonicPoint,
-        ConciseIPRA.PTm.subst_zero,Syn.subst_var,Syn.inst_zero]
-      exact (GaussianRationalFiniteSum.sum_zero _ _).eqTrans GaussianGammaEulerHeadQuadratic.harmonic_zero.eqSymm
-    · simp only [Fm.subst_eq,GaussianRationalFiniteSum.subst_sum,GaussianGammaCanonicalExponent.subst_harmonicPoint,
-        ConciseIPRA.PTm.subst_zero,Syn.subst_var,Syn.repl_zero]
-      have e := GaussianRationalFiniteSum.sum_succ (Γ := (rsum reciprocalBody (var 0) zero ≐ harmonicPoint (var 0)) :: Γ.map Fm.shift)
+    ipra_qfind [GaussianRationalFiniteSum.subst_sum, GaussianGammaCanonicalExponent.subst_harmonicPoint]
+    · exact (GaussianRationalFiniteSum.sum_zero _ _).eqTrans GaussianGammaEulerHeadQuadratic.harmonic_zero.eqSymm
+    · have e := GaussianRationalFiniteSum.sum_succ (Γ := (rsum reciprocalBody (var 0) zero ≐ harmonicPoint (var 0)) :: Γ.map Fm.shift)
         reciprocalBody (var 0) zero
       rw [reciprocal_at] at e
       exact e.eqTrans ((qadd_congr Prf.hyp0 (.eqRefl (reciprocalPoint (var 0)))).eqTrans (harmonic_point_increment _).eqSymm)
@@ -128,13 +124,9 @@ private theorem natural_one : Γ ⊢[PRAAx] naturalPoint (one : PTm n) ≐ qone 
 
 private theorem unit_sum (N : PTm n) : Γ ⊢[PRAAx] rsum unitBody N zero ≐ naturalPoint N := by
   have h : Γ ⊢[PRAAx] .all (rsum unitBody (var 0) zero ≐ naturalPoint (var 0)) := by
-    refine PRA.qfInd _ trivial ?_ ?_
-    · simp only [Fm.subst_eq,GaussianRationalFiniteSum.subst_sum,GaussianRationalNaturalScale.subst_naturalPoint,
-        ConciseIPRA.PTm.subst_zero,Syn.subst_var,Syn.inst_zero]
-      exact (GaussianRationalFiniteSum.sum_zero _ _).eqTrans natural_zero.eqSymm
-    · simp only [Fm.subst_eq,GaussianRationalFiniteSum.subst_sum,GaussianRationalNaturalScale.subst_naturalPoint,
-        ConciseIPRA.PTm.subst_zero,Syn.subst_var,Syn.repl_zero]
-      refine (GaussianRationalFiniteSum.sum_succ unitBody (var 0) zero).eqTrans ?_
+    ipra_qfind [GaussianRationalFiniteSum.subst_sum, GaussianRationalNaturalScale.subst_naturalPoint]
+    · exact (GaussianRationalFiniteSum.sum_zero _ _).eqTrans natural_zero.eqSymm
+    · refine (GaussianRationalFiniteSum.sum_succ unitBody (var 0) zero).eqTrans ?_
       rw [unit_at]
       exact (qadd_congr Prf.hyp0 natural_one.eqSymm).eqTrans
         (GaussianPositiveExponentialMajorant.natural_successor_sum _)

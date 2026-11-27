@@ -166,10 +166,9 @@ private theorem sum_succ_step (f g : PTm 2) (x y N : PTm n) (ih : Γ ⊢[PRAAx] 
 
 theorem finite_parts (f g : PTm 2) (x y N : PTm n) : Γ ⊢[PRAAx] telescopeLaw f g x y N := by
   have all : Γ ⊢[PRAAx] .all (telescopeLaw f g (Syn.shift x) (Syn.shift y) (var 0)) := by
-    refine PRA.qfInd _ trivial ?_ ?_
-    · simpa only [subst_telescopeLaw,Syn.subst_var,Syn.inst_zero,Syn.subst_inst_shift] using sum_zero_step (Γ := Γ) f g x y
-    · simp only [subst_telescopeLaw,subst_repl_shift]
-      exact sum_succ_step f g (Syn.shift x) (Syn.shift y) (var 0) Prf.hyp0
+    ipra_qfind [subst_telescopeLaw]
+    · exact sum_zero_step (Γ := Γ) f g x y
+    · exact sum_succ_step f g (Syn.shift x) (Syn.shift y) (var 0) Prf.hyp0
   simpa only [subst_telescopeLaw,Syn.subst_var,Syn.inst_zero,Syn.subst_inst_shift] using all.allE N
 
 end LeanProofs.IPRA.Analysis.GaussianStirlingAllOrderDiscreteParts

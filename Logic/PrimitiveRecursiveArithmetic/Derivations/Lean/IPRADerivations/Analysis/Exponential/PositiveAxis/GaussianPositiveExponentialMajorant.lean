@@ -76,16 +76,14 @@ ipra_subst zeroLaw [fact]
 
 theorem zero_numerator (K : PTm n) : Γ ⊢[PRAAx] zeroLaw K := by
   have all : Γ ⊢[PRAAx] .all (zeroLaw (var 0)) := by
-    refine PRA.qfInd _ trivial ?_ ?_
-    · simp only [subst_zeroLaw,Syn.subst_var,Syn.inst_zero]
-      have a := natEq (numerator_zero (Γ := Γ) zero)
+    ipra_qfind [subst_zeroLaw]
+    · have a := natEq (numerator_zero (Γ := Γ) zero)
       have b := natEq (fact_succ (Γ := Γ) zero zero)
       have c := natEq (fact_zero (Γ := Γ) zero)
       apply deriveNat; ipra_simps
       rw [a,b,c]
       ring
-    · simp only [subst_zeroLaw,Syn.subst_var,Syn.repl_zero]
-      have a := natEq (numerator_succ (Γ := zeroLaw (var 0) :: Γ.map Fm.shift) zero (var 0))
+    · have a := natEq (numerator_succ (Γ := zeroLaw (var 0) :: Γ.map Fm.shift) zero (var 0))
       have b := natEq (LeanProofs.IPRA.DiophantineNumberTheory.SuperellipticFamily.zero_pw
         (Γ := zeroLaw (var 0) :: Γ.map Fm.shift) (var 0))
       have c := natEq (fact_succ (Γ := zeroLaw (var 0) :: Γ.map Fm.shift) (succ (var 0)) zero)

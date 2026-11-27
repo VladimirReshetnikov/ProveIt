@@ -76,10 +76,9 @@ theorem rational_time_prefix (p N A B : PTm n) (hB : Γ ⊢[PRAAx] le one B) :
   let sh (a : PTm n) := Syn.shift a
   have hs : Γ.map Fm.shift ⊢[PRAAx] le one (sh B) := by simpa [Fm.shift,Syn.shift,sh,one] using hB.shift
   have all : Γ ⊢[PRAAx] .all (prefixLaw (sh p) (var 0) (sh A) (sh B)) := by
-    refine PRA.qfInd _ trivial ?_ ?_
-    · simpa only [subst_prefixLaw,Syn.subst_var,Syn.inst_zero,sh,Syn.subst_inst_shift] using prefix_zero p A B
-    · simp only [subst_prefixLaw,Syn.subst_var,Syn.repl_zero,sh,subst_repl_shift]
-      exact prefix_step (sh p) (var 0) (sh A) (sh B) hs.wk Prf.hyp0
+    ipra_qfind [subst_prefixLaw, sh]
+    · exact prefix_zero p A B
+    · exact prefix_step (sh p) (var 0) (sh A) (sh B) hs.wk Prf.hyp0
   change Γ ⊢[PRAAx] prefixLaw p N A B
   simpa only [subst_prefixLaw,Syn.subst_var,Syn.inst_zero,sh,Syn.subst_inst_shift] using all.allE N
 
