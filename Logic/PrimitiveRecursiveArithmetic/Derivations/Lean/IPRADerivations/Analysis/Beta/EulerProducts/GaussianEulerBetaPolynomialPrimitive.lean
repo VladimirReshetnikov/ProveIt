@@ -222,7 +222,7 @@ theorem base_constant : Γ ⊢[PRAAx] entry (base : PTm n) one ≐ qone :=
   (GaussianRationalPolynomialBuffers.added_lookup _ _ _ _ (le_refl two)).eqTrans
     ((qadd_congr (GaussianGammaLinearCoefficient.monomial_constant _)
       ((entry_congr (.eqRefl _) (by ipra_ring : Γ ⊢[PRAAx] one ≐ one+zero)).eqTrans
-        ((GaussianRationalPolynomialBuffers.pad_tail _ one zero (lt_congr (.eqRefl _) (GaussianRationalMonicReduction.singleton_length qone).eqSymm (zero_lt_succ zero))).eqTrans
+        ((GaussianRationalPolynomialBuffers.pad_tail _ one zero (Order.zero_lt_of_eq_succ (GaussianRationalMonicReduction.singleton_length qone))).eqTrans
           (GaussianRationalMonicReduction.singleton_lookup qone)))).eqTrans
       (GaussianRationalSyntheticDivision.qzero_add _ GaussianRationalSyntheticDivision.qone_canonical))
 

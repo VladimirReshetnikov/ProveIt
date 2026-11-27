@@ -82,7 +82,7 @@ theorem denominator_positive (z R B k : PTm n) (h : Γ ⊢[PRAAx] rowSource z R 
   · have e : (E ≐ zero) :: Γ ⊢[PRAAx] E ≐ zero := Prf.hyp0
     exact not_succ_le_self zero _ (le_congr (.eqRefl _) ((congrMul (.eqRefl _) e).eqTrans (mul_zero _)) nz.wk)
   · have e : (E ≐ ConciseIPRA.PTm.succ (pred E)) :: Γ ⊢[PRAAx] E ≐ ConciseIPRA.PTm.succ (pred E) := Prf.hyp0
-    exact le_congr (.eqRefl _) e.eqSymm (zero_lt_succ _)
+    exact Order.zero_lt_of_eq_succ e
 
 private theorem translated_bound (z R B k : PTm n) (h : Γ ⊢[PRAAx] rowSource z R B k) :
     Γ ⊢[PRAAx] nativeBound (translated z B k) (two*(B*k)) := by

@@ -99,7 +99,7 @@ theorem zero_width_any_count (F : PR 3) (p N a E x : PTm n) (hE : Γ ⊢[PRAAx] 
   refine .orE (zero_or_succ N) ?_ ?_
   · exact (GaussianCompactRiemannName.quadrature_index_congr F p N zero a zero E x Prf.hyp0).eqTrans (empty_quadrature F p a zero E x)
   · have positive : (N ≐ succ (LeanProofs.IPRA.PTm.pred N))::Γ ⊢[PRAAx] le one N :=
-      le_congr (.eqRefl _) Prf.hyp0.eqSymm (zero_lt_succ _)
+      Order.zero_lt_of_eq_succ Prf.hyp0
     exact GaussianCompactZeroWidth.quadrature_zero F p N a E x hE.wk positive
 
 theorem actual_same_panel_independent_uniform_grid_comparison_closed (F : PR 3) : ([] : List (Fm PTm 0)) ⊢[PRAAx] univ 9

@@ -133,7 +133,7 @@ theorem original_named_convexity (L U : PR 3) (W : PR 2) (A B C r t i j k x : PT
     exact rationalLE_congr (RationalAlgebra.multiply_congr (natCode_congr (add_comm t r)) (.eqRefl _))
       (RationalAlgebra.add_commutative _ _) result
   · have hr : ((r ≐ ConciseIPRA.PTm.succ (LeanProofs.IPRA.PTm.pred r)) :: Γ) ⊢[PRAAx] le one r :=
-      le_congr (.eqRefl _) Prf.hyp0.eqSymm (zero_lt_succ _)
+      Order.zero_lt_of_eq_succ Prf.hyp0
     exact named_convexity_first_positive L U W A B C r t i j k x h.wk hr hp.wk hc.wk
 
 theorem original_positive_barycenter_closed : ([] : List (Fm PTm 0)) ⊢[PRAAx] univ 5

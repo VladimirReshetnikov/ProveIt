@@ -25,7 +25,7 @@ private theorem next (j F : PTm n)
     Γ ⊢[PRAAx] le (S (pw two (succ j)) F) ((one+succ j)*F) := by
   let v := pw two j
   have hv : Γ ⊢[PRAAx] le one v :=
-    le_congr (.eqRefl _) (pw2_pos j).eqSymm (zero_lt_succ _)
+    Order.zero_lt_of_eq_succ (pw2_pos j)
   have same : Γ ⊢[PRAAx] pw two (succ j) ≐ v+v :=
     (pw_succ _ _).eqTrans (by ipra_ring)
   have delta : Γ ⊢[PRAAx] monus (v+v) v ≐ v := add_monus' v v

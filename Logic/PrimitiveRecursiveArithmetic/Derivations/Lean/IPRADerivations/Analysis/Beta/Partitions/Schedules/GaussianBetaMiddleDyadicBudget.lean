@@ -80,7 +80,7 @@ theorem monomial_bound (j w M C E N R : PTm n)
     exact GaussianRationalReciprocal.bound_congr eq.eqSymm (.eqRefl _) (.eqRefl _)
       (GaussianEulerNamedUpperTail.zero_bound _ _ (unit_positive (succ j)))
   · have hc : (C ≐ succ (pred C))::Γ ⊢[PRAAx] le one C :=
-      le_congr (.eqRefl one) Prf.hyp0.eqSymm (zero_lt_succ (pred C))
+      Order.zero_lt_of_eq_succ Prf.hyp0
     exact GaussianMonomialDecayBudget.original_grid_dyadic_bound w w (succ j) M C E (R+two)
       hE.wk hc hM.wk aux.andE₁.wk aux.andE₂.andE₁.wk
 

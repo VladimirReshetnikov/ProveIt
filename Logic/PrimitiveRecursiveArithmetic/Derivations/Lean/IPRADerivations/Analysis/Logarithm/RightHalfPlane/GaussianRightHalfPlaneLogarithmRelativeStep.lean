@@ -132,7 +132,7 @@ private theorem raw_norm_positive (u D : PTm n) (hD : Γ ⊢[PRAAx] le one D)
       (congrMul (.eqRefl _) Prf.hyp0).eqTrans (by ipra_ring)
     have bad := le_congr (.eqRefl one) (eq.wk.eqTrans bz) pos.wk
     exact .botE _ (succ_ne_zero ((succ_add zero _).eqSymm.eqTrans (eq_add_of_le bad).eqSymm))
-  · exact le_congr (.eqRefl one) Prf.hyp0.eqSymm (zero_lt_succ _)
+  · exact Order.zero_lt_of_eq_succ Prf.hyp0
 
 private theorem inverse_code (u D : PTm n) (hD : Γ ⊢[PRAAx] le one D)
     (hu : Γ ⊢[PRAAx] le one (denominator u)) :

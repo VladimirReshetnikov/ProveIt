@@ -42,7 +42,7 @@ ipra_subst oddSum
 
 theorem denominator_positive (a b K : PTm n) (hb : Γ ⊢[PRAAx] le one b) :
     Γ ⊢[PRAAx] le one (Dz K a b) :=
-  le_congr (.eqRefl _) (Dz_pos (pos_of_one_le hb) K a).eqSymm (zero_lt_succ _)
+  Order.zero_lt_of_eq_succ (Dz_pos (pos_of_one_le hb) K a)
 
 theorem denominator_step (a b K : PTm n) : Γ ⊢[PRAAx]
     Dz (succ K) a b ≐ (oddIndex K*(b*b))*Dz K a b := by
@@ -83,8 +83,7 @@ theorem value_step (a b K : PTm n) (hb : Γ ⊢[PRAAx] le one b) :
   let Q := Pv K b
   have hd := denominator_positive a b K hb
   have hD := denominator_positive a b (succ K) hb
-  have hQ : Γ ⊢[PRAAx] le one Q := le_congr (.eqRefl _)
-    (AnalyticNumberTheory.SigmaPrimePower.pos_pw (pos_of_one_le hb) (succ (two*K))).eqSymm (zero_lt_succ _)
+  have hQ : Γ ⊢[PRAAx] le one Q := Order.zero_lt_of_eq_succ (AnalyticNumberTheory.SigmaPrimePower.pos_pw (pos_of_one_le hb) (succ (two*K)))
   have hT : Γ ⊢[PRAAx] le one (A*Q) := positive_product _ _ (zero_lt_succ _) hQ
   have dstep : Γ ⊢[PRAAx] d*(A*S) ≐ D := (mul_comm _ _).eqTrans (denominator_step a b K).eqSymm
   have tstep : Γ ⊢[PRAAx] (A*Q)*(l*S) ≐ D := by

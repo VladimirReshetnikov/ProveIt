@@ -54,7 +54,7 @@ theorem row_positive (j : PTm n) : Γ ⊢[PRAAx] le one (rowDenominator j) := by
       ring
     exact le_congr (.eqRefl _) h.eqSymm (le_refl one)
   · have hj : (j ≐ succ (pred j)) :: Γ ⊢[PRAAx] le one j :=
-      le_congr (.eqRefl _) Prf.hyp0.eqSymm (zero_lt_succ _)
+      Order.zero_lt_of_eq_succ Prf.hyp0
     have p := positive_product j (succ (succ j)) hj (zero_lt_succ _)
     exact le_trans p (le_add_right _ _)
 
@@ -76,7 +76,7 @@ theorem prefix_identity (j : PTm n) : Γ ⊢[PRAAx]
     ipra_simps
     rw [m,m',e]
     ring
-  · have m := natEq (le_congr (.eqRefl one) Prf.hyp0.eqSymm (zero_lt_succ (pred j)) :
+  · have m := natEq (Order.zero_lt_of_eq_succ Prf.hyp0 :
       (j ≐ succ (pred j)) :: Γ ⊢[PRAAx] monus one j ≐ zero)
     have m' := natEq (zero_lt_succ (Γ := (j ≐ succ (pred j)) :: Γ) j :
       (j ≐ succ (pred j)) :: Γ ⊢[PRAAx] monus one (succ j) ≐ zero)

@@ -237,9 +237,9 @@ theorem split_allowing_zero (F : PR 3) (s a C1 C2 E K x : PTm n)
     · exact split_transport F s a E K x C1 C2 C1 zero (.eqRefl C1) Prf.hyp0
         (distance_of_identity _ _ _ _ hd.wk.wk (zero_right_identity F s a C1 E K x))
     · have h1 : (C2 ≐ succ (pred C2)) :: (C1 ≐ succ (pred C1)) :: Γ ⊢[PRAAx] le one C1 :=
-        le_congr (.eqRefl one) Prf.hyp1.eqSymm (zero_lt_succ (pred C1))
+        Order.zero_lt_of_eq_succ Prf.hyp1
       have h2 : (C2 ≐ succ (pred C2)) :: (C1 ≐ succ (pred C1)) :: Γ ⊢[PRAAx] le one C2 :=
-        le_congr (.eqRefl one) Prf.hyp0.eqSymm (zero_lt_succ (pred C2))
+        Order.zero_lt_of_eq_succ Prf.hyp0
       exact (positive.wk.wk.impE h1).impE h2
 
 def output (F : PR 3) (s a C1 C2 E K x : PTm n) : PTm n := pairT (quadrature F s ((C1+C2)*K) a (C1+C2) E x)

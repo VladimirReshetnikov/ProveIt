@@ -131,7 +131,7 @@ private theorem prefix_lower (j : PTm n) : Γ ⊢[PRAAx] le (prefixDenominator j
         ((congrAdd (.eqRefl _) (monus_zero one)).eqTrans (by ipra_ring))
     exact le_congr (congrSucc e).eqSymm p.eqSymm (le_refl one)
   · have hj : (j ≐ succ (LeanProofs.IPRA.PTm.pred j)) :: Γ ⊢[PRAAx] le one j :=
-      le_congr (.eqRefl _) Prf.hyp0.eqSymm (zero_lt_succ _)
+      Order.zero_lt_of_eq_succ Prf.hyp0
     have lower : (j ≐ succ (LeanProofs.IPRA.PTm.pred j)) :: Γ ⊢[PRAAx] le (prefixDenominator j) (num 4*j) := by
       unfold prefixDenominator
       ipra_le sl hj+2*Groth.ι (Q.mk _ j)

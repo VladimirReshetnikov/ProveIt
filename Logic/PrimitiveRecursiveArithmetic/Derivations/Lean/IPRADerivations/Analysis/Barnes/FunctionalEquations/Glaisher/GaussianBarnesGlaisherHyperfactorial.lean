@@ -38,7 +38,7 @@ local notation "H" => GaussianHarmonicLogarithmName.sample
 local notation "S" => GaussianBarnesGlaisherFinite.sumF
 
 theorem hyp_positive (N : PTm n) : Γ ⊢[PRAAx] le one (hyp N) :=
-  le_congr (.eqRefl _) (hyp_pos N).eqSymm (zero_lt_succ _)
+  Order.zero_lt_of_eq_succ (hyp_pos N)
 
 private theorem harmonic_congr {p a b c d : PTm n} (ha : Γ ⊢[PRAAx] a ≐ c)
     (hb : Γ ⊢[PRAAx] b ≐ d) : Γ ⊢[PRAAx] H p a b ≐ H p c d := by

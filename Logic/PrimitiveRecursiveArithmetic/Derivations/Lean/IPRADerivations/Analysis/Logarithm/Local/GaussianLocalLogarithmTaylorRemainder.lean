@@ -52,7 +52,7 @@ theorem half_disk_radius_strict (R N : PTm n) (hN : Γ ⊢[PRAAx] le one N) (hR 
   refine .orE (zero_or_succ R) ?_ ?_
   · exact le_congr (congrSucc Prf.hyp0).eqSymm (.eqRefl _) hN.wk
   · have positive : (R ≐ succ (pred R)) :: Γ ⊢[PRAAx] le one R :=
-      le_congr (.eqRefl _) Prf.hyp0.eqSymm (zero_lt_succ _)
+      Order.zero_lt_of_eq_succ Prf.hyp0
     have next : (R ≐ succ (pred R)) :: Γ ⊢[PRAAx] le (succ R) (two*R) :=
       le_congr (by ipra_ring) (by ipra_ring) (add_le_add_right R positive)
     exact le_trans next hR.wk

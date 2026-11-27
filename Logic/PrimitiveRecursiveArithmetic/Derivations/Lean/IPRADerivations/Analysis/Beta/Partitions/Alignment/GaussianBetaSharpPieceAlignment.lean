@@ -105,7 +105,7 @@ theorem original_middle_bound (p v j w k A R N K z B : PTm n)
     exact distance_congr beta.eqSymm euler.eqSymm (.eqRefl _) (.eqRefl _)
       (GaussianCompactAlignedSplit.distance_of_identity _ _ _ _ hd.wk (.eqRefl (qzero : PTm n)))
   · have hc : (C ≐ succ (pred C))::Γ ⊢[PRAAx] le one C :=
-      le_congr (.eqRefl one) Prf.hyp0.eqSymm (zero_lt_succ (pred C))
+      Order.zero_lt_of_eq_succ Prf.hyp0
     have growth : (C ≐ succ (pred C))::Γ ⊢[PRAAx] le K (C*K) :=
       le_congr (one_mul _) (.eqRefl _) (mul_le_mul_right K hc)
     have old := GaussianBetaMiddleDyadicBudget.original_middle_dyadic_bound p v j w z R B C E N (C*K)

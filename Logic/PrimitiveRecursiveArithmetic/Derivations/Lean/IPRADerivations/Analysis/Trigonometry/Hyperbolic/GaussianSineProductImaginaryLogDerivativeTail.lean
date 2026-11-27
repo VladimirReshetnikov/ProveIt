@@ -144,7 +144,7 @@ theorem uniform_bound (A B R N : PTm n) (hB : Γ ⊢[PRAAx] le one B) (hA : Γ �
   · have z := (sum_index_congr (Γ := (N ≐ zero) :: Γ) A B Prf.hyp0).eqTrans (sum_zero A B)
     exact bound_congr z.eqSymm (.eqRefl _) (.eqRefl _) (GaussianMonicResidualRadius.zero_bounded _ _ (le_refl one))
   · let Δ := (N ≐ succ (pred N)) :: Γ
-    have hN : Δ ⊢[PRAAx] le one N := le_congr (.eqRefl _) Prf.hyp0.eqSymm (zero_lt_succ _)
+    have hN : Δ ⊢[PRAAx] le one N := Order.zero_lt_of_eq_succ Prf.hyp0
     have base : Δ ⊢[PRAAx] logarithmSum A B one ≐ logarithmRow zero A B :=
       (logarithm_sum_succ A B zero).eqTrans
         ((qadd_congr (sum_zero A B) (.eqRefl _)).eqTrans

@@ -66,7 +66,7 @@ theorem positive_natural_representative (a N D : PTm n) (hD : Γ ⊢[PRAAx] le o
     have hbad := comparison_of_cleared a (natCode zero) N zero D one hD.wk (le_refl _)
       hr.wk (natCode_represents _) hzero
     exact le_lt_absurd _ hbad h.wk
-  · exact le_congr (.eqRefl _) Prf.hyp0.eqSymm (zero_lt_succ _)
+  · exact Order.zero_lt_of_eq_succ Prf.hyp0
 
 theorem first_numerator_positive (a b : PTm n) (h : Γ ⊢[PRAAx] rationalLT (natCode zero) a) :
     Γ ⊢[PRAAx] le one (firstNumerator a b) :=

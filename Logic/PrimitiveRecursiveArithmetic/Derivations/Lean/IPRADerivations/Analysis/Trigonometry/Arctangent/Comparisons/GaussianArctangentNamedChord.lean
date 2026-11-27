@@ -244,7 +244,7 @@ theorem original_chord_at (p q A B z : PTm n)
     have ord := RationalArgmin.rationalLE_congr (congrSnd (sample_at p zero B)).eqSymm (.eqRefl _) raw
     exact upper_congr (congrSnd hx).eqSymm (congrSnd hy).eqSymm (.eqRefl _) (.eqRefl _) (upper_of_order _ _ _ _ ord)
   · have hA : ((A ≐ succ (pred A)) :: Γ) ⊢[PRAAx] le one A :=
-      le_congr (.eqRefl _) Prf.hyp0.eqSymm (zero_lt_succ _)
+      Order.zero_lt_of_eq_succ Prf.hyp0
     exact remove_upper_slack _ _ _ _ (num 3) (named_chord_slack p q A B z _ hA hAB.wk)
 
 theorem actual_original_arctangent_sine_chord_closed :

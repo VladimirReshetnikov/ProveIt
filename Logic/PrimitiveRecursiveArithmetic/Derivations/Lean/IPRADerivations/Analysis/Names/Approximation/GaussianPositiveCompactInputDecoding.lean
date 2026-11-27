@@ -62,7 +62,7 @@ theorem decoded_positive (q E T : PTm n) (hs : Γ ⊢[PRAAx] source q E T) : Γ 
       (congrMul (.eqRefl E) Prf.hyp0).eqTrans (mul_zero E)
     have bad : (numerator q ≐ zero)::Γ ⊢[PRAAx] le one zero := le_congr (.eqRefl _) e bound.wk
     exact .botE _ (succ_ne_zero ((monus_zero one).eqSymm.eqTrans bad))
-  · exact le_congr (.eqRefl _) Prf.hyp0.eqSymm (zero_lt_succ (pred (numerator q)))
+  · exact Order.zero_lt_of_eq_succ Prf.hyp0
 
 theorem fraction_recode (q E T : PTm n) (hs : Γ ⊢[PRAAx] source q E T) : Γ ⊢[PRAAx]
     fraction (numerator q) (denominator q) ≐ GaussianFastValueCut.recode q := by

@@ -36,7 +36,7 @@ def inverseFactorial (j : PTm n) : PTm n := ofGaussian ComplexLogarithmRemainder
 ipra_subst inverseFactorial [fact]
 
 theorem factorial_positive (j : PTm n) : Γ ⊢[PRAAx] le one (fact j) :=
-  le_congr (.eqRefl _) (AnalyticNumberTheory.Primes.fact_pos j).eqSymm (zero_lt_succ _)
+  Order.zero_lt_of_eq_succ (AnalyticNumberTheory.Primes.fact_pos j)
 theorem inverse_factorial_represents (j : PTm n) : Γ ⊢[PRAAx]
     represents (inverseFactorial j) ComplexLogarithmRemainder.oneCode (fact j) :=
   GaussianRationalHorner.ofGaussian_represents _ _ (factorial_positive j)

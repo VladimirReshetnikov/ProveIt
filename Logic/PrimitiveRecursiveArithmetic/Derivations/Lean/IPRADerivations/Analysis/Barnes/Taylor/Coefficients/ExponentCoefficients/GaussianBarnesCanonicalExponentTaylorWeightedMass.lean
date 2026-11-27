@@ -203,7 +203,7 @@ private theorem stored_entry (q z R B r M i : PTm n) (hs : Γ ⊢[PRAAx] source 
   have he : (lt i d :: Γ) ⊢[PRAAx] le one e := by
     have eq := (GaussianRationalPowerExpansion.remaining_succ (Γ := lt i d :: Γ) d i).eqSymm.eqTrans
       (GaussianRationalPowerExpansion.remaining_before d (succ i) Prf.hyp0)
-    exact le_congr (.eqRefl _) eq.eqSymm (zero_lt_succ _)
+    exact Order.zero_lt_of_eq_succ eq
   have rd := (dilated_lookup (buffer q z R B r M) d point i hi).eqTrans
     (qmul_congr (descending_at q z R B r M i hi) (.eqRefl _))
   exact rationalLE_congr (qL1_congr rd).eqSymm (.eqRefl _) (coefficient_bound q z R B r e hs.wk he)

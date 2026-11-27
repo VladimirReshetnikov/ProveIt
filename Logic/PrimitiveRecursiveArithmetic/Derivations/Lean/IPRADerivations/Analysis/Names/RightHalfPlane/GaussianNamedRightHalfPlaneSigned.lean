@@ -118,7 +118,7 @@ theorem real_positive (q K : PTm n) (h : Γ ⊢[PRAAx] le (denominator q) (K * r
   refine .orE (zero_or_succ (realNumerator q)) ?_ ?_
   · exact lt_zero_absurd _
       (le_congr (.eqRefl _) ((congrMul (.eqRefl _) Prf.hyp0).eqTrans (mul_zero _)) hK.wk)
-  · exact le_congr (.eqRefl _) Prf.hyp0.eqSymm (zero_lt_succ _)
+  · exact Order.zero_lt_of_eq_succ Prf.hyp0
 
 theorem native_value (q : PTm n) (h : Γ ⊢[PRAAx] le one (realNumerator q)) :
     Γ ⊢[PRAAx] equal (native (realNumerator q) (imagNumerator q) (sign q)) (rawGaussian q) := by

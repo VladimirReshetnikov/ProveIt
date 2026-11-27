@@ -62,7 +62,7 @@ theorem scaled_factorization_at (z R B J x W : PTm n) (hB : Γ ⊢[PRAAx] le one
   · exact GaussianSineProductScaledZero.zero_identity nameF W J m a x ha.wk (le_refl m)
       (GaussianSineProductScaledZero.scaled_zero_samples z R B m x hB.wk hm.wk Prf.hyp0)
   · have pos : (normSq z ≐ ConciseIPRA.PTm.succ (pred (normSq z))) :: Γ ⊢[PRAAx] le one (normSq z) :=
-      le_congr (.eqRefl _) Prf.hyp0.eqSymm (zero_lt_succ _)
+      Order.zero_lt_of_eq_succ Prf.hyp0
     exact GaussianNamedClearedSincMultipleAngle.from_apart nameF m J W a x (apartClock B m)
       ha.wk (le_refl m) (scaled_apart z R B m x hB.wk hm.wk pos)
 

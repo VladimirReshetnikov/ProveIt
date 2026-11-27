@@ -82,7 +82,7 @@ private theorem positive_upper (a b T : PTm n) (ha : Γ ⊢[PRAAx] le one a) (hu
   · have z : (T ≐ zero)::Γ ⊢[PRAAx] T*b ≐ zero :=
       (congrMul Prf.hyp0 (.eqRefl b)).eqTrans (zero_mul b)
     exact not_succ_le_self zero _ (le_congr (.eqRefl one) z (le_trans ha.wk hu.wk))
-  · exact le_congr (.eqRefl _) Prf.hyp0.eqSymm (zero_lt_succ (pred T))
+  · exact Order.zero_lt_of_eq_succ Prf.hyp0
 
 theorem actual_rational_source (F G : PR 2) (k z Rz B x y C₀ C R₀ R E T a b : PTm n)
     (hs : Γ ⊢[PRAAx] source F G z Rz B x y C₀ C R₀ R E T a b) :

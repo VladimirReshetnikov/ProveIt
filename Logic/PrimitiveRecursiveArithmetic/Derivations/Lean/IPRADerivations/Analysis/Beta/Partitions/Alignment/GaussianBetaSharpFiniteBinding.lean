@@ -73,7 +73,7 @@ private theorem exterior_at_shared_count (p a C E K z B N : PTm n)
     exact (quadrature_congr F (.eqRefl p) hc (.eqRefl a) (.eqRefl C) (.eqRefl E) (.eqRefl x)).eqTrans
       (quadrature_empty F p a C E x)
   · have hp : (C ≐ succ (pred C)) :: Γ ⊢[PRAAx] le one C :=
-      le_congr (.eqRefl one) Prf.hyp0.eqSymm (zero_lt_succ _)
+      Order.zero_lt_of_eq_succ Prf.hyp0
     exact GaussianBetaZeroExtendedGrid.exterior_grid_zero p (C*K) a C E z B N
       hE.wk (positive_product _ _ hp hK.wk) hN.wk ha.wk
 
