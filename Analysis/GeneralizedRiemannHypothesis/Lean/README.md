@@ -62,6 +62,8 @@ to place them in the disks, and finite certificates from the
 
 [HeckeDiagonalFiniteCertificate.lean](GRHArticle/SingularModuli/HeckeDiagonalFiniteCertificate.lean) reduces a proposed prime Hecke diagonal identity to its first $2p+1$ cleared series coefficients. [HeckeTraceCoefficientFormula.lean](GRHArticle/SingularModuli/HeckeTraceCoefficientFormula.lean) expresses the power sums of the shifted factors through integer series coefficients.
 
+[HeckeDiagonalTraceRecursion.lean](GRHArticle/SingularModuli/HeckeDiagonalTraceRecursion.lean) proves a Newton recursion for the shifted factor product. At prime level the diagonal can be certified using only rational arithmetic on $2p+1$ formal coefficients.
+
 ## Integer geometric progressions
 
 [Rankin.lean](GRHArticle/ProgressionFree/Rankin.lean) proves that Rankin's

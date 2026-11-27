@@ -185,6 +185,7 @@ import GRHArticle.SingularModuli.DepthOne
 import GRHArticle.SingularModuli.DiskRootTransfer
 import GRHArticle.SingularModuli.HasseCoefficients
 import GRHArticle.SingularModuli.HeckeDiagonalFiniteCertificate
+import GRHArticle.SingularModuli.HeckeDiagonalTraceRecursion
 import GRHArticle.SingularModuli.HeckeRootOfUnityIntegrality
 import GRHArticle.SingularModuli.HeckeTraceCoefficientFormula
 import GRHArticle.SingularModuli.ModularIntegralExpansions
