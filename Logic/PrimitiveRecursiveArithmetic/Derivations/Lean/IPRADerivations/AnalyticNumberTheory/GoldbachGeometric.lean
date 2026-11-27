@@ -36,24 +36,13 @@ theorem geom_step {x I : PTm n} (hx : Γ ⊢[PRAAx] le one x)
   have s' := natEq s; have i' := natEq ih; have p := natEq (pw_succ (Γ := Γ) x I)
   ipra_lc p - 𝔞 (monus x one) * s' + i' + 𝔞 (pw x I) * natEq (eq_add_of_le hx)
 
-/-- Variables `0 = I`, `1 = x`. -/
-private abbrev geomF : Fm PTm 2 :=
-  le one (var 1) ⟶ pw (var 1) (var 0) ≐ monus (var 1) one * ap2 (sumF gB) (var 0) (var 1) + one
-
-private theorem geom₀ : ([] : List (Fm PTm 2)) ⊢[PRAAx] geomF := by
-  ipra_ind (⟨le_QF _ _, trivial⟩) [subst_le, subst_ap2]
-  · refine .impI ((pw_zero _).eqTrans ?_)
-    ipra_lc -𝔞 (monus (var 0) one) * natEq (sum_zero (Γ := [le one (var 0 : PTm 1)]) gB (var 0))
-  · exact .impI (geom_step Prf.hyp0 (.impE Prf.hyp1 Prf.hyp0))
-
 /-- `x^I = (x − 1) ∑_{i<I} x^i + 1` for `x ≥ 1`. -/
 theorem geom_sum {x : PTm n} (hx : Γ ⊢[PRAAx] le one x) (I : PTm n) :
     Γ ⊢[PRAAx] pw x I ≐ monus x one * ap2 (sumF gB) I x + one := by
-  have i := inst (Γ := Γ) geom₀ (![I, x] : Fin 2 → PTm n)
-  simp only [geomF, Fm.subst_imp, Fm.subst_eq, subst_le, subst_ap2, PTm.subst_mul, PTm.subst_add, PTm.subst_monus,
-    Syn.subst_var, Matrix.cons_val_zero, Matrix.cons_val_one, ConciseIPRA.PTm.subst_zero,
-    ConciseIPRA.PTm.subst_succ] at i
-  exact .impE i hx
+  refine (GeometricSum.sum_eq_pow gB I x ((eq_add_of_le hx).eqTrans (add_comm _ _)) ?_).eqSymm
+  refine .allI (.impI ?_)
+  rw [inst2_gB]
+  exact .eqRefl _
 
 theorem one_le_pw {r : PTm n} (hr : Γ ⊢[PRAAx] le one r) (s : PTm n) : Γ ⊢[PRAAx] le one (pw r s) :=
   pw_one_le hr s

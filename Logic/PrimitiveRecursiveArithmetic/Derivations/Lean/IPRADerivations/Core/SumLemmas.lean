@@ -93,4 +93,40 @@ theorem term_le_sum (f : PTm 2) {i M x : PTm n} (h : Γ ⊢[PRAAx] lt i M) :
     Γ ⊢[PRAAx] le (inst2 f i x) (ap2 (sumF f) M x) :=
   sum_term_le f h
 
+namespace GeometricSum
+
+/-- The cleared geometric-sum identity for a summand that equals `b^i` below the bound. -/
+theorem sum_eq_pow (f : PTm 2) (N x : PTm n) {a b : PTm n} (hb : Γ ⊢[PRAAx] b ≐ a + one)
+    (h : Γ ⊢[PRAAx] Fm.all (lt (var 0) (Syn.shift N) ⟶
+      (inst2 f (var 0) (Syn.shift x) ≐ pw (Syn.shift b) (var 0)))) :
+    Γ ⊢[PRAAx] a * ap2 (sumF f) N x + one ≐ pw b N := by
+  let P : Fm PTm (n + 1) :=
+    Syn.shift a * ap2 (sumF f) (var 0) (Syn.shift x) + one ≐ pw (Syn.shift b) (var 0)
+  have atBound : Γ ⊢[PRAAx] P.subst (Syn.inst N) := by
+    refine qfIndUpTo N trivial ?_ ?_
+    · have base : Γ ⊢[PRAAx] a * ap2 (sumF f) zero x + one ≐ pw b zero :=
+        (congrAdd ((congrMul (.eqRefl _) (sum_zero f x)).eqTrans (mul_zero _)) (.eqRefl _)).eqTrans
+          ((zero_add one).eqTrans (pw_zero b).eqSymm)
+      simpa [P] using base
+    · simp only [P, Fm.subst_eq, PTm.subst_add, PTm.subst_mul, subst_ap2,
+        Syn.subst_var, Syn.repl_zero, subst_repl_shift, ConciseIPRA.PTm.subst_zero,
+        ConciseIPRA.PTm.subst_succ]
+      refine .impI ?_
+      let Δ := lt (var 0) (Syn.shift N) :: P :: Γ.map Fm.shift
+      have point := Prf.impE h.allOpen.wk.wk (Prf.hyp0 : Δ ⊢[PRAAx] lt (var 0) (Syn.shift N))
+      have sumStep := (sum_succ' (Γ := Δ) f (var 0) (Syn.shift x)).eqTrans (congrAdd (.eqRefl _) point)
+      have powStep := pw_succ (Γ := Δ) (Syn.shift b) (var 0)
+      have baseEq : Γ.map Fm.shift ⊢[PRAAx] Syn.shift b ≐ Syn.shift a + one := by
+        simpa [Syn.shift] using Order.shift_eq hb
+      have previous : Δ ⊢[PRAAx] P := Prf.hyp1
+      refine withEq sumStep fun s => withEq powStep fun p =>
+        withEq previous.eqSymm fun ih => withEq baseEq.wk.wk fun e => ?_
+      apply deriveNat
+      ipra_simps
+      rw [s, p, ih, e]
+      ring
+  simpa [P] using atBound
+
+end GeometricSum
+
 end LeanProofs.IPRA

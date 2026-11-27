@@ -100,26 +100,9 @@ ipra_subst geoInv [subst_ap2]
 
 /-- `3 Σ_{j<J} 4^j + 1 = 4^J`. -/
 theorem geo (J x : PTm n) : Γ ⊢[PRAAx] num 3 * ap2 (sumF g4B) J x + one ≐ pw (num 4) J := by
-  have hall : Γ ⊢[PRAAx] Fm.all (geoInv (var 0) (Syn.shift x)) := by
-    refine PRA.qfInd _ trivial ?_ ?_
-    · rw [subst_geoInv]
-      simp only [Syn.subst_var, Syn.inst_zero, Syn.subst_inst_shift]
-      have a := natEq (sum_zero (Γ := Γ) g4B x)
-      show Γ ⊢[PRAAx] num 3 * ap2 (sumF g4B) zero x + one ≐ pw (num 4) zero
-      ipra_lc 3 * a - natEq (pw_zero (num 4 : PTm n))
-    · rw [subst_geoInv]
-      simp only [Syn.subst_var, Syn.repl_zero, subst_repl_shift]
-      let Δ : List (Fm PTm (n + 1)) := geoInv (var 0) (Syn.shift x) :: Γ.map Fm.shift
-      have e1 := natEq (sum_succ' (Γ := Δ) g4B (var 0) (Syn.shift x))
-      rw [show inst2 g4B (var 0 : PTm (n + 1)) (Syn.shift x) = pw (num 4) (var 0) by simp [inst2]] at e1
-      show Δ ⊢[PRAAx] num 3 * ap2 (sumF g4B) (succ (var 0)) (Syn.shift x) + one ≐ pw (num 4) (succ (var 0))
-      ipra_lc 4 * natEq (Prf.hyp0 : Δ ⊢[PRAAx] num 3 * ap2 (sumF g4B) (var 0) (Syn.shift x) + one ≐ pw (num 4) (var 0)) +
-        3 * e1 - natEq (pw_succ (num 4 : PTm (n + 1)) (var 0)) -
-        3 * natEq (Prf.hyp0 : Δ ⊢[PRAAx] num 3 * ap2 (sumF g4B) (var 0) (Syn.shift x) + one ≐ pw (num 4) (var 0))
-  have a := Prf.allE J hall
-  rw [subst_geoInv] at a
-  simp only [Syn.subst_inst_shift] at a
-  exact a
+  refine GeometricSum.sum_eq_pow g4B J x (by ipra_ring) (.allI (.impI ?_))
+  simp [inst2, Syn.shift]
+  exact .eqRefl _
 
 /-- `3 Σ_{j<J} 4^j < 4^J`, i.e. `Σ_{j=1}^{J} 4^{−j} < 1/3`. -/
 theorem geo_lt (J x : PTm n) : Γ ⊢[PRAAx] lt (num 3 * ap2 (sumF g4B) J x) (pw (num 4) J) := by

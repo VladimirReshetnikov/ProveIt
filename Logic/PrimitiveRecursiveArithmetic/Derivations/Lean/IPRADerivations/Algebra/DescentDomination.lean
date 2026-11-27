@@ -51,21 +51,12 @@ theorem geom4_step {K x : PTm n}
   rw [inst2_p4] at s
   ipra_lc 3 * natEq s + 4 * natEq ih - natEq (pw_succ (Γ := Γ) four K) - 3 * natEq ih
 
-/-- Variables: `0 = K` (induction), `1 = x`. -/
-private abbrev g4F : Fm PTm 2 := (two + one) * ap2 (sumF p4B) (var 0) (var 1) + one ≐ pw four (var 0)
-
-private theorem g4₀ : ([] : List (Fm PTm 2)) ⊢[PRAAx] g4F := by
-  refine ind _ trivial ?_ ?_
-  · ipra_lc [Fm.subst_eq, subst_ap2, PTm.subst_add, PTm.subst_mul, Syn.subst_var, Syn.inst_zero, Syn.inst_one, ConciseIPRA.PTm.subst_zero, ConciseIPRA.PTm.subst_succ] 3 * natEq (sum_zero (Γ := []) p4B (var 0 : PTm 1)) -
-      natEq (pw_zero (Γ := []) (four : PTm 1))
-  · simp only [Fm.subst_eq, subst_ap2, PTm.subst_add, PTm.subst_mul, Syn.subst_var, Syn.repl_zero, repl_one,
-      ConciseIPRA.PTm.subst_zero, ConciseIPRA.PTm.subst_succ]
-    exact geom4_step Prf.hyp0
-
 /-- `3 ∑_{i<K} 4^i + 1 = 4^K`. -/
 theorem geom4 (K x : PTm n) : Γ ⊢[PRAAx] (two + one) * ap2 (sumF p4B) K x + one ≐ pw four K := by
-  have h := inst (Γ := Γ) g4₀ (![K, x] : Fin 2 → PTm n)
-  simpa using h
+  refine GeometricSum.sum_eq_pow p4B K x (by ipra_ring) (.allI (.impI ?_))
+  rw [inst2_p4]
+  simp [Syn.shift]
+  exact .eqRefl _
 
 /-! ## Domination below -/
 

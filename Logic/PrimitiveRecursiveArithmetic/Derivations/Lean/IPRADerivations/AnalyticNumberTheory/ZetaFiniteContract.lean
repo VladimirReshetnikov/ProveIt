@@ -93,26 +93,9 @@ ipra_subst geo8Inv [subst_ap2]
 
 /-- `7 Σ_{j<J} 8^j + 1 = 8^J`. -/
 theorem geo8 (J x : PTm n) : Γ ⊢[PRAAx] num 7 * ap2 (sumF g8B) J x + one ≐ pw (num 8) J := by
-  have hall : Γ ⊢[PRAAx] Fm.all (geo8Inv (var 0) (Syn.shift x)) := by
-    refine PRA.qfInd _ trivial ?_ ?_
-    · rw [subst_geo8Inv]
-      simp only [Syn.subst_var, Syn.inst_zero, Syn.subst_inst_shift]
-      have a := natEq (sum_zero (Γ := Γ) g8B x)
-      show Γ ⊢[PRAAx] num 7 * ap2 (sumF g8B) zero x + one ≐ pw (num 8) zero
-      ipra_lc 7 * a - natEq (pw_zero (num 8 : PTm n))
-    · rw [subst_geo8Inv]
-      simp only [Syn.subst_var, Syn.repl_zero, subst_repl_shift]
-      let Δ : List (Fm PTm (n + 1)) := geo8Inv (var 0) (Syn.shift x) :: Γ.map Fm.shift
-      have e1 := natEq (sum_succ' (Γ := Δ) g8B (var 0) (Syn.shift x))
-      rw [show inst2 g8B (var 0 : PTm (n + 1)) (Syn.shift x) = pw (num 8) (var 0) by simp [inst2]] at e1
-      show Δ ⊢[PRAAx] num 7 * ap2 (sumF g8B) (succ (var 0)) (Syn.shift x) + one ≐ pw (num 8) (succ (var 0))
-      ipra_lc 8 * natEq (Prf.hyp0 : Δ ⊢[PRAAx] num 7 * ap2 (sumF g8B) (var 0) (Syn.shift x) + one ≐ pw (num 8) (var 0)) +
-        7 * e1 - natEq (pw_succ (num 8 : PTm (n + 1)) (var 0)) -
-        7 * natEq (Prf.hyp0 : Δ ⊢[PRAAx] num 7 * ap2 (sumF g8B) (var 0) (Syn.shift x) + one ≐ pw (num 8) (var 0))
-  have a := Prf.allE J hall
-  rw [subst_geo8Inv] at a
-  simp only [Syn.subst_inst_shift] at a
-  exact a
+  refine GeometricSum.sum_eq_pow g8B J x (by ipra_ring) (.allI (.impI ?_))
+  simp [inst2, Syn.shift]
+  exact .eqRefl _
 
 /-- `4 Σ_{j<J} 8^j ≤ 8^J`: a geometric sum of ratio `1/8` is at most twice its largest term. -/
 theorem geo8_tail (J x : PTm n) : Γ ⊢[PRAAx] le (num 4 * ap2 (sumF g8B) J x) (pw (num 8) J) := by
