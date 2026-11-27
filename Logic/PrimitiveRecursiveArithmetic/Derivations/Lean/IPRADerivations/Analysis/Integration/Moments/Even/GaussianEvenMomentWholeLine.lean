@@ -81,24 +81,10 @@ theorem sample_at (p N c d : PTm n) : Γ ⊢[PRAAx] ap2 nameF p (data N c d) ≐
   rw [bodyAt left,bodyAt right] at h
   exact e.eqTrans h
 
-private theorem cutoff_later (p N c d : PTm n) : Γ ⊢[PRAAx] le p (GaussianEvenMomentIntegral.cutoff p N c d) := by
-  unfold GaussianEvenMomentIntegral.cutoff GaussianEulerQuadraticImproperSchedule.index
-    GaussianEulerQuadraticImproperSchedule.threshold GaussianEulerQuadraticLowerEndpoint.minimumIndex GaussianFastValueCut.exponent
-  exact le_trans (le_succ_self p) (le_trans (le_add_right _ _) (le_trans (le_add_right _ _) (le_add_right _ _)))
-
 theorem endpoints_cofinal (p N c d : PTm n) (hd : Γ ⊢[PRAAx] le one d) : Γ ⊢[PRAAx]
-    le (unit p) (lowerDenominator p N c d) ⋏ le p (upperEndpoint p N c d) := by
-  let j := GaussianEvenMomentIntegral.cutoff p N c d
-  let H := height j two (radius N)
-  have hj : Γ ⊢[PRAAx] le j H := by
-    unfold H height
-    exact le_trans (le_add_right _ _) (le_trans (le_add_right _ _) (le_add_right _ _))
-  have hH : Γ ⊢[PRAAx] le H (two*H) := le_congr (one_mul H) (.eqRefl _)
-    (mul_le_mul_right H (zero_lt_succ one))
-  have hT : Γ ⊢[PRAAx] le (two*H) (upperEndpoint p N c d) :=
-    le_congr (one_mul _) (.eqRefl _) (mul_le_mul_right (two*H) hd)
-  have h := le_trans (cutoff_later p N c d) (le_trans hj hH)
-  exact .andI (dyadic_monotone _ _ h) (le_trans h hT)
+    le (unit p) (lowerDenominator p N c d) ⋏ le p (upperEndpoint p N c d) :=
+  GaussianEulerQuadraticImproperSchedule.endpoints_cofinal p (GaussianEvenMomentIntegral.cutoff p N c d) two (radius N) d
+    (GaussianEulerQuadraticImproperSchedule.index_later p two _ c d) (zero_lt_succ one) hd
 
 theorem finite_sample_error (p N c d : PTm n) (hc : Γ ⊢[PRAAx] le one c) (hd : Γ ⊢[PRAAx] le one d) : Γ ⊢[PRAAx]
     distanceBounded (finiteSample p N c d)

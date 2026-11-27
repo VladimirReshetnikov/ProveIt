@@ -18,7 +18,7 @@ open_ipra
 open GaussianOddMomentIntegrand (argument radius)
 open GaussianOddMomentSignedGrid (evaluatorF symmetricGrid)
 open GaussianOddSymmetricQuadrature (fixedData)
-open GaussianGammaIntegralCutoffs (etaDen height)
+open GaussianGammaIntegralCutoffs (etaDen)
 open GaussianEulerQuadraticUpperEndpoint (preimage)
 open GaussianEulerQuadraticCutoffGeometry (width)
 open GaussianCompactRiemannName (precision mesh dyadic_monotone quadrature)
@@ -52,26 +52,10 @@ def sample (p N c d : PTm n) : PTm n := symmetricGrid (query (clock p) N c d) (c
 theorem signed_sample_exact_zero (p N c d : PTm n) : Γ ⊢[PRAAx] sample p N c d ≐ qzero :=
   GaussianOddMomentSignedGrid.symmetric_grid_zero _ _ _ _ _ _
 
-private theorem cutoff_later (p N c d : PTm n) : Γ ⊢[PRAAx] le p (cutoff p N c d) := by
-  unfold cutoff GaussianEulerQuadraticImproperSchedule.index
-    GaussianEulerQuadraticImproperSchedule.threshold GaussianEulerQuadraticLowerEndpoint.minimumIndex GaussianFastValueCut.exponent
-  exact le_trans (le_succ_self p) (le_trans (le_add_right _ _) (le_trans (le_add_right _ _) (le_add_right _ _)))
-
 theorem endpoints_cofinal (p N c d : PTm n) (hd : Γ ⊢[PRAAx] le one d) : Γ ⊢[PRAAx]
-    le (unit p) (lowerDenominator p N c d) ⋏ le p (upperEndpoint p N c d) := by
-  let j := cutoff p N c d
-  let H := height j one (radius N)
-  have hj : Γ ⊢[PRAAx] le j H := by
-    unfold H height
-    exact le_trans (le_add_right _ _) (le_trans (le_add_right _ _) (le_add_right _ _))
-  have hH : Γ ⊢[PRAAx] le H (two*H) := le_congr (one_mul H) (.eqRefl _)
-    (mul_le_mul_right H (zero_lt_succ one))
-  have hT : Γ ⊢[PRAAx] le (two*H) (upperEndpoint p N c d) :=
-    le_congr (one_mul _) (.eqRefl _) (mul_le_mul_right (two*H) hd)
-  have h := le_trans (cutoff_later p N c d) (le_trans hj hH)
-  exact .andI (dyadic_monotone _ _ (le_congr (.eqRefl _) (one_mul H).eqSymm
-    (le_trans (cutoff_later p N c d) hj))) (le_trans h hT)
-
+    le (unit p) (lowerDenominator p N c d) ⋏ le p (upperEndpoint p N c d) :=
+  GaussianEulerQuadraticImproperSchedule.endpoints_cofinal p (cutoff p N c d) one (radius N) d
+    (GaussianEulerQuadraticImproperSchedule.index_later p one _ c d) (le_refl one) hd
 
 theorem original_quadrature (p N c d : PTm n) : Γ ⊢[PRAAx]
     ap2 halfF p (halfData N c d) ≐ quadrature GaussianEulerQuadraticKernelCompactName.evaluatorF (query p N c d)
