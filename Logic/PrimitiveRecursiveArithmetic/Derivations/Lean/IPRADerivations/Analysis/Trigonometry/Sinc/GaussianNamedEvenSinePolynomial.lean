@@ -19,7 +19,7 @@ open_ipra
 open GaussianApproximateInverseDistance (multiply_distance)
 open GaussianArctangentDivisionAngles (modulus)
 open GaussianBoundedIntegerExponentialStages (scaledF stageData radius)
-open GaussianCoefficientNameBounds (unit unit_positive bounded_radius_mono)
+open GaussianCoefficientNameBounds (unit unit_positive bounded_radius_mono_one)
 open GaussianExponentialInverseSamples (positive negative exact_pair disk inverseDisk positive_bound negative_bound)
 open GaussianGammaCanonicalExponent (constantF constant_at constant_regular)
 open GaussianNameArithmetic (multiplyF multiplyData multiplyModulus multiply_fast)
@@ -64,8 +64,7 @@ ipra_subst scaledPolynomialData
 
 theorem original_sine_bound (f : PR 2) (p R x : PTm n) (hf : Γ ⊢[PRAAx] input f R x) :
     Γ ⊢[PRAAx] bounded (ap2 (sineF f) p (sineData f R x)) (sineDisk f R x) one :=
-  bounded_radius_mono _ _ _ _ _ (le_refl one) (le_refl one) (le_mul_mono (le_add_right _ _) (le_refl one))
-    (GaussianNameBounds.sample_bound _ _ _ (sine_regular f R x hf))
+  bounded_radius_mono_one (le_add_right _ _) (GaussianNameBounds.sample_bound _ _ _ (sine_regular f R x hf))
 
 theorem original_sine_bounds (f : PR 2) (R x : PTm n) (hf : Γ ⊢[PRAAx] input f R x) :
     Γ ⊢[PRAAx] GaussianSineNormalizedSampleName.bound (sineF f) (sineDisk f R x) (sineData f R x) := by
@@ -84,7 +83,7 @@ theorem reciprocal_pair_sine_bound (f : PR 2) (p R x : PTm n) (hf : Γ ⊢[PRAAx
   have hs : Γ ⊢[PRAAx] bounded (sineValue (positive f p R x) (negative f p R x)) C one :=
     bound_congr (.eqRefl _) (one_mul C) (one_mul one)
       (bounded_product multiplier _ one one C one (le_refl one) (le_refl one) multiplier_unit_bound hd)
-  exact bounded_radius_mono _ _ _ _ _ (le_refl one) (le_refl one) (le_mul_mono (le_add_left _ _) (le_refl one)) hs
+  exact bounded_radius_mono_one (le_add_left _ _) hs
 
 theorem polynomial_regular (f : PR 2) (J R x z : PTm n) (hf : Γ ⊢[PRAAx] input f R x) :
     Γ ⊢[PRAAx] pointCN (polynomialF f) (polynomialData f J R x z) :=

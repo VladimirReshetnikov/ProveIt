@@ -28,7 +28,7 @@ open GaussianRationalMetric (bounded distanceBounded qsub)
 open GaussianRationalHorner (qadd)
 open GaussianRationalReciprocal (bound_congr bounded_sum)
 open GaussianRationalDistanceOrder (distance_congr distance_symmetric distance_triangle_same norm_from_distance_same)
-open GaussianCoefficientNameBounds (unit unit_positive bounded_radius_mono)
+open GaussianCoefficientNameBounds (unit unit_positive bounded_radius_mono bounded_radius_mono_one)
 open GaussianNameArithmetic (sum_distance)
 open LeanProofs.IPRA.AnalyticNumberTheory.PhiLower (le_mul_mono)
 
@@ -105,8 +105,7 @@ theorem real_rows (p N x : PTm n) :
   have b := doubled_sine_bound P _ _ X H
   have r : Δ ⊢[PRAAx] le twiceSineRadius radius :=
     le_mul_mono (le_refl two) (le_add_right sampleRadius (num 10))
-  have l := bounded_radius_mono _ _ _ _ _ (le_refl one) (le_refl one)
-    (le_congr (by ipra_ring) (by ipra_ring) r) b
+  have l := bounded_radius_mono_one r b
   simpa [rowBoundsAt,Δ,Syn.shift,P,J,X,i,radius,one] using
     bound_congr (sine_at P J X i).eqSymm (.eqRefl _) (.eqRefl _) l
 

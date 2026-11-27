@@ -19,7 +19,7 @@ set_option maxHeartbeats 650000
 namespace LeanProofs.IPRA.Analysis.GaussianNamedLogGammaTaylorFrozen
 
 open_ipra
-open GaussianCoefficientNameBounds (bounded_radius_mono unit unit_positive)
+open GaussianCoefficientNameBounds (bounded_radius_mono_one unit unit_positive)
 open GaussianEuclideanDistanceName (pointCN)
 open GaussianExponentialReference (unit_monotone)
 open GaussianGammaCanonicalExponent (constantF constant_at constant_regular)
@@ -116,10 +116,8 @@ private theorem sampled_step_bound (f g : PR 2) (x y M R k : PTm n)
     Γ ⊢[PRAAx] bounded (qsub (ap2 g k y) (ap2 f k x)) (two*R) one := by
   have hgR : Γ ⊢[PRAAx] le (U g y) R := hg.andE₂
   have hfR : Γ ⊢[PRAAx] le (U f x) R := hf.andE₂
-  have left := bounded_radius_mono _ _ one R one (le_refl one) (le_refl one)
-    (le_congr (by ipra_ring) (by ipra_ring) hgR) (sample_bound g y k hg.andE₁.andE₁)
-  have right := bounded_radius_mono _ _ one R one (le_refl one) (le_refl one)
-    (le_congr (by ipra_ring) (by ipra_ring) hfR) (sample_bound f x k hf.andE₁.andE₁)
+  have left := bounded_radius_mono_one hgR (sample_bound g y k hg.andE₁.andE₁)
+  have right := bounded_radius_mono_one hfR (sample_bound f x k hf.andE₁.andE₁)
   exact GaussianRationalReciprocal.bound_congr (.eqRefl _) (by ipra_ring) (by ipra_ring)
     (GaussianRationalReciprocal.bounded_difference _ _ _ _ _ _ (le_refl one) (le_refl one) left right)
 

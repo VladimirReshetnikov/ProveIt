@@ -76,8 +76,7 @@ theorem disk_positive (U V : PTm n) : Γ ⊢[PRAAx] le one (disk U V) :=
 theorem widen_point (f : PR 2) (U W y m : PTm n)
     (h : Γ ⊢[PRAAx] pointBounds f U y) (hUW : Γ ⊢[PRAAx] le U W) : Γ ⊢[PRAAx]
     bounded (ap2 f m y) W one :=
-  GaussianCoefficientNameBounds.bounded_radius_mono _ _ _ _ _ (le_refl _) (le_refl _)
-    (le_congr (by ipra_ring) (by ipra_ring) hUW)
+  GaussianCoefficientNameBounds.bounded_radius_mono_one hUW
     (GaussianRootApproximationWitness.point_at f U y m h)
 
 theorem sample_errors (a b : PR 3) (N x w m : PTm n)

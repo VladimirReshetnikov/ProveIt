@@ -19,7 +19,7 @@ open_ipra
 open ComplexLogarithmRemainder (code scale eval_re_code eval_im_code)
 open GaussianArctangentCayleyValues (imaginaryCode imaginaryPoint)
 open GaussianArctangentQuarterExponential (quarterF radius quarter_input quarter_cross boundedArguments finiteEstimate original_bounded_arguments)
-open GaussianCoefficientNameBounds (unit unit_positive bounded_radius_mono)
+open GaussianCoefficientNameBounds (unit unit_positive bounded_radius_mono_one)
 open GaussianEuclideanDistanceName (pointCN)
 open GaussianExponentialAddition (exponential_add_cross)
 open GaussianExponentialReference (add_input add_sample finite_reference recode_fixed)
@@ -189,9 +189,7 @@ theorem enlarge_input (f : PR 2) (R S x : PTm n) (h : Γ ⊢[PRAAx] input f R x)
     simpa only [Fm.shift,GaussianRadiusExponentialName.subst_boundedSamples,Syn.shift] using h.andE₂.shift
   have hRS' : Γ.map Fm.shift ⊢[PRAAx] le (Syn.shift R) (Syn.shift S) := by
     simpa [Fm.shift,Syn.shift] using hRS.shift
-  exact bounded_radius_mono _ _ _ _ _ (le_refl one) (le_refl one)
-    (le_congr (by ipra_ring) (by ipra_ring) hRS')
-    (bounded_samples_at _ _ _ (var 0) hs)
+  exact bounded_radius_mono_one hRS' (bounded_samples_at _ _ _ (var 0) hs)
 
 /-- Compare the two original clocks through a common later finite sum. -/
 theorem same_exp_different_radius_at (f : PR 2) (R S x p : PTm n)

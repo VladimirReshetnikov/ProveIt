@@ -19,7 +19,7 @@ namespace LeanProofs.IPRA.Analysis.GaussianNamedSineMultipleAngle
 open_ipra
 open GaussianBoundedIntegerExponentialSample (stage_input)
 open GaussianBoundedIntegerExponentialStages (scaledF stageData radius)
-open GaussianCoefficientNameBounds (unit unit_positive bounded_radius_mono)
+open GaussianCoefficientNameBounds (unit unit_positive bounded_radius_mono_one)
 open GaussianEuclideanDistanceName (pointCN)
 open GaussianExponentialInverse (negative_input)
 open GaussianExponentialInverseSamples (positive negative disk inverseDisk positive_bound negative_bound positive_sample negative_sample baseNegativeRadius)
@@ -82,14 +82,11 @@ theorem trace_sample (f : PR 2) (p R x : PTm n) (h : Γ ⊢[PRAAx] input f R x) 
 
 private theorem trace_actual_bound (f : PR 2) (p R x : PTm n) (h : Γ ⊢[PRAAx] input f R x) :
     Γ ⊢[PRAAx] bounded (ap2 (traceF f) p (traceData R x)) (traceDisk f R x) one :=
-  bounded_radius_mono _ _ _ _ _ (le_refl one) (le_refl one)
-    (LeanProofs.IPRA.AnalyticNumberTheory.PhiLower.le_mul_mono (le_add_right _ _) (le_refl one))
-    (GaussianNameBounds.sample_bound _ _ _ (trace_regular f R x h))
+  bounded_radius_mono_one (le_add_right _ _) (GaussianNameBounds.sample_bound _ _ _ (trace_regular f R x h))
 
 private theorem trace_pair_bound (f : PR 2) (p R x : PTm n) (h : Γ ⊢[PRAAx] input f R x) :
     Γ ⊢[PRAAx] bounded (qadd (positive f p R x) (negative f p R x)) (traceDisk f R x) one :=
-  bounded_radius_mono _ _ _ _ _ (le_refl one) (le_refl one)
-    (LeanProofs.IPRA.AnalyticNumberTheory.PhiLower.le_mul_mono (le_add_left _ _) (le_refl one))
+  bounded_radius_mono_one (le_add_left _ _)
     (bounded_sum_same _ _ _ _ _ (le_refl one) (positive_bound f p R x h) (negative_bound f p R x h))
 
 def recurrenceRadius (f : PR 2) (k R x : PTm n) : PTm n :=

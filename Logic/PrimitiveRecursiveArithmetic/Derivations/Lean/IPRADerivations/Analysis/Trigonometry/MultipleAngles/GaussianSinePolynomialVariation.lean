@@ -17,7 +17,7 @@ namespace LeanProofs.IPRA.Analysis.GaussianSinePolynomialVariation
 
 open_ipra
 open ComplexLogarithmRemainder (normSq)
-open GaussianCoefficientNameBounds (bounded_radius_mono)
+open GaussianCoefficientNameBounds (bounded_radius_mono_one)
 open GaussianEuclideanResidualRadius (coefficientBounds)
 open GaussianRationalHorner (qmul)
 open GaussianRationalL1 (rawGaussian rawDen raw_represents raw_den_positive)
@@ -65,7 +65,7 @@ theorem coefficients_bound (C : PTm n) : Γ ⊢[PRAAx] coefficientBounds C (coef
     simpa [boundBody,LeanProofs.IPRA.inst2,coefficientBound,pointBound] using
       term_le_sum boundBody (i := j) (M := length X) (x := X) (Prf.hyp0 : Δ ⊢[PRAAx] lt j (length X))
   have h : Δ ⊢[PRAAx] bounded (entry X j) (coefficientBound X) one :=
-    bounded_radius_mono _ _ _ _ _ (le_refl _) (le_refl _) (mul_le_mul_right _ term) (point_bound _)
+    bounded_radius_mono_one term (point_bound _)
   simpa [coefficientBounds,Δ,Syn.shift,X,j] using h
 
 theorem trace_distance (s t B H K : PTm n) (hk : Γ ⊢[PRAAx] le one K)

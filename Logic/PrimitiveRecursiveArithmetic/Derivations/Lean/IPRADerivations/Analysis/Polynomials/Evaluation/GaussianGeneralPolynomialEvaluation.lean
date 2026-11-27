@@ -100,9 +100,7 @@ theorem sample_coefficients (a : PR 3) (N s x : PTm n)
   have bound := GaussianGeneralPolynomialSamples.sample_coefficient_bound a (Syn.shift N) (Syn.shift s)
     (Syn.shift x) (var 0) cn.wk inside
   change _ ⊢[PRAAx] bounded _ (PTm.monus (A a (Syn.shift N) (Syn.shift x)) one) one at bound
-  have bigger := GaussianCoefficientNameBounds.bounded_radius_mono _ _ one (A a (Syn.shift N) (Syn.shift x)) one
-    (le_refl _) (le_refl _) (le_congr (by ipra_ring) (by ipra_ring)
-      (GaussianMonicResidualRadius.monus_le_left (A a (Syn.shift N) (Syn.shift x)) one)) bound
+  have bigger := GaussianCoefficientNameBounds.bounded_radius_mono_one (GaussianMonicResidualRadius.monus_le_left (A a (Syn.shift N) (Syn.shift x)) one) bound
   simpa only [Syn.shift,GaussianGeneralPolynomialSamples.subst_sample,subst_A] using bigger
 
 /-- Split at P_t(z_s): coefficient variation and point variation have the same denominator. -/

@@ -20,7 +20,7 @@ open GaussianRationalHorner (qzero qmul)
 open GaussianRationalMetric (bounded distanceBounded qsub)
 open GaussianRationalReciprocal (qone qone_bounded bound_congr bounded_product bounded_difference)
 open GaussianRationalDistanceOrder (distance_congr distance_radius_mono)
-open GaussianCoefficientNameBounds (bounded_radius_mono)
+open GaussianCoefficientNameBounds (bounded_radius_mono bounded_radius_mono_one)
 open GaussianRationalPowerDifference (distance_refl_zero)
 open GaussianNameArithmetic (product_distance)
 open GaussianNamedDifference (difference_distance)
@@ -71,8 +71,7 @@ private theorem step (S T M A B k : PTm n) (hB : Γ ⊢[PRAAx] le one B)
       (hprev : Γ ⊢[PRAAx] bounded (previous U k) W one)
       (hval : Γ ⊢[PRAAx] bounded (value U k) W one) :
       Γ ⊢[PRAAx] bounded (previous U (succ k)) X one ⋏ bounded (value U (succ k)) X one := by
-    have first := bounded_radius_mono _ _ _ _ _ (le_refl one) (le_refl one)
-      (le_mul_mono grow (le_refl one)) hval
+    have first := bounded_radius_mono_one grow hval
     have product := bound_congr (.eqRefl _) (.eqRefl _) (one_mul one)
       (bounded_product _ _ _ _ _ _ (le_refl one) (le_refl one) hu hval)
     have next : Γ ⊢[PRAAx] bounded (value U (succ k)) (M*W+W) one :=

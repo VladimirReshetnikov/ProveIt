@@ -55,8 +55,7 @@ theorem query_bound (d H s : PTm n) (hH : Γ ⊢[PRAAx] le one H) (hs : Γ ⊢[P
     bound_congr (.eqRefl _) (by ipra_ring) (by ipra_ring)
       (GaussianRationalReciprocal.bounded_product _ _ _ _ _ _ hH (le_refl one)
         (GaussianDominantPairAlgebra.radius_bounded one H hH) (GaussianDominantPairAlgebra.radius_bounded s one (le_refl one)))
-  exact GaussianCoefficientNameBounds.bounded_radius_mono _ _ _ _ _ hH hH
-    (mul_le_mul_right H hs) point
+  exact GaussianCoefficientNameBounds.bounded_radius_mono_same hH hs point
 
 theorem values_at (C D d H A B s : PTm n) (h : Γ ⊢[PRAAx] valuesClose C D d H A B)
     (hs : Γ ⊢[PRAAx] le s d) : Γ ⊢[PRAAx]

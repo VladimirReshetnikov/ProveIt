@@ -29,7 +29,7 @@ open GaussianRationalSquareGrid (grid nearest nearestIndex)
 open GaussianRationalReciprocal (bound_congr)
 open GaussianRationalDistanceOrder (distance_radius_mono distance_symmetric)
 open GaussianDominantSyntax (four)
-open GaussianCoefficientNameBounds (bounded_radius_mono)
+open GaussianCoefficientNameBounds (bounded_radius_mono bounded_radius_mono_one)
 open LeanProofs.IPRA.Foundations.MasterCertificate (entry)
 open LeanProofs.IPRA.Foundations.SequenceComposition (length)
 
@@ -223,8 +223,7 @@ theorem lower_at (C N A i : PTm n) (h : Γ ⊢[PRAAx] lowerBounds C N A) (hi : �
 theorem coefficient_of_lower (C N A i : PTm n) (hA : Γ ⊢[PRAAx] le one A)
     (hLen : Γ ⊢[PRAAx] length C ≐ succ N) (hMonic : Γ ⊢[PRAAx] entry C zero ≐ qone)
     (hLower : Γ ⊢[PRAAx] lowerBounds C N A) (hi : Γ ⊢[PRAAx] lt i (length C)) : Γ ⊢[PRAAx] bounded (entry C i) A one := by
-  have oneBound : Γ ⊢[PRAAx] bounded qone A one := bounded_radius_mono _ _ _ _ _ (le_refl one) (le_refl one)
-    (le_congr (by ipra_ring) (by ipra_ring) hA) GaussianRationalReciprocal.qone_bounded
+  have oneBound : Γ ⊢[PRAAx] bounded qone A one := bounded_radius_mono_one hA GaussianRationalReciprocal.qone_bounded
   refine .orE (zero_or_succ i) ?_ ?_
   · have value : (i ≐ zero)::Γ ⊢[PRAAx] entry C i ≐ qone :=
       (Foundations.SequenceComposition.entry_congr (.eqRefl _) Prf.hyp0).eqTrans hMonic.wk

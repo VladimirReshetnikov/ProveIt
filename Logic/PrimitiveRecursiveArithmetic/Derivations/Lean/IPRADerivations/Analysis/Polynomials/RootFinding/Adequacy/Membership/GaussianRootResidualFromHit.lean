@@ -19,7 +19,7 @@ set_option linter.unusedSimpArgs false
 namespace LeanProofs.IPRA.Analysis.GaussianRootResidualFromHit
 
 open_ipra
-open LeanProofs.IPRA.Analysis.GaussianCoefficientNameBounds (CN A R unit unit_positive bounded_radius_mono)
+open LeanProofs.IPRA.Analysis.GaussianCoefficientNameBounds (CN A R unit unit_positive bounded_radius_mono_one)
 open LeanProofs.IPRA.Analysis.GaussianFactorParameters (monicRD)
 open LeanProofs.IPRA.Analysis.GaussianRootRadius (roots product)
 open LeanProofs.IPRA.Analysis.GaussianRationalHorner (evaluate)
@@ -55,15 +55,13 @@ theorem sample_coefficient_bound (a : PR 3) (N s x i : PTm n)
       (entry_congr (.eqRefl _) Prf.hyp0).eqTrans (GaussianRootSamples.sample_leading a N s x)
     have oneBound : ((i ≐ zero) :: Γ) ⊢[PRAAx]
         bounded GaussianRationalSyntheticDivision.qone (A a N x) one :=
-      bounded_radius_mono _ one one (A a N x) one (le_refl _) (le_refl _)
-        (le_congr (by ipra_ring) (by ipra_ring) (GaussianRootRadius.A_positive a N x)) GaussianRationalReciprocal.qone_bounded
+      bounded_radius_mono_one (GaussianRootRadius.A_positive a N x) GaussianRationalReciprocal.qone_bounded
     exact bound_congr leading.eqSymm (.eqRefl _) (.eqRefl _) oneBound
   · have inside : ((i ≐ succ (PTm.pred i)) :: Γ) ⊢[PRAAx] lt (PTm.pred i) N :=
       le_congr Prf.hyp0 (.eqRefl _) hi.wk
     have original := GaussianCoefficientNameBounds.sample_bound a N x (PTm.monus N (succ (PTm.pred i))) s hCN.wk
       (GaussianApproximateFactorization.remaining_active N (PTm.pred i) inside)
-    have bigger := bounded_radius_mono _ (PTm.monus (A a N x) one) one (A a N x) one (le_refl _) (le_refl _)
-      (le_congr (by ipra_ring) (by ipra_ring) (GaussianMonicResidualRadius.monus_le_left (A a N x) one)) original
+    have bigger := bounded_radius_mono_one (GaussianMonicResidualRadius.monus_le_left (A a N x) one) original
     exact bound_congr ((entry_congr (.eqRefl _) Prf.hyp0).eqTrans
       (GaussianRootSamples.sample_coefficient a N s x (PTm.pred i) inside)).eqSymm (.eqRefl _) (.eqRefl _) bigger
 
@@ -109,8 +107,7 @@ theorem point_residual_bound (step a : PR 3) (N U t s x z p q i : PTm n)
     bounded (evaluate (GaussianRootSamples.sample a N s x) z)
       (numerator a N U t s x p q) (denominator a N t s x q) := by
   have rootBound := GaussianRootRadius.root_radius step a N t x i hRD hCN hN hi
-  have rootAtU := bounded_radius_mono _ (R a N x) one U one (le_refl _) (le_refl _)
-    (le_congr (by ipra_ring) (by ipra_ring) hRU) rootBound
+  have rootAtU := bounded_radius_mono_one hRU rootBound
   have variation := GaussianRationalHornerLipschitz.evaluation_bound (GaussianRootSamples.sample a N s x) z
     (entry (roots step a N t x) i) N U (A a N x) p q
     (GaussianRootSamples.sample_length a N s x) (sample_coefficients a N s x hCN) hz rootAtU hq hHit

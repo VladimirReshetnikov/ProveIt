@@ -90,8 +90,7 @@ theorem product_coefficient_bound (step a : PR 3) (N t x i : PTm n)
   · have head : ((i ≐ zero) :: Γ) ⊢[PRAAx] entry (product step a N t x) i ≐ qone :=
       (entry_congr (.eqRefl _) Prf.hyp0).eqTrans (product_leading step a N t x)
     exact GaussianRationalReciprocal.bound_congr head.eqSymm (.eqRefl _) (.eqRefl _)
-      (GaussianCoefficientNameBounds.bounded_radius_mono _ one one _ one (le_refl _) (le_refl _)
-        (le_congr (by ipra_ring) (by ipra_ring) (A_positive a N x)) GaussianRationalReciprocal.qone_bounded)
+      (GaussianCoefficientNameBounds.bounded_radius_mono_one (A_positive a N x) GaussianRationalReciprocal.qone_bounded)
   · have index : ((i ≐ succ (PTm.pred i)) :: Γ) ⊢[PRAAx] lt (PTm.pred i) N := le_congr Prf.hyp0 (.eqRefl _) hi.wk
     exact GaussianRationalReciprocal.bound_congr (entry_congr (.eqRefl _) Prf.hyp0.eqSymm) (.eqRefl _) (.eqRefl _)
       (product_lower_coefficient_bound step a N t x (PTm.pred i) hRD.wk hCN.wk hN.wk index)

@@ -16,7 +16,7 @@ set_option linter.unusedSimpArgs false
 namespace LeanProofs.IPRA.Analysis.GaussianNamedFiniteProductName
 
 open_ipra
-open GaussianCoefficientNameBounds (unit unit_positive bounded_radius_mono)
+open GaussianCoefficientNameBounds (unit unit_positive bounded_radius_mono_one)
 open GaussianEuclideanDistanceName (pointCN)
 open GaussianNameEquivalence (crossEquivalent)
 open GaussianNamedFiniteProduct (sample radius amplification rowBoundsAt rowDistance sample_canonical
@@ -89,7 +89,7 @@ theorem row_bounds_mono (f : PR 3) (K N R S x : PTm n) (h : Γ ⊢[PRAAx] rowBou
   have short := Order.shift_le (Order.shift_le hK)
   have wider := Order.shift_le (Order.shift_le hR)
   have b := Prf.impE h.allOpen.allOpen.wk (lt_of_lt_of_le Prf.hyp0 short.wk)
-  exact bounded_radius_mono _ _ _ _ _ (le_refl one) (le_refl one) (mul_le_mul_right one wider.wk) b
+  exact bounded_radius_mono_one wider.wk b
 
 /-- The row observation rate also holds for every shorter prefix. -/
 theorem row_regular_restrict (f : PR 3) (K N L x : PTm n) (h : Γ ⊢[PRAAx] rowRegular f N L x)

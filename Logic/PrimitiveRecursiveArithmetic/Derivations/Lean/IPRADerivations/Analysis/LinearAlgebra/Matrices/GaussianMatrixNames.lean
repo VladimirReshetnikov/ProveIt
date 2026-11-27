@@ -107,8 +107,7 @@ theorem entry_bound (a : PR 4) (N x r j s : PTm n) (h : Γ ⊢[PRAAx] CN a N x)
   have disk := GaussianRationalReciprocal.bound_congr (row_reader_at a r j s x) (.eqRefl _) (.eqRefl _) small
   have radius : Γ ⊢[PRAAx] le (PTm.monus A one) (B a N x) :=
     le_trans (GaussianMonicResidualRadius.monus_le_left A one) (row_bound_le_B a N x r hr)
-  exact GaussianCoefficientNameBounds.bounded_radius_mono _ _ _ _ _ (le_refl one) (le_refl one)
-    (le_congr (by ipra_ring) (by ipra_ring) radius) disk
+  exact GaussianCoefficientNameBounds.bounded_radius_mono_one radius disk
 
 theorem sample_row_bounds (a : PR 4) (N s x r : PTm n) (h : Γ ⊢[PRAAx] CN a N x) (hr : Γ ⊢[PRAAx] lt r N) :
     Γ ⊢[PRAAx] rowBounds (sample a N s x) N (B a N x) r := by

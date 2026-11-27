@@ -91,10 +91,8 @@ private theorem observation (f g : PR 2) (V x y p : PTm n)
     .andI (GaussianRationalHorner.qadd_canonical _ _) (RationalGaussianEmbedding.axis_add _ _ br.andE₂ sReal)
   have ab := GaussianRadiusExponentialName.bounded_samples_at f V x t hf.andE₂
   have bb := GaussianRadiusExponentialName.bounded_samples_at g V y t hg.andE₂
-  have arB := GaussianCoefficientNameBounds.bounded_radius_mono _ _ _ _ _ (le_refl one) (le_refl one)
-    (le_congr (by ipra_ring) (by ipra_ring) hr) ab
-  have brB := GaussianCoefficientNameBounds.bounded_radius_mono _ _ _ _ _ (le_refl one) (le_refl one)
-    (le_congr (by ipra_ring) (by ipra_ring) hr) bb
+  have arB := GaussianCoefficientNameBounds.bounded_radius_mono_one hr ab
+  have brB := GaussianCoefficientNameBounds.bounded_radius_mono_one hr bb
   have sb := fraction_bound two W hw
   have sbFixed := GaussianCoefficientNameBounds.bounded_radius_mono _ two W two one hw (le_refl one)
     (le_congr (by ipra_ring) (by ipra_ring) (mul_le_mul_right two hw)) sb
