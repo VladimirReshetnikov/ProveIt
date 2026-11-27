@@ -56,12 +56,9 @@ theorem tail_split (m N r s : PTm n) : Γ ⊢[PRAAx]
     tail m N (r+s) ≐ add (tail m N r) (tail m (N+r) s) := by
   have hall : Γ ⊢[PRAAx] .all (tail (Syn.shift m) (Syn.shift N) (Syn.shift r+var 0) ≐
       add (tail (Syn.shift m) (Syn.shift N) (Syn.shift r)) (tail (Syn.shift m) (Syn.shift N+Syn.shift r) (var 0))) := by
-    refine PRA.qfInd _ trivial ?_ ?_
-    · simpa only [Fm.subst_eq,RationalReciprocalPowerTail.subst_tail,RationalArithmetic.subst_add,PTm.subst_add,
-        Syn.subst_var,Syn.inst_zero,Syn.subst_inst_shift] using split_zero (Γ := Γ) m N r
-    · simp only [Fm.subst_eq,RationalReciprocalPowerTail.subst_tail,RationalArithmetic.subst_add,PTm.subst_add,
-        Syn.subst_var,Syn.repl_zero,subst_repl_shift]
-      exact split_succ (Syn.shift m) (Syn.shift N) (Syn.shift r) (var 0) Prf.hyp0
+    ipra_qfind [RationalReciprocalPowerTail.subst_tail, RationalArithmetic.subst_add]
+    · exact split_zero (Γ := Γ) m N r
+    · exact split_succ (Syn.shift m) (Syn.shift N) (Syn.shift r) (var 0) Prf.hyp0
   simpa only [Fm.subst_eq,RationalReciprocalPowerTail.subst_tail,RationalArithmetic.subst_add,PTm.subst_add,
     Syn.subst_var,Syn.inst_zero,Syn.subst_inst_shift] using hall.allE s
 
