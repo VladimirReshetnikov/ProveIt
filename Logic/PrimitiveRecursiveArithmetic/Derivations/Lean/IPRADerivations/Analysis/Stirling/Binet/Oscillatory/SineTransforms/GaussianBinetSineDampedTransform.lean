@@ -135,9 +135,8 @@ theorem finite_error (p X Y D sign A B R U K L N : PTm n)
   have inverse : Γ ⊢[PRAAx] bounded (reciprocal c) B one :=
     bounded_radius_mono _ _ _ _ _ hA (le_refl one) raw (inverse_bound _ _ _ hA hB low)
   have cancelled : Γ ⊢[PRAAx] qmul (reciprocal c) (qmul c W) ≐ W :=
-    (qmul_associative _ _ _).eqSymm.eqTrans
-      ((qmul_congr ((qmul_commutative _ _).eqTrans ci) (.eqRefl _)).eqTrans
-        ((qmul_commutative _ _).eqTrans (qmul_one_right W (reciprocal_canonical _))))
+    GaussianRationalInverseQuadraticAlgebra.cancel_nested_product (reciprocal c) c W
+      (reciprocal_canonical _) ((qmul_commutative _ _).eqTrans ci)
   exact distance_congr (.eqRefl _) cancelled (.eqRefl _) (.eqRefl _)
     (GaussianApproximateInverseDistance.multiply_distance (reciprocal c) _ _ B E H hH inverse first)
 

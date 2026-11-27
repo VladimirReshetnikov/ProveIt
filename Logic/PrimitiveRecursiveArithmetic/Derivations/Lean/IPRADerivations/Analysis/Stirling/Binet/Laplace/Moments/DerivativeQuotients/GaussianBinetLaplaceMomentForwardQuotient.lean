@@ -78,10 +78,8 @@ private theorem inverse_radius (H Q : PTm n) (hH : Γ ⊢[PRAAx] le one H)
     (GaussianRationalPowerAlgebra.qmul_commutative c w).eqTrans (GaussianEulerWeightedHalfDecay.radius_reciprocal H Q hH hQ)
   exact (qmul_one_right v (GaussianRationalReciprocal.reciprocal_canonical _)).eqSymm.eqTrans
     ((qmul_congr (.eqRefl v) f.eqSymm).eqTrans
-      ((qmul_associative v c w).eqSymm.eqTrans
-        ((qmul_congr e (.eqRefl w)).eqTrans
-          ((GaussianRationalPowerAlgebra.qmul_commutative qone w).eqTrans
-            (qmul_one_right w (GaussianRationalHorner.ofGaussian_canonical _ _ hH))))))
+      (GaussianRationalInverseQuadraticAlgebra.cancel_nested_product v c w
+        (GaussianRationalHorner.ofGaussian_canonical _ _ hH) e))
 
 private theorem sub_translated (x a : PTm n) : Γ ⊢[PRAAx] qsub (qsub x a) x ≐ qnegative a := by
   change Γ ⊢[PRAAx] qadd (qadd x (qnegative a)) (qnegative x) ≐ qnegative a
@@ -101,9 +99,8 @@ private theorem linear_quotient (x z H Q : PTm n)
   let v := inverse (radiusNumerator H) Q
   have e : Γ ⊢[PRAAx] qmul v c ≐ qone :=
     GaussianNamedDifferenceQuotient.actual_inverse _ _ (positive_parameter H Q hH hQ)
-  have cancel : Γ ⊢[PRAAx] qmul v (qmul c z) ≐ z := (qmul_associative v c z).eqSymm.eqTrans
-    ((qmul_congr e (.eqRefl z)).eqTrans
-      ((GaussianRationalPowerAlgebra.qmul_commutative qone z).eqTrans (qmul_one_right z hz)))
+  have cancel : Γ ⊢[PRAAx] qmul v (qmul c z) ≐ z :=
+    GaussianRationalInverseQuadraticAlgebra.cancel_nested_product v c z hz e
   exact (qmul_congr (.eqRefl v) (sub_translated x (qmul c z))).eqTrans
     ((GaussianMomentReflection.negative_right_product v _).eqTrans
       ((normalized_negation _).eqSymm.eqTrans (qsub_congr (.eqRefl qzero) cancel)))

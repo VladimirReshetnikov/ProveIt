@@ -159,8 +159,8 @@ private theorem reverse_power_bound (a b c H K : PTm n)
     (qmul_associative c b a).eqTrans
       ((qmul_congr (.eqRefl _) ((qmul_commutative _ _).eqTrans hab)).eqTrans (qmul_one_right _ cc))
   have right : Γ ⊢[PRAAx] qmul t c ≐ b :=
-    (qmul_commutative t c).eqTrans ((qmul_associative c c b).eqSymm.eqTrans
-      ((qmul_congr hcc (.eqRefl _)).eqTrans ((qmul_commutative _ _).eqTrans (qmul_one_right _ cb))))
+    (qmul_commutative t c).eqTrans
+      (GaussianRationalInverseQuadraticAlgebra.cancel_nested_product c c b cb hcc)
   exact distance_congr left right (.eqRefl _) (.eqRefl _)
     (GaussianRationalRoundedPower.multiply_distance_bound t a c H K hk ht h)
 

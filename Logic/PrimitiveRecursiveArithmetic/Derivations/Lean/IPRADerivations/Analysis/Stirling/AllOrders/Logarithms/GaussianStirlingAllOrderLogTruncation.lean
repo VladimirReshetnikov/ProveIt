@@ -80,11 +80,8 @@ theorem signed_regular (m : ℕ) (A B x : PTm n) (hs : Γ ⊢[PRAAx] source A B)
 
 private theorem initial_readback (R : PTm n) (hR : Γ ⊢[PRAAx] GaussianRationalHorner.canonical R) :
     Γ ⊢[PRAAx] qmul (signedScale 0) (qmul initial R) ≐ qsub R (truncation 0 R R) :=
-  (GaussianReciprocalHorner.qmul_associative _ _ _).eqSymm.eqTrans
-    ((qmul_congr signed_initial_cancel (.eqRefl _)).eqTrans
-      ((GaussianRationalPowerAlgebra.qmul_commutative _ _).eqTrans
-        ((GaussianReciprocalHorner.qmul_one_right R hR).eqTrans
-          (GaussianRationalReconstruction.qsub_zero_right R hR).eqSymm)))
+  (GaussianRationalInverseQuadraticAlgebra.cancel_nested_product (signedScale 0) initial R hR signed_initial_cancel).eqTrans
+    (GaussianRationalReconstruction.qsub_zero_right R hR).eqSymm
 
 private theorem step_error (m : ℕ) (A B p x : PTm n) (hs : Γ ⊢[PRAAx] source A B) : Γ ⊢[PRAAx]
     distanceBounded (ap2 (J (m+1)) p (JData (m+1) A B x))

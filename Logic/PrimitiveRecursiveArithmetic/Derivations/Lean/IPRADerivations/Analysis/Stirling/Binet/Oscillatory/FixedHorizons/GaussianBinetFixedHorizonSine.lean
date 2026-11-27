@@ -79,8 +79,7 @@ theorem reciprocal_value (X Y D sign A B : PTm n) (hz : Γ ⊢[PRAAx] GaussianRi
   have hc : Γ ⊢[PRAAx] qmul k c ≐ GaussianRationalSyntheticDivision.qone :=
     (qmul_commutative _ _).eqTrans (GaussianRationalLowerBounds.reciprocal_identity_of_lower c A B hA hB (coefficient_lower A B hB))
   exact (qmul_associative k (fraction one two) d).eqTrans ((qmul_congr (.eqRefl _) (h₁.eqTrans h₂)).eqTrans
-    ((qmul_associative k c W).eqSymm.eqTrans ((qmul_congr hc (.eqRefl _)).eqTrans
-      ((qmul_commutative _ _).eqTrans (qmul_one_right W (reciprocal_canonical _))))))
+    (GaussianRationalInverseQuadraticAlgebra.cancel_nested_product k c W (reciprocal_canonical _) hc))
 
 theorem finite_error (p X Y D sign A B R U K T L N : PTm n)
     (hz : Γ ⊢[PRAAx] source X Y D sign R) (hA : Γ ⊢[PRAAx] le one A) (hB : Γ ⊢[PRAAx] le one B)

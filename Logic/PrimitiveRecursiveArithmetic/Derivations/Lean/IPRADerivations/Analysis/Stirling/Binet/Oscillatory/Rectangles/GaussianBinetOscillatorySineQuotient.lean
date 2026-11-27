@@ -110,9 +110,8 @@ theorem quotient_error (j p M X Y D sign A B R U L N : PTm n)
   have with_k : Γ ⊢[PRAAx] distanceBounded (qmul k x) (qmul e v) (two*F) H :=
     distance_congr kx.eqSymm (.eqRefl _) (.eqRefl _) (.eqRefl _) scaled
   have first : Γ ⊢[PRAAx] qmul (reciprocal k) (qmul k x) ≐ x :=
-    (qmul_associative _ _ _).eqSymm.eqTrans
-      ((qmul_congr ((qmul_commutative _ _).eqTrans ki) (.eqRefl _)).eqTrans
-        ((qmul_commutative _ _).eqTrans (qmul_one_right x (qmul_canonical _ _))))
+    GaussianRationalInverseQuadraticAlgebra.cancel_nested_product (reciprocal k) k x (qmul_canonical _ _)
+      ((qmul_commutative _ _).eqTrans ki)
   have last : Γ ⊢[PRAAx] qmul (reciprocal k) (qmul e v) ≐ qmul e (qmul (reciprocal k) v) :=
     GaussianRationalPowerAlgebra.commute_nested (reciprocal k) e v
   exact distance_congr first last (.eqRefl _) (.eqRefl _)

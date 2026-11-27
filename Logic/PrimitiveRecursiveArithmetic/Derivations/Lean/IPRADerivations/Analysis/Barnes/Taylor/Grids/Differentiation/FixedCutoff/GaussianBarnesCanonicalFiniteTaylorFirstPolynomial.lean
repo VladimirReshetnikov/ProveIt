@@ -66,9 +66,7 @@ theorem first_quotient (P h B : PTm n) (hLen : Γ ⊢[PRAAx] length P ≐ succ t
       (GaussianRationalSyntheticDivision.qadd_sub_cancel _ _ (GaussianRationalHorner.qmul_canonical _ _))
   have cancel : Γ ⊢[PRAAx] qmul s (qmul a w) ≐ a :=
     (qmul_congr (.eqRefl s) (GaussianRationalPowerAlgebra.qmul_commutative a w)).eqTrans
-      ((qmul_associative s w a).eqSymm.eqTrans
-        ((qmul_congr (actual_inverse h B hs) (.eqRefl a)).eqTrans
-          ((GaussianRationalPowerAlgebra.qmul_commutative _ _).eqTrans (qmul_one_right a (qadd_canonical _ _)))))
+      (GaussianRationalInverseQuadraticAlgebra.cancel_nested_product s w a (qadd_canonical _ _) (actual_inverse h B hs))
   exact (qmul_congr (.eqRefl s) ((qsub_congr ev base).eqTrans sub)).eqTrans cancel
 
 theorem first_row (t q z h R B H r : PTm n)

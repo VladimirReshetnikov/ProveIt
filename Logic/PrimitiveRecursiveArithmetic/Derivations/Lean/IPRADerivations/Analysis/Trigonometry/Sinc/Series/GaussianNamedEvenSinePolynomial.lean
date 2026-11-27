@@ -125,9 +125,8 @@ theorem clear_normalization (A B J : PTm n) (hAB : Γ ⊢[PRAAx] qmul A B ≐ qo
   have hQ : Γ ⊢[PRAAx] canonical Q := GaussianRationalHorner.horner_canonical _ _ _
   have h : Γ ⊢[PRAAx] qmul (naturalPoint (modulus J)) (inverseOdd J) ≐ qone :=
     (qmul_commutative (naturalPoint (modulus J)) (inverseOdd J)).eqTrans (inverse_odd_unit J)
-  exact (qmul_associative (naturalPoint (modulus J)) (inverseOdd J) Q).eqSymm.eqTrans
-    ((qmul_congr h (.eqRefl Q)).eqTrans ((qmul_commutative qone Q).eqTrans
-      ((qmul_one_right Q hQ).eqTrans (evaluation_at_sine A B J hAB))))
+  exact (GaussianRationalInverseQuadraticAlgebra.cancel_nested_product
+    (naturalPoint (modulus J)) (inverseOdd J) Q hQ h).eqTrans (evaluation_at_sine A B J hAB)
 
 def scaledPolynomialRadius (f : PR 2) (J R x z : PTm n) : PTm n :=
   (multiplyModulus constantF (polynomialF f) (naturalPoint (modulus J)) (polynomialData f J R x z)+one)+

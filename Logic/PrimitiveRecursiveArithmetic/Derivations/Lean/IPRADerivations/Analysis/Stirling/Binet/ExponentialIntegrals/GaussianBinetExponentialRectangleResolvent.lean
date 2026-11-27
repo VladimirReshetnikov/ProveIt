@@ -86,9 +86,8 @@ theorem shifted_integral_error (j p X Y D sign R K L N M : PTm n)
   have main := GaussianBinetExponentialIntegral.original_cofinal_error p A B E sign (R+one) T N
     (shifted_source X Y D sign R M j hz hM hj) hN hpN
   have cancel : Γ ⊢[PRAAx] qmul q (qmul (qnegative w) v) ≐ v :=
-    ((qmul_associative _ _ _).eqSymm.eqTrans
-      (qmul_congr ((GaussianScalarColumnSelection.negative_both_product k w).eqTrans bounds.andE₂) (.eqRefl _))).eqTrans
-      ((qmul_commutative _ _).eqTrans (qmul_one_right v (qmul_canonical _ _)))
+    GaussianRationalInverseQuadraticAlgebra.cancel_nested_product q (qnegative w) v (qmul_canonical _ _)
+      ((GaussianScalarColumnSelection.negative_both_product k w).eqTrans bounds.andE₂)
   have first : Γ ⊢[PRAAx] distanceBounded v rhs (K*C) P :=
     distance_congr cancel (.eqRefl _) (.eqRefl _) (.eqRefl _)
       (GaussianApproximateInverseDistance.multiply_distance q _ _ K C P pPos bound main)
