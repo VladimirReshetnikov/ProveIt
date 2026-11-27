@@ -1,0 +1,1586 @@
+\section{Sparse equations for singular moduli}\label{sec:smd}
+% A ragged paragraph listing delivered certificate files (long paths do not hyphenate).
+\providecommand{\smdcert}[1]{\par\smallskip{\small\raggedright\noindent
+  \emph{Certificates:} #1\par}\smallskip}
+
+A \emph{singular modulus} is a value $\alpha=j(\tau)$ of the modular invariant at an
+imaginary quadratic point $\tau$ of the upper half-plane. The corresponding elliptic curve
+has complex multiplication by an imaginary quadratic order; we write $\Delta=-D<0$ for the
+discriminant of that order, $\Delta=f^2d_K$ with $d_K$ the fundamental discriminant of
+$K=\Q(\sqrt\Delta)$ and $f$ the conductor, $h=h(\Delta)$ for the class number of the order,
+and $H_\Delta\in\Z[X]$ for the monic ring class polynomial. The conjugates of $\alpha$ over
+$\Q$ are exactly the $h$ singular moduli of discriminant $\Delta$, one for each primitive
+reduced positive definite form $[a,b,c]$ of discriminant $\Delta$, namely
+$j(\tau)$ with $\tau=(-b+i\sqrt D)/(2a)$; they are the roots of $H_\Delta$ and are
+algebraic integers.
+
+The \emph{support} of a polynomial is its set of nonzero coefficients. Define
+\[
+ s(\Delta)=\min\set{\#\supp P : 0\ne P\in\Q[X],\ P(\alpha)=0}.
+\]
+All conjugates have the same minimum, so $s$ depends only on $\Delta$. Equivalently,
+$s(\Delta)$ is the least number of terms of a nonzero multiple of $H_\Delta$. The degree of
+$P$ and the size of its coefficients are unrestricted, and the class polynomial itself gives
+\begin{equation}\label{smd:eq:trivial}
+ s(\Delta)\le h(\Delta)+1 .
+\end{equation}
+The statement $s(\Delta)>t$ says that \emph{any} $t$ distinct nonnegative powers of
+$\alpha$ are linearly independent over $\Q$.
+
+Riffaut's conjecture asserts that a singular modulus of degree at least three is not a root
+of a trinomial, that is, $s(\Delta)\ge4$ whenever $h(\Delta)\ge3$. Bilu, Luca and
+Pizarro-Madariaga proved it assuming GRH for Dirichlet $L$-functions
+\cite{Bilu2022Trinomials}, a hypothesis which \cref{src:thm:dgrh} supplies. This section
+determines $s(\Delta)$ in every degree up to five and classifies the equations with at most
+five terms without any hypothesis on zeros (\cref{smd:thm:five}); it shows that
+$s(\Delta)$ has the order of magnitude of the class number up to a power of
+$\log D$ when Dirichlet GRH is used (\cref{smd:thm:growth}), with weaker unconditional
+bounds (\cref{smd:thm:uncond,smd:thm:nearfull}); and it exhibits infinite families of orders
+for which the trivial bound \eqref{smd:eq:trivial} is an equality
+(\cref{smd:thm:dyadic,smd:thm:gaussian}).
+
+\subsection{Coefficients in the CM field}
+{\raggedright\sources{grh_cm_prime_applications; grh_cm_four_terms_and_prime_bias; grh_sparse_singular_moduli}}
+
+\begin{proposition}[Coefficients in the CM field]\label[proposition]{smd:prop:cmfield}
+Let $\alpha$ be a singular modulus of discriminant $\Delta$ and $K=\Q(\sqrt\Delta)$. The
+minimum support size of a nonzero polynomial vanishing at $\alpha$ is exactly $s(\Delta)$
+when the coefficients range over $K$. The same holds for any coefficient field linearly
+disjoint from $\Q(\alpha)$ over $\Q$.
+\end{proposition}
+
+\begin{proof}
+The ring class field theorem gives $[K(\alpha):K]=h(\Delta)=[\Q(\alpha):\Q]$
+\cite{Cox2013Primes}. Consequently the natural map $K\otimes_\Q\Q(\alpha)\to K(\alpha)$ is
+an isomorphism, and the rational basis $1,\alpha,\dots,\alpha^{h-1}$ of $\Q(\alpha)$ remains
+a basis of $K(\alpha)$ over $K$. Every finite set of powers of $\alpha$ therefore has the
+same rank over the two fields. Conversely a rational relation is also a relation over $K$.
+The argument uses only linear disjointness.
+\end{proof}
+
+All results below about $s(\Delta)$ therefore hold verbatim for polynomials with
+coefficients in the corresponding imaginary quadratic field.
+
+\subsection{Sparse polynomials in a multiplicative \texorpdfstring{$p$}{p}-adic disk}\label{smd:sec:disk}
+{\raggedright\sources{grh_cm_sparse_equations; grh_cm_four_terms_and_prime_bias; grh_sparse_singular_moduli}}
+
+Normalize $v_p$ by $v_p(p)=1$ on $\overline{\Q}_p$. In each argument a finite extension of
+$\Q_p$ contains all points and scaling constants used; $\OO$ denotes its valuation ring. A
+\emph{multiplicative disk of relative depth $r$} about $a\ne0$ is the set of $x$ with
+$v_p(x/a-1)\ge r$. For rational $r>1/(p-1)$ put
+\[
+ w_{p,r}(n)=rn-v_p(n!)\qquad(n\ge0),
+\]
+so that $w_{p,r}(0)=0$ and $w_{p,r}(n)\to\infty$ by Legendre's formula
+$v_p(n!)=(n-S_p(n))/(p-1)$, where $S_p(n)$ is the sum of the base-$p$ digits of $n$.
+
+\begin{lemma}[Local root count]\label[lemma]{smd:lem:disk}
+Let $P(X)=\sum_{j=1}^t c_jX^{n_j}$ have distinct nonnegative integer exponents and
+nonzero coefficients in a finite extension of $\Q_p$, let $a\ne0$, and let $r>1/(p-1)$ be
+rational. The number of distinct roots of $P$ in the multiplicative disk of relative depth
+$r$ about $a$ is at most
+\[
+ B_p(t,r)=\max\set{k\ge0 : w_{p,r}(k)\le\max_{0\le i<t}w_{p,r}(i)} .
+\]
+\end{lemma}
+
+\begin{proof}
+Enlarge the field to contain the roots, the centre and an element $b$ with $v_p(b)=r$.
+The substitution $X=a\exp(bY)$, with inverse $Y=b^{-1}\log(X/a)$, identifies the disk
+with $\set{v_p(Y)\ge0}$. For the moments $M_k=\sum_jc_ja^{n_j}n_j^k$ (with $n_j^0=1$),
+\[
+ P(a\exp(bY))=\sum_{k\ge0}M_k\,\frac{b^k}{k!}\,Y^k .
+\]
+The first $t$ moments are not all zero, by the ordinary Vandermonde determinant in the
+distinct integers $n_j$. All later moments obey the monic integral recurrence with
+characteristic polynomial $\prod_j(T-n_j)\in\Z[T]$, so
+$v_p(M_k)\ge m:=\min_{i<t}v_p(M_i)$ for every $k$ by the ultrametric inequality. Some
+$i<t$ attains $m$, and the coefficient of $Y^i$ then has valuation $m+w_{p,r}(i)$. When
+$w_{p,r}(k)>\max_{i<t}w_{p,r}(i)$, the coefficient of $Y^k$ has strictly larger valuation.
+The series converges on the closed unit disk because $w_{p,r}(k)\to\infty$. Strassmann's
+theorem bounds the number of zeros by the last index of a coefficient of largest absolute
+value, which is at most $B_p(t,r)$.
+\end{proof}
+
+The lemma allows rational depths in ramified fields, algebraic centres, and disks centred
+at a nonunit after a common scaling. It is related to Lenstra's local fewnomial bounds and
+to Proposition 3.8 of Avenda\~no and Krick, which gives the bound $t-1$ in a principal-unit
+disk when $p>e+t-1$ for ramification index $e$
+\cite{Lenstra1999Factorization,Avendano2011Sharp}; retaining the individual factorial
+valuations handles small residue characteristic and values of $t$ much larger than $p$.
+Since $B_p(t,r)$ is nondecreasing in $t$, a bound for $t$ terms also covers polynomials
+with fewer terms. Two consequences are used repeatedly.
+
+\begin{corollary}[Depth thresholds]\label[corollary]{smd:cor:threshold}
+Let $t\ge2$ and let $\kappa\ge1/(p-1)$ satisfy
+\begin{equation}\label{smd:eq:factorial}
+ v_p\bigl((i+d)!/i!\bigr)\le d\kappa\qquad(0\le i<t,\ d\ge1).
+\end{equation}
+If $t$ distinct numbers $z_1,\dots,z_t$ satisfy $v_p(z_l/a-1)>\kappa$ for one $a\ne0$,
+then $\det(z_l^{n_j})_{l,j\le t}\ne0$ for every choice of distinct nonnegative integers
+$n_1,\dots,n_t$; equivalently, no nonzero polynomial with at most $t$ terms vanishes at all
+the $z_l$. Condition \eqref{smd:eq:factorial} holds for
+\[
+ \kappa(p,t)=\frac1{p-t+1}\quad(p\ge t),\qquad
+ \kappa(2,t)=2,\quad \kappa(3,t)=1\quad(t\le5).
+\]
+\end{corollary}
+
+\begin{proof}
+Choose a rational $r$ with $\kappa<r\le\min_lv_p(z_l/a-1)$, so that $r>1/(p-1)$. For $i<t\le n$, condition \eqref{smd:eq:factorial} with $d=n-i$ gives
+$w_{p,r}(n)-w_{p,r}(i)=r(n-i)-v_p(n!/i!)>0$. Hence $B_p(t,r)<t$, and
+\cref{smd:lem:disk} shows that a polynomial with at most $t$ terms has fewer than $t$ roots
+in the disk. A vanishing determinant would give such a polynomial with exponents among the
+$n_j$.
+
+For $p\ge t$ the left side of \eqref{smd:eq:factorial} is zero when $i+d<p$. Otherwise,
+Legendre's formula gives $v_p((i+d)!)\le(i+d-1)/(p-1)$, and
+$(i+d-1)/(p-1)\le d/(p-i)$ for $i\ge1$ and $d\ge p-i$, because the difference of the
+cross-products is $(i-1)(p-i-d)\le0$. For $i=0$ use $v_p(d!)\le d/(p-1)$. Since
+$i\le t-1$, each bound is at most $d/(p-t+1)$. For $p\in\set{2,3}$, $i\le4$ and $d\ge3$,
+the same formula gives $(i+d-1)/(p-1)\le2d$ at $p=2$ and $\le d$ at $p=3$; for $d=1,2$
+one checks the products of the factors $i+1,i+2\le6$ directly.
+\end{proof}
+
+\begin{corollary}[Depth one in an unramified disk]\label[corollary]{smd:cor:coarse}
+Let $p$ be odd and let $P$ have $t$ nonzero terms. A multiplicative disk of relative depth
+$1$ contains at most
+\begin{equation}\label{smd:eq:coarse}
+ \floor*{\frac{p-1}{p-2}\,(t-1)}
+\end{equation}
+distinct roots of $P$. More precisely, if it contains $N$ distinct roots, then
+\begin{equation}\label{smd:eq:digits}
+ N\le t-1+\frac{p-1}{p-2}\bigl(1+\log_pt\bigr).
+\end{equation}
+\end{corollary}
+
+\begin{proof}
+Here $w_{p,1}(n)=n-v_p(n!)=\bigl((p-2)n+S_p(n)\bigr)/(p-1)$. Since
+$w_{p,1}(n)\ge n(p-2)/(p-1)$ and $\max_{i<t}w_{p,1}(i)\le t-1$, the first bound follows
+from \cref{smd:lem:disk}. For the second, the lemma gives some $k\ge N$ and some $i<t$ with
+$(p-2)k+S_p(k)\le(p-2)i+S_p(i)$. Use $S_p(k)\ge1$ and
+$S_p(i)\le(p-1)(1+\log_pt)$.
+\end{proof}
+
+The bound \eqref{smd:eq:coarse} holds even when $t$ greatly exceeds $p$.
+
+\begin{lemma}[Counting conjugates in a disk]\label[lemma]{smd:lem:newton}
+Let $H$ be a monic separable polynomial with $p$-adically integral coefficients, let
+$v\ge0$ be an integer and $u$ a rational integer prime to $p$, and expand
+\[
+ H\bigl(p^v(u+Z)\bigr)=\sum_iB_iZ^i .
+\]
+For every rational $\lambda$, the least index minimizing $v_p(B_i)+i\lambda$ (omitting zero
+coefficients) equals the number of roots $\alpha$ of $H$ with
+$v_p\bigl(\alpha/(p^vu)-1\bigr)>\lambda$.
+\end{lemma}
+
+\begin{proof}
+The roots $z$ of the displayed polynomial in $Z$ are the numbers $\alpha/p^v-u$, and
+$v_p(\alpha/(p^vu)-1)=v_p(z)$. Choose $\pi$ with $v_p(\pi)=\lambda$, substitute
+$Z=\pi Y$, and divide by a coefficient of smallest valuation. Factor into linear factors
+in a splitting field and reduce. A root with $v_p(z)>\lambda$ contributes a factor $Y$,
+a root with $v_p(z)=\lambda$ a factor $Y$ minus a nonzero residue, and a root with
+$v_p(z)<\lambda$ a nonzero constant after normalization. The order of vanishing at $Y=0$
+of the reduction therefore counts exactly the roots strictly inside, and it equals the
+least minimizing index. This is the Newton polygon rule, including ties.
+\end{proof}
+
+Rational noninteger radii thus require no computation in a ramified field: the test uses
+only the integers $v_p(B_i)$.
+
+\begin{example}[Two certificates by hand]\label[example]{smd:ex:hand}
+For $\Delta=-55$ the valuations at $3$ of the five coefficients of $H_{-55}(27(1+Z))$,
+constant term first, are $(20,18,17,14,12)$. With $\lambda=1$ the weights
+$v_3(B_i)+i$ are $(20,19,19,17,16)$, with unique minimum at index $4$. All four roots
+have relative depth greater than $1=\kappa(3,4)$, so $s(-55)=5$ by
+\cref{smd:cor:threshold} and \eqref{smd:eq:trivial}.
+
+For $\Delta=-68$ expand $2^{-24}H_{-68}(2^6(3+Y))$. From constant to leading term the
+$2$-adic valuations are $13,10,6,5,0$. With $\lambda=5/2$ the unique minimizing index of
+$v_2(B_i)+5i/2$ is $4$, so all four conjugates lie in the disk of relative depth $5/2$
+about $2^6\cdot3$. For $i\le3$ the maximum of $w_{2,5/2}(i)=5i/2-v_2(i!)$ is $13/2$; at
+$n=4$ the weight is $7$, and for $n\ge5$ it is at least $3n/2+1$. Hence
+$B_2(4,5/2)=3$ and $s(-68)=5$.
+\end{example}
+
+\subsection{Separated complex conjugates}\label{smd:sec:arch}
+{\raggedright\sources{grh_cm_prime_applications; grh_cm_four_terms_and_prime_bias; grh_sparse_singular_moduli}}
+
+The archimedean counterpart of the disk lemma uses conjugates of very different sizes.
+
+\begin{lemma}[Separated conjugate sizes]\label[lemma]{smd:lem:separated}
+Let $z_1,\dots,z_t$ be nonzero complex numbers whose moduli $r_i=\abs{z_i}$ satisfy
+$r_{i+1}\ge16r_i$. For any integers $0\le e_1<\dots<e_t$ the matrix
+$(z_i^{e_j})_{i,j=1}^t$ is invertible. In particular a nonzero polynomial vanishing at all
+these points has more than $t$ terms.
+\end{lemma}
+
+\begin{proof}
+Multiply column $j$ by a positive number $c_j$, where $c_1=1$ and
+\[
+ c_{j+1}/c_j=(r_jr_{j+1})^{-(e_{j+1}-e_j)/2} .
+\]
+In row $i$ the ratio of successive
+absolute entries is $(r_i/\sqrt{r_jr_{j+1}})^{e_{j+1}-e_j}$. It is at least $4$ up to the
+diagonal ($j<i$) and at most $1/4$ after it ($j\ge i$). The sum of the off-diagonal
+magnitudes in a row is at most $2\sum_{m\ge1}4^{-m}=2/3$ of its diagonal magnitude.
+Strict diagonal dominance implies invertibility, and column scaling is reversible. For a
+polynomial with fewer than $t$ terms, enlarge its set of exponents to $t$ exponents.
+\end{proof}
+
+When the moduli are closer, the full permutation expansion can still be compared with its
+diagonal term.
+
+\begin{lemma}[Permutation test]\label[lemma]{smd:lem:perm}
+Let $z_1,\dots,z_t$ be complex numbers with moduli $0<r_1<\dots<r_t$ such that
+\begin{equation}\label{smd:eq:perm}
+ \sum_{\sigma\ne\mathrm{id}}\ \prod_{i=1}^tr_i^{\sigma(i)-1}<\prod_{i=1}^tr_i^{\,i-1},
+\end{equation}
+the sum being over the nonidentity permutations of $\set{1,\dots,t}$. Then
+$\det(z_i^{e_j})\ne0$ for all integers $0\le e_1<\dots<e_t$.
+\end{lemma}
+
+\begin{proof}
+Write $g_j=e_{j+1}-e_j\ge1$. Dividing the absolute value of the term of $\sigma$ in the
+determinant by that of the diagonal term gives
+\[
+ \prod_{j=1}^{t-1}\left(\frac{\prod_{i:\,\sigma(i)>j}r_i}{\prod_{i>j}r_i}\right)^{g_j}.
+\]
+Each numerator has as many factors as its denominator, which is the product of the largest
+radii of that cardinality, so each bracket is at most one. The quotient is therefore
+largest when all gaps equal one, where it is the quotient of the corresponding terms in
+\eqref{smd:eq:perm}.
+\end{proof}
+
+In applications \eqref{smd:eq:perm} is verified with rigorous enclosures
+$L_i\le r_i\le U_i$ of the moduli, using the upper endpoints on the left and the lower
+endpoints on the right.
+
+\paragraph{Sizes of conjugates.}
+For a primitive reduced form $[a,b,c]$ of discriminant $-D$ write $j_a$ for the associated
+conjugate. The cusp estimate of \cite[\S2]{Bilu2022Trinomials} gives
+\begin{equation}\label{smd:eq:cusp}
+ \Bigl|\,\abs{j_a}-\exp\bigl(\pi\sqrt D/a\bigr)\Bigr|\le2079 .
+\end{equation}
+For two leading coefficients $a<a'$ of reduced forms, the integer inequalities
+\begin{equation}\label{smd:eq:septest}
+ D\ge16a^2,\qquad 9D(a'-a)^2\ge16a^2a'^2
+\end{equation}
+imply $\abs{j_a}>16\abs{j_{a'}}$. Indeed the exponentials $U=\exp(\pi\sqrt D/a)$ and
+$V=\exp(\pi\sqrt D/a')$ satisfy $U\ge e^{4\pi}>34\cdot2079$ and
+$U/V\ge e^{4\pi/3}>32$, whence $U-2079>16(V+2079)$. A chain of $t$ leading
+coefficients whose consecutive pairs pass \eqref{smd:eq:septest} therefore yields $t$
+conjugates to which \cref{smd:lem:separated} applies, and both inequalities persist when
+$D$ increases.
+
+\begin{lemma}[Prescribed leading coefficients]\label[lemma]{smd:lem:forms}
+Let $a=t^2s$, where $t\mid f$ is odd and squarefree, $s$ is odd and coprime to $t$, and
+every prime dividing $s$ splits in $K$ and does not divide $D$. If $D\ge4a^2$, there is a
+primitive reduced form of discriminant $-D$ with leading coefficient $a$.
+\end{lemma}
+
+\begin{proof}
+Put $D'=D/t^2$ and choose $v$ as follows. Its parity is that of $D'$, so that
+$4\mid v^2+D'$. Modulo each prime power dividing $s$, it is a lift by Hensel's lemma of a
+unit square root of $-D'$. For each prime $q\mid t$ it avoids the at most two roots of
+$v^2+D'\equiv0\pmod q$. The Chinese remainder theorem gives a representative with
+$\abs v\le ts$. Take $b=tv$ and $c=(v^2+D')/(4s)$. Then $b^2-4ac=-D$ and
+$\abs b\le a\le c$, the last inequality because $D'\ge4t^2s^2$. The choices at the primes
+dividing $t$ ensure $q\nmid c$, and those at the primes dividing $s$ ensure $q\nmid b$.
+Thus $[a,b,c]$ is primitive and reduced, after normalizing the sign of $b$ on the boundary
+of the fundamental domain, which changes neither $a$ nor the modulus of the conjugate.
+\end{proof}
+
+For odd $p$ one has $p\mid f$ exactly when $p^2\mid D$, because the odd part of $d_K$ is
+squarefree; the hypotheses of the lemma are therefore congruence conditions on $D$.
+
+\subsection{Reduction of the conjugates at a nonsplit prime}\label{smd:sec:reduction}
+{\raggedright\sources{grh_cm_four_terms_and_prime_bias; grh_cm_sparse_equations; grh_sparse_singular_moduli}}
+
+\begin{lemma}[Supersingular disks]\label[lemma]{smd:lem:reduction}
+Let $p$ be a prime not dividing $f$ which does not split in $K$, and fix a place above $p$
+of the ring class field $L$ of the order.
+\begin{enumerate}[label=\textup{(\roman*)}]
+\item Every conjugate of discriminant $\Delta$ reduces to a supersingular $j$-invariant in
+characteristic $p$.
+\item The absolute ramification index of $L$ at $p$ is at most two, and equals one when
+$p$ is inert. Consequently two conjugates with the same nonzero reduction lie in a common
+multiplicative disk of relative depth at least $1/2$, and at least $1$ when $p$ is inert.
+\item The number of supersingular $j$-invariants over $\overline{\F}_p$ is $p/12+O(1)$.
+For $p\equiv1\pmod3$ the invariant $0$ is ordinary, and the number of supersingular
+invariants is $S_p=\floor{p/12}+\mathbf 1_{p\equiv7\ (\mathrm{mod}\ 12)}$.
+\item In characteristics $7$ and $13$ the supersingular invariant is unique and equals
+$6$ and $5$ respectively. In characteristic $19$ there are two, namely $18$ and $7$.
+\end{enumerate}
+In particular, if $p\in\set{7,13}$ does not divide $f$ and does not split in $K$, all
+$h$ conjugates lie in one multiplicative disk about a unit, of relative depth at least
+$1/2$, and at least $1$ when $(\Delta/p)=-1$.
+\end{lemma}
+
+\begin{proof}
+The conjugates are algebraic integers and the corresponding curves have potentially good
+reduction. Part (i) is Deuring's reduction theorem
+\cite{Elkies2005Reduction,Belding2008Computing}. The field $L$ is unramified over $K$ away
+from $f$ \cite{Cox2013Primes}, and $p$ has ramification index at most two in $K$; this
+gives the first assertion of (ii). If $\alpha,\alpha'$ are conjugates with the same
+nonzero reduction, then $\alpha'$ is a unit and $v_p(\alpha-\alpha')>0$ lies in
+$\tfrac12\Z$, or in $\Z$ in the unramified case, so $v_p(\alpha/\alpha'-1)\ge1/2$,
+respectively $\ge1$. The count in (iii) is classical
+\cite{Elkies2005Reduction,Silverman2009Arithmetic}. In characteristic $p>3$ the curve
+$y^2=x^3+Ax+B$ is supersingular exactly when the coefficient of $x^{p-1}$ in
+$(x^3+Ax+B)^{(p-1)/2}$ vanishes \cite[Ch.~V, \S4]{Silverman2009Arithmetic}. For
+$p\equiv1\pmod3$ and $j=0$ this coefficient is
+$\binom{(p-1)/2}{(p-1)/3}\not\equiv0\pmod p$. In characteristic $7$ it is $3B$, giving
+$j=1728\equiv6$. In characteristic $13$ it is $20A^3+15B^2$, giving $B^2=3A^3$ and
+$j=1728\cdot4/(4+81)=5$; here $A\ne0$ for a nonsingular curve. In characteristic $19$
+it is $B(10A^3+8B^2)$, and vanishing gives the values $18$ and $7$ for nonsingular
+curves.
+\end{proof}
+
+\subsection{A finite test for unbounded exponents}\label{smd:sec:confluent}
+{\raggedright\sources{grh_sparse_singular_moduli; grh_transfer_bridges_2026-11-25}}
+
+When no single disk and no chain of separated conjugates is available, linear independence
+of powers with arbitrarily large exponents can still be reduced to finitely many rank
+computations over finite fields. The test below retains information when several
+exponents share a residue.
+
+\begin{theorem}[Blockwise confluent certificate; \stU]\label{smd:thm:confluent}
+Let $p$ be any prime, let $\sigma,m\ge1$ be integers, and let $A$ be a finite free
+commutative $\Z_{(p)}$-algebra. Suppose
+\[
+ x^m=a+p^\sigma D_0,\qquad p\nmid a,
+\]
+with $x,D_0\in A$ and $a\in\Z$. Let $\mathcal E$ be a finite set of distinct nonnegative
+integers, and let $n_r$ count its elements congruent to $r$ modulo $m$, for $0\le r<m$.
+Assume
+\begin{equation}\label{smd:eq:block}
+ n_r<p^\sigma\qquad\text{for every }r .
+\end{equation}
+If the columns
+\[
+ x^rD_0^{\,l},\qquad0\le r<m,\quad0\le l<n_r,
+\]
+are linearly independent in $A/pA$ over $\F_p$, then the powers $x^e$, $e\in\mathcal E$,
+are linearly independent in $A\otimes\Q$ over $\Q$.
+\end{theorem}
+
+\begin{proof}
+Within a residue block write the exponents as $e_i=r+mt_i$ and divide the associated
+columns by $a^{t_i}$. They become $x^r(1+p^\sigma D_0/a)^{t_i}$. For
+$l=0,\dots,n_r-1$ take the Newton divided difference of order $l$ at the first $l+1$
+distinct integers $t_i$, multiplied by $l!/p^{\sigma l}$. These are invertible triangular
+column operations over $\Q$.
+
+Expand by the binomial theorem up to the largest $t_i$ in the block. The coefficient of
+$(D_0/a)^i$ in the new column of order $l$ is
+\[
+ l!\,p^{\sigma(i-l)}\,[t_0,\dots,t_l]\binom Ti .
+\]
+It is zero for $i<l$ and one for $i=l$. For $i>l$ its valuation is at least
+$\sigma(i-l)-v_p(i!/l!)$. Indeed $i!\binom Ti$ is an integer polynomial, and divided
+differences of integer polynomials at integer arguments are integers: for a monomial the
+divided difference of order $l$ is the complete homogeneous symmetric polynomial of the
+complementary degree at the chosen arguments, and linearity gives the general case.
+
+Since $l\le n_r-1\le p^\sigma-2$, the digit sums satisfy $S_p(l)\le\sigma(p-1)-1$ and
+$S_p(i)\ge1$. Put $d=i-l\ge1$ and $C=\sigma(p-1)-1\ge0$. Legendre's formula gives
+\[
+ (p-1)\bigl(\sigma d-v_p(i!/l!)\bigr)=Cd-S_p(l)+S_p(i)\ge C(d-1)+1>0 .
+\]
+Every coefficient with $i>l$ is therefore divisible by $p$. The transformed column is
+integral and reduces to $x^r(D_0/a)^l$ modulo $p$, and the factor $a^{-l}$ is a nonzero
+scalar modulo $p$.
+
+A rational dependence between integral columns in a finite free $\Z_{(p)}$-module can be
+scaled to have integral coefficients with at least one unit. Its reduction would
+contradict the assumed independence. Reversing the invertible column operations gives the
+result.
+\end{proof}
+
+The proof uses finite binomial expansions only; no $p$-adic exponential or logarithm is
+required, so $p=2$ causes no convergence problem. The bound \eqref{smd:eq:block} is on each
+residue block, not on the total support. In the applications of
+\cref{smd:sec:quintic,smd:sec:sextics} one has $\sigma=1$, $A=\Z_{(p)}[X]/(H_\Delta)$, $x$
+the class of $X$, and at most five exponents, so that \eqref{smd:eq:block} holds for every
+$p\ge7$. The congruence $x^m\equiv a\pmod{pA}$ is certified by reducing $x^m$ modulo
+$(H_\Delta,p^2)$: the constant coefficient is a $p$-adic unit, every other coefficient is
+divisible by $p$, and taking $a$ equal to the constant coefficient determines
+$D_0\bmod p$.
+
+\begin{proposition}[Sharpness of the strict threshold]\label[proposition]{smd:prop:sharp}
+The strict inequality in \eqref{smd:eq:block} cannot be replaced by a weak inequality for
+all finite free algebras. Put $k=p^\sigma$ and
+\[
+ A=\Z_{(p)}[D_0]/(D_0^k+D_0^{k-1}-1),\qquad x=1+kD_0,\quad m=1 .
+\]
+The $k$ confluent columns $1,D_0,\dots,D_0^{k-1}$ form a basis of $A/pA$, but
+\[
+ F(X)=(X-1)^k+k(X-1)^{k-1}-k^k
+\]
+vanishes at $x$ and has exactly $k$ nonzero coefficients.
+\end{proposition}
+
+\begin{proof}
+One has $F(x)=k^k(D_0^k+D_0^{k-1}-1)=0$. The coefficient of $X^{k-1}$ in $F$ is
+$-k+k=0$, and the coefficients at the exponents $0,1,\dots,k-2,k$ are nonzero. Hence
+the $k$ powers $x^e$, $e\in\set{0,\dots,k-2,k}$, are dependent, although they lie in one
+residue block with $n_0=k=p^\sigma$.
+\end{proof}
+
+At $p=3$, $\sigma=1$ the example becomes the irreducible relation $x^3-3x-25=0$ after
+$D_0^3+D_0^2-1=0$. The proposition concerns the generality of finite free algebras; it
+does not assert that $A=\Z_{(p)}[x]$, and that equality need not hold.
+
+\subsection{Equations with at most five terms: the classification}\label{smd:sec:classification}
+{\raggedright\sources{grh_sparse_singular_moduli; grh_cm_sparse_equations; grh_cm_four_terms_and_prime_bias; grh_cm_prime_applications}}
+
+\begin{theorem}[Five-term classification; \stU]\label{smd:thm:five}
+For every imaginary quadratic order discriminant $\Delta$,
+\[
+ s(\Delta)\le5\quad\Longleftrightarrow\quad h(\Delta)\le4 .
+\]
+Moreover $s(\Delta)=h(\Delta)+1$ whenever $h(\Delta)\le5$, with the single exception
+$\Delta=-3$, where the singular modulus is $0$ and $s=1$. In particular every quartic
+singular modulus requires exactly five terms and every quintic singular modulus exactly
+six. These assertions are independent of RH and GRH.
+\end{theorem}
+
+The content of the reverse implication is that for every singular modulus of degree at
+least five, any five distinct nonnegative powers are linearly independent over $\Q$.
+
+\begin{corollary}[Three and four terms; \stU]\label[corollary]{smd:cor:riffaut}
+A singular modulus is a root of a nonzero rational polynomial with at most three terms if
+and only if its degree is at most two, and of one with at most four terms if and only if
+its degree is at most three. In particular Riffaut's conjecture holds without any
+hypothesis on zeros.
+\end{corollary}
+
+\begin{proof}
+For $h\le3$ use \eqref{smd:eq:trivial}. For $h=3,4$ the theorem gives $s=4,5$, and for
+$h\ge5$ it gives $s\ge6$.
+\end{proof}
+
+\begin{remark}[The trinomial case]\label[remark]{smd:rem:riffaut}
+The original route to the trinomial statement assumed Dirichlet GRH: by
+\cite[Theorems~1.3, 1.4 and Corollary~5.2]{Bilu2022Trinomials} a discriminant admitting a
+trinomial is fundamental, satisfies $D>10^{11}$, and has $p>4\sqrt D/\log D$ for every
+prime $p$ splitting in $K$, while their Proposition~9.2 produces a smaller split prime
+under the hypothesis supplied by \cref{src:thm:dgrh}. The unconditional reductions just
+quoted can also be completed at a single prime, without the finite computations behind
+\cref{smd:thm:five}. Indeed $7$ is then inert or ramified in $K$, and $f=1$. By
+\cref{smd:lem:reduction} every conjugate lies in the disk $v_7(x/6-1)\ge1/2$. Three
+distinct conjugates in this disk contradict \cref{smd:cor:threshold} with $t=3$ and
+$\kappa(7,3)=1/5$. A binomial is covered by allowing a zero middle coefficient, or by
+squaring it.
+\end{remark}
+
+The proof of \cref{smd:thm:five} occupies
+\cref{smd:sec:small,smd:sec:quintic,smd:sec:global,smd:sec:sextics}. The forward
+implication is \eqref{smd:eq:trivial}. Degrees up to five are settled by a complete census
+(\cref{smd:prop:small,smd:thm:131}). For $h\ge5$, a combination of local and archimedean
+certificates covers all but $71$ discriminants (\cref{smd:prop:global}), and these are
+treated individually (\cref{smd:prop:residual,smd:prop:sextics}).
+
+\subsection{Degrees at most five}\label{smd:sec:small}
+{\raggedright\sources{grh_sparse_singular_moduli; grh_cm_sparse_equations; grh_cm_four_terms_and_prime_bias}}
+
+\paragraph{Certified class polynomials.}
+For a given discriminant, $H_\Delta$ is computed by enumerating the primitive reduced
+forms and evaluating
+\[
+ j(\tau)=\frac{E_4(q)^3}{q\prod_{n\ge1}(1-q^n)^{24}},\qquad
+ E_4(q)=1+240\sum_{n\ge1}\sigma_3(n)q^n,\quad q=e^{2\pi i\tau},
+\]
+with outward-rounded dyadic intervals. Reducedness gives $\abs q<1/200$. The $164$-term
+truncation of $E_4$ has error at most $960\cdot165^3/200^{165}$, since
+$\sigma_3(n)<2n^3$. For the omitted factors of the product the sum of $\abs q^n$ is at
+most $2/200^{165}$, which gives an absolute full-product error below $8/200^{165}$. Each
+coefficient enclosure of $\prod(X-j(\tau))$ contains exactly one integer, which determines
+the class polynomial by integrality.
+\smdcert{class polynomials
+\artifact{grh_sparse_singular_moduli/cm/class_polynomials.json} and
+\artifact{grh_sparse_singular_moduli/checks/five_small_witnesses.json}, with the verifier
+\artifact{grh_sparse_singular_moduli/cm/verify_class_polynomials.py}; independent
+reconstructions
+\artifact{grh_cm_four_terms_and_prime_bias/checks/class_polynomials.json} and
+\artifact{grh_cm_sparse_equations/certificates/cm-all-polys.json}.}
+
+\paragraph{The census of orders.}
+The order class number formula is
+\begin{equation}\label{smd:eq:classnumber}
+ h(\Delta)=\frac{h(d_K)\,f}{[\OO_K^\times:\OO_f^\times]}
+ \prod_{p\mid f}\Bigl(1-\frac{\chi_{d_K}(p)}p\Bigr),
+\end{equation}
+where $\OO_f$ is the order of conductor $f$ and $\chi_{d_K}=(d_K/\cdot)$
+\cite[Theorem~7.24]{Cox2013Primes}. The unit index is at most three, so
+$h(\Delta)\ge h(d_K)\varphi(f)/3$, and $h(d_K)$ divides $h(\Delta)$ by surjectivity of the
+map of class groups. On prime powers one has $\varphi(f)^2\ge f/2$, hence
+$f\le2\varphi(f)^2\le18h^2$. Watkins's table \cite[Table~4]{Watkins2004Class} bounds the
+fundamental discriminants: $\abs{d_K}\le163,427,907,1555,2683$ for
+$h(d_K)=1,2,3,4,5$. Enumerating the fundamental discriminants, the conductors
+($f\le162$, $288$, $450$ for $h=3,4,5$) and the reduced forms gives exactly $25$ cubic,
+$84$ quartic and $29$ quintic orders. The quintic orders have
+\[
+\begin{aligned}
+ D={}&47, 79, 103, 127, 131, 179, 188, 227, 316, 347, 412, 443, 508, 523, 571, 619, 683,
+ 691, 739,\\
+ &787, 947, 1051, 1123, 1723, 1747, 1867, 2203, 2347, 2683,
+\end{aligned}
+\]
+and the quartic orders are listed in the proof below.
+
+\paragraph{Disk certificates.}
+A \emph{disk certificate for $t$ terms} at $\Delta$ is a quadruple $(p,v,u,\lambda)$,
+with $p$ prime, $v\ge0$ an integer, $u$ an integer prime to $p$ and
+$\lambda>1/(p-1)$ rational, such that the least minimizing index of
+\cref{smd:lem:newton} for $H_\Delta(p^v(u+Z))$ at $\lambda$ is at least $t$, and
+\[
+ w_{p,\lambda}(n)>\max_{i<t}w_{p,\lambda}(i)\qquad\text{for all }n\ge t .
+\]
+The first condition places at least $t$ conjugates in the multiplicative disk of relative
+depth $\lambda$ about $p^vu$, and the second says $B_p(t,\lambda)<t$. By
+\cref{smd:lem:disk} such a certificate excludes all rational relations with at most $t$
+terms, of arbitrary degree, so that $s(\Delta)\ge t+1$. The second condition is a finite
+check: one uses exact factorial valuations up to the point where
+$n\lambda-(n-1)/(p-1)$ exceeds the required maximum, and this lower bound for
+$w_{p,\lambda}(n)$ increases thereafter. \Cref{smd:ex:hand} gives two instances.
+
+\begin{proposition}[Degrees up to five; \stU]\label[proposition]{smd:prop:small}
+Let $h(\Delta)\le5$ and $\Delta\notin\set{-3,-131}$. Then $s(\Delta)=h(\Delta)+1$.
+\end{proposition}
+
+\begin{proof}
+By \eqref{smd:eq:trivial} only lower bounds are needed.
+
+\emph{Degree one.} A nonzero rational number is not a root of a monomial, so $s=2$.
+
+\emph{Degree two.} Here $D\ge15$, and the conjugate of the principal form has larger
+absolute value than the other conjugate, since
+$e^{\pi\sqrt D}-2079>e^{\pi\sqrt D/2}+2079$ by \eqref{smd:eq:cusp}. A binomial has all its
+nonzero complex roots on one circle, so $s=3$.
+
+\emph{Degree three.} This is \cite[Theorem~6.6]{Bilu2022Trinomials}, which is independent
+of GRH. Independently, each of the $25$ cubic orders has a disk certificate for three terms
+at a prime $p\in\set{2,3,7,13,17}$.
+
+\emph{Degree four.} For the $50$ orders with
+\[
+\begin{aligned}
+ D={}&39, 55, 56, 63, 68, 80, 128, 136, 144, 155, 156, 171, 184, 196, 203, 208, 219, 220,
+ 252, 256,\\
+ &259, 275, 291, 292, 323, 328, 355, 363, 387, 388, 400, 475, 507, 568, 592, 603, 667,
+ 723,\\
+ &763, 772, 955, 1003, 1027, 1227, 1243, 1387, 1411, 1467, 1507, 1555,
+\end{aligned}
+\]
+the certificate file listed below contains a disk certificate for four terms. For the
+remaining $34$ quartic orders,
+\[
+\begin{aligned}
+ D={}&84, 96, 120, 132, 160, 168, 180, 192, 195, 228, 240, 280, 288, 312, 315, 340, 352,
+ 372, 408,\\
+ &435, 448, 483, 520, 532, 555, 595, 627, 708, 715, 760, 795, 928, 1012, 1435,
+\end{aligned}
+\]
+certified enclosures of the four moduli satisfy \eqref{smd:eq:perm}, and
+\cref{smd:lem:perm} applies.
+
+\emph{Degree five.} For $28$ of the $29$ quintic orders the same file contains a disk
+certificate for five terms. The witness primes are distributed as follows.
+\begin{center}
+\begin{tabular}{lrrrrrr}
+\toprule
+Witness prime&2&3&7&13&17&Total\\
+\midrule
+Four-term exclusions (50 quartic and 29 quintic orders)&1&48&23&5&2&79\\
+Five-term exclusions by a single disk (quintic orders)&0&20&5&3&0&28\\
+\bottomrule
+\end{tabular}
+\end{center}
+The remaining quintic order is $\Delta=-131$, excluded from the statement.
+\end{proof}
+
+\smdcert{cubic orders
+\artifact{grh_sparse_singular_moduli/cm/verify_all_cubics.py}; disk certificates
+\artifact{grh_sparse_singular_moduli/cm/disk_witnesses.csv}, checked by
+\artifact{grh_sparse_singular_moduli/cm/verify_disks.py}; permutation tests for the $34$
+quartic orders \artifact{grh_sparse_singular_moduli/cm/verify_all_quartics.py}.}
+
+Independent sets of disk certificates for the same $79$ orders exist. One of them uses
+only the eight triples $(p,v,u)=(2,3,5)$, $(2,6,3)$, $(2,6,5)$, $(3,3,1)$, $(3,3,2)$,
+$(7,0,6)$, $(13,0,5)$, $(17,0,8)$ with the thresholds of \cref{smd:cor:threshold}, and is
+extended to a disk for each quartic order.
+\smdcert{\artifact{grh_cm_four_terms_and_prime_bias/checks/disks.csv};
+\artifact{grh_cm_sparse_equations/certificates/cm-clusters.csv} (eight triples);
+\artifact{grh_cm_sparse_equations/certificates/cm-all-clusters.csv} (all quartic and
+quintic orders).}
+
+At $\Delta=-131$ the reduction of $H_{-131}$ modulo $17$ is $X(X-8)^4$, and the
+$17$-adic valuations of the coefficients of $H_{-131}(8+Y)$, constant term first, are
+$(4,3,2,1,0,0)$. At $\lambda=1/14$ the least minimizing index is $4$, so four conjugates
+lie at depth greater than $\kappa(17,4)=1/14$ about $8$ and $s(-131)\ge5$; the fifth
+conjugate has valuation $3$ and lies outside every such disk. A five-term relation
+therefore requires a different argument.
+
+\subsection{The last quintic order}\label{smd:sec:quintic}
+{\raggedright\sources{grh_sparse_singular_moduli; grh_transfer_bridges_2026-11-25}}
+
+Let $H=H_\Delta$ have degree $h$ and let $x$ be a root. Suppose that five powers of $x$
+are linearly dependent over $\Q$. Since $x\ne0$, dividing by the lowest power gives
+exponents $0=e_0<e_1<e_2<e_3<e_4$. For a modulus $N$, the \emph{pattern} of the relation
+modulo $N$ is the sorted quadruple of the residues of $e_1,\dots,e_4$, in which
+repetitions and zeros are allowed. Let $(p,m)$ be a pair with $m\mid N$, $p\ge7$ and
+$x^m\equiv a\pmod{pA}$ for a rational integer $a$ prime to $p$, in the notation following
+\cref{smd:thm:confluent}. The pattern modulo $N$ determines the numbers $n_r$ of
+\cref{smd:thm:confluent} for the five exponents, the exponent $0$ included, and by that
+theorem the five confluent columns must be linearly dependent in $A/pA$. The exponent $0$
+supplies the column $1$; in the basis $1,x,\dots,x^{h-1}$ the test therefore amounts to
+the vanishing of all $4\times4$ minors of the matrix of the other four columns with the
+constant coordinate deleted. A pattern passing this test for every pair considered at a
+given stage is said to \emph{survive}.
+
+If $n\mid N$, every pattern modulo $N$ is obtained from its reduction modulo $n$ by adding
+multiples of $n$ to the four residues. For equal old residues it suffices to take
+nondecreasing lifts among those positions, and sorting the resulting quadruple gives every
+possible lift exactly once. A genuine exponent set gives a surviving pattern at every
+stage of such a chain of moduli. If no pattern survives at the last stage, any five
+distinct powers of $x$ are independent, and a relation on fewer powers is excluded by
+adjoining further powers.
+
+\begin{theorem}[\stU]\label{smd:thm:131}
+The least support for discriminant $-131$ is six: $s(-131)=6$.
+\end{theorem}
+
+\begin{proof}
+Apply the sieve just described to the certified polynomial $H_{-131}$, of degree five,
+with the following stages. The modulus at every stage is divisible by each period used
+there.
+\begin{center}
+\begin{tabular}{rlrr}
+\toprule
+$N$ & Pairs $(p,m)$ tested at this stage & Patterns tested & Surviving\\
+\midrule
+200    & $(601,200)$                    &68,685,050 &119,264\\
+1,400  & $(1051,350),\ (4201,1400)$      &279,218,674&196\\
+4,200  & $(6301,1050)$                  &15,876     &5,876\\
+12,600 & $(757,252)$                    &475,956    &214,120\\
+25,200 & $(337,112)$                    &3,425,920  &0\\
+\bottomrule
+\end{tabular}
+\end{center}
+The last count proves that any five powers of a root are independent, and $H_{-131}$
+itself has at most six terms. The polynomial reductions and determinant checks are
+reproduced by two implementations, the second with a separately written basis recurrence,
+cofactor computation and lift enumerator; both reproduce all five rows.
+\end{proof}
+
+\smdcert{\artifact{grh_sparse_singular_moduli/checks/verify_last_quintic.py};
+\artifact{grh_sparse_singular_moduli/checks/independent_quintic.py}; output
+\artifact{grh_sparse_singular_moduli/checks/last_quintic.txt}.}
+
+\Cref{smd:prop:small,smd:thm:131} give $s=h+1$ for every order with $h\le5$ other than
+$\Delta=-3$, and in particular $s\ge6$ for $h=5$.
+
+\subsection{Reduction of the global problem to 71 discriminants}\label{smd:sec:global}
+{\raggedright\sources{grh_sparse_singular_moduli; grh_cm_sparse_equations; grh_cm_four_terms_and_prime_bias}}
+
+\begin{proposition}[Global reduction; \stU]\label[proposition]{smd:prop:global}
+Let $h(\Delta)\ge5$. Then $s(\Delta)\ge6$, except possibly when $D$ is one of the
+following $71$ integers, all with $h\ge6$ and $87\le D\le4563$:
+\[
+\begin{aligned}
+ &87, 152, 244, 248, 251, 264, 272, 276, 300, 339, 348, 360, 376, 432, 451, 467, 472, 563,
+ 588,\\
+ &608, 612, 628, 640, 664, 675, 699, 703, 712, 724, 755, 768, 784, 859, 867, 972, 979,
+ 1000,\\
+ &1067, 1083, 1147, 1195, 1252, 1291, 1312, 1323, 1368, 1459, 1483, 1587, 1648, 1699,
+ 1728,\\
+ &1732, 1795, 1819, 1875, 1972, 2107, 2187, 2323, 2467, 2523, 2539, 2707, 2812, 3043,
+ 3643,\\
+ &3667, 3675, 3883, 4563 .
+\end{aligned}
+\]
+\end{proposition}
+
+\begin{proof}
+\emph{Local certificates.} Let $p\in\set{7,13}$ with $p\nmid f$ and $p$ nonsplit in $K$.
+By \cref{smd:lem:reduction} all $h\ge5$ conjugates lie in one multiplicative disk of
+relative depth at least $1/2$ about a unit. In \cref{smd:lem:disk} take $r=1/2$ and
+$t=5$: the first five weights $w_{p,1/2}(i)=i/2$ are at most $2$, for $n=5,6$ one has
+$n/2-v_p(n!)>2$, and for $n\ge7$ one has $n/2-v_p(n!)\ge n/2-(n-1)/6>2$. Hence
+$B_p(5,1/2)\le4$ and $s(\Delta)\ge6$. If $7\cdot13\mid f$, the prime $19$ can be used in
+the same way when $19\nmid f$ and $19$ is nonsplit: \eqref{smd:eq:classnumber} gives
+$h\ge\varphi(f)/3\ge\varphi(91)/3=24$, there are only two supersingular invariants in
+characteristic $19$, both nonzero, so one disk of depth at least $1/2$ holds at least
+twelve conjugates, and the weight computation is unchanged.
+
+\emph{Archimedean certificates.} The following cases are disjoint and exhaustive. In each
+row, if a local certificate above applies at a prime available in that row, the case is
+settled. Otherwise every such prime splits, the displayed five leading coefficients exist
+by \cref{smd:lem:forms} as soon as $D\ge4a_{\max}^2$, and their consecutive pairs pass the
+separation tests \eqref{smd:eq:septest} at and above the indicated bound. The last row
+needs no splitting assumption. \Cref{smd:lem:separated} then gives $s(\Delta)\ge6$.
+\begin{center}
+\begin{tabular}{llr}
+\toprule
+Conductor condition & Five leading coefficients & $D$ sufficient\\
+\midrule
+$7\nmid f$ and $13\nmid f$ & $1,7,13,49,91$ & 38,416\\
+$7\mid f$, $13\nmid f$ & $1,13,49,169,637$ & 1,623,076\\
+$13\mid f$, $7\nmid f$ & $1,7,49,169,343$ & 470,596\\
+$7\cdot13\mid f$, $19\nmid f$ & $1,19,49,169,361$ & 521,284\\
+$7\cdot13\cdot19\mid f$ & $1,49,169,361,8281$ & 274,299,844\\
+\bottomrule
+\end{tabular}
+\end{center}
+
+\emph{The finite ranges.} For odd $p$ one has $p\mid f$ exactly when $p^2\mid D$.
+Enumerating the integers $D\equiv0,3\pmod4$ below the bound of each row which satisfy its
+divisibility conditions gives the following counts. The leading-coefficient test searches
+integers $a\le251$ for a chain of five passing \eqref{smd:eq:septest}, with a directly
+verified primitive reduced form at each $a$.
+\begin{center}
+\begin{tabular}{rrrrr}
+\toprule
+Row & Candidates & Local & Five leading coefficients & Remaining\\
+\midrule
+1 &18,705&14,908&3,667&130\\
+2 &16,464& 8,820&7,634&10\\
+3 & 1,364&   768&  594&2\\
+4 &    30&    16&   14&0\\
+5 &    45&     0&   45&0\\
+\midrule
+Total &36,608&24,512&11,954&142\\
+\bottomrule
+\end{tabular}
+\end{center}
+Counting all primitive reduced forms for the $142$ remaining values gives $21$ with
+$h<5$ and four with $h=5$, the latter covered by \cref{smd:sec:small,smd:sec:quintic}. For
+$46$ more there is a prime $p\in\set{7,13,19,31,37,43}$ with $(\Delta/p)=-1$ and
+$h>4S_p$. These primes are $1\pmod3$, so by \cref{smd:lem:reduction} the conjugates
+reduce to at most $S_p$ nonzero residues, one disk of relative depth at least $1$ holds at
+least five of them, and \cref{smd:cor:threshold} with $\kappa(p,5)=1/(p-4)<1$ gives
+$s(\Delta)\ge6$. The remaining $71$ discriminants are those listed.
+\end{proof}
+
+\smdcert{the complete integer sieve and its final list
+\artifact{grh_sparse_singular_moduli/checks/global_five.py}, with output
+\artifact{grh_sparse_singular_moduli/checks/global_five.txt}.}
+
+\subsection{The residual discriminants}\label{smd:sec:sextics}
+{\raggedright\sources{grh_sparse_singular_moduli; grh_cm_sparse_equations; grh_transfer_bridges_2026-11-25}}
+
+\begin{proposition}[\stU]\label[proposition]{smd:prop:residual}
+For $67$ of the $71$ discriminants of \cref{smd:prop:global}, namely all except
+$D=87,348,432,675$, one has $s(\Delta)\ge6$.
+\end{proposition}
+
+\begin{proof}
+For $49$ discriminants, five conjugates are selected whose moduli $r_1<\dots<r_5$,
+enclosed by the dyadic evaluation of $j$ described in \cref{smd:sec:small}, satisfy
+\eqref{smd:eq:perm} with $t=5$: the lower bound for the diagonal magnitude exceeds the sum
+of the upper bounds for the $119$ other terms. Here successive radii may be closer than the
+factor $16$ of \cref{smd:lem:separated}, and \cref{smd:lem:perm} gives independence for
+arbitrary exponents. For $18$ further discriminants a disk certificate for five terms (\cref{smd:sec:small})
+excludes five terms in a single disk. For
+these $18$ and for the four remaining cases the class polynomial is derived from interval
+enclosures and integrality. The witness file records the forms, coefficients and local
+parameters, and its verifier checks that its inputs match the $71$ discriminants of the
+global reduction.
+\end{proof}
+
+\smdcert{\artifact{grh_sparse_singular_moduli/checks/five_small_witnesses.json};
+\artifact{grh_sparse_singular_moduli/checks/verify_five_small.py}.}
+
+The four remaining orders have class number six.
+
+\begin{proposition}[The four residual sextic orders; \stU]\label[proposition]{smd:prop:sextics}
+For $D=87,348,432,675$ any five distinct nonnegative powers of a singular modulus of
+discriminant $-D$ are linearly independent over $\Q$.
+\end{proposition}
+
+\begin{proof}
+Apply the sieve of \cref{smd:sec:quintic} to the degree-six class polynomials. In the
+basis $1,x,\dots,x^5$, omitting the constant coordinate leaves a $5\times4$ matrix, and a
+pattern survives exactly when every $4\times4$ minor vanishes at every prime tested at
+the current stage. The period $m$ in each pair $(p,m)$ is certified by reduction modulo
+$(H_{-D},p^2)$. Each step from a modulus $n$ to a multiple $N$ enumerates all lifts of the
+surviving patterns.
+\begin{center}
+\begin{tabular}{rrrlrr}
+\toprule
+$D$ & $n$ & $N$ & Pairs $(p,m)$ & Patterns tested & Surviving\\
+\midrule
+87 & 1 & 102 & $(103,102)$ &4,780,230&13,125\\
+ &102 &1,530 & $(1531,1530)$ &653,917,425&625\\
+ &1,530&7,650& $(151,150)$ &390,625&915\\
+ &18&486& $(487,486),\ (1459,486)$ &7,971,615&0\\
+348&1&486& $(487,486),\ (1459,486)$ &2,353,329,126&0\\
+432&1&36& $(109,36)$ &82,251&106\\
+ &36&144& $(433,144)$ &26,212&0\\
+675&1&40& $(241,40)$ &123,410&1\\
+ &40&280& $(13,56)$ &2,401&0\\
+\bottomrule
+\end{tabular}
+\end{center}
+For $D=87$ the $915$ survivors modulo $7650$ reduce to exactly $15$ patterns modulo
+$18=\gcd(7650,486)$, and the last step for $87$ tests every lift of those $15$ patterns to
+$486$. Any set of integer exponents would give compatible residues on both sides, so the
+zero final count excludes every such set. For the other discriminants the successive
+moduli divide one another. A second implementation treats $D=87,348$ by eliminating two
+prefix columns and grouping suffix columns by their projective classes in the quotient:
+for $D=87$ the $196{,}587$ simultaneous failures modulo $486$, the $13{,}125$ failures
+modulo $102$ and the $19{,}669$ failures modulo $150$ restrict the lifts to $979{,}524$
+candidates at modulus $1530$, all eliminated by the rank test at $1531$; for $D=348$ it
+finds no survivor modulo $486$.
+\end{proof}
+
+\smdcert{\artifact{grh_sparse_singular_moduli/checks/verify_five_sieves.py}, with
+enumerator \artifact{grh_sparse_singular_moduli/checks/five_sieves.cpp} and output
+\artifact{grh_sparse_singular_moduli/checks/five_sieves.txt}; second implementation
+\artifact{grh_sparse_singular_moduli/checks/fast_sieve/verify.py}.}
+
+\begin{proof}[Proof of \cref{smd:thm:five}]
+If $h\le4$ then $s\le5$ by \eqref{smd:eq:trivial}. If $h=5$ then $s=6$ by
+\cref{smd:prop:small,smd:thm:131}. If $h\ge6$ then $s\ge6$ by
+\cref{smd:prop:global,smd:prop:residual,smd:prop:sextics}. The exact values for $h\le5$
+are \cref{smd:prop:small,smd:thm:131}.
+\end{proof}
+
+\begin{remark}[A second global sieve]\label[remark]{smd:rem:secondsieve}
+An independent reduction reaches the same four sextic orders. With the cutoff
+$A=4\cdot2401^2=23{,}059{,}204$ it tries the primes $7,13,19,31$ in order until one does
+not divide $f$. If that prime is nonsplit, a disk test as in \cref{smd:prop:global}
+applies (at $19$ and $31$ one has $91\mid f$, hence $h\ge24>4S_p$). If it splits, or if
+all four primes divide $f$, the chains of leading coefficients $1,7,49,343,2401$;
+$1,13,49,169,2197$; $1,19,49,169,361$; $1,31,49,169,361$; and $1,49,169,361,961$ are
+used. Of the $11{,}529{,}601$ integers $3\le D<A$ with $D\equiv0,3\pmod4$, the sieve
+discharges $9{,}109{,}793$ at a nonsplit prime $7$ or $13$ away from the conductor,
+$2{,}419{,}666$ by five separated moduli, $25$ because $h<6$, and $51$ at a larger
+nonsplit prime with $h>4S_p$; $66$ class polynomials with $D\le4563$ and degrees $6$ to
+$12$ remain, of which $62$ are eliminated by a single five-root disk.
+\smdcert{\artifact{grh_cm_sparse_equations/five/five_sieve.cpp};
+\artifact{grh_cm_sparse_equations/five/counts.txt};
+\artifact{grh_cm_sparse_equations/five/residual.txt};
+\artifact{grh_cm_sparse_equations/certificates/cm-extended-clusters.csv}.}
+\end{remark}
+
+\begin{remark}[Limits of the single-disk test]\label[remark]{smd:rem:disklimit}
+The residue sieve cannot be replaced by another choice of prime in
+\cref{smd:cor:threshold}. For each of the five orders
+$\Delta=-87,-131,-348,-432,-675$, no five conjugates lie in a common multiplicative disk
+of depth strictly greater than $\kappa(p,5)$ at any rational prime $p$, even with an
+algebraic centre. Five such roots would give $20$ ordered pairs with
+$v_p(\alpha_j/\alpha_i-1)>\kappa(p,5)$. Such a pair implies $p\mid\disc(H_\Delta)$, since
+the $\alpha_i$ are integral and $v_p(\alpha_j-\alpha_i)>0$. The roots of
+\[
+ Y^{-h}\Res_X\bigl(H_\Delta(X),H_\Delta((1+Y)X)\bigr)
+\]
+are the ratios $\alpha_j/\alpha_i-1$ with $i\ne j$. Factoring $\abs{\disc(H_\Delta)}$ and
+applying the least-minimizing-index count to this resultant at every prime divisor shows
+that the maximum number of such pairs is $14,12,14,12,14$ for the five discriminants in
+the order listed.
+\smdcert{\artifact{grh_cm_sparse_equations/certificates/cm_disk_limit.py}.}
+\end{remark}
+
+\begin{example}[A sextic order requiring seven terms]\label[example]{smd:ex:4075}
+For $\Delta=-4075=-5^2\cdot163$ the class number is six, and $7$ is inert in $K$ and
+prime to the conductor. By \cref{smd:lem:reduction} all six conjugates lie in one
+multiplicative disk of relative depth at least $1$, which exceeds
+$\kappa(7,6)=1/2$. Hence $s(-4075)=7$ by \cref{smd:cor:threshold}.
+\end{example}
+
+\subsection{Explicit lower bounds from real and from separated conjugates}\label{smd:sec:explicit}
+{\raggedright\sources{grh_cm_prime_applications}}
+
+Two elementary constructions give explicit lower bounds for individual discriminants.
+The first uses real conjugates and Descartes' rule of signs, the second
+\cref{smd:lem:separated}.
+
+\begin{proposition}[Support from coprime factorizations; \stU]\label[proposition]{smd:prop:descartes}
+Let $\omega(n)$ be the number of distinct prime divisors of $n$. Then
+\[
+\begin{aligned}
+ s(-4n)&\ge1+2^{\omega(n)-1}&&(n>1),\\
+ s(-N)&\ge1+\ceil*{2^{\omega(N)-2}}&&(N>3,\ N\equiv3\pmod4).
+\end{aligned}
+\]
+\end{proposition}
+
+\begin{proof}
+There are $2^{\omega(n)-1}$ unordered coprime factorizations $n=uv$ with $u<v$: assign each
+full prime power to one of two factors and identify the two orderings. The forms
+$[u,0,v]$ are distinct primitive reduced forms of discriminant $-4n$, with CM points
+$i\sqrt{v/u}$. All give positive conjugates, since for $z$ on the positive imaginary axis
+the formula $j(z)=E_4(z)^3/(q\prod_{m\ge1}(1-q^m)^{24})$, $q=e^{2\pi iz}$, has positive
+numerator and denominator by the Eisenstein series expansion. Descartes' rule gives at
+most $k-1$ positive roots for a polynomial with $k$ terms. This proves the even bound.
+
+For $N=uv$ odd, again use coprime pairs $u<v$. They are opposite modulo $4$. If $v>3u$,
+take $[u,u,(u+v)/4]$. If $v<3u$, take $[(u+v)/4,(v-u)/2,(u+v)/4]$. Equality forces
+$(u,v)=(1,3)$, which is excluded. Each triple is integral, reduced and of discriminant
+$-N$. It is primitive, because an odd common prime divisor would divide both $u$ and $v$,
+and the middle coefficient is odd. Each pair can be recovered from its triple, and the two
+types have disjoint shapes. The associated CM points $z=(b+i\sqrt N)/(2a)$ have either
+$\Re z=1/2$ or $\abs z=1$. In the first case $-\bar z=z-1$ and in the second
+$-\bar z=-1/z$, so modular invariance and the real Fourier coefficients of $j$ show that
+$j(z)$ is real. All these conjugates are nonzero because the unique zero of $j$ on the
+modular quotient has discriminant $-3$. Of $2^{\omega(N)-1}$ real conjugates at least half
+have the same sign. Apply Descartes' rule to $P(X)$ or $P(-X)$.
+\end{proof}
+
+\begin{example}\label[example]{smd:ex:840}
+At $\Delta=-120$ the complete list of primitive reduced forms is $[u,0,30/u]$ for
+$u=1,2,3,5$, and at $\Delta=-840$ it is $[u,0,210/u]$ for $u=1,2,3,5,6,7,10,14$. The
+class numbers are $4$ and $8$, and \cref{smd:prop:descartes} gives $s(-120)=5$ and
+$s(-840)=9$, the maximum allowed by \eqref{smd:eq:trivial}.
+\end{example}
+
+Individual prime discriminants can have arbitrarily large absolute value while giving only
+one coprime factor pair, so the factorization bound alone does not grow with $D$.
+
+\begin{proposition}[A certificate with $7{,}958$ conjugates; \stU]\label[proposition]{smd:prop:mersenne}
+For $\Delta=1-2^{61}$, every nonzero rational polynomial vanishing at a singular modulus
+of discriminant $\Delta$ has at least $7{,}959$ terms.
+\end{proposition}
+
+\begin{proof}
+Let $D=2^{61}-1$ and $B=\floor{D^{1/4}}=38{,}967$. An integer sieve counts $7{,}958$
+integers $1\le a\le B$ all of whose odd prime factors $p$ have $(\Delta/p)=1$. For each such $a$, Hensel
+lifting at odd primes and the Chinese remainder theorem show that $\Delta$ is a square
+modulo $4a$; the $2$-part follows from $\Delta\equiv1\pmod{2^{61}}$. Every $a$ counted is
+coprime to $\Delta$. Hence there is a primitive reduced form with leading coefficient $a$
+by \cite[Proposition~3.1(1)]{Bilu2022Trinomials}. For $a<a'\le B$ the exponents
+$\pi\sqrt D/a$ and $\pi\sqrt D/a'$ differ by at least $\pi\sqrt D/B^2\ge\pi$. Their
+exponentials are both at least $e^{\pi B}$, so the absolute error $2079$ in
+\eqref{smd:eq:cusp} changes their magnitudes by less than one percent. The ratio of the
+moduli therefore exceeds $(0.99/1.01)e^\pi>16$. Apply \cref{smd:lem:separated} to all
+$7{,}958$ moduli. The computation needs neither a numerical value of $j$ nor the
+coefficients of the class polynomial.
+\end{proof}
+
+\smdcert{the reduced-form lists of \cref{smd:ex:840} and the count of
+\cref{smd:prop:mersenne}, with integer arithmetic,
+\artifact{grh_cm_prime_applications/verify_cm_support.py}.}
+
+The separated-size method cannot exceed the exponent $1/4$.
+
+\begin{proposition}[Limit of the separated-size method]\label[proposition]{smd:prop:limit}
+For $\Delta<-3$, a sequence of conjugates of discriminant $\Delta$ in which each absolute
+value is at least sixteen times the preceding one has length $O(D^{1/4})$.
+\end{proposition}
+
+\begin{proof}
+For a reduced form $[a,b,c]$ with $a\le D^{1/4}$ the conjugate has absolute value within
+$2079$ of $\exp(\pi\sqrt D/a)$ by \eqref{smd:eq:cusp}. For sufficiently large $D$ the
+largest and smallest of these values at any one $a$ have ratio less than two. Thus this
+part supplies at most $\floor{D^{1/4}}$ entries.
+
+For the remaining forms the positive logarithms of the moduli are at most
+$\pi D^{1/4}+O(1)$, and the negative logarithms have absolute value $O(\log D)$. For the
+latter bound, a reduced point with $\abs b<a$ differs horizontally from either
+order-three elliptic corner by at least $1/(2a)$. When $\abs b=a$ the vertical difference
+from the closer corner is
+\[
+ \frac{\abs{D-3a^2}}{2a(\sqrt D+\sqrt3\,a)}\gg D^{-1},
+\]
+since equality $D=3a^2$ in this case would give the imprimitive multiple of
+$[1,\pm1,1]$ or discriminant $-3$, and $a\le\sqrt{D/3}$. The triple zero of $j$ at the
+corners and the positive lower bound away from their neighbourhoods give
+$\abs j\gg D^{-3}$; see \cite[Lemma~11.6]{Bilu2022Trinomials}. Packing gaps of length
+$\log16$ into the resulting interval of logarithms gives the assertion.
+\end{proof}
+
+This bound concerns the method, not $s(\Delta)$ itself. The results of the next two
+subsections obtain larger exponents by replacing separated archimedean sizes with many
+conjugates sharing one residue at a small inert prime.
+
+\subsection{Class numbers and the inert-prime principle}\label{smd:sec:principle}
+{\raggedright\sources{grh_cm_sparse_equations; grh_cm_four_terms_and_prime_bias; grh_sparse_singular_moduli}}
+
+\begin{lemma}[Class numbers of orders]\label[lemma]{smd:lem:classnumber}
+\leavevmode
+\begin{enumerate}[label=\textup{(\alph*)}]
+\item Unconditionally, $h(\Delta)=D^{1/2+o(1)}$ as $D\to\infty$ through order
+discriminants. The implied lower bound is ineffective.
+\item \textup{(\stG)} For all order discriminants,
+\[
+ \sqrt D/\log\log(3D)\ll h(\Delta)\ll\sqrt D\,\log\log(3D).
+\]
+\end{enumerate}
+\end{lemma}
+
+\begin{proof}
+(a) In \eqref{smd:eq:classnumber} the unit index is at most three, and the product lies
+between $\varphi(f)/f$ and $\prod_{p\mid f}(1+1/p)$, both $f^{o(1)}$. Siegel's bound
+$h(d_K)\gg_\eta\abs{d_K}^{1/2-\eta}$ \cite{Siegel1935Classenzahl} and the elementary upper
+bound $h(d_K)\ll\sqrt{\abs{d_K}}\log(2\abs{d_K})$ give the claim.
+
+(b) Write $d=d_K$ and $\chi_d=(d/\cdot)$. By \eqref{smd:eq:classnumber} and the analytic
+class number formula, $h(\Delta)$ is $\sqrt D$ times a bounded positive factor times
+$L(1,\chi_d)\prod_{p\mid f}(1-\chi_d(p)/p)$. Put $y=(\log(3D))^6$. By
+\cref{src:thm:dgrh} the estimate
+$\sum_{p\le t}\chi_d(p)\log p\ll\sqrt t\log^2(3Dt)$ holds, and partial summation gives
+\[
+ \Bigl|\sum_{p>y}\frac{\chi_d(p)}p\Bigr|
+ \ll\frac{\log^2(3Dy)}{\sqrt y\log y}
+ +\int_y^\infty\frac{\log^2(3Dt)}{t^{3/2}\log t}\,\dd t\ll1 ;
+\]
+for the last inequality split $\log^2(3Dt)\le2\log^2(3D)+2\log^2t$ and use the choice of
+$y$. In the logarithm of the Euler product the terms of prime-power exponent at least two
+have bounded absolute sum, and $\sum_{p\mid f,\,p>y}1/p\le\log(2f)/(y\log y)$. Hence
+\[
+ \log\Bigl(L(1,\chi_d)\prod_{p\mid f}\bigl(1-\chi_d(p)/p\bigr)\Bigr)
+ =\sum_{\substack{p\le y\\p\nmid f}}\frac{\chi_d(p)}p+O(1)
+ \ge-\log\log y-O(1)
+\]
+by Mertens' estimate for the sum of reciprocals of primes. The Euler expansion at $1$
+follows by taking the limit from the right, which the displayed tail estimate justifies.
+This gives the lower bound, and the same argument with the signs reversed gives the upper
+bound.
+\end{proof}
+
+\begin{lemma}[Inert-prime principle]\label[lemma]{smd:lem:principle}
+Let $p\ge5$ be a prime which is inert in $K$ and does not divide $f$, and suppose that at
+a place above $p$ at least $h/2$ of the conjugates of discriminant $\Delta$ are units.
+Then $s(\Delta)\gg h/p$, with an absolute implied constant.
+\end{lemma}
+
+\begin{proof}
+By \cref{smd:lem:reduction} the unit conjugates reduce to at most $p/12+O(1)$ nonzero
+supersingular invariants, and conjugates with the same reduction lie in one multiplicative
+disk of relative depth at least $1$. Some such disk contains $\gg h/p$ distinct roots.
+A $t$-term polynomial has at most $\frac{p-1}{p-2}(t-1)\le2(t-1)$ roots there by
+\eqref{smd:eq:coarse}.
+\end{proof}
+
+\subsection{Growth of the minimum support under Dirichlet GRH}\label{smd:sec:growth}
+{\raggedright\sources{grh_cm_sparse_equations; grh_sparse_singular_moduli; grh_cm_four_terms_and_prime_bias; grh_cm_prime_applications}}
+
+\begin{theorem}[Growth of the minimum support; \stG]\label{smd:thm:growth}
+Uniformly over imaginary quadratic order discriminants $\Delta=-D$,
+\[
+ s(\Delta)\gg\frac{h(\Delta)}{(\log(2D))^2}
+ \gg\frac{\sqrt D}{(\log(2D))^2\log\log(3D)},
+ \qquad
+ \lim_{D\to\infty}\frac{\log s(\Delta)}{\log D}=\frac12 .
+\]
+\end{theorem}
+
+\begin{proof}
+First suppose $K\ne\Q(\sqrt{-3})$. On the units modulo $q=6D$ the quadratic characters
+attached to $K$ and to $\Q(\sqrt{-3})$ are distinct and nontrivial, since they are induced
+by different primitive characters. The simultaneous conditions $\chi_K(p)=-1$,
+$\chi_{-3}(p)=1$ specify a coset of a subgroup of index four. With \cref{src:thm:dgrh} as
+input, Theorem~1.4 of Lamzouri, Li and Soundararajan \cite{LamzouriLiSoundararajan2015Conditional} yields
+a prime $p\ll(\log(2D))^2$ in this coset; small moduli are absorbed in the absolute
+constant. This prime is coprime to $6D$, it is inert in $K$, and $p\equiv1\pmod3$. By
+\cref{smd:lem:reduction}(iii) the invariant $0$ is ordinary in characteristic $p$, whereas
+every conjugate reduces to a supersingular invariant. Hence every conjugate is a unit, and
+\cref{smd:lem:principle} gives $s(\Delta)\gg h/p\gg h/(\log(2D))^2$.
+
+For $K=\Q(\sqrt{-3})$ the bound follows from the stronger unconditional estimate of
+\cref{smd:prop:eisenstein} below. The second inequality is
+\cref{smd:lem:classnumber}(b). The limit follows from the lower bound, from
+$s\le h+1$ and from \cref{smd:lem:classnumber}.
+\end{proof}
+
+\begin{proposition}[The field $\Q(\sqrt{-3})$; \stU]\label[proposition]{smd:prop:eisenstein}
+For $f\ge2$,
+\[
+ s(-3f^2)\gg\frac{h(-3f^2)}{\log(2f)} .
+\]
+\end{proposition}
+
+\begin{proof}
+Let $\alpha$ be a singular modulus of discriminant $-D=-3f^2$. The complex tori of the
+principal lattices $\OO_f\subset\OO_K$ are linked by a cyclic isogeny of degree $f$, and
+the second has $j=0$. Pazuki's Theorem~1.1 \cite{Pazuki2016Modular} gives
+$h_{\mathrm{Weil}}(\alpha)\le9.204+12\log f$ for the absolute logarithmic Weil height. As
+$H_{-D}(0)\ne0$ is an integer,
+\[
+ \log\abs{H_{-D}(0)}\le h\,h_{\mathrm{Weil}}(\alpha).
+\]
+At an inert prime $p\nmid D$ the ring class field is unramified, so each nonunit root
+contributes at least one to $v_p(H_{-D}(0))$. The total of $\log p$ over the inert primes
+at which more than half the roots are nonunits is therefore at most
+$2h_{\mathrm{Weil}}(\alpha)$, and the primes dividing $6f$ contribute at most
+$\log(6f)$. On the other hand the primes $p\equiv2\pmod3$ up to $X$ have total
+$\log p$ asymptotic to $X/2$, by the prime number theorem for this fixed progression.
+Taking $X=C\log(2f)$ for a sufficiently large absolute constant $C$ leaves a prime
+$p\le X$, inert in $K$ and prime to $6f$, at which at least half the roots are units.
+Apply \cref{smd:lem:principle}.
+\end{proof}
+
+\subsection{Unconditional growth and near-maximal support}\label{smd:sec:uncond}
+{\raggedright\sources{grh_cm_sparse_equations; grh_sparse_singular_moduli; grh_cm_four_terms_and_prime_bias; grh_cm_prime_applications}}
+
+\begin{theorem}[Unconditional growth; \stU]\label{smd:thm:uncond}
+For every $\eps>0$ and every order discriminant $\Delta=-D$,
+\[
+ s(\Delta)\gg_\eps D^{\,1/2-1/(4\sqrt e)-\eps}.
+\]
+The exponent $1/2-1/(4\sqrt e)$ is approximately $0.348367$. The implied constant is
+ineffective. In particular each fixed support size occurs at only finitely many order
+discriminants, of arbitrary conductor.
+\end{theorem}
+
+\begin{proof}
+Enge's Theorem~1.2 gives $\log\abs{H_{-D}(0)}\ll h+\sqrt D\,\log^2(2D)$
+\cite{Enge2006Complexity}. Discard $D=3$. At an inert prime $p\nmid D$ at which more than
+$h/2$ roots are nonunits, the valuation $v_p(H_{-D}(0))$ is at least $h/2$, so each such
+prime costs at least $\tfrac12h\log2$ of this norm. By \cref{smd:lem:classnumber}(a) the
+number of these primes is $D^{o(1)}$.
+
+Apply Pollack's Theorem~1.1 \cite{Pollack2015Bounds} to the Kronecker character of
+discriminant $-D$, including its imprimitive Euler factors. For each fixed $\delta>0$
+there is $c(\delta)>0$ such that, for sufficiently large $D$, more than $D^{c(\delta)}$
+primes $p\le D^{1/(4\sqrt e)+\delta}$ have character value $-1$. Every such prime is inert
+in $K$ and coprime to $D$. After dropping $2$, $3$ and the $D^{o(1)}$ primes just counted,
+at least one remains. \Cref{smd:lem:principle} gives
+$s(\Delta)\gg h/D^{1/(4\sqrt e)+\delta}$. Choose $\delta<\eps$ and absorb the loss in
+$h=D^{1/2+o(1)}$ into the difference. Siegel's lower bound makes the constant ineffective.
+\end{proof}
+
+At two fixed primes the loss disappears almost entirely on an explicit set of
+discriminants of positive density.
+
+\begin{theorem}[Near-maximal support in two congruence families; \stU]\label{smd:thm:nearfull}
+Let $p\in\set{7,13}$ and let $\Delta$ be an order discriminant with $(\Delta/p)=-1$.
+Then $t=s(\Delta)$ satisfies
+\[
+ h(\Delta)\le t-1+\frac{p-1}{p-2}\bigl(1+\log_pt\bigr),
+\]
+so that $s(\Delta)=h(\Delta)+1-O(\log(2h(\Delta)))$. The set of order discriminants
+satisfying one of the two conditions has relative density $9/13$ among all order
+discriminants, counted once each in order of absolute value.
+\end{theorem}
+
+\begin{proof}
+The condition says that $p$ is inert in $K$ and prime to $f$. By \cref{smd:lem:reduction}
+all $h$ conjugates lie in one multiplicative disk of relative depth $1$ about a unit, and
+\eqref{smd:eq:digits} with $N=h$ is the displayed inequality. As $t\le h+1$, the additive
+loss is $O(\log(2h))$. Order discriminants are the negative integers congruent to $0$ or
+$1$ modulo $4$. The nonresidue conditions at $7$ and $13$ hold in proportions $3/7$ and
+$6/13$, independently by the Chinese remainder theorem, so their union has relative density
+$1-(4/7)(7/13)=9/13$.
+\end{proof}
+
+This is a near-equality for the minimum over all multiples of $H_\Delta$, of arbitrary
+degree. The density is that of the sufficient congruence conditions.
+
+\subsection{Orders with full support: a criterion and two dyadic families}\label{smd:sec:full}
+{\raggedright\sources{grh_cm_sparse_equations; grh_sparse_singular_moduli; grh_transfers_singular_moduli_and_symmetric_powers}}
+
+The equality $s(\Delta)=h(\Delta)+1$ means that \emph{every} choice of $h$ distinct
+nonnegative powers of a singular modulus $\alpha$ of discriminant $\Delta$ is a basis of
+$\Q(\alpha)$ over $\Q$; equivalently every coefficient of $H_\Delta$ is nonzero and no
+multiple of $H_\Delta$, of any degree, has fewer terms than $H_\Delta$. A single disk
+containing all conjugates gives a sufficient condition in terms of factorials.
+
+\begin{lemma}[Full-support criterion]\label[lemma]{smd:lem:criterion}
+Let $p$ be a prime and $b>1/(p-1)$ a rational number, and suppose that all $h$ conjugates
+of discriminant $\Delta$ lie in one multiplicative disk of relative depth $b$ at a place
+above $p$. Write $w(n)=bn-v_p(n!)$. If
+\begin{equation}\label{smd:eq:G1}
+ \max_{0\le u<h}w(u)<\min_{v\ge h}w(v),
+\end{equation}
+then $s(\Delta)=h+1$. Condition \eqref{smd:eq:G1} is equivalent to
+\begin{equation}\label{smd:eq:G2}
+ \sum_{t\in I}v_p(t)<b\,\abs I\qquad
+ \text{for every interval }I\subset\Z_{>0}\text{ of integers containing }h .
+\end{equation}
+It holds in particular when the sum of the valuations $v_p(t)$ over each of the intervals
+$[h-r+1,h]$ $(1\le r\le h)$ and $[h+1,h+r]$ $(r\ge1)$ is less than $br$.
+\end{lemma}
+
+\begin{proof}
+Condition \eqref{smd:eq:G1} says that $B_p(h,b)<h$, so by \cref{smd:lem:disk} a polynomial
+with at most $h$ terms cannot vanish at $h$ points of the disk; the opposite inequality is
+\eqref{smd:eq:trivial}. For $u<h\le v$,
+$w(v)-w(u)=\sum_{t=u+1}^{v}(b-v_p(t))$, and the intervals $[u+1,v]$ are exactly those
+containing $h$. Under the last condition one has $w(u)<w(h)$ for $u<h$ and
+$w(h)<w(v)$ for $v>h$.
+\end{proof}
+
+\begin{theorem}[Two dyadic families; \stU]\label{smd:thm:dyadic}
+\leavevmode
+\begin{enumerate}[label=\textup{(\alph*)}]
+\item For every integer $m\ge1$, the discriminant $\Delta=-2^{\,6\cdot7^{m-1}}$ has
+$h(\Delta)=2^{\,3\cdot7^{m-1}-2}$ and $s(\Delta)=h(\Delta)+1$.
+\item For every integer $k\ge2$, the discriminant $\Delta=-2^{\,2+6\cdot7^{k-1}}$ has
+$h(\Delta)=2^{\,3\cdot7^{k-1}-1}$ and $s(\Delta)=h(\Delta)+1$.
+\end{enumerate}
+For instance $s(-2^{42})=524{,}289$, $s(-2^{44})=1{,}048{,}577$ and
+$s(-2^{294})=2^{145}+1$.
+\end{theorem}
+
+\begin{proof}
+In both cases $\Delta=-4f^2$ is the discriminant of the order of conductor $f=2^n$ in
+$\Q(i)$, with $n=3\cdot7^{m-1}-1$ in (a) and $n=3\cdot7^{k-1}$ in (b). By
+\eqref{smd:eq:classnumber} its class number is $h=f/2$: the Gaussian field has class
+number one, the unit index is two, and $2$ ramifies. The prime $7$ is inert in $\Q(i)$
+and coprime to $f$. By \cref{smd:lem:reduction} all $h$ distinct conjugates lie in the
+disk $6(1+7\OO)$ of a common unramified completion. Put
+$W(n)=n-v_7(n!)=(5n+S_7(n))/6$. By \cref{smd:lem:criterion} with $p=7$ and $b=1$ it
+suffices to show that, for every $r\ge1$, the sum of the $7$-adic valuations over each of
+the intervals $[h-r+1,h]$ (when $r\le h$) and $[h+1,h+r]$ is strictly less than $r$.
+
+(a) Write $M=7^m$. Because $2^3=1+7$, raising to the power $7^{m-1}$ gives
+$4h\equiv1\pmod M$. First take $1\le r<M/5$. The elements of either interval have the
+form $h+j$ with $\abs j\le r$. The nonzero integer $1+4j$ has $\abs{1+4j}\le4r+1<M$, so
+$v_7(h+j)=v_7(1+4j)$. In either arithmetic progression of $r$ consecutive values of $j$
+there are at most $r/7^a+1$ multiples of $7^a$ among the values $1+4j$. Summing over
+$a\le\log_7(4r+1)$ bounds the valuation sum by
+\[
+ r/6+\log_7(4r+1)<r ,
+\]
+since $4r+1\le5^r$ and $5^6<7^5$. If $r\ge M/5$, direct counting of multiples in the
+original interval gives the bound $r/6+\log_7(h+r)$. When $r\le h$,
+\[
+ \log_7(h+r)\le\log_7(2h)<M/6\le5r/6 ,
+\]
+where $2^{18}<7^7$ implies $(3/7)\log_72<1/6$. When $r>h$, use $h+r<2r\le5^r$ and
+$\log_75<5/6$.
+
+(b) Write $Q=7^k\ge49$. As before $2h=2^n\equiv1\pmod Q$. First let $2r+1<Q$. Then
+$v_7(h+j)=v_7(1+2j)$ for $1\le j\le r$, because twice the first number agrees with the
+second modulo $Q$ and $0<1+2j<Q$; similarly $v_7(h-j)=v_7(1-2j)$ for $0\le j<r$. Each of
+the two sums of valuations is at most $v_7((2r+1)!)$, the only repeated absolute value in
+the second sum being $1$. This bound is at most $(2r+1)/6<r$. For $r\ge(Q-1)/2$ use
+$S_7(i)\le6(1+\log_7h)$ for $0\le i\le h$: both $W(h+r)-W(h)$ and, for $r\le h$,
+$W(h)-W(h-r)$ are at least $(5r-6(1+\log_7h))/6$. Since $\log_7h<n/2=3Q/14$ and
+$5(Q-1)/2>6+9Q/7$ for $Q\ge49$, this is positive. The two ranges cover every $r\ge1$.
+\end{proof}
+
+The case $k=2$ of (b) has $h=2^{20}$: every coefficient of this class polynomial of degree
+$1{,}048{,}576$ is nonzero, and multiplying it by a polynomial of any degree never reduces
+its number of terms.
+\smdcert{a numerical check of the factorial inequalities for the first four members of
+family (a), \artifact{grh_sparse_singular_moduli/checks/check_exact_family.py}.}
+
+\subsection{Full support for Gaussian prime conductors}\label{smd:sec:gaussian}
+{\raggedright\sources{grh_transfers_singular_moduli_and_symmetric_powers; grh_sparse_singular_moduli}}
+
+For a rational prime $\ell$ let $j_\ell$ be a singular modulus with endomorphism order
+$\Z+\ell\Z[i]$, of discriminant $-4\ell^2$. Its degree is $h=(\ell-\sigma)/2$ for
+$\ell$ odd, where $\sigma=\chi_{-4}(\ell)=\pm1$, since $\Z[i]$ has class number one and the
+unit index is two.
+
+\begin{theorem}[Gaussian prime conductors; \stU]\label{smd:thm:gaussian}
+The primes $\ell$ with $s(-4\ell^2)=h(-4\ell^2)+1$ form a set of lower relative
+natural density greater than $0.999818260107372245$ among all primes.
+\end{theorem}
+
+The proof places all conjugates in common multiplicative disks at $2$, $3$ and $7$, of
+relative depths $4$, $3$ and $2$, and applies \cref{smd:lem:criterion} at each of the
+three primes. The exact density of the full-support set is not determined.
+
+\begin{lemma}[Common disks]\label[lemma]{smd:lem:gaussdisks}
+Let $\ell\notin\set{2,3,7}$ be prime. In a suitable finite extension of $\Q_p$ with
+valuation ring $\OO$, the $h$ conjugates of $j_\ell$ satisfy
+\[
+ \frac{j}{1728}\in1+7^2\OO\quad(p=7),\qquad
+ \frac{j}{1728}\in1+3^3\OO\quad(p=3),\qquad
+ \frac{j}{j'}\in1+2^4\OO\quad(p=2)
+\]
+for any two conjugates $j,j'$ in the last case.
+\end{lemma}
+
+\begin{proof}
+Every conjugate is the invariant of a quotient of $E_0\colon y^2=x^3-x$ by a cyclic
+subgroup of order $\ell$. Indeed its CM lattice corresponds to an invertible ideal $I$ of
+the order. Passing from $I$ to $I\Z[i]$ gives index $\ell$, as follows locally from
+invertibility. The extended lattice is principal, so the resulting curve has invariant
+$1728$, and the dual isogeny gives the desired quotient; see \cite{Sutherland2012Isogeny}
+for this lattice description.
+
+\emph{The primes $3$ and $7$.} At $p=3,7$ the curve $E_0$ has good reduction. A finite
+unramified extension contains all its $\ell$-torsion, since the torsion of order prime to
+$p$ is finite \'etale on the good model. Over its integer ring $\OO$, the quotient by each
+cyclic subgroup is an elliptic curve with good reduction, and its reduction is
+supersingular because it is isogenous to the supersingular reduction of $E_0$. At $p=7$
+use a good integral short equation $y^2=x^3+Ax+B$ of the quotient. The Hasse invariant is
+the coefficient of $x^6$ in $(x^3+Ax+B)^3$, which is $3B$. Thus $7\mid B$. The denominator
+$4A^3+27B^2$ is a unit, and
+\[
+ \frac{j}{1728}=\frac{4A^3}{4A^3+27B^2}=1-\frac{27B^2}{4A^3+27B^2}\in1+7^2\OO .
+\]
+At $p=3$ complete the square in a good integral equation to get
+$y^2=x^3+a_2x^2+a_4x+a_6$. The Hasse invariant is the coefficient of $x^2$ in this cubic,
+so $3\mid a_2$. Translating the $x$-coordinate by $-a_2/3$ gives an integral short equation
+with unit discriminant, and the same formula now gives $j/1728\in1+3^3\OO$, the division
+by $1728$ being taken in the local field at $3$.
+
+\emph{The prime $2$.} Let $v=v_2$. For any two cyclic subgroups $H,J$ of $E_0$ of odd
+order $\ell$ we claim
+\begin{equation}\label{smd:eq:G0}
+ v\bigl(j(E_0/H)/j(E_0/J)-1\bigr)\ge4 .
+\end{equation}
+The integral invariant $1728$ gives $E_0$ potentially good reduction. Take a finite
+extension of $\Q_2$ over which $E_0$ has good reduction and which contains
+$E_0[3\ell]$. Write $x=r+u^2X$ for the change from the original short equation to a good
+integral Weierstrass equation with coordinate $X$. Its discriminant is a unit, while the
+original discriminant is $64$, so $v(u^2)=1$. Every nonzero odd-torsion point under
+consideration has integral $X$: reduction is injective on prime-to-$2$ torsion, so its
+reduction is an affine point of the good model. In particular, for a fixed nonzero
+$3$-torsion point $T$ and every nonzero $Q\in H\cup J$ we have $v(x_Q-x_T)\ge1$.
+
+The $3$-division polynomial gives $3x_T^4-6x_T^2-1=0$, whose roots are units. For
+$y=5x_T^2-3$ this yields $3y^2-12y-88=0$. The Newton polygon has the single slope $-3/2$,
+so $v(y)=3/2$. Since $x_Q=x_T+2z$ with $z$ integral, $v(x_Q^2-x_T^2)\ge2$. For
+$g(x)=x(5x^2-3)$ it follows that
+\[
+ v(g(x_T))=3/2,\qquad v\bigl(g(x_Q)-g(x_T)\bigr)\ge2 .
+\]
+V\'elu's quotient model is $Y^2=X^3+A_HX+B_H$, where
+\[
+ A_H=-1-10\!\!\sum_{Q\in(H\setminus\{0\})/\{\pm1\}}\!\!(3x_Q^2-1),\qquad
+ B_H=-14\!\!\sum_{Q\in(H\setminus\{0\})/\{\pm1\}}\!\!g(x_Q);
+\]
+these are the short-equation specialization of the formulas of
+\cite[Theorem~1]{Miret2007Generalization}. In particular $A_H$ is a unit congruent to $-1$
+modulo $2$ and $v(B_H)\ge5/2$. The sums for $H$ and $J$ have the same number
+$(\ell-1)/2$ of terms, all congruent to $g(x_T)$ modulo $4$ in the second sum. Thus
+$v(B_H-B_J)\ge3$ and $v(B_H+B_J)=v(B_H-B_J+2B_J)\ge3$, which gives
+$v(B_H^2-B_J^2)\ge6$.
+
+Put $s_H=27B_H^2/(4A_H^3)$. Then $v(s_H)\ge3$ and $v(s_H-s_J)\ge4$: replacing $B_H^2$ by
+$B_J^2$ costs at least four in valuation after division by $4$, while
+$v(A_H^{-3}-A_J^{-3})\ge1$. The identity $j(E_0/H)=1728/(1+s_H)$ proves
+\eqref{smd:eq:G0}.
+\end{proof}
+
+Fixing any one of the quotient invariants $j_*$ therefore puts all $h$ conjugates in
+$j_*(1+16\OO)$; the centre is algebraic, which \cref{smd:lem:disk} allows.
+
+\begin{remark}[Sharpness of the depth at $2$]\label[remark]{smd:rem:depth2}
+The depth four in \eqref{smd:eq:G0} is sharp when the assertion ranges over all odd prime
+conductors. For $\ell=3$ let $Y=j/1728-1$. Substituting $A=9-30x_T^2$,
+$B=-14x_T(5x_T^2-3)$ into the formula for $j$ and eliminating by
+$3x_T^4-6x_T^2-1=0$ gives the quadratic $27Y^2-2399040Y-18593344$. Its discriminant has
+$2$-adic valuation eight, so its two roots differ by an element of valuation four, and
+both $1+Y$ are units. The corresponding pair attains equality in \eqref{smd:eq:G0}.
+\smdcert{the elimination, and the corresponding check for the isogenies of degree five,
+\artifact{grh_transfers_singular_moduli_and_symmetric_powers/quotient_check.py}.}
+\end{remark}
+
+\begin{proof}[Proof of \cref{smd:thm:gaussian}]
+Discard $\ell=2,3,7$. For $(p,b)\in\set{(2,4),(3,3),(7,2)}$ say that $\ell$ \emph{passes
+the test at $p$} if \eqref{smd:eq:G2} holds for $h=(\ell-\sigma)/2$ with these $p$ and
+$b$. By \cref{smd:lem:gaussdisks,smd:lem:criterion}, a prime passing at least one of the
+three tests has $s(-4\ell^2)=h+1$.
+
+\emph{Finite densities.} Fix $\sigma$. For lengths $\abs I\le R$, and omitting the
+finitely many $h<R$, the test \eqref{smd:eq:G2} depends only on $h\bmod p^{bR}$. For an
+odd $p$ the admissible classes of $h$ modulo $p^a$ are those with $p\nmid2h+\sigma$. For
+$p=2$ they are exactly the even classes: $\ell=2h+\sigma\equiv\sigma\pmod4$, and all such
+classes correspond to invertible classes of $\ell$ modulo $2^{a+1}$ with that sign. In all
+three cases each admissible class has conditional density $1/\varphi(p^a)$, by the prime
+number theorem in arithmetic progressions. Hence the set of primes of sign $\sigma$
+satisfying \eqref{smd:eq:G2} for all intervals of length at most $R$ has a relative
+density $d_{p,R}$. Reflection $h\mapsto-h$ and reversal of intervals show that $d_{p,R}$
+is the same for either $\sigma$.
+
+\emph{The tail.} If an interval of length $r$ violates \eqref{smd:eq:G2} and its greatest
+valuation is $\mu$, counting multiples of $p^a$ for $1\le a\le\mu$ bounds the sum of
+valuations by $r/(p-1)+\mu$. Consequently some $h+j$ with $\abs j\le r-1$ is divisible by
+\[
+ q_r=p^{\ceil{(b-1/(p-1))r}} .
+\]
+For fixed $r$ the conditional upper density of this event is at most
+$u_r=(2r-1)/\varphi(q_r)$. To sum these bounds, let $X$ be the cutoff for $\ell$. For
+$q_r\le\sqrt X$ the Brun--Titchmarsh inequality \cite{Montgomery1973Large} bounds the
+number of primes in each relevant invertible residue class by
+$O(X/(\varphi(q_r)\log X))$, with an absolute constant. The modulus is $q_r$ for odd $p$
+after dropping the condition modulo $4$, and $2q_r$ for $p=2$, because
+$\ell=2h+\sigma$; in the latter case $2q_r\le2\sqrt X$ still gives
+$\log(X/(2q_r))\gg\log X$. Since only $\ell=p$ can occupy a noninvertible class, dropping
+that prime and dividing by the number of primes of each sign gives a uniform tail bounded
+by an absolute multiple of $\sum_{r>T}u_r$. For $q_r>\sqrt X$, a positive multiple of
+$p^{\floor{\log_p\sqrt X}}$ occurs among the $h+j$. The inequality
+$(b-1/(p-1))r\le\log_p(h+r)$ forces $r=O(\log X)$: when $r>h$ it fails, since
+$h+r<2r$ and $2r\le2^r<p^{(b-1/(p-1))r}$, and otherwise $h+r\ll X$. There are
+$O(\sqrt X\log X)$ possibilities for a multiple and an offset, which is negligible
+compared with the number of primes. Taking limits at fixed $T$ and then $T\to\infty$
+proves that the density $d_p$ of primes passing the test at $p$ exists and that
+\begin{equation}\label{smd:eq:G3}
+ 0\le d_{p,R}-d_p\le\sum_{r>R}u_r .
+\end{equation}
+
+\emph{Exact certificate.} The finite density is computed as follows. Start with the
+$p-1$ admissible classes modulo $p$. In a class modulo $p^a$, evaluate all relevant
+valuations truncated at $a$. If any interval sum already reaches $br$, discard the class.
+If no valuation is truncated, accept the class. Otherwise visit all $p$ lifts. The process
+terminates by depth $bR$, since a truncated term at that depth already violates a length
+at most $R$ containing that term and the centre. To bound \eqref{smd:eq:G3}, group its
+terms in successive blocks of length $p-1$: for $r\ge R+1$ the ratio
+\[
+ \frac{u_{r+p-1}}{u_r}=\frac{2r+2p-3}{2r-1}\,p^{-(b(p-1)-1)}
+\]
+is decreasing, and a geometric sum bounds the whole tail by its first block. All
+operations use rational arithmetic.
+\begin{center}
+\begin{tabular}{cclc}
+\toprule
+$p$ & $R$ & $d_{p,R}$ & Tail upper bound\\
+\midrule
+2&25&$65963232382760376856543/75557863725914323419136$ &$3.879\cdot10^{-22}$\\
+3&16&$68736524642595367189/72945992754341572806$ &$1.694\cdot10^{-19}$\\
+7&10&$9528160153068835/9770481587462694$ &$5.089\cdot10^{-17}$\\
+\bottomrule
+\end{tabular}
+\end{center}
+
+\emph{The union.} At fixed sign the three finite congruence tests are independent, by the
+Chinese remainder theorem and the prime number theorem in progressions. Passing to the
+limits using \eqref{smd:eq:G3}, the density of primes passing at least one test is
+$d=1-(1-d_2)(1-d_3)(1-d_7)$. It is the same for both signs and satisfies
+\[
+ 0.9998182601073722452943<d<0.9998182601073722456678 .
+\]
+Every prime counted by $d$ gives full support.
+\end{proof}
+
+\smdcert{\artifact{grh_transfers_singular_moduli_and_symmetric_powers/check_density.py},
+with output
+\artifact{grh_transfers_singular_moduli_and_symmetric_powers/checks/check_density.txt}.}
+
+\begin{example}[Individual conductors]\label[example]{smd:ex:conductors}
+For $\ell=197$ the degree is $98$. The one-term interval $\set{98}$ fails
+\eqref{smd:eq:G2} at $7$, but the test at $3$ is passed: the singleton has valuation
+$0$, and every interval of length $r\ge2$ through $98$ has valuation sum at most
+$r/2+\log_3(98+r)<3r$, an inequality which holds at $r=2$ and persists since
+$3^{5r/2}$ grows faster than $98+r$ at every step. Thus any $98$ distinct nonnegative
+powers of $j_{197}$ form a basis of $\Q(j_{197})$.
+
+For $\ell=107$ the degree is $54$. Here $3^3\mid54$ rules out \eqref{smd:eq:G2} at $3$,
+while $7\nmid54$, and for $r\ge2$ one has $r/6+\log_7(54+r)<2r$. Every $54$ distinct
+powers of $j_{107}$ form a basis.
+
+The conductor $15877$ shows the contribution of the prime $2$. It is prime and
+$h=7938=2\cdot3^4\cdot7^2$, so both odd-prime tests fail on the singleton $\set h$. The
+largest sums of $2$-adic valuations of intervals through $7938$ of lengths $1,2,3,4$ are
+$1,1,9,9$, each smaller than four times the length. For every $r\ge5$ the sum is at most
+$r+\log_2(7938+r)<4r$, since $7938+5<2^{15}$ and the inequality persists on increasing
+$r$. Thus any $7938$ distinct nonnegative powers of this singular modulus form a basis.
+\end{example}
+
+\begin{remark}[Conductors up to $100{,}000$]\label[remark]{smd:rem:missed}
+Among the $9{,}589$ primes $\ell\le100{,}000$ other than $2,3,7$, exactly $9{,}587$ pass
+at least one test, and the two odd primes alone certify $9{,}575$; for a given $h$ the
+direct check of \eqref{smd:eq:G1} can stop as soon as $n(b-1/(p-1))>bh$. The first conductor missed by all three tests is $\ell=42{,}337$,
+with $h=21{,}168=16\cdot27\cdot49$: the singleton $\set h$ defeats all three tests. The
+other is $\ell=84{,}673$, with $h=42{,}336$. The exact least support in these two cases is
+not determined.
+\smdcert{\artifact{grh_transfers_singular_moduli_and_symmetric_powers/checks/conductors.txt}.}
+\end{remark}
+
+\subsection{Powers of singular moduli with exact support seven}\label{smd:sec:powered}
+{\raggedright\sources{grh_transfer_bridges_2026-11-25}}
+
+For an algebraic number $\gamma$ write $s(\gamma)$ for the least number of nonzero terms
+of a nonzero rational polynomial vanishing at $\gamma$. The higher-depth case of
+\cref{smd:thm:confluent} gives exact values beyond the range of \cref{smd:thm:five}.
+
+\begin{theorem}[Powered singular moduli; \stU]\label{smd:thm:powered}
+Let $\alpha$ be any singular modulus of discriminant $-87$ and $\beta$ any singular modulus
+of discriminant $-152$. Then, for every integer $t\ge1$,
+\[
+ s(\alpha^{63t})=7,\qquad s(\beta^{182t})=7 .
+\]
+The exponents and rational coefficients of the annihilating polynomials are unrestricted.
+\end{theorem}
+
+\begin{proof}
+Both ring class polynomials have degree six; they are the certified polynomials of
+\cref{smd:sec:sextics}.
+
+In $A=\Z_{(2)}[X]/(H_{-87})$, exact reduction gives
+\[
+ x^{63}\equiv1+16(x+x^2+x^3)\pmod{32A}.
+\]
+Thus $x^{63}=1+16D_0$ with $D_0\bmod2=x+x^2+x^3$. The six columns
+$1,D_0,\dots,D_0^5$, represented with entries $0,1$ in the power basis, have integer
+determinant $-1$. They are independent modulo $2$, and $6<2^4$. By
+\cref{smd:thm:confluent} with $p=2$, $\sigma=4$ and $m=63$, any six distinct powers of $x$
+with exponents divisible by $63$ are linearly independent.
+
+Likewise, in $\Z_{(3)}[X]/(H_{-152})$,
+\[
+ x^{182}\equiv26+9(2x^2+x^3+2x^5)\pmod{27A}.
+\]
+For $D_0=(x^{182}-26)/9$ the six columns $1,D_0,\dots,D_0^5$ have the following
+representative matrix modulo $3$:
+\[
+ \begin{pmatrix}
+ 1&0&2&2&0&0\\
+ 0&0&2&0&2&2\\
+ 0&2&2&1&1&2\\
+ 0&1&0&0&0&0\\
+ 0&0&0&0&2&1\\
+ 0&2&1&2&0&1
+ \end{pmatrix}.
+\]
+Its integer determinant is $-2$, which is nonzero modulo $3$, and $6<3^2$.
+
+For either powered number, a rational relation with at most six terms would select at
+most six such powers, and a smaller dependent set could be enlarged to six distinct
+exponents, contradicting the independence just established. On the other hand the number
+lies in a six-dimensional $\Q$-algebra, so seven of its powers are dependent. This gives
+support exactly seven. Replacing $63$ or $182$ by a positive multiple retains the
+argument, since the exponents remain divisible by $63$, respectively $182$. The modular
+powers were verified both by polynomial multiplication and by an independently written
+basis-shift recurrence, and the determinants with integer arithmetic.
+\end{proof}
+
+\smdcert{coefficients and certificates
+\artifact{grh_transfer_bridges_2026-11-25/checks/confluent_certificates.json}, where the
+polynomials coincide with those of
+\artifact{grh_sparse_singular_moduli/checks/five_small_witnesses.json}; checker
+\artifact{grh_transfer_bridges_2026-11-25/checks/check_confluent_refinement.py}, with
+output \artifact{grh_transfer_bridges_2026-11-25/evidence/confluent_replay.txt}.}
+
+The theorem does not give $s(-87)=7$ or $s(-152)=7$: a six-term relation for the original
+singular modulus could involve several different residue classes of exponents, and
+excluding it requires an exhaustive finite cover of all residue patterns, including
+repeated residues, as in \cref{smd:sec:sextics}.
+
+\subsection{Open questions}\label{smd:sec:open}
+{\raggedright\sources{grh_sparse_singular_moduli; grh_cm_sparse_equations; grh_transfers_singular_moduli_and_symmetric_powers; grh_transfer_bridges_2026-11-25}}
+
+\begin{question}[Six terms]\label{smd:q:six}
+Does every singular modulus of degree $h\ge6$ require at least seven terms, that is, does
+$h(\Delta)\ge6$ imply $s(\Delta)\ge7$? In particular, are $s(-87)$ and $s(-152)$ equal to
+seven? \Cref{smd:thm:powered} settles the relations whose exponents lie in one residue
+class modulo $63$, respectively $182$, and \cref{smd:ex:4075} gives $s=7$ for one sextic
+order. A global statement would need, in addition to a
+finite residue cover for the low-degree orders, a large-discriminant reduction of the
+kind supplied by \cref{smd:prop:global} for five terms. More generally, is there a uniform
+larger threshold?
+\end{question}
+
+\begin{question}[A fixed fraction of the class number]\label{smd:q:fraction}
+Is $s(\Delta)\ge c\,h(\Delta)$ for an absolute constant $c>0$ and every order? The
+argument of \cref{smd:thm:growth} loses a factor of order $p$ when the conjugates occupy
+different supersingular residues, and \cref{smd:thm:nearfull} gives a ratio tending to
+one only on the family of density $9/13$.
+\end{question}
+
+\begin{question}[Gaussian prime conductors]\label{smd:q:density}
+Is the relative density of primes $\ell$ with $s(-4\ell^2)=h+1$ equal to one? What is
+$s(-4\ell^2)$ for $\ell=42{,}337$ and $\ell=84{,}673$? At these conductors all three
+first-difference tests fail at the central integer. A tied coefficient valuation leaves
+room for a nonzero generalized Vandermonde determinant, and its leading residue for the
+actual CM points is a more precise target than the valuations of the factorials alone.
+\end{question}
+
+\begin{question}[Other CM isogeny classes]\label{smd:q:isogeny}
+Can the common-disk argument of \cref{smd:lem:gaussdisks} be extended to other CM isogeny
+classes? The proof uses a model with good reduction over an unramified field, an isogeny
+of degree prime to the residue characteristic, and explicit control of the local
+coordinate of every quotient; the extra depth at $3$ comes from normalizing by $1728$
+before taking logarithms.
+\end{question}

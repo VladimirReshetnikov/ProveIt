@@ -1,0 +1,106 @@
+\section{Introduction}\label{sec:intro}
+
+\subsection{The input and the two questions}
+
+Throughout, the input theorem is \cref{src:thm:dgrh}: the Riemann hypothesis for $\zeta(s)$
+and for every Dirichlet $L$-function, in the form exported by the Lean development \repo\ at
+the commit named in \cref{sec:src}. We refer to it as Dirichlet GRH. The article does not
+re-verify it. Every result below that depends on it says so.
+
+Two questions organize the material. The first is what Dirichlet GRH settles outside its own
+statement, either through published theorems that assume it or through new arguments. The
+second is which parts of its proof can be reused. \Cref{src:sec:mechanism} describes that
+proof as the reports read it: a comparison of two bounds for the same covolume, a spanning
+statement, a twisting step that selects torsion points with controlled valuations, and a
+final analytic step that turns a one-sided bound for a smoothed sum over primes into the
+absence of zeros. Each of these ingredients gives rise to one or more sections.
+
+\subsection{Status of the results}
+
+Three kinds of statement occur, and the optional argument of each theorem says which one it
+is.
+\begin{itemize}[leftmargin=2em]
+\item \emph{\stU.} The statement is proved without any hypothesis on zeros. All of
+  Parts~IV and~V, and most of Part~VI, are of this kind.
+\item \emph{\stG.} The proof uses \cref{src:thm:dgrh} and nothing else that is unproved.
+\item \emph{\stR.} The statement is an equivalence or an implication between a Riemann
+  hypothesis and an explicit inequality, usually a one-sided bound for a weighted count of
+  rational primes. The inequality is not proved. No result of this kind establishes a new
+  Riemann hypothesis, Artin's primitive-root conjecture, or any other named conjecture.
+\end{itemize}
+Finite computations enter several proofs. Where a result rests on one, the statement says
+so and names the delivered file that records it, relative to the directory
+\code{Research} of the repository that holds this article. Nothing was recomputed for the
+merge, and the mathematical claims are those of the reports.
+
+\subsection{Contents}
+
+\paragraph{Part I: the input and the analytic engine.}
+\Cref{sec:src} states the input and the architecture of its proof, and proves the general
+comparison lemmas that any transfer must satisfy. \Cref{sec:ana} contains the analytic step
+in the generality needed later. Its main statement is the one-sided test
+\cref{ana:thm:onesided}; \cref{ana:thm:primeonly} removes prime powers, and
+\cref{ana:thm:window} gives the auxiliary averaging window. The section also treats
+detectors that need only a bound in mean, tests on sparse sets of scales and of twists, and
+the question of what an averaged bound recovers pointwise.
+
+\paragraph{Part II: nonabelian zero detection.}
+\Cref{sec:nab} reduces the Riemann hypothesis for the Dedekind zeta function of an arbitrary
+Galois extension of $\Q$ to one inequality over rational primes, given Dirichlet GRH
+(\cref{nab:thm:sylow}). The main tool is a domination of zero multiplicities by Heilbronn
+characters, \cref{nab:thm:heilbronn}, which avoids Artin's holomorphy conjecture. The section
+also determines which Frobenius weights can serve as detectors and proves that weights
+depending only on a fixed congruence cannot (\cref{nab:thm:periodic}). \Cref{sec:grp} makes
+the reduction explicit for particular groups and fields, with optimal detectors in several
+cases, and \cref{sec:hec} treats $L$-functions of degree two: the cubic field of discriminant
+$-23$, dihedral conductors $47$ and $71$, class-group and Gaussian Hecke characters, and
+symmetric powers.
+
+\paragraph{Part III: consequences of Dirichlet GRH.}
+\Cref{sec:zer} contains statements about zeros, Euler products at the critical line and
+prime races, including the classification of abelian fields in Zhao's question
+(\cref{zer:thm:zhao}). \Cref{sec:dir} collects arithmetic consequences. \Cref{sec:cls} proves
+that the known lists of imaginary quadratic fields of class-group exponent six and seven are
+complete (\cref{cls:thm:six,cls:thm:seven}). \Cref{sec:smd} studies the least number of terms
+of a polynomial that vanishes at a singular modulus; its classification of equations with at
+most five terms (\cref{smd:thm:five}) is unconditional, and Dirichlet GRH enters only in a
+growth estimate (\cref{smd:thm:growth}).
+
+\paragraph{Part IV: combinatorial transfers.}
+The source proof uses additive constraints on exponents to exclude multiplicative patterns.
+\Cref{sec:gpp,sec:gpi} apply the same idea to sets without three-term geometric progressions:
+over polynomial rings, where a published density conjecture is disproved
+(\cref{gpp:thm:counterexample}), and over the integers and the ideals of a number field,
+where several questions of McNew are answered (\cref{gpi:thm:integer-gap,gpi:thm:beta-alpha}).
+\Cref{sec:gra} concerns the valuation of the number of spanning trees in towers of graphs,
+and optimal signings of cycle graphs.
+
+\paragraph{Part V: local transfers.}
+The twisting step of the source proof chooses a root of unity at which finitely many $p$-adic
+power series keep a prescribed valuation. \Cref{sec:tors} proves the selection theorem with
+the optimal bound on the order of the root (\cref{tors:thm:selection}), and \cref{sec:cost}
+proves the matching lower bounds: the exact cost of defeating every such choice
+(\cref{cost:thm:minimax}) and its dependence on the coefficient field. \Cref{sec:lub} proves
+sharp precision statements for branches of Lubin--Tate formal groups
+(\cref{lub:thm:pole}).
+
+\paragraph{Part VI: the arithmetic interface.}
+\Cref{sec:sel} states what the Selmer-group argument of the source proof requires of a
+Galois representation, proves the resulting obstructions (\cref{sel:thm:smith}), and compares
+the modules that occur with standard Galois cohomology. \Cref{sec:spn} treats the spanning
+statement, integral frames, the auxiliary characters of the twisting step, and the exact
+greatest common divisor of the cyclotomic annihilator witnesses (\cref{spn:thm:gcd}).
+
+\subsection{How the reports were merged}
+
+The reports were written in sequence, and later ones often repeat, sharpen, correct or
+answer earlier ones. Each result appears here once. When several reports prove the same
+statement, one proof is kept. When a result follows from another result of the collection
+whose hypotheses are no stronger, it is omitted, or kept as a corollary or an example if it
+carries an explicit constant or a worked instance. When a later report answers a question
+of an earlier one, the answer is stated and the question is dropped; each section ends with
+the questions that remain open. Descriptions of the source proof, which most reports
+contain, are replaced by \cref{sec:src}. A line under each subsection heading names the
+reports it is drawn from, and the tables in the directory \code{provenance} beside this
+article list, for every section of every report, where it went and, for each omitted
+result, the result that supersedes it.

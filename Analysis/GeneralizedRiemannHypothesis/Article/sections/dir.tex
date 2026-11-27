@@ -1,0 +1,2811 @@
+% A ragged line listing delivered files (the paths are unbreakable).
+\providecommand{\dirfiles}[1]{\par\smallskip\noindent
+  {\footnotesize\raggedright\emph{Files:} #1.\par}\smallskip}
+
+\section{Direct arithmetic consequences of Dirichlet GRH}\label{sec:dir}
+
+Throughout this section the input theorem \cref{src:thm:dgrh} is used as a statement
+without hypotheses: the Riemann zeta function and every Dirichlet $L$-function
+$L(s,\chi)$, of any modulus and primitive or not, have no zeros in $\Re s>1/2$.
+The results are of two kinds. Some follow by substituting the input theorem for the
+analytic hypothesis of a published conditional theorem; each of these is stated once,
+with the published theorem it rests on. The others require an additional argument,
+which is given in full. A result marked ``\stG'' depends on \cref{src:thm:dgrh};
+a result marked ``\stU'' does not. Several results use only the zeta case of the input
+theorem, the classical Riemann hypothesis; this is said where it applies.
+
+Logarithms are natural. For coprime integers $a,q$ with $q\ge1$ we write $P(a,q)$ for
+the least prime congruent to $a$ modulo $q$, and for an odd prime $p$ we write $n(p)$
+for the least positive integer that is not a square modulo $p$. For a fundamental
+discriminant $D$, $\chi_D$ is the primitive Kronecker character and $h(D)$ the class
+number of $\Q(\sqrt D)$.
+
+\subsection{Abelian fields and consequences through published theorems}
+\label{dir:sec:published}
+\sources{grh_transfer_analysis; grh_transfer_analysis_2026-11-25; grh_lean_transfer_analysis; grh-transfer; grh-lean-transfers}
+
+For a finite abelian extension $K/\Q$, class field theory attaches a finite group
+$X_K$ of Dirichlet characters, the characters of $\Gal(K/\Q)$ viewed through the
+Kronecker--Weber theorem. For $\chi\in X_K$ let $\chi^*$ be the primitive character
+inducing $\chi$.
+
+\begin{proposition}[Abelian Dedekind zeta functions; \stG]\label{dir:prop:abelian}
+For every finite abelian extension $K/\Q$, every zero of $\zeta_K(s)$ in
+$0<\Re s<1$ has real part $1/2$.
+\end{proposition}
+
+\begin{proof}
+The factorization
+\begin{equation}\label{dir:eq:abelian}
+ \zeta_K(s)=\prod_{\chi\in X_K}L(s,\chi^*)
+\end{equation}
+holds for $\Re s>1$ by comparison of Euler factors and extends by meromorphic
+continuation \cite{Sutherland2021Kronecker}. At an unramified prime $p$, if Frobenius has
+order $h$, its values under the characters run through all $h$th roots of unity equally
+often, so the local factor is $(1-p^{-hs})^{-[K:\Q]/h}$. At a ramified prime the
+characters trivial on inertia supply the local factors for the quotient by inertia,
+which is why each character is taken at its primitive conductor. The trivial character
+supplies $\zeta(s)$. Every factor is holomorphic in the open strip, since its only
+possible pole is at $1$. A finite product of nonzero complex numbers is nonzero, so a
+zero of the product in the strip is a zero of some factor, and \cref{src:thm:dgrh}
+places it on the line $\Re s=1/2$.
+\end{proof}
+
+The primitive characters matter for the exact identity \eqref{dir:eq:abelian}: writing
+all factors at a common imprimitive modulus removes finite Euler factors. Those factors
+do not vanish in the open strip, but they change the identity. The statement concerns
+extensions abelian over $\Q$; an extension abelian over another number field leads to
+Hecke $L$-functions outside the input theorem (see \cref{sec:hec}). In a cyclic field
+of prime degree $\ell$ and conductor $f$ the nontrivial factors are the functions
+$L(s,(\chi^j)^*)$, $1\le j\le\ell-1$, for one character $\chi$ of order $\ell$.
+
+\begin{proposition}[Real nonprincipal characters; \stG]\label{dir:prop:positive}
+Let $\chi$ be a real-valued nonprincipal Dirichlet character. Then
+\[
+ L(\sigma,\chi)>0\quad(\sigma>1/2),\qquad L(1/2,\chi)\ge0 .
+\]
+\end{proposition}
+
+\begin{proof}
+For real $\sigma>1$ the absolutely convergent Euler product has positive factors, so
+$L(\sigma,\chi)>0$. Because $\chi$ is real, the analytic continuation is real-valued on
+the real axis, and because $\chi$ is nonprincipal it is entire. By \cref{src:thm:dgrh}
+it is nonzero on the connected interval $(1/2,\infty)$. A continuous real-valued
+function cannot change sign there without vanishing, so it is positive throughout, and
+continuity at $1/2$ gives the endpoint inequality.
+\end{proof}
+
+This removes real zeros in $(1/2,1)$, including possible exceptional zeros near $1$.
+It does not give strict positivity at $1/2$, and zero location alone says nothing about
+simplicity or multiplicity of zeros on the critical line.
+
+\begin{theorem}[Published implications; \stG]\label{dir:thm:published}
+The following statements hold.
+\begin{enumerate}[label=\textup{(\alph*)}]
+\item\label{dir:it:nonresidue} For every prime $p\ge5$, $n(p)<(\log p)^2$
+ \cite[Corollary~1.1]{LamzouriLiSoundararajan2015Conditional}.
+\item\label{dir:it:leastprime} For $q>3$ and $\gcd(a,q)=1$,
+ $P(a,q)\le\bigl(\varphi(q)\log q\bigr)^2$
+ \cite[Corollary~1.2]{LamzouriLiSoundararajan2015Conditional}.
+\item\label{dir:it:lindelof} For primitive $\chi$ of conductor $q$ and every $\eps>0$,
+ $\abs{L(1/2+it,\chi)}\ll_\eps (q(2+\abs t))^{\eps}$ \cite{Chandee2009Explicit}.
+\item\label{dir:it:mobius} For every $\eps>0$, $\sum_{n\le x}\mu(n)=O_\eps(x^{1/2+\eps})$
+ \cite{Soundararajan2009Partial}.
+\item\label{dir:it:short} For every $x\ge2$ there is a prime in
+ $(x-\tfrac4\pi\sqrt x\log x,\,x]$ \cite[Theorem~2]{Dudek2015Riemann}.
+\item\label{dir:it:lagarias} For every $n\ge1$,
+ $\sum_{d\mid n}d\le H_n+e^{H_n}\log H_n$, where $H_n=\sum_{k\le n}1/k$, with equality
+ only at $n=1$ \cite[Theorem~1.1]{Lagarias2002Elementary}.
+\item\label{dir:it:dbn} The de Bruijn--Newman constant equals zero.
+\end{enumerate}
+Items \ref{dir:it:mobius}--\ref{dir:it:dbn} use only the Riemann hypothesis for $\zeta$.
+\end{theorem}
+
+\begin{proof}
+In \ref{dir:it:nonresidue}--\ref{dir:it:lagarias} the cited theorem assumes exactly the
+Riemann hypothesis for $\zeta$ or for Dirichlet $L$-functions, which
+\cref{src:thm:dgrh} supplies; the constants in \ref{dir:it:nonresidue} and
+\ref{dir:it:leastprime} are those of the corrected third arXiv version of
+\cite{LamzouriLiSoundararajan2015Conditional}. For \ref{dir:it:dbn}, let $H_t$ be the
+usual heat deformation of Riemann's $\Xi$-function. The de Bruijn--Newman constant
+$\Lambda_{\mathrm{DBN}}$ is characterized by all zeros of $H_t$ being real exactly when
+$t\ge\Lambda_{\mathrm{DBN}}$, so the Riemann hypothesis is equivalent to
+$\Lambda_{\mathrm{DBN}}\le0$. Rodgers and Tao proved $\Lambda_{\mathrm{DBN}}\ge0$
+\cite{RodgersTao2020Bruijn}.
+\end{proof}
+
+Item \ref{dir:it:nonresidue} contains Vinogradov's conjecture
+$n(p)\ll_\eps p^{\eps}$ \cite{Tao2015Elliott}, with an explicit constant.
+
+\begin{corollary}[Vinogradov's least quadratic nonresidue conjecture; \stG]
+\label{dir:cor:vinogradov}
+For every $\eps>0$ and every odd prime $p$,
+\[
+ n(p)\le C_\eps\,p^{\eps},\qquad
+ C_\eps=\max\Bigl\{2\cdot3^{-\eps},\ \frac{4}{e^2\eps^2}\Bigr\}.
+\]
+\end{corollary}
+
+\begin{proof}
+For $u\ge0$ the function $u^2e^{-\eps u}$ is maximal at $u=2/\eps$, with value
+$4/(e^2\eps^2)$. Hence $(\log p)^2\le 4p^{\eps}/(e^2\eps^2)$, and
+Theorem~\ref{dir:thm:published}\ref{dir:it:nonresidue} gives the bound for $p\ge5$. For $p=3$
+the exact value $n(3)=2$ is covered by the other term of $C_\eps$.
+\end{proof}
+
+The inequality of Theorem~\ref{dir:thm:published}\ref{dir:it:nonresidue} was also checked by
+exact arithmetic for all $428$ primes $5\le p<3000$, using Euler's criterion and
+rational lower bounds for $\log p$. The bound in \ref{dir:it:leastprime} is roughly
+quadratic in $q$; it is not Linnik's conjectural nearly linear bound.
+\dirfiles{\artifact{grh_transfer_analysis/scripts/nonresidue_checks.py},
+\artifact{grh_transfer_analysis/data/nonresidue_checks.json}}
+
+\begin{remark}[What substitution does not give]\label{dir:rem:limits}
+Three computations mark the boundary of this subsection.
+First, Theorem~\ref{dir:thm:published}\ref{dir:it:short} does not place a prime between
+consecutive squares: at $x=(n+1)^2$ the guaranteed interval has length
+$\tfrac4\pi(n+1)\log((n+1)^2)$, and its ratio to the available gap $2n+1$ is asymptotic
+to $(4/\pi)\log n$. Secondly, the Dirichlet-GRH estimate
+$\psi(x;q,a)-x/\varphi(q)=O(\sqrt x\log^2(qx))$, summed over $q\le Q$, gives only
+$O(Q\sqrt x\log^2(xQ))$; it does not reach the moduli of size nearly $x$ in the
+Elliott--Halberstam conjecture, and a bound for one prime sum does not give the
+two-prime correlations in the twin prime and binary Goldbach problems. Thirdly,
+Hooley's conditional proof of Artin's primitive-root conjecture
+\cite{Hooley1967Artin,Lenstra1977Artin,Perucca2026Closed} uses the Dedekind zeta
+functions of the Kummer fields $\Q(\zeta_k,a^{1/k})$ for squarefree $k$, which are
+generally nonabelian over $\Q$. Already for $k=3$ and $a=2$ the field is the splitting
+field of $X^3-2$, with group $S_3$, and its zeta function has a two-dimensional Artin
+factor not covered by Proposition~\ref{dir:prop:abelian}; see \cref{sec:grp}. These remarks
+identify missing steps in known routes. They do not assert that the conjectures are
+independent of the input theorem.
+\end{remark}
+
+\begin{remark}[A Turing machine that does not halt]\label{dir:rem:riemann95}
+Let $M$ be the machine \code{riemann95} tabulated in the Cryptids repository
+\cite{DeepMindCryptids}: it has $95$ working states, two tape symbols and one two-way
+infinite tape, starts on the blank tape and halts on a missing transition. The
+correctness theorem in that repository states, without hypotheses, that $M$ halts
+exactly when Mathlib's \code{RiemannHypothesis} is false. Hence $M$ runs forever. The
+two developments pin Lean 4.35.0-rc4 and 4.35.0, and the Mathlib file defining the
+proposition is byte-identical at both pins; the composition is recorded as a
+source-level example, and a joint build was not performed.
+\dirfiles{\artifact{grh-transfer/checks/Riemann95Transfer.lean}}
+\end{remark}
+
+\subsection{Primitive roots and Euclidean division}\label{dir:sec:roots}
+\sources{grh-lean-transfers; grh-transfer; grh_transfer_analysis_2026-11-25; grh_transfers}
+
+For a prime $p$ let $g(p)$ be its least positive primitive root and $\widehat g(p)$ its
+least prime primitive root.
+
+\begin{theorem}[Grosswald's conjecture; \stG]\label{dir:thm:grosswald}
+For every prime $p>409$, $g(p)<\sqrt p-2$. For every prime $p>2791$,
+$\widehat g(p)<\sqrt p-2$.
+\end{theorem}
+
+\begin{proof}
+This is Theorem~1 of McGown, Trevi\~no and Trudgian
+\cite{McGownTrevinoTrudgian2016Resolving}, whose hypothesis is the Riemann hypothesis
+for $\zeta$ and for the Dirichlet $L$-functions modulo $p$. Their proof detects a
+generator of the cyclic group $\F_p^\times$ by smoothed prime sums. For $p\nmid n$ the
+indicator of a primitive root is
+\[
+ \frac{\varphi(p-1)}{p-1}\sum_{d\mid p-1}\frac{\mu(d)}{\varphi(d)}
+ \sum_{\ord(\chi)=d}\chi(n),
+\]
+where $\chi$ runs through the Dirichlet characters modulo $p$; this follows by writing
+$n=u^k$ for a generator $u$ and applying inclusion--exclusion to $\gcd(k,p-1)=1$.
+Their Lemma~1 bounds the sums of $\Lambda(n)(1-n/x)$ and of $\Lambda(n)\chi(n)(1-n/x)$
+over $n<x$; the first uses the Riemann hypothesis and the second the hypothesis for
+each $L(s,\chi)$. A prime power generating $\F_p^\times$ has a prime base that also
+generates it, which gives the statement for $\widehat g$. Every character modulo $p$
+is covered by \cref{src:thm:dgrh}.
+\end{proof}
+
+The endpoints are sharp: $g(409)=21$ and $\widehat g(2791)=53$. An unconditional proof
+of the first bound for $p>1.77\cdot10^{54}$ is due to Bagger \cite{Bagger2026Note}.
+
+\begin{corollary}[Erd\H{o}s problem 985 for odd primes; \stG]\label{dir:cor:erdos985}
+For every odd prime $p$ there is a prime $q<p$ that generates $\F_p^\times$.
+\end{corollary}
+
+\begin{proof}
+For $p>2791$ take $q=\widehat g(p)$ and use Theorem~\ref{dir:thm:grosswald}. For the remaining
+$405$ odd primes, enumerate $p$ and the distinct prime divisors $\ell$ of $p-1$ by trial
+division, and test successive primes $q<p$ until
+\[
+ q^{(p-1)/\ell}\not\equiv1\pmod p\qquad\text{for every prime }\ell\mid p-1 .
+\]
+The order of $q$ divides $p-1$, and a proper divisor of $p-1$ divides $(p-1)/\ell$ for
+some such $\ell$, so the test certifies a generator. The program
+\artifact{grh-lean-transfers/checks/primitive_roots.py} runs this test and
+independently enumerates all powers of each witness. Every odd prime in the range
+passes; the largest least witness is $53$, attained only at $p=2791$.
+\end{proof}
+
+The statement for all primes has the elementary exception $p=2$.
+
+A number field $K$ is \emph{norm-Euclidean} if for all $a,b\in\OO_K$ with $b\ne0$ there
+is $c\in\OO_K$ with $\abs{\Nm_{K/\Q}(a-bc)}<\abs{\Nm_{K/\Q}(b)}$; equivalently, every
+$\xi\in K$ admits $\gamma\in\OO_K$ with $\abs{\Nm_{K/\Q}(\xi-\gamma)}<1$.
+
+\begin{theorem}[Norm-Euclidean cyclic fields of prime degree; \stG]
+\label{dir:thm:euclid}
+The norm-Euclidean cyclic number fields of degree $5$ are the three fields of
+conductor $11$, $31$, $41$, with discriminants $11^4$, $31^4$, $41^4$. Those of degree
+$7$ are the two fields of conductor $29$, $43$, with discriminants $29^6$, $43^6$.
+There is no norm-Euclidean cyclic field of degree
+$19$, $31$, $37$, $43$, $47$, $59$, $67$, $71$, $73$, $79$ or $97$. A norm-Euclidean
+cyclic field of degree $11$ has conductor $23$, $67$ or $331$.
+\end{theorem}
+
+\begin{proof}
+These are Theorems~1.3, 1.4 and 1.5 of Lezowski and McGown
+\cite{LezowskiMcGown2017Euclidean}, proved there under GRH. Their Proposition~5.2 uses
+GRH bounds for character nonresidues and an auxiliary integer to bound the conductor of
+a norm-Euclidean field; Proposition~2.1 and Table~2.2 give $f<6\cdot10^{10}$ in degree
+five and $f<4\cdot10^{10}$ in degree seven, Proposition~2.2 supplies the finite
+exclusions, and Proposition~2.3 the Euclidean minima of the surviving fields. The
+conductor estimates go back to McGown \cite{McGown2012Norm}, who specifies the
+hypothesis as GRH for the Dirichlet functions $L(s,\chi)$ or for $\zeta_K(s)$. For a
+cyclic field $K$ of prime degree $\ell$ with character group generated by $\chi$,
+\[
+ \zeta_K(s)=\zeta(s)\prod_{j=1}^{\ell-1}L(s,(\chi^j)^*),
+\]
+so both forms of the hypothesis are supplied by \cref{src:thm:dgrh} and
+Proposition~\ref{dir:prop:abelian}. The finite norm and exclusion computations are those of the
+published source.
+\end{proof}
+
+The theorem gives no positive norm-Euclidean certificate for the three candidates in
+degree eleven. As a check of one exclusion, the degree-$97$ field of conductor
+$f=59\,999\,999\,974\,303$ has first two inert primes $2$ and $3$, and the integer
+$431$ satisfies the character and congruence conditions of Proposition~3.1 in the arXiv
+version of \cite{LezowskiMcGown2017Euclidean}. The corresponding classification of
+cyclic cubic fields has a separate unconditional proof
+\cite{BaggerEtAl2025Determination}.
+\dirfiles{\artifact{grh-transfer/checks/check_euclidean_witness.py},
+\artifact{grh-transfer/checks/euclidean-witness.txt}}
+
+\subsection{Euler's list, integer boxes and K3 surfaces}\label{dir:sec:idoneal}
+\sources{grh-transfer; grh_transfer_analysis_2026-11-25}
+
+A positive integer $n$ is \emph{idoneal} if the class group of primitive positive
+definite binary quadratic forms of discriminant $-4n$ has exponent dividing two;
+equivalently, every such form has an ambiguous class. The discriminant $-4n$ can belong
+to a nonmaximal order.
+
+\begin{theorem}[Euler's list is complete; \stG]\label{dir:thm:idoneal}
+There are exactly $65$ idoneal numbers:
+\begin{align*}
+&1,2,3,4,5,6,7,8,9,10,12,13,15,16,18,21,22,24,25,28,30,33,37,\\
+&40,42,45,48,57,58,60,70,72,78,85,88,93,102,105,112,120,130,133,\\
+&165,168,177,190,210,232,240,253,273,280,312,330,345,357,385,408,\\
+&462,520,760,840,1320,1365,1848.
+\end{align*}
+\end{theorem}
+
+\begin{proof}
+Weinberger's theorem \cite{Weinberger1973Exponents} concerns fundamental discriminants
+and uses a zero-free interval near $1$ for real quadratic Dirichlet characters, which
+Proposition~\ref{dir:prop:positive} supplies. Kani's reduction from orders to fields
+\cite[Theorems~6 and~22, Corollary~23]{Kani2011Idoneal}, together with the finite list,
+gives the statement.
+\end{proof}
+
+The possible extra fundamental discriminant in Weinberger's unconditional statement can
+give two orders and hence two further idoneal numbers, not one; Kani's Corollary~23
+records the distinction. The $65$ fundamental discriminants of exponent dividing two and
+the $65$ idoneal numbers are different lists. The same completeness was drawn earlier
+from a weaker zero-free half-plane in \cite{OpenAI2026Quasi}. Two finite checks
+accompany the theorem: an enumeration of reduced forms for $1\le n\le10\,000$, storing a
+nonambiguous reduced form for each rejected $n$, and an integer sieve of the
+representation problem below through $n=5\,000\,000$.
+\dirfiles{\artifact{grh_transfer_analysis_2026-11-25/data/idoneal_certificates.json},
+\artifact{grh-transfer/checks/idoneal.py},
+\artifact{grh-transfer/checks/idoneal-output.txt}}
+
+A box with integer side lengths $x,y,z$ has surface area $2n$ with $n=xy+yz+zx$.
+
+\begin{corollary}[Integer boxes; \stG]\label{dir:cor:boxes}
+A positive integer $n$ fails to be of the form $xy+yz+zx$ with integers $0<x<y<z$
+exactly when $n$ is idoneal. Hence every even number greater than $3696$ is the
+surface area of a box with three different integer sides, and $3696$ is not. If equal
+sides are allowed, exactly $18$ positive even numbers are not surface areas, namely the
+doubles of
+\[
+ 1,2,4,6,10,18,22,30,42,58,70,78,102,130,190,210,330,462 ,
+\]
+so that $924$ is the last missing even area.
+\end{corollary}
+
+\begin{proof}
+Kani's Remark~35(b), crediting Rains, identifies the idoneal numbers with the failures
+for $0<x<y<z$ \cite{Kani2011Idoneal}; apply Theorem~\ref{dir:thm:idoneal}. The classification
+with repetitions is Theorem~1.1 of Borwein and Choi \cite{BorweinChoi2000Representations},
+conditional on the same hypothesis.
+\end{proof}
+
+For example, the box $8\times9\times23$ has area $926$.
+
+\begin{corollary}[The K3--Enriques obstruction list; \stG]\label{dir:cor:k3}
+The list of $577$ idoneal genera of positive definite integral lattices of
+Brandhorst, Sonel and Veniani is complete, and so is their list of $550$ co-idoneal
+lattices occurring in the criterion for a complex algebraic K3 surface to cover an
+Enriques surface. Exactly $65$ of the co-idoneal lattices have rank ten.
+\end{corollary}
+
+\begin{proof}
+An integral positive definite lattice has a symmetric integer-valued pairing; its genus
+consists of the isometry classes locally isometric to it over every $\Zp$ and over
+$\R$. A genus is \emph{idoneal} if each of its members has a vector of square one. In
+rank two such a vector $u$ splits off a copy of $[1]$, since $v-(v,u)u$ is integral and
+orthogonal to $u$ for every $v$, and the determinant $n$ fixes the remaining factor
+$[n]$. Hence an idoneal genus of rank two consists of the single class $[1]\oplus[n]$,
+and the characterization of idoneal numbers by genera identifies the admissible
+determinants with Euler's list, which is complete by Theorem~\ref{dir:thm:idoneal}.
+Brandhorst, Sonel and Veniani
+\cite[Remark~1.2 and Addendum~1.6]{BrandhorstSonelVeniani2025Idoneal} enumerate the
+other ranks from this input: the numbers of idoneal genera of rank $r=1,\dots,13$ are
+\[
+ 1,65,110,122,107,76,47,24,13,6,4,1,1,
+\]
+with total $577$ and none for $r>13$. This is the enumeration asked for in Kani's
+Problem~45 \cite{Kani2011Idoneal}.
+
+For the geometric statement put $\Lambda^-=U\oplus U(2)\oplus E_8(-2)$, where $U$ is
+the hyperbolic plane, $E_8$ is positive definite and parentheses scale the pairing. Let
+$T$ be the orthogonal complement of the N\'eron--Severi lattice in $H^2(X,\Z)$ of a K3
+surface $X$. Keum's criterion asks for a primitive embedding $T\hookrightarrow\Lambda^-$
+whose orthogonal complement contains no vector of square $-2$. Among the lattices that
+embed primitively, the \emph{co-idoneal} ones are those for which every such embedding
+has a vector of square $-2$ in its complement. By
+\cite[Proposition~3.15]{BrandhorstSonelVeniani2025Idoneal} each complement of a
+co-idoneal $T$ is $L(-2)$ for $L$ in a uniquely determined idoneal genus of rank
+$12-\rank T$, and their Algorithm~4 enumerates the candidates $T$ from the genera and
+discriminant forms. Thus rank two on the arithmetic side supplies rank ten on the
+geometric side. Their Addendum~1.11 and Table~1 give, for $\rank T=2,\dots,11$, the
+counts
+\[
+ 3,8,17,41,76,107,122,110,65,1,
+\]
+with sum $550$ and none in higher rank. Both finite enumerations are the published
+computations of \cite{BrandhorstSonelVeniani2025Idoneal}; the counts concern isometry
+classes of lattices, and one lattice can occur for many surfaces.
+\end{proof}
+
+\subsection{Representations \texorpdfstring{$n=xy+yz+zx$}{n = xy+yz+zx} with a small
+prime \texorpdfstring{$x+y$}{x+y}}\label{dir:sec:xyz}
+\sources{grh-transfer}
+
+For $n\ge1$ consider the strictly ordered positive integral solutions of
+\begin{equation}\label{dir:eq:xyz}
+ n=xy+yz+zx,\qquad 0<x<y<z .
+\end{equation}
+By Corollary~\ref{dir:cor:boxes} a solution exists for every $n>1848$. The results of this
+subsection are quantitative and use only the Riemann hypothesis for $\zeta$ and for
+real Dirichlet characters. All constants are absolute unless indicated.
+
+\begin{lemma}[From a split prime to three coordinates; \stU]\label{dir:lem:split}
+Let $\chi(k)=\legendre{-4n}{k}$ be the real Kronecker character modulo $4n$; it is
+nonprincipal, since $\chi(-1)=-1$. Let $p\le\sqrt n$ be a prime.
+\begin{enumerate}[label=\textup{(\roman*)}]
+\item If $p$ is odd, $p\nmid 4n$ and $\chi(p)=1$, let $b$ be the unique integer with
+ $0<b<p/2$ and $b^2\equiv-n\pmod p$. Then
+ \[
+  x=b,\qquad y=p-b,\qquad z=\frac{n+b^2}{p}-b
+ \]
+ is a solution of \eqref{dir:eq:xyz} with $x+y=p$.
+\item Conversely, if \eqref{dir:eq:xyz} has a solution with $x+y=p$, then
+ $p\nmid2n$ and $\chi(p)=1$.
+\end{enumerate}
+Different primes give different solutions.
+\end{lemma}
+
+\begin{proof}
+In (i), $(x+y)(x+z)=n+x^2$ by construction, which is \eqref{dir:eq:xyz}; and
+$x<y<z$ because $b<p/2$ and $n+b^2>p^2$. The pair sum recovers $p$. In (ii) the same
+product identity gives $x^2\equiv-n\pmod p$ with $0<x<p/2$; hence $p\nmid 2n$ and
+$\chi(p)=1$.
+\end{proof}
+
+\begin{lemma}[A uniform smoothed prime sum; \stG]\label{dir:lem:smooth}
+Fix a nonnegative smooth function $w$ supported in $(1,2)$ with $\int w=1$. For a
+Dirichlet character $\eta$ modulo $q$ and $X\ge2$ put
+$S(\eta)=\sum_k\Lambda(k)\eta(k)w(k/X)$. If $\eta$ is principal or real, then
+\[
+ S(\eta)=\mathbf 1_{\eta=\chi_0}\,X+O_w\bigl(\sqrt X\log(2q)\bigr),
+\]
+where $\chi_0$ is the principal character modulo $q$.
+\end{lemma}
+
+\begin{proof}
+First use the primitive character $\eta^*$ of conductor $f\mid q$ inducing $\eta$,
+treating $f=1$ as the zeta function. Its Mellin integral has integrand
+$-(L'/L)(s,\eta^*)X^s\widehat w(s)$ with
+$\widehat w(s)=\int_0^\infty w(u)u^{s-1}\,\dd u$. Shift the contour from $\Re s=2$ to
+$\Re s=-1/2$. The pole of zeta gives $X\widehat w(1)=X$. The possible trivial zero at
+$0$ costs $O_w(1)$. At each nontrivial zero $\rho$ the residue is
+$-X^{\rho}\widehat w(\rho)$, counted with multiplicity. Mellin integration by parts
+gives $\abs{\widehat w(\sigma+it)}\ll_w(1+\abs t)^{-3}$ uniformly for
+$-1/2\le\sigma\le2$. The number of zeros with $j\le\abs{\Im\rho}<j+1$ is
+$O(\log(2f(j+2)))$ by the zero-counting formula for Dirichlet $L$-functions
+\cite{BennettMartinOBryantRechnitzer2021Counting} and the classical estimate for zeta.
+By \cref{src:thm:dgrh} every $\rho$ has real part $1/2$, so the absolutely convergent
+zero sum is $O_w(\sqrt X\log(2f))$. The functional equation and the Euler product at
+$\Re(1-s)=3/2$ give $L'/L\ll\log(2f(\abs t+2))$ on the new line, which contributes
+$O_w(X^{-1/2}\log(2f))$. The contour shift is taken along heights avoiding zero
+ordinates, using the local partial fraction formula for $L'/L$ and the same zero count.
+Returning to modulus $q$ changes the sum by $O_w(\log q)$, since for each $p\mid q$ at
+most one power of $p$ lies in $(X,2X)$.
+\end{proof}
+
+\begin{theorem}[Many representations with a small prime pair sum; \stG]
+\label{dir:thm:xyz}
+There exist $C,c>0$ such that for every sufficiently large $n$ and every real $X$ with
+\[
+ C\log^2(4n)\le X\le\tfrac12\sqrt n
+\]
+there are at least $cX/\log X$ solutions of \eqref{dir:eq:xyz} for which $x+y$ is a
+prime in $(X,2X)$. In particular there are $\gg\log^2n/\log\log n$ solutions with
+$x,y\ll\log^2n$, and $\gg\sqrt n/\log n$ solutions altogether.
+\end{theorem}
+
+\begin{proof}
+Put $q=4n$ and let $\chi$ be as in Lemma~\ref{dir:lem:split}. On integers coprime to $q$ the
+function $(\chi_0+\chi)/2$ is the indicator of $\chi=1$, and it vanishes on the other
+integers. By Lemma~\ref{dir:lem:smooth}, after deleting higher prime powers,
+\[
+ \sum_{\substack{p\ \mathrm{prime}\\ \chi(p)=1}}(\log p)\,w(p/X)
+ =\frac X2+O_w\bigl(\sqrt X\log(2q)+\sqrt X\log^2(2X)\bigr).
+\]
+Indeed each exponent $k\ge2$ contributes at most $(2X)^{1/k}\log(2X)$, and there are
+$O(\log(2X))$ exponents. For $X\ge C\log^2(4n)$ the first error is at most $X/8$ once
+$C$ is large, and the prime-power error is $o(X)$ as the lower endpoint tends to
+infinity. Each prime contributes at most $\norm{w}_\infty\log(2X)$, so there are
+$\gg X/\log X$ primes $p\in(X,2X)$ with $\chi(p)=1$. They are odd, coprime to $4n$ and
+at most $\sqrt n$, and Lemma~\ref{dir:lem:split} turns them into distinct solutions. Take
+$X=C\log^2(4n)$ for the small coordinates and $X=\sqrt n/3$ for the total count.
+\end{proof}
+
+\begin{theorem}[Several integers at once; \stG]\label{dir:thm:xyzmany}
+For each fixed $k\ge1$ and all sufficiently large $N$, given
+$n_1,\dots,n_k\in[N,2N]$ there are $\gg_k\log^2N/\log\log N$ primes $p\ll_k\log^2N$
+such that every $n_i$ has a solution of \eqref{dir:eq:xyz} with $x_i+y_i=p$.
+\end{theorem}
+
+\begin{proof}
+Inflate the $k$ quadratic characters $\legendre{-4n_i}{\cdot}$ to the modulus
+$Q=4\prod_in_i$ and let $H$ be the group they generate. The function
+$\abs H^{-1}\sum_{\eta\in H}\eta$ is the indicator of simultaneous splitting among
+integers coprime to $Q$. Each member of $H$ is real, so by Lemma~\ref{dir:lem:smooth} the
+smoothed prime-power sum of this function has main term $X/\abs H$ and error
+$O_w(\sqrt X\log(2Q))$. Since $\abs H\le2^k$ and $\log Q=O_k(\log N)$, the choice
+$X=C_k\log^2N$ with $C_k$ large absorbs the error. Removing prime powers as before and
+applying Lemma~\ref{dir:lem:split} to each $n_i$ gives the claim.
+\end{proof}
+
+\begin{proposition}[A logarithmic obstruction; \stU]\label{dir:prop:xyzlog}
+There are infinitely many $n$ for which \eqref{dir:eq:xyz} has no solution with
+$x+y\le(1-o(1))\log n$, even if composite pair sums are allowed.
+\end{proposition}
+
+\begin{proof}
+For $Y\to\infty$ put $M=4\prod_{3\le p\le Y}p$, the product over primes. Prescribe
+$n\equiv1\pmod4$, choose $-n$ to be a quadratic nonresidue at every odd prime $p\le Y$,
+and take the representative in $[M,2M)$ given by the Chinese remainder theorem. Every
+integer $3\le a\le Y$ has an odd prime divisor at most $Y$ or is divisible by $4$, so
+$x^2\equiv-n\pmod a$ has no solution; this rules out $a=x+y$, because
+$(x+y)(x+z)=n+x^2$. The prime number theorem gives $\log n=(1+o(1))Y$.
+\end{proof}
+
+\begin{proposition}[A stronger obstruction at prime inputs; \stG]\label{dir:prop:xyzprime}
+There are infinitely many primes $n$ such that every solution of \eqref{dir:eq:xyz}
+satisfies
+\[
+ x+y>\bigl(1/\log4-o(1)\bigr)\log n\,\log\log n .
+\]
+\end{proposition}
+
+\begin{proof}
+Impose the signs of the preceding proof modulo $M=4\prod_{3\le p\le Y}p$, this time
+seeking a prime $n$. The sign modulo $4$ and the quadratic signs at the odd primes give
+$r=\pi(Y)$ independent binary conditions on the units modulo $M$, by the Chinese
+remainder theorem. The indicator of the prescribed set on these units is the product of
+$r$ terms $(1+\eps_j\eta_j)/2$ with $\eps_j\in\set{1,-1}$ and $\eta_j$ the corresponding
+local quadratic characters inflated to modulus $M$. Extend the indicator by zero off
+the units, so that the constant term of its expansion is the principal character
+divided by $2^r$. Independence makes every other character in the expansion
+nonprincipal, and the absolute values of all coefficients sum to one. By
+Lemma~\ref{dir:lem:smooth} and the removal of prime powers, for $X\ge2$ the smoothed sum of
+the indicator over primes $p$ with weight $(\log p)w(p/X)$ is
+\[
+ \frac X{2^r}+O_w\bigl(\sqrt X\,[\log(2M)+\log^2(2X)]\bigr).
+\]
+Take $X=4^r\log^6(2M)$. As $Y\to\infty$, $\log M\sim Y$ and $r\sim Y/\log Y$ by the
+prime number theorem. After division by $\sqrt X$ the main term is $\log^3(2M)$,
+whereas the error is $O_w(Y^2)$. Hence there is a prime $n\in(X,2X)$ with all
+prescribed signs. The congruence argument of Proposition~\ref{dir:prop:xyzlog} rules out
+$x+y\le Y$, and $\log n=(\log4+o(1))Y/\log Y$ gives the bound.
+\end{proof}
+
+\begin{proposition}[When the least splitting prime is the minimum; \stG]
+\label{dir:prop:xyzmin}
+For all sufficiently large squarefree $n\equiv1,2\pmod4$, the minimum of $x+y$ over the
+solutions of \eqref{dir:eq:xyz} equals the least odd prime that splits in
+$\Q(\sqrt{-n})$.
+\end{proposition}
+
+\begin{proof}
+Put $a=x+y$ and $b=x$ in any solution. Then $a\mid n+b^2$ and $0<b<a/2$. Since $-n$ is
+$2$ or $3$ modulo $4$, we have $4\nmid a$. If every odd prime $p\mid a$ divided $n$, it
+would also divide $b$, and squarefreeness would give $\vp(n+b^2)=1$; the odd part of
+$a$ would then divide $b$, although it is at least $a/2$. Thus some odd prime $p\mid a$
+is coprime to $n$, and $-n$ is a square modulo $p$. This splitting prime satisfies
+$p\le a$. Conversely, by Theorem~\ref{dir:thm:xyz} the least odd splitting prime is at most
+$\sqrt n$ for large $n$, so it supplies a solution with this pair sum by
+Lemma~\ref{dir:lem:split}.
+\end{proof}
+
+The congruence restriction matters: for $n\equiv3\pmod4$ and $n>15$ the triple
+$(1,3,(n-3)/4)$ is always a solution.
+
+\begin{remark}[Finding a witness]\label{dir:rem:xyzalg}
+The program \artifact{grh-transfer/checks/represent.py} tests $a=x+y$ in increasing
+order. For each $a$ it tries $0<b<a/2$ with $b^2\equiv-n\pmod a$ and $n+b^2>a^2$, and
+uses the formula of Lemma~\ref{dir:lem:split} with $p$ replaced by $a$. Every solution of
+\eqref{dir:eq:xyz} satisfies $3a^2<4n$, so exhaustive failure proves that there is
+none; for a positive answer the first witness minimizes $x+y$. By Theorem~\ref{dir:thm:xyz},
+for large $n$ at most $O(\log^4n)$ pairs $(a,b)$ are tested, which is deterministic
+polynomial time in the bit length of $n$. The program uses neither the unknown
+threshold of the asymptotic estimate nor a factorization of $n$.
+\end{remark}
+
+\subsection{A prime plus a multiple of a prime cube or fourth power}
+\label{dir:sec:cube}
+\sources{grh-arithmetic-transfers; grh_cm_prime_applications}
+
+Lee and O'Clarey asked whether every integer greater than $24$ is the sum of a prime
+and a positive multiple of a prime square, and proved this under Dirichlet GRH
+\cite[Theorem~1.3]{LeeOClarey2026Prime}; an unconditional proof is reported by Campbell
+\cite{Campbell2026Prime}. Raising the exponent gives sharp thresholds of a different
+size. The quantifier on the multiplier matters: requiring the second summand itself to
+be a prime power is a different problem.
+
+\begin{theorem}[Prime cubes; \stG]\label{dir:thm:cube}
+Every integer $n>10500$ has a representation $n=p+kq^3$ with $p,q$ prime and $k\ge1$.
+Exactly $62$ positive integers have no such representation:
+\[
+\begin{gathered}
+1,2,3,4,5,6,7,8,9,12,14,16,17,20,22,24,28,36,48,52,54,60,62,\\
+72,76,78,96,102,108,120,126,150,174,180,216,240,270,294,312,342,\\
+420,468,486,528,552,720,750,780,828,870,924,966,1080,1236,1260,\\
+1500,1590,1800,1860,2520,8190,10500 .
+\end{gathered}
+\]
+\end{theorem}
+
+\begin{proof}
+Let $q$ be the least prime that does not divide $n$, and
+$B_q=\prod_{\ell<q,\ \ell\ \mathrm{prime}}\ell$. Then $B_q\mid n$ and $n$ is a unit
+modulo $q^3$. If $P(n,q^3)<n$, subtraction supplies the required positive multiple of
+$q^3$. By Theorem~\ref{dir:thm:published}\ref{dir:it:leastprime} applied to the modulus $q^3$,
+\[
+ P(n,q^3)\le\bigl[\varphi(q^3)\log(q^3)\bigr]^2<9q^8 .
+\]
+For every prime $q\ge43$ we have $B_q>9q^8$. Exact multiplication verifies this for
+$43\le q\le257$. If the inequality holds for a prime $q\ge257$ and $r$ is the next
+prime, then $r<2q$ by Bertrand's postulate and
+$B_r=qB_q>9q^9>9(2q)^8>9r^8$. Thus every $n$ whose least nondividing prime is at least
+$43$ has a representation.
+
+For $q\le41$ put $M_q=\max_{\gcd(a,q)=1}P(a,q^3)$, the maximum over all reduced residue
+classes modulo $q^3$. A sieve that retains the first prime in each reduced class gives
+the exact values
+\begin{center}
+\begin{tabular}{r|rrrrrrr}
+$q$ &2&3&5&7&11&13&17\\
+$M_q$&17&109&1621&9371&47737&120401&349529\\ \hline
+$q$&19&23&29&31&37&41&\\
+$M_q$&540961&1494349&2367523&3812923&5897123&7802437&
+\end{tabular}
+\end{center}
+An exception with least nondividing prime $q$ satisfies $B_q\le n\le M_q$. For
+$q=23,29,31,37,41$ the lower endpoint exceeds the upper one, so it suffices to decide
+representability for $1\le n\le540961$. For every prime $q$ with $q^3+2\le540961$ and
+every residue $a$ modulo $q^3$, find the first prime $r$ in that class with
+$r+q^3\le540961$, if one exists, and mark $r+q^3,r+2q^3,\dots$ up to the bound. The
+marked values have explicit representations. Conversely every representation occurs
+among the marks, since its prime is at least the first prime in the same class; this
+step includes the class of $q$ itself. The $62$ unmarked values are those displayed.
+Grouped by the least nondividing prime $q=2,3,5,7,11$ they number $6,11,25,15,5$, and
+there are none for $q\ge13$.
+
+The first program listed below carries out the sieve, the primorial checks and the
+final enumeration; it tests each listed exception a second time by subtracting every
+eligible positive multiple of each prime cube, and an independent bit-set sum of all
+primes and all positive cube multiples agrees on every integer through $540961$. The
+second program is an independent implementation, which tests the multiples of $B_q$ up
+to $M_q$ coprime to $q$ one by one.
+\end{proof}
+\dirfiles{\artifact{grh-arithmetic-transfers/checks/prime_plus_cube_multiple.py},
+\artifact{grh_cm_prime_applications/checks/cube.py}}
+
+The largest exception can be checked by hand. For $n=10500$ the eligible primes $q$ are
+$2,3,5,7,11,13,17,19$. The first four divide $n$, so the only candidate prime summand
+is $q$ itself, and $q^3\nmid n-q$ in each case. For the other four an even multiplier
+gives an even summand, and $n-2=10498$ is divisible by none of their cubes. For odd
+multipliers the positive differences, grouped by $q$, are
+\[
+ \set{9169,6507,3845,1183},\quad\set{8303,3909},\quad\set{5587},\quad\set{3641},
+\]
+with prime divisors $53,3,5,7$, then $19,3$, then $37$ and $11$. On the other hand
+$10501=5+1312\cdot2^3$.
+
+\begin{corollary}[Prime squares; \stG]\label{dir:cor:square}
+The positive integers that are not a prime plus a positive multiple of a prime square
+are exactly $1,2,3,4,5,8,24$.
+\end{corollary}
+
+\begin{proof}
+A multiple of $q^3$ is a multiple of $q^2$, so only the $62$ exceptions of
+Theorem~\ref{dir:thm:cube} can fail. Direct subtraction of prime-square multiples on these
+$62$ inputs leaves the seven displayed values.
+\end{proof}
+
+This is a second proof of the explicit conclusion of \cite{LeeOClarey2026Prime}, from
+the same least-prime estimate.
+
+\begin{theorem}[Prime fourth powers; \stG]\label{dir:thm:fourth}
+Exactly $811$ positive integers fail to be a prime plus a positive multiple of a prime
+fourth power. The largest is $1\,561\,560$.
+\end{theorem}
+
+\begin{proof}
+Retain $q$ and $B_q$ from the proof of Theorem~\ref{dir:thm:cube}. For $q\ge53$,
+Theorem~\ref{dir:thm:published}\ref{dir:it:leastprime} bounds the least prime congruent to $n$
+modulo $q^4$ by $[4\varphi(q^4)\log q]^2<q^{10}$. Exact comparisons show $B_q>q^{10}$
+for all primes from $53$ through $1031$, and Bertrand's postulate propagates the
+inequality from any prime $q>2^{10}$ to its successor. Thus $n$ exceeds the least
+congruent prime throughout this range.
+
+For $q\le23$, enumerate all reduced classes modulo $q^4$ as before and test the
+remaining multiples of $B_q$. The maxima of the least primes, in increasing order of
+$q$, are
+\[
+ 41,\ 647,\ 20063,\ 92369,\ 1189213,\ 2987429,\ 9951083,\ 19423919,\ 42026629,
+\]
+and the nine groups yield $12,48,230,255,212,46,7,1,0$ exceptions. When another prime
+base $r$ dividing $n$ is tested, the only possible prime complement is $r$ itself,
+which shortens the check.
+
+For the six primes $29\le q\le47$ we have $4\log q<16$, so the least-prime bound covers
+$n>[16q^3(q-1)]^2$. For each positive multiple $n$ of $B_q$ up to this bound with
+$q\nmid n$, the checker exhibits a prime in the residue class of $n$ modulo $q^4$
+strictly below $n$. The numbers of inputs in the six groups are
+$516676,30586,4130,256,9,0$, and sieve lookup and trial division certify all the
+primes. Independently, for every prime $r$ with $r^4\le2\,000\,000$, taking the first
+prime $p$ in every occupied class modulo $r^4$ and marking $p+r^4,p+2r^4,\dots$ through
+two million leaves the same $811$ unmarked integers.
+\end{proof}
+\dirfiles{\artifact{grh_cm_prime_applications/checks/fourth.py} (the list and the
+computation), \artifact{grh_cm_prime_applications/checks/verify_exception_lists.py} (the
+independent check)}
+
+\begin{remark}\label{dir:rem:powers}
+For each fixed exponent $j\ge2$ the same argument reduces $n=p+kq^j$ to finitely many
+checks: the least-prime bound is at most $j^2q^{2j+2}$, while $B_q$ eventually exceeds
+every fixed power of $q$.
+\end{remark}
+
+\subsection{Primes in geometric intervals and Pomerance's divisibility conjecture}
+\label{dir:sec:geometric}
+\sources{grh-arithmetic-transfers}
+
+Barthel and M\"uller \cite{BarthelMuller2022Geometric} ask whether every interval
+$[q^t,q^{t+1})$ meets every reduced residue class modulo $q$ in a prime, for integers
+$q\ge2$ and $t\ge1$. Their Lemmas~5 and~6 cover all $q\le45000$ (with Bertrand's
+postulate for $q=2$); their Remark~7 obtains all $t\ge3$ on Dirichlet GRH, and $t=2$
+for $q\ge17386763$.
+
+\begin{theorem}[Geometric intervals; \stG]\label{dir:thm:geometric}
+For every $q\ge2$, every $a$ coprime to $q$ and every integer $t\ge2$, some prime
+$p\equiv a\pmod q$ satisfies $q^t<p<q^{t+1}$. The same holds for $t=1$ whenever
+$q\le50000$.
+\end{theorem}
+
+\begin{proof}
+Dudek, Greni\'e and Molteni \cite[Theorem~1.1 and Table~1]{DudekGrenieMolteni2019Primes}
+prove under Dirichlet GRH that for $q\ge3$ and $x\ge(18q\log q)^2$ there is a prime
+$p\equiv a\pmod q$ within distance
+\[
+ H(x)=q\sqrt x\,\bigl(0.6265\log x+\log q+14\bigr)
+\]
+of $x$; here both their radius and their threshold have been enlarged using
+$\varphi(q)\le q$. Their explicit formula is applied to primitive Dirichlet functions
+and restores the factors at primes dividing the modulus, so the hypothesis is the one
+supplied by \cref{src:thm:dgrh}.
+
+For $q\ge50000$ write $L=\log q$ and $x_2=(18qL)^2$. The quotient $q/(378L^2+252L)$ is
+increasing for $L>2$, by differentiation. At $q=50000$ we have $10<L<11$ and
+$378L^2+252L<48510<50000$. Thus $x_2<q^3$ and
+\[
+ \frac{H(x_2)}{q^2}<18L(3L+14),\qquad q^2<x_2-H(x_2)<x_2+H(x_2)<q^3 .
+\]
+Indeed the upper endpoint divided by $q^2$ is at most $378L^2+252L$, and the lower one
+exceeds $270L^2-252L>1$. For $t\ge2$ put $x_t=q^{t-2}x_2$. The function $H(x)/x$
+decreases for $x\ge x_2$, again by differentiation. Therefore the interval of radius
+$H(x_t)$ about $x_t$ is contained in the dilation by $q^{t-2}$ of the interval just
+shown to lie inside $(q^2,q^3)$. This proves the statement for every $t\ge2$ and
+$q\ge50000$.
+
+For $45001\le q\le50000$ an exact sieve verifies $t=1$ and $t=2$ in every reduced
+class (\artifact{grh-arithmetic-transfers/checks/progression_windows.cpp}). The
+following numbers are the maxima of the \emph{first} prime witnesses when the search
+starts at the indicated left endpoint, chosen so that all moduli share one sieve.
+\begin{center}
+\begin{tabular}{rrrr}
+$t$ & search starts at & classes checked & largest witness\\ \hline
+1 & $50001$ & $144390310$ & $9819037$\\
+2 & $2500000001$ & $144390310$ & $2515292327$
+\end{tabular}
+\end{center}
+For each row the program sieves $25\,000\,000$ consecutive integers by all primes up to
+the square root of the last one, verifies that the segment lies inside the appropriate
+geometric interval for each $q$, and traverses each reduced progression until it finds
+a prime, using integer arithmetic only. For these moduli $t\ge3$ follows from Remark~7
+of \cite{BarthelMuller2022Geometric}, and their results for $q\le45000$ complete the
+proof. Neither endpoint of an interval can be a prime in the indicated class for
+$q\ge2$.
+\end{proof}
+
+For a prime $p\ge3$ put
+\[
+ B(p)=\prod_{r<p,\ r\ \mathrm{prime}}r(r-1),\qquad
+ D(p)=\frac{p-1}{\gcd(p-1,B(p))}.
+\]
+Pomerance \cite{Pomerance1974Carmichael} conjectured that $D(p)=1$ for every $p$, and
+observed that if the least prime $P(1,q)$ in the class $1\bmod q$ satisfies
+$q^2\mid P(1,q)-1$ for a prime $q$, then $p=P(1,q)$ violates the conjecture.
+
+\begin{theorem}[The exact obstruction; \stG]\label{dir:thm:pomerance}
+For every prime $p\ge3$, either $D(p)=1$, or $D(p)$ is a single prime $q$ for which
+$p=P(1,q)$ and $v_q(p-1)=2$. In particular Pomerance's conjecture is equivalent to the
+assertion that $q^2\nmid P(1,q)-1$ for every prime $q$.
+\end{theorem}
+
+\begin{proof}
+Fix a prime $q\mid p-1$ and put $e=v_q(p-1)$. The factor $q$ itself occurs in $B(p)$.
+If $q\le50000$, Theorem~\ref{dir:thm:geometric} for $t=1,\dots,e-1$ supplies $e-1$ distinct
+primes $r<p$ with $q\mid r-1$; this handles all $e$, also when the list is empty.
+
+Suppose $q>50000$. Above the class $1\bmod q$ there are two reduced classes modulo
+$3q$, by the Chinese remainder theorem.
+By Theorem~\ref{dir:thm:published}\ref{dir:it:leastprime} each of them contains a prime at
+most $[2(q-1)\log(3q)]^2<q^3$; the last inequality follows from $4\log^2(3q)<q$, valid
+at $50000$ and thereafter by monotonicity of $q/\log^2(3q)$. These two primes are
+distinct. When $e\ge3$, use them first and then one prime from each of the $e-3$
+intervals $[q^j,q^{j+1})$, $j=3,\dots,e-1$, in the class $1\bmod q$, from
+Theorem~\ref{dir:thm:geometric}. They all lie below $q^e\le p-1$. Together with the factor $q$
+they give $v_q(B(p))\ge e$.
+
+The only possible shortage is at $e=2$. It occurs exactly when there is no earlier
+prime $r\equiv1\pmod q$, that is, when $p=P(1,q)$, and the shortage is then exactly one
+factor $q$. If $q<s$ were two deficient primes at $p$, we would have
+$q^2s^2\le p-1<p=P(1,q)\le[(q-1)\log q]^2$ by the same least-prime bound, forcing
+$s<\log q<q$, a contradiction.
+\end{proof}
+
+\begin{corollary}[Frequency of exceptions; \stG]\label{dir:cor:pomfreq}
+The number of primes $p\le X$ with $D(p)\ne1$ is at most $\pi(\sqrt{(X-1)/2})$, hence
+$O(\sqrt X/\log X)$; the exceptions have relative density zero among the primes.
+\end{corollary}
+
+\begin{proof}
+By Theorem~\ref{dir:thm:pomerance} an exceptional $p$ is determined by its prime $q$. Both $p$
+and $q$ are odd and $q^2\mid p-1$, so $2q^2\le p-1$.
+\end{proof}
+
+\begin{proposition}[A finite exclusion; \stU]\label{dir:prop:pomfinite}
+For every prime $p\le2\cdot10^{14}+1$, $D(p)=1$. Moreover $P(1,q)<q^2$ for all $664579$
+primes $q\le10^7$.
+\end{proposition}
+
+\begin{proof}
+The program \artifact{grh-arithmetic-transfers/checks/least_primes.cpp} sieves the
+prime moduli $q\le10^7$ and tests the candidates $kq+1$ in increasing order by exact
+trial division. The largest least prime encountered is $1753933943$, and the largest
+multiplier $k$ is $234$, first attained at $q=4722079$. For every prime $q\le10^7$ and
+every $e\ge2$ with $q^e\le2\cdot10^{14}$, the same program verifies that the
+$(e-1)$st prime in the class $1\bmod q$ lies below $q^e$; this checks $671350$ prime
+powers. If $q$ is odd and $q^2\mid p-1$ then $2q^2\le p-1$, so these ranges include all
+pairs $(q,e)$ relevant for $p\le2\cdot10^{14}+1$, also for $q=2$. The factor $q$ and the
+$e-1$ earlier primes supply $q^e$ in $B(p)$.
+\end{proof}
+
+Consequently a counterexample to Pomerance's conjecture requires a prime $q>10^7$ and
+$p=1+2kq^2\le[(q-1)\log q]^2$ for some positive integer $k$, with every smaller
+candidate prime in the class $1\bmod q$ absent. Pomerance's assertion would rule out one
+specific construction of a totient with a single preimage; it would not by itself
+settle Carmichael's conjecture on the multiplicities of totients.
+
+\subsection{The least prime-generating constants for five exponents}
+\label{dir:sec:mills}
+\sources{grh_cm_prime_applications}
+
+For $\alpha>1$ call $A>1$ \emph{admissible} if $\floor{A^{\alpha^n}}$ is prime for
+every integer $n\ge1$, and write $M_\alpha$ for the least admissible $A$ when one
+exists. Chamberland and Straub \cite[Example~5.2]{ChamberlandStraub2026Prime} give the
+digits $1.385510850556\ldots$ for $M_{9/4}$. Their construction produces an admissible
+number, but an earlier prime, discarded by its selection rule, gives a strictly smaller
+one.
+
+\begin{theorem}[Certified digits; \stG]\label{dir:thm:mills}
+The least admissible numbers for the following exponents exist and begin with the
+digits shown. The last column gives the level of a prime from whose floor interval an
+infinite prime sequence is proved to continue. Only the Riemann hypothesis for $\zeta$
+is used.
+\[
+\begin{array}{c@{\qquad}l@{\quad}r}
+\toprule
+\alpha & M_\alpha \text{ begins with} & \text{level}\\
+\midrule
+9/4 &1.374277825758088669776655315788864285945977 &7\\
+11/5 &1.40371466815791665549209159126764528659 &7\\
+21/10 &1.440684278165675686775820360228 &9\\
+41/20 &1.478399833482410327000644670 &10\\
+201/100 &1.51462541826615615161458 &13\\
+\bottomrule
+\end{array}
+\]
+\end{theorem}
+
+The proof occupies the rest of this subsection.
+
+\paragraph{Where the smaller branch starts.}
+At level $n$, the floor $p$ means that $A$ belongs to the half-open interval
+\[
+ I_n(p)=\bigl[p^{\alpha^{-n}},(p+1)^{\alpha^{-n}}\bigr).
+\]
+A common way to make $I_{n+1}(p')$ fit inside $I_n(p)$ is to require $p'\ge p^\alpha$
+and $p'+1<(p+1)^\alpha$. For nonintegral $\alpha$ the intervals can also overlap when
+$p'=\floor{p^\alpha}<p^\alpha$, and an overlap can contain a complete interval at a
+later level. This happens at $\alpha=9/4$. Any admissible $A$ satisfies $A^\alpha\ge2$
+and $A^{\alpha^2}\ge5$, since $2^\alpha$ lies between $4$ and $5$ and $4$ is composite.
+The floor at the third level can be $37$, since $37<5^\alpha<38$. At the fourth level,
+\[
+ 3455<5^{81/16}<3456<3457<3458<38^{9/4}.
+\]
+The integers $3455$ and $3456$ are composite and $3457$ is prime. Throughout
+$3457\le A^{\alpha^4}<3458$ the earlier floors are $2,5,37$: the lower bound implies
+$A^{\alpha^2}>5$, the upper bound gives $A^{\alpha^3}<38$, and
+$2^\alpha<5$, $38<6^\alpha$, $6<3^\alpha$ give the remaining endpoints. Thus the whole
+fourth-level interval fits inside the earlier overlap. An infinite continuation from
+this interval gives $M_{9/4}<38^{\alpha^{-3}}<41^{\alpha^{-3}}$, while the branch in
+\cite[Example~5.2]{ChamberlandStraub2026Prime} has third floor $41$.
+
+\paragraph{The lower endpoint.}
+Suppose $L$ is a lower bound for every admissible $A$. At level $n$ the next lower
+bound is
+\[
+ L'=\max\set{L,\,p^{\alpha^{-n}}},\qquad
+ p=\text{the least prime at least }\floor{L^{\alpha^n}} .
+\]
+This follows from monotonicity of the floor, with no assumption on the earlier floors
+of a competitor. For an upper bound, start from the same finite choice of primes and
+intersect their floor intervals. The certificate checks that the intersection contains
+a whole terminal interval, that its upper endpoint lies below every earlier upper
+endpoint, and that this terminal interval admits a continuation. Thus the lower bound
+and the constructed admissible branch enclose the infimum of the admissible numbers.
+The infimum is itself admissible: take admissible parameters tending to it from the
+right; for each fixed $n$, right continuity makes the floors eventually equal to the
+floor at the limit, and the initial lower bound $2^{1/\alpha}$ is strictly greater
+than $1$.
+
+\paragraph{The tail.}
+Carneiro, Milinovich and Soundararajan
+\cite[Theorem~5]{CarneiroMilinovichSoundararajan2017Fourier} prove on the Riemann
+hypothesis that for real $y\ge4$ there is a prime in $[y,y+\tfrac{22}{25}\sqrt y\log y]$.
+For $y=x^\alpha$ and $\alpha>2$, Taylor's theorem gives
+$(x+1)^\alpha-1-x^\alpha>\alpha x^{\alpha-1}$ for $x\ge1$. Hence, when $x^\alpha\ge4$,
+\[
+ x^{(\alpha-2)/2}\ge\tfrac{22}{25}\log x
+ \quad\Longrightarrow\quad
+ \text{there is a prime } p \text{ with } x^\alpha\le p<(x+1)^\alpha-1 .
+\]
+This is also Corollary~3.2 of \cite{ChamberlandStraub2026Prime}; compare their
+Lemma~5.1. For the five rows take $B=24,30,60,120,800$ respectively. If
+$h=(\alpha-2)/2$, then $Bh\log10>1$ and $10^{Bh}>3B$ in each case. The function
+$x^h/\log x$ increases past $10^B$, and $\log10<3$, so the implication applies for every
+$x\ge10^B$. Each prime $p$ beyond this threshold therefore has a successor whose floor
+interval lies inside its own, strictly at the upper end. Iteration gives an increasing
+sequence of lower endpoints with a finite limit. Every old upper endpoint exceeds a
+later upper endpoint, so this limit lies in every one of the half-open intervals and
+is admissible.
+
+\paragraph{Finite certificates.}
+In the first seven levels the construction uses the least allowable prime at or above
+the floor of the current lower bound, and each of the five cases ends this stage with a
+complete seventh-level interval. If the seventh prime is below $10^B$, one subsequently
+chooses any certified prime with a complete interval inside the previous one until the
+threshold is passed. These later choices establish an upper bound; computing the first
+seven floors of the minimum does not require that every later choice be minimal. The
+lower and upper bounds for $M_\alpha$ are the two endpoints of the seventh-level
+interval, the upper one strict: the lower endpoint is a global lower bound by
+construction, and a continuation inside the interval proves the upper bound.
+\[
+\begin{array}{c|rrrrr|r}
+\toprule
+\alpha &p_1&p_2&p_3&p_4&p_5& \text{digits of the terminal prime}\\
+\midrule
+9/4&2&5&37&3457&91637597&41\\
+11/5&2&5&37&2819&38923271&37\\
+21/10&2&5&29&1213&2993027&126\\
+41/20&2&5&29&997&1403869&223\\
+201/100&2&5&29&877&823117&1577\\
+\bottomrule
+\end{array}
+\]
+The certificate contains every prime, floor and primality witness. If $L=b^{\alpha^{-i}}$ and $\alpha=m/d$, the verifier
+checks $f^{d^{n-i}}\le b^{m^{n-i}}<(f+1)^{d^{n-i}}$ to establish a floor $f$. It proves
+every skipped candidate composite by an integer divisor or a failed strong
+probable-prime test. Each large prime $P$ comes with a factored divisor $F\mid P-1$,
+$F^2>P$, and for each prime factor $q\mid F$ a witness $a$ with
+$a^{P-1}\equiv1\pmod P$ and $\gcd(a^{(P-1)/q}-1,P)=1$. Thus for each prime divisor $r$
+of $P$ the order of $a$ modulo $r$ contains the full $q$-part of $P-1$, so
+$r\equiv1\pmod F$ for every $r\mid P$, whereas a composite $P$ would have a prime
+divisor at most $\sqrt P$. The verifier recurses on $q$ and uses trial division below
+$10^4$. Its decimal enclosures use repeated, outward-rounded rational roots, so the
+table uses neither probabilistic primality tests nor floating-point comparisons. This
+completes the proof of Theorem~\ref{dir:thm:mills}.
+\dirfiles{\artifact{grh_cm_prime_applications/checks/mills_data.json} (certificate),
+\artifact{grh_cm_prime_applications/checks/verify_mills.py} (verifier)}
+
+\subsection{Toroczkai's prime-gap graphs}\label{dir:sec:graphs}
+\sources{grh-exponent-six-and-transfers}
+
+Let $p_n$ be the $n$th prime, put $p_0=1$ and $d_i=p_i-p_{i-1}$. A \emph{prime-gap
+graph} on $n\ge2$ vertices is a simple graph on the vertex set $\set{1,\dots,n}$ with
+$\deg(i)=d_i$. The degree sequence begins $1,1,2,2,4,2,4,2,4,6$, and the degree sum is
+$p_n-1$. A matching is a set of edges with pairwise disjoint endpoints; $\nu(G)$ denotes
+the largest size of a matching in $G$. Only the Riemann hypothesis for $\zeta$ is used
+in this subsection.
+
+\begin{theorem}[Toroczkai's two conjectures; \stG]\label{dir:thm:toroczkai}
+For every $n\ge2$ a prime-gap graph on $n$ vertices exists, and every prime-gap graph
+on $n$ vertices has a matching of size $d_{n+1}/2$.
+\end{theorem}
+
+\begin{proof}
+Erd\H{o}s, Harcos, Kharel, Maga, Mezei and Toroczkai proved both assertions under the
+Riemann hypothesis \cite[Theorems~1.1 and~1.6]{ErdosEtAl2024Sequence}, which
+\cref{src:thm:dgrh} supplies. The second assertion implies the first: begin with a
+single edge, and at each step replace $d_{n+1}/2$ disjoint edges by paths of length two
+through a common new vertex. The old degrees stay fixed and the new vertex has the
+required degree.
+\end{proof}
+
+Without the Riemann hypothesis, existence is known for $n\ge\exp(\exp(30.32))$ and the
+matching assertion for $n\ge\exp(\exp(34.33))$ \cite{AggarwalFrotGouWang2025Explicit}.
+The insertion step in the proof, which removes a matching of size $d_{n+1}/2$ and joins
+its endpoints to the new vertex, is called an \emph{insertion} below.
+
+Write $p=p_n$, $L=\log p$, and
+\[
+ N=\ceil{652L^2},\qquad B(p)=\ceil*{\frac{p-2}{4N}} .
+\]
+
+\begin{theorem}[Matching and block theorem; \stG]\label{dir:thm:block}
+Every prime-gap graph $G$ on $n\ge2$ vertices has $\nu(G)\ge B(p)$. Whenever
+$p_{n+k}-p\le2B(p)$, the next $k$ vertices can all be inserted using pairwise disjoint
+sets of old endpoints: no two new vertices are adjacent, and every old vertex is
+incident to at most one new edge. In particular, for each fixed $0<c<1/1304$ and all
+sufficiently large $n$ this holds for $k=\floor{cp/L^3}$.
+\end{theorem}
+
+\begin{proof}
+For an integer $T\ge3$ let $H(T)=\sum_{i\le n,\ d_i\ge T}d_i$. Theorem~1.8 of
+\cite{ErdosEtAl2024Sequence} bounds the sum of the gaps of length at least $T$ that
+start at a prime in $[x,2x]$ by $163x(\log x)^2/T$ under the Riemann hypothesis, for
+every real $x\ge2$. Apply this at $x=p/2^j$ for $j\ge1$ while $x\ge2$. These intervals
+cover every gap start up to $p$ except possibly $1,2,3$, whose following gaps have size
+at most two. Since $\sum_{j\ge1}p/2^j=p$,
+\begin{equation}\label{dir:eq:g1}
+ H(T)\le163pL^2/T .
+\end{equation}
+Delete all vertices of degree at least $T$. This loses at most $H(T)$ edges and leaves
+maximum degree at most $T-1$. Vizing's edge-colouring theorem partitions the remaining
+edges into at most $T$ matchings. In particular
+\begin{equation}\label{dir:eq:g2}
+ \nu(G)\ge\ceil*{\frac{(p-1)/2-H(T)}{T}} .
+\end{equation}
+Taking $T=N$ gives $H(N)\le p/4$, hence $\nu(G)\ge B(p)$. The constant comes from the
+leading lower bound $p/(2T)-163pL^2/T^2$, which is maximal at $T=652L^2$.
+
+Partition a matching of size $(p_{n+k}-p)/2$ into pieces of sizes
+$d_{n+1}/2,\dots,d_{n+k}/2$. For each piece, remove its edges and join their endpoints
+to the corresponding new vertex. Distinct pieces have disjoint endpoints, so the
+insertions can be made in any order. Finally $2B(p)\sim p/(1304L^2)$. For fixed
+$c<c'<1/1304$ take $h=c'p/L^2$. Schoenfeld's estimate
+$\pi(t)=\li(t)+O(\sqrt t\log t)$ under the Riemann hypothesis
+\cite[Corollary~1]{Schoenfeld1976Sharper} gives
+$\pi(p+h)-\pi(p)=(c'+o(1))p/L^3$ by subtraction at the two endpoints. Thus the first
+$\floor{cp/L^3}$ new primes lie within the allowed distance once $p$ is large.
+\end{proof}
+
+\begin{proposition}[Restricted multiset extensions; \stU]\label{dir:prop:multiset}
+Let $G$ be a finite simple graph and $e_1,\dots,e_k$ positive even integers. New
+vertices of degrees $e_1,\dots,e_k$ can be appended to $G$ by insertions that use only
+original edges with pairwise disjoint endpoints if and only if
+$\sum_je_j\le2\nu(G)$.
+\end{proposition}
+
+\begin{proof}
+Necessity holds because all removed edges form one matching. Sufficiency is the
+partition construction in the proof of Theorem~\ref{dir:thm:block}.
+\end{proof}
+
+This is the restricted form of the extension question in Section~6 of
+\cite{ErdosKharelMezeiToroczkai2023Degree}, which asks which multisets of prescribed
+degrees can be appended to a fixed initial graph by degree-preserving steps. The
+unrestricted problem permits reusing vertices and edges created by earlier steps; for
+example, starting with a single edge one can add arbitrarily many vertices of degree
+two by subdividing one current edge at each step. Theorem~\ref{dir:thm:block} gives a
+quantitative sufficient condition for the unrestricted problem on every prime-gap
+realization, with the stronger guarantee on which edges the extensions use.
+
+\begin{example}[\stU]\label{dir:ex:graph}
+For $n=10\,000$, $p=104729$ and $T=31$, the degree sum over the vertices of degree at
+least $31$ is $9226$. Inequality \eqref{dir:eq:g2} gives
+$\ceil{(52364-9226)/31}=1392$ disjoint edges in every realization, without an analytic
+hypothesis. The next $236$ primes end at $107509$ and require
+$(107509-104729)/2=1390$ edges in total; the following prime is $107563$. The program
+\artifact{grh-exponent-six-and-transfers/checks/prime_gap_graphs.py} checks the degree
+sums by sieving, constructs one realization by the Havel--Hakimi algorithm and carries
+out all $236$ insertions, verifying simplicity, all $10236$ final degrees and
+distinctness of the old endpoints
+(\artifact{grh-exponent-six-and-transfers/data/graph-example.json}).
+\end{example}
+
+An infinite sequence of insertions can keep moving the same edge endpoint
+indefinitely. A choice that stops moving old endpoints gives a connected countable
+graph with the prescribed degrees, and one can control how long each vertex waits for
+its final neighbours.
+
+\begin{theorem}[Stabilization; \stG]\label{dir:thm:stabilize}
+There is a sequence of connected prime-gap graphs $G_2,G_3,\dots$, each obtained from
+the preceding one by an insertion, in which the neighbours of every fixed vertex
+eventually become permanent. The limit is a connected, locally finite simple graph on
+the positive integers with $\deg(i)=d_i$. Every limit edge $ij$ with $i<j$ satisfies
+$j-i=O(j/\log j)$ as $j\to\infty$, uniformly in $i$.
+\end{theorem}
+
+\begin{proof}
+Fix $A=100$ and a sufficiently large constant $P\ge e^A$. Use
+Theorem~\ref{dir:thm:toroczkai} until the first stage with $p=p_n\ge P$. Connectivity persists
+because each replaced edge has a new path between its original endpoints. At that
+stage choose a spanning tree. Thereafter all of its edges, and the edges of the
+successive trees defined below, are protected. Set
+\[
+ w(x)=\begin{cases}
+ x,&0\le x<P,\\
+ Ax/(A+\log(x/P)),&x\ge P,
+ \end{cases}
+ \qquad F(x)=x-w(x).
+\]
+At stage $n$ require that no edge used in the next insertion touch any of the first
+$k=\pi(F(p))$ vertices. Both $w$ and $F$ are nondecreasing, and $F$ is $1$-Lipschitz.
+For $p\ge P$, $w(p)\ge Ap/\log p$.
+
+We show inductively that enough eligible edges remain. Let $u=p_k$ if $k>0$. At stage
+$k$, all neighbours of the first $\pi(F(u))$ vertices had labels at most $k$ and were
+permanently protected from that stage onward, by monotonicity of the cutoff. If $u<P$
+this assertion is empty. Thus at least $(v-1)/2$ edges inside the first $k$ labels
+still exist at stage $n$, where $v$ is the greatest prime at most $F(u)$, with $v=1$ if
+there is none; this follows by summing the degrees of those earlier vertices and
+allowing each internal edge to be counted twice. The degree sum over the first $k$
+labels is $u-1$, so the number of edges incident to them is at most
+$(u-1)-(v-1)/2$. Consequently at least $(p-2u+v)/2$ edges have both endpoints outside
+the first $k$ labels.
+
+By the prime-gap bound $d_{m+1}=O(\sqrt{p_m}\log p_m)$ under the Riemann hypothesis
+\cite[Theorem~2.3]{ErdosEtAl2024Sequence}, $v\ge F(u)-O(\sqrt p\log p)$. As
+$u\le F(p)$ and $F$ is $1$-Lipschitz, $-2u+F(u)\ge-2F(p)+F(F(p))$. Hence the number of
+available edges, before protecting the tree or truncating high degrees, is at least
+\[
+ \frac{p-2F(p)+F(F(p))}{2}-O(\sqrt p\log p)
+ =\frac{w(p)-w(F(p))}{2}-O(\sqrt p\log p).
+\]
+For $k=0$ the same inequality follows directly from the total of $(p-1)/2$ edges and
+$0\le F(p)<2$. For $P\le x\le p$, differentiation gives $w'(x)=A(t-1)/t^2$ with
+$t=A+\log(x/P)\ge A$, hence $w'(x)\ge w(p)/(2p)$; for $x<P$ the derivative equals one.
+Integrating over $[F(p),p]$ gives
+\[
+ w(p)-w(F(p))\ge\frac{w(p)^2}{2p}.
+\]
+The part of the protected tree induced on the $n-k$ remaining vertices is a forest and
+contains at most $n-k$ edges. For all sufficiently large $p$, uniformly in $P\le p$,
+the prime-counting estimate under the Riemann hypothesis gives $n-k\le3w(p)/\log p$:
+for $w(p)\ge p/2$ use $\pi(p)\sim p/\log p$; otherwise subtract the estimates for $\pi$
+at $p$ and $p-w(p)\ge p/2$ and use $w(p)\ge Ap/\log p$ to absorb the error. Also
+exclude the vertices of degree at least $T=\ceil{(\log p)^5}$. By \eqref{dir:eq:g1} the
+resulting loss is at most $163p/(\log p)^3$ edges. The number of edges left is thus at
+least
+\[
+ \frac{w(p)^2}{4p}-\frac{3w(p)}{\log p}-O(\sqrt p\log p)-\frac{163p}{(\log p)^3}
+ \gg\frac{p}{(\log p)^2}.
+\]
+Here $w(p)^2/(4p)\ge25w(p)/\log p$. All implied constants are independent of $P$, so a
+single sufficiently large $P$ makes these estimates valid throughout the induction.
+Edge colouring now gives a matching of size $\gg p/(\log p)^7$, which exceeds
+$d_{n+1}/2$. Make the insertion and add one edge incident to the new vertex to the
+previously protected tree. The resulting trees are nested.
+
+Since $F(p)\to\infty$, the neighbours of each fixed label eventually become permanent.
+The union of the trees proves connectivity of the limit, and stabilization preserves
+every finite degree. An edge $ij$ with $i<j$ is born at stage $j$, so for $p=p_{j-1}$
+we have $i>\pi(F(p))$ once $p\ge P$. With $P$ fixed, $w(p)\sim100p/\log p$ and
+$j-i\le1+\pi(p)-\pi(F(p))=O(p/(\log p)^2)=O(j/\log j)$.
+\end{proof}
+
+\begin{remark}[Which part uses the Riemann hypothesis]\label{dir:rem:graphrh}
+A sufficiently late starting stage for Theorem~\ref{dir:thm:stabilize} can be treated with
+unconditional estimates. Theorems~2.2 and~2.4 of \cite{ErdosEtAl2024Sequence} give
+$d_{n+1}\le p^{5/8+o(1)}$ and $\sum_{i\le n}d_i^2\le p^{4/3+o(1)}$. With
+$T=\ceil{p^{7/20}}$ one has
+$H(T)\le T^{-1}\sum d_i^2\le p^{59/60+o(1)}=o(p/(\log p)^2)$. The gap estimate makes
+the error from rounding $F(u)$ down to a prime $o(p/(\log p)^2)$ as well, and the
+classical prime number theorem with remainder $O(x/(\log x)^4)$ suffices for
+$n-k\le3w(p)/\log p$. After the same exclusions a matching has size
+$\gg p^{13/20}/(\log p)^2$, exceeding $d_{n+1}/2$. Thus any sufficiently late connected
+starting realization admits the construction by classical bounds alone. The start at
+two vertices comes from Theorem~\ref{dir:thm:toroczkai}, and the uniform matching bound with
+$T=\ceil{652L^2}$ uses the tail estimate \eqref{dir:eq:g1}.
+\end{remark}
+
+\subsection{Coefficient fields of CM newforms}\label{dir:sec:cm}
+\sources{grh-lean-transfers}
+
+A normalized newform $f=\sum_{n\ge1}a_nq^n$ has a coefficient field
+$K_f=\Q(a_1,a_2,\dots)$. Fixing the weight and the degree of this field still allows
+the level to grow without bound. Martin's Conjecture~1(a)
+\cite{Martin2025Rationality} asks whether only finitely many fields occur at fixed
+weight and degree for trivial nebentypus. For the forms with complex multiplication
+(CM) the question can be decided, and the decisive zeros belong to quadratic Dirichlet
+$L$-functions; no hypothesis on the $L$-functions of the modular forms is needed. In
+weight two the classifications below turn out to be unconditional.
+
+Throughout, $f$ is a CM newform of weight $k\ge2$, $K=K_f$, $d=[K:\Q]$, $w=k-1$, and
+$E$ is the imaginary quadratic CM field, of fundamental discriminant $D$ and class
+number $h_E$. The CM correspondence realizes $f$ as the theta series of an algebraic
+Hecke character $\psi$ of $E$ of infinity type $(w,0)$ and conductor $\mathfrak m$:
+$a_n$ is the sum of $\psi(\mathfrak a)$ over the integral ideals of norm $n$, with
+$\psi$ extended by zero to ideals meeting the conductor. Let $L$ be the field generated
+by the values of $\psi$, and let $\eta\colon(\OO_E/\mathfrak m)^\times\to\C^\times$ be
+the finite character of $\psi$, so that
+\begin{equation}\label{dir:eq:eta}
+ \psi((a))=\eta(a)\,a^w\qquad(a\in E^\times\text{ a unit at }\mathfrak m).
+\end{equation}
+
+\begin{lemma}[The value field; \stU]\label{dir:lem:valuefield}
+For every nebentypus, $L=EK$. In particular $[L:E]=d/[K\cap E:\Q]$ divides $d$.
+\end{lemma}
+
+\begin{proof}
+Clearly $K\subseteq L$. For a prime $p=\mathfrak p\bar{\mathfrak p}$ that splits in $E$
+and is prime to the conductor, put $u=\psi(\mathfrak p)$ and
+$v=\psi(\bar{\mathfrak p})$. The coefficients at $p$ and $p^2$ give
+\[
+ u+v=a_p,\qquad uv=a_p^2-a_{p^2}.
+\]
+Let $h$ be the exponent of the ray class group modulo $\mathfrak m$. Then
+$\mathfrak p^h=(\alpha)$ and $\bar{\mathfrak p}^h=(\beta)$ with generators congruent to
+$1$ modulo $\mathfrak m$, so $u^h=\alpha^w$ and $v^h=\beta^w$ belong to $E$. Their
+principal ideals are distinct, and neither is invariant under conjugation.
+Consequently $u^h$ generates $E$ over $\Q$, so $E\subseteq L$. Every automorphism of
+$\overline{\Q}$ fixing $EK$ preserves the pair of roots $u,v$ of
+$X^2-a_pX+(a_p^2-a_{p^2})$ and fixes their distinct $h$th powers; it therefore fixes
+each root, and $u,v\in EK$. At a split prime where only one factor is prime to
+$\mathfrak m$, its value equals $a_p$. At an inert prime the sole prime ideal has value
+$a_{p^2}$, and at a ramified prime its value is $a_p$, whenever it is prime to the
+conductor. Prime ideals generate the ideal group, which proves $L=EK$.
+\end{proof}
+
+\begin{lemma}[The class-group exponent; \stU]\label{dir:lem:cmexponent}
+The exponent $e_E$ of $\Cl(E)$ divides $w[L:E]$, hence divides $(k-1)d$.
+\end{lemma}
+
+\begin{proof}
+For an ideal $\mathfrak a$ prime to $\mathfrak m$ write $\mathfrak a^h=(\gamma)$ with
+$\gamma\equiv1\pmod{\mathfrak m}$. Taking $h$th powers of ideals and using
+$\psi(\mathfrak a)^h=\gamma^w$ gives $(\psi(\mathfrak a))=(\mathfrak a\OO_L)^w$ in $L$.
+The ideal norm from $L$ to $E$ shows that $\mathfrak a^{w[L:E]}$ is principal. Every
+ideal class has such a representative.
+\end{proof}
+
+\begin{lemma}[Odd degree forces trivial nebentypus; \stU]\label{dir:lem:oddneben}
+If $d$ is odd, then $f$ has trivial nebentypus and $K$ is totally real.
+\end{lemma}
+
+\begin{proof}
+A field of odd degree has a real embedding. This embedding conjugates $f$ to a newform
+with real coefficients, so Sch\"utt's Corollary~1.2(i) \cite{Schutt2005CM} forces its
+nebentypus, and therefore the original one, to be trivial. For trivial nebentypus the
+coefficient field is totally real.
+\end{proof}
+
+\begin{theorem}[Finiteness with varying character; \stG]\label{dir:thm:cmfinite}
+Fix integers $k\ge2$ and $d\ge1$. Only finitely many isomorphism classes of fields
+$K_f$ occur among the CM newforms of weight $k$ with $[K_f:\Q]=d$, as both the level
+and the nebentypus vary.
+\end{theorem}
+
+\begin{proof}
+Martin proves the case of trivial character under quadratic Dirichlet GRH
+\cite[Theorem~1]{Martin2025Rationality}, and his Remark~1.1 anticipates a
+fixed-character analogue. The class-group and value-field arguments below are his; the
+identity $L=EK$ of Lemma~\ref{dir:lem:valuefield} is what allows the character to vary.
+
+\emph{Bounding the CM discriminant.} If $p=\mathfrak p\bar{\mathfrak p}$ splits in $E$,
+take $\mathfrak p^{e_E}=(\alpha)$. Unequal valuations at the two primes above $p$ force
+$\alpha\notin\Q$. Writing $\alpha=(a+b\sqrt D)/2$ with $b\ne0$ gives
+\[
+ p^{e_E}=\abs{\Nm_{E/\Q}\alpha}\ge\abs D/4 .
+\]
+Put $T=\log\abs D$ and $M=(k-1)d$, so that $e_E\mid M$ by Lemma~\ref{dir:lem:cmexponent}.
+If $T>25$, Theorem~3 of Elsenhans, Kl\"uners and Nicolae
+\cite{Elsenhans2020Imaginary} gives a split prime
+$p\le(1.881T+6.18)^2$ under the Riemann hypothesis for $\zeta_E(s)=\zeta(s)L(s,\chi_D)$,
+which \cref{src:thm:dgrh} supplies. Hence
+\begin{equation}\label{dir:eq:cmcutoff}
+ T\le\log4+2M\log(1.881T+6.18).
+\end{equation}
+The right side grows only logarithmically in $T$, so \eqref{dir:eq:cmcutoff} is an
+explicit discriminant cutoff for every weight and coefficient degree; only finitely
+many fields $E$ are possible.
+
+\emph{Finishing the field count.} For any one of these $E$, Martin's Corollary~3.6
+gives finitely many value fields $L/E$ of each bounded degree, uniformly in the
+conductor. Indeed the image of $\psi$ on principal ideals generates $E(\mu_r)$, where
+$r$ is the order of $\eta$; thus $\varphi(r)\le[L:\Q]\le2d$. Choose ideal-class
+generators $\mathfrak t_i$ with $\mathfrak t_i^{n_i}=(\theta_i)$. Martin's
+Proposition~3.4 places $L$ in the field obtained from $E$ by adjoining $\mu_{re_E}$ and
+the $n_i$th roots of $\theta_i^w$, independently of $\mathfrak m$. There are finitely
+many possible $r$, and each resulting number field has finitely many subfields.
+\end{proof}
+
+For example, in weight two and degree seven the class-group exponent divides seven,
+and Table~2 of \cite{Elsenhans2020Imaginary} yields
+$\abs D\le3.9\cdot10^{30}$. In weight two there is an independent unconditional
+reduction: the divisibility
+\begin{equation}\label{dir:eq:yang}
+ h_E\mid[L:E]\mid d\qquad(k=2)
+\end{equation}
+of Yang \cite[Theorem~3.1]{Yang2003CM}, applied to modular forms by Gonz\'alez
+\cite[Section~3]{Gonzalez2011Endomorphism}, replaces the class-group exponent by the
+class number, and \cite[Theorem~3.1]{Gonzalez2011Endomorphism} already proves
+weight-two finiteness in all degrees and for all characters. The interest below is in
+the exact lists over all levels.
+
+\paragraph{The genus field.}
+After Theorem~2 of \cite{Martin2025Rationality}, Martin observes from his tables that
+when a weight-two CM newform of trivial nebentypus has quadratic coefficient field $K$
+and $h_E=2$, the field $EK$ is the Hilbert class field of $E$, and he points out the
+lack of a non-computational proof. The following containment explains the equality,
+extends to every even weight, and removes the analytic hypothesis from his
+classification in coefficient degree two.
+
+\begin{theorem}[The genus field inside the value field; \stU]\label{dir:thm:genus}
+Let $f$ be a normalized CM newform of trivial nebentypus and even weight $k\ge2$. Let
+$t$ be the number of distinct primes dividing $D$, and $G_E$ the genus field of $E$.
+Then
+\[
+ G_E\subseteq L=EK,\qquad G_E\cap\R\subseteq K,\qquad 2^{t-1}\mid[K:\Q].
+\]
+In particular, if $h_E=[K:\Q]=2$, then $EK$ is the Hilbert class field $H_E$ of $E$,
+and $K$ has discriminant equal to the positive signed prime-discriminant factor of $D$.
+\end{theorem}
+
+\begin{proof}
+Here $w=k-1$ is odd. By the formula for the nebentypus of the theta series of $\psi$,
+the restriction of $\eta$ to rational units is the primitive quadratic character
+$\chi_D$ away from the moduli. The finite image $U$ of $\eta$ lies in $L$ by
+\eqref{dir:eq:eta}, since $E\subseteq L$ and each residue unit has a lift. Group the
+local components of $\eta$ over each rational prime $v$ into $\eta_v$. Their
+restrictions to diagonal rational units are exactly the corresponding local components
+of $\chi_D$; this follows by factoring the equality of Dirichlet characters into
+prime-power components using the Chinese remainder theorem, and it allows $\mathfrak m$
+to be asymmetric over a split prime.
+
+Fix an odd prime $s\mid D$ and let $P_s^2=(s)$ be its ramified prime ideal. By weak
+approximation choose $x\in E^\times$ such that $\mathfrak a=xP_s$ is prime to
+$\mathfrak m$. Then $\mathfrak a^2=(\theta)$ for $\theta=sx^2$, and \eqref{dir:eq:eta}
+gives
+\begin{equation}\label{dir:eq:genussquare}
+ b^2=s\,\eta(\theta),\qquad b=\frac{\psi(\mathfrak a)}{x^ws^{(w-1)/2}}\in L .
+\end{equation}
+We compute $\eta(\theta)$ in $U/U^2$. At a prime $v\ne s$ in the conductor, $\theta$
+equals $s$ times a local unit square at each relevant place. At $s$ use instead
+\[
+ \theta=(D/s)\,(sx/\sqrt D)^2 ,
+\]
+in which $D/s$ is a rational local unit and the second factor is a local unit square.
+Put $e_s=(-1)^{(s-1)/2}$, $s^*=e_ss$ and $d'=D/s^*$. The factorization into primitive
+quadratic characters gives $\chi_D=\chi_{s^*}\chi_{d'}$ on common units, with coprime
+conductors. Away from $s$ the rational local components evaluated at $s$ multiply to
+$\chi_{d'}(s)=\legendre{d'}{s}$. At $s$ the restriction to rational units is
+$\legendre{\cdot}{s}$. Multiplying in $U/U^2$ yields
+\[
+ \eta(\theta)\equiv\legendre{d'}{s}\legendre{D/s}{s}
+ =\legendre{e_s(d')^2}{s}=e_s\pmod{U^2}.
+\]
+All signs belong to $U$ since $\eta(-1)=-1$. Consequently there is $u\in U\subseteq L$
+with $\eta(\theta)=e_su^2$, and \eqref{dir:eq:genussquare} gives $(b/u)^2=s^*$. Thus
+$\sqrt{s^*}\in L$ for every odd prime $s\mid D$, with no restriction on the conductor,
+the order of $\eta$ or the class of $P_s$. The square-root identity at a ramified prime
+has a weight-two antecedent in \cite[Lemma~3.3]{Yang2003CM}.
+
+Gauss's genus theory gives $G_E=\Q(\sqrt{d_1},\dots,\sqrt{d_t})$, where $D=\prod_jd_j$
+is the factorization into signed prime discriminants, and $[G_E:E]=2^{t-1}$;
+equivalently $\Gal(G_E/E)$ is the class group modulo squares \cite{LemmermeyerGenus}.
+The odd factors are the $s^*$ just obtained. If a dyadic factor $-4$, $8$ or $-8$
+occurs, its square root also belongs to $L$, by dividing $\sqrt D\in E$ by the product
+of the square roots of the odd factors. This proves $G_E\subseteq L$. Martin's
+Lemma~2.2 identifies $L=EK$ (compare Lemma~\ref{dir:lem:valuefield}), and $K$ is totally
+real. Thus $L\cap\R=K$ and $[L:E]=[K:\Q]$, which gives the two remaining conclusions.
+For $h_E=2$ the class group has trivial subgroup of squares, so $G_E=H_E$ has degree
+two over $E$; when $[K:\Q]=2$ the containment is therefore an equality. The two signed
+prime discriminants have opposite signs, and the positive one defines the unique real
+quadratic subfield.
+\end{proof}
+
+\begin{corollary}[Quadratic coefficient fields in weight two; \stU]
+\label{dir:cor:cmquadratic}
+The real quadratic fields that occur as coefficient fields of weight-two CM newforms
+of trivial nebentypus are exactly those with the $23$ discriminants
+\[
+\begin{gathered}
+ 5,8,12,13,17,21,24,28,29,33,37,41,\\
+ 44,57,61,76,89,129,172,201,268,489,652 .
+\end{gathered}
+\]
+\end{corollary}
+
+\begin{proof}
+Suppose $k=2$ and $[K:\Q]=2$. Martin's Corollary~3.2 implies $\exp\Cl(E)\mid2$, so the
+class group equals its quotient by squares, and by Theorem~\ref{dir:thm:genus} its order
+$2^{t-1}$ divides two. Thus $h_E\in\set{1,2}$. The unconditional classifications of the
+imaginary quadratic fields of class numbers one and two \cite{Watkins2004Class} provide
+the base fields to check, and Martin's local arguments and constructions for these
+fields give the list, which is his Table~1.1 with the existence proofs of his
+Sections~5--7. The finite positive constructions and the specific class-number-one
+exclusions do not use ERH.
+\end{proof}
+
+In \cite{Martin2025Rationality} this list is the degree-two part of Theorem~2, proved
+there under quadratic Dirichlet GRH. Earlier work gives another route in weight two:
+\eqref{dir:eq:yang} gives $h_E\mid[K:\Q]$, and \cite[Theorem~3.2]{Gonzalez2011Endomorphism}
+classifies the $83$ pairs of CM field and quadratic coefficient field when the
+nebentypus is allowed to vary. The genus argument is an alternative proof; its local
+sign uses the trivial nebentypus and works in every even weight.
+
+\paragraph{Degree three.}
+
+\begin{theorem}[Cubic coefficient fields; \stU]\label{dir:thm:cmcubic}
+In weight two exactly eighteen cubic fields occur as coefficient fields of CM
+newforms, across all levels and nebentypus. Their discriminants are
+\[
+\begin{gathered}
+49,\ 81,\ 321,\ 621,\ 837,\ 993,\ 1593,\ 1929,\ 2241,\ 3753,\\
+5697,\ 7641,\ 8289,\ 10233,\ 13473,\ 14769,\ 23841,\ 24489 ,
+\end{gathered}
+\]
+and each field is determined up to isomorphism by its discriminant.
+\end{theorem}
+
+\begin{proof}
+By Lemma~\ref{dir:lem:oddneben} the nebentypus is trivial, and by
+Lemmas~\ref{dir:lem:valuefield} and~\ref{dir:lem:cmexponent} we have $[L:E]=3$ and
+$\exp\Cl(E)\mid3$.
+
+Assume $h_E>1$. We first show that $\eta$ has order two. If its order is $r$, then
+$\Q(\zeta_r)\subseteq L$, so $\varphi(r)\mid6$; also $r$ is even since $\eta(-1)=-1$.
+If $\varphi(r)=2$, the cyclotomic quadratic field would have to equal $E$, as $[L:E]$
+is odd, but $\Q(i)$ and $\Q(\sqrt{-3})$ have class number one. If $\varphi(r)=6$ then
+$r=14$ or $18$; the sextic cyclotomic field would equal $L$, whose quadratic subfield
+would be $\Q(\sqrt{-7})$ or $\Q(\sqrt{-3})$, again of class number one. Only $r=2$
+remains.
+
+For an ideal class $c$ choose a fractional ideal $\mathfrak a$ representing $c$ and
+prime to the conductor, and choose $\theta_c\in E^\times$ with
+$\mathfrak a^3=(\theta_c)$. The assignment
+\[
+ \Cl(E)\longrightarrow E^\times/(E^\times)^3,\qquad c\longmapsto[\theta_c]
+\]
+is a well-defined injective homomorphism: a change of representative multiplies
+$\theta_c$ by a cube times a unit, and both units $\pm1$ are cubes; the homomorphism
+law follows from ideal multiplication; and if $\theta_c=b^3$, unique factorization of
+fractional ideals gives $\mathfrak a=(b)$. Every $\theta_c$ acquires a cube root in
+$L$, because $\psi(\mathfrak a)^3=\eta(\theta_c)\theta_c=\pm\theta_c$. Set
+$F=E(\zeta_3)$. Since $[F:E]=2$, the norm from $F$ to $E$ shows that
+$E^\times/(E^\times)^3\to F^\times/(F^\times)^3$ is injective: if $b$ becomes a cube,
+then $b^2$ is a cube in $E$, so $b$ is a cube already. By the Kummer correspondence
+over $F$, adjoining cube roots of a subgroup of $F^\times/(F^\times)^3$ of order $3^m$
+gives an extension of degree $3^m$. The subgroup just constructed has order $h_E$ and
+its radicals all lie in $FL$. It follows that
+\[
+ h_E\mid[FL:F]\mid3 .
+\]
+In particular every nontrivial class group occurring here is cyclic of order three;
+this excludes fields with arbitrarily many independent classes of order three without
+enumerating them. (The divisibility \eqref{dir:eq:yang} also gives $h_E\mid3$
+directly.)
+
+There are sixteen imaginary quadratic fields of class number three, with largest
+absolute discriminant $907$; the unconditional classification goes back to Oesterl\'e
+and is included in \cite{Watkins2004Class}. For these sixteen fields Martin's
+Corollary~4.5 and Section~6.2 give the unique cubic coefficient field in each case,
+his Table~6.3 gives its discriminant, and the constructions there establish
+occurrence. For class number one his Section~5.3 gives just $\Q(\zeta_7)^+$ and
+$\Q(\zeta_9)^+$. These are the eighteen entries displayed, and by
+\cite[Table~1.2]{Martin2025Rationality} each is identified by its discriminant.
+\end{proof}
+
+Martin's proof of the cubic part of his Theorem~2 used a GRH-conditional list of the
+fields of class-group exponent three; the change here is the uniform exclusion of class
+groups of order greater than three.
+
+\paragraph{Degree five.}
+Martin singles out degree five as the next case \cite[Remark~1.2]{Martin2025Rationality}.
+
+\begin{theorem}[Quintic coefficient fields; \stU]\label{dir:thm:cmquintic}
+Across all levels and nebentypus, exactly twenty-six quintic fields occur as
+coefficient fields of weight-two CM newforms. One is the maximal real subfield
+$\Q(\zeta_{11})^+$. Each of the other twenty-five comes from a different imaginary
+quadratic field of class number five; for $D=-q$ it is generated by a root of
+\begin{equation}\label{dir:eq:quinticpoly}
+ P_{p,a}(X)=X^5-5pX^3+5p^2X-a ,
+\end{equation}
+with $(q,p,a)$ as in \cref{dir:tab:quintic}.
+\end{theorem}
+
+\begin{proof}
+\emph{Reduction.} By Lemma~\ref{dir:lem:oddneben} the nebentypus is trivial. Put $L=EK$, so
+that $[L:E]=5$ and $\exp\Cl(E)\mid5$. For $h_E>1$, $E$ has only the units $\pm1$. Let
+$r$ be the order of $\eta$. As $\varphi(r)\mid10$ and $r$ is even, $r$ is one of
+$2,4,6,22$. Orders four and six would force $E$ to be the quadratic cyclotomic field
+inside $L$, since $[L:E]$ is odd, and order twenty-two would force $L=\Q(\zeta_{11})$
+and hence $E=\Q(\sqrt{-11})$. All three exceptional quadratic fields have class number
+one. Thus $r=2$ when $h_E>1$. For each class $[\mathfrak a]$ use a representative prime
+to the conductor and write $\mathfrak a^5=(\theta)$. As in the proof of
+Theorem~\ref{dir:thm:cmcubic}, the classes $[\theta]$ form a subgroup of
+$E^\times/(E^\times)^5$ isomorphic to $\Cl(E)$, and each $\theta$ has a fifth root in
+$L$ since $\psi(\mathfrak a)^5=\pm\theta$. These classes stay independent over
+$F=E(\zeta_5)$, as $[F:E]$ divides four. Kummer theory gives $h_E\mid[FL:F]=5$. Only
+$h_E=1$ and $h_E=5$ remain.
+
+\emph{Class number one.} Principal ideals supply all values, so $L=E(\mu_r)$. For this
+field to have degree ten over $\Q$ the cyclotomic argument leaves only
+$E=\Q(\sqrt{-11})$ and $r=22$. To realize it, reduce modulo $11\OO_E$. The quotient is
+the ring of dual numbers over $\F_{11}$, with unit group
+$\F_{11}^\times\times(1+\epsilon\F_{11})$, $\epsilon^2=0$. Choose the Legendre
+character on the first factor and a character of order eleven on the second. The
+resulting $\eta$ sends $-1$ to $-1$ and restricts on rational units to $\chi_{-11}$.
+Hence $\psi((\alpha))=\alpha\eta(\alpha)$ defines a Hecke character of type $(1,0)$,
+primitive because the part of order eleven is nontrivial. Its newform has trivial
+nebentypus and coefficient field $\Q(\zeta_{11})^+$.
+
+\emph{Class number five: uniqueness.} Genus theory and the odd class number give a
+single prime discriminant, necessarily $D=-q$ with $q\equiv3\pmod4$ an odd prime; the
+purely dyadic discriminants have class number one. Let $\mathfrak t$ be an integral
+ideal representing a generator of $\Cl(E)$, prime to $q$, of norm $n$, and choose
+$\theta$ with $\mathfrak t^5=(\theta)$. For any conductor take a representative
+$\alpha\mathfrak t$ coprime to it. Its character value, divided by $\alpha$, is a
+fifth root of $\pm\theta$. The values on principal ideals generate $E$, and this one
+value generates the rest of $L$ over $E$; the sign can be absorbed in the choice of
+fifth root. The polynomial $X^5-\theta$ is irreducible over $E$: if a root generated
+an extension of degree $1\le j<5$, its norm would show that $\theta^j$ is a fifth
+power, forcing $\theta$ to be a fifth power, contrary to the order of $\mathfrak t$.
+Thus all choices yield isomorphic $L$ over $E$. As $L$ is a totally imaginary quadratic
+extension of its totally real coefficient field, its maximal totally real subfield
+recovers $K_f$. Hence there is at most one coefficient field for each $E$.
+
+\emph{Class number five: existence.} Choose as conductor the prime above $q$ and as
+$\eta$ the Legendre character on its residue field. It sends $-1$ to $-1$ and its
+rational restriction is $\chi_D$. The rule $\psi((\alpha))=\eta(\alpha)\alpha$ on
+principal ideals extends to all ideals prime to the conductor by assigning to
+$\mathfrak t$ any fifth root of $\eta(\theta)\theta$: every ideal is a principal ideal
+times a power of $\mathfrak t$, and the only relation of $\mathfrak t$ modulo principal
+ideals is the fifth-power relation used here. This character is primitive at $q$; its
+newform has weight two, trivial nebentypus and coefficient degree five. If
+$z=\psi(\mathfrak t)$ and $\Theta=z^5$, then $\bar z=n/z$ because $\abs\theta^2=n^5$.
+The coefficient field is generated by $x=z+n/z$, a root of
+\[
+ X^5-5nX^3+5n^2X-\Tr_{E/\Q}(\Theta).
+\]
+Indeed $x$ is real and $[E(z):E]=5$, while $z$ satisfies $Z^2-xZ+n=0$, so
+$x\notin\Q$.
+
+\emph{Different CM fields give different quintic fields.} Set $B=E(\zeta_5)$ and
+$M=B(z)$. Since $[B:E]$ divides four, $\Theta$ remains a non-fifth-power in $B$, so
+$M/B$ is cyclic of degree five. Conjugation takes $\Theta$ to $n^5/\Theta$, so $M$ is
+normal over $\Q$. It is unramified outside $5q$: at all other places $B$ is unramified
+and the valuation of $\Theta$ is a multiple of five, so that after division by a fifth
+power of a uniformizer one adjoins a fifth root of a unit, whose reduction is separable
+at that residue characteristic. At $q$, an inertia element restricting nontrivially to
+$E$ fixes $\zeta_5$ and sends $z$ to $\zeta_5^jn/z$ for some $j$. The five conjugates
+of $x$ are $x_i=\zeta_5^iz+\zeta_5^{-i}n/z$. They are distinct, since an equality for
+two different $i$ would make $z^2/n$ a root of unity, so that $\mathfrak t^5$ and
+$\bar{\mathfrak t}^5$ would be equal ideals and $[\mathfrak t]=[\mathfrak t]^{-1}$. The
+inertia element acts on the five conjugates by $i\mapsto-i-j$ and therefore acts
+nontrivially. This forces ramification at $q$ in the quintic field: if it were
+unramified at $q$, the compositum of all its conjugates would be unramified there as
+well. Thus $q$ is the unique ramified rational prime other than five, and it recovers
+the CM field. The field $\Q(\zeta_{11})^+$ ramifies only at eleven, and
+$\Q(\sqrt{-11})$ has class number one, so it is distinct from every class-number-five
+example.
+
+\emph{The count and the polynomials.} The unconditional classification of class number
+five contains twenty-five fields, with largest absolute discriminant $2683$
+\cite{Watkins2004Class}. In \cref{dir:tab:quintic}, $p$ is the norm of a nonprincipal
+split prime ideal and $4p^5=a^2+qb^2$. The integer $(a+b\sqrt{-q})/2$ generates the
+fifth power of one of the two prime ideals over $p$: it has the required norm, and
+$p\nmid a$, so its two conjugates cannot both be divisible by the same prime over $p$.
+Taking $\mathfrak t$ to be this prime gives $n=p$ and $\Tr\Theta=\pm a$; changing the
+sign of the trace sends the root to its negative and gives the same field.
+\end{proof}
+
+\begin{table}[ht]
+\centering\small
+\begin{tabular}{rrrrr@{\qquad}rrrrr}
+\toprule
+$q$ & $p$ & $a$ & $b$ & $v_5$ & $q$ & $p$ & $a$ & $b$ & $v_5$\\
+\midrule
+47 & 2 & 9 & 1 & 5 & 691 & 5 & 38 & 4 & 5\\
+79 & 2 & 7 & 1 & 5 & 739 & 5 & 26 & 4 & 3\\
+103 & 2 & 5 & 1 & 5 & 787 & 7 & 59 & 9 & 5\\
+127 & 2 & 1 & 1 & 5 & 947 & 3 & 5 & 1 & 5\\
+131 & 3 & 29 & 1 & 5 & 1051 & 5 & 107 & 1 & 3\\
+179 & 3 & 16 & 2 & 5 & 1123 & 7 & 239 & 3 & 3\\
+227 & 3 & 8 & 2 & 5 & 1723 & 11 & 149 & 19 & 3\\
+347 & 3 & 25 & 1 & 3 & 1747 & 17 & 1565 & 43 & 5\\
+443 & 3 & 23 & 1 & 3 & 1867 & 7 & 4 & 6 & 5\\
+523 & 7 & 220 & 6 & 5 & 2203 & 7 & 255 & 1 & 5\\
+571 & 5 & 58 & 4 & 5 & 2347 & 17 & 1810 & 32 & 5\\
+619 & 5 & 109 & 1 & 5 & 2683 & 11 & 344 & 14 & 5\\
+683 & 3 & 17 & 1 & 5 &  & & & & \\
+\bottomrule
+\end{tabular}
+\caption{The twenty-five quintic CM coefficient fields attached to class number five:
+$D=-q$, $4p^5=a^2+qb^2$, defining polynomial $P_{p,a}$ of \eqref{dir:eq:quinticpoly}.
+The column $v_5$ is the $5$-adic valuation of the field discriminant $q^2\,5^{v_5}$
+(Corollary~\ref{dir:cor:quinticdisc}).}\label{dir:tab:quintic}
+\end{table}
+
+The remaining field $\Q(\zeta_{11})^+$ has defining polynomial
+$X^5+X^4-4X^3-3X^2+3X+1$, obtained by writing $1+\zeta+\dots+\zeta^{10}=0$ in terms of
+$X=\zeta+\zeta^{-1}$. The first row of the table gives $X^5-10X^3+20X-9$ for $D=-47$.
+The accompanying program counts reduced primitive binary quadratic forms up to
+Watkins's discriminant bound, finds the displayed norm identities and checks every
+polynomial modulo primes. For each of the $26$ polynomials the archive gives a prime of
+irreducible reduction, and for each of the $\binom{26}{2}=325$ pairs a prime where both
+reductions are squarefree and the factor degrees disagree. A
+squarefree reduction ensures that the prime does not divide the polynomial
+discriminant, hence not the index of the order; its factor degrees are then the
+residue degrees in the field, and unequal patterns certify nonisomorphism. The
+canonical form of level $q^2$ and coefficient degree $h(-q)$ belongs to earlier work
+\cite{GonzalezLario2008Qcurves,GrossHecke}; what is added in
+Theorem~\ref{dir:thm:cmquintic} is exhaustiveness over all levels, the distinction by the
+ramified prime and the explicit polynomial list.
+\dirfiles{\artifact{grh-lean-transfers/checks/quintic_fields.py},
+\artifact{grh-lean-transfers/checks/quintic_irreducible.csv},
+\artifact{grh-lean-transfers/checks/quintic_witnesses.csv}}
+
+\paragraph{Every odd prime degree at least seven.}
+Define the Dickson polynomials by $D_0(X,p)=2$, $D_1(X,p)=X$ and
+$D_n=XD_{n-1}-pD_{n-2}$ for $n\ge2$.
+
+\begin{theorem}[Prime degree at least seven; \stU]\label{dir:thm:cmoddprime}
+For each prime $\ell\ge7$, the isomorphism classes of degree-$\ell$ coefficient fields
+of weight-two CM newforms, of any level and nebentypus, are in bijection with the
+imaginary quadratic fields $E$ of class number $\ell$. The field attached to $E$ of
+discriminant $-q$ is the real field generated by a root of
+\[
+ D_\ell(X,p)-\Tr_{E/\Q}\alpha ,
+\]
+where $P$ is a nonprincipal prime ideal of $E$ of degree one, of norm $p\nmid q\ell$,
+and $P^\ell=(\alpha)$. In particular there are $31$ such fields in degree seven, $41$
+in degree eleven and $37$ in degree thirteen.
+\end{theorem}
+
+\begin{proof}
+By Lemma~\ref{dir:lem:oddneben} the nebentypus is trivial; let $L=EK$. The divisibility
+\eqref{dir:eq:yang} gives $h_E\mid[L:E]=\ell$.
+
+\emph{Restricting the finite character.} If $r$ is the order of $\eta$, then $r$ is
+even and $\varphi(r)\mid2\ell$ because $\mu_r\subseteq L$. The possibilities are
+$r=2,4,6$, and $r=2(2\ell+1)$ if $2\ell+1$ is prime. Indeed $\varphi(r)=2\ell$ requires
+an odd prime factor of $r$ whose predecessor divides $2\ell$ and is even; that prime is
+$3$ or $2\ell+1$, and a power of $3$ cannot supply $\ell\ge7$ in the totient.
+
+In the last case $q=2\ell+1$ and $L=\Q(\zeta_q)$, so its unique quadratic subfield is
+$E=\Q(\sqrt{-q})$. This field cannot have class number one: none of the prime absolute
+discriminants $3,7,11,19,43,67,163$ of class number one has $(q-1)/2$ prime and at
+least seven. It cannot have class number $\ell$ either. For any negative prime
+discriminant $-q$ with $q\ge7$, a reduced form $(a,b,c)$ satisfies $a\le\sqrt{q/3}$;
+there are at most $a$ odd values $-a<b\le a$, by the boundary convention, and $b$
+determines $c$. Hence
+\begin{equation}\label{dir:eq:hbound}
+ h(-q)\le\sum_{1\le a\le\sqrt{q/3}}a<q/3<(q-1)/2 .
+\end{equation}
+If $r=4$ or $6$, then $E$ must be the quadratic cyclotomic field $\Q(\mu_r)$, since
+adjoining any other quadratic field to $E$ would give an even subdegree in $L/E$. Both
+choices have class number one, and in class number one the values on principal ideals
+already give $L=E(\mu_r)$, a contradiction with $[L:E]=\ell$. Finally $r=2$ also
+precludes $h_E=1$, since then $L=E$. Thus $r=2$ and $h_E=\ell$. Genus theory now gives
+$D=-q$ for a single odd prime $q\equiv3\pmod4$, and \eqref{dir:eq:hbound} excludes
+$q=\ell$.
+
+\emph{Construction and uniqueness.} Choose a nonprincipal prime ideal $P$ of degree one
+in $E$ away from $q\ell$, of norm $p$, and write $P^\ell=(\alpha)$; such primes exist
+by the prime ideal theorem in ideal classes. Take as $\eta_0$ the Legendre character
+on $(\OO_E/(\sqrt{-q}))^\times=\F_q^\times$. Its rational restriction is $\chi_{-q}$,
+and its sign at $-1$ ensures that $\psi((a))=\eta_0(a)a$ is well defined. Extend to the
+ideal group by choosing $\psi(P)^\ell=\eta_0(\alpha)\alpha$, using that $P$ generates
+the cyclic class group. Changing the sign of $\psi(P)$ if necessary, write
+$\beta^\ell=\alpha$. The polynomial $X^\ell-\alpha$ is irreducible over $E$: its
+reducibility for prime $\ell$ would make $\alpha$ an $\ell$th power by the binomial
+irreducibility criterion, forcing $P$ to be principal. The extension of $\psi$
+therefore has value field $E(\beta)$ of degree $\ell$ over $E$. Conversely, for any
+admissible $\psi$ with finite character of order two, use a representative $xP$ prime
+to its conductor. The value $\psi(xP)/x$ has $\ell$th power $\pm\alpha$ and generates
+$L$ over $E$. Thus all resulting value fields are conjugate. Since $\beta\bar\beta=p$,
+the real element $t=\beta+p/\beta$ is a root of $D_\ell(X,p)-\Tr_{E/\Q}\alpha$. If $t$
+were rational, $\beta$ would be at most quadratic over $\Q$ and
+$\beta^\ell\in E\setminus\Q$ would force $\beta\in E$. Hence $t$ generates the real
+coefficient field of prime degree $\ell$.
+
+\emph{Injectivity.} The prime $q$ can be read off from $K$: it is the unique ramified
+rational prime of $K$ away from $\ell$. Indeed $M=E(\zeta_\ell,\beta)$ is Galois over
+$\Q$, since it contains the radicals above both $\alpha$ and $\bar\alpha$. Away from
+$q\ell$, its radical extension over $E(\zeta_\ell)$ is unramified: the valuation of
+$\alpha$ is a multiple of $\ell$ everywhere, and after removing a local $\ell$th power
+one has a unit whose $\ell$th-root polynomial has unit discriminant. At $q\ne\ell$,
+inertia maps onto the nontrivial inertia of $E/\Q$ and fixes $\zeta_\ell$. An inertia
+lift of conjugation sends $\beta$ to $\zeta_\ell^cp/\beta$ for some $c$. On the $\ell$
+distinct conjugates
+\[
+ t_j=\zeta_\ell^j\beta+\zeta_\ell^{-j}p/\beta\qquad(j\bmod\ell)
+\]
+it acts by $j\mapsto-j-c$, a nonidentity permutation. Hence $q$ ramifies in the
+splitting field and in $K$, because the normal closure of a field unramified at $q$ is
+unramified there.
+
+The counts are those of the imaginary quadratic fields of class number $7$, $11$ and
+$13$ in the unconditional enumeration \cite{Watkins2004Class}.
+\end{proof}
+
+\subsection{The discriminant and conductor of the reflected fields}
+\label{dir:sec:reflected}
+\sources{grh-exponent-six-and-transfers; grh-lean-transfers; grh_transfers}
+
+The fields of Theorems~\ref{dir:thm:cmquintic} and~\ref{dir:thm:cmoddprime} belong to the reflection
+families of Cohen, Rubinstein-Salzedo and Thorne
+\cite{CohenRubinsteinSalzedoThorne2015Identities,CohenThorneDihedral}, whose reflection
+theorem leaves two possible exponents of $\ell$ in the discriminant. This subsection
+decides which one occurs, gives the conductor in the Galois closure, and separates the
+fields over the two quadratic bases of class number $25$.
+
+Let $D<0$ be a fundamental discriminant and $\ell$ an odd prime coprime to $D$. Put
+$E=\Q(\sqrt D)$, $B=E(\zeta_\ell)$ and $r=\dim_{\F_\ell}\Cl(E)[\ell]$. Under these
+hypotheses every unit of $E$ is an $\ell$th power.
+
+\begin{proposition}[The reflection family; \stU]\label{dir:prop:reflection}
+Let $[\mathfrak a]$ be a class of order $\ell$ in $\Cl(E)$, write
+$\mathfrak a^\ell=(\alpha)$, $n=\Nm\mathfrak a$ and $\beta^\ell=\alpha$, and put
+$M=B(\beta)$. Let $c$ denote complex conjugation.
+\begin{enumerate}[label=\textup{(\roman*)}]
+\item The $\ell$ numbers $\zeta_\ell^j\beta+n/(\zeta_\ell^j\beta)$ are real, distinct
+ and conjugate. Their splitting field is $M^{\langle c\rangle}$, its Galois group is
+ the affine group $\F_\ell\rtimes\F_\ell^\times$, and its cyclic subfield of degree
+ $\ell-1$ is $B^{\langle c\rangle}$.
+\item The isomorphism class of the field $\Q(\beta+n/\beta)$ depends only on the line
+ spanned by $[\mathfrak a]$ in $\Cl(E)[\ell]$, and different lines give different
+ normal closures. There are $(\ell^r-1)/(\ell-1)$ such fields.
+\end{enumerate}
+\end{proposition}
+
+\begin{proof}
+We have $\alpha\bar\alpha=n^\ell$. Changing the ideal representative changes $\alpha$
+by an $\ell$th power, up to a unit, and every unit is an $\ell$th power. Thus the
+group of virtual units
+\[
+ \set{v\in E^\times:(v)\text{ is an }\ell\text{th power of an ideal}}/E^{\times\ell}
+ \simeq\Cl(E)[\ell]
+\]
+identifies ideal-class lines with radical lines. A radical line remains nonzero and
+distinct from the other lines in $B^\times/B^{\times\ell}$, because restriction
+followed by the norm raises classes to the power $[B:E]=\ell-1$.
+
+A generator $s$ of $\Gal(M/B)$ sends $\beta$ to $\zeta_\ell\beta$. For a primitive root
+$g$ modulo $\ell$ choose $u$ fixing $E$ and $\beta$ and sending $\zeta_\ell$ to
+$\zeta_\ell^g$. Complex conjugation $c$ sends $\beta$ to $n/\beta$ and $\zeta_\ell$ to
+$\zeta_\ell^{-1}$. These automorphisms generate the Galois group of $M/\Q$, and direct
+substitution shows that $c$ is central and $usu^{-1}=s^g$. The $\ell$ real conjugates
+of $\beta+n/\beta$ are $\zeta_\ell^j\beta+n/(\zeta_\ell^j\beta)$. They are distinct:
+equality for different $j$ would make $\beta^2/n$ an $\ell$th root of unity and hence
+$\alpha^2=n^\ell$, forcing $[\alpha]=0$ in $E^\times/E^{\times\ell}$. Their splitting
+field is $M^{\langle c\rangle}$, since the affine action of $s$ and $u$ on the indices
+is faithful. Its cyclic subfield $B^{\langle c\rangle}$ of degree $\ell-1$ is the
+mirror field in the sense of \cite{CohenRubinsteinSalzedoThorne2015Identities}, and
+the conjugation rule is their star condition.
+
+Two different ideal-class lines give different normal closures: on adjoining $E$ each
+normal closure recovers its Kummer extension $M/B$, and Kummer theory distinguishes the
+lines. Different generators of one line give the same normal closure. Its cyclic
+complements of order $\ell-1$ are conjugate in the affine group, so they give a single
+isomorphism class of fields of degree $\ell$.
+\end{proof}
+
+For the following calculation assume that $D=-q$ is an odd prime discriminant and
+$q\ne\ell$. With the notation of Proposition~\ref{dir:prop:reflection} set
+\[
+ K=\Q(\beta+n/\beta),\qquad C=M^{\langle c\rangle},\qquad F=B^{\langle c\rangle},
+\]
+so that $C$ is the normal closure of $K$ and $C/F$ is cyclic of degree $\ell$. Let
+$v\mid\ell$ be a place of $E$, $U=E_v$ and $f=[U:\Q_\ell]$, and let $u$ be the unit
+obtained from $\alpha$ by dividing by $\ell^{v(\alpha)}$, with $v(\ell)=1$. Since
+$\ell\mid v(\alpha)$, this preserves the local radical class.
+
+\begin{theorem}[The local test at $\ell$; \stU]\label{dir:thm:localtest}
+With these assumptions, the discriminant of $K$ and the relative Artin conductor of
+any nontrivial character of $C/F$ are given by
+\[
+ \begin{array}{c|c|c}
+ \text{test in }\OO_U/\ell^2 & \abs{\disc(K)} & \text{conductor of }C/F\\ \hline
+ u^{\ell^f-1}=1 & q^{(\ell-1)/2}\,\ell^{\ell-2} & (1)\\
+ u^{\ell^f-1}\ne1 & q^{(\ell-1)/2}\,\ell^{\ell} & \lambda^2
+ \end{array}
+\]
+where $\lambda$ is the unique prime of $F$ over $\ell$. If $\ell$ splits in $E$, the
+two choices of $v$ give the same answer, since $\alpha\bar\alpha=n^\ell$.
+\end{theorem}
+
+\begin{proof}
+\emph{The local algebra at $\ell$.} We have $KE=E(\beta)$, by $[E(\beta):E]=\ell$ and
+$\beta^2-(\beta+n/\beta)\beta+n=0$. Extension of scalars gives
+\[
+ (K\otimes_\Q\Q_\ell)\otimes_{\Q_\ell}U\simeq U[X]/(X^\ell-u).
+\]
+The unramified extension $U/\Q_\ell$ commutes with the formation of the maximal order
+of an \'etale algebra: on each local factor its base change is a product of rings of
+integers of unramified extensions. Hence the discriminant valuation can be read after
+this scalar extension.
+
+Decompose a unit of $U$ into a Teichm\"uller root of unity of order dividing
+$\ell^f-1$ and a principal unit. The $\ell$th power map is an automorphism of the
+former group. On the latter the logarithm identifies $1+\ell\OO_U$ with $\ell\OO_U$,
+and taking $\ell$th powers has image $1+\ell^2\OO_U$. Thus $u$ is an $\ell$th power in
+$U$ exactly when $u^{\ell^f-1}=1$ in $\OO_U/\ell^2$. In that case the algebra is
+$U\times U(\zeta_\ell)$, with a tame, totally ramified factor of degree $\ell-1$, and
+its discriminant exponent is $\ell-2$.
+
+In the other case take $z$ to be any lift of the unique residue root of
+$X^\ell-\bar u$. Then $v(z^\ell-u)=1$, since a solution modulo $\ell^2$ would pass the
+power test. The shifted polynomial $(X+z)^\ell-u$ is Eisenstein. Its root is a
+uniformizer and generates the ring of integers; the derivative of the original
+polynomial at its root is $\ell$ times a unit, and the norm of this value has valuation
+$\ell$. This gives the wild exponent $\ell$.
+
+\emph{The remaining primes.} At a finite prime of $B$ away from $\ell$ the valuation of
+$\alpha$ is a multiple of $\ell$. After removing a local $\ell$th power one adjoins a
+root of a polynomial $X^\ell-v_0$ with $v_0$ a unit and unit discriminant, hence an
+unramified extension. Consequently ramification away from $\ell$ can occur only at $q$.
+There inertia has order two in $M/\Q$, fixes $\zeta_\ell$, and acts on the $\ell$ real
+roots by $j\mapsto h-j$ for some $h$. It has one fixed point and $(\ell-1)/2$
+transpositions, so tame inertia contributes $(\ell-1)/2$ to the discriminant exponent
+of $K$ at $q$. This inertia also injects into $\Gal(F/\Q)$, so $C/F$ is unramified
+there.
+
+\emph{The conductor.} At $\ell$, inertia acts on $F$ through the full cyclotomic group,
+since $E$ is unramified there and the cyclotomic group acts faithfully on $F$. Thus
+$F/\Q$ is totally and tamely ramified at $\ell$. In the power case, adjoining $U$ to
+the local splitting field leaves it inside $U(\zeta_\ell)$, of absolute degree at most
+$2(\ell-1)$. Its local degree over $F_\lambda$ divides $\ell$, so $\lambda$ splits
+completely in $C/F$.
+
+In the wild case, over $U$ the splitting field contains the totally ramified radical
+extension of degree $\ell$ and the totally ramified cyclotomic extension of degree
+$\ell-1$; indeed the normal closure of $K$ after this base change is the splitting
+field of the isomorphic radical algebra. The ramification index is divisible by both
+degrees, and its upper bound $\ell(\ell-1)$ shows that the entire affine group is
+inertia already over $\Q_\ell$. Use $K$ locally in the discriminant tower: the
+extension $C/K$ is tame of degree $\ell-1$, so
+\[
+ v_\ell(d_{C/\Q})=(\ell-1)\ell+(\ell-2)=\ell^2-2 .
+\]
+Using $F$ instead gives $v_\lambda(d_{C/F})=\ell^2-2-\ell(\ell-2)=2(\ell-1)$, as all
+residue degrees are one. The conductor--discriminant formula for the cyclic group of
+prime order gives conductor exponent two for each of its $\ell-1$ nontrivial
+characters.
+\end{proof}
+
+\begin{corollary}[The quintic CM coefficient fields; \stU]\label{dir:cor:quinticdisc}
+For the twenty-five fields of \cref{dir:tab:quintic} the discriminant is
+$q^2\,5^{v_5}$ with $v_5$ as tabulated. Exactly six of them are tame at five, those
+with $q=347,443,739,1051,1123,1723$. The field $\Q(\zeta_{11})^+$ has discriminant
+$11^4$. The discriminant of the polynomial $P_{p,a}$ is $5^5(4p^5-a^2)^2=5^5q^2b^4$,
+so the index of $\Z[X]/(P_{p,a})$ in the maximal order is $5b^2$ in the tame case and
+$b^2$ in the wild case.
+\end{corollary}
+
+\begin{proof}
+For each row, $p$ is a split rational prime, $4p^5=a^2+qb^2$ and $p\nmid a$; with
+$\alpha=(a+b\sqrt{-q})/2$ the ideal $(\alpha)$ is the fifth power of a prime above $p$,
+and as $p<q/4$ a generator of norm $p$ cannot exist. The polynomial $P_{p,a}$ follows
+by expanding $(\beta+p/\beta)^5$ and using $\beta^5+\bar\beta^5=a$. Apply
+Theorem~\ref{dir:thm:localtest} with $\ell=5$. The checker enumerates all $625$ potential
+roots modulo $25$ in the quadratic ring. When $p=5$ the quadratic algebra at
+five splits; one component of $\alpha$ is a unit and the other has valuation five, so
+modulo $25$ the latter is zero, the unit component decides the test, and its
+reciprocal times $5^5$ gives the other local class. The discriminant of $P_{p,a}$ is
+obtained from a resultant with $P'_{p,a}$, or from the critical values $\pm2p^{5/2}$
+of the Dickson polynomial. For $\Q(\zeta_{11})^+$ use the conductor--discriminant
+formula for its four nontrivial characters. A separate computation of maximal orders
+by the Round Two algorithm verifies every field discriminant and order index.
+\end{proof}
+\dirfiles{\artifact{grh-exponent-six-and-transfers/checks/reflection.py},
+\artifact{grh-exponent-six-and-transfers/checks/maximal_orders.py},
+\artifact{grh-exponent-six-and-transfers/data/reflected_fields.csv}}
+
+For example, for $q=347$ one may take $p=3$, $a=25$, $b=1$. Modulo $25$ we have
+$(2\sqrt{-347})^5=(25+\sqrt{-347})/2$, since $32\cdot347^2\equiv13\pmod{25}$; the field
+discriminant is $5^3\cdot347^2=15\,051\,125$ and the index is five. For $q=47$, $p=2$,
+$a=9$, $b=1$, the field discriminant is $5^5\cdot47^2=6\,903\,125$ and $P_{2,9}$
+generates the full ring of integers.
+
+\begin{proposition}[Two class groups of rank two; \stU]\label{dir:prop:ranktwo}
+Over each of $D=-12451$ and $D=-37363$, whose class groups are $C_5^2$, the six lines
+of $\F_5^2$ give six pairwise nonisomorphic reflected quintic fields, with defining
+polynomials $P_{p,a}$ as in \cref{dir:tab:ranktwo}. Exactly one line over each base is
+tame at five, and the five wild fields over one base have the same discriminant.
+\end{proposition}
+
+\begin{proof}
+A projective label certifies that its row represents a distinct line. For each base
+choose two triples $(s,r,z)$ in which $s\equiv1\pmod5$ is prime, $r^2\equiv D\pmod s$
+and $z$ has order five modulo $s$. Reducing $\alpha$ by $\sqrt D\mapsto r$ and raising
+to the power $(s-1)/5$ gives $z^e$ with $e\in\F_5$; the two exponents form the label
+$[e_1:e_2]$. All generators in the table are units at the probe primes. A relation
+between their classes modulo fifth powers would remain a relation between the labels,
+because the residual fifth-power characters are multiplicative. The six
+nonproportional labels prove exhaustion by the known rank. The triples are
+$(181,20,59)$, $(211,93,107)$ for the first base and $(151,38,59)$, $(241,76,87)$ for
+the second. The values of $v_5$ come from Theorem~\ref{dir:thm:localtest}, and the maximal
+order computation cited above verifies all twelve rows.
+\end{proof}
+
+\begin{table}[ht]
+\centering\small
+\begin{tabular}{rrrrr@{\qquad}rrrrr}
+\toprule
+\multicolumn{5}{c}{$D=-12451$} & \multicolumn{5}{c}{$D=-37363$}\\
+$p$ & $a$ & $b$ & label & $v_5$ & $p$ & $a$ & $b$ & label & $v_5$\\
+\midrule
+5 & 7 & 1 & $[2\!:\!0]$ & 3 & 11 & 779 & 1 & $[3\!:\!1]$ & 5\\
+7 & 132 & 2 & $[1\!:\!1]$ & 5 & 13 & 942 & 4 & $[1\!:\!3]$ & 5\\
+11 & 577 & 5 & $[2\!:\!3]$ & 5 & 23 & 4607 & 11 & $[3\!:\!3]$ & 5\\
+13 & 1134 & 4 & $[1\!:\!3]$ & 5 & 37 & 13131 & 53 & $[4\!:\!1]$ & 5\\
+53 & 23339 & 301 & $[0\!:\!1]$ & 5 & 43 & 7677 & 119 & $[0\!:\!1]$ & 3\\
+109 & 79839 & 2105 & $[2\!:\!4]$ & 5 & 79 & 96628 & 282 & $[3\!:\!0]$ & 5\\
+\bottomrule
+\end{tabular}
+\caption{The twelve reflected quintic fields over the two imaginary quadratic fields
+with class group $C_5^2$: $4p^5=a^2+\abs Db^2$, defining polynomial $P_{p,a}$.}
+\label{dir:tab:ranktwo}
+\end{table}
+
+\begin{corollary}[The reflected quintic fields of exponent five; \stG]
+\label{dir:cor:reflected37}
+There are exactly $27$ imaginary quadratic fields of class-group exponent five, and
+their reflection families for $\ell=5$ contain exactly $37$ quintic fields: the $25$
+fields of \cref{dir:tab:quintic} and the $12$ fields of \cref{dir:tab:ranktwo}. Each of
+them is a totally real field of discriminant $\abs D^2\,5^3$ or $\abs D^2\,5^5$, and
+these are all the starred fields of \cite{CohenRubinsteinSalzedoThorne2015Identities}
+with those discriminants.
+\end{corollary}
+
+\begin{proof}
+Elsenhans, Kl\"uners and Nicolae
+\cite[Theorem~1 and Table~1]{Elsenhans2020Imaginary} find $27$ imaginary
+quadratic fields of class-group exponent five up to $3.1\cdot10^{20}$, and their
+Lemma~1 and Theorem~3 bound every absolute discriminant of exponent five by
+$2.3\cdot10^{20}$ under the quadratic least-split-prime estimate (their Table~2). The
+required statement for $\zeta_E(s)=\zeta(s)L(s,\chi_D)$ follows from
+\cref{src:thm:dgrh}. Their data give $25$ groups $C_5$ and two groups $C_5^2$, at
+$D=-12451$ and $D=-37363$, so the count is $25+2(5^2-1)/(5-1)=37$ by
+Proposition~\ref{dir:prop:reflection}. By Theorem~\ref{dir:thm:localtest} the fields lie among the
+totally real starred fields of discriminant $\abs D^{(\ell-1)/2}\ell^{\ell-2}$ or
+$\abs D^{(\ell-1)/2}\ell^{\ell}$, and Theorem~1.2 and Lemma~2.8 of
+\cite{CohenRubinsteinSalzedoThorne2015Identities} give exactly
+$(\ell^r-1)/(\ell-1)$ starred fields in the union of these two sets. The construction
+therefore exhausts the family; the tables assign a specific alternative and a defining
+polynomial to each ideal-class line.
+\end{proof}
+
+The weight-two CM classification of Theorem~\ref{dir:thm:cmquintic} uses only the $25$ cyclic
+class groups and the cyclotomic exception. The twelve fields of
+\cref{dir:tab:ranktwo} are the subject of a joint splitting test in \cref{sec:grp}.
+
+\subsection{A uniform isogeny bound for two families of sextic fields}
+\label{dir:sec:isogeny}
+\sources{grh-arithmetic-transfers; dirichlet-grh-research}
+
+Let $E$ be an elliptic curve over a number field $K$. A cyclic isogeny of prime degree
+$p$ defined over $K$ gives a Galois-stable line in $E[p]$; write $\lambda$ for the
+character describing the action on the line and $\chi_p$ for the mod-$p$ cyclotomic
+character. We use \emph{Momose type 2} in the sense of Banwait and Derickx, with
+$\lambda^{12}=\chi_p^6$ and $p\equiv3\pmod4$ as in their type~2 sieve
+\cite{BanwaitDerickx2025Explicit}. A bound for such $p$ that is independent of the
+discriminant of $K$ is the uniformity question; Banwait and Derickx treat cubic fields
+and ask how their method might treat fields of even degree
+\cite{BanwaitDerickx2023Towards}. The arithmetic of this subsection rests on a statement
+about residue degrees that is also used in \cref{dir:sec:heavenly}.
+
+\begin{lemma}[Odd residue degrees; \stU]\label{dir:lem:oddresidue}
+Let $K$ be a number field with normal closure $N/\Q$, and let $G=\Gal(N/\Q)$ act on
+the set $X=G/H$ of embeddings of $K$, where $H=\Gal(N/K)$. If every element of $G$ has
+an odd cycle of length at most $r$ on $X$, then every rational prime $p$ has a place
+$v$ of $K$ above it of odd residue degree $f_v\le r$. This includes the primes
+ramified in $N$.
+\end{lemma}
+
+\begin{proof}
+Choose a place of $N$ above $p$, its decomposition group $D$, its inertia group
+$I\triangleleft D$, and a lift $u\in D$ of the Frobenius generator of $D/I$. The places
+of $K$ above $p$ correspond to the $D$-orbits on $X$. In the orbit of $x$, with
+stabilizer $D_x$, the inertia orbits are permuted transitively by $u$, and their number
+is $[D:ID_x]=f_v$: the local degree $[D:D_x]$ of the subfield of $N_w$ fixed by $D_x$,
+divided by its ramification index $[I:I\cap D_x]$, gives this index. Thus the length of
+the $u$-cycle through $x$ is a multiple of $f_v$. Choose $x$ on an odd cycle of $u$ of
+length at most $r$.
+\end{proof}
+
+\begin{lemma}[The two sextic actions; \stU]\label{dir:lem:sextic}
+Consider $A_4$ acting on the six edges of a tetrahedron and $A_5$ acting on its six
+Sylow $5$-subgroups. The numbers of elements of each cycle shape are
+\begin{center}
+\begin{tabular}{lrrrr}
+ & $1^6$ & $1^22^2$ & $3^2$ & $1\,5$\\
+\hline
+$A_4$ on edges & 1 & 3 & 8 & 0\\
+$A_5$ on Sylow $5$-subgroups & 1 & 15 & 20 & 24
+\end{tabular}
+\end{center}
+In particular every element has a cycle of length $1$ or $3$. Each of the two groups
+has a unique transitive action on six points up to equivalence, the $A_5$ action is
+primitive, and among the sixteen transitive permutation groups of degree six these two
+are exactly the ones in which every element has an odd cycle.
+\end{lemma}
+
+\begin{proof}
+The three double transpositions of $A_4$ each fix two edges of the tetrahedron, and an
+element of order three has two orbits of length three on the edges. For $A_5$, each of
+the six point stabilizers has order ten and contains five involutions; the fifteen
+involutions are conjugate, so each fixes $6\cdot5/15=2$ points. An element of order
+five fixes its unique Sylow subgroup, and an element of order three fixes none. For
+$A_4$ the stabilizer has order two and all such subgroups are conjugate. In $A_5$ a
+subgroup of order ten has a unique Sylow $5$-subgroup, hence is its normalizer, and all
+these normalizers are conjugate; the stabilizer is maximal, since the action is doubly
+transitive (the $5$-cycle in the stabilizer permutes the other five points). The
+statement about the sixteen transitive groups is an exhaustive computation.
+\end{proof}
+\dirfiles{\artifact{dirichlet-grh-research/heavenly/check_heavenly.py},
+\artifact{dirichlet-grh-research/heavenly/check_heavenly.txt}}
+
+The LMFDB number fields \code{6.6.284124736.1} and \code{6.2.27071209.2} have these two
+actions.
+
+The necessary condition used below is Proposition~6.1 of
+\cite{BanwaitDerickx2025Explicit}: if $p$ is a Momose type~2 isogeny prime for $K$,
+then for every rational prime $q$ that splits in $\Q(\sqrt{-p})$ and every prime of $K$
+above $q$ of odd residue degree $f$,
+\begin{equation}\label{dir:eq:cc}
+ 4q^f\ge p\qquad\text{or}\qquad p\mid q^{2f}+q^f+1 .
+\end{equation}
+The second alternative matters for potentially multiplicative reduction. There is no
+assumption that $q$ be unramified in $K$.
+
+\begin{theorem}[The strict local sieve; \stG]\label{dir:thm:strictcc}
+For a prime $p\equiv3\pmod4$, call a rational prime $w$ an \emph{excluding witness} if
+\[
+ 4w^3<p,\qquad\legendre wp=1,\qquad p\nmid(w^2+w+1)(w^6+w^3+1).
+\]
+The primes $p\equiv3\pmod4$ with no excluding witness are exactly the following $66$:
+\[
+\begin{gathered}
+3,7,11,19,23,31,43,59,67,83,107,139,163,211,283,307,331,379,499,523,\\
+547,643,787,883,907,1123,1723,1747,2083,2347,2683,3067,3187,3907,\\
+4027,4243,4363,4603,5107,5443,5923,6043,6427,6763,7723,8563,8803,\\
+9067,10627,10987,13267,14107,14347,14683,15667,16963,22003,26203,\\
+32323,34483,36523,37123,89083,90787,222643,253507 .
+\end{gathered}
+\]
+\end{theorem}
+
+By quadratic reciprocity, $\legendre wp=1$ is equivalent to $w$ splitting in
+$\Q(\sqrt{-p})$, also for $w=2$.
+
+\begin{proof}
+Trial of the eligible auxiliary primes gives the list up to $253507$.
+
+\emph{The range $253507<p\le11\cdot10^{12}$.} An independent sieve with the strict
+integer inequality finds, or certifies the existence of, an excluding witness for every prime in this range. It
+checks $264911$ primes directly up to $4\cdot127^3=8193532$. Above this threshold all
+primes $q\le127$ have admissible size. The program separately checks the eight primes
+$p\equiv3\pmod4$ in its upper range that divide one of the two polynomials for some
+$q\le127$. For all remaining primes, a square among these auxiliaries is a witness. If
+every auxiliary is a nonsquare, the conditions at $2,3,5,7,11,13,17$ restrict $p$ to
+$1440$ residue classes modulo $2042040$. For every odd $q$, quadratic reciprocity gives
+$\legendre qp=\legendre{-p}q$; in each class the further tests for $19\le q\le127$ are
+therefore periodic masks on an arithmetic progression, a mask discarding the multiples
+of $q$ and the integers with $\legendre{-p}q=1$. Exactly $327$ integers in the upper
+range survive all the masks. Trial division proves that $110$ of them are prime, and
+all $110$ have an excluding witness.
+
+\emph{The range $p>T=10^{11}$.} Put $y=\log p$ and $M(y)=1.881y+6.18$. For
+$p>T>e^{25}$, Theorem~3 of \cite{Elsenhans2020Imaginary}, which rests on
+Bach and Sorenson \cite{Bach1996Explicit} and on the Riemann hypothesis for the
+two Dirichlet factors of $\zeta_{\Q(\sqrt{-p})}(s)=\zeta(s)L(s,\chi_{-p})$, gives a
+prime $q\le M(y)^2$ that splits in $\Q(\sqrt{-p})$; the hypothesis is supplied by
+\cref{src:thm:dgrh}. Here $4q^3<p$: indeed $M(\log T)<54$ and $4\cdot54^6<T$, and
+$M(y)^6e^{-y}$ decreases for $y\ge\log T$ by logarithmic differentiation. If $y\ge58$,
+the same argument applied to the exponents $12$ and $6$, using $M(58)<116$ and
+$116^{12}+116^6+1<e^{58}$, yields $q^6+q^3+1<p$, and $q$ is already an excluding
+witness.
+
+In the remaining case $q\le116^2$ and $q^2+q+1<T$. The only obstruction to using $q$ is
+$p\mid N_q=q^6+q^3+1$. For each of the $1594$ primes $q\le116^2$ the supplied
+certificate decomposes $N_q=\prod_id_i^{e_i}$. A prime $p>T$ dividing $N_q$ divides some $d_i>T$. For every
+such entry the certificate supplies a prime $w\le43$ and an integer $z$ such that
+\[
+ z^2\equiv w\pmod{d_i},\qquad
+ \gcd\bigl(d_i,\,w(w^2+w+1)(w^6+w^3+1)\bigr)=1 .
+\]
+Reducing modulo $p$ gives a nonzero square $w$ and both required nondivisibilities, and
+since $4w^3<T$ this $w$ is an excluding witness. The argument works even when $d_i$ is
+composite, and no primality claim about the large divisors enters. The verifier checks
+every product, square, gcd and endpoint inequality with integer or rational
+arithmetic; it covers $1126$ distinct large divisors. The two overlapping ranges prove
+the classification.
+\end{proof}
+\dirfiles{\artifact{grh-arithmetic-transfers/checks/isogeny_sieve.py} (the list up to
+$253507$), \artifact{grh-arithmetic-transfers/checks/cubic_tail.cpp} (the middle range),
+\artifact{grh-arithmetic-transfers/checks/large_certificate.json} and
+\artifact{grh-arithmetic-transfers/checks/verify_large.py} (the certificate for large
+primes and its verifier)}
+
+\begin{remark}\label{dir:rem:strict}
+The strict inequality $4q^3<p$ must be retained even when $p$ lies just below $4q^3$.
+The loop in Algorithm~A.8 of \cite{BanwaitDerickx2023Towards}, and the authors'
+PARI/GP implementation, also admit $q\le1+(p/4)^{1/3}$, which can include an extra
+prime. For example $p=89083$ has no excluding witness; the extra prime $q=29$ has
+$\legendre{29}{p}=1$ and neither polynomial vanishes modulo $p$, yet
+$4\cdot29^3=97556>p$. The endpoint $253507$ agrees with the one reported in
+\cite[Appendix~A, Example~A.13]{BanwaitDerickx2023Towards} for the test with residue
+degrees $1,3$. A second run of the tail program, with its upper endpoint raised to
+$3\cdot10^{13}$, leaves $782$ integers after the masks, of which $246$ are prime, each
+with an excluding witness (\artifact{dirichlet-grh-research/heavenly/cubic_tail.txt}).
+The prime $p=3$ has no $q$ with $4q<p$ and passes vacuously.
+\end{remark}
+
+\begin{theorem}[Sextic fields; \stG]\label{dir:thm:sexticisogeny}
+Let $K$ be a sextic field whose normal closure acts on the six embeddings of $K$ as
+$A_4$ on the edges of a tetrahedron or as $A_5$ on its Sylow $5$-subgroups. Then every
+odd Momose type~2 isogeny prime for $K$ belongs to the set of $66$ primes of
+Theorem~\ref{dir:thm:strictcc}, whose largest member is $253507$.
+\end{theorem}
+
+\begin{proof}
+Let $p\equiv3\pmod4$ be a prime outside the list, and let $w$ be an excluding witness.
+Then $w$ splits in $\Q(\sqrt{-p})$. By Lemmas~\ref{dir:lem:oddresidue} and~\ref{dir:lem:sextic} some
+prime of $K$ above $w$ has residue degree $f\in\set{1,3}$. Since $4w^f\le4w^3<p$ and
+$p$ divides neither $w^2+w+1$ nor $w^6+w^3+1$, both alternatives of \eqref{dir:eq:cc}
+fail, so $p$ is not a Momose type~2 isogeny prime for $K$.
+\end{proof}
+
+The analytic input concerns $\Q(\sqrt{-p})$ only, which is why Dirichlet GRH suffices
+although the normal closure is nonabelian, and for $A_5$ nonsolvable.
+
+\begin{proposition}[A general uniform bound; \stG]\label{dir:prop:isogenygeneral}
+Suppose that every element of a transitive permutation group $G$ acting on $G/H$ has
+an odd cycle of length at most $m$, and let $K$ range over the number fields whose
+normal closure acts in this way on the embeddings of $K$. Put $U(p)=(4\log p+10)^2$.
+Every Momose type~2 isogeny prime $p$ for such a field satisfies
+\[
+ p\le\max\set{4U(p)^m,\ U(p)^{2m}+U(p)^m+1},
+\]
+an effective bound depending only on $m$. More generally, let $F/\Q$ be a fixed
+abelian extension contained in the normal closure $N$, and suppose only that every
+element of $\Gal(N/F)$ has an odd cycle of length at most $m$. Then the Momose type~2
+isogeny primes of these fields are bounded in terms of $m$ and $F$.
+\end{proposition}
+
+\begin{proof}
+The explicit bound of Bach and Sorenson \cite{Bach1996Explicit}, as used in
+\cite[Appendix~A]{BanwaitDerickx2023Towards}, gives a prime $q\le U(p)$ that splits in
+$\Q(\sqrt{-p})$; its hypothesis is the Riemann hypothesis for $\zeta(s)L(s,\chi_{-p})$.
+By Lemma~\ref{dir:lem:oddresidue} some prime of $K$ above $q$ has odd residue degree
+$f\le m$. If both displayed expressions were smaller than $p$, both alternatives in
+\eqref{dir:eq:cc} would fail for this prime. The right side is a fixed polynomial in
+$\log p$.
+
+For the variant, apply the least-split-prime estimate to the abelian field
+$J=F\,\Q(\sqrt{-p})$, whose zeta function is a product of Dirichlet $L$-functions by
+Proposition~\ref{dir:prop:abelian}. Its degree is at most $2[F:\Q]$ and its absolute discriminant
+is at most $\abs{D_F}^2p^{[F:\Q]}$, by the discriminant inequality for a compositum.
+The resulting prime $q\ll_F(1+\log p)^2$ splits in both fields. Its decomposition
+group in $N$ acts trivially on $F$, so the argument of Lemma~\ref{dir:lem:oddresidue}
+applies, even if $q$ ramifies in $N/F$.
+\end{proof}
+
+For example, the action of $S_4$ on the edges of the tetrahedron has the property of
+the variant with $m=3$ once its quadratic sign field is fixed, which gives a bound
+uniform over these sextic fields with fixed sign field.
+
+The set of $66$ primes cannot be shortened by the local condition alone.
+
+\begin{theorem}[Sharpness of the local obstruction; \stG]\label{dir:thm:isogenysharp}
+There is a sextic field $K$ with the tetrahedral $A_4$ action, and there is a sextic
+field with the primitive $A_5$ action, with the following property: among the primes
+$p\equiv3\pmod4$, the condition \eqref{dir:eq:cc} holds for every rational prime $q$
+that splits in $\Q(\sqrt{-p})$ and every prime of the field above $q$ of odd residue
+degree exactly when $p$ is one of the $66$ primes of Theorem~\ref{dir:thm:strictcc}. That
+\eqref{dir:eq:cc} holds for these $66$ primes is unconditional.
+\end{theorem}
+
+\begin{proof}
+Let $S$ be the union, over the $66$ candidates $p$, of the sets of primes $q<p/4$ that
+split in $\Q(\sqrt{-p})$. It comprises $5093$ primes.
+
+\emph{A cyclic cubic field in which every prime of $S$ is inert.} Consider
+\[
+ u_t(X)=X^3-tX^2-(t+3)X-1,\qquad\disc(u_t)=(t^2+3t+9)^2 .
+\]
+For every prime $q$, the values $0$ and $-1$ are never roots modulo $q$. Each of the
+other $q-2$ residue classes $x$ gives at most one $t$ with $u_t(x)=0$, since the
+coefficient of $t$ is $-x(x+1)$. Thus there is some $t$ modulo $q$ with $u_t$
+irreducible modulo $q$. Choose these parameters simultaneously for all $q\in S$ by the
+Chinese remainder theorem. Then $u_t$ is irreducible over $\Q$, its splitting field
+$C=\Q(\alpha)$ is cyclic cubic, and every $q\in S$ is unramified and inert, because the
+reduction is separable and irreducible. One can take $\sigma(\alpha)=-1/(\alpha+1)$ as
+a generator of $\Gal(C/\Q)$, as substitution into $u_t$ verifies.
+
+\emph{The tetrahedral extension.} Choose a rational prime splitting completely in $C$
+and use weak approximation to find $\beta\in C^\times$ with valuations $(1,0,0)$ at its
+three primes. Set $a=\beta/\sigma\beta$. The classes of $a$ and $\sigma a$ are
+independent in $C^\times/(C^\times)^2$, since their valuation vectors modulo two are
+two distinct nonzero vectors of even weight on the three primes. The relation
+$a\,\sigma a\,\sigma^2a=1$ shows that $N=C(\sqrt a,\sqrt{\sigma a})$ is Galois over
+$\Q$. Its quotient of order three permutes the three nontrivial square classes
+cyclically, and a subgroup of order three exists by Cauchy's theorem, so the group is
+the nontrivial semidirect product $V_4\rtimes C_3\cong A_4$. The sextic subfield
+$K=C(\sqrt a)$ has the tetrahedral edge action.
+
+\emph{Verification of \eqref{dir:eq:cc}.} Fix one of the $66$ primes $p$ and a rational
+prime $q$ that splits in $\Q(\sqrt{-p})$. If $q\ge p/4$, the first alternative holds
+for every $f$. Otherwise $q\in S$, and every residue degree of $K$ above $q$ is a
+multiple of $3$ and at most $6$, so the only odd degree to consider is $3$. If
+$4q^3\ge p$ the first alternative holds. If $4q^3<p$, then $q^2+q+1<p$, and since $p$
+has no excluding witness we must have $p\mid q^6+q^3+1$, the second alternative with
+$f=3$. This proves \eqref{dir:eq:cc} for $K$ and all $66$ primes. (The finite check
+shows that in fact $4q^3\ge p$ for every such pair $(p,q)$.) Conversely, by
+Theorem~\ref{dir:thm:sexticisogeny} and its proof, \eqref{dir:eq:cc} fails for every other
+prime $p\equiv3\pmod4$; this is the only step that uses Theorem~\ref{dir:thm:strictcc}.
+
+\emph{The primitive family.} We construct an $A_5$-extension in which every $q\in S$ is
+unramified with Frobenius a $3$-cycle in the natural quintic action; in the sextic
+action its cycle lengths are $3,3$, and the verification above applies unchanged. Let
+$X$ parametrize monic quintics $f$ together with $y\ne0$ satisfying $y^2=\disc(f)$. Its
+function field is $\Q(x_1,\dots,x_5)^{A_5}$: the elementary symmetric functions of the
+roots generate the $S_5$-invariant field and the Vandermonde product generates its
+quadratic extension. Maeda proved that this field is purely transcendental
+\cite{Maeda1989Noether}. Consequently $X$ has weak approximation at finite sets of
+primes: a nonempty Zariski open subset of $X$ is isomorphic to an open subset of affine
+$5$-space, every nonempty open subset of $X(\Q_q)$ meets this chart since $X$ is smooth
+and geometrically integral, and ordinary weak approximation in the five coordinates
+suffices. At every $q\in S$ prescribe squarefree reduction of type $(3,1,1)$; such a
+polynomial exists even over $\F_2$, by taking an irreducible cubic and two distinct
+linear factors. At two further primes prescribe types $(3,1,1)$ and $(5)$. Each
+prescription defines a nonempty open subset of the local points of $X$: a monic
+integral lift of the chosen reduction has unramified splitting field with Frobenius of
+the indicated cycle type, this permutation is even, so the signed Vandermonde product
+of its roots belongs to $\Q_q$ and supplies $y$. Weak approximation gives one rational
+quintic realizing all prescriptions. Its group is contained in $A_5$ and has order
+divisible by $15$. A subgroup of order $30$ would contradict simplicity, and a subgroup
+of order $15$ would have a normal Sylow $5$-subgroup, whereas the normalizer of this
+subgroup in $A_5$ has order $10$. Hence the splitting field has group $A_5$.
+\end{proof}
+
+\begin{remark}[Explicit witnesses]\label{dir:rem:sexticwitness}
+The tetrahedral field of Theorem~\ref{dir:thm:isogenysharp} is explicit. The union $S$ omits
+the prime $r=9343$. Take $t\equiv0\pmod{r^2}$ in addition to the inertness conditions.
+The polynomial $X^3-3X-1$ has the simple roots $755,8688,9243$ modulo $r$, and its
+value at $755$ has $r$-adic valuation one, so $\beta=\alpha-755$ has the valuations
+required above. With the two integers $A,B$ of the first parameter file listed below,
+\[
+ t=A/B,\qquad u_t(\alpha)=0,\qquad
+ K=\Q\Bigl(\alpha,\sqrt{(\alpha-755)/(-1/(\alpha+1)-755)}\Bigr).
+\]
+The largest absolute coefficient of $Bu_t(X)$ has $10797$ decimal digits. The verifier
+rebuilds the union and checks the parameter at each of its primes, including $2$.
+
+For the single endpoint $p=253507$ the set of split primes $q<p/4$ has $3152$ members,
+from $41$ to $63361$, and already $4\cdot41^3>p$. Here the parameter is obtained as
+follows. To shorten the defining polynomial, the admissible residues are first combined
+into $t_0$ modulo $M=17^2\prod_qq$, the product over these $3152$ primes, with
+$t_0\equiv0\pmod{17^2}$. The Euclidean algorithm gives a short pair $(A,B)$ with
+$A\equiv t_0B\pmod M$ and $\gcd(B,M)=1$, and $t=A/B$; since the denominator is a unit at
+each prescribed prime, reduction and irreducibility work as before. Modulo $17$, $u_t$
+has the three simple roots $3,4,10$ and $u_t(3)\equiv17\pmod{17^2}$, so
+$\beta=\alpha-3$ has the required valuations. The two integers are in the second
+parameter file. The largest absolute coefficient of $BX^3-AX^2-(A+3B)X-B$ has $6796$ decimal digits; a monic integral
+polynomial for the same cubic field is $Y^3-AY^2-B(A+3B)Y-B^3$, with largest
+coefficient of $20382$ digits. This cyclic cubic field is also a witness for the local
+compatibility question of \cite[Remark~A.14]{BanwaitDerickx2023Towards}, whose cubic
+example has coefficients exceeding $27380$ decimal digits and enforces inertness at
+every prime below $p/4$; the weaker splitting prescriptions used here suffice for the
+same necessary condition.
+\dirfiles{\artifact{grh-arithmetic-transfers/checks/simultaneous_parameter.txt},
+\artifact{grh-arithmetic-transfers/checks/sextic_parameter.txt} (the two parameter
+files), \artifact{grh-arithmetic-transfers/checks/simultaneous_witness.py} (the
+verifier)}
+\end{remark}
+
+The argument of Proposition~\ref{dir:prop:isogenygeneral} applies to an infinite sequence of
+even degrees. Let $N/\Q$ be a Galois extension with group $A_n$, $n\ge4$. Fix a
+$k$-element subset of the $n$ letters and let $K$ be the fixed field of its setwise
+stabilizer, so that $[K:\Q]=\binom nk$; by complementation we may take
+$1\le k\le n/2$. Orbits of a permutation are taken on the set of all $k$-subsets.
+
+\begin{theorem}[Alternating-group subset fields; \stU]\label{dir:thm:subsets}
+Every element of $A_n$ has an odd orbit on the $k$-subsets if and only if either
+$\binom nk$ is odd, or
+\begin{equation}\label{dir:eq:subsetcases}
+ n\in\set{2^a,2^a+1},\qquad k=2^{a-1},\qquad a\ge2 .
+\end{equation}
+In the cases \eqref{dir:eq:subsetcases}, the maximum over $g\in A_n$ of the length of
+the shortest odd orbit of $g$ is exactly the largest odd integer $m\le n$. If the
+criterion fails, a set of unramified primes of positive density has only even residue
+degrees in $K$.
+\end{theorem}
+
+\begin{proof}
+A permutation $g$ has an odd orbit on subsets exactly when the Sylow $2$-subgroup of
+$\langle g\rangle$ fixes a subset; this follows by taking the index of the stabilizer
+in the cyclic group. It therefore suffices to test the even permutations of $2$-power
+order. Their cycle lengths form partitions of $n$ into powers of two with an even
+number of even parts, and the sizes of the fixed subsets are exactly the subset sums
+of the parts.
+
+Write $\mathcal B$ for the set of powers of two in the binary expansion of $n$. Every
+partition into powers of two refines $\mathcal B$, as one sees by merging equal parts
+until all parts are distinct. Splitting a part leaves every previously attainable
+subset size attainable. Therefore every submask of $n$, that is, every sum of a subset
+of $\mathcal B$, always occurs. These sizes have $\binom nk$ odd, by expanding
+$(1+X)^n=\prod_{2^j\in\mathcal B}(1+X^{2^j})$ in $\F_2[X]$.
+
+Suppose $k$ is not a submask. If $\mathcal B$ itself describes an even permutation, it
+excludes $k$. Otherwise every even partition is a proper refinement, and replacing any
+one part $2^j>1$ of $\mathcal B$ by two halves already gives an even permutation. Thus
+$k$ must be a subset sum after \emph{every} possible single split; this is sufficient
+too, because a refinement starts with one of those splits. For a given $j$, a new sum
+must use exactly one of the two halves. If $2^{j-1}\in\mathcal B$ already, the two
+copies used in such a sum either leave the binary bit at $j-1$ or carry into the
+vacated bit $j$, and all sums are old. If $2^{j-1}\notin\mathcal B$, a new sum has
+exactly one bit outside $\mathcal B$, at $j-1$. Two different choices of $j$ therefore
+cannot allow the same new sum. The only remaining $n$ have a single binary part
+greater than one, with an optional part $1$. For $n\ge4$ the single split allows
+exactly the additional sizes $2^{a-1}$ and, when $n$ is odd, its complement
+$2^{a-1}+1$. This proves the equivalence. For an excluded pair $(n,k)$ the Chebotarev
+density theorem realizes the conjugacy class of the excluding element as a Frobenius
+class with positive density.
+
+For the orbit length put $k=2^{a-1}$ and write each cycle length of $g$ as $2^bu$ with
+$u$ odd. The $2$-part $2^b$ divides $k$ in both cases of \eqref{dir:eq:subsetcases}:
+a cycle violating this would have length $2^a$ and at most one point outside it,
+making the permutation odd. Sort the cycles by decreasing $2^b$. Take whole cycles
+until the next cycle would reach or exceed $k$ letters. The remaining number of
+letters required is a multiple of the $2^b$ of this cycle. Its $u$th power splits the
+cycle into $u$ cycles of length $2^b$; take the required number of these. The
+resulting $k$-set is fixed by $g^u$, so its orbit has odd length dividing $u\le m$.
+
+When $n=2k$, a cycle of length $m=2k-1$ with a fixed letter attains $m$: a $k$-set
+selects $k$ or $k-1$ letters in the long cycle, both numbers are coprime to $m$, and
+its stabilizer in this regular cyclic action has order dividing the number selected,
+hence is trivial. When $n=2k+1$ the $n$-cycle attains $m=n$ by the same coprimality
+argument. Both witness permutations are even.
+\end{proof}
+
+\begin{corollary}[Uniform bounds in arbitrarily large even degree; \stG]
+\label{dir:cor:subsets}
+In the cases \eqref{dir:eq:subsetcases}, every rational prime has a place of $K$ above
+it of odd residue degree at most $m$, including the primes ramified in $N$, and the
+bound of Proposition~\ref{dir:prop:isogenygeneral} holds with this $m$, independently of the
+discriminant of $K$.
+\end{corollary}
+
+\begin{proof}
+Combine Theorem~\ref{dir:thm:subsets}, Lemma~\ref{dir:lem:oddresidue} and Proposition~\ref{dir:prop:isogenygeneral}.
+\end{proof}
+
+\begin{center}
+\begin{tabular}{rrrrl}
+\toprule
+$n$ & $k$ & $[K:\Q]$ & $m$ & cycle type attaining $m$\\
+\midrule
+4 & 2 & 6 & 3 & $3+1$\\
+5 & 2 & 10 & 5 & $5$\\
+8 & 4 & 70 & 7 & $7+1$\\
+9 & 4 & 126 & 9 & $9$\\
+16 & 8 & 12\,870 & 15 & $15+1$\\
+17 & 8 & 24\,310 & 17 & $17$\\
+\bottomrule
+\end{tabular}
+\end{center}
+For example, a field of degree $70$ in the table admits the same universal
+odd-residue-degree test as a field of degree seven. The script
+\artifact{grh-arithmetic-transfers/checks/alternating.py} enumerates cycle partitions
+through $n=34$ and independently visits subset orbits of individual permutations
+through $n=7$.
+
+\subsection{Heavenly abelian varieties and uniform Rasmussen--Tamagawa bounds}
+\label{dir:sec:heavenly}
+\sources{dirichlet-grh-research; grh-arithmetic-transfers}
+
+Let $A$ be an abelian variety over a number field $K$ and $\ell$ a rational prime. Call
+$A$ \emph{heavenly at $\ell$} if $K(A[\ell^\infty])$ lies in the maximal pro-$\ell$
+extension of $K(\mu_{\ell^\infty})$ unramified outside $\ell$. Equivalently, $A$ has
+good reduction away from $\ell$ and $K(A[\ell])/K(\mu_\ell)$ has $\ell$-power degree
+(for elliptic curves see \cite[Lemma~2.2]{OHara2026Heavenly}). Write $\mathcal A(K,g,\ell)$ for the set of
+$K$-isomorphism classes of such varieties of dimension $g$. The uniform Conjecture~2
+of Rasmussen and Tamagawa \cite{RasmussenTamagawa2017Arithmetic} asks for
+$\mathcal A(K,g,\ell)=\varnothing$ for $\ell>B(g,d)$ over all fields $K$ of degree $d$.
+Their Theorem~5.1 assumes suitable Dedekind zeta hypotheses and treats each fixed $K$;
+their Theorem~5.2 proves uniformity in odd degree under GRH. (The numbering is that of
+the author manuscript, arXiv:1302.1477v1.) Lombardo established uniformity in any
+degree for CM abelian varieties \cite{Lombardo2018Uniform}, and McLeman and Rasmussen
+treat quadratic fields \cite{McLemanRasmussen2026Heavenly}.
+
+\begin{lemma}[The Rasmussen--Tamagawa obstruction; \stU]\label{dir:lem:rt}
+For fixed $g,d$ there exist an effective threshold $C_7(g,d)$ and a finite effective
+set of integers $\mathcal M(g,d)$ with the following property. If $[K:\Q]=d$ and $A/K$
+of dimension $g$ is heavenly at $\ell>C_7(g,d)$, then there is $m\in\mathcal M(g,d)$
+dividing $\ell-1$ such that for every place $v\mid p\ne\ell$ of $K$,
+\[
+ f_v\text{ odd},\quad p^{f_v}<\ell/(4g)
+ \qquad\Longrightarrow\qquad
+ p^{f_v}\bmod\ell\notin(\F_\ell^\times)^m .
+\]
+No condition on the ramification of $p$ or $\ell$ in $K$ is needed.
+\end{lemma}
+
+\begin{proof}
+Use \cite[Corollary~3.2, (3.4), Lemma~3.5, \S4.1, Proposition~4.2]{RasmussenTamagawa2017Arithmetic}.
+Their hypothesis (A1) is heavenliness, and the constant $C_7$ displayed in (3.4)
+suffices for (A2) uniformly in the degree. If $e$ is the gcd of their local indices
+$e_\lambda$, then $m=m_\Q\mid e/2$ and $e\mid M'(2g)d$, so the positive divisors of
+$M'(2g)d$ give a finite set. Here $M'(a)$ is the integer of their Lemma~3.1, the gcd
+of the orders of $\GL_a(\F_{\ell'})$ over the odd primes $\ell'\ne\ell$; their
+valuation formula attains each minimum at infinitely many odd primes, so removing
+$\ell$ preserves the gcd. For $p\ne\ell$ the cyclotomic character at an arithmetic
+Frobenius at $v$ is $p^{f_v}\bmod\ell$.
+
+To see the sign of the obstruction, let $\chi^{i_1},\dots,\chi^{i_{2g}}$ be the
+diagonal characters of $A[\ell]$. Triviality of $p^{f_v}$ modulo $m$th powers would
+make all of the residual characters $\chi^{i_j+i_k-1}$ trivial on this Frobenius. If
+$Q=p^{f_v}$ and $a_j$ is the integral trace of the $j$th power of Frobenius, this gives
+$a_2\equiv2gQ\pmod\ell$. Weil's bound $\abs{a_2}\le2gQ$ and $4gQ<\ell$ force equality.
+Every Frobenius eigenvalue is therefore $+\sqrt Q$ or $-\sqrt Q$. Since $Q$ is a
+nonsquare and $a_1$ an integer, $a_1=0$. The same residual characters give
+$a_1^2\equiv4g^2Q\pmod\ell$, a contradiction.
+\end{proof}
+
+\begin{theorem}[Uniform transfer; \stG]\label{dir:thm:heavenlygeneral}
+Fix $g,d,r\ge1$. There is an effective bound $B(g,d,r)$ such that
+$\mathcal A(K,g,\ell)=\varnothing$ for every $\ell>B(g,d,r)$ and every field $K$ of
+degree $d$ satisfying the cycle hypothesis of Lemma~\ref{dir:lem:oddresidue} with this $r$.
+\end{theorem}
+
+\begin{proof}
+Take the maximum of $C_7(g,d)$ and the constants $C_6(m,g,r,\Q)$ of
+\cite[Proposition~2.7]{RasmussenTamagawa2017Arithmetic} over $m\in\mathcal M(g,d)$.
+For $m\mid\ell-1$ let $L_{m,\ell}$ be the unique subfield of degree $m$ of
+$\Q(\zeta_\ell)$. The only zeta hypothesis of that proposition here is the Riemann
+hypothesis for $\zeta_{L_{m,\ell}}$, which holds by Proposition~\ref{dir:prop:abelian}. Apply the
+proposition to the identity automorphism. It yields a rational prime $p\ne\ell$ with
+\[
+ p<(\ell/(4g))^{1/r},\qquad p\bmod\ell\in(\F_\ell^\times)^m ;
+\]
+the residue condition expresses complete splitting in $L_{m,\ell}$, and for $m=1$ one
+may simply take $p=2$ for large $\ell$. Lemma~\ref{dir:lem:oddresidue} supplies $v\mid p$
+with odd $f_v\le r$, so $p^{f_v}<\ell/(4g)$ and $p^{f_v}$ is still an $m$th power
+modulo $\ell$. This contradicts Lemma~\ref{dir:lem:rt}. All fields used for the analytic
+estimate are cyclotomic subfields of bounded degree.
+\end{proof}
+
+\begin{theorem}[The two sextic families; \stG]\label{dir:thm:heavenlysextic}
+For every positive integer $g$ there is an effective $B(g)$ such that
+$\mathcal A(K,g,\ell)=\varnothing$ whenever $[K:\Q]=6$, the normal closure of $K$ has
+group $A_4$ or $A_5$, and $\ell>B(g)$. The bound is independent of the discriminant of
+$K$, of the variety and of its endomorphisms. One may take $B(1)=4027$; more precisely,
+a prime at which some elliptic curve over such a field is heavenly belongs to the list
+\begin{equation}\label{dir:eq:heavenlylist}
+\begin{gathered}
+ 2,3,5,7,11,13,19,23,29,31,37,43,59,67,83,107,139,163,211,\\
+ 283,307,331,379,499,547,643,883,907,4027 .
+\end{gathered}
+\end{equation}
+\end{theorem}
+
+\begin{proof}
+By Lemma~\ref{dir:lem:sextic} the cycle hypothesis holds with $r=3$ for both families, so
+the first assertion is Theorem~\ref{dir:thm:heavenlygeneral}. The rest of the proof concerns
+$g=1$.
+
+\emph{Inertia weights.} Let $E/K$ be a heavenly elliptic curve in either family, and
+first take $\ell>5$. Its mod-$\ell$ representation on $G_K$ has semisimple characters
+$\chi^i,\chi^{1-i}$ for some integer $0\le i<\ell-1$, by
+\cite[Lemma~3.3]{RasmussenTamagawa2017Arithmetic} and the Weil pairing; these exponents
+describe the characters on $G_K$ even if the image of $\chi|_{G_K}$ is proper. Since
+$\ell\nmid\abs G$, the inertia group above $\ell$ in the normal closure is tame and
+cyclic. The lengths of the cycles of an inertia generator on the embeddings equal the
+ramification indices on its inertia orbits. The cycle table of Lemma~\ref{dir:lem:sextic}
+therefore gives a place $\lambda\mid\ell$ of $K$ with $e(\lambda/\ell)=1$ or $3$. This
+use of inertia at the torsion prime is separate from the Frobenius argument at
+auxiliary primes.
+
+At any $\lambda\mid\ell$ an elliptic curve acquires semistable reduction over an
+extension of ramification index at most six. For completeness, take a short integral
+equation $y^2=x^3+ax+b$ over the local field, with discriminant $\Delta$ and
+$v(0)=+\infty$. If $v(j)\ge0$, then $s=v(\Delta)\le3v(a)$. From
+$\Delta=-16(4a^3+27b^2)$ it follows that $s=3v(a)$ or $s=2v(b)$, since $\ell>3$; also
+$s\le2v(b)$. Scale the equation by a parameter of valuation $s/12$, which exists in a
+totally ramified extension of degree $12/\gcd(s,12)\le6$. The new coefficients are
+integral and the new discriminant is a unit. If $v(j)<0$, then
+$3v(a)=2v(b)<v(\Delta)$. Write $v(a)=2t$ and $v(b)=3t$. Scaling by a parameter of
+valuation $t/2$ yields integral unit coefficients, unit $c_4$ and discriminant of
+positive valuation, and the resulting reduction is multiplicative. The case $j=0$
+belongs to the first alternative. In the good-reduction case the index just exhibited
+is a divisor of $12$ other than $12$; in the multiplicative case it divides two. The
+minimal semistability index divides any successful index
+\cite[\S3.1]{RasmussenTamagawa2017Arithmetic}. At the chosen place we consequently
+have
+\[
+ e=e_{E,K_\lambda}\,e(\lambda/\ell)\in\set{1,2,3,4,6,9,12,18}.
+\]
+The Tate--Oort relation \cite[(3.1)]{RasmussenTamagawa2017Arithmetic}, valid before
+their large-prime assumption (A2), supplies weights $0\le j,j'\le e$ with
+$ei\equiv j$ and $e(1-i)\equiv j'\pmod{\ell-1}$. For $\ell>211$ their sum must equal
+$e$, since $2e<\ell-1$. Interchanging the two characters permits $j\le e/2$.
+
+\emph{A finite test that forces equal inertia weights.} O'Hara uses powers of auxiliary
+Frobenius traces to test local weights over cubic fields
+\cite[\S2.3]{OHara2026Heavenly}. We use the same trace identity, retaining both
+possible odd residue degrees and combining the products below by a gcd. Fix a prime
+$p\in\set{2,3,5,7,11,13}$. By Lemmas~\ref{dir:lem:oddresidue} and~\ref{dir:lem:sextic} the residue
+field at some $v\mid p$ has size $Q=p$ or $p^3$. At this place $E$ has good reduction.
+Let $a$ be its Frobenius trace, with $a^2\le4Q$. The traces of powers satisfy
+\[
+ S_0=2,\quad S_1=a,\quad S_k=aS_{k-1}-QS_{k-2}.
+\]
+Reduction of the two eigenvalues modulo $\ell$ and the two inertia congruences give
+\[
+ S_e(a,Q)\equiv Q^j+Q^{e-j}\pmod\ell .
+\]
+For $j<e/2$ the positive integer on the right is strictly larger than $2Q^{e/2}$, by
+the strict inequality of arithmetic and geometric means, whereas
+$\abs{S_e}\le2Q^{e/2}$. Define
+\[
+ D_{e,j}=\gcd_{p\in\set{2,3,5,7,11,13}}\ \prod_{Q\in\set{p,p^3}}\
+ \prod_{a^2\le4Q}\bigl(Q^j+Q^{e-j}-S_e(a,Q)\bigr),
+\]
+where $a$ runs over the rational integers. For unbalanced weights $\ell$ must divide
+this positive gcd. The largest prime divisor of $D_{e,j}$ over $0\le j<e/2$, for each
+possible $e$, is
+\[
+ \begin{array}{c|rrrrrrrr}
+ e&1&2&3&4&6&9&12&18\\ \hline
+ \text{largest prime}&13&13&109&37&109&211&109&211 .
+ \end{array}
+\]
+The exact checker multiplies the positive terms and uses Euclid's algorithm; it divides each gcd by the
+primes up to $211$ to exhaustion and checks that the remainder equals one. This proves
+$j=e/2$ for every candidate $\ell>211$.
+
+\emph{What balance forces at a good prime.} Now $(e/2)(2i-1)\equiv0\pmod{\ell-1}$.
+Hence $4\mid e$, as $2i-1$ is odd, leaving $e=4$ or $12$. It also follows that
+$\ell\equiv3\pmod4$ and
+\[
+ 6(2i-1)\equiv0\pmod{\ell-1}.
+\]
+If $p\bmod\ell$ is a nonzero square, so is $Q=p^f$. Therefore $u=Q^{2i-1}$ has order
+dividing three: write $Q=b^2$ and use the last congruence. The residual trace square
+is
+\[
+ a^2\equiv Q(2+u+u^{-1})\equiv Q\text{ or }4Q\pmod\ell .
+\]
+If $4p^3<\ell$, then $0\le a^2\le4Q<\ell$, forcing equality over the integers. Both
+$Q$ and $4Q$ are nonsquares, since $f=1$ or $3$. Consequently a candidate $\ell>211$
+has \emph{no} prime $p$ with $4p^3<\ell$ that is a quadratic residue modulo $\ell$.
+
+\emph{Covering all large torsion primes.} For $\ell\equiv3\pmod4$ and a prime $p$,
+$\legendre p\ell=1$ exactly when $p$ splits in $\Q(\sqrt{-\ell})$. By
+Theorem~\ref{dir:thm:strictcc}, every prime $\ell\equiv3\pmod4$ with $\ell>253507$ has a prime
+$p$ with $4p^3<\ell$ and $\legendre p\ell=1$, so no such $\ell$ is a candidate. Direct
+trial of the condition $4p^3<\ell$ through $253507$ leaves $52$ candidates larger than
+$211$.
+
+\emph{Keeping the same diagonal character at every prime.} For each remaining
+$\ell>211$ retain the exponents $0\le i<\ell-1$ with $6(2i-1)\equiv0\pmod{\ell-1}$.
+For $\ell\le211$ begin with all exponents, imposing only for $\ell>5$ the necessary
+condition that $ei\bmod(\ell-1)\le e$ for at least one admissible $e$. For each prime
+$p\ne\ell$, discard $i$ if for \emph{both} $Q=p$ and $Q=p^3$ the least absolute residue
+of $Q^i+Q^{1-i}$ modulo $\ell$ exceeds $\floor{2\sqrt Q}$. For an actual curve its
+fixed exponent must survive every prime. One may stop as soon as
+$\floor{2\sqrt{p^3}}\ge\floor{\ell/2}$, since the option $Q=p^3$ alone allows every
+residue from then on. The checker yields the list \eqref{dir:eq:heavenlylist}.
+\end{proof}
+\dirfiles{\artifact{dirichlet-grh-research/heavenly/check_elliptic.py},
+\artifact{dirichlet-grh-research/heavenly/check_elliptic.txt}}
+
+The tests in the proof permit the locally chosen places to vary with $p$ and impose
+only necessary congruences. The large-prime step can also be obtained without the
+integer certificate of Theorem~\ref{dir:thm:strictcc}: Bach and Sorenson
+\cite[Theorem~5.1]{Bach1996Explicit} bound the least prime splitting in
+$\Q(\sqrt{-\ell})$ by $(4\log\ell+10)^2$ under the Riemann hypothesis for its zeta
+function. Put $H=3\cdot10^{13}$. For $y\ge\log H$ the function $4(4y+10)^6e^{-y}$
+decreases, because $24/(4y+10)<1$, and at $y=\log H<32$ its numerator is below
+$4\cdot138^6<H$; thus every $\ell>H$ has a prime $p$ with $4p^3<\ell$ and
+$\legendre p\ell=1$, and the range from $253507$ to $H$ is covered by the second tail
+computation of Remark~\ref{dir:rem:strict}.
+
+\begin{corollary}[Cubic fields; \stG]\label{dir:cor:heavenlycubic}
+A prime at which some elliptic curve over some cubic number field is heavenly belongs
+to the list \eqref{dir:eq:heavenlylist}. In particular $25$ primes remain in the range
+$\ell\ge11$.
+\end{corollary}
+
+\begin{proof}
+At any rational prime the identity $\sum e_vf_v=3$ guarantees a place with odd
+$f_v\in\set{1,3}$. If $\ell>5$, inertia above $\ell$ in the normal closure is cyclic,
+since its group embeds in $S_3$, and its action on three points has an orbit of size
+one or three. Thus the two local inputs to every numerical test in the proof of
+Theorem~\ref{dir:thm:heavenlysextic} are identical.
+\end{proof}
+
+This is a numerical version of the uniform finiteness for elliptic curves over cubic
+fields in \cite[Proposition~7.5]{RasmussenTamagawa2017Arithmetic}; for related balance
+criteria and sieves in this family see \cite{OHara2026Heavenly}.
+
+\begin{proposition}[Further permutation actions; \stG]\label{dir:prop:heavenlypsl}
+Let $q\equiv1\pmod4$ be an odd prime power. In the natural action of $\PSL_2(\F_q)$ on
+the $q+1$ points of $\mathbb P^1(\F_q)$ every element has an odd cycle of length at
+most $(q+1)/2$. Hence for fixed $g$ and $q$ the conclusion of
+Theorem~\ref{dir:thm:heavenlygeneral} holds uniformly over every number field realizing this
+action. Moreover, if a family of fields has an odd absolute residue degree at most $r$
+above every rational prime, then the extensions of fixed odd relative degree $n$ of
+its members have one at most $rn$, and Theorem~\ref{dir:thm:heavenlygeneral} applies
+uniformly to them.
+\end{proposition}
+
+\begin{proof}
+An element with an eigenline in $\mathbb P^1(\F_q)$ fixes a point. Otherwise a lift of
+determinant one has eigenvalues $\alpha,\alpha^q=\alpha^{-1}$ in $\F_{q^2}$. Therefore
+$\alpha^{(q+1)/2}=\pm1$, and the projective element has order dividing the odd integer
+$(q+1)/2$; every one of its cycles then has odd length at most $(q+1)/2$. The statement
+on towers follows from the identity $\sum_{w\mid v}e_wf_w=n$, which gives an odd
+relative residue degree at most $n$ above any place $v$.
+\end{proof}
+
+The case $q=5$ recovers the $A_5$ sextic family.
+
+\paragraph{O'Hara's finiteness questions and descent.}
+For elliptic curves we say that a pair $(E/K,\ell)$ is \emph{primitive over $K$} if no
+proper intermediate field $\Q\subseteq k\subsetneq K$ supports an elliptic curve
+heavenly at $\ell$ and geometrically isomorphic to $E$. In prime degree this is
+O'Hara's exclusion of the classes already heavenly over $\Q$. We work inside a fixed
+algebraic closure of $\Q$, and $[E]_K$ denotes a $K$-isomorphism class tagged with the
+field $K$.
+
+\begin{theorem}[O'Hara's Questions A and B; \stU]\label{dir:thm:ohara}
+For cyclic cubic fields $K/\Q$ and primes $\ell\ge11$, there are finitely many pairs
+$([E]_K,\ell)$ for which $E/K$ is heavenly at $\ell$ and its geometric isomorphism
+class has no heavenly representative over $\Q$ at the same prime. The set of pairs
+$(\ell,K)$ occurring in this way is finite.
+\end{theorem}
+
+\begin{proof}
+Rasmussen and Tamagawa
+\cite[Conjecture~2 and Proposition~7.5]{RasmussenTamagawa2017Arithmetic} give one bound
+$N(1,3)$ valid for all cubic fields simultaneously, so $11\le\ell\le N(1,3)$. For each
+such prime, McLeman and Rasmussen
+\cite[Theorem~1.2, equivalently Theorem~3.1]{McLemanRasmussen2026Heavenly} with $d=3$
+and $K_0=\Q$ give finitely many geometric isomorphism classes; their condition
+$\ell-1>2d$ holds already at $11$. For each geometric class and prime that occur after
+the exclusion, O'Hara's Lemma~5.1 excludes $j=0,1728$, and Proposition~5.2 of the same
+paper gives a finite fibre of field-tagged $K$-isomorphism classes; its hypotheses hold with $p=3$
+and $B=11$ \cite{OHara2026Heavenly}. A finite union proves the first statement
+(Question~A), and taking the image $([E]_K,\ell)\mapsto(\ell,K)$ proves the second
+(Question~B).
+\end{proof}
+
+The horizontal bound used here depends only on the degree and the dimension, and its
+uniformity in $K$ permits the finite union. Corollary~\ref{dir:cor:heavenlycubic} gives $25$
+candidate primes between $11$ and $4027$.
+
+\begin{lemma}[Descent inside a fixed division field; \stU]\label{dir:lem:descent}
+Suppose $E/K$ is heavenly at a prime $\ell>\max\set{2,[K:\Q]}$ and $j=j(E)\ne0,1728$.
+Put $k=\Q(j)$, choose any model $A_0/k$ with invariant $j$, and set $M=k(A_0[\ell])$,
+$J=K\cap M$. There exists a quadratic twist $A/J$ of $A_0$ (allowing the trivial twist)
+which is heavenly at $\ell$ over $J$ and satisfies $A_K\simeq_KE$. In particular, if
+the pair $(E/K,\ell)$ is primitive over $K$, then $K\subseteq M$.
+\end{lemma}
+
+\begin{proof}
+\sloppy
+Write $G_F$ for the absolute Galois group of a field $F$ and $\chi$ for the mod-$\ell$
+cyclotomic character. The mod-$\ell$ representation of $E$ on $G_K$ is upper
+triangular with diagonal $\chi^{i_1},\chi^{i_2}$
+\cite[Proposition~2.4]{OHara2026Heavenly}. Since $j\ne0,1728$, there is a character
+$\lambda\colon G_K\to\set{\pm1}$ giving the twist from $(A_0)_K$ to $E$. In
+corresponding bases the mod-$\ell$ representation of $A_0$ on $G_K$ is upper
+triangular with diagonal $\lambda\chi^{i_1},\lambda\chi^{i_2}$.
+
+The images of $G_K$ and $G_J$ on $A_0[\ell]$ coincide: restriction identifies
+$\Gal(KM/K)$ with $\Gal(M/J)$, since $M/k$ is Galois. The same basis therefore
+triangularizes $G_J$. Let $\phi_1,\phi_2$ be its diagonal characters. The determinant
+$\chi$ factors through $\Gal(M/J)$ by the Weil pairing. Thus the characters
+$\phi_1\chi^{-i_1}$ and $\phi_2\chi^{-i_2}$ on $G_J$ factor through that shared finite
+image, and both restrict to $\lambda$ on $G_K$. They agree and take values in
+$\set{\pm1}$ everywhere. Twisting $(A_0)_J$ by this common character gives a curve $A$
+which becomes $E$ over $K$ and whose diagonal characters on $G_J$ are the two
+cyclotomic powers. In particular $J(A[\ell])/J(\mu_\ell)$ has $\ell$-power degree.
+
+For each $s\ge1$ put $F_s=J(A[\ell^s])$. The congruence kernels in
+$\GL_2(\Z/\ell^s)$ are $\ell$-groups, so $F_s/J(\mu_\ell)$ has $\ell$-power degree. At
+every finite prime of $J$ away from $\ell$, the inertia order of $F_s/J$ is
+consequently a power of $\ell$. Since $KF_s/K$ is unramified there, multiplicativity of
+ramification indices in the two towers shows that this inertia order divides the
+corresponding ramification index in $K/J$. It is at most $[K:J]<\ell$ and hence equals
+one. The criterion of N\'eron--Ogg--Shafarevich gives good reduction of $A$ away from
+$\ell$. This proves the descent, and primitivity then forces $K=J$.
+\end{proof}
+
+\begin{theorem}[Odd degree; \stG]\label{dir:thm:heavenlyodd}
+Fix an odd integer $n>1$ and let $K$ range over all number fields of degree $n$. There
+are finitely many field-tagged pairs $([E]_K,\ell)$ primitive over $K$ with $E$
+heavenly at a prime $\ell>2n+1$. For an odd prime $n$ the exclusion of the classes
+heavenly over $\Q$ alone suffices. The same assertions hold upon restricting to Galois
+fields.
+\end{theorem}
+
+\begin{proof}
+In the proof of \cite[Theorem~5.3]{RasmussenTamagawa2017Arithmetic} take the fixed base
+$F=\Q$. The Chebotarev application there uses the field
+$\widetilde L=\Q(\mu_\ell)_{m_\Q}\widetilde F$; here $\widetilde F=\Q$ and the
+subscript indicates a subfield of the cyclotomic field. Its Dedekind zeta function
+factors into Dirichlet $L$-functions, so the GRH input for this application is
+available by Proposition~\ref{dir:prop:abelian}. The choice of the auxiliary prime is uniform in
+the field $K$ of degree $n$. The passage to $K$ uses the existence of a place of odd
+residue degree at most $n$ over that prime, which follows from $\sum e_vf_v=n$ being
+odd. The rest of the cited proof gives a bound $\ell\le N(1,n)$ uniform in $K$; this
+specializes the proof of their more general theorem under Dedekind GRH to the rational
+base.
+
+For each remaining $\ell$, \cite[Theorem~3.1]{McLemanRasmussen2026Heavenly} gives
+finitely many $j$. The exceptional invariants $0,1728$ are impossible in odd degree
+for $\ell>3$. Indeed the CM-field containment used in
+\cite[Lemma~5.1]{OHara2026Heavenly} forces $K\Q(\sqrt{-3})$ or $K\Q(i)$, respectively,
+into $K(E[\ell])$. The latter extension over $K(\mu_\ell)$ has odd degree, so the
+corresponding quadratic field would lie in $K(\mu_\ell)$. It is disjoint from
+$\Q(\mu_\ell)$ because of ramification at $3$ or $2$, whereas
+$[K(\mu_\ell):\Q(\mu_\ell)]$ divides the odd degree $n$. This argument uses no
+normality of $K$. For each other $j$, primitivity and Lemma~\ref{dir:lem:descent} force $K$
+to lie in the fixed finite extension $k(A_0[\ell])$, which allows only finitely many
+$K$. For each of them Shafarevich's finiteness theorem for elliptic curves with good
+reduction away from $\ell$ gives finitely many $K$-isomorphism classes. Taking the
+unions finishes the proof.
+\end{proof}
+
+\begin{theorem}[The two sextic families; \stG]\label{dir:thm:heavenlysexticfinite}
+Let $K$ range through all sextic fields with normal closure of group $A_5$. There are
+finitely many pairs $([E]_K,\ell)$ with $\ell\ge17$, $E/K$ heavenly at $\ell$, and no
+heavenly representative of the geometric class over $\Q$ at $\ell$. For sextic fields
+with normal closure of group $A_4$ the same finiteness holds when one excludes
+representatives over every proper intermediate field. In each case the pairs
+$(\ell,K)$ form a finite set.
+\end{theorem}
+
+\begin{proof}
+By Theorem~\ref{dir:thm:heavenlysextic}, $\ell\le4027$ for these fields. For each such $\ell$
+the theorem of McLeman and Rasmussen applies with $d=6$, since $\ell-1>12$. It remains
+to treat the exceptional invariants and the proper-subfield condition.
+
+Let $N$ be the normal closure, $G=\Gal(N/\Q)$ and $F=\Q(\mu_\ell)$. If $j=0$ or
+$1728$, the CM-field containment in O'Hara's proof puts $D=\Q(\sqrt{-3})$ or $\Q(i)$
+in $K(E[\ell])$. Over $KF$ this division field has odd degree, so
+$D\subseteq KF\subseteq NF$. We rule this out directly. The group
+$\Gal(NF/\Q)$ lies in $G\times\Gal(F/\Q)$ and surjects onto $G$. Its commutator
+subgroup is $G'\times\set{1}$: the second factor is abelian and every commutator in
+$G$ lifts. The largest abelian subfield of $NF$ is therefore $N^{G'}F$. Its degree
+over $F$ divides three for $A_4$ and equals one for $A_5$. Since $D$ is quadratic and
+ramifies at $2$ or $3$, while $F$ ramifies only at $\ell\ge17$, the quadratic extension
+$DF/F$ cannot lie in that abelian subfield. This excludes both exceptional invariants.
+
+Lemma~\ref{dir:lem:descent} now bounds the fields for each $j,\ell$ under the
+proper-subfield exclusion, and Shafarevich's theorem bounds the curves for each field.
+In the $A_5$ action the point stabilizer has order ten; a strictly larger proper
+subgroup would have index two or three, impossible by simplicity of $A_5$ and the
+associated coset action. Hence $K$ has no proper intermediate field except $\Q$. In
+the $A_4$ action the stabilizer of order two lies in the Klein four subgroup, giving a
+cubic intermediate field, which the stated exclusion takes into account.
+\end{proof}
+
+\subsection{Open questions}\label{dir:sec:open}
+\sources{grh-transfer; grh-lean-transfers; grh-arithmetic-transfers; grh_cm_prime_applications; grh-exponent-six-and-transfers; dirichlet-grh-research}
+
+\begin{enumerate}
+\item \emph{The least pair sum.} For $n$ outside Euler's list let $b(n)$ be the
+ smallest $x+y$ among the solutions of \eqref{dir:eq:xyz}. Can the uniform upper bound
+ $O((\log n)^2)$ of Theorem~\ref{dir:thm:xyz} be lowered while retaining an explicit
+ algorithm? Proposition~\ref{dir:prop:xyzprime} forces order at least $\log n\log\log n$ on a
+ sequence, and by Proposition~\ref{dir:prop:xyzmin} the question for squarefree $n\equiv1,2\pmod4$
+ is that of the least odd prime splitting in $\Q(\sqrt{-n})$.
+\item \emph{Additive cutoffs.} For each fixed $k\ge2$ the argument of
+ Theorem~\ref{dir:thm:cube} reduces $n=p+mr^k$ to a finite search (Remark~\ref{dir:rem:powers}).
+ What controls the growth with $k$ of the largest exception, which is $24$, $10500$
+ and $1\,561\,560$ for $k=2,3,4$?
+\item \emph{The first geometric interval.} Does every interval $[q,q^2)$ contain a
+ prime in every reduced class modulo $q$ for $q>50000$? Is there a prime $q$ for which
+ the least prime $1\bmod q$ is already $1\bmod q^2$? By Theorem~\ref{dir:thm:pomerance} the
+ second question is equivalent to the failure of Pomerance's divisibility conjecture,
+ and a positive answer to the first would rule out every such $q$.
+\item \emph{Prime-generating constants near two.} The certificates of
+ Theorem~\ref{dir:thm:mills} treat selected rational exponents. Can a common finite
+ construction control a whole interval of exponents, including the changes where a
+ powered endpoint crosses an integer? At exponent exactly two the factor
+ $x^{(\alpha-2)/2}$ no longer grows, and the method does not decide whether the
+ recursion taking the least prime above the square runs forever within the required
+ intervals. Whether every interval between consecutive $\alpha$th powers contains a
+ prime at $\alpha=2.01$, or even at $\alpha=2.2$, is a separate question.
+\item \emph{Matchings in prime-gap graphs.} What is the asymptotic minimum of the
+ largest matching among all prime-gap graphs on $n$ vertices? Theorem~\ref{dir:thm:block}
+ gives a lower bound of order $p_n/(\log p_n)^2$; a better bound lengthens the block of
+ insertions that use disjoint old endpoints.
+\item \emph{Norm-Euclidean fields of degree eleven.} Which of the cyclic fields of
+ degree $11$ and conductor $23$, $67$, $331$ are norm-Euclidean?
+ Theorem~\ref{dir:thm:euclid} supplies no positive certificate.
+\item \emph{Quartic coefficient fields.} In coefficient degree four the divisibility
+ \eqref{dir:eq:yang} allows CM fields of class number one, two or four. How do the
+ quartic coefficient fields from the cyclic and noncyclic class groups of order four
+ overlap? The odd-degree proofs use that a sign has an odd root and that the
+ coefficient field has a real embedding; neither argument covers every quartic field.
+ More generally, Theorem~\ref{dir:thm:cmfinite} concerns CM forms only, and Martin's
+ conjecture for non-CM newforms requires other ideas.
+\item \emph{Actual isogenies.} Which of the $66$ primes of Theorem~\ref{dir:thm:strictcc}
+ occur as degrees of Momose type~2 isogenies of elliptic curves over sextic fields of
+ the two families, in particular $253507$? By Theorem~\ref{dir:thm:isogenysharp} the local
+ condition, even when tested at every rational prime, cannot shorten the list
+ uniformly; a further obstruction must use the arithmetic of the curves or of their
+ moduli.
+\item \emph{Further permutation actions.} For which further transitive Galois actions
+ do suitable abelian splitting conditions force short odd Frobenius orbits, and hence
+ uniform bounds in even degree? Theorem~\ref{dir:thm:subsets} gives an exact criterion for
+ the alternating-group actions on subsets, and the fourteen other transitive actions
+ of degree six require an additional argument.
+\item \emph{Heavenly curves at the listed primes.} Does a heavenly elliptic curve
+ exist over a field of the two sextic families, or over a cubic field, at each prime
+ of \eqref{dir:eq:heavenlylist}, in particular at $4027$? Which field-specific classes
+ occur at each of the $25$ candidates of Corollary~\ref{dir:cor:heavenlycubic}?
+\end{enumerate}

@@ -1,0 +1,2377 @@
+\section{Graph towers, spanning-tree valuations and signed cycles}\label{sec:gra}
+
+\providecommand{\grah}{\mathsf{h}}
+\providecommand{\graA}{\mathcal{A}}
+\providecommand{\graP}{\mathbb{P}}
+\providecommand{\gramu}{\boldsymbol{\mu}}
+\providecommand{\graPi}{\Pi}
+\providecommand{\gracut}{\vartheta}
+\providecommand{\grafiles}[1]{\begin{center}\footnotesize#1\end{center}}
+
+The results of this section are unconditional and use no hypothesis on zeros
+of $L$-functions. They take from the source proof (\cref{src:sec:mechanism})
+only two local devices. The first is the exact valuation of $\zeta-1$ at a
+root of unity $\zeta$ of prime-power order, together with the comparison of
+the valuations of the terms of a polynomial in this uniformizer: a unique
+term of least valuation cannot be cancelled. In a tower of graphs with
+abelian deck groups this reads off the $p$-adic valuation of a Laplacian
+eigenvalue at every character, and the valuations can be summed. The second
+device is the restriction of a positive form to a principal submatrix,
+followed by a Schur complement; it gives the local obstruction used for
+signed cycles in \cref{gra:sec:cycles}. A third, purely methodological,
+transfer (rotation, and exclusion of zeros from one half-plane by a
+positivity certificate) locates the zeros of a family of Ehrhart
+polynomials in \cref{gra:sec:ehrhart}.
+
+\subsection{Voltage towers and conductor shells}\label{gra:sec:setting}
+{\raggedright
+\sources{grh_method_transfers_graph_towers_and_finite_rings; Effective_Graph_Towers; grh_method_transfers}
+}
+
+Fix a prime $p$ and a rank $d\ge1$, and normalise $v_p(p)=1$. A
+\emph{voltage} is a vector attached to an oriented edge of a base graph; it
+gives the displacement between the copies of its endpoints in a covering
+graph. Let $G$ be a finite connected undirected multigraph with integral
+voltages $a_e\in\Z^d$, one orientation per edge. At level $n\ge0$ the deck
+group is $G_n=(\Z/p^n\Z)^d$, the vertices are the pairs $(x,g)$ with $x$ a
+vertex of $G$ and $g\in G_n$, and an edge $e$ from $x$ to $y$ lifts to the
+edges from $(x,g)$ to $(y,g+a_e)$. We assume throughout that every finite
+lift is connected. Write $\kappa_n$ for the number of spanning trees at
+level $n$ and
+\[
+ \nu_n=v_p(\kappa_n),\qquad \nu_0=v_p(\kappa(G)).
+\]
+The main case is a \emph{bouquet}: one vertex and $m$ loops with steps
+$s_1,\dots,s_m\in\Z^d$. At level $n$ the vertex set is $G_n$, and for every
+$x\in G_n$ and every listed step there is one undirected edge between $x$
+and $x+s_i$. Repetitions count: parallel edges are retained, including both
+edges if a step has order two, and a zero step gives loops, which contribute
+nothing to the Laplacian. If the reductions of the steps span $\F_p^d$, they
+generate every $G_n$, so all levels are connected; then $\nu_0=0$.
+
+DuBose and Valli\`eres prove that $\nu_n$ eventually agrees with a
+polynomial in $p^n$ and $n$ \cite[Theorem~6.2]{DuBoseVallieres2023Towers}.
+The existence theorem does not specify the polynomial or the first level
+where it holds; these are the subject of
+\cref{gra:sec:effective,gra:sec:explicit,gra:sec:moments,gra:sec:extremal,gra:sec:onset}.
+
+\paragraph{The shell identity.}
+The \emph{Laurent Laplacian} of $(G,a)$ is the matrix over
+$\Z[X_1^{\pm1},\dots,X_d^{\pm1}]$ indexed by the vertices of $G$ which, for
+each edge $e$, adds $1$ to both endpoint diagonals and subtracts
+$X^{a_e}$ and $X^{-a_e}$ in the two corresponding off-diagonal positions
+(all four entries are at the same position for a loop). Let $F$ be its
+determinant. For a bouquet,
+\[
+ F(X)=\sum_{i=1}^m\grah(X^{s_i}),\qquad
+ \grah(U)=2-U-U^{-1}=-\frac{(U-1)^2}{U}.
+\]
+Character decomposition of the lifted Laplacian gives one block per
+character of $G_n$, namely the Laurent Laplacian evaluated at the
+corresponding tuple of $p^n$-th roots of unity; the trivial block is the
+base Laplacian. A connected base has a connected lift at a given level
+exactly when every nontrivial character block there is invertible, because
+the multiplicity of the zero eigenvalue counts components. The matrix-tree
+theorem applied to the base and to the lift cancels their common
+vertex-count factor and leaves the deck-group order in the denominator.
+Embedding the resulting algebraic identity into $\overline{\Q}_p$ and
+grouping the characters by conductor yields
+\begin{equation}\label{gra:eq:shells}
+ \nu_n=\nu_0-dn+\sum_{h=1}^n S_h,\qquad
+ S_h=\sum_{\xi}v_p(F(\xi)),
+\end{equation}
+where $\xi$ runs over the tuples of $p$-power roots of unity of joint order
+exactly $p^h$. The same argument works for graphs with leaves and for
+cycles.
+
+Fix a primitive $p^h$-th root of unity $\zeta=\zeta_h$ and write
+$e=e_h=\varphi(p^h)=(p-1)p^{h-1}$ and $\pi=\zeta-1$. A point of joint
+conductor $p^h$ is $\zeta^u=(\zeta^{u_1},\dots,\zeta^{u_d})$ with
+$u\in(\Z/p^h\Z)^d$ \emph{primitive}, that is, with at least one unit entry.
+The simultaneous action of the units modulo $p^h$ on such tuples is free;
+its orbits have size $e$ and consist of cyclotomic conjugates, so the
+valuation is constant on an orbit. Hence
+\begin{equation}\label{gra:eq:orbits}
+ S_h=\sum_{[u]}\ord_h F(\zeta^u),\qquad \ord_h(x)=e_h\,v_p(x),
+\end{equation}
+the sum being over orbits. We call $\ord_h$ the \emph{normalised order} at
+conductor $p^h$. This orbit decomposition is already used by DuBose and
+Valli\`eres; the point here is to evaluate the individual orders.
+
+\begin{lemma}[Comparison rules]\label[lemma]{gra:lem:rules}
+The polynomial $\Phi_{p^h}(1+T)$ is Eisenstein, so $v_p(\pi)=1/e$. Let
+$f\in\Z_p[[T]]$.
+\begin{enumerate}[label=\textup{(\roman*)}]
+\item If the first unit coefficient of $f$ is at degree $k<e$, then
+$\ord_h f(\pi)=k$.
+\item The same conclusion holds for $k<e+2$ if the constant and linear
+coefficients of $f$ vanish identically.
+\item For arbitrary $f\in\Z_p[T]$, reduce $f$ modulo $\Phi_{p^h}(1+T)$ to
+$\sum_{j<e}c_jT^j$. If this is nonzero, then
+$\ord_h f(\pi)=\min_{c_j\ne0}\{e\,v_p(c_j)+j\}$.
+\end{enumerate}
+\end{lemma}
+
+\begin{proof}
+Compare valuations term by term. In (i) the lower coefficients are
+divisible by $p$ and contribute normalised order at least $e>k$, and higher
+powers have order greater than $k$. In (ii) a lower nonzero term has degree
+at least two and coefficient divisible by $p$, hence order at least $e+2$.
+In (iii) the integers $e\,v_p(c_j)+j$ lie in distinct residue classes
+modulo $e$, so the minimum is attained once.
+\end{proof}
+
+For a general collected Laurent polynomial the orbit order is computed as
+follows. Write
+\begin{equation}\label{gra:eq:laurent}
+ F(X)=p^g\sum_{i=1}^m c_iX^{a_i},\qquad a_i\in\Z^d\text{ distinct},\quad
+ c_i\in\Z\setminus\{0\},\quad \min_iv_p(c_i)=0 .
+\end{equation}
+Put $Q=p^{h-1}$, so that $e=(p-1)Q$. For each monomial choose
+$0\le n_i<pQ$ congruent to $a_i\cdot u$ modulo $pQ$, and write
+$n_i=r_i+Qb_i$ with $0\le r_i<Q$. Set
+$A_{rb}=\sum_{i:(r_i,b_i)=(r,b)}c_i$. The unique representative of the
+normalised evaluation $p^{-g}F(\zeta^u)$ in the power basis
+$1,\zeta,\dots,\zeta^{e-1}$ is $R(\zeta)$, where
+\[
+ R(Y)=\sum_{r=0}^{Q-1}\sum_{b=0}^{p-2}C_{rb}Y^{r+Qb},\qquad
+ C_{rb}=A_{rb}-A_{r,p-1},
+\]
+because $\Phi_{p^h}(Y)=1+Y^Q+\dots+Y^{(p-1)Q}$ eliminates the last block of
+exponents. In particular $R=0$ detects exact vanishing.
+
+\begin{lemma}[Integral orbit valuation]\label[lemma]{gra:lem:orbit}
+If $R\ne0$, let $\mu=\min_{C_{rb}\ne0}v_p(C_{rb})$, and let $j$ be the
+first index whose coefficient in $p^{-\mu}R(1+T)$ is nonzero modulo $p$.
+Then $0\le j<e$ and
+\[
+ \ord_hF(\zeta^u)=e(g+\mu)+j .
+\]
+\end{lemma}
+
+\begin{proof}
+Changing variables from $Y$ to $1+T$ preserves nonzero polynomials over
+$\F_p$, so $j$ exists. In $p^{-\mu}R(1+\pi)$ the term of degree $j$ has
+valuation $j/e<1$. Every earlier nonzero coefficient is divisible by $p$
+and contributes valuation at least $1$, and each later term has valuation
+strictly greater than $j/e$. The unique term of least valuation gives the
+assertion, also when $p=2$ and $h=1$.
+\end{proof}
+
+The integer content is uniformly bounded: the sums defining the two terms
+of $C_{rb}$ use disjoint subsets of the coefficients, so
+$p^\mu\le\sum_i\abs{c_i}$ when $R\ne0$. The content must be computed after
+collecting terms. For $p=2$, $h=2$ and the square-grid symbol at $u=(1,1)$
+the exponent polynomial $4-2X-2X^3$ reduces to $4$ modulo $X^2+1$; thus
+$g=0$, $\mu=2$, $j=0$ and the orbit contributes $4$. Computing the content
+before collecting the terms would give the wrong answer.
+
+\subsection{The eventual polynomial and its first valid level}\label{gra:sec:effective}
+\sources{Effective_Graph_Towers}
+
+\begin{theorem}[Effective polynomial and first valid level; \stU]\label{gra:thm:effective}
+Let $(G,a)$ be a finite connected multigraph with integral voltages in
+$\Z^d$ all of whose lifts with deck groups $(\Z/p^n\Z)^d$ are connected;
+for instance a bouquet whose steps span $\F_p^d$ after reduction. From $p$
+and the voltages one can compute the unique rational polynomial $P(X,Y)$ of
+total degree at most $d$ and of degree at most one in $Y$, and the least
+$N\ge0$, such that $\nu_n=P(p^n,n)$ for every $n\ge N$. The algorithm also
+returns the exact rational generating function of all $\nu_n$ and the
+finite polynomial of exceptions. If levels start at one, the least start is
+$\max(1,N)$. The same holds for rational voltages with denominators prime
+to $p$.
+\end{theorem}
+
+The proof treats a finite Laurent polynomial \eqref{gra:eq:laurent} before
+specialising to graph Laplacians, and evaluates all conductors at once: it
+gives a finite representation of the first surviving coefficient of
+\cref{gra:lem:orbit} and shows that its output yields the entire generating
+function. It occupies the rest of this subsection.
+
+\paragraph{Reading the orbits digit by digit.}
+Normalise each orbit representative $u$ by making its first unit coordinate
+equal to $1$ modulo $p^h$. In the chart with pivot $i_0$, lower-indexed
+coordinates have units digit zero; the units digit of the pivot is one and
+its other digits are zero; every other digit is free. Reading the
+coordinate vectors from the least significant end therefore enumerates each
+orbit exactly once. At every stage there are two operations on a new digit:
+treating it as the top digit emits a valuation at that conductor, and
+treating it as an ordinary digit prepares the next stage.
+
+After $k$ ordinary digits let $Q=p^k$, let $w\in\{0,\dots,Q-1\}^d$ be the
+prefix, and decompose
+\[
+ a_i\cdot w=r_i+Qs_i,\qquad 0\le r_i<Q .
+\]
+Only the carries $s_i$ and a small amount of information about the $r_i$
+are needed. For $0\le j<Q$ define a row vector over $\F_p$ by
+\[
+ B_j=\Bigl(\tbinom{r_1}{j},\dots,\tbinom{r_m}{j}\Bigr)\pmod p .
+\]
+Process these rows in order of increasing $j$, retaining a row precisely
+when it is outside the span of the earlier retained rows. Store the ordered
+list of retained vectors, and keep their integer indices in separate
+registers. There are at most $m$ such registers.
+
+\begin{lemma}[What the retained rows determine]\label[lemma]{gra:lem:lucas}
+Two columns agree on the retained rows if and only if their residues $r_i$
+agree. For any linear functional on the rows, its first nonzero value, if
+one exists, occurs on a retained row. The retained list after one more
+ordinary digit is computable from the previous list and the carries.
+\end{lemma}
+
+\begin{proof}
+The full column associated to $r$ is the coefficient vector of
+$(1+T)^r\in\F_p[T]$. Distinct $r<Q$ give different degrees, and agreement
+on a basis of the row space implies agreement on all rows. A discarded row
+lies in the span of earlier rows, so it cannot be the first detected by a
+linear functional.
+
+For a new coordinate digit vector $v\in\{0,\dots,p-1\}^d$, perform
+Euclidean division $s_i+a_i\cdot v=b_i+ps_i'$ with $0\le b_i<p$. The new
+residue is $r_i+Qb_i$ and the new carry is $s_i'$. Over $\F_p$ one has
+$(1+T)^Q=1+T^Q$, hence
+\[
+ \binom{r_i+Qb_i}{j+Qt}\equiv\binom{r_i}{j}\binom{b_i}{t}\pmod p
+ \qquad(0\le j<Q,\ 0\le t<p).
+\]
+For each $t=0,\dots,p-1$ in order, multiply every old retained row
+coordinatewise by $(\binom{b_i}{t})_i$, and feed these candidates, in old
+row order within the block, to the same greedy independence test. The
+omitted old rows are combinations of earlier rows in their own block after
+this multiplication, so inserting them into the scan would leave all
+decisions unchanged. A retained candidate coming from an old index $j$ has
+new index $j+Qt$.
+\end{proof}
+
+\paragraph{Reading the top digit.}
+Use the carries to compute $b_i$ as above, and partition the columns
+according to their entries on the stored basis. \Cref{gra:lem:lucas}
+identifies these groups with the occupied values of $r$. Compute the
+integers $C_{rb}$ in each group, test for vanishing, and then compute
+$\mu$ as in \cref{gra:lem:orbit}. Division by $p^\mu$ takes place
+\emph{after} the integer sums and subtractions within each group. In top
+block $t=0,\dots,p-2$ put
+\[
+ w_r(t)=\sum_{b=0}^{p-2}(C_{rb}/p^\mu)\binom bt\pmod p .
+\]
+At index $j_0+Qt$, the coefficient to be tested modulo $p$ is
+$\sum_rw_r(t)\binom r{j_0}$. This is a linear functional on the old rows,
+using one coordinate per group. Testing the stored rows in order finds its
+earliest nonzero value; stop at the first successful block. If the
+successful old index is $j_0$, the orbit contribution is
+\[
+ \bigl((p-1)(g+\mu)+t\bigr)Q+j_0 .
+\]
+All choices except the numerical values of $Q$ and $j_0$ depend only on
+the finite state and this last digit.
+
+\paragraph{A reduction of the state space.}
+After processing $k$ ordinary digits, test the normalised coefficient
+functional $B_j\mapsto\sum_ic_i\binom{r_i}{j}$. Suppose its first nonzero
+value is at $j_*<p^k$. For every subsequent conductor the ordinary exponent
+polynomial at $1+T$, reduced modulo $(p,T^{p^k})$, equals
+$\sum_ic_i(1+T)^{r_i}$ in this quotient, since further exponent digits
+multiply these terms by powers of $1+T^{p^k}$. Final cyclotomic reduction
+preserves the same truncation, because
+$\Phi_{p^h}(1+T)\equiv T^{\varphi(p^h)}\bmod p$ and $\varphi(p^h)\ge p^k$
+for $h>k$. Consequently every continuation has $\mu=0$ and $j=j_*$,
+including arbitrary choices for its final digit. Such a prefix can be
+replaced by a state storing only $Q$ and $j_*$, with the same chart; future
+ordinary digits replace $Q$ by $pQ$ and leave $j_*$ fixed.
+
+\paragraph{Termination and weights.}
+The control state consists of the pivot, a first-digit flag, the carries
+and the ordered list of row vectors; the register values are stored
+separately. If $H_i=\sum_\ell\abs{a_{i\ell}}$, then
+$\abs{s_i}=\abs{\floor{a_i\cdot w/Q}}\le H_i$ for every prefix. An explicit
+upper bound for the number of control states, including the reduced
+states, is
+\begin{equation}\label{gra:eq:states}
+ N_{\mathrm{st}}=d+2d\Bigl(\prod_{i=1}^m(2H_i+1)\Bigr)\sum_{s=0}^mp^{ms}.
+\end{equation}
+A breadth-first search enumerates the reachable states and tests every
+allowed final digit. It therefore also decides whether a nontrivial
+$p$-power torsion zero of $F$ exists. One can reject such inputs or, for a
+sum taken only over nonzero evaluations, give a zero evaluation weight
+zero while continuing the search; rejection is appropriate for an ordinary
+product.
+
+Each ordinary state has registers $(Q,j_1,\dots,j_s)$ with $s\le m$. Each
+ordinary digit induces an integer linear map between registers by $Q'=pQ$,
+$j_a'=j_b+tQ$. Summing the maps for digits with the same target gives the
+corresponding block of a matrix $M$. In each state the sum of the output
+forms over its legal top digits gives the corresponding block of a row
+vector $f$. Initially each chart has zero carries, the single row
+$(1,\dots,1)$ and registers $(1,0)$. Let $u_0$ be the concatenated initial
+vector, zero outside these initial states. Matrix iteration adds the
+registers of all prefixes at each state. By induction on the prefix length
+and the unique chart representation, the shell sum at conductor $p^h$ is
+exactly
+\begin{equation}\label{gra:eq:transfer}
+ S_h=fM^{h-1}u_0 .
+\end{equation}
+The matrix dimension $L$ is the sum of the register counts of the
+reachable states; in particular $L\le(m+1)N_{\mathrm{st}}$.
+
+\paragraph{The generating function.}
+Let $F$ be the determinant of the Laurent Laplacian of $(G,a)$. With $z$ a
+formal variable, summing \eqref{gra:eq:shells} and using
+\eqref{gra:eq:transfer} yields
+\begin{equation}\label{gra:eq:resolvent}
+ \sum_{n\ge0}\nu_nz^n=\frac{\nu_0}{1-z}-\frac{dz}{(1-z)^2}
+ +\frac z{1-z}\,f(I-zM)^{-1}u_0 .
+\end{equation}
+This identity computes the entire sequence. If
+$\chi_M(x)=x^L+c_1x^{L-1}+\dots+c_L$, then
+$\det(I-zM)=1+c_1z+\dots+c_Lz^L$. The adjugate shows that the numerator of
+$f(I-zM)^{-1}u_0$ over this determinant has degree at most $L-1$.
+Multiplying that denominator by the first $L$ shell coefficients of the
+series and keeping degrees below $L$ gives its exact numerator, including
+when $M$ is singular. The base cofactor and the Laurent determinant are
+explicit finite input calculations.
+
+\begin{proof}[Proof of \cref{gra:thm:effective}]
+Put
+\[
+ D(z)=(1-p^dz)\prod_{i=0}^{d-1}(1-p^iz)^2 .
+\]
+An eventual law $\nu_n=P(p^n,n)$ with $\deg P\le d$ and $\deg_YP\le1$
+implies that the reduced denominator of \eqref{gra:eq:resolvent} divides
+$D(z)$. Conversely, whenever it divides $D(z)$, polynomial division and
+partial fractions give
+\[
+ \sum_{n\ge0}\nu_nz^n=E(z)+\sum_{i=0}^d\Bigl(\frac{A_i}{1-p^iz}
+ +\frac{B_i}{(1-p^iz)^2}\Bigr),\qquad B_d=0,
+\]
+with a polynomial $E$. Thus $P(X,Y)=\sum_i[A_i+(Y+1)B_i]X^i$ and
+$\nu_n-P(p^n,n)=[z^n]E$. If $E=0$ the least onset is zero; otherwise it is
+$1+\deg E$. Uniqueness of $P$ follows since the largest exponential base in
+a nonzero sum $\sum_i(a_i+b_in)p^{in}$ dominates its lower bases on a tail.
+
+DuBose and Valli\`eres guarantee the denominator shape for base graphs with
+no leaves and nonzero Euler characteristic
+\cite[Theorem~6.2]{DuBoseVallieres2023Towers}. To pass to an arbitrary
+connected base admitting such a connected tower, repeatedly remove pendant
+edges: their lifts are pendant edges and belong to every spanning tree. If
+the remaining core is a cycle, its fundamental group is cyclic, so a
+connected tower with deck groups as above has $d=1$; a cycle of length $b$
+then lifts to a cycle of length $bp^n$, with $\nu_n=v_p(b)+n$ (including a
+single loop or a double edge). A tree admits no connected nontrivial finite
+cover. These cases exhaust the missing base graphs. Computed divisibility
+also certifies the shape directly in each example, and for a general
+Laurent sum the characteristic-polynomial procedure produces its exact
+rational series independently of the existence theorem.
+
+Finally, multiplying every voltage in $\Q\cap\Z_p$ by a common denominator
+prime to $p$ induces compatible deck-group automorphisms at every level, so
+the finite graphs are isomorphic to those with the cleared integral
+voltages.
+\end{proof}
+
+\begin{remark}[A bound for the onset]\label[remark]{gra:rem:onsetbound}
+Formula \eqref{gra:eq:resolvent} has numerator and denominator degrees at
+most $L+2$. Consequently $\deg E\le L+2$ if $E\ne0$, and the least onset is
+at most $L+3$, where $L\le(m+1)N_{\mathrm{st}}$ with $N_{\mathrm{st}}$ as in
+\eqref{gra:eq:states}. The computation itself requires only the first $L$
+shell sums after the reachable matrix has been built. This bound is very
+far from the truth in rank two, where the onset is at most logarithmic in
+the size of the voltages (\cref{gra:cor:logbound}); no polynomial bound for
+the running time is claimed.
+\end{remark}
+
+\subsection{Explicit towers: the examples of DuBose--Valli\`eres and of Kataoka}\label{gra:sec:explicit}
+\sources{grh_method_transfers_graph_towers_and_finite_rings; Effective_Graph_Towers}
+
+Section~7 of \cite{DuBoseVallieres2023Towers} fits candidate polynomials to
+finite data for five two-dimensional bouquet towers. Kataoka's preprint
+\cite[\S6.3, Tables~6--7]{Kataoka2026Iwasawa} treats dyadic towers with
+prescribed leading coefficient $\lambda$; its Table~7 lists data through
+level six and suggests a full formula for each $0\le\lambda\le8$, of which
+the coefficient of $n2^n$ is verified there and the remaining coefficients
+are left unconfirmed. The following two theorems determine all fourteen
+formulas and their first valid levels. Throughout, $e_1=(1,0)$,
+$e_2=(0,1)$, and for $u=(a,b)$ primitive modulo $p^h$ we write
+$X=\zeta^a$, $Y=\zeta^b$ and $F_u(\zeta)=F(\zeta^a,\zeta^b)$.
+
+\begin{theorem}[The five towers of DuBose and Valli\`eres; \stU]\label{gra:thm:five}
+The five towers of \cite[\S7]{DuBoseVallieres2023Towers} have the following
+valuations. The column $N$ gives the least level, with level zero included,
+from which the formula holds.
+\begin{center}\small\upshape
+\begin{tabular}{cclll}
+\toprule
+Example & $p$ & steps & $\nu_n$ & $N$\\
+\midrule
+1 & 2 & $e_1,e_2$ & $(2n+4)2^n-6n-1$ & 1\\
+2 & 2 & $e_1,e_1,e_2,e_2$ & $4^n+(2n+4)2^n-6n-2$ & 1\\
+3 & 2 & $(1,5),(0,3),(1,2),(0,1)$ & $(n+33/4)2^n-4n-1$ & 4\\
+4 & 3 & $e_1,e_2$ & $4\cdot3^n-2n-4$ & 0\\
+5 & 3 & $(1,0),(2,3),(1,1)$ & $20\cdot3^{n-1}-2n-8$ & 1\\
+\bottomrule
+\end{tabular}
+\end{center}
+In Example~3 the values at levels $0,1,2,3$ are $0,5,19,65$.
+\end{theorem}
+
+The values of $N$ follow from the formulas for $n\ge1$ (respectively
+$n\ge4$) proved below: at $n=0$ the expressions in rows 1, 2 and 5 do not
+vanish while that of row 4 does, and in row 3 the polynomial predicts $77$
+at level three. The algorithm of \cref{gra:thm:effective}, supplied only
+with the prime and the steps, returns the same five polynomials and the
+same least levels; its integer linear representations have dimensions
+$25,25,32,8,16$, and in Example~3 the finite correction is
+$E(z)=-29/4-(17/2)z-13z^2-12z^3$
+(\artifact{Effective_Graph_Towers/dv_examples.json}).
+
+\begin{proof}[Proof for Examples 1 and 2]
+Here $p=2$ and $F=4-X-X^{-1}-Y-Y^{-1}$. The identity
+\[
+ F=4-(X+Y)\bigl(1+(XY)^{-1}\bigr)
+\]
+makes the exceptional characters explicit. Let $h\ge3$ and $e=2^{h-1}$.
+For a mixed-parity primitive pair, both $a-b$ and $a+b$ are odd, so each
+factor in the product has valuation $1/e$, giving normalised order $2$.
+There are $2e$ mixed-parity orbits, contributing $4e$.
+
+For the remaining orbits normalise $a=1$, so $b$ runs through the $e$ odd
+residues modulo $2^h$. The normalised orders of the factors are those of
+$1+\zeta^{1-b}$ and $1+\zeta^{1+b}$. For an exponent $k$ put $r=k+e$ modulo
+$2^h$. If $r\ne0$, the order of $1+\zeta^k$ is $2^{v_2(r)}$; if $r=0$ the
+factor vanishes. For either sign, $1\pm b+e$ runs exactly once through the
+even residues. Of a given pair of exponents, one is $2$ modulo $4$, so its
+order is $2$; the other, when finite, has order at most $e$. Thus a finite
+product has normalised order at most $e+2<2e$, and subtracting from $4$
+preserves that order. At a vanishing factor the order of $F$ is $2e$
+instead.
+
+For either sign, the sum over the nonzero even residues is
+$\sum_{i=1}^{h-1}(e/2^i)2^i=(h-1)e$. At each of the two exceptional orbits
+the other factor has already contributed $2$ to this sum, so each requires
+a correction of $2e-2$. The odd--odd contribution is $2(h-1)e+2(2e-2)$, and
+consequently
+\[
+ S_h=(h+3)2^h-4\qquad(h\ge3).
+\]
+At $h=1$ the eigenvalues are $4,4,8$, giving $S_1=7$. At $h=2$ the four
+mixed orbits each contribute $2$ and the two odd--odd orbits each
+contribute $4$, giving $S_2=16$. Equation \eqref{gra:eq:shells} gives row 1
+by summation. Doubling each edge multiplies the number of spanning trees by
+$2^{4^n-1}$, since a tree uses $4^n-1$ edges with two independent parallel
+choices each. This proves row 2.
+\end{proof}
+
+\begin{proof}[Proof for Example 3]
+Write $F=8-\sum_{(u,v)}(X^uY^v+X^{-u}Y^{-v})$, the sum being over the four
+steps. The two vectors $(1,2),(0,1)$ generate the group, so the only zero
+of $F$ among $2$-power torsion points is the trivial character, and
+$\nu_h-\nu_{h-1}=S_h-2$. The decisive local computation is the following
+identity for the reduction $\overline F$ over $\F_2$:
+\[
+ XY^5\,\overline F=(Y+1)\bigl[(Y^2+Y+1)(X^2Y^7+1)+XY^2(Y+1)^5\bigr].
+\]
+Substitute $X=(1+z)^a$, $Y=(1+z)^b$, using nonnegative representatives of
+$a,b$. For $b\ne0$ put $B=2^{v_2(b)}$ and $C=2^{v_2(2a+7b)}$. In
+characteristic two, $(1+z)^j-1$ has order $2^{v_2(j)}$. Since $C$ is a
+power of two, $C\ne5B$, and the resulting order of $\overline F$ is exactly
+$D=B+\min(C,5B)$. Whenever $D<e$ this gives $\ord_hF(\zeta^a,\zeta^b)=D$ by
+\cref{gra:lem:rules}(i), applied to the polynomial $XY^5F$ to avoid
+negative exponents.
+
+For $h\ge5$ and $e=2^{h-1}$, the following disjoint classes exhaust the
+conductor shell.
+\begin{center}\small\upshape
+\begin{tabular}{lll}
+\toprule
+Class & normalised order & contribution to $S_h$\\
+\midrule
+$b$ odd & $2$ & $4e$\\
+$b\equiv2\pmod4$ & $6,10,12$ & $17e/4$\\
+$v_2(b)=k$, $2\le k\le h-2$ & $2^k+2$ & $(h-3)e+e-4$ (all $k$)\\
+$b=0$ & $e+2$ & $e+2$\\
+$b=e$ & $2e$ & $2e$\\
+\bottomrule
+\end{tabular}
+\end{center}
+Indeed, for fixed $b\equiv2\pmod4$, as $a$ runs through odd residues, $C$
+is $4$, $8$, or at least $16$ in proportions $1/2,1/4,1/4$. For $k\ge2$ we
+have $C=2$ and $e/2^k$ eligible values of $b$ at depth $k$. All three
+generic rows have $D<e$. For the two exceptional rows, the integer
+identities $F(X,1)=2(2-X-X^{-1})$ and $F(X,-1)=12$ give the listed orders
+directly. Summation yields
+\[
+ S_h=(h+37/4)2^{h-1}-2\qquad(h\ge5).
+\]
+The small-shell totals $S_1,S_2,S_3,S_4$ are $7,16,48,116$. For an exact
+short verification use one representative per Galois orbit, $(a,1)$ with
+arbitrary $a$ and $(1,b)$ with $b$ even, and apply
+\cref{gra:lem:rules}(iii). At $h=1,2,3,4$ the multisets of orbit
+contributions, with superscripts for multiplicities, are respectively
+\[
+ \{2^{[2]},3\},\quad\{2^{[4]},4^{[2]}\},\quad
+ \{2^{[8]},6^{[2]},8,12\},\quad\{2^{[16]},6^{[4]},10^{[2]},16,24\}.
+\]
+Thus $(\nu_1,\nu_2,\nu_3,\nu_4)=(5,19,65,179)$, and summing the shell
+recurrence proves the formula for all $n\ge4$.
+\end{proof}
+
+\begin{proof}[Proof for Examples 4 and 5]
+For the square torus at $p=3$, the coefficient of $T^2$ in $F_u(1+T)$ is
+$-(a^2+b^2)$ and the lower two coefficients are exactly zero. Every
+primitive pair has $a^2+b^2\ne0$ modulo three. Thus each orbit has order
+$2$, even at $h=1$ by \cref{gra:lem:rules}(ii). The number of orbits is
+$4\cdot3^{h-1}$, giving row 4.
+
+For row 5 the projected steps are $a$, $2a+3b$, $a+b$. At $h=1$ the
+eigenvalue is three times the number of nonzero projected steps modulo
+three. The four orbits have normalised orders $4,4,2,2$, so $S_1=12$. For
+$h\ge2$, classify the primitive direction modulo nine. The following table
+gives the first nonzero degree $k$ of $F_u(1+T)$ modulo $(3,T^9)$.
+\begin{center}\small\upshape
+\begin{tabular}{c|rrrrrrrrr|ccc}
+$u$ & $(1,0)$ & $(1,1)$ & $(1,2)$ & $(1,3)$ & $(1,4)$ & $(1,5)$ &
+$(1,6)$ & $(1,7)$ & $(1,8)$ & $(0,1)$ & $(3,1)$ & $(6,1)$\\
+\hline
+$k$&4&6&2&6&4&2&4&4&2&2&2&2
+\end{tabular}
+\end{center}
+For an explicit verification put $J=\{a,2a+3b,a+b\}$ as a multiset. For
+$1\le j\le6$ the coefficient is the reduction modulo three of
+$-\sum_{k'\in J}\bigl(\binom{[k']_9}{j}+\binom{[-k']_9}{j}\bigr)$, where
+the representatives lie in $[0,8]$; the constant is zero before reduction.
+The table persists at every higher lift since $(1+T)^9\equiv1$ modulo
+$(3,T^9)$. Normalising a unit multiple amounts to a change of variable with
+invertible linear term. In the original Laurent expansion both the
+constant and the linear terms vanish exactly; thus $k\le6<e+2$ makes each
+displayed $k$ the normalised order at every $h\ge2$. Every displayed orbit
+has $3^{h-2}$ orbit lifts, and the sum of the table is $40$, so
+$S_h=40\cdot3^{h-2}$. Summing from $S_1=12$ proves row 5.
+\end{proof}
+
+In the next theorem $X,Y$ denote voltage monomials for the two basis
+vectors, so $X^aY^b$ corresponds to the step $(a,b)$, and a repeated entry
+means parallel generators.
+
+\begin{theorem}[Kataoka's nine rows; \stU]\label{gra:thm:kataoka}
+Let $p=2$ and $N=2^n$. For the nine step lists of
+\cite[Table~7]{Kataoka2026Iwasawa} below, $\nu_n$ equals the given
+expression for every $n$ from the displayed first level on.
+\begin{center}\small\upshape
+\begin{tabular}{cllc}
+\toprule
+$\lambda$ & generators & $\nu_n$ & first $n$\\
+\midrule
+0 & $X^3Y^2,X,Y$ & $9N-2n-3$ & 3\\
+1 & $X^2Y^2,X,Y$ & $nN+(15/2)N-4n-7$ & 3\\
+2 & $X,Y,Y$ & $2nN+2n+1$ & 2\\
+3 & $XY,X,Y$ & $3nN+9N-8n-9$ & 1\\
+4 & $X^2,X,X,Y,Y$ & $4nN-4N+6n+8$ & 2\\
+5 & $X^2Y^2,X^2Y,XY^2,X,Y$ & $5nN+5N-16n+22$ & 3\\
+6 & $X^3,X,Y,Y$ & $6nN-10N+14n+14$ & 3\\
+7 & $X^3Y^3,X^3Y^2,X^2Y^3,X^2Y,XY^2,XY$ & $7nN+4N-20n+14$ & 3\\
+8 & $X^4,X,X,Y,Y$ & $8nN-16N+14n+6$ & 2\\
+\bottomrule
+\end{tabular}
+\end{center}
+\end{theorem}
+
+In every row the lifts are connected and the only $2$-power torsion zero of
+the Laplacian symbol $F$ is the trivial character, so
+\eqref{gra:eq:shells} reads $\nu_0=0$, $\nu_h=\nu_{h-1}+S_h-2$. In each
+case the proof gives a closed formula for $S_h$ for large $h$ and the first
+few shell sums by the exact reduction of \cref{gra:lem:rules}(iii); the
+latter finite computations are recorded in
+\grafiles{\artifact{grh_method_transfers_graph_towers_and_finite_rings/verification/kataoka_results.txt}\\
+\artifact{grh_method_transfers_graph_towers_and_finite_rings/verification/odd_rows_results.txt}}
+Write $e=2^{h-1}$.
+
+\begin{proof}[Proof for $\lambda=0$]
+For $u=(a,b)$ the projected steps are $3a+2b,a,b$. Reduce the expansion of
+$F_u(1+T)$ modulo $(2,T^8)$, exactly as in the ternary table above. For
+$(1,b)$, $0\le b\le7$, the orders are $6,2,4,2,6,2,4,2$ in sequence; for
+$(a,1)$, $a=0,2,4,6$, they are all $2$. These orders are stable on lifting
+each class modulo eight, and they are strictly smaller than $e$ for
+$h\ge4$. The sum of the twelve entries is $36$, so $S_h=36\cdot2^{h-3}$.
+The first three exact shell sums $7,18,44$ give $\nu_3=63$, and the
+recurrence yields $\nu_n=9\cdot2^n-2n-3$ for $n\ge3$.
+\end{proof}
+
+\begin{proof}[Proof for $\lambda=1$]
+The three steps are $(2,2),(1,0),(0,1)$. Put $Z=XY$. The eigenvalue has the
+exact factorisation
+\[
+ F=4-(Z+1)H,\qquad H=(X+Y)/Z+(Z-1)^2(Z+1)/Z^2,
+\]
+since the third pair of translated terms adds $-(Z-Z^{-1})^2$ to the
+square-torus eigenvalue. Work first with $h\ge4$. For mixed parities the
+square-torus eigenvalue has order $2$ and $\ord_h((Z-Z^{-1})^2)=4$, so the
+$2e$ mixed orbits contribute $4e$.
+
+For odd $a,b$ take $a=1$. If $b\equiv-1\pmod4$, the first term of $H$ has
+order $2$, since $\ord_h(X+Y)=\ord_h(1-\zeta^{b-1+e})=2$; the second has
+order at least $12$ or vanishes. Thus $\ord_h(H)=2$. Over these $e/2$
+orbits, the exponents $1+b+e$ range over all multiples of four modulo
+$2^h$. For a nonzero such exponent $k$, the factor $Z+1$ has order
+$2^{v_2(k)}\le e$. The finite orders sum to
+$\sum_{j=2}^{h-1}(e/2^j)2^j=(h-2)e$. One orbit has $Z=-1$, giving
+$\ord_h(F)=2e$; on the others $\ord_h(F)=\ord_h(Z+1)+2<2e$. These orbits
+together contribute $(h+1)e-2$.
+
+For $b\equiv1\pmod4$ both $Z-1$ and $Z+1$ have order $2$, so the second
+term of $H$ has order $6$. The first has order $4$ for $b\equiv5\pmod8$ and
+at least $8$ (including infinity) for $b\equiv1\pmod8$, since $8\mid e$.
+The two contributions to $H$ have distinct orders in both cases. The
+resulting orders of $F$ are $6$ and $8$, each occurring $e/4$ times; their
+sum is $7e/2$. Hence
+\[
+ S_h=(h+17/2)2^{h-1}-2\qquad(h\ge4).
+\]
+Direct cyclotomic reduction at $h=1,2,3$ gives the shell sums $7,16,48$,
+so $(\nu_1,\nu_2,\nu_3)=(5,19,65)$, and the recurrence gives
+$\nu_n=(n+15/2)2^n-4n-7$ for $n\ge3$.
+\end{proof}
+
+\begin{proof}[Proof for $\lambda\in\{2,4,6,8\}$ and for $\lambda=3$]
+For $\lambda=2\ell$, $1\le\ell\le4$, the eigenvalue is
+$F=P_\ell(\grah(X))+2\grah(Y)$, where the integral polynomials satisfy
+$P_\ell(0)=0$ and $P_\ell(z)\equiv z^\ell\pmod2$. Explicitly, the four
+polynomials are $z$, $z(6-z)$, $z((3-z)^2+1)$ and $z(4-z)[4-z(4-z)]+2z$;
+these identities follow from $\grah(X^2)=\grah(X)(4-\grah(X))$ and
+$\grah(X^3)=\grah(X)(3-\grah(X))^2$.
+
+Put $L=2^j$, the smallest power of two at least $\ell$, and take
+$h\ge\max(3,j+2)$. If $a\ne0$ then
+$t=v_2(\grah(X))=2\cdot2^{v_2(a)}/e$. When $t\le1/L$, the odd coefficient
+of $z^\ell$ gives $v_2(P_\ell(\grah(X)))=\ell t\le1$, since lower
+coefficients are even and the constant term vanishes. For odd $a$ this
+applies regardless of $b$; the $2e^2$ choices contribute $4\ell e$ to
+$S_h$. With $a$ even and $b$ odd, each stratum $v_2(a)=k$ for
+$1\le k\le h-2-j$ contributes $2\ell e$: there are $e/2^k$ choices of $a$
+and $e$ choices of $b$ in that stratum. In the remaining $2L$ choices of
+$a$, either $a=0$ or $t\ge2/L$. For the latter, the leading monomial has
+valuation $\ell t\ge2\ell/L>1+2/e$, and the terms of smaller positive
+degree have valuation at least $1+t>1+2/e$; higher terms also exceed this
+bound. The strict bound for $2\ell/L$ follows at once for
+$(\ell,L)=(1,1),(2,2),(3,4),(4,4)$ and the stated range of $h$. The
+valuation of $F$ for all these $a$ is thus $1+2/e$, that of $2\grah(Y)$.
+In total,
+\[
+ S_h=\bigl[2\ell(h-j)+2L\bigr]e+4L .
+\]
+
+For $\lambda=3$ use the exact identity
+$XYF=8XY-(1+X)(1+Y)(1+XY)$. For $h\ge2$, exactly one of $a,b,a+b$ is even;
+label this residue $t$. The two odd arguments each give
+$v_2(1+\zeta^{\mathrm{odd}})=1/e$. For each choice of the even position and
+its value there are $e$ pairs. When $t=e$ the product is zero, hence
+$v_2(F)=3$. For all the other even $t$ we have $v_2(1+\zeta^t)\le1$, hence
+$v_2(F)=2/e+v_2(1+\zeta^t)<3$. The sum of $v_2(1+\zeta^t)$ over those
+remaining even $t$ is $h-1$, since $-\zeta^t$ takes all nonidentity values
+in $\gramu_e$ once and $\prod_{\xi\in\gramu_e,\,\xi\ne1}(1-\xi)=e$. Thus
+$S_h=3(h+4)e-6$.
+
+In the order $\lambda=2,4,6,8,3$, the shell totals at $h=1,2,3$ are
+$(7,18,36)$, $(10,30,56)$, $(10,28,88)$, $(10,28,80)$ and $(9,30,78)$,
+obtained from \cref{gra:lem:rules}(iii). Substituting in the recurrence and
+then using the shell formulas gives the corresponding five rows.
+\end{proof}
+
+\begin{proof}[Proof for $\lambda\in\{5,7\}$]
+The first list contains a basis, and the second contains $(2,1),(1,1)$,
+another basis; thus all layers are connected. Put $\delta=\lambda-2$.
+Direct multiplication gives
+\[
+ \overline F\doteq(X+1)(Y+1)(XY+1)^\delta\quad\text{in }
+ \F_2[X^{\pm1},Y^{\pm1}],
+\]
+where $\doteq$ means equality up to a Laurent monomial. For each primitive
+pair $(a,b)$ modulo $2^h$, exactly one of $a,b,a+b$ is even. Write $c$ for
+this even member and $W=\zeta^c$, and let $2^t$ be the order of $W$,
+including $t=0$ for $W=1$. For $t\ge1$ the order of $(1+z)^c-1$ in
+characteristic two is $B=e/2^{t-1}$, taking $c$ to be its residue in
+$[0,2^h)$; replacing an exponent by a congruent one does not change the
+formal order below $2^h$. At an axis ($a$ even or $b$ even) the contact
+order is $B+\delta+1$; at the diagonal ($a+b$ even) it is $2+\delta B$. If
+the contact order is strictly below $e$, it equals $\ord_hF(\zeta^a,\zeta^b)$
+by \cref{gra:lem:rules}(i). For $h\ge5$ this settles both axes when
+$t\ge2$, and the diagonal when $t\ge L+1$, where $L=2$ for $\delta=3$ and
+$L=3$ for $\delta=5$.
+
+For the remaining classes let $\eta=(\lambda-1)/2$ and let $Z$ denote a
+primitive root of order $2^h$. In an axis class expand
+$W^\eta Z^\eta F(W,Z)$ as $\sum_jc_j(Z-1)^j$; symmetry treats the second
+axis. In a diagonal class use $W^\eta ZF(Z,W/Z)$ instead. The following
+table gives the smallest pair $(v_2(c_j),j)$ in lexicographic order; a dash
+means that the generic calculation applies.
+\[
+\begin{array}{c|cc|cc}
+&\multicolumn{2}{c|}{\text{axis}}&\multicolumn{2}{c}{\text{diagonal}}\\
+ t&\lambda=5&\lambda=7&\lambda=5&\lambda=7\\\hline
+ 0&(1,2)&(1,4)&(2,2)&(2,2)\\
+ 1&(1,2)&(1,4)&(3,0)&(4,0)\\
+ 2&-&-&(2,0)&(3/2,2)\\
+ 3&-&-&-&(2,0)
+\end{array}
+\]
+To verify the entries, at $W=1,-1$ respectively the axis coefficient
+lists, in increasing $j$, are
+\[
+\begin{array}{c|ll}
+5&(0,0,-10,-10,-2)&(8,16,6,-2,0)\\
+7&(0,0,-28,-56,-42,-14,-2)&(-16,-48,-56,-32,-10,-2,0).
+\end{array}
+\]
+For the diagonal the lists in increasing $t$ are
+\[
+\begin{array}{c|l}
+5&(0,0,-4),\quad(8,8,0),\quad(-12,-12,0)\\
+7&(0,0,-4),\quad(-16,-16,0),\quad
+ (-16W,-16W-4,-2W-2),\quad(12W^3,12W^3,0).
+\end{array}
+\]
+These expansions use only the identity $\Phi_{2^t}(W)=0$, and
+$\Phi_1(W)=W-1$ when $t=0$. For $W$ of order four we have
+$v_2(1+W)=1/2$, explaining the fractional entry. If the table entry is
+$(H,J)$, the normalised order is $eH+J$: the coefficient valuations lie in
+$\varphi(2^t)^{-1}\Z$, and for $h\ge5$ the polynomial degree (at most six
+on the axes and two on the diagonal) is smaller than $e/\varphi(2^t)$ in
+every tabulated case, so the minimum term is unique.
+
+To sum each class over its primitive pairs, note that for each fixed $W$
+there are $e$ choices for the primitive coordinate $Z$. A normalised order
+$D$ therefore contributes $D$ for each such $W$, and there are
+$\varphi(2^t)$ choices of exact order $2^t$. In a single axis class the
+generic sum is $(h-2)e+(\delta+1)(e-2)$, while its two exceptional classes
+contribute $2(e+\delta-1)$; each axis total is consequently
+$(h+\delta+1)e-4$. The generic diagonal sum is
+\[
+ \delta(h-L-1)e+2(e-2^L),
+\]
+and the exceptional diagonal classes contribute $9e+2$ for $\delta=3$ and
+$17e+6$ for $\delta=5$. Adding all three classes yields
+\[
+ S_h=(5h+10)e-14\quad(\lambda=5),\qquad
+ S_h=(7h+11)e-18\quad(\lambda=7),\qquad h\ge5.
+\]
+The four initial values $(\nu_1,\dots,\nu_4)$ are $(8,34,134,358)$ and
+$(10,50,154,446)$ respectively, by the finite cyclotomic basis calculation
+of \cref{gra:lem:rules}(iii). Summation proves the asserted formulas.
+\end{proof}
+
+\begin{example}[A two-vertex base at every prime]\label[example]{gra:ex:honeycomb}
+Let the base graph have two vertices joined by three edges with voltages
+$0,e_1,e_2$; its covers are the periodic honeycomb graphs. The base has
+three spanning trees, and the determinant of its two-by-two Laurent
+Laplacian is
+\[
+ F(X,Y)=9-(1+X+Y)(1+X^{-1}+Y^{-1})=\grah(X)+\grah(Y)+\grah(X/Y).
+\]
+The file \artifact{Effective_Graph_Towers/honeycomb.json} encodes this
+base. At $p=2$ and $p=3$ the algorithm of \cref{gra:thm:effective} yields
+the all-level formulas
+\[
+ \nu_n=(3n+9)2^n-8n-9,\qquad\nu_n=5\cdot3^n-2n-4,
+\]
+with zero finite correction in both cases and register dimensions $44$
+and $12$; the ternary constant term takes account of the base tree count.
+For $p\ge5$, at every level,
+\[
+ \nu_n=\graA_p\,\frac{p^n-1}{p-1}-2n,\qquad
+ \graA_p=\begin{cases}2(p+5),&p\equiv1\pmod3,\\2(p+1),&p\equiv2\pmod3.
+ \end{cases}
+\]
+Indeed, in a primitive direction $(a,b)$ modulo $p$ the first even moment
+is $a^2+b^2+(a-b)^2=2(a^2-ab+b^2)$. If it is nonzero, the first unit degree
+is two. Otherwise $ab\ne0$ and $b/a$ is a primitive sixth root of unity;
+the three squared projections $a^2,b^2,(a-b)^2$ are $a^2$ times the three
+cube roots of unity, their first two power sums vanish and their third is
+$3a^6\ne0$. There are two such projective directions for $p\equiv1\bmod3$
+and none for $p\equiv2\bmod3$. To identify the first unit degree in the
+exceptional directions, use $X=\exp(az)$, $Y=\exp(bz)$ formally through
+degree six modulo $p$; here $p\ge7$, so all factorials in this expansion
+are units. The coefficient at even degree $2j$ is $-2/(2j)!$ times the
+$j$th power sum of the squared projections, and the change from $z$ to
+$\exp(z)-1$ preserves the order, so the first unit degree is six. In a
+cyclotomic specialisation the integral Laurent expansion in $T=\zeta-1$
+has its first two coefficients identically zero; thus even at $p=7$, $h=1$,
+when degree six equals the ramification index, every lower nonzero term
+divisible by $p$ has normalised order at least $e+2>6$. These unit degrees
+are exactly the orbit orders at every conductor. Each projective direction
+has $p^{h-1}$ normalised lifts at level $h$; summing gives $\graA_p$ at
+level one and the formula by geometric summation. This is the method of
+\cref{gra:thm:moments} applied to a base with two vertices.
+\end{example}
+
+\subsection{A finite-field formula when the prime exceeds the valency}\label{gra:sec:moments}
+{\raggedright
+\sources{grh_method_transfers_graph_towers_and_finite_rings; grh_transfers_lubin_tate_and_graph_towers; grh_transfer_extensions_2026-11-26}
+}
+
+The preceding arguments have a uniform form when the prime exceeds the
+valency. Fix a bouquet with $m$ steps $s_i\in\Z^d$ spanning $\F_p^d$ modulo
+$p$, and assume $p>2m$. For $u\in\F_p^d$ and $j\ge1$ put
+\[
+ M_j(u)=\sum_{i=1}^m\langle u,s_i\rangle^{2j}\in\F_p ,
+\]
+a form of degree $2j$ in $u$. For a projective covector
+$L\in\graP^{d-1}(\F_p)$ represented by $u$, define the \emph{depth} and the
+\emph{moment coefficient}
+\[
+ r(L)=\min\{j\ge1:M_j(u)\ne0\},\qquad\graA=\graA(S)=2\sum_Lr(L).
+\]
+Scaling $u$ preserves the first nonvanishing degree.
+
+\begin{theorem}[Moment formula; \stU]\label{gra:thm:moments}
+Each $r(L)$ is at most $m$, and for every $n\ge1$
+\[
+ \nu_n=\graA\sum_{h=0}^{n-1}p^{(d-1)h}-dn .
+\]
+In particular, the reductions of the steps modulo $p$ determine the
+valuation at every level.
+\end{theorem}
+
+\begin{proof}
+Put $x_i=\langle u,s_i\rangle^2$ in $\F_p$. If their first $m$ power sums
+vanished, Newton's identities (with $1,\dots,m$ invertible) would give
+$\prod_i(Z-x_i)=Z^m$. This forces all projections to be zero and
+contradicts spanning. Next take the truncated exponential coordinate
+$1+T=\exp z$ modulo $z^{2m+1}$ over $\F_p$; all denominators used are
+units, and the linear term is invertible. The eigenvalue becomes
+\[
+ -2\sum_{j=1}^m\frac{z^{2j}}{(2j)!}\,M_j(u)\pmod{z^{2m+1}} .
+\]
+Its first nonzero degree is $2r(L)$. The integral series in $T$ has zero
+constant and linear coefficients. Since $2r(L)\le2m\le p-1\le e$,
+\cref{gra:lem:rules}(ii) proves that the orbit contributes exactly
+$2r(L)$, including the possible boundary case $2r(L)=p-1$. There are
+$p^{(d-1)(h-1)}$ lifts of each projective residue direction to conductor
+$p^h$: normalise the first unit coordinate to one and lift the other $d-1$
+coordinates freely. Formula \eqref{gra:eq:shells} now gives the claim.
+\end{proof}
+
+\begin{example}\label[example]{gra:ex:torus}
+For the square torus ($e_1,e_2$) and $p\ge5$, the first moment is
+$a^2+b^2$. For $p\equiv3\pmod4$ it never vanishes on a projective point;
+for $p\equiv1\pmod4$ its two isotropic directions have nonzero fourth
+moment $2a^4$. Consequently $\graA=2(p+1)$ and $\graA=2(p+3)$,
+respectively. At $p=5$ this gives $\nu_n=4(5^n-1)-2n$.
+\end{example}
+
+In rank one, Dion, Lei, Ray and Valli\`eres had already used the even
+moments and analysed the distribution of the one-variable Iwasawa
+invariant, including the two-loop case
+\cite[Theorem~4.13 and Proposition~4.19]{DionLeiRayVallieres2024Distribution}.
+\Cref{gra:thm:moments} counts all residual projective directions and their
+lifts in arbitrary rank.
+
+\subsection{The largest moment coefficient in rank two}\label{gra:sec:extremal}
+{\raggedright
+\sources{grh_transfers_lubin_tate_and_graph_towers; grh_transfer_extensions_2026-11-26; grh_method_transfers_graph_towers_and_finite_rings}
+}
+
+How divisible by $p$ can the spanning-tree count of a connected abelian
+Cayley graph be, if the number of steps is fixed? By
+\cref{gra:thm:moments} this is the problem of maximising $\graA(S)$. In
+this subsection $d=2$, $p>2m$, and the $m$ steps span $\F_p^2$ after
+reduction; repetitions and steps with zero residue are allowed. The forms
+$M_j$ are binary forms of degree $2j$ over $\F_p$.
+
+\begin{theorem}[First nonzero moment form and the interpolation bound; \stU]\label{gra:thm:extremal}
+Let $t$ be the first index $j$ for which $M_j$ is a nonzero polynomial, and
+put $s=\floor{m/2}$. Then $t\le s$ and
+\begin{equation}\label{gra:eq:tbound}
+ \graA(S)\le2t(p+1)+4t(m-t)\le2s(p+1)+4s(m-s).
+\end{equation}
+For even $m=2s$, equality $\graA(S)=m(p+1+m)$ in the outer bound is
+attainable exactly at the primes with $2m\mid p-1$. The maximising
+configuration has $M_1=0$ identically whenever $m\ge4$.
+\end{theorem}
+
+\begin{proof}
+The degree of $M_t$ is $2t\le2m<p$. We first prove $t\le s$. Discard the
+steps with zero residue and let $m'$ be the remaining count. If a line
+through the origin contains more than half of these steps, take a nonzero
+linear functional annihilating the line. Its list of projections has at
+most $\floor{m'/2}$ nonzero entries and at least one, by spanning. Newton's
+identities applied to the shorter list show that some $M_j$ with
+$j\le\floor{m'/2}$ is nonzero at this covector.
+
+Otherwise, arrange the $2m'$ signed occurrences $\pm s_i$ in contiguous
+blocks according to the line through the origin that they occupy. Every
+block has size at most $m'$. Pair occurrence $j$ with occurrence $j+m'$
+for $1\le j\le m'$. Each pair has two distinct radial directions, so its
+affine line avoids the origin. Multiplying the equations of these $m'$
+affine lines produces a polynomial $H$ of degree $m'$ that vanishes on
+every signed occurrence and satisfies $H(0)\ne0$. If $t>\floor{m'/2}$,
+then $m'\le2t-1$. For every polynomial $P$ of degree at most $2t-1$ we
+have
+\[
+ \sum_{i:s_i\ne0}\bigl(P(s_i)+P(-s_i)\bigr)=2m'P(0):
+\]
+odd homogeneous degrees cancel, and for degree $2j<2t$, $j\ge1$, the
+vanishing coefficients of $M_j$ say that each mixed monomial of that degree
+sums to zero, since all binomial coefficients $\binom{2j}{k}$ are units.
+Applying the identity to $H$ contradicts $p>2m$. This proves $t\le s$ in
+both cases.
+
+A nonzero binary form of degree $2t$ has at most $2t$ projective roots.
+The other directions have depth $t$, and each exceptional direction has
+depth at most $m$ by \cref{gra:thm:moments}. Hence
+$\graA/2\le t(p+1)+2t(m-t)$. The right side increases strictly for
+integers $1\le t\le s$: the successive difference of
+$2t(p+1+2m-2t)$ is $2(p+1+2m-4t-2)>0$ in that range because $p>2m$. This
+proves \eqref{gra:eq:tbound}.
+
+For even $m=2s$, equality requires $t=s$ and $2s$ exceptional directions
+of depth $m$. In any direction of depth $m$, Newton's identities give
+$\prod_i(X-\langle u,s_i\rangle^2)=X^m-c$ with $c\ne0$. The roots are
+distinct nonzero squares. Dividing by one root shows that all $m$th roots
+of unity belong to the square subgroup, and hence $2m\mid p-1$.
+
+Conversely, assume $4s\mid p-1$ and choose $g\in\F_p^\times$ of order
+$2s$. Use the $s$ steps $(g^j,0)$ and the $s$ steps $(0,g^j)$,
+$0\le j<s$, lifting residues to integers. Since $g^2$ has order $s$,
+\[
+ M_k(a,b)=\begin{cases}0,&s\nmid k,\\ s(a^{2k}+b^{2k}),&s\mid k.\end{cases}
+\]
+Exactly $2s$ rational directions solve $a^{2s}=-b^{2s}$, because $-1$ is a
+$2s$th power; all have both coordinates nonzero. In each of them
+$M_{2s}=2sb^{4s}\ne0$, so their depth is $2s=m$, and all other directions
+have depth $s$. Thus
+$\graA=2s(p+1-2s)+4s\cdot2s=m(p+1+m)$. For $s\ge2$ the display gives
+$M_1=0$ identically.
+\end{proof}
+
+\begin{corollary}[Nonzero quadratic moment; \stU]\label[corollary]{gra:cor:quadratic}
+If $M_1$ is not the zero polynomial, then $\graA(S)\le2(p-1)+4m$. If
+$m\ge2$ and $2m\mid p-1$, this value is attained: take $g$ of order $2m$
+modulo $p$ and lift the $m$ steps $(g^j,g^{-j})$, $0\le j<m$, to integers.
+\end{corollary}
+
+\begin{proof}
+The bound is the case $t=1$ of \eqref{gra:eq:tbound}: a nonzero binary
+quadratic form has at most two projective roots, each of which can
+contribute at most $2m$. For the construction, the first two steps span.
+In the direction $(a,b)$ the quadratic moment is $2mab$, since the sums of
+$g^{2j}$ and of $g^{-2j}$ vanish. Each coordinate axis has all even
+moments through order $2m-2$ zero, and its $2m$th moment is nonzero. Thus
+$\graA=2(p-1)+4m$.
+\end{proof}
+
+For example $p=13$, $m=6$ gives $\graA=48$ in \cref{gra:cor:quadratic},
+whereas the unrestricted maximum for the same prime and step count is
+$120$:
+
+\begin{corollary}[Exact maximum at every layer; \stU]\label[corollary]{gra:cor:layers}
+For even $m$ and primes $p\equiv1\pmod{2m}$,
+\[
+ \max_Sv_p(\kappa_n(S))=m(p+1+m)\frac{p^n-1}{p-1}-2n\qquad(n\ge1),
+\]
+the maximum being over all lists of $m$ integral steps spanning $\F_p^2$.
+The same fixed root-of-unity step construction attains the maximum
+simultaneously at every level, independently of the chosen integral lifts.
+\end{corollary}
+
+\begin{proof}
+Combine \cref{gra:thm:moments} with \cref{gra:thm:extremal}; the
+congruence gives $p>2m$.
+\end{proof}
+
+\begin{example}\label[example]{gra:ex:thirteen}
+For $m=6$, $p=13$ the maximum coefficient is $120$ and
+$\max_Sv_{13}(\kappa_n(S))=10(13^n-1)-2n$. An attaining step list is
+$(1,0),(4,0),(3,0),(0,1),(0,4),(0,3)$: the eight ordinary directions have
+depth three and the six exceptional directions have depth six. Its values
+at the first three levels are $118$, $1676$, $21954$. At $m=4$, $p=17$
+the maximum coefficient is $88$ and the first-level valuation is $86$.
+The value $118$ is recovered by evaluating the $168\times168$ reduced
+integral Laplacian determinant directly; see
+\grafiles{\artifact{grh_transfers_lubin_tate_and_graph_towers/checks/graph_checks.txt}\\
+\artifact{grh_transfer_extensions_2026-11-26/verification/graph_check.txt}}
+\end{example}
+
+\begin{theorem}[Four steps at every prime; \stU]\label{gra:thm:four}
+For $m=4$ and every prime $p>8$, the unrestricted maximum of $\graA(S)$,
+which is also the maximum over lists with $M_1=0$, is
+\begin{equation}\label{gra:eq:four}
+ \graA_{\max}=4(p+1)+\begin{cases}
+ 16,&p\equiv1\pmod8,\\
+ 0,&p\in\{11,23,29,47,53,83,149\},\\
+ 8,&\text{otherwise}.\end{cases}
+\end{equation}
+\end{theorem}
+
+\begin{proof}
+The primes $p\equiv1\pmod8$ are covered by \cref{gra:thm:extremal}. If
+$M_1$ is nonzero, the at most two exceptional directions give
+$\graA\le2(p+1)+12<4(p+1)$. It remains to optimise over lists with $M_1=0$
+at the other primes. Relabel two independent steps and make them
+$e_1,e_2$ by a change of basis. The two rows of the remaining $2\times2$
+block must be perpendicular, both with sum of squared coordinates $-1$.
+The first row $(a,b)$ determines the second up to sign. Changing the sign
+of the second basis coordinate, followed by a sign change of the second
+step, if needed, puts the block in the form
+\[
+ B=\begin{pmatrix}a&b\\b&-a\end{pmatrix},\quad a^2+b^2=-1,\qquad
+ J=\begin{pmatrix}0&-1\\1&0\end{pmatrix}.
+\]
+Such $a,b$ exist for every odd prime because the squares and $-1$ minus
+the squares each have $(p+1)/2$ elements. \Cref{gra:thm:extremal} gives
+$t=2$.
+
+Both $B$ and $J$ permute the signed steps
+$\{\pm e_i,\pm Be_i:i=1,2\}$, with multiplicities. They satisfy
+$J^2=B^2=(JB)^2=-I$ and $JB=-BJ$. Their projective transformations on
+covectors generate a group of order four with three involutions: $B$ is
+symmetric and nonscalar, $J$ is skew-symmetric and invertible, and $JB$ is
+projectively different from both. Every $M_j$ is invariant under the
+corresponding transpose matrices. A direction fixed by any nonidentity
+element has eigenvalue $\lambda$ with $\lambda^2=-1$ for that
+representative, so $M_3(u)=\lambda^6M_3(u)=-M_3(u)$. If such a direction
+were a root of the quartic $M_2$, it would have depth four, which requires
+$8\mid p-1$. Thus all rational roots of $M_2$ are in orbits of four. Since
+$M_2$ is a nonzero quartic, it has either zero or four rational roots, and
+each has depth three. This contributes precisely zero or eight above
+$4(p+1)$.
+
+Existence of at least one such root, allowing the step list to vary, is
+equivalent to a rational point on the projective curve
+\[
+ C:\quad x_1^2+x_2^2+x_3^2+x_4^2=x_1^4+x_2^4+x_3^4+x_4^4=0 .
+\]
+The four projections in an exceptional direction give such a point.
+Conversely, take a nonzero representative $x$ of a point of $C(\F_p)$ and
+put $D=\operatorname{diag}(J,J)$. The vectors $x,Dx$ are perpendicular and
+isotropic in $\F_p^4$. If $Dx=\lambda x$, invariance under $D$ gives
+$\sum x_i^6=0$ as well, since $\lambda^2=-1$; the Newton argument for the
+four squares $x_i^2$ then forces $8\mid p-1$. For the primes under
+consideration the rows $x,Dx$ are therefore independent. Their four
+columns supply spanning steps with identically zero quadratic moment, and
+the first coordinate functional gives the required quartic root.
+
+Over an algebraic closure $C$ is a smooth complete intersection:
+dependence of its two gradients would force all nonzero $x_i^2$ to
+coincide with one common nonzero $c$, and the quadratic equation would
+give $kc=0$ for some $1\le k\le4<p$. The quartic does not vanish
+identically on the smooth quadric, as the point $(1,\sqrt{-1},0,0)$ shows.
+On this quadric, isomorphic over the algebraic closure to
+$\graP^1\times\graP^1$, the curve has bidegree $(4,4)$. It is connected:
+if two nonempty effective divisors of classes $(a,b)$ and $(4-a,4-b)$
+partitioned it disjointly, their intersection number $a(4-b)+b(4-a)$ would
+be positive. Smoothness then gives geometric irreducibility, and
+adjunction gives genus $(4-1)(4-1)=9$. The Hasse--Weil theorem
+\cite{Weil1948Courbes} yields
+\[
+ \#C(\F_p)\ge p+1-18\sqrt p>0\qquad(p>322).
+\]
+
+For the $49$ remaining primes $8<p\le322$, $p\not\equiv1\pmod8$, normalise
+a nonzero coordinate to one using permutation and scaling, and loop
+through $y,z\in\F_p$: set $c=-1-y^2-z^2$ and test whether $c$ is a square
+and $1+y^4+z^4+c^2=0$. This exhausts $C(\F_p)$ for the existence test.
+A witness for every successful prime, and an independent count of the
+whole curve at the $62$ primes from $11$ through $317$ by convolving
+two-coordinate moment tables, are recorded in
+\grafiles{\artifact{grh_transfers_lubin_tate_and_graph_towers/checks/graph_checks.txt}\\
+\artifact{grh_transfers_lubin_tate_and_graph_towers/checks/graph_independent_output.txt}}
+The seven failures are exactly the primes in \eqref{gra:eq:four}.
+\end{proof}
+
+\begin{remark}[Simple graphs]\label[remark]{gra:rem:simple}
+The four-step maximum is also attained among simple eight-regular Cayley
+graphs. The row plane $W\subset\F_p^4$ of a spanning list with $M_1=0$ is
+totally isotropic for the dot product. A zero step, or equality of two
+steps up to sign, would put $W$ in the orthogonal complement of $e_i$ or
+of $e_i\pm e_j$. Each complement is a nondegenerate three-space, in which
+a totally isotropic plane would violate $\dim W+\dim W^\perp=3$. Distinct
+nonzero steps up to sign modulo $p$ give a simple graph at every level.
+\end{remark}
+
+\begin{remark}
+Reduced Laplacians at $p=11$ and $p=13$ give four-step valuations $46$ and
+$62$ at level one, in agreement with \eqref{gra:eq:four} and
+\cref{gra:thm:moments}. The bound \eqref{gra:eq:tbound} leaves open the
+exact maxima for odd $m\ge5$ and for even $m\ge6$ with
+$2m\nmid p-1$: simultaneous projective
+roots of several moment forms determine which exceptional depths can
+coexist on a single plane.
+\end{remark}
+
+\subsection{How late can the eventual law start?}\label{gra:sec:onset}
+\sources{Effective_Graph_Towers; grh_method_transfers}
+
+The \emph{onset} of a tower is the least level from which the eventual
+polynomial agrees with $\nu_n$. This subsection shows that the onset is
+unbounded for a fixed prime and a fixed number of loops, that even the
+leading coefficient of the eventual polynomial is not a continuous function
+of the voltages, and that in rank two the onset is nevertheless at most
+logarithmic in the size of the voltages; the worst case grows linearly in
+the bit length exactly when the number of loops is at least $\max(3,p)$.
+We write $C_k$ for a cyclic group of order $k$.
+
+\begin{theorem}[The first stable level can be prescribed; \stU]\label{gra:thm:delayed}
+Fix a prime $p\equiv3\pmod4$ and an integer $k\ge1$. On
+$(\Z/p^n\Z)^2$ take one step in each of the directions $p^ke_1$ and $e_2$,
+and $p$ copies of the step $e_1$. Put $s=\min(k,n)$ and $C=2(p+1)/(p-1)$.
+At every level $n\ge1$,
+\[
+ \nu_n=2sp^n+C(p^n-p^s)+(p^s-1)+2s-2n .
+\]
+The eventual polynomial is
+\[
+ P_k(X,Y)=(2k+C)X-2Y+(1-C)p^k+2k-1 .
+\]
+It gives $\nu_n=P_k(p^n,n)$ from level $k$ onward. For $k\ge2$ it fails at
+level $k-1$, so $k$ is the exact first stable level.
+\end{theorem}
+
+These connected towers all have the same number $p+2$ of base loops for
+fixed $p$; in particular five loops suffice at $p=3$ to prescribe any
+positive starting level.
+
+\begin{proof}
+For a pair $(U,V)$ of $p$-power roots of unity of joint conductor $p^j>1$,
+write $U=\zeta^a$, $V=\zeta^b$ in a common primitive coordinate $\zeta$ of
+order $p^j$, with $a,b$ not both divisible by $p$. The reduction of
+$(\grah(U)+\grah(V))/(\zeta-1)^2$ modulo $\zeta-1$ is $-(a^2+b^2)$. Since
+$-1$ is a nonsquare modulo $p$, this is nonzero. Consequently
+\begin{equation}\label{gra:eq:aniso}
+ v_p(\grah(U)+\grah(V))=2/e_j\le1 .
+\end{equation}
+The eigenvalue at a character $(X,Y)$ is
+$\grah(X^{p^k})+\grah(Y)+p\,\grah(X)$. The final term has valuation
+strictly above one, with the convention $v_p(0)=+\infty$. Thus whenever
+$(X^{p^k},Y)\ne(1,1)$, the joint conductor of this image alone determines
+the valuation.
+
+The map $(X,Y)\mapsto(X^{p^k},Y)$ has fibres of size $p^s$ and image
+isomorphic to $C_{p^{n-s}}\times C_{p^n}$. For $1\le j\le n-s$ the exact
+conductor-$p^j$ shell of the image has $p^{2j}-p^{2j-2}$ elements; their
+aggregate valuation is therefore $2(p+1)p^{j-1}$. For $n-s<j\le n$ there
+are $p^{n-s}e_j$ elements in the shell, contributing $2p^{n-s}$. Summing
+these shell contributions and multiplying by $p^s$ gives
+$C(p^n-p^s)+2sp^n$. On the kernel with the trivial character removed, the
+eigenvalue is $p\,\grah(X)$ for each nontrivial $p^s$-th root $X$. There
+are $p^s-1$ such roots, and $\prod_{X\ne1}(1-X)=p^s$ gives
+$\sum_{X\ne1}v_p(\grah(X))=2s$. The matrix-tree denominator contributes
+$-2n$. This proves the formula.
+
+For $n\le k$ it reads $\nu_n=(2n+1)p^n-1$, and for $n\ge k$ it equals
+$P_k(p^n,n)$. The discrepancy one level before $k$ is
+\[
+ \nu_{k-1}-P_k(p^{k-1},k-1)=(p+1)p^{k-1}-2>0 .
+\]
+Distinct polynomials in $p^n,n$ cannot agree on an infinite tail: the term
+of highest degree in $p^n$ dominates all lower exponential orders, even
+with polynomial factors in $n$. This establishes the claimed onset for the
+unique eventual polynomial.
+\end{proof}
+
+\begin{remark}\label[remark]{gra:rem:delayed}
+(a) The growing onset is visible directly in the formal specialisations.
+For primitive $(a,b)\in\Z_p^2$, substitute $X=(1+z)^a$ and $Y=(1+z)^b$ in
+the Laplacian polynomial and reduce modulo $p$. The first nonzero degree
+is $2p^{\min(k+v_p(a),v_p(b))}$: the two summands that survive reduction
+have these respective initial orders, and in an equal-order tie the same
+anisotropic sum of squares prevents cancellation. The maximum is exactly
+$2p^k$, attained at $(1,0)$. Thus even within this family with no
+identically zero primitive specialisation, neither the maximal degree
+required to see a unit nor the onset admits a bound in terms of $p$, the
+dimension and the base edge count alone. Replacing $p^ke_1$ by the zero
+step gives the law $(2n+1)p^n-1$ at every level, despite agreement of the
+voltage data modulo $p^k$.
+
+(b) For $p=3$ and $k=3$ the stable law is $10\cdot3^n-2n-76$ and the first
+five values are $8,44,188,726,2344$
+(\artifact{Effective_Graph_Towers/delayed_tower_results.txt}).
+
+(c) There is a version with distinct steps. For $p\ge7$ in the same
+congruence class, replace the $p$ copies of $e_1$ by $(1+ip^k)e_1$ for
+$0\le i<p$. Every valuation stays the same. Indeed, writing $Z=X^{p^k}$,
+the replacement contributes $2p-X\Phi_p(Z)-X^{-1}\Phi_p(Z^{-1})$. At $Z=1$
+this is $p\,\grah(X)$. If $Z$ has order $p$ the two cyclotomic factors
+vanish. If its order is larger, each has valuation $(p-1)v_p(Z-1)$ by
+$\Phi_p(Z)=(Z^p-1)/(Z-1)$. Hence for $Z\ne1$ the new contribution has
+valuation strictly greater than $2v_p(Z-1)$, which in turn is at least
+$v_p(\grah(Z)+\grah(Y))$. For $n>k$ all steps are nonzero and distinct up
+to sign, so the graphs at those levels are simple.
+\end{remark}
+
+\begin{theorem}[The leading coefficient can change after an arbitrary level; \stU]\label{gra:thm:leading}
+Fix $p=3$. Take three copies of each of $(1,0)$ and $(0,1)$ and one
+additional step $(t,0)$, and write $\nu_n(t)$ for the resulting valuation.
+For $k\ge1$ put
+\[
+ B(n)=9^n+4\cdot3^n-2n-5,\qquad
+ D_k(n)=(2(n-k)+1)3^{n+k}+(2(n-k)+4)3^k-2n-5 .
+\]
+Then $\nu_n(0)=B(n)$ for every $n\ge1$, and
+\[
+ \nu_n(3^k)=\begin{cases}B(n),&1\le n\le k,\\ D_k(n),&n\ge k.\end{cases}
+\]
+Both expressions agree at $n=k$. The least positive starting level for the
+eventual formula $D_k$ is exactly $k$.
+\end{theorem}
+
+\begin{proof}
+Index a character by its two coordinate roots of unity, and let $a,b$ be
+their conductor exponents, with exponent $0$ for the trivial root. For a
+nontrivial character write $h=\max(a,b)$ and express the roots as
+$z^u,z^v$ for $z$ primitive of order $3^h$; at least one of $u,v$ is a unit
+modulo $3$. With $\pi=z-1$, the grid symbol $F=\grah(z^u)+\grah(z^v)$
+satisfies $F/\pi^2\equiv-(u^2+v^2)\pmod\pi$. The nonzero squares modulo
+$3$ are all $1$, so this residue is nonzero, and
+$v_3(F)=2/\varphi(3^h)=3^{1-h}$. If $a\le k$, the full symbol equals $3F$
+and has valuation $1+3^{1-h}$. If $a>k$, the extra summand
+$\grah(z^{3^ku})$ has valuation $3^{1-a+k}\le1$, strictly below that of
+$3F$, and gives the valuation of the sum.
+
+For $n\le k$ there are $9^n-1$ nontrivial characters, and the
+$8\cdot9^{h-1}$ characters at conductor $h$ contribute $8\cdot3^{h-1}$
+from the grid valuation. Summing and subtracting the matrix-tree
+correction $2n$ gives $B(n)$. This argument holds for every $n$ at $t=0$.
+For $n\ge k$, the rectangle $a\le k$ contains $3^{n+k}-1$ nontrivial
+characters; their unit contribution is this count. Their grid valuations
+sum to $4(3^k-1)$ for $h\le k$ and to $2(n-k)3^k$ for $h>k$, since then
+$b=h$. Outside the rectangle, the $2\cdot3^{a-1+n}$ characters with given
+$a>k$ contribute $2\cdot3^{k+n}$. Adding these sums and subtracting $2n$
+gives $D_k(n)$. For $k\ge2$ the difference at the preceding level is
+\[
+ B(k-1)-D_k(k-1)=4\cdot3^{2k-2}-2\cdot3^{k-1}>0 .
+\]
+This proves minimality, including $k=1$ by the positive-level convention.
+\end{proof}
+
+For $k=3$ the successive valuations at levels $1$ through $5$ are
+$14,108,826,6710,33006$
+(\artifact{Effective_Graph_Towers/leading_results.txt}).
+
+\begin{corollary}[No digit-oracle algorithm for the leading coefficient; \stU]\label[corollary]{gra:cor:oracle}
+Write $X=3^n$, and denote the coefficient of $X^2$ in the eventual
+polynomial by $\mu$ and that of $nX$ by $\lambda$. In the family of
+\cref{gra:thm:leading} the pair $(\mu,\lambda)$ is $(1,0)$ at $t=0$ and
+$(0,2\cdot3^k)$ at $t=3^k$. Thus the degree in $X$ drops from two to one,
+$\lambda$ is unbounded along a sequence for which all voltage digits
+stabilise, and $\mu$ is discontinuous at $0$ on the space of $3$-adic
+inputs. No algorithm that queries the $3$-adic digits of the voltages
+computes $\mu$ on all inputs, and the same holds for finite programs
+computing the digits, even with a promise that their values are ordinary
+integers.
+\end{corollary}
+
+\begin{proof}
+Any digit-query algorithm halting at $0$ has read only finitely many
+digits. A sufficiently large $3^k$ yields the same answers to all these
+queries, yet the required leading coefficient differs. For programs: given
+a machine, output the residues of $3^j$ if it first halts at time
+$j\ge1$, and the residues of zero if it never halts. Computing the residue
+modulo $3^r$ needs at most $r$ simulation steps. An algorithm for $\mu$ on
+such programs would decide halting. A finite integer encoding, as in
+\cref{gra:thm:effective}, distinguishes these inputs.
+\end{proof}
+
+\begin{remark}[A fixed simple base graph]\label[remark]{gra:rem:simplebase}
+The formulas of \cref{gra:thm:leading} hold with a simple graph at every
+level. Replace each of the seven base loops by a cycle of length four,
+using separate internal vertices for each cycle; put the original voltage
+on one oriented edge of that cycle and zero on the other three. This
+replaces every edge in each lifted graph by a path of length four. For a
+connected multigraph with $E$ edges and $V$ vertices, the resulting
+spanning-tree count is $4^{E-V+1}$ times the original count: the intact
+paths project to a spanning tree, and on each remaining path one of the
+four edges must be removed. The argument also applies to subdivided loops.
+The factor is a $3$-adic unit, so the least onset $k$, the discontinuity
+of $\mu$ and the unbounded values of $\lambda$ all persist on covers of
+this single simple base.
+\end{remark}
+
+We turn to upper bounds in rank two.
+
+\begin{theorem}[Quantitative shell theorem; \stU]\label{gra:thm:shell}
+Let $F\ne0$ be an integral Laurent polynomial in two variables, supported
+in $[-H,H]^2$ with $H\ge1$. Assume that $F$ is nonzero at all nontrivial
+pairs of $p$-power roots of unity, and let $S_h$ be the sum of
+$v_p(F(x,y))$ over the pairs of joint order exactly $p^h$. Set
+\[
+ K=\ceil{\log_p(8H^2+1)},\qquad M=\ceil{\log_p(2H+1)},\qquad h_0=K+M+2 .
+\]
+There exist rational $s_2,s_1,t_1,s_0$ such that for every $h\ge h_0$
+\[
+ S_h=s_2p^{2h}+(s_1+t_1h)p^h+s_0 .
+\]
+The constants are independent of the level, and the bound $h_0$ depends
+only on the exponents and $p$.
+\end{theorem}
+
+\begin{proof}
+Dividing $F$ by the common $p$-power $p^g$ of its coefficients adds
+$g(p^{2h}-p^{2h-2})$ back to the shell. Collect equal exponents and assume
+henceforth that $F=\sum_ic_iX^{a_i}Y^{b_i}$ has a unit coefficient. Fix
+compatible primitive roots $\zeta_h$. Each orbit of the unit action, of
+size $e_h$, contributes $\ord_h(F)=e_hv_p(F)$. Each orbit is uniquely
+represented in one of two charts: $(\zeta_h,\zeta_h^z)$ for any $z$ modulo
+$p^h$, or $(\zeta_h^z,\zeta_h)$ with $p\mid z$. In the second chart
+interchange the two exponent coordinates below.
+
+The projected exponents in the first chart are $a_i+b_iz$. Take as
+\emph{centres} the distinct $p$-integral rational solutions of
+$a_i+b_iz=a_j+b_jz$ lying in the chart. Write each centre as a reduced
+fraction $A/B$ with $p\nmid B$ and $\abs A,\abs B\le2H$. The difference of
+two distinct centres has nonzero numerator of absolute value at most
+$8H^2$. Hence their disks $z\equiv A/B\pmod{p^K}$ are disjoint. In the
+restricted chart each disk is entirely inside or outside the chart, since
+$K\ge1$.
+
+Outside these disks the projected exponents are pairwise distinct modulo
+$p^J$, where $J=K+M$. In fact a nonzero slope difference $b_i-b_j$ has
+valuation $<M$, and the distance factor $z-(a_j-a_i)/(b_i-b_j)$ has
+valuation $<K$; this covers centres outside the chart too. A nonzero
+constant difference has valuation $<M$. For each fixed $z\bmod p^J$ in this
+complement let $n_i\in[0,p^J)$ be the distinct exponent residues. The
+polynomial $\sum_ic_i(1+T)^{n_i}$ is nonzero modulo $p$ by the distinct
+degrees and the unit coefficient. Let its first nonzero coefficient occur
+at $j<p^J$. For any lift of $z$ and $h\ge h_0$, the orbit contributes
+exactly $j$. Indeed, modulo $(p,T^{p^J})$ the binomial expansion of each
+monomial depends only on its exponent modulo $p^J$, and one may choose
+nonnegative representatives modulo $p^h$ in forming the actual polynomial.
+At $T=\zeta_h-1$ a coefficient divisible by $p$ has order at least
+$e_h\ge p^J$, and all later terms have larger order than $j$. Each class
+contributes $jp^{h-J}$ to $S_h$.
+
+Fix a centre $A/B$. Applying the Galois automorphism
+$\zeta_h\mapsto\zeta_h^B$ expresses the same valuation as that of
+\[
+ P(\zeta_h,W),\qquad W=\zeta_h^{Bz-A},\qquad
+ P(X,Y)=\sum_ic_iX^{Ba_i+Ab_i}Y^{b_i},
+\]
+up to multiplication by a monomial of valuation zero. Shift each exponent
+axis by its minimum, so that $P$ is a polynomial of degrees $D\le8H^2$ in
+$X$ and $E\le2H$ in $Y$. The exponent transformation is injective, so $P$
+still has a unit coefficient. As $z$ ranges over the disk modulo $p^h$,
+$W$ ranges exactly once over the roots of order dividing $p^{h-K}$, since
+$B$ is a unit. Write $r$ for the conductor exponent of $W$, with $r=0$ for
+$W=1$, and put $R=M+1$.
+
+For $0\le r\le R$, use $e_0=1$ and write
+$P(1+T,W)=\sum_{j=0}^Dd_j(W)T^j$. This polynomial is nonzero: its
+vanishing would give a torsion zero of $F$ at the pair represented by
+$z$. Its nonzero coefficients have valuations in $e_r^{-1}\Z$. Let
+$\mu_W$ be their minimum and let $j_W$ be the first index attaining it. We
+have $e_h/e_r>D$ (for $r\ge1$ the quotient is $p^{h-r}$, and for $r=0$ use
+$e_h\ge p^{h-1}$), so terms with larger coefficient valuation cannot
+minimise; the unique minimum has order $e_h\mu_W+j_W$. The set of all $W$
+with $r\le R$ is the same for every $h\ge h_0$. Its total is a constant
+multiple of $p^h$ plus a constant.
+
+For $R<r\le h-K$, put $k=h-r$. Then $\ord_h(W-1)=p^k>D$ and $e_r>E+1$.
+Expand $P(X,1+U)=\sum_{i=0}^EP_i(X)U^i$, and take the smallest $l$ such
+that $P_l(X)$ is nonzero modulo $p$; such an $l$ exists. Let $d\le D$ be
+the order of $P_l(1+T)$ at $T=0$ modulo $p$. Its value at $X=\zeta_h$ has
+order exactly $d$. Terms with $i<l$ have order at least
+$e_h=e_rp^k>lp^k+d$, and terms with $i>l$ have order at least
+$(l+1)p^k>lp^k+d$. The orbit contribution is exactly $lp^k+d$ for every
+root of conductor $p^r$. The contribution from all these roots is
+\[
+ \sum_{k=K}^{h-R-1}e_{h-k}(lp^k+d)=l(h-R-K)e_h+d(p^{h-K}-p^R).
+\]
+Adding the finitely many disks in each chart, their complements and the
+removed content proves the shell formula.
+\end{proof}
+
+\begin{corollary}[Logarithmic bound for the onset in rank two; \stU]\label[corollary]{gra:cor:logbound}
+Let $F$ be the determinant of the Laurent Laplacian of a finite connected
+base graph with voltages in $\Z^2$ whose finite lifts are connected, and
+let $h_0$ be as in \cref{gra:thm:shell} for the support of $F$. Then from
+$n=h_0$ onward
+\[
+ \nu_n=\alpha p^{2n}+(\beta+\gamma n)p^n+\delta n+\epsilon
+\]
+for rational constants. For a bouquet whose step coordinates are at most
+$2^b$ in absolute value, the onset is at most $3b\log_p2+O_p(1)$. For a
+fixed base graph the same estimate holds with a base-dependent additive
+constant.
+\end{corollary}
+
+\begin{proof}
+Connectedness gives invertible blocks at every nontrivial character, so
+\eqref{gra:eq:shells} applies with $d=2$; summing the shell formula gives
+the displayed shape from $n=h_0$ onward. For a bouquet the support of the
+Laurent Laplacian consists of zero and the signed voltage vectors. For a
+fixed base graph the coordinates in the determinant support are bounded by
+the vertex count times the largest voltage coordinate, by determinant
+expansion.
+\end{proof}
+
+\begin{remark}\label[remark]{gra:rem:five}
+Five consecutive values beyond the bound $h_0$ suffice to recover the law:
+the evaluation matrix on $1,n,p^n,np^n,p^{2n}$ at five consecutive levels
+is nonsingular, since these sequences solve the order-five recurrence with
+characteristic polynomial $(x-1)^2(x-p)^2(x-p^2)$ and are linearly
+independent. Checking the finitely many preceding levels then gives the
+least onset. This is a bound on conductor precision; enumerating all the
+characters there can still be expensive.
+\end{remark}
+
+\begin{remark}[The coefficient of $p^{2n}$]\label[remark]{gra:rem:content}
+The coefficient $\alpha$ of $p^{2n}$ in \cref{gra:cor:logbound} is exactly
+the content valuation $g=\min_iv_p(c_i)$ of the collected Laurent
+determinant: restoring the removed power contributes exactly $g(p^{2n}-1)$
+to the cumulative sum, and every other summand grows as $O(np^n)$. This
+extends the discontinuity of \cref{gra:cor:oracle} to every prime. On a
+bouquet of $2p+1$ loops put $p$ copies each of $e_1,e_2$ and one step
+$p^se_1$ with $s\ge1$, and compare with the same assignment where the
+final step is zero. Both towers are connected, and the graphs agree
+through level $s$. The zero-step determinant is
+$p(\grah(X)+\grah(Y))$ and has content valuation one. The extra summand
+$\grah(X^{p^s})$ changes the content valuation to zero, because its two
+nonconstant exponents are new. So the two eventual laws have different
+$p^{2n}$ coefficients. Moreover, once $s-4$ is at least the bound $h_0$ of
+the zero-step tower, the zero-step law is exact throughout $[s-4,s]$; if
+the other law were exact from $s-4$ onward the two would agree on these
+five consecutive levels, which \cref{gra:rem:five} excludes. Hence the
+onset of the perturbed tower is at least $s-3$. At $p=3$ this is the
+family of \cref{gra:thm:leading}, where the onset is exactly $s$.
+\end{remark}
+
+\begin{theorem}[Classification by the number of loops; \stU]\label{gra:thm:loops}
+Let $L_{p,m}(b)$ be the largest onset over connected rank-two towers on one
+bouquet of $m\ge2$ loops with step coordinates bounded by $2^b$ in
+absolute value; repeated directions and zero voltages are allowed. As
+$b\to\infty$,
+\[
+ L_{p,m}(b)=\begin{cases}O_p(1),&2\le m<\max(3,p),\\
+ \Theta_p(b),&m\ge\max(3,p).\end{cases}
+\]
+The constants in the upper bound can be taken independent of $m$. For odd
+$p$ and $m<p$ the onset is at most one.
+\end{theorem}
+
+\begin{proof}
+The upper bound $O_p(b)$, with constants independent of $m$, is
+\cref{gra:cor:logbound}.
+
+\emph{The bounded range.} Let $p$ be odd and $m<p$, and take a projective
+direction modulo $p$. The projected step residues are not all zero,
+because connectedness forces the steps to span $\F_p^2$. In the group ring
+$\F_p[Z]/(Z^p-1)$ take any nonzero residue $a$ occupied by a step, and let
+$j$ count the steps in $\{a,-a\}$. The coefficient of $Z^a$ in the
+projected Laplacian is $-j\ne0$, since $a\ne-a$ and $1\le j\le m<p$. Thus
+its expansion at $Z=1$ has first surviving order $<p$. Since $e_h\ge p$
+for $h\ge2$, every orbit of depth $h$ lifting that projective direction
+has exactly that integral order. Every residue direction has $p^{h-1}$
+lifts, so $S_h$ is a fixed multiple of $p^{h-1}$ for $h\ge2$, and
+summation from level one proves the claim. For $p=2$, $m=2$ the two steps
+form an invertible basis modulo $2$, hence modulo $2^n$ for every $n$. A
+change of coordinates gives the same square grid at every fixed level for
+all choices of voltages, so the support bound $h_0$ evaluated at $H=1$
+suffices.
+
+\emph{A test for the coefficient of $np^n$.} For the linear range it is
+enough to work at the threshold value $m=\max(3,p)$ and pad with zero
+voltages. If a Laurent polynomial $F$ as in \cref{gra:thm:shell} is
+primitive modulo $p$, the coefficient of $np^n$ in the cumulative formula
+is positive precisely when some nonzero rational direction $(u,v)$, taken
+as a primitive integer representative, satisfies
+\begin{equation}\label{gra:eq:test}
+ F(Z^u,Z^v)\equiv0\pmod p\quad\text{as a Laurent polynomial in }Z .
+\end{equation}
+Indeed, the coefficient of $hp^h$ in $S_h$ is the sum of the nonnegative
+disk contributions $l(p-1)/p$. A disk contributes positively exactly when
+$P(X,1)$ vanishes modulo $p$, which is \eqref{gra:eq:test} after the
+monomial shift and the change of coordinates defining the disk. Conversely
+any identity \eqref{gra:eq:test} must group at least two distinct
+exponents with the same projection, because there is a unit coefficient;
+this yields one of the rational centres, using the chart where the
+direction has a unit pivot. Summing $hp^h$ gives a positive multiple of
+$np^n$ plus a multiple of $p^n$ and a constant.
+
+\emph{The case $m=p$ odd.} Use $p-2$ copies of $(1,0)$, one copy of
+$(1,1)$ and one copy of $(1+\delta,2)$, first with $\delta=0$ and then
+with $\delta=p^s>4$. In both cases the content is a unit and the first two
+directions ensure connectedness. In the first case projection along
+$(u,v)=(1,0)$ makes all $p$ exponents equal to one, so the test is
+positive. For the second case a vanishing projection must have all $p$
+absolute projected exponents equal to one another and nonzero: an occupied
+positive absolute frequency $f$ contributes the negative of its
+multiplicity to the coefficient of $Z^f$, this multiplicity must equal
+$p$, and a nonzero direction cannot annihilate every step. Thus $u\ne0$
+and $\abs{u+v}=\abs u$, so $v=0$ or $v=-2u$. The last projected absolute
+value is then $\abs{(1+\delta)u}$ or $\abs{(\delta-3)u}$, both different
+from $\abs u$. The $np^n$ term vanishes after perturbation.
+
+\emph{The case $p=2$, $m=3$.} Use the three steps
+$(1,0),(1,1),(\delta,1+2\delta)$ with $\delta=0$ or $2^s$. Again the
+content is a unit. In characteristic two every positive absolute projected
+frequency must occur an even number of times. Three steps spanning the
+plane therefore give a zero Laurent polynomial exactly when one projected
+value is zero and the other two have equal nonzero absolute value. A
+direction annihilating one step projects the other two in proportion to
+their determinants with that step. For $\delta=0$ the three pairwise
+absolute determinants all equal one, and such a direction exists. For
+$\delta>0$ the determinants are $1,1+\delta,1+2\delta$, all distinct. Thus
+this pair also has different $np^n$ coefficients.
+
+\emph{Conclusion.} In both constructions the perturbed tower agrees
+exactly with the fixed initial tower up through level $s$. Once the fixed
+initial tower has stabilised by $s-4$, the argument of
+\cref{gra:rem:five} forces onset at least $s-3$ for the perturbed tower.
+The heights are at most $1+2p^s$, allowing $s=b\log_p2+O_p(1)$. Together
+with the upper bound this proves the classification.
+\end{proof}
+
+Sample shell sums for \cref{gra:thm:shell} and the vanishing directions
+used in the two constructions are recorded in
+\artifact{grh_method_transfers/checks/onset_output.txt}.
+
+\subsection{Exact spectral tests for Grover walks}\label{gra:sec:grover}
+\sources{Effective_Graph_Towers}
+
+A Grover walk on a finite graph acts on its directed edges. From an arc
+ending at $v$, the amplitude to each outgoing arc is $2/\deg(v)$, with $1$
+subtracted for the reversed arc. A loop has two directed arcs, exchanged by
+reversal. On an abelian cover, Fourier transformation along the deck group
+splits the transition matrix into blocks $U(\xi)$, one for each character
+$\xi$. For integer voltages the block entries are rational multiples of
+Laurent monomials in the coordinates of $\xi$: a deck translation
+contributes its character value, and an opposite voltage contributes the
+inverse.
+
+\paragraph{Deciding spectral occurrence and computing determinants.}
+Given $P\in\Q[A]$, form the rational Laurent polynomial
+$F_P(X)=\det P(U(X))$ on the finite base arc space. At level $n$, with
+transition matrix $U_n$, one has the exact factorisation
+\[
+ \det P(U_n)=\prod_{\xi\in\gramu_{p^n}^d}F_P(\xi).
+\]
+This is the direct arc-space version of the spectral resultant
+factorisation of Akahori, Hayashi and Suzuki
+\cite[Theorems~3.3 and~4.3]{AkahoriHayashiSuzuki2026Grover}; using the full
+block retains the eigenvalues $1$ and $-1$ as well. If $F_P$ is
+identically zero or $F_P(1)=0$, a base-level eigenvalue already answers
+the occurrence question. Otherwise choose a positive integer $b$ with
+$G=bF_P$ integral. The reachable exact-zero test of
+\cref{gra:sec:effective} for $G$ decides whether a root of $P$ occurs as an
+eigenvalue at any finite layer; if it does, a shortest accepted digit word
+gives the first such level. If it does not, the valuation sequence
+$v_p(\det P(U_n))$ is the sum of the nontrivial character valuations for
+$G$, plus $v_p(G(1))-p^{dn}v_p(b)$, so the finite automaton gives its exact
+generating function. Monsky's torsion-sum theorem
+\cite[Theorem~5.6]{Monsky1981Padic} (see also
+\cite[Proposition~3.9]{TatenoUeki2025Iwasawa}) supplies the eventual
+polynomial shape in the nonvanishing case; clearing $b$ adds the displayed
+degree-$d$ term. The computation recovers that polynomial and its least
+starting level. The leading spectral asymptotics in
+\cite[Theorem~4.3]{AkahoriHayashiSuzuki2026Grover} allow more general
+coefficient and voltage data.
+
+\paragraph{The ternary square grid.}
+Take the square torus with side $3^n$, $N=9^n$ vertices, and the four
+directional arcs at each vertex, including at $n=0$. Set
+$S(X,Y)=4-X-X^{-1}-Y-Y^{-1}$. The characteristic polynomial is
+\begin{equation}\label{gra:eq:grovercp}
+ \det(AI-U_n)=(A^2-1)^N\prod_{X,Y\in\gramu_{3^n}}
+ \Bigl((A-1)^2+\tfrac A2S(X,Y)\Bigr).
+\end{equation}
+Indeed each of the $N$ character blocks has the two factors $A^2-1$ and
+$A^2+1-(A/2)(X+X^{-1}+Y+Y^{-1})$ by the Grover spectral factorisation.
+
+\begin{theorem}[All-level determinant formula; \stU]\label{gra:thm:grover}
+For every $n\ge0$ and every integer $a\ne\pm1$,
+\[
+ v_3(\det(aI-U_n))=\begin{cases}
+ 0,&a\equiv0\pmod3,\\
+ m9^n+4\cdot3^n+2m-4,&a\equiv1\pmod3,\quad m=v_3(a-1),\\
+ v_3(a+1)\,9^n,&a\equiv-1\pmod3 .\end{cases}
+\]
+At $A=1$ the zero of \eqref{gra:eq:grovercp} has order $N+2$, with first
+nonzero Taylor coefficient of valuation $4(3^n-1)$. At $A=-1$ the zero has
+order $N$ and the first nonzero Taylor coefficient is a $3$-adic unit.
+\end{theorem}
+
+\begin{proof}
+If $(X,Y)$ has joint conductor $3^h>1$, the ternary sum-of-squares
+argument in the proof of \cref{gra:thm:leading} gives $v_3(S)=3^{1-h}$.
+There are $8\cdot9^{h-1}$ such pairs, so the sum of $v_3(S)$ over
+nontrivial pairs is $4(3^n-1)$. At $(1,1)$ the value of $S$ is zero.
+
+If $a\equiv1\pmod3$, the term $(a/2)S$ in every nontrivial block has
+valuation at most one, and $(a-1)^2$ has valuation $2m\ge2$. The trivial
+block contributes $2m$ and the factor $(a^2-1)^N$ contributes $mN$. For
+the two other residue classes $(a-1)^2$ is a unit while $aS/2$ is in the
+maximal ideal in each character field, so only $(a^2-1)^N$ can
+contribute. At $A=1$ the trivial quadratic block contributes a double
+zero, and the leading coefficient is $2\prod_{(X,Y)\ne(1,1)}S(X,Y)$. At
+$A=-1$ all quadratic blocks are units.
+\end{proof}
+
+The file \artifact{Effective_Graph_Towers/grover_results.txt} records
+sample values; for example, at $a=4$ the successive values for $n=0,1,2$
+are $3,19,115$.
+
+\begin{proposition}[Periodic states on an odd rectangular grid; \stU]\label[proposition]{gra:prop:periodic}
+Let the side lengths $L,M$ of a rectangular torus be odd, $N=LM$ and
+$g=\gcd(L,M)$. In addition to the eigenvalues $1$ and $-1$ of the Grover
+walk, of multiplicities $N+2$ and $N$ respectively, the root-of-unity
+eigenvalues are precisely the nontrivial $g$-th roots of unity, each of
+multiplicity four. Thus the periodic subspace has dimension $2LM+4g-2$,
+and the restriction of the walk to it has exact period $2g$.
+\end{proposition}
+
+This counts the entire periodic subspace; Remark~6.5 of
+\cite{AkahoriHayashiSuzuki2026Grover} proposes studying periodic
+eigenvalues through a reduced polynomial derived from $A^r-1$ after
+removing the factors at $\pm1$.
+
+\begin{proof}
+A root of unity $w$ in a quadratic block must satisfy
+\[
+ 2(w+w^{-1})=X+X^{-1}+Y+Y^{-1}.
+\]
+This is a special case of the rational-angle cosine equation treated by
+Speyer \cite{Speyer2023Answer}; on an odd rectangular grid a short residue
+argument suffices. Reduce in the common cyclotomic field at a prime above
+$2$. The residue of $Y$ must solve the quadratic with roots the residues of
+$X,X^{-1}$. Distinct roots of odd order stay distinct under this
+reduction: if a nontrivial odd-order root $u$ reduced to $1$, its
+vanishing geometric sum would reduce to its odd order, which is nonzero.
+Hence $Y=X$ or $Y=X^{-1}$, and substitution forces $w=X$ or $X^{-1}$. For
+a nontrivial $g$-th root $w$, the four pairs in $\{w,w^{-1}\}^2$ each
+contribute one simple root. For $w=1$ only $(1,1)$ contributes the extra
+double root, and for $w=-1$ no quadratic block contributes. The unitary
+walk is diagonalisable, so these algebraic multiplicities count
+dimensions.
+\end{proof}
+
+\subsection{Optimal signings of square cycles}\label{gra:sec:cycles}
+\sources{grh_transfers_cycle_signings_and_lubin_tate; grh_transfer_advances_2026-11-26}
+
+What is the smallest possible spectral radius of the adjacency matrix of
+the square of a cycle, when each edge can be signed independently? For
+$n\ge5$ let $C_n(1,2)$ have vertex set $\Z/n\Z$, with an undirected edge
+between vertices at cyclic distance one or two. Write $a_i\in\{\pm1\}$ for
+the sign of $\{i,i+1\}$ and $b_i\in\{\pm1\}$ for that of $\{i,i+2\}$. The
+signed adjacency matrix $A$ is real and symmetric, and
+$\rho(A)=\max_{\lambda\in\operatorname{spec}(A)}\abs\lambda=\norm A$. Switching
+signs at vertices conjugates $A$ by a diagonal matrix with entries $\pm1$
+and preserves the spectrum. The \emph{triangle signs} and the
+\emph{holonomy} (the Hamilton-cycle sign product)
+\[
+ \tau_i=a_ia_{i+1}b_i,\qquad\alpha=\prod_{i\bmod n}a_i
+\]
+are invariant under switching and determine a switching class on labelled
+vertices: choose vertex signs successively to set $a_0,\dots,a_{n-2}$
+equal to $+1$; then $a_{n-1}=\alpha$ and $b_i=\tau_ia_ia_{i+1}$. There are
+$2^{n+1}$ such classes. Counts of minimising switching classes below are
+not counts of individual edge assignments.
+
+Suvagiya's Conjecture~28 proposed the constant optimum
+$r_*=F(2)$ for $n=8m\ge32$, in the notation of \cref{gra:thm:cycle8m}
+\cite{Suvagiya2026Parity}. A counterexample at $n=32$ attained a value
+below $2.79$ and left the exact optimum open
+\cite{Trureturing2026Refutation}. The results below give the exact
+optimum for every $n=8m\ge32$ and for every even $n$ with $8\le n\le50$.
+
+\paragraph{Path compressions.}
+For a word $w=(t_0,\dots,t_{k-1})$ of signs, let $H(w)$ be the signed
+square of a path on $k+2$ vertices, with all length-one signs positive and
+length-two signs $t_i$. An interval of $k+2$ consecutive vertices of
+$C_n(1,2)$ induces such a path when $n\ge k+4$: its endpoints are then at
+cyclic distance at least three, so there is no extra seam edge, and a
+switch on the interval yields $H(w)$ for the corresponding consecutive
+triangle signs. The compression of a real symmetric matrix to a coordinate
+subspace has norm at most the original norm, by the Rayleigh quotient.
+Hence
+\begin{equation}\label{gra:eq:compress}
+ \rho(A)<\gracut\ \Longrightarrow\ \norm{H(w)}<\gracut
+ \ \text{for every window $w$ of the triangle word of length at most $n-4$.}
+\end{equation}
+
+A word passes the test $\norm{H(w)}<\gracut$ precisely when both
+$\gracut I-H(w)$ and $\gracut I+H(w)$ are positive definite; then each
+leading principal submatrix is positive definite, so every prefix passes.
+Starting with the empty word and appending each of the two signs to each
+surviving word is therefore exhaustive. After eliminating all but the last
+two vertices of $\gracut I-H(w)$, write the remaining Schur block as
+$\bigl(\begin{smallmatrix}a&b\\b&c\end{smallmatrix}\bigr)$. Appending a
+sign $t$ adjoins a boundary column with entries $-t,-1$, and eliminating
+the vertex with pivot $a$ gives
+\begin{equation}\label{gra:eq:schur}
+ (a,b,c)\longmapsto\Bigl(c-\frac{b^2}{a},\ -1+\frac{bt}{a},\
+ \gracut-\frac1a\Bigr).
+\end{equation}
+The extension is kept if $a'>0$ and $a'c'>(b')^2$ for both shifted
+matrices. Alternating vertex signs transform $\gracut I+H(w)$ into
+$\gracut I-H(-w)$, so the second recurrence uses $-t$. Both start at
+$(\gracut,-1,\gracut)$. For rational $\gracut$ this is an exact rational
+computation with no eigenvalue tolerance.
+
+Put
+\[
+ \graPi=(+,+,-,+,-,-,+,-).
+\]
+
+\begin{lemma}[Finite obstruction]\label[lemma]{gra:lem:windows}
+Let $\gracut=1397/500$. Exactly eight words $w$ of length $27$ have
+$\norm{H(w)}<\gracut$: the eight length-$27$ windows of $\graPi$ repeated
+periodically. At length $19$ the only additional words are the two
+alternating windows. The numbers of surviving words of each length are
+\begin{center}\small\upshape
+\begin{tabular}{r|rrrrrrrrrrrrrr}
+\toprule
+Length &0&1&2&3&4&5&6&7&8&9&10&11&12&13\\
+Survivors &1&2&4&6&10&16&24&28&36&42&46&50&42&42\\
+\midrule
+Length &14&15&16&17&18&19&20&21&22&23&24&25&26&27\\
+Survivors &44&38&32&22&18&10&10&10&10&10&10&10&10&8\\
+\bottomrule
+\end{tabular}
+\end{center}
+\end{lemma}
+
+\begin{proof}
+This is the evaluation of the recurrence \eqref{gra:eq:schur}; a prefix
+failing either strict inequality can have no admissible descendant. Counts
+alone do not identify the surviving words, and the final set comparison
+\[
+ \{w:\abs w=27,\ \norm{H(w)}<\gracut\}
+ =\bigl\{(\graPi_{j+i\bmod8})_{0\le i<27}:0\le j<8\bigr\}
+\]
+is made explicitly, as is the comparison of the length-$19$ words with the
+indicated union. The certificates are
+\grafiles{\artifact{grh_transfers_cycle_signings_and_lubin_tate/graph_certificate.txt}\\
+\artifact{grh_transfers_cycle_signings_and_lubin_tate/permutation_certificate.txt}}
+The first also contains a second calculation, which builds the integer
+matrices $1397I\pm500H(w)$ with the actual signs; for every surviving
+parent, positivity of the two new determinants is equivalent to both
+leading-minor tests, since all earlier leading minors are already
+positive, and the determinants are recomputed by fraction-free integer
+elimination. The second is an independent implementation that sums signed
+permutation products and obtains the same eight words.
+\end{proof}
+
+\begin{proposition}[Rigidity below the cutoff; \stU]\label[proposition]{gra:prop:rigidity}
+If $n\ge31$ and $\rho(A)<1397/500$, then $8\mid n$ and the triangle signs
+form a rotation of repeated $\graPi$. When $n\ge23$ the length-$19$ test
+forces either this pattern or alternation.
+\end{proposition}
+
+\begin{proof}
+By \eqref{gra:eq:compress} every length-$27$ window must be in the finite
+list if $n\ge31$. Its first $26$ signs determine its phase, since the
+eight rotations already have distinct first eight signs. Overlap forces
+the next letter at every step. The primitive period is eight, so closing
+the word around the cycle requires $8\mid n$. For the length-$19$ list,
+the ten prefixes of length $18$ are distinct; the unique continuations
+consist of one cycle of length eight and one of length two.
+\end{proof}
+
+At $n=32$ there are $2^{33}$ labelled switching classes before the test.
+The proposition leaves sixteen possibilities below the threshold, one
+rotation for each choice of $\alpha$.
+
+\paragraph{The two boundary conditions.}
+Normalise the length-one edges on the covering line. For repeated $\graPi$
+the adjacency acts by
+\[
+ (Af)_i=f_{i-1}+f_{i+1}+\graPi_{i-2}f_{i-2}+\graPi_if_{i+2},
+\]
+indices of $\graPi$ being read modulo eight. The condition after one
+circuit of $C_{8m}(1,2)$ is $f_{i+8m}=\alpha f_i$. Diagonalise translation
+by eight: on the block indexed by $z$ with $z^m=\alpha$, $f_{i+8}=zf_i$.
+The $m$ blocks are mutually orthogonal because
+$\sum_{j=0}^{m-1}(z/z')^j=0$ for $z\ne z'$, and their dimensions add to
+$8m$. Suvagiya's equation~(3) gives the characteristic polynomial of the
+eight-vertex block \cite{Suvagiya2026Parity}, and the same symbol applies
+to either holonomy; it is also obtained by building the symbol from the
+signed edges with $z$ an indeterminate and expanding its determinant (this
+check is part of the first certificate of \cref{gra:lem:windows}).
+With $u=z+z^{-1}$ and $h=x^2-4$ the polynomial is
+\[
+ h^4-(16+2u)h^2+u^2+19u+38 .
+\]
+The two values of $h^2$ are $8+u\pm\sqrt{26-3u}$. Taking the greatest
+possible value of $x^2=4+h$, the block norm is
+\[
+ F(u)=\sqrt{4+\sqrt{8+u+\sqrt{26-3u}}} .
+\]
+The function $F$ increases strictly on $[-2,2]$, since
+\[
+ \frac{\dd}{\dd u}\bigl(8+u+\sqrt{26-3u}\bigr)=1-\frac3{2\sqrt{26-3u}}>0 .
+\]
+In the periodic case $z=1$ attains $u=2$. In the antiperiodic case the
+largest allowed value is $2\cos(\pi/m)$.
+
+\begin{theorem}[Unrestricted minimum for $C_{8m}(1,2)$ and all minimisers; \stU]\label{gra:thm:cycle8m}
+For every $m\ge4$ the minimum of $\rho(A)$ over all signings of
+$C_{8m}(1,2)$ is
+\[
+ F(2\cos(\pi/m)).
+\]
+Precisely eight labelled switching classes attain it, with triangle word
+a rotation of $\graPi^m$ and $\alpha=-1$. The next distinct value is
+$r_*=F(2)$, attained by eight classes with the same rotations and
+$\alpha=+1$. All remaining classes have $\rho(A)\ge1397/500$.
+\end{theorem}
+
+\begin{proof}
+The two candidate radii are strictly ordered by monotonicity. Both are
+below $1397/500$: $\sqrt{20}<4.473$, hence
+$F(2)^2=4+\sqrt{10+\sqrt{20}}<7.805<(1397/500)^2$.
+\Cref{gra:prop:rigidity} excludes every other word from this interval.
+Completeness of the switching invariants gives the exact counts.
+\end{proof}
+
+For $n=32$, $u=\sqrt2$ at the winning phase and the minimum is
+$2.78426979930755\ldots$; the optimiser is precisely the switching orbit,
+up to rotation, of the counterexample of
+\cite{Trureturing2026Refutation}, whose optimality now follows for
+arbitrary choices on all $64$ edges. As $m$ increases, the minimum
+increases strictly to $r_*$, with
+$r_*-F(2\cos(\pi/m))=\pi^2F'(2)m^{-2}+O(m^{-4})$. Thus the conjectured
+constant $r_*$ is the second distinct spectral radius.
+
+\paragraph{The alternating family.}
+For the alternating triangle word and even $n$, the Fourier blocks at
+negative holonomy are
+\[
+ \begin{pmatrix}2\cos2\theta&2\cos\theta\\2\cos\theta&-2\cos2\theta
+ \end{pmatrix},\qquad\theta=(2j+1)\pi/n,
+\]
+with squared norm $4(\cos^2\theta+\cos^22\theta)$. Putting
+$x=\cos^2\theta$ makes this expression divided by four equal to
+$4x^2-3x+1$, a convex polynomial. For even $n\ge8$ its maximum on the
+allowed values is at $x_{\max}=\cos^2(\pi/n)$: at the opposite extreme the
+allowed value is $0$ or $\sin^2(\pi/n)$. If it is $0$, $x_{\max}>3/4$
+implies $4x_{\max}^2-3x_{\max}+1>1$. If it is $1-x_{\max}$, subtracting
+the two polynomial values gives $2x_{\max}-1>0$. Hence the alternating
+signing with $\alpha=-1$ has spectral radius
+\begin{equation}\label{gra:eq:alternating}
+ G(n)=2\sqrt{\cos^2(\pi/n)+\cos^2(2\pi/n)},
+\end{equation}
+while the positive-holonomy radius is $2\sqrt2$. (These are the values of
+\cite[Proposition~25]{Suvagiya2026Parity}.) The function $G$ is
+increasing.
+
+\begin{theorem}[Even lengths at which alternation is optimal; \stU]\label{gra:thm:alternating}
+For every even $n$ with $8\le n\le30$ and for
+$n\in\{34,36,38,42,44,46\}$, the unrestricted minimum of $\rho(A)$ over
+all signings of $C_n(1,2)$ is $G(n)$. For
+$n\in\{34,36,38,42,44,46\}$ exactly two labelled switching classes attain
+it: alternating triangle signs with $\alpha=-1$.
+\end{theorem}
+
+In particular $n=32$ is the first even length at which alternation loses.
+The values at $n=26,28,30$, for which \cite[Remark~29]{Suvagiya2026Parity}
+records heuristic searches, are $2.777192$, $2.784204$ and $2.789872$ to
+six decimals.
+
+\begin{proof}
+\emph{Lengths $16\le n\le30$.} Let $\gracut=1397/500$. Regard each of the
+$42$ surviving length-$12$ words of \cref{gra:lem:windows} as an arrow
+from its $11$-letter prefix to its $11$-letter suffix. Delete any arrow
+whose initial vertex has no incoming arrow or whose final vertex has no
+outgoing arrow; no arrow on a closed walk can be removed. The counts after
+successive rounds are $42,20,10,10$, and the ten remaining arrows form the
+period-eight and alternating cycles (second certificate of
+\cref{gra:lem:windows}). Each length-$12$ word occupies $14$ vertices, so by
+\eqref{gra:eq:compress} this applies for $n\ge16$: a signing with
+$\rho(A)<\gracut$ has period-eight or alternating triangle word. The
+increasing function $G(n)$ is below $\gracut$ for $n\le30$: put
+$v=3.14/30$ and $C(t)=1-t^2/2+t^4/24$; then
+$4(C(v)^2+C(2v)^2)<\gracut^2$ by integer arithmetic, and $C(v),C(2v)$
+bound the cosines at $n=30$ from above. Since $2\sqrt2>\gracut$, the
+alternating word contributes exactly $G(n)$. Period eight is compatible
+only with $n=16,24$ in this range. At $16$,
+$G(16)^2=4+\sqrt{2+\sqrt2}+\sqrt2<7.3$, while $F(0)^2>7.6$. At $24$,
+$G(24)^2=4+(\sqrt6+\sqrt2)/2+\sqrt3<7.67$, while $F(1)^2>7.7$.
+
+\emph{Lengths $8,10,12,14$.} These have direct finite certificates: with
+cutoffs $2327/1000$, $1249/500$, $519/200$ and $26551/10000$ respectively,
+only alternating triangle signs with negative holonomy survive:
+\grafiles{\artifact{grh_transfers_cycle_signings_and_lubin_tate/small_cycle_certificate.txt}}
+
+\emph{The six further lengths.} For each $n$ choose the rational
+threshold $\gracut$ in the table below. The recursion
+\eqref{gra:eq:schur} lists every word of length $n-4$ whose path norm is
+below $\gracut$. Complete each such word in every one of the $2^4$ ways,
+and retain a cycle word only when every cyclic window of length $n-4$ is
+on the passing list. In each case the sole surviving rotation class is
+alternating.
+\begin{center}\small\upshape
+\begin{tabular}{rrrrr}
+\toprule
+$n$&$\gracut$&window length&passing path words&cyclic rotation classes\\
+\midrule
+34&$281/100$&30&98&1\\
+36&$281/100$&32&108&1\\
+38&$281/100$&34&92&1\\
+42&$281/100$&38&70&1\\
+44&$703/250$&40&394&1\\
+46&$703/250$&42&422&1\\
+\bottomrule
+\end{tabular}
+\end{center}
+This necessary condition is complete as an exclusion argument: a window
+occupies $n-2$ consecutive vertices, and the two omitted consecutive
+vertices leave its endpoints at cyclic distance three, so
+\eqref{gra:eq:compress} applies. After reduction to rotation
+representatives, both values of $\alpha$ are tested by exact integer
+elimination on $(\operatorname{den}\gracut)(\gracut I\pm A)$: Bareiss
+elimination computes the leading principal minors without row swaps, and
+their positivity is Sylvester's criterion. Only $\alpha=-1$ passes, in
+accordance with $2\sqrt2>\gracut$. Every prefix count is recorded in
+\grafiles{\artifact{grh_transfer_advances_2026-11-26/checks/graphs/even_extension_certificate.json}}
+Finally $G(n)<\gracut$ is certified
+using a rational lower bound for $\pi$ from Machin's identity and the
+alternating arctangent series, followed by
+$\cos x\le1-x^2/2+x^4/24$. Hence the candidate exists below the threshold
+that excludes all competitors, and the two phases of alternation give
+exactly two labelled switching classes.
+\end{proof}
+
+\begin{theorem}[The fifty-vertex optimum; \stU]\label{gra:thm:fifty}
+Let $\rho_{50}$ be the minimum spectral radius over all independent edge
+signings of $C_{50}(1,2)$, and put
+\[
+ \Omega=(-\graPi)^6(-,+).
+\]
+Precisely the switching classes with $\alpha=+1$ and triangle word a
+cyclic rotation of $\Omega$ or $-\Omega$ minimise the spectral radius.
+These are $100$ distinct labelled switching classes. Moreover
+\[
+ 2.811568906156<\rho_{50}<2.811568906157,
+\]
+and $\rho_{50}=\sqrt{y_{\max}}$, where $y_{\max}$ is the largest real root
+of the degree-$25$ polynomial $Q$ of \cref{gra:tab:q50}. Every other
+switching class has spectral radius at least $7029/2500=2.8116$.
+\end{theorem}
+
+\begin{proof}
+Set $\gracut=7029/2500$. By the recurrence \eqref{gra:eq:schur}, in
+rational arithmetic, there are $324$ passing words at triangle length
+$46$. Append all four remaining signs to each of them and retain a
+length-$50$ word only if all its cyclic length-$46$ windows pass. There
+are exactly two resulting rotation classes, represented by $\Omega$ and
+$-\Omega$. The local path classification is checked by two independent
+algorithms, the Schur recurrence and the summation of signed permutation
+products using only integer arithmetic and the band width of the actual
+path matrices; they agree on every prefix count and every surviving word:
+\grafiles{\artifact{grh_transfer_advances_2026-11-26/checks/graphs/n50/certificate_n50.json}\\
+\artifact{grh_transfer_advances_2026-11-26/checks/graphs/n50/verification_manifest.json}}
+
+Any $48$ consecutive vertices of $C_{50}(1,2)$ induce such a path: the two
+endpoints have cyclic distance three, so no extra edge joins them. By
+\eqref{gra:eq:compress} every signing with radius $<\gracut$ must have one
+of these two triangle words, up to rotation. There remain just two
+holonomies for each word. Exact fraction-free elimination of the full
+matrices $7029I\pm2500A$ shows that $\alpha=+1$ passes both Sylvester
+tests, whereas $\alpha=-1$ fails: the first $49$ leading minors are
+positive in each failed test, and the final determinant is negative. Thus
+no additional signing can have radius $<\gracut$.
+
+Negating every edge changes every triangle sign to its negative and,
+because $50$ is even, preserves $\alpha$. It takes $A$ to $-A$, so the two
+surviving rotation classes have equal spectral radius, and both are
+global minimisers. Each word has primitive period $50$ and their rotation
+orbits are disjoint, giving exactly $100$ labelled switching classes.
+
+The characteristic polynomial of either minimising representative is
+$\det(xI-A)=Q(x^2)$, computed from the integer traces $\tr(A^j)$ by
+Newton's identities. For $r_-=2811568906156/10^{12}$ and
+$r_+=2811568906157/10^{12}$, exact leading-minor sign counts show that
+$r_-I-A$ and $r_-I+A$ each have exactly one negative eigenvalue, while
+both shifts at $r_+$ have none:
+\grafiles{\artifact{grh_transfer_advances_2026-11-26/checks/graphs/n50/root_isolation.json}}
+This proves the strict interval and shows that the interval contains
+exactly one positive eigenvalue. No irreducibility assertion about $Q$ is
+needed.
+\end{proof}
+
+\begin{table}[htbp]
+\centering\small
+\begin{tabular}{rr@{\qquad}rr}
+\toprule
+$j$&$q_j$&$j$&$q_j$\\
+\midrule
+25&1&12&$-42556190827574$\\
+24&$-100$&11&95424283730427\\
+23&4702&10&$-173149057931144$\\
+22&$-138186$&9&251857479144425\\
+21&2846105&8&$-290088695299758$\\
+20&$-43660212$&7&260508422825773\\
+19&517548579&6&$-178938476667148$\\
+18&$-4854567112$&5&91816438267915\\
+17&36601189842&4&$-34160308422738$\\
+16&$-224095627758$&3&8848896828974\\
+15&1121189638159&2&$-1499411878484$\\
+14&$-4598060887914$&1&148268409185\\
+13&15463123646497&0&$-6447640168$\\
+\bottomrule
+\end{tabular}
+\caption{Coefficients of $Q(y)=\sum_{j=0}^{25}q_jy^j$, where
+$\det(xI-A)=Q(x^2)$ for a minimising signing of $C_{50}(1,2)$.}
+\label{gra:tab:q50}
+\end{table}
+
+\begin{remark}\label[remark]{gra:rem:fifty}
+The best value in the alternating family at $n=50$ is $G(50)>2.814$: with
+$\pi<22/7$, $\cos u\ge1-u^2/2$ and $v=11/175$, rational arithmetic gives
+$4\bigl((1-v^2/2)^2+(1-2v^2)^2\bigr)>(2814/1000)^2$. Thus the improvement
+over alternation at fifty vertices is strict. The winning word is six
+copies of an eight-letter block with an additional two-letter segment, and
+its holonomy is positive, whereas the minimisers at $n=8m\ge32$ have exact
+period eight and negative holonomy. One cannot predict the optimiser by
+carrying over the best boundary condition from a different cycle length.
+\end{remark}
+
+\begin{corollary}[Settled cases]\label[corollary]{gra:cor:settled}
+The exact minimum of $\rho(A)$ over all signings of $C_n(1,2)$ is known
+for every even $n$ with $8\le n\le50$ and for every multiple of eight
+$n\ge32$:
+\begin{center}\small\upshape
+\begin{tabular}{lll}
+\toprule
+$n$ & minimum & minimising switching classes\\
+\midrule
+even, $8\le n\le30$ & $G(n)$ & alternating, $\alpha=-1$\\
+$8m$, $m\ge4$ & $F(2\cos(\pi/m))$ & eight: rotations of $\graPi^m$, $\alpha=-1$\\
+$34,36,38,42,44,46$ & $G(n)$ & two: alternating, $\alpha=-1$\\
+$50$ & $\rho_{50}=2.811568906156\ldots$ & $100$: rotations of $\pm\Omega$, $\alpha=+1$\\
+\bottomrule
+\end{tabular}
+\end{center}
+\end{corollary}
+
+\begin{proposition}[A local gap and the infinite line; \stU]\label[proposition]{gra:prop:line}
+At the cutoff $281/100$ there are $72$ surviving words of length $43$, and
+their central nine-letter subwords (indices $17$ through $25$ from zero)
+are exactly the eight windows of $\graPi$. Consequently:
+\begin{enumerate}[label=\textup{(\alph*)}]
+\item for $n\ge47$, any signing of $C_n(1,2)$ whose triangle word differs
+from the period-eight family has $\rho(A)\ge2.81$;
+\item the same holds for signings of the graph on $\Z$ joining integers at
+distance one or two, and on this graph the minimum of $\norm A$ is
+$r_*=F(2)$, attained uniquely up to switching and translation by the
+period-eight triangle word. The minimum is isolated.
+\end{enumerate}
+\end{proposition}
+
+\begin{proof}
+The enumeration is recorded in the second certificate of
+\cref{gra:lem:windows}. Part (a) follows from \eqref{gra:eq:compress}, since every position of
+the cycle is central in a length-$43$ window. On the line every finite
+compression is an operator-norm lower bound, and every position is
+central in a length-$43$ window, which gives the gap. All length-one
+signs on the line can be switched to $+1$, and Fourier transformation by
+period-eight cells gives the norm of the surviving operator as
+$\max_{-2\le u\le2}F(u)=r_*$.
+\end{proof}
+
+\begin{corollary}[Poles of the signed Ihara function; \stU]\label[corollary]{gra:cor:ihara}
+For a signed four-regular graph, the Bass determinant formula for the
+signed Ihara zeta function gives the nontrivial factor of its reciprocal
+as
+\[
+ Q_A(v)=\det(I-vA+3v^2I)=\prod_{\lambda\in\operatorname{spec}(A)}
+ (1-\lambda v+3v^2),
+\]
+the universal factor $(1-v^2)^{\abs E-\abs V}$ being omitted. Among all
+signings of $C_{8m}(1,2)$, $m\ge4$, the largest possible minimum angular
+distance of the roots of $Q_A$ from the real axis is
+\[
+ \arccos\Bigl(\frac{F(2\cos(\pi/m))}{2\sqrt3}\Bigr),
+\]
+and \cref{gra:thm:cycle8m} characterises every maximising signing. At
+$n=32$ the angle is about $36.51^\circ$.
+\end{corollary}
+
+\begin{proof}
+The displayed form also follows by taking the ordinary Bass identities for
+the double cover and for the base graph and dividing them: adjacency on
+the cover splits into the base and signed matrices
+\cite{Suvagiya2026Parity,Bass1992Ihara}. When
+$\abs\lambda\le2\sqrt3$ the two roots of the factor
+$1-\lambda v+3v^2$ are $3^{-1/2}e^{\pm i\theta}$, where
+$2\sqrt3\cos\theta=\lambda$; for $\abs\lambda>2\sqrt3$ there is a root on
+the real axis. The minimum angular distance is therefore a decreasing
+function of $\rho(A)$. The signed Ihara function itself has poles at
+these points.
+\end{proof}
+
+\subsection{A bipartite family with all zeros on the canonical line}\label{gra:sec:ehrhart}
+\sources{grh_method_transfers}
+
+For a graph $G$ on $v$ vertices let $P_G$ be the convex hull of
+$\pm(e_i-e_j)$ over its edges, in the lattice
+$\Z^v\cap\{\sum x_i=0\}$. Write
+$E_{m,n}(k)=\abs{kP_{K_{m,n}}\cap\Z^{m+n}}$ for the Ehrhart polynomial of
+the complete bipartite graph $K_{m,n}$; its degree is $d=m+n-1$.
+Higashitani, Kummer and Micha\l{}ek asked, for complete multipartite
+graphs, whether all zeros lie on the line $\Re z=-1/2$ and whether
+decreasing a largest part gives interlacing
+\cite[Conjecture~4.10]{HigashitaniKummerMichalek2016Conjecture}. A
+counterexample with six parts of size two has been reported
+\cite{DavisCounterexampleEhrhart}; it leaves the complete bipartite question intact.
+K\"olbl gave a conditional result for $K_{4,n}$
+\cite[Theorem~3.3]{Kolbl2024Ehrhart}, and the line property through
+smaller part five was proved using positive Jacobi matrices
+\cite{Carptopus2026Ehrhart}. Here the transfer from the source proof is
+methodological: after rotation, exclusion of zeros from one half-plane
+suffices by symmetry, and the needed positivity comes from the known
+Ehrhart expansion and finite certificates.
+
+\begin{theorem}[Finite-width theorem; \stU]\label{gra:thm:ehrhart}
+The following hold for the Ehrhart polynomials $E_{m,n}$.
+\begin{enumerate}[label=\textup{(\alph*)}]
+\item For $2\le m\le32$ and every integer $n\ge m$, all zeros of $E_{m,n}$
+are simple and lie on $\Re z=-1/2$, and the ordinates of the zeros
+strictly alternate with those of $E_{m,n-1}$.
+\item For $2\le m\le32$ and $n\ge m$, the ordinates of the zeros of
+$E_{m,n}$ strictly interlace those of $E_{m+1,n}$. Consequently all zeros
+of $E_{33,n}$, $n\ge33$, are simple and lie on $\Re z=-1/2$.
+\end{enumerate}
+\end{theorem}
+
+Width $32$ is the last width for which a positive Bezoutian is certified
+below; consecutive-$n$ interlacing within width $33$ remains outside the
+certificate. In particular, the interlacing of $E_{3,n}$ and $E_{4,n}$
+holds for $n\ge3$; the cases $n=1,2$ of this particular interlacing follow
+from the cross-polytope recurrence and from the larger-part interlacing at
+width two, respectively. Width one follows at once from the cross-polytope
+recurrence.
+
+\paragraph{Reduction to two short polynomials.}
+Put $r=m-1$, so that $d=n+r$, and let $C_k$ denote the Ehrhart polynomial
+of a $k$-dimensional cross-polytope; its Ehrhart series is
+$(1+t)^k/(1-t)^{k+1}$. Set $Q_k(y)=k!\,i^{-k}C_k((iy-1)/2)$. The
+cross-polytope recurrence gives
+\[
+ Q_0=1,\qquad Q_1=y,\qquad Q_{k+1}=yQ_k-k^2Q_{k-1}.
+\]
+In particular $Q_k$ is the characteristic polynomial of a real symmetric
+tridiagonal matrix with consecutive off-diagonal entries $1,2,\dots,k-1$.
+The formula of Higashitani, Jochemko and Micha\l{}ek for the
+$h^*$-polynomial
+\cite[Theorem~4.1]{HigashitaniJochemkoMichalek2018Hstar} has
+coefficients $\gamma_j=\binom{2j}{j}\binom rj\binom{n-1}j$ in the basis
+$t^j(1+t)^{d-2j}$. Use $4t=(1+t)^2-(1-t)^2$ in the Ehrhart series.
+Binomial expansion expresses $4^rE_{m,n}$ as
+$\sum_{h=0}^r(-1)^hc_hC_{d-2h}$, where
+$c_h=\sum_{j=h}^r4^{r-j}\gamma_j\binom jh$. Thus the rotated polynomial
+has the exact expression
+\begin{equation}\label{gra:eq:rotated}
+ R_n(y)=4^rd!\,i^{-d}E_{m,n}((iy-1)/2)
+ =\sum_{h=0}^rc_h(d)_{2h}Q_{d-2h}(y)
+ =A_n(y)Q_n(y)-B_n(y)Q_{n-1}(y),
+\end{equation}
+where $(d)_k=d(d-1)\cdots(d-k+1)$, and where $A_n,B_n$ are defined by
+expanding each $Q_{d-2h}$ from $Q_n,Q_{n-1}$ by forward or backward
+recurrence. Their $y$-degrees are at most $r$ and $r-1$; $A_n$ has degree
+$r$ with positive leading coefficient $c_0$; and their parities are those
+of $r$ and $r-1$ respectively. The construction also works at $n=m-1$,
+including a possible $Q_0$.
+
+\paragraph{The positive form and the interlacing determinant.}
+Let $A=A_n$, $B=B_n$, and let $\mathsf H$ be the real symmetric matrix of
+coefficients in $u^iv^j$ ($0\le i,j<r$) of the Bezoutian
+\[
+ \frac{A(u)B(v)-B(u)A(v)}{u-v}.
+\]
+
+\begin{lemma}\label[lemma]{gra:lem:bezout}
+Suppose $\mathsf H$ is positive definite. Then all zeros of $R_n$ are real
+and simple. If moreover the even polynomial
+\[
+ T_n(y)=n^2A_nA_{n+1}-yB_nA_{n+1}+B_nB_{n+1}
+\]
+is positive on the real axis, then the zeros of $R_{n+1}$ are real and
+simple and strictly interlace those of $R_n$.
+\end{lemma}
+
+\begin{proof}
+Substitution of $v=\bar u$ shows that $A,B$ have no common zero and that
+$\Im(B(u)/A(u))<0$ for $\Im u>0$ where the quotient is defined. In fact
+$A(u)$ cannot vanish there, since the diagonal Hermitian form at
+$(1,u,\dots,u^{r-1})$ would vanish. On the upper half-plane
+$Q_n/Q_{n-1}$ has positive imaginary part, by induction using
+$Q_{k+1}/Q_k=y-k^2/(Q_k/Q_{k-1})$. The two ratios cannot coincide, so
+$R_n$ has only real zeros. On the real axis the diagonal limit gives
+$W=A'B-AB'>0$. Also $W_n=Q_n'Q_{n-1}-Q_nQ_{n-1}'>0$, since $W_1=1$ and
+$W_n=Q_{n-1}^2+(n-1)^2W_{n-1}$ for $n\ge2$.
+
+Set $C=yA_{n+1}-B_{n+1}$ and $D=n^2A_{n+1}$, so that
+$R_{n+1}=CQ_n-DQ_{n-1}$ and $T_n=AD-BC$. At every real root $t$ of $R_n$
+there is a nonzero $\lambda$ with
+$(Q_n,Q_{n-1})(t)=\lambda(B,A)(t)$; both vectors are nonzero by the
+recurrence and by positive definiteness. Differentiation gives
+$R_n'(t)=(\lambda^2W(t)+W_n(t))/\lambda$, which proves simplicity.
+Moreover
+\[
+ \frac{R_{n+1}(t)}{R_n'(t)}=-\frac{\lambda^2T_n(t)}{\lambda^2W(t)+W_n(t)} .
+\]
+When $T_n$ is positive on the real axis, signs force a root of $R_{n+1}$
+in each interior gap and one in each exterior gap, since both leading
+coefficients are positive. The degree difference is one, so this accounts
+for all its roots, with multiplicity one.
+\end{proof}
+
+\begin{proof}[Proof of \cref{gra:thm:ehrhart}\textup{(a)}]
+By \eqref{gra:eq:rotated} and \cref{gra:lem:bezout} it suffices to prove,
+for each $2\le m\le32$, that $\mathsf H$ is positive definite for every
+$n\ge m-1$ and that $T_n$ is positive on the real axis for every
+$n\ge m-1$. Only short polynomials involving $r$ occur in the two
+positivity tests, and finite exact calculations prove the universal
+quantifier over $n$, as follows. The integer calculations for widths $2$
+through $32$ are recorded in
+\artifact{grh_method_transfers/checks/ehrhart_output.txt} and in
+\artifact{grh_method_transfers/checks/interlacing_output.txt}.
+
+\emph{Degree bounds.} In performing the backward recurrence, multiply
+both coordinates by $S(n)=\prod_{j=1}^{r-1}(n-j)^2$. Backward steps divide
+by distinct squared linear factors of $S$. In the forward direction at
+most $r$ steps increase the degree in $n$ by at most $2r$. In the backward
+direction the coordinates have denominators dividing $S$ and, after
+multiplication by $S$, degrees at most $2r$ (each step is
+$[yq_{k+1}-q_{k+2}]/(n+k+1)^2$, where indices are relative to $n$). Thus
+each cleared coordinate in the mixture has degree at most $7r$ in $n$:
+$2r$ allows for $S$, $2r$ for the forward recurrence, $r$ for $c_h$, and
+$2r$ for $(d)_{2h}$. At $7r+1$ consecutive integers beginning at $m$, one
+verifies by taking forward differences that the coordinates divided by $S$
+agree with polynomials of degrees at most $r$ for $A_n$ and $r+1$ for
+$B_n$. Multiplying these interpolants by $S$ and applying the polynomial
+identity principle proves the degree bounds identically.
+
+\emph{The Bezoutian.} The Bezoutian splits into even and odd blocks by
+parity. Each entry has degree at most $2r+1$ in $n$. For the leading minor
+of order $j$ of either block, its exact integer values at
+$n=m,m+1,\dots,m+(2r+1)j$ are computed by fraction-free elimination. All
+forward differences at $m$, through its actual degree, are positive. For
+every integer $s\ge0$, Newton's identity
+$f(m+s)=\sum_h\binom sh\Delta^hf(m)$ now proves strict positivity, and
+Sylvester's criterion applies to both blocks. At $n=m-1$ the two blocks
+are tested directly.
+
+\emph{The interlacing determinant.} Write $T_n(y)=U(n,y^2)$; its degree
+in $n$ is at most $2r+2$. The differences $\Delta_n^hU(m,z)$ are obtained
+from $2r+3$ rows. For each nonzero polynomial in $z$ among them one
+verifies a positive constant term and equal numbers of Sturm sign changes
+at $0$ and $+\infty$. Hence each is positive on $[0,\infty)$, and so is
+$U(m+s,z)$ for integral $s\ge0$ by Newton's identity (the zeroth row is
+positive). The same Sturm test at $n=m-1$ completes the square boundary
+case.
+\end{proof}
+
+\begin{proof}[Proof of \cref{gra:thm:ehrhart}\textup{(b)}]
+Keep the pair $Q_n,Q_{n-1}$ fixed, and use subscripts $(m,n)$ for the
+short coordinates. In the residue formula of \cref{gra:lem:bezout} take
+$C=A_{m+1,n}$ and $D=B_{m+1,n}$. The determinant
+\[
+ V(n,y^2)=A_{m,n}(y)B_{m+1,n}(y)-B_{m,n}(y)A_{m+1,n}(y)
+\]
+has even parity. Its degree in $n$ is at most $2r+2$, as the termwise
+degree bounds for its factors are $(r,r+2)$ and $(r+1,r+1)$. The
+coordinate bounds for width $m+1$ are tested by the same interpolation
+identity, with upper endpoint including width $33$, and $V(m+s,z)>0$ is
+certified for every integer $s\ge0$ and real $z\ge0$ by applying the Sturm
+test to the Newton coefficient polynomials in $s$; the output is
+\artifact{grh_method_transfers/checks/smaller_part_output.txt}. The
+residue sign argument gives the claimed interlacing. This argument needs
+the positive Bezoutian only in the lower width.
+\end{proof}
+
+\begin{example}\label[example]{gra:ex:k66}
+For $K_{6,6}$, dividing both short coordinates by their common factor
+$132$ gives
+\[
+ A(y)=693y^5-29984y^3+175507y,\qquad
+ B(y)=19656y^4-442620y^2+881100 .
+\]
+Thus positivity of a five-by-five real form suffices for the
+degree-eleven Ehrhart polynomial in this example. Its first four
+lattice-point counts, at dilations $0,1,2,3$, are $1,73,1915,26547$.
+\end{example}
+
+\begin{proposition}[Membership in the dilated polytope; \stU]\label[proposition]{gra:prop:membership}
+Split a lattice vector into its coordinates $(u,v)$ on the two sides of
+$K_{m,n}$. It belongs to $kP_{K_{m,n}}$ if and only if
+\[
+ \textstyle\sum u_i+\sum v_j=0,\qquad
+ \max(\norm u_1,\norm v_1)\le k .
+\]
+\end{proposition}
+
+\begin{proof}
+A weighted sum of signed edges is a matrix with row sums $u$, column sums
+$-v$, and cost equal to the sum of the absolute entries. Both marginal
+norms bound that cost from below. For the converse let $T$ be the larger
+marginal norm and let $s=\sum u_i$. On each side choose nonnegative
+positive and negative margins with total positive mass $(T+s)/2$ and total
+negative mass $(T-s)/2$: starting from the ordinary positive and negative
+parts, add the same padding to both where needed. Nonnegative matrices
+with each pair of prescribed margins exist by successively matching
+supplies and demands. The difference of the two matrices realises the
+desired vector with cost at most $T$. Real edge weights suffice for
+membership in the polytope.
+\end{proof}
+
+Counting integer vectors by their sum and $\ell^1$ norm on each side
+recovers the entire polynomial from the required $d+1$ integer values for
+$K_{2,2}$, $K_{3,5}$, $K_{6,6}$ and $K_{7,9}$, a total of $40$ comparisons
+with \eqref{gra:eq:rotated}; see
+\artifact{grh_method_transfers/checks/instances_output.txt}.
+
+\subsection{Open questions}\label{gra:sec:open}
+{\raggedright
+\sources{Effective_Graph_Towers; grh_method_transfers_graph_towers_and_finite_rings; grh_method_transfers; grh_transfers_lubin_tate_and_graph_towers; grh_transfer_extensions_2026-11-26; grh_transfers_cycle_signings_and_lubin_tate; grh_transfer_advances_2026-11-26}
+}
+
+\begin{enumerate}
+\item \emph{The sharp constant for the onset.} For a fixed prime and a
+fixed loop count $m\ge\max(3,p)$, what is the sharp coefficient of the
+voltage bit length $b$ in the worst-case onset $L_{p,m}(b)$ of
+\cref{gra:thm:loops}? \Cref{gra:cor:logbound} gives at most
+$3b\log_p2+O_p(1)$, and the constructions give at least
+$b\log_p2-O_p(1)$.
+\item \emph{Higher rank.} For fixed $p$, $d\ge3$ and a fixed number of
+voltage vectors, what is the largest possible onset for vectors of bit
+length at most $b$? In rank three the exceptional directions can meet
+along a positive-dimensional set, and an effective bound would require
+controlling such intersections; the only general bound is that of
+\cref{gra:rem:onsetbound}.
+\item \emph{Minimal linear representations.} Can one compute the smallest
+rational linear representation of the shell sums directly from the
+exponent vectors, without constructing all reachable digit states? The
+five examples of \cref{gra:thm:five} have far fewer poles than registers,
+and a structural description of the cancelled factors could yield a
+practical improvement for Laplacians with many terms.
+\item \emph{Input models.} Which exact input representations beyond
+rational voltages support a terminating algorithm as in
+\cref{gra:thm:effective}? More general algebraic $p$-adic inputs would
+need additional control of carries or an alternative way of recognising
+coincident exponents; \cref{gra:cor:oracle} shows that an input model
+matters.
+\item \emph{Extremal moment coefficients.} Determine the maximum of
+$\graA(S)$ in rank two for odd $m\ge5$ and for even $m\ge6$ at primes
+with $2m\nmid p-1$. Which root configurations of the quartic, sextic and
+higher directional moments can occur on a single plane for $m=5$? In
+higher dimension, can the distribution of $\graA$ for random step lists be
+expressed through point counts of the successive moment varieties?
+\item \emph{Square cycles at lengths incompatible with period eight.}
+What are the exact optima of \cref{gra:sec:cycles} at large lengths
+incompatible with period eight? The first undetermined even length is
+$n=52$. Is there a uniform
+description at lengths $8m+2$, $8m+4$ and $8m+6$? The fifty-vertex word is
+evidence for a defect-pattern search, not a proof that one defect always
+wins, and the finite-window language can become much larger at a slightly
+increased threshold.
+\item \emph{A conceptual proof of period eight.} Can the $29$-vertex test
+of \cref{gra:lem:windows} be replaced by a short human-checkable family
+of inequalities for forbidden sign patterns? Such a proof would explain
+the period eight and could extend to $C_n(1,k)$ with $k>2$.
+\item \emph{All widths.} For complete bipartite edge polytopes, are the
+two parity blocks of the Bezoutian of \cref{gra:lem:bezout} positive in
+every width? A representation of their minors as sums with positive
+coefficients could replace the width-by-width certificates and give a
+route to the line property and to interlacing for unrestricted part
+sizes.
+\end{enumerate}

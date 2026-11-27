@@ -53,6 +53,9 @@ and Coq proofs; the Fabius project is currently a Lean statement formalization.
   start from the external Lean development `lsernau/grh-lean`. They are placed as
   delivered from [`docs/incoming`](../docs/incoming/README.md): nothing was rerun,
   reviewed or formalized, and their `.lean` files are not part of the Lake package.
+  [`Article/article.pdf`](GeneralizedRiemannHypothesis/Article/article.pdf) merges them
+  into one article, with each result stated once in its strongest form and results implied
+  by stronger ones left out.
 
 The Coq developments are mathematical ports rather than generated
 translations. The tiny-exponent proof uses `coq-interval`; the trigonometric

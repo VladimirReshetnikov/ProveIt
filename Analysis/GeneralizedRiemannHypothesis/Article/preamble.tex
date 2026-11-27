@@ -1,0 +1,93 @@
+% Shared preamble of the merged article. Section files must compile under exactly this.
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage{lmodern}
+\usepackage[a4paper,margin=1in]{geometry}
+\usepackage{amsmath,amssymb,amsthm,mathtools}
+\usepackage{enumitem,booktabs,longtable,array,graphicx,xcolor}
+\usepackage[numbers,sort&compress]{natbib}
+\usepackage[colorlinks=true,linkcolor=blue!50!black,citecolor=green!40!black,urlcolor=blue!50!black]{hyperref}
+\usepackage{aliascnt}
+\usepackage[capitalise,noabbrev]{cleveref}
+
+\numberwithin{equation}{section}
+\theoremstyle{plain}
+\newtheorem{theorem}{Theorem}[section]
+% Shared numbering through alias counters, so that \cref names each environment correctly.
+\newcommand{\sharedtheorem}[3]{%
+  \newaliascnt{#1}{theorem}\newtheorem{#1}[#1]{#2}\aliascntresetthe{#1}%
+  \crefname{#1}{#2}{#3}\Crefname{#1}{#2}{#3}}
+\sharedtheorem{proposition}{Proposition}{Propositions}
+\sharedtheorem{lemma}{Lemma}{Lemmas}
+\sharedtheorem{corollary}{Corollary}{Corollaries}
+\sharedtheorem{conjecture}{Conjecture}{Conjectures}
+\theoremstyle{definition}
+\sharedtheorem{definition}{Definition}{Definitions}
+\sharedtheorem{example}{Example}{Examples}
+\sharedtheorem{construction}{Construction}{Constructions}
+\sharedtheorem{question}{Question}{Questions}
+\sharedtheorem{problem}{Problem}{Problems}
+\theoremstyle{remark}
+\sharedtheorem{remark}{Remark}{Remarks}
+
+% Number systems and standard operators
+\newcommand{\N}{\mathbb{N}}
+\newcommand{\Z}{\mathbb{Z}}
+\newcommand{\Q}{\mathbb{Q}}
+\newcommand{\R}{\mathbb{R}}
+\newcommand{\C}{\mathbb{C}}
+\newcommand{\F}{\mathbb{F}}
+\newcommand{\Fq}{\mathbb{F}_q}
+\newcommand{\Qp}{\mathbb{Q}_p}
+\newcommand{\Zp}{\mathbb{Z}_p}
+\newcommand{\Cp}{\mathbb{C}_p}
+\newcommand{\OO}{\mathcal{O}}
+\newcommand{\eps}{\varepsilon}
+\renewcommand{\Re}{\operatorname{Re}}
+\renewcommand{\Im}{\operatorname{Im}}
+\DeclareMathOperator{\ord}{ord}
+\DeclareMathOperator{\Gal}{Gal}
+\DeclareMathOperator{\Frob}{Frob}
+\DeclareMathOperator{\Ind}{Ind}
+\DeclareMathOperator{\Res}{Res}
+\DeclareMathOperator{\Reg}{Reg}
+\DeclareMathOperator{\tr}{tr}
+\DeclareMathOperator{\Tr}{Tr}
+\DeclareMathOperator{\Nm}{N}
+\DeclareMathOperator{\disc}{disc}
+\DeclareMathOperator{\Cl}{Cl}
+\DeclareMathOperator{\Hom}{Hom}
+\DeclareMathOperator{\End}{End}
+\DeclareMathOperator{\Aut}{Aut}
+\DeclareMathOperator{\Sym}{Sym}
+\DeclareMathOperator{\PSL}{PSL}
+\DeclareMathOperator{\SL}{SL}
+\DeclareMathOperator{\GL}{GL}
+\DeclareMathOperator{\PGL}{PGL}
+\DeclareMathOperator{\Sp}{Sp}
+\DeclareMathOperator{\lcm}{lcm}
+\DeclareMathOperator{\rank}{rank}
+\DeclareMathOperator{\supp}{supp}
+\DeclareMathOperator{\Li}{Li}
+\DeclareMathOperator{\li}{li}
+\newcommand{\triv}{\mathbf{1}}
+\newcommand{\vp}{v_p}
+\newcommand{\dd}{\mathrm{d}}
+\DeclarePairedDelimiter{\abs}{\lvert}{\rvert}
+\DeclarePairedDelimiter{\norm}{\lVert}{\rVert}
+\DeclarePairedDelimiter{\floor}{\lfloor}{\rfloor}
+\DeclarePairedDelimiter{\ceil}{\lceil}{\rceil}
+\newcommand{\set}[1]{\{#1\}}
+\newcommand{\legendre}[2]{\Bigl(\frac{#1}{#2}\Bigr)}
+
+% Project-specific
+\newcommand{\code}[1]{\texttt{\detokenize{#1}}}
+\newcommand{\repo}{\texttt{grh-lean}}
+% Status of a result, for the optional argument of a theorem-like environment
+\newcommand{\stU}{unconditional}
+\newcommand{\stG}{uses Dirichlet GRH}
+\newcommand{\stR}{reduction; the target estimate is open}
+% A delivered file under Research/, e.g. \artifact{grh_dihedral_47_71/checks/x.json}
+\newcommand{\artifact}[1]{\texttt{\detokenize{#1}}}
+% Provenance line: the packets a subsection is merged from
+\newcommand{\sources}[1]{\par\smallskip{\raggedright\noindent\footnotesize\emph{Sources:} \texttt{\detokenize{#1}}.\par}\smallskip}

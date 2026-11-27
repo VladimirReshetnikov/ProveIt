@@ -1,0 +1,2292 @@
+\section{The Selmer, Galois-cohomology and K-theory interface}\label{sec:sel}
+
+\providecommand{\sellen}{\operatorname{length}}
+\providecommand{\selSha}{\operatorname{Sha}}
+\providecommand{\selnum}{\operatorname{num}}
+\providecommand{\selT}{\mathsf{t}}
+\providecommand{\selA}{\mathcal{A}}
+
+The arithmetic half of the source proof (\cref{src:sec:mechanism}) is a
+statement about Galois cohomology: finitely many admissible representations
+admit simultaneous anticyclotomic twists whose Selmer modules have small
+normalized length, and certain modules of odd cocycles over cyclotomic CM
+fields have lengths bounded by the valuations of one explicit integer. This
+section determines what that engine requires of a representation, where it
+stops when the representation is no longer one of the source's, and what its
+outputs do and do not say about standard objects such as Tate--Shafarevich
+groups, Bloch--Kato Selmer groups and the groups $K_{4m}(\Z)$. Most results
+are interface or obstruction theorems. None of them uses
+\cref{src:thm:dgrh}, and none proves the conjecture of Birch and
+Swinnerton-Dyer, Vandiver's conjecture, or a new Selmer vanishing theorem.
+
+\subsection{The source interface}\label{sel:sec:interface}
+\sources{grh_structural_transfers_2026-11-25; grh_beyond_dirichlet_2026-11-25; grh_ideal_densities_and_transfer_conditions_2026-11-26; grh_transfer_extensions_2026-11-26; grh_arithmetic_transfers_2026-11-26}
+
+We fix the notation used throughout. Let $\ell$ be a prime, $F/\Q_\ell$ a
+finite extension, $\OO$ its ring of integers, $\pi$ a uniformizer,
+$k=\OO/\pi$, and $e_{\OO}$ the absolute ramification index. For a
+finite-length $\OO$-module $M$ write
+\[
+ \lambda_{\OO}(M)=\frac{\sellen_{\OO}M}{e_{\OO}}
+\]
+for the normalized length, so that $\lambda_{\OO}(\OO/\ell)=1$. This is the
+normalization of the source, not the integer-valued composition length.
+
+Let $G$ be a group with an involution $g\mapsto g^c$ and let
+$\chi\colon G\to\OO^\times$ be a character with $\chi(g^c)=\chi(g)$. In the
+source, $G=G_K$ for a CM field $K$, the involution is conjugation by a
+complex conjugation $c$, and $\chi$ is the $\ell$-adic cyclotomic
+character. For a representation $\rho\colon G\to\GL_d(\OO)$ on a free
+lattice $T$, the \emph{conjugate Tate dual} is
+\begin{equation}\label{sel:eq:conjdual}
+ D(T)=\Hom_{\OO}(T,\OO)(1)^c,\qquad
+ D(\rho)(g)=\chi(g^c)\,\rho(g^c)^{-\selT}.
+\end{equation}
+An $\OO$-linear map $X\colon T\to D(T)$ is the same thing as a bilinear form
+$B$ on $T$, and $X$ is equivariant modulo $a\in\OO$ exactly when
+\begin{equation}\label{sel:eq:conjdualrel}
+ B\bigl(\rho(g)u,\rho(g^c)v\bigr)\equiv\chi(g)B(u,v)\pmod a
+ \qquad(g\in G,\ u,v\in T).
+\end{equation}
+The source works with character modules; a finite quotient of a discrete
+valuation ring has a generating additive character (for instance from the
+field trace and a generator of the inverse different), which identifies the
+character module of $\OO/\pi^n$ with $\OO/\pi^n$. The identification is not
+canonical and does not affect any length. With it, the source's
+\code{New.Selmer.conjDualHom} is the module of solutions of
+\eqref{sel:eq:conjdualrel}, and its \emph{global congruence term}
+\code{New.Selmer.congruenceTerm} is
+\begin{equation}\label{sel:eq:congterm}
+ C(T)=\sup_{n\ge1}C_n(T),\qquad
+ C_n(T)=\sellen_{\OO}\Hom_{(\OO/\pi^n)[G]}\bigl(T/\pi^nT,D(T)/\pi^nD(T)\bigr).
+\end{equation}
+Since every nonzero ideal of $\OO$ is a power of $(\pi)$, the supremum over
+all moduli $a\ne0$ used in the source is the same number. This quantity is
+neither a Mordell--Weil rank nor the length of a Selmer group. It is a
+uniform bound on congruences between a representation and its conjugate Tate
+dual.
+
+A \code{SelmerDatum} of the source (file
+\code{New/Congruences/Selmer/SelmerData.lean}) consists of such a lattice
+together with the following requirements, among others: the integral
+Burnside condition $\operatorname{span}_{\OO}\rho(G)=M_d(\OO)$ (which implies
+residual absolute irreducibility); a local-rank budget and finite local
+defects; $C(T)<\infty$; and an element $\gamma$ of an inertia group at a
+place away from $\ell$ such that $\rho(\gamma)$ and $\rho(\gamma^{-c})$ both
+equal a scalar $\zeta I$ with $\zeta^2-1\in\OO^\times$. The general twisting
+theorem \code{exists_anticyclotomic_twist} (file
+\code{New/Congruences/Selmer/GeneralTheorem.lean}) starts from finitely many
+such data $T_i$, finitely many interpolated value families, a tolerance
+$\varepsilon>0$ and a power range $1\le d\le m$. It produces a finite set
+$Q$ of auxiliary places away from $\ell$ and one finite-order
+anticyclotomic character $\psi$ of $\ell$-power order such that every
+$\psi^d$, $1\le d\le m$, is ramified at the places of $Q$ with controlled
+local cost, the valuations of the value families increase by a controlled amount, and the
+Selmer modules of $T_i\otimes\psi^d$ with divisible coefficients have
+normalized length at most $\beta_i+\varepsilon$ over all sufficiently large
+coefficient rings, where $\beta_i$ is the finite budget of $T_i$ (the
+global term $C(T_i)$ plus local terms). The construction is formulated in
+the source's unramified CM setting with its prescribed local relations.
+Two features of this statement are easy to misread and are made precise
+below: the bound concerns divisible coefficients, not one finite precision
+(\cref{sel:sec:quantifiers}), and a small normalized length is not zero
+(\cref{sel:sec:ramification}). Shrinking Selmer groups by a choice of local
+conditions has precedent in the work of Mazur--Rubin and
+Fakhruddin--Khare--Patrikis~\cite{Mazur2018Diophantine,Fakhruddin2021Relative};
+what is extracted here is the combined interface with its hypotheses.
+
+One hypothesis of the value families must be recorded. The definition
+\code{IsFamily} contains the field \code{val_empty_ne_zero}, which says that
+the untwisted seed value is nonzero. The conclusion bounds the valuation of
+a twisted value by the valuation of this seed plus a finite loss. It
+therefore preserves the nonvanishing of an existing seed; it does not
+establish the nonvanishing of a central value that is initially zero.
+
+Among the local terms of the budget, the source contains an explicit bound
+that may be of use in other integral Selmer comparisons
+(\code{CupOrthogonalityBounds.lean}): a local Kummer-chart theorem bounds a
+crystalline orthogonality defect by
+\[
+ 11f\bigl[m(a+1)+\rank(L)(W+1)\bigr]\sellen_{\OO}(\OO/p\OO),
+\]
+where $m$ counts low Hodge--Tate jumps and is not automatically the rank.
+Its hypotheses include an unramified Kummer chart, opposite weight windows,
+a large gap and a restriction excluding nearby multiples; a companion
+result makes the defect zero under stronger window assumptions. This is a
+local input, not a global Bloch--Kato vanishing statement.
+
+\subsection{The conjugate-dual congruence term}\label{sel:sec:congruence}
+\sources{grh_structural_transfers_2026-11-25; grh_transfer_advances_2026-11-26}
+
+The finiteness of $C(T)$ is decided by linear algebra over $\OO$. The
+statement is for two arbitrary lattices; it is applied with $U=D(T)$.
+
+\begin{theorem}[Length formula for congruence modules; \stU]\label{sel:thm:smith}
+Let $\OO$ be a discrete valuation ring with uniformizer $\pi$ and fraction
+field $F$, and let $T,U$ be finite free $\OO$-modules with actions of an
+arbitrary group $G$. Put $V=\Hom_{\OO}(T,U)$, of rank $m$, and
+$H=\Hom_{\OO[G]}(T,U)$. Let $R\subseteq V^*=\Hom_{\OO}(V,\OO)$ be the
+submodule generated by all coordinate functions of
+\[
+ f\longmapsto\rho_U(g)f-f\rho_T(g)\qquad(g\in G),
+\]
+and write
+\[
+ Q=V^*/R\simeq\OO^{h}\oplus\bigoplus_{i=1}^{s}\OO/(\pi^{a_i}),\qquad a_i>0.
+\]
+\begin{enumerate}[label=\textup{(\roman*)}]
+\item Finitely many group elements impose all intertwining equations, over
+$\OO$ and modulo every power of $\pi$. If $a_1,\dots,a_r\ge0$ are the
+valuations of the nonzero Smith factors of the relation matrix of such a
+finite set, then $h=m-r$ and the positive $a_j$ are the exponents above.
+\item $h=\rank_{\OO}H=\dim_F\Hom_{F[G]}(T\otimes F,U\otimes F)$.
+\item For every $n\ge1$ there is an $\OO$-linear identification
+\[
+ \Hom_{(\OO/\pi^n)[G]}(T/\pi^nT,U/\pi^nU)\simeq\Hom_{\OO}(Q,\OO/\pi^n),
+\]
+and therefore
+\begin{equation}\label{sel:eq:smithlength}
+ \sellen_{\OO}\Hom_{(\OO/\pi^n)[G]}(T/\pi^nT,U/\pi^nU)
+ =hn+\sum_{i}\min(n,a_i).
+\end{equation}
+\item The module $H/\pi^nH$ injects into the left-hand module of
+\eqref{sel:eq:smithlength}. The quotient has length $\sum_i\min(n,a_i)$,
+which is at most $\sum_ia_i$.
+\end{enumerate}
+\end{theorem}
+
+\begin{proof}
+The module $V^*$ is Noetherian, so $R$ is generated by finitely many of the
+original coordinate functions; these involve finitely many group elements,
+and the same elements generate the reduction of $R$ modulo every $\pi^n$.
+Writing the relation matrix of this finite set in Smith normal form gives a
+presentation of $Q$, which proves (i).
+
+A vector of $V/\pi^nV$ is a functional on $V^*$ with values in
+$\OO/\pi^n$, and it is equivariant exactly when it annihilates $R$. This
+gives the identification in (iii). A free summand of $Q$ contributes
+$\Hom_{\OO}(\OO,\OO/\pi^n)$, of length $n$; a summand $\OO/\pi^a$ contributes
+the $\pi^a$-torsion of $\OO/\pi^n$, of length $\min(a,n)$. This proves
+\eqref{sel:eq:smithlength}. The same argument with values in $\OO$ gives
+$H=\Hom_{\OO}(Q,\OO)$, of rank $h$; clearing denominators shows
+$H\otimes F=\Hom_{F[G]}(T\otimes F,U\otimes F)$, which is (ii).
+
+Finally, $H$ is saturated in $V$, because it is the kernel of a map to a
+torsion-free module. Hence $H\cap\pi^nV=\pi^nH$, so $H/\pi^nH$ injects into
+$V/\pi^nV$ with image inside the equivariant maps. Its length is $hn$, and
+(iv) follows from \eqref{sel:eq:smithlength}.
+\end{proof}
+
+\begin{corollary}[Exact finiteness criterion; \stU]\label{sel:cor:finiteness}
+In the notation of \cref{sel:sec:interface}, the global congruence term
+$C(T)$ is finite if and only if
+\[
+ \Hom_{F[G]}\bigl(T\otimes F,D(T)\otimes F\bigr)=0 .
+\]
+In that case $C(T)=\sum_ia_i$, and the value is attained for
+$n\ge\max_ia_i$. If the rational $\Hom$ space has dimension $h>0$, then
+$C_n(T)\ge hn$, and the divergence has exact slope $h$. No residual
+irreducibility assumption is needed.
+\end{corollary}
+
+\begin{proof}
+Apply \eqref{sel:eq:smithlength} with $U=D(T)$ and let $n\to\infty$. The
+term $\sum_i\min(n,a_i)$ eventually equals $\sum_ia_i$.
+\end{proof}
+
+Thus a nonzero rational conjugate Tate-dual map, that is, a nonzero
+$G$-invariant bilinear form on $T\otimes F$ satisfying
+\eqref{sel:eq:conjdualrel} exactly, makes the source's \code{SelmerDatum}
+hypothesis $C(T)<\infty$ fail. Residual isomorphism between $T$ and $D(T)$
+is not the obstruction; rational equivariant $\Hom$ is: for the rank-one
+relation $5^af=0$ over $\Z_5$ the length is $\min(n,a)$, while for the zero
+relation it is $n$.
+
+\begin{proposition}[Finite relation matrices certify upper bounds; \stU]\label{sel:prop:finitecert}
+In the situation of \cref{sel:thm:smith}, let $M$ be any finite relation
+matrix, formed from the intertwining equations of finitely many group
+elements, of full column rank $m$, with Smith exponents
+$b_1,\dots,b_m\ge0$. Then for every $n$
+\[
+ \sellen_{\OO}\Hom_{(\OO/\pi^n)[G]}(T/\pi^nT,U/\pi^nU)
+ \le\sum_{i=1}^m\min(n,b_i)\le\sum_{i=1}^mb_i\le v_\pi(\Delta)
+\]
+for every nonzero maximal minor $\Delta$ of $M$.
+\end{proposition}
+
+\begin{proof}
+The equivariant $\Hom$ module is a submodule of the kernel of $M$ modulo
+$\pi^n$, whose length is $\sum_i\min(n,b_i)$. The product of the Smith
+factors generates the ideal of maximal minors.
+\end{proof}
+
+A finite sample of relations can therefore certify an upper bound without
+any claim that it generates all Galois relations. It cannot by itself
+certify that a nonzero kernel persists after the omitted relations are
+imposed, and finding a complete finite set of relations effectively is a
+separate problem.
+
+\begin{proposition}[Invariance under anticyclotomic twists and coefficient extension; \stU]\label{sel:prop:invariance}
+\leavevmode
+\begin{enumerate}[label=\textup{(\roman*)}]
+\item Let $\psi\colon G\to\OO^\times$ satisfy $\psi(g^c)=\psi(g)^{-1}$. For
+every $n$, the modules of equivariant maps for $T$ and for $T\otimes\psi$
+into their respective conjugate Tate duals are identical submodules of the
+same matrix module. In particular $C(T\otimes\psi)=C(T)$.
+\item Let $\OO'/\OO$ be the ring of integers of a finite extension, of
+relative ramification index $e$, and transport the same representations by
+scalar extension. Then the free rank $h$ is unchanged, the exponents become
+$ea_i$, and the length at $\pi'^{\,n}$ is $hn+\sum_i\min(n,ea_i)$. When
+$h=0$ the normalized supremum is invariant,
+$e\sum_ia_i/(e\,e_{\OO})=\sum_ia_i/e_{\OO}$, and at corresponding moduli
+$\pi^n$ and $\pi'^{\,en}$ the normalized lengths agree term by term.
+\end{enumerate}
+Consequently neither a finite-order anticyclotomic twist with values in a
+larger coefficient ring nor a coefficient extension removes a rational
+conjugate-dual obstruction.
+\end{proposition}
+
+\begin{proof}
+(i) The two representations in the equivariance equation acquire the same
+scalar factor:
+\[
+ (\rho\otimes\psi)(g)=\psi(g)\rho(g),\qquad
+ D(\rho\otimes\psi)(g)=\psi(g^c)^{-1}D(\rho)(g)=\psi(g)D(\rho)(g).
+\]
+The unit $\psi(g)$ cancels from
+$X(\rho\otimes\psi)(g)=D(\rho\otimes\psi)(g)X$, modulo every $\pi^n$.
+
+(ii) By flatness, $Q'=Q\otimes_{\OO}\OO'$, and
+$\OO/\pi^{a}\otimes\OO'=\OO'/\pi'^{\,ea}$. Apply
+\eqref{sel:eq:smithlength} over $\OO'$ and divide by
+$e_{\OO'}=e\,e_{\OO}$. If $\psi$ takes values in a larger ring, extend
+scalars first; a nonzero rational intertwiner remains nonzero.
+\end{proof}
+
+Part (ii) does not license a vanishing argument for \emph{varying} twists
+and coefficient fields; see \cref{sel:sec:ramification}.
+
+\begin{proposition}[Finite-image representations pass the rational-duality test; \stU]\label{sel:prop:finiteimage}
+Let $\rho\colon G_K\to\GL(V)$ have finite image, and suppose the cyclotomic
+character of $G_K$ has infinite image, as it does for a number field $K$.
+Then
+\[
+ \Hom_{F[G_K]}\bigl(V,(V^c)^\vee(1)\bigr)=0,
+\]
+and for every stable lattice $T$ and every $n$,
+$C_n(T)\le(\dim V)^2\,v_\pi(1-\chi(g))$ for a suitable $g\in G_K$. In
+particular $C(T)<\infty$.
+\end{proposition}
+
+\begin{proof}
+The common kernel of $\rho$ and $\rho^c$ has finite index, and the
+cyclotomic character still has infinite image on it. Choose $g$ in this
+kernel with $\chi(g)\ne1$. It acts as the identity on $V$ and as the scalar
+$\chi(g)$ on $(V^c)^\vee(1)$. Every equivariant map is therefore killed by
+the nonzero scalar $1-\chi(g)$; at torsion level $n$ every matrix entry is
+killed by it, which gives the uniform bound.
+\end{proof}
+
+This removes the global obstruction for finite-image Artin targets such as
+the $S_3$ representation of conductor $23$ (\cref{sec:hec}). It does not
+establish residual irreducibility at every coefficient prime, the
+scalar-inertia condition, the required local cocycle ranks, the arithmetic
+theta-divisibility identity, or Artin holomorphy.
+
+\begin{example}[Two finite certificates]\label{sel:ex:smith}
+(a) For $\OO=\Z_\ell$ and $r\ge0$, let $G$ act on $T=U=\Z_\ell^2$ through
+\[
+ A=\begin{pmatrix}1&\ell^r\\0&1\end{pmatrix},\qquad
+ B=\begin{pmatrix}1&0\\\ell^r&1\end{pmatrix}.
+\]
+The commutation relations for
+$X=\bigl(\begin{smallmatrix}a&b\\c&d\end{smallmatrix}\bigr)$ are
+$\ell^rb=\ell^rc=\ell^r(a-d)=0$ modulo $\ell^n$, and the relation matrix has
+Smith diagonal $(\ell^r,\ell^r,\ell^r,0)$. The commutant modulo $\ell^n$ has
+length $n+3\min(n,r)$, and its quotient by the scalar line has length
+$3\min(n,r)\le3r$. For $r>0$ the residual image is trivial, so the integral
+Burnside hypothesis fails; this is a linear-algebra model.
+
+(b) For the abstract cyclic example $\rho(g)=\rho(g^c)=\operatorname{diag}(1,26)$
+with $\chi(g)=126$, the relations \eqref{sel:eq:conjdualrel} have $5$-adic
+Smith exponents $(2,2,2,3)$, so the supremum is $9$. Restricted to symmetric
+and to alternating forms the exponents are $(2,2,3)$ and $(2)$. In residue
+characteristic two an alternating constraint must include zero diagonal
+entries in addition to off-diagonal skew symmetry.
+
+These are matrix certificates, not Galois-image certificates. The Smith
+factors (by gcds of minors) and the finite-level lengths (by exhaustive
+modular enumeration) are recorded in the files
+\begin{center}
+\footnotesize
+\artifact{grh_structural_transfers_2026-11-25/computation/exact_results.json},\\
+\artifact{grh_transfer_advances_2026-11-26/checks/congruence/congruence_length_certificates.json}.
+\end{center}
+\end{example}
+
+\subsection{Exact trace depth under the integral Burnside condition}\label{sel:sec:tracedepth}
+\sources{grh_arithmetic_transfers_2026-11-26; grh_structural_transfers_2026-11-25}
+
+Under the matrix-span hypothesis that a \code{SelmerDatum} already imposes,
+the congruence term is cyclic and is computed by traces.
+
+\begin{theorem}[Exact trace-congruence depth; \stU]\label{sel:thm:tracedepth}
+Let $\OO$ be a discrete valuation ring and let
+$\rho,\sigma\colon G\to\GL_d(\OO)$, $d\ge1$, satisfy
+\[
+ \operatorname{span}_{\OO}\rho(G)=M_d(\OO)=\operatorname{span}_{\OO}\sigma(G).
+\]
+Set
+\[
+ a=\min_{g\in G}v_\pi\bigl(\tr\rho(g)-\tr\sigma(g)\bigr)\in\N\cup\{\infty\}.
+\]
+For every $n\ge1$ the module
+$H_n=\Hom_{(\OO/\pi^n)[G]}(\rho\bmod\pi^n,\sigma\bmod\pi^n)$ is cyclic and
+isomorphic to $\OO/\pi^{\min(n,a)}$. In particular
+\[
+ \sellen_{\OO}H_n=\min(n,a),\qquad\sup_n\sellen_{\OO}H_n=a .
+\]
+No restriction on the residue characteristic relative to $d$ is needed.
+\end{theorem}
+
+\begin{proof}
+We first recall the trace-rigidity argument, a classical theorem of
+Carayol~\cite{Carayol1994Representations}. Put $A=\OO/\pi^r$ and suppose the
+two traces agree modulo $\pi^r$ at every group element. Sending $\rho(g)$ to
+$\sigma(g)$ defines an $A$-algebra automorphism of $M_d(A)$. Indeed, if
+$\sum_ib_i\rho(g_i)=0$, then for every $h\in G$
+\[
+ \tr\Bigl(\Bigl(\sum_ib_i\sigma(g_i)\Bigr)\sigma(h)\Bigr)
+ =\sum_ib_i\tr\sigma(g_ih)=\sum_ib_i\tr\rho(g_ih)=0 .
+\]
+The $\sigma(h)$ span $M_d(A)$ and the trace pairing on that algebra is
+perfect, since each matrix unit pairs with its transpose. Thus
+$\sum_ib_i\sigma(g_i)=0$. The same argument in reverse supplies the inverse,
+and the group law gives multiplicativity. An automorphism of $M_d(A)$ is
+inner because $A$ is local: take the images $F_{ij}$ of the matrix units,
+choose a generator $v_1$ of the rank-one direct summand $F_{11}A^d$, and use
+$v_i=F_{i1}v_1$ as a basis; in this basis the $F_{ij}$ are the usual matrix
+units. Consequently $\rho$ and $\sigma$ are equivalent modulo $\pi^r$. The
+converse follows from invariance of the trace.
+
+Next, multiplying an entrywise lift by $\pi^{n-1}$ identifies
+\[
+ H_n[\pi]\simeq\Hom_{k[G]}(\bar\rho,\bar\sigma),\qquad k=\OO/\pi .
+\]
+The matrix-span hypotheses imply absolute irreducibility of the residual
+representations, so by Schur's lemma this $k$-space has dimension at most
+one. The structure theorem over a discrete valuation ring makes $H_n$ cyclic
+or zero; write its length as $r\le n$.
+
+If $r>0$, choose a generator $X$ of exact order $\pi^r$ and write
+$X=\pi^{n-r}Y$ with $Y$ a matrix modulo $\pi^r$ having a unit entry. The
+intertwining equation descends to $Y$. Its residual reduction is a nonzero
+map between irreducible representations of equal dimension, hence
+invertible; therefore $Y$ is invertible modulo $\pi^r$. The representations
+are equivalent there, which gives $r\le a$.
+
+Conversely, for $s=\min(n,a)>0$, trace rigidity supplies an invertible
+intertwiner modulo $\pi^s$. Multiplying any lift by $\pi^{n-s}$ gives an
+element of $H_n$ of exact order $\pi^s$. Thus $r\ge s$; the case $s=0$
+follows from the first inequality.
+\end{proof}
+
+For the conjugate Tate dual $\sigma=D(\rho)$ of \eqref{sel:eq:conjdual}, the
+full matrix-span condition for $\rho$ gives the same condition for $\sigma$:
+conjugation and inversion permute the group elements, transposition
+preserves matrix span, and the extra factors are units. Hence
+\cref{sel:thm:tracedepth} computes $C_n(T)$ and $C(T)$ for every lattice
+satisfying the integral Burnside condition:
+\begin{equation}\label{sel:eq:Ctrace}
+ C(T)=\min_{g\in G}v_\pi\Bigl(\tr\rho(g)-\chi(g^c)\tr\bigl(\rho(g^c)^{-1}\bigr)\Bigr).
+\end{equation}
+\Cref{sel:thm:smith} is the general Smith formula and covers the rationally
+self-dual case $a=\infty$; \cref{sel:thm:tracedepth} identifies the finite
+congruence depth with a trace ideal.
+
+\begin{corollary}[Sharp scalar-discrepancy bound; \stU]\label{sel:cor:scalar}
+Under the integral Burnside condition, suppose $\rho(g)=\alpha I$ and
+$\rho((g^c)^{-1})=\alpha'I$ for some $g\in G$. Then
+\[
+ C(T)\le v_\pi\bigl(\alpha-\chi(g^c)\alpha'\bigr).
+\]
+\end{corollary}
+
+\begin{proof}
+The intertwining equation at $g$ says that
+$\Delta=\alpha-\chi(g^c)\alpha'$ annihilates $H_n$. Since $H_n$ is cyclic,
+its length is at most $v_\pi(\Delta)$. If $\Delta=0$ the bound is vacuous.
+\end{proof}
+
+The source's \code{congruenceTerm_le} gives $d\,v_\pi(\Delta)$ instead: its
+proof embeds the $\Hom$ module into a rank-$d$ character module, and
+cyclicity removes the factor $d$. In \code{MainSummands.lean}, the proof of
+\code{IsMainSummandLike.normLength_congruenceTerm_le} already establishes
+the necessary scalar discrepancy, so with the same hypotheses its conclusion
+improves to
+\[
+ \lambda_{\OO}\bigl(\text{\code{congruenceTerm}}\bigr)\le
+ v_\ell(\text{\code{D.chosenGroupOrder}})
+\]
+instead of $d$ times the right-hand side. This changes only the global
+congruence term. The local terms in the full Selmer budget keep their
+original estimates, and no factor-$d$ improvement of the source proof as a
+whole is asserted.
+
+\begin{example}[Exact model]\label{sel:ex:tracemodel}
+Let $G$ be free on $x,y,z$, and over $\Z_p$ put
+\[
+ A=\begin{pmatrix}1&1\\0&1\end{pmatrix},\quad
+ B=\begin{pmatrix}1&0\\1&1\end{pmatrix},\quad q=1+p^b,\quad b\ge1 ,
+\]
+$\rho(x)=\sigma(x)=A$, $\rho(y)=\sigma(y)=B$, $\rho(z)=I$,
+$\sigma(z)=qI$. The matrices $I,A,B,AB$ form an integral basis of
+$M_2(\Z_p)$. Commuting with $A,B$ forces an intertwiner to be scalar, and
+the last relation is $p^bt=0$; hence $\sellen H_n=\min(n,b)$, and the
+relation matrix has Smith factors $1,1,1,p^b$. The sharp bound is $b$, where
+the rank-$d$ estimate gives $2b$. For $p=2$, $b=3$ the discrepancy at $z$ is
+$-16$, of valuation $4$, while at $zxy$ it is $-24$, of valuation $3$:
+tracing only the scalar element can lose information when $p\mid d$, while
+the complete trace criterion remains exact. The checks are recorded in
+\artifact{grh_arithmetic_transfers_2026-11-26/certificates/trace_depth.json}.
+\end{example}
+
+The trace condition can be verified on a finite set of words.
+
+\begin{theorem}[A finite certificate from group generators; \stU]\label{sel:thm:finitewords}
+Let $G=\langle S\rangle$ with $S$ finite, let
+$\rho,\sigma\colon G\to\GL_d(\OO)$ with $\OO$ a discrete valuation ring,
+$d\ge1$, and $\operatorname{span}_{\OO}\rho(G)=M_d(\OO)$. Put $m=d^2$. There
+are words $g_1=1,g_2,\dots,g_m$, each of length at most $m-1$ in $S$, for
+which $B_i=\rho(g_i)$, $1\le i\le m$, is an $\OO$-basis of $M_d(\OO)$. For
+every $r\ge1$, the two representations are equivalent modulo $\pi^r$ if and
+only if their traces agree modulo $\pi^r$ on the finite set
+\[
+ \mathcal T=\{g_ig_j:1\le i,j\le m\}\cup\{sg_ig_j:s\in S,\ 1\le i,j\le m\}.
+\]
+All test words have length at most $2d^2-1$. If both integral matrix spans
+are full, the exact congruence depth of \cref{sel:thm:tracedepth} is
+\[
+ a=\min_{w\in\mathcal T}v_\pi\bigl(\tr\rho(w)-\tr\sigma(w)\bigr).
+\]
+\end{theorem}
+
+\begin{proof}
+Over the residue field let $V_j$ be the span of the images of positive
+words of length at most $j$. Its dimension starts at one. If
+$V_{j+1}=V_j$, left multiplication by each generator preserves it; these
+multiplications are invertible, so their restrictions to the
+finite-dimensional space are surjective and inverses also preserve it. Thus
+$V_j$ contains every group image and is already $M_d(k)$. It follows that
+$V_{m-1}=M_d(k)$. Choose a basis of word images including the identity and
+lift it to $\OO$; its coordinate determinant is a unit, giving the asserted
+integral basis.
+
+Work over $R=\OO/\pi^r$. The trace pairing $(X,Y)\mapsto\tr(XY)$ on
+$M_d(R)$ is perfect, so $\Gamma=(\tr(B_iB_j))_{i,j}$ has unit determinant.
+The pair tests say that the same is true for the corresponding matrix on
+$B_i'=\sigma(g_i)$. Consequently the $B_i'$ also form a basis, and there is
+a unique linear isomorphism $\Phi\colon M_d(R)\to M_d(R)$ taking $B_i$ to
+$B_i'$. It sends the identity to the identity.
+
+Write $\rho(s)B_i=\sum_kc_kB_k$. Pair this equation with each $B_j$ and use
+the triple tests. Perfectness of the pairing on the $B_j'$ implies
+\[
+ \sigma(s)B_i'=\sum_kc_kB_k'=\Phi(\rho(s)B_i).
+\]
+Thus $\Phi$ intertwines left multiplication by all generators, hence by
+their inverses and by all group elements. Applying this to the identity
+gives $\Phi(\rho(g))=\sigma(g)$ for every $g$. As group images span, $\Phi$
+is multiplicative. The matrix-unit argument in the proof of
+\cref{sel:thm:tracedepth} makes it inner, proving equivalence. The reverse
+implication is invariance of the trace. Taking the largest valid $r$, with
+zero and infinity allowed, proves the last assertion.
+\end{proof}
+
+The generators must generate $G$, or at least the \emph{joint} image of
+$(\rho,\sigma)$: an element of the kernel of $\rho$ may act nontrivially
+under $\sigma$. For continuous representations it is enough to generate the
+joint image topologically, since the equations are continuous and
+congruence classes are closed. An arbitrary list of Frobenius elements is
+not automatically such a generating set, and the word bound is an
+elementary certificate, not an optimal one.
+
+\begin{corollary}[Frobenius traces and the product over coefficient primes; \stU]\label{sel:cor:frobenius}
+\leavevmode
+\begin{enumerate}[label=\textup{(\roman*)}]
+\item For continuous representations $\rho,\sigma$ of the Galois group of a
+number field, unramified outside a finite set and both of full integral
+matrix span,
+\begin{equation}\label{sel:eq:frobdepth}
+ a=\min_{v\ \mathrm{unramified}}
+ v_\pi\bigl(\tr\rho(\Frob_v)-\tr\sigma(\Frob_v)\bigr).
+\end{equation}
+\item Let $L$ be a number field (the coefficient field) and $S$ a finite set
+of its finite places.
+Suppose a fixed compatible pair has trace discrepancies
+$\delta_v\in\OO_{L,S}$, with local representations integral and of full
+matrix span at the coefficient places designated good, all outside $S$, and
+let $J=(\delta_{v_1},\dots,\delta_{v_t})$ be a nonzero ideal generated by
+exact discrepancies at finitely many places unramified for every local pair
+under consideration. With
+$N_S(J)=\prod_{\lambda\notin S}(N\lambda)^{v_\lambda(J)}$,
+\begin{equation}\label{sel:eq:idealbound}
+ C_\lambda\le v_\lambda(J),\qquad
+ \sum_{\lambda\ \mathrm{good}}C_\lambda\log N\lambda\le\log N_S(J).
+\end{equation}
+If $J=\OO_{L,S}$, all good-place global congruence terms vanish. If the
+common discrepancies range over a Frobenius set that is Chebotarev-dense for
+every good local pair, the ideal $I$ of all of them satisfies
+$C_\lambda=v_\lambda(I)$ at good places.
+\end{enumerate}
+\end{corollary}
+
+\begin{proof}
+(i) A finite minimal valuation defines a nonempty conjugacy-invariant open
+subset in a finite quotient, and by Chebotarev's theorem some unramified
+Frobenius belongs to it. Conversely every Frobenius is a group element. If
+all discrepancies vanish, both sides are infinite. (ii) follows from
+\eqref{sel:eq:frobdepth} and $v_\lambda(J)=\min_iv_\lambda(\delta_{v_i})$.
+\end{proof}
+
+One nonzero exact Frobenius discrepancy of valuation $b$ proves $C\le b$,
+and finding it needs no scalar Frobenius. To prove $C=b$ one must also
+establish the congruence modulo $\pi^b$, for example by an invertible
+intertwiner, a proven joint-image certificate, or
+\cref{sel:thm:finitewords}; numerical approximations to Hecke eigenvalues
+are not exact congruence certificates. The hypotheses of (ii) are
+additional arithmetic requirements, not consequences of compatibility:
+coefficient places over the residue characteristic of a chosen Frobenius
+place may have to be excluded, and simultaneous unramifiedness can leave too
+small a common indexing set. Noetherianity supplies a finite generating
+subfamily of $I$; it does not make an arbitrary sample complete. The
+inequality \eqref{sel:eq:idealbound} is the form in which the source's
+product-formula argument pays for local denominator losses. It certifies
+the global congruence term only: local terms, bad coefficient primes and the
+construction of the compatible system remain separate.
+
+\begin{example}\label{sel:ex:ideal}
+Over $\Z[1/5]$, let $G$ be free on $u,v,z$, with
+$\rho(u)=\sigma(u)=A$, $\rho(v)=\sigma(v)=B$ as in
+Example~\ref{sel:ex:tracemodel}, $\rho(z)=I$ and $\sigma(z)=25I$. The matrices
+$I,A,B,AB$ form an integral basis with trace-pairing determinant $-1$. The
+trace differences at $z,zu,zv,zuv$ are $-48,-48,-48,-72$, generating
+$(24)$, and all discrepancies are divisible by $24$ in $\Z[1/5]$. Thus
+$C_2=3$, $C_3=1$ and $C_p=0$ for $p\notin\{2,3,5\}$. The exact denominator
+product is $2^3\cdot3=24$, where the rank-two scalar estimate gives
+$24^2=576$; the relation matrix has Smith factors $1,1,1,24$
+(\artifact{grh_arithmetic_transfers_2026-11-26/certificates/transfer_extensions.json}).
+\end{example}
+
+The full \emph{integral} matrix-span hypothesis in
+\cref{sel:thm:tracedepth} is essential. Absolute irreducibility over the
+fraction field is too weak, even in rank two.
+
+\begin{theorem}[Extra torsion invisible to the trace depth; \stU]\label{sel:thm:bad}
+Fix an odd prime $p$ and positive integers $a,c$. Let $\OO=\Z_p$ and let $G$
+be free on $u,v,z$. Define
+\[
+ \rho(u)=\sigma(u)=I+p^cE_{12},\quad
+ \rho(v)=\sigma(v)=I+p^cE_{21},\quad
+ \rho(z)=I,\quad\sigma(z)=(1+p^a)I .
+\]
+Both representations are absolutely irreducible over $\Q_p$, and their
+trace-congruence depth is exactly $a$, but
+\begin{align}
+ \sellen_{\OO}\Hom_{(\OO/p^n)[G]}(\rho_n,\sigma_n)
+ &=\min(n,a)+3\min(n,a,c),\label{sel:eq:badlength}\\
+ \sup_n\sellen_{\OO}\Hom_{(\OO/p^n)[G]}(\rho_n,\sigma_n)
+ &=a+3\min(a,c).\notag
+\end{align}
+The image order generated by $u,v$ is
+$\mathcal R=\OO I+\OO p^cE_{12}+\OO p^cE_{21}+\OO p^{2c}E_{11}$. It has
+colength $4c$ in $M_2(\OO)$ and conductor exponent $2c$:
+$p^{2c}M_2(\OO)\subseteq\mathcal R$ but
+$p^{2c-1}M_2(\OO)\nsubseteq\mathcal R$.
+\end{theorem}
+
+\begin{proof}
+Over the algebraic closure the first unipotent has the unique invariant
+line spanned by the first coordinate vector, and the second has the unique
+invariant line spanned by the second; they have no common line. The
+representations agree modulo $p^a$ on generators and hence on all group
+elements, and at $z$ the trace discrepancy is $-2p^a$, of valuation $a$.
+
+Write an intertwiner as
+$X=\bigl(\begin{smallmatrix}t&y\\z'&t+h\end{smallmatrix}\bigr)$.
+Commutation with the first two matrices imposes exactly
+$p^cy=p^cz'=p^ch=0$ modulo $p^n$. The third equation imposes $p^aX=0$,
+which kills all four coordinates. Their lengths are $\min(n,a)$ and three
+copies of $\min(n,a,c)$.
+
+The displayed order is closed under products and contains the generators
+and their inverses. Conversely their differences from $I$ give the
+off-diagonal generators, and their product gives $p^{2c}E_{11}$. Its
+elementary divisor valuations are $0,c,c,2c$, which proves the colength and
+conductor statements.
+\end{proof}
+
+For $a\ge c$ the excess over the trace depth is exactly $3c$; for instance
+$p=3$, $a=2$, $c=1$ gives trace depth $2$ and intertwiner length $5$. The
+relation matrix has Smith factors
+$p^{\min(a,c)},p^{\min(a,c)},p^{\min(a,c)},p^a$. This is not a sampling
+problem: the traces on \emph{all} group elements fail to determine the
+extra torsion. An integral model, or an explicitly measured defect of the
+image order, must accompany any extension of \eqref{sel:eq:Ctrace} to bad
+coefficient primes.
+
+\subsection{Polarized Tate modules and the symmetry of the mirror pairing}\label{sel:sec:mirror}
+\sources{grh_structural_transfers_2026-11-25; grh_arithmetic_transfers_2026-11-26}
+
+\begin{corollary}[Polarized abelian varieties; \stU]\label{sel:cor:polarized}
+Let $A$ be an abelian variety over a totally real field $k_0$, let $K/k_0$
+be a CM quadratic extension, and put $T=T_\ell A|_{G_K}$, after any finite
+extension of coefficients. Then $C(T)=\infty$, and the same holds after
+every finite-order anticyclotomic twist. In particular the source's
+\code{SelmerDatum} hypothesis cannot be instantiated directly with the Tate
+module relevant to the Birch and Swinnerton-Dyer conjecture for an elliptic
+curve over $\Q$.
+\end{corollary}
+
+\begin{proof}
+A polarization gives a nondegenerate rational Weil
+pairing~\cite{Milne2008Abelian} $e\colon V\times V\to F(1)$ on
+$V=T\otimes F$. Let $C$ denote the action of a chosen complex conjugation on
+$V$ and set $B(v,w)=e(v,Cw)$. For $g\in G_K$,
+\[
+ B(\rho(g)v,w)=\chi(g)e\bigl(v,\rho(g)^{-1}Cw\bigr)
+ =\chi(g^c)e\bigl(v,C\rho(g^c)^{-1}w\bigr)
+ =B\bigl(v,\chi(g^c)\rho(g^c)^{-1}w\bigr).
+\]
+Thus $v\mapsto B(v,-)$ is a nonzero rational map $V\to D(V)$. Apply
+Corollary~\ref{sel:cor:finiteness} and Proposition~\ref{sel:prop:invariance}. For an elliptic
+curve the principal polarization is already perfect on the Tate lattice;
+the rational argument also covers nonprincipal polarizations without
+excluding the primes dividing their degree.
+\end{proof}
+
+The source locates precisely the step at which a new argument would be
+needed. In \code{Mirror.lean}, the theorem
+\code{SelmerDatum.length_dualSelmer_le} constructs, for each $n$, an
+injection
+\begin{equation}\label{sel:eq:mirror}
+ \Phi_n\colon\mathcal S_n^{\mathrm{dual}}\hookrightarrow
+ \Hom_{G_K}\bigl(T/\pi^nT,D(T)/\pi^nD(T)\bigr)
+\end{equation}
+of the dual Selmer module at level $n$. It is characterized, on the subgroup
+$H_0\subseteq G_K$ used to detect cocycles, by
+$\Phi_n(y)(z(g))=y(g^c)$ for a fixed primitive Selmer cocycle $z$; the
+construction has $H_0$ stable under conjugation and $z(H_0)$ spanning
+$W=T/\pi^nT$. With $H$ the lattice of integral intertwiners $T\to D(T)$ and
+$a_j$ as in \cref{sel:thm:smith}, the correct unconditional inequality is
+\begin{equation}\label{sel:eq:polarcomponent}
+ \sellen\mathcal S_n^{\mathrm{dual}}
+ \le\sellen\Phi_n^{-1}(H/\pi^nH)+\sum_j\min(n,a_j)
+ \le\sellen\Phi_n^{-1}(H/\pi^nH)+\sum_ja_j .
+\end{equation}
+Projecting the target modulo $H/\pi^nH$ can destroy injectivity, so the
+Smith computation supplies only the second term. The theorem in
+\code{Descent.lean} feeds the full dual length into the tied Selmer bound,
+and \code{IsTorsionLevel} in \code{Line.lean} requires a fixed finite budget
+independent of the torsion level; replacing that budget by the bounded
+quotient without controlling the \emph{polarization component}
+$\Phi_n^{-1}(H/\pi^nH)$ would be a gap.
+
+The source proves more about $\Phi_n$ than its stated length bound uses.
+For $W=T/\pi^nT$ let
+\begin{align*}
+ \mathcal C_n^+(T)&=\bigl\{\eta\in\Hom_{G_K}(W,W^{*c}):
+ \eta(u)(v)=\eta(v)(u)\ \text{for all }u,v\in W\bigr\},\\
+ C^+(T)&=\sup_{n\ge1}\sellen_{\OO}\mathcal C_n^+(T).
+\end{align*}
+The superscript refers to symmetry of the bilinear form, not to the action
+of complex conjugation on a Selmer group. Clearly $C^+(T)\le C(T)$.
+
+\begin{proposition}[Sign-sensitive mirror bound; \stU]\label{sel:prop:symmetricmirror}
+Under the hypotheses used to construct the mirror injection
+\eqref{sel:eq:mirror}, its image lies in $\mathcal C_n^+(T)$. Consequently
+\[
+ \sellen_{\OO}\mathcal S_n^{\mathrm{dual}}\le\sellen_{\OO}\mathcal C_n^+(T).
+\]
+The proof uses the source identity \code{mirrorForm_eq_zero} together with
+the spanning hypothesis; it does not require a division by $2$.
+\end{proposition}
+
+\begin{proof}
+The identity \code{mirrorForm_eq_zero} states
+\[
+ y(h')\bigl(t\,z(h)\bigr)-y(h^c)\bigl(t\,z(h'^{\,c})\bigr)=0
+ \qquad(h,h'\in H_0,\ t\in\OO).
+\]
+Put $h'=k^c$. Since $H_0$ is stable under conjugation, this gives
+\[
+ \Phi_n(y)(z(k))\bigl(t\,z(h)\bigr)=\Phi_n(y)(z(h))\bigl(t\,z(k)\bigr).
+\]
+Extend in both arguments using the spanning of $z(H_0)$ and
+$\OO$-bilinearity; this proves symmetry on all of $W\times W$. The source
+proves $\Phi_n$ injective, so the length inequality follows.
+\end{proof}
+
+Appending the symmetry equations $X-X^{\selT}=0$ to the finite intertwining
+matrix and applying \cref{sel:thm:smith} to the augmented relation matrix
+gives the exact criterion
+\begin{equation}\label{sel:eq:Cplus}
+ C^+(T)<\infty\iff
+ \text{there is no nonzero symmetric rational conjugate Tate-dual map.}
+\end{equation}
+Anticyclotomic twists preserve the symmetry equations as well as the
+intertwining equations, so they preserve this refined obstruction too.
+
+\begin{proposition}[The opposite sign admits a bounded mirror target; \stU]\label{sel:prop:opposite}
+Suppose the rational conjugate Tate-dual $\Hom$ space is one-dimensional,
+generated by an alternating pairing. Let $P$ be a primitive integral
+generator of its lattice, let $a_1,\dots,a_r$ be the nonzero Smith
+valuations of the full intertwining matrix, and put
+$\gamma_n=\sum_j\min(n,a_j)$ and $d_2=v_\pi(2)$. Then
+\[
+ \sellen\mathcal C_n^+(T)\le\gamma_n+\min(n,d_2)\le\sum_ja_j+d_2 .
+\]
+For odd residue characteristic the term involving $2$ vanishes.
+\end{proposition}
+
+\begin{proof}
+The quotient of the full finite-level $\Hom$ module by $(\OO/\pi^n)P$ has
+length $\gamma_n$. The kernel of the restriction of the quotient map to the
+symmetric submodule consists of the scalar multiples $bP$ that are symmetric
+modulo $\pi^n$. Since $P^{\selT}=-P$ and $P$ is primitive, this is
+equivalent to $2b=0$ in $\OO/\pi^n$, and that annihilator has length
+$\min(n,d_2)$. Add the lengths of the kernel and the image.
+\end{proof}
+
+Under the integral Burnside hypothesis the sign analysis is exact at every
+congruence depth.
+
+\begin{proposition}[Exact symmetric length under the matrix-span hypothesis; \stU]\label{sel:prop:exactsign}
+Assume $\operatorname{span}_{\OO}\rho(G)=M_d(\OO)$, and let
+$a\in\{1,2,\dots\}\cup\{\infty\}$ be the trace depth \eqref{sel:eq:Ctrace}
+of the pair $(\rho,D(\rho))$, assumed positive.
+\begin{enumerate}[label=\textup{(\roman*)}]
+\item There is an intertwiner $P$ from $\rho$ to $D(\rho)$ that is invertible
+modulo $\pi^a$ (over $\OO$ when $a=\infty$, where $P$ is a primitive
+integral generator of the rational $\Hom$ line), and for every $n$ the full
+finite-level $\Hom$ module is generated by $\pi^{n-\min(n,a)}P$.
+\item $P^{\selT}=\epsilon P$ for a unit $\epsilon$ modulo $\pi^a$ with
+$\epsilon^2=1$; when $a=\infty$, $\epsilon\in\{1,-1\}$.
+\item Put $s=\min\bigl(a,v_\pi(\epsilon-1)\bigr)$, the valuation being
+computed on any lift and truncated at $a$. Then
+\[
+ \sellen\mathcal C_n^+(T)=\min(n,s),\qquad C^+(T)=s .
+\]
+\end{enumerate}
+In particular, when $a=\infty$,
+\[
+ \sellen\mathcal C_n^+(T)=
+ \begin{cases}n,&\epsilon=1,\\ \min(n,v_\pi(2)),&\epsilon=-1,\end{cases}
+\]
+so that $C^+(T)=v_\pi(2)$ in the alternating case: zero at odd $\ell$, and of
+normalized length at most $1$ at $\ell=2$. When $a<\infty$ and the residue
+characteristic is odd, $\epsilon=\pm1$ and $C^+(T)$ equals $a$ or $0$
+respectively.
+\end{proposition}
+
+\begin{proof}
+(i) For $a<\infty$ this is \cref{sel:thm:tracedepth} and its proof. For
+$a=\infty$, reducing the matrix-span condition modulo $\pi$ shows that the
+residual representation is absolutely irreducible. A primitive integral
+intertwiner $P$ reduces to a nonzero map between the residual representation
+and its conjugate Tate dual; its kernel is invariant under every matrix and
+hence zero, so $P\in\GL_d(\OO)$. After identifying the target by $P$, an
+equivariant map modulo $\pi^n$ is a matrix commuting with $\rho(G)$, hence
+with all of $M_d(\OO/\pi^n)$, and is scalar.
+
+(ii) Transposition preserves the conjugate-duality equations: the bilinear
+form of \eqref{sel:eq:conjdualrel} satisfies
+$B(\rho(g)u,\rho(g^c)v)=\chi(g)B(u,v)$ with $c^2=1$ and
+$\chi(g^c)=\chi(g)$. By (i) the module at level $a$ is a free line, so
+$P^{\selT}=\epsilon P$, and transposing twice gives $\epsilon^2=1$. In
+characteristic zero this forces $\epsilon=\pm1$.
+
+(iii) For $r=\min(n,a)$, every intertwiner is a scalar multiple
+$b\,\pi^{n-r}P$ with $b$ modulo $\pi^r$, and symmetry imposes exactly
+$(\epsilon-1)b\equiv0\pmod{\pi^r}$.
+\end{proof}
+
+At residue characteristic two and finite depth one must retain the measured
+value of $s$: a scalar whose square is one modulo $8$ need not be $\pm1$.
+The invertible matrices
+$P_\epsilon=\bigl(\begin{smallmatrix}0&1\\\epsilon&0\end{smallmatrix}\bigr)$
+over $\Z/8\Z$ satisfy $P_\epsilon^{\selT}=\epsilon P_\epsilon$ for each of
+$\epsilon=1,3,5,7$. This is a finite algebra illustration, not a Galois
+realization.
+
+\begin{proposition}[The polarization of a Tate module is symmetric; \stU]\label{sel:prop:weilsign}
+In the situation of Corollary~\ref{sel:cor:polarized}, the conjugate pairing
+$B(v,w)=e(v,Cw)$ is symmetric. Hence $C^+(T)=\infty$ as well: neither odd
+$\ell$ nor removal of $2$-torsion eliminates the obstruction.
+\end{proposition}
+
+\begin{proof}
+If $e$ is the alternating Weil pairing and $C$ is complex conjugation, then
+$e(Cv,Cw)=-e(v,w)$. Therefore
+\[
+ B(w,v)=e(w,Cv)=-e(Cw,v)=e(v,Cw)=B(v,w).
+\]
+The forced polarization map survives the symmetry condition of
+Proposition~\ref{sel:prop:symmetricmirror}; apply \eqref{sel:eq:Cplus}.
+\end{proof}
+
+\begin{remark}[Symmetry alone cannot justify quotienting]\label{sel:rem:quotient}
+Let $R=\OO/\pi^n$, $W=R$ and $H_0=(R,+)$ with trivial conjugation. Put
+$z(h)=h$ and $y_b(h)(v)=bhv$ (composed with a generating additive character
+if character-module values are used). Then $z(H_0)$ spans $W$ and the mirror
+expression vanishes identically. The associated map is
+$\Phi(b)=b\cdot\mathrm{id}$, which is injective, and its image is exactly
+the symmetric pairing line. Quotienting by that line kills the whole image,
+of length $n$. This is a linear-algebra counterexample to deducing a bounded
+quotient estimate from mirror symmetry and spanning; it is not a Galois
+Selmer datum.
+\end{remark}
+
+\begin{remark}[A weaker hypothesis for the twisting theorem]\label{sel:rem:refactor}
+In the structure \code{SelmerDatum} of the source, replace the hypothesis field
+\code{congruenceTerm_ne_top} by
+finiteness of $C^+(T)$ and define $\beta^+(T)=C^+(T)+{}$local terms.
+Proposition~\ref{sel:prop:symmetricmirror} then supplies the required endpoint of the
+descent; the subsequent uses in the source are the tied Selmer-length
+estimate (\code{Descent.lean}), the constant-term polynomial bound and the
+finite budget of \code{IsTorsionLevel} (\code{Line.lean}), and
+torsion-point specialization and the simultaneous twist theorem
+(\code{GeneralTheorem.lean}). The old data satisfy the new condition because
+$C^+(T)\le C(T)$, and by Propositions~\ref{sel:prop:opposite} and~\ref{sel:prop:exactsign} the
+enlargement would include opposite-sign self-dual representations whenever
+all the other scalar, irreducibility, local-rank and ramification
+assumptions hold. This generalized twisting theorem is a proposed
+generalization supported by the dependency chain just listed; it has not been
+rebuilt formally, and no arithmetic instance has been constructed. The
+signs of automorphic polarizations are constrained by the theorem of
+Bella\"iche--Chenevier~\cite{Bellaiche2011Sign}, whose sign convention and
+multiplier must be translated before it is applied to this interface; one
+cannot assume that opposite-sign examples include the central geometric
+motives of interest, and by Proposition~\ref{sel:prop:weilsign} they do not include
+the Tate modules of Corollary~\ref{sel:cor:polarized}.
+\end{remark}
+
+In summary, this is an obstruction to a direct use of the existing proof,
+not a negative theorem about the Birch and Swinnerton-Dyer conjecture. For
+symmetric polarized data the term $\Phi_n^{-1}(H/\pi^nH)$ in
+\eqref{sel:eq:polarcomponent} remains an explicit arithmetic obligation: a
+successful extension would have to bound or reinterpret it, or replace the
+descent by a rank-sensitive one. Moreover the source constructs favorable
+twists with small Selmer modules for a particular denominator budget; this
+does not relate the analytic rank of an elliptic curve to its Mordell--Weil
+rank, determine a regulator, or give a leading-term formula.
+
+\subsection{A worked certificate: the Ramanujan representation}\label{sel:sec:delta}
+\sources{grh_arithmetic_transfers_2026-11-26}
+
+Let $\Delta(q)=q\prod_{n\ge1}(1-q^n)^{24}=\sum_{n\ge1}\tau(n)q^n$ and let
+$\rho_\ell\colon G_{\Q}\to\GL_2(\Z_\ell)$ be its usual representation, so
+that for $p\ne\ell$
+\[
+ \tr\rho_\ell(\Frob_p)=\tau(p),\qquad\det\rho_\ell(\Frob_p)=p^{11},
+\]
+with arithmetic Frobenius and $\chi_\ell(\Frob_p)=p$. Put
+$E=\Q(\sqrt{-23})$, restrict $\rho_\ell$ to $G_E$, write $T_\ell$ for its
+lattice and $T_\ell(j)=T_\ell\otimes\chi_\ell^j$ for $j\in\Z$.
+
+\begin{theorem}[Global term at every Tate shift; \stU]\label{sel:thm:delta}
+Let $\ell\notin\{2,3,5,7,23,691\}$, $j\in\Z$ and $M=10+2j$. Then
+\[
+ C\bigl(T_\ell(j)\bigr)=
+ \begin{cases}
+ \infty,&M=0,\\
+ 1+v_\ell(\abs{M}),&M\ne0\text{ and }(\ell-1)\mid M,\\
+ 0,&(\ell-1)\nmid M .
+ \end{cases}
+\]
+For every finite level $n$ the full conjugate-dual $\Hom$ module is cyclic
+of length $\min\bigl(n,C(T_\ell(j))\bigr)$. Moreover
+$C^+(T_\ell(j))=C(T_\ell(j))$ in every case.
+\end{theorem}
+
+\begin{proof}
+By the theorem of Serre and Swinnerton-Dyer, outside the six displayed
+primes the residual image of $\rho_\ell$ contains
+$\SL_2(\F_\ell)$~\cite{SwinnertonDyer1973Ladic,Edixhoven2007Computation}.
+Restriction to $G_E$ retains this subgroup: the image of $G_E$ has index at
+most two, and $\SL_2(\F_\ell)$ is perfect for $\ell\ge5$. Thus the
+restricted residual representation is absolutely irreducible and the
+integral matrix-span hypothesis holds; Tate twists preserve it, since they
+multiply each group image by a unit.
+
+Because $\rho_\ell$ extends to $G_{\Q}$, conjugation by complex conjugation
+is an integral change of basis. In rank two the wedge pairing identifies
+$\rho_\ell^\vee$ with $\rho_\ell\otimes(\det\rho_\ell)^{-1}$ integrally.
+Consequently
+\[
+ D\bigl(T_\ell(j)\bigr)\simeq T_\ell(j)\otimes\chi_\ell^{-M}.
+\]
+In an intertwining equation between these two representations the factor
+$\chi_\ell^j$ cancels, so we may work with $\rho_\ell|_{G_E}$ and its twist
+by $\psi=\chi_\ell^{-M}$.
+
+First, the residual representation has no nontrivial character self-twist.
+If an invertible $U$ satisfies
+$U\bar\rho(g)=\bar\psi(g)\bar\rho(g)U$, then $\bar\psi$ is trivial on
+$\ker\bar\rho$ and factors through $\Gamma=\operatorname{im}\bar\rho$.
+Since $\Gamma$ contains the perfect group $\SL_2(\F_\ell)$, the character is
+trivial on that subgroup. The matrix $U$ then commutes with all elementary
+unipotents, hence with every matrix, and is scalar. The intertwining
+equation now forces $\bar\psi=1$ on all of $G_E$.
+
+Suppose an equivalence exists modulo $\ell^n$. Its reduction and the
+preceding argument give $\psi\equiv1\pmod\ell$. Taking determinants gives
+$\psi^2\equiv1\pmod{\ell^n}$. Because $\ell$ is odd, $\psi+1$ is a unit at
+every group element, so $\psi\equiv1\pmod{\ell^n}$. Conversely a character
+that is trivial modulo $\ell^n$ plainly gives an equivalence. By
+\cref{sel:thm:tracedepth}, the global term is the largest depth at which
+$\chi_\ell^M$ is trivial on $G_E$, and the $\Hom$ modules are cyclic.
+
+The cyclotomic image of $G_E$ is all of $\Z_\ell^\times$. Indeed
+$E\cap\Q(\mu_{\ell^\infty})=\Q$: a nontrivial intersection would contain the
+quadratic field $E$, which ramifies at $23$, whereas the $\ell$-power
+cyclotomic tower is unramified there for $\ell\ne23$. If $(\ell-1)\nmid M$,
+some unit already has $u^M\not\equiv1\pmod\ell$. If $(\ell-1)\mid M\ne0$,
+the decomposition
+$\Z_\ell^\times\simeq\mu_{\ell-1}\times(1+\ell\Z_\ell)$ and the
+lifting-the-exponent formula give
+\[
+ \min_{u\in\Z_\ell^\times}v_\ell(u^M-1)=1+v_\ell(\abs{M}),
+\]
+with equality at $u=1+\ell$. For $M=0$ the character is trivial at every
+depth. These are the three stated cases.
+
+For the last assertion, the wedge pairing of $T_\ell(j)$ takes values in
+$\Z_\ell(11+2j)$. At any depth where $\chi_\ell^M=1$ this target equals the
+Tate twist $\Z_\ell(1)$ modulo that depth. If $C_j$ is complex conjugation
+on $T_\ell(j)$, then $\det C_j=-1$, so the conjugate pairing
+$B(v,w)=v\wedge C_jw$ is symmetric and perfect. It generates the entire
+finite-level intertwiner line, whence $C^+=C$, including the infinite value
+at $j=-5$.
+\end{proof}
+
+\begin{example}[Two-prime certificate at $j=0$]\label{sel:ex:twoprime}
+For $j=0$ the theorem gives $C(T_{11})=1$ and $C(T_\ell)=0$ for the other
+non-exceptional primes. The upper bounds follow from two Frobenius
+discrepancies via \eqref{sel:eq:idealbound}. Both $2$ and $3$ split in $E$,
+since $-23\equiv1\pmod 8$ and $-23\equiv1\pmod 3$. At a degree-one place
+above $p\in\{2,3\}$ the trace discrepancy between $T_\ell$ and
+$D(T_\ell)\simeq T_\ell\otimes\chi_\ell^{-10}$ is $\tau(p)(1-p^{-10})$, whose
+denominator is an $\ell$-adic unit. With $\tau(2)=-24$ and $\tau(3)=252$,
+\[
+ 24(2^{10}-1)=24552=2^3\,3^2\,11\cdot31,\qquad
+ 252(3^{10}-1)=14880096=2^5\,3^2\,7\cdot11^2\cdot61,
+\]
+and $\gcd(24552,14880096)=792=2^3\,3^2\,11$. Hence $C(T_\ell)=0$ unless
+$\ell=11$, and $C(T_{11})\le1$. At $11$ the character $\chi_{11}^{10}$ is
+trivial modulo $11$ on every group element, so $T_{11}$ and $D(T_{11})$ are
+equivalent modulo $11$ and $C(T_{11})\ge1$.
+\end{example}
+
+\begin{center}
+\begin{tabular}{@{}rrl@{}}
+\toprule
+$j$ & $M=10+2j$ & Nonzero terms at non-exceptional primes\\
+\midrule
+$-5$ & $0$ & $C(T_\ell(-5))=\infty$ for every such $\ell$\\
+$-1$ & $8$ & none\\
+$0$ & $10$ & $C(T_{11})=1$\\
+$1$ & $12$ & $C(T_{13}(1))=1$\\
+$2$ & $14$ & none\\
+$3$ & $16$ & $C(T_{17}(3))=1$\\
+$4$ & $18$ & $C(T_{19}(4))=1$\\
+$50$ & $110$ & $C(T_{11}(50))=2$\\
+\bottomrule
+\end{tabular}
+\end{center}
+
+\begin{corollary}[No bound independent of Tate weight; \stU]\label{sel:cor:tateweight}
+Fix a prime $\ell\notin\{2,3,5,7,23,691\}$ and $r\ge1$. For
+$j=\bigl((\ell-1)\ell^{r-1}-10\bigr)/2$ one has
+$C(T_\ell(j))=C^+(T_\ell(j))=r$.
+\end{corollary}
+
+\begin{proof}
+The numerator defining $j$ is even, and \cref{sel:thm:delta} applies with
+$M=(\ell-1)\ell^{r-1}$.
+\end{proof}
+
+This constrains any transfer scheme that seeks a uniform congruence budget
+while changing the Tate weight, and it is a concrete family in which the
+sign-sensitive refinement of Proposition~\ref{sel:prop:symmetricmirror} retains the
+central obstruction: at $j=-5$ the conjugate Tate self-duality is genuine
+and the global term is infinite, so the finite certificate at $j=0$ does
+not remove the central self-duality obstruction relevant to a direct
+Bloch--Kato transfer. The theorem computes one arithmetic input of the
+general twisting theorem and does not by itself give a \code{SelmerDatum}:
+the untwisted representation is unramified at all finite primes away from
+$\ell$, whereas the source requires a scalar inertia element there
+(\cref{sel:sec:inertia}); a preliminary ramified twist and the local
+crystalline conditions would have to be established separately, and the
+displayed Tate shifts are not asserted to satisfy the local-rank
+conditions. An anticyclotomic preliminary twist preserves the computed
+global term by Proposition~\ref{sel:prop:invariance}.
+
+\subsection{Scalar inertia}\label{sel:sec:inertia}
+\sources{grh_structural_transfers_2026-11-25; grh_transfer_analysis_2026-11-25; grh_method_transfers_2026-11-25_1; grh_quantitative_twists_2026-11-25}
+
+Besides a finite global congruence term, a \code{SelmerDatum} requires an
+element $\gamma$ of inertia at a place away from $\ell$ with
+$\rho(\gamma)=\rho(\gamma^{-c})=\zeta I$ and $\zeta^2-1\in\OO^\times$. The
+following tests are elementary consequences of that requirement.
+
+\begin{proposition}[Rank and determinant obstruction; \stU]\label{sel:prop:rankdet}
+Let $\OO$ be a discrete valuation ring of residue characteristic $\ell$ with
+fraction field of characteristic zero, and let
+$\rho\colon G\to\GL_n(\OO)$, $n>0$. Let $I\subseteq G$ be a subgroup on
+which $\det\rho$ is trivial, and write $n=\ell^an_0$ with
+$\gcd(n_0,\ell)=1$. If $n_0\in\{1,2\}$, there is no $\gamma\in I$ with
+$\rho(\gamma)=\zeta I_n$ and $\zeta^2-1\in\OO^\times$.
+\end{proposition}
+
+\begin{proof}
+Taking determinants gives $\zeta^n=1$, so $\zeta$ is a unit. In the residue
+field,
+$(\bar\zeta^{n_0}-1)^{\ell^a}=\bar\zeta^{\ell^an_0}-1=0$, hence
+$\bar\zeta^{n_0}=1$. If $n_0$ is $1$ or $2$ this implies $\bar\zeta^2=1$, so
+$\zeta^2-1$ lies in the maximal ideal.
+\end{proof}
+
+This applies whenever the determinant is unramified at every finite place
+away from $\ell$, with $I$ any of those inertia groups; it rules out ranks
+$1$, $2$, $\ell^a$ and $2\ell^a$ with such determinant. Two special cases
+recur in the corpus: a nonzero pure Tate-twist lattice $\OO(-e)$ ($n=1$),
+which blocks the immediate substitution that would turn the twisting
+theorem into universal Tate-twist Selmer vanishing; and the unmodified
+rank-two Tate module of an elliptic curve, whose determinant is the
+cyclotomic character by the Weil pairing. (In rank two the argument needs
+no residue field: over any nonzero integral domain, $\det(\eta I_2)=1$
+gives $\eta^2-1=0$, which is not a unit.) The test is necessary, not
+sufficient. The hypothesis on the determinant matters: adjoining a ramified
+scalar character changes it and can remove this particular obstruction.
+Such a preliminary character must have suitable nontrivial residual order;
+the source's own $\ell$-power-order twists reduce to $1$ in residue
+characteristic $\ell$, so they cannot turn $\bar\zeta^2=1$ into
+$\bar\zeta^2\ne1$, and tensoring by a scalar cannot turn a nonscalar inertia
+matrix into a scalar one.
+
+\begin{lemma}[Scalars on symmetric powers]\label{sel:lem:symscalar}
+Let $F$ be a field of characteristic zero, $A\in\GL_2(F)$ and $r\ge1$. If
+$\Sym^r(A)$ is a scalar matrix, then $A$ is a scalar matrix. Consequently,
+if also $\det A=1$, then $\Sym^r(A)$ is $I$ or $-I$.
+\end{lemma}
+
+\begin{proof}
+Extend scalars to an algebraic closure. If $\lambda,\mu$ are the eigenvalues
+of $A$, then $\lambda^r$ and $\lambda^{r-1}\mu$ occur among the eigenvalues
+of $\Sym^r(A)$; they are equal, so $\lambda=\mu\ne0$. If $A$ were not
+scalar, a Jordan basis would give $Ae_1=\lambda e_1$ and
+$Ae_2=\lambda(e_2+ue_1)$ with $u\ne0$. On the symmetric monomial
+$e_1^{r-1}e_2$ the action would then be
+$\lambda^r(e_1^{r-1}e_2+ue_1^r)$, which is not scalar. Hence $A=\lambda I$;
+the determinant condition gives $\lambda^2=1$.
+\end{proof}
+
+\begin{corollary}[All positive symmetric powers; \stU]\label{sel:cor:sympowers}
+Let $V$ be a two-dimensional $\ell$-adic representation whose determinant is
+trivial on inertia away from $\ell$. For every $r\ge1$ and every integer
+$t$, no stable lattice in $\Sym^r(V)\otimes\chi_\ell^t$ can directly be a
+\code{SelmerDatum} with those inertia groups.
+\end{corollary}
+
+\begin{proof}
+The cyclotomic character is trivial on inertia away from $\ell$. If an
+inertia element acts as $\zeta I$ on the indicated symmetric power, the
+lemma gives $\zeta=\pm1$, so $\zeta^2-1=0$. The argument takes place over
+the fraction field and is independent of the lattice.
+\end{proof}
+
+No hypothesis of semistability, tame ramification, diagonalizability or
+finite inertia image is used; wild inertia and nontrivial unipotent matrices
+are covered by the Jordan argument. For an elliptic curve
+$\det V_\ell=\chi_\ell$~\cite{Milne2008Abelian}, so the corollary applies to
+all its positive symmetric powers and Tate twists, including cases in which
+Proposition~\ref{sel:prop:rankdet} alone does not apply.
+
+\begin{remark}[Interaction with the global obstruction]\label{sel:rem:central}
+Suppose in addition that $V$ is a two-dimensional representation of
+$G_{\Q}$ with determinant $\chi_\ell$, restricted to a CM field. Conjugation
+by complex conjugation is an inner operation on the representation, and
+$V^\vee\simeq V\otimes\chi_\ell^{-1}$. Therefore, for
+$W=\Sym^r(V)\otimes\chi_\ell^t$,
+\[
+ D(W)=(W^c)^\vee(1)\simeq\Sym^r(V)\otimes\chi_\ell^{1-r-t}.
+\]
+For odd $r$ and $t=(1-r)/2$ one has $D(W)\simeq W$, so these central
+normalizations also fail the finiteness of $C$ by
+Corollary~\ref{sel:cor:finiteness}. A preliminary ramified anticyclotomic character
+of suitable prime-to-$\ell$ residual order can sometimes remove the
+scalar-inertia obstruction, subject to its existence and local conditions;
+but every anticyclotomic twist preserves $D(W)\simeq W$. Accordingly,
+anticyclotomic pre-twisting does not repair both problems. For even
+symmetric powers the displayed integral central normalization is
+unavailable, and this particular self-duality obstruction must not be
+claimed from the rank-two origin alone.
+\end{remark}
+
+\begin{remark}[Why the source avoids the global obstruction]\label{sel:rem:sourceavoids}
+The source's main summands obey, on traces,
+\[
+ \rho^c\simeq\rho^\vee\otimes\chi_\ell^{-(t-1)_{\N}},\qquad
+ D(\rho)\simeq\rho\otimes\chi_\ell^{(t-1)_{\N}+1},
+\]
+where the subscript denotes truncated subtraction of natural numbers. The
+shift is positive even when $t=0$. At the scalar Frobenius selected by the
+source, the annihilator of the conjugate-dual $\Hom$ module is
+$\alpha\bigl(1-p^{n((t-1)_{\N}+1)}\bigr)$, which is nonzero and has a
+valuation bound supplied by the chosen finite linear groups
+(\code{IsMainSummandLike.normLength_congruenceTerm_le}). Replacing the
+source by a central self-dual representation sets the analogous scalar
+difference to zero, and the bound becomes infinite instead of small.
+\end{remark}
+
+\subsection{Hecke components: an exact cost and a way to avoid it}\label{sel:sec:hecke}
+\sources{grh_structural_transfers_2026-11-25}
+
+The source controls a particular projection onto theta lifts. Projecting
+further onto a prescribed Hecke component is a new integral operation whose
+cost is measured by congruences, even when the projector is orthogonal at
+the real places. This is the classical setting of congruence
+ideals~\cite{Hida2019Modular,AgasheModular}.
+
+\begin{proposition}[Polynomial isolation and denominator; \stU]\label{sel:prop:projector}
+Let $L$ be a finite free lattice over an integrally closed domain $R$ with
+fraction field $F_0$. Let $U\in\End_R(L)$ be diagonalizable over a field
+containing $F_0$, with distinct eigenvalues $\lambda,\mu_1,\dots,\mu_s$,
+all integral over $R$. The spectral projector onto the whole
+$\lambda$-eigenspace is
+\[
+ e_\lambda=\frac{\prod_{j=1}^s(U-\mu_jI)}{\prod_{j=1}^s(\lambda-\mu_j)} .
+\]
+In an integral coefficient ring containing the eigenvalues, the denominator
+$\delta_\lambda=\prod_j(\lambda-\mu_j)$ clears this projector, and at a
+nonarchimedean valuation $v$ nonnegative on that ring its entries have
+valuation at least $-v(\delta_\lambda)$.
+\end{proposition}
+
+\begin{proof}
+The numerator acts on the $\lambda$-eigenspace by $\delta_\lambda$ and on
+each other eigenspace by zero, and it is an integral endomorphism. Repeated
+eigenvalues need not be repeated in the product, because $U$ is semisimple.
+\end{proof}
+
+This is an upper bound, not a claim of minimality: a block projector can
+often be obtained with a smaller denominator, or none, while a congruence
+between the chosen eigencharacter and its complement can make an integral
+splitting impossible. An archimedean orthogonal projector has norm one but
+can have nonintegral entries in the arithmetic lattice.
+
+For a complete example, let $q=e^{2\pi iz}$,
+$E_4=1+240\sum_{n\ge1}\sigma_3(n)q^n$ and
+$\Delta=q\prod_{n\ge1}(1-q^n)^{24}$. The space $S_{24}(\SL_2(\Z))$ has
+dimension $2$~\cite{Hida2019Modular}, and its integral cusp lattice $L$ has
+basis
+\[
+ g_1=\Delta E_4^3-696\Delta^2=q+0\cdot q^2+\cdots,\qquad
+ g_2=\Delta^2=q^2+\cdots,
+\]
+since the first two coefficients of an integral form are its coordinates
+in this basis. The formula $(T_pf)_n=a_{pn}+p^{23}a_{n/p}$ gives
+\begin{equation}\label{sel:eq:t2}
+ U=T_2=\begin{pmatrix}0&1\\20468736&1080\end{pmatrix},\qquad
+ \det(XI-U)=X^2-1080X-20468736,
+\end{equation}
+of discriminant $83041344=2^6\,3^2\cdot144169$, where $144169$ is a prime
+congruent to $1$ modulo $4$. Set $s=\sqrt{144169}$, $K=\Q(s)$ and
+$\OO_K=\Z[(1+s)/2]$. The eigenvalues are $\lambda_\pm=540\pm12s$, and the
+normalized eigenforms are $g_1+\lambda_\pm g_2$.
+
+\begin{proposition}[Exact projector denominator in weight $24$; \stU]\label{sel:prop:weight24}
+On $L\otimes\OO_K$ the denominator ideal of either eigenprojector is
+\[
+ \{a\in\OO_K:a\,e_\pm(L\otimes\OO_K)\subseteq L\otimes\OO_K\}=(24s),
+\]
+of norm $576\cdot144169=83041344$. The smallest positive rational integer
+$d$ with $d\,e_\pm(L\otimes\OO_K)\subseteq L\otimes\OO_K$ is
+$d=24\cdot144169=3460056$. Every integral matrix commuting with $U$ has the
+form $aI+bU$ with $a,b\in\Z$, so the full integral Hecke algebra is
+$\Z[U]=\Z+24\OO_K$, the order of conductor $24$.
+\end{proposition}
+
+\begin{proof}
+We have
+\[
+ e_+=\frac1{24s}\begin{pmatrix}-540+12s&1\\20468736&540+12s\end{pmatrix},
+ \qquad e_-=I-e_+ .
+\]
+The numerator is integral, so $(24s)$ clears the entries. The upper-right
+entry is exactly $1/(24s)$, so every clearing scalar belongs to $(24s)$.
+For a rational integer $d$, the condition
+$d/(24s)=(d/(24\cdot144169))s\in\OO_K$ implies
+$d/(24\cdot144169)\in\Z$: writing $cs=2c(1+s)/2-c$ shows that both
+coordinates are integral exactly when $c\in\Z$. The norm is the product of
+the two conjugates of $24s$ in absolute value. The description of the
+commutant follows by multiplying $2\times2$ matrices and equating entries;
+every $T_n$ is integral and commutes with $T_2$, and $T_1=I$, $T_2=U$ give
+the reverse inclusion. With $\omega=(1+s)/2$ one has
+$\lambda_+=528+24\omega$.
+\end{proof}
+
+The result cannot be improved by another combination of Hecke operators
+with the same eigenspace and complement, since the projector is unique;
+the congruence primes $2,3,144169$ are those of the Hecke algebra
+discriminant. The example is classical; its use here is to cost a proposed
+transfer. The exact computation is recorded in
+\begin{center}
+\artifact{grh_structural_transfers_2026-11-25/computation/exact_results.json}.
+\end{center}
+
+\begin{proposition}[Entire products avoid eigenform isolation; \stU]\label{sel:prop:orbit}
+Let $L_1,\dots,L_t$ be holomorphic functions, none identically zero, on the
+strip $0<\Re s<1$, and let $L_{\mathrm{all}}=\prod_jL_j$. Every zero of
+$L_{\mathrm{all}}$ lies on $\Re s=1/2$ if and only if that is true of every
+$L_j$, and at each point $\rho$,
+$\ord_\rho L_{\mathrm{all}}=\sum_j\ord_\rho L_j$ with all summands
+nonnegative.
+\end{proposition}
+
+\begin{proof}
+Factor each function locally as $(s-\rho)^{m_j}u_j(s)$ with
+$u_j(\rho)\ne0$ and $m_j\ge0$, and multiply.
+\end{proof}
+
+For a Galois orbit of $t$ holomorphic eigenforms of the same weight $k$ and
+trivial nebentypus, normalize all $L$-functions to center $1/2$ and
+multiply them. They are entire in the strip, their prime traces add, and
+Deligne's bound~\cite{Deligne1974Weil} gives the nonnegative deficit
+\[
+ 2t-\frac{\tr(T_p\mid\text{orbit})}{p^{(k-1)/2}}\ge0,
+\]
+the orbit version of the trace-deficit target of \cref{sec:hec}. In weight
+$24$ the full space is one orbit, so its projector is the identity, and no
+conjecture about Hecke irreducibility in general weights is needed. If a
+larger space has several orbits, projecting onto one entire orbit can still
+incur denominators from congruences with the other orbits; only the cost of
+separating conjugates within the orbit is avoided. This simplifies the
+target and proves nothing about its zeros: the source does not realize
+these trace coefficients in its theta divisibility counts, the
+half-integral unitary normalization requires an honest comparison of
+algebraic and archimedean factors, and for meromorphic Artin factors zeros
+can cancel poles, so the proposition cannot be used without its holomorphy
+hypothesis.
+
+A projector or congruence loss enters the source's comparison through the
+determinant amplification of \cref{src:prop:amplification}(i): with target
+dimension $D$, selected rank $n\ge\theta D$, upper loss $U$, lower loss $L$
+and index loss $I$ per dimension, it gives $mR\le U+(L+2I)/\theta$. Two
+risks are thereby explicit. A very thin chosen component can have
+$\theta\to0$, losing the exponent even when all other estimates are
+correct; and a new projector or congruence loss must enter the budget.
+Clearing $n$ columns by one scalar $d$ multiplies the squared Gram
+determinant by $\abs{d}^{2n}$, adding $2n\log\abs{d}$; the local
+description charges the corresponding wedge valuations, and these are two
+descriptions of the same operation, not independent costs. A fixed
+projector denominator such as $3460056$ is harmless asymptotically, whereas
+a denominator or missing-dimension ratio growing with the source's rapidly
+changing weights, levels and ranks is not, and the source provides no fixed
+embedding of a prescribed eigenform throughout its family. A bound for a
+full determinant also gives no bound for a selected factor:
+$\operatorname{diag}(u,u^{-1})$ has determinant one while its first factor
+tends to zero as $u\to0^+$.
+
+\subsection{Odd cocycle modules and standard Galois cohomology}\label{sel:sec:oddsha}
+\sources{grh_beyond_dirichlet_grh_2026-11-25; grh_ideal_densities_and_transfer_conditions_2026-11-26; grh_transfer_extensions_2026-11-26; grh_transfer_analysis_2026-11-25; grh-transfer}
+
+The source bounds an explicitly defined module of cocycles, and its
+documentation does not identify that module with a standard
+Tate--Shafarevich group. We give the definition, the comparison, and the
+consequences of the comparison.
+
+\begin{definition}[The source's odd-cocycle functor]\label{sel:def:oddcocycles}
+Fix a CM number field $E$, a prime $\ell$, an integer $j\ge0$ and a complex
+conjugation $c$, which normalizes $G_E=\Gal(\overline{\Q}/E)$. Let
+$\chi_\ell\colon G_E\to\Z_\ell^\times$ be the cyclotomic character. At each
+finite place $v$ choose a decomposition group $D_v$ with inertia group
+$I_v$, and for $v\mid\ell$ put $K_v=D_v\cap\ker\chi_\ell$. For the ring of
+integers $\OO$ of a finite extension of $\Q_\ell$ and $\nu\ge1$, let
+$\selA_{\ell,j,\nu}(E;\OO)$ be the $\OO$-module of continuous functions
+$z\colon G_E\to\OO/\ell^\nu\OO$ such that
+\begin{enumerate}[label=\textup{(\arabic*)}]
+\item $z(gh)=z(g)+\chi_\ell(g)^{-j}z(h)$;
+\item $z$ vanishes on $I_v$ for every finite $v\nmid\ell$;
+\item if $j=0$, $z$ vanishes on $I_v$ for $v\mid\ell$; if $j>0$, $z$
+vanishes on $K_v$ for $v\mid\ell$;
+\item if $j>0$, $z(cgc^{-1})=-z(g)$; for $j=0$ this condition is omitted.
+\end{enumerate}
+Let $\selA_{\ell,j,\infty}(E)$ be the same module of cocycles with
+coefficients in the discrete module $\Q_\ell/\Z_\ell$, and
+$\selA_{\ell,j,\infty}(E;\OO)$ the one with coefficients $F/\OO$.
+\end{definition}
+
+These are the scalar-coordinate conditions of the module
+\code{New.Selmer.shaOdd} of the source, defined in the file
+\code{SelmerModules.lean} under \code{Lib/GaloisRep/Main}. No quotient by coboundaries is taken, and the local subsets are independent
+of the coefficient ring and of $\nu$. The source tests all closure places;
+choosing one decomposition group at each place is equivalent, because the
+tested inertia groups and cyclotomic kernels act trivially on the
+coefficients, so the cocycle formula makes pointwise vanishing on them
+invariant under conjugation. Multiplication by $\ell$ on coefficients,
+identified with the inclusions
+$\ell^{-\nu}\OO/\OO\subseteq\ell^{-(\nu+1)}\OO/\OO$, embeds
+$\selA_{\ell,j,\nu}$ in $\selA_{\ell,j,\nu+1}$. A continuous function from
+the compact group $G_E$ to a discrete module has finite image, hence a
+common $\ell$-power denominator; so
+\begin{equation}\label{sel:eq:torsionlevels}
+ \selA_{\ell,j,\nu}(E;\OO)\simeq\selA_{\ell,j,\infty}(E;\OO)[\ell^\nu],
+ \qquad
+ \selA_{\ell,j,\infty}(E;\OO)=\bigcup_{\nu}\selA_{\ell,j,\infty}(E;\OO)[\ell^\nu],
+\end{equation}
+every defining relation being preserved in both directions. Write
+\[
+ \selSha^1(E,A)=\ker\Bigl(H^1(G_E,A)\longrightarrow\prod_vH^1(D_v,A)\Bigr)
+\]
+for continuous cohomology, the product being over all places; infinite
+places give no condition because $E$ is totally imaginary.
+
+\begin{theorem}[Exact comparison for the odd cocycle module; \stU]\label{sel:thm:oddsha}
+Let $E\subseteq\Q(\mu_N)$ be a CM field, $\ell$ an odd prime and $e>0$.
+There is a canonical $\OO$-linear isomorphism
+\[
+ \varinjlim_\nu\selA_{\ell,e,\nu}(E;\OO)=\selA_{\ell,e,\infty}(E;\OO)
+ \ \simeq\ \selSha^1\bigl(E,(F/\OO)(-e)\bigr)^{c=(-1)^{e+1}} .
+\]
+\end{theorem}
+
+\begin{proof}
+Put $A=(F/\OO)(-e)$ and $(\tau z)(g)=z(cgc)$. Since
+$\chi_\ell(cgc)=\chi_\ell(g)$, the involution $\tau$ preserves cocycles.
+Every coboundary $(\delta a)(g)=(\chi_\ell(g)^{-e}-1)a$ is fixed by $\tau$.
+As $2$ is invertible, an odd coboundary is zero, and every $\tau$-odd
+cohomology class has a unique odd representative, namely $(z-\tau z)/2$.
+The local conditions are preserved by $\tau$, because conjugation permutes
+places and preserves the cyclotomic kernel.
+
+For $v\mid\ell$, the image $\Gamma_v=\chi_\ell(D_v)$ is an open subgroup of
+$\Z_\ell^\times$. Its pro-$\ell$ subgroup $\Gamma_v^0\simeq\Z_\ell$ has
+index prime to $\ell$. If $u$ is a topological generator of $\Gamma_v^0$,
+then $u^{-e}-1\ne0$, and procyclic cohomology together with the
+divisibility of $F/\OO$ gives
+\[
+ H^1(\Gamma_v^0,A)=A/(u^{-e}-1)A=0 .
+\]
+Inflation--restriction through the finite prime-to-$\ell$ quotient yields
+$H^1(\Gamma_v,A)=0$. A second inflation--restriction sequence, for
+$1\to K_v\to D_v\to\Gamma_v\to1$, shows that
+$H^1(D_v,A)\to H^1(K_v,A)$ is injective. Since $K_v$ acts trivially, all
+coboundaries restrict to zero on it. Therefore the condition $z|_{K_v}=0$
+is equivalent to local triviality of $[z]$ at $v$.
+
+For $v\nmid\ell$, inertia acts trivially on $A$ and Frobenius acts by
+$(Nv)^{-e}$. An unramified local class belongs to
+\[
+ H^1(D_v/I_v,A)=A/\bigl((Nv)^{-e}-1\bigr)A=0,
+\]
+the scalar being nonzero and $A$ divisible. Conversely a locally trivial
+class has representatives vanishing on $I_v$, because coboundaries vanish
+there. Thus the source's local conditions with coefficients in $A$ describe
+the full local kernel $\selSha^1(E,A)$.
+
+By \eqref{sel:eq:torsionlevels} the direct limit of the odd cocycle modules
+is the $\tau=-1$ part of that local kernel. The natural action on cochains
+includes the coefficient action:
+\[
+ (c\cdot z)(g)=c\bigl(z(c^{-1}gc)\bigr)=(-1)^e(\tau z)(g),
+\]
+so the eigenvalue is $(-1)^{e+1}$.
+\end{proof}
+
+The passage to divisible coefficients is essential: no finite level
+$\selA_{\ell,e,\nu}$ is identified with an ordinary finite-coefficient
+$\selSha^1$ group, since multiplication by the relevant nonzero local
+scalar need not be surjective on $\OO/\ell^\nu$. The argument excludes
+$\ell=2$, where division by two is unavailable, and $e=0$, where the local
+scalar vanishes and the source uses a different local condition. The
+comparison is a proof on paper applied to the exact definitions of the
+source; its ingredients are standard, and it has not been compiled as an
+additional Lean theorem.
+
+The source theorem \code{New.exists_length_shaOdd_le} (file
+\code{Lib/Cyclotomic/OddSha.lean}) states: for a CM field
+$E\subseteq\Q(\mu_N)$ and an integer $t\ge0$ there is an integer
+\begin{equation}\label{sel:eq:X}
+ 1\le X\le2^{4(N+t+3)^{27}}h_E
+\end{equation}
+such that for every prime $\ell$, every coefficient ring $\OO$ allowed by
+that theorem (it must contain enough roots of unity, of order the exponent
+of $(\Z/N\Z)^\times$), every $j<t$ and every $\nu$,
+\[
+ \sellen_{\OO}\selA_{\ell,j,\nu}(E;\OO)\le v_{\OO}(X),
+\]
+where $v_{\OO}$ is the valuation normalized at a uniformizer. This is a
+uniform length bound for the particular formal module; at primes not
+dividing $X$ it gives vanishing of that module. It makes no assertion about
+characteristic ideals.
+
+\begin{corollary}[A uniform standard cohomological bound; \stU]\label{sel:cor:oddshabound}
+Fix $E\subseteq\Q(\mu_N)$ and $t$ as above and let $X$ be the integer of
+\eqref{sel:eq:X}. For every odd prime $\ell$, every allowed coefficient ring
+$\OO$ and every $0<e<t$,
+\[
+ \sellen_{\OO}\selSha^1\bigl(E,(F/\OO)(-e)\bigr)^{c=(-1)^{e+1}}
+ \le v_{\OO}(X).
+\]
+In particular this group is finite, is annihilated by $X$, vanishes if
+$\ell\nmid X$, and has order at most $q^{v_{\OO}(X)}$ with $q=\#k$.
+Moreover a continuous cocycle $z\colon G_E\to\OO(-e)$ satisfying the local
+and oddness conditions of Definition~\ref{sel:def:oddcocycles} is zero.
+\end{corollary}
+
+\begin{proof}
+The source bound holds at every finite level, and the transition maps are
+injective, so the lengths form a nondecreasing sequence of integers bounded
+by $v_{\OO}(X)$. The maximum is attained; after that every inclusion has
+quotient of length zero and is an isomorphism, and the direct limit has the
+same bound. Apply \cref{sel:thm:oddsha}. A module of length $r$ over a
+discrete valuation ring is annihilated by the $r$th power of its maximal
+ideal, which gives the annihilator and cardinality statements. For the last
+assertion, each reduction of $z$ modulo $\ell^\nu$ lies in
+$\selA_{\ell,e,\nu}(E;\OO)$ and is killed by $X$; hence
+$Xz(g)\in\bigcap_\nu\ell^\nu\OO=0$, and $z(g)=0$ because $X\ne0$ and $\OO$
+is torsion-free.
+\end{proof}
+
+The stabilization index in this proof is effective: by
+Theorem~\ref{sel:thm:basechange} and Corollary~\ref{sel:cor:oneprecision} below, the bound for one
+allowed $\OO$ gives
+$\sellen_{\Z_\ell}\selA_{\ell,e,\nu}(E;\Z_\ell)\le v_\ell(X)$ at every
+level, and the union of the levels already equals the level
+$\nu=v_\ell(X)+1$.
+
+\subsection{Divisible coefficients and a fixed-coefficient certificate}\label{sel:sec:quantifiers}
+\sources{grh_ideal_densities_and_transfer_conditions_2026-11-26; grh_transfer_extensions_2026-11-26; grh_beyond_dirichlet_2026-11-25; grh_fixed_field_transfer_2026-11-25; grh_nonabelian_transfer_2026-11-25}
+
+The Selmer bounds of the source are statements about modules with divisible
+coefficients. The passage from a finite precision rests on an elementary
+fact, which is the content of the source lemma
+\code{length_selmerModule_divisibleQuot_le} in \code{Line.lean}.
+
+\begin{proposition}[Saturation from one finite level; \stU]\label{sel:prop:saturation}
+Let $\OO$ be a discrete valuation ring with uniformizer $\pi$, and let $M$
+be a torsion $\OO$-module. If
+\[
+ \sellen_{\OO}M[\pi^n]<n,
+\]
+then $M=M[\pi^n]$; in particular $M$ has that same finite length, and it is
+killed by $\pi^{n-1}$. No finite-generation assumption is needed. If $\OO$
+is the ring of integers of a finite extension of $\Q_\ell$, then
+\[
+ \lambda_{\OO}\bigl(M[\ell^N]\bigr)\le b<N
+ \quad\Longrightarrow\quad M=M[\ell^N],\qquad\lambda_{\OO}(M)\le b .
+\]
+The strict inequality is sharp: $M=F/\OO$ satisfies
+$\lambda_{\OO}(M[\ell^N])=N$ for every $N$ but has infinite length.
+\end{proposition}
+
+\begin{proof}
+If an element of $M$ has order $\pi^r$ with $r\ge n$, a suitable multiple
+generates a submodule isomorphic to $\OO/\pi^n$ inside $M[\pi^n]$, which
+forces length at least $n$. Consequently every element is killed by
+$\pi^{n-1}$, and the finite module $M[\pi^n]$ is all of $M$. For the
+normalized assertion use $\ell^N=u\pi^{e_{\OO}N}$ with $u$ a unit.
+\end{proof}
+
+For the source's Selmer modules the two identifications needed to apply
+this are proved in the repository: the module of locally constant cocycles
+with divisible coefficients is torsion, because a locally constant function
+on the compact Galois group has finite image and hence a common
+denominator; and the module with coefficients $\OO/a$ is the $a$-torsion of
+the divisible one. These are modules of cocycles satisfying fixed linear
+relations, not unrelated finite groups.
+
+Accordingly the predicate \code{TwistedLengthLe} of the readable edition
+bounds the length of the module \code{divisibleSelmer}, with coefficients
+$\operatorname{Frac}(\OO')/\OO'$, for all sufficiently large coefficient
+rings $\OO'$, and \code{exists_anticyclotomic_twist} returns this property
+for one character and all its first $m$ powers. The intermediate torsion
+precision $\ell^M$ in the proof is chosen with a strict margin above the
+error bound (\code{IsTorsionLevel}); it is not a restriction of the
+conclusion to coefficients modulo $\ell^M$. The displayed theorem of the
+compact edition is stated at a fixed precision $\ell^M$, chosen before the
+auxiliary set and the character; it has the same upgrade. Retain all its
+hypotheses and suppose in addition that its bound satisfies $B_i+\eta<M$
+for every datum $i$. After its single twist $\psi$ has been chosen, apply
+Proposition~\ref{sel:prop:saturation} to that same twist, coefficient ring and local
+relations: the conclusion is the full divisible Selmer bound for $\psi^d$,
+$1\le d\le m$. No interchange of $\forall M\,\exists\psi$ and
+$\exists\psi\,\forall M$ occurs.
+
+\begin{remark}[What a bare finite-precision statement would not give]\label{sel:rem:countermodel}
+Without the strict margin, a family of statements of the shape
+$\forall M\ \exists\psi_M$: \emph{controlled length modulo $\ell^M$} does
+not supply one twist that works at all precisions. For a fixed prime $\ell$
+put $S_M(n)=\Z/\ell^{\max(M-n,0)}\Z$ for $M,n\ge1$. For every $M$ some $n$
+has $\sellen_{\Z_\ell}S_M(n)=0$, namely $n=M$, but for every fixed $n$ the
+lengths $\max(M-n,0)$ are unbounded as $M\to\infty$. This is a countermodel
+to an interchange of quantifiers, not to the source theorem, which by the
+preceding paragraph does not need the interchange.
+\end{remark}
+
+The qualifications that remain are arithmetic. A finite length rules out a
+positive divisible corank for the selected object; it does not force its
+finite torsion subgroup to vanish. The auxiliary ramification set varies
+with the data, the local relations include additional evaluation
+conditions, and the bound concerns normalized length after coefficient
+extension. The source's local relations have not been identified with the
+Bloch--Kato local conditions of an arbitrary motive, so these modules cannot
+be identified without proof with one fixed integral Bloch--Kato Selmer
+group or with the Tate--Shafarevich group of an elliptic curve; the
+representation hypotheses of \cref{sel:sec:interface} are not removed; and
+a small normalized length is not zero (\cref{sel:sec:ramification}).
+
+For the odd-cocycle functor of Definition~\ref{sel:def:oddcocycles}, the dependence
+on the coefficient ring and on the precision can be removed completely.
+
+\begin{theorem}[Scalar extension for the strict odd cocycles; \stU]\label{sel:thm:basechange}
+For every finite coefficient extension $\OO/\Z_\ell$ and all
+$\ell,j,\nu$, including $\ell=2$, the natural map is an isomorphism
+\[
+ \OO\otimes_{\Z_\ell}\selA_{\ell,j,\nu}(E;\Z_\ell)
+ \xrightarrow{\ \sim\ }\selA_{\ell,j,\nu}(E;\OO).
+\]
+If these modules have finite length, then
+\[
+ \sellen_{\OO}\selA_{\ell,j,\nu}(E;\OO)
+ =e_{\OO}\,\sellen_{\Z_\ell}\selA_{\ell,j,\nu}(E;\Z_\ell),
+\]
+so their normalized lengths are independent of $\OO$ and are nonnegative
+integers.
+\end{theorem}
+
+\begin{proof}
+Choose a $\Z_\ell$-basis $b_1,\dots,b_d$ of $\OO$. Reduction modulo the
+ideal $\ell^\nu\OO$, not modulo a fixed power of a uniformizer, gives
+$\OO/\ell^\nu\OO=\bigoplus_ib_i(\Z_\ell/\ell^\nu)$. Write
+$z=\sum_ib_iz_i$. The coordinate maps are maps between finite discrete
+sets, so $z$ is continuous if and only if all $z_i$ are. Each defining
+equation has coefficients in $\Z_\ell$: this includes the cyclotomic
+action, both vanishing conditions and the equation defining oddness. Hence
+$z$ satisfies the conditions if and only if every $z_i$ does, which proves
+that the natural map is bijective. No averaging operator $(1-c)/2$ is used,
+so $2$ need not be invertible.
+
+For finite length write the base module as
+$\bigoplus_i\Z_\ell/\ell^{a_i}$. After extension it is
+$\bigoplus_i\OO/\ell^{a_i}\OO$, whose $\OO$-length is $e_{\OO}\sum_ia_i$.
+Finite length also descends: if the extended module has finite length, its
+restriction to $\Z_\ell$ is a finite-length module containing the base
+module as a direct summand. The residue degree does not enter.
+\end{proof}
+
+\begin{corollary}[One-precision certificate; \stU]\label{sel:cor:oneprecision}
+For an integer $B\ge0$ the following are equivalent:
+\begin{enumerate}[label=\textup{(\roman*)}]
+\item $\sellen_{\Z_\ell}\selA_{\ell,j,\nu}(E;\Z_\ell)\le B$ for every
+$\nu$;
+\item $\sellen_{\Z_\ell}\selA_{\ell,j,B+1}(E;\Z_\ell)\le B$;
+\item $\selA_{\ell,j,\infty}(E)$ has length at most $B$;
+\item $\lambda_{\OO}\bigl(\selA_{\ell,j,\nu}(E;\OO)\bigr)\le B$ for every
+finite coefficient extension $\OO$ and every $\nu$.
+\end{enumerate}
+When they hold, $\selA_{\ell,j,\infty}(E)=\selA_{\ell,j,B+1}(E;\Z_\ell)$. In
+particular, vanishing of the mod-$\ell$ module is equivalent to vanishing
+at every torsion level and over every finite coefficient extension.
+\end{corollary}
+
+\begin{proof}
+(i)$\Rightarrow$(ii) is immediate. By \eqref{sel:eq:torsionlevels} and
+Proposition~\ref{sel:prop:saturation} with $N=B+1$, (ii) gives (iii) together with the
+identification of the union with level $B+1$. Taking torsion submodules
+gives (i) from (iii). \Cref{sel:thm:basechange} gives the equivalence with
+(iv).
+\end{proof}
+
+This is a statement for a fixed field, a fixed exponent and fixed local
+conditions. The coefficient ring may vary because a scalar-extension theorem
+has been proved, and the torsion level may vary because all truncations
+belong to one torsion module. Changing the character, the representation,
+the field or the local relations requires a separate comparison; in
+particular the theorem does not compare an untwisted Selmer group with a
+differently twisted one.
+
+Combining Corollary~\ref{sel:cor:oneprecision} with the form of the source theorem
+gives the exact shape of a replacement beyond cyclotomic fields. For a CM
+field $E$ not contained in a cyclotomic field, a proposed positive integer
+$X$ satisfies the whole bound following \eqref{sel:eq:X} if and only if
+\begin{equation}\label{sel:eq:target}
+ \sellen_{\Z_\ell}\selA_{\ell,j,v_\ell(X)+1}(E;\Z_\ell)\le v_\ell(X)
+ \qquad\text{for every prime }\ell\text{ and every }j<t .
+\end{equation}
+The coefficient-ring and all-precision quantifiers have been removed. The
+infinitely many prime conditions have not: for every $\ell\nmid X$ the
+condition is mod-$\ell$ vanishing. Nor is there an algorithm here that
+computes these Galois cocycle groups.
+
+The source uses the resulting odd-class cost through the identity
+$\sum_\ell v_\ell(X)\log\ell=\log X$. In the file
+\code{TraceRelations.lean}, write $G_0$ for \code{chosenGroupOrder}, $h$
+for \code{halfGap} and $f$ for \code{numInfPlaces}. The denominator error
+and the clearing bound at $\ell$ are
+\begin{align*}
+ d_\ell&=t\,v_\ell(X)+\bigl(8ft+2+(4t+1)h^{22}+h\bigr)v_\ell(G_0),\\
+ \beta_\ell&=\operatorname{localDefect}_\ell
+ +(1+2t)\operatorname{twistError}_\ell+d_\ell+v_\ell(G_0),
+\end{align*}
+and the weighted sum, together with the $U(1)$ class-number cost, must fit
+within
+\[
+ \frac{\operatorname{errorUnit}}{mk}=\frac{fa(\log b)^3}{mk}
+\]
+(\code{FitTwistsExist.lean}). A replacement odd-cocycle theorem must
+therefore control $\log X$ uniformly along the varying fields and weights
+of a transfer; a bound established separately for each fixed field is
+insufficient without this growth estimate. The source bounds $\log X$ by
+$x^{2000}$, which is stronger than the budget requires.
+
+\begin{proposition}[Permissible odd-cocycle growth; \stU]\label{sel:prop:growth}
+Let $\mathcal B=fa(\log b)^3/(mk)$. Suppose $x>1$, $b\ge e$ (the base of
+the natural logarithm), $q_0\ge1$, all of $m,k,r,t,f,a$ are positive, and
+\[
+ t=5r,\quad r\le3x^5,\quad k\le r,\quad m\le2\sqrt x,\quad
+ f\ge\varphi(q_0)x^{11},\quad a=xb .
+\]
+Then for $X\ge1$
+\begin{equation}\label{sel:eq:growth}
+ \frac{t\log X}{\mathcal B}\le\frac{90}{\varphi(q_0)}\,x^{-3/2}\,
+ \frac{\log X}{b(\log b)^3}.
+\end{equation}
+In particular $\log X\le b$ makes the odd-cocycle contribution negligible
+as $x\to\infty$.
+\end{proposition}
+
+\begin{proof}
+The scale inequalities give $tmk\le5r^2m\le90x^{21/2}$ and
+$fa\ge\varphi(q_0)x^{12}b$. Substitute these in
+$tmk\log X/[fa(\log b)^3]$; the exponent difference is $21/2-12=-3/2$.
+\end{proof}
+
+For every fixed $\varepsilon>0$ with $\log b\asymp x^\varepsilon$, even a
+uniform bound $\log X\le\exp(x^{o(1)})$ suffices asymptotically for this
+term. This relaxes the arithmetic target; it does not bound the new
+modules or account for the other denominator terms.
+
+\subsection{The ramification cost hidden in small Selmer lengths}\label{sel:sec:ramification}
+\sources{grh_method_transfers_2026-11-25; grh_quantitative_twists_2026-11-25; grh_transfer_advances_2026-11-26; grh_fixed_field_transfer_2026-11-25; grh_method_transfers_orthogonal_jets_2026-11-26}
+
+The lengths in the twisting theorem are normalized by
+$\lambda_{\OO}(\OO/\ell)=1$, while the coefficient ring is allowed to become
+more ramified. In this subsection $v$ is the valuation on
+$\overline{\Q}_\ell$ with $v(\ell)=1$, and $e=e_{\OO}$; the positive values
+of $v$ on $\OO$ are the positive multiples of $1/e$.
+
+\begin{proposition}[The exact discreteness threshold; \stU]\label{sel:prop:threshold}
+If $M$ is a finite-length $\OO$-module, then
+$\lambda_{\OO}(M)<1/e$ implies $M=0$. The strict inequality cannot be
+replaced by a weak one, and there are nonzero finite modules over
+coefficient rings of increasing ramification whose normalized lengths tend
+to zero.
+\end{proposition}
+
+\begin{proof}
+A nonzero finite-length module has composition length at least one, and
+$\OO/(\pi)$ has normalized length $1/e$. For the last assertion take
+$\OO_h=\Z_\ell[\zeta_{\ell^h}]$ and $M_h=\OO_h/(\zeta_{\ell^h}-1)$,
+$h\ge1$. The polynomial $\Phi_{\ell^h}(1+X)$ is Eisenstein at $\ell$: its
+constant term is $\ell$ and modulo $\ell$ it is
+$X^{\ell^{h-1}(\ell-1)}$. Hence $e_h=\ell^{h-1}(\ell-1)$,
+$\zeta_{\ell^h}-1$ is a uniformizer, and
+$\lambda_{\OO_h}(M_h)=1/(\ell^{h-1}(\ell-1))\to0$.
+\end{proof}
+
+\begin{lemma}[Valuations of local character values]\label{sel:lem:rootval}
+If $\zeta\in\overline{\Q}_\ell$ has exact order $\ell^h$ with $h\ge1$, then
+\[
+ v(\zeta-1)=\frac1{\ell^{h-1}(\ell-1)},\qquad
+ v(\zeta^{\ell^k}-1)=\ell^kv(\zeta-1)\quad(0\le k<h).
+\]
+If $\zeta\in\OO$, the right-hand side is at least $\ell^k/e$.
+\end{lemma}
+
+\begin{proof}
+An $\ell$-power root of unity reduces to one in residue characteristic
+$\ell$. If $a$ is prime to $\ell$, the quotient $(1-\zeta^a)/(1-\zeta)$
+reduces to $a$ and is a unit. Thus all factors of
+$\Phi_{\ell^h}(1)=\prod_{a\in(\Z/\ell^h\Z)^\times}(1-\zeta^a)=\ell$ have the
+same valuation, and there are $\ell^{h-1}(\ell-1)$ of them. Apply this also
+to $\zeta^{\ell^k}$, of exact order $\ell^{h-k}$. Finally $\zeta-1$ is a
+nonzero element of the maximal ideal of $\OO$, so $v(\zeta-1)\ge1/e$.
+\end{proof}
+
+\begin{theorem}[Ramification forced by a simultaneous twisting budget; \stU]\label{sel:thm:rambudget}
+Let $Q$ be a nonempty finite set of finite places of a CM field, away from
+$\ell$ and disjoint from its complex conjugate $\overline Q$. Let $\psi$ be
+a finite-order character of $\ell$-power order with all its values in
+$\OO$, and fix a tame inertia generator $\gamma_w$ at each place of
+$Q\cup\overline Q$. Suppose that for an integer $m\ge1$ and every
+$1\le j\le m$:
+\begin{enumerate}[label=\textup{(\roman*)}]
+\item $\psi^j$ is nontrivial on tame inertia at every place of
+$Q\cup\overline Q$;
+\item $\sum_{w\in Q\cup\overline Q}v\bigl(\psi^j(\gamma_w)-1\bigr)\le\varepsilon$.
+\end{enumerate}
+If $k\ge0$ is the integer with $\ell^k\le m<\ell^{k+1}$, then
+\begin{equation}\label{sel:eq:rambudget}
+ \varepsilon\,e\ \ge\ 2\abs{Q}\,\ell^k .
+\end{equation}
+\end{theorem}
+
+\begin{proof}
+Use the permitted exponent $j=\ell^k$. For every $w$ write
+$\zeta_w=\psi(\gamma_w)$. Nontriviality of $\psi^{\ell^k}$ on tame inertia
+says that $\zeta_w$ has order $\ell^{h_w}$ with $h_w>k$, and
+Lemma~\ref{sel:lem:rootval} gives
+$v(\zeta_w^{\ell^k}-1)=\ell^kv(\zeta_w-1)\ge\ell^k/e$. There are $2\abs{Q}$
+places, because conjugation is a bijection and the two sets are disjoint.
+\end{proof}
+
+The source theorem is anticyclotomic and its ramification clause is written
+at $Q$; at conjugate places the inertia characters are inverses up to
+conjugacy, so their orders and the valuations after subtracting one agree,
+and hypothesis (i) follows from the source's clause for each power.
+Alternatively the finite sum in (ii) already forbids a trivial tame value,
+since $v(0)=+\infty$.
+
+Suppose the estimate for a particular twisted Selmer module is
+$\lambda_{\OO}(S(T\otimes\psi))\le\beta+\varepsilon$. Even when $\beta=0$,
+\eqref{sel:eq:rambudget} gives
+\[
+ \beta+\varepsilon\ge\frac{2\abs{Q}\ell^k}{e}\ge\frac2e .
+\]
+The upper bound can therefore never be made smaller than the threshold
+$1/e$ of Proposition~\ref{sel:prop:threshold} while the same nonempty ramification set
+and local smallness conditions are retained, and integer rounding of the
+bound cannot certify Selmer vanishing. For instance $\ell=3$, $m=10$ and
+$\abs{Q}=2$ give $k=2$ and $\varepsilon e\ge36$; a budget
+$\varepsilon=10^{-3}$ forces $e\ge36000$, and the least positive normalized
+length is then at most $1/36000$. This is a limitation of the numerical
+certificate. It is not a proof that the Selmer module is nonzero, it does
+not contradict the source, and it does not exclude stronger bounds obtained
+from additional information about the module. The same quantifier
+distinction applies to Proposition~\ref{sel:prop:invariance}(ii): a fixed-ring bound
+strictly below $1/e_{\OO}$ forces vanishing, but a bound in which the ring
+and the twist depend on the tolerance does not.
+
+\begin{proposition}[A sufficient additional descent theorem; \stU]\label{sel:prop:descent}
+Let $\OO_0$ have absolute ramification index $e_0$ and let $S$ be a fixed
+finite-length $\OO_0$-module. Suppose that for arbitrarily small $\eta>0$
+there are a finite extension of coefficient rings
+$\OO_0\subset\OO_\eta$, a finite-length $\OO_\eta$-module $N_\eta$ and an
+$\OO_\eta$-linear injection
+\[
+ S\otimes_{\OO_0}\OO_\eta\hookrightarrow N_\eta
+ \quad\text{with}\quad\lambda_{\OO_\eta}(N_\eta)\le\eta .
+\]
+Then $S=0$.
+\end{proposition}
+
+\begin{proof}
+If the relative ramification index is $r_\eta$, extension of scalars
+multiplies composition lengths by $r_\eta$, while
+$e_\eta=r_\eta e_0$. By the structure theorem for finite modules over a
+discrete valuation ring,
+$\lambda_{\OO_\eta}(S\otimes_{\OO_0}\OO_\eta)=\lambda_{\OO_0}(S)$. The
+injection gives $\lambda_{\OO_0}(S)\le\eta$ for arbitrarily small $\eta$, so
+this fixed length is zero.
+\end{proof}
+
+This identifies the shape of the statement a vanishing theorem would need:
+an injective comparison from one fixed ordinary Selmer group, after
+coefficient extension, into the favorable twisted groups, with all local
+conditions matched. The twisting theorem does not assert such an injection.
+Changing the twist changes the representation and its Selmer problem, and
+the invariance of normalized length under coefficient extension cannot be
+used as though twisting were coefficient extension. For the odd-cocycle
+functor, \cref{sel:thm:basechange} supplies the scalar-extension half of
+such a comparison, but not a comparison between different twists.
+
+\begin{remark}[Bounded support of the twists]\label{sel:rem:boundedsupport}
+The construction behind the general twisting theorem gives slightly more
+than its statement. Under exactly its data and hypotheses there is an
+integer $B\ge1$, depending on the fixed Selmer data, the Stickelberger
+systems, the initial coefficient ring and the torsion level but independent
+of $m$ and $\varepsilon$, such that the chosen characters may be taken with
+$1\le\abs{Q}\le B$ in addition to all the stated conclusions. Indeed
+\code{exists_twistPolynomials} first chooses $s_0$, independently of $m$ and
+$\varepsilon$, such that all its output data have $2\abs{Q}\le s_0$; its
+construction takes $Q=J$, a set of tied primes containing a designated
+first prime $P_0$, so $Q$ is nonempty; and the roots-of-unity step then
+chooses the character values without adding auxiliary primes. This is a
+proof extraction from the source, not a compiled strengthening of its
+interface. Since each of $\psi,\dots,\psi^m$ is ramified at a place of the
+nonempty $Q$, the order of $\psi$ exceeds $m$; unbounded $m$ therefore
+produces infinitely many distinct characters with bounded \emph{cardinality}
+of ramification support and simultaneous finite Selmer-length bounds. Their
+orders and conductors are unbounded and the auxiliary primes vary. This is
+not a positive-density family of twists, a fixed-conductor result, or a
+statement towards Goldfeld's conjecture.
+\end{remark}
+
+\subsection{K-theory and Vandiver's conjecture}\label{sel:sec:ktheory}
+\sources{grh_beyond_dirichlet_grh_2026-11-25; grh_transfer_analysis_2026-11-25; grh_method_transfers_2026-11-25_2; grh_exact_torsion_transfer_2026-11-25; grh_ideal_densities_and_transfer_conditions_2026-11-26; grh_transfer_extensions_2026-11-26; grh_transfer_analysis}
+
+The groups $K_{4m}(\Z)$ are connected, through strict Galois cohomology, to
+cyclotomic class groups, so a bound on such a cohomology group inside the
+source proof could have an application that does not factor through the
+location of zeros. Alp\"oge's announcement tentatively suggests $K$-group
+vanishing and cyclicity consequences and a weakening of Vandiver's
+conjecture~\cite{Alpoge2026Remark}; this concerns the original development.
+Two preprints pursue it. Pintar states vanishing of $K_{4k}(\Z)$ through
+degree $104$ \emph{assuming} the arithmetic construction behind the
+declaration \code{corGK_of} of the original
+development~\cite{Pintar2026Vanishing}; Mok and Zheng claim
+$K_{4m}(\Z)=0$ for $1\le m\le30$, using pointwise Selmer bounds and exact
+Hecke determinant certificates, and report that their modified Gaussian
+Lean entry point has not been fully rebuilt~\cite{Mok2026Vanishing}. These
+are different proof routes with different verification statuses; they are
+not among the theorems exported by the shorter repository, and neither is
+certified here.
+
+\paragraph{What the shorter source provides.}
+The shorter source proves the bound following \eqref{sel:eq:X} for the
+odd-cocycle modules, and \cref{sel:thm:oddsha} identifies their limit with
+an eigenspace of an ordinary local kernel. Three limitations are exact.
+
+\begin{proposition}[Limits of the odd-cocycle bound; \stU]\label{sel:prop:parity}
+\leavevmode
+\begin{enumerate}[label=\textup{(\roman*)}]
+\item The bound of Corollary~\ref{sel:cor:oddshabound} allows nonzero groups at the
+primes dividing $X$.
+\item The data $E$, $N$, $t$ are fixed before $\ell$ varies: a statement
+about almost all coefficient primes for a fixed field does not control the
+diagonal choice $E=\Q(\mu_\ell)$.
+\item For even $e>0$ and odd $\ell$, the eigenspace of
+\cref{sel:thm:oddsha} is the natural minus eigenspace of complex
+conjugation. A class obtained by restriction from $\Q$ is fixed by the
+natural action of complex conjugation, and the two eigenspaces intersect
+trivially.
+\end{enumerate}
+\end{proposition}
+
+\begin{proof}
+(i) and (ii) are read off from the statement. For (iii), the sign in
+\cref{sel:thm:oddsha} is $(-1)^{e+1}=-1$ for even $e$. On the other hand,
+let $z\colon G_{\Q}\to M$ be a cocycle with values in a module on which $c$
+acts trivially, as it does on an even Tate twist, and on which
+multiplication by $2$ is injective. Then
+\[
+ 0=z(c^2)=2z(c),\qquad z(chc)=z(c)+c\,z(h)+ch\,z(c)=z(h),
+\]
+so the restriction of $z$ to $G_E$ lies in the even conjugation sector,
+whereas condition (4) of Definition~\ref{sel:def:oddcocycles} selects the opposite
+sign. An element fixed and negated by an involution is zero at odd $\ell$.
+\end{proof}
+
+The cohomological obstruction related to $K_{4m}(\Z)$ uses
+$H^2(\Z[1/\ell],\Z_\ell(2m+1))$, whose dual coefficient has Tate exponent
+$-2m$; the relation between class groups, parity and $K$-groups is explicit
+in Kurihara's paper~\cite{Kurihara1992Remarks}. Thus the odd-cocycle bound
+addresses the opposite parity from this Vandiver obstruction. The general
+all-degree vanishing question for $K_{4k}(\Z)$ is tied to Vandiver's
+conjecture~\cite{Weibel2013Kbook}.
+
+The source's own account of its denominator bound is consistent with this:
+it states that the orders of the even classes, the ones associated with
+Vandiver's conjecture, do not enter the estimate. The triangular choice of auxiliary primes removes their
+contribution from a calculation, which is different from proving that the
+classes vanish. The auxiliary-prime construction also has
+substantial field hypotheses, including a primitive $5040$th root of unity
+in the relevant setting, which do not specialize to $\Q(i)$,
+$\Q(\sqrt{-3})$ or $\Q(\sqrt{-7})$. A length bound by the valuation of a
+large integer does not force vanishing at the primes dividing it, and
+finiteness does not imply cyclicity. Finally, by
+Proposition~\ref{sel:prop:rankdet} a pure Tate twist is not a \code{SelmerDatum}, so
+the general twisting theorem does not apply to it directly, and a statement
+about a negative Tate twist with strict local triviality is not
+automatically a statement about the positive twists used in arithmetic
+$K$-theory. No $K$-group vanishing or cyclicity statement, and no case of
+Vandiver's conjecture, is deduced.
+
+\paragraph{The original interface.}
+The $K$-theory papers use a different interface, the declaration
+\code{UpperTheory.V.Z.J.OneCharU_s} of the much larger original
+development, whose caller is the file \code{CorGKOf.lean}; these names are
+absent from the shorter source tree, and the definitions were inspected
+in a mirror of the original source~\cite{Alpoge2026Original}.
+Schematically, subject to its admissibility and nonzero-difference
+hypotheses, it has the shape
+\[
+ \forall\sigma\ \ \exists X_\sigma\text{ finite}:\qquad
+ V_n\le2\sum_{\pi\in X_\sigma}v_\ell\bigl(\tr\pi(\sigma)-t_\sigma\bigr).
+\]
+In this pointwise formulation a Galois element $\sigma$ (a Frobenius probe)
+is selected first, and the finite family $X_\sigma$ of admissible
+automorphic witnesses may depend on that element.
+Pintar's stronger route extracts a common representation from the
+construction behind the inequality; the inequality alone does not exchange
+these quantifiers. There is also a field issue: for the original parameters
+$N=2$, an even exponent and the trivial character, the fields
+$\Q(\sqrt{-3})$ and $\Q(\sqrt{-7})$ satisfy the relevant odd-discriminant
+coprimality condition, whereas $\Q(i)$ does not, since $\gcd(4,2)\ne1$.
+Using the Gaussian field therefore requires the additional proof transfer
+described by Mok--Zheng, not substitution into the unmodified hypothesis.
+
+\paragraph{Aggregating finite certificates.}
+Suppose that, for a finite set of valid Frobenius probes $q$, a nonzero
+Selmer group forces at least one of the integral branch determinants
+$A_{qj}$ to be divisible by the coefficient prime $\ell$. By
+\cref{src:lem:gcd} (products before gcds),
+\begin{equation}\label{sel:eq:productgcd}
+ \bigl(\forall q\ \exists j:\ \ell\mid A_{qj}\bigr)
+ \iff\ell\mid\gcd_q\prod_jA_{qj},
+\end{equation}
+and by \cref{src:ex:gcd} eliminating each branch by a different probe is
+insufficient unless a common-witness theorem has first been proved.
+Validity of the probe, integrality of the chosen lattice and the target
+trace normalization are hypotheses of the divisibility statement, not
+consequences of the integer calculation. The substantial input is spectral
+coverage: every admissible trace difference, with its local type and
+normalization, must occur in a shifted integral Hecke matrix or a valid
+coefficient norm, and an exact gcd alone does not establish this. For
+stronger inputs there is an exact refinement.
+
+\begin{proposition}[Exact certificate for alternative length bounds; \stU]\label{sel:prop:lcm}
+Let the probe set and each branch set be finite and nonempty, let $A_{qj}$
+be nonzero integers, and suppose a nonnegative integer $r_\ell$ satisfies
+\[
+ \forall q\ \exists j:\quad r_\ell\le v_\ell(A_{qj}).
+\]
+With $C=\gcd_q\lcm_j\abs{A_{qj}}$,
+\[
+ r_\ell\le v_\ell(C)=\min_q\max_jv_\ell(A_{qj}),
+\]
+and the right-hand side is the largest bound permitted by these numerical
+inequalities alone.
+\end{proposition}
+
+\begin{proof}
+At a fixed probe the existence of a branch is equivalent to
+$r_\ell\le\max_jv_\ell(A_{qj})$. Intersecting over probes takes the
+minimum. Prime valuations turn lcm into maximum and gcd into minimum.
+Taking $r_\ell$ equal to that minimum shows sharpness.
+\end{proof}
+
+If $r_\ell$ is the length of a finite $\Z_\ell$-module, its exponent is
+consequently at most $\ell^{v_\ell(C)}$. This requires the displayed length
+hypothesis: the mere nonzero-witness condition imposes no such bound, since
+for rows $(2,3)$ and $(3,2)$ the prime $2$ survives all probes whether the
+module is $\Z/2\Z$ or $\Z/2^{100}\Z$. If the available estimate is a
+\emph{sum} of valuations of simultaneous witnesses, as in the Mok--Zheng
+route, products are still needed, and the lcm refinement must not be
+applied to it; it becomes available only after a stronger branchwise length
+theorem.
+
+\paragraph{A finite arithmetic theorem beyond the cited degree range.}
+For $d\in\{3,7\}$ let $\chi_{-d}(a)=(a/d)$ be the Legendre symbol, an odd
+quadratic Dirichlet character. Define generalized Bernoulli numbers by
+\[
+ \sum_{m\ge0}B_{m,\chi_{-d}}\frac{t^m}{m!}
+ =\frac{t\sum_{a=1}^{d-1}\chi_{-d}(a)e^{at}}{e^{dt}-1},
+\]
+and put
+\[
+ b_d(n)=\frac{B_{n+1,\chi_{-d}}}{n+1},\qquad
+ A_d(e)=\abs[\big]{\selnum b_d(e)\cdot\selnum b_d(2e)},
+\]
+with numerators and denominators in lowest terms.
+
+\begin{theorem}[Exact two-field unit screening; \stU]\label{sel:thm:screening}
+For every even $e$ with $54\le e\le80$ and every prime $\ell>109$ there is
+$d\in\{3,7\}$ for which $b_d(0)$, $b_d(e)$ and $b_d(2e)$ are all
+$\ell$-adic units. For $e=62$ and $e=64$ the same holds for every prime
+$\ell\notin\{2,3,7\}$. The values of $\gcd(A_3(e),A_7(e))$ are:
+\begin{center}
+\begin{tabular}{@{}rrl@{\qquad}rrl@{}}
+\toprule
+$e$ & $2e$ & $\gcd(A_3,A_7)$ & $e$ & $2e$ & $\gcd(A_3,A_7)$\\
+\midrule
+54&108&$4\cdot37\cdot109$&68&136&$4$\\
+56&112&$4$&70&140&$4$\\
+58&116&$4\cdot47$&72&144&$4\cdot37^2$\\
+60&120&$4$&74&148&$4$\\
+62&124&$4$&76&152&$4$\\
+64&128&$4$&78&156&$4\cdot79^2$\\
+66&132&$4\cdot67^2$&80&160&$4$\\
+\bottomrule
+\end{tabular}
+\end{center}
+The denominators of $\bigl(b_d(e),b_d(2e)\bigr)$ are $(27,3)$ for
+$(d,e)=(3,62)$, $(49,1)$ for $(7,62)$, $(3,9)$ for $(3,64)$ and $(1,7)$ for
+$(7,64)$.
+\end{theorem}
+
+\begin{proof}
+The $84$ rational values are computed exactly in two ways; the output is
+\begin{center}
+\artifact{grh_method_transfers_2026-11-25_2/checks/prefilter_results.json}.
+\end{center} Comparison of coefficients
+after multiplication by $e^{dt}-1$ gives the recurrence
+\[
+ b_d(n)=\frac{\displaystyle\sum_{a=1}^{d-1}\chi_{-d}(a)a^{n+1}
+ -\sum_{j=2}^{n+1}\binom{n+1}{j}d^jb_d(n+1-j)}{(n+1)d},
+\]
+and ordinary Bernoulli polynomials, expanded in the Bernoulli numbers $B_j$,
+give the independent formula
+\[
+ b_d(n)=\frac{d^n}{n+1}\sum_{a=1}^{d-1}\chi_{-d}(a)
+ \sum_{j=0}^{n+1}\binom{n+1}{j}B_j\Bigl(\frac ad\Bigr)^{n+1-j}.
+\]
+Both use exact rational arithmetic and agree. All computed denominators
+have prime factors only in $\{3,7\}$. For every table entry the output
+supplies a B\'ezout equality $uA_3+vA_7=g$ with the displayed $g$, together
+with exact divisibility of $A_3$ and $A_7$ by $g$; this certifies each gcd
+without factoring the large numerator products.
+
+For a prime $\ell>109$ the table shows that $\ell$ cannot divide both
+numerator products. Select the field whose product is prime to $\ell$; the
+denominators are also prime to $\ell$, and $b_3(0)=-1/3$, $b_7(0)=-1$. For
+$e=62,64$ the common gcd is $4$, so the same argument excludes only
+$2,3,7$.
+\end{proof}
+
+The three unit conditions belong to the common-representation and
+Bernoulli-exclusion route described by Pintar. They do not by themselves
+remove all branches from the weaker pointwise-witness route, and they give
+no unit bound on the required Hecke determinant. The screening range is
+compatible with the computation of Hart--Harvey--Ong, which verifies
+Vandiver's conjecture for primes below $2^{31}$~\cite{Hart2017Irregular};
+that result handles small coefficient primes only after the relevant
+$K$-theoretic comparison has been justified. No new Vandiver verification
+is claimed.
+
+\paragraph{Dimensions of the next comparison spaces.}
+Let $P_n$ be the space over $\C$ of polynomials homogeneous of degree $n$ in
+each of two triples of variables $x,y$. Put $q=x_1y_1+x_2y_2+x_3y_3$ and
+$W_n=P_n/qP_{n-1}$. The group $\Gamma_h=\mu_h^3\rtimes S_3$ scales $x_i$
+and $y_i$ inversely and permutes the coordinates, and the swap
+$J\colon P(x,y)\mapsto P(y,x)$ normalizes this action. Let
+$\mathcal O_h(n)$ be the set of unordered triples of pairs $(a_i,b_i)$ with
+$\sum a_i=\sum b_i=n$ and $a_i\equiv b_i\pmod h$, and let $C_h(n)$ count
+those triples fixed after swapping the entries of each pair.
+
+\begin{proposition}[Orbit formula for the signed dimension; \stU]\label{sel:prop:orbitdim}
+With $d_h(n)=\abs{\mathcal O_h(n)}-\abs{\mathcal O_h(n-1)}$ and
+$t_h(n)=C_h(n)-C_h(n-1)$,
+\[
+ \dim W_n^{\Gamma_h}=d_h(n),\qquad
+ \tr\bigl(J\mid W_n^{\Gamma_h}\bigr)=t_h(n),\qquad
+ \dim\bigl(W_n^{\Gamma_h}\bigr)^-=\frac{d_h(n)-t_h(n)}2 .
+\]
+For $n=e-1$:
+\begin{center}
+\begin{tabular}{@{}rrrrrr@{}}
+\toprule
+$2e$ & $h$ & $n$ & $d_h(n)$ & $t_h(n)$ & $\dim(W_n^{\Gamma_h})^-$\\
+\midrule
+124&6&61&1110&10&550\\
+128&6&63&1221&11&605\\
+124&4&61&2490&10&1240\\
+128&4&63&2731&11&1360\\
+\bottomrule
+\end{tabular}
+\end{center}
+\end{proposition}
+
+\begin{proof}
+The coordinate congruences specify the monomials invariant under
+$\mu_h^3$, and orbit sums give a basis of their $S_3$-invariants. The swap
+permutes that basis, so its trace is the number of fixed orbits.
+Multiplication by $q$ is injective and equivariant, and taking invariants
+is exact in characteristic zero by averaging over the finite group;
+subtraction gives the dimension and trace on the quotient. The last
+identity follows from $J^2=1$. The table is by exact enumeration.
+\end{proof}
+
+The stabilizers $h=6$ and $h=4$ correspond to the standard Eisenstein and
+Gaussian ternary lattices. The formula computes these finite representation
+spaces unconditionally; identifying them with an exhaustive automorphic
+comparison space still uses the relevant field's global and local transfer.
+For comparison, the odd-discriminant $\Q(\sqrt{-7})$ route uses two lattice
+classes, whose standard-class negative ranks in the signed elimination
+formula are $\binom{32}{3}=4960$ and $\binom{33}{3}=5456$. The Gaussian
+route thus offers much smaller second-field calculations, but only after
+its modified field hypothesis has been validated.
+
+\paragraph{Two small Hecke operators reconstructed.}
+Two low-weight operators were rebuilt from the published $18$-neighbor
+formula~\cite{Pintar2026Hecke}, using no stored operator matrix. For each
+coordinate pair $i<j$ and sixth root of unity $u$, use the identity on the
+remaining coordinate and
+\[
+ g_{i,j,u}=\frac12\begin{pmatrix}1&b\\-\bar b&1\end{pmatrix},
+ \qquad b=\sqrt{-3}\,u .
+\]
+The check verifies unitarity and pairwise coset inequivalence at $2$,
+evaluates the invariant basis on six incidence pairs with $x\cdot y=0$, and
+solves exact nonsingular interpolation systems. With $z_i=x_iy_i$,
+$s_2=\sum_{i<j}z_iz_j$ and $s_3=z_1z_2z_3$, the ordered basis for $e=6$ is
+$(s_2s_3)$, and for $e=8$ it is
+$\bigl(s_2^2s_3,\ \sum_{i\ne j}(x_iy_j)^6z_i,\ \sum_{i\ne j}(x_iy_j)^6z_j\bigr)$;
+columns give the images of the basis elements. The reconstructed values are
+\[
+ T_2(e=6)=\frac{99}{128},\qquad
+ 2048\,T_2(e=8)=
+ \begin{pmatrix}
+ 10215&-81081&-81081\\
+ -81&-2421&11907\\
+ -81&11907&-2421
+ \end{pmatrix},
+\]
+and for
+$D_e=\det\bigl(4^{e-1}(T_2+3I)-(4^{2e}+4^e+1)I\bigr)$,
+\[
+ D_6=-16777449=-3^5\cdot13\cdot47\cdot113,\qquad
+ D_8=-3^{13}\,5^2\cdot7\cdot11^2\cdot23\cdot401\cdot809\cdot1753\cdot13109\cdot13687
+\]
+with $\abs{D_8}=79228276291965330830049420825$; the exact output is
+\begin{center}
+\artifact{grh_method_transfers_2026-11-25_2/checks/small_reconstruction_results.json}.
+\end{center}
+The completeness and interpretation of the geometric neighbor model remain
+the published mathematical input.
+
+\subsection{Exact Euler factors in rank two}\label{sel:sec:euler}
+\sources{grh_arithmetic_transfers_2026-11-26}
+
+Several internal theories of the source are developed only in the strength
+its proof needs. In particular \code{GaloisRep.Attached} gives
+coefficientwise $p$-adic limits along a specially defined filter of
+Frobenius data, which suffices for uniqueness of the attached trace but is
+not a quantitative density estimate for all primes; and at a split place
+away from the coefficient prime, \code{IsCompatibleAt} says that the
+specified Hecke polynomial \emph{annihilates} each geometric Frobenius
+operator. Neither identifies the full characteristic polynomial with its
+multiplicities. A transfer asserting an exact Euler product must justify
+the stronger identification. In rank two this is cheap.
+
+\begin{lemma}[Rank-two determinant upgrade]\label{sel:lem:ranktwo}
+Let $K$ be a field of any characteristic, $A\in\GL_2(K)$ and
+$Q(X)=X^2-tX+d$. If $Q(A)=0$ and $\det A=d$, then $t=\tr A$ and $Q$ is the
+characteristic polynomial of $A$.
+\end{lemma}
+
+\begin{proof}
+Cayley--Hamilton gives $A^2-(\tr A)A+(\det A)I=0$. Subtracting $Q(A)=0$ and
+using $\det A=d$ gives $(\tr A-t)A=0$; multiply by $A^{-1}$.
+\end{proof}
+
+For the conductor-$23$ target of \cref{sec:hec}, the splitting field of
+$X^3-X-1$ (discriminant $-23$) has group $S_3$; the standard
+two-dimensional representation is the complement of the constants in the
+permutation representation on the roots, its determinant is the sign
+character $\chi_{-23}$, and its trace $a_p$ at an unramified prime is the
+number of roots modulo $p$ minus one:
+\begin{center}
+\begin{tabular}{@{}ccc@{}}
+\toprule
+Factor degrees of the cubic modulo $p$ & $a_p$ & $\chi_{-23}(p)$\\
+\midrule
+$1+1+1$ & $2$ & $1$\\
+$1+2$ & $0$ & $-1$\\
+$3$ & $-1$ & $1$\\
+\bottomrule
+\end{tabular}
+\end{center}
+The local Euler denominator is $1-a_pp^{-s}+\chi_{-23}(p)p^{-2s}$. In a
+proposed theta-lift realization, suppose the polynomial
+$X^2-a_pX+\chi_{-23}(p)$ is known to annihilate the intended Frobenius
+operator and its determinant has the stated sign value. Then
+Lemma~\ref{sel:lem:ranktwo} gives the exact local factor; arithmetic and
+geometric Frobenius have the same trace and determinant in this
+representation. Thus this particular interface obligation reduces to
+determinant compatibility. The annihilator must be the one attached to the
+intended representation in the new construction, and establishing exact
+Euler factors proves nothing about zeros; the arithmetic lattice whose
+divisibility would detect the $a_p$ is still missing (\cref{sec:hec},
+\cref{sec:spn}).
+
+\begin{example}[The upgrade fails in rank three]\label{sel:ex:rankthree}
+Over $\Q$ the matrices $A=I_3$ and the cyclic permutation matrix $B$ of
+order $3$ are orthogonal, semisimple and of finite order, with determinant
+one. Both are annihilated by the squarefree polynomial $X^3-1$, but
+$\det(XI-A)=(X-1)^3$ and $\det(XI-B)=X^3-1$, with traces $3$ and $0$. The
+correct rank, determinant, finite image and a squarefree annihilator do not
+control multiplicities in rank three
+(\artifact{grh_arithmetic_transfers_2026-11-26/certificates/euler_factor.json}).
+A sufficient replacement in any rank $d$ is a cyclic vector: if
+$v,Av,\dots,A^{d-1}v$ form a basis, the minimal polynomial has degree $d$
+and every monic annihilator of degree $d$ is the characteristic polynomial;
+a nonzero Krylov determinant is a finite certificate. A scalar Frobenius in
+rank greater than one has no cyclic vector, so this condition cannot be
+assumed uniformly over Frobenius classes.
+\end{example}
+
+\subsection{Open questions}\label{sel:sec:open}
+\sources{grh_structural_transfers_2026-11-25; grh_arithmetic_transfers_2026-11-26; grh_ideal_densities_and_transfer_conditions_2026-11-26; grh_method_transfers_2026-11-25; grh_method_transfers_2026-11-25_2; grh_transfer_analysis_2026-11-25; grh_transfer_advances_2026-11-26; grh_beyond_dirichlet_2026-11-25; grh_quantitative_twists_2026-11-25}
+
+\begin{enumerate}
+\item \emph{The polarization component.} For a symmetric polarized datum,
+such as the Tate module of an abelian variety over a totally real field
+restricted to a CM extension, bound or reinterpret
+$\Phi_n^{-1}(H/\pi^nH)$ in \eqref{sel:eq:polarcomponent} uniformly in $n$,
+or replace the source's descent by a rank-sensitive one.
+\item \emph{The symmetric generalization.} Prove the generalized twisting
+theorem of Remark~\ref{sel:rem:refactor}, with $C^+(T)$ in place of $C(T)$, and
+exhibit an arithmetic representation of opposite sign satisfying all the
+remaining hypotheses of a \code{SelmerDatum}.
+\item \emph{Selmer data outside the source's family.} For a finite-image
+target such as the $S_3$ representation of conductor $23$, which passes the
+rational-duality test (Proposition~\ref{sel:prop:finiteimage}), establish or refute
+the other requirements: integral matrix span at every coefficient prime, a
+scalar inertia element (possibly after a preliminary ramified twist of
+suitable residual order), and the local cocycle ranks. The same question
+for the off-central Tate shifts $T_\ell(j)$ of \cref{sel:thm:delta},
+including their crystalline local conditions. Alternatively, can the
+small-twist argument be reworked to admit rank-two representations without
+the special scalar inertia?
+\item \emph{Bad coefficient primes.} Extend the trace-depth formula
+\eqref{sel:eq:Ctrace} to representations whose image order is not maximal,
+in terms of a measured defect of the order, as \cref{sel:thm:bad} shows to
+be necessary; and find an effective complete finite set of Galois relations
+for \cref{sel:thm:smith}.
+\item \emph{Local conditions.} Identify the source's local relations with
+Bloch--Kato local conditions for a specified representation, so that the
+divisible Selmer bound of \cref{sel:sec:quantifiers} becomes a statement
+about a standard Selmer group.
+\item \emph{A fixed-module comparison.} Construct an injective comparison,
+with matched local conditions, from one fixed ordinary Selmer group into
+the favorably twisted groups, as required by Proposition~\ref{sel:prop:descent}; by
+\cref{sel:thm:rambudget} the numerical bounds alone can never certify
+vanishing.
+\item \emph{Odd cocycles beyond cyclotomic fields.} For a specified
+noncyclotomic CM field or tower, prove \eqref{sel:eq:target} with $\log X$
+growing slowly enough for the denominator budget, together with a
+compatible prime-divisibility construction; and compare the finite levels
+$\selA_{\ell,e,\nu}$, the case $\ell=2$ and the case $e=0$ with standard
+cohomology.
+\item \emph{The $K$-theory bridge.} State and prove a standalone theorem of
+the form: a nonzero ordinary strict Selmer group implies an admissible
+automorphic witness at each allowed probe, which implies divisibility of an
+explicitly defined integral determinant; with the cohomology model, the
+local conditions and parity, the auxiliary fields, levels, trace
+normalization and exceptional primes fixed, and with the statement saying
+whether witnesses are pointwise or simultaneous. Then certify complete
+spectral coverage and the large determinants for the spaces of
+Proposition~\ref{sel:prop:orbitdim} in degrees $124$ and $128$. The parity and
+diagonal-family limitations of Proposition~\ref{sel:prop:parity} would still separate
+such results from Vandiver's conjecture.
+\item \emph{Hecke traces.} Realize the normalized Hecke traces of a whole
+Galois orbit (the weight-$24$ space, or $\Delta$ alone) in an arithmetic
+divisibility count with compatible global lower bounds; at a central
+self-dual normalization the symmetric global obstruction remains, and an
+off-central alternative must connect its Selmer objects to the desired
+$L$-function.
+\end{enumerate}

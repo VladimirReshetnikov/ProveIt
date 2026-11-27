@@ -1,0 +1,1883 @@
+\section{Progression-free sets of integers and of ideals}\label{sec:gpi}
+% Displayed path of a delivered file (a long path cannot be broken inside a line)
+\providecommand{\gpifile}[2][]{\begin{center}\footnotesize\artifact{#2}#1\end{center}}
+
+
+The sparse-place construction in the source proof (\cref{src:sec:mechanism}) converts
+multiplicative patterns into additive relations between exponents and then chooses the
+exponents in a set without three-term arithmetic progressions (the lemma
+\code{exists_three_term_free} of \repo). The same conversion governs sets of integers, or of
+ideals, without three-term geometric progressions: $ac=b^2$ holds exactly when
+$v_p(a)+v_p(c)=2v_p(b)$ at every prime $p$. This section applies it to the density questions
+of McNew \cite{McNew2015Sets} over the integers and of Best, Huan, McNew, Miller, Powell, Tor
+and Weinstein \cite{Best2017Geometric} over number fields. Every result of this section is
+unconditional; none uses \cref{src:thm:dgrh} or any other statement about zeros. Finite
+computations enter only through certificates in exact integer or rational arithmetic, which
+are cited with the result they support.
+
+\subsection{Conventions and the questions}\label{gpi:sec:setting}
+{\raggedright\sources{grh_transfers_density_gaps_and_zero_tests; mcnew_density_and_grh_transfers; grh_ideal_densities_and_transfer_conditions_2026-11-26; grh_prime_patterns_and_branch_precision}}
+
+Let $K$ be a number field of degree $n=[K:\Q]$ and let $\mathcal I_K$ be the set of its
+nonzero integral ideals. Put
+\[
+ A_K(X)=\#\set{\mathfrak a\in\mathcal I_K:\Nm\mathfrak a\le X},\qquad
+ w_{\mathfrak p}=(\Nm\mathfrak p)^{-1}\quad(\mathfrak p\text{ a prime ideal}).
+\]
+The classical ideal-counting theorem gives $A_K(X)=\kappa_KX+o(X)$ with $\kappa_K>0$
+\cite{Murty2007Counting}. Consequently $A_K(t)\ll_Kt$ for all $t\ge1$, and for a fixed ideal
+$\mathfrak d$ the multiples of $\mathfrak d$ of norm at most $X$ number
+$A_K(X/\Nm\mathfrak d)$, which is $(\Nm\mathfrak d)^{-1}A_K(X)(1+o(1))$ and is
+$O_K(X/\Nm\mathfrak d)$ uniformly in $X$ and $\mathfrak d$. The \emph{natural density} of
+$E\subseteq\mathcal I_K$ is
+\[
+ d(E)=\lim_{X\to\infty}\frac{\#\set{\mathfrak a\in E:\Nm\mathfrak a\le X}}{A_K(X)}
+\]
+when the limit exists, and its \emph{upper density} $\overline d(E)$ is the corresponding
+limsup. The count is of ideals; for $K=\Q$ the ideals are the positive integers and these are
+the usual densities of subsets of $\N=\set{1,2,\dots}$.
+
+We use two conventions for the forbidden triples. In the \emph{integral} convention they are
+$\mathfrak a,\mathfrak a\mathfrak r,\mathfrak a\mathfrak r^2$ with an integral ideal
+$\mathfrak r\ne\OO_K$. In the \emph{fractional} convention $\mathfrak r\ne\OO_K$ may be any
+nonzero fractional ideal such that all three terms are integral; this includes nontrivial
+ratios of norm one. In valuation coordinates
+$\mathfrak a\mapsto(v_{\mathfrak p}(\mathfrak a))_{\mathfrak p}$ the forbidden triples are the
+nonconstant three-term arithmetic progressions of exponent vectors with a nonnegative step,
+respectively with an arbitrary integral step. For $K=\Q$ the integral convention forbids
+$a,ar,ar^2$ with an integer $r>1$, and the fractional convention forbids them for every
+rational $r>1$, that is, it forbids every triple of distinct positive integers $a,b,c$ with
+$ac=b^2$. Thus $4,6,9$ is forbidden only by the second rule. A set is \emph{admissible} (for
+the convention under discussion) if it contains no forbidden triple. A set that is admissible
+for the fractional convention is admissible for the integral one.
+
+For a fixed convention let $b_K$ be the supremum of the natural densities of the admissible
+sets that have a natural density, and $u_K$ the supremum of the upper densities of admissible
+sets. For $K=\Q$ we use McNew's notation:
+\[
+ \alpha,\ \overline\alpha\quad\text{(rational ratios)},\qquad
+ \beta,\ \overline\beta\quad\text{(integer ratios)}
+\]
+for the natural-density suprema $\alpha,\beta$ and the upper-density suprema
+$\overline\alpha,\overline\beta$. Trivially $\alpha\le\overline\alpha$,
+$\beta\le\overline\beta$, $\alpha\le\beta$ and $\overline\alpha\le\overline\beta$. Results
+about one of these four numbers do not transfer to another: an upper bound for natural
+densities is not an upper bound for upper densities, and a set that avoids integer ratios
+need not avoid rational ones.
+
+\paragraph{The greedy set.}
+Let
+\[
+ \mathcal A=\Bigl\{\sum_{j\ge0}\epsilon_j3^j:\epsilon_j\in\set{0,1},\ \epsilon_j=0
+ \text{ eventually}\Bigr\}
+\]
+be the set of nonnegative integers whose ternary digits are all $0$ or $1$. If $a+c=2b$ with
+$a,b,c\in\mathcal A$, neither side has carries in base three and each digit of $2b$ is $0$ or
+$2$; hence the corresponding digits of $a,b,c$ agree and $a=b=c$. So $\mathcal A$ contains no
+nonconstant three-term arithmetic progression. Note also that
+$\mathcal A=\set{0,1}+3\mathcal A=\set{0,1,3,4}+9\mathcal A$ with unique representations. The
+\emph{greedy set} is
+\[
+ \mathcal G_K=\set{\mathfrak a\in\mathcal I_K:v_{\mathfrak p}(\mathfrak a)\in\mathcal A
+ \text{ for every prime ideal }\mathfrak p}.
+\]
+It is admissible for the fractional convention. For $K=\Q$ it is Rankin's set
+$R=\mathcal G_\Q$ \cite{Rankin1961Sets}, and by Lemma~\ref{gpi:lem:product} below
+\[
+ d(R)=\prod_p\Bigl[(1-p^{-1})\prod_{j\ge0}(1+p^{-3^j})\Bigr]\approx0.71974 .
+\]
+
+\paragraph{The questions.}
+McNew \cite[Section~7]{McNew2015Sets} asked whether $\alpha<\overline\alpha$ (Question~7.1),
+whether $\beta<\overline\beta$ (Question~7.3) and whether $\alpha<\beta$ (Question~7.4), and
+conjectured that $\alpha=d(R)$ (Conjecture~7.2). Best et al.\ ask how far nongreedy sets of
+ideals in a quadratic field can improve on the greedy set, in particular for natural density
+with integral ratios (their Question~5.1) and with fractional ratios (their Question~5.4)
+\cite[Section~5]{Best2017Geometric}. The answers obtained in this section are as follows.
+\begin{itemize}
+\item Questions~7.1 and~7.3: $\overline\alpha-\alpha>0.002836$ and
+ $\overline\beta-\beta>0.069218$ (\cref{gpi:thm:integer-gap}). More generally $u_K>b_K$ in
+ every number field and for both conventions (\cref{gpi:thm:ideal-separation}).
+\item Conjecture~7.2 is false: $\alpha>d(R)$. A change of the lowest ternary digit of the
+ exponents at finitely many primes suffices (\cref{gpi:thm:onedigit}), and an explicit set
+ supported on the primes up to $1427$ has $d(E)-d(R)>10^{-596}$ (\cref{gpi:thm:explicit}).
+ On the other hand Rankin's rule is optimal on every block of at most four primes, so that
+ $\alpha<0.740912$ (Theorem~\ref{gpi:thm:fourprimes} and Corollary~\ref{gpi:cor:restricted}), and every density rule that
+ couples only boundedly many primes at a time loses a positive amount against $\alpha$
+ (\cref{gpi:thm:blocks}). The suprema $\alpha$ and $\beta$ are computable and are attained
+ (\cref{gpi:thm:attain}).
+\item Question~7.4: $\beta-\alpha>0.0001351$ (\cref{gpi:thm:beta-alpha}).
+\item In every number field the greedy ideals are surpassed in natural density, even when all
+ fractional-ideal ratios are forbidden (\cref{gpi:thm:onedigit}); for integral ratios in
+ $\Q(\sqrt{-23})$ the gain exceeds $0.0011957$ (Proposition~\ref{gpi:prop:Q23gain}).
+\item For the upper density with rational ratios, $0.7365954<\overline\alpha<0.7716011$
+ (\cref{gpi:thm:upper-alpha}).
+\end{itemize}
+The statements for $\F_q[x]$ that are proved by the same arguments are collected in
+\cref{gpi:sec:poly}; the other results on polynomial rings are in \cref{sec:gpp}.
+
+\subsection{Product sets and the two smooth-factor optimizations}\label{gpi:sec:local}
+{\raggedright\sources{grh_transfers_density_gaps_and_zero_tests; grh_ideal_densities_and_transfer_conditions_2026-11-26; mcnew_counterexample_and_grh_transfers; grh_prime_patterns_and_branch_precision; grh_transfer_advances_2026-11-26}}
+
+Let $S$ be a finite set of prime ideals. An ideal is \emph{$S$-smooth} if all its prime
+factors lie in $S$ and \emph{$S$-rough} if none does; every ideal factors uniquely as
+$\mathfrak a=\mathfrak g\mathfrak h$ with $\mathfrak g$ rough and $\mathfrak h$ smooth. For a
+set $F$ of $S$-smooth ideals put
+\[
+ W(F)=\sum_{\mathfrak h\in F}\frac1{\Nm\mathfrak h},\qquad
+ c_S=\prod_{\mathfrak p\in S}(1-w_{\mathfrak p}),
+\]
+so that the set of all $S$-smooth ideals has $W=1/c_S$, by multiplying geometric series. For
+$K=\Q$ and a real $Y$ we write $S_Y$ for the set of positive integers all of whose prime
+factors are at most $Y$.
+
+\begin{lemma}[Density of a product set]\label{gpi:lem:product}
+Let $S$ be a finite set of prime ideals, let $F$ be a set of $S$-smooth ideals, and for every
+prime $\mathfrak p\notin S$ let $A_{\mathfrak p}$ be a set of nonnegative integers containing
+$0$ and $1$. Let $E$ consist of the ideals $\mathfrak g\mathfrak h$ with $\mathfrak h\in F$
+and $\mathfrak g$ an $S$-rough ideal such that $v_{\mathfrak p}(\mathfrak g)\in A_{\mathfrak p}$
+for every $\mathfrak p\notin S$. Then $E$ has the natural density
+\begin{equation}\label{gpi:eq:product}
+ d(E)=c_S\,W(F)\prod_{\mathfrak p\notin S}\lambda_{\mathfrak p},\qquad
+ \lambda_{\mathfrak p}=(1-w_{\mathfrak p})\sum_{e\in A_{\mathfrak p}}w_{\mathfrak p}^{e}
+ \ \ge\ 1-w_{\mathfrak p}^2 ,
+\end{equation}
+and the infinite product converges to a positive number. If every $A_{\mathfrak p}$ contains
+no nonconstant three-term arithmetic progression and $F$ is admissible, then $E$ is
+admissible for the same convention.
+\end{lemma}
+
+\begin{proof}
+Counting multiples of products of prime powers and applying finite inclusion--exclusion
+shows that, for a finite set $T$ of primes and prescribed exponents $(e_{\mathfrak p})$, the
+ideals with $v_{\mathfrak p}=e_{\mathfrak p}$ for all $\mathfrak p\in T$ have density
+$\prod_{\mathfrak p\in T}(1-w_{\mathfrak p})w_{\mathfrak p}^{e_{\mathfrak p}}$. The ideals with
+$v_{\mathfrak p}\ge L$ for some $\mathfrak p\in T$ have upper density
+$O_K(\sum_{\mathfrak p\in T}w_{\mathfrak p}^L)$, which tends to zero as $L\to\infty$. Hence
+any condition on the valuations at the primes of $T$ defines a set whose density is the
+corresponding sum of products of the independent geometric laws.
+
+Let $H$ be the set of rough ideals occurring in the definition of $E$. Imposing its
+conditions only at the primes of norm at most $Y$ changes the set only inside the ideals
+divisible by $\mathfrak p^2$ for some $\mathfrak p$ with $\Nm\mathfrak p>Y$, because
+$0,1\in A_{\mathfrak p}$. The number of such ideals of norm at most $X$ is at most
+$\sum_{\Nm\mathfrak p>Y}A_K(X/\Nm\mathfrak p^2)$, so their upper density is
+$O_K(\sum_{\Nm\mathfrak p>Y}w_{\mathfrak p}^2)$, which tends to zero as $Y\to\infty$ since at
+most $n$ primes have a given norm. Therefore $d(H)=c_H:=c_S\prod_{\mathfrak p\notin S}
+\lambda_{\mathfrak p}$. The product is positive because
+$\lambda_{\mathfrak p}\ge(1-w_{\mathfrak p})(1+w_{\mathfrak p})$ and
+$\sum_{\mathfrak p}w_{\mathfrak p}^2<\infty$. The same argument gives
+$d(\mathfrak hH)=c_H/\Nm\mathfrak h$ for every smooth $\mathfrak h$. By unique factorization
+the sets $\mathfrak hH$ are disjoint for distinct $\mathfrak h$, and the union of those with
+$\Nm\mathfrak h>T$ has upper density $O_K(\sum_{\Nm\mathfrak h>T}1/\Nm\mathfrak h)$, which
+tends to zero as $T\to\infty$. Hence $d(E)=c_HW(F)$.
+
+In a forbidden triple inside $E$ the valuations at each $\mathfrak p\notin S$ form an
+arithmetic progression in $A_{\mathfrak p}$, so they are constant. The three rough parts
+agree, and cancelling the common rough part leaves a forbidden triple in $F$ with the same
+ratio.
+\end{proof}
+
+Two choices recur: $A_{\mathfrak p}=\mathcal A$ (the greedy rule outside $S$), for which
+$\lambda_{\mathfrak p}=(1-w_{\mathfrak p})\prod_{j\ge0}(1+w_{\mathfrak p}^{3^j})$, and
+$A_{\mathfrak p}=\set{0,1}$ (squarefree rough parts), for which
+$\lambda_{\mathfrak p}=1-w_{\mathfrak p}^2$. Taking $S=\emptyset$ in the first gives
+$d(\mathcal G_K)=\prod_{\mathfrak p}(1-w_{\mathfrak p})\sum_{e\in\mathcal A}w_{\mathfrak p}^e$.
+
+\paragraph{The two optimizations.}
+Fix a convention and an integer $Y\ge2$, and let $S$ be the set of prime ideals of norm at
+most $Y$. Put
+\[
+ c=c_S,\qquad v=\prod_{\mathfrak q\notin S}\bigl(1-w_{\mathfrak q}^{2}\bigr),
+\]
+and, for admissible sets $D$ of $S$-smooth ideals and $t\ge1$,
+\begin{align*}
+ B&=c\,\sup_{D}W(D),\\
+ J(t)&=\max\set{\#D:D\text{ admissible},\ \Nm\mathfrak h\le t\text{ for all }\mathfrak h\in D},\\
+ U&=c\int_1^\infty J(t)\,\frac{\dd t}{t^2}.
+\end{align*}
+The number $B$ optimizes one fixed admissible smooth set against the weights
+$1/\Nm\mathfrak h$; the number $U$ optimizes separately at every cutoff. If $H_S(t)$ counts the
+smooth ideals of norm at most $t$, then $c\int_1^\infty H_S(t)t^{-2}\,\dd t$ equals $c$ times
+the reciprocal-norm sum of all smooth ideals, which is $1$; and for a fixed admissible $D$
+with counting function $D(t)$
+\begin{equation}\label{gpi:eq:tonelli}
+ \int_1^\infty D(t)\,\frac{\dd t}{t^2}=W(D),\qquad D(t)\le J(t)\le H_S(t).
+\end{equation}
+Hence $B\le U\le1$. The supremum defining $B$ is attained: identify subsets of the countable
+smooth monoid with their indicator vectors in a product of two-point spaces; admissibility is
+a closed condition and the summable weighted objective is continuous.
+
+\begin{lemma}[Smooth-factor bounds]\label{gpi:lem:BU}
+For either convention and every $Y$,
+\[
+ vB\le b_K\le B,\qquad vU\le u_K\le U,\qquad
+ 1-v\le\sum_{\Nm\mathfrak q>Y}w_{\mathfrak q}^2\le\frac nY .
+\]
+For $K=\Q$, moreover, every admissible set $E\subseteq\N$ satisfies
+\[
+ \limsup_{X\to\infty}\frac1{\log X}\sum_{m\in E,\ m\le X}\frac1m\ \le\ B .
+\]
+\end{lemma}
+
+\begin{proof}
+By finite inclusion--exclusion the rough ideals have density $c$, and by
+Lemma~\ref{gpi:lem:product} the squarefree rough ideals have density $cv$.
+
+\emph{Upper bound for $b_K$.} Let $E$ be admissible with natural density $\delta$. Partial
+summation gives
+$\sum_{\mathfrak a\in E,\ \Nm\mathfrak a\le X}1/\Nm\mathfrak a=(\delta\kappa_K+o(1))\log X$.
+For each rough $\mathfrak g$ the fiber $D_{\mathfrak g}=\set{\mathfrak h\text{ smooth}:
+\mathfrak g\mathfrak h\in E}$ is admissible, since multiplication by $\mathfrak g$ preserves
+forbidden triples; no density is assumed to exist within a fiber. Hence
+$W(D_{\mathfrak g})\le B/c$ and
+\[
+ \sum_{\substack{\mathfrak a\in E\\ \Nm\mathfrak a\le X}}\frac1{\Nm\mathfrak a}
+ \le\frac Bc\sum_{\substack{\mathfrak g\text{ rough}\\ \Nm\mathfrak g\le X}}\frac1{\Nm\mathfrak g}
+ =(B\kappa_K+o(1))\log X ,
+\]
+again by partial summation. Thus $\delta\le B$. For $K=\Q$ the same inequality, with a limsup
+on the left, gives the last assertion of the lemma.
+
+\emph{Upper bound for $u_K$.} For admissible $E$, counting in each rough fiber gives
+\[
+ \#\set{\mathfrak a\in E:\Nm\mathfrak a\le X}
+ \le\sum_{\substack{\mathfrak g\text{ rough}\\ \Nm\mathfrak g\le X}}J(X/\Nm\mathfrak g).
+\]
+Fix $T>1$. On $[1,T]$ the function $J$ is a step function with finitely many jumps, and on
+an interval $(a,b)$ where it is constant the rough ideals with $X/b<\Nm\mathfrak g<X/a$ have
+count $(c(1/a-1/b)+o(1))A_K(X)$. So the terms with $X/\Nm\mathfrak g\le T$ contribute
+$(c\int_1^TJ(t)t^{-2}\,\dd t+o(1))A_K(X)$. The remaining terms are at most the number of
+ideals $\mathfrak g\mathfrak h$ of norm at most $X$ with $\Nm\mathfrak g<X/T$. Those with
+$\Nm\mathfrak h>\sqrt T$ number at most
+$\sum_{\Nm\mathfrak h>\sqrt T}A_K(X/\Nm\mathfrak h)\ll_KX\sum_{\Nm\mathfrak h>\sqrt T}1/\Nm\mathfrak h$,
+the sums being over smooth $\mathfrak h$, and the others have norm less than $X/\sqrt T$.
+Both bounds are $o(X)$ as $T\to\infty$, uniformly in $X$. Letting $X\to\infty$ and then
+$T\to\infty$ gives $\overline d(E)\le U$.
+
+\emph{Lower bounds.} Retain only squarefree rough parts. By Lemma~\ref{gpi:lem:product} with
+$A_{\mathfrak q}=\set{0,1}$, using one admissible smooth set $D$ in every fiber gives an
+admissible set of natural density $cvW(D)$; the supremum over $D$ is $vB$. For the upper
+density choose integers $X_j$ with $X_0=0$ and $X_j/X_{j-1}\to\infty$. For every squarefree
+rough $\mathfrak g$ with $X_{j-1}<\Nm\mathfrak g\le X_j$ permanently assign a maximizing
+admissible smooth set of ideals of norm at most $X_j/\Nm\mathfrak g$, and let $E$ be the union
+over all $\mathfrak g$ and $j$ of the assigned sets multiplied by $\mathfrak g$. In a forbidden
+triple inside $E$ the valuations outside $S$ form arithmetic progressions in $\set{0,1}$, so
+the three terms lie in one fiber, where the assigned set is admissible. Thus $E$ is
+admissible. At the cutoff $X=X_j$ and for fixed $T$, the fibers with
+$X/T<\Nm\mathfrak g\le X$ were all assigned at stage $j$ once $j$ is large, and by the
+step-function count above they contribute $(cv\int_1^TJ(t)t^{-2}\,\dd t+o(1))A_K(X)$. Letting
+$T\to\infty$ gives $\overline d(E)\ge vU$.
+
+\emph{The tail.} A prime ideal of norm $m$ lies over the unique rational prime dividing $m$,
+and at most $n$ prime ideals lie over it. Hence
+$1-v\le\sum_{\Nm\mathfrak q>Y}w_{\mathfrak q}^2\le n\sum_{m>Y}m^{-2}\le n/Y$.
+\end{proof}
+
+For $K=\Q$ the sharper form $1-v\le\sum_{p>Y}p^{-2}$ of the tail bound will be used. The lemma
+has the following immediate consequence, on which all the separation results rest:
+\begin{equation}\label{gpi:eq:gapframe}
+ u_K-b_K\ \ge\ vU-B\ \ge\ (U-B)-(1-v),\qquad
+ U-B=c\,\inf_D\int_1^\infty\bigl(J(t)-D(t)\bigr)\frac{\dd t}{t^2},
+\end{equation}
+where $D$ ranges over the admissible smooth sets and the second inequality uses $U\le1$. A
+lower bound for $U-B$ is thus a statement that no single admissible set is optimal at every
+cutoff.
+
+\subsection{Natural density against upper density}\label{gpi:sec:gap}
+{\raggedright\sources{grh_ideal_densities_and_transfer_conditions_2026-11-26; grh_transfers_density_gaps_and_zero_tests; grh_transfer_advances_2026-11-26}}
+
+\begin{theorem}[Separation in every number field; \stU]\label{gpi:thm:ideal-separation}
+For every number field $K$ and for either convention, $u_K>b_K$. More precisely, fix a prime
+ideal $\mathfrak p$, put $Q=\Nm\mathfrak p$ and $M=Q^8$, and for an integer $Y\ge Q$ let
+$c_Y=\prod_{\Nm\mathfrak q\le Y}(1-w_{\mathfrak q})$. Then
+\begin{equation}\label{gpi:eq:ideal-gap}
+ u_K-b_K\ \ge\ \frac{c_Y}{M(M+1)}-\frac nY ,
+\end{equation}
+and the right side is positive for every sufficiently large $Y$. Both $b_K$ and $u_K$ are
+computable from an explicit presentation of $K$.
+\end{theorem}
+
+\begin{proof}
+Use the notation of Lemma~\ref{gpi:lem:BU}. Let $G$ be the greedy smooth set, consisting of the
+smooth ideals all of whose exponents lie in $\mathcal A$. For $m=\sum_j\epsilon_j3^j$ with
+digits $\epsilon_j\in\set{0,1,2}$ define
+\[
+ a(m)=\sum_{\epsilon_j=1}3^j,\qquad b(m)=\sum_{\epsilon_j\in\set{1,2}}3^j .
+\]
+Then $a(m),b(m)\in\mathcal A$ and $m=2b(m)-a(m)$; if $m\in\mathcal A$ both equal $m$, and
+otherwise $0\le a(m)<b(m)<m$. Applying this in every coordinate shows that every nongreedy
+ideal is the last term of a progression with integral ratio whose first two terms are greedy
+ideals of strictly smaller norm. On the other hand all greedy ideals coexist without any
+forbidden triple, even with fractional ratios.
+
+It follows by induction on the integer norm that an admissible set of smooth ideals which
+maximizes the number of its elements of norm at most $k$ for \emph{every} integer cutoff
+$k=1,2,\dots,M$ must agree with $G$ up to norm $M$: in a new norm layer every nongreedy
+candidate is already blocked, all greedy candidates can be included together, and to reach
+the greedy count all of them must be included. The argument needs no ordering inside a norm
+layer, and therefore also covers distinct ideals of equal norm.
+
+Now change only the pure powers of $\mathfrak p$ below the cutoff $M=Q^8$: replace the
+exponent set $\set{0,1,3,4}$ by $\set{0,1,3,7,8}$. The latter contains no three-term
+arithmetic progression and has one more element. The resulting set of smooth ideals of norm
+at most $M$ is admissible even for fractional ratios. Indeed, a new forbidden triple has an
+added pure power of $\mathfrak p$ as one of its terms. At every other prime one of the three
+valuations is then zero and the other two lie in $\mathcal A$; since $0\in\mathcal A$ and
+$\mathcal A$ is progression-free, all three are zero. The triple is confined to pure powers
+of $\mathfrak p$, where the new exponent set excludes it.
+
+Thus $G$ is not of maximal cardinality at the cutoff $M$, and no admissible set is optimal at
+all cutoffs up to $M$. For every admissible smooth $D$ there is an integer $1\le k\le M$ with
+$J(k)-D(k)\ge1$. The deficit persists on $[k,k+1)$, so
+\[
+ \int_1^\infty\bigl(J(t)-D(t)\bigr)\frac{\dd t}{t^2}\ \ge\ \frac1{k(k+1)}\ \ge\ \frac1{M(M+1)},
+\]
+and \eqref{gpi:eq:gapframe} gives $U-B\ge c/(M(M+1))$ and then \eqref{gpi:eq:ideal-gap}, by
+the tail bound of Lemma~\ref{gpi:lem:BU}. Finally
+$c_Y\ge\prod_{p\le Y}(1-p^{-1})^n\gg_n(\log Y)^{-n}$ by Mertens' product theorem, which
+decreases more slowly than $n/Y$. This proves positivity.
+
+For computability choose $Y$ with $n/Y$ below the desired tolerance; by
+Lemma~\ref{gpi:lem:BU}, $0\le B-b_K\le n/Y$ and $0\le U-u_K\le n/Y$. The smooth reciprocal sum over
+norms at most $H$ approaches $1/c$, with the explicit rational tail
+$\tau_H=1/c-\sum_{\Nm\mathfrak h\le H}1/\Nm\mathfrak h$. A finite weighted independent-set
+optimization over the smooth ideals of norm at most $H$ approximates $B$ within $c\tau_H$.
+Optimizing cardinalities at each norm up to $H$ and integrating the resulting step function
+approximates $U$ within $c\int_H^\infty H_S(t)t^{-2}\,\dd t=c\,(H_S(H)/H+\tau_H)$. Both errors
+are computable rationals tending to zero as $H\to\infty$. (This is the existence of an
+algorithm; the exact independent-set problems can be expensive.)
+\end{proof}
+
+\begin{example}[The field $\Q(\sqrt{-23})$]\label{gpi:ex:Q23gap}
+Let $K=\Q(\sqrt{-23})$ and choose a prime of norm $2$, so $M=256$. A rational prime $p\ne23$
+splits or is inert according to its quadratic-residue class modulo $23$; $23$ ramifies, split
+primes contribute two Euler factors to $c_Y$, and inert primes contribute one factor when
+$p^2\le Y$. For $Y=10^7$ there are $664449$ factors, and rounding down on the grid
+$10^{-40}\Z$ after each factor gives
+\[
+ c_{10^7}\ \ge\ \frac{11078476589752147709803027083658225201}
+ {625000000000000000000000000000000000000}.
+\]
+With the tail bound $2/10^7$, \eqref{gpi:eq:ideal-gap} yields
+$u_K-b_K>1/20000000$ for both conventions. The computation is
+\gpifile[,]{grh_ideal_densities_and_transfer_conditions_2026-11-26/code/check_ideal_density.py}
+with the sharper rational bound recorded in
+\gpifile[.]{grh_ideal_densities_and_transfer_conditions_2026-11-26/data/ideal_density_certificate.json}
+\end{example}
+
+For fractional ratios \cref{gpi:thm:ideal-separation} shows in particular that the greedy
+density is exceeded by an upper density; that it is also exceeded by a natural density is
+\cref{gpi:thm:onedigit}.
+
+For $K=\Q$ the bound \eqref{gpi:eq:ideal-gap} is far from the truth, and the same frame gives
+much more when the prefix losses are computed exactly. Let $K=\Q$, fix a convention and an
+integer $N\ge1$, and let $J(k)$ now denote the maximal cardinality of an admissible subset of
+$\set{1,\dots,k}$. Put
+\begin{equation}\label{gpi:eq:LN}
+ L_N=\sum_{k=1}^N\frac{J(k)}{k(k+1)}
+ -\max_{A\subseteq\set{1,\dots,N}\ \mathrm{admissible}}\
+ \sum_{a\in A}\Bigl(\frac1a-\frac1{N+1}\Bigr).
+\end{equation}
+
+\begin{lemma}[Prefix losses]\label{gpi:lem:prefix}
+For $K=\Q$ and every integer $Y\ge N$ one has $U-B\ge c\,L_N$, and hence, for the respective
+convention,
+\[
+ u_\Q-b_\Q\ \ge\ L_N\prod_{p\le Y}(1-p^{-1})-\sum_{p>Y}p^{-2}.
+\]
+\end{lemma}
+
+\begin{proof}
+For $Y\ge N$ all integers up to $N$ are $Y$-smooth, so the function $J$ of
+\cref{gpi:sec:local} agrees on $[1,N+1)$ with the one used in \eqref{gpi:eq:LN}. For an
+admissible $A\subseteq S_Y$ the second expression in \eqref{gpi:eq:LN}, evaluated at
+$A\cap[1,N]$, is $\int_1^{N+1}\#(A\cap[1,t])\,t^{-2}\,\dd t$, and the first is
+$\int_1^{N+1}J(t)t^{-2}\,\dd t$. The remaining integral of the prefix deficit over
+$[N+1,\infty)$ is nonnegative. Now use \eqref{gpi:eq:gapframe}.
+\end{proof}
+
+\begin{example}[The obstruction in $\set{1,\dots,12}$]\label{gpi:ex:twelve}
+The rational-ratio progressions up to $12$ are
+\[
+ (1,2,4),\quad(1,3,9),\quad(2,4,8),\quad(3,6,12),\quad(4,6,9),
+\]
+as one sees from the parametrization $(ab^2,abc,ac^2)$ with $1\le b<c$,
+$\gcd(b,c)=1$ and $ac^2\le12$; the first four have integer ratios. An admissible set that
+maximizes its cardinality at every cutoff $k\le12$ must agree with the increasing greedy
+construction up to $12$: whenever the greedy construction takes $k$, adding $k$ to the agreed
+prefix improves the count, so every simultaneous maximizer takes it, and whenever it rejects
+$k$, taking $k$ would violate admissibility. Under both conventions the greedy prefix is
+$\set{1,2,3,5,6,7,8,10,11}$, with nine elements, whereas
+$\set{1,2,5,6,7,8,9,10,11,12}$ is admissible and has ten. Hence every admissible set falls
+short of $J(k)$ at some $k\le12$, and $L_{12}\ge1/(12\cdot13)$ for both conventions.
+\end{example}
+
+\begin{theorem}[McNew's Questions 7.1 and 7.3; \stU]\label{gpi:thm:integer-gap}
+\[
+ \overline\alpha-\alpha>0.002836,\qquad\overline\beta-\beta>0.069218 .
+\]
+\end{theorem}
+
+\begin{proof}
+For $N=80$ the exact values are
+\[
+ L_{80}=\frac{1553}{45360}\ \text{(rational ratios)},\qquad
+ L_{80}=\frac{16567}{132300}\ \text{(integer ratios)}.
+\]
+The finite maximum is computed as follows. Form each forbidden triple in $[1,k]$ as an edge
+with three vertices; maximizing the retained weight is the same as minimizing the weight of a
+set of vertices meeting every edge. If an uncovered edge is $\set{i,j,l}$, branch on putting
+each of its three vertices into the cover and remove all incident edges; the optimum is the
+minimum over the branches, with zero cost for the empty edge set, and identical remaining
+edge sets are cached. The same recursion with unit weights gives each $J(k)$, and with integer
+multiples of the weights in \eqref{gpi:eq:LN} it gives the second term. With $Y=293$ and
+rational ratios, Lemma~\ref{gpi:lem:prefix} gives $\overline\alpha-\alpha>0.002836$; the product
+is bounded below and the tail $\sum_{p>Y}p^{-2}$ is bounded above by sieving the primes up to
+$100000$ and adding $1/100000$ for the rest, in directed fixed-point integer arithmetic, by
+\gpifile[.]{grh_transfers_density_gaps_and_zero_tests/checks/check_integer_prefix.py}
+The same method with integer ratios and $Y=83$ gives $\overline\beta-\beta>0.013336$.
+
+For integer ratios a separate calculation is stronger. Apply Lemma~\ref{gpi:lem:BU} with $Y=7$, so
+that $c=8/35$. There are $265$ integers in $S_7\cap[1,5000]$, and the maximal reciprocal sum
+of a subset of them avoiding integer-ratio progressions is
+\[
+ M_0=\frac{1619153731921}{497871360000}.
+\]
+Assigning the full remaining smooth mass to the untested tail gives
+\begin{equation}\label{gpi:eq:beta-upper}
+ \beta\ \le\ B\ \le\ 1-c\Bigl(\sum_{h\in S_7,\ h\le5000}\frac1h-M_0\Bigr)
+ =\frac{5245322990569}{7001316000000}<0.749192 .
+\end{equation}
+The exhaustive calculation uses the common denominator of the $265$ weights. In ascending
+order it branches on including or excluding the least undecided integer; whenever the first
+two terms of a forbidden progression have been selected, the third is removed from the
+candidates, and the selected and remaining weights together bound the optimum on a branch; this is
+\gpifile[.]{grh_transfers_density_gaps_and_zero_tests/checks/check_integer_gap.py}
+McNew's
+Theorem~4.4 gives $\overline\beta>0.818410$ \cite{McNew2015Sets}. The difference exceeds
+$0.069218$.
+\end{proof}
+
+\subsection{Bounds for \texorpdfstring{$\beta$}{beta} and for the upper density
+\texorpdfstring{$\overline\alpha$}{alpha-bar}}\label{gpi:sec:bounds}
+{\raggedright\sources{mcnew_density_and_grh_transfers; mcnew_counterexample_and_grh_transfers; grh_transfers_density_gaps_and_zero_tests}}
+
+\begin{proposition}[Natural density with integer ratios; \stU]\label{gpi:prop:beta}
+\[
+ 0.723891309687823565\ \le\ \beta\ <\ 0.749192 .
+\]
+\end{proposition}
+
+\begin{proof}
+The upper bound is \eqref{gpi:eq:beta-upper}. For the lower bound let $P$ be the set of the
+eight primes up to $19$. The file
+\gpifile{mcnew_density_and_grh_transfers/checks/integral_ratio_support.txt}
+lists a set
+$J_0$ of $8197$ $P$-smooth integers, the largest being $99{,}792{,}810$, which contains no
+integer-ratio progression. Use Rankin's rule at the primes outside $P$. By
+Lemma~\ref{gpi:lem:product} the resulting set is admissible for integer ratios and has natural
+density
+\[
+ W(J_0)\prod_{p\le19}(1-p^{-1})
+ \prod_{p>19}\Bigl[(1-p^{-2})\prod_{j\ge1}(1+p^{-3^j})\Bigr].
+\]
+Verifying the triples in $J_0$, retaining the factors $j=1$ for $p\le200000$ and bounding the
+remaining product from below by $200000/200001$, with all fixed-point divisions rounded
+downward, gives the stated bound, by
+\gpifile[.]{mcnew_density_and_grh_transfers/checks/verify_integer_ratio.py}
+Optimality of
+the $8197$ choices is not needed.
+\end{proof}
+
+McNew's Theorem~3.3 gave $\beta>0.72195$ by modifying the greedy construction at three primes.
+Upper bounds for $\alpha$ are in Corollary~\ref{gpi:cor:restricted} and Theorem~\ref{gpi:thm:beta-alpha}.
+
+For the upper density with rational ratios we need a restricted variant. For $s\ge2$ let
+$\overline\alpha_s$ be the supremum of the upper densities of the sets containing no
+progression whose ratio, in lowest terms, has numerator and denominator in $S_s$. Since fewer
+triples are forbidden, $\overline\alpha\le\overline\alpha_s$ for every $s$, and
+$\overline\alpha_s$ is nonincreasing in $s$.
+
+\begin{theorem}[Upper density with rational ratios; \stU]\label{gpi:thm:upper-alpha}
+\[
+ 0.7365954<\overline\alpha<0.7716011,\qquad
+ \overline\alpha_7-\overline\alpha_{11}\ \ge\ \frac{64}{139755}.
+\]
+\end{theorem}
+
+McNew's bounds are $0.730027<\overline\alpha<0.772059$ \cite[Theorems~4.3 and~4.5]{McNew2015Sets};
+smooth-number fibers were already used there. The additions are explicit finite templates
+and a strict, certified loss when the prime $11$ is admitted to the ratios.
+
+\begin{proof}[Proof of the lower bound]
+The file
+\gpifile{mcnew_counterexample_and_grh_transfers/checks/density/lower.csv}
+gives
+thresholds $1=t_1<\dots<t_{275}=972405$ and sets $C_i\subset S_7\cap[1,t_i]$ with $\#C_i=i$
+such that $b^2/a\notin C_i$ for all $a<b$ in $C_i$ with $a\mid b^2$. Thus every $C_i$ is
+admissible for rational ratios; the sets need not be nested. For $x\ge1$ let $C(x)=C_i$ for
+the largest $t_i\le x$, and let $C(x)=\emptyset$ for $x<1$. The exact sum of the threshold
+contributions is
+\[
+ I=\sum_{i=1}^{275}\frac1{t_i}=\frac{86690601810929969}{26132271943680000}.
+\]
+Call an integer $h$ \emph{allowed} if $\gcd(h,210)=1$, its exponents at the primes
+$11\le p\le997$ lie in $\set{0,1,3,4}$, and its exponents at all larger primes lie in
+$\set{0,1}$. Both exponent sets are free of nonconstant three-term arithmetic progressions.
+By Lemma~\ref{gpi:lem:product} the allowed integers have natural density
+\[
+ c_0=\frac6{\pi^2}\prod_{p\in\set{2,3,5,7}}\frac p{p+1}\prod_{11\le p\le997}(1+p^{-3}),
+\]
+since the local factor $(1-p^{-1})(1+p^{-1}+p^{-3}+p^{-4})$ equals $(1-p^{-2})(1+p^{-3})$.
+
+Take $N_0=0$ and $N_j=2^{2^j}$ for $j\ge1$. For each allowed $h\in(N_{j-1},N_j]$ insert the
+integers $h\,C(N_j/h)$ into one set $A$. The part of each inserted integer coprime to $210$
+is $h$. If three inserted integers formed a progression, their valuations at each prime
+greater than $7$ would form an arithmetic progression in a permitted exponent set, so they
+would have the same part $h$, and their $7$-smooth parts would lie in the one admissible
+template assigned to $h$. This excludes progressions across stages as well as within a
+stage. At $N=N_j$ the current stage alone contributes at least
+\[
+ \sum_{i=1}^{275}\#\set{h\le N/t_i:h\text{ allowed}}-275\,N_{j-1}
+\]
+elements, because the size of each template is the number of thresholds below its cutoff.
+Since $N_{j-1}/N_j\to0$, division by $N_j$ gives $\overline d(A)\ge c_0I$. Replacing $\pi$ by
+the upper bound $355/113$, itself certified from Machin's formula
+$\pi=16\arctan(1/5)-4\arctan(1/239)$, gives the rational estimate
+\[
+ \frac{6\cdot113^2}{355^2}\prod_{p\in\set{2,3,5,7}}\frac p{p+1}
+ \prod_{11\le p\le997}(1+p^{-3})\,I>\frac{7365954}{10^7}
+\]
+which is checked by
+\gpifile[.]{mcnew_counterexample_and_grh_transfers/checks/density/check_density.py}
+\end{proof}
+
+\begin{proof}[Proof of the loss at eleven and of the upper bound]
+Let $F_s(x)$ be the maximal size of a subset of $S_s\cap[1,x]$ free of rational-ratio
+progressions, and let $g_s(N)$ be the maximal size of a subset of $[1,N]$ avoiding
+progressions with $s$-smooth ratio. McNew's Theorem~4.2 gives $g_s(N)/N\to\overline\alpha_s$.
+Partition $[1,N]$ into fibers according to the part $b$ coprime to $2310$, and put $x=N/b$.
+When all $11$-smooth ratios are forbidden the maximum in the fiber is $F_{11}(x)$. When only
+$7$-smooth ratios are forbidden it is $H(x)=\sum_{j\ge0}F_7(x/11^j)$, because each
+$11$-adic layer can be chosen independently; always $H(x)\ge F_{11}(x)$. The following finite
+comparison shows $H(x)\ge F_{11}(x)+1$ throughout $121\le x<165$.
+\[
+\small\setlength{\arraycolsep}{3pt}
+\begin{array}{c|rrrrrrr}
+ [a,b') &[121,125)&[125,132)&[132,135)&[135,140)&[140,154)&[154,162)&[162,165)\\
+ \hline
+ \max(S_{11}\cap[1,b')) &121&128&132&135&150&160&162\\
+ H(a)\ \text{at least} &38&39&40&41&42&43&44\\
+ F_{11}(x)\ \text{at most} &37&38&39&40&41&42&43
+\end{array}
+\]
+For each interval, the file
+\gpifile{mcnew_counterexample_and_grh_transfers/checks/density/intervals.json}
+supplies three
+$7$-smooth sets for the layers $j=0,1,2$; testing their members and their triples proves the
+lower entry for $H(a)$. For an upper entry $u$, consider the hypergraph whose vertices are
+the $11$-smooth numbers up to the listed maximum, with a hyperedge for every triple $d<e<f$
+with $df=e^2$. A set of $u+1$ surviving vertices would give a cover with at most
+$\#V-u-1$ deleted vertices. Seven proof trees in
+\gpifile{mcnew_counterexample_and_grh_transfers/checks/density/trees/}
+rule this out. At an
+internal node one branches on a single vertex being deleted or kept. After discarding the
+covered edges, let $k$ be the remaining deletion budget. A leaf closes if $k<0$ or if an
+uncovered edge has all its vertices fixed to be kept. The remaining type of leaf carries
+positive integer weights on uncovered edges, with sum $W$ and with maximal total weight $D$
+incident to an undecided vertex; every cover using at most $k$ further deletions covers
+weight at most $kD$, and the supplied weights satisfy $W>kD$. The verifier checks these
+integer inequalities, both branches at every internal node, all listed members and the
+ordering of the smooth numbers. The trees have $813$, $3295$, $1559$, $1331$, $2047$, $3139$
+and $2865$ nodes.
+
+The fibers with $\gcd(b,2310)=1$ partition $[1,N]$ for both optimization problems, and every
+$b$ with $N/165<b\le N/121$ costs at least one element in the $11$-smooth problem. Dividing
+$g_7(N)-g_{11}(N)$ by $N$ and passing to the limit gives
+\[
+ \overline\alpha_7-\overline\alpha_{11}\ \ge\ \frac{\varphi(2310)}{2310}
+ \Bigl(\frac1{121}-\frac1{165}\Bigr)=\frac{64}{139755}.
+\]
+McNew obtains $\overline\alpha_7<0.772059$ \cite[Section~4]{McNew2015Sets}. Consequently
+\[
+ \overline\alpha\le\overline\alpha_{11}<\frac{772059}{10^6}-\frac{64}{139755}
+ =\frac{21567021109}{27951000000}<0.7716011 . \qedhere
+\]
+\end{proof}
+
+\subsection{Attainment and computability of the natural-density suprema}\label{gpi:sec:attain}
+{\raggedright\sources{grh_transfers_density_gaps_and_zero_tests; grh_prime_patterns_and_branch_precision}}
+
+\begin{theorem}[The suprema are attained; \stU]\label{gpi:thm:attain}
+For each of the two conventions over $\Q$, the natural-density supremum $b\in\set{\alpha,\beta}$
+is a computable real number, and there is an admissible set of natural density exactly $b$.
+Moreover $b$ is also the supremum of the upper logarithmic densities
+$\limsup_{X\to\infty}(\log X)^{-1}\sum_{m\in E,\,m\le X}1/m$ over all admissible sets $E$.
+\end{theorem}
+
+\begin{proof}
+\emph{Computability.} By Lemma~\ref{gpi:lem:BU}, $vB\le b\le B$ and $B\le1$, so replacing $b$ by
+$B=B(Y)$ costs at most $\sum_{p>Y}p^{-2}\le1/Y$. For fixed $Y$ the finite weighted
+optimization over $S_Y\cap[1,H]$ approximates $B$ from below within
+$1-c\sum_{h\in S_Y,\,h\le H}1/h$, an explicitly computable rational tending to zero as
+$H\to\infty$. This gives effective two-sided bounds without identifying an optimizer.
+
+\emph{A uniform estimate for the largest prime factor.} Write $D(m)$ for the largest prime
+factor of $m$, with $D(1)=1$, and let $F_x(y)$ be the proportion of the positive integers
+$m\le x$ with $D(m)\le y$. For every fixed positive integer $a$,
+\begin{equation}\label{gpi:eq:dickman}
+ \sup_{y\ge1}\abs{F_{x/a}(y)-F_x(y)}\longrightarrow0\qquad(x\to\infty).
+\end{equation}
+Indeed, by Dickman's theorem \cite{Dickman1930Frequency,GranvilleSmooth} the distribution
+functions of the ratio $\log D(m)/\log x$ converge to the continuous law with distribution
+function $t\mapsto\rho(1/t)$ on $(0,1]$, extended by zero for $t\le0$ and by one for $t\ge1$.
+Pointwise convergence of distribution functions to a continuous distribution function is
+uniform, by choosing a finite grid of quantiles and using monotonicity. Replacing $\log x$ by
+$\log(x/a)$ rescales $t$ by a factor tending to one, with uniform error tending to zero by
+continuity on a compact interval and the constant tails.
+
+\emph{Approximating rules.} Choose cutoffs $Y_j\to\infty$ and finite admissible sets
+$A_j\subset S_{Y_j}$ such that the product sets $E_j$ of Lemma~\ref{gpi:lem:product}, with smooth
+part in $A_j$ and squarefree $Y_j$-rough part, have densities $e_j\to b$. Put
+$\epsilon_j=2^{-j}$. Each $E_j$ is approximated, in proportion on $[1,x]$ and uniformly for
+integers $x\ge1$, within $\epsilon_j$ by a finite Boolean combination $C_j$ of divisibility
+conditions: membership in a finite list of exact smooth parts is a finite divisibility
+condition, and ignoring the squares of primes beyond $K$ costs at most $\sum_{p>K}p^{-2}$.
+Inclusion--exclusion writes the indicator of $C_j$ as a finite linear combination
+$\sum_au_a\mathbf 1_{a\mid m}$. For $y\ge D(a)$ the proportion of $m\le x$ with $a\mid m$ and
+$D(m)\le y$ is $\floor{x/a}F_{x/a}(y)/\floor{x}$, which by \eqref{gpi:eq:dickman} equals
+$a^{-1}F_x(y)+o_a(1)$ as $x\to\infty$, uniformly in such $y$.
+
+\emph{Pasting by the largest prime factor.} Choose increasing thresholds $m_j>Y_j$ so large
+that, for all $x,y\ge m_j$, the proportion of $m\le x$ in $C_j$ with $D(m)\le y$ differs from
+$d(C_j)F_x(y)$ by at most $\epsilon_j$; using $E_j$ and $e_j$ instead costs at most
+$2\epsilon_j$ more. Let $E$ contain $m$ exactly when $m_j<D(m)\le m_{j+1}$ and $m\in E_j$
+for some $j\ge1$; the integers with $D(m)\le m_1$ are omitted. The set $E$ is admissible. In
+a forbidden triple, consider the largest prime $\ell$ dividing any of its three terms.
+Wherever $\ell$ is present it is the largest prime factor of that term, exceeds the cutoff
+$Y_j$ of the rule that the term follows, and therefore occurs to exponent one. The three
+valuations at $\ell$ form an arithmetic progression in $\set{0,1}$ with one value equal to
+one, so all equal one. Hence the three terms have the same largest prime factor, follow the
+same rule $E_j$, and cannot form a forbidden triple.
+
+For each $j$ the proportion of $m\le x$ in $E$ with $m_j<D(m)\le m_{j+1}$ differs from $e_j$
+times the proportion of that bin by at most $6\epsilon_j$; both are zero if $x<m_j$. The mass
+of finitely many initial bins tends to zero, because $F_x(m)\to0$ for fixed $m$. The errors
+of the bins $j\ge j_0$ sum to at most $6\sum_{j\ge j_0}\epsilon_j$, and
+$\sup_{j\ge j_0}\abs{e_j-b}\to0$. Letting $x\to\infty$ and then $j_0\to\infty$ shows that $E$
+has natural density $b$.
+
+\emph{Logarithmic density.} By the last assertion of Lemma~\ref{gpi:lem:BU} every admissible set
+has upper logarithmic density at most $B(Y)$ for every $Y$, hence at most $b$. A set of
+natural density $b$ has logarithmic density $b$ by partial summation.
+\end{proof}
+
+The polynomial analogue, with an elementary substitute for Dickman's theorem and a decidable
+extremal set, is \cref{gpi:thm:poly-natural}.
+
+\subsection{The greedy set is not optimal: an exchange in one ternary digit}\label{gpi:sec:onedigit}
+{\raggedright\sources{grh_prime_patterns_and_branch_precision; mcnew_counterexample_and_grh_transfers; mcnew-density-and-dirichlet-grh}}
+
+McNew's Conjecture~7.2 asserts $\alpha=d(R)$. It fails, and it fails in the same way in every
+number field and for the stronger (fractional) convention. The mechanism is to correlate the
+exponents at different primes: one forbidden digit at a \emph{marker} prime is shared by
+additions indexed by many \emph{satellite} primes, and one common deletion protects all of
+them. The added reciprocal mass grows like a sum of reciprocals of primes, while the
+deletion is paid once.
+
+A \emph{cap} is a subset of $\F_3^{r}$ in which $x+y+z=0$ implies $x=y=z$; we use the
+representatives $0,1,2$. The binary cube $\set{0,1}^{r}$ is a cap. Fix a prime ideal
+$\mathfrak l$ of $K$ (the marker) and distinct further prime ideals
+$\mathfrak q_1,\dots,\mathfrak q_k$ (the satellites); write $S$ for this set of $k+1$ primes,
+$w=w_{\mathfrak l}$ and $u_i=w_{\mathfrak q_i}$. Coordinates in $\F_3^{k+1}$ are indexed by
+$(\mathfrak l,\mathfrak q_1,\dots,\mathfrak q_k)$. Let $\mathbf b=(1,\dots,1)$ be the
+all-ones satellite vector and $\mathbf b_i$ the vector obtained from it by replacing the
+$i$th entry by $2$. Put $\mathcal C=\set{0,1}^{k+1}$ and
+\begin{equation}\label{gpi:eq:capC}
+ \mathcal C'=\bigl(\mathcal C\setminus\set{(0,\mathbf b),(1,\mathbf b)}\bigr)\cup
+ \set{(2,\mathbf b),(2,\mathbf b_1),\dots,(2,\mathbf b_k)} .
+\end{equation}
+Let $E$ be the set of ideals $\mathfrak a$ such that the exponent vector
+$(v_{\mathfrak p}(\mathfrak a))_{\mathfrak p\in S}$ has the form $3h+c$ with
+$c\in\mathcal C'$ and $h\in\mathcal A^{k+1}$, and such that
+$v_{\mathfrak p}(\mathfrak a)\in\mathcal A$ for every $\mathfrak p\notin S$. Replacing
+$\mathcal C'$ by $\mathcal C$ gives $\mathcal G_K$; only the units digits in base three at
+the primes of $S$ differ from the greedy rule.
+
+\begin{theorem}[One-digit exchange; \stU]\label{gpi:thm:onedigit}
+With the notation above, the following hold.
+\begin{enumerate}[label=\textup{(\alph*)}]
+\item The set $\mathcal C'$ is a cap, and $E$ is admissible for the fractional convention.
+\item $E$ has a natural density, and
+\begin{equation}\label{gpi:eq:capgain}
+ d(E)-d(\mathcal G_K)=\Bigl(\prod_iu_i\Bigr)
+ \Bigl[w^2\Bigl(1+\sum_iu_i\Bigr)-(1+w)\Bigr]
+ \prod_{\mathfrak p\in S}\Bigl[(1-w_{\mathfrak p})\sum_{h\in\mathcal A}w_{\mathfrak p}^{3h}\Bigr]
+ \prod_{\mathfrak p\notin S}\Bigl[(1-w_{\mathfrak p})\sum_{e\in\mathcal A}w_{\mathfrak p}^{e}\Bigr].
+\end{equation}
+\item For every $K$ and every marker there are finitely many satellites with
+ $\sum_iu_i>w^{-2}+w^{-1}-1$, and then $d(E)>d(\mathcal G_K)$. Hence in every number field
+ the natural-density supremum for fractional ratios, and a fortiori for integral ratios,
+ exceeds the greedy density.
+\item For $K=\Q$, take the marker $2$ and the first odd primes until their reciprocals sum to
+ more than $5$; all odd primes up to $\ceil{\exp(\exp7)}$ suffice. Then $d(E)>d(R)$. In
+ particular $\alpha>d(R)$, and Conjecture~7.2 of \cite{McNew2015Sets} is false.
+\end{enumerate}
+\end{theorem}
+
+\begin{proof}
+(a) Consider $x+y+z=0$ in $\mathcal C'$. Three old points lie in the cap $\mathcal C$. If two
+of the points are new, the marker digit of the third is $2$, so it is new as well; all three
+then have satellite digits in $\set{1,2}$, which is a cap in each coordinate, and equal
+marker digits. Suppose exactly one point is new. At every satellite coordinate where its
+digit is $1$, the two old digits lie in $\set{0,1}$ and sum to $2$ modulo three, so both are
+$1$. At its exceptional coordinate, if it has one, the old digits sum to $1$, so they are $0$
+and $1$. Thus at least one old point has satellite vector $\mathbf b$, and both old points
+with that satellite vector were removed.
+
+In a forbidden triple of ideals in $E$, with any integral step in each coordinate, the three
+residue vectors modulo $3$ on $S$ satisfy $x+z\equiv2y$, that is $x+y+z\equiv0$. By the cap
+property they are equal. Subtracting the common vector and dividing by three gives an
+arithmetic progression in $\mathcal A$ in each coordinate, which is constant. The valuations
+outside $S$ are constant for the same reason.
+
+(b) Give a digit vector $c$ the mass $W(c)=w^{c_{\mathfrak l}}\prod_iu_i^{c_i}$. By
+Lemma~\ref{gpi:lem:product}, applied with the greedy rule outside $S$ and with $F$ the set of
+$S$-smooth ideals whose exponent vector is $3h+c$ with $c\in\mathcal C'$, respectively
+$c\in\mathcal C$, and $h\in\mathcal A^{k+1}$, both densities exist and their difference is
+$W(\mathcal C')-W(\mathcal C)$ times the two products in \eqref{gpi:eq:capgain}. The removed
+vectors have mass $(1+w)\prod_iu_i$ and the added ones $w^2(1+\sum_iu_i)\prod_iu_i$.
+
+(c) The sum $\sum_{\mathfrak p}w_{\mathfrak p}$ diverges: the Dedekind zeta function has a
+pole at $1$, and in the logarithm of its Euler product the prime powers of exponent at least
+two contribute a bounded amount as $s\downarrow1$. The two products in \eqref{gpi:eq:capgain}
+are positive.
+
+(d) With $w=1/2$ the bracket is $(\sum_iu_i-5)/4$. Euler's divergence theorem ensures that
+the initial segment is finite. For the explicit cutoff $Y=\ceil{\exp(\exp7)}$, the finite Euler
+product over $p\le Y$ exceeds $\sum_{m\le Y}1/m\ge\log Y$, and in its logarithm the prime
+powers of exponent at least two contribute at most $\sum_{m\ge2}1/(m(m-1))=1$. Subtracting
+the contribution $1/2$ of the prime $2$ leaves at least $7-1-\tfrac12>5$.
+\end{proof}
+
+Part~(c) gives an affirmative answer, in every number field and for both conventions, to the
+natural-density form of the questions of Best et al.\ recalled in \cref{gpi:sec:setting}.
+The same exchange over $\F_q[x]$ is Proposition~\ref{gpi:prop:poly-greedy}.
+
+\paragraph{Which exchanges with two deletions can help.}
+The exchange \eqref{gpi:eq:capC} deletes two vertices of the binary cube. This is the least
+possible number, and the profitable two-deletion exchanges can be classified exactly. Let
+$\mathcal C=\set{0,1}^r\subset\F_3^r$ carry the weights $W(x)=\prod_iw_i^{x_i}$ with
+$0<w_i\le1/2$, extended to $\F_3^r$ by the representatives $0,1,2$. Require that a
+replacement cap keep all cube vertices except those of a specified set $D$ and omit every
+vertex of $D$.
+
+\begin{theorem}[Two deletions; \stU]\label{gpi:thm:edge}
+If $D$ is empty, or a single vertex, or two vertices at Hamming distance at least two, then
+the weight that can be added outside the cube is at most the deleted weight $W(D)$; there is
+no net gain. If $D$ consists of two adjacent vertices, call their varying coordinate the
+marker, of weight $w$, and their common remaining vector $b$; for a satellite coordinate $i$
+put $s_i=w_i^{2-b_i}$. Then the maximal weight that can be added is
+\[
+ W(b)\max\Bigl\{(1+w)\max_is_i,\ w^2\Bigl(1+\sum_is_i\Bigr)\Bigr\},\qquad
+ W(b)=\prod_{i\ne\mathrm{marker}}w_i^{b_i},
+\]
+with zero for an empty maximum, and the deleted weight is $(1+w)W(b)$.
+\end{theorem}
+
+\begin{proof}
+An outside point with $h$ entries equal to $2$ lies on exactly $2^{h-1}$ lines through pairs
+of cube points: at a coordinate with entry $2$ the two binary digits are opposite, and
+everywhere else both equal the digit of the outside point. These pairs are disjoint. Hence
+$h\le2$ after two deletions. For $h=2$ both deleted vertices must belong to the square face
+of the point and must meet the two different opposite pairs; in a binary square this means
+that they are adjacent. For $h=1$ at least one endpoint of the associated cube edge must
+have been deleted. With no deletion every outside point is excluded.
+
+For a single missing vertex $v$ the allowed additions therefore arise by changing one digit
+of $v$ to $2$. Two different such changes have as third point the cube vertex obtained from
+$v$ by flipping both binary digits, which survives. So at most one point can be added, of
+weight at most $W(v)/2$. For two nonadjacent missing vertices each possible addition is
+incident to exactly one of them. Two different additions incident to $v$ require that their
+two-digit flip equal the other missing vertex, so at most two additions are incident to $v$,
+each of weight at most $W(v)/2$. Summing the charges proves the first claim.
+
+Now let $D$ be an edge. The available points are the centre $(2,b)$ and, for each satellite
+$i$, the three points with any marker digit above the satellite vector $b_i$ obtained from
+$b$ by changing its $i$th digit to $2$; call this triple column $i$. The face argument gives
+this entire list and shows that each individual candidate is compatible with all pairs of
+retained cube points.
+
+Suppose different columns $i,j$ are used with marker digits $a,c$. The third point of the
+line has satellite vector $b$ flipped at $i$ and $j$, which is binary; its marker $-a-c$
+must be $2$, since otherwise it is a retained cube vertex. Thus $a+c=1$ modulo three. A
+centre and a column point give a one-flip binary completion by the same calculation, which
+forces the column marker to be $2$. Three or more occupied columns force every marker to be
+$2$. Two occupied columns without the centre can only carry the marker pairs $(0,1)$, $(1,0)$,
+$(2,2)$, with a single point in each column. One occupied column contains at most two
+points, because its three points form a line; their combined relative marker weight is at
+most $1+w$. The two mixed-marker cases cost at most $(1+w)\max_is_i$ in units of $W(b)$ as
+well, and all cases with marker $2$ only cost at most the second term of the maximum.
+
+Both bounds are attained when the corresponding candidates exist. In a maximizing column use
+the markers $0$ and $1$; their completion is the third point of the same column and is
+absent. Alternatively use the centre and all columns with marker $2$: the satellite digits
+then lie in the cap $\prod_i\set{b_i,2}$, and with only one new point a pair of retained
+points cannot complete a line. This proves the formula, including the case of no satellites.
+\end{proof}
+
+The proof is confirmed on $378$ small weighted cube instances by
+\gpifile[.]{grh_prime_patterns_and_branch_precision/checks/check_caps.py}
+Three consequences
+follow. First, since $u_i\le1/2$, the first term of the maximum never exceeds the deleted
+weight, so a strict gain requires
+\begin{equation}\label{gpi:eq:edge-threshold}
+ w^2\Bigl(1+\sum_is_i\Bigr)>1+w ,
+\end{equation}
+and by \cref{gpi:thm:edge} two is the smallest number of deleted cube vertices in a profitable
+one-digit exchange. The restriction concerns the residue cap and allows arbitrarily many
+added patterns. Second, since $s_i\le w_i$ with equality for $b_i=1$, for a fixed marker the
+most favourable choice is the all-ones satellite vector of \eqref{gpi:eq:capC}. Third, the
+marker giving the easiest threshold is one of largest weight: with $S_0=\sum_iw_i$ fixed over
+all coordinates, the ratio $w^2(1+S_0-w)/(1+w)$ increases for $0<w\le1/2$, since its
+logarithmic derivative is $2/w-1/(1+S_0-w)-1/(1+w)>0$. Consequently the threshold
+$\sum_iu_i>5$ of \cref{gpi:thm:onedigit}(d) is sharp for a two-deletion exchange with marker
+$2$, and for a list of rational primes containing $2$ no other marker lowers it.
+
+\paragraph{The least number of primes as a function of the field degree.}
+Order the multiset containing $n$ copies of $1/p$ for each rational prime $p$ decreasingly,
+and let $\Sigma_n(r)$ be the sum of its first $r$ terms.
+
+\begin{proposition}[Sharp dimension; \stU]\label{gpi:prop:thresholds}
+Among all number fields of degree $n$, the least number of prime-ideal coordinates in which
+a two-deletion exchange strictly improves the greedy cube is
+\[
+ D_n=\min\set{r:\Sigma_n(r)>11/2}.
+\]
+Every field of degree $n$ needs at least $D_n$ coordinates, and at least one field of degree
+$n$ attains $D_n$. The values are
+\begin{center}
+\begin{tabular}{c|rrrrrrrrrr}
+$n$&2&3&4&5&6&7&8&9&10&$\ge11$\\ \hline
+$D_n$&30\,948&85&27&18&15&14&13&13&12&12
+\end{tabular}
+\end{center}
+and for $n=1$
+\[
+ 3.46\cdot10^{79}<D_1<3.52\cdot10^{79}.
+\]
+\end{proposition}
+
+\begin{proof}
+By \eqref{gpi:eq:edge-threshold} and $s_i\le w_i$, the sum of all the prime-ideal weights in
+the exchange, marker included, must exceed $w+(1+w)/w^2-1$, a decreasing function of $w$ on
+$(0,1/2]$ with minimum $11/2$. There are at most $n$ primes above each rational prime $p$,
+each of norm at least $p$, so $\Sigma_n(r)$ dominates the sum of any $r$ weights in a field of
+degree $n$. The minimum is finite by the divergence of $\sum_p1/p$.
+
+For the converse, choose a field of degree $n$ in which every rational prime occurring among
+the first $D_n$ terms of the multiset splits completely. Such a field exists by coefficientwise
+Chinese remaindering: set $g(X)=\prod_{j=1}^n(X-j)$ and, at every specified prime $p$, demand
+that a monic polynomial $f$ of degree $n$ be congruent to $g$ modulo $p^{2M+1}$ with
+$M=\max_jv_p(g'(j))$. Hensel's lemma at each $j$ gives a root whose difference from $j$ has
+valuation greater than $M$, and these roots are distinct because $v_p(j-k)\le M$ for $j\ne k$.
+Impose Eisenstein's criterion at one further prime to guarantee irreducibility. Then
+$\Q[X]/(f)$ has the required degree and splitting, as one sees from its tensor products with
+$\Q_p$. In these coordinates choose a marker of norm two and all satellite digits equal to
+one; the sum condition is sufficient.
+
+For $n\ge12$ the first twelve terms are all $1/2$; for $n=2$ the last prime used is $169751$.
+The table is reproduced, with integer interval certificates and exact short sums, by
+\gpifile[.]{grh_prime_patterns_and_branch_precision/checks/check_field_thresholds.py}
+
+For $n=1$ put $x_-=6.51\cdot10^{81}$ and $x_+=6.57\cdot10^{81}$. By Theorem~5 of Rosser and
+Schoenfeld \cite{RosserSchoenfeld1962Approximate}, the absolute error in replacing $\sum_{p\le x}1/p$ by
+$\log\log x+B_1$ is at most $1/(2\log^2x)$ at both points, where the Meissel--Mertens
+constant satisfies $0.261496<B_1<0.261499$. Substitution places the two prime sums on opposite
+sides of $11/2$. Theorem~1 of the same paper bounds $\pi(x)$ below and above by
+$(x/\log x)(1+\theta/\log x)$ with $\theta=1/2$ and $3/2$ respectively in this range. Applying
+these bounds to $\pi(x_-)<D_1\le\pi(x_+)$ gives the interval. The checker also bounds $B_1$
+directly by truncating $B_1=\gamma-\sum_p\sum_{k\ge2}1/(kp^k)$ with explicit tail errors.
+\end{proof}
+
+\begin{example}[A degree-ten field with twelve primes]\label{gpi:ex:431}
+Let $K$ be the unique subfield of degree $10$ of $\Q(\zeta_{431})$. The integer $431$ is
+prime, the Galois group of $\Q(\zeta_{431})$ is cyclic of order $430$, and the subgroup fixing
+$K$ has order $43$. Repeated squaring gives $2^{43}\equiv3^{43}\equiv1\pmod{431}$, so $2$ and
+$3$ split completely in $K$. Take the ten primes of norm $2$ and two primes of norm $3$, with a
+marker of norm $2$. The eleven satellite weights sum to $9/2+2/3=31/6$, and
+\eqref{gpi:eq:capgain} gives an added unnormalized mass of $1/110592$. Dividing by the mass
+$(3/2)^{10}(4/3)^2$ of the original cube gives the exact relative gain
+\[
+ d(E)=d(\mathcal G_K)\Bigl(1+\frac1{11337408}\Bigr).
+\]
+By Proposition~\ref{gpi:prop:thresholds}, twelve is the least possible number of coordinates for a
+two-deletion exchange in any number field, and ten is the least degree in which twelve
+suffice. The arithmetic of this example is checked by
+\gpifile[.]{grh_prime_patterns_and_branch_precision/checks/check_fields.py}
+\end{example}
+
+\begin{example}[No uniform bound for the relative gain]\label{gpi:ex:unbounded}
+There is no field-independent upper bound for the ratio of the achievable natural density to
+the greedy density. Choose $L$ distinct rational primes congruent to $1$ modulo $8$ and
+adjoin their square roots. Independent square classes give a field of degree $2^L$, and all
+radicands are squares in $\Q_2$, so $2$ splits completely. Apply the exchange
+\eqref{gpi:eq:capC} in disjoint groups of twelve prime ideals of norm $2$. Each group
+multiplies the density by exactly $1+1/2125764$, since its added mass is $1/16384$ and its
+original mass is $(3/2)^{12}$, and the admissibility proof applies to each group separately.
+Independent groups multiply the gains, giving the factor
+$(1+1/2125764)^{\floor{2^L/12}}$ relative to the greedy density of the same field.
+\end{example}
+
+\subsection{An explicit counterexample over the integers}\label{gpi:sec:explicit}
+{\raggedright\sources{mcnew_counterexample_and_grh_transfers; mcnew-density-and-dirichlet-grh}}
+
+By Proposition~\ref{gpi:prop:thresholds} the one-digit exchange over $\Q$ needs about $3.5\cdot10^{79}$
+primes. An exchange of exact valuations, with four marker exponents, needs far fewer.
+
+\begin{theorem}[A counterexample on the primes up to $1427$; \stU]\label{gpi:thm:explicit}
+There is a set $E\subseteq\N$ containing no three distinct integers $a,b,c$ with $ac=b^2$,
+having a natural density, which differs from Rankin's set only in the exponents at the $225$
+primes up to $1427$, and such that
+\[
+ d(E)-d(R)>10^{-596}.
+\]
+\end{theorem}
+
+\begin{proof}
+Let $B$ be the set of the $224$ odd primes $q\le Y=1427$, put $Q=\prod_{q\in B}q$ and
+$S=\set{2}\cup B$, and let $C$ be the set of $S$-smooth integers all of whose exponents lie
+in $\mathcal A$. For an $S$-smooth integer $m$ write $a=v_2(m)$ and $b_q=v_q(m)$. Let
+\[
+ \mathcal K=2+3\set{0,1,3,4}=\set{2,5,11,14},\qquad
+ 2\mathcal K=\set{2k:k\in\mathcal K}.
+\]
+Delete $m\in C$ under either of the following conditions.
+\begin{itemize}
+\item All odd exponents $b_q$ equal $1$ and $a>0$.
+\item Exactly one odd exponent $b_q$ differs from $1$, and either $b_q=4$, or $b_q=3$ and
+ $a\in2\mathcal K$.
+\end{itemize}
+Insert the integers $2^kQ$, $2^kQq$ and $2^kQq^3$ for every $q\in B$ and $k\in\mathcal K$.
+All four markers $k$ are congruent to $2$ modulo $3$, so the inserted integers lie outside
+$C$. Let $F$ be the resulting set of $S$-smooth integers and let $E$ be the product set of
+Lemma~\ref{gpi:lem:product} with smooth part in $F$ and Rankin's rule outside $S$.
+
+\emph{A local fact.} If $x,y\in\mathcal A$ and $x,2,y$ is an arithmetic progression, then
+$\set{x,y}=\set{0,4}$ or $\set{1,3}$. If $x,y,2$ is an arithmetic progression with
+$x,y\in\mathcal A$, then $x=2y-2$ and $y\in\set{1,3}$. For the latter write $y$ in base
+three. If its last digit is $1$, subtracting $2$ from $2y$ leaves every higher digit doubled,
+so all higher digits vanish. If its last digit is $0$, let $j\ge1$ be the position of its
+first nonzero digit; borrowing to subtract $2$ would create a digit $2$ at position $1$ if
+$j>1$, so $j=1$, and all higher digits vanish, again by doubling. Both values of $y$ occur.
+
+\emph{Admissibility of $F$.} Three points of $C$ form no forbidden triple. Consider a
+forbidden triple containing exactly one inserted point.
+
+If it is $2^kQq$, then at every $q'\in B\setminus\set q$ the three exponents lie in
+$\mathcal A$ and one of them is $1$, so all are $1$. If the inserted point is an end of the
+progression, the middle exponent at $q$ is $1$ or $3$ by the local fact. In the first case
+the middle point has all odd exponents $1$ and a positive exponent at $2$, since that
+exponent is the average of the positive $k$ and a nonnegative integer; it was deleted. In
+the second case the other end has exponent $4$ at $q$ and was deleted. If the inserted point
+is the middle, the outer exponents at $q$ are $0,4$ or $1,3$. A point with exponent $4$ was
+deleted. In the other pair the point with exponent $1$ at $q$ has all odd exponents $1$ and
+survives only for $a=0$, which forces the point with exponent $3$ at $q$ to have
+$a=2k\in2\mathcal K$, so that it was deleted.
+
+If it is $2^kQ$, both old points have all odd exponents $1$ and survive only with $a=0$;
+the exponents $0,0,k$ at $2$ are not in arithmetic progression in any order.
+
+If it is $2^kQq^3$, the exceptional odd exponent is $4\in\mathcal A$. Every odd coordinate
+of all three points then lies in $\mathcal A$ and is constant, so both old points have the
+deleted odd pattern with exceptional exponent $4$.
+
+If two points are inserted, their exponents at $2$ are congruent to $2$ modulo $3$, which
+forces the third exponent at $2$ into the same class in each of the three positions; no
+member of $\mathcal A$ lies in it. With three inserted points every odd exponent lies in the
+progression-free set $\set{1,2,4}$ and the exponent at $2$ in the progression-free set
+$\mathcal K$, an affine image of a subset of $\mathcal A$. Each coordinate is then constant
+and the three terms coincide. The cases allow any order of the terms, hence all rational
+ratios. By Lemma~\ref{gpi:lem:product}, $E$ is admissible and has a natural density.
+
+\emph{The gain.} Let $\sigma=\sum_{a\in\mathcal A}2^{-a}$. Exponents below $27$ use only the
+three lowest ternary digits, and the remaining terms are bounded by
+$\sum_{a\ge27}2^{-a}=2^{-26}$, so
+\[
+ \sigma\le\Upsilon:=(1+2^{-1})(1+2^{-3})(1+2^{-9})+2^{-26}.
+\]
+Put $u=\sum_{k\in\mathcal K}2^{-k}$ and $v=\sum_{k\in\mathcal K}2^{-2k}$. In units of $1/Q$
+the insertions contribute $u\,(1+\sum_{q\in B}(q^{-1}+q^{-3}))$ to the reciprocal mass, the
+common deletion costs $\sigma-1$, and the two kinds of single-coordinate deletions cost at
+most $v/q^2$ and exactly $\sigma/q^3$ respectively (the first bound also counts those $2k$
+that are not in $\mathcal A$). Hence
+\[
+ Q\,\bigl(W(F)-W(C)\bigr)\ \ge\ u-(\Upsilon-1)
+ +\sum_{q\in B}\Bigl(\frac uq-\frac v{q^2}-\frac{\Upsilon-u}{q^3}\Bigr)>\frac9{100000}.
+\]
+The last inequality is checked in exact rational arithmetic by
+\gpifile[,]{mcnew_counterexample_and_grh_transfers/checks/check_rankin_finite.py}
+which also
+sieves the primes, verifies $Q<3\cdot10^{590}$, and checks
+\[
+ \frac Y{Y+1}\prod_{p\le Y}(1-p^{-1})>\frac1{15}.
+\]
+By Lemma~\ref{gpi:lem:product}, $d(E)-d(R)=c_H(W(F)-W(C))$, where $c_H$ is the density of the
+permitted rough parts. Its local factors at $p>Y$ are at least $1-p^{-2}$, with product at
+least $\prod_{m>Y}(1-m^{-2})=Y/(Y+1)$, so $c_H>1/15$ and
+\[
+ d(E)-d(R)>\frac9{100000\cdot15\cdot3\cdot10^{590}}>10^{-596}. \qedhere
+\]
+\end{proof}
+
+\subsection{Where Rankin's rule is optimal}\label{gpi:sec:restricted}
+{\raggedright\sources{grh_prime_patterns_and_branch_precision; mcnew_density_and_grh_transfers}}
+
+The counterexamples couple many primes. For few primes Rankin's rule cannot be beaten. For a
+finite set $P$ of rational primes write $S_P$ for the $P$-smooth positive integers,
+$c_P=\prod_{p\in P}(1-p^{-1})$, and $C_P$ for the set of $m\in S_P$ with all exponents in
+$\mathcal A$. In this subsection and the next, \emph{progression-free} means admissible for
+rational ratios. Say that \emph{Rankin's rule is optimal on $P$} if $W(F)\le W(C_P)$ for
+every progression-free $F\subseteq S_P$.
+
+\begin{proposition}[Light blocks]\label{gpi:prop:light}
+If $1/c_P\le2$, then Rankin's rule is optimal on $P$.
+\end{proposition}
+
+This is the observation following Theorem~6.1 of \cite{McNew2015Sets}; here is a direct
+proof.
+
+\begin{proof}
+For $s\in F\setminus C_P$ replace every ternary digit $2$ in its exponents by $0$,
+respectively by $1$, to get integers $a,b\in C_P$ with $a<b<s$ and $as=b^2$. At least one of
+these proper divisors of $s$ is missing from $F$; charge $1/s$ to one such divisor $t$. Each
+$s$ charged to $t$ is a different $tu$ with $u\in S_P\setminus\set1$, so the charge at $t$ is
+at most $(1/c_P-1)/t\le1/t$. Summing over the missing elements of $C_P$ gives
+$W(F\setminus C_P)\le W(C_P\setminus F)$.
+\end{proof}
+
+\begin{theorem}[Blocks of at most four primes; \stU]\label{gpi:thm:fourprimes}
+Rankin's rule is optimal on every set of at most four primes.
+\end{theorem}
+
+\begin{proof}
+It suffices to treat four primes $q_1<q_2<q_3<q_4$: a smaller set can be padded with further
+primes carrying independent Rankin rules, and the resulting inequality divided by their
+positive reciprocal masses. If $q_1\ge5$, then
+$\prod_iq_i/(q_i-1)\le(5/4)(7/6)(11/10)(13/12)<2$ and Proposition~\ref{gpi:prop:light} applies.
+Otherwise select a base tuple $b$ from the following table; the first $f$ entries of the
+tuple are fixed, $q_i=b_i$, and the others satisfy $q_i\ge b_i$.
+\begin{center}\small
+\begin{tabular}{lrrrr}
+\toprule
+Condition & Base tuple & $f$ & Prefixes & Search nodes\\ \midrule
+$q_1=2,\ q_2=3$ & $(2,3,5,7)$ & 2 & 9 & 5{,}537{,}385\\
+$q_1=2,\ q_2\ge5$ & $(2,5,7,11)$ & 1 & 81 & 221{,}071\\
+$q_1=3$ & $(3,5,7,11)$ & 1 & 81 & 29{,}307\\ \bottomrule
+\end{tabular}
+\end{center}
+Use the box $\mathcal D=\prod_i\set{0,\dots,m_i-1}$ of exponent vectors with $m=(9,9,3,3)$,
+corresponding to the low ternary digit depths $(2,2,1,1)$. Write $\mathcal A^4$ for the good
+vectors, $W_b(I)=\sum_{a\in I}\prod_ib_i^{-a_i}$ and $\lambda=21/20$. For every rectangular
+prefix $\mathcal D'$ of $\mathcal D$ in which the first $f$ axes are not truncated, the
+program
+\gpifile{grh_prime_patterns_and_branch_precision/checks/check_four_prime_blocks.py}
+certifies that every progression-free $I\subseteq\mathcal D'$ satisfies
+\begin{equation}\label{gpi:eq:lowbox}
+ \lambda\,W_b(I\setminus\mathcal A^4)\ \le\ W_b\bigl((\mathcal A^4\cap\mathcal D')\setminus I\bigr).
+\end{equation}
+The test orders the box by the integer $\prod_ib_i^{a_i}$ and branches on including or
+omitting the least undecided value. Including a value $y$, when a smaller $x$ has already
+been chosen, forbids $y^2/x$ whenever it lies in the box. The upper bound for the objective
+on a branch is the summed weight of all chosen and undecided values, with the factor
+$\lambda$ on the bad ones, and a branch is complete as soon as this bound is at most
+$W_b(\mathcal A^4\cap\mathcal D')$. The objective is scaled to integers. Every
+progression-free subset follows one branch, so a successful traversal certifies the
+inequality.
+
+\emph{From the base tuple to all tuples.} For $t_i=b_i/q_i\le1$ the function
+$a_i\mapsto t_i^{a_i}$ on $0\le a_i<m_i$ is a nonnegative linear combination of indicators of
+prefixes: the coefficient of $\mathbf 1_{a_i\le j}$ is $t_i^j-t_i^{j+1}$ for $j<m_i-1$ and
+$t_i^{m_i-1}$ for the full range. A fixed coordinate uses only the full range. Multiply the
+four expansions, apply \eqref{gpi:eq:lowbox} to $I\cap\mathcal D'$ on each prefix and sum.
+This gives \eqref{gpi:eq:lowbox} on the full box with every $b_i$ replaced by $q_i$. This
+change of quantifier matters, because a partition of the primes can pair even the smallest
+prime with an arbitrarily large one.
+
+\emph{From the box to all exponents.} Let $F\subseteq S_{\set{q_1,\dots,q_4}}$ be
+progression-free and put $M=W_q(C\setminus F)$, where $C$ is the Rankin set. Split exponents
+into low digits and a high part divisible by $m_i$ in each coordinate. For each fixed good
+high part, \eqref{gpi:eq:lowbox} bounds the mass of the points of $F$ with a bad low digit by
+the missing good mass divided by $\lambda$; dilation by a fixed high part preserves both the
+weights up to a common factor and the forbidden triples. Summing gives at most $M/\lambda$.
+For a point of $F$ with a bad high digit, replace every digit $2$ by $0$, respectively by
+$1$. As in the proof of Proposition~\ref{gpi:prop:light}, one of the two resulting points of $C$ is
+missing from $F$. Relative to a missing point the charged reciprocal weight is a product of
+factors $q_i^{-e3^j}$ over a set of digit positions, with $e=1$ for the replacement by $1$
+and $e=2$ for the replacement by $0$, and at least one changed digit is high. The total
+charge is at most $M\,T(q)$, where
+\[
+ T(q)=\sum_{e=1,2}\Bigl[\prod_i\prod_{0\le j<k_i}(1+q_i^{-e3^j})\Bigr]
+ \Bigl[\prod_i\bigl(1-q_i^{-em_i}\bigr)^{-1}-1\Bigr],\qquad(k_i)=(2,2,1,1).
+\]
+The second bracket bounds all nonempty changes of high digits by geometric series, since
+ternary subset sums have distinct exponents. The bound decreases when a prime increases, and
+for each base tuple the program checks $1-1/\lambda-T(b)>1/200$ in rational arithmetic.
+Therefore
+\[
+ W_q(C)-W_q(F)\ \ge\ M\bigl(1-1/\lambda-T(q)\bigr)\ \ge\ 0. \qedhere
+\]
+\end{proof}
+
+Call a rational ratio \emph{$P$-supported} if every prime factor of its numerator and
+denominator lies in $P$, and let $R_P$ be the set of positive integers $m$ with
+$v_p(m)\in\mathcal A$ for all $p\in P$, with no condition at the other primes. Since
+$\mathcal A$ is progression-free, $R_P$ avoids all progressions with $P$-supported ratio.
+
+\begin{corollary}[Restricted ratios; \stU]\label{gpi:cor:restricted}
+Let $P$ be a finite set of primes on which Rankin's rule is optimal, for instance any set of
+at most four primes. Then $R_P$ attains the largest natural density, and the largest upper
+logarithmic density, among the sets of positive integers avoiding all progressions with
+$P$-supported rational ratio. Its density is
+\[
+ d_P=\prod_{p\in P}\Bigl[(1-p^{-1})\prod_{j\ge0}(1+p^{-3^j})\Bigr].
+\]
+In particular $\alpha\le d_{\set{2,3,5,7}}<0.740912$.
+\end{corollary}
+
+\begin{proof}
+The set $R_P$ has natural density $d_P=c_PW(C_P)$ by Lemma~\ref{gpi:lem:product}, with
+$A_p=\Z_{\ge0}$ outside $P$. Let $E$ avoid all progressions with $P$-supported ratio and write
+$m=hs$ with $s\in S_P$ and $h$ coprime to the primes of $P$. For each $h$ the fiber
+$\set{s:hs\in E}$ is progression-free, so its reciprocal sum is at most $W(C_P)$, and
+\[
+ \sum_{m\in E,\ m\le x}\frac1m\ \le\ W(C_P)\sum_{h\le x}\frac1h=(c_PW(C_P)+o(1))\log x
+\]
+by periodicity of the coprimality condition and partial summation. Hence the upper
+logarithmic density of $E$ is at most $d_P$, and so is its natural density if it exists.
+Sets free of all rational-ratio progressions obey the restriction for every $P$, which gives
+the bound for $\alpha$.
+\end{proof}
+
+The values for the three initial segments of the primes are
+\begin{center}\small
+\begin{tabular}{lr}
+\toprule
+$P$ & $d_P$ (rounded)\\ \midrule
+$\set{2,3}$ & $0.779336473$\\
+$\set{2,3,5}$ & $0.754148705$\\
+$\set{2,3,5,7}$ & $0.740911746$\\ \bottomrule
+\end{tabular}
+\end{center}
+For these three sets the fixed-prime certificates of
+\gpifile{mcnew_density_and_grh_transfers/checks/verify_rankin.py}
+(low boxes of sizes $81$,
+$243$, $729$ with $\lambda=51/50$, $11/10$, $21/20$) give
+$W(C_P)-W(F)\ge\theta\,W(C_P\setminus F)$ with $\theta>0.014$, $0.062$, $0.0057$
+respectively, and hence uniqueness of the optimizer on the smooth semigroup. Each of the
+three sets lies outside the range $1/c_P\le2$ of Proposition~\ref{gpi:prop:light}.
+
+\subsection{How many primes must a density rule couple?}\label{gpi:sec:blocks}
+{\raggedright\sources{grh_prime_patterns_and_branch_precision; mcnew_counterexample_and_grh_transfers}}
+
+Partition the primes into blocks of size at most $m$. For each block $P$ choose an arbitrary
+set $F_P\subseteq S_P$ of allowed smooth parts, and admit an integer when its $P$-smooth part
+lies in $F_P$ for every block. Let $\alpha_m$ be the supremum of the natural densities of
+the progression-free sets of this form that have a natural density, over all partitions and
+all rules. The partition may vary with the competitor; in particular the model allows
+dependence among infinitely many separate groups of primes. Clearly
+$d(R)\le\alpha_1\le\alpha_2\le\dots\le\alpha$.
+
+\begin{theorem}[Bounded prime blocks; \stU]\label{gpi:thm:blocks}
+For each $m\ge1$ the number $\alpha_m$ is computable and is attained, by a construction that
+uses Rankin's rule outside a finite set of primes. Allowing upper density gives the same
+$\alpha_m$ in this class. Furthermore
+\[
+ 0<\alpha-\alpha_m\le\frac1{p_{m+1}},\qquad\text{so that}\quad\alpha_m<\alpha\quad\text{and}\quad
+ \lim_{m\to\infty}\alpha_m=\alpha ,
+\]
+where $p_j$ denotes the $j$th prime, and
+\[
+ \alpha_1=\alpha_2=\alpha_3=\alpha_4=d(R).
+\]
+The least $m$ with $\alpha_m>d(R)$ satisfies $5\le m\le225$.
+\end{theorem}
+
+Thus every fixed bound on the number of jointly tested primes has a strict density cost,
+even after optimizing the partition, and a progression-free product rule of density greater
+than $d(R)$ must couple at least five primes in some block.
+
+\begin{proof}
+\emph{Local probabilities.} For a finite set $P$ of primes and $F\subseteq S_P$ put
+$\mu_P(F)=c_PW(F)$. By Lemma~\ref{gpi:lem:product} this is the natural density of the integers
+with $P$-smooth part in $F$, and disjoint finite blocks have independent probabilities. A
+nonempty progression-free product forces each block rule to be progression-free: replace the
+smooth part of one admitted integer by the three local terms. Conversely a product of
+progression-free rules is progression-free by projection.
+
+\emph{Reduction to finitely many exceptional primes.} Call a block $P$ light if $1/c_P\le2$
+and heavy otherwise. If every prime of $P$ exceeds $4m$, then
+$\log(1/c_P)\le\sum_{p\in P}1/(p-1)\le1/4<\log2$. Hence at most $\pi(4m)$ blocks are heavy, and
+their union $H$ has at most $h=m\,\pi(4m)$ primes. Replace the rule on every light block by
+Rankin's rule. By Proposition~\ref{gpi:prop:light} and Lemma~\ref{gpi:lem:product} the new set has a natural density,
+equal to the finite heavy probability times the Rankin product off $H$, and it is at least
+the upper density of the original set: finite collections of the old block restrictions bound
+the latter from above, and the products of the corresponding new probabilities converge to
+the new density. A heavy rule may likewise be optimized separately; its maximum exists by
+the compactness argument of \cref{gpi:sec:local}.
+
+\emph{Existence of an optimal partition.} Take a sequence of competitors of this form whose
+densities approach $\alpha_m$. Pass to a subsequence with a constant number of exceptional
+primes and a constant partition of their ordered positions. After a further subsequence each
+of the at most $h$ prime labels is either constant or tends to infinity. In every block
+temporarily impose valuation zero at each escaping prime $p$; the density loss is at most the
+sum of $1/p$ over these primes and tends to zero. The surviving local zero slices are
+progression-free on the fixed prime labels. Now use the optimal rule on each fixed block and
+Rankin's rule at each discarded prime, which allows the exponent zero. This single fixed
+construction attains at least the limiting density and belongs to the original class. The
+assertion about upper density follows from the replacement bound above.
+
+\emph{A uniform improvement.} Fix the at most $h$ exceptional primes of a competitor after
+replacement. A marker prime $\ell\notin H$ can be taken at most $L$, the $(h+1)$st prime.
+Choose $Y\ge L$, depending only on $m$, so large that
+\[
+ \sum_{q\le Y,\ q\ \mathrm{prime}}\frac1q>2L^2+\frac{h+1}2 ,
+\]
+and let the satellite set $B$ consist of all primes up to $Y$ outside $H\cup\set\ell$, so
+that $\sum_{q\in B}1/q>2L^2$. Apply the exchange \eqref{gpi:eq:capC} to the lowest digits at
+the marker and the satellites; by \cref{gpi:thm:onedigit}(a) it works with any marker and
+leaves the higher digits binary. With $w=1/\ell$ and $u_q=1/q$, the change in unnormalized
+reciprocal mass for fixed good higher digits, relative to their common weight, is
+\[
+ \Bigl(\prod_{q\in B}u_q\Bigr)\Bigl[w^2\Bigl(1+\sum_{q\in B}u_q\Bigr)-(1+w)\Bigr]
+ >\frac12\prod_{q\in B}u_q ,
+\]
+because $1/L\le w\le1/2$. The higher digits have total weight at least one. With
+$P_Y=\prod_{p\le Y}p$ and $c_Y=\prod_{p\le Y}(1-1/p)$, the new local probability on the
+marker and the satellites exceeds the old one by at least $\delta_m=c_Y/(2P_Y)>0$. Since a
+local probability is at most one, this multiplies the full product by a factor at least
+$1+\delta_m$. Thus $\alpha\ge(1+\delta_m)\alpha_m>\alpha_m$, uniformly over all partitions.
+
+\emph{Approximation by one finite block.} Let $P$ be the set of primes up to an integer
+$Y\ge2$, and let $M_Y$ be the largest reciprocal sum $W(F)$ of a progression-free
+$F\subseteq S_P$. By Lemma~\ref{gpi:lem:BU}, $\alpha\le c_PM_Y$. A maximizing smooth template on
+$P$ together with Rankin's rule elsewhere has width $\pi(Y)$, so by Lemma~\ref{gpi:lem:product}
+\[
+ \alpha_{\pi(Y)}\ \ge\ c_PM_Y\prod_{p>Y}(1-p^{-2})\ \ge\ c_PM_Y\,\frac Y{Y+1},
+\]
+by telescoping over all integers greater than $Y$. With monotonicity this proves
+convergence. Choosing $Y=p_{m+1}-1$ gives $0<\alpha-\alpha_m\le1/p_{m+1}$, since
+$c_PM_Y\le1$.
+
+\emph{Effective computation for fixed width.} Uniformly over competitors after replacement,
+freezing the exponents at the heavy primes $p>Y$ to zero costs at most $h/Y$, and releasing
+these primes to Rankin's rule can only increase the density. Thus optimizing over the
+partitions of the primes up to $Y$ of width $m$, with the Rankin tail, approximates
+$\alpha_m$ from below with error at most $h/Y$. There are finitely many partitions.
+Truncating each prime exponent below $L'$ costs at most $\sum_{p\le Y}p^{-L'}$ in total. On
+finite boxes, enumerate all subsets, reject those containing a nonconstant arithmetic
+progression of exponent vectors, and maximize the exact rational probability. Finally the
+Rankin tail product up to any $Z>Y$ has absolute truncation error at most
+$\sum_{j>Z}j^{-2}\le1/Z$, and its single-prime factors can be truncated geometrically. These
+estimates give rational intervals of any prescribed width, with no claim about running time.
+
+\emph{Small widths.} Rankin's rule is itself a rule of width one, so $\alpha_m\ge d(R)$. By
+\cref{gpi:thm:fourprimes}, Rankin's rule is optimal on every block of a rule of width
+$m\le4$, so the replacement argument of the second step applies to all blocks, heavy or
+light, and gives $\alpha_m\le d(R)$ for $m\le4$. The set of \cref{gpi:thm:explicit} is a rule
+of width $225$ of density greater than $d(R)$.
+\end{proof}
+
+In particular, for a fixed finite set $T$ of primes, no progression-free rule on $S_T$
+combined with Rankin's rule at all other primes attains $\alpha$: such a set has density at
+most $\alpha_{\#T}<\alpha$. Exact optimality on finite sets of primes, as in
+\cref{gpi:thm:fourprimes}, therefore coexists with the failure of the unrestricted
+conjecture.
+
+\subsection{Integer ratios against rational ratios: Question 7.4}\label{gpi:sec:q74}
+{\raggedright\sources{grh_transfer_extensions_2026-11-26; mcnew_density_and_grh_transfers}}
+
+McNew constructed a set avoiding integer ratios that is denser than Rankin's set
+\cite[Theorem~3.3]{McNew2015Sets}. Comparing one construction with Rankin's set leaves open
+whether another set avoiding rational ratios is equally dense; Question~7.4 asks for the
+comparison of the two suprema. The following comparison is uniform in the competing set.
+
+\begin{theorem}[Question 7.4; \stU]\label{gpi:thm:beta-alpha}
+\[
+ \beta-\alpha\ \ge\ \frac{135102729954660}{10^{18}}>0.0001351 .
+\]
+\end{theorem}
+
+The proof replaces the $5$-smooth part of an arbitrary competitor by one fixed finite set
+and pays for the new progressions that cross the boundary of the replacement. Let
+$S=S_5=\set{2^i3^j5^k:i,j,k\ge0}$ and
+\[
+ N=10^6,\qquad\tau=\frac{824341}{10^7},\qquad g=\frac{237}{100000},\qquad V=S\cap[1,N].
+\]
+The set $V$ has $507$ elements. Let $B$ be the set of $102$ integers in
+\cref{gpi:tab:replacement}. It is obtained as follows: start with the seven integers
+$60,90,150,180,300,450,900$ added to the slice at $2,3,5$ in the proof of McNew's
+Theorem~3.3; then visit the integers $2^i3^j5^k\le N$ with all ternary digits of $i,j,k$ in
+$\set{0,1}$ in increasing order, retaining an integer if adjoining it introduces no
+integer-ratio progression.
+
+\begin{table}[htbp]\centering\small
+\caption{The replacement set $B$.}\label{gpi:tab:replacement}
+\begin{tabular}{rrrrrrrrrr}\toprule
+1&2&3&5&6&8&10&15&16&24\\
+27&40&48&54&60&80&81&90&120&125\\
+135&150&162&180&216&250&270&300&375&405\\
+432&450&512&625&648&750&900&1000&1024&1080\\
+1250&1296&1536&1875&2000&2560&3000&3072&3375&4096\\
+5000&5120&6750&7680&8192&10000&10125&12288&13824&15360\\
+16875&19683&20480&24576&27000&27648&39366&40960&41472&50625\\
+59049&61440&64000&69120&82944&98415&110592&118098&122880&128000\\
+138240&157464&192000&196830&207360&221184&295245&314928&320000&331776\\
+384000&414720&472392&512000&531441&552960&590490&640000&663552&787320\\
+944784&960000&&&&&&&&\\\bottomrule
+\end{tabular}
+\end{table}
+
+\begin{lemma}[Finite exchange with a boundary charge]\label{gpi:lem:exchange}
+The set $B$ contains no integer-ratio progression. Every $A\subseteq S$ free of
+rational-ratio progressions satisfies
+\begin{equation}\label{gpi:eq:exchange}
+ W(B)-W(A)-\tau\,W(B\setminus A)\ \ge\ g .
+\end{equation}
+Moreover $\sum_{r\in\N\setminus S}r^{-2}<\tau$.
+\end{lemma}
+
+\begin{proof}
+Checking, for every $a\in B$ and every integer $2\le r\le\sqrt{N/a}$, that $ar$ and $ar^2$
+are not both in $B$ exhausts the integer-ratio triples in $B$. Geometric series give
+$W(S)=15/4$, and exact summation gives
+\[
+ W(B)=\frac{1928068463873}{680244480000},\qquad
+ T_0:=W(S\setminus V)=\frac{12000753838363}{108839116800000000}.
+\]
+Give $m\in V$ the weight $\omega_m=(1-\tau\mathbf 1_B(m))/m$. The finite statement to be
+certified is
+\begin{equation}\label{gpi:eq:finite}
+ \sum_{m\in I}\omega_m\ \le\ (1-\tau)W(B)-T_0-g
+ \qquad\text{for every }I\subseteq V\text{ free of rational-ratio progressions.}
+\end{equation}
+Since $W(A\setminus V)\le T_0$ and $B\subseteq V$, applying \eqref{gpi:eq:finite} to
+$I=A\cap V$ and rearranging gives \eqref{gpi:eq:exchange}.
+
+All weights are scaled to integers by the factor $1088391168000000000000000$. In these units
+the bound in \eqref{gpi:eq:finite} is
+\[
+ 2827908305897851139120000 ;
+\]
+equivalently, every set of vertices meeting each rational-ratio triple in $V$ has weight at
+least $999136824871360000000000$.
+There are $16{,}446$ such triples, generated from the pairs $a<c$ in $V$ with $ac$ a square
+and $\sqrt{ac}\in V$. Two independent verifications are provided by
+\gpifile[.]{grh_transfer_extensions_2026-11-26/code/certify_density.py}
+\begin{enumerate}
+\item A proof tree for the covering bound, with two kinds of steps. At a leaf, nonnegative
+ integer masses are assigned to the remaining triples so that the total mass incident to each
+ vertex is at most its weight; every cover then costs at least the total mass, and the leaf
+ is certified when this total reaches the deletion weight still required. Otherwise one
+ uncovered triple is chosen; every cover contains one of its three vertices, and one branches
+ on the three possibilities, paying the weight of the chosen vertex and removing every triple
+ it meets. The tree, with every branch and the dual masses of every leaf, is recorded in
+ \gpifile[;]{grh_transfer_extensions_2026-11-26/data/density_exchange_certificate.json}
+ a separate replayer checks the capacities, the uncovered-edge conditions and all three
+ children at each branch. Generation and replay each visit $496$ nodes.
+\item A direct search. Vertices are visited in increasing order; whenever a middle term $y$
+ and an earlier selected term $x$ are present, the future term $y^2/x$ is excluded if it is an
+ integer in $V$. Every admissible set follows one of the include/exclude branches, and the
+ sum of the selected and still available weights bounds every completion. The search closes
+ every branch at or below the bound in $416{,}653$ visits.
+\end{enumerate}
+Finally $\sum_{r\notin S}r^{-2}=\zeta(2)-\prod_{p\in\set{2,3,5}}(1-p^{-2})^{-1}=\zeta(2)-25/16$.
+Bounding the tail of $\sum r^{-2}$ beyond $10000$ by $1/10000$ and rounding each earlier term
+upward on the grid $10^{-18}\Z$ gives
+\[
+ \zeta(2)-\frac{25}{16}<\frac{82434071848064747}{10^{18}}<\frac{824341}{10^7}. \qedhere
+\]
+\end{proof}
+
+\begin{lemma}[The exchange survives further primes]\label{gpi:lem:patch}
+Let $Y\ge5$. For every $E\subseteq S_Y$ free of rational-ratio progressions there is an
+$F\subseteq S_Y$ free of integer-ratio progressions with $W(F)\ge W(E)+g$.
+\end{lemma}
+
+\begin{proof}
+Put $A=E\cap S$ and replace $A$ by $B$, keeping the rest of $E$. For each newly inserted
+$b\in B\setminus A$ delete every $br^2$ in the current set for which the integer $r$ has a
+prime factor greater than $5$; these deletions lie outside $S$. Let $F$ be the result.
+
+Consider an integer-ratio triple in $F$ that was not in $E$; it contains a newly inserted
+element of $B$. If its ratio is $5$-smooth, the valuations at the primes greater than $5$ are
+constant along it, so it lies entirely in $S\cap F=B$, where there is no such triple. If its
+ratio has a prime factor greater than $5$, the middle and last terms are not in $S$, so the
+inserted element is the first term, and the last term was deleted. A triple consisting of
+old elements only was already forbidden in $E$.
+
+The deleted mass is at most $W(B\setminus A)\sum_{r\notin S}r^{-2}<\tau\,W(B\setminus A)$,
+even when all positive integer ratios are allowed for, uniformly in $Y$ and in $E$. Now apply
+Lemma~\ref{gpi:lem:exchange}.
+\end{proof}
+
+The uniformity in $Y$ is essential: an improvement on a fixed finite set of primes alone
+would have no consequence for natural densities. The ordering imposed by integer ratios
+(nonnegative steps in all coordinates) is what allows a new cross-boundary triple to be
+charged to its final term; rational ratios allow mixed signs.
+
+\begin{proof}[Proof of \cref{gpi:thm:beta-alpha}]
+Fix $Y\ge5$ and use Lemma~\ref{gpi:lem:BU} for $K=\Q$ and both conventions, writing $B_{\Q}$ and
+$B_{\mathrm I}$ for the two values of the weighted optimum $B$. By Lemma~\ref{gpi:lem:patch},
+$B_{\mathrm I}\ge B_{\Q}+cg$. Hence
+\begin{equation}\label{gpi:eq:bridge}
+ \beta-\alpha\ \ge\ vB_{\mathrm I}-B_{\Q}\ \ge\ cg-(1-v)B_{\mathrm I}\ \ge\
+ g\prod_{p\le Y}(1-p^{-1})-\sum_{p>Y}p^{-2}.
+\end{equation}
+Take $Y=6619$ and sieve the primes up to $2{,}000{,}000$. Starting from the integer
+$10^{18}$, multiply successively by $(p-1)/p$ and round downward for each $p\le Y$; for
+$Y<p\le2{,}000{,}000$ round $10^{18}/p^2$ upward, and add $10^{18}/2{,}000{,}000$ to dominate
+the remaining tail. This proves
+\[
+ \prod_{p\le Y}(1-p^{-1})\ge\frac{63728234915742846}{10^{18}},\qquad
+ \sum_{p>Y}p^{-2}\le\frac{15933186795650}{10^{18}},
+\]
+and substitution into \eqref{gpi:eq:bridge}, with one final downward rounding, gives the
+theorem.
+\end{proof}
+
+Even the elementary bounds $\prod_{p\le Y}(1-p^{-1})\ge1/(2\sqrt Y)$ and
+$\sum_{p>Y}p^{-2}\le1/Y$ make the right side of \eqref{gpi:eq:bridge} positive for large $Y$;
+the first follows by including every odd integer $3\le j\le Y$ in the product and using
+$(1-1/j)^2\ge(j-2)/j$.
+
+\subsection{Integral ratios in number fields: a larger exchange}\label{gpi:sec:cube}
+{\raggedright\sources{grh_ideal_densities_and_transfer_conditions_2026-11-26; mcnew_counterexample_and_grh_transfers}}
+
+For integral ratios the improvement on the greedy density guaranteed by
+\cref{gpi:thm:onedigit} can be made much larger by an exchange that removes a whole orthant.
+Its integer precedent is McNew's exchange at $2,3,5$. For a nonempty finite set $S$ of prime
+ideals of $K$, with $k=\#S$, replace the permitted local vectors $\mathcal A^k$ by
+\[
+ D_S=\set{u\in\mathcal A^k:\min_iu_i=0}\ \cup\ \bigl(\set{1,2}^k\setminus\set{(1,\dots,1)}\bigr),
+\]
+and let $\mathcal E_S$ be the set of ideals whose exponent vector on $S$ lies in $D_S$ and
+whose exponents outside $S$ lie in $\mathcal A$. Put
+\[
+ T(w)=\sum_{a\in\mathcal A,\ a\ge1}w^{a-1},\qquad
+ C_S=\prod_{\mathfrak p\notin S}\Bigl[(1-w_{\mathfrak p})\sum_{a\in\mathcal A}w_{\mathfrak p}^a\Bigr].
+\]
+
+\begin{proposition}[Orthant exchange; \stU]\label{gpi:prop:cube}
+The set $\mathcal E_S$ is admissible for the integral convention, has a natural density, and
+\begin{equation}\label{gpi:eq:cube-delta}
+ d(\mathcal E_S)-d(\mathcal G_K)=C_S\prod_{\mathfrak p\in S}(1-w_{\mathfrak p})w_{\mathfrak p}
+ \Bigl[\prod_{\mathfrak p\in S}(1+w_{\mathfrak p})-1-\prod_{\mathfrak p\in S}T(w_{\mathfrak p})\Bigr].
+\end{equation}
+Moreover $\prod_{\mathfrak p\in S}T(w_{\mathfrak p})<2^n$ and $C_S>2^{-n}$, so the gain is
+positive as soon as
+\begin{equation}\label{gpi:eq:cube-test}
+ \prod_{\mathfrak p\in S}(1+w_{\mathfrak p})>1+2^n ,
+\end{equation}
+which holds for all sufficiently large initial segments $S$ of the primes of $K$. Replacing
+$C_S$ by $2^{-n}$ and $\prod T(w_{\mathfrak p})$ by $2^n$ in \eqref{gpi:eq:cube-delta} then
+gives a positive rational lower bound for the gain.
+\end{proposition}
+
+\begin{proof}
+A forbidden triple in $\mathcal E_S$ has zero valuation step outside $S$. Inside $S$ it gives
+$u,u+h,u+2h\in D_S$ with $h\ge0$, $h\ne0$. If the final vector has a zero coordinate, all
+three vectors have a zero there and lie in $\mathcal A^k$, a contradiction. Otherwise the
+final vector lies in the new cube $\set{1,2}^k$. At every moving coordinate the three entries
+must then be $0,1,2$. The initial vector therefore lies in $\mathcal A^k$, so every fixed
+coordinate belongs to $\mathcal A\cap\set{1,2}=\set1$, and the middle vector is the deleted
+all-ones vector.
+
+The densities exist by Lemma~\ref{gpi:lem:product}. The deleted vectors are those of
+$\mathcal A^k$ with all coordinates positive, of mass
+$\prod_{\mathfrak p\in S}w_{\mathfrak p}T(w_{\mathfrak p})$, and the added cube has mass
+$\prod_{\mathfrak p\in S}w_{\mathfrak p}\,[\prod_{\mathfrak p\in S}(1+w_{\mathfrak p})-1]$; this gives
+\eqref{gpi:eq:cube-delta}. The exponents occurring in $T$ lie in $\set0\cup\set{2,3,\dots}$,
+and every integer at least two is $2a+3b$ with $a,b\ge0$, whence
+\[
+ T(w)\le\frac1{(1-w^2)(1-w^3)},\qquad
+ \prod_{\mathfrak p\in S}T(w_{\mathfrak p})\le\zeta_K(2)\zeta_K(3)\le\bigl(\zeta(2)\zeta(3)\bigr)^n<2^n .
+\]
+The middle inequality holds prime by prime, since at most $n$ prime ideals lie over a
+rational prime and each has norm at least that prime; the last follows from
+$\zeta(2)<\sum_{j\le10}j^{-2}+\tfrac1{10}<\tfrac{33}{20}$ and
+$\zeta(3)<\sum_{j\le4}j^{-3}+\tfrac1{32}<\tfrac{121}{100}$, whose product is $3993/2000$.
+Also $C_S\ge\zeta_K(2)^{-1}>2^{-n}$ because $0,1\in\mathcal A$. Finally
+$\prod_{\mathfrak p\in S}(1+w_{\mathfrak p})$ is unbounded along increasing $S$, because
+$\sum_{\mathfrak p}w_{\mathfrak p}$ diverges.
+\end{proof}
+
+Enumerating and factoring rational primes gives a terminating search for $S$, and factoring
+an ideal and testing its valuation digits decides membership in $\mathcal E_S$. The exchange
+does not serve for fractional ratios: for two selected coordinates the vectors
+$(0,3),(1,2),(2,1)$ all satisfy the new rule and form a progression with a step of mixed
+sign, and further coordinates may be fixed at one. For that convention the improvement is
+\cref{gpi:thm:onedigit}.
+
+\begin{proposition}[An explicit gain in $\Q(\sqrt{-23})$; \stU]\label{gpi:prop:Q23gain}
+Let $K=\Q(\sqrt{-23})$ and let $S$ consist of the four prime ideals of norms $2,2,3,3$. Then,
+for the integral convention,
+\[
+ d(\mathcal E_S)-d(\mathcal G_K)>\frac{16658080679}{13931406950400}>0.0011957 .
+\]
+\end{proposition}
+
+\begin{proof}
+Write $\omega=(1+\sqrt{-23})/2$, with minimal polynomial $X^2-X+6$. For $p=2,3$ its two
+distinct roots modulo $p$ are $0$ and $1$, so the four prime ideals $(p,\omega)$ and
+$(p,\omega-1)$ have norms $2,2,3,3$. From $\mathcal A\cap[1,8]=\set{1,3,4}$ one gets
+\[
+ T(w)\le\overline T(w):=1+w^2+w^3+\frac{w^8}{1-w},\qquad
+ \overline T(1/2)=\frac{177}{128},\quad\overline T(1/3)=\frac{5023}{4374},
+\]
+and exact arithmetic gives
+\[
+ \prod_{\mathfrak p\in S}(1+w_{\mathfrak p})-1-\prod_{\mathfrak p\in S}\overline T(w_{\mathfrak p})
+ =\frac{16658080679}{34828517376},\qquad
+ \prod_{\mathfrak p\in S}(1-w_{\mathfrak p})w_{\mathfrak p}=\frac1{324}.
+\]
+Since $\prod_{\mathfrak p\in S}(1-w_{\mathfrak p}^2)=4/9$ and
+$\zeta_K(2)\le\zeta(2)^2<(5/3)^2$,
+\[
+ C_S\ \ge\ \prod_{\mathfrak p\notin S}(1-w_{\mathfrak p}^2)=\frac{\zeta_K(2)^{-1}}{4/9}>\frac{81}{100}.
+\]
+Substituting into \eqref{gpi:eq:cube-delta} gives the bound. The prime reductions and every
+number in this certificate are checked by
+\gpifile[.]{grh_ideal_densities_and_transfer_conditions_2026-11-26/code/verify_ideal_natural_gain.py}
+\end{proof}
+
+\subsection{The same questions over \texorpdfstring{$\F_q[x]$}{Fq[x]}}\label{gpi:sec:poly}
+{\raggedright\sources{grh_transfers_density_gaps_and_zero_tests; grh_prime_patterns_and_branch_precision; mcnew-density-and-dirichlet-grh}}
+
+The arguments of \cref{gpi:sec:local,gpi:sec:gap,gpi:sec:attain,gpi:sec:onedigit} apply to
+$\F_q[x]$ for every prime power $q$, and some steps become exact. We record the results here;
+the remaining results on polynomial rings, in particular those on upper density and on
+polynomial ratios, are in \cref{sec:gpp}.
+
+We work with monic polynomials over $\F_q$. A forbidden triple is $f,rf,r^2f$ with
+$r\in\F_q(x)$ nonconstant and all three terms monic polynomials; this includes nonconstant
+ratios of degree zero. In factorization coordinates the three valuation vectors form an
+arithmetic progression with a nonzero integral step of either sign in each coordinate. Write
+$\mathbb P_n$ for the uniform measure on the $q^n$ monic polynomials of degree $n$. The
+proportion of a set $E$ in the balls of degree at most $N$ converges to a limit exactly when
+$\mathbb P_n(E)$ converges to it: subtract successive ball counts for one implication and sum
+the geometric weights for the other. This common limit is the natural density of $E$, and
+the limsup of the ball proportions is its upper density. All results also hold for sets of
+nonzero polynomials: a fixed scalar class gives the upper bounds by averaging, and the
+constructions may include all scalar multiples, since equal valuations at every monic
+irreducible force a ratio to lie in $\F_q^\times$. Let $b_q$ and $u_q$ be the suprema of the
+natural and of the upper densities of admissible sets.
+
+For $T\ge1$ let $S_T$ be the set of monic irreducibles of degree at most $T$, let
+$\norm{h}=q^{\deg h}$, let $I_q(d)$ be the number of monic irreducibles of degree $d$, so
+that $\sum_{d\mid k}dI_q(d)=q^k$ and $I_q(d)\le q^d/d$, and set
+\[
+ c_T=\prod_{P\in S_T}(1-\norm P^{-1}),\qquad v_T=\prod_{P\notin S_T}(1-\norm P^{-2}),\qquad
+ B_T=c_T\max_A\sum_{h\in A}\norm h^{-1},
+\]
+the maximum being over the admissible sets $A$ of monic $S_T$-smooth polynomials. It exists
+by the compactness argument of \cref{gpi:sec:local}.
+
+\begin{theorem}[The largest natural density over $\F_q$; \stU]\label{gpi:thm:poly-natural}
+For every $T\ge1$,
+\[
+ v_TB_T\le b_q\le B_T,\qquad0\le B_T-b_q\le\frac{q^{-T}}{q-1}.
+\]
+The number $b_q$ is computable, and there is a decidable admissible set of natural density
+exactly $b_q$. Moreover $b_q$ is the largest upper Banach mean of the sequence of
+exact-degree proportions: for every admissible $E$ and every $T$,
+\begin{equation}\label{gpi:eq:banach}
+ \sum_{j=M}^{M+L-1}\mathbb P_j(E)\ \le\ L\,B_T+O_{q,T}(1)\qquad(M\ge0,\ L\ge1).
+\end{equation}
+For $q=2$, $b_2\le2797/4096=0.682861328125$.
+\end{theorem}
+
+\begin{proof}
+\emph{Upper bound.} Let $E$ be admissible of density $\delta$, and write $f=gh$ with $g$
+$S_T$-rough and $h$ $S_T$-smooth. The fiber $A_g=\set{h:gh\in E}$ is admissible. The sum of
+the exact-layer proportions for $0\le j<N$ is
+\[
+ \sum_{\substack{g\ \mathrm{rough}\\ \deg g<N}}\norm g^{-1}
+ \sum_{\substack{h\in A_g\\ \deg h<N-\deg g}}\norm h^{-1}
+ \ \le\ \frac{B_T}{c_T}\sum_{\substack{g\ \mathrm{rough}\\ \deg g<N}}\norm g^{-1}.
+\]
+By finite inclusion--exclusion the rough proportion is exactly $c_T$ in every sufficiently
+high degree. Dividing by $N$ and passing to the limit gives $\delta\le B_T$.
+
+\emph{Lower bound and computability.} Use a maximizing $A$ in every rough fiber with
+squarefree $g$ and omit every other fiber; call this set $E_T$. In a forbidden triple the
+valuations outside $S_T$ would lie in $\set{0,1}$, so they agree, and the common fiber
+excludes the triple. The density of $E_T$ is $e_T=v_TB_T$: impose a degree bound on $h$ and
+test squarefreeness only at primes up to a second cutoff; each resulting condition is a
+finite Boolean combination of divisor events, and $\mathbb P_j(a\mid f)=\norm a^{-1}$ once
+$j\ge\deg a$. The error from large smooth factors is at most
+$\sum_{\deg h>L,\ h\ \mathrm{smooth}}\norm h^{-1}$ and that from large squares at most
+$\sum_{\deg P>K}\norm P^{-2}$, uniformly in $j$, since the probability of divisibility is
+always at most the reciprocal norm. Since $B_T\le1$,
+\[
+ B_T-b_q\le1-v_T\le\sum_{d>T}q^dq^{-2d}=\frac{q^{-T}}{q-1}.
+\]
+A finite weighted independent-set optimization over $\deg h\le L$ bounds the unrestricted
+maximum from below, with deficit at most the smooth tail, for example at most
+$\sum_{j>L}(j+1)^{\#S_T}q^{-j}$. This gives an algorithm of any prescribed absolute accuracy.
+
+\emph{A uniform estimate for the largest irreducible factor.} Write $D(f)$ for the largest
+degree of an irreducible divisor of $f$, with $D(1)=0$, and $F_m(j)=\mathbb P_j(D(f)\le m)$.
+For $m\ge1$,
+\begin{equation}\label{gpi:eq:shift}
+ \abs{F_m(j)-F_m(j-1)}\le\frac1m\qquad(j\ge1).
+\end{equation}
+Indeed, let $G(z)=(1-z)\sum_{j\ge0}F_m(j)z^j$. The Euler product over monic polynomials gives
+\[
+ G(z)=\prod_{\deg P>m}\bigl(1-(z/q)^{\deg P}\bigr)
+ =\exp\Bigl(-\sum_{k>m}a_k\frac{z^k}k\Bigr),\qquad
+ a_k=q^{-k}\sum_{d\mid k,\ d>m}dI_q(d)\in[0,1].
+\]
+If $g_j$ is the coefficient of $z^j$ in $G$, then $g_j=0$ for $1\le j\le m$, and for $j>m$
+logarithmic differentiation and coefficientwise majorization by the exponential with positive
+signs give
+\[
+ j\abs{g_j}\le\sum_{i=0}^{j-1}\abs{g_i}\le\exp\Bigl(\sum_{k=m+1}^{j}\frac1k\Bigr)\le\frac jm .
+\]
+The coefficient $g_j$ is the first difference in \eqref{gpi:eq:shift}. Consequently
+$\abs{F_m(j-k)-F_m(j)}\le k/m$ for $0\le k\le j$.
+
+\emph{Pasting by the largest prime degree.} For each $i\ge1$ take the set $E_i$ constructed
+at $T=i$, of density $e_i\to b_q$, and put $\epsilon_i=2^{-i}$. By the two uniform
+truncations there is a cylinder event $C_i$ with $\mathbb P_j(E_i\,\triangle\,C_i)\le\epsilon_i$
+for every $j$. Its indicator has the form $\sum_au_a\mathbf 1_{a\mid f}$ for finitely many
+monic $a$, by inclusion--exclusion. Write $s_i=\sum_au_a/\norm a$, so that
+$\abs{s_i-e_i}\le\epsilon_i$. Choose increasing integers $m_i>i$ exceeding every $\deg a$
+occurring for $C_i$ and satisfying $\sum_a\abs{u_a}\deg(a)/\norm a\le m_i\epsilon_i$. Accept
+$f$ by the rule $E_i$ when $m_i<D(f)\le m_{i+1}$, and omit the $f$ with $D(f)\le m_1$. This
+set is admissible: at a prime of the greatest degree occurring anywhere in a putative
+forbidden triple, all three valuations are zero or one, since wherever it is present it is a
+largest prime and the rule there enforces squarefreeness; as the valuations are in arithmetic
+progression and one of them is one, all are one. So the three polynomials have the same
+largest degree, follow the same rule, and cannot form the triple.
+
+For $m,j\ge m_i$, exact division by $a$ and the shift estimate give
+\[
+ \mathbb P_j(C_i,\ D\le m)=\sum_a\frac{u_a}{\norm a}F_m(j-\deg a)=s_iF_m(j)+\theta\epsilon_i,
+ \qquad\abs\theta\le1 .
+\]
+Replacing $C_i$ by $E_i$ and $s_i$ by $e_i$ raises the error to $3\epsilon_i$. The
+probability retained in the $i$th bin therefore differs from
+$e_i\,\mathbb P_j(m_i<D\le m_{i+1})$ by at most $6\epsilon_i$, and for $j<m_i$ the bin is
+empty. For fixed $m$, $F_m(j)\to0$, since the finitely many permitted prime factors give at
+most $(j+1)^{\#S_m}$ polynomials; hence the mass of any fixed initial segment of bins tends
+to zero. The remaining errors sum to at most $6\sum_{i\ge i_0}\epsilon_i$, and
+$\sup_{i\ge i_0}\abs{e_i-b_q}\to0$. Letting $j\to\infty$ and then $i_0\to\infty$ shows that the
+exact-degree proportions tend to $b_q$.
+
+\emph{Decidability.} At stage $i$ use a finite optimizer whose omitted smooth tail, after
+multiplication by $c_i$, is less than $2^{-i}$, with deterministic tie breaking. The cylinder
+truncations and the endpoints $m_i$ can then be chosen by the effective bounds above. This
+changes $e_i$ by at most $2^{-i}$ and preserves its limit. Factoring a given polynomial and
+finding its bin decides membership.
+
+\emph{Banach means.} For rough cores with degrees in $[M,M+L)$ the fiber bound and the
+eventually exact rough proportions give $LB_T+O_{q,T}(1)$. The contribution of the earlier
+rough cores is at most
+\[
+ \sum_{s\ge1}\ \sum_{\substack{h\ \mathrm{smooth}\\ \deg h\ge s}}\norm h^{-1}
+ =\sum_{h\ \mathrm{smooth}}(\deg h)\norm h^{-1}<\infty ,
+\]
+by summing over $s=M-\deg g$ and bounding the rough shell proportion by one. This proves
+\eqref{gpi:eq:banach}. Divide by $L$, take the supremum over $M$, and let $L$ and $T$ tend to
+infinity; the reverse inequality follows from the set with converging degree proportions.
+
+\emph{The binary certificate.} For $q=2$ and $T=2$, $S_2$ consists of the two linear primes
+and the unique quadratic prime, and $c_2=3/16$. On the exponent triples $(a,b,c)$ with
+$a+b+2c\le12$ the maximum of $\sum2^{12-a-b-2c}$ over admissible sets is $14853$, attained by
+the truncated greedy set. The script
+\gpifile{grh_transfers_density_gaps_and_zero_tests/checks/natural_density_check.py}
+exhausts the independent sets by branching on the earliest remaining vector; including it
+deletes the third vertex of any progression whose first two vertices in the chosen ordering
+are now included, and a branch is pruned when its score plus the total available weight
+cannot improve the incumbent. All scores are integers. Assigning the full mass to the
+untested smooth tail gives
+\[
+ b_2\le B_2\le1-\frac3{16}\Bigl(\sum_{a+b+2c\le12}2^{-a-b-2c}-\frac{14853}{4096}\Bigr)
+ =\frac{2797}{4096}. \qedhere
+\]
+\end{proof}
+
+\begin{theorem}[Natural against upper density over $\F_q$; \stU]\label{gpi:thm:poly-gap}
+For every prime power $q$, $u_q>b_q$. For each $T\ge3$,
+\[
+ u_q-b_q\ \ge\ (1-q^{-1})\,c_T\,q^{-3}-\frac{q^{-T}}{(T+1)(q-1)} .
+\]
+In particular $u_2-b_2>0.003660$, and $\liminf_{q\to\infty}q^3(u_q-b_q)\ge e^{-11/6}$.
+\end{theorem}
+
+\begin{proof}
+Let $J_T(t)$ be the largest cardinality of an admissible set of monic $S_T$-smooth
+polynomials of degree at most $t$, and define
+\[
+ U_T=(1-q^{-1})\,c_T\sum_{t\ge0}q^{-t}J_T(t).
+\]
+\emph{The bounds $v_TU_T\le u_q\le U_T$.} A ball of degree at most $N$ has $(q^{N+1}-1)/(q-1)$
+monic elements, the number of rough cores of degree $N-t$ divided by $q^{N-t}$ tends to
+$c_T$, and there are at most $J_T(t)$ admissible smooth factors per core; dominated
+convergence, with $J_T(t)\le(t+1)^{\#S_T}$, gives the upper bound. For the lower bound use
+only squarefree rough cores, whose degree proportions tend to $c_Tv_T$ by finite divisibility
+and the convergent square tail. Fix $N_0=0$ and $N_j=2^{j+1}$. For each such core $g$ with
+degree in $(N_{j-1},N_j]$ permanently choose a maximizing smooth fiber at the cutoff
+$N_j-\deg g$. Distinct cores cannot occur in one progression, because their outside
+valuations all lie in $\set{0,1}$. At $N_j$ the entire contribution from $t<N_j-N_{j-1}$
+attains the finite-fiber bound, and the summable tail tends to zero. Taking all smooth
+factors in the same count gives $U_T\le1$.
+
+\emph{Comparison with a fixed set.} For a fixed admissible smooth set $A$ let $A(t)$ count
+its elements of degree at most $t$. A geometric series gives
+\[
+ \sum_{h\in A}\norm h^{-1}=(1-q^{-1})\sum_{t\ge0}q^{-t}A(t),
+\]
+and each difference $J_T(t)-A(t)$ is a nonnegative integer. We show that one of them is
+positive for some $1\le t\le3$. Because $T\ge3$, the smooth polynomials of these degrees are
+all the monic polynomials.
+
+\emph{The three cutoffs are incompatible.} Write $\mathcal L$ for the set of the $q$ monic
+linear polynomials. Expressing the ratio in lowest terms shows that every forbidden triple
+of monic polynomials has the form
+\[
+ ad^2,\quad ade,\quad ae^2
+\]
+with distinct coprime monic $d,e$ and monic $a$. At cutoff three, $d,e\in\set1\cup\mathcal L$
+and $\deg a\le1$; at cutoff two, $a=1$. For each pair of distinct diagonal entries $d^2,e^2$
+the unique middle entry $de$ must be absent if both diagonals are retained, and distinct
+pairs have distinct middle entries. Retaining $k$ of the $q+1$ diagonals at cutoff two
+therefore costs at least
+\[
+ q+1-k+\binom k2\ \ge\ q
+\]
+deletions, and the bound is attained by deleting the $q$ squares of linear polynomials. At
+cutoff one all $q+1$ polynomials are admissible. Thus a set that is optimal at both cutoffs
+one and two retains $1$ and all linear polynomials and deletes exactly those $q$ squares. For
+all $a,d\in\mathcal L$ with $a\ne d$ the entries $a$ and $ad$ are then retained, and their
+progression forces the deletion of $ad^2$. With the $q$ squares these $q(q-1)$ distinct
+cubics give at least $q^2$ deletions up to degree three.
+
+There is an admissible set at cutoff three with only $q^2-1$ deletions. Start with the
+deletion list consisting of every $P^2$ with $P\in\mathcal L$ and every $ad^2$ with distinct
+$a,d\in\mathcal L$. Choose distinct $X,Y\in\mathcal L$, restore $Y^2$ and $YX^2$, and delete
+$Y$. To check admissibility, group the triples by their common factor $a$. For $a=1$ the
+retained diagonals are $1$ and $Y^2$, whose middle is the missing $Y$. For $a=Y$ the retained
+diagonals are $Y^3$ and $YX^2$, whose middle is the missing $XY^2$. For every other linear
+$a$ the only retained diagonals are $a$ and $a^3$, whose middle $a^2$ is missing. This
+exhausts the possibilities, including ratios of degree zero.
+
+\emph{The gap.} The integer loss has weight at least $q^{-3}$ in the series. Maximizing over
+$A$ gives $U_T-B_T\ge(1-q^{-1})c_Tq^{-3}$. With $u_q\ge v_TU_T$, $b_q\le B_T$ and $U_T\le1$
+this proves the bound, since $I_q(d)\le q^d/d$ gives
+\[
+ 1-v_T\le\sum_{d>T}I_q(d)q^{-2d}\le\frac{q^{-T}}{(T+1)(q-1)} .
+\]
+The product $c_T$ decays slowly: its first factor is $(1-1/q)^q\ge1/4$, and for $d\ge2$
+Bernoulli's inequality gives $(1-q^{-d})^{I_q(d)}\ge1-1/d$. Hence $c_T\ge1/(4T)$, and a
+sufficiently large $T$ gives a positive gap for every $q$. For the asymptotic statement take
+$T=3$ and use $I_q(1)=q$, $I_q(2)=(q^2-q)/2$, $I_q(3)=(q^3-q)/3$; then $c_3\to e^{-11/6}$. The
+numerical value for $q=2$ uses $T=8$.
+\end{proof}
+
+The script
+\gpifile{grh_transfers_density_gaps_and_zero_tests/checks/check_gap.py}
+verifies
+the following certified lower bounds for $u_q-b_q$ in rational arithmetic.
+\begin{center}\small
+\begin{tabular}{crl@{\qquad}crl}\toprule
+$q$&$T$&gap exceeds&$q$&$T$&gap exceeds\\\midrule
+2&8&0.003660&5&4&0.000715\\
+3&5&0.002149&7&4&0.000297\\
+4&4&0.001192&&&\\\bottomrule
+\end{tabular}
+\end{center}
+It also exhausts the $2^{15}$ subsets of the binary ball of degree three: the optimal sizes
+up to degrees $0,1,2,3$ are $1,3,5,12$, and preserving the optima up to degree two allows at
+most $11$ at degree three.
+
+\begin{remark}[Polynomial ratios]\label{gpi:rem:poly-ratio}
+The same separation holds when the ratio $r$ must be a nonconstant polynomial, with
+admissibility for this convention in both optimizations; squarefreeness outside $S_T$ still
+fixes the rough core. At cutoff two the monic constant $1$ meets every forbidden triple, so
+one deletion suffices and is necessary. A set optimal at cutoff one retains $1$ and all $q$
+linear polynomials and must then delete all $q$ squares of linear polynomials at cutoff two.
+This proves incompatibility already up to degree two and replaces $q^{-3}$ by $q^{-2}$ in
+\cref{gpi:thm:poly-gap} for this convention.
+\end{remark}
+
+Let $G_q$ be the greedy set of monic polynomials all of whose valuations lie in
+$\mathcal A$. Asada, Fourakis, Manski, McNew, Miller and Moreland asked for a set avoiding
+rational-function ratios of greater upper density than the greedy set
+\cite[Question~6.4]{Asada2017Subsets}. The one-digit exchange gives one with a natural
+density.
+
+\begin{proposition}[The greedy set over $\F_q$ is not optimal; \stU]\label{gpi:prop:poly-greedy}
+For every prime power $q$ there is a set of monic polynomials over $\F_q$, avoiding all
+progressions with nonconstant ratio in $\F_q(x)$, whose natural density exists and exceeds
+that of $G_q$. Hence $b_q>d(G_q)$. The same holds for sets of nonzero polynomials.
+\end{proposition}
+
+\begin{proof}
+Give a monic irreducible $P$ the weight $w_P=q^{-\deg P}$. Among the monic polynomials of
+degree exactly $j$, divisibility by a fixed monic $D$ has probability $q^{-\deg D}$ once
+$j\ge\deg D$, so the finite valuation laws follow by inclusion--exclusion, and an omitted
+square condition in degrees above $j_0$ costs at most $\sum_{j>j_0}q^jq^{-2j}$. Thus the
+analogue of Lemma~\ref{gpi:lem:product} holds with exact-degree limits, and the proof of
+\cref{gpi:thm:onedigit}(a),(b) applies verbatim, with \eqref{gpi:eq:capgain} for the weights
+$w_P$. The reciprocal sum over the irreducibles diverges: for $s>1$ the Euler product is
+$(1-q^{1-s})^{-1}$, while the powers of exponent at least two contribute a bounded amount to
+its logarithm as $s\downarrow1$. Choose a linear marker, so $w=1/q$, and enough satellites to
+make $\sum_iu_i>q^2+q-1$. Then \eqref{gpi:eq:capgain} is positive. Including all nonzero
+scalar multiples preserves the result.
+\end{proof}
+
+For $q=2$ the greedy density is approximately $0.6483610761$, by the Euler product of
+\cite{Asada2017Subsets}, against the bound $b_2\le0.682861328125$ of
+\cref{gpi:thm:poly-natural}. The conjecture of \cite{Asada2017Subsets} for polynomial ratios
+uses a different benchmark and is treated in \cref{sec:gpp}.
+
+\subsection{Open questions}\label{gpi:sec:open}
+{\raggedright\sources{grh_transfers_density_gaps_and_zero_tests; mcnew-density-and-dirichlet-grh; mcnew_counterexample_and_grh_transfers; mcnew_density_and_grh_transfers; grh_prime_patterns_and_branch_precision; grh_ideal_densities_and_transfer_conditions_2026-11-26}}
+
+\begin{enumerate}
+\item \emph{The values of the four suprema.} The results above give
+ \[
+ d(R)+10^{-596}<\alpha<0.740912,\quad0.723891<\beta<0.749192,\quad
+ 0.7365954<\overline\alpha<0.7716011,
+ \]
+ together with $\beta-\alpha>0.0001351$ and $\overline\beta>0.818410$. The numbers $\alpha$,
+ $\beta$ (and $b_K$, $u_K$ in general) are computable, but none of them is determined. How
+ large is $\alpha-d(R)$? The exchanges used here optimize particular families of patterns;
+ larger digit alphabets or several interacting markers could give larger gains.
+\item \emph{The least number of coupled primes.} Determine the least $m$ with
+ $\alpha_m>d(R)$; \cref{gpi:thm:blocks} gives $5\le m\le225$. In particular, is Rankin's rule
+ optimal on every set of five primes? Can the positive margin in the low-box inequality
+ \eqref{gpi:eq:lowbox} be certified on larger sets of small primes without a low-digit box
+ that grows exponentially?
+\item \emph{More deletions.} \Cref{gpi:thm:edge} classifies the profitable one-digit
+ exchanges with at most two deleted cube vertices. Is there a comparably explicit
+ classification for three or more deletions, or an exchange with an appreciable density gain
+ using few primes of ordinary size?
+\item \emph{The loss at each prime.} Is $\overline\alpha_{p^-}-\overline\alpha_p>0$ for every
+ sufficiently large prime $p$, where $p^-$ is the preceding prime? The proof at $p=11$ in
+ \cref{gpi:thm:upper-alpha} reduces strictness to finding one interval on which the
+ independent layers have a strictly larger optimum; a family of such intervals would
+ quantify the convergence from smooth to unrestricted ratios.
+\item \emph{The size of $\beta-\alpha$.} Can the replacement set $B$ and the budget for the
+ removed endpoints in Lemmas~\ref{gpi:lem:exchange} and~\ref{gpi:lem:patch} be optimized jointly to improve
+ the lower bound of \cref{gpi:thm:beta-alpha}?
+\item \emph{Number fields.} Determine the optimal natural density $b_K$ and the extremal upper
+ density $u_K$, or sharp field-specific improvements on the greedy density, for instance for
+ quadratic fields as asked in \cite{Best2017Geometric}. For fractional ratios the
+ improvements obtained here are those of \cref{gpi:thm:onedigit}.
+\item \emph{Polynomial rings.} How large is the true gap $u_2-b_2$, and more generally
+ $u_q-b_q$? What is $b_q$?
+\end{enumerate}

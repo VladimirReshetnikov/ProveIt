@@ -31,6 +31,18 @@ licence. Its `LICENSE`, `NOTICE` and `ATTRIBUTION.md` texts are in
 [`Research/grh_transfer_analysis/licenses`](Research/grh_transfer_analysis/licenses/), as
 `upstream_APACHE-2.0.txt`, `upstream_NOTICE.txt` and `upstream_ATTRIBUTION.txt`.
 
+## Merged article
+
+[`Article/article.pdf`](Article/article.pdf) merges all 61 reports into one article. Each
+result is stated once, in the strongest form the reports prove; repeated material and results
+implied by stronger or more general ones are left out, and the reports' many accounts of the
+upstream proof are replaced by one section. Like the packets, the article is not an
+independent check: its mathematics is that of the reports. Every result is marked as
+unconditional, as using Dirichlet GRH, or as a reduction whose target estimate is open. The
+[article README](Article/README.md) lists its sections, and the
+[provenance tables](Article/provenance/README.md) record, for every section of every report,
+where its material went and which result supersedes each omitted one.
+
 ## Layout
 
 - [`Research/`](Research/) has one directory per archive, named after the archive without

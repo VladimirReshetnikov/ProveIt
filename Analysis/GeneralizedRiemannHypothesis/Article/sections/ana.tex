@@ -1,0 +1,1863 @@
+\providecommand{\anapos}[1]{\bigl(#1\bigr)_{+}}
+\providecommand{\ananeg}[1]{\bigl(#1\bigr)_{-}}
+\providecommand{\anaone}{\mathbf{1}}
+\providecommand{\anaE}{\mathcal{E}}
+\providecommand{\anaEx}{\mathbb{E}}
+\providecommand{\anaPr}{\mathbb{P}}
+
+\section{One-sided analytic criteria}\label{sec:ana}
+
+The source theorem is obtained from an upper bound for a smoothed sum over primes. A Mellin
+transform turns that bound into a statement about poles, and a positivity argument of Landau
+excludes them (\cref{src:sec:mechanism}). This section states that analytic step once, in the
+generality needed in \cref{sec:nab,sec:grp,sec:hec}, together with its variants: tests in mean,
+tests without a centring constant, joint tests, the removal of prime powers, the choice of the
+auxiliary second scale, and tests on thin sets of twists and of scales. With the exceptions
+marked ``\stG'', the results are unconditional statements of analysis. None of them supplies
+the arithmetic inequality that a criterion asks for. For every function outside the scope of
+\cref{src:thm:dgrh} that inequality is open.
+
+For a real number $u$ write $u_+=\max(u,0)$ and $u_-=\max(-u,0)$. Mellin transforms are taken
+over $[1,\infty)$. With $x=e^v$ the integral $\int_1^\infty R(x)x^{-s}\,\dd x$ is the shifted
+Laplace transform $\int_0^\infty R(e^v)e^{(1-s)v}\,\dd v$ used in the Lean source.
+
+\subsection{The basic test}\label{ana:sec:basic}
+{\raggedright\sources{grh_transfer_analysis; grh_transfer_analysis_2026-11-25; grh_lean_transfer_analysis; grh_method_transfers_2026-11-25_2; grh_transfer_synthesis_2026-11-25; grh_sylow_transfer_2026-11-25; grh_reflection_transfer_2026-11-25; grh_cyclic_generator_transfer_2026-11-25; grh_a6_transfer_2026-11-25; grh_kummer_window_transfer_2026-11-25; grh_relative_prime_races_2026-11-25; psl2_grh_transfer}}
+
+\begin{lemma}[Landau]\label{ana:lem:landau}
+Let $h\colon[1,\infty)\to[0,\infty)$ be locally integrable, and suppose that
+$G(s)=\int_1^\infty h(x)x^{-s}\,\dd x$ converges for some real $s$. Let $a\in[-\infty,\infty)$
+be its abscissa of convergence. If $a>-\infty$, then $G$ has no holomorphic continuation to a
+neighbourhood of the real point $a$.
+\end{lemma}
+
+\begin{proof}
+Suppose that $G$ is holomorphic on a disc about $a$. Choose a real $z>a$ so close to $a$ that
+the Taylor disc of $G$ about $z$ contains a real point $t=z-r<a$. For $k\ge0$,
+differentiation inside the half-plane of convergence gives
+\[
+ (-1)^kG^{(k)}(z)=\int_1^\infty(\log x)^kh(x)x^{-z}\,\dd x .
+\]
+All terms of the Taylor series of $G$ about $z$, evaluated at $t$, are therefore nonnegative,
+and Tonelli's theorem identifies its convergent sum with
+\[
+ \sum_{k\ge0}\frac{r^k}{k!}\int_1^\infty(\log x)^kh(x)x^{-z}\,\dd x
+ =\int_1^\infty h(x)x^{-t}\,\dd x .
+\]
+So the integral converges at $t<a$, which contradicts the definition of $a$. See
+\cite[\S15.1]{MontgomeryVaughan2007Multiplicative}.
+\end{proof}
+
+\begin{theorem}[One-sided Mellin--Landau test; \stU]\label{ana:thm:onesided}
+Let $\beta>0$, and let $R\colon[1,\infty)\to\R$ be locally integrable with $\abs{R(x)}\le Cx^{A}$
+for all sufficiently large $x$, for some finite constants $A$ and $C$. Suppose that
+\[
+ F(s)=\int_1^\infty R(x)x^{-s}\,\dd x\qquad(\Re s>A+1)
+\]
+has a meromorphic continuation to $\Re s>\beta$, and that every pole of $F$ at a real point
+$u>\beta$ is simple with positive residue. Poles of $F$ off the real axis may have any order.
+If
+\begin{equation}\label{ana:eq:posint}
+ \int_1^\infty R(x)_+\,x^{-\sigma}\,\dd x<\infty\qquad\text{for every real }\sigma>\beta ,
+\end{equation}
+then $F$ is holomorphic on $\Re s>\beta$. Moreover
+$\int_1^\infty\abs{R(x)}x^{-\sigma}\,\dd x<\infty$ for every $\sigma>\beta$, so the Mellin integral
+of $R$ converges absolutely on that half-plane.
+\end{theorem}
+
+\begin{proof}
+Put $H(s)=\int_1^\infty R(x)_+x^{-s}\,\dd x$. By \eqref{ana:eq:posint} this integral converges
+absolutely and defines a holomorphic function on $\Re s>\beta$. Far to the right,
+\[
+ G(s):=H(s)-F(s)=\int_1^\infty R(x)_-\,x^{-s}\,\dd x
+\]
+is the Mellin transform of a nonnegative function. Let $a$ be its abscissa of convergence. The
+growth hypothesis gives $a\le A+1$, and it is enough to prove $a\le\beta$.
+
+Suppose $a>\beta$. The meromorphic function $H-F$ continues $G$ to a neighbourhood of $a$, and
+agrees with $G$ on $\Re s>a$ by the identity theorem. By hypothesis its singularity at $a$ is at
+most a simple pole, with residue $-\Res_{s=a}F\le0$. On the other hand $G(\sigma)\ge0$ for real
+$\sigma>a$, so that residue equals $\lim_{\sigma\downarrow a}(\sigma-a)G(\sigma)\ge0$. Hence the
+residue is zero and $H-F$ is holomorphic at $a$. This contradicts \cref{ana:lem:landau}, and so
+$a\le\beta$.
+
+The positive and negative parts of $R$ now both have absolutely convergent transforms at every
+real $\sigma>\beta$. Their difference is holomorphic on $\Re s>\beta$ and equals $F$ by analytic
+continuation. Their sum gives the last assertion.
+\end{proof}
+
+The Lean source proves the special case in which a fixed exponential majorant is subtracted
+(\code{IsPolar.landau}). The proof above subtracts the transform of the whole positive part
+instead, which is what admits hypotheses in mean. The positivity principle is classical, and
+related one-sided criteria for the zeta function and for Dirichlet $L$-functions appear in
+\cite{Suzuki2025Variants}.
+
+\begin{corollary}[Pointwise, dyadic and square-mean hypotheses]\label{ana:cor:forms}
+Under the analytic hypotheses of \cref{ana:thm:onesided}, each of the following conditions
+implies \eqref{ana:eq:posint}, and hence excludes all poles of $F$ in $\Re s>\beta$.
+\begin{enumerate}[label=\textup{(\alph*)}]
+\item For every $\eps>0$ there is $C_\eps$ with $R(x)\le C_\eps x^{\beta-1+\eps}$ for all
+ sufficiently large $x$. In particular $R(x)\le Cx^{\beta-1}$ eventually suffices.
+\item For every $\eps>0$ and all sufficiently large dyadic $X=2^k$,
+ $\int_X^{2X}R(x)_+\,\dd x\ll_\eps X^{\beta+\eps}$.
+\item For every $\eps>0$ and all sufficiently large dyadic $X=2^k$,
+ $\int_X^{2X}R(x)_+^2\,\dd x\ll_\eps X^{2\beta-1+\eps}$.
+\end{enumerate}
+Condition \textup{(b)} is equivalent to \eqref{ana:eq:posint}.
+\end{corollary}
+
+\begin{proof}
+For $\sigma>\beta$ choose $0<\eps<\sigma-\beta$. Under (a) the integrand in
+\eqref{ana:eq:posint} is eventually at most $C_\eps x^{\beta-1+\eps-\sigma}$. Under (b),
+\[
+ \int_{2^k}^{2^{k+1}}R(x)_+\,x^{-\sigma}\,\dd x\ll_\eps2^{k(\beta+\eps-\sigma)},
+\]
+and the geometric series converges. Conversely, integrability at $\sigma=\beta+\eps$ bounds a
+dyadic block by a constant multiple of $X^{\beta+\eps}$. Finally the Cauchy--Schwarz inequality
+gives $\int_X^{2X}R_+\le X^{1/2}\bigl(\int_X^{2X}R_+^2\bigr)^{1/2}$, which takes (c) to (b).
+\end{proof}
+
+When a real pole may have higher order, the pointwise form of the test still holds if one
+inspects the leading Laurent coefficient.
+
+\begin{proposition}[Real poles of higher order; \stU]\label{ana:prop:higher}
+Let $a_0<\beta$ be real, and let $R\colon[1,\infty)\to\R$ be locally integrable and of at most
+polynomial growth, with $R(x)\le Cx^{\beta-1}$ for all sufficiently large $x$. Suppose that the
+Mellin transform $F$ of $R$ continues meromorphically to $\Re s>a_0$, and that at every real
+pole $a>\beta$ its leading Laurent coefficient is positive: if the pole has order $j$, then
+$F(s)=c_a(s-a)^{-j}+O\bigl((s-a)^{1-j}\bigr)$ with $c_a>0$. Then $F$ has no pole in
+$\Re s>\beta$, and the Mellin integral of $R$ converges absolutely there.
+\end{proposition}
+
+\begin{proof}
+Enlarge $C$ to be nonnegative and replace $R$ by zero on an initial compact interval, so that
+the upper bound holds for all $x\ge1$. The change in $F$ is entire and affects no pole and no
+leading coefficient. Put
+\[
+ h(x)=Cx^{\beta-1}-R(x)\ge0,\qquad
+ G(s)=\int_1^\infty h(x)x^{-s}\,\dd x=\frac{C}{s-\beta}-F(s)
+\]
+in the initial domain of convergence, and let $\sigma$ be the abscissa of convergence of this
+nonnegative integral. Suppose $\sigma>\beta$. By \cref{ana:lem:landau} the meromorphic
+continuation of $G$ has a pole at $\sigma$. Since $C/(s-\beta)$ is holomorphic there, the
+leading Laurent coefficient of $G$ at $\sigma$ is the negative of that of $F$, hence negative,
+and $G(s)\to-\infty$ as real $s\downarrow\sigma$. But $G(s)\ge0$ for real $s>\sigma$. Thus
+$\sigma\le\beta$, $G$ is holomorphic on $\Re s>\beta$, and $F$ has no pole there. Finally
+$\abs{R(x)}\le Cx^{\beta-1}+h(x)$ gives the absolute convergence.
+\end{proof}
+
+\begin{remark}[The hypotheses cannot be omitted]\label{ana:rem:hyp}
+Fix $0<\beta<\alpha<1$ and $\tau>0$. Each of the following functions is nonpositive on
+$[1,\infty)$, so every form of the one-sided hypothesis holds, and each has a transform with a
+pole to the right of $\beta$.
+\begin{enumerate}[label=\textup{(\arabic*)}]
+\item \emph{A negative real residue.} $R(x)=-x^{\alpha-1}$ has $F(s)=-1/(s-\alpha)$.
+\item \emph{A real pole masking complex ones.} $R(x)=x^{\alpha-1}\bigl(\cos(\tau\log x)-1\bigr)$
+ has
+ \[
+  F(s)=\frac{s-\alpha}{(s-\alpha)^2+\tau^2}-\frac1{s-\alpha},
+ \]
+ with poles at $\alpha\pm i\tau$ of residue $1/2$ and a real pole at $\alpha$ of residue $-1$.
+\item \emph{Higher order at a real point.} $R(x)=-x^{\alpha-1}\log x$ has
+ $F(s)=-(s-\alpha)^{-2}$. The residue is zero although a double pole exists. This is why the
+ source proves that its poles are at most simple, and why \cref{ana:prop:higher} inspects the
+ leading coefficient.
+\end{enumerate}
+There is a separate cancellation problem. A difference of logarithmic derivatives does not see
+a zero shared by its two factors: for $F_1(s)=F_2(s)=s-\rho$ one has $F_1'/F_1-F_2'/F_2=0$. A
+test applied to a remainder must therefore identify the residues and prevent cancellation. In
+the settings of \cref{ana:sec:ramp} this is automatic, because all multiplicities enter with
+one sign. In the source the residues are differences of multiplicities, and an auxiliary twist
+without zeros in a prescribed box is selected first (\cref{ana:sec:sparse}).
+\end{remark}
+
+\subsection{Ramp sums of Dirichlet series}\label{ana:sec:ramp}
+{\raggedright\sources{grh_sylow_transfer_2026-11-25; grh_reflection_transfer_2026-11-25; psl2_grh_transfer; grh_a6_transfer_2026-11-25; grh_relative_prime_races_2026-11-25; grh_cyclic_generator_transfer_2026-11-25; grh_deficit_transfer_2026-11-25; grh_kummer_window_transfer_2026-11-25; grh_transfer_analysis_2026-11-25}}
+
+\begin{definition}[Ramp and centred remainder]\label{ana:def:ramp}
+Let $a(n)$, $n\ge1$, be real numbers with $a(n)=O(\log 2n)$, and put
+\[
+ A(s)=\sum_{n\ge1}a(n)n^{-s}\quad(\Re s>1),\qquad
+ T(x)=\sum_{n\le x}a(n)\Bigl(\frac1n-\frac1x\Bigr)\quad(x\ge1).
+\]
+Suppose that $A$ extends meromorphically to a neighbourhood of $s=1$ with at most a simple pole
+there, and write $A(s)=\delta/(s-1)+b_0+O(s-1)$. The \emph{centred remainder} of $a$ is
+\[
+ R(x)=T(x)-\delta\log x-c,\qquad c=b_0-\delta .
+\]
+\end{definition}
+
+The kernel $1/n-1/x$ is the one of the source's \code{primeError}. Each summand vanishes when it
+enters, so $T$ is continuous.
+
+\begin{lemma}[Mellin transform of the centred ramp]\label{ana:lem:mellin}
+In the situation of \cref{ana:def:ramp}:
+\begin{enumerate}[label=\textup{(\roman*)}]
+\item $T(x)=\int_1^x\bigl(\sum_{n\le t}a(n)\bigr)t^{-2}\,\dd t$ and $T(x)=O(\log^2(2x))$.
+\item For $\Re s>1$,
+ \begin{equation}\label{ana:eq:mellin}
+  \int_1^\infty T(x)x^{-s}\,\dd x=\frac{A(s)}{s(s-1)},\qquad
+  \Phi(s):=\int_1^\infty R(x)x^{-s}\,\dd x
+  =\frac{A(s)}{s(s-1)}-\frac{\delta}{(s-1)^2}-\frac{c}{s-1}.
+ \end{equation}
+\item $\Phi$ is regular at $s=1$, and $c$ is the only constant with this property. If
+ $T(x)-\delta\log x$ has a finite limit as $x\to\infty$, that limit is $c$.
+\item On any domain in $\Re s>0$ to which $A$ continues meromorphically, so does $\Phi$. A pole
+ of $A$ at $\rho\ne1$ is a pole of $\Phi$ of the same order. If it is simple with residue $r$,
+ then $\Res_{s=\rho}\Phi=r/\bigl(\rho(\rho-1)\bigr)$.
+\end{enumerate}
+\end{lemma}
+
+\begin{proof}
+(i) Use $\int_n^xt^{-2}\,\dd t=1/n-1/x$ and $\sum_{n\le t}\abs{a(n)}\ll t\log 2t$. (ii) Absolute
+convergence permits termwise integration, and for every $n\ge1$
+\[
+ \int_n^\infty\Bigl(\frac1n-\frac1x\Bigr)x^{-s}\,\dd x=\frac{n^{-s}}{s(s-1)},\qquad
+ \int_1^\infty x^{-s}\log x\,\dd x=\frac1{(s-1)^2}.
+\]
+(iii) Division of $A(s)=\delta/(s-1)+b_0+O(s-1)$ by $s(s-1)$ gives
+$\delta/(s-1)^2+(b_0-\delta)/(s-1)+O(1)$, so the two subtractions in \eqref{ana:eq:mellin}
+remove the singularity exactly when $c=b_0-\delta$. Suppose $T(x)-\delta\log x\to c'$. For real
+$\sigma>1$ and every $X\ge1$,
+\[
+ (\sigma-1)\Bigl|\int_1^\infty\bigl(T(x)-\delta\log x-c'\bigr)x^{-\sigma}\,\dd x\Bigr|
+ \le(\sigma-1)\int_1^X\abs{T(x)-\delta\log x-c'}\,\dd x+\sup_{x>X}\abs{T(x)-\delta\log x-c'} ,
+\]
+which tends to zero as $\sigma\downarrow1$ and then $X\to\infty$. The left side equals
+$\abs{(\sigma-1)\Phi(\sigma)+c-c'}$, and $\Phi$ is regular at $1$, so $c'=c$. (iv) is immediate
+from \eqref{ana:eq:mellin}.
+\end{proof}
+
+\begin{definition}[One-sided setting]\label{ana:def:setting}
+Fix $0<\beta<1$. A sequence $a$ as in \cref{ana:def:ramp} is in a \emph{one-sided setting at
+$\beta$} if, for $\Re s>1$,
+\begin{equation}\label{ana:eq:setting}
+ A(s)=-\sum_{j=1}^{r}w_j\frac{F_j'(s)}{F_j(s)}+H(s)
+\end{equation}
+with positive real weights $w_j$, where $H$ is holomorphic on $\Re s>\beta$ and every $F_j$ is
+meromorphic on $\Re s>\beta$, holomorphic and nonvanishing at every point of $\Re s\ge1$ other
+than $s=1$, and holomorphic at every point of $\beta<\Re s<1$.
+\end{definition}
+
+In such a setting $A$ is meromorphic on $\Re s>\beta$. Its only possible pole on $\Re s\ge1$ is
+at $s=1$, where it is simple with residue $\delta=-\sum_jw_j\ord_{s=1}F_j$. Its other poles lie
+at the zeros $\rho$ of the $F_j$ in $\beta<\Re s<1$, and are simple with residue
+$-\sum_jw_j\ord_\rho F_j$.
+
+\begin{theorem}[One-sided zero test for ramp sums; \stU]\label{ana:thm:zerotest}
+Let $a$ be in a one-sided setting at $\beta$, with centred remainder $R$. If
+\[
+ \int_1^\infty R(x)_+\,x^{-\sigma}\,\dd x<\infty\qquad\text{for every real }\sigma>\beta,
+\]
+and in particular if $R(x)\le Cx^{\beta-1}$ for all sufficiently large $x$, then no $F_j$ has a
+zero in $\Re s>\beta$. The Mellin integral of $R$ then converges absolutely on $\Re s>\beta$.
+\end{theorem}
+
+\begin{proof}
+By \cref{ana:lem:mellin} the transform $\Phi$ of $R$ is meromorphic on $\Re s>\beta$ and regular
+at every point of $\Re s\ge1$. Its poles in $\beta<\Re s<1$ are simple, with
+\begin{equation}\label{ana:eq:residue}
+ \Res_{s=\rho}\Phi(s)=\frac{\sum_jw_j\ord_\rho F_j}{\rho(1-\rho)} .
+\end{equation}
+At a real point $\rho\in(\beta,1)$ the denominator is positive and the numerator is a
+nonnegative combination of nonnegative integers. So the real poles of $\Phi$ have positive
+residue, and $R(x)=O(\log^2(2x))$. \Cref{ana:thm:onesided} shows that $\Phi$ is holomorphic on
+$\Re s>\beta$. A zero of some $F_j$ at a point $\rho$ of this half-plane would make
+\eqref{ana:eq:residue} nonzero, because all orders are nonnegative, the weights are positive
+and $\rho(1-\rho)\ne0$. No cancellation is possible, even at nonreal zeros.
+\end{proof}
+
+The positivity of the real residues is the point of the definition. It comes from the
+holomorphy of the $F_j$ in the strip and needs no information about the individual Artin
+factors of the $F_j$. No zero-density estimate and no auxiliary twist is used.
+
+\begin{remark}[Orientation]\label{ana:rem:sign}
+The inequality cannot be reversed. If $A=+\sum_jw_jF_j'/F_j+H$, as happens for a weight that
+counts a deficit of the primes detected by the $F_j$, the real residues of $\Phi$ are negative.
+The valid one-sided hypothesis is then an upper bound for $-R$, which is a lower bound for the
+deficit statistic. An upper bound for it detects nothing. In the same way a real exceptional
+zero would escape a lower bound for the statistics of \cref{ana:ex:instances}. A geometric
+construction must therefore produce its inequality with the orientation of
+\cref{ana:thm:zerotest}.
+\end{remark}
+
+\begin{example}[Instances]\label{ana:ex:instances}
+The following settings are used in \cref{sec:nab,sec:grp,sec:hec}. In each of them the inputs
+are classical: Hecke's continuation and the nonvanishing on $\Re s\ge1$ of the $L$-functions of
+finite-order characters, and the pole of a Dedekind zeta function at $1$
+\cite{Neukirch1999Algebraic}.
+\begin{enumerate}[label=\textup{(\alph*)}]
+\item \emph{A Dedekind zeta function.} For a number field $K$ take $A=-\zeta_K'/\zeta_K$, with
+ coefficients $\Lambda_K(n)$. Define the Euler--Kronecker constant $\gamma_K$ by
+ $\zeta_K'/\zeta_K(s)=-(s-1)^{-1}+\gamma_K+O(s-1)$. Then $\delta=1$, $c=-1-\gamma_K$ and
+ \begin{equation}\label{ana:eq:RK}
+  R_K(x)=\sum_{n\le x}\Lambda_K(n)\Bigl(\frac1n-\frac1x\Bigr)-\log x+1+\gamma_K .
+ \end{equation}
+ The setting holds at every $\beta\in(0,1)$, and so it does for every positive combination
+ $\sum_jw_jR_{E_j}$ of finitely many fields. An eventual bound
+ $\sum_jw_jR_{E_j}(x)\le Cx^{\beta-1}$ excludes zeros of every $\zeta_{E_j}$ in $\Re s>\beta$.
+\item \emph{An entire product.} Let $F$ be a finite product of positive integer powers of
+ $L$-functions of nontrivial finite-order Hecke characters of number fields, regarded as an
+ Euler product over rational primes with all local factors, and with real coefficients in
+ $D_F=-F'/F=\sum_{p,k}a_F(p^k)\log p\,p^{-ks}$. Then $\delta=0$, $c=D_F(1)$, and
+ $R_F(x)=\sum_{p^k\le x}a_F(p^k)\log p\,(p^{-k}-x^{-1})-D_F(1)$ has no logarithmic term.
+\item \emph{An Artin $L$-function with a simple pole.} Let $W$ be a character of a finite Galois
+ group for which $L(s,W)$ is known to be holomorphic except for a simple pole at $s=1$, for
+ example a permutation character, or $\triv$ plus a nonnegative integer combination of
+ characters induced from nontrivial linear characters of subgroups. With all Euler factors,
+ $a(p^k)=\log p\cdot\Tr\bigl(g_p^k\mid V_W^{I_p}\bigr)$, where $I_p$ is inertia and $g_p$ a
+ Frobenius lift. Here $\delta=1$.
+\item \emph{Quotients of zeta functions.} $F_j=Q_j$ is a product of Dedekind zeta functions with
+ integer exponents of sum zero that is holomorphic in $\Re s>0$. Here $\delta=0$.
+\end{enumerate}
+\end{example}
+
+\begin{example}[The source remainder]\label{ana:ex:source}
+For a modulus $q\ge1$ and an odd prime $d\nmid q$ write $\chi_d(n)=(n/d)$ and
+\[
+ \lambda_{d,q}(n)=\anaone_{n\equiv1\ (\mathrm{mod}\ q)}\,\Lambda(n)\bigl(1-\chi_d(n)\bigr)\ge0,\qquad
+ R_{d,q}(x)=\sum_{n\le x}\lambda_{d,q}(n)\Bigl(\frac1n-\frac1x\Bigr)
+ -\frac{\log x}{\varphi(q)}-c_{d,q}.
+\]
+This is the remainder bounded from above in the source (its \code{primeError}), and it is the
+centred remainder of $\lambda_{d,q}$ in the sense of \cref{ana:def:ramp}. Indeed, let
+$E_\chi=L(s,\chi)$ for a nonprincipal character $\chi$ and let $E_\chi$ be the entire function
+$(s-1)L(s,\chi)$ for a principal one. Orthogonality and the Euler products give, for $\Re s>1$,
+\[
+ \sum_{n\ge1}\frac{\lambda_{d,q}(n)}{n^s}
+ =\frac1{\varphi(q)}\Bigl\{\frac1{s-1}+\sum_{\chi\bmod q}
+ \Bigl(\frac{E'_{\chi\chi_d}(s)}{E_{\chi\chi_d}(s)}-\frac{E'_\chi(s)}{E_\chi(s)}\Bigr)\Bigr\},
+\]
+so that $\delta=1/\varphi(q)$, and $c_{d,q}$ is real. By \cref{ana:lem:mellin} the transform
+$\Phi_{d,q}$ of $R_{d,q}$ is meromorphic on $\Re s>0$ and regular at $1$, its poles are at most
+simple, and for $\rho\ne1$
+\begin{equation}\label{ana:eq:srcres}
+ \Res_{s=\rho}\Phi_{d,q}(s)
+ =\frac{\sum_{\chi\bmod q}\ord_\rho E_\chi-\sum_{\chi\bmod q}\ord_\rho E_{\chi\chi_d}}
+ {\varphi(q)\,\rho(1-\rho)} .
+\end{equation}
+Even a multiple zero gives a simple pole, with the multiplicity in the residue. The numerator
+is a difference, so $\lambda_{d,q}$ is not in a one-sided setting: an untwisted and a twisted
+function vanishing at the same point may cancel. The source first chooses $d$ so that no
+twisted function vanishes in a prescribed box. This step is examined in \cref{ana:sec:sparse}.
+\end{example}
+
+\begin{proposition}[Converse; \stU]\label{ana:prop:converse}
+Let $a$ be in a one-sided setting at $\beta$. Suppose in addition that every $F_j$ is a finite
+product of integer powers of $L$-functions of finite-order Hecke characters of number fields,
+Dedekind zeta functions included, and that $H$ is bounded on $\Re s\ge\beta+\eps$ for every
+$\eps>0$. If no $F_j$ has a zero in $\Re s>\beta$, then for every $\eps>0$
+\[
+ R(x)=O_\eps\bigl(x^{\beta-1+\eps}\bigr).
+\]
+Consequently, for $1/2\le\beta<1$ the absence of zeros of all $F_j$ in $\Re s>\beta$ is
+equivalent to the family of one-sided bounds $R(x)\le C_\eps x^{\beta-1+\eps}$, $\eps>0$.
+\end{proposition}
+
+\begin{proof}
+Let $0<\eps<1-\beta$ and $\sigma_0=\beta+\eps$. Each constituent $L$-function, completed and
+multiplied by $s(s-1)$ when its character is trivial, is entire of order one. It has a Hadamard
+product, and it has $O(\log(\abs t+3))$ zeros with ordinate in $[t-1,t+1]$
+\cite[Ch.~5]{IwaniecKowalski2004Analytic}. For $s=\sigma+it$ with $\sigma_0\le\sigma\le2$,
+subtract the Hadamard logarithmic derivative at $2+it$ from the one at $s$. Each zero then
+contributes a difference of two reciprocals. The zeros in the $k$th unit shell contribute
+$O(\log(\abs t+k+3)/k^2)$ in total, the gamma factors obey Stirling's bound, and the Euler series
+at $2+it$ converges absolutely. In the signed sum that forms $F_j'/F_j$, a zero $\rho$ with
+$\Re\rho>\beta$ has total multiplicity $\ord_\rho F_j=0$ by hypothesis. Every remaining zero
+has $\Re\rho\le\beta$, hence distance at least $\eps$ from $s$. Therefore
+\[
+ A(\sigma+it)=O_\eps\bigl(\log(\abs t+3)\bigr)\qquad(\sigma_0\le\sigma\le2,\ \abs t\ge1),
+\]
+and at small heights the same bound holds away from $s=1$ by compactness. These are estimates
+for fixed functions. No uniformity in the fields or in the degree is claimed.
+
+The inverse Mellin kernel of $(y-1)_+$ gives
+\[
+ T(x)=\frac1{2\pi i}\int_{2-i\infty}^{2+i\infty}A(s)\frac{x^{s-1}}{s(s-1)}\,\dd s .
+\]
+Shift the contour to $\Re s=\sigma_0$. The horizontal integrals tend to zero by the logarithmic
+bound and the decay $\abs s^{-2}$. The only pole crossed is at $s=1$, with residue
+$\delta\log x+c$ by the expansion in the proof of \cref{ana:lem:mellin}. The new vertical
+integral is $O_\eps(x^{\sigma_0-1})$, since $\log(\abs t+3)/(1+t^2)$ is integrable. The last
+assertion combines this with \cref{ana:thm:zerotest,ana:cor:forms}.
+\end{proof}
+
+\subsection{Removal of prime powers}\label{ana:sec:primeonly}
+{\raggedright\sources{grh_relative_prime_races_2026-11-25; grh_cyclic_generator_transfer_2026-11-25; grh_a6_transfer_2026-11-25; grh_sylow_transfer_2026-11-25; psl2_grh_transfer; grh_deficit_transfer_2026-11-25}}
+
+The coefficients of a logarithmic derivative at prime powers $p^k$, $k\ge2$, and at finitely
+many bad primes, do not affect a test at any exponent $\beta\ge1/2$.
+
+\begin{lemma}[Prime powers and finitely many primes]\label{ana:lem:powers}
+Let $a(n)$ be supported on prime powers with $\abs{a(p^k)}\le C_0\log p$, and let $S$ be a finite
+set of primes. Call $n=p^k$ \emph{omitted} if $k\ge2$ or $p\in S$. Let $a^\flat(n)=a(n)$ if $n$
+is a prime outside $S$ and $a^\flat(n)=0$ otherwise, with series $A^\flat$ and ramp $T^\flat$.
+\begin{enumerate}[label=\textup{(\roman*)}]
+\item $A-A^\flat=\sum_{n\ \mathrm{omitted}}a(n)n^{-s}$ converges normally on
+ $\Re s\ge1/2+\eta$ for every $\eta>0$. Hence $A^\flat$ continues to $\Re s>1/2$ wherever $A$
+ does, with the same poles and principal parts.
+\item $B=\sum_{n\ \mathrm{omitted}}a(n)/n$ converges absolutely, and
+ \begin{equation}\label{ana:eq:powers}
+  T(x)-T^\flat(x)=B+O\bigl(x^{-1/2}\bigr).
+ \end{equation}
+\end{enumerate}
+\end{lemma}
+
+\begin{proof}
+(i) On $\Re s\ge1/2+\eta$ the terms with $k\ge2$ are dominated by a constant multiple of
+$\sum_{n\ge2}\log n/n^{1+2\eta}$, and each of the finitely many local series at $p\in S$
+converges normally on $\Re s>0$. (ii) The Chebyshev bound $\sum_{p\le y}\log p=O(y)$ gives
+\[
+ M(t):=\sum_{p^k\le t,\ k\ge2}\log p=O\bigl(\sqrt t+t^{1/3}\log t\bigr)=O(\sqrt t).
+\]
+By partial summation,
+\[
+ \sum_{p^k>x,\ k\ge2}\frac{\abs{a(p^k)}}{p^k}=O\bigl(x^{-1/2}\bigr),\qquad
+ \frac1x\sum_{p^k\le x,\ k\ge2}\abs{a(p^k)}=O\bigl(x^{-1/2}\bigr).
+\]
+A prime $p\in S$ contributes a tail $O(1/x)$ and a correction $O(\log x/x)$.
+\end{proof}
+
+For the main statement let $E/\Q$ be a finite Galois extension with group $G$, let $S$ be a
+finite set of rational primes containing those ramified in $E$, and let $g_p$ denote the
+Frobenius class of $p\notin S$. For a real class function $w$ on $G$ put
+$a_w=\langle w,\triv\rangle$ and
+\begin{align*}
+ D_w(s)&=\sum_{p\notin S}\sum_{k\ge1}w(g_p^k)\log p\;p^{-ks}\quad(\Re s>1),\\
+ \Theta_w(x)&=\sum_{p\le x,\ p\notin S}w(g_p)\log p,\qquad
+ P_w(x)=\sum_{p\le x,\ p\notin S}w(g_p)\log p\Bigl(\frac1p-\frac1x\Bigr).
+\end{align*}
+The Chebotarev density theorem with its classical error term gives
+\[
+ \Theta_w(x)=a_wx+O_E\bigl(x\exp(-c\sqrt{\log x})\bigr)
+\]
+for some $c>0$; a possible exceptional real zero of the fixed field is absorbed in the error
+\cite{LagariasOdlyzko1977Effective}. Since $P_w(x)=\int_1^x\Theta_w(t)t^{-2}\,\dd t$, the limit
+\[
+ C_w=\lim_{x\to\infty}\bigl(P_w(x)-a_w\log x\bigr)
+ =\int_1^\infty\frac{\Theta_w(t)-a_wt}{t^2}\,\dd t
+\]
+exists, and the \emph{prime-only remainder}
+\begin{equation}\label{ana:eq:Rw}
+ R_w(x)=P_w(x)-a_w\log x-C_w=-\int_x^\infty\frac{\Theta_w(t)-a_wt}{t^2}\,\dd t
+\end{equation}
+is continuous, bounded, and tends to zero. This defines the constant without any Riemann
+hypothesis. It is a definition, not a finite numerical evaluation.
+
+\begin{theorem}[Prime-only criterion; \stU]\label{ana:thm:primeonly}
+With the notation above, suppose that for $\Re s>1$
+\[
+ D_w(s)=-\sum_{j=1}^rw_j\frac{F_j'(s)}{F_j(s)}+H(s),
+\]
+where the $w_j$ are positive, every $F_j$ is a finite product of integer powers of
+$L$-functions of finite-order Hecke characters of number fields that has no pole in
+$1/2<\Re s<1$, and $H$ is holomorphic on $\Re s>1/2$ and bounded on $\Re s\ge1/2+\eta$ for
+every $\eta>0$. Let $R$ be the centred remainder of the full coefficient sequence of $D_w$
+(\cref{ana:def:ramp}). Then $R(x)=R_w(x)+O(x^{-1/2})$, and the following are equivalent.
+\begin{enumerate}[label=\textup{(\roman*)}]
+\item No $F_j$ has a zero in $\Re s>1/2$.
+\item For every $0<\eps<1/2$ there is $C_\eps$ with $R_w(x)\le C_\eps x^{-1/2+\eps}$ for all
+ sufficiently large real $x$.
+\item $R_w(x)=O_\eps(x^{-1/2+\eps})$ for every $\eps>0$.
+\item For every $0<\eps<1/2$ there is $K_\eps$ such that for all sufficiently large integers
+ $n$,
+ \begin{equation}\label{ana:eq:dyadicint}
+  P_w(n)-P_w(2n)+a_w\log 2\le K_\eps n^{-1/2+\eps}.
+ \end{equation}
+\item For every $0<\eps<1/2$ there is $K_\eps$ such that for all sufficiently large integers
+ $n$,
+ \begin{equation}\label{ana:eq:squareint}
+  P_w(n)-P_w(n^2)+a_w\log n\le K_\eps n^{-1/2+\eps}.
+ \end{equation}
+\end{enumerate}
+More precisely, for a single $\beta\in(1/2,1)$ an eventual bound with exponent $\beta-1$ in
+\textup{(ii)}, \textup{(iv)} or \textup{(v)} excludes zeros of every $F_j$ in $\Re s>\beta$. If
+moreover all nontrivial zeros of $\zeta_E$ have real part $1/2$, then
+$R_w(x)=O_{E,w}(x^{-1/2}\log^2x)$.
+\end{theorem}
+
+\begin{proof}
+\emph{Comparison with the full series.} Let $T$ be the ramp of the coefficients
+$a(p^k)=w(g_p^k)\log p$, $p\notin S$, of $D_w$. \Cref{ana:lem:powers} gives
+\[
+ T(x)-P_w(x)=B+O\bigl(x^{-1/2}\bigr),\qquad
+ B=\sum_{p\notin S,\ k\ge2}\frac{w(g_p^k)\log p}{p^k}.
+\]
+The $L$-functions of finite-order Hecke characters are holomorphic and nonvanishing on $\Re s\ge1$
+apart from the pole of a zeta function at $1$, so $D_w$ is in a one-sided setting at every
+$\beta\in(1/2,1)$. Its residue at $1$ is $\lim_{\sigma\downarrow1}(\sigma-1)D_w(\sigma)=a_w$ by
+the asymptotic for $\Theta_w$. As $T(x)-a_w\log x\to C_w+B$, \cref{ana:lem:mellin}(iii)
+identifies the centring constant of $T$ as $C_w+B$, and the centred remainder $R$ of $T$
+satisfies
+\begin{equation}\label{ana:eq:RwR}
+ R(x)=R_w(x)+O\bigl(x^{-1/2}\bigr).
+\end{equation}
+
+\emph{From a one-sided bound to zeros.} If $R_w(x)\le Cx^{\beta-1}$ eventually, with
+$1/2<\beta<1$, then $R(x)\le C'x^{\beta-1}$ eventually by \eqref{ana:eq:RwR}, and
+\cref{ana:thm:zerotest} excludes zeros of every $F_j$ in $\Re s>\beta$. Letting $\beta$
+decrease to $1/2$ proves (ii)$\Rightarrow$(i).
+
+\emph{From zeros to the two-sided bound.} Under (i), \cref{ana:prop:converse} at $\beta=1/2$ and
+\eqref{ana:eq:RwR} give (iii). Clearly (iii) implies (ii), and it implies (iv) and (v), whose
+left sides are $R_w(n)-R_w(2n)$ and $R_w(n)-R_w(n^2)$.
+
+\emph{Telescoping.} Assume \eqref{ana:eq:dyadicint} with exponent $\beta-1$, where
+$\beta=1/2+\eps$, for all integers $n\ge n_0$. Since $R_w(2^kn)\to0$ unconditionally,
+\[
+ R_w(n)=\lim_{k\to\infty}\sum_{j=0}^{k-1}\bigl(R_w(2^jn)-R_w(2^{j+1}n)\bigr)
+ \le K_\eps n^{\beta-1}\sum_{j\ge0}2^{j(\beta-1)}=\frac{K_\eps}{1-2^{\beta-1}}\,n^{\beta-1}.
+\]
+Assume instead \eqref{ana:eq:squareint}. Telescoping along the integers $n^{2^i}$ gives
+\[
+ R_w(n)\le K_\eps\sum_{i\ge0}n^{(\beta-1)2^i}\le2K_\eps n^{\beta-1}
+\]
+for large $n$, since $2^i\ge i+1$. In both cases only upper bounds are summed, and no unknown
+constant has to be computed. Between consecutive integers $R_w$ is differentiable off the
+primes, with derivative $\Theta_w(x)x^{-2}-a_wx^{-1}=O_w(x^{-1})$ by the Chebyshev bound. So the
+integer bound extends to all sufficiently large real $x$ with a changed constant, which is (ii)
+with the same $\beta$.
+
+\emph{The sharper bound.} If $\zeta_E$ satisfies the Riemann hypothesis, the effective
+Chebotarev theorem gives $\Theta_w(x)=a_wx+O_{E,w}(\sqrt x\log^2x)$
+\cite{LagariasOdlyzko1977Effective,GrenieMolteni2019Explicit}, and \eqref{ana:eq:Rw} gives the
+bound for $R_w$.
+\end{proof}
+
+\begin{remark}[The statistics in \textup{(iv)} and \textup{(v)} are finite]\label{ana:rem:finite}
+The constant $C_w$ does not enter \eqref{ana:eq:dyadicint} or \eqref{ana:eq:squareint}. Direct
+subtraction gives
+\[
+ P_w(n)-P_w(2n)=-\frac{\Theta_w(n)}{2n}
+ -\sum_{\substack{n<p\le2n\\p\notin S}}w(g_p)\log p\Bigl(\frac1p-\frac1{2n}\Bigr).
+\]
+A proof of \eqref{ana:eq:dyadicint} need not evaluate any $L'(1)/L(1)$. It has to control a
+signed combination of a cumulative count and a short-interval count. Replacing either
+inequality by its negative does not give the same conclusion, because the sign of the real
+residues would be reversed (\cref{ana:rem:sign}).
+\end{remark}
+
+\begin{remark}[Scope]\label{ana:rem:base}
+\Cref{ana:thm:primeonly} is the common analytic part of the criteria of
+\cref{sec:nab,sec:grp}. The choice of $w$ and the verification of the displayed identity for
+$D_w$ belong to those sections. When the nonvanishing of the $F_j$ is known to be equivalent to
+the Riemann hypothesis for $\zeta_E$, each of (ii)--(v) is equivalent to that hypothesis. The
+excluded set $S$ may be any finite set containing the ramified primes. When $w$ is given by the
+number of roots modulo $p$ of a polynomial, $S$ may consist of the primes dividing its
+discriminant, and (ii)--(v) refer to rational primes and root counts only. The same statements
+hold over a base number field $k$ in place of $\Q$, with prime ideals of $k$ ordered by absolute
+norm: the Mellin calculation depends only on the norms, and each rational prime lies below at
+most $[k:\Q]$ prime ideals, so \cref{ana:lem:powers} is unchanged.
+\end{remark}
+
+\subsection{A finite-difference detector}\label{ana:sec:fd}
+{\raggedright\sources{grh_deficit_transfer_2026-11-25; grh_a6_transfer_2026-11-25}}
+
+The integer-scale statistics of \cref{ana:thm:primeonly} avoid the centring constant by
+telescoping, which uses the limit $R_w(x)\to0$. A difference at two scales of fixed ratio avoids
+the constant without any limit, and accepts hypotheses in mean. Let $a$ be as in
+\cref{ana:def:ramp}, fix $\lambda>1$, and put
+\begin{equation}\label{ana:eq:fd}
+ \Delta_\lambda(x)=T(x)-T(\lambda x)+\delta\log\lambda=R(x)-R(\lambda x)\qquad(x\ge1).
+\end{equation}
+Term by term, including at $n=x$ and $n=\lambda x$,
+\[
+ T(\lambda x)-T(x)=\frac1x\sum_{n\le\lambda x}a(n)K_\lambda\Bigl(\frac nx\Bigr),\qquad
+ K_\lambda(y)=\begin{cases}1-\lambda^{-1},&0<y\le1,\\ y^{-1}-\lambda^{-1},&1<y\le\lambda,\\
+ 0,&y>\lambda,\end{cases}
+\]
+with a nonnegative kernel. The statistic uses the coefficients up to $\lambda x$ only, and no
+value of a logarithmic derivative at $1$.
+
+\begin{lemma}[Mellin identity]\label{ana:lem:fd}
+Suppose that $A$ extends meromorphically to $\Re s>\beta$, where $0<\beta<1$, with at most a
+simple pole at $1$, of residue $\delta$. For $\Re s>1$,
+\begin{gather*}
+ \int_1^\infty\Delta_\lambda(x)x^{-s}\,\dd x
+ =-H_\lambda(s)A(s)+\frac{\delta\log\lambda}{s-1}+J_\lambda(s),\\
+ H_\lambda(s)=\frac{\lambda^{s-1}-1}{s(s-1)},\qquad
+ J_\lambda(s)=\lambda^{s-1}\int_1^\lambda T(u)u^{-s}\,\dd u .
+\end{gather*}
+The function $J_\lambda$ is entire and the right side is regular at $s=1$, where
+$H_\lambda(1)=\log\lambda$. The function $H_\lambda$ has no zero in $0<\Re s<1$, and
+$H_\lambda(\sigma)>0$ for real $\sigma>0$.
+\end{lemma}
+
+\begin{proof}
+By \eqref{ana:eq:mellin}, $\int_1^\infty T(x)x^{-s}\,\dd x=A(s)/(s(s-1))$. In the term with
+$T(\lambda x)$ substitute $u=\lambda x$; the omitted interval $[1,\lambda]$ gives $J_\lambda$.
+Since $\lambda^{s-1}=1$ forces $\Re s=1$, the function $H_\lambda$ has no zero in the open
+strip, and $\lambda^{\sigma-1}-1$ has the sign of $\sigma-1$.
+\end{proof}
+
+The kernel $1/(s(s-1))$ of the undifferenced ramp is negative on $(0,1)$, and so is
+$-H_\lambda$. Thus $R$ and $\Delta_\lambda$ detect poles of $A$ with the same sign of residue,
+while the reversed difference $T(\lambda x)-T(x)$ detects the opposite sign.
+
+\begin{theorem}[One-sided averaged detector; \stU]\label{ana:thm:fd}
+In the situation of \cref{ana:lem:fd}, assume that all poles of $A$ in $\Re s>\beta$ other than
+$1$ are simple, lie in $\beta<\Re s<1$, and have nonpositive residue whenever they are real. If
+\begin{equation}\label{ana:eq:fdint}
+ \int_1^\infty\anapos{\Delta_\lambda(x)}x^{-\sigma}\,\dd x<\infty
+ \qquad\text{for every real }\sigma>\beta,
+\end{equation}
+then $A$ has no pole in $\Re s>\beta$ except possibly at $1$. It suffices that
+$\int_X^{2X}\anapos{\Delta_\lambda(x)}\,\dd x=O_\eps(X^{\beta+\eps})$ for every $\eps>0$. The
+pointwise condition $\Delta_\lambda(x)\le C_\eps x^{\beta-1+\eps}$ is stronger and also suffices.
+\end{theorem}
+
+\begin{proof}
+The function $\Delta_\lambda$ is continuous and $O(\log 2x)$. By \cref{ana:lem:fd} its
+transform is meromorphic on $\Re s>\beta$ and regular on $\Re s\ge1$. Its poles in
+$\beta<\Re s<1$ are those of $A$, with residue $-H_\lambda(\rho)\Res_{s=\rho}A$, which is
+nonnegative at real $\rho$. \Cref{ana:thm:onesided} shows that the transform is holomorphic on
+$\Re s>\beta$. So is $H_\lambda A$ on $\beta<\Re s<1$, and $H_\lambda$ does not vanish there.
+The two sufficient conditions are those of \cref{ana:cor:forms}.
+\end{proof}
+
+In a one-sided setting (\cref{ana:def:setting}) the hypothesis on the poles holds, so
+\cref{ana:thm:zerotest} remains true with $R(x)-R(\lambda x)$ in place of $R(x)$, and the
+constant $c$ is never needed. Under the hypotheses of \cref{ana:prop:converse} one has
+conversely $\Delta_\lambda(x)=O_\eps(x^{\beta-1+\eps})$, and by \cref{ana:lem:powers} the
+passage to primes changes $\Delta_\lambda$ by $O(x^{-1/2})$. For weights with the opposite
+orientation (\cref{ana:rem:sign}) the theorem applies to $-a$: the detector is then an upper
+bound for $T(\lambda x)-T(x)-\delta\log\lambda$. Two separate upper bounds at $x$ and at
+$\lambda x$ cannot be subtracted to bound $\Delta_\lambda$. An arithmetic construction has to
+produce the increment itself, or a matching lower bound for the subtracted term.
+
+\subsection{Signed averages and joint filters}\label{ana:sec:mean}
+{\raggedright\sources{grh_method_transfers_2026-11-25_2; grh_transfer_synthesis_2026-11-25}}
+
+By \cref{ana:cor:forms} a bound for the positive part in mean suffices. This subsection
+determines how far cancellation may be admitted. Throughout, $R$ and $F$ satisfy the analytic
+hypotheses of \cref{ana:thm:onesided}.
+
+\begin{theorem}[Signed moving window; \stU]\label{ana:thm:moving}
+Fix $h>1$. If, for some $C\ge0$,
+\begin{equation}\label{ana:eq:moving}
+ \int_x^{hx}R(t)\,\dd t\le Cx^{\beta}\qquad\text{for every sufficiently large real }x,
+\end{equation}
+then $F$ is holomorphic on $\Re s>\beta$. It also suffices to prove \eqref{ana:eq:moving} with
+exponent $\beta+\eps$ for every $\eps>0$, with constants depending on $\eps$.
+\end{theorem}
+
+\begin{proof}
+Set $T_hR(x)=x^{-1}\int_x^{hx}R(t)\,\dd t$. Fubini's theorem, far to the right, gives
+\[
+ \int_1^\infty T_hR(x)x^{-s}\,\dd x=\frac{h^s-1}{s}F(s)
+ -\frac1s\int_1^hR(t)\bigl(h^st^{-s}-1\bigr)\,\dd t ,
+\]
+because the inner integral in the reversed order is $\int_{\max(1,t/h)}^tx^{-s-1}\,\dd x$. The
+finite-interval correction is entire. The multiplier $(h^s-1)/s$ is entire, has no zero on
+$\Re s>0$, and is positive for real $s>0$. Thus the transform of $T_hR$ has exactly the poles of
+$F$ in $\Re s>\beta$, and its real residues are positive.
+
+By \eqref{ana:eq:moving}, $T_hR(x)\le Cx^{\beta-1}$ eventually, and $T_hR$ is continuous.
+\Cref{ana:thm:onesided} with \cref{ana:cor:forms}(a) shows that the transform of $T_hR$ has no
+pole in $\Re s>\beta$, and neither has $F$. The last claim follows by applying this at each
+$\beta+\eps$.
+\end{proof}
+
+\begin{remark}\label{ana:rem:box}
+(1) For real $\nu$ the weighted box $T_{h,\nu}R(x)=x^{-1-\nu}\int_x^{hx}t^\nu R(t)\,\dd t$ has
+multiplier $(h^{s+\nu}-1)/(s+\nu)$, whose zeros lie on $\Re s=-\nu$. The criterion remains valid
+on $\Re s>\beta$ whenever $\beta+\nu\ge0$. For an arbitrary varying weight the transform must be
+computed afresh.
+
+(2) For a centred ramp $R$ one has $\abs{R(x)}=O(\log^2(2x))$, so changing $x$ by at most one
+changes the integral in \eqref{ana:eq:moving} by $O(\log^2(2x))$, and integer starting points
+suffice. Exponentially sparse starting points do not, as the next example shows.
+\end{remark}
+
+\begin{example}[Signed averages on the dyadic grid are insufficient]\label{ana:ex:dyadic}
+Fix $0<\beta<a<1$, put $\tau=2\pi/\log2$ and
+\[
+ R(x)=\frac{\dd}{\dd x}\bigl(x^a\sin(\tau\log x)\bigr)
+ =x^{a-1}\bigl(a\sin(\tau\log x)+\tau\cos(\tau\log x)\bigr).
+\]
+Then $\int_{2^k}^{2^{k+1}}R(x)\,\dd x=0$ for every integer $k\ge0$, while
+\[
+ F(s)=\frac{\tau s}{(s-a)^2+\tau^2}\qquad(\Re s>a)
+\]
+has simple poles at $a\pm i\tau$, to the right of $\beta$, and no real pole. All analytic
+hypotheses of \cref{ana:thm:onesided} hold. Here
+$\int_{2^k}^{2^{k+1}}R(x)_+\,\dd x=C_a2^{ka}$ with $C_a>0$, by the substitution $x=2^ke^u$. So
+cancellation in signed averages over a fixed partition can hide exactly the poles that the test
+is meant to exclude.
+\end{example}
+
+A positive averaging kernel is not enough either: its Mellin multiplier must have no zero in
+the half-plane. The following theorem makes this exact for averages over geometric scales.
+Fix $h>1$. For a nonzero polynomial $P(z)=\sum_{k=0}^dp_kz^k$ with real coefficients $p_k\ge0$,
+put
+\[
+ T_PR(x)=\sum_{k=0}^dp_kR(h^kx),\qquad z(s)=h^{s-1}.
+\]
+A change of variables in each term gives, far to the right,
+\begin{equation}\label{ana:eq:filter}
+ \int_1^\infty T_PR(x)x^{-s}\,\dd x=P(z(s))F(s)-E_P(s),\qquad
+ E_P(s)=\sum_kp_kh^{k(s-1)}\int_1^{h^k}R(u)u^{-s}\,\dd u,
+\end{equation}
+with $E_P$ entire. At a real point $s$ one has $P(h^{s-1})>0$.
+
+\begin{theorem}[Joint detection; \stU]\label{ana:thm:joint}
+Let $P_1,\dots,P_r$ be nonzero polynomials with nonnegative real coefficients, and suppose that
+the functions $P_j(z(s))$ have no common zero in $\Re s>\beta$. If, for each $j$,
+\begin{equation}\label{ana:eq:joint}
+ \int_1^\infty\anapos{T_{P_j}R(x)}x^{-\sigma}\,\dd x<\infty\qquad(\sigma>\beta),
+\end{equation}
+then $F$ is holomorphic on $\Re s>\beta$. Conversely, the absence of a common zero is necessary
+for this implication to hold for every $R$ satisfying the analytic hypotheses of
+\cref{ana:thm:onesided}.
+\end{theorem}
+
+\begin{proof}
+By \eqref{ana:eq:filter} the transform of $T_{P_j}R$ has at most simple real poles with positive
+residues, because its multiplier is positive at real points. \Cref{ana:thm:onesided} applies to
+each filtered function, so every $P_j(z(s))F(s)$ is holomorphic on $\Re s>\beta$. At any point
+of the half-plane some multiplier is nonzero, and division by it shows that $F$ is holomorphic
+there.
+
+For the necessity let $\rho=a+i\tau$ be a common zero with $a>\beta$. It is not real. The
+function
+\[
+ R(x)=\Re x^{\rho-1}=x^{a-1}\cos(\tau\log x)
+\]
+has a meromorphic Mellin transform with simple poles at $\rho,\bar\rho$ and no real pole, yet
+$T_{P_j}R(x)=\Re\bigl(P_j(h^{\rho-1})x^{\rho-1}\bigr)=0$ for every $j$. All hypotheses
+\eqref{ana:eq:joint} hold and $F$ is not holomorphic on $\Re s>\beta$.
+\end{proof}
+
+The necessity concerns the whole analytic class. It does not assert that a given common zero is
+a zero of a particular $L$-function. The simplest instance is the single filter
+$P(z)=1+2^{1-a}z$ with $h=2$: for $R(x)=x^{a-1}\cos(\pi\log x/\log2)$ the positive combination
+$R(x)+2^{1-a}R(2x)$ vanishes identically. If a single available multiplier is zero-free on
+$\Re s>\beta$, as in \cref{ana:thm:moving,ana:thm:fd}, it suffices on its own.
+
+\begin{example}[Two filters with integer weights]\label{ana:ex:filters}
+Take $h=2$, $P(z)=5+6z$ and $Q(z)=25+30z+36z^2$. The identity
+\begin{equation}\label{ana:eq:bezout}
+ Q(z)-6zP(z)=25
+\end{equation}
+shows that $P$ and $Q$ have no common zero. Hence the statistics
+\[
+ A_R(x)=5R(x)+6R(2x),\qquad B_R(x)=25R(x)+30R(2x)+36R(4x)
+\]
+suffice jointly: if, for every $\eps>0$ and all large dyadic $X$,
+\[
+ \int_X^{2X}\anapos{A_R(x)}\,\dd x\ll_\eps X^{\beta+\eps},\qquad
+ \int_X^{2X}\anapos{B_R(x)}\,\dd x\ll_\eps X^{\beta+\eps},
+\]
+then $F$ is holomorphic on $\Re s>\beta$. Moreover the exact identity
+$25R(x)=B_R(x)-6A_R(2x)$, with the absolute integrability of both filtered functions supplied
+by \cref{ana:thm:onesided}, shows that the Mellin integral of $R$ converges absolutely there. At
+$\beta=1/2$ each displayed bound may be replaced by a square moment $\ll_\eps X^{\eps}$ of the
+positive part. Each filter alone has zeros on the line
+$\Re s=1+\log(5/6)/\log2\approx0.7369656$: for $P$ at the ordinates $(2k+1)\pi/\log2$, for $Q$
+at $(2k\pm2/3)\pi/\log2$. So each can conceal poles to the right of $1/2$, and the certificate
+\eqref{ana:eq:bezout}, not a numerical root search, shows that the pair cannot. Integer
+weights are chosen because direct sums and repeated copies of integral lattices produce
+integer-weighted sums of logarithmic covolumes.
+\end{example}
+
+\begin{proposition}[Positive coefficients do not repair a single filter; \stU]\label{ana:prop:onefilter}
+There are positive, uniformly bounded real coefficients $a_n$ and constants $A_0>0$, $c$ such
+that the remainder $R(x)=\sum_{n\le x}a_n(1/n-1/x)-A_0\log x-c$ satisfies $5R(x)+6R(2x)\le0$
+for all $x\ge1$, while its Mellin transform, which is meromorphic on $\Re s>0$ with no real pole
+there, has poles with real part $1+\log(5/6)/\log2>1/2$.
+\end{proposition}
+
+\begin{proof}
+Let $a=1+\log(5/6)/\log2$, $\tau=\pi/\log2$, $z=a-1+i\tau$ and $R_0(x)=\epsilon\Re x^z$. Given
+$A_0>0$ choose $\epsilon>0$ with $\epsilon\abs{z(z+1)}\le A_0/2$ and
+$\epsilon\abs{\Re z}\le A_0/2$. The measure
+\[
+ \mu=(A_0+\epsilon\Re z)\,\delta_1
+ +\bigl[A_0+\epsilon\Re\bigl(z(z+1)x^z\bigr)\bigr]\dd x
+\]
+is positive with bounded density, and its mass below $x$ is $A_0x+\epsilon\Re(zx^{z+1})$.
+Differentiating the ramp $S_\mu(x)=\int_{[1,x]}(u^{-1}-x^{-1})\,\dd\mu(u)$ and matching the
+value at $x=1$ gives $S_\mu(x)-A_0\log x+\epsilon=R_0(x)$. The filter $5+6z$ annihilates $R_0$,
+since $2^{z}=-5/6$, although the transform of $R_0$ has poles at $a\pm i\tau$. Now move the
+density on each interval $[n,n+1)$ to the integer $n$ and correct the limiting constant, as in
+the proof of \cref{ana:prop:mptsharp}. The computation \eqref{ana:eq:discreteid} there shows that
+the remainder becomes $R=R_0-D$ with $0\le D(x)\ll1/x$. Then $5R(x)+6R(2x)=-5D(x)-6D(2x)\le0$,
+and the poles persist because the transform of $D$ is holomorphic on $\Re s>0$.
+\end{proof}
+
+The comparison of covolumes in the source (\cref{src:sec:mechanism}) produces its bound for
+the remainder at each $x$ separately. The next statement records how its losses may be
+averaged.
+
+\begin{proposition}[Rank-sensitive loss in mean; \stU]\label{ana:prop:rankloss}
+At a given $x$ let $d>0$, $0<n\le d$, $M>0$, $H\ge0$ and $L,U,I\ge0$, and suppose that a real
+number $V$ satisfies
+\[
+ d(H-L)\le V+2dI,\qquad V\le n\bigl(H-MR(x)+U\bigr).
+\]
+With $\alpha=n/d$,
+\begin{equation}\label{ana:eq:rank}
+ R(x)_+\le\frac{\bigl(L+\alpha U+2I-(1-\alpha)H\bigr)_+}{\alpha M}
+ \le\frac1M\Bigl(U+\frac{L+2I}{\alpha}\Bigr).
+\end{equation}
+Consequently, if these data exist for all large $x$, with $M(x)\ge c_0x^{\theta}$ for some
+$0<\theta<1$, and if for every $\eps>0$
+\begin{equation}\label{ana:eq:rankmean}
+ \int_X^{2X}\Bigl(U(x)+\frac{L(x)+2I(x)}{\alpha(x)}\Bigr)\dd x\ll_\eps X^{1+\eps},
+\end{equation}
+then $\int_X^{2X}R(x)_+\,\dd x\ll_\eps X^{1-\theta+\eps}$, and under the analytic hypotheses of
+\cref{ana:thm:onesided} the transform of $R$ has no pole in $\Re s>1-\theta$.
+\end{proposition}
+
+\begin{proof}
+Combining the two inequalities and dividing by $d$ gives
+$\alpha MR(x)\le L+\alpha U+2I-(1-\alpha)H$. Take positive parts and divide by $\alpha M$. As
+$H\ge0$ and $\alpha\le1$, dropping the nonpositive term gives the second inequality. The rest
+is \cref{ana:cor:forms}(b).
+\end{proof}
+
+No uniform lower bound for the spanning fraction $\alpha$ is required. For conjugate exponents
+$p,q>1$, H\"older's inequality derives \eqref{ana:eq:rankmean} from
+$\int_X^{2X}U\ll_\eps X^{1+\eps}$, $\int_X^{2X}(L+2I)^p\ll_\eps X^{1+\eps}$ and
+$\int_X^{2X}\alpha^{-q}\ll_\eps X^{1+\eps}$. The bounds must be combined at each $x$ before
+averaging. Separate bounds for the averages of $L$, $I$ and $\alpha$ are insufficient: on a
+probability space let $L=1$, and let $\alpha=\eta^2$ with probability $\eta$ and $\alpha=1$
+otherwise. Then $\anaEx L=1$ and $\anaEx\alpha\to1$ as $\eta\to0$, but
+$\anaEx(L/\alpha)=1-\eta+\eta^{-1}\to\infty$.
+
+\subsection{What averaged bounds recover pointwise}\label{ana:sec:mpt}
+{\raggedright\sources{grh_transfer_synthesis_2026-11-25; grh_method_transfers_2026-11-25_2}}
+
+A bound in mean for the positive part is a weaker input than a pointwise bound. For
+remainders of positive measures one can say exactly how much weaker. Estimates from $L^p$ to
+$L^\infty$ for semiconvex functions are in the literature
+\cite[Proposition~8.2]{BragaFigalliMoreira2019Optimal}; the one-sided statement, its constants
+and the countermodel below are proved directly. Let $\mu$ be a positive
+locally finite Borel measure on $[1,\infty)$, let $A_0\ge0$ and $c\in\R$, and put
+\begin{equation}\label{ana:eq:posramp}
+ S(x)=\int_{[1,x]}\Bigl(\frac1u-\frac1x\Bigr)\dd\mu(u),\qquad
+ R(x)=S(x)-A_0\log x-c\qquad(x\ge1).
+\end{equation}
+The centred ramp of nonnegative coefficients $a(n)$ has this form with $A_0=\delta$, and the
+source remainder has it with $A_0=1/\varphi(q)$ and its nonnegative prime-power weights. For
+$p\ge1$ and $x\ge3/2$ define
+\[
+ M_p(x)=\frac1x\int_{2x/3}^{2x}R(y)_+^p\,\dd y,\qquad h=R(x)_+,\qquad c_p=\frac{2^{2-p}}9 .
+\]
+
+\begin{theorem}[Positive mass forced by a positive value; \stU]\label{ana:thm:mpt}
+If $A_0>0$, then
+\begin{equation}\label{ana:eq:mptmass}
+ M_p(x)\ge c_ph^p\min\Bigl\{1,\sqrt{\frac{3h}{A_0}}\Bigr\}.
+\end{equation}
+Consequently, with $D_p=9\cdot2^{p-2}$,
+\begin{equation}\label{ana:eq:mptpoint}
+ h\le\max\Bigl\{\bigl(D_pM_p(x)\bigr)^{1/p},
+ \bigl(D_p\sqrt{A_0/3}\,M_p(x)\bigr)^{1/(p+1/2)}\Bigr\}.
+\end{equation}
+For $A_0=0$ one has $M_p(x)\ge c_ph^p$.
+\end{theorem}
+
+\begin{proof}
+The function $t\mapsto\int_{[1,\infty)}(u^{-1}-t)_+\,\dd\mu(u)$ is finite and convex for $t>0$,
+and equals $S(1/t)$ for $0<t\le1$. Set $f(v)=R(x/v)$ for $1/2\le v\le3/2$. Then
+$f(v)-A_0\log v$ is convex, and its midpoint inequality gives
+\[
+ f(1-z)+f(1+z)\ge2f(1)+A_0\log(1-z^2)\qquad(0\le z\le1/2).
+\]
+The assertion is immediate if $h=0$. Otherwise $f(1)=h>0$. Since $t\mapsto t_+^p$ is convex and
+nondecreasing,
+\[
+ f(1-z)_+^p+f(1+z)_+^p\ge2\Bigl(h+\frac{A_0}2\log(1-z^2)\Bigr)_+^p .
+\]
+As $\log(1-z^2)\ge-4z^2/3$ for $0\le z\le1/2$, the right side is at least $2(h/2)^p$ on
+$0\le z\le r$, where $r=\min\{1/2,\sqrt{3h/(4A_0)}\}$. The change of variables $y=x/v$ yields
+\[
+ M_p(x)=\int_{1/2}^{3/2}f(v)_+^p\frac{\dd v}{v^2}\ge\frac49\int_{1/2}^{3/2}f(v)_+^p\,\dd v
+ \ge\frac{8r}9\Bigl(\frac h2\Bigr)^p,
+\]
+which is \eqref{ana:eq:mptmass}. Splitting at $h=A_0/3$ gives \eqref{ana:eq:mptpoint}. If
+$A_0=0$ take $r=1/2$. No differentiability of $R$ or of $\mu$ is used.
+\end{proof}
+
+\begin{corollary}[Dyadic moments to pointwise values]\label{ana:cor:mpt}
+Suppose $A_0>0$, $p\ge1$ and $\gamma>0$. If for every $\eps>0$ and every sufficiently large
+dyadic $X$
+\begin{equation}\label{ana:eq:mptdyadic}
+ \int_X^{2X}R(y)_+^p\,\dd y\ll_\eps X^{1-p\gamma+\eps},
+\end{equation}
+then $R(x)_+\ll_\eps x^{-2p\gamma/(2p+1)+\eps}$. At the square-root scale $\gamma=1/2$ the
+pointwise exponent is $-p/(2p+1)$: it is $-1/3$ from first moments and $-2/5$ from second
+moments.
+\end{corollary}
+
+\begin{proof}
+Cover $[2x/3,2x]$ by a bounded number of dyadic intervals of size comparable with $x$. Then
+$M_p(x)\ll_\eps x^{-p\gamma+\eps}$, so $M_p(x)\to0$, and \eqref{ana:eq:mptmass} forces $h\to0$.
+The small-$h$ branch of \eqref{ana:eq:mptpoint} then applies.
+\end{proof}
+
+Under the analytic hypotheses of \cref{ana:thm:onesided} each input \eqref{ana:eq:mptdyadic}
+with $\gamma=1/2$ already excludes poles to the right of $1/2$, by \cref{ana:cor:forms} and
+H\"older's inequality. Passing through a pointwise estimate first would weaken the conclusion
+to the half-plane $\Re s>1-p/(2p+1)$. \Cref{ana:thm:mpt} is a local certificate, and the next
+result shows that its exponent is the limit of what positivity alone gives.
+
+\begin{proposition}[Optimal exponent in the positive-ramp class; \stU]\label{ana:prop:mptsharp}
+Fix $p\ge1$ and $0<\gamma<1$, and set $\alpha=2p\gamma/(2p+1)$. There are positive coefficients
+$a_n$, with $1/2\le a_n\le3/2$ for $n\ge2$ and $\sum_{n\le x}a_n\sim x$, and a real constant
+$c_d$, such that
+\[
+ R_d(x)=\sum_{n\le x}a_n\Bigl(\frac1n-\frac1x\Bigr)-\log x-c_d
+\]
+satisfies \eqref{ana:eq:mptdyadic} with $\eps=0$, while $R_d(4^k)\sim(4^k)^{-\alpha}$ as
+$k\to\infty$. Thus the exponent in \cref{ana:cor:mpt} cannot be increased for this class.
+\end{proposition}
+
+\begin{proof}
+Let $X_k=4^k$, $h_k=X_k^{-\alpha}$ and $L_k=10X_k\sqrt{h_k}$, and start at an integer $k_0$
+with $h_k\le1/400$ for $k\ge k_0$. Let $\psi(z)=(1-z^2)^3$ for $\abs z\le1$ and $\psi(z)=0$
+otherwise, a function of class $C^2$, and put
+\[
+ R_c(x)=\sum_{k\ge k_0}h_k\,\psi\Bigl(\frac{x-X_k}{L_k}\Bigr).
+\]
+The supports are disjoint, because $L_k\le X_k/2$ and successive centres have ratio four.
+Since $\psi''=-6+36z^2-30z^4$ on the support, one finds $\max\abs{\psi'}=96/(25\sqrt5)<2$ and
+$\max\abs{\psi''}=6$. Put $w(x)=1+(x^2R_c'(x))'$ and $\mu_c=\delta_1+w(x)\,\dd x$ on
+$[1,\infty)$. On the $k$th support $x\le3X_k/2$, hence
+\[
+ \abs{w(x)-1}\le\frac{6x^2h_k}{L_k^2}+\frac{4xh_k}{L_k}
+ \le\frac{27}{200}+\frac35\sqrt{h_k}\le\frac{33}{200},
+\]
+so $1/2\le w\le3/2$. Integration gives $\mu_c([1,x])=x+x^2R_c'(x)$. Differentiating the ramp and
+comparing values at $1$ proves the exact identity
+\[
+ S_{\mu_c}(x)-\log x=R_c(x).
+\]
+On each bump
+\[
+ \int R_c(x)^p\,\dd x=h_k^pL_k\int_{-1}^1\psi^p
+ =10\Bigl(\int_{-1}^1\psi^p\Bigr)X_k^{1-\alpha(p+1/2)}=C_pX_k^{1-p\gamma},
+\]
+and every dyadic interval meets at most two supports, with comparable centres. This is the mean
+bound for $R_c$, whose value at $X_k$ is exactly $X_k^{-\alpha}$.
+
+To pass to integer support set
+\[
+ a_n=\anaone_{n=1}+\int_n^{n+1}w(u)\,\dd u,\qquad
+ c_d=\int_1^\infty w(u)\Bigl(\frac1{\floor u}-\frac1u\Bigr)\dd u .
+\]
+The last integral converges absolutely, and $1/2\le a_n\le3/2$ for $n\ge2$. For
+$N=\floor x$, direct subtraction gives
+\begin{equation}\label{ana:eq:discreteid}
+ R_d(x)-R_c(x)=-\int_{N+1}^\infty w(u)\Bigl(\frac1{\floor u}-\frac1u\Bigr)\dd u
+ +\int_x^{N+1}w(u)\Bigl(\frac1u-\frac1x\Bigr)\dd u .
+\end{equation}
+Both terms are nonpositive, and for $x\ge2$ their absolute values sum to at most
+$3/(2N)+3/(4x^2)\le4/x$. Hence
+\begin{equation}\label{ana:eq:discreteerr}
+ 0\le R_c(x)-R_d(x)\le4/x ,
+\end{equation}
+so that $(R_d)_+\le R_c$, which preserves the mean bound. Since $\alpha<1$,
+$R_d(X_k)=X_k^{-\alpha}+O(X_k^{-1})\sim X_k^{-\alpha}$. Finally $x^2R_c'(x)=O(x\sqrt{h_k})=o(x)$
+on the supports and vanishes elsewhere, so $\mu_c([1,x])\sim x$, and rounding changes this by
+$O(1)$.
+\end{proof}
+
+The coefficients of \cref{ana:prop:mptsharp} obey a stronger size bound than $O(\log n)$, but
+they have no prime-power support, no Euler product and no functional equation. The example
+limits an abstract inference. It says nothing against sharper statements about primes. It
+contains the earlier examples of narrow positive spikes, which separate mean from pointwise
+control without the ramp structure. The model also has the analytic properties required by
+the mean criterion.
+
+\begin{proposition}[Compatibility with meromorphic continuation; \stU]\label{ana:prop:mptmero}
+In the construction of \cref{ana:prop:mptsharp} write $(s)_j=s(s+1)\cdots(s+j-1)$ and
+\[
+ J_m(s)=\frac{(s)_{2m}}{(2m)!}\int_{-1}^1z^{2m}\psi(z)\,\dd z .
+\]
+Then the Mellin transform of $R_c$ is
+\begin{equation}\label{ana:eq:mptmero}
+ F_c(s)=10\sum_{m\ge0}100^mJ_m(s)\,
+ \frac{4^{k_0(1-s-\alpha(m+3/2))}}{1-4^{1-s-\alpha(m+3/2)}} ,
+\end{equation}
+a meromorphic function on $\C$ whose possible poles are simple and lie at
+$s=1-\alpha(m+3/2)+2\pi in/\log4$, $m\ge0$, $n\in\Z$. At a positive real pole the residue is
+positive. The rightmost line of poles is
+\[
+ \Re s=1-\frac{3\alpha}2=1-\frac{3p\gamma}{2p+1}\le1-\gamma ,
+\]
+with equality when $p=1$. The transform $F_d$ of $R_d$ differs from $F_c$ by a function
+holomorphic on $\Re s>0$.
+\end{proposition}
+
+\begin{proof}
+With $\delta_k=L_k/X_k=10X_k^{-\alpha/2}\le1/2$, expand $(1+\delta_kz)^{-s}$ in the integral
+over the $k$th bump and use that $\psi$ is even. This gives \eqref{ana:eq:mptmero} far to the
+right. On a compact set avoiding the displayed points, the late terms are bounded by a
+polynomial in $m$ times $(100\cdot4^{-k_0\alpha})^m$, and this ratio is at most $1/4$. So the
+series is meromorphic on $\C$. At a positive real pole $u=1-\alpha(m+3/2)$ the residue is
+$10\cdot100^mJ_m(u)/\log4>0$. The last assertion follows from \eqref{ana:eq:discreteerr}.
+Global continuation of $F_d$ is not asserted.
+\end{proof}
+
+At $\gamma=1/2$ these models meet the mean budget exactly and have no pole to the right of
+$1/2$, yet their peaks decay only like $x^{-p/(2p+1)}$. The sharper pointwise bounds known for
+arithmetic $L$-functions under their Riemann hypotheses use additional structure. For a
+construction that controls a remainder in mean, the mean criterion should therefore be applied
+directly, and \cref{ana:thm:mpt} kept for diagnostics on finite windows.
+
+\subsection{Auxiliary windows}\label{ana:sec:window}
+{\raggedright\sources{grh_cyclic_generator_transfer_2026-11-25; grh_kummer_window_transfer_2026-11-25; grh-progression-densities-and-cubic-prime-race; grh_deficit_transfer_2026-11-25}}
+
+The comparison in the source involves the remainder at a second, much larger scale. For two
+error functions $E$ and $E'$ of the logarithmic variable, the source selects a point
+$u\in[t,t^2]$ with
+\[
+ E(u)-XE'(u)\le e^{-t},\qquad\text{uniformly for }0\le X\le e^t
+\]
+(its lemma \code{IsPolar.exists_window_sub_mul_le}; see \cref{src:sec:mechanism}). The results
+of this
+subsection replace the window $[t,t^2]$ by a linear window $[t,Lt]$, treat finitely many errors
+with one averaging measure, allow exponentially large coefficients, and determine which
+windows work for the whole analytic class. They use no Riemann hypothesis.
+
+\begin{theorem}[Common truncated Gamma average; \stU]\label{ana:thm:window}
+Let $E_1,\dots,E_q\colon[0,\infty)\to\R$ be measurable with $\abs{E_j(v)}\le Be^{bv}$ for
+constants $B>0$ and $b\ge0$. Suppose that for some $a>b$ the Laplace transforms
+$F_j(z)=\int_0^\infty E_j(v)e^{-zv}\,\dd v$ continue holomorphically to a neighbourhood of the
+closed disc $\abs{z-a}\le a$. Then for every $\gamma>0$ there are $L>1$ and $\kappa>0$ such
+that, for all sufficiently large $t$, the probability measure
+\[
+ \dd\nu_t(v)=\frac{\anaone_{[t,Lt]}(v)\,v^{\ceil{\kappa t}}e^{-av}\,\dd v}
+ {\int_t^{Lt}u^{\ceil{\kappa t}}e^{-au}\,\dd u}
+\]
+satisfies $\bigl|\int E_j\,\dd\nu_t\bigr|\le e^{-\gamma t}$ for every $j$. If the $E_j$ are
+continuous, there are at most $q+1$ points of $[t,Lt]$ and nonnegative weights of sum one,
+independent of $j$, with the same bound for all the weighted averages.
+\end{theorem}
+
+\begin{proof}
+By compactness and finiteness of the family there is a radius $R>a$ such that all $F_j$ are
+holomorphic on a neighbourhood of $\abs{z-a}\le R$. Let $C$ bound their absolute values there.
+The Cauchy estimate and differentiation under the integral at $a$ give
+\[
+ \Bigl|\int_0^\infty v^ke^{-av}E_j(v)\,\dd v\Bigr|=\abs{F_j^{(k)}(a)}\le Ck!\,R^{-k}.
+\]
+Let $\mu_k$ be the Gamma probability measure $a^{k+1}v^ke^{-av}\,\dd v/k!$. The full mean of
+$E_j$ is bounded by $Ca(a/R)^k$. For the low tail, with $e^{-av}$ as a Markov test on $v<t$,
+\[
+ \int_{v<t}\abs{E_j}\,\dd\mu_k\le Be^{(a+b)t}2^{-(k+1)}.
+\]
+For the high tail fix $h=(a-b)/2$. Integrating $e^{bv}\anaone_{v>Lt}\le e^{-hLt}e^{(b+h)v}$
+gives
+\[
+ \int_{v>Lt}\abs{E_j}\,\dd\mu_k\le Be^{-hLt}\Bigl(\frac{a}{a-b-h}\Bigr)^{k+1}.
+\]
+For $k=\ceil{\kappa t}$ choose $\kappa$ with $\kappa\log(R/a)>\gamma+2$ and
+$\kappa\log2>a+b+\gamma+2$, and then $L>1$ with $hL>\gamma+2+\kappa\log(a/(a-b-h))$. Each of the
+three contributions is $O(e^{-(\gamma+2)t})$. The same tail estimates applied to the majorant
+$e^{bv}\ge1$ show $\mu_k([t,Lt])\to1$. Normalizing the restricted measure gives the stated
+bound. For continuous $E_j$ the vector of means lies in the convex hull of the compact image of
+$[t,Lt]$ in $\R^q$, and Carath\'eodory's theorem gives the finite combination.
+\end{proof}
+
+\begin{corollary}[Moving coefficients]\label{ana:cor:window}
+Under the hypotheses of \cref{ana:thm:window}, for any $A,\eta>0$ there is a fixed $L>1$ such
+that for all large $t$ and every vector of real coefficients with $\abs{c_j}\le e^{At}$, some
+$u\in[t,Lt]$ satisfies
+\[
+ \sum_{j=1}^qc_jE_j(u)\le e^{-\eta t}.
+\]
+If the $E_j$ are continuous, some $u\in[t,Lt]$ satisfies
+$\bigl|\sum_jc_jE_j(u)\bigr|\le e^{-\eta t}$. The measure $\nu_t$ does not depend on the
+coefficients. The point $u$ may depend on them.
+\end{corollary}
+
+\begin{proof}
+Apply \cref{ana:thm:window} with $\gamma>A+\eta+1$. The mean of the combination under $\nu_t$
+has absolute value at most $qe^{(A-\gamma)t}$, which is eventually smaller than $e^{-\eta t}$.
+If every point of the interval gave a value above $e^{-\eta t}$, so would the mean. A continuous
+real function on a compact interval attains its mean.
+\end{proof}
+
+\begin{remark}[No common point]\label{ana:rem:nocommon}
+Small averages do not give a single point at which all $E_j$ are small. For $E_1(v)=\sin v$ and
+$E_2(v)=\cos v$ the hypotheses hold, the Laplace poles being at $\pm i$, but
+$E_1(v)^2+E_2(v)^2=1$. The vector statement yields a common weighted average, which is useful
+only where the arithmetic inequality is stable under averaging.
+\end{remark}
+
+Call a real measurable function $E$ on $[0,\infty)$ \emph{polar} if $\abs{E(v)}\le Ce^v$ and
+the function
+\[
+ \Phi(s)=\int_0^\infty E(v)e^{(1-s)v}\,\dd v\qquad(\Re s>2)
+\]
+continues meromorphically to $\Re s>0$ with at most simple poles and is holomorphic at every
+point of $\Re s\ge1$. This
+is the class to which the source applies its window lemma. The remainders $v\mapsto R(e^v)$ of
+\cref{ana:lem:mellin} belong to it whenever $A$ is meromorphic on $\Re s>0$ with simple poles
+and no pole on $\Re s\ge1$ other than $s=1$; in particular the source's two errors do
+(\cref{ana:ex:source}). For a polar function the Laplace transform $F(z)=\Phi(z+1)$ is
+holomorphic near $\Re z\ge0$, so the hypotheses of \cref{ana:thm:window} hold with $b=1$ and
+any $a>1$.
+
+\begin{theorem}[Sharp universal schedule; \stU]\label{ana:thm:schedule}
+Let $H(t)\ge t$ for all large $t$, and fix $a,b\ge0$ with $a+b>0$. The following are
+equivalent.
+\begin{enumerate}[label=\textup{(\roman*)}]
+\item For every pair of polar functions $E,E'$, all sufficiently large $t$ and every
+ $0\le X\le e^{bt}$, some $u\in[t,H(t)]$ satisfies $E(u)-XE'(u)\le e^{-at}$.
+\item $H(t)/t\to\infty$.
+\end{enumerate}
+\end{theorem}
+
+\begin{proof}
+(ii)$\Rightarrow$(i). For a given pair, \cref{ana:cor:window} supplies a constant $L$ such
+that a suitable $u$ exists in $[t,Lt]$, and $Lt\le H(t)$ eventually.
+
+(i)$\Rightarrow$(ii). Suppose $H(t_i)\le L_0t_i$ along a sequence $t_i\to\infty$. Choose
+$0<\delta<\min\{1,(a+b)/L_0\}$ and take $E=0$, $E'(v)=-e^{-\delta v}$, $X=e^{bt_i}$. The
+transform of $E'$ is $-1/(s-1+\delta)$, with one simple pole at $1-\delta$, so $E'$ is polar.
+For every $u\in[t_i,H(t_i)]$,
+\[
+ E(u)-XE'(u)\ge e^{(b-\delta L_0)t_i}>e^{-at_i}.
+\]
+So (i) fails, even for continuous functions.
+\end{proof}
+
+The counterexample concerns the full analytic class. For a fixed pair the window is linear,
+with a constant depending on the pair through the radius $R$ in the proof of
+\cref{ana:thm:window}. No uniformity in unbounded conductors is claimed, and arithmetic
+subfamilies with larger pole-free regions can have uniform constants.
+
+\begin{corollary}[The second scale of the source; \stU]\label{ana:cor:source}
+Fix a modulus $M\ge1$ and a prime $d\equiv7\pmod8$ with $d\nmid M$, and let $R_{d,M}$, $R_{d,1}$
+be the remainders of \cref{ana:ex:source}. There is $L=L(d,M)>1$ such that for all
+sufficiently large $x$ and every $0\le X\le x^{10^6}$ there is $x_1$ with
+\[
+ x^{10^6}\le x_1\le x^{10^6L},\qquad
+ \bigl|R_{d,M}(x_1)-XR_{d,1}(x_1)\bigr|\le x^{-10^6}.
+\]
+\end{corollary}
+
+\begin{proof}
+The two functions $v\mapsto R_{d,M}(e^v)$ and $v\mapsto R_{d,1}(e^v)$ are continuous and polar.
+Apply \cref{ana:cor:window} with $A=\eta=1$ and $t=10^6\log x$.
+\end{proof}
+
+In the source the coefficient $X$ is a ratio of two cardinalities bounded by $e^t$ with
+$t=10^6\log x$, and the admissible upper endpoint for $x_1$ is $\exp((10^6\log x)^2)$. For
+large $x$ the new window lies inside that one, so the main inequality of the source and its
+exponent are unchanged. The exponent $1/2$ comes from the number of theta lifts and is not
+affected by the window. What changes is the range of auxiliary levels that a new geometric
+construction would have to support: a fixed power of $x$ instead of a quasi-polynomial range.
+
+\begin{corollary}[Two-scale certificate; \stU]\label{ana:cor:interface}
+Let $R$ be a real function on $[1,\infty)$, let $E_1,\dots,E_q$ satisfy the hypotheses of
+\cref{ana:thm:window}, and fix $A_0,A_1>0$. Let $L$ be the constant of \cref{ana:cor:window} for
+$A=A_1$ and some $\eta$ with $A_0\eta>1/2$. Suppose that for every $\eps>0$ and every
+sufficiently large $x$, with $t=A_0\log x$, there are real coefficients $c_j(x)$ with
+$\abs{c_j(x)}\le e^{A_1t}$ such that
+\begin{equation}\label{ana:eq:interface}
+ R(x)\le C_\eps x^{-1/2+\eps}+\sum_{j=1}^qc_j(x)E_j(u)\qquad\text{for every }u\in[t,Lt].
+\end{equation}
+Then $R(x)\le(C_\eps+1)x^{-1/2+\eps}$ for all sufficiently large $x$.
+\end{corollary}
+
+\begin{proof}
+The coefficients do not depend on $u$. Choose $u$ by \cref{ana:cor:window}, so that the sum in
+\eqref{ana:eq:interface} is at most $e^{-\eta t}=x^{-A_0\eta}\le x^{-1/2}$.
+\end{proof}
+
+The functions $E_j$ may be centred prime-only remainders $v\mapsto R_w(e^v)$ of class
+functions, the finite differences $v\mapsto\Delta_\lambda(e^v)$ of \cref{ana:sec:fd}, or the
+errors of the source: their transforms are holomorphic near $\Re s\ge1$. Combined with
+\cref{ana:thm:primeonly} or \cref{ana:thm:fd}, an inequality of the form
+\eqref{ana:eq:interface} for the corresponding statistic $R$ would therefore prove the
+criterion. It is a sufficient interface for a geometric comparison with several comparison
+scales. No such inequality is available for a function outside the scope of
+\cref{src:thm:dgrh}. The form of this certificate with the source window asks for
+\eqref{ana:eq:interface} on the larger range $x^{L}\le e^u\le\exp(L^2(\log x)^2)$.
+
+\subsection{Thin sets of twists and of scales}\label{ana:sec:sparse}
+{\raggedright\sources{grh_cm_prime_applications; grh_transfer_analysis_2026-11-25; grh_lean_transfer_analysis; grh-torsion-and-prime-sampling; grh_method_transfers_research; grh_method_transfers_sharp_torsion}}
+
+The criteria above ask for an inequality at every large real scale, and the criterion of the
+source asks for it at every auxiliary prime of a residue class. Both sets of inputs can be
+thinned.
+
+\paragraph{Thin sets of twists for the source remainder.}
+Fix an integer $Q>0$ divisible by $8$ and a reduced residue class $a\bmod Q$ with
+$a\equiv7\pmod8$. For primes $d\equiv a\pmod Q$ let $R_d=R_{d,Q}$ be the remainder of
+\cref{ana:ex:source}. The following input is taken from the source (its lemma
+\code{zero_density_quadTwist}, with $\gamma=1/2+9\delta$ and exponent $1-\delta/2$; see
+\cref{src:sec:mechanism}): for $1/2<\gamma<1$ and $H\ge0$, the number of primes $d\le X$,
+$d\equiv a\pmod Q$, for which some $L(s,\xi\chi_d)$ with $\xi\bmod Q$ has a zero in
+$\Re s\ge\gamma$, $\abs{\Im s}\le H$, is
+\begin{equation}\label{ana:eq:zerodensity}
+ O_{Q,a,\gamma,H}\bigl(X^{1-(\gamma-1/2)/18}\bigr).
+\end{equation}
+
+\begin{theorem}[Sparse one-sided zero detection; \stU]\label{ana:thm:sparse}
+Fix $1/2<\beta<1$. Let $S$ be a set of primes $d\equiv a\pmod Q$ and
+$S(X)=\#\{d\in S:d\le X\}$. Suppose that
+\begin{equation}\label{ana:eq:S}
+ \limsup_{X\to\infty}\frac{\log(1+S(X))}{\log X}\ge1-\frac{\beta-1/2}{18},
+\end{equation}
+and that for each $d\in S$ there are a constant $C_d>0$ and an increasing unbounded sequence
+$x_j\ge1$, both allowed to depend on $d$, with
+\begin{equation}\label{ana:eq:E}
+ x_{j+1}-x_j=O_d\bigl(x_j^{(1+\beta)/2}\bigr),\qquad
+ R_d(x_j)\le C_dx_j^{\beta-1}\quad(j\text{ sufficiently large}).
+\end{equation}
+Then for every Dirichlet character $\psi$ modulo $Q$, $L(s,\psi)$ is nonzero in $\Re s>\beta$,
+the pole of the principal character excepted.
+\end{theorem}
+
+\begin{proof}
+\emph{Recovery of the intervening scales.} Write $t=1/x$. On a compact interval
+$[u,v]\subset(0,\infty)$ the function $F(t)=\sum_{n\ge1}\lambda_{d,Q}(n)(1/n-t)_+$ is a finite
+sum of convex functions, hence lies below its chord, and
+$R_d(1/t)=F(t)+(\log t)/\varphi(Q)-c_{d,Q}$. Write $If$ for the affine interpolant of $f$ from
+$u$ and $v$. Since $t\mapsto\log t+t^2/(2u^2)$ is convex on $[u,v]$,
+\[
+ 0\le\log t-I(\log)(t)\le\frac{(t-u)(v-t)}{2u^2}\le\frac{(v-u)^2}{8u^2}.
+\]
+Take $u=1/x_{j+1}$ and $v=1/x_j$. Then $(v-u)/u=(x_{j+1}-x_j)/x_j$, so the interpolation loss
+is $O_d(x_j^{\beta-1})$, and $x_{j+1}/x_j\to1$. With \eqref{ana:eq:E} at the two endpoints this
+gives $R_d(x)\le K_dx^{\beta-1}$ for all large $x$, for some $K_d>0$.
+
+\emph{Selection of a twist.} Suppose $L(\rho,\psi)=0$ with $\sigma=\Re\rho>\beta$. The
+classical nonvanishing on $\Re s\ge1$ leaves $\sigma<1$. Choose $\gamma$ with
+$\beta<\gamma<\sigma$ and put $H=\abs{\Im\rho}$. Call $d$ bad if some $L(s,\xi\chi_d)$,
+$\xi\bmod Q$, has a zero in $\Re s\ge\gamma$, $\abs{\Im s}\le H$. By
+\eqref{ana:eq:zerodensity} the bad primes up to $X$ number $O(X^{1-(\gamma-1/2)/18})$, and this
+exponent is strictly smaller than the right side of \eqref{ana:eq:S}. Hence some $d\in S$ is
+not bad. Fix it. Since $K_dx^{\beta-\gamma}\to0$, we have $R_d(x)\le x^{\gamma-1}$ eventually.
+
+\emph{The fixed twist.} In \eqref{ana:eq:srcres} the twisted orders vanish in the box. On the
+real segment $\gamma<s<1$ the residues of $\Phi_{d,Q}$ are therefore nonnegative, and for real
+$s\ge1$ there is no pole. \Cref{ana:thm:onesided} with \cref{ana:cor:forms}(a) shows that
+$\Phi_{d,Q}$ has no pole in $\Re s>\gamma$. But its residue at $\rho$ is the total multiplicity
+of $\rho$ as a zero of the untwisted functions, which is positive, divided by
+$\varphi(Q)\rho(1-\rho)\ne0$. This is a contradiction.
+\end{proof}
+
+The order of quantifiers matters: first $\rho$, then a successful $d$, then the eventual
+estimate for that $d$. No uniformity in the constants $C_d$ or in the thresholds is required.
+
+\begin{corollary}\label{ana:cor:density}
+Condition \eqref{ana:eq:S} holds in each of the following cases:
+\begin{enumerate}[label=\textup{(\alph*)}]
+\item $S$ has positive upper relative density among the primes $d\equiv a\pmod Q$;
+\item $\limsup_{X\to\infty}\log(1+S(X))/\log X=1$;
+\item $\sum_{d\in S}(\log d)/d=+\infty$;
+\item $S(X)/X^{1-(\beta-1/2)/18}$ is unbounded.
+\end{enumerate}
+In particular, if for every $d$ in such a set one has $R_d(x)\le C_dx^{\beta-1}$ for all
+sufficiently large real $x$, then no $L(s,\psi)$, $\psi\bmod Q$, vanishes in $\Re s>\beta$.
+A single set $S$ with counting exponent $1$, on which the bound holds for every $\beta>1/2$,
+excludes all zeros to the right of $1/2$.
+\end{corollary}
+
+\begin{proof}
+(a) follows from the prime number theorem in the progression and implies (b). (b) and (d) are
+immediate. For (c), if \eqref{ana:eq:S} failed then $S(X)\le X^{1-\eta}$ for some $\eta>0$ and
+all large $X$, and the sum would converge by partial summation.
+\end{proof}
+
+\begin{remark}\label{ana:rem:schedule}
+(1) The grid $x_j=j^4$ satisfies the gap condition in \eqref{ana:eq:E} for every
+$\beta\ge1/2$. The fourth-power mesh and the chord interpolation for the prime sum of the
+ordinary zeta function are due to Setiawan \cite{Setiawan2026Primacohedron}. The exact
+interpolation loss and its sharpness for general positive measures are given in
+\cref{sec:nab}.
+
+(2) If a zero $\rho$ with $\Re\rho>\beta$ existed, then for every $\gamma\in(\beta,\Re\rho)$
+the number of admissible primes $d\le X$ with
+$\limsup_{j\to\infty}j^{4(1-\beta)}R_d(j^4)<+\infty$ would be
+$O(X^{1-(\gamma-1/2)/18})$, since every such $d$ is bad for one fixed box. So the normalized
+discrepancy at fourth powers would have arbitrarily large positive excursions for all
+admissible primes outside a set of power-saving size.
+
+(3) An explicit thin schedule is the following. Let $p_1<p_2<\cdots$ be the primes
+$\equiv a\pmod Q$ and $d_k=p_{\floor{k\log^2(k+2)}}$. Then $d_k\sim\varphi(Q)k\log^3k$, the
+reciprocals of the $d_k$ have a convergent sum, and the counting exponent of $\{d_k\}$ is $1$.
+If for every $k$ and every $\eps>0$ one has
+$R_{d_k}(j^4)\le C_{k,\eps}j^{-2+4\eps}$ for all large $j$, then no $L(s,\psi)$ modulo $Q$
+vanishes to the right of $1/2$. For an arbitrary modulus $q$ take $Q=18480q$ and $a=Q/2-1$;
+the nonvanishing descends to $q$, because changing the level changes finitely many Euler
+factors. For these parameters the estimate proved in the source implies the sampled
+inequalities. The statement describes the weaker input that an alternative proof would have
+to supply. Bounds for finitely many twists, or at finitely many scales, give nothing.
+\end{remark}
+
+\paragraph{Prescribed sparse scales for a Dedekind zeta function.}
+Let $K$ be a number field and $R_K$ the remainder \eqref{ana:eq:RK}. All sums over the
+nontrivial zeros $\rho$ of $\zeta_K$ count multiplicity. Put
+$\Theta_K=\sup_\rho\Re\rho\in[1/2,1]$ and $c_\rho=1/\bigl(\rho(1-\rho)\bigr)$. The smoothed
+explicit formula is
+\begin{equation}\label{ana:eq:explicit}
+ R_K(x)=\sum_\rho c_\rho\,x^{\rho-1}+O_K\bigl(x^{-1}\log(2x)\bigr)\qquad(x\ge2).
+\end{equation}
+It is obtained by shifting the inverse Mellin integral of the uncentred ramp from $\Re s=2$
+to $\Re s=-1/2$ along heights avoiding zeros. The terms at $s=1$ give the centring, the pole
+of order at most two at $s=0$ gives $O_K(x^{-1}\log(2x))$, and the new line contributes
+$O_K(x^{-3/2})$ by the functional equation and Stirling's formula; compare
+\cite[\S\S1.2--1.3]{IharaEulerKronecker}. The zero count $N_K(T)=O_K(T\log(2T))$ gives
+$\sum_\rho\abs{c_\rho}<\infty$, and by partial summation
+\begin{equation}\label{ana:eq:zerosums}
+ \sum_{\abs{\Im\rho}\le T}\frac1{\abs\rho}\ll_K\log^2(2T),\qquad
+ \sum_{\abs{\Im\rho}>T}\frac1{\abs{\rho(1-\rho)}}\ll_K\frac{\log(2T)}T\qquad(T\ge1).
+\end{equation}
+
+\begin{theorem}[Prescribed grids; \stU]\label{ana:thm:powers}
+Let $y_j$ be an unbounded increasing sequence with $\log(y_{j+1}/y_j)=O(y_j^{-\delta})$ for
+some $\delta>0$; for instance $y_m=m^k$ for a fixed integer $k\ge1$, with $\delta=1/k$.
+\begin{enumerate}[label=\textup{(\roman*)}]
+\item For every $0<\beta<\Theta_K$,
+ $\limsup_{j\to\infty}y_j^{1-\beta}R_K(y_j)=+\infty$.
+\item For every $\beta>\Theta_K$, $x^{1-\beta}R_K(x)\to0$ as $x\to\infty$.
+\item If all nontrivial zeros of $\zeta_K$ lie on the critical line, then
+ $\abs{R_K(x)}\ll_Kx^{-1/2}$.
+\end{enumerate}
+In particular, for every fixed $k\ge1$ the Riemann hypothesis for $\zeta_K$ is equivalent to
+an eventual one-sided bound $R_K(m^k)\le C_{K,k}\,m^{-k/2}$ at the integers $m$.
+\end{theorem}
+
+\begin{proof}
+(ii) and (iii) follow from \eqref{ana:eq:explicit} and the absolute convergence of
+$\sum_\rho c_\rho$. For (i), let $0<h\le1$. Since
+$\abs{e^{(\rho-1)h}-1}\le\min(2,\abs{\rho-1}h)$, splitting the sum in \eqref{ana:eq:explicit}
+at $\abs{\Im\rho}=1/h$ and using \eqref{ana:eq:zerosums} gives
+\[
+ \abs{R_K(xe^h)-R_K(x)}\ll_Kx^{\Theta_K-1}h\log^2(2/h)+x^{-1}\log(2x).
+\]
+Suppose that the upper limit in (i) is finite for some $\beta<\Theta_K$, so that
+$R_K(y_j)\le Cy_j^{\beta-1}$ for all $j$. Choose $\tau$ with
+$\max(\beta,\Theta_K-\delta)<\tau<\Theta_K$. For $y_j\le x\le y_{j+1}$ the variation estimate
+gives $R_K(x)\le C'x^{\tau-1}$ on the whole ray. By \cref{ana:thm:zerotest} and
+\cref{ana:ex:instances}(a), $\zeta_K$ has no zero in $\Re s>\tau$, which contradicts the
+definition of $\Theta_K$. The last assertion follows from (i) at $\beta=1/2$ and from (iii).
+\end{proof}
+
+Part (i) holds even if no zero attains the supremum $\Theta_K$. The grid may be far sparser
+than the one allowed by the convexity argument in the proof of \cref{ana:thm:sparse}, which
+at $\beta=1/2$ reaches fourth powers; the price is the use of the explicit formula, so the
+statement is special to a function all of whose residues have one sign.
+
+\begin{corollary}[A finite statistic on power grids; \stU]\label{ana:cor:finite}
+Fix $k\ge1$ and put $D_k(m)=R_K(m^k)-R_K((2m)^k)$, which is the difference of the two finite
+ramp sums plus $k\log2$. The Riemann hypothesis for $\zeta_K$ is equivalent to
+$\sup_{m\ge1}m^{k/2}D_k(m)<\infty$.
+\end{corollary}
+
+\begin{proof}
+Under the Riemann hypothesis use \cref{ana:thm:powers}(iii). Conversely $R_K(x)\to0$
+unconditionally, by \eqref{ana:eq:explicit}, dominated convergence and the nonvanishing on
+$\Re s=1$. Telescoping over $m,2m,4m,\dots$ gives $R_K(m^k)\le Cm^{-k/2}/(1-2^{-k/2})$ from a
+nonnegative upper bound $C$ for the statistic, and \cref{ana:thm:powers} applies.
+\end{proof}
+
+\begin{proposition}[One base for every number field; \stU]\label{ana:prop:generic}
+Let $0<\lambda_n\uparrow\infty$ with $\lambda_{n+1}/\lambda_n\to1$. There is a dense countable
+intersection of open sets of bases $b>1$ for which conclusions \textup{(i)} and
+\textup{(ii)} of \cref{ana:thm:powers} hold on the grid $x=b^{\lambda_n}$, for every number
+field $K$ simultaneously. For instance $\lambda_n=\exp(n/\log(n+2))$ uses asymptotically
+$(\log\log X)\log\log\log X$ samples up to $X$ for fixed $b$.
+\end{proposition}
+
+\begin{proof}
+For a continuous function $F$ and a rational $h<\limsup_{x\to\infty}F(x)$, the set of $b$ with
+$F(b^{\lambda_n})>h$ for some $n\ge N$ is open, and it is dense because for $1<a<c$ the
+intervals $(a^{\lambda_n},c^{\lambda_n})$ eventually overlap and cover a ray. Intersect over
+$h$, over $N$, and over the countably many functions $F(x)=x^{1-\beta}R_K(x)$ with rational
+$0<\beta<1$. By \cref{ana:thm:powers} with $y_j=j$ the upper limit of $F$ on the whole ray is
+$+\infty$ for $\beta<\Theta_K$, and intermediate rational exponents give the real ones. This
+is a Croft--Kingman sampling argument \cite{BinghamOstaszewskiKingman}.
+\end{proof}
+
+The generic statement leaves open the status of a prescribed base. The next theorem treats
+every base on one explicit set of integer exponents. Put
+\[
+ M_j=2^{2^{j^2}},\qquad\anaE=\bigcup_{j\ge1}\{M_j,2M_j,\dots,jM_j\}.
+\]
+For every $b>1$ at most $O_b(1+\log\log\log X)$ of the cutoffs $b^e$, $e\in\anaE$, lie below
+$X$: indeed $b^{M_j}\le X$ implies $j^2=O_b(1+\log\log\log X)$, and the first $j$ blocks
+contain $j(j+1)/2$ terms.
+
+\begin{theorem}[Extremal values on a prescribed sparse set; \stU]\label{ana:thm:blocks}
+Let $K$ be a number field with signature $(r_1,r_2)$ and discriminant $d_K$, and let $b>1$.
+\begin{enumerate}[label=\textup{(\roman*)}]
+\item If every nontrivial zero of $\zeta_K$ has real part $1/2$, then
+ \[
+  \lim_{j\to\infty}\max_{1\le k\le j}b^{kM_j/2}R_K\bigl(b^{kM_j}\bigr)
+  =\sum_\rho\frac1{1/4+(\Im\rho)^2}=:S_K ,
+ \]
+ and
+ $S_K=2+2\gamma_K+\log\abs{d_K}-r_1(\gamma+\log4\pi)-2r_2(\gamma+\log2\pi)$, where $\gamma$ is
+ Euler's constant. Moreover, for every $\eps>0$ a positive proportion of the indices $k$ in
+ every sufficiently large block gives a value within $\eps$ of $S_K$.
+\item Unconditionally, the upper limit of $x^{1-\Theta_K}R_K(x)$ over $x=b^e$, $e\in\anaE$, is
+ strictly positive if and only if some zero has real part $\Theta_K$. If no zero attains
+ $\Theta_K$, then $x^{1-\Theta_K}R_K(x)\to0$ on the whole ray.
+\end{enumerate}
+\end{theorem}
+
+By \cref{src:thm:dgrh} the hypothesis of (i) holds for $K=\Q$ and for every abelian field, and
+$S_\Q=2+\gamma-\log(4\pi)=0.0461914\ldots$.
+
+\begin{proof}
+Write $\Theta=\Theta_K$ and $\rho=\sigma+i\gamma_\rho$. Multiply \eqref{ana:eq:explicit} by
+$x^{1-\Theta}$. By dominated convergence the sum over $\Re\rho<\Theta$ tends to zero, and so
+does the error term. The only surviving sum is
+$\sum_{\Re\rho=\Theta}c_\rho\exp(i\gamma_\rho\log x)$, which is empty if $\Theta$ is not
+attained.
+
+Fix a finite list of $n$ of its ordinates, set $\theta_i=\gamma_i\log b/(2\pi)$, and take an
+integer $q\ge2$. The fractional parts of $0,M_j\theta,\dots,q^nM_j\theta$ occupy $q^n$
+half-open boxes of side $1/q$ in $[0,1)^n$. Two of these points share a box, and their
+difference supplies $1\le k\le q^n$ with $\norm{kM_j\theta_i}_{\R/\Z}\le1/q$ for all $i$. For
+$j\ge q^n$ this $k$ belongs to the $j$th block. In fact a positive proportion of each large
+block works: for $N=j+1$ points and $B=q^n$ boxes, the number of same-box pairs is at least
+$(N^2/B-N)/2$ by the Cauchy--Schwarz inequality, each positive difference occurs in at most
+$N$ pairs, and so there are at least $(N/B-1)/2$ suitable values of $k$. Absolute summability
+allows one to discard a tail of arbitrarily small norm and then to choose $q$ so that all
+remaining phases are arbitrarily close to $1$. Hence a subsequence of the normalized values
+tends to $\sum_{\Re\rho=\Theta}c_\rho$. This sum is real by conjugation, and each summand has
+positive real part because $\Re[\rho(1-\rho)]=\sigma(1-\sigma)+\gamma_\rho^2>0$. This proves
+(ii).
+
+On the critical line every $c_\rho=1/(1/4+\gamma_\rho^2)$ is positive, and the triangle
+inequality gives the matching upper bound on every block. The value of $S_K$ in terms of the
+invariants of $K$ follows from \cite[(1.2.2), (1.2.3), (1.3.11)]{IharaEulerKronecker}.
+\end{proof}
+
+For an arbitrary field, a finite upper bound for $\sqrt x\,R_K(x)$ on this grid therefore
+excludes an attained rightmost zero with real part greater than $1/2$: on the subsequence
+constructed in the proof the factor $x^{\Theta-1/2}$ tends to infinity. The sparsity counts
+cutoffs. It gives no saving in the evaluation of a prime sum at such a cutoff.
+
+\begin{example}\label{ana:ex:cuberoot}
+For $K=\Q(\sqrt[3]{2})$, of discriminant $-108$, the weights are computable: for $p\nmid6$ the
+degrees $f_i$ of the irreducible factors of $T^3-2$ modulo $p$ give
+$\Lambda_K(p^j)=(\log p)\sum_{f_i\mid j}f_i$, and $\Lambda_K(p^j)=\log p$ for $p\in\{2,3\}$,
+where $p$ is totally ramified. Here $\zeta_K=\zeta\cdot L(s,\mathrm{std})$ with the
+two-dimensional standard representation of $S_3$, which is outside the scope of
+\cref{src:thm:dgrh}. The sampled bounds of \cref{ana:thm:powers,ana:cor:finite} for this field
+are open.
+\end{example}
+
+\paragraph{Simple zeros.}
+The same remainder detects multiplicity on a sparse sequence. Let
+\[
+ x_n=2^n3^{n^2}.
+\]
+Only $O(\sqrt{\log X})$ of these cutoffs lie below $X$. Assume that all nontrivial zeros of
+$\zeta_K$ lie on the critical line. For real $t$ let $m_K(t)$ be the multiplicity of $1/2+it$
+as a zero, and let $\Gamma_K$ be the set of distinct ordinates. By \eqref{ana:eq:explicit},
+\begin{equation}\label{ana:eq:apseries}
+ \sqrt x\,R_K(x)=\sum_{t\in\Gamma_K}a_tx^{it}+o(1),\qquad
+ a_t=\frac{m_K(t)}{1/4+t^2},\qquad\sum_ta_t<\infty,
+\end{equation}
+with uniform convergence in $\log x$. Let $\xi_K(s)=s(s-1)\abs{d_K}^{s/2}
+\Gamma_\R(s)^{r_1}\Gamma_\C(s)^{r_2}\zeta_K(s)$ be the completed entire zeta function, with
+$\Gamma_\R(s)=\pi^{-s/2}\Gamma(s/2)$ and $\Gamma_\C(s)=2(2\pi)^{-s}\Gamma(s)$, and
+$H_K=(\log\xi_K)'$.
+
+\begin{theorem}[Multiplicities from a sparse sequence; \stG\ when $K$ is abelian]\label{ana:thm:simple}
+Let $K$ be a number field all of whose nontrivial zeros lie on the critical line.
+\begin{enumerate}[label=\textup{(\roman*)}]
+\item For every real $u$,
+ \[
+  \lim_{N\to\infty}\frac1N\sum_{n=1}^N\sqrt{x_n}\,R_K(x_n)\,x_n^{-iu}=\frac{m_K(u)}{1/4+u^2}.
+ \]
+\item The limit
+ \[
+  \lim_{N\to\infty}\frac1N\sum_{n=1}^Nx_nR_K(x_n)^2
+  =\sum_{t\in\Gamma_K}\frac{m_K(t)^2}{(1/4+t^2)^2}
+ \]
+ exists, and it exceeds $4H_K(1)-2H_K'(1)$ by exactly
+ $\sum_{t}m_K(t)\bigl(m_K(t)-1\bigr)/(1/4+t^2)^2\ge0$.
+\item \textup{(\stG.)} For $K=\Q$, all nontrivial zeros of $\zeta$ are simple if and only if
+ \[
+  \lim_{N\to\infty}\frac1N\sum_{n=1}^Nx_nR_\Q(x_n)^2
+  =6+2\gamma-2\log(4\pi)+4\gamma_1+2\gamma^2-\frac{\pi^2}4\approx0.00007420127287493 ,
+ \]
+ where $\zeta(1+u)=u^{-1}+\gamma-\gamma_1u+O(u^2)$. The excess $D$ of the limit over this
+ constant satisfies $0\le D<1.67\cdot10^{-34}$.
+\end{enumerate}
+\end{theorem}
+
+The hypothesis holds for $K=\Q$ and for abelian fields by \cref{src:thm:dgrh}; for a general
+field it is an additional assumption. No assumption is made about rational relations among
+the ordinates.
+
+\begin{proof}
+(i) For every real $u$,
+\[
+ \lim_{N\to\infty}\frac1N\sum_{n=1}^Nx_n^{iu}=\begin{cases}1,&u=0,\\0,&u\ne0.\end{cases}
+\]
+Indeed, for $u\ne0$ at least one of $u\log2/(2\pi)$ and $u\log3/(2\pi)$ is irrational, since
+$\log2/\log3$ is irrational, and Weyl's theorem applies to the polynomial with these linear
+and quadratic coefficients \cite{Weyl1916Gleichverteilung}. Multiply \eqref{ana:eq:apseries}
+by $x_n^{-iu}$ and average termwise: absolute convergence controls the tail uniformly in $N$,
+and the average of the $o(1)$ term tends to zero.
+
+(ii) The prime sum is real, so its square is its squared absolute value. The double series
+obtained from \eqref{ana:eq:apseries} converges absolutely, and by the same averaging only
+pairs with equal ordinates survive. The Hadamard product of genus one and the symmetry
+$\xi_K(s)=\xi_K(1-s)$ give
+\[
+ \sum_\rho\frac1{\rho(1-\rho)}=H_K(1)-H_K(0)=2H_K(1),\qquad
+ \sum_\rho\frac1{(1-\rho)^2}=-H_K'(1).
+\]
+With $[z(1-z)]^{-2}=z^{-2}+(1-z)^{-2}+2/[z(1-z)]$ and the same symmetry,
+\[
+ \sum_{t\in\Gamma_K}\frac{m_K(t)}{(1/4+t^2)^2}=4H_K(1)-2H_K'(1),
+\]
+and subtracting this from the limit gives the stated excess.
+
+(iii) For $K=\Q$ the expansion at $s=1$ gives
+\[
+ H_\Q(1)=1+\tfrac12\gamma-\tfrac12\log(4\pi),\qquad
+ H_\Q'(1)=-1-2\gamma_1-\gamma^2+\frac{\pi^2}8,
+\]
+which is the stated constant, and $D$ vanishes exactly when all zeros are simple. For the
+enclosure let $T_0=3\cdot10^{12}$. The zeros up to height $T_0$ are simple
+\cite{PlattTrudgian2021Riemann}. For $t\ge T_0$ the zero-counting function satisfies
+$\abs{N(t)-(t/2\pi)\log(t/(2\pi e))}\le0.1038\log t+0.2573\log\log t+9.3675<\log t$
+\cite[Corollary~1.2]{HasanalizadeShenWong2021Counting}. Hence $N(t)\le t\log t$ there and a
+jump of $N$ at $t>T_0$ has size at most $2\log t$. By conjugation symmetry and Stieltjes
+integration by parts, in which the boundary term discarded at $T_0$ is nonpositive,
+\[
+ D\le4\int_{(T_0,\infty)}\frac{\log t}{t^4}\,\dd N(t)
+ \le16\int_{T_0}^\infty\frac{\log^2t}{t^4}\,\dd t
+ =\frac{16}{T_0^3}\Bigl(\frac{\log^2T_0}3+\frac{2\log T_0}9+\frac2{27}\Bigr)<1.67\cdot10^{-34}.
+\]
+The rational evaluation of the last bound is recorded in the file
+\begin{center}
+\artifact{grh-torsion-and-prime-sampling/verification.txt}.
+\end{center}
+\end{proof}
+
+The identity in (ii) has the same shape for the polynomial $n^d$ in place of $n^2$, for each
+fixed $d\ge2$. Continuous mean squares of prime errors also detect repeated zeros
+\cite{Caceres2026Constant}. Here the reciprocal weights make the series
+\eqref{ana:eq:apseries} absolutely convergent, and the polynomial choice of $\log x_n$ allows
+sampling on one sparse sequence. The arithmetic question that remains is an upper bound for
+the sampled mean square by the explicit constant in (iii). It would require control of the
+off-diagonal terms when the prime side of the mean square is expanded at these cutoffs.
+
+\paragraph{Negative excursions of the source remainder.}
+The remainder of the source is bounded from above by the source itself. Its excursions below
+zero at modulus one can be located as follows. Fix a prime $d\equiv7\pmod8$, let
+$\chi=\chi_d$, and write $R_d=R_{d,1}$, so that
+\[
+ R_d(x)=\sum_{n\le x}\Lambda(n)\bigl(1-\chi(n)\bigr)\Bigl(\frac1n-\frac1x\Bigr)
+ -\log x+1+\gamma-\frac{L'(1,\chi)}{L(1,\chi)} .
+\]
+Put
+\[
+ B_0=2+\gamma-\log(4\pi)=0.0461914179\ldots,\qquad
+ B_d=\log\frac d\pi-\gamma+2\,\frac{L'(1,\chi)}{L(1,\chi)} .
+\]
+
+\begin{theorem}[Excursion bounds; \stG]\label{ana:thm:excursion}
+For every prime $d\equiv7\pmod8$,
+\[
+ -B_d-B_0\le\liminf_{x\to\infty}\sqrt x\,R_d(x)\le-B_d+B_0 .
+\]
+A single sequence $x_j\to\infty$ realizes $\sqrt{x_j}\,R_d(x_j)\to B_0-B_d$ for every such $d$
+simultaneously, and there is a single sequence of integer exponents $n_j\to\infty$ with
+$\sqrt{a^{n_j}}\,R_d(a^{n_j})\to B_0-B_d$ for every integer $a\ge2$ and every $d$. In
+particular the lower limit divided by $\log d$ tends to $-1$ as $d\to\infty$.
+\end{theorem}
+
+The limits are taken in this order, first in $x$ for fixed $d$. Nothing is asserted about the
+first $x$ at which a given excursion occurs.
+
+\begin{proof}
+By \cref{src:thm:dgrh} the nontrivial zeros of $\zeta$ and of $L(s,\chi)$ lie on the critical
+line. For $F=\zeta$ or $F=L(\cdot,\chi)$ put
+\[
+ H_F(u)=\sum_{\rho=1/2+i\gamma_\rho}\frac{e^{i\gamma_\rho u}}{1/4+\gamma_\rho^2},
+\]
+over all nontrivial zeros with multiplicity, central zeros included. The series converges
+absolutely and uniformly, and is real. For fixed $d$,
+\begin{equation}\label{ana:eq:O1}
+ \sqrt x\,R_d(x)=H_\zeta(\log x)-H_{L(\cdot,\chi)}(\log x)+O_d\bigl(x^{-1/2}\bigr).
+\end{equation}
+To see this, integrate $x^sA(s)/(s(s-1))$ over $\Re s=2$, with
+$A=-\zeta'/\zeta+L'/L(\cdot,\chi)$. Mellin inversion gives
+$\sum_{n\le x}\Lambda(n)(1-\chi(n))(x/n-1)$. At $s=1$ the residue is
+$x\bigl(\log x-1-\gamma+L'(1,\chi)/L(1,\chi)\bigr)$, and at a zero $\rho$ it is
+$x^\rho\bigl(m_\zeta(\rho)-m_L(\rho)\bigr)/\bigl(\rho(1-\rho)\bigr)$, coincident zeros
+included. Shift the contour to $\Re s=-1/2$. The kernel has a simple pole at $0$, since
+$\zeta(0)L(0,\chi)\ne0$ for this odd primitive character, with a residue depending only on
+$d$. On the new line the logarithmic derivatives are $O_d(\log(\abs{\Im s}+2))$ by the
+functional equations, and the horizontal edges can be sent to infinity along heights at
+distance $\gg_d1/\log T$ from both zero sets. The new integral is $O_d(x^{-1/2})$. Dividing
+by $\sqrt x$ gives \eqref{ana:eq:O1}.
+
+For the completed entire function $\Xi_F$ the Hadamard product gives
+\[
+ \frac{\Xi_F'}{\Xi_F}(1)-\frac{\Xi_F'}{\Xi_F}(0)=\sum_\rho\frac1{\rho(1-\rho)}=H_F(0),
+\]
+and by the functional equation the left side is twice the logarithmic derivative at $1$.
+Inserting the gamma factors gives $H_\zeta(0)=B_0$ and $H_{L(\cdot,\chi)}(0)=B_d$. As
+$\abs{H_F(u)}\le H_F(0)$, \eqref{ana:eq:O1} proves the lower bound.
+
+For finitely many real ordinates, simultaneous approximation returns all their phases
+arbitrarily close to $1$ at arbitrarily large times, whatever their rational relations: the
+integer iterates in the finite torus have a convergent subsequence, and differences of
+increasingly separated indices return to the identity. Enumerate the ordinates of $\zeta$ and
+of the countably many characters, and take $u_j>j$ approximating the first $j$ phases to
+within $1/j$. Absolute convergence of each series gives
+$H_\zeta(u_j)-H_{L(\cdot,\chi)}(u_j)\to B_0-B_d$ for every $d$, which proves the upper bound
+and the simultaneous assertion with $x_j=e^{u_j}$. The same argument with the countably many
+frequencies $\gamma_\rho\log a$, $a\ge2$, gives the integer exponents $n_j$. Finally
+$L'(1,\chi)/L(1,\chi)=O(\log\log d)$ under \cref{src:thm:dgrh}
+\cite[Corollary~3.3.2]{IharaMurtyShimura2009Logarithmic}, which gives $B_d\sim\log d$.
+\end{proof}
+
+\begin{proposition}[When the lower endpoint is attained; \stG]\label{ana:prop:parity}
+The value $-B_d-B_0$ is a limiting value of $\sqrt x\,R_d(x)$ if and only if every finite
+integer relation among the positive ordinates of $\zeta$ and of $L(\cdot,\chi)$ has an even
+total coefficient on the ordinates of $\zeta$. Here each occurrence of an ordinate is
+labelled by its function, so a positive ordinate shared by the two functions already violates
+the condition.
+\end{proposition}
+
+\begin{proof}
+Equality forces each cosine with positive weight in $H_\zeta$ to approach $-1$ and each
+cosine in $H_{L(\cdot,\chi)}$ to approach $+1$, because their individually nonnegative
+deficits sum to zero in the limit. The function $\zeta$ has no central zero, and central
+zeros of $L$ contribute with the required sign. On each finite set of frequencies,
+Kronecker's theorem identifies the closure of the real flow with the subtorus cut out by the
+integer relations, and the required sign vector lies in that closure exactly under the
+stated parity condition. A diagonal sequence and the summable tails give the sufficiency for
+all ordinates.
+\end{proof}
+
+For $d=7$ the two endpoints are approximately $-0.30142740$ and $-0.20904456$, and for
+$d=23$ they are $-0.61549819$ and $-0.52311535$. Further values are in the file
+\begin{center}
+\artifact{grh_method_transfers_sharp_torsion/checks/oscillation_bounds.txt}.
+\end{center}
+These numbers evaluate the proven bounds through
+\[
+ \frac{L'(1,\chi)}{L(1,\chi)}=\log(2\pi)+\gamma-\frac1{L(0,\chi)}\sum_{a=1}^{d-1}\chi(a)\log\Gamma(a/d),
+ \qquad L(0,\chi)=-\frac1d\sum_{a=1}^{d-1}a\chi(a).
+\]
+They are not estimates of a lower limit by sampling.
+
+\subsection{Sparse Li coefficients}\label{ana:sec:li}
+{\raggedright\sources{grh_method_transfers_research}}
+
+\Cref{ana:thm:blocks}(ii) does not see zeros off the line whose real parts approach an
+unattained supremum. The block argument gives a full equivalence for a different sequence.
+For a number field $K$ put $w_\rho=1-1/\rho$ and define the Li coefficients
+\[
+ \lambda_n(K)=\lim_{T\to\infty}\sum_{\abs{\Im\rho}\le T}\bigl(1-w_\rho^n\bigr)\qquad(n\ge1).
+\]
+They are real, and
+$\lambda_n(K)=\frac1{(n-1)!}\bigl(\frac{\dd}{\dd s}\bigr)^n\bigl[s^{n-1}\log\xi_K(s)\bigr]_{s=1}$.
+Li's criterion for number fields and the dominant exponential terms when it fails are
+classical \cite{BombieriLagariasComplements,LagariasLi}. The additional content below is the
+prescribed sparse set of indices $\anaE$ of \cref{ana:thm:blocks}.
+
+\begin{theorem}[Sparse Li criterion; \stU]\label{ana:thm:li}
+For every number field $K$ the following are equivalent.
+\begin{enumerate}[label=\textup{(\roman*)}]
+\item All nontrivial zeros of $\zeta_K$ lie on the critical line.
+\item $\lambda_n(K)\ge0$ for all sufficiently large $n\in\anaE$.
+\item The proportion of indices $k\in\{1,\dots,j\}$ with $\lambda_{kM_j}(K)<0$ tends to zero as
+ $j\to\infty$.
+\end{enumerate}
+If \textup{(i)} fails, let $\varrho>1$ be the largest value of $\abs{w_\rho}$ and $m$ the number
+of zeros attaining it, with multiplicity. Then
+\[
+ \lim_{j\to\infty}\min_{1\le k\le j}\varrho^{-kM_j}\lambda_{kM_j}(K)=-m .
+\]
+The set $\anaE$ contains $O(1+\log\log N)$ indices up to $N$.
+\end{theorem}
+
+\begin{proof}
+On the critical line $\abs{w_\rho}=1$ and every $1-\Re(w_\rho^n)$ is nonnegative, so (i) implies
+(ii) and (iii). Suppose (i) fails. By the symmetry about the critical line there is a zero with
+real part below $1/2$, and then $\abs{w_\rho}>1$, since
+$\abs{w_\rho}^2=1+(1-2\Re\rho)/\abs\rho^2$. As $w_\rho\to1$ with increasing height, the largest
+modulus $\varrho$ is attained at finitely many zeros, and all other moduli are at most some $r$
+with $1<r<\varrho$. For these other zeros Taylor's formula on the segment from $1$ to $w_\rho$
+gives, for $n\ge2$,
+\[
+ \Bigl|1-w_\rho^n-\frac n\rho\Bigr|\le\frac{n(n-1)}{2\abs\rho^2}\,r^{n-2}.
+\]
+The sum of $\abs\rho^{-2}$ is finite, and the symmetric sum of $1/\rho$ exists. Hence
+\[
+ \varrho^{-n}\lambda_n(K)=-\sum_{\abs{w_\rho}=\varrho}\Bigl(\frac{w_\rho}{\varrho}\Bigr)^n+o(1).
+\]
+Apply the same-box argument of the proof of \cref{ana:thm:blocks} to the arguments of the $m$
+outermost points. In every sufficiently large block the real parts of their normalized powers
+can all be made arbitrarily close to $1$, for a positive proportion of the indices $k$, and the
+real part of their sum never exceeds $m$. This gives the limit $-m$, and it contradicts (ii)
+and (iii). Counting the blocks with $M_j\le N$ gives the sparsity.
+\end{proof}
+
+The proof allows any sequence of positive integer dilations $M_j\to\infty$ with block lengths
+tending to infinity. For a field such as $\Q(\sqrt[3]{2})$ the sampled inequalities in (ii)
+are open.
+
+For two number fields $K$ and $L$ let $d_n=\lambda_n(K)-\lambda_n(L)$. The next result needs
+no hypothesis on the location of zeros.
+
+\begin{theorem}[Arithmetic equivalence from sparse Li coefficients; \stU]\label{ana:thm:rigidity}
+If $\zeta_K\ne\zeta_L$, then
+\[
+ \lim_{H\to\infty}\ \inf_{A\ge1}\ \frac1H\sum_{n=A}^{A+H-1}\abs{d_n}=+\infty\qquad(A,H\in\N).
+\]
+Thus a bounded mean absolute discrepancy on a single sequence of windows of increasing length
+forces $\zeta_K=\zeta_L$, and then $d_n=0$ for every $n$. The windows may be arbitrarily far
+apart: those starting at $2^{2^{j^2}}$ and of length $j$ use only $O(1+\log\log N)$ indices up
+to $N$. The same holds with $\abs{d_n}^2$ in place of $\abs{d_n}$.
+\end{theorem}
+
+\begin{proof}
+The statement for squares follows from the one for absolute values by the Cauchy--Schwarz
+inequality. Write $m_w$ for the difference of the multiplicities, for $K$ and for $L$, of the
+transformed zero $w=1-1/\rho$. Second differences of the two symmetric sums give
+\[
+ a_n:=-(d_{n+2}-2d_{n+1}+d_n)=\sum_wc_ww^n,\qquad c_w=m_w(1-w)^2,\qquad\sum_w\abs{c_w}<\infty,
+\]
+because $\abs{1-w}=\abs\rho^{-1}$. All $\abs w$ are bounded. Suppose that there are windows
+$[A,A+H-1]$ with $H\to\infty$ on which the mean of $\abs{d_n}$ is at most $C$. Then
+$\abs{d_n}\le CH$ on each window.
+
+\emph{Points off the unit circle.} Suppose some $w$ with $m_w\ne0$ has modulus above $1$, and
+let $\varrho$ be the largest such modulus. It is attained, at finitely many distinct points
+$w_1,\dots,w_t$, and the other moduli with $m_w\ne0$ are at most some $r<\varrho$. Put
+$z_i=w_i/\varrho$. For $N=A+H-t-2$ and $0\le h<t$,
+\[
+ \varrho^{-N-h}a_{N+h}=\sum_{i=1}^tz_i^h\,c_{w_i}z_i^N+O\bigl((r/\varrho)^{N+h}\bigr).
+\]
+The left sides tend to zero, since $N\ge H-t-1$ and $\abs{a_{N+h}}\le4CH$. The Vandermonde
+matrix $(z_i^h)_{h,i}$ is invertible, so $c_{w_i}z_i^N\to0$, which contradicts
+$\abs{c_{w_i}}>0$. Hence $m_w=0$ for $\abs w>1$. The reflection $\rho\mapsto1-\rho$ induces
+$w\mapsto1/w$ and preserves multiplicity, so $m_w=0$ for $\abs w<1$ as well.
+
+\emph{Points on the unit circle.} Let $\Gamma$ be the countable subgroup of the circle
+generated by the remaining points $w$ with $m_w\ne0$, with the discrete topology. Its dual $G$
+is compact and metrizable. Write $g_n\in G$ for the character $w\mapsto w^n$. On each window
+take nonnegative triangular weights $t_n$ of total mass one, obtained by normalizing
+$\min(i+1,H-2-i)$, $0\le i\le H-3$, and zero at the last two positions. They satisfy
+$\sup t_n=O(1/H)$ and $\sup\abs{t_{n+1}-t_n}=O(1/H^2)$. The measures
+$\sum_nt_nd_n\delta_{g_n}$ on $G$ have total variation at most $O(C)$, so a subsequence
+converges weak-star to a finite measure $\nu$. For $z\in\Gamma$, Abel summation shows that
+the $t_n$-weighted average of $(w/z)^n$ tends to zero for $w\ne z$, the total variation of the
+weights being $O(1/H)$. Since the $c_w$ are absolutely summable, the weighted average of
+$a_nz^{-n}$ tends to $c_z$, with $c_z=0$ when $m_z=0$. Shifting the indices in the second
+difference gives
+\[
+ \sum_nt_na_nz^{-n}=-(z-1)^2\sum_nt_nd_nz^{-n}+O\Bigl(H^{-2}\sum_n\abs{d_n}\Bigr),
+\]
+and the error is $O(C/H)$. Hence $\hat\nu(z)=-m_z$ for $z\ne1$. Subtracting $\hat\nu(1)$
+times the Haar probability makes the coefficient at $1$ vanish.
+
+The resulting Fourier transform is bounded and integer-valued. Choose a polynomial that
+vanishes at $0$ and takes the value $1$ at every nonzero integer of its finite range.
+Applying the corresponding convolution polynomial to the measure gives a finite measure whose
+Fourier transform is the indicator of $D=\{w:m_w\ne0\}$. By the idempotent theorem of Cohen,
+Helson and Rudin \cite{GreenSanders2008Quantitative}, $D$ lies in the coset ring of $\Gamma$.
+
+An infinite member of the coset ring of a subgroup of the circle is dense in the circle. To
+see this, write a Boolean combination of finitely many cosets as a union of atoms. The
+positive cosets of an atom intersect in a single coset of a subgroup $T$. Split it into
+finitely many smaller cosets so as to settle all excluded cosets whose subgroups meet $T$ in
+finite index. Each surviving piece is a coset of a subgroup $T_0$ with finitely many cosets of
+subgroups of infinite index removed. If $T_0$ is infinite, it is dense in the circle. For a
+translation-invariant finitely additive probability on the abelian group $T_0$, every coset
+of infinite index has measure zero, by disjoint translates, and the trace on $T_0$ of every
+nonempty open arc has positive measure, since finitely many translates cover $T_0$. So each
+surviving infinite piece is dense. But the only possible accumulation point of $D$ is $1$,
+because $w_\rho\to1$ as the height grows. Thus $D$ is finite.
+
+\emph{Finitely many differing zeros.} The completed functions $\xi_K,\xi_L$ are entire of
+order one, and Hadamard factorization now gives $\xi_K/\xi_L=e^{\alpha+\beta s}P(s)/Q(s)$ with
+polynomials $P,Q$. Put $Z=\zeta_K/\zeta_L$. The gamma factors of a number field are products
+of $\Gamma_\R(s)$ and $\Gamma_\R(s+1)$, and $\Gamma_\R(s+2)/\Gamma_\R(s)=s/(2\pi)$, while the
+discriminant factor contributes a constant under the shift $s\mapsto s+2$. Hence
+$Z(s+2)/Z(s)$ is a rational function. On the positive real axis $\zeta_K(s)=1+O_K(2^{-s})$,
+and likewise for $L$, so $Z(s+2)/Z(s)=1+O(2^{-s})$. A rational function with this decay
+towards $1$ is identically $1$. For real $s>1$ this gives $Z(s)=Z(s+2m)\to1$, so
+$\zeta_K=\zeta_L$.
+\end{proof}
+
+The theorem identifies a zeta function up to equality, so it does not separate nonisomorphic
+arithmetically equivalent fields. It is a statement about infinitely many samples and gives
+no effective window length for a given pair of fields.
+
+\subsection{Open questions}\label{ana:sec:open}
+
+\begin{question}[Arithmetic inputs]\label{ana:q:input}
+No hypothesis of the criteria of this section is established for a function outside the
+scope of \cref{src:thm:dgrh}. Is there such a function, for instance $\zeta_K$ with
+$K=\Q(\sqrt[3]{2})$, for which one of the weaker inputs can be proved by a comparison of
+covolumes: a bound for the positive part in mean (\cref{ana:cor:forms}), with losses
+controlled only on average as in \cref{ana:prop:rankloss}; a signed moving-window bound
+(\cref{ana:thm:moving}); a pair of filtered bounds (\cref{ana:thm:joint}); a finite
+difference (\cref{ana:thm:fd}); or a bound on a sparse grid
+(\cref{ana:thm:powers,ana:cor:finite})? The specific targets are stated in
+\cref{sec:grp,sec:hec}.
+\end{question}
+
+\begin{question}[Uniform windows]\label{ana:q:window}
+The constant $L$ of \cref{ana:thm:window} depends on the family through the radius of a disc
+of holomorphy. Can it be chosen uniformly for a family of errors attached to fields of
+increasing conductor, for example for increasing blocks of Kummer fields? Uniformity is not
+needed for a criterion about finitely many fixed fields, but it is needed for quantitative
+error terms and for any criterion about an infinite block.
+\end{question}
+
+\begin{question}[Thin twist families beyond Dirichlet characters]\label{ana:q:twist}
+\Cref{ana:thm:sparse} rests on nonnegative weights, on the residue formula
+\eqref{ana:eq:srcres} and on the zero-density estimate \eqref{ana:eq:zerodensity} for the
+twisting family. Is there a family of twists of a nonabelian $L$-function, for instance of the
+two-dimensional factor of the splitting field of $X^3-2$, with a zero-density estimate that
+permits the same selection?
+\end{question}
+
+\begin{question}[A prescribed base on thin grids]\label{ana:q:base}
+\Cref{ana:prop:generic} holds for a generic base, and \cref{ana:thm:blocks} for every base on
+the particular set $\anaE$. For a prescribed base such as $b=2$ and the grid
+$x=b^{\lambda_n}$ with $\lambda_n=\exp(n/\log(n+2))$, do conclusions (i) and (ii) of
+\cref{ana:thm:powers} hold?
+\end{question}
+
+\begin{question}[Unattained suprema]\label{ana:q:sup}
+Let $K$ be a number field for which the real parts of the zeros off the critical line approach
+$\Theta_K>1/2$ without attaining it. Is $\sqrt x\,R_K(x)$ unbounded above on the grid
+$x=b^e$, $e\in\anaE$? \Cref{ana:thm:blocks} decides this only when $\Theta_K$ is attained,
+whereas the Li coefficients on the same index set detect every failure
+(\cref{ana:thm:li}).
+\end{question}
+
+\begin{question}[Simple zeros]\label{ana:q:simple}
+Prove that the sampled mean square in \cref{ana:thm:simple}(iii) is at most the displayed
+constant, that is, $D=0$. A multiple zero at very large height would contribute less than the
+bound $1.67\cdot10^{-34}$, so no finite computation of zeros decides this.
+\end{question}
+
+\begin{question}[The lower limit of the source remainder]\label{ana:q:parity}
+Does the parity condition of \cref{ana:prop:parity} hold for the ordinates of $\zeta$ and of
+$L(\cdot,\chi_d)$? If it does, $\liminf_{x\to\infty}\sqrt x\,R_d(x)=-B_d-B_0$ exactly. In
+general, where in the interval of \cref{ana:thm:excursion} does the lower limit lie?
+\end{question}
+
+\begin{question}[Effective rigidity]\label{ana:q:rigidity}
+Give an effective window length in \cref{ana:thm:rigidity}: for two given number fields with
+different zeta functions, bound the length $H$ beyond which every window has mean
+$\abs{d_n}$ above a given size. This requires quantitative control of ordinates, of their
+separation, and of the tails as the fields vary.
+\end{question}

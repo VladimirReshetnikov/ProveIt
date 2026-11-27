@@ -1,0 +1,783 @@
+\section{Imaginary quadratic fields of class-group exponent six and seven}\label{sec:cls}
+
+\providecommand{\clsp}{\mathfrak p}
+\providecommand{\clsq}{\mathfrak q}
+\providecommand{\clsXz}{X_0}
+
+The \emph{exponent} of a finite abelian group is the least positive integer that
+annihilates every element. Throughout this section $D<0$ is a fundamental discriminant,
+$x=\abs{D}$, $K=\Q(\sqrt D)$, and $\chi=\chi_D=(D/\cdot)$ is the primitive odd quadratic
+character of conductor $x$. We put
+\[
+  \clsXz=3.1\cdot10^{20}.
+\]
+Elsenhans, Kl\"uners and Nicolae (EKN) enumerated all imaginary quadratic fields with
+$x\le\clsXz$ whose class group has small exponent, and bounded $x$ for each exponent under
+the Riemann hypothesis for $\zeta_K$ \cite{Elsenhans2020Imaginary}. For the exponents six
+and seven their bounds, $2.5\cdot10^{25}$ and $3.9\cdot10^{30}$, lie above $\clsXz$, and
+the two intervals in between were left open. We show that both intervals are empty. The
+results are \cref{cls:thm:six} (432 fields and 1{,}236 orders of exponent six) and
+\cref{cls:thm:seven} (33 fields and 40 orders of exponent seven). With
+\cref{cls:prop:small} they complete the census for every exponent from one to eight.
+
+Each proof has three parts. A split prime $p$ gives a norm equation
+$a^2+xb^2=4p^e$, which forbids small split primes and bounds the coefficient $b$. An
+explicit formula with a signed test function converts the location of the zeros of
+$L(s,\chi)$ into a lower bound for the total contribution of split primes. A finite
+computation shows that the norm equations of two split primes are incompatible whenever
+their coefficients $b$ are equal (exponent six) or have a ratio of small height (exponent
+seven).
+
+In the two censuses the input theorem \cref{src:thm:dgrh} enters in exactly three places,
+each time for $\zeta$ and one quadratic Dirichlet $L$-function, through
+$\zeta_K(s)=\zeta(s)L(s,\chi)$:
+it discharges the hypothesis of the EKN discriminant bounds; it makes the zero side of the
+explicit formula of \cref{cls:prop:weil} nonnegative; and it discharges the hypothesis of
+the order classification of Aiken, Ross, Shvydkoy and Xue \cite{Aiken2026Boundary}. The
+norm lemmas, the finite certificates and the reduced-form computations are unconditional.
+The exhaustive EKN enumeration through $\clsXz$ is used as a published computation.
+
+\subsection{Published inputs and the exponents below six}\label{cls:sec:inputs}
+\sources{grh_transfers; grh-exponent-six-and-transfers; exponent_seven_and_grh_transfers}
+
+We use the following statements of \cite{Elsenhans2020Imaginary}.
+\begin{enumerate}[label=\textup{(E\arabic*)}]
+\item\label{cls:it:census} (Theorem~1 and Table~1.) The list of imaginary quadratic fields
+of class-group exponent at most eight with $x\le\clsXz$ is known. It contains
+$9,56,17,203,27,432,33,778$ fields of exact exponent $1,2,\dots,8$ respectively.
+\item\label{cls:it:bound} (Theorem~3 and Table~2.) If $\zeta_K$ satisfies the Riemann
+hypothesis and $\Cl(K)$ has exponent $e$, then $x\le2.3\cdot10^{20}$ for $e=5$,
+$x\le X_1:=2.5\cdot10^{25}$ for $e=6$, and $x\le3.9\cdot10^{30}$ for $e=7$. The analytic
+input is the bound of Bach and Sorenson \cite{Bach1996Explicit} for the least rational prime
+that splits in $K$, combined with the norm inequality of \cref{cls:lem:norm}.
+\item\label{cls:it:complete} (Theorem~2.) Under the same hypothesis the lists in
+\ref{cls:it:census} are complete for the exponents $1,2,3,4,5$ and $8$. The exponents six
+and seven are excluded from this assertion.
+\end{enumerate}
+Since $\zeta_K(s)=\zeta(s)L(s,\chi_D)$, the hypothesis of \ref{cls:it:bound} and
+\ref{cls:it:complete} holds for every $K$ by \cref{src:thm:dgrh}.
+
+\begin{proposition}[Exponents one to five and eight; \stG]\label{cls:prop:small}
+The numbers of imaginary quadratic fields whose class group has exact exponent
+$1,2,3,4,5,8$ are $9,56,17,203,27,778$ respectively.
+\end{proposition}
+
+\begin{proof}
+This is \ref{cls:it:census} and \ref{cls:it:complete}, with the hypothesis supplied by
+\cref{src:thm:dgrh}.
+\end{proof}
+
+\begin{remark}[Exponent five]\label{cls:rem:five}
+For $e=5$ the bound in \ref{cls:it:bound} lies inside the enumerated range, so no interval
+remains. Of the 27 fields, 25 have class group $\Z/5\Z$, and the class group is
+$(\Z/5\Z)^2$ for $D=-12451$ and $D=-37363$. An independent enumeration of the $75{,}988$
+negative fundamental discriminants with $x\le250{,}000$, through their $11{,}689{,}615$
+reduced forms, finds 196 fields whose class number is a nontrivial power of five, of which
+exactly these 27 have exponent five; see \ref{cls:it:c-five} in \cref{cls:sec:six}.
+\end{remark}
+
+For orders we use \cite[Theorem~1.3(5),(6) and Section~6]{Aiken2026Boundary}: under ERH,
+the tables A.6 and A.7 of that paper, of negative order discriminants with proper ideal
+class group of exponent six, respectively seven, are complete if the interval left open
+by \ref{cls:it:census} and \ref{cls:it:bound} contains no fundamental discriminant of that
+exponent. The construction reduces all analytic hypotheses to the classification of the
+underlying quadratic fields, for which \cref{src:thm:dgrh} supplies them. The integer
+$\clsXz$ itself is not a fundamental discriminant.
+
+\subsection{Norm equations at split primes}\label{cls:sec:norm}
+\sources{grh_transfers; grh-exponent-six-and-transfers; exponent_seven_and_grh_transfers}
+
+\begin{lemma}[Norm equation; \stU]\label{cls:lem:norm}
+Let $p$ be a rational prime that splits in $K$, let $\clsp\mid p$, and suppose
+$[\clsp]^j=1$ in $\Cl(K)$ for some $j\ge1$. Then there are integers $a\ge0$ and $b\ge1$
+with
+\begin{equation}\label{cls:eq:norm}
+  a^2+xb^2=4p^j .
+\end{equation}
+In particular $x\le4p^j$.
+\end{lemma}
+
+\begin{proof}
+Write $\clsp^j=(\alpha)$ with $\alpha=(a+b\sqrt D)/2\in\OO_K$. The valuations of $\alpha$
+at $\clsp$ and at $\bar\clsp$ differ, so $\alpha\notin\Q$ and $b\ne0$. Taking norms gives
+$4p^j=a^2+xb^2$, and one may replace $a,b$ by their absolute values.
+\end{proof}
+
+\begin{corollary}[Residue witnesses; \stU]\label{cls:cor:witness}
+Suppose $\Cl(K)$ is annihilated by $e\ge1$, and let $r$ be a prime with $4r^e<x$.
+\begin{enumerate}[label=\textup{(\roman*)}]
+\item The prime $r$ does not split in $K$.
+\item If $r$ is odd, $c\ge1$ is an integer and $M=xc^2$, then $-M$ is not a nonzero
+square modulo $r$.
+\end{enumerate}
+\end{corollary}
+
+\begin{proof}
+Part (i) is \cref{cls:lem:norm} with $j=e$. For (ii), suppose $-M=Dc^2$ is a nonzero
+square modulo $r$. Then $r\nmid cD$ and $(D/r)=1$, so $r$ splits in $K$, contrary to (i).
+\end{proof}
+
+In the applications $M$ is produced from two norm equations without knowledge of $x$ or
+$c$, and (ii) is tested for the small primes $r$. No extraction of the squarefree part of
+$M$ is needed.
+
+\subsection{An explicit-formula inequality}\label{cls:sec:weil}
+\sources{grh-exponent-six-and-transfers; exponent_seven_and_grh_transfers}
+
+\begin{proposition}[Signed test; \stG]\label{cls:prop:weil}
+Let $g$ be a compactly supported real step function with nonzero $L^2$ norm, and put
+\[
+ F(u)=\frac{\int_{\R}g(v)g(v+u)\,\dd v}{\int_{\R}g(v)^2\,\dd v},
+ \qquad h(t)=\int_{\R}F(u)e^{itu}\,\dd u .
+\]
+Let $C$ be the largest absolute slope of the piecewise linear function $F$. Then
+\begin{equation}\label{cls:eq:weil}
+ \log x>2\sum_{n\ge2}\frac{\chi(n)\Lambda(n)}{\sqrt n}\,F(\log n)+2-\frac{14}{9}\,C .
+\end{equation}
+\end{proposition}
+
+\begin{proof}
+The function $F$ is even, continuous and piecewise linear, with $F(0)=1$ and $\abs{F}\le1$.
+Its Fourier transform $h$ is the squared modulus of the Fourier transform of $g$ divided
+by $\norm{g}_2^2$, so $h\ge0$ on the real line. By the explicit Fourier integral of a step
+function and its reflected copy, $h$ extends to an entire function with
+$O((1+\abs{t})^{-2})$ decay on every fixed horizontal strip. For $\psi=\Gamma'/\Gamma$ the
+Guinand--Weil formula for the odd primitive character $\chi$ reads
+\begin{equation}\label{cls:eq:gw}
+ \sum_{\rho}h\bigl((\rho-\tfrac12)/i\bigr)=
+ \log\frac{x}{\pi}+\frac{1}{2\pi}\int_{\R}h(t)\,\Re\psi\bigl(\tfrac34+\tfrac{it}2\bigr)\,\dd t
+ -2\sum_{n\ge2}\frac{\chi(n)\Lambda(n)}{\sqrt n}F(\log n),
+\end{equation}
+the sum running over the nontrivial zeros of $L(s,\chi)$; see
+\cite[Lemma~9]{Carneiro2024Fourier}, with the Fourier conventions converted. The odd parity
+determines the argument $3/4$ of the digamma function. By \cref{src:thm:dgrh} every
+$(\rho-\tfrac12)/i$ is real, so the left side is nonnegative. This is the only use of the
+location of zeros.
+
+By the integral formula for the digamma function and Fourier inversion, the archimedean
+term, including its factor $1/(2\pi)$, equals
+\[
+ \psi(\tfrac34)+2\int_0^\infty\frac{e^{-3u/2}}{1-e^{-2u}}\bigl(1-F(u)\bigr)\,\dd u
+ \le\psi(\tfrac34)+\frac{14}{9}\,C .
+\]
+Indeed the difference $\Re\psi(\tfrac34+\tfrac{it}2)-\psi(\tfrac34)$ is an integral of
+$1-\cos(tu)$ against a positive density, and its nonnegativity against $h(t)$ permits the
+interchange of integrals. For the inequality use $0\le1-F(u)\le Cu$ for $u\ge0$, expand the
+denominator geometrically, and bound
+$\sum_{j\ge0}(2j+\tfrac32)^{-2}\le\tfrac49+\tfrac13$ by the integral test. Moreover
+$\log\pi-\psi(\tfrac34)>2$: one has $\log\pi>1.1$, Euler's constant satisfies
+$\gamma>H_6-\log7>\tfrac12$, the first two terms of the series for the digamma difference
+give $\psi(1)-\psi(\tfrac34)>\tfrac13+\tfrac1{14}$, and $\psi(1)=-\gamma$. Inserting these
+bounds into \eqref{cls:eq:gw} proves \eqref{cls:eq:weil}.
+\end{proof}
+
+\begin{definition}[Twelve-step windows]\label{cls:def:window}
+Fix $Y>1$ and a vector $V=(v_1,\dots,v_6)$ of positive heights. Let $\delta=\log(Y)/12$,
+and let $g=g_{Y,V}$ take the values
+\[
+  v_1,\ v_2,\ \dots,\ v_6,\ -v_6,\ \dots,\ -v_2,\ -v_1
+\]
+on twelve successive intervals of length $\delta$ beginning at zero, and vanish elsewhere.
+Writing $(w_1,\dots,w_{12})$ for this signed vector, extended by zero, the associated $F$
+satisfies $F(j\delta)=\sum_iw_iw_{i+j}/\sum_iw_i^2$ for integers $j\ge0$, is linear between
+consecutive knots $j\delta$, and vanishes for $\abs{u}\ge\log Y$. For a prime $p\le Y$ put
+\[
+ R_p=2\sum_{p^k\le Y}\frac{(-1)^k}{p^{k/2}}F(k\log p),\qquad
+ L_p=-\frac{4\log p}{\sqrt p}\,F(\log p),\qquad W_Y(p)=\max\set{0,L_p},
+\]
+and define the \emph{inert baseline} and the \emph{ramification constant}
+\[
+ S(Y)=2-\frac{14}9\,C+\sum_{p\le Y}R_p\log p,\qquad
+ B_Y=\max\Bigl(0,\max_{p\le Y}R_p\Bigr).
+\]
+All quantities depend on $V$. We use the two vectors
+\[
+ V_0=(21,14,10,6,4,1),\qquad V_1=(1000,933,686,449,251,81).
+\]
+\end{definition}
+
+The opposite signs at the two ends of $g$ make $F$ negative near the end of its support.
+Although $h$ is nonnegative, an inert prime, for which $\chi(p)=-1$, can then contribute
+positively to the right side of \eqref{cls:eq:weil}. The quantity $S(Y)$ is that right
+side when every prime up to $Y$ is inert, and $L_p$ is the amount lost when a prime with
+$p^2>Y$ splits instead.
+
+\begin{lemma}[Baseline and losses; \stG]\label{cls:lem:baseline}
+Let $Y$, $V$ be as in \cref{cls:def:window}, and suppose that every prime $p\le Y$ that
+splits in $K$ satisfies $p^2>Y$. Then
+\[
+ \log x> S(Y)-\sum_{\substack{p\mid D\\ p\le Y}}R_p\log p
+        -\sum_{\substack{p\le Y\\ p\text{ split}}}L_p
+ \ \ge\ S(Y)-B_Y\log x-\sum_{\substack{p\le Y\\ p\text{ split}}}W_Y(p).
+\]
+\end{lemma}
+
+\begin{proof}
+Since $F(\log n)=0$ for $n\ge Y$, only prime powers $p^k\le Y$ occur in
+\eqref{cls:eq:weil}. An inert prime has $\chi(p^k)=(-1)^k$ and contributes $R_p\log p$.
+A ramified prime contributes nothing. A split prime contributes only through $k=1$, namely
+$2(\log p)F(\log p)/\sqrt p=R_p\log p-L_p$. This gives the first inequality. For the
+second, $\sum_{p\mid D}\log p\le\log x$ and $R_p\le B_Y$.
+\end{proof}
+
+\begin{remark}[Exact arithmetic]\label{cls:rem:exact}
+All numerical inequalities for $S(Y)$, $B_Y$, $C$ and $L_p$ quoted below are verified
+with rational arithmetic. The knot interval containing $\log(p^k)$ is located by comparing
+the integers $(p^k)^{12}$ and $Y^j$. Logarithms are enclosed by reducing the argument to
+$1\le z\le2$ and summing finitely many terms of the positive series
+$2\operatorname{artanh}\bigl((z-1)/(z+1)\bigr)$ with its geometric tail. Integer square
+roots bound $1/\sqrt{p^k}$ on both sides. No zero ordinate and no class group enters these
+checks, and no floating-point comparison decides an inequality. The programs and their
+outputs are \ref{cls:it:c-zero} for exponent six and \ref{cls:it:c-explicit} for exponent
+seven.
+\end{remark}
+
+\subsection{The exponent-six census}\label{cls:sec:six}
+\sources{grh-exponent-six-and-transfers; grh_transfer_synthesis_2026-11-25; grh_transfers}
+
+\begin{theorem}[Exponent-six census; \stG]\label{cls:thm:six}
+Exactly $432$ imaginary quadratic fields have ideal class group of exponent six. They are
+the fields in the exponent-six row of \textup{\cite[Table~1]{Elsenhans2020Imaginary}}, and
+the largest absolute discriminant among them is $5\,761\,140$. Exactly $1{,}236$ imaginary
+quadratic orders have proper ideal class group of exponent six, of which $804$ are
+nonmaximal. The largest absolute order discriminant is $43\,522\,752$.
+\end{theorem}
+
+By \ref{cls:it:census} and \ref{cls:it:bound} it suffices, for the fields, to show that no
+$K$ with $\clsXz<x\le X_1$ has class group annihilated by six. The finite part of the
+argument is the following certificate.
+
+\begin{lemma}[Pairs of sixth-power norm equations; \stU]\label{cls:lem:sixpairs}
+Let $p<q\le5500$ be primes with $4p^6>\clsXz$, put $N=q^6-p^6$, and let $u$ be a positive
+divisor of $N$ with
+\[
+   q^3-p^3<u\le\floor{\sqrt N}.
+\]
+If $M=4p^6-(N/u-u)^2$ exceeds $\clsXz$, then there is a prime $r$ with $19\le r\le151$
+such that $-M$ is a nonzero square modulo $r$.
+\end{lemma}
+
+\begin{proof}
+This is a finite computation. Factor
+\[
+ N=(q-p)(q+p)(q^2+pq+p^2)(q^2-pq+p^2).
+\]
+Each factor is at most $3\cdot5500^2$, so trial division suffices. Generate the divisors
+from their prime exponents, test the two inequalities, and reduce $-M$ modulo the small
+primes. Two independently written programs perform the search \ref{cls:it:c-pairs}: one
+with arbitrary-precision integers and sets of nonzero squares, the other with 128-bit
+products, a check of each factorization, and precomputed residue masks for the equivalent
+residue $(v-u)^2-4p^6$, $v=N/u$. The counts, with multiplicity over prime pairs and
+divisors, are as follows.
+\begin{center}
+\begin{tabular}{lr}\toprule
+Quantity & Count\\\midrule
+Primes $p\le5500$ with $4p^6>\clsXz$ & 414\\
+Unordered pairs & 85{,}491\\
+Divisors in the interval & 10{,}144{,}433\\
+Pairs and divisors giving $M>\clsXz$ & 9{,}393{,}302\\
+Candidates with no witness & 0\\\bottomrule
+\end{tabular}
+\end{center}
+The second program includes the lower endpoint $u=q^3-p^3$, which adds one divisor with
+$M=0$ for each pair and accounts for its count $10{,}229{,}924$ in the third row. Both
+programs agree on the candidates above the threshold and report no survivor. A complete
+replay of both is recorded in \ref{cls:it:c-replay}.
+\end{proof}
+
+\begin{proof}[Proof of \cref{cls:thm:six}]
+Suppose $\clsXz<x\le X_1$ and $\Cl(K)$ is annihilated by six.
+
+\emph{Split primes are large.} Since $4\cdot2000^6<\clsXz$, \cref{cls:cor:witness}(i)
+shows that every prime that splits in $K$ exceeds $2000$.
+
+\emph{There are at least $28$ split primes below $5500$.} Take $Y=5500$ and $V=V_0$ in
+\cref{cls:def:window}, and let $N_Y$ be the number of split primes $p\le Y$. Each of them
+satisfies $p^2>Y$, so \cref{cls:lem:baseline} applies. For any $L>0$ that bounds $L_p$
+from above for all primes $2000<p\le5500$ it gives
+\[
+ N_YL>S(Y)-(1+B_Y)\log x\ge S(Y)-(1+B_Y)\log X_1 .
+\]
+The rational enclosures of \cref{cls:rem:exact} give the two strict inequalities
+\begin{equation}\label{cls:eq:sixmargins}
+ \max_{2000<p\le5500}L_p<0.216,\qquad S(Y)-(1+B_Y)\log X_1>5.84 .
+\end{equation}
+For orientation, $\sum_{p\le Y}R_p\log p$ is about $65.682$, $B_Y$ about $0.04476$ and
+$C$ about $0.47355$. Since $27\cdot0.216=5.832<5.84$, we get $N_Y\ge28$.
+
+\emph{There are at most $18$ coefficients.} By \cref{cls:lem:norm} every split prime
+$p\le5500$ gives a norm equation
+\begin{equation}\label{cls:eq:norm6}
+   a_p^2+xb_p^2=4p^6,\qquad a_p\ge0,\quad b_p\ge1 .
+\end{equation}
+The exact inequality $4\cdot5500^6<19^2\clsXz$ gives $b_p\le18$. By the pigeonhole
+principle two distinct split primes $p<q\le5500$ have the same coefficient $b=b_p=b_q$.
+
+\emph{Eliminating the discriminant.} The integers $a_p<a_q$ have the same parity, since
+their squares differ by a multiple of four. Subtract the two equations
+\eqref{cls:eq:norm6} and put
+\[
+   u=(a_q-a_p)/2,\qquad v=(a_q+a_p)/2,\qquad N=q^6-p^6=uv .
+\]
+Then $0<u\le v$, $a_p=v-u$, and the positive integer
+\[
+   M=4p^6-(v-u)^2=xb^2
+\]
+is greater than $\clsXz$; in particular $4p^6>\clsXz$. Since $N=(q^3-p^3)(q^3+p^3)$ and
+$N/u-u$ decreases for $u>0$, positivity of $M$ is equivalent, for $u\le\sqrt N$, to
+$u>q^3-p^3$. Hence $(p,q,u)$ satisfies the hypotheses of \cref{cls:lem:sixpairs}, which
+supplies a prime $r\le151$ with $-M$ a nonzero square modulo $r$. As
+$4r^6<4\cdot2000^6<x$, this contradicts \cref{cls:cor:witness}(ii) with $c=b$.
+
+Hence no such $K$ exists, and \ref{cls:it:census} gives the statement on fields. The
+statement on orders now follows from \cite[Theorem~1.3(5)]{Aiken2026Boundary}, whose
+remaining condition has just been discharged. Table~A.6 of that paper, in the form of the
+authors' data file \cite{Ross2026Data}, has $1{,}236$ distinct entries with largest
+absolute value $43\,522\,752$, and its subset of fundamental discriminants agrees entry
+for entry with the list of $432$ fields; the other $1{,}236-432=804$ orders are nonmaximal.
+\end{proof}
+
+The $432$ field discriminants, with class number, number of ramified primes, largest prime
+factor and cofactor, are listed in \ref{cls:it:c-fields}. The $1{,}236$ order discriminants
+with their groups, a copy of \cite{Ross2026Data}, and the comparison of the two lists are
+in \ref{cls:it:c-orders}. The distribution of the fields by the number $\omega(x)$ of
+ramified primes is as follows.
+\begin{center}
+\begin{tabular}{lrrrrrrr}\toprule
+$\omega(\abs{D})$ & 2&3&4&5&6&7&Total\\\midrule
+Fields of exact exponent six&60&141&140&76&12&3&432\\\bottomrule
+\end{tabular}
+\end{center}
+The three fields with seven ramified primes have $D=-3\,892\,980$, $-4\,696\,692$ and
+$-5\,761\,140$. The largest value of $x/P^+(x)$ among the $432$ fields, where $P^+$
+denotes the largest prime factor, is $204{,}204$.
+
+\begin{remark}[Verification by reduced forms]\label{cls:rem:forms}
+Membership in both lists has been checked independently of the cited tables. A negative
+discriminant $\Delta$ of an order gives one proper ideal class for each reduced primitive
+positive definite binary quadratic form $(a,b,c)$ with $b^2-4ac=\Delta$; the forms are
+enumerated using $3a^2\le\abs{\Delta}$, and their number is the order of the class group.
+Powers are computed as follows. Change variables unimodularly until $a$ is prime to
+$\Delta$; such a representative exists by avoiding the bad residues at the primes dividing
+$\Delta$. Let $\omega$ generate the order, with minimal polynomial $f$. The form
+corresponds, up to the inverse convention, to the invertible ideal $(a,\omega-u)$ for a
+simple root $u$ of $f$ modulo $a$. Lift $u$ to a root $u_j$ of $f$ modulo $a^j$ by
+Hensel's rule. The ideal $(a^j,\omega-u_j)$ contains the $j$th power of $(a,\omega-u)$ and
+has the same norm, hence equals it, and reduction of its norm form tests principality. A
+finite abelian group annihilated by six whose order is divisible by six has exponent
+exactly six, and its order determines its structure, because its Sylow subgroups are
+elementary abelian. In this way the $432$ fields were recomputed through $x=5\,761\,140$
+\ref{cls:it:c-fields}, and the listed group orders and the sixth power of each of the
+$103\,830$ classes in the $1{,}236$ orders were verified \ref{cls:it:c-orders}.
+Exhaustiveness rests on \ref{cls:it:census}, on \cref{cls:thm:six} and on the conductor
+theorem of \cite{Aiken2026Boundary}.
+\end{remark}
+
+The delivered certificates for this subsection and for \cref{cls:rem:five} are the
+following.
+\begin{enumerate}[label=\textup{(C\arabic*)},series=clscert,leftmargin=*]
+\item\label{cls:it:c-zero} Rational enclosures for \eqref{cls:eq:sixmargins}, program and
+output:\\
+\artifact{grh-exponent-six-and-transfers/checks/zero_test.py}\\
+\artifact{grh-exponent-six-and-transfers/data/zero-test.txt}
+\item\label{cls:it:c-pairs} The two searches of \cref{cls:lem:sixpairs} and their outputs:\\
+\artifact{grh-exponent-six-and-transfers/checks/paired_norms.py}\\
+\artifact{grh-exponent-six-and-transfers/data/paired-norms.txt}\\
+\artifact{grh-exponent-six-and-transfers/checks/paired_norms.cpp}\\
+\artifact{grh-exponent-six-and-transfers/data/paired-norms-cpp.txt}
+\item\label{cls:it:c-replay} Replay of \ref{cls:it:c-zero} and \ref{cls:it:c-pairs}:\\
+\artifact{grh_transfer_synthesis_2026-11-25/validation/full_replay/summary.json}
+\item\label{cls:it:c-fields} The $432$ fields and the log of their recomputation:\\
+\artifact{grh_transfers/checks/exponent_six.csv}\\
+\artifact{grh_transfers/checks/exponent_six_run.txt}
+\item\label{cls:it:c-orders} The $1{,}236$ orders, the comparison with the field list, and
+the check of all class powers:\\
+\artifact{grh-exponent-six-and-transfers/data/orders-six.txt}\\
+\artifact{grh-exponent-six-and-transfers/data/order-check.txt}\\
+\artifact{grh-exponent-six-and-transfers/data/order-class-check.txt}
+\item\label{cls:it:c-five} The exponent-five enumeration of \cref{cls:rem:five}:\\
+\artifact{grh_transfers/checks/exponent_five.csv}\\
+\artifact{grh_transfers/checks/exponent_five_run.txt}
+\end{enumerate}
+
+\subsection{The exponent-seven census}\label{cls:sec:seven}
+\sources{exponent_seven_and_grh_transfers; grh-exponent-six-and-transfers}
+
+\begin{theorem}[Exponent-seven census; \stG]\label{cls:thm:seven}
+Exactly $33$ imaginary quadratic fields have ideal class group of exponent seven. For
+$31$ of them the group is cyclic of order seven. For the discriminants $-63499$ and
+$-118843$ it is $(\Z/7\Z)^2$. Exactly $40$ imaginary quadratic orders have proper ideal
+class group of exponent seven, of which seven are nonmaximal. The discriminants are those
+of \cref{cls:tab:seven}.
+\end{theorem}
+
+At exponent seven the pigeonhole argument of \cref{cls:thm:six} is not available: with
+the same test the forced number of split primes does not exceed the number of admissible
+coefficients. Two further ingredients replace it. The elimination is carried out for
+pairs of coefficients with a prescribed reduced ratio, and the upper bound for the total
+loss charges each group of mutually excluded coefficients only once.
+
+\subsubsection*{Arithmetic restrictions on split primes}
+Let $D=-x$ be a fundamental discriminant with $x>\clsXz$ and suppose $\Cl(K)$ has
+exponent seven. This group is a vector space over $\F_7$, so its order is odd. Genus theory
+gives $2$-rank $t-1$ for $t$ distinct prime discriminant factors, so there is just one
+ramified prime. The dyadic fundamental discriminants with this property are small, hence
+$x$ is an odd prime with $x\equiv3\pmod4$. In particular every prime $p\le7000$ is
+unramified. By \cref{cls:lem:norm} every split prime $p$ gives
+\begin{equation}\label{cls:eq:norm7}
+ a_p^2+xb_p^2=4p^7,\qquad a_p\ge0,\quad b_p\ge1 ,
+\end{equation}
+and by \cref{cls:cor:witness}(i) every prime $r$ with $4r^7\le\clsXz$, that is every
+prime $r\le691$, is inert. This includes $2$, so $D\equiv5\pmod8$ and $x\equiv3\pmod8$.
+
+\begin{lemma}[Finite exclusions; \stU]\label{cls:lem:sevenpairs}
+Let $K$ be as above and let $p\ne q$ be primes that split in $K$.
+\begin{enumerate}[label=\textup{(\roman*)}]
+\item If $p,q\le6500$, then $b_p\ne b_q$.
+\item If $p,q\le4200$, then the fraction $b_p/b_q$ in lowest terms does not have both
+numerator and denominator at most $12$.
+\end{enumerate}
+\end{lemma}
+
+\begin{proof}
+(i) Take $p<q$ and suppose $b_p=b_q$. By \eqref{cls:eq:norm7}, $a_p$ and $a_q$ have the
+same parity. Put $u=(a_q-a_p)/2$ and $v=(a_q+a_p)/2$. Then $uv=q^7-p^7$, $0<u\le v$, and
+$M=4p^7-(v-u)^2=xb_p^2>\clsXz$. For each pair of primes $693<p<q\le6500$ the program
+\ref{cls:it:c-equal} factors $q-p$ and $(q^7-p^7)/(q-p)$, enumerates all divisors $u\le\sqrt{q^7-p^7}$ of their product, and for
+every divisor with $M>\clsXz$ searches for an odd prime $r$ with $4r^7<\clsXz$ such that
+$-M$ is a nonzero square modulo $r$. By \cref{cls:cor:witness}(ii) such an $r$ excludes
+the candidate. There are $717$ eligible primes, $256{,}686$ pairs and $191{,}603$ divisor
+candidates above the threshold, and every candidate has a witness $r\le107$.
+
+(ii) Suppose the contrary. By (i) the two coefficients differ, so, naming the primes
+suitably, $b_p=ic$ and $b_q=jc$ with coprime integers $1\le i<j\le12$ and $c\ge1$. No
+order between $p$ and $q$ is assumed, and both assignments of the two primes occur in the
+enumeration. Put
+\[
+   d=i^2q^7-j^2p^7 .
+\]
+It is nonzero, since $p,q>693$. Multiplying the two equations \eqref{cls:eq:norm7} by
+$j^2$ and $i^2$ and subtracting shows that the nonnegative integers $ia_q$ and $ja_p$
+have squares differing by $4d$, so their sum and difference are even. The half sum $v$
+and the half absolute difference $u$ satisfy $uv=\abs{d}$. If $d>0$ then $ja_p=v-u$ and
+$ia_q=v+u$; if $d<0$ the two expressions are exchanged. For each divisor $u\le\sqrt{\abs d}$
+of $\abs d$ one tests divisibility by $j$ and $i$, recovers the two integers $a_p,a_q$, and
+keeps only the common integral values
+\[
+        M=\frac{4p^7-a_p^2}{i^2}=\frac{4q^7-a_q^2}{j^2}>\clsXz .
+\]
+Here $M=xc^2$, so \cref{cls:cor:witness}(ii) applies again: a prime $r>12$ with
+$4r^7<\clsXz$ for which $-M$ is a nonzero square excludes the candidate. The search is
+organized as follows.
+
+The program \ref{cls:it:c-ratio} first discards the cases with $4p^7\le\clsXz i^2$ or $4q^7\le\clsXz j^2$, which contradict
+\eqref{cls:eq:norm7}. It then tests the two norm equations simultaneously modulo
+\[
+             128,\ 81,\ 125,\ 49,\ 121,\ 13,\ 17,\ 19,\ 23 .
+\]
+For an odd base prime $r$ of one of these moduli choose a unit $w$ with $(-w/r)=-1$. Since
+$r$ is inert, $(-x/r)=-1$, so $x/w$ is a square modulo $r$, and a square root lifts to each
+$r^k$ by Hensel's lemma. At $2$ use $w=3$: a dyadic unit is a square precisely when it is
+$1\bmod8$, and $x\equiv3\pmod8$. Thus every possible $M=xc^2$ lies in the finite set
+$w(\Z/r^k\Z)^2$ of square multiples of $w$, including multiples of $r$. For each modulus a
+pair $(p,q)$ with ratio $i/j$ is kept if there is a residue $t$ in this set such that
+$4p^7-i^2t$ and $4q^7-j^2t$ are both squares; this condition is necessary, and the
+residues $t$ may be chosen separately at the different moduli. For each surviving pair
+every divisor $u\le\sqrt{\abs d}$ of $\abs d$ is tested as described. The results are as
+follows.
+\begin{center}
+\begin{tabular}{lrr}\toprule
+ & Equal coefficients & Distinct coefficients\\\midrule
+Prime pairs processed after preliminary tests & 256{,}686 & 1{,}963{,}144\\
+Divisor candidates giving a possible $M>\clsXz$ & 191{,}603 & 231{,}471\\
+Largest first witness $r$ & 107 & 97\\
+Candidates left & 0 & 0\\\bottomrule
+\end{tabular}
+\end{center}
+The first column counts unordered pairs. The second counts ordered prime pairs for each
+of the $45$ reduced ratios, with multiplicity over ratios; the output in
+\ref{cls:it:c-ratio} gives the counts for every ratio. The divisor searches use exact
+integer arithmetic and a proof-enabled build of GNU \code{factor}, and each list of
+factors is checked against its product. The residue masks and the sets of eligible pairs
+were reconstructed independently \ref{cls:it:c-review}.
+\end{proof}
+
+The use of ratios has the following effect. If one coefficient equals $2c$ and another
+$3c$, neither $c$ nor the discriminant need be known: the pair forces a factorization of
+$\abs{4q^7-9p^7}$, which depends only on the primes, and one of its divisors would have to
+produce an admissible $M$. A single calculation therefore rules out every value of $c$.
+The limit $12$ on the reduced multipliers is a choice of finite search size; the interval
+inequalities below show that it suffices.
+
+\subsubsection*{Charging the split primes}
+Let $\clsXz\le A<x\le U$ and put
+\[
+  \beta_p=\floor[\big]{\sqrt{4p^7/A}},\qquad \beta=\max_{p\le Y}\beta_p .
+\]
+Equation \eqref{cls:eq:norm7} implies $b_p\le\beta_p$. Let $k\in\set{1,12}$. Process the
+integers $1,\dots,\beta$ in order; at the first unassigned $b$ form a block consisting of
+all still unassigned members of $\set{b,2b,\dots,kb}$ that are at most $\beta$. Let $I$
+be the set of block minima, and define
+\begin{equation}\label{cls:eq:pack}
+ L(A,Y,k)=\sum_{b\in I}\ \max_{p\le Y,\ \beta_p\ge b}W_Y(p) .
+\end{equation}
+
+\begin{lemma}[Charge bound; \stU]\label{cls:lem:charge}
+Let $K$ be as above with $A<x$, and suppose that either $k=1$ and $Y\le6500$, or $k=12$
+and $Y\le4200$. Then
+\[
+   \sum_{\substack{p\le Y\\ p\text{ split}}}W_Y(p)\le L(A,Y,k).
+\]
+\end{lemma}
+
+\begin{proof}
+Every split prime $p\le Y$ has $b_p\le\beta_p\le\beta$, so $b_p$ lies in exactly one
+block. Two members of the same block have a ratio whose reduced numerator and denominator
+are at most $k$. By \cref{cls:lem:sevenpairs} at most one split prime $p\le Y$ has its
+coefficient $b_p$ in any given block; this includes the case of two equal coefficients.
+If the minimum of that block is $b$, the prime satisfies $\beta_p\ge b_p\ge b$, so its
+charge $W_Y(p)$ is at most the term of \eqref{cls:eq:pack} belonging to the block. Each
+term is a separate maximum, so the bound remains valid when the same prime realizes
+several maxima, and a block used by no split prime contributes a nonnegative term.
+\end{proof}
+
+\subsubsection*{Closing the interval}
+
+\begin{proof}[Proof of \cref{cls:thm:seven}]
+Let $K$ be as above. By \ref{cls:it:bound} and \cref{src:thm:dgrh},
+$x\le3.9\cdot10^{30}$. Every split prime exceeds $693$, and its square exceeds every $Y$
+used below, while no prime $p\le Y$ is ramified. Hence \cref{cls:lem:baseline} gives, for
+every window,
+\begin{equation}\label{cls:eq:seven}
+   \log x>S(Y)-\sum_{\substack{p\le Y\\ p\text{ split}}}W_Y(p).
+\end{equation}
+Each row of the following table excludes the interval $A<x\le U$. In the first four rows
+$A=4Y^7$: if $x>4Y^7$ then every prime up to $Y$ is inert by \cref{cls:cor:witness}(i),
+the sum in \eqref{cls:eq:seven} is empty, and $\log x>S(Y)>\log U$ contradicts $x\le U$.
+In the remaining rows the sum is bounded by $L(A,Y,k)$ by \cref{cls:lem:charge}, and
+$S(Y)-L(A,Y,k)>\log U$ gives the contradiction. The first six rows use the heights $V_0$,
+the last eight the heights $V_1$. The entries are outward roundings of the rational
+bounds of \cref{cls:rem:exact}: the charge is rounded up, the forced lower bound
+$S(Y)-L(A,Y,k)$ down, and $\log U$ up.
+\begin{center}
+\begin{tabular}{rcllrrr}\toprule
+$Y$ & $k$ & $A$ & $U$ & Charge $\le$ & Forced $\log x>$ & $\log U<$\\\midrule
+7000 & -- & $4\cdot7000^7$ & $3.9\cdot10^{30}$ & 0 & 76.072 & 70.439\\
+5000 & -- & $4\cdot5000^7$ & $4\cdot7000^7$ & 0 & 63.631 & 63.362\\
+4700 & -- & $4\cdot4700^7$ & $4\cdot5000^7$ & 0 & 61.571 & 61.007\\
+4600 & -- & $4\cdot4600^7$ & $4\cdot4700^7$ & 0 & 60.867 & 60.574\\
+6500 & 1 & $4\cdot10^{22}$ & $4\cdot4600^7$ & 12.055 & 61.084 & 60.423\\
+4900 & 1 & $10^{22}$ & $4\cdot10^{22}$ & 10.186 & 52.767 & 52.044\\
+4200 & 12 & $3.1\cdot10^{20}$ & $3.255\cdot10^{20}$ & 9.223 & 47.295 & 47.232\\
+4200 & 12 & $3.255\cdot10^{20}$ & $3.74325\cdot10^{20}$ & 9.001 & 47.518 & 47.372\\
+4200 & 12 & $3.74325\cdot10^{20}$ & $4.866225\cdot10^{20}$ & 8.368 & 48.151 & 47.635\\
+4200 & 12 & $4.866225\cdot10^{20}$ & $7.2993375\cdot10^{20}$ & 7.322 & 49.197 & 48.040\\
+4200 & 12 & $7.2993375\cdot10^{20}$ & $1.31388075\cdot10^{21}$ & 6.011 & 50.508 & 48.628\\
+4200 & 12 & $1.31388075\cdot10^{21}$ & $2.6277615\cdot10^{21}$ & 4.600 & 51.919 & 49.321\\
+4200 & 12 & $2.6277615\cdot10^{21}$ & $7.8832845\cdot10^{21}$ & 3.425 & 53.094 & 50.420\\
+4200 & 12 & $7.8832845\cdot10^{21}$ & $10^{22}$ & 2.120 & 54.399 & 50.657\\\bottomrule
+\end{tabular}
+\end{center}
+The fourteen intervals cover every $x$ with $\clsXz<x\le3.9\cdot10^{30}$. The closest
+comparison is the seventh row: at $A=\clsXz$ there are $193$ blocks, and even if every
+block uses the most expensive prime available to it the total charge is below $9.223$,
+while the inert baseline $S(4200)$ exceeds $56.518$; the difference exceeds the upper
+bound $47.232$ for $\log x$. A separate computation at 65-digit working precision
+reproduces the fourteen margins, the smallest being $0.0641$ \ref{cls:it:c-explicit}.
+
+Thus no field with $x>\clsXz$ has class group of exponent seven, and \ref{cls:it:census}
+gives the $33$ fields. For the orders apply
+\cite[Theorem~1.3(6) and Section~6]{Aiken2026Boundary}. Its conductor enumeration starts
+from the maximal orders whose class-group exponent divides seven; the fields of class
+number one are known, and the result on fields discharges the remaining completeness
+condition. This gives the seven nonmaximal orders of \cref{cls:tab:seven}.
+\end{proof}
+
+\begin{table}[ht]
+\centering
+\begin{tabular}{lp{0.70\linewidth}}\toprule
+Class group & $\abs{D}$ for the maximal orders\\\midrule
+$\Z/7\Z$ & 71, 151, 223, 251, 463, 467, 487, 587, 811, 827, 859, 1163, 1171, 1483, 1523,
+1627, 1787, 1987, 2011, 2083, 2179, 2251, 2467, 2707, 3019, 3067, 3187, 3907, 4603, 5107,
+5923 \\[3pt]
+$(\Z/7\Z)^2$ & 63499, 118843 \\\bottomrule
+\end{tabular}
+
+\medskip
+\begin{tabular}{rrr}\toprule
+Nonmaximal order discriminant & Field discriminant & Conductor\\\midrule
+$-284$ & $-71$ &2\\
+$-343$ & $-7$ &7\\
+$-604$ & $-151$ &2\\
+$-892$ & $-223$ &2\\
+$-1372$ & $-7$ &14\\
+$-1852$ & $-463$ &2\\
+$-1948$ & $-487$ &2\\\bottomrule
+\end{tabular}
+\caption{The $33$ field discriminants and the seven additional order discriminants of
+class-group exponent seven. In the lower table the order discriminant is the field
+discriminant times the square of the conductor, and the proper class group is cyclic of
+order seven.}\label{cls:tab:seven}
+\end{table}
+
+\begin{remark}[Verification of the lists]\label{cls:rem:sevenlists}
+The $38$ cyclic groups and two groups of rank two in \cref{cls:tab:seven} have together
+$364$ classes. A reduced-form computation as in \cref{cls:rem:forms} checks the seventh
+power of each class and records generators, together with field discriminant, conductor,
+class number and group for each order. A second computation enumerates all $59{,}421$
+negative order discriminants of absolute value at most $118{,}843$: of the $135$ orders
+whose class number is a nontrivial power of seven, exactly the $40$ recorded here have
+exponent seven. Both are in \ref{cls:it:c-sevenlists}.
+\end{remark}
+
+The delivered certificates for this subsection are the following.
+\begin{enumerate}[resume*=clscert]
+\item\label{cls:it:c-explicit} Rational enclosures for the fourteen rows of the table in
+the proof of \cref{cls:thm:seven}, their output, and the 65-digit recomputation:\\
+\artifact{exponent_seven_and_grh_transfers/checks/explicit_bound.py}\\
+\artifact{exponent_seven_and_grh_transfers/evidence/explicit-result.txt}\\
+\artifact{exponent_seven_and_grh_transfers/evidence/review_bounds.txt}
+\item\label{cls:it:c-equal} The search of \cref{cls:lem:sevenpairs}(i) and its output:\\
+\artifact{exponent_seven_and_grh_transfers/checks/equal_norms.py}\\
+\artifact{exponent_seven_and_grh_transfers/evidence/equal-result.txt}
+\item\label{cls:it:c-ratio} The search of \cref{cls:lem:sevenpairs}(ii), its output, and
+the record of the factoring program:\\
+\artifact{exponent_seven_and_grh_transfers/checks/ratio_norms.py}\\
+\artifact{exponent_seven_and_grh_transfers/evidence/ratio-result.txt}\\
+\artifact{exponent_seven_and_grh_transfers/evidence/factor_version.txt}
+\item\label{cls:it:c-review} Independent reconstruction of the residue masks and of a
+sample of the divisor searches:\\
+\artifact{exponent_seven_and_grh_transfers/evidence/review_masks.txt}\\
+\artifact{exponent_seven_and_grh_transfers/evidence/crosscheck_output.txt}
+\item\label{cls:it:c-sevenlists} The $40$ orders with generators, and the enumeration of
+all orders through $118{,}843$:\\
+\artifact{exponent_seven_and_grh_transfers/class_groups.csv}\\
+\artifact{exponent_seven_and_grh_transfers/evidence/small_range_output.txt}
+\end{enumerate}
+
+\subsection{Two general restrictions for even exponents}\label{cls:sec:genus}
+\sources{grh_transfers; grh_method_transfers_2026-11-25_1}
+
+The following two restrictions hold for every even exponent and are not used in the
+censuses above. For the exponent six they give necessary conditions on a field with
+$x>\clsXz$, in terms of the number and size of the prime factors of $x$; those conditions
+are contained in \cref{cls:thm:six}, which shows that no such field exists.
+
+\begin{lemma}[Largest prime factor; \stU]\label{cls:lem:pplus}
+In the situation of \cref{cls:lem:norm} suppose $j=2r$ is even. Then every prime factor
+of $x$ is less than $4p^r$.
+\end{lemma}
+
+\begin{proof}
+In \eqref{cls:eq:norm} we have $0\le a<2p^r$. The positive integers $2p^r-a$ and
+$2p^r+a$ have product $xb^2$, and each is strictly less than $4p^r$. Every prime factor
+of $x$ divides at least one of them.
+\end{proof}
+
+For the second restriction let $D<-4$, write $A=\Cl(K)$ and $t=\omega(x)$, and call a
+squarefree product of the prime ideals above the rational primes dividing $D$ a
+\emph{ramified ideal}. The genus field $G$ of $K$ is the compositum of the quadratic
+fields attached to the $t$ prime discriminants dividing $D$. It is multiquadratic of
+degree $2^t$ over $\Q$, unramified over $K$ at every finite prime, and
+$\Gal(G/K)\simeq A/A^2$ by the principal genus theorem \cite[\S6]{Cox2013Primes}.
+
+\begin{theorem}[Intermediate genus-field bound; \stG]\label{cls:thm:genus}
+Suppose the exponent of $A$ divides $2m$, where $m$ is a positive odd integer. Let
+$H\subseteq A[2]$ have dimension $k$ over $\F_2$, and assume that each class in $H$ has a
+ramified ideal representative of norm at most $R$. Then there is an abelian field
+$F/\Q$ containing $K$, of degree $n=2^{t-k}$ and absolute discriminant $x^{n/2}$, such
+that every unramified rational prime $p$ splitting completely in $F$ satisfies
+\begin{equation}\label{cls:eq:genusnorm}
+                         x\le4Rp^m .
+\end{equation}
+Consequently
+\begin{equation}\label{cls:eq:genusuniv}
+ x\le4R\bigl(2n\log x+\tfrac52n+5\bigr)^{2m}.
+\end{equation}
+The field $F$ and the inequality \eqref{cls:eq:genusnorm} are unconditional;
+\eqref{cls:eq:genusuniv} uses \cref{src:thm:dgrh}. Any sharper valid upper bound for the
+least completely split prime of $F$ may replace the one used in
+\eqref{cls:eq:genusuniv}.
+\end{theorem}
+
+\begin{proof}
+The map $A[2]\to A/A^2$ is an isomorphism. Indeed $A^2$ has exponent dividing the odd
+integer $m$, so it meets $A[2]$ trivially; and for every $a\in A$ the element $a^m$ lies
+in $A[2]$ while $a^{1-m}$ is a square. Regard $H$ as a subgroup of $\Gal(G/K)$ and put
+$F=G^H$. Then $K\subseteq F$, $[F:\Q]=n$, and $F/K$ is unramified, so the discriminant
+tower formula gives $\abs{\Delta_F}=\abs{D}^{[F:K]}=x^{n/2}$. Moreover $F/\Q$ is abelian
+because $G/\Q$ is.
+
+Let $p$ be as stated. Since $F\supseteq K$, the prime $p$ splits in $K$ and is prime to
+$D$. Choose a prime $\clsp$ of $K$ above $p$. Its Artin symbol in $\Gal(G/K)$ lies in $H$,
+so $[\clsp]=ha^2$ for some $h\in H$ and $a\in A$, and raising to the $m$th power gives
+$[\clsp]^m=h$. Choose a ramified ideal $J$ in the class $h$ with $\Nm(J)\le R$. Because
+$h^2=1$, the integral ideal $\clsp^mJ$ is principal, say $(\alpha)$. Its valuations at
+$\clsp$ and $\bar\clsp$ are $m$ and zero, since $J$ is supported at primes above $D$.
+Hence $\alpha\notin\Q$. Writing $\alpha=(a+b\sqrt D)/2$ with integers $a,b$ and $b\ne0$,
+norms give
+\[
+ p^m\Nm(J)=\Nm_{K/\Q}(\alpha)=\frac{a^2+xb^2}{4}\ge\frac x4 ,
+\]
+which proves \eqref{cls:eq:genusnorm}. The cost in the norm is $R$, not $R^m$, because the
+ramified ideal is inserted after the $m$th power is taken.
+
+The Dedekind zeta function of the abelian field $F$ is a product of Dirichlet
+$L$-functions, so \cref{src:thm:dgrh} gives its Riemann hypothesis. Theorem~5.1 of
+\cite{Bach1996Explicit} then provides an unramified prime with trivial Frobenius in
+$\Gal(F/\Q)$ and
+\[
+ p\le\bigl(4\log\abs{\Delta_F}+\tfrac52n+5\bigr)^2 .
+\]
+Substitution into \eqref{cls:eq:genusnorm} proves \eqref{cls:eq:genusuniv}.
+\end{proof}
+
+One may optimize the theorem by replacing $R$ with
+\[
+ R(H)=\max_{h\in H}\min\set{\Nm(J):J\text{ ramified},\ [J]=h}
+\]
+and varying $H$. The next
+lemma gives an explicit choice that avoids any search over subgroups. Let
+$q_1<\dots<q_t$ be the rational primes dividing $D$, with ramified prime ideals
+$\clsq_i$, and write $P_j=q_1\cdots q_j$, $P_0=1$.
+
+\begin{lemma}[Independence of ramified classes; \stU]\label{cls:lem:ramified}
+Under the exponent hypothesis of \cref{cls:thm:genus}, any selection of at most $t-2$
+ramified prime classes is independent in $A[2]$ and in $A/A^2$. Thus for $0\le k\le t-2$
+the subgroup generated by $[\clsq_1],\dots,[\clsq_k]$ has dimension $k$ and has ramified
+representatives of norm at most $P_k$.
+\end{lemma}
+
+\begin{proof}
+Each ramified class has order dividing two. Suppose a nonempty squarefree product $J$ of
+ramified prime ideals is principal, say $J=(\alpha)$. Conjugation fixes $J$, so
+$\bar\alpha/\alpha$ is a unit of $K$, and since $D<-4$ the units are $\pm1$. If
+$\bar\alpha=\alpha$, then $\alpha$ is rational and its valuations at all ramified primes
+are even, contrary to the definition of $J$. Otherwise $\alpha$ is a rational multiple of
+$\sqrt D$. Multiplication by a rational number changes every ramified valuation by an even
+integer. At each odd prime dividing $D$ the valuation of $\sqrt D$ is odd. At the prime
+above two its parity is that of $v_2(D)$, and a fundamental even discriminant has
+$v_2(D)=2$ or $3$. Therefore a nonempty relation is supported on all $t$ ramified primes
+when $D$ is odd or $v_2(D)=3$, and on all $t-1$ odd ramified primes when $v_2(D)=2$. No
+selection of at most $t-2$ ramified primes supports a relation. Finally, a class of order
+dividing two that lies in $A^2$ is trivial, since $A^2$ has odd exponent; this proves
+independence in the genus quotient as well. Every class of the stated subgroup has a
+representative formed from a subset of the first $k$ prime ideals, of norm at most $P_k$.
+\end{proof}
+
+\subsection{Open questions}\label{cls:sec:open}
+\sources{exponent_seven_and_grh_transfers; grh-exponent-six-and-transfers}
+
+\begin{enumerate}
+\item In the proof of \cref{cls:thm:seven} the reduced multipliers are limited to $12$.
+What is the smallest maximal reduced multiplier that suffices after optimizing the test
+function and the partition into blocks?
+\item Can the pair exclusions of \cref{cls:lem:sixpairs,cls:lem:sevenpairs} be verified by
+a shorter, formally checked arithmetic certificate? Neither census has been formalized;
+both rest on \cref{src:thm:dgrh}, on the published enumeration \ref{cls:it:census} and on
+the finite computations cited above.
+\item For exponents above eight the same norm equations can be tested, but a new initial
+census range, new prime weights and a new compatibility proof for pairs of equations would
+be needed. For which further exponents can the interval between an enumerated range and
+the bound of type \ref{cls:it:bound} be closed in this way?
+\end{enumerate}

@@ -1,0 +1,1071 @@
+\section{Lubin--Tate branches, jet recovery and Fleck congruences}\label{sec:lub}
+
+Berger and Sprang recover bivariate Taylor coefficients from substitutions along finitely
+many Lubin--Tate branches in their study of bounded functions on the
+Schneider--Teitelbaum character variety: Lemma~4.2 of \cite{BergerSprang2025Integer} gives a
+finite truncation by a compactness argument, and Proposition~4.4 there uses it to extract
+coefficients. This section computes the least possible truncation. The answer is one plus
+the pole order of an inverse interpolation denominator. Over the residue field it is a sum
+of contact orders; modulo $\pi^r$ it grows linearly in $r$ with a slope read from the
+deepest contact, up to a bounded, eventually periodic defect that vanishes exactly under a
+base-$p$ carry condition. The optimal choice of directions is the same at every precision.
+Specialized to the multiplicative group, the pole computation becomes a simultaneous
+congruence for weighted Fleck sums. The last subsection treats a related invariant of
+\cite[Definition~5.1]{BergerSprang2025Integer}, the coefficient depth $s_0(n)$, through an
+exact valuation formula for powers of the Lubin--Tate logarithm.
+
+All results of this section are local and algebraic. They use no hypothesis on zeros and
+do not depend on \cref{src:thm:dgrh}. The bounded-functions conjecture that motivates
+\cite{BergerSprang2025Integer} has been reported for quadratic extensions of $\Qp$
+\cite{BergerSprangSteingart2026Bounded} and announced for all finite extensions
+\cite{Colovic2026Ring}; the statements below neither rely on those results nor bear on
+them, with the single exception of the finiteness of $s_0(n)$ recalled in
+Section~\ref{lub:ssec:depth}.
+
+\subsection{Branches, jets and the interpolation threshold}\label{lub:ssec:threshold}
+\begingroup\raggedright\sources{grh_transfers_cycle_signings_and_lubin_tate; grh_transfers_lubin_tate_and_graph_towers; grh_prime_patterns_and_branch_precision; grh_method_transfers; grh_method_transfers_orthogonal_jets_2026-11-26}\endgroup
+
+Let $K/\Qp$ be a finite extension with ring of integers $\OO$, uniformizer $\pi$, valuation
+$v$ normalized by $v(\pi)=1$, residue field $k$ of size $q$, and put $e=v(p)$. Fix a
+Lubin--Tate formal $\OO$-module for $\pi$ in a coordinate $X$, and write $[b](X)$ for
+multiplication by $b\in\OO$. For $r\ge1$ put $A_r=\OO/\pi^r$, so that $A_1=k$. Let
+$B\subset\OO$ be a finite set of $d\ge1$ distinct \emph{directions}, and for $b\in B$ put
+\begin{gather*}
+ u_b(X)=[b](X)\bmod\pi^r\in XA_r[[X]],\\
+ P_b(X,Y)=\prod_{c\in B\setminus\set{b}}\bigl(Y-u_c(X)\bigr),\qquad
+ \Delta_b(X)=P_b\bigl(X,u_b(X)\bigr).
+\end{gather*}
+Let $H\in A_r[[X,Y]]$ be unknown. The \emph{observation} on the branch $b$ at precision
+$n_b$ is the residue $H(X,u_b(X))\bmod X^{n_b}$; precision $n$ retains exactly the
+coefficients of $X^0,\dots,X^{n-1}$. The desired output is the \emph{jet} of $H$: the list of its
+coefficients of total degree $<d$.
+
+\begin{lemma}[Contact of two branches]\label{lub:lem:contact}
+Let $b\ne c$ in $\OO$ and $h=v(b-c)$. In $\OO[[X]]$,
+\[
+ [b](X)-[c](X)=[\pi^h](X)\cdot U(X),\qquad U\in\OO[[X]]^\times ,
+\]
+and the reduction of $[\pi^h](X)$ modulo $\pi$ has order exactly $q^h$ in $X$. Consequently
+the reductions of the two branches over $k$ meet to order $q^{v(b-c)}$, and $u_b-u_c$ is a
+unit of $A_r((X))$ for every $r$.
+\end{lemma}
+\begin{proof}
+For the formal group law $\mathcal F$, the series $\mathcal F(S,T)-S$ equals $T$ times a
+power series with constant term $1$. Substituting $S=[c](X)$ and $T=[b-c](X)$ shows that
+$[b]-[c]$ is a unit multiple of $[b-c]$. If $b-c=\pi^hw$ with $w\in\OO^\times$, then
+$[b-c]=[w]\circ[\pi^h]$, and $[w](Z)$ is $Z$ times a unit because its linear coefficient is
+$w$. The reduction of $[\pi]$ has order $q$, and orders multiply under composition.
+Finally a series $X^sV+\pi V'$ with $V\in\OO[[X]]^\times$ is invertible in $A_r((X))$:
+factor off $X^sV$ and expand the remaining factor $1+\pi X^{-s}V^{-1}V'$ in a geometric
+series, which is finite because $\pi$ is nilpotent in $A_r$.
+\end{proof}
+
+By Lemma~\ref{lub:lem:contact}, $\Delta_b$ is a unit of $A_r((X))$. Define the \emph{inverse pole
+order}
+\begin{equation}\label{lub:eq:pole}
+ t_b(r)=\min\set{t\ge0:\ X^t/\Delta_b\in A_r[[X]]}.
+\end{equation}
+For $d=1$ the empty product is $1$ and $t_b(r)=0$.
+
+\begin{proposition}[Exact componentwise recovery threshold; \stU]\label{lub:prop:threshold}
+The observations $H(X,u_b(X))\bmod X^{n_b}$, $b\in B$, determine the jet of every
+$H\in A_r[[X,Y]]$ if and only if
+\[
+ n_b\ge1+t_b(r)\qquad\text{for every }b\in B.
+\]
+In particular the least common precision is $1+\max_{b\in B}t_b(r)$.
+\end{proposition}
+\begin{proof}
+Put $P=\prod_{b\in B}(Y-u_b(X))$. Division by this monic distinguished polynomial in $Y$
+over the complete local ring $A_r[[X]]$ gives a remainder $R$ of $Y$-degree $<d$. Since
+every $u_b$ has zero constant term, $P\in(X,Y)^d$, so $H$ and $R$ have the same jet. Over
+$A_r((X))$ Lagrange interpolation is valid because every $u_b-u_c$ is a unit:
+\begin{equation}\label{lub:eq:lagrange}
+ R(X,Y)=\sum_{b\in B}\frac{H(X,u_b(X))}{\Delta_b(X)}\,P_b(X,Y).
+\end{equation}
+If all observations vanish and $n_b\ge1+t_b(r)$ for every $b$, each quotient in
+\eqref{lub:eq:lagrange} belongs to $XA_r[[X]]$. Since $P_b\in(X,Y)^{d-1}$, the remainder
+belongs to $(X,Y)^d$ and the jet of $H$ vanishes.
+
+For necessity fix $b$ and set $g_b=X^{t_b(r)}/\Delta_b\in A_r[[X]]$. Its constant
+coefficient is nonzero: otherwise $g_b$ would be divisible by $X$, contradicting the
+minimality of $t_b(r)$ (for $t_b(r)=0$ the claim is immediate from $g_b\Delta_b=1$). The
+series
+\[
+ H_b(X,Y)=g_b(X)\,P_b(X,Y)
+\]
+has the nonzero coefficient $g_b(0)$ at $Y^{d-1}$, vanishes on every other branch, and
+evaluates to $X^{t_b(r)}$ on the branch $b$. If $n_b\le t_b(r)$, all its observations
+vanish while its jet does not, so recovery fails, even with exact data on every other
+branch. The argument needs only $g_b(0)\ne0$, not that $g_b(0)$ be a unit, and so remains
+valid in the presence of nilpotents in $A_r$.
+\end{proof}
+
+The rest of the analysis concerns $t_b(r)$ for one fixed $b\in B$, with $d\ge2$. Write
+\begin{equation}\label{lub:eq:contacts}
+\begin{gathered}
+ h_c=v(b-c)\quad(c\in B\setminus\set{b}),\qquad
+ \omega=\omega_b=\sum_{c\ne b}q^{h_c},\\
+ \nu_j=\#\set{c\ne b: h_c=j},\qquad
+ m_j=\#\set{c\ne b: h_c\ge j},
+\end{gathered}
+\end{equation}
+and call the multiset $\set{h_c}$ the \emph{contact multiset} of $b$. In the Lubin--Tate
+coordinate with
+\begin{equation}\label{lub:eq:coordinate}
+ [\pi](X)=\pi X+X^q
+\end{equation}
+define the polynomials
+\begin{equation}\label{lub:eq:iterates}
+\begin{gathered}
+ \phi_0=X,\qquad \phi_h=\pi\phi_{h-1}+\phi_{h-1}^{\,q}=[\pi^h](X)\quad(h\ge1),\\
+ \Phi_j=\phi_j/\phi_{j-1}=\pi+\phi_{j-1}^{\,q-1},\qquad D_j=(q-1)q^{j-1}\quad(j\ge1).
+\end{gathered}
+\end{equation}
+Each $\Phi_j$ is monic of degree $D_j$, has constant term $\pi$, and is congruent to
+$X^{D_j}$ modulo $\pi$. For a monic polynomial $Q\in\OO[X]$ with
+$Q\equiv X^{\deg Q}\pmod\pi$, write $\tau_r(Q)$ for the least $n\ge0$ such that $X^n=0$ in
+$A_r[X]/(Q)$; thus $\tau_r(1)=0$.
+
+\begin{lemma}[Normal form of the denominator]\label{lub:lem:normal}
+\begin{enumerate}[label=\textup{(\roman*)}]
+\item In any Lubin--Tate coordinate, $\Delta_b$ is the product of a unit of $A_r[[X]]$ and
+the reduction of $\prod_{c\ne b}[\pi^{h_c}](X)$, and $t_b(r)$ is the least $t$ for which
+$X^t/\prod_{c\ne b}[\pi^{h_c}](X)\in A_r[[X]]$. This number is the same for all Lubin--Tate
+formal $\OO$-modules for $\pi$ and all their integral coordinates. For fixed $K$ and $\pi$
+it therefore depends only on $r$ and on the contact multiset, not on the unit parts of the
+differences $b-c$.
+\item In the coordinate \eqref{lub:eq:coordinate},
+\begin{equation}\label{lub:eq:denominator}
+ P^{(b)}(X):=\prod_{c\ne b}\phi_{h_c}(X)=X^{d-1}\prod_{j\ge1}\Phi_j(X)^{m_j},
+ \qquad \deg P^{(b)}=d-1+\sum_{j\ge1}D_jm_j=\omega .
+\end{equation}
+\item If $Q\in\OO[X]$ is monic with $Q\equiv X^{\deg Q}\pmod\pi$, then
+$\min\set{t:\ X^t/Q\in A_r[[X]]}=\tau_r(Q)$. In particular $t_b(r)=\tau_r(P^{(b)})$.
+If $Q$ divides a second such polynomial $Q'$, then $\tau_r(Q)\le\tau_r(Q')$.
+\end{enumerate}
+\end{lemma}
+\begin{proof}
+(i) The first assertion is Lemma~\ref{lub:lem:contact}. Multiplication by a unit power series
+preserves the least exponent of every nonzero Laurent series over $A_r$: the coefficient at
+that exponent is multiplied by the unit constant term and remains nonzero, also when it is
+nilpotent. This gives the description of $t_b(r)$. By the theorem of Lubin and Tate
+\cite{LubinTate1965Formal}, any two Lubin--Tate formal $\OO$-modules for $\pi$ are
+isomorphic over $\OO$; more generally let $\theta(X)=uX+\cdots$, $u\in\OO^\times$, be an
+integral change of coordinate conjugating one formal module into the other. Then
+$\theta(S)-\theta(T)=(S-T)\Theta(S,T)$ with $\Theta(0,0)=u$, so every transformed branch
+difference is the old difference, after the invertible substitution
+$X\mapsto\theta^{-1}(X)$, times a unit. This substitution is an automorphism of $A_r((X))$
+preserving every lattice $X^jA_r[[X]]$, hence the least exponent of a Laurent series. The
+total-degree filtration of $A_r[[X,Y]]$ is preserved as well.
+
+(ii) The identity $\phi_j=\phi_{j-1}\Phi_j$ gives $\phi_h=X\prod_{j=1}^h\Phi_j$, and
+$q^h=1+\sum_{j=1}^hD_j$.
+
+(iii) Since $Q$ is a unit of $A_r((X))$, the condition $X^t/Q\in A_r[[X]]$ says that
+$X^t\in QA_r[[X]]$. Division by the monic polynomial $Q$ gives the same remainder in the
+polynomial ring $A_r[X]$ and, by the uniqueness in Weierstrass division, in $A_r[[X]]$. So
+the condition says that $X^t$ vanishes in $A_r[X]/(Q)$. If $Q\mid Q'$, then $X^n\in(Q')$
+implies $X^n\in(Q)$.
+\end{proof}
+
+Part (iii) yields a terminating exact algorithm for $t_b(r)$: start with $1$, multiply by
+$X$, and reduce modulo $P^{(b)}$ and $\pi^r$ until the remainder is zero.
+
+\subsection{The sharp pole bound and the carry criterion}\label{lub:ssec:pole}
+\begingroup\raggedright\sources{grh_transfers_cycle_signings_and_lubin_tate; grh_transfers_lubin_tate_and_graph_towers; grh_prime_patterns_and_branch_precision; grh_method_transfers; grh_method_transfers_orthogonal_jets_2026-11-26}\endgroup
+
+\begin{lemma}[The leading Newton face]\label{lub:lem:face}
+For $a\ge1$ write $\phi_a=\sum_jc_{a,j}X^j$. The polynomial $\phi_a$ is monic of degree
+$q^a$ and reduces to $X^{q^a}$ modulo $\pi$. Every nonzero lower coefficient satisfies
+\[
+ q^a-j\le D_a\,v(c_{a,j}).
+\]
+Among the lower coefficients equality occurs only at $j=q^{a-1}$, where
+$c_{a,j}\equiv\pi\pmod{\pi^2}$. Moreover every exponent occurring in $\phi_a$ is congruent
+to $1$ modulo $q-1$.
+\end{lemma}
+\begin{proof}
+The case $a=1$ is immediate from \eqref{lub:eq:coordinate}. For the inductive step note
+that $D_a=qD_{a-1}$ and use the recurrence \eqref{lub:eq:iterates}. In a nonleading product
+monomial from $\phi_{a-1}^{\,q}$, the total degree deficit from $q^a$ is at most
+$kD_{a-1}$, where $k\ge1$ is the sum of the valuations of the chosen coefficients.
+Multinomial coefficients can only increase the valuation. Hence such a term lies strictly
+above the proposed face of slope $D_a$.
+
+A monomial $\pi c_{a-1,j}X^j$ from the first summand has valuation $1+k$, where
+$k=v(c_{a-1,j})$, and deficit
+\[
+ q^a-j=D_a+(q^{a-1}-j)\le D_a+kD_{a-1}.
+\]
+This is strictly smaller than $(1+k)D_a$ when $k>0$. When $k=0$ the monomial is precisely
+$\pi X^{q^{a-1}}$. All other contributions at that exponent have valuation at least two, so
+they cannot cancel its residue after division by $\pi$. Adding coefficients elsewhere can
+only increase their valuations. The congruence of exponents follows by the same induction,
+since a product of $q$ monomials with exponents congruent to $1$ has exponent congruent to
+$q\equiv1$ modulo $q-1$.
+\end{proof}
+
+In particular
+\begin{equation}\label{lub:eq:modsquare}
+ \phi_a(X)\equiv X^{q^a}+\pi X^{q^{a-1}}\pmod{\pi^2}\qquad(a\ge1),
+\end{equation}
+which can also be seen directly: $\phi_{a-1}\equiv X^{q^{a-1}}\bmod\pi$, and replacing
+$\phi_{a-1}$ by this monomial inside the $q$th power is valid modulo $\pi^2$ because
+$\pi q\in\pi^2\OO$.
+
+\begin{theorem}[Sharp pole bound and carry criterion; \stU]\label{lub:thm:pole}
+Fix $b\in B$, $d\ge2$, and let $h_*=\max_{c\ne b}h_c$ be the deepest contact.
+\begin{enumerate}[label=\textup{(\alph*)}]
+\item If $h_*=0$, then $t_b(r)=\omega=d-1$ for every $r\ge1$.
+\item If $h_*\ge1$, put
+\[
+ D=D_{h_*}=(q-1)q^{h_*-1},\qquad m=\nu_{h_*}=\#\set{c\ne b:\ h_c=h_*}.
+\]
+Then for every $r\ge1$
+\begin{equation}\label{lub:eq:polebound}
+ \omega+\max(0,r-m)\,D\ \le\ t_b(r)\ \le\ \omega+(r-1)D,
+\end{equation}
+and
+\begin{equation}\label{lub:eq:carry}
+ t_b(r)=\omega+(r-1)D\quad\Longleftrightarrow\quad
+ p\nmid\binom{m+r-2}{r-1},
+\end{equation}
+equivalently, if and only if adding $m-1$ and $r-1$ in base $p$ produces no carry.
+\end{enumerate}
+In particular $t_b(1)=\omega$ in all cases.
+\end{theorem}
+\begin{proof}
+By Lemma~\ref{lub:lem:normal} we compute with $P^{(b)}=\prod_{c\ne b}\phi_{h_c}$ in the
+coordinate \eqref{lub:eq:coordinate}. If $h_*=0$, every factor is $X$ and
+$P^{(b)}=X^{d-1}$, which proves (a).
+
+Let $h_*\ge1$. For $a\ge1$ write $\phi_a=X^{q^a}(1+G_a)$, where $G_a$ is a polynomial in
+$X^{-1}$ without constant term, all of whose coefficients are divisible by $\pi$; put
+$G_0=0$. Modulo $\pi^r$,
+\[
+ \frac1{P^{(b)}}=X^{-\omega}\prod_{c\ne b}(1+G_{h_c})^{-1},\qquad
+ (1+G_a)^{-1}=\sum_{k=0}^{r-1}(-G_a)^k .
+\]
+By Lemma~\ref{lub:lem:face}, every monomial $cX^{-\delta}$ of $G_a$ satisfies
+$\delta\le D_a\,v(c)$. Since $D_a<D$ for $a<h_*$ and $v(c)\ge1$, all monomials of $G_a$
+with $a<h_*$ satisfy the strict inequality $\delta<D\,v(c)$. For $a=h_*$ the same strict
+inequality holds for every monomial of $G_{h_*}$ except one, $c_*X^{-D}$ with
+$c_*\equiv\pi\pmod{\pi^2}$.
+
+Expand the product. Each term is an integer multiple of a product of monomials of the
+$G_{h_c}$, say $k$ copies of $c_*X^{-D}$ and further monomials $c_iX^{-\delta_i}$ of the
+strict kind. The resulting monomial $cX^{-\delta}$ has $\delta\le D\,v(c)$, with strict
+inequality as soon as one strict monomial occurs. A term that is nonzero modulo $\pi^r$ has
+$v(c)\le r-1$, so the inverse has no nonzero exponent below $-\omega-(r-1)D$. This is the
+upper bound in \eqref{lub:eq:polebound}. A term at exactly that exponent which survives
+modulo $\pi^r$ contains no strict monomial and has $k=r-1$. The coefficient of
+$X^{-\omega-(r-1)D}$ is therefore the coefficient supplied by
+$X^{-\omega}(1+c_*X^{-D})^{-m}$, namely
+\begin{equation}\label{lub:eq:topcoefficient}
+ (-c_*)^{r-1}\binom{m+r-2}{r-1}\equiv(-\pi)^{r-1}\binom{m+r-2}{r-1}\pmod{\pi^r}.
+\end{equation}
+It is nonzero in $A_r$ exactly when the integer binomial coefficient is prime to $p$. This
+proves \eqref{lub:eq:carry}. The carry formulation is Kummer's criterion: by
+Legendre's formula $v_p(n!)=(n-s_p(n))/(p-1)$, with $s_p$ the sum of base-$p$ digits,
+\[
+ v_p\binom{x+y}{x}=\frac{s_p(x)+s_p(y)-s_p(x+y)}{p-1},
+\]
+and this vanishes exactly when the addition of $x$ and $y$ has no carry.
+
+For the lower bound put $a_k=\binom{m+k-1}{k}\bmod p$. The generating series of the $a_k$
+is $(1-z)^{-m}\in\F_p[[z]]$. The recurrence obtained from multiplication by $(1-z)^m$,
+whose constant and leading coefficients are nonzero, forbids $m$ consecutive zeros among
+the $a_k$: such a block would force all later coefficients to vanish, while $(1-z)^{-m}$ is
+not a polynomial. Since $a_0=1$, some $j$ with $\max(0,r-m)\le j\le r-1$ has $a_j\ne0$.
+The pole order is weakly increasing in the precision, because integrality modulo $\pi^r$
+implies integrality modulo $\pi^{j+1}$. With \eqref{lub:eq:carry} at precision $j+1$ this
+gives $t_b(r)\ge t_b(j+1)=\omega+jD$.
+\end{proof}
+
+\begin{corollary}[Residue field; unique deepest contact; \stU]\label{lub:cor:unique}
+\begin{enumerate}[label=\textup{(\alph*)}]
+\item Let $r=1$, so that $A_1=k$. The observations determine the jet of every
+$H\in k[[X,Y]]$ if and only if $n_b\ge1+\omega_b$ for every $b\in B$. Here
+$\omega_b=\sum_{c\ne b}q^{v(b-c)}$ is the sum of the contact orders of the branch $b$
+with the other branches. The least common precision is $1+\max_b\omega_b$.
+\item If the deepest contact of $b$ is unique \textup{(}$m=1$\textup{)}, then
+$t_b(r)=\omega+(r-1)D$ for every $r$. In particular, for exactly two branches with
+$h=v(b-c)\ge1$,
+\[
+ t_b(r)=q^h+(r-1)(q-1)q^{h-1},
+\]
+and both branches have the same least precision $1+t_b(r)$.
+\item If $h_*\ge1$, then $t_b(r)-Dr$ is bounded and $\lim_{r\to\infty}t_b(r)/r=D$. Thus the
+necessary branch depth grows with $r$ as soon as two directions are congruent modulo $\pi$.
+\end{enumerate}
+\end{corollary}
+\begin{proof}
+Combine Proposition~\ref{lub:prop:threshold} with Theorem~\ref{lub:thm:pole}; in (b) the binomial coefficient
+in \eqref{lub:eq:carry} equals $1$.
+\end{proof}
+
+\begin{remark}[The weaker slope $q^{h_*}-1$]\label{lub:rem:older}
+Allowing each power of $\pi$ in the geometric expansion of Lemma~\ref{lub:lem:contact} to add at
+most $q^{h_*}-1$ to the pole order gives the cruder estimate
+$t_b(r)\le\omega+(r-1)(q^{h_*}-1)$. Since $D\le q^{h_*}-1$ with equality exactly for
+$h_*=1$, Theorem~\ref{lub:thm:pole} shows that this estimate is attained in precisely the
+following cases: always for $r=1$; always for $h_*=0$; for $r>1$ and $h_*=1$ exactly when
+$(m-1)+(r-1)$ has no carry in base $p$; and never for $r>1$ and $h_*\ge2$.
+\end{remark}
+
+\begin{remark}[Frequency of equality]\label{lub:rem:frequency}
+If the base-$p$ digits of $m-1$ are $a_0,\dots,a_{\ell-1}$, the upper endpoint in
+\eqref{lub:eq:polebound} is attained for a proportion $\prod_{i=0}^{\ell-1}(p-a_i)/p^{\ell}$
+of the precisions $r$ in every block of $p^{\ell}$ consecutive values, by independent digit
+choices in $r-1$.
+\end{remark}
+
+\begin{remark}[A classical special case]\label{lub:rem:classical}
+For $K=\Qp$, $\pi=p$ and two directions with contact depth $h\ge1$, the multiplicative
+coordinate makes the denominator associated to $(1+X)^{p^h}-1$. By
+Lemma~\ref{lub:lem:normal}(iii) the condition $X^n/\Delta_b\in A_r[[X]]$ says that $X^n=0$ in
+the quotient by this polynomial, which is $(\Z/p^r)[T]/(T^{p^h}-1)$ via $X=T-1$. The value
+$p^h+(r-1)(p-1)p^{h-1}$ of Corollary~\ref{lub:cor:unique}(b) agrees with the classical nilpotency
+index of the augmentation ideal of this cyclic group ring, which follows from results of
+Weisman and Wilson as presented in \cite[Theorem~4.7]{ClarkSchauz2022Functional}. More than
+two branches give products of division polynomials in the same variable, with
+multiplicities, and allow the cancellation in \eqref{lub:eq:carry}.
+\end{remark}
+
+\subsection{Exact pole orders below saturation}\label{lub:ssec:exact}
+\begingroup\raggedright\sources{grh_prime_patterns_and_branch_precision; grh_transfers_lubin_tate_and_graph_towers; grh_method_transfers; grh_method_transfers_orthogonal_jets_2026-11-26}\endgroup
+
+When the carry criterion \eqref{lub:eq:carry} fails, the shallower contacts can affect the
+exact pole order. The next theorem computes it at every precision from one finite ring
+that does not depend on $r$.
+
+Keep the notation of Theorem~\ref{lub:thm:pole} with $h_*\ge1$ and put $\kappa=q^{h_*-1}$, so that
+$D=(q-1)\kappa$. By the last assertion of Lemma~\ref{lub:lem:face},
+\begin{equation}\label{lub:eq:F}
+ X^{-\omega}\prod_{c\ne b}\phi_{h_c}(X)=F\bigl(X^{-(q-1)}\bigr),\qquad F\in\OO[z],\quad F(0)=1 .
+\end{equation}
+In particular the defect $\omega+(r-1)D-t_b(r)$ is always divisible by $q-1$.
+
+\begin{theorem}[The exact defect at every precision; \stU]\label{lub:thm:defect}
+Let $h_*\ge1$. There is a bounded, eventually periodic sequence of integers $\eta_r$ with
+\[
+ t_b(r)=\omega+(q-1)\bigl(\kappa(r-1)-\eta_r\bigr),\qquad 0\le\eta_r\le(m-1)\kappa .
+\]
+Its exact values, including the initial ones, are computed as follows. Adjoin $\rho$ with
+$\rho^{\kappa}=\pi$, put $N=m\kappa$ and $S=\OO[\rho]/(\rho^N)$, with $v_\rho(\rho)=1$ and
+the convention that the zero class of $S$ has valuation $+\infty$. Set
+\[
+ G(z)=F(z/\rho),\qquad \frac1{G(z)}=\sum_{j\ge0}\gamma_jz^j\ \text{ in }S[[z]],\qquad
+ \gamma_j=0\ (j<0).
+\]
+Then $G$ has coefficients in $\OO[\rho]$, and $\eta_r$ is the least integer
+$i\in[0,(m-1)\kappa]$ satisfying
+\begin{equation}\label{lub:eq:survival}
+ v_\rho\bigl(\gamma_{\kappa(r-1)-i}\bigr)<\kappa+i .
+\end{equation}
+Moreover, with
+\[
+ N_1=mN,\qquad b_0=\ceil{m/e},\qquad
+ \Theta=2p^{\,b_0+\floor{\log_p\max\set{1,N_1-1}}},
+\]
+one has $\eta_{r+\Theta}=\eta_r$ for all $r$ with $\kappa(r-m)\ge\deg C$, where
+$C\in S[z]$ is the polynomial \eqref{lub:eq:C} below. The period $\Theta$ is explicit and
+possibly not minimal.
+\end{theorem}
+\begin{proof}
+The ring $\OO[\rho]$ is a discrete valuation ring with uniformizer $\rho$ and
+$v_\rho(\pi)=\kappa$. By the degree allowance established in the proof of
+Theorem~\ref{lub:thm:pole}, a monomial $cz^j$ of $F$ corresponds to $cX^{-(q-1)j}$ with
+$(q-1)j\le D\,v(c)$, that is $\kappa\,v(c)\ge j$. So $G$ is integral. On reducing $G$
+modulo $\rho$, only the terms with $\kappa\,v(c)=j$ survive; these are the constant term
+and the products of the monomials $c_*z^{\kappa}$ from the $m$ deepest factors, and
+$c_*\rho^{-\kappa}=c_*/\pi\equiv1$. Thus
+\begin{equation}\label{lub:eq:Gmod}
+ G(z)\equiv(1+z^{\kappa})^m\pmod\rho .
+\end{equation}
+Write $F^{-1}=\sum_j\theta_jz^j$ with $\theta_j\in\OO$. Then $\gamma_j$ is the class of
+$\theta_j\rho^{-j}$, and by \eqref{lub:eq:F} and Lemma~\ref{lub:lem:normal}
+\[
+ t_b(r)=\omega+(q-1)\max\set{j:\ v(\theta_j)<r}.
+\]
+At $j=\kappa(r-1)-i\ge0$ the condition $v(\theta_j)<r$ is equivalent to
+$v_\rho(\theta_j\rho^{-j})<\kappa+i$, since $v(\theta_j)$ is an integer. All these cutoffs
+are at most $N$, so the test can be made in $S$. By \eqref{lub:eq:polebound} the largest
+surviving index $j$ lies in the range $\kappa(r-1)-(m-1)\kappa\le j\le\kappa(r-1)$. This
+proves the formula for $t_b(r)$, the bounds on $\eta_r$ and the test \eqref{lub:eq:survival}.
+
+For the period put $E=G-(1+z^{\kappa})^m\in S[z]$ and
+\begin{equation}\label{lub:eq:C}
+ C(z)=\sum_{k=0}^{N-1}(-E)^k(1+z^{\kappa})^{m(N-1-k)} .
+\end{equation}
+By \eqref{lub:eq:Gmod} all coefficients of $E$ lie in $\rho S$, so $E^N=0$ and
+$G^{-1}=C(z)/(1+z^{\kappa})^{N_1}$ in $S[[z]]$. For $j\ge\deg C$, the coefficient
+$\gamma_j$ is a finite $S$-linear combination of the shifted sequences
+$(-1)^u\binom{u+N_1-1}{N_1-1}$, indexed by $u=(j-k)/\kappa$ for the monomials
+$z^k$ of $C$ with $k\equiv j\bmod\kappa$. Now $p^{b_0}=0$ in $S$, because
+$v_\rho(p)=\kappa e$. For $1\le l\le N_1-1$ the identity
+$l\binom{\Theta}{l}=\Theta\binom{\Theta-1}{l-1}$ gives $p^{b_0}\mid\binom{\Theta}{l}$.
+Vandermonde's identity then shows that the displayed signed binomial sequence has period
+dividing $\Theta$ in $S$; this includes $N_1=1$, where the evenness of $\Theta$
+suffices. Hence $\gamma_{j+\kappa\Theta}=\gamma_j$ for $j\ge\deg C$, and
+$\eta_{r+\Theta}=\eta_r$ whenever $\kappa(r-1)-(m-1)\kappa\ge\deg C$.
+\end{proof}
+
+\begin{remark}[Computation over the original local ring]\label{lub:rem:original}
+The auxiliary root $\rho$ can be removed. Define $k_j=\ceil{j/\kappa}$,
+$c_i=[z^i]F/\pi^{k_i}$ and $\beta_j=\theta_j/\pi^{k_j}$. Dividing the recurrence
+$[z^j](FF^{-1})=0$ by $\pi^{k_j}$ gives $\beta_0=1$ and, for $j>0$,
+\[
+ \beta_j=-\sum_{i=1}^{\min(j,\deg F)}c_i\,\beta_{j-i}\,\pi^{k_i+k_{j-i}-k_j}\pmod{\pi^m}.
+\]
+The exponents of $\pi$ in this expression are zero or one. For $j=\kappa(r-1)-i\ge0$ the
+survival test \eqref{lub:eq:survival} becomes
+$\beta_j\not\equiv0\bmod\pi^{\floor{i/\kappa}+1}$. The recurrence computes every precision
+in the fixed ring $\OO/\pi^m$.
+\end{remark}
+
+In two situations the defect has a closed form.
+
+\begin{proposition}[All precisions when every contact has depth at most one; \stU]\label{lub:prop:depthone}
+Suppose $h_*=1$, so that every $h_c\in\set{0,1}$ and $m\ge1$ counts the contacts of depth
+one. Set
+\[
+ K_m(r)=\max\Bigl\{0\le k<r:\ k+e\,v_p\binom{m+k-1}{k}<r\Bigr\}.
+\]
+Then
+\begin{equation}\label{lub:eq:depthone}
+ t_b(r)=\omega+(q-1)K_m(r)\qquad(r\ge1).
+\end{equation}
+\end{proposition}
+\begin{proof}
+In the coordinate \eqref{lub:eq:coordinate} the unit-free denominator is exactly
+$X^{\omega}(1+\pi X^{-(q-1)})^m$. Its reciprocal modulo $\pi^r$ is
+\[
+ X^{-\omega}\sum_{k=0}^{r-1}(-1)^k\binom{m+k-1}{k}\pi^kX^{-k(q-1)} .
+\]
+Distinct $k$ give distinct exponents. The coefficient at index $k$ has valuation
+$k+e\,v_p\binom{m+k-1}{k}$, so it survives exactly under the condition in the maximum; the
+candidate set contains $k=0$. No cancellation between different $k$ is possible.
+\end{proof}
+
+\begin{corollary}[An explicit period at depth one; \stU]\label{lub:cor:depthoneperiod}
+In Proposition~\ref{lub:prop:depthone} let $m\ge2$, let $p^{\sigma}$ be the least power of $p$ with
+$p^{\sigma}\ge m$, and put
+\[
+ \ell=\floor{(p^{\sigma}-1)/e},\qquad \vartheta=\ell+v_p\bigl((m-1)!\bigr)+1 .
+\]
+Then $K_m(r)\ge\max(0,r-p^{\sigma})$ for every $r\ge1$, and for $r\ge p^{\sigma}$
+\[
+ K_m(r+p^{\vartheta})=K_m(r)+p^{\vartheta},\qquad\text{so that}\qquad
+ t_b(r+p^{\vartheta})=t_b(r)+(q-1)p^{\vartheta}.
+\]
+For $m=1$ one has $K_1(r)=r-1$ from the start.
+\end{corollary}
+\begin{proof}
+Every $k$ divisible by $p^{\sigma}$ has no carry when added to $m-1<p^{\sigma}$, so its
+binomial coefficient is a $p$-adic unit. The largest such $k\le r-1$ proves the first
+assertion. For $r\ge p^{\sigma}$ write a potential maximum as $k=r-1-\delta$ with
+$0\le\delta<p^{\sigma}$. With $n=m-1$ it is
+admissible exactly when
+\[
+ e\,v_p\binom{k+n}{n}\le\delta .
+\]
+All thresholds for the binomial valuation are at most $\ell$. Since
+$\binom{k+n}{n}=\prod_{i=1}^{n}(k+i)/n!$, these comparisons are determined by
+$k\bmod p^{\vartheta}$: if the valuation of a numerator factor reaches $\vartheta$, the
+binomial valuation already exceeds every relevant threshold; below that, the valuation of
+each factor is determined by its residue modulo $p^{\vartheta}$. Replacing $r$ by
+$r+p^{\vartheta}$ leaves the set of admissible $\delta$ unchanged, hence also its smallest
+element, which gives the largest $k$.
+\end{proof}
+
+The period $p^{\vartheta}$ is a safe explicit period and is not claimed to be minimal;
+the finite maximum in \eqref{lub:eq:depthone} is usually the simpler algorithm.
+
+\begin{proposition}[Second precision at arbitrary contact depths; \stU]\label{lub:prop:second}
+For every contact multiset,
+\[
+ t_b(2)=\omega+\max\bigl(\set{0}\cup\set{D_j:\ j\ge1,\ p\nmid\nu_j}\bigr).
+\]
+\end{proposition}
+\begin{proof}
+By \eqref{lub:eq:modsquare}, the reciprocal of $P^{(b)}$ modulo $\pi^2$ is
+\[
+ X^{-\omega}\Bigl(1-\pi\sum_{j\ge1}\nu_jX^{-D_j}\Bigr).
+\]
+The exponents $D_j$ are distinct, and the term indexed by $j$ survives modulo $\pi^2$
+exactly when $\nu_j$ is prime to $p$. The largest surviving level determines the pole.
+\end{proof}
+
+\begin{example}\label{lub:ex:poles}
+\begin{enumerate}[label=\textup{(\arabic*)}]
+\item Take $K=\Q_3$, $\pi=3$ and $B=\set{0,3,6}$. Every pair of directions has contact
+depth one, so at each branch $\omega=6$ and $m=2$, and \eqref{lub:eq:depthone} gives the
+following table. The estimate of Remark~\ref{lub:rem:older} is listed for comparison.
+\begin{center}\small
+\begin{tabular}{l|rrrrrrrrr}
+\toprule
+$r$ &1&2&3&4&5&6&7&8&9\\
+\midrule
+$K_2(r)$ &0&1&1&3&4&4&6&7&7\\
+exact precision $1+t_b(r)$ &7&9&9&13&15&15&19&21&21\\
+$1+\omega+(r-1)(q^{h_*}-1)$ &7&9&11&13&15&17&19&21&23\\
+\bottomrule
+\end{tabular}
+\end{center}
+At $r=3$ the coefficient at $k=2$ is $3^2\binom32=27\equiv0$, so observations through
+degree eight suffice and through degree seven they do not. The plateaus are arithmetic
+cancellations, not rounding effects.
+\item Take $K=\Q_2$, $\pi=2$, $B=\set{0,2,6}$ and $b=0$. The contact multiset is $(1,1)$,
+the denominator is associated to $X^2(2+X)^2$, and the reciprocal terms have coefficients
+$(-2)^k(k+1)$. Hence $t_0(r)=4+(r-1)$ for odd $r$ and $t_0(r)=4+(r-2)$ for even $r$; at
+precisions one and two the same five coefficients suffice at this branch.
+\item Take $K=\Q_2$, $B=\set{0,4,12}$ and $b=0$. Here $\omega=8$, $D=2$ and $m=2$. The pole
+order is $8$ at $r=2$, where $\phi_2^2\equiv X^8\bmod4$, and $12$ at $r=3$, where the top
+coefficient survives; the observation precisions are $9$ and $13$. For $B=\set{0,4}$ and
+$r=2$ one finds $t=6$: in the multiplicative coordinate $[4](X)=(1+X)^4-1$ reduces to
+$X^4+2X^2$ modulo $4$, with reciprocal $X^{-4}-2X^{-6}$.
+\item For $K=\Q_3$, two directions that differ by $9$ have $\omega=9$ and $D=6$, and their
+common cutoff is $10+6(r-1)$ at every $r$.
+\item Let $p=2$ and $q=4$, and compare the contact multisets $(0,2,2)$ and $(1,2,2)$. Both
+have $D=12$ and $m=2$, and neither reaches $\omega+D$ at $r=2$. By
+Proposition~\ref{lub:prop:second} the defect is $12$ in the first case. In the second the depth-one
+factor leaves a surviving pole increase of $3$, and the defect is $9$. Thus shallower
+contacts can determine the exact answer already at the first cancellation.
+\end{enumerate}
+\end{example}
+
+\begin{remark}[Finite checks]\label{lub:rem:checks}
+The formulas of this subsection, of the preceding one, and of
+Theorem~\ref{lub:thm:directions} below were compared with exact computations in the
+delivered files:
+\begin{itemize}[nosep]
+\raggedright
+\item $210$ inverse products for $(p,q)=(2,2),(2,4),(3,3),(3,9)$ and $r\le6$:
+\artifact{grh_method_transfers_orthogonal_jets_2026-11-26/checks/jet_checks.json};
+\item $1400$ monic-remainder computations and $640$ comparisons with the literal branches
+$(1+X)^b-1$:
+\artifact{grh_transfers_lubin_tate_and_graph_towers/checks/branch_check_output.txt};
+\item observation matrices over $\Z/p^r$ for small sets such as $\set{0,2,6}$ over $\Z_2$
+and $\set{0,3,6}$ over $\Z_3$:
+\artifact{grh_transfers_lubin_tate_and_graph_towers/checks/jet-matrix-output.txt};
+\item $1088$ cases of the bounds \eqref{lub:eq:polebound} and of saturation:
+\artifact{grh_prime_patterns_and_branch_precision/results/branch_checks.txt};
+\item $6128$ finite residue-ball designs for the minimax formula \eqref{lub:eq:minimax}:
+\artifact{grh_transfers_lubin_tate_and_graph_towers/checks/design_checks.txt}.
+\end{itemize}
+These computations use unramified coefficient rings; the proofs, including the factor $e$,
+cover ramified fields.
+\end{remark}
+
+\subsection{Optimal directions and a multiplication rule}\label{lub:ssec:directions}
+\begingroup\raggedright\sources{grh_transfers_cycle_signings_and_lubin_tate; grh_transfers_lubin_tate_and_graph_towers; grh_prime_patterns_and_branch_precision}\endgroup
+
+In \cite[Theorem~4.6]{BergerSprang2025Integer} the directions must lie in $\pi\OO$ in order
+to preserve the kernel of the trace operator $\psi$. This motivates optimizing the common
+precision over all sets of $d$ directions inside a prescribed residue ball.
+
+\begin{theorem}[Optimal directions at all precisions in every residue ball; \stU]\label{lub:thm:directions}
+Suppose $d\ge2$ directions may be chosen in a prescribed coset of $\pi^a\OO$, $a\ge0$. The
+smallest possible common precision is
+\begin{equation}\label{lub:eq:minimax}
+ 1+\tau_r\Bigl(X^{d-1}\prod_{j\ge1}\Phi_j^{\,u_j}\Bigr),\qquad
+ u_j=\begin{cases} d-1,& j\le a,\\[2pt] \floor{(d-1)/q^{\,j-a}},& j>a.\end{cases}
+\end{equation}
+Equivalently, it is one plus the pole order of the reciprocal of
+$\prod_{i=1}^{d-1}\phi_{H_i}$, where $H_i=a+\max\set{h:\ q^h\mid i}$. One set of directions
+is optimal simultaneously at every precision $r$: choose representatives
+$x_0,\dots,x_{q-1}$ of the residue field, map the base-$q$ digits of $0,\dots,d-1$ to these
+representatives in a $\pi$-adic expansion, scale by $\pi^a$, and translate into the
+required coset.
+\end{theorem}
+\begin{proof}
+Translating and scaling, the directions are $\xi+\pi^ay$ with a fixed $\xi\in\OO$ and $y$
+running over a set $B_0\subset\OO$ of $d$ elements, and contact depths in $B$ are those in
+$B_0$ increased by $a$. Hence $m_j(b)=d-1$ for
+$j\le a$ and every $b$. Starting with $B_0$, successively follow a most populous child in
+the tree of residue balls. By induction its occupancy after $h$ splits is at least
+$\ceil{d/q^h}$. The nested path selects some $b$, since the finite set is nonempty at every
+depth and eventually the ball contains a single direction. For this $b$ the number of
+other directions with $v(b-c)\ge a+h$ is at least
+$\ceil{d/q^h}-1=\floor{(d-1)/q^h}$, that is $m_j(b)\ge u_j$ for all $j$. By
+\eqref{lub:eq:denominator} the polynomial in \eqref{lub:eq:minimax} divides $P^{(b)}$, and
+Lemma~\ref{lub:lem:normal}(iii) gives the lower bound.
+
+In the digit construction, two directions are congruent modulo $\pi^{a+h}$ exactly when
+their indices are congruent modulo $q^h$. Every residue class at depth $h$ therefore
+contains at most $\ceil{d/q^h}$ directions, so $m_j(b)\le u_j$ for every $b$ and $j$. Now
+$P^{(b)}$ divides the polynomial in \eqref{lub:eq:minimax}, which gives the matching upper
+bound at every $r$. The second description holds because the number of
+$i\in\set{1,\dots,d-1}$ with $H_i\ge j$ is $u_j$.
+\end{proof}
+
+\begin{corollary}[Closed forms for the optimum; \stU]\label{lub:cor:optimum}
+\begin{enumerate}[label=\textup{(\alph*)}]
+\item Over the residue field, that is for $r=1$, the least common precision for $d$
+directions in a coset of $\pi^a\OO$ equals $1+q^aW_q(d)$, where
+\[
+ W_q(d)=d-1+(q-1)\sum_{h\ge1}q^{h-1}\floor*{\frac{d-1}{q^h}} .
+\]
+For $d=q^t$, $t\ge1$, this is $1+q^a\,t(q-1)q^{t-1}$.
+\item For $d=q^k+1$ with $k\ge1$ the extremal contact list has a unique deepest contact,
+and the optimal common precision is, for every $r\ge1$,
+\[
+ 1+q^a\bigl(q^k+k(q-1)q^{k-1}\bigr)+(r-1)(q-1)q^{a+k-1}.
+\]
+\end{enumerate}
+\end{corollary}
+\begin{proof}
+(a) Modulo $\pi$ the polynomial in \eqref{lub:eq:minimax} is a power of $X$, so its
+$\tau_1$ is its degree $d-1+\sum_jD_ju_j=q^aW_q(d)$. When $d=q^t$, precisely $(q-1)q^{t-h-1}$ other
+directions have contact depth $a+h$ with a given one, for $0\le h<t$.
+(b) The polynomial in \eqref{lub:eq:minimax} is $P^{(b)}$ for the direction of index $0$
+in the digit construction. Counting the multiples of $q^h$ gives
+$\omega=q^a(q^k+k(q-1)q^{k-1})$; the deepest level $a+k$ has multiplicity $u_{a+k}=1$, and
+Corollary~\ref{lub:cor:unique}(b) applies.
+\end{proof}
+
+\begin{example}\label{lub:ex:eight}
+For eight directions over $\Q_2$ the profiles $(u_j)$ in \eqref{lub:eq:minimax} are $(3,1)$
+without restriction and $(7,3,1)$ when all eight directions must be even; in both the
+deepest level has multiplicity one. The optimal common precision is $2r+11$ in the first
+case and $4r+21$ in the second. At $r=1$ these are $13$ and $25$: inside $\pi\OO$, all
+bivariate coefficients of total degree at most seven are recovered from branch
+coefficients through degree $24$. For $q=2$, five directions constrained to one coset of
+$\pi\OO$ need $17+4(r-1)$ coefficients per branch. These residue-class optimizations are
+related to Bhargava's $P$-orderings \cite{Bhargava1997Porderings}.
+\end{example}
+
+Berger and Sprang use the case $r=1$ to multiply coefficient polynomials
+\cite[Theorem~4.6]{BergerSprang2025Integer}. For $f\in\OO[[X]]$ and $x\in\OO$ write
+$c_{f,j}(x)=[X^j]f([x](X))$. The interpolation formula \eqref{lub:eq:lagrange} gives an
+explicit row cutoff for this procedure at any residue precision.
+
+\begin{proposition}[A finite-precision multiplication rule; \stU]\label{lub:prop:products}
+Let $\psi$ be the Lubin--Tate trace operator of \cite{BergerSprang2025Integer}, let
+$f\in\ker\psi$ and $g\in\OO[[X]]$, and let $i,\ell\ge0$. Set $d=i+\ell+1$, choose
+$B\subset\pi\OO$ of size $d$ by Theorem~\ref{lub:thm:directions}, and define
+$f_b(X)=f(X)\,g([b](X))$ for $b\in B$. Then $f_b\in\ker\psi$, and with the constants
+\[
+ \mu_{bj}=[X^{i-j}Y^{\ell}]\,\frac{P_b(X,Y)}{\Delta_b(X)}\in A_r
+\]
+the following congruence of integer-valued functions holds for every $x\in\OO$:
+\begin{equation}\label{lub:eq:products}
+ c_{f,i}(x)\,c_{g,\ell}(x)\equiv\sum_{b\in B}\sum_{j=0}^{t_b(r)}\mu_{bj}\,c_{f_b,j}(x)\pmod{\pi^r}.
+\end{equation}
+\end{proposition}
+\begin{proof}
+The membership $f_b\in\ker\psi$ is \cite[Lemma~4.5]{BergerSprang2025Integer}. Apply
+\eqref{lub:eq:lagrange} to
+\[
+ H(X,Y)=f([x](X))\,g([x](Y)),
+\]
+whose coefficient at $X^iY^{\ell}$, of total degree $<d$, is $c_{f,i}(x)c_{g,\ell}(x)$.
+The branch values are $H(X,u_b)=f_b([x](X))$, since the endomorphisms commute. Moreover
+$[Y^{\ell}]P_b$ lies in $X^{d-1-\ell}A_r[[X]]$ and $1/\Delta_b$ lies in
+$X^{-t_b(r)}A_r[[X]]$, so $\mu_{bj}=0$ for $j>t_b(r)$. This gives the displayed cutoff.
+\end{proof}
+
+Equation \eqref{lub:eq:products} supplies explicit weights and an optimal common precision
+for the full jet used by this procedure. A single prescribed product can require fewer
+coefficients.
+
+\subsection{A simultaneous congruence for weighted Fleck sums}\label{lub:ssec:fleck}
+\begingroup\raggedright\sources{grh_prime_patterns_and_branch_precision}\endgroup
+
+The multiple-branch calculation has an arithmetic interpretation involving only ordinary
+integers. Fix a prime $p$, a modulus $M=p^h$ with $h\ge1$, and a positive integer $m$. For
+$0\le u<M$ and $0\le j<m$ define
+\[
+ S_{j,u}(n)=\sum_{\substack{0\le k\le n\\ k\equiv u\bmod M}}
+ (-1)^{n-k}\binom nk\binom{(k-u)/M}{j}.
+\]
+The lower argument $(k-u)/M$ is a nonnegative integer at every summand. Sums of this type
+are, up to the displayed sign, the cyclotomic $\psi$-coefficients before normalization, for
+which Sun and Wan prove Lucas-type congruences \cite{SunWan2005Lucas}. Their integrality
+statement gives
+$v_p(S_{j,u}(n))\ge\floor{(n-M/p-jM)/(M-M/p)}$; at $j=m-1$ it supplies the sufficient
+common threshold $U_r$ below. The following result determines the least simultaneous
+threshold and identifies the obstruction one step earlier.
+
+\begin{theorem}[Simultaneous congruence for weighted Fleck sums; \stU]\label{lub:thm:fleck}
+For $r\ge1$ let $T_r$ be the inverse pole order \eqref{lub:eq:pole} for $K=\Qp$, $\pi=p$
+and the contact multiset consisting of $m$ copies of $h$; thus $\omega=mM$, $D=M-M/p$, and
+with $U_r=mM+(r-1)D$
+\[
+ U_r-(m-1)D\le T_r\le U_r,\qquad
+ T_r=U_r\iff\text{$r-1$ and $m-1$ add without a base-$p$ carry.}
+\]
+Then:
+\begin{enumerate}[label=\textup{(\alph*)}]
+\item $p^r\mid S_{j,u}(n)$ for every $0\le j<m$ and $0\le u<M$ if and only if $n\ge T_r$.
+\item For every $r$, the values $S_{m-1,u}(T_r-1)$, $0\le u<M$, are all congruent modulo
+$p^r$ to one nonzero class $c$, and $S_{j,u}(T_r-1)\equiv0\pmod{p^r}$ for $j<m-1$.
+\item When $T_r=U_r$, the common class is
+\[
+ c\equiv(-p)^{r-1}\binom{m+r-2}{r-1}\pmod{p^r}.
+\]
+\end{enumerate}
+\end{theorem}
+\begin{proof}
+The displayed bounds are Theorem~\ref{lub:thm:pole}. Put $\Xi=Y^M-1$ and $\Pi=\Xi^m$ in
+$(\Z/p^r)[Y]$. In the multiplicative Lubin--Tate coordinate $X=Y-1$ one has
+$[p^h](X)=(1+X)^M-1$, so by Lemma~\ref{lub:lem:normal} the number $T_r$ is the nilpotency index
+of $Y-1$ in $(\Z/p^r)[Y]/(\Pi)$. The polynomials $Y^u\Xi^j$ with $0\le u<M$ and $0\le j<m$
+form a basis of this quotient over $\Z/p^r$: their leading monomials run through the
+degrees $0$ to $mM-1$ with coefficient one. Writing $Y^{u+Ml}=Y^u(1+\Xi)^l$ in the binomial
+expansion of $(Y-1)^n$ identifies the coordinates of $(Y-1)^n$ in this basis with the
+$S_{j,u}(n)$. This proves (a).
+
+Let $Q(Y)$ be the polynomial remainder of $(Y-1)^{T_r-1}$ on division by $\Pi$. Then
+$Q\ne0$ and $(Y-1)Q=c\,\Pi$ for some scalar $c\in\Z/p^r$, by the degree bound and the
+vanishing at $T_r$. Multiplication by the monic polynomial $Y-1$ is injective in
+$(\Z/p^r)[Y]$, whence
+\[
+ Q=c\,\Xi^{m-1}(1+Y+\cdots+Y^{M-1}),\qquad c\ne0 .
+\]
+This is the full vector of residues claimed in (b).
+
+For (c), put $\Pi_X=((1+X)^M-1)^m$ and $F_*(z)=z^{mM}\Pi_X(1/z)$. In the variable $X$ the
+coefficient in degree $mM-1$ of the remainder of $X^{T_r-1}$ is still $c$. Monic division
+at infinity identifies it with $[z^{T_r-mM}]F_*^{-1}$, by comparing the coefficients of
+$X^{-1}$ in $X^{T_r-1}/\Pi_X$. In the reverse polynomial of a single factor the nonconstant
+coefficients are $\binom Mi$ in deficit $M-i$, $1\le i<M$. They have valuations
+$h-v_p(i)$, since $\binom Mi=(M/i)\binom{M-1}{i-1}$ and $\binom{M-1}{i-1}$ is prime to $p$.
+The unique coefficient whose deficit equals $D$ times its valuation is at $i=M/p$; for all
+others the deficit is strictly smaller than $D$ times the valuation. The coefficient at
+$i=M/p$, divided by $p$, is
+$\binom{M-1}{M/p-1}\equiv1\pmod p$. So $F_*$ has the same leading face as $(1+pz^D)^m$, and
+the top-degree computation in the proof of Theorem~\ref{lub:thm:pole}, applied to
+$(1+pz^D)^{-m}$, gives the residue \eqref{lub:eq:topcoefficient} with $\pi=p$.
+\end{proof}
+
+\begin{example}\label{lub:ex:fleck}
+\sloppy
+Take $p=2$, $h=2$, $m=2$ and $r=2$. The upper endpoint is $U_2=10$ and the exact threshold
+is $T_2=8$: indeed $(Y^4-1)^2\equiv(Y-1)^8\bmod4$ by the binomial theorem, and at $n=7$
+direct expansion gives $S_{1,u}(7)\equiv1\bmod4$ for every $u$. These residues, and both
+sides of the threshold for further parameters ($3153$ vectors of exact integer sums), are
+recorded in \artifact{grh_prime_patterns_and_branch_precision/results/fleck_checks.txt}.
+\end{example}
+
+\subsection{The logarithmic coefficient window and the first coefficient depth}\label{lub:ssec:depth}
+\begingroup\raggedright\sources{grh_transfer_advances_2026-11-26; grh_transfers_cycle_signings_and_lubin_tate}\endgroup
+
+Let $p$ be a prime and $q$ a power of $p$, and let $L(X)\in\Qp[[X]]$ be the normalized
+Lubin--Tate logarithm with
+\[
+ L(X)=X+O(X^2),\qquad L(pX+X^q)=pL(X).
+\]
+Here $v_p$ is normalized by $v_p(p)=1$, and $v_p(0)=+\infty$.
+
+\begin{theorem}[Exact logarithmic coefficient window; \stU]\label{lub:thm:window}
+For every positive integer $n$ put $N=v_p(n)$. For every $1\le j\le p^N$,
+\begin{equation}\label{lub:eq:window}
+ v_p\Bigl([X^{n+j(q-1)}]\,L(X)^n\Bigr)=N-v_p(j)-j .
+\end{equation}
+The coefficients of $L(X)^n$ outside the degrees congruent to $n$ modulo $q-1$ vanish.
+Consequently the first nonintegral coefficient of $L(X)^n$ after the leading one occurs
+exactly in degree
+\[
+ n+(q-1)J_p(N),\qquad J_p(N)=\min\set{j\ge1:\ j+v_p(j)>N}.
+\]
+\end{theorem}
+\begin{proof}
+Choose $\eta$ with $\eta^{q-1}=p$ and write
+\[
+ \Lambda(X)=\eta^{-1}L(\eta X)=X\sum_{j\ge0}\lambda_jX^{j(q-1)} .
+\]
+The functional equation becomes $\Lambda(pX+pX^q)=p\Lambda(X)$. Coefficient comparison
+gives $\lambda_0=1$ and, for $j\ge1$,
+\[
+ \bigl(1-p^{j(q-1)}\bigr)\lambda_j=\sum_{i=0}^{j-1}\lambda_i\,p^{i(q-1)}\binom{1+i(q-1)}{j-i}.
+\]
+Every factor on the left is a unit. Induction proves $\lambda_j\in\Zp$,
+\[
+ \lambda_1=(1-p^{q-1})^{-1},\qquad \lambda_j\in p^{q-1}\Zp\quad(j\ge2).
+\]
+The support assertion follows either from the same recurrence or from the $\mu_{q-1}$
+symmetry of the functional equation.
+
+Let $C(Y)=\sum_j\lambda_jY^j$ and $C_0(Y)=C(Y)-1$. There is $\beta(Y)\in Y\Zp[[Y]]$ such
+that
+\[
+ C_0(Y)=\lambda_1Y\bigl(1+p^{q-1}\beta(Y)\bigr).
+\]
+For every integer $i\ge1$, all nonconstant coefficients of $(1+p^{q-1}\beta)^i$ are
+divisible by $p^{q-1+v_p(i)}$. Indeed $v_p\binom ik\ge v_p(i)-v_p(k)$ and
+$(q-1)k-v_p(k)\ge q-1$ for $k\ge1$. It follows that for $j>i$,
+\[
+ v_p\bigl([Y^j]C_0(Y)^i\bigr)\ge q-1+v_p(i).
+\]
+Expand $C^n=\sum_i\binom niC_0^i$. For $1\le j\le p^N\le n$, the term $i=j$ contributes
+$\binom nj\lambda_1^j$ to the coefficient of $Y^j$. Its valuation is $N-v_p(j)$: use
+$\binom nj=(n/j)\binom{n-1}{j-1}$ and note that the last binomial coefficient is a $p$-adic
+unit, since the lowest $N$ base-$p$ digits of $n-1$ are all $p-1$. Every term with $i<j$
+has valuation at least $N+q-1$, by the preceding inequality and
+$v_p\binom ni\ge N-v_p(i)$. Thus no cancellation is possible and
+\[
+ v_p\bigl([Y^j]C^n\bigr)=N-v_p(j).
+\]
+Since $[X^{n+j(q-1)}]\Lambda^n=p^j[X^{n+j(q-1)}]L^n$, equation \eqref{lub:eq:window}
+follows. Finally $J_p(N)\le N+1\le p^N$, also when $N=0$, so the proven range includes the
+first failure of integrality.
+\end{proof}
+
+\begin{remark}\label{lub:rem:Jp}
+\sloppy
+The case $p=q=2$ gives $L(X)=\log(1+X)$, and \eqref{lub:eq:window} is then an exact
+coefficient-valuation formula for powers of the usual formal logarithm. The proof uses only
+$q-1\ge1$, so it is uniform in the residue degree. The threshold has the closed finite
+expression
+\[
+ J_p(N)=\min_{0\le b\le\floor{\log_p(N+1)}}p^b\Bigl(\floor*{\frac{N-b}{p^b}}+1\Bigr):
+\]
+the expression for a fixed $b$ is the first positive multiple of $p^b$ whose sum with $b$
+exceeds $N$; it always satisfies the required inequality, and every minimizing $j$ is
+included by taking $b=v_p(j)$. The formula \eqref{lub:eq:window} was checked by finite-ring
+arithmetic modulo $p^{20}$ in $3033$ cases
+\textup{(}\artifact{grh_transfer_advances_2026-11-26/checks/local/log_window_verification.json}\textup{)}.
+\end{remark}
+
+We now specialize to the setting of \cite[Section~5]{BergerSprang2025Integer}. Let
+$K/\Qp$ be the unramified quadratic extension, so $q=p^2$ and $\pi=p$, with the coordinate
+$[p](X)=pX+X^q$. Let $\mathcal M=\OO[[X]]^{\psi=0}$ be the kernel of the normalized trace.
+By \cite[Lemma~5.2]{BergerSprang2025Integer}, every element of $\mathcal M$ is a convergent
+$\OO$-linear combination of the series
+\begin{equation}\label{lub:eq:generators}
+ X^i(pX+X^q)^j\quad(1\le i\le q-2,\ j\ge0),\qquad
+ (pX^{q-1}+q-1)(pX+X^q)^j\quad(j\ge0),
+\end{equation}
+which belong to $\mathcal M$. For $f\in\mathcal M$ let $c_{f,m}(T)$ be the polynomial
+characterized by $c_{f,m}(x)=[X^m]f([x](X))$ for $x\in\OO$, so that
+$f([T](X))=\sum_{m\ge0}c_{f,m}(T)X^m$. Put
+\[
+ w_q(n)=\sum_{j\ge1}\floor{n/q^j}=\frac{n-s_q(n)}{q-1},
+\]
+where $s_q(n)$ is the base-$q$ digit sum.
+
+\begin{definition}[{\cite[Definition~5.1]{BergerSprang2025Integer}}]\label{lub:def:s0}
+For $n\ge0$, $s_0(n)$ is the least cutoff $N\ge n$ at which the $\OO$-span of the
+polynomials $c_{f,m}$ with $f\in\mathcal M$ and $m\le N$ contains a polynomial of degree
+$n$ whose leading coefficient has valuation $-w_q(n)$.
+\end{definition}
+
+The finiteness of $s_0(n)$ follows from the quadratic character-variety result and the
+criterion of \cite{BergerSprang2025Integer,BergerSprangSteingart2026Bounded}. Let
+$E(Z)=Z+\cdots$ be the Lubin--Tate exponential, the compositional inverse of $L$, so that
+$[x](X)=E(xL(X))$.
+
+\begin{lemma}[Coefficient identity]\label{lub:lem:identity}
+For $f\in\OO[[X]]$ and $m,n\ge0$,
+\[
+ [T^n]\,c_{f,m}(T)=[Z^n]f(E(Z))\cdot[X^m]L(X)^n .
+\]
+The second factor vanishes unless $m\ge n$ and $m\equiv n\bmod(q-1)$, and equals $1$ for
+$m=n$. In particular $\deg c_{f,m}\le m$, and
+$c_{f,m}(\zeta T)=\zeta^mc_{f,m}(T)$ for every $(q-1)$st root of unity $\zeta$. For
+$f\in\mathcal M$ and $n>0$ the first factor has valuation at least $-w_q(n)$.
+\end{lemma}
+\begin{proof}
+Substitute $[T](X)=E(TL(X))$ into $f$ and expand $f(E(Z))$ at $Z=TL(X)$. The vanishing is
+the support statement of Theorem~\ref{lub:thm:window} together with $L(X)^n=X^n+\cdots$;
+equivalently, $[\zeta](X)=\zeta X$ in this coordinate, because $\zeta X$ commutes with
+$[p]$ and has the required derivative. Since $c_{f,n}$ is integer-valued on $\OO$ and has
+degree at most $n$, its coefficient at $T^n$, which is the first factor, has valuation at
+least $-w_q(n)$.
+\end{proof}
+
+\begin{corollary}[A sharp coefficient obstruction; \stU]\label{lub:cor:obstruction}
+Let $n>0$. If $s_0(n)>n$, then
+\[
+ s_0(n)\ \ge\ n+(q-1)\,J_p\bigl(v_p(n)\bigr).
+\]
+In particular $s_0(n)\ge n+q-1$, and $s_0(n)\ge n+(q-1)(J+1)$ whenever $J\ge1$ satisfies
+$J+\floor{\log_pJ}\le v_p(n)$.
+\end{corollary}
+\begin{proof}
+By Lemma~\ref{lub:lem:identity}, rows $c_{f,m}$ with $m<n$ have degree $<n$, so a polynomial of
+degree $n$ in the span at cutoff $n$ has leading coefficient $[Z^n]f(E(Z))$ for some
+$f\in\mathcal M$. Failure at depth $n$, the bound of Lemma~\ref{lub:lem:identity} and the
+integral value group of $K$ imply that $[Z^n]f(E(Z))$ has valuation at least $1-w_q(n)$
+for every $f\in\mathcal M$. Theorem~\ref{lub:thm:window} shows that all second factors
+$[X^m]L(X)^n$ with $m<n+(q-1)J_p(v_p(n))$ are integral. Thus all $T^n$-coefficients in the
+module generated by the rows before the indicated threshold have valuation at least
+$1-w_q(n)$, which excludes the required polynomial of degree $n$. For the last assertion,
+every $j\le J$ has $j+v_p(j)\le J+\floor{\log_pJ}\le v_p(n)$, so $J_p(v_p(n))\ge J+1$.
+\end{proof}
+
+\begin{theorem}[First-depth criterion for small digit sum; \stU]\label{lub:thm:firstdepth}
+Let $n>0$ have the base-$q$ expansion $n=\sum_{j\ge0}n_jq^j$, and put $s=\sum_jn_j$.
+\begin{enumerate}[label=\textup{(\alph*)}]
+\item If $1\le s\le q-2$, then $s_0(n)=n$ holds exactly when the addition of the integers
+$n_j$ in base $p$ involves no carries.
+\item If $s=q-1$, then $s_0(n)>n$.
+\item At the first excluded digit sum, $s_0(q-1)=2q-2$ exactly.
+\end{enumerate}
+In the cases with $s_0(n)>n$, that is $s=q-1$, or $s\le q-2$ with a carry,
+Corollary~\ref{lub:cor:obstruction} gives $s_0(n)\ge n+(q-1)J_p(v_p(n))$.
+\end{theorem}
+\begin{proof}
+By Lemma~\ref{lub:lem:identity}, only the $n$th row can supply the leading term at cutoff $n$,
+and $s_0(n)=n$ holds exactly when some $f\in\mathcal M$ has
+$v\bigl([Z^n]f(E(Z))\bigr)=-w_q(n)$.
+
+Take $\eta^{q-1}=p$ and set $V(Z)=E(\eta Z)/\eta$, the compositional inverse of the series
+$\Lambda$ in the proof of Theorem~\ref{lub:thm:window}. The exponential equation becomes
+$V(pZ)=pV(Z)+pV(Z)^q$. Its coefficients are integral: for $m>1$,
+\[
+ (p^{m-1}-1)[Z^m]V=[Z^m]V^q,
+\]
+with a unit on the left and only earlier coefficients on the right. In fact this recursion
+puts all coefficients in $\Zp$, with support in the degrees congruent to $1$ modulo $q-1$.
+Reducing modulo $p$ yields $\overline V+\overline V^{\,q}=Z$, whence
+$\overline V=\sum_{j\ge0}(-1)^jZ^{q^j}$. A monomial $X^i$ of $f$ can only contribute to
+$[Z^n]f(E(Z))$ if $i\equiv n\bmod(q-1)$, and since $[Z^n]E(Z)^i=\eta^{i-n}[Z^n]V(Z)^i$ its
+contribution has valuation at least $-(n-i)/(q-1)$. When $1\le s\le q-1$, the first
+eligible positive $i$ is $s$, and larger $i$ give valuation strictly above $-w_q(n)$. The
+constant monomial contributes zero.
+
+For $i=s$, the reduction of $\eta^{n-s}[Z^n]E^s$ is the coefficient of $Z^n$ in
+$\overline V^{\,s}$. Since $s<q$, writing $n$ as a sum of $s$ powers of $q$ uses exactly
+$n_j$ copies of $q^j$. The coefficient is therefore, up to sign, the multinomial
+coefficient $s!/\prod_jn_j!$, which is a unit exactly when the addition of the $n_j$ is
+carry-free in base $p$, by Legendre's factorial formula. If $s\le q-2$, the monomial $X^s$
+belongs to $\mathcal M$ by \eqref{lub:eq:generators}; this proves (a). For $s=q-1$,
+reducing the generators \eqref{lub:eq:generators} modulo $(p,X^q)$ leaves only the constant
+and the powers $X^1,\dots,X^{q-2}$, so $[X^{q-1}]f\in p\OO$ for every $f\in\mathcal M$;
+this proves (b).
+
+For (c), part (b) and Corollary~\ref{lub:cor:obstruction} give $s_0(q-1)\ge2q-2$. Set $m=2q-2$.
+The series $g=pX^{q-1}+q-1$ and $g'=X^{q-2}[p](X)-g=X^m+(1-q)$ both belong to
+$\mathcal M$ by \eqref{lub:eq:generators}. The logarithm has coefficient $(p-p^q)^{-1}$ at
+$X^q$, as follows by comparing coefficients in $L(pX+X^q)=pL(X)$. Therefore
+\[
+ c_{g,m}(T)=\frac{p(q-1)}{p-p^q}\,(T^{q-1}-T^m),\qquad c_{g',m}(T)=T^m .
+\]
+The displayed multiplier is a unit. The span of these two rows contains $T^{q-1}$, whose
+leading valuation is $0=-w_q(q-1)$, at the claimed cutoff.
+\end{proof}
+
+\begin{corollary}[Unbounded excess depth; \stU]\label{lub:cor:excess}
+For every prime $p$ the excess $s_0(n)-n$ is unbounded. Along $n=(q-1)q^k$ it is at least
+$(q-1)J_p(2k)\ge(q-1)\bigl(2k-O(\log(k+1))\bigr)$ as $k\to\infty$.
+\end{corollary}
+\begin{proof}
+For $n=(q-1)q^k$ the digit sum is $q-1$ and $v_p(n)=2k$, so
+Theorem~\ref{lub:thm:firstdepth}(b) and Corollary~\ref{lub:cor:obstruction} apply; for $k\ge1$ take
+$J=2k-\floor{\log_p(2k)}$ in the last assertion of Corollary~\ref{lub:cor:obstruction}.
+\end{proof}
+
+For $p=2$ and $q=4$, Theorem~\ref{lub:thm:firstdepth} gives $s_0(2\cdot4^j)=2\cdot4^j$ for every
+$j\ge0$, and $s_0(4^i+4^j)\ge4^i+4^j+3$ for $i\ne j$, since $1+1$ carries in base two. In
+particular $s_0(5)\ge8$ and $s_0(3)=6$.
+
+The equality \eqref{lub:eq:window} determines the exact first integrality threshold of the
+second factor in Lemma~\ref{lub:lem:identity}, but the bound of Corollary~\ref{lub:cor:obstruction} is
+not in general the value of $s_0(n)$. At later depths a $T^n$-coefficient of the right
+valuation may occur in a polynomial of higher degree, and the higher terms must then be
+eliminated by integral combinations of genuine trace-kernel rows. This is a distinct
+arithmetic constraint, as the following exact values show.
+
+\begin{proposition}[Exact values of the coefficient depth; \stU]\label{lub:prop:values}
+The following values of $s_0(n)$ are exact. The two valuation columns give the
+leading-coefficient ideal for degree $n$, after imposing that all higher-degree terms
+vanish, at the cutoffs $s_0(n)-1$ and $s_0(n)$.
+\begin{center}\upshape
+\begin{tabular}{rrrrrr}
+\toprule
+$p$ & $q$ & $n$ & $s_0(n)$ & valuation at $s_0(n)-1$ & valuation at $s_0(n)$\\
+\midrule
+2&4&3&6&$1$&$0$\\
+2&4&5&8&$0$&$-1$\\
+2&4&7&16&$0$&$-1$\\
+2&4&12&30&$-2$&$-3$\\
+3&9&8&16&$1$&$0$\\
+\bottomrule
+\end{tabular}
+\end{center}
+For $p=2$ and $n=12$ one has $v_2(12)=2$ and $J_2(2)=2$, so Theorem~\ref{lub:thm:window} first
+allows a suitable $T^{12}$-coefficient in a row at depth $18$, and indeed the generator
+$g(X)=2X^3+3$ already gives $[T^{12}]c_{g,18}(T)=15811/9815288$, of valuation
+$-3=-w_4(12)$; nevertheless $s_0(12)=30$.
+\end{proposition}
+\begin{proof}
+The values are certified by exact computations whose outputs are in the delivered files
+listed at the end of the proof; the certificate stores both the obstruction immediately
+before each claimed depth and the attainment at that depth. The computation starts only
+from the generators \eqref{lub:eq:generators}. For a cutoff $N$ it suffices to use
+$j\le N$ in the second family and $i+j\le N$ in the first: the omitted generators have
+$X$-adic order greater than $N$, since $pX+X^q$ has $X$-adic order one, and the
+coefficients through $X^N$ of any element of $\mathcal M$ depend only on this finite list.
+The rows $c_{f,m}$, $m\le N$, are formed exactly over $\Q$ from the Carleman matrix
+$\mathcal D$ of the logarithm as
+$\mathcal D^{-1}\operatorname{diag}(1,T,T^2,\dots)\mathcal D$, and all of them are
+retained, including diagonal rows with nonunit coefficients. This proves completeness at
+each finite cutoff.
+
+To read off the leading-coefficient ideals, clear denominators in each rational row using
+only $p$-adic units and a common factor $p^{\kappa_0}$. Choose a triangular full-rank
+source submatrix whose determinant has valuation $\mu$. Its adjugate proves that
+$p^{\mu}\Zp^{\,\ell}$, with $\ell$ the number of columns, is already contained in the
+scaled row module, so adding $p^{\mu}I$ and reducing entries modulo $p^{\mu}$ preserves
+that module. An exact integer column Hermite normal form now gives its leading-degree
+ideals, and subtracting $\kappa_0$ restores the original valuations. Extension of scalars
+to $\OO$ preserves the calculation. Monotonicity of the generated modules in the cutoff
+shows that the tabulated values are exact minima and not merely upper bounds from one
+witness. An independent descending-degree elimination over $\Z_{(p)}$, in which a pivot is
+replaced only when a smaller valuation is found and every row operation is invertible,
+gives the same values. The files are:
+\begin{itemize}[nosep]
+\raggedright
+\item the Hermite-normal-form certificate and its generator:
+\artifact{grh_transfer_advances_2026-11-26/checks/local/depth_hnf_checks.json},
+\artifact{grh_transfer_advances_2026-11-26/checks/local/verify_depth_hnf.py};
+\item the elimination output for $p=2$, cutoff $48$, and for $p=3$, cutoff $100$, where a
+null entry means only that the cutoff was exceeded:
+\artifact{grh_transfer_advances_2026-11-26/checks/local/depth_p2_48.json},
+\artifact{grh_transfer_advances_2026-11-26/checks/local/depth_p3_100.json}.\qedhere
+\end{itemize}
+\end{proof}
+
+\begin{remark}[The numerical baseline]\label{lub:rem:baseline}
+The values in Proposition~\ref{lub:prop:values} refer to Definition~\ref{lub:def:s0} as stated. According to
+Berger's errata \cite[Section~19]{Berger2026Errata}, the implementation in Appendix~A of
+\cite{BergerSprang2025Integer} inserts $T^s$ at each stage without establishing membership
+in the module and omits the possible nonunit diagonal generator, so that the printed
+experiment there addresses $\operatorname{Pol}(\mathcal M)+\OO[T]$ rather than the defined
+$s_0(n)$. The definition, the generators \eqref{lub:eq:generators} and the proofs above are
+not affected.
+\end{remark}
+
+\subsection{Open questions}\label{lub:ssec:open}
+\begingroup\raggedright\sources{grh_transfers_cycle_signings_and_lubin_tate; grh_transfers_lubin_tate_and_graph_towers; grh_prime_patterns_and_branch_precision; grh_method_transfers_orthogonal_jets_2026-11-26; grh_transfer_advances_2026-11-26}\endgroup
+
+\begin{question}\label{lub:q:closed}
+When the carry criterion \eqref{lub:eq:carry} fails and $h_*\ge2$, the defect $\eta_r$ of
+Theorem~\ref{lub:thm:defect} is computed by a finite recurrence and depends on the shallower
+contacts. Is there a closed formula for $\eta_r$ in terms of the contact multiplicities
+$\nu_j$, in particular over ramified fields?
+\end{question}
+
+\begin{question}\label{lub:q:period}
+Determine the least eventual period of $r\mapsto t_b(r)-Dr$ directly from the contact
+multiplicities. The periods $\Theta$ of Theorem~\ref{lub:thm:defect} and $p^{\vartheta}$ of
+Corollary~\ref{lub:cor:depthoneperiod} are explicit but not claimed to be minimal.
+\end{question}
+
+\begin{question}\label{lub:q:growth}
+What is the true growth of $s_0\bigl((q-1)q^k\bigr)-(q-1)q^k$? Corollary~\ref{lub:cor:excess}
+supplies a growing lower bound. A matching upper bound would require the explicit
+construction of trace-kernel rows at a controlled depth, together with the integral
+elimination of the higher-degree terms; by Proposition~\ref{lub:prop:values} the coefficient threshold
+of Theorem~\ref{lub:thm:window} does not by itself control that cancellation.
+\end{question}
+
+\begin{question}\label{lub:q:delayed}
+Determine $s_0(n)$ exactly for the delayed families of Theorem~\ref{lub:thm:firstdepth}, and
+describe its behaviour for digit sums $s\ge q$, which the first-depth criterion does not
+cover.
+\end{question}

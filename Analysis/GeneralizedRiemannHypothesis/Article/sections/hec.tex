@@ -1,0 +1,2470 @@
+\section{Degree-two targets: Artin, Hecke and modular \texorpdfstring{$L$}{L}-functions}\label{sec:hec}
+
+\providecommand{\hecsgn}{\operatorname{sgn}}
+\providecommand{\hecVar}{\operatorname{Var}}
+\providecommand{\hecCov}{\operatorname{Cov}}
+\providecommand{\hecE}{\mathbb{E}}
+\providecommand{\hecind}{\mathbf{1}}
+% Local line-breaking tolerance for this section; restored at its end.
+\edef\hecsavedemergencystretch{\the\emergencystretch}
+\emergencystretch=2em\relax
+
+The input theorem, \cref{src:thm:dgrh}, concerns $\zeta$ and the Dirichlet $L$-functions. The simplest
+$L$-functions it does not reach have degree two over $\Q$: Hecke $L$-functions of ideal class characters
+of imaginary quadratic fields (equivalently, two-dimensional dihedral Artin $L$-functions), Hecke
+$L$-functions of characters of infinite order of $\Q(i)$, and the $L$-functions of holomorphic
+modular forms together with their symmetric powers. This section collects what the one-sided method
+gives for these targets. For each of them we state the exact prime estimate that is equivalent to
+its Riemann hypothesis, we solve the extremal problems that govern the admissible prime weights, and we
+record the unconditional results obtained along the way: real zeros, Jensen polynomials, oscillation of
+the prime sums, and obstructions to realizing the weights by congruence conditions. Every statement that
+mentions a Riemann hypothesis outside the scope of \cref{src:thm:dgrh} is a reduction; the prime
+estimates themselves are open. The final subsection treats two questions about Dirichlet characters
+that are settled, or sharply delimited, by \cref{src:thm:dgrh}.
+
+\subsection{Conventions and the Landau step}\label{hec:ss:landau}
+{\emergencystretch=\textwidth\sources{grh_transfer_analysis; grh_beyond_dirichlet_2026-11-25; grh_dihedral_47_71; grh_method_transfers_sharp_torsion}}
+
+For an $L$-function $L(s)$ with a functional equation relating $s$ and $1-s$, \emph{RH for $L$} means that
+every zero in $0<\Re s<1$ has real part $1/2$. All $L$-functions below are attached to a fixed finite-order
+Hecke character, a fixed Hecke character of $\Q(i)$, or a fixed cuspidal automorphic representation.
+For these we use the analytic continuation, the functional equation, the order-one Hadamard product of the
+completed function, nonvanishing on $\Re s=1$, and the zero count $N(T+1)-N(T)=O(\log(2+T))$. These are
+estimates for a fixed function; no uniformity in the field or in the conductor is used. An induced
+representation $\Ind\psi$ of a one-dimensional character $\psi$ has $L(s,\Ind\psi)=L(s,\psi)$, a Hecke
+$L$-function; no case of Artin's holomorphy conjecture beyond this monomial case is used.
+
+The passage from a one-sided bound to the absence of zeros is always the same. It is proved in
+\cref{sec:ana}, and we recall it in the normalization used below.
+
+\begin{lemma}[Landau step]\label{hec:lem:landau}
+Let $g\colon[1,\infty)\to\R$ be locally integrable with $g(x)=O(x^{A})$ for some $A$, and let
+\[
+ G(s)=\int_1^\infty g(x)x^{-s-1}\,\dd x\qquad(\Re s>A).
+\]
+Let $a>0$. Suppose that $G$ continues meromorphically to $\Re s>a$, that its poles on the real interval
+$(a,\infty)$ are simple, and that the residue of $G$ at each of them is positive. If
+$g(x)\le Cx^{a}$ for all sufficiently large $x$, then the integral converges for $\Re s>a$, and $G$ is
+holomorphic in that half-plane.
+\end{lemma}
+
+This is \cref{ana:thm:onesided}, with the pointwise hypothesis of \cref{ana:cor:forms}(a), applied to
+$R(x)=g(x)/x$ and $\beta=a$. For a remainder of a logarithmic derivative in the ramp normalization of
+\cref{sec:ana} the residues are computed once in \cref{ana:thm:zerotest}.
+
+With $g(x)=xR(x)$ the lemma applies to transforms $\int_1^\infty R(x)x^{-s}\,\dd x$ and bounds
+$R(x)\le Cx^{a-1}$. Applied to $-g$, it converts a lower bound into holomorphy when the real residues are
+negative. In every application the conclusion is used in the same way: a zero $\rho$ of the tested
+$L$-function with $\Re\rho>a$ would produce a pole of $G$ whose residue is a nonzero combination of zero
+orders, so there is no such zero.
+
+For the converse implications we use the explicit formula for a fixed $L$-function in the following form.
+Under RH for the entire functions $L(s,\chi_1),\dots,L(s,\chi_r)$ of fixed characters, each sum
+$\sum_{\Nm\mathfrak p^k\le x}\chi_i(\mathfrak p)^k\log\Nm\mathfrak p$ is $O(\sqrt x\log^2(2x))$, and the
+sum for the trivial character is $x+O(\sqrt x\log^2(2x))$ under RH for the corresponding Dedekind zeta
+function; see \cite{GrenieMolteni2016Explicit,GrenieMolteni2017Effective} and, for Artin $L$-functions,
+\cite[Ch.~3]{Ng2000Limiting}. Prime powers of exponent at least two, inert primes and ramified primes
+contribute $O(\sqrt x\log^2(2x))$ to such sums.
+
+\subsection{The cubic field of discriminant \texorpdfstring{$-23$}{-23}}\label{hec:ss:cubic}
+{\emergencystretch=\textwidth\sources{grh_transfer_analysis; grh_transfer_analysis_2026-11-25; grh_lean_transfer_analysis; grh_transfers; grh-progression-densities-and-cubic-prime-race; grh_beyond_dirichlet_2026-11-25; grh_method_transfers_2026-11-25_2; grh_dihedral_47_71; grh_transfers_lubin_tate_and_graph_towers}}
+
+Let
+\[
+ F=\Q(\theta),\qquad \theta^3-\theta-1=0,\qquad K=\Q(\sqrt{-23}),
+\]
+and let $H$ be the splitting field of $X^3-X-1$. The degree-two Artin $L$-function of this field is a small
+nonabelian example with known holomorphy, rather than an arbitrary automorphic family with further
+unresolved analytic prerequisites, and it serves as the test case for the transfers discussed in this
+article.
+
+\begin{proposition}[The field and its factorizations; \stU]\label{hec:prop:cubicfield}
+The group $\Gal(H/\Q)$ is $S_3$ with quadratic subfield $K$, the class group $\Cl(K)$ is cyclic of order
+$3$, and $H$ is the Hilbert class field of $K$. If $\psi$ is either nontrivial character of $\Cl(K)$ and
+$\rho$ is the two-dimensional irreducible representation of $S_3$, then $L_K(s,\psi)=L(s,\rho)$ and
+\begin{align}
+\zeta_F(s)&=\zeta(s)L_K(s,\psi),\label{hec:eq:cubic}\\
+\zeta_H(s)&=\zeta_K(s)L_K(s,\psi)^2=\zeta(s)L(s,\chi_{-23})L_K(s,\psi)^2.\label{hec:eq:galois}
+\end{align}
+\end{proposition}
+
+\begin{proof}
+The only possible rational roots of $X^3-X-1$ are $\pm1$, and neither is a root. Its discriminant is
+$-4(-1)^3-27(-1)^2=-23$. It is squarefree, so the order $\Z[\theta]$ is maximal; it is not a square, so the
+transitive Galois group is $S_3$, with quadratic subfield $K$.
+
+Reduced positive definite primitive forms of discriminant $-23$ have first coefficient at most
+$\sqrt{23/3}<3$. Enumerating the possibilities gives exactly
+\[
+(1,1,6),\qquad (2,1,3),\qquad (2,-1,3),
+\]
+so $h_K=3$ by the correspondence between ideal classes and form classes.
+
+The extension $H/K$ is cyclic of degree $3$. No prime other than $23$ ramifies. Modulo $23$,
+\[
+X^3-X-1=(X-10)^2(X-3).
+\]
+The simple root lifts over $\Q_{23}$, so the local decomposition group fixes a root and is contained in a
+stabilizer of order two. The quadratic field is ramified at $23$, so inertia is exactly that subgroup of
+order two, and its intersection with $A_3=\Gal(H/K)$ is trivial. Thus $H/K$ is unramified at the finite
+places, and $K$ has no real places. The degree of $H/K$ equals the class number, so $H$ is the Hilbert
+class field.
+
+The permutation representation of $S_3$ on the three roots is $\triv\oplus\rho$, hence
+$\zeta_F=\zeta L(s,\rho)$. Inducing either nontrivial character of $A_3$ gives $\rho$: the induced
+character takes the values $2,0,-1$ on the identity, the transpositions and the three-cycles.
+Compatibility of Artin $L$-functions with induction identifies $L(s,\rho)$ with $L_K(s,\psi)$; the two
+nontrivial characters induce isomorphic representations and give the same $L$-function (complex conjugation
+of ideals preserves norms and inverts classes). The regular representation of $S_3$ is
+$\triv\oplus\hecsgn\oplus\rho^{\oplus2}$, which proves \eqref{hec:eq:galois}.
+\end{proof}
+
+The function $L(s)=L_K(s,\psi)$ is the $L$-function of the weight-one cusp form
+\begin{equation}\label{hec:eq:eta23}
+ f(z)=\eta(z)\eta(23z)=q\prod_{n\ge1}(1-q^n)(1-q^{23n}),\qquad q=e^{2\pi iz},
+\end{equation}
+of level $23$ and character $\chi_{-23}$
+\cite{Zagier2008Elliptic,Serre2003Jordan,KhareLaRosaWiese2023Splitting,LMFDBDatabase}. Its coefficient at
+a prime $p\ne23$ is
+\[
+ a(p)=\tr\rho(\Frob_p)=\#\set{t\in\F_p: t^3-t-1=0}-1\in\set{2,0,-1}.
+\]
+Put $t=p^{-s}$ and write $D_F(t)$ and $D_\psi(t)$ for the reciprocal Euler factors of $\zeta_F$ and of
+$L$ at $p$. All cases, including the ramified prime, are as follows.
+\begin{center}
+\begin{tabular}{llll}
+\toprule
+Splitting type of the cubic & $D_F(t)$ & $D_\psi(t)$ & $a(p)$\\
+\midrule
+$1+1+1$ & $(1-t)^3$ & $(1-t)^2$ & $2$\\
+$1+2$ & $(1-t)(1-t^2)$ & $1-t^2$ & $0$\\
+$3$ & $1-t^3$ & $1+t+t^2$ & $-1$\\
+$p=23$ & $(1-t)^2$ & $1-t$ & $1$\\
+\bottomrule
+\end{tabular}
+\end{center}
+At the ramified prime the prime ideal of $K$ has class of order dividing $2$, hence is principal, and its
+$\psi$-value is $1$. The completed function
+\begin{equation}\label{hec:eq:Lambda23}
+ \Lambda(s)=\Bigl(\frac{\sqrt{23}}{2\pi}\Bigr)^{s}\Gamma(s)L(s)
+ =23^{s/2}\int_0^\infty f(iy)\,y^{s}\,\frac{\dd y}{y}
+\end{equation}
+is entire of order one and satisfies $\Lambda(s)=\Lambda(1-s)$. The eta product is positive on the
+imaginary axis, so $\Lambda(\sigma)>0$ for every real $\sigma$; in particular $L$ has no real zero in
+$(0,1)$, and $L(1/2)\ne0$.
+
+Inside the critical strip all factors in \eqref{hec:eq:cubic} and \eqref{hec:eq:galois} are holomorphic, so
+zeros cannot be cancelled by poles. With \cref{src:thm:dgrh} applied to $\zeta$ and $L(s,\chi_{-23})$, the
+three assertions RH for $L$, RH for $\zeta_F$ and RH for $\zeta_H$ are therefore equivalent. None of them
+is covered by \cref{src:thm:dgrh}.
+
+\paragraph{A positive selector: the principal-class criterion.}
+For a nonzero integral ideal $\mathfrak a$ of $K$ put $\Lambda_K(\mathfrak a)=\log\Nm\mathfrak p$ if
+$\mathfrak a=\mathfrak p^r$ with $\mathfrak p$ prime and $r\ge1$, and $\Lambda_K(\mathfrak a)=0$ otherwise.
+Character orthogonality on the class group gives
+$1+\psi(\mathfrak a)+\overline{\psi(\mathfrak a)}=3\,\hecind_{[\mathfrak a]=1}$, and the logarithmic
+derivative of \eqref{hec:eq:galois} is, for $\Re s>1$,
+\begin{equation}\label{hec:eq:classlogder}
+-\frac{\zeta_H'}{\zeta_H}(s)
+=3\sum_{[\mathfrak a]=1}\frac{\Lambda_K(\mathfrak a)}{(\Nm\mathfrak a)^s}.
+\end{equation}
+All coefficients are nonnegative. The sum is over principal prime powers, not over powers of principal
+primes: a nonprincipal prime ideal $\mathfrak p$ contributes through $\mathfrak p^3$. The identity can also
+be seen locally. If the class of $\mathfrak p$ has order $e\in\set{1,3}$, then $\mathfrak p$ splits into
+$3/e$ primes of norm $(\Nm\mathfrak p)^e$ in $H$, so $-\zeta_H'/\zeta_H$ has coefficient
+$3\log\Nm\mathfrak p$ at exactly the powers $\mathfrak p^j$ with $e\mid j$; since $H/K$ is unramified, no
+Euler factor is exceptional. The same argument, with $1/h$ in place of $1/3$, applies to any unramified
+abelian extension of degree $h$. For a rational prime $p$, the coefficient of $p^{-ks}$ in
+\eqref{hec:eq:classlogder}, divided by $3\log p$, is
+\begin{center}
+\begin{tabular}{lll}
+\toprule
+Type of $p$ & Exponents $k$ with nonzero coefficient & Coefficient$/(3\log p)$\\
+\midrule
+$\Frob_p=1$ & all $k$ & $2$\\
+$\Frob_p$ a transposition & $2\mid k$ & $2$\\
+$\Frob_p$ a three-cycle & $3\mid k$ & $2$\\
+$p=23$ & all $k$ & $1$\\
+\bottomrule
+\end{tabular}
+\end{center}
+The transposition line comes from a prime ideal of norm $p^2$, which is principal because it is generated
+by $p$. Define the Euler--Kronecker constant
+$\gamma_H=\lim_{s\to1}\bigl(\zeta_H'(s)/\zeta_H(s)+1/(s-1)\bigr)$ and the normalized smoothed remainder
+\begin{equation}\label{hec:eq:RH}
+\mathcal R_H(x)=
+3\!\!\sum_{\substack{\Nm\mathfrak a\le x\\{}[\mathfrak a]=1}}
+\Lambda_K(\mathfrak a)
+\Bigl(\frac1{\Nm\mathfrak a}-\frac1x\Bigr)
+-\log x+(1+\gamma_H).
+\end{equation}
+The sign and the constant are forced by the Laurent expansion at $s=1$; another additive constant would
+destroy a decaying bound.
+
+\begin{theorem}[Principal-class criterion; \stR]\label{hec:thm:principal}
+Fix $0<\beta<1$. If there is a constant $C$ with
+\begin{equation}\label{hec:eq:principalbound}
+\mathcal R_H(x)\le Cx^{\beta-1}\qquad\text{for all sufficiently large }x,
+\end{equation}
+then $\zeta_H$ has no zero with $\Re s>\beta$, and consequently neither do $\zeta_K$, $\zeta_F$ and
+$L_K(s,\psi)$. If \eqref{hec:eq:principalbound} holds for every $\beta>1/2$, then RH holds for $\zeta_H$,
+$\zeta_F$ and $L_K(s,\psi)$.
+\end{theorem}
+
+\begin{proof}
+By \eqref{hec:eq:classlogder}, $\mathcal R_H$ is the remainder \eqref{ana:eq:RK} of the Dedekind zeta
+function of $H$: the sum is $\sum_{n\le x}\Lambda_H(n)(1/n-1/x)$, where $\Lambda_H(n)$ groups the
+coefficients of $-\zeta_H'/\zeta_H$ by rational norm, and the constant is $1+\gamma_H$. With $u=s-1$ one has
+$-\zeta_H'/\zeta_H(1+u)=1/u-\gamma_H+O(u)$, and division by $s(s-1)=u(1+u)$ gives
+$u^{-2}-(1+\gamma_H)u^{-1}+O(1)$; this is the normalization that makes the Mellin transform of
+$\mathcal R_H$ regular at $s=1$ (\cref{ana:lem:mellin}). At a zero $\rho$ of $\zeta_H$ of multiplicity
+$m_\rho$ the transform has a simple pole with residue $m_\rho/(\rho(1-\rho))$, even if the zero is
+multiple. \Cref{ana:thm:zerotest}, in the instance \cref{ana:ex:instances}(a) with $K=H$, therefore excludes
+every zero of $\zeta_H$ in $\Re s>\beta$. The factorizations \eqref{hec:eq:cubic} and \eqref{hec:eq:galois},
+with all factors holomorphic in the strip, give the statements for the other functions, and the
+functional equations give the zeros to the left of the critical line.
+\end{proof}
+
+The theorem makes no use of \cref{src:thm:dgrh}: the estimate would give the Riemann hypothesis for every
+factor of $\zeta_H$ at once. Because the selector is the full class-character product, every residue has the same
+sign, and no auxiliary zero-avoiding twist is required. By the averaged forms of the Landau step in
+\cref{ana:cor:forms,ana:thm:moving}, the pointwise bound may be replaced, for every $\eps>0$, by any one of
+\[
+ \int_X^{2X}(\mathcal R_H)_+\,\dd x\ll_\eps X^{1/2+\eps},\qquad
+ \int_X^{2X}(\mathcal R_H)_+^2\,\dd x\ll_\eps X^{\eps},\qquad
+ \int_X^{2X}\mathcal R_H\,\dd x\le C_\eps X^{1/2+\eps},
+\]
+the first two on dyadic $X$ and the third for all large real $X$; since
+$\mathcal R_H(x)=O(\log^2(2x))$, integer starting points suffice in the third. Conversely, RH for this
+fixed field supplies the conventional smoothed error bounds, and hence these averaged bounds. The three
+targets are therefore weaker forms of control to aim for, not conjectures logically weaker than RH for
+$\zeta_H$. The local normalizations
+were checked by exact computation: the coefficients of \eqref{hec:eq:eta23} agree with the Euler product
+obtained from the splitting of the cubic through $n=2000$ (303 primes), and \eqref{hec:eq:classlogder} was
+checked on twelve powers of each of these primes
+(\artifact{grh_beyond_dirichlet_2026-11-25/code/conductor23_benchmark.py},
+\artifact{grh_lean_transfer_analysis/computation/cubic23_exact.py}).
+{\emergencystretch=14em\par}
+
+\paragraph{A twisted coefficient system.}
+The source proof works with coefficients weighted by $1-\chi_d$ for an auxiliary quadratic character.
+The same shape is available here, at the price of a second hypothesis. Write $\epsilon$ for the sign
+character of $S_3$. The character table gives $\abs{\tr\rho(g)}^2=1+\epsilon(g)+\tr\rho(g)$ on every class,
+so
+\[
+ \rho\otimes\rho^*\simeq\triv\oplus\epsilon\oplus\rho ,
+\]
+and $\abs{\tr\rho(g^k)}^2\ge0$ is the character of this representation at every prime-power argument
+(a transposition gives $0$ for odd $k$ and $4$ for even $k$; a three-cycle gives $1$ unless $3\mid k$, when
+it gives $4$). Let $d\equiv7\pmod8$ be a prime, $d\ne23$, let $\chi_d(n)=\legendre{n}{d}$, and put
+$S_d=\set{23,d}$. With a superscript $S_d$ denoting omission of the Euler factors at those primes, define
+\begin{align*}
+ P_d(s)&=\zeta^{S_d}(s)L^{S_d}(s,\epsilon)L^{S_d}(s,\rho),\\
+ Q_d(s)&=L^{S_d}(s,\chi_d)L^{S_d}(s,\epsilon\chi_d)L^{S_d}(s,\rho\otimes\chi_d).
+\end{align*}
+Neither one-dimensional character in $Q_d$ is principal, and $\rho\otimes\chi_d$ is induced from the
+character $\psi\cdot\chi_d|_{G_K}$, whose cubic part cannot be cancelled by a quadratic character. Thus
+$Q_d$ is entire and nonzero at $s=1$, while $P_d$ has a simple pole there. For $n=p^k$ with $p\notin S_d$
+put
+\begin{equation}\label{hec:eq:lambdad}
+ \lambda_d(p^k)=(\log p)\,\abs{\tr\rho(\Frob_p^k)}^2\bigl(1-\chi_d(p)^k\bigr),
+\end{equation}
+and $\lambda_d(n)=0$ otherwise. Then $0\le\lambda_d(n)\le8\Lambda(n)$ and
+$\sum_n\lambda_d(n)n^{-s}=-P_d'/P_d(s)+Q_d'/Q_d(s)$ for $\Re s>1$. The pole coefficient at $1$ is one,
+the mean of the squared trace. Let $A_d$ be the entire function $(s-1)P_d(s)$, put
+$G_d(s)=Q_d'(s)/Q_d(s)-A_d'(s)/A_d(s)-1$ and $c_d=G_d(1)\in\R$, and define
+\begin{equation}\label{hec:eq:Rd}
+ R_d(x)=\sum_{n\le x}\lambda_d(n)\Bigl(\frac1n-\frac1x\Bigr)-\log x-c_d.
+\end{equation}
+
+\begin{proposition}[Twisted target; \stR]\label{hec:prop:twisted}
+Fix $1/2<\beta<1$. Suppose that for every $T\ge0$ there is a prime $d\equiv7\pmod 8$, $d\ne23$, such that
+\begin{enumerate}[label=\textup{(\Alph*)}]
+\item $R_d(x)\le C_dx^{\beta-1}$ for all sufficiently large $x$, for some finite $C_d$, and
+\item $Q_d(s)\ne0$ whenever $\Re s\ge\beta$ and $\abs{\Im s}\le T$.
+\end{enumerate}
+Then $\zeta(s)L(s,\epsilon)L(s,\rho)$, and in particular $L(s,\rho)$, has no zero in $\Re s>\beta$.
+\end{proposition}
+
+\begin{proof}
+The sum of the series is $s/(s-1)+G_d(s)$, so the same integration as before gives
+\[
+ \Phi_d(s)=\int_1^\infty R_d(x)x^{-s}\,\dd x=\frac{G_d(s)/s-c_d}{s-1}.
+\]
+The point $s=1$ is removable, and at $\omega\ne0,1$
+\begin{equation}\label{hec:eq:resd}
+ \Res_{s=\omega}\Phi_d(s)=\frac{\ord_\omega A_d-\ord_\omega Q_d}{\omega(1-\omega)}.
+\end{equation}
+All the representations have finite image, so the removed Euler polynomials vanish only on $\Re s=0$;
+omitting $S_d$ changes no zero order in $\Re s>0$ (it does change the constant $c_d$). The bound on
+$\lambda_d$ gives $R_d(x)=O_d(1+\log^2x)$. Suppose $\omega$ is a zero of $\zeta L(s,\epsilon)L(s,\rho)$ with
+$\Re\omega>\beta$, take $T\ge\abs{\Im\omega}$, and use the same $d$ in (A) and (B). For real $\beta<t<1$
+the residue \eqref{hec:eq:resd} is $\ord_tA_d/(t(1-t))\ge0$ by (B), and there is no real pole on
+$[1,\infty)$. By \cref{hec:lem:landau}, applied to $g(x)=xR_d(x)$, the function $\Phi_d$ is holomorphic in
+$\Re s>\beta$. But at $\omega$ the target order is positive and the auxiliary order vanishes by (B), so
+\eqref{hec:eq:resd} is nonzero, a contradiction.
+\end{proof}
+
+If (A) and (B) hold for every $\beta>1/2$, the functional equation gives RH for $L(s,\rho)$. With
+\cref{src:thm:dgrh} the one-dimensional factors of $Q_d$ are already zero-free in $\Re s>1/2$; the new
+separation problem is the degree-two factor $L(s,\rho\otimes\chi_d)$, and (A) and (B) must hold for a
+common $d$. Unlike \cref{hec:thm:principal}, this route needs an auxiliary nonvanishing statement, because
+the residue \eqref{hec:eq:resd} is a difference of zero orders.
+
+\paragraph{A sign test on prime root counts.}
+The strongest form of the reduction uses primes only, a single cutoff, a sign rather than a rate, and a
+sparse set of cutoffs. Consider the first Riesz mean of the trace over primes,
+\begin{equation}\label{hec:eq:T}
+ \mathcal{T}(x)=\sum_{p\le x,\ p\ne23}a(p)\log p\,\Bigl(1-\frac px\Bigr).
+\end{equation}
+Call an increasing unbounded sequence $(x_j)$ \emph{admissible} if
+$x_{j+1}-x_j=O(x_j^{1-\delta})$ for some fixed $0<\delta\le1$; for instance $x_j=j^k$ with $\delta=1/k$,
+for any integer $k\ge1$.
+
+The completed function \eqref{hec:eq:Lambda23} is the one used in \cref{zer:sec:window}, and the zero sum
+that controls the oscillation is
+\[
+ Z=\sum_{\rho}\frac1{1/4+(\Im\rho)^2},
+\]
+over the nontrivial zeros of $L$ with multiplicity, as in \eqref{zer:eq:Z}. The curvature bound for positive
+eta products, \cref{zer:prop:eta}, gives in the case $\eta(z)\eta(23z)$ the following
+(\cref{zer:cor:cubicZ}): if RH holds for $L$, then
+$Z=2\Lambda'(1)/\Lambda(1)\le6/(\pi\sqrt{23})$.
+
+\begin{theorem}[Sparse sign test; \stR]\label{hec:thm:sign}
+Let $(x_j)$ be an admissible sequence. Then RH for $L$ is equivalent to
+\[
+ \mathcal{T}(x_j)\le0\qquad\text{for all sufficiently large }j.
+\]
+Moreover, RH for $L$ implies
+\begin{equation}\label{hec:eq:limsup}
+ \limsup_{x\to\infty}\frac{\mathcal{T}(x)}{\sqrt x}\le\frac6{\pi\sqrt{23}}-\frac23<-0.268 .
+\end{equation}
+\end{theorem}
+
+\begin{theorem}[Oscillation on sparse sequences; \stU]\label{hec:thm:osc}
+Let $(x_j)$ be an admissible sequence.
+\begin{enumerate}[label=\textup{(\roman*)}]
+\item $\mathcal{T}(x_j)<0$ for infinitely many $j$, and
+$\liminf_{j}\mathcal{T}(x_j)/\sqrt{x_j}\le6/(\pi\sqrt{23})-2/3$.
+\item If $L$ has a zero with real part $\beta>1/2$, then for every $1/2\le a<\beta$,
+\[
+ \limsup_{j\to\infty}\frac{\mathcal{T}(x_j)}{x_j^{a}}=+\infty,\qquad
+ \liminf_{j\to\infty}\frac{\mathcal{T}(x_j)}{x_j^{a}}=-\infty .
+\]
+\item In all cases
+\[
+ \liminf_{j\to\infty}\frac{\mathcal{T}(x_j)}{\sqrt{x_j}}<-\frac23<\limsup_{j\to\infty}\frac{\mathcal{T}(x_j)}{\sqrt{x_j}}.
+\]
+\end{enumerate}
+\end{theorem}
+
+\begin{proof}[Proof of \cref{hec:thm:sign,hec:thm:osc}]
+\emph{The explicit formula and the bias from squares.}
+Write $b(p^j)=\tr(\rho(\Frob_p)^j)\log p$ at unramified primes, with the inertia-invariant trace at $23$.
+Assume RH for $L$. Mellin inversion on $\Re s=2$ with the kernel $x^s/(s(s+1))$, which inverts to
+$(1-p^j/x)_+$, expresses the Riesz mean of $b$ as the integral of $(-L'/L)(s)x^s/(s(s+1))$. Shift the line
+to $\Re s=-1/2$ along heights $T$ between successive integers at distance $\gg1/\log T$ from the zero
+ordinates, where the logarithmic derivative is $O(\log^2(2+\abs s))$; such heights exist by the local zero
+count, and the two horizontal integrals are $O_x(T^{-2}\log^2T)$. On the new line the functional equation
+gives $O(\log(2+\abs s))$ and the integral is $O(x^{-1/2})$. At $s=0$ the pole of the gamma factor and
+$\Lambda(0)>0$ give a simple zero of $L$, so the double pole there contributes $O(1+\log x)$. Hence
+\begin{equation}\label{hec:eq:riesz}
+ \sum_{p^j\le x}b(p^j)\Bigl(1-\frac{p^j}x\Bigr)
+ =-\sum_{\rho}\frac{x^{\rho}}{\rho(\rho+1)}+O\bigl((1+\log x)^2\bigr),
+\end{equation}
+the zero sum being absolutely convergent. Since $\abs{\rho+1}\ge\abs\rho$ on the critical line, the zero
+sum has modulus at most $Z\sqrt x$. At the squares, the character $h\mapsto\tr\rho(h^2)$ has group mean
+$(2+3\cdot2+2\cdot(-1))/6=1$, so the Chebotarev theorem for the fixed field $H$ and partial summation give
+\begin{equation}\label{hec:eq:squares}
+ \sum_{p\le\sqrt x,\ p\ne23}b(p^2)\Bigl(1-\frac{p^2}x\Bigr)
+ =\Bigl(\int_0^1(1-y^2)\,\dd y+o(1)\Bigr)\sqrt x=\Bigl(\frac23+o(1)\Bigr)\sqrt x
+\end{equation}
+without any hypothesis on zeros. The terms of exponent at least three contribute $O(x^{1/3}\log^2x)$, and
+the powers of $23$ contribute $O(\log x)$. Subtracting from \eqref{hec:eq:riesz} and using the bound
+$Z\le6/(\pi\sqrt{23})$ of \cref{zer:cor:cubicZ} proves \eqref{hec:eq:limsup}, and with it the implication
+from RH to the eventual sign, for every sequence tending to infinity.
+
+\emph{From a one-sided bound to zeros.}
+For $\Re s>1$,
+\begin{equation}\label{hec:eq:Tmellin}
+ \int_1^\infty \mathcal{T}(x)x^{-s-1}\,\dd x=\frac{-L'(s)/L(s)-E(s)}{s(s+1)},
+\end{equation}
+where $E$ collects the powers of exponent at least two and the ramified prime, and is holomorphic in
+$\Re s>1/2$. A zero $\rho$ of $L$ of multiplicity $m$ with $\Re\rho>1/2$ gives a simple pole with residue
+$-m/(\rho(\rho+1))\ne0$, and by positivity of $\Lambda$ on the real axis there is no real pole in
+$(1/2,\infty)$. By \cref{ana:thm:onesided} with \cref{ana:cor:forms}(a), applied to $\mathcal{T}(x)/x$ and to
+$-\mathcal{T}(x)/x$ with $\beta=a$, a bound $\mathcal{T}(x)\le Cx^{a}$ or $-\mathcal{T}(x)\le Cx^{a}$ with $a>1/2$, valid for all
+large $x$, excludes all zeros in $\Re s>a$.
+
+\emph{Interpolation between the sample points.}
+Suppose $L$ has no zero in $\Re s>\theta$, where $1/2\le\theta\le1$. Then
+$U(x)=\sum_{p\le x,\,p\ne23}a(p)\log p$ is $O_\eps(x^{\theta+\eps})$ for each $\eps>0$: at $\theta=1$ this
+is trivial, and otherwise it follows from the truncated explicit formula for the fixed Artin factor at
+half-integers with a height $T\asymp x^2$ chosen away from the ordinates, in which the zeros contribute
+$O(x^\theta\sum_{\abs{\Im\rho}\le T}1/\abs\rho)=O(x^\theta\log^2T)$, the truncation error is
+$O(\log^{O(1)}x)$, and the omitted prime powers cost $O(\sqrt x\log^2x)$
+\cite[\S3.4 and Example~3.5.6]{Ng2000Limiting}. Between primes,
+\[
+ \abs{\mathcal{T}'(x)}=x^{-2}\Bigl\lvert\sum_{p\le x,\ p\ne23}p\,a(p)\log p\Bigr\rvert=O_\eps(x^{\theta-1+\eps})
+\]
+by partial summation, and $T$ is continuous at primes. If $\mathcal{T}(x_j)\le Cx_j^{a}$ for all large $j$, with
+$a\ge1/2$, then integrating across a gap of length $O(x_j^{1-\delta})$ gives the upper bound
+$\mathcal{T}(x)\ll_\eps x^{a}+x^{\theta-\delta+\eps}$ for all large $x$, and the previous step excludes zeros in
+$\Re s>\max(a,\theta-\delta)$. Starting from $\theta=1$ and iterating at most $\lceil1/(2\delta)\rceil$
+times shows that $L$ is zero-free in $\Re s>a$. The same holds for $-\mathcal{T}$.
+
+\emph{Conclusions.}
+With $C=0$ and $a=1/2$ the iteration shows that $\mathcal{T}(x_j)\le0$ for all large $j$ implies that $L$ has no
+zero in $\Re s>1/2$, and the functional equation gives RH for $L$. This completes the proof of
+\cref{hec:thm:sign}. If $\mathcal{T}(x_j)$ were nonnegative for all large $j$, the same argument for $-\mathcal{T}$ would give
+RH for $L$, hence \eqref{hec:eq:limsup} and eventual strict negativity, a contradiction; so $\mathcal{T}(x_j)<0$
+infinitely often. If $L$ has a zero with real part $\beta>1/2$ and $1/2\le a<\beta$, a finite upper bound
+for $\mathcal{T}(x_j)/x_j^{a}$ or for $-\mathcal{T}(x_j)/x_j^{a}$ would make $L$ zero-free in $\Re s>a$; this proves (ii).
+Combining (ii) at $a=1/2$ with \eqref{hec:eq:limsup} gives the second assertion of (i).
+
+For (iii) we may assume RH for $L$, since otherwise (ii) gives both infinite extrema. With $t=\log x$,
+\eqref{hec:eq:riesz} and \eqref{hec:eq:squares} give
+\[
+ e^{-t/2}\mathcal{T}(e^t)=-\frac23+\Phi(t)+o(1),\qquad
+ \Phi(t)=-\sum_{\rho=1/2+i\gamma}\frac{e^{i\gamma t}}{\rho(\rho+1)} .
+\]
+Absolute uniform convergence makes $\Phi$ real and uniformly continuous. Positivity of $\Lambda(1/2)$ rules
+out $\gamma=0$, so the average of $\Phi$ over $[0,T]$ tends to zero. There is at least one zero: a
+zero-free entire function of order one is the exponential of an affine function, the symmetry would make
+it constant, and this contradicts Stirling's formula at large positive real $s$. Choose one positive
+ordinate $\gamma$, of multiplicity $m$, and put $C=-m/(\rho(\rho+1))$, the nonzero Fourier coefficient of
+$\Phi$ at $\gamma$. The weight $1+\cos(\gamma t+\phi)$ is nonnegative with mean $1$, and its product with
+$\Phi$ has mean $\Re(e^{-i\phi}C)$. The phases giving $-\abs C$ and $\abs C$ show
+$\liminf\Phi\le-\abs C$ and $\limsup\Phi\ge\abs C$. Finally $\log x_{j+1}-\log x_j\to0$, and uniform
+continuity gives the same two extrema along $(x_j)$.
+\end{proof}
+
+The script \artifact{grh-progression-densities-and-cubic-prime-race/code/check_eta23.py} compares the
+78{,}497 unramified primes below $10^6$ with the coefficients of the eta product by two independent exact
+algorithms, and gives $\mathcal{T}(10^6)/1000=-0.788953233$ to the displayed precision. No finite
+computation bears on the eventual sign.
+{\emergencystretch=14em\par}
+
+\begin{remark}[Two-scale form]\label{hec:rem:twoscale}
+Let $B(y)=\sum_{p\le y,\,p\ne23}a(p)\log p$ and, for a dilation $h>1$,
+$J_h(x)=-\int_x^{hx}B(y)\,y^{-2}\,\dd y$, which is the statistic \eqref{zer:eq:Jh} for the weight $a(p)$.
+\Cref{zer:thm:cubicrace} shows that RH for $L$ is equivalent to $J_4(x)\ge0$ for all sufficiently large $x$,
+and to $\liminf_{x\to\infty}\sqrt x\,J_4(x)\ge1-9/(\pi\sqrt{23})>0.4026$, and that $J_4$ takes positive
+values arbitrarily far out unconditionally. \Cref{hec:thm:sign} replaces the two continuous cutoffs by a
+single one on a prescribed sparse sequence.
+\end{remark}
+
+\paragraph{Irreducible primes.}
+The geometric part of the source proof produces nonnegative local amounts. A nonnegative class function
+on a group $G$ whose coefficients on all nonlinear characters are negative is positive on every nonidentity
+element of $[G,G]$, and the indicator of these elements is the pointwise minimal such function in the
+normalization of \cref{sec:nab}. For $S_3$ this indicator is that of the three-cycles, which asks whether
+the cubic is irreducible modulo $p$.
+
+\begin{corollary}[Irreducible-prime criterion for $S_3$ cubics; \stR]\label{hec:thm:irred}
+Let $P\in\Z[X]$ be a monic irreducible cubic with nonsquare discriminant, let $E$ be its splitting field,
+with group $S_3$, and let $\tau$ be the standard representation. Assume \cref{src:thm:dgrh}. Then RH for
+$L(s,\tau)$ is equivalent to RH for $\zeta_E$, and hence to each of the equivalent statements of
+\cref{nab:thm:nonsplit} with $N=[S_3,S_3]=A_3$. For this choice the set $\mathcal P$ consists of the primes
+$p\nmid\disc(P)$ at which $P\bmod p$ is irreducible, $\delta=1/2-1/6=1/3$, and the weight is
+\[
+ 3\,\hecind_{A_3\setminus\set1}=1+\hecsgn-\chi_\tau .
+\]
+In particular RH for $L(s,\tau)$ is equivalent to the bound, for every $\eps>0$,
+\begin{equation}\label{hec:eq:irredP}
+ \sum_{\substack{p\le x,\ p\nmid\disc(P)\\ P\bmod p\ \mathrm{irreducible}}}\log p-\frac x3\le C_{P,\eps}x^{1/2+\eps}.
+\end{equation}
+\end{corollary}
+
+\begin{proof}
+In the order identity, transposition, three-cycle, the characters are $\chi_\tau=(2,0,-1)$ and
+$\hecsgn=(1,-1,1)$, which gives the displayed weight; a prime $p\nmid\disc(P)$ has a three-cycle as
+Frobenius exactly when $P\bmod p$ is irreducible. The representation $\tau$ is induced from a nontrivial
+character of $A_3$, so $L(s,\tau)$ is an entire Hecke $L$-function, and the regular representation gives
+$\zeta_E=\zeta\,L(s,\hecsgn)L(s,\tau)^2$ with all factors holomorphic in the critical strip. With
+\cref{src:thm:dgrh} for the first two factors, RH for $\zeta_E$ and RH for $L(s,\tau)$ are equivalent, and
+\eqref{hec:eq:irredP} is statement (iv) of \cref{nab:thm:nonsplit}.
+\end{proof}
+
+The first Riesz mean of the same primes gives a two-sided form without loss of $\eps$.
+
+\begin{proposition}[Riesz form of the irreducible-prime criterion; \stR]\label{hec:prop:irredriesz}
+With $P$ and $\tau$ as in \cref{hec:thm:irred}, put
+\[
+ I_P(x)=3\sum_{\substack{p\le x,\ p\nmid\disc(P)\\ P\bmod p\ \mathrm{irreducible}}}
+ \log p\,\Bigl(1-\frac px\Bigr).
+\]
+Assume \cref{src:thm:dgrh}. The following are equivalent.
+\begin{enumerate}[label=\textup{(\arabic*)}]
+\item All nontrivial zeros of $L(s,\tau)$ have real part $1/2$.
+\item $I_P(x)=x/2+O_P(\sqrt x)$.
+\item For each $\eps>0$ and all sufficiently large $x$, $I_P(x)\le x/2+C_{P,\eps}x^{1/2+\eps}$.
+\end{enumerate}
+\end{proposition}
+
+\begin{proof}
+Let $w_*$ be the indicator of the three-cycles and $U(x)$ the sum over prime powers $p^k\le x$,
+$p\nmid\disc(P)$, of $3w_*(g_p^k)\log p\,(1-p^k/x)$, where $g_p$ is a Frobenius element. Chebyshev's bound
+gives $U-I_P=O(\sqrt x)$. For $\Re s>1$,
+\[
+ \int_1^\infty U(x)x^{-s-1}\,\dd x=\frac{A(s)}{s(s+1)},\qquad
+ A(s)=-\frac{\zeta'}{\zeta}(s)-\frac{L'}L(s,\hecsgn)+\frac{L'}L(s,\tau)+B(s),
+\]
+where $B$ accounts for the finitely many excluded Euler factors and is holomorphic in $\Re s>0$. The
+residue at $s=1$ is $1/2$. After subtraction of $1/(2(s-1))$, the transform of $U(x)-x/2$ has, at a zero
+$\beta$ of $L(s,\tau)$ with $\Re\beta>1/2$ of multiplicity $m_\beta$, a simple pole with residue
+$m_\beta/(\beta(\beta+1))$, positive at real $\beta$; by \cref{src:thm:dgrh} the first two terms of $A$
+contribute no other pole in this region. Assume (3) and fix $a=1/2+\eps<1$. By \cref{hec:lem:landau} the
+transform is holomorphic in $\Re s>a$, so $L(s,\tau)$ has no zero there; let $\eps\to0$ and use the
+functional equation. This proves (1).
+
+Assume (1). All three factors then satisfy their critical-line statements. Start from Mellin inversion
+on $\Re s=2$ with the full logarithmic derivatives, adding back the omitted local terms at a cost
+$O_P(\log x)$, and shift to $\Re s=-1/2$ along heights at distance $\gg_P1/\log T$ from the ordinates. The
+logarithmic derivatives are $O_P(\log^2T)$ on the horizontal segments and $O_P(\log(2+\abs t))$ on the new
+line, the residues at the nontrivial zeros have absolute sum $O_P(\sqrt x)$ because
+$\sum_\rho(1+\abs{\Im\rho})^{-2}$ converges, and the possible double pole at $0$ costs $O_P(1+\log x)$.
+This gives $U(x)=x/2+O_P(\sqrt x)$, which is (2), and (2) implies (3).
+\end{proof}
+
+For $P=X^3-X-1$, with $E=H$, the estimates in \cref{hec:thm:irred,hec:prop:irredriesz} are open. With
+$I(p)=1$ if $X^3-X-1$ is irreducible modulo $p$ and $I(p)=0$ otherwise, \eqref{hec:eq:irredP} reads
+\begin{equation}\label{hec:eq:irred23}
+ \sum_{p\le x,\ p\ne23}I(p)\log p-\frac x3\le C_\eps x^{1/2+\eps}\qquad\text{for every }\eps>0 ,
+\end{equation}
+and under \cref{src:thm:dgrh} it is equivalent to RH for $\zeta_H$.
+
+\paragraph{Obstructions to an automatic Dirichlet reduction.}
+The weights $a(p)$ and $I(p)$ cannot be produced by changing the modulus in the source construction, and
+the field $H$ cannot be substituted for the auxiliary field.
+
+\begin{proposition}[Finite-modulus obstruction; \stU]\label{hec:prop:modulus}
+For every integer $q\ge1$, infinitely many unramified primes $p\equiv1\pmod q$ have $a(p)=2$, and
+infinitely many have $a(p)=-1$. Consequently $a(p)$ is not a function of $p$ modulo any fixed integer,
+even after deleting finitely many primes, and it is not a finite linear combination of Dirichlet
+characters. No finite product or quotient of Dirichlet $L$-functions has the Euler product of $L$.
+\end{proposition}
+
+\begin{proof}
+Put $C=\Q(\zeta_q)$. The field $H\cap C$ is abelian over $\Q$, and the largest abelian quotient of $S_3$
+is its sign quotient, so $H\cap C\subseteq K$. The identity and a three-cycle act trivially on this
+intersection, so the pairs $(1,1)$ and $((123),1)$ define elements of $\Gal(HC/\Q)$, viewed as a fibre
+product over $\Gal(H\cap C/\Q)$. The Chebotarev theorem gives infinitely many primes for each of their
+conjugacy classes. The cyclotomic component is trivial, so $p\equiv1\pmod q$, while the traces are $2$ and
+$-1$. A finite list of Dirichlet characters has a common modulus, on whose identity class every character
+equals $1$, and no fixed linear combination can take both values there. The last assertion follows by
+comparing the prime coefficients of logarithmic derivatives.
+\end{proof}
+
+The mean-square form of this obstruction is the case $E=H$ of \cref{nab:thm:periodic}. For a modulus $m$
+the field $H\cap\Q(\zeta_m)$ is abelian over $\Q$, hence is $\Q$ or $K$, and it is $K$ exactly when
+$23\mid m$, because $K$ has conductor $23$; so the subgroup $H_m$ of \cref{nab:thm:periodic} is $S_3$ if
+$23\nmid m$ and $A_3$ if $23\mid m$. The weights expand as $a=\chi_\rho$ and
+$I=\tfrac13(1+\epsilon-\chi_\rho)$ in the characters of $S_3$. Reading off \eqref{nab:eq:energy} and
+\cref{nab:prop:error} gives the following explicit values.
+
+\begin{corollary}[Mean-square distance to congruence weights; \stU]\label{hec:prop:meansq}
+Let $m\ge1$.
+\begin{enumerate}[label=\textup{(\roman*)}]
+\item For every real function $w$ on $(\Z/m)^\times$,
+\[
+ \lim_{X\to\infty}\frac1{\pi(X)}\sum_{\substack{p\le X\\p\nmid23m}}\bigl(a(p)-w(p\bmod m)\bigr)^2
+ =1+\frac1{\varphi(m)}\sum_{r\in(\Z/m)^\times}w(r)^2 ,
+\]
+so the best periodic approximation to $a(p)$ is $w=0$: the coset average of the nonlinear character
+$\chi_\rho$ vanishes and $\norm{\chi_\rho}^2_{S_3}=1$.
+\item The least value over $w$ of
+$\lim_{X\to\infty}\pi(X)^{-1}\sum_{p\le X,\,p\nmid23m}(I(p)-w(p\bmod m))^2$ is
+$\tfrac19+\tfrac19=\tfrac29$ if $23\nmid m$, where the coefficients of $\epsilon$ and $\chi_\rho$ are lost,
+and $\tfrac19$ if $23\mid m$, where only that of $\chi_\rho$ is lost. The best $\set{0,1}$-valued
+congruence rule, with the modulus freely chosen, misclassifies a proportion
+$\tfrac16\bigl(\min\set{2,1}+\min\set{0,3}\bigr)=\tfrac16$ of the primes: it predicts irreducibility on the
+classes in which $p$ splits in $K$.
+\end{enumerate}
+\end{corollary}
+
+These values exclude an exact replacement of the weight by a fixed collection of Dirichlet characters;
+they do not exclude cancellation in the signed sum \eqref{hec:eq:irred23}, nor constructions whose modulus grows
+with the cutoff (\cref{nab:rem:fixed}).
+
+\begin{remark}[Structural obstructions]\label{hec:rem:structural}
+Three further facts constrain a transfer of the source construction to this field.
+First, although $H$ contains the imaginary quadratic field $K$ and is totally imaginary, it is not a CM
+field: in a Galois CM field complex conjugation is central, whereas in $S_3$ it is a noncentral
+transposition. For the same reason $H$ is contained in no Galois CM field, since a central element would
+restrict centrally to $H$; and it is contained in no abelian field. Replacing the auxiliary CM field of the
+source by $H$ is therefore not possible, and an extension has to use relative or adelic class information
+over the CM base $K$. Second, the new information sits at the split primes: if $p$ is inert in $K$, the
+prime ideal above it is $(p)$, which is principal, so $\psi((p))=1$, and the two nontrivial class characters
+are distinguished from the trivial one only at split prime ideals, whereas the divisibility construction
+of the source is organized around primes at which the auxiliary quadratic character is not $1$. Third, the
+one-dimensional representations of $S_3$ are $\triv$ and $\epsilon$, and every virtual combination of them
+takes the same value at the identity and at a three-cycle, while $\tr\rho$ takes the values $2$ and $-1$;
+the degree-two factor is thus not reached by any argument through one-dimensional representations of
+$\Gal(H/\Q)$. These are limitations of particular transfer routes, not statements of logical independence
+from \cref{src:thm:dgrh}.
+\end{remark}
+
+\subsection{Two further cubic tests}\label{hec:ss:othercubic}
+{\emergencystretch=\textwidth\sources{grh-lean-transfers; mcnew_counterexample_and_grh_transfers}}
+
+\paragraph{All class weights for the pure cubic field.}
+Let $E=\Q(\sqrt[3]2)$ and $M=E(\zeta_3)$. The polynomial $X^3-2$ is Eisenstein at $2$ and has discriminant
+$-108$; its splitting field $M$ has group $S_3$ and quadratic subfield $\Q(\sqrt{-3})$. For $p>3$ let $g_p$
+be the Frobenius class and $r_p$ the number of roots of $X^3-2$ modulo $p$, and let $\tau$ be the character
+of the standard representation, so that $\tau(g_p)=r_p-1$.
+\begin{center}
+\begin{tabular}{lrrrr}
+\toprule
+Factorization mod $p$ & Class size & $r_p$ & $\hecsgn(g_p)$ & $\tau(g_p)$\\
+\midrule
+Three linear factors & 1 & 3 & $1$ & $2$\\
+One linear and one quadratic factor & 3 & 1 & $-1$ & $0$\\
+One irreducible cubic & 2 & 0 & $1$ & $-1$\\
+\bottomrule
+\end{tabular}
+\end{center}
+For example $7$ and $31$ are both $7\pmod{24}$, but the cubes modulo $7$ are $0,\pm1$, whereas
+$4^3\equiv2\pmod{31}$; the traces are $-1$ and $2$. The permutation character on the roots is $1+\tau$, so
+the standard factor is $F=\zeta_E/\zeta$. By \cref{src:thm:dgrh} it is holomorphic in the right half of the
+critical strip, and $F(1)$ is finite and positive.
+
+\begin{theorem}[Three splitting types; \stR]\label{hec:thm:cuberoot}
+Assume \cref{src:thm:dgrh}. Let $w=(u,v,z)$ be real weights on the three rows of the table, in order, and put
+\[
+ A=\frac{u+3v+2z}6,\qquad B=\frac{u-3v+2z}6,\qquad C=\frac{u-z}3,
+\]
+so that $w=A+B\,\hecsgn+C\tau$. Let
+\[
+ S_w(x)=\sum_{3<p\le x}w(g_p)\log p\,\Bigl(\frac1p-\frac1x\Bigr),\qquad
+ R_w(x)=S_w(x)-A\log x-c_w,
+\]
+where the constant $c_w$ is fixed by $R_w(x)\to0$.
+\begin{enumerate}[label=\textup{(\arabic*)}]
+\item If $C=0$, then $R_w(x)=O_w(x^{-1/2}\log^2(2x))$.
+\item If $C\ne0$, then RH for $\zeta_E$ is equivalent to the following one-sided estimate: for every
+$\eps>0$ there is $K_{w,\eps}>0$ such that, for all sufficiently large $x$,
+\[
+ \hecsgn(C)\,R_w(x)\le K_{w,\eps}x^{-1/2+\eps}.
+\]
+Under RH for $\zeta_E$ the two-sided bound of \textup{(1)} holds for these weights as well.
+\end{enumerate}
+\end{theorem}
+
+Thus an upper bound for the primes at which $X^3-2$ splits completely suffices, and so does a lower bound
+for the primes at which it is irreducible. For $w=(2,0,-1)$ the logarithmic main term vanishes; this choice
+measures exactly the part missed by the two Dirichlet characters in the table.
+
+\begin{proof}
+Let $\theta_w(t)=\sum_{3<p\le t}w(g_p)\log p$, so that $S_w(x)=\int_1^x\theta_w(t)t^{-2}\,\dd t$. The prime
+ideal theorem for the fixed fields $E$, $\Q(\sqrt{-3})$ and $\Q$ gives
+$\theta_w(t)=At+O_w(te^{-b\sqrt{\log t}})$ for some $b>0$: the degree-one primes of $E$ above $p>3$ are
+counted by $r_p$, the quadratic field gives $1+\hecsgn(g_p)$, and the terms of higher residue degree and
+higher powers add $O(\sqrt t\log^2(2t))$ in each field. Hence
+\[
+ c_w=\int_1^\infty(\theta_w(t)-At)t^{-2}\,\dd t,\qquad
+ R_w(x)=-\int_x^\infty(\theta_w(t)-At)t^{-2}\,\dd t .
+\]
+Under RH for the respective Dedekind zeta function the prime ideal theorem has error
+$O(\sqrt t\log^2(2t))$ \cite{GrenieMolteni2016Explicit}; for the quadratic field this hypothesis is supplied
+by $\zeta_{\Q(\sqrt{-3})}=\zeta L(s,\chi_{-3})$ and \cref{src:thm:dgrh}. The last integral proves (1) and the
+forward implication in (2).
+
+For the reverse implication it suffices, by linearity and (1), to treat $w=\tau$ and an upper bound. For
+$\Re s>1$ put $D(s)=\sum_{p>3}(r_p-1)(\log p)p^{-s}$. Comparing Euler factors gives
+$D(s)=-F'(s)/F(s)-H(s)$ with $H$ holomorphic in $\Re s>1/2$: the coefficient at the $j$th power of an
+unramified prime is $\tau(g_p^j)\log p$ with $\abs\tau\le2$, the sum over $j\ge2$ converges absolutely and
+locally uniformly there, and the two ramified primes have local inverse roots that are zero or roots of
+unity. The prime ideal theorem gives $c_\tau=D(1)$. For $\Re s>1$,
+\[
+ \int_1^\infty R_\tau(x)x^{-s}\,\dd x=\frac{D(s)}{s(s-1)}-\frac{D(1)}{s-1},
+\]
+and the singularity at $1$ is removable. Each zero $\rho$ of $F$ in $\Re s>1/2$, of multiplicity $m_\rho$,
+gives a simple pole with residue $m_\rho/(\rho(1-\rho))$, which is positive at real zeros because these lie
+below $1$. Fix $1/2<\beta<1$ and take the assumed bound with $\eps=\beta-1/2$. \Cref{hec:lem:landau},
+applied to $g(x)=xR_\tau(x)$, shows that the transform is holomorphic in $\Re s>\beta$. Hence $F$, and with
+it $\zeta_E$ away from its pole, is zero-free in $\Re s>1/2$, and the functional equation of $\zeta_E$ gives
+the left half. In this argument the prime-power correction is holomorphic on the open half-plane, which is
+exactly the domain needed.
+\end{proof}
+
+For this field \cref{nab:thm:periodic}, applied to the nonlinear character $\tau$ of $\Gal(M/\Q)$, gives as
+in \cref{hec:prop:meansq}(i), for every complex function $a$ on $(\Z/q)^\times$,
+\[
+ \lim_{x\to\infty}\frac1{\pi(x)}\sum_{\substack{p\le x\\p\nmid6q}}\abs{\tau(g_p)-a(p\bmod q)}^2
+ =1+\frac1{\varphi(q)}\sum_{b\in(\Z/q)^\times}\abs{a(b)}^2 .
+\]
+The field $M$ is the case $n=3$ of the fields $\Q(\zeta_n,2^{1/n})$, $n$ squarefree, in Hooley's
+conditional treatment of Artin's primitive-root conjecture for the base $2$, and
+$\zeta_M=\zeta\,L(s,\chi_{-3})F^2$. The theorem therefore identifies the first missing instance, with its
+sign and arithmetic weight; the full conjecture would require the whole family, with the uniformity used
+in the sieve \cite{FanPollack2025Counting}. The Kummer family is treated in \cref{sec:grp}.
+
+\paragraph{A binary event isolating one twisted factor.}
+Let $H$ be the splitting field of $P(X)=X^3-X-1$ as before and $E=H(i)$, so that
+$G=\Gal(E/\Q)=S_3\times C_2$. Let $\sigma$ be the sign character of $S_3$, $\rho$ its standard character and
+$\eta$ the nontrivial character of $C_2$. For a prime $p\nmid46$ put $f(p)=1$ if either
+$p\equiv1\pmod4$ and $P$ is irreducible modulo $p$, or $p\equiv3\pmod4$ and $P$ has three distinct linear
+factors modulo $p$; put $f(p)=0$ otherwise. Evaluating on the three cycle types for each value of $\eta$
+shows that the corresponding class function is
+\begin{equation}\label{hec:eq:twistid}
+ f=\frac{1+\sigma}4+\frac{(1+\sigma)\eta}{12}-\frac{\rho\eta}3 .
+\end{equation}
+Its mean is $1/4$, and it has no $\rho$ term.
+
+\begin{theorem}[One Hecke $L$-function from one binary event; \stR]\label{hec:thm:twistedcubic}
+Assume \cref{src:thm:dgrh}. All nontrivial zeros of $L(s,\rho\eta)$ lie on $\Re s=1/2$ if and only if for
+every $\eps>0$ there is a constant $C_\eps$ such that, for $x\ge2$,
+\begin{equation}\label{hec:eq:twistbound}
+ \sum_{p\le x,\ p\nmid46}f(p)\log p-\frac x4\le C_\eps x^{1/2+\eps}.
+\end{equation}
+\end{theorem}
+
+\begin{proof}
+The standard representation of $S_3$ is induced from either nontrivial character of $A_3$, and twisting by
+$\eta$ commutes with induction. Thus $L(s,\rho\eta)$ is the Hecke $L$-function of a nontrivial finite-order
+character of $\Q(\sqrt{-23})$; it is entire, self-dual, and has the usual functional equation. Let
+$\Psi_f(x)=\sum_{p^k\le x,\ p\nmid46}f(g_p^k)\log p$; the prime powers with $k\ge2$ contribute
+$O(\sqrt x\log^2(2x))$. For $\Re s>1$ the transform of $\Psi_f(x)-x/4$ against $x^{-s-1}\,\dd x$ is
+\[
+ T(s)=-\frac1s\sum_\chi c_\chi\frac{L'}L(s,\chi)-\frac1{4(s-1)}+U(s),
+\]
+where the $c_\chi$ are the coefficients in \eqref{hec:eq:twistid} and $U$, which comes from the omitted
+Euler factors, is holomorphic in $\Re s>0$. The pole at $1$ cancels, \cref{src:thm:dgrh} controls the four
+linear terms, and at a zero $z$ of $L(s,\rho\eta)$ with $\Re z>1/2$, of multiplicity $m_z$, the residue of
+$T$ is $m_z/(3z)$. Given \eqref{hec:eq:twistbound}, \cref{hec:lem:landau} shows that $T$ is holomorphic in
+$\Re s>\theta$ for every $\theta>1/2$; the functional equation completes the forward direction. Conversely,
+the explicit formula under RH for these finitely many Dirichlet and Hecke $L$-functions bounds their
+centered sums by $O(\sqrt x\log^2(2x))$, and \eqref{hec:eq:twistid} gives \eqref{hec:eq:twistbound}.
+\end{proof}
+
+By the classification of admissible binary Frobenius events in \cref{sec:nab}, among such events this $f$
+is the unique inversion-invariant $\set{0,1}$-valued class function of least support that has a negative
+coefficient on $\rho\eta$ and coefficient zero on $\rho$; its support has three of the twelve elements of
+$G$. The
+identity and a three-cycle of $S_3$ have the same image in the abelianization of $G$ and different values
+of $f$, which shows where an estimate beyond congruence conditions is needed.
+
+\subsection{Dihedral conductors \texorpdfstring{$47$ and $71$}{47 and 71}}\label{hec:ss:dihedral}
+{\emergencystretch=\textwidth\sources{grh_dihedral_47_71}}
+
+At conductor $23$ there is one nonabelian Artin factor and its completion is positive on the real axis. At
+conductors $47$ and $71$ there are two and three such factors. This subsection determines the real zeros of
+their real linear combinations and shows that one ideal class still tests all factors at once.
+
+\paragraph{Conductor $47$: the real zeros of the pencil.}
+Let $K=\Q(\sqrt{-47})$ and let $H$ be its Hilbert class field. Reduction gives the forms
+$(1,1,12)$, $(2,\pm1,6)$, $(3,\pm1,4)$, so the class group is cyclic of order five, with representatives up
+to inversion
+\[
+ Q_0=x^2+xy+12y^2,\qquad Q_1=2x^2+xy+6y^2,\qquad Q_2=3x^2+xy+4y^2 .
+\]
+Complex conjugation acts by inversion, and $\Gal(H/\Q)$ is dihedral of order ten. Put
+$B_i(z)=\sum_{x,y\in\Z}q^{Q_i(x,y)}$, $q=e^{2\pi iz}$, and let $\lambda=(1+\sqrt5)/2$,
+$\mu=(1-\sqrt5)/2$. The two normalized eigenforms and their difference are
+\begin{align}
+ f_1&=(B_0-\mu B_1-\lambda B_2)/2, &
+ f_2&=(B_0-\lambda B_1-\mu B_2)/2,\nonumber\\
+ E(z)&=\eta(z)\eta(47z)=(B_1-B_2)/2=(f_1-f_2)/\sqrt5 \label{hec:eq:eta47}
+\end{align}
+\cite{BerkovichPatane2013Binary,BuzzardWeightOne}. The $L$-functions $L_1,L_2$ of $f_1,f_2$ are the Hecke
+$L$-functions of the two inverse pairs of nontrivial class characters, that is, the two irreducible
+nonabelian Artin factors of $H/\Q$. They have the same gamma factor, and we put
+\[
+ \Lambda_j(s)=\Bigl(\frac{\sqrt{47}}{2\pi}\Bigr)^{s}\Gamma(s)L_j(s),\qquad
+ F_c(s)=\Lambda_1(s)-c\Lambda_2(s)\quad(c\in\R).
+\]
+These completions are entire. The one direction of the pencil omitted by this notation, a nonzero
+multiple of $\Lambda_2$, has no real zero.
+
+\begin{theorem}[Real zeros at conductor $47$; \stU]\label{hec:thm:real47}
+For $m\ge0$ let $C_m=\Lambda_1^{(2m)}(1/2)/\Lambda_2^{(2m)}(1/2)$. The numbers $C_m$ decrease strictly to
+$1$. The ratio
+\[
+ R_m(t)=\frac{\Lambda_1^{(2m)}(1/2+t)}{\Lambda_2^{(2m)}(1/2+t)}
+\]
+is positive and even, decreases strictly from $C_m$ to $1$ as $t$ increases from $0$ to $\infty$, and
+satisfies $R_m''(0)<0$. Consequently the real zeros of $F_c^{(2m)}$ are as follows.
+\begin{center}\begin{tabular}{ll}\toprule
+Parameter & Real zeros with multiplicities \\\midrule
+$c\le1$ or $c>C_m$ & none\\
+$c=C_m$ & one double zero at $s=1/2$\\
+$1<c<C_m$ & two simple zeros $s=1/2\pm t_c$, $t_c>0$\\\bottomrule
+\end{tabular}\end{center}
+For all real $s$, $\Lambda_1^{(2m)}(s)>\Lambda_2^{(2m)}(s)>0$. For odd orders, the ratio of the derivatives
+of order $2m+1$ decreases strictly from $C_{m+1}$ to $1$ on $t>0$; the central zero of $F_c^{(2m+1)}$ is
+simple unless $c=C_{m+1}$, when it is exactly triple, and there is one further simple symmetric pair of
+real zeros exactly when $1<c<C_{m+1}$.
+\end{theorem}
+
+\begin{proof}
+\emph{Positivity of the smaller kernel.}
+For $y\ge1/\sqrt{47}$ one has $q=e^{-2\pi y}<r=41/100$. The first terms of $f_2$ are
+$q-\lambda q^2-\mu q^3+\lambda q^4$, and the $n$th coefficient is bounded in absolute value by the number
+of ideals of norm $n$ in $K$, hence by $d(n)\le n$. Dropping the positive third and fourth terms,
+\[
+ \frac{f_2(iy)}q\ge1-\tfrac53r-\frac{r^4(5-4r)}{(1-r)^2}>0.04 .
+\]
+The eta product is positive on the imaginary axis, so $f_1(iy)>f_2(iy)$ by \eqref{hec:eq:eta47}. Poisson
+summation on each binary lattice gives $B_i(i/(47y))=\sqrt{47}\,yB_i(iy)$, because the Gram matrix has
+determinant $47$ and its adjugate is integrally equivalent to it by a rotation. Thus positivity and the
+ordering extend to all $y>0$, and both completions are positive at every real point.
+
+\emph{A modular function with one pole.}
+Put $h(z)=f_2(z)/E(z)$. Weights and characters cancel, and the Fricke transformations of numerator and
+denominator agree, so $h$ descends to the compact curve $X_0(47)^+=X_0(47)/\langle W_{47}\rangle$. The eta
+function has no zero in the upper half-plane; at infinity the numerator begins with $q$ and the
+denominator with $q^2$. Since $47$ is prime, $X_0(47)$ has two cusps, exchanged by the Fricke involution;
+their common image is unramified in the quotient and is the only pole of $h$, of order one. Hence $h$ is an
+isomorphism of $X_0(47)^+$ with the sphere.
+
+No elliptic point lies on the ray $iy$, $y>1/\sqrt{47}$. A matrix of determinant one fixing $iy$ has equal
+diagonal entries, and a nonidentity elliptic element has absolute trace less than two; in $\Gamma_0(47)$
+this would force both diagonal entries to vanish, which is incompatible with a lower-left entry divisible
+by $47$ and determinant one. In the other coset write the matrix as
+\[
+ \begin{pmatrix}a&b\\47d&e\end{pmatrix}
+ \begin{pmatrix}0&-1/\sqrt{47}\\\sqrt{47}&0\end{pmatrix}.
+\]
+Equality of the diagonal entries gives $b=-d$, and the trace bound forces $b=d=0$, whose only fixed point
+is $i/\sqrt{47}$. The quotient map is therefore unramified along the open ray, so $h(iy)$ has nonzero
+derivative there. It is real and tends to $+\infty$ like $q^{-1}$, so it increases strictly, and
+\[
+ b(u)=\frac{f_1(ie^u/\sqrt{47})}{f_2(ie^u/\sqrt{47})}=1+\frac{\sqrt5}{h(ie^u/\sqrt{47})}
+\]
+is strictly decreasing on $u>0$ and tends to one.
+
+\emph{The ratio under the Mellin integral.}
+Let $K_j(u)=e^{u/2}f_j(ie^u/\sqrt{47})$. By the Fricke identities these positive functions are even, and
+their double-exponential decay justifies all differentiations in
+\[
+ \Lambda_j(1/2+t)=\int_\R K_j(u)e^{tu}\,\dd u .
+\]
+Thus $R_m(t)$ is the expectation of $b(u)$ under the probability density proportional to
+$u^{2m}K_2(u)\cosh(tu)$ on $u>0$, and its derivative is the covariance of $b(u)$ with $u\tanh(tu)$. For
+$t>0$ the second function increases strictly and $b$ decreases strictly; integrating
+$(b(u)-b(v))(u\tanh(tu)-v\tanh(tv))/2$ over two independent draws shows that the covariance is negative.
+At $t=0$ the same calculation after a second differentiation gives $R_m''(0)=\hecCov(b(u),u^2)<0$, and
+weighting the measure at $t=0$ by $u^2$ proves $C_{m+1}<C_m$. As $t\to\infty$ with $m$ fixed, or
+$m\to\infty$ with $t=0$, these probability measures leave every compact interval: the ratio of the mass on
+$[0,A]$ to the mass on $[A+1,A+2]$ tends to zero by the exponential tilt $\cosh(tu)$, respectively the
+power tilt $u^{2m}$. Since $b$ is bounded, continuous and tends to one, both limits are one. The denominator
+$\Lambda_2^{(2m)}$ is positive on the real line, so the strict derivative signs away from the centre and the
+strict second derivative at the centre give the asserted multiplicities.
+
+\emph{Odd derivatives.}
+For $t>0$ the ratio of the derivatives of order $2m+1$ is the expectation of $b(u)$ under the density
+proportional to $u^{2m+1}K_2(u)\sinh(tu)$, and its derivative is the covariance with $u\coth(tu)$, a
+strictly increasing function of $u$ because $\cosh v\sinh v>v$ for $v>0$. The ratio decreases strictly from
+$C_{m+1}$ to $1$, by dominated convergence at zero and the same escape argument at infinity. The central
+zero of $F_c^{(2m+1)}$ is simple unless $c=C_{m+1}$; in that case its cubic Taylor coefficient is nonzero
+because $C_{m+2}<C_{m+1}$.
+\end{proof}
+
+The transition value for the functions themselves is certified by rational arithmetic. With
+$h_0=2\pi/\sqrt{47}$ and $G(a)=\int_1^\infty e^{-av^2}\,\dd v$, the substitution $v=e^{u/2}$ gives
+$\Lambda_j(1/2)=4\sum_{n\ge1}a_j(n)G(h_0n)$, where $a_j(n)$ are the coefficients of $f_j$. Since
+$v^2\ge1+2(v-1)$ for $v\ge1$, $G(h_0n)\le e^{-h_0n}/(2h_0n)$, and with $\abs{a_j(n)}\le n$ and
+$e^{-h_0}<r=41/100$ the tail after $N=28$ terms, before multiplication by $4$, is at most
+$r^{N+1}/(2h_0(1-r))$. The value $G(a)$ is obtained by subtracting $\int_0^1e^{-av^2}\,\dd v$ from
+$\tfrac12\sqrt{\pi/a}$, with the integrated Taylor polynomials $\sum_{k=0}^{M}(-a)^k/(k!(2k+1))$ as upper
+bound at $M=122$ and lower bound at $M=123$. The resulting enclosures are
+\begin{equation}\label{hec:eq:C0}
+\begin{gathered}
+ 0.6660152520\le\Lambda_1(1/2)\le0.6660152521,\qquad
+ 0.4586804524\le\Lambda_2(1/2)\le0.4586804526,\\
+ 1.4520244940\le C_0\le1.4520244943
+\end{gathered}
+\end{equation}
+(\artifact{grh_dihedral_47_71/check_threshold.py}). For example, $F_{7/5}$ has two simple real zeros,
+while $F_{3/2}$ has none.
+{\emergencystretch=14em\par}
+
+\begin{remark}\label{hec:rem:bookerthorne}
+Positivity of a Mellin kernel does not control zeros off the real axis. For $c=1$ the completion $F_1$ is,
+up to the factor $\sqrt5$, the completed $L$-function of $E=\eta(z)\eta(47z)$, and it is positive on the
+real axis. But $E$ is a combination of two Hecke eigenforms with different $T_2$-eigenvalues, so by the
+theorem of Booker and Thorne \cite[Theorem~1.1]{BookerThorne2014Zeros} its Dirichlet series has zeros with
+$\Re s>1$; each of them recurs in disjoint translates of a small disk by almost periodicity and Rouch\'e's
+theorem. These zeros belong to the difference of the factors.
+\end{remark}
+
+\paragraph{Conductor $47$: one quadratic form tests both factors.}
+Choose $Q$ to be $Q_1$ or $Q_2$, once and for all, and let
+\[
+ S_Q(x)=\sum_{\substack{p\le x,\ p\ne47\\ p=Q(u,v)\ \text{for some }u,v\in\Z}}\Bigl(1-\frac px\Bigr)\log p,
+\]
+each prime being counted once. The corresponding conjugacy class has two of the ten group elements, so the
+density is $1/5$, and the linear smoothing halves the main term.
+
+\begin{theorem}[One class, two factors; \stR]\label{hec:thm:primes47}
+Assume \cref{src:thm:dgrh}. For either choice of $Q$ the following are equivalent.
+\begin{enumerate}[label=\textup{(\arabic*)}]
+\item The nontrivial zeros of both $L_1$ and $L_2$ lie on $\Re s=1/2$.
+\item For every $\eps>0$ there is $A_\eps$ such that $S_Q(x)\le x/10+A_\eps x^{1/2+\eps}$ for all large
+$x$.
+\item For every $\eps>0$ there is $A_\eps$ such that $S_Q(x)\ge x/10-A_\eps x^{1/2+\eps}$ for all large
+$x$.
+\end{enumerate}
+In particular either direction of the error suffices by itself, and common zeros of the two factors cannot
+defeat the test.
+\end{theorem}
+
+\begin{proof}
+Let $r$ generate the rotations of the dihedral group, labelled so that the class of $Q_1$ corresponds to
+$r^{\pm1}$. By class field theory the unramified rational primes represented by $Q$ are exactly those with
+Frobenius in $C=\set{r,r^{-1}}$, respectively $C=\set{r^2,r^{-2}}$. Put $a=(\sqrt5-1)/2$ and
+$b=-(\sqrt5+1)/2$. For the first class, column orthogonality gives
+\[
+ 5\,\hecind_C=\triv+\hecsgn+a\chi_1+b\chi_2,
+\]
+where $\chi_j$ is the Artin character of $f_j$; for the second class $a$ and $b$ are interchanged. Here
+$a+b=-1$, and $a,b$ are linearly independent over $\Q$.
+
+Let $U(x)$ be the sum of $\hecind_C(g_p^k)(1-p^k/x)\log p$ over $p^k\le x$, $p\ne47$; Chebyshev's estimate
+gives $U-S_Q=O(\sqrt x)$. For $\Re s>1$,
+\begin{align*}
+ \int_1^\infty U(x)x^{-s-1}\,\dd x&=\frac{D(s)}{s(s+1)},\\
+ 5D(s)&=-\frac{\zeta'}\zeta(s)-\frac{L'}L(s,\chi_{-47})-a\frac{L_1'}{L_1}(s)-b\frac{L_2'}{L_2}(s)+B(s),
+\end{align*}
+where the ramified correction $B$ is holomorphic in $\Re s>0$. The residue at $s=1$ is $1/10$; subtract
+$1/(10(s-1))$ and call the result $M(s)$. By \cref{src:thm:dgrh}, \cref{hec:thm:real47} (which gives
+$\Lambda_j>0$ on the real axis) and the cancellation at $1$, the function $M$ is regular at every real
+point of $(1/2,\infty)$. At a nonreal $\rho$ with $\Re\rho>1/2$ its residue is
+\[
+ -\frac{a\ord_\rho L_1+b\ord_\rho L_2}{5\rho(\rho+1)},
+\]
+and the numerator vanishes only if both integer multiplicities vanish. Take $\sigma_0=1/2+\eps<1$. Under
+(2) or (3), \cref{hec:lem:landau} applies to $U(x)-x/10$ or to its negative, with no real pole to consider,
+and shows that $M$ is holomorphic in $\Re s>\sigma_0$. The residue formula excludes all zeros there; let
+$\eps\to0$ and use the functional equations. Conversely $\zeta_H=\zeta L(s,\chi_{-47})L_1^2L_2^2$, and
+under (1) and \cref{src:thm:dgrh} the effective Chebotarev theorem for this fixed field
+\cite{GrenieMolteni2017Effective} gives the weighted count $x/5+O(\sqrt x\log^2(2x))$; partial integration
+against $1-p/x$ gives both one-sided estimates.
+\end{proof}
+
+No rational congruence weight reproduces this class, even in mean square. Let $m$ be any modulus and $v$
+any function of a reduced residue class modulo $m$; since $v$ is also a function of the class modulo
+$\lcm(47,m)$, we may assume $47\mid m$. The intersection of $H$ with $\Q(\zeta_m)$ is then $K$, the maximal
+abelian subextension of $H/\Q$. Chebotarev's theorem in the compositum gives
+the uniform distribution on the five rotations for residue classes that split in $K$; the conditional
+probability of $C$ is $2/5$ there and $0$ on inert classes. Therefore
+\begin{equation}\label{hec:eq:325}
+ \lim_{X\to\infty}\frac1{\pi(X)}\sum_{\substack{p\le X\\p\nmid47m}}\abs{\hecind_C(g_p)-v(p\bmod m)}^2
+ \ge\frac12\cdot\frac25\cdot\frac35=\frac3{25},
+\end{equation}
+with equality for $m=47$ and the conditional mean. An exhaustive enumeration through $10^6$ finds $7{,}819$,
+$15{,}692$ and $15{,}690$ primes represented by $Q_0,Q_1,Q_2$, with $47$ omitted, and the centered values
+$(S_Q(x)-x/10)/\sqrt x$ for $Q_1,Q_2$ are about $-0.04823$ and $-0.11582$ at this cutoff
+(\artifact{grh_dihedral_47_71/sample_primes.py}). These counts check the identification of the classes;
+the theorem requires a bound at all large $x$.
+{\emergencystretch=14em\par}
+
+\paragraph{A real-zero bound at prime levels.}
+Let $p\equiv23\pmod{24}$ be prime and $m=(p+1)/24$. Let $F$ be a nonzero cusp form with real coefficients,
+of weight one on $\Gamma_0(p)$ with character $\legendre{-p}{\cdot}$, satisfying the Fricke law
+$F(i/(py))=\sqrt p\,yF(iy)$ for $y>0$. This covers the theta eigenforms of nonreal class characters of
+$\Q(\sqrt{-p})$. Let $\Lambda_F(s)=(\sqrt p/(2\pi))^s\Gamma(s)L(s,F)$.
+
+\begin{theorem}[Real zeros and interpolation; \stU]\label{hec:thm:interp}
+For each integer $k\ge0$, the entire function $x\mapsto\Lambda_F^{(2k)}(1/2+\sqrt x)$ has at most $m-1$
+zeros on $[0,\infty)$, counted with multiplicity. Equivalently, $\Lambda_F^{(2k)}$ has at most $2(m-1)$
+zeros on the real axis, counted with multiplicity, a zero of order $r$ at $x=0$ corresponding to a central
+zero of order $2r$.
+
+At $p=71$, prescribe any two points of $[0,\infty)$ in the $x$-coordinate, repetition allowed. There is a
+real linear combination of the three completed nonabelian class-character factors, unique up to a nonzero
+scalar, for which $x\mapsto\Lambda_F^{(2k)}(1/2+\sqrt x)$ has exactly that multiset of zeros.
+\end{theorem}
+
+\begin{proof}
+\emph{Divisor bound.}
+The criterion for eta quotients, applied to $E(z)=\eta(z)\eta(pz)$, uses $p+1\equiv0\pmod{24}$ in both
+congruences and gives the weight, the character and the Fricke law of $F$. The quotient $F/E$ descends to
+the Fricke quotient $X_0(p)^+$. The product $E$ does not vanish in the upper half-plane and begins with
+$q^m$. The two cusps of $X_0(p)$ are exchanged by the Fricke involution, so $F/E$ has a single possible
+pole on the quotient, of order at most $m-1$, and at most that many zeros if it is not constant.
+
+The arc $iy$, $y>1/\sqrt p$, injects into the quotient. Indeed, for
+$\left(\begin{smallmatrix}a&b\\c&d\end{smallmatrix}\right)\in\Gamma_0(p)$ a purely imaginary image of $iy$
+requires $acy^2+bd=0$. If both terms are nonzero, then $ad$ and $bc$ are nonzero of opposite signs, which
+is incompatible with $ad-bc=1$. Otherwise both products vanish and the matrix is diagonal or antidiagonal;
+the first case is the identity in $\PSL_2$ and the second is impossible since $p\mid c$. In the other
+Fricke coset one first replaces $y$ by $1/(py)$, below the end of the arc. Thus $F(iy)$ has at most $m-1$
+sign changes on the open arc.
+
+\emph{Passage to the Mellin integral.}
+For $u=\log(\sqrt p\,y)>0$ put $K(u)=e^{u/2}F(ie^u/\sqrt p)$. The centred derivative is
+$2\int_0^\infty u^{2k}K(u)\cosh(tu)\,\dd u$, and the cusp expansion gives double-exponential decay. For
+$0\le t_1<\dots<t_l$ and $0<u_1<\dots<u_l$,
+\[
+ \det\bigl[\cosh(t_iu_j)\bigr]_{i,j=1}^l>0 .
+\]
+To see this, expand each entry in the terms $(t_i^2)^h(u_j^2)^h/(2h)!$, truncated at $h=M$. The
+Cauchy--Binet formula writes the determinant as a sum of products of two generalized Vandermonde
+determinants with positive weights; each product is nonnegative by the alternant formula for Schur
+polynomials, and the term with $h=0,\dots,l-1$ is positive. This lower bound persists as $M\to\infty$. The
+determinant remains positive for repeated nodes in $x_i=t_i^2$ when the rows at a node of multiplicity $r$
+are replaced by $\partial_x^j\cosh(\sqrt xu)/j!$, $0\le j<r$: approximate each repeated node by a cluster
+of distinct nonnegative $x$'s and divide by the product of differences within each cluster. Taylor
+expansion in $x$ gives the derivative rows in the limit, including at $x=0$; the lower bound supplied by
+$h=0,\dots,l-1$ contains the full Vandermonde determinant in the $x$'s, and after division the factors
+between different clusters have positive limits.
+
+Let $u_1<\dots<u_b$ be the sign changes of $K$, so $b\le m-1$. If the transform had $b+1$ zeros in $x$,
+counted with multiplicity, take the corresponding rows of the confluent determinant, with columns at
+$u_1,\dots,u_b,u$ and the last point variable. By the strict sign of ordered minors this determinant
+changes sign exactly when $u$ crosses the $b$ points, so its product with $u^{2k}K(u)$ has constant sign
+and nonzero integral. Expanding along the last column expresses this integral as a linear combination of
+the vanishing Mellin integrals and their $x$-derivatives, a contradiction. The same argument excludes an
+identically vanishing transform.
+
+\emph{Sharpness at level $71$.}
+The class group has order seven, and its six nontrivial characters form three inverse pairs. The three
+theta eigenforms are linearly independent, because their $T_2$-eigenvalues are the distinct numbers
+$2\cos(2j\pi/7)$, $1\le j\le3$ \cite{BerkovichPatane2013Binary}, and they satisfy the Fricke law by Poisson
+summation. Two homogeneous linear conditions on three real coefficients have a nonzero solution; for a
+repeated point the conditions are the vanishing of the value and of the first $x$-derivative. The bound
+$m-1=2$ excludes any further zero or multiplicity. If the solution space had dimension two, imposing
+vanishing at a third point would leave a nonzero solution with three zeros.
+\end{proof}
+
+The corresponding geometric and Mellin-transform method in weight at least two is due to Wang
+\cite{Wang2026Modular}; here the eta divisor supplies the geometric bound in weight one, and the factor
+$u^{2k}$ gives the same count for every even derivative.
+
+\begin{example}[A central zero of order four]\label{hec:ex:fourth}
+Order the three factors at level $71$ so that their $T_2$-eigenvalues are
+$2\cos(6\pi/7),2\cos(2\pi/7),2\cos(4\pi/7)$, and let $A=(\Lambda_j(1/2))_j$ and
+$B=(\Lambda_j''(1/2))_j$. By the interpolation theorem with $k=0$ at the repeated node $x=0$, the
+conditions $w\cdot A=w\cdot B=0$ have a one-dimensional solution space, so $A\times B\ne0$, and
+\[
+ \mathcal L(s)=\det\begin{pmatrix}A_1&A_2&A_3\\ B_1&B_2&B_3\\
+ \Lambda_1(s)&\Lambda_2(s)&\Lambda_3(s)\end{pmatrix}
+\]
+has vanishing value and second derivative at $s=1/2$; the odd central derivatives vanish by symmetry. The
+zero count gives $\mathcal L^{(4)}(1/2)\ne0$ and excludes every other real zero of $\mathcal L$. The
+central cancellation takes place between three distinct Artin factors. Numerically the coefficient vector
+is approximately $(-0.3172807331,-0.6479315312,1)$ (\artifact{grh_dihedral_47_71/example71.py}); the proof
+does not depend on these values.
+{\emergencystretch=14em\par}
+\end{example}
+
+\paragraph{Conductor $71$: positivity and a one-class test.}
+Let $H$ now be the Hilbert class field of $\Q(\sqrt{-71})$. A reduced form has $a\le\sqrt{71/3}<5$, and
+the seven classes are represented, up to inversion, by
+\[
+ Q_0=(1,1,18),\quad Q_1=(2,1,9),\quad Q_2=(4,3,5),\quad Q_3=(3,1,6).
+\]
+The class group is cyclic of order seven. A prime above $2$ generates it; the square of that prime has norm
+$4$ and nontrivial class, and the only nonprincipal inverse pair representing $4$ is $Q_2$, which matches
+the indices with the powers of a generator up to inversion. The group $\Gal(H/\Q)$ is dihedral of order
+$14$. With $\Theta_k(iy)=\sum_{x,v\in\Z}\exp(-2\pi yQ_k(x,v))$, the three weight-one Hecke forms are
+\[
+ f_j(iy)=\tfrac12\Theta_0(iy)+\sum_{k=1}^3\cos(2\pi jk/7)\,\Theta_k(iy),\qquad1\le j\le3.
+\]
+
+\begin{proposition}[Positivity at conductor $71$; \stU]\label{hec:prop:pos71}
+With $q=e^{-2\pi y}$, for $0<q\le12/25$,
+\[
+ f_1(iy)/q\ge0.999,\qquad f_2(iy)/q\ge0.877,\qquad f_3(iy)/q\ge0.324 .
+\]
+Consequently each $f_j(iy)$ is positive for all $y>0$, and the three completed $L$-functions are positive
+on the whole real axis.
+\end{proposition}
+
+\begin{proof}
+For $y\ge1/\sqrt{71}$ one has $q<12/25$, since $2\pi/\sqrt{71}>37/50$ and the Taylor polynomial of degree
+four of the exponential at $37/50$ exceeds $25/12$. Let $r_k(n)$ be the number of representations of $n$ by
+$Q_k$ and $t=2\cos(2\pi j/7)$. Twice the $n$th coefficient of $f_j$ is
+$r_0(n)+tr_1(n)+(t^2-2)r_2(n)+(1-t-t^2)r_3(n)$, and the three roots of $t^3+t^2-2t-1$ lie in
+$[1.2469,1.2470]$, $[-0.4451,-0.4450]$ and $[-1.8020,-1.8019]$ by sign changes. The coefficients up to
+$N=24$ are enumerated from $4aQ(x,v)=(2ax+bv)^2+71v^2$. All coefficients are bounded in absolute value by
+the number of ideals of norm $n$, hence by $n$; with $r=12/25$ the remaining normalized series is at most
+$r^N((N+1)/(1-r)+r/(1-r)^2)$. Interval Horner evaluation on the $24$ consecutive intervals of width $1/50$,
+with this tail subtracted, gives the stated bounds (\artifact{grh_dihedral_47_71/check_level71.py}, in
+rational arithmetic).{\emergencystretch=14em\par}
+Poisson summation gives $\Theta_k(i/(71y))=\sqrt{71}\,y\Theta_k(iy)$, so positivity
+extends to the whole imaginary axis, and the Mellin integral is positive at every real argument.
+\end{proof}
+
+For a dihedral group of order $2n$ with $n$ prime, a single nonidentity rotation class detects every
+nonzero vector of nonnegative integral zero multiplicities, by Galois conjugation of the character values
+(\cref{sec:nab}); when the nonlinear factors have no real zero in $(1/2,1)$, a one-sided bound suffices.
+\Cref{hec:prop:pos71} supplies the real-axis hypothesis unconditionally. Hence, under \cref{src:thm:dgrh},
+for any one of the three nonprincipal inverse pairs $[a]$ of classes the upper bound
+\begin{equation}\label{hec:eq:71bound}
+ \sum_{\substack{p\le x\\ \Frob_p\in[a]}}\log p\,\Bigl(1-\frac px\Bigr)\le\frac x{14}+O_\eps(x^{1/2+\eps})
+ \qquad\text{for every }\eps>0
+\end{equation}
+is equivalent to RH for all three nonlinear factors of $\zeta_H$. The bound \eqref{hec:eq:71bound} is open.
+
+\subsection{Eta products and Jensen polynomials}\label{hec:ss:jensen}
+{\emergencystretch=\textwidth\sources{grh_transfers_density_gaps_and_zero_tests; grh_dihedral_47_71; mcnew_density_and_grh_transfers}}
+
+For an even kernel $K$ on $\R$ with sufficient decay write
+\begin{equation}\label{hec:eq:jensendef}
+ \int_\R e^{zu}K(u)\,\dd u=\sum_{n\ge0}\frac{\gamma_n}{n!}z^{2n},\qquad
+ J^{d,n}(X)=\sum_{j=0}^d\binom dj\gamma_{n+j}X^j .
+\end{equation}
+The polynomials $J^{d,n}$ are the Jensen polynomials of degree $d$ and shift $n$. If
+$G(w)=\int_\R\cosh(\sqrt w\,u)K(u)\,\dd u$, then $\gamma_n=G^{(n)}(0)$. For the completed $L$-function
+$\Lambda$ of \eqref{hec:eq:Lambda23} one has $G(w)=\Lambda(1/2+\sqrt w)$, a function of order at most $1/2$
+whose zeros are negative real numbers exactly when the zeros of $\Lambda$ are on the critical line. By
+Hadamard factorization and Jensen's criterion, RH for $L$ is therefore equivalent to real-rootedness of
+$J^{d,n}$ for all $d$ and $n$. This subsection records what the kernel alone gives.
+
+\paragraph{The quadratic inequalities.}
+Let $h(v)=v/4+\log\eta(ie^v)$. The inversion formula for $\eta$ shows that $h$ is even, and for $v\ge0$,
+with $Y=2\pi e^v$,
+\begin{equation}\label{hec:eq:hseries}
+ h(v)=\frac v4-\frac Y{24}-\sum_{m\ge1}\sigma_{-1}(m)e^{-mY},\qquad\sigma_{-1}(m)=\sum_{d\mid m}d^{-1}.
+\end{equation}
+
+\begin{theorem}[Quadratic Jensen inequalities for paired eta kernels; \stU]\label{hec:thm:turan}
+Let $g(u)=\sum_jr_j\bigl[h(u-a_j)+h(u+a_j)\bigr]$ for a nonempty finite list of $a_j\in\R$ and $r_j>0$, and
+let $K=e^{g}$. Then all $\gamma_n$ are positive and $\gamma_{n+1}^2>\gamma_n\gamma_{n+2}$ for every
+$n\ge0$; equivalently, $J^{2,n}$ has two distinct negative real roots for every $n$. In particular this
+holds for the centred Mellin kernel of every product $\eta(az)\eta(bz)$ with positive integers $a\le b$,
+for which $g(u)=h(u-v)+h(u+v)$ with $v=\tfrac12\log(b/a)$, and so for the coefficients of
+$\Lambda(1/2+z)$ in \eqref{hec:eq:Lambda23}.
+\end{theorem}
+
+\begin{proof}
+The series \eqref{hec:eq:hseries} and its first four derivatives converge locally uniformly. The fourth
+derivative in $v$ of $e^{-mY}$ is $e^{-q}q\bigl((q-6)q^2+7q-1\bigr)$ with $q=mY\ge2\pi>6$, hence positive.
+Consequently $h^{(4)}(v)<0$ for all real $v$, by evenness for $v<0$. Then $g$ is even with $g^{(4)}<0$, so
+$g'''(u)<0$ for $u>0$ and $(ug''-g')'=ug'''<0$. Since $g'(0)=0$,
+\[
+ \bigl(\log K(\sqrt x)\bigr)''=\frac{ug''(u)-g'(u)}{4u^3}<0,\qquad u=\sqrt x>0 .
+\]
+At both ends $K$ decays at least as fast as $\exp(-ce^{\abs u})$ for some $c>0$. This is the eta-kernel
+curvature argument of Conrey and Ghosh \cite{ConreyGhosh1994Turan}; the symmetric translations preserve
+the sign of the fourth derivative for unequal dilations.
+
+Write $V(x)=-\log K(\sqrt x)$ and $M(p)=\int_0^\infty x^{p-1}e^{-V(x)}\,\dd x$ for $p>0$, and let $E_p$
+denote expectation for the probability density $x^{p-1}e^{-V(x)}/M(p)$. Integration by parts gives
+$E_{p+1}[V']=pM(p)/M(p+1)$. Since $V'$ is strictly increasing,
+\[
+ E_{p+2}[V']-E_{p+1}[V']=\frac{\hecCov_{p+1}(x,V'(x))}{E_{p+1}[x]}>0,
+\]
+as one sees by averaging $(x-y)(V'(x)-V'(y))/2$ over two independent draws. Hence the consecutive ratios
+of $M(p)/\Gamma(p)$ decrease strictly as $p$ increases by one. Since
+\[
+ \gamma_n=\frac{n!}{(2n)!}M(n+1/2)=\frac{\sqrt\pi}{4^n}\frac{M(n+1/2)}{\Gamma(n+1/2)},
+\]
+this gives $\gamma_{n+1}^2>\gamma_n\gamma_{n+2}$, and all $\gamma_n$ are positive.
+\end{proof}
+
+The same calculation applies to every positive eta product whose exponents are paired under
+$d\leftrightarrow N/d$, after centring its Mellin kernel at half the weight. Such a kernel need not come
+from an eigenform, and the next result shows that the quadratic inequalities carry no information about
+zeros off the real axis.
+
+\begin{theorem}[Two-factor eta products; \stU]\label{hec:thm:etafamily}
+For positive integers $a\le b$ let $f_{a,b}(z)=\eta(az)\eta(bz)$ and
+$\Lambda_{a,b}(s)=(\sqrt{ab})^s\int_0^\infty f_{a,b}(iy)y^{s-1}\,\dd y$. The function $\Lambda_{a,b}$ is
+zero-free in $\Re s>1$ if and only if
+\[
+ b/a\in\set{1,2,3,5,7,11,23}.
+\]
+For every other ratio it has infinitely many zeros in $\Re s>1$, and at every fixed shift $n$ the number
+of nonreal roots of $J^{d,n}$ tends to infinity with $d$; in fact it is $\gg_{a,b,n}\log d/\log\log d$.
+In the coprime subfamily with $24\mid a+b$, the only surviving pair is $(1,23)$.
+\end{theorem}
+
+\begin{proof}
+A common dilation of $a$ and $b$ leaves the normalized completion unchanged, so divide by $\gcd(a,b)$. Set
+$g_0=\gcd(a+b,24)$, $r=24/g_0$, $A=ra$, $B=rb$, $N=AB$ and $m=(a+b)/g_0$. Both eta congruence sums for
+$f_{A,B}$ at level $N$ equal $A+B=24m$, and the cusp-order formula has positive summands, so $f_{A,B}$ is a
+weight-one cusp form with character $\legendre{-AB}{\cdot}$ \cite[Theorems~1.64--1.65]{Ono2004Web}. Its
+expansion begins with $q^m$ with coefficient one; write $a_n$ for its coefficients. One has
+$\gcd(m,N)=1$, because $a+b$ is coprime to $ab$ and $m$ is coprime to $r$. If $m>1$, the coefficient of $q$
+in $T_mf_{A,B}$ is $a_m=1$ whereas $a_1=0$, so $f_{A,B}$ is not an eigenfunction of all $T_p$ with
+$p\nmid N$, which generate $T_m$.
+
+If $m=1$, then $(A,B)$ is one of the twelve partitions of $24$ into two parts and $a_1=1$. The four pairs
+$(5,19),(7,17),(9,15),(11,13)$ have $a_2=a_4=0$, and the pair $(10,14)$ has $a_3=a_9=0$; the prime $p$
+involved is coprime to $N$, so the eigenform relation $a_{p^2}=a_p^2-\chi(p)$ fails. The remaining seven
+pairs are the classical multiplicative eta products of weight one
+\cite{DummitKisilevskyMcKay1985Multiplicative,VoskresenskayaEta}; their ratios form the displayed set, and
+the absolutely convergent Euler products give nonvanishing in $\Re s>1$. Each excluded form fails to be
+a Hecke eigenform, and by \cite[Theorem~1.1 and Remark~(2)]{BookerThorne2014Zeros} its $L$-function has
+infinitely many zeros in $\Re s>1$.
+
+For the Jensen polynomials of an excluded pair, write the completed transform as $\mathcal E(s)L(s)$ with
+$\mathcal E(s)=(\sqrt N/2\pi)^s\Gamma(s)$ and $L$ the Dirichlet series of $f_{A,B}$. Choose a closed disk
+$D\subset\set{\Re s>1}$ with a zero of $L$ inside and none on its boundary. Absolute convergence gives
+arbitrarily large $t_j$ with $L(s+it_j)\to L(s)$ uniformly on $D$: truncate the series and approximate
+the phases $n^{-it_j}$ by one for the finitely many retained indices. Every fixed derivative of $L$ is
+bounded on the corresponding vertical strip. Put $w=(s-1/2)^2$ and fix $n\ge0$. Uniformly on $D+it_j$ as
+$j\to\infty$,
+\[
+ \frac{[2(s-1/2)]^nG^{(n)}(w)}{\mathcal E(s)(\log s)^n}=L(s)+O_n(1/\log t_j).
+\]
+Indeed, expanding $\dd/\dd w=[2(s-1/2)]^{-1}\dd/\dd s$ repeatedly, the leading term after multiplication
+by the displayed power is $(\mathcal EL)^{(n)}$ and the terms with $k<n$ derivatives have coefficients
+$O_n(\abs s^{k-n})$; Stirling's formula gives
+$\mathcal E^{(k)}/\mathcal E=(\log s)^k+O_k((\log\abs s)^{k-1})$ on this strip, and Leibniz's rule
+completes the estimate. Rouch\'e's theorem gives a zero of $G^{(n)}((s-1/2)^2)$ in every translated disk
+of large height. Disjoint disks of increasing positive ordinate have squares about $1/2$ off the real axis,
+so $G^{(n)}$ has infinitely many nonreal zeros. Finally $J^{d,n}(w/d)\to G^{(n)}(w)$ locally uniformly as
+$d\to\infty$, by termwise binomial scaling and domination by the absolute Taylor series, so any finite
+collection of disjoint small disks around nonreal zeros contains zeros of every scaled polynomial of
+sufficiently large degree.
+
+For the quantitative bound, a fixed uniform approximation on $D$ suffices for Rouch\'e's theorem, and the
+corresponding shifts are relatively dense: a finite Dirichlet sum approximates $L$ uniformly, and the
+returns of its phase flow to a neighbourhood of the identity have bounded gaps, by compactness of the
+closure of the flow in a finite-dimensional torus. One can therefore choose $\gg T$ disjoint translated
+disks at heights between $T/2$ and $T$, on whose boundaries $\abs{G^{(n)}((s-1/2)^2)}\ge e^{-2T}$ for large
+$T$. Their squares lie in $\abs w\le R$ with $R=O(T^2)$. The binomial scaling coefficients
+$u_{d,j}=\prod_{k=0}^{j-1}(1-k/d)$ satisfy $0\le1-u_{d,j}\le j(j-1)/(2d)$, and positivity of the Taylor
+coefficients gives
+\[
+ \max_{\abs w\le R}\abs{G^{(n)}(w)-J^{d,n}(w/d)}\le\frac{R^2G^{(n+2)}(R)}{2d}\le\frac{e^{C_nT\log T}}d .
+\]
+The last inequality uses the bound $C\exp(-ce^{\abs u})$ for the centred kernel, which gives
+$\log\max_{\abs w\le R+1}\abs{G(w)}=O(\sqrt{R+1}\log(R+2))$, and Cauchy's bound for the derivatives. With
+$T=c_n\log d/\log\log d$ and $c_n$ small, the approximation error is at most $d^{-1/2}<e^{-2T}$, and a
+second application of Rouch\'e's theorem transfers all these disks to the polynomial of degree $d$.
+
+In the coprime subfamily with $24\mid a+b$ one has $r=1$ and $(A,B)=(a,b)$, and among the seven surviving
+partitions of $24$ only $(1,23)$ has coprime parts.
+\end{proof}
+
+\paragraph{Finite ranges of degrees at conductor $23$.}
+Let $\Lambda$ be as in \eqref{hec:eq:Lambda23}, with centred kernel
+\[
+ K(u)=e^{u/2}\,\eta\bigl(ie^u/\sqrt{23}\bigr)\,\eta\bigl(i\sqrt{23}\,e^u\bigr).
+\]
+The location of the low zeros gives real-rootedness in a range of degrees, uniformly in the shift.
+
+\begin{theorem}[Jensen polynomials through degree sixteen; \stU]\label{hec:thm:sixteen}
+For the conductor-$23$ kernel, $J^{d,n}$ has only negative real zeros for all $1\le d\le16$ and all
+$n\ge0$.
+\end{theorem}
+
+\begin{proof}
+\emph{A zero-free rectangle.} Put $a=\Re s-1/2$ and $t=\Im s$. Then
+\[
+ \tfrac12\Re\Lambda(s)=\int_0^\infty K(u)\cosh(au)\cos(tu)\,\dd u,
+\]
+and on $\abs a\le1/2$, $\abs t\le4$ the right side exceeds $1/1000$. This is certified with integer bounds
+(\artifact{grh_transfers_density_gaps_and_zero_tests/checks/check_height.py}) as follows. Subdivide
+$0\le u\le4$ in steps of $1/1024$ and $0\le t\le4$ in steps of $1/256$. On each $u$-interval bound
+$q=\exp[-(2\pi/\sqrt{23})e^u]$ using $1.3101<2\pi/\sqrt{23}<1.3102$. In
+$K=e^{u/2}q\prod_{m\ge1}(1-q^m)(1-q^{23m})$ keep the first eight factors of the first product; the product
+of the remaining factors lies between $1-2q^9/(1-q)$ and $1$. Bound the cosine from below by its lower
+Taylor polynomial of degree $62$ at $\lfloor512t_{\min}u_{\min}\rfloor/512$, minus the maximal phase
+distance from this point in the cell. A positive lower bound for the cosine is multiplied by the lower
+bound for $K$, a negative one by the upper bound for $K\cosh(u/2)$. The sum of the contributions is a
+lower integral for every $a$ and every $t$ in the cell. Beyond $u=4$ the integrand is bounded by
+$e^ue^{-e^u}$, with tail $e^{-e^4}<2^{-64}$. All exponentials use a rational Taylor bound on $[0,1]$
+followed by seven squarings with outward rounding.
+{\emergencystretch=14em\par}
+
+\emph{The sector argument.} The Euler product and the functional equation place the zeros of $\Lambda$ in
+$\abs a\le1/2$, and the zeros of $G$ are the numbers $w=(a+it)^2$. If all zeros have $\abs t\ge T$, with
+$T>1/2$, then $\abs a/\abs t\le1/(2T)$ and the zeros of $G$ lie in the closed sector about the negative
+real axis with half-angle $\theta=2\arctan(1/(2T))$. The estimate
+$\log\max_{\abs z\le R}\abs{\Lambda(1/2+z)}=O(R\log(2+R))$ shows that $G$ has order at most $1/2$, so it is
+the locally uniform limit of its genus-zero partial products, which are real polynomials after grouping
+conjugate zeros. The closed sector is convex, so by the Gauss--Lucas theorem the zeros of every $G^{(n)}$
+lie in it, and all $G^{(n)}$ have positive Taylor coefficients. The sector theorem of Obreschkoff and
+Chasse \cite{Chasse2013Laguerre} gives real-rooted Jensen polynomials for each $G^{(n)}$ through degree
+\[
+ d\le\csc^2\theta=\Bigl(T+\frac1{4T}\Bigr)^2 .
+\]
+With $T=4$ this is $d\le\lfloor(65/16)^2\rfloor=16$. Positivity of the coefficients puts the roots on the
+negative axis.
+\end{proof}
+
+The same sector calculation extends the range when zero computations are taken as input. The ten low
+ordinates $5.1156833,\dots,18.0806617$ listed by the LMFDB for the newform $23.1.b.a$, with the stated
+radii, give $\abs a/\abs t<1/(2T)$ for $T=18.08$ and hence $d\le327$ \cite{LMFDBDatabase}. Ng's
+verification of RH for this Artin factor up to height $972.2$ \cite[\S\S4.3.4--4.3.5]{Ng2000Limiting} gives
+$d\le945{,}173$. These computations were not repeated.
+
+\paragraph{Cubic Jensen tests near the Gaussian.}
+The curvature inequality $(\log K(\sqrt x))''<0$ used in \cref{hec:thm:turan} does not imply the cubic
+inequalities, contrary to what Theorem~1 of \cite{DimitrovLucas2011Higher} would give for admissible
+kernels. The reason is visible at first order around the Gaussian, and the first-order analysis has exact
+answers. Let $V\colon[0,\infty)\to\R$ be continuous, bounded below and of at most polynomial growth, and for
+$\eps>0$ let
+\[
+ K_\eps(u)=\exp\bigl[-u^2-\eps V(u^2)\bigr].
+\]
+Let $X_n$ have the gamma distribution of shape $n+1/2$ and rate one, and put
+\[
+ m(n)=\hecE V(X_n),\qquad\Delta m(n)=m(n+1)-m(n).
+\]
+Call a shift $n$ \emph{persistent} for $V$ if $J^{3,n}$, formed with the kernel $K_\eps$, is real-rooted
+along some sequence $\eps\downarrow0$; each shift may use its own sequence.
+
+\begin{lemma}[First-order discriminant]\label{hec:lem:disc}
+With $c_n=4^n\gamma_n/\sqrt\pi$, one has $c_n=\hecE e^{-\eps V(X_n)}=1-\eps m(n)+O_n(\eps^2)$. The cubic
+$P(W)=\sum_{j=0}^3\binom3jc_{n+j}(W-1)^j$, which differs from $J^{3,n}$ by positive rescalings of the
+variable and of the value, has discriminant
+\[
+ -27\eps^2\bigl(\Delta^3m(n)\bigr)^2+O_n(\eps^3)\quad\text{if }\Delta^3m(n)\ne0,\qquad
+ 108\eps^3\bigl(\Delta^2m(n+1)\bigr)^3+O_n(\eps^4)\quad\text{if }\Delta^3m(n)=0 .
+\]
+In particular a persistent shift has $\Delta^3m(n)=0$.
+\end{lemma}
+
+\begin{proof}
+The substitution $x=u^2$ and the duplication formula for the gamma function give the formula for $c_n$.
+The expansion follows by integrating the second-order Taylor remainder of the exponential, which is
+bounded by a constant times $\eps^2V^2$ for $0<\eps<1$ because $V$ is bounded below. The coefficients of
+$1,W,W^2,W^3$ in $P$ are, respectively,
+\[
+ \eps\Delta^3m(n)+O_n(\eps^2),\qquad-3\eps\Delta^2m(n+1)+O_n(\eps^2),\qquad O_n(\eps),\qquad1+O_n(\eps),
+\]
+and the two expansions of the discriminant follow.
+\end{proof}
+
+\begin{theorem}[Polynomial perturbations: the number of tests; \stU]\label{hec:thm:finitejensen}
+Fix $r\ge3$ and let $V$ be a polynomial of degree at most $r$, bounded below on $[0,\infty)$. If $r-2$
+distinct shifts are persistent, then $\deg V\le2$, and in that case every $J^{d,n}$, $d\ge1$, $n\ge0$, has
+only negative real roots for every $\eps>0$. The number $r-2$ is sharp: for every set $S$ of $r-3$
+nonnegative integers there is a strictly convex increasing polynomial of degree $r$ whose persistent shifts
+are exactly the elements of $S$, and at each fixed shift the predicted outcome holds for all sufficiently
+small $\eps>0$.
+\end{theorem}
+
+\begin{proof}
+The map $V\mapsto m$ sends $x^k$ to the monic polynomial $(n+1/2)(n+3/2)\cdots(n+k-1/2)$ in $n$, so it is
+a degree-preserving linear isomorphism. If $r-2$ shifts are persistent, the polynomial $\Delta^3m$, of
+degree at most $r-3$, vanishes at $r-2$ points by \cref{hec:lem:disc}, hence identically, and
+$\deg V\le2$.
+
+Conversely let $V(x)=ax^2+bx+c$. For $a>0$, P\'olya's theorem on quartic Fourier integrals with an
+arbitrary quadratic coefficient gives only real zeros for $\int e^{itu}K_\eps(u)\,\dd u$
+\cite[(1.3)]{deBruijn1950Roots}. Then $G(w)=\int\cosh(\sqrt w\,u)K_\eps(u)\,\dd u$ has only negative real
+zeros, and the bound $\abs{\sqrt w}\abs u\le(\eps a/2)u^4+C\abs w^{2/3}$ shows that its order is at most
+$2/3$, so its genus-zero product places it in the Laguerre--P\'olya class. For $a=0$, boundedness below
+gives $b\ge0$ and $G$ is a positive multiple of an exponential with positive slope, again in the class.
+Every derivative of $G$ is in the class, so Jensen's theorem gives real roots for every $J^{d,n}$, and
+positivity of the coefficients puts them on the negative axis.
+
+For sharpness take $m$ with $\Delta^3m(n)=\prod_{s\in S}(n-s)$, which is possible by triangularity of
+finite differences. Its leading coefficient, and that of the corresponding $V$, is positive. Adding $Ax^2$
+to $V$ adds $2A$ to $\Delta^2m(n+1)$ and preserves $\Delta^3m$. Choose $A$ so large that
+$\Delta^2m(s+1)>0$ for each $s\in S$ and $V''>0$ on $[0,\infty)$, and add a linear term to make $V'(0)>0$.
+The two expansions in \cref{hec:lem:disc} give all claims; the threshold for $\eps$ may depend on the
+shift.
+\end{proof}
+
+\begin{theorem}[The exact stride; \stU]\label{hec:thm:stride}
+Let $V$ be continuous, bounded below and of at most polynomial growth. If all shifts in $r+2\N_0$ are
+persistent for some integer $r\ge0$, then $V$ is a polynomial of degree at most two. For every stride
+$k\ge3$ and every residue $r\bmod k$ there is a smooth, strictly convex, increasing, nonpolynomial $V$
+whose persistent shifts are exactly that residue class.
+\end{theorem}
+
+Thus one parity class of shifts, even with a finite initial segment missing, detects every nonquadratic
+perturbation in this class; in particular, real-rootedness of all cubic Jensen polynomials along a sequence
+$\eps\downarrow0$ forces $V$ to be a polynomial of degree at most two.
+
+\begin{proof}
+By \cref{hec:lem:disc}, persistence gives $\Delta^3m(n)=0$ on the progression. Define a distribution
+supported on $[0,\infty)$ by
+\[
+ T(\phi)=-\int_0^\infty V(x)\frac{\dd^3}{\dd x^3}\bigl(x^{r+5/2}e^{-x}\phi(x)\bigr)\,\dd x .
+\]
+The least exponent at the origin is $r-1/2>-1$, and by polynomial growth and exponential decay $T$ can be
+tested on polynomials and on the exponentials $e^{zx}$ with $\Re z<1$. For $j\ge0$ and $p=r+j+1/2$,
+differentiating the integrand gives
+\[
+ T(x^j)=\Gamma(p+3)\Delta^3m(r+j),
+\]
+because the four terms have integrals proportional to $m(r+j+3),-3m(r+j+2),3m(r+j+1),-m(r+j)$ with the same
+factor. Put $F(z)=T(e^{zx})$, analytic in $\Re z<1$. If the progression of stride two is persistent, all
+even derivatives of $F$ at zero vanish, so $F(z)+F(-z)=0$ for $\abs{\Re z}<1$. On the imaginary axis this
+says that $T$ plus its reflection has zero Fourier transform; both are tempered, so
+$T+T^{\mathrm{refl}}=0$. Their supports meet only at the origin, so $T$ vanishes on $(0,\infty)$, where
+$T=x^{r+5/2}e^{-x}V'''$ in the sense of distributions. The multiplier is smooth and positive, so $V'''=0$
+and $V$ is a polynomial of degree at most two. \Cref{hec:thm:finitejensen} gives the converse.
+
+For sharpness set $t=\tan(\pi/k)>0$ and $h=(1-it)^{-1}$, so that $\arg h=\pi/k$, and take
+\[
+ V(x)=Ax^2+Bx+\cos(tx+\theta).
+\]
+The gamma expectation of the oscillatory part is $\Re(e^{i\theta}h^{n+1/2})$, and its third difference is
+$\Re(e^{i\theta}h^{n+1/2}(h-1)^3)$. Choose $\theta=\pi/2-(r+1/2)\pi/k-3\arg(h-1)$. Since $h\ne1$, the third
+difference vanishes exactly for $n\equiv r\pmod k$; the quadratic and linear terms do not change it. The
+oscillatory contribution to the second difference has absolute value at most $\abs{h-1}^2$, since
+$\abs h<1$. Choose $2A>\max(t^2,\abs{h-1}^2)$ and $B>t$. Then $V'>0$, $V''>0$ and $\Delta^2m(n+1)>0$
+everywhere. On the chosen progression the leading term of the discriminant is positive of order $\eps^3$,
+and off it the leading term is negative of order $\eps^2$.
+\end{proof}
+
+\begin{example}[Explicit cubic failures]\label{hec:ex:sextic}
+(a) For $K_\delta(u)=\exp(-u^2-\delta u^6)$, that is $V(x)=x^3$, the third difference of
+$m(n)=(n+1/2)(n+3/2)(n+5/2)$ is $6$, and the discriminant of the rescaled cubic at shift $0$ is
+$-972\delta^2+O(\delta^3)$. For $\delta=10^{-8}$ the Taylor inequalities
+$1-\delta(p)_3\le c_n\le1-\delta(p)_3+\tfrac12\delta^2(p)_6$, with $p=n+1/2$ and $(p)_j$ the rising
+factorial, certify
+\[
+ -975<\disc(P)/\delta^2<-969
+\]
+(\artifact{grh_transfers_density_gaps_and_zero_tests/checks/check_cubic.py}), so $J^{3,0}$ has a nonreal
+pair. This kernel is positive, even, entire, strictly decreasing for $u>0$, rapidly decreasing with all
+derivatives, and satisfies $(\log K_\delta(\sqrt x))''=-6\delta x<0$; it is a counterexample to the
+general cubic criterion. In the argument of \cite{DimitrovLucas2011Higher} the difficulty is in the
+mean-value step preceding their equation~(14): the function
+$A(y,z)=(z^2-y^2)K(y)K(z)[B(y)-B(z)]$, with $B(y)=K'(y)/(yK(y))$, vanishes to second order as $z\to y$, so
+$\partial_yA/A$ has a simple pole at $z=y$ and the step cannot be applied on an interval with
+$z_1<y<z_2$.
+{\emergencystretch=14em\par}
+
+(b) The obstruction persists under strict fourth-derivative curvature. For
+$\widehat K_\delta(u)=\exp[-u^2-\delta(u^4+u^6)]$ the logarithm has fourth derivative
+$-24\delta-360\delta u^2<0$, as for the eta kernels of \cref{hec:thm:turan}, and $V(x)=x^2+x^3$ again has
+$\Delta^3m=6$. A single sufficiently small $\delta$ violates the cubic inequalities at any prescribed
+finite set of shifts.
+
+(c) For $V(x)=x^4-14x^3+100x^2+x$ one has $V''(x)=12(x-7/2)^2+53$, $\Delta^3m(n)=24n$ and
+$\Delta^2m(1)=95$, so shift $0$ is persistent and every other fixed shift fails for small $\eps$. At
+$\eps=10^{-12}$ the inequalities $1-y\le e^{-y}\le1-y+y^2/2$ give
+\[
+ 92{,}590{,}000<\disc(P_0)/\eps^3<92{,}600{,}000,\qquad-15{,}553<\disc(P_1)/\eps^2<-15{,}551
+\]
+(\artifact{grh_dihedral_47_71/check_finite.py}).
+{\emergencystretch=14em\par}
+\end{example}
+
+The first-order analysis leaves open whether a quartic term can restore the low-degree tests while a
+higher degree still detects nonreal zeros. This is decided by a second scaling. Fix $t>0$ and $c\ge0$,
+and consider
+\[
+ K_{t,c}(u)=\exp(-u^2-t^2u^4-ct^3u^6),\qquad
+ b_n=4^n\gamma_n/\sqrt\pi,\qquad J_{d,n}(Z)=\sum_{k=0}^d\binom dkb_{n+k}Z^k .
+\]
+
+\begin{theorem}[Sextic perturbations; \stU]\label{hec:thm:sexticlimit}
+Let $D=\dd/\dd y$ and $Q_{d,c}(y)=\exp(-D^2+cD^3)\,y^d$.
+\begin{enumerate}[label=\textup{(\roman*)}]
+\item For fixed $n,d,c$, $t^{-d}J_{d,n}(-1+ty)\to Q_{d,c}(y)$ coefficientwise as $t\downarrow0$.
+\item Let $c_*=2\sqrt2/3$. For every fixed shift, $J_{3,n}$ has three distinct real roots for all
+sufficiently small $t>0$ if $0\le c\le c_*$, and a nonreal pair for all sufficiently small $t>0$ if
+$c>c_*$.
+\item If $d\ge3$ and $Q_{d,c}$ is real-rooted, then $c^2\le8/(9(d-2))$. Consequently, for $c>0$, any
+$d>2+8/(9c^2)$ and any fixed $n$, the polynomial $J_{d,n}$ has a nonreal pair for all sufficiently small
+$t>0$. Conversely, for any finite set of degrees and shifts one can first fix a small $c>0$ and then take
+$t>0$ so small that every prescribed $J_{d,n}$ has distinct real roots.
+\end{enumerate}
+All this holds although $(\log K_{t,c}(\sqrt x))''=-2t^2-6ct^3x<0$ everywhere.
+\end{theorem}
+
+\begin{proof}
+(i) With $p=n+1/2$ and $X$ gamma distributed of shape $p$, $b_n=\hecE H(tX)$ where
+$H(s)=\exp(-s^2-cs^3)$. If $h_j$ is the coefficient of $s^j$ in $H$, Taylor's formula gives
+$b_n=\sum_{j=0}^dh_jt^j(p)_j+O_{n,d,c}(t^{d+1})$, since every derivative of $H$ is bounded on the positive
+half-line and $X$ has all moments. At index $n+k$, $(p+k)_j$ is monic of degree $j$ in $k$. Acting on
+$(1+Z)^d$ with $(Z\partial_Z)^j$ inserts the multiplier $k^j$ in the binomial sum, and the top derivative
+in this operator is $Z^j\partial_Z^j$, which at $Z=-1+ty$ yields
+$(-1)^jd(d-1)\cdots(d-j+1)\,t^{d-j}y^{d-j}+O(t^{d-j+1})$; all lower derivatives carry at least one more
+power of $t$. Summing gives $H(-D)y^d$. The polynomials $Q_{d,c}$ are classical three-variable Hermite
+polynomials; a broader classification of Fourier transforms with only real zeros under Gaussian damping
+is in \cite{Newman1976Fourier}.
+
+(ii) $Q_{3,c}=y^3-6y+6c$ has discriminant $864-972c^2$, which settles the case $c\ne c_*$ by continuity of
+the roots. At $c_*$ the limit has a double root at $y=\sqrt2$. The first five Taylor coefficients
+$(1,0,-1,-c,1/2)$ of $H$ give
+\[
+ t^{-3}J_{3,n}(-1+ty)=Q_{3,c}(y)+6t(p+3)(y^2-3cy-2)+O_{n,c}(t^2),
+\]
+and the correction at the double root is $-24t(p+3)$. The local minimum is therefore negative, the values
+at a fixed small distance on either side are positive, and the simple third root persists. More precisely,
+for $c=c_*+at$ the local minimum is $t(6a-24(p+3))+O(t^2)$, so the value $a=4(p+3)$ separates the two
+outcomes to this order.
+
+(iii) Let $r_i$ be the roots of $Q_{d,c}$ and $s_k=\sum r_i^k$. Newton's identities with the first four
+coefficients give
+\[
+ s_1=0,\qquad s_2=2d(d-1),\qquad s_3=-3cd(d-1)(d-2),\qquad s_4=4d(d-1)(2d-3).
+\]
+For real $r_i$ the Cauchy--Schwarz inequality for $r_i$ and $r_i^2-s_2/d$ gives
+$s_3^2\le s_2(s_4-s_2^2/d)$, which is the stated bound. The remaining assertions follow from (i), since
+$Q_{d,0}$ is a rescaled Hermite polynomial with simple real zeros.
+\end{proof}
+
+The bound in (iii) is sufficient for failure; its optimal value for each $c$ is not determined. At $n=0$,
+$t=1/10000$, $c=4/5$ the cubic passes and the quartic fails: bounding each $b_k$ by the Taylor polynomials
+of degrees nine and ten of $e^{-V}$, $V=t^2X^2+ct^3X^3$, averaged over the gamma law, the rescaled cubic
+has alternating signs at $-4,0,7/5,3$, and for the quartic the determinant of $(s_{i+j})_{0\le i,j\le2}$
+lies strictly between $-11000$ and $-1000$, whereas real roots would make this matrix a Gram matrix
+(\artifact{mcnew_density_and_grh_transfers/checks/verify_jensen.py}).
+{\emergencystretch=14em\par}
+
+These results describe the reach of arguments that use only convexity properties of the kernel. Real
+roots in every degree for the conductor-$23$ kernel would require an argument uniform in the degree that
+uses arithmetic information.
+
+\subsection{Class-group Hecke \texorpdfstring{$L$}{L}-functions}\label{hec:ss:classgroup}
+{\emergencystretch=\textwidth\sources{grh_method_transfers_sharp_torsion}}
+
+In the source proof the residues of the prime-error transform are differences of zero multiplicities, and
+an auxiliary twist is chosen to remove the competing term. For Hecke $L$-functions of class characters one
+can instead choose weights on ideal classes so that the unwanted unknown factors disappear from the
+logarithmic derivative and the remaining residues have a common sign.
+
+Let $K$ be an imaginary quadratic field, $C$ its ideal class group, $h=\abs C$, and $B\le C$ a subgroup.
+Let $B^\perp$ be the group of characters of $C$ trivial on $B$, and suppose that the functions
+$L_K(s,\eta)$, $\eta\in B^\perp$, have no zeros in $\Re s>1/2$; these are the \emph{known factors}. For
+$B=C^2$ every such character has order at most two, Kronecker's genus factorization writes its
+$L$-function as a product of two Dirichlet $L$-functions (for the trivial character,
+$\zeta_K=\zeta L(\cdot,\chi_K)$), and \cref{src:thm:dgrh} supplies the hypothesis. For background on
+class group $L$-functions see \cite{DukeFriedlanderIwaniec1995Class}.
+
+For a real, inversion-invariant weight $w\colon C\to[0,1]$ put
+\[
+ a_\chi=\frac1h\sum_{c\in C}w(c)\overline{\chi(c)},\qquad
+ \Theta_w(x)=\sum_{\substack{p\le x\\p\ \mathrm{split\ in}\ K}}w([\mathfrak p])\log p,\qquad
+ \delta=\frac{a_1}2,
+\]
+where $a_1$ is the coefficient of the trivial character. Either prime ideal above $p$ gives the same
+weight, each rational prime is counted once, and the $a_\chi$ are real. Let $S$ be a nonempty
+inversion-invariant subset of $\widehat C\setminus B^\perp$, and require
+\begin{equation}\label{hec:eq:weightcond}
+ a_\chi<0\quad(\chi\in S),\qquad a_\chi=0\quad(\chi\notin S\cup B^\perp).
+\end{equation}
+Let $P_w(s)=\sum_{p\ \mathrm{split}}w([\mathfrak p])(\log p)p^{-s}$,
+$c_w=\lim_{s\to1}(P_w(s)-\delta/(s-1))-\delta$, and
+\[
+ R_w(x)=\sum_{\substack{p\le x\\p\ \mathrm{split\ in}\ K}}w([\mathfrak p])\log p\,
+ \Bigl(\frac1p-\frac1x\Bigr)-\delta\log x-c_w .
+\]
+
+\begin{theorem}[Class-weight criterion; \stR]\label{hec:thm:classweight}
+With the field, the subgroup and the weight fixed as above, the following are equivalent.
+\begin{enumerate}[label=\textup{(\arabic*)}]
+\item Each $L_K(s,\chi)$ with $\chi\in S$ satisfies RH.
+\item For each $0<\eps<1/2$ there is $M_\eps$ with $\Theta_w(x)-\delta x\le M_\eps x^{1/2+\eps}$ for all
+sufficiently large $x$.
+\item For each $0<\eps<1/2$ there is $M_\eps$ with $R_w(x)\ge-M_\eps x^{-1/2+\eps}$ for all sufficiently
+large $x$.
+\end{enumerate}
+\end{theorem}
+
+\begin{proof}
+Comparing Euler factors for $\Re s>1$ gives
+\[
+ P_w(s)=-\frac12\sum_\chi a_\chi\frac{L_K'}{L_K}(s,\chi)+H(s)
+\]
+with $H$ holomorphic in $\Re s>1/2$: the two primes of degree one above a split prime contribute equally,
+inert primes have norm $p^2$, the powers of exponent at least two converge absolutely and locally
+uniformly there, and the ramified primes contribute finitely many locally holomorphic series. The pole at
+$1$ has residue $\delta$. At a zero $\rho$ with $1/2<\Re\rho<1$ of the tested functions the residue of
+$P_w$ is
+\[
+ d_\rho=\frac12\sum_{\chi\in S}(-a_\chi)\ord_\rho L_K(s,\chi)>0 ;
+\]
+an untested function vanishing at the same point does not enter, and nothing is assumed about simplicity
+or independence of zeros. With $E(x)=\Theta_w(x)-\delta x$, termwise integration in $\Re s>1$ gives
+\begin{align*}
+ \int_1^\infty E(x)x^{-s-1}\,\dd x&=\frac{P_w(s)}s-\frac\delta{s-1},\\
+ \int_1^\infty xR_w(x)x^{-s-1}\,\dd x&=\frac{P_w(s)}{s(s-1)}-\frac\delta{(s-1)^2}-\frac{c_w}{s-1},
+\end{align*}
+both regular at $1$. Their residues at a real zero $\rho\in(1/2,1)$ are $d_\rho/\rho>0$ and
+$d_\rho/(\rho(\rho-1))<0$. Let $a=1/2+\eps$. Under (2), \cref{hec:lem:landau} applies to $g=E$; under (3)
+it applies to $g=-xR_w$. In both cases the transform is holomorphic in $\Re s>a$, so no tested function
+has a zero there. Vary $a$ and use the functional equations, $S$ being closed under inversion.
+
+Conversely, under (1) and the hypothesis on the known factors, the explicit formula gives
+$\sum_{\Nm\mathfrak p^k\le x}\chi(\mathfrak p)^k\log\Nm\mathfrak p
+=\hecind_{\chi=1}x+O_{K,\chi}(\sqrt x\log^2(2x))$ for each $\chi$ with $a_\chi\ne0$. Removing prime powers,
+inert primes and ramified primes costs $O_K(\sqrt x\log^2(2x))$, and Fourier inversion gives the same
+two-sided error for $\Theta_w$, which is (2). Finally $\sum_{p\le x}w\log p\,(1/p-1/x)
+=\int_1^x\Theta_w(t)t^{-2}\,\dd t$; the two-sided error makes $\int_1^\infty E(t)t^{-2}\,\dd t$ converge with
+tail $O_{K,w}(x^{-1/2}\log^2(2x))$, and evaluating the first transform at $s=1$ identifies the integral
+with $c_w$. This gives (3).
+\end{proof}
+
+For $w=\hecind_{B\setminus\set1}$, orthogonality gives $a_\eta=(\abs B-1)/h$ for $\eta\in B^\perp$ and
+$a_\chi=-1/h$ otherwise, so the test detects every remaining factor, with prime density
+$(\abs B-1)/(2h)$. In a ring class field the event is splitting completely in the fixed field of $B$ and
+not in the full field. This aggregate case is an instance of the normal-subgroup criterion of
+\cref{sec:nab}. Selecting a single pair of factors requires a different weight.
+
+\paragraph{Isolating one dihedral factor.}
+Fix a character $\chi\notin B^\perp$ of order $n>2$. Since $L_K(s,\chi)=L_K(s,\chi^{-1})$, we seek a
+weight with $a_\chi=a_{\chi^{-1}}=-t<0$ and coefficient zero on every other unknown character; by
+\cref{hec:thm:classweight} it tests this Hecke $L$-function alone, even if other untested functions have
+zeros off the line.
+
+\begin{theorem}[Sharp coefficient, support and coefficient field; \stU]\label{hec:thm:isolate}
+Put $v(c)=\Re\chi(c)$, and for each coset $Q$ of $B$ let $M_Q=\max_{c\in Q}v(c)$,
+$m_Q=\min_{c\in Q}v(c)$ and $D=\max_Q(M_Q-m_Q)$.
+\begin{enumerate}[label=\textup{(\roman*)}]
+\item $D>0$, the largest possible $t$ is $1/(2D)$, and it is attained by
+\[
+ w_\chi(c)=\frac{M_{cB}-v(c)}D .
+\]
+This weight also has the smallest support, by inclusion, among all admissible weights.
+\item For $B=C^2$,
+\[
+ t_{\max}=\begin{cases}
+ [2(1+\cos(\pi/n))]^{-1},&n\ \text{odd},\\
+ 1/4,&4\mid n,\\
+ [2(1+\cos(2\pi/n))]^{-1},&n\equiv2\pmod4 .
+ \end{cases}
+\]
+\item The smallest real number field containing all values of a weight that isolates the pair
+$\set{\chi,\chi^{-1}}$ is $F_n=\Q(\zeta_n+\zeta_n^{-1})$.
+\item For $B=C^2$, a rational-valued weight isolating the pair exists exactly for $n\in\set{3,4,6}$, and
+in these cases a $\set{0,1}$-valued weight suffices.
+\end{enumerate}
+\end{theorem}
+
+\begin{proof}
+(i) Fourier inversion gives $w(c)=u(cB)-2tv(c)$, where $u$ is a real inversion-invariant function on
+$C/B$. The bounds $0\le w\le1$ hold exactly when $2tM_Q\le u(Q)\le1+2tm_Q$ for every coset $Q$. Since
+$\chi|_B$ is nontrivial, $v$ is not constant on $B$, so $D>0$ and $t\le1/(2D)$. Taking $u(Q)=2tM_Q$ makes
+the weight vanish at every coset maximum, while all other points have positive weight for every feasible
+$u$ and every $t>0$.
+
+(ii) For odd $n$ the image of $B$ under $\chi$ consists of all $n$th roots of unity, with extreme real
+parts $1$ and $-\cos(\pi/n)$. For even $n$ each coset maps onto the even or the odd powers of a primitive
+$n$th root. The even powers include $\pm1$ when $4\mid n$. For $n\equiv2\pmod4$ they form a regular polygon
+with an odd number of vertices, and the odd powers are its negative.
+
+(iii) The weight $w_\chi$ has values in $F_n$. Conversely, let $E$ be a number field containing all values
+of an isolating weight. Every automorphism of $\overline\Q$ fixing $E$ induces a power map on $\mu_n$ and
+permutes the nonzero Fourier coefficients belonging to primitive powers of $\chi$. These powers are all
+nontrivial on $B$, because raising a root of unity to a power prime to $n$ preserves its order. Hence the
+image of $\chi$ is $\chi$ or $\chi^{-1}$, every such automorphism fixes $\zeta_n+\zeta_n^{-1}$, and
+$F_n\subseteq E$.
+
+(iv) An automorphism taking $\zeta_n$ to $\zeta_n^j$ sends $a_\chi$ to $a_{\chi^j}$, so a rational weight
+has nonzero coefficients on the whole orbit of $\chi$, all of whose members have order $n>2$ and are
+unknown. An isolated pair forces $\varphi(n)\le2$. For sufficiency write $\chi(c)=\exp(2\pi ij/n)$ and take
+the indicators of the exponents $\set{1,2}$ for $n=3$, $\set2$ for $n=4$, and $\set{2,3,4}$ for $n=6$;
+these are the weights $w_\chi$.
+\end{proof}
+
+The classification concerns exact vanishing of the extraneous Fourier coefficients; it says nothing about
+coincidences of zeros.
+
+\begin{example}[A pair that requires irrational weights]\label{hec:ex:d95}
+For $C=\Z/8\Z$ and $\chi(j)=\exp(2\pi ij/8)$ the optimal weight is, in the order $j=0,\dots,7$,
+\[
+ (0,0,1/2,\sqrt2/2,1,\sqrt2/2,1/2,0).
+\]
+Its coefficient on each of $\chi,\chi^{-1}$ is $-1/4$ and its rational-prime mean is $(2+\sqrt2)/16$. The
+primitive character $\chi^3$ gives a second pair, which does not contribute; replacing $j$ by $3j$ gives
+its own test. A rational weight could detect both pairs together but cannot separate them.
+
+A realization by a maximal order is $K=\Q(\sqrt{-95})$, whose eight reduced primitive forms are
+\[
+ [1,1,24],\quad[2,\pm1,12],\quad[3,\pm1,8],\quad[4,\pm1,6],\quad[5,5,6].
+\]
+Let $g=[2,1,12]$. The root $b=1$ of $b^2\equiv-95$ modulo $4\cdot2^k$ for $k=1,2,3$ gives $g^2=[4,1,6]$ and
+$g^3=[8,1,3]=[3,-1,8]$ by composition. The square $[4,1,6]$ differs from its inverse $[4,-1,6]$, so $g$ has
+order eight, and the only nonprincipal ambiguous class $[5,5,6]$ is $g^4$. The test therefore uses the
+three representation conditions
+\begin{center}
+\begin{tabular}{c|ccc}
+$Q(x,y)$ & $4x^2+xy+6y^2$ & $3x^2+xy+8y^2$ & $5x^2+5xy+6y^2$\\\hline
+$w$ & $1/2$ & $\sqrt2/2$ & $1$
+\end{tabular}
+\end{center}
+on primes $p\nmid95$; for prime inputs the three sets are disjoint. Replacing the middle form by
+$2x^2+xy+12y^2$ gives the test for the other faithful pair
+(\artifact{grh_method_transfers_sharp_torsion/checks/verify_d95.py}).
+{\emergencystretch=14em\par}
+\end{example}
+
+\paragraph{The Gaussian ring class tower.}
+Let $K=\Q(i)$, let $K_n$ be its ring class field of conductor $2^n$ for $n\ge1$, and for $n\ge2$ let
+\[
+ Q_n(X,Y)=(2X+Y)^2+2^{2n-2}Y^2,\qquad
+ \vartheta_n(x)=\sum_{\substack{p\le x\\ p=Q_n(a,b)}}\log p,
+\]
+each represented odd prime being counted once.
+
+\begin{theorem}[One quadratic form for each layer; \stR]\label{hec:thm:tower}
+Let $n\ge2$ and assume RH for $\zeta_{K_{n-1}}$. Then RH for $\zeta_{K_n}$ is equivalent to
+\[
+ \vartheta_n(x)\le2^{-n}x+O_{n,\eps}(x^{1/2+\eps})\qquad\text{for every }\eps>0 .
+\]
+Under \cref{src:thm:dgrh}, these bounds for all $n\ge3$ together are equivalent to RH for every
+$\zeta_{K_n}$.
+\end{theorem}
+
+\begin{proof}
+The ring class number formula, with the factor two from the units, gives $[K_n:K]=2^{n-1}$, and an odd
+prime splits completely in $K_n$ exactly when $p=a^2+2^{2n}b^2$ \cite[\S\S7, 9]{Cox2013Primes}. The fields
+are nested. For $p\equiv1\pmod4$ write $p=a^2+c^2$ with $a$ odd and $c$ even; the pair of absolute values
+is unique. Complete splitting in $K_{n-1}$ together with failure of complete splitting in $K_n$ means
+$v_2(c)=n-1$, that is, $c=2^{n-1}Y$ with $Y$ odd and $a=2X+Y$; conversely an odd prime of the form $Q_n$
+forces $Y$ odd and this valuation. So $\vartheta_n$ counts exactly these primes. The quadratic extension
+$K_2=\Q(\zeta_8)$ of $K$ is abelian over $\Q$, so \cref{src:thm:dgrh} gives RH for $\zeta_{K_2}$ and starts
+the induction.
+
+For a Galois field $M/\Q$, the series $P_M(s)=\sum_{p\ \text{split completely}}(\log p)p^{-s}$ equals
+$-[M:\Q]^{-1}\zeta_M'(s)/\zeta_M(s)$ up to a function holomorphic in $\Re s>1/2$, because the unramified
+primes of degree one occur in full packets of $[M:\Q]$ and all other terms have exponent at least two. The
+tested series is $P_{K_{n-1}}-P_{K_n}$ up to finitely many primes; its pole at $1$ has residue
+$2^{1-n}-2^{-n}=2^{-n}$, and under RH for the lower field a zero of $\zeta_{K_n}$ at $\beta+i\gamma$ with
+$1/2<\beta<1$ contributes a positive residue, its multiplicity divided by $2^n$. \Cref{hec:lem:landau},
+applied to $\vartheta_n(x)-2^{-n}x$, gives zero-freeness from the bound. Conversely RH for both fields and
+the prime ideal theorem give the two-sided error $O_n(\sqrt x\log^2(2x))$. No holomorphy of individual
+Artin factors is used.
+\end{proof}
+
+The first case is $Q_3=4X^2+4XY+17Y^2$, of density $1/8$; here $K_3=\Q(i,\sqrt[4]2)$ and the test counts
+the primes $p\equiv1\pmod8$ for which $2$ is a quartic nonresidue. Detecting $v_2(c)=2$ in $p=a^2+c^2$
+uses splitting in a nonabelian extension of $\Q$: the class group at conductor eight is cyclic of order
+four and complex conjugation inverts it, so the Galois group over $\Q$ is dihedral of order eight, and the
+test is not a restriction to Dirichlet residue classes.
+
+\subsection{Hecke characters of the Gaussian field}\label{hec:ss:gaussian}
+{\emergencystretch=\textwidth\sources{grh-methods-polynomial-density}}
+
+Let $K=\Q(i)$. Every nonzero ideal has a generator $a$, and $\eta((a))=(a/\abs a)^4$ does not depend on its
+choice. Write $L_k(s)=L_K(s,\eta^k)$ and $L_0=\zeta_K$. For $k\ne0$ these are entire Hecke $L$-functions of
+nonzero infinity type, with $L_{-k}=L_k$; their zeros govern the distribution of the angles of Gaussian
+primes \cite{RudnickWaxman2017Angles}. For a real even trigonometric polynomial
+$P(z)=h_0+\sum_{k=1}^Nh_k(z^k+z^{-k})$ on the unit circle,
+\begin{equation}\label{hec:eq:DP}
+ D_P(s)=\sum_{\mathfrak p,\,m\ge1}\frac{\log\Nm\mathfrak p\;P(\eta(\mathfrak p)^m)}{(\Nm\mathfrak p)^{ms}}
+ =-h_0\frac{\zeta_K'}{\zeta_K}(s)-2\sum_{k=1}^Nh_k\frac{L_k'}{L_k}(s)\qquad(\Re s>1),
+\end{equation}
+the sum being over all prime ideals. A nonnegative $P$ gives nonnegative local weights, nonnegative $h_k$
+make the orders of zeros add with the same sign, and the mean $h_0$ is the residue of $D_P$ at $1$. One is
+led to ask for the smallest main term compatible with prescribed sensitivity to several $L_k$.
+
+\begin{theorem}[Optimal weights for a block of modes; \stU]\label{hec:thm:belov}
+Fix $0<\alpha<1$ and integers $1\le r\le N$. With rising factorials $(a)_j=a(a+1)\cdots(a+j-1)$ put
+\[
+ c_j=\frac{(\alpha)_j}{j!},\qquad b_j=\frac{(2\alpha)_j}{j!},\qquad
+ d=\min\set{r,\lfloor N/2\rfloor+1}.
+\]
+Among nonnegative $P$ of degree at most $N$ with $h_{N-j}\ge b_j$ for $0\le j<r$, the minimum of $h_0$ is
+\[
+ M_{N,r}(\alpha)=2\sum_{j=0}^{d-1}c_j^2-\hecind_{\set{N=2d-2}}\,c_{d-1}^2 .
+\]
+It is attained with every $h_k\ge0$, by $P(z)=\abs{\sum_{i=0}^Nv_iz^i}^2$ with $v_i=c_{\min(i,N-i)}$ if
+$\min(i,N-i)<d$ and $v_i=0$ otherwise.
+\end{theorem}
+
+\begin{proof}
+The $c_i$ decrease and $(1-z)^{-\alpha}=\sum c_iz^i$, so $\sum_{i=0}^jc_ic_{j-i}=b_j$. By the symmetry of
+$v$, $h_{N-j}=\sum_{i=0}^jv_iv_{j-i}$. For $j<d$ this equals $b_j$. If $d\le j<r$, the support covers every
+index and $v_i\ge c_i$ throughout, so the remaining constraints hold. Parseval's identity gives the stated
+mean, and every autocorrelation $h_k$ is nonnegative.
+
+For the lower bound use the Fej\'er--Riesz factorization $P(z)=\abs{\sum_{i=0}^Nu_iz^i}^2$. Put
+$A_i=\abs{u_i}$ and $B_i=\abs{u_{N-i}}$ for $0\le i<d$, and $w_i=1$ except that $w_{d-1}=1/2$ when
+$N=2d-2$; then $\sum_iw_i(A_i^2+B_i^2)\le h_0$, the centre index being counted once. Let $e_k$ be the
+coefficient of $z^k$ in $(1-z)^\alpha$, set $y_i=w_ic_i$, and define
+\[
+ \lambda_j=\sum_{k=0}^{d-1-j}e_ky_{j+k},\qquad
+ H_{ij}=\begin{cases}\lambda_{i+j},&i+j<d,\\0,&i+j\ge d.\end{cases}
+\]
+Here $e_0=1$, $e_k<0$ for $k\ge1$, and $\sum_{k=0}^me_k>0$, the coefficient of $z^m$ in
+$(1-z)^{\alpha-1}$. Since $y_i$ is positive and nonincreasing, $\lambda_j>0$. The convolution of $c$ with
+$e$ is $(1,0,\dots)$, which gives $(Hc)_i=\sum_{j<d-i}c_j\lambda_{i+j}=w_ic_i$. For all $i,j$ the
+arithmetic--geometric mean inequality gives $2A_iB_j\le A_i^2c_j/c_i+B_j^2c_i/c_j$. Multiplying by
+$H_{ij}$, summing, and using the symmetry of $H$ and $Hc=(w_ic_i)_i$,
+\[
+ 2\sum_{j<d}\lambda_jb_j\le2\sum_{j<d}\lambda_jh_{N-j}\le2\sum_{i,j<d}H_{ij}A_iB_j
+ \le\sum_{i<d}w_i(A_i^2+B_i^2)\le h_0 .
+\]
+The first sum, without the factor two, is $\sum_{i,j<d}H_{ij}c_ic_j=\sum_{i<d}w_ic_i^2$, which is half of
+$M_{N,r}(\alpha)$.
+\end{proof}
+
+For $\alpha=1/2$ the required gains are $b_j=1$, and with $r=N$ the theorem is Belov's, after
+multiplication of his cosine polynomial by two; Belov also proved uniqueness in that case
+\cite{Belov1994Extremal}. For $N=r=4$ and $\alpha=1/3$ the factor is $1+z/3+2z^2/9+z^3/3+z^4$ and the
+optimal mean is $184/81$. The constraints at the lower frequencies beyond $\lfloor N/2\rfloor+1$ never
+increase the optimum. Since $c_j\sim j^{\alpha-1}/\Gamma(\alpha)$, the full block satisfies, as
+$N\to\infty$,
+\begin{equation}\label{hec:eq:belovasym}
+ M_{N,N}(\alpha)=
+ \begin{cases}
+ 2\sum_{j\ge0}c_j^2+o(1),&0<\alpha<1/2,\\[2pt]
+ (2/\pi)\log N+O(1),&\alpha=1/2,\\[2pt]
+ \dfrac{2(N/2)^{2\alpha-1}}{(2\alpha-1)\Gamma(\alpha)^2}\,(1+o(1)),&1/2<\alpha<1 .
+ \end{cases}
+\end{equation}
+In the bounded regime the gains decrease, but each of the $N$ gains is positive at every fixed $N$.
+
+Let $g_P=\lim_{s\to1}(D_P(s)-h_0/(s-1))-h_0$ and
+\[
+ U_P(x)=\sum_{(\Nm\mathfrak p)^m\le x}\log\Nm\mathfrak p\;P(\eta(\mathfrak p)^m)
+ \Bigl(\frac1{(\Nm\mathfrak p)^m}-\frac1x\Bigr)-h_0\log x-g_P .
+\]
+
+\begin{theorem}[Angular criterion; \stR]\label{hec:thm:angular}
+Let $P$ be the extremal polynomial of \cref{hec:thm:belov}. If for each $0<\eps<1/2$ there is $C_\eps$ with
+$U_P(x)\le C_\eps x^{-1/2+\eps}$ for all sufficiently large $x$, then RH holds for every $L_k$ with
+$h_k>0$. In particular $r=N$ detects every $L_k$ with $1\le k\le N$.
+\end{theorem}
+
+\begin{proof}
+For $\Re s>1$, termwise integration and \eqref{hec:eq:DP} give
+\[
+ \int_1^\infty U_P(x)x^{-s}\,\dd x=\frac{D_P(s)}{s(s-1)}-\frac{h_0}{(s-1)^2}-\frac{g_P}{s-1},
+\]
+regular at $1$ by construction. At a zero $\rho$ in the open strip the residue is
+$(h_0\ord_\rho\zeta_K+2\sum_kh_k\ord_\rho L_k)/(\rho(1-\rho))$, positive at a real zero detected by $P$
+and nonzero at any detected nonreal zero; the Hecke $L$-functions have no zeros on $\Re s=1$. Apply
+\cref{hec:lem:landau} to $g(x)=xU_P(x)$ with $a=1/2+\eps$, let $\eps\to0$, and use the functional
+equations.
+\end{proof}
+
+The optimum determines the smallest pole term allowed by this class of detectors. The arithmetic estimate
+concerns the angles of individual Gaussian prime powers, and is open already for $N=r=1$.
+
+\subsection{Modular forms and symmetric powers}\label{hec:ss:sym}
+{\emergencystretch=\textwidth\sources{grh-torsion-and-zero-data; grh_transfers_singular_moduli_and_symmetric_powers; grh_deficit_transfer_2026-11-25}}
+
+The Landau step is not restricted to representations with finite image. For a holomorphic newform
+without complex multiplication, the symmetric powers are cuspidal automorphic by Newton and Thorne
+\cite{NewtonThorne2021Symmetric}, and a single positive prime sum tests a whole range of them. The
+admissible weights are polynomials in the normalized Frobenius trace, and the size of the main term for a
+given sensitivity is governed by extremal problems for the Sato--Tate measure.
+
+\paragraph{Notation.}
+Write $t=2\cos\theta$ and
+\[
+ C_j(t)=\frac{\sin((j+1)\theta)}{\sin\theta},\qquad
+ \dd\mu(t)=\frac{\sqrt{4-t^2}}{2\pi}\,\dd t\quad(-2\le t\le2),
+\]
+with the continuous values at the endpoints. Thus $C_{-1}=0$, $C_0=1$, $tC_j=C_{j+1}+C_{j-1}$, the $C_j$
+are monic and orthonormal for the Sato--Tate measure $\mu$, and
+\begin{equation}\label{hec:eq:CG}
+ C_iC_j=\sum_{k=0}^{\min(i,j)}C_{i+j-2k}.
+\end{equation}
+For a polynomial $P=\sum_ja_jC_j$ we write $[C_j]P=a_j$. The coefficient $a_0=\int P\,\dd\mu$ is the mean,
+and $a_j$ is the weight given to the $j$th symmetric power. If $\alpha$ has absolute value one and
+$t=\alpha+\alpha^{-1}$, then $C_j(t)=\sum_{k=0}^j\alpha^{j-2k}$ is the trace of the $j$th symmetric power
+of $\operatorname{diag}(\alpha,\alpha^{-1})$, and $C_j(\alpha^m+\alpha^{-m})$ is the trace of its $m$th
+power.
+
+\paragraph{Three extremal problems.}
+The first maximizes the weight of the standard $L$-function for a given mean; the other two minimize the
+mean for a given weight on the highest symmetric powers.
+
+\begin{proposition}[Largest trace coefficient; \stU]\label{hec:prop:extrE}
+Let $d\ge1$. For a nonzero polynomial $f\ge0$ on $[-2,2]$ of degree at most $2d$, written
+$f=\sum_{j=0}^{2d}a_jC_j$, the largest possible ratio $a_1/a_0$ is $u=2\cos(\pi/(d+2))$. The optimizer is
+unique up to a positive scalar:
+\[
+ f_d(z)=\Bigl(\sum_{j=0}^dC_j(u)C_j(z)\Bigr)^2 ,
+\]
+and all its coefficients $a_0,\dots,a_{2d}$ are positive.
+\end{proposition}
+
+\begin{proof}
+Let $\theta_i=i\pi/(d+2)$, $z_i=2\cos\theta_i$ and $w_i=2\sin^2\theta_i/(d+2)$ for $1\le i\le d+1$. The rule
+$\int g\,\dd\mu=\sum_iw_ig(z_i)$ holds for polynomials of degree at most $2d+1$: divide $g$ by $C_{d+1}$,
+which vanishes at all nodes; the quotient has degree at most $d$, so the integral of the multiple of
+$C_{d+1}$ vanishes by orthogonality, and discrete orthogonality of sines gives the formula for the
+remainder. Now $a_1/a_0=\int zf\,\dd\mu/\int f\,\dd\mu$ is a weighted average of the nodes, so it is at
+most $z_1=u$, and equality forces a double zero of $f$ at every other node, which determines $f$ up to
+scale. Discrete orthogonality gives $\sum_{j=0}^dC_j(z_1)C_j(z_i)=0$ for $i>1$, so $f_d$ attains equality.
+Each $C_j(u)$, $0\le j\le d$, is positive, and by \eqref{hec:eq:CG} every $C_m$ with $0\le m\le2d$ occurs in
+some product $C_jC_k$ with $j,k\le d$; hence $a_m>0$.
+\end{proof}
+
+For $d=2$ one has $u=\sqrt2$, $f_2(z)=(z^2+\sqrt2z)^2$, and the coefficients are
+$(a_0,\dots,a_4)=(4,4\sqrt2,5,2\sqrt2,1)$.
+
+For the other two problems fix $k\ge1$, let $u_k=(k+1)/k$, and for $0\le a\le u_k$ put
+$Q_a=C_k+aC_{k-1}$. Its zeros $z_1<\dots<z_k$ are simple and lie in the open interval $(-2,2)$, except that
+$z_1=-2$ when $a=u_k$: for $k\ge2$, at the zeros of $C_{k-1}$ the values $Q_a=C_k$ alternate in sign, and
+$Q_a(2)=k+1+ak$, $(-1)^kQ_a(-2)=k+1-ak$ give the two outer roots; for $k=1$ the zero is $-a$. Let $\ell_i$
+be the cardinal interpolation polynomials at the $z_i$ and $\lambda_i=\int\ell_i\,\dd\mu$. For
+$\deg V\le2k-2$, division by $Q_a$ leaves a quotient of degree at most $k-2$, orthogonal to $Q_a$, and the
+remainder $\sum_iV(z_i)\ell_i$. Hence
+\begin{equation}\label{hec:eq:quadrature}
+ \int V\,\dd\mu=\sum_i\lambda_iV(z_i)\quad(\deg V\le2k-2),\qquad\lambda_i=\int\ell_i^2\,\dd\mu>0 .
+\end{equation}
+
+\begin{proposition}[Least mean in odd degree; \stU]\label{hec:prop:odd}
+Among monic polynomials of degree $2k-1$ that are nonnegative on $[-2,2]$, the least mean is $(k+1)/k$. The
+unique minimizer is $R_k(t)=Q_{u_k}(t)^2/(t+2)$, and all its coefficients are positive:
+\[
+ [C_{2j}]R_k=\frac{k(k+1)-j(j+1)}{k^2}\quad(0\le j\le k-1),\qquad
+ [C_{2j-1}]R_k=\frac{j^2}{k^2}\quad(1\le j\le k).
+\]
+\end{proposition}
+
+\begin{proof}
+Since $Q_{u_k}(-2)=0$, $R_k$ is a monic polynomial, nonnegative on the interval, with a simple zero at the
+endpoint and $k-1$ double interior zeros. If $P$ is a competitor, $P-R_k$ has degree at most $2k-2$, and
+\eqref{hec:eq:quadrature} with $a=u_k$ gives $\int(P-R_k)\,\dd\mu=\sum_i\lambda_iP(z_i)\ge0$. Equality
+forces the endpoint zero and every interior double zero, which with monicity determine $R_k$. To check
+the coefficients $r_j=[C_j]R_k$, multiply by $t+2$: the coefficient at $j$ becomes
+$2r_j+r_{j-1}+r_{j+1}$, which is $1+u_k^2$ at even $j<2k$, $2u_k$ at odd $j<2k$ and $1$ at $2k$; these are
+the coefficients of $Q_{u_k}^2$ by \eqref{hec:eq:CG}. In particular $r_0=u_k$.
+\end{proof}
+
+In even degree, minimizing the mean with only the top coefficient prescribed gives $C_k^2$, which omits
+every odd symmetric power. Prescribing the coefficient of $C_{2k-1}$ measures the cost of including the
+preceding power.
+
+\begin{theorem}[Least mean in even degree; \stU]\label{hec:thm:even}
+Let $P$ be monic of degree $2k$, nonnegative on $[-2,2]$, with $[C_{2k-1}]P=b\ge0$. The least possible mean
+is
+\[
+ M_k(b)=\begin{cases}1+b^2/4,&0\le b\le2u_k,\\ 1-u_k^2+u_kb,&b\ge2u_k,\end{cases}
+\]
+and the unique minimizer is
+\[
+ P_{k,b}=\begin{cases}Q_{b/2}^2,&0\le b\le2u_k,\\ Q_{u_k}^2+(b-2u_k)R_k,&b\ge2u_k .\end{cases}
+\]
+For $b>0$ every coefficient $[C_j]P_{k,b}$ is positive.
+\end{theorem}
+
+\begin{proof}
+For $0\le a\le u_k$ subtract $Q_a^2+(b-2a)C_{k-1}Q_a$ from $P$ to cancel the two highest terms. Applying
+\eqref{hec:eq:quadrature} to the difference and using orthonormality gives the identity
+\[
+ \int P\,\dd\mu=1-a^2+ab+\sum_{i=1}^k\lambda_iP(z_i).
+\]
+Maximizing the quadratic lower bound over $[0,u_k]$ selects $a=\min(b/2,u_k)$ and gives $M_k(b)$. In the
+first range $Q_a^2$ attains equality. For $b\ge2u_k$ the sum of $Q_{u_k}^2$ and $(b-2u_k)R_k$ is
+nonnegative, has the prescribed two top coefficients and vanishes at all quadrature nodes. In the case of
+interior nodes equality forces $k$ double zeros, hence the monic square. At $a=u_k$ equality forces
+divisibility by $R_k$, and the remaining monic linear factor is determined by $b$. By \eqref{hec:eq:CG},
+$[C_{2k}]Q_a^2=1$, all lower even coefficients equal $1+a^2$ and all odd coefficients equal $2a$;
+\cref{hec:prop:odd} supplies the additional coefficients in the second range.
+\end{proof}
+
+For $0<b\le2u_k$ the same $M_k(b)$ is the sharp minimum when \emph{every} odd coefficient is required to be
+at least $b$: a competitor has top odd coefficient $b'\ge b$ and $M_k(b')\ge M_k(b)$, while $Q_{b/2}^2$ has
+all odd coefficients equal to $b$. Without a positive lower bound on some odd coefficient, the infimum of
+the mean over polynomials with positive coefficients is $1$, approached as $b\downarrow0$ and not attained.
+Under $P(2\cos\theta)\mapsto\sin\theta\,P(2\cos\theta)$ these are extremal problems for nonnegative sine
+polynomials \cite{RogosinskiSzego1950Extremum}. The individual top-coefficient extremizers, including
+\cref{hec:prop:odd} and the even-degree example $C_k^2$, are in \cite{DimitrovMerlo2002Nonnegative}, whose
+next-to-top extremizer for odd sine degree is the case $b=2$ of \cref{hec:thm:even}; the case $k=1$ is
+covered by \cite{RoysterSuffridge1970Typically}. The joint formula fixes both highest coefficients and
+describes the transition at $b=2+2/k$.
+
+\paragraph{The criterion for an elliptic curve.}
+Fix an elliptic curve $E/\Q$ without complex multiplication and $d\ge1$. For a good prime $p$ let
+$2\cos\theta_p=(p+1-\#E(\F_p))/\sqrt p$, $0\le\theta_p\le\pi$. Let $L_j(s)=L(s,\Sym^jE)$ in the unitary
+normalization, with centre $1/2$, and $L_0=\zeta$. For $j\ge1$ these are cuspidal automorphic
+$L$-functions \cite{NewtonThorne2021Symmetric}, entire with a functional equation and nonvanishing on
+$\Re s=1$ \cite{JacquetShalika1976Nonvanishing}. With the extremizer $f=f_d=\sum_{j=0}^{2d}a_jC_j$ of
+\cref{hec:prop:extrE} form the positive sum
+\[
+ S_f(x)=\sum_{\substack{p^k\le x,\ k\ge1\\p\ \mathrm{good}}}(\log p)\,f(2\cos(k\theta_p))
+ \Bigl(\frac1{p^k}-\frac1x\Bigr),
+\]
+and, with $L_j^{(S)}$ the Euler product with the bad primes omitted,
+\[
+ D(s)=-\sum_{j=0}^{2d}a_j\frac{(L_j^{(S)})'}{L_j^{(S)}}(s),\qquad
+ c_f=\lim_{s\to1}\Bigl(D(s)-\frac{a_0}{s-1}\Bigr)-a_0,\qquad
+ R_f(x)=S_f(x)-a_0\log x-c_f .
+\]
+The bad Euler factors have normalized inverse roots of modulus at most one, so their removal introduces no
+zeros in $\Re s>0$.
+
+\begin{theorem}[Symmetric powers of an elliptic curve on fourth powers; \stR]\label{hec:thm:symE}
+All nontrivial zeros of $L_0,\dots,L_{2d}$ have real part $1/2$ if and only if, for each $\eps>0$, there is
+$B_\eps>0$ with
+\[
+ R_f(n^4)\le B_\eps n^{-2+4\eps}\qquad\text{for all sufficiently large integers }n .
+\]
+Under these equivalent conditions, $\abs{R_f(x)}\ll_{E,d,\eps}x^{-1/2+\eps}$ for all $x$.
+\end{theorem}
+
+\begin{proof}
+\emph{Interpolation.} This is the chord interpolation of the first step of the proof of
+\cref{ana:thm:sparse}. As a function of $t=1/x$, $S_f(1/t)$ is convex, each summand being a nonnegative
+coefficient times $(p^{-k}-t)_+$. Between $t_-=(n+1)^{-4}$ and $t_+=n^{-4}$ it lies below its secant. The
+secant of $-a_0\log t$ exceeds that function by at most $a_0(t_+-t_-)^2/(8t_-^2)=O_d(n^{-2})$, by the
+interpolation remainder and the second derivative $a_0/t^2$. Since $x\asymp n^4$, the sampled bounds imply
+$R_f(x)\le B'_\eps x^{-1/2+\eps}$ for all large $x$.
+
+\emph{Zeros from the upper bound.} For $\Re s>1$ termwise integration gives
+\begin{equation}\label{hec:eq:symmellin}
+ \int_1^\infty R_f(x)x^{-s}\,\dd x=\frac{D(s)}{s(s-1)}-\frac{a_0}{(s-1)^2}-\frac{c_f}{s-1},
+\end{equation}
+because $C_j(2\cos(k\theta_p))$ is the trace of the $k$th power of the normalized Frobenius element on
+$\Sym^j$. The definition of $c_f$ removes the singularity at $1$. At a zero $\rho$ in the open critical
+strip the residue is
+\[
+ \frac{\sum_ja_j\ord_\rho L_j}{\rho(1-\rho)},
+\]
+which is positive at every real zero and nonzero at every nonreal zero, including a zero shared by several
+factors and a central zero of any order. \Cref{hec:lem:landau} with $g(x)=xR_f(x)$ and $a=1/2+\eps$ shows
+that the transform is holomorphic in $\Re s>1/2+\eps$; let $\eps\to0$ and use the functional equations.
+
+\emph{The reverse implication.} Assume the zeros are on the line and fix $0<\eps<1/2$. Invert
+$D(s)/(s(s-1))$ on $\Re s=2$ against $x^{s-1}$; the inverse of each prime-power term is
+$(p^{-k}-x^{-1})_+$. Shift the line to $\Re s=1/2+\eps$. The double pole at $1$ contributes
+$a_0\log x+c_f$. For the shift one uses the order-one Hadamard products of the fixed $L$-functions, their
+gamma factors, and the local zero count: subtracting the logarithmic derivative at $2+it$ from that at
+$\sigma+it$ gives an absolutely convergent sum over zeros, in which the zeros with $\abs{\Im\rho-t}\le1$
+contribute $O_{E,d,\eps}(\log(2+\abs t))$ because $\abs{\sigma+it-\rho}\ge\eps$, and the more distant zeros
+contribute the same by summing unit bands with weights $O((1+\abs{t-\Im\rho})^{-2})$. Thus
+$D(\sigma+it)=O_{E,d,\eps}(\log(2+\abs t))$ uniformly on the strip for $\abs t\ge2$, the quadratic
+denominator gives absolute convergence on the new line and vanishing horizontal integrals, and
+$\abs{R_f(x)}\ll_{E,d,\eps}x^{-1/2+\eps}$.
+\end{proof}
+
+For $d=2$ the weights $(4,4\sqrt2,5,2\sqrt2,1)$ give an explicit target on the fourth powers for the first
+four symmetric powers. For the curve $y^2+y=x^3-x$, of discriminant $37$ and nonintegral $j$-invariant
+$48^3/37$, counting points at all good primes up to $10^4$ gives $S_f(16)=1.17616326$ and
+$S_f(10^4)=19.38460159$ (\artifact{grh-torsion-and-zero-data/elliptic_samples.py}; floating-point sums).
+{\emergencystretch=14em\par}
+
+\begin{proposition}[Congruence weights for the elliptic test; \stU]\label{hec:prop:66}
+Let $q\ge1$ and let $g$ be a real function on $(\Z/q\Z)^\times$. With $\pi_S(X)$ the number of good primes
+$p\le X$ prime to $q$,
+\[
+ \lim_{X\to\infty}\frac1{\pi_S(X)}\sum_{\substack{p\le X\ \mathrm{good}\\p\nmid q}}
+ \bigl(f_2(2\cos\theta_p)-g(p\bmod q)\bigr)^2
+ =66+\frac1{\varphi(q)}\sum_{b\in(\Z/q\Z)^\times}(4-g(b))^2 .
+\]
+\end{proposition}
+
+\begin{proof}
+In each reduced residue class the average of $C_j(2\cos\theta_p)$ tends to zero for $1\le j\le8$. To see
+this, expand the indicator of the class in Dirichlet characters and apply the prime number theorem to the
+standard $L$-functions of $\Sym^jE$ twisted by these characters. Each twist is cuspidal of degree
+$j+1>1$; its $L$-function is holomorphic and nonzero on $\Re s=1$, and its normalized prime-power traces
+are bounded by $j+1$, which gives the prime number theorem by the usual Tauberian argument (add a large
+multiple of $-\zeta'/\zeta$ to dominate the real and imaginary parts of the coefficients by nonnegative
+ones, then subtract the ordinary prime number theorem). Prime powers of exponent at least two cost $o(X)$
+in the logarithmically weighted sum, and partial summation removes the logarithm. Consequently the average
+of any polynomial of degree at most $8$ in $2\cos\theta_p$ on a class is its Sato--Tate integral, and
+orthonormality gives the squared fluctuation $(4\sqrt2)^2+5^2+(2\sqrt2)^2+1^2=66$.
+\end{proof}
+
+The proposition has the shape of \cref{nab:thm:periodic}, with the Sato--Tate measure in place of the Haar
+measure of a finite Galois group; it is not an instance of that theorem, because the angles $\theta_p$ are
+not Frobenius classes of a finite extension, and its proof uses the prime number theorem for the twisted
+symmetric powers instead of the Chebotarev theorem.
+
+\paragraph{The criterion for $\Delta$.}
+Let $\Delta(z)=\sum_{n\ge1}\tau(n)e^{2\pi inz}$, and at each prime $p$ let
+\[
+ t_{p,m}=\alpha_p^m+\alpha_p^{-m},\qquad\alpha_p+\alpha_p^{-1}=\tau(p)p^{-11/2},\qquad\abs{\alpha_p}=1,
+\]
+the last by Deligne's bound \cite{Deligne1974Weil}. The level is one, so every Euler factor is unramified.
+Put $L_j(s)=L(s,\Sym^j\Delta)$ in the unitary normalization and $L_0=\zeta$. Let $P=\sum_{j=0}^da_jC_j$ with
+$a_j>0$ for $0\le j\le d$, and
+\begin{align*}
+ S_P(x)&=\sum_{p^m\le x}(\log p)P(t_{p,m})\Bigl(\frac1{p^m}-\frac1x\Bigr),\qquad
+ D_P(s)=-\sum_{j=0}^da_j\frac{L_j'}{L_j}(s),\\
+ c_P&=\lim_{s\to1}\Bigl(D_P(s)-\frac{a_0}{s-1}\Bigr)-a_0,\qquad
+ R_P(x)=S_P(x)-a_0\log x-c_P .
+\end{align*}
+Then $D_P$ is the Dirichlet series with coefficient $(\log p)P(t_{p,m})$ at $p^m$. The extremal
+polynomials $f_d$, $R_k$ and $P_{k,b}$ ($b>0$) above are admissible and are in addition pointwise
+nonnegative.
+
+\begin{theorem}[Symmetric powers of $\Delta$; \stR]\label{hec:thm:symDelta}
+For each fixed $P$ as above the following are equivalent.
+\begin{enumerate}[label=\textup{(\arabic*)}]
+\item Every nontrivial zero of every $L_j$, $0\le j\le d$, lies on $\Re s=1/2$.
+\item For every $0<\eps<1/2$ there are $K>0$ and $X\ge2$ such that $R_P(x)\le Kx^{-1/2+\eps}$ for
+$x\ge X$.
+\end{enumerate}
+\end{theorem}
+
+\begin{proof}
+The Mellin identity \eqref{hec:eq:symmellin} holds with $D_P$, $a_0$ and $c_P$, and the residue at a zero
+$\rho$ in the open strip is $\sum_ja_j\ord_\rho L_j/(\rho(1-\rho))$, nonzero at every such zero and positive
+at a real one. The implication from (2) to (1) is therefore the second step of the proof of
+\cref{hec:thm:symE}. Conversely, let $\psi_P(y)=\sum_{p^m\le y}\log p\,P(t_{p,m})$. Under (1) the explicit
+formula for the fixed symmetric-power $L$-functions gives $\psi_P(y)=a_0y+O_P(\sqrt y\log^2(2y))$
+\cite{RouseThorner2017Explicit}. Since $S_P(x)=\int_1^x\psi_P(y)y^{-2}\,\dd y$, the integral of
+$(\psi_P(y)-a_0y)y^{-2}$ over $[1,\infty)$ converges, its tail is $O_P(x^{-1/2}\log^2(2x))$, and its value
+is $c_P$, as one sees by expanding $D_P(s)=s\int_1^\infty\psi_P(y)y^{-s-1}\,\dd y$ at $1$.
+\end{proof}
+
+\begin{proposition}[Prime-only form; \stU]\label{hec:prop:primeonlyDelta}
+Let $R_P^{(1)}(x)$ be defined as $R_P(x)$ with only the terms $m=1$ in $S_P(x)$ and with $c_P$ replaced by
+$c_P^{(1)}=c_P-\sum_{p,\,m\ge2}(\log p)p^{-m}P(t_{p,m})$. Then
+\[
+ R_P^{(1)}(x)-R_P(x)=\frac{2B_P+o(1)}{\sqrt x},\qquad B_P=\sum_{j=0}^d(-1)^ja_j .
+\]
+For the odd-degree extremizer $R_r$ of degree $2r-1$ one has $B_P=(r+1)(2r+1)/(6r)$. Consequently the
+criterion of \cref{hec:thm:symDelta} can be stated with primes alone.
+\end{proposition}
+
+\begin{proof}
+The correction to the constant converges absolutely. Put
+\[
+ H(y)=\sum_{p^m\le y,\ m\ge2}\log p\,P(t_{p,m}).
+\]
+The terms with $m\ge3$ are $O_P(y^{1/3}\log^2(2y))$. For
+the squares, $t_{p,2}=t_{p,1}^2-2$, and the Sato--Tate theorem for $\Delta$ with partial summation gives
+$H(y)=B_P\sqrt y+o(\sqrt y)$ with $B_P=\int P(t^2-2)\,\dd\mu(t)$. Since
+\[
+ C_j(t^2-2)=\sum_{k=0}^j(-1)^kC_{2(j-k)}(t),
+\]
+only the last term has nonzero mean, which gives the formula for $B_P$; inserting the coefficients of
+\cref{hec:prop:odd} gives the value for $R_r$. Partial summation gives
+\[
+ R_P^{(1)}(x)-R_P(x)=\frac{H(x)}x+\int_{(x,\infty)}\frac{\dd H(y)}y=\int_x^\infty\frac{H(y)}{y^2}\,\dd y .
+\]
+\end{proof}
+
+For $d=1$ the weight is $P(t)=2+t$, and the criterion tests the zeros of the degree-two $L$-function of
+$\Delta$ together with those of $\zeta$.
+
+\paragraph{A nonnegative deficit weight for a single $L$-function.}
+A different normalization isolates one $L$-function with nonnegative weights and without a centring
+constant. For $c>1$ let
+\[
+ K_c(y)=\begin{cases}1-c^{-1},&0<y\le1,\\ y^{-1}-c^{-1},&1<y\le c,\\0,&y>c,\end{cases}
+\]
+so that for a coefficient sequence $a(n)$ with $T(x)=\sum_{n\le x}a(n)(1/n-1/x)$ one has
+$T(cx)-T(x)=x^{-1}\sum_{n\le cx}a(n)K_c(n/x)$. The transform of this finite difference carries the factor
+$H_c(s)=(c^{s-1}-1)/(s(s-1))$, which is positive on the positive real axis and has no zeros in
+$0<\Re s<1$; the one-sided finite-difference detector built on it is \cref{ana:thm:fd}.
+
+\begin{theorem}[Deficit detector; \stR]\label{hec:thm:deficit}
+Let $L(s,\pi)$ be a normalized self-dual cuspidal automorphic $L$-function of degree $d$ over $\Q$ whose
+Euler traces $t(p^k)$ are real and bounded by $d$ in absolute value, with the usual continuation,
+functional equation, order-one completion and nonvanishing on $\Re s\ge1$. Put $w(p^k)=d-t(p^k)\ge0$.
+Assume \cref{src:thm:dgrh}. Then RH for $L(s,\pi)$ is equivalent to the statement that for every $\eps>0$
+\begin{equation}\label{hec:eq:deficit}
+ \frac1x\sum_{p\le2x}(d-t(p))\log p\;K_2(p/x)-d\log2\le C_{\pi,\eps}x^{-1/2+\eps}
+\end{equation}
+for all sufficiently large $x$. The same holds with the pointwise bound replaced by the corresponding
+bound for the mean of the positive part over $[X,2X]$.
+\end{theorem}
+
+\begin{proof}
+Up to finitely many harmless Euler corrections, the Dirichlet series of $w(p^k)\log p$ is
+\[
+ A(s)=-d\,\frac{\zeta'(s)}{\zeta(s)}+\frac{L'(s,\pi)}{L(s,\pi)} .
+\]
+It has residue $d$ at $1$ and, since $\zeta$ is zero-free in $\Re s>1/2$, a simple pole with positive
+residue, the multiplicity, at each zero of $L(s,\pi)$ to the right of the critical line. The
+finite-difference detector of \cref{ana:thm:fd} with $\lambda=2$, applied to the coefficients $-w$ (the
+opposite orientation, \cref{ana:rem:sign}), therefore gives the absence of such zeros from
+\eqref{hec:eq:deficit}, or from its averaged form, and the functional equation gives RH. The converse
+follows from the contour shift for $T(2x)-T(x)$, whose multiplier $H_2$ is $O((1+\abs t)^{-2})$ on vertical
+strips. The prime powers of exponent at least two contribute $O(x^{-1/2}\log^2(2x))$ to the left side of
+\eqref{hec:eq:deficit}, so passing from prime powers to primes changes neither implication.
+\end{proof}
+
+For $\Delta$ one has $d=2$ and $t(p)=\tau(p)/p^{11/2}$. For the $r$th symmetric power, $d=r+1$ and
+$t_r(p)=C_r(t(p))$, so the weight $r+1-C_r(\tau(p)p^{-11/2})$ gives a nonnegative target for RH of
+$L(s,\Sym^r\Delta)$ alone. In contrast with \cref{hec:thm:symDelta}, the tested function enters with a
+negative coefficient, the test detects a single symmetric power, and the residue at $1$ is the full degree.
+Neither criterion bears on the order of vanishing at the centre.
+
+\subsection{Central zeros of Dirichlet \texorpdfstring{$L$}{L}-functions}\label{hec:ss:central}
+{\emergencystretch=\textwidth\sources{grh-lean-transfers; mcnew-density-and-dirichlet-grh}}
+
+\Cref{src:thm:dgrh} places the zeros of Dirichlet $L$-functions on the critical line but says nothing
+about the central point. This subsection gives one prime race in which central zeros can only help, and a
+finite test for central nonvanishing together with the exact limits of such tests. All results here use
+\cref{src:thm:dgrh}.
+
+\paragraph{A simultaneous weighted prime race.}
+Chebyshev's assertion that
+\[
+ \sum_{p>2}(-1)^{(p-1)/2}e^{-p/x}\longrightarrow-\infty\qquad(x\to\infty)
+\]
+is equivalent to the location of the zeros of the character modulo four, by Hardy--Littlewood and Landau;
+see \cite[\S1.2]{Suzuki2025Variants}.
+With a different smoothing one can measure the lead of every nonsquare class at once.
+
+\begin{theorem}[Weighted race; \stG]\label{hec:thm:race}
+Fix a modulus $q$ and a quotient $G$ of $(\Z/q\Z)^\times$, and write $h=\abs G$,
+$G^2=\set{a^2:a\in G}$ and $G[2]=\set{a:a^2=1}$. For $g\in G$ put
+\[
+ S_g(x)=\sum_{\substack{p\le x,\ p\nmid q\\{}[p]=g}}\frac{\log p}{\sqrt p}\log\frac xp ,
+\]
+and for a nonprincipal $\chi\in\widehat G$ let $m_\chi=\ord_{s=1/2}L(s,\chi)$. Then, simultaneously for all
+$g$,
+\[
+ S_g(x)-S_1(x)=B_g(\log x)^2+O_q(\log x),\qquad
+ B_g=\frac{\abs{G[2]}}{4h}\,\hecind_{g\notin G^2}+\frac1{2h}\sum_{\chi\ne1}(1-\Re\chi(g))\,m_\chi .
+\]
+In particular every nonsquare class eventually leads the identity class, by at least
+$(\abs{G[2]}/(4h)+o(1))(\log x)^2$; if every element of $G$ has order dividing two, all $g\ne1$ lead by at
+least $(1/4+o(1))(\log x)^2$.
+\end{theorem}
+
+For a multiquadratic extension of $\Q$ the identity class consists of the primes that split completely,
+and the other classes are the other patterns of quadratic splitting.
+
+\begin{proof}
+Let $u=\log x$. For a nonprincipal character, the explicit formula \cite[(62), (64)]{Suzuki2025Variants}
+gives
+\[
+ A_\chi(x)=\sum_{n\le x}\frac{\Lambda(n)\chi(n)}{\sqrt n}\log\frac xn=-\frac{m_\chi}2u^2+O_q(u):
+\]
+the central zero gives the quadratic term, the other zeros $1/2+i\gamma$ contribute a bounded series
+because $\abs{x^{i\gamma}}=1$ by \cref{src:thm:dgrh} and $\sum_{\gamma\ne0}\gamma^{-2}<\infty$, and all
+other terms are $O_q(u)$. Passing from a primitive character to a character it induces costs $O_q(u)$, and
+the extra Euler factors do not vanish at $s=1/2$. The terms $n=p^k$ with $k\ge3$ contribute $O(u)$. The
+terms $n=p^2$ equal
+\[
+ 2\int_1^{\sqrt x}\Bigl(\sum_{p\le t}\frac{\chi^2(p)\log p}p\Bigr)\frac{\dd t}t
+ =\hecind_{\chi^2=1}\frac{u^2}4+O_q(u),
+\]
+since the inner sum is $\log t+O_q(1)$ for principal $\chi^2$ by Mertens' estimate, and $O_q(1)$ otherwise
+by the prime number theorem in progressions. The sum over primes alone therefore has quadratic coefficient
+$-m_\chi/2-\hecind_{\chi^2=1}/4$. By orthogonality, $S_g-S_1$ is the sum of these prime sums with
+coefficients $(\overline{\chi(g)}-1)/h$; the principal character cancels, and conjugate characters have
+equal central orders, so real parts may be taken. The characters with $\chi^2=1$ are the dual of $G/G^2$,
+and their sum at $g$ is $\abs{G/G^2}=\abs{G[2]}$ for $g\in G^2$ and zero otherwise. This gives $B_g$; each
+central-zero term is nonnegative.
+\end{proof}
+
+\begin{example}\label{hec:ex:mod8}
+For $q=8$ and $g\in\set{3,5,7}$, $S_g(x)-S_1(x)=\tfrac14(\log x)^2+O(\log x)$. Here all three central orders
+vanish: on the odd classes $1,3,5,7$ the three characters have sign patterns $+,-,+,-$, $+,+,-,-$ and
+$+,-,-,+$, each block of four consecutive odd summands of the series at $s=1/2$ has positive sum (for the
+last pattern by strict convexity of $t^{-1/2}$), and so every central value is positive. Values of the
+normalized difference are tabulated in \artifact{grh-lean-transfers/checks/weighted_race.csv}. The theorem
+concerns these weighted sums; an unweighted two-way race can change sign.
+{\emergencystretch=14em\par}
+\end{example}
+
+\paragraph{A finite test for central nonvanishing.}
+Let $\chi$ be a primitive nonprincipal Dirichlet character of conductor $q$, put
+$\kappa=(1-\chi(-1))/2$ and
+\[
+ \Lambda_\chi(s)=(q/\pi)^{(s+\kappa)/2}\Gamma((s+\kappa)/2)L(s,\chi).
+\]
+Chowla's question, in the quadratic case, is whether $L(1/2,\chi)\ne0$ for every real $\chi$. Fix a real
+$t$, let $m_t=\ord_{s=1/2+it}L(s,\chi)$, and put
+\[
+ H_j(t)=\sqrt j\,\Re\frac{\Lambda_\chi'}{\Lambda_\chi}\bigl(\tfrac12+\sqrt j+it\bigr),\qquad
+ B_k(t)=\sum_{j=1}^k(-1)^{j-1}\binom kjH_j(t),\qquad
+ K_k(u)=\prod_{j=1}^k\frac j{j+u}.
+\]
+Only values of $L$ in the half-plane of absolute convergence enter.
+
+\begin{theorem}[Finite criterion; \stG]\label{hec:thm:chowla}
+For every $k\ge1$, summing over the ordinates $\gamma$ of the nontrivial zeros with multiplicity,
+\[
+ B_k(t)=\sum_\gamma K_k\bigl((\gamma-t)^2\bigr),
+\]
+and $B_k(t)$ decreases to $m_t$ as $k\to\infty$. Consequently, for each integer $r\ge0$, $m_t\le r$ if and
+only if $B_k(t)<r+1$ for some $k$. For a real character, $B_k(0)<2$ for some $k$ certifies
+$L(1/2,\chi)\ne0$, and $B_k(0)<2K_k(g^2)$ certifies that $L(s,\chi)$ has no nontrivial zero with
+$\abs\gamma\le g$. Moreover:
+\begin{enumerate}[label=\textup{(\roman*)}]
+\item If $h$ is the least positive distance $\abs{\gamma-t}$ and $d_h$ the number of zeros at that
+distance, then $B_k(t)-m_t\sim d_h\,\Gamma(1+h^2)\,k^{-h^2}$.
+\item At $t=0$ and fixed $k$, uniformly in $\chi$,
+\[
+ B_k(0)=\tfrac12c_k\log q+O_k(1),\qquad
+ c_k=\sum_{j=1}^k(-1)^{j-1}\binom kj\sqrt j=\frac1{2\sqrt\pi}\int_0^\infty(1-e^{-v})^k\frac{\dd v}{v^{3/2}}>0,
+\]
+and $c_k\sim(\pi\log k)^{-1/2}$. Thus every fixed $k$ eventually gives $B_k(0)>2$ as the conductor grows,
+whatever the order of vanishing.
+\end{enumerate}
+\end{theorem}
+
+\begin{proof}
+The Hadamard product gives the logarithmic derivative as a constant plus $\sum_\rho(1/(s-\rho)+1/\rho)$,
+and $\sum\Re(1/\rho)$ converges absolutely. On the critical line, away from zeros, the functional equation
+$\Lambda_\chi(s)=\epsilon_\chi\overline{\Lambda_\chi(1-\bar s)}$ makes $\Lambda_\chi'/\Lambda_\chi$ purely
+imaginary. Since every $\rho$ is $1/2+i\gamma$ by \cref{src:thm:dgrh}, this identifies the real constant
+and gives
+\[
+ H_j(t)=\sum_\gamma\frac j{j+(\gamma-t)^2}.
+\]
+Partial fractions give $\sum_{j=1}^k(-1)^{j-1}\binom kjj/(j+u)=K_k(u)$. For $u>0$ the product tends to zero
+because $\sum1/j$ diverges, and dominated convergence applies since the sum for $H_1(t)$ is finite. For a
+real character the root number is $+1$, so $m_0$ is even, and nonreal zeros occur in pairs of opposite
+ordinates; a pair with $\abs\gamma\le g$, or a central zero, contributes at least $2K_k(g^2)$.
+
+(i) $K_k(u)=\Gamma(k+1)\Gamma(1+u)/\Gamma(k+1+u)$. For $u\ge h^2$ the quotient $K_k(u)/K_k(h^2)$ decreases
+in $k$, is bounded by $K_1(u)/K_1(h^2)$, which is summable over the zeros, and tends to zero for $u>h^2$.
+
+(ii) The gamma terms are bounded at each of the finitely many arguments, and the logarithmic derivatives
+of $L$ are bounded uniformly in $q$ by their absolutely convergent prime-power series. The integral follows
+from $\sqrt j=(2\sqrt\pi)^{-1}\int_0^\infty(1-e^{-jv})v^{-3/2}\,\dd v$. With $v=y\log k$ the factor
+$(1-k^{-y})^k$ tends to $\hecind_{y>1}$ almost everywhere; on $y\ge1/2$ the factor $y^{-3/2}$ is
+integrable, for $0<v<1/2$ one bounds $(1-e^{-v})^k$ by $v^k$, and for $1/2\le v\le(\log k)/2$ by
+$\exp(-\sqrt k)$. The surviving integral is $\int_1^\infty y^{-3/2}\,\dd y=2$.
+\end{proof}
+
+\begin{example}[A certified conductor]\label{hec:ex:chowla}
+Let $q=1\,000\,004\,329$, a prime, and $\chi(n)=\legendre nq$. Then $L(s,\chi)$ has no zero in
+$0<\Re s<1$, $\abs{\Im s}\le1/5$. Indeed outward-rounded evaluation gives
+\[
+ 0.94936<B_{10}(0)<1.66669,\qquad1.78105<2K_{10}(1/25)<1.78106
+\]
+(\artifact{mcnew-density-and-dirichlet-grh/checks/chowla.py}). The evaluation uses
+$\Lambda_\chi'/\Lambda_\chi(s)=\tfrac12(\log(q/\pi)+\psi_0((s+\kappa)/2))-\sum_n\chi(n)\Lambda(n)n^{-s}$ at
+$s=1/2+\sqrt j$, with all prime powers up to $N=65\,536$, the tail bound $4(\log2)sN^{1-s}/(s-1)$ obtained
+from $\sum_{n\le x}\Lambda(n)\le4x\log2$, and
+$\log y-1/(2y)-1/(12y^2)\le\psi_0(y)\le\log y-1/(2y)$ after shifting the argument up by $128$. The character
+is even and its conductor lies just above the range $10^9$ of \cite{PlattTrudgian2026Even}; all primitive
+characters of modulus up to $2\,000\,000$ were treated in \cite{Platt2016Numerical}. For the family see
+\cite{Soundararajan2000Nonvanishing}.
+{\emergencystretch=14em\par}
+\end{example}
+
+\paragraph{The best positive bound from prescribed samples.}
+Fix distinct offsets $a_1,\dots,a_k>1/2$ and a target ordinate $t$, and let
+$H_i=a_i\Re(\Lambda_\chi'/\Lambda_\chi)(1/2+a_i+it)=\sum_\gamma a_i^2/(a_i^2+(\gamma-t)^2)$. Call
+\[
+ F(u)=\sum_{i=1}^kc_i\frac{a_i^2}{a_i^2+u^2},\qquad c_i\in\R,
+\]
+\emph{admissible} if $F(0)=1$ and $F\ge0$ on $\R$. Each admissible $F$ gives the bound
+$m_t\le\sum_ic_iH_i$; the coefficients may have either sign.
+
+\begin{theorem}[Optimal certificates and their limits; \stG]\label{hec:thm:kernels}
+\begin{enumerate}[label=\textup{(\roman*)}]
+\item The matrix $G_{ij}=(a_jH_i+a_iH_j)/(a_i+a_j)$ is positive definite, and with
+$\mathbf e=(1,\dots,1)^{\mathsf T}$,
+\[
+ \min_{F\ \mathrm{admissible}}\ \sum_\gamma F(\gamma-t)=\frac1{\mathbf e^{\mathsf T}G^{-1}\mathbf e}.
+\]
+In particular, at $t=0$ and for real $\chi$, if $G-2\mathbf e\mathbf e^{\mathsf T}$ is not positive
+semidefinite then $L(1/2,\chi)\ne0$.
+\item Let $t=0$, $S=\sum_ia_i^{-1}$, and keep the sites fixed. Uniformly over primitive nonprincipal
+characters of conductor $q$, the minimum in \textup{(i)} equals
+\[
+ \frac{\log q}{2S}+O_{a_1,\dots,a_k}(1)\qquad(q\to\infty).
+\]
+The function attaining the least coefficient of $\log q$ is
+\[
+ F_*(u)=\frac{\sin^2\bigl(\sum_j\arctan(u/a_j)\bigr)}{S^2u^2},\qquad F_*(0)=1 .
+\]
+\item Let $M_k(\chi)$ be the infimum of the central bound over all choices of $k$ distinct sites
+$a_j>1/2$ and all admissible $F$. For fixed $k$, uniformly over primitive nonprincipal characters,
+\[
+ \frac{M_k(\chi)}{\log q}\longrightarrow\frac1{4k}\qquad(q\to\infty).
+\]
+\end{enumerate}
+\end{theorem}
+
+Thus no fixed number of samples certifies central nonvanishing uniformly in the conductor, even when the
+sample sites and the signed coefficients are chosen after inspecting the character. For the sites
+$a_j=\sqrt j$ the optimal coefficient of $\log q$ is $1/(2\sum_{j\le k}j^{-1/2})\sim1/(4\sqrt k)$, whereas
+the binomial test of \cref{hec:thm:chowla} has $c_k/2\sim1/(2\sqrt{\pi\log k})$. The limit in (iii) is for
+fixed $k$ and says nothing about $k=k(q)\to\infty$.
+
+\begin{proof}
+(i) Let $g_i(u)=a_i/(a_i-iu)$, so $g_i(0)=1$, and symmetrize the counting measure of the numbers
+$u=\gamma-t$ by placing mass $1/2$ at $u$ and at $-u$; this does not change the integral of an even
+function. Against this measure the Gram matrix of the $g_i$ is real, and the identity
+\[
+ \Re\bigl(g_i(u)\overline{g_j(u)}\bigr)
+ =\frac{a_j}{a_i+a_j}\frac{a_i^2}{a_i^2+u^2}+\frac{a_i}{a_i+a_j}\frac{a_j^2}{a_j^2+u^2}
+\]
+shows that it is $G$. It is positive definite because a nonzero combination of the $g_i$ has finitely
+many zeros and the measure has infinite support. Every admissible $F$ is $\abs{\sum_iv_ig_i}^2$: after
+multiplication by $\prod(u^2+a_i^2)$ its numerator is a real polynomial of degree at most $2k-2$,
+nonnegative on $\R$, hence of the form $\abs{P(u)}^2$ with $\deg P\le k-1$, and partial fractions of
+$P(u)/\prod(a_i-iu)$ give the representation; a phase makes $\sum v_i=1$. The Cauchy--Schwarz inequality
+for the inner product $G$ gives the lower bound $(\mathbf e^{\mathsf T}G^{-1}\mathbf e)^{-1}$, attained by
+$v=G^{-1}\mathbf e/(\mathbf e^{\mathsf T}G^{-1}\mathbf e)$. This vector is real, so the squared modulus is
+even, and it lies in the span of the functions $a_i^2/(a_i^2+u^2)$ since its denominator has the distinct
+factors $u^2+a_i^2$ and its numerator has smaller degree. Finally a real vector $v$ with
+$v^{\mathsf T}(G-2\mathbf e\mathbf e^{\mathsf T})v<0$ has $\mathbf e^{\mathsf T}v\ne0$, and after
+normalization gives a bound below $2$; the central order of a real character is even.
+
+(ii) By absolute convergence of the prime sums at the sample sites, $G=(\log q)C+O(1)$ entrywise with
+$C_{ij}=a_ia_j/(a_i+a_j)$, the Gram matrix of the functions $x\mapsto a_ie^{-a_ix}$ on $[0,\infty)$, which
+is positive definite. For $w=C^{-1}\mathbf e$ put $R(z)=\sum_jw_ja_j/(z+a_j)$. The equations $a_iR(a_i)=1$
+give
+\[
+ 1-zR(z)=\prod_j\frac{a_j-z}{a_j+z},
+\]
+since both sides have the same denominator, numerators of degree at most $k$ with the same $k$ zeros, and
+value $1$ at $z=0$. Differentiating at zero gives $\mathbf e^{\mathsf T}C^{-1}\mathbf e=2S$, and inversion
+of the matrix of fixed size gives the asymptotic. The extremal function is $\abs{R(-iu)/(2S)}^2$, which is
+$F_*$; for $k=1$ it is the single kernel and for $k=2$ the product of the two single kernels. The
+calculation is an instance of a rational reproducing kernel \cite{Dzhrbashyan1974Biorthogonal}.
+
+(iii) Any admissible $F$ at any sites has the form $P(u)/\prod_j(1+u^2/a_j^2)$ with $P$ even, nonnegative,
+$P(0)=1$ and $\deg P\le2k-2$. For fixed $b>1/2$,
+\[
+ F(u)\ge(2b)^{-2k}f(u),\qquad f(u)=\frac{P(u)}{(1+u^2/b^2)^k},
+\]
+because each denominator factor is at most $1+4u^2\le4b^2(1+u^2/b^2)$. The extremum for fixed poles gives
+$\int_\R f\ge\pi b/k$ also for the repeated pole: replace the $k$ copies of $b$ by distinct sites tending
+to $b$, keep $P$ fixed, and use dominated convergence in the inequality $\int F\ge\pi/\sum_j(1/a_j)$,
+which follows from $\int a_j^2/(a_j^2+u^2)\,\dd u=\pi a_j$ and the minimal value of the quadratic form of
+$C$. On the fixed finite-dimensional space spanned by $(b^2+u^2)^{-j}$, $1\le j\le k$,
+\[
+ \Bigl\lvert\sum_\gamma f(\gamma)-\frac{\log q}{2\pi}\int_\R f(u)\,\dd u\Bigr\rvert
+ \le A_{b,k}\int_\R\abs{f(u)}\,\dd u .
+\]
+This follows by differentiating at $v=b^2$ the identity
+\[
+ \sum_\gamma\frac1{v+\gamma^2}=\frac1{\sqrt v}\,\Re\frac{\Lambda_\chi'}{\Lambda_\chi}\bigl(\tfrac12+\sqrt v\bigr)
+ =\frac{\log q}{2\sqrt v}+O_b(1),
+\]
+whose error has uniformly bounded derivatives up to order $k-1$ near $b^2$, and using
+$\int_\R(v+u^2)^{-1}\,\dd u=\pi/\sqrt v$ and the equivalence of norms on the space. Since $f\ge0$, this gives
+$\liminf M_k(\chi)/\log q\ge(2b)^{-2k}b/(2k)$, and $b\downarrow1/2$ gives $1/(4k)$. Conversely, fixed
+distinct sites close to $1/2$ from above have leading coefficient $1/(2S)$ close to $1/(4k)$ by (ii).
+\end{proof}
+
+\subsection{Open questions}\label{hec:ss:open}
+{\emergencystretch=\textwidth\sources{grh_transfers; grh-lean-transfers; grh_dihedral_47_71; grh_transfers_density_gaps_and_zero_tests; mcnew_density_and_grh_transfers; mcnew_counterexample_and_grh_transfers; grh-methods-polynomial-density; grh-torsion-and-zero-data; grh_transfers_singular_moduli_and_symmetric_powers; mcnew-density-and-dirichlet-grh; grh_transfers_lubin_tate_and_graph_towers}}
+
+Every reduction in this section leaves a one-sided prime estimate unproved. The questions below ask for
+these estimates in their smallest instances, and for the extensions of the unconditional results that the
+proofs suggest.
+
+\begin{enumerate}[label=\textup{(\arabic*)}]
+\item \emph{The conductor-$23$ estimate.} Can a covolume comparison of the kind used in the source proof,
+built over the CM base $\Q(\sqrt{-23})$ with data indexed by its ideal classes, produce any one of the
+equivalent one-sided estimates of \cref{hec:ss:cubic}: the bound \eqref{hec:eq:principalbound} for the
+principal-class remainder, the eventual sign $\mathcal T(x_j)\le0$ of \cref{hec:thm:sign}, or the
+irreducible-prime bound \eqref{hec:eq:irred23}? The construction would need integral forms whose local
+divisibility distinguishes the identity from a three-cycle inside the same quadratic splitting condition
+(the principal form $u^2+uv+6v^2$ represents the completely split primes and $2u^2+uv+3v^2$ the primes at
+which the cubic is irreducible), enough independent such forms, a determinant lower bound with controlled
+denominators, and a matching archimedean main term. \Cref{hec:prop:modulus,hec:prop:meansq} show that
+this information cannot come from a fixed set of residue classes. The same question is open for the weight
+$r_p-1$ of the field $\Q(\sqrt[3]2)$ in \cref{hec:thm:cuberoot}.
+\item \emph{A selective event.} Can the comparison be realized for the binary event of
+\cref{hec:thm:twistedcubic}, with its negative coefficient on $\rho\eta$ and its vanishing coefficient on
+$\rho$?
+\item \emph{Other sign tests.} For which other self-dual Artin or modular $L$-functions of degree two does
+the bias from prime squares exceed the total contribution of the zeros, as in \eqref{hec:eq:limsup}, so
+that the Riemann hypothesis for the function becomes equivalent to an eventual sign of a prime sum? The
+curvature bound of \cref{zer:prop:eta} gives a verifiable sufficient condition for positive eta products.
+\item \emph{Conductor $47$.} Can the prime weight of the class of $Q_1$ in \cref{hec:thm:primes47} be
+realized as a local divisibility contribution of an integral theta lift, with the determinant lower bound
+retained? Reproducing its mean $1/5$ gives no control of its error.
+\item \emph{Prime dihedral degrees.} For a dihedral Hilbert class field of prime degree $\ell>7$ over its
+quadratic subfield, a single rotation class still prevents cancellation of zero multiplicities. For which
+explicit fields can the real-axis hypothesis be proved by positivity of the Mellin kernel of every
+constituent, as in \cref{hec:prop:pos71}?
+\item \emph{Real zeros of pencils.} Which pairs of newforms of equal conductor admit a quotient with a
+single simple pole on a Fricke quotient, as in the proof of \cref{hec:thm:real47}? When the modular
+function has degree greater than one, can the number of real zeros of a linear combination be bounded by
+the number of turns of the ratio of the kernels?
+\item \emph{Cubic Jensen inequalities.} Which property of the conductor-$23$ kernel yields the cubic
+Jensen inequalities at every shift without locating zeros? By
+\cref{hec:thm:finitejensen,hec:thm:stride,hec:thm:sexticlimit} no argument that uses only the sign of
+$(\log K(\sqrt x))''$ or of the fourth derivative of $\log K$ can do so, and an argument uniform in the
+degree would be needed for the full critical-line statement.
+\item \emph{The sextic family.} For each $c>0$, what is the least degree $d$ for which $Q_{d,c}$ of
+\cref{hec:thm:sexticlimit} fails to be real-rooted? The bound $d>2+8/(9c^2)$ is sufficient.
+\item \emph{Gaussian angles.} Can the local divisibility calculation in a theta lift be made sensitive to
+one nonconstant angular harmonic of Gaussian primes, that is, can the bound of \cref{hec:thm:angular} be
+proved for $N=r=1$?
+\item \emph{Traces of Frobenius.} Can a height or divisibility inequality give the upper bound of
+\cref{hec:thm:symDelta} for the degree-one weight $2+\tau(p)p^{-11/2}$, or the bound of \cref{hec:thm:symE}
+for the curve $y^2+y=x^3-x$ and $d=1$? \Cref{hec:prop:66} identifies the part of the local data that no
+fixed modulus sees.
+\item \emph{Central nonvanishing.} For quadratic characters, can sampling sites depending on the
+conductor, with a number of samples $k=k(q)$ tending to infinity and uniform estimates for the logarithmic
+derivatives at these sites, force a central multiplicity bound below two? By \cref{hec:thm:kernels} no
+bounded number of samples can.
+\end{enumerate}
+
+\emergencystretch=\hecsavedemergencystretch\relax

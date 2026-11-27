@@ -1,0 +1,2607 @@
+\section{Spanning, frames, auxiliary characters and matrix statistics}\label{sec:spn}
+
+\providecommand{\spnHS}{\mathrm{HS}}
+\providecommand{\spncodim}{\operatorname{codim}}
+\providecommand{\spnim}{\operatorname{im}}
+\providecommand{\spnE}{\mathbb{E}}
+\providecommand{\spnP}{\mathbb{P}}
+\providecommand{\spnTV}{d_{\mathrm{TV}}}
+\providecommand{\spnStab}{\operatorname{Stab}}
+\providecommand{\spnMat}{\operatorname{Mat}}
+\providecommand{\spnDD}{\mathfrak{D}}
+\providecommand{\spnT}{\mathsf{T}}
+\providecommand{\spnqbin}[3]{\genfrac{[}{]}{0pt}{}{#1}{#2}_{#3}}
+\providecommand{\spnOrth}{\mathcal{O}}
+\providecommand{\spnTame}{\mathcal{T}}
+
+The source proof (\cref{src:sec:mechanism}) compares an upper and a lower bound
+for one twisted lattice. Several of its intermediate inputs are finite or local
+statements that can be isolated, sharpened and tested without any hypothesis on
+zeros: the second-moment spanning estimate, the integral tight frames, the
+positive-type Fourier estimate for matrix compressions, the auxiliary
+anticyclotomic characters, and the integer that annihilates the odd cyclotomic
+cocycles. This section treats them in that order. Apart from
+\cref{spn:thm:bounded-conductor}, which uses \cref{src:thm:dgrh} through a
+least-prime bound, every result is unconditional. Notation is local to each
+subsection.
+
+%======================================================================
+\subsection{A sharp spanning interface}\label{spn:sec:spanning}
+\sources{grh_spanning_and_s5_2026-11-26}
+
+Let $S,T$ be finite-dimensional complex Hilbert spaces, with $s=\dim S>0$. Let a
+finite group $G$ act unitarily on $T$, by $\rho$, and let $P$ be the orthogonal
+projection onto a $G$-stable subspace $W$, of dimension $d>0$. Thus
+$P\rho(g)=\rho(g)P$. Fix a linear map $B\colon S\to T$ and write
+$C_g=P\rho(g)B\colon S\to W$.
+
+The spanning lemma of the source, \code{isSpread_of_second_moment}, rests on
+two quantitative hypotheses: for every subspace $U\le S$,
+\begin{equation}\label{spn:eq:near}
+ \norm{PBP_U}_{\spnHS}^2\ge \dim U-us,
+\end{equation}
+and
+\begin{equation}\label{spn:eq:moment}
+ \frac d{\abs{G}}\sum_{g\in G}\norm{B^*\rho(g)B}_{\spnHS}^2\le(1+v)s^2 .
+\end{equation}
+Here $P_U$ denotes orthogonal projection onto $U$, and $0\le u<1$, $v\ge0$.
+Condition \eqref{spn:eq:near} is the predicate \code{IsNearIsometry} of the
+source; it is a statement on every source subspace, not merely one lower
+bound on the total Hilbert--Schmidt norm.
+
+\begin{lemma}[The square-root estimate; \stU]\label{spn:lem:sqrt}
+For every subspace $F\le W$, of relative dimension $\alpha=\dim F/d$, some
+$g\in G$ satisfies
+\begin{equation}\label{spn:eq:sqrt}
+ \dim C_g^{-1}(F)\le s\bigl[u+\sqrt{(1+v)\alpha}\bigr].
+\end{equation}
+In particular, $s\le d/(1-u)$.
+\end{lemma}
+
+\begin{proof}
+Put $M=\abs{G}^{-1}\sum_g\rho(g)BB^*\rho(g)^*$. Unitarity and a change of
+variables in the double sum give
+\[
+ \tr(M^2)=\frac1{\abs{G}}\sum_g\norm{B^*\rho(g)B}_{\spnHS}^2 .
+\]
+The Hilbert--Schmidt Cauchy--Schwarz inequality therefore gives
+\[
+ \frac1{\abs{G}}\sum_g\norm{P_F\rho(g)B}_{\spnHS}^2=\tr(P_FM)
+ \le\sqrt{\dim F\,\tr(M^2)}\le s\sqrt{\alpha(1+v)} .
+\]
+Choose $g$ with its summand at most this average and put $U=C_g^{-1}(F)$. On
+$U$, the maps $C_g$ and $P_F\rho(g)B$ agree. Because $C_g=\rho(g)PB$, and
+right-composition by an orthogonal projection does not increase the
+Hilbert--Schmidt norm, \eqref{spn:eq:near} yields
+\[
+ \dim U-us\le\norm{PBP_U}_{\spnHS}^2=\norm{C_gP_U}_{\spnHS}^2
+ \le\norm{P_F\rho(g)B}_{\spnHS}^2 .
+\]
+This proves \eqref{spn:eq:sqrt}. For the last assertion, apply
+\eqref{spn:eq:near} to $\ker(PB)$. It gives $\dim\ker(PB)\le us$, hence
+$(1-u)s\le\rank(PB)\le d$.
+\end{proof}
+
+The source first replaces both errors by a common $\eps$, then applies
+$\sqrt{\alpha(1+\eps)}\le(\alpha+1+\eps)/2$ before proceeding to the greedy
+argument. Keeping the square root retains the information near the limiting
+dimension. Set
+\begin{equation}\label{spn:eq:parameters}
+\begin{gathered}
+ a=1-u,\qquad z=1+v,\qquad \alpha_*=\frac{a^2}{z},\\[3pt]
+ \delta_*=1-\alpha_*=\frac{2u+v-u^2}{1+v},\qquad h=\frac{sz}{2ad},\qquad
+ q=\max\set{0,1-h}.
+\end{gathered}
+\end{equation}
+Thus $a,z,\alpha_*,h>0$, $0\le\delta_*<1$, and $0\le q<1$.
+
+\begin{theorem}[Greedy selection with the sharp limiting loss; \stU]\label{spn:thm:greedy}
+Assume \eqref{spn:eq:near} and \eqref{spn:eq:moment}. For every integer $t\ge0$
+there is a set $A\subseteq G$, with $\abs{A}\le t$, such that
+\begin{equation}\label{spn:eq:greedy}
+ \spncodim_W\sum_{g\in A}\spnim C_g\le d\bigl[\delta_*+\alpha_*q^t\bigr].
+\end{equation}
+Consequently, for $0<\tau<\alpha_*$, a loss of at most $(\delta_*+\tau)d$ is
+achieved with at most
+\begin{equation}\label{spn:eq:count}
+ \ceil*{\frac{2ad}{sz}\log\frac{\alpha_*}{\tau}}
+\end{equation}
+translates. The span of all the images has codimension at most
+$\floor{\delta_*d}$.
+\end{theorem}
+
+\begin{proof}
+Let the current span be $F$, with codimension $c$. Rank--nullity for
+$S\to W/F$ gives
+\[
+ \dim(F+\spnim C_g)-\dim F=s-\dim C_g^{-1}(F).
+\]
+By \cref{spn:lem:sqrt}, some $g$ therefore adds at least
+\begin{equation}\label{spn:eq:gain}
+ s\Bigl[a-\sqrt{z(1-c/d)}\Bigr]
+\end{equation}
+dimensions. Suppose $c>\delta_*d$, and put $e=c-\delta_*d>0$. The bracket in
+\eqref{spn:eq:gain} is
+\[
+ a-\sqrt{a^2-ze/d}=\frac{ze/d}{a+\sqrt{a^2-ze/d}}\ge\frac{ze}{2ad}.
+\]
+The square root is real because $c\le d$. Thus, after the selected step, the
+new excess codimension is at most $(1-h)e$, and hence at most $qe$. If
+$c\le\delta_*d$, keep the existing set of indices. Induction from the empty
+span, $c_0=d=\delta_*d+\alpha_*d$, proves \eqref{spn:eq:greedy}. Taking a set of
+indices accommodates repetitions automatically.
+
+Since $q\le e^{-h}$, the number in \eqref{spn:eq:count} suffices. This also
+covers $q=0$, as the displayed ceiling is at least one. Finally, take
+$F=\sum_{g\in G}\spnim C_g$ in \eqref{spn:eq:sqrt}. Every preimage is all of
+$S$, so $1\le u+\sqrt{z\dim F/d}$, whence $\dim F\ge\alpha_*d$. Integrality
+gives the stated floor.
+\end{proof}
+
+\begin{proposition}[Sharpness under the moment hypotheses; \stU]\label{spn:prop:sharp}
+For every rational pair $0\le u<1$, $v\ge0$, there are examples satisfying
+\eqref{spn:eq:near} and \eqref{spn:eq:moment} whose total span has dimension
+exactly $\alpha_*d$. Thus $\delta_*$ cannot be decreased as a universal bound
+under these hypotheses.
+\end{proposition}
+
+\begin{proof}
+Since $\alpha_*$ is positive and rational, choose positive integers $d,r$ with
+$r/d=\alpha_*$. Take $S=\C$, $W=T=\C^d$, and $P=I$. Let the cyclic group of
+order $r$ rotate the first $r$ coordinate vectors, fixing the other $d-r$
+vectors. Put $B(1)=\sqrt{1-u}\,e_1$. The only subspaces of $S$ are zero and
+$S$, so \eqref{spn:eq:near} holds, with equality for $S$. Moreover
+\[
+ \frac1{\abs{G}}\sum_g\norm{B^*\rho(g)B}_{\spnHS}^2=\frac{(1-u)^2}{r},\qquad
+ \frac{d(1-u)^2}{r}=1+v .
+\]
+Thus \eqref{spn:eq:moment} is also an equality. The orbit images span exactly
+the first $r$ coordinate directions.
+\end{proof}
+
+\begin{corollary}[Equal errors]\label{spn:cor:equal}
+When $u=v=\eps$, the sharp limiting deficit is
+$\delta_*=(3\eps-\eps^2)/(1+\eps)$. For $\eps=p/v_0$, with integers
+$0\le p<v_0$, one explicit equality example has $d=v_0(v_0+p)$ and
+$r=(v_0-p)^2$.
+\end{corollary}
+
+The total-rank argument is an instance of the classical second-moment, or
+effective-rank, inequality \cite{Welch1974Lower,Mixon2020Three}. Greedy rank
+accumulation is likewise a classical technique; see the submodular-cover
+analysis in \cite{Wolsey1982Analysis}. What is extracted here is the exact
+threshold $\delta_*$ of the source hypotheses and an explicit selection
+schedule.
+
+\begin{lemma}[Restriction loss; \stU]\label{spn:lem:restriction}
+Let $S_0\le S$ have codimension $r_0$. The same selected set in
+\cref{spn:thm:greedy} satisfies
+\begin{equation}\label{spn:eq:restricted}
+ \spncodim_W\sum_{g\in A}C_g(S_0)\le d\bigl[\delta_*+\alpha_*q^t\bigr]+tr_0 .
+\end{equation}
+\end{lemma}
+
+\begin{proof}
+The direct sum of $\abs{A}$ copies of $S/S_0$ surjects onto
+$\bigl(\sum_{g\in A}C_g(S)\bigr)/\bigl(\sum_{g\in A}C_g(S_0)\bigr)$. Thus the
+difference of the two span dimensions is at most $\abs{A}r_0\le tr_0$. Apply
+\eqref{spn:eq:greedy}.
+\end{proof}
+
+Inequality \eqref{spn:eq:restricted} balances the benefit of selecting more
+translates against the cost of restricting the source. If $r_0/s=\theta>0$ and
+$2\theta<a$, taking $t=\ceil{h^{-1}\log(a/(2\theta))}$ gives
+\begin{equation}\label{spn:eq:optimized}
+ \frac1d\spncodim_W\sum_{g\in A}C_g(S_0)
+ \le\delta_*+\frac{2a\theta}{z}\Bigl(1+\log\frac{a}{2\theta}\Bigr)
+ +\frac{\theta s}{d}
+ \le\delta_*+\frac{2a\theta}{z}\Bigl(1+\log\frac{a}{2\theta}\Bigr)
+ +\frac{\theta}{a}.
+\end{equation}
+Indeed, $d\alpha_*h=as/2$, and rounding up increases the linear loss by at most
+$r_0$.
+
+%======================================================================
+\subsection{The source spanning theorem at its original constants}\label{spn:sec:source-improvement}
+\sources{grh_spanning_and_s5_2026-11-26}
+
+The parameter called $b$ here is the large weight in the source, not the moment
+factor $z=1+v$. The raw estimates in the source file
+\code{SpanningTheorem.lean} are
+\[
+ u=\frac5{b^4},\qquad v=\frac9{b^4};
+\]
+they occur in the following declarations, respectively:
+\begin{itemize}
+\item \code{isNearIsometry_e}\textsubscript{0}\code{_comp_scaledPoincare};
+\item \code{targetDim_mul_sum_hilbertSchmidtNorm_sq_le}.
+\end{itemize}
+The proof of \code{isSpread_goodPoincare} later replaces both by
+$\eps=(8b^2)^{-1}$; that enlargement is unnecessary for the argument here.
+The source-restriction argument in \code{ShortAndEnough.lean} has
+$r_0/s\le b^{-8}$. The maps are identified through \code{sourceFormCoords};
+the nonzero scalar normalizations in \code{goodPoincare} and
+\code{normalizedPoincare} do not change the image subspaces.
+
+\begin{theorem}[Fourth-order loss and fewer translates; \stU]\label{spn:thm:source}
+Assume \eqref{spn:eq:near} and \eqref{spn:eq:moment} with $u=5b^{-4}$,
+$v=9b^{-4}$, and $b\ge6$. Let $S_0\le S$ satisfy
+$r_0=s-\dim S_0\le b^{-8}s$. Then some set $A\subseteq G$ satisfies
+\begin{align}
+ \abs{A}\dim S_0&\le4d\log(1+2b^2),\label{spn:eq:sourcecount}\\
+ \dim\sum_{g\in A}C_g(S_0)&\ge\Bigl(1-\frac{20}{b^4}\Bigr)d.\label{spn:eq:sourcerank}
+\end{align}
+In fact $\abs{A}s\le4d\log(1+2b^2)$.
+\end{theorem}
+
+\begin{proof}
+Write $L=\log(1+2b^2)$, and choose $t=\floor{4dL/s}$. \Cref{spn:lem:sqrt} gives
+$s/d\le1/a$. Since $u\le5/256$ and $v\le9/256$, we have $a\ge251/256$,
+$z\le265/256$, and
+\[
+ 0<h=\frac{sz}{2ad}\le\frac{z}{2a^2}\le\frac{33920}{63001}<1 .
+\]
+Also $4dL/s\ge4aL>1$, so $t\ge1$. In particular $q=1-h$, and
+\[
+ q^t\le e^{-ht}\le\exp\Bigl(\frac{sz}{2ad}\Bigr)(1+2b^2)^{-2z/a}
+ \le\exp\Bigl(\frac{z}{2a^2}\Bigr)(1+2b^2)^{-2z/a}.
+\]
+The second inequality uses $t\ge4dL/s-1$; this retains the entire cost of the
+floor. Applying \cref{spn:lem:restriction} and dividing by $d$, the missing
+share is at most
+\begin{equation}\label{spn:eq:exactsource}
+ \delta_*+\alpha_*\exp\Bigl(\frac{z}{2a^2}\Bigr)(1+2b^2)^{-2z/a}
+ +4b^{-8}\log(1+2b^2).
+\end{equation}
+Bound the three terms separately. First,
+$\delta_*=(2u+v-u^2)/(1+v)\le2u+v=19b^{-4}$. Second, $\alpha_*\le1$,
+$z/(2a^2)<1$, $e<3$, and $z/a\ge1$, so the middle term is at most
+$3(1+2b^2)^{-2}\le\tfrac34b^{-4}$. Third, $\log(1+2b^2)\le2b^2$, so the final
+term is at most $8b^{-6}$. For $b\ge6$,
+\[
+ \frac{19}{b^4}+\frac3{4b^4}+\frac8{b^6}
+ \le\frac1{b^4}\Bigl(19+\frac34+\frac8{36}\Bigr)=\frac{719}{36b^4}
+ <\frac{20}{b^4}.
+\]
+This proves \eqref{spn:eq:sourcerank}. Finally,
+$\abs{A}\dim S_0\le\abs{A}s\le ts\le4dL$, proving \eqref{spn:eq:sourcecount}.
+\end{proof}
+
+\begin{corollary}[Original budget, smaller minimum weight; \stU]\label{spn:cor:five}
+For $b\ge4$, the conclusion \eqref{spn:eq:sourcerank} holds with
+$\abs{A}s\le5d\log(1+2b^2)$.
+\end{corollary}
+
+\begin{proof}
+Take $t=\floor{5dL/s}$. The middle term in \eqref{spn:eq:exactsource} becomes
+at most $3(1+2b^2)^{-5/2}\le b^{-5}$, and the restriction term is at most
+$10b^{-6}$. The total is at most
+$b^{-4}(19+1/4+10/16)=159/(8b^4)<20/b^4$.
+\end{proof}
+
+\begin{proposition}[The fourth-order scale and its leading coefficient are optimal; \stU]\label{spn:prop:fourth}
+For every integer $b\ge2$, the raw error bounds $u=5b^{-4}$, $v=9b^{-4}$, with
+$S_0=S$, admit an example whose missing share even after all translates is
+\[
+ \frac{19b^4-25}{b^4(b^4+9)}=\frac{19}{b^4}-\frac{196}{b^4(b^4+9)}.
+\]
+Consequently no $o(b^{-4})$ universal deficit bound, and no universal leading
+coefficient below $19$, follows from the raw moment and near-isometry
+inequalities alone.
+\end{proposition}
+
+\begin{proof}
+Use \cref{spn:prop:sharp} with $d=b^4(b^4+9)$, $r=(b^4-5)^2$, and $S=\C$. Then
+$d-r=19b^4-25$ and $r/d=(1-u)^2/(1+v)$. The unrestricted source has zero
+restriction loss. The stated identity follows by division.
+\end{proof}
+
+\begin{remark}\label{spn:rem:source-status}
+The source's \code{enough_forms} has $(1-4/b^2)d$ in place of
+\eqref{spn:eq:sourcerank}, with the count constant five in place of four in
+\eqref{spn:eq:sourcecount}. The source imposes much larger lower bounds on $b$
+than $b\ge6$, so \cref{spn:thm:source} improves it throughout its admissible
+parameter range, using the original moment and ramification estimates and no
+new arithmetic input; all three errors, the floor, and the restriction of the
+source are retained. The statement has not been executed through Lean. It
+improves the tolerance for completing an almost-full span to a basis: with
+$O(b^{-4})$ missing dimensions, the per-missing-vector completion cost can be
+much larger for a fixed total budget than with $O(b^{-2})$ missing dimensions
+(compare \cref{spn:sec:missing}). It does not change the $x^{-1/2+o(1)}$
+prime-sum exponent of the source and establishes no further Riemann
+hypothesis.
+\end{remark}
+
+%======================================================================
+\subsection{Exact finite selection certificates}\label{spn:sec:certificates}
+\sources{grh_spanning_and_s5_2026-11-26}
+
+The real-valued greedy estimate is convenient for asymptotics. For specified
+finite dimensions, integrality gives a more precise computable guarantee, in
+rational arithmetic only. It certifies guaranteed ranks, not actual optimizing
+translates of an unspecified map.
+
+Let $u,v$ be rational and retain the notation of \cref{spn:sec:spanning}. Put
+\[
+ R=\ceil*{\frac{(1-u)^2}{1+v}\,d}.
+\]
+At a current span of dimension $k$, \cref{spn:lem:sqrt} and rank--nullity
+guarantee a gain of at least
+\[
+ g(k)=\max\Bigl\{0,\ s-\floor[\big]{su+s\sqrt{(1+v)k/d}}\Bigr\}.
+\]
+In particular $g(k)\ge1$ when $k<R$. Define
+\[
+ T(k)=\min\set{R,k+g(k)},\qquad H(j)=\min_{j\le k\le R}T(k),\qquad
+ q_0=0,\quad q_{j+1}=H(q_j).
+\]
+
+\begin{proposition}[Envelope certificate; \stU]\label{spn:prop:envelope}
+Assume \eqref{spn:eq:near} and \eqref{spn:eq:moment} with rational $u,v$. For
+every $j\ge0$ there is a set of at most $j$ translates whose images span a
+subspace of dimension at least $q_j$. Moreover $q_{j+1}>q_j$ whenever $q_j<R$,
+so $q_j=R$ for some $j\le R$. If the source is restricted to a subspace of
+codimension $r_0$, the same $j$ translates retain rank at least $q_j-jr_0$.
+\end{proposition}
+
+\begin{proof}
+The actual rank can exceed a previous lower certificate, so iterating
+$k\mapsto k+g(k)$ on a lower bound would require a monotonicity argument; the
+envelope $H$ avoids it. If the actual rank is at least $R$, the target is
+already reached. Otherwise the actual integer rank lies between $q_j$ and
+$R-1$, so the next actual rank is at least $H(q_j)$. Thus $q_j$ is a lower
+certificate after at most $j$ selected translates. Since $g(k)\ge1$ for $k<R$,
+we have $T(k)>q_j$ for all $q_j\le k\le R$ when $q_j<R$, which gives strict
+growth. The last assertion is \cref{spn:lem:restriction}.
+\end{proof}
+
+All square-root comparisons can be eliminated. To decide whether an integer
+$m$ is at most $su+s\sqrt{(1+v)k/d}$, set $w=m-su$. The answer is yes if
+$w\le0$; if $w>0$, it is yes exactly when $w^2\le s^2(1+v)k/d$. Every quantity
+is rational. Binary search over $0\le m\le s$ suffices because values above
+$s$ all give gain zero, and the table of $H$ is obtained from one backward pass
+over the values of $T$. This constructs the table in $O(R\log(s+1))$ exact
+comparisons and $O(R)$ storage.
+
+\begin{example}\label{spn:ex:certificate}
+For $d=1000$, $s=20$, and $u=v=1/100$, the sharp universal ceiling is $R=971$.
+The exact integer certificate reaches rank $840$ after $148$ translates and
+rank $971$ after $261$. The exponential greedy bound in the source, with its
+$16\eps$ cutoff and rate $2s/(5d)$, certifies rank $840$ after $230$
+translates. These figures compare sufficient guarantees; they do not assert a
+lower bound on the optimal number of translates for a particular family. The
+certificates, the rational equality examples of \cref{spn:prop:sharp}, the
+instantiation at $u=5/b^4$, $v=9/b^4$ and the constants used in
+\cref{spn:thm:source} are recorded in a delivered
+file.\footnote{\artifact{grh_spanning_and_s5_2026-11-26/checks/spanning_certificates.json}}
+\end{example}
+
+There is a second dimension constraint, $\rank(PB)\ge\ceil{(1-u)s}$.
+Consequently $R$ is the ceiling of the optimal universal coefficient times
+$d$, not necessarily the exact minimum possible total rank for every fixed
+quadruple $(d,s,u,v)$. The cyclic examples establish the sharpness claimed in
+\cref{spn:prop:sharp}.
+
+%======================================================================
+\subsection{A different way to pay for missing dimensions}\label{spn:sec:missing}
+\sources{grh_transfer_bridges_2026-11-25}
+
+The source makes the short family span almost the whole target space. The
+abstract determinant theorem \eqref{src:eq:twisted} shows what that
+hypothesis pays for: completing the family to a basis. The rearrangement of
+that inequality which tracks the cost is \cref{src:prop:rank}. In its
+notation, with target dimension $D=n+r$, completion cost
+$K=b_{\mathrm{short}}+b_{\mathrm{denom}}$ per missing vector and
+$b_{\mathrm{volume}}\le-DA+B$, it gives
+$nmR\le nU+2\delta+B+r(K-A)$: the deficit is charged by $K-A$, the
+\emph{excess} completion cost, rather than by $K$ alone. Normalizing all
+errors by one scale gives the following form.
+
+\begin{corollary}[Completion cost at a common error scale; \stU]\label{spn:cor:rank-error}
+In \cref{src:prop:rank} write $\varrho=n/D$ and let $E_0>0$. Suppose
+\[
+ \varrho\ge\rho>0,\quad U\le U_0E_0,\quad \delta/D\le I_0E_0,\quad
+ B/D\le J_0E_0,\quad(1-\varrho)(K-A)_+\le K_0E_0 .
+\]
+Then
+\begin{equation}\label{spn:eq:rank-error}
+ R\le\frac{U_0+(2I_0+J_0+K_0)/\rho}{m}\,E_0 .
+\end{equation}
+\end{corollary}
+
+\begin{proof}
+Divide \eqref{src:eq:rank} by $nm$ and use $D/n=1/\varrho\le1/\rho$ and
+$r/n=(1-\varrho)/\varrho$.
+\end{proof}
+
+There are consequently two ways to achieve the needed accuracy: make the
+missing dimension fraction extremely small, or prove that a completion has
+excess cost $O(E_0)$. In the latter case a fixed positive fraction of
+independent target forms can suffice. If $K\le A$, the deficit term is
+favorable. A uniform lower bound on $n/D$, or a compensating improvement in
+the other errors, is still needed; the resulting exponent bookkeeping is
+\cref{src:rem:rates}.
+
+\begin{proposition}[An explicit weakening inside the source proof; \stU]\label{spn:prop:weakening}
+In the source's notation, let
+\[
+ d=\mathrm{targetDim},\quad A=\mathrm{mainAmount},\quad u=fa(\log b)^4,\quad
+ C=2x_1^2b^2+b ,
+\]
+so that $d,C,u$ play the roles of $D,K,U$ in \cref{src:prop:rank}.
+Before using its near-full-rank hypothesis, the proof of
+\textup{\code{integral_forms_long}} has obtained
+\begin{equation}\label{spn:eq:source-before-rank}
+ 0\le c+2\delta+(d-n)C+d(b+u-A).
+\end{equation}
+Consequently the source's conclusion $c+2\delta\ge d(A-3u)$ already follows
+under the completion budget
+\begin{equation}\label{spn:eq:weaker-spanning}
+ (d-n)C\le d(2u-b).
+\end{equation}
+Keeping the same completion and height estimates, it is sufficient to replace
+the loss bound $d-n\le4d/b^2$ by
+\[
+ \frac{d-n}{d}\le\min\Bigl\{\frac12,\ \frac{u}{2x_1^2b^2+b}\Bigr\},
+\]
+and with $A\ge0$, $\delta\le dI_0$, $b\le u$ and the short-family upper bound
+$c\le n(A-mR+u)$ of \cref{src:prop:rank} this gives $mR\le7u+4I_0$.
+\end{proposition}
+
+\begin{proof}
+Inequality \eqref{spn:eq:source-before-rank} gives
+$c+2\delta\ge d(A-b-u)-(d-n)C$, which is at least $d(A-3u)$ exactly when
+\eqref{spn:eq:weaker-spanning} holds. Since the source has $b\le u$, the
+condition $(d-n)C\le du$ suffices; this is the second term of the displayed
+minimum. The first term ensures $n\ge d/2$. For the final bound use
+$B=d(b+u)$ in \eqref{src:eq:rank}, drop the favorable term $-(d-n)A$, and
+bound $2\delta+B+(d-n)C$ by $d(2I_0+3u)$.
+\end{proof}
+
+The completing vectors of the source come from a globally spanning auxiliary
+family, with squared-norm exponent $2x_1^2b^2$, scalar denominator-height
+bound $b$, and the displayed volume-height bound; an arbitrary completion is
+insufficient. The original argument obtains the smaller allowance
+$(d-n)C\le db$ from the loss bound $d-n\le4d/b^2$ and its scale inequalities.
+\Cref{spn:prop:weakening} is a weakening of a sufficient hypothesis in the
+written source argument, not an improvement to the endpoint
+\cref{src:thm:dgrh}: for the same expensive completion the missing fraction
+still tends to zero. For a new target it isolates a distinct task: construct
+cheaper integral completing vectors and control their twist scalars, instead
+of reproducing the full spanning estimate. The abstract inequality still
+requires injective twist maps, a family and a completion that together form a
+basis, integral vectors after a common scalar, norm bounds at all complex
+conjugates, and height bounds at the allowed finite places, all tied to the
+same lattice. With the source-like error scale $E_0=fa(\log b)^4$ and
+$m\asymp\sqrt x$, \eqref{spn:eq:rank-error} has normalized size
+$O((\log b)^4/\sqrt x)$; converting this into a prime remainder still needs
+the comparison of the arithmetic gain with the relevant Frobenius statistic.
+
+%======================================================================
+\subsection{Optimal integral frames and the ramification obstruction}\label{spn:sec:frames}
+\sources{grh_nonabelian_transfer_2026-11-25}
+
+For a totally real number field $F$ of degree $n$, an \emph{ordinary integral
+tight frame} of bound $M\in\Z_{>0}$ is a finite family $v_i\in\OO_F$ with
+positive integer multiplicities $m_i$ such that
+\begin{equation}\label{spn:eq:frame}
+ \sum_im_i\sigma(v_i)\tau(v_i)=M\delta_{\sigma,\tau}
+ \qquad(\sigma,\tau\colon F\hookrightarrow\R).
+\end{equation}
+Thus the vectors give a resolution of a scalar identity in the embedding
+space. Repeated vectors can replace multiplicities. This is the linear-algebra
+part of the source's frame input; its global integrality condition instead
+uses a fractional Weil lattice (\cref{spn:sec:projective}).
+
+\begin{theorem}[Trace-dual obstruction; \stU]\label{spn:thm:dual-obstruction}
+If \eqref{spn:eq:frame} holds, then
+\begin{equation}\label{spn:eq:codiff-obstruction}
+ M\,\spnDD_{F/\Q}^{-1}\subseteq\OO_F .
+\end{equation}
+In particular, every rational prime ramified in $F$ divides $M$.
+\end{theorem}
+
+\begin{proof}
+Let $a$ lie in the codifferent, so $\Tr_{F/\Q}(av_i)\in\Z$ for all $i$.
+Applying the frame operator to the embedding vector of $a$ gives
+\[
+ Ma=\sum_im_i\Tr_{F/\Q}(av_i)v_i\in\OO_F .
+\]
+This proves \eqref{spn:eq:codiff-obstruction}. At a prime $\mathfrak p$ over a
+ramified rational prime $p$, write $e_{\mathfrak p}$ for the ramification
+index and $d_{\mathfrak p}>0$ for the different exponent. The ideal
+containment requires $e_{\mathfrak p}\vp(M)\ge d_{\mathfrak p}$, so
+$\vp(M)\ge1$.
+\end{proof}
+
+The obstruction concerns every ordinary integral frame, not only a particular
+construction. It also explains why the source allows denominators in one half
+of the relative codifferent: those denominators change the dual lattice. The
+elementary obstruction has a converse away from a finite initial range.
+
+\begin{theorem}[Eventual frame bounds for an integral lattice; \stU]\label{spn:thm:real-eventual}
+Let $L$ be a positive definite integral $\Z$-lattice of positive rank with
+Gram matrix $G$ in an integral basis. Put
+\[
+ d=\min\set{a\in\Z_{>0}: aG^{-1}\text{ has integer entries}} .
+\]
+Every positive integer tight-frame bound for vectors in $L$ is divisible by
+$d$, and every sufficiently large positive multiple of $d$ is such a bound.
+\end{theorem}
+
+\begin{proof}
+Let $B$ be the real basis matrix, so $G=B^{\spnT}B$. If the frame vectors have
+integer coordinate columns $u_i$, the frame identity becomes
+\[
+ \sum_im_iu_iu_i^{\spnT}=MG^{-1}.
+\]
+The left side is integral. This proves $d\mid M$; equivalently, $d$ is the
+exponent of the discriminant group $L^\#/L$.
+
+For sufficiency set $C=dG^{-1}$, a positive definite integral symmetric
+matrix. The rank-one matrices generated by $e_i$ and $e_i+e_j$ span all
+integral symmetric matrices over $\Z$: their differences give the
+off-diagonal matrix units, while $e_ie_i^{\spnT}$ gives the diagonal units.
+Let $S$ be this finite set of vectors. For a sufficiently small positive
+rational $\epsilon$, the matrix
+\[
+ C-\epsilon\sum_{v\in S}vv^{\spnT}
+\]
+is positive definite and rational. Rational $LDL^{\spnT}$ decomposition
+expresses it as a sum of positive rational multiples of rational rank-one
+matrices. Scaling their vectors to integer vectors and clearing coefficients
+yields
+\[
+ qC=\sum_{v\in T}c_vvv^{\spnT},\qquad c_v\in\Z_{>0},\quad S\subseteq T .
+\]
+Write $C=\sum_{v\in T}z_vvv^{\spnT}$ with $z_v\in\Z$, using $S$, and extending
+by zero on other vectors. For $N=kq+r$, $0\le r<q$,
+\[
+ NC=\sum_{v\in T}(kc_v+rz_v)vv^{\spnT}.
+\]
+For all sufficiently large $k$, every coefficient is nonnegative. The
+resulting frame has bound $Nd$. The same argument makes every coefficient
+exceed any prescribed fixed lower bound.
+\end{proof}
+
+This proof supplies an effective threshold once a rational reserve
+decomposition has been chosen. It supplies no useful uniform bound as the rank
+and arithmetic data vary. Sums of integral squares and Hermitian norms form an
+established subject \cite{Beli2019Waring}; the present formulation is used as a
+transfer tool.
+
+\begin{example}[The cubic field of discriminant $229$]\label{spn:ex:cubic229}
+Let $f(X)=X^3-4X+1$ and let $\alpha$ be a root. The rational root test proves
+irreducibility. There is a root in each of $(-3,-2)$, $(0,1)$ and $(1,2)$, so
+the cubic field $F_0=\Q(\alpha)$ is totally real. Its polynomial discriminant
+is $-4(-4)^3-27=229$, a prime. Thus $(1,\alpha,\alpha^2)$ is an integral
+basis. Newton sums give
+$\Tr(1),\Tr(\alpha),\dots,\Tr(\alpha^4)=(3,0,8,-3,32)$, and the trace Gram
+matrix is
+\[
+ T=\begin{pmatrix}3&0&8\\0&8&-3\\8&-3&32\end{pmatrix},\qquad
+ 229\,T^{-1}=\begin{pmatrix}247&-24&-64\\-24&32&9\\-64&9&24\end{pmatrix}.
+\]
+The coordinate vectors
+\[
+ (0,2,1),\quad(1,-1,1)\ \text{twice},\quad(2,-1,1),\quad(4,-5,-2),\quad
+ (15,0,-4)
+\]
+in the basis $(1,\alpha,\alpha^2)$ have outer products summing to
+$229\,T^{-1}$. Therefore they give a six-vector frame of bound $229$, and
+\cref{spn:thm:dual-obstruction} shows that no smaller positive integer bound
+is possible.
+\end{example}
+
+Let now $F$ be the splitting field of $f$ and let $\alpha,\beta$ be distinct
+roots. Its Galois group is $S_3$, because the irreducible cubic has nonsquare
+discriminant. Its six embeddings correspond to ordered pairs of distinct
+roots. Define
+\[
+ b=(1,\alpha,\alpha^2,\beta,\alpha\beta,\alpha^2\beta).
+\]
+This is an integral basis. Indeed, only $229$ can ramify in the splitting
+field. At $229$ the extension is tame, and
+\[
+ f(X)\equiv(X-29)^2(X+58)\pmod{229}.
+\]
+Inertia has order two and acts as a transposition: it is nontrivial, cyclic,
+and fixes the simple-root branch. A tame degree-six Galois extension with
+inertia index two has discriminant exponent $6(1-1/2)=3$. Consequently
+$\disc(F)=229^3$. The Gram matrix of $b$, computed below, also has determinant
+$229^3$, proving that the lattice it generates has index one in $\OO_F$.
+
+Write $s_j$ for the $j$th power sum of the three roots. Then $s_0=3$, $s_1=0$,
+$s_2=8$ and $s_j=4s_{j-2}-s_{j-3}$ for $j\ge3$. For monomials
+$\alpha^i\beta^j$ and $\alpha^k\beta^l$, the trace of their product equals
+$s_{i+k}s_{j+l}-s_{i+j+k+l}$. It follows that the Gram matrix and its scaled
+inverse are
+\begin{align*}
+G&=\begin{pmatrix}
+6&0&16&0&-8&3\\
+0&16&-6&-8&3&-32\\
+16&-6&64&3&-32&20\\
+0&-8&3&16&3&32\\
+-8&3&-32&3&32&-4\\
+3&-32&20&32&-4&125
+\end{pmatrix},\\[3pt]
+C:=229\,G^{-1}&=\begin{pmatrix}
+125&-16&-32&4&0&-3\\
+-16&32&3&0&-3&8\\
+-32&3&16&-3&8&0\\
+4&0&-3&32&-6&-8\\
+0&-3&8&-6&16&0\\
+-3&8&0&-8&0&6
+\end{pmatrix}.
+\end{align*}
+
+\begin{theorem}[Optimal discriminant-$229$ frame; \stU]\label{spn:thm:optimal229}
+Let $v_i$ have the following coordinates in $b$, with multiplicities $m_i$:
+\[
+\begin{array}{@{}rrrrrrcr@{}}
+\toprule
+1&\alpha&\alpha^2&\beta&\alpha\beta&\alpha^2\beta&&m_i\\\midrule
+0&2&-2&-2&-1&1&&1\\
+1&-2&-2&4&-2&-1&&1\\
+2&2&0&1&2&1&&1\\
+4&1&-1&1&-1&0&&2\\
+4&1&-1&2&0&-1&&1\\
+6&-4&-1&-1&2&-1&&1\\
+6&-1&-2&-2&-1&1&&1\\\bottomrule
+\end{array}
+\]
+They satisfy \eqref{spn:eq:frame} with $M=229$, and $229$ is the smallest
+possible positive integer bound for any ordinary integral frame in $F$.
+\end{theorem}
+
+\begin{proof}
+Let $u_i$ denote the displayed columns. Direct integer multiplication gives
+\[
+ \sum_im_iu_iu_i^{\spnT}=C,\qquad GC=229\,I_6 .
+\]
+If $B=(\sigma(b_j))_{\sigma,j}$, then $B^{\spnT}B=G$, whence
+\[
+ \sum_im_i\sigma(v_i)\tau(v_i)=(BCB^{\spnT})_{\sigma,\tau}
+ =229\,\delta_{\sigma,\tau}.
+\]
+The vectors are integral. Every positive integer frame bound is divisible by
+the ramified prime $229$, by \cref{spn:thm:dual-obstruction}. This proves
+optimality.
+\end{proof}
+
+The squared trace norms of the seven displayed vectors are, in order,
+\[
+ (221,\ 229,\ 229,\ 74,\ 157,\ 211,\ 179),
+\]
+and their multiplicity-weighted sum is $6\cdot229$. In particular all real
+conjugates of every displayed vector have absolute value at most
+$\sqrt{229}$. The Newton sums, matrices, determinants, outer products and
+identities are recomputed in an exact
+certificate.\footnote{\artifact{grh_nonabelian_transfer_2026-11-25/certificates/frame_certificates.json}}
+
+\begin{corollary}[Cyclotomic tensor frame; \stU]\label{spn:cor:tensor}
+For $229\mid q$, the elements $v_i\zeta_q^j$, $0\le j<q$, with the same
+multiplicities, give a frame of bound $229q$ on the compatible embeddings of
+$F\Q(\zeta_q)$. The same embedding identity holds on the induced CM type after
+adjoining the source's imaginary quadratic field $K$.
+\end{corollary}
+
+\begin{proof}
+Multiply \eqref{spn:eq:frame} by the geometric-sum identity
+\[
+ \sum_{j=0}^{q-1}\eta(\zeta_q^j)\overline{\eta'(\zeta_q^j)}
+ =q\,\delta_{\eta,\eta'} .
+\]
+Embeddings of the compositum correspond to compatible pairs of embeddings.
+Restricting the product identity to those pairs proves the assertion; linear
+disjointness is not assumed.
+\end{proof}
+
+The tensor frame preserves integrality at the inert primes used in the local
+argument for the nonabelian benchmark of \cref{sec:grp}. Its bound still
+carries $229$. The correction needed for coprime bounds is a change to the
+appropriate fractional lattice, addressed next.
+
+%======================================================================
+\subsection{Every sufficiently large bound in a self-dual projective lattice}\label{spn:sec:projective}
+\sources{grh_nonabelian_transfer_2026-11-25}
+
+Let $K$ be imaginary quadratic, $\OO=\OO_K$, and assume that some
+$\eta\in\OO$ satisfies
+\begin{equation}\label{spn:eq:traceone}
+ \eta+\overline\eta=1 .
+\end{equation}
+For the source, $K=\Q(\sqrt{-d})$ with $d\equiv7\pmod8$, and
+$\eta=(1+\sqrt{-d})/2$ works. Let $V$ have positive dimension over $K$, and
+let $h$ be a positive definite Hermitian form, conjugate-linear in the first
+variable. For $v\in V$, define the rank-one operator $\Theta_v(z)=v\,h(v,z)$;
+for $x,y\in V$, also put $\Theta_{x,y}(z)=x\,h(y,z)$. For a full
+$\OO$-lattice $A\subset V$ write
+$A^\#=\set{z\in V:h(z,A)\subseteq\OO}$.
+
+\begin{theorem}[Projective Hermitian eventual frames; \stU]\label{spn:thm:projective}
+Let $A$ be a full projective $\OO$-lattice in $V$ with $A^\#=A$. Let
+$S\subset A$ be finite and $R\in\Z_{\ge0}$. There are a fixed finite family
+$T\subset A$ containing $S$ and an integer $M_0$ such that for every integer
+$M\ge M_0$ there are integers $m_v\ge R$ satisfying
+\begin{equation}\label{spn:eq:projective-frame}
+ \sum_{v\in T}m_v\Theta_v=M\,I_V .
+\end{equation}
+In orthonormal complex coordinates this is an ordinary tight-frame identity.
+Neither freeness of $A$ nor a principal fractional ideal is assumed.
+\end{theorem}
+
+\begin{lemma}[An integral signed resolution of the identity]\label{spn:lem:signed}
+Under the hypotheses of \cref{spn:thm:projective}, the identity is an integer
+linear combination of finitely many $\Theta_v$ with $v\in A$.
+\end{lemma}
+
+\begin{proof}
+The dual-basis lemma for a finite projective module supplies $x_i\in A$ and
+$\OO$-linear functionals $\ell_i\colon A\to\OO$ such that
+$z=\sum_ix_i\ell_i(z)$. Each functional extends to $V$ and, by
+nondegeneracy, has the form $\ell_i(z)=h(y_i,z)$ for some $y_i\in V$. Since
+$\ell_i(A)\subseteq\OO$, self-duality implies $y_i\in A$. Thus
+\[
+ \sum_i\Theta_{x_i,y_i}=I,\qquad\sum_i\Theta_{y_i,x_i}=I,
+\]
+where the second equality is the adjoint of the first. Direct expansion gives
+the exact polarization identity
+\begin{equation}\label{spn:eq:polarization}
+ \Theta_{x+\eta y}-\Theta_x-\Nm_{K/\Q}(\eta)\,\Theta_y
+ =\overline\eta\,\Theta_{x,y}+\eta\,\Theta_{y,x}.
+\end{equation}
+Summing over $i$ and applying \eqref{spn:eq:traceone} gives $I$ on the right.
+The left is an integer linear combination of rank-one operators of lattice
+vectors, since $\Nm_{K/\Q}(\eta)\in\Z$. Combine repeated vectors to obtain
+\begin{equation}\label{spn:eq:signed-id}
+ I=\sum_{v\in S'}z_v\Theta_v,\qquad z_v\in\Z .
+\end{equation}
+The prescribed set $S$ can be added to $S'$ with zero coefficients.
+\end{proof}
+
+The trace-one element removes the factor two that a purely real polarization
+argument would introduce. Projective dual generators replace a global integral
+basis; this is why no freeness assumption enters the proof.
+
+\begin{lemma}[A positive reserve containing prescribed vectors]\label{spn:lem:reserve}
+For every finite $S'\subset A$, there are a positive integer $q$, a finite
+$T\supseteq S'$, and positive integers $c_v$ such that
+\begin{equation}\label{spn:eq:reserve}
+ q\,I=\sum_{v\in T}c_v\Theta_v .
+\end{equation}
+\end{lemma}
+
+\begin{proof}
+Choose a sufficiently small positive rational $\epsilon$ so that
+$I-\epsilon\sum_{v\in S'}\Theta_v$ is positive definite. Choose a $K$-basis of
+$V$ inside $A$, with complex coordinate matrix $B$. Its Hermitian Gram matrix
+$H=B^*B$ has entries in $K$. If $u_v\in K^n$ is the coordinate column of $v$,
+then
+\[
+ I=BH^{-1}B^*,\qquad\Theta_v=Bu_vu_v^*B^* .
+\]
+The residual matrix $H^{-1}-\epsilon\sum_{v\in S'}u_vu_v^*$ is positive
+definite Hermitian over $K$. Hermitian $LDL^*$ decomposition has a triangular
+factor over $K$ and strictly positive diagonal entries in $K\cap\R=\Q$. This
+expresses the residual as a sum of positive rational multiples of rank-one
+matrices with vectors in $K^n$.
+
+Multiply each vector by an integer so that its image in $V$ lies in $A$, and
+divide its coefficient by the corresponding square. Reinsert the vectors of
+$S'$ with coefficient $\epsilon$. Clearing all positive rational denominators
+gives \eqref{spn:eq:reserve}. Zero vectors, if prescribed, may be retained
+with arbitrary positive coefficients. Combine duplicate vectors if necessary.
+\end{proof}
+
+\begin{proof}[Proof of \cref{spn:thm:projective}]
+Use \eqref{spn:eq:signed-id} and \eqref{spn:eq:reserve}, extending $z_v=0$
+outside the signed support. Define
+\begin{equation}\label{spn:eq:explicit-threshold}
+ k_0=\max_{v\in T}\ceil*{\frac{R+(q-1)\max(0,-z_v)}{c_v}},\qquad M_0=qk_0 .
+\end{equation}
+For $M\ge M_0$, write $M=kq+r$ with $0\le r<q$, and set $m_v=kc_v+rz_v$. Then
+$k\ge k_0$ and every $m_v\ge R$. Moreover,
+\[
+ \sum_{v\in T}m_v\Theta_v=k\sum_{v\in T}c_v\Theta_v+r\sum_{v\in T}z_v\Theta_v
+ =kqI+rI=MI .
+\]
+This proves the theorem with a fixed family independent of $M$.
+\end{proof}
+
+\begin{corollary}[Coprime and prescribed large bounds; \stU]\label{spn:cor:coprime}
+Let $A$ be as in \cref{spn:thm:projective}. Then $A$ has frames of every
+sufficiently large positive integer bound; in particular it has coprime pairs
+of bounds, and arbitrarily large bounds prime to any fixed integer, and any
+finite set of its elements can be prescribed as frame members with any fixed
+lower multiplicity. This applies to the corrected ideal $A=A_0\OO_E$ of the
+unramified nonabelian benchmark of \cref{sec:grp}, with both unit witnesses
+inherited from the source prescribed as frame members.
+\end{corollary}
+
+\begin{proof}
+Consecutive sufficiently large integers give coprime bounds; integers
+congruent to one modulo a fixed integer give the other assertion. The
+corrected ideal is Hermitian self-dual and projective, and $\OO_K$ contains
+the required trace-one element.
+\end{proof}
+
+The inherited two-element witness set is unusually convenient. A qualitative
+substitute exists for any fractional ideal.
+
+\begin{lemma}[Finite simultaneous local generators; \stU]\label{spn:lem:local-generators}
+For a nonzero fractional ideal $A$ of a number field $E$, there is a finite
+set $S\subset A$ such that, for every rational prime $p$, some $y\in S$
+satisfies
+\[
+ v_{\mathfrak P}(y)=v_{\mathfrak P}(A)\quad\text{for all }\mathfrak P\mid p .
+\]
+\end{lemma}
+
+\begin{proof}
+Choose $0\ne y_0\in A$. The integral ideal $(y_0)A^{-1}$ has finite support.
+Outside the finitely many rational primes below that support, $y_0$ already
+works. For each exceptional $p$, choose a nonzero class in every
+one-dimensional residue module $A/\mathfrak PA$, for $\mathfrak P\mid p$. The
+Chinese remainder theorem gives one element $y_p\in A$ representing those
+classes simultaneously. Its local valuation is exactly that of $A$ at every
+such prime. Take $S$ to consist of $y_0$ and these finitely many $y_p$.
+\end{proof}
+
+\begin{remark}[Limits of the qualitative theorem]\label{spn:rem:projective-limits}
+For each fixed tower level, qualitative coprime frames and prescribed
+sufficiently large bounds are available in the correct lattice; the raw
+integral obstruction of \cref{spn:thm:dual-obstruction} is overcome by the
+fractional-lattice construction, not contradicted. The threshold
+\eqref{spn:eq:explicit-threshold} may be very large. Rational decomposition
+and denominator clearing do not by themselves bound $q$, $c_v$, $z_v$, the
+coordinates of the vectors, or $M_0$ uniformly in a growing tower. The source
+needs a small auxiliary bound $h\le b$ and an exact final bound $M=p_0p_1$ in
+a prescribed window, with multiplicities at least $6fb$ and controlled
+conjugate norms. None of these quantitative inequalities follows from
+qualitative eventual existence.
+\end{remark}
+
+%======================================================================
+\subsection{The positive-type Fourier estimate and matrix compressions}\label{spn:sec:positive-type}
+\sources{grh_sharp_torsion_and_symplectic_blocks; grh_beyond_dirichlet_2026-11-25}
+
+The spanning argument of the source contains a finite-field estimate for a
+positive-type weight on a finite group (\code{card_mul_sum_det_le} in the
+compact edition). It bounds one additive character sum through the masses of
+two stabilizers and is then used to estimate the mass of singular square
+compressions. Passing
+from vectors to ordered frames controls the law of an entire rectangular
+compression and the factorial moments of its kernel dimension.
+
+Let $V=\F_q^n$, let $G$ be a finite group, and let $\pi\colon G\to\GL(V)$ be a
+representation. The finite field may have any characteristic. A probability
+mass function $\mu\colon G\to\R_{\ge0}$ is \emph{of positive type} if the
+matrix $\bigl(\mu(g^{-1}h)\bigr)_{g,h\in G}$ is positive semidefinite over
+$\C$. This is an assumption in addition to nonnegativity and total mass one;
+uniform measure is one example. Write $g\cdot x=\pi(g)x$ and
+$g\cdot y=y\circ\pi(g)^{-1}$ for the actions on $V$ and $V^*$, and let both act
+diagonally on tuples. Fix a nontrivial additive character
+$\psi\colon\F_q\to\C^\times$. Expectations $\spnE_\mu$ and probabilities
+$\spnP_\mu$ refer to $g$ with law $\mu$.
+
+\begin{lemma}[Positive-type coefficient bound; \stU]\label{spn:lem:positive-coefficient}
+For $X=(x_1,\dots,x_k)\in V^k$ and $Y=(y_1,\dots,y_k)\in(V^*)^k$,
+\begin{equation}\label{spn:eq:frame-coefficient}
+ \abs[\Big]{\spnE_\mu\psi\Bigl(\sum_{i=1}^ky_i(\pi(g)x_i)\Bigr)}
+ \le q^{nk/2}\sqrt{\mu(\spnStab X)\,\mu(\spnStab Y)} ,
+\end{equation}
+where the stabilizers fix every member of the tuple. No transitivity or
+irreducibility is needed.
+\end{lemma}
+
+\begin{proof}
+Applying the case $k=1$ to the representation on $V^k$ gives the general case,
+so let $k=1$ and write $x=x_1$, $y=y_1$. Choose vectors $u_g$ in a complex
+Hilbert space with $\langle u_g,u_h\rangle=\mu(g^{-1}h)$; a finite positive
+semidefinite matrix always has such a Gram representation. Inner products are
+conjugate-linear in the first argument. In $\ell^2(V)$ let $e_x$ be the point
+masses and put $c_y(z)=q^{-n/2}\psi(-y(z))$. Additive-character orthogonality
+makes both indexed families orthonormal. Consider the two finite tensor sums
+\[
+ P=\sum_{g\in G}c_{g\cdot y}\otimes u_g,\qquad
+ Q=\sum_{h\in G}e_{h\cdot x}\otimes u_h .
+\]
+Setting $t=g^{-1}h$ in their inner product gives
+\[
+ \langle P,Q\rangle
+ =\abs{G}q^{-n/2}\sum_{t\in G}\mu(t)\psi\bigl(y(\pi(t)x)\bigr).
+\]
+Orthonormality similarly gives $\norm{P}^2=\abs{G}\mu(\spnStab y)$ and
+$\norm{Q}^2=\abs{G}\mu(\spnStab x)$. Cauchy--Schwarz proves the result.
+\end{proof}
+
+Let $A\colon\F_q^a\to V$ and $B\colon\F_q^b\to V^*$ be linear maps. Define the
+$b\times a$ matrix $M(g)$ and its nullity by
+\[
+ M(g)_{ij}=(Be_i)(\pi(g)Ae_j),\qquad\nu(g)=\dim_{\F_q}\ker M(g);
+\]
+in coordinate identifications $M(g)=B^{\spnT}\pi(g)A$. For nonnegative
+integers $d,j$, let
+\[
+ F_q(d,j)=\prod_{i=0}^{j-1}(q^d-q^i)\quad(0\le j\le d),\qquad
+ F_q(d,j)=0\quad(j>d),
+\]
+the number of ordered independent $j$-frames in $\F_q^d$, with $F_q(d,0)=1$.
+The number of $b\times j$ matrices of rank $k$ is
+\begin{equation}\label{spn:eq:rank-matrix-count}
+ R_q(b,j;k)=\frac{F_q(b,k)F_q(j,k)}{F_q(k,k)} .
+\end{equation}
+Indeed, factor a rank-$k$ matrix as a full-column-rank $b\times k$ matrix
+times a full-row-rank $k\times j$ matrix, and divide by the
+$\abs{\GL_k(\F_q)}$ changes of intermediate basis. When $A$ and $B$ are
+injective, let $\alpha_k$ be the maximum $\mu$-mass of the pointwise
+stabilizer of an independent $k$-frame in $\spnim A$, and let $\beta_k$ be
+the corresponding maximum for independent $k$-frames in $\spnim B$ under the
+dual action.
+
+\begin{theorem}[Distribution of a compression; \stU]\label{spn:thm:tv}
+Let $A,B$ be injective, let $g$ have a law $\mu$ of positive type, and let $Z$
+be uniform on all $b\times a$ matrices over $\F_q$. Then
+\begin{equation}\label{spn:eq:inherited-TV}
+ \spnTV\bigl(M(g),Z\bigr)\le\frac12\Bigl(\sum_{k=1}^{\min(a,b)}
+ R_q(b,a;k)\,q^{nk}\alpha_k\beta_k\Bigr)^{1/2}.
+\end{equation}
+\end{theorem}
+
+\begin{proof}
+A rank-$k$ matrix $W$ defining a nontrivial Fourier character
+$M\mapsto\psi(\tr(W^{\spnT}M))$ factors as a sum of $k$ rank-one matrices
+with independent left and independent right vectors. Its value on $M(g)$
+becomes $\psi\bigl(\sum_iy_i(\pi(g)x_i)\bigr)$ for a corresponding independent
+frame $X$ in $\spnim A$ and covector frame $Y$ in $\spnim B$.
+\Cref{spn:lem:positive-coefficient} bounds the squared modulus of the Fourier
+coefficient by $q^{nk}\alpha_k\beta_k$. The $\ell^1$--$\ell^2$ inequality and
+Parseval give the displayed estimate, since the uniform distribution has zero
+Fourier coefficient at every nontrivial character.
+\end{proof}
+
+The next two results extract a different observable, the kernel dimension.
+They give direct rank-tail certificates which can remain useful when
+\eqref{spn:eq:inherited-TV} is vacuous. Put
+\[
+ \alpha(x)=\mu(\spnStab x),\quad\beta(y)=\mu(\spnStab y),\qquad
+ P_A=\sum_{v\in\F_q^a\setminus\set{0}}\sqrt{\alpha(Av)},\quad
+ P_B=\sum_{y\in\F_q^b\setminus\set{0}}\sqrt{\beta(By)} .
+\]
+
+\begin{proposition}[Kernel-size moment; \stU]\label{spn:prop:kernel-first-moment}
+Let $A,B$ be linear, not necessarily injective, and $\mu$ of positive type.
+Then
+\begin{equation}\label{spn:eq:first-kernel-moment}
+ \abs[\Big]{\spnE_\mu q^{\nu(g)}-\Bigl(1+\frac{q^a-1}{q^b}\Bigr)}
+ \le q^{n/2-b}P_AP_B .
+\end{equation}
+Consequently, for $1\le r\le a$,
+\begin{equation}\label{spn:eq:first-kernel-tail}
+ \spnP_\mu(\nu\ge r)\le\min\Bigl\{1,\
+ \frac{(q^a-1)q^{-b}+q^{n/2-b}P_AP_B}{q^r-1}\Bigr\}.
+\end{equation}
+\end{proposition}
+
+\begin{proof}
+Count the kernel by additive-character orthogonality:
+\[
+ \spnE_\mu q^\nu=q^{-b}\sum_{v\in\F_q^a}\sum_{y\in\F_q^b}
+ \spnE_\mu\psi\bigl((By)(\pi(g)Av)\bigr).
+\]
+Pairs for which $v=0$ or $y=0$ contribute exactly $q^{-b}(q^a+q^b-1)$. Bound
+each remaining coefficient with \cref{spn:lem:positive-coefficient}, and
+factor the two finite sums of square roots. This proves the two-sided moment
+estimate. The nonnegative variable $q^\nu-1$ is at least $q^r-1$ on
+$\set{\nu\ge r}$; Markov's inequality gives the tail estimate.
+\end{proof}
+
+For square compressions $a=b=m$, if every relevant nonzero-vector stabilizer
+mass is at most $Y$, the moment estimate becomes
+$\abs{\spnE_\mu q^\nu-(2-q^{-m})}\le q^{m+n/2}(1-q^{-m})^2Y$. The source's
+singular-minor conclusion instead has the form
+$q\,\spnP(\det M=0)\le2+q^{m+n/2}Y$. Keeping the zero-character contribution
+exact and retaining the kernel-size moment gives information about every
+deficiency threshold, rather than just singularity. The denominator $q^r-1$
+is best possible if only the expectation of $q^\nu-1$ is known: an abstract
+variable supported on $\set{0,r}$ attains equality in the Markov step.
+
+Assume henceforth that $A$ and $B$ are injective, with $a,b\le n$. For
+$1\le j\le a$ define
+\begin{equation}\label{spn:eq:moment-main}
+ U_j=\frac{F_q(a,j)}{q^{bj}},\qquad
+ \eps_j=\sum_{k=1}^{\min(b,j)}R_q(b,j;k)\,q^{nk/2}\sqrt{\alpha_k\beta_k} .
+\end{equation}
+
+\begin{theorem}[Factorial kernel moments; \stU]\label{spn:thm:factorial-kernel}
+For every $1\le j\le a$,
+\begin{equation}\label{spn:eq:factorial-moment}
+ \abs[\big]{\spnE_\mu F_q(\nu(g),j)-U_j}\le U_j\eps_j .
+\end{equation}
+For every $1\le j\le r\le a$ it follows that
+\begin{equation}\label{spn:eq:factorial-tail}
+ \spnP_\mu(\nu\ge r)\le\min\Bigl\{1,\ \frac{U_j(1+\eps_j)}{F_q(r,j)}\Bigr\},
+\end{equation}
+and one may minimize the right-hand side over $j$.
+\end{theorem}
+
+\begin{proof}
+For each $g$, the quantity $F_q(\nu(g),j)$ counts full-column-rank matrices
+$T\in\spnMat_{a\times j}(\F_q)$ for which $M(g)T=0$. For a fixed such $T$,
+character orthogonality on all $b\times j$ matrices gives
+\[
+ \mathbf 1_{M(g)T=0}=q^{-bj}\sum_{W\in\spnMat_{b\times j}(\F_q)}
+ \psi\bigl(\tr(W^{\spnT}M(g)T)\bigr).
+\]
+Take expectations and sum over the $F_q(a,j)$ choices of $T$. The term $W=0$
+contributes exactly $U_j$.
+
+For a nonzero $W$ of rank $k$, choose a factorization $W=CD$, where $C$ has
+size $b\times k$ and rank $k$, and $D$ has size $k\times j$ and rank $k$.
+Cyclicity of the trace yields
+$\tr(W^{\spnT}M(g)T)=\tr(C^{\spnT}M(g)TD^{\spnT})$. The columns of
+$ATD^{\spnT}$ form an independent $k$-frame in $\spnim A$: each of
+$D^{\spnT}$, $T$ and $A$ is injective. The columns of $BC$ form an
+independent $k$-frame in $\spnim B$. Inequality
+\eqref{spn:eq:frame-coefficient} therefore bounds the absolute value of the
+expected character by $q^{nk/2}\sqrt{\alpha_k\beta_k}$. This bound is
+independent of $T$ and of the chosen factorization.
+
+There are $R_q(b,j;k)$ possibilities for $W$ of rank $k$. The triangle
+inequality, summed over $W$ and $T$, proves \eqref{spn:eq:factorial-moment}.
+Finally, $F_q(\nu,j)$ is nonnegative and is at least $F_q(r,j)$ when
+$\nu\ge r$. Apply Markov's inequality and the upper moment bound to obtain
+\eqref{spn:eq:factorial-tail}.
+\end{proof}
+
+The normalization has an exact probabilistic meaning. If $Z$ is uniform on all
+$b\times a$ matrices, annihilating any fixed independent $j$-frame imposes
+$bj$ independent linear equations, hence
+$\spnE F_q(\dim\ker Z,j)=F_q(a,j)q^{-bj}=U_j$. These are precisely the
+factorial kernel moments of the independent-entry model. Counting frames is
+equivalent, by duality, to counting surjections to $\F_q^j$; that moment
+viewpoint has well-developed precedents \cite{Wood2019Random}, and exact
+finite-field rank laws and total-variation comparisons have an established
+literature \cite{Fulman2015Stein}.
+
+\begin{remark}[The two certificates are incomparable]\label{spn:rem:tv-vs-moments}
+The bound \eqref{spn:eq:inherited-TV} controls all matrix events
+simultaneously. The moment bound \eqref{spn:eq:factorial-tail} instead sums
+over frequency matrices of size $b\times j$, not $b\times a$; it requires
+frame stabilizers only through rank $\min(b,j)$ and can focus on a particular
+rank tail. The two bounds use different norms and quantities, and neither
+dominates the other in all regimes. A small total-variation bound can be far
+stronger. Conversely, take $G=\GL_{32}(\F_2)$ with uniform probability,
+$a=31$, $b=4$, and coordinate injections $A,B$. The event $\nu\ge28$ is
+exactly failure of full row rank. Transitivity on independent frames, also
+for the dual action, gives $\alpha_k=\beta_k=1/F_2(32,k)$. Exact rational
+arithmetic gives $\eps_8<0.058894$ and the following certificates (decimal
+upper bounds rounded upward).
+\begin{center}
+\begin{tabular}{ll}
+\toprule
+Quantity & Value or certificate\\
+\midrule
+First moment, $j=1$ & $\spnP(\nu\ge28)\le0.500115$\\
+Eighth moment, $j=8$ & $\spnP(\nu\ge28)\le0.004137$\\
+Uncapped right side of \eqref{spn:eq:inherited-TV} & $>2.132$, hence vacuous\\
+Exact probability in this example & $15/(2^{32}-1)$\\
+\bottomrule
+\end{tabular}
+\end{center}
+The exact value holds because $\pi(g)\spnim A$ is a uniform hyperplane in
+$\F_2^{32}$, and projection to $\F_2^4$ loses one row of rank exactly when
+that hyperplane contains the fixed $28$-dimensional projection kernel; there
+are $2^{32}-1$ hyperplanes in total and $2^4-1$ containing this kernel, and
+no larger loss is possible. So the example does not improve the specialized
+exact $\GL_n$ calculation; the comparison is between general certificates
+using the same stabilizer information.
+\end{remark}
+
+\begin{example}[Positive type is essential]\label{spn:ex:positive-type}
+Take $G=\GL_2(\F_2)$, $a=b=1$, $A=B=e_1$, and put all probability on
+$s=\left(\begin{smallmatrix}0&1\\1&0\end{smallmatrix}\right)$. This weight is
+nonnegative, normalized and inverse-symmetric. Both relevant stabilizer
+masses are zero, but $M(s)=0$ with probability one. Thus $\spnE2^\nu=2$,
+whereas the center in \eqref{spn:eq:first-kernel-moment} is $3/2$ and its
+asserted error would be zero. The law is not of positive type: the principal
+Gram matrix indexed by $\set{1,s}$ is
+$\left(\begin{smallmatrix}0&1\\1&0\end{smallmatrix}\right)$, with determinant
+$-1$. On the other hand, for any subgroup $H$ the kernel
+$\mathbf 1_H(g^{-1}h)/\abs{H}$ is a positive semidefinite block matrix on
+cosets, and convex combinations preserve positivity; for instance
+$\tfrac12\mathrm{Unif}(\GL_4(\F_2))+\tfrac12\mathrm{Unif}(\Sp_4(\F_2))$ is
+of positive type, with weights $29/40320$ on $\Sp_4$ and $1/40320$
+elsewhere. For a square $2\times2$ compression its nullity law is
+$(52/105,\,16/35,\,1/21)$ on $\nu=0,1,2$, against $(16/35,\,18/35,\,1/35)$
+for uniform $\GL_4(\F_2)$. All $636$ relevant ordered-frame Fourier
+inequalities for these two laws, the main terms and every stated finite
+moment and tail are verified in exact
+arithmetic.\footnote{\artifact{grh_beyond_dirichlet_2026-11-25/data/rank_moments_results.json}}
+\end{example}
+
+%======================================================================
+\subsection{Which blocks of a random symplectic matrix look uniform?}\label{spn:sec:symplectic}
+\sources{grh_sharp_torsion_and_symplectic_blocks}
+
+In a symplectic space a change of basis preserves alternating pairings. Over
+a fixed finite field, \cref{spn:thm:tv} gives a uniform range for all
+rectangular compressions, and for isotropic blocks at a fixed distance from
+the boundary the limiting total variation distance can be determined
+exactly. Throughout, $n$ is even, $g$ is uniform in $\Sp_n(\F_q)$,
+$A\colon\F_q^a\to V$ and $B\colon\F_q^b\to V^*$ are injective, $M(g)$ is the
+compression of \cref{spn:sec:positive-type}, and $Z$ is a uniform $b\times a$
+matrix. Write $\spnqbin{m}{i}{q}$ for the Gaussian binomial coefficient.
+
+\begin{theorem}[Symplectic compression; \stU]\label{spn:thm:symplectic}
+For arbitrary $A,B$ as above with $a+b\le n$, an absolute constant $C$ gives
+\begin{equation}\label{spn:eq:symplectic-upper}
+ \spnTV(M(g),Z)\le C\,q^{-(n+1-a-b)/2} .
+\end{equation}
+Thus $n-a-b\to\infty$ suffices at fixed $q$, uniformly in both subspaces. For
+every fixed integer $c\ge0$, the dimensions $n=2m$, $a=m$, $b=m-c$ admit
+isotropic choices such that the distance stays bounded away from zero as
+$m\to\infty$.
+\end{theorem}
+
+\begin{proof}[Proof of the upper bound]
+The symplectic form identifies the dual action with the given one. By Witt
+extension, the orbit of an independent $j$-frame consists of all independent
+frames with its prescribed alternating Gram matrix. Once $i-1$ independent
+vectors have been specified, the pairings with the next vector give $i-1$
+independent linear constraints. Of the $q^{n-i+1}$ solutions at most
+$q^{i-1}$ are in the previous span. Since $j\le n/2$, every orbit has size at
+least
+\[
+ q^{nj-j(j-1)/2}\prod_{i=1}^j(1-q^{2i-2-n})
+ \ \ge\ q^{nj-j(j-1)/2}\prod_{k\ge1}(1-2^{-2k}).
+\]
+Each stabilizer mass is the reciprocal of its orbit size. By
+\eqref{spn:eq:rank-matrix-count},
+$R_q(b,a;j)\le q^{j(a+b-j)}/\prod_{k\ge1}(1-2^{-k})$. Substitution in
+\eqref{spn:eq:inherited-TV} leaves a geometric sum
+$\sum_{j\ge1}q^{-j(n+1-a-b)}$, as claimed.
+\end{proof}
+
+\begin{proof}[Proof of the obstruction]
+Under the symplectic identification take $\spnim A$ Lagrangian and
+$\spnim B=W_0$ isotropic of dimension $m-c$. Then $L=g\spnim A$ is a uniform
+Lagrangian. Full row rank of $M(g)$ means $L\cap W_0=0$, since $L^\perp=L$.
+The number of Lagrangians in dimension $2m$ is $\prod_{k=1}^m(q^k+1)$, as
+follows by counting pairs of a Lagrangian and a line in it and passing to the
+line's symplectic quotient. A fixed $i$-dimensional subspace of $W_0$ lies in
+$L$ with probability $1/\prod_{k=m-i+1}^{m}(q^k+1)$, by the same quotient
+argument. Subspace-lattice M\"obius inversion gives the full-rank probability
+\begin{equation}\label{spn:eq:Pmc}
+ P_{m,c}=\sum_{i=0}^{m-c}
+ \frac{(-1)^iq^{i(i-1)/2}\spnqbin{m-c}{i}{q}}{\prod_{k=m-i+1}^{m}(1+q^k)},
+\end{equation}
+where the Gaussian coefficient counts $i$-subspaces of $W_0$ and the M\"obius
+function in dimension $i$ is $(-1)^iq^{i(i-1)/2}$. For $c=0$ the probability
+also has the elementary form $\prod_{k=1}^m(1+q^{-k})^{-1}$, since there are
+$q^{m(m+1)/2}$ Lagrangian complements, parametrized by symmetric matrices.
+
+Set $Q=q^{-1}$. The $i$th term converges to
+$(-Q^{c+1})^i/\prod_{k=1}^i(1-Q^k)$ and is bounded in absolute value by
+$Q^{(c+1)i}/\prod_{k\ge1}(1-Q^k)$; these facts follow by extracting the
+highest powers of $q$ in the Gaussian coefficient and the denominator.
+Dominated convergence and the power-series identity
+$\sum_{i\ge0}z^i/\prod_{k=1}^i(1-Q^k)=\prod_{k\ge0}(1-zQ^k)^{-1}$ for
+$\abs{z}<1$ yield
+\[
+ \lim_{m\to\infty}P_{m,c}=\prod_{k=c+1}^\infty(1+q^{-k})^{-1}.
+\]
+For the uniform rectangular matrix the full-rank probability is
+$\prod_{k=c+1}^{m}(1-q^{-k})$. The two positive limits have ratio
+$\prod_{k=c+1}^\infty(1-q^{-2k})^{-1}>1$. Their difference is a lower bound
+for the limit inferior of the total variation distance.
+\end{proof}
+
+\begin{theorem}[Exact limiting distance for the isotropic family; \stU]\label{spn:thm:symplectic-exact}
+Let $n=2m$, $a=m$, $b=m-c$ with $\spnim A$ Lagrangian and $\spnim B$
+isotropic, and fix $q$ and $c$. As $m\to\infty$, the total variation distance
+between $M(g)$ and $Z$ converges to
+\begin{equation}\label{spn:eq:symplectic-limit}
+ \frac{Q^{c+1}}{1-Q}\Bigl(\prod_{j=c+2}^{\infty}(1-Q^j)
+ -\frac{1}{\prod_{j=c+1}^{\infty}(1+Q^j)}\Bigr),\qquad Q=q^{-1}.
+\end{equation}
+At fixed $q$, this is asymptotic to $Q^{2c+2}/(1-Q)$ as $c\to\infty$. The
+event that the matrix loses exactly one row of rank accounts for the entire
+distance in the limit.
+\end{theorem}
+
+\begin{proof}
+Witt extension realizes every change of coordinates in each of the two
+isotropic subspaces by a symplectic automorphism. Left and right invariance
+of uniform $g$ therefore make its compression uniform conditional on its
+rank, since left and right general linear transformations act transitively
+on each rank. The uniform rectangular model has the same conditional laws.
+Hence total variation of the full matrices equals total variation of their
+row deficiencies $\mathrm{def}=b-\rank M$.
+
+Let $s_m(k)$ and $u_m(k)$ be the two probabilities of deficiency $k$. Each
+possible intersection $D=L\cap W_0$ of dimension $k$ gives a symplectic
+quotient $D^\perp/D$ of dimension $2(m-k)$, with the image of $W_0$ isotropic
+of dimension $m-k-c$. Conditional on $D\subseteq L$, the Lagrangian $L/D$ is
+uniform there. In the rectangular model, specifying a $k$-dimensional left
+kernel first requires the random map $\F_q^b\to\F_q^m$ to vanish on it, then
+to be injective on its quotient. Therefore, for $0\le k\le m-c$,
+\[
+ s_m(k)=\spnqbin{m-c}{k}{q}\frac{P_{m-k,c}}{\prod_{j=m-k+1}^{m}(1+q^j)},
+ \qquad
+ u_m(k)=\spnqbin{m-c}{k}{q}q^{-mk}\prod_{j=c+k+1}^{m}(1-Q^j).
+\]
+Both families are tight on the nonnegative integers. The expected number of
+lines in the left kernel is $\spnqbin{m-c}{1}{q}/(q^m+1)$ in the symplectic
+model, by the one-line quotient count, and $\spnqbin{m-c}{1}{q}q^{-m}$ for a
+uniform matrix. Both remain bounded as $m\to\infty$, while a $k$-dimensional
+kernel contains $(q^k-1)/(q-1)$ lines. Pointwise convergence of both mass
+functions, which follows from the displayed formulas, thus implies
+convergence in total variation to their respective limiting laws.
+
+Write $s(k),u(k)$ for the limits and $R_k=s(k)/u(k)$, with $u(k)>0$. Taking
+ratios gives
+\[
+ R_0=\prod_{j=c+1}^{\infty}(1-Q^{2j})^{-1}>1,\qquad
+ \frac{R_{k+1}}{R_k}=Q^{-k}(1-Q^{c+k+1}).
+\]
+Set $t=Q^{c+1}$. Retaining the first two factors of $R_0$ yields
+$R_2\ge[Q(1+t)(1+Qt)]^{-1}>1$, since $Q\le1/2$ and $t\le Q$. For $k\ge1$ the
+successive ratio is at least $Q^{-1}(1-Q^2)>1$. All deficiencies except
+possibly $k=1$ therefore have excess mass in the symplectic law, with strict
+excess at $k=0$. As both limiting laws have total mass one, the distance is
+exactly $u(1)-s(1)$. Substitution gives \eqref{spn:eq:symplectic-limit}.
+Finally, $\prod_{j=c+2}^\infty(1-Q^j)=1-Qt/(1-Q)+O_q(t^2)$ and
+$\prod_{j=c+1}^\infty(1+Q^j)^{-1}=1-t/(1-Q)+O_q(t^2)$ by the convergent
+logarithmic expansions. Their difference is $t+O_q(t^2)$, proving the
+asymptotic.
+\end{proof}
+
+\begin{example}\label{spn:ex:symplectic-F2}
+For a square block over $\F_2$ with isotropic test spaces ($q=2$, $c=0$), the
+limiting probability of losing exactly one row of rank is $0.419422$ in the
+symplectic model and $0.577576$ for a uniform binary matrix. Their difference
+$0.158154$ is the limiting total variation distance for the entire matrix.
+Small cases of the isotropic frame counts are checked by exact
+enumeration.\footnote{\artifact{grh_sharp_torsion_and_symplectic_blocks/checks/results.txt}}
+\end{example}
+
+The Lagrangian intersection count used when $c=0$ also appears in
+\cite[Corollary~2]{Kueng2015Qubit}. For random $\GL_n$ blocks,
+\cite[Theorem~1.8]{Gorodetsky2026Statistics} shows that
+$n-\min(a,b)\to\infty$ suffices. Along the symplectic family just constructed
+this quantity grows without bound, yet the full-row-rank test detects a
+nonvanishing discrepancy. The boundary calculation quantifies the discrepancy
+at each fixed deficit; it leaves scope for finer estimates when the two
+specific subspaces are known.
+
+%======================================================================
+\subsection{Exact tests for a block of a split orthogonal matrix}\label{spn:sec:orthogonal}
+\sources{grh_method_transfers_orthogonal_jets_2026-11-26}
+
+The symplectic and orthogonal boundary laws are different, and neither
+statement contains the other: in odd characteristic the determinant
+component of the orthogonal group leaves a parity signature that has no
+symplectic counterpart. Let $q$ be an odd prime power, $m\ge1$, and put
+\[
+ J=\begin{pmatrix}0&I_m\\I_m&0\end{pmatrix},\qquad
+ G=\set{g\in\GL_{2m}(\F_q):g^{\spnT}Jg=J}.
+\]
+This is the split orthogonal group $O^+(2m,q)$. Its determinant-one subgroup
+is denoted by $G^+=SO^+(2m,q)$; this notation does not mean the possibly
+smaller commutator subgroup. Write
+$g=\left(\begin{smallmatrix}A&B\\C&D\end{smallmatrix}\right)$ in this
+hyperbolic basis, and let $U_m$ be a uniform $m\times m$ matrix over $\F_q$.
+For laws $P,P'$ on the finite matrix space,
+$\spnTV(P,P')=\frac12\sum_M\abs{P(M)-P'(M)}=\max_E\abs{P(E)-P'(E)}$.
+
+\begin{theorem}[Optimal parity and full-rank tests; \stU]\label{spn:thm:orthogonal}
+If $g$ is uniform in $G^+$, then $\rank C$ is even and
+\begin{equation}\label{spn:eq:SO-TV}
+ \spnTV(C,U_m)=\spnP\bigl(\rank U_m\text{ is odd}\bigr).
+\end{equation}
+Consequently the test ``the block has odd rank'' achieves the full total
+variation distance; no test using all its entries improves this
+distinguishing advantage. If instead $g$ is uniform in the full group $G$,
+then
+\begin{equation}\label{spn:eq:O-TV}
+ \spnTV(C,U_m)=\prod_{j=1}^{m}(1-q^{-j})
+ -\frac{1}{2\prod_{j=1}^{m-1}(1+q^{-j})},
+\end{equation}
+and the full-rank test achieves the full distance. Empty products equal one,
+so the formula also includes $m=1$.
+\end{theorem}
+
+\begin{proof}
+Let $W=\F_q^m\oplus0$ and $L=gW$. The space $L$ is maximal totally isotropic
+for $J$ and $\rank C=m-\dim(L\cap W)$. Write
+$T_m=2\prod_{i=1}^{m-1}(1+q^i)$, and let $e_1,\dots,e_m,f_1,\dots,f_m$ be the
+hyperbolic basis.
+
+\emph{The determinant and rank parity.} Every element of $G$ stabilizing $W$
+has block form
+$\left(\begin{smallmatrix}P&*\\0&P^{-\spnT}\end{smallmatrix}\right)$, hence
+determinant one. Suppose $\dim(L\cap W)=m-r$. A change of basis in $W$,
+extended by the inverse transpose on its complementary isotropic subspace,
+puts the intersection in standard position. In its orthogonal quotient, $L$
+is transverse to the remaining part of $W$, hence is the graph of a
+skew-symmetric matrix. An upper unipotent isometry with a skew-symmetric
+upper-right block removes that graph. Both changes stabilize $W$ and have
+determinant one. The resulting space is
+$\langle e_1,\dots,e_{m-r},f_{m-r+1},\dots,f_m\rangle$. It is the image of
+$W$ under the isometry which swaps $e_i$ with $f_i$ in precisely $r$
+hyperbolic pairs. That isometry has determinant $(-1)^r$. Multiplying by it
+leaves an element stabilizing $W$, proving
+\begin{equation}\label{spn:eq:orthogonal-parity}
+ \det g=(-1)^{\rank C}.
+\end{equation}
+This construction also proves transitivity on maximal isotropic subspaces.
+Since their stabilizer has determinant one, the two determinant cosets of $G$
+give two equally sized families, selected by the parity of $r$.
+
+\emph{The exact rank counts.} Choose $D=L\cap W$ of dimension $m-r$ in
+$\spnqbin{m}{r}{q}$ ways. The quotient $D^\perp/D$ is a hyperbolic space of
+dimension $2r$. The possible $L/D$ are precisely its maximal isotropic
+complements to $W/D$. Writing each such complement as a graph gives a
+skew-symmetric $r\times r$ matrix. There are $q^{r(r-1)/2}$ such matrices
+because $q$ is odd. Thus the number of possible $L$ at block rank $r$ is
+\begin{equation}\label{spn:eq:orthogonal-subspace-count}
+ N_m(r)=\spnqbin{m}{r}{q}q^{r(r-1)/2}.
+\end{equation}
+The $q$-binomial identity
+$\sum_{r=0}^{m}\spnqbin{m}{r}{q}q^{r(r-1)/2}=\prod_{i=0}^{m-1}(1+q^i)=T_m$
+follows by induction from the Gaussian-binomial recursion. Uniform group
+elements induce the uniform law on each orbit. Therefore the full orthogonal
+rank law and the special orthogonal rank law are
+\[
+ o_m(r)=N_m(r)/T_m,\qquad
+ s_m(r)=\begin{cases}2o_m(r),&r\text{ even},\\0,&r\text{ odd}.\end{cases}
+\]
+For an independent-entry matrix, choose its $r$-dimensional image and then a
+surjection onto it. This gives
+\[
+ u_m(r)=\spnP(\rank U_m=r)=\spnqbin{m}{r}{q}F_q(m,r)q^{-m^2},\qquad
+ F_q(m,r)=\prod_{i=0}^{r-1}(q^m-q^i).
+\]
+
+\emph{Why rank suffices for all matrix tests.} For each $P\in\GL_m(\F_q)$,
+the matrix $\operatorname{diag}(P,P^{-\spnT})$ lies in $G^+$. Left and right
+multiplication by these matrices transform $C$ into $P^{-\spnT}CP'$ for
+independently arbitrary invertible $P,P'$. Uniform measure on either group is
+invariant under these operations. Since left and right invertible
+transformations act transitively on matrices of a given rank, both block
+laws are uniform conditional on rank. The independent-entry law has the same
+property. Thus the total variation distance of the full matrices equals that
+of their rank laws.
+
+\emph{Comparing the mass at each rank.} Set $R_m(r)=2o_m(r)/u_m(r)$, also for
+odd $r$. Cancellation in the exact formulas gives
+\[
+ R_m(m)=\frac{1}{(1-q^{-m})\prod_{j=1}^{m-1}(1-q^{-2j})}>1,\qquad
+ \frac{R_m(r-1)}{R_m(r)}=q^{m-r+1}-1 .
+\]
+Because $q\ge3$, each displayed ratio is at least two. Hence
+$s_m(r)>u_m(r)$ at every even rank, while $s_m(r)=0$ at every odd rank. All
+the deficit lies at the odd ranks, proving \eqref{spn:eq:SO-TV}.
+
+For the full orthogonal group, the likelihood ratio is $R_m(r)/2$. At rank
+$m$ it is less than one: writing $Q=q^{-1}\le1/3$, its denominator before the
+factor two satisfies
+\[
+ (1-Q^m)\prod_{j=1}^{m-1}(1-Q^{2j})
+ \ge(1-Q)\Bigl(1-\sum_{j=1}^{\infty}Q^{2j}\Bigr)\ge\frac{7}{12}>\frac12 .
+\]
+The ratio at rank $m$ is also greater than $1/2$, because that same product
+is less than one. At rank $m-1$ the ratio is therefore greater than
+$(q-1)/2\ge1$, and it increases as rank decreases. Thus only full rank has
+deficient mass in $o_m$ compared with $u_m$. Their full-rank probabilities
+are respectively
+\[
+ o_m(m)=\frac{1}{2\prod_{j=1}^{m-1}(1+q^{-j})},\qquad
+ u_m(m)=\prod_{j=1}^{m}(1-q^{-j}).
+\]
+Their difference proves \eqref{spn:eq:O-TV}.
+\end{proof}
+
+With equally likely hypotheses, the best success probability of a test is
+$(1+\spnTV)/2$. The group counts used are classical; for related counts of
+isotropic subspaces see \cite[Lemma~3.2.2]{Li2022Arithmetic}, and for
+finite-field rank laws \cite{Fulman2015Stein}.
+
+\begin{example}\label{spn:ex:orthogonal-q3}
+For $q=3$ the theorem gives the following values, which are confirmed by
+exhaustive enumeration of all maximal isotropic subspaces and all square
+matrices for $m\le3$, and of all $2$ and $576$ elements of $SO^+(2m,3)$ for
+$m=1,2$.\footnote{\artifact{grh_method_transfers_orthogonal_jets_2026-11-26/checks/orthogonal_blocks_checks.json}}
+\begin{center}
+\begin{tabular}{c|c|c|l}
+ $m$ & $\spnTV(C_{SO},U_m)$ & $\spnTV(C_{O},U_m)$ & nonzero $SO$ rank masses\\\hline
+ $1$ & $2/3$ & $1/6$ & $r=0\colon 1$\\
+ $2$ & $32/81$ & $47/216$ & $r=0\colon 1/4,\quad r=2\colon 3/4$\\
+ $3$ & $11570/19683$ & $13597/58320$ & $r=0\colon 1/40,\quad r=2\colon 39/40$
+\end{tabular}
+\end{center}
+\end{example}
+
+For the full orthogonal group, fixed $q$ and $m\to\infty$ in
+\eqref{spn:eq:O-TV} give the positive limiting distance
+\[
+ \prod_{j=1}^{\infty}(1-q^{-j})-\frac{1}{2\prod_{j=1}^{\infty}(1+q^{-j})} .
+\]
+The products converge to positive limits, and the proof above shows that the
+difference is positive for every odd $q$. Even when $q\to\infty$, this
+expression tends to $1/2$. The matrix entries therefore do not become
+independent at this maximal isotropic boundary: the determinant component
+leaves a precise parity signature, and averaging the two components leaves a
+precise full-rank signature.
+
+%======================================================================
+\subsection{A tail bound for every principal binary orthogonal kernel}\label{spn:sec:binary}
+\sources{grh_method_transfers_orthogonal_jets_2026-11-26}
+
+Let $\spnOrth_n=\set{Q\in\GL_n(\F_2):Q^{\spnT}Q=I}$, and for
+$Q\in\spnOrth_n$ and $J\subseteq[n]$ let $Q[J]$ be the principal submatrix on
+$J$. Vaas \cite{Vaas2026Principal} asks about
+\[
+ \nu(Q)=\max_{J\subseteq[n]}\dim\ker Q[J],\qquad
+ Q\text{ uniform in }\spnOrth_n ,
+\]
+including whether constants $c,\alpha>0$ can make
+$\spnP(\nu(Q)\ge cn)\ge1-2^{-\alpha n^2}$. The proposed linear alternative
+fails, and $\nu(Q)$ is at most of square-root size with exponentially high
+probability. Everything below uses the symmetric bilinear dot product over
+$\F_2$; replacing it with an orthogonal group attached to a quadratic form
+would change the problem.
+
+\begin{lemma}[Subspaces mapped into a prescribed subspace; \stU]\label{spn:lem:symp-incidence}
+Let $V$ be a nondegenerate symplectic space of even dimension $N$ over
+$\F_2$. Fix subspaces $U,T\subseteq V$ of dimensions $d,t$. Let $S$ be
+uniform in $\Sp(V)$. For $1\le s\le N/2$,
+\[
+ \spnP\set{\exists L\subseteq U:\dim L=s,\ SL\subseteq T}
+ \le6\cdot2^{-s(N-d-t)-s(s+1)/2}.
+\]
+If $s>d$ or $s>t$, the event is empty. For $s=0$ the bound with right side
+$6$ also holds.
+\end{lemma}
+
+\begin{proof}
+Fix an independent ordered $s$-frame $x_1,\dots,x_s$ spanning one candidate
+$L$. Its orbit consists of all independent $s$-frames with the same
+alternating Gram matrix. The extension fact used to identify that orbit is
+the following. In the span of any frame, choose a symplectic basis for a
+nondegenerate summand and a basis for its radical. Pair the radical basis
+with dual vectors in the orthogonal complement of the nondegenerate summand,
+adjust those vectors to make the pairs hyperbolic, and complete to a
+symplectic basis of $V$. An isometry between the original spans carries
+these choices to compatible bases. The resulting basis map extends it to all
+of $V$. Thus the extension fact also covers a degenerate restricted form.
+
+Suppose $i$ independent images $y_1,\dots,y_i$ have already been selected.
+The conditions
+\[
+ \langle y_j,y_{i+1}\rangle=\langle x_j,x_{i+1}\rangle\qquad(1\le j\le i)
+\]
+are $i$ independent linear equations. They have $2^{N-i}$ solutions. At most
+$2^i$ lie in the previous span, so there are at least $2^{N-i}-2^i$
+admissible next vectors. Consequently the orbit contains at least
+\[
+ \prod_{i=0}^{s-1}(2^{N-i}-2^i)
+ =2^{Ns-s(s-1)/2}\prod_{i=0}^{s-1}(1-2^{2i-N})
+ \ge\frac23\,2^{Ns-s(s-1)/2}
+\]
+frames. Indeed $s\le N/2$ makes the finite product at least
+$\prod_{j\ge1}(1-4^{-j})\ge1-\sum_{j\ge1}4^{-j}=2/3$. There are at most
+$2^{ts}$ ordered frames in $T$, so
+\[
+ \spnP(SL\subseteq T)\le\frac32\,2^{ts-Ns+s(s-1)/2}.
+\]
+The number of $s$-dimensional subspaces of $U$ satisfies
+\[
+ \spnqbin{d}{s}{2}=\prod_{i=0}^{s-1}\frac{2^d-2^i}{2^s-2^i}
+ \le4\cdot2^{s(d-s)}.
+\]
+For the constant, $\prod_{j\ge1}(1-2^{-j})>1/4$; for example its first two
+factors times the elementary tail bound give
+$(1/2)(3/4)(1-\sum_{j\ge3}2^{-j})=9/32>1/4$. A union bound over the candidate
+subspaces gives the stated exponent and the constant $6$.
+\end{proof}
+
+An $s$-dimensional kernel supplies a subspace, while the orbit of a whole
+independent frame is much larger than the orbit of one vector. The quadratic
+exponent in $s$ pays for the later union over every principal submatrix.
+
+Put $c=(1,\dots,1)\in\F_2^n$ and write $B(x,y)=x^{\spnT}y$. Then
+$B(x,x)=B(x,c)$. Every isometry fixes $c$: for all $x$,
+$B(Qx,c)=B(Qx,Qx)=B(x,x)=B(x,c)$, and nondegeneracy gives $Q^{-1}c=c$. For
+$J\subseteq[n]$ let $E_J$ be its coordinate subspace, and put $j=\abs{J}$. A
+vector in the kernel of $Q[J]$ is precisely a vector in
+\begin{equation}\label{spn:eq:kernel-intersection}
+ K_J=E_J\cap Q^{-1}E_{J^c}.
+\end{equation}
+Therefore $\dim K_J\le\min(j,n-j)\le\floor{n/2}$. The empty and full sets
+have zero nullity, so only nonempty proper $J$ matter.
+
+\begin{theorem}[Uniform tail for the maximum principal nullity; \stU]\label{spn:thm:binary}
+For a uniform $Q\in\spnOrth_n$ and every integer $r$ with
+$1\le r\le\floor{n/2}$,
+\[
+ \spnP\set{\nu(Q)\ge r}\le\min\set{1,\ 6\cdot2^{\,n-r(r-1)/2}} .
+\]
+For $r>\floor{n/2}$ the probability is zero.
+\end{theorem}
+
+\begin{proof}
+We prove the bound $6\cdot2^{-r(r-1)/2}$ for each fixed nonempty proper $J$,
+then sum over at most $2^n$ choices.
+
+\emph{Odd $n$.} Now $B(c,c)=1$ and $\F_2^n=\langle c\rangle\perp H$ with
+$H=c^\perp$. The form on $H$ is alternating and nondegenerate, of dimension
+$N=n-1$. Restriction identifies $\spnOrth_n$ with $\Sp(H)$: every symplectic
+map extends by fixing $c$. A uniform $Q$ therefore induces a uniform
+$S\in\Sp(H)$. Let $\rho$ be projection to $H$ along $c$. Since $c$ belongs to
+neither proper coordinate space, $\rho$ is injective on both $E_J$ and
+$E_{J^c}$. Their images have dimensions $d=j$ and $t=n-j$, so $d+t=N+1$. The
+projection commutes with $Q$. If $\dim K_J\ge r$, an $r$-dimensional subspace
+of $\rho(E_J)$ is mapped by $S$ into $\rho(E_{J^c})$. Apply
+\cref{spn:lem:symp-incidence} with $s=r\le N/2$. It gives
+$6\cdot2^{r-r(r+1)/2}=6\cdot2^{-r(r-1)/2}$. Ignoring the remaining
+$c$-component imposes fewer conditions, which is legitimate for this upper
+bound.
+
+\emph{Even $n$.} Here $c\in H=c^\perp$ and the radical of $B|_H$ is exactly
+$\langle c\rangle$. The quotient $\overline H=H/\langle c\rangle$ is a
+nondegenerate symplectic space of dimension $N=n-2$. The natural map
+$\spnOrth_n\to\Sp(\overline H)$ is onto. To see this directly, choose
+$f=e_1$. The plane $D=\langle c,f\rangle$ has Gram matrix
+$\left(\begin{smallmatrix}0&1\\1&1\end{smallmatrix}\right)$ and is
+nondegenerate. Its orthogonal complement is alternating and identifies with
+$\overline H$. Every symplectic map of that complement extends by the
+identity on $D$. Hence the induced $S$ is uniform.
+
+The spaces $E_J\cap H$ and $E_{J^c}\cap H$ have dimensions $j-1$ and
+$n-j-1$; both inject into the quotient. Their quotient images $U,T$ satisfy
+$d+t=N$. If $\dim K_J\ge r$, the subspace $K_J\cap H$ has dimension at least
+$r-1$. Its image in $\overline H$ remains injective and is mapped into $T$.
+Apply \cref{spn:lem:symp-incidence} with $s=r-1\le N/2$. The bound is
+$6\cdot2^{-(r-1)r/2}$. When $r=1$ this step is just the trivial bound by $6$.
+
+Both parity cases give the same fixed-$J$ estimate. The union bound and the
+deterministic restriction following \eqref{spn:eq:kernel-intersection}
+finish the proof.
+\end{proof}
+
+\begin{corollary}[No linear maximum with high probability; \stU]\label{spn:cor:no-linear}
+For fixed $0<c\le1/2$,
+\[
+ \spnP\set{\nu(Q)\ge cn}\le6\cdot2^{-c^2n^2/2+(1+c/2)n}
+\]
+whenever the integer threshold is feasible. If $c>1/2$ the event is empty.
+In particular the high-probability linear lower bound proposed in
+\cite{Vaas2026Principal} is impossible.
+\end{corollary}
+
+\begin{proof}
+Use $r=\ceil{cn}$ in \cref{spn:thm:binary} and $r(r-1)\ge cn(cn-1)$.
+\end{proof}
+
+\begin{corollary}[A square-root upper scale; \stU]\label{spn:cor:sqrt-scale}
+For every $a>0$ put
+\[
+ r_n=\ceil*{\frac{1+\sqrt{1+8(1+a)n}}2}.
+\]
+Then $\spnP(\nu(Q)\ge r_n)\le6\cdot2^{-an}$, with probability zero if the
+threshold exceeds $n/2$. Consequently $\nu(Q)=O(\sqrt n)$ with exponentially
+high probability; more specifically, for every $\epsilon>0$, the probability
+that $\nu(Q)>(\sqrt2+\epsilon)\sqrt n$ tends to zero exponentially in $n$.
+\end{corollary}
+
+The proof does not treat independent-entry random matrices as interchangeable
+with orthogonal matrices: the fixed vector $c$ and the even-dimensional
+quotient are essential. Exhaustive verification for $1\le n\le6$ (group
+orders, the deterministic maximum $\floor{n/2}$, complete nullity histograms
+and the tail bound) is
+recorded.\footnote{\artifact{grh_method_transfers_orthogonal_jets_2026-11-26/checks/binary_orthogonal_checks.json}}
+
+%======================================================================
+\subsection{When local torsion data become global twists}\label{spn:sec:characters}
+\sources{grh_transfer_bridges_2026-11-25}
+
+A torsion-avoidance lemma (\cref{sec:tors}) chooses roots of unity satisfying
+polynomial inequalities. A global twisting theorem needs those roots to be
+values of an arithmetic character. There are three separate quantities: the
+orders of the local inertia values, the order of the global character, and
+its conductor. The following elementary theorem identifies their first
+compatibility obstruction.
+
+\begin{theorem}[Exact extension criterion; \stU]\label{spn:thm:extension}
+Let $N\ge1$, and let
+\[
+ 0\longrightarrow A\longrightarrow B\longrightarrow C\longrightarrow0
+\]
+be an exact sequence of finite abelian $p$-groups, with $p^aC=0$. Let $D$ be
+a subgroup of $B$, and let $\lambda\colon A\to\mu_{p^N}$ be a character.
+\begin{enumerate}
+\item An extension $\chi\colon B\to\mu_{p^{N+a}}$ trivial on $D$ exists if
+and only if
+\begin{equation}\label{spn:eq:compat-raised}
+ \lambda(A\cap D)=1 .
+\end{equation}
+\item An extension $\chi\colon B\to\mu_{p^N}$ trivial on $D$ exists if and
+only if
+\begin{equation}\label{spn:eq:compat-exact}
+ \lambda\bigl(A\cap(D+p^NB)\bigr)=1 .
+\end{equation}
+\end{enumerate}
+Here $\lambda(H)=1$ means that $\lambda$ is trivial on every element of $H$.
+\end{theorem}
+
+\begin{proof}
+A character from a subgroup of a finite abelian $p$-group extends to
+$\mu_{p^\infty}$. An elementary construction adjoins one generator $b$ at a
+time: if the least positive integer $r$ with $rb$ in the old subgroup is
+$r=p^j$, choose an $r$th root of the already assigned value at $rb$. This
+gives a well-defined extension and terminates.
+
+Condition \eqref{spn:eq:compat-raised} is necessary for an extension killing
+$D$. If it holds, $\lambda$ descends to $\bar A=(A+D)/D\subseteq B/D$. Extend
+it into $\mu_{p^\infty}$. The quotient $(B/D)/\bar A$ is a quotient of $C$,
+hence is killed by $p^a$. For each $\bar b\in B/D$,
+\[
+ \chi(\bar b)^{p^{N+a}}=\lambda(p^a\bar b)^{p^N}=1 .
+\]
+Thus the extension takes values in the required finite group.
+
+For the second assertion, a character of exponent dividing $p^N$ kills $p^NB$
+as well as $D$, giving necessity. Conversely, under
+\eqref{spn:eq:compat-exact}, $\lambda$ descends to the image of $A$ in
+$B/(D+p^NB)$. Extend it as above. This quotient is killed by $p^N$, so its
+character values automatically lie in $\mu_{p^N}$.
+\end{proof}
+
+The permitted increase in order is bounded by the exponent of the quotient,
+not by its cardinality. When $D=0$, the proportion of local
+$\mu_{p^N}$-valued characters that extend with that same exponent is exactly
+\begin{equation}\label{spn:eq:proportion}
+ \frac{1}{[A\cap p^NB:p^NA]} .
+\end{equation}
+Indeed, all such local characters form the dual of $A/p^NA$, while the
+extendible characters form the dual of $A/(A\cap p^NB)$. An argument that
+samples the unrestricted local torsion grid cannot assume that the same
+sampling measure applies to global characters.
+
+Let $E$ be a CM field, with complex conjugation $c$. Fix an odd prime $p$ and
+a squarefree modulus
+\[
+ \mathfrak m=\prod_{j=1}^t\mathfrak v_j\,c(\mathfrak v_j),
+\]
+where all the primes are distinct, $\mathfrak v_j\ne c(\mathfrak v_j)$, and
+none lies above $p$. Put $q_j=\Nm\mathfrak v_j$. For a finite abelian
+$p$-group with $c$-action, the minus part is the image of the idempotent
+$(1-c)/2$.
+
+\begin{theorem}[CM ray realization; \stU]\label{spn:thm:ray}
+Set
+\[
+ R=\prod_{j=1}^t\F_{q_j}^{\times}[p^\infty],\qquad
+ B=\Cl_{\mathfrak m}(E)[p^\infty]^{-},\qquad C=\Cl(E)[p^\infty]^{-}.
+\]
+Let $W$ be the image of $\mu(E)[p^\infty]$ in the minus local residue group
+$R$. Then $W$ is cyclic, and there is an exact sequence
+\begin{equation}\label{spn:eq:ray}
+ 0\longrightarrow R/W\longrightarrow B\longrightarrow C\longrightarrow0 .
+\end{equation}
+Consequently \cref{spn:thm:extension} applies with $A=R/W$. A proposed local
+tuple must first annihilate $W$. Prescribed splitting conditions are imposed
+by the appropriate subgroup $D$ of ray classes.
+\end{theorem}
+
+\begin{proof}
+Start with the usual ray class exact sequence
+\[
+ \OO_E^\times\longrightarrow(\OO_E/\mathfrak m)^\times\longrightarrow
+ \Cl_{\mathfrak m}(E)\longrightarrow\Cl(E)\longrightarrow0 .
+\]
+The Chinese remainder theorem identifies each conjugate residue pair with two
+copies of $\F_{q_j}^\times$, exchanged by $c$. Its minus $p$-part consists of
+the pairs $(u,u^{-1})$ and is one copy of $\F_{q_j}^\times[p^\infty]$.
+Primary decomposition and the minus idempotent are exact direct-summand
+operations on the finite groups.
+
+The minus part of the unit image needs care. For any unit $u$, the quotient
+$u/c(u)$ is an algebraic integer unit all of whose conjugates have absolute
+value one. Kronecker's theorem makes it a root of unity. On the $p$-part,
+taking its square root is an automorphism, since $p$ is odd. Thus the minus
+unit image is contained in the image of $\mu(E)[p^\infty]$. The reverse
+inclusion holds because every such root is a unit and $c$ acts on it by
+inversion. The unit image is therefore exactly $W$, proving
+\eqref{spn:eq:ray}.
+\end{proof}
+
+The ideal-theoretic class-field correspondence \cite{Milne2020CFT} interprets
+characters of $B$ as finite anticyclotomic Hecke characters. If
+$p\nmid\abs{\mu(E)}$, then $W=0$ and the local variables are unrestricted
+before the class and splitting conditions are imposed. If $p\nmid h_E$, then
+additionally $C=0$, so the unrestricted minus local tuple determines a unique
+$p$-primary ray character. Neither simplification can be assumed in general.
+In particular, the field of the source contains a primitive root of unity of
+order $5040$; its cases $p=3,5,7$ require the $W$ term.
+
+An extension supplied by \cref{spn:thm:ray} has conductor dividing
+$\mathfrak m$. At each prime of this squarefree modulus, a nontrivial local
+residue character has conductor exponent one. Therefore, if all prescribed
+local characters are nontrivial,
+\begin{equation}\label{spn:eq:conductor}
+ \mathfrak f(\chi)=\mathfrak m,\qquad
+ \Nm\mathfrak f(\chi)=\prod_{j=1}^tq_j^2 .
+\end{equation}
+Increasing the allowed global order does not force an increase in this
+conductor. If the local character at pair $j$ has exact order $p^{n_j}$, the
+first $M$ positive powers of $\chi$ all retain the full conductor if and only
+if $p^{n_j}>M$ for every $j$. This assertion concerns local orders, even when
+the global order is larger.
+
+\begin{proposition}[A fixed-exponent parameter bound; \stU]\label{spn:prop:grid}
+Suppose $N\ge1$ and $R=\prod_{j=1}^tC_{p^{h_j}}$ with $h_j\ge N$. Let $C$
+require $r$ generators, let $W$ require $w$ generators, and let the
+required-triviality subgroup $D\subseteq B$ have a chosen generating set of
+size $s$. Then the image of
+\[
+ \Hom(B/D,\mu_{p^N})\longrightarrow\Hom(R,\mu_{p^N})
+\]
+contains a free $\Z/p^N\Z$-submodule of rank at least $\max(0,t-w-r-s)$. For
+the CM unit subgroup, $w$ is zero or one.
+\end{proposition}
+
+\begin{proof}
+Choose invariant-factor generators $c_i$ of $C$, of orders $p^{a_i}$, and
+lifts $b_i$ in $B$. Write each relation $p^{a_i}b_i$ as an element of $R/W$,
+and choose a representative in $R$. Assign the value zero to every $b_i$,
+writing characters additively in $\Z/p^N\Z$. Assigning values to the $t$
+local generators then gives a character precisely when the unit relations and
+these $r$ relations are respected. Requiring the chosen $s$ elements of $D$
+to vanish adds at most $s$ further linear equations. Thus the kernel of a
+matrix with at most $w+r+s$ rows over $\Z/p^N\Z$ maps into the restriction
+image. Smith normal form leaves at least the asserted number of free
+columns.
+\end{proof}
+
+The bound $t-r$ in the case $W=D=0$ is sharp. For $a\ge1$, take
+\[
+ B=C_{p^{N+a}}^{\,r}\times C_{p^N}^{\,t-r},\qquad
+ A=p^aC_{p^{N+a}}^{\,r}\times C_{p^N}^{\,t-r}.
+\]
+The first $r$ restriction coordinates lie in $p^a(\Z/p^N\Z)$ and have smaller
+exponent; the last $t-r$ give all free coordinates of exponent $p^N$. The
+proposition does not say that every original inertia coordinate can vary
+independently, or even that every one is nonzero somewhere on the displayed
+submodule. A polynomial which is nonzero on the full local parameter space
+may vanish identically on the compatible subgroup; applying a
+torsion-avoidance result after this restriction requires a fresh witness
+estimate.
+
+%======================================================================
+\subsection{An explicit conductor bound and its limits}\label{spn:sec:conductor}
+\sources{grh_transfer_bridges_2026-11-25}
+
+The source's torsion and prime-selection arguments control the number and
+character-theoretic properties of auxiliary primes. They do not give a norm
+bound for primes satisfying every required Frobenius and Selmer condition.
+For the simpler, unrestricted realization problem there is a completely
+explicit bound.
+
+\begin{theorem}[Bounded conductor for an abelian CM base; \stG]\label{spn:thm:bounded-conductor}
+Let $E/\Q$ be an abelian CM extension contained in $\Q(\zeta_f)$. Let $p$ be
+odd, $N\ge1$, and $t\ge1$. Write
+\[
+ \abs{\mu(E)[p^\infty]}=p^{w_0},\qquad p^a\,\Cl(E)[p^\infty]^{-}=0 .
+\]
+Let $S$ be a finite set of rational primes to avoid. Set
+\[
+ M=\lcm\Bigl(f,\ p^{N+w_0},\ \prod_{q\in S}q\Bigr).
+\]
+Choose a prime $\ell>t$ not dividing $M$, and put
+\[
+ Q=M\ell,\qquad P=(\varphi(Q)\log Q)^2 .
+\]
+Then, by Dirichlet GRH (\cref{src:thm:dgrh}), there exist $t$ distinct
+rational primes $q_j\le P$, splitting completely in $E$ and avoiding $S\cup\set{p}$, with the following property.
+Choose one conjugate pair above each $q_j$. Every tuple of local characters
+of order dividing $p^N$ on those pairs extends to an anticyclotomic character
+$\chi$ with
+\[
+ \ord(\chi)\mid p^{N+a},\qquad\Nm\mathfrak f(\chi)\le P^{2t}.
+\]
+If all the selected local characters have exact order $p^N$, then the
+conductor is exactly the selected modulus, and the first $m$ powers of $\chi$
+have that same conductor whenever $m<p^N$.
+\end{theorem}
+
+\begin{proof}
+Choose $t$ distinct nonzero residues modulo $\ell$. For each, the Chinese
+remainder theorem gives a reduced residue class modulo $Q$ which is $1$
+modulo $M$ and has the chosen value modulo $\ell$. Under Dirichlet GRH, the
+least-prime bound $P(a,q)\le(\varphi(q)\log q)^2$ for $q>3$ of Lamzouri, Li
+and Soundararajan \cite[Corollary~1.2]{LamzouriLiSoundararajan2015Conditional} gives a prime
+in each class at most $P$. They are distinct because the residues modulo $\ell$ are distinct.
+Their congruence modulo $f$ ensures complete splitting in $E$; their
+congruence modulo the other factors ensures avoidance and
+$\vp(q_j-1)\ge N+w_0$.
+
+For the corresponding local $p$-group $R$, every coordinate of the root-unit
+image $W$ has order at most $p^{w_0}$. In a cyclic factor of order
+$p^{h_j}$, with $h_j\ge N+w_0$, such elements lie in
+$p^{h_j-w_0}R_j\subseteq p^NR_j$. Therefore $W\subseteq p^NR$. Every local
+character into $\mu_{p^N}$ automatically annihilates $W$. Apply
+\cref{spn:thm:extension,spn:thm:ray} with $D=0$. The conductor and power
+assertions follow from \eqref{spn:eq:conductor}.
+\end{proof}
+
+This strengthens a construction which simply excludes primes dividing the
+order of the roots of unity of $E$: deeper local residue groups absorb that
+unit relation. Among supports with $h_j\ge N$, the extra depth
+$h_j\ge N+w_0$ is also necessary for \emph{every independent} local
+$\mu_{p^N}$ tuple to kill the unit image. Reduction away from $p$ injects
+$\mu(E)[p^\infty]$ into each residue field, so the projection of $W$ is
+exactly the subgroup of order $p^{w_0}$; it lies in $p^NR_j$ precisely at the
+displayed depth, and a tuple supported on one coordinate detects any failure.
+The construction also supplies arbitrarily many independent local coordinates
+using distinct rational primes, without an exponentially growing recursive
+exclusion modulus.
+
+There is an elementary lower restriction. A tame inertia character of order
+$p^N$ requires $p^N\mid q_j-1$, hence $q_j\ge p^N+1$. A nontrivial conjugate
+pair therefore has conductor norm at least $(p^N+1)^2$. No conductor bound
+independent of the requested local order can hold.
+
+\begin{lemma}[The tame part of the small-valuation condition; \stU]\label{spn:lem:tame-cost}
+Normalize $\vp(p)=1$. Let $\chi$ be a character as in \cref{spn:thm:ray}
+whose local values on all $t$ conjugate pairs of $\mathfrak m$ have exact
+order $p^N$, and let $\tau_{\mathfrak v}$ be a tame inertia generator at
+$\mathfrak v\mid\mathfrak m$. Then
+\[
+ \sum_{\mathfrak v\mid\mathfrak m}\vp\bigl(1-\chi(\tau_{\mathfrak v})^j\bigr)
+ \le\frac{2t\,p^{\floor{\log_pm}}}{(p-1)p^{N-1}},\qquad1\le j\le m<p^N .
+\]
+\end{lemma}
+
+\begin{proof}
+At a primitive $p^N$th root, $\vp(1-\zeta_{p^N})=1/((p-1)p^{N-1})$, and for
+$1\le j\le m<p^N$,
+$\vp(1-\zeta_{p^N}^{\,j})=p^{\vp(j)}/((p-1)p^{N-1})$. Primitivity makes the
+valuation independent of the choice of generator. Sum over the $2t$ primes.
+\end{proof}
+
+Choosing $N$ large makes this particular cost small, with the conductor bound
+of \cref{spn:thm:bounded-conductor}; this recovers one quantitative component
+of the source's twisting problem. The theorem sets $D=0$: it does not
+impose splitting at the primes above $p$, and \cref{spn:ex:conductor13}
+below shows that this omission can be decisive even at tiny discriminant. Nor
+do the congruences on $q_j$ enforce the Frobenius neighborhoods governing the
+source's tied Selmer relations, which can involve nonabelian extensions. One
+may quotient by the required subgroup $D$ and apply
+\cref{spn:thm:extension}, or use \cref{spn:prop:grid} to exhibit a surviving
+family; either route still needs a proof that the determinant or
+special-value witness does not vanish on that family. Prescribed tame
+ramification through relations among Frobenius elements is a developed
+subject, including the Gras--Munnier criterion \cite{Hajir2022Tame}, and
+effective Chebotarev results \cite{Thorner2017Explicit} can be considered
+once the governing field, its degree and its discriminant are bounded; they
+cannot be replaced by the Dirichlet endpoint \cref{src:thm:dgrh}. For a
+nonabelian base field, even finding small completely split primes requires
+additional analysis, and for $p=2$ the minus idempotent used here is
+unavailable.
+
+%======================================================================
+\subsection{Exact conductor minima over \texorpdfstring{$\Q(\sqrt{-23})$}{Q(sqrt(-23))} and the precursor condition}\label{spn:sec:benchmark}
+\sources{grh_transfer_bridges_2026-11-25; grh_ideal_densities_and_transfer_conditions_2026-11-26}
+
+The source's predicate \code{IsFromU1} asks for an auxiliary character of the
+form
+\[
+ \psi=\xi/\xi^c ,
+\]
+where the \emph{precursor} $\xi$ is ramified on only one side of each
+conjugate pair and is itself trivial on the whole decomposition groups, not
+only the inertia subgroups, at the prescribed places
+(\code{IsFromU1.eq_one_of_mem_decompGroup}). Triviality of the output $\psi$
+alone does not imply this stronger assertion. This subsection makes the
+distinction effective in a small benchmark, computes the exact conductor
+minima under both conditions, and realizes the precursor condition with
+arbitrarily small normalized tame cost.
+
+Let
+\[
+ K=\Q(\sqrt{-23}),\qquad\theta=\frac{1+\sqrt{-23}}2,\qquad
+ \theta^2-\theta+6=0,\qquad\beta=1+2\theta=2+\sqrt{-23},
+\]
+and let $c$ be complex conjugation. The reduced primitive forms of
+discriminant $-23$ are $(1,1,6)$, $(2,-1,3)$, $(2,1,3)$; the reduced-form
+inequality $a\le\sqrt{23/3}<3$ makes this list exhaustive. Hence
+$\Cl(K)\simeq C_3$, entirely in the minus part, and the only roots of unity
+are $\pm1$. The prime $\mathfrak s=(3,\theta-1)$ is nonprincipal: the norm
+form is $u^2+uv+6v^2$; for $v\ne0$ it is at least $23v^2/4>3$, and for $v=0$
+it is a square. Since $\Nm\beta=27$ and $\beta$ reduces to zero at
+$\mathfrak s$ and to a unit at the conjugate prime above $3$,
+\begin{equation}\label{spn:eq:class-relations}
+ \mathfrak s^3=(\beta),\qquad\mathfrak s\,c\mathfrak s=(3).
+\end{equation}
+In particular the class of $\mathfrak s$ generates $\Cl(K)$. Let
+$S=\set{\mathfrak s,c\mathfrak s}$. The $S$-units are exactly
+$\set{\pm3^a\beta^b:a,b\in\Z}$: their valuation vectors $(u,v)$ satisfy
+$u-v\equiv0\pmod3$, and $(1,1),(3,0)$ generate precisely that lattice.
+
+\begin{example}[Conductor $13$: a necessary increase of order, and a fatal splitting condition]\label{spn:ex:conductor13}
+At $13$, the roots of $T^2-T+6$ are $5$ and $9$, so $13$ splits. The minus
+local $3$-group has order three, and the ray exact sequence \eqref{spn:eq:ray}
+gives a group $B$ of order nine,
+$0\to C_3\to B\to C_3\to0$. At the root $\theta=5$, the residue of
+$\beta/c(\beta)$ is $4$ modulo $13$, and $4^4\equiv9\not\equiv1\pmod{13}$.
+Thus its $3$-primary component is nontrivial. By
+\eqref{spn:eq:class-relations}, the triple of a minus lift of the class above
+$3$ is a nonzero local inertia element. The lift therefore has order nine and
+$B\simeq C_9$.
+
+Its local inertia subgroup is $3C_9$. Every character $C_9\to\mu_3$ kills
+that subgroup. A prescribed nontrivial local cubic character therefore needs
+global order nine, even though its conductor norm remains $13^2=169$: the
+order increase in \cref{spn:thm:extension} can be necessary in an actual
+number field. The splitting condition above $3$ is more restrictive. The
+minus Frobenius at $3$ generates $C_9$; requiring its value to be one kills
+the whole ray group. Thus no nontrivial character of any $3$-power order on
+this fixed support satisfies that condition, and enlarging the allowed
+character order does not repair it.
+\end{example}
+
+\begin{theorem}[Exact minimum for the output condition; \stU]\label{spn:thm:minimum}
+Among nontrivial finite $3$-power anticyclotomic characters of $K$ which are
+trivial on the decomposition groups above $3$ and ramify only at primes lying
+in split rational conjugate pairs, the minimum conductor norm is
+$151^2=22801$. Exactly two characters attain this minimum. Both have order
+three and conductor $(151)$.
+\end{theorem}
+
+\begin{proof}
+For a split rational prime $q\ne3$, the minus local $3$-group is cyclic of
+order $3^{h_q}$, where $h_q=v_3(q-1)$. If $h_q=0$, no such character can
+ramify at $q$. Assume henceforth $h_q\ge1$.
+
+Let $B_q$ be the minus $3$-ray group modulo $(q)$, and let $b$ be a minus
+lift of Frobenius above $3$. Its image generates the ordinary class group.
+Consequently $B_q$ is generated by its local group $R_q$ and $b$, with the
+single additional class relation $3b=r_q\in R_q$. Up to inversion and
+multiplication by a $3$-adic unit, $r_q$ is the $3$-primary residue of
+$\beta/c(\beta)$, by \eqref{spn:eq:class-relations}. Killing Frobenius
+therefore gives
+\begin{equation}\label{spn:eq:ray-quotient}
+ B_q/\langle b\rangle\simeq R_q/\langle r_q\rangle .
+\end{equation}
+It is nontrivial exactly when $\beta/c(\beta)$ is a cube modulo $q$. Choosing the conjugate root in the residue field only inverts the ratio
+and does not change this test.
+
+The exact finite calculation below includes every split prime $q\le151$ with
+$q\equiv1\pmod3$. The root $t$ is a root of $T^2-T+6$ modulo $q$, and
+\[
+ u_q=\frac{1+2t}{3-2t}\pmod q,\qquad z_q=u_q^{(q-1)/3}\pmod q .
+\]
+\begin{center}
+\begin{tabular}{rrrrrr}
+\toprule
+$q$ & $t$ & $u_q$ & $h_q$ & $z_q$ & $\abs{B_q/\langle b\rangle}$\\
+\midrule
+13  &5 &4  &1&9 &1\\
+31  &8 &13 &1&5 &1\\
+73  &30&54 &2&64&1\\
+127 &28&78 &2&19&1\\
+139 &17&102&1&42&1\\
+151 &43&79 &1&1 &3\\
+\bottomrule
+\end{tabular}
+\end{center}
+At $151$ the quotient is $C_3$, giving exactly two nontrivial characters.
+Their inertia is nontrivial, so the conductor is exactly $(151)$.
+
+For minimality, unramified characters are killed by the condition at $3$
+because the class of $\mathfrak s$ generates $\Cl(K)$. A character with one
+rational prime in its support and smaller conductor would occur in an earlier
+row and has just been excluded. A character with at least two distinct
+rational support primes has their product at least $13\cdot31=403>151$.
+Anticyclotomicity makes both conjugate primes ramify together. At residue
+characteristic $q\ne3$, a finite $3$-power character is trivial on the higher
+unit groups, which are pro-$q$; every ramified conductor exponent is one.
+Thus a multi-prime support has conductor norm at least $403^2>151^2$. This
+proves the claim without a squarefree-conductor assumption being added
+separately.
+\end{proof}
+
+The table is reproduced by a certificate using only exact reduced-form
+enumeration, norms, modular roots and modular
+exponentiation.\footnote{\artifact{grh_transfer_bridges_2026-11-25/evidence/ray_character_checks.json}}
+A two-prime alternative illustrates the role of the support. At $13$ and
+$31$, both local groups are $C_3$ and both components of the relation $3b$
+are nonzero. After changing their generators, killing $b$ imposes the
+relation $(1,1)$ on $C_3^2$. The two nontrivial compatible characters have
+local exponent vectors $(1,-1)$ and $(-1,1)$, and conductor norm
+$(13\cdot31)^2=162409$; the one-prime support $151$ is cheaper.
+
+\medskip
+We now pass to the precursor condition and to small tame costs. Choose a
+finite set $Q$ of primes of $K$ of prime norm, disjoint from $S$, with
+$Q\cap cQ=\varnothing$. Thus each rational prime in the support splits in
+$K$, and $Q$ contains one of its two primes. Consider nontrivial continuous
+finite-order characters
+\[
+ \xi\colon G_K\longrightarrow\mu_{3^\infty},\qquad\psi=\xi/\xi^c,
+\]
+where $\xi$ is tamely ramified only on $Q$ and is trivial on the
+decomposition groups at both members of $S$. Delete any primes of $Q$ where
+$\xi$ is unramified, so that $Q$ is the actual support. Write
+\begin{equation}\label{spn:eq:tame-cost-def}
+ \spnTame(\psi)=\sum_{\mathfrak v\mid\mathfrak f(\psi)}
+ v_3\bigl(1-\psi(\tau_{\mathfrak v})\bigr),\qquad v_3(3)=1,
+\end{equation}
+with $\tau_{\mathfrak v}$ a tame inertia generator; the quantity is
+independent of those choices. If the local order at pair $i$ is $3^{n_i}$ and
+the rational prime below it is $q_i$, then
+\begin{equation}\label{spn:eq:source-twist-cost}
+ \spnTame(\psi)=\sum_i3^{1-n_i},\qquad
+ \Nm\mathfrak f(\psi)=\Bigl(\prod_iq_i\Bigr)^2 .
+\end{equation}
+Indeed, each primitive $3^{n_i}$th root contributes $1/(2\cdot3^{n_i-1})$ to
+the valuation, and the pair contributes twice that number; the valuation
+formula follows from $\Phi_{3^{n_i}}(1)=3$ and equality of the valuations of
+its conjugate factors. Tameness makes each nontrivial conductor exponent
+one.
+
+Let
+\[
+ R_Q=\prod_{\mathfrak q\in Q}(\OO_K/\mathfrak q)^\times[3^\infty].
+\]
+The ordinary ray exact sequence has kernel $R_Q$ on the $3$-primary part,
+because the units of $K$ are $\set{\pm1}$. Its quotient is $C_3$. A lift $b$
+of $[\mathfrak s]$ satisfies $3b=r_\beta$, and the class of $c\mathfrak s$
+is $r_3-b$, where $r_u$ denotes the local residue tuple of $u$, projected to
+$R_Q$. A consistent inversion convention for principal ideals changes signs
+but not the subgroups below. Consequently, imposing triviality on \emph{both}
+decomposition groups above $3$ gives the exact quotient
+\begin{equation}\label{spn:eq:source-twist-quotient}
+ \frac{\Cl_Q(K)[3^\infty]}{\langle[\mathfrak s],[c\mathfrak s]\rangle}
+ \simeq R_Q/\langle r_3,r_\beta\rangle .
+\end{equation}
+The characters of this quotient are exactly the allowed precursors $\xi$.
+This is also the ray class sequence with the $S$-units quotiented out; the
+class-field correspondence identifies it with the stated Galois-character
+conditions \cite{Milne2020CFT}. For a single split rational prime $q$, put
+$h=v_3(q-1)$ and choose a root $r$ of $r^2=-23$ in $\F_q$. The local group is
+cyclic of order $3^h$. A precursor with local order at least $3^N$ exists if
+and only if
+\begin{equation}\label{spn:eq:residue-tests}
+\begin{split}
+ &q\equiv1\pmod{3^N},\qquad\legendre{-23}{q}=1,\\
+ &3^{(q-1)/3^N}\equiv1\pmod q,\qquad(2+r)^{(q-1)/3^N}\equiv1\pmod q .
+\end{split}
+\end{equation}
+These tests do not depend on which square root is chosen: the other value of
+$\beta$ is $27/\beta$, and the test on $3$ already controls $27$.
+
+\begin{theorem}[Exact conductor minima with the precursor condition; \stU]\label{spn:thm:source-twist-minimum}
+For $1\le N\le5$, impose the budget $\spnTame(\psi)\le3^{1-N}$. Among all
+characters $\psi=\xi/\xi^c$ just specified, including characters supported
+on several split pairs, the exact minimum of $\Nm\mathfrak f(\psi)$ and the
+number of output characters attaining it are as follows.
+\[
+\begin{array}{rcrrr}
+\toprule
+N & \text{Budget} & q_{\min} & \text{Minimum conductor norm} & \text{Number}\\
+\midrule
+1 & 1    & 151       & 22801             & 2\\
+2 & 1/3  & 6481      & 42003361          & 24\\
+3 & 1/9  & 6481      & 42003361          & 18\\
+4 & 1/27 & 11767033  & 138463065623089   & 54\\
+5 & 1/81 & 102906613 & 10589770999131769 & 162\\
+\bottomrule
+\end{array}
+\]
+Every minimum is attained on one conjugate pair, with conductor ideal
+$(q_{\min})$ for $\psi$. For budget $1/3$ the minimum includes six
+characters with local order $9$ and eighteen with local order $27$.
+\end{theorem}
+
+\begin{proof}
+An exact search lists every prime in the progression $1\bmod3^N$ up to the
+candidate bound, using a sieve of that progression and no probable-prime
+tests, numerical approximations or class-group oracle, and applies
+\eqref{spn:eq:residue-tests}; it finds the displayed first
+primes.\footnote{\artifact{grh_ideal_densities_and_transfer_conditions_2026-11-26/data/source_twist_certificate.json}}
+The exponents of the cyclic quotients in
+\eqref{spn:eq:source-twist-quotient} at those primes are respectively
+$1,3,3,4,5$.
+
+This finite search also proves the minimum over arbitrary supports. If there
+are at least two pairs and the budget is $3^{1-N}$, each $n_i$ must be at
+least $N+1$: a single term with $n_i\le N$ would already exhaust or exceed
+the budget, leaving no room for another positive term. Hence every support
+prime is split and is $1\bmod3^{N+1}$. The first two such primes are
+\[
+\begin{array}{c|rrrrr}
+N&1&2&3&4&5\\ \hline
+q_1&73&163&163&487&42283\\
+q_2&127&271&487&3889&52489.
+\end{array}
+\]
+For $N=1,2,3,5$, their product exceeds the corresponding single-support
+minimum $q_{\min}$, which excludes every multipair support.
+
+For $N=4$, three pairs cost at least $487^3>11767033$ before the conductor is
+squared. Since $3889^2>11767033$, every potentially cheaper two-pair support
+must be $(487,q)$, with $q\in\set{3889,4861,8263,19441,19927}$. All these
+primes have $v_3(q-1)=5$. Thus both local characters would have to have exact
+order $3^5$. Choose generators of their local cyclic $3$-groups and reduce
+the coordinate vectors of $(r_3,r_\beta)$ modulo $3$. One exact choice gives
+\[
+\begin{array}{c|rrrrrr}
+q&487&3889&4861&8263&19441&19927\\ \hline
+\log(3)\bmod3&1&0&2&1&0&0\\
+\log(\beta)\bmod3&1&2&0&0&1&2.
+\end{array}
+\]
+The column for $487$ is independent of every other column, even after
+replacing the second row in that other column by its negative. The sign
+change covers the other choice of the prime above $q$, since
+$\log(\bar\beta)=3\log(3)-\log(\beta)$. Thus neither orientation admits
+nonzero local character coefficients modulo $3$ satisfying both relations.
+This excludes all five pairs.
+
+Finally, at a cyclic quotient $C_{3^k}$, the number of characters with local
+order at least $3^N$ is $\sum_{j=N}^{k}\varphi(3^j)$, which gives the final
+column of the table. The map $\xi\mapsto\xi/\xi^c$ is injective for a fixed
+half-support: its kernel would be unramified everywhere, while triviality at
+$\mathfrak s$ kills every unramified character because $[\mathfrak s]$
+generates the class group. Choosing the other half does not add new outputs,
+since it replaces a precursor by the inverse of its conjugate.
+\end{proof}
+
+\begin{proposition}[The stronger condition changes the answer; \stU]\label{spn:prop:weak-minima}
+If only the anticyclotomic output $\psi$ is required to be trivial above $3$,
+the one-pair quotient is $C_{3^h}/\langle r_{\beta/\bar\beta}\rangle$, as in
+\eqref{spn:eq:ray-quotient}, and the exact minimal support primes at budgets
+$1,1/3,1/9,1/27,1/81,1/243$ are
+\[
+ 151,\ 541,\ 6481,\ 94447,\ 238627,\ 1573183 .
+\]
+At budget $1/3$ the minimum conductor norm is $292681=541^2$ under the output
+condition and $42003361=6481^2$ under the precursor condition.
+\end{proposition}
+
+\begin{proof}
+The first entry is \cref{spn:thm:minimum}. The remaining minima, including
+the exclusion of smaller multipair supports, are certified by the same exact
+search.\footnote{\artifact{grh_ideal_densities_and_transfer_conditions_2026-11-26/data/source_twist_minima.csv}}
+For the comparison at $q=541$, choose $r=40$, so $\beta=42$. Then
+\[
+ \Bigl(\frac{2+r}{2-r}\Bigr)^{60}\equiv1,\qquad3^{60}\equiv352,\qquad
+ 42^{60}\equiv129\pmod{541}.
+\]
+The weaker character exists at budget $1/3$, but the precursor condition
+\eqref{spn:eq:residue-tests} fails.
+\end{proof}
+
+\begin{theorem}[A governing field for the precursor condition; \stU]\label{spn:thm:all-budgets}
+For each $N\ge1$, set $k=3^N$ and
+\[
+ L_N=K\bigl(\zeta_k,3^{1/k},\beta^{1/k}\bigr).
+\]
+This is a finite Galois extension of $\Q$, of degree at most
+$4\cdot3^{3N-1}$. Every rational prime $q$ splitting completely in $L_N$
+supplies a precursor $\xi$ as above, with local order $3^N$ on one chosen
+prime above $q$. Its output $\psi=\xi/\xi^c$ has conductor $(q)$ and
+$\spnTame(\psi)=3^{1-N}$.
+
+More generally, given an integer $m\ge1$ and $\eps>0$, choose
+$N>\floor{\log_3m}$ such that $3^{1-N+\floor{\log_3m}}\le\eps$. Then a
+character exists for which the first $m$ positive powers all have conductor
+$(q)$ and satisfy $\spnTame(\psi^j)\le\eps$ for $1\le j\le m$. The support
+can avoid any prescribed finite set of rational primes.
+\end{theorem}
+
+\begin{proof}
+The field contains all conjugates of the displayed radicals. In particular,
+$c\beta=27/\beta$, so a $k$th root of $c\beta$ is
+$(3^{1/k})^3/\beta^{1/k}$, and the other roots differ by elements of
+$\mu_k$. Thus $L_N/\Q$ is Galois. Adjoining the two radicals to $K(\zeta_k)$
+gives
+\[
+ [L_N:\Q]\le2\varphi(k)k^2=4\cdot3^{3N-1}.
+\]
+Complete splitting makes $q$ split in $K$, gives $q\equiv1\pmod k$, and makes
+$3$ and $\beta$ $k$th powers in the residue field. The tests
+\eqref{spn:eq:residue-tests} therefore hold. The quotient in
+\eqref{spn:eq:source-twist-quotient} has a character with exact local order
+$k$, giving the claimed precursor. Chebotarev's theorem gives infinitely many
+completely split primes, so any finite set may be excluded. This use is
+unconditional and qualitative \cite{Milne2020CFT}.
+
+For $1\le j\le m<3^N$, the inertia value of $\psi^j$ has order
+$3^{N-v_3(j)}$. Hence
+\[
+ \spnTame(\psi^j)=3^{1-N+v_3(j)}\le3^{1-N+\floor{\log_3m}} .
+\]
+No such power loses ramification, proving the last assertions.
+\end{proof}
+
+For $0<\eps\le1$, choosing $N$ minimally in \cref{spn:thm:all-budgets} also
+gives the explicit degree estimate $[L_N:\Q]<972\,(m/\eps)^3$. This bounds
+the degree of the field governing the prime-selection problem. It does not
+bound the least completely split prime or the conductor; in particular, a
+least-prime estimate for rational arithmetic progressions cannot be applied
+to $L_N$ merely from \cref{src:thm:dgrh}.
+
+\begin{remark}[What these characters do and do not satisfy]\label{spn:rem:twist-scope}
+The source already uses roots of $S$-units and Chebotarev to produce
+auxiliary characters.\footnote{Declaration
+\code{exists_anticyclotomicChar_of_frob_fixes_roots} of the source.} The
+characters of \cref{spn:thm:source-twist-minimum,spn:thm:all-budgets} satisfy
+the requirements isolated here: the local precursor condition, tame
+ramification, triviality on the decomposition groups, and small valuation. They do not establish the simultaneous Selmer
+length estimates, special-value bounds or prescribed Frobenius neighborhoods
+needed for regular twists in the determinant argument (\cref{sec:sel}).
+Also, $K=\Q(\sqrt{-23})$ is a benchmark base field, not the full cyclotomic
+CM field of the source's admissible data; a base extension requires
+recomputing its units and local conditions. No nonabelian Riemann hypothesis
+follows from these constructions.
+\end{remark}
+
+%======================================================================
+\subsection{The exact gcd of the cyclotomic annihilator witnesses}\label{spn:sec:annihilator}
+\sources{grh_method_transfers_2026-11-26; mcnew_counterexample_and_grh_transfers}
+
+An intermediate step of the source constructs an integer $X$ from a Bernoulli
+matrix and proves that $4X^2$ kills a family of Galois cocycles (file
+\code{Voronoi.lean}). The value of a single integer meeting
+the hypotheses and the effective integer obtained by combining several such
+proofs can differ. This subsection determines the gcd of all admissible
+integers at every modulus and weight, gives a finite decision procedure for
+the least one, and records the consequences for the cocycles. The statements
+use the cyclotomic lemmas imported by the source proof and are independent of
+zero location.
+
+Fix integers $N,e\ge1$. A Dirichlet character $\chi$ modulo $N$ is
+\emph{relevant} when $\chi(-1)=(-1)^{e+1}$. Characters take the value zero on
+nonunits; for $N=1$ the unique character takes value one on every integer.
+Let $O_\chi=\Z[\chi((\Z/N\Z)^\times)]$. With $B_j(x)$ the Bernoulli
+polynomial ($B_1(x)=x-1/2$), set
+\begin{align*}
+ K&=(e+2)!\,(e+1)N,& b(a)&=(e+2)!\,N^{e+1}B_{e+1}(a/N),\\
+ B_\chi&=\sum_{a=0}^{N-1}b(a)\chi(a),& F(c)&=(c^e-1)(c^{e+1}-1)\quad(c\ge2).
+\end{align*}
+The source shows $b(a)\in\Z$ and $B_\chi=-K\,L(-e,\chi)\ne0$ for relevant
+$\chi$, including imprimitive characters with their actual Euler factors.
+For $m\ge1$ and $c\equiv1\pmod N$ put
+\[
+ S_{m,c,\chi}=\sum_{a=0}^{Nm-1}\floor*{\frac{ca}{Nm}}a^e\chi(a).
+\]
+
+\begin{definition}\label{spn:def:witness}
+A positive integer $X$ is a \emph{witness} when both of the following hold;
+this is the source's predicate \code{IsStickelbergerBound}.
+\begin{enumerate}
+\item For every prime $p$, some $c\ge2$ congruent to $1$ modulo $N$ has
+$p\nmid c$ and $F(c)\mid X$.
+\item For each $c\ge0$ congruent to $1$ modulo $N$ and each relevant
+character with values in a characteristic-zero integral domain $O$, there is
+a single $w\in O$ such that
+\begin{equation}\label{spn:eq:stick}
+ (c^{e+1}-1)X\equiv2wS_{m,c,\chi}\pmod{mO}
+ \qquad\text{for every }m\ge1\text{ with }(m,c)=1 .
+\end{equation}
+\end{enumerate}
+\end{definition}
+
+The source's Voronoi congruence, in the character ring, reads
+\begin{equation}\label{spn:eq:voronoi}
+ Kc^eS_{m,c,\chi}\equiv(c^{e+1}-1)B_\chi\pmod{mO_\chi}.
+\end{equation}
+The source chooses the matrix
+\[
+ T_{u,v}=2b(t)+(-1)^e\mathbf 1_{t=1}+\mathbf 1_{t=-1},\qquad
+ t=vu^{-1}\pmod N ,
+\]
+indexed by $u,v\in(\Z/N\Z)^\times$, and supplies the witness
+$X_0=F(1+N)F(1+2N)\abs{\det T}$. Character vectors diagonalize $T$; relevant
+characters have eigenvalue $2B_\chi$, the others have eigenvalue $2(-1)^e$,
+and the adjugate clears every relevant eigenvalue at once.
+
+For each relevant complex $\chi$, let $D_\chi$ generate the ideal
+$(2B_\chi)O_\chi\cap\Z$, and set $D=\lcm_\chi D_\chi$, with empty lcm one.
+Equivalently $D_\chi$ is the least common denominator of the rational
+coefficients of $(2B_\chi)^{-1}$ in the cyclotomic power basis; an algebraic
+integer in $\Q(\zeta_d)$ belongs to $\Z[\zeta_d]$, so one may compute the
+denominators in a single cyclotomic field containing all character values.
+This gives a finite exact calculation for every $N,e$. Put
+\begin{equation}\label{spn:eq:Q}
+ Q=\frac{D}{\gcd(D,K)} .
+\end{equation}
+
+\begin{theorem}[The second clause is a divisibility; \stU]\label{spn:thm:second-clause}
+Clause~(2) of \cref{spn:def:witness} holds for a positive integer $X$
+precisely when
+\begin{equation}\label{spn:eq:clause-two}
+ \frac{KX}{2B_\chi}=-\frac{X}{2L(-e,\chi)}\in O_\chi
+ \qquad\text{for each relevant complex character }\chi ,
+\end{equation}
+that is, precisely when $Q\mid X$. Thus $Q$ is the least positive integer
+clearing the denominators of $(2L(-e,\chi))^{-1}$ in all the $O_\chi$
+($Q=1$ if there are no relevant characters).
+\end{theorem}
+
+\begin{proof}
+By the definition of $D$, condition \eqref{spn:eq:clause-two} says $D\mid KX$,
+which is equivalent to $Q\mid X$.
+
+\emph{Necessity.} Apply the second clause to the character in $O_\chi$
+itself. Fix $c>1$, multiply \eqref{spn:eq:stick} by $Kc^e$, and use
+\eqref{spn:eq:voronoi}. Then $(c^{e+1}-1)(Kc^eX-2wB_\chi)$ belongs to
+$mO_\chi$ for all $m$ coprime to $c$. The intersection of these ideals is
+zero, since $O_\chi$ is a finite free abelian group and we may take powers of
+a single prime outside $c$. Hence $w=c^eKX/(2B_\chi)$. Use $c=1+N$ and
+$c=1+2N$. Their $e$th powers are coprime, so B\'ezout's identity gives
+\eqref{spn:eq:clause-two}.
+
+\emph{Sufficiency.} Write $R=Nm$. For $k\ge1$ coprime to $c$, partition the
+terms of $S_{km,c,\chi}$ as $a+jR$, $0\le a<R$, $0\le j<k$. Modulo $m$ the
+polynomial and character factors are unchanged. The floor factors satisfy
+\[
+ \sum_{j=0}^{k-1}\floor*{\frac{ca/R+cj}{k}}
+ =\floor*{\frac{ca}{R}}+\frac{(c-1)(k-1)}{2}.
+\]
+Indeed the residues of $cj+\floor{ca/R}$ modulo $k$ run once through
+$0,\dots,k-1$. Let $A_m=\sum_{a=0}^{R-1}a^e\chi(a)$. The involution
+$a\mapsto-a\bmod R$ negates its summands modulo $m$, using the parity of
+$\chi$; the zero summand causes no exception since $e\ge1$. Thus
+$2A_m\equiv0\pmod m$, even when $m$ is even. The floor identity, whose
+correction is an integer, gives
+\begin{equation}\label{spn:eq:km}
+ 2S_{km,c,\chi}\equiv2S_{m,c,\chi}\pmod m .
+\end{equation}
+Take $w=c^eKX/(2B_\chi)\in O_\chi$ and denote the left side of
+\eqref{spn:eq:stick} minus its right side by $E_m$. For any $m$ prime to
+$c>0$ put $k=\prod_{p\mid m}p^{\vp(K)}$. Then $(km,c)=1$. At the enlarged
+modulus $km$, \eqref{spn:eq:voronoi} and $2wB_\chi=Kc^eX$ give
+$Kc^eE_{km}\in kmO_\chi$. Cancel $k$ in the integral domain and invert
+$(K/k)c^e$ modulo $m$. It follows that $E_{km}\in mO_\chi$. Congruence
+\eqref{spn:eq:km} now gives $E_m\in mO_\chi$. For $c=0$, possible only at
+$N=1$, the sole modulus coprime to $c$ is $m=1$.
+
+The argument proves the result in all target domains $O$ by passage along
+the character-ring embedding. Indeed, the finite nonzero image in
+$\operatorname{Frac}(O)^\times$ is cyclic of some order $d$, a primitive
+$d$th root in characteristic zero has minimal polynomial $\Phi_d$ over $\Q$,
+and the image of $\Z[\zeta_d]$ under a choice of primitive generator is the
+character subring. Choosing the corresponding complex character transports
+every congruence.
+\end{proof}
+
+Passing to the larger modulus $km$ before cancelling the factorial in
+Voronoi's congruence is the step that makes the denominator $Q$ sufficient.
+Clearing denominators first, that is, requiring $2B_\chi\mid X$ in every
+$O_\chi$, imposes the stronger condition $D\mid X$.
+
+For each prime $p$ let $m_p$ be the minimum of $\vp(F(c))$ over $c\ge2$,
+$c\equiv1\pmod N$, $p\nmid c$, and write $M=\prod_pp^{m_p}$.
+
+\begin{lemma}[The local minima; \stU]\label{spn:lem:mp}
+For odd $p$,
+\begin{equation}\label{spn:eq:mp}
+ m_p=\begin{cases}
+ 2\vp(N)+\vp(e(e+1)),&p\mid N,\\[2pt]
+ \displaystyle\sum_{j\in\set{e,e+1},\ p-1\mid j}\bigl(1+\vp(j)\bigr),&p\nmid N .
+ \end{cases}
+\end{equation}
+For $p=2$, $m_2=v_2(e(e+1))+2v_2(N)$ if $4\mid N$, and
+$m_2=v_2(e(e+1))+3$ otherwise. In particular $M$ is a finite product.
+\end{lemma}
+
+\begin{proof}
+For odd $p\mid N$, the lifting-the-exponent formula gives
+$\vp(F(c))=2\vp(c-1)+\vp(e(e+1))$, and one can take $\vp(c-1)=\vp(N)$. For
+odd $p\nmid N$, an exponent $j$ divisible by $p-1$ forces at least
+$1+\vp(j)$ in $c^j-1$ by Fermat's theorem and lifting the exponent. A
+primitive root modulo $p^2$, combined with the progression modulo $N$,
+attains equality for all $j$ at once and contributes zero for the other
+exponents. At two, $c$ is odd; let $a'=v_2(c-1)$, $b'=v_2(c+1)$. The two
+exponents $e,e+1$ have opposite parity, giving total valuation
+$2a'+b'-1+v_2(e(e+1))$. If $4\mid N$ we can take $a'=v_2(N)$, $b'=1$.
+Otherwise $c\equiv3\pmod8$ is possible and minimizes $2a'+b'$ at four.
+\end{proof}
+
+\begin{theorem}[The gcd of all witnesses; \stU]\label{spn:thm:gcd}
+The gcd of all positive witnesses is
+\begin{equation}\label{spn:eq:G}
+ G(N,e)=\lcm(Q,M).
+\end{equation}
+Moreover, a specified $X>0$ is a witness precisely when $Q\mid X$ and the
+finite set $\set{c\ge2:c\equiv1\pmod N,\ F(c)\mid X}$ has gcd one (with empty
+gcd zero). For coprime $a,b\ge2$ in the progression $1\bmod N$,
+$X(a,b)=\lcm(Q,F(a),F(b))$ is a witness, and finitely many witnesses of this
+form realize the gcd.
+\end{theorem}
+
+\begin{proof}
+The first clause says precisely that the eligible $c$ are nonempty and have
+no common prime divisor. It implies $M\mid X$; \cref{spn:thm:second-clause}
+gives $Q\mid X$ and the characterization. Conversely, for coprime $a,b\ge2$
+in the progression, each rational prime is coprime to at least one of $a,b$,
+so $X(a,b)$ is a witness. For each prime $p$ choose a minimizer $a$ for
+$m_p$. By the Chinese remainder theorem choose $b>1$ congruent to $a$ modulo
+$p^{m_p+1}$, to $1$ modulo $N$, and to $1$ modulo every prime divisor of
+$a$. These congruences are compatible since $p\nmid a$ and
+$a\equiv1\pmod N$. Hence $(a,b)=1$ and $\vp(F(b))=m_p$. The $p$-valuation of
+$X(a,b)$ is $\max(\vp(Q),m_p)$, as required. Finitely many witnesses
+suffice: start with any witness and choose the corresponding minimizer for
+each of its prime divisors.
+\end{proof}
+
+The least witness is a different invariant, computable as follows. Start with
+the explicit upper bound $U=X(1+N,1+2N)$ and list all $c$ in the progression
+with $F(c)\le U$. For each subset $T$ of the list with $\gcd(T)=1$ compute
+$\lcm(Q,\set{F(c):c\in T})$. The smallest value is the least witness, by the
+characterization in \cref{spn:thm:gcd}.
+
+\begin{example}[Modulus five, weight one]\label{spn:ex:five}
+At $(N,e)=(5,1)$ the four values $b(t)$, in increasing order of $t$, are
+$1,-11,-11,1$. The trivial and quadratic characters are relevant, with
+$2B_\chi=-40$ and $48$; the two odd characters give the eigenvalue $-2$ of
+$T$ each. Thus $D=240$, $K=60$, $Q=4$, $\abs{\det T}=7680$, $F(6)=175$,
+$F(11)=1200$, and the source's witness is $X_0=1\,612\,800\,000$. By
+\cref{spn:lem:mp}, $M=2^4\cdot3\cdot5^2=1200$, so $G(5,1)=1200$.
+
+\emph{The least witness is $8400$.} The pair $(6,11)$ gives the witness
+$8400$. For a witness $0<X\le8400$, the only possible auxiliary integers are
+$6,11,16$, because $F$ is increasing and $F(21)=8800$. The eligible integers
+must have gcd one. The only way within the budget is to include $6$ and
+$11$: the integers $6$ and $16$ share a factor, and
+$\lcm(F(11),F(16))=61200$ since $F(16)=3825$. Thus $8400\mid X$.
+\end{example}
+
+\begin{example}\label{spn:ex:stick-table}
+The following values are produced with exact polynomial and integer
+arithmetic, together with finite lists of witnesses realizing each gcd and
+direct tests of \eqref{spn:eq:stick} on $1217$ character, auxiliary and
+modulus
+choices.\footnote{\artifact{mcnew_counterexample_and_grh_transfers/checks/stickelberger_examples.json}\\
+\artifact{grh_method_transfers_2026-11-26/checks/cyclotomic_results.json}}
+\begin{center}
+\begin{tabular}{rrrrr}
+\toprule
+$N$ & $e$ & $Q$ & $M$ & $G=\lcm(Q,M)$\\
+\midrule
+1&11&691&131040&90548640\\
+3&9&9841&14256&140293296\\
+5&1&4&1200&1200\\
+5&2&4&1200&1200\\
+7&2&32&2352&4704\\
+8&2&6&384&384\\
+12&2&20&864&4320\\
+15&1&16&3600&3600\\
+\bottomrule
+\end{tabular}
+\end{center}
+For $N=1$, $e=11$ the special value is $\zeta(-11)=691/32760$, giving
+$Q=691$ immediately; this is the familiar Bernoulli obstruction, from the
+numerator of $B_{12}=-691/2730$. At $(N,e)=(3,9)$ only the principal
+character is relevant, and $L(-9,\chi_0)=(1-3^9)\zeta(-9)=9841/66$. At
+$(8,2)$ the least individual witness is $48\,746\,880$, with eligible
+auxiliaries $9,25$; the pair $9,17$ would instead give $643\,668\,480$. The
+stronger requirement $D\mid X$ would replace $G$ by $\lcm(D,M)$, which is
+strictly larger in every row except $(5,1)$; at $(1,11)$ it equals
+$286\,858\,091\,520$ and contains the prime $11$, which is absent from $G$,
+and at $(3,9)$ it contains $5$ and $7$.
+\end{example}
+
+\begin{corollary}[Annihilation of the odd components; \stU]\label{spn:cor:kill}
+In the setting of the source's odd component with coefficients $O/\ell^\nu$,
+where $O$ is the integer ring of a finite extension of $\Q_\ell$, the integer
+$4G(N,e)^2$ annihilates all its cocycles. For $\ell>N+e+3$, at most
+$v_\ell(H)+1$ Galois elements suffice to detect an element by evaluation,
+where $H=\lcm(D,M)$. For a CM subfield
+$E\subseteq\Q(\mu_N)$, under the source's coefficient hypotheses,
+$16\varphi(N)G(N,e)^2$ annihilates the module \textup{\code{shaOdd}} at
+weight $e$ and every level.
+\end{corollary}
+
+\begin{proof}
+For each witness $X$, the source proves the assertions with $X$ in place of
+$G$: component annihilation and detection in the file
+\code{ReciprocityComponentBounds.lean}, and the CM descent in
+\code{OddSha.lean}. Take the gcd of the integer annihilators over a finite
+family of witnesses realizing $G$, using B\'ezout's identity. For detection
+use the witnesses $\lcm(D,F(a),F(b))$, which are multiples of $X(a,b)$ with
+the same eligible auxiliaries: the construction in the proof of
+\cref{spn:thm:gcd}, with $D$ in place of $Q$, gives one whose valuation at
+the specified $\ell$ is $\max(v_\ell(D),m_\ell)=v_\ell(H)$. These two
+operations are different; in particular the proof never requires $G$ or $H$
+itself to be a witness.
+\end{proof}
+
+The component consists of locally constant cocycles on $G_\Q$ for
+$(\mathrm{cyc}^e\psi)^{-1}$ with quotient coefficients, of odd parity,
+subject to the source's specified vanishing at conjugation, inertia and the
+local set at $\ell$; the CM descent also asks for enough roots of unity in
+$O$. Consequently these cocycles vanish at every finite level for each
+coefficient prime not dividing $2G(N,e)$: multiplication by $4G^2$ is then a
+unit on a module with coefficients modulo a power of $\ell$. At $(5,1)$ only
+$2,3,5$ can support the components, whereas the source's witness $X_0$
+permits the prime $7$. At $(3,9)$ the primes $5$ and $7$ are excluded. At
+$(1,11)$, $G=2^5\cdot3^2\cdot5\cdot7\cdot13\cdot691$. This is an exclusion of
+primes; it does not assert a nonzero component at any surviving prime.
+Optimality in \eqref{spn:eq:G} concerns the stated predicate: a module can
+have a smaller annihilator. The identification of the source's object with a
+conventional cohomology group, and control of even class-group eigenspaces in
+Vandiver's conjecture, require further arguments (\cref{sec:sel}). Classical
+higher Stickelberger theory treats related Galois-cohomological annihilators
+\cite{Banaszak2003Higher}.
+
+%======================================================================
+\subsection{Open questions}\label{spn:sec:open}
+
+\begin{question}[Optimal selection]\label{spn:q:selection}
+Under \eqref{spn:eq:near} and \eqref{spn:eq:moment}, the universal rank
+fraction $\alpha_*$ is sharp (\cref{spn:prop:sharp}), but the minimum
+possible total rank for a fixed quadruple $(d,s,u,v)$ and the optimal number
+of translates needed to reach a given rank are not determined.
+\end{question}
+
+\begin{question}[Cheap completions]\label{spn:q:completion}
+For a target beyond the source, construct integral completing vectors with
+excess completion cost $K-A=O(E_0)$ in \eqref{spn:eq:rank-error}, with control
+of their twist scalars and heights, so that a fixed positive fraction of
+independent short forms suffices.
+\end{question}
+
+\begin{question}[Quantitative frames]\label{spn:q:frames}
+Bound the reserve denominator $q$, the signed coefficients $z_v$, the vector
+sizes and the threshold $M_0$ of \cref{spn:thm:projective} uniformly as the
+tower modulus grows; a polynomial bound in the modulus with fixed exponents
+would be a very favorable outcome. The source needs a small auxiliary bound
+$h\le b$, an exact final bound $M=p_0p_1$ in a prescribed window,
+multiplicities at least $6fb$ and controlled conjugate norms, and a threshold
+growing like $\exp(f^{c})$ for a fixed $c>0$ would exceed the permitted
+scale.
+\end{question}
+
+\begin{question}[General symplectic compressions]\label{spn:q:symplectic}
+For arbitrary compressed subspaces in a symplectic space, determine the
+limiting discrepancy from the uniform matrix law in terms of the ranks of
+their restricted alternating forms. \Cref{spn:thm:symplectic-exact} gives the
+isotropic endpoint of that classification.
+\end{question}
+
+\begin{question}[The scale of the binary principal nullity]\label{spn:q:binary}
+\Cref{spn:cor:sqrt-scale} gives $\nu(Q)=O(\sqrt n)$ with exponentially high
+probability and no matching lower bound. Is the typical order of
+$\nu(Q)$ logarithmic, of square-root size, or another sublinear scale?
+\end{question}
+
+\begin{question}[An arithmetic family of constrained twists]\label{spn:q:twists}
+Produce a family of auxiliary characters that simultaneously has an explicit
+ray-group presentation with its required-triviality subgroup $D$; a proved
+nonvanishing or bounded-valuation witness on the compatible character
+subgroup of \cref{spn:prop:grid}; controlled local orders, so that the first
+required powers remain ramified; a quantitative support-prime construction
+meeting the actual Frobenius conditions, in particular a bound for the least
+prime splitting completely in the governing field $L_N$ of
+\cref{spn:thm:all-budgets}; and a bound for the associated conductor and
+coefficient-field ramification. A harder benchmark than
+\cref{spn:thm:source-twist-minimum} would replace its class relations by the
+tied cocycle relations of one explicitly chosen Selmer datum. The analogues
+of \cref{spn:thm:ray,spn:thm:bounded-conductor} for $p=2$ and for a
+nonabelian base field are also open.
+\end{question}
+
+\begin{question}[Surviving coefficient primes]\label{spn:q:primes}
+Which primes dividing the exact gcd $G(N,e)$ of \cref{spn:thm:gcd} support a
+nonzero odd component? The calculation rules out some primes universally;
+establishing that a surviving prime occurs requires information about the
+cocycles themselves.
+\end{question}

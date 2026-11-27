@@ -1,0 +1,1989 @@
+\section[Progression-free sets in polynomial rings and finite rings]{Progression-free sets in polynomial rings and finite rings; additive constraints}\label{sec:gpp}
+
+\providecommand{\gppA}{\mathcal{A}}
+\providecommand{\gppG}{\mathcal{G}_q}
+\providecommand{\gppP}{\mathcal{P}}
+\providecommand{\gppPr}{\operatorname{Pr}}
+\providecommand{\gppE}{\mathbb{E}}
+\providecommand{\gppVar}{\operatorname{Var}}
+\providecommand{\gppdens}{\operatorname{dens}}
+\providecommand{\gpplc}{\operatorname{lc}}
+\providecommand{\gppm}{\mathfrak{m}}
+\providecommand{\gppsloppy}{\sloppy}
+
+The source proof selects its distinguished infinite places by a finite combinatorial
+construction (\cref{src:sec:mechanism}). The lemma
+\code{modEq_orderOf_of_div_pow_eq} turns a multiplicative identity between powers of one
+element into a weighted additive congruence between exponents, and the lemma
+\code{exists_three_term_free} produces a large set of exponents satisfying no such
+congruence. The second lemma is a Behrend-type construction \cite{Behrend1946Sets}: digit
+vectors on a sphere, encoded in a base large enough to prevent carries. This section
+collects the results obtained by moving that exponent principle to other settings. In
+$\Fq[x]$ the exponent map is the whole vector of prime valuations and the congruence becomes
+an equality; this gives answers to the questions and to Conjecture~6.3 of Asada, Fourakis,
+Manski, McNew, Miller and Moreland \cite{Asada2017Subsets} on sets free of three-term
+geometric progressions. Over finite coefficient rings the same ideas, combined with the
+density Hales--Jewett theorem, answer their Question~6.5 for large families of rings. The
+remaining subsections treat additive constraints coming directly from the source
+construction: periodic sets of integers with a prescribed spectrum of ratios, the exact
+capacity of the sparse-place condition of the source, and coefficient collisions in the
+root lattice $A_n$. Nothing in this section uses \cref{src:thm:dgrh} or any other
+hypothesis on zeros of $L$-functions. The corresponding questions for sets of integers and
+of ideals are treated in \cref{sec:gpi}.
+
+\subsection{The weighted digit-sphere lemma}\label{gpp:sec:digits}
+{\raggedright\sources{dirichlet-grh-research; exponent_seven_and_grh_transfers; mcnew_counterexample_and_grh_transfers; grh_method_transfers_graph_towers_and_finite_rings; grh_method_transfers}}
+
+The following is the finite estimate behind \code{exists_three_term_free}, with all digit
+losses retained. It is used in
+\cref{gpp:sec:rings,gpp:sec:syndetic,gpp:sec:sparse}.
+
+\begin{lemma}[Weighted digit-sphere lemma; \stU]\label[lemma]{gpp:lem:digits}
+Let $n,H,L,o$ be positive integers, put $B=L(H-1)+1$, and assume $B^n\le o$; this holds in
+particular when $(LH)^n\le o$. There is a set $S\subset\set{0,\ldots,o-1}$ with
+$\abs{S}\ge H^n/(nH^2)$ such that for all $u,v,w\in S$ and all positive integers $b,c$
+with $b+c\le L$,
+\[
+ (b+c)v\equiv bu+cw \pmod o\quad\Longrightarrow\quad u=v=w .
+\]
+\end{lemma}
+
+\begin{proof}
+Take the digit cube $\set{0,\ldots,H-1}^n$ and its centre
+$\kappa=((H-1)/2,\ldots,(H-1)/2)$. All values of $\norm{x-\kappa}^2$ differ by integers,
+since $a^2-(H-1)a$ is an integer for each digit $a$, and their range has length at most
+$n(H-1)^2/4$. The most populated sphere centred at $\kappa$ therefore contains at least
+$H^n/(1+\floor{n(H-1)^2/4})\ge H^n/(nH^2)$ points. Encode each point $x$ of that sphere
+by $e(x)=\sum_{k=0}^{n-1}x_kB^k$ and let $S$ be the set of these integers. In a weighted
+relation as in the statement, each digit of either side is at most $L(H-1)=B-1$, so both
+sides lie in $[0,B^n)\subseteq[0,o)$. The congruence is therefore an equality of integers
+and holds digit by digit. The underlying vectors satisfy
+$v=\frac{b}{b+c}u+\frac{c}{b+c}w$. On a sphere a strict convex combination of two
+different vectors has smaller distance from the centre, so $u=w$ and then $v=u$.
+\end{proof}
+
+\begin{corollary}[\stU]\label[corollary]{gpp:cor:behrend}
+For every integer $L\ge2$ there is a constant $C_L$ such that for each integer $m\ge2$
+some $S\subset\set{0,\ldots,m-1}$ of size at least $m\exp(-C_L\sqrt{\log(2+m)})$ contains
+no three elements $d_1,d_2,d_3$, not all equal, with $(a+b)d_2=bd_1+ad_3$ for positive
+integers $a,b$ with $a+b\le L$.
+\end{corollary}
+
+\begin{proof}
+For large $m$ apply \cref{gpp:lem:digits} with $o=m$, $n=\floor{\sqrt{\log m}}$ and
+$H=\floor{m^{1/n}/L}$. Then $(LH)^n\le m$, and since $m^{1/n}/L\to\infty$ eventually
+$m^{1/n}/(2L)\le H\le m^{1/n}$. Hence
+\[
+ \abs{S}\ge\frac{m}{n(2L)^n m^{2/n}},
+\]
+and the logarithm of the denominator is $\log n+n\log(2L)+2(\log m)/n=O_L(\sqrt{\log m})$.
+A larger constant covers the finitely many smaller values of $m$.
+\end{proof}
+
+\subsection{Polynomial rings over finite fields: conventions}\label{gpp:sec:conventions}
+{\raggedright\sources{grh-progression-densities-and-cubic-prime-race; grh-methods-polynomial-density; grh_beyond_dirichlet_2026-11-25}}
+
+Let $q$ be a prime power. A \emph{triple} is $f,rf,r^2f$ with all three terms nonzero
+polynomials in $\Fq[x]$. Two conventions for the ratio are used. Under the
+\emph{polynomial-ratio} convention $r\in\Fq[x]$ and $\deg r\ge1$. Under the
+\emph{rational-ratio} convention $r$ is any nonconstant element of $\Fq(x)$, including
+functions of degree zero such as $x/(x+1)$. Constant ratios are ignored in both. Write
+$B_N=\set{f:\deg f\le N}$, including zero, so that $\abs{B_N}=q^{N+1}$. The \emph{natural
+density} of a set $E$ is the limit of $\abs{E\cap B_N}/q^{N+1}$ when it exists, written
+$\gppdens(E)$, and the \emph{upper density} is the upper limit. Working with monic
+polynomials and then taking all nonzero scalar multiples gives the same limiting
+densities.
+
+Let
+\[
+ \gppA=\set{a\ge0:\text{every ternary digit of }a\text{ is }0\text{ or }1},\qquad
+ \sum_{a\in\gppA}t^a=\prod_{j\ge0}\bigl(1+t^{3^j}\bigr).
+\]
+The set $\gppA$ contains no nonconstant three-term arithmetic progression: in an equality
+$a+c=2b$ with $a,b,c\in\gppA$ neither side has ternary carries, so at each digit the only
+possibilities are $0+0=2\cdot0$ and $1+1=2\cdot1$, and $a=b=c$. The argument allows a
+common difference of either sign. Put
+\begin{equation}\label{gpp:eq:mq}
+ m_q=(1-q^{-1})\sum_{a\in\gppA}q^{-a}=(1-q^{-2})\prod_{j\ge1}\bigl(1+q^{-3^j}\bigr).
+\end{equation}
+In the ball $B_N$ call $d=N-\deg f$ the \emph{deficit} of $f$. The rule $d\in\gppA$
+selects a polynomial-ratio progression-free subset of $B_N$ of density tending to $m_q$,
+because a nonconstant polynomial ratio gives strictly increasing degrees in arithmetic
+progression. By \cite[Theorem~4.3]{Asada2017Subsets}, $m_q$ is optimal among sets defined
+solely by degree. Let $\beta_q$ be the supremum of the upper densities of
+polynomial-ratio progression-free subsets of $\Fq[x]$. Conjecture~6.3 of
+\cite{Asada2017Subsets} asserts $\beta_q=m_q$.
+
+Let $\gppG$ consist of the nonzero polynomials with $v_P(f)\in\gppA$ at every monic
+irreducible $P$. By \cite[Theorem~2.2]{Asada2017Subsets} this is the greedy
+progression-free set. Since valuations along a triple form an arithmetic progression at
+each prime, with a common difference of either sign under the rational-ratio convention,
+$\gppG$ contains no triple under either convention.
+
+\begin{lemma}[Counting valuations; \stU]\label[lemma]{gpp:lem:valuations}
+\gppsloppy
+Set $w_P=q^{-\deg P}$ and $p_P=(1-w_P)\sum_{a\in\gppA}w_P^a$. Among monic polynomials of
+exact degree $n$, the valuations at a fixed finite list of monic irreducibles have, as
+$n\to\infty$, independent limiting geometric laws $\gppPr(v_P=a)=(1-w_P)w_P^a$. A set
+defined by restricting the valuations at a finite set $S$ of primes to a subset of
+$\Z_{\ge0}^S$ and by requiring $v_P\in\gppA$ at every $P\notin S$ has a natural density,
+equal to the product of the limiting probability of the restriction at $S$ and of
+$C_S=\prod_{P\notin S}p_P$. In particular $\gppdens(\gppG)=\prod_Pp_P$, and
+\begin{equation}\label{gpp:eq:CS}
+ C_S\ge\prod_P(1-w_P^2)=1-q^{-1}.
+\end{equation}
+\end{lemma}
+
+\begin{proof}
+The geometric laws follow by counting the multiples of products of prime powers and then
+excluding the next powers. Unbounded valuations at a fixed finite list can be truncated
+with error tending to zero. A restriction $v_P\in\gppA$ at a prime of degree greater than
+$D$ can fail only if $P^2\mid f$; the total failure probability is at most
+$\sum_{d>D}q^dq^{-2d}$ uniformly in $n$, using the number of monic polynomials of degree
+$d$ as an upper bound for the number of primes. Thus the exact-degree limiting proportions
+exist, and summing the geometrically weighted degree layers gives the same ball density.
+For \eqref{gpp:eq:CS}, $0,1\in\gppA$ gives $p_P\ge(1-w_P)(1+w_P)$, and the product
+follows by unique factorization from $\prod_P(1-u^{\deg P})^{-1}=(1-qu)^{-1}$ at
+$u=q^{-2}$.
+\end{proof}
+
+\subsection{A counterexample to the density conjecture for polynomial ratios}\label{gpp:sec:counterexample}
+{\raggedright\sources{grh-methods-polynomial-density; grh_beyond_dirichlet_2026-11-25}}
+
+The construction changes the admissible deficits inside classes of polynomials with a
+prescribed rough part. It therefore uses the factorization of polynomials of the same
+degree, which no set defined by degree alone can do.
+
+\begin{lemma}[Replacing degree deficits within rough-factor classes; \stU]\label[lemma]{gpp:lem:replacement}
+Let $A_0\subseteq\Z_{\ge0}$ contain no nonconstant three-term arithmetic progression.
+Suppose $D\subseteq\Z_{\ge0}$ is also free of such progressions and
+$D\setminus A_0\subseteq[0,L]$ for an integer $L\ge1$. Let $\gppP$ be the set of all monic
+irreducibles in $\Fq[x]$ of degree at most $L$, and let
+\[
+ H(u)=\prod_{P\in\gppP}(1-u^{\deg P})^{-1}=\sum_{n\ge0}H_nu^n .
+\]
+If, for some $0<z<1$,
+\[
+ J(z):=\sum_{d\in D}z^d-\sum_{a\in A_0}z^a>0,
+\]
+then some integer $R\ge0$ satisfies $\Delta_R=[u^R]H(u)J(u)\ge1$, and for every such $R$
+there is one infinite polynomial-ratio progression-free set of upper density at least
+\begin{equation}\label{gpp:eq:delta}
+ (1-q^{-1})\sum_{a\in A_0}q^{-a}+(q-1)\Delta_Rq^{-R-1}c_q,
+ \qquad
+ c_q=(1-q^{-1})\prod_{P\in\gppP}(1+q^{-\deg P})^{-1}>0 .
+\end{equation}
+In particular, for $A_0=\gppA$, $\beta_q\ge m_q+(q-1)\Delta_Rq^{-R-1}c_q$.
+\end{lemma}
+
+\begin{proof}
+All series converge absolutely at $z$. The product $H(u)J(u)$ has integer coefficients and
+$H(z)J(z)>0$. If every coefficient were nonpositive, the value at $z$ would be
+nonpositive. Thus a coefficient $\Delta_R\ge1$ exists.
+
+Call a monic polynomial \emph{smooth} if all its irreducible factors belong to $\gppP$
+and \emph{rough} if none do. Here $H_n$ counts the monic smooth polynomials of degree $n$,
+by unique factorization. Every nonzero polynomial has a unique expression
+\[
+ f=cgh,\qquad c\in\Fq^\times,\quad g\text{ monic rough},\quad h\text{ monic smooth}.
+\]
+At a degree cutoff $N\ge R$, the baseline set consists of the polynomials whose deficit
+$d=N-\deg f$ lies in $A_0$. It is progression-free because degrees, and hence deficits,
+would otherwise form a nonconstant arithmetic progression. For each squarefree rough monic
+$g$ of degree $N-R$, change the rule on the entire class $\set{cgh}$ to the deficit rule
+$d\in D$, and denote the resulting finite set by $E_N$. A polynomial in this class with
+deficit $d$ has $\deg h=R-d$. Consequently each $g$ changes the number of selected
+polynomials by exactly $(q-1)\Delta_R$.
+
+A new progression cannot leave a modified class. Indeed, any progression in $E_N$
+contains an added polynomial $f=cgh$, whose deficit is in $D\setminus A_0$, hence at most
+$L$. If $f$ is the first or the middle term, a later term is still inside $B_N$, so the
+ratio has degree at most $L$ and every irreducible factor of the ratio is smooth. If $f$
+is the last term, the square of the ratio divides it; its rough part $g$ is squarefree,
+so again every irreducible factor of the ratio is smooth. In either case all three terms
+have the same monic rough part $g$, and their three distinct deficits lie in $D$. This
+contradicts the progression-free property of $D$. The argument uses the condition
+$r\in\Fq[x]$ of Conjecture~6.3.
+
+Let $G_n$ count the squarefree rough monic polynomials of degree $n$. Unique factorization
+gives
+\[
+ \sum_{n\ge0}G_nu^n=\frac{1-qu^2}{1-qu}\prod_{P\in\gppP}(1+u^{\deg P})^{-1},
+\]
+by the Euler product $\prod_P(1-u^{\deg P})^{-1}=(1-qu)^{-1}$ and
+$1+y=(1-y^2)/(1-y)$. Subtracting the pole part at $u=1/q$ leaves a rational function
+analytic on $\abs{u}<1$, and coefficient comparison gives $G_n/q^n\to c_q$. The exact
+density of $E_N$ is
+\[
+ \frac{\abs{E_N}}{q^{N+1}}
+  =(1-q^{-1})\sum_{\substack{a\in A_0\\a\le N}}q^{-a}
+      +(q-1)\Delta_R\,\frac{G_{N-R}}{q^{N+1}},
+\]
+which tends to \eqref{gpp:eq:delta}.
+
+It remains to obtain a single infinite set. Choose integers $N_j$ increasing so fast that
+\begin{equation}\label{gpp:eq:blocks}
+ N_j-j>2N_{j-1},\qquad N_j-2j>N_{j-1},\qquad N_1\ge R+2 .
+\end{equation}
+From $E_{N_j}$ keep only the polynomials of degree in $[N_j-j,N_j]$, and take the union of
+these blocks over $j$. A progression whose first two terms lie in earlier blocks than its
+last term has last degree at most $2N_{j-1}$. A progression with two terms in the block
+of its last term has first degree at least $N_j-2j$. Both possibilities contradict
+\eqref{gpp:eq:blocks}, and progressions within one block were already excluded. The
+deleted lower degrees have density at most $q^{-j-1}$ at the cutoff $N_j$, which tends to
+zero. The union therefore has upper density at least \eqref{gpp:eq:delta}.
+\end{proof}
+
+\begin{theorem}[Counterexample to Conjecture~6.3 of \cite{Asada2017Subsets}; \stU]\label{gpp:thm:counterexample}
+For every prime power $q$ there is an infinite polynomial-ratio progression-free set
+$E\subseteq\Fq[x]$ whose upper density is strictly greater than $m_q$. Consequently
+$\beta_q>m_q$.
+\end{theorem}
+
+\begin{proof}
+Apply \cref{gpp:lem:replacement} with $A_0=\gppA$, $L=480$ and $D=B$, where
+\[
+\begin{split}
+B=\{&
+0,1,4,5,11,13,14,16,20,30,37,38,41,42,48,50,51,53,57,67,\\
+&111,112,115,116,122,124,125,127,131,141,148,149,152,153,\\
+&159,161,162,164,168,178,333,334,337,338,344,346,347,349,\\
+&353,363,370,371,374,375,381,383,384,386,390,437,440,441,\\
+&444,449,450,453,455,464,467,468,471,476,477,480\}.
+\end{split}
+\]
+This set of $74$ deficits is the slice $878,\ldots,1358$, translated by $-878$, of the
+record $a(143)\le1360$ of G.~Theobald in the database of non-averaging sets
+\cite{WroblewskiNonaveraging}. Only the displayed list is used: all $\binom{74}{2}=2701$
+midpoint tests were checked exactly, so $B$ contains no nonconstant three-term arithmetic
+progression. No optimality of the list is used. Since $D=B$ is finite, on the modified
+classes the whole original rule is replaced, and no tail of $\gppA$ has to be joined to
+$B$.
+
+Take $z=127/128$ and let
+$\gppA_7=\set{\sum_{j=0}^{6}\epsilon_j3^j:\epsilon_j\in\set{0,1}}$, which has $128$
+elements and maximum $1093$. Clearing the denominator $128^{1093}$ proves the integer
+inequality
+\[
+ \sum_{b\in B}z^b-\sum_{a\in\gppA_7}z^a>\frac{16}{1000}.
+\]
+Every other element of $\gppA$ is at least $3^7=2187$, so
+\[
+ \sum_{a\in\gppA\setminus\gppA_7}z^a\le\frac{z^{2187}}{1-z}=128z^{2187}<\frac1{100000},
+\]
+again by integer multiplication. Hence
+\begin{equation}\label{gpp:eq:Jpositive}
+ J(127/128)>\frac{3}{200},
+\end{equation}
+and the lemma applies. \gppsloppy The finite inputs are verified by
+\artifact{grh-methods-polynomial-density/check_tilted.py} and, independently, by
+\artifact{grh_beyond_dirichlet_2026-11-25/code/check_density_certificate.py}.
+\end{proof}
+
+\begin{example}[A database-free witness on a digit sphere]\label[example]{gpp:ex:sphere}
+There is a fully elementary alternative certificate, which uses the same carry-free
+sphere as \code{exists_three_term_free}. Put $M=3^{20}$. For
+$u\in\set{0,1,\ldots,5}^9$ define
+\[
+ b(u)=\sum_{i=0}^{8}u_i11^i,\qquad
+ B_0=\Bigl\{b(u):\sum_{i=0}^{8}(2u_i-5)^2=105\Bigr\}.
+\]
+Each squared coordinate is $1$, $9$ or $25$, with multiplicity two. If the three counts
+are $i,j,k$, then $i+j+k=9$ and $j+3k=12$, so $(i,j,k)$ is $(1,6,2)$, $(3,3,3)$ or
+$(5,0,4)$ and
+\[
+ \abs{B_0}=2^9\left(\frac{9!}{1!\,6!\,2!}+\frac{9!}{3!\,3!\,3!}+\frac{9!}{5!\,0!\,4!}\right)
+ =1\,053\,696>2^{20}=\abs{\gppA\cap[0,M)} .
+\]
+No sum of two digits and no doubled digit exceeds $10$, so a midpoint relation in base
+$11$ holds coordinatewise, and three points of a Euclidean sphere cannot have one as the
+midpoint of the other two unless they coincide. Hence $B_0$ is progression-free, and
+$\max B_0\le(11^9-1)/2<M/2$.
+
+Set $D=B_0\cup(\gppA\cap[M,\infty))$. This remains progression-free. Two low terms cannot
+reach a high term because $2\max B_0<M$. For a possible progression $a<b<c$ with $a$ low
+and $b,c$ high, let $S=3^j$ be the largest ternary place of $c$, so that
+$S\le c\le(3S-1)/2$. If $b<S$, then $2b\le S-1<c$. If $b\ge S$, then
+$2b-c\ge(S+1)/2\ge(M+1)/2>a$. Both alternatives exclude $a+c=2b$. The difference
+\[
+ J(u)=\sum_{b\in B_0}u^b-\sum_{\substack{a\in\gppA\\a<M}}u^a
+\]
+is a polynomial with $J(1)=1\,053\,696-2^{20}>0$, hence positive at some real $z<1$, and
+\cref{gpp:lem:replacement} applies with $L=M$. \gppsloppy The cardinality and the range are verified
+by \artifact{grh-methods-polynomial-density/check_sphere.py}.
+\end{example}
+
+The failure of the conjecture does not depend on particular digit counts. It reflects a
+growth gap between two digit constructions.
+
+\begin{proposition}[Any sparse deficit rule can be improved; \stU]\label[proposition]{gpp:prop:growth}
+Let $A_0\subseteq\Z_{\ge0}$ contain no nonconstant three-term arithmetic progression and
+satisfy $\abs{A_0\cap[0,x]}\ll(1+x)^\alpha$ for some $0\le\alpha<1$. The deficit rule
+$d\in A_0$ has limiting ball density $(1-q^{-1})\sum_{d\in A_0}q^{-d}$, and for every $q$
+there is a polynomial-ratio progression-free set of strictly greater upper density. For
+$A_0=\gppA$ one can take $\alpha=\log_32$.
+\end{proposition}
+
+\begin{proof}
+For $X\ge1$, Abel summation gives $\sum_{d\in A_0}e^{-d/X}\ll_\alpha X^\alpha$, with a
+constant depending also on the counting bound. Choose an integer $h\ge2$ so large that
+$h>(2h-1)^\alpha$. In dimension $n$ read the digits $0,\ldots,h-1$ in base $2h-1$ and set
+$X=(2h-1)^n$. One squared-norm level contains at least $h^n/(1+n(h-1)^2)$ vectors. Its
+integer encodings form a progression-free set $B\subset[0,X/2]$ by the carry-free
+midpoint argument of \cref{gpp:ex:sphere}. Consequently
+\[
+ \sum_{d\in B}e^{-d/X}\ge\frac{e^{-1/2}h^n}{1+n(h-1)^2}>\sum_{d\in A_0}e^{-d/X}
+\]
+for all sufficiently large $n$. Apply \cref{gpp:lem:replacement} with $D=B$,
+$L=\max B$ and $z=e^{-1/X}$. For the ternary set there are $2^k$ permitted integers
+below $3^k$, and already $h=4$ satisfies $4>7^{\log_32}$.
+\end{proof}
+
+\subsection{An explicit margin}\label{gpp:sec:margin}
+{\raggedright\sources{grh_beyond_dirichlet_2026-11-25; grh-methods-polynomial-density}}
+
+The proof of \cref{gpp:thm:counterexample} does not exhibit the first positive
+coefficient $\Delta_R$. A variance bound for the degree of a random smooth polynomial
+locates one in an explicit range and gives an explicit lower bound for $\beta_q-m_q$.
+
+\begin{lemma}[Positive coefficient from a concentrated generating function; \stU]\label[lemma]{gpp:lem:concentration}
+Let $H(u)=\sum_{n\ge0}H_nu^n$ have nonnegative coefficients and $0<H(z)<\infty$ for some
+$0<z<1$. Define a random variable $X$ by $\gppPr(X=n)=H_nz^n/H(z)$. Suppose
+$J(u)=P(u)-Q(u)$, where $P,Q$ have nonnegative coefficients, all exponents in $P$ are at
+most $L$, and
+\[
+ J(z)>\gamma>0,\qquad P(z)\le C .
+\]
+If $\gppE X\le U$, $\gppVar X\le V$, and $t>0$ satisfies $CV/t^2<\gamma$, then for every
+integer $R\ge L+U+t$,
+\[
+ \sum_{n=0}^R[u^n]\bigl(H(u)J(u)\bigr)\frac{z^n}{H(z)}>0 .
+\]
+In particular some coefficient of $HJ$ through $R$ is positive; if the coefficients are
+integers, some coefficient is at least one.
+\end{lemma}
+
+\begin{proof}
+The positive contribution omitted beyond $R$ is
+\[
+ \sum_{d\le L}[u^d]P(u)\,z^d\,\gppPr(X>R-d)\le P(z)\gppPr(X>U+t)\le\frac{CV}{t^2}
+\]
+by Chebyshev's inequality, since $\gppE X\le U$. Omitting the negative tail can only
+increase the truncated signed sum. Its normalized value therefore exceeds
+$\gamma-CV/t^2>0$.
+\end{proof}
+
+Take $z=127/128$, $L=480$ and the $74$-point set $B$ of \cref{gpp:thm:counterexample}.
+Write $I_q(d)$ for the number of monic irreducibles of degree $d$ over $\Fq$, computed
+recursively from $\sum_{e\mid d}eI_q(e)=q^d$. Under the law of
+\cref{gpp:lem:concentration} for the smooth generating function $H$ of
+\cref{gpp:lem:replacement}, the exponents of the different irreducibles are independent
+geometric random variables with ratios $z^d$. Consequently
+\[
+ \gppE X=\sum_{d=1}^{480}I_q(d)\frac{dz^d}{1-z^d},\qquad
+ \gppVar X=\sum_{d=1}^{480}I_q(d)\frac{d^2z^d}{(1-z^d)^2}.
+\]
+Define the integers
+\begin{align}
+ U_q^{\circ}&=\sum_{d=1}^{480}\ceil*{\frac{I_q(d)\,d\,127^d}{128^d-127^d}},\qquad
+ V_q^{\circ}=\sum_{d=1}^{480}\ceil*{\frac{I_q(d)\,d^2\,127^d128^d}{(128^d-127^d)^2}},
+ \notag\\
+ R_q^*&=480+U_q^{\circ}+\ceil*{\sqrt{7400\,V_q^{\circ}}}. \label{gpp:eq:Rstar}
+\end{align}
+Termwise ceilings give $\gppE X\le U_q^{\circ}$ and $\gppVar X\le V_q^{\circ}$.
+
+\begin{theorem}[Explicit search cutoff and margin; \stU]\label{gpp:thm:cutoff}
+For the $74$-point witness some integer $R\le R_q^*$ satisfies $[u^R]H(u)J(u)\ge1$. In
+particular, with $c_q$ as in \eqref{gpp:eq:delta} for $L=480$,
+\begin{equation}\label{gpp:eq:explicitgap}
+ \beta_q\ge m_q+(q-1)c_q\,q^{-R_q^*-1}>m_q .
+\end{equation}
+\end{theorem}
+
+\begin{proof}
+Use $P(u)=\sum_{b\in B}u^b$ and $Q(u)=\sum_{a\in\gppA}u^a$. By
+\eqref{gpp:eq:Jpositive} one may take $\gamma=3/200$, and $P(z)\le74$. Put
+$t=\ceil{\sqrt{7400V_q^{\circ}}}$. Then $74V_q^{\circ}/t^2\le1/100$, and the normalized
+truncated sum is greater than $3/200-1/100=1/200>0$. \Cref{gpp:lem:concentration} provides
+a positive integer coefficient with index at most $R_q^*$, and \eqref{gpp:eq:delta}
+proves \eqref{gpp:eq:explicitgap}.
+\end{proof}
+
+\begin{corollary}[The binary margin; \stU]\label[corollary]{gpp:cor:binary}
+One has $\beta_2>m_2+2^{-R_2^*-13}>m_2+2^{-2^{476}}$.
+\end{corollary}
+
+\begin{proof}
+Exact integer arithmetic gives a value of $R_2^*$ of bit length $476$ with
+$R_2^*+13<2^{476}$; the integer is recorded in
+\artifact{grh_beyond_dirichlet_2026-11-25/data/density_certificate.json}. Using
+$I_2(d)\le2^d/d$ and $\log(1+t)\le t$,
+\[
+ c_2=\frac12\prod_{d=1}^{480}(1+2^{-d})^{-I_2(d)}
+ \ge\frac12\exp\Bigl(-\sum_{d=1}^{480}\frac1d\Bigr)\ge\frac1{960e}>2^{-12},
+\]
+since $\sum_{d\le480}1/d\le1+\log480$ and $e<3$. The additional density in
+\eqref{gpp:eq:explicitgap} is $c_2\,2^{-R_2^*-1}>2^{-R_2^*-13}$.
+\end{proof}
+
+The certified cutoffs satisfy $R_q^*<2^{b}$ with
+\[
+\begin{array}{c|ccccc}
+ q&2&3&4&5&7\\\hline
+ b&476&756&956&1110&1343
+\end{array}
+\]
+all computed with integers. The margin remains extraordinarily small: the proof shows
+that a positive coefficient exists within an explicit range and does not enumerate an
+extremal set.
+
+\subsection{Finite optimization problems converging to the supremum}\label{gpp:sec:supremum}
+{\raggedright\sources{grh-methods-polynomial-density}}
+
+For the integers, McNew computes extremal upper densities by optimizing over a finite set
+of primes and then enlarging it \cite[Theorems~4.2 and~5.1]{McNew2015Sets}. The following
+adaptation to all irreducibles of degree at most $T$ bounds the approximation error in
+terms of the degree cutoff.
+
+\begin{theorem}[Computability and attainment of $\beta_q$; \stU]\label{gpp:thm:supremum}
+Fix $q$. For an integer $T\ge1$ let $S$ be the set of all monic irreducibles of degree at
+most $T$, and let $J_S(t)$ be the largest size of a polynomial-ratio progression-free
+subset of the monic $S$-smooth polynomials of degree at most $t$. Put
+\[
+ U_T=(1-q^{-1})\prod_{P\in S}(1-q^{-\deg P})\sum_{t\ge0}J_S(t)q^{-t},\qquad
+ v_T=\frac{1-q^{-1}}{\prod_{P\in S}(1-q^{-2\deg P})}.
+\]
+Then
+\[
+ v_TU_T\le\beta_q\le U_T,\qquad
+ 0\le U_T-\beta_q\le1-v_T\le\frac{q^{-T}}{q-1}.
+\]
+Thus $\beta_q=\lim_{T\to\infty}U_T$ is a computable real number. Moreover the supremum
+$\beta_q$ is attained as the upper density of one progression-free set. The same
+statements hold under the rational-ratio convention, if that convention is used both for
+the supremum and for every $J_S(t)$.
+\end{theorem}
+
+\begin{proof}
+For the upper bound, fix the scalar and the monic $S$-rough part $g$ of a polynomial. At
+cutoff $N$, at most $J_S(N-\deg g)$ smooth factors can occur in that class. For the lower
+bound, restrict the allowed $g$ to be squarefree and use a maximizing subset independently
+in each class, with the same choice for all scalars at fixed $g$. In any allowed
+progression the valuations outside $S$ are three equally spaced members of $\set{0,1}$,
+hence constant. The three monic parts therefore lie in one class, where their quotients
+would give a prohibited progression between smooth factors. This also handles signed
+valuation steps in the rational-ratio version, including nonconstant ratios of degree
+zero.
+
+The proportion of monic polynomials of degree $n$ coprime to all primes in $S$ tends to
+$c=\prod_{P\in S}(1-q^{-\deg P})$, by finite inclusion--exclusion. The proportion of those
+that are also squarefree tends to $cv_T$, by the generating function in the proof of
+\cref{gpp:lem:replacement}. In the normalized count the classes with $\deg g=N-t$
+therefore contribute at most $(1-q^{-1})c\,J_S(t)q^{-t}$ in the limit, and the lower
+construction attains the same expression times $v_T$. Dominated convergence applies since
+$J_S(t)\le(t+1)^{\abs{S}}$, by counting the possible exponent vectors. Also $U_T\le1$, by
+applying the identical count with all smooth factors allowed. Finally
+\[
+ 1-v_T=1-\prod_{P\notin S}(1-q^{-2\deg P})\le\sum_{d>T}q^dq^{-2d}=\frac{q^{-T}}{q-1}.
+\]
+To pass from the finite constructions to one infinite set, use the degree blocks
+\eqref{gpp:eq:blocks}. A rational-ratio progression with nonconstant degrees can be
+ordered by increasing degree, by reversing its ratio if necessary, and triples of equal
+degree are confined to one block.
+
+For each fixed $T$, finite enumeration of admissible sets computes $J_S(t)$ exactly, and
+truncating the series at $t=L$ costs at most the explicit tail
+$\sum_{t>L}(t+1)^{\abs{S}}q^{-t}$. This determines $\beta_q$ to any prescribed error.
+
+For attainment, at stage $j$ take $T=j$ and choose $N_j$ so large that the squarefree
+construction has density at least $v_jU_j-1/j$ in its ball and that
+\eqref{gpp:eq:blocks} holds. Keep its top $j+1$ degree layers. The union is
+progression-free and has upper density at least
+$\lim_{j\to\infty}(v_jU_j-1/j-q^{-j-1})=\beta_q$; equality follows from the definition of
+$\beta_q$.
+\end{proof}
+
+\subsection{Upper bounds for polynomial ratios}\label{gpp:sec:upper}
+{\raggedright\sources{grh-progression-densities-and-cubic-prime-race; mcnew-density-and-dirichlet-grh; grh-methods-polynomial-density}}
+
+Let $r_3(n)$ be the largest size of a subset of $\set{0,\ldots,n-1}$ free of nonconstant
+three-term arithmetic progressions, with $r_3(0)=0$. Write $z=1/q$. The one-prime upper
+bound of \cite{Asada2017Subsets} is
+\[
+ U_q=(q-1)\sum_{n\ge1}\bigl(r_3(n)-r_3(n-1)\bigr)q^{-n}.
+\]
+A second linear prime forces strict losses against this bound, which answers
+Question~6.2 of \cite{Asada2017Subsets}.
+
+\begin{theorem}[Two-prime upper bound; \stU]\label{gpp:thm:twoprime}
+For every prime power $q$,
+\[
+ \beta_q\le U_q-(1-z)^2(z^8+z^{19}+z^{29}).
+\]
+In particular $\beta_2\le907739729/1073741824<0.845398501494$.
+\end{theorem}
+
+\begin{proof}
+Choose distinct monic linear primes $P,Q$ and a polynomial-ratio progression-free set.
+Up to degree $N$, the nonzero polynomials of the form $bP^iQ^j$, for fixed $b$ coprime
+to $PQ$ with its leading coefficient retained, have indices in
+\[
+ T_L=\set{(i,j)\in\Z_{\ge0}^2:i+j<L},\qquad L=N-\deg b+1 .
+\]
+In each row and each column the selected positions are progression-free in the varying
+index, since a nonconstant progression on an axis gives a polynomial ratio. Summing the
+row bounds permits $R_L=\sum_{k=1}^Lr_3(k)$ positions, and the same bound is obtained by
+columns. Thus the total deficiency $R_L$ minus the number of selected positions can be
+computed either by summing row deficiencies or by summing column deficiencies.
+
+Suppose at least $h$ deficiencies are forced in $T_K$. For $L\ge K$, the last $K$ rows of
+$T_L$ form a translated $T_K$, and so do the last $K$ columns; their lengths are unchanged
+by translation. Consequently the deficiency of $T_L$ is at least $h$, and if it equals $h$
+then every row and every column indexed below $L-K$ attains its maximum. For $K=0$ take
+$h=0$. The following facts about intervals, with indices starting at zero, give three
+contradictions to equality.
+\[
+\begin{array}{c|c|c|c|c}
+ L&K&i&\text{row }i:\ \text{all maxima include }0&
+         \text{column }0:\ \text{all maxima omit }i\\ \hline
+ 9&0&4 &r_3(5)=4&r_3(9)=5\\
+ 20&9&7&r_3(13)=7&r_3(20)=9\\
+ 30&20&4&r_3(26)=11&r_3(30)=12
+\end{array}
+\]
+In each line $i<L-K$, so the two extremizers would disagree at the position $(i,0)$.
+Starting with $T_0$ empty and applying the argument successively shows that the
+deficiency is at least $1,2,3$ at the displayed lengths. Embedding these three tips in
+longer triangles gives a penalty of
+$\mathbf 1_{L\ge9}+\mathbf 1_{L\ge20}+\mathbf 1_{L\ge30}$ in each fibre.
+
+\gppsloppy The interval entries are established by a finite enumeration. Generate the increasing
+progression-free subsets by appending a permitted index $t$ and removing from the future
+choices each $2t-a$ with $a$ already selected; this visits every progression-free subset
+exactly once. Group by maximum and size, then take unions and intersections of the masks
+of maximum cardinality. The program
+\artifact{grh-progression-densities-and-cubic-prime-race/code/triangle_check.py} verifies
+the table with integer arithmetic. For the first line one checks directly that the only
+set of size four on five positions is $\set{0,1,3,4}$ and that the sets of size five on
+nine positions are $\set{0,1,3,7,8}$, $\set{0,1,5,6,8}$, $\set{0,1,5,7,8}$ and
+$\set{0,2,3,7,8}$.
+
+To sum the row bounds, merge each row into a one-prime fibre with $P$ as the varying
+prime and $P$-free base $bQ^j$. After division by $q^{N+1}$, the number of such bases of
+degree $N-k$ tends to $(1-z)^2z^k$ at fixed $k$, by counting the polynomials of degree
+$N-k$ and excluding the multiples of $P$. Their contribution is bounded in the limit by
+\[
+ (1-z)^2\sum_{k\ge0}r_3(k+1)z^k=U_q,
+\]
+where the equality follows by summing differences and domination follows from
+$r_3(k+1)\le k+1$. Each penalty for a threshold $L\ge s$ is counted once for each $b$
+coprime to $PQ$ of degree at most $N+1-s$; by inclusion--exclusion the normalized count
+tends to $(1-z)^2z^{s-1}$. This proves the bound. For the numerical value the checker
+computes $r_3(n)$ through $n=32$ and bounds the remaining increments by one, giving a
+tail of at most $2^{-32}$ at $q=2$.
+\end{proof}
+
+The local calculation uses only ratios that are powers of one of two distinct linear
+primes. Together with \cref{gpp:cor:binary},
+\[
+ m_2+2^{-2^{476}}<\beta_2\le\frac{907739729}{1073741824}<0.845398501494,
+ \qquad m_2=0.8453979555\ldots,
+\]
+so $0<\beta_2-m_2<5.46\cdot10^{-7}$.
+
+The next estimate locates the size of the discrepancy as the field grows.
+
+\begin{theorem}[The supremum at large field size; \stU]\label{gpp:thm:largeq}
+For every prime power $q\ge16$,
+\[
+ 0<\beta_q-m_q\le(2q+1)q^{-q+14}.
+\]
+In particular $\beta_q$ and $m_q$ agree to every fixed order in $1/q$ as $q\to\infty$
+through prime powers, and the upper limit of $\log(\beta_q-m_q)/(q\log q)$ is at most
+$-1$.
+\end{theorem}
+
+\begin{proof}
+The lower bound is \cref{gpp:thm:counterexample}. Put $K=q$, fix a degree cap $N\ge K$
+and a progression-free set $E$. Call the set of polynomials of degree $N-k$ layer $k$,
+and call a layer preferred if $k\in\gppA$. For each $k\in[0,K]\setminus\gppA$, form $a$
+and $b$ by replacing every ternary digit $2$ of $k$ by $0$ and by $1$, respectively,
+keeping the other digits. Then $a,b\in\gppA$, $a<b<k$ and $k+a=2b$. Set $d=k-b$. For
+every $f\in E$ on layer $k$ and every monic irreducible $P$ of degree $d$, at least one
+of $fP$ on layer $b$ and $fP^2$ on layer $a$ is missing from $E$. Assign weight
+$1/I_q(d)$ to one such missing polynomial. The weights sent by each $f$ sum to one. All
+three polynomials have the same leading coefficient, so the count also applies to sets
+which distinguish associates.
+
+For a nonzero polynomial $g$ let $\omega_d(g)$ be the number of its distinct monic
+irreducible factors of degree $d$. For fixed $k$ and target $g$, at most $\omega_d(g)$
+choices of $P$ can send weight to $g$; the layer of $g$ determines whether $f$ is
+recovered as $g/P$ or as $g/P^2$. Moreover a target layer $h$ and a ratio degree $d$
+determine at most one source layer $k$. Indeed the ternary digits of $d$ are ones
+precisely where $k$ has twos. On this nonempty set of positions $b$ has only ones and $a$
+has only zeros. Thus $h$ cannot occur in both roles for the same $d$, and the role fixes
+$k$ as $h+d$ or $h+2d$.
+
+Choose
+\[
+ \theta_1=1-\frac8q,\qquad\theta_d=\frac{8}{qd(d-1)}\quad(d\ge2),\qquad
+ \sum_{d\ge1}\theta_d=1 .
+\]
+Call a pair $(k,g)$ exceptional if $\omega_d(g)>\theta_dI_q(d)$. Across all its
+nonexceptional pairs, $g$ receives at most one unit of weight, by the uniqueness of the
+source layer for each $d$. Hence the missing elements on preferred layers account for all
+nonexceptional weight. The weight at an exceptional pair is at most one.
+
+For $g$ uniform among the polynomials of a prescribed degree $n$, also with prescribed
+leading coefficient, the probability that each of $t$ prescribed distinct primes of
+degree $d$ divides $g$ is at most $q^{-dt}$. Taking $t=\floor{\theta_dI_q(d)}+1$ and
+using the union bound gives
+\[
+ \gppPr\bigl(\omega_d(g)\ge t\bigr)\le\binom{I_q(d)}{t}q^{-dt}.
+\]
+For $d=1$ we have $I_q(1)=q$ and $t=q-7$, and the probability is at most
+$\binom q7q^{-(q-7)}\le q^{-q+14}$. For $d\ge2$,
+$dI_q(d)\ge q^d-\sum_{j=1}^{\floor{d/2}}q^j\ge q^d/2$, since every element of
+$\F_{q^d}$ of degree less than $d$ over $\Fq$ lies in a proper subfield of degree at most
+$d/2$. Hence
+\[
+ t>\frac{4q^{d-1}}{d^2(d-1)}\ge q,\qquad
+ \frac{e}{\theta_dq^d}=\frac{e\,d(d-1)}{8q^{d-1}}\le\frac{e}{4q}<\frac1q .
+\]
+Both bounds hold at $d=2$; when $d$ increases by one, the denominators $d^2(d-1)$ and
+$d(d-1)$ grow by factors at most $9/2$ and $3$, respectively, while $q\ge16$. Using
+$\binom{I}{t}\le(eI/t)^t$ now bounds the probability by $q^{-q}$ for $d\ge2$.
+
+Write $B_N^\times$ for the set of nonzero polynomials of degree at most $N$. Across all
+$k\le K$ the exceptional weight is at most $2q\abs{B_N^\times}q^{-q+14}$. The proportion
+of $B_N^\times$ on layers deeper than $K$ is $(q^{N-K}-1)/(q^{N+1}-1)\le q^{-K-1}$. The
+count of $E$ is at most the full count on preferred layers, plus the exceptional weight
+and this allowance for deeper layers: every remaining member on a nonpreferred layer has
+one unit of weight, which has been charged against a missing element of a preferred
+layer. The proportion of $B_N^\times$ on preferred layers tends to
+$(1-q^{-1})\sum_{j\in\gppA}q^{-j}=m_q$. Taking the upper limit in $N$, then the supremum
+over $E$, and using $K=q$ proves the bound.
+\end{proof}
+
+\subsection{Natural density, and rational-function ratios}\label{gpp:sec:natural}
+{\raggedright\sources{grh-progression-densities-and-cubic-prime-race}}
+
+The benchmark for natural density is the greedy set $\gppG$ of
+\cref{gpp:sec:conventions}. A finite change in the allowed joint valuations at a few
+primes gives a larger natural density, which answers Question~6.1 of
+\cite{Asada2017Subsets}; the precedent is McNew's exchange at $2,3,5$ over the integers
+\cite[Theorem~3.3]{McNew2015Sets}.
+
+Let $S$ be a finite nonempty set of distinct monic irreducibles and put $k=\abs{S}$.
+Retain the constraint $v_P(f)\in\gppA$ at every $P\notin S$. For the coordinates indexed
+by $S$, replace $\gppA^k$ by
+\[
+ D_S=\set{u\in\gppA^k:\min_iu_i=0}\ \cup\
+ \bigl(\set{1,2}^k\setminus\set{(1,\ldots,1)}\bigr),
+\]
+and call the resulting set of polynomials $E_S$. Deleting the entire positive part of
+$\gppA^k$ makes it possible to account for every higher-power conflict in one step.
+
+\begin{lemma}[\stU]\label[lemma]{gpp:lem:ES}
+The set $E_S$ contains no triple with a nonconstant polynomial ratio.
+\end{lemma}
+
+\begin{proof}
+The common valuation step of a polynomial ratio is nonnegative at each prime. All its
+coordinates outside $S$ vanish since $\gppA$ is progression-free. Inside $S$ write the
+three vectors as $u,u+h,u+2h$ with $h\ge0$, $h\ne0$. If the final point has a zero
+coordinate, all three points have a zero and belong to $\gppA^k$, which is impossible.
+Otherwise the final point is in the new cube. At every moving coordinate its final value
+is $2$, its initial value $0$ and its middle value $1$. The initial point therefore
+belongs to $\gppA^k$. Any fixed coordinate must be $1$, since its value lies in both
+$\gppA$ and $\set{1,2}$. The middle point is then the deleted all-ones vector.
+\end{proof}
+
+\begin{theorem}[An explicit exchange beating the greedy set in natural density; \stU]\label{gpp:thm:natural}
+For every prime power $q$ an explicit finite set $S$ gives
+$\gppdens(E_S)>\gppdens(\gppG)$. With $T(w)=\sum_{a\in\gppA,\ a\ge1}w^{a-1}$ and the
+notation of \cref{gpp:lem:valuations}, the exact gain is
+\begin{equation}\label{gpp:eq:gain}
+ \gppdens(E_S)-\gppdens(\gppG)=C_S\prod_{P\in S}(1-w_P)w_P
+ \left[\prod_{P\in S}(1+w_P)-1-\prod_{P\in S}T(w_P)\right].
+\end{equation}
+One may take all $q$ monic linear polynomials when $q\ge4$, the set
+$\set{x,x+1,x^2+x+1,x^3+x+1}$ when $q=2$, and the three monic linear polynomials together
+with $x^2+1$ when $q=3$.
+\end{theorem}
+
+\begin{proof}
+Both densities exist by \cref{gpp:lem:valuations}. The two terms subtracted and added
+inside the brackets of \eqref{gpp:eq:gain} are the weights of the positive cube with its
+all-ones point omitted and of the old positive orthant, after division by the weight of
+the all-ones point.
+
+For $q\ge4$ and all $q$ monic linears: the first two positive members of $\gppA$ are $1$
+and $3$, so $T(w)\le1+w^2/(1-w)$ and
+\[
+ T(1/q)^q\le e^{1/(q-1)}\le e^{1/3}<1.4,\qquad
+ (1+1/q)^q-1\ge(5/4)^4-1>1.44 ;
+\]
+the lower bound follows by expanding the binomial, since each term of fixed degree in
+$(1+1/q)^q$ increases with $q$. For $q=2,3$ use the sharper bound
+$T(w)\le1+w^2+w^3+w^8/(1-w)$, which follows from $\gppA\cap[1,8]=\set{1,3,4}$, the bound
+\eqref{gpp:eq:CS}, and the degree multisets in the table. Substitution in
+\eqref{gpp:eq:gain} gives the strict lower bounds shown, rounded down; the line for $q=4$
+illustrates the size of the improvement.
+\begin{center}
+\begin{tabular}{@{}clll@{}}\toprule
+$q$ & Degrees in $S$ & Bracket in \eqref{gpp:eq:gain} exceeds & Density gain exceeds\\\midrule
+2 & $1,1,2,3$ & $0.06622$ & $0.00004244$\\
+3 & $1,1,1,2$ & $0.09852$ & $0.00007119$\\
+4 & $1,1,1,1$ & $0.09023$ & $0.00008364$\\\bottomrule
+\end{tabular}
+\end{center}
+\gppsloppy The displayed quadratic and cubic polynomials have no root in their ground fields. The
+table is reproduced with rational arithmetic by
+\artifact{grh-progression-densities-and-cubic-prime-race/code/check_density.py}.
+\end{proof}
+
+\begin{remark}\label[remark]{gpp:rem:mixed}
+The monotonicity of the valuation step is essential in \cref{gpp:lem:ES}. For two
+selected coordinates the three points $(0,3),(1,2),(2,1)$ all obey the new local rule and
+have the mixed common step $(1,-1)$; in larger dimension append coordinates constantly
+equal to $1$. Thus $E_S$ is not free of rational-ratio triples, and that convention needs
+separate constructions: \cref{gpp:thm:rational} below, and the one-digit exchange of
+\cref{gpi:prop:poly-greedy}.
+\end{remark}
+
+The bare existence of a polynomial-ratio progression-free set of natural density greater
+than $\gppdens(\gppG)$ also follows from \cref{gpi:prop:poly-greedy}, which produces such a
+set under the stronger rational-ratio convention; every rational-ratio progression-free
+set is polynomial-ratio progression-free. That construction needs a linear marker and
+satellite primes of total weight exceeding $q^2+q-1$ and comes with no numerical gain.
+\Cref{gpp:thm:natural} is retained for what it adds under the polynomial-ratio convention
+of Question~6.1: the exchange uses only $\max(4,q)$ primes, its gain is given exactly by
+\eqref{gpp:eq:gain}, and the table gives certified numerical gains. Neither result
+implies the other.
+
+For the rational-ratio convention fix a monic linear $P$. Every nonzero polynomial has a
+unique expression $cgP^e$ with $c\in\Fq^\times$, $g$ monic, $P\nmid g$ and $e\ge0$. Call
+$g$ \emph{admissible} when all its valuations belong to $\gppA$, and let $g_n$ be the
+number of admissible cofactors of degree $n$. \Cref{gpp:lem:valuations} gives
+\[
+ g_n/q^n\longrightarrow c_P=(1-q^{-1})\prod_{Q\ne P}p_Q>0 .
+\]
+For every admissible $g$ choose a set $I_g\subset\Z_{\ge0}$ free of nonconstant
+three-term arithmetic progressions, and select exactly the polynomials $cgP^e$ with $g$
+admissible and $e\in I_g$. Every such set is free of rational-ratio triples. Indeed a
+rational-function ratio has signed valuation steps; the restrictions outside $P$ force
+all of those steps to be zero, so the three terms have the same monic cofactor $g$, and a
+nonconstant ratio would have to change the $P$-exponent by a nonzero step.
+
+\begin{theorem}[Rational-function ratios with one free linear prime; \stU]\label{gpp:thm:rational}
+Let $s(t)=r_3(t+1)$ be the largest size of a three-term-progression-free subset of
+$\set{0,\ldots,t}$. In the family just described, the maximum attainable upper density is
+\[
+ c_P(1-q^{-1})\sum_{t\ge0}q^{-t}s(t).
+\]
+This maximum exceeds $\gppdens(\gppG)$ by at least
+$c_P(1-q^{-1})q^{-8}\ge(1-q^{-1})^3q^{-8}$, although the greedy restriction is relaxed at
+one linear prime only.
+\end{theorem}
+
+\begin{proof}
+At cutoff $N$ any admissible $g$ of degree $N-t$ permits at most $s(t)$ exponents. The
+normalized count is at most $(q-1)q^{-N-1}\sum_{t\le N}g_{N-t}s(t)$. For fixed $t$ the
+summand with its factor tends to $c_P(1-q^{-1})q^{-t}s(t)$, and the terms are dominated
+by $(1-q^{-1})q^{-t}(t+1)$, which is summable. This proves the upper bound.
+
+To realize it in a single set, choose $N_j=2^{j+4}$ for $j\ge1$ and $N_0=-1$. For each
+cofactor with $N_{j-1}<\deg g\le N_j$, let $I_g$ be a progression-free maximizer in
+$[0,N_j-\deg g]$, with ties broken lexicographically. This defines each fibre once. At
+the cutoff $N_j$ the current block attains the upper bound term by term for
+$0\le t<N_j-N_{j-1}$, and the bound on the omitted normalized tail tends to zero.
+Therefore the upper density equals the claimed maximum.
+
+For the greedy set the same counting identity holds with $\abs{\gppA\cap[0,t]}$ in place
+of $s(t)$, since every fibre is $\gppA$. All differences are nonnegative. At $t=8$ the
+set $\gppA$ selects only $0,1,3,4$, whereas $\set{0,1,3,7,8}$ is progression-free of size
+five. This single summand gives the stated gain, and $\prod_{Q\ne P}p_Q\ge1-q^{-1}$ by
+\eqref{gpp:eq:CS}.
+\end{proof}
+
+For $q=2$ the guaranteed gain is $1/2048$. The limits in \cref{gpp:thm:rational} are
+upper densities along cutoffs, whereas \cref{gpp:thm:natural} gives a natural density.
+In particular the existence clause of Question~6.4 of \cite{Asada2017Subsets} has a
+positive answer. That clause, taken alone, is also a consequence of
+\cref{gpi:prop:poly-greedy}, which gives a rational-ratio progression-free set whose
+natural density exceeds $\gppdens(\gppG)$, and of \cref{gpi:thm:poly-gap}, which bounds
+the supremum $u_q$ of the upper densities of such sets from below by the supremum $b_q$ of
+their natural densities plus an explicit positive quantity, greater than $0.003660$ for
+$q=2$; since $b_q\ge\gppdens(\gppG)$ this is a larger excess than $1/2048$.
+\Cref{gpp:thm:rational} is not implied by those results: it determines the exact optimum
+of the family in which the greedy condition is retained outside one linear prime. By
+\cref{gpp:thm:supremum} the unrestricted rational-ratio supremum $u_q$ is the limit of the
+finite optimization problems $U_T$ formed with the rational-ratio convention; the bounds
+$v_TU_T\le u_q\le U_T$ are also proved in \cref{gpi:thm:poly-gap}. For polynomial ratios,
+the supremum of the natural densities is strictly smaller than $\beta_q$
+(\cref{gpi:rem:poly-ratio}).
+
+\subsection{Finite coefficient rings: local rings with square-zero maximal ideal and their products}\label{gpp:sec:rings}
+{\raggedright\sources{grh_method_transfers; grh_method_transfers_graph_towers_and_finite_rings; grh_method_transfers_research}}
+
+Question~6.5 of \cite{Asada2017Subsets} asks how the density problem changes when another
+finite ring replaces the coefficient field. The nonunit-ratio convention of that paper is
+retained: ratios are polynomials that are not units. A finite product of rings shows a new
+feature, since multiplication by $x$ can be switched on independently in any subset of the
+factors; nilpotents show another, since the ratio and its square then act differently.
+
+All rings are commutative with identity, and local rings have a nonzero residue field. For
+a finite ring $R$ put $B_n(R)=\set{f\in R[x]:\deg f\le n}$, including zero, with
+$\deg0=-\infty$; thus $\abs{B_n(R)}=\abs{R}^{n+1}$. For an integer $L\ge2$ call a set
+\emph{admissible} if it contains no three distinct polynomials of the form
+\begin{equation}\label{gpp:eq:pattern}
+ f,\quad r^af,\quad r^{a+b}f,\qquad
+ r\in R[x]\text{ a nonunit},\quad a,b\ge1,\quad a+b\le L .
+\end{equation}
+Thus $L=2$ is the progression problem of \cite{Asada2017Subsets}. Write $\Delta_L(R)$ for
+the supremum over admissible $E$ of $\limsup_{n\to\infty}\abs{E\cap B_n(R)}/\abs{R}^{n+1}$,
+and $\Delta(R)=\Delta_2(R)$. The proofs work also if triples with repeated terms are
+forbidden: in the lower-bound constructions polynomials with a zero residue component are
+discarded, and all triples used in upper bounds are distinct.
+
+\begin{theorem}[Criterion for growing products; \stU]\label{gpp:thm:local}
+Let $(A_i,\gppm_i)$ be finite local rings with $\gppm_i^2=0$. Write
+$q_i=\abs{A_i/\gppm_i}$, $Q_i=\abs{A_i}$ and $R_s=\prod_{i=1}^sA_i$. Define
+\[
+ w_i=\begin{cases}Q_i^{-2},&q_i\text{ even},\\(q_iQ_i)^{-1},&q_i\text{ odd}.\end{cases}
+\]
+For every fixed $L\ge2$ the limit $\lim_{s\to\infty}\Delta_L(R_s)$ exists, and it is
+positive if and only if $\sum_iw_i<\infty$. For one local factor, uniformly in $L$,
+\[
+ \gamma_iw_i\le1-\Delta_L(A_i)\le w_i,\qquad
+ \gamma_i=\begin{cases}1-Q_i^{-1},&q_i\text{ even},\\(1-q_i^{-1})^2,&q_i\text{ odd}.\end{cases}
+\]
+For every finite $s$,
+\begin{equation}\label{gpp:eq:productbound}
+ \prod_{i=1}^s(1-w_i)\le\Delta_L(R_s)\le\gppE\,\alpha_K,\qquad
+ K=\sum_{i=1}^sX_i,
+\end{equation}
+where the $X_i$ are independent Bernoulli variables with $\gppPr(X_i=1)=3\gamma_iw_i$ and
+$\alpha_k$ is the largest density of a subset of the ternary word cube $\set{0,1,2}^k$
+containing no combinatorial line, with $\alpha_0=1$.
+\end{theorem}
+
+The quantities $Q_i$ and $q_i$ measure different features. At fixed odd $q_i=q$ the
+density loss has order $Q_i^{-1}$, whereas at fixed even $q$ it has order $Q_i^{-2}$. For
+example take $A_i=\Fq\oplus V_i$ with $V_i^2=0$ and
+$1+\dim V_i=\max(2,\ceil{\log_q(i+1)})$. Then $Q_i$ is comparable to $i+1$ for fixed $q$,
+and the limiting extremal density is positive for $q=2$ and zero for $q=3$. The ring
+$\Z/p^2\Z$ is covered with $q=p$ and $Q=p^2$, and a finite field is covered with $Q=q$
+and $w=q^{-2}$, so that for products of fields the criterion is the convergence of
+$\sum_iq_i^{-2}$; in particular $\Delta(\Fq^b)\to0$ as $b\to\infty$ for fixed $q$.
+
+\begin{proof}
+\emph{Degree restrictions at a single factor.} Let $(A,\gppm)$ be one of the factors,
+$k=A/\gppm$, $q=\abs{k}$, $Q=\abs{A}$, and write $\bar f$ for coefficientwise reduction.
+A polynomial is a unit if and only if its reduction is a nonzero constant: lift that
+constant to a unit and invert the remaining nilpotent correction. A polynomial with
+reduction of degree $e\ge1$ can be written $r=t+u$ with $\deg t=e$, the leading
+coefficient of $t$ a unit, and $u\in\gppm[x]$; choose lifts only of the coefficients of
+$\bar r$ up to degree $e$. Then
+\[
+ r^j=t^j+jt^{j-1}u\qquad(j\ge1).
+\]
+If the residue characteristic $p$ divides $j$, then $ju=0$, since $p\in\gppm$.
+Multiplication by $t$ increases the degree of every nonzero polynomial by exactly $e$.
+These assertions allow the characteristic of $A$ itself to be $p^2$.
+
+Suppose $f$, $y=r^af$, $z=r^{a+b}f$ lie in $B_n(A)$ with all three reductions nonzero. If
+$r$ is a nonunit, its reduction has positive degree $e$. In residue characteristic two at
+least one of $a,b,a+b$ is even, and the corresponding relation $y=t^af$, $z=t^by$ or
+$z=t^{a+b}f$ forces $f$ or $y$ to have degree at most $n-2$. Remove $B_{n-2}(A)$, of
+relative size $Q^{-2}$. For odd $p$ remove instead
+\[
+ D_n=\set{f:\deg f\le n-1,\ \deg\bar f\le n-2},
+\]
+of relative size $(qQ)^{-1}$ by the independent uniform coefficients of $x^n$ and
+$x^{n-1}$. If $p\mid b$, then $z=t^by$ forces $\deg y\le n-2$. Otherwise $b$ is a unit in
+$A$, and elimination of $u$ gives
+\begin{equation}\label{gpp:eq:eliminate}
+ (a+b)t^by-az=bt^{a+b}f .
+\end{equation}
+Consequently $\deg f\le n-ae\le n-1$, and $\bar z=\bar r^{a+b}\bar f$ forces
+$\deg\bar f\le n-(a+b)e\le n-2$, so the first term lies in $D_n$. After these deletions,
+and the removal of the fibre of zero reduction at a cost of at most $q^{-(n+1)}$, no
+pattern \eqref{gpp:eq:pattern} remains in $B_n(A)$.
+
+\emph{Disjoint triples.} A \emph{packing} is a collection of vertex-disjoint ordered
+triples \eqref{gpp:eq:pattern} with $a=b=1$; it is enough to specify the first terms and
+an injective rule for each of the three positions. For even $q$ take every $f$ of exact
+degree $n-2$, with triple $(f,xf,x^2f)$. The three positions have different degrees, and
+the proportion of first terms is $(1-Q^{-1})Q^{-2}$. For odd $q$ and $n\ge3$ take all
+$f=\sum f_jx^j$ with
+\[
+ f_n=0,\qquad f_{n-1}\in\gppm,\qquad f_{n-2},\,f_0\in A^\times .
+\]
+They form the proportion $(1-q^{-1})^2/(qQ)$ of the ball. Set
+\[
+ c=-\frac{f_{n-1}}{2f_{n-2}}\in\gppm,\qquad r=x+c(x^2+1),\qquad y=rf,\quad z=r^2f .
+\]
+The term $x^2c$ cancels the unwanted term of degree $n+1$ of $z$: indeed $cf_{n-1}=0$
+and $f_{n-1}+2cf_{n-2}=0$, so $y,z\in B_n(A)$. Their residue degrees are $n-1$ and $n$,
+distinct from the residue degree $n-2$ of the start. To recover the start, the
+polynomial $\bar f$ is obtained from $\bar y=x\bar f$ or $\bar z=x^2\bar f$, and the
+coefficients
+\[
+ [x^n]y=-cf_{n-2},\qquad[x]z=2cf_0
+\]
+determine $c$ from either position, because $\gppm$ is a vector space over $k$ and the
+indicated scalars are known and nonzero in $k$. Finally $r(x-c(x^2+1))=x^2$ shows that
+multiplication by $r$ and by $r^2$ is injective. The triples are pairwise disjoint. With
+the deletions above this proves the bounds for one factor.
+
+\emph{From finite balls to one infinite set.} For a fixed finite product let $M(n)$ be the
+largest fraction of its ball occupied by an admissible set. Then
+\begin{equation}\label{gpp:eq:glueproduct}
+ \Delta_L(R_s)=\limsup_{n\to\infty}M(n).
+\end{equation}
+For the nontrivial inequality choose a subsequence $n_j$ approaching the upper limit so
+rapidly that
+\[
+ n_j-j>(1+L)n_{j-1},\qquad n_j-(1+L)j>n_{j-1}.
+\]
+From an optimizer at $n_j$ keep only the elements whose residue degrees in all
+coordinates lie in $[n_j-j,n_j]$. The fraction discarded is at most
+$\sum_{i\le s}q_i^{-j-1}$, by uniform reduction. The union of the retained blocks is
+admissible. In each coordinate the three residue degrees of a pattern are
+$d,d+ae,d+(a+b)e$ with $e\ge0$, and all are finite. If only the last term were in the
+latest block, its degree in each coordinate would be at most $(1+L)n_{j-1}$, because the
+middle degree is at most $n_{j-1}$. If the last two were in that block, their difference
+$be$ would be at most $j$, so the first degree would be at least $n_j-(1+L)j$. Both
+contradict the separation. Slicing the product by its last coordinate shows
+$\Delta_L(R_{s+1})\le\Delta_L(R_s)$, using ratio $1$ in the coordinate held fixed; hence
+the limit in $s$ exists.
+
+\emph{Products.} The product of the single-factor constructions, trimmed to nonzero
+residues, gives the lower bound in \eqref{gpp:eq:productbound}: in a pattern the ratio
+is a nonunit in at least one coordinate, where all three residue degrees are finite, so
+the deletion argument in that coordinate applies. For the upper bound put
+$u_i=\gamma_iw_i$ and partition $B_n(A_i)$ into the packed triples above and singleton
+cells. A uniformly drawn point of the product ball falls in a triple with probability
+$3u_i$ in coordinate $i$, independently across the coordinates. Conditionally on the
+cells, if $K$ coordinates fall in triples the point is uniform on a ternary cube of
+dimension $K$. Every combinatorial line gives a forbidden triple, since its moving
+coordinates have their respective fixed ratios and the other coordinates can use ratio
+$1$. Hence $M(n)\le\gppE\,\alpha_K$. The density Hales--Jewett theorem gives
+$\alpha_k\to0$ \cite{Polymath2012New}. Since $\gamma_i\ge4/9$ and
+$\gppVar K\le\gppE K$, divergence of $\sum_iw_i$ gives $K\to\infty$ in probability, and
+the upper bound tends to zero. When the sum converges, the product in
+\eqref{gpp:eq:productbound} is positive, since $w_i\le1/4$.
+\end{proof}
+
+\begin{proposition}[Products of finite fields; \stU]\label[proposition]{gpp:prop:fields}
+For $R_b=\prod_{i=1}^b\F_{q_i}$ the upper bound in \eqref{gpp:eq:productbound} holds for
+$\Delta(R_b)$ with the larger parameters
+\[
+ \gppPr(X_i=1)=\frac{3}{q_i^2+q_i+1}.
+\]
+For any sequence of finite products of fields, with no nesting assumption, set
+$S=\sum_iq_i^{-2}$ for each product. Along such a sequence $\Delta\to0$ exactly when
+$S\to\infty$, and $\Delta\to1$ exactly when $S\to0$; in the latter regime
+\[
+ 1-\Delta=S+O(S^{3/2})
+\]
+uniformly.
+\end{proposition}
+
+\begin{proof}
+Fix a field of order $q$. Each nonzero polynomial in its ball has a unique expression
+$x^eg$ with $g(0)\ne0$. For each fixed $g$ partition the exponent interval
+$0\le e\le n-\deg g$ into successive triples starting at $0,3,6,\ldots$, leaving up to
+two singleton cells, and put zero in a singleton. For $3j+2\le n$ the number of triples
+starting at exponent $3j$ equals $(q-1)q^{n-2-3j}$, the number of $g$ with nonzero
+constant term and degree at most $n-2-3j$. The fraction of the ball lying in triple cells
+is therefore
+\[
+ \theta_{q,n}=3(q-1)\sum_{0\le j\le(n-2)/3}q^{-3j-3}\longrightarrow\frac{3}{q^2+q+1}.
+\]
+The word-cube argument in the proof of \cref{gpp:thm:local} applies to these cells with
+$r_i=x$ on the moving positions and $r_i=1$ elsewhere, and gives $\gppE\,\alpha_{K_n}$ as
+an upper bound for the maximum in the finite ball; passage to the limit at fixed $b$
+gives the first assertion. It uses only the $2^b-1$ nonconstant ratios whose coordinates
+are in $\set{1,x}$.
+
+Write $p_i=3/(q_i^2+q_i+1)$; these lie between $(12/7)q_i^{-2}$ and $3q_i^{-2}$. When
+$S\to\infty$ the mean $\mu=\sum_ip_i$ of $K$ tends to infinity, $\gppVar K\le\mu$ gives
+$\gppPr(K<\mu/2)\le4/\mu$, and the contribution of larger $K$ is bounded by
+$\sup_{k\ge\mu/2}\alpha_k\to0$. Conversely the lower bound in
+\eqref{gpp:eq:productbound} is at least $\exp(-4S/3)$, since $-\log(1-u)\le4u/3$ for
+$0\le u\le1/4$. For the other endpoint, slicing a ternary cube of positive dimension into
+parallel lines shows $\alpha_k\le2/3$ for $k\ge1$, whence
+\[
+ \frac{1-\prod_i(1-p_i)}{3}\le1-\Delta\le S .
+\]
+As $\sum_ip_i\ge12S/7$, the left side stays positive when $S$ stays bounded below. As
+$S\to0$ each $q_i^{-1}\le\sqrt S$, so $\sum_ip_i=3S+O(S^{3/2})$, and the first two
+inclusion--exclusion bounds give
+$1-\prod_i(1-p_i)=\sum_ip_i+O((\sum_ip_i)^2)$. This proves the expansion.
+\end{proof}
+
+\begin{example}\label[example]{gpp:ex:fields}
+With the values $\alpha_1=\alpha_2=\alpha_3=2/3$ from \cite{Polymath2010Density},
+\cref{gpp:prop:fields,gpp:thm:local} give
+\[
+ \frac9{16}\le\Delta(\F_2\times\F_2)\le\frac{38}{49},\qquad
+ \frac{16}{25}\le\Delta(\F_2\times\F_3\times\F_5)\le\frac{322}{403}.
+\]
+\gppsloppy The chain counts are verified by direct enumeration at small cutoffs, all $37$
+lines in a three-coordinate cell are checked, and the displayed bounds are computed in
+rational arithmetic, by the program \code{check_products.py} in
+\artifact{grh_method_transfers_graph_towers_and_finite_rings/verification/}.
+\end{example}
+
+The following lower bound is valid for every finite product of local rings, with radicals
+of arbitrary nilpotence order. The choices of $a,b$ in \eqref{gpp:eq:pattern} give
+precisely the several weights that \cref{gpp:lem:digits} handles simultaneously.
+
+\begin{proposition}[A Behrend-type lower bound; \stU]\label[proposition]{gpp:prop:behrendrings}
+Let $R=\prod_{i=1}^sA_i$ be a finite product of finite local rings with residue fields of
+orders $q_i$, and put $V=\sum_iq_i/(q_i-1)^2\le2s$. For a constant $C_L$ depending only on
+$L$,
+\[
+ \Delta_L(R)\ge\exp\bigl(-C_L\sqrt{\log(2+V)}\bigr).
+\]
+\end{proposition}
+
+\begin{proof}
+At cutoff $n$ consider, on tuples with every residue component nonzero, the sum of the
+residue degree deficits $D_n=\sum_i(n-\deg\bar f_i)$. For fixed $s$ its limiting law is
+that of a sum $D$ of independent variables with masses $(1-q_i^{-1})q_i^{-j}$ for
+$j\ge0$, of variance $V$; the stated geometric probability for a given $j\le n$ is the
+exact probability of residue degree $n-j$, and zero components have vanishing
+probability. By Chebyshev's inequality an interval $I$ of $m\le4\sqrt V+4$ consecutive
+integers, enlarged to length two if needed, carries at least $3/4$ of the mass of $D$.
+Let $S\subset\set{0,\ldots,m-1}$ be the set of \cref{gpp:cor:behrend}. As $h$ ranges over
+the $2m-1$ integers of $I-\set{0,\ldots,m-1}$, each point of $I$ belongs to exactly
+$\abs{S}$ translates $h+S$. Hence some translate receives probability at least
+$3\abs{S}/(4(2m-1))$. At cutoff $n$ select the tuples with nonzero residue components and
+$D_n\in h+S$. Along a pattern \eqref{gpp:eq:pattern} the sum of the residue degrees
+increases by $a\sigma$ and then by $b\sigma$, where $\sigma=\sum_i\deg\bar r_i>0$, so the
+three deficits would satisfy a forbidden weighted mean. Passing to the limit and applying
+the block argument \eqref{gpp:eq:glueproduct}, which only uses reduction to the residue
+fields, proves the bound.
+\end{proof}
+
+\begin{theorem}[The leading constant in odd residue characteristic; \stU]\label{gpp:thm:oddleading}
+Let $A$ be a finite local ring with residue field $k=\Fq$ of odd characteristic, maximal
+ideal $J$ with $J^2=0$, cardinality $Q$, and $M=\abs{J}=Q/q$. For every $L\ge2$,
+\[
+ \frac{1-q^{-q}}{qQ}\left(1-\frac{2+2q}{M}\right)
+ \le1-\Delta_L(A)\le\frac{1-q^{-q}}{qQ}+\frac{q+1}{Q^2}.
+\]
+Consequently, along any sequence of such rings with fixed residue field of odd order $q$,
+\[
+ \lim_{Q\to\infty}qQ\bigl(1-\Delta_L(A)\bigr)=1-q^{-q}.
+\]
+\end{theorem}
+
+The constant accounts for the proportion $q^{-q}$ of residue polynomials divisible by
+every monic linear polynomial. With \cref{gpp:thm:local}, for ordinary three-term
+progressions and fixed residue field,
+\[
+ 1-\Delta(A)=\begin{cases}Q^{-2}+O(Q^{-3}),&q\text{ even},\\
+ (1-q^{-q})/(qQ)+O_q(Q^{-2}),&q\text{ odd}.\end{cases}
+\]
+
+\begin{proof}
+Multiplication makes $J$ a vector space over $k$. Choose a representative
+$\tilde\gamma\in A$ of each $\gamma\in k$, and put $P_\gamma=x-\tilde\gamma$ and
+$\Lambda=\prod_{\gamma\in k}(x-\gamma)\in k[x]$. Subscripts denote coefficients.
+
+\emph{Construction.} At cutoff $n\ge q+3$ consider the rectangle $f_n=0$, $f_{n-1}\in J$,
+of proportion $1/(qQ)$. Inside this rectangle delete only the points with
+$\Lambda\nmid\bar f$; their proportion in the full ball is $(1-q^{-q})/(qQ)$ by
+uniformity modulo the polynomial $\Lambda$ of degree $q$. Also delete all points of
+degree at most $n-2$ and all points divisible in $A[x]$ by some $P_\gamma^2$. The
+additional cost is at most $(q+1)Q^{-2}$, since $P_\gamma$ is monic. The points of zero
+residue are removed at a cost tending to zero.
+
+Consider a remaining pattern $f$, $y=r^if$, $z=r^{i+j}f$ with a nonunit ratio. Nonzero
+reductions of all three terms ensure that $e_0=\deg\bar r$ is positive. Let $t$ be a
+coefficient lift of $\bar r$ of degree $e_0$ with unit leading coefficient. If the
+residue characteristic divides $j$, then $r^j=t^j$ and $y$ has degree at most
+$n-je_0\le n-2$, which was excluded. Otherwise $j$ is a unit, and
+\eqref{gpp:eq:eliminate} gives $\deg f\le n-ie_0$. Since the points of degree at most
+$n-2$ were deleted, $i=e_0=1$ and $\deg f=n-1$; moreover
+$\deg\bar f\le n-(i+j)e_0\le n-2$. Thus $f$ lies in the rectangle, and
+$\Lambda\mid\bar f$ because $f$ survived.
+
+Write $r=uP_\gamma+\epsilon$ with $u\in A^\times$ constant and $\epsilon\in J[x]$. At a
+surviving first term $\Lambda\mid\bar f$, hence $f=P_\gamma g+\eta$ for some $g\in A[x]$
+and $\eta\in J[x]$, and $\epsilon f=P_\gamma\epsilon g$. For $m=i+j\ge2$,
+\[
+ r^mf=u^mP_\gamma^mf+mu^{m-1}P_\gamma^{m-1}\epsilon f
+\]
+is divisible by $P_\gamma^2$, so the last term was deleted. Gluing the cutoffs by
+\eqref{gpp:eq:glueproduct} gives the upper bound for $1-\Delta_L(A)$.
+
+\emph{A matching of triples.} Start with all $f$ in the rectangle with
+$\Lambda\nmid a$, where $a=\bar f$. Choose the first $\beta\in k$ in a fixed order with
+$a(\beta)\ne0$. Put $P=P_\beta$, $s=n-\deg a\ge2$ and
+\[
+ c=\frac{-f_{n-1}}{2\gpplc(a)}\in J,\qquad r=P+c(P^s+1),\qquad y=rf,\quad z=r^2f,
+\]
+where the operations on $c$ use the $k$-action on $J$. These formulas give
+$\deg y,\deg z\le n$ and $y_n=-c\,\gpplc(a)$: the coefficient of degree $n+1$ in
+$z=P^2f+2cP(P^s+1)f$ is $f_{n-1}+2c\,\gpplc(a)=0$. Discard $c=0$. Each remaining first
+term has degree $n-1$ and $y$ has degree $n$. Require $z_n\ne0$ as well. If $s=2$ the
+reduction $\bar z=(x-\beta)^2a$ already has degree $n$. For $s>2$, conditionally on $a$
+and $c$, the coefficient $f_{n-2}$ is uniform on $J$ and occurs in $z_n$ with coefficient
+one, while its occurrences in terms multiplied by $c$ depend only on its reduction. Thus
+these two exclusions cost at most the fraction $2/M$ of the starts.
+
+At $\tilde\beta$ one has $y(\tilde\beta)=ca(\beta)\ne0$ and $z(\tilde\beta)=0$. If
+$\gamma\ne\beta$ is a root of $a$, then $f(\tilde\gamma)\in J$ and
+\[
+ y(\tilde\gamma)=P(\tilde\gamma)f(\tilde\gamma),\qquad
+ z(\tilde\gamma)=P(\tilde\gamma)^2f(\tilde\gamma),
+\]
+where $P(\tilde\gamma)$ is a unit. Conditionally on $a$ and $c$, $f(\tilde\gamma)$ is
+uniform on $J$, because the constant coefficient of $f$ has a free uniform $J$-part.
+Require all these evaluations to be nonzero, at a cost of at most $q/M$. At the other
+residue points $y,z$ have nonzero reductions. Consequently $y$ has no root among the
+chosen representatives, while $z$ has exactly one, namely $\tilde\beta$.
+
+One further condition identifies the start from $y$. Write $Y=\bar y$. For every simple
+root $\gamma$ of $Y$ test the equality in $J$
+\[
+ y(\tilde\gamma)=-y_n\,\frac{\bigl(Y/(x-\gamma)\bigr)(\gamma)}{\gpplc(Y)} .
+\]
+It holds at $\beta$. At any other simple root of $Y$ the right side is fixed after
+conditioning on $a,c$, and the left side is uniform on $J$, as just proved. Discard the
+starts with a second successful test, at a cost of at most $q/M$. All these costs use the
+union bound on the original starts and require no independence between the tests.
+
+The resulting triples are disjoint. Degree distinguishes starts from both other
+positions, and evaluation at the representatives distinguishes middles from ends. A
+middle identifies $\beta$ by its unique successful test; then $a=\bar y/(x-\beta)$ and
+$c=-y_n/\gpplc(a)$ recover $r$. An end identifies $\beta$ by its unique root and gives
+$a=\bar z/(x-\beta)^2$; dividing in $A[x]$ by the monic $P$ yields
+$(z/P)(\tilde\beta)=2ca(\beta)$ and hence $c$. Finally $r$ is a non-zero-divisor, since
+$r(P-c(P^s+1))=P^2$ is monic, so each inversion recovers at most one start. The ordinary
+triple belongs to the family \eqref{gpp:eq:pattern} for each $L\ge2$, and removing one
+member of each disjoint triple gives the lower bound for $1-\Delta_L(A)$.
+\end{proof}
+
+\subsection{Finite coefficient rings: square-zero algebras and natural density}\label{gpp:sec:squarezero}
+{\raggedright\sources{grh_method_transfers_research; grh_method_transfers_graph_towers_and_finite_rings}}
+
+For square-zero extensions of a field the squares of nonunits can be described exactly.
+This gives sharper bounds for ordinary triples, exact extrema for a related pair
+condition, and a strict separation between natural and upper density.
+
+Let $k=\Fq$, let $V$ be a $k$-vector space of dimension $b-1$, and give $R=k\oplus V$ the
+multiplication $(u,v)(u',v')=(uu',uv'+u'v)$. Put $Q=\abs{R}=q^b$. With a fixed basis of
+$V$ write $f\in R[x]$ as a tuple $(f_0,f_1,\ldots,f_{b-1})$ with entries in $k[x]$. In
+this subsection a set is \emph{admissible} if it is contained in $R[x]\setminus\set{0}$
+and contains no triple $f,rf,r^2f$ with $r\in R[x]$ a nonunit; retaining zero would
+change no density. An element $r=(a,c)$ is a unit exactly when $a\in k^\times$, as
+$(a,c)^{-1}=(a^{-1},-a^{-2}c)$ in that case. Let $\Delta(R)$ be the supremum of the upper
+densities of admissible sets and $D(R)$ the supremum of the natural densities of
+admissible sets whose ball densities converge.
+
+\begin{theorem}[Characteristic two; \stU]\label{gpp:thm:char2}
+Suppose $q$ is even.
+\begin{enumerate}[label=\textup{(\roman*)}]
+\item The set $S$ of nonzero tuples whose monic componentwise gcd is squarefree is
+admissible; it consists exactly of the nonzero elements divisible by no square of a
+nonunit. For every $n\ge2$,
+\[
+ \abs{S\cap B_n}=Q^{n+1}-qQ^{n-1}+q-1,
+\]
+so $S$ has natural density $1-q/Q^2$.
+\item One has
+\begin{equation}\label{gpp:eq:localring}
+ 1-\frac1{Q^2}\le\Delta(R)\le1-\frac{Q-1}{Q^3-1}=1-\frac1{Q^2+Q+1}.
+\end{equation}
+For fixed $q$ this determines the leading constant: $Q^2(1-\Delta(R))\to1$ as
+$b\to\infty$. The upper bound holds in every characteristic and for $b=1$.
+\item Among sets containing no pair $f,a^2f$ with $a\in k[x]$ nonconstant, the largest
+upper density is exactly $1-Q^{-2}$ and the largest natural density is exactly
+$1-q/Q^2$; the two extrema differ by $(q-1)/Q^2$.
+\end{enumerate}
+All these assertions hold more generally for a finite local $k$-algebra $R=k\oplus V$
+with nilpotent maximal ideal $V$, provided every $v\in V$ satisfies $v^2=0$; distinct
+elements of $V$ may then have nonzero product.
+\end{theorem}
+
+\begin{proof}
+In characteristic two $r=a+c$ with $a\in k[x]$, $c\in V[x]$ has $r^2=a^2$, since
+Frobenius acts coefficientwise on $c$ and all its coefficients square to zero. In the
+more general algebra the unit criterion follows by reduction modulo the nilpotent ideal
+$V[x]$ and a finite geometric series. If $a=0$ the last term of a triple is zero.
+Otherwise choose a monic irreducible $P\mid a$; every component of the last term is
+divisible by $P^2$. Conversely every nonzero tuple with a common square factor $P^2$ is a
+multiple of the square of the scalar nonunit $P$. This proves the description of $S$ and
+its admissibility.
+
+For a nonzero tuple the indicator that its gcd is squarefree is
+$\sum_{d^2\mid\gcd(f_i)}\mu(d)$ over monic $d\in k[x]$. In $B_n$ there are
+$Q^{n+1-2j}-1$ nonzero multiples of a fixed $d^2$ of degree $2j\le n$. Unique
+factorization gives $\sum_{d\text{ monic}}\mu(d)u^{\deg d}=1-qu$, the reciprocal of
+$\sum_{j\ge0}q^ju^j$. Thus only $j=0,1$ contribute, which yields the count and the
+natural density in (i).
+
+Next consider sets containing no pair $f,a^2f$ with $a\in k[x]$ nonconstant; every such
+set is admissible. In a single ball $B_n$, $n\ge1$, the two layers of highest degrees
+$n-1,n$ avoid all such pairs and have $Q^{n+1}-Q^{n-1}$ elements. For the reverse bound
+map each nonzero $f\in B_n$ to $x^{2\floor{(n-\deg f)/2}}f$ in those two layers. Two
+distinct preimages of one point differ by multiplication by a positive even power of
+$x$, so the map is injective on any pair-avoiding set.
+
+To attain the limiting proportion in one infinite set, let $h(f)$ be the largest monic
+polynomial whose square divides every component of $f$; at each prime its exponent is
+half the common valuation rounded down. Thus $m(f)=\deg f-2\deg h(f)$ is invariant under
+multiplication by any nonzero scalar polynomial square. Choose $N_0=-1$ and $N_j=2^{j+1}$
+for $j\ge1$. Assign each $f\ne0$ to the unique $j$ with $N_{j-1}<m(f)\le N_j$, and
+include it exactly when $\deg f\in\set{N_j-1,N_j}$. The members of a forbidden pair would
+have the same assigned $j$ and degrees differing by at least two, which is impossible. In
+the top two layers of $B_{N_j}$ a missing element has $m(f)\le N_{j-1}$, hence
+$\deg h(f)\ge L_j=\ceil{(N_j-1-N_{j-1})/2}$. For a monic $d$ of degree $s\le N_j/2$ the
+fraction of $B_{N_j}$ divisible componentwise by $d^2$ is $Q^{-2s}$, and a union bound
+shows that the missed fraction is at most $\sum_{s\ge L_j}(q/Q^2)^s$, which tends to
+zero. This proves the lower bound in \eqref{gpp:eq:localring} and the value $1-Q^{-2}$
+in (iii). The construction also applies for $b=1$.
+
+For the natural-density extremum in (iii), each nonzero $f$ factors uniquely as $uh^2$
+with $h=h(f)$ monic and $u\in S$. For a pair-avoiding set $E$ let $I_u$ be the set of
+monic $h$ with $uh^2\in E$. If $1\in I_u$ there are no other elements. Otherwise
+\[
+ \sum_{h\in I_u}Q^{-2\deg h}\le\sum_{s\ge1}(q/Q^2)^s\le1,
+\]
+since $q/Q^2\le1/2$. In either case the mass is at most one. Multiplying by
+$Q^{-\deg u}$ and summing over the base tuples up to degree $n$ gives
+\[
+ \sum_{f\in E\cap B_n}Q^{-\deg f}\le\sum_{u\in S\cap B_n}Q^{-\deg u}.
+\]
+The number of all tuples of exact degree $t$ is $(Q-1)Q^t$. Whenever a set has natural
+ball density $\delta$, its exact-degree proportions tend to $\delta$ as well, by
+subtracting consecutive ball counts. Dividing the last inequality by $(n+1)(Q-1)$ and
+using the convergence of arithmetic means bounds the natural density of $E$ by
+$1-q/Q^2$, and $S$ attains it.
+
+For the upper bound in \eqref{gpp:eq:localring} take a scalar monic linear $P$. Every
+nonzero tuple has an exact common $P$-valuation, the minimum of the component valuations
+with $v_P(0)=+\infty$. Partition each chain $h,Ph,P^2h,\ldots$ with common valuation of
+$h$ equal to zero into triples starting at exponents $0,3,6,\ldots$. Multiplication by
+$P$ is injective and increases the maximum component degree by one. Hence the triples
+are disjoint, and every triple lying in $B_n$ forces at least one deletion. Their number
+is exactly
+\[
+ T_n=\sum_{0\le3j\le n-2}\bigl(Q^{n-1-3j}-Q^{n-2-3j}\bigr),
+\]
+since their first terms have degree at most $n-2$ and valuation $3j$. Dividing by
+$Q^{n+1}$ and summing the limiting geometric series gives
+$(1-Q^{-1})Q^{-2}/(1-Q^{-3})$. This argument works in every characteristic, including
+$b=1$.
+\end{proof}
+
+\begin{theorem}[A strict gap for triple avoidance; \stU]\label{gpp:thm:gaprings}
+Suppose $q$ is even. Then
+\[
+ 1-\frac q{Q^2}\le D(R)\le1-\frac q{Q^2}(1-Q^{-1})^q .
+\]
+Thus $Q^2(1-D(R))\to q$ as $b\to\infty$ with $q$ fixed, and $D(R)<\Delta(R)$ for every
+$b\ge2$.
+\end{theorem}
+
+\begin{proof}
+The lower bound is \cref{gpp:thm:char2}(i). For the upper bound let $C$ consist of the
+nonzero tuples whose gcd has no linear factor. By reduction modulo the product of the $q$
+monic linears, the natural density of $C$ is $(1-Q^{-1})^q$. For each $g\in C$ form the
+$q$ triples $g,Pg,P^2g$, one for each monic linear $P$. Two different centres give
+disjoint collections, because the common linear valuations of a member determine the
+multiplying polynomial $1$, $P$ or $P^2$ uniquely; within one collection only the centre
+$g$ is shared. Give a tuple $f$ of degree $d$ the weight $Q^{-d}$. Omitting $g$ costs
+$Q^{-\deg g}$. If $g$ is present, at least one of $Pg,P^2g$ is missing for each $P$,
+which costs at least $qQ^{-2-\deg g}$. In either case the omitted weight is at least
+$qQ^{-2-\deg g}$. Sum over the centres in $B_{n-2}$, so that every tuple counted is in
+$B_n$, divide by $(n+1)(Q-1)$, and pass to the limit using the exact-degree proportions
+of $C$ and of the omitted set as in the proof of \cref{gpp:thm:char2}. This gives the
+upper bound. For $b\ge2$ one has $q(1-Q^{-1})^q>q(1-q/Q)\ge q-1\ge1$ by the strict
+Bernoulli inequality, so the natural-density upper bound is strictly below the
+upper-density construction $1-Q^{-2}$.
+\end{proof}
+
+\begin{theorem}[Odd characteristic; \stU]\label{gpp:thm:oddnatural}
+If $q$ is odd, the nonzero elements of $R[x]$ divisible by no square of a nonunit form an
+admissible set of natural density
+\begin{equation}\label{gpp:eq:localringodd}
+ \prod_{P\text{ monic irreducible}}
+ \bigl(1-z_P^{b+1}+z_P^{b+2}-z_P^{2b+1}\bigr)\ge1-q^{-b},\qquad z_P=q^{-\deg P}.
+\end{equation}
+\end{theorem}
+
+\begin{proof}
+Every forbidden triple ends at a multiple of a nonunit square. Discard the tuples with
+$f_0=0$, a set of proportion $q^{-(n+1)}$. A tuple with $f_0\ne0$ is a multiple of the
+square of a nonunit if and only if some prime $P$ satisfies one of the two mutually
+exclusive conditions
+\[
+\begin{array}{ll}
+ v_P(f_0)=2, &P\mid f_i\quad(1\le i<b),\\
+ v_P(f_0)\ge3, &P^2\mid f_i\quad(1\le i<b).
+\end{array}
+\]
+For necessity write $f=(a,c)^2(h_0,h)=(a^2h_0,a^2h+2ach_0)$ and take $P\mid a$. All
+nilpotent coordinates are multiples of $P$. If $v_P(a^2h_0)\ge3$, then $P^2\mid a$ or
+$P\mid h_0$, and all are multiples of $P^2$. For sufficiency, in the second case divide
+by the pure square $P^2$. In the first case set $h_0=f_0/P^2$. Since both $2$ and $h_0$
+are invertible modulo $P$, choose $c_i$ solving $2c_ih_0\equiv f_i/P\pmod P$. Then
+$h_i=(f_i-2Pc_ih_0)/P^2$ is a polynomial for each $i$ and $f=(P,c)^2(h_0,h)$.
+
+For fixed $P$, uniform residues of independent polynomial coordinates modulo $P^3$ give
+the total local obstruction probability
+$(z_P^2-z_P^3)z_P^{b-1}+z_P^3z_P^{2(b-1)}$. The Chinese remainder theorem gives
+independence for any finite set of primes once $n$ is sufficiently large. For nonzero
+$f_0$ an obstruction with $\deg P=d$ requires $2d\le n$ and has probability at most
+$q^{-(b+1)d}$, because it needs $P^2\mid f_0$ and $P\mid f_i$ for all $i>0$. Thus the
+omitted large primes have total probability at most $\sum_{d>D}q^{-bd}$, which tends to
+zero uniformly in $n$. This gives the product. Since $2b+1\ge b+2$ for $b\ge1$, every
+factor is at least $1-z_P^{b+1}$, and the product of these lower bounds is $1-q^{-b}$ by
+unique factorization.
+\end{proof}
+
+\begin{example}[Dual numbers]\label[example]{gpp:ex:dual}
+For $R=\F_2[\epsilon]/(\epsilon^2)$, so $q=2$ and $Q=4$, the squarefree construction has
+natural density $7/8$; every admissible set with a natural density has density at most
+$119/128$; the block construction has upper density $15/16$; and
+$15/16\le\Delta(R)\le20/21$. More generally any even $q$ and $b\ge2$ give a lower bound
+at least $1-q^{-3}$, already for natural density, which exceeds the upper bound
+$1-1/(q^2+q+1)$ valid for the residue field itself (the case $b=1$ of
+\eqref{gpp:eq:localring}; it is $6/7$ for $\F_2[x]$), because $q^3>q^2+q+1$. By
+\eqref{gpp:eq:localringodd} the same comparison holds for arbitrary $q$ in square-zero
+extensions of dimension $b\ge3$. In the opposite direction, for the same $q$ and $b$ the
+reduced algebra $\Fq^b$ has the same cardinality $Q$, yet $\Delta(\Fq^b)\to0$ by
+\cref{gpp:thm:local}: its coordinate idempotents permit the independent ratios that
+realize the ternary word cube.
+\end{example}
+
+\subsection{Periodic sets with a prescribed spectrum of ratios}\label{gpp:sec:syndetic}
+{\raggedright\sources{dirichlet-grh-research}}
+
+Beiglb\"ock, Bergelson, Hindman and Strauss asked whether every set of positive integers
+with bounded gaps contains arbitrarily long geometric progressions
+\cite{Beiglbock2006Multiplicative}; even three terms with an integral common ratio
+$r\ge2$ are at issue \cite{Nathanson2020Geometric}. Consider the finite restriction in
+which a prime modulus $p$ is fixed and ratios outside a prescribed residue class are to
+be excluded. The weighted congruence of \cref{gpp:lem:digits} is exactly the relation
+between the three discrete logarithms of a triple $a,ar^i,ar^j$, and the lemma gives the
+exact set of permissible ratios for many exponent pairs at once.
+
+For a nonempty periodic set $W\subset\N$ write $G(W)$ for the largest difference between
+successive elements and $d(W)$ for the natural density. For a positive rational $r=u/v$
+in lowest terms, its residue $\bar r=u/v\in\F_p^\times$ is defined when $p\nmid uv$.
+
+\begin{theorem}[Exact ratio spectrum of a periodic set; \stU]\label{gpp:thm:syndetic}
+Let $p$ run through the primes, and let $L=L(p)\ge2$ be integers with
+$\log L=o(\log p)$. Put $E=\sqrt{\log p\,\log(2L)}$. For all sufficiently large $p$
+there is a $p$-periodic set $W\subset\N$, all of whose members are coprime to $p$, with
+\[
+ d(W)\ge\exp(-CE),\qquad G(W)\le\sqrt p\,\exp(CE)
+\]
+for an absolute constant $C$, such that for every $1\le i<j\le L$ and every positive
+rational $r=u/v$ in lowest terms, some integer $a$ satisfies $a,ar^i,ar^j\in W$ if and
+only if
+\[
+ p\nmid uv\qquad\text{and}\qquad\bar r^{\gcd(i,j)}=1 .
+\]
+Whenever a ratio occurs, infinitely many $a$ realize it.
+\end{theorem}
+
+In particular the ordinary triple $a,ar,ar^2$ occurs exactly for $r\equiv1\pmod p$ among
+rational $p$-units, and the least integral ratio greater than one is $p+1$. A single
+occupied residue class would have the same ratio spectrum; the theorem gives
+$p^{1-o(1)}$ occupied classes and an additive gap of at most $p^{1/2+o(1)}$,
+simultaneously for all the specified shapes.
+
+\begin{lemma}[\stU]\label[lemma]{gpp:lem:gap}
+Every $m$-element set $B\subset\F_p$, $m\ge1$, has a nonzero multiplicative dilate with
+maximum circular gap at most $2(\floor{p/\sqrt m}+1)$.
+\end{lemma}
+
+\begin{proof}
+Set $h=\floor{p/\sqrt m}+1$. If $2h\ge p$ the assertion is automatic. Otherwise take
+independent uniform $x\in\F_p$ and $t\in\F_p^\times$, and let $Z$ count the points of
+$tB+x$ in $I=\set{0,\ldots,h-1}$. Each image is uniform, and any two distinct images are
+uniformly distributed as an ordered pair of distinct points. Consequently
+$\mu=\gppE Z=mh/p$ and $\gppVar(Z)\le\mu$, since the hit indicators have nonpositive
+pairwise covariance. Chebyshev's inequality gives $\gppPr(Z=0)\le1/\mu$. Averaging in
+$t$, some dilate has at most $p/\mu=p^2/(mh)<h$ empty intervals of length $h$ among the
+$p$ cyclic starting positions. A run of $2h-1$ vacant points would contain $h$ such
+intervals.
+\end{proof}
+
+\begin{proof}[Proof of \cref{gpp:thm:syndetic}]
+Apply \cref{gpp:lem:digits} with $o=p-1$ and
+\[
+ n=\floor*{\sqrt{\frac{\log o}{\log(2L)}}},\qquad H=\floor*{\frac{o^{1/n}}{L}} .
+\]
+Since $\log L=o(\log p)$, both $n$ and $o^{1/n}/L$ tend to infinity. Eventually
+$o^{1/n}/(2L)\le H\le o^{1/n}$ and $(LH)^n\le o$, and the size $m=\abs{S}$ satisfies
+\[
+ m\ge\frac{o}{n(2L)^no^{2/n}}\ge o\exp\bigl(-O(\sqrt{\log o\,\log(2L)})\bigr),
+\]
+because the logarithm of the first denominator is $\log n+n\log(2L)+2(\log o)/n$.
+
+Choose a generator $g$ of $\F_p^\times$ and write $B=\set{g^e:e\in S}$. Any
+multiplicative dilate $tB$ may be used; let $W$ be the inverse image of $tB$ in $\N$. If
+$a,ar^i,ar^j\in W$, their $p$-adic valuations vanish and $r$ is a $p$-unit. Write their
+residues as $tg^{e_0},tg^{e_i},tg^{e_j}$. Then
+\[
+ je_i\equiv(j-i)e_0+ie_j\pmod{p-1}.
+\]
+The lemma forces the three exponents to agree. Thus $\bar r^i=\bar r^j=1$, which is
+equivalent to $\bar r^{\gcd(i,j)}=1$. Conversely, under these conditions choose $a$
+divisible by $v^j$ in any class of $tB$; the Chinese remainder theorem gives infinitely
+many choices, and all three integers have the same residue modulo $p$. Finally take for
+$t$ the dilate of \cref{gpp:lem:gap}. Then $d(W)=m/p$ and $G(W)\ll p/\sqrt m$.
+\end{proof}
+
+\begin{proposition}[Obstruction to a fixed gap bound; \stU]\label[proposition]{gpp:prop:syndeticobstruction}
+For any nonempty $p$-periodic set, all positive integral ratios $r\equiv1\pmod p$ occur
+in progressions of arbitrary length. Let $W$ be a $p$-periodic set in which all integral
+ratios of ordinary triples are $1\pmod p$. Then $W$ omits the residue zero, the discrete
+logarithms of its occupied residues, represented in $[0,p-2]$, contain no nonconstant
+three-term arithmetic progression, and
+\[
+ d(W)\le\exp\bigl(-c(\log p)^{1/9}\bigr),\qquad G(W)\ge\exp\bigl(c(\log p)^{1/9}\bigr)
+\]
+for large $p$ and an absolute $c>0$. If moreover $W$ has the simultaneous spectra of
+\cref{gpp:thm:syndetic} for some $L<p-1$ and occupies $m$ residue classes, then
+$m(L+1)\le2(p-1)$ and $G(W)\ge p(L+1)/(2(p-1))$.
+\end{proposition}
+
+\begin{proof}
+If $W$ contained a multiple of $p$, the multiples of $p$ in $W$ would realize every
+integral ratio. Exponents $e,e+d,e+2d$ of occupied residues give a triple of residues
+with ratio $g^d\ne1$, and a positive integer representative of this ratio gives a triple
+in $W$. The density bound then follows from the bound of Bloom and Sisask for sets
+without three-term arithmetic progressions \cite{Bloom2023Improvement}, and the maximum
+gap is at least the mean gap. For the last assertion, three occupied exponents among
+$L+1$ consecutive cyclic exponents would give a forbidden triple with ratio $g$ and
+$j\le L<p-1$; counting occupied exponents over all such intervals gives
+$m(L+1)\le2(p-1)$.
+\end{proof}
+
+Thus increasing the prime period cannot yield a fixed gap bound by this method. McNew
+already treated geometric progressions in modular unit groups through arithmetic
+progressions in a finite abelian group \cite[Section~2]{McNew2015Sets}; the deduction
+here combines the simultaneous shape control of \cref{gpp:lem:digits}, an additive gap
+estimate, and exact realization of every admissible rational ratio.
+
+\begin{example}\label[example]{gpp:ex:syndetic}
+\gppsloppy
+For $p=65\,537$, $g=3$, $L=4$, $n=4$ and $H=4$, a largest digit sphere has squared radius
+$14$ and $24$ vectors. Searching all dilations gives $t=18\,054$ and largest circular gap
+$4\,555$. Among the six pairs $1\le i<j\le4$, the shape $(0,2,4)$ admits the residues $1$
+and $-1$; each of the other five admits only $1$. The program
+\artifact{dirichlet-grh-research/progressions/verify_syndetic.py} checks all $393\,222$
+combinations of exponent pair and residue ratio, including zero, and
+\artifact{dirichlet-grh-research/progressions/syndetic-example.txt} records the occupied
+residues.
+\end{example}
+
+\subsection{Sparse places in the source construction}\label{gpp:sec:sparse}
+{\raggedright\sources{exponent_seven_and_grh_transfers; mcnew_counterexample_and_grh_transfers}}
+
+The choice of infinite places in the source proof poses a finite extremal problem on
+residue classes. Fix a positive multiple $q_0$ of $18480$ and an integer $s\ge1$, and put
+\[
+ z=3^{\floor{\log_3s}+4},\quad q_1=q_0\cdot3z\cdot2^s,\quad v=v_2(q_0),\quad
+ C=\set{x\in(\Z/q_1\Z)^\times:x\equiv-1\ (\mathrm{mod}\ q_0)} .
+\]
+The source identifies the place labels with $(\Z/q_1\Z)^\times$, and the desired labels
+lie in $C$. For a prime $p$ let $m_p=q_1/p^{v_p(q_1)}$. A set $T\subseteq C$ is
+\emph{sparse at $p$} if there are no $x,y,t\in T$, integers $0<i<j<z$ and signs
+$\epsilon,\delta\in\set{1,-1}$ with
+\[
+ y/x\equiv\epsilon p^i\pmod{m_p},\qquad t/x\equiv\delta p^j\pmod{m_p}.
+\]
+The three entries may coincide and the signs are independent. This is the local
+condition in \code{New.Parameters.IsSparse}; imposing it at all primes $p\le L$ is the
+sparse-set requirement of the source. The source theorem
+\code{Parameters.exists_large_isSparse} uses $(2zH)^n\le2^s$ and $2z(L+1)<2^s$ to obtain
+at least $H^n/(nH^2)$ sparse places for the primes $p\le L$; it fixes one odd residue and
+uses a large set of exponents in the $2$-primary coordinate.
+
+\subsubsection*{Which primes can be admitted}
+
+Let $\delta_p$ denote the order of the class of $p$ in $(\Z/m_p\Z)^\times/\set{\pm1}$,
+that is, the least positive $t$ with $p^t\equiv\pm1\pmod{m_p}$.
+
+\begin{theorem}[Exact obstruction for sparse places; \stU]\label{gpp:thm:sparseexact}
+Let $H\ge2$ and $n\ge1$ satisfy $\bigl((z-1)(H-1)+1\bigr)^n\le2^s$. There is a single set
+$T\subseteq C$ with
+\[
+ \abs{T}\ge\frac{H^n}{nH^2}
+\]
+such that for every prime $p$ the following are equivalent: $T$ is sparse at $p$; some
+nonempty subset of $C$ is sparse at $p$; and $2\delta_p\ge z$.
+\end{theorem}
+
+\begin{proof}
+A prime with $2\delta_p<z$ obstructs every nonempty set: use $x=y=t$, $i=\delta_p$ and
+$j=2\delta_p$. We construct a set for which all obstructions arise in this way.
+
+Let $S\subset\set{0,\ldots,2^s-1}$ be the set of \cref{gpp:lem:digits} for $o=2^s$ and
+coefficient budget $L=z-1$, so that every relation
+$je_2\equiv(j-i)e_1+ie_3\pmod{2^s}$ with $0<i<j<z$ and $e_1,e_2,e_3\in S$ forces
+$e_1=e_2=e_3$. Put $g=1+3zq_0$ and $T=\set{-g^e\bmod q_1:e\in S}$. The integer $g$ is
+prime to $q_1$ and congruent to $1$ modulo $q_0$. As $v_2(g-1)=v\ge4$, one has
+$v_2(g^a-1)=v+v_2(a)$ for $a>0$: an odd power preserves the valuation, and each
+successive squaring adds one. Hence $g$ has order $2^s$ modulo $N=2^{s+v}$, and the
+labels are distinct.
+
+For odd $p$, the divisor $N$ of $m_p$ retains both congruences of any forbidden triple.
+On $(\Z/N\Z)^\times$ send a unit $u$ to its unique signed representative
+$\rho(u)\in\set{u,-u}$ that is $1\pmod4$. This is a group homomorphism, it kills both
+signs, and it fixes $g$. Writing the exponents of $x,y,t$ as $e_1,e_2,e_3$, the
+congruences give
+\[
+ g^{e_2-e_1}=\rho(p)^i,\qquad g^{e_3-e_1}=\rho(p)^j\pmod N .
+\]
+Raise the first relation to the power $j$ and the second to the power $i$. The order of
+$g$ gives $je_2\equiv(j-i)e_1+ie_3\pmod{2^s}$, so $e_1=e_2=e_3$. Returning to the full
+modulus $m_p$, both $i$ and $j$ are multiples of $\delta_p$, so $2\delta_p\le j<z$.
+
+For $p=2$, every ratio of two elements of $T$ is $1$ modulo $3z$, a divisor of $m_2$. A
+forbidden triple would imply $4^i\equiv1\pmod{3z}$. The order of $4$ modulo $3z$ is $z$,
+since $v_3(4^a-1)=1+v_3(a)$ for $a>0$; this contradicts $i<z$. Hence $T$ is sparse at
+$2$, and by the first paragraph $2\delta_2\ge z$.
+\end{proof}
+
+\begin{corollary}[The largest prime cutoff; \stU]\label[corollary]{gpp:cor:cut}
+The largest integer $L$ for which some nonempty subset of $C$ is sparse at every prime
+$p\le L$ is
+\[
+ \min\set{p\text{ prime}:2\delta_p<z}-1,
+\]
+and the set $T$ of \cref{gpp:thm:sparseexact} realizes it. In particular
+$z(L+1)\le2^{s+v+1}$ is sufficient.
+\end{corollary}
+
+\begin{proof}
+A prime $p\equiv1\pmod{q_1}$ has $\delta_p=1$, and such primes exist by Dirichlet's
+theorem; this gives a first obstruction. For odd $p$ choose $a\in\set{p,-p}$ with
+$a\equiv1\pmod4$. Its order modulo $N$ is $2^{\max(0,s+v-v_2(a-1))}$ by the valuation
+formula above, and this order divides $\delta_p$. Since $2^{v_2(a-1)}\le p+1$, we have
+$\delta_p\ge2^{s+v}/(p+1)$. For $p=2$ the proof of \cref{gpp:thm:sparseexact} applies.
+\end{proof}
+
+\begin{example}[A $120$-place instance]\label[example]{gpp:ex:120}
+Take $q_0=18480$, $s=44$ and $z=2187$, so that
+\[
+ q_1=2^{48}\cdot3^9\cdot5\cdot7\cdot11=2\,133\,004\,707\,139\,399\,188\,480 .
+\]
+With $n=3$ and $H=12$ the digit base is $24047$ and $24047^3=13\,905\,375\,151\,823<2^{44}$.
+Exactly $120$ triples $(a,b,c)\in\set{0,\ldots,11}^3$ satisfy
+$(2a-11)^2+(2b-11)^2+(2c-11)^2=131$: the unordered triples of odd squares are
+$(121,9,1)$, $(81,49,1)$ and $(81,25,25)$, and signs and coordinate permutations give
+$48+48+24$ labels $-g^{a+24047b+24047^2c}\bmod q_1$.
+
+The sufficient cutoff of the source is $4\,021\,990\,406$, the elementary bound of
+\cref{gpp:cor:cut} gives $257\,407\,386\,108$, and the exact largest cutoff is
+$18\,216\,708\,648\,992\,766$; the first obstructing prime is
+$p_*=18\,216\,708\,648\,992\,767$. Indeed, for an odd obstructing prime one must have
+$\delta_p\le1093$, and its projective order modulo $2^{48}$ divides $\delta_p$. This
+dyadic order is a power of two at most $1024$, so $p\equiv\pm1\pmod{2^{38}}$. Of the
+$132\,543$ integers at least $2$ in these two classes through $p_*$, exactly $55\,083$
+are prime to $q_1$, and the primes dividing $q_1$ other than $2$ fail the two-class test.
+For each retained integer $u$, compute its dyadic order and test its multiples $k$
+through $1093$ for $u^k\equiv\pm1\pmod{q_1}$. Exactly seven integers pass.
+\begin{center}
+\begin{tabular}{rrl}
+\toprule
+Integer & Least exponent & Certificate\\
+\midrule
+$1\,020\,346\,790\,576\,129$ &1080& divisible by $157$\\
+$2\,185\,829\,116\,018\,687$ &320& divisible by $101999$\\
+$3\,870\,280\,929\,771\,521$ &972& divisible by $1663$\\
+$6\,412\,351\,813\,189\,631$ &864& divisible by $17$\\
+$9\,399\,724\,905\,857\,023$ &768& divisible by $23$\\
+$17\,099\,604\,835\,172\,353$ &324& divisible by $13$\\
+$18\,216\,708\,648\,992\,767$ &864& Lucas certificate, base $3$\\
+\bottomrule
+\end{tabular}
+\end{center}
+For the last integer, $p_*-1=2\cdot3^6\cdot11\cdot74413\cdot15264089$ with prime factors
+verified by trial division, $3^{p_*-1}\equiv1\pmod{p_*}$, and
+$\gcd(3^{(p_*-1)/\ell}-1,p_*)=1$ for each prime factor $\ell$; this proves primality. At
+this prime $i=864$ and $j=1728$ obstruct even a singleton. The computation is in
+\artifact{exponent_seven_and_grh_transfers/other-results/verify_sparse.py}, with output
+\artifact{exponent_seven_and_grh_transfers/other-results/sparse_output.txt}.
+\end{example}
+
+\subsubsection*{How many places can be used}
+
+\Cref{gpp:thm:sparseexact} keeps one odd residue. Two of the prime constraints admit an
+exact joint solution, which bounds the capacity from above and enlarges the
+construction.
+
+For $p\in\set{2,3}$ write $b_p=q_0/p^{v_p(q_0)}$ and $N_p=m_p/b_p$, so that $N_2=3z$ and
+$N_3=2^s$. Let $d_p$ be the least positive integer with $p^{d_p}\equiv\pm1\pmod{b_p}$,
+and let $g_p=\epsilon_pp^{d_p}$, where $\epsilon_p\in\set{-1,1}$ is the unique sign
+giving $g_p\equiv1\pmod{b_p}$. Define
+\[
+ H_p=\ord_{m_p}(g_p),\qquad w_p=\ceil{z/d_p},\qquad
+ A_p=\frac{N_p}{H_p}\min\Bigl(H_p,\floor*{\frac{2H_p}{w_p}}\Bigr).
+\]
+Both $d_p$ depend only on $q_0$.
+
+\begin{theorem}[The exact two-prime capacity; \stU]\label{gpp:thm:sparsetwo}
+The largest size of a set $T\subseteq C$ that is sparse at both $2$ and $3$ is $A_2A_3$.
+Thus $A_2A_3$ is the exact optimum for the prime cutoffs $L=3,4$ and an upper bound for
+every $L\ge3$; in particular
+\[
+ \frac{\abs{T}}{\abs{C}}\le\frac{4d_2d_3}{z^2}\qquad(L\ge3).
+\]
+\end{theorem}
+
+\begin{proof}
+The possible images in $(\Z/m_p\Z)^\times$ of elements of $C$ are precisely the residues
+$a\equiv-1\pmod{b_p}$. They number $N_p$, since every prime divisor of $m_p$ already
+divides $b_p$. If $\pm p^i$ takes one of these residues to another, then $d_p\mid i$ by
+the order of the class of $p$ in $(\Z/b_p\Z)^\times/\set{\pm1}$. Since $b_p>2$ the sign
+is unique, and the step is multiplication by $g_p^{i/d_p}$. Multiplication by $g_p$
+partitions the possible images into $N_p/H_p$ cycles of length $H_p$.
+
+Write $H=H_p$ and $w=w_p$. On one such cycle mark the residues in the image of $T$, and
+read their indicator as a periodic binary sequence on $\Z$. Three marked positions in a
+window of $w$ consecutive indices give a forbidden triple, by subtracting the first index
+and multiplying both differences by $d_p$. Conversely the three indices of any forbidden
+triple fit in such a window, because $\floor{(z-1)/d_p}=w-1$. If a window goes around the
+cycle more than once, all its occurrences count, as required for repeated places. For
+$K$ marks the sum of the occupancies of the $H$ windows is $wK$, so $K\le H$ and
+$K\le\floor{2H/w}$. Both bounds are attained together: with $K=\min(H,\floor{2H/w})$
+mark the indices $\ell$ with
+\[
+ \floor*{\frac{(\ell+1)K}{H}}-\floor*{\frac{\ell K}{H}}=1 .
+\]
+There are $K$ such indices per period, and the sum over every window is at most
+$\ceil{wK/H}\le2$ by telescoping. Hence the largest allowable projected support has
+$A_p$ elements.
+
+Write $q_0=2^v3^ab$ with $\gcd(b,6)=1$. The component modulo $b$ is fixed to $-1$ in
+every element of $C$. The two remaining freely varying components are a lift of
+$-1\bmod2^v$ and a lift of $-1\bmod3^a$. The condition at $2$ uses only the second of
+these, and the condition at $3$ only the first. Any two permissible projected supports
+can therefore be combined by taking their full Cartesian product under the Chinese
+remainder theorem, and every eligible $T$ is contained in the product of its own
+projections. This proves exactness. Finally $A_p/N_p\le2/w_p\le2d_p/z$ and
+$\abs{C}=N_2N_3$.
+\end{proof}
+
+\begin{example}[The base modulus $18480$]\label[example]{gpp:ex:18480}
+Here $b_2=1155$ and $b_3=6160$. The orders of $2$ modulo $3,5,7,11$ are $2,4,3,10$, and
+the powers of $2$ cannot reach $-1$ modulo $7$. The orders of $3$ modulo $16,5,7,11$ are
+$4,4,6,5$, and the powers of $3$ cannot reach $-1$ modulo $16$. Consequently
+$d_2=d_3=60$ and both signs are positive. The identities $v_3(2^{60}-1)=2$ and
+$v_2(3^{60}-1)=4$ give $H_2=z$ and $H_3=2^s$: replacing the exponent $60$ by $60k$ adds
+$v_3(k)$ to the first valuation and $v_2(k)$ to the second, since
+$3^{60}\equiv1\pmod4$, and the other prime-power components already have order one. With
+$w=\ceil{z/60}$ the capacity is therefore
+\[
+ 3\min\bigl(z,\floor{2z/w}\bigr)\,\min\bigl(2^s,\floor{2^{s+1}/w}\bigr).
+\]
+For $s\ge81$ this equals $357\floor{2^{s+1}/\ceil{z/60}}$. Indeed $z=6561$ gives $w=110$
+and $\floor{2z/w}=119$; the next possible value is $z=19683$, and for it and all larger
+$z$ one has $120z/(z+59)>119$ while $2z/w<120$ because $60\nmid z$. The $3z$ possible
+odd residues have thus shrunk to exactly $357$ before any prime $p\ge5$ is considered.
+\end{example}
+
+\begin{proposition}[An all-prime construction; \stU]\label[proposition]{gpp:prop:sparseall}
+Let $n,H$ be positive integers and $L\ge2$ an integer with
+\[
+ \bigl((z-1)H\bigr)^n\le2^s,\qquad(L+1)(z-1)<2^{v+s}.
+\]
+There exists $T\subseteq C$, sparse at every prime $p\le L$, with
+\[
+ \abs{T}\ge A_2\,\frac{H^n}{nH^2}.
+\]
+\end{proposition}
+
+\begin{proof}
+Let $S\subset\set{0,\ldots,2^s-1}$ be as in the proof of \cref{gpp:thm:sparseexact}. Take
+as the $2$-primary component $-(1+2^v)^e\bmod2^{v+s}$ for $e\in S$, and independently an
+optimal support of size $A_2$ in the odd modulus $m_2$, as in \cref{gpp:thm:sparsetwo}.
+The first components are distinct, since $1+2^v$ has order $2^s$. The condition at $2$
+holds by construction. Let $p\le L$ be odd and let $t_p\in\set{p,-p}$ be $1\bmod4$.
+Project a proposed forbidden triple to $2^{v+s}$, a divisor of $m_p$. The two ratios are
+$1\bmod4$, so their signs are forced and their values are $t_p^i$ and $t_p^j$. Raising
+the first to the $j$th power and the second to the $i$th gives the weighted relation on
+exponents, so all three exponents are equal and $t_p^i\equiv1\pmod{2^{v+s}}$. Yet
+\[
+ 2^{v_2(t_p^i-1)}=2^{v_2(t_p-1)}2^{v_2(i)}\le(p+1)i<2^{v+s},
+\]
+a contradiction.
+\end{proof}
+
+Compared with the source theorem, for the same $n$ and $H$ the lower bound is multiplied
+by $A_2$ and both size conditions are relaxed; the coefficient budget drops from $2z$ to
+$z-1$ because the sign is determined modulo $4$ before the powers are compared.
+\Cref{gpp:thm:sparseexact} admits a still larger range of primes, namely exactly the
+primes that any nonempty set can admit, but keeps one odd residue. For $q_0=18480$,
+$s=40$, $L=19$, $n=2$ and $H=40$ the construction of \cref{gpp:prop:sparseall} takes
+eight exponents on one digit sphere and $354$ projected residues at $2$, giving $2832$
+places.
+
+\begin{proposition}[Sharp order at a fixed prime cutoff; \stU]\label[proposition]{gpp:prop:sparseorder}
+Let $M(q_0,s,L)$ be the largest size of a subset of $C$ that is sparse at every prime
+$p\le L$. For fixed $q_0$ and fixed $L\ge3$, as $s\to\infty$,
+\[
+ M(q_0,s,L)=\Theta_{q_0,L}(2^s/z),\qquad
+ \frac{M(q_0,s,L)}{\abs{C}}=\Theta_{q_0,L}(z^{-2}).
+\]
+More precisely, if $r$ is the number of odd primes up to $L$ and
+$(L+1)(z-1)<2^{v+s}$, then
+\[
+ \frac{A_2\,2^s}{1+2r(z-1)}\le M(q_0,s,L)\le A_2A_3 .
+\]
+\end{proposition}
+
+\begin{proof}
+The upper bound is \cref{gpp:thm:sparsetwo}. For the lower bound form a graph on the
+$2^s$ possible $2$-primary components, joining $x$ to $y$ if $y/x$ or $x/y$ is a signed
+power $p^i$ for some odd prime $p\le L$ and $0<i<z$. The valuation bound in the proof of
+\cref{gpp:prop:sparseall} rules out loops once $(L+1)(z-1)<2^{v+s}$, which holds for all
+large $s$ since $z\le81s$. For each pair $p,i$ the residue modulo $4$ forces the sign, so
+the degree is at most $2r(z-1)$. Greedily choosing a vertex and discarding its
+neighbours yields an independent set of size at least $2^s/(1+2r(z-1))$. This excludes
+even the first nontrivial step of each forbidden triple at an odd prime. Use its full
+product with an optimal support at the prime $2$. The latter has $A_2\ge1$: a singleton
+odd residue could return under a signed $2^i$ only if $4^i\equiv1\pmod{3z}$, whereas
+$4=1+3$ has order $z$ there.
+\end{proof}
+
+{\gppsloppy The program
+\artifact{mcnew_counterexample_and_grh_transfers/checks/sparse_places.py} evaluates the
+two orders, enumerates all binary cycle supports for $108$ small pairs of size and
+window, and tests explicit attaining supports against the signed-power predicate.\par}
+
+\subsection{Coefficient collisions and higher-dimensional anticodes}\label{gpp:sec:lattice}
+{\raggedright\sources{grh_method_transfers_2026-11-26}}
+
+In \cref{gpp:lem:digits} a prescribed family of coefficient relations between exponents
+is excluded. One may change which relations must be excluded and ask how small an
+encoding group suffices. Allow every equality between two sums of $h$ labels, with
+repetitions, as a potential collision. A label set free of such collisions between
+distinct multisets is a classical $B_h$ set. A coefficient difference
+$z=(z_0,\ldots,z_n)$ has zero total and $\tfrac12\sum_i\abs{z_i}\le h$ after common
+labels cancel; conversely each such difference comes from two $h$-term sums by padding
+both with the same label. Thus the coefficient geometry is that of the root lattice
+\[
+ A_n=\set{z\in\Z^{n+1}:\textstyle\sum_iz_i=0},\qquad
+ d(z,w)=\tfrac12\textstyle\sum_i\abs{z_i-w_i},
+\]
+a classical correspondence \cite{Kovacevic2017Improved}.
+
+Write $a_n(D)$ for the largest cardinality of a subset of $A_n$ of diameter at most $D$.
+For $x\in\Z^n$ put $\pi(x)=\sum_i\max(x_i,0)$ and $\nu(x)=\pi(-x)$. The isometry
+$x\mapsto(x,-\sum x_i)$ identifies $d$ with the norm $\max(\pi,\nu)$ of the difference.
+Put $P=\ceil{D/2}$ and $Q=\floor{D/2}$. The balanced difference of two discrete
+simplices $S_n(P,Q)=\set{x:\pi(x)\le P,\ \nu(x)\le Q}$ has diameter at most $P+Q$, since
+$\pi(x-y)\le\pi(x)+\nu(y)$ and likewise for $\nu$. Choosing the $j$ strictly positive
+coordinates and using stars and bars on each sign gives its cardinality
+\[
+ M_n(D)=\sum_{j=0}^{\min(n,P)}\binom nj\binom Pj\binom{Q+n-j}{n-j}.
+\]
+Kova\v{c}evi\'c conjectures that $a_n(D)=M_n(D)$ for all $n,D$ and proves this for $n=3$
+\cite[\S7]{Kovacevic2026Isodiametric}.
+
+\begin{theorem}[Exact anticodes in ranks four and five; computer-assisted; \stU]\label{gpp:thm:anticodes}
+The values of $a_4(D)$ for $2\le D\le10$ and of $a_5(D)$ for $2\le D\le6$ are
+\begin{center}
+\begin{tabular}{@{}r*{9}{r}@{}}\toprule
+$D$ & 2 & 3 & 4 & 5 & 6 & 7 & 8 & 9 & 10\\\midrule
+$a_4(D)$ & 21 & 55 & 131 & 255 & 471 & 780 & 1251 & 1875 & 2751\\
+$a_5(D)$ & 31 & 96 & 271 & 606 & 1281 & & & &\\\bottomrule
+\end{tabular}
+\end{center}
+In each case $a_n(D)=M_n(D)$, and every maximizing family is a translate of $S_n(P,Q)$ or
+of its negative.
+\end{theorem}
+
+\begin{proof}
+Let $F$ be a set of diameter at most $D$ in root coordinates and put $m=n+1$. Subtract
+each coordinate's minimum on $F$. All coordinates now lie in $[0,D]$ and all coordinate
+sums equal some $k$; the reflection $x_i\mapsto D-x_i$ allows
+$0\le k\le\floor{mD/2}$. Each possible ambient layer $V_k$ is finite. For $x,y$ in it,
+\[
+ d(x,y)=\max_{J\subseteq\set{1,\ldots,m}}\sum_{i\in J}(x_i-y_i),
+\]
+since the sum of all positive coordinate differences is half their total absolute value.
+Accordingly $F$ has diameter at most $D$ precisely when each subset sum has range at most
+$D$ on $F$. Singletons already satisfy this, and a cut and its complement have equal
+range.
+
+For each remaining cut let $\alpha,\beta$ be its minimum and maximum on the whole layer.
+If $\beta-\alpha>D$, try each integer interval $[\sigma,\sigma+D]$ for
+$\alpha\le\sigma\le\beta-D$; any feasible range is contained in one of these intervals,
+by clipping its lower endpoint to $\beta-D$ when necessary. If $\beta-\alpha\le D$, the
+entire layer satisfies the cut. Intersect with a chosen interval and recurse, and stop
+when the intersection has fewer than $M_n(D)$ points. Every feasible family fits some
+branch at every depth, so the absence of a larger intersection on all full branches
+proves the upper bound, and at equality the family is the entire intersection. For every
+leaf of size at least $M_n(D)$ the program checks its size and compares the full set,
+after subtracting coordinate minima, with the two normalized candidate shapes. This
+proves the classification of equality. \gppsloppy The program
+\artifact{grh_method_transfers_2026-11-26/checks/lattice/anticodes.py} performs these
+operations with exact integer bit sets; its outputs
+\artifact{grh_method_transfers_2026-11-26/checks/lattice/A4.txt} and
+\artifact{grh_method_transfers_2026-11-26/checks/lattice/A5.txt} record the node counts.
+\end{proof}
+
+The two entries for $D=2$ also follow from classical Singer difference sets for the
+prime powers $4$ and $5$ through the code--anticode bound
+\cite{Kovacevic2017Improved,Kovacevic2026Isodiametric}. The theorem for rank three does
+not cover either row for $D\ge3$.
+
+\begin{corollary}[Multisets with large pairwise intersections; \stU]\label[corollary]{gpp:cor:multisets}
+Let $(n,D)$ be one of the pairs of \cref{gpp:thm:anticodes} and $m=n+1$. A family of
+$K$-multisets on $m$ symbols in which every two members share at least $K-D$ elements,
+counted with multiplicity, has size at most $M_n(D)$, with equality possible exactly
+when $K\ge mQ+P-Q$. For example, a family of $K$-multisets on five symbols in which
+every pair shares at least $K-3$ elements has size at most $55$, with equality exactly
+when $K\ge6$.
+\end{corollary}
+
+\begin{proof}
+For two count vectors of sum $K$ the intersection cardinality is $K-d(x,y)$, so the
+upper bound holds on every layer. For the lower bound take $x\in S_n(P,Q)$ and add the
+final coordinate $P-Q-\sum_ix_i$. All $m$ coordinates are at least $-Q$ and their sum is
+$P-Q$. Each coordinate attains $-Q$, so the normalized shape is obtained by adding $Q$
+everywhere; it has coordinate sum $mQ+P-Q$. The negative shape interchanges $P$ and $Q$.
+Nonnegative translations give all larger sums. The classification of equality therefore
+gives the threshold $K\ge mQ+P-Q$, since $P\ge Q$ and $m\ge2$.
+\end{proof}
+
+\begin{proposition}[Approximation in every fixed rank; \stU]\label[proposition]{gpp:prop:anticodeasymptotic}
+For every fixed $n$, $a_n(D)=M_n(D)+O_n(D^{n-1})$.
+\end{proposition}
+
+\begin{proof}
+Let $\mathcal B=\set{x\in\R^n:\pi(x),\nu(x)\le1}$, with $\pi,\nu$ extended to real
+vectors. Attaching unit cubes in the $\Z^n$ coordinates to a family of size $a_n(D)$
+gives a union $U$ of that volume with $U-U\subseteq(D+n)\mathcal B$. The
+Brunn--Minkowski inequality gives
+$a_n(D)\le2^{-n}(D+n)^n\operatorname{vol}(\mathcal B)$. The formula for $M_n(D)$ has
+leading coefficient $2^{-n}\binom{2n}{n}/n!$, which equals
+$2^{-n}\operatorname{vol}(\mathcal B)$: sum the orthant volumes
+$\binom nj/(j!(n-j)!)$ over $j$.
+\end{proof}
+
+\begin{theorem}[The least order of a three-sum encoding with five labels; computer-assisted; \stU]\label{gpp:thm:sidon}
+The least order of a finite abelian group containing a $B_3$ set of cardinality five is
+$64$, and the least order among cyclic groups is $65$. Witnesses are
+\[
+ \begin{array}{ll}
+ (\Z/8\Z)^2: & (0,0),(0,1),(1,0),(4,6),(7,6),\\
+ \Z/65\Z: & 0,1,4,15,24 ,
+ \end{array}
+\]
+each giving $\binom73=35$ distinct unordered sums of three labels. In particular a
+full-rank sublattice of $A_4$ of minimum distance at least four has index at least $64$,
+and there is no diameter-perfect lattice code in $A_4$ at $D=3$.
+\end{theorem}
+
+\begin{proof}
+Translate a candidate $\set{b_0,\ldots,b_4}$ in a group $G$ so that $b_0=0$. The
+homomorphism $A_4\to G$, $z\mapsto\sum_{i=0}^4z_ib_i$, has no nonzero kernel element of
+distance at most $3$ from the origin, by cancellation and padding. It is therefore
+injective on the $55$ points of $S_4(2,1)$ in root coordinates, and $\abs{G}\ge55$. For
+the orders $55$ through $63$, the structure theorem gives the cyclic group at every
+order and just four additional groups, with invariant factors $(2,28)$, $(2,2,14)$,
+$(2,30)$ and $(3,21)$.
+
+The program \artifact{grh_method_transfers_2026-11-26/checks/lattice/sidon.py} orders
+each group lexicographically and enumerates all increasing four-label extensions of
+$\set{0}$. It retains a partial set $T$ exactly when its unordered triple sums are
+distinct. When a label $x$ is adjoined, the new sums are the elements of
+$(x+2T)\cup(2x+T)\cup\set{3x}$, where $2T$ is the set of pairwise sums; there must be
+precisely $\abs{2T}+\abs{T}+1$ new values, all outside $3T$. This test counts all new
+multisets correctly, because the partial $B_3$ property implies that pairwise sums are
+distinct, by adding one fixed old label. Removing a label preserves the property, so
+every valid set is reached. All thirteen groups of order $55$ to $63$ fail, and so does
+the cyclic group of order $64$; the output is
+\artifact{grh_method_transfers_2026-11-26/checks/lattice/sidon.txt}. Both displayed
+witnesses pass an additional direct check over the $35$ multisets.
+
+For the last assertion, the five coordinate labels in the quotient of $A_4$ by such a
+sublattice, after translating a common coordinate vector to zero, have the $B_3$
+property. A diameter-perfect lattice code at $D=3$ would have index $a_4(3)=55$.
+\end{proof}
+
+\subsection{Open questions}\label{gpp:sec:open}
+{\raggedright\sources{grh-methods-polynomial-density; grh-progression-densities-and-cubic-prime-race; mcnew-density-and-dirichlet-grh; grh_method_transfers; grh_method_transfers_graph_towers_and_finite_rings; grh_method_transfers_research; dirichlet-grh-research; exponent_seven_and_grh_transfers; mcnew_counterexample_and_grh_transfers; grh_method_transfers_2026-11-26}}
+
+\begin{question}[The size of $\beta_q-m_q$]\label{gpp:q:beta}
+Determine $\beta_q$. For $q=2$ the results above give
+$2^{-2^{476}}<\beta_2-m_2<5.46\cdot10^{-7}$; computing the gain to the first decimal
+place at which $\beta_2$ differs from $m_2$ is a specific numerical problem, which a
+smaller degree substitution or a sharper optimized smooth part in
+\cref{gpp:lem:replacement} could advance, as could the solution of the finite extremal
+problems of \cref{gpp:thm:supremum}. For large $q$, \cref{gpp:thm:largeq} bounds the
+difference by $q^{-q+O(1)}$ up to a polynomial factor; is there a lower bound on a
+comparable scale? This would require a much more economical construction than that of
+\cref{gpp:thm:counterexample}.
+\end{question}
+
+\begin{question}[Rational-function ratios]\label{gpp:q:rational}
+Determine the supremum of the upper densities of rational-ratio progression-free subsets
+of $\Fq[x]$. \Cref{gpp:thm:rational} computes the optimum when all coordinates but one
+are subject to the greedy restriction. Optimizing two free valuation coordinates
+requires avoiding collinear midpoint triples also in mixed directions.
+\end{question}
+
+\begin{question}[Radicals of higher nilpotence]\label{gpp:q:cube}
+For finite local rings with $\gppm^3=0$ and $\gppm^2\ne0$, which invariant controls the
+loss of density? The elimination \eqref{gpp:eq:eliminate} then leaves a term in the
+second radical layer; whether its rank or its multiplication law enters the criterion is
+the first case beyond \cref{gpp:thm:local}. More generally, classify the growing products
+of arbitrary finite local rings with positive limiting density, and determine the
+extremal densities for general finite coefficient rings.
+\end{question}
+
+\begin{question}[Products of a fixed field]\label{gpp:q:decay}
+For fixed $q$, determine the rate of decay of $\Delta(\Fq^b)$ as $b\to\infty$. The
+density Hales--Jewett reduction gives vanishing and \cref{gpp:prop:behrendrings} gives a
+lower bound $\exp(-C\sqrt{\log(2+b)})$. Can polynomial ratios beyond those with entries
+$1,x$ substantially sharpen the upper bound?
+\end{question}
+
+\begin{question}[Exact extrema for small rings]\label{gpp:q:dual}
+Determine $\Delta(R)$ and $D(R)$ for the dual numbers
+$R=\F_2[\epsilon]/(\epsilon^2)$, where $15/16\le\Delta(R)\le20/21$ and
+$7/8\le D(R)\le119/128$. Does allowing both endpoints of a square-ratio pair increase
+the achievable upper density beyond $15/16$? Determine the exact extrema for finite
+products of fields, for instance for $\F_2\times\F_2$.
+\end{question}
+
+\begin{question}[Syndetic sets]\label{gpp:q:syndetic}
+Does every set of positive integers with bounded gaps contain a three-term geometric
+progression with an integral ratio $r\ge2$? By \cref{gpp:prop:syndeticobstruction},
+increasing the prime period in \cref{gpp:thm:syndetic} cannot yield a fixed gap bound, so
+the question for an arbitrary syndetic set and unrestricted integral ratios is not
+reached by that construction.
+\end{question}
+
+\begin{question}[Capacity of the sparse-place condition]\label{gpp:q:sparse}
+Determine $M(q_0,s,L)$ exactly for $L\ge5$. How does the maximal density of sparse
+places decay when the prime cutoff grows with the parameter $s$, as in the source proof?
+The proof of \cref{gpp:prop:sparseorder} tracks the dependence on the number of primes,
+and the exact two-prime extremizers of \cref{gpp:thm:sparsetwo} are specific candidates
+on which to test the remaining congruences.
+\end{question}
+
+\begin{question}[Anticodes in $A_n$]\label{gpp:q:anticodes}
+Is $a_n(D)=M_n(D)$ for all $n\ge4$ and all $D$, with the translates of the balanced
+simplex difference and of its negative as the only extremal families?
+\Cref{gpp:prop:anticodeasymptotic} gives only the leading term.
+\end{question}
