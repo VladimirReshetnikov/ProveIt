@@ -116,22 +116,12 @@ theorem vitali_all {η K N x : PTm n}
       (lt (Syn.shift K) (inst2 b (var 0) (Syn.shift x)) ⟶ (inst2 e₃ (var 0) (Syn.shift x) ≐ one)))) :
     Γ ⊢[PRAAx] Fm.all (le (var 0) (Syn.shift N) ⟶
       VInv w d a b e₁ e₂ e₃ (Syn.shift η) (Syn.shift K) (var 0) (Syn.shift x)) := by
-  refine PRA.qfInd _ ⟨le_QF _ _, le_QF _ _⟩ ?_ ?_
-  · have e : (le (var 0) (Syn.shift N) ⟶
-          VInv w d a b e₁ e₂ e₃ (Syn.shift η) (Syn.shift K) (var 0) (Syn.shift x)).subst (Syn.inst zero) =
-        (le zero N ⟶ VInv w d a b e₁ e₂ e₃ η K zero x) := by
-      simp
-    rw [e]
-    exact .impI (vitali_base w d a b e₁ e₂ e₃ η K x)
-  · have e : (le (var 0) (Syn.shift N) ⟶
-          VInv w d a b e₁ e₂ e₃ (Syn.shift η) (Syn.shift K) (var 0) (Syn.shift x)).subst
-          (Syn.repl (succ (var 0))) =
-        (le (succ (var 0)) (Syn.shift N) ⟶
-          VInv w d a b e₁ e₂ e₃ (Syn.shift η) (Syn.shift K) (succ (var 0)) (Syn.shift x)) := by
-      simp
-    rw [e]
-    exact .impI (vitali_guard w d a b e₁ e₂ e₃ Prf.hyp0 hd.allOpen.wk.wk h₁.allOpen.wk.wk h₂.allOpen.wk.wk
-      h₃.allOpen.wk.wk Prf.hyp1)
+  refine qfIndAllUpTo N (le_QF _ _) ?_ ?_
+  · simpa [VInv] using vitali_base (Γ := Γ) w d a b e₁ e₂ e₃ η K x
+  · simp [VInv]
+    exact .impI (vitali_step w d a b e₁ e₂ e₃
+      (vitali_pt (.impE hd.allOpen.wk.wk Prf.hyp0) (.impE h₁.allOpen.wk.wk Prf.hyp0)
+        (.impE h₂.allOpen.wk.wk Prf.hyp0) (.impE h₃.allOpen.wk.wk Prf.hyp0)) Prf.hyp1)
 
 /-- `thm:vitali`, finite core: `Σ w d ≤ η Σ w + 2K Σ w e₁ + Σ w a e₂ + Σ w b e₃`, the sums over `i < N`. -/
 theorem vitali {η K N x : PTm n}
@@ -144,13 +134,7 @@ theorem vitali {η K N x : PTm n}
     (h₃ : Γ ⊢[PRAAx] Fm.all (lt (var 0) (Syn.shift N) ⟶
       (lt (Syn.shift K) (inst2 b (var 0) (Syn.shift x)) ⟶ (inst2 e₃ (var 0) (Syn.shift x) ≐ one)))) :
     Γ ⊢[PRAAx] VInv w d a b e₁ e₂ e₃ η K N x := by
-  have h := Prf.allE N (vitali_all w d a b e₁ e₂ e₃ hd h₁ h₂ h₃)
-  have e : (le (var 0) (Syn.shift N) ⟶
-        VInv w d a b e₁ e₂ e₃ (Syn.shift η) (Syn.shift K) (var 0) (Syn.shift x)).subst (Syn.inst N) =
-      (le N N ⟶ VInv w d a b e₁ e₂ e₃ η K N x) := by
-    simp
-  rw [e] at h
-  exact Prf.impE h (le_refl N)
+  exact .impE (by simpa [VInv] using Prf.allE N (vitali_all w d a b e₁ e₂ e₃ hd h₁ h₂ h₃)) (le_refl N)
 
 end Sums
 

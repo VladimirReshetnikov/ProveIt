@@ -108,22 +108,12 @@ theorem trunc_all {η K N x : PTm n}
       (lt (Syn.shift K) (inst2 G (var 0) (Syn.shift x)) ⟶ (inst2 e₂ (var 0) (Syn.shift x) ≐ one)))) :
     Γ ⊢[PRAAx] Fm.all (le (var 0) (Syn.shift N) ⟶
       TInv w d G e₁ e₂ (Syn.shift η) (Syn.shift K) (var 0) (Syn.shift x)) := by
-  refine PRA.qfInd _ ⟨le_QF _ _, le_QF _ _⟩ ?_ ?_
-  · have e : (le (var 0) (Syn.shift N) ⟶
-          TInv w d G e₁ e₂ (Syn.shift η) (Syn.shift K) (var 0) (Syn.shift x)).subst (Syn.inst zero) =
-        (le zero N ⟶ TInv w d G e₁ e₂ η K zero x) := by
-      simp
-    rw [e]
-    exact .impI (trunc_base w d G e₁ e₂ η K x)
-  · have e : (le (var 0) (Syn.shift N) ⟶
-          TInv w d G e₁ e₂ (Syn.shift η) (Syn.shift K) (var 0) (Syn.shift x)).subst
-          (Syn.repl (succ (var 0))) =
-        (le (succ (var 0)) (Syn.shift N) ⟶
-          TInv w d G e₁ e₂ (Syn.shift η) (Syn.shift K) (succ (var 0)) (Syn.shift x)) := by
-      simp
-    rw [e]
-    exact .impI (trunc_guard w d G e₁ e₂ Prf.hyp0 hd.allOpen.wk.wk h₁.allOpen.wk.wk h₂.allOpen.wk.wk
-      Prf.hyp1)
+  refine qfIndAllUpTo N (le_QF _ _) ?_ ?_
+  · simpa [TInv] using trunc_base (Γ := Γ) w d G e₁ e₂ η K x
+  · simp [TInv]
+    exact .impI (trunc_step w d G e₁ e₂
+      (trunc_pt (.impE hd.allOpen.wk.wk Prf.hyp0) (.impE h₁.allOpen.wk.wk Prf.hyp0)
+        (.impE h₂.allOpen.wk.wk Prf.hyp0)) Prf.hyp1)
 
 /-- `lem:truncation`: `∑ w d ≤ η ∑ w + 2K ∑ w e₁ + 2 ∑ w G e₂`, the sums over `i < N`. -/
 theorem truncation {η K N x : PTm n}
@@ -134,13 +124,7 @@ theorem truncation {η K N x : PTm n}
     (h₂ : Γ ⊢[PRAAx] Fm.all (lt (var 0) (Syn.shift N) ⟶
       (lt (Syn.shift K) (inst2 G (var 0) (Syn.shift x)) ⟶ (inst2 e₂ (var 0) (Syn.shift x) ≐ one)))) :
     Γ ⊢[PRAAx] TInv w d G e₁ e₂ η K N x := by
-  have a := Prf.allE N (trunc_all w d G e₁ e₂ hd h₁ h₂)
-  have e : (le (var 0) (Syn.shift N) ⟶
-        TInv w d G e₁ e₂ (Syn.shift η) (Syn.shift K) (var 0) (Syn.shift x)).subst (Syn.inst N) =
-      (le N N ⟶ TInv w d G e₁ e₂ η K N x) := by
-    simp
-  rw [e] at a
-  exact Prf.impE a (le_refl N)
+  exact .impE (by simpa [TInv] using Prf.allE N (trunc_all w d G e₁ e₂ hd h₁ h₂)) (le_refl N)
 
 end Sums
 

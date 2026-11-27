@@ -137,22 +137,12 @@ theorem back_all {B x : PTm n}
       (inst2 D (var 0) (Syn.shift x) ≐ succ (pred (inst2 D (var 0) (Syn.shift x)))))) :
     Γ ⊢[PRAAx] Fm.all (le (var 0) (Syn.shift (succ B)) ⟶
       (ap2 (sumF (adB P Q)) (var 0) (Syn.shift x) ≐ zero)) := by
-  refine PRA.qfInd _ ⟨le_QF _ _, trivial⟩ ?_ ?_
-  · have e : (le (var 0) (Syn.shift (succ B)) ⟶
-          (ap2 (sumF (adB P Q)) (var 0) (Syn.shift x) ≐ zero)).subst (Syn.inst zero) =
-        (le zero (succ B) ⟶ (ap2 (sumF (adB P Q)) zero x ≐ zero)) := by
-      simp
-    rw [e]
-    exact .impI (sum_zero _ _)
-  · have e : (le (var 0) (Syn.shift (succ B)) ⟶
-          (ap2 (sumF (adB P Q)) (var 0) (Syn.shift x) ≐ zero)).subst (Syn.repl (succ (var 0))) =
-        (le (succ (var 0)) (Syn.shift (succ B)) ⟶
-          (ap2 (sumF (adB P Q)) (succ (var 0)) (Syn.shift x) ≐ zero)) := by
-      simp
-    rw [e]
-    have e' : Syn.shift (succ B) = succ (Syn.shift B) := by simp [Syn.shift]
-    rw [e']
-    exact .impI (back_guard c D P Q Prf.hyp0 hE.allOpen.wk.wk hD.allOpen.wk.wk Prf.hyp1)
+  refine qfIndAllUpTo (succ B) trivial ?_ ?_
+  · simpa using sum_zero (Γ := Γ) (adB P Q) x
+  · simp
+    exact .impI (back_step c D P Q
+      (.impE hE.allOpen.wk.wk (Order.le_of_lt_succ Prf.hyp0))
+      (.impE hD.allOpen.wk.wk (Order.le_of_lt_succ Prf.hyp0)) Prf.hyp1)
 
 /-- Uniqueness by back substitution: two solutions of a triangular system with positive diagonal
 agree at every index `d ≤ B`. -/

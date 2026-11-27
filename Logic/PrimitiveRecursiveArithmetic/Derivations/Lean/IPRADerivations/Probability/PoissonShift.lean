@@ -78,23 +78,10 @@ theorem shift_all {α β N x : PTm n}
     Γ ⊢[PRAAx] Fm.all (le (var 0) (Syn.shift N) ⟶
       (Syn.shift β * ap2 (sumF (kB t)) (succ (var 0)) (Syn.shift x) ≐
         Syn.shift α * ap2 (sumF t) (var 0) (Syn.shift x))) := by
-  refine PRA.qfInd _ ⟨le_QF _ _, trivial⟩ ?_ ?_
-  · have e : (le (var 0) (Syn.shift N) ⟶
-          (Syn.shift β * ap2 (sumF (kB t)) (succ (var 0)) (Syn.shift x) ≐
-            Syn.shift α * ap2 (sumF t) (var 0) (Syn.shift x))).subst (Syn.inst zero) =
-        (le zero N ⟶ (β * ap2 (sumF (kB t)) (succ zero) x ≐ α * ap2 (sumF t) zero x)) := by
-      simp
-    rw [e]
-    exact .impI (shift_base t α β x)
-  · have e : (le (var 0) (Syn.shift N) ⟶
-          (Syn.shift β * ap2 (sumF (kB t)) (succ (var 0)) (Syn.shift x) ≐
-            Syn.shift α * ap2 (sumF t) (var 0) (Syn.shift x))).subst (Syn.repl (succ (var 0))) =
-        (le (succ (var 0)) (Syn.shift N) ⟶
-          (Syn.shift β * ap2 (sumF (kB t)) (succ (succ (var 0))) (Syn.shift x) ≐
-            Syn.shift α * ap2 (sumF t) (succ (var 0)) (Syn.shift x))) := by
-      simp
-    rw [e]
-    exact .impI (shift_guard t Prf.hyp0 hr.allOpen.wk.wk Prf.hyp1)
+  refine qfIndAllUpTo N trivial ?_ ?_
+  · simpa using shift_base (Γ := Γ) t α β x
+  · simp
+    exact .impI (shift_step t (.impE hr.allOpen.wk.wk Prf.hyp0) Prf.hyp1)
 
 /-- `prop:poisson`, the finite stage: weights with `(k + 1) β t(k + 1) = α t(k)` for `k < N` satisfy
 `β ∑_{k<N+1} k t(k) = α ∑_{j<N} t(j)`. -/
@@ -103,14 +90,7 @@ theorem shift_identity {α β N x : PTm n}
       (succ (var 0) * (Syn.shift β * inst2 t (succ (var 0)) (Syn.shift x)) ≐
         Syn.shift α * inst2 t (var 0) (Syn.shift x)))) :
     Γ ⊢[PRAAx] β * ap2 (sumF (kB t)) (succ N) x ≐ α * ap2 (sumF t) N x := by
-  have a := Prf.allE N (shift_all t hr)
-  have e : (le (var 0) (Syn.shift N) ⟶
-        (Syn.shift β * ap2 (sumF (kB t)) (succ (var 0)) (Syn.shift x) ≐
-          Syn.shift α * ap2 (sumF t) (var 0) (Syn.shift x))).subst (Syn.inst N) =
-      (le N N ⟶ (β * ap2 (sumF (kB t)) (succ N) x ≐ α * ap2 (sumF t) N x)) := by
-    simp
-  rw [e] at a
-  exact Prf.impE a (le_refl N)
+  exact .impE (by simpa using Prf.allE N (shift_all t hr)) (le_refl N)
 
 end Abstract
 

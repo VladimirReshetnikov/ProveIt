@@ -80,23 +80,10 @@ theorem norm_base (N : PTm n) : Γ ⊢[PRAAx] ap2 (sumF pB) zero N + eps N zero 
 theorem norm_all (N : PTm n) :
     Γ ⊢[PRAAx] Fm.all (le (var 0) (Syn.shift N) ⟶
       (ap2 (sumF pB) (var 0) (Syn.shift N) + eps (Syn.shift N) (var 0) ≐ pw two (Syn.shift N))) := by
-  refine PRA.qfInd _ ⟨le_QF _ _, trivial⟩ ?_ ?_
-  · have e : (le (var 0) (Syn.shift N) ⟶
-          (ap2 (sumF pB) (var 0) (Syn.shift N) + eps (Syn.shift N) (var 0) ≐ pw two (Syn.shift N))).subst
-          (Syn.inst zero) =
-        (le zero N ⟶ (ap2 (sumF pB) zero N + eps N zero ≐ pw two N)) := by
-      simp
-    rw [e]
-    exact .impI (norm_base N)
-  · have e : (le (var 0) (Syn.shift N) ⟶
-          (ap2 (sumF pB) (var 0) (Syn.shift N) + eps (Syn.shift N) (var 0) ≐ pw two (Syn.shift N))).subst
-          (Syn.repl (succ (var 0))) =
-        (le (succ (var 0)) (Syn.shift N) ⟶
-          (ap2 (sumF pB) (succ (var 0)) (Syn.shift N) + eps (Syn.shift N) (succ (var 0)) ≐
-            pw two (Syn.shift N))) := by
-      simp
-    rw [e]
-    exact .impI (norm_guard Prf.hyp0 Prf.hyp1)
+  refine qfIndAllUpTo N trivial ?_ ?_
+  · simpa [eps] using norm_base (Γ := Γ) N
+  · simp [eps]
+    exact .impI (norm_step Prf.hyp0 Prf.hyp1)
 
 /-- `prop:st-petersburg`: the probabilities of the first `N` outcomes add up to `1 − 2^{-N}`. -/
 theorem normalization (N : PTm n) : Γ ⊢[PRAAx] ap2 (sumF pB) N N + one ≐ pw two N := by
