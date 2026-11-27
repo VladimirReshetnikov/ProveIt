@@ -1,0 +1,105 @@
+% Input fragment. Requires hyperref (for \url), amsmath and amssymb.
+% Companion bibliography entries are in references_extra.tex.
+
+\section{Sources, prior methods, and the boundary of the contribution}
+\label{sec:sources-literature}
+
+\subsection{Positive interpolation is an established subject}
+
+The construction in Section~\ref{sec:annihilation} does not originate
+the general problem of Fourier interpolation by positive compactly
+supported measures. Florek's 1987 paper has precisely that subject
+in its title~\cite{Florek}. The publisher's bibliographic record was
+available, but its full-text download returned an access error in
+this investigation. Consequently, no specific quantitative theorem
+is attributed to that paper and no claimed distinction rests on
+guessing its contents.
+
+As independently inspected context, Graham and Hare~\cite{GrahamHare}
+study interpolation by nonnegative measures for Sidon,
+$\varepsilon$-Kronecker and $I_0$ sets. Their introduction explicitly
+identifies Florek's result as a Sidon-set predecessor. Such results
+establish clear historical precedent for positive interpolation.
+They do not, in the passages inspected, state the present support
+bound for an arbitrary finite multiset in terms of its local
+occupancy, with prescribed zero orders and a simultaneous uniform
+tail estimate.
+
+Kahane's treatment of nonharmonic Fourier series supplies a close
+classical mechanism~\cite{Kahane}. Proposition~VI.2.1, on printed
+page~131, gives a sufficient diagonal-dominance condition on the
+Fourier Gram matrix of a compact positive measure for equivalence
+between the coefficient $\ell^2$ norm and the associated integral
+norm. Proposition~VI.2.2 gives the interpolation interpretation.
+We use this as context for the matrix argument, without claiming
+that those propositions themselves impose positivity on a new
+interpolating density. In the present elementary proof the explicit
+$\ell^1$ estimate on the correction coefficients is what preserves
+positivity pointwise. Diagonal dominance, the Neumann series, and
+convolution are all classical tools.
+
+\subsection{Translate averaging and support bounds}
+
+Kozma and Oravecz~\cite{KozmaOravecz}, Theorem~1, prove that a real
+trigonometric polynomial with finite symmetric integer spectrum
+$S\subset\mathbb Z^d\setminus\{0\}$ has a zero in every ball of
+diameter $\sum_{\lambda\in S}(4\|\lambda\|_2)^{-1}$.
+Their proof successively adds suitable translates to remove
+frequencies while retaining positivity. The same elementary
+frequency-removal operation is the dual counterpart of convolving
+positive two-point measures. Although their stated theorem uses
+integer frequencies, that removal step makes sense for real
+frequencies as well. This is relevant precedent for a cost obtained
+by summing reciprocal frequencies; it is not presented here as a
+published local-occupancy bound for Dirichlet ordinates.
+
+The comparison with the supplied arithmetic packet is narrower and
+can be checked directly. Its explicit construction uses one
+interval-convolution factor for each selected ordinate, with support
+cost on the scale of $\sum_{0<\gamma\le B}\gamma^{-1}$, hence
+$O((\log B)^2)$ for a fixed Dirichlet family. The construction proved
+here groups occurrences into separated classes before convolution.
+The local zero count bounds the number of classes by $O(\log B)$.
+It thereby obtains support $O(\log B)$ while retaining exact
+cancellation and adding the explicit tail attenuation. This is the
+specific quantitative improvement over the inspected packet.
+
+\subsection{The lower bound uses proved pair correlation only}
+
+For multiplicity-preserving cancellation, Jensen's formula and the
+Riemann--von Mangoldt count give the lower bound directly; simplicity
+is irrelevant. For ordinary cancellation at distinct zeta ordinates,
+Montgomery's proved squared-sinc pair-sum formula~\cite{Montgomery}
+gives
+\[
+ \sum_{\gamma\ \mathrm{distinct},\ 0<\gamma\le T}m_\gamma^2
+ \le (4/3+o(1))N(T).
+\]
+The parameter stays within the proved Fourier-support range and is
+then allowed to approach its endpoint. No pair-correlation
+conjecture is assumed. The integer inequality
+$1\ge(3m-m^2)/2$ for $m\ge1$ yields the distinct-zero proportion
+$5/6-o(1)$, also explicitly discussed by
+Conrey--Ghosh--Gonek~\cite[pp.~497--498]{CGG}. This leads to the
+convenient lower support constant $5/12$ for ordinary cancellation.
+It is not asserted to be the strongest constant in the literature.
+
+\subsection{Novelty and verification limits}
+
+The claim supported by this packet is an explicitly proved
+quantitative arithmetic improvement relative to the supplied
+documents: logarithmic support, prescribed aggregate zero orders,
+uniform high-frequency attenuation, and the resulting common
+positive average of the smoothed residue-class errors. The
+matching logarithmic obstruction explains the scale of the result.
+The argument does not require independence of zero ordinates or
+distinctness across different characters.
+
+The literature search identified substantial related work and an
+especially relevant older positive-interpolation paper whose full
+text could not be inspected. Accordingly, global priority is
+unverified. The packet claims neither a new general theory of
+positive Fourier interpolation nor the solution of another named
+conjecture. Numerical examples illustrate the finite construction;
+the proofs, rather than numerical residuals, establish exact
+cancellation.

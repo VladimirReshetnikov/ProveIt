@@ -1,0 +1,185 @@
+\section{The exact first deviation from uniformity}
+\label{sec:asymptotics}
+
+Write $P_n(M)$ for the probability in the main theorem and
+$U_{a,b}(M)=q^{-ab}$ for the law of a matrix with independent uniform entries.
+The exact law gives more than convergence to $U_{a,b}$: it identifies the
+first correction at every matrix, including the matrices with degenerate
+combined Gram form.
+
+Put $d=a+b$ and, for an integer $u\geq 0$, define
+\[
+ A_q(u)=\sum_{j=0}^{u-1}q^{2j},\qquad A_q(0)=0.
+\]
+The number of one-dimensional relations transverse to both coordinate
+summands is
+\begin{equation}
+ T_1=\frac{q^r-q^{t_0}-q^{t_1}+1}{q-1}.
+ \label{eq:T-one}
+\end{equation}
+Indeed, the radical has $(q^r-1)/(q-1)$ lines, and the lines contained in
+its two disjoint coordinate intersections must be removed.
+
+\begin{theorem}[First correction and its sharp rate]
+\label{thm:first-correction}
+Fix $q,a,b,H_1,H_0$ and let $n$ tend to infinity. For a proposed matrix $M$,
+let $s,r,t_0,t_1$ be the invariants of its combined Gram matrix as in the
+main theorem. Set
+\begin{equation}
+ K(M)=q^{d-1}T_1-A_q(d-s)+A_q(a-s_1)+A_q(b-s_0).
+ \label{eq:K-correction}
+\end{equation}
+If $a+b=0$, interpret the first term as zero. Then, uniformly over all
+$M\in\operatorname{Mat}_{a,b}(\mathbb F_q)$,
+\begin{equation}
+ q^{ab}P_n(M)=1+q^{-2n}K(M)+O(q^{-4n}).
+ \label{eq:likelihood-correction}
+\end{equation}
+Consequently, with total variation defined as half the sum of absolute
+probability differences,
+\begin{equation}
+ \operatorname{TV}(P_n,U_{a,b})
+ =\frac{q^{-2n}}{2q^{ab}}\sum_M |K(M)|+O(q^{-4n}).
+ \label{eq:TV-correction}
+\end{equation}
+If $a,b\geq1$, the coefficient of $q^{-2n}$ in
+\eqref{eq:TV-correction} is at least $(q-1)/q$, and in particular is
+strictly positive. Thus the rate $q^{-2n}$ is sharp for every fixed pair
+of nonempty frames. If $a=0$ or $b=0$, the observed matrix has no entries
+and its distribution is exactly uniform.
+\end{theorem}
+
+\begin{proof}
+Let $z=q^{-2n}$ and define
+\[
+ C(u,z)=\prod_{j=0}^{u-1}(1-q^{2j}z).
+\]
+Factoring the powers of $q$ out of the exact law gives
+\begin{equation}
+ q^{ab}P_n(M)=
+ \frac{\displaystyle\sum_{\ell=0}^r
+   T_\ell q^{d\ell-\ell(\ell+1)/2}z^\ell
+   C(d-\ell-s,z)}
+ {C(a-s_1,z)C(b-s_0,z)}.
+ \label{eq:rational-likelihood}
+\end{equation}
+For sufficiently large $n$ this follows directly from the frame-count
+product. In fact it remains valid at every admissible $n$: if a quotient
+is too large to embed, its product includes the zero factor with $j=n$.
+
+The denominator has constant term one. Since
+$C(u,z)=1-A_q(u)z+O(z^2)$, only $\ell=0$ and $\ell=1$ contribute to
+the linear coefficient. The first contributes $-A_q(d-s)$, and the
+second contributes $q^{d-1}T_1$. Inverting the denominator adds
+$A_q(a-s_1)+A_q(b-s_0)$, proving \eqref{eq:likelihood-correction}.
+There are finitely many matrices $M$ for the fixed parameters, so the
+remainder is uniform. The inequality $\bigl||x+y|-|x|\bigr|\leq|y|$
+then gives \eqref{eq:TV-correction} after summation.
+
+For sharpness, take nonzero vectors $u\in\mathbb F_q^a$ and
+$v\in\mathbb F_q^b$. The scalar $u^TMv$ is the symplectic pairing of
+the nonzero vector $Yu$ with $Xv$. The latter vector is uniform on
+$\mathbb F_q^{2n}\setminus\{0\}$, because the symplectic group is
+transitive on nonzero vectors. Therefore
+\begin{equation}
+ \Pr(u^TMv=\alpha)=
+ \begin{cases}
+ \dfrac{q^{2n-1}-1}{q^{2n}-1},&\alpha=0,\\[6pt]
+ \dfrac{q^{2n-1}}{q^{2n}-1},&\alpha\ne0.
+ \end{cases}
+ \label{eq:scalar-pairing-law}
+\end{equation}
+Under $U_{a,b}$ this scalar is uniform on $\mathbb F_q$. Its total
+variation distance from uniform is exactly
+\begin{equation}
+ \frac{q-1}{q(q^{2n}-1)}.
+ \label{eq:universal-TV-lower}
+\end{equation}
+Taking a function of an observation cannot increase total variation.
+Thus \eqref{eq:universal-TV-lower} is a lower bound for the full matrix
+distance. Multiply by $q^{2n}$ and pass to the limit in
+\eqref{eq:TV-correction} to obtain the stated positive lower bound
+for its leading coefficient.
+\end{proof}
+
+The constants in the $O$ terms may depend on $q,a,b,H_1,H_0$.
+The theorem keeps these parameters fixed; it does not assert a uniform
+approximation when the frame dimensions grow with $n$.
+For another description of the obstruction to exact uniformity, any
+nontrivial additive character $\psi$ satisfies
+\[
+ \mathbb E\,\psi(u^TMv)=-\frac{1}{q^{2n}-1},\qquad
+ q^{-ab}\sum_M K(M)\psi(u^TMv)=-1.
+\]
+Thus every nonzero rank-one additive-character test detects the same
+first-order bias, regardless of the two prescribed Gram forms.
+
+\subsection{Two symplectic planes: a closed distribution}
+\label{sec:two-planes}
+
+Take $a=b=2$ and
+\[
+ H_1=H_0=J_2=\begin{pmatrix}0&1\\-1&0\end{pmatrix}.
+\]
+No asymptotic notation is needed in this case.
+
+\begin{theorem}[Exact two-plane likelihood]
+\label{thm:two-plane-law}
+For every prime power $q$, every $n\geq1$, and every
+$M\in\operatorname{Mat}_{2,2}(\mathbb F_q)$,
+\begin{equation}
+ q^4P_n(M)=
+ \begin{cases}
+ \dfrac{1+(q^3-q^2)q^{-2n}}{1-q^{-2n}},&\det M=1,\\[7pt]
+ \dfrac{1-q^2q^{-2n}}{1-q^{-2n}},&\det M\ne1.
+ \end{cases}
+ \label{eq:two-plane-likelihood}
+\end{equation}
+Its total variation distance from independent uniform entries is
+\begin{equation}
+ \operatorname{TV}(P_n,U_{2,2})
+ =\frac{(q^3-q^2+1)(q^2-1)}{q^3(q^{2n}-1)}.
+ \label{eq:two-plane-TV}
+\end{equation}
+These formulas include characteristic two and the endpoint $n=1$.
+\end{theorem}
+
+\begin{proof}
+Schur complementation and $M^TJ_2M=(\det M)J_2$ give
+\[
+ \operatorname{rank}\Gamma_M
+ =2+\operatorname{rank}\bigl((1-\det M)J_2\bigr).
+\]
+Both coordinate intersections of the radical are zero. If $\det M\ne1$,
+then $s=2$, $r=0$, and the numerator of the exact law is $\mathcal E_n(4,2)$.
+If $\det M=1$, then $s=1$, $r=2$, and
+$(T_0,T_1,T_2)=(1,q+1,1)$. The numerator is then
+\[
+ \mathcal E_n(4,1)+(q+1)\mathcal E_n(3,1)+\mathcal E_n(2,1).
+\]
+Substitute the product formula and divide by $\mathcal E_n(2,1)^2$.
+Writing $z=q^{-2n}$, the critical numerator of the likelihood simplifies
+to
+\begin{align*}
+ &(1-q^2z)(1-q^4z)
+ +(q+1)q^3z(1-q^2z)+q^5z^2\\
+ &\hspace{35mm}=1+(q^3-q^2)z.
+\end{align*}
+This proves \eqref{eq:two-plane-likelihood}.
+
+There are $q(q^2-1)$ matrices with determinant one: choose their first
+column nonzero, then choose their second column from an affine line of
+size $q$. The likelihood exceeds one exactly on that set, and its
+excess there is $(q^3-q^2+1)/(q^{2n}-1)$. Multiplying by its uniform
+mass $(q^2-1)/q^3$ gives \eqref{eq:two-plane-TV}. At $n=1$ the second
+likelihood is zero and the first gives the uniform law on
+$\operatorname{SL}_2(\mathbb F_q)$, as required for two symplectic bases
+of the same plane.
+\end{proof}
+
+For example, at $q=2$ the likelihood is
+$(1+4\cdot2^{-2n})/(1-2^{-2n})$ on the six determinant-one matrices
+and $(1-4\cdot2^{-2n})/(1-2^{-2n})$ on the other ten matrices.
+The exact distance is $15/[8(2^{2n}-1)]$. For $q>2$, two invertible
+matrices can fall into different likelihood classes, so ordinary matrix
+rank is not a sufficient statistic.

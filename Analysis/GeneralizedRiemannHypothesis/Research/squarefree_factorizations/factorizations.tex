@@ -1,0 +1,347 @@
+\documentclass[11pt]{article}
+\usepackage[letterpaper,margin=.96in,top=.84in,bottom=.84in]{geometry}
+\usepackage[T1]{fontenc}
+\usepackage{lmodern}
+\usepackage{amsmath,amsthm,amssymb,booktabs,xcolor,fancyhdr}
+\usepackage[colorlinks=true,linkcolor=teal,citecolor=teal,urlcolor=teal,pdfauthor={Research note},pdftitle={Simultaneous congruences for factors of a squarefree integer}]{hyperref}
+\setlength{\headheight}{14pt}
+\pagestyle{fancy}\fancyhf{}\fancyhead[L]{\small Simultaneous congruences for squarefree factorizations}\fancyhead[R]{\small November 2026}\fancyfoot[C]{\thepage}
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{corollary}[theorem]{Corollary}
+\newcommand{\U}{\mathrm U}
+\newcommand{\E}{\mathbb E}
+\newcommand{\PP}{\mathbb P}
+\newcommand{\e}{\varepsilon}
+\newcommand{\ph}{\varphi}
+\newcommand{\Z}{\mathbb Z}
+\newcommand{\dd}{\mathrm d}
+\allowdisplaybreaks[2]
+\raggedbottom\setlength{\emergencystretch}{2em}
+\begin{document}
+\thispagestyle{plain}
+\begin{center}
+{\small\sffamily ANALYTIC NUMBER THEORY}\par\vspace{.85em}
+{\LARGE\bfseries Simultaneous congruences for factors\\[3pt] of a squarefree integer}\par\vspace{.55em}
+{\large Prescribed factor sizes after arbitrary prime deletions}\par\vspace{.65em}
+{\small Research note \quad 26 November 2026}
+\end{center}
+\begin{abstract}
+One set of small primes permits joint control of every factor in an ordered factorization. Fix an erasure fraction below one half and a relative error $Q^{-A}$. For up to $R$ factors, we select $O(R\log Q)$ distinct primes of size $O(\log^2 Q)$. After the erasures and removal of primes dividing any prescribed modulus, each factor may be assigned its own modulus $q_j\le Q$ and a prescribed number of primes of order at least $\log Q$. The residue vectors are pointwise equidistributed subject to a single product congruence modulo $\gcd_j q_j$. This holds for $R$ as large as a constant times $\log Q/\log\log Q$. An adversarial deletion modulo $3$ and a lower bound on a hypergeometric character average give matching orders for the number of primes and the maximal number of factors. At any fixed retained fraction $a>0$ and fixed $r$, at most $\lfloor 1/a\rfloor^{r-1}$ residual classes suffice to describe support after fixing the total product. This bound is sharp. The analytic input is the Dirichlet GRH theorem. The partition estimates and lower bounds are unconditional.
+\end{abstract}
+
+\section{The factorization problem}
+Suppose that a squarefree integer $P$ is to be split into three factors $F_1,F_2,F_3$.
+Can one prescribe $F_1$ modulo $12$, $F_2$ modulo $15$, and $F_3$ modulo $20$, together with the number of prime divisors of each?
+Every pair of these moduli shares a prime factor, but their common gcd is $1$. We construct prime sets for which every triple of unit residues occurs, with almost the same representation count. With moduli $6,9,12$ the answer changes. Exactly those triples whose product equals $P$ modulo $3$ occur. The theorem treats both examples by the same formula, and permits the moduli and deletions to be chosen after the prime set.
+
+Write $\U(q)=(\Z/q\Z)^\times$, including the one-element group $\U(1)$. For a finite set $T$ of $m$ primes and integers $k_1+\cdots+k_r=m$, an ordered partition $T=T_1\sqcup\cdots\sqcup T_r$ with $|T_j|=k_j$ determines $F_j=\prod_{p\in T_j}p$. There are exactly
+\[
+   {m\choose k_1,\ldots,k_r}=\frac{m!}{\prod_j k_j!}
+\]
+such factorizations of $P=\prod_{p\in T}p$. Each occurrence below is counted once as an ordered factorization of integers.
+
+\begin{theorem}[Simultaneous factorization]\label{thm:main}
+Fix $0<\e<1/2$ and $A>0$. Under Dirichlet GRH there are positive constants $b,c,C,K$, depending only on $\e,A$, such that for every sufficiently large $Q$ and every integer
+\[
+ 2\le R\le c\,\frac{\log Q}{\log\log Q}
+\]
+one can choose a single set $S$ of $n\le C R\log(2Q)$ distinct primes in
+$[K\log^2(2Q),2K\log^2(2Q)]$ with all the following properties simultaneously.
+Choose $2\le r\le R$, any moduli $1\le q_j\le Q$, and any $D\subseteq S$ with $|D|\le(1/2-\e)n$. Set
+\[
+ T=\{p\in S\setminus D:p\nmid q_1\cdots q_r\},\quad m=|T|,
+ \quad P=\prod_{p\in T}p,\quad g=\gcd(q_1,\ldots,q_r).
+\]
+Choose any positive quotas $k_j$ summing to $m$ with $\min_j k_j\ge b\log(2Q)$.
+For $u_j\in\U(q_j)$ let $N(\mathbf u)$ count the ordered factorizations with these quotas and $F_j\equiv u_j\pmod{q_j}$. If $\prod_j u_j\not\equiv P\pmod g$, then $N(\mathbf u)=0$. Otherwise
+\begin{equation}\label{eq:main}
+ N(\mathbf u)={m\choose k_1,\ldots,k_r}
+   \frac{\ph(g)}{\prod_{j=1}^r\ph(q_j)}(1+\theta_{\mathbf u}),
+ \qquad |\theta_{\mathbf u}|\le Q^{-A}.
+\end{equation}
+The choice of $S$ ensures that the balanced quotas $k_j\in\{\lfloor m/r\rfloor,\lceil m/r\rceil\}$ are always available and satisfy the lower bound.
+\end{theorem}
+
+The moduli can repeat, divide one another, or have large pairwise common factors. Equation~\eqref{eq:main} gives exact support because $Q^{-A}<1$. When every $q_j=q$, the first $r-1$ residues can be assigned freely and the last is forced by $P$. When $g=1$, every tuple is available. For $r=2$, specifying $F_1$ and $F_2=P/F_1$ reduces by the Chinese remainder theorem to one subset product modulo the least common multiple. The joint problem starts at three factors. Its quantitative difficulty is allowing $r$ to grow while keeping the number of available primes proportional to $r\log Q$.
+
+\section{A bound for a prescribed partition}
+Let $q_j\le Q$, $H=\prod_j\U(q_j)$ and $M=\operatorname{lcm}(q_1,\ldots,q_r)$. In this section $T$ is any set of $m$ integers coprime to $M$, with its elements regarded as labeled positions. Put $P=\prod_{p\in T}p$. Choose the partition uniformly with the given positive quotas. If $\chi_j$ is a character of $\U(q_j)$, write $\widetilde\chi_j$ for its pullback to $\U(M)$. We require a number $\Delta\in[0,m]$ such that for every pair of labels and all unequal pullbacks,
+\begin{equation}\label{eq:gap}
+ \left|\sum_{p\in T}\widetilde\chi_i(p)\overline{\widetilde\chi_j(p)}\right|
+ \le m-\Delta .
+\end{equation}
+The finite estimate will depend on the smallest quota $k_*=\min_j k_j$.
+
+\begin{lemma}[Fourier coefficient of a partition]\label{lem:partition}
+For a tuple of characters, merge labels with equal pullbacks. Denote the resulting classes by $C$, their number by $h$, their characters by $z_C$, and their masses by $w_C=\sum_{j\in C}k_j/m$. Write $V=\prod_j\chi_j(F_j)$. Then
+\begin{equation}\label{eq:mass}
+ |\E V|\le (m+1)^{h-1}
+       \exp\!\left(-\Delta\sum_{C<C'}w_Cw_{C'}\right),
+\end{equation}
+where the sum runs over unordered pairs of classes. If $C_0$ has largest mass and $t$ individual labels lie outside $C_0$, then
+\begin{equation}\label{eq:defect}
+ |\E V|\le \left[(m+1)\exp\!\left(-\frac{\Delta k_*}{2m}\right)\right]^t .
+\end{equation}
+\end{lemma}
+\begin{proof}
+After merging, each partition into classes of sizes $mw_C$ has the same number of refinements, and $V$ is constant on those refinements. The merged partition is therefore uniform. Independently assign each position a class with probabilities $w_C$ and condition on the counts being exactly $mw_C$. The conditioning event has probability at least $(m+1)^{1-h}$. Indeed $a_C=mw_C$ is a modal count vector for this multinomial distribution. If $v_i>a_i$ and $v_j<a_j$, moving one count from $i$ to $j$ increases the mass by the factor $v_i w_j/((v_j+1)w_i)\ge1$. There are at most $(m+1)^{h-1}$ count vectors.
+
+The numerator of the conditional expectation is a coefficient of
+\[
+   \prod_{p\in T}\left(\sum_C w_C Z_C z_C(p)\right).
+\]
+The torus integral for a coefficient bounds its modulus by the maximum of the product on $Z_C=e^{i\tau_C}$. For unit complex numbers $v_C$ one has
+\[
+ \left|\sum_Cw_Cv_C\right|^2
+ =1-2\sum_{C<C'}w_Cw_{C'}(1-\Re(v_C\overline{v_{C'}})).
+\]
+Apply $1-y\le e^{-y}$, take square roots, and multiply over $p$. For each pair the sum of the real parts is at most the modulus in \eqref{eq:gap}, uniformly in the torus phases. This proves \eqref{eq:mass} after division by the probability of the conditioning event. Finally
+\[
+  \sum_{C<C'}w_Cw_{C'}=\tfrac12(1-\sum_C w_C^2)
+  \ge\tfrac12(1-w_{C_0})\ge\frac{t k_*}{2m},\qquad h-1\le t .
+\]
+Substitution proves \eqref{eq:defect}.
+\end{proof}
+
+\begin{proposition}[Pointwise estimate for mixed moduli]\label{prop:finite}
+Write $B=(m+1)\exp(-\Delta k_*/(2m))$. For a compatible tuple $\mathbf u$, set
+\[
+ E(\mathbf u)=\frac{|H|}{\ph(g)}\PP(F_j\equiv u_j\bmod q_j\text{ for all }j)-1 .
+\]
+Then
+\begin{equation}\label{eq:finite}
+ |E(\mathbf u)|\le\frac{Q}{\ph(g)}\bigl((1+QB)^r-1\bigr).
+\end{equation}
+\end{proposition}
+\begin{proof}
+Reduction $\U(M)\to\U(q_j)$ is onto. The intersection of the $r$ inflated character groups consists precisely of the characters inflated from $\U(g)$. To see this, work prime by prime via the Chinese remainder theorem. At a prime $\ell\mid M$, characters factoring through $\ell^a$ form nested subgroups as $a$ runs from zero to $v_\ell(M)$. Their intersection corresponds to the minimum of the exponents $v_\ell(q_j)$. These minima are the exponents in $g$.
+
+Fourier inversion on $H$ multiplies each $\E V$ by $\prod_j\overline{\chi_j(u_j)}$ and sums over character tuples with normalization $1/|H|$. For an entirely common character $\chi$ from $\U(g)$ the corresponding summand is $\chi(P/\prod_j u_j)$, using division in $\U(g)$. The common characters contribute $\ph(g)/|H|$ for a compatible tuple. The product reduction $H\to\U(g)$ is onto, so the number of such tuples is $|H|/\ph(g)$.
+
+For all other tuples choose one largest-mass class, breaking ties arbitrarily. For any specified set of $t\ge1$ labels outside this class, the common character on the remaining labels can be chosen in at most $Q$ ways, by inspecting any one remaining modulus. Each of the $t$ other characters has at most $Q$ choices. Lemma~\ref{lem:partition} bounds the term by $B^t$. Summing over the exceptional labels and dividing by $\ph(g)$ gives \eqref{eq:finite}. The term $t=r$ in the binomial bound merely enlarges it. Incompatible tuples are impossible by multiplication modulo $g$.
+\end{proof}
+
+Charging a tuple according to the number of labels outside its largest class is essential to this estimate for growing $r$. Counting all $|H|$ tuples at the worst single-label decay would introduce an extra factor of order $r$ in the sufficient quota.
+
+\section{Selecting the primes}\label{sec:selection}
+
+We use the usual convention that a Dirichlet character modulo $h$ has value
+zero on integers sharing a prime factor with $h$. All logarithms are natural.
+
+\begin{lemma}[One set for all characters]\label{lem:smallbias}
+Assume GRH for primitive nonprincipal Dirichlet $L$-functions.
+For each fixed $0<\delta<1$ there are positive constants
+$K_\delta,C_\delta,c_\delta$ such that the following holds for all
+sufficiently large $Q$. Let $x=K_\delta\log^2(2Q)$ and let $L$ be any
+real number with
+\[
+ C_\delta\log(2Q)\leq L\leq
+ c_\delta\frac{\log^2(2Q)}{\log\log(3Q)} .
+\]
+There is a set $S$ of distinct primes in $[x,2x]$ satisfying
+\[
+ L\leq n=|S|\leq 2L,\qquad
+ \left|\sum_{p\in S}\chi(p)\right|\leq\delta n
+ \quad(2\leq h\leq Q^2,\ \chi\bmod h\text{ nonprincipal}).
+\]
+\end{lemma}
+
+\begin{proof}
+Fix a nonnegative smooth function $W$ supported in $(1,2)$ with
+$\int W(u)\,du=1$, and put $w_p=(\log p)W(p/x)$.
+The ordinary prime number theorem and partial summation give
+$M:=\sum_p w_p=x+o(x)$. For a primitive nonprincipal character $\psi$
+of conductor $f$, the smoothed explicit formula at real-part cutoff $1/4$
+gives
+\[
+ \sum_{j\geq1}\Lambda(j)\psi(j)W(j/x)
+ =-\sum_{\Re\rho>1/4}x^\rho \widetilde W(\rho)
+    +O_W\!\left(x^{1/4}\log(2f)\right),
+ \qquad \widetilde W(s)=\int_0^\infty W(u)u^{s-1}\,du.
+\]
+Here $\rho$ runs over zeros with multiplicity. The formula and the local
+zero count follow, for example, from \cite[Exercise 45(i),(v)]{Tao}.
+Under GRH each zero in the sum has real part $1/2$. Integration by parts
+gives $|\widetilde W(1/2+it)|\ll_W(1+|t|)^{-3}$. Each unit interval
+about height $j$ contains $O(\log(f(2+|j|)))$ zeros, so summing over
+these intervals bounds the zero sum by $O_W(\sqrt{x}\log(2f))$.
+
+The contribution from prime powers of exponent at least two is
+$O_W(\sqrt{x}\log^2(2x))$. Indeed there are $O(\log(2x))$ possible
+exponents, at most $\sqrt{2x}$ possible bases for each, and each weight
+is $O_W(\log(2x))$. If $\chi$ modulo $h$ is induced by $\psi$, deleting
+the additional primes dividing $h$ costs at most
+$\|W\|_\infty\sum_{p\mid h}\log p\leq\|W\|_\infty\log h$.
+Thus for all the characters in the lemma,
+\[
+ \frac1M\left|\sum_p w_p\chi(p)\right|
+ \ll_W \frac{\log(2Q)}{\sqrt{x}}+
+          \frac{\log^2(2x)}{\sqrt{x}}+
+          \frac{\log(2Q)}{x}.
+\]
+Choosing $K_\delta$ sufficiently large in terms of $\delta$ and then $Q$
+sufficiently large makes this ratio at most $\delta/4$.
+
+Set $\mu=3L/2$. For each prime in the support independently take an
+indicator $I_p$ with $\Pr(I_p=1)=\mu w_p/M$. These probabilities are
+at most $O_W(L\log(2x)/x)$. Our upper bound on $L$ and the choice of a
+sufficiently small $c_\delta$ make them at most one. The selected primes
+are distinct and $\mathbb E\sum_p I_p=\mu$. For every admissible $\chi$, put
+$Z_\chi=\sum_p I_p\chi(p)$, so $|\mathbb E Z_\chi|\leq\delta\mu/4$.
+Both real and imaginary parts of $Z_\chi-\mathbb E Z_\chi$ are sums of
+independent centered terms, each bounded by one in absolute value, with
+total variance at most $\mu$. The two-sided Bernstein inequality applied
+at $t=\delta\mu/8$ to both parts gives
+\[
+ \Pr\bigl(|Z_\chi-\mathbb E Z_\chi|>\delta\mu/4\bigr)
+ \leq 4\exp(-c\delta^2\mu)
+\]
+for an absolute $c>0$. The same inequality for the size gives
+$\Pr(|\sum_p I_p-\mu|>\mu/3)\leq 2\exp(-c'\mu)$.
+There are at most $\sum_{h\leq Q^2}h\leq Q^4$ characters to check
+for $Q\geq2$. Choose $C_\delta$ large enough that the sum of the
+failure probabilities tends to zero. A successful realization has
+$L=2\mu/3\leq n\leq 4\mu/3=2L$ and simultaneously
+$|Z_\chi|\leq\delta\mu/2\leq\delta n$. This proves the lemma.
+\end{proof}
+
+A modulus $q\leq Q$ has at most $\log Q/\log x$ prime divisors in $S$,
+since the product of $b$ such primes is at least $x^b$ and divides $q$.
+Thus even the most divisible modulus in the stated range loses only $o(n)$
+of the selected primes to the coprimality condition.
+
+\section{Proof of the simultaneous factorization theorem}\label{sec:mainproof}
+Put $\delta=\e/2$ in Lemma~\ref{lem:smallbias}. Choose
+\[
+ b=2(A+6)/\e,\qquad C_0\ge\max\{C_\delta,\,4(b+1)\},
+ \qquad L=C_0R\log(2Q).
+\]
+Shrinking $c$ in Theorem~\ref{thm:main} ensures that $L$ is in the allowed range. Select the resulting $S$ and write $n=|S|$, so $L\le n\le 2L$. The number $v$ of selected primes dividing some modulus is at most $r\log Q/\log x$ with $x=K_\delta\log^2(2Q)$. Thus $v/n\le 1/(C_0\log x)\le\e/4$ for all sufficiently large $Q$, uniformly in every modulus tuple and in $r$. After deletion,
+\[
+ m\ge(1/2+\e)n-v\ge(1/2+3\e/4)n.
+\]
+In particular balanced quotas exceed $b\log(2Q)$, even after rounding down.
+
+For a pair of distinct inflated characters, their ratio comes from a nonprincipal character modulo $h=\operatorname{lcm}(q_i,q_j)\le Q^2$. Extend it by zero on nonunits modulo $h$. Deleting the $n-m$ unavailable positions from its sum increases its modulus by at most $n-m$. Hence
+\[
+ m-\left|\sum_{p\in T}\widetilde\chi_i(p)\overline{\widetilde\chi_j(p)}\right|
+ \ge 2m-(1+\delta)n\ge\e n .
+\]
+This proves \eqref{eq:gap} with $\Delta=\e n$. The full joint modulus $M$ can be much larger than $Q^2$. Only the pairwise ratios enter this bound.
+
+Now $m+1\le Q$ and $r\le Q$ for sufficiently large $Q$, by the upper bound on $L$. As $m\le n$, we get
+$QB\le Q^2\exp(-\e k_*/2)\le Q^{-A-4}$.
+Consequently $(1+QB)^r-1\le 2rQB$ for large $Q$. The right side of \eqref{eq:finite} is at most $2Q^{-A-2}\le Q^{-A}$. Multiplication by the multinomial count proves \eqref{eq:main}.
+
+\section{Why the number of primes is of the right order}
+The upper bound permits any fixed fraction $\lambda=1/2-\e>0$ of deletions. The following converse explains why each balanced factor costs order $\log Q$ primes when the target is pointwise relative accuracy $Q^{-A}$.
+
+\begin{lemma}[A lower bound for a sample of signs]\label{lem:sign}
+A population of $m$ signs has absolute sum at least $\beta m$, with $0<\beta\le1$. For the product $Y_k$ of a uniformly chosen $k$-subset,
+\[
+ |\E Y_k|\ge(\beta/2)^k\qquad (0\le k\le\beta^2m/4).
+\]
+\end{lemma}
+\begin{proof}
+Switch all signs if necessary; this preserves the absolute means. Write $s\ge\beta m$ for their sum and $a_j=\E Y_j$. With $m_+$ plus signs and $m_-$ minus signs, put $f(z)=(1+z)^{m_+}(1-z)^{m_-}$. Its $z^j$ coefficient is $\binom mj a_j$. The identity $(1-z^2)f'=(s-mz)f$ gives
+\[
+  (m-j)a_{j+1}=s a_j-j a_{j-1},\qquad a_0=1,\quad a_1=s/m .
+\]
+If $a_j\ge(\beta/2)a_{j-1}>0$ and $j\le\beta^2m/4$, then
+$(m-j)a_{j+1}\ge(\beta m-2j/\beta)a_j\ge(\beta m/2)a_j$.
+The ratios stay at least $\beta/2$ throughout the asserted range.
+\end{proof}
+
+\begin{theorem}[Necessity of logarithmic quotas]\label{thm:lower}
+Fix $0<\lambda<1/2$, $A>0$ and put $\beta=\lambda/2$. Suppose a set of $n$ distinct primes has the following property at level $Q$: for $r\ge 4/\beta^2$ labeled factors, after every deletion of at most $\lambda n$ primes and removal of the prime $3$ if present, the balanced-size factorization law for moduli $q_1=\cdots=q_r=3$ has pointwise relative error at most $Q^{-A}$ on the compatible tuples. Assume the balanced profile is required to exist (empty blocks, if allowed, have product one). For all sufficiently large $n$,
+\[
+ n\ge \frac{A}{\log(2/\beta)}\,r\log Q .
+\]
+\end{theorem}
+\begin{proof}
+Remove $3$ if present. Among the two signs of the remaining primes modulo $3$, delete as many of the minority sign as possible up to $\lfloor\lambda n\rfloor$. If all minority signs disappear, the surviving population is constant. Otherwise its imbalance has grown by $\lfloor\lambda n\rfloor\ge\beta n$ for large $n$. In both cases the absolute imbalance is at least $\beta m$. Take a smallest block of size $k=\lfloor m/r\rfloor\le\beta^2m/4$. Its locations form a uniformly random $k$-subset. The uniform law on compatible tuples has exactly half its tuples of each sign in this block, since $r\ge2$. Summing the pointwise error against the sign gives $|\E Y_k|\le Q^{-A}$. By Lemma~\ref{lem:sign}, $(\beta/2)^k\le Q^{-A}$. Hence $n\ge rk\ge Ar\log Q/\log(2/\beta)$.
+\end{proof}
+
+For bounded $r$, universal coverage alone needs $n\gg\log Q$: take one modulus a prime in $(Q/2,Q]$, the others $1$. The first factor has at most $2^n$ possible products. Together the two arguments show that the order $R\log Q$ of the set size in Theorem~\ref{thm:main} is sharp for its balanced-profile guarantee. A height bound $C'\log^2 Q$ supplies only $O_{C'}(\log^2 Q/\log\log Q)$ distinct primes by the prime number theorem. Thus the order $\log Q/\log\log Q$ of the maximal number of factors is sharp at this height and this accuracy. The argument does not determine the minimum prime height for a fixed number of factors.
+
+The erasure threshold is sharp even for two positive-size factors. Use modulus $3$ for both. Erasing the smaller of the two sign classes costs at most $\lfloor n/2\rfloor$ deletions. Each factor then has a forced sign at its given size. Changing the signs of both target residues preserves total compatibility and gives an unattainable tuple.
+
+\section{What survives at a smaller retained density}\label{sec:minority}
+For a fixed number of factors, arbitrary positive retained density still gives an exact support theorem. Extra obstructions live in a quotient whose size is bounded independently of the moduli. We describe this quotient through the characters that detect it.
+
+\begin{theorem}\label{thm:minority}
+Fix $r\ge2$, $0<a\le1$ and $A>0$, and put $d=\lfloor 1/a\rfloor$. For every sufficiently large $Q$, the Dirichlet GRH theorem permits one to choose $O_{a,r,A}(\log Q)$ distinct primes of size $O_{a,r,A}(\log^2 Q)$ such that the following holds simultaneously for every $q_1,\ldots,q_r\le Q$. Put $M=\operatorname{lcm}_j q_j$ and let $U$ be the selected primes coprime to $M$. Retain any $T\subseteq U$ with $|T|\ge a|U|$. The product group $H=\prod_j\U(q_j)$ has a character subgroup $E$ containing the diagonal group $D\simeq\widehat{\U(g)}$, independent of the quotas, with
+\[
+ [E:D]\le d^{r-1}.
+\]
+Let $\pi:H\to\widehat E$ be the evaluation map, onto by finite abelian duality, $\mu$ the usual factorization law for $T$, and $\nu=\pi_*\mu$. For all quotas $k_j\ge b_{a,r,A}\log Q$ summing to $m=|T|$, a vector $u\in H$ occurs exactly when $\nu(\pi(u))>0$. On each occupied fiber,
+\[
+ \mu(u)=\frac{|E|}{|H|}\nu(\pi(u))(1+O_{a,r,A}(Q^{-A})).
+\]
+The occupied projections number at most $d^{r-1}$. The index bound is sharp.
+\end{theorem}
+
+\begin{proof}
+Fix $a,r,A$. Choose a small constant $\eta>0$ below. Apply Lemma~\ref{lem:smallbias} with parameter $Q^r$ and a sufficiently small bias, and take $L$ to be a sufficiently large constant multiple of $\log Q$. The constant in $L$ can be enlarged after $b_{a,r,A}$ has been chosen, so that balanced quotas exist for every permitted $T$. Removing the selected primes dividing $M$ costs $o(L)$ because $r$ is fixed. Write $U$ for the remaining pool. Every nonprincipal character of $\U(M)$ has mean of modulus at most $\eta$ on $U$.
+
+\smallskip\noindent\emph{Characters of large bias.} We recall the subgroup-extraction argument from \cite{predecessor}. Use the probability inner product over $U$, and write $\alpha=|T|/|U|\ge a$. If $t$ distinct characters all have mean of modulus at least $u$ on $T$, their Gram matrix over $U$ has operator norm at most $1+(t-1)\eta$, by its row sums. Bessel's inequality for these vectors, applied to the indicator of $T$, gives
+\[
+ t\alpha u^2\le1+(t-1)\eta.
+\]
+Here the bias on $T$ is the absolute value of the mean character value over $T$. Generate $J\subseteq\widehat{\U(M)}$ by characters with bias greater than $1-\tau$ on $T$. Each generator and inverse has normalized $L^2(T)$ distance at most $\sqrt{2\tau}$ from a unit constant. Multiplying at most $d$ such characters produces a character of bias at least $1-d^2\tau$ by telescoping and squaring the distance. Choose $\tau>0$ and then $\eta>0$ small enough that
+$(d+1)a(1-d^2\tau)^2>1+d\eta$, with $1-d^2\tau>0$. The radius-$d$ word ball in $J$ has at most $d$ elements by the displayed Gram bound. Successive word balls grow strictly until the full subgroup is reached, so $|J|\le d$.
+
+\smallskip\noindent\emph{The quotient for the joint law.} Define $E\subseteq\widehat H$ by requiring that all ratios of the inflated characters lie in $J$. Its ratio map, taking the ratios to the first coordinate, has kernel $D$ and image in $J^{r-1}$. This proves the claimed index bound. Orthogonality gives the exact contribution of $E$ to Fourier inversion at $u$ as $|E|\nu(\pi(u))/|H|$. Outside $E$, group the labels by the cosets of $J$ of their pullbacks. Different cosets have pairwise character bias at most $1-\tau$. In the torus estimate of Lemma~\ref{lem:partition}, retain the original $r$ labels for the conditioning prefactor and discard all terms internal to these cosets in the nonnegative exponent. Because some label lies outside every largest coset, the remaining pair mass is at least $k_*/(2m)$. Thus every coefficient outside $E$ is bounded by $(m+1)^{r-1}\exp(-\tau k_*/2)$. Their unnormalized sum can be made at most $Q^{-A-2}$ by increasing $b_{a,r,A}$, since $|H|\le Q^r$ and $r$ is fixed.
+
+\smallskip\noindent\emph{Mass of an occupied class.} To bound an occupied mass from below, fix an assignment with the desired projection. Starting at any assignment with the same quotas, draw a directed edge for each misplaced prime from its current label to its desired label. Equal quotas imply equal in- and out-degree at each label. Decompose the edges into directed simple cycles of length at most $r$. Moving the primes around one such cycle preserves the quotas. Its change upon projection is trivial on $D$ since the total product stays fixed. All projected changes therefore belong to a group of order $s=[E:D]$. Their product corrects the projection. In any list with at least $s$ such changes, two partial products coincide, including the empty partial product. Delete the intervening block and repeat. At most $s-1$ cycles remain, and moving them still reaches the target projection. Every assignment consequently differs in at most $r(s-1)$ positions from some assignment with this projection. Any one assignment has at most $\sum_{j\le r(s-1)}\binom mj r^j$ assignments in that neighborhood. Thus every positive projected mass is at least an inverse polynomial in $m$, at fixed $a,r$. Since $m=O_{a,r,A}(\log Q)$, the Fourier error is small enough for the stated relative estimate. An empty projected fiber contains no possible assignment by definition. Finally, all occupied projected points restrict to the same character of $D$ determined by the total product. There are at most $[E:D]$ such extensions.
+
+\smallskip\noindent\emph{Sharpness.} Take all the moduli equal to a prime $\ell\equiv1\pmod d$. We may use any fixed such prime, or arbitrarily large ones by Dirichlet's theorem. The cyclic group $\U(\ell)$ has a subgroup of index $d$. Retain its most populous coset in $U$, which contains at least $|U|/d\ge a|U|$ selected primes. On this set, every character of the cyclic quotient has bias one, so $J$ contains its order-$d$ character group and therefore equals it. Here the ratio map $E/D\to J^{r-1}$ is onto. Take the trivial character in the first label and any prescribed characters of $J$ in the others. Thus $[E:D]=d^{r-1}$ exactly. More intrinsically, each label's quota fixes its quotient residue, and total compatibility imposes only one relation among the $r$ quotient residues. The support is confined to at most a $d^{1-r}$ fraction of the compatible fiber. Any quotient whose occupied fibers describe support exactly must have at least $d^{r-1}$ classes on that fiber.
+\end{proof}
+
+The projected distribution can be computed before testing any full tuple. For clarity, start with the reference allocation placing all primes in label 1, temporarily ignoring quotas. Its residue vector is $u^0=(P,1,\ldots,1)$ with $P$ reduced in the first coordinate. For each prime $p$ and label $j$, compute the projected change $v_{p,j}$ produced by moving $p$ from label 1 to $j$, with $v_{p,1}=1$. All $v_{p,j}$ lie in the kernel of $\widehat E\to\widehat D$, of size $s=[E:D]$. Process one prime at a time. For each assignment of that prime to $j$, increment the $j$th count and multiply the current residual class by $v_{p,j}$. Store integer multiplicities and discard counts above quota. The processed length determines the last count from the first $r-1$. At the final quotas, translate by $\pi(u^0)$ and divide by the multinomial count to obtain $\nu$. Once the characters and moves are available, a layer has at most $s\prod_{j<r}(k_j+1)$ states. This also gives a finite procedure for the support criterion in Theorem~\ref{thm:minority}.
+
+\section{Finite examples}
+The reproducible enumeration uses the fifteen primes from $101$ through $173$ inclusive and labels three factors of five primes each. Equivalently, start with those primes together with $3,97$, erase $97$ and remove the nonunit prime $3$. For each triple of moduli the number of ordered assignments is $\binom{15}{5,5,5}=756{,}756$. The last column is the maximum relative deviation from the uniform count on the compatible tuples.
+\begin{center}
+\begin{tabular}{@{}lrrrr@{}}\toprule
+Moduli & Common gcd & Targets attained & Counts on support & Deviation\\ \midrule
+$(12,15,20)$ & $1$ & $256/256$ & $2712$--$3196$ & $8.257\%$\\
+$(6,9,12)$ & $3$ & $24/48$ & $30426$--$32502$ & $3.506\%$\\ \bottomrule
+\end{tabular}
+\end{center}
+In the first example the three pairwise gcds are $3,4,5$. In the second, the global congruence removes exactly half the possible unit tuples. The program counts every assignment using integer arithmetic and, separately, compares each Fourier coefficient with one computed by polynomial multiplication in complex floating point. These examples illustrate the support and normalization. The proof of the uniform asymptotic estimate is in Sections~\ref{sec:selection} and~\ref{sec:mainproof}.
+
+The small-quotient law can be nonuniform even among its occupied classes. Give all three factors modulus $5$, give them quotas $(2,3,4)$, and use the nine primes
+\[
+ 11,19,29,31,41,59,61,71,13.
+\]
+Only $13$ is a quadratic nonresidue modulo $5$. The total product is $2\bmod5$, so the four quadratic-sign triples with an odd number of minus signs are compatible. Exactly one factor can contain $13$. Thus $(-,+,+),(+,-,+),(+,+,-)$ have probabilities $2/9,3/9,4/9$ respectively, and $(-,-,-)$ has probability zero. Direct enumeration of all $1260$ factorizations gives all four compatible residue tuples in each occupied sign class. The accompanying dynamic program computes the same sign distribution using two quota counters and two parity bits.
+
+\section{Sources and scope of the contribution}
+The upstream repository at commit \texttt{72fead10} defines the propositions in \nolinkurl{grh/src/Statements.lean} using Mathlib and exports them in \nolinkurl{grh/src/Main.lean}. In particular \nolinkurl{LFunction_eq_zero_re_of_isPrimitive} places all interior-strip zeros of a primitive Dirichlet $L$-function on the critical line. The development obtains Dirichlet nonvanishing from a one-sided smoothed arithmetic estimate. Our use of the zero theorem runs in the other direction: the explicit formula bounds prime character sums, and these bounds control factors of a squarefree integer. Sutherland reports successful sandboxed builds, statement comparisons and \nolinkurl{comparator --paranoid} checks for both shorter editions. The Lean FRO and Mathlib Initiative describe the separate checks of Alp\"oge's original proof \cite{lean,suth,fro}. We inspected the source declarations and used the published verification record. The downstream theorems in this note have mathematical proofs and finite checks; there is no Lean formalization of them here. The requested Wikipedia article supplies the historical context and the distinction between the zeta and Dirichlet statements \cite{wiki}.
+
+The ProveIt collection at commit \texttt{041d8032} includes a 499-page synthesis of 61 reports and a separate project-level incoming directory \cite{proveit}. Its closest predecessor, \emph{Squarefree products of small primes after arbitrary deletions}, already constructs a common logarithmically sized list for one prescribed subset product. Its majority theorem covers a range of quotas, and its common-list corollary fixes a quota in a dyadic range of moduli \cite{predecessor}. With two exhaustive factors one can recover the same type of conclusion by passing to the least common multiple. Starting with three factors, the additional statement here concerns their joint law under a single disjoint allocation of all the primes. The growing number of factors, the sharp lower bound on balanced quotas, and the sharp quotient governing the mixed-modulus joint law at arbitrary positive retained density are the proposed contributions.
+
+Klurman, Shparlinski and Ter\"av\"ainen address common prime lists and Boolean products for almost all moduli, and discuss the implication of GRH for coverage \cite{kst}. Hughes obtains a first-order optimal size for the almost-all-moduli covering problem \cite{hughes}. Martin and Parvardi study unrestricted subproducts of short intervals modulo a prime \cite{martin}. Our theorem does not optimize the leading constant for Boolean coverage. In additive combinatorics, prescribed block sums and sizes for an entire finite abelian group appear in the Tannenbaum problem discussed by Cichacz and Suchan \cite{cichacz}. Roos gives general inequalities for characteristic functions of random assignments using permanents \cite{roos}. Our finite bound uses an elementary multivariate coefficient estimate. The novelty assessment is relative to the sources reviewed. Historical priority remains unverified.
+
+\paragraph{Further research questions.}
+For fixed $A$ and erasure fraction, what is the best leading constant in the logarithmic quota for growing $r$? Can the largest prime be made smaller for a fixed number of factors while retaining the pointwise bound? At retained density $a\le1/2$, how quickly may $r$ grow while relative equidistribution still holds on every occupied fiber of the quotient in Theorem~\ref{thm:minority}?
+
+\begin{thebibliography}{10}\small\raggedright\setlength{\itemsep}{1pt}\setlength{\parsep}{0pt}
+\bibitem{lean} \texttt{lsernau/grh-lean}, \emph{GRH for Dirichlet $L$-functions, in Lean 4}, commit \texttt{72fead102f663d5c7a407964a13dc0cf9d977207}.
+\href{https://github.com/lsernau/grh-lean/tree/72fead102f663d5c7a407964a13dc0cf9d977207}{Repository and proof guide}.
+\bibitem{suth} A. V. Sutherland, \href{https://math.mit.edu/~drew/shortgrh/}{Verification files for the shorter Lean proof of RH and GRH}, November 2026.
+\bibitem{fro} Lean FRO and Mathlib Initiative, \href{https://leanprover-community.github.io/blog/posts/riemann-hypothesis/}{Statement on the Riemann hypothesis}, November 2026.
+\bibitem{wiki} Wikipedia contributors, \href{https://en.wikipedia.org/wiki/Riemann_hypothesis}{Riemann hypothesis}, consulted 26 November 2026.
+\bibitem{proveit} V. Reshetnikov, \href{https://github.com/VladimirReshetnikov/ProveIt/tree/041d8032541746f2ac2e686fbe437f8092771670/Analysis/GeneralizedRiemannHypothesis}{ProveIt, Generalized Riemann Hypothesis collection and merged article}, commit \texttt{041d8032541746f2ac2e686fbe437f8092771670}.
+\bibitem{predecessor} \emph{Squarefree products of small primes after arbitrary deletions}, 26 November 2026, especially Sections 1 and 8. \href{https://github.com/VladimirReshetnikov/ProveIt/blob/041d8032541746f2ac2e686fbe437f8092771670/Analysis/GeneralizedRiemannHypothesis/docs/incoming/squarefree_prime_products.zip}{Archived research packet, ProveIt}.
+\bibitem{Tao} T. Tao, \href{https://terrytao.wordpress.com/2014/12/09/254a-notes-2-complex-analytic-multiplicative-number-theory/}{254A, Notes 2: Complex-analytic multiplicative number theory}, 2014, Exercise 45.
+\bibitem{kst} O. Klurman, I. E. Shparlinski and J. Ter\"av\"ainen, \emph{On the generation of multiplicative groups by small primes}, \href{https://arxiv.org/abs/2609.25393}{arXiv:2609.25393} (2026).
+\bibitem{hughes} S. D. Hughes, \emph{Few small primes suffice to cover unit groups}, \href{https://arxiv.org/abs/2610.04678}{arXiv:2610.04678} (2026).
+\bibitem{martin} G. Martin and A. Parvardi, \emph{Subproducts of small residue classes}, \href{https://arxiv.org/abs/2008.10198}{arXiv:2008.10198}.
+\bibitem{cichacz} S. Cichacz and K. Suchan, \emph{Zero-sum partitions of Abelian groups and their applications to magic-type labelings}, \href{https://arxiv.org/abs/2203.09395}{arXiv:2203.09395}.
+\bibitem{roos} B. Roos, \emph{New inequalities for permanents and hafnians and some generalizations}, \href{https://doi.org/10.1080/03081087.2024.2436061}{Linear and Multilinear Algebra}, Theorem 1.4.
+\end{thebibliography}
+\end{document}

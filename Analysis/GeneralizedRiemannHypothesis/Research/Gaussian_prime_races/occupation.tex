@@ -1,0 +1,35 @@
+\section{Every projection spends little time in small sets}
+Let \(H\) be the closure of the orbit \(\theta_t=(\e^{i\gamma t})_{\gamma\in\Gamma}\) in the product of unit circles. This compact abelian group retains all arithmetic relations among the ordinates. Let \(\nu\) denote its normalized Haar measure. For \(z\in H\), put
+\[
+ F_z(t)=b_0+2\operatorname{Re}\sum_{\gamma>0}
+                 b_\gamma\e^{-h\gamma^2}z_\gamma\e^{i\gamma t}.
+\]
+Every derivative is continuous in \((z,t)\), and all \(F_z\) are real analytic. Translation satisfies \(F_z(t+u)=F_{z\theta_u}(t)\). A finite product of coordinate characters restricts on the orbit to \(\e^{i\omega t}\); it is nontrivial on \(H\) precisely when \(\omega\ne0\). Continuous-time averaging kills these nontrivial characters. Their finite linear combinations are uniformly dense in \(C(H)\) by Stone--Weierstrass. Hence the law of \(\QQ\) is the image of \(\nu\) under \(z\mapsto F_z(0)\) and the law of \(\PP\) is its translate by \(-r_q/(2d)\), by \eqref{eq:asymp}. In particular their means are \(b_0\) and \(b_0-r_q/(2d)\).
+
+\begin{lemma}[Uniform derivative order]\label{le:type}
+There are \(K\ge2\) and \(c>0\) such that for every \(z\in H\), real unit \(v\), and real \(t\),
+\[
+ \max_{1\le j\le K}|v\cdot F_z^{(j)}(t)|\ge c .
+\]
+\end{lemma}
+\begin{proof}
+If \(v\cdot F_z\) were constant on any interval, analyticity would make it constant on the line. Multiplication by \(\e^{-i\gamma t}\) and averaging would give \(v\cdot b_\gamma=0\) at every positive frequency, contradicting Lemma~\ref{le:rank}. Thus at \(t=0\) at least one positive-order derivative is nonzero for every \((v,z)\). Compactness of the unit sphere times \(H\), and continuity, give a finite cover, a common maximum order and a strictly positive lower bound. Translation supplies every \(t\).
+\end{proof}
+
+\begin{lemma}[Occupation on a real interval]\label{le:occ}
+Consider \(C^{K+1}\) real functions \(g\) on intervals of length one. Suppose their derivatives of orders \(1,\ldots,K+1\) are uniformly bounded and \(\max_{1\le j\le K}|g^{(j)}|\ge c>0\) pointwise. Uniformly in \(g\), Borel \(B\subset\R\), and real \(u\), one has
+\[
+ |\{t:g(t)\in B\}|\ll |B|^{1/K},\qquad
+ \left|\int \exp(iu g(t))\dd t\right|\ll(1+|u|)^{-1/K}.
+\]
+\end{lemma}
+\begin{proof}
+A sufficiently fine common mesh divides the interval into boundedly many pieces. On each piece some fixed \(|g^{(j)}|\ge c/2\) throughout, by the derivative bound at order \(j+1\). For \(j=1\) change variables directly. For \(j\ge2\), the set \(|g'|\le s\) has length \(O(s^{1/(j-1)})\). To see the elementary sublevel estimate used here, if \(|f^{(k)}|\ge c/2\) and \(|f|\le s\) on a set of length \(L>0\), choose \(k+1\) points of this set separated by \(\gg_k L\) using its measure quantiles. Their order-\(k\) divided difference has absolute value \(O_k(s/L^k)\) and equals \(f^{(k)}(\tau)/k!\). This proves the bound. On the complement of \(|g'|\le s\), the inverse change of variables gives at most \(j|B|/s\): Rolle's theorem bounds the number of monotone branches by \(j\). For \(0<|B|\le1\) take \(s=|B|^{(j-1)/j}\); null sets follow on letting \(s\downarrow0\), and large sets are immediate. Each interval contributes \(O(|B|^{1/j})\).
+For the oscillatory integral use the order-\(j\) van der Corput lemma when \(j\ge2\). When \(j=1\), a single integration by parts uses the lower bound on \(|g'|\) and the upper bound on \(|g''|\). Summing over the mesh proves the assertions.
+\end{proof}
+
+\begin{proof}[Proof of Theorem~\ref{th:local}]
+Apply the lemmas to \(g(t)=v\cdot F_z(t)\), allowing any additive constant. Proposition~\ref{pr:explicit} transfers the same hypotheses to each sufficiently late unit interval of the actual prime statistics: the error and its first \(K+1\) derivatives tend to zero for fixed \(q,h\), uniformly over all unit directions. This proves the local Borel bound. For the limiting measures average the estimates for \(F_z\) on \([0,1]\) over \(z\) and use Haar invariance. The Borel estimate gives absolute continuity; if \(w\) denotes the projected density, \(u|\{w>u\}|\le C|\{w>u\}|^{1/K}\). The resulting weak \(L^{K/(K-1)}\) estimate, compact support, and integration of level sets give the claimed strong \(L^p\) norms. Applying the oscillatory estimate in direction \(\xi/\|\xi\|\) gives the Fourier bound.
+\end{proof}
+
+In particular any finite list of strict linear inequalities in the smoothed races has a logarithmic density, since its boundary is contained in finitely many hyperplanes of measure zero. A specific density can be zero or one. Section~\ref{sec:four} gives an example where this distinction matters.

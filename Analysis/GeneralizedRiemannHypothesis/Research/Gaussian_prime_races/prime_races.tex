@@ -1,0 +1,87 @@
+\documentclass[11pt,letterpaper]{article}
+\usepackage[T1]{fontenc}
+\usepackage{lmodern,amsmath,amssymb,amsthm,mathtools,booktabs,graphicx}
+\usepackage[margin=1in,top=.84in,bottom=.82in]{geometry}
+\usepackage[final]{microtype}
+\usepackage{xcolor,fancyhdr,enumitem}
+\usepackage[hidelinks]{hyperref}
+\definecolor{inkblue}{HTML}{17465A}
+\hypersetup{colorlinks=true,linkcolor=inkblue,citecolor=inkblue,urlcolor=inkblue,pdftitle={Gaussian prime races: a transition modulo four and full-dimensional limit laws}}
+\pagestyle{fancy}\fancyhf{}\fancyhead[L]{\small\textcolor{inkblue}{Gaussian prime races}}\fancyhead[R]{\small November 2026}\fancyfoot[C]{\thepage}
+\setlength{\headheight}{14pt}
+\setlist{topsep=3pt,itemsep=3pt}
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{corollary}[theorem]{Corollary}
+\newtheorem{proposition}[theorem]{Proposition}
+\newcommand{\R}{\mathbb R}\newcommand{\C}{\mathbb C}\newcommand{\T}{\mathbb T}
+\newcommand{\e}{\mathrm e}\newcommand{\dd}{\,\mathrm d}
+\newcommand{\PP}{\mathcal P}\newcommand{\QQ}{\mathcal Q}
+\DeclareMathOperator{\supp}{supp}
+\newcommand{\abs}[1]{\left|#1\right|}
+\setlength{\emergencystretch}{2em}
+\begin{document}
+\begin{center}
+{\small\textsf{\textcolor{inkblue}{ANALYTIC NUMBER THEORY}}}\\[8pt]
+{\huge\bfseries Gaussian prime races}\\[6pt]
+{\large A transition modulo four and full-dimensional limit laws}\\[8pt]
+{\small Research note \quad$\cdot$\quad 26 November 2026}
+\end{center}
+\begin{abstract}
+Count primes in a moving Gaussian window on the logarithmic axis, weighting each prime by \((\log p)/\sqrt p\). We prove that the race between the classes \(3\) and \(1\) modulo \(4\) has a unique critical smoothing time in the certified interval \((0.04007656562,0.04007656609)\). Below it each class leads with positive logarithmic density. Above it the class \(3\) leads at every sufficiently large scale. At the threshold the class \(3\) leads with logarithmic density one. For arbitrary moduli we classify the transitions for every pair of classes by their limiting mean. Distinct inverse classes each win with density one half for every width. Every nonzero real projection has a limiting density and a uniform local occupation bound. For \(d=\varphi(q)\), adding the vectors at \(d\) distinct log-scales \(n^{\alpha_j}\), \(1<\alpha_j<2\), gives a single sequence with a limiting density in \(L^{1+\delta}(\mathbb R^d)\). The number-theoretic input is Dirichlet GRH. Multiplicities, coincidences, and rational relations among zero ordinates are allowed.
+\end{abstract}
+
+\section{The prime statistic and its laws}
+Write \(G=(\mathbb Z/q\mathbb Z)^\times\), \(d=|G|\), with \(q\ge1\) and the one-element group for \(q=1\). For \(h>0\) and \(a\in G\), define
+\begin{align}
+ k_h(u)&=(4\pi h)^{-1/2}\exp(-u^2/(4h)),\nonumber\\
+ \PP_a(t)&=\sum_{p\equiv a\ (q)}\frac{\log p}{\sqrt p}\,k_h(t-\log p)
+                  -\frac{\exp(t/2+h/4)}{d},\label{eq:P}\\
+ \QQ_a(t)&=\sum_{n\equiv a\ (q)}\frac{\Lambda(n)}{\sqrt n}\,k_h(t-\log n)
+                  -\frac{\exp(t/2+h/4)}{d}.\label{eq:Q}
+\end{align}
+Here \(p\) runs through primes and \(\Lambda(p^k)=\log p\) for \(k\ge1\), with \(\Lambda=0\) elsewhere. At \(x=\e^t\) the window has fixed multiplicative width around \(x\). The subtracted term comes from the pole at \(s=1\); it cancels in pairwise races. All \(d\) classes are retained, so the total prime-count fluctuation is still present.
+
+For the prime-only difference \(B_h=\PP_3-\PP_1\) modulo four, the threshold is pinned down by
+\[
+                 \boxed{\,0.04007656562<h_*<0.04007656609\,}.
+\]
+At \(h=0.040\) each class therefore leads with positive logarithmic density. At \(h=0.041\) class \(3\) leads at every sufficiently large scale. Theorem~\ref{th:transition} and Proposition~\ref{prop:enclosure} prove these assertions. The estimate in \eqref{eq:rate} controls the losing density up to the threshold.
+
+For a vector process \(X(t)\), its logarithmic limiting law is the weak limit of the image of \(T^{-1}\dd t\) on \([0,T]\) under \(t\mapsto X(t)\). For a sequence, use its empirical measures. Write \(|B|\) for Lebesgue measure in the dimension of \(B\).
+
+\begin{theorem}[Local occupation and projection densities]\label{th:local}
+For \(X=\PP\) or \(\QQ\), there are an integer \(K\ge2\), \(C<\infty\), and \(T_0\), depending on \(q,h\), such that for every \(T\ge T_0\), unit \(v\in\R^d\), and Borel \(B\subset\R\),
+\begin{equation}
+ |\{t\in[T,T+1]:v\cdot X(t)\in B\}|\ \le\ C|B|^{1/K}.\label{eq:occupation}
+\end{equation}
+The logarithmic limiting law \(\mu_X\) exists and has compact support. Its projection in every unit direction satisfies the same bound, with a density uniformly bounded in \(L^p(\R)\) for each \(1\le p<K/(K-1)\). Its joint Fourier transform satisfies
+\(\abs{\widehat\mu_X(\xi)}\le C(1+\|\xi\|)^{-1/K}\).
+\end{theorem}
+
+\begin{theorem}[A full-dimensional density from one sequence]\label{th:several}
+Fix \(1<\alpha_1<\cdots<\alpha_m<2\). For \(X=\PP\) or \(\QQ\), the sequence
+\begin{equation}
+ S_n=\sum_{j=1}^m X(n^{\alpha_j})\qquad(n=1,2,\ldots)\label{eq:Sn}
+\end{equation}
+has limiting law \(\mu_X^{*m}\). At \(m=d\) this measure has a density in \(L^{1+\delta}(\R^d)\) for some \(\delta=\delta(q,h)>0\), and the same holds for \(m>d\). At \(m>K(d+\ell)\) it has a \(C^\ell\) density for every nonnegative integer \(\ell\) meeting this inequality. The scales can be chosen without knowledge of any zero.
+\end{theorem}
+
+For example, modulo \(4\) there are two reduced classes. Adding their two-component vectors at \(t=n^{4/3}\) and \(t=n^{5/3}\) gives a limiting law with a density in the plane. Theorems~\ref{th:transition} and \ref{th:generaltransition} describe the outcome at a single scale. As \(h\) increases, the ordinary-prime race undergoes a sharp change from recurrent reversals to an eventual permanent lead.
+
+\paragraph{Mathematical inputs and precedent.}
+The Lean development \cite{sernau} exports Mathlib's RH and a zero-free right half-plane for every Dirichlet character, with the principal pole excepted. Its readable edition derives a one-sided estimate on prime sums by putting lower and upper bounds on the same corrected covolume. A Mellin argument then excludes zeros. The original formalization and its verification are described in the Lean FRO--Mathlib statement \cite{lean} and the historical account \cite{wiki}. We use the zero-location endpoint to pass in the reverse direction, from zeros to a prime statistic. The results below are proved in ordinary mathematics.
+
+The ProveIt synthesis \cite{proveit} combines 61 research packets. In its section on zeros and prime races, the theorem labelled \texttt{zer:thm:rank} obtains full rank of zero-multiplicity vectors even in short height intervals, using a Landau formula related to Banks \cite{banks}. Another theorem there places a ball in the convex hull of race values on multiplicative intervals. We use the insight that coincident zeros can still detect every direction. Lemma~\ref{le:rank} supplies the weaker global rank that suffices here with a separate proof. The later packets on filtered races and multiscale covariance study excursions and correlations at fixed lags. Our observation times in \eqref{eq:Sn} grow at distinct rates.
+
+Rubinstein--Sarnak \cite{rs}, Akbary--Ng--Shahabi \cite{ans}, Devin \cite{devin} and Martin--Ng \cite{mn} study limiting distributions and ties in prime races. Devin's nonconcentration result for finite trigonometric sums and Lawton's small-value bound for scalar functions with bounded Fourier spectrum \cite{lawton} are particularly close. Analytic pushforward integrability is a general subject \cite{ghs}. The proposed contributions concern the threshold for the Gaussian race, local occupation of sets for its infinite spectrum, the broad-window exponent, and the full-dimensional law for \eqref{eq:Sn}. Section~\ref{sec:four} compares the transition with earlier work on smoothed races. Historical priority for the exact results remains open.
+\input{explicit}
+\input{occupation}
+\input{modfour}
+\input{enclosure}
+\input{critical_rate}
+\input{general_threshold}
+\input{multiple}
+\input{broad}
+\input{closing}
+\end{document}

@@ -1,0 +1,154 @@
+\documentclass[11pt]{article}
+\usepackage[letterpaper,margin=1.04in,headheight=14pt]{geometry}
+\usepackage[T1]{fontenc}\usepackage{lmodern,amsmath,amssymb,amsthm,mathtools,xcolor,fancyhdr,microtype}
+\definecolor{teal}{HTML}{116461}\usepackage[colorlinks=true,allcolors=teal]{hyperref}
+\newtheorem{theorem}{Theorem}\newtheorem{lemma}[theorem]{Lemma}
+\newcommand{\Z}{\mathbb Z}\newcommand{\R}{\mathbb R}
+\newcommand{\re}{\operatorname{Re}}\newcommand{\im}{\operatorname{Im}}
+\pagestyle{fancy}\fancyhf{}\lhead{\small Dyadic recovery of Dirichlet zeros}\rhead{\small Analytic number theory}\cfoot{\thepage}
+\setlength{\emergencystretch}{1.5em}\raggedbottom
+\begin{document}\thispagestyle{plain}
+{\sffamily\small\color{teal} RESEARCH NOTE\hfill 26 NOVEMBER 2026}\par\vspace{8pt}
+{\LARGE\bfseries Recovering the labelled zeros of Dirichlet\par
+\vspace{2pt} $L$-functions from one dyadic prime statistic\par}
+\vspace{8pt}
+\noindent A single complex sequence of finite weighted prime-power sums determines, at every ordinate, the multiplicity for every character of a fixed modulus. The sample centres are the ordinary powers of two. At these centres two ordinates differing by $2\pi/\log 2$ oscillate identically. The proof separates arbitrarily many such coincidences, even when several characters share zeros. Its two ingredients are a Gaussian kernel with a derivative term and a lower bound on the spacing of algebraic integers with bounded coefficients.
+\section{The observation and the theorem}
+Fix $q\ge1$ and order its $h=\varphi(q)$ characters as $\chi_0,\ldots,\chi_{h-1}$, starting with the principal character. Write $m_j(\gamma)$ for the order of vanishing of $L(s,\chi_j)$ at $s=1/2+i\gamma$, taking the value zero at a nonzero value of the function. Put
+\[
+ T=\frac{2\pi}{\log2},\qquad \theta=2^{1/h},\qquad
+ a(m)=\sum_{j=0}^{h-1}\theta^j\chi_j(m).
+\]
+Choose the following filter parameters, allowing generous margins:
+\[
+ B=\frac{\log(102q)+10}{\log(7/6)},\qquad D=2hB,\qquad
+ A=h+4\log(512D^h),\qquad L=4\sqrt A/T.
+\]
+Define the real kernel $k$ and its bilateral Laplace transform $W$ by
+\[
+ g(y)=\frac{T}{2\sqrt{\pi A}}\exp\!\left(-\frac{T^2y^2}{4A}\right),
+ \quad k(y)=g(y)+g'(y)/T,\qquad
+ W(z)=(1+z/T)\exp(Az^2/T^2).
+\]
+Indeed, $\int_{\R} k(y)e^{-zy}\,dy=W(z)$ by Gaussian integration and integration by parts. With $t_n=n\log 2$ and the von Mangoldt function $\Lambda$, observe
+\begin{equation}
+ Y_n=e^{t_n/2}W(1/2)-
+ \sum_{\substack{m\ge 2\\|\log m-t_n|\le L\sqrt{t_n}}}
+ \frac{\Lambda(m) a(m)}{\sqrt m}\, k(t_n-\log m).
+ \label{eq:obs}
+\end{equation}
+Only prime powers in the displayed finite window contribute. When $q=1$ the statistic is real. The window has logarithmic width $O_q(\sqrt{\log x})$ about $x=2^n$.
+\begin{theorem}\label{th:main}
+Using Dirichlet GRH, the sequence $(Y_n)_{n\ge1}$ determines the complete divisor of zeros in $0<\re s<1$ of every character modulo $q$, with its character label and multiplicity. More precisely, for any real $\gamma$ the reconstruction gives the vector $(m_j(\gamma))_{j<h}$. The conclusion persists after an arbitrary $o(1)$ perturbation of $Y_n$.
+\end{theorem}
+The theorem concerns identification from infinite data. The precision required to identify multiplicities at high ordinates is quantified in Section~\ref{sec:inverse}.
+\section{From primes to a folded spectrum}
+\begin{lemma}\label{lem:count}
+For every $u\in\R$ and every $j$, $m_j(Tu)\le B(1+|u|)$.
+\end{lemma}
+\begin{proof}
+Use the inducing primitive character of conductor at most $q$. The omitted Euler factors have no zero in $\re s>0$. For a nonprincipal primitive character the partial sums of $\chi(n)$ have absolute value at most $q$. Partial summation gives $|L(s,\chi)|\le q|s|/\re s$ there. For the principal primitive function use $F(s)=(s-1)\zeta(s)/(s+1)$. Euler summation gives $\zeta(s)=s/(s-1)-s\int_1^\infty\{y\}y^{-s-1}\,dy$ and $|F(s)|\le1+|s|/\re s$. In the nonprincipal case set $F=L$. On the disk of radius $7/4$ centred at $2+it$ these bounds give $|F|\le17q(1+|t|)$. The Euler product gives $|L(2+it)|\ge1/\zeta(2)>1/2$ and the extra pole-removing factor has absolute value at least $1/3$ there. Jensen's formula on the disk gives
+\[
+ m_j(t)\log(7/6)\le\log(102q(1+|t|)).
+\]
+The point in question is $3/2$ from the centre. Now set $t=Tu$, use $T<10$ and $\log(1+T|u|)\le10|u|$.
+\end{proof}
+\begin{lemma}\label{lem:series}
+Let $c(u)=\sum_j\theta^jm_j(Tu)$ and let $\mathcal U$ be its support. Then
+\begin{equation}
+ Y_n=\sum_{u\in\mathcal U} c(u)(1+iu)e^{-Au^2}e^{2\pi i n u}+o(1),
+ \label{eq:series}
+\end{equation}
+with absolute convergence, uniformly in $n$.
+\end{lemma}
+\begin{proof}
+For one character, first take the prime-power sum over every $m\ge2$. On the line $\re s=2$ the Euler product and Gaussian inversion express it as
+\[
+ \frac1{2\pi i}\int_{(2)}
+     -\frac{L'}{L}(s,\chi)W(s-1/2)e^{(s-1/2)t_n}\,ds .
+\]
+Move the line to $\re s=1/4$. A zero contributes its negative multiplicity times the kernel and exponential evaluated there. The principal pole contributes $+e^{t_n/2}W(1/2)$, with coefficient $\theta^0=1$ in the combined statistic. Dirichlet GRH places every crossed nontrivial zero on the critical line; the half-plane nonvanishing export also excludes zeros on $\re s=1$. The remaining integral is $O_{q,A}(e^{-t_n/4})$.
+
+For detail on the shift, Jensen's argument on the same disks counts $O_q(\log(2+|v|))$ zeros with $|\gamma-v|\le1/2$, since their distance from the centre is at most $\sqrt{5/2}<7/4$. The order-one Hadamard product of the completed primitive function gives, uniformly for $1/4\le\sigma\le2$ at large $|v|$, away from zeros,
+\[
+ \frac{L'}{L}(\sigma+iv,\chi)=
+ \sum_{|\gamma-v|\le1}\frac{m_\chi(\gamma)}{\sigma+iv-1/2-i\gamma}
+ +O_q(\log(2+|v|)).
+\]
+Here the sum is over distinct ordinates. Subtract the completed logarithmic derivative at $2+iv$. In the difference, terms at distances $j\le|\gamma-v|<j+1$, $j\ge1$, cost $O_q(j^{-2}\log(2+|v|+j))$ per shell. The gamma factors obey the required bound by Stirling's formula, and $L'/L(2+iv)$ is bounded. Finite Euler factors contribute bounded logarithmic derivatives on this strip. The line $1/4$ is thus admissible. At large $|H|$, $[H,H+1]$ contains a height at distance $\gg_q 1/\log(2+|H|)$ from every ordinate, by deleting short intervals about nearby zeros. At those heights the horizontal integrals tend to zero by Gaussian decay. The local count also proves absolute summability in \eqref{eq:series}. For the standard analytic inputs see \cite{davenport,bmor}.
+
+Finally, the unrestricted prime sum can be truncated to \eqref{eq:obs}. Write $a_0=T^2/(4A)$ and group omitted integers by $j\le|\log m-t_n|<j+1$. On each of the two log intervals their total $\Lambda(m)/\sqrt m$ is $O((1+t_n+j)e^{(t_n+j)/2})$ by counting integers. Also $|k(t_n-\log m)|\ll_A (1+j)e^{-a_0j^2}$. In the tail $j\ge L\sqrt{t_n}-1$ and $a_0L^2=4$; summation of this Gaussian tail is $o(1)$ even after the factor $e^{t_n/2}$. The finite sum over characters preserves this error.
+\end{proof}
+For each residue $r\in\R/\Z$ the observation supplies one complex number,
+\begin{equation}
+ Z(r)=\lim_{N\to\infty}\frac1N\sum_{n=1}^N Y_n e^{-2\pi i n r}
+     =\sum_{u\in r+\Z} c(u)(1+iu)e^{-Au^2}.
+ \label{eq:fold}
+\end{equation}
+The geometric-series average kills every nonintegral frequency difference. Absolute convergence justifies the limit, even if the nonzero residue classes are dense. Every term in the real part is nonnegative. Thus $Z(r)=0$ precisely when this class has no zeros.
+\section{Separating the ordinates and the character labels}\label{sec:inverse}
+For a fixed $u$, its coefficient belongs to the finite set
+\[
+ \mathcal D_u=
+ \left\{\sum_{j=0}^{h-1} b_j\theta^j:
+       b_j\in\Z,\quad 0\le b_j\le B(1+|u|)\right\}.
+\]
+A member determines its entire digit vector, since $X^h-2$ is Eisenstein at 2 (for $h=1$ the basis is just $1$). Every member is between zero and $D(1+|u|)$. If $|u|\le R$, two distinct members are separated by at least
+\begin{equation}
+ \Delta_R=[D(1+R)]^{-(h-1)}.\label{eq:sep}
+\end{equation}
+Their difference is a nonzero algebraic integer, so its norm has absolute value at least one. At each of the other $h-1$ embeddings the absolute value of the difference is at most $2hB(1+R)$, since all conjugates of $\theta$ have absolute value $2^{1/h}$.
+
+To handle distinct ordinates in the same residue class, represent the lattice $r+\Z$ in one of two ways. If $r$ is within $1/4$ of an integer, write it as $\epsilon+\Z$, $|\epsilon|\le1/4$. Start with the singleton $\{\epsilon\}$, then the pairs $\{\epsilon-j,\epsilon+j\}$, $j=1,2,\ldots$. Otherwise write it as $\epsilon+1/2+\Z$, $|\epsilon|\le1/4$, and use pairs $\{\epsilon-(j+1/2),\epsilon+(j+1/2)\}$ for $j=0,1,\ldots$. Within a pair the two frequencies are at least one apart. Consecutive groups are separated in absolute value by at least $1/2$.
+\begin{theorem}\label{th:unfold}
+Starting with $Z(r)$, all coefficients and their character labels can be recovered group by group. To recover the groups through maximal radius $R$, it suffices to know $Z(r)$ with absolute error at most
+\begin{equation}
+ \frac{e^{-AR^2}\Delta_R}{4(1+R)}.\label{eq:noise}
+\end{equation}
+\end{theorem}
+\begin{proof}
+Subtract the contributions of all previously recovered groups. For a pair $u,v$ and residual $z$, use the real linear functional
+\[
+ P_{u,v}(z)=\frac{\im z-v\re z}{u-v}.
+\]
+It sends $1+iu$ to $1$ and $1+iv$ to $0$. For a singleton use $P(z)=\re z$. Apply this functional and multiply by $e^{Au^2}$. The result equals $c(u)$ plus contributions from later groups. Let $R_0$ be the maximum absolute value in the current group. Members $w$ of the $(k+1)$st later group satisfy
+\[
+ R_0+k+\tfrac12\le|w|\le R_0+k+2\qquad(k\ge0).
+\]
+Both forms of the projection satisfy $|P(1+iw)|\le 2(1+|w|)$ on later groups. Each group has at most two members. Their total contribution has absolute value at most
+\begin{align*}
+ &4D\sum_{k\ge0}(R_0+k+3)^2
+ \exp\{-A[(R_0+k+1/2)^2-R_0^2]\}\\
+ &\hspace{1em}\le \frac{36D e^{-A/4}e^{-(A-2/3)R_0}}{1-e^{-(A-2/3)}}
+ <\tfrac14\Delta_{R_0}.
+\end{align*}
+For the first inequality use $(3+y)^2\le9e^{2y/3}$ and $(R_0+k+1/2)^2-R_0^2\ge R_0+k+1/4$. For the second, $A-2/3\ge h-1$, $e^{-A/4}\le(512D^h)^{-1}$ and the denominator exceeds $1/2$. Thus the nearest member of $\mathcal D_u$ is $c(u)$. The other member of a pair is recovered by swapping $u$ and $v$ before subtraction. Formula \eqref{eq:sep} gives both digit vectors uniquely.
+
+For a measurement error, $|P(z)|\le (1+R_0)|z|$ since $|u-v|\ge1$. Error \eqref{eq:noise} introduces at most $\Delta_{R_0}/4$ after projection and rescaling for this and every earlier group. Each nearest-member decision is therefore correct and induction continues.
+\end{proof}
+Combining \eqref{eq:fold} and Theorem~\ref{th:unfold} proves Theorem~\ref{th:main}. An $o(1)$ perturbation has zero limiting Fourier coefficient at every frequency. For fixed nonvanishing noise the finite-radius result applies whenever the induced error in the folded coefficient satisfies \eqref{eq:noise}.
+
+\section{An example and the relation to earlier work}
+For $q=3$ the coefficients are $m_0(\gamma)+\sqrt2\,m_1(\gamma)$. At a single ordinate, a shared simple zero gives $1+\sqrt2$, while a double zero of the principal character gives $2$. If the scaled ordinates $-1/2$ and $1/2$ both occur, their sampled oscillations are both $(-1)^n$. Their contributions to $Z(1/2)$ are proportional to $c(-1/2)(1-i/2)$ and $c(1/2)(1+i/2)$. The sum and difference encoded in the real and imaginary parts separate these two contributions once the tail estimate accounts for all more distant copies. For real characters symmetry enforces equal multiplicities at opposite ordinates. The proof covers nonreal characters without that restriction.
+
+The readable Lean development \cite{lean} derives its zero theorem from one-sided estimates for smoothed sums of $\Lambda(n)(1-\chi_K(n))$ in a progression. Its Mellin transform detects logarithmic-derivative poles. The five exports concern zeta and Dirichlet $L$-functions. Independent checks compare them against their formal statements \cite{audit}. The supplied overview \cite{wiki} describes the zero-line statement and its prime-distribution consequences. Here the zero-line theorem permits a different inverse problem, with character-labelled multiplicities as the target. The present proofs are on paper. We used the published verification for the upstream Lean build.
+
+A ProveIt predecessor \cite{prior} recovers each zeta multiplicity from smoothed sums at $2^n3^{n^2}$. Weyl equidistribution separates distinct actual ordinates on that grid. Our theorem allows exact frequency collisions on a regular grid and handles all characters at the fixed modulus with one prime weight. Through $X$ the dyadic grid has order $\log X$ centres, compared with order $\sqrt{\log X}$ for the predecessor's example. Its observations use prime powers through the cutoff, while \eqref{eq:obs} uses a two-sided window. These differences matter when comparing the information supplied to the two inverse problems. The index describes the ProveIt packets as unreviewed on deposit. We checked the frequency argument in the indicated predecessor. Two further notes in the earlier research collection address neighboring inverse problems. \emph{Factorial samples of prime-power sums} uses lag-one correlations for a given primitive character at factorials. \emph{How many arithmetic progressions resolve a Dirichlet zero?} bounds the separation of multiplicity vectors using residues at a specified zero. Here a folded coefficient must resolve all ordinates in one frequency class and all character labels simultaneously. Historical priority of this formulation has not been established.
+
+\paragraph{Precision and further questions.}
+At height $|\gamma|=TR$, the sufficient tolerance in \eqref{eq:noise} decays as $\exp(-A\gamma^2/T^2)$ times a power of $1+|\gamma|$. The rate of convergence in \eqref{eq:fold} involves the proximity of other phases modulo one. The proof gives no uniform finite sample count. Can an analytic weight achieve recovery of all labels and ordinates on the same grid with only exponential loss in $|\gamma|$? How short can the prime window be while retaining an absolutely convergent expansion with an invertible folded spectrum?
+
+\paragraph{Exact finite test.} The accompanying program \texttt{check\_dyadic.py} constructs folded data with two labels in $\mathbb Q(\sqrt2)$ on eighth-integer lattices. For synthetic multiplicity envelope $B=2$, it uses $A=128\log2$, which satisfies the tail inequalities in the proof with $h=2$, $D=8$. Thus all Gaussian weights are powers of two with integer exponents. It verifies 430 label pairs with exact comparisons, including tests with nonzero perturbations and with unresolved tails.\par
+\begin{thebibliography}{9}\small
+\bibitem{lean} L. Sernau and collaborators, \emph{GRH for Dirichlet L-functions, in Lean 4}, based on the work of L. Alp\"oge with Claude.
+\href{https://github.com/lsernau/grh-lean/blob/72fead102f663d5c7a407964a13dc0cf9d977207/grh/GUIDE.md}{Readable guide},
+\href{https://github.com/lsernau/grh-lean/blob/72fead102f663d5c7a407964a13dc0cf9d977207/grh/src/Main.lean}{formal exports}.
+\bibitem{audit} A. V. Sutherland, \href{https://math.mit.edu/~drew/shortgrh/}{Verification files for the shorter Lean proof of RH and GRH}, November 2026.
+\bibitem{wiki} \href{https://en.wikipedia.org/wiki/Riemann_hypothesis}{Riemann hypothesis}, supplied overview, consulted 26 November 2026.
+\bibitem{prior} ProveIt collection,
+\href{https://github.com/VladimirReshetnikov/ProveIt/blob/2c45d198070f93209d6f0faa2d387ef0a2c4e72c/Analysis/GeneralizedRiemannHypothesis/Research/grh-torsion-and-prime-sampling/sections/simplicity.tex}{\emph{What sparse prime sums determine about zeta zeros}, section on multiplicity};
+\href{https://github.com/VladimirReshetnikov/ProveIt/blob/2c45d198070f93209d6f0faa2d387ef0a2c4e72c/Analysis/GeneralizedRiemannHypothesis/README.md}{collection index}.
+\bibitem{davenport} H. Davenport, \emph{Multiplicative Number Theory}, 3rd ed., revised by H. L. Montgomery, Springer, 2000.
+\bibitem{bmor} M. A. Bennett, G. Martin, K. O'Bryant and A. Rechnitzer, \href{https://doi.org/10.1090/mcom/3599}{Counting zeros of Dirichlet $L$-functions}, Math. Comp. \textbf{90} (2021), 1455--1482.
+\end{thebibliography}
+\end{document}

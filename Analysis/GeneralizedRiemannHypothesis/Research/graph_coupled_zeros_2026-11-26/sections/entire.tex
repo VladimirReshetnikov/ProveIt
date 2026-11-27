@@ -1,0 +1,416 @@
+% Requires amsmath,amssymb,amsthm; theorem,lemma,corollary,remark environments.
+% Bibliography keys used: reiffenstein, dlmfdirichlet.
+\section{Entire functions, collisions, and zero counting}
+\label{sec:entire-graph}
+
+The finite compression theorem has an entire-function counterpart.
+Its real-zero mechanism is the classical sign of a logarithmic derivative
+of a real canonical product.  In matrix language this is a special case
+of meromorphic Herglotz theory and its higher-order interlacing;
+we do not claim that mechanism as new.\cite{reiffenstein}
+We give direct proofs to make the multiplicities and all pole cancellations
+in the present construction explicit.
+
+\subsection{The precise analytic class}
+
+Let $F_1,\ldots,F_n$ be nonzero entire functions with representations
+\begin{equation}\label{eq:real-canonical-product}
+ F_i(z)=c_i z^{m_i}e^{b_i z}
+ \prod_{\rho\in\mathcal Z_i}
+ \left(1-\frac z\rho\right)e^{z/\rho},
+ \qquad
+ c_i\in\mathbb R\setminus\{0\},\quad b_i\in\mathbb R,\quad m_i\geq0.
+\end{equation}
+Here $\mathcal Z_i$ is a possibly empty multiset of nonzero real numbers,
+each zero is listed with multiplicity,
+$\sum_{\rho\in\mathcal Z_i}|\rho|^{-2}<\infty$, and the product converges
+locally uniformly.  Assume that each $F_i$ has at least one zero:
+$m_i+|\mathcal Z_i|>0$.
+These hypotheses hold, in particular, for real entire functions of order
+at most one with at least one zero and with all zeros real, by Hadamard
+factorization.  They also include the polynomial inputs above.
+No assumption that $F_i(0)\neq0$ is made.
+
+Write $g_i=F_i'/F_i$ away from the zeros of $F_i$.
+Termwise logarithmic differentiation of
+\eqref{eq:real-canonical-product} gives
+\begin{equation}\label{eq:logder-canonical}
+ g_i(z)=b_i+\frac{m_i}{z}
+   +\sum_{\rho\in\mathcal Z_i}
+       \left(\frac1{z-\rho}+\frac1\rho\right).
+\end{equation}
+The sum and its derivative converge uniformly on compact sets avoiding
+the zeros: for large $|\rho|$ the summand in \eqref{eq:logder-canonical}
+is $O(|\rho|^{-2})$, uniformly on each such compact set.
+
+\begin{lemma}[Strict half-plane sign]\label{lem:strict-logder}
+For $z=x+iy$ with $y\neq0$,
+\begin{equation}\label{eq:logder-imaginary}
+ \operatorname{Im}g_i(z)
+ =-y\left(\frac{m_i}{|z|^2}
+       +\sum_{\rho\in\mathcal Z_i}\frac1{|z-\rho|^2}\right).
+\end{equation}
+At real $x$ with $F_i(x)\neq0$,
+\begin{equation}\label{eq:logder-decrease}
+ -g_i'(x)=
+ \frac{m_i}{x^2}
+       +\sum_{\rho\in\mathcal Z_i}\frac1{(x-\rho)^2}>0.
+\end{equation}
+Terms involving $m_i$ are omitted when $m_i=0$.
+\end{lemma}
+\begin{proof}
+The constants $b_i$ and $1/\rho$ are real, and
+$\operatorname{Im}(z-\rho)^{-1}=-y/|z-\rho|^2$.
+This proves \eqref{eq:logder-imaginary}.
+Differentiating \eqref{eq:logder-canonical} gives
+\eqref{eq:logder-decrease}.
+At least one nonnegative term in each parenthesized sum is positive,
+because $F_i$ has at least one zero.
+\end{proof}
+
+The analytic class matters.  Real zero location alone, without a growth
+or canonical-product restriction, is insufficient: $F(z)=ze^{z^2}$ has
+only a real zero, whereas $F'(z)=e^{z^2}(1+2z^2)$ has nonreal zeros.
+Likewise a zero-free exponential has constant logarithmic derivative
+and does not satisfy the strict inequality needed below.
+
+\subsection{A determinant without division}
+
+Let $A$ be an $n$-by-$n$ Hermitian matrix, constant in $z$.  For a subset
+$S\subseteq[n]=\{1,\ldots,n\}$, write $A[S]$ for the corresponding
+principal submatrix, with $\det A[\varnothing]=1$.  Define
+\begin{align}
+ \mathcal P_A(z)
+ &=\det\!\left(
+       \operatorname{diag}(F_1(z),\ldots,F_n(z))A+
+       \operatorname{diag}(F'_1(z),\ldots,F'_n(z))
+          \right) \label{eq:entire-determinant}\\
+ &=\sum_{S\subseteq[n]}
+       \det A[S^{\mathrm c}]
+       \prod_{i\in S}F_i'(z)
+       \prod_{j\notin S}F_j(z). \label{eq:principal-minor-entire}
+\end{align}
+The second equality follows by multilinearity in the rows of the
+determinant.  It proves directly that $\mathcal P_A$ is entire.
+Every principal minor of a Hermitian matrix is real, so $\mathcal P_A$
+is a real entire function.
+Away from the input zeros, put
+\[
+ M_A(z)=A+\operatorname{diag}(g_1(z),\ldots,g_n(z)).
+\]
+Then
+\begin{equation}\label{eq:entire-meromorphic-factorization}
+ \mathcal P_A(z)=\left(\prod_iF_i(z)\right)\det M_A(z).
+\end{equation}
+
+\begin{theorem}[Real zeros under Hermitian coupling]\label{thm:entire-real-zeros}
+The entire function $\mathcal P_A$ is not identically zero and all of
+its zeros are real.
+For $A=L$, a weighted graph Laplacian, it is precisely the rooted-forest
+expression \eqref{eq:forest-polynomial} with $p_i$ replaced by $F_i$.
+\end{theorem}
+\begin{proof}
+Take $z$ in the upper half-plane.  All $F_i(z)$ are nonzero.
+If $M_A(z)v=0$ for a nonzero vector $v$, Hermiticity of $A$ and
+Lemma~\ref{lem:strict-logder} give
+\[
+ 0=\operatorname{Im}\bigl(v^*M_A(z)v\bigr)
+   =\sum_i|v_i|^2\operatorname{Im}g_i(z)<0,
+\]
+a contradiction.  Thus \eqref{eq:entire-meromorphic-factorization}
+is nonzero throughout the upper half-plane.  Since $\mathcal P_A$ is
+real entire, it is nonzero throughout the lower half-plane as well.
+The forest assertion follows from the polynomial identity
+\eqref{eq:forest-det}; its substitution is first valid off the input
+zeros, and the entire expressions then agree everywhere.
+\end{proof}
+
+\subsection{An exact formula at collisions}
+
+A product formula written with logarithmic derivatives can conceal
+cancellation at a shared zero.  The following formula resolves every
+such collision, including multiple and central zeros.
+
+Fix $\lambda\in\mathbb R$, and define
+\[
+ I=\{i:F_i(\lambda)=0\},\qquad J=[n]\setminus I,\qquad
+ \mu_i=\operatorname{ord}_{\lambda}F_i\quad(i\in I).
+\]
+Define the complementary Hermitian matrix
+\begin{equation}\label{eq:collision-complement}
+ C_\lambda=A[J]+\operatorname{diag}(g_j(\lambda):j\in J),
+ \qquad k_\lambda=\dim\ker C_\lambda.
+\end{equation}
+If $J$ is empty, its nullity is defined to be zero.
+
+\begin{theorem}[Exact collision order]\label{thm:collision-order}
+For every real $\lambda$,
+\begin{equation}\label{eq:collision-order}
+ \boxed{\quad
+ \operatorname{ord}_{\lambda}\mathcal P_A
+    =\sum_{i\in I}(\mu_i-1)+k_\lambda .
+ \quad}
+\end{equation}
+When $I$ is empty, this says that the multiplicity of a zero away from
+the input zeros equals the nullity of $M_A(\lambda)$.
+\end{theorem}
+\begin{proof}
+Set $t=z-\lambda$.  For $i\in I$ write
+$F_i(\lambda+t)=t^{\mu_i}h_i(t)$ with $h_i(0)\neq0$.
+The $I$-by-$I$ block of $M_A(\lambda+t)$ is
+\[
+ B(t)=t^{-1}D+E(t),\qquad
+ D=\operatorname{diag}(\mu_i:i\in I),
+\]
+where $E$ is analytic near zero.  Hence
+\[
+ B(t)^{-1}=tD^{-1}+O(t^2),\qquad
+ \det B(t)=t^{-|I|}\det D\,(1+O(t)).
+\]
+The Schur complement of this block is analytic near zero:
+\begin{align*}
+ S(t)&=A[J]+\operatorname{diag}(g_j(\lambda+t):j\in J)
+                   -A[J,I]B(t)^{-1}A[I,J]\\
+     &=C_\lambda+tD_\lambda+O(t^2),
+\end{align*}
+where
+\begin{equation}\label{eq:collision-negative-derivative}
+ D_\lambda=
+   \operatorname{diag}(g_j'(\lambda):j\in J)
+        -A[J,I]D^{-1}A[I,J]\prec0
+\end{equation}
+when $J$ is nonempty.  Indeed the first term is strictly negative
+definite by \eqref{eq:logder-decrease}, and the term subtracted from it
+is positive semidefinite.
+
+We verify explicitly that $\det S(t)$ has order $k_\lambda$.
+Use the orthogonal decomposition
+$\mathbb C^J=\ker C_\lambda\oplus(\ker C_\lambda)^\perp$.
+On the second summand $C_\lambda$ is invertible.  Taking its Schur
+complement reduces the first block to
+\[
+ t\,D_\lambda|_{\ker C_\lambda}+O(t^2).
+\]
+Cross-block contributions start in order $t^2$, since the off-diagonal
+blocks of $C_\lambda$ in this decomposition vanish.
+The compression of $D_\lambda$ to the kernel is negative definite,
+so its determinant is nonzero.  Thus
+$\operatorname{ord}_0\det S=k_\lambda$.
+This argument also covers a zero-dimensional kernel; the empty
+determinant is one.
+
+Finally, the factors $\prod_{i\in I}F_i$ supply order
+$\sum_{i\in I}\mu_i$, $\det B(t)$ removes $|I|$, and all $F_j(\lambda)$
+for $j\in J$ are nonzero.  Equation
+\eqref{eq:entire-meromorphic-factorization} now gives
+\eqref{eq:collision-order}.
+If $I$ is empty, apply the kernel-compression argument directly to
+$M_A(\lambda+t)$, whose derivative is strictly negative definite.
+If $J$ is empty, the first block alone gives the asserted order.
+\end{proof}
+
+No simplicity or noncoincidence assumption is hidden in this formula.
+For example, if every input has a simple zero at $\lambda$, then
+$I=[n]$, $J=\varnothing$, and $\mathcal P_A(\lambda)\neq0$:
+the apparent common zero is removed completely.
+
+\subsection{A bounded discrepancy on every interval}
+
+Let $n_+(B)$ denote the number of strictly positive eigenvalues of a
+Hermitian matrix $B$, counted with multiplicity.  For a nonzero entire
+function $F$, let $N_F(a,b)$ count its real zeros in $(a,b)$ with
+multiplicity.
+
+\begin{theorem}[Exact zero-count identity]\label{thm:entire-count}
+Let $a<b$ be real, and suppose neither endpoint is a zero of any $F_i$
+or of $\mathcal P_A$.  Then
+\begin{equation}\label{eq:inertia-count}
+ \boxed{\quad
+ N_{\mathcal P_A}(a,b)
+  =\sum_iN_{F_i}(a,b)
+     +n_+(M_A(a))-n_+(M_A(b)).
+ \quad}
+\end{equation}
+In particular,
+\begin{equation}\label{eq:count-discrepancy}
+ \left|N_{\mathcal P_A}(a,b)-\sum_iN_{F_i}(a,b)\right|\leq n.
+\end{equation}
+If the interval contains no input zero, it contains at most $n$ zeros
+of $\mathcal P_A$, counted with multiplicity.
+\end{theorem}
+\begin{proof}
+On any interval without input zeros,
+\[
+ M_A'(x)=\operatorname{diag}(g_i'(x))\prec0.
+\]
+At a zero of $\det M_A$ with kernel dimension $k$, the same compression
+argument used above shows that the $k$ zero eigenvalues cross from
+positive to negative as $x$ increases.  Its positive inertia therefore
+drops by $k$, which is exactly the multiplicity of $\mathcal P_A$ there.
+
+Now cross an input zero $\lambda$ with notation as in
+Theorem~\ref{thm:collision-order}.  For small negative $t$, the block
+$B(t)$ has $|I|$ negative eigenvalues; for small positive $t$, it has
+$|I|$ positive eigenvalues.  Hermitian block elimination preserves
+inertia, so the remaining eigenvalues are counted by $S(t)$.
+Its $k_\lambda$ zero eigenvalues cross from positive to negative by
+\eqref{eq:collision-negative-derivative}; its other eigenvalues retain
+their signs.  Consequently
+\[
+ n_+(M_A(\lambda+0))-n_+(M_A(\lambda-0))
+       =|I|-k_\lambda
+       =\sum_{i\in I}\mu_i
+          -\operatorname{ord}_{\lambda}\mathcal P_A.
+\]
+There are only finitely many zeros of these nonzero entire functions
+in a compact interval.  Summing these jumps, including the ordinary
+zeros between poles, telescopes to \eqref{eq:inertia-count}.
+Since positive inertia lies between zero and $n$, the two remaining
+claims follow.
+\end{proof}
+
+The discrepancy bound is sharp even for connected graph Laplacians.
+Take $F_i(z)=z$ for every $i$.  If the nonzero eigenvalues of $L$ are
+$\ell_2,\ldots,\ell_n>0$, then
+\[
+ \mathcal P_L(z)=\prod_{j=2}^n(1+\ell_jz).
+\]
+An interval sufficiently close to zero contains all $n$ input zeros
+and no output zero, attaining discrepancy $-n$.
+
+\subsection{Local motion under a positive coupling change}
+
+A local monotonicity statement survives for entire inputs, although
+the finite resistance sum in \eqref{eq:resistance-sum} is not an
+unregularized sum over infinitely many zeros.
+
+\begin{corollary}[Velocity of a simple zero]\label{cor:entire-velocity}
+Let $A(t)=A_0+tB$ with $B\succeq0$ Hermitian.
+Suppose $x_0$ is a simple zero of $\mathcal P_{A(t_0)}$ and
+$F_i(x_0)\neq0$ for every $i$.
+There is a local differentiable real zero $x(t)$ with $x(t_0)=x_0$.
+For any nonzero $v\in\ker M_{A(t_0)}(x_0)$,
+\begin{equation}\label{eq:entire-velocity}
+ x'(t_0)=
+ \frac{v^*Bv}{\displaystyle\sum_i|v_i|^2(-g_i'(x_0))}\geq0.
+\end{equation}
+For increasing one graph-edge conductance, the numerator is
+$|v_i-v_j|^2$.
+\end{corollary}
+\begin{proof}
+The collision formula with $I=\varnothing$ shows that the kernel is
+one-dimensional.  The real implicit function theorem applies because
+the zero is simple.  Choose a local nonzero kernel vector and
+differentiate $M_{A(t)}(x(t))v(t)=0$ at $t_0$.
+Multiplication on the left by $v^*$ removes the term involving $v'$,
+and gives
+$v^*Bv+x'(t_0)\sum_i|v_i|^2g_i'(x_0)=0$.
+The denominator in \eqref{eq:entire-velocity} is strictly positive.
+\end{proof}
+
+\subsection{Completed Dirichlet functions as inputs}
+
+Let $\chi$ be a primitive nonprincipal Dirichlet character of conductor
+$q$, with parity $a_\chi\in\{0,1\}$ determined by
+$\chi(-1)=(-1)^{a_\chi}$.  Use the standard completion
+\begin{equation}\label{eq:completed-dirichlet}
+ \Lambda_\chi(s)=
+  (q/\pi)^{(s+a_\chi)/2}
+  \Gamma\!\left(\frac{s+a_\chi}{2}\right)L(s,\chi).
+\end{equation}
+Its entire continuation has order one, and its zeros are the
+nontrivial zeros of $L(s,\chi)$.  The primitive functional equation and
+conjugation identity are
+\begin{equation}\label{eq:completed-functional-equation}
+ \Lambda_\chi(s)=\varepsilon_\chi
+                  \Lambda_{\overline\chi}(1-s),
+ \qquad |\varepsilon_\chi|=1,\qquad
+ \overline{\Lambda_\chi(\overline s)}
+                  =\Lambda_{\overline\chi}(s).
+\end{equation}
+These are the standard analytic facts about primitive completions;
+the functional-equation conventions are recorded, for example, in
+DLMF \S25.15.\cite{dlmfdirichlet}
+
+Choose a square root $\eta_\chi$ of $\varepsilon_\chi$, and define
+\begin{equation}\label{eq:phase-real-dirichlet}
+ F_\chi(z)=\eta_\chi^{-1}
+             \Lambda_\chi\!\left(\tfrac12+iz\right).
+\end{equation}
+This is a real entire function even when $\chi$ is complex-valued.
+Indeed, for every complex $z$,
+\begin{align*}
+ \overline{F_\chi(\overline z)}
+ &=\eta_\chi
+       \Lambda_{\overline\chi}\!\left(\tfrac12-iz\right)\\
+ &=\eta_\chi\varepsilon_\chi^{-1}
+       \Lambda_\chi\!\left(\tfrac12+iz\right)
+ =F_\chi(z).
+\end{align*}
+Changing the choice of square root merely changes the sign of $F_\chi$,
+which does not change any of the zero sets in the construction.
+
+Under Dirichlet GRH, every zero of $F_\chi$ is real.
+Hadamard factorization therefore gives
+\eqref{eq:real-canonical-product}, with real $b_i$ and $c_i$:
+divide its Hadamard factorization by the real canonical product; its
+value and logarithmic derivative at a real regular point show that
+the remaining constant and linear exponential can be chosen real.
+The zero set is nonempty.  One way to see this, without a numerical
+zero computation, is that a zero-free entire function of order at most
+one is an exponential of a linear polynomial, whereas on the positive
+real $s$-axis Stirling's formula and $L(s,\chi)\to1$ give
+$\log|\Lambda_\chi(s)|=\tfrac{s}{2}\log s+O(s)$.
+The latter growth cannot be that of a linear exponential.
+
+For the trivial primitive character use the pole-removed zeta
+completion
+\[
+ \xi(s)=\tfrac12s(s-1)\pi^{-s/2}\Gamma(s/2)\zeta(s),
+ \qquad F_\zeta(z)=\xi\!\left(\tfrac12+iz\right).
+\]
+The functional equation $\xi(s)=\xi(1-s)$ makes $F_\zeta$ real and even,
+and RH supplies the same real-zero canonical-product hypotheses.
+
+\begin{corollary}[Graph-coupled completed Dirichlet functions]
+\label{cor:dirichlet-graphs}
+Assume the Dirichlet zero-location theorem used in the upstream proof.
+Choose any finite list of primitive completed functions
+\eqref{eq:phase-real-dirichlet}, allowing $F_\zeta$ and repetitions,
+and any Hermitian coupling matrix $A$.
+Then the explicitly entire function
+\eqref{eq:principal-minor-entire} has only real zeros.
+Its collision multiplicities are given by \eqref{eq:collision-order},
+and on every interval with regular endpoints its zero count differs
+from the sum of the input zero counts by at most $n$.
+
+For a graph Laplacian, this yields an entire rooted-forest combination
+of the completed functions and their first derivatives.
+After the change of variable $z=-i(s-\tfrac12)$, every zero lies on
+$\operatorname{Re}s=\tfrac12$.
+\end{corollary}
+\begin{proof}
+The preceding normalization and factorization verify all hypotheses
+of Theorems~\ref{thm:entire-real-zeros},
+\ref{thm:collision-order}, and \ref{thm:entire-count}.
+The linear change of variable maps the real $z$-axis to the critical
+line.
+\end{proof}
+
+Central zeros cause no exception: their exact multiplicities are
+retained through the powers $z^{m_i}$ in
+\eqref{eq:real-canonical-product}.
+A conjugate pair can also be combined into one even input.
+Choose $\eta_{\overline\chi}=\overline{\eta_\chi}$.
+Then \eqref{eq:completed-functional-equation} gives
+$F_{\overline\chi}(z)=F_\chi(-z)$, so
+$F_\chi(z)F_{\overline\chi}(z)$ is a real even canonical product
+satisfying the same hypotheses.
+
+Primitivity in this application is substantive.  An imprimitive
+Dirichlet $L$-function includes extra Euler factors whose zeros can lie
+on $\operatorname{Re}s=0$; they need not become real zeros in the
+$z$-coordinate.  The constructed graph functions are explicit entire
+functions with a critical-line zero theorem.  No Euler product,
+automorphic interpretation, or new instance of Artin GRH is asserted.
+

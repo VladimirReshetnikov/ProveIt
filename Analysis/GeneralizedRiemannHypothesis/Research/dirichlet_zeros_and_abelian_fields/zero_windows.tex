@@ -1,0 +1,652 @@
+\documentclass[11pt]{article}
+\usepackage[T1]{fontenc}
+\usepackage{lmodern,microtype,amsmath,amssymb,amsthm,booktabs}
+\usepackage[letterpaper,margin=.92in,top=.84in,bottom=.86in]{geometry}
+\usepackage{xcolor}
+\definecolor{inkblue}{RGB}{28,63,91}
+\usepackage[colorlinks,linkcolor=inkblue,citecolor=inkblue,urlcolor=inkblue,pdfauthor={OpenAI},pdftitle={Distinguishing Dirichlet characters and abelian number fields by low zeros}]{hyperref}
+\usepackage{fancyhdr}
+\pagestyle{fancy}\fancyhf{}\fancyhead[L]{\small\itshape Dirichlet characters and abelian fields}\fancyhead[R]{\small\itshape Finite zero windows}\fancyfoot[C]{\thepage}
+\setlength{\headheight}{14pt}
+\newtheorem{theorem}{Theorem}
+\newtheorem{corollary}[theorem]{Corollary}
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{proposition}[theorem]{Proposition}
+\newcommand{\C}{\mathbb C}\newcommand{\Q}{\mathbb Q}\newcommand{\R}{\mathbb R}
+\newcommand{\abs}[1]{\left|#1\right|}\newcommand{\norm}[1]{\left\|#1\right\|}
+\newcommand{\dd}{\,d}\DeclareMathOperator{\sinc}{sinc}
+\DeclareMathOperator{\ord}{ord}
+\newcommand{\calP}{\mathcal P}\newcommand{\wh}{\widehat}
+\allowdisplaybreaks[2]\emergencystretch=1em
+\begin{document}
+\begin{center}
+{\Large\bfseries\color{inkblue} Distinguishing Dirichlet characters and abelian\par
+number fields by low zeros\par}
+\vspace{.65em}
+{\small Research note \enspace$\cdot$\enspace 26 November 2026}
+\end{center}
+\begin{abstract}
+Using Dirichlet GRH, we prove that the strictly positive zero ordinates,
+counted with multiplicity, up to height $C\log^2(2Q)/\log\log(3Q)$ determine a primitive Dirichlet
+character of conductor at most $Q$, uniformly in its order. The
+zero-multiplicity measures of any fixed number of distinct characters have full
+linear rank in this range. For abelian number fields of absolute discriminant at
+most $D$, a height of $C\log^2(2D)$ determines the field, uniformly in the degree.
+Both statements extend to translated intervals and give lower bounds on the
+total discrepancy of the multiplicities. The two estimates use different
+features of the same explicit formula. A sieve bounds contamination from nearby
+prime powers on average over prime centres. An $\ell^2$ estimate controls that
+contamination for a sum of characters with bounded total log conductor.
+\end{abstract}
+
+\section{The finite data and what they determine}
+For a primitive Dirichlet character $\chi$ set
+\[
+ m_\chi(t)=\ord_{s=1/2+it}L(s,\chi)\qquad(t\in\R).
+\]
+This is zero whenever the function is nonzero at the given point. Write $m_K$ for the corresponding function of
+the Dedekind zeta function of a number field $K$. All zeros in this paper are
+nontrivial. We use the Dirichlet zero-line theorem of \cite{lean}, including
+the Riemann zeta function. An ordinate is recorded with its sign and
+multiplicity. For a nonreal character the sign distinguishes the spectra of
+$\chi$ and $\bar\chi$, which are reflections of one another. Put
+\[
+ I=I(\tau,H)=[\tau-H,\tau+H],\qquad
+ J(F,\tau)=\log\log\bigl(e^e F(3+|\tau|)\bigr).
+\]
+Logarithms are natural. All constants below are absolute unless a dependence
+is displayed. A sum over $t\in I$ ranges over the distinct ordinates in the
+union of the spectra in question.
+
+\begin{theorem}[Abelian fields]\label{thm:fields}
+There are constants $C,c>0$ with the following property. Let $K$ and $L$ be
+distinct finite abelian extensions of $\Q$ in a fixed algebraic closure, with
+absolute discriminants at most $D\ge3$. Let $r$ be the cardinality of the
+symmetric difference between their groups of primitive Dirichlet characters.
+For every $\tau\in\R$ and
+\[
+ H\ge C\{\log^2(2D)+J(D,\tau)\}
+\]
+one has
+\begin{equation}\label{eq:fieldmain}
+ \sum_{t\in I}|m_K(t)-m_L(t)|
+ \ \ge\ c H\sqrt r\,\frac{\log\log(3D)}{\log(2D)} .
+\end{equation}
+In particular the multiset for $|t|\le C'\log^2(2D)$ determines an abelian
+field of absolute discriminant at most $D$ up to $\Q$-isomorphism. The
+constant is independent of the field degrees.
+\end{theorem}
+
+\begin{theorem}[Linear independence in a finite window]\label{thm:family}
+Let $\chi_1,\ldots,\chi_r$ be distinct primitive Dirichlet characters
+of conductors at most $Q\ge3$. This includes the conductor-one character.
+Take $X=C_0r^2\log^2(2Q)$ for a sufficiently large absolute $C_0$. For
+every $v\in\C^r$ and every $\tau\in\R$,
+\begin{align}
+ H&\ge C_1\{rX/\log X+J(Q,\tau)\}
+ \quad\Longrightarrow\nonumber\\[-2pt]
+ \sum_{t\in I}\abs{\sum_{j=1}^r v_jm_{\chi_j}(t)}
+ &\ \ge\ c H\,\frac{\log X}{\sqrt{rX}}\,\norm{v}_2 .
+ \label{eq:familymain}
+\end{align}
+Consequently the matrix $(m_{\chi_j}(t))_{t\in I,\,1\le j\le r}$ has
+column rank $r$. Some $r$ ordinates in $I$ already give an invertible minor.
+\end{theorem}
+
+Taking $r=2$ and $v=(1,-1)$ gives the character cutoff in the abstract.
+Taking differences of multiplicities of factors also identifies any product
+of primitive Dirichlet $L$-functions with at most $k$ distinct factors,
+each of conductor at most $Q$, from the pooled zero multiset up to
+$O_k(\log^2(2Q)/\log\log(3Q))$. Indeed the union of the factor lists of
+two candidate products has size at most $2k$. The exponents of the factors
+can be arbitrary positive integers. These are uniqueness statements from
+exact finite data. A discrepancy in multiplicity can occur at an ordinate
+shared by both functions.
+
+\paragraph{Relation to the two repositories.}
+The readable edition of \cite{lean} states its public interface in
+\texttt{grh/src/Statements.lean}. In \texttt{Main.lean},
+\texttt{LFunction\_eq\_zero\_re} places every zero in the open critical
+strip on the critical line. The source derives a one-sided estimate for a
+smoothed, quadratically twisted prime remainder by comparing lattice
+covolumes. The analytic reduction excludes zeros to the right of the line.
+Here the zero-line theorem is used both for the measured spectra and for
+the primitive characters inducing pairwise quotients. Those quotient
+characters supply the many arithmetic measurements needed below.
+
+The 621-page ProveIt article \cite{article} merges 103 reports. Its section
+on quadratic characters constructs compact tests that isolate one prime
+power while suppressing the tail over the zeros. Corollary
+\texttt{rec:cor:quadsep} gives the quadratic cutoff
+$O(\log^2(2Q)\log\log(3Q))$. The open questions following that section ask
+whether the last factor can be removed and how the cutoff changes for complex
+characters. Theorem~\ref{thm:family} improves that upper bound by a factor
+of order $(\log\log Q)^2$ and covers arbitrary orders. The
+article also studies full rank and signed differences at large height for
+fixed families. Its high-window theorem in \texttt{sections/zer.tex}
+obtains triple-logarithmic widths, with the starting height depending on
+the family. Our estimates give conductor dependence from height zero onward.
+
+\paragraph{Earlier work and scope of the comparison.}
+Banks \cite{banks} gives an unconditional comparison on positive-height
+windows for distinct primitive characters of a common modulus.
+Steuding \cite{steuding} studies global determination and unique
+factorizations from zero multisets. Eid's deposited abstract \cite{eid}
+describes polylogarithmic-height determination and stability for bounded
+character orders by isolating a distinguishing prime power. We could verify
+the abstract only, so we make no exponent comparison with that preprint.
+The refinements proved here are the conductor-uniform scale in
+Theorem~\ref{thm:family}, its quantitative rank bound, and the
+degree-uniform discriminant estimate in Theorem~\ref{thm:fields}.
+Historical priority for these formulations remains to be established.
+
+\section{The explicit formula at positive logarithmic arguments}
+For $g$ supported on a compact subinterval of $(0,\infty)$, write
+$\wh g(t)=\int_\R g(u)e^{itu}\dd u$. Let $a\in\{0,1\}$ be the parity of
+$\chi$ and $\delta_\chi$ be one for conductor one and zero otherwise.
+For a sufficiently smooth, possibly complex $g$, the explicit formula reads
+\begin{align}
+ \sum_\gamma \wh g(\gamma)
+ &=-\sum_{n\ge2}\frac{\Lambda(n)\chi(n)}{\sqrt n}g(\log n)
+   -\int_0^\infty g(u)\frac{e^{-(a+1/2)u}}{1-e^{-2u}}\dd u \nonumber\\
+ &\hspace{1.1em}+\delta_\chi\int_0^\infty
+           g(u)(e^{u/2}+e^{-u/2})\dd u .\label{eq:weil}
+\end{align}
+Here $\Lambda(p^k)=\log p$ for $k\ge1$ and $\Lambda(n)=0$ otherwise. The sum on the left repeats each ordinate according to its multiplicity.
+This is the positive-support specialization of the Dirichlet explicit
+formula, as in \cite[Lemma 2.1]{liuye}. For the signs, put
+$\Phi(s)=\int g(u)e^{(s-1/2)u}\dd u$. Integrating
+$-(L'/L)(s,\chi)\Phi(s)$ on a line to the right of one gives the displayed
+prime sum with positive sign by inversion. Shifting left, a zero
+contributes $-\Phi(\rho)$ and a pole contributes $+\Phi(1)$.
+Summing the values at $-a-2j$ gives the integral with denominator
+$1-e^{-2u}$. For zeta the list starts at $-2$, which restores $\Phi(0)$.
+Equivalently the general explicit formula has a reflected prime term
+$g(-\log n)$ and a conductor term proportional to $g(0)$, both zero here.
+Compactly supported piecewise smooth tests used below follow by smoothing,
+since their Fourier transforms decay integrably against the zero count.
+
+We use the uniform count, with multiplicity,
+\begin{equation}\label{eq:count}
+ \#\{\gamma:t\le\gamma\le t+1\}\ll\log(2q(|t|+3)).
+\end{equation}
+For conductor $q>1$ this follows, for example, by differencing the
+symmetric zero count of Bennett, Martin, O'Bryant and Rechnitzer
+\cite{count}, allowing a slightly larger interval at the endpoints.
+The zeta case is the classical Riemann--von Mangoldt formula.
+In particular $\sum_\gamma (1+\gamma^2)^{-1}\ll \log(2q)$.
+
+\begin{lemma}[Prime Gram estimate]\label{lem:gram}
+Fix a smooth compactly supported real weight $w$ on $(0,\infty)$.
+For primitive characters of conductors $q_j,q_k$, define
+\[
+ G_{jk}(w)=\sum_p(\log p)w(p/X)\chi_j(p)\overline{\chi_k(p)} .
+\]
+For distinct primitive labels, and also on the diagonal, one has
+\[
+ G_{jk}(w)=\mathbf1_{j=k}X\int_0^\infty w(y)\dd y
+          +O_w\!\left(\sqrt X\log(2q_jq_k)\right)\qquad (X\ge X_w).
+\]
+\end{lemma}
+\begin{proof}
+Let $\eta$ be the primitive character inducing
+$\chi_j\bar\chi_k$ modulo $\mathrm{lcm}(q_j,q_k)$. Its conductor is at
+most $q_jq_k$, and it is principal exactly for $j=k$, by uniqueness of
+primitive induction. Apply \eqref{eq:weil} to $\eta$ with
+$g(u)=e^{u/2}w(e^u/X)$. For large $X$ this has positive support, and
+\[
+ \wh g(t)=X^{1/2+it}\int_0^\infty w(y)y^{-1/2+it}\dd y
+       \ll_w \sqrt X(1+t^2)^{-1}.
+\]
+Equation \eqref{eq:count} bounds the zero sum by $O_w(\sqrt X\log(2q_jq_k))$.
+The integral from trivial zeros is $O_w(1)$, and the pole terms for
+$\eta=1$ are $X\int w+O_w(1)$. Remove higher powers at cost $O_w(\sqrt X)$:
+Chebyshev's bound $\sum_{p\le y}\log p\ll y$ bounds the squares by
+$O_w(\sqrt X)$ and the other powers by $O_w(X^{1/3}\log X)$.
+Passing from $\eta(p)$ to the product of the given characters at primes
+costs at most $\|w\|_\infty\sum_{p\mid q_jq_k}\log p$.
+\end{proof}
+
+Fix once and for all $0\le w\le1$, smooth, supported in $(1,2)$, with
+$\int w>0$. Write $A(n)=\sum_j v_j\chi_j(n)$,
+$P_X=X/\log X$, and $\calP_X=\{p\text{ prime}:X\le p\le2X\}$.
+For $X\ge C_0r^2\log^2(2Q)$ the lemma gives
+\begin{equation}\label{eq:rms}
+ \sum_{p\in\calP_X}|A(p)|^2\gg P_X\|v\|_2^2,\qquad
+ \frac1{P_X}\sum_{p\in\calP_X}|A(p)|\gg\frac{\|v\|_2}{\sqrt r}.
+\end{equation}
+The quadratic-form error is
+$O(\sqrt X\log(2Q)\|v\|_1^2)$, and $|A(p)|\le\sqrt r\|v\|_2$.
+We also have $|\calP_X|\asymp P_X$ by the prime number theorem.
+
+\section{A prime and its neighbours}
+A compact window around $\log p$ can contain several prime powers. We compare
+their total contribution to the unit weight at the prime $p$.
+Define $\sinc u=\sin(u)/u$, with $\sinc 0=1$. For $B>0$ put
+\begin{equation}\label{eq:leak}
+ W_p(B)=\sum_{\substack{n\ne p\\ |\log(n/p)|\le1/2}}
+  \frac{\Lambda(n)}{\log p}\sqrt{\frac pn}\,
+  \min\{1,(B\log(n/p))^{-2}\}.
+\end{equation}
+Each $W_p(B)$ bounds the off-diagonal arithmetic error in a single character value
+when the test has modulus at most $\sinc^2(B\log(n/p))$ on this support.
+
+\begin{lemma}[Mean contribution from neighbouring prime powers]\label{lem:sieve}
+Uniformly for all sufficiently large $X$ and $B>0$,
+\[
+ \frac1{P_X}\sum_{p\in\calP_X} W_p(B)\ll\frac{X}{B\log X}.
+\]
+\end{lemma}
+\begin{proof}
+On the support in \eqref{eq:leak}, $X e^{-1/2}\le n\le 2Xe^{1/2}$.
+The prefactor is bounded absolutely, and the minimum is at most
+$b(h)=\min(1,(C X/(Bh))^2)$, where $h=|n-p|\ge1$.
+For two primes at nonzero distance $h$, the upper-bound sieve gives,
+uniformly in $h$ in this range,
+\begin{equation}\label{eq:pairs}
+ \#\{p\in\calP_X:p\pm h\text{ prime in }[Xe^{-1/2},2Xe^{1/2}]\}
+ \ll \frac{X}{\log^2X}\,s(h),\qquad
+ s(h)=\prod_{\substack{\ell\mid h\\\ell>2\ {\rm prime}}}
+       \frac{\ell-1}{\ell-2}.
+\end{equation}
+Here either sign may be fixed. We give details on uniformity. Odd $h$ gives
+no such pair for large $X$. For even $h$, sieve out the classes $0$ and
+$\mp h$ modulo primes $\ell\le y$, taking one class at $\ell\mid h$ and
+two otherwise. Let $R=\sqrt X$, $y=R^{1/8}$, and let $\nu_\ell$ count the
+excluded classes. The arithmetic large sieve
+\cite[Corollary 1]{mv} bounds the surviving count by $O(X+R^2)/J_0$,
+where
+\[
+ J_0=\sum_{\substack{d\le R,\ d\ {\rm squarefree}\\
+                         \ell\mid d\Rightarrow\ell\le y}}
+                 \prod_{\ell\mid d}\frac{\nu_\ell}{\ell-\nu_\ell}.
+\]
+All the sieving primes lie below both entries of every counted pair.
+In the Euler product without $d\le R$, the prime $\ell$ is selected
+independently with probability $\nu_\ell/\ell$. The expected $\log d$ is
+at most $2\sum_{\ell\le y}\log\ell/\ell\le 2\log y+O(1)$.
+Markov's inequality retains at least half the product for $d\le R$ for
+large $X$. By Mertens' product formula, the reciprocal of this product
+is $\ll s(h)/(\log y)^2$. For odd $\ell\nmid h$ the ratio of
+$1-2/\ell$ to $(1-1/\ell)^2$ is $1-1/(\ell-1)^2$, and changing to
+one excluded class multiplies $1-2/\ell$ by $(\ell-1)/(\ell-2)$.
+This proves \eqref{eq:pairs}.
+
+By expanding $s(h)$ over squarefree divisors,
+$\sum_{h\le z}s(h)\le z\prod_{\ell>2}(1+1/(\ell(\ell-2)))\ll z$.
+Summing by dyadic intervals gives
+$\sum_{h\ge1}b(h)s(h)\ll X/B$, including $B>X$, when the stronger
+bound $O((X/B)^2)$ applies up to an absolute factor. Thus prime
+neighbours contribute $O(X^2/(B\log^2X))$ to the sum over all centres.
+There are $O(\sqrt X)$ proper prime powers in the whole range.
+For each, summing over all integer centres other than itself costs
+$O(\sum_{h\ge1}b(h))=O(X/B)$. After division by $P_X$ their contribution
+is $O(\sqrt X\log X/B)$, which is absorbed in the asserted bound.
+\end{proof}
+
+\section{Tests on translated zero windows}
+Take $B=H/4$ and $m=\lfloor H/200\rfloor$, with the absolute lower
+bound on $H$ chosen so that $m\ge4$. Set
+\[
+ w_m(u)=(1-4u^2)_+^m,\qquad
+ g_p(u)= e^{-i\tau(u-\log p)}w_m(u-\log p)\sinc^2(B(u-\log p)),
+ \qquad h_p=\wh g_p .
+\]
+Here $x_+=\max(x,0)$. The phase is chosen so that $g_p(\log p)=1$ at
+every centre height $\tau$. Uniformly in real $t$,
+\begin{equation}\label{eq:lip}
+ |h_p(t)|\le \pi/B,\qquad |h'_p(t)|\le (\log p+1/2)\pi/B .
+\end{equation}
+Both follow by integration since $\int_\R\sinc^2(Bu)\dd u=\pi/B$.
+A compact polynomial cutoff also controls the contribution from every
+zero outside the measured window:
+\begin{equation}\label{eq:tail}
+ \sum_{|\gamma-\tau|>H}|h_p(\gamma)|
+ \ll H e^{-c_0H}\log(2q(|\tau|+H+3)).
+\end{equation}
+To see this, integrate $m$ times by parts in $\wh w_m$. Boundary terms
+vanish, and the $L^1$ norm of the $m$th derivative on the support is at most
+$10^m m!$ by Cauchy's derivative estimate on complex circles of radius one
+for the polynomial $(1-4z^2)^m$. Thus
+$|\wh w_m(t)|\le(10m/|t|)^m$ for $t\ne0$.
+The factor $\sinc^2(Bu)$ is an average of $e^{ivu}$ for $v$ in $[-2B,2B]$
+(the sum of two independent uniforms on $[-B,B]$).
+For $|t-\tau|\ge H$, this gives
+$|h_p(t)|\le(20m/|t-\tau|)^m$.
+Summing on dyadic annuli with \eqref{eq:count} proves \eqref{eq:tail};
+the $j$th annulus contributes at most a constant times
+$2^jH(10^{-1}2^{-j})^m\log(2q(|\tau|+2^{j+1}H+3))$.
+
+For any complex coefficients $v_j$ define the real-ordinate multiplicity
+combination $M(t)=\sum_jv_jm_{\chi_j}(t)$ and the normalized observation
+\[
+ Z_v(p)=-\frac{\sqrt p}{\log p}\sum_{t\in I}h_p(t)M(t).
+\]
+Formula \eqref{eq:weil} gives an actual matrix identity
+\begin{equation}\label{eq:observation}
+ Z_v(p)=A(p)+\sum_{n\ne p}\frac{\sqrt p}{\log p}
+          \frac{\Lambda(n)}{\sqrt n}\,g_p(\log n)A(n)+E_v(p),
+\end{equation}
+where, if $q_j\le Q$, the following bound holds for each $p\in\calP_X$:
+\begin{equation}\label{eq:errors}
+ |E_v(p)|\ll
+ \frac{\|v\|_1}{B\log X}
+ +|v_{\rm triv}|\frac{X}{B\log X}
+ +\|v\|_1\frac{\sqrt X}{\log X}
+       H e^{-c_0H}\log(2Q(|\tau|+H+3)).
+\end{equation}
+The coefficient $v_{\rm triv}$ is zero if zeta is absent. On the support
+of $g_p$, the trivial-zero kernel in \eqref{eq:weil} is $O(X^{-1/2})$ and
+the zeta pole kernel is $O(\sqrt X)$. Their contributions follow from
+$\int |g_p|\le\pi/B$. The remaining term is \eqref{eq:tail}.
+In particular no knowledge of the conductor or parity of an unknown
+character is required to form the observation.
+
+\begin{proof}[Proof of Theorem~\ref{thm:family}]
+The main term has mean absolute value
+$P_X^{-1}\sum_p|A(p)|\gg\|v\|_2/\sqrt r$ by \eqref{eq:rms}.
+Taking absolute values of the off-diagonal term in \eqref{eq:observation}
+bounds its mean by
+\[
+ \|v\|_1\,P_X^{-1}\sum_{p\in\calP_X}W_p(B)
+ \ll\sqrt r\|v\|_2\,\frac{X}{B\log X}.
+\]
+For $B\ge C r X/\log X$ this can be made less than a quarter of the main
+lower bound by choosing $C$ large. The first two terms of \eqref{eq:errors}
+are also smaller than a quarter with a sufficiently large constant.
+For the last one, $H\gg rX/\log X$ absorbs every fixed power of
+$r,X,H$ into $e^{c_0 H/4}$ (increasing the constant if needed).
+Also $\log(2Q(|\tau|+H+3))\ll \exp(J(Q,\tau))+\log(H+3)$.
+Taking $H\ge C J(Q,\tau)$ absorbs this factor, with room to spare.
+It follows that some prime $p$ satisfies
+$|Z_v(p)|\gg\|v\|_2/\sqrt r$.
+On the other hand, \eqref{eq:lip} yields
+\[
+ |Z_v(p)|\ll \frac{\sqrt X}{H\log X}\sum_{t\in I}|M(t)|.
+\]
+Combining the bounds proves \eqref{eq:familymain}. Full rank and the
+existence of the minor follow by finite-dimensional linear algebra.
+\end{proof}
+
+\begin{corollary}[Stability under partial matching]\label{cor:match}
+Use the hypotheses of Theorem~\ref{thm:family} for two distinct characters,
+with $r=2$. Match any submultiset of the first list in $I$ bijectively to
+any submultiset of the second list in $I$. Let $U$ be the total number
+of unmatched entries, and $S$ the sum of absolute displacements over all
+matched pairs. Then
+\[
+ U+(\log(2X)+1)S\gg H\frac{\log X}{\sqrt X}.
+\]
+In particular every complete matching has total displacement
+$\gg H/\log(2Q)$, whenever the cardinalities agree.
+\end{corollary}
+\begin{proof}
+For $v=(1,-1)$ the proof gives a prime with $|Z_v(p)|\gg1$.
+The contribution of an unmatched entry is bounded using the first
+inequality of \eqref{eq:lip}, and that of a matched pair using the second.
+\end{proof}
+
+\section{Abelian fields with unrestricted degree}
+For a finite abelian extension $K/\Q$, let $\mathcal X_K$ be its group of
+Dirichlet characters, each represented by its unique primitive character.
+The product in this group is taken with primitive induction. The standard
+factorization and conductor--discriminant formula are
+\begin{equation}\label{eq:class}
+ \zeta_K(s)=\prod_{\chi\in\mathcal X_K} L(s,\chi),
+ \qquad |\operatorname{disc}K|=\prod_{\chi\in\mathcal X_K} q_\chi .
+\end{equation}
+The group determines $K$: inside a common cyclotomic field it has as
+annihilator exactly the subgroup fixing $K$ \cite[Chs.~3--4]{wash}.
+Thus if $K\ne L$, cancellation of the common factors leaves $r\ge1$
+distinct characters with coefficients $v_j\in\{1,-1\}$. The trivial
+character cancels. Then
+\begin{equation}\label{eq:budget}
+ M(t)=m_K(t)-m_L(t),\qquad
+ S_0=\sum_{j=1}^r\log(2q_j)\ll\log(2D),\qquad r\ll\log(2D).
+\end{equation}
+Indeed each surviving $q_j\ge3$ and $\sum_j\log q_j\le2\log D$.
+Estimating every off-diagonal Gram entry by the largest conductor would
+lose the benefit of this budget.
+
+\begin{proof}[Proof of Theorem~\ref{thm:fields}]
+Take $X=C_2\log^2(2D)$ with a sufficiently large absolute $C_2$. In
+Lemma~\ref{lem:gram} the error after summing over all $j,k$ has size
+\[
+ \ll_w \sqrt X\sum_{j,k}\log(2q_jq_k)\ll_w \sqrt X\,rS_0 .
+\]
+For our fixed minorant on $(1,2)$ this is less than half the diagonal
+main term $rX\int w$. For a second fixed smooth weight majorizing the
+indicator of $[e^{-1/2},2e^{1/2}]$ the same argument gives an upper
+bound. Write $\mathcal N_X=[e^{-1/2}X,2e^{1/2}X]\cap\mathbb N$.
+As in \eqref{eq:rms}, these bounds give
+\begin{equation}\label{eq:fieldgram}
+ \sum_{p\in\calP_X}|A(p)|^2\gg rP_X,\qquad
+ \sum_{p\in\mathcal N_X\ {\rm prime}} |A(p)|^2\ll rP_X .
+\end{equation}
+Define $b_n=(\Lambda(n)/\log X)\sqrt{X/n}\,A(n)$ for $n\in\mathcal N_X$.
+Its prime part satisfies $\sum_{p}|b_p|^2\ll rP_X$. For higher powers,
+$|A(n)|\le r$, $\Lambda(n)\ll\log X$, and their total von Mangoldt
+weight is $O(\sqrt X)$ by the Chebyshev argument in Lemma~\ref{lem:gram}.
+Hence
+\begin{equation}\label{eq:columnnorm}
+ \sum_{n\in\mathcal N_X}|b_n|^2
+ \ll rP_X+\frac{r^2\sqrt X}{\log X}\ll rP_X ,
+\end{equation}
+using $r\ll\sqrt X$. This step controls prime powers even when several
+characters agree on them.
+
+The off-diagonal matrix with rows $p\in\calP_X$ and columns
+$n\in\mathcal N_X$ has entries
+\[
+ T_{pn}=\mathbf1_{p\ne n}\sqrt{p/X}\,(\log X/\log p)g_p(\log n).
+\]
+For $n\ne p$, $|\log(n/p)|\gg |n-p|/X$, so
+$|T_{pn}|\ll(X/B)^2|n-p|^{-2}$. Both absolute row sums and absolute
+column sums are $O((X/B)^2)$, since the indices are integers without
+repetition. Cauchy--Schwarz in each row followed by the column bound gives
+$\|Tb\|_2\ll(X/B)^2\|b\|_2$ (Schur's test). Thus $B\ge K_0 X$ with
+a large absolute $K_0$ makes the norm of $Tb$ at most a quarter of the
+norm of the central vector $(A(p))_{p\in\calP_X}$, by
+\eqref{eq:fieldgram}--\eqref{eq:columnnorm}.
+
+In \eqref{eq:errors} one has $v_{\rm triv}=0$, $\|v\|_1=r$, each $q_j\le D$, and $r\ll\sqrt X$.
+Once $H\ge C(X+J(D,\tau))$ the error at each prime is at most an
+arbitrarily small absolute constant times $\sqrt r$, by the exponential
+estimate used in the proof of Theorem~\ref{thm:family}. Since
+$|\calP_X|\ll P_X$, its norm is at most another quarter of the central
+norm. Identity \eqref{eq:observation} now yields
+\[
+ \sum_{p\in\calP_X}|Z_v(p)|^2\gg rP_X .
+\]
+For some prime $p$ this gives $|Z_v(p)|\gg\sqrt r$. By \eqref{eq:lip},
+$\sum_{t\in I}|M(t)|\gg H\sqrt r\,\log X/\sqrt X$.
+Substitution of $X=C_2\log^2(2D)$ proves \eqref{eq:fieldmain}.
+\end{proof}
+
+\paragraph{Positive ordinates alone.}
+Both determination results hold using only strictly positive ordinates
+below the indicated height. Choose $H$ of the asserted order for a centred
+window and use the translated window $[H,3H]$, centred at $2H$, increasing
+the absolute constant as needed. Its $J$ term obeys the same bound.
+This observation applies even to a conjugate pair of complex characters.
+Folding both halves onto their absolute values would give identical folded
+lists for a conjugate pair.
+
+\section{A pair of biquadratic fields}
+Consider
+\[
+ K=\Q(\sqrt5,\sqrt{221}),\qquad L=\Q(\sqrt{13},\sqrt{85}).
+\]
+They are totally real of degree four and both have discriminant
+$1105^2=1\,221\,025$. Their quadratic subfields have discriminants
+$5,221,1105$ and $13,85,1105$. They share the factors $\zeta$ and
+$L(s,\chi_{1105})$. Here $\chi_d$ denotes the real primitive character
+of fundamental discriminant $d$. At $3$ the four remaining characters give
+\[
+ \chi_5(3)+\chi_{221}(3)-\chi_{13}(3)-\chi_{85}(3)=-4 .
+\]
+In particular the two zeta functions differ at their Euler factors even
+though their gamma and discriminant factors agree.
+
+\begin{proposition}[A low zero for the example]\label{prop:example}
+There exists $1.20<t<1.23$ such that $\zeta_K(1/2+it)=0$.
+Throughout $1.20\le t\le1.23$ one has $\zeta_L(1/2+it)\ne0$.
+\end{proposition}
+\begin{proof}
+For these positive fundamental discriminants the quadratic root number
+is $+1$. The completed $L$-function on the line is the real function
+\[
+ F_d(t)=4\int_0^\infty e^{u/2}\cos(tu)
+       \sum_{n\ge1}\chi_d(n)\exp(-\pi n^2 e^{2u}/d)\dd u.
+\]
+This follows by splitting the Mellin integral of the quadratic theta
+series at $1$, applying its theta transformation to the lower part,
+and substituting $x=e^{2u}$. The gamma and exponential factors relating
+$F_d(t)$ to $L(1/2+it,\chi_d)$ are nonzero. The following are outward
+enclosures from \texttt{theta\_example.py}. In the last three rows the
+enclosure is for the entire interval.
+\begin{center}
+\begin{tabular}{rll}
+\toprule
+$d$ & $t$ & enclosure for $F_d(t)$ \\
+\midrule
+221 & $1.20$ & $[0.040,\ 0.122]$ \\
+221 & $1.23$ & $[-0.150,\ -0.067]$ \\
+13  & $[1.20,1.23]$ & $[1.640,\ 1.693]$ \\
+85  & $[1.20,1.23]$ & $[2.393,\ 2.656]$ \\
+1105 & $[1.20,1.23]$ & $[3.727,\ 6.562]$ \\
+\bottomrule
+\end{tabular}
+\end{center}
+The checker integrates interval ranges on $2560$ subintervals of $[0,5]$,
+each of length $1/512$, using endpoints on the $2^{-80}$ grid and outward
+rounding. It encloses $\pi$ by Machin's identity, and exponentials and
+cosines by Taylor estimates. At most $150$ terms are used in each theta
+series. Terms among them dropped because the exponent exceeds $60$
+contribute at most $150e^{-60}$ inside the sum. The remaining $n>150$
+terms contribute at most $1105e^{-3\cdot150^2/1105}/900$ by Gaussian
+integration. Multiply both bounds by $20e^{5/2}$ to account for the
+integral on $[0,5]$. For $u=5+z$, the full theta sum has absolute value
+at most $2e^{-40(1+2z)}$, so the omitted integral costs at most
+$8e^{5/2-40}/(80-1/2)$. The program includes $10^{-9}$ for the total
+of these errors.
+
+The intermediate value theorem gives a zero of $F_{221}$ between the
+endpoints, while $F_{13},F_{85},F_{1105}$ stay positive. It remains to
+check the zeta factor of $L$. For $s=1/2+it$ Euler--Maclaurin gives
+\[
+ \zeta(s)=\frac1{s-1}+\frac12+\frac{s}{12}+R(s),\qquad
+ |R(s)|\le\frac{|s(s+1)|}{12(1+\Re s)} .
+\]
+The inequality follows by bounding the second periodic Bernoulli polynomial
+by $1/6$ in the integral remainder from $1$ to infinity. Over the stated
+interval the imaginary part of the three displayed terms is
+$-t/(1/4+t^2)+t/12<-0.57$, and $|R(s)|<0.16$. All four factors of
+$\zeta_L$ are therefore nonzero there. This verification is independent
+of GRH.
+\end{proof}
+
+\paragraph{A second certificate counts multiplicity differences.}
+With the Dirichlet zero-line input, the same fields satisfy
+$\sum_{0<t\le80}|m_K(t)-m_L(t)|\ge7$. Here the count allows several
+units of discrepancy at one ordinate. The rational calculation in
+\texttt{field\_example.py} is as follows. Put $a=2/7$,
+$\phi(x)=(x(1-x^2)_+^7)'$, and $g(u)=\phi((u-\log3)/a)$. Its support
+contains only $\log3$ among logarithms of prime powers. Its integral is
+zero, and $g(\log3)=1$. In the four-character contrast of
+\eqref{eq:weil} the trivial-zero integrals cancel by parity. The full
+spectral sum is $4\log(3)/\sqrt3>263/105$. Six integrations by parts give
+$|\wh g(t)|\le C_6 |t|^{-6}$ with
+\[
+ C_6=a^{-5}\left(2\int_{-1}^1|\phi^{(6)}(x)|^2\dd x\right)^{1/2}
+ \le 2629707255/16 .
+\]
+Let $N(t)$ count both signs over the four characters of conductors
+$5,13,85,221$ and set $A(t)=(4t/\pi)\log(\sqrt{1105}\,t/(2\pi e))$.
+By \cite[Corollary 1.2]{count}, $|N(t)-A(t)|\le E(t)$ for $t\ge1$,
+where $E(t)=(6/5)\log(34t)+18$. Partial summation bounds the absolute
+tail beyond $H$ by
+\[
+ C_6\left(\int_H^\infty A'(t)t^{-6}\dd t+E(H)H^{-6}
+                   +6\int_H^\infty E(t)t^{-7}\dd t\right).
+\]
+At $H=80$ this is less than $0.117$. The central ordinate contributes
+zero. The two terms at $\pm t$ cost at most
+$2\|g\|_1=8a(14/15)^7/\sqrt{15}$ per unit of positive-height
+discrepancy. Subtraction of the tail leaves more than six times this amount.
+
+\paragraph{A complex character modulo five.}
+The script \texttt{prime\_leakage.py} sums all prime powers
+in the support using $w_4(u)\sinc^2(Bu)$, which bounds the absolute
+weight for all $m\ge4$. At $X=1000$, $B=4X/\log X$, $p=1523$, and
+$\chi$ modulo five with $\chi(2)=i$, the central term is $-i$.
+The normalized arithmetic sum is approximately
+$0.04284475-1.02239786i$. Its distance from $-i$ is approximately $0.04834601$,
+below the total absolute off-diagonal contribution $0.10965114$ (rounded
+up). For $\bar\chi$ the arithmetic sum is its complex conjugate. The
+JSON file gives all nine parameter choices. The prime sums use floating-point arithmetic. Proposition~\ref{prop:example} uses a
+separate interval calculation.
+
+\section{Further research questions}
+\begin{enumerate}
+\item Can the degree-uniform field cutoff be reduced by another
+$\log\log D$? The Schur estimate treats possible neighbours as integers.
+Improvement would require controlling the restriction of this matrix to the
+particular prime-power vectors furnished by abelian character groups.
+\item How many \emph{distinct} ordinates, as opposed to multiplicity
+discrepancies, must distinguish two fields? The lower bounds here permit
+concentration at a common zero of different orders. A uniform guarantee
+of a zero present on only one side would have different arithmetic content.
+\item Can the $J(D,\tau)$ term be reduced uniformly in the discriminant
+while retaining the measure bound? The short-window results for fixed
+families in \cite{article} suggest testing more rapidly decaying
+spectral kernels against the prime-power estimates of this paper.
+\item What absolute constant gives a practical degree-uniform cutoff?
+The proof is effective in principle. Numerical optimization would require
+explicit constants for the Gram bounds, the prime-power operator norm,
+and the spectral tail simultaneously.
+\end{enumerate}
+
+\paragraph{Verification and provenance.}
+The public Lean declarations and the authors' account of the machine checks
+were inspected at the revisions below. The readable edition pins Lean
+4.35.0 and Mathlib \texttt{56a00585}, and reports the axioms
+\texttt{propext}, \texttt{Classical.choice}, and \texttt{Quot.sound}.
+We did not rerun the upstream build. The Lean development supplies Dirichlet GRH and the ProveIt article gives
+the comparison theorem and open question. The proofs in this note are
+analytic arguments. The accompanying computations check the specified
+finite examples.
+
+\begin{thebibliography}{99}\small
+\bibitem{lean} L. Sernau and collaborators,
+\emph{GRH for Dirichlet L-functions, in Lean 4}, readable edition,
+commit \texttt{72fead102f663d5c7a407964a13dc0cf9d977207}.
+\href{https://github.com/lsernau/grh-lean/tree/72fead102f663d5c7a407964a13dc0cf9d977207/grh}{Repository and verification notes}.
+\bibitem{article} V. Reshetnikov, ProveIt repository,
+\emph{Beyond the Riemann hypothesis for Dirichlet L-functions: consequences,
+transfers and limits}, commit \texttt{10802a6b360d5cdce48698261bc305e57a934b1f}.
+\href{https://github.com/VladimirReshetnikov/ProveIt/tree/10802a6b360d5cdce48698261bc305e57a934b1f/Analysis/GeneralizedRiemannHypothesis/Article}{Article, source, and provenance};
+in particular \href{https://github.com/VladimirReshetnikov/ProveIt/blob/10802a6b360d5cdce48698261bc305e57a934b1f/Analysis/GeneralizedRiemannHypothesis/Article/sections/rec.tex}{the section on recovery}.
+\bibitem{banks} W. D. Banks, \emph{Comparing zeros of distinct Dirichlet
+$L$-functions}, revised 2024, \href{https://arxiv.org/abs/2302.07073}{arXiv:2302.07073}.
+\bibitem{steuding} J. Steuding, \emph{Distinguishing L-functions by joint
+universality}, Lithuanian Math. J. \textbf{61} (2021), 413--423.
+\href{https://doi.org/10.1007/s10986-021-09531-y}{DOI}.
+\bibitem{eid} S. Eid, \emph{Effective Determination of Primitive Dirichlet
+Characters by Their Zeros up to Polylogarithmic Height}, Zenodo, July 2026.
+\href{https://doi.org/10.5281/zenodo.21326652}{Deposited record}.
+\bibitem{liuye} J. Liu and Y. Ye, \emph{Distribution of zeros of Dirichlet
+$L$-functions and the least prime in an arithmetic progression},
+Acta Arith. \textbf{119} (2005), 13--38.
+\href{https://doi.org/10.4064/aa119-1-2}{DOI}.
+\bibitem{count} M. A. Bennett, G. Martin, K. O'Bryant, and A. Rechnitzer,
+\emph{Counting zeros of Dirichlet $L$-functions}, Math. Comp. \textbf{90}
+(2021), 1455--1482. \href{https://arxiv.org/abs/2005.02989}{arXiv:2005.02989}.
+\bibitem{mv} H. L. Montgomery and R. C. Vaughan, \emph{The large sieve},
+Mathematika \textbf{20} (1973), 119--134.
+\href{https://doi.org/10.1112/S0025579300004708}{DOI}.
+\bibitem{wash} L. C. Washington, \emph{Introduction to Cyclotomic Fields},
+2nd ed., Graduate Texts in Mathematics 83, Springer, 1997, Chs.~3--4.
+\href{https://doi.org/10.1007/978-1-4612-1934-7}{DOI}.
+\end{thebibliography}
+\end{document}

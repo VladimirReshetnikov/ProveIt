@@ -1,0 +1,263 @@
+\section{An electrical law after squaring the zero ordinates}
+\label{sec:squared}
+
+The previous construction differentiates with respect to the ordinary zero
+ordinate.  A second, explicitly different construction differentiates with
+respect to its square.  Its leading transport constant remembers the
+effective resistances of the entire network.
+
+Assume the inputs of Section~\ref{sec:setup} are even, and write
+$\operatorname{ord}_0 F_i=2m_i$.  Define an entire function $G_i$ by
+\begin{equation}\label{eq:squared-input}
+ F_i(z)=z^{2m_i}G_i(z^2).
+\end{equation}
+In particular, $G_i(0)\ne0$.  Evenness holds for the Riemann xi-function
+and the phase-normalized completions of primitive real Dirichlet
+characters.  It may instead be retained as an explicit hypothesis; the
+proof below only needs evenness, real zeros, and the radial asymptotic.
+Multiplying $G_i$ by a nonzero real constant changes none of the results.
+
+Let $\mathcal G_0,\mathcal G_1$ be connected weighted graphs on $n\ge2$ vertices, with
+Laplacians $L_0,L_1$, and suppose
+\[
+ B=L_1-L_0\succeq0.
+\]
+For example, any collection of added edges or increased conductances
+has this property.  Write $\tau_j$ for the weighted spanning-tree sum,
+$R^{(j)}_{ab}$ for effective resistance, and
+\begin{equation}\label{eq:kirchhoff-drop}
+ K_j=\sum_{a<b}R^{(j)}_{ab}=n\operatorname{tr}L_j^+,
+ \qquad \Delta K=K_0-K_1.
+\end{equation}
+Rayleigh monotonicity gives $\Delta K\ge0$, and it is positive if $B\ne0$.
+Define
+\[
+ Q_j(w)=\det\bigl(\operatorname{diag}(G_i(w))L_j+
+                         \operatorname{diag}(G_i'(w))\bigr),
+ \qquad h_i(w)=G_i'(w)/G_i(w).
+\]
+At regular real points define the transport density explicitly by
+\[
+ \eta(x)=n_+\!\left(L_1+\operatorname{diag}h_i(x)\right)
+           -n_+\!\left(L_0+\operatorname{diag}h_i(x)\right).
+\]
+Its values at the discrete exceptional set do not affect any integral.
+
+\begin{theorem}[Infinite electrical transport]\label{thm:electrical-infinite}
+The functions $Q_j$ have only real zeros, are bounded below in zero
+location, and $\eta$ is supported in a half-line.  If $B\ne0$, then
+\begin{equation}\label{eq:squared-main}
+ \boxed{\displaystyle
+   \int_{-\infty}^{X}\eta(u)\,du
+       \sim \frac{\Delta K}{4\pi n}\sqrt X\log X.}
+\end{equation}
+For every sufficiently large $R$ there is the exact convergent identity
+\begin{equation}\label{eq:squared-stieltjes}
+ \boxed{\displaystyle
+ \log\frac{Q_1(-R)/\tau_1}{Q_0(-R)/\tau_0}
+       =\int_{\mathbb R}\frac{\eta(u)}{R+u}\,du.}
+\end{equation}
+The real logarithm in this formula is unambiguous and positive.
+For any fixed $u_0>0$, the clipped displacement measured back in positive
+ordinary ordinates satisfies
+\begin{equation}\label{eq:squared-back}
+ \boxed{\displaystyle
+  \int_{u_0}^{T^2}\frac{\eta(u)}{2\sqrt u}\,du
+        \sim\frac{\Delta K}{8\pi n}(\log T)^2.}
+\end{equation}
+Finite changes below $u_0$ do not affect this leading term.
+\end{theorem}
+
+\begin{proof}
+\emph{Step 1: a genus-zero product.}
+The zeros of $G_i$ are the positive numbers $\gamma^2$, where $\gamma>0$
+runs through the zeros of $F_i$, with multiplicity.  The function $G_i$
+has order at most $1/2$ and hence has a genus-zero product
+\[
+ G_i(w)=G_i(0)\prod_{\gamma>0}
+              \left(1-\frac{w}{\gamma^2}\right),
+ \qquad
+ h_i(w)=\sum_{\gamma>0}\frac{1}{w-\gamma^2}.
+\]
+These assertions follow either from Hadamard factorization or from
+pairing the factors of the even genus-one product for $F_i$.
+The sum converges locally uniformly off its poles, since
+$\sum_{\gamma>0}\gamma^{-2}<\infty$.
+The half-plane sign and determinant arguments of Theorem~\ref{ut:exact}
+therefore apply unchanged.
+
+At $w=-R$, differentiation of \eqref{eq:squared-input} gives
+\begin{align}
+ h_i(-R)
+ &=\frac{g_i(i\sqrt R)}{2i\sqrt R}+\frac{m_i}{R}\notag\\
+ &=-\frac{\log R}{8\sqrt R}
+      -\frac{c_i}{2\sqrt R}+O(R^{-1}),
+ \qquad c_i=\frac12\log\frac{q_i}{2\pi}.
+ \label{eq:squared-radial}
+\end{align}
+Set $a_R=\log R/(8\sqrt R)$.  Thus
+$h_i(-R)=-a_R(1+O(1/\log R))$ for all vertices.  For large $R$,
+$L_j+\operatorname{diag}h_i(-R)$ has exactly one negative eigenvalue
+and $n-1$ positive eigenvalues.  Indeed its restriction to
+$\boldsymbol1^\perp$ remains positive definite, and its Schur complement
+in the constant direction is negative.  The same holds for every real
+$w$ below some fixed $u_*$.  Consequently $Q_j$ has no zeros there and
+$\eta=0$ there.
+
+\emph{Step 2: the two-root forest coefficient.}
+For arbitrary variables $x_i$, the matrix-tree identity and the
+two-root forest identity give the finite polynomial expansion
+\begin{equation}\label{eq:forest-low-degree}
+ \frac{\det(L_j+\operatorname{diag}x)}{\tau_j}
+   =\sum_i x_i+\sum_{a<b}R^{(j)}_{ab}x_ax_b+O(\|x\|^3).
+\end{equation}
+Here the remainder is a fixed polynomial containing terms of degree
+at least three (zero if $n=2$).  To see the quadratic coefficient
+directly, the coefficient of $x_ax_b$ is
+$\det L_j[[n]\setminus\{a,b\}]$; division by $\tau_j$ gives
+$R^{(j)}_{ab}$ by the usual effective-resistance cofactor formula.
+This is the same finite forest identity used in the earlier graph
+packet~\cite{priorgraph}.
+
+Substituting $x_i=h_i(-R)$ in \eqref{eq:forest-low-degree}, the common
+linear term is $-na_R(1+O(1/\log R))$, and the difference of the
+quadratic terms is $-\Delta K\,a_R^2(1+O(1/\log R))$.
+The factors $\prod_iG_i(-R)$ cancel in the ratio.  It follows that
+\begin{equation}\label{eq:electrical-log-asymptotic}
+ f(-R):=\log\frac{Q_1(-R)/\tau_1}{Q_0(-R)/\tau_0}
+    =\frac{\Delta K}{n}a_R
+       +O\left(\frac{a_R}{\log R}+a_R^2\right)
+    \sim\frac{\Delta K}{8n}\frac{\log R}{\sqrt R}.
+\end{equation}
+The spanning-tree normalization is essential: it is exactly what
+makes $f(-R)\longrightarrow0$.
+
+\emph{Step 3: a convergent transform.}
+Writing $B=VV^*$, the analytic logarithm in this construction is
+\[
+ f(z)=\operatorname{tr}\log\!\left(
+ I+V^*(L_0+\operatorname{diag}h_i(z))^{-1}V\right)
+                         -\log(\tau_1/\tau_0).
+\]
+The matrix logarithm is the same principal branch as before.  Subtracting
+the real spanning-tree constant changes no boundary phase.  Thus $f$ has
+bounded nonnegative imaginary part and
+boundary value $\pi\eta$.  Differentiating its subtracted Cauchy representation consequently gives
+\[
+ f'(z)=\int\frac{\eta(u)}{(u-z)^2}\,du.
+\]
+For $S>R$ large, integrate this identity on the real interval
+$[-S,-R]$, which lies below the support of $\eta$:
+\[
+ f(-R)-f(-S)
+  =\int\eta(u)\left(\frac1{R+u}-\frac1{S+u}\right)du.
+\]
+Monotone convergence and $f(-S)\to0$ prove
+\eqref{eq:squared-stieltjes}, including its convergence.
+
+\emph{Step 4: remove the smoothing.}
+Translate the support by the fixed number $u_*$ to a positive half-line;
+this changes neither leading asymptotic.  Apply the positive Stieltjes
+Tauberian lemma below with exponent $1/2$ and slowly varying function
+$\log R$.  Equations \eqref{eq:squared-stieltjes} and
+\eqref{eq:electrical-log-asymptotic} yield
+\[
+ \int_{-\infty}^{X}\eta
+    \sim\frac{2}{\pi}\frac{\Delta K}{8n}\sqrt X\log X,
+\]
+which is \eqref{eq:squared-main}.
+
+Finally write $U(X)=\int_{-\infty}^{X}\eta$ and
+$c=\Delta K/(4\pi n)$.  Integration by parts gives
+\[
+ \int_{u_0}^{X}\frac{dU(u)}{2\sqrt u}
+ =\frac{U(X)}{2\sqrt X}+\frac14\int_{u_0}^{X}\frac{U(u)}{u^{3/2}}du+O(1).
+\]
+Since $U(u)\sim c\sqrt u\log u$, the integral term is
+$(c/8)(\log X)^2(1+o(1))$, and the endpoint term is only $O(\log X)$.
+Taking $X=T^2$ proves \eqref{eq:squared-back}.
+\end{proof}
+
+\begin{lemma}[Positive Stieltjes Tauberian lemma]\label{lem:stieltjes}
+Let $\nu$ be a nonnegative locally finite measure on $[0,\infty)$,
+and suppose $S(R)=\int(R+u)^{-1}d\nu(u)$ is finite for $R>0$.
+If $0<\alpha<1$, $L$ is slowly varying, and
+$S(R)\sim cR^{\alpha-1}L(R)$ with $c>0$, then
+\[
+ \nu([0,X])\sim\frac{c\sin(\pi\alpha)}{\pi\alpha}X^\alpha L(X).
+\]
+\end{lemma}
+\begin{proof}
+This is the classical Stieltjes form of Karamata's theorem
+\cite[Theorem A.7 and Remark A.8]{langerworacek}; a proof of the converse
+needed here is short.  Rescale to measures
+$\nu_R(E)=\nu(RE)/(RS(R))$.  For each $s>0$,
+\[
+ \int\frac{d\nu_R(u)}{s+u}
+      =\frac{S(Rs)}{S(R)}\longrightarrow s^{\alpha-1}.
+\]
+Their masses on compact sets are uniformly bounded, since the
+transform at $s=1$ equals one.  From every sequence $R\to\infty$,
+select a vaguely convergent subsequence.  To pass its transforms to
+the limit, for $M\ge s$ use
+\[
+ \int_M^\infty\frac{d\nu_R(u)}{s+u}
+       \le 2\int\frac{d\nu_R(u)}{M+u}
+       =2\frac{S(RM)}{S(R)}.
+\]
+The limsup is $2M^{\alpha-1}$ and tends to zero as $M\to\infty$.
+Every subsequential limit therefore has Stieltjes transform
+$s^{\alpha-1}$.  Uniqueness of that transform identifies it as
+$\sin(\pi\alpha)u^{\alpha-1}du/\pi$, since the beta integral gives
+\[
+ \int_0^\infty\frac{u^{\alpha-1}}{s+u}du
+     =\frac{\pi}{\sin(\pi\alpha)}s^{\alpha-1}.
+\]
+For completeness, uniqueness follows from analytic continuation of
+the transforms followed by Stieltjes inversion; both operations are
+valid under $\int(1+u)^{-1}d\nu<\infty$.
+The limit has no atoms at $0$ or $1$, so convergence of the mass of
+$[0,1]$ gives
+$\nu([0,R])/(RS(R))\to\sin(\pi\alpha)/(\pi\alpha)$, as required.
+\end{proof}
+
+\subsection{One added edge and a completely explicit network}
+
+If $L_1=L_0+hbb^{\mathsf T}$ with $b=e_a-e_b$ and $h>0$, put
+$R_e=b^{\mathsf T}L_0^+b$.  The rank-one inverse identity on
+$\boldsymbol1^\perp$ gives
+\begin{equation}\label{eq:kirchhoff-edge-drop}
+ \Delta K=\frac{nh}{1+hR_e}\|L_0^+b\|^2.
+\end{equation}
+Thus the constants in \eqref{eq:squared-main} and
+\eqref{eq:squared-back} are respectively
+\[
+ \frac{h\|L_0^+b\|^2}{4\pi(1+hR_e)},\qquad
+ \frac{h\|L_0^+b\|^2}{8\pi(1+hR_e)}.
+\]
+These are explicit electrical quantities, including the saturation
+factor familiar from the finite polynomial theorem.
+
+For a path on three vertices with both conductances one, add a third
+edge of conductance one to make a triangle.  Then
+$\tau_0=1$, $\tau_1=3$, $K_0=4$, $K_1=2$, and $\Delta K=2$.
+With the Riemann xi-function at all vertices, the squared construction
+has
+\[
+ U(X)\sim\frac{1}{6\pi}\sqrt X\log X,
+ \qquad
+ \int_{u_0}^{T^2}\frac{\eta(u)}{2\sqrt u}du
+      \sim\frac{1}{12\pi}(\log T)^2.
+\]
+Writing $m=h_i(-R)$, its normalized determinant ratio reduces exactly to
+\[
+ \frac{\det(L_1+mI)/3}{\det(L_0+mI)}
+    =\frac{m+3}{3(m+1)},
+\]
+providing a transparent independent check of the coefficient
+$\log R/(12\sqrt R)$ in \eqref{eq:electrical-log-asymptotic}.
+
+The ordinary-ordinate law and the squared-ordinate law concern
+\emph{different entire functions}: replacing $F_i'$ by $G_i'$ changes
+the coupling operation.  The latter is not obtained by simply squaring
+the zeros of the former.

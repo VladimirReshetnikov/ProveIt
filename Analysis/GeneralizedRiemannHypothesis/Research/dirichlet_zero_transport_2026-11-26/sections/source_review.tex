@@ -1,0 +1,123 @@
+\section{Source review and the precise new contribution}
+\label{sec:sources}
+
+\subsection{What was taken from the three requested sources}
+
+The upstream repository was inspected at commit
+\texttt{72fead102f663d5c7a407964a13dc0cf9d977207}.  Its
+\texttt{grh-compact/src/Statements.lean} imports Mathlib and defines the
+zero-location statements, while \texttt{src/Main.lean} proves those
+statements and Mathlib's \texttt{RiemannHypothesis}.  The scope is the
+Riemann zeta function and \emph{Dirichlet} $L$-functions, including all
+positive moduli and imprimitive characters.  It does not state GRH for
+arbitrary Artin or automorphic $L$-functions~\cite{upstream}.
+
+The repository reports successful compilation, kernel replay, and
+Comparator checks, with the five main theorems depending only on
+\texttt{propext}, \texttt{Classical.choice}, and \texttt{Quot.sound}.
+The readable and compact editions contain roughly 300,000 and 76,000
+lines respectively.  The pinned source and selected central files were
+read for this report; the complete build was not replayed here.
+Andrew Sutherland's verification page records independent checks of this
+same shorter release~\cite{sutherland}.  The requested Wikipedia page
+reports the November 2026 proof and its verification~\cite{wikipedia};
+the exact formal statements, rather than the encyclopedia's broad
+terminology, determine the scope used below.
+
+The source's central new argument is an \emph{arithmetic covolume
+comparison}, not the spectral construction in this report.  In the
+compact edition, \texttt{New/Endgame/ShortAndEnough.lean} supplies many
+small integral forms and an almost-spanning dimension bound;
+\texttt{LongForms.lean} supplies a lower bound for the same integral
+covolume using heights and the product formula.  In the notation of
+\texttt{New/Main.lean}, cancellation of the main height leads to
+\[
+ mR\le (\log b)^2\,\mathrm{budget},\qquad m\asymp\sqrt x,
+\]
+where $R$ is a smoothed prime-power remainder.  The compact
+\texttt{OneSidedCriterion.lean} then applies a one-sided Landau argument;
+functional equations complete the zero-location conclusion.
+The useful conceptual pattern is to retain positivity and a common
+determinant while comparing two descriptions of it.  Our argument
+uses that pattern in a new analytic construction after importing the
+proved zero-location statement.
+
+The ProveIt tree was inspected at commit
+\texttt{041d8032541746f2ac2e686fbe437f8092771670}.  Its README distinguishes
+61 imported older research packets from independent checking and states
+that their Lean excerpts are not part of its root Lake package
+\cite{proveit}.  The review here read the index, relevant merged-article
+sections, the graph packet, the robust-spectrum packet, and descriptions
+and targeted source searches in seven later incoming packets.  It is
+not a proof audit of every report in the collection.  Retrieved archive
+bytes were checked against their pinned Git blob identifiers, and a
+source manifest is included with this report.
+
+\subsection{The immediate predecessor}
+
+The packet \texttt{graph\_coupled\_zeros\_2026-11-26.zip} already proves
+the finite polynomial identity
+\[
+ P_G(z)=\det\!\left(\operatorname{diag}(p_i(z))L_G+
+                             \operatorname{diag}(p_i'(z))\right)
+\]
+has real zeros, with a compression interpretation and an exact total
+displacement expressed through effective resistances.  It also proves
+real-zero preservation, collision multiplicities, and bounded zero-count
+discrepancy for entire inputs~\cite{priorgraph}.  Those facts are prior
+work; the essential half-plane argument is reproduced below for a
+self-contained proof of the extensions.
+
+Its final section explicitly asks whether one can regularize the
+displacement of \emph{all} completed Dirichlet zeros and obtain an
+infinite analogue of the electrical formula.  Theorems
+\ref{ut:exact}--\ref{ut:expansion} answer the convergence and asymptotic
+part for the original construction.  Theorem~\ref{thm:electrical-infinite}
+gives an electrical counterpart for a separately defined squared-ordinate
+construction.  In particular, an unweighted infinite sum is generally
+\emph{divergent}; its precise growth and convergent transforms are the
+correct objects.
+
+\subsection{Novelty compared with primary literature}
+
+The mathematical components have clear precedents.  Matrix meromorphic
+Herglotz theory already provides higher-order interlacing
+\cite{reiffenstein}.  Spectral-shift logarithms and trace identities are
+classical~\cite{bgn}.  Herglotz boundary distributions and Cauchy laws are
+treated by Aizenman and Warzel~\cite{aizenmanwarzel}.  Sodin proves a weak
+Cauchy limit for the normalized logarithmic derivative under RH
+\cite[Section 3.4.5, equation (55)]{sodin}; Najnudel and Nikeghbali develop
+that theme further~\cite{najnudel}.  Differencing and derivative
+deformations of completed $L$-functions also predate this work
+\cite{lagarias,farmergonek}.
+
+The contributions developed and proved here are the following:
+\begin{enumerate}
+\item An arithmetic local limit for the logarithmic derivative valid for
+\emph{arbitrarily shrinking moving value intervals}, including relative
+asymptotics for exponentially small widths
+(Theorem~\ref{thm:local-cauchy}).
+\item A universal local transport limit for positive Hermitian
+perturbations of completed Dirichlet determinants, on every fixed
+macroscopic real window (Theorem~\ref{ut:main}).
+\item An all-orders Poisson-smoothed expansion whose coefficients are
+explicit finite matrix traces, separating the first conductor and graph
+corrections (Theorem~\ref{ut:expansion}).
+\item A squared-ordinate transport law with exact coefficient given by
+the decrease in the graph's Kirchhoff index
+(Theorem~\ref{thm:electrical-infinite}).
+\end{enumerate}
+No identical statement was located in the inspected ProveIt material or
+the targeted primary-literature search.  This is a documented novelty
+comparison, not certification of worldwide publication priority.  The
+proofs below establish the claims as mathematical statements independently
+of that priority question.
+
+\paragraph{Dependence on RH/GRH.}
+The given zero-location theorem makes the relevant logarithmic derivatives
+have a strict half-plane sign.  The functional equation and gamma-factor
+asymptotics then determine the constants.  No simplicity of zeros,
+linear independence of ordinates, pair-correlation conjecture, or
+identification of the new determinants with Euler products is assumed.
+The proofs are written out in ordinary mathematics.  They have not been
+formalized in Lean in this packet.

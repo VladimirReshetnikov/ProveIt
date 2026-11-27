@@ -1,0 +1,141 @@
+\documentclass[11pt,letterpaper]{article}
+\usepackage[T1]{fontenc}
+\usepackage{lmodern}
+\usepackage[margin=0.98in]{geometry}
+\usepackage{amsmath,amssymb,amsthm,booktabs,hyperref}
+\hypersetup{hidelinks,pdftitle={When products of quadratic Dirichlet L-functions agree at primes}}
+\newtheorem{theorem}{Theorem}
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{corollary}[theorem]{Corollary}
+\newcommand{\F}{\mathbb F_2}
+\newcommand{\Z}{\mathbb Z}
+\newcommand{\supp}{\operatorname{supp}}
+\newcommand{\one}{\mathbf 1}
+\newcommand{\E}{\mathbb E}
+\setlength{\emergencystretch}{2em}
+\setlength{\parindent}{1.2em}
+\linespread{1.07}
+\begin{document}
+\begin{center}
+{\Large\bfseries When products of quadratic Dirichlet\\[3pt]
+\(L\)-functions agree at primes\par}
+\vspace{7pt}
+{\normalsize Exact matching densities and recovery from a finite prime sum}\par
+\vspace{5pt}{\small November 26, 2026}
+\end{center}
+\begin{abstract}
+For a product of \(k\) quadratic Dirichlet \(L\)-functions, how many local Euler factors can match those of a different product? We determine the maximum matching density, classify all maximizing pairs, and find every disagreement density below twice the minimum. After cancellation, each pair in this range has a prescribed number of distinct factors on either side. The density results are unconditional. Dirichlet GRH gives a uniform prime-counting error in the high-agreement range and a finite scale at which one smoothed count determines the exact density.
+\end{abstract}
+
+\section{The local comparison}
+Let \(Q\ge3\), and let \(X\) be any subgroup of the characters modulo \(Q\) of order dividing two. Write \(r=\dim_{\F}X\ge1\) and \(V=\widehat X\). Equivalently \(V\) is the quotient of \((\Z/Q\Z)^\times\) by the intersection of the kernels of all members of \(X\). Write its law additively. A packet \(A\) is an unordered multiset of \(k\ge1\) members of \(X\), including repetitions and allowing the principal character. At each \(p\nmid Q\), put
+\[
+ P_{A,p}(T)=\prod_{\chi\in A}(1-\chi(p)T).
+\]
+Its two factor multiplicities are \((k\pm\sum_{\chi\in A}\chi(p))/2\). Thus equality of local polynomials is exactly equality of the traces. For distinct packets \(A,C\), let \(\delta(A,C)\) be the natural density among primes of \(P_{A,p}\ne P_{C,p}\). The prime number theorem for fixed arithmetic progressions gives equal density to the fibers over \(V\). Consequently,
+\begin{equation}
+ \delta(A,C)=2^{-r}|\supp H|,\qquad
+ H(v)=\sum_{\chi\in X}c_\chi\chi(v),\quad
+ c_\chi=\operatorname{mult}_A(\chi)-\operatorname{mult}_C(\chi).
+ \label{finite}
+\end{equation}
+Walsh orthogonality makes \(H\) nonzero. We have \(H(0)=0\) and \(B=\sum|c_\chi|\le2k\). After common entries cancel, each packet has size \(B/2\).
+
+\begin{theorem}[Exact minimum]\label{minimum}
+Put \(D=\lfloor\log_2(2k)\rfloor\), \(d=\min(r,D)\). The minimum positive disagreement density at rank \(r\) and size \(k\) is \(2^{-d}\). If \(r>D\), equality holds precisely when
+\[
+ H(v)=\pm 2^d\eta(v)\one_{a+W}(v)
+\]
+for a character \(\eta\in X\) and an affine subspace missing \(0\), of codimension \(d\). If \(r\le D\), equality holds precisely when \(H=m2^r\one_{\{a\}}\) with \(a\ne0\) and a nonzero integer \(m\) satisfying \(|m|2^r\le2k\).
+\end{theorem}
+
+\newpage
+\section{The dyadic argument and the extremizers}
+\begin{lemma}\label{dyadic}
+Let \(H\) be a nonzero integral linear combination of Walsh characters of \(\F^r\). Let \(t=\min_{H(x)\ne0}v_2(H(x))\). The map \(x\mapsto 2^{-t}H(x)\bmod 2\) is a nonzero polynomial function over \(\F\) of degree at most \(t\).
+\end{lemma}
+\begin{proof}
+Use Boolean coordinates \(x_i\in\{0,1\}\). Each Walsh character is a product of selected factors \(1-2x_i\). A monomial of degree \(j\) in the multilinear expansion of \(H\) therefore has coefficient divisible by \(2^j\). Each coefficient is also an alternating integer sum of values of \(H\), by inversion on the subsets of its variables, and so is divisible by \(2^t\). Divide every coefficient by \(2^t\) and reduce modulo two. All degrees greater than \(t\) disappear, and a value with valuation \(t\) survives.
+\end{proof}
+A nonzero Boolean polynomial of degree at most \(s\le r\) has relative weight at least \(2^{-s}\). The case \(s=r\) follows by counting one point. For \(s<r\), induct on \(r\), writing the polynomial as \(f_0+x_rf_1\). If \(f_1=0\), suppress \(x_r\). Otherwise the two restrictions differ wherever \(f_1=1\), giving half the lower bound for \(f_1\), of degree at most \(s-1\). For the equality case let \(S\) be a support of weight exactly \(2^{-s}\), with \(s\ge1\). For any translate \(S+h\), the Boolean difference has degree at most \(s-1\). If it is nonzero its weight is at least \(2^{1-s}\), the sum of the two weights. Hence translates of \(S\) coincide or are disjoint. Translating one point of \(S\) to zero gives a subgroup, proving that \(S\) is an affine flat. For \(s=0\) the assertion follows from constancy.
+
+\begin{proof}[Proof of Theorem~\ref{minimum}]
+Since \(|H|\le B\le2k\), we have \(t\le D\). For \(r>D\), Lemma~\ref{dyadic} and the weight bound give \(\delta\ge2^{-t}\ge2^{-d}\). At equality \(t=d\). All nonzero values of \(H\) have absolute value \(2^d\), since \(2k<2^{d+1}\). Their support \(a+W\) is a minimum-weight support, hence an affine flat. Write \(H(a+w)=2^ds(w)\), where \(s\) takes values \(\pm1\). Fourier inversion gives
+\[
+ c_\chi=\chi(a)\,|W|^{-1}\sum_{w\in W}s(w)\chi(w).
+\]
+Every character of \(W\) extends to \(V\). Thus every normalized Fourier coefficient of \(s\) is integral. Their squares sum to one by Parseval, so exactly one is \(\pm1\), and \(s\) is a signed character. This proves the asserted form, with \(0\notin a+W\) from \(H(0)=0\).
+
+Conversely, the Fourier coefficients of the displayed signed indicator are \(\pm1\) on a translate of \(W^\perp\) and vanish elsewhere. Their sum is zero, so half are positive and half negative. These two sets give packets of size \(2^{d-1}\le k\); add common entries to both as needed. If \(r\le D\), counting gives \(\delta\ge2^{-r}\). A one-point support at \(a\ne0\) has \(c_\chi=2^{-r}H(a)\chi(a)\), forcing exactly the integer multiples stated. The two signs again occur equally often, and common entries complete the construction.
+\end{proof}
+
+\newpage
+\section{The entire range below twice the minimum}
+\begin{theorem}[High-agreement spectrum]\label{spectrum}
+If \(r>D\), the possible positive densities strictly below \(2^{1-d}\) are precisely
+\[
+ \delta_j=2^{1-d}(1-2^{-j}),\qquad
+ 1\le j\le\min(d,r-d),\qquad k\ge 2^d-2^{d-j}.
+\]
+For every pair realizing \(\delta_j\), cancellation leaves two disjoint sets, each of exactly \(2^d-2^{d-j}\) distinct characters. If \(r\le D\), only the minimum occurs strictly below twice the minimum.
+\end{theorem}
+\begin{proof}
+Consider \(r>D\). If \(t<d\), the weight bound of Section 2 yields \(\delta\ge2^{1-d}\). Hence \(t=d\), and all nonzero values are \(\pm2^d\). The Boolean polynomial in Lemma~\ref{dyadic} is precisely the disagreement indicator. The Kasami--Tokura classification of weights of binary Reed--Muller words below twice their minimum gives \(\delta=2^{1-d}(1-2^{-j})\) for an integer \(j\ge1\) \cite{KT,GKZ}. To recall the numerical step for \(d\ge2\), one normal form is a product of \(d-j\) coordinate bits times the sum of two disjoint degree-\(j\) monomials. The second is a product of \(d-2\) bits times a sum of \(j\) independent bit pairs' products. In the first case the two monomials differ with probability \(2^{1-j}(1-2^{-j})\). In the second, the parity of those pair products is odd with probability \((1-2^{-j})/2\). Both yield the stated weight. For \(d=1\), every nonconstant affine form has weight \(1/2\).
+
+From \(|c_\chi|=|\E H\chi|\le2^d\delta<2\) and integrality, each coefficient is \(0\) or \(\pm1\). Consequently
+\[
+ B=\sum c_\chi^2=\E H^2=4^d\delta,\qquad
+ B/2=2^d-2^{d-j}.
+\]
+The last expression is an integer at most \(k\), forcing \(j\le d\). Also \(|\supp H|=2^{r+1-d}-2^{r+1-d-j}\) is even: every Boolean monomial of degree \(\le d<r\) has an even number of ones, so the sum of the indicator values is zero modulo two. This forces \(j\le r-d\).
+
+Conversely take two \(d\)-dimensional subspaces \(U,U'\subset X\) meeting in dimension \(d-j\); they fit because \(d+j\le r\). Use \(U\setminus U'\) and \(U'\setminus U\), padded identically to size \(k\). Character orthogonality gives \(H=2^d(\one_{U^\perp}-\one_{(U')^\perp})\). The intersection of these two supports has density \(2^{-d-j}\); their symmetric difference has density \(\delta_j\). Finally for \(r\le D\) each density is an integer multiple of \(2^{-r}\).
+\end{proof}
+
+For example, take \(r\ge6\) and compare pairs of equal size. At \(k=4\) or \(5\), the only disagreement density below \(1/4\) is \(1/8\). At \(k=6\), the possibilities are \(1/8\) and \(3/16\); at \(k=7\) they are \(1/8,3/16,7/32\). Thus two products of seven factors can agree at \(25/32\) of the primes, but agreement strictly between \(25/32\) and \(13/16\) is impossible.
+
+\newpage
+\section{A finite observation under Dirichlet GRH}
+Fix a nonnegative smooth weight \(w\), compactly supported in \((1/2,1)\), of integral one. For \(f:V\to\mathbb C\) set
+\[
+ M_x(f)=\sum_{p\nmid Q}(\log p)w(p/x)f([p]),\qquad
+ \|f\|_A=\sum_{\chi\in X}|\widehat f(\chi)|,
+ \quad \widehat f(\chi)=\E_{v\in V}f(v)\chi(v).
+\]
+Under Dirichlet GRH the smoothed explicit formula implies
+\begin{equation}
+ |M_x(f)-x\E f|\ll_w \|f\|_A\sqrt{x}\log(2Q),\qquad x\ge2.
+ \label{smoothed}
+\end{equation}
+Here are details of uniformity in the modulus. By Fourier expansion it suffices to treat one character. For the inducing primitive character of conductor \(q\mid Q\), apply the Mellin explicit formula to the von Mangoldt sum with weight \(w(n/x)\), including the zeta pole for the principal character \cite[Ch.~5]{IK}. The pole contributes \(x\int w\). A nontrivial zero contributes \(-x^\rho\widetilde w(\rho)\), where \(\widetilde w(s)=\int_0^\infty w(u)u^{s-1}du\). On the critical line this is \(O_w(\sqrt x(1+|\Im\rho|)^{-3})\), while the number of zeros in every unit interval about height \(T\) is \(O(\log(2q(|T|+2)))\). Summation gives the stated error. Shifting to \(\Re s=-1/2\) crosses at most the extra trivial zero at zero and contributes \(O_w(1+x^{-1/2}\log(2q))\), by the functional equation, absolute convergence at \(3/2\), and Mellin decay. Prime powers of exponent at least two contribute \(O_w(\sqrt{x})\) by the elementary Chebyshev bound \(\sum_{p\le y}\log p\ll y\), since \(\sum_{3\le j\le\log_2 x}x^{1/j}\ll\sqrt{x}\). Removing extra primes dividing \(Q\) costs \(O_w(\sum_{p\mid Q}\log p)=O_w(\log(2Q))\). This proves \eqref{smoothed}.
+
+\begin{theorem}[Finite detection and density recovery]\label{finiteprim}
+Every distinct pair has a distinguishing prime in \((x/2,x)\) whenever \(x\ge C_w k^2\log^2(2Q)\), under Dirichlet GRH. If \(r>D\) and \(0<\delta<2^{1-d}\), then for its disagreement set \(S\subset V\),
+\[
+ M_x(\one_S)=x\delta+O_w(\sqrt{x}\log(2Q)).
+\]
+The implicit constant is uniform in \(k,r,Q\) and both packets. Given this density range, rounding \(4^d M_x(\one_S)/(2x)\) to the nearest integer recovers the reduced packet size \(B/2\) exactly when \(x\ge C'_w16^d\log^2(2Q)\), and hence recovers \(\delta\).
+\end{theorem}
+\begin{proof}
+The Fourier coefficients of \(H^2\) are the convolution of the \(c_\chi\) with themselves. Thus \(\|H^2\|_A\le B^2\), whereas \(\E H^2=\sum c_\chi^2\ge B\). Apply \eqref{smoothed} with \(f=H^2\). The main term exceeds the error at the first stated scale with a sufficiently large constant, since \(B\le2k\). A positive summand supplies a prime. In the smaller-density range \(\one_S=4^{-d}H^2\), so \(\|\one_S\|_A\le4^{-d}B^2<4\). This gives the second estimate. Now \(4^d\delta/2=B/2\) by Theorem~\ref{spectrum}; the last scale makes the rounding error less than \(1/2\).
+\end{proof}
+
+\newpage
+\section{Interpretation, checks and prior work}
+The matching question has a representation-theoretic formulation. The packets are semisimple sums of one-dimensional real characters of an elementary abelian two-group. Agreement of their Frobenius traces determines every unramified local polynomial in this family. Martin and Walji \cite{MW} study matching densities of irreducible finite-group characters and applications to Artin representations. Their irreducibility hypothesis and the present decomposable family lead to different extremal problems. The exact near-minimum spectrum here uses the integrality of the Walsh coefficients, balance at the identity, and the classical low-weight classification in \cite{KT}. The constructions attain all the surviving weights. The arithmetic passage uses the prime number theorem in progressions for existence of densities and the explicit formula for the finite estimates.
+
+The research collection accompanying the question develops zero detection, prime races and other arithmetic applications of Dirichlet GRH \cite{PI}. Its index and merged article describe a different set of local statistics. The upstream Lean repository states the critical-line input used in Section 4 \cite{lean}. Theorems~\ref{minimum} and~\ref{spectrum} are independent of that input. We did not find the combined spectrum, cancellation-size formula and finite measurement statement in the sources examined. The paper gives a derivation from the cited theorems. Historical priority remains open.
+
+The companion program \texttt{verify.py} compares all unordered pairs of multisets in small ranks, checks the reduced sizes, and verifies constructions in larger ranks. It also counts the disagreement classes of a concrete modulus directly. The run covers 723,057 packet pairs and 95 subspace constructions. Its recorded output is in \texttt{verification.txt}. The script uses only the Python standard library. The analytic estimates are proved in Section 4; the finite checks concern the algebraic statements.
+
+One question suggested by the result is whether arbitrary products of order dividing an odd prime admit an equally explicit upper range of local matching densities. A second is whether a single density measurement can be made at a smaller scale, uniformly across the full set of admissible near-minimum densities.
+
+\begin{thebibliography}{9}\small
+\bibitem{KT} T.~Kasami and N.~Tokura, On the weight structure of Reed--Muller codes, \emph{IEEE Trans. Inform. Theory} \textbf{16} (1970), 752--759. \href{https://doi.org/10.1109/TIT.1970.1054545}{doi:10.1109/TIT.1970.1054545}.
+\bibitem{GKZ} P.~Gopalan, A.~Klivans and D.~Zuckerman, List-decoding Reed--Muller codes over small fields, \emph{Proceedings of the 40th ACM Symposium on Theory of Computing} (2008), 265--274. See Theorem 9 and the weight calculation following it in the \href{https://www.cs.utexas.edu/~klivans/rm.pdf}{authors' conference version}.
+\bibitem{IK} H.~Iwaniec and E.~Kowalski, \emph{Analytic Number Theory}, American Mathematical Society Colloquium Publications 53, 2004.
+\bibitem{MW} K.~Martin and N.~Walji, Distinguishing finite group characters and refined local-global phenomena, \emph{Acta Arith.} \textbf{179} (2017), 277--300. \href{https://kimballmartin.github.io/papers/dist-artin.pdf}{authors' manuscript}.
+\bibitem{PI} V.~Reshetnikov, \emph{ProveIt}, \href{https://github.com/VladimirReshetnikov/ProveIt/tree/main/Analysis/GeneralizedRiemannHypothesis}{Generalized Riemann Hypothesis collection and merged article}.
+\bibitem{lean} L.~Sernau et al., \emph{GRH for Dirichlet L-functions, in Lean 4}, \href{https://github.com/lsernau/grh-lean/tree/72fead102f663d5c7a407964a13dc0cf9d977207}{repository at 72fead102f66}.
+\end{thebibliography}
+\end{document}

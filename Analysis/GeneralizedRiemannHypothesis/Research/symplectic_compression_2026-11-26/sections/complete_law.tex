@@ -1,0 +1,306 @@
+\section{The complete law of an arbitrary symplectic compression}
+\label{sec:complete-law}
+
+Let $q$ be a prime power. All spaces and matrices in this section are over
+$\mathbb F_q$. An alternating form means a bilinear form $B$ satisfying
+$B(x,x)=0$ for every $x$. Its matrix therefore has zero diagonal as well as
+$H^{\mathsf T}=-H$; both requirements matter in characteristic two.
+Let $V$ be a $2n$-dimensional space with a nondegenerate alternating form
+$\langle\ ,\ \rangle$. Write $J$ for its matrix in a chosen basis.
+
+Fix two injective linear maps
+\[
+ Y:\mathbb F_q^a\longrightarrow V,\qquad
+ X_0:\mathbb F_q^b\longrightarrow V,
+\]
+and let
+\[
+ H_1=Y^{\mathsf T}JY,\quad H_0=X_0^{\mathsf T}JX_0,
+ \qquad \operatorname{rank}H_i=2s_i.
+\]
+For $g$ chosen uniformly from $\operatorname{Sp}(V)$, the observed matrix is
+\begin{equation}\label{eq:complete-observation}
+ M=Y^{\mathsf T}JgX_0\in\operatorname{Mat}_{a,b}(\mathbb F_q).
+\end{equation}
+Neither prescribed form need be zero or nondegenerate. In particular, both
+observed subspaces may have arbitrary nonzero radicals. The necessary and
+sufficient conditions that the two initial frames exist are
+$a-s_1\le n$ and $b-s_0\le n$.
+
+\subsection{An explicit count for a prescribed Gram matrix}
+
+For integers $d,s\ge0$, define
+\begin{equation}\label{eq:E-count}
+ \mathcal E_n(d,s)=
+ q^{2nd-\binom d2}
+ \prod_{j=n-d+s+1}^{n}(1-q^{-2j})
+ \quad\text{if }0\le2s\le d\text{ and }d-s\le n,
+\end{equation}
+and set $\mathcal E_n(d,s)=0$ otherwise. Empty products are one; in
+particular $\mathcal E_n(0,0)=1$. Formula \eqref{eq:E-count} is only
+evaluated in the stated feasible range, so it contains no nonpositive
+product indices there.
+
+\begin{lemma}[Prescribed-Gram frames]\label{lem:E-count}
+Let $E$ be a specified $d$-dimensional alternating space of rank $2s$.
+The number of isometric injections $E\longrightarrow V$ is
+$\mathcal E_n(d,s)$. The symplectic group acts transitively on this set
+whenever it is nonempty.
+\end{lemma}
+
+\begin{proof}
+Decompose $E=S\oplus R$, where $S$ is nondegenerate of dimension $2s$
+and $R$ is the radical, of dimension $h=d-2s$. A symplectic basis of $S$
+embeds in $V$ in
+\[
+ \frac{|\operatorname{Sp}_{2n}(q)|}
+ {|\operatorname{Sp}_{2(n-s)}(q)|}
+\]
+ways. Once its image is fixed, the images of an ordered basis of $R$
+must be an independent isotropic $h$-frame in the orthogonal complement,
+which is symplectic of dimension $2(n-s)$. After $i$ radical vectors have
+been chosen, the next one lies in their orthogonal complement and outside
+their span. There are exactly
+$q^{2(n-s)-i}-q^i$ choices. Hence the count is
+\begin{equation}\label{eq:E-integer}
+ \frac{|\operatorname{Sp}_{2n}(q)|}
+ {|\operatorname{Sp}_{2(n-s)}(q)|}
+ \prod_{i=0}^{d-2s-1}(q^{2(n-s)-i}-q^i),
+\end{equation}
+and it is nonzero exactly when $h\le n-s$.
+
+The standard symplectic-basis count gives
+$|\operatorname{Sp}_{2u}(q)|=q^{u^2}\prod_{j=1}^u(q^{2j}-1)$.
+Substituting in \eqref{eq:E-integer} and extracting powers of $q$ gives
+\eqref{eq:E-count}; the remaining factors have consecutive indices
+$n-d+s+1,\ldots,n$.
+
+For transitivity, first extend the image of the chosen symplectic basis
+of $S$ to a symplectic decomposition of $V$. In its complement, extend
+the ordered isotropic basis of $R$ to a symplectic basis by adjoining
+dual vectors and then a basis of the residual complement. The change of
+symplectic basis between any two such completions sends one entire
+prescribed frame to the other. This is the relevant elementary case of
+Witt extension, and the argument works in characteristic two.
+\end{proof}
+
+\subsection{Three invariants of an observed matrix}
+
+For a proposed value $A\in\operatorname{Mat}_{a,b}(\mathbb F_q)$, form
+the alternating matrix
+\begin{equation}\label{eq:combined-Gram}
+ \Gamma_A=
+ \begin{pmatrix}H_1&A\\-A^{\mathsf T}&H_0\end{pmatrix}.
+\end{equation}
+Write $\operatorname{rank}\Gamma_A=2s$ and
+$r=a+b-2s$. In $E=E_1\oplus E_0=\mathbb F_q^a\oplus\mathbb F_q^b$,
+let $R=\operatorname{rad}\Gamma_A$ and put
+\begin{align}
+ t_1&=\dim(R\cap E_1)=\dim(\ker H_1\cap\ker A^{\mathsf T}),
+ \label{eq:t1}\\
+ t_0&=\dim(R\cap E_0)=\dim(\ker H_0\cap\ker A),
+ \label{eq:t0}\\
+ c&=r-t_0-t_1.\label{eq:complement-c}
+\end{align}
+Thus $r$ and $c$ are determined by the three integers $(s,t_0,t_1)$
+and the fixed frame dimensions.
+
+Write $\genfrac{[}{]}{0pt}{}{u}{v}_q$ for the number of $v$-subspaces
+of $\mathbb F_q^u$, with value zero outside $0\le v\le u$, and set
+$|\operatorname{GL}_0(q)|=1$. For $0\le\ell\le r$ define
+\begin{equation}\label{eq:T-count}
+ \begin{split}
+ T_\ell(r,t_0,t_1)=
+ \sum_{k=\max(0,\ell-c)}^{\min(\ell,t_0,t_1)}
+ &\genfrac{[}{]}{0pt}{}{t_0}{k}_q
+ \genfrac{[}{]}{0pt}{}{t_1}{k}_q
+ |\operatorname{GL}_k(q)|
+ \genfrac{[}{]}{0pt}{}{c}{\ell-k}_q\\[-2pt]
+ &\hspace{12mm}\cdot q^{(\ell-k)(t_0+t_1-k)}.
+ \end{split}
+\end{equation}
+An empty sum is zero. This is a nonnegative integer formula with no
+cancellation.
+
+\begin{lemma}[Relations meeting neither frame]\label{lem:transverse-relations}
+The number of $\ell$-dimensional subspaces $L\le R$ satisfying
+$L\cap E_0=L\cap E_1=0$ is $T_\ell(r,t_0,t_1)$.
+Such a subspace exists exactly when
+\begin{equation}\label{eq:ell-support}
+ 0\le\ell\le r-\max(t_0,t_1)=c+\min(t_0,t_1).
+\end{equation}
+\end{lemma}
+
+\begin{proof}
+Put $R_i=R\cap E_i$, choose a complement $C$ to $R_0\oplus R_1$
+in $R$, and set $J_L=L\cap(R_0\oplus R_1)$. Both coordinate
+projections of $J_L$ are injective. If $\dim J_L=k$, it is therefore
+the graph of an isomorphism between a $k$-subspace of $R_0$ and a
+$k$-subspace of $R_1$. The number of choices is
+\[
+ \genfrac{[}{]}{0pt}{}{t_0}{k}_q
+ \genfrac{[}{]}{0pt}{}{t_1}{k}_q|\operatorname{GL}_k(q)|.
+\]
+The image $D$ of $L$ under projection to $C$ has dimension $\ell-k$,
+giving $\genfrac{[}{]}{0pt}{}{c}{\ell-k}_q$ choices.
+For fixed $J_L,D$, the possible quotients $L/J_L$ are exactly the
+graphs of linear maps
+$D\longrightarrow(R_0\oplus R_1)/J_L$, of which there are
+$q^{(\ell-k)(t_0+t_1-k)}$. They all have the required intersection
+with $R_0\oplus R_1$ and meet neither $R_i$. This proves
+\eqref{eq:T-count}.
+
+The dimension inequality $\ell+\dim R_i\le r$ is necessary.
+It is sufficient: take the graph of an isomorphism between subspaces
+of $R_0,R_1$ of dimension $\min(t_0,t_1)$, add $C$, and then take
+any desired lower-dimensional subspace. This proves \eqref{eq:ell-support}.
+\end{proof}
+
+\begin{theorem}[Complete compression law]\label{thm:complete-law}
+For the observation \eqref{eq:complete-observation} and every proposed
+matrix $A$, its probability is
+\begin{equation}\label{eq:main-law}
+ \boxed{\displaystyle
+ \Pr(M=A)=
+ \frac{\displaystyle\sum_{\ell=0}^{r}
+ T_\ell(r,t_0,t_1)\,\mathcal E_n(a+b-\ell,s)}
+ {\mathcal E_n(a,s_1)\,\mathcal E_n(b,s_0)}.}
+\end{equation}
+All quantities on the right are determined by $(s,t_0,t_1)$ and the
+fixed parameters. This is valid over every finite field.
+More precisely, the $\ell$-th summand divided by the same denominator
+is
+\begin{equation}\label{eq:joint-law}
+ \Pr\bigl(M=A,\ \dim(\operatorname{im}Y\cap
+ \operatorname{im}(gX_0))=\ell\bigr).
+\end{equation}
+\end{theorem}
+
+\begin{proof}
+By Lemma~\ref{lem:E-count}, $gX_0$ is uniform among the
+$\mathcal E_n(b,s_0)$ prescribed-Gram injections. The number of
+such $X$ giving a specified $A$ is independent of the particular
+target injection $Y$: a symplectic change of coordinates carrying
+one target to another carries the corresponding source injections
+bijectively. The same holds if the intersection dimension is also
+specified. We may consequently choose $Y$ independently and uniformly
+among its $\mathcal E_n(a,s_1)$ possible values and count pairs.
+
+Each pair $(Y,X)$ with $Y^{\mathsf T}JX=A$ is the linear map
+\[
+ F:E_1\oplus E_0\longrightarrow V,\qquad F(u,v)=Yu+Xv,
+\]
+with Gram matrix $\Gamma_A$, whose restrictions to $E_1,E_0$ are
+injective. Its kernel $L$ lies in $R$, since
+$\Gamma_A(z,w)=\langle Fz,Fw\rangle$ vanishes for every $w$ when
+$Fz=0$. Injectivity on the two summands says exactly
+$L\cap E_1=L\cap E_0=0$.
+
+Conversely, fix any such $L$ of dimension $\ell$. The alternating
+form descends to $E/L$ with dimension $a+b-\ell$ and rank $2s$.
+Every isometric injection $E/L\longrightarrow V$ gives exactly one
+map $F$ of the required kind with kernel exactly $L$, and hence one
+pair $(Y,X)$. Lemma~\ref{lem:E-count} counts these injections by
+$\mathcal E_n(a+b-\ell,s)$; Lemma~\ref{lem:transverse-relations}
+counts possible kernels by $T_\ell$. Summing and dividing by the
+number of independent pairs gives \eqref{eq:main-law}.
+
+Finally, the map $(u,v)\mapsto Yu=-Xv$ identifies $\ker F$ with
+$\operatorname{im}Y\cap\operatorname{im}X$. Thus the same count
+at a fixed $\ell$ proves \eqref{eq:joint-law}.
+\end{proof}
+
+\subsection{The exact obstruction and the smallest possible ambient space}
+
+\begin{theorem}[Exact support and minimal dimension]\label{thm:minimum-dimension}
+In Theorem~\ref{thm:complete-law},
+\begin{equation}\label{eq:support-criterion}
+ \boxed{\quad\Pr(M=A)>0\quad\Longleftrightarrow\quad
+ s+\max(t_0,t_1)\le n.\quad}
+\end{equation}
+More generally, start with any two alternating forms $H_1,H_0$ and
+any cross-pairing matrix $A$, without assuming that frames have already
+been realized. The smallest dimension of a nondegenerate alternating
+space admitting injective realizations of both spaces, preserving
+their forms and the prescribed cross pairings, is
+\begin{equation}\label{eq:minimum-dimension}
+ \boxed{\qquad 2\bigl(s+\max(t_0,t_1)\bigr).\qquad}
+\end{equation}
+\end{theorem}
+
+\begin{proof}
+A summand in \eqref{eq:main-law} is positive precisely when a
+transverse kernel of dimension $\ell$ exists and its quotient embeds.
+By the preceding lemmas, these conditions are
+\[
+ 0\le\ell\le r-\max(t_0,t_1),\qquad
+ \ell\ge a+b-s-n.
+\]
+Their compatibility is exactly $s+\max(t_0,t_1)\le n$, because
+$r=a+b-2s$. The largest allowed kernel has dimension
+$r-\max(t_0,t_1)$; its quotient has rank $2s$ and radical dimension
+$\max(t_0,t_1)$, and embeds in a symplectic space of dimension
+$2(s+\max(t_0,t_1))$ by Lemma~\ref{lem:E-count}.
+The quotient map is injective on each original summand. Conversely,
+any realization produces a transverse kernel and therefore cannot
+use a smaller ambient dimension. This argument also proves
+\eqref{eq:minimum-dimension} without separately assuming that the
+two original frames are realizable.
+\end{proof}
+
+\subsection{Sufficient statistics and special cases}
+
+The triple $(s,t_0,t_1)$ is sufficient for every likelihood test of
+the symplectic law against uniform independent entries: both laws
+are uniform within each set of matrices sharing a triple. Consequently
+their full total variation distance is exactly the distance between
+the induced distributions of that triple. To see this directly, let
+$\mathcal C_\tau$ be a triple class and $p_\tau$ the value of
+\eqref{eq:main-law} on it. Both distances are
+\[
+ \frac12\sum_\tau |\mathcal C_\tau|
+ |p_\tau-q^{-ab}|.
+\]
+This does not assert that the triple is the coarsest possible statistic;
+different triples can happen to give the same likelihood.
+
+Conditional on an observed $A$ with positive probability, the
+intersection dimension has the distribution
+\begin{equation}\label{eq:conditional-intersection}
+ \Pr(\ell\mid A)=
+ \frac{T_\ell(r,t_0,t_1)\mathcal E_n(a+b-\ell,s)}
+ {\sum_jT_j(r,t_0,t_1)\mathcal E_n(a+b-j,s)}.
+\end{equation}
+Conditional also on $\ell$, all allowed relation subspaces
+$L\le R$ are equally likely, since the number of embeddings of
+their quotients is the same.
+
+If both $H_i$ are nondegenerate, then $t_0=t_1=0$ and
+$T_\ell=\genfrac{[}{]}{0pt}{}{r}{\ell}_q$. The likelihood depends
+only on the rank of $\Gamma_A$. For nondegenerate $H_1$, ordinary
+block elimination gives the useful identity
+\begin{equation}\label{eq:Schur-rank}
+ \operatorname{rank}\Gamma_A
+ =a+\operatorname{rank}(H_0+A^{\mathsf T}H_1^{-1}A).
+\end{equation}
+Thus the relevant rank is that of an alternating residual form,
+which is generally different from the ordinary matrix rank of $A$.
+
+At the previously studied Lagrangian-output endpoint, $a=n$ and
+$H_1=0$. Put $K=\ker A$. A basis adapted to $A$ yields
+\[
+ \operatorname{rank}\Gamma_A
+ =2\operatorname{rank}A+\operatorname{rank}(H_0|_{K\times K}),
+ \qquad t_1=n-\operatorname{rank}A.
+\]
+Since $t_0\le\dim K=b-\operatorname{rank}A$, the general support
+criterion directly gives the familiar isotropic-kernel obstruction
+when also $b=n$: the proposed matrix occurs exactly when
+$H_0|_{K\times K}=0$. The full theorem permits arbitrary dimensions
+and arbitrary forms on both frames, so it reaches beyond that
+endpoint.
+
+The computational evaluation uses Gaussian elimination for
+\eqref{eq:combined-Gram}--\eqref{eq:t0}, followed by at most
+$O((a+b)^2)$ terms of scalar integer arithmetic. This is an operation
+count, not a bit-complexity bound; the exact integers can be large.
