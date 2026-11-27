@@ -77,10 +77,9 @@ theorem at_code (h u v D k : PTm n) :
 
 /-- `a < h`, `b < h` give `a + h b < h²`. -/
 theorem digit_lt {a b h : PTm n} (ha : Γ ⊢[PRAAx] lt a h) (hb : Γ ⊢[PRAAx] lt b h) :
-    Γ ⊢[PRAAx] lt (a + h * b) (h * h) := by
-  have h₁ := natEq (eq_add_of_le ha); have h₂ := natEq (eq_add_of_le hb)
-  refine le_of_eq_add (d := monus h (succ a) + h * monus h (succ b)) ?_
-  ipra_lc Groth.ι (Q.mk _ h) * h₂ + h₁
+    Γ ⊢[PRAAx] lt (a + h * b) (h * h) :=
+  lt_congr ((congrAdd (mul_comm _ _) (.eqRefl _)).eqTrans (add_comm _ _))
+    (.eqRefl _) (Order.mul_add_lt_mul hb ha)
 
 /-- Two-digit uniqueness: `a + h b = a' + h b'` with `a, a' < h`. -/
 theorem digit_eq {a b a' b' h : PTm n} (hh : Γ ⊢[PRAAx] h ≐ succ (pred h)) (ha : Γ ⊢[PRAAx] lt a h)

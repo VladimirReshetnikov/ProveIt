@@ -159,11 +159,8 @@ end expansion
 
 /-- "Append interval": `x < P` and `d < B` give `x + d P < P B`. -/
 theorem append_interval {x P d B : PTm n} (hx : Γ ⊢[PRAAx] lt x P) (hd : Γ ⊢[PRAAx] lt d B) :
-    Γ ⊢[PRAAx] lt (x + d * P) (P * B) := by
-  have hx' : Γ ⊢[PRAAx] le (succ x) P := hx
-  have hd' : Γ ⊢[PRAAx] le (succ d) B := hd
-  show Γ ⊢[PRAAx] le (succ (x + d * P)) (P * B)
-  ipra_le sl hx' + sl hd' * 𝔟 P
+    Γ ⊢[PRAAx] lt (x + d * P) (P * B) :=
+  lt_congr (add_comm _ _) (mul_comm _ _) (Order.mul_add_lt_mul hd hx)
 
 /-- "Code extensionality": two digit vectors below the radices with the same code agree at every index. -/
 theorem code_ext {r d d' : PTm 2} {x i t : PTm n}

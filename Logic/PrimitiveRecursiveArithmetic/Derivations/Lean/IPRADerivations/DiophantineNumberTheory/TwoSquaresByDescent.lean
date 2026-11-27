@@ -66,8 +66,8 @@ theorem sq_comm {a b n : PTm k} (e : Γ ⊢[PRAAx] a * a + b * b ≐ n) : Γ ⊢
   ipra_lc natEq e
 
 theorem code_lt {B a b : PTm k} (ha : Γ ⊢[PRAAx] lt a B) (hb : Γ ⊢[PRAAx] lt b B) :
-    Γ ⊢[PRAAx] lt (B * b + a) (B * B) := by
-  ipra_le 𝔞 B * sl hb + sl ha
+    Γ ⊢[PRAAx] lt (B * b + a) (B * B) :=
+  lt_congr (congrAdd (mul_comm _ _) (.eqRefl _)) (.eqRefl _) (Order.mul_add_lt_mul hb ha)
 
 /-- Any representation makes the bit `1`. -/
 theorem rep_intro {n a b : PTm k} (e : Γ ⊢[PRAAx] a * a + b * b ≐ n) : Γ ⊢[PRAAx] T n ≐ one := by

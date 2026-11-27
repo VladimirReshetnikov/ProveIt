@@ -222,6 +222,12 @@ theorem mul_le_mul_left {a b : PTm n} (c : PTm n) (h : Γ ⊢[PRAAx] le a b) :
     Γ ⊢[PRAAx] le (c * a) (c * b) :=
   le_congr (mul_comm _ _) (mul_comm _ _) (mul_le_mul_right c h)
 
+/-- The index `i * R + j` lies in the first `N` blocks of length `R`. -/
+theorem Order.mul_add_lt_mul {i j N R : PTm n} (hi : Γ ⊢[PRAAx] lt i N) (hj : Γ ⊢[PRAAx] lt j R) :
+    Γ ⊢[PRAAx] lt (i * R + j) (N * R) :=
+  lt_of_lt_of_le (le_congr (add_succ _ _) (succ_mul _ _).eqSymm (add_le_add_left _ hj))
+    (mul_le_mul_right R hi)
+
 /-- Variables: `0 = c` (induction), `1 = a`, `2 = b`. -/
 private abbrev mcF : Fm PTm 3 := monus (var 1 + var 0) (var 2 + var 0) ≐ monus (var 1) (var 2)
 

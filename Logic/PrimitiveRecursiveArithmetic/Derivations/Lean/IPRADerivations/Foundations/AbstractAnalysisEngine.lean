@@ -46,11 +46,10 @@ theorem separation {r s C : PTm n}
   simp only [subst_le, PTm.subst_add, PTm.subst_mul, subst_ap2, Syn.subst_var, Syn.inst_zero,
     Syn.subst_inst_shift, ConciseIPRA.PTm.subst_succ, ConciseIPRA.PTm.subst_zero] at hC
   refine .orE (lt_or_le s r) ?_ Prf.hyp0
-  have hlt : (lt s r :: Γ) ⊢[PRAAx] le (succ s) r := Prf.hyp0
   have hp := succ_le_two_pow (Γ := lt s r :: Γ) C
-  have hcon : (lt s r :: Γ) ⊢[PRAAx] lt (pw two C * s + C) (pw two C * r) := by
-    show _ ⊢[PRAAx] le (succ (pw two C * s + C)) (pw two C * r)
-    ipra_le 𝔟 (pw two C) * sl hlt + sl hp
+  have hcon : (lt s r :: Γ) ⊢[PRAAx] lt (pw two C * s + C) (pw two C * r) :=
+    lt_congr (congrAdd (mul_comm _ _) (.eqRefl _)) (mul_comm _ _)
+      (Order.mul_add_lt_mul Prf.hyp0 hp)
   exact le_lt_absurd _ hC.wk hcon
 
 /-! ## Perturbed contraction -/

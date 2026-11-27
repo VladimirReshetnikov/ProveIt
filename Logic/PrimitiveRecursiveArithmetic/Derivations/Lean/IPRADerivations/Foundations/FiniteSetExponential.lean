@@ -225,9 +225,8 @@ theorem curry_ev_closed : ([] : List (Fm PTm 0)) ⊢[PRAAx] univ 3
 
 /-- `i m + j < n m` for `i < n` and `j < m`. -/
 theorem pair_lt {i j N m : PTm n} (hi : Γ ⊢[PRAAx] lt i N) (hj : Γ ⊢[PRAAx] lt j m) :
-    Γ ⊢[PRAAx] lt (i * m + j) (N * m) := by
-  refine le_of_eq_add (d := monus N (succ i) * m + monus m (succ j)) ?_
-  ipra_lc 𝔞 m * natEq (eq_add_of_le hi) + natEq (eq_add_of_le hj)
+    Γ ⊢[PRAAx] lt (i * m + j) (N * m) :=
+  Order.mul_add_lt_mul hi hj
 
 /-- The first projection of a pair. -/
 theorem pair_fst {i j m : PTm n} (hm : Γ ⊢[PRAAx] m ≐ succ (pred m)) (hj : Γ ⊢[PRAAx] lt j m) :

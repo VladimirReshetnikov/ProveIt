@@ -36,8 +36,6 @@ open LeanProofs.IPRA.BlockSum (qr_block)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
-local notation "𝔟" t:max => Groth.ι (IPRA.Q.mk _ t)
-
 /-! ## The cell hypotheses -/
 
 /-- `F(i, x) ≤ C(⌊i/R⌋, x) + e` for `i < N R`. -/
@@ -79,9 +77,8 @@ theorem dn_at {F C : PTm 2} {x N R e t : PTm n} (h : Γ ⊢[PRAAx] CellDn F C x 
 
 /-- The fine index `c R + j` of a cell lies below `N R`. -/
 theorem fine_lt {c j N R : PTm n} (hc : Γ ⊢[PRAAx] lt c N) (hj : Γ ⊢[PRAAx] lt j R) :
-    Γ ⊢[PRAAx] lt (c * R + j) (N * R) := by
-  unfold lt at hc hj ⊢
-  ipra_le 𝔟 R * sl hc + sl hj
+    Γ ⊢[PRAAx] lt (c * R + j) (N * R) :=
+  Order.mul_add_lt_mul hc hj
 
 /-- The `j`-th fine sample of the cell at `c R`, read through the offset body. -/
 theorem off_at (F : PTm 2) (c R j x : PTm n) :

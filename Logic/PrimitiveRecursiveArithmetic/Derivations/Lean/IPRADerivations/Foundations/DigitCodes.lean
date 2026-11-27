@@ -130,9 +130,9 @@ theorem enc_lt {P : PTm n} :
 
 /-- A pair of codes below `K` gives a code below `K K`. -/
 theorem pair_lt {eu ev K : PTm n} (hu : Γ ⊢[PRAAx] lt eu K) (hv : Γ ⊢[PRAAx] lt ev K) :
-    Γ ⊢[PRAAx] lt (eu + K * ev) (K * K) := by
-  refine le_of_eq_add (d := monus K (succ eu) + K * monus K (succ ev)) ?_
-  ipra_lc 𝔞 K * natEq (eq_add_of_le hv) + natEq (eq_add_of_le hu)
+    Γ ⊢[PRAAx] lt (eu + K * ev) (K * K) :=
+  lt_congr ((congrAdd (mul_comm _ _) (.eqRefl _)).eqTrans (add_comm _ _))
+    (.eqRefl _) (Order.mul_add_lt_mul hv hu)
 
 /-- The digits are below `P`. -/
 theorem dec_lt {P cP : PTm n} (hP : Γ ⊢[PRAAx] P ≐ succ cP) :

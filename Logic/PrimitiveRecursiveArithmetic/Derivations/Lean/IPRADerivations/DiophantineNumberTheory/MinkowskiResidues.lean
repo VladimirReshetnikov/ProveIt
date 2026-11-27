@@ -70,10 +70,8 @@ theorem color_succ (N m a : PTm n) :
 
 /-- One Horner step stays strictly below the next radix power. -/
 theorem range_step {m C P r : PTm n} (hC : Γ ⊢[PRAAx] lt C P) (hr : Γ ⊢[PRAAx] lt r m) :
-    Γ ⊢[PRAAx] lt (m*C+r) (P*m) := by
-  have first : Γ ⊢[PRAAx] le (succ (m*C+r)) (m*succ C) :=
-    le_congr (by ipra_ring) (by ipra_ring) (add_le_add_right (m*C) hr)
-  exact le_trans first (le_congr (.eqRefl _) (mul_comm _ _) (le_mul_mono (le_refl m) hC))
+    Γ ⊢[PRAAx] lt (m*C+r) (P*m) :=
+  lt_congr (congrAdd (mul_comm _ _) (.eqRefl _)) (.eqRefl _) (Order.mul_add_lt_mul hC hr)
 
 /-- Global finite color range, with no nontrivial-modulus or vector-shape assumption. -/
 theorem color_range (N m a : PTm n) (hm : Γ ⊢[PRAAx] le one m) :
