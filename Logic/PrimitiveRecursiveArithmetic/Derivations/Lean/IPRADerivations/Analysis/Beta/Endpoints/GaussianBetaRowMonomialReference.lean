@@ -138,8 +138,7 @@ theorem multiply_distance (c x y A B C D : PTm n)
     (hb : Γ ⊢[PRAAx] le one B) (hd : Γ ⊢[PRAAx] le one D)
     (hc : Γ ⊢[PRAAx] bounded c C D) (he : Γ ⊢[PRAAx] distanceBounded x y A B) : Γ ⊢[PRAAx]
     distanceBounded (qmul c x) (qmul c y) (C*A) (D*B) :=
-  GaussianRationalReciprocal.bound_congr (GaussianRationalRoundedPower.multiplication_difference c x y).eqSymm
-    (.eqRefl _) (.eqRefl _) (GaussianRationalReciprocal.bounded_product _ _ _ _ _ _ hd hb hc he)
+  GaussianRationalRoundedPower.distance_mul_left hd hb hc he
 
 theorem monomial_bound (d a b T : PTm n) (hb : Γ ⊢[PRAAx] le one b) (ht : Γ ⊢[PRAAx] le a (T*b)) : Γ ⊢[PRAAx]
     bounded (monomial d a b) (pw T d) one :=

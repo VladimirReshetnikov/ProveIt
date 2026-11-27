@@ -144,8 +144,7 @@ private theorem weighted_gap (p A B neg a b sign D H N : PTm n)
   have close := GaussianNamedInverseRate.diagonal_rate S T s t (radius A B+one) N k hN rate
   have product : Γ ⊢[PRAAx] distanceBounded (qmul d u) (qmul d v)
       (H*((radius A B+one)*unit k+two*N)) (N*unit k) :=
-    bound_congr (GaussianRationalRoundedPower.multiplication_difference d u v).eqSymm (.eqRefl _) (one_mul _)
-      (bounded_product d (qsub u v) H one _ _ (le_refl _) hn hb close)
+    GaussianRationalRoundedPower.distance_mul_left_one hn hb close
   have clockPay : Γ ⊢[PRAAx] le (H*unit p) (unit k) := GaussianFastValueCut.query_budget H p
   have small := distance_radius_mono (qmul d u) (qmul d v) _ _ (H+two) (unit p) hn hp
     (by ipra_le 𝔞(H)*𝔞(unit k)*sl hpay + 2*𝔞(N)*sl clockPay) product

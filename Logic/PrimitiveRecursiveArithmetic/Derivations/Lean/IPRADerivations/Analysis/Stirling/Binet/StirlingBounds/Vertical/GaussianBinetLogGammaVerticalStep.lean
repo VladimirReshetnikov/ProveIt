@@ -54,8 +54,7 @@ theorem scaled_distance (w a b W C A B : PTm n)
     (hC : Γ ⊢[PRAAx] le one C) (hB : Γ ⊢[PRAAx] le one B)
     (hw : Γ ⊢[PRAAx] bounded w W C) (hr : Γ ⊢[PRAAx] distanceBounded a b A B) :
     Γ ⊢[PRAAx] distanceBounded (qmul w a) (qmul w b) (W*A) (C*B) :=
-  bound_congr (GaussianPolynomialCoefficientDifferences.scalar_scaled_difference w a b).eqSymm (.eqRefl _) (.eqRefl _)
-    (bounded_product w (qsub a b) W C A B hC hB hw hr)
+  GaussianRationalRoundedPower.distance_mul_left hC hB hw hr
 
 def dyadicCost (A B D sign H : PTm n) : PTm n :=
   (H+num 37)+(multiplyModulus constantF S (step H D sign) (sd A B D sign)+one)+two*H
