@@ -74,10 +74,8 @@ private theorem cutoff_one_bound (A B D neg K : PTm n)
   let s := reciprocalSum A B D neg (succ one)
   have first := at_zero A B D neg K h hK hm
   have second := inverse_bound (shiftedPoint z one) one (le_refl one) (shifted_lower A B D neg one h)
-  have built := GaussianRationalFiniteSum.sum_succ (Γ := Γ) rowBody zero z
-  have term : Γ ⊢[PRAAx] inst2 rowBody zero z ≐ u := row_at z zero
-  have replaced := qadd_congr (GaussianRationalFiniteSum.sum_zero rowBody z) term
-  have oneRow := built.eqTrans (replaced.eqTrans (qzero_add u (reciprocal_canonical _)))
+  have oneRow : Γ ⊢[PRAAx] GaussianRationalFiniteSum.sum rowBody one z ≐ u :=
+    GaussianRationalFiniteSum.sum_singleton rowBody z (row_at z zero) (reciprocal_canonical _)
   have rows : Γ ⊢[PRAAx] s ≐ qadd u v :=
     (GaussianRationalFiniteSum.sum_succ rowBody one z).eqTrans (qadd_congr oneRow (row_at z one))
   have hSum : Γ ⊢[PRAAx] bounded s (K+one) one :=

@@ -24,9 +24,8 @@ variable {n : ℕ} {Γ : List (Fm PTm n)}
 
 theorem prefix_one (P Q N M e : PTm n) : Γ ⊢[PRAAx]
     GaussianRationalFiniteSum.sum termBody one (data P Q N M e) ≐ term P Q N M e zero :=
-  (GaussianRationalFiniteSum.sum_succ _ zero _).eqTrans
-    ((qadd_congr (GaussianRationalFiniteSum.sum_zero _ _) (term_at P Q N M e zero)).eqTrans
-      (GaussianRationalSyntheticDivision.qzero_add _ (GaussianRationalHorner.qmul_canonical _ _)))
+  GaussianRationalFiniteSum.sum_singleton _ _ (term_at P Q N M e zero)
+    (GaussianRationalHorner.qmul_canonical _ _)
 theorem prefix_two (P Q N M e : PTm n) : Γ ⊢[PRAAx]
     GaussianRationalFiniteSum.sum termBody two (data P Q N M e) ≐ qadd (term P Q N M e zero) (term P Q N M e one) :=
   (GaussianRationalFiniteSum.sum_succ _ one _).eqTrans (qadd_congr (prefix_one P Q N M e) (term_at P Q N M e one))

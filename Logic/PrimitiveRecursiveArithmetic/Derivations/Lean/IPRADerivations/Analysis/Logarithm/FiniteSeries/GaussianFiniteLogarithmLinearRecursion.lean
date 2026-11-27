@@ -116,9 +116,10 @@ theorem first_two (P D e : PTm n) : Γ ⊢[PRAAx]
     GaussianRationalFiniteSum.sum priorBody two (data P linear D one e) ≐
       qadd (priorTerm P D linear one e zero) (priorTerm P D linear one e one) :=
   (GaussianRationalFiniteSum.sum_succ priorBody one _).eqTrans
-    (qadd_congr ((GaussianRationalFiniteSum.sum_succ priorBody zero _).eqTrans
-      ((qadd_congr (GaussianRationalFiniteSum.sum_zero _ _) (GaussianRationalCoefficientRecursion.prior_at _ _ _ _ _ _)).eqTrans
-        (GaussianRationalSyntheticDivision.qzero_add _ (GaussianRationalHorner.qmul_canonical _ _))))
+    (qadd_congr
+      (GaussianRationalFiniteSum.sum_singleton priorBody _
+        (GaussianRationalCoefficientRecursion.prior_at _ _ _ _ _ _)
+        (GaussianRationalHorner.qmul_canonical _ _))
       (GaussianRationalCoefficientRecursion.prior_at _ _ _ _ _ _))
 
 theorem higher_prior_zero (d k : PTm n) (hk : Γ ⊢[PRAAx] le (succ (succ k)) d) : Γ ⊢[PRAAx]
@@ -144,10 +145,9 @@ theorem point_one (d : PTm n) (hd : Γ ⊢[PRAAx] le one d) : Γ ⊢[PRAAx] poin
     (GaussianRationalNaturalScale.natScale_congr (.eqRefl _) (linear_low one (le_refl one))).eqTrans
       (GaussianRationalNaturalScale.natScale_one_canonical qone qone_canonical)
   have right : Γ ⊢[PRAAx] priorSum (euler (GaussianFiniteLogarithmPolynomial.polynomial d) d) d linear one one ≐ qone :=
-    (GaussianRationalFiniteSum.sum_succ priorBody zero _).eqTrans
-      ((qadd_congr (GaussianRationalFiniteSum.sum_zero _ _) (GaussianRationalCoefficientRecursion.prior_at _ _ _ _ _ _)).eqTrans
-        ((GaussianRationalSyntheticDivision.qzero_add _ (GaussianRationalHorner.qmul_canonical _ _)).eqTrans
-          ((prior_zero d zero hd).eqTrans parity_zero)))
+    GaussianRationalFiniteSum.sum_singleton priorBody _
+      ((GaussianRationalCoefficientRecursion.prior_at _ _ _ _ _ _).eqTrans
+        ((prior_zero d zero hd).eqTrans parity_zero)) qone_canonical
   exact left.eqTrans right.eqSymm
 
 theorem point_higher (d k : PTm n) (hk : Γ ⊢[PRAAx] le (succ (succ k)) d) : Γ ⊢[PRAAx] point d (succ (succ k)) :=

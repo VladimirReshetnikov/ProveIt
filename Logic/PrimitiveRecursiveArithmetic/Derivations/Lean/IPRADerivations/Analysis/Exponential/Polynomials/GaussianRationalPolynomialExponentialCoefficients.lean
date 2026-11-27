@@ -93,9 +93,8 @@ theorem coefficient_zero (C N K e : PTm n) : Γ ⊢[PRAAx] coefficient C N K zer
 
 theorem sum_zero (C N K e : PTm n) : Γ ⊢[PRAAx] coefficient C N K zero e ≐ coefficientSum C N K e zero := by
   have hs : Γ ⊢[PRAAx] coefficientSum C N K e zero ≐ term C N K e zero :=
-    (GaussianRationalFiniteSum.sum_succ termBody zero (data C N K e)).eqTrans
-      ((qadd_congr (GaussianRationalFiniteSum.sum_zero termBody (data C N K e)) (term_at C N K e zero)).eqTrans
-        (GaussianRationalSyntheticDivision.qzero_add _ (GaussianRationalHorner.qmul_canonical _ _)))
+    GaussianRationalFiniteSum.sum_singleton termBody (data C N K e)
+      (term_at C N K e zero) (GaussianRationalHorner.qmul_canonical _ _)
   exact (coefficient_zero C N K e).eqTrans hs.eqSymm
 
 def sumLaw (C N K e j : PTm n) : Fm PTm n := coefficient C N K j e ≐ coefficientSum C N K e j

@@ -28,7 +28,6 @@ open GaussianNamedMultiplyRate (sampleBound)
 open GaussianRationalHorner (canonical canonical_congr)
 open GaussianRationalMetric (bounded qsub)
 open GaussianRationalReciprocal (bounded_sum bound_congr)
-open GaussianRationalSyntheticDivision (qadd_congr qzero_add)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 local notation "C" => GaussianGammaZetaDirichletCofinal.nameF
@@ -47,13 +46,11 @@ private theorem prefix_at_one (p z R B A : PTm n) :
   let t := body inverseF dirichletBody
   let x := parameters (shifted z B) (R+one) B A
   let k := GaussianFastValueCut.exponent one p
-  let row := ap2 inverseF k (inverseData (shifted z B) B one one)
   have read := (term_at (Γ := Γ) inverseF dirichletBody zero k x).eqTrans
     (congrAp2 inverseF (.eqRefl _) (dirichlet_at zero (shifted z B) (R+one) B A))
-  have first := (GaussianNamedFiniteSumFamily.sample_at (Γ := Γ) inverseF dirichletBody p one x).eqTrans
-    ((GaussianRationalFiniteSum.sum_succ t zero (pairT k x)).eqTrans
-      (qadd_congr (GaussianRationalFiniteSum.sum_zero t (pairT k x)) read))
-  exact first.eqTrans (qzero_add row (GaussianRadiusExponentialName.sample_canonical _ _ _ _))
+  exact (GaussianNamedFiniteSumFamily.sample_at (Γ := Γ) inverseF dirichletBody p one x).eqTrans
+    (GaussianRationalFiniteSum.sum_singleton t (pairT k x) read
+      (GaussianRadiusExponentialName.sample_canonical _ _ _ _))
 
 private theorem canonical_at (p z R B A : PTm n) : Γ ⊢[PRAAx] canonical (ap2 C p (cd z R B A)) := by
   let N := GaussianGammaZetaDirichletCofinal.cutoff A p

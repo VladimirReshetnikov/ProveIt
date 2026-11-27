@@ -21,7 +21,7 @@ namespace LeanProofs.IPRA.Analysis.GaussianRationalPolynomialExponential
 
 open_ipra
 open GaussianRationalHorner (qzero qadd qmul canonical evaluate ofGaussian represents)
-open GaussianRationalSyntheticDivision (qone qone_canonical qadd_congr qmul_congr qzero_add canonicalCoefficients)
+open GaussianRationalSyntheticDivision (qone qone_canonical qadd_congr qmul_congr canonicalCoefficients)
 open GaussianRationalPolynomialPowers (powerPrefix prefix_length prefix_evaluation)
 open GaussianRationalPolynomialBuffers (leftPad pad_length pad_evaluation added added_length added_evaluation)
 open GaussianRationalCoefficientScaling (scaled scaled_length evaluation_linearity)
@@ -57,15 +57,11 @@ ipra_subst scalarSum
 theorem scalar_body_at (q j : PTm n) : inst2 scalarBody j q =
     qmul (inverseFactorial j) (GaussianRationalReciprocal.power q j) := by simp [scalarBody,inst2]
 theorem scalar_sum_zero (q : PTm n) : Γ ⊢[PRAAx] scalarSum q zero ≐ qone := by
-  have hs : Γ ⊢[PRAAx] scalarSum q zero ≐
-      qadd (GaussianRationalFiniteSum.sum scalarBody zero q) (inst2 scalarBody zero q) :=
-    GaussianRationalFiniteSum.sum_succ scalarBody zero q
   have ht : Γ ⊢[PRAAx] inst2 scalarBody zero q ≐ qone := by
     rw [scalar_body_at]
     exact (qmul_congr (inverse_factorial_zero (Γ := Γ)) (GaussianRationalReciprocal.power_zero q)).eqTrans
       (GaussianPolynomialDeterminantTerms.one_mul_canonical qone qone_canonical)
-  exact hs.eqTrans ((qadd_congr (GaussianRationalFiniteSum.sum_zero scalarBody q) ht).eqTrans
-    (qzero_add qone qone_canonical))
+  exact GaussianRationalFiniteSum.sum_singleton scalarBody q ht qone_canonical
 
 theorem scalar_sum_succ (q j : PTm n) : Γ ⊢[PRAAx] scalarSum q (succ j) ≐
     qadd (scalarSum q j) (qmul (inverseFactorial (succ j)) (GaussianRationalReciprocal.power q (succ j))) := by

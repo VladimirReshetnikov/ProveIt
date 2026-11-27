@@ -154,9 +154,9 @@ def sumLaw (C N K e j : PTm n) : Fm PTm n := productCoefficient C N K j e ≐ sh
 ipra_subst sumLaw
 theorem sum_zero (C N K e : PTm n) : Γ ⊢[PRAAx] sumLaw C N K e zero := by
   have hs : Γ ⊢[PRAAx] shiftedSum C N K e (succ zero) ≐ shiftedTerm C N K e zero :=
-    (GaussianRationalFiniteSum.sum_succ shiftedBody zero (GaussianRationalPolynomialExponentialCoefficients.data C N K e)).eqTrans
-      ((qadd_congr (GaussianRationalFiniteSum.sum_zero _ _) (GaussianRationalFactorialEulerSums.shifted_body_at C N K e zero)).eqTrans
-        (GaussianRationalSyntheticDivision.qzero_add _ (GaussianRationalHorner.qmul_canonical _ _)))
+    GaussianRationalFiniteSum.sum_singleton shiftedBody _
+      (GaussianRationalFactorialEulerSums.shifted_body_at C N K e zero)
+      (GaussianRationalHorner.qmul_canonical _ _)
   exact (product_zero_coefficient C N K e).eqTrans hs.eqSymm
 
 theorem sum_step (C N K e j : PTm n) (he : Γ ⊢[PRAAx] le e N) (ih : Γ ⊢[PRAAx] sumLaw C N K e j) :

@@ -21,7 +21,7 @@ open GaussianNamedInverseRate (independentRate)
 open GaussianRationalHorner (qadd qmul ofGaussian canonical qmul_canonical)
 open GaussianRationalMetric (bounded)
 open GaussianRationalReciprocal (power qone)
-open GaussianRationalSyntheticDivision (qadd_congr qmul_congr qzero_add)
+open GaussianRationalSyntheticDivision (qadd_congr qmul_congr)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
@@ -51,9 +51,8 @@ theorem exact_value (w : PTm n) (hw : Γ ⊢[PRAAx] canonical w) :
     (qmul_congr coeff_zero (GaussianRationalPowerAlgebra.power_one w hw)).eqTrans
       ((GaussianRationalPowerAlgebra.qmul_commutative qone w).eqTrans
         (GaussianReciprocalHorner.qmul_one_right w hw))
-  have first := (GaussianRationalFiniteSum.sum_succ (Γ := Γ) sourceTerm zero w).eqTrans
-    ((qadd_congr (GaussianRationalFiniteSum.sum_zero sourceTerm w) (.eqRefl _)).eqTrans
-      (by rw [source_term_at]; exact (qzero_add _ (qmul_canonical _ _)).eqTrans firstLeaf))
+  have first := GaussianRationalFiniteSum.sum_singleton sourceTerm w
+    (by rw [source_term_at]; exact firstLeaf) hw
   have second : Γ ⊢[PRAAx] inst2 sourceTerm one w ≐ qmul (coefficient one) (qmul w w) := by
     rw [source_term_at]
     exact qmul_congr (.eqRefl _) (GaussianRationalPowerAlgebra.power_two w hw)

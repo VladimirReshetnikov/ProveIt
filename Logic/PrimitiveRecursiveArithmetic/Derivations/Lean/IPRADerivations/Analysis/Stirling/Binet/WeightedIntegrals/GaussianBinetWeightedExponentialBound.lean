@@ -51,9 +51,7 @@ theorem one_panel (p a b : PTm n) (hb : Γ ⊢[PRAAx] le one b) :
   have row : Γ ⊢[PRAAx] rowValue p a b zero one ≐ c :=
     (qmul_congr w e).eqTrans (GaussianReciprocalHorner.qmul_one_right c hc)
   have grid : Γ ⊢[PRAAx] sum f one x ≐ c :=
-    (GaussianRationalFiniteSum.sum_succ f zero x).eqTrans
-      ((qadd_congr (GaussianRationalFiniteSum.sum_zero f x) ((cell_at zero p one a b).eqTrans row)).eqTrans
-        (qzero_add c hc))
+    GaussianRationalFiniteSum.sum_singleton f x ((cell_at zero p one a b).eqTrans row) hc
   have scale : Γ ⊢[PRAAx] weight one one one ≐ qone :=
     (GaussianCompactRiemannName.fraction_congr one one (one*one) one (.eqRefl _) (one_mul _)).eqTrans
       ((GaussianEulerDecayFactorBounds.fraction_is_radius_point one one (le_refl one)).eqTrans

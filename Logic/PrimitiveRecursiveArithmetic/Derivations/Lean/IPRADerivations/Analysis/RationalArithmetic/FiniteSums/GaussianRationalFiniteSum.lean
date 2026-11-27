@@ -65,6 +65,13 @@ theorem sum_succ (t : PTm 2) (m x : PTm n) : Γ ⊢[PRAAx]
     (qadd_congr (generated_prefix_congr t (succ m) m x m (le_succ_self _) (le_refl _))
       (sequence_decode t (le_refl (succ m))))
 
+/-- A singleton sum is the read-back term when that term has canonical code. -/
+theorem sum_singleton (t : PTm 2) (x : PTm n) {a : PTm n}
+    (h : Γ ⊢[PRAAx] inst2 t zero x ≐ a) (ha : Γ ⊢[PRAAx] canonical a) :
+    Γ ⊢[PRAAx] sum t one x ≐ a :=
+  (sum_succ t zero x).eqTrans ((qadd_congr (sum_zero t x) h).eqTrans
+    (GaussianRationalSyntheticDivision.qzero_add a ha))
+
 def termsEqual (t u : PTm 2) (m x y : PTm n) : Fm PTm n := .all
   (lt (var 0) (Syn.shift m) ⟶ inst2 t (var 0) (Syn.shift x) ≐ inst2 u (var 0) (Syn.shift y))
 

@@ -61,9 +61,8 @@ private theorem low_sum (q z h R B r M : PTm n) (hB : Γ ⊢[PRAAx] le one B) :
     (qmul_congr (coefficient_one q z R B r) (GaussianRationalPowerAlgebra.power_one d (ofGaussian_canonical _ _ hB)))
   have e2 := (power_term q z R B r M d two hm).eqTrans (qmul_congr (coefficient_two q z R B r) (.eqRefl _))
   have z0 : Γ ⊢[PRAAx] sum termBody one x ≐ qzero :=
-    (GaussianRationalFiniteSum.sum_succ termBody zero x).eqTrans
-      ((qadd_congr (GaussianRationalFiniteSum.sum_zero termBody x) e0).eqTrans
-        (qzero_add qzero GaussianRationalSyntheticDivision.qzero_canonical))
+    GaussianRationalFiniteSum.sum_singleton termBody x e0
+      GaussianRationalSyntheticDivision.qzero_canonical
   have z1 : Γ ⊢[PRAAx] sum termBody two x ≐ qmul (linearCoefficient q z R B r) d :=
     (GaussianRationalFiniteSum.sum_succ termBody one x).eqTrans
       ((qadd_congr z0 e1).eqTrans (qzero_add (qmul (linearCoefficient q z R B r) d) (qmul_canonical _ _)))

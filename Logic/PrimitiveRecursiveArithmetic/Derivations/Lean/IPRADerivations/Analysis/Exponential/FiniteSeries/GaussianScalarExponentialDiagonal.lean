@@ -207,8 +207,8 @@ theorem diagonal_zero (u v : PTm n) : Γ ⊢[PRAAx] diagonal u v zero ≐ qone :
   have e : Γ ⊢[PRAAx] term u v zero zero ≐ qone :=
     (qmul_congr (coefficient_zero u) ((coefficient_congr (.eqRefl _) (monus_self zero)).eqTrans
       (coefficient_zero v))).eqTrans (qmul_one_right _ qone_canonical)
-  exact (GaussianRationalFiniteSum.sum_succ termBody zero (data u v zero)).eqTrans
-    ((qadd_congr (GaussianRationalFiniteSum.sum_zero _ _) ((term_at _ _ _ _).eqTrans e)).eqTrans (qzero_add _ qone_canonical))
+  exact GaussianRationalFiniteSum.sum_singleton termBody (data u v zero)
+    ((term_at _ _ _ _).eqTrans e) qone_canonical
 
 def diagonalLaw (u v e : PTm n) : Fm PTm n := diagonal u v e ≐ coefficient (qadd u v) e
 

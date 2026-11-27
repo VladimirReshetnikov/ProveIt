@@ -43,7 +43,7 @@ open GaussianRationalPolynomialExponential (stage_zero)
 open GaussianRationalPolynomialExponentialProductTruncation (exponentialPrefix)
 open GaussianRationalPolynomialExponentialStability (finite_exponential_cutoff)
 open GaussianRationalSyntheticCoefficientValues (qmul_recode_left)
-open GaussianRationalSyntheticDivision (qadd_congr qmul_congr qmul_zero_right qone qzero_add qzero_canonical)
+open GaussianRationalSyntheticDivision (qadd_congr qmul_congr qmul_zero_right qone qzero_canonical)
 open GaussianReciprocalHorner (qadd_zero_right qmul_one_right)
 open GaussianTranslatedNonconstant (recode recode_canonical)
 open LeanProofs.IPRA.Analysis.Products (fact)
@@ -99,9 +99,8 @@ private theorem singleton_convolution (P Q N M : PTm n) :
   have row : Γ ⊢[PRAAx] term P Q N M zero zero ≐ qmul (entry P N) (entry Q M) :=
     qmul_congr (entry_congr (.eqRefl _) (monus_zero N))
       (entry_congr (.eqRefl _) ((congrMonus (.eqRefl M) (monus_zero zero)).eqTrans (monus_zero M)))
-  exact (GaussianRationalFiniteSum.sum_succ termBody zero a).eqTrans
-    ((qadd_congr (GaussianRationalFiniteSum.sum_zero termBody a) ((term_at P Q N M zero zero).eqTrans row)).eqTrans
-      (qzero_add (qmul (entry P N) (entry Q M)) (qmul_canonical (entry P N) (entry Q M))))
+  exact GaussianRationalFiniteSum.sum_singleton termBody a
+    ((term_at P Q N M zero zero).eqTrans row) (qmul_canonical _ _)
 
 theorem coefficient_at_zero (q z R B r M : PTm n) (hB : Γ ⊢[PRAAx] le one B) :
     Γ ⊢[PRAAx] productCoefficient q z R B r M zero ≐ powerProduct z B (initial R) := by

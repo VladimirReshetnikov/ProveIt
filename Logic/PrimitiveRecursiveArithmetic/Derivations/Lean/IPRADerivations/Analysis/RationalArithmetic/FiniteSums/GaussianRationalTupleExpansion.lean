@@ -105,10 +105,9 @@ theorem choice_append (f : PTm 3) (m d w v x : PTm n) (hm : Γ ⊢[PRAAx] le one
 /-- The zero-row case really sums over ONE empty word, even when m=0. -/
 theorem tuple_sum_zero (f : PTm 3) (m x : PTm n) : Γ ⊢[PRAAx] tupleSum f m zero x ≐ qone :=
   (sum_index_congr _ (pw_zero m) (.eqRefl _)).eqTrans
-    ((GaussianRationalFiniteSum.sum_succ _ zero _).eqTrans
-      ((qadd_congr (GaussianRationalFiniteSum.sum_zero _ _)
-        ((tuple_body_at _ _ _ _ _).eqTrans (GaussianRationalFiniteProduct.product_zero _ _))).eqTrans
-          (GaussianRationalSyntheticDivision.qzero_add _ qone_canonical)))
+    (GaussianRationalFiniteSum.sum_singleton _ _
+      ((tuple_body_at _ _ _ _ _).eqTrans (GaussianRationalFiniteProduct.product_zero _ _))
+      qone_canonical)
 
 def appendedBlock (f : PTm 3) (m d v x : PTm n) : PTm n := sum (offB (tupleBody f)) (pw m d)
   (pairT (pw m d*v) (tupleData m (succ d) x))

@@ -148,11 +148,9 @@ theorem term_numerator_one (z : PTm n) : Γ ⊢[PRAAx] equal (termNumerator z on
 theorem value_two (w : PTm n) : Γ ⊢[PRAAx] value two w ≐
     qadd (inst2 sourceTerm zero w) (inst2 sourceTerm one w) := by
   have hs : Γ ⊢[PRAAx] GaussianRationalFiniteSum.sum sourceTerm one w ≐ inst2 sourceTerm zero w :=
-    (GaussianRationalFiniteSum.sum_succ sourceTerm zero w).eqTrans
-      ((qadd_congr (GaussianRationalFiniteSum.sum_zero sourceTerm w) (.eqRefl _)).eqTrans
-        (GaussianRationalSyntheticDivision.qzero_add _ (by
-          rw [GaussianFiniteLogarithmPolynomial.source_term_at]
-          exact GaussianRationalHorner.qmul_canonical _ _)))
+    GaussianRationalFiniteSum.sum_singleton sourceTerm w (.eqRefl _) (by
+      rw [GaussianFiniteLogarithmPolynomial.source_term_at]
+      exact GaussianRationalHorner.qmul_canonical _ _)
   exact (GaussianRationalFiniteSum.sum_succ sourceTerm one w).eqTrans (qadd_congr hs (.eqRefl _))
 
 theorem base_represents (z N : PTm n) (hN : Γ ⊢[PRAAx] le one N) : Γ ⊢[PRAAx]
