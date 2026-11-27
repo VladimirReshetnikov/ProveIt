@@ -62,7 +62,7 @@ theorem one_le_two : Γ ⊢[PRAAx] le one two :=
 
 private alias right_one := Common.mul_one_right
 
-private theorem powered_bounds (a V m : PTm n)
+theorem powered_bounds (a V m : PTm n)
     (ha : Γ ⊢[PRAAx] le one a) (hV : Γ ⊢[PRAAx] le two V) (hm : Γ ⊢[PRAAx] le one m) :
     Γ ⊢[PRAAx] le two (pw (a*V) m) := by
   have base : Γ ⊢[PRAAx] le V (a*V) :=

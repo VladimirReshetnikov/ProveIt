@@ -38,12 +38,7 @@ def observation (step a : PR 3) (point : PR 2) (N t x s : PTm n) : PTm n :=
 ipra_subst cost
 ipra_subst observation
 
-theorem coarse_power (Z H r : PTm n) (hH : Γ ⊢[PRAAx] le one H) : Γ ⊢[PRAAx]
-    le (pw (Z*H+one) r) (pw (Z+one) r*pw H r) := by
-  have h : Γ ⊢[PRAAx] le (Z*H+one) ((Z+one)*H) :=
-    le_congr (.eqRefl _) (by ipra_ring) (add_le_add₂ (le_refl (Z*H)) hH)
-  exact le_congr (.eqRefl _) (GaussianProductStability.power_product _ _ _)
-    (pw_le_pw r h)
+alias coarse_power := GaussianRationalPowerEnvelope.coarse_power_envelope
 
 /-- The actual rational-disk coefficient estimate has sharp main term
 2 C_Z/D and a computed sample slack cost/H, uniformly in D>=1. -/
