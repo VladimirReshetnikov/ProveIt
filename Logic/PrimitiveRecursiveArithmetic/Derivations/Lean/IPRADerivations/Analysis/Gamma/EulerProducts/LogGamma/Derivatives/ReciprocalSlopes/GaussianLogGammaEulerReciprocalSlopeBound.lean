@@ -17,6 +17,7 @@ set_option autoImplicit false
 namespace LeanProofs.IPRA.Analysis.GaussianLogGammaEulerReciprocalSlopeBound
 
 open_ipra
+open GaussianRationalPowerDifference (bounded_sum_one)
 open LeanProofs.IPRA.AnalyticNumberTheory.PhiLower (le_mul_mono)
 open GaussianCoefficientNameBounds (unit unit_positive)
 open GaussianLogGammaEulerHead (argument)
@@ -78,8 +79,8 @@ private theorem cutoff_one_bound (A B D neg K : PTm n)
   have rows : Γ ⊢[PRAAx] s ≐ qadd u v :=
     (GaussianRationalFiniteSum.sum_succ rowBody one z).eqTrans (qadd_congr oneRow (row_at z one))
   have hSum : Γ ⊢[PRAAx] bounded s (K+one) one :=
-    bound_congr rows.eqSymm (by ipra_ring) (by ipra_ring)
-      (bounded_sum u v K one one one (le_refl one) (le_refl one) first second)
+    bound_congr rows.eqSymm (.eqRefl _) (.eqRefl _)
+      (bounded_sum_one first second)
   have logarithm := (GaussianBetaUpperPowerCancellation.rational_log_integer_at (Γ := Γ) zero one).eqTrans
     (GaussianBetaUpperPowerCancellation.integer_log_at_one (GaussianBetaUpperPowerCancellation.logClock zero))
   have read : Γ ⊢[PRAAx] observed zero A B D neg one ≐ qnegative s :=

@@ -15,6 +15,7 @@ set_option maxHeartbeats 850000
 namespace LeanProofs.IPRA.Analysis.GaussianCyclicOriginalSineProduct
 
 open_ipra
+open GaussianRationalPowerDifference (bounded_sum_one)
 open GaussianCyclicExponentialRoots (source sampleRadius)
 open GaussianCyclicFullHalfAngle (sineSample)
 open GaussianCyclicChordSquare (realSine doubledSine real_sine_bound doubled_sine_bound sine_error twiceSineRadius)
@@ -22,12 +23,11 @@ open GaussianCyclicSineProductSquare (data index sine_at normBudget)
 open GaussianCyclicSineProductNormalization (clock clock_fine product_real_error)
 open GaussianNamedFiniteProduct (sample sample_distance rowBoundsAt rowDistance amplification)
 open GaussianNamedFiniteProductMap (mapF map_at applyMap)
-open GaussianNamedSineFromExponential (sine_canonical)
 open GaussianRationalNaturalScale (naturalPoint)
 open GaussianRationalMetric (bounded distanceBounded qsub)
 open GaussianRationalHorner (qadd)
 open GaussianRationalReciprocal (bound_congr bounded_sum)
-open GaussianRationalDistanceOrder (distance_congr distance_symmetric distance_triangle_same)
+open GaussianRationalDistanceOrder (distance_congr distance_symmetric distance_triangle_same norm_from_distance_same)
 open GaussianCoefficientNameBounds (unit unit_positive bounded_radius_mono)
 open GaussianNameArithmetic (sum_distance)
 open LeanProofs.IPRA.AnalyticNumberTheory.PhiLower (le_mul_mono)
@@ -75,10 +75,8 @@ theorem original_bound (p r m x : PTm n) (h : Γ ⊢[PRAAx] source r m) :
   have h1 : Γ ⊢[PRAAx] bounded (qsub s q) (num 10) one :=
     bounded_radius_mono _ _ _ _ _ (unit_positive p) (le_refl one)
       (le_mul_mono (le_refl (num 10)) (unit_positive p)) (sine_error p r m x h)
-  have hc := sine_canonical (Γ := Γ) GaussianCyclicExponentialRoots.angleF
-    GaussianArctangentExponentialPeriod.fullTurnRadius (GaussianCyclicExponentialRoots.angleData r (two*m) x) p
-  exact bound_congr (GaussianRationalLinearProduct.add_sub_right q s hc)
-    (by ipra_ring) (by ipra_ring) (bounded_sum _ _ _ _ _ _ (le_refl one) (le_refl one) h0 h1)
+  exact bound_congr (.eqRefl _) (by ipra_ring) (.eqRefl _)
+    (norm_from_distance_same (le_refl one) h1 h0)
 
 theorem original_rows (p N x : PTm n) :
     Γ ⊢[PRAAx] rowBoundsAt doubledF p N radius (data N x) := by
@@ -91,8 +89,8 @@ theorem original_rows (p N x : PTm n) :
   have H : Δ ⊢[PRAAx] source (succ (index J i)) (succ J) := index_source J i Prf.hyp0
   have b := original_bound P _ _ X H
   have t : Δ ⊢[PRAAx] bounded (ap3 doubledF P i (data J X)) radius one :=
-    bound_congr (doubled_at P J X i).eqSymm (by unfold radius; ipra_ring) (by ipra_ring)
-    (bounded_sum _ _ _ _ _ _ (le_refl one) (le_refl one) b b)
+    bound_congr (doubled_at P J X i).eqSymm (by unfold radius; ipra_ring) (.eqRefl _)
+    (bounded_sum_one b b)
   simpa [rowBoundsAt,Δ,Syn.shift,P,J,X,i,radius,one] using t
 
 theorem real_rows (p N x : PTm n) :

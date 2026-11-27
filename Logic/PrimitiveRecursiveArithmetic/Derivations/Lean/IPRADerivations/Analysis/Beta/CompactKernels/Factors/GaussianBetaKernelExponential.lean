@@ -18,6 +18,7 @@ set_option autoImplicit false
 namespace LeanProofs.IPRA.Analysis.GaussianBetaKernelExponential
 
 open_ipra
+open GaussianRationalPowerDifference (bounded_sum_one)
 open GaussianBetaKernelLogarithm (source negativeNumerator localData target radius)
 open GaussianRationalHorner (qadd ofGaussian positive_product)
 open GaussianRationalSyntheticDivision (qone)
@@ -68,9 +69,9 @@ theorem base_exponential (a b N : PTm n) (h : Γ ⊢[PRAAx] source a b N) : Γ �
       (linear_constant_cross (ofGaussian (negativeNumerator a) (b*N))))
 
 theorem base_bound (a b N : PTm n) (h : Γ ⊢[PRAAx] source a b N) : Γ ⊢[PRAAx] bounded (base a b N) two one :=
-  GaussianRationalReciprocal.bound_congr (.eqRefl _) (by ipra_ring) (by ipra_ring)
-    (GaussianRationalReciprocal.bounded_sum _ _ _ _ _ _ (le_refl one) (le_refl one)
-      GaussianRationalReciprocal.qone_bounded (GaussianLocalLogarithmLinearRemainder.linear_unit_bound _ _ _
+  GaussianRationalReciprocal.bound_congr (.eqRefl _) (by ipra_ring) (.eqRefl _)
+    (bounded_sum_one GaussianRationalReciprocal.qone_bounded
+      (GaussianLocalLogarithmLinearRemainder.linear_unit_bound _ _ _
         (GaussianBetaKernelLogarithm.local_source a b N h)))
 
 theorem integer_input (a b N : PTm n) (h : Γ ⊢[PRAAx] source a b N) : Γ ⊢[PRAAx]
