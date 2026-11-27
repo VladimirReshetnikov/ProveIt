@@ -98,28 +98,21 @@ theorem p_step {k a M L K : PTm n} (h : Γ ⊢[PRAAx] Hp (succ k) a M L K) (ih :
   have e := natEq (congrAp2 (Γ := Γ) (sumF hB) q (.eqRefl (fact L)))
   ipra_le sl ih + sl sub with e
 
-/-- Variables: `0 = k`, `1 = a`, `2 = M`, `3 = L`, `4 = K`. -/
-private abbrev powF : Fm PTm 5 :=
-  Hp (var 0) (var 1) (var 2) (var 3) (var 4) ⟶ P (var 0) (var 1) (var 2) (var 3)
-
-private theorem pow₀ : ([] : List (Fm PTm 5)) ⊢[PRAAx] powF := by
-  ipra_ind (⟨⟨le_QF _ _, le_QF _ _, le_QF _ _, le_QF _ _⟩, le_QF _ _⟩) [subst_le, subst_ap2]
-  · exact .impI (p_zero _ _ _)
-  · refine .impI ?_
-    have h := (Prf.hyp0 : (Hp (succ (var 0)) (var 1) (var 2) (var 3) (var 4) :: [powF]) ⊢[PRAAx]
-      Hp (succ (var 0)) (var 1) (var 2) (var 3) (var 4))
-    have h' : (Hp (succ (var 0)) (var 1) (var 2) (var 3) (var 4) :: [powF]) ⊢[PRAAx]
-        Hp (var 0) (var 1) (var 2) (var 3) (var 4) :=
-      .andI (Prf.andE₁ h) (.andI (Prf.andE₁ (Prf.andE₂ h)) (.andI (Prf.andE₁ (Prf.andE₂ (Prf.andE₂ h)))
-        (le_trans (le_succ_self _) (Prf.andE₂ (Prf.andE₂ (Prf.andE₂ h))))))
-    exact p_step h (Prf.impE Prf.hyp1 h')
-
 /-- `λ_M(a^K) ≤ K λ_M(a) + K/M`: `S(M a^K) + K S(M) ≤ S(M) + K S(Ma) + K ⌊F/M⌋` for `M, a ≥ 1`, `M a^K ≤ L`. -/
 theorem pow_sub {a M L K : PTm n} (hM : Γ ⊢[PRAAx] le one M) (ha : Γ ⊢[PRAAx] le one a)
     (hL : Γ ⊢[PRAAx] le (M * pw a K) L) : Γ ⊢[PRAAx] P K a M L := by
-  have i := inst (Γ := Γ) pow₀ (![K, a, M, L, K] : Fin 5 → PTm n)
-  simp at i
-  exact Prf.impE i (.andI hM (.andI ha (.andI hL (le_refl K))))
+  let I : Fm PTm (n + 1) := P (var 0) (Syn.shift a) (Syn.shift M) (Syn.shift L)
+  have hM' := LeanProofs.IPRA.Order.shift_one_le hM
+  have ha' := LeanProofs.IPRA.Order.shift_one_le ha
+  have hL' : Γ.map Fm.shift ⊢[PRAAx] le (Syn.shift M * pw (Syn.shift a) (Syn.shift K)) (Syn.shift L) := by
+    simpa [Syn.shift] using LeanProofs.IPRA.Order.shift_le hL
+  have h : Γ ⊢[PRAAx] I.subst (Syn.inst K) := by
+    refine qfIndUpTo K (le_QF _ _) ?_ ?_
+    · simpa [I] using (p_zero _ _ _ : Γ ⊢[PRAAx] P zero a M L)
+    · simp [I, subst_repl_shift]
+      exact .impI (p_step (K := Syn.shift K)
+        (.andI hM'.wk.wk (.andI ha'.wk.wk (.andI hL'.wk.wk Prf.hyp0))) Prf.hyp1)
+  simpa [I] using h
 
 /-! ## Mertens' upper bound -/
 

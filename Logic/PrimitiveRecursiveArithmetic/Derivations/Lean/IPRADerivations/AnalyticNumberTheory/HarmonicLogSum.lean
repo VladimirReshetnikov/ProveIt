@@ -104,26 +104,21 @@ theorem i_step {k K L N0 : PTm n} (h : Γ ⊢[PRAAx] Hl (succ k) K L N0) (ih : �
   exact .andI (by ipra_le sl (Prf.andE₁ ih) + sl dl with -eP)
     (by ipra_le sl (Prf.andE₂ ih) + sl inc with eP + eF - eSs)
 
-/-- Variables: `0 = k`, `1 = K`, `2 = L`, `3 = N0`. -/
-private abbrev sumF' : Fm PTm 4 := Hl (var 0) (var 1) (var 2) (var 3) ⟶ I2 (var 0) (var 1) (var 2)
-
-private theorem sum₀ : ([] : List (Fm PTm 4)) ⊢[PRAAx] sumF' := by
-  ipra_ind (⟨⟨le_QF _ _, le_QF _ _, le_QF _ _⟩, le_QF _ _, le_QF _ _⟩) [subst_le, subst_ap2, subst_pairT]
-  · exact .impI (i_zero _ _)
-  · refine .impI ?_
-    have h := (Prf.hyp0 : (Hl (succ (var 0)) (var 1) (var 2) (var 3) :: [sumF']) ⊢[PRAAx]
-      Hl (succ (var 0)) (var 1) (var 2) (var 3))
-    have h' : (Hl (succ (var 0)) (var 1) (var 2) (var 3) :: [sumF']) ⊢[PRAAx] Hl (var 0) (var 1) (var 2) (var 3) :=
-      .andI (Prf.andE₁ h) (.andI (Prf.andE₁ (Prf.andE₂ h)) (le_trans (le_succ_self _) (Prf.andE₂ (Prf.andE₂ h))))
-    exact i_step h (Prf.impE Prf.hyp1 h')
-
 /-- `sb:log-sum` for the harmonic logarithm: `Nλ_K(N) − N ≤ P_1(N) ≤ Nλ_K(N) − N + H_N`, i.e.
 `N S(KN) ≤ P(N) + NF` and `P(N) + NF ≤ N S(KN) + S(N)`, for `K ≥ 1`, `KN ≤ L`, `F = L!`. -/
 theorem log_sum {N K L : PTm n} (hK : Γ ⊢[PRAAx] le one K) (hL : Γ ⊢[PRAAx] le (K * N) L) :
     Γ ⊢[PRAAx] I2 N K L := by
-  have i := inst (Γ := Γ) sum₀ (![N, K, L, N] : Fin 4 → PTm n)
-  simp at i
-  exact Prf.impE i (.andI hK (.andI hL (le_refl N)))
+  let I : Fm PTm (n + 1) := I2 (var 0) (Syn.shift K) (Syn.shift L)
+  have hK' := LeanProofs.IPRA.Order.shift_one_le hK
+  have hL' : Γ.map Fm.shift ⊢[PRAAx] le (Syn.shift K * Syn.shift N) (Syn.shift L) := by
+    simpa [Syn.shift] using LeanProofs.IPRA.Order.shift_le hL
+  have h : Γ ⊢[PRAAx] I.subst (Syn.inst N) := by
+    refine qfIndUpTo N (⟨le_QF _ _, le_QF _ _⟩) ?_ ?_
+    · simpa [I] using (i_zero _ _ : Γ ⊢[PRAAx] I2 zero K L)
+    · simp [I, subst_repl_shift]
+      exact .impI (i_step (N0 := Syn.shift N)
+        (.andI hK'.wk.wk (.andI hL'.wk.wk Prf.hyp0)) Prf.hyp1)
+  simpa [I] using h
 
 end LeanProofs.IPRA.AnalyticNumberTheory.HarmonicLogSum
 

@@ -64,24 +64,19 @@ theorem pf_step {k K L N0 : PTm n} (h : Γ ⊢[PRAAx] Hl (succ k) K L N0) (ih : 
   have ep := natEq (P_succ (Γ := Γ) k K (fact L))
   ipra_le sl ih + sl hl with ep - ef
 
-/-- Variables: `0 = k`, `1 = K`, `2 = L`, `3 = N`. -/
-private abbrev pfF : Fm PTm 4 := Hl (var 0) (var 1) (var 2) (var 3) ⟶ Pf (var 0) (var 1) (var 2)
-
-private theorem pf₀ : ([] : List (Fm PTm 4)) ⊢[PRAAx] pfF := by
-  ipra_ind (⟨⟨le_QF _ _, le_QF _ _, le_QF _ _⟩, le_QF _ _⟩) [subst_le, subst_ap2, subst_ap1, subst_pairT]
-  · exact .impI (pf_zero _ _)
-  · refine .impI ?_
-    have h := (Prf.hyp0 : (Hl (succ (var 0)) (var 1) (var 2) (var 3) :: [pfF]) ⊢[PRAAx]
-      Hl (succ (var 0)) (var 1) (var 2) (var 3))
-    have h' : (Hl (succ (var 0)) (var 1) (var 2) (var 3) :: [pfF]) ⊢[PRAAx] Hl (var 0) (var 1) (var 2) (var 3) :=
-      .andI (Prf.andE₁ h) (.andI (Prf.andE₁ (Prf.andE₂ h)) (le_trans (le_succ_self _) (Prf.andE₂ (Prf.andE₂ h))))
-    exact pf_step h (Prf.impE Prf.hyp1 h')
-
 theorem lfact_P {m K L : PTm n} (hK : Γ ⊢[PRAAx] le one K) (hL : Γ ⊢[PRAAx] le (K * m) L) :
     Γ ⊢[PRAAx] Pf m K L := by
-  have i := inst (Γ := Γ) pf₀ (![m, K, L, m] : Fin 4 → PTm n)
-  simp at i
-  exact Prf.impE i (.andI hK (.andI hL (le_refl m)))
+  let I : Fm PTm (n + 1) := Pf (var 0) (Syn.shift K) (Syn.shift L)
+  have hK' := LeanProofs.IPRA.Order.shift_one_le hK
+  have hL' : Γ.map Fm.shift ⊢[PRAAx] le (Syn.shift K * Syn.shift m) (Syn.shift L) := by
+    simpa [Syn.shift] using LeanProofs.IPRA.Order.shift_le hL
+  have h : Γ ⊢[PRAAx] I.subst (Syn.inst m) := by
+    refine qfIndUpTo m (le_QF _ _) ?_ ?_
+    · simpa [I] using (pf_zero _ _ : Γ ⊢[PRAAx] Pf zero K L)
+    · simp [I, subst_repl_shift]
+      exact .impI (pf_step (N0 := Syn.shift m)
+        (.andI hK'.wk.wk (.andI hL'.wk.wk Prf.hyp0)) Prf.hyp1)
+  simpa [I] using h
 
 /-- `L_w(m!) + mF ≤ m u_m + S(m, F)`. -/
 theorem lfact_upper {m K L : PTm n} (hm : Γ ⊢[PRAAx] le one m) (hK : Γ ⊢[PRAAx] le one K)

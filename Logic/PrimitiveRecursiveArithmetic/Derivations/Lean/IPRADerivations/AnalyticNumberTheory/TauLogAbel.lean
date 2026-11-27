@@ -222,31 +222,27 @@ theorem i_step {k K L X N0 : PTm n} (h : Γ ⊢[PRAAx] Ht (succ k) K L X N0)
       2 * (𝔞 (fact L) - (𝔞 k + 1) * 𝔞 (monus (S (K * succ (succ k)) (fact L)) (S (K * succ k) (fact L)))) * EC +
       (2 * 𝔞 (CT K X (fact L)) + 𝔞 (U (succ k) K (fact L))) * EF
 
-/-- Variables: `0 = k`, `1 = K`, `2 = L`, `3 = X`, `4 = N0`. -/
-private abbrev abelF : Fm PTm 5 :=
-  Ht (var 0) (var 1) (var 2) (var 3) (var 4) ⟶ (IU (var 0) (var 1) (var 2) (var 3) ⋏ IL (var 0) (var 1) (var 2) (var 3))
-
-private theorem abel₀ : ([] : List (Fm PTm 5)) ⊢[PRAAx] abelF := by
-  ipra_ind (⟨⟨le_QF _ _, le_QF _ _, le_QF _ _, le_QF _ _, le_QF _ _⟩, le_QF _ _, le_QF _ _⟩) [subst_le, subst_ap2,
-      subst_ap1, subst_pairT]
-  · exact .impI (i_zero Prf.hyp0)
-  · refine .impI ?_
-    have h := (Prf.hyp0 : (Ht (succ (var 0)) (var 1) (var 2) (var 3) (var 4) :: [abelF]) ⊢[PRAAx]
-      Ht (succ (var 0)) (var 1) (var 2) (var 3) (var 4))
-    have h' : (Ht (succ (var 0)) (var 1) (var 2) (var 3) (var 4) :: [abelF]) ⊢[PRAAx]
-        Ht (var 0) (var 1) (var 2) (var 3) (var 4) :=
-      .andI (Prf.andE₁ h) (.andI (Prf.andE₁ (Prf.andE₂ h)) (.andI (Prf.andE₁ (Prf.andE₂ (Prf.andE₂ h)))
-        (.andI (Prf.andE₁ (Prf.andE₂ (Prf.andE₂ (Prf.andE₂ h))))
-          (le_trans (le_succ_self _) (Prf.andE₂ (Prf.andE₂ (Prf.andE₂ (Prf.andE₂ h))))))))
-    exact i_step h (Prf.impE Prf.hyp1 h')
-
 /-- The finite partial-summation step of `sb:divisor-approx` at `N = k + 1 ≤ min(X, K)`, `K ≥ 1`, `KX ≤ L`. -/
 theorem tau_abel {k K L X : PTm n} (hK : Γ ⊢[PRAAx] le one K) (hL : Γ ⊢[PRAAx] le (K * X) L)
     (hX : Γ ⊢[PRAAx] le (succ k) X) (hKk : Γ ⊢[PRAAx] le (succ k) K) :
     Γ ⊢[PRAAx] IU k K L X ⋏ IL k K L X := by
-  have i := inst (Γ := Γ) abel₀ (![k, K, L, X, succ k] : Fin 5 → PTm n)
-  simp at i
-  exact Prf.impE i (.andI hK (.andI hL (.andI hX (.andI hKk (le_refl _)))))
+  let I : Fm PTm (n + 1) :=
+    IU (var 0) (Syn.shift K) (Syn.shift L) (Syn.shift X) ⋏ IL (var 0) (Syn.shift K) (Syn.shift L) (Syn.shift X)
+  have hK' := LeanProofs.IPRA.Order.shift_one_le hK
+  have hL' : Γ.map Fm.shift ⊢[PRAAx] le (Syn.shift K * Syn.shift X) (Syn.shift L) := by
+    simpa [Syn.shift] using LeanProofs.IPRA.Order.shift_le hL
+  have hX' := LeanProofs.IPRA.Order.shift_lt (a := k) (b := X) hX
+  have hKk' := LeanProofs.IPRA.Order.shift_lt (a := k) (b := K) hKk
+  have h : Γ ⊢[PRAAx] I.subst (Syn.inst k) := by
+    refine qfIndUpTo k ⟨le_QF _ _, le_QF _ _⟩ ?_ ?_
+    · simp [I]
+      exact i_zero (N0 := succ k) (.andI hK (.andI hL (.andI hX (.andI hKk
+        (LeanProofs.IPRA.Order.succ_le_succ (zero_le k))))))
+    · simp [I, subst_repl_shift]
+      exact .impI (i_step (N0 := succ (Syn.shift k))
+        (.andI hK'.wk.wk (.andI hL'.wk.wk (.andI hX'.wk.wk (.andI hKk'.wk.wk
+          (LeanProofs.IPRA.Order.succ_le_succ Prf.hyp0))))) Prf.hyp1)
+  simpa [I] using h
 
 end LeanProofs.IPRA.AnalyticNumberTheory.TauLogAbel
 

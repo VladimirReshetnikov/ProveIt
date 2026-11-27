@@ -116,25 +116,20 @@ theorem t_step {k M L N : PTm n} (h : Γ ⊢[PRAAx] Hf (succ k) M L N) (ih : Γ 
   have e := natEq lf
   ipra_le sl ih + sl dl + sl ll + 𝔞 k * 𝔞 (quo (fact L) M) with -e
 
-/-- Variables: `0 = k`, `1 = M`, `2 = L`, `3 = N`. -/
-private abbrev factF' : Fm PTm 4 := Hf (var 0) (var 1) (var 2) (var 3) ⟶ T (var 0) (var 1) (var 2)
-
-private theorem fact₀ : ([] : List (Fm PTm 4)) ⊢[PRAAx] factF' := by
-  ipra_ind (⟨⟨le_QF _ _, le_QF _ _, le_QF _ _⟩, le_QF _ _⟩) [subst_le, subst_ap2, subst_pairT]
-  · exact .impI (t_zero _ _)
-  · refine .impI ?_
-    have h := (Prf.hyp0 : (Hf (succ (var 0)) (var 1) (var 2) (var 3) :: [factF']) ⊢[PRAAx]
-      Hf (succ (var 0)) (var 1) (var 2) (var 3))
-    have h' : (Hf (succ (var 0)) (var 1) (var 2) (var 3) :: [factF']) ⊢[PRAAx] Hf (var 0) (var 1) (var 2) (var 3) :=
-      .andI (Prf.andE₁ h) (.andI (Prf.andE₁ (Prf.andE₂ h)) (le_trans (le_succ_self _) (Prf.andE₂ (Prf.andE₂ h))))
-    exact t_step h (Prf.impE Prf.hyp1 h')
-
 /-- `N λ_M(N) ≤ L_w(N!) + N + N²/M` for `M ≥ 1`, `MN ≤ L`. -/
 theorem fact_lower {N M L : PTm n} (hM : Γ ⊢[PRAAx] le one M) (hL : Γ ⊢[PRAAx] le (M * N) L) :
     Γ ⊢[PRAAx] T N M L := by
-  have i := inst (Γ := Γ) fact₀ (![N, M, L, N] : Fin 4 → PTm n)
-  simp at i
-  exact Prf.impE i (.andI hM (.andI hL (le_refl N)))
+  let I : Fm PTm (n + 1) := T (var 0) (Syn.shift M) (Syn.shift L)
+  have hM' := LeanProofs.IPRA.Order.shift_one_le hM
+  have hL' : Γ.map Fm.shift ⊢[PRAAx] le (Syn.shift M * Syn.shift N) (Syn.shift L) := by
+    simpa [Syn.shift] using LeanProofs.IPRA.Order.shift_le hL
+  have h : Γ ⊢[PRAAx] I.subst (Syn.inst N) := by
+    refine qfIndUpTo N (le_QF _ _) ?_ ?_
+    · simpa [I] using (t_zero _ _ : Γ ⊢[PRAAx] T zero M L)
+    · simp [I, subst_repl_shift]
+      exact .impI (t_step (N := Syn.shift N)
+        (.andI hM'.wk.wk (.andI hL'.wk.wk Prf.hyp0)) Prf.hyp1)
+  simpa [I] using h
 
 /-! ## Mertens' lower bound -/
 

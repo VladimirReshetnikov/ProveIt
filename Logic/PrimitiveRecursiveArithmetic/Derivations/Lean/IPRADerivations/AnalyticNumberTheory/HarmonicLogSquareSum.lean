@@ -153,25 +153,20 @@ theorem j_step {k K L N0 : PTm n} (h : Γ ⊢[PRAAx] Hq (succ k) K L N0) (ih : �
   · ipra_le sl (Prf.andE₂ ih) + sl b1 + 𝔞 (fact L) * 𝔞 (quo (fact L) (succ (succ k))) + sl b2 + sl b3 with
       -eQ - 2 * 𝔞 (fact L) * eS + 2 * 𝔞 (fact L) * eF
 
-/-- Variables: `0 = k`, `1 = K`, `2 = L`, `3 = N0`. -/
-private abbrev sqF : Fm PTm 4 := Hq (var 0) (var 1) (var 2) (var 3) ⟶ J (var 0) (var 1) (var 2)
-
-private theorem sq₀ : ([] : List (Fm PTm 4)) ⊢[PRAAx] sqF := by
-  ipra_ind (⟨⟨le_QF _ _, le_QF _ _, le_QF _ _⟩, le_QF _ _, le_QF _ _⟩) [subst_le, subst_ap2, subst_pairT]
-  · exact .impI (j_zero _ _)
-  · refine .impI ?_
-    have h := (Prf.hyp0 : (Hq (succ (var 0)) (var 1) (var 2) (var 3) :: [sqF]) ⊢[PRAAx]
-      Hq (succ (var 0)) (var 1) (var 2) (var 3))
-    have h' : (Hq (succ (var 0)) (var 1) (var 2) (var 3) :: [sqF]) ⊢[PRAAx] Hq (var 0) (var 1) (var 2) (var 3) :=
-      .andI (Prf.andE₁ h) (.andI (Prf.andE₁ (Prf.andE₂ h)) (le_trans (le_succ_self _) (Prf.andE₂ (Prf.andE₂ h))))
-    exact j_step h (Prf.impE Prf.hyp1 h')
-
 /-- `sb:log-square-sum` for the harmonic logarithm at `N = k + 1`:
 `−2F S(N) ≤ Q(N) − G(N) ≤ F u_N + 2 u_N S(N)` for `K ≥ 1`, `KN ≤ L`, `F = L!`. -/
 theorem log_square_sum {k K L : PTm n} (hK : Γ ⊢[PRAAx] le one K) (hL : Γ ⊢[PRAAx] le (K * succ k) L) :
     Γ ⊢[PRAAx] J k K L := by
-  have i := inst (Γ := Γ) sq₀ (![k, K, L, succ k] : Fin 4 → PTm n)
-  simp at i
-  exact Prf.impE i (.andI hK (.andI hL (le_refl _)))
+  let I : Fm PTm (n + 1) := J (var 0) (Syn.shift K) (Syn.shift L)
+  have hK' := LeanProofs.IPRA.Order.shift_one_le hK
+  have hL' : Γ.map Fm.shift ⊢[PRAAx] le (Syn.shift K * succ (Syn.shift k)) (Syn.shift L) := by
+    simpa [Syn.shift] using LeanProofs.IPRA.Order.shift_le hL
+  have h : Γ ⊢[PRAAx] I.subst (Syn.inst k) := by
+    refine qfIndUpTo k (⟨le_QF _ _, le_QF _ _⟩) ?_ ?_
+    · simpa [I] using (j_zero _ _ : Γ ⊢[PRAAx] J zero K L)
+    · simp [I, subst_repl_shift]
+      exact .impI (j_step (N0 := succ (Syn.shift k))
+        (.andI hK'.wk.wk (.andI hL'.wk.wk (LeanProofs.IPRA.Order.succ_le_succ Prf.hyp0))) Prf.hyp1)
+  simpa [I] using h
 
 end LeanProofs.IPRA.AnalyticNumberTheory.HarmonicLogSquareSum
