@@ -21,11 +21,11 @@ open GaussianEulerLogarithmicParameterIncrement (source increment)
 open GaussianEulerParameterExponentialIncrement (shifted incrementF incrementData)
 open GaussianGammaCanonicalExponent (constantF constant_at constant_regular)
 open GaussianNameArithmetic (multiplyF multiplyData)
-open GaussianRationalHorner (qmul ofGaussian positive_product)
+open GaussianRationalHorner (ofGaussian)
 open GaussianRationalMetric (bounded distanceBounded)
 open GaussianRationalReciprocal (bound_congr bounded_product)
-open GaussianRationalDistanceOrder (distance_congr distance_radius_mono distance_triangle_same)
-open GaussianNameEquivalence (crossEquivalent cross_refl cross_symm cross_trans)
+open GaussianRationalDistanceOrder (distance_congr)
+open GaussianNameEquivalence (crossEquivalent cross_refl cross_trans)
 open GaussianCoefficientNameBounds (unit unit_positive bounded_radius_mono)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
@@ -96,10 +96,8 @@ theorem increment_query_error (p z R B E T a b h D X Y : PTm n)
       (increment p h D a b) two (unit p) := by
   let r := clock (GaussianRadiusExponentialName.inputPrecision one p) h D a b
   have regular := GaussianPositiveRationalLogarithm.name_regular a b hs.andE₁.andE₂.andE₁
-  have old := GaussianNameEquivalence.point_at GaussianPositiveRationalLogarithm.logF (GaussianPositiveRationalLogarithm.data a b) r p regular
-  have later := GaussianExponentialReference.unit_monotone (Γ := Γ) (logarithm_query_later p h D a b)
-  have logs := distance_radius_mono _ _ _ _ two (unit p) (positive_product _ _ (unit_positive r) (unit_positive p)) (unit_positive p)
-    (by ipra_le 𝔞(unit p)*sl later) old
+  have logs := GaussianNameEquivalence.point_at_later GaussianPositiveRationalLogarithm.logF
+    (GaussianPositiveRationalLogarithm.data a b) p r regular (logarithm_query_later p h D a b)
   have scaled := bounded_product _ _ _ _ _ _ (le_refl one) (unit_positive p)
     (parameter_unit_bound z R B E T a b h D X Y hs) logs
   exact bound_congr ((GaussianRationalRoundedPower.multiplication_difference _ _ _).eqSymm.eqTrans

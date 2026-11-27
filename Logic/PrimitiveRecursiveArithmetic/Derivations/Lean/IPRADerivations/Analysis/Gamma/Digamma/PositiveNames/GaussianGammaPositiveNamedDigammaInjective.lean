@@ -18,7 +18,7 @@ open_ipra
 open GaussianCoefficientNameBounds (unit unit_positive)
 open GaussianGammaMinimumFreezeRational (numerator denominator frozen_rational_domain fraction_at)
 open GaussianGammaPositiveNamedRationalFreeze (clock threshold_le)
-open GaussianNameEquivalence (crossEquivalent cross_at point_at)
+open GaussianNameEquivalence (crossEquivalent)
 open GaussianNamedInverseRate (diagonal_rate)
 open GaussianNamedPositiveDigamma (source nameF data)
 open GaussianNamedRightHalfPlane (threshold radius)
@@ -51,12 +51,9 @@ theorem frozen_observation (f : PR 2) (p k x A : PTm n) (hf : Γ ⊢[PRAAx] sour
 private theorem frozen_input (f : PR 2) (p k x A : PTm n) (hf : Γ ⊢[PRAAx] source f x A)
     (hp : Γ ⊢[PRAAx] le p k) (ht : Γ ⊢[PRAAx] le (threshold A) k) :
     Γ ⊢[PRAAx] distanceBounded (ap2 f p x) (fraction (numerator f k x) (denominator f k x)) two (unit p) := by
-  have hu := unit_positive (Γ := Γ) p
-  have hv := unit_positive (Γ := Γ) k
-  have grow := GaussianExponentialReference.unit_monotone hp
   exact distance_congr (.eqRefl _) (fraction_at f k x A hf ht) (.eqRefl _) (.eqRefl _)
-    (distance_radius_mono _ _ _ _ two (unit p) (positive_product _ _ hu hv) hu
-      (by unfold two; ipra_le 𝔞(unit p)*sl grow) (point_at f x p k hf.andE₁.andE₁))
+    (distance_symmetric _ _ _ _ (unit_positive p)
+      (GaussianNameEquivalence.point_at_later f x p k hf.andE₁.andE₁ hp))
 
 theorem input_distance (f g : PR 2) (p x y A B : PTm n) (hf : Γ ⊢[PRAAx] source f x A)
     (hg : Γ ⊢[PRAAx] source g y B)

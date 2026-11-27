@@ -21,7 +21,7 @@ open GaussianEuclideanDistanceName (pointCN)
 open GaussianExponentialReference (add_sample unit_monotone)
 open GaussianFastValueCut (exponent)
 open GaussianNameArithmetic (addF addData add_fast multiplyF multiplyData multiplyModulus)
-open GaussianNameEquivalence (crossEquivalent cross_to_diagonal diagonal_at point_at)
+open GaussianNameEquivalence (crossEquivalent cross_to_diagonal diagonal_at)
 open GaussianNameRingLaws (equivalent_of_envelope multiply_sample_error)
 open GaussianRationalHorner (qadd qmul)
 open GaussianRationalLowerBounds (lower)
@@ -73,13 +73,8 @@ theorem sample_distance (f g : PR 2) (x y h p : PTm n)
   have close : Γ ⊢[PRAAx] distanceBounded (ap2 f k x) (ap2 g k y) A (unit p) :=
     distance_radius_mono _ _ _ _ A (unit p) hk hp
       (le_congr (mul_comm (unit p) A) (mul_comm (unit k) A) (mul_le_mul_right A grow)) raw
-  have den := GaussianRationalHorner.positive_product _ _ hp hk
-  have cmp : Γ ⊢[PRAAx] le ((unit p+unit k)*unit p) (two*(unit p*unit k)) :=
-    le_congr (.eqRefl _) (by ipra_ring)
-      (mul_le_mul_right (unit p) (add_le_add₂ grow (le_refl (unit k))))
-  have left := distance_radius_mono _ _ _ _ two (unit p) den hp cmp (point_at f x p k hf)
-  have right := distance_symmetric _ _ _ _ hp
-    (distance_radius_mono _ _ _ _ two (unit p) den hp cmp (point_at g y p k hg))
+  have left := distance_symmetric _ _ _ _ hp (GaussianNameEquivalence.point_at_later f x p k hf pp)
+  have right := GaussianNameEquivalence.point_at_later g y p k hg pp
   exact distance_triangle_same _ _ _ _ _ _ hp (distance_triangle_same _ _ _ _ _ _ hp left close) right
 
 theorem equivalent_of_apart (f g : PR 2) (x y h : PTm n)

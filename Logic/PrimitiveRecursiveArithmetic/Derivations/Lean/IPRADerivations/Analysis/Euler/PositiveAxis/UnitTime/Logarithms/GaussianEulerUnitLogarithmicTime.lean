@@ -19,10 +19,10 @@ open_ipra
 open GaussianEulerUnitLogarithmicMargin (source timeF timeData time_regular)
 open GaussianNameRingLaws (negativeF negativeData negative_fast)
 open GaussianHarmonicLogarithmName (sample)
-open GaussianNameEquivalence (crossEquivalent cross_symm cross_trans cross_at)
+open GaussianNameEquivalence (crossEquivalent cross_symm cross_trans)
 open GaussianRationalMetric (distanceBounded qnegative qnegative_canonical qsub)
-open GaussianRationalHorner (qzero positive_product)
-open GaussianRationalDistanceOrder (distance_congr distance_radius_mono)
+open GaussianRationalHorner (qzero)
+open GaussianRationalDistanceOrder (distance_congr)
 open GaussianCoefficientNameBounds (unit unit_positive)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
@@ -62,14 +62,9 @@ theorem harmonic_negative_cross (a b : PTm n) (h : Γ ⊢[PRAAx] GaussianPositiv
     by simpa [Fm.shift,Syn.shift] using h.shift
   refine .allI ?_
   let r : PTm (n+1) := GaussianFastValueCut.exponent (one+one) (var 0)
-  have hr : Γ.map Fm.shift ⊢[PRAAx] le (unit (var 0)) (unit r) :=
-    GaussianExponentialReference.unit_monotone (le_add_right _ _)
-  have near := GaussianNameEquivalence.point_at GaussianHarmonicLogarithmName.nameF
-    (GaussianHarmonicLogarithmName.data (Syn.shift b) (Syn.shift a)) r (var 0)
-    (GaussianHarmonicLogarithmName.name_regular _ _ (.andI hs.andE₂ hs.andE₁))
-  have weak := distance_radius_mono _ _ _ _ two (unit (var 0))
-    (positive_product _ _ (unit_positive r) (unit_positive (var 0))) (unit_positive (var 0))
-    (by ipra_le (Groth.ι (Q.mk (Γ.map Fm.shift) (unit (var 0))))*sl hr) near
+  have weak := GaussianNameEquivalence.point_at_later GaussianHarmonicLogarithmName.nameF
+    (GaussianHarmonicLogarithmName.data (Syn.shift b) (Syn.shift a)) (var 0) r
+    (GaussianHarmonicLogarithmName.name_regular _ _ (.andI hs.andE₂ hs.andE₁)) (le_add_right _ _)
   simpa only [GaussianValueNormalizerExtensionality.rawDiagonal,GaussianNameRingLaws.subst_negativeData,
     GaussianHarmonicLogarithmName.subst_data,ConciseIPRA.PTm.subst_succ,ConciseIPRA.PTm.subst_zero,Syn.shift] using
     distance_congr (negative_harmonic_sample (var 0) (Syn.shift a) (Syn.shift b)).eqSymm (.eqRefl _) (.eqRefl _) (.eqRefl _) weak
