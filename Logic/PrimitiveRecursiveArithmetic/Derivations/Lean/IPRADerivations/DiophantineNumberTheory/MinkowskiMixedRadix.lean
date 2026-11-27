@@ -185,17 +185,8 @@ def differentIndex (N W i j : PTm n) : PTm n := Search.mu comparisonBody N (comp
 
 theorem comparisonBody_at (W i j k : PTm n) :
     Γ ⊢[PRAAx] inst2 comparisonBody k (comparisonData W i j) ≐ eqb (digit W i k) (digit W j k) := by
-  have h := Prf.eqCongr (Γ := Γ) (eqb (digit (var 0) (var 1) (var 3)) (digit (var 0) (var 2) (var 3)) : PTm 4)
-    (σ := ![fstT (comparisonData W i j),fstT (sndT (comparisonData W i j)),sndT (sndT (comparisonData W i j)),k])
-    (σ' := ![W,i,j,k]) (fun a => by
-      fin_cases a
-      · exact fst_pair _ _
-      · exact (congrFst (snd_pair _ _)).eqTrans (fst_pair _ _)
-      · exact (congrSnd (snd_pair _ _)).eqTrans (snd_pair _ _)
-      · exact .eqRefl _)
-  simpa only [comparisonBody, inst2, subst_eqb, subst_digit, subst_fstT, subst_sndT,
-    Syn.subst_var, Matrix.cons_val_zero, Matrix.cons_val_one, Matrix.cons_val_two,
-    Matrix.cons_val_three, Matrix.head_cons, Matrix.tail_cons] using h
+  simpa [comparisonBody, comparisonData, inst2, pairVector, pairVectorField] using
+    (subst_pairVector_eq (Γ := Γ) (eqb (digit (var 1) (var 2) (var 0)) (digit (var 1) (var 3) (var 0)) : PTm 4) k ![W, i, j])
 
 /-- A genuine unequal pair of indices makes the actual finite coordinate search
 succeed. Its no-success branch would reconstruct equal prefix remainders. -/

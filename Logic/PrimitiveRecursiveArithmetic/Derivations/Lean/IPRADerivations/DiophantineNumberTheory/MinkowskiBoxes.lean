@@ -139,17 +139,8 @@ theorem point_length (N L U i : PTm n) : Γ ⊢[PRAAx] length (point N L U i) �
 
 theorem pointBody_at (L W i k : PTm n) :
     Γ ⊢[PRAAx] inst2 pointBody k (pointData L W i) ≐ pack (coordinate L W i k) := by
-  have h := Prf.eqCongr (Γ := Γ) (pack (coordinate (var 0) (var 1) (var 2) (var 3)) : PTm 4)
-    (σ := ![fstT (pointData L W i),fstT (sndT (pointData L W i)),sndT (sndT (pointData L W i)),k])
-    (σ' := ![L,W,i,k]) (fun a => by
-      fin_cases a
-      · exact fst_pair _ _
-      · exact (congrFst (snd_pair _ _)).eqTrans (fst_pair _ _)
-      · exact (congrSnd (snd_pair _ _)).eqTrans (snd_pair _ _)
-      · exact .eqRefl _)
-  simpa only [pointBody, inst2, SignedEuclidean.subst_pack, subst_coordinate, subst_fstT, subst_sndT,
-    Syn.subst_var, Matrix.cons_val_zero, Matrix.cons_val_one, Matrix.cons_val_two,
-    Matrix.cons_val_three, Matrix.head_cons, Matrix.tail_cons] using h
+  simpa [pointBody, pointData, inst2, pairVector, pairVectorField] using
+    (subst_pairVector_eq (Γ := Γ) (pack (coordinate (var 1) (var 2) (var 3) (var 0)) : PTm 4) k ![L, W, i])
 
 theorem point_lookup (N L U i k : PTm n) (hk : Γ ⊢[PRAAx] lt k N) :
     Γ ⊢[PRAAx] entry (point N L U i) k ≐ pack (coordinate L (widths N L U) i k) :=
@@ -258,17 +249,8 @@ theorem points_length (N L U : PTm n) : Γ ⊢[PRAAx] length (points N L U) ≐ 
 
 theorem pointsBody_at (N L U i : PTm n) :
     Γ ⊢[PRAAx] inst2 pointsBody i (pointsData N L U) ≐ point N L U i := by
-  have h := Prf.eqCongr (Γ := Γ) (point (var 0) (var 1) (var 2) (var 3) : PTm 4)
-    (σ := ![fstT (pointsData N L U),fstT (sndT (pointsData N L U)),sndT (sndT (pointsData N L U)),i])
-    (σ' := ![N,L,U,i]) (fun a => by
-      fin_cases a
-      · exact fst_pair _ _
-      · exact (congrFst (snd_pair _ _)).eqTrans (fst_pair _ _)
-      · exact (congrSnd (snd_pair _ _)).eqTrans (snd_pair _ _)
-      · exact .eqRefl _)
-  simpa only [pointsBody, inst2, subst_point, subst_fstT, subst_sndT, Syn.subst_var,
-    Matrix.cons_val_zero, Matrix.cons_val_one, Matrix.cons_val_two,
-    Matrix.cons_val_three, Matrix.head_cons, Matrix.tail_cons] using h
+  simpa [pointsBody, pointsData, inst2, pairVector, pairVectorField] using
+    (subst_pairVector_eq (Γ := Γ) (point (var 1) (var 2) (var 3) (var 0) : PTm 4) i ![N, L, U])
 
 theorem points_lookup (N L U i : PTm n) (hi : Γ ⊢[PRAAx] lt i (count N L U)) :
     Γ ⊢[PRAAx] entry (points N L U) i ≐ point N L U i :=

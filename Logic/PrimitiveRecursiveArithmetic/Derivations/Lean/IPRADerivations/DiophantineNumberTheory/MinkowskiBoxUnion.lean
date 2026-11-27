@@ -56,18 +56,8 @@ theorem location_at (N B q : PTm n) : Γ ⊢[PRAAx] ap3 locationF N B q ≐ loca
 
 theorem locationBody_at (N B q j : PTm n) :
     Γ ⊢[PRAAx] inst2 locationBody j (locationData N B q) ≐ monus (succ q) (prefixCount N B (succ j)) := by
-  have h := Prf.eqCongr (Γ := Γ) (monus (succ (var 2)) (prefixCount (var 0) (var 1) (succ (var 3))) : PTm 4)
-    (σ := ![fstT (locationData N B q),fstT (sndT (locationData N B q)),sndT (sndT (locationData N B q)),j])
-    (σ' := ![N,B,q,j]) (fun a => by
-      fin_cases a
-      · exact fst_pair _ _
-      · exact (congrFst (snd_pair _ _)).eqTrans (fst_pair _ _)
-      · exact (congrSnd (snd_pair _ _)).eqTrans (snd_pair _ _)
-      · exact .eqRefl _)
-  simpa only [locationBody, inst2, PTm.subst_monus, ConciseIPRA.PTm.subst_succ,
-    subst_prefixCount, subst_fstT, subst_sndT, Syn.subst_var,
-    Matrix.cons_val_zero, Matrix.cons_val_one, Matrix.cons_val_two,
-    Matrix.cons_val_three, Matrix.head_cons, Matrix.tail_cons] using h
+  simpa [locationBody, locationData, inst2, pairVector, pairVectorField] using
+    (subst_pairVector_eq (Γ := Γ) (monus (succ (var 3)) (prefixCount (var 1) (var 2) (succ (var 0))) : PTm 4) j ![N, B, q])
 
 /-- A global valid position makes the actual finite locator succeed, including
 lists with zero-count blocks. An empty outer list admits no valid position. -/
