@@ -21,7 +21,7 @@ open GaussianRationalDistanceOrder (distance_congr distance_radius_mono)
 open GaussianCoefficientNameBounds (unit unit_positive)
 open GaussianCompactLogarithmBounds (domain radius)
 open GaussianPositiveRationalLogarithm (logF fraction)
-open GaussianNamedInverseRate (rateNumerator rateDenominator)
+open GaussianNamedInverseRate (rateNumerator rateDenominator rate_at denominator_positive)
 open GaussianEuclideanDistanceName (pointCN)
 open GaussianNameEquivalence (crossEquivalent cross_at cross_refl)
 
@@ -82,14 +82,14 @@ theorem sample_bound (f : PR 2) (p x E T : PTm n) (h : Γ ⊢[PRAAx] source f x 
     (GaussianCompactLogarithmBounds.sample_bound (succ p) _ _ E T h.andE₂.andE₁
       (decoded_domain f (clock p E) x E T h))
 
-private theorem decoded_log_rate (f g : PR 2) (r s x y E T A D : PTm n)
-    (hf : Γ ⊢[PRAAx] source f x E T) (hg : Γ ⊢[PRAAx] source g y E T)
+private theorem decoded_log_rate (f g : PR 2) (r s x y E T U A D : PTm n)
+    (hf : Γ ⊢[PRAAx] source f x E T) (hg : Γ ⊢[PRAAx] source g y E U)
     (hd : Γ ⊢[PRAAx] le one D) (hr : Γ ⊢[PRAAx] distanceBounded (ap2 f r x) (ap2 g s y) A D) :
     Γ ⊢[PRAAx] GaussianNamedInverseRate.independentRate logF logF (rationalData f r x) (rationalData g s y) (E*A) D := by
   have hx := decoded_domain f r x E T hf
-  have hy := decoded_domain g s y E T hg
+  have hy := decoded_domain g s y E U hg
   exact GaussianCompactLogarithmBounds.original_log_rate _ _ _ _ E A D hx.andE₁ hy.andE₁ hd hx.andE₂.andE₁ hy.andE₂.andE₁
-    (distance_congr (decoded_value f r x E T hf).eqSymm (decoded_value g s y E T hg).eqSymm (.eqRefl _) (.eqRefl _) hr)
+    (distance_congr (decoded_value f r x E T hf).eqSymm (decoded_value g s y E U hg).eqSymm (.eqRefl _) (.eqRefl _) hr)
 
 private theorem double_unit (p : PTm n) : Γ ⊢[PRAAx] unit (succ p) ≐ two*unit p :=
   (pw_succ two p).eqTrans (mul_comm _ _)
@@ -98,33 +98,44 @@ private theorem clock_budget (p E : PTm n) : Γ ⊢[PRAAx] le (two*E*unit p) (un
   le_congr ((congrMul (.eqRefl E) (double_unit p)).eqTrans (by ipra_ring)) (.eqRefl _)
     (GaussianFastValueCut.query_budget E (succ p))
 
+theorem observations_of_query_bound (f g : PR 2) (p q x y E T U A D : PTm n)
+    (hf : Γ ⊢[PRAAx] source f x E T) (hg : Γ ⊢[PRAAx] source g y E U)
+    (hD : Γ ⊢[PRAAx] le one D)
+    (h : Γ ⊢[PRAAx] distanceBounded (ap2 f (clock p E) x) (ap2 g (clock q E) y)
+      (rateNumerator A D (clock p E) (clock q E)) (rateDenominator D (clock p E) (clock q E))) :
+    Γ ⊢[PRAAx] distanceBounded (ap2 (nameF f) p (data x E)) (ap2 (nameF g) q (data y E))
+      (rateNumerator (E*A) D p q) (rateDenominator D p q) := by
+  let r := clock p E
+  let s := clock q E
+  let B := rateNumerator A D r s
+  let C := rateDenominator D r s
+  have hC : Γ ⊢[PRAAx] le one C := denominator_positive D r s hD
+  have raw := rate_at logF logF (rationalData f r x) (rationalData g s y) (E*B) C (succ p) (succ q)
+    (decoded_log_rate f g r s x y E T U B C hf hg hC h)
+  have up := double_unit (Γ := Γ) p
+  have uq := double_unit (Γ := Γ) q
+  have eN : Γ ⊢[PRAAx] rateNumerator (E*B) C (succ p) (succ q) ≐
+      (E*B)*(two*unit p)*(two*unit q)+C*(two*unit p+two*unit q) :=
+    congrAdd (congrMul (congrMul (.eqRefl _) up) uq) (congrMul (.eqRefl _) (congrAdd up uq))
+  have eD : Γ ⊢[PRAAx] rateDenominator C (succ p) (succ q) ≐ C*(two*unit p)*(two*unit q) :=
+    congrMul (congrMul (.eqRefl _) up) uq
+  apply distance_radius_mono _ _ _ _ _ _
+    (positive_product _ _ (positive_product _ _ hC (positive_product _ _ RationalAlgebra.two_positive (unit_positive p)))
+      (positive_product _ _ RationalAlgebra.two_positive (unit_positive q))) (denominator_positive D p q hD) ?_
+    (distance_congr (sample_at f p x E).eqSymm (sample_at g q y E).eqSymm eN eD raw)
+  dsimp only [B,C,rateNumerator,rateDenominator]
+  ipra_le (2*(𝔞 D)^2*𝔞(unit p)*𝔞(unit q)*𝔞(unit s)*𝔞(unit q))*sl (clock_budget p E)+
+    (2*(𝔞 D)^2*𝔞(unit p)*𝔞(unit q)*𝔞(unit r)*𝔞(unit p))*sl (clock_budget q E)
+
 theorem original_observations (f g : PR 2) (p q x y E T : PTm n)
     (hf : Γ ⊢[PRAAx] source f x E T) (hg : Γ ⊢[PRAAx] source g y E T)
     (he : Γ ⊢[PRAAx] crossEquivalent f g x y) :
     Γ ⊢[PRAAx] distanceBounded (ap2 (nameF f) p (data x E)) (ap2 (nameF g) q (data y E))
       (unit p+unit q) (unit p*unit q) := by
-  let r := clock p E
-  let s := clock q E
-  let A := unit r+unit s
-  let D := unit r*unit s
-  have hd := positive_product _ _ (unit_positive (Γ := Γ) r) (unit_positive s)
-  have raw := GaussianNamedInverseRate.rate_at logF logF _ _ (E*A) D (succ p) (succ q)
-    (decoded_log_rate f g r s x y E T A D hf hg hd (cross_at f g x y r s he))
-  have up := double_unit (Γ := Γ) p
-  have uq := double_unit (Γ := Γ) q
-  have eN : Γ ⊢[PRAAx] rateNumerator (E*A) D (succ p) (succ q) ≐
-      (E*A)*(two*unit p)*(two*unit q)+D*(two*unit p+two*unit q) :=
-    congrAdd (congrMul (congrMul (.eqRefl _) up) uq) (congrMul (.eqRefl _) (congrAdd up uq))
-  have eD : Γ ⊢[PRAAx] rateDenominator D (succ p) (succ q) ≐ D*(two*unit p)*(two*unit q) :=
-    congrMul (congrMul (.eqRefl _) up) uq
-  have exactRate := distance_congr (sample_at f p x E).eqSymm (sample_at g q y E).eqSymm eN eD raw
-  exact distance_radius_mono _ _ _ _ _ _
-    (positive_product _ _ (positive_product _ _ hd (positive_product _ _ (le_succ_self one) (unit_positive p)))
-      (positive_product _ _ (le_succ_self one) (unit_positive q)))
-    (positive_product _ _ (unit_positive p) (unit_positive q)) (by
-      dsimp only [A,D]
-      ipra_le (2*𝔞(unit p)*𝔞(unit q)*𝔞(unit s)*𝔞(unit q))*sl (clock_budget p E)+
-        (2*𝔞(unit p)*𝔞(unit q)*𝔞(unit r)*𝔞(unit p))*sl (clock_budget q E)) exactRate
+  have raw := cross_at f g x y (clock p E) (clock q E) he
+  exact distance_congr (.eqRefl _) (.eqRefl _) (by unfold rateNumerator; ipra_ring) (by unfold rateDenominator; ipra_ring)
+    (observations_of_query_bound f g p q x y E T T zero one hf hg (le_refl one)
+      (distance_congr (.eqRefl _) (.eqRefl _) (by unfold rateNumerator; ipra_ring) (by unfold rateDenominator; ipra_ring) raw))
 
 theorem proper (f g : PR 2) (x y E T : PTm n)
     (hf : Γ ⊢[PRAAx] source f x E T) (hg : Γ ⊢[PRAAx] source g y E T)
@@ -163,7 +174,7 @@ theorem original_frozen_observations (f : PR 2) (p q k x E T : PTm n) (h : Γ �
   let D := unit r*unit k
   have hd := positive_product _ _ (unit_positive (Γ := Γ) r) (unit_positive k)
   have raw := GaussianNamedInverseRate.rate_at logF logF _ _ (E*A) D (succ p) q
-    (decoded_log_rate f f r k x x E T A D h h hd (cross_at f f x x r k (cross_refl f x h.andE₁)))
+    (decoded_log_rate f f r k x x E T T A D h h hd (cross_at f f x x r k (cross_refl f x h.andE₁)))
   have up := double_unit (Γ := Γ) p
   have eN : Γ ⊢[PRAAx] rateNumerator (E*A) D (succ p) q ≐
       (E*A)*(two*unit p)*unit q+D*(two*unit p+unit q) :=
