@@ -5,6 +5,7 @@ finite correction exponent. Both are polynomial in the native step.
 import IPRADerivations.Analysis.Barnes.Taylor.RelativeExpansions.GaussianBarnesCanonicalRelativeLogIncrement
 import IPRADerivations.Analysis.Barnes.Taylor.FirstDerivative.FiniteFactors.GaussianBarnesCanonicalHeadCorrectionDerivative
 import IPRADerivations.Analysis.RationalArithmetic.Complex.GaussianRationalSquareCancellation
+import IPRADerivations.Analysis.Names.FiniteOperations.Sums.GaussianNamedSumDifference
 
 set_option autoImplicit false
 set_option maxHeartbeats 500000
@@ -96,19 +97,8 @@ theorem prefactor_cross (z h B : PTm n) (hB : Γ ⊢[PRAAx] le one B) : Γ ⊢[P
     (prefactor_difference z h B hB)
 
 private theorem constant_difference (a b c : PTm n) (hc : Γ ⊢[PRAAx] qsub a b ≐ c) :
-    Γ ⊢[PRAAx] crossEquivalent (D constantF constantF) constantF (dd a b) c := by
-  apply GaussianNameRingLaws.equivalent_of_envelope _ _ _ _ (num 6)
-    (GaussianNamedDifference.name_regular _ _ _ _ (constant_regular _) (constant_regular _)) (constant_regular _)
-  refine .allI ?_
-  let Δ := Γ.map Fm.shift
-  let sh (t : PTm n) := Syn.shift t
-  let p : PTm (n+1) := var 0
-  have eq : Δ ⊢[PRAAx] qsub (sh a) (sh b) ≐ sh c := by simpa [Δ,sh,Fm.shift,Syn.shift] using hc.shift
-  have read := (qsub_congr (constant_at p (sh a)) (constant_at p (sh b))).eqTrans
-    (eq.eqTrans (constant_at p (sh c)).eqSymm)
-  simpa only [Δ,sh,p,Syn.shift,GaussianNamedDifference.subst_data,PTm.subst_num] using
-    GaussianRationalDistanceOrder.distance_congr (.eqRefl _) read (.eqRefl _) (.eqRefl _)
-      (GaussianNamedDifference.sample_error constantF constantF (sh a) (sh b) p (constant_regular _) (constant_regular _))
+    Γ ⊢[PRAAx] crossEquivalent (D constantF constantF) constantF (dd a b) c :=
+  GaussianNamedSumDifference.constant_difference a b c hc
 
 theorem correction_cross (z h B N : PTm n) (hB : Γ ⊢[PRAAx] le one B) : Γ ⊢[PRAAx]
     crossEquivalent correctionF constantF (correctionData z h B N) (correctionQuadratic z h B N) :=

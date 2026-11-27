@@ -4,6 +4,7 @@ import IPRADerivations.Analysis.Names.FiniteOperations.Sums.GaussianNamedAddRate
 import IPRADerivations.Analysis.Names.Rates.Transport.GaussianNamedUniformRateClosure
 import IPRADerivations.Analysis.Names.Rates.Order.GaussianNamedFrozenScalarOrder
 import IPRADerivations.Analysis.Stirling.GammaLogarithm.GaussianStirlingNames
+import IPRADerivations.Analysis.Names.FiniteOperations.Sums.GaussianNamedSumDifference
 
 /-!
 # Original normalized Gamma ratio on regular positive real names
@@ -119,16 +120,8 @@ private theorem addition_rate (F G H K : PR 2) (x y u v A B D : PTm n)
     (le_of_eq_add (d := zero) (by simp only [GaussianNamedRateComposition.leadingNumerator]; ipra_ring)) raw
 
 private theorem constant_difference (a b : PTm n) : Γ ⊢[PRAAx]
-    crossEquivalent (Diff constantF constantF) constantF (DD a b) (qsub a b) := by
-  apply GaussianNameRingLaws.equivalent_of_envelope _ _ _ _ (num 6)
-    (GaussianNamedDifference.name_regular _ _ _ _ (constant_regular _) (constant_regular _)) (constant_regular _)
-  refine .allI ?_
-  have raw := GaussianNamedDifference.sample_error (Γ := Γ.map Fm.shift) constantF constantF
-    (Syn.shift a) (Syn.shift b) (var 0) (constant_regular _) (constant_regular _)
-  have actual := distance_congr (.eqRefl _)
-    ((qsub_congr (constant_at _ _) (constant_at _ _)).eqTrans (constant_at (var 0) (qsub (Syn.shift a) (Syn.shift b))).eqSymm)
-    (.eqRefl _) (.eqRefl _) raw
-  simpa only [GaussianNamedDifference.subst_data,GaussianRationalMetric.subst_qsub,PTm.subst_num,Syn.shift] using actual
+    crossEquivalent (Diff constantF constantF) constantF (DD a b) (qsub a b) :=
+  GaussianNamedSumDifference.constant_difference a b (qsub a b) (.eqRefl _)
 
 private theorem coefficient_rate (g h : PR 2) (y z s k b c d : PTm n)
     (hy : Γ ⊢[PRAAx] pointCN g y) (hz : Γ ⊢[PRAAx] pointCN h z)

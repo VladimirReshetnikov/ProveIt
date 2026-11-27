@@ -1,5 +1,6 @@
 import IPRADerivations.Analysis.Gamma.Distributions.GaussianGammaDensityMomentName
 import IPRADerivations.Analysis.Names.Rates.DifferenceQuotients.GaussianNamedDifferenceQuotientProperness
+import IPRADerivations.Analysis.Names.FiniteOperations.Sums.GaussianNamedSumDifference
 
 /-!
 # Normalization, mean and variance of the actual Gamma-density moment names
@@ -98,16 +99,8 @@ theorem variance_regular (z R B A : PTm n) (h : Γ ⊢[PRAAx] source z R B A) : 
       (GaussianGammaDensityMomentName.name_regular z R B A one h))
 
 private theorem constant_difference (x y : PTm n) : Γ ⊢[PRAAx]
-    crossEquivalent (GaussianNamedDifference.nameF constantF constantF) constantF (GaussianNamedDifference.data x y) (qsub x y) := by
-  apply GaussianNameRingLaws.equivalent_of_envelope _ _ _ _ (num 6)
-    (GaussianNamedDifference.name_regular _ _ _ _ (constant_regular _) (constant_regular _)) (constant_regular _)
-  refine .allI ?_
-  have raw := GaussianNamedDifference.sample_error (Γ := Γ.map Fm.shift) constantF constantF (Syn.shift x) (Syn.shift y) (var 0)
-    (constant_regular _) (constant_regular _)
-  have actual := distance_congr (.eqRefl _)
-    ((qsub_congr (constant_at _ _) (constant_at _ _)).eqTrans (constant_at (var 0) (qsub (Syn.shift x) (Syn.shift y))).eqSymm)
-    (.eqRefl _) (.eqRefl _) raw
-  simpa only [GaussianNamedDifference.subst_data,GaussianRationalMetric.subst_qsub,PTm.subst_num,Syn.shift] using actual
+    crossEquivalent (GaussianNamedDifference.nameF constantF constantF) constantF (GaussianNamedDifference.data x y) (qsub x y) :=
+  GaussianNamedSumDifference.constant_difference x y (qsub x y) (.eqRefl _)
 
 theorem variance (z R B A : PTm n) (h : Γ ⊢[PRAAx] source z R B A) : Γ ⊢[PRAAx]
     crossEquivalent varianceF constantF (varianceData z R B A) (ofGaussian z B) := by

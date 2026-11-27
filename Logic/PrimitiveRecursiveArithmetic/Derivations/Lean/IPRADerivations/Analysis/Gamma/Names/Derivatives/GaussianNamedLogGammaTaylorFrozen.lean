@@ -2,6 +2,7 @@ import IPRADerivations.Analysis.Gamma.Digamma.LogGammaDerivative.GaussianLogGamm
 import IPRADerivations.Analysis.Gamma.Digamma.LogGammaDerivative.GaussianLogGammaEulerSampleDigamma
 import IPRADerivations.Analysis.Names.FiniteOperations.Products.Bounds.GaussianNamedMultiplyRate
 import IPRADerivations.Analysis.Exponential.PositiveAxis.NamedValues.GaussianSignedNameExponentialOrder
+import IPRADerivations.Analysis.Names.FiniteOperations.Sums.GaussianNamedSumDifference
 
 /-!
 # Freezing the first-order term of the named log-Gamma expansion
@@ -77,16 +78,8 @@ theorem step_eq_original (q r R S K : PTm n)
     (qsub_represents _ _ _ _ _ hD (right_represents q r S K hr) (left_represents q r R K hq))
 
 private theorem constant_difference (a b : PTm n) : Γ ⊢[PRAAx]
-    crossEquivalent (diffF constantF constantF) constantF (diffData a b) (qsub a b) := by
-  apply GaussianNameRingLaws.equivalent_of_envelope _ _ _ _ (num 6)
-    (GaussianNamedDifference.name_regular _ _ _ _ (constant_regular _) (constant_regular _)) (constant_regular _)
-  refine .allI ?_
-  have raw := GaussianNamedDifference.sample_error (Γ := Γ.map Fm.shift) constantF constantF
-    (Syn.shift a) (Syn.shift b) (var 0) (constant_regular _) (constant_regular _)
-  have actual := distance_congr (.eqRefl _)
-    ((qsub_congr (constant_at _ _) (constant_at _ _)).eqTrans (constant_at (var 0) (qsub (Syn.shift a) (Syn.shift b))).eqSymm)
-    (.eqRefl _) (.eqRefl _) raw
-  simpa only [GaussianNamedDifference.subst_data, GaussianRationalMetric.subst_qsub, PTm.subst_num, Syn.shift] using actual
+    crossEquivalent (diffF constantF constantF) constantF (diffData a b) (qsub a b) :=
+  GaussianNamedSumDifference.constant_difference a b (qsub a b) (.eqRefl _)
 
 private theorem difference_frozen_rate (f g : PR 2) (x y s k : PTm n)
     (hf : Γ ⊢[PRAAx] pointCN f x) (hg : Γ ⊢[PRAAx] pointCN g y) (hsk : Γ ⊢[PRAAx] le s k) :

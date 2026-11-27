@@ -2,6 +2,7 @@ import IPRADerivations.Analysis.Trigonometry.Arctangent.Cayley.GaussianArctangen
 import IPRADerivations.Analysis.Exponential.IntegerPowers.GaussianBoundedIntegerExponential
 import IPRADerivations.Analysis.Gamma.EulerProducts.GaussianGammaWeierstrassApproximant
 import IPRADerivations.Analysis.Exponential.Names.Derivatives.GaussianNamedExponentialDifferenceIdentity
+import IPRADerivations.Analysis.Names.FiniteOperations.Sums.GaussianNamedSumDifference
 
 /-!
 # Sine as a normalized combination of the original exponential names
@@ -77,16 +78,8 @@ private theorem difference_cross (f f' g g' : PR 2) (x x' y y' : PTm n)
 
 private theorem constant_difference (a b : PTm n) : Γ ⊢[PRAAx]
     crossEquivalent (GaussianNamedDifference.nameF constantF constantF) constantF
-      (GaussianNamedDifference.data a b) (qsub a b) := by
-  apply GaussianNameRingLaws.equivalent_of_envelope _ _ _ _ (num 6)
-    (GaussianNamedDifference.name_regular _ _ _ _ (constant_regular _) (constant_regular _)) (constant_regular _)
-  refine .allI ?_
-  have raw := GaussianNamedDifference.sample_error (Γ := Γ.map Fm.shift) constantF constantF (Syn.shift a) (Syn.shift b) (var 0)
-    (constant_regular _) (constant_regular _)
-  have actual := distance_congr (.eqRefl _)
-    ((qsub_congr (constant_at _ _) (constant_at _ _)).eqTrans (constant_at (var 0) (qsub (Syn.shift a) (Syn.shift b))).eqSymm)
-    (.eqRefl _) (.eqRefl _) raw
-  simpa only [GaussianNamedDifference.subst_data, GaussianRationalMetric.subst_qsub, PTm.subst_num, Syn.shift] using actual
+      (GaussianNamedDifference.data a b) (qsub a b) :=
+  GaussianNamedSumDifference.constant_difference a b (qsub a b) (.eqRefl _)
 
 theorem sine_exponential_cross (f g : PR 2) (R S x y : PTm n)
     (hf : Γ ⊢[PRAAx] input f R x) (hg : Γ ⊢[PRAAx] input g S y)
