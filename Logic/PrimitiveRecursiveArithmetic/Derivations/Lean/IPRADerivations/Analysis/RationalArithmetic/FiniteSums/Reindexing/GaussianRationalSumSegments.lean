@@ -78,18 +78,7 @@ ipra_subst congruenceLaw
 no equality of the original outer list codes is required. -/
 theorem prefix_entries_congr (Q R m r : PTm n) (h : Γ ⊢[PRAAx] entriesEqual Q R m)
     (hr : Γ ⊢[PRAAx] le r m) : Γ ⊢[PRAAx] partialSum Q r ≐ partialSum R r := by
-  have hs : Γ.map Fm.shift ⊢[PRAAx] entriesEqual (Syn.shift Q) (Syn.shift R) (Syn.shift m) := by
-    simpa only [Fm.shift,subst_entriesEqual,Syn.shift] using h.shift
-  have all : Γ ⊢[PRAAx] .all (congruenceLaw (Syn.shift Q) (Syn.shift R) (Syn.shift m) (var 0)) := by
-    ipra_qfind (⟨le_QF _ _,trivial⟩) [subst_congruenceLaw]
-    · exact .impI ((prefix_zero Q).eqTrans (prefix_zero R).eqSymm)
-    · refine .impI ?_
-      exact (prefix_succ (Syn.shift Q) (var 0)).eqTrans
-        ((qadd_congr (.impE Prf.hyp1 (le_trans (le_succ_self _) Prf.hyp0))
-          (entry_equal_at _ _ _ _ hs.wk.wk Prf.hyp0)).eqTrans (prefix_succ (Syn.shift R) (var 0)).eqSymm)
-  have rule : Γ ⊢[PRAAx] congruenceLaw Q R m r := by
-    simpa only [subst_congruenceLaw,Syn.subst_var,Syn.inst_zero,Syn.subst_inst_shift] using all.allE r
-  exact .impE rule hr
+  exact GaussianRationalHorner.horner_congr_entries Q R qone m r h hr
 
 def splitLaw (Q a m r : PTm n) : Fm PTm n := le r m ⟶
   partialSum Q (a+r) ≐ qadd (partialSum Q a) (partialSum (segment Q a m) r)
@@ -115,14 +104,14 @@ theorem split_step (Q a m r : PTm n) (hr : Γ ⊢[PRAAx] lt r m)
 no outer list-length premise, since every original lookup is total. -/
 theorem prefix_split (Q a m r : PTm n) (hr : Γ ⊢[PRAAx] le r m) : Γ ⊢[PRAAx]
     partialSum Q (a+r) ≐ qadd (partialSum Q a) (partialSum (segment Q a m) r) := by
-  have all : Γ ⊢[PRAAx] .all (splitLaw (Syn.shift Q) (Syn.shift a) (Syn.shift m) (var 0)) := by
-    ipra_qfind (⟨le_QF _ _,trivial⟩) [subst_splitLaw]
-    · exact .impI (split_zero Q a m)
-    · refine .impI ?_
-      exact split_step _ _ _ _ Prf.hyp0 (.impE Prf.hyp1 (le_trans (le_succ_self _) Prf.hyp0))
-  have rule : Γ ⊢[PRAAx] splitLaw Q a m r := by
-    simpa only [subst_splitLaw,Syn.subst_var,Syn.inst_zero,Syn.subst_inst_shift] using all.allE r
-  exact .impE rule hr
+  let invariant := partialSum (Syn.shift Q) (Syn.shift a + var 0) ≐
+    qadd (partialSum (Syn.shift Q) (Syn.shift a))
+      (partialSum (segment (Syn.shift Q) (Syn.shift a) (Syn.shift m)) (var 0))
+  suffices result : Γ ⊢[PRAAx] invariant.subst (Syn.inst r) by simpa [invariant] using result
+  refine qfIndAtMost hr trivial ?_ ?_
+  · simpa [invariant] using split_zero (Γ := Γ) Q a m
+  · simp [invariant]
+    exact .impI (split_step _ _ _ _ Prf.hyp0 Prf.hyp1)
 
 theorem sum_segment (Q a m : PTm n) : Γ ⊢[PRAAx] sum (segment Q a m) ≐ partialSum (segment Q a m) m :=
   prefix_congr (.eqRefl _) (segment_length Q a m)

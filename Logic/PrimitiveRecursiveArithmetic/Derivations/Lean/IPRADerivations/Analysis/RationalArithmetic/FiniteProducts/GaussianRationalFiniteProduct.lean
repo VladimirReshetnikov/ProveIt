@@ -76,18 +76,15 @@ the induction formula is only a guarded equality of actual products. -/
 theorem product_prefix_congr (t u : PTm 2) (N x y k : PTm n)
     (h : Γ ⊢[PRAAx] GaussianRationalFiniteSum.termsEqual t u N x y)
     (hk : Γ ⊢[PRAAx] le k N) : Γ ⊢[PRAAx] qprod t k x ≐ qprod u k y := by
-  have hs : Γ.map Fm.shift ⊢[PRAAx]
+  let invariant := qprod t (var 0) (Syn.shift x) ≐ qprod u (var 0) (Syn.shift y)
+  have shifted : Γ.map Fm.shift ⊢[PRAAx]
       GaussianRationalFiniteSum.termsEqual t u (Syn.shift N) (Syn.shift x) (Syn.shift y) := by
-    simpa only [Fm.shift,GaussianRationalFiniteSum.subst_termsEqual,Syn.shift] using h.shift
-  have all : Γ ⊢[PRAAx] .all (prefixLaw t u (Syn.shift N) (Syn.shift x) (Syn.shift y) (var 0)) := by
-    ipra_qfind (⟨le_QF _ _,trivial⟩) [subst_prefixLaw]
-    · exact .impI ((product_zero t x).eqTrans (product_zero u y).eqSymm)
-    · refine .impI ?_
-      exact prefix_step t u _ _ _ _ hs.wk.wk Prf.hyp0
-        (.impE Prf.hyp1 (le_trans (le_succ_self _) Prf.hyp0))
-  have rule : Γ ⊢[PRAAx] prefixLaw t u N x y k := by
-    simpa only [subst_prefixLaw,Syn.subst_var,Syn.inst_zero,Syn.subst_inst_shift] using all.allE k
-  exact .impE rule hk
+    simpa only [Fm.shift, GaussianRationalFiniteSum.subst_termsEqual, Syn.shift] using h.shift
+  suffices result : Γ ⊢[PRAAx] invariant.subst (Syn.inst k) by simpa [invariant] using result
+  refine qfIndAtMost hk trivial ?_ ?_
+  · simpa [invariant] using (product_zero (Γ := Γ) t x).eqTrans (product_zero u y).eqSymm
+  · simp [invariant]
+    exact .impI (prefix_step t u _ _ _ _ shifted.wk.wk Prf.hyp0 Prf.hyp1)
 
 theorem product_congr_bounded (t u : PTm 2) (N x y : PTm n)
     (h : Γ ⊢[PRAAx] GaussianRationalFiniteSum.termsEqual t u N x y) : Γ ⊢[PRAAx]

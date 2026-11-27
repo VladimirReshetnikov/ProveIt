@@ -143,22 +143,19 @@ theorem term_majorized_at (f g : PTm 2) (N x y i : PTm n)
 
 theorem sum_majorized (f g : PTm 2) (N x y : PTm n) (h : Γ ⊢[PRAAx] termsMajorized f g N x y) :
     Γ ⊢[PRAAx] majorized (GaussianRationalFiniteSum.sum f N x) (RationalFiniteSum.sum g N y) := by
-  have hs : Γ.map Fm.shift ⊢[PRAAx] termsMajorized f g (Syn.shift N) (Syn.shift x) (Syn.shift y) := by
-    simpa [Fm.shift,Syn.shift] using h.shift
-  have all : Γ ⊢[PRAAx] .all (prefixMajorized f g (Syn.shift N) (Syn.shift x) (Syn.shift y) (var 0)) := by
-    refine PRA.qfInd _ ?_ ?_ ?_
-    · simp [prefixMajorized,majorized,sign,bounded,RationalArgmin.rationalLE,Fm.QF,le_QF]
-    · simp only [subst_prefixMajorized,Syn.subst_var,Syn.inst_zero,Syn.subst_inst_shift]
-      exact .impI (majorized_congr (GaussianRationalFiniteSum.sum_zero f x).eqSymm
-        (RationalFiniteSum.sum_zero g y).eqSymm zero_majorized)
-    · simp only [subst_prefixMajorized,Syn.subst_var,Syn.repl_zero,subst_repl_shift]
-      refine .impI ?_
-      apply majorized_congr (GaussianRationalFiniteSum.sum_succ f _ _).eqSymm (RationalFiniteSum.sum_succ g _ _).eqSymm
-      exact majorized_add _ _ _ _ (.impE Prf.hyp1 (le_trans (le_succ_self _) Prf.hyp0))
-        (term_majorized_at f g _ _ _ _ hs.wk.wk Prf.hyp0)
-  have rule : Γ ⊢[PRAAx] prefixMajorized f g N x y N := by
-    simpa only [subst_prefixMajorized,Syn.subst_var,Syn.inst_zero,Syn.subst_inst_shift] using all.allE N
-  exact .impE rule (le_refl _)
+  let invariant := majorized (GaussianRationalFiniteSum.sum f (var 0) (Syn.shift x))
+    (RationalFiniteSum.sum g (var 0) (Syn.shift y))
+  have shifted : Γ.map Fm.shift ⊢[PRAAx] termsMajorized f g (Syn.shift N) (Syn.shift x) (Syn.shift y) := by
+    simpa [Fm.shift, Syn.shift] using h.shift
+  have hQF : invariant.QF := by simp [invariant, majorized, sign, bounded, RationalArgmin.rationalLE, Fm.QF, le_QF]
+  suffices result : Γ ⊢[PRAAx] invariant.subst (Syn.inst N) by simpa [invariant] using result
+  refine qfIndUpTo N hQF ?_ ?_
+  · simpa [invariant] using majorized_congr (GaussianRationalFiniteSum.sum_zero (Γ := Γ) f x).eqSymm
+      (RationalFiniteSum.sum_zero g y).eqSymm zero_majorized
+  · simp [invariant]
+    refine .impI (majorized_congr (GaussianRationalFiniteSum.sum_succ f _ _).eqSymm
+      (RationalFiniteSum.sum_succ g _ _).eqSymm ?_)
+    exact majorized_add _ _ _ _ Prf.hyp1 (term_majorized_at f g _ _ _ _ shifted.wk.wk Prf.hyp0)
 
 theorem actual_scalar_majorant_sum_closed (f g : PTm 2) : ([] : List (Fm PTm 0)) ⊢[PRAAx] univ 3
     (termsMajorized f g (var 0) (var 1) (var 2) ⟶

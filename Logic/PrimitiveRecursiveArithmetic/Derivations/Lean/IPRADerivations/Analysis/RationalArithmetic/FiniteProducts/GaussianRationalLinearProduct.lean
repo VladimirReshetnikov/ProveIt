@@ -183,17 +183,7 @@ no extensionality of arbitrary outer sequence encodings is assumed. -/
 theorem horner_ext (C D y N k : PTm n)
     (h : Γ ⊢[PRAAx] .all (lt (var 0) (Syn.shift N) ⟶ entry (Syn.shift C) (var 0) ≐ entry (Syn.shift D) (var 0)))
     (hk : Γ ⊢[PRAAx] le k N) : Γ ⊢[PRAAx] horner C y k ≐ horner D y k := by
-  let invariant := horner (Syn.shift C) (Syn.shift y) (var 0) ≐ horner (Syn.shift D) (Syn.shift y) (var 0)
-  have atIndex : Γ ⊢[PRAAx] invariant.subst (Syn.inst k) := by
-    refine qfIndAtMost hk trivial ?_ ?_
-    · simpa [invariant] using
-        (GaussianRationalHorner.horner_zero (Γ := Γ) C y).eqTrans (GaussianRationalHorner.horner_zero D y).eqSymm
-    · ipra_ind_simp [invariant, GaussianRationalHorner.subst_horner, subst_repl_shift]
-      refine .impI ?_
-      exact (GaussianRationalHorner.horner_succ _ _ _).eqTrans
-        ((qadd_congr (qmul_congr Prf.hyp1 (.eqRefl _)) (.impE h.allOpen.wk.wk Prf.hyp0)).eqTrans
-          (GaussianRationalHorner.horner_succ _ _ _).eqSymm)
-  simpa [invariant] using atIndex
+  exact GaussianRationalHorner.horner_congr_entries C D y N k h hk
 
 theorem inverse_entries (C z N : PTm n) (hC : Γ ⊢[PRAAx] length C ≐ N)
     (hcanon : Γ ⊢[PRAAx] canonicalCoefficients C) : Γ ⊢[PRAAx]

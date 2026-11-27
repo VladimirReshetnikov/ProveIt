@@ -182,6 +182,20 @@ theorem horner_succ (C z k : PTm n) : Γ ⊢[PRAAx]
   have h := rec_succ_vecCons (Γ := Γ) (qzero : PTm 2) hornerStep k ![C,z]
   simpa [horner,hornerF,ap3,hornerStep] using h
 
+/-- Literal entries determine an actual Horner prefix up to the certified bound. -/
+theorem horner_congr_entries (C D y N k : PTm n)
+    (h : Γ ⊢[PRAAx] .all (lt (var 0) (Syn.shift N) ⟶ entry (Syn.shift C) (var 0) ≐ entry (Syn.shift D) (var 0)))
+    (hk : Γ ⊢[PRAAx] le k N) : Γ ⊢[PRAAx] horner C y k ≐ horner D y k := by
+  let invariant := horner (Syn.shift C) (Syn.shift y) (var 0) ≐ horner (Syn.shift D) (Syn.shift y) (var 0)
+  suffices result : Γ ⊢[PRAAx] invariant.subst (Syn.inst k) by simpa [invariant] using result
+  refine qfIndAtMost hk trivial ?_ ?_
+  · simpa [invariant] using (horner_zero (Γ := Γ) C y).eqTrans (horner_zero D y).eqSymm
+  · simp [invariant]
+    refine .impI ?_
+    refine (horner_succ _ _ _).eqTrans (Prf.eqTrans ?_ (horner_succ _ _ _).eqSymm)
+    ipra_congr (qadd (qmul (var 0) (var 1)) (var 2) : PTm 3) with
+      [Prf.hyp1, .eqRefl _, .impE h.allOpen.wk.wk Prf.hyp0]
+
 theorem canonical_congr {q r : PTm n} (h : Γ ⊢[PRAAx] q ≐ r)
     (hr : Γ ⊢[PRAAx] canonical r) : Γ ⊢[PRAAx] canonical q := by
   have e := Prf.eqSubst (canonical (var 0) : Fm PTm 1) ![r] ![q]

@@ -148,13 +148,13 @@ theorem filter_step (K f : PTm 2) (P p x u : PTm n) (hu : Γ ⊢[PRAAx] lt u P)
 
 theorem filter_prefix (K f : PTm 2) (P p x u : PTm n) (hu : Γ ⊢[PRAAx] le u P) : Γ ⊢[PRAAx]
     selectedPrefix K f P p x u ≐ maskedPrefix K f p x u := by
-  have all : Γ ⊢[PRAAx] .all (filterLaw K f (Syn.shift P) (Syn.shift p) (Syn.shift x) (var 0)) := by
-    ipra_qfind (⟨le_QF _ _,trivial⟩) [subst_filterLaw]
-    · exact .impI (filter_zero _ _ _ _ _)
-    · exact .impI (filter_step _ _ _ _ _ _ Prf.hyp0 (.impE Prf.hyp1 (le_trans (le_succ_self _) Prf.hyp0)))
-  have rule : Γ ⊢[PRAAx] filterLaw K f P p x u := by
-    simpa only [subst_filterLaw,Syn.subst_var,Syn.inst_zero,Syn.subst_inst_shift] using all.allE u
-  exact .impE rule hu
+  let invariant := selectedPrefix K f (Syn.shift P) (Syn.shift p) (Syn.shift x) (var 0) ≐
+    maskedPrefix K f (Syn.shift p) (Syn.shift x) (var 0)
+  suffices result : Γ ⊢[PRAAx] invariant.subst (Syn.inst u) by simpa [invariant] using result
+  refine qfIndAtMost hu trivial ?_ ?_
+  · simpa [invariant] using filter_zero (Γ := Γ) K f P p x
+  · simp [invariant]
+    exact .impI (filter_step _ _ _ _ _ _ Prf.hyp0 Prf.hyp1)
 
 theorem filtered_sum (K f : PTm 2) (P p x : PTm n) : Γ ⊢[PRAAx]
     sum (selectedBody K f) (rank K P p) (filteredData P p x) ≐ sum (maskBody K f) P (pairT p x) :=
