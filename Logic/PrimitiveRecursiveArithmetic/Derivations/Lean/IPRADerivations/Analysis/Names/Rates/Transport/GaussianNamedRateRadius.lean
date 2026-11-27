@@ -76,6 +76,49 @@ theorem distance_at_first_succ (a b A B p q : PTm n)
   ipra_simps
   linear_combination 𝔞(U)*𝔞(V)^2*budget + 𝔞(B)*𝔞(V)^2*next
 
+private theorem frozen_budget (p q s a : PTm n)
+    (h : Γ ⊢[PRAAx] le (two*unit p*unit s) (unit a*(two*unit p+unit s))) :
+    Γ ⊢[PRAAx] le (rateNumerator one (unit a) (succ p) q*rateDenominator (unit s) p q)
+      (rateNumerator one (unit s) p q*rateDenominator (unit a) (succ p) q) := by
+  let U := unit p
+  let V := unit q
+  let S := unit s
+  let W := unit a
+  have cleared : Γ ⊢[PRAAx]
+      le ((one*(two*U)*V+W*(two*U+V))*(S*U*V)) ((one*U*V+S*(U+V))*(W*(two*U)*V)) := by
+    change Γ ⊢[PRAAx] le (two*U*S) (W*(two*U+S)) at h
+    ipra_le 𝔞(U)*𝔞(V)^2*sl h
+  have double : Γ ⊢[PRAAx] unit (succ p) ≐ two*U := (pw_succ two p).eqTrans (mul_comm _ _)
+  exact le_congr
+    (congrMul (congrAdd (congrMul (congrMul (.eqRefl _) double) (.eqRefl _))
+      (congrMul (.eqRefl _) (congrAdd double (.eqRefl _)))) (.eqRefl _)).eqSymm
+    (congrMul (.eqRefl _) (congrMul (congrMul (.eqRefl _) double) (.eqRefl _))).eqSymm cleared
+
+private theorem frozen_observation_at (F G : PR 2) (p q s a x y : PTm n)
+    (paid : Γ ⊢[PRAAx] le (two*unit p*unit s) (unit a*(two*unit p+unit s)))
+    (h : Γ ⊢[PRAAx] independentRate F G x y one (unit a)) :
+    Γ ⊢[PRAAx] distanceBounded (ap2 F (succ p) x) (ap2 G q y)
+      (rateNumerator one (unit s) p q) (rateDenominator (unit s) p q) :=
+  distance_radius_mono _ _ _ _ _ _ (denominator_positive _ _ _ (unit_positive a))
+    (denominator_positive _ _ _ (unit_positive s)) (frozen_budget p q s a paid)
+    (rate_at F G x y one (unit a) (succ p) q h)
+
+/-- Compare an original observation at its successor clock with a frozen name. -/
+theorem frozen_observation_of_rates (F G : PR 2) (p q s x y : PTm n)
+    (early : le p s :: Γ ⊢[PRAAx] independentRate F G x y one (unit (succ p)))
+    (late : le s p :: Γ ⊢[PRAAx] independentRate F G x y one (unit s)) :
+    Γ ⊢[PRAAx] distanceBounded (ap2 F (succ p) x) (ap2 G q y)
+      (rateNumerator one (unit s) p q) (rateDenominator (unit s) p q) := by
+  refine .orE (le_total p s) ?_ ?_
+  · have double : le p s :: Γ ⊢[PRAAx] unit (succ p) ≐ two*unit p := (pw_succ two p).eqTrans (mul_comm _ _)
+    have paid : le p s :: Γ ⊢[PRAAx] le (two*unit p*unit s) ((two*unit p)*(two*unit p+unit s)) :=
+      le_of_eq_add (d := two*unit p*(two*unit p)) (by ipra_ring)
+    exact frozen_observation_at F G p q s (succ p) x y
+      (le_congr (.eqRefl _) (congrMul double.eqSymm (.eqRefl _)) paid) early
+  · have paid : le s p :: Γ ⊢[PRAAx] le (two*unit p*unit s) (unit s*(two*unit p+unit s)) :=
+      le_of_eq_add (d := unit s*unit s) (by ipra_ring)
+    exact frozen_observation_at F G p q s s x y paid late
+
 /-- Enlarge the second dyadic allowance while keeping both observations and
 the first allowance fixed. -/
 theorem relax_second_clock (a b p q r : PTm n) (hqr : Γ ⊢[PRAAx] le q r)

@@ -1,4 +1,5 @@
 import IPRADerivations.Analysis.Names.RightHalfPlane.GaussianNamedRightHalfPlaneDemandLift
+import IPRADerivations.Analysis.Names.Rates.Transport.GaussianNamedRateRadius
 
 /-!
 # Compare demand-based right-half-plane lifts
@@ -22,63 +23,32 @@ open GaussianNamedRightHalfPlaneDemandLift (RationalMap demandBody clock frozenD
 open GaussianNamedRightHalfPlaneSigned (certificate)
 open GaussianNameEquivalence (crossEquivalent diagonalEquivalent diagonal_to_cross
   cross_to_diagonal diagonal_at cross_refl)
-open GaussianNamedInverseRate (independentRate rateNumerator rateDenominator rate_at denominator_positive)
+open GaussianNamedRateRadius (frozen_observation_of_rates)
+open GaussianNamedInverseRate (independentRate rateNumerator rateDenominator)
 open GaussianRationalDistanceOrder (distance_congr distance_radius_mono)
 open GaussianRationalMetric (distanceBounded)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
-local notation "𝔞" t:max => Groth.ι (Q.mk Γ t)
 
-private theorem frozen_budget (p q s a : PTm n)
-    (h : Γ ⊢[PRAAx] le (two*unit p*unit s) (unit a*(two*unit p+unit s))) : Γ ⊢[PRAAx]
-    le (rateNumerator one (unit a) (succ p) q*rateDenominator (unit s) p q)
-      (rateNumerator one (unit s) p q*rateDenominator (unit a) (succ p) q) := by
-  let P := unit p
-  let Q := unit q
-  let S := unit s
-  let W := unit a
-  have cleared : Γ ⊢[PRAAx]
-      le ((one*(two*P)*Q+W*(two*P+Q))*(S*P*Q)) ((one*P*Q+S*(P+Q))*(W*(two*P)*Q)) := by
-    change Γ ⊢[PRAAx] le (two*P*S) (W*(two*P+S)) at h
-    ipra_le 𝔞(P)*𝔞(Q)^2*sl h
-  have double : Γ ⊢[PRAAx] unit (succ p) ≐ two*P := (pw_succ two p).eqTrans (mul_comm _ _)
-  exact le_congr
-    (congrMul (congrAdd (congrMul (congrMul (.eqRefl _) double) (.eqRefl _))
-      (congrMul (.eqRefl _) (congrAdd double (.eqRefl _)))) (.eqRefl _)).eqSymm
-    (congrMul (.eqRefl _) (congrMul (congrMul (.eqRefl _) double) (.eqRefl _))).eqSymm cleared
-
-private theorem rate_with (map : RationalMap) (f : PR 2) (p q s a k x M R : PTm n)
+private theorem late_frozen_rate (map : RationalMap) (f : PR 2) (p s a k x M R : PTm n)
     (hf : Γ ⊢[PRAAx] source f x M R) (hk : Γ ⊢[PRAAx] le (clock map s M R) k)
-    (hp : Γ ⊢[PRAAx] le a (succ p)) (hs : Γ ⊢[PRAAx] le a (succ s))
-    (hb : Γ ⊢[PRAAx] le (two*unit p*unit s) (unit a*(two*unit p+unit s))) :
-    Γ ⊢[PRAAx] distanceBounded (ap2 (nameF map f) p (data x M R))
-      (ap2 map.evaluator q (frozenData map f k x M R))
-      (rateNumerator one (unit s) p q) (rateDenominator (unit s) p q) := by
-  let r := clock map p M R
-  have rate := late_rate map f f a r k x x M R hf hf (cross_refl _ _ hf.andE₁.andE₁)
+    (hp : Γ ⊢[PRAAx] le a (succ p)) (hs : Γ ⊢[PRAAx] le a (succ s)) :
+    Γ ⊢[PRAAx] independentRate map.evaluator map.evaluator
+      (frozenData map f (clock map p M R) x M R) (frozenData map f k x M R) one (unit a) :=
+  late_rate map f f a (clock map p M R) k x x M R hf hf (cross_refl _ _ hf.andE₁.andE₁)
     (clock_margin map p M R) (le_trans (clock_margin map s M R) hk)
     (clock_demand map p M R a hp) (le_trans (clock_demand map s M R a hs) hk)
-  have near := distance_radius_mono _ _ _ _ _ _ (denominator_positive _ _ _ (unit_positive a))
-    (denominator_positive _ _ _ (unit_positive s)) (frozen_budget p q s a hb)
-    (rate_at _ _ _ _ _ _ (succ p) q rate)
-  exact distance_congr (sample_at map f p x M R).eqSymm (.eqRefl _) (.eqRefl _) (.eqRefl _) near
 
 theorem frozen_observations (map : RationalMap) (f : PR 2) (p q s k x M R : PTm n)
     (hf : Γ ⊢[PRAAx] source f x M R) (hk : Γ ⊢[PRAAx] le (clock map s M R) k) :
     Γ ⊢[PRAAx] distanceBounded (ap2 (nameF map f) p (data x M R))
       (ap2 map.evaluator q (frozenData map f k x M R))
       (rateNumerator one (unit s) p q) (rateDenominator (unit s) p q) := by
-  refine .orE (le_total p s) ?_ ?_
-  · have late : le p s :: Γ ⊢[PRAAx] le (succ p) (succ s) :=
-      le_congr (succ_eq_add_one _).eqSymm (succ_eq_add_one _).eqSymm (add_le_add_right one Prf.hyp0)
-    have double : le p s :: Γ ⊢[PRAAx] unit (succ p) ≐ two*unit p := (pw_succ two p).eqTrans (mul_comm _ _)
-    have hb : le p s :: Γ ⊢[PRAAx] le (two*unit p*unit s) ((two*unit p)*(two*unit p+unit s)) :=
-      le_of_eq_add (d := two*unit p*(two*unit p)) (by ipra_ring)
-    exact rate_with map f p q s (succ p) k x M R hf.wk hk.wk (le_refl _) late
-      (le_congr (.eqRefl _) (congrMul double.eqSymm (.eqRefl _)) hb)
-  · have hb : le s p :: Γ ⊢[PRAAx] le (two*unit p*unit s) (unit s*(two*unit p+unit s)) :=
-      le_of_eq_add (d := unit s*unit s) (by ipra_ring)
-    exact rate_with map f p q s s k x M R hf.wk hk.wk (le_trans Prf.hyp0 (le_succ_self p)) (le_succ_self s) hb
+  have read := frozen_observation_of_rates map.evaluator map.evaluator p q s
+    (frozenData map f (clock map p M R) x M R) (frozenData map f k x M R)
+    (late_frozen_rate map f p s (succ p) k x M R hf.wk hk.wk (le_refl _) (Common.succ_le_succ Prf.hyp0))
+    (late_frozen_rate map f p s s k x M R hf.wk hk.wk (le_trans Prf.hyp0 (le_succ_self p)) (le_succ_self s))
+  exact distance_congr (sample_at map f p x M R).eqSymm (.eqRefl _) (.eqRefl _) (.eqRefl _) read
 
 theorem frozen_rate (map : RationalMap) (f : PR 2) (s k x M R : PTm n)
     (hf : Γ ⊢[PRAAx] source f x M R) (hk : Γ ⊢[PRAAx] le (clock map s M R) k) :
