@@ -16,21 +16,20 @@ namespace LeanProofs.IPRA.Analysis.GaussianBetaEulerUpperDifferenceGrid
 
 open_ipra
 open GaussianEulerUpperPowerCoefficients (source)
-open GaussianBetaEulerTailDifferencePointwise (scalarMajorant referenceError difference)
+open GaussianBetaEulerTailDifferencePointwise (scalarMajorant referenceError)
 open GaussianEulerWeightedHalfDecay (majorant)
-open GaussianEulerCompactUpperTail (halfEvaluator scaledF scaled_at scaled_quadrature)
+open GaussianEulerCompactUpperTail (halfEvaluator scaledF scaled_quadrature)
 open GaussianCompactRiemannName (sampleBody sampleData sample_body_at quadrature
-  field0 field1 field2 field3 field4 field5 field0_at field1_at field2_at field3_at field4_at field5_at)
+  field0 field1 field2 field3 field4 field5)
 open GaussianRationalQuadratureDifference (differenceBody difference_body_at weighted_difference)
 open GaussianRationalSumMajorant (majorized termsMajorized majorized_congr)
-open GaussianRationalRiemannRefinement (leftSum termsDistance)
+open GaussianRationalRiemannRefinement (leftSum)
 open GaussianRationalHorner (qmul positive_product)
-open GaussianRationalSyntheticDivision (qmul_congr qsub_congr)
+open GaussianRationalSyntheticDivision (qsub_congr)
 open GaussianRationalMetric (bounded distanceBounded)
 open GaussianRationalDistanceOrder (distance_congr)
 open GaussianCoefficientNameBounds (unit unit_positive)
 open GaussianDominantPairAlgebra (radiusPoint radius_bounded)
-open RationalGaussianEmbedding (embed)
 open RationalGaussianRealPart (embedBody)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
@@ -40,12 +39,8 @@ def scalarBody : PTm 2 := scalarMajorant (field0 (var 1)) (field5 (var 1))
 
 theorem scalar_body_at (i p M a C E R : PTm n) : Γ ⊢[PRAAx]
     inst2 scalarBody i (sampleData p M a C E R) ≐ scalarMajorant p R (a*M+C*i) (E*M) := by
-  let x := sampleData p M a C E R
-  have num := congrAdd (congrMul (field2_at p M a C E R) (field1_at p M a C E R))
-    (congrMul (field3_at p M a C E R) (Prf.eqRefl (Γ := Γ) i))
-  have den := congrMul (field4_at (Γ := Γ) p M a C E R) (field1_at p M a C E R)
-  ipra_congr (scalarMajorant (var 0) (var 1) (var 2) (var 3) : PTm 4) with
-    [field0_at p M a C E R, field5_at p M a C E R, num, den] using [scalarBody, inst2, x]
+  simpa [scalarBody, GaussianEulerCompactUpperTail.scalarBodyWith] using
+    GaussianEulerCompactUpperTail.scalar_body_at_of (Γ := Γ) (scalarMajorant (var 0) (var 1) (var 2) (var 3)) i p M a C E R
 
 theorem majorized_row (i p M a C E z R B N : PTm n) (hM : Γ ⊢[PRAAx] le one M)
     (hE : Γ ⊢[PRAAx] le one E) (hea : Γ ⊢[PRAAx] le E a) (h : Γ ⊢[PRAAx] source z R B)
@@ -56,12 +51,8 @@ theorem majorized_row (i p M a C E z R B N : PTm n) (hM : Γ ⊢[PRAAx] le one M
       (inst2 scalarBody i (sampleData p M a C E R)) := by
   let u := a*M+C*i
   let v := E*M
-  have hv : Γ ⊢[PRAAx] le one v := positive_product _ _ hE hM
-  have hle : Γ ⊢[PRAAx] le v u := le_trans (mul_le_mul_right M hea) (le_add_right _ _)
-  have hs : Γ ⊢[PRAAx] GaussianEulerUpperPowerOrder.source z R B u v := .andI h (.andI (.andI (le_trans hv hle) hv) hle)
-  have within : Γ ⊢[PRAAx] le u (v*N) :=
-    le_trans (add_le_add₂ (le_refl (a*M)) (AnalyticNumberTheory.PhiLower.le_mul_mono (le_refl C) (le_of_lt hi)))
-      (le_congr (by ipra_ring) (by dsimp only [v]; ipra_ring) (mul_le_mul_right M hRight))
+  have hs := GaussianEulerCompactUpperTail.grid_row_source i M a C E z R B hM hE hea h
+  have within := GaussianEulerCompactUpperTail.grid_row_within i M a C E N hRight hi
   have left := (sample_body_at (Γ := Γ) GaussianBetaKernelGridComparison.evaluatorF i p M a C E (GaussianBetaKernelGridComparison.sampleDataBeta z B N)).eqTrans
     (GaussianBetaKernelGridComparison.row_at p z B u v N)
   have right := sample_body_at (Γ := Γ) GaussianEulerIntegrandName.evaluatorF i p M a C E (GaussianEulerIntegrandName.fixedData z B)
@@ -72,19 +63,10 @@ theorem majorized_row (i p M a C E z R B N : PTm n) (hM : Γ ⊢[PRAAx] le one M
 theorem reference_row (i p M a C E R : PTm n) (hM : Γ ⊢[PRAAx] le one M)
     (hE : Γ ⊢[PRAAx] le one E) : Γ ⊢[PRAAx] distanceBounded
     (inst2 (embedBody scalarBody) i (sampleData p M a C E R))
-    (inst2 (sampleBody scaledF) i (sampleData p M a C E (majorant R))) (referenceError R) (unit p) := by
-  let u := a*M+C*i
-  let v := E*M
-  let K := majorant R
-  have hv := positive_product (Γ := Γ) _ _ hE hM
-  have left : Γ ⊢[PRAAx] inst2 (embedBody scalarBody) i (sampleData p M a C E R) ≐ embed (scalarMajorant p R u v) := by
-    simpa only [inst2,embedBody,RationalGaussianEmbedding.subst_embed] using
-      RationalGaussianRealPart.embed_congr (scalar_body_at (Γ := Γ) i p M a C E R)
-  have right := (sample_body_at (Γ := Γ) scaledF i p M a C E K).eqTrans
-    ((scaled_at p (pairT u v) K).eqTrans (qmul_congr (.eqRefl _)
-      (GaussianEulerHalfDecayReference.actual_half_evaluator p u v zero)))
-  exact distance_congr left.eqSymm right.eqSymm (.eqRefl _) (.eqRefl _)
-    (GaussianBetaEulerTailDifferencePointwise.scalar_majorant_half_reference_error p R u v hv)
+    (inst2 (sampleBody scaledF) i (sampleData p M a C E (majorant R))) (referenceError R) (unit p) :=
+  GaussianEulerCompactUpperTail.reference_row_of i p M a C E R _ _ (scalar_body_at i p M a C E R)
+    (GaussianBetaEulerTailDifferencePointwise.scalar_majorant_half_reference_error p R (a*M+C*i) (E*M)
+      (positive_product _ _ hE hM))
 
 /-- Sum an actual grid difference majorized by the scalar half-decay rows. -/
 theorem grid_bound_of_majorized_difference (f g : PTm 2) (p M a C E R X Y U V : PTm n)
@@ -96,14 +78,10 @@ theorem grid_bound_of_majorized_difference (f g : PTm 2) (p M a C E R X Y U V : 
       ((C*referenceError R)*V+U*(E*unit p)) ((E*unit p)*V) := by
   let Z := sampleData p M a C E R
   let W := sampleData p M a C E (majorant R)
-  have er : Γ ⊢[PRAAx] termsDistance (embedBody scalarBody) (sampleBody scaledF) M Z W (referenceError R) (unit p) := by
-    have m' : Γ.map Fm.shift ⊢[PRAAx] le one (Syn.shift M) := by simpa [Fm.shift,Syn.shift] using hM.shift
-    have e' : Γ.map Fm.shift ⊢[PRAAx] le one (Syn.shift E) := by simpa [Fm.shift,Syn.shift] using hE.shift
-    refine .allI (.impI ?_)
-    simpa only [termsDistance,Z,W,Syn.shift,GaussianCompactRiemannName.subst_sampleData,
-      GaussianEulerWeightedHalfDecay.subst_majorant,GaussianBetaEulerTailDifferencePointwise.subst_referenceError,
-      GaussianCoefficientNameBounds.subst_unit] using
-      reference_row (var 0) (Syn.shift p) (Syn.shift M) (Syn.shift a) (Syn.shift C) (Syn.shift E) (Syn.shift R) m'.wk e'.wk
+  have er := GaussianEulerCompactUpperTail.reference_rows_of scalarBody p M a C E R (referenceError R) (by
+    simpa only [Syn.shift, GaussianBetaEulerTailDifferencePointwise.subst_referenceError] using
+      reference_row (var 0) (Syn.shift p) (Syn.shift M) (Syn.shift a) (Syn.shift C) (Syn.shift E)
+        (Syn.shift R) (Order.shift_one_le hM).wk (Order.shift_one_le hE).wk)
   have dist := GaussianCompactScalarMajorant.common_mesh_distance (embedBody scalarBody) (sampleBody scaledF)
     M Z W C E (referenceError R) (unit p) hM hE (unit_positive p) er
   have error := distance_congr (GaussianCompactScalarMajorant.scalar_left_embedding scalarBody M Z C E hE hM).eqSymm

@@ -44,21 +44,45 @@ def scaledF : PR 3 := PTm.toPR (scaledEval (var 0) (var 1) (var 2))
 
 ipra_subst scaledEval
 
+/-- Read a scalar evaluator on the same grid as the compact quadrature. -/
+def scalarBodyWith (f : PTm 4) : PTm 2 :=
+  Syn.subst ![field0 (var 1), field5 (var 1),
+    field2 (var 1)*field1 (var 1)+field3 (var 1)*var 0, field4 (var 1)*field1 (var 1)] f
+
+theorem scalar_body_at_of (f : PTm 4) (i p N a C E R : PTm n) : Γ ⊢[PRAAx]
+    inst2 (scalarBodyWith f) i (sampleData p N a C E R) ≐ Syn.subst ![p,R,a*N+C*i,E*N] f := by
+  rw [inst2, scalarBodyWith, Syn.subst_subst]
+  refine Prf.eqCongr f ?_
+  intro j
+  fin_cases j
+  · simpa using field0_at (Γ := Γ) p N a C E R
+  · simpa using field5_at (Γ := Γ) p N a C E R
+  · simpa using congrAdd (congrMul (field2_at p N a C E R) (field1_at p N a C E R))
+      (congrMul (field3_at p N a C E R) (Prf.eqRefl (Γ := Γ) i))
+  · simpa using congrMul (field4_at (Γ := Γ) p N a C E R) (field1_at p N a C E R)
+
 theorem scalar_body_at (i p N a C E R : PTm n) : Γ ⊢[PRAAx]
     inst2 scalarBody i (sampleData p N a C E R) ≐ scalarMajorant p R (a*N+C*i) (E*N) := by
-  let x := sampleData p N a C E R
-  have hint := congrAdd (congrMul (field2_at p N a C E R) (field1_at p N a C E R))
-    (congrMul (field3_at p N a C E R) (Prf.eqRefl (Γ := Γ) i))
-  have denom : Γ ⊢[PRAAx] field4 x*field1 x ≐ E*N :=
-    congrMul (field4_at p N a C E R) (field1_at p N a C E R)
-  ipra_congr (scalarMajorant (var 0) (var 1) (var 2) (var 3) : PTm 4) with
-    [field0_at p N a C E R, field5_at p N a C E R, hint, denom] using [scalarBody, inst2, x]
+  simpa [scalarBody, scalarBodyWith] using
+    scalar_body_at_of (Γ := Γ) (scalarMajorant (var 0) (var 1) (var 2) (var 3)) i p N a C E R
 
 theorem scaled_at (p t M : PTm n) : Γ ⊢[PRAAx]
     ap3 scaledF p t M ≐ qmul (radiusPoint M one) (ap3 halfEvaluator p t zero) := by
   have e : Γ ⊢[PRAAx] ap3 scaledF p t M ≐ scaledEval p t M := by
     simpa [scaledF,ap3] using toPR_eq (Γ := Γ) (scaledEval (var 0) (var 1) (var 2) : PTm 3) ![p,t,M]
   exact e
+
+theorem grid_row_source (i N a C E z R B : PTm n) (hN : Γ ⊢[PRAAx] le one N)
+    (hE : Γ ⊢[PRAAx] le one E) (hea : Γ ⊢[PRAAx] le E a) (h : Γ ⊢[PRAAx] source z R B) :
+    Γ ⊢[PRAAx] GaussianEulerUpperPowerOrder.source z R B (a*N+C*i) (E*N) := by
+  have hpositive := positive_product _ _ hE hN
+  have hordered := le_trans (mul_le_mul_right N hea) (le_add_right _ (C*i))
+  exact .andI h (.andI (.andI (le_trans hpositive hordered) hpositive) hordered)
+
+theorem grid_row_within (i N a C E K : PTm n) (hRight : Γ ⊢[PRAAx] le (a+C) (E*K))
+    (hi : Γ ⊢[PRAAx] lt i N) : Γ ⊢[PRAAx] le (a*N+C*i) ((E*N)*K) :=
+  le_trans (add_le_add_left (a*N) (mul_le_mul_left C (le_of_lt hi)))
+    (le_congr (by ipra_ring) (by ipra_ring) (mul_le_mul_right N hRight))
 
 theorem majorized_row (i p N a C E z R B : PTm n) (hN : Γ ⊢[PRAAx] le one N)
     (hE : Γ ⊢[PRAAx] le one E) (hea : Γ ⊢[PRAAx] le E a) (h : Γ ⊢[PRAAx] source z R B) :
@@ -67,31 +91,48 @@ theorem majorized_row (i p N a C E z R B : PTm n) (hN : Γ ⊢[PRAAx] le one N)
       (inst2 scalarBody i (sampleData p N a C E R)) := by
   let u := a*N+C*i
   let v := E*N
-  have hv : Γ ⊢[PRAAx] le one v := positive_product _ _ hE hN
-  have hle : Γ ⊢[PRAAx] le v u := le_trans (mul_le_mul_right N hea) (le_add_right _ _)
-  have hs : Γ ⊢[PRAAx] GaussianEulerUpperPowerOrder.source z R B u v :=
-    .andI h (.andI (.andI (le_trans hv hle) hv) hle)
+  have hs := grid_row_source i N a C E z R B hN hE hea h
   exact majorized_congr (sample_body_at evaluatorF i p N a C E (fixedData z B)).eqSymm
     (scalar_body_at i p N a C E R).eqSymm
     (GaussianEulerUpperTailScalar.original_cell_majorized p z R B u v hs)
+
+/-- Transport a pointwise half-decay bound to the two literal grid rows. -/
+theorem reference_row_of {f : PTm 2} (i p N a C E R v K : PTm n)
+    (scalar : Γ ⊢[PRAAx] inst2 f i (sampleData p N a C E R) ≐ v)
+    (reference : Γ ⊢[PRAAx] distanceBounded (embed v)
+      (qmul (radiusPoint (majorant R) one) (GaussianEulerWeightedHalfDecay.halfSample p (a*N+C*i) (E*N)))
+      K (unit p)) : Γ ⊢[PRAAx] distanceBounded
+    (inst2 (embedBody f) i (sampleData p N a C E R))
+    (inst2 (sampleBody scaledF) i (sampleData p N a C E (majorant R))) K (unit p) := by
+  have left : Γ ⊢[PRAAx] inst2 (embedBody f) i (sampleData p N a C E R) ≐ embed v := by
+    simpa only [inst2,embedBody,RationalGaussianEmbedding.subst_embed] using
+      RationalGaussianRealPart.embed_congr scalar
+  have right := (sample_body_at (Γ := Γ) scaledF i p N a C E (majorant R)).eqTrans
+    ((scaled_at p (pairT (a*N+C*i) (E*N)) (majorant R)).eqTrans (qmul_congr (.eqRefl _)
+      (GaussianEulerHalfDecayReference.actual_half_evaluator p (a*N+C*i) (E*N) zero)))
+  exact distance_congr left.eqSymm right.eqSymm (.eqRefl _) (.eqRefl _) reference
+
+theorem reference_rows_of (f : PTm 2) (p N a C E R K : PTm n)
+    (rows : let i : PTm (n+1) := var 0
+      lt i (Syn.shift N) :: Γ.map Fm.shift ⊢[PRAAx] distanceBounded
+        (inst2 (embedBody f) i (sampleData (Syn.shift p) (Syn.shift N) (Syn.shift a) (Syn.shift C)
+          (Syn.shift E) (Syn.shift R)))
+        (inst2 (sampleBody scaledF) i (sampleData (Syn.shift p) (Syn.shift N) (Syn.shift a) (Syn.shift C)
+          (Syn.shift E) (majorant (Syn.shift R)))) (Syn.shift K) (unit (Syn.shift p))) :
+    Γ ⊢[PRAAx] termsDistance (embedBody f) (sampleBody scaledF) N
+      (sampleData p N a C E R) (sampleData p N a C E (majorant R)) K (unit p) := by
+  refine .allI (.impI ?_)
+  simpa only [termsDistance, Syn.shift, GaussianCompactRiemannName.subst_sampleData,
+    GaussianEulerWeightedHalfDecay.subst_majorant, GaussianCoefficientNameBounds.subst_unit] using rows
 
 theorem reference_row (i p N a C E R : PTm n) (hN : Γ ⊢[PRAAx] le one N)
     (hE : Γ ⊢[PRAAx] le one E) :
     Γ ⊢[PRAAx] distanceBounded
       (inst2 (embedBody scalarBody) i (sampleData p N a C E R))
-      (inst2 (sampleBody scaledF) i (sampleData p N a C E (majorant R))) (budget R) (unit p) := by
-  let u := a*N+C*i
-  let v := E*N
-  let M := majorant R
-  have hv : Γ ⊢[PRAAx] le one v := positive_product _ _ hE hN
-  have e₁ : Γ ⊢[PRAAx] inst2 (embedBody scalarBody) i (sampleData p N a C E R) ≐ embed (scalarMajorant p R u v) := by
-    simpa only [inst2,embedBody,RationalGaussianEmbedding.subst_embed] using
-      RationalGaussianRealPart.embed_congr (scalar_body_at i p N a C E R)
-  have e₂ := (sample_body_at (Γ := Γ) scaledF i p N a C E M).eqTrans
-    ((scaled_at p (pairT u v) M).eqTrans (qmul_congr (.eqRefl _)
-      (GaussianEulerHalfDecayReference.actual_half_evaluator p u v zero)))
-  exact distance_congr e₁.eqSymm e₂.eqSymm (.eqRefl _) (.eqRefl _)
-    (GaussianEulerUpperTailScalar.scalar_majorant_scaled_reference_error p R u v hv)
+      (inst2 (sampleBody scaledF) i (sampleData p N a C E (majorant R))) (budget R) (unit p) :=
+  reference_row_of i p N a C E R _ _ (scalar_body_at i p N a C E R)
+    (GaussianEulerUpperTailScalar.scalar_majorant_scaled_reference_error p R (a*N+C*i) (E*N)
+      (positive_product _ _ hE hN))
 
 theorem scaled_quadrature (p N a C E M : PTm n) : Γ ⊢[PRAAx]
     quadrature scaledF p N a C E M ≐
@@ -136,7 +177,6 @@ theorem original_grid_bound_from_half (p N a C E z R B U V : PTm n) (hN : Γ ⊢
   let X := sampleData p N a C E x
   let Y := sampleData p N a C E R
   let M := majorant R
-  let Z := sampleData p N a C E M
   have hm : Γ ⊢[PRAAx] termsMajorized (sampleBody evaluatorF) scalarBody N X Y := by
     refine .allI (.impI ?_)
     have n' : Γ.map Fm.shift ⊢[PRAAx] le one (Syn.shift N) := by simpa [Fm.shift,Syn.shift] using hN.shift
@@ -147,14 +187,10 @@ theorem original_grid_bound_from_half (p N a C E z R B U V : PTm n) (hN : Γ ⊢
     simpa only [termsMajorized,X,Y,x,Syn.shift,GaussianCompactRiemannName.subst_sampleData,GaussianEulerIntegrandName.subst_fixedData] using
       majorized_row (var 0) (Syn.shift p) (Syn.shift N) (Syn.shift a) (Syn.shift C) (Syn.shift E)
         (Syn.shift z) (Syn.shift R) (Syn.shift B) n'.wk e'.wk ea'.wk h'.wk
-  have er : Γ ⊢[PRAAx] termsDistance (embedBody scalarBody) (sampleBody scaledF) N Y Z (budget R) (unit p) := by
-    refine .allI (.impI ?_)
-    have n' : Γ.map Fm.shift ⊢[PRAAx] le one (Syn.shift N) := by simpa [Fm.shift,Syn.shift] using hN.shift
-    have e' : Γ.map Fm.shift ⊢[PRAAx] le one (Syn.shift E) := by simpa [Fm.shift,Syn.shift] using hE.shift
-    simpa only [termsDistance,Y,Z,M,Syn.shift,GaussianCompactRiemannName.subst_sampleData,
-      GaussianEulerWeightedHalfDecay.subst_majorant,GaussianEulerUpperTailScalar.subst_budget,GaussianCoefficientNameBounds.subst_unit] using
+  have er := reference_rows_of scalarBody p N a C E R (budget R) (by
+    simpa only [Syn.shift, GaussianEulerUpperTailScalar.subst_budget] using
       reference_row (var 0) (Syn.shift p) (Syn.shift N) (Syn.shift a) (Syn.shift C) (Syn.shift E)
-        (Syn.shift R) n'.wk e'.wk
+        (Syn.shift R) (Order.shift_one_le hN).wk (Order.shift_one_le hE).wk)
   have ref : Γ ⊢[PRAAx] bounded (quadrature scaledF p N a C E M) (M*U) V :=
     GaussianRationalReciprocal.bound_congr (scaled_quadrature p N a C E M).eqSymm (.eqRefl _) (one_mul V)
       (GaussianRationalReciprocal.bounded_product _ _ _ _ _ _ (le_refl one) hV (radius_bounded M one (le_refl one)) hHalf)
