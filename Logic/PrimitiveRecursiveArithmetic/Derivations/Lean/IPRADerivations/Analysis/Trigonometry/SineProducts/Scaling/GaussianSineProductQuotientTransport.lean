@@ -16,7 +16,7 @@ namespace LeanProofs.IPRA.Analysis.GaussianSineProductQuotientTransport
 open_ipra
 open GaussianRationalHorner (qmul qmul_canonical positive_product)
 open GaussianRationalMetric (bounded distanceBounded qsub)
-open GaussianRationalReciprocal (qone reciprocal bounded_product bound_congr)
+open GaussianRationalReciprocal (qone reciprocal bounded_product_one)
 open GaussianRationalLowerBounds (lower product_lower lower_congr reciprocal_identity_of_lower inverse_bound)
 open GaussianRationalPowerAlgebra (qmul_commutative qmul_shuffle)
 open GaussianRationalSyntheticDivision (qmul_congr)
@@ -47,9 +47,7 @@ theorem cross_quotient_bound (u v a b E M V B : PTm n)
     Γ ⊢[PRAAx] distanceBounded (qmul u (reciprocal v)) (qmul (reciprocal b) a) ((V*B)*E) M := by
   let P := qmul (reciprocal v) (reciprocal b)
   have bound : Γ ⊢[PRAAx] bounded P (V*B) one :=
-    bound_congr (.eqRefl _) (.eqRefl _) (one_mul one)
-      (bounded_product _ _ _ _ _ _ (le_refl one) (le_refl one)
-        (inverse_bound v one V (le_refl one) hV hv) (inverse_bound b one B (le_refl one) hB hb))
+    bounded_product_one (inverse_bound v one V (le_refl one) hV hv) (inverse_bound b one B (le_refl one) hB hb)
   have left : Γ ⊢[PRAAx] qmul P (qmul u b) ≐ qmul u (reciprocal v) :=
     (qmul_shuffle _ _ _ _).eqTrans
       ((qmul_congr (.eqRefl _) (inverse_identity b B hB hb)).eqTrans
