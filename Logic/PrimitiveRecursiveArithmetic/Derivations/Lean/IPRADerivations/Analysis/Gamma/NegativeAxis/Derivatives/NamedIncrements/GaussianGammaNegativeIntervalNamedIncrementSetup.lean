@@ -33,10 +33,6 @@ local notation "diffF" => GaussianNamedDifference.nameF
 local notation "diffData" => GaussianNamedDifference.data
 local notation "𝔞" t:max => Groth.ι (IPRA.Q.mk Γ t)
 
-private theorem zero_cross (x z : PTm n) : Γ ⊢[PRAAx] crossEquivalent zeroF zeroF x z := by
-  refine GaussianNameConjugation.equal_samples_cross _ _ _ _ (zero_fast _) (zero_fast _) (.allI ?_)
-  exact (zero_at (Γ := Γ.map Fm.shift) (var 0) (Syn.shift x)).eqTrans (zero_at (var 0) (Syn.shift z)).eqSymm
-
 theorem increment_cross (f K : PR 2) (x z : PTm n)
     (hf : Γ ⊢[PRAAx] pointCN f x) (hk : Γ ⊢[PRAAx] pointCN K z) :
     Γ ⊢[PRAAx] crossEquivalent (diffF (sumF f K) f) K (diffData (sumData x z) x) z := by
@@ -49,7 +45,7 @@ theorem increment_cross (f K : PR 2) (x z : PTm n)
     (add_fast _ _ _ _ hf hk) (add_fast _ _ _ _ hk hf) hh hh
     (add_commutative f K x z hf hk) (cross_refl H w hh)
   have assoc := add_associative K f H z x w hk hf hh
-  have cancel := cross_trans F zeroF zeroF u x z (add_negative f x hf) (zero_cross x z)
+  have cancel := cross_trans F zeroF zeroF u x z (add_negative f x hf) (GaussianNameRingLaws.zero_name_cross x z)
   have move := add_cross K K F zeroF z z u z hk hk (add_fast _ _ _ _ hf hh)
     (zero_fast z) (cross_refl K z hk) cancel
   exact cross_trans _ _ _ _ _ _ turn
