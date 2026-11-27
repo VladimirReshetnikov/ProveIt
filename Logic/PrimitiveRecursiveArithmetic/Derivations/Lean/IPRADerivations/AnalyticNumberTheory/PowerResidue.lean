@@ -128,13 +128,9 @@ theorem res_cop {D q b : PTm n} (hq : Γ ⊢[PRAAx] le two q) (hD : Γ ⊢[PRAAx
 theorem cop_pw {d q : PTm n} (hq : Γ ⊢[PRAAx] le two q) (hd : Γ ⊢[PRAAx] gcd d q ≐ one) (h : PTm n) :
     Γ ⊢[PRAAx] gcd (pw d h) q ≐ one := by
   have hall : Γ ⊢[PRAAx] Fm.all (gcd (pw (Syn.shift d) (var 0)) (Syn.shift q) ≐ one) := by
-    refine PRA.qfInd _ trivial ?_ ?_
-    · simp only [Fm.subst_eq, subst_ap2, subst_ex2, Syn.subst_var, Syn.inst_zero, Syn.subst_inst_shift,
-        ConciseIPRA.PTm.subst_succ, ConciseIPRA.PTm.subst_zero]
-      exact (congrGcd (pw_zero _) (.eqRefl _)).eqTrans (gcd_one_left q)
-    · simp only [Fm.subst_eq, subst_ap2, subst_ex2, Syn.subst_var, Syn.repl_zero, subst_repl_shift,
-        ConciseIPRA.PTm.subst_succ, ConciseIPRA.PTm.subst_zero]
-      have hq' := (shift_le_two hq).wk (ψ := gcd (pw (Syn.shift d) (var 0)) (Syn.shift q) ≐ one)
+    ipra_qfind (trivial) [subst_ap2, subst_ex2]
+    · exact (congrGcd (pw_zero _) (.eqRefl _)).eqTrans (gcd_one_left q)
+    · have hq' := (shift_le_two hq).wk (ψ := gcd (pw (Syn.shift d) (var 0)) (Syn.shift q) ≐ one)
       have hd' := (Gcd.shift_coprime hd).wk (ψ := gcd (pw (Syn.shift d) (var 0)) (Syn.shift q) ≐ one)
       exact (congrGcd (pw_succ _ _) (.eqRefl _)).eqTrans (cop_mul hq' Prf.hyp0 hd')
   have e := Prf.allE h hall

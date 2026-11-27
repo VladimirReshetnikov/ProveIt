@@ -54,13 +54,9 @@ theorem X_step {m : PTm n} (ih : Γ ⊢[PRAAx] le one (Xp m ps)) : Γ ⊢[PRAAx]
 /-- `X_m ≥ 1`. -/
 theorem X_pos (m : PTm n) : Γ ⊢[PRAAx] le one (Xp m ps) := by
   have hall : Γ ⊢[PRAAx] Fm.all (le one (Xp (var 0) fun i => Syn.shift (ps i))) := by
-    refine PRA.qfInd _ (le_QF _ _) ?_ ?_
-    · simp only [subst_le, subst_sim₁, Syn.subst_var, Syn.inst_zero, Syn.subst_inst_shift,
-        ConciseIPRA.PTm.subst_zero, ConciseIPRA.PTm.subst_succ]
-      exact le_congr (.eqRefl _) (X_zero ps).eqSymm (le_refl _)
-    · simp only [subst_le, subst_sim₁, Syn.subst_var, Syn.repl_zero, subst_repl_shift,
-        ConciseIPRA.PTm.subst_zero, ConciseIPRA.PTm.subst_succ]
-      have hA' : Γ.map Fm.shift ⊢[PRAAx] le one (Syn.shift (ps 0)) := by simpa [Fm.shift, Syn.shift] using hA.shift
+    ipra_qfind (le_QF _ _) [subst_le, subst_sim₁]
+    · exact le_congr (.eqRefl _) (X_zero ps).eqSymm (le_refl _)
+    · have hA' : Γ.map Fm.shift ⊢[PRAAx] le one (Syn.shift (ps 0)) := by simpa [Fm.shift, Syn.shift] using hA.shift
       have hB' : Γ.map Fm.shift ⊢[PRAAx] le one (Syn.shift (ps 1)) := by simpa [Fm.shift, Syn.shift] using hB.shift
       exact X_step (ps := fun i => Syn.shift (ps i)) hA'.wk hB'.wk Prf.hyp0
   simpa [Syn.subst_inst_shift] using Prf.allE m hall
@@ -75,11 +71,9 @@ theorem Y_step (m : PTm n) : Γ ⊢[PRAAx] le (succ (Yp m ps)) (Yp (succ m) ps) 
 theorem Y_mono (m k : PTm n) : Γ ⊢[PRAAx] le (Yp m ps + k) (Yp (m + k) ps) := by
   have hall : Γ ⊢[PRAAx] Fm.all (le (Yp (Syn.shift m) (fun i => Syn.shift (ps i)) + var 0)
       (Yp (Syn.shift m + var 0) fun i => Syn.shift (ps i))) := by
-    refine PRA.qfInd _ (le_QF _ _) ?_ ?_
-    · simp only [subst_le, subst_sim₂, PTm.subst_add, Syn.subst_var, Syn.inst_zero, Syn.subst_inst_shift]
-      exact le_congr (add_zero _).eqSymm (congrYp ps (add_zero m).eqSymm) (le_refl _)
-    · simp only [subst_le, subst_sim₂, PTm.subst_add, Syn.subst_var, Syn.repl_zero, subst_repl_shift]
-      have hA' : Γ.map Fm.shift ⊢[PRAAx] le one (Syn.shift (ps 0)) := by simpa [Fm.shift, Syn.shift] using hA.shift
+    ipra_qfind (le_QF _ _) [subst_le, subst_sim₂]
+    · exact le_congr (add_zero _).eqSymm (congrYp ps (add_zero m).eqSymm) (le_refl _)
+    · have hA' : Γ.map Fm.shift ⊢[PRAAx] le one (Syn.shift (ps 0)) := by simpa [Fm.shift, Syn.shift] using hA.shift
       have hB' : Γ.map Fm.shift ⊢[PRAAx] le one (Syn.shift (ps 1)) := by simpa [Fm.shift, Syn.shift] using hB.shift
       let C : List (Fm PTm (n + 1)) := le (Yp (Syn.shift m) (fun i => Syn.shift (ps i)) + var 0)
         (Yp (Syn.shift m + var 0) fun i => Syn.shift (ps i)) :: Γ.map Fm.shift

@@ -136,13 +136,9 @@ theorem fold_length (inner : PR 2) (outer x j : PTm n) :
   have all : Γ ⊢[PRAAx] .all
       (length (fold inner (Syn.shift outer) (Syn.shift x) (var 0)) ≐
         prefixSum inner (Syn.shift outer) (Syn.shift x) (var 0)) := by
-    refine PRA.qfInd _ trivial ?_ ?_
-    · simp only [Fm.subst_eq, subst_length, subst_fold, subst_prefix,
-        Syn.subst_var, Syn.inst_zero, Syn.subst_inst_shift]
-      exact ((congrFst (fold_zero inner outer x)).eqTrans empty_length).eqTrans (prefix_zero _ _ _).eqSymm
-    · simp only [Fm.subst_eq, subst_length, subst_fold, subst_prefix,
-        Syn.subst_var, Syn.repl_zero, subst_repl_shift]
-      exact ((congrFst (fold_succ inner _ _ _)).eqTrans (append_length _ _)).eqTrans
+    ipra_qfind (trivial) [subst_length, subst_fold, subst_prefix]
+    · exact ((congrFst (fold_zero inner outer x)).eqTrans empty_length).eqTrans (prefix_zero _ _ _).eqSymm
+    · exact ((congrFst (fold_succ inner _ _ _)).eqTrans (append_length _ _)).eqTrans
         ((congrAdd Prf.hyp0 (.eqRefl _)).eqTrans (prefix_succ _ _ _ _).eqSymm)
   simpa only [Fm.subst_eq, subst_length, subst_fold, subst_prefix,
     Syn.subst_var, Syn.inst_zero, Syn.subst_inst_shift] using Prf.allE j all
@@ -152,13 +148,9 @@ theorem prefix_add_mono (inner : PR 2) (outer x a k : PTm n) :
   have all : Γ ⊢[PRAAx] .all
       (le (prefixSum inner (Syn.shift outer) (Syn.shift x) (Syn.shift a))
         (prefixSum inner (Syn.shift outer) (Syn.shift x) (Syn.shift a + var 0))) := by
-    refine PRA.qfInd _ (le_QF _ _) ?_ ?_
-    · simp only [subst_le, subst_prefix, PTm.subst_add, Syn.subst_var,
-        Syn.inst_zero, Syn.subst_inst_shift]
-      exact le_congr (.eqRefl _) (congrAp3 _ (add_zero a) (.eqRefl outer) (.eqRefl x)).eqSymm (le_refl _)
-    · simp only [subst_le, subst_prefix, PTm.subst_add, Syn.subst_var,
-        Syn.repl_zero, subst_repl_shift]
-      have step : (le (prefixSum inner (Syn.shift outer) (Syn.shift x) (Syn.shift a))
+    ipra_qfind (le_QF _ _) [subst_le, subst_prefix]
+    · exact le_congr (.eqRefl _) (congrAp3 _ (add_zero a) (.eqRefl outer) (.eqRefl x)).eqSymm (le_refl _)
+    · have step : (le (prefixSum inner (Syn.shift outer) (Syn.shift x) (Syn.shift a))
           (prefixSum inner (Syn.shift outer) (Syn.shift x) (Syn.shift a + var 0))) :: Γ.map Fm.shift ⊢[PRAAx]
           le (prefixSum inner (Syn.shift outer) (Syn.shift x) (Syn.shift a + var 0))
             (prefixSum inner (Syn.shift outer) (Syn.shift x) (Syn.shift a + succ (var 0))) := by
@@ -221,11 +213,9 @@ theorem fold_lookup (inner : PR 2) (outer x j localIndex count : PTm n)
       entry (block inner outer x j) localIndex := by
   have all : Γ ⊢[PRAAx] .all (lookupCondition inner (Syn.shift outer) (Syn.shift x)
       (Syn.shift j) (Syn.shift localIndex) (var 0)) := by
-    refine PRA.qfInd _ ⟨lt_QF _ _, ⟨lt_QF _ _, trivial⟩⟩ ?_ ?_
-    · simp only [subst_lookupCondition, Syn.subst_var, Syn.inst_zero, Syn.subst_inst_shift]
-      exact .impI (.impI (lt_zero_absurd _ Prf.hyp1))
-    · simp only [subst_lookupCondition, Syn.subst_var, Syn.repl_zero, subst_repl_shift]
-      exact .impI (.impI (fold_lookup_step inner _ _ _ _ _ hyp2 Prf.hyp1 Prf.hyp0))
+    ipra_qfind (⟨lt_QF _ _, ⟨lt_QF _ _, trivial⟩⟩) [subst_lookupCondition]
+    · exact .impI (.impI (lt_zero_absurd _ Prf.hyp1))
+    · exact .impI (.impI (fold_lookup_step inner _ _ _ _ _ hyp2 Prf.hyp1 Prf.hyp0))
   have h := Prf.allE count all
   simp only [subst_lookupCondition, Syn.subst_var, Syn.inst_zero, Syn.subst_inst_shift] at h
   exact .impE (.impE h hj) hl
@@ -322,13 +312,9 @@ theorem identity_prefix (outer j : PTm n) :
     Γ ⊢[PRAAx] prefixSum identityInner outer zero j ≐ flattenedPrefix outer j := by
   have all : Γ ⊢[PRAAx] .all
       (prefixSum identityInner (Syn.shift outer) zero (var 0) ≐ flattenedPrefix (Syn.shift outer) (var 0)) := by
-    refine PRA.qfInd _ trivial ?_ ?_
-    · simp only [Fm.subst_eq, subst_prefix, subst_flattenedPrefix, Syn.subst_var,
-        Syn.inst_zero, Syn.subst_inst_shift, ConciseIPRA.PTm.subst_zero]
-      exact (prefix_zero _ _ _).eqTrans (sum_zero _ _).eqSymm
-    · simp only [Fm.subst_eq, subst_prefix, subst_flattenedPrefix, Syn.subst_var,
-        Syn.repl_zero, subst_repl_shift, ConciseIPRA.PTm.subst_zero]
-      refine (prefix_succ _ _ _ _).eqTrans ?_
+    ipra_qfind (trivial) [subst_prefix, subst_flattenedPrefix]
+    · exact (prefix_zero _ _ _).eqTrans (sum_zero _ _).eqSymm
+    · refine (prefix_succ _ _ _ _).eqTrans ?_
       refine (congrAdd Prf.hyp0 (congrFst (identity_block _ _))).eqTrans ?_
       simpa [length, flattenedPrefix, flattenedLengthBody, inst2] using
         (sum_succ' (Γ := (prefixSum identityInner (Syn.shift outer) zero (var 0) ≐

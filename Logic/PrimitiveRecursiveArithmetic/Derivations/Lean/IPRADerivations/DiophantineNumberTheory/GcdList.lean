@@ -29,11 +29,9 @@ variable {k : ℕ} {Γ : List (Fm PTm k)}
 /-- `x mod 0 = x`. -/
 theorem rem_by_zero (z : PTm k) : Γ ⊢[PRAAx] rem z zero ≐ z := by
   have hall : Γ ⊢[PRAAx] Fm.all (rem (var 0 : PTm (k + 1)) zero ≐ var 0) := by
-    refine PRA.qfInd _ trivial ?_ ?_
-    · simp only [Fm.subst_eq, subst_ap2, Syn.subst_var, Syn.inst_zero, ConciseIPRA.PTm.subst_zero]
-      exact rem_zero _
-    · simp only [Fm.subst_eq, subst_ap2, Syn.subst_var, Syn.repl_zero, ConciseIPRA.PTm.subst_zero]
-      have ih : ((rem (var 0 : PTm (k + 1)) zero ≐ var 0) :: Γ.map Fm.shift) ⊢[PRAAx] rem (var 0) zero ≐ var 0 :=
+    ipra_qfind (trivial) [subst_ap2]
+    · exact rem_zero _
+    · have ih : ((rem (var 0 : PTm (k + 1)) zero ≐ var 0) :: Γ.map Fm.shift) ⊢[PRAAx] rem (var 0) zero ≐ var 0 :=
         Prf.hyp0
       have e0 : ((rem (var 0 : PTm (k + 1)) zero ≐ var 0) :: Γ.map Fm.shift) ⊢[PRAAx]
           eqb (succ (rem (var 0) zero)) zero ≐ zero :=
@@ -101,17 +99,13 @@ theorem gv_step_dvd (f : PTm 2) (N x : PTm k) : Γ ⊢[PRAAx] dvd (gv f (succ N)
 /-- `G(M + D) ∣ G(M)`. -/
 theorem gv_dvd_prefix (f : PTm 2) (M D x : PTm k) : Γ ⊢[PRAAx] dvd (gv f (M + D) x) (gv f M x) := by
   have hall : Γ ⊢[PRAAx] Fm.all (dvd (gv f (Syn.shift M + var 0) (Syn.shift x)) (gv f (Syn.shift M) (Syn.shift x))) := by
-    refine PRA.qfInd _ trivial ?_ ?_
-    · simp only [Fm.subst_eq, subst_ap2, PTm.subst_add, Syn.subst_var, Syn.inst_zero, Syn.subst_inst_shift,
-        ConciseIPRA.PTm.subst_zero]
-      exact dvd_congr_left (congrAp2 _ (add_zero _) (.eqRefl _)).eqSymm
+    ipra_qfind (trivial) [subst_ap2]
+    · exact dvd_congr_left (congrAp2 _ (add_zero _) (.eqRefl _)).eqSymm
         (dvd_congr (.eqRefl _) (by
           refine .orE (zero_or_succ (gv f M x)) ?_ ?_
           · exact dvd_congr_left Prf.hyp0.eqSymm (dvd_congr Prf.hyp0.eqSymm dvd_zero_zero)
           · exact dvd_congr_left Prf.hyp0.eqSymm (dvd_congr Prf.hyp0.eqSymm (dvd_self _))))
-    · simp only [Fm.subst_eq, subst_ap2, PTm.subst_add, Syn.subst_var, Syn.repl_zero, subst_repl_shift,
-        ConciseIPRA.PTm.subst_zero]
-      have ih : ((dvd (gv f (Syn.shift M + var 0) (Syn.shift x)) (gv f (Syn.shift M) (Syn.shift x))) ::
+    · have ih : ((dvd (gv f (Syn.shift M + var 0) (Syn.shift x)) (gv f (Syn.shift M) (Syn.shift x))) ::
           Γ.map Fm.shift) ⊢[PRAAx] dvd (gv f (Syn.shift M + var 0) (Syn.shift x)) (gv f (Syn.shift M) (Syn.shift x)) :=
         Prf.hyp0
       have st := gv_step_dvd (Γ := (dvd (gv f (Syn.shift M + var 0) (Syn.shift x)) (gv f (Syn.shift M) (Syn.shift x))) ::

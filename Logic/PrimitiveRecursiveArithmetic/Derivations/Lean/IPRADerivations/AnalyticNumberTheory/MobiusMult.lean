@@ -170,18 +170,14 @@ abbrev ParF (x y : PTm n) : Fm PTm n :=
 
 theorem par_add (x y : PTm n) : Γ ⊢[PRAAx] ParF x y := by
   have hall : Γ ⊢[PRAAx] Fm.all (ParF (Syn.shift x) (var 0)) := by
-    refine PRA.qfInd _ ⟨trivial, trivial⟩ ?_ ?_
-    · simp only [ParF, Fm.subst_and, Fm.subst_eq, subst_eqb, subst_ap2, PTm.subst_add, PTm.subst_mul, Syn.subst_var,
-        Syn.inst_zero, Syn.subst_inst_shift, ConciseIPRA.PTm.subst_succ, ConciseIPRA.PTm.subst_zero]
-      have r0 := rem_zero_two (Γ := Γ) (n := n)
+    ipra_qfind (⟨trivial, trivial⟩) [ParF, subst_eqb, subst_ap2]
+    · have r0 := rem_zero_two (Γ := Γ) (n := n)
       have e0 : Γ ⊢[PRAAx] ev (zero : PTm n) ≐ one := (congrEqb' r0 (.eqRefl _)).eqTrans (eqb_of_eq (.eqRefl _))
       have o0 : Γ ⊢[PRAAx] od (zero : PTm n) ≐ zero := (congrEqb' r0 (.eqRefl _)).eqTrans (eqb_of_ne zero_ne_one')
       have ex : Γ ⊢[PRAAx] ev (x + zero) ≐ ev x := congrEqb' (congrAp2 remF (add_zero x) (.eqRefl _)) (.eqRefl _)
       have ox : Γ ⊢[PRAAx] od (x + zero) ≐ od x := congrEqb' (congrAp2 remF (add_zero x) (.eqRefl _)) (.eqRefl _)
       exact par_base_alg ex ox e0 o0
-    · simp only [ParF, Fm.subst_and, Fm.subst_eq, subst_eqb, subst_ap2, PTm.subst_add, PTm.subst_mul, Syn.subst_var,
-        Syn.repl_zero, subst_repl_shift, ConciseIPRA.PTm.subst_succ, ConciseIPRA.PTm.subst_zero]
-      let C : List (Fm PTm (n + 1)) := ParF (Syn.shift x) (var 0) :: Γ.map Fm.shift
+    · let C : List (Fm PTm (n + 1)) := ParF (Syn.shift x) (var 0) :: Γ.map Fm.shift
       have ih : C ⊢[PRAAx] ParF (Syn.shift x) (var 0) := Prf.hyp0
       have es : C ⊢[PRAAx] Syn.shift x + succ (var 0) ≐ succ (Syn.shift x + var 0) := add_succ _ _
       have ps := Mobius.par_succ (Γ := C) (Syn.shift x + var 0)

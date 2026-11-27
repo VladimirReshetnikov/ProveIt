@@ -106,13 +106,9 @@ theorem up_step {K p s W : PTm n} (hW : Γ ⊢[PRAAx] s * s ≐ W + p * p) :
 
 theorem L_pos (K x : PTm n) : Γ ⊢[PRAAx] Lv K x ≐ succ (pred (Lv K x)) := by
   have hall : Γ ⊢[PRAAx] Fm.all (Lv (var 0) (Syn.shift x) ≐ succ (pred (Lv (var 0) (Syn.shift x)))) := by
-    refine PRA.qfInd _ trivial ?_ ?_
-    · simp only [Fm.subst_eq, subst_ap2, ConciseIPRA.PTm.subst_succ, LeanProofs.IPRA.PTm.subst_pred, Syn.subst_var,
-        Syn.inst_zero, Syn.subst_inst_shift]
-      exact (L_zero _).eqTrans (congrSucc ((pred_succ _).eqSymm.eqTrans (congrPred (L_zero _).eqSymm)))
-    · simp only [Fm.subst_eq, subst_ap2, ConciseIPRA.PTm.subst_succ, LeanProofs.IPRA.PTm.subst_pred, Syn.subst_var,
-        Syn.repl_zero, subst_repl_shift]
-      have h0 := (L_succ (Γ := (Lv (var 0) (Syn.shift x) ≐ succ (pred (Lv (var 0) (Syn.shift x)))) :: Γ.map Fm.shift)
+    ipra_qfind (trivial) [subst_ap2]
+    · exact (L_zero _).eqTrans (congrSucc ((pred_succ _).eqSymm.eqTrans (congrPred (L_zero _).eqSymm)))
+    · have h0 := (L_succ (Γ := (Lv (var 0) (Syn.shift x) ≐ succ (pred (Lv (var 0) (Syn.shift x)))) :: Γ.map Fm.shift)
         (var 0) (Syn.shift x))
       have p := pos_mul (Γ := (Lv (var 0) (Syn.shift x) ≐ succ (pred (Lv (var 0) (Syn.shift x)))) :: Γ.map Fm.shift)
         (a := succ (two * var 0)) (congrSucc (pred_succ _).eqSymm) Prf.hyp0
@@ -194,13 +190,9 @@ theorem log_name {p s W : PTm n} (hs : Γ ⊢[PRAAx] s ≐ succ (pred s)) (hWp :
     Γ ⊢[PRAAx] NF K j p s W ⋏
       le (Nz (K + j) p s * Ud (K + j) p s W) (Un (K + j) p s W * Dz (K + j) p s) := by
   have hall : Γ ⊢[PRAAx] Fm.all (NF (Syn.shift K) (var 0) (Syn.shift p) (Syn.shift s) (Syn.shift W)) := by
-    refine PRA.qfInd _ ⟨le_QF _ _, le_QF _ _⟩ ?_ ?_
-    · simp only [Fm.subst_and, subst_le, subst_ap2, subst_pairT, PTm.subst_add, PTm.subst_mul,
-        ConciseIPRA.PTm.subst_succ, ConciseIPRA.PTm.subst_zero, Syn.subst_var, Syn.inst_zero, Syn.subst_inst_shift]
-      exact nf_zero K p s W
-    · simp only [Fm.subst_and, subst_le, subst_ap2, subst_pairT, PTm.subst_add, PTm.subst_mul,
-        ConciseIPRA.PTm.subst_succ, ConciseIPRA.PTm.subst_zero, Syn.subst_var, Syn.repl_zero, subst_repl_shift]
-      let Δ : List (Fm PTm (n + 1)) := NF (Syn.shift K) (var 0) (Syn.shift p) (Syn.shift s) (Syn.shift W) ::
+    ipra_qfind (⟨le_QF _ _, le_QF _ _⟩) [subst_le, subst_ap2, subst_pairT]
+    · exact nf_zero K p s W
+    · let Δ : List (Fm PTm (n + 1)) := NF (Syn.shift K) (var 0) (Syn.shift p) (Syn.shift s) (Syn.shift W) ::
         Γ.map Fm.shift
       have hs' : Δ ⊢[PRAAx] Syn.shift s ≐ succ (pred (Syn.shift s)) := by
         have b := hs.shift
@@ -225,24 +217,18 @@ theorem log_name {p s W : PTm n} (hs : Γ ⊢[PRAAx] s ≐ succ (pred s)) (hWp :
 /-- `L_K` does not depend on its (unused) parameter. -/
 theorem L_eq (K x y : PTm n) : Γ ⊢[PRAAx] Lv K x ≐ Lv K y := by
   have hall : Γ ⊢[PRAAx] Fm.all (Lv (var 0) (Syn.shift x) ≐ Lv (var 0) (Syn.shift y)) := by
-    refine PRA.qfInd _ trivial ?_ ?_
-    · simp only [Fm.subst_eq, subst_ap2, Syn.subst_var, Syn.inst_zero, Syn.subst_inst_shift]
-      exact (L_zero _).eqTrans (L_zero _).eqSymm
-    · simp only [Fm.subst_eq, subst_ap2, Syn.subst_var, Syn.repl_zero, subst_repl_shift]
-      exact (L_succ _ _).eqTrans ((congrMul (.eqRefl _) Prf.hyp0).eqTrans (L_succ _ _).eqSymm)
+    ipra_qfind (trivial) [subst_ap2]
+    · exact (L_zero _).eqTrans (L_zero _).eqSymm
+    · exact (L_succ _ _).eqTrans ((congrMul (.eqRefl _) Prf.hyp0).eqTrans (L_succ _ _).eqSymm)
   have r := Prf.allE K hall
   simpa [Syn.subst_inst_shift] using r
 
 /-- `RobinGamma`'s numerators are the case `p = 1`: `Nv K s = Nz K 1 s`. -/
 theorem N_bridge (K s : PTm n) : Γ ⊢[PRAAx] RobinGamma.Nv K s ≐ Nz K one s := by
   have hall : Γ ⊢[PRAAx] Fm.all (RobinGamma.Nv (var 0) (Syn.shift s) ≐ Nz (var 0) one (Syn.shift s)) := by
-    refine PRA.qfInd _ trivial ?_ ?_
-    · simp only [Fm.subst_eq, subst_ap2, subst_pairT, ConciseIPRA.PTm.subst_succ, ConciseIPRA.PTm.subst_zero,
-        Syn.subst_var, Syn.inst_zero, Syn.subst_inst_shift]
-      exact (RobinGamma.N_zero _).eqTrans (Nz_zero _ _).eqSymm
-    · simp only [Fm.subst_eq, subst_ap2, subst_pairT, ConciseIPRA.PTm.subst_succ, ConciseIPRA.PTm.subst_zero,
-        Syn.subst_var, Syn.repl_zero, subst_repl_shift]
-      let Δ : List (Fm PTm (n + 1)) := (RobinGamma.Nv (var 0) (Syn.shift s) ≐ Nz (var 0) one (Syn.shift s)) ::
+    ipra_qfind (trivial) [subst_ap2, subst_pairT]
+    · exact (RobinGamma.N_zero _).eqTrans (Nz_zero _ _).eqSymm
+    · let Δ : List (Fm PTm (n + 1)) := (RobinGamma.Nv (var 0) (Syn.shift s) ≐ Nz (var 0) one (Syn.shift s)) ::
         Γ.map Fm.shift
       have a := RobinGamma.N_succ (Γ := Δ) (var 0) (Syn.shift s)
       have b := Nz_succ (Γ := Δ) (var 0) one (Syn.shift s)
@@ -277,14 +263,10 @@ theorem mono_step {K p s p' s' : PTm n} (hz : Γ ⊢[PRAAx] le (p * s') (p' * s)
 theorem low_mono {p s p' s' : PTm n} (hz : Γ ⊢[PRAAx] le (p * s') (p' * s)) (K : PTm n) :
     Γ ⊢[PRAAx] le (Nz K p s * Dz K p' s') (Nz K p' s' * Dz K p s) := by
   have hall : Γ ⊢[PRAAx] Fm.all (MF (var 0) (Syn.shift p) (Syn.shift s) (Syn.shift p') (Syn.shift s')) := by
-    refine PRA.qfInd _ (le_QF _ _) ?_ ?_
-    · simp only [subst_le, subst_ap2, subst_pairT, PTm.subst_mul, ConciseIPRA.PTm.subst_succ,
-        ConciseIPRA.PTm.subst_zero, Syn.subst_var, Syn.inst_zero, Syn.subst_inst_shift]
-      have a := natEq (Nz_zero (Γ := Γ) p s)
+    ipra_qfind (le_QF _ _) [subst_le, subst_ap2, subst_pairT]
+    · have a := natEq (Nz_zero (Γ := Γ) p s)
       ipra_le 𝔞 (Nz zero p' s' * Pv zero s) with -(𝔞 (Pv zero s')) * a
-    · simp only [subst_le, subst_ap2, subst_pairT, PTm.subst_mul, ConciseIPRA.PTm.subst_succ,
-        ConciseIPRA.PTm.subst_zero, Syn.subst_var, Syn.repl_zero, subst_repl_shift]
-      have hz' : (MF (var 0) (Syn.shift p) (Syn.shift s) (Syn.shift p') (Syn.shift s') :: Γ.map Fm.shift) ⊢[PRAAx]
+    · have hz' : (MF (var 0) (Syn.shift p) (Syn.shift s) (Syn.shift p') (Syn.shift s') :: Γ.map Fm.shift) ⊢[PRAAx]
           le (Syn.shift p * Syn.shift s') (Syn.shift p' * Syn.shift s) := by
         have b := hz.shift
         simp only [Fm.shift, subst_le, PTm.subst_mul] at b

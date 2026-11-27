@@ -81,16 +81,12 @@ theorem gw_step (t K : PTm n) (ih : Γ ⊢[PRAAx] WF t K) : Γ ⊢[PRAAx] WF (su
 
 theorem gw_all (t K : PTm n) : Γ ⊢[PRAAx] WF t K := by
   have hall : Γ ⊢[PRAAx] Fm.all (WF (var 0) (Syn.shift K)) := by
-    refine PRA.qfInd _ (le_QF _ _) ?_ ?_
-    · simp only [subst_le, subst_ap2, subst_pairT, PTm.subst_add, PTm.subst_mul, ConciseIPRA.PTm.subst_succ, LeanProofs.IPRA.PTm.subst_num,
-        ConciseIPRA.PTm.subst_zero, Syn.subst_var, Syn.inst_zero, Syn.subst_inst_shift]
-      have a := natEq (An_zero (Γ := Γ) K)
+    ipra_qfind (le_QF _ _) [subst_le, subst_ap2, subst_pairT]
+    · have a := natEq (An_zero (Γ := Γ) K)
       have p := natEq (P_zero' (Γ := Γ) (pairT one K) : Γ ⊢[PRAAx] ap2 Pf zero (pairT one K) ≐ zero)
       ipra_le 0 with (4 * (2 * 𝔞 K + 1) * 𝔞 (Pv K c3) * 𝔞 (Qt zero (pairT one K))) * a -
         (4 * (2 * 𝔞 K + 1) * 𝔞 (Pv K c3) * 𝔞 (Ad zero K)) * p
-    · simp only [subst_le, subst_ap2, subst_pairT, PTm.subst_add, PTm.subst_mul, ConciseIPRA.PTm.subst_succ, LeanProofs.IPRA.PTm.subst_num,
-        ConciseIPRA.PTm.subst_zero, Syn.subst_var, Syn.repl_zero, subst_repl_shift]
-      exact gw_step _ _ Prf.hyp0
+    · exact gw_step _ _ Prf.hyp0
   have r := Prf.allE t hall
   simpa [Syn.subst_inst_shift] using r
 

@@ -87,13 +87,11 @@ theorem growth_step {a d N : PTm n} (ih : Γ ⊢[PRAAx] GInv a d N) : Γ ⊢[PRA
 /-- `ratio_growth`: `a^N (a + N d) ≤ a (a + d)^N`. -/
 theorem ratio_growth (a d N : PTm n) : Γ ⊢[PRAAx] GInv a d N := by
   have hall : Γ ⊢[PRAAx] Fm.all (GInv (Syn.shift a) (Syn.shift d) (Syn.var 0)) := by
-    refine PRA.qfInd _ (le_QF _ _) ?_ ?_
-    · simp only [subst_le, subst_ap2, PTm.subst_add, PTm.subst_mul, Syn.subst_var, Syn.inst_zero, Syn.subst_inst_shift]
-      have p1 := natEq (pw_zero (Γ := Γ) a)
+    ipra_qfind (le_QF _ _) [subst_le, subst_ap2]
+    · have p1 := natEq (pw_zero (Γ := Γ) a)
       have p2 := natEq (pw_zero (Γ := Γ) (a + d))
       ipra_le 0 using rw [p1, p2]; ring
-    · simp only [subst_le, subst_ap2, PTm.subst_add, PTm.subst_mul, Syn.subst_var, Syn.repl_zero, subst_repl_shift]
-      exact growth_step Prf.hyp0
+    · exact growth_step Prf.hyp0
   have h2 := Prf.allE N hall
   simpa only [subst_le, subst_ap2, PTm.subst_add, PTm.subst_mul, Syn.subst_var, Syn.inst_zero,
     Syn.subst_inst_shift] using h2

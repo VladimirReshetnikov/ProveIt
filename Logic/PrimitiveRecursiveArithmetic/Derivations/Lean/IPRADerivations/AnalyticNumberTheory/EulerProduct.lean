@@ -105,13 +105,9 @@ theorem prod_extend (F : PTm 2) {m : PTm n} (hm : Γ ⊢[PRAAx] m ≐ succ (pred
     Γ ⊢[PRAAx] ap2 (prodF (pB F)) (succ m + k) m ≐ ap2 (prodF (pB F)) (succ m) m := by
   have hall : Γ ⊢[PRAAx] Fm.all (ap2 (prodF (pB F)) (succ (Syn.shift m) + var 0) (Syn.shift m) ≐
       ap2 (prodF (pB F)) (succ (Syn.shift m)) (Syn.shift m)) := by
-    refine PRA.qfInd _ trivial ?_ ?_
-    · simp only [Fm.subst_eq, subst_ap2, PTm.subst_add, Syn.subst_var, Syn.inst_zero, Syn.subst_inst_shift,
-        ConciseIPRA.PTm.subst_succ]
-      exact congrAp2 (prodF (pB F)) (add_zero _) (.eqRefl _)
-    · simp only [Fm.subst_eq, subst_ap2, PTm.subst_add, Syn.subst_var, Syn.repl_zero, Syn.subst_shift, Syn.repl_succ,
-        ConciseIPRA.PTm.subst_succ]
-      refine (congrAp2 (prodF (pB F)) (add_succ _ _) (.eqRefl _)).eqTrans ((prod_succ _ _ _).eqTrans ?_)
+    ipra_qfind (trivial) [subst_ap2, Syn.subst_shift, Syn.repl_succ]
+    · exact congrAp2 (prodF (pB F)) (add_zero _) (.eqRefl _)
+    · refine (congrAp2 (prodF (pB F)) (add_succ _ _) (.eqRefl _)).eqTrans ((prod_succ _ _ _).eqTrans ?_)
       have t : ((ap2 (prodF (pB F)) (succ (Syn.shift m) + var 0) (Syn.shift m) ≐
           ap2 (prodF (pB F)) (succ (Syn.shift m)) (Syn.shift m)) :: Γ.map Fm.shift) ⊢[PRAAx]
           inst2 (pB F) (succ (Syn.shift m) + var 0) (Syn.shift m) ≐ one := by

@@ -65,13 +65,9 @@ theorem ranked_inv (hR : Γ ⊢[PRAAx] le (inst2 ρ zero x) R)
       lt (inst2 ρ (succ (var 0)) (Syn.shift x)) (inst2 ρ (var 0) (Syn.shift x)))) :
     Γ ⊢[PRAAx] Fm.all (lt (mu b (var 0) (Syn.shift x)) (var 0) ⋎
       le (inst2 ρ (var 0) (Syn.shift x) + var 0) (Syn.shift R)) := by
-  refine PRA.qfInd _ ⟨lt_QF _ _, le_QF _ _⟩ ?_ ?_
-  · simp only [Fm.subst_or, subst_le, subst_lt, subst_ap2, subst_inst2, PTm.subst_add, Syn.subst_var, Syn.inst_zero,
-      Syn.subst_inst_shift]
-    exact rs_base hR
-  · simp only [Fm.subst_or, subst_le, subst_lt, subst_ap2, subst_inst2, PTm.subst_add, Syn.subst_var, Syn.repl_zero,
-      subst_repl_shift]
-    exact rs_step hd.allOpen.wk Prf.hyp0
+  ipra_qfind (⟨lt_QF _ _, le_QF _ _⟩) [subst_le, subst_lt, subst_ap2, subst_inst2]
+  · exact rs_base hR
+  · exact rs_step hd.allOpen.wk Prf.hyp0
 
 /-- `thm:rank-metastability`: the least search over `t ≤ R` finds a stable step. -/
 theorem ranked_search (hR : Γ ⊢[PRAAx] le (inst2 ρ zero x) R)

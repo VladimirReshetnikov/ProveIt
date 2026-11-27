@@ -49,11 +49,9 @@ theorem T_lt_succ (i D : PTm n) : Γ ⊢[PRAAx] lt (T i D) (T (succ i) D) := by
 
 theorem T_mono_add (i D : PTm n) (d : PTm n) : Γ ⊢[PRAAx] le (T i D) (T (i + d) D) := by
   have hall : Γ ⊢[PRAAx] Fm.all (le (T (Syn.shift i) (Syn.shift D)) (T (Syn.shift i + var 0) (Syn.shift D))) := by
-    refine PRA.qfInd _ (le_QF _ _) ?_ ?_
-    · simp only [subst_le, subst_ap2, PTm.subst_add, Syn.subst_var, Syn.inst_zero, Syn.subst_inst_shift]
-      exact le_congr (.eqRefl _) (congrAp2 _ (add_zero i).eqSymm (.eqRefl _)) (le_refl _)
-    · simp only [subst_le, subst_ap2, PTm.subst_add, Syn.subst_var, Syn.repl_zero, subst_repl_shift]
-      refine le_trans Prf.hyp0 (le_congr (.eqRefl _) (congrAp2 _ (add_succ _ _).eqSymm (.eqRefl _)) ?_)
+    ipra_qfind (le_QF _ _) [subst_le, subst_ap2]
+    · exact le_congr (.eqRefl _) (congrAp2 _ (add_zero i).eqSymm (.eqRefl _)) (le_refl _)
+    · refine le_trans Prf.hyp0 (le_congr (.eqRefl _) (congrAp2 _ (add_succ _ _).eqSymm (.eqRefl _)) ?_)
       exact le_trans (le_succ_self _) (T_lt_succ _ _)
   have h2 := Prf.allE d hall
   simp only [subst_le, subst_ap2, PTm.subst_add, Syn.subst_var, Syn.inst_zero, Syn.subst_inst_shift] at h2
@@ -73,13 +71,9 @@ theorem pow_step {D Ti Ti1 P P1 : PTm n} (ih : Γ ⊢[PRAAx] le (succ Ti) P) (e1
 /-- **`T_i + 1 ≤ (B + 1)^i`.** -/
 theorem T_pow (i D : PTm n) : Γ ⊢[PRAAx] le (succ (T i D)) (pw (B1 D) i) := by
   have hall : Γ ⊢[PRAAx] Fm.all (le (succ (T (var 0) (Syn.shift D))) (pw (B1 (Syn.shift D)) (var 0))) := by
-    refine PRA.qfInd _ (le_QF _ _) ?_ ?_
-    · simp only [subst_le, subst_ap2, PTm.subst_mul, Syn.subst_var, Syn.inst_zero, Syn.subst_inst_shift,
-        ConciseIPRA.PTm.subst_succ, PTm.subst_num]
-      exact le_congr (congrSucc (T_zero D)).eqSymm (pw_zero _).eqSymm (le_refl _)
-    · simp only [subst_le, subst_ap2, PTm.subst_mul, Syn.subst_var, Syn.repl_zero, subst_repl_shift,
-        ConciseIPRA.PTm.subst_succ, PTm.subst_num]
-      exact pow_step Prf.hyp0 (T_succ _ _) (pw_succ _ _)
+    ipra_qfind (le_QF _ _) [subst_le, subst_ap2]
+    · exact le_congr (congrSucc (T_zero D)).eqSymm (pw_zero _).eqSymm (le_refl _)
+    · exact pow_step Prf.hyp0 (T_succ _ _) (pw_succ _ _)
   have h2 := Prf.allE i hall
   simp only [subst_le, subst_ap2, PTm.subst_mul, Syn.subst_var, Syn.inst_zero, Syn.subst_inst_shift,
     ConciseIPRA.PTm.subst_succ, PTm.subst_num] at h2

@@ -162,11 +162,9 @@ theorem step_ineq (Ψ Dm : PTm 2) {j p c N C x S' : PTm n}
 theorem inv_all (Ψ Dm : PTm 2) {P : PTm n} (hC : Γ ⊢[PRAAx] le one (fstT (sndT P)))
     (hmono : Γ ⊢[PRAAx] monoF Ψ (sndT (sndT P))) (hKD : Γ ⊢[PRAAx] kdF Ψ Dm (fstT (sndT P)) (sndT (sndT P))) :
     Γ ⊢[PRAAx] Fm.all (invF Ψ Dm (var 0) (Syn.shift P)) := by
-  refine PRA.qfInd _ (le_QF _ _) ?_ ?_
-  · simp only [subst_invF, Syn.subst_var, Syn.inst_zero, Syn.subst_inst_shift]
-    exact base_ineq Ψ Dm (S_zero Ψ Dm P)
-  · simp only [subst_invF, Syn.subst_var, Syn.repl_zero, subst_repl_shift]
-    let ψ0 : Fm PTm (n + 1) := invF Ψ Dm (var 0) (Syn.shift P)
+  ipra_qfind (le_QF _ _) [subst_invF]
+  · exact base_ineq Ψ Dm (S_zero Ψ Dm P)
+  · let ψ0 : Fm PTm (n + 1) := invF Ψ Dm (var 0) (Syn.shift P)
     have hC' : (ψ0 :: Γ.map Fm.shift) ⊢[PRAAx] le one (fstT (sndT (Syn.shift P))) := by
       simpa [Fm.shift, Syn.shift] using sh ψ0 hC
     have hm' : (ψ0 :: Γ.map Fm.shift) ⊢[PRAAx] monoF Ψ (sndT (sndT (Syn.shift P))) := by

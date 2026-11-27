@@ -97,14 +97,10 @@ theorem cf_step (t K K' : PTm n) (ih : Γ ⊢[PRAAx] CF t K K') : Γ ⊢[PRAAx] 
 
 theorem acc_cmp (t K K' : PTm n) : Γ ⊢[PRAAx] CF t K K' := by
   have hall : Γ ⊢[PRAAx] Fm.all (CF (var 0) (Syn.shift K) (Syn.shift K')) := by
-    refine PRA.qfInd _ (le_QF _ _) ?_ ?_
-    · simp only [subst_le, subst_ap2, subst_pairT, PTm.subst_mul, ConciseIPRA.PTm.subst_succ,
-        ConciseIPRA.PTm.subst_zero, Syn.subst_var, Syn.inst_zero, Syn.subst_inst_shift]
-      have a := natEq (An_zero (Γ := Γ) K)
+    ipra_qfind (le_QF _ _) [subst_le, subst_ap2, subst_pairT]
+    · have a := natEq (An_zero (Γ := Γ) K)
       ipra_le 𝔞 (Pt zero (pairT one K') * Ad zero K) with -(𝔞 (Qt zero (pairT one K'))) * a
-    · simp only [subst_le, subst_ap2, subst_pairT, PTm.subst_mul, ConciseIPRA.PTm.subst_succ,
-        ConciseIPRA.PTm.subst_zero, Syn.subst_var, Syn.repl_zero, subst_repl_shift]
-      exact cf_step _ _ _ Prf.hyp0
+    · exact cf_step _ _ _ Prf.hyp0
   have r := Prf.allE t hall
   simpa [Syn.subst_inst_shift] using r
 

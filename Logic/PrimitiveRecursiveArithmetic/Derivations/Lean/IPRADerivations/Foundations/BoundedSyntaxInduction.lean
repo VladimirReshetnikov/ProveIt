@@ -24,11 +24,9 @@ theorem induction (A : BFm (n+1))
     (hs : formula A :: Γ.map Fm.shift ⊢[PRAAx] (formula A).subst (repl (succ (var 0)))) :
     Γ ⊢[PRAAx] .all (formula A) := by
   have all : Γ ⊢[PRAAx] .all (bit A var ≐ one) := by
-    refine PRA.qfInd _ trivial ?_ ?_
-    · simp only [Fm.subst_eq,bit_subst,Syn.subst_var,ConciseIPRA.PTm.subst_succ,ConciseIPRA.PTm.subst_zero]
-      exact (bounded_reflection A (Syn.inst zero)).iffMpr h0
-    · simp only [Fm.subst_eq,bit_subst,Syn.subst_var,ConciseIPRA.PTm.subst_succ,ConciseIPRA.PTm.subst_zero]
-      have source : (bit A var ≐ one) :: Γ.map Fm.shift ⊢[PRAAx] formula A := by
+    ipra_qfind (trivial) [bit_subst]
+    · exact (bounded_reflection A (Syn.inst zero)).iffMpr h0
+    · have source : (bit A var ≐ one) :: Γ.map Fm.shift ⊢[PRAAx] formula A := by
         simpa only [Fm.subst_id] using (bounded_reflection A var).iffMp Prf.hyp0
       exact (bounded_reflection A (repl (succ (var 0)))).iffMpr (.impE (Prf.impI hs).wk source)
   refine .allI ?_

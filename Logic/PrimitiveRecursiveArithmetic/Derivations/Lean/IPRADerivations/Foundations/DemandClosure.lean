@@ -460,12 +460,9 @@ theorem iterate_bounded {F : PTm 2} {r caps x : PTm n}
     (hF : Γ ⊢[PRAAx] mapsInto F r caps x) :
     Γ ⊢[PRAAx] .all (ordered (Syn.shift r)
       (iterate F (var 0) (Syn.shift r) (Syn.shift x)) (Syn.shift caps)) := by
-  refine PRA.qfInd _ trivial ?_ ?_
-  · simp only [subst_ordered, subst_iterate, Syn.subst_var, Syn.inst_zero, Syn.subst_inst_shift]
-    exact ordered_congr (.eqRefl _) (iterate_zero F r x).eqSymm (.eqRefl _) (zeros_le r caps)
-  · simp only [subst_ordered, subst_iterate, Syn.subst_var, Syn.repl_zero,
-      subst_repl_shift]
-    let Δ := ordered (Syn.shift r) (iterate F (var 0) (Syn.shift r) (Syn.shift x))
+  ipra_qfind (trivial) [subst_ordered, subst_iterate]
+  · exact ordered_congr (.eqRefl _) (iterate_zero F r x).eqSymm (.eqRefl _) (zeros_le r caps)
+  · let Δ := ordered (Syn.shift r) (iterate F (var 0) (Syn.shift r) (Syn.shift x))
       (Syn.shift caps) :: Γ.map Fm.shift
     have hf : Δ ⊢[PRAAx] mapsInto F (Syn.shift r) (Syn.shift caps) (Syn.shift x) := by
       simpa only [Δ, Fm.shift, subst_mapsInto, Syn.shift] using hF.shift.wk
@@ -499,11 +496,9 @@ theorem iterate_le_prefixed {F : PTm 2} {r caps x e : PTm n}
     (he : Γ ⊢[PRAAx] ordered r e caps) (hPref : Γ ⊢[PRAAx] prefixed F r e x) :
     Γ ⊢[PRAAx] .all (ordered (Syn.shift r)
       (iterate F (var 0) (Syn.shift r) (Syn.shift x)) (Syn.shift e)) := by
-  refine PRA.qfInd _ trivial ?_ ?_
-  · simp only [subst_ordered, subst_iterate, Syn.subst_var, Syn.inst_zero, Syn.subst_inst_shift]
-    exact ordered_congr (.eqRefl _) (iterate_zero F r x).eqSymm (.eqRefl _) (zeros_le r e)
-  · simp only [subst_ordered, subst_iterate, Syn.subst_var, Syn.repl_zero, subst_repl_shift]
-    let Δ := ordered (Syn.shift r) (iterate F (var 0) (Syn.shift r) (Syn.shift x))
+  ipra_qfind (trivial) [subst_ordered, subst_iterate]
+  · exact ordered_congr (.eqRefl _) (iterate_zero F r x).eqSymm (.eqRefl _) (zeros_le r e)
+  · let Δ := ordered (Syn.shift r) (iterate F (var 0) (Syn.shift r) (Syn.shift x))
       (Syn.shift e) :: Γ.map Fm.shift
     have hm : Δ ⊢[PRAAx] mapsInto F (Syn.shift r) (Syn.shift caps) (Syn.shift x) := by
       simpa only [Δ, Fm.shift, subst_mapsInto, Syn.shift] using hMaps.shift.wk
@@ -536,15 +531,11 @@ theorem iterate_ordered {F : PTm 2} {k l r x : PTm n} (hkl : Γ ⊢[PRAAx] le k 
   have hall : Γ ⊢[PRAAx] .all (le (Syn.shift k) (var 0) ⟶
       ordered (Syn.shift r) (iterate F (Syn.shift k) (Syn.shift r) (Syn.shift x))
         (iterate F (var 0) (Syn.shift r) (Syn.shift x))) := by
-    refine PRA.qfInd _ ⟨le_QF _ _, trivial⟩ ?_ ?_
-    · simp only [Fm.subst_imp, subst_le, subst_ordered, subst_iterate, Syn.subst_var,
-        Syn.inst_zero, Syn.subst_inst_shift]
-      refine .impI ?_
+    ipra_qfind (⟨le_QF _ _, trivial⟩) [subst_le, subst_ordered, subst_iterate]
+    · refine .impI ?_
       have kZero : (le k zero :: Γ) ⊢[PRAAx] k ≐ zero := (monus_zero _).eqSymm.eqTrans Prf.hyp0
       exact ordered_congr (.eqRefl _) (iterate_congr kZero).eqSymm (.eqRefl _) (ordered_refl _ _)
-    · simp only [Fm.subst_imp, subst_le, subst_ordered, subst_iterate, Syn.subst_var,
-        Syn.repl_zero, subst_repl_shift]
-      refine .impI ?_
+    · refine .impI ?_
       let Δ := le (Syn.shift k) (succ (var 0)) ::
         (le (Syn.shift k) (var 0) ⟶
           ordered (Syn.shift r) (iterate F (Syn.shift k) (Syn.shift r) (Syn.shift x))

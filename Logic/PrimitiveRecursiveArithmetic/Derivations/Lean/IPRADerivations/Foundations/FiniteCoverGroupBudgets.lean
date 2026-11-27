@@ -48,13 +48,9 @@ theorem scaled_sum_succ (K B m : PTm n) : Γ ⊢[PRAAx] scaledSum (succ K) B m �
 theorem scale_budget_sum (K B m : PTm n) : Γ ⊢[PRAAx] scaledSum K B m ≐ m * budgetSum K B := by
   have all : Γ ⊢[PRAAx] .all (scaledSum (var 0) (Syn.shift B) (Syn.shift m) ≐
       Syn.shift m * budgetSum (var 0) (Syn.shift B)) := by
-    refine PRA.qfInd _ trivial ?_ ?_
-    · simp only [Fm.subst_eq,subst_scaledSum,subst_budgetSum,LeanProofs.IPRA.PTm.subst_mul,
-        Syn.subst_var,Syn.inst_zero,Syn.subst_inst_shift]
-      exact (sum_zero _ _).eqTrans ((congrMul (.eqRefl _) (sum_zero _ _)).eqTrans (mul_zero _)).eqSymm
-    · simp only [Fm.subst_eq,subst_scaledSum,subst_budgetSum,LeanProofs.IPRA.PTm.subst_mul,
-        Syn.subst_var,Syn.repl_zero,subst_repl_shift]
-      exact (scaled_sum_succ _ _ _).eqTrans ((congrAdd Prf.hyp0 (.eqRefl _)).eqTrans
+    ipra_qfind (trivial) [subst_scaledSum, subst_budgetSum]
+    · exact (sum_zero _ _).eqTrans ((congrMul (.eqRefl _) (sum_zero _ _)).eqTrans (mul_zero _)).eqSymm
+    · exact (scaled_sum_succ _ _ _).eqTrans ((congrAdd Prf.hyp0 (.eqRefl _)).eqTrans
         ((mul_add _ _ _).eqSymm.eqTrans (congrMul (.eqRefl _) (budget_sum_succ _ _).eqSymm)))
   simpa only [Fm.subst_eq,subst_scaledSum,subst_budgetSum,LeanProofs.IPRA.PTm.subst_mul,
     Syn.subst_var,Syn.inst_zero,Syn.subst_inst_shift] using all.allE K

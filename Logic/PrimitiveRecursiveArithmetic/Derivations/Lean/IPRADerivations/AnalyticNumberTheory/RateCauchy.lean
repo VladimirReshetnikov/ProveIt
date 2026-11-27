@@ -218,16 +218,10 @@ theorem ginv_all {r c y P : PTm n} (hr : Γ ⊢[PRAAx] le one r) (hP : Γ ⊢[PR
     Γ ⊢[PRAAx] GInv aP aN r c y P Q := by
   have hall : Γ ⊢[PRAAx] Fm.all (le (Syn.shift P) (var 0) ⟶
       GInv aP aN (Syn.shift r) (Syn.shift c) (Syn.shift y) (Syn.shift P) (var 0)) := by
-    refine PRA.qfInd _ ⟨le_QF _ _, le_QF _ _⟩ ?_ ?_
-    · simp only [GInv, Fm.subst_imp, subst_le, subst_ap2, PTm.subst_add, PTm.subst_mul, PTm.subst_monus, subst_pairT,
-        LeanProofs.IPRA.PTm.subst_pred, ConciseIPRA.PTm.subst_succ, ConciseIPRA.PTm.subst_zero, Syn.subst_var,
-        Syn.inst_zero, Syn.subst_inst_shift]
-      refine .impI ?_
+    ipra_qfind (⟨le_QF _ _, le_QF _ _⟩) [GInv, subst_le, subst_ap2, subst_pairT]
+    · refine .impI ?_
       exact lt_irrefl zero _ (le_trans hP.wk Prf.hyp0)
-    · simp only [GInv, Fm.subst_imp, subst_le, subst_ap2, PTm.subst_add, PTm.subst_mul, PTm.subst_monus, subst_pairT,
-        LeanProofs.IPRA.PTm.subst_pred, ConciseIPRA.PTm.subst_succ, ConciseIPRA.PTm.subst_zero, Syn.subst_var,
-        Syn.repl_zero, subst_repl_shift]
-      refine .impI ?_
+    · refine .impI ?_
       let φ : Fm PTm (n + 1) := le (Syn.shift P) (var 0) ⟶
         GInv aP aN (Syn.shift r) (Syn.shift c) (Syn.shift y) (Syn.shift P) (var 0)
       let Δ : List (Fm PTm (n + 1)) := le (Syn.shift P) (succ (var 0)) :: φ :: Γ.map Fm.shift

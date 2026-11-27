@@ -86,13 +86,9 @@ theorem pc_run {N t : PTm n} (h : Γ ⊢[PRAAx] le (succ t) N) :
 /-- `π(u + j) ≤ π(u) + j`: with `PrimeRank.pc_mono`, `0 ≤ π(v) − π(u) ≤ v − u` for `u ≤ v`. -/
 theorem pc_lipschitz (u j : PTm n) : Γ ⊢[PRAAx] le (pc (u + j)) (pc u + j) := by
   have hall : Γ ⊢[PRAAx] Fm.all (le (pc (Syn.shift u + var 0)) (pc (Syn.shift u) + var 0)) := by
-    refine PRA.qfInd _ trivial ?_ ?_
-    · simp only [subst_le, subst_ap2, PTm.subst_add, Syn.subst_var, Syn.inst_zero, Syn.subst_inst_shift,
-        ConciseIPRA.PTm.subst_succ, ConciseIPRA.PTm.subst_zero]
-      exact le_congr (congrPc (add_zero u).eqSymm) (add_zero _).eqSymm (le_refl _)
-    · simp only [subst_le, subst_ap2, PTm.subst_add, Syn.subst_var, Syn.repl_zero, subst_repl_shift,
-        ConciseIPRA.PTm.subst_succ, ConciseIPRA.PTm.subst_zero]
-      let D : List (Fm PTm (n + 1)) :=
+    ipra_qfind (trivial) [subst_le, subst_ap2]
+    · exact le_congr (congrPc (add_zero u).eqSymm) (add_zero _).eqSymm (le_refl _)
+    · let D : List (Fm PTm (n + 1)) :=
         le (pc (Syn.shift u + var 0)) (pc (Syn.shift u) + var 0) :: Γ.map Fm.shift
       have ih : D ⊢[PRAAx] le (pc (Syn.shift u + var 0)) (pc (Syn.shift u) + var 0) := Prf.hyp0
       have es : D ⊢[PRAAx] Syn.shift u + succ (var 0) ≐ succ (Syn.shift u + var 0) := add_succ _ _

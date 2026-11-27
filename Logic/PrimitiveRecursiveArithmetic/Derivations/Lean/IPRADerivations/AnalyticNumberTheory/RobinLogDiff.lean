@@ -42,18 +42,14 @@ theorem qg_step {K p s W : PTm n} (hW : Γ ⊢[PRAAx] s * s ≐ W + p * p) (ih :
 
 theorem q_gen {p s W : PTm n} (hW : Γ ⊢[PRAAx] s * s ≐ W + p * p) (K : PTm n) : Γ ⊢[PRAAx] QG K p s W := by
   have hall : Γ ⊢[PRAAx] Fm.all (QG (var 0) (Syn.shift p) (Syn.shift s) (Syn.shift W)) := by
-    refine PRA.qfInd _ (le_QF _ _) ?_ ?_
-    · simp only [subst_le, subst_ap2, subst_pairT, PTm.subst_add, PTm.subst_mul, ConciseIPRA.PTm.subst_succ,
-        ConciseIPRA.PTm.subst_zero, Syn.subst_var, Syn.inst_zero, Syn.subst_inst_shift]
-      have a := natEq (Nz_zero (Γ := Γ) p s)
+    ipra_qfind (le_QF _ _) [subst_le, subst_ap2, subst_pairT]
+    · have a := natEq (Nz_zero (Γ := Γ) p s)
       have b := natEq (L_zero (Γ := Γ) (zero : PTm n))
       have c := natEq (P_zero (Γ := Γ) p)
       have d := natEq (P_zero (Γ := Γ) s)
       ipra_le 0 with -(𝔞 W) * a + (2 * 𝔞 (Pv zero s) * 𝔞 p * 𝔞 s - 2 * 𝔞 (Pv zero p) * (𝔞 s) ^ 2) * b -
         2 * (𝔞 s) ^ 2 * c + 2 * 𝔞 p * 𝔞 s * d
-    · simp only [subst_le, subst_ap2, subst_pairT, PTm.subst_add, PTm.subst_mul, ConciseIPRA.PTm.subst_succ,
-        ConciseIPRA.PTm.subst_zero, Syn.subst_var, Syn.repl_zero, subst_repl_shift]
-      have hW' : (QG (var 0) (Syn.shift p) (Syn.shift s) (Syn.shift W) :: Γ.map Fm.shift) ⊢[PRAAx]
+    · have hW' : (QG (var 0) (Syn.shift p) (Syn.shift s) (Syn.shift W) :: Γ.map Fm.shift) ⊢[PRAAx]
           Syn.shift s * Syn.shift s ≐ Syn.shift W + Syn.shift p * Syn.shift p := by
         have b := hW.shift
         simp only [Fm.shift, Fm.subst_eq, PTm.subst_mul, PTm.subst_add] at b

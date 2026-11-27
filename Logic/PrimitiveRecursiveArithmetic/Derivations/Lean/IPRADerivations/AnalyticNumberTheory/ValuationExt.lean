@@ -105,13 +105,9 @@ theorem lw_pow (w : PTm 2) {a : PTm n} (ha : Γ ⊢[PRAAx] a ≐ succ (pred a)) 
   have ha' := shift_pos ha
   have hall : Γ ⊢[PRAAx] Fm.all (Lw w (pw (Syn.shift a) (var 0)) (Syn.shift y) ≐
       var 0 * Lw w (Syn.shift a) (Syn.shift y)) := by
-    refine PRA.qfInd _ trivial ?_ ?_
-    · simp only [Fm.subst_eq, subst_ap2, subst_pairT, PTm.subst_mul, Syn.subst_var, Syn.inst_zero, Syn.subst_inst_shift,
-        ConciseIPRA.PTm.subst_succ]
-      exact (congrLw w _ (pw_zero _)).eqTrans ((lw_one w _).eqTrans (zero_mul _).eqSymm)
-    · simp only [Fm.subst_eq, subst_ap2, subst_pairT, PTm.subst_mul, Syn.subst_var, Syn.repl_zero, subst_repl_shift,
-        ConciseIPRA.PTm.subst_succ]
-      refine (congrLw w _ (pw_succ _ _)).eqTrans ((lw_mul w (pw_pos' ha'.wk _) ha'.wk).eqTrans ?_)
+    ipra_qfind (trivial) [subst_ap2, subst_pairT]
+    · exact (congrLw w _ (pw_zero _)).eqTrans ((lw_one w _).eqTrans (zero_mul _).eqSymm)
+    · refine (congrLw w _ (pw_succ _ _)).eqTrans ((lw_mul w (pw_pos' ha'.wk _) ha'.wk).eqTrans ?_)
       exact (congrAdd Prf.hyp0 (.eqRefl _)).eqTrans (succ_mul_alg _ _)
   have h2 := Prf.allE e hall
   simp only [Fm.subst_eq, subst_ap2, subst_pairT, PTm.subst_mul, Syn.subst_var, Syn.inst_zero, Syn.subst_inst_shift,

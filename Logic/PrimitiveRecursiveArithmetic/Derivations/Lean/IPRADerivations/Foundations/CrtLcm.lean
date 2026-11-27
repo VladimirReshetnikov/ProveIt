@@ -159,13 +159,9 @@ theorem Lc_succ (K y : PTm n) : Γ ⊢[PRAAx] Lc mB (succ K) y ≐ lcm (Lc mB K 
 
 theorem Lc_pos (K y : PTm n) : Γ ⊢[PRAAx] Lc mB K y ≐ succ (pred (Lc mB K y)) := by
   have hall : Γ ⊢[PRAAx] Fm.all (Lc mB (var 0) (Syn.shift y) ≐ succ (pred (Lc mB (var 0) (Syn.shift y)))) := by
-    refine PRA.qfInd _ trivial ?_ ?_
-    · simp only [Fm.subst_eq, subst_ap2, PTm.subst_pred, Syn.subst_var, Syn.inst_zero, Syn.subst_inst_shift,
-        ConciseIPRA.PTm.subst_succ]
-      exact (Lc_zero mB y).eqTrans (congrSucc ((pred_succ zero).eqSymm.eqTrans (congrPred (Lc_zero mB y).eqSymm)))
-    · simp only [Fm.subst_eq, subst_ap2, PTm.subst_pred, Syn.subst_var, Syn.repl_zero, subst_repl_shift,
-        ConciseIPRA.PTm.subst_succ]
-      have e := Lc_succ (Γ := (Lc mB (var 0) (Syn.shift y) ≐ succ (pred (Lc mB (var 0) (Syn.shift y)))) ::
+    ipra_qfind (trivial) [subst_ap2]
+    · exact (Lc_zero mB y).eqTrans (congrSucc ((pred_succ zero).eqSymm.eqTrans (congrPred (Lc_zero mB y).eqSymm)))
+    · have e := Lc_succ (Γ := (Lc mB (var 0) (Syn.shift y) ≐ succ (pred (Lc mB (var 0) (Syn.shift y)))) ::
         Γ.map Fm.shift) mB (var 0) (Syn.shift y)
       exact e.eqTrans ((lcm_pos Prf.hyp0 (m_pos mB _ _)).eqTrans (congrSucc (congrPred e.eqSymm)))
   have h2 := Prf.allE K hall
@@ -180,13 +176,9 @@ theorem Lc_step_dvd (K y : PTm n) : Γ ⊢[PRAAx] dvd (Lc mB K y) (Lc mB (succ K
 theorem m_dvd_Lc {i K y : PTm n} (hi : Γ ⊢[PRAAx] lt i K) : Γ ⊢[PRAAx] dvd (inst2 (mS mB) i y) (Lc mB K y) := by
   have hall : Γ ⊢[PRAAx] Fm.all (lt (Syn.shift i) (var 0) ⟶
       dvd (inst2 (mS mB) (Syn.shift i) (Syn.shift y)) (Lc mB (var 0) (Syn.shift y))) := by
-    refine PRA.qfInd _ ⟨le_QF _ _, trivial⟩ ?_ ?_
-    · simp only [Fm.subst_imp, subst_lt, Fm.subst_eq, subst_ap2, subst_inst2, Syn.subst_var, Syn.inst_zero,
-        Syn.subst_inst_shift, ConciseIPRA.PTm.subst_zero]
-      exact .impI (lt_zero_absurd _ Prf.hyp0)
-    · simp only [Fm.subst_imp, subst_lt, Fm.subst_eq, subst_ap2, subst_inst2, Syn.subst_var, Syn.repl_zero,
-        subst_repl_shift, ConciseIPRA.PTm.subst_zero]
-      refine .impI (.orE (lt_succ_cases Prf.hyp0) ?_ ?_)
+    ipra_qfind (⟨le_QF _ _, trivial⟩) [subst_lt, subst_ap2, subst_inst2]
+    · exact .impI (lt_zero_absurd _ Prf.hyp0)
+    · refine .impI (.orE (lt_succ_cases Prf.hyp0) ?_ ?_)
       · exact dvd_trans' (m_pos mB _ _) (Lc_pos mB _ _) (.impE hyp2 Prf.hyp0) (Lc_step_dvd mB _ _)
       · have e : ((Syn.shift i ≐ var 0) :: lt (Syn.shift i) (succ (var 0)) ::
             (lt (Syn.shift i) (var 0) ⟶ dvd (inst2 (mS mB) (Syn.shift i) (Syn.shift y))

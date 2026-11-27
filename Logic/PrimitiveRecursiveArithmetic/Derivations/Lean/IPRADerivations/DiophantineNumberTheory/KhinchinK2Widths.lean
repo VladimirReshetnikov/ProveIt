@@ -92,11 +92,9 @@ theorem mono_shift (Ψ : PTm 2) {x : PTm n} (hmono : Γ ⊢[PRAAx] monoF Ψ x) (
 /-- `Ψ(a + i) ≤ Ψ(a)` for every `i`. -/
 theorem mono_far (Ψ : PTm 2) {x : PTm n} (a : PTm n) (hmono : Γ ⊢[PRAAx] monoF Ψ x) :
     Γ ⊢[PRAAx] Fm.all (le (inst2 Ψ (Syn.shift a + var 0) (Syn.shift x)) (inst2 Ψ (Syn.shift a) (Syn.shift x))) := by
-  refine PRA.qfInd _ (le_QF _ _) ?_ ?_
-  · simp only [subst_le, subst_inst2, PTm.subst_add, Syn.subst_var, Syn.inst_zero, Syn.subst_inst_shift]
-    exact le_congr (congrInst2 Ψ (add_zero a).eqSymm (.eqRefl x)) (.eqRefl _) (le_refl _)
-  · simp only [subst_le, subst_inst2, PTm.subst_add, Syn.subst_var, Syn.repl_zero, subst_repl_shift]
-    have m := mono_shift Ψ hmono (Syn.shift a + var 0)
+  ipra_qfind (le_QF _ _) [subst_le, subst_inst2]
+  · exact le_congr (congrInst2 Ψ (add_zero a).eqSymm (.eqRefl x)) (.eqRefl _) (le_refl _)
+  · have m := mono_shift Ψ hmono (Syn.shift a + var 0)
     have m' := le_congr (congrInst2 Ψ (add_succ (Syn.shift a) (var 0)).eqSymm (.eqRefl _)) (.eqRefl _) m
     exact le_trans m'.wk Prf.hyp0
 

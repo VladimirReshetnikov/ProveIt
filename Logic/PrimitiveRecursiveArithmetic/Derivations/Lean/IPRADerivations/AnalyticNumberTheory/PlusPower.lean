@@ -52,14 +52,10 @@ theorem cancel {C w x y : PTm n} (hC : Γ ⊢[PRAAx] C ≐ succ (pred C)) (hw : 
 theorem cop_pow {B C : PTm n} (hC : Γ ⊢[PRAAx] C ≐ succ (pred C)) (h : Γ ⊢[PRAAx] gcd C B ≐ one) (k : PTm n) :
     Γ ⊢[PRAAx] gcd C (pw B k) ≐ one := by
   have hall : Γ ⊢[PRAAx] Fm.all (gcd (Syn.shift C) (pw (Syn.shift B) (var 0)) ≐ one) := by
-    refine PRA.qfInd _ trivial ?_ ?_
-    · simp only [Fm.subst_eq, subst_ex2, subst_ap2, Syn.subst_var, Syn.inst_zero, Syn.subst_inst_shift,
-        ConciseIPRA.PTm.subst_succ, ConciseIPRA.PTm.subst_zero]
-      exact (congrGcd (.eqRefl _) (pw_zero _)).eqTrans
+    ipra_qfind (trivial) [subst_ex2, subst_ap2]
+    · exact (congrGcd (.eqRefl _) (pw_zero _)).eqTrans
         (gcd_eq_one_of_dvd (gcd_pos_right one_pos) (.orI₂ (.eqRefl _)))
-    · simp only [Fm.subst_eq, subst_ex2, subst_ap2, Syn.subst_var, Syn.repl_zero, subst_repl_shift,
-        ConciseIPRA.PTm.subst_succ, ConciseIPRA.PTm.subst_zero]
-      have h' := Euler.shift_cop h
+    · have h' := Euler.shift_cop h
       exact (congrGcd (.eqRefl _) (pw_succ _ _)).eqTrans (coprime_mul (pos_shift hC).wk Prf.hyp0 h'.wk)
   have h2 := Prf.allE k hall
   simp only [Fm.subst_eq, subst_ex2, subst_ap2, Syn.subst_var, Syn.inst_zero, Syn.subst_inst_shift,

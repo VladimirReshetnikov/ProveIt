@@ -44,11 +44,9 @@ theorem congrIter (f : PTm 1) {n n' x x' : PTm k} (h₁ : Γ ⊢[PRAAx] n ≐ n'
 theorem iter_add (f : PTm 1) (j n x : PTm k) : Γ ⊢[PRAAx] iter f (j + n) x ≐ iter f n (iter f j x) := by
   have hall : Γ ⊢[PRAAx] Fm.all (iter f (Syn.shift j + Syn.var 0) (Syn.shift x) ≐
       iter f (Syn.var 0) (iter f (Syn.shift j) (Syn.shift x))) := by
-    refine PRA.qfInd _ trivial ?_ ?_
-    · simp only [Fm.subst_eq, subst_ap2, PTm.subst_add, Syn.subst_var, Syn.inst_zero, Syn.subst_inst_shift]
-      exact (congrIter f (add_zero _) (.eqRefl _)).eqTrans (iter_zero f _).eqSymm
-    · simp only [Fm.subst_eq, subst_ap2, PTm.subst_add, Syn.subst_var, Syn.repl_zero, subst_repl_shift]
-      have ih : ((iter f (Syn.shift j + Syn.var 0) (Syn.shift x) ≐
+    ipra_qfind (trivial) [subst_ap2]
+    · exact (congrIter f (add_zero _) (.eqRefl _)).eqTrans (iter_zero f _).eqSymm
+    · have ih : ((iter f (Syn.shift j + Syn.var 0) (Syn.shift x) ≐
           iter f (Syn.var 0) (iter f (Syn.shift j) (Syn.shift x))) :: Γ.map Fm.shift) ⊢[PRAAx]
           iter f (Syn.shift j + Syn.var 0) (Syn.shift x) ≐
             iter f (Syn.var 0) (iter f (Syn.shift j) (Syn.shift x)) := Prf.hyp0
@@ -90,18 +88,14 @@ theorem contract_step (H : Contr F B d) {V W n : PTm k} (ih : Γ ⊢[PRAAx] CInv
 theorem iter_contract (H : Contr F B d) {V W : PTm k} (hV : Γ ⊢[PRAAx] app1 B V ≐ one)
     (hW : Γ ⊢[PRAAx] app1 B W ≐ one) (n : PTm k) : Γ ⊢[PRAAx] CInv F B d V W n := by
   have hall : Γ ⊢[PRAAx] Fm.all (CInv F B d (Syn.shift V) (Syn.shift W) (Syn.var 0)) := by
-    refine PRA.qfInd _ ⟨⟨trivial, trivial⟩, le_QF _ _⟩ ?_ ?_
-    · simp only [Fm.subst_and, Fm.subst_eq, subst_le, subst_ap2, subst_app1, subst_inst2, PTm.subst_mul, subst_one',
-        subst_two', Syn.subst_var, Syn.inst_zero, Syn.subst_inst_shift]
-      have zV := iter_zero (Γ := Γ) F V
+    ipra_qfind (⟨⟨trivial, trivial⟩, le_QF _ _⟩) [subst_le, subst_ap2, subst_app1, subst_inst2, subst_one', subst_two']
+    · have zV := iter_zero (Γ := Γ) F V
       have zW := iter_zero (Γ := Γ) F W
       refine .andI (.andI ((congrApp1 B zV).eqTrans hV) ((congrApp1 B zW).eqTrans hW)) ?_
       have p := natEq (pw_zero (Γ := Γ) two)
       have e := natEq (congrInst2 d zV zW)
       ipra_le 0 using rw [p, e]; ring
-    · simp only [Fm.subst_and, Fm.subst_eq, subst_le, subst_ap2, subst_app1, subst_inst2, PTm.subst_mul, Syn.subst_var,
-        Syn.repl_zero, subst_repl_shift, ConciseIPRA.PTm.subst_zero, ConciseIPRA.PTm.subst_succ]
-      exact contract_step H Prf.hyp0
+    · exact contract_step H Prf.hyp0
   have h2 := Prf.allE n hall
   simpa only [Fm.subst_and, Fm.subst_eq, subst_le, subst_ap2, subst_app1, subst_inst2, PTm.subst_mul, subst_one', subst_two',
     Syn.subst_var, Syn.inst_zero, Syn.subst_inst_shift] using h2

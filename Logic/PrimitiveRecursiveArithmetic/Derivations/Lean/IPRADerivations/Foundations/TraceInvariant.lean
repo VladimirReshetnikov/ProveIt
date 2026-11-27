@@ -96,13 +96,9 @@ abbrev invF (s₀ x : PTm n) : Fm PTm (n + 1) :=
 /-- An invariant that holds initially and is preserved by one step holds along the whole run. -/
 theorem trace_invariant_all {s₀ x : PTm n} (h₀ : Γ ⊢[PRAAx] inst2 inv s₀ x ≐ one)
     (hs : Γ ⊢[PRAAx] presF step inv x) : Γ ⊢[PRAAx] Fm.all (invF step inv s₀ x) := by
-  refine PRA.qfInd _ trivial ?_ ?_
-  · simp only [Fm.subst_eq, subst_inst2, subst_ap2, subst_pairT, Syn.subst_var, Syn.inst_zero,
-      Syn.subst_inst_shift, ConciseIPRA.PTm.subst_succ, ConciseIPRA.PTm.subst_zero]
-    exact (congrInst2 inv (run_zero step s₀ x) (.eqRefl _)).eqTrans h₀
-  · simp only [Fm.subst_eq, subst_inst2, subst_ap2, subst_pairT, Syn.subst_var, Syn.repl_zero,
-      subst_repl_shift', ConciseIPRA.PTm.subst_succ, ConciseIPRA.PTm.subst_zero]
-    have hsh : Γ.map Fm.shift ⊢[PRAAx] presF step inv (Syn.shift x) := by
+  ipra_qfind (trivial) [subst_inst2, subst_ap2, subst_pairT, subst_repl_shift']
+  · exact (congrInst2 inv (run_zero step s₀ x) (.eqRefl _)).eqTrans h₀
+  · have hsh : Γ.map Fm.shift ⊢[PRAAx] presF step inv (Syn.shift x) := by
       have h := hs.shift
       rw [shift_presF] at h
       exact h

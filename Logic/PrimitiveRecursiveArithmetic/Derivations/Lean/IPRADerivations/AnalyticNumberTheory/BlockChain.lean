@@ -100,13 +100,9 @@ theorem chain_sum {x E0 Q B N A Ds K L c0 C1 c2 : PTm n} (hQ : Γ ⊢[PRAAx] le 
   have hN' : (Γ.map Fm.shift) ⊢[PRAAx] le (Syn.shift E0 * pw (Syn.shift Q) (Syn.shift B)) (Syn.shift N) := by
     simpa [Fm.shift, Syn.shift] using hN.shift
   have hall : Γ ⊢[PRAAx] Fm.all (Inv x E0 Q B N A Ds K L c0 C1 c2) := by
-    refine PRA.qfInd _ (by simp [Fm.QF, le_QF]) ?_ ?_
-    · simp only [Fm.subst_imp, subst_le, subst_ap2, PTm.subst_add, PTm.subst_mul, PTm.subst_monus, subst_pairT, Inv,
-        Syn.subst_var, Syn.inst_zero, Syn.subst_inst_shift, ConciseIPRA.PTm.subst_succ, ConciseIPRA.PTm.subst_zero]
-      exact .impI (base_alg _ _ _)
-    · simp only [Fm.subst_imp, subst_le, subst_ap2, PTm.subst_add, PTm.subst_mul, PTm.subst_monus, subst_pairT, Inv,
-        Syn.subst_var, Syn.repl_zero, subst_repl_shift, ConciseIPRA.PTm.subst_succ, ConciseIPRA.PTm.subst_zero]
-      refine .impI ?_
+    ipra_qfind (by simp [Fm.QF, le_QF]) [subst_le, subst_ap2, subst_pairT, Inv]
+    · exact .impI (base_alg _ _ _)
+    · refine .impI ?_
       let Θ : List (Fm PTm (n + 1)) := le (succ (var 0)) (Syn.shift B) :: Inv x E0 Q B N A Ds K L c0 C1 c2 ::
         Γ.map Fm.shift
       have hle : Θ ⊢[PRAAx] le (var 0) (Syn.shift B) := le_trans (le_succ_self _) Prf.hyp0

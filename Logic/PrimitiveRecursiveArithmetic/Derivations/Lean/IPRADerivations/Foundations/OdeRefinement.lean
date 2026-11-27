@@ -75,13 +75,9 @@ theorem geo_all (h0 : Γ ⊢[PRAAx] inst2 D zero x ≐ zero)
     (hs : Γ ⊢[PRAAx] Fm.all (le (pw two (var 0) * inst2 s (var 0) (Syn.shift x)) (Syn.shift C))) :
     Γ ⊢[PRAAx] Fm.all (le (pw two (var 0) * inst2 D (var 0) (Syn.shift x) + (Syn.shift C + Syn.shift C))
       (pw two (var 0) * (Syn.shift C + Syn.shift C))) := by
-  refine PRA.qfInd _ (le_QF _ _) ?_ ?_
-  · simp only [subst_le, subst_ap2, subst_inst2, PTm.subst_add, PTm.subst_mul, Syn.subst_var, Syn.inst_zero,
-      Syn.subst_inst_shift, ConciseIPRA.PTm.subst_zero, ConciseIPRA.PTm.subst_succ]
-    exact geo_base h0
-  · simp only [subst_le, subst_ap2, subst_inst2, PTm.subst_add, PTm.subst_mul, Syn.subst_var, Syn.repl_zero,
-      subst_repl_shift, ConciseIPRA.PTm.subst_zero, ConciseIPRA.PTm.subst_succ]
-    exact geo_step hstep.allOpen.wk hs.allOpen.wk Prf.hyp0
+  ipra_qfind (le_QF _ _) [subst_le, subst_ap2, subst_inst2]
+  · exact geo_base h0
+  · exact geo_step hstep.allOpen.wk hs.allOpen.wk Prf.hyp0
 
 /-- `eq:ode-cauchy`: steps `s(k) ≤ C/2^k` telescope to `D(k) ≤ 2C` for every `k`. -/
 theorem geometric_cauchy (h0 : Γ ⊢[PRAAx] inst2 D zero x ≐ zero)

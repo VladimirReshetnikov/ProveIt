@@ -321,13 +321,9 @@ theorem tau_alg {S S1 P a : PTm n} (h : Γ ⊢[PRAAx] S1 ≐ P * S + one) (hP : 
 /-- **`τ(p^a) = a + 1`** for a prime `p` (`τ = σ_0`). -/
 theorem tau_pow {p : PTm n} (hp : Γ ⊢[PRAAx] prime p) (a : PTm n) : Γ ⊢[PRAAx] sigr zero (pw p a) ≐ succ a := by
   have hall : Γ ⊢[PRAAx] Fm.all (sigr zero (pw (Syn.shift p) (var 0)) ≐ succ (var 0)) := by
-    refine PRA.qfInd _ trivial ?_ ?_
-    · simp only [Fm.subst_eq, subst_ap2, subst_pairT, ConciseIPRA.PTm.subst_succ, ConciseIPRA.PTm.subst_zero,
-        Syn.subst_var, Syn.inst_zero, Syn.subst_inst_shift]
-      exact (sigr_congr (pw_zero p)).eqTrans (sigr_one zero)
-    · simp only [Fm.subst_eq, subst_ap2, subst_pairT, ConciseIPRA.PTm.subst_succ, ConciseIPRA.PTm.subst_zero,
-        Syn.subst_var, Syn.repl_zero, subst_repl_shift]
-      let Δ : List (Fm PTm (n + 1)) := (sigr zero (pw (Syn.shift p) (var 0)) ≐ succ (var 0)) :: Γ.map Fm.shift
+    ipra_qfind (trivial) [subst_ap2, subst_pairT]
+    · exact (sigr_congr (pw_zero p)).eqTrans (sigr_one zero)
+    · let Δ : List (Fm PTm (n + 1)) := (sigr zero (pw (Syn.shift p) (var 0)) ≐ succ (var 0)) :: Γ.map Fm.shift
       have hpr : Δ ⊢[PRAAx] prime (Syn.shift p) := (prime_shift hp).wk
       exact tau_alg (sigr_succ hpr (var 0) zero) (pw_zero _) Prf.hyp0
   have h2 := Prf.allE a hall
@@ -365,13 +361,9 @@ theorem rev_step_alg {G0 G1 G2 P1 P2 x : PTm n} (s2 : Γ ⊢[PRAAx] G2 ≐ G1 + 
 /-- `geo x (a + 1) = x · geo x a + 1`. -/
 theorem geo_rev (x a : PTm n) : Γ ⊢[PRAAx] geo x (succ a) ≐ x * geo x a + one := by
   have hall : Γ ⊢[PRAAx] Fm.all (geo (Syn.shift x) (succ (var 0)) ≐ Syn.shift x * geo (Syn.shift x) (var 0) + one) := by
-    refine PRA.qfInd _ trivial ?_ ?_
-    · simp only [Fm.subst_eq, subst_ap2, PTm.subst_add, PTm.subst_mul, ConciseIPRA.PTm.subst_succ,
-        ConciseIPRA.PTm.subst_zero, Syn.subst_var, Syn.inst_zero, Syn.subst_inst_shift]
-      exact rev_base_alg (geo_succ x zero) (geo_zero x) (pw_succ x zero) (pw_zero x)
-    · simp only [Fm.subst_eq, subst_ap2, PTm.subst_add, PTm.subst_mul, ConciseIPRA.PTm.subst_succ,
-        ConciseIPRA.PTm.subst_zero, Syn.subst_var, Syn.repl_zero, subst_repl_shift]
-      exact rev_step_alg (geo_succ _ _) (pw_succ _ _) Prf.hyp0 (geo_succ _ _)
+    ipra_qfind (trivial) [subst_ap2]
+    · exact rev_base_alg (geo_succ x zero) (geo_zero x) (pw_succ x zero) (pw_zero x)
+    · exact rev_step_alg (geo_succ _ _) (pw_succ _ _) Prf.hyp0 (geo_succ _ _)
   have h2 := Prf.allE a hall
   simp only [Fm.subst_eq, subst_ap2, PTm.subst_add, PTm.subst_mul, ConciseIPRA.PTm.subst_succ,
     ConciseIPRA.PTm.subst_zero, Syn.subst_var, Syn.inst_zero, Syn.subst_inst_shift] at h2
@@ -382,13 +374,9 @@ theorem sigr_pow {p : PTm n} (hp : Γ ⊢[PRAAx] prime p) (a r : PTm n) :
     Γ ⊢[PRAAx] sigr r (pw p a) ≐ geo (pw p r) a := by
   have hall : Γ ⊢[PRAAx] Fm.all (sigr (Syn.shift r) (pw (Syn.shift p) (var 0)) ≐
       geo (pw (Syn.shift p) (Syn.shift r)) (var 0)) := by
-    refine PRA.qfInd _ trivial ?_ ?_
-    · simp only [Fm.subst_eq, subst_ap2, subst_pairT, ConciseIPRA.PTm.subst_succ, Syn.subst_var, Syn.inst_zero,
-        Syn.subst_inst_shift]
-      exact (sigr_congr (pw_zero p)).eqTrans ((sigr_one r).eqTrans (geo_zero _).eqSymm)
-    · simp only [Fm.subst_eq, subst_ap2, subst_pairT, ConciseIPRA.PTm.subst_succ, Syn.subst_var, Syn.repl_zero,
-        subst_repl_shift]
-      let Δ : List (Fm PTm (n + 1)) := (sigr (Syn.shift r) (pw (Syn.shift p) (var 0)) ≐
+    ipra_qfind (trivial) [subst_ap2, subst_pairT]
+    · exact (sigr_congr (pw_zero p)).eqTrans ((sigr_one r).eqTrans (geo_zero _).eqSymm)
+    · let Δ : List (Fm PTm (n + 1)) := (sigr (Syn.shift r) (pw (Syn.shift p) (var 0)) ≐
         geo (pw (Syn.shift p) (Syn.shift r)) (var 0)) :: Γ.map Fm.shift
       have hpr : Δ ⊢[PRAAx] prime (Syn.shift p) := (prime_shift hp).wk
       have ih : Δ ⊢[PRAAx] sigr (Syn.shift r) (pw (Syn.shift p) (var 0)) ≐

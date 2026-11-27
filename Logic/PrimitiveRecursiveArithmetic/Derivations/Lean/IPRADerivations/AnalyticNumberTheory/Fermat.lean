@@ -142,14 +142,12 @@ theorem rem_succ_congr {M x y : PTm n} (hM : Γ ⊢[PRAAx] M ≐ succ (pred M))
 theorem fermat_at {p : PTm n} (hp : Γ ⊢[PRAAx] prime p) (a : PTm n) :
     Γ ⊢[PRAAx] rem (pw a p) p ≐ rem a p := by
   have hall : Γ ⊢[PRAAx] Fm.all (rem (pw (var 0) (Syn.shift p)) (Syn.shift p) ≐ rem (var 0) (Syn.shift p)) := by
-    refine PRA.qfInd _ trivial ?_ ?_
-    · simp only [Fm.subst_eq, subst_ap2, Syn.subst_var, Syn.inst_zero, Syn.subst_inst_shift]
-      have hq := prime_eq_succ_pred hp
+    ipra_qfind (trivial) [subst_ap2]
+    · have hq := prime_eq_succ_pred hp
       have z : Γ ⊢[PRAAx] pw zero p ≐ zero :=
         (congrPw (.eqRefl _) hq).eqTrans ((pw_succ _ _).eqTrans (mul_zero _))
       exact congrAp2 remF z (.eqRefl _)
-    · simp only [Fm.subst_eq, subst_ap2, Syn.subst_var, Syn.repl_zero, subst_repl_shift]
-      have hp' := (prime_shift hp).wk
+    · have hp' := (prime_shift hp).wk
         (ψ := rem (pw (var 0) (Syn.shift p)) (Syn.shift p) ≐ rem (var 0) (Syn.shift p))
       exact (freshman hp').eqTrans (rem_succ_congr (prime_eq_succ_pred hp') Prf.hyp0)
   have h := Prf.allE a hall

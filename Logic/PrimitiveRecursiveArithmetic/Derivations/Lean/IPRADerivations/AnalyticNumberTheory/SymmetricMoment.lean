@@ -28,15 +28,11 @@ variable {n : ℕ} {Γ : List (Fm PTm n)}
 theorem pow_gap (h j : PTm n) : Γ ⊢[PRAAx] le ((succ h + j) * pw h j) (pw (succ h) (succ j)) := by
   have hall : Γ ⊢[PRAAx] Fm.all (le ((succ (Syn.shift h) + var 0) * pw (Syn.shift h) (var 0))
       (pw (succ (Syn.shift h)) (succ (var 0)))) := by
-    refine PRA.qfInd _ (le_QF _ _) ?_ ?_
-    · simp only [subst_le, subst_ap2, PTm.subst_add, PTm.subst_mul, Syn.subst_var, Syn.inst_zero, Syn.subst_inst_shift,
-        ConciseIPRA.PTm.subst_succ]
-      have a := natEq (pw_zero (Γ := Γ) h)
+    ipra_qfind (le_QF _ _) [subst_le, subst_ap2]
+    · have a := natEq (pw_zero (Γ := Γ) h)
       have b := natEq (pw_one (Γ := Γ) (succ h))
       ipra_le 0 with (𝔞 h + 1) * a - b
-    · simp only [subst_le, subst_ap2, PTm.subst_add, PTm.subst_mul, Syn.subst_var, Syn.repl_zero, subst_repl_shift,
-        ConciseIPRA.PTm.subst_succ]
-      let Δ : List (Fm PTm (n + 1)) := le ((succ (Syn.shift h) + var 0) * pw (Syn.shift h) (var 0))
+    · let Δ : List (Fm PTm (n + 1)) := le ((succ (Syn.shift h) + var 0) * pw (Syn.shift h) (var 0))
           (pw (succ (Syn.shift h)) (succ (var 0))) :: Γ.map Fm.shift
       have ih : Δ ⊢[PRAAx] le ((succ (Syn.shift h) + var 0) * pw (Syn.shift h) (var 0))
           (pw (succ (Syn.shift h)) (succ (var 0))) := Prf.hyp0

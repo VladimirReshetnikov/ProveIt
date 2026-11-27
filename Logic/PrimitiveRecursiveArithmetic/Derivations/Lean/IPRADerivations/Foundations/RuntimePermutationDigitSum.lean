@@ -60,11 +60,9 @@ theorem sorting_total (m w t : PTm n) :
   have all : Γ ⊢[PRAAx] .all
       (digitTotal (Syn.shift m) (RuntimeWordSorting.state (Syn.shift m) (Syn.shift w) (var 0)) ≐
         digitTotal (Syn.shift m) (Syn.shift w)) := by
-    refine PRA.qfInd _ trivial ?_ ?_
-    · simp only [Fm.subst_eq,subst_digitTotal,RuntimeWordSorting.subst_state,Syn.subst_var,Syn.inst_zero,Syn.subst_inst_shift]
-      exact digit_total_congr (.eqRefl _) (RuntimeWordSorting.state_zero _ _)
-    · simp only [Fm.subst_eq,subst_digitTotal,RuntimeWordSorting.subst_state,Syn.subst_var,Syn.repl_zero,subst_repl_shift]
-      exact (digit_total_congr (.eqRefl _) (RuntimeWordSorting.state_succ _ _ _)).eqTrans
+    ipra_qfind (trivial) [subst_digitTotal, RuntimeWordSorting.subst_state]
+    · exact digit_total_congr (.eqRefl _) (RuntimeWordSorting.state_zero _ _)
+    · exact (digit_total_congr (.eqRefl _) (RuntimeWordSorting.state_succ _ _ _)).eqTrans
         ((step_total _ _).eqTrans Prf.hyp0)
   simpa only [Fm.subst_eq,subst_digitTotal,RuntimeWordSorting.subst_state,Syn.subst_var,Syn.inst_zero,Syn.subst_inst_shift]
     using all.allE t

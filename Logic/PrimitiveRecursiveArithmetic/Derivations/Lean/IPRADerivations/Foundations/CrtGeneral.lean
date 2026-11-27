@@ -164,14 +164,10 @@ theorem gcd_dvd_G (K J y : PTm n) :
     Γ ⊢[PRAAx] dvd (gcd (Lc mB K y) (inst2 (mS mB) J y)) (G mB K J y) := by
   have hall : Γ ⊢[PRAAx] Fm.all (dvd (gcd (Lc mB (var 0) (Syn.shift y)) (inst2 (mS mB) (Syn.shift J) (Syn.shift y)))
       (G mB (var 0) (Syn.shift J) (Syn.shift y))) := by
-    refine PRA.qfInd _ trivial ?_ ?_
-    · simp only [subst_dvd, subst_ap2, subst_ex2, subst_pairT, subst_inst2, Syn.subst_var, Syn.inst_zero,
-        Syn.subst_inst_shift, ConciseIPRA.PTm.subst_succ]
-      exact dvd_congr_left (DiophantineNumberTheory.QuarticStep.congrGcd (Lc_zero mB y) (.eqRefl _)).eqSymm
+    ipra_qfind (trivial) [subst_dvd, subst_ap2, subst_ex2, subst_pairT, subst_inst2]
+    · exact dvd_congr_left (DiophantineNumberTheory.QuarticStep.congrGcd (Lc_zero mB y) (.eqRefl _)).eqSymm
         (gcd_one_dvd _ _)
-    · simp only [subst_dvd, subst_ap2, subst_ex2, subst_pairT, subst_inst2, Syn.subst_var, Syn.repl_zero,
-        subst_repl_shift, ConciseIPRA.PTm.subst_succ]
-      exact gd_step mB Prf.hyp0
+    · exact gd_step mB Prf.hyp0
   have h2 := Prf.allE K hall
   simp only [subst_dvd, subst_ap2, subst_ex2, subst_pairT, subst_inst2, Syn.subst_var, Syn.inst_zero,
     Syn.subst_inst_shift, ConciseIPRA.PTm.subst_succ] at h2

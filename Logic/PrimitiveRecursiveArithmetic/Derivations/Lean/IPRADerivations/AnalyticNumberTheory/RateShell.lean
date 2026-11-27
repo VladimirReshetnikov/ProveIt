@@ -323,15 +323,9 @@ theorem inM_at {r c y : PTm n} (hc : Γ ⊢[PRAAx] InM aP aN r c y) (N : PTm n) 
 theorem inv_all {r c y : PTm n} (hr : Γ ⊢[PRAAx] le one r) (hc : Γ ⊢[PRAAx] InM aP aN r c y) (m : PTm n) :
     Γ ⊢[PRAAx] Inv aP aN r c y (succ m) := by
   have hall : Γ ⊢[PRAAx] Fm.all (Inv aP aN (Syn.shift r) (Syn.shift c) (Syn.shift y) (succ (var 0))) := by
-    refine PRA.qfInd _ (le_QF _ _) ?_ ?_
-    · simp only [Inv, subst_le, subst_ap2, PTm.subst_add, PTm.subst_mul, PTm.subst_monus, subst_pairT,
-        LeanProofs.IPRA.PTm.subst_pred, ConciseIPRA.PTm.subst_succ, ConciseIPRA.PTm.subst_zero, Syn.subst_var,
-        Syn.inst_zero, Syn.subst_inst_shift]
-      exact inv_one aP aN hr y
-    · simp only [Inv, subst_le, subst_ap2, PTm.subst_add, PTm.subst_mul, PTm.subst_monus, subst_pairT,
-        LeanProofs.IPRA.PTm.subst_pred, ConciseIPRA.PTm.subst_succ, ConciseIPRA.PTm.subst_zero, Syn.subst_var,
-        Syn.repl_zero, subst_repl_shift]
-      let φ : Fm PTm (n + 1) := Inv aP aN (Syn.shift r) (Syn.shift c) (Syn.shift y) (succ (var 0))
+    ipra_qfind (le_QF _ _) [Inv, subst_le, subst_ap2, subst_pairT]
+    · exact inv_one aP aN hr y
+    · let φ : Fm PTm (n + 1) := Inv aP aN (Syn.shift r) (Syn.shift c) (Syn.shift y) (succ (var 0))
       let Δ : List (Fm PTm (n + 1)) := φ :: Γ.map Fm.shift
       have hr' : Δ ⊢[PRAAx] le one (Syn.shift r) := by
         have b : (Γ.map Fm.shift) ⊢[PRAAx] le one (Syn.shift r) := by simpa [Fm.shift, Syn.shift] using hr.shift

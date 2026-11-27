@@ -180,15 +180,9 @@ theorem claim_succ {j m u v : PTm n} (hj : Γ ⊢[PRAAx] lt (succ j) m)
 
 theorem claim_all (m u v : PTm n) :
     Γ ⊢[PRAAx] Fm.all (TailT (a' := a') (var 0) (Syn.shift m) (Syn.shift u) (Syn.shift v)) := by
-  refine PRA.qfInd _ ⟨lt_QF _ _, trivial, trivial⟩ ?_ ?_
-  · simp only [TailT, Fm.subst_imp, Fm.subst_and, Fm.subst_eq, subst_lt, subst_fstT, subst_sndT, subst_pairT, subst_ap2,
-      PTm.subst_monus, PTm.subst_add, PTm.subst_mul, Syn.subst_var, Syn.inst_zero, Syn.subst_inst_shift,
-      ConciseIPRA.PTm.subst_succ]
-    exact .impI (claim_zero Prf.hyp0)
-  · simp only [TailT, Fm.subst_imp, Fm.subst_and, Fm.subst_eq, subst_lt, subst_fstT, subst_sndT, subst_pairT, subst_ap2,
-      PTm.subst_monus, PTm.subst_add, PTm.subst_mul, Syn.subst_var, Syn.repl_zero, subst_repl_shift,
-      ConciseIPRA.PTm.subst_succ]
-    refine .impI ?_
+  ipra_qfind (⟨lt_QF _ _, trivial, trivial⟩) [TailT, subst_lt, subst_fstT, subst_sndT, subst_pairT, subst_ap2]
+  · exact .impI (claim_zero Prf.hyp0)
+  · refine .impI ?_
     let Θ : List (Fm PTm (n + 1)) := lt (succ (var 0)) (Syn.shift m) ::
       TailT (a' := a') (var 0) (Syn.shift m) (Syn.shift u) (Syn.shift v) :: Γ.map Fm.shift
     have hj : Θ ⊢[PRAAx] lt (succ (var 0)) (Syn.shift m) := Prf.hyp0

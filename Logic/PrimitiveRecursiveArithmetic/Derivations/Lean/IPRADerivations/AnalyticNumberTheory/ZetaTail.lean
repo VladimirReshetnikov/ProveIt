@@ -192,17 +192,13 @@ theorem zeta_tail {N F u : PTm n} (hN : Γ ⊢[PRAAx] N ≐ succ (pred N)) (K : 
   have hall : Γ ⊢[PRAAx] Fm.all ((Ex (Syn.shift F) (Syn.shift u) (Syn.shift N + var 0) ≐ zero) ⟶
       le (S (Syn.shift N) (Syn.shift F) (Syn.shift u) (var 0) +
         G (Syn.shift F) (Syn.shift u) (Syn.shift N + var 0)) (G (Syn.shift F) (Syn.shift u) (Syn.shift N))) := by
-    refine PRA.qfInd _ ⟨trivial, le_QF _ _⟩ ?_ ?_
-    · simp only [Fm.subst_imp, Fm.subst_eq, subst_le, subst_ap2, subst_pairT, PTm.subst_add, Syn.subst_var,
-        Syn.inst_zero, Syn.subst_inst_shift, ConciseIPRA.PTm.subst_zero, ConciseIPRA.PTm.subst_succ]
-      refine .impI ?_
+    ipra_qfind (⟨trivial, le_QF _ _⟩) [subst_le, subst_ap2, subst_pairT]
+    · refine .impI ?_
       have e0 : (Ex F u (N + zero) ≐ zero) :: Γ ⊢[PRAAx] S N F u zero + G F u (N + zero) ≐ G F u N :=
         (congrAdd (sum_zero _ _) (congrAp2 quoF (.eqRefl _) (congrPw (add_zero N) (.eqRefl _)))).eqTrans
           (zero_add _)
       exact le_congr e0.eqSymm (.eqRefl _) (le_refl _)
-    · simp only [Fm.subst_imp, Fm.subst_eq, subst_le, subst_ap2, subst_pairT, PTm.subst_add, Syn.subst_var,
-        Syn.repl_zero, subst_repl_shift, ConciseIPRA.PTm.subst_zero, ConciseIPRA.PTm.subst_succ]
-      exact .impI (tele_step hN'.wk.wk Prf.hyp1 Prf.hyp0)
+    · exact .impI (tele_step hN'.wk.wk Prf.hyp1 Prf.hyp0)
   have h2 := Prf.allE K hall
   simp only [Fm.subst_imp, Fm.subst_eq, subst_le, subst_ap2, subst_pairT, PTm.subst_add, Syn.subst_var, Syn.inst_zero,
     Syn.subst_inst_shift, ConciseIPRA.PTm.subst_zero, ConciseIPRA.PTm.subst_succ] at h2

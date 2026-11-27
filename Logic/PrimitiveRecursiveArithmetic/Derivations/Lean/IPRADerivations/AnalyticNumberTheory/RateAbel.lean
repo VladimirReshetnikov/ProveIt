@@ -212,19 +212,15 @@ theorem diff_one (r y K : PTm n) : Γ ⊢[PRAAx] DiffF aP aN r y K one :=
 theorem diff_bound {r y K : PTm n} (hr : Γ ⊢[PRAAx] le one r) (hW : Γ ⊢[PRAAx] WBound aP aN r y K) (N : PTm n) :
     Γ ⊢[PRAAx] DiffF aP aN r y K N := by
   have hall : Γ ⊢[PRAAx] Fm.all (DiffF aP aN (Syn.shift r) (Syn.shift y) (Syn.shift K) (var 0)) := by
-    refine PRA.qfInd _ (le_QF _ _) ?_ ?_
-    · simp only [DiffF, subst_le, subst_ap2, PTm.subst_add, PTm.subst_mul, PTm.subst_monus, subst_pairT, LeanProofs.IPRA.PTm.subst_pred,
-        ConciseIPRA.PTm.subst_succ, ConciseIPRA.PTm.subst_zero, Syn.subst_var, Syn.inst_zero, Syn.subst_inst_shift]
-      have e1 := natEq (sum_zero (Γ := Γ) (shiftBody aP) y)
+    ipra_qfind (le_QF _ _) [DiffF, subst_le, subst_ap2, subst_pairT]
+    · have e1 := natEq (sum_zero (Γ := Γ) (shiftBody aP) y)
       have e2 := natEq (sum_zero (Γ := Γ) (shiftBody aN) y)
       have e3 := natEq (W_zero (Γ := Γ) aP r y)
       have e4 := natEq (W_zero (Γ := Γ) aN r y)
       refine absd_le ?_ ?_
       · ipra_le 𝔞 (pw two K * uu r zero) with e2 + e3 - e1 - e4
       · ipra_le 𝔞 (pw two K * uu r zero) with e1 + e4 - e2 - e3
-    · simp only [DiffF, subst_le, subst_ap2, PTm.subst_add, PTm.subst_mul, PTm.subst_monus, subst_pairT, LeanProofs.IPRA.PTm.subst_pred,
-        ConciseIPRA.PTm.subst_succ, ConciseIPRA.PTm.subst_zero, Syn.subst_var, Syn.repl_zero, subst_repl_shift]
-      let φ : Fm PTm (n + 1) := DiffF aP aN (Syn.shift r) (Syn.shift y) (Syn.shift K) (var 0)
+    · let φ : Fm PTm (n + 1) := DiffF aP aN (Syn.shift r) (Syn.shift y) (Syn.shift K) (var 0)
       let Δ : List (Fm PTm (n + 1)) := φ :: Γ.map Fm.shift
       have ih : Δ ⊢[PRAAx] φ := Prf.hyp0
       have hr' : Δ ⊢[PRAAx] le one (Syn.shift r) := by

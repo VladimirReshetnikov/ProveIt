@@ -35,13 +35,9 @@ theorem fact_le_pow (N : PTm n) : Γ ⊢[PRAAx] le (fact N) (pw N N) := by
 
 theorem pow_le_three_fact (N : PTm n) : Γ ⊢[PRAAx] le (pw N N) (pw (succ two) N * fact N) := by
   have hall : Γ ⊢[PRAAx] Fm.all (le (pw (var 0) (var 0)) (pw (succ two) (var 0) * fact (var 0))) := by
-    refine PRA.qfInd _ trivial ?_ ?_
-    · simp only [subst_le, subst_ap2, PTm.subst_mul, Syn.subst_var, Syn.inst_zero, ConciseIPRA.PTm.subst_zero,
-        ConciseIPRA.PTm.subst_succ]
-      exact le_congr (pw_zero _).eqSymm ((congrMul (pw_zero _) (fact_zero zero)).eqTrans (one_mul _)).eqSymm (le_refl _)
-    · simp only [subst_le, subst_ap2, PTm.subst_mul, Syn.subst_var, Syn.repl_zero, ConciseIPRA.PTm.subst_zero,
-        ConciseIPRA.PTm.subst_succ]
-      let D : List (Fm PTm (n + 1)) := le (pw (var 0) (var 0)) (pw (succ two) (var 0) * fact (var 0)) :: Γ.map Fm.shift
+    ipra_qfind (trivial) [subst_le, subst_ap2]
+    · exact le_congr (pw_zero _).eqSymm ((congrMul (pw_zero _) (fact_zero zero)).eqTrans (one_mul _)).eqSymm (le_refl _)
+    · let D : List (Fm PTm (n + 1)) := le (pw (var 0) (var 0)) (pw (succ two) (var 0) * fact (var 0)) :: Γ.map Fm.shift
       have ih : D ⊢[PRAAx] le (pw (var 0) (var 0)) (pw (succ two) (var 0) * fact (var 0)) := Prf.hyp0
       have b3 : D ⊢[PRAAx] le (pw (succ (var 0)) (var 0)) (succ two * pw (var 0) (var 0)) :=
         BinomialThree.binomial_three (var 0)

@@ -79,15 +79,11 @@ theorem window_step {Y m : PTm n} (hY : Γ ⊢[PRAAx] le Y (succ m))
 theorem prime_window (Y j : PTm n) : Γ ⊢[PRAAx] le (pw Y (pc (Y + j))) (pw Y (pc Y) * pri (Y + j)) := by
   have hall : Γ ⊢[PRAAx] Fm.all (le (pw (Syn.shift Y) (pc (Syn.shift Y + var 0)))
       (pw (Syn.shift Y) (pc (Syn.shift Y)) * pri (Syn.shift Y + var 0))) := by
-    refine PRA.qfInd _ trivial ?_ ?_
-    · simp only [subst_le, subst_ap2, PTm.subst_add, PTm.subst_mul, Syn.subst_var, Syn.inst_zero,
-        Syn.subst_inst_shift, ConciseIPRA.PTm.subst_succ, ConciseIPRA.PTm.subst_zero]
-      have e0 : Γ ⊢[PRAAx] Y + zero ≐ Y := add_zero Y
+    ipra_qfind (trivial) [subst_le, subst_ap2]
+    · have e0 : Γ ⊢[PRAAx] Y + zero ≐ Y := add_zero Y
       have a : Γ ⊢[PRAAx] le (pw Y (pc Y)) (pw Y (pc Y) * pri Y) := mul_pos_ge (pri_pos Y)
       exact le_congr (congrAp2 powF (congrPc e0.eqSymm) (.eqRefl _)) (congrMul (.eqRefl _) (congrPri e0.eqSymm)) a
-    · simp only [subst_le, subst_ap2, PTm.subst_add, PTm.subst_mul, Syn.subst_var, Syn.repl_zero,
-        subst_repl_shift, ConciseIPRA.PTm.subst_succ, ConciseIPRA.PTm.subst_zero]
-      let D : List (Fm PTm (n + 1)) :=
+    · let D : List (Fm PTm (n + 1)) :=
         le (pw (Syn.shift Y) (pc (Syn.shift Y + var 0)))
           (pw (Syn.shift Y) (pc (Syn.shift Y)) * pri (Syn.shift Y + var 0)) :: Γ.map Fm.shift
       have ih : D ⊢[PRAAx] le (pw (Syn.shift Y) (pc (Syn.shift Y + var 0)))

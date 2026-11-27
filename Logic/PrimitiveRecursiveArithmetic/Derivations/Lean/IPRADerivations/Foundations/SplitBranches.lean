@@ -92,13 +92,9 @@ theorem lower_step {c : PTm 2} {M' x s : PTm n} (ih : Γ ⊢[PRAAx] LowerInv c M
 
 theorem lower_all (c : PTm 2) (M' x : PTm n) :
     Γ ⊢[PRAAx] Fm.all (LowerInv c (Syn.shift M') (Syn.shift x) (var 0)) := by
-  refine PRA.qfInd _ (le_QF _ _) ?_ ?_
-  · simp only [subst_le, subst_ap2, subst_pairT, PTm.subst_mul, Syn.subst_var, Syn.inst_zero, Syn.subst_inst_shift,
-      ConciseIPRA.PTm.subst_succ]
-    exact lower_base c M' x
-  · simp only [subst_le, subst_ap2, subst_pairT, PTm.subst_mul, Syn.subst_var, Syn.repl_zero, subst_repl_shift,
-      ConciseIPRA.PTm.subst_succ]
-    exact lower_step Prf.hyp0
+  ipra_qfind (le_QF _ _) [subst_le, subst_ap2, subst_pairT]
+  · exact lower_base c M' x
+  · exact lower_step Prf.hyp0
 
 /-- `M · ∑_{k<s} c_k M^k ≤ (∑_{k<s} c_k) · M^s` for `M = M′ + 1`. -/
 theorem lower_terms (c : PTm 2) (M' x s : PTm n) : Γ ⊢[PRAAx] LowerInv c M' x s := by

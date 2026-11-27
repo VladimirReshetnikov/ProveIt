@@ -284,15 +284,9 @@ theorem cf_invariants (k : PTm n) : Γ ⊢[PRAAx] InvF k D a := by
   have hB' : Γ.map Fm.shift ⊢[PRAAx] lt (Syn.shift D) (succ (Syn.shift a) * succ (Syn.shift a)) := by
     simpa [Fm.shift, Syn.shift] using hB.shift
   have hall : Γ ⊢[PRAAx] Fm.all (InvF (var 0) (Syn.shift D) (Syn.shift a)) := by
-    refine PRA.qfInd _ ⟨trivial, trivial, trivial⟩ ?_ ?_
-    · simp only [InvF, Fm.subst_and, Fm.subst_eq, subst_ap1, subst_ap2, subst_pairT, subst_fstT, subst_sndT,
-        PTm.subst_add, PTm.subst_mul, PTm.subst_monus, Syn.subst_var, Syn.inst_zero, Syn.subst_inst_shift,
-        ConciseIPRA.PTm.subst_zero, ConciseIPRA.PTm.subst_succ]
-      exact inv_zero
-    · simp only [InvF, Fm.subst_and, Fm.subst_eq, subst_ap1, subst_ap2, subst_pairT, subst_fstT, subst_sndT,
-        PTm.subst_add, PTm.subst_mul, PTm.subst_monus, Syn.subst_var, Syn.repl_zero, subst_repl_shift,
-        ConciseIPRA.PTm.subst_zero, ConciseIPRA.PTm.subst_succ]
-      exact inv_step hA'.wk hB'.wk (k := var 0) Prf.hyp0
+    ipra_qfind (⟨trivial, trivial, trivial⟩) [InvF, subst_ap1, subst_ap2, subst_pairT, subst_fstT, subst_sndT]
+    · exact inv_zero
+    · exact inv_step hA'.wk hB'.wk (k := var 0) Prf.hyp0
   have h := Prf.allE k hall
   simp only [InvF, Fm.subst_and, Fm.subst_eq, subst_ap1, subst_ap2, subst_pairT, subst_fstT, subst_sndT,
     PTm.subst_add, PTm.subst_mul, PTm.subst_monus, Syn.subst_var, Syn.inst_zero, Syn.subst_inst_shift,

@@ -33,13 +33,9 @@ variable {n : ℕ} {Γ : List (Fm PTm n)}
 
 theorem Nz_p0 (K s : PTm n) : Γ ⊢[PRAAx] Nz K zero s ≐ zero := by
   have hall : Γ ⊢[PRAAx] Fm.all (Nz (var 0) zero (Syn.shift s) ≐ zero) := by
-    refine PRA.qfInd _ trivial ?_ ?_
-    · simp only [Fm.subst_eq, subst_ap2, subst_pairT, ConciseIPRA.PTm.subst_zero, Syn.subst_var, Syn.inst_zero,
-        Syn.subst_inst_shift]
-      exact Nz_zero _ _
-    · simp only [Fm.subst_eq, subst_ap2, subst_pairT, ConciseIPRA.PTm.subst_zero, Syn.subst_var, Syn.repl_zero,
-        subst_repl_shift]
-      let Δ : List (Fm PTm (n + 1)) := (Nz (var 0) zero (Syn.shift s) ≐ zero) :: Γ.map Fm.shift
+    ipra_qfind (trivial) [subst_ap2, subst_pairT]
+    · exact Nz_zero _ _
+    · let Δ : List (Fm PTm (n + 1)) := (Nz (var 0) zero (Syn.shift s) ≐ zero) :: Γ.map Fm.shift
       ipra_lc natEq (Nz_succ (var 0) zero (Syn.shift s)) +
         (2 * 𝔞 (var 0 : PTm (n + 1)) + 1) * (𝔞 (Syn.shift s)) ^ 2 * natEq (Prf.hyp0 : Δ ⊢[PRAAx] Nz (var 0) zero (Syn.shift s) ≐ zero) +
         2 * 𝔞 (Lv (var 0 : PTm (n + 1)) zero) * (𝔞 (Syn.shift s)) ^ 2 * natEq (pw_succ (zero : PTm (n + 1)) (two * var 0))

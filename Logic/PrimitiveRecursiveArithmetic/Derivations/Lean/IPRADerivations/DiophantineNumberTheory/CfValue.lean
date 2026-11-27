@@ -98,13 +98,9 @@ theorem pre_step {N k : PTm n} (ih : Γ ⊢[PRAAx] Pre (uv a' (succ k) N) (co a'
 theorem pre (k N : PTm n) : Γ ⊢[PRAAx] Pre (uv a' (succ k) N) (co a' (succ N)) (uv a' k (succ N)) := by
   have hall : Γ ⊢[PRAAx] Fm.all (Pre (uv a' (succ (var 0)) (Syn.shift N)) (co a' (succ (Syn.shift N)))
       (uv a' (var 0) (succ (Syn.shift N)))) := by
-    refine PRA.qfInd _ (pre_QF _ _ _) ?_ ?_
-    · simp only [subst_Pre, subst_uv, subst_ap1, Syn.subst_var, Syn.inst_zero, Syn.subst_inst_shift,
-        ConciseIPRA.PTm.subst_succ]
-      exact pre_base N
-    · simp only [subst_Pre, subst_uv, subst_ap1, Syn.subst_var, Syn.repl_zero, subst_repl_shift,
-        ConciseIPRA.PTm.subst_succ]
-      exact pre_step Prf.hyp0
+    ipra_qfind (pre_QF _ _ _) [subst_Pre, subst_uv, subst_ap1]
+    · exact pre_base N
+    · exact pre_step Prf.hyp0
   have h2 := Prf.allE k hall
   simp only [subst_Pre, subst_uv, subst_ap1, Syn.subst_var, Syn.inst_zero, Syn.subst_inst_shift,
     ConciseIPRA.PTm.subst_succ] at h2
@@ -226,13 +222,9 @@ theorem tail_succ {j m : PTm n} (hj : Γ ⊢[PRAAx] lt (succ j) m)
   exact tail_step_alg hb1 hb2 ihX ihY (Prf.andE₁ (Prf.andE₁ P)) (Prf.andE₂ (Prf.andE₁ P)) (.eqRefl _) hs hc
 
 theorem tail_all (m : PTm n) : Γ ⊢[PRAAx] Fm.all (TailF (a' := a') (var 0) (Syn.shift m)) := by
-  refine PRA.qfInd _ ⟨lt_QF _ _, trivial, trivial⟩ ?_ ?_
-  · simp only [TailF, Fm.subst_imp, Fm.subst_and, Fm.subst_eq, subst_lt, subst_fstT, subst_sndT, subst_ap2,
-      PTm.subst_monus, Syn.subst_var, Syn.inst_zero, Syn.subst_inst_shift, ConciseIPRA.PTm.subst_succ]
-    exact .impI (tail_zero Prf.hyp0)
-  · simp only [TailF, Fm.subst_imp, Fm.subst_and, Fm.subst_eq, subst_lt, subst_fstT, subst_sndT, subst_ap2,
-      PTm.subst_monus, Syn.subst_var, Syn.repl_zero, subst_repl_shift, ConciseIPRA.PTm.subst_succ]
-    refine .impI ?_
+  ipra_qfind (⟨lt_QF _ _, trivial, trivial⟩) [TailF, subst_lt, subst_fstT, subst_sndT, subst_ap2]
+  · exact .impI (tail_zero Prf.hyp0)
+  · refine .impI ?_
     let Θ : List (Fm PTm (n + 1)) := lt (succ (var 0)) (Syn.shift m) ::
       TailF (a' := a') (var 0) (Syn.shift m) :: Γ.map Fm.shift
     have hj : Θ ⊢[PRAAx] lt (succ (var 0)) (Syn.shift m) := Prf.hyp0

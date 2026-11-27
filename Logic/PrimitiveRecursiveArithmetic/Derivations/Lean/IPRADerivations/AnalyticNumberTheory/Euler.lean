@@ -294,15 +294,11 @@ theorem cop_prod {a N : PTm n} (hN : Γ ⊢[PRAAx] le two N) (M : PTm n) :
     Γ ⊢[PRAAx] gcd N (ap2 (prodF (lift3 h3)) M (pairT a N)) ≐ one := by
   have hall : Γ ⊢[PRAAx] Fm.all (gcd (Syn.shift N) (ap2 (prodF (lift3 h3)) (var 0)
       (pairT (Syn.shift a) (Syn.shift N))) ≐ one) := by
-    refine PRA.qfInd _ trivial ?_ ?_
-    · simp only [Fm.subst_eq, subst_ex2, subst_ap2, subst_pairT, Syn.subst_var, Syn.inst_zero, Syn.subst_inst_shift,
-        ConciseIPRA.PTm.subst_succ, ConciseIPRA.PTm.subst_zero]
-      have hp := N_pos hN
+    ipra_qfind (trivial) [subst_ex2, subst_ap2, subst_pairT]
+    · have hp := N_pos hN
       refine (congrGcd (.eqRefl _) (prod_zero _ _)).eqTrans ?_
       exact eq_one_of_dvd_one (gcd_pos (B := one) hp) (Prf.andE₂ (gcd_dvd' (b := one) hp))
-    · simp only [Fm.subst_eq, subst_ex2, subst_ap2, subst_pairT, Syn.subst_var, Syn.repl_zero, subst_repl_shift,
-        ConciseIPRA.PTm.subst_succ, ConciseIPRA.PTm.subst_zero]
-      have hN' := (shift_le_two hN).wk (ψ := gcd (Syn.shift N) (ap2 (prodF (lift3 h3)) (var 0)
+    · have hN' := (shift_le_two hN).wk (ψ := gcd (Syn.shift N) (ap2 (prodF (lift3 h3)) (var 0)
         (pairT (Syn.shift a) (Syn.shift N))) ≐ one)
       have hp := N_pos hN'
       refine (congrGcd (.eqRefl _) (prod_succ _ _ _)).eqTrans (coprime_mul hp Prf.hyp0 ?_)

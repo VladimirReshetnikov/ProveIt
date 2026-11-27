@@ -105,14 +105,10 @@ theorem p1_step {N P : PTm n} (ih : Γ ⊢[PRAAx] le (P * U N P) (N * LD P)) :
 /-- `P · U(N) ≤ N L²`. -/
 theorem phase1 (N P : PTm n) : Γ ⊢[PRAAx] le (P * U N P) (N * LD P) := by
   have hall : Γ ⊢[PRAAx] Fm.all (le (Syn.shift P * U (var 0) (Syn.shift P)) (var 0 * LD (Syn.shift P))) := by
-    refine PRA.qfInd _ trivial ?_ ?_
-    · simp only [subst_le, subst_ap2, PTm.subst_mul, Syn.subst_var, Syn.inst_zero, Syn.subst_inst_shift,
-        ConciseIPRA.PTm.subst_zero]
-      refine le_of_eq_add (d := zero) ?_
+    ipra_qfind (trivial) [subst_le, subst_ap2]
+    · refine le_of_eq_add (d := zero) ?_
       ipra_lc (-(𝔞 P)) * natEq (sum_zero uB P)
-    · simp only [subst_le, subst_ap2, PTm.subst_mul, Syn.subst_var, Syn.repl_zero, subst_repl_shift,
-        ConciseIPRA.PTm.subst_zero]
-      let D : List (Fm PTm (n + 1)) :=
+    · let D : List (Fm PTm (n + 1)) :=
         le (Syn.shift P * U (var 0) (Syn.shift P)) (var 0 * LD (Syn.shift P)) :: Γ.map Fm.shift
       exact p1_step (Prf.hyp0 : D ⊢[PRAAx] _)
   have r := Prf.allE N hall
@@ -165,16 +161,12 @@ theorem phi_step {m N P : PTm n} (hm : Γ ⊢[PRAAx] m ≐ succ (pred m)) (ih : 
 
 theorem phase2 {m P : PTm n} (hm : Γ ⊢[PRAAx] m ≐ succ (pred m)) (N : PTm n) : Γ ⊢[PRAAx] Phi m N P := by
   have hall : Γ ⊢[PRAAx] Fm.all (Phi (Syn.shift m) (var 0) (Syn.shift P)) := by
-    refine PRA.qfInd _ ⟨le_QF _ _, le_QF _ _, le_QF _ _⟩ ?_ ?_
-    · simp only [Fm.subst_imp, subst_le, subst_ap2, PTm.subst_mul, PTm.subst_add, Syn.subst_var, Syn.inst_zero,
-        Syn.subst_inst_shift, ConciseIPRA.PTm.subst_zero, ConciseIPRA.PTm.subst_succ]
-      refine .impI (.impI ?_)
+    ipra_qfind (⟨le_QF _ _, le_QF _ _, le_QF _ _⟩) [subst_le, subst_ap2]
+    · refine .impI (.impI ?_)
       have hm0 : (le zero P :: le m zero :: Γ) ⊢[PRAAx] le m zero := Prf.hyp1
       have h1 := le_trans (FactorVector.one_le_pos (hm.wk.wk : (le zero P :: le m zero :: Γ) ⊢[PRAAx] _)) hm0
       exact not_succ_le_self zero _ h1
-    · simp only [Fm.subst_imp, subst_le, subst_ap2, PTm.subst_mul, PTm.subst_add, Syn.subst_var, Syn.repl_zero,
-        subst_repl_shift, ConciseIPRA.PTm.subst_zero, ConciseIPRA.PTm.subst_succ]
-      let D : List (Fm PTm (n + 1)) := Phi (Syn.shift m) (var 0) (Syn.shift P) :: Γ.map Fm.shift
+    · let D : List (Fm PTm (n + 1)) := Phi (Syn.shift m) (var 0) (Syn.shift P) :: Γ.map Fm.shift
       have hm' : D ⊢[PRAAx] Syn.shift m ≐ succ (pred (Syn.shift m)) := by
         have b := hm.shift
         simp only [Fm.shift, Fm.subst_eq, ConciseIPRA.PTm.subst_succ, LeanProofs.IPRA.PTm.subst_pred] at b
