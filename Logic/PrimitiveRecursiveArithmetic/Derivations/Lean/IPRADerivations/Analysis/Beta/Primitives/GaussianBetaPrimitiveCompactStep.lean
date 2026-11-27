@@ -25,7 +25,7 @@ open GaussianEulerBetaPolynomialPrimitive (primitive)
 open GaussianTimeWeightedPolynomialIncrement (value linear residual quadraticBound)
 open GaussianRationalUniformFirstOrderPolynomial (mass slopeConstant)
 open GaussianRationalHorner (qmul qadd positive_product ofGaussian_canonical)
-open GaussianRationalMetric (bounded distanceBounded qsub qsub_canonical)
+open GaussianRationalMetric (bounded distanceBounded qsub)
 open GaussianRationalReciprocal (bound_congr bounded_product)
 open GaussianRationalPowerDifference (bounded_sum_same)
 open GaussianRationalSyntheticDivision (qmul_congr qsub_congr)
@@ -136,10 +136,8 @@ private theorem polynomial_errors (z B a b c N : PTm n) (hb : Γ ⊢[PRAAx] le o
   have remLinear : Γ ⊢[PRAAx] bounded (qsub delta weightedLinear) (W*c) D := by
     apply bounded_radius_mono _ _ _ _ _ hD2 hD ?_ atStep
     ipra_le (𝔞 W*𝔞 c*𝔞 D)*sl hc_le
-  have sum := bounded_sum_same weightedLinear (qsub delta weightedLinear) _ _ _ hD linearBound remLinear
   have varBound : Γ ⊢[PRAAx] bounded delta ((W+L)*c) D :=
-    bound_congr (GaussianRationalLinearProduct.add_sub_right weightedLinear delta (qsub_canonical _ _))
-      (by ipra_ring) (.eqRefl _) sum
+    bound_congr (.eqRefl _) (by ipra_ring) (.eqRefl _) (GaussianRationalDistanceOrder.norm_from_distance_same hD remLinear linearBound)
   refine ⟨small, bounded_radius_mono _ _ _ _ _ hD hb ?_ varBound⟩
   change Γ ⊢[PRAAx] le (((W+L)*c)*b) (((W+L)*c)*D)
   ipra_le ((𝔞 W+𝔞 L)*𝔞 c)*sl hD_ge

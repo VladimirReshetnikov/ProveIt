@@ -21,9 +21,9 @@ open GaussianEulerDecayQuadraturePrecision (endpointDifference)
 open GaussianEulerDecayOrder (signedTime original_decay_order original_decay_nonnegative_representative)
 open GaussianRealExponentialPositiveRepresentative (positiveF positiveData sample_canonical sample_nonnegative)
 open GaussianCoefficientNameBounds (unit unit_positive)
-open GaussianRationalHorner (canonical positive_product qzero)
+open GaussianRationalHorner (canonical positive_product)
 open GaussianRationalMetric (bounded distanceBounded qsub)
-open GaussianRationalDistanceOrder (distance_congr distance_radius_mono distance_symmetric distance_triangle_same)
+open GaussianRationalDistanceOrder (distance_congr distance_radius_mono distance_symmetric norm_from_distance_same)
 open GaussianRationalReciprocal (bound_congr bounded_negative)
 open GaussianReconstructionRoots (distance_zero_iff norm_from_distance)
 open RationalGaussianEmbedding (scalarZero scalar_zero_represents canonical_axis_roundtrip embed_zero)
@@ -104,9 +104,7 @@ theorem endpoint_norm (a C E p A B : PTm n) (hE : Γ ⊢[PRAAx] le one E)
   have neg := bound_congr (GaussianCharacteristicEntryNorm.negative_difference Y R).eqSymm (.eqRefl _) (.eqRefl _)
     (bounded_negative (qsub Y R) _ _ hd second)
   have pair := GaussianNameArithmetic.sum_distance _ _ _ _ _ _ _ hd first neg
-  exact (distance_zero_iff _ _ _ hd).iffMp
-    (distance_congr (.eqRefl _) (.eqRefl _) (by ipra_ring) (.eqRefl _)
-      (distance_triangle_same _ _ _ _ _ _ hd pair ((distance_zero_iff _ _ _ hd).iffMpr hb)))
+  exact bound_congr (.eqRefl _) (by ipra_ring) (.eqRefl _) (norm_from_distance_same hd pair hb)
 
 theorem original_decay_endpoint_norm_closed : ([] : List (Fm PTm 0)) ⊢[PRAAx] univ 6
     ((le one (var 2) ⋏ le one (var 5)) ⟶ bounded (observation (var 0) (var 2) (var 3)) (var 4) (var 5) ⟶

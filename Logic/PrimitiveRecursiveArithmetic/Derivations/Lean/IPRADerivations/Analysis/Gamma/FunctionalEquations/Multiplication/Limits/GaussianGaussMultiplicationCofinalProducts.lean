@@ -24,9 +24,9 @@ open GaussianGaussMultiplicationPowerRate (powerF)
 open GaussianGaussMultiplicationPowerPerturbation (limitData)
 open GaussianNameArithmetic (multiplyF multiplyData)
 open GaussianNameBounds (U)
-open GaussianRationalHorner (qmul positive_product)
+open GaussianRationalHorner (qmul)
 open GaussianRationalMetric (bounded distanceBounded)
-open GaussianRationalDistanceOrder (distance_congr distance_radius_mono distance_symmetric distance_triangle_same)
+open GaussianRationalDistanceOrder (distance_congr distance_radius_mono distance_symmetric distance_triangle_same norm_from_distance_same)
 open GaussianRationalSyntheticDivision (qone)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
@@ -91,8 +91,7 @@ private theorem bounded_near (u v A B p : PTm n)
   have hp := unit_positive (Γ := Γ) p
   have stable := distance_radius_mono _ _ _ _ A one hp (le_refl one)
     (le_congr (by ipra_ring) (by ipra_ring) (mul_le_mul_right A hp)) hd
-  exact GaussianRationalReciprocal.bound_congr (.eqRefl _) (by ipra_ring) (one_mul _)
-    (GaussianReconstructionRoots.norm_from_distance _ _ _ _ _ _ (le_refl one) (le_refl one) stable hv)
+  exact norm_from_distance_same (le_refl one) stable hv
 
 theorem left_error (p z R B m a d : PTm n) (h : Γ ⊢[PRAAx] source z R B m a d) :
     Γ ⊢[PRAAx] distanceBounded (leftRaw p z R B m a d) (ap2 leftF p (leftData z R B m d)) (leftBudget z R B m d) (unit p) := by

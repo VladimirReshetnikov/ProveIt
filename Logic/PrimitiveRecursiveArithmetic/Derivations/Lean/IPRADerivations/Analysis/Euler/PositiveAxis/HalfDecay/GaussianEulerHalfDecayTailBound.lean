@@ -25,10 +25,9 @@ open GaussianCompactRiemannName (quadrature)
 open GaussianCoefficientNameBounds (unit unit_positive bounded_radius_mono)
 open GaussianRationalHorner (positive_product qmul)
 open GaussianRationalMetric (bounded distanceBounded)
-open GaussianRationalDistanceOrder (distance_radius_mono distance_triangle_same distance_congr)
+open GaussianRationalDistanceOrder (distance_radius_mono norm_from_distance_same)
 open GaussianRationalReciprocal (bound_congr bounded_product)
 open GaussianRationalNaturalScale (naturalPoint)
-open GaussianReconstructionRoots (distance_zero_iff)
 open GaussianNameRingLaws (three)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
@@ -92,9 +91,8 @@ theorem actual_integer_left_half_decay_bound (p q N L C E x : PTm n)
         (bounded_product _ _ _ _ _ _ (le_refl one) hb s (integer_left_endpoint_norm L C E q hE))
     exact bounded_radius_mono _ _ _ _ _ hb hD
       (le_of_eq_add (d := zero) (by dsimp only [B,D,tailDenominator]; ipra_ring)) raw
-  exact (distance_zero_iff _ _ _ hD).iffMp
-    (distance_congr (.eqRefl _) (.eqRefl _) (by dsimp only [A,B,tailNumerator,three]; ipra_ring) (.eqRefl _)
-      (distance_triangle_same _ _ _ _ _ _ hD first ((distance_zero_iff _ _ _ hD).iffMpr second)))
+  exact bound_congr (.eqRefl _) (by dsimp only [A,B,tailNumerator,three]; ipra_ring) (.eqRefl _)
+    (norm_from_distance_same hD first second)
 
 theorem actual_cutoff_half_decay_bound (p q N k A R C E x : PTm n)
     (hN : Γ ⊢[PRAAx] le one N) (hC : Γ ⊢[PRAAx] le one C) (hE : Γ ⊢[PRAAx] le one E)

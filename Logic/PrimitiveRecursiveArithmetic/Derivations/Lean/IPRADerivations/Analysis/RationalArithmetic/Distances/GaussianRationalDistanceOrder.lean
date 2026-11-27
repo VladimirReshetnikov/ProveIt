@@ -159,6 +159,15 @@ theorem distance_triangle_same (z y w A C B : PTm n)
     (le_congr (.eqRefl _) (by ipra_ring) (le_refl _))
     (GaussianReconstructionRoots.distance_triangle _ _ _ _ _ _ _ hB hB hzy hyw)
 
+/-- Bound a point from its distance to a bounded point at the same denominator. -/
+theorem norm_from_distance_same {z z₀ A C B : PTm n}
+    (hB : Γ ⊢[PRAAx] le one B)
+    (hdist : Γ ⊢[PRAAx] distanceBounded z z₀ A B)
+    (hbase : Γ ⊢[PRAAx] bounded z₀ C B) : Γ ⊢[PRAAx] bounded z (A+C) B :=
+  (GaussianReconstructionRoots.distance_zero_iff _ _ _ hB).iffMp
+    (distance_triangle_same _ _ _ _ _ _ hB hdist
+      ((GaussianReconstructionRoots.distance_zero_iff _ _ _ hB).iffMpr hbase))
+
 /-- Add a distance bound to one whose denominator contains the first denominator. -/
 theorem distance_triangle_scaled_left {x y z A B C D : PTm n}
     (hB : Γ ⊢[PRAAx] le one B) (hD : Γ ⊢[PRAAx] le one D)

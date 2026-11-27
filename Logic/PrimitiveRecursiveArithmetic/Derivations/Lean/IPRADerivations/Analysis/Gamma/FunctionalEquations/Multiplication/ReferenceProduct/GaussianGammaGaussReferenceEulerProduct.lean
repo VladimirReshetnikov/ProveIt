@@ -16,16 +16,13 @@ namespace LeanProofs.IPRA.Analysis.GaussianGammaGaussReferenceEulerProduct
 
 open_ipra
 open GaussianCoefficientNameBounds (unit unit_positive bounded_radius_mono)
-open GaussianGammaEulerReciprocalInverse (eulerF eulerData eulerHeight)
-open GaussianGammaFiniteApproximantName (qF qData)
+open GaussianGammaEulerReciprocalInverse (eulerF eulerData)
 open GaussianGammaGaussReferenceProduct (argument row_source)
 open GaussianGaussEulerCutoff (commonCutoff common_guards larger_cutoff_error)
 open GaussianNamedFiniteProduct (rowBoundsAt rowDistance amplification radius)
-open GaussianRationalDistanceOrder (distance_congr distance_radius_mono distance_two_errors)
-open GaussianRationalHorner (canonical canonical_congr positive_product)
-open GaussianRationalLinearProduct (add_sub_right)
-open GaussianRationalMetric (bounded distanceBounded qsub)
-open GaussianRationalPowerDifference (bounded_sum_same)
+open GaussianRationalDistanceOrder (distance_congr distance_radius_mono distance_two_errors norm_from_distance_same)
+open GaussianRationalHorner (positive_product)
+open GaussianRationalMetric (bounded distanceBounded)
 open GaussianRationalReciprocal (bound_congr)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
@@ -80,19 +77,10 @@ theorem row_error_at (p q r m N : PTm n) (hr : Γ ⊢[PRAAx] lt r m)
 
 theorem row_bound_at (p r m N : PTm n) (hr : Γ ⊢[PRAAx] lt r m) (hN : Γ ⊢[PRAAx] le (threshold p m) N) :
     Γ ⊢[PRAAx] bounded (ap3 rowF p r (rowData m N)) (rowRadius m) one := by
-  let E := ap3 rowF p r (rowData m N)
-  let G := ap3 GaussianGammaGaussReferenceProduct.rowF p r m
-  let U := unit p
-  let w := argument r
-  have hU : Γ ⊢[PRAAx] le one U := unit_positive p
-  have ce : Γ ⊢[PRAAx] canonical E :=
-    canonical_congr (row_at p r m N) (GaussianNameReciprocal.name_canonical qF (eulerHeight w one m m N) (qData w m N) (succ p))
-  have hb : Γ ⊢[PRAAx] bounded G (GaussianGammaGaussReferenceProduct.rowRadius m) one :=
-    GaussianGammaGaussReferenceProduct.row_bound_at p r m hr
-  have hd : Γ ⊢[PRAAx] distanceBounded E G two one :=
-    distance_two_errors E G U U one hU hU (le_refl one) hU hU (row_error_at p p r m N hr hN)
-  exact bound_congr (add_sub_right G E ce) (.eqRefl _) (.eqRefl _)
-    (bounded_sum_same G (qsub E G) _ _ one (le_refl one) hb hd)
+  have hU := unit_positive (Γ := Γ) p
+  have hd := distance_two_errors _ _ _ _ one hU hU (le_refl one) hU hU (row_error_at p p r m N hr hN)
+  exact bound_congr (.eqRefl _) (add_comm _ _) (.eqRefl _)
+    (norm_from_distance_same (le_refl one) hd (GaussianGammaGaussReferenceProduct.row_bound_at p r m hr))
 
 theorem row_bounds (p m N : PTm n) (hN : Γ ⊢[PRAAx] le (threshold p m) N) :
     Γ ⊢[PRAAx] rowBoundsAt rowF p m (rowRadius m) (rowData m N) := by

@@ -22,15 +22,14 @@ open ComplexLogarithmRemainder (normSq normSq_eval eval_re_code eval_im_code sca
 open GaussianArctangentCayleyStep (conjugateValue increment incrementCode local_defect)
 open GaussianArctangentCayleyValues (numerator denominator denominator_positive exact_square_norm
   imaginaryCode imaginaryPoint)
-open GaussianRationalHorner (canonical qzero qadd qmul ofGaussian ofGaussian_canonical
-  ofGaussian_represents positive_product canonical_unique represents_congr represents_rescale qmul_represents)
+open GaussianRationalHorner (canonical qzero qadd qmul ofGaussian_canonical ofGaussian_represents positive_product canonical_unique represents_congr represents_rescale qmul_represents)
 open GaussianRationalReciprocal (qone conjugate norm_conjugate qone_bounded bound_congr
   qone_represents_scaled re_conjugate im_conjugate)
 open GaussianRationalMetric (bounded bounded_of_cleared distanceBounded qnegative qnegative_represents
   qnegative_canonical)
 open GaussianRootAlgebra (equal equal_of_values equal_refl re_scale im_scale re_neg im_neg re_one im_one re_mul im_mul)
 open GaussianRationalSyntheticDivision (qmul_congr)
-open GaussianRationalDistanceOrder (distance_congr distance_symmetric distance_radius_mono distance_triangle_same)
+open GaussianRationalDistanceOrder (distance_congr distance_symmetric distance_radius_mono distance_triangle_same norm_from_distance_same)
 open GaussianRationalPolynomialExponential (scalarSum scalarBody)
 open GaussianScalarExponentialProductTail (rectangleCutoff reserve growthExponent actual_scalar_product_dyadic)
 open GaussianRationalPowerAlgebra (qmul_commutative)
@@ -139,11 +138,8 @@ theorem sample_bound (P s : PTm n) (hP : Γ ⊢[PRAAx] bounded P two one) :
     distance_congr (.eqRefl _) (GaussianGammaCanonicalTailExponential.scalar_zero_point K)
       ((congrMul (DiophantineNumberTheory.ResidueFacts.pw_two (num 3)) (.eqRefl _)).eqTrans (by ipra_ring))
       (.eqRefl _) raw
-  have dou : Γ ⊢[PRAAx] distanceBounded qone qzero one one :=
-    (distance_zero_iff _ _ _ (le_refl one)).iffMpr qone_bounded
-  have norm := (distance_zero_iff (sample P s) (num 18+one) one (le_refl one)).iffMp
-    (distance_triangle_same _ _ _ _ _ _ (le_refl one) d dou)
-  exact bound_congr (.eqRefl _) (by ipra_ring) (.eqRefl _) norm
+  exact bound_congr (.eqRefl _) (by ipra_ring) (.eqRefl _)
+    (norm_from_distance_same (le_refl one) d qone_bounded)
 
 theorem sample_zero (s : PTm n) : Γ ⊢[PRAAx] sample qzero s ≐ qone :=
   GaussianGammaCanonicalTailExponential.scalar_zero_point (rectangleCutoff two s)

@@ -19,9 +19,9 @@ open GaussianEulerPowerIncrement (point slopeTerm)
 open GaussianEulerCompactPowerMajorant (majorant original_power_observation)
 open GaussianRationalFirstOrderProductError (error productError decomposedError)
 open GaussianRationalHorner (qadd qmul positive_product qmul_canonical)
-open GaussianRationalMetric (qsub bounded distanceBounded qnegative)
+open GaussianRationalMetric (qsub bounded distanceBounded)
 open GaussianRationalSyntheticDivision (qone qadd_congr qmul_congr qsub_congr)
-open GaussianRationalReciprocal (bound_congr bounded_product bounded_sum bounded_negative)
+open GaussianRationalReciprocal (bound_congr bounded_product bounded_negative)
 open GaussianRationalPowerDifference (bounded_sum_same)
 open GaussianCoefficientNameBounds (unit unit_positive bounded_radius_mono)
 
@@ -101,9 +101,7 @@ theorem original_decay_variation (p z R B E T a b c : PTm n)
     bounded_radius_mono _ _ _ _ _ hD hD
       (le_congr (by ipra_ring) (by ipra_ring) (add_le_add_right (num 20*(b*b)*D)
         (mul_le_mul_right (num 3*c*P*D) h.andE₂.andE₂))) (original_decay_error p z R B E T a b c h)
-  have sum := bounded_sum_same L (qsub Y L) _ _ D hD lin rem
-  exact bound_congr (GaussianRationalLinearProduct.add_sub_right L Y (GaussianRationalMetric.qsub_canonical _ _))
-    (by ipra_ring) (.eqRefl _) sum
+  exact bound_congr (.eqRefl _) (by ipra_ring) (.eqRefl _) (GaussianRationalDistanceOrder.norm_from_distance_same hD rem lin)
 
 theorem original_power_linear_bound (p z R B E T a b c : PTm n)
     (h : Γ ⊢[PRAAx] source z R B E T a b c) : Γ ⊢[PRAAx]

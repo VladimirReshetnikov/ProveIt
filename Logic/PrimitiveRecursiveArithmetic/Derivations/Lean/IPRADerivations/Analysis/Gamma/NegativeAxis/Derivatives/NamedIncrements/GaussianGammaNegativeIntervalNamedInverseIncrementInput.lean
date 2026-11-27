@@ -23,10 +23,9 @@ open GaussianGammaNegativeIntervalNamedInput (sampleNumerator sampleDenominator)
 open GaussianNameEquivalence (crossEquivalent cross_at cross_symm)
 open GaussianNamedEulerUnitTime (source source_at)
 open GaussianPositiveRationalLogarithm (fraction)
-open GaussianRationalDistanceOrder (distance_congr distance_radius_mono distance_symmetric distance_triangle_same)
+open GaussianRationalDistanceOrder (distance_congr distance_radius_mono distance_symmetric distance_triangle_same norm_from_distance_same)
 open GaussianRationalHorner (positive_product)
 open GaussianRationalMetric (distanceBounded qsub)
-open GaussianReconstructionRoots (distance_zero_iff)
 open GaussianUnitIntervalInputDecoding (fraction_recode)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
@@ -89,10 +88,9 @@ theorem frozen_step_small (f g K : PR 2) (p r x y z E : PTm n)
   have compare := approx_increment f g K r r x y z E hf hg he (le_refl r)
   have near := distance_radius_mono v u (num 8) (unit r) one (unit p) hR hp
     (le_congr (.eqRefl _) (one_mul _).eqSymm hr) (distance_symmetric _ _ _ _ hR compare)
-  have bound := (distance_zero_iff u one (unit p) hp).iffMpr (small_samples_at K z one (unit p) r small)
-  apply (distance_zero_iff v two (unit p) hp).iffMp
-  exact distance_congr (.eqRefl _) (.eqRefl _) (by ipra_ring) (.eqRefl _)
-    (distance_triangle_same _ _ _ _ _ _ hp near bound)
+  change Γ ⊢[PRAAx] GaussianRationalMetric.bounded v two (unit p)
+  exact GaussianRationalReciprocal.bound_congr (.eqRefl _) (by ipra_ring) (.eqRefl _)
+    (norm_from_distance_same hp near (small_samples_at K z one (unit p) r small))
 
 theorem actual_named_inverse_increment_rational_approximation_closed (f g K : PR 2) :
     ([] : List (Fm PTm 0)) ⊢[PRAAx] univ 6

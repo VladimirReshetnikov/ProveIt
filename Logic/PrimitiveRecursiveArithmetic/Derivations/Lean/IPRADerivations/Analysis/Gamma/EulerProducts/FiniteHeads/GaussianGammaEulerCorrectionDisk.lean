@@ -15,10 +15,10 @@ set_option autoImplicit false
 namespace LeanProofs.IPRA.Analysis.GaussianGammaEulerCorrectionDisk
 
 open_ipra
-open GaussianRationalHorner (qmul ofGaussian positive_product)
-open GaussianRationalMetric (bounded distanceBounded qsub)
-open GaussianRationalDistanceOrder (distance_congr)
-open GaussianRationalReciprocal (bounded_product bounded_sum bound_congr)
+open GaussianRationalHorner (positive_product)
+open GaussianRationalMetric (bounded qsub)
+open GaussianRationalDistanceOrder (distance_congr norm_from_distance_same)
+open GaussianRationalReciprocal (bounded_product bound_congr)
 open GaussianGammaCanonicalExponent (gammaF gamma_sample_at)
 open GaussianGammaLogHarmonicName (fixedF)
 open GaussianGammaFoldedExponentBalance (correctionF correctionData correctionBudget correctionCore
@@ -77,7 +77,6 @@ theorem correction_bound (p z R B N : PTm n) (h : Γ ⊢[PRAAx] source z R B N) 
   let c := correctionCore p z B N
   let U := unit p
   let D := N*U
-  let A := R*U+(two*R)*N
   let S := correctionBudget z B N
   have dpos := positive_product _ _ h.andE₁ (unit_positive p)
   have core := core_bound p z R B N h
@@ -85,11 +84,8 @@ theorem correction_bound (p z R B N : PTm n) (h : Γ ⊢[PRAAx] source z R B N) 
   have wider : Γ ⊢[PRAAx] bounded (qsub q c) (S*N) D :=
     GaussianCoefficientNameBounds.bounded_radius_mono _ _ _ _ _ (unit_positive p) dpos
       (le_of_eq_add (d := zero) (by unfold D; ipra_ring)) error
-  have sum := GaussianRationalPowerDifference.bounded_sum_same c (qsub q c) A (S*N) D dpos core wider
-  have hc : Γ ⊢[PRAAx] GaussianRationalHorner.canonical q :=
-    GaussianNameArithmetic.multiply_canonical _ _ _ _ p
-  exact bound_congr (GaussianRationalLinearProduct.add_sub_right c q hc) (by unfold slack A S; ipra_ring)
-    (.eqRefl _) sum
+  exact bound_congr (.eqRefl _) (by dsimp only [slack,S]; ipra_ring) (.eqRefl _)
+    (norm_from_distance_same dpos wider core)
 
 theorem correction_envelope (z R B N : PTm n) (h : Γ ⊢[PRAAx] source z R B N) :
     Γ ⊢[PRAAx] rawEnvelope correctionF (correctionData z B N) R N (slack z R B N) := by
