@@ -209,4 +209,13 @@ theorem add_shuffle (a b c d : PTm n) : Γ ⊢[PRAAx] add (add a b) (add c d) �
       ((add_congr (.eqRefl a) (add_congr (add_commutative b c) (.eqRefl d))).eqTrans
         ((add_congr (.eqRefl a) (add_associative c b d)).eqTrans (add_associative a c (add b d)).eqSymm)))
 
+open RationalArithmetic (negative)
+
+theorem negative_add (a b : PTm n) : Γ ⊢[PRAAx] negative (add a b) ≐ add (negative a) (negative b) :=
+  (negative_minus_multiply _).eqTrans ((multiply_add _ _ _).eqTrans
+    (add_congr (negative_minus_multiply _).eqSymm (negative_minus_multiply _).eqSymm))
+
+theorem swap_tail (a b c : PTm n) : Γ ⊢[PRAAx] add (add a b) c ≐ add (add a c) b :=
+  (add_associative _ _ _).eqTrans ((add_congr (.eqRefl _) (add_commutative _ _)).eqTrans (add_associative _ _ _).eqSymm)
+
 end LeanProofs.IPRA.Analysis.RationalAlgebra

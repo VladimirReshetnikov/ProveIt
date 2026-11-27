@@ -16,7 +16,7 @@ namespace LeanProofs.IPRA.Analysis.GaussianStirlingAllOrderPanelPartsSolve
 open_ipra
 open GaussianStirlingAllOrderPanelPartsOuter (finite_outer_recurrence)
 open GaussianStirlingAllOrderPanelPartsOuterFold (massPrefix panelPrefix fold_identity)
-open GaussianStirlingAllOrderPanelPartsRecurrence (errorCoefficient)
+open GaussianStirlingAllOrderPanelPartsRecurrence (errorCoefficient multiply_sub)
 open GaussianStirlingAllOrderPanelPartsDensities (lowScalar highScalar)
 open GaussianStirlingAllOrderPanelDerivative (signedMean)
 open GaussianStirlingAllOrderReciprocalWeightError (coefficient)
@@ -69,10 +69,6 @@ theorem inverse_high_cancel (e : ℕ) (he : 2≤e) : Γ ⊢[PRAAx]
   simp only [ZT.toZ_mul,ZT.toZ_ofNat]
   ipra_simps
   ring
-
-private theorem multiply_sub (w a b : PTm n) :
-    Γ ⊢[PRAAx] multiply w (sub a b) ≐ sub (multiply w a) (multiply w b) :=
-  (multiply_add _ _ _).eqTrans (add_congr (.eqRefl _) (multiply_negative _ _))
 
 theorem divide_residual (m e : ℕ) (he : 2≤e) (A B M L : PTm n) : Γ ⊢[PRAAx]
     multiply (inverseHigh e) (GaussianStirlingAllOrderPanelPartsOuter.errorSum m e A B M L) ≐

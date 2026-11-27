@@ -26,6 +26,8 @@ open RationalReciprocalPowerTail (tail tail_zero tail_succ reciprocalPower add_z
 open RationalArithmetic (add multiply negative)
 open RationalAlgebra (add_congr add_associative add_commutative multiply_congr multiply_add
   negative_congr negative_minus_multiply)
+open RationalAlgebra (negative_add)
+open RationalAlgebra renaming add_shuffle → interleave
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 local notation "rsum" => RationalFiniteSum.sum
@@ -37,11 +39,7 @@ def result (U B Q L : PTm n) : PTm n :=
 
 ipra_subst result [linearCoefficient, squareCoefficient]
 
-private theorem negative_add (a b : PTm n) : Γ ⊢[PRAAx] negative (add a b) ≐ add (negative a) (negative b) :=
-  (negative_minus_multiply _).eqTrans ((multiply_add _ _ _).eqTrans
-    (add_congr (negative_minus_multiply _).eqSymm (negative_minus_multiply _).eqSymm))
-
-private theorem negative_zero : Γ ⊢[PRAAx] negative (fraction zero one : PTm n) ≐ fraction zero one :=
+theorem negative_zero : Γ ⊢[PRAAx] negative (fraction zero one : PTm n) ≐ fraction zero one :=
   (negative_minus_multiply _).eqTrans (multiply_zero_right _)
 
 private theorem negative_successor (L : PTm n) : Γ ⊢[PRAAx]
@@ -55,13 +53,6 @@ private theorem negative_successor (L : PTm n) : Γ ⊢[PRAAx]
   apply ZT.derive
   ipra_simps
   ring
-
-private theorem interleave (a b c d : PTm n) : Γ ⊢[PRAAx]
-    add (add a b) (add c d) ≐ add (add a c) (add b d) :=
-  (add_associative a b _).eqTrans
-    ((add_congr (.eqRefl a) ((add_associative b c d).eqSymm.eqTrans
-      ((add_congr (add_commutative b c) (.eqRefl d)).eqTrans (add_associative c b d)))).eqTrans
-      (add_associative a c _).eqSymm)
 
 private theorem result_zero (U B Q : PTm n) : Γ ⊢[PRAAx] result U B Q zero ≐ fraction zero one := by
   let z : PTm n := fraction zero one

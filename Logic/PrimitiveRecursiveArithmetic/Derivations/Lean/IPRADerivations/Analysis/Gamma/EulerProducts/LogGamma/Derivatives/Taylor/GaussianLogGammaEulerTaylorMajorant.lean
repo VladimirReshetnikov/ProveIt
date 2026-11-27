@@ -34,18 +34,9 @@ open RationalNonnegativePowers (fraction_congr fraction_multiply)
 open RationalReciprocalPowerTail (tail tail_zero tail_succ reciprocalPower potential sharp_tail)
 open RationalSumLinearity (scaledBody scaled_term sum_homogeneous)
 open RationalSupMetric (denominatorOf)
+open GaussianLogGammaEulerResidualIntervalMajorant (fraction_add)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
-
-private theorem fraction_add (a b c d : PTm n) (hb : Γ ⊢[PRAAx] le one b) (hd : Γ ⊢[PRAAx] le one d) :
-    Γ ⊢[PRAAx] add (fraction a b) (fraction c d) ≐ fraction (a * d + c * b) (b * d) := by
-  have hbd := positive_product _ _ hb hd
-  have rep := RationalRepresentations.represents_add _ _ _ _ _ _
-    (fraction_represents a b hb) (fraction_represents c d hd)
-  apply RationalFiniteSum.canonical_equal _ _ _ _ _ _ (RationalArithmetic.add_guard _ _)
-    (RationalNormalForm.normalize_well_formed _ _ hbd) rep (fraction_represents _ _ hbd) hbd hbd
-  apply ZT.derive
-  simp only [ZT.toZ_add, ZT.toZ_mul, ZT.toZ_ofNat, Q.mk_add, Q.mk_mul, map_add, map_mul]
 
 private alias square_power := Common.pw_two
 

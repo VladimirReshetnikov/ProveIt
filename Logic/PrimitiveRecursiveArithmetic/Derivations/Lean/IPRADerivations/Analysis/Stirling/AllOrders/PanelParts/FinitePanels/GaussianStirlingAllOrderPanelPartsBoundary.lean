@@ -37,15 +37,13 @@ open RationalArithmetic (add multiply negative)
 open RationalAlgebra (add_congr multiply_congr negative_congr multiply_commutative negative_minus_multiply add_commutative)
 open RationalReciprocalPowerTail (add_zero_right)
 open RationalArgmin (rationalLE_congr reflexive)
+open GaussianStirlingAllOrderFirstPanelSum (negative_zero)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 local notation "𝔞" t:max => Groth.ι (IPRA.Q.mk Γ t)
 
 def boundaryCap (m e : ℕ) (B : PTm n) : PTm n :=
   two*num (endpointCoefficient m)*power e B
-
-private theorem negative_zero : Γ ⊢[PRAAx] negative (fraction zero one : PTm n) ≐ fraction zero one :=
-  (negative_minus_multiply _).eqTrans (multiply_zero_right _)
 
 private theorem endpoint_order (m : ℕ) (hm : 0<m) (M : PTm n) (hM : Γ ⊢[PRAAx] le one M) :
     (Γ ⊢[PRAAx] bounded (embed (sample (m+1) one M)) (num (endpointCoefficient m)) (M*M)) ∧

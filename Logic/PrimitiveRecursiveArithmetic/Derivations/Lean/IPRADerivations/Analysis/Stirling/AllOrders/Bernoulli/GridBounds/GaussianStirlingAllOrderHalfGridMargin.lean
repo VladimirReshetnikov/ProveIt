@@ -28,6 +28,7 @@ open RationalNonnegativePowers (fraction_congr)
 open RationalReciprocalPowerTail (add_zero_right)
 open RationalSumConstants (count_add)
 open RationalSumSegments (sum_congr)
+open RationalAlgebra renaming add_shuffle → group_four
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
@@ -43,13 +44,6 @@ noncomputable def rightSide (m : ℕ) (q A B S t u N M : PTm n) : PTm n :=
 
 noncomputable def withMargin (m : ℕ) (q A B S t u N M amount : PTm n) : Fm PTm n :=
   rationalLE (add (leftSide m q A B S t u N M) amount) (rightSide m q A B S t u N M)
-
-private theorem group_four (a b c d : PTm n) : Γ ⊢[PRAAx]
-    add (add a b) (add c d) ≐ add (add a c) (add b d) := by
-  have mid := (add_associative (Γ := Γ) a b c).eqTrans
-    ((add_congr (.eqRefl _) (add_commutative b c)).eqTrans (add_associative a c b).eqSymm)
-  exact (add_associative _ _ _).eqSymm.eqTrans
-    ((add_congr mid (.eqRefl _)).eqTrans (add_associative _ _ _))
 
 private theorem add_factor (a b c : PTm n) : Γ ⊢[PRAAx] add (multiply a c) (multiply b c) ≐ multiply (add a b) c :=
   (add_congr (multiply_commutative _ _) (multiply_commutative _ _)).eqTrans

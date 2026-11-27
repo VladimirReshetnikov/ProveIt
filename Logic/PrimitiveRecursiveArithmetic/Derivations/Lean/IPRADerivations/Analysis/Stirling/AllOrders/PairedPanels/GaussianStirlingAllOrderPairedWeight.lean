@@ -22,6 +22,7 @@ open GaussianRationalMetric (comparison_of_cleared)
 open GaussianStirlingAllOrderPowerGap (low base gap cleared_weight_gap)
 open RationalArgmin (rationalLE rationalLE_congr)
 open RationalArithmetic (add represents)
+open RationalConvexSecants renaming add_natural_representation → add_rep
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
@@ -57,16 +58,6 @@ private theorem weight_rep (q M a c D : PTm n) (ha : Γ ⊢[PRAAx] le one a)
   RationalConvexFiniteModulus.rescale_natural _ _ _ _ _
     (fraction_represents _ _ (GaussianFactorBudget.power_positive _ _ ha))
     ((pw_mul_base a c (succ q)).eqSymm.eqTrans (congrAp2 powF (.eqRefl _) e))
-
-private theorem add_rep (x y U V D : PTm n) (hD : Γ ⊢[PRAAx] le one D)
-    (hx : Γ ⊢[PRAAx] represents x (ZT.ofNat U) D) (hy : Γ ⊢[PRAAx] represents y (ZT.ofNat V) D) :
-    Γ ⊢[PRAAx] represents (add x y) (ZT.ofNat (U+V)) D := by
-  apply scalar_cancel _ _ _ D hD
-  apply scalar_congr (.eqRefl _) (hAB := .eqRefl _) (h := RationalRepresentations.represents_add _ _ _ _ _ _ hx hy)
-  apply ZT.derive
-  simp only [ZT.toZ_add,ZT.toZ_mul,ZT.toZ_ofNat]
-  ipra_simps
-  ring
 
 set_option maxHeartbeats 900000 in
 theorem weight_gap (q M a d h : PTm n) (ha : Γ ⊢[PRAAx] le one a) :

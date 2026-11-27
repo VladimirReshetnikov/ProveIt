@@ -29,6 +29,7 @@ open GaussianRootAlgebra (equal_of_values re_add im_add re_sub im_sub re_mul im_
 open GaussianScalarExponentialOddTaylor (oddSum oddBody odd_sum_succ scalarTerm)
 open RationalArgmin (rationalLE rationalLE_congr transitive)
 open RationalSupMetric (denominatorOf)
+open GaussianPositiveExponentialTermBound renaming as_lower_bound → positive_real_lower
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
@@ -81,27 +82,6 @@ theorem odd_first_order (q K : PTm n) (hq : Γ ⊢[PRAAx] canonical q) (h : Γ �
       exact first_succ _ _ hs.wk Prf.hyp0
   change Γ ⊢[PRAAx] firstLaw q K
   simpa only [subst_firstLaw,Syn.subst_var,Syn.inst_zero,Syn.subst_inst_shift] using all.allE K
-
-private theorem positive_real_lower (q A B : PTm n) (hq : Γ ⊢[PRAAx] positive q) (hc : Γ ⊢[PRAAx] canonical q)
-    (hB : Γ ⊢[PRAAx] le one B) (h : Γ ⊢[PRAAx] rationalLE (fstT (radiusPoint A B)) (fstT q)) :
-    Γ ⊢[PRAAx] lower q A B := by
-  let a := fstT q
-  let d := denominatorOf a
-  let m := GaussianPositiveRealArithmetic.numerator a
-  have hd : Γ ⊢[PRAAx] le one d := RationalArgmin.denominator_positive a
-  have real := natural_representation a hq.andE₂
-  have exactA : Γ ⊢[PRAAx] RationalArithmetic.represents (fstT (radiusPoint A B)) (ZT.ofNat A) B :=
-    scalar_congr (.eqRefl _) (by apply ZT.derive; simp only [radiusNumerator,ComplexLogarithmRemainder.eval_re_code])
-      (.eqRefl _) (radius_represents A B hB).andE₁
-  have cmp : Γ ⊢[PRAAx] le (d*A) (m*B) :=
-    GaussianRationalMetric.comparison_to_cleared _ _ _ _ _ _ exactA real h
-  have eq := (GaussianTranslatedNonconstant.recode_eq q hc).eqSymm.eqTrans (RationalGaussianEmbedding.axis_roundtrip q hq.andE₁)
-  have rep : Γ ⊢[PRAAx] GaussianRationalHorner.represents q (radiusNumerator m) d :=
-    represents_congr eq.eqSymm (GaussianRootAlgebra.equal_refl _) (.eqRefl _)
-      (RationalGaussianEmbedding.embed_from_representation _ _ _ real)
-  apply lower_from_representation _ _ _ _ _ hd hB rep
-  exact le_congr (by ipra_ring) ((by ipra_ring : Γ ⊢[PRAAx] m*B*(m*B) ≐ B*B*(m*m)).eqTrans
-    (congrMul (.eqRefl _) (radius_numerator_norm m).eqSymm)) (sq_le_sq cmp)
 
 theorem odd_lower (A B K E D : PTm n) (hB : Γ ⊢[PRAAx] le one B) (hD : Γ ⊢[PRAAx] le one D)
     (h : Γ ⊢[PRAAx] rationalLE (fstT (radiusPoint E D)) (fstT (radiusPoint A B))) :

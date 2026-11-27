@@ -36,6 +36,7 @@ open RationalGaussianRealPart (embed_congr)
 open GaussianRationalMetric (distanceBounded qnegative)
 open GaussianRationalSyntheticDivision (qadd_congr qmul_congr)
 open GaussianStirlingOddReadback (affine)
+open RationalAlgebra (negative_add)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 local notation "𝔞" t:max => Groth.ι (IPRA.Q.mk Γ t)
@@ -73,10 +74,6 @@ private theorem add_units : Γ ⊢[PRAAx] add (fraction one one) (fraction one o
   apply ZT.derive
   ipra_simps
   ring
-
-private theorem negative_add (a b : PTm n) : Γ ⊢[PRAAx] negative (add a b) ≐ add (negative a) (negative b) :=
-  (negative_minus_multiply _).eqTrans ((multiply_add _ _ _).eqTrans
-    (add_congr (negative_minus_multiply _).eqSymm (negative_minus_multiply _).eqSymm))
 
 private theorem half_twice : Γ ⊢[PRAAx] multiply (fraction one two : PTm n) (fraction two one) ≐ fraction one one := by
   have h₂ : Γ ⊢[PRAAx] le one (two : PTm n) := by ipra_le 1

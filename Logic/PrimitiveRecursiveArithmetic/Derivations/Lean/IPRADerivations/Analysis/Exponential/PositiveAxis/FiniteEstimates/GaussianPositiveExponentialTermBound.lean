@@ -79,7 +79,7 @@ theorem original_term_le (q i K : PTm n) (hq : Γ ⊢[PRAAx] positive q) (hi : �
     (rationalLE_congr (.eqRefl _) (rep.eqTrans (RationalGaussianRealPart.real_add t a)).eqSymm first)
     (prefix_real_mono q (succ i) (succ K) hq monotone)
 
-private theorem as_lower_bound (q A B : PTm n) (hq : Γ ⊢[PRAAx] positive q)
+theorem as_lower_bound (q A B : PTm n) (hq : Γ ⊢[PRAAx] positive q)
     (can : Γ ⊢[PRAAx] canonical q) (hB : Γ ⊢[PRAAx] le one B)
     (h : Γ ⊢[PRAAx] rationalLE (fstT (radiusPoint A B)) (fstT q)) :
     Γ ⊢[PRAAx] lower q A B := by

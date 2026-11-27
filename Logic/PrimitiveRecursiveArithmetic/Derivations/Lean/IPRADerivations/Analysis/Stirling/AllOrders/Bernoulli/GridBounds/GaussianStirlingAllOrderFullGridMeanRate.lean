@@ -64,24 +64,7 @@ theorem full_mean_readback (m : ℕ) (q U B S : PTm n) (hS : Γ ⊢[PRAAx] le on
     simpa [termwiseEq,f,g,M,x,T,i,Δ,Syn.shift] using (RationalArgmin.rationalEq_congr row.eqSymm (.eqRefl _) (.eqRefl _))
   exact multiply_congr (.eqRefl _) (sum_ext f g M x M h)
 
-theorem upper_as_added_fraction (x y C D : PTm n) (hD : Γ ⊢[PRAAx] le one D)
-    (h : Γ ⊢[PRAAx] upper x y C D) :
-    Γ ⊢[PRAAx] rationalLE x (add y (fraction C D)) := by
-  let a := numeratorOf x
-  let b := numeratorOf y
-  let E := denominatorOf x
-  let F := denominatorOf y
-  let c := fraction C D
-  have hx := represents_self (Γ := Γ) x
-  have hy := represents_self (Γ := Γ) y
-  have hc := fraction_represents C D hD
-  have raw := to_signed x y a b E F C D hx hy h
-  refine order_of_representations _ _ _ _ _ _ hx (represents_add _ _ _ _ _ _ hy hc)
-    (RationalArgmin.denominator_positive x) (positive_product _ _ (RationalArgmin.denominator_positive y) hD) ?_
-  apply zle_of_toZ (PolynomialBisection.slack (left a F D) (right b E F C D))
-  have e := zle_toZ raw
-  simp only [left,right,PolynomialBisection.slack,ZT.toZ_mul,ZT.toZ_add,ZT.toZ_ofNat,Q.mk_mul,map_mul] at e ⊢
-  linear_combination e
+alias upper_as_added_fraction := RationalConvexEndpointBudget.order_of_upper
 
 def meanErrorNumerator (m : ℕ) : PTm n := num (radius (coefficients (m+1)))
 def meanErrorDenominator (m : ℕ) (S : PTm n) : PTm n := num (bden (2*(m+1)))*(S*num 8)

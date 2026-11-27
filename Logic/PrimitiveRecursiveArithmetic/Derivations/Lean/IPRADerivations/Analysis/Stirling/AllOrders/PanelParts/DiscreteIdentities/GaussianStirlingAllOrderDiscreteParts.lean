@@ -26,6 +26,8 @@ open RationalReciprocalPowerTail (add_zero_right zero_fraction)
 open RationalHalfNinthProductLower (add_negative_cancel)
 open RationalNormalForm (wellFormed)
 open RationalFiniteSum (term)
+open RationalAlgebra (negative_add)
+open RationalAlgebra renaming add_shuffle → interleave
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 local notation "rsum" => RationalFiniteSum.sum
@@ -40,10 +42,6 @@ def defect (a₀ a₁ a₂ b₀ b₁ b₂ : PTm n) : PTm n :=
 ipra_subst sub
 
 ipra_subst adjacent
-
-private theorem negative_add (a b : PTm n) : Γ ⊢[PRAAx] negative (add a b) ≐ add (negative a) (negative b) :=
-  (negative_minus_multiply _).eqTrans ((multiply_add _ _ _).eqTrans
-    (add_congr (negative_minus_multiply _).eqSymm (negative_minus_multiply _).eqSymm))
 
 private theorem recode_eq (a : PTm n) (h : Γ ⊢[PRAAx] wellFormed a) : Γ ⊢[PRAAx] RationalArithmetic.recode a ≐ a := by
   have hd := RationalArgmin.denominator_positive (Γ := Γ) a
@@ -67,13 +65,6 @@ private theorem sub_self (a : PTm n) : Γ ⊢[PRAAx] sub a a ≐ fraction zero o
   simp only [ZT.toZ_mul,ZT.toZ_add,ZT.toZ_neg,ZT.toZ_ofNat]
   ipra_simps
   ring
-
-private theorem interleave (a b c d : PTm n) : Γ ⊢[PRAAx]
-    add (add a b) (add c d) ≐ add (add a c) (add b d) :=
-  (add_associative a b _).eqTrans
-    ((add_congr (.eqRefl a) ((add_associative b c d).eqSymm.eqTrans
-      ((add_congr (add_commutative b c) (.eqRefl d)).eqTrans (add_associative c b d)))).eqTrans
-      (add_associative a c _).eqSymm)
 
 private theorem sub_common (a b e : PTm n) (he : Γ ⊢[PRAAx] wellFormed e) :
     Γ ⊢[PRAAx] sub (sub a e) (sub b e) ≐ sub a b := by
