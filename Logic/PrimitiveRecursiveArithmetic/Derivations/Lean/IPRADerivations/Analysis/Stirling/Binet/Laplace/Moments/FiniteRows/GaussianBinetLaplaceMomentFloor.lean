@@ -1,4 +1,4 @@
-import IPRADerivations.Analysis.Stirling.Binet.Laplace.GaussianBinetLaplaceCompactRealFloor
+import IPRADerivations.Analysis.Stirling.Binet.Laplace.Integrands.GaussianBinetLaplaceCompactRealFloor
 import IPRADerivations.Analysis.Stirling.Binet.Laplace.Strips.GaussianBinetLaplaceStripCutoff
 
 /-!

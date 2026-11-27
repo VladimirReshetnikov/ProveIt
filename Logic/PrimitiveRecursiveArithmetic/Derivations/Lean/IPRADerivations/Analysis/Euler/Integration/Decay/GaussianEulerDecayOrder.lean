@@ -1,5 +1,5 @@
 import IPRADerivations.Analysis.Euler.Integration.GaussianEulerIntegrandName
-import IPRADerivations.Analysis.Exponential.PositiveAxis.GaussianSignedRealExponentialOrder
+import IPRADerivations.Analysis.Exponential.PositiveAxis.FiniteEstimates.GaussianSignedRealExponentialOrder
 
 /-!
 # Order and nonnegative representation for the original Euler decay

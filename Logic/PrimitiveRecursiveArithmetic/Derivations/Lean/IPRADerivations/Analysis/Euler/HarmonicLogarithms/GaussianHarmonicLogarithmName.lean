@@ -1,5 +1,5 @@
 import IPRADerivations.Analysis.Logarithm.PositiveAxis.GaussianPositiveRationalLogarithmSign
-import IPRADerivations.Analysis.Exponential.PositiveAxis.GaussianSignedNameExponentialOrder
+import IPRADerivations.Analysis.Exponential.PositiveAxis.NamedValues.GaussianSignedNameExponentialOrder
 import IPRADerivations.Analysis.RationalArithmetic.OrderBounds.RationalClosure
 import IPRADerivations.Analysis.Logarithm.PositiveAxis.GaussianCompactLogarithmBounds
 

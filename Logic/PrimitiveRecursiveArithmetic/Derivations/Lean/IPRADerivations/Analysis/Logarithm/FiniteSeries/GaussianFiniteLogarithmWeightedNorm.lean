@@ -2,7 +2,7 @@ import IPRADerivations.Analysis.Polynomials.Representation.GaussianRationalPolyn
 import IPRADerivations.Analysis.Logarithm.FiniteSeries.GaussianFiniteLogarithmPolynomial
 import IPRADerivations.Analysis.RationalArithmetic.Powers.GaussianIntegerFractionPowers
 import IPRADerivations.Analysis.Polynomials.RootFinding.DominantTerms.DirectionSelection.GaussianDominantPairAlgebra
-import IPRADerivations.Analysis.Polynomials.Coefficients.GaussianCoefficientNormEntries
+import IPRADerivations.Analysis.Polynomials.Coefficients.Norms.GaussianCoefficientNormEntries
 
 /-!
 # The auxiliary-radius coefficient majorant of the original finite logarithm

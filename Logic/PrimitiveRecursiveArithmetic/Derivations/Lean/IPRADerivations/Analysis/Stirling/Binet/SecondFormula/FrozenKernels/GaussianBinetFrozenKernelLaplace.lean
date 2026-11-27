@@ -1,6 +1,6 @@
 import IPRADerivations.Analysis.Stirling.Binet.SecondFormula.FrozenKernels.GaussianBinetFrozenKernelRectangle
 import IPRADerivations.Analysis.Stirling.Binet.Kernel.FrequencyGrids.GaussianBinetKernelFrequencyRadius
-import IPRADerivations.Analysis.Stirling.Binet.Laplace.GaussianBinetLaplaceFrequencySuffix
+import IPRADerivations.Analysis.Stirling.Binet.Laplace.Exhaustion.GaussianBinetLaplaceFrequencySuffix
 
 /-!
 # Frozen kernel rectangle and the original Laplace suffix

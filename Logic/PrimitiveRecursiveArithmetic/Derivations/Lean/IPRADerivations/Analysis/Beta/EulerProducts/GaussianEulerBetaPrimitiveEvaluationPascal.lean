@@ -1,5 +1,5 @@
 import IPRADerivations.Analysis.Beta.EulerProducts.GaussianEulerBetaPrimitivePascal
-import IPRADerivations.Analysis.Polynomials.Horner.GaussianRationalHornerPerturbation
+import IPRADerivations.Analysis.Polynomials.Horner.Perturbation.GaussianRationalHornerPerturbation
 
 /-!
 # Literal Horner Pascal identity for the actual finite Beta primitive

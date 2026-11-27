@@ -1,7 +1,7 @@
 import IPRADerivations.Analysis.Gamma.Digamma.NegativeAxis.GaussianGammaNegativeIntervalDigammaRate
 import IPRADerivations.Analysis.Gamma.NegativeAxis.Values.GaussianGammaNegativeIntervalGammaSign
 import IPRADerivations.Analysis.Gamma.NegativeAxis.Values.GaussianGammaNegativeIntervalNamedSign
-import IPRADerivations.Analysis.Polynomials.Coefficients.GaussianNamedConstantCoefficientDifferenceProduct
+import IPRADerivations.Analysis.Polynomials.Coefficients.NamedCoefficients.GaussianNamedConstantCoefficientDifferenceProduct
 
 /-!
 # Exact fixed-sign interpretation of the native Gamma unit quotient

@@ -1,4 +1,4 @@
-import IPRADerivations.Analysis.Beta.Partitions.GaussianBetaSharpFiniteBinding
+import IPRADerivations.Analysis.Beta.Partitions.Alignment.GaussianBetaSharpFiniteBinding
 import IPRADerivations.Analysis.Integration.CompactGrids.Splits.GaussianCompactAlignedThreeSplit
 import IPRADerivations.Analysis.Names.Rates.Moduli.GaussianCompactModulusAlignedTime
 

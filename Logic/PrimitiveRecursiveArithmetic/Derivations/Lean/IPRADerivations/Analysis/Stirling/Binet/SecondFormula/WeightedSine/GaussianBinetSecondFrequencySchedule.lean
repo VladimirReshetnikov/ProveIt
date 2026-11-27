@@ -1,6 +1,6 @@
 import IPRADerivations.Analysis.Stirling.Binet.SecondFormula.WeightedSine.GaussianBinetSecondEarlySchedule
 import IPRADerivations.Analysis.Stirling.Binet.Oscillatory.SineKernels.GaussianBinetSineKernelFrequency
-import IPRADerivations.Analysis.Stirling.Binet.Laplace.GaussianBinetLaplaceFrequencySuffix
+import IPRADerivations.Analysis.Stirling.Binet.Laplace.Exhaustion.GaussianBinetLaplaceFrequencySuffix
 
 /-!
 # Independent frequency clocks for the second Binet formula

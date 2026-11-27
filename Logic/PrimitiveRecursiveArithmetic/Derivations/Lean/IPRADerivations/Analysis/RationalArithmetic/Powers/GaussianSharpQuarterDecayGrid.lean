@@ -1,4 +1,4 @@
-import IPRADerivations.Analysis.Beta.Partitions.GaussianBetaSharpUpperDifference
+import IPRADerivations.Analysis.Beta.Partitions.Splits.GaussianBetaSharpUpperDifference
 
 /-!
 # A single quarter-degree endpoint for any later contiguous half-decay grid

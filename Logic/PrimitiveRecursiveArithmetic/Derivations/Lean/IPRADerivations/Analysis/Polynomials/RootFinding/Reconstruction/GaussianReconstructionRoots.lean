@@ -1,6 +1,6 @@
 import IPRADerivations.Analysis.RationalArithmetic.Representations.GaussianRationalReconstruction
 import IPRADerivations.Analysis.Polynomials.RootFinding.Descent.GaussianEuclideanResidualRadius
-import IPRADerivations.Analysis.Polynomials.Coefficients.GaussianCoefficientNormOrder
+import IPRADerivations.Analysis.Polynomials.Coefficients.Norms.GaussianCoefficientNormOrder
 
 /-!
 # Listed zeros and exact radii of the actual reconstructed product

@@ -1,7 +1,7 @@
 import IPRADerivations.Analysis.Polynomials.Interpolation.GaussianLagrangeCoefficientSensitivity
 import IPRADerivations.Analysis.Polynomials.Products.Convolution.GaussianPolynomialLowPrefix
 import IPRADerivations.Analysis.RationalArithmetic.Directions.GaussianRationalTravelScaling
-import IPRADerivations.Analysis.Polynomials.Coefficients.GaussianCoefficientNormEntries
+import IPRADerivations.Analysis.Polynomials.Coefficients.Norms.GaussianCoefficientNormEntries
 
 /-!
 # Actual coefficient extraction from a shrinking finite grid

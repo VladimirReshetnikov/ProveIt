@@ -1,6 +1,6 @@
 import IPRADerivations.Analysis.Stirling.Wallis.GaussianStirlingWallisRatioRate
 import IPRADerivations.Analysis.Names.RightHalfPlane.GaussianNamedPositiveLateLogSource
-import IPRADerivations.Analysis.Exponential.PositiveAxis.GaussianNamedPositiveLogarithmExponential
+import IPRADerivations.Analysis.Exponential.PositiveAxis.NamedValues.GaussianNamedPositiveLogarithmExponential
 import IPRADerivations.Analysis.Stirling.Duplication.GaussianStirlingLogDuplication
 
 /-!

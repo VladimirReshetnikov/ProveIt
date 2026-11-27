@@ -1,4 +1,4 @@
-import IPRADerivations.Analysis.SpecialFunctions.DampingPower.GaussianNamedDampingPowerPositive
+import IPRADerivations.Analysis.SpecialFunctions.DampingPower.LowerBounds.GaussianNamedDampingPowerPositive
 import IPRADerivations.Analysis.Euler.CompactExhaustion.Tails.GaussianEulerNamedUpperTail
 
 /-!

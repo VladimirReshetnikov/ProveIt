@@ -95,7 +95,14 @@ The Lean modules in this directory construct derivations in the object theory. T
 | Convexity | [Secants](Optimization/Convexity/Secants/), [moduli](Optimization/Convexity/Moduli/), and [regular names](Optimization/Convexity/Named/) |
 | Observations and quantum proofs | [Replay](Observation/Replay/), [observation certificates](Observation/Certificates/), [amplitudes](Quantum/Amplitudes/), and [Hilbert spaces](Quantum/HilbertSpace/) |
 | Contraction and weighted inequalities | [Exact and inexact contraction](Inequalities/Contraction/) and [weighted AM–GM and Cauchy–Schwarz](Inequalities/Weighted/) |
-
+| Binet Laplace integral | [Integrand bounds and positivity](Stirling/Binet/Laplace/Integrands/), [unit-shift differences](Stirling/Binet/Laplace/UnitShift/), and [exhaustion and improper names](Stirling/Binet/Laplace/Exhaustion/) |
+| Damped Mellin integrals | [Finite evaluations and grid transposition](Gamma/Zeta/Mellin/Damped/FiniteRows/), [compact windows and alignment](Gamma/Zeta/Mellin/Damped/Windows/), and [uniform tail estimates](Gamma/Zeta/Mellin/Damped/Tails/) |
+| Canonical Gamma products | [Coefficient recurrences and Taylor comparisons](Gamma/EulerProducts/CanonicalProducts/Coefficients/) and [named tails and first-factor shifts](Gamma/EulerProducts/CanonicalProducts/Tails/) |
+| Polynomial coefficients | [Finite norms and entry bounds](Polynomials/Coefficients/Norms/), [regular names for coefficients](Polynomials/Coefficients/NamedCoefficients/), and [coefficient identities and recursions](Polynomials/Coefficients/Operations/) |
+| Horner methods | [Monic quotient and remainder](Polynomials/Horner/MonicDivision/) and [Lipschitz and perturbation estimates](Polynomials/Horner/Perturbation/) |
+| Real exponential on the positive axis | [Finite-series order and term estimates](Exponential/PositiveAxis/FiniteEstimates/) and [regular values, order, and injectivity](Exponential/PositiveAxis/NamedValues/) |
+| Beta integral partitions | [Shared meshes and finite-name alignment](Beta/Partitions/Alignment/), [Dyadic budgets and cutoff schedules](Beta/Partitions/Schedules/), and [Endpoint telescopes and interval splits](Beta/Partitions/Splits/) |
+| Damping-power estimates | [Compact sums and additivity](SpecialFunctions/DampingPower/Compact/) and [Lower cutoffs and positivity](SpecialFunctions/DampingPower/LowerBounds/) |
 
 Import a file using its path within the Lean library. For example, `IPRADerivations.Analysis.Gamma.BohrMollerup.Named.GaussianBohrMollerupNamedGamma` contains `LeanProofs.IPRA.Analysis.GaussianBohrMollerupNamedGamma.actual_named_Bohr_Mollerup_Gamma_closed`.
 

@@ -1,5 +1,5 @@
-import IPRADerivations.Analysis.Beta.Partitions.GaussianBetaSharpNaturalDegreeSchedule
-import IPRADerivations.Analysis.Beta.Partitions.GaussianBetaSharpPieceAlignment
+import IPRADerivations.Analysis.Beta.Partitions.Schedules.GaussianBetaSharpNaturalDegreeSchedule
+import IPRADerivations.Analysis.Beta.Partitions.Alignment.GaussianBetaSharpPieceAlignment
 import IPRADerivations.Analysis.Euler.PositiveAxis.SharpRates.GaussianEulerSharpResidualAssembly
 
 /-!

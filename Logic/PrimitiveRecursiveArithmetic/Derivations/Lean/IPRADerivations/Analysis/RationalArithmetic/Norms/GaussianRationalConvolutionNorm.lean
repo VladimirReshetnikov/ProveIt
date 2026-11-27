@@ -1,4 +1,4 @@
-import IPRADerivations.Analysis.Polynomials.Coefficients.GaussianPolynomialNormBuffers
+import IPRADerivations.Analysis.Polynomials.Coefficients.Norms.GaussianPolynomialNormBuffers
 import IPRADerivations.Analysis.Polynomials.Products.GaussianRationalPolynomialProduct
 
 /-!

@@ -2,7 +2,7 @@ import IPRADerivations.Analysis.Barnes.Logarithms.FiniteRows.GaussianBarnesCanon
 import IPRADerivations.Analysis.Gamma.EulerProducts.Factorials.GaussianGammaFactorialValues
 import IPRADerivations.Analysis.Gamma.Names.Input.GaussianGammaInputProperness
 import IPRADerivations.Analysis.Euler.HarmonicLogarithms.GaussianHarmonicIntegerExponential
-import IPRADerivations.Analysis.Exponential.PositiveAxis.GaussianNamedPositiveLogarithmExponential
+import IPRADerivations.Analysis.Exponential.PositiveAxis.NamedValues.GaussianNamedPositiveLogarithmExponential
 import IPRADerivations.Analysis.Stirling.GammaLogarithm.GaussianStirlingGammaLogarithm
 
 /-!

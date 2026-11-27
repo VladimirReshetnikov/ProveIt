@@ -1,5 +1,5 @@
 import IPRADerivations.Analysis.Gamma.Ratios.GaussianGammaRationalWendelUniformLog
-import IPRADerivations.Analysis.Exponential.PositiveAxis.GaussianRealNameExponentialNonnegative
+import IPRADerivations.Analysis.Exponential.PositiveAxis.NamedValues.GaussianRealNameExponentialNonnegative
 
 /-!
 # The exact linear lower bound for the original negative exponential

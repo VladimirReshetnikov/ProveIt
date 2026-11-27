@@ -1,5 +1,5 @@
 import IPRADerivations.Analysis.Names.Differences.GaussianNamedDifference
-import IPRADerivations.Analysis.Polynomials.Coefficients.GaussianCoefficientNormOrder
+import IPRADerivations.Analysis.Polynomials.Coefficients.Norms.GaussianCoefficientNormOrder
 
 /-!
 # Cancellation of a common increment between regular names

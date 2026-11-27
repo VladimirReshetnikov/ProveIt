@@ -1,5 +1,5 @@
 import IPRADerivations.Analysis.Gamma.EulerProducts.FiniteHeads.GaussianGammaEulerHeadHarmonicNewton
-import IPRADerivations.Analysis.Polynomials.Coefficients.GaussianPolynomialFirstCoefficients
+import IPRADerivations.Analysis.Polynomials.Coefficients.Operations.GaussianPolynomialFirstCoefficients
 
 /-!
 # The actual harmonic-power kernel multiplies the original head Euler buffer

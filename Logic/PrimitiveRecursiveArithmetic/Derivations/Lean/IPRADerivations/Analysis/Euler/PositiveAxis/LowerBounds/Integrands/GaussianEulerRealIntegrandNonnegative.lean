@@ -1,4 +1,4 @@
-import IPRADerivations.Analysis.Exponential.PositiveAxis.GaussianRealNameExponentialNonnegative
+import IPRADerivations.Analysis.Exponential.PositiveAxis.NamedValues.GaussianRealNameExponentialNonnegative
 import IPRADerivations.Analysis.Euler.PositiveAxis.LowerBounds.Powers.GaussianEulerRealPowerLowerOrder
 
 /-!

@@ -1,4 +1,4 @@
-import IPRADerivations.Analysis.Polynomials.Coefficients.GaussianRationalCoefficientRecursion
+import IPRADerivations.Analysis.Polynomials.Coefficients.Operations.GaussianRationalCoefficientRecursion
 import IPRADerivations.Analysis.RationalArithmetic.Powers.GaussianIntegerFractionPowers
 
 /-!

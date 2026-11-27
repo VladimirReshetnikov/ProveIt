@@ -1,6 +1,6 @@
 import IPRADerivations.Analysis.Exponential.Polynomials.GaussianFiniteExponentialWeightedNorm
-import IPRADerivations.Analysis.Polynomials.Horner.GaussianRationalVariableHornerBudget
-import IPRADerivations.Analysis.Polynomials.Coefficients.GaussianCoefficientNameBounds
+import IPRADerivations.Analysis.Polynomials.Horner.Perturbation.GaussianRationalVariableHornerBudget
+import IPRADerivations.Analysis.Polynomials.Coefficients.NamedCoefficients.GaussianCoefficientNameBounds
 
 /-!
 # Actual Euclidean unit-disk Horner prefixes from the original finite norm

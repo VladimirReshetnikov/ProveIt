@@ -1,6 +1,6 @@
 import IPRADerivations.Analysis.Polynomials.Products.RationalPolynomialProductGaussianEmbedding
 import IPRADerivations.Analysis.Polynomials.Products.GaussianRationalPolynomialProductDegree
-import IPRADerivations.Analysis.Polynomials.Coefficients.GaussianCoefficientNormOrder
+import IPRADerivations.Analysis.Polynomials.Coefficients.Norms.GaussianCoefficientNormOrder
 import IPRADerivations.Analysis.RationalArithmetic.FiniteProducts.GaussianRationalFiniteProduct
 
 /-!

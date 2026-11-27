@@ -1,5 +1,5 @@
-import IPRADerivations.Analysis.Gamma.EulerProducts.CanonicalProducts.GaussianGammaCanonicalPrefixTaylor
-import IPRADerivations.Analysis.Gamma.EulerProducts.CanonicalProducts.GaussianGammaCanonicalCoefficientRecurrence
+import IPRADerivations.Analysis.Gamma.EulerProducts.CanonicalProducts.Coefficients.GaussianGammaCanonicalPrefixTaylor
+import IPRADerivations.Analysis.Gamma.EulerProducts.CanonicalProducts.Coefficients.GaussianGammaCanonicalCoefficientRecurrence
 import IPRADerivations.Analysis.RationalArithmetic.Powers.GaussianPowers.GaussianRationalPowerNonzero
 
 /-!

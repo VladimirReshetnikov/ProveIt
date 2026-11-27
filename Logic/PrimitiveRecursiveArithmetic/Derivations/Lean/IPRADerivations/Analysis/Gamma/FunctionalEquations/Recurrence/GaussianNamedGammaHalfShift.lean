@@ -1,6 +1,6 @@
 import IPRADerivations.Analysis.Gamma.Names.Input.GaussianEulerNamedShiftInput
 import IPRADerivations.Analysis.Gamma.Names.PositiveAxis.GaussianNamedGammaPositiveLower
-import IPRADerivations.Analysis.Exponential.PositiveAxis.GaussianRealExponentialPositiveIncrement
+import IPRADerivations.Analysis.Exponential.PositiveAxis.NamedValues.GaussianRealExponentialPositiveIncrement
 import IPRADerivations.Analysis.RationalArithmetic.OrderBounds.RationalUpperAddition
 
 /-!

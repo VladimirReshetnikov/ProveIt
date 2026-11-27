@@ -1,6 +1,6 @@
 import IPRADerivations.Analysis.Euler.Integration.Decay.Increments.GaussianEulerDecayGlobalTaylor
 import IPRADerivations.Analysis.Euler.Integration.Decay.Quadrature.GaussianEulerDecayMesh
-import IPRADerivations.Analysis.Stirling.Binet.Laplace.GaussianBinetLaplaceDomination
+import IPRADerivations.Analysis.Stirling.Binet.Laplace.Integrands.GaussianBinetLaplaceDomination
 
 /-!
 # Actual real decay products at independently encoded parameters

@@ -1,4 +1,4 @@
-import IPRADerivations.Analysis.Gamma.EulerProducts.CanonicalProducts.GaussianGammaCanonicalTailFiniteSplit
+import IPRADerivations.Analysis.Gamma.EulerProducts.CanonicalProducts.Tails.GaussianGammaCanonicalTailFiniteSplit
 import IPRADerivations.Analysis.Gamma.EulerProducts.GammaLocalFactorName
 import IPRADerivations.Analysis.Names.Arithmetic.GaussianNameArithmetic
 

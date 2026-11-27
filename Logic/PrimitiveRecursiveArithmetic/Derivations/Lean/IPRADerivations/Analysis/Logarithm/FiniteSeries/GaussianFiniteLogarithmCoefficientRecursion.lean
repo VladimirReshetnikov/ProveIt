@@ -1,4 +1,4 @@
-import IPRADerivations.Analysis.Polynomials.Coefficients.GaussianRationalCoefficientRecursion
+import IPRADerivations.Analysis.Polynomials.Coefficients.Operations.GaussianRationalCoefficientRecursion
 
 /-!
 # The original finite logarithm exponential has the actual prior recursion

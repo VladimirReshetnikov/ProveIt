@@ -1,5 +1,5 @@
 import IPRADerivations.Analysis.Gamma.FunctionalEquations.Multiplication.Normalization.GaussianGaussMultiplicationHalfPower
-import IPRADerivations.Analysis.Exponential.PositiveAxis.GaussianRealExponentialCompactLower
+import IPRADerivations.Analysis.Exponential.PositiveAxis.NamedValues.GaussianRealExponentialCompactLower
 
 /-!
 # Strict positivity of the Gauss reciprocal half-power

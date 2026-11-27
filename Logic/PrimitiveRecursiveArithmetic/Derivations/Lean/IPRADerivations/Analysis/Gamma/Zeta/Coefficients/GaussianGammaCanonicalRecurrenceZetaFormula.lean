@@ -1,4 +1,4 @@
-import IPRADerivations.Analysis.Gamma.EulerProducts.CanonicalProducts.GaussianGammaCanonicalCoefficientRecurrence
+import IPRADerivations.Analysis.Gamma.EulerProducts.CanonicalProducts.Coefficients.GaussianGammaCanonicalCoefficientRecurrence
 
 /-!
 # The literal original gamma plus signed-zeta recurrence formula

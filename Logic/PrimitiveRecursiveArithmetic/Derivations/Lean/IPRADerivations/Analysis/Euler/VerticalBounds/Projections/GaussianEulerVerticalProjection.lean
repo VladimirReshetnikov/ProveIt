@@ -1,6 +1,6 @@
 import IPRADerivations.Analysis.Gamma.Names.Symmetry.GaussianGammaRealValues
 import IPRADerivations.Analysis.Names.RightHalfPlane.GaussianNamedRightHalfPlane
-import IPRADerivations.Analysis.Exponential.PositiveAxis.GaussianSignedNameExponentialOrder
+import IPRADerivations.Analysis.Exponential.PositiveAxis.NamedValues.GaussianSignedNameExponentialOrder
 
 /-!
 # The actual positive real-part argument for vertical Euler comparisons

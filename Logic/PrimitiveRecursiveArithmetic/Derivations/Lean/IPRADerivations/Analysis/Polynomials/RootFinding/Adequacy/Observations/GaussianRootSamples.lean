@@ -1,5 +1,5 @@
 import IPRADerivations.Analysis.Polynomials.RootFinding.Adequacy.GaussianRootSchedule
-import IPRADerivations.Analysis.Polynomials.Coefficients.GaussianCoefficientNormEntries
+import IPRADerivations.Analysis.Polynomials.Coefficients.Norms.GaussianCoefficientNormEntries
 
 /-!
 # Actual sampled polynomials and root lists

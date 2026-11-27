@@ -1,6 +1,6 @@
 import IPRADerivations.Analysis.Beta.Endpoints.AllDegrees.GaussianBetaAllDegreeUpperEndpoint
-import IPRADerivations.Analysis.Beta.Partitions.GaussianBetaFiniteEndpointTelescope
-import IPRADerivations.Analysis.Beta.Partitions.GaussianBetaSharpFiniteBinding
+import IPRADerivations.Analysis.Beta.Partitions.Splits.GaussianBetaFiniteEndpointTelescope
+import IPRADerivations.Analysis.Beta.Partitions.Alignment.GaussianBetaSharpFiniteBinding
 
 /-!
 # The actual finite-support binding at every positive degree

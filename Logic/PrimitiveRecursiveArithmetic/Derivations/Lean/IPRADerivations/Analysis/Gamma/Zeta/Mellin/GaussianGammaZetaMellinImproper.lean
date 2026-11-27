@@ -1,4 +1,4 @@
-import IPRADerivations.Analysis.Gamma.Zeta.Mellin.Damped.GaussianGammaZetaMellinNestedBound
+import IPRADerivations.Analysis.Gamma.Zeta.Mellin.Damped.Windows.GaussianGammaZetaMellinNestedBound
 
 /-!
 # The original Mellin improper integral as a regular name

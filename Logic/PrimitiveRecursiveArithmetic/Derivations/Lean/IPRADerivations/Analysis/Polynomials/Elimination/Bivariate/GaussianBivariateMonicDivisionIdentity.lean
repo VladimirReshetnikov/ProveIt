@@ -2,7 +2,7 @@ import IPRADerivations.Analysis.Polynomials.Elimination.Bivariate.GaussianBivari
 import IPRADerivations.Analysis.Polynomials.Elimination.Bivariate.GaussianBivariatePolynomialBuffers
 import IPRADerivations.Analysis.Polynomials.Elimination.Bivariate.GaussianBivariatePolynomialProduct
 import IPRADerivations.Analysis.Polynomials.Elimination.Bivariate.GaussianBivariateGridCoefficients
-import IPRADerivations.Analysis.Polynomials.Horner.GaussianPolynomialMonicHornerQuotient
+import IPRADerivations.Analysis.Polynomials.Horner.MonicDivision.GaussianPolynomialMonicHornerQuotient
 
 /-!
 # The literal stored coefficient identity for monic division

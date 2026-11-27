@@ -1,5 +1,5 @@
 import IPRADerivations.Analysis.Exponential.FiniteSeries.GaussianRationalExponentialProductCoefficients
-import IPRADerivations.Analysis.Polynomials.Coefficients.GaussianRationalCoefficientRecursion
+import IPRADerivations.Analysis.Polynomials.Coefficients.Operations.GaussianRationalCoefficientRecursion
 
 /-!
 # The diagonal Cauchy sums of the original scalar exponential

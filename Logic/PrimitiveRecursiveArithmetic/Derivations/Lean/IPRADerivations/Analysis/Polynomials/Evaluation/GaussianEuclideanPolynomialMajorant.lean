@@ -1,5 +1,5 @@
 import IPRADerivations.Analysis.RationalArithmetic.FiniteSums.WeightedSums.GaussianRationalSumMajorant
-import IPRADerivations.Analysis.Polynomials.Coefficients.GaussianCoefficientNormEntries
+import IPRADerivations.Analysis.Polynomials.Coefficients.Norms.GaussianCoefficientNormEntries
 import IPRADerivations.Analysis.RationalArithmetic.FiniteSums.RationalIdentities.RationalSumLinearity
 import IPRADerivations.Analysis.RationalArithmetic.FiniteSums.Reindexing.GaussianRationalSumSegments
 

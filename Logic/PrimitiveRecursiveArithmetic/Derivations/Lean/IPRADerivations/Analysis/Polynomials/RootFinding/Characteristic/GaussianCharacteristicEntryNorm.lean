@@ -1,6 +1,6 @@
 import IPRADerivations.Analysis.Polynomials.CompanionMatrices.GaussianRationalCharacteristicPolynomial
-import IPRADerivations.Analysis.Polynomials.Coefficients.GaussianCoefficientNormOrder
-import IPRADerivations.Analysis.Polynomials.Coefficients.GaussianPolynomialNormBuffers
+import IPRADerivations.Analysis.Polynomials.Coefficients.Norms.GaussianCoefficientNormOrder
+import IPRADerivations.Analysis.Polynomials.Coefficients.Norms.GaussianPolynomialNormBuffers
 
 /-!
 # Norm bounds for the original characteristic entry polynomials

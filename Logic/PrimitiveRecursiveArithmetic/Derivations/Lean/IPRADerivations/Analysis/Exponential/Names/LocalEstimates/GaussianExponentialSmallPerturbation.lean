@@ -1,4 +1,4 @@
-import IPRADerivations.Analysis.Gamma.EulerProducts.CanonicalProducts.GaussianGammaCanonicalTailExponential
+import IPRADerivations.Analysis.Gamma.EulerProducts.CanonicalProducts.Tails.GaussianGammaCanonicalTailExponential
 
 /-!
 # Exact small-exponent perturbations for the original exponential name

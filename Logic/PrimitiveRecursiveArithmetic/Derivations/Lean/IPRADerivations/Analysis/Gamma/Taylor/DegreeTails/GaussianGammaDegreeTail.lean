@@ -2,7 +2,7 @@ import IPRADerivations.Analysis.Gamma.Taylor.FinitePolynomials.GaussianGammaFini
 import IPRADerivations.Analysis.Gamma.EulerProducts.CanonicalProducts.GaussianGammaCanonicalTailMetric
 import IPRADerivations.Analysis.FiniteOperations.FiniteProducts.GaussianProductStability
 import IPRADerivations.Analysis.Names.Arithmetic.GaussianNameArithmetic
-import IPRADerivations.Analysis.Polynomials.Coefficients.GaussianCoefficientNormOrder
+import IPRADerivations.Analysis.Polynomials.Coefficients.Norms.GaussianCoefficientNormOrder
 
 /-!
 # Exact degree tails of the original finite canonical Gamma program

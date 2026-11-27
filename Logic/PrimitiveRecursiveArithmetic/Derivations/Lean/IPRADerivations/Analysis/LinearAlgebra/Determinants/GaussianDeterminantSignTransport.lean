@@ -1,7 +1,7 @@
 import IPRADerivations.Foundations.RuntimeAdjacentPermutationSwap
 import IPRADerivations.Analysis.Polynomials.Determinants.GaussianPolynomialDeterminantTerms
 import IPRADerivations.Analysis.Polynomials.Translation.GaussianInverseBinomialRows
-import IPRADerivations.Analysis.Polynomials.Coefficients.GaussianCoefficientNormOrder
+import IPRADerivations.Analysis.Polynomials.Coefficients.Norms.GaussianCoefficientNormOrder
 
 /-!
 # Actual Gaussian sign transport for numerical permutation words

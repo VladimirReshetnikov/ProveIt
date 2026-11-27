@@ -1,5 +1,5 @@
 import IPRADerivations.Analysis.Polynomials.RootFinding.Reconstruction.GaussianRootFiniteEvaluation
-import IPRADerivations.Analysis.Polynomials.Horner.GaussianRationalHornerLipschitz
+import IPRADerivations.Analysis.Polynomials.Horner.Perturbation.GaussianRationalHornerLipschitz
 import IPRADerivations.Analysis.RationalArithmetic.Covers.GaussianRationalCover
 
 /-!

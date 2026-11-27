@@ -1,6 +1,6 @@
 import IPRADerivations.Analysis.Stirling.Binet.Oscillatory.SineTransforms.GaussianBinetSineDampedQuadrature
 import IPRADerivations.Analysis.Stirling.Binet.Oscillatory.SineKernels.GaussianBinetSineQuotientClock
-import IPRADerivations.Analysis.Stirling.Binet.Laplace.GaussianBinetLaplaceScalarMajorant
+import IPRADerivations.Analysis.Stirling.Binet.Laplace.Integrands.GaussianBinetLaplaceScalarMajorant
 
 /-!
 # Retiming the original damped sine grid on the same physical mesh

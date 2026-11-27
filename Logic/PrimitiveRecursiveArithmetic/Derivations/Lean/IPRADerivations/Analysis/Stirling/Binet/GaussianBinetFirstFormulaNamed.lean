@@ -1,5 +1,5 @@
-import IPRADerivations.Analysis.Stirling.Binet.Laplace.GaussianBinetLaplaceNamed
-import IPRADerivations.Analysis.Exponential.PositiveAxis.GaussianSignedNameExponentialOrder
+import IPRADerivations.Analysis.Stirling.Binet.Laplace.Exhaustion.GaussianBinetLaplaceNamed
+import IPRADerivations.Analysis.Exponential.PositiveAxis.NamedValues.GaussianSignedNameExponentialOrder
 
 /-!
 # Binet's first formula on actual regular right half-plane names

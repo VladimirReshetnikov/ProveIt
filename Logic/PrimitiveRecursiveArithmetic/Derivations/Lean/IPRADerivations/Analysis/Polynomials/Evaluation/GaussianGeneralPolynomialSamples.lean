@@ -1,7 +1,7 @@
-import IPRADerivations.Analysis.Polynomials.Coefficients.GaussianGeneralCoefficientNames
+import IPRADerivations.Analysis.Polynomials.Coefficients.NamedCoefficients.GaussianGeneralCoefficientNames
 import IPRADerivations.Analysis.Polynomials.RootFinding.Descent.Nonmonic.GaussianNonmonicStepBound
 import IPRADerivations.Foundations.BoundedSyntaxBackwardInduction
-import IPRADerivations.Analysis.Polynomials.Coefficients.GaussianRationalAllCoefficientPerturbation
+import IPRADerivations.Analysis.Polynomials.Horner.Perturbation.GaussianRationalAllCoefficientPerturbation
 import IPRADerivations.Analysis.Polynomials.RootFinding.FundamentalTheorem.GaussianGeneralFTAConstants
 
 /-!

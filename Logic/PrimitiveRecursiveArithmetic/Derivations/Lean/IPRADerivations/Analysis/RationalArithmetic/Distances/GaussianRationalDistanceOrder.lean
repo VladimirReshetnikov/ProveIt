@@ -1,4 +1,4 @@
-import IPRADerivations.Analysis.Polynomials.Coefficients.GaussianCoefficientNameBounds
+import IPRADerivations.Analysis.Polynomials.Coefficients.NamedCoefficients.GaussianCoefficientNameBounds
 
 /-!
 # Exact order operations for the original Gaussian-rational metric

@@ -1,5 +1,5 @@
-import IPRADerivations.Analysis.Stirling.Binet.Laplace.GaussianBinetLaplaceWeightedShiftRow
-import IPRADerivations.Analysis.Stirling.Binet.Laplace.GaussianBinetLaplaceDifferenceGrid
+import IPRADerivations.Analysis.Stirling.Binet.Laplace.UnitShift.GaussianBinetLaplaceWeightedShiftRow
+import IPRADerivations.Analysis.Stirling.Binet.Laplace.UnitShift.GaussianBinetLaplaceDifferenceGrid
 
 /-!
 # Read the original difference of the two Binet samples at each grid tag

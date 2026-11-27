@@ -1,4 +1,4 @@
-import IPRADerivations.Analysis.Polynomials.Coefficients.GaussianConstantCoefficientNames
+import IPRADerivations.Analysis.Polynomials.Coefficients.NamedCoefficients.GaussianConstantCoefficientNames
 import IPRADerivations.Analysis.Polynomials.RootFinding.FundamentalTheorem.GaussianGeneralFTAValueZero
 
 /-!

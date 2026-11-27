@@ -1,4 +1,4 @@
-import IPRADerivations.Analysis.Polynomials.Coefficients.GaussianRationalEulerCoefficients
+import IPRADerivations.Analysis.Polynomials.Coefficients.Operations.GaussianRationalEulerCoefficients
 import IPRADerivations.Analysis.LinearAlgebra.Matrices.GaussianRationalMatrixFiniteSums
 import IPRADerivations.Analysis.RationalArithmetic.Powers.GaussianIntegerFractionPowers
 

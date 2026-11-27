@@ -1,5 +1,5 @@
 import IPRADerivations.Algebra.PowerDifference
-import IPRADerivations.Analysis.Polynomials.Horner.GaussianRationalHornerLipschitz
+import IPRADerivations.Analysis.Polynomials.Horner.Perturbation.GaussianRationalHornerLipschitz
 
 /-!
 # Exact finite envelopes for rationally enlarged Gaussian disks

@@ -1,6 +1,6 @@
 import IPRADerivations.Analysis.RationalArithmetic.Grids.GaussianRationalSquareGrid
 import IPRADerivations.Analysis.Polynomials.RootFinding.Descent.Monic.GaussianMonicApplications
-import IPRADerivations.Analysis.Polynomials.Horner.GaussianRationalHornerLipschitz
+import IPRADerivations.Analysis.Polynomials.Horner.Perturbation.GaussianRationalHornerLipschitz
 import IPRADerivations.Analysis.RationalArithmetic.FiniteProducts.GaussianRationalLinearProduct
 import IPRADerivations.Foundations.LeastBoundedWitness
 

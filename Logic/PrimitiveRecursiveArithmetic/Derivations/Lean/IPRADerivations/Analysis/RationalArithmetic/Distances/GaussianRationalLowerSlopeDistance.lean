@@ -1,7 +1,7 @@
 import IPRADerivations.Analysis.Beta.Endpoints.GaussianBetaRowMonomialReference
 import IPRADerivations.Analysis.Gamma.Digamma.ElementaryBounds.GaussianGammaDigammaHarmonicCells
 import IPRADerivations.Analysis.Integration.Partitions.GaussianRationalSignedPanelTailDistance
-import IPRADerivations.Analysis.Exponential.PositiveAxis.GaussianNamedPositiveExponentialOrder
+import IPRADerivations.Analysis.Exponential.PositiveAxis.NamedValues.GaussianNamedPositiveExponentialOrder
 import IPRADerivations.Analysis.Stirling.Expansions.OddSeries.GaussianStirlingOddCoefficients
 
 /-!

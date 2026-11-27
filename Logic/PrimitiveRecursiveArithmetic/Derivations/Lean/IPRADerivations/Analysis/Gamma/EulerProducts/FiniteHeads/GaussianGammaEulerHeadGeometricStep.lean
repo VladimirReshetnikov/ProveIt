@@ -1,5 +1,5 @@
 import IPRADerivations.Analysis.Gamma.EulerProducts.FiniteHeads.GaussianGammaEulerHeadExponentStep
-import IPRADerivations.Analysis.Polynomials.Coefficients.GaussianCoefficientGeometricCancellation
+import IPRADerivations.Analysis.Polynomials.Coefficients.Operations.GaussianCoefficientGeometricCancellation
 
 /-!
 # Original head factors under the actual geometric coefficient convolution

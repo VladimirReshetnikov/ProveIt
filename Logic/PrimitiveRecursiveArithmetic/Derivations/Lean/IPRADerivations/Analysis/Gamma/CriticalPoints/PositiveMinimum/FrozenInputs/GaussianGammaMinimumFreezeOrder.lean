@@ -1,5 +1,5 @@
 import IPRADerivations.Analysis.Gamma.CriticalPoints.PositiveMinimum.FrozenInputs.GaussianGammaMinimumFreeze
-import IPRADerivations.Analysis.Exponential.PositiveAxis.GaussianNamedPositiveLogarithmExponential
+import IPRADerivations.Analysis.Exponential.PositiveAxis.NamedValues.GaussianNamedPositiveLogarithmExponential
 import IPRADerivations.Analysis.Stirling.Bounds.GaussianStirlingMultiplicativeBoundsStrictOrder
 
 /-!

@@ -1,6 +1,6 @@
 import IPRADerivations.Analysis.Exponential.Estimates.GaussianRadiusExponentialLipschitzRate
 import IPRADerivations.Analysis.Exponential.Names.Evaluators.GaussianNamedRadiusExponentialFreeze
-import IPRADerivations.Analysis.Exponential.PositiveAxis.GaussianSignedNameExponentialOrder
+import IPRADerivations.Analysis.Exponential.PositiveAxis.NamedValues.GaussianSignedNameExponentialOrder
 
 /-!
 # Preserve an exponential rate with a supplied constant comparison

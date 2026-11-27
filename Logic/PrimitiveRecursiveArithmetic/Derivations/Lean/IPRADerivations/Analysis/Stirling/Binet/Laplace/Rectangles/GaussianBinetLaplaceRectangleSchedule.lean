@@ -1,4 +1,4 @@
-import IPRADerivations.Analysis.Stirling.Binet.Laplace.GaussianBinetLaplaceDifferenceGrid
+import IPRADerivations.Analysis.Stirling.Binet.Laplace.UnitShift.GaussianBinetLaplaceDifferenceGrid
 import IPRADerivations.Analysis.Stirling.Binet.Laplace.Rectangles.GaussianBinetLaplaceRectangleRowBudget
 import IPRADerivations.Analysis.Stirling.Binet.ExponentialIntegrals.GaussianBinetExponentialRectangleEvaluation
 

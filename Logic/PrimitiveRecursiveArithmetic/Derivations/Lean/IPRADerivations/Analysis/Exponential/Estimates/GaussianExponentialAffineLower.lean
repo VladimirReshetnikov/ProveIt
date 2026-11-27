@@ -1,5 +1,5 @@
-import IPRADerivations.Analysis.Exponential.PositiveAxis.GaussianPositiveExponentialSeparation
-import IPRADerivations.Analysis.Exponential.PositiveAxis.GaussianPositiveExponentialTermBound
+import IPRADerivations.Analysis.Exponential.PositiveAxis.FiniteEstimates.GaussianPositiveExponentialSeparation
+import IPRADerivations.Analysis.Exponential.PositiveAxis.FiniteEstimates.GaussianPositiveExponentialTermBound
 
 /-!
 # Affine lower bound for the original positive exponential samples

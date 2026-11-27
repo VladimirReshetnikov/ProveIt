@@ -1,5 +1,5 @@
 import IPRADerivations.Analysis.Polynomials.Products.Convolution.GaussianPolynomialLowPrefix
-import IPRADerivations.Analysis.Polynomials.Coefficients.GaussianPolynomialNormBuffers
+import IPRADerivations.Analysis.Polynomials.Coefficients.Norms.GaussianPolynomialNormBuffers
 
 /-!
 # Coefficient mass of a stored low-degree prefix

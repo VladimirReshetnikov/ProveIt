@@ -1,7 +1,7 @@
 import IPRADerivations.Analysis.Polynomials.RootFinding.Deflation.GaussianRationalDeflationError
 import IPRADerivations.Analysis.RationalArithmetic.Representations.GaussianRationalReconstruction
 import IPRADerivations.Analysis.Polynomials.RootFinding.Deflation.FactorTransport.GaussianFactorBounds
-import IPRADerivations.Analysis.Polynomials.Coefficients.GaussianCoefficientNormOrder
+import IPRADerivations.Analysis.Polynomials.Coefficients.Norms.GaussianCoefficientNormOrder
 
 /-!
 # Actual local errors in finite rational approximate factorization

@@ -1,6 +1,6 @@
 import IPRADerivations.Analysis.Stirling.Bounds.GaussianStirlingMultiplicativeAlgebra
 import IPRADerivations.Analysis.Stirling.Duplication.GaussianStirlingDuplicationConstant
-import IPRADerivations.Analysis.Exponential.PositiveAxis.GaussianRealExponentialCompactLower
+import IPRADerivations.Analysis.Exponential.PositiveAxis.NamedValues.GaussianRealExponentialCompactLower
 import IPRADerivations.Analysis.Euler.VerticalBounds.Integrands.GaussianEulerVerticalRealSamples
 
 /-!

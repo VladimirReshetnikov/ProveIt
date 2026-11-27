@@ -1,7 +1,7 @@
 import IPRADerivations.Analysis.Gamma.Zeta.Dirichlet.GaussianGammaZetaDirichletProduct
-import IPRADerivations.Analysis.Gamma.Zeta.Mellin.Damped.GaussianGammaZetaMellinFiniteDampedComparison
-import IPRADerivations.Analysis.Gamma.Zeta.Mellin.Damped.GaussianGammaZetaMellinFiniteWindowTail
-import IPRADerivations.Analysis.Gamma.Zeta.Mellin.Damped.GaussianGammaZetaMellinPoweredCompactProduct
+import IPRADerivations.Analysis.Gamma.Zeta.Mellin.Damped.FiniteRows.GaussianGammaZetaMellinFiniteDampedComparison
+import IPRADerivations.Analysis.Gamma.Zeta.Mellin.Damped.Tails.GaussianGammaZetaMellinFiniteWindowTail
+import IPRADerivations.Analysis.Gamma.Zeta.Mellin.Damped.Windows.GaussianGammaZetaMellinPoweredCompactProduct
 
 /-!
 # The original Gamma–zeta Mellin identity in iPRA

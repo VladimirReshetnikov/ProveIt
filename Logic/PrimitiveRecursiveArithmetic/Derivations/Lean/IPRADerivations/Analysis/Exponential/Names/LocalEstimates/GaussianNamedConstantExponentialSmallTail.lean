@@ -1,5 +1,5 @@
 import IPRADerivations.Analysis.Exponential.Estimates.GaussianRationalExponentialSmallTail
-import IPRADerivations.Analysis.Exponential.PositiveAxis.GaussianSignedNameExponentialOrder
+import IPRADerivations.Analysis.Exponential.PositiveAxis.NamedValues.GaussianSignedNameExponentialOrder
 
 /-!
 # The named exponential's fixed Taylor error on the half disk

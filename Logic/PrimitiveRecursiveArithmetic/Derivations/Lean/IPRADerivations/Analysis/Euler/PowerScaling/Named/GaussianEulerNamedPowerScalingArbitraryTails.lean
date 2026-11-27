@@ -1,6 +1,6 @@
 import IPRADerivations.Analysis.Euler.PowerScaling.Named.GaussianEulerNamedPowerScalingImproper
 import IPRADerivations.Analysis.Euler.PowerScaling.Exhaustion.GaussianEulerPowerScalingArbitraryTails
-import IPRADerivations.Analysis.SpecialFunctions.DampingPower.GaussianNamedDampingPowerCompactBound
+import IPRADerivations.Analysis.SpecialFunctions.DampingPower.Compact.GaussianNamedDampingPowerCompactBound
 
 /-!
 # Either arbitrary physical tail for the actual named damping quadrature

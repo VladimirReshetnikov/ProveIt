@@ -1,5 +1,5 @@
 import IPRADerivations.Analysis.Polynomials.RootFinding.FundamentalTheorem.GaussianGeneralFTATelescope
-import IPRADerivations.Analysis.Polynomials.Coefficients.GaussianRationalAllCoefficientPerturbation
+import IPRADerivations.Analysis.Polynomials.Horner.Perturbation.GaussianRationalAllCoefficientPerturbation
 import IPRADerivations.Analysis.Polynomials.RootFinding.FundamentalTheorem.GaussianGeneralFTACoefficientDrift
 
 /-!

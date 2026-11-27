@@ -1,5 +1,5 @@
 import IPRADerivations.Analysis.RationalArithmetic.Complex.GaussianRationalReciprocal
-import IPRADerivations.Analysis.Polynomials.Coefficients.GaussianCoefficientNameBounds
+import IPRADerivations.Analysis.Polynomials.Coefficients.NamedCoefficients.GaussianCoefficientNameBounds
 
 /-!
 # A linear denominator bound for a contractive rational power

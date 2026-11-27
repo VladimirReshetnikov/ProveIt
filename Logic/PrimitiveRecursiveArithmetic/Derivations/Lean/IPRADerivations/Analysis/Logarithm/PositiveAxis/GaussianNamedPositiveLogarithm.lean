@@ -1,5 +1,5 @@
 import IPRADerivations.Analysis.Names.Approximation.GaussianPositiveCompactInputDecoding
-import IPRADerivations.Analysis.Exponential.PositiveAxis.GaussianRealNameExponentialInjectivity
+import IPRADerivations.Analysis.Exponential.PositiveAxis.NamedValues.GaussianRealNameExponentialInjectivity
 
 /-!
 # The original positive-rational logarithm on a compact real name

@@ -1,5 +1,5 @@
 import IPRADerivations.Analysis.Gamma.Integrals.GaussianGammaCompactCutoffSplit
-import IPRADerivations.Analysis.Beta.Partitions.GaussianBetaRefinedFixedCompactComparison
+import IPRADerivations.Analysis.Beta.Partitions.Alignment.GaussianBetaRefinedFixedCompactComparison
 
 /-!
 # Splitting an original Euler cutoff at a positive rational point

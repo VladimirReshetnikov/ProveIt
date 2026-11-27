@@ -1,4 +1,4 @@
-import IPRADerivations.Analysis.Polynomials.Coefficients.GaussianInitialCoefficientBound
+import IPRADerivations.Analysis.Polynomials.Coefficients.Norms.GaussianInitialCoefficientBound
 import IPRADerivations.Analysis.Polynomials.RootFinding.Deflation.FactorTransport.GaussianFactorBudget
 import IPRADerivations.Analysis.RationalArithmetic.OrderBounds.GaussianRationalSyntheticBounds
 import IPRADerivations.Analysis.Polynomials.RootFinding.Deflation.GaussianRationalDeflation

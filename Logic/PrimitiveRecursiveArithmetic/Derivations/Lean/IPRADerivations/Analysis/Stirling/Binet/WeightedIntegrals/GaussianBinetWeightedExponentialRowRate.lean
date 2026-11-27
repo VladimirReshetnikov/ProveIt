@@ -1,5 +1,5 @@
 import IPRADerivations.Analysis.Stirling.Binet.WeightedIntegrals.GaussianBinetWeightedExponentialGrid
-import IPRADerivations.Analysis.Exponential.PositiveAxis.GaussianSignedNameExponentialOrder
+import IPRADerivations.Analysis.Exponential.PositiveAxis.NamedValues.GaussianSignedNameExponentialOrder
 import IPRADerivations.Analysis.Names.FiniteOperations.Sums.GaussianNamedAddRate
 
 /-!

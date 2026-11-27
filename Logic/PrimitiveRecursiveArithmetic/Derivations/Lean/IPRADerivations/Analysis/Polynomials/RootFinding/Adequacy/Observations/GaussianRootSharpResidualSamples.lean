@@ -1,4 +1,4 @@
-import IPRADerivations.Analysis.Polynomials.Horner.GaussianRationalHornerRadiusLipschitz
+import IPRADerivations.Analysis.Polynomials.Horner.Perturbation.GaussianRationalHornerRadiusLipschitz
 import IPRADerivations.Analysis.Polynomials.RootFinding.Adequacy.Membership.GaussianRootResidualFromHit
 import IPRADerivations.Analysis.Geometry.Distances.GaussianEuclideanDistanceName
 import IPRADerivations.Analysis.Names.Approximation.GaussianRepresentedPointBounds

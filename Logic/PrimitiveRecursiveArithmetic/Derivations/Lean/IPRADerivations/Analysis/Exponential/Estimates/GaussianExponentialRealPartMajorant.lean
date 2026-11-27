@@ -1,4 +1,4 @@
-import IPRADerivations.Analysis.Exponential.PositiveAxis.GaussianSignedRealExponentialOrder
+import IPRADerivations.Analysis.Exponential.PositiveAxis.FiniteEstimates.GaussianSignedRealExponentialOrder
 import IPRADerivations.Analysis.Exponential.PositiveAxis.GaussianPositiveExponentialMajorant
 
 /-!

@@ -1,6 +1,6 @@
 import IPRADerivations.Analysis.Barnes.Taylor.FirstDerivative.FiniteFactors.GaussianBarnesCanonicalHeadDerivative
 import IPRADerivations.Analysis.Barnes.HeadProducts.GaussianBarnesCanonicalHeadCorrectionContinuity
-import IPRADerivations.Analysis.Polynomials.Horner.GaussianRationalSyntheticSlopeLipschitz
+import IPRADerivations.Analysis.Polynomials.Horner.Perturbation.GaussianRationalSyntheticSlopeLipschitz
 import IPRADerivations.Analysis.Names.FiniteOperations.Sums.GaussianNamedBoundedSumObservation
 
 /-!

@@ -1,5 +1,5 @@
 import IPRADerivations.Analysis.Gamma.NegativeAxis.CriticalPoints.Chords.GaussianGammaNegativeIntervalChordInverse
-import IPRADerivations.Analysis.Polynomials.Coefficients.GaussianNamedConstantCoefficientDifferenceProduct
+import IPRADerivations.Analysis.Polynomials.Coefficients.NamedCoefficients.GaussianNamedConstantCoefficientDifferenceProduct
 
 /-!
 # Product rule for the original negative Gamma thin-chord quotient

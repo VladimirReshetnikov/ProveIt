@@ -1,5 +1,5 @@
 import IPRADerivations.Analysis.Exponential.Estimates.GaussianRationalExponentialTail
-import IPRADerivations.Analysis.Polynomials.Coefficients.GaussianPolynomialCoefficientDifferences
+import IPRADerivations.Analysis.Polynomials.Coefficients.Operations.GaussianPolynomialCoefficientDifferences
 import IPRADerivations.Analysis.Exponential.FiniteSeries.ExponentialSeries
 
 /-!

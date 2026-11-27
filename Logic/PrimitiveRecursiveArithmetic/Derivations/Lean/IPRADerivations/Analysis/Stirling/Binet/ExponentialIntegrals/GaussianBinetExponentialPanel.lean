@@ -1,4 +1,4 @@
-import IPRADerivations.Analysis.Stirling.Binet.Laplace.GaussianBinetLaplaceExponential
+import IPRADerivations.Analysis.Stirling.Binet.Laplace.Integrands.GaussianBinetLaplaceExponential
 import IPRADerivations.Analysis.Gamma.FunctionalEquations.Recurrence.GaussianGammaEulerShift
 import IPRADerivations.Analysis.Exponential.Estimates.GaussianExponentialLinearRemainder
 

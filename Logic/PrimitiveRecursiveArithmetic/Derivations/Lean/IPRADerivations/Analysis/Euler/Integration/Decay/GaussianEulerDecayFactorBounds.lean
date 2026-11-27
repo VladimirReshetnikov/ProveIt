@@ -1,6 +1,6 @@
 import IPRADerivations.Analysis.Euler.Integration.GaussianEulerIntegrandName
 import IPRADerivations.Analysis.Exponential.IntegerPowers.GaussianNaturalExponentialDyadicBound
-import IPRADerivations.Analysis.Exponential.PositiveAxis.GaussianPositiveRationalExponentialDecay
+import IPRADerivations.Analysis.Exponential.PositiveAxis.FiniteEstimates.GaussianPositiveRationalExponentialDecay
 import IPRADerivations.Analysis.Names.Arithmetic.GaussianNameConjugation
 
 /-!

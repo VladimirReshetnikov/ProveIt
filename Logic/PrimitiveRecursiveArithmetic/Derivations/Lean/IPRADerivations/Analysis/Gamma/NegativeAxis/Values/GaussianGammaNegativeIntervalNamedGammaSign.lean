@@ -1,5 +1,5 @@
 import IPRADerivations.Analysis.Gamma.NegativeAxis.Values.GaussianGammaNegativeIntervalNamedGamma
-import IPRADerivations.Analysis.Exponential.PositiveAxis.GaussianRealExponentialCompactLower
+import IPRADerivations.Analysis.Exponential.PositiveAxis.NamedValues.GaussianRealExponentialCompactLower
 import IPRADerivations.Analysis.Stirling.Bounds.GaussianStirlingMultiplicativeBoundsCaps
 
 /-!

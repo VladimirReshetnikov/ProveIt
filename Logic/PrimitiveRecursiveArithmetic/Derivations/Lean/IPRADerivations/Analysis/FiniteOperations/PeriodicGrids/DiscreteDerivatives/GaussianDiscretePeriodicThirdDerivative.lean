@@ -1,7 +1,7 @@
 import IPRADerivations.Analysis.FiniteOperations.PeriodicGrids.Observations.GaussianDiscretePeriodicGridReadback
 import IPRADerivations.Analysis.FiniteOperations.PeriodicGrids.DiscreteDerivatives.GaussianDiscreteThirdDerivativeEstimate
 import IPRADerivations.Analysis.FiniteOperations.PeriodicGrids.Observations.GaussianSignedObservationOrder
-import IPRADerivations.Analysis.Exponential.PositiveAxis.GaussianNamedPositiveExponentialOrder
+import IPRADerivations.Analysis.Exponential.PositiveAxis.NamedValues.GaussianNamedPositiveExponentialOrder
 
 /-!
 # Finite derivative rates and approximate cyclic readback

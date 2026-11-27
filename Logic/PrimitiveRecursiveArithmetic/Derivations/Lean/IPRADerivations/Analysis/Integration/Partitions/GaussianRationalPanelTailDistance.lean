@@ -1,7 +1,7 @@
 import IPRADerivations.Analysis.FiniteOperations.FiniteSums.GaussianPositiveRadiusFiniteSum
 import IPRADerivations.Analysis.RationalArithmetic.FiniteSums.GaussianRationalSumAlgebra
 import IPRADerivations.Analysis.RationalArithmetic.Embeddings.RationalGaussianRealPart
-import IPRADerivations.Analysis.Exponential.PositiveAxis.GaussianNamedPositiveExponentialOrder
+import IPRADerivations.Analysis.Exponential.PositiveAxis.NamedValues.GaussianNamedPositiveExponentialOrder
 
 /-!
 # Finite observed-value tail estimates for actual complex panels

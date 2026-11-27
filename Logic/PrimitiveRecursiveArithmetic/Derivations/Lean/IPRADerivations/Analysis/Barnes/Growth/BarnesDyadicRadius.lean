@@ -1,5 +1,5 @@
 import IPRADerivations.AnalyticNumberTheory.ZetaFiniteContract
-import IPRADerivations.Analysis.Polynomials.Coefficients.GaussianCoefficientNameBounds
+import IPRADerivations.Analysis.Polynomials.Coefficients.NamedCoefficients.GaussianCoefficientNameBounds
 
 /-!
 # Dyadic brackets of positive integer Barnes radii

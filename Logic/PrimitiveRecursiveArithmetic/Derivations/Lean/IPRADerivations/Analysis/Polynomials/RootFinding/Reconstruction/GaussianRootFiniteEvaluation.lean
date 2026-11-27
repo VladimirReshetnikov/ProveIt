@@ -1,5 +1,5 @@
 import IPRADerivations.Analysis.Polynomials.RootFinding.Adequacy.Distances.GaussianRootRadius
-import IPRADerivations.Analysis.Polynomials.Horner.GaussianRationalHornerPerturbation
+import IPRADerivations.Analysis.Polynomials.Horner.Perturbation.GaussianRationalHornerPerturbation
 
 /-!
 # Exact finite evaluation budget for the actual root-support product

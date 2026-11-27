@@ -1,5 +1,5 @@
 import IPRADerivations.Analysis.Euler.Integration.Decay.Increments.GaussianEulerDecayAddition
-import IPRADerivations.Analysis.Stirling.Binet.Laplace.GaussianBinetLaplaceScalarMajorant
+import IPRADerivations.Analysis.Stirling.Binet.Laplace.Integrands.GaussianBinetLaplaceScalarMajorant
 
 /-!
 # Global linear remainder for the original real decay sampler

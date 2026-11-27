@@ -1,4 +1,4 @@
-import IPRADerivations.Analysis.Polynomials.Coefficients.GaussianPolynomialFirstCoefficients
+import IPRADerivations.Analysis.Polynomials.Coefficients.Operations.GaussianPolynomialFirstCoefficients
 import IPRADerivations.Analysis.RationalArithmetic.Powers.GaussianPowers.GaussianRationalPowerExpansion
 
 /-!

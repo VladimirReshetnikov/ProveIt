@@ -1,5 +1,5 @@
 import IPRADerivations.Analysis.Exponential.Estimates.GaussianExponentialLinearRemainder
-import IPRADerivations.Analysis.Exponential.PositiveAxis.GaussianPositiveExponentialTermBound
+import IPRADerivations.Analysis.Exponential.PositiveAxis.FiniteEstimates.GaussianPositiveExponentialTermBound
 import IPRADerivations.DiophantineNumberTheory.Coprime
 
 /-!

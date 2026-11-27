@@ -1,5 +1,5 @@
 import IPRADerivations.Analysis.Barnes.Logarithms.PositiveAxis.ThirdDerivative.GaussianBarnesCanonicalThirdLogarithmTail
-import IPRADerivations.Analysis.Exponential.PositiveAxis.GaussianPositiveExponentialProduct
+import IPRADerivations.Analysis.Exponential.PositiveAxis.FiniteEstimates.GaussianPositiveExponentialProduct
 
 /-!
 # Positive-axis partial sums of the original Barnes cubic logarithmic rows

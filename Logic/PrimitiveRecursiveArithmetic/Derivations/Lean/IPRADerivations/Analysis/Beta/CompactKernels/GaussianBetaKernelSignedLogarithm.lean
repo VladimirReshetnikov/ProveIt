@@ -1,5 +1,5 @@
 import IPRADerivations.Analysis.Beta.CompactKernels.GaussianBetaKernelLogarithm
-import IPRADerivations.Analysis.Exponential.PositiveAxis.GaussianNamedPositiveExponentialOrder
+import IPRADerivations.Analysis.Exponential.PositiveAxis.NamedValues.GaussianNamedPositiveExponentialOrder
 import IPRADerivations.Analysis.Optimization.CubeInfimum.RationalCubeInfimumIntervals
 
 /-!

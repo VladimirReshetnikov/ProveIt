@@ -1,5 +1,5 @@
-import IPRADerivations.Analysis.Gamma.Zeta.Mellin.Damped.GaussianGammaZetaMellinFiniteNested
-import IPRADerivations.Analysis.Gamma.Zeta.Mellin.Damped.GaussianGammaZetaMellinFiniteDampedUpper
+import IPRADerivations.Analysis.Gamma.Zeta.Mellin.Damped.Windows.GaussianGammaZetaMellinFiniteNested
+import IPRADerivations.Analysis.Gamma.Zeta.Mellin.Damped.Tails.GaussianGammaZetaMellinFiniteDampedUpper
 import IPRADerivations.Analysis.Integration.CompactGrids.Splits.GaussianCompactNamedAdditivity
 
 /-!

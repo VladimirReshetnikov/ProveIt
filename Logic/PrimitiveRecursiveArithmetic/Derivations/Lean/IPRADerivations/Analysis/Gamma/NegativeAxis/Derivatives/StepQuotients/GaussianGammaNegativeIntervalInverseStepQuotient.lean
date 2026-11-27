@@ -1,6 +1,6 @@
 import IPRADerivations.Analysis.Gamma.NegativeAxis.Derivatives.StepQuotients.GaussianGammaNegativeIntervalInverseStepCoefficient
 import IPRADerivations.Analysis.Gamma.NegativeAxis.Derivatives.StepQuotients.GaussianGammaNegativeIntervalStep
-import IPRADerivations.Analysis.Polynomials.Coefficients.GaussianNamedConstantCoefficientDifferenceProduct
+import IPRADerivations.Analysis.Polynomials.Coefficients.NamedCoefficients.GaussianNamedConstantCoefficientDifferenceProduct
 
 /-!
 # The actual negative Gamma quotient in inverse-product form

@@ -1,4 +1,4 @@
-import IPRADerivations.Analysis.Stirling.Binet.Laplace.GaussianBinetLaplaceIntegrand
+import IPRADerivations.Analysis.Stirling.Binet.Laplace.Integrands.GaussianBinetLaplaceIntegrand
 import IPRADerivations.Analysis.Integration.CompactGrids.GaussianCompactRiemannName
 
 /-!

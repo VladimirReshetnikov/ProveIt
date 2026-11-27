@@ -1,5 +1,5 @@
 import IPRADerivations.Analysis.Names.Arithmetic.GaussianNameRingLaws
-import IPRADerivations.Analysis.Exponential.PositiveAxis.GaussianNamedPositiveExponentialOrder
+import IPRADerivations.Analysis.Exponential.PositiveAxis.NamedValues.GaussianNamedPositiveExponentialOrder
 import IPRADerivations.Analysis.RationalArithmetic.OrderBounds.RationalUpperAddition
 
 /-!

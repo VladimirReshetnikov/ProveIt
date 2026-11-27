@@ -3,7 +3,7 @@ import IPRADerivations.Analysis.Stirling.Binet.Laplace.Strips.GaussianBinetLapla
 import IPRADerivations.Analysis.Integration.CompactGrids.Splits.GaussianCompactZeroWidth
 import IPRADerivations.Analysis.Integration.CompactGrids.Splits.GaussianCompactRiemannSplit
 import IPRADerivations.Analysis.Integration.Quadrature.SquareSubstitution.GaussianRationalQuadratureSquareCells
-import IPRADerivations.Analysis.Gamma.EulerProducts.CanonicalProducts.GaussianGammaCanonicalTailExponential
+import IPRADerivations.Analysis.Gamma.EulerProducts.CanonicalProducts.Tails.GaussianGammaCanonicalTailExponential
 
 /-!
 # Actual equally spaced rows of the complex Laplace antiderivative

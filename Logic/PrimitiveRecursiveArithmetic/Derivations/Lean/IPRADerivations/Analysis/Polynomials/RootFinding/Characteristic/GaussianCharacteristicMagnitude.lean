@@ -1,7 +1,7 @@
 import IPRADerivations.Analysis.Polynomials.RootFinding.Characteristic.GaussianCharacteristicFactorBounds
 import IPRADerivations.Analysis.Polynomials.Determinants.ErrorBounds.GaussianPolynomialDeterminantStageNorm
 import IPRADerivations.Analysis.Polynomials.Determinants.ErrorBounds.GaussianPolynomialDeterminantNorm
-import IPRADerivations.Analysis.Polynomials.Coefficients.GaussianCoefficientNormEntries
+import IPRADerivations.Analysis.Polynomials.Coefficients.Norms.GaussianCoefficientNormEntries
 import IPRADerivations.AnalyticNumberTheory.LocalFactor
 
 /-!

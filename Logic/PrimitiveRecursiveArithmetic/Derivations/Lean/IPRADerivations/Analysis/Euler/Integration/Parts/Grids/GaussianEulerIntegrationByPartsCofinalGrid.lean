@@ -1,5 +1,5 @@
 import IPRADerivations.Analysis.Euler.Integration.Parts.Grids.GaussianEulerIntegrationByPartsGrid
-import IPRADerivations.Analysis.Beta.Partitions.GaussianBetaRefinedFixedCompactComparison
+import IPRADerivations.Analysis.Beta.Partitions.Alignment.GaussianBetaRefinedFixedCompactComparison
 import IPRADerivations.Analysis.Gamma.Integrals.GaussianGammaCompactCutoffGeometry
 
 /-!
