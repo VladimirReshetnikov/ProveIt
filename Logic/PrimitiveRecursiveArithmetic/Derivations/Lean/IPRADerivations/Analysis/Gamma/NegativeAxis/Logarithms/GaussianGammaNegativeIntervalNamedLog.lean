@@ -64,21 +64,8 @@ theorem clock_demand (p E N s : PTm n) (hs : Γ ⊢[PRAAx] le s (succ p)) :
 
 theorem name_at (f : PR 2) (p x E N : PTm n) : Γ ⊢[PRAAx]
     ap2 (nameF f) p (data x E N) ≐ sample f p x E N := by
-  let X := data x E N
-  have raw : Γ ⊢[PRAAx] ap2 (nameF f) p X ≐ sample f p (fstT X) (fstT (sndT X)) (sndT (sndT X)) := by
-    simpa only [nameF,ap2,subst_sample,Syn.subst_var,subst_fstT,subst_sndT,Matrix.cons_val_zero,Matrix.cons_val_one]
-      using toPR_eq (Γ := Γ)
-        (sample f (var 0) (fstT (var 1)) (fstT (sndT (var 1))) (sndT (sndT (var 1))) : PTm 2) ![p,X]
-  have fields := Prf.eqCongr (Γ := Γ) (Ax := PRAAx) (sample f (var 0) (var 1) (var 2) (var 3) : PTm 4)
-    (σ := ![p,fstT X,fstT (sndT X),sndT (sndT X)]) (σ' := ![p,x,E,N])
-    (fun i => by
-      fin_cases i
-      exact .eqRefl _
-      exact fst_pair _ _
-      exact (congrFst (snd_pair _ _)).eqTrans (fst_pair _ _)
-      exact (congrSnd (snd_pair _ _)).eqTrans (snd_pair _ _))
-  exact raw.eqTrans (by simpa only [subst_sample,Syn.subst_var,Matrix.cons_val_zero,Matrix.cons_val_one,
-    Matrix.cons_val_two,Matrix.cons_val_three,Matrix.head_cons,Matrix.tail_cons] using fields)
+  simpa [nameF, data, pairVector, pairVectorField] using
+    (toPR_pairVector_eq (Γ := Γ) (k := 2) (sample f (var 0) (var 1) (var 2) (var 3)) p ![x, E, N])
 
 theorem encoded_regular (f : PR 2) (k x E N : PTm n) (h : Γ ⊢[PRAAx] source f x E) :
     Γ ⊢[PRAAx] pointCN L (encodedData f k x N) :=

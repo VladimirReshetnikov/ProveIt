@@ -57,19 +57,8 @@ ipra_subst data
 
 theorem sample_at (f : PR 2) (p x M j : PTm n) :
     Γ ⊢[PRAAx] ap2 (nameF f) p (data x M j) ≐ sample f p x M j := by
-  let X := data x M j
-  have raw : Γ ⊢[PRAAx] ap2 (nameF f) p X ≐ sample f p (fstT X) (fstT (sndT X)) (sndT (sndT X)) := by
-    simpa [nameF,ap2] using
-      toPR_eq (Γ := Γ) (sample f (var 0) (fstT (var 1)) (fstT (sndT (var 1))) (sndT (sndT (var 1))) : PTm 2) ![p,X]
-  have fields := Prf.eqCongr (Γ := Γ) (Ax := PRAAx) (sample f (var 0) (var 1) (var 2) (var 3) : PTm 4)
-    (σ := ![p,fstT X,fstT (sndT X),sndT (sndT X)]) (σ' := ![p,x,M,j])
-    (fun i => by
-      fin_cases i
-      exact .eqRefl _
-      exact fst_pair _ _
-      exact (congrFst (snd_pair _ _)).eqTrans (fst_pair _ _)
-      exact (congrSnd (snd_pair _ _)).eqTrans (snd_pair _ _))
-  exact raw.eqTrans (by simpa using fields)
+  simpa [nameF, data, pairVector, pairVectorField] using
+    (toPR_pairVector_eq (Γ := Γ) (k := 2) (sample f (var 0) (var 1) (var 2) (var 3)) p ![x, M, j])
 
 theorem clock_margin (p M j : PTm n) : Γ ⊢[PRAAx] le (threshold M) (clock p M j) :=
   le_congr (zero_add _).eqSymm (.eqRefl _) (le_add_left _ _)

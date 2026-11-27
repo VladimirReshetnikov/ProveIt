@@ -113,14 +113,8 @@ theorem raw_value_congr {p z R B p' z' R' B' : PTm n} (hp : Γ ⊢[PRAAx] p ≐ 
   ipra_congr (rawValue (var 0) (var 1) (var 2) (var 3) : PTm 4) with [hp, hz, hR, hB]
 
 theorem raw_at (p z R B : PTm n) : Γ ⊢[PRAAx] ap2 rawF p (rawData z R B) ≐ rawValue p z R B := by
-  have raw := toPR_eq (Γ := Γ) (rawValue (var 0) (fstT (var 1)) (fstT (sndT (var 1))) (sndT (sndT (var 1))) : PTm 2) ![p,rawData z R B]
-  have e : Γ ⊢[PRAAx] ap2 rawF p (rawData z R B) ≐ rawValue p (fstT (rawData z R B))
-      (fstT (sndT (rawData z R B))) (sndT (sndT (rawData z R B))) := by
-    simpa only [rawF,ap2,subst_rawValue,subst_fstT,subst_sndT,Syn.subst_var,
-      Matrix.cons_val_zero,Matrix.cons_val_one,Matrix.head_cons] using raw
-  have t := snd_pair (Γ := Γ) z (pairT R B)
-  exact e.eqTrans (raw_value_congr (.eqRefl _) (fst_pair _ _)
-    t.fstE t.sndE)
+  simpa [rawF, rawData, pairVector, pairVectorField] using
+    (toPR_pairVector_eq (Γ := Γ) (k := 2) (rawValue (var 0) (var 1) (var 2) (var 3)) p ![z, R, B])
 
 theorem raw_name_regular (z R B : PTm n) (h : Γ ⊢[PRAAx] source z R B) : Γ ⊢[PRAAx]
     GaussianFastValueCut.regular rawF (R+one) (rawData z R B) := by

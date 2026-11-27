@@ -69,19 +69,8 @@ ipra_subst data
 
 theorem sample_at (R : RationalMap) (f : PR 2) (p x E N : PTm n) :
     Γ ⊢[PRAAx] ap2 (nameF R f) p (data x E N) ≐ sample R f p x E N := by
-  let X := data x E N
-  have raw : Γ ⊢[PRAAx] ap2 (nameF R f) p X ≐ sample R f p (fstT X) (fstT (sndT X)) (sndT (sndT X)) := by
-    simpa [nameF, ap2] using
-      toPR_eq (Γ := Γ) (sample R f (var 0) (fstT (var 1)) (fstT (sndT (var 1))) (sndT (sndT (var 1))) : PTm 2) ![p,X]
-  have fields := Prf.eqCongr (Γ := Γ) (Ax := PRAAx) (sample R f (var 0) (var 1) (var 2) (var 3) : PTm 4)
-    (σ := ![p,fstT X,fstT (sndT X),sndT (sndT X)]) (σ' := ![p,x,E,N])
-    (fun i => by
-      fin_cases i
-      exact .eqRefl _
-      exact fst_pair _ _
-      exact (snd_pair _ _).fstE
-      exact (snd_pair _ _).sndE)
-  exact raw.eqTrans (by simpa using fields)
+  simpa [nameF, data, pairVector, pairVectorField] using
+    (toPR_pairVector_eq (Γ := Γ) (k := 2) (sample R f (var 0) (var 1) (var 2) (var 3)) p ![x, E, N])
 
 theorem frozen_variation (R : RationalMap) (f g : PR 2) (r t x y E N A D : PTm n)
     (hf : Γ ⊢[PRAAx] source f x E) (hg : Γ ⊢[PRAAx] source g y E) (hD : Γ ⊢[PRAAx] le one D)

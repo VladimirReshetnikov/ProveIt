@@ -61,15 +61,8 @@ def nameF (f : PR 2) : PR 2 :=
 
 theorem sample_at (f : PR 2) (p x R e : PTm n) :
     Γ ⊢[PRAAx] ap2 (nameF f) p (data x R e) ≐ sample f p x R e := by
-  let X := data x R e
-  have raw : Γ ⊢[PRAAx] ap2 (nameF f) p X ≐ sample f p (fstT X) (fstT (sndT X)) (sndT (sndT X)) := by
-    simpa [nameF,ap2] using toPR_eq (Γ := Γ)
-      (sample f (var 0) (fstT (var 1)) (fstT (sndT (var 1))) (sndT (sndT (var 1))) : PTm 2) ![p,X]
-  have left : Γ ⊢[PRAAx] fstT X ≐ x := fst_pair x (pairT R e)
-  have right : Γ ⊢[PRAAx] sndT X ≐ pairT R e := snd_pair x (pairT R e)
-  refine raw.eqTrans ?_
-  ipra_congr (sample f (var 0) (var 1) (var 2) (var 3) : PTm 4) with
-    [.eqRefl p, left, (congrFst right).eqTrans (fst_pair R e), (congrSnd right).eqTrans (snd_pair R e)]
+  simpa [nameF, data, pairVector, pairVectorField] using
+    (toPR_pairVector_eq (Γ := Γ) (k := 2) (sample f (var 0) (var 1) (var 2) (var 3)) p ![x, R, e])
 
 theorem retains (e : PTm n) : Γ ⊢[PRAAx] le e (previous e) := le_trans (le_succ_self e) (le_succ_self (succ e))
 

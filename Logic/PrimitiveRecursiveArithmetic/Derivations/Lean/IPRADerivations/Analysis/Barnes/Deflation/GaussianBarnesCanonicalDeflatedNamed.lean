@@ -86,15 +86,8 @@ private theorem subst_coefficientData {l : ℕ} (σ : Fin n → PTm l) (z R B m 
   simp [sample]
 
 theorem sample_at (f : PR 2) (p x R m : PTm n) : Γ ⊢[PRAAx] ap2 (nameF f) p (data x R m) ≐ sample f p x R m := by
-  let X := data x R m
-  have raw : Γ ⊢[PRAAx] ap2 (nameF f) p X ≐ sample f p (fstT X) (fstT (sndT X)) (sndT (sndT X)) := by
-    simpa [nameF,ap2] using toPR_eq (Γ := Γ)
-      (sample f (var 0) (fstT (var 1)) (fstT (sndT (var 1))) (sndT (sndT (var 1))) : PTm 2) ![p,X]
-  have first : Γ ⊢[PRAAx] fstT X ≐ x := fst_pair x (pairT R m)
-  have rest : Γ ⊢[PRAAx] sndT X ≐ pairT R m := snd_pair x (pairT R m)
-  refine raw.eqTrans ?_
-  ipra_congr (sample f (var 0) (var 1) (var 2) (var 3) : PTm 4) with
-    [.eqRefl p, first, (congrFst rest).eqTrans (fst_pair R m), (congrSnd rest).eqTrans (snd_pair R m)]
+  simpa [nameF, data, pairVector, pairVectorField] using
+    (toPR_pairVector_eq (Γ := Γ) (k := 2) (sample f (var 0) (var 1) (var 2) (var 3)) p ![x, R, m])
 
 theorem rational_source (f : PR 2) (k x R m : PTm n) (h : Γ ⊢[PRAAx] source f x R m) :
     Γ ⊢[PRAAx] GaussianBarnesCanonicalFactor.source (rawGaussian (ap2 f k x)) R (rawDen (ap2 f k x)) m := by
