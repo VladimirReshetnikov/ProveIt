@@ -199,8 +199,7 @@ theorem full_grid_covariance (m : ℕ) (q A B S k : PTm n) (hA : Γ ⊢[PRAAx] l
       (half_bernoulli_nonnegative m q U B S hS))
   have hV := doubled_weight_nonnegative q U B S hU hS
   have w := multiply_monotone H W V hH (half_weight_le q U B S hU hS)
-  have b := rationalLE_congr (multiply_commutative V H) (multiply_commutative V G)
-    (multiply_monotone V H G hV (half_bernoulli_le m q U B S hS))
+  have b := RationalAlgebra.multiply_monotone_right H G V hV (half_bernoulli_le m q U B S hS)
   have start : Γ ⊢[PRAAx] rationalLE (add P E) (multiply H W) := half_grid_mean m q U B S hU hB hS
   have joined := add_monotone _ _ T T (transitive (transitive start w) b) (reflexive _)
   have sort := (add_associative (Γ := Γ) P E T).eqTrans

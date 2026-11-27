@@ -75,10 +75,7 @@ theorem multiply_bounds (a b A B : PTm n)
     (hA : Γ ⊢[PRAAx] le (numeratorOf A).neg (numeratorOf A).pos)
     (ha : Γ ⊢[PRAAx] rationalLE a A) (hB : Γ ⊢[PRAAx] rationalLE b B) :
     Γ ⊢[PRAAx] rationalLE (multiply a b) (multiply A B) :=
-  RationalArgmin.transitive
-    (RationalArgmin.rationalLE_congr (RationalAlgebra.multiply_commutative _ _)
-      (RationalAlgebra.multiply_commutative _ _) (RationalArithmetic.multiply_monotone b a A hb ha))
-    (RationalArithmetic.multiply_monotone A b B hA hB)
+  RationalAlgebra.multiply_monotone₂ a b A B hb hA ha hB
 
 theorem singleton_weighted_norm (t : PTm n) : Γ ⊢[PRAAx]
     weightedNorm (singleton qone) zero t ≐ fraction one one := by

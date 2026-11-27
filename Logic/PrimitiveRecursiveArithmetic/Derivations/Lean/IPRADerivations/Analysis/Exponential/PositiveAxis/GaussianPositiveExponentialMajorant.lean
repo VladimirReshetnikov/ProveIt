@@ -123,13 +123,11 @@ theorem bound_zero (K : PTm n) : Γ ⊢[PRAAx] boundLaw K zero :=
     (RationalArgmin.reflexive (natCode one))
 
 theorem bound_step (K R : PTm n) (ih : Γ ⊢[PRAAx] boundLaw K R) : Γ ⊢[PRAAx] boundLaw K (succ R) := by
-  have first := RationalArgmin.rationalLE_congr (RationalAlgebra.multiply_commutative _ _)
-    (RationalAlgebra.multiply_commutative _ _)
-    (RationalArithmetic.multiply_monotone (value one K) _ _
-      (positive_scalar_sum (naturalPoint one) K (GaussianPositiveRealArithmetic.positive_natural one)).andE₂ ih)
-  have second := RationalArithmetic.multiply_monotone (Γ := Γ) (natCode (pw (num 3) R)) _ _
-    (natCode_nonnegative _) (value_at_one_bound K)
-  have actual := RationalArgmin.transitive (value_successor_product R K) (RationalArgmin.transitive first second)
+  have product := RationalAlgebra.multiply_monotone₂ (value R K) (value one K)
+    (natCode (pw (num 3) R)) (natCode (num 3))
+    (positive_scalar_sum (naturalPoint one) K (GaussianPositiveRealArithmetic.positive_natural one)).andE₂
+    (natCode_nonnegative _) ih (value_at_one_bound K)
+  have actual := RationalArgmin.transitive (value_successor_product R K) product
   exact RationalArgmin.rationalLE_congr (.eqRefl _)
     ((GaussianRationalSyntheticBounds.natCode_multiply _ _).eqTrans (natCode_congr (pw_succ (num 3) R).eqSymm)) actual
 

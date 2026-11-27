@@ -99,10 +99,8 @@ theorem product_lower (r s U : PTm n) (hU : Γ ⊢[PRAAx] le (num 18) U)
   have sign2 := lowered_sign two U (le_succ_self one) h1 h2
   have sign9 := lowered_sign (num 9) U (le_of_eq_add (d := num 8) (by ipra_ring)) h1 h9
   have signr := GaussianRationalL1.nonnegative_of_lower _ _ sign2 lo
-  have first := RationalArgmin.rationalLE_congr (RationalAlgebra.multiply_commutative _ _) (RationalAlgebra.multiply_commutative _ _)
-    (RationalArithmetic.multiply_monotone (lowered (num 9) U) (lowered two U) r sign9 lo)
-  have second := RationalArithmetic.multiply_monotone r (lowered (num 9) U) s signr hi
-  exact RationalValueBounds.upper_order_right _ _ _ _ _ (lowered_product_error U hU) (RationalArgmin.transitive first second)
+  exact RationalValueBounds.upper_order_right _ _ _ _ _ (lowered_product_error U hU)
+    (RationalAlgebra.multiply_monotone₂ (lowered two U) (lowered (num 9) U) r s sign9 signr lo hi)
 
 theorem actual_half_ninth_rational_product_lower_closed : ([] : List (Fm PTm 0)) ⊢[PRAAx] univ 3
     ((le (num 18) (var 2) ⋏ (RationalNormalForm.wellFormed (var 0) ⋏ RationalNormalForm.wellFormed (var 1))) ⟶

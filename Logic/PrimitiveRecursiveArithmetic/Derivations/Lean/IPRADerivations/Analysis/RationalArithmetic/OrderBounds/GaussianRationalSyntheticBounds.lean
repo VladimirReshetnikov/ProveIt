@@ -125,14 +125,8 @@ theorem quotient_step (C z N A Z k : PTm n) (hk : Γ ⊢[PRAAx] lt (succ k) N)
     rationalLE (qL1 (entry (quotient C z N) (succ k))) (natCode (majorant A Z (succ k))) := by
   let old := entry (quotient C z N) k
   have product := GaussianRationalL1Algebra.qL1_multiply (Γ := Γ) old z
-  have first := RationalArithmetic.multiply_monotone (qL1 z) (qL1 old) (natCode (majorant A Z k))
-    (qL1_nonnegative z) ih
-  have first' : Γ ⊢[PRAAx] rationalLE (multiply (qL1 old) (qL1 z))
-      (multiply (natCode (majorant A Z k)) (qL1 z)) := RationalArgmin.rationalLE_congr
-    (RationalAlgebra.multiply_commutative _ _) (RationalAlgebra.multiply_commutative _ _) first
-  have second := RationalArithmetic.multiply_monotone (natCode (majorant A Z k)) (qL1 z) (natCode Z)
-    (natCode_nonnegative _) hz
-  have multiplied := RationalArgmin.transitive product (RationalArgmin.transitive first' second)
+  have multiplied := RationalArgmin.transitive product
+    (RationalAlgebra.multiply_monotone₂ (qL1 old) (qL1 z) _ _ (qL1_nonnegative z) (natCode_nonnegative _) ih hz)
   have triangle := GaussianRationalL1Algebra.qL1_add (Γ := Γ) (qmul old z) (entry C (succ k))
   have estimate := RationalArgmin.transitive triangle (add_monotone _ _ _ _ multiplied hcoeff)
   have actual := qL1_congr (quotient_successor C z N k hk)

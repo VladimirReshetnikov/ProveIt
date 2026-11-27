@@ -53,8 +53,7 @@ theorem box_margin_positive (m : ℕ) (q A B : PTm n) (hA : Γ ⊢[PRAAx] le one
   have lu : Γ ⊢[PRAAx] rationalLE d t := center_gap_positive _ _ _ hA hB
   have lt := nonnegative_of_lower d t hd lu
   have first := multiply_monotone c d t hc lu
-  have second := rationalLE_congr (RationalAlgebra.multiply_commutative t c) (RationalAlgebra.multiply_commutative t p)
-    (multiply_monotone t c p lt (positive_margin m))
+  have second := RationalAlgebra.multiply_monotone_right c p t lt (positive_margin m)
   have f := (fraction_multiply one r one s hr hs).eqTrans (fraction_congr (one_mul one) (.eqRefl _))
   exact rationalLE_congr f (.eqRefl _) (transitive first second)
 

@@ -79,9 +79,8 @@ theorem norm_numerator_nonnegative (v : PTm n) : Γ ⊢[PRAAx]
 theorem norm_product_monotone (d N v : PTm n) (h : Γ ⊢[PRAAx] le d N) : Γ ⊢[PRAAx]
     rationalLE (RationalArithmetic.multiply (contractionSquare d) (qnormSq v))
       (RationalArithmetic.multiply (contractionSquare N) (qnormSq v)) :=
-  RationalArgmin.rationalLE_congr (RationalAlgebra.multiply_commutative _ _) (RationalAlgebra.multiply_commutative _ _)
-    (RationalArithmetic.multiply_monotone (qnormSq v) (contractionSquare d) (contractionSquare N)
-      (norm_numerator_nonnegative v) (contraction_square_monotone d N h))
+  RationalAlgebra.multiply_monotone_right (contractionSquare d) (contractionSquare N) (qnormSq v)
+    (norm_numerator_nonnegative v) (contraction_square_monotone d N h)
 
 /-- A genuine lower-degree residual comparison weakens to the original
 degree without any positive-residual or canonical-point hypothesis. -/

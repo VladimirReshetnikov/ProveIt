@@ -51,6 +51,20 @@ theorem multiply_commutative (a b : PTm n) : Γ ⊢[PRAAx] multiply a b ≐ mult
     (multiply_value a b) (multiply_value b a) (product_denominator_positive a b) (product_denominator_positive b a)
   ipra_lc [productDenominator]
 
+theorem multiply_monotone_right (a b c : PTm n)
+    (hc : Γ ⊢[PRAAx] le (numeratorOf c).neg (numeratorOf c).pos)
+    (h : Γ ⊢[PRAAx] rationalLE a b) :
+    Γ ⊢[PRAAx] rationalLE (multiply a c) (multiply b c) :=
+  RationalArgmin.rationalLE_congr (multiply_commutative c a) (multiply_commutative c b)
+    (multiply_monotone c a b hc h)
+
+theorem multiply_monotone₂ (a b A B : PTm n)
+    (hb : Γ ⊢[PRAAx] le (numeratorOf b).neg (numeratorOf b).pos)
+    (hA : Γ ⊢[PRAAx] le (numeratorOf A).neg (numeratorOf A).pos)
+    (ha : Γ ⊢[PRAAx] rationalLE a A) (hB : Γ ⊢[PRAAx] rationalLE b B) :
+    Γ ⊢[PRAAx] rationalLE (multiply a b) (multiply A B) :=
+  RationalArgmin.transitive (multiply_monotone_right a A b hb ha) (multiply_monotone A b B hA hB)
+
 theorem add_associative (a b c : PTm n) : Γ ⊢[PRAAx] add (add a b) c ≐ add a (add b c) := by
   have hl := represents_add (Γ := Γ) (add a b) c _ _ _ _ (add_value a b) (represents_self c)
   have hr := represents_add (Γ := Γ) a (add b c) _ _ _ _ (represents_self a) (add_value b c)

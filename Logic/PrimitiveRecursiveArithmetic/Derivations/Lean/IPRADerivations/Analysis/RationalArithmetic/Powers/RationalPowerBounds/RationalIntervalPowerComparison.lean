@@ -88,9 +88,7 @@ theorem product_monotone (A B C D : PTm n) (hB : Γ ⊢[PRAAx] nonnegative B)
     (GaussianRationalSyntheticBounds.natCode_nonnegative zero) hB
   have hc := GaussianRationalL1.nonnegative_of_lower _ _
     (GaussianRationalSyntheticBounds.natCode_nonnegative zero) hC
-  have left := rationalLE_congr (RationalAlgebra.multiply_commutative _ _)
-    (RationalAlgebra.multiply_commutative _ _) (RationalArithmetic.multiply_monotone B A C hb hAC)
-  exact transitive left (RationalArithmetic.multiply_monotone C B D hc hBD)
+  exact RationalAlgebra.multiply_monotone₂ A B C D hb hc hAC hBD
 
 theorem endpoints_nonnegative (L U : PR 3) (q offset p s x : PTm n)
     (h : Γ ⊢[PRAAx] regular L U q x) (hpos : Γ ⊢[PRAAx] positiveWitness L q offset s x)

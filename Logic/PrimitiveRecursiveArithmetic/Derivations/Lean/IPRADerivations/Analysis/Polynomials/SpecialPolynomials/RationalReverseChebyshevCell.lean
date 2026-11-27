@@ -18,8 +18,8 @@ open GaussianPositiveRealArithmetic (sign)
 open GaussianRationalL1 (nonnegative_of_lower)
 open GaussianRationalSyntheticBounds (add_monotone)
 open RationalAlgebra (add_congr add_associative add_commutative multiply_congr multiply_commutative multiply_add)
-open RationalArgmin (rationalLE rationalLE_congr reflexive transitive)
-open RationalArithmetic (add multiply negative add_guard multiply_monotone)
+open RationalArgmin (rationalLE rationalLE_congr reflexive)
+open RationalArithmetic (add multiply negative add_guard)
 open RationalHalfNinthProductLower (add_negative_cancel)
 open RationalNormalForm (wellFormed)
 
@@ -84,11 +84,9 @@ theorem rectangle_margin (a b u v c d : PTm n) (hb : Γ ⊢[PRAAx] wellFormed b)
   have hce := lower_gap a b c hc h₁
   have hdf := lower_gap v u d hd h₂
   have se := nonnegative_of_lower c e sc hce
-  have first : Γ ⊢[PRAAx] rationalLE (multiply c d) (multiply e d) :=
-    rationalLE_congr (multiply_commutative d c) (multiply_commutative d e) (multiply_monotone d c e sd hce)
-  have second := multiply_monotone e d f se hdf
+  have product := RationalAlgebra.multiply_monotone₂ c d e f sd se hce hdf
   exact rationalLE_congr (.eqRefl _) (rectangle_balance a b u v hb hu)
-    (add_monotone l l (multiply c d) (multiply e f) (reflexive l) (transitive first second))
+    (add_monotone l l (multiply c d) (multiply e f) (reflexive l) product)
 
 theorem reverse_Chebyshev_cell_margin_closed : ([] : List (Fm PTm 0)) ⊢[PRAAx] univ 6
     (wellFormed (var 1) ⟶ wellFormed (var 2) ⟶ wellFormed (var 4) ⟶ wellFormed (var 5) ⟶
