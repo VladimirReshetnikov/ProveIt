@@ -1,4 +1,4 @@
-import IPRADerivations.Core.SumLemmas
+import IPRADerivations.Core.SumOrder
 
 /-!
 # Power-sum quadrature (`docs/proofs/analysis/basel_ipra`, Lemma `lem:moment`)
@@ -32,36 +32,8 @@ variable {n : ℕ} {Γ : List (Fm PTm n)}
 theorem sum_le (f g : PTm 2) (x N : PTm n)
     (h : Γ ⊢[PRAAx] Fm.all (lt (var 0) (Syn.shift N) ⟶
       le (inst2 f (var 0) (Syn.shift x)) (inst2 g (var 0) (Syn.shift x)))) :
-    Γ ⊢[PRAAx] le (ap2 (sumF f) N x) (ap2 (sumF g) N x) := by
-  have hall : Γ ⊢[PRAAx] Fm.all (le (var 0) (Syn.shift N) ⟶
-      le (ap2 (sumF f) (var 0) (Syn.shift x)) (ap2 (sumF g) (var 0) (Syn.shift x))) := by
-    refine PRA.qfInd _ ⟨le_QF _ _, le_QF _ _⟩ ?_ ?_
-    · simpa using .impI (le_congr (sum_zero (Γ := le zero N :: Γ) f x).eqSymm
-        (sum_zero (Γ := le zero N :: Γ) g x).eqSymm (le_refl _))
-    · simp only [Fm.subst_imp, subst_le, subst_ap2, Syn.subst_var, Syn.repl_zero,
-        subst_repl_shift, ConciseIPRA.PTm.subst_zero]
-      have hf := h.allOpen
-      refine .impI ?_
-      have hle : (le (succ (var 0)) (Syn.shift N) ::
-          (le (var 0) (Syn.shift N) ⟶ le (ap2 (sumF f) (var 0) (Syn.shift x)) (ap2 (sumF g) (var 0) (Syn.shift x))) ::
-          Γ.map Fm.shift) ⊢[PRAAx] le (var 0) (Syn.shift N) :=
-        le_trans (le_succ_self _) Prf.hyp0
-      have h₁ := Prf.impE Prf.hyp1 hle
-      have h₂ : (le (succ (var 0)) (Syn.shift N) ::
-          (le (var 0) (Syn.shift N) ⟶ le (ap2 (sumF f) (var 0) (Syn.shift x)) (ap2 (sumF g) (var 0) (Syn.shift x))) ::
-          Γ.map Fm.shift) ⊢[PRAAx] le (inst2 f (var 0) (Syn.shift x)) (inst2 g (var 0) (Syn.shift x)) :=
-        Prf.impE hf.wk.wk Prf.hyp0
-      have w₁ := eq_add_of_le h₁
-      have w₂ := eq_add_of_le h₂
-      refine le_congr (sum_succ' f (var 0) _).eqSymm (sum_succ' g (var 0) _).eqSymm ?_
-      refine le_of_eq_add (d := monus (ap2 (sumF g) (var 0) (Syn.shift x)) (ap2 (sumF f) (var 0) (Syn.shift x)) +
-        monus (inst2 g (var 0) (Syn.shift x)) (inst2 f (var 0) (Syn.shift x))) ?_
-      refine withEq w₁ fun e₁ => withEq w₂ fun e₂ => ?_
-      apply deriveNat; ipra_simps; rw [e₁, e₂]; ring
-  have h2 := Prf.allE N hall
-  simp only [Fm.subst_imp, subst_le, subst_ap2, Syn.subst_var, Syn.inst_zero,
-    Syn.subst_inst_shift, ConciseIPRA.PTm.subst_zero] at h2
-  exact .impE h2 (le_refl N)
+    Γ ⊢[PRAAx] le (ap2 (sumF f) N x) (ap2 (sumF g) N x) :=
+  sum_le_params f g x x N h
 
 /-- `c(x) · g(i, x)` as a body, for `c : PTm 1`. -/
 def mulParam (c : PTm 1) (g : PTm 2) : PTm 2 := Syn.subst ![var 1] c * g

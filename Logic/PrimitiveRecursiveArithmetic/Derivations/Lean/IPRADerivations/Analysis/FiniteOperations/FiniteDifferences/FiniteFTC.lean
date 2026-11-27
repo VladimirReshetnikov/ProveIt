@@ -67,20 +67,13 @@ theorem ftc_upper (G Fpos Fneg : PTm 2) (x N E : PTm n)
       le (inst2 G (succ (var 0)) (Syn.shift x) + inst2 Fneg (var 0) (Syn.shift x))
         (inst2 G (var 0) (Syn.shift x) + inst2 Fpos (var 0) (Syn.shift x) + Syn.shift E))) :
     Γ ⊢[PRAAx] UpInv G Fpos Fneg N x E := by
-  have hall : Γ ⊢[PRAAx] Fm.all (le (var 0) (Syn.shift N) ⟶
-      UpInv G Fpos Fneg (var 0) (Syn.shift x) (Syn.shift E)) := by
-    ipra_qfind (⟨le_QF _ _, le_QF _ _⟩) [subst_le, subst_ap2, subst_inst2]
-    · exact .impI (up_base G Fpos Fneg x E)
-    · have hf := h.allOpen
-      refine .impI ?_
-      have hk : (le (succ (var 0)) (Syn.shift N) ::
-          (le (var 0) (Syn.shift N) ⟶ UpInv G Fpos Fneg (var 0) (Syn.shift x) (Syn.shift E)) ::
-          Γ.map Fm.shift) ⊢[PRAAx] le (succ (var 0)) (Syn.shift N) := Prf.hyp0
-      exact up_step (Prf.impE hf.wk.wk hk) (Prf.impE Prf.hyp1 (le_trans (le_succ_self _) hk))
-  have h2 := Prf.allE N hall
-  simp only [Fm.subst_imp, subst_le, subst_ap2, subst_inst2, PTm.subst_add, PTm.subst_mul, Syn.subst_var,
-    Syn.inst_zero, Syn.subst_inst_shift, ConciseIPRA.PTm.subst_zero] at h2
-  exact .impE h2 (le_refl N)
+  let P := UpInv G Fpos Fneg (var 0) (Syn.shift x) (Syn.shift E)
+  have atBound : Γ ⊢[PRAAx] P.subst (Syn.inst N) := by
+    refine qfIndUpTo N (le_QF _ _) ?_ ?_
+    · simpa [P, UpInv] using up_base (Γ := Γ) G Fpos Fneg x E
+    · ipra_ind_simp [P, UpInv, subst_le, subst_ap2, subst_inst2, subst_repl_shift]
+      exact .impI (up_step (.impE h.allOpen.wk.wk Prf.hyp0) Prf.hyp1)
+  simpa [P, UpInv] using atBound
 
 /-- `eq:FTCfinite`, lower half: if `G(j) + F⁺(j) ≤ G(j+1) + F⁻(j) + E` for `j < N`, then
 `G(0) + ∑_{j<N} F⁺(j) ≤ G(N) + ∑_{j<N} F⁻(j) + N E`. -/
@@ -89,19 +82,12 @@ theorem ftc_lower (G Fpos Fneg : PTm 2) (x N E : PTm n)
       le (inst2 G (var 0) (Syn.shift x) + inst2 Fpos (var 0) (Syn.shift x))
         (inst2 G (succ (var 0)) (Syn.shift x) + inst2 Fneg (var 0) (Syn.shift x) + Syn.shift E))) :
     Γ ⊢[PRAAx] DnInv G Fpos Fneg N x E := by
-  have hall : Γ ⊢[PRAAx] Fm.all (le (var 0) (Syn.shift N) ⟶
-      DnInv G Fpos Fneg (var 0) (Syn.shift x) (Syn.shift E)) := by
-    ipra_qfind (⟨le_QF _ _, le_QF _ _⟩) [subst_le, subst_ap2, subst_inst2]
-    · exact .impI (dn_base G Fpos Fneg x E)
-    · have hf := h.allOpen
-      refine .impI ?_
-      have hk : (le (succ (var 0)) (Syn.shift N) ::
-          (le (var 0) (Syn.shift N) ⟶ DnInv G Fpos Fneg (var 0) (Syn.shift x) (Syn.shift E)) ::
-          Γ.map Fm.shift) ⊢[PRAAx] le (succ (var 0)) (Syn.shift N) := Prf.hyp0
-      exact dn_step (Prf.impE hf.wk.wk hk) (Prf.impE Prf.hyp1 (le_trans (le_succ_self _) hk))
-  have h2 := Prf.allE N hall
-  simp only [Fm.subst_imp, subst_le, subst_ap2, subst_inst2, PTm.subst_add, PTm.subst_mul, Syn.subst_var,
-    Syn.inst_zero, Syn.subst_inst_shift, ConciseIPRA.PTm.subst_zero] at h2
-  exact .impE h2 (le_refl N)
+  let P := DnInv G Fpos Fneg (var 0) (Syn.shift x) (Syn.shift E)
+  have atBound : Γ ⊢[PRAAx] P.subst (Syn.inst N) := by
+    refine qfIndUpTo N (le_QF _ _) ?_ ?_
+    · simpa [P, DnInv] using dn_base (Γ := Γ) G Fpos Fneg x E
+    · ipra_ind_simp [P, DnInv, subst_le, subst_ap2, subst_inst2, subst_repl_shift]
+      exact .impI (dn_step (.impE h.allOpen.wk.wk Prf.hyp0) Prf.hyp1)
+  simpa [P, DnInv] using atBound
 
 end LeanProofs.IPRA.Analysis.FiniteFTC

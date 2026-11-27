@@ -43,20 +43,14 @@ theorem increments_le (F g : PTm 2) (x N : PTm n)
       le (inst2 F (succ (var 0)) (Syn.shift x)) (inst2 F (var 0) (Syn.shift x) + inst2 g (var 0) (Syn.shift x)))) :
     Γ ⊢[PRAAx] Fm.all (le (var 0) (Syn.shift N) ⟶
       le (inst2 F (var 0) (Syn.shift x)) (inst2 F zero (Syn.shift x) + ap2 (sumF g) (var 0) (Syn.shift x))) := by
-  ipra_qfind (⟨le_QF _ _, le_QF _ _⟩) [subst_le, subst_ap2, subst_inst2]
-  · exact .impI (le_add_right _ _)
-  · have hf := h.allOpen
-    refine .impI ?_
-    have hle : (le (succ (var 0)) (Syn.shift N) ::
-        (le (var 0) (Syn.shift N) ⟶ le (inst2 F (var 0) (Syn.shift x))
-          (inst2 F zero (Syn.shift x) + ap2 (sumF g) (var 0) (Syn.shift x))) ::
-        Γ.map Fm.shift) ⊢[PRAAx] le (var 0) (Syn.shift N) :=
-      le_trans (le_succ_self _) Prf.hyp0
-    have ih := Prf.impE Prf.hyp1 hle
-    refine le_trans (Prf.impE hf.wk.wk Prf.hyp0) ?_
+  refine qfIndAllUpTo N (le_QF _ _) ?_ ?_
+  · ipra_ind_simp [subst_le, subst_ap2, subst_inst2, Syn.subst_inst_shift]
+    exact le_add_right _ _
+  · ipra_ind_simp [subst_le, subst_ap2, subst_inst2, subst_repl_shift]
+    refine .impI (le_trans (.impE h.allOpen.wk.wk Prf.hyp0) ?_)
     exact le_congr (.eqRefl _)
       ((add_assoc _ _ _).eqTrans (congrAdd (.eqRefl _) (sum_succ' g (var 0) _).eqSymm))
-      (add_le_add_right (inst2 g (var 0) (Syn.shift x)) ih)
+      (add_le_add_right (inst2 g (var 0) (Syn.shift x)) Prf.hyp1)
 
 /-! ## A Lipschitz bound for equally spaced samples -/
 
@@ -69,18 +63,12 @@ theorem lip_up (f : PTm 2) (x N D : PTm n)
       le (inst2 f (succ (var 0)) (Syn.shift x)) (inst2 f (var 0) (Syn.shift x) + Syn.shift D))) :
     Γ ⊢[PRAAx] Fm.all (le (var 0) (Syn.shift N) ⟶
       le (inst2 f (var 0) (Syn.shift x)) (inst2 f zero (Syn.shift x) + Syn.shift D * var 0)) := by
-  ipra_qfind (⟨le_QF _ _, le_QF _ _⟩) [subst_le, subst_inst2]
-  · exact .impI (le_add_right _ _)
-  · have hf := h.allOpen
-    refine .impI ?_
-    have hle : (le (succ (var 0)) (Syn.shift N) ::
-        (le (var 0) (Syn.shift N) ⟶ le (inst2 f (var 0) (Syn.shift x))
-          (inst2 f zero (Syn.shift x) + Syn.shift D * var 0)) ::
-        Γ.map Fm.shift) ⊢[PRAAx] le (var 0) (Syn.shift N) :=
-      le_trans (le_succ_self _) Prf.hyp0
-    have ih := Prf.impE Prf.hyp1 hle
-    refine le_trans (Prf.impE hf.wk.wk Prf.hyp0) ?_
-    exact le_congr (.eqRefl _) (lin_step _ _ _) (add_le_add_right (Syn.shift D) ih)
+  refine qfIndAllUpTo N (le_QF _ _) ?_ ?_
+  · ipra_ind_simp [subst_le, subst_inst2, Syn.subst_inst_shift]
+    exact le_add_right _ _
+  · ipra_ind_simp [subst_le, subst_inst2, subst_repl_shift]
+    refine .impI (le_trans (.impE h.allOpen.wk.wk Prf.hyp0) ?_)
+    exact le_congr (.eqRefl _) (lin_step _ _ _) (add_le_add_right (Syn.shift D) Prf.hyp1)
 
 /-! ## The sum of a linear sequence -/
 
@@ -152,19 +140,13 @@ theorem lip_down (f : PTm 2) (x N D : PTm n)
       le (inst2 f (var 0) (Syn.shift x)) (inst2 f (succ (var 0)) (Syn.shift x) + Syn.shift D))) :
     Γ ⊢[PRAAx] Fm.all (le (var 0) (Syn.shift N) ⟶
       le (inst2 f zero (Syn.shift x)) (inst2 f (var 0) (Syn.shift x) + Syn.shift D * var 0)) := by
-  ipra_qfind (⟨le_QF _ _, le_QF _ _⟩) [subst_le, subst_inst2]
-  · exact .impI (le_add_right _ _)
-  · have hf := h.allOpen
-    refine .impI ?_
-    have hle : (le (succ (var 0)) (Syn.shift N) ::
-        (le (var 0) (Syn.shift N) ⟶ le (inst2 f zero (Syn.shift x))
-          (inst2 f (var 0) (Syn.shift x) + Syn.shift D * var 0)) ::
-        Γ.map Fm.shift) ⊢[PRAAx] le (var 0) (Syn.shift N) :=
-      le_trans (le_succ_self _) Prf.hyp0
-    have ih := Prf.impE Prf.hyp1 hle
-    refine le_trans ih ?_
+  refine qfIndAllUpTo N (le_QF _ _) ?_ ?_
+  · ipra_ind_simp [subst_le, subst_inst2, Syn.subst_inst_shift]
+    exact le_add_right _ _
+  · ipra_ind_simp [subst_le, subst_inst2, subst_repl_shift]
+    refine .impI (le_trans Prf.hyp1 ?_)
     exact le_congr (.eqRefl _) (lin_step' _ _ _)
-      (add_le_add_right (Syn.shift D * var 0) (Prf.impE hf.wk.wk Prf.hyp0))
+      (add_le_add_right (Syn.shift D * var 0) (.impE h.allOpen.wk.wk Prf.hyp0))
 
 /-- `f(i, fst y)`: the body `f` read at the first component of a pair parameter. -/
 abbrev fp (f : PTm 2) : PTm 2 := Syn.subst ![var 0, fstT (var 1)] f
