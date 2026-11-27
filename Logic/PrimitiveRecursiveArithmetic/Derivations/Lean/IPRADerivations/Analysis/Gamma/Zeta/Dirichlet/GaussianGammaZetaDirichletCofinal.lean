@@ -22,7 +22,7 @@ open GaussianGammaZetaDirichletFiniteRate (prefixData budget prefix_observations
 open GaussianGammaZetaMellinDampedImproper (dirichletF parameters)
 open GaussianNamedInverseRate (independentRate rateNumerator rateDenominator denominator_positive)
 open GaussianNamedLipschitzRate (diagonalNumerator diagonalDenominator diagonalEnvelope)
-open GaussianRationalDistanceOrder (distance_congr distance_radius_mono distance_symmetric)
+open GaussianRationalDistanceOrder (distance_at_earlier_precisions distance_congr distance_radius_mono distance_symmetric)
 open GaussianRationalHorner (positive_product)
 open GaussianRationalMetric (distanceBounded)
 
@@ -110,27 +110,14 @@ theorem late_observations (p q N z R B A : PTm n) (hz : Γ ⊢[PRAAx] S z R B A)
   exact distance_congr (sample_at p z R B A).eqSymm (.eqRefl _) (.eqRefl _) (.eqRefl _)
     (distance_radius_mono _ _ _ _ _ _ dp (positive_product _ _ (unit_positive p) (unit_positive q)) move raw)
 
-private theorem lower_second_error (x y p q : PTm n)
-    (h : Γ ⊢[PRAAx] distanceBounded x y (unit p+unit (succ q)) (unit p*unit (succ q))) :
-    Γ ⊢[PRAAx] distanceBounded x y (unit p+unit q) (unit p*unit q) := by
-  have hp := unit_positive (Γ := Γ) p
-  apply distance_radius_mono _ _ _ _ _ _ (positive_product _ _ hp (unit_positive (succ q)))
-    (positive_product _ _ hp (unit_positive q)) ?_ h
-  refine le_of_eq_add (d := unit p*unit p*unit q) ?_
-  have eq := natEq (dyadic_successor (Γ := Γ) q)
-  apply deriveNat
-  ipra_simps
-  rw [eq]
-  ring
-
 theorem observations (p q z R B A : PTm n) (hz : Γ ⊢[PRAAx] S z R B A) :
     Γ ⊢[PRAAx] distanceBounded (ap2 nameF p (data z R B A)) (ap2 nameF q (data z R B A))
       (unit p+unit q) (unit p*unit q) := by
   refine (le_total p q).orE ?_ ?_
-  · exact lower_second_error _ _ p q
+  · exact distance_at_earlier_precisions p q p (succ q) (le_refl _) (le_succ_self _)
       (distance_congr (.eqRefl _) (sample_at q z R B A).eqSymm (.eqRefl _) (.eqRefl _)
         (late_observations p (succ q) (cutoff A q) z R B A hz.wk (cutoff_monotone A p q Prf.hyp0)))
-  · have rev := lower_second_error _ _ q p
+  · have rev := distance_at_earlier_precisions q p q (succ p) (le_refl _) (le_succ_self _)
       (distance_congr (.eqRefl _) (sample_at p z R B A).eqSymm (.eqRefl _) (.eqRefl _)
         (late_observations q (succ p) (cutoff A p) z R B A hz.wk (cutoff_monotone A q p Prf.hyp0)))
     exact distance_congr (.eqRefl _) (.eqRefl _) (add_comm _ _) (mul_comm _ _)
