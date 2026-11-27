@@ -189,9 +189,7 @@ theorem act_at (a M Q' T α γ β : PTm n) :
     Γ ⊢[PRAAx] inst2 actK a (tup M Q' T α γ β) ≐ actE Q' M α γ β a := by
   have e := conv (Γ := Γ) actC a M Q' T α γ β
   have h : Syn.subst (![a, M, Q', T, α, γ, β] : Fin 7 → PTm n) actC = actE Q' M α γ β a := by
-    simp only [actC, qC, actE, qE, actv, KhinchinBad.inJT, Signum.sg, gcd, PTm.subst_mul, PTm.subst_monus,
-      PTm.subst_add, subst_ex2, subst_ap2, subst_eqb, Syn.subst_var, ConciseIPRA.PTm.subst_succ,
-      ConciseIPRA.PTm.subst_zero]
+    ipra_ind_simp [actC, qC, actE, qE, actv, KhinchinBad.inJT, Signum.sg, gcd, subst_ex2, subst_ap2, subst_eqb]
     try rfl
   rw [h] at e
   exact e

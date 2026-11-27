@@ -177,9 +177,9 @@ theorem real_of_prod (h : Γ ⊢[PRAAx] (prod A B).Real) : Γ ⊢[PRAAx] A.Real 
   show _ ⊢[PRAAx] (Fm.shift A.Real ⋏ Fm.shift B.Real)
   rw [shift_Real, shift_Real]
   refine .andI (.exI (fstT (var 0)) ?_) (.exI (sndT (var 0)) ?_)
-  · simp only [Fm.subst_and, subst_wit, subst_allCh, Syn.subst_var, Syn.inst_zero]
+  · ipra_ind_simp [subst_wit, subst_allCh]
     exact prod_fst (.andE₁ Prf.hyp0) (.andE₂ Prf.hyp0)
-  · simp only [Fm.subst_and, subst_wit, subst_allCh, Syn.subst_var, Syn.inst_zero]
+  · ipra_ind_simp [subst_wit, subst_allCh]
     exact prod_snd (.andE₁ Prf.hyp0) (.andE₂ Prf.hyp0)
 
 /-- `Real(A) ∧ Real(B) → Real(A × B)`. -/
@@ -207,7 +207,7 @@ theorem prod_of_real (hA : Γ ⊢[PRAAx] A.Real) (hB : Γ ⊢[PRAAx] B.Real) :
     rw [e] at h
     exact h.wk
   refine .exI (pairT (Syn.shift (var 0)) (var 0)) ?_
-  simp only [Fm.subst_and, subst_wit, subst_allCh, Syn.subst_var, Syn.inst_zero]
+  ipra_ind_simp [subst_wit, subst_allCh]
   exact pair_real (.andE₁ hx) (.andE₂ hx) (.andE₁ Prf.hyp0) (.andE₂ Prf.hyp0)
 
 /-- The product contract expresses the conjunction of the two tasks. -/

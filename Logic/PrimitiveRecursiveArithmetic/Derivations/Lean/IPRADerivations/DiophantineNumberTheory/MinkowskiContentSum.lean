@@ -48,9 +48,8 @@ theorem numerator_succ (P Q : PTm 2) (N x : PTm n) :
       numerator P Q N x*inst2 Q N x+inst2 P N x*denominator Q N x := by
     have ρ : (fun i : Fin 2 => Syn.subst ![N,numerator P Q N x,x] (![var 0,var 2] i)) = ![N,x] := by
       funext i; fin_cases i <;> rfl
-    simp only [numeratorStep,PTm.subst_add,PTm.subst_mul,Syn.subst_subst,
-      subst_denominator,Syn.subst_var,Matrix.cons_val_zero,Matrix.cons_val_one,Matrix.cons_val_two,
-      Matrix.head_cons,Matrix.tail_cons,ρ]
+    ipra_ind_simp [numeratorStep, Syn.subst_subst, subst_denominator, Matrix.cons_val_zero, Matrix.cons_val_one,
+      Matrix.cons_val_two, Matrix.head_cons, Matrix.tail_cons, ρ]
     rfl
   exact e ▸ h
 
@@ -63,8 +62,8 @@ def positiveDenominators (Q : PTm 2) (N x : PTm n) : Fm PTm n :=
 
 @[simp] theorem subst_clearing {m : ℕ} (σ : Fin n → PTm m) (C P Q : PTm 2) (N K x : PTm n) :
     (clearing C P Q N K x).subst σ = clearing C P Q (Syn.subst σ N) (Syn.subst σ K) (Syn.subst σ x) := by
-  simp only [clearing,Fm.subst_all,Fm.subst_imp,Fm.subst_eq,subst_lt,PTm.subst_mul,
-    subst_inst2,Syn.subst_var,Syn.up_zero,Syn.up_succ,Syn.subst_shift,Syn.shift_subst]
+  ipra_ind_simp [clearing, Fm.subst_all, subst_lt, subst_inst2, Syn.up_zero, Syn.up_succ, Syn.subst_shift,
+    Syn.shift_subst]
 
 theorem clearing_at (C P Q : PTm 2) (N K x j : PTm n)
     (h : Γ ⊢[PRAAx] clearing C P Q N K x) (hj : Γ ⊢[PRAAx] lt j N) :
@@ -82,12 +81,10 @@ theorem sum_clearing (C P Q : PTm 2) (N K x : PTm n)
       Syn.shift K * numerator P Q (var 0) (Syn.shift x)
   have atBound : Γ ⊢[PRAAx] inv.subst (Syn.inst N) := by
     refine qfIndUpTo N trivial ?_ ?_
-    · simp only [inv, Fm.subst_eq, PTm.subst_mul, subst_denominator,
-        subst_count, subst_numerator, Syn.subst_var, Syn.inst_zero, Syn.subst_inst_shift]
+    · ipra_ind_simp [inv, subst_denominator, subst_count, subst_numerator, Syn.subst_inst_shift]
       exact (congrMul (.eqRefl _) (sum_zero C x)).eqTrans ((mul_zero _).eqTrans
         ((mul_zero _).eqSymm.eqTrans (congrMul (.eqRefl _) (numerator_zero P Q x).eqSymm)))
-    · simp only [inv, Fm.subst_eq, PTm.subst_mul, subst_denominator, subst_count,
-        subst_numerator, Syn.subst_var, Syn.repl_zero, subst_repl_shift]
+    · ipra_ind_simp [inv, subst_denominator, subst_count, subst_numerator, subst_repl_shift]
       refine .impI ?_
       let Δ := lt (var 0) (Syn.shift N) :: inv :: Γ.map Fm.shift
       have contract : Γ.map Fm.shift ⊢[PRAAx] clearing C P Q (Syn.shift N) (Syn.shift K) (Syn.shift x) := by

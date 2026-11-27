@@ -161,7 +161,7 @@ theorem inst2_loB (j x : PTm n) : inst2 (loB A) j x = inst2 A j (sndT x) := by
   simp only [inst2, loB] at *; exact sub2 A j x
 
 theorem inst2_hiB (j x : PTm n) : inst2 (hiB A act) j x = inst2 A j (sndT x) + sg (inst2 act j (sndT x)) * fstT x := by
-  simp only [hiB, inst2, PTm.subst_add, PTm.subst_mul, Signum.sg, PTm.subst_monus]
+  ipra_ind_simp [hiB, inst2, Signum.sg]
   rw [show Syn.subst ![j, x] (Syn.subst ![var 0, sndT (var 1)] A) = inst2 A j (sndT x) from sub2 A j x,
     show Syn.subst ![j, x] (Syn.subst ![var 0, sndT (var 1)] act) = inst2 act j (sndT x) from sub2 act j x]
   simp [inst2]
@@ -186,7 +186,7 @@ theorem inst2_spB (j' z : PTm n) : inst2 (spB A act) j' z =
     sg (inst2 act j' (sndT (sndT z))) * sg (inst2 act (fstT z) (sndT (sndT z))) *
       sg (monus (inst2 A (fstT z) (sndT (sndT z)) + fstT (sndT z)) (inst2 A j' (sndT (sndT z)))) *
       sg (monus (inst2 A j' (sndT (sndT z)) + fstT (sndT z)) (inst2 A (fstT z) (sndT (sndT z)))) := by
-  simp only [spB, inst2, PTm.subst_add, PTm.subst_mul, Signum.sg, PTm.subst_monus]
+  ipra_ind_simp [spB, inst2, Signum.sg]
   rw [sub3 A j' z, sub3 act j' z, sub4 A j' z, sub4 act j' z]
   simp [inst2]
 

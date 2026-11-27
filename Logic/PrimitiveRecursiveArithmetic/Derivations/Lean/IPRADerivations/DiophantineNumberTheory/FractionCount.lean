@@ -108,9 +108,8 @@ abbrev tup (Q P u v W : PTm n) : PTm n := pairT (pairT Q P) (pairT (pairT u v) W
 
 theorem inst2_cB (i x : PTm n) : inst2 cB i x =
     eqb (SV (quo i (xP x)) (rem i (xP x)) (xQ x) (xu x) (xv x) (xW x)) zero := by
-  simp only [inst2, cB, SV, PTm.subst_add, PTm.subst_monus, PTm.subst_mul, subst_ex2, subst_ap2, Syn.subst_var,
-    Matrix.cons_val_zero, Matrix.cons_val_one, ConciseIPRA.PTm.subst_succ, ConciseIPRA.PTm.subst_zero, subst_eqb,
-    subst_fstT, subst_sndT]
+  ipra_ind_simp [inst2, cB, SV, subst_ex2, subst_ap2, Matrix.cons_val_zero, Matrix.cons_val_one, subst_eqb, subst_fstT,
+    subst_sndT]
 
 theorem inst2_gB (i x : PTm n) : inst2 gB i x =
     monus (quo (xQ x * xQ x * rem i (xP x)) (quo i (xP x))) (quo (xQ x * xQ x * xu x) (xW x)) := by

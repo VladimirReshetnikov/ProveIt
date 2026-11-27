@@ -48,9 +48,8 @@ abbrev hB : PTm 3 := eqb (gcd (rem (var 0) (var 1)) (var 1)) one * eqb (gcd (quo
 
 theorem inst3_hB (j m N : PTm n) :
     inst3 hB j m N = eqb (gcd (rem j m) m) one * eqb (gcd (quo j m) N) one := by
-  simp only [inst3, PTm.subst_mul, subst_eqb, subst_ex2, subst_ap2, Syn.subst_var, Matrix.cons_val_zero,
-    Matrix.cons_val_one, Matrix.head_cons, Matrix.cons_val_two, Matrix.tail_cons,
-    ConciseIPRA.PTm.subst_succ, ConciseIPRA.PTm.subst_zero]
+  ipra_ind_simp [inst3, subst_eqb, subst_ex2, subst_ap2, Matrix.cons_val_zero, Matrix.cons_val_one, Matrix.head_cons,
+    Matrix.cons_val_two, Matrix.tail_cons]
 
 /-- The closed form `φ(m) ∑_{b<K div m} e_n(b) + e_n(K div m) ∑_{a<K mod m} e_m(a)`. -/
 abbrev blockR (K m N : PTm n) : PTm n :=
@@ -189,8 +188,8 @@ abbrev crtS : PTm 2 := lift3 sig3
 abbrev crtF : PTm 2 := lift3 hB
 
 theorem inst3_sig (k m N : PTm n) : inst3 sig3 k m N = rem k m + m * rem k N := by
-  simp only [inst3, PTm.subst_add, PTm.subst_mul, subst_ap2, Syn.subst_var, Matrix.cons_val_zero,
-    Matrix.cons_val_one, Matrix.head_cons, Matrix.cons_val_two, Matrix.tail_cons]
+  ipra_ind_simp [inst3, subst_ap2, Matrix.cons_val_zero, Matrix.cons_val_one, Matrix.head_cons, Matrix.cons_val_two,
+    Matrix.tail_cons]
 
 theorem shift_quo' (a b : PTm n) : Syn.shift (quo a b) = quo (Syn.shift a) (Syn.shift b) := by simp [Syn.shift]
 

@@ -35,13 +35,11 @@ theorem amortized (c a P : PTm 2) (x N : PTm n)
     (ap2 (sumF a) (var 0) (Syn.shift x) + inst2 P zero (Syn.shift x))
   have atBound : Γ ⊢[PRAAx] invariant.subst (Syn.inst N) := by
     refine qfIndUpTo N (le_QF _ _) ?_ ?_
-    · simp only [invariant, subst_le, subst_ap2, PTm.subst_add, subst_inst2, Syn.subst_var,
-        Syn.inst_zero, Syn.subst_inst_shift, ConciseIPRA.PTm.subst_zero]
+    · ipra_ind_simp [invariant, subst_le, subst_ap2, subst_inst2, Syn.subst_inst_shift]
       have L0 := (congrAdd (sum_zero (Γ := Γ) c x) (.eqRefl (inst2 P zero x))).eqTrans (zero_add _)
       have R0 := (congrAdd (sum_zero (Γ := Γ) a x) (.eqRefl (inst2 P zero x))).eqTrans (zero_add _)
       exact le_congr L0.eqSymm R0.eqSymm (le_refl _)
-    · simp only [invariant, subst_le, subst_ap2, PTm.subst_add, subst_inst2, Syn.subst_var,
-        Syn.repl_zero, subst_repl_shift, ConciseIPRA.PTm.subst_zero]
+    · ipra_ind_simp [invariant, subst_le, subst_ap2, subst_inst2, subst_repl_shift]
       refine .impI ?_
       let Δ := lt (var 0) (Syn.shift N) :: invariant :: Γ.map Fm.shift
       have previous : Δ ⊢[PRAAx] invariant := Prf.hyp1

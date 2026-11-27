@@ -45,8 +45,7 @@ def rB (g : PTm 2) : PTm 3 := eqb (rem (var 0) (var 1)) zero * Syn.subst ![quo (
 
 theorem inst3_rB (g : PTm 2) (k d x : PTm n) :
     inst3 (rB g) k d x = eqb (rem k d) zero * inst2 g (quo k d) x := by
-  simp only [inst3, inst2, rB, PTm.subst_mul, subst_eqb, subst_ap2, Syn.subst_subst, Syn.subst_var,
-    ConciseIPRA.PTm.subst_zero]
+  ipra_ind_simp [inst3, inst2, rB, subst_eqb, subst_ap2, Syn.subst_subst]
   congr 2; funext i; fin_cases i <;> simp
 
 theorem reindex_step {g : PTm 2} {K d x : PTm n} (hd : Γ ⊢[PRAAx] d ≐ succ (pred d))

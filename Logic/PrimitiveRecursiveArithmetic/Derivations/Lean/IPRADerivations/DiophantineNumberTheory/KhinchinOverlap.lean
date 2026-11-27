@@ -98,7 +98,7 @@ theorem inst2_c2 (j W : PTm n) : inst2 c2 j W =
     meet (fstT W) (fstT (sndT W)) (inst2 AK j (sndT (sndT (sndT W))))
         (inst2 AK j (sndT (sndT (sndT W))) + sg (inst2 actK j (sndT (sndT (sndT W)))) * fstT (sndT (sndT W))) *
       sg (inst2 actK j (sndT (sndT (sndT W)))) := by
-  simp only [c2, inst2, PTm.subst_mul, PTm.subst_add, PTm.subst_monus, Signum.sg]
+  ipra_ind_simp [c2, inst2, Signum.sg]
   rw [sub3, sub3]
   simp
 

@@ -55,13 +55,11 @@ theorem contraction_iter (D : PTm 2) {a b x N : PTm n}
   let P := CInv D (Syn.shift a) (Syn.shift b) (Syn.var 0) (Syn.shift x)
   have atBound : Γ ⊢[PRAAx] P.subst (Syn.inst N) := by
     refine qfIndUpTo N (le_QF _ _) ?_ ?_
-    · simp only [P, subst_le, subst_ap2, subst_inst2, PTm.subst_mul,
-        Syn.subst_var, Syn.inst_zero, Syn.subst_inst_shift, ConciseIPRA.PTm.subst_zero]
+    · ipra_ind_simp [P, subst_le, subst_ap2, subst_inst2, Syn.subst_inst_shift]
       have p1 := natEq (pw_zero (Γ := Γ) b)
       have p2 := natEq (pw_zero (Γ := Γ) a)
       ipra_le 0 using rw [p1, p2]; ring
-    · simp only [P, subst_le, subst_ap2, subst_inst2, PTm.subst_mul, Syn.subst_var,
-        Syn.repl_zero, subst_repl_shift, ConciseIPRA.PTm.subst_zero]
+    · ipra_ind_simp [P, subst_le, subst_ap2, subst_inst2, subst_repl_shift]
       exact .impI (trace_step (.impE hs.allOpen.wk.wk Prf.hyp0) Prf.hyp1)
   simpa [P] using atBound
 

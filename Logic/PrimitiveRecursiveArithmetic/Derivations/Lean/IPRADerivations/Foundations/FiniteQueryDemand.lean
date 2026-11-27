@@ -188,9 +188,8 @@ def prefixAt (A : BoundedSyntax.BFm 3) (stage H x : PTm n) : Fm PTm n :=
     (A : BoundedSyntax.BFm 3) (stage H x : PTm n) :
     (prefixAt A stage H x).subst σ =
       prefixAt A (Syn.subst σ stage) (Syn.subst σ H) (Syn.subst σ x) := by
-  simp only [prefixAt, Fm.subst_all, Fm.subst_imp, subst_lt, subst_observe,
-    ConciseIPRA.PTm.subst_succ, Syn.subst_var, Syn.up_zero,
-    Syn.subst_shift, Syn.shift_subst, Syn.up_succ]
+  ipra_ind_simp [prefixAt, Fm.subst_all, subst_lt, subst_observe, Syn.up_zero, Syn.subst_shift, Syn.shift_subst,
+    Syn.up_succ]
 
 /-- Original variables are stage, horizon and data; a fresh bounded variable
 becomes the observation index, while stage and data are shifted correctly. -/
@@ -204,9 +203,8 @@ theorem prefixSyntax_at (A : BoundedSyntax.BFm 3) (stage H x : PTm n) :
       (![Syn.shift stage, var 0, Syn.shift x] : Fin 3 → PTm (n + 1)) := by
     funext i
     fin_cases i <;> rfl
-  simp only [prefixSyntax, BoundedSyntax.formula, BoundedSyntax.formula_subst,
-    Fm.subst_all, Fm.subst_imp, subst_lt, ConciseIPRA.PTm.subst_succ,
-    Syn.subst_var, Syn.up_zero, BoundedFormulas.subst_up_shift', Fm.subst_subst]
+  ipra_ind_simp [prefixSyntax, BoundedSyntax.formula, BoundedSyntax.formula_subst, Fm.subst_all, subst_lt, Syn.up_zero,
+    BoundedFormulas.subst_up_shift', Fm.subst_subst]
   rw [compose]
   rfl
 
@@ -281,9 +279,8 @@ def multipleStep (A : BoundedSyntax.BFm 3) (m : PR 3) (q : PR 4) (x : PTm n) : F
 @[simp] theorem subst_multipleStep {k : ℕ} (σ : Fin n → PTm k)
     (A : BoundedSyntax.BFm 3) (m : PR 3) (q : PR 4) (x : PTm n) :
     (multipleStep A m q x).subst σ = multipleStep A m q (Syn.subst σ x) := by
-  simp only [multipleStep, Fm.subst_all, Fm.subst_imp, subst_queries, subst_observe,
-    ConciseIPRA.PTm.subst_succ, Syn.subst_var, Syn.up_zero, Syn.up_succ,
-    Syn.subst_shift, Syn.shift_subst, Syn.up_one, Syn.shift_var, Fin.succ_zero_eq_one]
+  ipra_ind_simp [multipleStep, Fm.subst_all, subst_queries, subst_observe, Syn.up_zero, Syn.up_succ, Syn.subst_shift,
+    Syn.shift_subst, Syn.up_one, Syn.shift_var, Fin.succ_zero_eq_one]
 
 theorem multipleStep_at (A : BoundedSyntax.BFm 3) (m : PR 3) (q : PR 4) {x : PTm n}
     (h : Γ ⊢[PRAAx] multipleStep A m q x) (stage index : PTm n)

@@ -62,8 +62,7 @@ theorem res_congr {D D' q b : PTm n} (h : Γ ⊢[PRAAx] D ≐ D') : Γ ⊢[PRAAx
 
 theorem shift_res' (d h q b : PTm n) :
     Syn.shift (res (pw d h) q b) = res (pw (Syn.shift d) (Syn.shift h)) (Syn.shift q) (Syn.shift b) := by
-  simp only [Syn.shift, PTm.subst_mul, PTm.subst_add, PTm.subst_monus, LeanProofs.IPRA.PTm.subst_pred, subst_eqb,
-    subst_ex2, subst_ap2, Bezout.subst_cur, ConciseIPRA.PTm.subst_succ, ConciseIPRA.PTm.subst_zero]
+  ipra_ind_simp [Syn.shift, subst_eqb, subst_ex2, subst_ap2, Bezout.subst_cur]
 
 /-! ## The column and row bodies -/
 
@@ -96,17 +95,13 @@ theorem inst2_Rt (m P : PTm n) :
 theorem GtC_eval (m N q b h y : PTm n) :
     Syn.subst ![m, N, q, b, h, y] (GtC a) = eqb (gcd (pw m h) q) one *
       Apre (mask a) (quo N (pw m h)) (pairT (pairT q (res (pw m h) q b)) y) := by
-  simp only [GtC, PTm.subst_mul, PTm.subst_add, PTm.subst_monus, LeanProofs.IPRA.PTm.subst_pred, subst_eqb,
-    subst_ex2, subst_ap2, subst_pairT, Bezout.subst_cur, ConciseIPRA.PTm.subst_succ, ConciseIPRA.PTm.subst_zero,
-    Syn.subst_var]
+  ipra_ind_simp [GtC, subst_eqb, subst_ex2, subst_ap2, subst_pairT, Bezout.subst_cur]
   rfl
 
 theorem RtC_eval (m N q b h y : PTm n) :
     Syn.subst ![m, N, q, b, h, y] (RtC a) = eqb (gcd (pw m h) q) one *
       MB a (quo N (pw m h)) q (res (pw m h) q b) h y := by
-  simp only [RtC, PTm.subst_mul, PTm.subst_add, PTm.subst_monus, LeanProofs.IPRA.PTm.subst_pred, subst_eqb,
-    subst_ex2, subst_ap2, subst_pairT, Bezout.subst_cur, ConciseIPRA.PTm.subst_succ, ConciseIPRA.PTm.subst_zero,
-    Syn.subst_var]
+  ipra_ind_simp [RtC, subst_eqb, subst_ex2, subst_ap2, subst_pairT, Bezout.subst_cur]
   rfl
 
 theorem proj_eqs (N q b h y : PTm n) :

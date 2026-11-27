@@ -92,8 +92,7 @@ alias pred_lt := Common.pred_lt
 alias mul_one'' := Common.mul_one_right
 
 theorem shift_res0 (l q a : PTm n) : Syn.shift (res l q a) = res (Syn.shift l) (Syn.shift q) (Syn.shift a) := by
-  simp only [Syn.shift, PTm.subst_mul, PTm.subst_add, PTm.subst_monus, LeanProofs.IPRA.PTm.subst_pred, subst_eqb,
-    subst_ex2, subst_ap2, Bezout.subst_cur, ConciseIPRA.PTm.subst_succ, ConciseIPRA.PTm.subst_zero]
+  ipra_ind_simp [Syn.shift, subst_eqb, subst_ex2, subst_ap2, Bezout.subst_cur]
 
 /-- `X R + D R = X + D` for `R = 1`. -/
 theorem one_fold {X D R : PTm n} (h : Γ ⊢[PRAAx] R ≐ one) : Γ ⊢[PRAAx] X * R + D * R ≐ X + D := by

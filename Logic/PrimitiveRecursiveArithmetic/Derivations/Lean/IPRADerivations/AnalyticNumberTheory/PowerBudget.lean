@@ -48,8 +48,7 @@ abbrev Budget (z X : PTm n) : Fm PTm n :=
   Fm.all (le (succ (var 0) * inst2 v (var 0) (Syn.shift z)) (Syn.shift X))
 
 theorem budget_shift (z X : PTm n) : Fm.shift (Budget v z X) = Budget v (Syn.shift z) (Syn.shift X) := by
-  simp only [Budget, Fm.shift, Fm.subst_all, subst_le, PTm.subst_mul, ConciseIPRA.PTm.subst_succ, Syn.subst_var,
-    Syn.up_zero, subst_inst2, subst_up_shift_pal]
+  ipra_ind_simp [Budget, Fm.shift, Fm.subst_all, subst_le, Syn.up_zero, subst_inst2, subst_up_shift_pal]
   rfl
 
 theorem budget_at {z X : PTm n} (hv : Γ ⊢[PRAAx] Budget v z X) (t : PTm n) :

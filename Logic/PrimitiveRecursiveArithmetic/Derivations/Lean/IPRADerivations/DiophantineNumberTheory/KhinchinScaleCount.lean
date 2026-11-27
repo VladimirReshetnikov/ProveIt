@@ -54,16 +54,14 @@ def gS : PTm 3 :=
 
 /-- The flattened body is the activity body. -/
 theorem acB_eq : acB actK = flB gS := by
-  simp only [acB, actK, dec, actC, qC, flB, gS, actv, inJT, Signum.sg, gcd, PTm.subst_mul, PTm.subst_monus,
-    PTm.subst_add, subst_ex2, subst_ap2, subst_eqb, Syn.subst_var, ConciseIPRA.PTm.subst_succ,
-    ConciseIPRA.PTm.subst_zero, subst_fstT, subst_sndT]
+  ipra_ind_simp [acB, actK, dec, actC, qC, flB, gS, actv, inJT, Signum.sg, gcd, subst_ex2, subst_ap2, subst_eqb,
+    subst_fstT, subst_sndT]
   try rfl
 
 theorem inst3_gS (i p x : PTm n) :
     inst3 gS i p x = sg (actv p (succ (fstT x + i)) (fstT (sndT (sndT x))) (fstT (sndT (sndT (sndT x))))
       (sndT (sndT (sndT (sndT x))))) := by
-  simp only [inst3, gS, actv, inJT, Signum.sg, gcd, PTm.subst_mul, PTm.subst_monus, PTm.subst_add, subst_ex2, subst_eqb,
-    Syn.subst_var, ConciseIPRA.PTm.subst_succ, ConciseIPRA.PTm.subst_zero, subst_fstT, subst_sndT]
+  ipra_ind_simp [inst3, gS, actv, inJT, Signum.sg, gcd, subst_ex2, subst_eqb, subst_fstT, subst_sndT]
   try rfl
 
 /-- A row term at an explicit tail. -/

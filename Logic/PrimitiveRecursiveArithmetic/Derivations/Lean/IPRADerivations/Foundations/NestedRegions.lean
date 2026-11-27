@@ -48,8 +48,7 @@ def ball (B : BallCodes) (k z x : PTm n) : Fm PTm n :=
 @[simp] theorem subst_ball (B : BallCodes) (k z x : PTm n) (σ : Fin n → PTm m) :
     (ball B k z x).subst σ =
       ball B (Syn.subst σ k) (Syn.subst σ z) (Syn.subst σ x) := by
-  simp only [ball, Fm.subst_and, Fm.subst_eq, subst_le, PTm.subst_mul,
-    subst_ap2, subst_ap3, ConciseIPRA.PTm.subst_succ, ConciseIPRA.PTm.subst_zero]
+  ipra_ind_simp [ball, subst_le, subst_ap2, subst_ap3]
 
 theorem ball_QF (B : BallCodes) (k z x : PTm n) : (ball B k z x).QF := ⟨trivial, le_QF _ _⟩
 
@@ -60,9 +59,8 @@ def nesting (B : BallCodes) (x : PTm n) : Fm PTm n :=
 
 @[simp] theorem subst_nesting (B : BallCodes) (x : PTm n) (σ : Fin n → PTm m) :
     (nesting B x).subst σ = nesting B (Syn.subst σ x) := by
-  simp only [nesting, Fm.subst_all, Fm.subst_imp, subst_ball, Syn.subst_var,
-    Syn.up_zero, Syn.up_succ, Syn.up_one, Syn.shift_var, Fin.succ_zero_eq_one, Syn.subst_shift, Syn.shift_subst,
-    ConciseIPRA.PTm.subst_succ]
+  ipra_ind_simp [nesting, Fm.subst_all, subst_ball, Syn.up_zero, Syn.up_succ, Syn.up_one, Syn.shift_var,
+    Fin.succ_zero_eq_one, Syn.subst_shift, Syn.shift_subst]
 
 theorem nesting_at (B : BallCodes) (k z x : PTm n)
     (h : Γ ⊢[PRAAx] nesting B x) :

@@ -66,8 +66,7 @@ abbrev chB : PTm 2 := sg (monus (quo (var 1) (succ (var 0))) (quo (var 1) (succ 
 
 theorem inst2_chB (i N : PTm n) :
     inst2 chB i N = sg (monus (quo N (succ i)) (quo N (succ (succ i)))) := by
-  simp only [inst2, PTm.subst_monus, subst_ap2, Syn.subst_var, Matrix.cons_val_zero, Matrix.cons_val_one,
-    ConciseIPRA.PTm.subst_succ, ConciseIPRA.PTm.subst_zero]
+  ipra_ind_simp [inst2, subst_ap2, Matrix.cons_val_zero, Matrix.cons_val_one]
 
 /-- The number of changes among the indices `i < x`. -/
 abbrev Dc (x N : PTm n) : PTm n := ap2 (sumF chB) x N

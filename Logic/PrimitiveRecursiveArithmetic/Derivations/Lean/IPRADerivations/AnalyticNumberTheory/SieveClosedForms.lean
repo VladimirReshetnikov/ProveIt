@@ -58,17 +58,14 @@ theorem e_alg (c1 c2 sd gd se ge Ud Ve q d e : PTm n) :
 def gU (U : PTm 2) : PTm 2 := eqb (gcd (var 0) (fstT (var 1))) one * U
 
 theorem inst2_gU (U : PTm 2) (d P : PTm n) : inst2 (gU U) d P = eqb (gcd d (fstT P)) one * inst2 U d P := by
-  simp only [inst2, gU, LeanProofs.IPRA.PTm.subst_mul, subst_eqb, subst_gcd', subst_fstT, Syn.subst_var,
-    Matrix.cons_val_zero, Matrix.cons_val_one, ConciseIPRA.PTm.subst_succ, ConciseIPRA.PTm.subst_zero]
+  ipra_ind_simp [inst2, gU, subst_eqb, subst_gcd', subst_fstT, Matrix.cons_val_zero, Matrix.cons_val_one]
 
 /-- `[e ≥ 1][gcd(e, q) = 1] V(e, P)` over `0 = e`, `1 = P`. -/
 def sgV (V : PTm 2) : PTm 2 := (sg (var 0) * eqb (gcd (var 0) (fstT (var 1))) one) * V
 
 theorem inst2_sgV (V : PTm 2) (e P : PTm n) :
     inst2 (sgV V) e P = (sg e * eqb (gcd e (fstT P)) one) * inst2 V e P := by
-  simp only [inst2, sgV, LeanProofs.IPRA.PTm.subst_mul, subst_eqb, LeanProofs.IPRA.PTm.subst_monus, subst_gcd',
-    subst_fstT, Syn.subst_var, Matrix.cons_val_zero, Matrix.cons_val_one, ConciseIPRA.PTm.subst_succ,
-    ConciseIPRA.PTm.subst_zero]
+  ipra_ind_simp [inst2, sgV, subst_eqb, subst_gcd', subst_fstT, Matrix.cons_val_zero, Matrix.cons_val_one]
 
 /-- `χ · X` as a term in the parameter `y = ⟨X, P⟩`. -/
 def kC : PTm 1 :=
@@ -77,9 +74,7 @@ def kC : PTm 1 :=
 
 theorem at1_kC (y : PTm n) : at1 kC y =
     (eqb (monus one (fstT (sndT y))) zero * eqb (gcd (fstT (sndT (sndT y))) (fstT (sndT y))) one) * fstT y := by
-  simp only [at1, kC, LeanProofs.IPRA.PTm.subst_mul, subst_eqb, LeanProofs.IPRA.PTm.subst_monus, subst_gcd',
-    subst_fstT, subst_sndT, Syn.subst_var, Matrix.cons_val_zero, ConciseIPRA.PTm.subst_succ,
-    ConciseIPRA.PTm.subst_zero]
+  ipra_ind_simp [at1, kC, subst_eqb, subst_gcd', subst_fstT, subst_sndT, Matrix.cons_val_zero]
 
 section Forms
 

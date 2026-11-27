@@ -80,8 +80,7 @@ abbrev presF (x : PTm n) : Fm PTm n :=
     (inst2 inv (inst2 step (var 0) (Syn.shift x)) (Syn.shift x) ≐ one))
 
 theorem shift_presF (x : PTm n) : Fm.shift (presF step inv x) = presF step inv (Syn.shift x) := by
-  simp only [Fm.shift, Fm.subst_all, Fm.subst_imp, Fm.subst_eq, subst_inst2, Syn.subst_var, Syn.up_zero,
-    subst_up_shift', ConciseIPRA.PTm.subst_succ, ConciseIPRA.PTm.subst_zero]
+  ipra_ind_simp [Fm.shift, Fm.subst_all, subst_inst2, Syn.up_zero, subst_up_shift']
   rfl
 
 /-- The preservation hypothesis at a state `s`. -/

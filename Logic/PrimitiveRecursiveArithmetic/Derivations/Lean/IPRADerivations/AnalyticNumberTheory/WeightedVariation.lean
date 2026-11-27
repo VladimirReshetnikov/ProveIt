@@ -148,11 +148,11 @@ abbrev nabsB : PTm 2 := var 0 * absd gB (Syn.subst ![succ (var 0), var 1] gB)
 abbrev ndhB : PTm 2 := var 0 * monus hB (Syn.subst ![succ (var 0), var 1] hB)
 
 theorem inst2_nabs (k z : PTm n) : inst2 nabsB k z = k * absd (inst2 gB k z) (inst2 gB (succ k) z) := by
-  simp only [nabsB, inst2, PTm.subst_mul, PTm.subst_add, PTm.subst_monus, Syn.subst_var]
+  ipra_ind_simp [nabsB, inst2]
   rw [inst2_g1]; simp [inst2]
 
 theorem inst2_ndh (k z : PTm n) : inst2 ndhB k z = k * monus (inst2 hB k z) (inst2 hB (succ k) z) := by
-  simp only [ndhB, inst2, PTm.subst_mul, PTm.subst_monus, Syn.subst_var]
+  ipra_ind_simp [ndhB, inst2]
   rw [inst2_g1]; simp [inst2]
 
 theorem var_pt {x K L : PTm n} (k : PTm n) :

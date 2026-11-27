@@ -44,7 +44,7 @@ theorem gv_congr_all (f g : PTm 2) {N x y : PTm k}
     Γ ⊢[PRAAx] Fm.all (le (var 0) (Syn.shift N) ⟶ gv f (var 0) (Syn.shift x) ≐ gv g (var 0) (Syn.shift y)) := by
   refine qfIndAllUpTo N trivial ?_ ?_
   · simpa using (gv_zero (Γ := Γ) f x).eqTrans (gv_zero g y).eqSymm
-  · simp only [Fm.subst_eq, subst_ap2, Syn.subst_var, Syn.repl_zero, subst_repl_shift]
+  · ipra_ind_simp [subst_ap2, subst_repl_shift]
     refine .impI ?_
     let Δ := lt (var 0) (Syn.shift N) ::
       (gv f (var 0) (Syn.shift x) ≐ gv g (var 0) (Syn.shift y)) :: Γ.map Fm.shift

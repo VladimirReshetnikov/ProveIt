@@ -55,9 +55,9 @@ theorem replay {T u : PTm n}
       (Run init step₁ (var 0) (Syn.shift u) ≐ Run init step₂ (var 0) (Syn.shift u))) := by
   refine guarded_loop_all
     (Run init step₁ (var 0) (Syn.shift u) ≐ Run init step₂ (var 0) (Syn.shift u)) trivial T ?_ ?_
-  · simp only [Fm.subst_eq, subst_ap2, Syn.subst_var, Syn.inst_zero, Syn.subst_inst_shift]
+  · ipra_ind_simp [subst_ap2, Syn.subst_inst_shift]
     exact (run_zero u).eqTrans (run_zero u).eqSymm
-  · simp only [Fm.subst_eq, subst_ap2, Syn.subst_var, Syn.repl_zero, subst_repl_shift]
+  · ipra_ind_simp [subst_ap2, subst_repl_shift]
     exact replay_step (Prf.impE hagree.allOpen.wk.wk Prf.hyp0) Prf.hyp1
 
 /-- The two runs agree at every stage `t ≤ T`. -/

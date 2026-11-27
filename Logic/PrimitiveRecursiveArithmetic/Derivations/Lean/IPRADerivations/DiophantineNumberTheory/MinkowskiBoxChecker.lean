@@ -95,18 +95,15 @@ theorem certificate_formula (N B : PTm n) : formula (certificateSyntax N B) = bo
 
 @[simp] theorem subst_boxShapes {k : ℕ} (σ : Fin n → PTm k) (N B : PTm n) :
     (boxShapes N B).subst σ = boxShapes (Syn.subst σ N) (Syn.subst σ B) := by
-  simp only [boxShapes,Fm.subst_and,Fm.subst_eq,Fm.subst_all,Fm.subst_imp,
-    subst_lt,subst_entry,subst_sequence,subst_length,subst_pairT,
-    MinkowskiRationalBoxes.subst_lowerRow,MinkowskiRationalBoxes.subst_upperRow,
-    MinkowskiWellFormed.subst_vectorGuard,Syn.subst_var,Syn.up_zero,Syn.up_succ,
-    Syn.subst_shift,Syn.shift_subst]
+  ipra_ind_simp [boxShapes, Fm.subst_all, subst_lt, subst_entry, subst_sequence, subst_length, subst_pairT,
+    MinkowskiRationalBoxes.subst_lowerRow, MinkowskiRationalBoxes.subst_upperRow, MinkowskiWellFormed.subst_vectorGuard,
+    Syn.up_zero, Syn.up_succ, Syn.subst_shift, Syn.shift_subst]
 
 @[simp] theorem subst_boxOK {k : ℕ} (σ : Fin n → PTm k) (N B : PTm n) :
     (boxOK N B).subst σ = boxOK (Syn.subst σ N) (Syn.subst σ B) := by
-  simp only [boxOK,Fm.subst_and,subst_le,subst_lt,subst_length,subst_boxShapes,
-    MinkowskiRationalBoxes.subst_rationalSides,MinkowskiRationalBoxes.subst_rationalDisjoint,
-    MinkowskiRationalContent.subst_contentNumerator,MinkowskiRationalContent.subst_contentDenominator,
-    ConciseIPRA.PTm.subst_zero,ConciseIPRA.PTm.subst_succ]
+  ipra_ind_simp [boxOK, subst_le, subst_lt, subst_length, subst_boxShapes, MinkowskiRationalBoxes.subst_rationalSides,
+    MinkowskiRationalBoxes.subst_rationalDisjoint, MinkowskiRationalContent.subst_contentNumerator,
+    MinkowskiRationalContent.subst_contentDenominator]
 
 def checkerF : PR 2 := bitF (certificateSyntax (var 0) (var 1) : BFm 2)
 def check (N B : PTm n) : PTm n := ap2 checkerF N B

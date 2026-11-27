@@ -102,8 +102,7 @@ abbrev vB : PTm 2 :=
 
 theorem inst2_v (m q : PTm n) :
     inst2 vB m q = sg m * (eqb (gcd m q) one * sg (rem (pw (Aq m q) m) m)) := by
-  simp only [inst2, PTm.subst_mul, PTm.subst_monus, subst_eqb, subst_ex2, subst_ap2, Syn.subst_var,
-    Matrix.cons_val_zero, Matrix.cons_val_one, ConciseIPRA.PTm.subst_succ, ConciseIPRA.PTm.subst_zero]
+  ipra_ind_simp [inst2, subst_eqb, subst_ex2, subst_ap2, Matrix.cons_val_zero, Matrix.cons_val_one]
 
 theorem bits_alg {s b X : PTm n} (hs : Γ ⊢[PRAAx] s ≐ one) (hb : Γ ⊢[PRAAx] b ≐ one)
     (h : Γ ⊢[PRAAx] s * (b * X) ≐ zero) : Γ ⊢[PRAAx] X ≐ zero := by
@@ -178,8 +177,8 @@ abbrev hqB : PTm 2 := sg (var 0) * (eqb (gcd (var 0) (fstT (var 1))) one * quo (
 
 theorem inst2_hq (m y : PTm n) :
     inst2 hqB m y = sg m * (eqb (gcd m (fstT y)) one * quo (sndT y) m) := by
-  simp only [inst2, PTm.subst_mul, PTm.subst_monus, subst_eqb, subst_ex2, subst_ap2, subst_fstT, subst_sndT,
-    Syn.subst_var, Matrix.cons_val_zero, Matrix.cons_val_one, ConciseIPRA.PTm.subst_succ, ConciseIPRA.PTm.subst_zero]
+  ipra_ind_simp [inst2, subst_eqb, subst_ex2, subst_ap2, subst_fstT, subst_sndT, Matrix.cons_val_zero,
+    Matrix.cons_val_one]
 
 theorem hq_at (m q F : PTm n) :
     Γ ⊢[PRAAx] inst2 hqB m (pairT q F) ≐ sg m * (eqb (gcd m q) one * quo F m) := by

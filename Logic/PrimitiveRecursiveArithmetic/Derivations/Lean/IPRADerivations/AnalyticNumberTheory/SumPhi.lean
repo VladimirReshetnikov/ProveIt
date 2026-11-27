@@ -239,8 +239,7 @@ end Count
 abbrev dpB : PTm 2 := eqb (rem (var 1) (var 0)) zero * ap2 (sumF totBody) (var 0) (var 0)
 
 theorem inst2_dp (d N : PTm n) : inst2 dpB d N = eqb (rem N d) zero * phi d := by
-  simp only [inst2, PTm.subst_mul, subst_eqb, subst_ap2, Syn.subst_var, Matrix.cons_val_zero, Matrix.cons_val_one,
-    ConciseIPRA.PTm.subst_zero]
+  ipra_ind_simp [inst2, subst_eqb, subst_ap2, Matrix.cons_val_zero, Matrix.cons_val_one]
 
 /-- `thm:sum-phi` at an arbitrary `N ≥ 1`: `∑_{d ≤ N, d ∣ N} φ(d) = N`. -/
 theorem sum_phi_at {N : PTm n} (hN : Γ ⊢[PRAAx] N ≐ succ (pred N)) :

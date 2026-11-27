@@ -37,11 +37,11 @@ theorem contract (b c T : PTm n) (R : PTm (n + 1))
     (pw (Syn.shift c) (var 0) * Syn.shift (Syn.subst (Syn.inst zero) R))
   have atEnd : Γ ⊢[PRAAx] P.subst (Syn.inst T) := by
     refine qfIndUpTo T (le_QF _ _) ?_ ?_
-    · simp only [P, subst_le, subst_ap2, PTm.subst_mul, Syn.subst_var, Syn.inst_zero, Syn.subst_inst_shift]
+    · ipra_ind_simp [P, subst_le, subst_ap2, Syn.subst_inst_shift]
       have eb := natEq (pw_zero (Γ := Γ) b)
       have ec := natEq (pw_zero (Γ := Γ) c)
       ipra_le 0 with 𝔞 (Syn.subst (Syn.inst zero) R) * (ec - eb)
-    · simp only [P, subst_le, subst_ap2, PTm.subst_mul, Syn.subst_var, Syn.repl_zero, subst_repl_shift]
+    · ipra_ind_simp [P, subst_le, subst_ap2, subst_repl_shift]
       refine .impI ?_
       let Θ := lt (var 0) (Syn.shift T) :: P :: Γ.map Fm.shift
       have ih : Θ ⊢[PRAAx] P := Prf.hyp1

@@ -91,8 +91,7 @@ abbrev hB : PTm 2 := monus one (eqb (gcd (mS mB) (ap2 (prodF (mS mB)) (var 0) (v
 
 theorem inst2_h (j y : PTm n) :
     inst2 (hB mB) j y = monus one (eqb (gcd (inst2 (mS mB) j y) (L mB j y)) one) := by
-  simp only [inst2, hB, PTm.subst_monus, subst_eqb, subst_ex2, subst_ap2, Syn.subst_var, Matrix.cons_val_zero,
-    Matrix.cons_val_one, ConciseIPRA.PTm.subst_succ, ConciseIPRA.PTm.subst_zero]
+  ipra_ind_simp [inst2, hB, subst_eqb, subst_ex2, subst_ap2, Matrix.cons_val_zero, Matrix.cons_val_one]
 
 /-- `H K y = ∑_{j<K} [gcd(m_j, ∏_{i<j} m_i) ≠ 1]`. -/
 abbrev H (K y : PTm n) : PTm n := ap2 (sumF (hB mB)) K y
@@ -213,8 +212,7 @@ theorem extend_with_bound (B : PR 2)
   refine Prf.exE (crt_exists_at (positive K y) (m_pos mB K y) hc) ?_
   have hV' : Γ.map Fm.shift ⊢[PRAAx] V mB aB (Syn.shift x) (Syn.shift K) (Syn.shift y) ≐ zero := by
     simpa [Fm.shift, Syn.shift] using hV.shift
-  simp only [Fm.shift, Fm.subst_and, Fm.subst_eq, subst_lt, subst_ap2, subst_pairT, subst_inst2,
-    ConciseIPRA.PTm.subst_succ, ConciseIPRA.PTm.subst_zero, Syn.shift]
+  ipra_ind_simp [Fm.shift, subst_lt, subst_ap2, subst_pairT, subst_inst2, Syn.shift]
   exact found_with_bound mB aB B positive divides (Prf.andE₁ Prf.hyp0) (Prf.andE₂ Prf.hyp0) hV'.wk
 
 /-- A common solution `x` of `X K y` modulo `L K` and of `a_K` modulo `m_K` gives a solution of the first `K + 1`

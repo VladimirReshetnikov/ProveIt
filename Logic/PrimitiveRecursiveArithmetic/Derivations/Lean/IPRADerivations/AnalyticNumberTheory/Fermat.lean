@@ -84,8 +84,7 @@ theorem dvd_sum (f : PTm 2) {d' N x : PTm n}
   have atBound : Γ ⊢[PRAAx] P.subst (Syn.inst N) := by
     refine qfIndUpTo N trivial ?_ ?_
     · simpa [P] using dvd_congr (sum_zero (Γ := Γ) f x).eqSymm (dvd_zero d')
-    · simp only [P, Fm.subst_eq, subst_ap2, Syn.subst_var, Syn.repl_zero, subst_repl_shift,
-        ConciseIPRA.PTm.subst_succ, ConciseIPRA.PTm.subst_zero]
+    · ipra_ind_simp [P, subst_ap2, subst_repl_shift]
       exact .impI (dvd_congr (sum_succ' f (var 0) _).eqSymm
         (dvd_add Prf.hyp1 (.impE h.allOpen.wk.wk Prf.hyp0)))
   simpa [P] using atBound

@@ -118,17 +118,14 @@ private theorem euler_exists {N : PTm n} (hN : Γ ⊢[PRAAx] le one N)
     Γ ⊢[PRAAx] hasForm N := by
   unfold hasForm
   refine .exI (val two N) ?_
-  simp only [perfectForm, Fm.subst_and, Fm.subst_eq, subst_le, Fermat.subst_prime, subst_ap2,
-    PTm.subst_mul, PTm.subst_pred, Syn.subst_var, Syn.inst_zero, Syn.subst_inst_shift,
-    ConciseIPRA.PTm.subst_succ, ConciseIPRA.PTm.subst_zero]
+  ipra_ind_simp [perfectForm, subst_le, Fermat.subst_prime, subst_ap2, Syn.subst_inst_shift]
   exact euler_witness hN hEven hPerf
 
 private theorem euclid_exists {N : PTm n} (h : Γ ⊢[PRAAx] hasForm N) :
     Γ ⊢[PRAAx] sig N ≐ two * N := by
   unfold hasForm at h
   refine .exE h ?_
-  simp only [Fm.shift, Fm.subst_eq, subst_ap2, PTm.subst_mul,
-    ConciseIPRA.PTm.subst_succ, ConciseIPRA.PTm.subst_zero]
+  ipra_ind_simp [Fm.shift, subst_ap2]
   exact euclid_from_witness Prf.hyp0
 
 def characterizationFormula : Fm PTm 1 :=

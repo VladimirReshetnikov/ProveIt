@@ -40,8 +40,7 @@ def accepted (lower candidate : PTm n) : Fm PTm n :=
 
 @[simp] theorem subst_accepted {m : ℕ} (σ : Fin n → PTm m) (a i : PTm n) :
     (accepted a i).subst σ = accepted (Syn.subst σ a) (Syn.subst σ i) := by
-  simp only [accepted, Fm.subst_and, Fm.subst_eq, subst_le, subst_ap1,
-    ConciseIPRA.PTm.subst_zero]
+  ipra_ind_simp [accepted, subst_le, subst_ap1]
 
 theorem verifier_correct (a i : PTm n) :
     Γ ⊢[PRAAx] Fm.iff (ap2 verifier a i ≐ one) (accepted a i) := by

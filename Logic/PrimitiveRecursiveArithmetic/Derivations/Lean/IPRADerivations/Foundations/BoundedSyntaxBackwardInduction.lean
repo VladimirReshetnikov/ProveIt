@@ -103,11 +103,9 @@ theorem reverse_induction (A : BFm (n+1)) (N : PTm n)
     (hTerminal : Γ ⊢[PRAAx] (formula A).subst (Syn.inst N))
     (hStep : Γ ⊢[PRAAx] localStep A N) : Γ ⊢[PRAAx] .all (formula (reverseSyntax A N)) := by
   apply BoundedSyntaxInduction.induction
-  · simp only [reverse_formula, Fm.subst_imp, subst_le, Syn.subst_var, Syn.inst_zero, Syn.subst_inst_shift, repl_inst,
-      PTm.subst_monus]
+  · ipra_ind_simp [reverse_formula, subst_le, Syn.subst_inst_shift, repl_inst]
     exact .impI (inst_congr (formula A) (monus_zero N).eqSymm hTerminal.wk)
-  · simp only [reverse_formula,Fm.subst_imp,subst_le,Syn.subst_var,Syn.repl_zero,
-      subst_repl_shift,repl_repl,PTm.subst_monus]
+  · ipra_ind_simp [reverse_formula, subst_le, subst_repl_shift, repl_repl]
     refine .impI ?_
     let Δ := le (succ (var 0)) (Syn.shift N) ::
       (le (var 0) (Syn.shift N) ⟶ (formula A).subst (repl (monus (Syn.shift N) (var 0)))) :: Γ.map Fm.shift

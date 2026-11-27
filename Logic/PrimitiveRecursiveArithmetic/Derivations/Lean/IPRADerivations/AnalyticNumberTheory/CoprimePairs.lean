@@ -33,8 +33,7 @@ variable {n : ℕ} {Γ : List (Fm PTm n)}
 abbrev gB3 : PTm 3 := (sg (var 0) * sg (var 1)) * eqb (gcd (var 0) (var 1)) one
 
 theorem inst3_g (i j x : PTm n) : inst3 gB3 i j x = (sg i * sg j) * eqb (gcd i j) one := by
-  simp only [inst3, PTm.subst_mul, PTm.subst_monus, subst_eqb, subst_ex2, Syn.subst_var, Matrix.cons_val_zero,
-    Matrix.cons_val_one, ConciseIPRA.PTm.subst_succ, ConciseIPRA.PTm.subst_zero]
+  ipra_ind_simp [inst3, subst_eqb, subst_ex2, Matrix.cons_val_zero, Matrix.cons_val_one]
 
 theorem cop_symm (i j : PTm n) :
     Γ ⊢[PRAAx] (sg i * sg j) * eqb (gcd i j) one ≐ (sg j * sg i) * eqb (gcd j i) one := by

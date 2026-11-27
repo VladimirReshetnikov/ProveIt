@@ -95,11 +95,9 @@ theorem descent_fuel (ρ : PTm 2) (N x : PTm n)
   let P : Fm PTm (n + 1) := le (inst2 ρ (var 0) (Syn.shift x) + var 0) (inst2 ρ zero (Syn.shift x))
   have atEnd : Γ ⊢[PRAAx] P.subst (Syn.inst N) := by
     refine qfIndUpTo N (le_QF _ _) ?_ ?_
-    · simp only [P, subst_le, subst_inst2, PTm.subst_add, Syn.subst_var, Syn.inst_zero,
-        Syn.subst_inst_shift, ConciseIPRA.PTm.subst_zero]
+    · ipra_ind_simp [P, subst_le, subst_inst2, Syn.subst_inst_shift]
       ipra_le 0
-    · simp only [P, subst_le, subst_inst2, PTm.subst_add, Syn.subst_var, Syn.repl_zero,
-        subst_repl_shift, ConciseIPRA.PTm.subst_zero]
+    · ipra_ind_simp [P, subst_le, subst_inst2, subst_repl_shift]
       refine .impI ?_
       let Δ := lt (var 0) (Syn.shift N) :: P :: Γ.map Fm.shift
       have hd' : Δ ⊢[PRAAx] le (succ (inst2 ρ (succ (var 0)) (Syn.shift x))) (inst2 ρ (var 0) (Syn.shift x)) :=

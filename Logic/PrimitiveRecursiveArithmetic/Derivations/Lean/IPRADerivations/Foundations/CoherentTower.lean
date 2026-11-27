@@ -266,8 +266,7 @@ theorem binary_lifting : binary.Lifting := by
     rw [binary_bd] at h
     exact h
   refine .exI a ?_
-  simp only [Fm.subst_and, subst_lt, subst_neg, Fm.subst_eq, subst_inst2, Syn.subst_var,
-    Syn.inst_zero, Syn.subst_inst_shift, ConciseIPRA.PTm.subst_succ, ConciseIPRA.PTm.subst_zero]
+  ipra_ind_simp [subst_lt, subst_neg, subst_inst2, Syn.subst_inst_shift]
   rw [binary_bd, binary_V, binary_p]
   exact .andI (lt_pw_succ ha) (.andI (.impI (one_ne_zero _ Prf.hyp0))
     (rem_of_lt (pw_pos' two_pos n) ha))

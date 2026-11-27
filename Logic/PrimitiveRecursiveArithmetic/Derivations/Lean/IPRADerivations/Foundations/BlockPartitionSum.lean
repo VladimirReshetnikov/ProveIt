@@ -49,9 +49,9 @@ theorem block_sum (f e : PTm 2) (G x : PTm n) (h0 : Γ ⊢[PRAAx] inst2 e zero x
       ap2 (sumF (blockB f e)) (var 0) (Syn.shift x)
   have atBound : Γ ⊢[PRAAx] P.subst (Syn.inst G) := by
     refine qfIndUpTo G trivial ?_ ?_
-    · simp only [P, Fm.subst_eq, subst_ap2, subst_inst2, Syn.subst_var, Syn.inst_zero, Syn.subst_inst_shift]
+    · ipra_ind_simp [P, subst_ap2, subst_inst2, Syn.subst_inst_shift]
       exact ((congrAp2 (sumF f) h0 (.eqRefl _)).eqTrans (sum_zero f x)).eqTrans (sum_zero _ x).eqSymm
-    · simp only [P, Fm.subst_eq, subst_ap2, subst_inst2, Syn.subst_var, Syn.repl_zero, subst_repl_shift]
+    · ipra_ind_simp [P, subst_ap2, subst_inst2, subst_repl_shift]
       refine .impI ?_
       let Θ := lt (var 0) (Syn.shift G) :: P :: Γ.map Fm.shift
       have mono : Θ ⊢[PRAAx] le (inst2 e (var 0) (Syn.shift x)) (inst2 e (succ (var 0)) (Syn.shift x)) :=

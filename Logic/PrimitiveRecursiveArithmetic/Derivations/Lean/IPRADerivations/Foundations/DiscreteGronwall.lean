@@ -63,8 +63,7 @@ theorem gronwall (e dl : PTm 2) (x N p q : PTm n) (hq : Γ ⊢[PRAAx] le q p)
   have atBound : Γ ⊢[PRAAx] P.subst (Syn.inst N) := by
     refine qfIndUpTo N (le_QF _ _) ?_ ?_
     · simpa [P] using g_base (Γ := Γ) e dl x p q
-    · simp only [P, subst_le, subst_ap2, subst_inst2, PTm.subst_add, PTm.subst_mul, Syn.subst_var,
-        Syn.repl_zero, subst_repl_shift, ConciseIPRA.PTm.subst_zero]
+    · ipra_ind_simp [P, subst_le, subst_ap2, subst_inst2, subst_repl_shift]
       have hq' := LeanProofs.IPRA.Order.shift_le hq
       exact .impI (g_step hq'.wk.wk (.impE h.allOpen.wk.wk Prf.hyp0) Prf.hyp1)
   simpa [P] using atBound

@@ -63,8 +63,7 @@ theorem inst2_c (i z : PTm n) :
     inst2 (cB mB aB) i z = monus one (eqb (rem (inst2 aB i (sndT z)) (g mB i (fstT z) (sndT z)))
       (rem (inst2 aB (fstT z) (sndT z)) (g mB i (fstT z) (sndT z)))) := by
   show Syn.subst ![i, z] (cB mB aB) = _
-  simp only [cB, PTm.subst_monus, subst_eqb, subst_ap2, subst_ex2, sub_fst, sub_snd,
-    ConciseIPRA.PTm.subst_succ, ConciseIPRA.PTm.subst_zero]
+  ipra_ind_simp [cB, subst_eqb, subst_ap2, subst_ex2, sub_fst, sub_snd]
   rfl
 
 theorem c_at (i j y : PTm n) :

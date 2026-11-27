@@ -62,8 +62,7 @@ theorem R_dvd {a b N : PTm n}
     refine qfIndUpTo N trivial ?_ ?_
     · simp only [P, subst_dvd, subst_ap2, Syn.subst_var, Syn.inst_zero, Syn.subst_inst_shift]
       exact (congrAp2 remF (prod_zero _ _) (prod_zero _ _)).eqTrans (dvd_self' one_pos')
-    · simp only [P, subst_dvd, subst_ap2, Syn.subst_var, Syn.repl_zero, subst_repl_shift,
-        ConciseIPRA.PTm.subst_zero, ConciseIPRA.PTm.subst_succ]
+    · ipra_ind_simp [P, subst_dvd, subst_ap2, subst_repl_shift]
       refine .impI ?_
       let C := lt (var 0) (Syn.shift N) :: P :: Γ.map Fm.shift
       have hb : C ⊢[PRAAx] lt (var 0) (Syn.shift N) ⟶ isP (var 0) ≐ one ⟶

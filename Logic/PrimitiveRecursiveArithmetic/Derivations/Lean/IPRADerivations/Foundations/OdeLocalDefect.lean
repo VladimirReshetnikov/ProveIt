@@ -67,13 +67,10 @@ theorem defect_sum (u e : PTm 2) {x A B K : PTm n}
   let P := DInv u e (Syn.shift x) (Syn.shift A) (Syn.shift B) (Syn.var 0)
   have atBound : Γ ⊢[PRAAx] P.subst (Syn.inst K) := by
     refine qfIndUpTo K (le_QF _ _) ?_ ?_
-    · simp only [P, subst_le, subst_ap2, subst_inst2, PTm.subst_add, PTm.subst_mul,
-        Syn.subst_var, Syn.inst_zero, Syn.subst_inst_shift, ConciseIPRA.PTm.subst_zero,
-        ConciseIPRA.PTm.subst_succ]
+    · ipra_ind_simp [P, subst_le, subst_ap2, subst_inst2, Syn.subst_inst_shift]
       have z := natEq (sum_zero (Γ := Γ) e x)
       ipra_le 0 using rw [z]; ring
-    · simp only [P, subst_le, subst_ap2, subst_inst2, PTm.subst_add, PTm.subst_mul, Syn.subst_var, Syn.repl_zero,
-        subst_repl_shift, ConciseIPRA.PTm.subst_zero, ConciseIPRA.PTm.subst_succ]
+    · ipra_ind_simp [P, subst_le, subst_ap2, subst_inst2, subst_repl_shift]
       exact .impI (defect_step (.impE hm.allOpen.wk.wk Prf.hyp0)
         (.impE hc.allOpen.wk.wk Prf.hyp0) Prf.hyp1)
   simpa [P] using atBound

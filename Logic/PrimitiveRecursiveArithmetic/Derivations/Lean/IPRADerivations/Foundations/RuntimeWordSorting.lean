@@ -261,7 +261,7 @@ theorem checker_preserved (m w j : PTm n) (hw : Γ ⊢[PRAAx] lt w (RuntimePermu
     refine PRA.qfInd _ trivial ?_ ?_
     · simpa only [Fm.subst_eq,RuntimePermutationWords.subst_permutationBit,subst_state,Syn.subst_var,Syn.inst_zero,Syn.subst_inst_shift] using
         checker_congr (.eqRefl m) (state_zero m w)
-    · simp only [Fm.subst_eq,RuntimePermutationWords.subst_permutationBit,subst_state,Syn.subst_var,Syn.repl_zero,subst_repl_shift]
+    · ipra_ind_simp [RuntimePermutationWords.subst_permutationBit, subst_state, subst_repl_shift]
       have hs : Γ.map Fm.shift ⊢[PRAAx] lt (Syn.shift w) (RuntimePermutationWords.horizon (Syn.shift m)) := by
         simpa only [Fm.shift,subst_lt,RuntimePermutationWords.subst_horizon,Syn.shift] using hw.shift
       exact (checker_congr (.eqRefl _) (state_succ _ _ _)).eqTrans
@@ -463,7 +463,7 @@ theorem state_from_inactive (m w j : PTm n) (h : Γ ⊢[PRAAx] inactive m w ≐ 
   have all : Γ ⊢[PRAAx] .all (state (Syn.shift m) (Syn.shift w) (var 0) ≐ Syn.shift w) := by
     refine PRA.qfInd _ trivial ?_ ?_
     · simpa only [Fm.subst_eq,subst_state,Syn.subst_var,Syn.inst_zero,Syn.subst_inst_shift] using state_zero m w
-    · simp only [Fm.subst_eq,subst_state,Syn.subst_var,Syn.repl_zero,subst_repl_shift]
+    · ipra_ind_simp [subst_state, subst_repl_shift]
       have hs : Γ.map Fm.shift ⊢[PRAAx] inactive (Syn.shift m) (Syn.shift w) ≐ one := by
         simpa only [Fm.shift,Fm.subst_eq,subst_inactive,one,ConciseIPRA.PTm.subst_succ,ConciseIPRA.PTm.subst_zero,Syn.shift] using h.shift
       exact (state_succ _ _ _).eqTrans ((sortStep_congr (.eqRefl _) Prf.hyp0).eqTrans (step_inactive _ _ hs.wk))

@@ -73,8 +73,7 @@ def kdF (Ψ Dm : PTm 2) (C x : PTm n) : Fm PTm n :=
 
 @[simp] theorem subst_kdF {m : ℕ} (σ : Fin n → PTm m) (Ψ Dm : PTm 2) (C x : PTm n) :
     (kdF Ψ Dm C x).subst σ = kdF Ψ Dm (Syn.subst σ C) (Syn.subst σ x) := by
-  simp only [kdF, Fm.subst_all, Fm.subst_imp, subst_le, subst_inst2, subst_ap2, PTm.subst_add,
-    ConciseIPRA.PTm.subst_succ, ConciseIPRA.PTm.subst_zero, Syn.subst_var, Syn.up_zero, subst_up_shift_pal]
+  ipra_ind_simp [kdF, Fm.subst_all, subst_le, subst_inst2, subst_ap2, Syn.up_zero, subst_up_shift_pal]
 
 theorem shift_kdF (Ψ Dm : PTm 2) (C x : PTm n) : Fm.shift (kdF Ψ Dm C x) = kdF Ψ Dm (Syn.shift C) (Syn.shift x) := by
   simp [Fm.shift, Syn.shift]

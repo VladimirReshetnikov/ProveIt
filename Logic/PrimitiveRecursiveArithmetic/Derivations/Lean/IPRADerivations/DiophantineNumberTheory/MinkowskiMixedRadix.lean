@@ -50,9 +50,8 @@ def positive (N W : PTm n) : Fm PTm n :=
 
 @[simp] theorem subst_positive {l : ℕ} (σ : Fin n → PTm l) (N W : PTm n) :
     (positive N W).subst σ = positive (Syn.subst σ N) (Syn.subst σ W) := by
-  simp only [positive, Fm.subst_all, Fm.subst_imp, subst_lt, subst_le, subst_entry,
-    ConciseIPRA.PTm.subst_succ, ConciseIPRA.PTm.subst_zero,
-    Syn.subst_var, Syn.up_zero, Syn.up_succ, Syn.subst_shift, Syn.shift_subst]
+  ipra_ind_simp [positive, Fm.subst_all, subst_lt, subst_le, subst_entry, Syn.up_zero, Syn.up_succ, Syn.subst_shift,
+    Syn.shift_subst]
 
 theorem positive_at (N W k : PTm n) (h : Γ ⊢[PRAAx] positive N W)
     (hk : Γ ⊢[PRAAx] lt k N) : Γ ⊢[PRAAx] le one (entry W k) := by
@@ -110,8 +109,8 @@ def digitsEqual (N W i j : PTm n) : Fm PTm n :=
 
 @[simp] theorem subst_digitsEqual {l : ℕ} (σ : Fin n → PTm l) (N W i j : PTm n) :
     (digitsEqual N W i j).subst σ = digitsEqual (Syn.subst σ N) (Syn.subst σ W) (Syn.subst σ i) (Syn.subst σ j) := by
-  simp only [digitsEqual, Fm.subst_all, Fm.subst_imp, Fm.subst_eq, subst_lt, subst_digit,
-    Syn.subst_var, Syn.up_zero, Syn.up_succ, Syn.subst_shift, Syn.shift_subst]
+  ipra_ind_simp [digitsEqual, Fm.subst_all, subst_lt, subst_digit, Syn.up_zero, Syn.up_succ, Syn.subst_shift,
+    Syn.shift_subst]
 
 theorem digitsEqual_at (N W i j k : PTm n) (h : Γ ⊢[PRAAx] digitsEqual N W i j)
     (hk : Γ ⊢[PRAAx] lt k N) : Γ ⊢[PRAAx] digit W i k ≐ digit W j k := by
@@ -129,12 +128,10 @@ theorem prefix_remainders_equal (N W i j : PTm n) (h : Γ ⊢[PRAAx] positive N 
     rem (Syn.shift i) (count (var 0) (Syn.shift W)) ≐ rem (Syn.shift j) (count (var 0) (Syn.shift W))
   have atBound : Γ ⊢[PRAAx] P.subst (Syn.inst N) := by
     refine qfIndUpTo N trivial ?_ ?_
-    · simp only [P, Fm.subst_eq, subst_ap2, subst_count, Syn.subst_var,
-        Syn.inst_zero, Syn.subst_inst_shift]
+    · ipra_ind_simp [P, subst_ap2, subst_count, Syn.subst_inst_shift]
       exact ((congrAp2 remF (.eqRefl _) (count_zero W)).eqTrans (rem_one i)).eqTrans
         ((congrAp2 remF (.eqRefl _) (count_zero W)).eqTrans (rem_one j)).eqSymm
-    · simp only [P, Fm.subst_eq, subst_ap2, subst_count, Syn.subst_var,
-        Syn.repl_zero, subst_repl_shift]
+    · ipra_ind_simp [P, subst_ap2, subst_count, subst_repl_shift]
       refine .impI ?_
       let Δ := lt (var 0) (Syn.shift N) :: P :: Γ.map Fm.shift
       have pos : Γ.map Fm.shift ⊢[PRAAx] positive (Syn.shift N) (Syn.shift W) := by

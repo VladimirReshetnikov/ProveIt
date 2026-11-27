@@ -35,8 +35,7 @@ abbrev phi (N : PTm n) : PTm n := ap2 (sumF totBody) N N
 abbrev mulBody : PTm 2 := eqb (rem (var 0) (var 1)) zero
 
 theorem inst2_tot (a x : PTm n) : inst2 totBody a x = eqb (gcd a x) one := by
-  simp only [inst2, subst_eqb, subst_ex2, Syn.subst_var, Matrix.cons_val_zero, Matrix.cons_val_one,
-    ConciseIPRA.PTm.subst_succ, ConciseIPRA.PTm.subst_zero]
+  ipra_ind_simp [inst2, subst_eqb, subst_ex2, Matrix.cons_val_zero, Matrix.cons_val_one]
 theorem inst2_mul (a x : PTm n) : inst2 mulBody a x = eqb (rem a x) zero := by simp [inst2]
 
 /-! ## Coprimality to powers -/

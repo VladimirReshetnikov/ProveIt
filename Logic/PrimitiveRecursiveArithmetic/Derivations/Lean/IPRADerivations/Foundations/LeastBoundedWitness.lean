@@ -90,8 +90,7 @@ theorem accepted_of_lt {N x : PTm n} (h : Γ ⊢[PRAAx] lt (mu f N x) N) :
 
 theorem exists_of_lt {N x : PTm n} (h : Γ ⊢[PRAAx] lt (mu f N x) N) : Γ ⊢[PRAAx] ExW f N x := by
   refine .exI (mu f N x) ?_
-  simp only [Fm.subst_and, Fm.subst_eq, subst_lt, subst_inst2, Syn.subst_var, Syn.inst_zero,
-    Syn.subst_inst_shift, ConciseIPRA.PTm.subst_zero]
+  ipra_ind_simp [subst_lt, subst_inst2, Syn.subst_inst_shift]
   exact .andI h (accepted_of_lt h)
 
 /-- From a bounded witness, given existentially: `μ < N` and `f(μ, x) = 0`. -/
@@ -101,7 +100,7 @@ theorem lt_of_exists {N x : PTm n} (h : Γ ⊢[PRAAx] ExW f N x) :
   have w : ((lt (var 0) (Syn.shift N) ⋏ (inst2 f (var 0) (Syn.shift x) ≐ zero)) :: Γ.map Fm.shift) ⊢[PRAAx]
       lt (var 0) (Syn.shift N) ⋏ (inst2 f (var 0) (Syn.shift x) ≐ zero) := Prf.hyp0
   have sf := search_found (Prf.andE₂ w) (Prf.andE₁ w)
-  simp only [Fm.shift, Fm.subst_and, Fm.subst_eq, subst_lt, subst_ap2, subst_inst2, ConciseIPRA.PTm.subst_zero]
+  ipra_ind_simp [Fm.shift, subst_lt, subst_ap2, subst_inst2]
   exact .andI (Prf.andE₁ sf) (Prf.andE₁ (Prf.andE₂ sf))
 
 /-- Minimality with the bounded universal quantifier: `∀ d < μ. f(d, x) ≠ 0`. -/
@@ -233,7 +232,7 @@ theorem witness_of_bound {N x : PTm n}
   have w : ((inst2 f (var 0) (Syn.shift x) ≐ zero) :: Γ.map Fm.shift) ⊢[PRAAx]
       inst2 f (var 0) (Syn.shift x) ≐ zero := Prf.hyp0
   have sf := search_found w (Prf.impE hb.allOpen.wk w)
-  simp only [Fm.shift, Fm.subst_and, Fm.subst_eq, subst_lt, subst_ap2, subst_inst2, ConciseIPRA.PTm.subst_zero]
+  ipra_ind_simp [Fm.shift, subst_lt, subst_ap2, subst_inst2]
   exact .andI (Prf.andE₁ sf) (Prf.andE₁ (Prf.andE₂ sf))
 
 /-- A height bound decides existence: `(∃ y. f(y, x) = 0) ∨ (∀ y. f(y, x) ≠ 0)`. -/
@@ -244,8 +243,7 @@ theorem decide_of_bound {N x : PTm n}
   refine .orE (decision (f := f) N x) (.orI₁ ?_) (.orI₂ ?_)
   · have w := lt_of_exists (Prf.hyp0 : (ExW f N x :: Γ) ⊢[PRAAx] ExW f N x)
     refine .exI (mu f N x) ?_
-    simp only [Fm.subst_eq, subst_inst2, Syn.subst_var, Syn.inst_zero, Syn.subst_inst_shift,
-      ConciseIPRA.PTm.subst_zero]
+    ipra_ind_simp [subst_inst2, Syn.subst_inst_shift]
     exact Prf.andE₂ w
   · have hN : (NoW f N x :: Γ) ⊢[PRAAx] NoW f N x := Prf.hyp0
     refine .allI (.impI ?_)

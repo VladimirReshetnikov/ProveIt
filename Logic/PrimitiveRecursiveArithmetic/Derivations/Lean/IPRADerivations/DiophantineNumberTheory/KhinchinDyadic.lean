@@ -72,13 +72,11 @@ theorem dyadic (Ψ : PTm 2) (K B x : PTm n)
       ap2 (sumF (dyB Ψ)) (var 0) (pairT (Syn.shift K) (Syn.shift x)))
   have atEnd : Γ ⊢[PRAAx] P.subst (Syn.inst B) := by
     refine qfIndUpTo B (le_QF _ _) ?_ ?_
-    · simp only [P, subst_le, subst_ap2, subst_pairT, PTm.subst_add, ConciseIPRA.PTm.subst_succ,
-        ConciseIPRA.PTm.subst_zero, Syn.subst_var, Syn.inst_zero, Syn.subst_inst_shift]
+    · ipra_ind_simp [P, subst_le, subst_ap2, subst_pairT, Syn.subst_inst_shift]
       have e1 := natEq (congrAp2 (Γ := Γ) (sumF Ψ) (congrPw2 (add_zero K)) (.eqRefl x))
       have e2 := natEq (sum_zero (Γ := Γ) (dyB Ψ) (pairT K x))
       ipra_le 0 with e2 - e1
-    · simp only [P, subst_le, subst_ap2, subst_pairT, PTm.subst_add, ConciseIPRA.PTm.subst_succ,
-        ConciseIPRA.PTm.subst_zero, Syn.subst_var, Syn.repl_zero, subst_repl_shift]
+    · ipra_ind_simp [P, subst_le, subst_ap2, subst_pairT, subst_repl_shift]
       refine .impI ?_
       let Θ := lt (var 0) (Syn.shift B) :: P :: Γ.map Fm.shift
       have ih : Θ ⊢[PRAAx] P := Prf.hyp1

@@ -57,17 +57,15 @@ def coordinatesLE (r a b : PTm n) : Fm PTm n :=
 
 @[simp] theorem subst_ordered {m : ℕ} (σ : Fin n → PTm m) (r a b : PTm n) :
     (ordered r a b).subst σ = ordered (Syn.subst σ r) (Syn.subst σ a) (Syn.subst σ b) := by
-  simp only [ordered, allB, Fm.subst_eq, subst_ap2, subst_pairT,
-    ConciseIPRA.PTm.subst_succ, ConciseIPRA.PTm.subst_zero]
+  ipra_ind_simp [ordered, allB, subst_ap2, subst_pairT]
 
 theorem ordered_QF (r a b : PTm n) : (ordered r a b).QF := trivial
 
 private theorem orderBody_at (i a b : PTm n) :
     Γ ⊢[PRAAx] inst2 orderBody i (pairT a b) ≐
       monus one (monus (entry a i) (entry b i)) := by
-  simp only [inst2, orderBody, PTm.subst_monus, MasterCertificate.subst_entry,
-    subst_fstT, subst_sndT, Syn.subst_var, Matrix.cons_val_zero, Matrix.cons_val_one,
-    ConciseIPRA.PTm.subst_succ, ConciseIPRA.PTm.subst_zero]
+  ipra_ind_simp [inst2, orderBody, MasterCertificate.subst_entry, subst_fstT, subst_sndT, Matrix.cons_val_zero,
+    Matrix.cons_val_one]
   exact congrMonus (.eqRefl _) (congrMonus
     (entry_congr (fst_pair _ _) (.eqRefl _))
     (entry_congr (snd_pair _ _) (.eqRefl _)))

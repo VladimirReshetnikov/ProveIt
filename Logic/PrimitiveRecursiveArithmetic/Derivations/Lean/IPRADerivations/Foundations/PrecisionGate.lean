@@ -61,12 +61,10 @@ theorem gate_all {E : PTm 2} {N x K δ : PTm n} (h0 : Γ ⊢[PRAAx] le (inst2 E 
     Γ ⊢[PRAAx] Fm.all (le (var 0) (Syn.shift N) ⟶
       le (inst2 E (var 0) (Syn.shift x)) (pw (succ (succ (Syn.shift K))) (var 0) * Syn.shift δ)) := by
   refine qfIndAllUpTo N (le_QF _ _) ?_ ?_
-  · simp only [subst_le, subst_ap2, subst_inst2, PTm.subst_mul, Syn.subst_var, Syn.inst_zero,
-      Syn.subst_inst_shift, ConciseIPRA.PTm.subst_zero, ConciseIPRA.PTm.subst_succ]
+  · ipra_ind_simp [subst_le, subst_ap2, subst_inst2, Syn.subst_inst_shift]
     have p0 := natEq (pw_zero (Γ := Γ) (succ (succ K)))
     ipra_le sl h0 using rw [p0]; ring
-  · simp only [subst_le, subst_ap2, subst_inst2, PTm.subst_mul, Syn.subst_var, Syn.repl_zero,
-      subst_repl_shift, ConciseIPRA.PTm.subst_zero, ConciseIPRA.PTm.subst_succ]
+  · ipra_ind_simp [subst_le, subst_ap2, subst_inst2, subst_repl_shift]
     exact .impI (gate_step (.impE hrec.allOpen.wk.wk Prf.hyp0) Prf.hyp1)
 
 /-- The error at a stage `j ≤ N`. -/
