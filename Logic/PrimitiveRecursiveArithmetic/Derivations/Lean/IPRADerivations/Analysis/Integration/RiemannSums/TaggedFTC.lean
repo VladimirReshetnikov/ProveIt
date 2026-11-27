@@ -98,30 +98,13 @@ theorem tagged_upper {ek ep N x : PTm n}
           inst2 Δ (var 0) (Syn.shift x) * Syn.shift ek +
           (num 4 + inst2 Δ (var 0) (Syn.shift x)) * Syn.shift ep))) :
     Γ ⊢[PRAAx] UInv G Hp Hm Δ ek ep N x := by
-  have hall : Γ ⊢[PRAAx] Fm.all (le (var 0) (Syn.shift N) ⟶
-      UInv G Hp Hm Δ (Syn.shift ek) (Syn.shift ep) (var 0) (Syn.shift x)) := by
-    refine PRA.qfInd _ ⟨le_QF _ _, le_QF _ _⟩ ?_ ?_
-    · have e : (le (var 0) (Syn.shift N) ⟶
-            UInv G Hp Hm Δ (Syn.shift ek) (Syn.shift ep) (var 0) (Syn.shift x)).subst (Syn.inst zero) =
-          (le zero N ⟶ UInv G Hp Hm Δ ek ep zero x) := by
-        simp
-      rw [e]
-      exact .impI (u_base G Hp Hm Δ ek ep x)
-    · have e : (le (var 0) (Syn.shift N) ⟶
-            UInv G Hp Hm Δ (Syn.shift ek) (Syn.shift ep) (var 0) (Syn.shift x)).subst
-            (Syn.repl (succ (var 0))) =
-          (le (succ (var 0)) (Syn.shift N) ⟶
-            UInv G Hp Hm Δ (Syn.shift ek) (Syn.shift ep) (succ (var 0)) (Syn.shift x)) := by
-        simp
-      rw [e]
-      exact .impI (u_guard G Hp Hm Δ Prf.hyp0 c.allOpen.wk.wk Prf.hyp1)
-  have a := Prf.allE N hall
-  have e : (le (var 0) (Syn.shift N) ⟶
-        UInv G Hp Hm Δ (Syn.shift ek) (Syn.shift ep) (var 0) (Syn.shift x)).subst (Syn.inst N) =
-      (le N N ⟶ UInv G Hp Hm Δ ek ep N x) := by
-    simp
-  rw [e] at a
-  exact Prf.impE a (le_refl N)
+  let P := UInv G Hp Hm Δ (Syn.shift ek) (Syn.shift ep) (var 0) (Syn.shift x)
+  have atBound : Γ ⊢[PRAAx] P.subst (Syn.inst N) := by
+    refine qfIndUpTo N (le_QF _ _) ?_ ?_
+    · simpa [P, UInv] using u_base (Γ := Γ) G Hp Hm Δ ek ep x
+    · ipra_ind_simp [P, UInv, subst_le, subst_ap2, subst_inst2, subst_repl_shift]
+      exact .impI (u_step G Hp Hm Δ (.impE c.allOpen.wk.wk Prf.hyp0) Prf.hyp1)
+  simpa [P, UInv] using atBound
 
 /-- `eq:taggedfinite`, lower side. -/
 theorem tagged_lower {ek ep N x : PTm n}
@@ -131,30 +114,13 @@ theorem tagged_lower {ek ep N x : PTm n}
           inst2 Δ (var 0) (Syn.shift x) * Syn.shift ek +
           (num 4 + inst2 Δ (var 0) (Syn.shift x)) * Syn.shift ep))) :
     Γ ⊢[PRAAx] LInv G Hp Hm Δ ek ep N x := by
-  have hall : Γ ⊢[PRAAx] Fm.all (le (var 0) (Syn.shift N) ⟶
-      LInv G Hp Hm Δ (Syn.shift ek) (Syn.shift ep) (var 0) (Syn.shift x)) := by
-    refine PRA.qfInd _ ⟨le_QF _ _, le_QF _ _⟩ ?_ ?_
-    · have e : (le (var 0) (Syn.shift N) ⟶
-            LInv G Hp Hm Δ (Syn.shift ek) (Syn.shift ep) (var 0) (Syn.shift x)).subst (Syn.inst zero) =
-          (le zero N ⟶ LInv G Hp Hm Δ ek ep zero x) := by
-        simp
-      rw [e]
-      exact .impI (l_base G Hp Hm Δ ek ep x)
-    · have e : (le (var 0) (Syn.shift N) ⟶
-            LInv G Hp Hm Δ (Syn.shift ek) (Syn.shift ep) (var 0) (Syn.shift x)).subst
-            (Syn.repl (succ (var 0))) =
-          (le (succ (var 0)) (Syn.shift N) ⟶
-            LInv G Hp Hm Δ (Syn.shift ek) (Syn.shift ep) (succ (var 0)) (Syn.shift x)) := by
-        simp
-      rw [e]
-      exact .impI (l_guard G Hp Hm Δ Prf.hyp0 c.allOpen.wk.wk Prf.hyp1)
-  have a := Prf.allE N hall
-  have e : (le (var 0) (Syn.shift N) ⟶
-        LInv G Hp Hm Δ (Syn.shift ek) (Syn.shift ep) (var 0) (Syn.shift x)).subst (Syn.inst N) =
-      (le N N ⟶ LInv G Hp Hm Δ ek ep N x) := by
-    simp
-  rw [e] at a
-  exact Prf.impE a (le_refl N)
+  let P := LInv G Hp Hm Δ (Syn.shift ek) (Syn.shift ep) (var 0) (Syn.shift x)
+  have atBound : Γ ⊢[PRAAx] P.subst (Syn.inst N) := by
+    refine qfIndUpTo N (le_QF _ _) ?_ ?_
+    · simpa [P, LInv] using l_base (Γ := Γ) G Hp Hm Δ ek ep x
+    · ipra_ind_simp [P, LInv, subst_le, subst_ap2, subst_inst2, subst_repl_shift]
+      exact .impI (l_step G Hp Hm Δ (.impE c.allOpen.wk.wk Prf.hyp0) Prf.hyp1)
+  simpa [P, LInv] using atBound
 
 end Tagged
 

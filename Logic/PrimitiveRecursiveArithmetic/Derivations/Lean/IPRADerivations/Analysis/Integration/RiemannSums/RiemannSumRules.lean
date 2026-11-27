@@ -72,17 +72,14 @@ theorem bound_guard {f : PTm 2} {k x M N : PTm n} (hkN : Γ ⊢[PRAAx] le (succ 
 theorem rs_bound {f : PTm 2} {N x M : PTm n}
     (h : Γ ⊢[PRAAx] Fm.all (lt (var 0) (Syn.shift N) ⟶ le (inst2 f (var 0) (Syn.shift x)) (Syn.shift M))) :
     Γ ⊢[PRAAx] le (ap2 (sumF f) N x) (N * M) := by
-  have hall : Γ ⊢[PRAAx] Fm.all (le (var 0) (Syn.shift N) ⟶
-      le (ap2 (sumF f) (var 0) (Syn.shift x)) (var 0 * Syn.shift M)) := by
-    ipra_qfind (⟨le_QF _ _, le_QF _ _⟩) [subst_le, subst_ap2]
-    · refine .impI ?_
-      have z := natEq (sum_zero (Γ := le zero N :: Γ) f x)
-      ipra_le 0 using rw [z]; ring
-    · exact .impI (bound_guard Prf.hyp0 (Prf.impE h.allOpen.wk.wk Prf.hyp0) Prf.hyp1)
-  have a := Prf.allE N hall
-  simp only [Fm.subst_imp, subst_le, subst_ap2, PTm.subst_mul, Syn.subst_var, Syn.inst_zero,
-    Syn.subst_inst_shift, ConciseIPRA.PTm.subst_zero, ConciseIPRA.PTm.subst_succ] at a
-  exact .impE a (le_refl N)
+  let P := le (ap2 (sumF f) (var 0) (Syn.shift x)) (var 0 * Syn.shift M)
+  have atBound : Γ ⊢[PRAAx] P.subst (Syn.inst N) := by
+    refine qfIndUpTo N (le_QF _ _) ?_ ?_
+    · ipra_ind_simp [P, subst_le, subst_ap2, Syn.subst_inst_shift]
+      exact le_congr (sum_zero f x).eqSymm (zero_mul M).eqSymm (le_refl zero)
+    · ipra_ind_simp [P, subst_le, subst_ap2, subst_repl_shift]
+      exact .impI (bound_step (.impE h.allOpen.wk.wk Prf.hyp0) Prf.hyp1)
+  simpa [P] using atBound
 
 /-! ## Comparison of integrands -/
 

@@ -212,62 +212,44 @@ theorem refDn_step {f : PTm 2} {k r x D : PTm n}
 `2 ∑_{i < N r} f(i) + D N r ≤ 2 r ∑_{k<N} f(k r) + D N r²`. -/
 theorem refine_upper (f : PTm 2) (x N r D : PTm n) (h : Γ ⊢[PRAAx] StepUp f x (N * r) D) :
     Γ ⊢[PRAAx] RefUp f N r x D := by
-  have hall : Γ ⊢[PRAAx] Fm.all (le (var 0) (Syn.shift N) ⟶
-      RefUp f (var 0) (Syn.shift r) (Syn.shift x) (Syn.shift D)) := by
-    ipra_qfind (⟨le_QF _ _, le_QF _ _⟩) [subst_le, subst_ap2, subst_pairT]
-    · exact .impI (refUp_base f r x D)
-    · refine .impI ?_
-      have hk : (le (succ (var 0)) (Syn.shift N) ::
-          (le (var 0) (Syn.shift N) ⟶ RefUp f (var 0) (Syn.shift r) (Syn.shift x) (Syn.shift D)) ::
-          Γ.map Fm.shift) ⊢[PRAAx] le (succ (var 0)) (Syn.shift N) := Prf.hyp0
-      have ih := Prf.impE Prf.hyp1 (le_trans (le_succ_self _) hk)
-      have h' : (le (succ (var 0)) (Syn.shift N) ::
-          (le (var 0) (Syn.shift N) ⟶ RefUp f (var 0) (Syn.shift r) (Syn.shift x) (Syn.shift D)) ::
-          Γ.map Fm.shift) ⊢[PRAAx] StepUp f (Syn.shift x) (Syn.shift N * Syn.shift r) (Syn.shift D) := by
-        have a := h.shift
-        have e : Syn.shift (N * r) = Syn.shift N * Syn.shift r := by simp [Syn.shift]
-        rw [shift_StepUp, e] at a
-        exact a.wk.wk
-      have hA : (le (succ (var 0)) (Syn.shift N) ::
-          (le (var 0) (Syn.shift N) ⟶ RefUp f (var 0) (Syn.shift r) (Syn.shift x) (Syn.shift D)) ::
-          Γ.map Fm.shift) ⊢[PRAAx] le (var 0 * Syn.shift r + Syn.shift r) (Syn.shift N * Syn.shift r) := by
+  let P := RefUp f (var 0) (Syn.shift r) (Syn.shift x) (Syn.shift D)
+  have atBound : Γ ⊢[PRAAx] P.subst (Syn.inst N) := by
+    refine qfIndUpTo N (le_QF _ _) ?_ ?_
+    · simpa [P, RefUp] using refUp_base (Γ := Γ) f r x D
+    · ipra_ind_simp [P, RefUp, subst_le, subst_ap2, subst_pairT, subst_repl_shift]
+      refine .impI ?_
+      let Δ := lt (var 0) (Syn.shift N) :: P :: Γ.map Fm.shift
+      have hk : Δ ⊢[PRAAx] le (succ (var 0)) (Syn.shift N) := Prf.hyp0
+      have steps : Δ ⊢[PRAAx] StepUp f (Syn.shift x) (Syn.shift N * Syn.shift r) (Syn.shift D) := by
+        have shifted := h.shift
+        rw [shift_StepUp, show Syn.shift (N * r) = Syn.shift N * Syn.shift r by simp [Syn.shift]] at shifted
+        exact shifted.wk.wk
+      have block : Δ ⊢[PRAAx] le (var 0 * Syn.shift r + Syn.shift r) (Syn.shift N * Syn.shift r) := by
         ipra_le sl hk * 𝔟 (Syn.shift r)
       exact refUp_step (cell_upper (offB f) (pairT (var 0 * Syn.shift r) (Syn.shift x)) (Syn.shift r)
-        (Syn.shift D) (up_off h' hA)) ih
-  have h2 := Prf.allE N hall
-  simp only [Fm.subst_imp, subst_le, subst_ap2, subst_pairT, PTm.subst_add, PTm.subst_mul, Syn.subst_var,
-    Syn.inst_zero, Syn.subst_inst_shift, ConciseIPRA.PTm.subst_zero, ConciseIPRA.PTm.subst_succ] at h2
-  exact .impE h2 (le_refl N)
+        (Syn.shift D) (up_off steps block)) Prf.hyp1
+  simpa [P, RefUp] using atBound
 
 /-- `eq:refine`, lower half: if `f(j) ≤ f(j + 1) + D` for `j < N r`, then
 `2 r ∑_{k<N} f(k r) + D N r ≤ 2 ∑_{i < N r} f(i) + D N r²`. -/
 theorem refine_lower (f : PTm 2) (x N r D : PTm n) (h : Γ ⊢[PRAAx] StepDn f x (N * r) D) :
     Γ ⊢[PRAAx] RefDn f N r x D := by
-  have hall : Γ ⊢[PRAAx] Fm.all (le (var 0) (Syn.shift N) ⟶
-      RefDn f (var 0) (Syn.shift r) (Syn.shift x) (Syn.shift D)) := by
-    ipra_qfind (⟨le_QF _ _, le_QF _ _⟩) [subst_le, subst_ap2, subst_pairT]
-    · exact .impI (refDn_base f r x D)
-    · refine .impI ?_
-      have hk : (le (succ (var 0)) (Syn.shift N) ::
-          (le (var 0) (Syn.shift N) ⟶ RefDn f (var 0) (Syn.shift r) (Syn.shift x) (Syn.shift D)) ::
-          Γ.map Fm.shift) ⊢[PRAAx] le (succ (var 0)) (Syn.shift N) := Prf.hyp0
-      have ih := Prf.impE Prf.hyp1 (le_trans (le_succ_self _) hk)
-      have h' : (le (succ (var 0)) (Syn.shift N) ::
-          (le (var 0) (Syn.shift N) ⟶ RefDn f (var 0) (Syn.shift r) (Syn.shift x) (Syn.shift D)) ::
-          Γ.map Fm.shift) ⊢[PRAAx] StepDn f (Syn.shift x) (Syn.shift N * Syn.shift r) (Syn.shift D) := by
-        have a := h.shift
-        have e : Syn.shift (N * r) = Syn.shift N * Syn.shift r := by simp [Syn.shift]
-        rw [shift_StepDn, e] at a
-        exact a.wk.wk
-      have hA : (le (succ (var 0)) (Syn.shift N) ::
-          (le (var 0) (Syn.shift N) ⟶ RefDn f (var 0) (Syn.shift r) (Syn.shift x) (Syn.shift D)) ::
-          Γ.map Fm.shift) ⊢[PRAAx] le (var 0 * Syn.shift r + Syn.shift r) (Syn.shift N * Syn.shift r) := by
+  let P := RefDn f (var 0) (Syn.shift r) (Syn.shift x) (Syn.shift D)
+  have atBound : Γ ⊢[PRAAx] P.subst (Syn.inst N) := by
+    refine qfIndUpTo N (le_QF _ _) ?_ ?_
+    · simpa [P, RefDn] using refDn_base (Γ := Γ) f r x D
+    · ipra_ind_simp [P, RefDn, subst_le, subst_ap2, subst_pairT, subst_repl_shift]
+      refine .impI ?_
+      let Δ := lt (var 0) (Syn.shift N) :: P :: Γ.map Fm.shift
+      have hk : Δ ⊢[PRAAx] le (succ (var 0)) (Syn.shift N) := Prf.hyp0
+      have steps : Δ ⊢[PRAAx] StepDn f (Syn.shift x) (Syn.shift N * Syn.shift r) (Syn.shift D) := by
+        have shifted := h.shift
+        rw [shift_StepDn, show Syn.shift (N * r) = Syn.shift N * Syn.shift r by simp [Syn.shift]] at shifted
+        exact shifted.wk.wk
+      have block : Δ ⊢[PRAAx] le (var 0 * Syn.shift r + Syn.shift r) (Syn.shift N * Syn.shift r) := by
         ipra_le sl hk * 𝔟 (Syn.shift r)
       exact refDn_step (cell_lower (offB f) (pairT (var 0 * Syn.shift r) (Syn.shift x)) (Syn.shift r)
-        (Syn.shift D) (dn_off h' hA)) ih
-  have h2 := Prf.allE N hall
-  simp only [Fm.subst_imp, subst_le, subst_ap2, subst_pairT, PTm.subst_add, PTm.subst_mul, Syn.subst_var,
-    Syn.inst_zero, Syn.subst_inst_shift, ConciseIPRA.PTm.subst_zero, ConciseIPRA.PTm.subst_succ] at h2
-  exact .impE h2 (le_refl N)
+        (Syn.shift D) (dn_off steps block)) Prf.hyp1
+  simpa [P, RefDn] using atBound
 
 end LeanProofs.IPRA.Analysis.RiemannRefinement

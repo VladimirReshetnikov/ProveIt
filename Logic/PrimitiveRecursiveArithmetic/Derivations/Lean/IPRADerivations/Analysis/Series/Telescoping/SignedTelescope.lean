@@ -81,31 +81,28 @@ theorem signed_telescope (N δ x : PTm n)
     (hd : Γ ⊢[PRAAx] Fm.all (lt (var 0) (Syn.shift N) ⟶
       le (ad (DU Gn Rp Mn (var 0) (Syn.shift x)) (DV Gp Rn Mp (var 0) (Syn.shift x))) (Syn.shift δ))) :
     Γ ⊢[PRAAx] le (ad (TX Gp Gn Mn N x) (TY Gp Gn Mp N x)) (N * δ) := by
-  have hall : Γ ⊢[PRAAx] Fm.all (le (var 0) (Syn.shift N) ⟶
-      le (ad (TX Gp Gn Mn (var 0) (Syn.shift x)) (TY Gp Gn Mp (var 0) (Syn.shift x))) (var 0 * Syn.shift δ)) := by
-    ipra_qfind (⟨le_QF _ _, le_QF _ _⟩) [TX, TY, subst_le, subst_ap2, subst_inst2]
-    · refine .impI ?_
-      have s₁ := natEq (sum_zero (Γ := le zero N :: Γ) Mn x)
-      have s₂ := natEq (sum_zero (Γ := le zero N :: Γ) Mp x)
-      have c : (le zero N :: Γ) ⊢[PRAAx]
+  let P := le (ad (TX Gp Gn Mn (var 0) (Syn.shift x)) (TY Gp Gn Mp (var 0) (Syn.shift x)))
+    (var 0 * Syn.shift δ)
+  have atBound : Γ ⊢[PRAAx] P.subst (Syn.inst N) := by
+    refine qfIndUpTo N (le_QF _ _) ?_ ?_
+    · ipra_ind_simp [P, TX, TY, subst_le, subst_ap2, subst_inst2, Syn.subst_inst_shift]
+      have s₁ := natEq (sum_zero (Γ := Γ) Mn x)
+      have s₂ := natEq (sum_zero (Γ := Γ) Mp x)
+      have c : Γ ⊢[PRAAx]
           ad (inst2 Gp zero x + inst2 Gn zero x + ap2 (sumF Mn) zero x)
             (inst2 Gn zero x + inst2 Gp zero x + ap2 (sumF Mp) zero x) ≐ ad zero zero := by
         refine ad_eq_of_cross ?_
-        apply deriveNat; ipra_simps; rw [s₁, s₂]; ring
+        apply deriveNat
+        ipra_simps
+        rw [s₁, s₂]
+        ring
       have e := natEq c
-      have z := natEq (monus_self (Γ := le zero N :: Γ) (zero : PTm n))
+      have z := natEq (monus_self (Γ := Γ) (zero : PTm n))
       ipra_le 0 using linear_combination -e - 2 * z
-    · refine .impI ?_
-      have hk : (le (succ (var 0)) (Syn.shift N) ::
-          (le (var 0) (Syn.shift N) ⟶
-            le (ad (TX Gp Gn Mn (var 0) (Syn.shift x)) (TY Gp Gn Mp (var 0) (Syn.shift x))) (var 0 * Syn.shift δ)) ::
-          Γ.map Fm.shift) ⊢[PRAAx] le (succ (var 0)) (Syn.shift N) := Prf.hyp0
-      exact tel_step Gp Gn Rp Rn Mp Mn (Prf.impE hR.allOpen.wk.wk hk) (Prf.impE hd.allOpen.wk.wk hk)
-        (Prf.impE Prf.hyp1 (le_trans (le_succ_self _) hk))
-  have h2 := Prf.allE N hall
-  simp only [TX, TY, Fm.subst_imp, subst_le, subst_ap2, subst_inst2, PTm.subst_add, PTm.subst_mul,
-    PTm.subst_monus, Syn.subst_var, Syn.inst_zero, Syn.subst_inst_shift, ConciseIPRA.PTm.subst_zero] at h2
-  exact .impE h2 (le_refl N)
+    · ipra_ind_simp [P, TX, TY, subst_le, subst_ap2, subst_inst2, subst_repl_shift]
+      exact .impI (tel_step Gp Gn Rp Rn Mp Mn
+        (.impE hR.allOpen.wk.wk Prf.hyp0) (.impE hd.allOpen.wk.wk Prf.hyp0) Prf.hyp1)
+  simpa [P, TX, TY, ad] using atBound
 
 end Telescope
 
