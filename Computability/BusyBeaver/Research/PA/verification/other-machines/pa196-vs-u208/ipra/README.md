@@ -201,10 +201,12 @@ theorem, so `PA196PASubstitutionWitnessComplete.lean` proves the substitution
 witness bound without those two hypotheses. This does not establish the full
 PA-refutation witness certificate or the machine reductions.
 
-`PA196PRAAssembly.lean` composes the two conditional transfers with the
-intuitionistic endpoint. Its equivalence in standard iPRA has three explicit
-classical PRA hypotheses: the forward reduction, the reverse reduction, and
-the PA-specific witness certificate. All three remain to be proved.
+[`PA196PACertificateComplete.certificate`](PA196PACertificateComplete.lean#L16)
+supplies the PA-specific bounded-witness certificate used by
+[`PA196PRAAssemblyComplete.consistency_iff_nonhalting_of_classical_pra`](PA196PRAAssemblyComplete.lean#L15).
+The standard iPRA equivalence still requires two open classical PRA
+derivations for the literal machine. The forward reduction goes from PA
+refutability to halting, and the reverse goes from halting to PA refutability.
 
 ## Checking
 
