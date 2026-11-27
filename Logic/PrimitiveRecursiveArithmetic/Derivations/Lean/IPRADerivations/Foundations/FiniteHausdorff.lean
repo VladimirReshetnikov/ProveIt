@@ -78,13 +78,12 @@ alias positive_length := Common.pos_of_one_le
 
 theorem index_le_pred {i L : PTm n} (hi : Γ ⊢[PRAAx] lt i L) :
     Γ ⊢[PRAAx] le i (pred L) := by
-  have pos : Γ ⊢[PRAAx] le one L := le_trans ((succ_monus_succ zero i).eqTrans (zero_le i)) hi
-  have bound := lt_congr (.eqRefl i) (positive_length pos) hi
-  exact (succ_monus_succ _ _).eqSymm.eqTrans bound
+  have pos : Γ ⊢[PRAAx] le one L := le_trans (Common.one_le_succ i) hi
+  exact Order.le_of_lt_succ (lt_congr (.eqRefl i) (positive_length pos) hi)
 
 theorem index_lt {i L : PTm n} (hL : Γ ⊢[PRAAx] le one L)
     (hi : Γ ⊢[PRAAx] le i (pred L)) : Γ ⊢[PRAAx] lt i L :=
-  lt_congr (.eqRefl i) (positive_length hL).eqSymm ((succ_monus_succ _ _).eqTrans hi)
+  lt_congr (.eqRefl i) (positive_length hL).eqSymm (Order.lt_succ_of_le hi)
 
 /-- The actual selected list index and distance, with deterministic ties. -/
 theorem nearest_spec (d : PR 3) (z T p : PTm n) (hT : Γ ⊢[PRAAx] le one (length T)) :

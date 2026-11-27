@@ -114,10 +114,8 @@ theorem mono_step {N i s x : PTm k} (hs : Γ ⊢[PRAAx] s ≐ succ (pred s))
     (ih : Γ ⊢[PRAAx] le i N ⟶ dvd (G ω N s x) (G ω i s x)) :
     Γ ⊢[PRAAx] dvd (G ω (succ N) s x) (G ω i s x) := by
   refine .orE (lt_or_eq_of_le hle) ?_ ?_
-  · have h' : (lt i (succ N) :: Γ) ⊢[PRAAx] le i N :=
-      (succ_monus_succ i N).eqSymm.eqTrans Prf.hyp0
-    exact dvd_trans' (G_pos ω hs.wk (succ N) x) (G_pos ω hs.wk N x)
-      (Prf.andE₁ (G_chain ω hs N x)).wk (.impE ih.wk h')
+  · exact dvd_trans' (G_pos ω hs.wk (succ N) x) (G_pos ω hs.wk N x)
+      (Prf.andE₁ (G_chain ω hs N x)).wk (.impE ih.wk (Order.le_of_lt_succ Prf.hyp0))
   · have hi : ((i ≐ succ N) :: Γ) ⊢[PRAAx] i ≐ succ N := Prf.hyp0
     exact dvd_congr (congrAp2 _ hi.eqSymm (.eqRefl _)) (dvd_self' (G_pos ω hs.wk (succ N) x))
 

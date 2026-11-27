@@ -107,8 +107,7 @@ private theorem ev_step (t : PTm 2) {N j m p : PTm n} (hm : Γ ⊢[PRAAx] m ≐ 
     (ih : Γ ⊢[PRAAx] lt j N ⟶ (dg m j (code t N m p) ≐ rem (inst2 t j p) m)) :
     Γ ⊢[PRAAx] dg m j (code t (succ N) m p) ≐ rem (inst2 t j p) m := by
   have cs := code_succ (Γ := Γ) t N m p
-  have hle : Γ ⊢[PRAAx] le j N := (succ_monus_succ j N).eqSymm.eqTrans hj
-  refine .orE (lt_or_eq_of_le hle) ?_ ?_
+  refine .orE (Order.lt_succ_cases hj) ?_ ?_
   · -- `j < N`: the new top digit is not seen
     have h₁ : (lt j N :: Γ) ⊢[PRAAx]
         dg m j (rem (inst2 t N p) m * pw m N + code t N m p) ≐ dg m j (code t N m p) :=

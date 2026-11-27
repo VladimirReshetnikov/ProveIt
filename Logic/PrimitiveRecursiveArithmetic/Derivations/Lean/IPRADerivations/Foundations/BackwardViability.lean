@@ -64,11 +64,8 @@ theorem lt_two_of_bit {b : PTm k} (h : Γ ⊢[PRAAx] (b ≐ zero) ⋎ (b ≐ one
 /-- A number below `2` is a bit. -/
 theorem bit_of_lt_two {b : PTm k} (h : Γ ⊢[PRAAx] lt b two) :
     Γ ⊢[PRAAx] (b ≐ zero) ⋎ (b ≐ one) := by
-  have h₁ : Γ ⊢[PRAAx] le b one := (succ_monus_succ b one).eqSymm.eqTrans h
-  refine .orE (lt_or_eq_of_le h₁) (.orI₁ ?_) (.orI₂ Prf.hyp0)
-  have h₀ : (lt b one :: Γ) ⊢[PRAAx] le b zero :=
-    (succ_monus_succ b zero).eqSymm.eqTrans Prf.hyp0
-  exact (monus_zero b).eqSymm.eqTrans h₀
+  refine .orE (Order.lt_succ_cases h) (.orI₁ ?_) (.orI₂ Prf.hyp0)
+  exact (monus_zero b).eqSymm.eqTrans (Order.le_of_lt_succ Prf.hyp0)
 
 /-- A product of two bits is a bit. -/
 theorem mul_bit {x y : PTm k} (hx : Γ ⊢[PRAAx] (x ≐ zero) ⋎ (x ≐ one))

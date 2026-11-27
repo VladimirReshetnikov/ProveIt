@@ -155,10 +155,9 @@ theorem argmin_spec (score : PTm 2) (K x : PTm n) :
       (inst2 score (argmin score K x) x ≐ Mn score K x) := by
   have a := attaining_spec (Γ := Γ) score K x
   have found := Search.Finite.search_found (test_zero score (Prf.andE₂ a))
-    (lt_of_le_of_lt (Prf.andE₁ a) (le_refl (succ K)))
-  have hBound : Γ ⊢[PRAAx] le (argmin score K x) K :=
-    (succ_monus_succ _ _).eqSymm.eqTrans (Prf.andE₁ found)
-  exact .andI hBound (value_of_test_zero score (Prf.andE₁ (Prf.andE₂ found)))
+    (Order.lt_succ_of_le (Prf.andE₁ a))
+  exact .andI (Order.le_of_lt_succ (Prf.andE₁ found))
+    (value_of_test_zero score (Prf.andE₁ (Prf.andE₂ found)))
 
 /-- Every candidate's score is at least the score at the selected index. -/
 theorem argmin_minimal (score : PTm 2) {K i x : PTm n} (hi : Γ ⊢[PRAAx] le i K) :

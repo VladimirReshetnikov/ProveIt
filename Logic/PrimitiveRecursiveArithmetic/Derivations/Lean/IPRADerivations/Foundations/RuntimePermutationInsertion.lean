@@ -67,8 +67,7 @@ theorem inverse_before_skip (m p k : PTm n) (hp : Γ ⊢[PRAAx] lt p (succ m)) (
     (hne : Γ ⊢[PRAAx] neg (k ≐ p)) : Γ ⊢[PRAAx] lt (compressed p k) m ⋏ slot p (compressed p k) ≐ k := by
   refine .orE (lt_or_le k p) ?_ ?_
   · have e : lt k p :: Γ ⊢[PRAAx] compressed p k ≐ k := sel_one (sg_lt Prf.hyp0)
-    have pm : lt k p :: Γ ⊢[PRAAx] le p m := (succ_monus_succ p m).eqSymm.eqTrans hp.wk
-    exact .andI (lt_congr e.eqSymm (.eqRefl _) (lt_of_lt_of_le Prf.hyp0 pm))
+    exact .andI (lt_congr e.eqSymm (.eqRefl _) (lt_of_lt_of_le Prf.hyp0 (Order.le_of_lt_succ hp.wk)))
       ((slot_congr (.eqRefl p) e).eqTrans (slot_before p k Prf.hyp0))
   · have above : le p k :: Γ ⊢[PRAAx] lt p k := by
       refine .orE (lt_or_eq_of_le Prf.hyp0) Prf.hyp0 ?_
