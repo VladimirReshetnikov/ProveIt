@@ -175,6 +175,14 @@ theorem sum_right_error (a u v A B : PTm n) (hB : Γ ⊢[PRAAx] le one B)
     (GaussianNameArithmetic.sum_distance a a u v zero A B hB
       (GaussianRationalPowerDifference.distance_refl_zero a B hB) h)
 
+/-- Keep the left sample and pay for approximating the right sample in a normalized sum. -/
+theorem add_sample_error_right (f g : PR 2) (x y p b K : PTm n)
+    (hf : Γ ⊢[PRAAx] pointCN f x) (hg : Γ ⊢[PRAAx] pointCN g y)
+    (h : Γ ⊢[PRAAx] distanceBounded (ap2 g p y) b K (unit p)) : Γ ⊢[PRAAx]
+    distanceBounded (ap2 (addF f g) p (addData x y)) (qadd (ap2 f p x) b) (three+K) (unit p) :=
+  distance_triangle_same _ _ _ _ _ _ (unit_positive p) (add_sample_error f g x y p hf hg)
+    (sum_right_error (ap2 f p x) (ap2 g p y) b K (unit p) (unit_positive p) h)
+
 theorem add_associative_at (f g h : PR 2) (x y z k : PTm n)
     (hf : Γ ⊢[PRAAx] pointCN f x) (hg : Γ ⊢[PRAAx] pointCN g y)
     (hh : Γ ⊢[PRAAx] pointCN h z) : Γ ⊢[PRAAx]

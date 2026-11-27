@@ -25,9 +25,9 @@ open GaussianBarnesCanonicalPrefactorInverse (exponentF)
 open GaussianCoefficientNameBounds (unit unit_positive)
 open GaussianEuclideanDistanceName (pointCN)
 open GaussianGammaCanonicalExponent (constantF constant_at constant_regular)
-open GaussianNameArithmetic (addF addData add_fast sum_distance)
-open GaussianNameRingLaws (add_sample_error)
-open GaussianRationalDistanceOrder (distance_congr distance_symmetric distance_triangle_same)
+open GaussianNameArithmetic (addF addData add_fast)
+open GaussianNameRingLaws (add_sample_error_right three)
+open GaussianRationalDistanceOrder (distance_congr distance_symmetric)
 open GaussianRationalHorner (qadd)
 open GaussianRationalMetric (distanceBounded)
 open GaussianRationalSyntheticDivision (qadd_congr)
@@ -89,36 +89,23 @@ theorem series_prefix_error (p A B R r : PTm n) (h : Γ ⊢[PRAAx] disk (center 
     (hr : Γ ⊢[PRAAx] le (GaussianBarnesCanonicalDerivativeCofinal.length p R) r) :
     Γ ⊢[PRAAx] distanceBounded (ap2 seriesF p (seriesData A B R)) (prefixValue A B R r) (num 4) (unit p) := by
   let z := center A B
-  let N := initial R
-  let a := v z B zero N
+  let a := v z B zero (initial R)
   let b := sd z R B
-  have hu := unit_positive (Γ := Γ) p
-  have e := GaussianBarnesCanonicalDerivativeCofinal.sample_at (Γ := Γ) p z R B
-  have close := distance_symmetric _ _ _ _ hu
-    (distance_congr (.eqRefl _) e.eqSymm (.eqRefl _) (.eqRefl _)
+  have close := distance_symmetric _ _ _ _ (unit_positive p)
+    (distance_congr (.eqRefl _) (GaussianBarnesCanonicalDerivativeCofinal.sample_at p z R B).eqSymm (.eqRefl _) (.eqRefl _)
       (GaussianBarnesCanonicalDerivativeCofinal.late_prefix_error p z R B r h hr))
-  have raw := add_sample_error constantF S a b p (constant_regular a)
-    (GaussianBarnesCanonicalDerivativeCofinal.regular z R B h)
-  have arc := sum_distance _ _ _ _ _ _ _ hu
-    (distance_congr (constant_at p a).eqSymm (.eqRefl _) (.eqRefl _) (.eqRefl _)
-      (GaussianRationalPowerDifference.distance_refl_zero a (unit p) hu)) close
-  have fit : Γ ⊢[PRAAx] GaussianNameRingLaws.three+(zero+one) ≐ num 4 := by unfold GaussianNameRingLaws.three; ipra_ring
-  exact distance_congr (.eqRefl _) (prefix_split A B R r).eqSymm fit (.eqRefl _)
-    (distance_triangle_same _ _ _ _ _ _ hu raw arc)
+  have read := (qadd_congr (constant_at (Γ := Γ) p a) (.eqRefl _)).eqTrans (prefix_split A B R r).eqSymm
+  exact distance_congr (.eqRefl _) read (by unfold three; ipra_ring) (.eqRefl _)
+    (add_sample_error_right constantF S a b p _ one (constant_regular a)
+      (GaussianBarnesCanonicalDerivativeCofinal.regular z R B h) close)
 
 theorem prefix_error (p A B R r : PTm n) (h : Γ ⊢[PRAAx] disk (center A B) R B)
     (hr : Γ ⊢[PRAAx] le (GaussianBarnesCanonicalDerivativeCofinal.length p R) r) :
     Γ ⊢[PRAAx] distanceBounded (ap2 nameF p (data A B R)) (qadd
-      (ap2 exponentF p (prefactorData A B)) (prefixValue A B R r)) (num 7) (unit p) := by
-  let u := ap2 exponentF p (prefactorData A B)
-  have hu := unit_positive (Γ := Γ) p
-  have main := add_sample_error exponentF seriesF (prefactorData A B) (seriesData A B R) p
-    (prefactor_regular A B) (series_regular A B R h)
-  have close := sum_distance _ _ _ _ _ _ _ hu
-    (GaussianRationalPowerDifference.distance_refl_zero u (unit p) hu) (series_prefix_error p A B R r h hr)
-  have fit : Γ ⊢[PRAAx] GaussianNameRingLaws.three+(zero+num 4) ≐ num 7 := by unfold GaussianNameRingLaws.three; ipra_ring
-  exact distance_congr (.eqRefl _) (.eqRefl _) fit (.eqRefl _)
-    (distance_triangle_same _ _ _ _ _ _ hu main close)
+      (ap2 exponentF p (prefactorData A B)) (prefixValue A B R r)) (num 7) (unit p) :=
+  distance_congr (.eqRefl _) (.eqRefl _) (by unfold three; ipra_ring) (.eqRefl _)
+    (add_sample_error_right exponentF seriesF (prefactorData A B) (seriesData A B R) p _ (num 4)
+      (prefactor_regular A B) (series_regular A B R h) (series_prefix_error p A B R r h hr))
 
 theorem actual_Barnes_positive_first_logarithm_name_regular_closed :
     ([] : List (Fm PTm 0)) ⊢[PRAAx] univ 3
