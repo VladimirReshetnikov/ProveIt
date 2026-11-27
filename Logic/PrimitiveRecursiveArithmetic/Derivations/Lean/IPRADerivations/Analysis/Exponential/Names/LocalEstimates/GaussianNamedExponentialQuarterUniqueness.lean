@@ -25,12 +25,12 @@ open GaussianGammaCanonicalExponent (constantF constant_at)
 open GaussianGammaFiniteApproximantName (exponential_input exponentialInputData)
 open GaussianNameArithmetic (multiplyF multiplyData multiplyModulus multiply_fast addF addData)
 open GaussianNameBounds (U)
-open GaussianNameEquivalence (crossEquivalent cross_at cross_trans cross_symm cross_to_diagonal point_at)
+open GaussianNameEquivalence (crossEquivalent cross_trans cross_symm cross_to_diagonal)
 open GaussianNameRingLaws (oneF one_at one_fast zeroF zero_at zero_fast multiply_sample_error)
 open GaussianNamedDiagonalRate (diagonalRate cross_of_diagonal_rate)
 open GaussianNamedExponentialLocalUniqueness (lateSmall)
 open GaussianRadiusExponentialName (input data inputPrecision index)
-open GaussianRationalHorner (qadd qmul qzero canonical positive_product)
+open GaussianRationalHorner (qadd qmul canonical)
 open GaussianRationalMetric (bounded distanceBounded)
 open GaussianRationalDistanceOrder (distance_congr distance_symmetric distance_radius_mono distance_triangle_same)
 open GaussianRationalReciprocal (bounded_product bound_congr qone)
@@ -178,10 +178,8 @@ private theorem fourth_reflection (f : PR 2) (R x C anchor : PTm n)
     (near_one f (sh R) (sh x) (sh C) k hs' (le_add_left _ _)) (fourth_at g (data (sh R) (sh x)) (sh anchor) k hg' he')
   have step := distance_radius_mono _ _ _ _ _ (unit p) hk hp
     (AnalyticNumberTheory.PhiLower.le_mul_mono (le_refl _) later) q
-  have earliest := distance_radius_mono _ _ _ _ two (unit p) (positive_product _ _ hp hk) hp
-    (by
-      ipra_le (Groth.ι (IPRA.Q.mk Δ (unit p)))*sl later)
-    (point_at g (data (sh R) (sh x)) p k hg')
+  have earliest := distance_symmetric _ _ _ _ hp
+    (GaussianNameEquivalence.point_at_later g (data (sh R) (sh x)) p k hg' (le_add_right p (sh C)))
   simpa [diagonalRate,Syn.shift,sh,p,Δ,K,g,y,fourthBudget,squareData,two,one] using
     distance_congr (.eqRefl _) (one_at p (sh anchor)).eqSymm (.eqRefl _) (.eqRefl _)
       (distance_triangle_same _ _ _ _ _ _ hp earliest step)

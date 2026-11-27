@@ -20,8 +20,8 @@ open GaussianHarmonicLogarithmPower (scaledF scaledData)
 open GaussianNameEquivalence (crossEquivalent cross_at)
 open GaussianPositiveRationalLogarithm (source data logF sample fraction)
 open GaussianRaabeLogPrimitiveCell (primitive fraction_bound)
-open GaussianRationalDistanceOrder (distance_symmetric distance_radius_mono distance_congr)
-open GaussianRationalHorner (qmul positive_product)
+open GaussianRationalDistanceOrder (distance_symmetric distance_congr distance_two_errors)
+open GaussianRationalHorner (qmul)
 open GaussianRationalMetric (bounded distanceBounded)
 open GaussianRationalNaturalScale (natScale naturalPoint)
 open GaussianRationalReciprocal (bound_congr bounded_product bounded_negative)
@@ -33,12 +33,7 @@ local notation "hd" => GaussianHarmonicLogarithmName.data
 private theorem common_clock (f g : PR 2) (p x y : PTm n) (h : Γ ⊢[PRAAx] crossEquivalent f g x y) :
     Γ ⊢[PRAAx] distanceBounded (ap2 f p x) (ap2 g p y) two one := by
   have pos := unit_positive (Γ := Γ) p
-  exact distance_radius_mono _ _ _ _ two one (positive_product _ _ pos pos) (le_refl one)
-    (by
-      let U := unit p
-      change Γ ⊢[PRAAx] le ((U+U)*one) (two*(U*U))
-      ipra_le 2*Groth.ι (IPRA.Q.mk Γ U)*sl pos)
-    (cross_at f g x y p p h)
+  exact distance_two_errors _ _ _ _ one pos pos (le_refl one) pos pos (cross_at f g x y p p h)
 
 private theorem harmonic_half_bound (p : PTm n) :
     Γ ⊢[PRAAx] bounded (GaussianHarmonicLogarithmName.sample p one two) (num 31) one := by

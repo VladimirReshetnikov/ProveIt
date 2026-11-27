@@ -28,9 +28,9 @@ open GaussianGammaIntegralCutoffs (height etaDen top)
 open GaussianEulerCompactModulus (lipschitz)
 open GaussianRationalMetric (distanceBounded qsub qnegative bounded)
 open GaussianRationalHorner (positive_product)
-open GaussianRationalDistanceOrder (distance_congr distance_radius_mono distance_triangle_same)
+open GaussianRationalDistanceOrder (distance_congr distance_radius_mono distance_triangle_same distance_two_errors)
 open GaussianCoefficientNameBounds (unit unit_positive)
-open GaussianNameEquivalence (crossEquivalent point_at)
+open GaussianNameEquivalence (crossEquivalent)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
@@ -124,16 +124,11 @@ theorem original_diagonal (t a b : PTm n) (h : Γ ⊢[PRAAx] source a b) : Γ �
     GaussianExponentialReference.unit_monotone (le_add_right t (num 4) : Γ ⊢[PRAAx] le t p)
   have next := GaussianExponentialReference.unit_monotone (Γ := Γ) (le_add_right t one)
   have raw := compact_endpoints p t a b h
-  have first := distance_radius_mono _ _ _ _ two (unit t) (positive_product _ _ hp ht) ht
-    (le_congr (by ipra_ring) (by ipra_ring)
-      (add_le_add_right (unit p*unit t) (mul_le_mul_right (unit t) later))) raw
+  have first := distance_two_errors _ _ _ _ _ hp ht ht later (le_refl _) raw
   have second := distance_radius_mono _ _ _ _ (num 3) (unit t) hq ht
     (le_congr (by ipra_ring) (by ipra_ring) (mul_le_mul_right (num 3) next)) (endpoint_error t a b)
-  have shift := point_at (Γ := Γ) decayF (decayData a b) (t+one) t
-    (GaussianEulerDecayQuadraturePrecision.observation_regular a b)
-  have third := distance_radius_mono _ _ _ _ two (unit t) (positive_product _ _ hq ht) ht
-    (le_congr (by ipra_ring) (by ipra_ring)
-      (add_le_add_right (unit (t+one)*unit t) (mul_le_mul_right (unit t) next))) shift
+  have third := GaussianNameEquivalence.point_at_later (Γ := Γ) decayF (decayData a b) t (t+one)
+    (GaussianEulerDecayQuadraturePrecision.observation_regular a b) (le_add_right t one)
   have joined := distance_triangle_same _ _ _ _ _ _ ht
     (distance_triangle_same _ _ _ _ _ _ ht first second) third
   exact distance_congr (GaussianEulerIncompleteName.upper_at t oneCode one one one a b).eqSymm

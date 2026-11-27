@@ -24,7 +24,7 @@ open GaussianNameArithmetic (addF addData add_fast multiplyF multiplyData multip
 open GaussianNameEquivalence (crossEquivalent)
 open GaussianNameRingLaws (three)
 open GaussianPositiveRationalLogarithm (fraction)
-open GaussianRationalDistanceOrder (distance_congr distance_radius_mono distance_symmetric distance_triangle_same)
+open GaussianRationalDistanceOrder (distance_congr distance_radius_mono distance_symmetric distance_triangle_same distance_two_errors)
 open GaussianRationalHorner (qadd qmul)
 open GaussianRationalMetric (distanceBounded)
 open GaussianRationalSyntheticDivision (qmul_congr)
@@ -126,16 +126,12 @@ theorem recurrence_at (p a b : PTm n) (hs : Γ ⊢[PRAAx] source a b) :
   have hd := derivative_regular a b hs
   have hg := gamma_regular a b hs
   have gammaNear := GaussianNameEquivalence.point_at gammaF y t p hg
-  have gammaNear' := distance_radius_mono _ _ _ _ two (unit p)
-    (GaussianRationalHorner.positive_product _ _ (unit_positive t) hp) hp
-    (by ipra_le 𝔞 (unit p)*sl ht) gammaNear
+  have gammaNear' := distance_two_errors _ _ _ _ _ (unit_positive t) hp hp ht (le_refl _) gammaNear
   have initial := distance_symmetric _ _ _ _ hp (rate_at p p (a+b) b D hi h1 (le_refl _))
   have cross := GaussianNameEquivalence.cross_at QF GaussianGammaDigammaDifferenceProduct.nameF
     (stepQuotientData (a+b) b D) (GaussianGammaDigammaDifferenceProduct.data a b D) p t
     (GaussianGammaDigammaDifferenceProduct.step_product_rule a b D hs hD₁)
-  have cross' := distance_radius_mono _ _ _ _ two (unit p)
-    (GaussianRationalHorner.positive_product _ _ hp (unit_positive t)) hp
-    (by ipra_le 𝔞 (unit p)*sl ht) cross
+  have cross' := distance_two_errors _ _ _ _ _ hp (unit_positive t) hp (le_refl _) ht cross
   have first := distance_triangle_same _ _ _ _ _ _ hp initial cross'
   have readback := GaussianNameRingLaws.add_sample_error GaussianGammaDigammaDifferenceProduct.productF gammaF
     (GaussianGammaDigammaDifferenceProduct.productData a b D) y t

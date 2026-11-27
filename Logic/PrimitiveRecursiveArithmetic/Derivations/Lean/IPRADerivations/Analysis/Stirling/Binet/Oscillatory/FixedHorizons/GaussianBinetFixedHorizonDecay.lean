@@ -25,7 +25,7 @@ open GaussianEulerIntegrandName (decayF decayData decayPoint)
 open GaussianLogGammaEulerResidualDomain (source)
 open GaussianNameArithmetic (multiplyF multiplyData multiplyModulus multiply_at)
 open GaussianNameEquivalence (cross_at)
-open GaussianRationalDistanceOrder (distance_congr distance_radius_mono distance_symmetric)
+open GaussianRationalDistanceOrder (distance_congr distance_symmetric distance_two_errors)
 open GaussianRationalHorner (qmul qmul_canonical positive_product)
 open GaussianRationalMetric (bounded distanceBounded qsub)
 open GaussianRationalReciprocal (bounded_product bounded_sum bound_congr)
@@ -63,10 +63,8 @@ theorem real_decay (p a B L : PTm n) (hB : Γ ⊢[PRAAx] le one B)
   have cut := GaussianEulerDecayAddition.original_decay_add L one c B (le_refl one) hB
   have eq : Γ ⊢[PRAAx] observation (L*B+c*one) (one*B) p ≐ w := observation_congr p aEq (one_mul _)
   have near : Γ ⊢[PRAAx] distanceBounded w W two V :=
-    distance_radius_mono _ _ (P+P) (P*P) two V (positive_product _ _ hP hP) hV
-      (by dsimp only [V,P]; ipra_le 2*𝔞(unit p)*sl hvp)
-      (distance_symmetric _ _ _ _ (positive_product _ _ hP hP)
-        (distance_congr (.eqRefl _) eq (.eqRefl _) (.eqRefl _) (cross_at _ _ _ _ p p cut)))
+    distance_symmetric _ _ _ _ hV (distance_congr (.eqRefl _) eq (.eqRefl _) (.eqRefl _)
+      (distance_two_errors _ _ P P V hP hP hV hvp hvp (cross_at _ _ _ _ p p cut)))
   have shrink : Γ ⊢[PRAAx] bounded (observation L one r) (num 3) V :=
     bounded_radius_mono _ _ _ _ _ (positive_product _ _ hV hR) hV
       (by dsimp only [V]; ipra_le 2*𝔞(unit L)*sl hvr) (GaussianEulerDecayFactorBounds.original_integer_decay_bound L r)

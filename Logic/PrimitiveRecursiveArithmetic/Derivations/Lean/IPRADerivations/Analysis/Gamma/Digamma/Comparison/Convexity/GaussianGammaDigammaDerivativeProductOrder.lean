@@ -27,8 +27,8 @@ open GaussianNameRingLaws (multiply_sample_error through_identity)
 open GaussianNamedPositiveExponentialOrder (realOrder real_order_at)
 open GaussianNamedDifferenceQuotient (scale_distance inverse)
 open GaussianPositiveRationalLogarithm (fraction)
-open GaussianRationalDistanceOrder (distance_congr distance_triangle_same distance_symmetric distance_radius_mono)
-open GaussianRationalHorner (qadd qmul positive_product)
+open GaussianRationalDistanceOrder (distance_congr distance_triangle_same distance_symmetric distance_radius_mono distance_two_errors)
+open GaussianRationalHorner (qmul positive_product)
 open GaussianRationalMetric (qsub qnegative distanceBounded)
 open GaussianRationalNaturalScale (natScale naturalPoint natScale_as_product)
 open GaussianRationalPowerAlgebra (qmul_commutative)
@@ -172,8 +172,7 @@ theorem product_near (p t a c b D : PTm n) (ha : Γ ⊢[PRAAx] source a b)
   have d1 := distance_congr (qmul_commutative g r) (qmul_commutative g v)
     (by ipra_ring : Γ ⊢[PRAAx] U gammaF y*num 4 ≐ num 4*U gammaF y) (.eqRefl _) h1
   have gg := GaussianNameEquivalence.point_at gammaF y t p hy
-  have gg' := distance_radius_mono _ _ _ _ two (unit p) (positive_product _ _ (unit_positive t) hp) hp
-    (by ipra_le 𝔞 (unit p)*sl ht) gg
+  have gg' := distance_two_errors _ _ _ _ _ (unit_positive t) hp hp ht (le_refl _) gg
   have h2 := scale_distance v g (ap2 gammaF p y) (U IF x) two (unit p) hp (sample_bound IF x p hx) gg'
   have d2 := distance_congr (.eqRefl _) (.eqRefl _)
     (by ipra_ring : Γ ⊢[PRAAx] U IF x*two ≐ two*U IF x) (.eqRefl _) h2

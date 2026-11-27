@@ -93,12 +93,8 @@ theorem endpoint_error (p a b : PTm n) (ha : Γ ⊢[PRAAx] le one a) :
 theorem endpoint_later (p q a b : PTm n) (ha : Γ ⊢[PRAAx] le one a) (hpq : Γ ⊢[PRAAx] le p q) :
     Γ ⊢[PRAAx] distanceBounded (endpoint q a b) (endpoint p a b) (b*((a+two*b)*two+zero)) (unit p) := by
   have hp := unit_positive (Γ := Γ) p
-  have hq := unit_positive (Γ := Γ) q
-  have grow := GaussianExponentialReference.unit_monotone hpq
-  have near : Γ ⊢[PRAAx] distanceBounded (observation a b q) (observation a b p) two (unit p) :=
-    distance_radius_mono _ _ _ _ _ _ (positive_product _ _ hq hp) hp
-      (by ipra_le 𝔞(unit p)*sl grow)
-      (point_at decayF (decayData a b) q p (GaussianEulerDecayQuadraturePrecision.observation_regular a b))
+  have near := point_at_later decayF (decayData a b) p q
+    (GaussianEulerDecayQuadraturePrecision.observation_regular a b) hpq
   have prod := GaussianApproximateInverseDistance.multiply_distance (rightCoefficient a b) _ _ _ _ _ hp
     (right_bound a b) near
   have diff := GaussianNamedDifference.difference_distance _ _ _ _ _ _ _ hp prod

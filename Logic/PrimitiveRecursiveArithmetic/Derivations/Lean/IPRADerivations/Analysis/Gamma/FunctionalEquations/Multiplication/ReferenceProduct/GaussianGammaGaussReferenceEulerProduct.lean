@@ -21,7 +21,7 @@ open GaussianGammaFiniteApproximantName (qF qData)
 open GaussianGammaGaussReferenceProduct (argument row_source)
 open GaussianGaussEulerCutoff (commonCutoff common_guards larger_cutoff_error)
 open GaussianNamedFiniteProduct (rowBoundsAt rowDistance amplification radius)
-open GaussianRationalDistanceOrder (distance_congr distance_radius_mono)
+open GaussianRationalDistanceOrder (distance_congr distance_radius_mono distance_two_errors)
 open GaussianRationalHorner (canonical canonical_congr positive_product)
 open GaussianRationalLinearProduct (add_sub_right)
 open GaussianRationalMetric (bounded distanceBounded qsub)
@@ -90,8 +90,7 @@ theorem row_bound_at (p r m N : PTm n) (hr : Γ ⊢[PRAAx] lt r m) (hN : Γ ⊢[
   have hb : Γ ⊢[PRAAx] bounded G (GaussianGammaGaussReferenceProduct.rowRadius m) one :=
     GaussianGammaGaussReferenceProduct.row_bound_at p r m hr
   have hd : Γ ⊢[PRAAx] distanceBounded E G two one :=
-    distance_radius_mono E G (U+U) (U*U) two one (positive_product U U hU hU) (le_refl one)
-      (by ipra_le 2*𝔞 U*sl hU) (row_error_at p p r m N hr hN)
+    distance_two_errors E G U U one hU hU (le_refl one) hU hU (row_error_at p p r m N hr hN)
   exact bound_congr (add_sub_right G E ce) (.eqRefl _) (.eqRefl _)
     (bounded_sum_same G (qsub E G) _ _ one (le_refl one) hb hd)
 

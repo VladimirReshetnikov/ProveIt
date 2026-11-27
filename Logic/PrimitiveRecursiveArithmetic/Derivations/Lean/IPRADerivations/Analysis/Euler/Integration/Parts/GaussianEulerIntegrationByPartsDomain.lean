@@ -25,10 +25,10 @@ open GaussianGammaReciprocalInverse (gammaF gammaData)
 open GaussianGammaCanonicalExponent (constantF constant_at constant_regular)
 open GaussianNameArithmetic (multiplyF multiplyData)
 open GaussianNameEquivalence (crossEquivalent cross_refl cross_symm cross_trans)
-open GaussianRationalHorner (ofGaussian qmul positive_product)
+open GaussianRationalHorner (ofGaussian qmul)
 open GaussianRationalSyntheticDivision (qmul_congr)
 open GaussianRationalMetric (distanceBounded)
-open GaussianRationalDistanceOrder (distance_congr distance_radius_mono)
+open GaussianRationalDistanceOrder (distance_congr distance_two_errors)
 open GaussianCoefficientNameBounds (unit unit_positive)
 open GaussianEulerCutoffCauchyComparison (observation)
 open GaussianNamedSmallPerturbationTransport (productClock product_at)
@@ -81,12 +81,8 @@ theorem original_product_to_fixed_cutoff (t q k z R B A : PTm n) (h : Γ ⊢[PRA
   let s := productClock constantF nameF c x t
   have hs : Γ ⊢[PRAAx] le t s := le_add_right _ _
   have old := GaussianEulerLaterCutoffObservation.later_cutoff_observations s q t z R B A k (improper_source z R B A h) hk hq
-  have ul : Γ ⊢[PRAAx] le (unit t) (unit s) := GaussianExponentialReference.unit_monotone hs
-  have cmp : Γ ⊢[PRAAx] le ((unit s+unit t)*unit t) (two*(unit s*unit t)) :=
-    le_congr (by ipra_ring) (by ipra_ring)
-      (add_le_add₂ (le_refl (unit s*unit t)) (mul_le_mul_right (unit t) ul))
-  have bounded := distance_radius_mono _ _ _ _ two (unit t) (positive_product _ _ (unit_positive s) (unit_positive t))
-    (unit_positive t) cmp old
+  have bounded := distance_two_errors _ _ _ _ _ (unit_positive s) (unit_positive t)
+    (unit_positive t) (GaussianExponentialReference.unit_monotone hs) (le_refl _) old
   have sample : Γ ⊢[PRAAx] ap2 productF t (productData z R B A) ≐ qmul c (ap2 nameF s x) :=
     (product_at constantF nameF c x t).eqTrans (qmul_congr (constant_at s c) (.eqRefl _))
   exact distance_congr sample.eqSymm (.eqRefl _) (by ipra_ring) (.eqRefl _)
