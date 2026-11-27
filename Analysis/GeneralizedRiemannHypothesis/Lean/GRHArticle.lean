@@ -1,5 +1,6 @@
 import GRHArticle.ProgressionFree.EulerLowerBound
 import GRHArticle.ProgressionFree.ExchangeDensity
+import GRHArticle.ProgressionFree.ExplicitExchange
 import GRHArticle.ProgressionFree.Rankin
 import GRHArticle.ProgressionFree.RankinApproximation
 import GRHArticle.ProgressionFree.RankinTruncation
