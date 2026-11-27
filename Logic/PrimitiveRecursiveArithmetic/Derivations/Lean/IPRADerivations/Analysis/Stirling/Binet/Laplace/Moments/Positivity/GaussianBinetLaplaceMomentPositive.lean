@@ -192,7 +192,6 @@ theorem improper_order_with_cap (j X D R S : PTm n) (h : Γ ⊢[PRAAx] realSourc
   let Δ := Γ.map Fm.shift
   let p : PTm (n+1) := var 0
   let U := unit p
-  let V := unit (succ p)
   let L := GaussianBinetLaplaceMomentImproper.cutoff p (s j) (s D)
   let m := marginPoint (s S)
   have hs : Δ ⊢[PRAAx] realSource (s X) zero (s D) zero (s R) :=
@@ -206,12 +205,10 @@ theorem improper_order_with_cap (j X D R S : PTm n) (h : Γ ⊢[PRAAx] realSourc
   have read := GaussianBinetLaplaceMomentImproper.sample_at (Γ := Δ) p (s j) (s X) (s D) (s R)
   have hv := unit_positive (Γ := Δ) (succ p)
   have retime := GaussianExponentialReference.unit_monotone (Γ := Δ) (le_succ_self p)
-  have budget : Δ ⊢[PRAAx] le ((V+V)*U) (two*(V*V)) := by
-    ipra_le 2*𝔞(V)*sl retime
   simpa only [envelope,Δ,s,p,m,U,Syn.shift,subst_marginPoint,GaussianBinetLaplaceMomentImproper.subst_data,
     two,one,ConciseIPRA.PTm.subst_succ,ConciseIPRA.PTm.subst_zero] using
-    upper_mono _ _ _ _ _ _ (positive_product _ _ hv hv)
-      (upper_congr (congrFst c) (congrFst read).eqSymm (.eqRefl _) (.eqRefl _) raw) budget
+    RationalValueBounds.upper_two_errors (positive_product _ _ hv hv) (unit_positive (Γ := Δ) p) retime retime
+      (upper_congr (congrFst c) (congrFst read).eqSymm (.eqRefl _) (.eqRefl _) raw)
 
 theorem improper_order (j X D R : PTm n) (h : Γ ⊢[PRAAx] realSource X zero D zero R) :
     Γ ⊢[PRAAx] realOrder constantF J (marginPoint X) (JData j X D R) :=

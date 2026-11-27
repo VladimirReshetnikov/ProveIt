@@ -162,12 +162,11 @@ private theorem upper_slack_at (f : PR 2) (p q t x z : PTm n) (hf : Γ ⊢[PRAAx
           (numerator_le f t x)))
       (le_congr (one_mul T).eqSymm (one_mul V).eqSymm hT)
   have right : Γ ⊢[PRAAx] upper c d (T+Q) (T*Q) :=
-    upper_mono _ _ (V+Q) (V*Q) (T+Q) (T*Q) hVQ
+    RationalValueBounds.upper_two_errors_retime hVQ hT (le_refl Q)
       (upper_of_radius _ _ _ _
         (imaginary_coordinate_radius _ _ _ _ hVQ
           (cross_at GaussianArctangentPartialQuadrature.nameF quarterF
             (GaussianArctangentPartialQuadrature.data one one) z (clock t) q (unit_endpoint_cross z))))
-      (by ipra_le 𝔞 Q*𝔞 Q*sl hT)
   have joined := upper_triangle _ _ _ _ _ _ _ (upper_triangle _ _ _ _ _ _ _ left mid) right
   apply upper_mono _ _ _ _ _ _ (positive_product _ _ (positive_product _ _ hpt ht) hTQ) joined
   exact le_of_eq_add (d := zero) (by dsimp only [P,Q,T]; ipra_ring)

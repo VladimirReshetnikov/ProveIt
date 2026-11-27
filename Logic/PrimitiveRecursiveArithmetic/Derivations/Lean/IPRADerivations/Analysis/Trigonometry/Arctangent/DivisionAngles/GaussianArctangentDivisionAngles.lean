@@ -188,9 +188,8 @@ private theorem upper_at (k m z p q : PTm n) (h : Γ ⊢[PRAAx] source k m) :
   have hvq := positive_product (Γ := Γ) _ _ (unit_positive (clock p)) (unit_positive q)
   have d := imaginary_coordinate_radius _ _ _ _ hvq (point_at quarterF z (clock p) q (quarter_regular z))
   have hP : Γ ⊢[PRAAx] le P V := GaussianExponentialReference.unit_monotone (le_add_right _ _)
-  exact upper_mono _ _ (V+Q) (V*Q) (P+Q) (P*Q) hvq
+  exact RationalValueBounds.upper_two_errors_retime hvq hP (le_refl Q)
     (upper_order_left _ _ _ _ _ ord (upper_of_radius _ _ _ _ d))
-    (by ipra_le 𝔞 Q*𝔞 Q*sl hP)
 
 theorem interval_input (k m z : PTm n) (h : Γ ⊢[PRAAx] source k m) :
     Γ ⊢[PRAAx] GaussianArctangentInverseForward.input nameF (data k m z) z := by

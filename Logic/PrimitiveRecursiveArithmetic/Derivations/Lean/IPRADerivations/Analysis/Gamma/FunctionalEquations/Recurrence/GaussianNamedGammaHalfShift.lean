@@ -185,8 +185,8 @@ private theorem minus_certificate_at (f : PR 2) (p q x A : PTm n)
     upper_congr (left.eqTrans (congrFst (constant_at p (marginPoint A))).eqSymm) right
       (.eqRefl _) (.eqRefl _) temp
   have grow := GaussianExponentialReference.unit_monotone (GaussianEulerNamedShiftInput.clock_later (Γ := Γ) q)
-  exact upper_mono _ _ _ _ _ _ (GaussianRationalHorner.positive_product _ _ (unit_positive p) (unit_positive r)) bound
-    (by ipra_le 𝔞(unit p*unit p)*sl grow)
+  exact RationalValueBounds.upper_two_errors_retime
+    (GaussianRationalHorner.positive_product _ _ (unit_positive p) (unit_positive r)) (le_refl _) grow bound
 
 theorem minus_source (f : PR 2) (x A : PTm n) (hs : Γ ⊢[PRAAx] source f x A) : Γ ⊢[PRAAx]
     GaussianNamedGammaPositiveLower.source (minusF f) (minusData x) A := by

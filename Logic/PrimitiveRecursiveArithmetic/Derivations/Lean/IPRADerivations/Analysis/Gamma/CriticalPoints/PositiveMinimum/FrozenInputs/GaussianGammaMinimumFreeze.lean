@@ -72,8 +72,7 @@ theorem gamma_positive (f : PR 2) (x A : PTm n) (h : Γ ⊢[PRAAx] source f x A)
   have hs : Δ ⊢[PRAAx] source f (sh x) (sh A) := by
     simpa only [Fm.shift, Syn.shift, GaussianNamedGammaPositiveLower.subst_source, Δ, sh] using h.shift.shift
   have lower := original_gamma_positive_lower f q (sh x) (sh A) hs
-  have widened := upper_mono _ _ _ _ (unit p+unit q) (unit p*unit q) (unit_positive q)
-    lower (by ipra_le (Groth.ι (Q.mk Δ (unit q)))^2)
+  have widened := RationalValueBounds.upper_one_error (D := unit p) (unit_positive q) (le_refl _) lower
   have result := upper_congr (margin_at p).eqSymm (.eqRefl _) (.eqRefl _) (.eqRefl _) widened
   simpa only [certificate, GaussianNamedPositiveExponentialOrder.realOrder,
     GaussianNamedRightHalfPlane.subst_marginPoint, GaussianStirlingGammaLogarithm.subst_gammaMargin,

@@ -148,15 +148,12 @@ theorem late_enclosure (r p s x : PTm n) : Γ ⊢[PRAAx]
   have diff : Γ ⊢[PRAAx] GaussianRationalMetric.distanceBounded
       (ap2 nameF p x) (ap2 nameF t x) (W+T) (W*T) :=
     point_at nameF x p t (GaussianGammaHalfPiName.name_regular x)
+  have radial := scalar_coordinate_distance _ _ _ _ hWT diff
   have fwd : Γ ⊢[PRAAx] upper B P (W+U) (W*U) :=
-    upper_mono _ _ _ _ _ _ hWT
-      (upper_of_radius _ _ _ _ (scalar_coordinate_distance _ _ _ _ hWT diff))
-      (by ipra_le 𝔞 W^2*sl later)
+    RationalValueBounds.upper_two_errors_retime hWT (le_refl W) later (upper_of_radius _ _ _ _ radial)
   have rev : Γ ⊢[PRAAx] upper P B (W+U) (W*U) :=
-    upper_mono _ _ _ _ _ _ hWT
-      (upper_of_radius _ _ _ _ (scalar_coordinate_distance _ _ _ _ hWT
-        (GaussianRationalDistanceOrder.distance_symmetric _ _ _ _ hWT diff)))
-      (by ipra_le 𝔞 W^2*sl later)
+    RationalValueBounds.upper_two_errors_retime hWT (le_refl W) later
+      (upper_of_radius _ _ _ _ (RationalValueBounds.radius_symmetric _ _ _ _ radial))
   change Γ ⊢[PRAAx] upper A B (one*U+two*W) (W*U) ⋏ upper B A ((two*W+N)*U+two*(N*W)) ((N*W)*U)
   refine .andI ?_ ?_
   · exact upper_mono _ _ _ _ _ _ (positive_product _ _ hU hWU)

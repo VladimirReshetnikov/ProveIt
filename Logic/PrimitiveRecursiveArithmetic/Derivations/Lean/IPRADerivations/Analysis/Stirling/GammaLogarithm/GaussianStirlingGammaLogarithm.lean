@@ -159,11 +159,10 @@ private theorem real_lower_at (p q a b : PTm n) (h : Γ ⊢[PRAAx] source a b) :
     Γ ⊢[PRAAx] upper (fstT (ap2 constantF p (marginPoint gammaMargin))) (fstT (ap2 gammaRealF q (gammaData a b)))
       (unit p+unit q) (unit p*unit q) := by
   let c := fraction (one : PTm n) gammaMargin
-  let Y := fstT (ap2 gammaF q (gammaData a b))
   have hC : Γ ⊢[PRAAx] fstT (ap2 constantF p (marginPoint gammaMargin)) ≐ c :=
     (congrFst (constant_at p (marginPoint gammaMargin))).eqTrans margin_scalar
-  have g := upper_mono c Y one (unit q) (unit p+unit q) (unit p*unit q) (unit_positive q)
-    (gamma_lower_at q a b h) (by ipra_le (𝔞 (unit q))^2)
+  have g := RationalValueBounds.upper_one_error (D := unit p)
+    (unit_positive q) (le_refl _) (gamma_lower_at q a b h)
   exact upper_congr hC.eqSymm (real_coordinate q a b).eqSymm (.eqRefl _) (.eqRefl _) g
 
 theorem gamma_real_positive (a b : PTm n) (h : Γ ⊢[PRAAx] source a b) :

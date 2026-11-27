@@ -184,6 +184,25 @@ theorem upper_two_errors_same {a b D : PTm n} (hD : Γ ⊢[PRAAx] le one D)
   upper_cancel a b two D D hD
     (upper_congr (.eqRefl _) (.eqRefl _) (by ipra_ring) (.eqRefl _) h)
 
+/-- Lower either observation denominator while keeping the two error allowances. -/
+theorem upper_two_errors_retime {a b B C D E : PTm n} (hBC : Γ ⊢[PRAAx] le one (B*C))
+    (hDB : Γ ⊢[PRAAx] le D B) (hEC : Γ ⊢[PRAAx] le E C)
+    (h : Γ ⊢[PRAAx] upper a b (B+C) (B*C)) : Γ ⊢[PRAAx] upper a b (D+E) (D*E) :=
+  upper_mono _ _ _ _ _ _ hBC h (le_congr (by ipra_ring) (by ipra_ring)
+    (add_le_add₂ (mul_le_mul_right (B*D) hEC) (mul_le_mul_right (C*E) hDB)))
+
+/-- Bound two observations by twice the error at a common earlier denominator. -/
+theorem upper_two_errors {a b B C D : PTm n} (hBC : Γ ⊢[PRAAx] le one (B*C))
+    (hD : Γ ⊢[PRAAx] le one D) (hDB : Γ ⊢[PRAAx] le D B) (hDC : Γ ⊢[PRAAx] le D C)
+    (h : Γ ⊢[PRAAx] upper a b (B+C) (B*C)) : Γ ⊢[PRAAx] upper a b two D :=
+  upper_two_errors_same hD (upper_two_errors_retime hBC hDB hDC h)
+
+/-- A single reciprocal error is covered by a pair including a denominator no larger. -/
+theorem upper_one_error {a b B D E : PTm n} (hB : Γ ⊢[PRAAx] le one B) (hEB : Γ ⊢[PRAAx] le E B)
+    (h : Γ ⊢[PRAAx] upper a b one B) : Γ ⊢[PRAAx] upper a b (D+E) (D*E) :=
+  upper_mono _ _ _ _ _ _ hB h (le_congr (by ipra_ring) (by ipra_ring)
+    (le_trans (mul_le_mul_right D hEB) (le_add_right (B*D) (E*B))))
+
 theorem radius_cancel (a b A B c : PTm n) (hc : Γ ⊢[PRAAx] le one c)
     (h : Γ ⊢[PRAAx] radius a b (c*A) (c*B)) : Γ ⊢[PRAAx] radius a b A B :=
   positive_cancel hc (le_congr (by ipra_ring) (by ipra_ring) h)

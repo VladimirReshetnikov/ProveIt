@@ -114,7 +114,7 @@ private theorem diagonal_bound (k m z p : PTm n) (h : Γ ⊢[PRAAx] source k m) 
   have d' := imaginary_coordinate_radius _ _ _ _ hUV
     (distance_congr (.eqRefl _) (sample_at k m z p).eqSymm (one_mul _) (.eqRefl _) d)
   have leftBound : Γ ⊢[PRAAx] upper (sndT (qmul c v)) (sndT y) two U :=
-    upper_mono _ _ (U+V) (U*V) two U hUV (upper_of_radius _ _ _ _ d') (by ipra_le 𝔞 U*sl hUUV)
+    RationalValueBounds.upper_two_errors hUV hU (le_refl U) hUUV (upper_of_radius _ _ _ _ d')
   have chord := GaussianArctangentAngleChord.original_chord nameF X z (interval_input k m z h) (imaginary_samples k m z h.andE₁)
   have middle : Γ ⊢[PRAAx] upper (sndT y) (sndT H) two U :=
     RationalValueBounds.upper_two_errors_same hU (imaginary_order_at _ _ _ _ p p chord)
@@ -157,8 +157,7 @@ private theorem chord_sine_lower (k m z : PTm n) (h : Γ ⊢[PRAAx] source k m) 
   have lower := cofinal_bound a d x q hc
   have bound : C ⊢[PRAAx] upper (fstT (coefficient a d)) (fstT (ap2 (sineF nameF) q (chordSineData a d x)))
       (unit p+unit q) (unit p*unit q) :=
-    upper_mono _ _ one (unit q) _ _ (unit_positive q) lower
-      (le_of_eq_add (d := unit q*unit q) (by ipra_ring))
+    RationalValueBounds.upper_one_error (unit_positive q) (le_refl _) lower
   simpa only [realOrder, Syn.shift, chordSineData, GaussianArctangentDivisionAngles.subst_data,
     GaussianArctangentDivisionAngles.subst_coefficient, GaussianNameBounds.subst_U,
     GaussianNamedSineFromExponential.subst_sineData, a,d,x,p,q,C] using

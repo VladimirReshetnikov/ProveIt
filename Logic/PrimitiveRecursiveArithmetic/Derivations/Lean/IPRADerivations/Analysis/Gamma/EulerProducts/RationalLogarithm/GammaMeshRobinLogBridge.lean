@@ -324,8 +324,7 @@ theorem clocked_values (N p q : PTm n) (hN : Γ ⊢[PRAAx] le one N) : Γ ⊢[PR
   have lower := RationalValueBounds.upper_mono _ _ _ _ one (unit q) (gain_positive _) h.andE₂
     (le_congr (.eqRefl _) (by ipra_ring) (clock_error_budget N q hN))
   apply RationalValueBounds.radius_of_upper _ _ _ _
-  · exact RationalValueBounds.upper_mono _ _ _ _ _ _ (unit_positive q) lower
-      (le_of_eq_add (d := unit q*unit q) (by ipra_ring))
+  · exact RationalValueBounds.upper_one_error (unit_positive q) (le_refl _) lower
   · exact RationalValueBounds.upper_mono _ _ _ _ _ _ (mesh_positive p) h.andE₁
       (le_of_eq_add (d := LeanProofs.IPRA.PTm.num 4*unit p*unit p+LeanProofs.IPRA.PTm.num 3*unit p*unit q)
         (by unfold mesh; ipra_ring))

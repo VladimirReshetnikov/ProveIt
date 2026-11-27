@@ -104,8 +104,7 @@ theorem certificate_at (f : PR 2) (x A p q : PTm n) (h : Γ ⊢[PRAAx] certifica
   have oneS := RationalValueBounds.upper_order_right _ _ _ _ _ old
     (RationalValueBounds.order_of_upper_zero (le_refl one) (add_one_upper (ap2 f (clock q) x)))
   have grow := GaussianExponentialReference.unit_monotone (clock_later (Γ := Γ) q)
-  have widened := upper_mono _ _ one (unit (clock q)) (unit p+unit q) (unit p*unit q) (unit_positive _) oneS
-    (by ipra_le 𝔞(unit p)*sl grow + 𝔞(unit q)*𝔞(unit (clock q)))
+  have widened := RationalValueBounds.upper_one_error (D := unit p) (unit_positive _) grow oneS
   exact upper_congr (congrFst (constant_at p (marginPoint A))).eqSymm (congrFst (sample_at f q x)).eqSymm (.eqRefl _) (.eqRefl _) widened
 
 theorem original_certificate (f : PR 2) (x A : PTm n) (h : Γ ⊢[PRAAx] certificate f x A) : Γ ⊢[PRAAx]

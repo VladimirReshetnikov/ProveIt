@@ -134,8 +134,7 @@ theorem certificate_at (f : PR 2) (x A h D p q : PTm n) (hs : Γ ⊢[PRAAx] sour
   have old := GaussianNamedRightHalfPlane.actual_sample_upper f x A (clock q) hs.andE₁.andE₂.andE₂
   have shifted := shifted_upper f x A h D (ap2 f (clock q) x) (unit (clock q)) hs old
   have grow := GaussianExponentialReference.unit_monotone (clock_later (Γ := Γ) q)
-  have wide := upper_mono _ _ one (unit (clock q)) (unit p+unit q) (unit p*unit q) (unit_positive _) shifted
-    (by ipra_le 𝔞(unit p)*sl grow+𝔞(unit q)*𝔞(unit (clock q)))
+  have wide := RationalValueBounds.upper_one_error (D := unit p) (unit_positive _) grow shifted
   exact upper_congr (congrFst (constant_at p (marginPoint (two*A)))).eqSymm (congrFst (sample_at f q x h D)).eqSymm
     (.eqRefl _) (.eqRefl _) wide
 

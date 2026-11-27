@@ -75,14 +75,13 @@ theorem half_lower (m : PTm n) (hm : Γ ⊢[PRAAx] le one m) :
   let p : PTm (n+2) := var 1
   let q : PTm (n+2) := var 0
   let a := fraction one (lowerDenominator M)
-  let y := fstT (ap2 HalfF q (halfData M))
   have hM : Δ ⊢[PRAAx] le one M := by simpa [Δ,M,Fm.shift,Syn.shift] using hm.shift.shift
   have read : Δ ⊢[PRAAx] fstT (ap2 constantF p (positiveMargin M)) ≐ a := by
     have e := (constant_at (Γ := Δ) p (positiveMargin M)).fstE
     exact e.eqTrans (RationalNormalForm.normalize_idempotent _ _ (lower_denominator_positive M))
-  have first := upper_mono a y one (unit q) (unit p+unit q) (unit p*unit q)
-    (unit_positive q) (half_lower_at M q hM) (by ipra_le (Groth.ι (Q.mk Δ (unit q)))^2)
-  simpa [realOrder,Δ,M,Syn.shift,p,q,y] using upper_congr read.eqSymm (.eqRefl _) (.eqRefl _) (.eqRefl _) first
+  have first := RationalValueBounds.upper_one_error (D := unit p)
+    (unit_positive q) (le_refl _) (half_lower_at M q hM)
+  simpa [realOrder,Δ,M,Syn.shift,p,q] using upper_congr read.eqSymm (.eqRefl _) (.eqRefl _) (.eqRefl _) first
 
 def positiveRoot (m : PTm n) : Fm PTm n :=
   pointCN HalfF (halfData m) ⋏

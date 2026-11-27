@@ -121,8 +121,7 @@ theorem positive_wall (r x : PTm n) (h : Γ ⊢[PRAAx] le (num 6) (succ r)) :
   let q : PTm (n+2) := var 0
   have hn : Δ ⊢[PRAAx] le (num 6) (succ R) := by simpa [Fm.shift,Syn.shift,R,Δ] using h.shift.shift
   have e := wallis_lower q R X hn
-  have wide := upper_mono _ _ _ _ (unit p+unit q) (unit p*unit q) (unit_positive q) e
-    (by ipra_le (Groth.ι (IPRA.Q.mk Δ (unit q)))^2)
+  have wide := RationalValueBounds.upper_one_error (D := unit p) (unit_positive q) (le_refl _) e
   have align := upper_congr (congrFst (constant_at p (marginPoint two))).eqSymm (.eqRefl _) (.eqRefl _) (.eqRefl _) wide
   simpa [GaussianNamedRightHalfPlane.certificate,GaussianNamedPositiveExponentialOrder.realOrder,
       GaussianNamedRightHalfPlane.marginPoint,Syn.shift,ComplexLogarithmRemainder.oneCode,

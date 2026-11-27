@@ -129,8 +129,7 @@ theorem certificate_at (f : PR 2) (k x E p q : PTm n) (hf : Γ ⊢[PRAAx] pointC
     Γ ⊢[PRAAx] upper (fstT (ap2 constantF p (marginPoint (two*E)))) (fstT (ap2 f q x))
       (unit p+unit q) (unit p*unit q) := by
   have small := observation_margin f k q x E hf hE hk hY
-  have large := upper_mono _ _ one (unit q) (unit p+unit q) (unit p*unit q) (unit_positive q) small
-    (le_of_eq_add (d := unit q*unit q) (by ipra_ring))
+  have large := RationalValueBounds.upper_one_error (D := unit p) (unit_positive q) (le_refl _) small
   exact upper_congr (congrFst (constant_at p _)).eqSymm (.eqRefl _) (.eqRefl _) (.eqRefl _) large
 
 theorem positive_source (f : PR 2) (k x R E : PTm n)
