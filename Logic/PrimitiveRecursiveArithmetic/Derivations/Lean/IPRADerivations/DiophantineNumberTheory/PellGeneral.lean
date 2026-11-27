@@ -35,7 +35,8 @@ open LeanProofs.IPRA.Combinatorics.Binomial (pos_mul)
 open LeanProofs.IPRA.DiophantineNumberTheory.Coprime
 open LeanProofs.IPRA.DiophantineNumberTheory.PellDescent (rr tt)
 open LeanProofs.IPRA.DiophantineNumberTheory.PellGenDescent (gen_descent_pos gen_descent_neg)
-open LeanProofs.IPRA.DiophantineNumberTheory.PellAll (alg_x alg_y)
+open LeanProofs.IPRA.DiophantineNumberTheory.PellAll
+  (reconstruct_zero reconstruct_succ descent_index terminal_residual_zero)
 open LeanProofs.IPRA.Algebra.CubeRootTwo (sg sg_zero sg_succ)
 open LeanProofs.IPRA.AnalyticNumberTheory.PhiLower (le_mul_mono)
 open LeanProofs.IPRA.DiophantineNumberTheory.SquareArea (le_add_mono)
@@ -206,7 +207,7 @@ theorem inv_step {s : Bool} {ps : Fin 6 → PTm n} {k : PTm n} (hA : Γ ⊢[PRAA
   · -- `t ≤ A K`: nothing changes.
     let Δ := ((monus (T k ps) (ps 0 * ps 5) ≐ zero) ⋏ le (T k ps) (ps 0 * ps 5)) :: Γ
     have hz : Δ ⊢[PRAAx] monus (T k ps) (ps 0 * ps 5) ≐ zero := Prf.andE₁ Prf.hyp0
-    have hs : Δ ⊢[PRAAx] G k ps ≐ zero := (congrMonus (.eqRefl _) (congrMonus (.eqRefl _) hz)).eqTrans sg_zero
+    have hs := (Common.congrSg hz).eqTrans sg_zero
     refine invAt_congr (r := R k ps) (t := T k ps) (c := C k ps) (rs.wk.eqTrans (Bezout.guard_zero hz)).eqSymm
       (ts.wk.eqTrans (Bezout.guard_zero hz)).eqSymm ((cs.wk.eqTrans ((congrAdd (.eqRefl _) hs).eqTrans (add_zero _))).eqSymm) ?_
     have i := (ih.wk : Δ ⊢[PRAAx] _)
@@ -220,26 +221,17 @@ theorem inv_step {s : Bool} {ps : Fin 6 → PTm n} {k : PTm n} (hA : Γ ⊢[PRAA
     have i := (ih.wk : Δ ⊢[PRAAx] _)
     have e₃ := Prf.andE₁ (Prf.andE₂ (Prf.andE₂ i))
     have d := gen_descent hA.wk hB.wk hD.wk hK.wk e₃ hlt
-    have hs : Δ ⊢[PRAAx] G k ps ≐ one := (congrMonus (.eqRefl _) (congrMonus (.eqRefl _) hg)).eqTrans (sg_succ _)
+    have hs := (Common.congrSg hg).eqTrans (sg_succ _)
     refine invAt_congr (rs.wk.eqTrans (Bezout.guard_succ hg)).eqSymm (ts.wk.eqTrans (Bezout.guard_succ hg)).eqSymm
       ((cs.wk.eqTrans (congrAdd (.eqRefl _) hs))).eqSymm ?_
-    have hX := X_succ (Γ := Δ) ps (C k ps)
-    have hY := Y_succ (Γ := Δ) ps (C k ps)
-    have hX' := (congrX ps (succ_eq_add_one (C k ps)).eqSymm).eqTrans hX
-    have hY' := (congrY ps (succ_eq_add_one (C k ps)).eqSymm).eqTrans hY
     have hR := Prf.andE₁ (Prf.andE₂ (Prf.andE₂ (Prf.andE₂ (Prf.andE₂ d))))
     have hT' := Prf.andE₂ (Prf.andE₂ (Prf.andE₂ (Prf.andE₂ (Prf.andE₂ d))))
-    refine .andI (alg_x (Prf.andE₁ i) hR hT' hX' hY') (.andI (alg_y (Prf.andE₁ (Prf.andE₂ i)) hR hT' hX' hY')
-      (.andI (Prf.andE₁ d) (.andI ?_ ?_)))
+    have xy := reconstruct_succ (p3 ps) i.andE₁ i.andE₂.andE₁ hR hT'
+    refine .andI xy.andE₁ (.andI xy.andE₂ (.andI (Prf.andE₁ d) (.andI ?_ ?_)))
     · -- `t' + k + 1 ≤ t + k ≤ y` (the first disjunct contradicts `A K < t`).
       refine .orE (Prf.andE₁ (Prf.andE₂ (Prf.andE₂ (Prf.andE₂ i)))) ?_ ?_
       · exact le_lt_absurd _ Prf.hyp0 hlt.wk
-      · refine .orI₂ (le_trans ?_ Prf.hyp0)
-        have l := Prf.andE₁ (Prf.andE₂ (Prf.andE₂ (Prf.andE₂ d)))
-        have w := eq_add_of_le (l.wk (ψ := le (T k ps + k) (ps 4)))
-        refine le_of_eq_add (d := monus (T k ps) (succ (tt (ps 0) (ps 1) (ps 2) (R k ps) (T k ps)))) ?_
-        refine withEq w fun e => ?_
-        apply deriveNat; ipra_simps; rw [e]; ring
+      · exact .orI₂ (le_trans (descent_index k d.andE₂.andE₂.andE₂.andE₁.wk) Prf.hyp0)
     · have l := Prf.andE₂ (Prf.andE₂ (Prf.andE₂ (Prf.andE₂ i)))
       exact (succ_monus_succ _ _).eqTrans l |> fun h => le_congr (succ_eq_add_one _) (.eqRefl _) h
 
@@ -254,18 +246,12 @@ theorem general {s : Bool} {ps : Fin 6 → PTm n} (hA : Γ ⊢[PRAAx] ps 0 * ps 
       (le (R (ps 4) ps) (ps 2 * (ps 0 * ps 5) + ps 5) ⋏ le (C (ps 4) ps) (ps 4))))) := by
   have hall : Γ ⊢[PRAAx] Fm.all (Inv s (fun i => Syn.shift (ps i)) (var 0)) := by
     refine PRA.qfInd _ (by cases s <;> exact ⟨trivial, trivial, trivial, ⟨le_QF _ _, le_QF _ _⟩, le_QF _ _⟩) ?_ ?_
-    · have e₁ : (fun i => Syn.subst (Syn.inst zero) (Syn.shift (ps i))) = ps := by
-        funext i; simp [Syn.subst_inst_shift]
-      rw [subst_Inv, e₁, show Syn.subst (Syn.inst zero) (var 0 : PTm (n + 1)) = zero by simp]
+    · simp only [subst_Inv, Syn.subst_inst_shift, Syn.subst_var, Syn.inst_zero]
       refine invAt_congr (R_zero ps).eqSymm (T_zero ps).eqSymm (C_zero ps).eqSymm ?_
-      refine .andI ?_ (.andI ?_ (.andI hx (.andI (.orI₂ (le_congr (add_zero _).eqSymm (.eqRefl _) (le_refl _))) (le_refl _))))
-      · refine withEq (X_zero (Γ := Γ) ps) fun e₁ => withEq (Y_zero (Γ := Γ) ps) fun e₂ => ?_
-        apply deriveNat; ipra_simps; rw [e₁, e₂]; ring
-      · refine withEq (X_zero (Γ := Γ) ps) fun e₁ => withEq (Y_zero (Γ := Γ) ps) fun e₂ => ?_
-        apply deriveNat; ipra_simps; rw [e₁, e₂]; ring
-    · have e₁ : (fun i => Syn.subst (Syn.repl (succ (var 0))) (Syn.shift (ps i))) = fun i => Syn.shift (ps i) := by
-        funext i; simp
-      rw [subst_Inv, e₁, show Syn.subst (Syn.repl (succ (var 0))) (var 0 : PTm (n + 1)) = succ (var 0) by simp]
+      have xy := reconstruct_zero (Γ := Γ) (p3 ps) (ps 3) (ps 4)
+      exact .andI xy.andE₁ (.andI xy.andE₂ (.andI hx
+        (.andI (.orI₂ (le_congr (add_zero _).eqSymm (.eqRefl _) (le_refl _))) (le_refl _))))
+    · simp only [subst_Inv, subst_repl_shift, Syn.subst_var, Syn.repl_zero]
       have hA' := hA.shift
       have hB' := hB.shift
       have hD' := hD.shift
@@ -274,18 +260,11 @@ theorem general {s : Bool} {ps : Fin 6 → PTm n} (hA : Γ ⊢[PRAAx] ps 0 * ps 
         ConciseIPRA.PTm.subst_succ, ConciseIPRA.PTm.subst_zero] at hA' hB' hD' hK'
       exact inv_step (ps := fun i => Syn.shift (ps i)) hA'.wk hB'.wk hD'.wk hK'.wk Prf.hyp0
   have h := Prf.allE (ps 4) hall
-  have e₁ : (fun i => Syn.subst (Syn.inst (ps 4)) (Syn.shift (ps i))) = ps := by
-    funext i; simp [Syn.subst_inst_shift]
-  rw [subst_Inv, e₁, show Syn.subst (Syn.inst (ps 4)) (var 0 : PTm (n + 1)) = ps 4 by simp] at h
+  simp only [subst_Inv, Syn.subst_inst_shift, Syn.subst_var, Syn.inst_zero] at h
   -- The residual is in the box `t ≤ A K`.
   have ht : Γ ⊢[PRAAx] le (T (ps 4) ps) (ps 0 * ps 5) := by
     refine .orE (Prf.andE₁ (Prf.andE₂ (Prf.andE₂ (Prf.andE₂ h)))) Prf.hyp0 ?_
-    have w := eq_add_of_le (Prf.hyp0 : (le (T (ps 4) ps + ps 4) (ps 4) :: Γ) ⊢[PRAAx] _)
-    have z : (le (T (ps 4) ps + ps 4) (ps 4) :: Γ) ⊢[PRAAx] T (ps 4) ps ≐ zero := by
-      refine add_eq_zero_left (y := monus (ps 4) (T (ps 4) ps + ps 4)) (add_right_cancel (c := ps 4) ?_)
-      refine withEq w fun e => ?_
-      ipra_lc -e
-    exact le_congr z.eqSymm (.eqRefl _) (zero_le _)
+    exact le_congr (terminal_residual_zero Prf.hyp0).eqSymm (.eqRefl _) (zero_le _)
   have hn := Prf.andE₁ (Prf.andE₂ (Prf.andE₂ h))
   have hr : Γ ⊢[PRAAx] le (R (ps 4) ps) (ps 2 * (ps 0 * ps 5) + ps 5) := by
     refine le_of_sq_le (le_trans ?_ (seed_square hD hK))
