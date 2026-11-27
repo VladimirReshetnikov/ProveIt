@@ -1,0 +1,70 @@
+\section{An exact extension to taller symplectic corners}
+\label{sec:taller}
+
+The determinant in the two-plane theorem is a special case of a
+symplectic area. This observation extends the exact law to every
+proper symplectic target summand, when the input still consists of
+one symplectic pair.
+
+\begin{corollary}[A symplectic pair projected to any proper symplectic summand]
+\label{cor:taller}
+Let $1\le a<g$. Suppose $X^{\mathsf T}JX=J_2$ and
+$Y^{\mathsf T}JY=J_{2a}$, where $Y$ has $2a$ columns and $J_{2a}$
+is a standard unimodular alternating matrix. For
+$M=Y^{\mathsf T}JSX\in\Mat_{2a,2}(\OO)$, put
+\[
+ \Omega(M)=M_1^{\mathsf T}J_{2a}M_2,\quad
+ N=2g-2a,\quad
+ \alpha_{g,a}=\frac{1-q^{-N}}{1-q^{-2g}}.
+\]
+The finite-precision density relative to $2a\times2$ independent entries is
+\[
+ h_{g,a,e}(M)=\frac{f_{N,e}(1-\Omega(M))}{1-q^{-2g}},
+\]
+with $f_{N,e}$ as in \eqref{eq:padic-finite-f}; the complete-ring
+density is the corresponding geometric sum
+\[
+ \alpha_{g,a}\sum_{r=0}^{v(1-\Omega(M))}q^{-(N-1)r}.
+\]
+For every finite or infinite precision,
+\begin{equation}\label{eq:taller-TV}
+ \TV(\mu_e,\nu_e)
+ =\left(1-q^{-1}+q^{-(2a+1)}\right)
+   \frac{q^{2a}-1}{q^{2g}-1}.
+\end{equation}
+The event $\Omega(M)\equiv1\pmod\pi$ is optimal. For $e>k\ge1$,
+\begin{equation}\label{eq:taller-lift}
+ \TV(\mu_e,\widetilde\mu_{k,e})
+ =(1-q^{-1})(1-\alpha_{g,a})q^{-Nk}.
+\end{equation}
+\end{corollary}
+
+\begin{proof}
+Split the ambient module as the target symplectic summand and its
+symplectic complement. Write the image frame as $(B;C)$. Since
+$M=J_{2a}B$, the visible pairing is
+$\Omega(M)=B_1^{\mathsf T}J_{2a}B_2$, and the complement equation is
+$\langle C_1,C_2\rangle=1-\Omega(M)$. The frame-counting proof of
+Theorem~\ref{thm:padic-density} applies verbatim, with $N=2g-2a$;
+the independent-entry factor is now $q^{-4ae}$.
+
+For independent visible columns modulo $\pi$, the first is nonzero
+with probability $1-q^{-2a}$, and then pairing with the second is
+uniform. Consequently the area-one event has probability
+$q^{-1}(1-q^{-2a})$. On its complement the likelihood is
+$\alpha_{g,a}<1$; on the event it exceeds one by the same sign
+calculation as before. Here $N\ge2$, which is the necessary inequality
+in that calculation. This proves \eqref{eq:taller-TV}.
+
+Conditional on an area-one residue class, one coordinate of the first
+column is a unit. Varying the paired coordinate of the second column
+makes the area uniform in $1+\pi R_e$. The valuation probabilities
+used in Theorem~\ref{thm:padic-lift-exact} therefore hold with
+$\beta_q=q^{-1}(1-q^{-2a})$. The identical calculation proves
+\eqref{eq:taller-lift}.
+\end{proof}
+
+When $a=g$, there is no complementary symplectic pair and the
+conclusion changes: the area is identically one, as in the $g=1$
+endpoint of the square case. Thus the proper-summand hypothesis
+has a concrete geometric role.

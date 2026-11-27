@@ -1,0 +1,431 @@
+% Self-contained mathematical section. Requires amsmath, amssymb, amsthm.
+% Bibliography keys: ProveItArticle, GRHLean, Liehr2024, Wellershoff2024.
+\section{One positive prime weight determines all labelled Dirichlet zeros}
+\label{rw:sec:main}
+
+The inverse-problem section of the supplied article constructs a complex
+prime weight whose autocorrelation determines all labelled primitive
+Dirichlet zero multisets. It asks whether one real nonnegative weight can
+do the same \cite[section ``Recovering zeros and characters from prime
+data'', final question ``Fewer filters and weights'']{ProveItArticle}.
+The answer below is affirmative. Second-order correlation already suffices.
+The weight is computable independently of the zeros and stays uniformly
+close to one. The construction uses three bounded frequency shifts to
+recover the orientation that taking real parts would otherwise erase.
+
+Throughout this section, Dirichlet GRH means that the nontrivial zeros of
+every primitive Dirichlet $L$-function lie on $\Re s=1/2$. This is exactly
+the input supplied by the main exported theorems of \cite{GRHLean}; no
+hypothesis about Artin or automorphic $L$-functions is used. Put
+\[
+ m_\chi(t)=\operatorname{ord}_{s=1/2+it}L(s,\chi),\qquad
+ D(t)=(\tfrac12+it)(\tfrac32+it),\qquad
+ K(t)=|D(t)|.
+\]
+At a nonzero value of $L$, the order is zero. Write $m_\zeta$ for the
+conductor-one character. Both signs of $t$ are retained for a nonreal
+character.
+
+\begin{theorem}[A real positive universal arithmetic encoder]
+\label{rw:thm:encoder}
+There is an explicitly specified computable function
+$W:\mathbb N_{\ge1}\to[3/4,5/4]$, independent of the zero multisets, such that the
+following holds under Dirichlet GRH. Define, for real $t$,
+\[
+ F(t)=e^{-t/2}\left\{
+ \sum_{1\le n\le e^t}\Lambda(n)W(n)(1-ne^{-t})-\frac{e^t}{2}\right\}.
+\]
+The real autocorrelation
+\[
+ C(h)=\lim_{T\to\infty}\frac1T\int_0^T F(t+h)F(t)\,dt
+ \qquad(h\in\mathbb R)
+\]
+exists, is continuous, even and positive definite, and determines
+$m_\chi(t)$ for every primitive character $\chi$ and every real $t$.
+In particular, the labels, multiplicities and signs of the ordinates are
+recovered. No simplicity, common-zero exclusion or linear independence
+assumption is required.
+
+The same conclusion holds for a sum over primes alone after adding the
+explicit bounded correction in Corollary~\ref{rw:cor:primes}.
+More generally, for every prescribed rational $0<\varepsilon<1$ one
+can require $1-\varepsilon\le W(n)\le1+\varepsilon$ for all $n$.
+The determination uses exact limiting correlation data. It does not
+assert a uniformly stable reconstruction from a fixed finite observation.
+\end{theorem}
+
+\subsection{A separated positive code}
+
+Enumerate all pairs $(\chi_j,a_j)$, where $\chi_j$ is primitive and
+nonprincipal and $a_j\in\{0,1,\sqrt2\}$, as $j=1,2,\ldots$, in a fixed
+computable order. For example, order the characters by conductor and then
+by their finite tables of algebraic values, and list the three shifts
+consecutively. Let $q_j$ be the conductor and $w_j=q_j+1$. Put $c_0=1$,
+$w_0=2$, $k_0=0$, and let $p_j$ denote the $j$th rational prime.
+The construction below is the multiquadratic prefix code of
+\cite[lemma ``Prefix separation'']{ProveItArticle}, with a smaller tail
+budget needed for a real positive weight. It is included in full.
+
+Inductively set
+\begin{align}
+ D_n^*&=2^{\max_{0\le j\le n}k_j},&
+ d_n&=(D_n^*)^{-1}
+       \bigl(3D_n^*(n+1)\bigr)^{-(2^n-1)},\label{rw:eq:dn}\\
+ c_j&=2^{-k_j}\sqrt{p_j},\label{rw:eq:cj}
+\end{align}
+where $k_j$ is the least nonnegative integer satisfying
+\begin{equation}\label{rw:eq:codechoice}
+ 2^{-k_j}p_jw_j\le
+ 2^{-j-3}\min\left(1,\min_{0\le n<j}\frac{d_n}{n+1}\right).
+\end{equation}
+Every comparison in \eqref{rw:eq:codechoice} is rational, so the choice is
+effective. In particular $d_0=1$, and
+\begin{equation}\label{rw:eq:tails}
+ \sum_{j\ge1}c_jw_j\le\frac18,\qquad
+ \sum_{j>n}c_jw_j\le
+ 2^{-n-3}\frac{d_n}{n+1}.
+\end{equation}
+
+\begin{lemma}[Prefix decoding]\label{rw:lem:code}
+If $u_0,\ldots,u_n$ are integers, not all zero, with
+$|u_j|\le(n+1)w_j$, then
+\[
+ \left|\sum_{j=0}^n c_ju_j\right|\ge d_n.
+\]
+Consequently $E(m)=\sum_{j\ge0}c_jm_j$ is injective on nonnegative integer
+sequences satisfying $m_j\le H w_j$ for some finite $H$.
+If $n+1\ge H$ and $|A'-E(m)|<d_n/8$, the true prefix is the unique vector
+of integers $0\le v_j\le(n+1)w_j$, $0\le j\le n$, satisfying
+\[
+ \left|A'-\sum_{j=0}^n c_jv_j\right|<\frac{d_n}{2}.
+\]
+\end{lemma}
+
+\begin{proof}
+The field $\mathbb Q(\sqrt{p_1},\ldots,\sqrt{p_n})$ has degree $2^n$;
+its automorphisms change the signs of the square roots independently.
+The square classes of the distinct primes are independent, as follows
+by taking their valuations modulo two. Thus
+$z=D_n^*\sum_{j=0}^nc_ju_j$ is a nonzero algebraic integer. Every conjugate
+of $z$ has modulus at most
+\[
+ D_n^*(n+1)\left(w_0+\sum_{j=1}^nc_jw_j\right)
+ \le\frac{17}{8}D_n^*(n+1)<3D_n^*(n+1).
+\]
+The product of its $2^n$ conjugates is a nonzero integer. Bounding all
+but the displayed conjugate gives precisely the lower bound $d_n$.
+By \eqref{rw:eq:tails}, the omitted tail of $E(m)$ is at most $d_n/8$
+when $n+1\ge H$. The true prefix is therefore within $d_n/4$ of $A'$;
+every other admissible prefix is more than $3d_n/4$ away. Finally, if two
+sequences differed, a sufficiently long prefix containing a difference
+would contradict this uniqueness with $A'=E(m)$.
+\end{proof}
+
+Define the promised weight by
+\begin{equation}\label{rw:eq:weight}
+ W(n)=1+2\sum_{j\ge1}c_j
+       \Re\bigl(\chi_j(n)n^{-ia_j}\bigr).
+\end{equation}
+The series converges uniformly in the positive integer $n$.
+Equation~\eqref{rw:eq:tails} gives $|W(n)-1|\le2\sum c_j\le1/4$.
+It also gives an effective uniform truncation error, proving the stated
+computability of $W$. No zero or zero approximation enters this definition.
+For the arbitrary-$\varepsilon$ version, replace $2^{-j-3}$ in
+\eqref{rw:eq:codechoice} by $\sigma2^{-j}$, where
+$\sigma=\min(\varepsilon/2,1/8)$. All separation and tail estimates remain
+valid, while $|W(n)-1|\le2\sigma\le\varepsilon$.
+
+\subsection{The shifted explicit formula and the infinite sum}
+
+\begin{lemma}[Uniformly bounded shifts]\label{rw:lem:explicit}
+Assume Dirichlet GRH. Let $\chi$ be primitive and nonprincipal of conductor
+$q$, and let $|a|\le\sqrt2$. Uniformly for $x\ge1$,
+\begin{equation}\label{rw:eq:shifted}
+ \sum_{1\le n\le x}\Lambda(n)\chi(n)n^{-ia}(1-n/x)
+ =-\sum_\gamma
+ \frac{x^{1/2+i(\gamma-a)}}{D(\gamma-a)}
+ +O\bigl(x^{1/4}\log(q+2)\bigr).
+\end{equation}
+The zeros in this formula are repeated with multiplicity. The implied
+constant is absolute, and
+\begin{equation}\label{rw:eq:abssum}
+ \sum_\gamma |D(\gamma-a)|^{-1}\ll\log(q+2)
+\end{equation}
+with an absolute constant. For $\zeta$ and $a=0$, the same formula holds
+with the additional main term $x/2$.
+\end{lemma}
+
+\begin{proof}
+We give the uniformity details because they justify using infinitely many
+characters. The standard completed function is
+\[
+ \Xi_\chi(s)=\bigl(s(s-1)\bigr)^{\mathbf1_{q=1}}
+ (q/\pi)^{(s+\kappa)/2}\Gamma((s+\kappa)/2)L(s,\chi),
+ \qquad \chi(-1)=(-1)^\kappa.
+\]
+Its Hadamard product and functional equation, with the zeros on the
+critical line, give
+\begin{equation}\label{rw:eq:poisson}
+ \Re\frac{\Xi_\chi'}{\Xi_\chi}(2+iu)
+ =\sum_\gamma\frac{3/2}{(3/2)^2+(u-\gamma)^2}.
+\end{equation}
+For example, subtract the logarithmic derivative at $1/2+iu$, whose real
+part is zero away from zeros, and then extend by continuity in $u$.
+The Euler series at $2+iu$ and the digamma factor show that the left side
+is $O(\log(q(|u|+3)))$, absolutely in $q,u$. Thus each interval
+$[u-1,u+1]$ contains $O(\log(q(|u|+3)))$ zeros, with multiplicity.
+Summing these estimates over unit intervals proves
+\eqref{rw:eq:abssum}, uniformly for the indicated bounded shifts.
+
+For completeness a crude numerical multiplicity bound follows directly.
+The digamma series implies
+$\Re\psi(x+iy)\le2+\log(|y|+2)$ for $1\le x\le3/2$:
+split its series after $N=\lceil\max(2,|y|)\rceil$ terms and bound the
+remaining terms by $\tfrac12(n+1)^{-2}+y^2(n+1)^{-3}$.
+Also $\sum_{n\ge2}\Lambda(n)n^{-2}<2$ and the two possible rational
+terms in $\Xi_\chi'/\Xi_\chi$ have real part at most $3/2$ together.
+Hence the left side of \eqref{rw:eq:poisson} is at most
+$\tfrac92+\tfrac12\log(q(|u|+3))$. Each zero in $[u-1,u+1]$ contributes
+at least $6/13$, so the safe bound
+\begin{equation}\label{rw:eq:localcount}
+ \#\{\gamma:|\gamma-u|\le1\}
+ \le10+2\log(q(|u|+3))
+\end{equation}
+is valid, including $q=1$.
+
+For $x\ge1$ the Mellin inversion formula is
+\[
+ \frac1{2\pi i}\int_{(2)}
+ -\frac{L'}{L}(s+ia,\chi)\frac{x^s}{s(s+1)}\,ds.
+\]
+Move the line to $\Re s=1/4$. The logarithmic derivative there is
+$O(\log(q(|\Im s|+4)))$, uniformly for $|a|\le\sqrt2$.
+To see this bound without proximity to zeros, compare the Hadamard
+logarithmic derivative at $1/4+iv$ with that at $2+iv$. The difference
+is an absolutely convergent sum of terms bounded by
+$O((1+|v-\gamma|^2)^{-1})$; the local count just proved and the elementary
+gamma terms give the assertion. Horizontal edges can be chosen at
+distance $\gg1/\log(q(T+3))$ from zero ordinates, using the same local
+count. Their contributions tend to zero; the resulting logarithmic
+derivative bound on these edges is $O(\log^2(q(T+3)))$.
+The new vertical integral has absolute value at most
+\[
+ Cx^{1/4}\int_{\mathbb R}
+ \frac{\log(q(|v|+4))}{1+v^2}\,dv
+ \ll x^{1/4}\log(q+2).
+\]
+The crossed poles are at $s=1/2+i(\gamma-a)$, and their residues give
+\eqref{rw:eq:shifted}. Nonprincipal characters introduce no pole at
+$1-ia$. The poles of the kernel and the trivial zeros have real part
+at most zero, so none was crossed. For $\zeta$ with $a=0$, its pole
+at $s=1$ contributes $x/2$.
+\end{proof}
+
+For each real $\lambda$ put
+\begin{equation}\label{rw:eq:amplitude}
+ A(\lambda)=m_\zeta(\lambda)+
+ \sum_{j\ge1}c_j
+ \bigl\{m_{\chi_j}(a_j+\lambda)+m_{\chi_j}(a_j-\lambda)\bigr\}.
+\end{equation}
+These are nonnegative, and $A(-\lambda)=A(\lambda)$.
+The conjugate identity $m_{\bar\chi}(v)=m_\chi(-v)$ is what makes the
+second contribution of $2\Re(\chi(n)n^{-ia})$ equal to
+$m_\chi(a-\lambda)$.
+Since $\sum c_j\log(q_j+2)<\infty$, Lemma~\ref{rw:lem:explicit} and
+absolute convergence yield
+\begin{equation}\label{rw:eq:Fourier}
+ F(t)=G(t)+O(e^{-t/4}),\qquad
+ G(t)=-\sum_{\lambda}\frac{A(\lambda)}{D(\lambda)}e^{i\lambda t},
+ \qquad
+ \sum_\lambda\frac{A(\lambda)}{|D(\lambda)|}<\infty.
+\end{equation}
+The sum is over the countable union of the shifted spectra and the zeta
+spectrum. That union need not be locally finite. Its absolute convergence
+is the justification for all regrouping and averaging here; local
+finiteness of the union is not assumed.
+
+Expand the absolutely convergent double series for $G(t+h)G(t)$, using
+$G$ real. The mean of $e^{i\omega t}$ is zero unless $\omega=0$.
+The decaying error in \eqref{rw:eq:Fourier} does not change the mean.
+Consequently
+\begin{equation}\label{rw:eq:correlation}
+ C(h)=\sum_\lambda\frac{A(\lambda)^2}{K(\lambda)^2}e^{i\lambda h}.
+\end{equation}
+This is an absolutely convergent series with nonnegative Fourier
+coefficients, proving the existence and the stated properties of $C$.
+Its Fourier--Bohr coefficients are
+\begin{equation}\label{rw:eq:decodeA}
+ P(\lambda):=\lim_{U\to\infty}\frac1U\int_0^U
+ C(h)e^{-i\lambda h}\,dh
+ =\frac{A(\lambda)^2}{K(\lambda)^2},\qquad
+ A(\lambda)=K(\lambda)\sqrt{P(\lambda)}.
+\end{equation}
+Here the positive square root is justified by the nonnegative amplitudes.
+At $\lambda=0$ the same formula holds without an extra factor of two.
+
+Equation~\eqref{rw:eq:localcount} implies that the integer vector
+\[
+ \bigl(m_\zeta(\lambda),
+ m_{\chi_j}(a_j+\lambda)+m_{\chi_j}(a_j-\lambda)\ (j\ge1)\bigr)
+\]
+satisfies the bound in Lemma~\ref{rw:lem:code}. One explicit sufficient
+choice is
+\begin{equation}\label{rw:eq:Hlambda}
+ H_\lambda=\left\lceil30+10\log(|\lambda|+5)\right\rceil.
+\end{equation}
+Indeed each paired multiplicity is at most
+$20+4\log(q_j(|\lambda|+5))\le H_\lambda(q_j+1)$, using
+$\log q\le q-1$; the zeta coordinate is smaller than $2H_\lambda$.
+The prefix code therefore recovers, for every character, the three
+functions
+\begin{equation}\label{rw:eq:Sa}
+ S_{\chi,a}(x)=m_\chi(a+x)+m_\chi(a-x),
+ \qquad a=0,1,\sqrt2.
+\end{equation}
+
+\subsection{Recovering an oriented discrete spectrum from reflections}
+
+The reflection principle used next has close precedents in holomorphic
+phase retrieval. Liehr characterizes parallel-line uniqueness by exclusion
+of an arithmetic progression \cite{Liehr2024}, and Wellershoff treats
+three parallel lines with rationally independent distances
+\cite{Wellershoff2024}. We include the elementary discrete-measure
+argument and an exact stopping rule; the reflection principle itself is
+not asserted to be new.
+
+\begin{proposition}[The reflection-group criterion]
+\label{rw:prop:reflection}
+Let $\mathcal A\subset\mathbb R$ be nonempty and let $a_0\in\mathcal A$.
+For locally finite positive atomic measures, the family of centered
+symmetrizations about $a\in\mathcal A$ is injective if and only if
+\[
+ \Gamma=\left\langle2(a-a_0):a\in\mathcal A\right\rangle_{\mathbb Z}
+\]
+is nondiscrete. In particular, three centers $a_0,a_1,a_2$ with
+$(a_1-a_0)/(a_2-a_0)$ irrational suffice, whereas two centers never
+suffice for all locally finite positive atomic measures.
+\end{proposition}
+
+\begin{proof}
+If two measures have the same symmetrizations, their signed difference
+$\nu$ satisfies $R_a\nu=-\nu$, where $R_a$ is reflection about $a$.
+Composing two reflections gives invariance under every translation in
+$\Gamma$. A nondiscrete additive subgroup of $\mathbb R$ is dense.
+If $\nu$ had a nonzero atom, translation would give equal nonzero atoms
+at a dense set of translates. Infinitely many would lie in one compact
+interval, contradicting local finiteness of its total variation.
+Since $\nu$ is atomic, it is zero.
+
+Conversely, a discrete subgroup is either $b\mathbb Z$ for $b>0$, or
+$\{0\}$. In the first case choose $0<\delta<b/2$ and set
+\[
+ \mu=\sum_{k\in\mathbb Z}\delta_{a_0+\delta+kb},\qquad
+ \widetilde\mu=\sum_{k\in\mathbb Z}\delta_{a_0-\delta+kb}.
+\]
+These are distinct and every reflection $R_a$, $a\in\mathcal A$,
+interchanges them because $2(a-a_0)\in b\mathbb Z$.
+Their symmetrizations therefore agree. For $\Gamma=\{0\}$ use the
+two single atoms at $a_0\pm\delta$. The lattice counterexamples have
+bounded multiplicities and finite $(1+t^2)^{-1}$-weighted mass. They
+are abstract spectra, not asserted Dirichlet zero multisets.
+\end{proof}
+
+For Dirichlet zeros one can recover each multiplicity by a terminating
+finite calculation once exact values of the symmetrizations are supplied.
+Let $m:\mathbb R\to\mathbb Z_{\ge0}$ have locally finite support and set
+$S_a(x)=m(a+x)+m(a-x)$. Define
+\begin{equation}\label{rw:eq:Da}
+ \Delta_a(y)=S_a(y+a)-S_0(y)=m(y+2a)-m(y).
+\end{equation}
+Write
+\[
+ (1+\sqrt2)^k=p_k+q_k\sqrt2,\qquad
+ u_k=2(q_k\sqrt2-p_k)=-2(1-\sqrt2)^k.
+\]
+Then $p_k,q_k$ are positive integers, $u_k\ne0$, and $u_k\to0$.
+The path with $q_k$ steps $+2\sqrt2$ and then $p_k$ steps $-2$ gives
+the fully explicit identity
+\begin{align}
+ T_k(t)
+ &:={\sum_{r=0}^{q_k-1}}\Delta_{\sqrt2}(t+2r\sqrt2)
+ -{\sum_{s=1}^{p_k}}\Delta_1(t+2q_k\sqrt2-2s)\notag\\
+ &=m(t+u_k)-m(t).\label{rw:eq:Pelltelescope}
+\end{align}
+
+\begin{proposition}[An exact stopping rule]\label{rw:prop:stop}
+For fixed real $t$, inspect $k=1,2,\ldots$ until
+$S_0(t+u_k)=0$. This happens for every sufficiently large $k$ and certifies
+\[
+ m(t)=-T_k(t).
+\]
+\end{proposition}
+
+\begin{proof}
+Local finiteness gives punctured neighborhoods of both $t$ and $-t$
+containing no support point. Thus, for all sufficiently large $k$,
+both $m(t+u_k)$ and $m(-t-u_k)$ vanish. Conversely, a zero value of
+$S_0(t+u_k)$ certifies $m(t+u_k)=0$ because both summands are
+nonnegative. Equation~\eqref{rw:eq:Pelltelescope} then proves the formula.
+\end{proof}
+
+This stopping rule is an exact-oracle statement; it does not decide from
+a noisy real approximation whether a spectral coefficient vanishes.
+Applying it to the three functions in \eqref{rw:eq:Sa} finishes the proof
+of Theorem~\ref{rw:thm:encoder}. Only the individual character's spectrum
+is required to be locally finite.
+
+\subsection{Using primes alone and the scope of the conclusion}
+
+\begin{corollary}[A literal prime statistic]\label{rw:cor:primes}
+For the weight \eqref{rw:eq:weight} put
+\begin{equation}\label{rw:eq:bias}
+ B(t)=\frac23+4\sum_{j:\chi_j^2\ {m principal}}
+ c_j\Re\left\{
+ \frac{e^{-ia_jt}}{(1-2ia_j)(3-2ia_j)}\right\}.
+\end{equation}
+Then the real signal
+\[
+ F_{\rm p}(t)=e^{-t/2}\left\{
+ \sum_{p\le e^t}(\log p)W(p)(1-pe^{-t})-\frac{e^t}{2}\right\}+B(t)
+\]
+has the autocorrelation $C$ of Theorem~\ref{rw:thm:encoder}.
+The correction $B$ is explicit and computable; it is a linear combination
+of the constant function and sines and cosines at frequencies $1$ and
+$\sqrt2$.
+\end{corollary}
+
+\begin{proof}
+The terms of exponent at least three in the prime-power sum contribute
+$O(x^{1/3}\log^2x)=o(\sqrt x)$, since $W$ is bounded. For a fixed
+character and fixed $a$, the prime number theorem for $\chi^2$ and
+partial summation give
+\[
+ x^{-1/2}\sum_{p\le\sqrt x}(\log p)\chi(p)^2p^{-2ia}(1-p^2/x)
+ =\mathbf1_{\chi^2\ {m principal}}
+ \frac{2x^{-ia}}{(1-2ia)(3-2ia)}+o(1).
+\]
+The coefficient is the integral of $u^{-2ia}(1-u^2/x)$ from zero to
+$\sqrt x$. The unshifted baseline gives $2/3$. Chebyshev's estimate
+bounds every normalized sum absolutely by one common constant,
+independent of the character. Since $\sum c_j<\infty$, dominated
+convergence permits summing the individual limits. Therefore the
+normalized square contribution is $B(\log x)+o(1)$, giving
+$F_{\rm p}(t)=F(t)+o(1)$. Both signals are bounded for $t\ge0$, so their
+fixed-lag correlations agree.
+\end{proof}
+
+The contribution relative to the supplied article is the positive real
+arithmetic encoding \eqref{rw:eq:weight} together with recovery of the
+oriented labelled spectra from its real autocorrelation. The existing
+complex-weight encoder and its multiquadratic separation mechanism are
+explicit antecedents. The reflection argument has the published
+antecedents just cited. A targeted literature search did not locate this
+combined arithmetic theorem; that is evidence for a candidate new result,
+not a claim that an exhaustive priority search has been completed.
+
+The coefficient code is deliberately very small and its decoding
+thresholds deteriorate rapidly with the character index. The theorem
+answers an exact information question. Finite-time spectral estimation
+with controlled error, and an economical well-conditioned encoding, are
+separate problems. No assertion here proves simplicity or nonvanishing
+at the central point, nor does it enlarge Dirichlet GRH to other families.
