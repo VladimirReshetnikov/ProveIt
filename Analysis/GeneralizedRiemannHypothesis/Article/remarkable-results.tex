@@ -1,0 +1,523 @@
+% Standalone source. Compile twice with pdfLaTeX.
+\documentclass[11pt,letterpaper]{article}
+\usepackage[T1]{fontenc}
+\usepackage{lmodern}
+\usepackage[letterpaper,top=.82in,bottom=.78in,left=1.04in,right=1.04in,headheight=14pt,headsep=16pt,footskip=30pt]{geometry}
+\usepackage{amsmath,amssymb,array,booktabs,tabularx,xcolor,fancyhdr,hyperref}
+\definecolor{ink}{HTML}{18324A}
+\definecolor{lake}{HTML}{116764}
+\definecolor{slate}{HTML}{465766}
+\hypersetup{colorlinks=true,urlcolor=lake,linkcolor=lake,pdftitle={Beyond the standard consequences of Dirichlet GRH},pdfauthor={Research assessment of the ProveIt article},bookmarksopen=true}
+\pagestyle{fancy}\fancyhf{}
+\fancyhead[L]{\footnotesize\sffamily\color{slate} ProveIt\enspace /\enspace Research assessment}
+\fancyhead[R]{\footnotesize\sffamily\color{slate} 27 November 2026}
+\fancyfoot[L]{\footnotesize\sffamily\color{slate} Beyond the standard consequences of Dirichlet GRH}
+\fancyfoot[R]{\small\sffamily\color{ink}\thepage}
+\renewcommand{\headrulewidth}{.3pt}
+\setlength{\parindent}{0pt}\setlength{\parskip}{4.4pt plus .5pt minus .2pt}
+\setlength{\abovedisplayskip}{6pt plus 1pt minus 1pt}
+\setlength{\belowdisplayskip}{6pt plus 1pt minus 1pt}
+\setlength{\emergencystretch}{1.8em}
+\renewcommand{\arraystretch}{1.18}
+\newcolumntype{Y}{>{\raggedright\arraybackslash}X}
+\newcounter{folio}
+\newcommand{\pagepart}[2]{\clearpage\stepcounter{folio}\pdfbookmark[1]{#2}{topic\thefolio}\vspace*{1pt}{\color{lake}\sffamily\footnotesize\bfseries\MakeUppercase{#1}\par}\vspace{3pt}{\raggedright\color{ink}\sffamily\bfseries\fontsize{21}{24}\selectfont #2\par}\vspace{7pt}}
+\newcommand{\topic}[1]{\par\vspace{3pt}{\color{ink}\sffamily\bfseries #1}\par\nobreak}
+\newcommand{\sources}[1]{\par\vspace{3pt}\vspace{5pt}\noindent{\color{lake}\rule{26pt}{1pt}}\par\nobreak{\raggedright\footnotesize\color{slate}#1\par}}
+\newcommand{\repo}{https://github.com/VladimirReshetnikov/ProveIt}
+\newcommand{\shaA}{cb0cb077fdaed91ea722783ba2b61d60973b7f18}
+\newcommand{\base}{\repo/blob/\shaA/Analysis/GeneralizedRiemannHypothesis/Article}
+\newcommand{\arc}[3]{\href{\base/sections/#1.tex\#L#2}{#3}}
+\newcommand{\refs}[2]{\href{#1}{#2}}
+\newcommand{\Q}{\mathbb Q}\newcommand{\Z}{\mathbb Z}\newcommand{\F}{\mathbb F}
+\newcommand{\Cl}{\operatorname{Cl}}\newcommand{\ord}{\operatorname{ord}}
+\begin{document}
+\pdfbookmark[0]{Assessment and principal results}{overview}
+{\sffamily\color{lake}\footnotesize\bfseries MATHEMATICAL RESEARCH REPORT}\par
+\vspace{8pt}
+{\raggedright\sffamily\color{ink}\bfseries\fontsize{29}{32}\selectfont Beyond the standard consequences of Dirichlet GRH\par}
+\vspace{3pt}
+{\large\itshape Which results in the ProveIt article answer open questions?}\par
+\vspace{7pt}
+The strongest candidates for new solutions of established problems are the five-term theorem for singular moduli, the disproofs of two geometric-progression density conjectures, and the completion of two class-group censuses. The enlarged article also contains substantial new inverse-spectral, modular-form and arithmetic results. The first three discoveries are RH-independent; the censuses require new arguments even with Dirichlet GRH. This report ranks the contributions by mathematical content, not by how famous the upstream theorem is.
+
+\begin{tabularx}{\linewidth}{@{}p{.255\linewidth}Y@{}}\toprule
+\textbf{Selection} & \textbf{What the article adds}\\\midrule
+Singular moduli & An independent proof of Riffaut's trinomial conjecture and exact classifications for four and five terms.\\
+Integer progressions & A set of greater natural density than Rankin's, refuting McNew's Conjecture 7.2. Three other strict inequalities answer his numbered questions.\\
+Progressions over $\F_q[x]$ & A disproof of Asada and coauthors' Conjecture 6.3 for every prime power $q$. The predicted density agrees with the truth to every fixed order in $1/q$.\\
+Quadratic class groups & Exclusion of the last possible discriminant ranges for exact exponents six and seven.\\
+CM modular forms & A classification of coefficient fields of weight-two CM newforms valid in every prime degree at least seven, and an exact quintic list.\\\bottomrule
+\end{tabularx}
+\topic{What the evidence supports}
+The live article now combines 120 reports into 689 pages, counting 869 theorem-like results (534 unconditional marks, 246 GRH marks and 43 reduction marks; the status counts are not a partition). It supersedes the 103-report, 621-page version covered by the four supplied assessments. The merge is explicitly not independent verification. The external Lean theorem has independent kernel and statement checks. The present review replays selected finite tests; see p.~\pageref{audit}.
+
+The named problems answered here are chiefly specialist problems. Several have precise conjecture numbers and published authors. None of the selected arguments establishes a further major general conjecture such as nonabelian GRH, Artin's primitive-root conjecture, or Birch--Swinnerton-Dyer.
+\sources{\href{\base/README.md}{ProveIt Contributors, \emph{Beyond the Riemann hypothesis for Dirichlet $L$-functions}, article and verification note}. Upstream records are available from \refs{https://github.com/lsernau/grh-lean}{Sernau's Lean repository} and \refs{https://math.mit.edu/~drew/grh/}{Sutherland's independent verification project}.}
+
+
+\pagepart{Executive synthesis}{Ranked shortlist and nature of the advances}
+The order below favors substantive new mathematical work, closeness to a precisely identified published question, generality, and the clarity of a route to independent verification. It is an editorial ranking, not a claim of priority over all current literature. A result marked U needs no RH; G uses the verified Dirichlet input plus a genuinely new argument; R is a reduction whose required inequality remains open.
+
+{\small\begin{tabularx}{\linewidth}{@{}p{.055\linewidth}p{.30\linewidth}p{.075\linewidth}Y@{}}\toprule
+\textbf{No.}&\textbf{Contribution}&\textbf{Type}&\textbf{What is new or consequential}\\\midrule
+1 & Singular moduli, minimum support & U & Riffaut's question with a stronger exact threshold; large families with maximal support.\\
+2 & Integer geometric progressions & U & McNew 7.2 refuted; 7.1, 7.3, 7.4 answered; arbitrary progression length and bounded-block barriers.\\
+3 & Quadratic class-group censuses & G & Missing discriminant intervals for exponents 6 and 7 eliminated; prior field/order lists become complete.\\
+4 & Polynomial-ring geometric progressions & U & Asada et al. 6.3 refuted for every field; optimum computable and attained; strict density gaps.\\
+5 & CM coefficient fields & U/G & Quintic and all prime degrees $\ge7$; ramification classification; general finiteness with varying character.\\
+6 & Inverse zero spectra & G & A short initial list identifies any bounded-conductor primitive character; fields of bounded discriminant likewise.\\
+7 & Heavenly elliptic curves & U/G & O'Hara A/B; uniform finiteness in higher degree subject to descent exclusions.\\
+8 & One-sided nonabelian detectors & R & Potential route to general field RH, not a solution.\\
+9 & Zhao and Suzuki sign phenomena & G & Exhaustive sufficient-condition census and fixed-cutoff sign transition.\\
+10 & Sharp local transfer and graph results & U & Optimal torsion selection, signed spectra, graph-tower onset and random matrix laws.\\\bottomrule\end{tabularx}}
+
+\topic{Why the ranking differs from a list of RH consequences}
+The upstream theorem changes the status of numerous earlier conditional results. It does not make their implications original to this article. The classification of exponents six and seven is more deserving of new-result credit than the classical idoneal-number census, even though the latter has greater historical name recognition. Likewise the independent trinomial proof would retain its mathematical value even if the upstream proof were unavailable.
+\sources{\href{\base/README.md}{Current inventory and status policy}. The four supplied assessments are reconciled below; their rankings differed principally in whether they valued named resolutions or general analytic methods most.}
+
+\pagepart{Complex multiplication}{Sparse equations for singular moduli}
+
+Let $\alpha=j(\tau)$, where $\tau$ is imaginary quadratic. Its degree $h$ over $\Q$ equals the class number of the corresponding order, of discriminant $\Delta$. Write $s(\Delta)$ for the fewest nonzero terms in any nonzero rational polynomial vanishing at $\alpha$. Its minimal polynomial gives $s\le h+1$. The difficulty comes from allowing the competing polynomial to have arbitrarily high degree. Even deciding whether three suitably chosen powers of $\alpha$ are dependent requires control of infinitely many choices of exponents.
+
+\topic{The exact thresholds}
+The five-term theorem and its corollary (\texttt{smd:thm:five}, \texttt{smd:cor:riffaut}) give, for $t=3,4,5$,
+\[
+                  s(\Delta)\le t \quad\Longleftrightarrow\quad h\le t-1.
+\]
+In degrees one through five, $s=h+1$ except for $j=0$ at $\Delta=-3$, where $s=1$. In particular, for a quintic singular modulus, \emph{every} choice of five distinct nonnegative powers is linearly independent over $\Q$. Six terms suffice. Riffaut conjectured the three-term case in 2019. Bilu, Luca and Pizarro-Madariaga proved it assuming Dirichlet GRH. The independent proof and the four- and five-term classifications earn this result its place here.
+
+\topic{Why one prime settles the original conjecture}
+The published unconditional reductions force a hypothetical trinomial discriminant to be fundamental, with $|\Delta|>10^{11}$, and every split prime to exceed $4\sqrt{|\Delta|}/\log|\Delta|$. In particular $7$ cannot split. Deuring's reduction theorem then places every conjugate at the unique supersingular invariant $j\equiv6\pmod7$. Ramification index at most two puts them in the disk $v_7(x/6-1)\ge1/2$. A trinomial has at most two distinct roots there. Indeed, after a $7$-adic exponential substitution the three exponents give an integral recurrence for the coefficients' power sums. Strassmann's theorem supplies the root count. Degree at least three supplies three distinct conjugates in that same disk.
+
+\topic{Beyond the conjecture}
+For class number at least six, the five-term proof reduces to 71 discriminants. Complex determinant bounds handle 49 of them and local disk bounds handle 18 more. Four sextic orders, of absolute discriminants 87, 348, 432 and 675, require a further modular rank sieve. The article also obtains $s=h+1-O(\log(2h))$ on congruence families of relative density $9/13$ among all imaginary quadratic order discriminants. The analogous classification for six terms, including the sextic cases $\Delta=-87,-152$, remains open.
+
+\sources{\arc{smd}{439}{Five-term classification} $\cdot$ \arc{smd}{465}{Trinomial proof} $\cdot$ \arc{smd}{1150}{Density theorem} $\cdot$ \refs{https://arxiv.org/abs/2003.06547}{Bilu, Luca and Pizarro-Madariaga}}
+
+
+\pagepart{Complex multiplication}{From small support to enormous exact support}
+The new material in the current article greatly increases the scope of the sparse-equation result. Minimum support is invariant under conjugacy and measures the length of the shortest rational linear dependence between distinct nonnegative powers, not the smallest possible polynomial degree.
+
+\topic{Explicit families attaining the trivial upper bound}
+The theorem \texttt{smd:thm:dyadic} gives two infinite families with $s(\Delta)=h(\Delta)+1$. For $m\ge1$ the first has
+\[
+ \Delta=-2^{6\cdot7^{m-1}},\qquad h(\Delta)=2^{3\cdot7^{m-1}-2}.
+\]
+The second, for $k\ge2$, has $\Delta=-2^{2+6\cdot7^{k-1}}$ and $h=2^{3\cdot7^{k-1}-1}$. Thus $s(-2^{42})=524289$ and $s(-2^{294})=2^{145}+1$. For such a singular modulus, any $h$ distinct powers are linearly independent; its minimal polynomial is as sparse as an annihilator can ever be. This is considerably stronger than an absolute lower bound of five or six terms. Local separation certificates explain why arbitrarily large exponents cannot circumvent the support bound.
+
+\topic{A density theorem for Gaussian prime conductors}
+For the orders of discriminant $-4\ell^2$ in $\Q(i)$, the article claims that primes $\ell$ for which full support holds have lower relative natural density greater than $0.999818260107372245$ among primes. This does not assert full support for every conductor, nor does it give an exact density. It suggests that maximal algebraic rigidity is typical, at least in a special and very large family.
+
+\topic{Progress on the six-term frontier}
+For any singular modulus $\alpha$ of discriminant $-87$ and $\beta$ of discriminant $-152$, the powered-moduli theorem proves, for every $t\ge1$,
+\[
+ s(\alpha^{63t})=7,\qquad s(\beta^{182t})=7.
+\]
+Here $s$ denotes the minimum support of a rational annihilator of the indicated algebraic number. This does not decide whether $s(\alpha)=s(\beta)=7$: a sparse relation on the base need not descend to a relation with the required number of terms on a power. The result is a restriction on one entire lattice of exponents, not a global classification of six-term relations.
+
+\topic{Publication and validation}
+The original trinomial theorem is independently interesting, but the strongest standalone paper would combine its direct proof, the exact four/five-term classifications, and these infinite full-support families. The finite modular certificates and the prime-density estimate deserve separate proof audits. No comparable general support theorem for arbitrary algebraic numbers follows from RH.
+\sources{\arc{smd}{1208}{Dyadic families}; \arc{smd}{1272}{Gaussian prime conductors}; \arc{smd}{1488}{Powered singular moduli}; \arc{smd}{1551}{Open questions}.}
+
+\pagepart{Extremal number theory}{An integer set denser than Rankin's}
+
+A three-term geometric progression of distinct positive integers satisfies $ac=b^2$. Its ratio may be rational, as in $4,6,9$. For each prime $p$, the exponents $v_p(a),v_p(b),v_p(c)$ form an arithmetic progression. Rankin therefore allowed, at every prime, only those exponents whose ternary digits are zero or one. These form a set containing no nonconstant three-term arithmetic progression. His resulting set $R$ has natural density about $0.719745$. McNew had already surpassed this in upper density. His Conjecture 7.2 asked whether Rankin was optimal among sets whose density has a limit.
+
+\topic{An exchange across 225 primes}
+The explicit counterexample theorem (\texttt{gpi:thm:explicit}) constructs a progression-free set $E$ with
+\[
+                            d(E)>d(R)+10^{-596}.
+\]
+For primes above $1427$ it retains Rankin's rule. At the 225 primes up to and including that bound it chooses exponent patterns jointly. Put $Q$ equal to the product of the 224 odd primes in this range. The construction inserts patterns represented by $2^k Q$, $2^k Qp$, and $2^k Qp^3$, where $p$ ranges over those odd primes and $k\in\{2,5,11,14\}$. Carefully chosen deletions remove an old endpoint or midpoint whenever an inserted pattern could complete a triple. The four values of $k$ are all $2$ modulo $3$, which controls triples containing two inserted patterns. Factoring off the part supported on primes above $1427$ gives an actual natural density.
+
+The supplied archive's finite rational checks were rerun successfully in this review. Measured in units of $1/Q$, the certified gain in reciprocal mass exceeds $0.00009$. The density factor from the permitted rough parts exceeds $1/15$, and $Q<3\cdot10^{590}$. These inequalities give the stated strict gain. Its sign decides the conjecture, however small its magnitude. The article also proves optimality for modifications supported on at most four primes.
+
+\topic{Three density questions}
+Write $\alpha,\beta$ for the natural-density suprema when forbidden ratios range over rationals and integers respectively. Bars denote the corresponding upper-density suprema. The article answers McNew's Questions 7.1, 7.3, and 7.4 by proving
+\[
+ \bar\alpha-\alpha>0.002836,\qquad \bar\beta-\beta>0.069218,\qquad \beta-\alpha>0.0001351.
+\]
+Thus even after optimizing over all admissible sets, both the ratio convention and the choice of density change the answer. The natural-density suprema are computable and attained. The strict natural-versus-upper separation extends to ideals in every number field for both ratio conventions. The exact optima remain open.
+
+\sources{\arc{gpi}{939}{Finite exchange} $\cdot$ \arc{gpi}{416}{Density gaps} $\cdot$ \arc{gpi}{1456}{Ratio conventions} $\cdot$ \refs{https://www.nathanmcnew.com/GPFsets.pdf}{McNew's questions and conjecture}}
+
+
+\pagepart{Extremal number theory}{Greedy constructions fail at every length}
+For $k\ge3$, let $G_k$ be the greedy set of nonnegative exponents with no nonconstant $k$-term arithmetic progression. Define $\mathcal G_k=\{n:v_p(n)\in G_k\ \forall p\}$. Brown and Gordon proved optimality in the restricted common-exponent-set model and asked whether going outside that model helps. The new article answers the question for all lengths, not only for $k=3$:
+\[
+ \text{for every } k\ge3,\quad \exists A_k:\ d(A_k)>d(\mathcal G_k),
+\]
+where $A_k$ avoids $k$ distinct integers in geometric progression of positive rational ratio. The modification needs only finitely many primes and may avoid any preassigned finite set. Riddell's earlier improvement on Rankin's benchmark for $k\ge4$ is not the same as beating this greedy model at every length. The article's argument uses a marker prime and many satellite primes: one strategically deleted family can make many admissible additions possible. Divergence of the sum of reciprocals of primes supplies sufficient satellites.
+
+\topic{No fixed finite block size can attain the true optimum}
+Allow arbitrary partitions of the primes into blocks of size at most $d$, with an arbitrary local progression-free smooth-part rule in each block. Write $\alpha_{k,d}$ for the best upper density in this model and $\alpha_k$ for the unrestricted natural-density supremum. With $p_j$ the $j$th prime, the new theorem gives
+\[
+ \alpha_{k,1}=d(\mathcal G_k),\qquad
+ 0<\alpha_k-\alpha_{k,d}\le \frac{(p_{d+1}-1)^{-(k-2)}}{k-2}.
+\]
+Every restricted optimum is attained, and the numbers are uniformly computable in $k,d$. Thus increasing block size is a convergent algorithmic approximation, but no fixed size is exact, even allowing infinitely many independent blocks. For triples, Rankin remains optimal through four primes and the smallest successful block size is between 5 and 225. This identifies an intrinsic nonlocality of the extremal problem; it is not simply a tiny numerical improvement.
+
+\topic{Prescribed gains in residue classes}
+For any modulus $m\ge2$ and any $k\ge3$, there is an $\eta>0$ such that every vector of gains $0\le t_a\le\eta$ on reduced residue classes can be realized by a progression-free set, increasing $d(\mathcal G_k\cap[a]_m)$ by exactly $t_a$, without changing nonreduced classes. This is an unconditional structural refinement connecting density optimization and arithmetic localization. Exact values of the unrestricted optima are still not known.
+\sources{\arc{gpi}{1040}{Brown--Gordon question and every length}; \arc{gpi}{1139}{Residue classes}; \arc{gpi}{1338}{Bounded blocks}; \arc{gpi}{1409}{Triple case}.}
+
+\pagepart{Extremal number theory}{A polynomial-ring conjecture fails for every field size}
+
+In $\F_q[x]$, consider sets containing no three nonzero polynomials $f,fr,fr^2$ with a nonconstant polynomial ratio $r$. Let $\beta_q$ be the supremum of their upper densities, measured in balls of polynomials of degree at most $N$ as $N$ tends to infinity. Asada, Fourakis, Manski, McNew, Miller and Moreland proved an exact optimum among constructions depending only on degree. Their Conjecture 6.3 proposed the same optimum for arbitrary sets. The counterexample theorem (\texttt{gpp:thm:counterexample}) gives a counterexample for every prime power $q$.
+
+\topic{Why factorization matters}
+Write $A$ for the nonnegative integers with ternary digits zero or one. In a ball of degree bound $N$, the degree deficit of $f$ is $N-\deg f$. Allowing only deficits in $A$ excludes a progression because its three degrees would have a common nonzero difference. The conjectured density is
+\[
+ m_q=(1-q^{-1})\sum_{a\in A}q^{-a}
+     =(1-q^{-2})\prod_{j\ge1}(1+q^{-3^j}).
+\]
+The article replaces the degree rule only on selected classes defined by irreducible factors. Their common factor supported on large irreducibles is squarefree. If an added polynomial is the last term of a progression, the square of its ratio must divide it. If it is an earlier term, the bounded degree deficit limits the degree of the ratio. In either case the whole progression stays within the modified class, where its three deficits would contradict the replacement rule.
+
+The replacement uses 74 deficits between 0 and 480. The replay tested all $\binom{74}{2}=2701$ pairs of endpoints for a midpoint in the set. None produced a triple. At $z=127/128$ the replay also evaluated the weighted excess over $A$ in exact rational arithmetic, including a geometric bound on the omitted tail. The resulting lower bound is approximately $0.0161155759$, and exceeds $0.015$ by an exact rational comparison. Multiplication by the generating series for smooth polynomial degrees yields a positive integer coefficient, hence a gain on an entire rough-factor class. Widely separated degree blocks assemble those gains into one infinite set for each $q$.
+
+\topic{A conjecture correct to every algebraic order}
+The article also proves
+\[
+             0<\beta_q-m_q\le (2q+1)q^{-q+14}\qquad(q\ge16).
+\]
+The discrepancy decays faster than $q^{-k}$ for every fixed $k$. A separate finite-field estimate gives $\beta_2-m_2<5.46\cdot10^{-7}$. The optimum is computable and attained, although its exact numerical value remains undetermined. Two constructions also answer Question 6.1 and the existence part of Question 6.4. For every $q$, one beats the greedy valuation set in natural density for polynomial ratios. Another beats its upper density while excluding all nonconstant rational-function ratios.
+
+\sources{\arc{gpp}{237}{Counterexample and witness} $\cdot$ \arc{gpp}{448}{Attainment} $\cdot$ \arc{gpp}{596}{Large fields} $\cdot$ \arc{gpp}{702}{Q.~6.1} $\cdot$ \arc{gpp}{779}{Q.~6.4} $\cdot$ \refs{https://www.nathanmcnew.com/fqxramsey.pdf}{Asada and coauthors}}
+
+\pagepart{Extremal number theory}{Natural density over function fields and finite rings}
+The old reports emphasized Conjecture 6.3, which concerns upper density with polynomial ratios. The enlarged article also develops the harder-to-compare notion of natural density for rational-function ratios. Let $b_q$ denote the best natural density and $u_q$ the best upper density under the latter convention. The article gives effectively computable finite optimization bounds $v_TB_T\le b_q\le B_T$, with error at most $q^{-T}/(q-1)$, and constructs a decidable set attaining $b_q$.
+
+\topic{Strict separation, not just a new example}
+For every prime power $q$, $u_q>b_q$, with
+\[
+ u_2-b_2>0.003660,\qquad
+ \liminf_{q\to\infty} q^3(u_q-b_q)\ge e^{-11/6}.
+\]
+Moreover the greedy valuation set $G_q$ is suboptimal even in natural density with rational-function ratios. The article's natural-density exchange works uniformly over all $q$. These statements concern a different extremal constant from $m_q$, so they neither assert nor require a value for the polynomial-ratio natural-density optimum. They extend the integer-density distinction to the function-field setting and give a stronger answer to the existence part of Asada et al.'s Question 6.4.
+
+\topic{A response to the finite-ring question}
+Asada et al.'s Question 6.5 asks about replacing the field by a finite ring. The article studies local algebras $R=k\oplus V$ with square-zero ideal and $|k|=q$, $|R|=Q$. Under its admissibility convention in characteristic two, among sets avoiding pairs $f,a^2f$ for nonconstant $a\in k[x]$, the optimum upper density is $1-Q^{-2}$ and the optimum natural density is $1-q/Q^2$. For the article's triple-avoidance problem it proves strict separation in the stated range $b\ge2$ of its size parameter, and determines the leading constants of the deficits as $Q$ grows with $q$ fixed. This gives a concrete answer for a substantial class of rings, not a classification for arbitrary finite rings. The definitions of progression, nonunit, and density must travel with these statements because zero divisors can make naive formulations degenerate.
+
+\topic{Further finite additive results}
+The same section computes exact anticodes in ranks four and five for specified small diameters, and reports the least order of an abelian group containing a five-element $B_3$ set as 64, or 65 for a cyclic group. The displayed witnesses in $(\Z/8\Z)^2$ and $\Z/65\Z$ are directly checkable by enumerating the 35 unordered triple sums. Minimality is computer-assisted and deserves a separate certificate. These are interesting finite combinatorial results but not as significant as the infinite density disproofs.
+\sources{\arc{gpi}{1737}{Natural density}; \arc{gpi}{1862}{Gap}; \arc{gpi}{1972}{Greedy rule}; \arc{gpp}{1191}{Characteristic two}; \arc{gpp}{1287}{Triple avoidance}; \arc{gpp}{1882}{Three-sum encodings}.}
+
+\pagepart{Quadratic fields}{Closing the two gaps in the class-group census}
+The exponent of an ideal class group is the least $e>0$ such that the $e$th power of every ideal is principal. The group can have more than $e$ elements.
+
+\begin{center}
+\begin{tabular}{@{}crrr@{}}\toprule
+\textbf{Exact exponent} & \textbf{Fields} & \textbf{All orders} & \textbf{Nonmaximal orders}\\\midrule
+6 & 432 & 1,236 & 804\\
+7 & 33 & 40 & 7\\\bottomrule
+\end{tabular}
+\end{center}
+Elsenhans, Klüners and Nicolae had already found all the fields in these rows through $|D|\le3.1\cdot10^{20}$. Their GRH-based upper bounds were $2.5\cdot10^{25}$ for six and $3.9\cdot10^{30}$ for seven. Aiken, Ross, Shvydkoy and Xue made the completeness of their corresponding order lists contingent on those gaps. The article excludes both intervals. This completes the field census for each exact exponent from one through eight. The order counts use proper ideal classes and the earlier conductor enumeration.
+
+\topic{Why six can be settled by a collision}
+Put $x=|D|$. If $p$ splits and the class group is annihilated by $e$, a prime ideal over $p$ becomes principal on taking its $e$th power. Taking the norm of a generator gives
+\[
+                 a_p^2+xb_p^2=4p^e,\qquad b_p\ge1.
+\]
+Dirichlet GRH supplies the required zero information via $\zeta_K=\zeta L(s,\chi_D)$. For $e=6$ an explicit formula forces at least 28 split primes up to 5500, but the norm bound allows only $1\le b_p\le18$. For two primes with the same $b$, subtract their equations. The difference of squares factors $q^6-p^6$, and each viable divisor produces a candidate for $xb^2$. A small quadratic-residue witness eliminates every candidate. The earlier supplied assessments report 85,491 prime pairs, 9,393,302 candidates above the lower discriminant bound and zero survivors. This is a reported historical replay, not a new execution here.
+
+\topic{Why seven needs a different argument}
+There are now too many possible coefficients for the same pigeonhole argument. Genus theory first forces a large candidate $x$ to be prime. Paired norm equations then exclude equal coefficients for primes up to 6500 and exclude reduced ratios with numerator and denominator at most 12 for distinct split primes up to 4200. Grouping incompatible coefficients bounds their total contribution to the explicit formula. Fourteen overlapping or adjacent ranges cover the entire gap. The earlier archive reports reproducing the analytic enclosures. The full exponent-seven pair exclusions still require a separate independent audit.
+
+Thirty-one of the 33 fields have class group $C_7$. The fields with discriminants $-63499$ and $-118843$ have group $C_7\times C_7$. Only the 31 fields of class number seven enter the degree-seven classification on the next page.
+\sources{\arc{cls}{238}{Exponent-six theorem} and \arc{cls}{406}{Exponent-seven theorem}. Published field lists and bounds: \refs{https://arxiv.org/abs/1803.02056}{Elsenhans, Klüners and Nicolae, Acta Arith. 193 (2020)} and \refs{https://math.uni-paderborn.de/en/ag/ca/research/exponent/exponent0}{authors' tables}. Orders: \refs{https://arxiv.org/abs/2605.26020}{Aiken, Ross, Shvydkoy and Xue, Thm.~1.3 and appendices A.6--A.7}.}
+
+\pagepart{Modular forms}{Coefficient fields of CM modular forms}
+
+A normalized modular eigenform $f=\sum_{n\ge1}a_nq^n$ determines a number field $K_f=\Q(a_1,a_2,\ldots)$. How many fields of a given degree can arise as the level varies without bound? For weight-two forms with complex multiplication (CM), Gonz\'alez had already proved finiteness in every degree. Martin listed the eighteen cubic fields under quadratic Dirichlet GRH and identified degree five as a natural next case. The article's strongest advance here is an explicit classification that extends across all odd prime degrees.
+
+\topic{Twenty-six quintic fields}
+Exactly one is the maximal real subfield of $\Q(\zeta_{11})$. Each of the other twenty-five comes from a distinct imaginary quadratic field $E$ of class number five. If a nonprincipal degree-one prime ideal above $p$ is chosen as in the article and its fifth power has a generator of trace $a$, the construction gives a defining equation
+\[
+ X^5-5pX^3+5p^2X-a=0.
+\]
+For example, $E=\Q(\sqrt{-47})$ gives $p=2$ and $a=9$. The classification covers every level and character. For each odd prime $\ell\ge7$, the article goes further. There is exactly one degree-$\ell$ coefficient field up to isomorphism for each imaginary quadratic field of class number $\ell$. Degrees seven, eleven and thirteen consequently give 31, 41 and 37 fields.
+
+\topic{Why the list closes}
+For the Hecke character defining a weight-two CM form, the class number of $E$ divides the degree of its value field over $E$, which in turn divides $[K_f:\Q]$. In prime degree this leaves only two possible class numbers. A construction supplies each field that survives, and ramification distinguishes the outputs. This also gives a GRH-independent route to Martin's cubic list. For every fixed weight $k\ge2$ and coefficient degree $d$, the article also extends Martin's finiteness theorem to varying nebentypus, using quadratic Dirichlet GRH. His finiteness question for non-CM forms remains open.
+
+\topic{A check and a correction}
+The replay checked for all 25 tabulated quintics the norm identity and recomputed the field discriminant from a maximal order. Among primes through 71 it found irreducibility witnesses for all 26 polynomials and distinct squarefree factorization patterns for every one of the 325 pairs. The article's auxiliary lemma asserting trivial nebentypus in odd coefficient degree requires even weight; the current source still omits this restriction. The CM form $\eta(4z)^6$ has weight three, rational coefficients and character of order two. Schütt's cited corollary explicitly requires even weight for this conclusion. All three classifications apply it in weight two. The separate general finiteness proof uses other lemmas.
+
+\sources{\arc{dir}{1396}{Cubic fields}, \arc{dir}{1463}{quintic fields}, \arc{dir}{1610}{prime degrees}, \arc{dir}{1228}{auxiliary lemma}, \arc{dir}{1239}{varying character}. \refs{https://arxiv.org/abs/2509.24119}{Martin}, \refs{https://ems.press/content/serial-article-files/38349}{Gonz\'alez}, \refs{https://arxiv.org/pdf/math/0511228}{Schütt, Cor.~1.2}, \refs{https://www.lmfdb.org/ModularForm/GL2/Q/holomorphic/16/3/c/a/}{counterexample 16.3.c.a}.}
+
+
+\pagepart{Modular forms}{Reflected fields and a local ramification dichotomy}
+For the reflected families constructed from an imaginary quadratic field $E$ of discriminant $-q$ with class-group exponent an odd prime $\ell$, the new article gives an explicit local test determining the discriminant of the degree-$\ell$ reflected field $K$. The hypotheses and the unit $u$ in the unramified local field $U$ are specified in \texttt{dir:thm:localtest}; the test is performed modulo $\ell^2$.
+\begin{center}
+\begin{tabular}{@{}lll@{}}\toprule
+\textbf{Test} & $|\operatorname{disc} K|$ & \textbf{Relative conductor}\\\midrule
+$u^{\ell^f-1}=1$ & $q^{(\ell-1)/2}\ell^{\ell-2}$ & $(1)$\\
+$u^{\ell^f-1}\ne1$ & $q^{(\ell-1)/2}\ell^{\ell}$ & $\lambda^2$\\\bottomrule
+\end{tabular}
+\end{center}
+Here $f$ is the specified local residue degree and $\lambda$ is the prime over $\ell$ in the base of the relative extension. In particular this distinguishes the six tame quintic fields in the noncyclotomic list from the nineteen wild ones; the tame cases correspond to $q=347,443,739,1051,1123,1723$. This is a sharper arithmetic invariant than merely counting possible coefficient fields.
+
+With GRH and the existing exponent-five census of 27 imaginary quadratic fields, the article classifies 37 reflected quintic fields: the 25 noncyclotomic CM coefficient fields and 12 additional fields from the two rank-two class groups. This is a different family from the 26 weight-two coefficient fields (which include the cyclotomic real quintic). The additional fields must not be counted as modular coefficient fields by conflating class-group exponent five with class number five.
+
+\topic{Why this deserves attention}
+The construction turns class groups and a local congruence into exact defining equations, discriminants and conductors. It provides a natural way to organize databases of CM newforms and degree-$\ell$ fields, and makes possible tests of the distribution of wild ramification. It is an advance within the CM family, not a resolution of Martin's general conjecture. The general-weight nebentypus issue identified on the previous page should be repaired before publication; the stated weight-two conclusions do not require the invalid odd-weight extension.
+\sources{\arc{dir}{1706}{Reflection family}; \arc{dir}{1763}{Local discriminant and conductor test}; \arc{dir}{1836}{Quintic discriminants}; \arc{dir}{1911}{37 reflected fields}.}
+
+\pagepart{Arithmetic applications}{Two questions about uniformity}
+
+\topic{Heavenly elliptic curves over varying fields}
+An elliptic curve is called heavenly at a prime $\ell$ if its $\ell$-power torsion generates a pro-$\ell$ extension of the field obtained by adjoining the $\ell$-power roots of unity, unramified away from $\ell$. O'Hara asked whether there are finitely many such curves, counted up to isomorphism over their fields, as the cyclic cubic field $K$ and the prime $\ell\ge11$ both vary. She excludes geometric isomorphism classes already heavenly over $\Q$ at the same prime. Without that exclusion a single rational example would give examples over infinitely many cubic fields.
+
+The article answers yes, independently of GRH. Rasmussen and Tamagawa's uniform cubic bound leaves finitely many primes. For each, a theorem of McLeman and Rasmussen leaves finitely many geometric isomorphism classes. O'Hara's own finite-fibre result then leaves finitely many field-tagged pairs $([E]_K,\ell)$. Projecting to $(K,\ell)$ answers her second question. This short synthesis settles two explicitly posed, equivalent specialist questions.
+
+For sextic fields whose normal closures have group $A_4$ or $A_5$, the article obtains an effective bound in every fixed dimension, uniform in the field discriminant, using Dirichlet GRH. In dimension one its list has 29 candidate primes, the largest 4027. The supplied archive reports a replay of the finite congruence sieve through 253507; it was not rerun here. Occurrence at each surviving prime, including 4027, remains open.
+
+\topic{Squarefree products of small primes}
+Booker and Pomerance suggested that each nonzero class modulo a prime $p$ should have a squarefree representative with every prime factor $O((\log p)^2)$ under GRH for Kummer extensions. The article attains that scale using Dirichlet GRH and proves a stronger uniform statement. For any fixed $\delta>0$ below $1/2$ and sufficiently large modulus $q$, retain any $m$ primes comprising at least a fraction $1/2+\delta$ of the primes up to $C(\log q)^2$ coprime to $q$. For each $B\log q\le k\le m-B\log q$, every unit class receives
+\[
+ \frac{\binom{m}{k}}{\varphi(q)}\bigl(1+O(q^{-2})\bigr)
+\]
+products of exactly $k$ distinct retained primes. Here $B,C$ may depend on $\delta$. The majority condition has arithmetic content. Retaining just one quadratic character class can force every product of prescribed length into a single coset. Booker and Pomerance's separate conjecture on the size of representatives had already been settled by Munsch and Shparlinski.
+
+\sources{\arc{dir}{2623}{O'Hara's questions}, \arc{dir}{2439}{sextic fields}, \arc{dir}{2895}{squarefree products}. \refs{https://arxiv.org/html/2609.35642v1}{O'Hara}, \refs{https://doi.org/10.1090/tran/6790}{Rasmussen--Tamagawa}, \refs{https://doi.org/10.1007/s40993-026-00757-8}{McLeman--Rasmussen}, \refs{https://arxiv.org/abs/1607.01557}{Booker--Pomerance}, \refs{https://arxiv.org/abs/1710.04705}{Munsch--Shparlinski}.}
+
+\pagepart{Arithmetic applications}{Uniform descent and simultaneous prime products}
+\topic{Beyond cyclic cubics}
+The article proves finiteness, using Dirichlet GRH, of field-tagged primitive heavenly elliptic curves as $K$ runs over all degree-$n$ fields for any fixed odd $n>1$, at primes $\ell>2n+1$. Here primitive means excluding the geometric classes already admitting heavenly representatives at the same prime over a proper subfield of $K$. For prime $n$, exclusion over $\Q$ is sufficient. Separate $A_5$ and $A_4$ sextic theorems give finiteness for $\ell\ge17$ with the precise descent exclusions in the source. This extends the scope of the O'Hara-type question beyond Galois cubic fields. A descent lemma identifies the relevant field of definition using the torsion representation; its odd-degree and ramification hypotheses are crucial. None of this asserts full Rasmussen--Tamagawa for arbitrary dimension and degree.
+
+A different GRH-based theorem restricts odd Momose type 2 isogeny primes in the two specified sextic permutation actions to a list of 66 primes, at most 253507. The result should not be described as a bound on every possible rational isogeny prime: it treats the stated isogeny type. Both the isogeny sieve and the heavenly bound use explicit local Frobenius restrictions rather than GRH alone.
+
+\topic{One short prime pool, many moduli}
+For a prescribed family of up to $R\ll\log Q/\log\log Q$ moduli $q_j\le Q$, the article constructs one list of $O(R\log Q)$ distinct primes of size $O(\log^2 Q)$. In fact the list works simultaneously for every such family, after arbitrary deletion of fewer than $(1/2-\epsilon)$ of its members and removal of primes dividing the moduli. Assign the retained primes to $r$ labelled factors with prescribed quotas $k_j\gg\log Q$. Write $m=\sum k_j$, $g=\gcd(q_1,\ldots,q_r)$ and $P_T$ for their total product. Then the article gives the asymptotic count of allocations with factor residues $u_j$:
+\[
+ N(\mathbf u)=\binom m{k_1,\ldots,k_r}\frac{\varphi(g)}{\prod_j\varphi(q_j)}(1+O(Q^{-A}))
+\]
+when $\prod_j u_j\equiv P_T\pmod g$, and zero otherwise. The error exponent $A>0$ is prescribed. At any retained positive density $a$, a related exact-support theorem identifies a finite obstruction quotient of index bounded by $\lfloor1/a\rfloor^{r-1}$ beyond the diagonal condition; that bound is sharp. These are stronger distribution and resilience statements than finding a single smooth squarefree representative. They may be useful in constructive modular arithmetic, although efficient deterministic pool construction and optimal sizes warrant further work.
+\sources{\arc{dir}{2105}{Sextic isogenies}; \arc{dir}{2688}{Odd degree}; \arc{dir}{2724}{Sextic finiteness}; \arc{dir}{3204}{Simultaneous factorization}; \arc{dir}{3440}{Minority retention}.}
+
+\pagepart{Analytic number theory}{Two questions about the sign of a prime sum}
+
+\topic{The 229 abelian fields in Zhao's criterion}
+For a number field $K$, subtract $\log\log x$ and the field's Mertens constant from the sum of $1/N\mathfrak p$ over prime ideals of norm at most $x$. Zhao asked which fields admit an eventual positivity criterion for the integral of this error. Under RH for $\zeta_K$, a sufficient condition is
+\[
+ B_K=\sum_{\rho=1/2+i\gamma}\frac{1}{1/4+\gamma^2}<2 .
+\]
+The sum counts all nontrivial zeros with multiplicity. The explicit formula gives the normalized integral a lower bound $2-B_K+o(1)$. Prime-ideal squares supply the constant $2$.
+
+Among finite abelian extensions of $\Q$, the article finds exactly 229 fields passing this test. Their counts in degrees $1,2,3,4,5,6,8$ are respectively $1,168,7,47,1,4,1$. The sole degree-eight field, $\Q(\zeta_{15})$, passes narrowly, with $1.9967391<B_K<1.9967467$. Abelian factorization makes $B_K$ a sum of positive Dirichlet-character contributions. Conductor bounds limit the search, and the group law decides which surviving characters can occur together. All 229 fields have eventual positivity. Fields failing the numerical test may still have this property.
+
+The supplied archive reports replaying the interval and group calculations, checking 4,327 exterior quadratic discriminants and 29,162 primitive nonreal characters in the finite range. The two character lists and the resulting field list each reproduced the archived file exactly.
+
+\topic{Suzuki's fixed cutoff reverses the sign}
+In Suzuki's equation (29), $A_Q(x)$ sums, over $3\le q\le Q$, the quantity
+\[
+ \varphi(q)\!\sum_{\substack{n\le x\\n\equiv1\ (q)}}\frac{\Lambda(n)}{\sqrt n}\log(x/n)-4\sqrt x .
+\]
+Suzuki proved eventual negativity for $Q\ge x$ and asked what happens for a large fixed cutoff. With Dirichlet GRH the article obtains eventual negativity for $3\le Q\le138$ and eventual positivity for $139\le Q\le2{,}000{,}000$.
+
+The expansion has the form $-M(Q)(\log x)^2/2-B(Q)\log x+O_Q(1)$, where $M(Q)$ counts central zeros with the relevant multiplicities. The supplied archive reports reproducing rational sign enclosures for every $3\le Q<10^4$. The coefficient $B(Q)$ changes sign between 138 and 139 and stays negative thereafter by the large-modulus bound. Platt supplies central nonvanishing through two million. For any fixed $Q\ge139$, eventual negativity is equivalent to a central zero for some primitive character of conductor at most $Q$. This leaves a genuine central-value question beyond the verified range.
+
+\sources{\arc{zer}{3638}{Zhao census}, \arc{zer}{970}{Suzuki cutoff}, \refs{https://doi.org/10.1007/s40993-025-00640-y}{Zhao}, \refs{https://doi.org/10.1007/s11139-025-01238-9}{Suzuki}, \refs{https://doi.org/10.1090/mcom/3077}{Platt}.}
+
+\pagepart{Zeros and inverse problems}{What sparse observations determine}
+
+\topic{A doubly logarithmic sample of Li coefficients}
+Li's criterion characterizes RH by the nonnegativity of an infinite sequence. The article's refinement concerns how many of those signs suffice. Let $\lambda_n(K)$ denote the Li coefficients of the completed Dedekind zeta function of a number field $K$. Take
+\[
+ M_j=2^{2^{j^2}},\qquad E=\bigcup_{j\ge1}\{M_j,2M_j,\ldots,jM_j\}.
+\]
+Only $O(1+\log\log N)$ indices in $E$ lie below $N$. For \emph{every} number field, RH for $\zeta_K$ is equivalent to $\lambda_n(K)\ge0$ at all sufficiently large $n\in E$. If RH fails, a positive proportion of the coefficients in every sufficiently late block are negative.
+
+The transformation $u=1-1/\rho$ sends the critical line to the unit circle. If a zero is off the line, finitely many transformed zeros have largest modulus $R>1$. Their arguments control the sign of $R^{-n}\lambda_n(K)$. Among multiples of $M_j$, a pigeonhole argument aligns these finitely many phases often enough to force negative signs. The equivalence itself is unconditional. The coefficients have very large indices. The criterion supplies no finite stopping rule certifying RH, and positivity on this schedule remains open for general fields.
+
+\topic{Recovering a character from low zeros}
+With Dirichlet GRH, the zeros of a primitive nonprincipal quadratic character of conductor at most $Q$, including multiplicities, determine the character once the height reaches
+\[
+ T_Q\ll (\log(2Q))^2\log\log(3Q).
+\]
+The proof uses a test function concentrated around the logarithm of a single prime power. The explicit formula then produces a number within rounding distance of the character value $-1$, $0$, or $1$. The decoder tolerates an explicitly bounded total perturbation of the ordinates. A small prime where two candidate characters differ separates them. Earlier work of Banks distinguishes characters using zeros in moving height intervals. Here one low initial segment serves the entire bounded-conductor quadratic family.
+
+A separate theorem encodes \emph{all} primitive Dirichlet zero multisets in the full complex autocorrelation of one deliberately weighted prime-power sum. At each ordinate its Fourier coefficient reveals an injective weighted sum of the character-by-character multiplicities, even when several characters share a zero. This establishes identifiability from exact limiting data. The weights can require extremely fine precision, and the theorem supplies no practical finite-observation runtime.
+
+\sources{\arc{li}{187}{Sparse Li criterion}, \arc{rec}{3025}{finite decoder}, \arc{rec}{973}{universal reconstruction}, \refs{https://websites.umich.edu/~lagarias/doc/bombieri.pdf}{Bombieri--Lagarias}, \refs{https://arxiv.org/abs/2302.07073}{Banks}.}
+
+\pagepart{Inverse spectral theory}{A short spectrum identifies a character or a field}
+The current \texttt{rec.tex} contains stronger results than the quadratic-only reconstruction emphasized in the earlier PDF reports. Let $\mathcal C(Q)$ be all primitive Dirichlet characters of conductor at most $Q$, including the conductor-one character, and write $L_Q=\log(2Q)$. The theorem \texttt{rec:thm:lowzero} asserts that the multiset of positive ordinates, with multiplicity, through height
+\[
+ H=C\frac{L_Q^2}{\log\log(3Q)}
+\]
+identifies $\chi\in\mathcal C(Q)$, with an absolute $C$. For distinct characters at least $cL_Q$ occurrences remain unmatched even after allowing matches within $c/L_Q^2$. Folding the signed spectrum by taking absolute values identifies exactly the pair $\{\chi,\bar\chi\}$, not the orientation of a nonreal character. This removes the quadratic restriction and improves the order of the cutoff. It requires Dirichlet GRH, but neither simple zeros nor linear independence of ordinates.
+
+\topic{A robust decoder and exact identification of abelian fields}
+A second theorem gives explicit constants at the slightly larger scale $H\gg L_Q^2\log\log(3Q)$ and separates any two signed spectra in an edit metric by more than $H/(10^6L_Q)$. Erasures and insertions cost one, and shifts cost $\min(1,|\gamma-\gamma'|)$. A ball of radius half the separation has a unique possible character. The first theorem addresses short observations; the second addresses errors and effective constants.
+
+The abelian-field theorem gives an absolute $C'$ such that nontrivial zeros through height $C'\log^2(2D)$ determine any finite abelian extension of $\Q$ of absolute discriminant at most $D$, regardless of its degree. Positive ordinates suffice. Distinct fields have differing groups of primitive characters; the conductor--discriminant identity and an explicit formula isolate their difference. Unlike arithmetically equivalent non-Galois fields, distinct abelian fields cannot have identical full zeta functions. The achievement is the quantitative finite cutoff, not the classical uniqueness from an entire zeta function. It makes exact spectra into compressed arithmetic fingerprints. Practical recovery would still need certified zero completeness and sufficient precision.
+
+\topic{Other rigidity statements}
+In the Li section, a bounded mean absolute discrepancy between Li sequences of two number fields on any sequence of intervals of growing length forces equality of their Dedekind zeta functions. The intervals can be extremely sparse. The theorem detects arithmetic equivalence, not isomorphism of arbitrary fields. Together with the sparse positivity test and the universal autocorrelation construction, these results show how little exact spectral data can suffice in principle.
+\sources{\arc{rec}{3159}{Finite window rank}; \arc{rec}{3222}{Low zeros of all primitive characters}; \arc{rec}{3300}{Abelian fields}; \arc{rec}{3410}{Robust identification}; \arc{li}{325}{Sparse Li rigidity}.}
+
+\pagepart{Nonabelian number theory}{One prime-counting inequality for a whole field}
+Among the transfers of the analytic method, the nonsplit-prime test is especially easy to state. Fix a finite nonabelian Galois extension $E/\Q$, let $G$ be its Galois group, and let $B=E^{[G,G]}$ be its largest abelian subfield. Take the set $\mathcal P$ of unramified rational primes that split completely in $B$ and fail to split completely in $E$. Its density is
+\[
+                      \delta=\frac1{[B:\Q]}-\frac1{[E:\Q]} .
+\]
+Given Dirichlet GRH, the article proves that RH for $\zeta_E$ is equivalent to the following assertion. For every $\varepsilon>0$ and all sufficiently large $x$,
+\[
+       \sum_{\substack{p\le x\\p\in\mathcal P}}\log p-\delta x
+                   \ \le\ C_{E,\varepsilon}\,x^{1/2+\varepsilon}.
+\]
+Only a positive deviation can violate the test. The result works for arbitrary finite nonabelian Galois groups and uses Dedekind zeta functions without assuming Artin holomorphy.
+
+For the splitting field of $X^3-X-1$ the group is $S_3$, and the commutator subgroup consists of the even permutations. A prime in $\mathcal P$ has Frobenius a 3-cycle. Equivalently, the cubic remains irreducible modulo $p$. The expected density is $1/2-1/6=1/3$. An upper bound for just this one prime count would establish RH for that degree-six splitting field.
+
+\topic{Why the direction of the bound matters}
+At unramified primes the indicator of $\mathcal P$ is the difference of the complete-splitting indicators for $B$ and $E$. Up to terms analytic for $\Re s>1/2$, the prime series is a difference of suitably scaled logarithmic derivatives of $\zeta_B$ and $\zeta_E$. Dirichlet GRH controls the former. A zero of the latter in that half-plane produces a pole of known sign and multiplicity. The manuscript's one-sided argument converts that obstruction into failure of the estimate. In the reverse direction the explicit formula under field RH yields the required bound.
+
+This is a new target for a proof, with a precise measurable error term. The target remains open even in the cubic example. Hooley's approach to Artin's primitive-root conjecture requires control of generally nonabelian Kummer fields, which is beyond the verified Dirichlet input. The same distinction applies to the manuscript's tests for particular Artin, Hecke and modular $L$-functions.
+
+\topic{A separate partial answer about ordinary primes}
+For Barthel and Müller's geometric intervals, the article obtains a prime in every reduced class modulo $q$ between $q^t$ and $q^{t+1}$ for all $t\ge2$. Earlier conditional work already covered $t\ge3$ and part of $t=2$. The first interval remains open for general $q>50{,}000$. Under Dirichlet GRH the manuscript reduces Pomerance's divisibility conjecture to $q^2\nmid P(1,q)-1$ for every prime $q$, where $P(1,q)$ is the least prime congruent to 1 modulo $q$. The remaining condition is a genuine obstruction.
+\sources{\arc{nab}{928}{The nonsplit-prime test}, \arc{nab}{956}{pole calculation}, \arc{dir}{703}{geometric intervals and divisibility}. Original question: \refs{https://orbilu.uni.lu/handle/10993/53879}{Barthel and Müller, Amer. Math. Monthly 129 (2022)}.}
+
+\pagepart{Spectral graph theory}{Two exact answers for infinite graph families}
+
+\topic{When a spanning-tree law starts}
+In a $d$-dimensional abelian tower of connected graph covers, let $\nu_n$ count the factors of $p$ in the number of spanning trees at level $n$. DuBose and Vallières proved that eventually $\nu_n=P(p^n,n)$ for a rational polynomial of total degree at most $d$ and degree at most one in its second argument. For a finite base graph with integral edge voltages, or rational voltages with denominators prime to $p$, the article computes $P$, the \emph{least} level from which it is valid, and every earlier exception. Voltages specify how traversing an edge changes the coordinate in the covering group $(\Z/p^n\Z)^d$.
+
+This determines the full laws for five examples of DuBose and Vallières and nine rows of Kataoka's numerical table. In the third DuBose--Vallières example, the law is
+\[
+ \nu_n=(n+33/4)2^n-4n-1\qquad(n\ge4).
+\]
+The supplied archive reports exact determinant checks giving $5,19,65$ at the first three levels and a resultant check giving $179$ at level four. The polynomial predicts $77$ at level three. The need for a proof of stabilization is structural. At $p=3$ the article gives pairs of towers that agree through any prescribed level, although one eventually grows on the scale $9^n$ while the other is $O_k(n3^n)$ when agreement is prescribed through level $k$.
+
+\topic{The exact optimum after Suvagiya's conjecture}
+Join each vertex of a cycle to its neighbors at distances one and two. Assign a sign to every edge and minimize the largest absolute eigenvalue of the signed adjacency matrix. Suvagiya proposed a constant optimum for cycles of length $8m$, $m\ge4$. An earlier 32-vertex counterexample refuted the conjecture. The article determines the true optimum throughout this infinite family. It is $F(2\cos(\pi/m))$, where
+\[
+ F(u)=\sqrt{4+\sqrt{8+u+\sqrt{26-3u}}}.
+\]
+The conjectured constant $F(2)$ is exactly the second-smallest distinct value. At 32 vertices the two values are approximately $2.784270$ and $2.793604$.
+
+This review reran the supplied exact rational matrix-elimination certificate for the finite obstruction. Only eight sign words of length 27 survive the spectral threshold $1397/500$. Their overlaps force a periodic pattern. A second exact calculation verifies its eight-vertex block characteristic polynomial. The two ways to close that pattern around the cycle give the two displayed radii. The article also treats every even length from 8 through 50. Other lengths outside the $8m$ family include open cases.
+
+\sources{\arc{gra}{172}{Effective graph towers}, \arc{gra}{397}{five examples}, \arc{gra}{1804}{cycle optimum}, \refs{https://doi.org/10.5802/alco.304}{DuBose--Vallières}, \refs{https://arxiv.org/abs/2606.03579}{Kataoka}, \refs{https://arxiv.org/abs/2607.17343v2}{Suvagiya}, \refs{https://www.trureturing.org/research/suvagiya-conjecture28-refutation/}{prior counterexample}.}
+\pagepart{Further transfers}{Three results independent of zero locations}
+Three other theorems illustrate the range of the compilation. Each has a sharp mathematical conclusion. Their relations to the open literature differ.
+
+\topic{An optimal bound for torsion specialization}
+Take a prime $p$ and a nonzero bounded $p$-adic series $F=\sum_\nu a_\nu T^\nu$ in $s$ variables. Normalize the valuation by $v(p)=1$. The quantities
+\[
+ G_\rho(F)=\min_\nu\{v(a_\nu)+\rho|\nu|\},\qquad
+ \Delta_\rho(F)=G_\rho(F)-\inf_\nu v(a_\nu)
+\]
+record the least weighted valuation and its increase above the infimum of the coefficient valuations. The local selection problem is to find roots of unity of controlled order at which cancellation does not drive the valuation above $G_\rho(F)$.
+
+If $h_0\ge1$, $\rho\ge1/\varphi(p^{h_0})$ and $\Delta_\rho(F)\le B$, there are $z_i=\zeta_i-1$ with $\zeta_i$ of order $p^{h_i}$ and
+\[
+ h_0\le h_i\le h_0+\lfloor Bp^{h_0-1}\rfloor,\qquad
+ v(F(z_1,\ldots,z_s))\le G_\rho(F).
+\]
+The endpoint is independent of the number of variables and of any truncation degree. In a single variable the minimum cost $\Delta_\rho$ of forcing strict excess everywhere on $N$ consecutive shells starting at $h_0$ is exactly $Np^{1-h_0}$. A polynomial of degree $p^N-1$ attains it, and every such polynomial blocker has at least that degree. Coefficients range over the completed algebraic closure. Restricting their field or requiring separate inequalities for several functions changes the problem. The contribution is a sharp local optimization extracted from a step in the source proof.
+
+\topic{A square-root law for random binary matrices}
+Choose $Q$ uniformly from the binary matrices satisfying $Q^tQ=I$. Among all principal submatrices $Q[S]$, let $\nu(Q)$ be the largest kernel dimension over $\F_2$. If $h$ is the integer nearest to $\sqrt n$, then for some $c>0$,
+\[
+             \Pr\{\nu(Q)\in\{h-1,h\}\}=1-O(2^{-c\sqrt n}).
+\]
+This answers Vaas's posted question about possible linear growth. A principal block with nullity at least $r$ has a cost on the scale $2^{-r^2}$, while there are $2^n$ candidate supports. The crossing is at $r^2\approx n$. Controlling the dependencies between overlapping supports is the substantive second-moment step. The question was a recent public problem.
+
+\topic{Ehrhart zeros for an unbounded family of graphs}
+For the symmetric edge polytopes of the complete bipartite graphs $K_{m,n}$, $2\le m\le32$ and $n\ge m$, the article gives simple Ehrhart zeros on $\Re z=-1/2$ and strict interlacing in two directions. Simplicity and the line property extend to $m=33$, $n\ge33$. This advances the bipartite case of Higashitani, Kummer and Michałek's interlacing question. A counterexample to the broader multipartite assertion was already known. Arbitrary bipartite width remains open.
+\sources{\arc{tors}{322}{Torsion selection}, \arc{cost}{419}{exact obstruction}, \arc{spn}{2141}{binary orthogonal matrices}, \refs{https://math.stackexchange.com/q/5119604}{Vaas's question}, \arc{gra}{2123}{finite-width theorem}, \refs{https://arxiv.org/abs/1612.07538}{Higashitani, Kummer and Michałek}.}
+
+
+\pagepart{Transfer mechanisms}{Additional advances worth developing}
+\topic{Sharp one-sided sampling}
+The article characterizes pointwise sampling meshes for positive ramp sums $R(x)=\sum_n w(n)(1/n-1/x)_+-c\log x-C$ with $w(n)\ge0$, when $E(x)$ is positive, tends to zero, is comparable on each dyadic interval, and $1/x=O(E(x))$. Eventual upper bounds $R(x_j)=O(E(x_j))$ in the one-sided sense transfer to the full ray for all these weights exactly when $((x_{j+1}-x_j)/x_j)^2=O(E(x_j))$. The necessity construction can use only zero-one weights of a prescribed natural density. This shows why density-one sampling alone is insufficient; it may be valuable in attempts to prove RH via inequalities at selected scales.
+
+\topic{Gaussian smoothing changes the nature of a prime race}
+For the race modulo four with the article's Gaussian-window normalization, there is a unique smoothing parameter $h_*$: below it both signs recur with positive logarithmic density; above it the bias toward class three is eventually bounded below by a positive normalized constant; at the threshold positivity has density one but liminf zero. The proof uses a compact phase group, not an assumption of independence of zero ordinates. This is a precise phase transition, not a statement about the unsmoothed classical Chebyshev race. The analogous results for multiple scales and pairs deserve specialist review.
+
+\topic{Local algebra and quantitative reconstruction}
+The Lubin--Tate section develops an exact observation kernel for a formal bivariate series restricted to a finite set of branches. In terms of the branch-contact invariants $\lambda_j$, the $d$-jet is determined precisely when the observation precision $n\ge\lambda_{d-1}+1$ (with at least $d$ branches). Redundant branches give correction and erasure criteria; optimizing contact patterns gives exact saturation thresholds. This is a reusable, nonasymptotic interpolation theory inspired by the torsion argument rather than by GRH itself.
+
+The Selmer section identifies a direct limit of odd cocycle modules in a cyclotomic CM field with a prescribed conjugation eigenspace of standard locally trivial Galois cohomology with divisible Tate-twisted coefficients. The exact comparison \texttt{sel:thm:oddsha}, together with trace-congruence bounds and obstructions, clarifies which arithmetic length hypotheses a transfer must prove. It does not establish Vandiver's conjecture or a general Selmer bound for arbitrary motives. In the spanning section, a full finite-field law for symplectic compressions gives their exact support, and the revised random binary orthogonal-matrix results go beyond the typical square-root threshold to rare-event asymptotics. These structural results are mathematically strong even though no longstanding named conjecture is attached to most of them.
+\sources{\arc{ana}{2018}{Mesh classification}; \arc{zer}{3246}{Critical smoothing}; \arc{lub}{915}{Observation kernel}; \arc{sel}{1356}{Cohomological comparison}; \arc{spn}{1386}{Compression law}; \arc{spn}{2383}{Rare events}.}
+
+\pagepart{Evidence and attribution}{What was checked, and what remains open}
+\phantomsection\label{audit}
+The current article was inspected via the GitHub connector at commit \texttt{cb0cb077fdae} (full hash \href{\repo/commit/\shaA}{\texttt{cb0cb077fdaed91ea722783ba2b61d60973b7f18}}). The README names packet-history commits \texttt{10802a6b36} (first 103) and \texttt{f2f9fd7531} (17 additions). All 19 section inventories were inspected; selected theorem statements and proofs were examined, not all 869 results. Links in this report target the current pinned source and stable LaTeX labels wherever useful. Original question statements were checked against McNew, Asada et al., Bilu--Luca--Pizarro-Madariaga, Aiken et al., Martin and O'Hara, among others.
+
+{\small\renewcommand{\arraystretch}{1.1}\begin{tabularx}{\linewidth}{@{}p{.235\linewidth}Y@{}}\toprule
+\textbf{Result}&\textbf{Evidence and limits}\\\midrule
+Singular moduli & Source classification, local argument, new families inspected. The full five-term and Gaussian density certificates have not been independently replayed in this review.\\
+Progression-free sets & Reran the supplied exact rational script: 2701 midpoint checks, weighted excess $>0.015$, and the 225-prime gain $>10^{-596}$. Does not by itself verify gluing arguments or all new density theorems.\\
+Quadratic class groups & Earlier assessments report reproducing the exponent-six pair exclusion and exponent-seven analytic ranges. This review checked the published gaps and source theorem statements; did not rerun the full exclusion computations.\\
+CM fields & Reran script: 25 norm identities and maximal-order discriminants, 26 irreducibilities and 325 pairwise distinctions. The exhaustive realization argument and local conductor theorem still require separate checking. Odd-weight lemma defect identified and retained in report.\\
+Zhao and Suzuki & Earlier archive reports interval/group enumeration and partial sign replays; not performed here. Classification concerns a sufficient criterion, and nonvanishing input has a finite range.\\
+Spectral graphs & Reran exact word elimination and Laurent determinant computation. Tower determinants were reported in prior archive, not newly executed.\\
+New inverse results & Statements and portions of analytic method inspected; no complete proof replay. No efficiency or stability beyond the declared metric is claimed.\\\bottomrule\end{tabularx}}
+
+The supplied materials are three ChatGPT PDF assessments (\emph{Select Remarkable Results}, \emph{Assess GRH Results}, \emph{Summarize Article Results}) and a ZIP containing the earlier LaTeX report and its certificate script. The present report incorporates their arguments but does not inherit their verification claims as personal work. The actual execution transcript and unchanged certificate script accompany this report. The review is not peer review, and global originality is not certified.
+\sources{\href{\base/README.md}{Live article inventory}; \href{\repo/tree/10802a6b36/Analysis/GeneralizedRiemannHypothesis/Research}{First research packets}; \href{\repo/tree/f2f9fd7531/Analysis/GeneralizedRiemannHypothesis/Research}{Later packets}; \refs{https://math.mit.edu/~drew/grh/}{Original Lean checks}; \refs{https://math.mit.edu/~drew/shortgrh/}{Shorter Lean checks}.}
+
+\pagepart{Problem ledger}{What has been answered, and what has not}
+{\small\begin{tabularx}{\linewidth}{@{}p{.32\linewidth}p{.23\linewidth}Y@{}}\toprule
+\textbf{Problem in earlier literature} & \textbf{Status in article} & \textbf{Scope and qualification}\\\midrule
+Riffaut (2019), trinomial singular moduli & Claimed yes, RH-independent & Previously conditional; article strengthens to four and five terms and beyond.\\
+McNew, Conj.~7.2 & Claimed false, RH-independent & Natural density, rational ratio, not just upper density.\\
+McNew, Q.~7.1, 7.3, 7.4 & Claimed yes & Strict numerical gaps; exact optima remain unknown.\\
+Brown--Gordon question & Claimed yes for all lengths & Finite coupled-prime exchanges beat the greedy common-exponent rule.\\
+Asada et al., Conj.~6.3 & Claimed false for every $q$ & Polynomial ratios, upper density. True optimum computable and attained.\\
+Asada et al., Q.~6.1, 6.4, 6.5 & Existence answers and extensions & Rational-function and finite-ring variants distinguished; arbitrary rings not fully classified.\\
+Elsenhans--Kl\"uners--Nicolae; Aiken et al. & Claimed complete under Dirichlet GRH & Both exponent-six and exponent-seven gaps; proper order counts.\\
+O'Hara, Questions A/B & Claimed affirmative, RH-independent & Cyclic cubic, $\ell\ge11$, precise descent exclusions.\\
+Martin's finiteness conjecture & CM refinement only & Varying nebentypus; exact prime-degree classifications, not general non-CM conjecture.\\
+Zhao's Mertens criterion & Claimed abelian classification & Exactly 229 pass sufficient test; necessity is not shown.\\
+Suzuki's fixed cutoff & Claimed sign transition; partial general answer & Central nonvanishing above known range remains open.\\
+Suvagiya's signed cycles & Claimed exact optimum & Earlier counterexample already refuted constant conjecture; exact optimization new.\\
+Higashitani--Kummer--Micha\l ek & Finite-width advance & Arbitrary bipartite width open.\\
+Barthel--M\"uller & Partial & All $t\ge2$ intervals; first interval open in general.\\
+Pomerance & Reduction & Least-prime congruence obstruction still open.\\\bottomrule\end{tabularx}}
+
+\topic{How famous are these questions?}
+Several are named, numbered, peer-literature conjectures. The integer and polynomial progression questions and the class-group completeness problems are well established within their areas. None is comparable in general mathematical prominence to RH itself. Their interest comes from precision, novelty of mechanism and the scope of the conclusions rather than from an inflated label of a second Millennium Problem.
+\sources{Primary literature links appear on the relevant topic pages. The ledger uses article claims, not independently certified resolutions.}
+
+\pagepart{Scope and attribution}{Standard implications deliberately excluded}
+The following are not ranked as original mathematical contributions of this article, even if the verified upstream result makes earlier conditional statements unconditional in the usual mathematical sense. The distinction matters for scholarly credit.
+
+{\small\begin{tabularx}{\linewidth}{@{}p{.34\linewidth}Y@{}}\toprule
+\textbf{Excluded from main ranking} & \textbf{Reason}\\\midrule
+Lindel\"of hypothesis & Classical consequence of RH/Dirichlet GRH; prior implication known.\\
+Exact de Bruijn--Newman constant $\Lambda=0$ & Combine RH with Rodgers--Tao's lower bound.\\
+Euler's 65 idoneal numbers and box-area corollaries & Earlier classification conditional on zero-free information (Weinberger and Kani); not a new census argument.\\
+Grosswald's bound and Erd\H{o}s 985 (odd primes) & Published GRH primitive-root bounds plus small finite check.\\
+Vinogradov least quadratic nonresidue & Earlier GRH implication and explicit bounds.\\
+Robin and Lagarias divisor inequalities & Earlier equivalences with RH.\\
+Toroczkai prime-gap graph conjectures & Already proved conditionally on ordinary RH; new block/matching refinements can be considered separately.\\
+Abelian Dedekind RH & Classical character factorization of the zeta function.\\
+Nonhalting of \texttt{riemann95} & Composition of RH and existing machine specification; earlier report notes no joint build.\\\bottomrule\end{tabularx}}
+
+\topic{Major open directions not settled by the article}
+The input theorem concerns the Riemann zeta function and Dirichlet $L$-functions, not every automorphic or motivic $L$-function. Nonabelian Dedekind RH and Artin holomorphy are not established. Artin's fixed-generator primitive-root conjecture requires further Kummer-field estimates, not the varying-generator bounds in the excluded list. Neither general Hecke/automorphic GRH, Chowla's central nonvanishing, Vandiver, full Rasmussen--Tamagawa, Martin's non-CM finiteness conjecture, nor simplicity or linear independence of zeta zeros follows. One-sided and finite-certificate reductions are research targets, not solutions.
+\sources{\arc{dir}{85}{Published implications}; \arc{dir}{184}{Primitive roots}; \arc{dir}{281}{Idoneal numbers}; \arc{dir}{977}{Prime-gap graphs}; \arc{nab}{1945}{Open nonabelian questions}; \arc{hec}{2413}{Open degree-two questions}.}
+
+\pagepart{Research priorities}{What to extract, verify, and publish first}
+\topic{Priority 1: three independent conjecture papers}
+Extract the sparse-singular-moduli article (with the three-term proof as a short independent section, followed by the five-term theorem and full-support families). Extract a unified integer-progression paper containing the explicit McNew disproof, the every-length theorem, the bounded-prime-block obstruction and the natural/upper-density gaps. A third paper should focus on the polynomial-ring conjecture and the beyond-all-orders discrepancy. All three can be reviewed without relying on the recent RH proof. Publish exact witnesses, generation scripts, small checkers and precise definitions of density and ratio. In particular, don't claim the optimum is known in closed form merely because it is computable.
+
+\topic{Priority 2: a definitive arithmetic census}
+Write a separate exponent-six/seven paper preserving the distinction between previously found lists and new completeness. Independently implement the paired norm-equation exclusions and interval arithmetic, verify all endpoints, compare the order lists against the published conductor enumeration, and package minimal exact certificates. This is the most compelling new arithmetic application that genuinely uses Dirichlet GRH. In parallel, repair the odd-weight lemma in the CM section and extract the weight-two prime-degree classification and local conductor test.
+
+\topic{Priority 3: quantitative inverse number theory}
+The current short-spectrum theorem for all primitive characters and the unrestricted-degree abelian-field fingerprint are particularly attractive. Prove a precise finite-observation theorem with computable constants and stability under missed and displaced zeros; contrast it with the full autocorrelation identifiability theorem, where exact data rather than efficiency is central. Verify all window tails, local prime-power interference estimates and dependence on conductor. This program has broad potential without requiring any new RH.
+
+\topic{Priority 4: transfer beyond Dirichlet GRH}
+A realistic next milestone is the $S_3$ splitting field of $X^3-X-1$. Use the explicit nonsplit-prime inequality as the target. The article's torsion, Selmer, spanning and determinant interfaces help specify what a proof must supply, and identify which apparently plausible uniform hypotheses fail. Further research should focus on constructing and checking the missing arithmetic inequality, not adding more equivalent formulations alone. An actual proof for a nonabelian field would be a qualitatively different accomplishment.
+
+\topic{Final verdict}
+Yes: the article contains credible candidates for several new resolutions of specialist conjectures and published open questions, as well as striking new structural theorems. The clearest conjecture disproofs are McNew and Asada et al.; the strongest unconditional rigidity theorem is the five-term singular-moduli classification and its extensions; the strongest genuinely GRH-dependent classification is the exponent-six/seven census. These claims deserve independent validation and individual publication. No new major general Riemann hypothesis has yet been proved by the downstream collection.
+\end{document}
