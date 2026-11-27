@@ -17,14 +17,14 @@ namespace LeanProofs.IPRA.Analysis.GaussianBinetBoseOriginName
 open_ipra
 open GaussianBinetBoseCompact (evaluatorF gain)
 open GaussianBinetBoseOriginExhaustion (cutData subst_cutData cut_regular ordered_rate width)
-open GaussianCoefficientNameBounds (unit unit_positive)
+open GaussianCoefficientNameBounds (unit)
 open GaussianCompactRiemannName
   (sampleData field0 field1 field2 field3 field4)
 open GaussianEuclideanDistanceName (pointCN)
 open GaussianFastValueCut (exponent normalizer query_budget)
-open GaussianNamedInverseRate (independentRate rate_at diagonal_of_later_rate)
-open GaussianNamedLipschitzRate (diagonalEnvelope diagonalNumerator diagonalDenominator diagonal_of_regular_distance)
-open GaussianRationalDistanceOrder (distance_congr distance_symmetric)
+open GaussianNamedInverseRate (independentRate rate_at)
+open GaussianNamedLipschitzRate (diagonalEnvelope diagonalNumerator diagonalDenominator)
+open GaussianRationalDistanceOrder (distance_congr)
 open GaussianRationalHorner (positive_product)
 open GaussianRationalMetric (distanceBounded)
 open LeanProofs.IPRA.AnalyticNumberTheory.PhiLower (le_mul_mono)
@@ -110,15 +110,10 @@ theorem late_observations (p q X Y D sign T L : PTm n)
 theorem observations (p q X Y D sign T : PTm n) (h : Γ ⊢[PRAAx] source X Y D sign T) :
     Γ ⊢[PRAAx] distanceBounded (ap2 nameF p (data X Y D sign T)) (ap2 nameF q (data X Y D sign T))
       (unit p+unit q) (unit p*unit q) := by
-  refine (le_total (schedule p D) (schedule q D)).orE ?_ ?_
-  · exact GaussianNamedRateRadius.relax_second_clock _ _ p q (succ q) (le_succ_self q)
-      (distance_congr (.eqRefl _) (sample_at q X Y D sign T).eqSymm (.eqRefl _) (.eqRefl _)
-        (late_observations p (succ q) X Y D sign T (schedule q D) h.wk Prf.hyp0))
-  · have raw := GaussianNamedRateRadius.relax_second_clock _ _ q p (succ p) (le_succ_self p)
-      (distance_congr (.eqRefl _) (sample_at p X Y D sign T).eqSymm (.eqRefl _) (.eqRefl _)
-        (late_observations q (succ p) X Y D sign T (schedule p D) h.wk Prf.hyp0))
-    exact distance_congr (.eqRefl _) (.eqRefl _) (by ipra_ring) (by ipra_ring)
-      (distance_symmetric _ _ _ _ (positive_product _ _ (unit_positive q) (unit_positive p)) raw)
+  exact GaussianNamedRateRadius.ordered_cutoff_observations p q (schedule p D) (schedule q D)
+    (sample_at p X Y D sign T) (sample_at q X Y D sign T)
+    (late_observations p (succ q) X Y D sign T (schedule q D) h.wk Prf.hyp0)
+    (late_observations q (succ p) X Y D sign T (schedule p D) h.wk Prf.hyp0)
 
 theorem regular (X Y D sign T : PTm n) (h : Γ ⊢[PRAAx] source X Y D sign T) :
     Γ ⊢[PRAAx] pointCN nameF (data X Y D sign T) := by
@@ -138,14 +133,10 @@ private theorem prefix_diagonal (p X Y D sign T L : PTm n)
   let C := schedule p D
   let N := panelDen L*(num 4*X)
   have hN : Γ ⊢[PRAAx] le one N := cutoff_denominator_positive X L h.andE₁.andE₁.andE₁
-  refine (le_total L C).orE ?_ ?_
-  · have raw := rate_at CompactF CompactF (cutData X Y D sign T L) (cutData X Y D sign T C) D N p (succ p)
-      (ordered_rate X Y D sign T L C h.andE₁.wk h.andE₂.wk Prf.hyp0)
-    have aligned := diagonal_of_later_rate _ _ D N p (succ p) hN.wk (le_succ_self p) raw
-    exact distance_congr (sample_at p X Y D sign T).eqSymm (.eqRefl _) (.eqRefl _) (.eqRefl _)
-      (distance_symmetric _ _ _ _ (positive_product N (unit p) hN.wk (unit_positive p)) aligned)
-  · exact diagonal_of_regular_distance _ _ D N p hN.wk
-      (late_observations p p X Y D sign T L h.wk Prf.hyp0)
+  exact GaussianNamedLipschitzRate.ordered_prefix_diagonal CompactF p D N L C
+    (cutData X Y D sign T L) (cutData X Y D sign T C) hN (sample_at p X Y D sign T)
+    (ordered_rate X Y D sign T L C h.andE₁.wk h.andE₂.wk Prf.hyp0)
+    (late_observations p p X Y D sign T L h.wk Prf.hyp0)
 
 /-- The fixed-horizon name and any positive compact dyadic panel differ by
 at most `D/(4 X 2^(L+1))` plus their independent observation allowances. -/

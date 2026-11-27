@@ -12,7 +12,7 @@ open GaussianNamedInverseRate (independentRate rateNumerator rateDenominator den
 open GaussianCoefficientNameBounds (unit unit_positive)
 open GaussianRationalHorner (positive_product)
 open GaussianRationalMetric (distanceBounded)
-open GaussianRationalDistanceOrder (distance_radius_mono)
+open GaussianRationalDistanceOrder (distance_congr distance_radius_mono distance_symmetric)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 local notation "𝔞" t:max => Groth.ι (Q.mk Γ t)
@@ -134,6 +134,21 @@ theorem relax_second_clock (a b p q r : PTm n) (hqr : Γ ⊢[PRAAx] le q r)
     (positive_product _ _ (unit_positive p) (unit_positive q)) ?_ h
   change Γ ⊢[PRAAx] le ((U+W)*(U*V)) ((U+V)*(U*W))
   ipra_le 𝔞(U)*𝔞(U)*sl grow
+
+/-- Compare the observations selected by two cutoffs when each reads its
+finite prefix at the successor of the requested clock. -/
+theorem ordered_cutoff_observations {a b u v : PTm n} (p q L M : PTm n)
+    (ha : Γ ⊢[PRAAx] a ≐ u) (hb : Γ ⊢[PRAAx] b ≐ v)
+    (forward : le L M :: Γ ⊢[PRAAx] distanceBounded a v (unit p+unit (succ q)) (unit p*unit (succ q)))
+    (backward : le M L :: Γ ⊢[PRAAx] distanceBounded b u (unit q+unit (succ p)) (unit q*unit (succ p))) :
+    Γ ⊢[PRAAx] distanceBounded a b (unit p+unit q) (unit p*unit q) := by
+  refine (le_total L M).orE ?_ ?_
+  · exact relax_second_clock _ _ p q (succ q) (le_succ_self q)
+      (distance_congr (.eqRefl _) hb.wk.eqSymm (.eqRefl _) (.eqRefl _) forward)
+  · have h := relax_second_clock _ _ q p (succ p) (le_succ_self p)
+      (distance_congr (.eqRefl _) ha.wk.eqSymm (.eqRefl _) (.eqRefl _) backward)
+    exact distance_congr (.eqRefl _) (.eqRefl _) (by ipra_ring) (by ipra_ring)
+      (distance_symmetric _ _ _ _ (positive_product _ _ (unit_positive q) (unit_positive p)) h)
 
 theorem observation_at (F G : PR 2) (p q x y A B C D : PTm n)
     (hB : Γ ⊢[PRAAx] le one B) (hD : Γ ⊢[PRAAx] le one D) (h : Γ ⊢[PRAAx] le (A*D) (C*B))

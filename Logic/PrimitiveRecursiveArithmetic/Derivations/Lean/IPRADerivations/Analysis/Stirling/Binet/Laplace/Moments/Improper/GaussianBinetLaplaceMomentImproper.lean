@@ -22,9 +22,9 @@ open GaussianCoefficientNameBounds (unit unit_positive)
 open GaussianCompactRiemannName (sampleData field0 field1 field2 field3)
 open GaussianEuclideanDistanceName (pointCN)
 open GaussianFastValueCut (exponent normalizer query_budget)
-open GaussianNamedInverseRate (independentRate rate_at diagonal_of_later_rate)
-open GaussianNamedLipschitzRate (diagonalEnvelope diagonalNumerator diagonalDenominator diagonal_of_regular_distance)
-open GaussianRationalDistanceOrder (distance_congr distance_symmetric)
+open GaussianNamedInverseRate (independentRate rate_at)
+open GaussianNamedLipschitzRate (diagonalEnvelope diagonalNumerator diagonalDenominator)
+open GaussianRationalDistanceOrder (distance_congr)
 open GaussianRationalHorner (positive_product canonical)
 open GaussianRationalMetric (distanceBounded)
 
@@ -85,15 +85,10 @@ theorem late_observations (p q j X D R L : PTm n)
 theorem observations (p q j X D R : PTm n) (h : Γ ⊢[PRAAx] realSource X zero D zero R) :
     Γ ⊢[PRAAx] distanceBounded (ap2 nameF p (data j X D R)) (ap2 nameF q (data j X D R))
       (unit p+unit q) (unit p*unit q) := by
-  refine (le_total (cutoff p j D) (cutoff q j D)).orE ?_ ?_
-  · exact GaussianNamedRateRadius.relax_second_clock _ _ p q (succ q) (le_succ_self q)
-      (distance_congr (.eqRefl _) (sample_at q j X D R).eqSymm (.eqRefl _) (.eqRefl _)
-        (late_observations p (succ q) j X D R (cutoff q j D) h.wk Prf.hyp0))
-  · have raw := GaussianNamedRateRadius.relax_second_clock _ _ q p (succ p) (le_succ_self p)
-      (distance_congr (.eqRefl _) (sample_at p j X D R).eqSymm (.eqRefl _) (.eqRefl _)
-        (late_observations q (succ p) j X D R (cutoff p j D) h.wk Prf.hyp0))
-    exact distance_congr (.eqRefl _) (.eqRefl _) (by ipra_ring) (by ipra_ring)
-      (distance_symmetric _ _ _ _ (positive_product _ _ (unit_positive q) (unit_positive p)) raw)
+  exact GaussianNamedRateRadius.ordered_cutoff_observations p q (cutoff p j D) (cutoff q j D)
+    (sample_at p j X D R) (sample_at q j X D R)
+    (late_observations p (succ q) j X D R (cutoff q j D) h.wk Prf.hyp0)
+    (late_observations q (succ p) j X D R (cutoff p j D) h.wk Prf.hyp0)
 
 theorem regular (j X D R : PTm n) (h : Γ ⊢[PRAAx] realSource X zero D zero R) :
     Γ ⊢[PRAAx] pointCN nameF (data j X D R) := by
@@ -111,14 +106,10 @@ private theorem prefix_diagonal (p j X D R L : PTm n)
     Γ ⊢[PRAAx] distanceBounded (ap2 nameF p (data j X D R)) (ap2 StripF p (prefixData j X D R L))
       (diagonalNumerator (tailNumerator j D) L two p) (diagonalDenominator L p) := by
   let C := cutoff p j D
-  refine (le_total L C).orE ?_ ?_
-  · have raw := rate_at StripF StripF (prefixData j X D R L) (prefixData j X D R C) (tailNumerator j D) L p (succ p)
-      (ordered_rate j X D R L C h.wk hL.wk Prf.hyp0)
-    have aligned := diagonal_of_later_rate _ _ (tailNumerator j D) L p (succ p) hL.wk (le_succ_self p) raw
-    exact distance_congr (sample_at p j X D R).eqSymm (.eqRefl _) (.eqRefl _) (.eqRefl _)
-      (distance_symmetric _ _ _ _ (positive_product L (unit p) hL.wk (unit_positive p)) aligned)
-  · exact diagonal_of_regular_distance _ _ (tailNumerator j D) L p hL.wk
-      (late_observations p p j X D R L h.wk Prf.hyp0)
+  exact GaussianNamedLipschitzRate.ordered_prefix_diagonal StripF p (tailNumerator j D) L L C
+    (prefixData j X D R L) (prefixData j X D R C) hL (sample_at p j X D R)
+    (ordered_rate j X D R L C h.wk hL.wk Prf.hyp0)
+    (late_observations p p j X D R L h.wk Prf.hyp0)
 
 theorem prefix_rate (j X D R L : PTm n)
     (h : Γ ⊢[PRAAx] realSource X zero D zero R) (hL : Γ ⊢[PRAAx] le one L) :

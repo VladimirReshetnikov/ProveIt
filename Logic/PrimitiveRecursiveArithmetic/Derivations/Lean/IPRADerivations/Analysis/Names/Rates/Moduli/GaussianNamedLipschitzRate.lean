@@ -16,8 +16,8 @@ namespace LeanProofs.IPRA.Analysis.GaussianNamedLipschitzRate
 open_ipra
 open GaussianRationalHorner (positive_product)
 open GaussianRationalMetric (qsub distanceBounded)
-open GaussianRationalDistanceOrder (distance_congr distance_radius_mono distance_triangle_same)
-open GaussianNamedInverseRate (rateNumerator rateDenominator independentRate denominator_positive)
+open GaussianRationalDistanceOrder (distance_congr distance_radius_mono distance_triangle_same distance_symmetric)
+open GaussianNamedInverseRate (rateNumerator rateDenominator independentRate denominator_positive rate_at diagonal_of_later_rate)
 open GaussianCoefficientNameBounds (unit unit_positive)
 open GaussianEuclideanDistanceName (pointCN)
 
@@ -50,6 +50,20 @@ theorem diagonal_of_regular_distance (x y A N p : PTm n) (hN : Γ ⊢[PRAAx] le 
     (positive_product _ _ (unit_positive p) (unit_positive p))
     (positive_product _ _ hN (unit_positive p))
     (le_of_eq_add (d := A*unit p*unit p*unit p) (by unfold diagonalNumerator diagonalDenominator; ipra_ring)) h
+
+/-- Bound the diagonal error between a cutoff observation and a fixed
+prefix by using the rate in whichever direction their cutoffs are ordered. -/
+theorem ordered_prefix_diagonal (F : PR 2) (p A N L C x y : PTm n) {a : PTm n}
+    (hN : Γ ⊢[PRAAx] le one N) (readback : Γ ⊢[PRAAx] a ≐ ap2 F (succ p) y)
+    (early : le L C :: Γ ⊢[PRAAx] independentRate F F x y A N)
+    (late : le C L :: Γ ⊢[PRAAx] distanceBounded a (ap2 F p x) (unit p+unit p) (unit p*unit p)) :
+    Γ ⊢[PRAAx] distanceBounded a (ap2 F p x) (diagonalNumerator A N two p) (diagonalDenominator N p) := by
+  refine (le_total L C).orE ?_ ?_
+  · have h := diagonal_of_later_rate _ _ A N p (succ p) hN.wk (le_succ_self p)
+      (rate_at F F x y A N p (succ p) early)
+    exact distance_congr readback.wk.eqSymm (.eqRefl _) (.eqRefl _) (.eqRefl _)
+      (distance_symmetric _ _ _ _ (positive_product N (unit p) hN.wk (unit_positive p)) h)
+  · exact diagonal_of_regular_distance _ _ A N p hN.wk late
 
 /-- Three original metric legs at one proved positive common denominator. -/
 theorem independent_slack (F G : PR 2) (x y A N C p q t : PTm n)
