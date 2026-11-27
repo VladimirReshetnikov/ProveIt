@@ -180,21 +180,9 @@ theorem inst2_lift (C : PTm 7) (a y : PTm n) :
 
 theorem dec_tup (a M Q' T α γ β : PTm n) (i : Fin 7) :
     Γ ⊢[PRAAx] dec a (tup M Q' T α γ β) i ≐ (![a, M, Q', T, α, γ, β] : Fin 7 → PTm n) i := by
-  have s1 : Γ ⊢[PRAAx] sndT (tup M Q' T α γ β) ≐ pairT Q' (pairT T (pairT α (pairT γ β))) := snd_pair _ _
-  have s2 : Γ ⊢[PRAAx] sndT (sndT (tup M Q' T α γ β)) ≐ pairT T (pairT α (pairT γ β)) :=
-    (congrSnd s1).eqTrans (snd_pair _ _)
-  have s3 : Γ ⊢[PRAAx] sndT (sndT (sndT (tup M Q' T α γ β))) ≐ pairT α (pairT γ β) :=
-    (congrSnd s2).eqTrans (snd_pair _ _)
-  have s4 : Γ ⊢[PRAAx] sndT (sndT (sndT (sndT (tup M Q' T α γ β)))) ≐ pairT γ β :=
-    (congrSnd s3).eqTrans (snd_pair _ _)
-  fin_cases i
-  · exact .eqRefl _
-  · exact fst_pair _ _
-  · exact (congrFst s1).eqTrans (fst_pair _ _)
-  · exact (congrFst s2).eqTrans (fst_pair _ _)
-  · exact (congrFst s3).eqTrans (fst_pair _ _)
-  · exact (congrFst s4).eqTrans (fst_pair _ _)
-  · exact (congrSnd s4).eqTrans (snd_pair _ _)
+  refine Fin.cases (.eqRefl _) (fun j => ?_) i
+  simpa [dec, tup, pairVector, pairVectorField] using
+    (pairVectorField_eq (Γ := Γ) 5 ![M, Q', T, α, γ, β] (.eqRefl _) j)
 
 /-- Decoding a body at a tuple. -/
 theorem conv (C : PTm 7) (a M Q' T α γ β : PTm n) :

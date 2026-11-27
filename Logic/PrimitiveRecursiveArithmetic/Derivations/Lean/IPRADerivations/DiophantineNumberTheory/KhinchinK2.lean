@@ -122,8 +122,8 @@ theorem S_succ (Ψ Dm : PTm 2) (j P : PTm n) :
 theorem base_ineq (Ψ Dm : PTm 2) {S : PTm n} (hS : Γ ⊢[PRAAx] S ≐ pairT zero one) :
     Γ ⊢[PRAAx] le (pw (succ (num 16383)) zero * ap2 (sumF evB) (succ (fstT S)) (sndT S))
       (pw (num 16383) zero * succ (fstT S)) := by
-  have ef0 : Γ ⊢[PRAAx] fstT S ≐ zero := (congrFst hS).eqTrans (fst_pair _ _)
-  have es0 : Γ ⊢[PRAAx] sndT S ≐ one := (congrSnd hS).eqTrans (snd_pair _ _)
+  have ef0 : Γ ⊢[PRAAx] fstT S ≐ zero := hS.fstE
+  have es0 : Γ ⊢[PRAAx] sndT S ≐ one := hS.sndE
   have eA0 : Γ ⊢[PRAAx] ap2 (sumF evB) (succ (fstT S)) (sndT S) ≐ ap2 (sumF evB) zero one + inst2 evB zero one :=
     (congrAp2 (sumF evB) (congrSucc ef0) es0).eqTrans (sum_succ evB zero one)
   have hd : Γ ⊢[PRAAx] lt (inst2 evB zero one) two := by
@@ -185,8 +185,8 @@ theorem khinchin_k2 (Ψ Dm : PTm 2) {N C x : PTm n} (m : PTm n) (hC : Γ ⊢[PRA
     Γ ⊢[PRAAx] le (pw two (succ m) * resK Ψ Dm (succ (num 16383) * succ m) (pairT N (pairT C x)))
       (gridK Ψ Dm (succ (num 16383) * succ m) (pairT N (pairT C x))) := by
   have e1 : Γ ⊢[PRAAx] sndT (pairT N (pairT C x)) ≐ pairT C x := snd_pair _ _
-  have eC : Γ ⊢[PRAAx] fstT (sndT (pairT N (pairT C x))) ≐ C := (congrFst e1).eqTrans (fst_pair _ _)
-  have ex : Γ ⊢[PRAAx] sndT (sndT (pairT N (pairT C x))) ≐ x := (congrSnd e1).eqTrans (snd_pair _ _)
+  have eC : Γ ⊢[PRAAx] fstT (sndT (pairT N (pairT C x))) ≐ C := e1.fstE
+  have ex : Γ ⊢[PRAAx] sndT (sndT (pairT N (pairT C x))) ≐ x := e1.sndE
   have inv := inv_all Ψ Dm (le_congr (.eqRefl _) eC.eqSymm hC) (monoF_congr Ψ ex hmono) (kdF_congr Ψ Dm eC ex hKD)
   have hT := Prf.allE (succ (num 16383) * succ m) inv
   simp only [subst_invF, Syn.subst_var, Syn.inst_zero, Syn.subst_inst_shift] at hT

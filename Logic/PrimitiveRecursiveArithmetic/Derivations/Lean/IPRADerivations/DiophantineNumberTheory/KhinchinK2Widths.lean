@@ -173,10 +173,10 @@ theorem w_at (Ψ : PTm 2) (k K0 C x Q R G α γ b0 : PTm n) :
   fin_cases i
   · exact .eqRefl _
   · exact fst_pair _ _
-  · exact (congrFst s2).eqTrans (fst_pair _ _)
-  · exact (congrFst s3).eqTrans (fst_pair _ _)
-  · exact (congrFst eCx).eqTrans (fst_pair _ _)
-  · exact (congrSnd eCx).eqTrans (snd_pair _ _)
+  · exact s2.fstE
+  · exact s3.fstE
+  · exact eCx.fstE
+  · exact eCx.sndE
 
 /-- `4 Q_k² C ≤ R` for `k ≤ B` from `4 Q_B² C ≤ R`. -/
 theorem r4_at {k K0 B C R : PTm n} (hk : Γ ⊢[PRAAx] le k B)

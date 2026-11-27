@@ -67,24 +67,9 @@ abbrev yk (K0 M R G α γ b0 k : PTm n) : PTm n :=
 
 theorem dec_Xt (k K0 M R G α γ b0 : PTm n) (i : Fin 8) :
     Γ ⊢[PRAAx] decX k (Xt K0 M R G α γ b0) i ≐ (![k, K0, M, R, G, α, γ, b0] : Fin 8 → PTm n) i := by
-  have s1 : Γ ⊢[PRAAx] sndT (Xt K0 M R G α γ b0) ≐ pairT M (pairT R (pairT G (pairT α (pairT γ b0)))) := snd_pair _ _
-  have s2 : Γ ⊢[PRAAx] sndT (sndT (Xt K0 M R G α γ b0)) ≐ pairT R (pairT G (pairT α (pairT γ b0))) :=
-    (congrSnd s1).eqTrans (snd_pair _ _)
-  have s3 : Γ ⊢[PRAAx] sndT (sndT (sndT (Xt K0 M R G α γ b0))) ≐ pairT G (pairT α (pairT γ b0)) :=
-    (congrSnd s2).eqTrans (snd_pair _ _)
-  have s4 : Γ ⊢[PRAAx] sndT (sndT (sndT (sndT (Xt K0 M R G α γ b0)))) ≐ pairT α (pairT γ b0) :=
-    (congrSnd s3).eqTrans (snd_pair _ _)
-  have s5 : Γ ⊢[PRAAx] sndT (sndT (sndT (sndT (sndT (Xt K0 M R G α γ b0))))) ≐ pairT γ b0 :=
-    (congrSnd s4).eqTrans (snd_pair _ _)
-  fin_cases i
-  · exact .eqRefl _
-  · exact fst_pair _ _
-  · exact (congrFst s1).eqTrans (fst_pair _ _)
-  · exact (congrFst s2).eqTrans (fst_pair _ _)
-  · exact (congrFst s3).eqTrans (fst_pair _ _)
-  · exact (congrFst s4).eqTrans (fst_pair _ _)
-  · exact (congrFst s5).eqTrans (fst_pair _ _)
-  · exact (congrSnd s5).eqTrans (snd_pair _ _)
+  refine Fin.cases (.eqRefl _) (fun j => ?_) i
+  simpa [decX, Xt, pairVector, pairVectorField] using
+    (pairVectorField_eq (Γ := Γ) 6 ![K0, M, R, G, α, γ, b0] (.eqRefl _) j)
 
 theorem K_at (k K0 M R G α γ b0 : PTm n) :
     Γ ⊢[PRAAx] Syn.subst (decX k (Xt K0 M R G α γ b0)) KCore ≐ Kk K0 M k := by

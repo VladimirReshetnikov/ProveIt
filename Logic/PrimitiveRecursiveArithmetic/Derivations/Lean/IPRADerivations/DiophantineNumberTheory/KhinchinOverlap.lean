@@ -111,9 +111,9 @@ theorem projW (lo hi w y : PTm n) :
     (Γ ⊢[PRAAx] fstT (Wt lo hi w y) ≐ lo) ∧ (Γ ⊢[PRAAx] fstT (sndT (Wt lo hi w y)) ≐ hi) ∧
       (Γ ⊢[PRAAx] fstT (sndT (sndT (Wt lo hi w y))) ≐ w) ∧ (Γ ⊢[PRAAx] sndT (sndT (sndT (Wt lo hi w y))) ≐ y) := by
   have s1 : Γ ⊢[PRAAx] sndT (Wt lo hi w y) ≐ pairT hi (pairT w y) := snd_pair _ _
-  have s2 : Γ ⊢[PRAAx] sndT (sndT (Wt lo hi w y)) ≐ pairT w y := (congrSnd s1).eqTrans (snd_pair _ _)
-  exact ⟨fst_pair _ _, (congrFst s1).eqTrans (fst_pair _ _), (congrFst s2).eqTrans (fst_pair _ _),
-    (congrSnd s2).eqTrans (snd_pair _ _)⟩
+  have s2 : Γ ⊢[PRAAx] sndT (sndT (Wt lo hi w y)) ≐ pairT w y := s1.sndE
+  exact ⟨fst_pair _ _, s1.fstE, s2.fstE,
+    s2.sndE⟩
 
 theorem c2_at (i lo hi w y : PTm n) :
     Γ ⊢[PRAAx] inst2 c2 i (Wt lo hi w y) ≐
@@ -303,10 +303,10 @@ theorem loc_pt {j K2 wk yk wl M Ql Q'l R G α γ β s : PTm n} (hM : Γ ⊢[PRAA
   let Z := pairT K2 (pairT (pairT wk yk) (pairT wl yl))
   have sZ : Γ ⊢[PRAAx] sndT Z ≐ pairT (pairT wk yk) (pairT wl yl) := snd_pair _ _
   have hK : Γ ⊢[PRAAx] fstT Z ≐ monus Ql Q'l * M := (fst_pair _ _).eqTrans hK2
-  have hx1 : Γ ⊢[PRAAx] fstT (sndT Z) ≐ pairT wk yk := (congrFst sZ).eqTrans (fst_pair _ _)
-  have hx2 : Γ ⊢[PRAAx] sndT (sndT Z) ≐ pairT wl yl := (congrSnd sZ).eqTrans (snd_pair _ _)
-  have hy : Γ ⊢[PRAAx] sndT (fstT (sndT Z)) ≐ yk := (congrSnd hx1).eqTrans (snd_pair _ _)
-  have hwk : Γ ⊢[PRAAx] fstT (fstT (sndT Z)) ≐ wk := (congrFst hx1).eqTrans (fst_pair _ _)
+  have hx1 : Γ ⊢[PRAAx] fstT (sndT Z) ≐ pairT wk yk := sZ.fstE
+  have hx2 : Γ ⊢[PRAAx] sndT (sndT Z) ≐ pairT wl yl := sZ.sndE
+  have hy : Γ ⊢[PRAAx] sndT (fstT (sndT Z)) ≐ yk := hx1.sndE
+  have hwk : Γ ⊢[PRAAx] fstT (fstT (sndT Z)) ≐ wk := hx1.fstE
   have eAj := congrInst2 AK (.eqRefl j) hy
   have eSj := congrSg (congrInst2 actK (.eqRefl j) hy)
   have eL : Γ ⊢[PRAAx] ap2 (sumF (mtB (loB AK) (hiB AK actK))) (fstT Z)

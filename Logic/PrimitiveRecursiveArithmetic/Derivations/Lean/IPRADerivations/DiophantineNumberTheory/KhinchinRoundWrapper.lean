@@ -70,19 +70,19 @@ theorem vB_at (wb : PTm 2) (k g r B K0 M R G' p : PTm n) :
   have e3 := (congrSnd e2).eqTrans (snd_pair (Γ := Γ) K0 _)
   have e4 := (congrSnd e3).eqTrans (snd_pair (Γ := Γ) M _)
   have e5 := (congrSnd e4).eqTrans (snd_pair (Γ := Γ) R _)
-  have er : Γ ⊢[PRAAx] fstT (sndT (pairT g (px r B K0 M R G' p))) ≐ r := (congrFst e0).eqTrans (fst_pair _ _)
+  have er : Γ ⊢[PRAAx] fstT (sndT (pairT g (px r B K0 M R G' p))) ≐ r := e0.fstE
   have eg : Γ ⊢[PRAAx] fstT (pairT g (px r B K0 M R G' p)) ≐ g := fst_pair _ _
-  have eB : Γ ⊢[PRAAx] fstT (sndT (sndT (pairT g (px r B K0 M R G' p)))) ≐ B := (congrFst e1).eqTrans (fst_pair _ _)
+  have eB : Γ ⊢[PRAAx] fstT (sndT (sndT (pairT g (px r B K0 M R G' p)))) ≐ B := e1.fstE
   have eK : Γ ⊢[PRAAx] fstT (sndT (sndT (sndT (pairT g (px r B K0 M R G' p))))) ≐ K0 :=
-    (congrFst e2).eqTrans (fst_pair _ _)
+    e2.fstE
   have eM : Γ ⊢[PRAAx] fstT (sndT (sndT (sndT (sndT (pairT g (px r B K0 M R G' p)))))) ≐ M :=
-    (congrFst e3).eqTrans (fst_pair _ _)
+    e3.fstE
   have eR : Γ ⊢[PRAAx] fstT (sndT (sndT (sndT (sndT (sndT (pairT g (px r B K0 M R G' p))))))) ≐ R :=
-    (congrFst e4).eqTrans (fst_pair _ _)
+    e4.fstE
   have eG : Γ ⊢[PRAAx] fstT (sndT (sndT (sndT (sndT (sndT (sndT (pairT g (px r B K0 M R G' p)))))))) ≐ G' :=
-    (congrFst e5).eqTrans (fst_pair _ _)
+    e5.fstE
   have ep : Γ ⊢[PRAAx] sndT (sndT (sndT (sndT (sndT (sndT (sndT (pairT g (px r B K0 M R G' p)))))))) ≐ p :=
-    (congrSnd e5).eqTrans (snd_pair _ _)
+    e5.sndE
   have eα := congrAdd (congrMul (.eqRefl (num 4)) eg) (.eqRefl (one : PTm n))
   have eγ := congrAdd (congrMul (.eqRefl (num 4)) eg) (.eqRefl (num 3 : PTm n))
   have eb := congrAdd (congrMul (.eqRefl (num 4)) ep) (.eqRefl (num 3 : PTm n))

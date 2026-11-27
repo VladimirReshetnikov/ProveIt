@@ -72,12 +72,12 @@ theorem row_pt (i p Q' T α γ β : PTm n) :
     Γ ⊢[PRAAx] inst3 gS i p (tl Q' T α γ β) ≐ sg (actv p (succ (Q' + i)) α γ β) := by
   rw [inst3_gS]
   have s1 : Γ ⊢[PRAAx] sndT (tl Q' T α γ β) ≐ pairT T (pairT α (pairT γ β)) := snd_pair _ _
-  have s2 : Γ ⊢[PRAAx] sndT (sndT (tl Q' T α γ β)) ≐ pairT α (pairT γ β) := (congrSnd s1).eqTrans (snd_pair _ _)
-  have s3 : Γ ⊢[PRAAx] sndT (sndT (sndT (tl Q' T α γ β))) ≐ pairT γ β := (congrSnd s2).eqTrans (snd_pair _ _)
+  have s2 : Γ ⊢[PRAAx] sndT (sndT (tl Q' T α γ β)) ≐ pairT α (pairT γ β) := s1.sndE
+  have s3 : Γ ⊢[PRAAx] sndT (sndT (sndT (tl Q' T α γ β))) ≐ pairT γ β := s2.sndE
   have hQ : Γ ⊢[PRAAx] fstT (tl Q' T α γ β) ≐ Q' := fst_pair _ _
-  have hα : Γ ⊢[PRAAx] fstT (sndT (sndT (tl Q' T α γ β))) ≐ α := (congrFst s2).eqTrans (fst_pair _ _)
-  have hγ : Γ ⊢[PRAAx] fstT (sndT (sndT (sndT (tl Q' T α γ β)))) ≐ γ := (congrFst s3).eqTrans (fst_pair _ _)
-  have hβ : Γ ⊢[PRAAx] sndT (sndT (sndT (sndT (tl Q' T α γ β)))) ≐ β := (congrSnd s3).eqTrans (snd_pair _ _)
+  have hα : Γ ⊢[PRAAx] fstT (sndT (sndT (tl Q' T α γ β))) ≐ α := s2.fstE
+  have hγ : Γ ⊢[PRAAx] fstT (sndT (sndT (sndT (tl Q' T α γ β)))) ≐ γ := s3.fstE
+  have hβ : Γ ⊢[PRAAx] sndT (sndT (sndT (sndT (tl Q' T α γ β)))) ≐ β := s3.sndE
   have hq : Γ ⊢[PRAAx] succ (fstT (tl Q' T α γ β) + i) ≐ succ (Q' + i) := congrSucc (congrAdd hQ (.eqRefl _))
   exact congrSg (congrMul (inJT_congr (.eqRefl _) hq hα hγ hβ) (congrEqb' (congrGcd (.eqRefl _) hq) (.eqRefl _)))
 
@@ -86,11 +86,11 @@ theorem cop_pt (p q α γ β : PTm n) :
     Γ ⊢[PRAAx] inst2 copB p (pairT q (pairT α (pairT γ β))) ≐ inJT p q α γ β * eqb (gcd p q) one := by
   rw [inst2_copB]
   have s1 : Γ ⊢[PRAAx] sndT (pairT q (pairT α (pairT γ β))) ≐ pairT α (pairT γ β) := snd_pair _ _
-  have s2 : Γ ⊢[PRAAx] sndT (sndT (pairT q (pairT α (pairT γ β)))) ≐ pairT γ β := (congrSnd s1).eqTrans (snd_pair _ _)
+  have s2 : Γ ⊢[PRAAx] sndT (sndT (pairT q (pairT α (pairT γ β)))) ≐ pairT γ β := s1.sndE
   have hq : Γ ⊢[PRAAx] fstT (pairT q (pairT α (pairT γ β))) ≐ q := fst_pair _ _
-  have hα : Γ ⊢[PRAAx] fstT (sndT (pairT q (pairT α (pairT γ β)))) ≐ α := (congrFst s1).eqTrans (fst_pair _ _)
-  have hγ : Γ ⊢[PRAAx] fstT (sndT (sndT (pairT q (pairT α (pairT γ β))))) ≐ γ := (congrFst s2).eqTrans (fst_pair _ _)
-  have hβ : Γ ⊢[PRAAx] sndT (sndT (sndT (pairT q (pairT α (pairT γ β))))) ≐ β := (congrSnd s2).eqTrans (snd_pair _ _)
+  have hα : Γ ⊢[PRAAx] fstT (sndT (pairT q (pairT α (pairT γ β)))) ≐ α := s1.fstE
+  have hγ : Γ ⊢[PRAAx] fstT (sndT (sndT (pairT q (pairT α (pairT γ β))))) ≐ γ := s2.fstE
+  have hβ : Γ ⊢[PRAAx] sndT (sndT (sndT (pairT q (pairT α (pairT γ β))))) ≐ β := s2.sndE
   exact congrMul (inJT_congr (.eqRefl _) hq hα hγ hβ) (congrEqb' (congrGcd (.eqRefl _) hq) (.eqRefl _))
 
 /-- A product of bits is a bit: `sg(act) = [p/q ∈ J*][gcd = 1]`, here with `q = q'`. -/

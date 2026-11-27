@@ -115,11 +115,11 @@ theorem eB_row (d q y : PTm n) :
     Γ ⊢[PRAAx] inst2 eB d (pairT (fstT y) (pairT q (sndT y))) ≐ inst2 (rowB gB) d (pairT q y) := by
   rw [inst2_eB, inst2_rowB, inst3_gB]
   have h2 : Γ ⊢[PRAAx] sndT (pairT (fstT y) (pairT q (sndT y))) ≐ pairT q (sndT y) := snd_pair _ _
-  have hq1 : Γ ⊢[PRAAx] xq (sndT (pairT (fstT y) (pairT q (sndT y)))) ≐ q := (congrFst h2).eqTrans (fst_pair _ _)
+  have hq1 : Γ ⊢[PRAAx] xq (sndT (pairT (fstT y) (pairT q (sndT y)))) ≐ q := h2.fstE
   have hq2 : Γ ⊢[PRAAx] fstT (pairT q y) ≐ q := fst_pair _ _
   have hy : Γ ⊢[PRAAx] sndT (pairT q y) ≐ y := snd_pair _ _
   have hs : Γ ⊢[PRAAx] sndT (sndT (pairT (fstT y) (pairT q (sndT y)))) ≐ sndT y :=
-    (congrSnd h2).eqTrans (snd_pair _ _)
+    h2.sndE
   refine (congrMul (congrMul (.eqRefl _) (congrEqb' (congrAp2 remF hq1 (.eqRefl _)) (.eqRefl _)))
     (congrAp2 (sumF cntB) (fst_pair _ _) (congrPairT (congrAp2 quoF hq1 (.eqRefl _)) hs))).eqTrans ?_
   exact (congrMul (congrMul (.eqRefl _) (congrEqb' (congrAp2 remF hq2 (.eqRefl _)) (.eqRefl _)))
@@ -166,10 +166,10 @@ theorem cnt_dS (k M s : PTm n) :
   have hW : Δ ⊢[PRAAx] sndT (pairT (Syn.shift k * fstT (Syn.shift s)) (pairT (Syn.shift k * fstT (sndT (Syn.shift s)))
       (sndT (sndT (Syn.shift s))))) ≐ pairT (Syn.shift k * fstT (sndT (Syn.shift s))) (sndT (sndT (Syn.shift s))) :=
     snd_pair _ _
-  have hβ := (congrSnd hW).eqTrans (snd_pair _ _)
+  have hβ := hW.sndE
   have hu := (fst_pair (Γ := Δ) (Syn.shift k * fstT (Syn.shift s))
     (pairT (Syn.shift k * fstT (sndT (Syn.shift s))) (sndT (sndT (Syn.shift s)))))
-  have hv := (congrFst hW).eqTrans (fst_pair _ _)
+  have hv := hW.fstE
   refine (inJT_congr (.eqRefl _) (fst_pair _ _) (congrFst hX) (congrFst (congrSnd hX))
     (congrSnd (congrSnd hX))).eqTrans ?_
   exact congrMul (sg_congr (congrMonus (congrMul (.eqRefl _) hβ.eqSymm) hu.eqSymm))
