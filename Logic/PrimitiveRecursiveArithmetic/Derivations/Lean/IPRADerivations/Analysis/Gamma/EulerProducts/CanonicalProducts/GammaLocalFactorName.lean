@@ -277,14 +277,8 @@ theorem pair_bound (p q z R N : PTm n) (hN : Γ ⊢[PRAAx] le one N)
   exact le_congr (pair_reverse_norm p q z R N).eqSymm (by ipra_ring)
     (ordered_pair_bound q p z R N hN.wk hz.wk hR.wk Prf.hyp0)
 
-theorem unit_standard (p : PTm n) : Γ ⊢[PRAAx] unit p ≐ num 16*pw two p := by
-  have e₂ : Γ ⊢[PRAAx] pw two two ≐ num 4 :=
-    (pw_succ two one).eqTrans ((congrMul (pw_one two) (.eqRefl _)).eqTrans (by ipra_ring))
-  have e₃ : Γ ⊢[PRAAx] pw two (num 3) ≐ num 8 :=
-    (pw_succ two two).eqTrans ((congrMul e₂ (.eqRefl _)).eqTrans (by ipra_ring))
-  have e₄ : Γ ⊢[PRAAx] pw two (num 4) ≐ num 16 :=
-    (pw_succ two (num 3)).eqTrans ((congrMul e₃ (.eqRefl _)).eqTrans (by ipra_ring))
-  exact (pw_add two p (num 4)).eqTrans ((congrMul (.eqRefl _) e₄).eqTrans (by ipra_ring))
+theorem unit_standard (p : PTm n) : Γ ⊢[PRAAx] unit p ≐ num 16*pw two p :=
+  (pw_add_numeral 2 4 p).eqTrans (mul_comm _ _)
 
 /-- The source regular-name inequality at arbitrary independent precisions,
 with the dyadic fractions fully cleared. -/

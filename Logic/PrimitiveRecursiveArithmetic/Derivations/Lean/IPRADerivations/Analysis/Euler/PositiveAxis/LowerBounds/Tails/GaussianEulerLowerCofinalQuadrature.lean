@@ -85,15 +85,7 @@ theorem transformed_refinement (F : PR 3) (t A C E L T x : PTm n) (h : Γ ⊢[PR
       (scale t A L T*one) (scale t A L T*C) (scale t A L T*E) L T x scaled (factor_positive t A C L T h.andE₂.andE₁) (le_refl _))
 
 theorem three_slack (t : PTm n) : Γ ⊢[PRAAx] le (num 3*unit t) (unit (t+num 6)) := by
-  have square : Γ ⊢[PRAAx] pw two two ≐ num 4 :=
-    (pw_succ two one).eqTrans ((congrMul (pw_one two) (.eqRefl _)).eqTrans (by ipra_ring))
-  have fourth : Γ ⊢[PRAAx] pw two (two+two) ≐ num 16 :=
-    (pw_add two two two).eqTrans ((congrMul square square).eqTrans (by ipra_ring))
-  have eval : Γ ⊢[PRAAx] pw two (num 6) ≐ num 64 :=
-    (congrAp2 powF (by ipra_ring : Γ ⊢[PRAAx] num 6 ≐ (two+two)+two) (.eqRefl _)).eqTrans
-      ((pw_add two (two+two) two).eqTrans ((congrMul fourth square).eqTrans (by ipra_ring)))
-  have split : Γ ⊢[PRAAx] unit (t+num 6) ≐ unit t*num 64 :=
-    (pw_add two t (num 6)).eqTrans (congrMul (.eqRefl _) eval)
+  have split : Γ ⊢[PRAAx] unit (t+num 6) ≐ unit t*num 64 := pw_add_numeral 2 6 t
   exact le_congr (.eqRefl _) split.eqSymm (le_of_eq_add (d := num 61*unit t) (by ipra_ring))
 
 /-- Comparison with any requested observation of the original, unscaled

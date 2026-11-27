@@ -84,11 +84,8 @@ theorem partial_distance (f : PR 2) (p x A B : PTm n)
   distance_congr (sample_at f p x).eqSymm (.eqRefl _) (.eqRefl _) (.eqRefl _)
     (diagonal_at _ _ _ _ (clock p) (cross_to_diagonal _ _ _ _ (partial_specialization f p x A B hB hAB hrep)))
 
-theorem unit_clock (p : PTm n) : Γ ⊢[PRAAx] unit (clock p) ≐ num 4*unit p := by
-  have eq : Γ ⊢[PRAAx] pw two two ≐ num 4 :=
-    (pw_succ two one).eqTrans ((congrMul (pw_one two) (.eqRefl _)).eqTrans (by ipra_ring))
-  exact (pw_add two p two).eqTrans
-    ((congrMul (.eqRefl _) eq).eqTrans (mul_comm _ _))
+theorem unit_clock (p : PTm n) : Γ ⊢[PRAAx] unit (clock p) ≐ num 4*unit p :=
+  (pw_add_numeral 2 2 p).eqTrans (mul_comm _ _)
 
 private theorem scheduled_budget (p q : PTm n) :
     Γ ⊢[PRAAx] le (((unit (clock p)+unit (clock q))*(unit (clock p)*unit (clock q))+

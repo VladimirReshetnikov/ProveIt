@@ -29,10 +29,8 @@ variable {k : ℕ} {Γ : List (Fm PTm k)}
 /-- `A = 2^22 3^15 7^7`. -/
 def Aval : ℕ := 2 ^ 22 * 3 ^ 15 * 7 ^ 7
 
-theorem pw_num (a : ℕ) : (b : ℕ) → Γ ⊢[PRAAx] pw (num a : PTm k) (num b) ≐ num (a ^ b)
-  | 0 => (pw_zero _).eqTrans (by apply deriveNat; ipra_simps; simp)
-  | b + 1 => (pw_succ (num a) (num b)).eqTrans ((congrMul (pw_num a b) (.eqRefl _)).eqTrans
-      (by apply deriveNat; ipra_simps; push_cast; ring))
+theorem pw_num (a : ℕ) : (b : ℕ) → Γ ⊢[PRAAx] pw (num a : PTm k) (num b) ≐ num (a ^ b) :=
+  pw_numeral a
 
 theorem num_lt (a b : ℕ) (h : a < b) : Γ ⊢[PRAAx] lt (num a : PTm k) (num b) := by
   show Γ ⊢[PRAAx] le (succ (num a)) (num b)

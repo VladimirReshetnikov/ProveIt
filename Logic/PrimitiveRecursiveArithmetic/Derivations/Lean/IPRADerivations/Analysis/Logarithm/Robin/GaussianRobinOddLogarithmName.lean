@@ -63,12 +63,8 @@ theorem shifted_clock_lower (p : PTm n) : Γ ⊢[PRAAx] le (p+two) (clock p) :=
   le_of_eq_add (d := p+two) (by unfold clock; ipra_ring)
 
 theorem clock_unit_lower (p : PTm n) : Γ ⊢[PRAAx] le (num 4*unit p) (unit (clock p)) := by
-  have square : Γ ⊢[PRAAx] pw two two ≐ num 4 :=
-    (pw_succ two one).eqTrans
-      ((congrMul (pw_one two) (.eqRefl _)).eqTrans (by ipra_ring))
-  have factor : Γ ⊢[PRAAx] unit (p+two) ≐ num 4*unit p := by
-    exact (pw_add two p two).eqTrans
-      ((congrMul (.eqRefl _) square).eqTrans (mul_comm _ _))
+  have factor : Γ ⊢[PRAAx] unit (p+two) ≐ num 4*unit p :=
+    (pw_add_numeral 2 2 p).eqTrans (mul_comm _ _)
   exact le_congr factor (.eqRefl _) (GaussianBalancedRadiusArithmetic.unit_monotone _ _ (shifted_clock_lower p))
 
 theorem rounding_bound (p a b : PTm n) (hb : Γ ⊢[PRAAx] le one b) :

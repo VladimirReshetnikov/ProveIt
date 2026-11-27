@@ -35,6 +35,12 @@ theorem pw_succ (a m : PTm n) : Γ ⊢[PRAAx] pw a (succ m) ≐ pw a m * a := po
 theorem pw_one (a : PTm n) : Γ ⊢[PRAAx] pw a one ≐ a :=
   (pw_succ a zero).eqTrans ((congrMul (pw_zero a) (.eqRefl a)).eqTrans (one_mul a))
 
+/-- Evaluate a power whose base and exponent are both numerals. -/
+theorem pw_numeral (a : ℕ) : (b : ℕ) → Γ ⊢[PRAAx] pw (num a : PTm n) (num b) ≐ num (a ^ b)
+  | 0 => (pw_zero _).eqTrans (by apply deriveNat; ipra_simps; simp)
+  | b + 1 => (pw_succ (num a) (num b)).eqTrans
+      ((congrMul (pw_numeral a b) (.eqRefl _)).eqTrans (by apply deriveNat; ipra_simps; push_cast; ring))
+
 /-- Substitution normal forms, including powers. -/
 macro "pw_subst" : tactic =>
   `(tactic| simp only [Fm.subst_eq, Fm.subst_imp, Fm.subst_and, Fm.subst_or, subst_le, subst_lt,
@@ -67,6 +73,11 @@ private theorem pw_add₀ : ([] : List (Fm PTm 3)) ⊢[PRAAx] pwAddF := by
 
 theorem pw_add (a m k : PTm n) : Γ ⊢[PRAAx] pw a (m + k) ≐ pw a m * pw a k := by
   simpa using inst (Γ := Γ) pw_add₀ (![k, m, a] : Fin 3 → PTm n)
+
+/-- Evaluate the numeral factor in a power with a shifted exponent. -/
+theorem pw_add_numeral (a b : ℕ) (e : PTm n) : Γ ⊢[PRAAx]
+    pw (num a) (e + num b) ≐ pw (num a) e * num (a ^ b) :=
+  (pw_add (num a) e (num b)).eqTrans (congrMul (.eqRefl _) (pw_numeral a b))
 
 /-- Variables: `0 = m`, `1 = a`, `2 = b`. -/
 private abbrev pwMulBasesF : Fm PTm 3 :=

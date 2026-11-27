@@ -96,14 +96,6 @@ private theorem square_residual (R K : PTm n)
   change Γ ⊢[PRAAx] le (K*(num 96*(two*H+K)+num 8)) (num 8*(succ (num 8*L)*succ (num 8*L)))
   ipra_le 192*sl first+96*sl second+8*sl third+216*𝔞 L*𝔞 L+128*𝔞 L+8
 
-private theorem unit_six : Γ ⊢[PRAAx] (unit (num 6) : PTm n) ≐ num 64 := by
-  have square : Γ ⊢[PRAAx] pw two two ≐ num 4 :=
-    (pw_succ two one).eqTrans ((congrMul (pw_one two) (.eqRefl _)).eqTrans (by ipra_ring))
-  have fourth : Γ ⊢[PRAAx] pw two (two+two) ≐ num 16 :=
-    (pw_add two two two).eqTrans ((congrMul square square).eqTrans (by ipra_ring))
-  exact (congrAp2 powF (by ipra_ring : Γ ⊢[PRAAx] num 6 ≐ (two+two)+two) (.eqRefl two)).eqTrans
-    ((pw_add two (two+two) two).eqTrans ((congrMul fourth square).eqTrans (by ipra_ring)))
-
 private theorem decay_exponent (R : PTm n) (hR : Γ ⊢[PRAAx] le one R) :
     Γ ⊢[PRAAx] le (num 64*unit (num 68*(R*R))) (unit (num 74*(R*R))) := by
   let H := R*R
@@ -111,7 +103,7 @@ private theorem decay_exponent (R : PTm n) (hR : Γ ⊢[PRAAx] le one R) :
   have h6 : Γ ⊢[PRAAx] le (num 6) (num 6*H) := by ipra_le 6*sl hH
   have split : Γ ⊢[PRAAx] unit (num 68*H)*unit (num 6*H) ≐ unit (num 74*H) :=
     (pw_add two (num 68*H) (num 6*H)).eqSymm.eqTrans (congrAp2 powF (by ipra_ring) (.eqRefl two))
-  exact le_congr ((congrMul (.eqRefl _) unit_six).eqTrans (mul_comm _ _)) split
+  exact le_congr ((congrMul (.eqRefl _) (pw_numeral 2 6)).eqTrans (mul_comm _ _)) split
     (le_mul_mono (le_refl (unit (num 68*H))) (unit_monotone _ _ h6))
 
 theorem budget (R K T : PTm n) (hR : Γ ⊢[PRAAx] le one R) (hK : Γ ⊢[PRAAx] le one K)

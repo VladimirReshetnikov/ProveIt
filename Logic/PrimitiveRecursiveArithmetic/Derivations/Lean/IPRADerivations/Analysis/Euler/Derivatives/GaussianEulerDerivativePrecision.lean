@@ -67,15 +67,7 @@ theorem unit_budget (p N D : PTm n) (hN : Γ ⊢[PRAAx] le one N) (hD : Γ ⊢[P
   exact le_trans (le_congr (by ipra_ring) (.eqRefl _) (mul_le_mul_right (workUnit p) scale)) (read_budget p N D hN)
 
 theorem total_budget (p : PTm n) : Γ ⊢[PRAAx] le (num 13*unit p) (workUnit p) := by
-  have square : Γ ⊢[PRAAx] pw two two ≐ num 4 :=
-    (pw_succ two one).eqTrans ((congrMul (pw_one two) (.eqRefl _)).eqTrans (by ipra_ring))
-  have fourth : Γ ⊢[PRAAx] pw two (two+two) ≐ num 16 :=
-    (pw_add two two two).eqTrans ((congrMul square square).eqTrans (by ipra_ring))
-  have six : Γ ⊢[PRAAx] pw two (num 6) ≐ num 64 :=
-    (congrAp2 powF (by ipra_ring : Γ ⊢[PRAAx] num 6 ≐ (two+two)+two) (.eqRefl two)).eqTrans
-      ((pw_add two (two+two) two).eqTrans ((congrMul fourth square).eqTrans (by ipra_ring)))
-  have split : Γ ⊢[PRAAx] workUnit p ≐ unit p*num 64 :=
-    (pw_add two p (num 6)).eqTrans (congrMul (.eqRefl _) six)
+  have split : Γ ⊢[PRAAx] workUnit p ≐ unit p*num 64 := pw_add_numeral 2 6 p
   exact le_of_eq_add (d := num 51*unit p) (split.eqTrans (by ipra_ring))
 
 theorem actual_derivative_local_precision_budget_closed : ([] : List (Fm PTm 0)) ⊢[PRAAx] univ 8

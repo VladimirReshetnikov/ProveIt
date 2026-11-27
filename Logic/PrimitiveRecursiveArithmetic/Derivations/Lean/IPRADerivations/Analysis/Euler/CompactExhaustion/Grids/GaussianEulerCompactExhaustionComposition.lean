@@ -71,10 +71,7 @@ theorem three_paid_comparisons (s q a b c d : PTm n)
   have refined : Γ ⊢[PRAAx] distanceBounded a c (two*V) (U*V) :=
     distance_radius_mono _ _ _ _ _ _ hu huv (le_of_eq_add (d := zero) (by ipra_ring)) first
   have next := distance_triangle_same _ c _ _ _ (U*V) huv refined h₂
-  have square : Γ ⊢[PRAAx] pw two two ≐ num 4 :=
-    (pw_succ two one).eqTrans ((congrMul (pw_one two) (.eqRefl _)).eqTrans (by ipra_ring))
-  have price : Γ ⊢[PRAAx] U ≐ P*num 4 :=
-    (pw_add two s two).eqTrans (congrMul (.eqRefl P) square)
+  have price : Γ ⊢[PRAAx] U ≐ P*num 4 := pw_add_numeral 2 2 s
   have exactly : Γ ⊢[PRAAx] le ((two*V+(U+two*V))*(P*V)) ((P+V)*(U*V)) := by
     apply le_of_eq_add (d := zero)
     have price' := natEq price

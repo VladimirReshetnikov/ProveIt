@@ -66,10 +66,8 @@ private theorem square_clock (p T : PTm n) : Γ ⊢[PRAAx] le (T*T) (unit (preci
         (le_mul_mono (le_refl two) prev))
   have h : Γ ⊢[PRAAx] squareLaw T := by simpa only [subst_squareLaw,Syn.subst_var,Syn.inst_zero] using all.allE T
   have grow : Γ ⊢[PRAAx] le T (T+num 3) := le_add_right _ _
-  have pow4 : Γ ⊢[PRAAx] pw two (num 4) ≐ num 16 :=
-    LeanProofs.IPRA.DiophantineNumberTheory.AperyMultibound.pw_num 2 4
   have sixteen : Γ ⊢[PRAAx] num 16*unit T ≐ unit (T+num 4) :=
-    (mul_comm _ _).eqTrans ((congrMul (.eqRefl _) pow4.eqSymm).eqTrans (pw_add _ _ _).eqSymm)
+    (mul_comm _ _).eqTrans (pw_add_numeral 2 4 T).eqSymm
   have et : Γ ⊢[PRAAx] le (T+num 4) (precision p T) := by
     unfold precision
     ipra_le 𝔞(p)+2

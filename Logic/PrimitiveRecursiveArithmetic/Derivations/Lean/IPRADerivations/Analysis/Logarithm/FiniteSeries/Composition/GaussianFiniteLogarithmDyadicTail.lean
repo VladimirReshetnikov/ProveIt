@@ -39,11 +39,7 @@ theorem clock_monotone (p q : PTm n) (h : Γ ⊢[PRAAx] le p q) : Γ ⊢[PRAAx] 
 theorem precision_positive (p : PTm n) : Γ ⊢[PRAAx] le one (precisionDenominator p) :=
   GaussianFactorBudget.power_positive _ _ (le_succ_self one)
 
-theorem two_four : Γ ⊢[PRAAx] pw two (num 4 : PTm n) ≐ num 16 := by
-  have square : Γ ⊢[PRAAx] pw two two ≐ num 4 :=
-    (pw_succ two one).eqTrans ((congrMul (pw_one two) (.eqRefl _)).eqTrans (by ipra_ring))
-  exact (congrAp2 powF (by ipra_ring : Γ ⊢[PRAAx] (num 4 : PTm n) ≐ two+two) (.eqRefl _)).eqTrans
-    ((pw_add two two two).eqTrans ((congrMul square square).eqTrans (by ipra_ring)))
+theorem two_four : Γ ⊢[PRAAx] pw two (num 4 : PTm n) ≐ num 16 := pw_numeral 2 4
 
 theorem precision_shift (p : PTm n) : Γ ⊢[PRAAx]
     pw two (p+num 8) ≐ precisionDenominator p*num 16 :=
