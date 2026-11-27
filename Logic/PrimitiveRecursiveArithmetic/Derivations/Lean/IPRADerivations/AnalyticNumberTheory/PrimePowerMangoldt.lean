@@ -83,9 +83,9 @@ theorem ppI_pw {q p a : PTm n} (hq : Γ ⊢[PRAAx] prime q) (hp : Γ ⊢[PRAAx] 
 theorem p_lt_pw {p a : PTm n} (hp : Γ ⊢[PRAAx] prime p) (ha : Γ ⊢[PRAAx] a ≐ succ (pred a)) :
     Γ ⊢[PRAAx] lt p (succ (pw p a)) := by
   have hp2 := prime_two hp; have ppos := ValuationMul.p_pos hp2
-  have l1 : Γ ⊢[PRAAx] le one a := le_of_eq_add (d := pred a) (ha.eqTrans (by ipra_ring))
+  have l1 := Common.one_le_of_pos ha
   have d : Γ ⊢[PRAAx] dvd p (pw p a) := dvd_congr_left (pw_one p) (WeightedMangoldt.pw_dvd_pw hp2 l1)
-  exact (succ_monus_succ _ _).eqTrans (dvd_le' ppos d (Valuation.pw_pos' ppos a))
+  exact Order.lt_succ_of_le (dvd_le' ppos d (Valuation.pw_pos' ppos a))
 
 section Weighted
 

@@ -33,9 +33,9 @@ theorem prime_no_divisor {p d : PTm n} (hp : Γ ⊢[PRAAx] prime p) (h2 : Γ ⊢
     Syn.subst_inst_shift, ConciseIPRA.PTm.subst_succ, ConciseIPRA.PTm.subst_zero] at a
   exact Prf.impE (Prf.impE a h2) hlt
 
-theorem lt_add_pos {f j : PTm n} (fp : Γ ⊢[PRAAx] f ≐ succ (pred f)) : Γ ⊢[PRAAx] lt j (f + j) := by
-  refine le_of_eq_add (d := pred f) ?_
-  ipra_lc natEq fp
+theorem lt_add_pos {f j : PTm n} (fp : Γ ⊢[PRAAx] f ≐ succ (pred f)) : Γ ⊢[PRAAx] lt j (f + j) :=
+  le_congr ((succ_add zero j).eqTrans (congrSucc (zero_add j))) (.eqRefl _)
+    (add_le_add_right j (Common.one_le_of_pos fp))
 
 /-- `N! + j` is not prime for `2 ≤ j ≤ N`. -/
 theorem composite_run {N j : PTm n} (h2 : Γ ⊢[PRAAx] le two j) (hj : Γ ⊢[PRAAx] le j N) :

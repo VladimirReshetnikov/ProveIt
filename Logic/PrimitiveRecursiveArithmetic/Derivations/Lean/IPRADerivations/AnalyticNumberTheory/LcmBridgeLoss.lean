@@ -85,8 +85,7 @@ theorem uB_sq {i P : PTm n} (hiP : Γ ⊢[PRAAx] le i P) :
       exact le_lt_absurd _ hiP.wk.wk (le_congr (.eqRefl _) e1 I2.wk)
     · let C' : List (Fm PTm n) := (val i (lcmu P) ≐ succ (pred (val i (lcmu P)))) :: C
       have h2 : C' ⊢[PRAAx] le (succ (succ zero)) (succ (val i (lcmu P))) :=
-        le_congr (.eqRefl _) (congrSucc Prf.hyp0).eqSymm
-          (le_of_eq_add (d := pred (val i (lcmu P))) (by ipra_ring))
+        Order.succ_le_succ (Common.one_le_of_pos Prf.hyp0)
       have p2 : C' ⊢[PRAAx] pw i (succ (succ zero)) ≐ i * i :=
         (pw_succ i (succ zero)).eqTrans (congrMul ((pw_succ i zero).eqTrans
           ((congrMul (pw_zero i) (.eqRefl _)).eqTrans (one_mul i))) (.eqRefl _))
@@ -157,8 +156,8 @@ theorem phi_step {m N P : PTm n} (hm : Γ ⊢[PRAAx] m ≐ succ (pred m)) (ih : 
   have hmN : C ⊢[PRAAx] le m (succ N) := Prf.hyp1
   refine .orE (lt_or_eq_of_le hmN) ?_ (jbase Prf.hyp0)
   let C1 : List (Fm PTm n) := lt m (succ N) :: C
-  have hmN' : C1 ⊢[PRAAx] le m N := (succ_monus_succ _ _).eqSymm.eqTrans Prf.hyp0
-  have hNP' : C1 ⊢[PRAAx] le N P := le_trans (le_succ_self N) hNP.wk
+  have hmN' : C1 ⊢[PRAAx] le m N := Order.le_of_lt_succ Prf.hyp0
+  have hNP' : C1 ⊢[PRAAx] le N P := le_of_lt hNP.wk
   have j := Prf.impE (Prf.impE (ih.wk.wk.wk : C1 ⊢[PRAAx] _) hmN') hNP'
   -- `N ≥ m ≥ 1`
   have hN : C1 ⊢[PRAAx] N ≐ succ (pred N) := by
