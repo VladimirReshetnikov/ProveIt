@@ -17,7 +17,7 @@ open_ipra
 open GaussianCoefficientNameBounds (unit unit_positive)
 open GaussianEuclideanDistanceName (pointCN)
 open GaussianNameArithmetic (add_fast sum_distance)
-open GaussianNameEquivalence (crossEquivalent cross_to_diagonal diagonal_at)
+open GaussianNameEquivalence (crossEquivalent cross_diagonal_at)
 open GaussianNameRingLaws (add_sample_error equivalent_of_envelope)
 open GaussianNamedDifference (difference_distance)
 open GaussianRationalDistanceOrder (distance_congr distance_radius_mono distance_symmetric distance_triangle_same)
@@ -186,7 +186,7 @@ theorem sample_error (K : ℕ) (half : HalfStepBound K) (residual : ResidualBoun
   have hu := unit_positive (Γ := Γ) p
   have hs := GaussianStirlingIntegerTail.integer_source i (le_trans hu (base_after_unit p))
   have e := GaussianStirlingDuplication.duplication i one x hs
-  have mid := diagonal_at DL DR (LD i one) (RD i one x) p (cross_to_diagonal _ _ _ _ e)
+  have mid := cross_diagonal_at p e
   have first := distance_symmetric _ _ _ _ hu (left_near_limit K half p y x)
   exact distance_triangle_same _ _ _ _ _ _ hu first
     (distance_triangle_same _ _ _ _ _ _ hu mid (right_near_constant residual p x))

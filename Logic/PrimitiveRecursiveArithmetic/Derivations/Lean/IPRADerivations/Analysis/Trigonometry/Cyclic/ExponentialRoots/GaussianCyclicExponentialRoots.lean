@@ -35,7 +35,7 @@ open GaussianRationalReciprocal (qone qone_bounded power bound_congr bounded_pro
 open GaussianRationalDistanceOrder (distance_congr distance_triangle_same distance_symmetric)
 open GaussianRationalSyntheticDivision (qmul_congr qmul_zero_left)
 open GaussianReciprocalHorner (qmul_associative)
-open GaussianNameEquivalence (crossEquivalent diagonal_at cross_to_diagonal cross_trans)
+open GaussianNameEquivalence (crossEquivalent cross_diagonal_at cross_trans)
 open GaussianNamedDiagonalRate (cross_of_diagonal_rate diagonalRate)
 open GaussianRootAlgebra (equal_refl equal_of_values re_scale im_scale re_one im_one re_zero im_zero)
 open ComplexLogarithmRemainder (scale oneCode zeroCode normSq normSq_scale normSq_one)
@@ -207,12 +207,12 @@ theorem power_residual (p r m x : PTm n) (h : Γ ⊢[PRAAx] source r m) :
   have hp := unit_positive (Γ := Γ) p
   have hi := angle_input r m x h
   have oneEq := GaussianBoundedIntegerExponentialSample.one_cross angleF m fullTurnRadius d hi h.andE₁
-  have base := diagonal_at F rootF d₁ (rootData r m x) p (cross_to_diagonal _ _ _ _ oneEq)
+  have base := cross_diagonal_at p oneEq
   have powered := GaussianBoundedIntegerExponentialSample.prefix_error angleF p m m fullTurnRadius d c sampleRadius two
     hi (sample_bound p r m x h) base (le_refl _)
   have last : Γ ⊢[PRAAx] distanceBounded (ap2 F p dₘ) qone two (unit p) :=
     distance_congr (.eqRefl _) (constant_at p qone) (.eqRefl _) (.eqRefl _)
-    (diagonal_at F constantF dₘ qone p (cross_to_diagonal _ _ _ _ (root_power_cross r m x h)))
+    (cross_diagonal_at p (root_power_cross r m x h))
   exact distance_triangle_same _ _ _ _ _ _ hp (distance_symmetric _ _ _ _ hp powered) last
 
 theorem actual_cyclic_exponential_root_closed : ([] : List (Fm PTm 0)) ⊢[PRAAx] univ 4

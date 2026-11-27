@@ -20,7 +20,7 @@ namespace LeanProofs.IPRA.Analysis.GaussianStirlingGlobalBoundsTranslatedRate
 open_ipra
 open LeanProofs.IPRA.AnalyticNumberTheory.PNTStageStep (pos_of_one_le)
 open GaussianCoefficientNameBounds (unit unit_positive)
-open GaussianNameEquivalence (cross_to_diagonal diagonal_at)
+open GaussianNameEquivalence (cross_diagonal_at)
 open GaussianNameRingLaws (add_sample_error)
 open GaussianNamedInverseRate (independentRate diagonal_rate)
 open GaussianRationalDistanceOrder (distance_congr distance_symmetric distance_radius_mono distance_triangle_same)
@@ -93,7 +93,7 @@ theorem shift_bound (i r b p : PTm n) (hi : Γ ⊢[PRAAx] le one i) (hb : Γ ⊢
     distance_congr (.eqRefl _) GaussianRationalMonicReconstruction.zero_add_zero
       (by dsimp [GaussianNameRingLaws.three]; ipra_ring) (.eqRefl _)
       (distance_triangle_same _ _ _ _ _ _ hu addition sum)
-  have split := diagonal_at _ _ _ _ p (cross_to_diagonal _ _ _ _ (exact_split i r b hi hb))
+  have split := cross_diagonal_at p (exact_split i r b hi hb)
   have obs := GaussianNamedDifference.sample_error A A x y p
     (name_regular _ _ (.andI (shifted_positive _ _ _ hi hb) hb)) (name_regular _ _ (.andI hi (le_refl one)))
   have mid := distance_triangle_same _ _ _ _ _ _ hu split splitSmall

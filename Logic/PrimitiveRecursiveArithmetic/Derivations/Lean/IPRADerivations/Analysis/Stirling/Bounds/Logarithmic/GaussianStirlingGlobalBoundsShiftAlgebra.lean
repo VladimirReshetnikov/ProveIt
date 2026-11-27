@@ -20,7 +20,7 @@ open GaussianCoefficientNameBounds (unit unit_positive)
 open GaussianEuclideanDistanceName (pointCN)
 open GaussianGammaCanonicalExponent (constantF constant_at constant_regular)
 open GaussianNameArithmetic (addF addData add_fast multiplyF multiplyData multiplyModulus)
-open GaussianNameEquivalence (crossEquivalent cross_to_diagonal diagonal_at)
+open GaussianNameEquivalence (crossEquivalent cross_diagonal_at)
 open GaussianNameRingLaws (add_sample_error multiply_sample_error through_identity)
 open GaussianNamedDifference (difference_distance)
 open GaussianPositiveRationalLogarithm (logF)
@@ -147,7 +147,7 @@ private theorem original_error (i r b p : PTm n) (hi : Γ ⊢[PRAAx] le one i) (
   have sj : Γ ⊢[PRAAx] source j b := .andI (shifted_positive _ _ _ hi hb) hb
   have si : Γ ⊢[PRAAx] source i one := .andI hi (le_refl one)
   have logS := shifted_log i r b hi hb
-  have er := distance_triangle_same _ _ _ _ _ _ hp (diagonal_at _ _ _ _ p (cross_to_diagonal _ _ _ _ logS))
+  have er := distance_triangle_same _ _ _ _ _ _ hp (cross_diagonal_at p logS)
     (add_sample_error logXF logF (logXData i one) (ratioData i r b) p (log_x_regular i one si) (log_ratio_regular i r b hi hb))
   have upper := GaussianStirlingRecurrence.a_error p j b g (qadd l t) _ _ sj (distance_refl_zero g _ hp) er
   have lower := GaussianStirlingRecurrence.a_error p i one h l _ _ si (distance_refl_zero h _ hp) (distance_refl_zero l _ hp)

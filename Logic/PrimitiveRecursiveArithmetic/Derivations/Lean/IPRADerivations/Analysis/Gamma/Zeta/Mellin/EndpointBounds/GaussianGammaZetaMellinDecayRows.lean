@@ -25,7 +25,7 @@ open GaussianExponentialInverseSamples (height negative negativeRadius negative_
 open GaussianGammaCanonicalExponent (constantF constant_at constant_regular)
 open GaussianGammaZetaMellinGeometric (ratio prefix_term)
 open GaussianGammaZetaMellinIntegrand (exponentialF exponentialData denominatorClock reciprocalClock)
-open GaussianNameEquivalence (crossEquivalent cross_trans cross_to_diagonal diagonal_at)
+open GaussianNameEquivalence (crossEquivalent cross_trans cross_to_diagonal cross_diagonal_at)
 open GaussianNameRingLaws (negativeF negativeData negative_equivalent)
 open GaussianRationalDistanceOrder (distance_symmetric distance_triangle_same)
 open GaussianRationalLowerBounds (lower lower_congr inverse_bound)
@@ -140,7 +140,7 @@ theorem row_error (p E i a b : PTm n) (hb : Γ ⊢[PRAAx] le one b)
   let x := negative constantF r R t
   let y := ratio p a b
   have step := signed_stage E i a b hb hi
-  have first := diagonal_at _ _ _ _ r (cross_to_diagonal _ _ _ _ step)
+  have first := cross_diagonal_at r step
   have center := negative_power constantF r E i R t (base_input a b) hi hE
   have last := GaussianRationalPowerDifference.unit_disk_power_difference x y two (unit r) i
     (unit_positive r) (inverse_unit_bound s a b hb) (inverse_unit_bound r a b hb) (inverse_clock_error p a b hb)

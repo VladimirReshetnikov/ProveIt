@@ -21,7 +21,7 @@ open GaussianEuclideanDistanceName (pointCN)
 open GaussianGammaCanonicalExponent (constantF constant_at constant_regular)
 open GaussianNameArithmetic (addF addData add_fast multiplyF multiplyData multiplyModulus sum_distance)
 open GaussianNameBounds (U sample_bound)
-open GaussianNameEquivalence (crossEquivalent cross_to_diagonal diagonal_at)
+open GaussianNameEquivalence (crossEquivalent cross_diagonal_at)
 open GaussianNameRingLaws (add_sample_error multiply_sample_error product_right_error through_identity)
 open GaussianNamedDifference (difference_distance)
 open GaussianRationalDistanceOrder (distance_congr distance_triangle_same)
@@ -109,7 +109,7 @@ private theorem sum_error (f g h : PR 2) (p x y z : PTm n) (hg : Γ ⊢[PRAAx] p
     (hh : Γ ⊢[PRAAx] pointCN h z) (he : Γ ⊢[PRAAx] crossEquivalent f (addF g h) x (addData y z)) :
     Γ ⊢[PRAAx] distanceBounded (ap2 f p x) (qadd (ap2 g p y) (ap2 h p z)) incrementBudget (unit p) :=
   distance_triangle_same _ _ _ _ _ _ (unit_positive p)
-    (diagonal_at _ _ _ _ p (cross_to_diagonal _ _ _ _ he))
+    (cross_diagonal_at p he)
     (add_sample_error g h y z p hg hh)
 
 def recurrenceBudget (a b : PTm n) : PTm n :=

@@ -23,7 +23,7 @@ open GaussianGammaFoldedMajorantExponent (input majorant majorantF majorantData 
 open GaussianGammaFiniteApproximantName (pF pData p_regular)
 open GaussianGammaCanonicalExponent (constantF constant_regular exponentF exponentialF exponentData exponentialData)
 open GaussianNameArithmetic (multiplyF multiplyData multiply_fast)
-open GaussianNameEquivalence (crossEquivalent diagonalEquivalent cross_refl cross_symm cross_trans cross_to_diagonal)
+open GaussianNameEquivalence (crossEquivalent diagonalEquivalent cross_refl cross_symm cross_trans)
 open GaussianGammaAdjacentCutoff (multiply_cross)
 open GaussianEuclideanDistanceName (pointCN)
 open GaussianRationalMetric (bounded)
@@ -141,8 +141,8 @@ theorem original_P_bounded_representative (z R B N : PTm n) (h : Γ ⊢[PRAAx] i
 
 theorem original_P_observation_bound (p z R B N : PTm n) (h : Γ ⊢[PRAAx] input z R B N) : Γ ⊢[PRAAx]
     bounded (ap2 pF p (pData z B N)) (majorant R*unit p+two) (unit p) := by
-  have close := GaussianNameEquivalence.diagonal_at _ _ _ _ p
-    (cross_to_diagonal _ _ _ _ (original_P_bounded_representative z R B N h))
+  have close := GaussianNameEquivalence.cross_diagonal_at p
+    (original_P_bounded_representative z R B N h)
   exact GaussianRationalReciprocal.bound_congr (.eqRefl _) (by ipra_ring) (by ipra_ring)
     (GaussianReconstructionRoots.norm_from_distance _ _ two (unit p) (majorant R) one (unit_positive p) (le_refl _)
       close (GaussianGammaFoldedMajorantExponent.majorant_point_bound p z R B N h))

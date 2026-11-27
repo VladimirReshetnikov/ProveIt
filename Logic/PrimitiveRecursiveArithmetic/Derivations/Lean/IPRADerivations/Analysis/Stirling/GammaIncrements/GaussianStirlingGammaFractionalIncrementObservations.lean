@@ -22,7 +22,7 @@ open GaussianCoefficientNameBounds (unit unit_positive)
 open GaussianEuclideanDistanceName (pointCN)
 open GaussianGammaCanonicalExponent (constantF constant_at constant_regular)
 open GaussianNameArithmetic (addF addData multiplyModulus sum_distance)
-open GaussianNameEquivalence (cross_to_diagonal diagonal_at)
+open GaussianNameEquivalence (cross_diagonal_at)
 open GaussianNamedPositiveExponentialOrder (realOrder real_order_at scalar_coordinate_distance)
 open GaussianNaturalScaleProductName (productF productData)
 open GaussianPositiveRationalLogarithm (fraction)
@@ -114,7 +114,7 @@ theorem unit_gamma_increment_at (i p : PTm n) (hi : Γ ⊢[PRAAx] le one i) :
   have hs : Γ ⊢[PRAAx] GaussianStirlingGammaLogarithm.source i one := .andI hi (le_refl one)
   have hp := unit_positive (Γ := Γ) p
   have law := GaussianStirlingGammaLogShift.log_gamma_increment i one hs
-  have diag := diagonal_at _ _ _ _ p (cross_to_diagonal _ _ _ _ law)
+  have diag := cross_diagonal_at p law
   have named := GaussianNameRingLaws.add_sample_error logXF logGammaF (logXData i one) (gl i) p
     (GaussianHarmonicLogarithmName.name_regular i one hs) (log_gamma_regular i one hs)
   have sumError := distance_triangle_same _ _ _ _ _ _ hp diag named

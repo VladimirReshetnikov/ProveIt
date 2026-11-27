@@ -24,7 +24,7 @@ open GaussianGammaCanonicalExponent (constantF constant_at constant_regular)
 open GaussianGammaWeierstrassApproximant (constant_data_cross constant_product_cross)
 open GaussianNameArithmetic (multiplyF multiplyData)
 open GaussianNameConjugation (pointwiseEqual equal_samples_cross)
-open GaussianNameEquivalence (crossEquivalent cross_symm cross_trans diagonal_at cross_to_diagonal)
+open GaussianNameEquivalence (crossEquivalent cross_symm cross_trans cross_diagonal_at)
 open GaussianNamedDiagonalRate (diagonalRate cross_of_diagonal_rate)
 open GaussianNamedEvenSinePolynomial (rootProductF polynomialData original_sine_bounds)
 open GaussianNamedSincQuadraticBounds (observationBound zero_is_one)
@@ -137,7 +137,7 @@ theorem normalized_product_zero (f : PR 2) (J B x z : PTm n)
     have hz' : Γ.map Fm.shift ⊢[PRAAx] crossEquivalent f constantF X qzero :=
       by simpa [X,Fm.shift,Syn.shift] using hz.shift
     have small := distance_congr (.eqRefl _) (constant_at t qzero) (.eqRefl _) (.eqRefl _)
-      (diagonal_at _ _ _ _ t (cross_to_diagonal _ _ _ _ hz'))
+      (cross_diagonal_at t hz')
     have comparison := normalized_value_distance N (ap2 f t X) qzero A two (unit t)
       (GaussianCoefficientNameBounds.unit_positive t) (GaussianRootApproximationWitness.point_at f A X t hb')
       (GaussianMonicResidualRadius.zero_bounded A one (le_refl one)) small

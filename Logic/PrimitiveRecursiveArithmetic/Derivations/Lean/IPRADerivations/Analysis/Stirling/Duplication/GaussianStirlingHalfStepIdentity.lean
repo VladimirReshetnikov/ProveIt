@@ -21,7 +21,7 @@ open GaussianEuclideanDistanceName (pointCN)
 open GaussianGammaCanonicalExponent (constantF constant_at constant_regular)
 open GaussianNameArithmetic (addF addData add_fast multiplyF multiplyData multiply_fast sum_distance)
 open GaussianNameBounds (U sample_bound)
-open GaussianNameEquivalence (crossEquivalent cross_refl cross_symm cross_trans cross_to_diagonal diagonal_at)
+open GaussianNameEquivalence (crossEquivalent cross_refl cross_symm cross_trans cross_diagonal_at)
 open GaussianNameRingLaws (three add_sample_error multiply_sample_error product_right_error through_identity)
 open GaussianNamedDifference (difference_distance)
 open GaussianRationalDistanceOrder (distance_congr distance_symmetric distance_triangle_same)
@@ -138,7 +138,7 @@ private theorem half_gamma_near (p r x : PTm n) (hn : Γ ⊢[PRAAx] le (num 6) (
   have eJ := sum_near X D p l d _ _ zero (three+(zero+zero)) regularL regularD zL eD
   have eI := sum_near H J p h j _ _ zero (three+(zero+(three+(zero+zero)))) regularH regularJ zH eJ
   have m := multiply_near I p c (idData r x) _ nestedBudget regularI eI
-  have e := diagonal_at _ _ _ _ p (cross_to_diagonal _ _ _ _ (half_gamma_cross r x hn))
+  have e := cross_diagonal_at p (half_gamma_cross r x hn)
   exact distance_triangle_same _ _ _ _ _ _ bp e m
 
 private theorem half_log_cross (r : PTm n) :
@@ -189,7 +189,7 @@ theorem identity_error (p r x : PTm n) (hn : Γ ⊢[PRAAx] le (num 6) (succ r)) 
   have hh := half_source (Γ := Γ) r
   have hW := GaussianStirlingDuplicationResidual.log_regular a one hs.andE₁
   have lh := log_x_regular a one hs
-  have split := diagonal_at _ _ _ _ p (cross_to_diagonal _ _ _ _ (half_log_cross (Γ := Γ) r))
+  have split := cross_diagonal_at p (half_log_cross (Γ := Γ) r)
   have halfLog := distance_triangle_same _ _ _ _ _ _ bp split
     (add_sample_error X W (logXData a one) (halfRatioData a one) p lh hW)
   have e0 := a_error p a one g l zero zero hs (distance_refl_zero _ _ bp) (distance_refl_zero _ _ bp)

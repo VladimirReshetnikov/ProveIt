@@ -23,7 +23,7 @@ open GaussianArctangentInverseCorrectness (roundTripF imaginary_right_inverse)
 open GaussianArctangentCayleyProjections (sineProjectionF sine_projection)
 open GaussianNamedSineFromExponential (sineF sineData sine_regular sine_proper)
 open GaussianEuclideanDistanceName (pointCN)
-open GaussianNameEquivalence (crossEquivalent cross_symm cross_trans cross_to_diagonal diagonal_at)
+open GaussianNameEquivalence (crossEquivalent cross_symm cross_trans cross_diagonal_at)
 open GaussianRationalMetric (distanceBounded)
 open GaussianRationalDistanceOrder (distance_congr distance_triangle_same)
 open GaussianCoefficientNameBounds (unit unit_positive)
@@ -85,7 +85,7 @@ theorem raw_root_error_at (p k J z : PTm n) (hk : Γ ⊢[PRAAx] le k J) :
   let x := exactSineData k (modulus J) z
   let y := GaussianArctangentNamedCayley.data (inverseData k J z)
   have eq := original_sine_projection_cross k J z hk
-  have same := diagonal_at f g x y p (cross_to_diagonal _ _ _ _ eq)
+  have same := cross_diagonal_at p eq
   exact distance_congr (.eqRefl _) (.eqRefl _) (by ipra_ring) (.eqRefl _)
     (distance_triangle_same _ _ _ _ _ _ (unit_positive p) same (projection_raw_error p k J z hk))
 

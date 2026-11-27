@@ -37,7 +37,7 @@ open GaussianSineRootNormalization (normalizedFactor)
 open GaussianRadiusExponentialName (input)
 open GaussianNameArithmetic (multiplyF multiplyData multiplyModulus)
 open GaussianNameRingLaws (multiply_sample_error)
-open GaussianNameEquivalence (diagonal_at cross_to_diagonal)
+open GaussianNameEquivalence (cross_diagonal_at)
 open GaussianRationalHorner (qmul positive_product)
 open GaussianRationalMetric (distanceBounded bounded)
 open GaussianRationalReciprocal (bound_congr bounded_product)
@@ -121,7 +121,7 @@ theorem sine_factor_error (d p : PTm n) (h : Γ ⊢[PRAAx] input nameF one d) :
   let f := angleSineF
   let x := sineData (imaginaryF nameF) one d
   have c := GaussianNamedSineSincFactorization.original_sine_factors nameF one d h
-  have first := diagonal_at f (multiplyF nameF g) x (multiplyData nameF g d y) p (cross_to_diagonal _ _ _ _ c)
+  have first := cross_diagonal_at p c
   have next := multiply_sample_error nameF g d y p h.andE₁ (GaussianNamedSinc.name_regular nameF one d h)
   exact distance_congr (.eqRefl _) (.eqRefl _) (by unfold FactorBudget; dsimp only [g,y]; ipra_ring) (.eqRefl _)
     (distance_triangle_same _ _ _ _ _ _ (unit_positive p) first next)
@@ -139,8 +139,7 @@ private theorem root_factor_error (R K i x p : PTm n)
   have hp := unit_positive (Γ := Γ) p
   have first := distance_symmetric _ _ _ _ hp (sine_factor_error d p h)
   have sinEq := root_sine_cross k m x one (odd_source k J hk) h
-  have middle := diagonal_at angleSineF (sineF GaussianArctangentDivisionAngles.nameF)
-    (sineData (imaginaryF nameF) one d) (exactSineData k m x) p (cross_to_diagonal _ _ _ _ sinEq)
+  have middle := cross_diagonal_at p sinEq
   have last := raw_root_error_later p (GaussianSineSampleRootGuards.clock p J) k J x hk
     (GaussianSineSampleRootGuards.clock_later p J)
   exact distance_congr (.eqRefl _) (.eqRefl _) (by ipra_ring) (.eqRefl _)

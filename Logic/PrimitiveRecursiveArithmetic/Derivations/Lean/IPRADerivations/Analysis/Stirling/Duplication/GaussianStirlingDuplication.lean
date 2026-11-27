@@ -23,7 +23,7 @@ open GaussianGammaCanonicalExponent (constantF constant_at constant_regular)
 open GaussianGaussMultiplicationPowerRate (multiplier limitLogData)
 open GaussianNameArithmetic (addF addData add_fast multiplyF multiplyData multiply_fast sum_distance)
 open GaussianNameBounds (U sample_bound)
-open GaussianNameEquivalence (crossEquivalent cross_to_diagonal diagonal_at)
+open GaussianNameEquivalence (crossEquivalent cross_diagonal_at)
 open GaussianNameRingLaws (add_sample_error multiply_sample_error product_right_error negativeF negativeData
   negative_sample_error through_identity)
 open GaussianNamedDifference (difference_distance)
@@ -101,7 +101,7 @@ private theorem multiply_near (f : PR 2) (p c x v A : PTm n)
 private theorem nominal_sum (f g h : PR 2) (p x y z : PTm n) (hf : Γ ⊢[PRAAx] pointCN g y)
     (hg : Γ ⊢[PRAAx] pointCN h z) (he : Γ ⊢[PRAAx] crossEquivalent f (addF g h) x (addData y z)) :
     Γ ⊢[PRAAx] distanceBounded (ap2 f p x) (qadd (ap2 g p y) (ap2 h p z)) (two+three) (unit p) :=
-  distance_triangle_same _ _ _ _ _ _ (unit_positive p) (diagonal_at _ _ _ _ p (cross_to_diagonal _ _ _ _ he))
+  distance_triangle_same _ _ _ _ _ _ (unit_positive p) (cross_diagonal_at p he)
     (add_sample_error g h y z p hf hg)
 
 def powerBudget (a b : PTm n) : PTm n :=
@@ -116,7 +116,7 @@ private theorem power_near (p a b : PTm n) :
   have regular := GaussianPositiveRationalLogarithm.name_regular two one (.andI h.andE₂ h.andE₁)
   have n := negative_sample_error logF y p regular
   have eq := qzero_add (Γ := Γ) _ (GaussianRationalMetric.qnegative_canonical u)
-  have d := diagonal_at _ _ _ _ p (cross_to_diagonal _ _ _ _ (rational_inverse one two h))
+  have d := cross_diagonal_at p (rational_inverse one two h)
   exact multiply_near logF p (multiplier (arg a) b two) (limitLogData two) (qnegative u) (two+three)
     (GaussianPositiveRationalLogarithm.name_regular one two h)
     (distance_triangle_same _ _ _ _ _ _ (unit_positive p) d (distance_congr (.eqRefl _) eq (.eqRefl _) (.eqRefl _) n))
@@ -147,8 +147,8 @@ private theorem halfGamma_near (p a b : PTm n) (hs : Γ ⊢[PRAAx] source a b) :
   have jh := log_gamma_regular _ _ (double_source a b hs)
   have kh := log_gamma_regular _ _ (half_source a b hs)
   have first := distance_symmetric _ _ _ _ bp (add_sample_error logGammaF logGammaF g k p gh kh)
-  have middle := diagonal_at LL RR (LD a b) (RD a b) p
-    (cross_to_diagonal _ _ _ _ (GaussianStirlingLogDuplication.logarithmic_duplication a b hs))
+  have middle := cross_diagonal_at p
+    (GaussianStirlingLogDuplication.logarithmic_duplication a b hs)
   have xh := power_regular (Γ := Γ) a b
   have partialSum := sum_near powerExponentF logGammaF p X h Y H (powerBudget a b) zero xh hh
     (power_near p a b) (distance_refl_zero _ _ bp)
@@ -177,8 +177,7 @@ private theorem stirling_constant_near (p x : PTm n) :
   have hh := log_gamma_regular one two (.andI (le_refl one) (le_succ_self one) : Γ ⊢[PRAAx] source one two)
   have vh := GaussianPositiveRationalLogarithm.name_regular
     two one (.andI (le_succ_self one) (le_refl one) : Γ ⊢[PRAAx] GaussianPositiveRationalLogarithm.source two one)
-  have first := diagonal_at _ _ _ _ p (cross_to_diagonal _ _ _ _
-    (GaussianStirlingDuplicationConstant.constant_half_gamma (Γ := Γ) x))
+  have first := cross_diagonal_at p (GaussianStirlingDuplicationConstant.constant_half_gamma (Γ := Γ) x)
   have prod := multiply_near logF p c v (ap2 logF p v) zero vh (distance_refl_zero _ _ bp)
   have last := sum_near logGammaF P p h X (ap2 logGammaF p h) (qmul c (ap2 logF p v))
     zero (scaleBudget logF c v zero) hh (multiply_fast constantF logF c v (constant_regular c) vh)

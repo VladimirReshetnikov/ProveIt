@@ -46,9 +46,8 @@ theorem prefix_zero (p z R B N : PTm n) : Γ ⊢[PRAAx] prefixLaw p z R B N zero
 
 theorem prefix_step (p z R B N j : PTm n) (h : Γ ⊢[PRAAx] source z R B N)
     (ih : Γ ⊢[PRAAx] prefixLaw p z R B N j) : Γ ⊢[PRAAx] prefixLaw p z R B N (succ j) := by
-  have next := GaussianNameEquivalence.diagonal_at nameF nameF (data z R B (N+j)) (data z R B (succ (N+j))) p
-    (GaussianNameEquivalence.cross_to_diagonal _ _ _ _
-      (GaussianGammaAdjacentCutoff.adjacent_cutoff_equivalent z R B (N+j) (source_after z R B N j h)))
+  have next := GaussianNameEquivalence.cross_diagonal_at p
+    (GaussianGammaAdjacentCutoff.adjacent_cutoff_equivalent z R B (N+j) (source_after z R B N j h))
   exact distance_congr (.eqRefl _) (sample_cutoff_congr p z R B (by ipra_ring)) (by ipra_ring) (.eqRefl _)
     (distance_triangle_same _ _ _ _ _ _ (unit_positive p) ih next)
 

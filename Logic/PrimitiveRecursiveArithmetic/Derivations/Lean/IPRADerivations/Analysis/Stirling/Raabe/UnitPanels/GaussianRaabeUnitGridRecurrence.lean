@@ -21,7 +21,7 @@ open_ipra
 open GaussianCoefficientNameBounds (unit unit_positive)
 open GaussianCompactRiemannName (grid quadrature sampleBody sampleData sample_body_at)
 open GaussianNameEquivalence
-  (crossEquivalent cross_symm cross_trans cross_to_diagonal diagonal_at)
+  (crossEquivalent cross_symm cross_trans cross_diagonal_at)
 open GaussianRationalDistanceOrder (distance_congr distance_radius_mono distance_symmetric distance_triangle_same)
 open GaussianRationalHorner (positive_product)
 open GaussianRationalMetric (distanceBounded qsub)
@@ -99,8 +99,8 @@ theorem sample_error (p A D : PTm n) (hA : Γ ⊢[PRAAx] le one A) (hD : Γ ⊢[
   have ha := GaussianStirlingGammaLogarithm.log_gamma_regular (A+D) D
     (.andI (le_trans hA (le_add_right A D)) hD)
   have hb := GaussianStirlingGammaLogarithm.log_gamma_regular A D (.andI hA hD)
-  have he := diagonal_at (diffF G G) L (diffData a b) (ld A D) p
-    (cross_to_diagonal (diffF G G) L (diffData a b) (ld A D) (real_recurrence A D hA hD))
+  have he := cross_diagonal_at p
+    (real_recurrence A D hA hD)
   have hr := GaussianNamedDifference.sample_error G G a b p ha hb
   exact distance_congr (.eqRefl _) (.eqRefl _) (by ipra_ring) (.eqRefl _)
     (distance_triangle_same (qsub (ap2 G p a) (ap2 G p b)) v (ap2 L p (ld A D))

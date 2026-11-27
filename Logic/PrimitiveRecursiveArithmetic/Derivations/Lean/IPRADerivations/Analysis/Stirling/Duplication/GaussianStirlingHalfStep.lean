@@ -15,7 +15,7 @@ open_ipra
 open GaussianCoefficientNameBounds (unit unit_positive)
 open GaussianGammaCanonicalExponent (constantF constant_at)
 open GaussianNameArithmetic (addF addData multiplyModulus multiply_at recode_congr sum_distance)
-open GaussianNameEquivalence (cross_to_diagonal diagonal_at)
+open GaussianNameEquivalence (cross_diagonal_at)
 open GaussianNameRingLaws (three add_sample_error recode_left_distance)
 open GaussianRationalDistanceOrder (distance_congr distance_radius_mono distance_symmetric distance_triangle_same)
 open GaussianRationalHorner (qadd qmul qzero qmul_canonical positive_product)
@@ -113,7 +113,7 @@ theorem half_step_error (p r x : PTm n) (hn : Γ ⊢[PRAAx] le (num 6) (succ r))
   have hu := unit_positive (Γ := Γ) p
   have hD := positive_product _ _ ha hu
   have circ := half_step_identity r x hn
-  have e0 := diagonal_at _ _ _ _ p (cross_to_diagonal _ _ _ _ circ)
+  have e0 := cross_diagonal_at p circ
   have first := GaussianNamedDifference.sample_error nameF nameF (nameData b two) (nameData a one) p
     (name_regular _ _ (half_source (Γ := Γ) r)) (name_regular _ _ (integer_source r))
   have leg := lift_to_denominator p a _ _ (num 6) ha (distance_symmetric _ _ _ _ hu first)

@@ -28,7 +28,7 @@ open GaussianNamedSineFromExponential (differenceF differenceData multiplier)
 open GaussianNameRingLaws (negativeF negativeData)
 open GaussianNamedSmallPerturbationTransport (productClock product_at)
 open GaussianNamedSincSamples (common_late_distance)
-open GaussianNameEquivalence (diagonal_at cross_to_diagonal)
+open GaussianNameEquivalence (cross_diagonal_at)
 open GaussianGammaCanonicalExponent (constantF constant_at)
 open GaussianRationalHorner (qmul qmul_canonical ofGaussian_represents)
 open GaussianRationalMetric (bounded distanceBounded qsub qsub_canonical bounded_of_cleared)
@@ -102,7 +102,7 @@ private theorem conjugate_error (p r m x : PTm n) (h : Γ ⊢[PRAAx] source r m)
   have hc := GaussianImaginaryNameConjugation.negative_exponential_conjugate_cross angleF fullTurnRadius a hi
     (imaginary_samples r m x h.andE₁)
   exact distance_congr (.eqRefl _) (GaussianNameConjugation.sample_at rootF p (rootData r m x))
-    (.eqRefl _) (.eqRefl _) (diagonal_at _ _ _ _ p (cross_to_diagonal _ _ _ _ hc))
+    (.eqRefl _) (.eqRefl _) (cross_diagonal_at p hc)
 
 theorem sine_error (p r m x : PTm n) (h : Γ ⊢[PRAAx] source r m) :
     Γ ⊢[PRAAx] distanceBounded (sineSample p r m x) (realSine p r m x) (num 10) (unit p) := by
@@ -162,7 +162,7 @@ private theorem raw_chord_error (p r m x : PTm n) (h : Γ ⊢[PRAAx] source r m)
   have hM := half_source r m h
   have hr := root_regular r M x hM
   have hp := unit_positive (Γ := Γ) p
-  have sq := diagonal_at _ _ _ _ p (cross_to_diagonal _ _ _ _ (exponential_square r m x h))
+  have sq := cross_diagonal_at p (exponential_square r m x h)
   have approx := product_error rootF rootF b b p sampleRadius sampleRadius hr hr
     (fun t => sample_bound t r M x hM) (fun t => sample_bound t r M x hM)
   have near := distance_triangle_same _ _ _ _ _ _ hp (distance_symmetric _ _ _ _ hp sq) approx

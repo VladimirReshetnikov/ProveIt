@@ -20,7 +20,7 @@ open GaussianCyclicExponentialGroup (productF productData product_index_cross pr
 open GaussianCyclicExponentialSamples (product_error exponential_lower inverseBudget lower_under_half_error)
 open GaussianArctangentExponentialPeriod (fullTurnRadius)
 open GaussianGammaCanonicalExponent (constantF constant_at)
-open GaussianNameEquivalence (diagonal_at cross_to_diagonal)
+open GaussianNameEquivalence (cross_diagonal_at)
 open GaussianCoefficientNameBounds (unit unit_positive)
 open GaussianRationalHorner (qmul positive_product represents_congr)
 open GaussianRationalMetric (bounded distanceBounded qsub qnegative_represents)
@@ -84,7 +84,7 @@ private theorem direct_error (p r s d m x : PTm n) (hr : Γ ⊢[PRAAx] source r 
   have eq := product_index_cross r d m x hr hd hs'
   have first := distance_symmetric _ _ _ _ hp
     (distance_congr (.eqRefl _) (sample_index_congr p m x e) (.eqRefl _) (.eqRefl _)
-      (diagonal_at _ _ _ _ p (cross_to_diagonal _ _ _ _ eq)))
+      (cross_diagonal_at p eq))
   have last := distance_triangle_same _ _ _ _ _ _ hp first (root_product_error p r d m x hr hd)
   exact distance_radius_mono _ _ _ _ _ _ hp hp
     (by unfold budget; ipra_le 6*Groth.ι (Q.mk Γ (sampleRadius : PTm n))*Groth.ι (Q.mk Γ (unit p))) last
@@ -98,11 +98,11 @@ private theorem wrapped_error (p r s d m x : PTm n) (hr : Γ ⊢[PRAAx] source r
   have hm : Γ ⊢[PRAAx] source m m := .andI hr.andE₁ (le_refl m)
   have hp := unit_positive (Γ := Γ) p
   have last := root_product_error p s d m x hs hd
-  have mid := diagonal_at _ _ _ _ p (cross_to_diagonal _ _ _ _ (product_equal_cross r m s d m x hr hm hs hd e))
+  have mid := cross_diagonal_at p (product_equal_cross r m s d m x hr hm hs hd e)
   have prev := distance_symmetric _ _ _ _ hp (root_product_error p r m m x hr hm)
   have bdist : Γ ⊢[PRAAx] distanceBounded b qone two (unit p) :=
     distance_congr (.eqRefl _) (constant_at p qone) (.eqRefl _) (.eqRefl _)
-      (diagonal_at rootF constantF (rootData m m x) qone p (cross_to_diagonal _ _ _ _ (endpoint_root_cross m x hr.andE₁)))
+      (cross_diagonal_at p (endpoint_root_cross m x hr.andE₁))
   have hC := GaussianRadiusExponentialName.sample_canonical (Γ := Γ) angleF fullTurnRadius p (angleData r m x)
   have start := distance_symmetric _ _ _ _ hp (distance_congr (.eqRefl _) (qmul_one_right a hC)
     (.eqRefl _) (.eqRefl _) (multiply_distance a b qone H two (unit p) hp (sample_bound p r m x hr) bdist))

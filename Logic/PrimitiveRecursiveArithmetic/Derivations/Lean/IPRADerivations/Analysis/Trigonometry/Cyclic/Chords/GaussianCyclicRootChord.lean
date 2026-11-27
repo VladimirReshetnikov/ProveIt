@@ -26,7 +26,7 @@ open GaussianNamedSineFromExponential (sineF sineData differenceF differenceData
 open GaussianNamedSincSamples (common_late_distance)
 open GaussianNameArithmetic (multiplyF multiplyData)
 open GaussianNameRingLaws (negativeF negativeData)
-open GaussianNameEquivalence (diagonal_at cross_to_diagonal)
+open GaussianNameEquivalence (cross_diagonal_at)
 open GaussianGammaCanonicalExponent (constantF constant_at)
 open GaussianNamedSmallPerturbationTransport (product_at productClock)
 open GaussianRationalHorner (qmul qmul_canonical positive_product qmul_represents ofGaussian_represents
@@ -141,7 +141,7 @@ theorem chord_error (p d m x : PTm n) (h : Γ ⊢[PRAAx] source d m) :
   have product := product_error F F b b p H H hr hr (fun t => exponential_bound _ _ _ t hi) (fun t => exponential_bound _ _ _ t hi)
   have eq := exponential_square d m x h
   have head := distance_triangle_same _ _ _ _ _ _ hp
-    (distance_symmetric _ _ _ _ hp (diagonal_at _ _ _ _ p (cross_to_diagonal _ _ _ _ eq))) product
+    (distance_symmetric _ _ _ _ hp (cross_diagonal_at p eq)) product
   have tail := distance_symmetric _ _ _ _ hp (inverse_error D two a p hi)
   have delta := distance_congr (.eqRefl _) (GaussianRationalRoundedPower.multiplication_difference u u v)
     (.eqRefl _) (.eqRefl _) (GaussianNamedDifference.difference_distance _ _ _ _ _ _ _ hp head tail)

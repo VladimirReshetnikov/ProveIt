@@ -50,8 +50,8 @@ theorem original_exp_sample_near_one (f : PR 2) (p R x A B C : PTm n)
     (hf : Γ ⊢[PRAAx] GaussianRadiusExponentialName.input f R x) (hB : Γ ⊢[PRAAx] le one B)
     (hAB : Γ ⊢[PRAAx] le A B) (he : Γ ⊢[PRAAx] rawEnvelope f x A B C) : Γ ⊢[PRAAx]
     distanceBounded (GaussianRadiusExponentialName.sample f R p x) qone (num 3*A*unit p+two*B) (B*unit p) := by
-  have pair := GaussianNameEquivalence.diagonal_at _ _ _ _ p
-    (GaussianNameEquivalence.cross_to_diagonal _ _ _ _ (original_exp_equiv_shrunk_unit f R x A B C hf hB hAB he))
+  have pair := GaussianNameEquivalence.cross_diagonal_at p
+    (original_exp_equiv_shrunk_unit f R x A B C hf hB hAB he)
   have small := GaussianExponentialSmallPerturbation.uniformly_small_perturbation (GaussianExactDiskShrinking.nameF f)
     p (GaussianExactDiskShrinking.data x A B C) A B hB hAB (GaussianExactDiskShrinking.exact_disk_samples f x A B C hB he)
   exact GaussianRationalDistanceOrder.distance_congr (.eqRefl _) (.eqRefl _) (by ipra_ring) (by ipra_ring)

@@ -123,7 +123,7 @@ theorem factored_point_bound (p z R B N : PTm n) (h : Γ ⊢[PRAAx] input z R B 
 
 theorem original_Q_observation_bound (p z R B N : PTm n) (h : Γ ⊢[PRAAx] input z R B N) : Γ ⊢[PRAAx]
     bounded (ap2 qF p (qData z B N)) (majorant R*unit p+two) (unit p) := by
-  have close := GaussianNameEquivalence.diagonal_at _ _ _ _ p (cross_to_diagonal _ _ _ _ (original_Q_factored z R B N h))
+  have close := GaussianNameEquivalence.cross_diagonal_at p (original_Q_factored z R B N h)
   exact GaussianRationalReciprocal.bound_congr (.eqRefl _) (by ipra_ring) (by ipra_ring)
     (GaussianReconstructionRoots.norm_from_distance _ _ two (unit p) (majorant R) one (unit_positive p) (le_refl _)
       close (factored_point_bound p z R B N h))
