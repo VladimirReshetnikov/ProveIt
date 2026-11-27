@@ -1,3 +1,4 @@
+import IPRADerivations.Core.IntCancel
 import IPRADerivations.Analysis.RationalArithmetic.Representations.RationalIntegerNormalization
 import IPRADerivations.Analysis.Optimization.RationalArgmin
 
@@ -54,15 +55,8 @@ theorem opposite_value (c : PTm n) :
 /-- Positive natural cancellation in an integer equation is derived from
 ordinary natural multiplication cancellation, without a domain assumption. -/
 theorem integer_cancel (c : PTm n) (u v : ZT n) (hc : Γ ⊢[PRAAx] le one c)
-    (h : Γ ⊢[PRAAx] ZT.eq (ZT.ofNat c*u) (ZT.ofNat c*v)) : Γ ⊢[PRAAx] ZT.eq u v := by
-  have value := ZT.toZ_eq h
-  simp only [ZT.toZ_mul, ZT.toZ_ofNat] at value
-  have scaled : Γ ⊢[PRAAx] c*(u.pos+v.neg) ≐ c*(v.pos+u.neg) := by
-    apply deriveNat
-    simp only [ZT.toZ] at value
-    ipra_simps
-    linear_combination value
-  exact Combinatorics.BinomialIdentities.mul_cancel (positive_form hc) scaled
+    (h : Γ ⊢[PRAAx] ZT.eq (ZT.ofNat c*u) (ZT.ofNat c*v)) : Γ ⊢[PRAAx] ZT.eq u v :=
+  zt_mul_eq_cancel_nat_left hc h
 
 theorem midpoint_input_integer (a b z : ZT n) (m : PTm n) (hm : Γ ⊢[PRAAx] le one m)
     (h : Γ ⊢[PRAAx] ZT.eq (a-b) (ZT.ofNat m*z)) :

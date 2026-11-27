@@ -1,3 +1,4 @@
+import IPRADerivations.Core.IntCancel
 import IPRADerivations.Core.CommonLemmas
 
 /-!
@@ -170,11 +171,8 @@ variable {n : ℕ} {Γ : List (Fm PTm n)}
 alias cancel_two_nat := Common.two_mul_cancel
 
 /-- `u + u = v + v` gives `u = v`. -/
-theorem zt_cancel_two {u v : ZT n} (h : Γ ⊢[PRAAx] ZT.eq (u + u) (v + v)) : Γ ⊢[PRAAx] ZT.eq u v := by
-  have h' : Γ ⊢[PRAAx] (u.pos + u.pos) + (v.neg + v.neg) ≐ (v.pos + v.pos) + (u.neg + u.neg) := h
-  have d : Γ ⊢[PRAAx] two * (u.pos + v.neg) ≐ two * (v.pos + u.neg) := by
-    ipra_lc natEq h'
-  exact cancel_two_nat d
+theorem zt_cancel_two {u v : ZT n} (h : Γ ⊢[PRAAx] ZT.eq (u + u) (v + v)) : Γ ⊢[PRAAx] ZT.eq u v :=
+  zt_mul_eq_cancel_nat_left Common.one_le_two (by ipra_lc ZT.toZ_eq h)
 
 /-- `lem:Jcentral`: an integer `J` with `−J = J + det(X + Y, X − Y)` equals `det(X, Y)`. -/
 theorem central_path {J X₁ X₂ Y₁ Y₂ : ZT n}

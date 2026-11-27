@@ -1,3 +1,4 @@
+import IPRADerivations.Core.IntCancel
 import IPRADerivations.Algebra.BringMonotone
 import IPRADerivations.DiophantineNumberTheory.ZTCancel
 
@@ -45,16 +46,8 @@ abbrev E5 : ZT n := a * b * c * d * e
 end
 
 /-- `2 ≠ 0`. -/
-theorem two_ne_zero : Γ ⊢[PRAAx] neg (ZT.eq (ZT.natLit 2) (ZT.natLit 0)) := by
-  refine .impI ?_
-  have h : (ZT.eq (ZT.natLit 2) (ZT.natLit 0) :: Γ) ⊢[PRAAx] ZT.eq (ZT.natLit 2) (ZT.natLit 0) := Prf.hyp0
-  have e := ZT.toZ_eq h
-  have h2 : (ZT.eq (ZT.natLit 2) (ZT.natLit 0) :: Γ) ⊢[PRAAx] succ one ≐ zero := by
-    apply deriveNat; ipra_simps
-    try simp only [ZT.toZ_natLit] at e
-    try push_cast at e
-    linear_combination e
-  exact succ_ne_zero h2
+theorem two_ne_zero : Γ ⊢[PRAAx] neg (ZT.eq (ZT.natLit 2) (ZT.natLit 0)) :=
+  zt_ofNat_nonzero Common.one_le_two
 
 /-- Newton: `T_1 = T_2 = 0` gives `e_2 = 0`. -/
 theorem newton_e2 {a b c d e : ZT n} (h1 : Γ ⊢[PRAAx] ZT.eq (T1 a b c d e) (ZT.natLit 0))

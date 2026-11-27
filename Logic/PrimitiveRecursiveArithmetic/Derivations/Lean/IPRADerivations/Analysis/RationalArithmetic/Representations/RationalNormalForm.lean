@@ -1,3 +1,4 @@
+import IPRADerivations.Core.IntCancel
 import IPRADerivations.Analysis.RationalArithmetic.Representations.RationalIntegerNormalization
 
 /-!
@@ -161,15 +162,8 @@ theorem denominators_unique (c d : PTm n)
 
 theorem positive_integer_cancel (D : PTm n) (a b : ZT n)
     (hD : Γ ⊢[PRAAx] le one D)
-    (h : Γ ⊢[PRAAx] ZT.eq (a*ZT.ofNat D) (b*ZT.ofNat D)) : Γ ⊢[PRAAx] ZT.eq a b := by
-  have value := ZT.toZ_eq h
-  simp only [ZT.toZ_mul,ZT.toZ_ofNat] at value
-  have scaled : Γ ⊢[PRAAx] D*(a.pos+b.neg) ≐ D*(b.pos+a.neg) := by
-    apply deriveNat
-    simp only [ZT.toZ] at value
-    ipra_simps
-    linear_combination value
-  exact Combinatorics.BinomialIdentities.mul_cancel (positive_form hD) scaled
+    (h : Γ ⊢[PRAAx] ZT.eq (a*ZT.ofNat D) (b*ZT.ofNat D)) : Γ ⊢[PRAAx] ZT.eq a b :=
+  zt_mul_eq_cancel_nat_left hD (by ipra_lc ZT.toZ_eq h)
 
 /-- Canonical codes of equal rational values are literally equal.  This is
 usable for arbitrary arithmetic membership formulas, without an assumed

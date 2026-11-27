@@ -81,4 +81,31 @@ theorem zt_mul_cancel_sub {X Y K : ZT n} (hXY : Γ ⊢[PRAAx] neg (ZT.eq X Y))
   refine zt_mul_cancel_left (.impI (.impE hXY.wk ?_)) h
   ipra_lc ZT.toZ_eq (Prf.hyp0 : (ZT.eq (X - Y) (ZT.natLit 0) :: Γ) ⊢[PRAAx] _)
 
+/-- A positive natural term embedded as an integer is nonzero. -/
+theorem zt_ofNat_nonzero {d : PTm n} (hd : Γ ⊢[PRAAx] le one d) :
+    Γ ⊢[PRAAx] neg (ZT.eq (ZT.ofNat d) (ZT.natLit 0)) := by
+  refine .impI ?_
+  have equal : (ZT.eq (ZT.ofNat d) (ZT.natLit 0) :: Γ) ⊢[PRAAx] d ≐ zero :=
+    (add_zero d).eqSymm.eqTrans (Prf.hyp0.eqTrans (add_zero zero))
+  exact lt_zero_absurd _ (le_congr (.eqRefl _) equal hd.wk)
+
+/-- Cancel a positive natural factor in an equality of integer terms. -/
+theorem zt_mul_eq_cancel_nat_left {d : PTm n} {x y : ZT n} (hd : Γ ⊢[PRAAx] le one d)
+    (h : Γ ⊢[PRAAx] ZT.eq (ZT.ofNat d * x) (ZT.ofNat d * y)) : Γ ⊢[PRAAx] ZT.eq x y := by
+  have value := ZT.toZ_eq h
+  simp only [ZT.toZ_mul, ZT.toZ_ofNat] at value
+  have scaled : Γ ⊢[PRAAx] d * (x.pos + y.neg) ≐ d * (y.pos + x.neg) := by
+    apply deriveNat
+    simp only [ZT.toZ] at value
+    ipra_simps
+    linear_combination value
+  exact mul_eq_cancel_at (Common.pos_of_one_le hd) scaled
+
+/-- Cancel a nonzero integer factor in an equality of integer terms. -/
+theorem zt_mul_eq_cancel_left {r x y : ZT n} (hr : Γ ⊢[PRAAx] neg (ZT.eq r (ZT.natLit 0)))
+    (h : Γ ⊢[PRAAx] ZT.eq (r * x) (r * y)) : Γ ⊢[PRAAx] ZT.eq x y := by
+  have product : Γ ⊢[PRAAx] ZT.eq (r * (x - y)) (ZT.natLit 0) := by
+    ipra_lc ZT.toZ_eq h
+  ipra_lc ZT.toZ_eq (zt_mul_cancel_left hr product)
+
 end LeanProofs.IPRA

@@ -1,3 +1,4 @@
+import IPRADerivations.Core.IntCancel
 import IPRADerivations.Core.LinearAlgebra
 import IPRADerivations.Geometry.HypercubeSplit
 
@@ -30,7 +31,6 @@ set_option linter.unusedSimpArgs false
 namespace LeanProofs.IPRA.Geometry.CevaMenelaus
 
 open_ipra
-open LeanProofs.IPRA.Geometry.HypercubeSplit (le_mul_pos)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
@@ -41,11 +41,8 @@ local notation "𝔞" t:max => Groth.ι (IPRA.Q.mk _ t)
 /-- `δ ≠ 0`, as `|δ| ≥ 1`. -/
 abbrev nz (δ : ZT n) : Fm PTm n := le one (monus δ.pos δ.neg + monus δ.neg δ.pos)
 
-theorem nat_cancel {k l : PTm n} (hk : Γ ⊢[PRAAx] le one k) (h : Γ ⊢[PRAAx] k * l ≐ zero) : Γ ⊢[PRAAx] l ≐ zero := by
-  have hk' : Γ ⊢[PRAAx] k ≐ succ (pred k) := pos_of_eq_succ (c := monus k one) (by
-    ipra_lc natEq (eq_add_of_le hk))
-  have hle : Γ ⊢[PRAAx] le l zero := le_congr (.eqRefl _) ((mul_comm _ _).eqTrans h) (le_mul_pos l hk')
-  exact (monus_zero l).eqSymm.eqTrans hle
+theorem nat_cancel {k l : PTm n} (hk : Γ ⊢[PRAAx] le one k) (h : Γ ⊢[PRAAx] k * l ≐ zero) : Γ ⊢[PRAAx] l ≐ zero :=
+  mul_eq_cancel_at (Common.pos_of_one_le hk) (h.eqTrans (mul_zero _).eqSymm)
 
 theorem nz_of_le {δ : ZT n} (hδ : Γ ⊢[PRAAx] nz δ) (h : Γ ⊢[PRAAx] le δ.pos δ.neg) :
     Γ ⊢[PRAAx] le one (monus δ.neg δ.pos) :=
@@ -55,46 +52,42 @@ theorem nz_of_ge {δ : ZT n} (hδ : Γ ⊢[PRAAx] nz δ) (h : Γ ⊢[PRAAx] le �
     Γ ⊢[PRAAx] le one (monus δ.pos δ.neg) :=
   le_congr (.eqRefl _) ((congrAdd (.eqRefl _) h).eqTrans (add_zero _)) hδ
 
+private theorem nonzero_of_nz {δ : ZT n} (hδ : Γ ⊢[PRAAx] nz δ) :
+    Γ ⊢[PRAAx] neg (ZT.eq δ (ZT.natLit 0)) := by
+  refine .impI ?_
+  have coordinates : (ZT.eq δ (ZT.natLit 0) :: Γ) ⊢[PRAAx] δ.pos ≐ δ.neg :=
+    (add_zero _).eqSymm.eqTrans (Prf.hyp0.eqTrans (zero_add _))
+  have magnitude := (congrAdd
+    ((congrMonus coordinates (.eqRefl _)).eqTrans (monus_self _))
+    ((congrMonus (.eqRefl _) coordinates).eqTrans (monus_self _))).eqTrans (add_zero _)
+  exact lt_zero_absurd _ (le_congr (.eqRefl _) magnitude hδ.wk)
+
+/-! The case-specific theorems keep the order hypotheses in their original interfaces. -/
+section
+set_option linter.unusedVariables false
+
 theorem zt_cancel₁ {δ X Y : ZT n} (hδ : Γ ⊢[PRAAx] nz δ) (h : Γ ⊢[PRAAx] ZT.eq (δ * X) (δ * Y))
-    (h₁ : Γ ⊢[PRAAx] le δ.pos δ.neg) (h₂ : Γ ⊢[PRAAx] le (X.pos + Y.neg) (Y.pos + X.neg)) : Γ ⊢[PRAAx] ZT.eq X Y := by
-  have e := ZT.toZ_eq h; rw [ZT.toZ_mul, ZT.toZ_mul] at e; simp only [ZT.toZ] at e
-  have f := natEq (eq_add_of_le h₁); have g := natEq (eq_add_of_le h₂)
-  have l0 := nat_cancel (nz_of_le hδ h₁) (l := monus (Y.pos + X.neg) (X.pos + Y.neg)) (by
-    ipra_lc e - (𝔞 δ.neg - 𝔞 δ.pos) * g - 𝔞 (monus (Y.pos + X.neg) (X.pos + Y.neg)) * f)
-  exact ((eq_add_of_le h₂).eqTrans ((congrAdd (.eqRefl _) l0).eqTrans (add_zero _))).eqSymm
+    (h₁ : Γ ⊢[PRAAx] le δ.pos δ.neg) (h₂ : Γ ⊢[PRAAx] le (X.pos + Y.neg) (Y.pos + X.neg)) : Γ ⊢[PRAAx] ZT.eq X Y :=
+  zt_mul_eq_cancel_left (nonzero_of_nz hδ) h
 
 theorem zt_cancel₂ {δ X Y : ZT n} (hδ : Γ ⊢[PRAAx] nz δ) (h : Γ ⊢[PRAAx] ZT.eq (δ * X) (δ * Y))
-    (h₁ : Γ ⊢[PRAAx] le δ.pos δ.neg) (h₂ : Γ ⊢[PRAAx] le (Y.pos + X.neg) (X.pos + Y.neg)) : Γ ⊢[PRAAx] ZT.eq X Y := by
-  have e := ZT.toZ_eq h; rw [ZT.toZ_mul, ZT.toZ_mul] at e; simp only [ZT.toZ] at e
-  have f := natEq (eq_add_of_le h₁); have g := natEq (eq_add_of_le h₂)
-  have l0 := nat_cancel (nz_of_le hδ h₁) (l := monus (X.pos + Y.neg) (Y.pos + X.neg)) (by
-    ipra_lc -e - (𝔞 δ.neg - 𝔞 δ.pos) * g - 𝔞 (monus (X.pos + Y.neg) (Y.pos + X.neg)) * f)
-  exact (eq_add_of_le h₂).eqTrans ((congrAdd (.eqRefl _) l0).eqTrans (add_zero _))
+    (h₁ : Γ ⊢[PRAAx] le δ.pos δ.neg) (h₂ : Γ ⊢[PRAAx] le (Y.pos + X.neg) (X.pos + Y.neg)) : Γ ⊢[PRAAx] ZT.eq X Y :=
+  zt_mul_eq_cancel_left (nonzero_of_nz hδ) h
 
 theorem zt_cancel₃ {δ X Y : ZT n} (hδ : Γ ⊢[PRAAx] nz δ) (h : Γ ⊢[PRAAx] ZT.eq (δ * X) (δ * Y))
-    (h₁ : Γ ⊢[PRAAx] le δ.neg δ.pos) (h₂ : Γ ⊢[PRAAx] le (X.pos + Y.neg) (Y.pos + X.neg)) : Γ ⊢[PRAAx] ZT.eq X Y := by
-  have e := ZT.toZ_eq h; rw [ZT.toZ_mul, ZT.toZ_mul] at e; simp only [ZT.toZ] at e
-  have f := natEq (eq_add_of_le h₁); have g := natEq (eq_add_of_le h₂)
-  have l0 := nat_cancel (nz_of_ge hδ h₁) (l := monus (Y.pos + X.neg) (X.pos + Y.neg)) (by
-    ipra_lc -e - (𝔞 δ.pos - 𝔞 δ.neg) * g - 𝔞 (monus (Y.pos + X.neg) (X.pos + Y.neg)) * f)
-  exact ((eq_add_of_le h₂).eqTrans ((congrAdd (.eqRefl _) l0).eqTrans (add_zero _))).eqSymm
+    (h₁ : Γ ⊢[PRAAx] le δ.neg δ.pos) (h₂ : Γ ⊢[PRAAx] le (X.pos + Y.neg) (Y.pos + X.neg)) : Γ ⊢[PRAAx] ZT.eq X Y :=
+  zt_mul_eq_cancel_left (nonzero_of_nz hδ) h
 
 theorem zt_cancel₄ {δ X Y : ZT n} (hδ : Γ ⊢[PRAAx] nz δ) (h : Γ ⊢[PRAAx] ZT.eq (δ * X) (δ * Y))
-    (h₁ : Γ ⊢[PRAAx] le δ.neg δ.pos) (h₂ : Γ ⊢[PRAAx] le (Y.pos + X.neg) (X.pos + Y.neg)) : Γ ⊢[PRAAx] ZT.eq X Y := by
-  have e := ZT.toZ_eq h; rw [ZT.toZ_mul, ZT.toZ_mul] at e; simp only [ZT.toZ] at e
-  have f := natEq (eq_add_of_le h₁); have g := natEq (eq_add_of_le h₂)
-  have l0 := nat_cancel (nz_of_ge hδ h₁) (l := monus (X.pos + Y.neg) (Y.pos + X.neg)) (by
-    ipra_lc e - (𝔞 δ.pos - 𝔞 δ.neg) * g - 𝔞 (monus (X.pos + Y.neg) (Y.pos + X.neg)) * f)
-  exact (eq_add_of_le h₂).eqTrans ((congrAdd (.eqRefl _) l0).eqTrans (add_zero _))
+    (h₁ : Γ ⊢[PRAAx] le δ.neg δ.pos) (h₂ : Γ ⊢[PRAAx] le (Y.pos + X.neg) (X.pos + Y.neg)) : Γ ⊢[PRAAx] ZT.eq X Y :=
+  zt_mul_eq_cancel_left (nonzero_of_nz hδ) h
+
+end
 
 /-- `δ X = δ Y` with `δ ≠ 0` gives `X = Y`. -/
 theorem zt_cancel {δ X Y : ZT n} (hδ : Γ ⊢[PRAAx] nz δ) (h : Γ ⊢[PRAAx] ZT.eq (δ * X) (δ * Y)) :
-    Γ ⊢[PRAAx] ZT.eq X Y := by
-  refine .orE (le_total δ.pos δ.neg) ?_ ?_
-  · exact .orE (le_total (X.pos + Y.neg) (Y.pos + X.neg)) (zt_cancel₁ hδ.wk.wk h.wk.wk Prf.hyp1 Prf.hyp0)
-      (zt_cancel₂ hδ.wk.wk h.wk.wk Prf.hyp1 Prf.hyp0)
-  · exact .orE (le_total (X.pos + Y.neg) (Y.pos + X.neg)) (zt_cancel₃ hδ.wk.wk h.wk.wk Prf.hyp1 Prf.hyp0)
-      (zt_cancel₄ hδ.wk.wk h.wk.wk Prf.hyp1 Prf.hyp0)
+    Γ ⊢[PRAAx] ZT.eq X Y :=
+  zt_mul_eq_cancel_left (nonzero_of_nz hδ) h
 
 /-! ## Vectors in coordinates -/
 

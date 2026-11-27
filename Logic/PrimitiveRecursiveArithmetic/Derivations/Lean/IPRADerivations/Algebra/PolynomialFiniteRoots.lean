@@ -201,15 +201,8 @@ theorem quotient_root (c : ZT n) (cs : List (ZT n)) (a b : ZT n) (A B : PTm n)
   linear_combination -factor
 
 theorem positive_nonzero (D : PTm n) (hD : Γ ⊢[PRAAx] le one D) :
-    Γ ⊢[PRAAx] neg (ZT.eq (ZT.ofNat D) (ZT.natLit 0)) := by
-  refine .impI ?_
-  have ez := ZT.toZ_eq (Prf.hyp0 : ZT.eq (ZT.ofNat D) (ZT.natLit 0) :: Γ ⊢[PRAAx] _)
-  have e : ZT.eq (ZT.ofNat D) (ZT.natLit 0) :: Γ ⊢[PRAAx] D ≐ zero := by
-    apply deriveNat
-    simp only [ZT.toZ_ofNat, ZT.toZ_natLit] at ez
-    ipra_simps
-    exact ez
-  exact lt_zero_absurd _ (le_congr (.eqRefl _) e hD.wk)
+    Γ ⊢[PRAAx] neg (ZT.eq (ZT.ofNat D) (ZT.natLit 0)) :=
+  zt_ofNat_nonzero hD
 
 /-- A polynomial represented by `d+1` coefficients which has `d+1`
 pairwise distinct rational zeros has zero leading coefficient.  All
