@@ -97,8 +97,7 @@ theorem prior_tail_zero (P D e N : PTm n) : Γ ⊢[PRAAx]
   simpa only [Δ,Syn.shift,subst_pairT,GaussianRationalLowCoefficientConvolution.subst_data,subst_linear,
     ConciseIPRA.PTm.subst_zero,ConciseIPRA.PTm.subst_succ,one,two] using h
 
-theorem unit_multiply (q : PTm n) (hq : Γ ⊢[PRAAx] canonical q) : Γ ⊢[PRAAx] qmul qone q ≐ q :=
-  (GaussianRationalPowerAlgebra.qmul_commutative _ _).eqTrans (GaussianReciprocalHorner.qmul_one_right q hq)
+alias unit_multiply := GaussianPolynomialDeterminantTerms.one_mul_canonical
 
 theorem prior_zero (d e : PTm n) (he : Γ ⊢[PRAAx] le (succ e) d) : Γ ⊢[PRAAx]
     priorTerm (euler (GaussianFiniteLogarithmPolynomial.polynomial d) d) d linear one (succ e) zero ≐ parityPoint e :=

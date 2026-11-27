@@ -27,6 +27,7 @@ open GaussianRationalReciprocal (power)
 open LeanProofs.IPRA.Foundations.GuardedTotalization (sel sel_one sel_zero)
 open LeanProofs.IPRA.Foundations.MasterCertificate (entry)
 open LeanProofs.IPRA.Foundations.SequenceComposition (length entry_congr)
+export GaussianRationalLagrangeCardinals (factors_canonical)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
@@ -74,9 +75,6 @@ theorem difference_zero (R z : PTm n) : Γ ⊢[PRAAx] differenceProduct R z zero
 theorem difference_succ (R z k : PTm n) : Γ ⊢[PRAAx]
     differenceProduct R z (succ k) ≐ qmul (differenceProduct R z k) (qsub z (entry R k)) :=
   (product_succ _ _ _).eqTrans (qmul_congr (.eqRefl _) (difference_body_at _ _ _))
-theorem factors_canonical (R N z k : PTm n) : Γ ⊢[PRAAx] canonical (factors R N z k) :=
-  canonical_congr (GaussianRationalReconstruction.reconstruction_evaluation R N z k).eqSymm
-    (GaussianRationalHorner.horner_canonical _ _ _)
 
 def prefixLaw (R N z i : PTm n) : Fm PTm n := le i N ⟶
   qmul (differenceProduct R z i) (factors R N z (monus N i)) ≐ factors R N z N

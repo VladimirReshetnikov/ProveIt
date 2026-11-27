@@ -171,10 +171,7 @@ theorem weighted_product_bound (P Q N M t : PTm n) (hP : Γ ⊢[PRAAx] length P 
       (product_entries P Q N M t hP hQ)).eqSymm (.eqRefl _)
     (GaussianRationalConvolutionNorm.product_norm _ _ N M (dilated_length _ _ _) (dilated_length _ _ _))
 
-theorem multiply_sum_right (a b c : PTm n) : Γ ⊢[PRAAx]
-    qmul (qadd a b) c ≐ qadd (qmul a c) (qmul b c) :=
-  (qmul_commutative _ _).eqTrans ((GaussianRationalCoefficientScaling.qmul_add c a b).eqTrans
-    (qadd_congr (qmul_commutative _ _) (qmul_commutative _ _)))
+alias multiply_sum_right := GaussianRationalPolynomialBuffers.distribute_right
 
 theorem added_coefficient (P Q N t i : PTm n) (hi : Γ ⊢[PRAAx] le i N) : Γ ⊢[PRAAx]
     entry (dilated (GaussianRationalPolynomialBuffers.added P Q (succ N)) N t) i ≐
