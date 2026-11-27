@@ -76,11 +76,8 @@ theorem qr_pow {J z : PTm n} (h : Γ ⊢[PRAAx] le J (qr z)) : Γ ⊢[PRAAx] le 
   le_trans (sq_le_sq (le_trans (sq_le_sq h) (isqrt_le (isqrt z)))) (isqrt_le z)
 
 /-- `⌊√w⌋ ≤ w`. -/
-theorem isqrt_le_self (w : PTm n) : Γ ⊢[PRAAx] le (isqrt w) w := by
-  refine .orE (lt_or_le zero (isqrt w)) ?_ ?_
-  · have t := le_scale (isqrt w) (Prf.hyp0 : (lt zero (isqrt w) :: Γ) ⊢[PRAAx] le one (isqrt w))
-    exact le_trans (by ipra_le sl t) (isqrt_le w)
-  · exact le_trans Prf.hyp0 (zero_le _)
+theorem isqrt_le_self (w : PTm n) : Γ ⊢[PRAAx] le (isqrt w) w :=
+  Isqrt.le_self w
 
 theorem Q4_pos (i : PTm n) : Γ ⊢[PRAAx] Q4 i ≐ succ (pred (Q4 i)) :=
   pos_of_lt_zero (le_of_eq_add

@@ -37,14 +37,8 @@ open LeanProofs.IPRA.DiophantineNumberTheory.ResidueFacts (pw_two)
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
 /-- `y² ≤ N` gives `y ≤ ⌊√N⌋`. -/
-theorem le_isqrt {y N : PTm n} (h : Γ ⊢[PRAAx] le (y * y) N) : Γ ⊢[PRAAx] le y (isqrt N) := by
-  refine .orE (lt_or_le (isqrt N) y) ?_ Prf.hyp0
-  have hl : (lt (isqrt N) y :: Γ) ⊢[PRAAx] lt (isqrt N) y := Prf.hyp0
-  have hs2 := lt_isqrt_succ_sq (Γ := lt (isqrt N) y :: Γ) N
-  have h' := h.wk (ψ := lt (isqrt N) y)
-  have bad : (lt (isqrt N) y :: Γ) ⊢[PRAAx] le one zero := by
-    ipra_le sl hs2 + sl h' + sl hl * sl hl + 2 * (𝔞 (isqrt N) + 1) * sl hl
-  exact lt_zero_absurd _ bad
+theorem le_isqrt {y N : PTm n} (h : Γ ⊢[PRAAx] le (y * y) N) : Γ ⊢[PRAAx] le y (isqrt N) :=
+  Isqrt.le_of_sq_le h
 
 /-- `u · ((A W) u) = u^{s+2} W` when `A = u^s`. -/
 theorem asm_alg {u A W PW B2 : PTm n} (p1 : Γ ⊢[PRAAx] PW ≐ A * B2) (p2 : Γ ⊢[PRAAx] B2 ≐ u * u) :

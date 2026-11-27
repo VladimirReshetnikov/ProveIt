@@ -77,13 +77,8 @@ theorem coefficients_succ (h K x : PTm n) (hx : Γ ⊢[PRAAx] lt x K) : Γ ⊢[P
 
 alias monus_bound := Common.monus_le_self
 theorem first_bound (x : PTm n) : Γ ⊢[PRAAx] le (fstT x) x := monus_bound _ _
-theorem square_root_bound (x : PTm n) : Γ ⊢[PRAAx] le (isqrt x) x := by
-  refine .orE (zero_or_succ (isqrt x)) ?_ ?_
-  · exact le_congr Prf.hyp0.eqSymm (.eqRefl _) (zero_le _)
-  · have h1 : ((isqrt x ≐ succ (PTm.pred (isqrt x))) :: Γ) ⊢[PRAAx] le one (isqrt x) :=
-      Order.zero_lt_of_eq_succ Prf.hyp0
-    have sq := mul_le_mul_right (isqrt x) h1
-    exact le_trans (le_congr (one_mul _) (.eqRefl _) sq) (isqrt_le x)
+theorem square_root_bound (x : PTm n) : Γ ⊢[PRAAx] le (isqrt x) x :=
+  Isqrt.le_self x
 theorem second_bound (x : PTm n) : Γ ⊢[PRAAx] le (sndT x) x := le_trans (monus_bound _ _) (square_root_bound x)
 
 def sizeLaw (h K : PTm n) : Fm PTm n := .all (lt (var 0) (Syn.shift K) ⟶

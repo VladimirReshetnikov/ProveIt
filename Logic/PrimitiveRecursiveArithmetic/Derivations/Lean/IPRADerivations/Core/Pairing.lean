@@ -134,22 +134,36 @@ theorem lt_isqrt_succ_sq (z : PTm n) : Γ ⊢[PRAAx] lt z ((isqrt z + one) * (is
 theorem sq_le_sq {a b : PTm n} (h : Γ ⊢[PRAAx] le a b) : Γ ⊢[PRAAx] le (a * a) (b * b) :=
   le_trans (mul_le_mul_right a h) (le_congr (mul_comm _ _) (.eqRefl _) (mul_le_mul_right b h))
 
+namespace Isqrt
+
+/-- Any natural number whose square is at most `z` is at most `isqrt z`. -/
+theorem le_of_sq_le {t z : PTm n} (h : Γ ⊢[PRAAx] le (t * t) z) :
+    Γ ⊢[PRAAx] le t (isqrt z) := by
+  refine .orE (lt_or_le (isqrt z) t) ?_ Prf.hyp0
+  have hsq := sq_le_sq (Γ := lt (isqrt z) t :: Γ) Prf.hyp0
+  have es := succ_eq_add_one (Γ := lt (isqrt z) t :: Γ) (isqrt z)
+  exact le_lt_absurd _ (le_trans (le_congr (congrMul es es) (.eqRefl _) hsq) h.wk) (lt_isqrt_succ_sq z)
+
+/-- The integer square root is at most its argument. -/
+theorem le_self (z : PTm n) : Γ ⊢[PRAAx] le (isqrt z) z := by
+  refine .orE (lt_or_le zero (isqrt z)) ?_ (le_trans Prf.hyp0 (zero_le _))
+  have h := mul_le_mul_right (isqrt z) (Prf.hyp0 : (lt zero (isqrt z) :: Γ) ⊢[PRAAx] le one (isqrt z))
+  exact le_trans (le_congr (one_mul _) (.eqRefl _) h) (isqrt_le z)
+
+/-- A positive natural number has a positive integer square root. -/
+theorem one_le_succ (z : PTm n) : Γ ⊢[PRAAx] le one (isqrt (succ z)) :=
+  le_of_sq_le (le_congr (one_mul one).eqSymm (.eqRefl _) (Order.succ_le_succ (zero_le z)))
+
+end Isqrt
+
 /-- If `t² ≤ z < (t + 1)²` then `isqrt z = t`. -/
 theorem isqrt_unique {t z : PTm n} (h₁ : Γ ⊢[PRAAx] le (t * t) z)
     (h₂ : Γ ⊢[PRAAx] lt z ((t + one) * (t + one))) : Γ ⊢[PRAAx] isqrt z ≐ t := by
-  have hS : ∀ {Δ : List (Fm PTm n)} (u : PTm n), Δ ⊢[PRAAx] succ u ≐ u + one :=
-    fun u => succ_eq_add_one u
-  refine .orE (lt_or_le (isqrt z) t) ?_ ?_
-  · -- isqrt z < t: (isqrt z + 1)² ≤ t² ≤ z < (isqrt z + 1)².
-    have hsq := sq_le_sq (Γ := _ :: Γ) (Prf.hyp0 : _ ⊢[PRAAx] lt (isqrt z) t)
-    have hle : _ ⊢[PRAAx] le ((isqrt z + one) * (isqrt z + one)) z :=
-      le_trans (le_congr (congrMul (hS _) (hS _)) (.eqRefl _) hsq) h₁.wk
-    exact le_lt_absurd _ hle (lt_isqrt_succ_sq z)
-  · refine .orE (lt_or_eq_of_le Prf.hyp0) ?_ (Prf.hyp0.eqSymm)
-    have hsq := sq_le_sq (Γ := lt t (isqrt z) :: le t (isqrt z) :: Γ) Prf.hyp0
-    have hle : (lt t (isqrt z) :: le t (isqrt z) :: Γ) ⊢[PRAAx] le ((t + one) * (t + one)) z :=
-      le_trans (le_congr (congrMul (hS _) (hS _)) (.eqRefl _) hsq) (isqrt_le z)
-    exact le_lt_absurd _ hle h₂.wk.wk
+  refine le_antisymm ?_ (Isqrt.le_of_sq_le h₁)
+  refine .orE (lt_or_le t (isqrt z)) ?_ Prf.hyp0
+  have hsq := sq_le_sq (Γ := lt t (isqrt z) :: Γ) Prf.hyp0
+  have es := succ_eq_add_one (Γ := lt t (isqrt z) :: Γ) t
+  exact le_lt_absurd _ (le_trans (le_congr (congrMul es es) (.eqRefl _) hsq) (isqrt_le z)) h₂.wk
 
 /-! ## Pairing -/
 

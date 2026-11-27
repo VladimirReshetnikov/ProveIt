@@ -73,14 +73,8 @@ theorem pos_part {a b p : PTm n} (hp : Γ ⊢[PRAAx] prime p) (e : Γ ⊢[PRAAx]
   exact .botE _ (prime_not_square hp.wk (zero_part e.wk Prf.hyp0))
 
 /-- `a² + R = p` gives `a ≤ ⌊√p⌋`. -/
-theorem le_isqrt {a R p : PTm n} (e : Γ ⊢[PRAAx] a * a + R ≐ p) : Γ ⊢[PRAAx] le a (isqrt p) := by
-  refine .orE (lt_or_le (isqrt p) a) ?_ Prf.hyp0
-  have hs : (lt (isqrt p) a :: Γ) ⊢[PRAAx] lt (isqrt p) a := Prf.hyp0
-  have hlt := lt_isqrt_succ_sq (Γ := lt (isqrt p) a :: Γ) p
-  have en := natEq (e.wk (ψ := lt (isqrt p) a))
-  have bad : (lt (isqrt p) a :: Γ) ⊢[PRAAx] le one zero := by
-    ipra_le sl hlt + sl hs * (𝔞 a + 𝔞 (isqrt p) + 1) + 𝔞 R with -en
-  exact lt_zero_absurd _ bad
+theorem le_isqrt {a R p : PTm n} (e : Γ ⊢[PRAAx] a * a + R ≐ p) : Γ ⊢[PRAAx] le a (isqrt p) :=
+  Isqrt.le_of_sq_le (le_of_eq_add e.eqSymm)
 
 /-! ## Sorting -/
 

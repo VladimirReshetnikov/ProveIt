@@ -125,17 +125,8 @@ theorem i_zero {K L X N0 : PTm n} (h : Γ ⊢[PRAAx] Ht zero K L X N0) : Γ ⊢[
         2 * 𝔞 (CT K X (fact L)) * (eSs + eS0 + eq1) + 2 * 𝔞 (fact L) * eC
 
 /-- `1 ≤ ⌊√(k+1)⌋`. -/
-theorem isqrt_pos (k : PTm n) : Γ ⊢[PRAAx] le one (isqrt (succ k)) := by
-  refine .orE (lt_or_le zero (isqrt (succ k))) Prf.hyp0 ?_
-  have m0 : (le (isqrt (succ k)) zero :: Γ) ⊢[PRAAx] isqrt (succ k) ≐ zero := le_antisymm Prf.hyp0 (zero_le _)
-  have sp := lt_isqrt_succ_sq (Γ := le (isqrt (succ k)) zero :: Γ) (succ k)
-  have e : (le (isqrt (succ k)) zero :: Γ) ⊢[PRAAx] (isqrt (succ k) + one) * (isqrt (succ k) + one) ≐ one := by
-    ipra_lc (𝔞 (isqrt (succ k)) + 2) * natEq m0
-  have c : (le (isqrt (succ k)) zero :: Γ) ⊢[PRAAx] le (succ (succ k)) (succ zero) := le_congr (.eqRefl _) e sp
-  have c' : (le (isqrt (succ k)) zero :: Γ) ⊢[PRAAx] le (succ zero) zero :=
-    le_trans (le_of_eq_add (d := k) (by ipra_ring) : (le (isqrt (succ k)) zero :: Γ) ⊢[PRAAx] le (succ zero) (succ k))
-      ((succ_monus_succ _ _).eqSymm.eqTrans c)
-  exact not_succ_le_self zero _ c'
+theorem isqrt_pos (k : PTm n) : Γ ⊢[PRAAx] le one (isqrt (succ k)) :=
+  Isqrt.one_le_succ k
 
 theorem i_step {k K L X N0 : PTm n} (h : Γ ⊢[PRAAx] Ht (succ k) K L X N0)
     (ih : Γ ⊢[PRAAx] IU k K L X ⋏ IL k K L X) : Γ ⊢[PRAAx] IU (succ k) K L X ⋏ IL (succ k) K L X := by
@@ -155,9 +146,7 @@ theorem i_step {k K L X N0 : PTm n} (h : Γ ⊢[PRAAx] Ht (succ k) K L X N0)
   have h1 := isqrt_le (Γ := Γ) (succ k)
   have hm2 : Γ ⊢[PRAAx] lt (succ k) (succ (isqrt (succ k)) * succ (isqrt (succ k))) :=
     le_congr (.eqRefl _) (by ipra_ring) (lt_isqrt_succ_sq (succ k))
-  have hmy : Γ ⊢[PRAAx] le (isqrt (succ k)) (succ k) := by
-    have t := le_scale (isqrt (succ k)) hm1
-    exact le_trans (by ipra_le sl t) h1
+  have hmy := Isqrt.le_self (Γ := Γ) (succ k)
   have hmX := le_trans hmy hyX
   have hXL : Γ ⊢[PRAAx] le X L := le_trans (by have t := le_scale X hK; ipra_le sl t) hL
   have hmL := le_trans hmX hXL

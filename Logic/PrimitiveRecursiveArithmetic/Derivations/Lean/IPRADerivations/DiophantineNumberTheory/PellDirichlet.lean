@@ -28,12 +28,8 @@ variable {n : ℕ} {Γ : List (Fm PTm n)}
 /-! ## Square roots -/
 
 /-- `x² ≤ N` gives `x ≤ ⌊√N⌋`. -/
-theorem le_isqrt {x N : PTm n} (h : Γ ⊢[PRAAx] le (x * x) N) : Γ ⊢[PRAAx] le x (isqrt N) := by
-  refine .orE (lt_or_le (isqrt N) x) ?_ Prf.hyp0
-  let C := lt (isqrt N) x :: Γ
-  have s : C ⊢[PRAAx] le ((isqrt N + one) * (isqrt N + one)) (x * x) :=
-    le_congr (congrMul (succ_eq_add_one _) (succ_eq_add_one _)) (.eqRefl _) (le_mul_mono Prf.hyp0 Prf.hyp0)
-  exact le_lt_absurd _ (le_trans s h.wk) (lt_isqrt_succ_sq N)
+theorem le_isqrt {x N : PTm n} (h : Γ ⊢[PRAAx] le (x * x) N) : Γ ⊢[PRAAx] le x (isqrt N) :=
+  Isqrt.le_of_sq_le h
 
 /-- Subadditivity of square roots: `u ≤ v√D`, `b ≤ d√D` give `u + b ≤ (v + d)√D`. -/
 theorem sqrt_add_le {u v b d D : PTm n} (h₁ : Γ ⊢[PRAAx] le (u * u) (v * v * D)) (h₂ : Γ ⊢[PRAAx] le (b * b) (d * d * D)) :

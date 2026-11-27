@@ -55,9 +55,7 @@ theorem divisor_at {k K L X : PTm n} (hK : Γ ⊢[PRAAx] le one K) (hL : Γ ⊢[
   have h1 := isqrt_le (Γ := Γ) (succ k)
   have hm2 : Γ ⊢[PRAAx] lt (succ k) (succ (isqrt (succ k)) * succ (isqrt (succ k))) :=
     le_congr (.eqRefl _) (by ipra_ring) (lt_isqrt_succ_sq (succ k))
-  have hmy : Γ ⊢[PRAAx] le (isqrt (succ k)) (succ k) := by
-    have t := le_scale (isqrt (succ k)) hm1
-    exact le_trans (by ipra_le sl t) h1
+  have hmy := Isqrt.le_self (Γ := Γ) (succ k)
   have hmX := le_trans hmy hyX
   have hXL : Γ ⊢[PRAAx] le X L := le_trans (by have t := le_scale X hK; ipra_le sl t) hL
   have hmL := le_trans hmX hXL
