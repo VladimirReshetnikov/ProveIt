@@ -84,14 +84,10 @@ theorem factor_length (z B i : PTm n) : Γ ⊢[PRAAx] length (factor z B i) ≐ 
 
 theorem polynomial_length (z B N : PTm n) : Γ ⊢[PRAAx] length (polynomial z B N) ≐ succ (degree N) := by
   have all : Γ ⊢[PRAAx] .all (length (polynomial (Syn.shift z) (Syn.shift B) (var 0)) ≐ succ (degree (var 0))) := by
-    refine PRA.qfInd _ trivial ?_ ?_
-    · simp only [Fm.subst_eq,subst_length,subst_polynomial,ConciseIPRA.PTm.subst_succ,
-        GaussianBarnesCanonicalHeadPolynomial.subst_degree,Syn.subst_var,Syn.inst_zero,Syn.subst_inst_shift]
-      exact ((congrFst (polynomial_zero z B)).eqTrans (singleton_length qone)).eqTrans
+    ipra_qfind [subst_length, subst_polynomial, GaussianBarnesCanonicalHeadPolynomial.subst_degree]
+    · exact ((congrFst (polynomial_zero z B)).eqTrans (singleton_length qone)).eqTrans
         (congrSucc degree_zero).eqSymm
-    · simp only [Fm.subst_eq,subst_length,subst_polynomial,ConciseIPRA.PTm.subst_succ,
-        GaussianBarnesCanonicalHeadPolynomial.subst_degree,Syn.subst_var,Syn.repl_zero,subst_repl_shift]
-      exact (congrFst (polynomial_succ _ _ (var 0))).eqTrans
+    · exact (congrFst (polynomial_succ _ _ (var 0))).eqTrans
         ((product_length _ _ _ _).eqTrans (congrSucc (degree_succ (var 0))).eqSymm)
   simpa only [Fm.subst_eq,subst_length,subst_polynomial,ConciseIPRA.PTm.subst_succ,
     GaussianBarnesCanonicalHeadPolynomial.subst_degree,Syn.subst_var,Syn.inst_zero,Syn.subst_inst_shift] using all.allE N
@@ -150,11 +146,9 @@ theorem original_evaluation (z h B N : PTm n) (hB : Γ ⊢[PRAAx] le one B) : Γ
     evaluate (polynomial z B N) (ofGaussian h B) ≐ powerProduct (add z h) B N := by
   have bs : Γ.map Fm.shift ⊢[PRAAx] le one (Syn.shift B) := by simpa [Fm.shift,Syn.shift] using hB.shift
   have all : Γ ⊢[PRAAx] .all (evaluationLaw (Syn.shift z) (Syn.shift h) (Syn.shift B) (var 0)) := by
-    refine PRA.qfInd _ trivial ?_ ?_
-    · simp only [subst_evaluationLaw,Syn.subst_var,Syn.inst_zero,Syn.subst_inst_shift]
-      exact evaluation_zero z h B
-    · simp only [subst_evaluationLaw,Syn.subst_var,Syn.repl_zero,subst_repl_shift]
-      exact evaluation_step _ _ _ _ bs.wk Prf.hyp0
+    ipra_qfind [subst_evaluationLaw]
+    · exact evaluation_zero z h B
+    · exact evaluation_step _ _ _ _ bs.wk Prf.hyp0
   change Γ ⊢[PRAAx] evaluationLaw z h B N
   simpa only [subst_evaluationLaw,Syn.subst_var,Syn.inst_zero,Syn.subst_inst_shift] using all.allE N
 

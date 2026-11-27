@@ -71,14 +71,10 @@ theorem factor_length (i : PTm n) : Γ ⊢[PRAAx] length (factor i) ≐ succ (su
 
 theorem polynomial_length (N : PTm n) : Γ ⊢[PRAAx] length (polynomial N) ≐ succ (degree N) := by
   have all : Γ ⊢[PRAAx] .all (length (polynomial (var 0)) ≐ succ (degree (var 0))) := by
-    refine PRA.qfInd _ trivial ?_ ?_
-    · simp only [Fm.subst_eq,subst_length,subst_polynomial,ConciseIPRA.PTm.subst_succ,
-        subst_degree,Syn.subst_var,Syn.inst_zero]
-      exact ((congrFst polynomial_zero).eqTrans (singleton_length qone)).eqTrans
+    ipra_qfind [subst_length, subst_polynomial, subst_degree]
+    · exact ((congrFst polynomial_zero).eqTrans (singleton_length qone)).eqTrans
         (congrSucc degree_zero).eqSymm
-    · simp only [Fm.subst_eq,subst_length,subst_polynomial,ConciseIPRA.PTm.subst_succ,
-        subst_degree,Syn.subst_var,Syn.repl_zero]
-      exact (congrFst (polynomial_succ (var 0))).eqTrans
+    · exact (congrFst (polynomial_succ (var 0))).eqTrans
         ((product_length _ _ _ _).eqTrans (congrSucc (degree_succ (var 0))).eqSymm)
   simpa only [Fm.subst_eq,subst_length,subst_polynomial,ConciseIPRA.PTm.subst_succ,
     subst_degree,Syn.subst_var,Syn.inst_zero] using all.allE N
@@ -114,11 +110,9 @@ theorem original_evaluation (z B N : PTm n) (hB : Γ ⊢[PRAAx] le one B) : Γ �
     evaluate (polynomial N) (ofGaussian z B) ≐ powerProduct z B N := by
   have bs : Γ.map Fm.shift ⊢[PRAAx] le one (Syn.shift B) := by simpa [Fm.shift,Syn.shift] using hB.shift
   have all : Γ ⊢[PRAAx] .all (evaluationLaw (Syn.shift z) (Syn.shift B) (var 0)) := by
-    refine PRA.qfInd _ trivial ?_ ?_
-    · simp only [subst_evaluationLaw,Syn.subst_var,Syn.inst_zero,Syn.subst_inst_shift]
-      exact evaluation_zero z B
-    · simp only [subst_evaluationLaw,Syn.subst_var,Syn.repl_zero,subst_repl_shift]
-      exact evaluation_step _ _ _ bs.wk Prf.hyp0
+    ipra_qfind [subst_evaluationLaw]
+    · exact evaluation_zero z B
+    · exact evaluation_step _ _ _ bs.wk Prf.hyp0
   change Γ ⊢[PRAAx] evaluationLaw z B N
   simpa only [subst_evaluationLaw,Syn.subst_var,Syn.inst_zero,Syn.subst_inst_shift] using all.allE N
 

@@ -63,11 +63,9 @@ private def readbackLaw (m : PTm n) : Fm PTm n :=
 
 private theorem literal_readback (m : PTm n) : Γ ⊢[PRAAx] readbackLaw m := by
   have hall : Γ ⊢[PRAAx] .all (readbackLaw (var 0)) := by
-    refine PRA.qfInd _ trivial ?_ ?_
-    · simp only [subst_readbackLaw,Syn.subst_var,Syn.inst_zero]
-      exact (GaussianRationalFiniteSum.sum_zero squareBody zero).eqTrans literal_zero.eqSymm
-    · simp only [subst_readbackLaw,Syn.subst_var,Syn.repl_zero]
-      have previous : readbackLaw (var 0) :: Γ.map Fm.shift ⊢[PRAAx] readbackLaw (var 0) := Prf.hyp0
+    ipra_qfind [subst_readbackLaw]
+    · exact (GaussianRationalFiniteSum.sum_zero squareBody zero).eqTrans literal_zero.eqSymm
+    · have previous : readbackLaw (var 0) :: Γ.map Fm.shift ⊢[PRAAx] readbackLaw (var 0) := Prf.hyp0
       exact (GaussianRationalFiniteSum.sum_succ squareBody (var 0) zero).eqTrans (by
         rw [inst2_squareBody]
         exact (qadd_congr previous (.eqRefl _)).eqTrans (literal_succ (var 0)).eqSymm)
