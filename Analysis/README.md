@@ -49,11 +49,11 @@ and Coq proofs; the Fabius project is currently a Lean statement formalization.
   delivered layout, and is not formalized.
 - [`GeneralizedRiemannHypothesis/`](GeneralizedRiemannHypothesis/), opened on 26 November
   2026, holds [`Article/article.pdf`](GeneralizedRiemannHypothesis/Article/article.pdf),
-  an article that merges 131 delivered research reports on results beyond GRH for
+  an article that merges 142 delivered research reports on results beyond GRH for
   Dirichlet L-functions, each result stated once in its strongest form. By their own
   account the reports start from the external Lean development `lsernau/grh-lean`.
   Nothing was rerun, reviewed or formalized. The reports themselves were removed after the
-  merge and remain in the history (commits `10802a6b36`, `f2f9fd7531` and `64f3896557`).
+  merge and remain in the history (commits `10802a6b36`, `f2f9fd7531`, `64f3896557` and `fd9a9cb2bd`).
 
 The Coq developments are mathematical ports rather than generated
 translations. The tiny-exponent proof uses `coq-interval`; the trigonometric
