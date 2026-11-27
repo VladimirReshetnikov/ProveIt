@@ -21,7 +21,7 @@ open ComplexLogarithmRemainder (oneCode normSq_one scale)
 open GaussianArctangentDivisionAngles (modulus)
 open GaussianArctangentDivisionAngleResidual (positiveBudget)
 open GaussianCoefficientNameBounds (unit unit_positive)
-open GaussianRationalDistanceOrder (distance_congr distance_symmetric distance_triangle_same distance_radius_mono)
+open GaussianRationalDistanceOrder (distance_congr distance_symmetric distance_triangle_same distance_radius_mono_den)
 open GaussianRationalHorner (evaluate qmul ofGaussian ofGaussian_represents canonical_unique positive_product)
 open GaussianRationalMetric (bounded bounded_of_cleared distanceBounded qsub)
 open GaussianRationalNaturalScale (naturalPoint natScale natScale_as_product natScale_canonical natScale_represents)
@@ -117,8 +117,7 @@ theorem normalized_distance (p J z s B : PTm n) (hf : Γ ⊢[PRAAx] fine p J) (h
 theorem cofinal_normalized_distance (p J z s B : PTm n) (hs : Γ ⊢[PRAAx] bounded s B one) :
     Γ ⊢[PRAAx] distanceBounded (normalizedProduct (clock p J) J z s) (normalizedValue J (fromSine s))
       (normalizedBudget J B) (unit p) :=
-  distance_radius_mono _ _ _ _ _ _ (unit_positive _) (unit_positive _)
-    (AnalyticNumberTheory.PhiLower.le_mul_mono (le_refl _) (GaussianExponentialReference.unit_monotone (clock_later p J)))
+  distance_radius_mono_den (unit_positive _) (GaussianExponentialReference.unit_monotone (clock_later p J))
     (normalized_distance _ _ _ _ _ (clock_fine _ _) hs)
 
 theorem actual_cofinal_normalized_sine_product_closed : ([] : List (Fm PTm 0)) ⊢[PRAAx] univ 5

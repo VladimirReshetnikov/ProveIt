@@ -29,7 +29,7 @@ open GaussianBoundedConstantProductName (clock)
 open GaussianRationalHorner (ofGaussian ofGaussian_represents positive_product represents represents_congr)
 open GaussianRationalMetric (bounded bounded_iff)
 open GaussianRationalReciprocal (bound_congr bounded_product)
-open GaussianCoefficientNameBounds (bounded_radius_mono)
+open GaussianCoefficientNameBounds (bounded_radius_mono_den)
 open GaussianNamedSincQuadraticBounds (observationBound bounded_samples_of_observation_bound)
 open GaussianRadiusExponentialName (input)
 open GaussianEuclideanDistanceName (pointCN)
@@ -96,8 +96,7 @@ theorem coefficient_bound (z R B m : PTm n) (hB : Γ ⊢[PRAAx] le one B) (hm : 
 
 theorem name_regular (z R B m x : PTm n) (hB : Γ ⊢[PRAAx] le one B) (hm : Γ ⊢[PRAAx] le one m)
     (hz : Γ ⊢[PRAAx] ComplexLogarithmRemainder.bounded z (R*B)) : Γ ⊢[PRAAx] pointCN nameF (data z R B m x) := by
-  have coarse := bounded_radius_mono _ _ _ (two*R) one hm (le_refl one)
-    (le_mul_mono (le_refl (two*R)) hm) (coefficient_bound z R B m hB hm hz)
+  have coarse := bounded_radius_mono_den (le_refl one) hm (coefficient_bound z R B m hB hm hz)
   exact GaussianBoundedConstantProductName.name_regular quarterF (two*R) (coefficient z B m) x
     (.andI (quarter_regular x) coarse)
 
