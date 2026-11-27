@@ -1,0 +1,531 @@
+\section{An exponential information gap for wide symplectic blocks}
+\label{sec:symplectic-information}
+
+The second result concerns a finite linear-algebra mechanism developed in the
+source project.  A rectangular block of a uniformly random symplectic
+transformation can have almost the same rank distribution as a matrix of
+independent uniform entries, while the two complete matrix distributions are
+almost mutually singular.  We determine both discrepancies and the number of
+rank observations needed to distinguish the models.
+
+The exact arbitrary-frame compression law and a square-block version of rank
+blindness already appear in the supplied article
+\cite[sections on symplectic compressions and Lagrangian projections]{ProveItArticle}.
+The square result gives a positive limiting discrepancy between complete
+matrices.  Here the number of columns exceeds the number of rows by a growing
+amount.  In this regime the complete-matrix discrepancy tends to one, and we
+prove a sharp rank-only sample scale.  The finite orbit count below is a
+specialization of the article's law, for which we give a direct proof.  The
+uniform asymptotic separation and statistical sample scale are the additional
+conclusions.  They are unconditional finite-field theorems; they do not use
+Dirichlet GRH.  Classical uniform-matrix rank distributions provide the
+comparison law \cite{FulmanGoldstein2015}; prescribed-form sampling is also
+studied in \cite{Ishizuka2026}.
+
+\subsection{The two random-matrix models}
+
+Fix a prime power $q$, integers
+\begin{equation}
+  n\ge c\ge1,\qquad b=n+c\text{ even},\qquad m=b/2,
+  \qquad Q=q^{-1},\qquad h=n-c.
+  \label{symp:eq:parameters}
+\end{equation}
+In particular $h$ is even and $0\le h\le n-1$.  Let $H$ be a
+nondegenerate alternating $b\times b$ matrix over $\mathbb F_q$.  Here
+``alternating'' means $x^{\mathsf T}Hx=0$ for every $x$; in characteristic two
+this includes the zero-diagonal condition.  Set
+\[
+ J_n=\begin{pmatrix}0&I_n\\-I_n&0\end{pmatrix}.
+\]
+Choose a $2n\times b$ matrix $X_0$ satisfying
+$X_0^{\mathsf T}J_nX_0=H$.  Such a matrix exists since $b\le2n$; its columns
+are independent because $H$ is nondegenerate.  For uniform
+$g\in\operatorname{Sp}_{2n}(\mathbb F_q)$, write
+\begin{equation}
+ gX_0=\begin{pmatrix}A\\B\end{pmatrix},
+ \qquad A,B\in\operatorname{Mat}_{n,b}(\mathbb F_q).
+ \label{symp:eq:model}
+\end{equation}
+Let $U$ be uniform on $\operatorname{Mat}_{n,b}(\mathbb F_q)$, so its entries
+are independent and uniform.  The two laws are independent of the particular
+choice of $X_0$ with the prescribed Gram matrix.
+
+For probability measures on a finite set we use
+\[
+ \operatorname{TV}(P,V)=\frac12\sum_x|P(x)-V(x)|,
+ \qquad
+ \chi^2(P\Vert V)=\sum_x\frac{(P(x)-V(x))^2}{V(x)}
+\]
+when $V$ is positive on the support of $P$.  Write
+$\operatorname{TV}(A,U)$ for the distance between their laws.  Define
+\begin{equation}
+ a_j=\prod_{i=1}^j(1-Q^i),\quad a_0=1,\quad
+ a_\infty=\prod_{i=1}^\infty(1-Q^i)>0,\quad
+ C=\prod_{j=n-m+1}^{n}(1-Q^{2j}).
+ \label{symp:eq:products}
+\end{equation}
+All finite products with empty index sets are one.  For a proposed matrix
+$M$, let $K=\ker M$ and $k=\dim K$.  Necessarily $c\le k\le b$.
+We call $K$ \emph{$H$-isotropic} if $x^{\mathsf T}Hy=0$ for every $x,y\in K$.
+
+\begin{theorem}[Exact law and optimal distinguishing events]
+\label{symp:thm:finite}
+In the model \eqref{symp:eq:model}, the likelihood relative to a uniform
+matrix is
+\begin{equation}
+ \frac{\Pr(A=M)}{q^{-nb}}
+ =\mathbf 1_{\{\ker M\text{ is }H\text{-isotropic}\}}
+   \frac{q^{\binom{k}{2}}}{C}.
+ \label{symp:eq:density}
+\end{equation}
+Consequently,
+\begin{equation}
+ \operatorname{TV}(A,U)
+ =\Pr\bigl(H|_{\ker U\times\ker U}\ne0\bigr).
+ \label{symp:eq:fulltv}
+\end{equation}
+For $c\le k\le b$ put
+\begin{equation}
+ u(k)=Q^{k(k-c)}\frac{a_na_b}{a_ka_{k-c}a_{b-k}},\qquad
+ R_{b,k}=\prod_{i=0}^{k-1}
+          \frac{1-Q^{b-2i}}{1-Q^{b-i}}\quad(k\le m),
+ \label{symp:eq:rank-formulas}
+\end{equation}
+and set $R_{b,k}=0$ for $k>m$.  Then
+\begin{equation}
+ \Pr(\dim\ker U=k)=u(k),\qquad
+ \Pr(\dim\ker A=k)=u(k)\frac{R_{b,k}}C.
+ \label{symp:eq:rank-law}
+\end{equation}
+Full row rank is the only rank class with more probability under $A$ than
+under $U$.  In particular, with
+\[
+ D=\prod_{j=m+1}^n(1-Q^{2j}),\qquad
+ E=\prod_{j=n+1}^{n+c}(1-Q^j),
+\]
+the exact rank discrepancy is
+\begin{equation}
+ \Delta:=\operatorname{TV}(\operatorname{rank}A,\operatorname{rank}U)
+ =\frac{a_n}{a_c}\bigl(D^{-1}-E\bigr).
+ \label{symp:eq:rank-tv}
+\end{equation}
+The overlap of the complete matrix laws is
+\begin{equation}
+ \Omega:=1-\operatorname{TV}(A,U)
+  =\sum_{k=c}^{m}u(k)Q^{\binom{k}{2}}R_{b,k}.
+ \label{symp:eq:overlap}
+\end{equation}
+\end{theorem}
+
+\subsection{Counting frames and fibres}
+
+We first prove the likelihood without using the general compression formula.
+The symplectic group acts transitively on the frames $X$ satisfying
+$X^{\mathsf T}J_nX=H$: identify the nondegenerate spans of two frames by the
+map taking corresponding columns to each other, and extend that isometry
+over their symplectic orthogonal complements.  A fixed frame has stabilizer
+$\operatorname{Sp}_{2(n-m)}(\mathbb F_q)$, acting on its complement.  The
+standard count
+\[
+ |\operatorname{Sp}_{2t}(\mathbb F_q)|
+   =q^{t^2}\prod_{j=1}^{t}(q^{2j}-1)
+\]
+therefore gives
+\begin{equation}
+ \#\{X:X^{\mathsf T}J_nX=H\}
+ =q^{2nb-b(b-1)/2}C.
+ \label{symp:eq:frame-count}
+\end{equation}
+The group-order formula itself follows by successively choosing a nonzero
+first vector, a partner pairing to one with it, and a symplectic basis in
+their orthogonal complement.
+
+Fix $A=M$ of rank $r=b-k$.  The equation for the remaining rows is
+\begin{equation}
+ M^{\mathsf T}B-B^{\mathsf T}M=H.
+ \label{symp:eq:gram-fibre}
+\end{equation}
+Its restriction to $K\times K$ is zero, so $H$-isotropy of $K$ is necessary.
+Choose invertible matrices $P,T$ with
+$PMT=\left(\begin{smallmatrix}I_r&0\\0&0\end{smallmatrix}\right)$.
+Replacing $B$ by $P^{-\mathsf T}BT$ and $H$ by $T^{\mathsf T}HT$ preserves
+\eqref{symp:eq:gram-fibre}.  Partition rows into sizes $r,n-r$ and columns
+into sizes $r,k$.  In these coordinates the equation prescribes
+\[
+ B_{11}-B_{11}^{\mathsf T}=H_{11},\qquad B_{12}=H_{12},
+ \qquad H_{22}=0.
+\]
+If $K$ is isotropic, the last equation holds.  The first has
+$q^{r(r+1)/2}$ solutions, since the diagonal and one entry in each
+off-diagonal pair are free.  The last $n-r$ rows of $B$ are entirely free.
+Thus the number of solutions is
+\begin{equation}
+ q^{r(r+1)/2+(n-r)b}
+  =q^{nb-b(b-1)/2+\binom{k}{2}}.
+ \label{symp:eq:fibre-count}
+\end{equation}
+Every such solution gives an independent frame: a vector in the kernel of
+$\left(\begin{smallmatrix}M\\B\end{smallmatrix}\right)$ belongs to
+$\operatorname{rad}H=0$.  This argument requires no division by two and
+applies in characteristic two.  Dividing \eqref{symp:eq:fibre-count} by
+\eqref{symp:eq:frame-count} proves \eqref{symp:eq:density}.
+
+Since $C<1$, every positive likelihood in \eqref{symp:eq:density} is
+strictly larger than one.  The entire deficit relative to the uniform law
+therefore lies outside the support, proving \eqref{symp:eq:fulltv}.  If $Z$
+is a basis matrix for $\ker M$, the optimal event is simply
+$Z^{\mathsf T}HZ\ne0$.  It can be evaluated using a polynomial number of
+finite-field operations.
+
+\subsection{The rank law and its sign pattern}
+
+To count uniform matrices with kernel dimension $k$, choose a $k$-subspace
+of $\mathbb F_q^b$ and an injective map from its quotient to
+$\mathbb F_q^n$.  Dividing the resulting count by $q^{nb}$ gives $u(k)$
+in \eqref{symp:eq:rank-formulas}.  Conditional on $k$, the kernel is a
+uniform $k$-subspace.
+
+For an independent isotropic $k$-frame in the nondegenerate $b$-space,
+after $i$ vectors have been chosen the next vector must lie in their common
+orthogonal complement and outside their span.  There are
+$q^{b-i}-q^i$ choices.  Comparing with all independent $k$-frames gives
+\begin{equation}
+ \Pr(K\text{ is }H\text{-isotropic}\mid\dim K=k)
+ =\frac{\prod_{i=0}^{k-1}(q^{b-i}-q^i)}
+        {\prod_{i=0}^{k-1}(q^b-q^i)}
+ =Q^{\binom{k}{2}}R_{b,k}
+ \label{symp:eq:isotropy}
+\end{equation}
+for $k\le m$, and the probability is zero for $k>m$.  Averaging
+\eqref{symp:eq:density} proves \eqref{symp:eq:rank-law}; summing
+\eqref{symp:eq:isotropy} proves \eqref{symp:eq:overlap}.
+
+It remains to identify the sign of every rank discrepancy.  Cancellation
+of factors gives
+\begin{equation}
+ \frac{R_{b,c}}C=(DE)^{-1}>1.
+ \label{symp:eq:fullrank-ratio}
+\end{equation}
+For $1\le k<m$ the successive ratio
+\[
+ \frac{R_{b,k+1}}{R_{b,k}}
+  =\frac{1-Q^{b-2k}}{1-Q^{b-k}}
+\]
+is strictly smaller than one.  We prove that $R_{b,c+1}<C$, after which
+all remaining inequalities follow.  If $c=n$, then $c=m$ and this is
+immediate.  Otherwise $h=n-c\ge2$, and direct cancellation gives
+\begin{equation}
+ \frac{R_{b,c+1}}C
+ =\frac{1-Q^{n-c}}
+ {\displaystyle\prod_{j=n}^{n+c}(1-Q^j)
+  \displaystyle\prod_{j=m+1}^{n}(1-Q^{2j})}.
+ \label{symp:eq:first-deficiency}
+\end{equation}
+The sum of the quantities subtracted from one in this denominator, divided
+by $Q^{n-c}$, is at most
+\begin{equation}
+ \frac{Q^c(1-Q^{c+1})}{1-Q}
+ +\frac{Q^{2c+2}}{1-Q^2}<1.
+ \label{symp:eq:sign-bound}
+\end{equation}
+Indeed, for $c=1$ the upper bound is at most
+$3/4+1/12=5/6$; for $c\ge2$ it is at most
+$1/2+1/48=25/48$.  We used only $Q\le1/2$.  The inequality
+$\prod_i(1-x_i)\ge1-\sum_i x_i$ now shows that the denominator in
+\eqref{symp:eq:first-deficiency} exceeds its numerator.  Hence full row
+rank is the sole rank class with positive discrepancy.  Multiplying its
+likelihood excess by $u(c)=a_b/a_c$ proves
+\eqref{symp:eq:rank-tv}, completing the proof of
+Theorem~\ref{symp:thm:finite}.
+
+\subsection{Uniform separation as the excess width grows}
+
+\begin{theorem}[Almost singular matrices with almost identical ranks]
+\label{symp:thm:separation}
+Fix $q$.  As $c\to\infty$, uniformly for every $n\ge c$ with $n+c$ even,
+\begin{equation}
+ \Delta=\frac{q^{-n}}{q-1}\bigl(1+O_q(q^{-c})\bigr).
+ \label{symp:eq:rank-asymptotic}
+\end{equation}
+An explicit estimate, valid throughout \eqref{symp:eq:parameters}, is
+\begin{equation}
+ \left|(q-1)q^n\Delta-1\right|\le3q^{-c}.
+ \label{symp:eq:rank-explicit}
+\end{equation}
+Define
+\begin{align}
+ \Omega_0&=q^{-\binom c2}\frac{a_n}{a_c}
+  \prod_{j=(n-c)/2+1}^{(n+c)/2}(1-q^{-2j}),
+  \label{symp:eq:leading-overlap}\\
+ \eta_q(c)&=\frac{a_\infty^{-2}q^{-(2c+1)}}{1-q^{-(2c+4)}}.
+  \label{symp:eq:overlap-error}
+\end{align}
+Then
+\begin{equation}
+ \Omega_0\le\Omega\le\Omega_0\bigl(1+\eta_q(c)\bigr).
+ \label{symp:eq:overlap-certified}
+\end{equation}
+In particular, for the even integer $h=n-c$ put
+\[
+ B_{q,h}=\prod_{j=h/2+1}^{\infty}(1-q^{-2j}).
+\]
+Uniformly for $h\ge0$,
+\begin{equation}
+ 1-\operatorname{TV}(A,U)
+ =B_{q,h}\,q^{-\binom c2}\bigl(1+O_q(q^{-c})\bigr).
+ \label{symp:eq:full-asymptotic}
+\end{equation}
+Thus $\operatorname{TV}(\operatorname{rank}A,\operatorname{rank}U)\to0$
+and $\operatorname{TV}(A,U)\to1$.  If also $n-c\to\infty$, the leading
+factor $B_{q,h}$ tends to one.  No such additional hypothesis is needed for
+the separation itself.
+\end{theorem}
+
+\begin{proof}
+For the rank estimate, write
+\[
+ S_E=\sum_{j=n+1}^{n+c}Q^j
+     =\frac{Q^n(1-Q^c)}{q-1},\qquad
+ S_D=\sum_{j=m+1}^{n}Q^{2j}
+     \le\frac{Q^{n+c}}{q^2-1}.
+\]
+The elementary product estimates give
+\begin{gather}
+ S_E-\tfrac12S_E^2\le1-E\le S_E,\qquad
+ 0\le D^{-1}-1\le\frac{S_D}{1-S_D},
+ \label{symp:eq:product-bounds}\\
+ 1-\frac{Q^c}{q-1}\le\frac{a_n}{a_c}\le1.
+ \nonumber
+\end{gather}
+For the first lower bound, the sum of pairwise products is at most
+$S_E^2/2$, and the two-term Bonferroni inequality applies.  Since
+$n+c\ge2$, we have $S_D\le1/12$.  Divide
+\eqref{symp:eq:rank-tv} by $Q^n/(q-1)$.  The upper bound from
+\eqref{symp:eq:product-bounds} is at most
+$1+(4/11)Q^c$.  The lower bound is at least
+\[
+ \left(1-\frac{Q^c}{q-1}\right)
+ \left(1-Q^c-\frac{Q^n}{2(q-1)}\right)
+ \ge1-\frac52Q^c.
+\]
+The weaker symmetric bound \eqref{symp:eq:rank-explicit} follows.
+
+The $k=c$ summand of \eqref{symp:eq:overlap} is exactly
+$\Omega_0$.  To bound the others, put $k=c+j$.  Since $R_{b,c+j}\le R_{b,c}$,
+and
+\begin{equation}
+ \frac{u(c+j)}{u(c)}
+  =Q^{j(c+j)}\frac{a_ca_n}{a_{c+j}a_ja_{n-j}}
+  \le a_\infty^{-2}Q^{j(c+j)},
+ \label{symp:eq:overlap-ratio}
+\end{equation}
+the ratio of the $j$th summand to $\Omega_0$ is at most
+\begin{equation}
+ a_\infty^{-2}Q^{2cj+(3j^2-j)/2}.
+ \label{symp:eq:overlap-tail}
+\end{equation}
+For $j\ge1$, successive exponents increase by
+$2c+3j+1\ge2c+4$.  A geometric majorant proves
+\eqref{symp:eq:overlap-certified}.  Finally,
+$a_n/a_c=1+O_q(Q^c)$, while the finite even product in
+\eqref{symp:eq:leading-overlap} differs from $B_{q,h}$ by relative
+$O_q(Q^{n+c})$.  Because $n+c\ge2c$, these estimates prove
+\eqref{symp:eq:full-asymptotic}, uniformly in $h$.
+\end{proof}
+
+The boundary $c=n$ is included.  Here the source frame fills the ambient
+space, so $A$ has full row rank surely.  The exact formulas reduce to
+\begin{equation}
+ \Delta=1-\prod_{j=n+1}^{2n}(1-q^{-j}),\qquad
+ \Omega=q^{-\binom n2}\prod_{j=1}^{n}(1-q^{-2j}).
+ \label{symp:eq:saturation}
+\end{equation}
+The second equality also counts the uniformly random matrices whose
+$n$-dimensional kernels are Lagrangian.  More generally, when $h$ remains
+fixed, the factor $B_{q,h}$ records the finite distance to this boundary.
+
+\subsection{Sharp sample complexity when only ranks are observed}
+
+Small one-observation total variation by itself does not identify the right
+sample scale.  The following calculation does so.
+
+\begin{theorem}[Rank-only information and its sharp sample scale]
+\label{symp:thm:sample}
+Let $P$ be the law of $\operatorname{rank}A$ and let $V$ be the law of
+$\operatorname{rank}U$.  For fixed $q$ and $c\to\infty$, uniformly over
+\eqref{symp:eq:parameters},
+\begin{equation}
+ \chi^2(P\Vert V)
+  =\frac{q^{-(2n-c)}}{q-1}\bigl(1+O_q(q^{-c})\bigr).
+ \label{symp:eq:chi-square}
+\end{equation}
+For $t$ independent matrix observations, with only their ranks retained,
+the following conclusions hold.
+\begin{enumerate}
+\item If $t=o(q^{2n-c})$, the total variation distance between the two
+ joint rank laws tends to zero.  Under equal prior probabilities, every
+ rank-only decision rule consequently has error probability tending to
+ $1/2$ or larger.
+\item If $t/q^{2n-c}\to\infty$, a threshold on the number of matrices
+ failing to have full row rank distinguishes the models with error
+ probability tending to zero.
+\end{enumerate}
+For any fixed target error strictly between zero and $1/2$, the required
+number of rank observations is therefore $\Theta_q(q^{2n-c})$, with the
+implicit constants also allowed to depend on the target error.
+By contrast, one complete matrix has optimal equal-prior error
+\begin{equation}
+ \frac{\Omega}{2}
+ =\frac{B_{q,n-c}}2\,q^{-\binom c2}
+      \bigl(1+O_q(q^{-c})\bigr).
+ \label{symp:eq:one-matrix-risk}
+\end{equation}
+\end{theorem}
+
+\begin{proof}
+Use row deficiency $j$ instead of rank, so that the kernel has dimension
+$k=c+j$.  Write
+\[
+ u_j=u(c+j),\qquad r_j=\frac{R_{b,c+j}}C.
+\]
+Then $P(j)=u_jr_j$, $V(j)=u_j$, and
+\begin{equation}
+ \chi^2(P\Vert V)=\sum_{j=0}^{n}u_j(r_j-1)^2.
+ \label{symp:eq:chi-sum}
+\end{equation}
+We show that the term $j=1$ supplies the leading contribution.
+
+First, the explicit uniform rank law gives
+\begin{equation}
+ u_1=\frac{Q^c}{q-1}(1-Q^n)
+         \prod_{i=c+2}^{n+c}(1-Q^i)
+     =\frac{Q^c}{q-1}\bigl(1+O_q(Q^c)\bigr).
+ \label{symp:eq:u-one}
+\end{equation}
+From \eqref{symp:eq:fullrank-ratio}, $r_0=1+O_q(Q^n)$.  The successive
+ratio formula gives, including when $h=0$,
+\begin{equation}
+ r_1=r_0\frac{1-Q^h}{1-Q^n},\qquad
+ 1-r_1=Q^h\bigl(1+O_q(Q^c)\bigr).
+ \label{symp:eq:r-one}
+\end{equation}
+For clarity, the second estimate follows by writing
+$r_0/(1-Q^n)=1+O_q(Q^n)$: subtracting its product with $1-Q^h$ from one
+leaves $Q^h+O_q(Q^n)$, and $Q^n/Q^h=Q^c$.  At $h=0$ the identity
+$r_1=0$ makes the conclusion exact.  Equations
+\eqref{symp:eq:u-one} and \eqref{symp:eq:r-one} yield
+\begin{equation}
+ u_1(1-r_1)^2
+ =\frac{Q^{c+2h}}{q-1}\bigl(1+O_q(Q^c)\bigr).
+ \label{symp:eq:chi-leading}
+\end{equation}
+The $j=0$ contribution is $O_q(Q^{2n})$, a relative
+$O_q(Q^c)$ error.
+
+For the other terms we need an estimate that remains valid near the support
+boundary.  For every $j\ge1$,
+\begin{equation}
+ 0\le1-r_j\le\frac{Q^{h-2(j-1)}}{1-Q^2}.
+ \label{symp:eq:likelihood-defect}
+\end{equation}
+If $c+j\le m$, then $r_j\ge R_{b,c+j}$, and removing the denominators in
+the product for $R$ gives
+\[
+ R_{b,c+j}\ge\prod_{i=0}^{c+j-1}(1-Q^{b-2i}).
+\]
+Its defect from one is at most the sum of the displayed powers of $Q$,
+which is bounded by the right side of
+\eqref{symp:eq:likelihood-defect}.  If $c+j>m$, then $r_j=0$ and
+$h-2(j-1)\le0$, so the same bound still holds.  The uniform rank formula
+also gives
+\begin{equation}
+ u_j=Q^{j(c+j)}
+       \frac{a_n}{a_{n-j}}\frac{a_b}{a_{c+j}}\frac1{a_j}
+     \le a_\infty^{-1}Q^{j(c+j)}.
+ \label{symp:eq:rank-tail-bound}
+\end{equation}
+Consequently, for $j\ge2$, the summand in
+\eqref{symp:eq:chi-sum}, divided by $Q^{c+2h}$, is at most
+\[
+ \frac{Q^{(j-1)c+(j-2)^2}}{a_\infty(1-Q^2)^2}.
+\]
+Their sum is bounded by
+\begin{equation}
+ \frac{1}{a_\infty(1-Q^2)^2}
+       \frac{Q^c}{1-Q^{c+1}},
+ \label{symp:eq:chi-remainder}
+\end{equation}
+since successive exponents increase by at least $c+1$.  Together with
+\eqref{symp:eq:chi-leading}, and $c+2h=2n-c$, this proves
+\eqref{symp:eq:chi-square} with uniform error.
+
+For the impossibility assertion, independence gives the exact identity
+\[
+ 1+\chi^2(P^{\otimes t}\Vert V^{\otimes t})
+  =\bigl(1+\chi^2(P\Vert V)\bigr)^t.
+\]
+By Cauchy--Schwarz,
+\[
+ \operatorname{TV}(P^{\otimes t},V^{\otimes t})
+ \le\frac12\sqrt{\bigl(1+\chi^2(P\Vert V)\bigr)^t-1},
+\]
+which tends to zero when $t=o(q^{2n-c})$.  Optimal equal-prior error is
+$(1-\operatorname{TV})/2$, proving the first assertion.
+
+For achievability, let
+\[
+ p_U=\Pr(\operatorname{rank}U<n),\qquad
+ p_A=\Pr(\operatorname{rank}A<n).
+\]
+The exact sign pattern gives $p_U-p_A=\Delta$.  The uniform full-row-rank
+product and a union bound show
+\[
+ 0\le p_A\le p_U
+   =1-\prod_{j=c+1}^{n+c}(1-Q^j)
+   \le\frac{Q^c}{q-1}.
+\]
+From $t$ observations compute the fraction failing to have full row rank,
+and compare it with $(p_A+p_U)/2$.  Under either hypothesis its variance is
+at most $p_U/t$.  Chebyshev's inequality bounds each error probability by
+\begin{equation}
+ \frac{4p_U}{t\Delta^2}
+   =O_q\left(\frac{q^{2n-c}}t\right).
+ \label{symp:eq:chebyshev-test}
+\end{equation}
+This tends to zero in the claimed range.  A sufficiently small constant
+multiple of the scale in the chi-square bound, and a sufficiently large
+constant multiple in \eqref{symp:eq:chebyshev-test}, give the matching
+fixed-error lower and upper bounds.
+
+Finally, the complete-matrix test selects the symplectic model precisely
+when the observed kernel is $H$-isotropic.  It never errs under that model,
+and errs with probability $\Omega$ under the uniform model.  It is optimal
+by \eqref{symp:eq:density}, so its equal-prior error is $\Omega/2$.
+Theorem~\ref{symp:thm:separation} gives
+\eqref{symp:eq:one-matrix-risk}.
+\end{proof}
+
+\subsection{Interpretation and relation to the source}
+
+For example, take any admissible sequence with $c/n\to\alpha\in(0,1)$.
+The one-observation rank discrepancy is asymptotic to
+$q^{-n}/(q-1)$, and the rank-only sample scale is
+$q^{(2-\alpha)n+o(n)}$.  Yet the optimal error from a single complete matrix
+is
+\[
+ \frac12q^{-\alpha^2n^2/2+o(n^2)}.
+\]
+The information resides in pairings between vectors in the kernel, rather
+than in its dimension.  Kernel dimension is almost identically distributed
+in the two models; the restriction of the known alternating form to that
+kernel separates them.
+
+The supplied article establishes the square case and the general exact
+compression law.  The present family keeps the target Lagrangian, takes a
+nondegenerate source, and allows a growing excess of columns.  This yields
+an explicit solution of one growing-dimension regime, including its
+saturation boundary and its rank-only statistical complexity.  It does not
+determine the limiting law of arbitrary pairs of growing, possibly
+degenerate, restricted forms.  The literature comparison likewise supports
+a new extension relative to the supplied corpus; it is not a certification
+of worldwide priority.

@@ -54,3 +54,30 @@ settles elsewhere and which methods inside its proof carry over to other problem
 packets contained excerpts of that development, under the Apache-2.0 licence. The excerpts
 left with the packets; the whole `grh` directory, at the commit the reports pin, is in
 [`vendor/grh-lean`](vendor/grh-lean/README.md).
+
+## Reports placed and not yet merged
+
+11 further archives arrived in `Analysis/GeneralizedRiemannHypothesis/docs/incoming` on
+27 November 2026, in 6 arrival commits from `9ab4d2073b` to `edca076fde`. They are placed as before, one
+directory per archive under `Research/`, and retired from the drop directory. Of their 166
+members, 141 are placed and 25 are listed in [`Research/OMITTED.tsv`](Research/OMITTED.tsv):
+9 matched by `.gitignore` and 16 files byte-identical to a file of an earlier packet
+(upstream Lean excerpts), whose reference column gives a path under `Research/` at one of
+the history commits `10802a6b36`, `f2f9fd7531` and `64f3896557`. One small `lean-toolchain`
+file that equals an earlier one is kept. Their content is merged into the article next,
+after which these directories are removed like the earlier ones.
+
+| Directory | Archive | Arrival | Wrapper | Members | Placed | Omitted | Title in the delivery README |
+|---|---|---|---|---:|---:|---:|---|
+| [dirichlet-li-kernels](Research/dirichlet-li-kernels/README.md) | `dirichlet-li-kernels.zip` | `9ab4d2073b` | `dirichlet-li-kernels` | 12 | 11 | 1 | Dirichlet Li kernels |
+| [dirichlet_zero_filters](Research/dirichlet_zero_filters/README.md) | `dirichlet_zero_filters.zip` | `a78e32fb7e` | `dirichlet_zero_filters` | 10 | 10 | 0 | The shortest positive average that cancels two Dirichlet zeros |
+| [disjoint-prime-products](Research/disjoint-prime-products/README.md) | `disjoint-prime-products.zip` | `c0f2782360` | `disjoint-prime-products` | 9 | 9 | 0 | When do disjoint products of small primes cover every residue tuple? |
+| [dirichlet-zero-multiplicity-and-reconstruction](Research/dirichlet-zero-multiplicity-and-reconstruction/README.md) | `dirichlet-zero-multiplicity-and-reconstruction.zip` | `2a9f8e3ee7` | none | 9 | 9 | 0 | Dirichlet zeros from prime sums |
+| [grh_exact_extensions_2026-11-27](Research/grh_exact_extensions_2026-11-27/README.txt) | `grh_exact_extensions_2026-11-27.zip` | `2a9f8e3ee7` | `grh_exact_extensions` | 49 | 32 | 17 | EXACT EXTENSIONS OF THE GRH RESEARCH PROGRAMME |
+| [grh_extensions_2026-11-27](Research/grh_extensions_2026-11-27/README.md) | `grh_extensions_2026-11-27.zip` | `2a9f8e3ee7` | `grh_extensions` | 19 | 17 | 2 | Two extensions of the ProveIt GRH development |
+| [grh_path_rigidity_2026-11-27](Research/grh_path_rigidity_2026-11-27/README.txt) | `grh_path_rigidity_2026-11-27.zip` | `2a9f8e3ee7` | `grh_path_rigidity_2026-11-27` | 27 | 25 | 2 | ARITHMETIC HIDDEN IN SMALL JUMPS |
+| [euler-packet-rigidity](Research/euler-packet-rigidity/README.txt) | `euler-packet-rigidity.zip` | `31f8087cd1` | `euler-packet-rigidity` | 11 | 11 | 0 | Rigidity and gaps in Euler-factor matching |
+| [dirichlet-zero-recovery](Research/dirichlet-zero-recovery/README.md) | `dirichlet-zero-recovery.zip` | `edca076fde` | `dirichlet-zero-recovery` | 6 | 5 | 1 | When blurred Dirichlet zeros determine their sources |
+| [odd-order-euler-factor-matching](Research/odd-order-euler-factor-matching/README.md) | `odd-order-euler-factor-matching.zip` | `edca076fde` | none | 6 | 5 | 1 | How often can two products of Dirichlet L-functions agree locally? |
+| [odd_prime_order_euler_packets](Research/odd_prime_order_euler_packets/README.md) | `odd_prime_order_euler_packets.zip` | `edca076fde` | none | 8 | 7 | 1 | Sharp local agreement for products of odd-prime-order Dirichlet L-functions |
+| Total | 11 archives | | | 166 | 141 | 25 | |

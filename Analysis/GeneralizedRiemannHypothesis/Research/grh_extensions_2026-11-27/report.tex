@@ -1,0 +1,214 @@
+\documentclass[11pt,letterpaper]{article}
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage{lmodern}
+\usepackage[margin=1in]{geometry}
+\usepackage{amsmath,amssymb,amsthm,mathtools}
+\usepackage{booktabs,array,longtable,enumitem}
+\usepackage{microtype,xcolor,graphicx}
+\usepackage[hyphens]{url}
+\usepackage[colorlinks=true,linkcolor=blue!45!black,citecolor=blue!45!black,urlcolor=blue!45!black]{hyperref}
+\usepackage[nameinlink,noabbrev]{cleveref}
+\hypersetup{pdftitle={Unsmoothed prime fluctuations and information loss in symplectic projections},pdfauthor={ChatGPT; prepared for Vladimir Reshetnikov},pdfsubject={Two extensions of the ProveIt GRH development},pdfkeywords={Dirichlet GRH, prime counting, symplectic matrices, sample complexity}}
+\usepackage{fancyhdr}
+\pagestyle{fancy}
+\fancyhf{}
+\fancyhead[L]{\small Two extensions of the ProveIt GRH development}
+\fancyhead[R]{\small 27 November 2026}
+\fancyfoot[C]{\thepage}
+\setlength{\headheight}{14pt}
+\setlength{\emergencystretch}{2em}
+\setlength{\parskip}{3pt}
+\setlist{itemsep=3pt,topsep=4pt}
+\numberwithin{equation}{section}
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{corollary}[theorem]{Corollary}
+\theoremstyle{definition}
+\newtheorem{definition}[theorem]{Definition}
+\theoremstyle{remark}
+\newtheorem{remark}[theorem]{Remark}
+\newcommand{\F}{\mathbb F}
+\newcommand{\R}{\mathbb R}
+\newcommand{\C}{\mathbb C}
+\newcommand{\Z}{\mathbb Z}
+\newcommand{\N}{\mathbb N}
+\newcommand{\TV}{\operatorname{TV}}
+\DeclareMathOperator{\rank}{rank}
+\DeclareMathOperator{\Var}{Var}
+\DeclareMathOperator{\Cov}{Cov}
+\DeclareMathOperator{\Span}{span}
+\DeclareMathOperator{\diag}{diag}
+\newcommand{\E}{\mathbb E}
+\newcommand{\Prob}{\mathbb P}
+\newcommand{\ind}{\mathbf 1}
+\title{\textbf{Unsmoothed prime fluctuations and information loss in symplectic projections}\\[8pt]
+\large Two proved extensions of the ProveIt GRH development}
+\author{Research note prepared for Vladimir Reshetnikov\\\small Mathematical development and source review by ChatGPT}
+\date{27 November 2026}
+\begin{document}
+\maketitle
+\begin{abstract}
+We develop two extensions of the supplied ProveIt GRH sources, pinned to commit
+\texttt{3d8689ceae76}.
+First, using the source's Dirichlet GRH statement, we prove strict positive
+definiteness of the covariance of ordinary, unsmoothed prime-counting errors
+in all reduced residue classes at any finite set of distinct multiplicative
+scales. The result survives every finite deletion of zero frequencies and
+gives positive occupation of both directional tails in every sufficiently
+long logarithmic interval. It uses no simplicity or linear independence of
+zero ordinates and settles the unsmoothed multiscale clause of the article's
+explicit question on less smoothing. The analytic bridge is convergence in a
+uniform local fourth-moment norm, together with a controlled transfer from
+prime powers to actual primes.
+
+Second, we prove an unconditional statistical separation for rectangular
+symplectic projections over every finite field. For an $n\times(n+c)$
+projection with nonsingular source form, $1\le c\le n$ and $n+c$ even,
+the full matrix laws become perfectly distinguishable as $c\to\infty$,
+whereas their rank laws have distance asymptotic to $q^{-n}/(q-1)$.
+We compute their rank chi-square divergence and prove that distinguishing
+from ranks alone requires order $q^{2n-c}$ independent observations.
+The proofs include exact finite formulas and cover the endpoint $c=n$.
+An exact-arithmetic verification program and a source audit accompany the paper.
+These are new extensions relative to the inspected article; external priority
+for their complete formulations is not certified by the limited literature search.
+\end{abstract}
+\tableofcontents
+\newpage
+
+\section{Source analysis, dependencies, and contributions}\label{sec:context}
+
+\subsection{What was inspected}
+The two requested directories were read at the fixed ProveIt commit
+\texttt{3d8689ceae76}.
+The vendor directory identifies its upstream snapshot as
+\texttt{lsernau/grh-lean}, commit
+\texttt{72fead102f66}.
+The archive records both full commit identifiers. Its Git tree contains 818 files. The article README describes a merge of
+120 reports, with 689 pages and 869 numbered results; it explicitly says the
+merge is not an independent mathematical review \cite{ProveItArticle}.
+We materialized and indexed the article's 21 section files, inspected the
+relevant arguments in its source, zero-fluctuation, and spanning sections,
+and inspected the vendored theorem interfaces and the principal reduction
+and spanning files. A complete list of the source paths and expected Git blob
+hashes used in this review is included in the archive.
+
+The exact public Lean interface uses Mathlib's Riemann zeta and Dirichlet
+$L$-functions. The file \texttt{src/Statements.lean} imports only Mathlib;
+\texttt{src/Main.lean} exports \texttt{riemannHypothesis},
+\texttt{riemannZeta\_eq\_zero\_re},
+\texttt{LFunction\_ne\_zero\_of\_half\_lt\_re},
+\texttt{LFunction\_eq\_zero\_re}, and the primitive-character specialization
+\cite{ProveItVendor}. For our arithmetic theorem the input is precisely this:
+every nontrivial zero of a primitive Dirichlet $L$-function lies on
+$\Re s=1/2$. This includes the Riemann zeta function. It asserts neither
+simple zeros nor nonvanishing at the central point. It is not an interface
+for general nonabelian Artin or automorphic GRH.
+
+The package README reports an axiom check and independent proof replay.
+Those reports were read, not rerun here: the workspace has no Lean or Lake
+executable. The vendoring README also says the separate package is not part
+of ProveIt's root Lake build. The five \texttt{sorry} placeholders in
+\texttt{Challenge.lean} are declared comparator targets and are not imports
+of the inspected proof path. Their presence alone is not evidence of a hole
+in the exported theorem. Our audit is a scoped source review, not a fresh
+kernel verification. The new proofs below are human-readable proofs and have
+not been formalized in Lean.
+
+\subsection{The mathematical mechanisms}
+The source's arithmetic argument compares the same covolume and arithmetic
+index from above and below. A near-complete spanning family permits
+cancellation of the large main terms. In the notation of the inspected
+\texttt{star\_inequality} declaration, the remainder satisfies a bound of
+the form $mR\le f(a)(\log b)^5$. After normalization this becomes an eventual
+one-sided prime-remainder estimate for every exponent above $1/2$.
+An auxiliary quadratic twist removes unwanted zeros in a prescribed finite
+rectangle. A Landau-type argument applied to the remainder's transform then
+forces the remaining nonnegative zero multiplicities to vanish in the
+half-plane to the right of $1/2$.
+
+Two parts of that architecture motivate the present paper. Its zero-detection
+method makes arithmetic prime probes useful for recovering coefficients of
+spectral combinations. The article turns these probes into a multiscale
+spanning theorem for zero-multiplicity vectors. Its finite spanning method
+also uses additive characters, positive-type weights, and singularity
+estimates for compressions of group actions. The article develops this into
+exact symplectic compression laws. We carry the first route to unsmoothed
+prime counts and the second to a sharp loss of statistical information.
+
+\subsection{What is added}
+The relevant article statements are identified by their stable LaTeX labels,
+so they can be located despite changes in pagination.
+\begin{center}\small
+\begin{tabular}{>{\raggedright\arraybackslash}p{0.28\textwidth}>{\raggedright\arraybackslash}p{0.29\textwidth}>{\raggedright\arraybackslash}p{0.34\textwidth}}
+\toprule
+Existing result & Extension proved here & Dependency\\
+\midrule
+\texttt{zer:thm:coercive}, \texttt{zer:cor:multiscale}: smoothed multiscale covariance
+& Ordinary prime counts, correct prime-square and central-zero centering,
+finite spectral deletions, uniform directional occupation
+& Dirichlet GRH; standard explicit formulas\\[5pt]
+\texttt{spn:thm:complete-law}, \texttt{spn:thm:rank-blind}: exact compression law and square rank obstruction
+& Wide rectangular limit, boundary constants, uniform chi-square asymptotic,
+sharp order of rank-only sample complexity
+& Unconditional finite-field linear algebra\\
+\bottomrule
+\end{tabular}
+\end{center}
+
+The first result answers the multiscale unsmoothed-count clause of item 10
+in \texttt{zer:sec:open}; it does not assert all possible orderings of prime
+races or resolve every question about unsmoothed derivatives.
+The second gives a concrete growing-dimensional family for
+\texttt{spn:q:symplectic}. The exact rectangular likelihood is a specialization
+and simplification of the article's general count. The additional mathematical
+content is the uniform asymptotic analysis and the testing threshold, not a
+claim to have discovered the prescribed-Gram orbit count.
+
+Stepanov almost periodicity of normalized prime errors is classical
+\cite{KaczorowskiRamare2003}; general limiting-distribution methods also precede
+this work \cite{AkbaryNgShahabi2014}. Results asserting all orderings of prime
+races are stronger and may use extra independence assumptions
+\cite{MartinNg2019}. Finite-field rank laws and prescribed-form sampling likewise
+have established theories \cite{FulmanGoldstein2015,Ishizuka2026}. The present
+novelty claim is therefore scoped to the two precise extensions just stated,
+relative to the supplied article. The accompanying novelty record describes
+the targeted primary-source comparison; it does not establish worldwide priority.
+
+\input{sections/prime_fluctuations}
+\input{sections/symplectic_information}
+\input{sections/verification}
+
+\section{Formalization route and remaining boundaries}\label{sec:formalization}
+For a Lean implementation, the two proofs separate into reusable interfaces.
+The arithmetic part needs the source's Dirichlet GRH theorem, the ordinary
+explicit formula, a local zero-count bound, and fixed-argument Landau sums.
+The new analysis can then be developed as: (i) the binned local $L^2$ estimate;
+(ii) its convolution-based $L^4$ upgrade; (iii) completeness and uniform mean
+limits in these norms; (iv) the Volterra estimate transferring $\theta$ to
+$\pi$; and (v) the finite-dimensional occupation lemma. The prime-probe
+argument supplies injectivity of each sufficiently high frequency band.
+Every spectral sum groups coincident ordinates before taking a square.
+
+The finite-field part can be formalized independently of all analytic
+number theory. Its natural order is: symplectic-basis extension, the
+prescribed-Gram frame count, the affine fibre of $M^{\mathsf T}B-B^{\mathsf T}M=H$,
+kernel-isotropy counts, the exact probability laws, product inequalities,
+and the chi-square product identity. The Python checks exercise the finite
+identities with exact arithmetic; they do not replace these general proofs.
+
+The arithmetic theorem is uniform over the location of sufficiently long
+logarithmic intervals and over unit directions, with modulus, scales, and
+deleted frequencies fixed. It gives no uniform constants as scales coalesce,
+as the modulus grows, or as the number of scales grows. Positive definite
+covariance does not imply that the limiting law has an interior, nor that all
+coordinate orderings occur. The matrix theorem is uniform in $n\ge c$ for fixed
+field size $q$, and treats independent repeated observations. It does not
+address correlated observations, hidden unknown source forms, or arbitrary
+pairs of degenerate source and target forms.
+
+\bibliographystyle{plain}
+\bibliography{references}
+\end{document}

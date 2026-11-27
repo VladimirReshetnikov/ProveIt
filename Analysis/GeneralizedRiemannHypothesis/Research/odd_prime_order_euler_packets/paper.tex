@@ -1,0 +1,327 @@
+\documentclass[11pt]{article}
+\usepackage[margin=1in]{geometry}
+\usepackage{amsmath,amssymb,amsthm,mathtools,booktabs,tabularx}
+\usepackage[T1]{fontenc}
+\usepackage{lmodern,microtype}
+\usepackage{xcolor}
+\usepackage[colorlinks=true,linkcolor=blue!45!black,citecolor=blue!45!black,urlcolor=blue!45!black]{hyperref}
+\usepackage{enumitem}
+\setlength{\emergencystretch}{2em}
+\hypersetup{pdftitle={Sharp local agreement for products of odd-prime-order Dirichlet L-functions},pdfauthor={Research note for the ProveIt project}}
+\setlist{nosep}
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{corollary}[theorem]{Corollary}
+\newtheorem{proposition}[theorem]{Proposition}
+\theoremstyle{remark}\newtheorem{remark}[theorem]{Remark}
+\newcommand{\F}{\mathbb F}
+\newcommand{\E}{\mathbb E}
+\newcommand{\Z}{\mathbb Z}
+\newcommand{\C}{\mathbb C}
+\newcommand{\one}{\mathbf 1}
+\newcommand{\supp}{\operatorname{supp}}
+\newcommand{\normA}[1]{\lVert #1\rVert_{\mathcal A}}
+\newcommand{\ang}[2]{\langle #1,#2\rangle}
+\newcommand{\ceil}[1]{\left\lceil #1\right\rceil}
+\newcommand{\src}{\textsc{Dirichlet GRH}}
+\title{Sharp local agreement for products of\\odd-prime-order Dirichlet $L$-functions\\[3pt]\large Finite-field rigidity and robust prime reconstruction}
+\author{Research note for the ProveIt project}
+\date{27 November 2026}
+\begin{document}
+\maketitle
+\begin{abstract}
+The ProveIt merged article asks for an odd-prime-order counterpart of its quadratic Euler-packet matching theorem. We give a partial but sharp answer, including exact minima at every rank for packets of prime-power size, all sizes above the rank-saturation threshold, and small packets of size dividing either $\ell-1$ or $\ell+1$. A discrete Radon identity gives a lower bound of order $1/k$ for the disagreement density of distinct $k$-factor products, and characterizes all equality cases at prime-power sizes as parallel affine flats. A second argument gives a stronger bound for $k\le\ell$, characterizes equality via planar switching configurations, and realizes it through split and nonsplit dihedral actions. A finite obstruction establishes the exact minimum $24/49$ at $(\ell,r,k)=(7,2,5)$. These density statements are unconditional. Using the Dirichlet GRH interface of the vendored Lean proof, we also establish rank-uniform robust identification in a single smoothed prime window of scale $O(k^2\log^2 Q)$, with a sharp asymptotic adversarial-error threshold in the exact regimes. No linear independence or simplicity of zeros is required. The new arguments are written proofs, not kernel-checked Lean extensions.
+\end{abstract}
+\tableofcontents
+
+\section{Context and main results}
+\subsection{The input and the gap in the article}
+This note uses the snapshot of \texttt{ProveIt} at commit
+\begin{center}\small\texttt{64f3896557566342bc28ed309513a2b762568866}.\end{center}
+The vendored \texttt{grh-lean} README \cite{lean} pins the readable upstream edition at commit \texttt{72fead1} (full hash in the source manifest, 25 November 2026), and states that the import was not rebuilt. In that edition, \path{src/Statements.lean} defines the half-plane nonvanishing and strip zero-line propositions in Mathlib's terms, and \path{src/Main.lean} proves them as \path{LFunction_ne_zero_of_half_lt_re} and \path{LFunction_eq_zero_re}, using \texttt{New.grh} and the functional-equation step. The quantification is over all positive moduli and all Dirichlet characters, not only primitive ones. The exception at the principal character's pole $s=1$ is explicit. The upstream README reports independent proof checking and the usual three Lean axioms (\texttt{propext}, \texttt{Classical.choice}, and \texttt{Quot.sound}). We inspected the statements, their immediate proofs, the READMEs and the reduction files; we did not replay the kernel or audit the entire upstream proof. Thus the analytic part of this note uses precisely those asserted theorems as an input, not a claim of independent certification.
+
+The underlying method compares upper and lower bounds for a corrected lattice covolume. In \path{New/Reduction/MainInequality.lean}, \texttt{star\_inequality} bounds $m\,\mathrm{rem}$ by $fa\log^5 b$. In \path{New/Reduction/OneSidedBound.lean}, scale selection and a classical prime number theorem convert this to a one-sided bound for a weighted prime remainder, and a zero criterion gives right-half-plane nonvanishing. Our use is downstream: once that nonvanishing is supplied, the smoothed explicit formula provides nearly uniform prime samples. We do not transfer the covolume construction to nonabelian $L$-functions.
+
+The pinned merged article \cite{article} collects 131 reports in 723 pages, according to its README. Its section \texttt{rec:sec:qmatch} proves sharp density and high-agreement-spectrum results for products of quadratic Dirichlet $L$-functions, and \texttt{rec:thm:qmatchfinite} gives a finite detection theorem. The open-questions subsection \texttt{rec:sec:open}, item on pooled zero statistics, expressly asks about odd prime orders. Our contribution answers several infinite families of cases of that question. We use the article's \texttt{rec:lem:gram} (prime Gram estimate), for which we also give a proof outline in Section~\ref{sec:effective}. The algebraic arguments here differ from the article's dyadic valuation and Boolean Reed--Muller method: they exploit exact projection-count identities, projective directions, and finite-field reflections.
+
+\subsection{Formulation}
+Let $\ell$ be an odd prime, $Q\ge2$, and $G$ an elementary abelian group of Dirichlet characters modulo $Q$, of exponent $\ell$ and rank $r\ge1$. Regard $G$ as an $r$-dimensional $\F_\ell$-space and write $V=G^*$ for its additive linear dual. A packet $A$ is a multiset of $k\ge1$ characters in $G$. For a rational prime $p\nmid Q$, define
+\[
+ E_A(p,T)=\prod_{a\in A}(1-a(p)T),\qquad
+ \delta(A,B)=\lim_{x\to\infty}\frac{\#\{p\le x:p\nmid Q,\ E_A(p,T)\ne E_B(p,T)\}}{\pi(x)}.
+\]
+The variable $T$ is formal. The denominator $E_A$ determines the usual Euler factor $E_A(p,p^{-s})^{-1}$. Let $d_\ell(r,k)$ be the minimum of $\delta(A,B)$ over distinct size-$k$ packets in $G$. It depends only on the three indicated parameters.
+
+\begin{theorem}[Sharp density regimes; unconditional]\label{thm:main}
+For all $\ell,r,k$ as above,
+\begin{equation}\label{eq:master}
+ d_\ell(r,k)\ge \frac{\ell-1}{\ell^r}\ceil{\frac{\ell^{r-1}}{k}}\ge
+ D_0:=\frac{\ell-1}{\ell\min(k,\ell^{r-1})}.
+\end{equation}
+Here and below the first inequality is interpreted with a positive integer ceiling, including $k>\ell^{r-1}$. The following are exact.
+\begin{enumerate}[label=(\alph*)]
+\item If $k=\ell^s$ with $0\le s\le r-1$, then
+\[d_\ell(r,k)=\frac{\ell-1}{\ell^{s+1}}.\]
+All minimizers are two distinct cosets of the same $s$-dimensional subspace of $G$, each with every point occurring once.
+\item If $k\ge\ell^{r-1}$, then $d_\ell(r,k)=(\ell-1)/\ell^r$. The signed multiplicity difference of a minimizing pair is exactly a nonzero integer-valued function constant on cosets of some hyperplane of $G$, with total sum zero. In particular all pairs at rank one have the same positive distance.
+\item For $r\ge2$ and $1\le k\le\ell$,
+\begin{equation}\label{eq:pencil}
+ d_\ell(r,k)\ge D_1:=\frac{(\ell-1)(\ell+1-k)}{\ell^2}.
+\end{equation}
+Equality is attained if $k=1$, $k=\ell$, or $2\le k<\ell$ and $k\mid(\ell-1)$ or $k\mid(\ell+1)$. For $2\le k\le\ell$ the precise equality criterion is given in Theorem~\ref{thm:planar}.
+\end{enumerate}
+\end{theorem}
+
+\begin{theorem}[Effective recovery; uses Dirichlet GRH]\label{thm:effintro}
+Fix a nonnegative smooth function $w$ of integral one, compactly supported in $(1/2,1)$. There is a constant $C_w$, independent of $\ell,r,k,Q$, such that in the weighted prime window $p\in(X/2,X)$, $p\nmid Q$, the relative disagreement weight between any distinct packets is at least
+\[
+ D_0-O_w\left(\frac{\log(2Q)}{\sqrt X}\right).
+\]
+If $r\ge2$ and $k\le\ell$, it is also at least $D_1-O_w(k\log(2Q)/\sqrt X)$. In the exact regimes (a),(b), the worst-case relative distance is $D_0+O_w(\log(2Q)/\sqrt X)$; in the exact small-size cases it is $D_1+O_w(k\log(2Q)/\sqrt X)$. Thus, for $0<\eta<1$, a sufficient scale for distinguishing all packets and correcting any weighted fraction less than $(1-\eta)D_0/2$ of corrupted local factors is
+\[ X\ge C_w\eta^{-2}\min(k,\ell^{r-1})^2\log^2(2Q).\]
+In regimes with an exact minimum, the limiting worst-case correction threshold is precisely half that minimum. Correction here means uniqueness under adversarial substitution, not an assertion of polynomial-time decoding.
+\end{theorem}
+
+The generic $1/(2k^2)$ character-matching lower bound familiar from finite representation theory follows from character orthogonality and a $2k$ trace bound (cf. \cite{martinwalji,walji}). Orthogonality alone even gives an order-$1/k$ bound for sums of linear characters; the new identity below gives the sharper $\ell$-dependent constant, an integer refinement, and rigidity. In particular two cubic packets of size $3^s$ can agree at precisely $1-2/3^{s+1}$ of primes, but cannot agree more at rank at least $s+1$. The result concerns reducible abelian packets, not the general automorphic strong multiplicity-one conjecture.
+
+\section{From Euler factors to finite-field projections}
+Choose $\zeta=e^{2\pi i/\ell}$. Evaluation at a reduced residue $u$ defines a unique $v_u\in V$ by $a(u)=\zeta^{v_u(a)}$ for all $a\in G$. The map $(\Z/Q\Z)^\times\to V$ is surjective. Indeed a proper linear image would have a nonzero annihilator $a\in G$, which would be the trivial character on every unit, a contradiction. The fibers have equal sizes. The prime number theorem in arithmetic progressions, with the finite modulus held fixed, makes $v_p$ uniform in $V$ in natural prime density.
+
+For packets $A,B$ let
+\[
+ c_a=\operatorname{mult}_A(a)-\operatorname{mult}_B(a),\quad
+ m=\sum_{c_a>0}c_a=-\sum_{c_a<0}c_a\le k,\qquad
+ H(v)=\sum_{a\in G}c_a\zeta^{v(a)}.
+\]
+We may cancel all common entries. The remaining packets have mass $m$ each and disjoint supports. At a direction $v$ set
+\[ R_v(t)=\sum_{a:v(a)=t}c_a,\qquad t\in\F_\ell.\]
+The polynomial $E_A=E_B$ precisely when the multiplicities of every $\ell$th root of unity agree, i.e. $R_v(t)=0$ for every $t$. Equality of traces alone is equivalent: if $H(v)=0$, the integer polynomial $\sum_{j=0}^{\ell-1}R_v(j)z^j$ vanishes at $\zeta$ and hence is a constant multiple of $1+z+\cdots+z^{\ell-1}$. Since its value at $1$ is zero, that multiple is zero. This use of primality of $\ell$ is essential for the trace-only assertion.
+
+Put $S=\{v:H(v)\ne0\}$. Then
+\begin{equation}\label{eq:delta}
+ \delta(A,B)=|S|/\ell^r,\qquad H(0)=0,
+\end{equation}
+and $S$ is a union of punctured one-dimensional subspaces of $V$, because replacing $v$ by a nonzero multiple just permutes the bins of $R_v$. Fourier inversion implies $S\ne\varnothing$ for $c\ne0$. Equations \eqref{eq:delta} already prove that the density exists, that it is a positive multiple of $(\ell-1)/\ell^r$, and that it depends only on the abstract character group. Every $r$ can occur arithmetically: choose $r$ distinct rational primes congruent to $1\pmod\ell$, choose an order-$\ell$ character at each, and use the Chinese remainder theorem.
+
+\section{The discrete Radon identity and its equality cases}
+\begin{lemma}[Anchored projection count]\label{lem:radon}
+For $a\in G$ define $J_a(v)=R_v(v(a))$. Then
+\begin{equation}\label{eq:radon}
+ J_a(v)=\sum_{b\in G}c_b\one_{v(b-a)=0},\quad
+ \E_{v\in V}J_a(v)=(1-1/\ell)c_a,
+ \quad |J_a(v)|\le m\one_S(v).
+\end{equation}
+In particular
+\[\delta(A,B)\ge \frac{\ell-1}{\ell m}\max_a|c_a|.\]
+\end{lemma}
+\begin{proof}
+The first equality groups by the common value $v(a)$. For $b=a$, the indicator is identically one; for $b\ne a$, its mean is $1/\ell$. Thus the expectation is $c_a+(\sum_{b\ne a}c_b)/\ell=(1-1/\ell)c_a$. Each projection bin has signed mass between $-m$ and $m$, and all bins vanish outside $S$. Taking absolute values after averaging gives the inequality.
+\end{proof}
+
+This identity can also be understood by summing over one representative of each projective direction: because $J_a(0)=0$ and $J_a$ is constant on punctured lines, the sum equals $\ell^{r-1}c_a$. Unlike a norm bound on the complex trace, the anchored count retains the sign and the integer mass of the packet difference.
+
+\begin{proof}[Proof of Theorem~\ref{thm:main}(a) and the universal bound]
+Since $\max|c_a|\ge1$ and $m\le k$, Lemma~\ref{lem:radon} and the integrality in \eqref{eq:delta} give \eqref{eq:master}. More precisely, the number of disagreement directions is at least $\ceil{\ell^{r-1}\max|c_a|/m}$.
+
+Let $k=\ell^s$, $0\le s<r$. Take an $s$-dimensional subspace $U\subset G$ and two cosets $a+U$ and $b+U$ with $b-a\notin U$. Regard each coset as a simple packet. Their trace difference is
+\begin{equation}\label{eq:cosettrace}
+ H(v)=k\one_{U^\perp}(v)\bigl(\zeta^{v(a)}-\zeta^{v(b)}\bigr).
+\end{equation}
+Consequently $S=U^\perp\setminus(U+\F_\ell(b-a))^\perp$ and $|S|/\ell^r=(\ell-1)/\ell^{s+1}$. This is the lower bound.
+
+Conversely suppose $\delta=(\ell-1)/(\ell k)$. Lemma~\ref{lem:radon} forces $m=k$ and $|c_a|=1$ whenever $c_a\ne0$, so both packets are disjoint sets of cardinality $k$. For each $a\in A$, the nonnegative function $k\one_S-J_a$ has mean zero; hence $J_a(v)=k$ on every $v\in S$. For each $b\in B$ the same argument applied to $-J_b$ gives $J_b(v)=-k$. Thus at each $v\in S$, all $A$ project onto one common value, all $B$ onto a different common value. Fix $a_0\in A,b_0\in B$, and let
+\[
+ U=\operatorname{span}\bigl((A-a_0)\cup(B-b_0)\bigr).
+\]
+Every $v\in S$ annihilates $U$; conversely for $v\in U^\perp$ the trace has the form \eqref{eq:cosettrace}, even before we know $A,B$ fill their cosets. Thus $S=U^\perp\setminus(U+\F_\ell(b_0-a_0))^\perp$. Nonemptiness implies $b_0-a_0\notin U$. If $s'=\dim U$, then $\delta=(\ell-1)/\ell^{s'+1}$, so $k=\ell^{s'}$. The two sets of size $k$ fill their respective cosets. This also shows that equality in the unrounded anchored lower bound $(\ell-1)/(\ell k)$ is impossible unless $k$ is a power of $\ell$ no larger than $\ell^{r-1}$.
+\end{proof}
+
+\begin{proof}[Proof of Theorem~\ref{thm:main}(b)]
+At least one punctured line is present in $S$. Take $s=r-1$ in the construction and pad both packets with any common multiset to achieve the stated minimum for every $k\ge\ell^{r-1}$. For equality, $S=L\setminus\{0\}$ for a one-dimensional subspace $L\subset V$. Fourier inversion then implies that $c$ is invariant under addition of the hyperplane $L^\perp\subset G$. Conversely any nonzero, balanced integer-valued $c$ with this invariance has Fourier support in $L$; $H(0)=0$ and nonempty punctured-line support give equality. Such a $c$ can occur as the difference of size-$k$ packets exactly when its positive mass is at most $k$, by common padding. Its positive mass is a positive multiple of $\ell^{r-1}$. This covers rank one with $L^\perp=\{0\}$.
+\end{proof}
+
+\section{Small packets: hyperplane pencils and dihedral orbits}
+\begin{lemma}[A union of hyperplanes]\label{lem:union}
+Let $r\ge2$ and let $H_1,\dots,H_d$ be distinct linear hyperplanes of $V$ with $1\le d\le\ell$. Then
+\begin{equation}\label{eq:union}
+ |\cup_iH_i|\le \ell^{r-1}+(d-1)(\ell^{r-1}-\ell^{r-2}).
+\end{equation}
+For $d\ge2$ equality holds exactly when all $H_i$ contain a common codimension-two subspace.
+\end{lemma}
+\begin{proof}
+Keep $H_1$ and add each $H_i\setminus H_1$, a set of size $\ell^{r-1}-\ell^{r-2}$. Equality means these added pieces are pairwise disjoint. For $i,j>1$, this implies $H_i\cap H_j\subseteq H_1$. By dimensions it equals $H_i\cap H_1=H_j\cap H_1$. When $d=2$ take $H_1\cap H_2$ directly. Conversely, a common codimension-two intersection makes the added pieces disjoint.
+\end{proof}
+
+\begin{theorem}[Planar rigidity]\label{thm:planar}
+Let $r\ge2$ and $2\le k\le\ell$. Then \eqref{eq:pencil} holds. Equality for distinct packets $A,B$ is equivalent to the following geometric conditions:
+\begin{enumerate}[label=(\roman*)]
+\item $A$ and $B$ are disjoint sets of $k$ distinct points in a common affine plane in $G$;
+\item there are exactly $k$ projective directions of cross-differences $a-b$ with $a\in A,b\in B$;
+\item from each point of either set, the $k$ cross-differences to the other set occupy those $k$ directions exactly once.
+\end{enumerate}
+In this case the entire agreement set in $V$ is a pencil of $k$ hyperplanes, not merely a subset of one. For $k=1$, the agreement set is one hyperplane and \eqref{eq:pencil} is an equality for every distinct pair.
+\end{theorem}
+\begin{proof}
+Cancel common entries, choose $a\in A$, and for every distinct $b\in B$ form the hyperplane $H_b=\{v:v(b-a)=0\}$. If $A,B$ have equal projection multiplicities at $v$, the occurrence of $a$ must be matched by at least one occurrence of an element of $B$. Thus $V\setminus S\subseteq\cup_b H_b$. There are $d\le m\le k$ distinct hyperplanes. Lemma~\ref{lem:union} bounds the agreement fraction by $d/\ell-(d-1)/\ell^2$, which yields \eqref{eq:pencil} (also for $k=1$).
+
+For equality, $d=k=m$, so $B$ is simple and no common entries were cancelled. The union is exactly the agreement set and it is a pencil with common subspace $W$ of codimension two. Repeating the argument with every anchor $a\in A$ and with the roles reversed shows that $A$ too is simple, and each anchor produces a union of exactly $k$ distinct hyperplanes equal to the agreement set. Each such hyperplane must be one of the original pencil members: if a hyperplane $H$ were contained in the union of $k\le\ell$ other distinct hyperplanes, it would be covered by $k$ proper subspaces of size $\ell^{r-2}$ or less, all containing $0$. Their union has size at most $1+k(\ell^{r-2}-1)<\ell^{r-1}$. Contradiction.
+
+It follows that all cross-differences belong to the two-dimensional space $W^\perp\subset G$, and their directions are precisely the $k$ annihilator normals of the pencil members. Fixing one point from each packet shows both sets lie in the same affine translate of $W^\perp$. For each anchor each of the $k$ directions occurs once. Conversely, under (i)--(iii) each cross-direction defines a perfect matching of $A$ with $B$. Every $v$ annihilating that direction therefore gives equal projections. No other $v$ can agree by the anchored inclusion. The resulting pencil attains \eqref{eq:pencil}.
+\end{proof}
+
+\begin{proposition}[Split and nonsplit realizations]\label{prop:dihedral}
+If $2\le k<\ell$ and $k$ divides $\ell-1$ or $\ell+1$, planar configurations satisfying Theorem~\ref{thm:planar} exist, in every rank $r\ge2$.
+\end{proposition}
+\begin{proof}
+Work first in dimension two.
+
+\emph{Split case.} Let $z\in\F_\ell^\times$ have order $k$. Use the rotation $R(x,y)=(zx,z^{-1}y)$ and the reflection $S(x,y)=(y,x)$. Take the orbit $A=\{(z^j,0):0\le j<k\}$ of $(1,0)$, and $B=S(A)=\{(0,z^j):0\le j<k\}$. They are disjoint simple sets. For each $j$, $R^jS$ is an involution with one-dimensional $+1$ and $-1$ eigenspaces (odd characteristic); it bijects $A$ with $B$. Its fixed linear functionals form a line of the dual, and every such functional takes the same multiset of values on $A,B$. The $k$ involutions have distinct fixed dual lines, since the functional $ux+vy$ is fixed exactly when $u=z^{-j}v$. Hence there are at least $k$ agreement directions. Theorem~\ref{thm:planar} supplies the opposite bound, so equality holds.
+
+\emph{Nonsplit case.} Identify the plane with $\F_{\ell^2}$ and let $z$ have order $k$ in its norm-one subgroup (cyclic of size $\ell+1$). Use $R(x)=zx$ and $S(x)=x^\ell$. There is $a\ne0$ with $a^\ell/a\notin\langle z\rangle$: the homomorphism $a\mapsto a^{\ell-1}$ maps $\F_{\ell^2}^\times$ onto the full norm-one group, whereas $k<\ell+1$. Then $A=a\langle z\rangle$ and $B=a^\ell\langle z\rangle$ are disjoint simple orbits. Each $R^jS$ is an involution; it is not scalar, as Frobenius is not multiplication by a field element. In odd characteristic its eigenvalues are $+1,-1$, each with a one-dimensional space. It maps $A$ onto $B$. Its fixed dual line gives agreement as before. These $k$ dual lines are distinct: if a nonzero functional is fixed by $R^iS$ and $R^jS$ for $i\ne j$, it is fixed by their product $R^{i-j}$, a nonidentity field multiplication with no nonzero fixed functional. This is impossible. So again equality holds. Finally embed either plane in any $G$ of dimension $r\ge2$; the restriction map on dual spaces is uniform and preserves relative distance.
+\end{proof}
+
+The remaining stated exact cases $k=1$ and $k=\ell$ follow from singletons and part (a) with $s=1$. In particular, $k=2,3,4$ are covered for every odd prime $\ell$ with $k\le\ell$: $2\mid\ell-1$; $3$ divides $\ell-1$ or $\ell+1$ when $\ell\ne3$; and $4$ divides one of the two neighboring even integers. At $k=\ell-1$ the minimum is $2(\ell-1)/\ell^2$; at $k=\ell$ it drops by a factor of two. These are not just existence bounds for a particular modulus but the optimum for each rank-$r$ character group.
+
+\section{A nontrivial obstruction at order seven}
+The geometric lower bound need not be attained. The following small case is included to prevent mistaking the lower bound for a formula at all small sizes.
+\begin{proposition}[Exact exceptional case; finite certificate]\label{prop:seven}
+$d_7(2,5)=24/49$, not $18/49$.
+\end{proposition}
+\begin{proof}
+If equality in \eqref{eq:pencil} held, Theorem~\ref{thm:planar} would give two disjoint five-point sets in $\F_7^2$ with five cross-directions and every direction occurring exactly once from every anchor. Translate one point of $A$ to $(0,0)$. The remaining three projective directions can be carried to vertical, horizontal and slope one by an invertible linear map: choose representatives of two directions as a basis, then scale the basis so the third has equal coordinates. Thus the allowed slopes are $D=\{2,3,4,5,6\}$. The five points of $B$ must be $(x_d,dx_d)$ with $x_d\in\F_7^\times$, one per $d\in D$.
+
+The accompanying exact certificate enumerates all $6^5=7776$ choices of the $x_d$. For each it enumerates the 49 possible points $u$ and retains those not in $B$ whose five slopes to $B$, as a multiset, are exactly $D$. The cardinalities have distribution
+\[
+\begin{array}{c|rrrr}
+\text{eligible points}&1&2&3&4\\\hline
+\text{choices of }B&6048&1494&54&180.
+\end{array}
+\]
+No candidate admits five points in $A$. The loop is reproduced in pseudocode below; all slope calculations are in $\F_7$ and a vertical slope is represented by 7. No heuristic search or floating-point computation is used.
+\begin{verbatim}
+for x in {1,...,6}^5:
+    B = [(x[d], d*x[d] mod 7) for d in {2,...,6}]
+    eligible = 0
+    for u in F_7^2 minus B:
+        if sorted([slope(u,b) for b in B]) == [2,3,4,5,6]:
+            eligible += 1
+    assert eligible <= 4
+\end{verbatim}
+Hence the distance is strictly greater than $18/49$. In rank two the distance is an integer multiple of $6/49$, giving a lower bound of $24/49$. The $k=4$ nonsplit construction realizes $24/49$; adding a common entry realizes that same distance at $k=5$.
+\end{proof}
+
+For clarity, Table~\ref{tab:values} records the exact values at rank two for the three smallest odd primes. After $k=\ell$, all values stay constant by saturation. The $\ell=7,k=5$ entry is the only one in this table using a finite search rather than the general proofs.
+\begin{table}[ht]
+\centering
+\caption{Minimum disagreement density at rank two.}\label{tab:values}
+\begin{tabular}{c*{7}{c}}
+\toprule
+$\ell\backslash k$ & 1&2&3&4&5&6&7\\
+\midrule
+3&$2/3$&$4/9$&$2/9$&$2/9$&$2/9$&$2/9$&$2/9$\\
+5&$4/5$&$16/25$&$12/25$&$8/25$&$4/25$&$4/25$&$4/25$\\
+7&$6/7$&$36/49$&$30/49$&$24/49$&$24/49$&$12/49$&$6/49$\\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\section{Effective prime windows under Dirichlet GRH}\label{sec:effective}
+\subsection{The smoothed explicit formula}
+Use the normalization $\int w=1$, $w\ge0$, $w\in C_c^\infty((1/2,1))$. For a function $f:V\to\C$ set
+\[
+ M_X(f)=\sum_{p\nmid Q}(\log p)w(p/X)f(v_p),\quad
+ \widehat f(a)=\E_{v\in V}f(v)\zeta^{-v(a)},\quad
+ \normA f=\sum_{a\in G}|\widehat f(a)|.
+\]
+\begin{lemma}[Prime Fourier estimate; uses Dirichlet GRH]\label{lem:gram}
+For every $X\ge2$, uniformly over the preceding data,
+\begin{equation}\label{eq:prime-est}
+ |M_X(f)-X\E f|\le C_w\normA f\sqrt X\log(2Q).
+\end{equation}
+\end{lemma}
+\begin{proof}
+This is the prime Gram estimate in the article, applied to a character and the trivial character, followed by Fourier inversion. Here is the analytic justification to specify the input and uniformity. Replace a character $a$ modulo $Q$ by its inducing primitive character of conductor $q\mid Q$. Let $\widetilde w(s)=\int_0^\infty w(y)y^{s-1}\,dy$, which decreases faster than every power of $|\Im s|$ on fixed vertical strips. Mellin inversion expresses the weighted von Mangoldt sum as the integral of $-L'/L(s,a)X^s\widetilde w(s)$ on $\Re s=2$. Shift to $\Re s=-1/4$ using the primitive function and horizontal edges avoiding zeros; the standard logarithmic-derivative estimates, functional equation and Stirling's formula justify the contour shift (see \cite{davenport}, and the proof of \texttt{rec:lem:gram} in \cite{article}). The pole of the zeta function gives $X$ in the principal case. The possible trivial zero at $0$ contributes $O_w(1)$; the new line costs $O_w(X^{-1/4}\log(2q))$. By the input zero-line theorem and the standard unit-interval zero count $O(\log(q(2+|t|)))$, the sum of the nontrivial zero residues is $O_w(\sqrt X\log(2q))$. The count includes multiplicity, so no zero simplicity assumption is used. Contributions from prime powers of exponent at least two are $O_w(\sqrt X)$ by Chebyshev's bound (sum the prime logarithms up to $X^{1/j}$ for $j\ge2$). Removing primes dividing $Q$ costs $O_w(\log Q)$. The same estimate holds for every character with main term $X$ precisely for the trivial one. Fourier expand $f$ and sum these errors absolutely. Enlarge $C_w$ for any bounded initial range.
+\end{proof}
+
+The estimate uses only the asserted Dirichlet GRH theorem, not an analogue for Hecke, Artin, or automorphic $L$-functions. The constant is effective in principle via standard explicit formula bounds, but is not evaluated numerically here. A fixed smooth weight, rather than a sharp indicator of a prime interval, is used to avoid an extra logarithm in the error.
+
+\subsection{Uniform one-sided minorants}
+Write $\epsilon=C_w\log(2Q)/\sqrt X$. For $X$ with $\epsilon<1$ the normalizing mass $M_X(1)$ is positive. Let $d_X(A,B)=M_X(\one_S)/M_X(1)$.
+\begin{lemma}[Rank-free spectral budget]\label{lem:minorant}
+For distinct packets there is a real function $f\le\one_S$ on $V$ such that
+\[\E f\ge D_0,\qquad \normA f\le2.\]
+If $r\ge2$ and $k\le\ell$, there is also a real function $g\le\one_S$ with $\E g\ge D_1$ and $\normA g\le2k$.
+\end{lemma}
+\begin{proof}
+The indicator of a linear subspace $U\subset V$ has Fourier coefficients $|U|/|V|$ on $U^\perp$ and zero elsewhere. Thus its Fourier norm is one. For $k\le\ell^{r-1}$ choose $a$ with $c_a\ge1$ and set $f=J_a/k$. The anchored identity gives $f\le\one_S$ even if $f$ is negative at some points, $\E f\ge(\ell-1)/(\ell k)$ and $\normA f\le\sum_b|c_b|/k\le2$. For $k\ge\ell^{r-1}$ choose any punctured line $L\setminus\{0\}\subset S$ and set $f=\one_L-\one_{\{0\}}$. This also has norm at most two and mean $(\ell-1)/\ell^r$.
+
+For the second minorant use the anchored hyperplanes $H_1,\ldots,H_d$ of the proof of Theorem~\ref{thm:planar}, with $d\le k$, and set
+\[
+ g=(1-\one_{H_1})\left(1-\sum_{j=2}^d\one_{H_j}\right).
+\]
+Outside the union it equals one; on the union it is nonpositive. Thus $g\le\one_S$. By the size of each hyperplane and of each pairwise intersection with $H_1$, $\E g=(\ell-1)(\ell+1-d)/\ell^2\ge D_1$. Expanding the product gives $\normA g\le2d\le2k$. Crucially, the union need not be a pencil and the bound does not enumerate all permutations of the factors.
+\end{proof}
+
+\begin{proof}[Proof of Theorem~\ref{thm:effintro}]
+Apply \eqref{eq:prime-est} to the minorants and use $w\ge0$. More explicitly,
+\begin{equation}\label{eq:dX}
+ d_X(A,B)\ge \frac{\max(0,D_0-2\epsilon,D_1-2k\epsilon)}{1+\epsilon},
+\end{equation}
+where the $D_1$ term is omitted outside its range. This gives both stated lower estimates (or the trivial lower bound zero if the displayed numerator is negative). In the power-size and saturation regimes the extremizing coset examples have $\one_S$ equal to a difference of subspace indicators, so $\normA{\one_S}\le2$. Thus for that pair its distance is $D_0+O_w(\log(2Q)/\sqrt X)$, proving the worst-case estimate by combining upper and lower bounds. The saturation classification in fact gives norm at most two for every minimizing pair.
+
+In a small-size equality case the agreement set is a pencil $H_1,\ldots,H_k$ with common codimension-two intersection $W$ (the case $k=1$ just uses one hyperplane). Here
+\begin{equation}\label{eq:indicator}
+ \one_S=1-\sum_{j=1}^k\one_{H_j}+(k-1)\one_W.
+\end{equation}
+It has norm at most $2k$. For $k\ge2$ the exact Fourier norm is $2kD_1$: the coefficient at zero is $D_1$, each of the $k(\ell-1)$ nonzero vectors on the selected normal lines has coefficient $-(\ell+1-k)/\ell^2$, and each of the other $(\ell+1-k)(\ell-1)$ nonzero vectors in $W^\perp$ has coefficient $(k-1)/\ell^2$. All others vanish. Summing absolute values gives the claim. The two-sided estimate follows; $k=1$ has norm $2(1-1/\ell)=2D_1$ as well.
+
+Since $D_0\ge(2/3)/\min(k,\ell^{r-1})$, taking $\epsilon\le\eta D_0/4$ suffices for $(D_0-2\epsilon)/(1+\epsilon)\ge(1-\eta)D_0$. This proves the claimed scale with a suitably enlarged $C_w$. The strict inequality for the corruption fraction is explained next.
+\end{proof}
+
+For the finite-exception pair of Proposition~\ref{prop:seven}, at rank two a general disagreement set is a union of at most $\ell+1$ punctured lines. Hence its indicator has norm at most $2(\ell+1)$, giving uniform convergence of all distances with error $O_w(\ell\log(2Q)/\sqrt X)$. In particular the exact value $24/49$ is also its limiting minimum in the effective sampling problem. This argument applies to any fixed rank-two size, even without a pencil classification.
+
+\subsection{Error correction interpretation and sharpness}
+Treat the list of local factor polynomials (or, equivalently for exact observations of size-$k$ packets, their complex traces) at primes with positive sampling weights as a codeword. Give each prime coordinate the normalized weight $(\log p)w(p/X)/M_X(1)$, and use weighted Hamming distance, i.e. the sum of weights of differing coordinates. For any received word, if two codewords are both within distance $e$, the triangle inequality makes their mutual distance at most $2e$. Thus every received word with errors of total weight strictly less than half the minimum code distance identifies at most one packet. Existence holds for a word actually arising from a packet with such errors. Exhaustive nearest-neighbor decoding is possible because the code is finite; no efficient general algorithm is claimed.
+
+For sharpness, fix a pair attaining the exact limiting minimum $D$ in any of the regimes above. On the agreeing primes use their common symbol. Partition the differing primes into two sets of weights differing by at most the largest single-prime weight (a greedy allocation to the lighter part suffices). Use one codeword on the first set and the other on the second. The resulting received word is within $(d_X+\max_p w_p)/2$ of each, where $w_p$ is the normalized prime weight. Since $\max_p w_p=O_w(\log X/X)$ as $X\to\infty$ for fixed $Q$, these radii approach $D/2$. Consequently no larger limiting uniform adversarial correction fraction is possible. This reasoning uses exact equality of symbols; it does not promise recovery from small numerical errors in a trace or from incorrect knowledge of $G$ or $k$.
+
+\section{Examples, scope and further research}
+For an arithmetic example let $\chi$ and $\psi$ be independent cubic characters at moduli 13 and 19, inflated to $Q=247$. In the coordinates of $G=\langle\chi,\psi\rangle$, take
+\[
+\begin{aligned}
+ A_2&=\{\chi,\chi^{-1}\},&B_2&=\{\psi,\psi^{-1}\},\\
+ A_3&=\{1,\chi,\chi^2\},&B_3&=\{\psi,\psi\chi,\psi\chi^2\}.
+\end{aligned}
+\]
+Their local factors disagree with respective densities $4/9$ and $2/9$. Among the 36,960 primes in $(500000,1000000]$, the supplied code finds 16,435 and 8,211 disagreements respectively (unweighted fractions 0.444670 and 0.222159). This merely illustrates the theorem; the observed counts are not used to infer the exact limits.
+
+The companion \texttt{verify.py} tests the results with exact projection histograms, avoiding floating-point comparisons of roots of unity. It checks all pairs in eight small parameter cases, including all $4,276,350$ pairs at $(5,2,3)$; 107 split/nonsplit dihedral constructions; 20 coset constructions; and the normalized $7,2,5$ obstruction. Its output is preserved in \texttt{verification.txt}. Except for the finite obstruction in Proposition~\ref{prop:seven}, these checks are illustrations of proofs, not replacements for proofs.
+
+\paragraph{What is new relative to the source?} The article already proves exact quadratic matching densities and the $O(k^2\log^2 Q)$ prime detection scale there. Our results supply exact odd-order families and classification, a signed Radon minorant yielding the sharp rank-free corruption threshold at power sizes, a planar equality criterion, dihedral realizations, and a failure of naive extension of the small-size bound. The proof strategy does not rely on dyadic Walsh valuations. The broader problem of matching densities is classical: Martin--Walji \cite{martinwalji} and Walji \cite{walji} treat finite-group/Artin character matching, and discrete tomography studies equal projection counts and switching configurations (e.g. \cite{tomography,matousek}). The projective union argument is elementary finite geometry, consistent with the minimum-weight geometry of projective Reed--Muller codes \cite{hyperplanes}. These connections mean the techniques themselves should not be advertised as new. A targeted literature search did not locate the combined statements above for fixed-rank odd-order Dirichlet packets. Novelty is relative to the pinned article and provisional against the full literature; no claim of resolving a celebrated general conjecture is made.
+
+\paragraph{What remains open in this note?} The complete spectrum of matching densities at odd prime order, as asked by the article, is not settled. For arbitrary $k$ we have \eqref{eq:master}, and for $k\le\ell$ we have \eqref{eq:pencil}; the exact minimum outside the proved regimes may be higher. In particular the dihedral construction is sufficient, not asserted necessary. The explicit $(7,2,5)$ obstruction does not classify that size in ranks greater than two.
+
+\paragraph{Further research questions.}
+\begin{enumerate}
+\item Classify the planar configurations of Theorem~\ref{thm:planar} for all $\ell,k$, and in particular determine which sizes not dividing $\ell\pm1$ attain the pencil bound. Can the order-seven obstruction be proved uniformly for an infinite family?
+\item Determine the next possible disagreement density above $(\ell-1)/\ell^{s+1}$ for $k=\ell^s$. The Radon identity shows that if $\delta<2(\ell-1)/(\ell k)$ then all nonzero signed coefficients have absolute value one, but does not yet classify their supports.
+\item For intermediate $\ell^s<k<\ell^{s+1}$ and large rank, find matching lower and upper bounds. Inflating a pair of planar packets by a common $s$-dimensional subspace multiplies the size by $\ell^s$ and divides its distance by $\ell^s$, giving many candidate extremizers.
+\item Develop a polynomial-time or fixed-parameter decoder under the effective corruption bound, and compute explicit numerical values of $C_w$ for an optimized smooth weight.
+\item For characters of composite exponent, trace equality no longer implies equality of all eigenvalue multiplicities. Investigate a vector of power traces and corresponding rank-uniform bounds.
+\item Formalize the finite-dimensional lemmas in Lean and connect the analytic step to the vendored GRH interface. In particular the Radon identity is a finite double count, the equality case is a subspace argument, and the dihedral construction uses only finite fields and elementary linear algebra. The GRH-to-explicit-formula estimates remain a separate substantial formalization task.
+\end{enumerate}
+
+\paragraph{Verification status.} The repository files were accessed through GitHub at the indicated snapshot; the pinned upstream proof was not compiled in this environment. The theoretical density results, except the explicitly enumerated case, have analytic or algebraic proofs as given. The prime-window results are implications from the vendored Dirichlet GRH statements and classical explicit-formula estimates. The present note does not prove a Riemann hypothesis for any new class of $L$-functions. No repository files were modified.
+
+\begin{thebibliography}{9}
+\small\setlength{\itemsep}{1pt}\setlength{\parskip}{0pt}
+\bibitem{article} ProveIt contributors, \emph{Beyond the Riemann hypothesis for Dirichlet $L$-functions: consequences, transfers and limits}, snapshot \texttt{64f3896}, 27 Nov. 2026. \href{https://github.com/VladimirReshetnikov/ProveIt/tree/64f3896557566342bc28ed309513a2b762568866/Analysis/GeneralizedRiemannHypothesis/Article}{Article directory}; \href{https://github.com/VladimirReshetnikov/ProveIt/blob/64f3896557566342bc28ed309513a2b762568866/Analysis/GeneralizedRiemannHypothesis/Article/sections/rec.tex}{rec.tex}, labels \texttt{rec:lem:gram}, \texttt{rec:thm:qmatch}, \texttt{rec:thm:qmatchfinite}, \texttt{rec:sec:open}.
+\bibitem{lean} L. Alp\"oge and Claude; readable rewriting in \texttt{lsernau/grh-lean}, \href{https://github.com/lsernau/grh-lean/tree/72fead102f663d5c7a407964a13dc0cf9d977207/grh}{upstream commit \texttt{72fead1}}; \href{https://github.com/VladimirReshetnikov/ProveIt/tree/64f3896557566342bc28ed309513a2b762568866/Analysis/GeneralizedRiemannHypothesis/vendor/grh-lean}{vendored directory}. See \path{src/Statements.lean}, \path{src/Main.lean}, \path{src/New/Reduction/MainInequality.lean}, \path{src/New/Reduction/OneSidedBound.lean}.
+\bibitem{davenport} H. Davenport, \emph{Multiplicative Number Theory}, 3rd ed., revised by H. L. Montgomery, Springer, 2000.
+\bibitem{martinwalji} K. Martin and N. Walji, \emph{Distinguishing finite group characters and refined local-global phenomena}, \href{https://kimballmartin.github.io/papers/dist-artin.pdf}{author's manuscript}.
+\bibitem{walji} N. Walji, Matching densities for Galois representations, \emph{Proc. Amer. Math. Soc.} 144 (2016), 3309--3316, \href{https://doi.org/10.1090/proc/12996}{doi:10.1090/proc/12996}.
+\bibitem{tomography} A. Alpers and D. G. Larman, \emph{The smallest sets of points not determined by their X-rays}, preprint and subsequent publication; related discrete tomography problem.
+\bibitem{matousek} J. Matou\v{s}ek, A. P\v{r}\'{i}v\v{e}tiv\'{y}, P. \v{S}kovro\v{n}, How many points can be reconstructed from $k$ projections?, \href{https://doi.org/10.1137/080715706}{doi:10.1137/080715706}.
+\bibitem{hyperplanes} \emph{The second and the third smallest arrangements of hyperplanes in finite projective spaces}, J. Finite Fields Appl., \href{https://doi.org/10.1016/j.ffa.2015.10.001}{doi:10.1016/j.ffa.2015.10.001}; discussion of Serre's extremal geometry.
+\end{thebibliography}
+\end{document}
