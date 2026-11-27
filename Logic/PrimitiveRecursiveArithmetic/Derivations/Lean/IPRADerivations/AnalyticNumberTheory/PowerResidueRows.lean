@@ -61,15 +61,12 @@ theorem maskC_eval (m q b z : PTm n) :
 theorem mask_at (m q b z : PTm n) :
     Γ ⊢[PRAAx] inst2 (mask a) m (pairT (pairT q b) z) ≐ eqb (rem m q) b * inst2 a m z := by
   rw [inst2_mask, ← maskC_eval]
-  have e1 : Γ ⊢[PRAAx] fstT (fstT (pairT (pairT q b) z)) ≐ q := (congrFst (fst_pair _ _)).eqTrans (fst_pair _ _)
-  have e2 : Γ ⊢[PRAAx] sndT (fstT (pairT (pairT q b) z)) ≐ b := (congrSnd (fst_pair _ _)).eqTrans (snd_pair _ _)
-  have e3 : Γ ⊢[PRAAx] sndT (pairT (pairT q b) z) ≐ z := snd_pair _ _
   exact Prf.eqCongr (maskC a) fun k => by
     fin_cases k
     · exact .eqRefl _
-    · exact e1
-    · exact e2
-    · exact e3
+    · exact (fst_pair _ _).fstE
+    · exact (fst_pair _ _).sndE
+    · exact snd_pair _ _
 
 /-! ## `b_h` as a body -/
 
@@ -84,6 +81,12 @@ theorem bvB_at (m h y : PTm n) : Γ ⊢[PRAAx] inst2 (bvB a) m (pairT h y) ≐ b
 
 /-- The parameter `⟨⟨q, b⟩, ⟨h, y⟩⟩` of the `B` row. -/
 abbrev Xp (q b h y : PTm n) : PTm n := pairT (pairT q b) (pairT h y)
+
+/-- Read the four fields of the packed progression-row parameter. -/
+theorem xp_fields {z q b h y : PTm n} (packed : Γ ⊢[PRAAx] z ≐ Xp q b h y) :
+    (Γ ⊢[PRAAx] fstT (fstT z) ≐ q) ∧ (Γ ⊢[PRAAx] sndT (fstT z) ≐ b) ∧
+      (Γ ⊢[PRAAx] fstT (sndT z) ≐ h) ∧ (Γ ⊢[PRAAx] sndT (sndT z) ≐ y) :=
+  ⟨packed.fstE.fstE, packed.fstE.sndE, packed.sndE.fstE, packed.sndE.sndE⟩
 
 /-- `B_{h;q,b}(N) = Σ_{m ≤ N, m ≡ b} b_h(m)`. -/
 abbrev MB (N q b h y : PTm n) : PTm n := Apre (mask (bvB a)) N (Xp q b h y)
@@ -117,19 +120,11 @@ theorem tw_at (m j q b h y : PTm n) :
     Γ ⊢[PRAAx] inst2 (tw a) m (pairT j (Xp q b h y)) ≐ eqb (gcd (pw (succ j) h) q) one *
       (eqb (rem m q) (res (pw (succ j) h) q b) * inst2 a m y) := by
   rw [inst2_tw, ← twC_eval]
-  have e1 : Γ ⊢[PRAAx] fstT (pairT j (Xp q b h y)) ≐ j := fst_pair _ _
-  have e2 : Γ ⊢[PRAAx] fstT (fstT (sndT (pairT j (Xp q b h y)))) ≐ q :=
-    (congrFst ((congrFst (snd_pair _ _)).eqTrans (fst_pair _ _))).eqTrans (fst_pair _ _)
-  have e3 : Γ ⊢[PRAAx] sndT (fstT (sndT (pairT j (Xp q b h y)))) ≐ b :=
-    (congrSnd ((congrFst (snd_pair _ _)).eqTrans (fst_pair _ _))).eqTrans (snd_pair _ _)
-  have e4 : Γ ⊢[PRAAx] fstT (sndT (sndT (pairT j (Xp q b h y)))) ≐ h :=
-    (congrFst ((congrSnd (snd_pair _ _)).eqTrans (snd_pair _ _))).eqTrans (fst_pair _ _)
-  have e5 : Γ ⊢[PRAAx] sndT (sndT (sndT (pairT j (Xp q b h y)))) ≐ y :=
-    (congrSnd ((congrSnd (snd_pair _ _)).eqTrans (snd_pair _ _))).eqTrans (snd_pair _ _)
+  obtain ⟨e2, e3, e4, e5⟩ := xp_fields (snd_pair (Γ := Γ) j (Xp q b h y))
   exact Prf.eqCongr (twC a) fun k => by
     fin_cases k
     · exact .eqRefl _
-    · exact e1
+    · exact fst_pair _ _
     · exact e2
     · exact e3
     · exact e4

@@ -114,11 +114,7 @@ theorem proj_eqs (N q b h y : PTm n) :
       (Γ ⊢[PRAAx] sndT (fstT (sndT (Zp N h (Xp q b h y)))) ≐ b) ∧
       (Γ ⊢[PRAAx] fstT (sndT (sndT (Zp N h (Xp q b h y)))) ≐ h) ∧
       (Γ ⊢[PRAAx] sndT (sndT (sndT (Zp N h (Xp q b h y)))) ≐ y) :=
-  ⟨(congrFst (fst_pair _ _)).eqTrans (fst_pair _ _),
-    (congrFst ((congrFst (snd_pair _ _)).eqTrans (fst_pair _ _))).eqTrans (fst_pair _ _),
-    (congrSnd ((congrFst (snd_pair _ _)).eqTrans (fst_pair _ _))).eqTrans (snd_pair _ _),
-    (congrFst ((congrSnd (snd_pair _ _)).eqTrans (snd_pair _ _))).eqTrans (fst_pair _ _),
-    (congrSnd ((congrSnd (snd_pair _ _)).eqTrans (snd_pair _ _))).eqTrans (snd_pair _ _)⟩
+  ⟨(fst_pair _ _).fstE, xp_fields (snd_pair _ _)⟩
 
 theorem Gt_at (m N q b h y : PTm n) :
     Γ ⊢[PRAAx] inst2 (Gt a) m (Zp N h (Xp q b h y)) ≐ eqb (gcd (pw m h) q) one *
