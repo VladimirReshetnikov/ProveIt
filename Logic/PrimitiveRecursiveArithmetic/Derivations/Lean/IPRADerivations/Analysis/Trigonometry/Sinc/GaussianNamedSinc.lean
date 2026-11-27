@@ -74,7 +74,7 @@ theorem sample_distance_near (f g : PR 2) (R S x y p q : PTm n)
     (le_trans (by ipra_le 3*𝔞 U) cmp) (sample_near f R x p one U hU hU hnear)
   have right := distance_radius_mono _ _ (two*two) D two U hD hU cmp
     (sample_near g S y q two U hU h2U bSmall)
-  exact distance_triangle_same _ _ _ _ _ _ hU left (distance_symmetric _ _ _ _ hU right)
+  exact GaussianNameRingLaws.through_identity _ _ _ _ _ _ _ hU left right (.eqRefl _)
 
 /-- Away from zero, the finite samples are compared by cancelling the
 first argument after transporting the two products to that common factor. -/

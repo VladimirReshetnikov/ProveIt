@@ -130,7 +130,7 @@ theorem actual_doubled_product_error (p N x : PTm n) :
   have a := product_real_error (Γ := Γ) q N x (clock_fine _ _) (GaussianCyclicExponentialSeparation.clock_fine _ _)
   have b := sample_distance doubledF GaussianCyclicSineProductSquare.sineF q q N radius (num 20) (unit q)
     (data N x) (data N x) hU (original_rows q N x) (real_rows q N x) (same_clock_rows q N x)
-  exact distance_triangle_same _ _ _ _ _ _ hU a (distance_symmetric _ _ _ _ hU b)
+  exact GaussianNameRingLaws.through_identity _ _ _ _ _ _ _ hU a b (.eqRefl _)
 
 theorem actual_original_doubled_sine_product_closed :
     ([] : List (Fm PTm 0)) ⊢[PRAAx] univ 3

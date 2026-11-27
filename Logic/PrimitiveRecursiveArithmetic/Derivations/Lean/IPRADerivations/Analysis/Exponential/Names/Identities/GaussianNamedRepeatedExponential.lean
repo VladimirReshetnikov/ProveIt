@@ -68,10 +68,8 @@ theorem repeated_at (f : PR 2) (p N E R x : PTm n) (hf : Γ ⊢[PRAAx] input f R
   have e := prefix_error f p E N R x (point f p E one R x) S zero hf
     (point_bound f p E one R x hf hE) (distance_refl_zero _ _ hp) hN
   have folded := (raw_at (Γ := Γ) F p N c).eqTrans (sample_power g p N c)
-  have near : Γ ⊢[PRAAx] distanceBounded (point f p E N R x) (ap2 (rawF F) p D) A (unit p) :=
-    distance_congr (.eqRefl _) folded.eqSymm (.eqRefl _) (.eqRefl _) e
   have fin := GaussianNameRingLaws.normalized_to_sample (rawF F) L D p (raw_regular F N S one c hb hr)
-  exact distance_triangle_same _ _ _ _ _ _ hp near (distance_symmetric _ _ _ _ hp fin)
+  exact GaussianNameRingLaws.through_identity _ _ _ _ _ _ _ hp e fin folded.eqSymm
 
 theorem repeated_exponential (f : PR 2) (N E R x : PTm n) (hf : Γ ⊢[PRAAx] input f R x)
     (hE : Γ ⊢[PRAAx] le one E) (hN : Γ ⊢[PRAAx] le N E) :

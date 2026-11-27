@@ -158,8 +158,8 @@ ipra_subst bridgeRadius [two, one]
 theorem even_recurrence_at (f : PR 2) (p J R x z : PTm n) (hf : Γ ⊢[PRAAx] input f R x) :
     Γ ⊢[PRAAx] distanceBounded (ap2 (recurrenceF f) p (recurrenceData f (two*J) R x))
       (ap2 (scaledPolynomialF f) p (scaledPolynomialData f J R x z)) (bridgeRadius f J R x z) (unit p) :=
-  distance_triangle_same _ _ _ _ _ _ (unit_positive p) (recurrence_sample f p (two*J) R x hf)
-    (distance_symmetric _ _ _ _ (unit_positive p) (scaled_polynomial_sample f p J R x z hf))
+  GaussianNameRingLaws.through_identity _ _ _ _ _ _ _ (unit_positive p)
+    (recurrence_sample f p (two*J) R x hf) (scaled_polynomial_sample f p J R x z hf) (.eqRefl _)
 
 theorem even_recurrence_cross (f : PR 2) (J R x z : PTm n) (hf : Γ ⊢[PRAAx] input f R x) :
     Γ ⊢[PRAAx] crossEquivalent (recurrenceF f) (scaledPolynomialF f)

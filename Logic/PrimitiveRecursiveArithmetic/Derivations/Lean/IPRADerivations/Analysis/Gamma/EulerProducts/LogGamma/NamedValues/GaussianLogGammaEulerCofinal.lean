@@ -192,14 +192,12 @@ private theorem radius_diagonal (p A B D neg R S : PTm n)
   let N := cutoff R p+cutoff S p
   let x := observed p A B D neg R
   let y := observed p A B D neg S
-  let z := ap2 F p (headData A B D neg N)
   let u := unit p
   have hu := unit_positive (Γ := Γ) p
   have hD := positive_product (Γ := Γ) u u hu hu
   have left := late_cutoff_distance p p A B D neg R N hR (le_add_right _ _)
   have right := late_cutoff_distance p p A B D neg S N hS (le_add_left _ _)
-  have gap := distance_triangle_same x z y (u+u) (u+u) (u*u) hD left
-    (distance_symmetric _ _ _ _ hD right)
+  have gap := GaussianNameRingLaws.through_identity _ _ _ _ _ _ _ hD left right (.eqRefl _)
   have reduced := distance_radius_mono x y _ _ (num 4) u hD hu
     (le_of_eq_add (d := zero) (by dsimp only [u]; ipra_ring)) gap
   exact distance_congr (sample_at p A B D neg R).eqSymm (sample_at p A B D neg S).eqSymm

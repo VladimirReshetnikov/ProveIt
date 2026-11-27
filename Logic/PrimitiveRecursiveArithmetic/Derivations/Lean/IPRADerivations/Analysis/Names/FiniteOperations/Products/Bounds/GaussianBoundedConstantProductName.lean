@@ -78,12 +78,12 @@ theorem sample_at (f : PR 2) (p A a x : PTm n) : Γ ⊢[PRAAx] sample f p A a x 
 theorem normalized_error (f : PR 2) (p A a x : PTm n) (h : Γ ⊢[PRAAx] input f A a x) : Γ ⊢[PRAAx]
     distanceBounded (sample f p A a x)
       (ap2 (GaussianNameArithmetic.multiplyF constantF f) p (GaussianNameArithmetic.multiplyData constantF f a x)) (cost f A a x) (unit p) := by
-  have first := distance_congr (.eqRefl _) (raw_at f p a x) (.eqRefl _) (.eqRefl _)
-    (GaussianNameRingLaws.normalized_to_sample (rawF f) A (rawData a x) p (raw_name_regular f A a x h))
-  have second := distance_congr (.eqRefl _) (GaussianRationalSyntheticDivision.qmul_congr (constant_at p a) (.eqRefl _)) (.eqRefl _) (.eqRefl _)
-    (GaussianNameRingLaws.multiply_sample_error constantF f a x p (constant_regular a) h.andE₁)
+  have first := GaussianNameRingLaws.normalized_to_sample (rawF f) A (rawData a x) p (raw_name_regular f A a x h)
+  have second := GaussianNameRingLaws.multiply_sample_error constantF f a x p (constant_regular a) h.andE₁
+  have center := (raw_at (Γ := Γ) f p a x).eqTrans
+    (GaussianRationalSyntheticDivision.qmul_congr (constant_at p a) (.eqRefl _)).eqSymm
   exact bound_congr (.eqRefl _) (by unfold cost; ipra_ring) (.eqRefl _)
-    (distance_triangle_same _ _ _ _ _ _ (unit_positive p) first (distance_symmetric _ _ _ _ (unit_positive p) second))
+    (GaussianNameRingLaws.through_identity _ _ _ _ _ _ _ (unit_positive p) first second center)
 
 theorem diagonal_envelope (f : PR 2) (A a x : PTm n) (h : Γ ⊢[PRAAx] input f A a x) : Γ ⊢[PRAAx]
     GaussianValueNormalizerExtensionality.rawDiagonal (nameF f) (GaussianNameArithmetic.multiplyF constantF f)

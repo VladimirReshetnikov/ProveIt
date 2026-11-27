@@ -124,7 +124,7 @@ theorem multiple_sample (f : PR 2) (p k R x : PTm n) (h : Γ ⊢[PRAAx] input f 
   have db := distance_symmetric _ _ _ _ hp (recurrence_sample f p k R x h)
   have second := product_distance A a B b _ _ _ (growth (traceDisk f R x) k) (GaussianNameBounds.U (sineF f) (sineData f R x))
     hp da db (value_bound _ _ _ (trace_pair_bound f p R x h)) (GaussianNameBounds.sample_bound _ _ _ hs)
-  exact distance_triangle_same _ _ _ _ _ _ hp first (distance_symmetric _ _ _ _ hp second)
+  exact GaussianNameRingLaws.through_identity _ _ _ _ _ _ _ hp first second (.eqRefl _)
 
 def identityRadius (f : PR 2) (E k R x : PTm n) : PTm n := scaledRadius f E k R x+multipleRadius f k R x
 
@@ -133,8 +133,8 @@ ipra_subst identityRadius
 theorem identity_at (f : PR 2) (p E k R x : PTm n) (h : Γ ⊢[PRAAx] input f R x) (hi : Γ ⊢[PRAAx] le (succ k) E) :
     Γ ⊢[PRAAx] distanceBounded (ap2 (sineF (scaledF f)) p (sineData (scaledF f) (radius E R) (stageData E (succ k) x)))
       (ap2 (multipleF f) p (multipleData f k R x)) (identityRadius f E k R x) (unit p) :=
-  distance_triangle_same _ _ _ _ _ _ (unit_positive p)
-    (scaled_sample f p E k R x h hi) (distance_symmetric _ _ _ _ (unit_positive p) (multiple_sample f p k R x h))
+  GaussianNameRingLaws.through_identity _ _ _ _ _ _ _ (unit_positive p)
+    (scaled_sample f p E k R x h hi) (multiple_sample f p k R x h) (.eqRefl _)
 
 theorem identity (f : PR 2) (E k R x : PTm n) (h : Γ ⊢[PRAAx] input f R x) (hi : Γ ⊢[PRAAx] le (succ k) E) :
     Γ ⊢[PRAAx] crossEquivalent (sineF (scaledF f)) (multipleF f)

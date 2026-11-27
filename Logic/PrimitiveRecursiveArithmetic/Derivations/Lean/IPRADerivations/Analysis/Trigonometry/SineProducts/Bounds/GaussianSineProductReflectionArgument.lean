@@ -89,9 +89,9 @@ theorem diagonal_argument (z R B x p : PTm n) (hB : Γ ⊢[PRAAx] le one B)
   have left := distance_congr (scaled_argument_at z R B x p hB).eqSymm
     (qmul_commutative C (ap2 piF p x)) (.eqRefl _) (.eqRefl _)
     (multiply_distance C _ _ R two (unit p) hu hC gap)
-  have right := distance_congr (.eqRefl _) (qmul_congr (.eqRefl _) (constant_at p C)) (.eqRefl _) (.eqRefl _)
+  exact GaussianNameRingLaws.through_identity _ _ _ _ _ _ _ hu left
     (multiply_sample_error piF constantF x C p reg (constant_regular C))
-  exact distance_triangle_same _ _ _ _ _ _ hu left (distance_symmetric _ _ _ _ hu right)
+    (qmul_congr (.eqRefl _) (constant_at p C)).eqSymm
 
 theorem reflection_argument_cross (z R B x : PTm n) (hB : Γ ⊢[PRAAx] le one B)
     (hz : Γ ⊢[PRAAx] ComplexLogarithmRemainder.bounded z (R*B)) :

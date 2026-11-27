@@ -208,12 +208,10 @@ theorem original_sine_taylor_cross (f : PR 2) (R x : PTm n) (hf : Γ ⊢[PRAAx] 
   let p : PTm (n+1) := var 0
   have h : C ⊢[PRAAx] input f Rt xt := by
     simpa only [Fm.shift, Syn.shift, GaussianRadiusExponentialName.subst_input, C, Rt, xt] using hf.shift
-  have left := distance_congr (.eqRefl _) (raw_at f Rt xt p).eqSymm (.eqRefl _) (.eqRefl _)
-    (finite_taylor_error f Rt xt p h)
   have right := GaussianNameRingLaws.normalized_to_sample (rawF f) (budget f Rt xt+one) (rawData Rt xt) p
     (raw_regular f Rt xt h)
-  have result := distance_triangle_same _ _ _ _ _ _ (unit_positive p) left
-    (distance_symmetric _ _ _ _ (unit_positive p) right)
+  have result := GaussianNameRingLaws.through_identity _ _ _ _ _ _ _ (unit_positive p)
+    (finite_taylor_error f Rt xt p h) right (raw_at f Rt xt p).eqSymm
   have cost : C ⊢[PRAAx] budget f Rt xt+(budget f Rt xt+one+one) ≐ two*budget f Rt xt+two := by ipra_ring
   simpa only [GaussianNamedDiagonalRate.diagonalRate, Syn.shift, taylorF, taylorData,
     GaussianFastValueCut.subst_nameData, subst_rawData,
