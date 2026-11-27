@@ -30,7 +30,7 @@ open GaussianPositiveRationalLogarithm (fraction)
 open GaussianRationalHorner (qmul positive_product)
 open GaussianRationalMetric (distanceBounded bounded)
 open GaussianRationalReciprocal (bound_congr bounded_product)
-open GaussianRationalDistanceOrder (distance_congr distance_symmetric distance_radius_mono)
+open GaussianRationalDistanceOrder (distance_congr distance_symmetric)
 open GaussianCoefficientNameBounds (unit unit_positive)
 open GaussianNamedInverseRate (rateNumerator rateDenominator)
 open GaussianRationalSyntheticDivision (qmul_congr)
@@ -93,10 +93,8 @@ private theorem fixed_product_distance (x y u A B C E : PTm n)
 
 private theorem later_sample_distance (F : PR 2) (p j x : PTm n)
     (hj : Γ ⊢[PRAAx] le p j) (hf : Γ ⊢[PRAAx] pointCN F x) :
-    Γ ⊢[PRAAx] distanceBounded (ap2 F j x) (ap2 F p x) two (unit p) := by
-  have grow := GaussianExponentialReference.unit_monotone hj
-  exact distance_radius_mono _ _ _ _ two (unit p) (positive_product _ _ (unit_positive j) (unit_positive p))
-    (unit_positive p) (by ipra_le 𝔞(unit p)*sl grow) (GaussianNameEquivalence.point_at F x j p hf)
+    Γ ⊢[PRAAx] distanceBounded (ap2 F j x) (ap2 F p x) two (unit p) :=
+  GaussianNameEquivalence.point_at_later F x p j hf hj
 
 private theorem physical_weight_bound (e f Q C E N : PTm n)
     (hf : Γ ⊢[PRAAx] le one f) (he : Γ ⊢[PRAAx] le e (Q*f)) (hD : Γ ⊢[PRAAx] le one (timeDenominator N E)) :
