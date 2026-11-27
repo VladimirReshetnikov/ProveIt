@@ -60,21 +60,9 @@ ipra_subst data
 
 theorem sample_at (p A B D neg R : PTm n) :
     Γ ⊢[PRAAx] ap2 nameF p (data A B D neg R) ≐ finiteRead (succ p) A B D neg (cutoff R p) := by
-  let z := argument A B D neg
-  let x := data A B D neg R
-  have read : Γ ⊢[PRAAx] ap2 nameF p x ≐ readAt p (fstT x) (sndT x) := by
-    simpa only [nameF, body, ap2, subst_readAt, subst_fstT, subst_sndT, Syn.subst_var,
-      Matrix.cons_val_zero, Matrix.cons_val_one] using toPR_eq (Γ := Γ) body ![p, x]
-  have align : Γ ⊢[PRAAx] readAt p (fstT x) (sndT x) ≐ readAt p z R := by
-    simpa only [subst_readAt, Syn.subst_var, Matrix.cons_val_zero, Matrix.cons_val_one, Matrix.cons_val_two,
-      Matrix.head_cons, Matrix.tail_cons] using
-      Prf.eqCongr (Γ := Γ) (Ax := PRAAx) (readAt (var 0) (var 1) (var 2) : PTm 3)
-        (σ := ![p, fstT x, sndT x]) (σ' := ![p, z, R]) (fun i => by
-          fin_cases i
-          · exact .eqRefl p
-          · exact fst_pair z R
-          · exact snd_pair z R)
-  exact read.eqTrans align
+  change Γ ⊢[PRAAx] ap2 nameF p (data A B D neg R) ≐ readAt p (argument A B D neg) R
+  simpa [nameF, body, data] using
+    (toPR_pair_eq (Γ := Γ) (readAt (var 0) (var 1) (var 2)) p (argument A B D neg) R)
 
 private theorem cutoff_positive (R p : PTm n) : Γ ⊢[PRAAx] le one (cutoff R p) :=
   positive_product _ _ (le_add_left one R) (unit_positive _)

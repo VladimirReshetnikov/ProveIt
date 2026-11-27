@@ -142,18 +142,8 @@ ipra_subst cofinalTerm
 ipra_subst cofinalPoint
 
 theorem cofinal_point_at (p z R B : PTm n) : Γ ⊢[PRAAx] cofinalPoint p z R B ≐ cofinalValue p z R B := by
-  have prog : Γ ⊢[PRAAx] cofinalPoint p z R B ≐ cofinalTerm p (cofinalData z R B) := by
-    simpa [cofinalPoint,cofinalF,ap2] using toPR_eq (Γ := Γ) (cofinalTerm (var 0) (var 1) : PTm 2) ![p,cofinalData z R B]
-  refine prog.eqTrans ?_
-  simpa only [cofinalTerm,subst_cofinalValue,Syn.subst_var,Matrix.cons_val_zero,Matrix.cons_val_one,Matrix.cons_val_two,Matrix.cons_val_three,Matrix.cons_val_succ,Matrix.head_cons,Matrix.tail_cons] using
-    Prf.eqCongr (cofinalValue (var 0) (var 1) (var 2) (var 3) : PTm 4)
-      (σ := ![p,fstT (cofinalData z R B),fstT (sndT (cofinalData z R B)),sndT (sndT (cofinalData z R B))]) (σ' := ![p,z,R,B])
-      (fun i => by
-        fin_cases i
-        · exact .eqRefl _
-        · exact fst_pair _ _
-        · exact (snd_pair _ _).fstE
-        · exact (snd_pair _ _).sndE)
+  simpa [cofinalPoint, cofinalF, cofinalTerm, cofinalData, pairVector, pairVectorField] using
+    (toPR_pairVector_eq (Γ := Γ) (k := 2) (cofinalValue (var 0) (var 1) (var 2) (var 3)) p ![z, R, B])
 theorem cofinal_point_canonical (p z R B : PTm n) : Γ ⊢[PRAAx] GaussianRationalHorner.canonical (cofinalPoint p z R B) :=
   GaussianRationalHorner.canonical_congr (cofinal_point_at p z R B) (exponential_canonical p z R B (cutoff R p))
 theorem cofinal_point_distance (p z R B : PTm n) (h : Γ ⊢[PRAAx] diskSource z R B) : Γ ⊢[PRAAx]

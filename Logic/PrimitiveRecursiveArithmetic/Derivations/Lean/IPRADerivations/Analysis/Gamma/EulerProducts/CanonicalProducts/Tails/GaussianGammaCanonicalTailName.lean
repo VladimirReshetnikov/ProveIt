@@ -134,19 +134,8 @@ ipra_subst pointTerm
 ipra_subst point
 
 theorem point_at (p z R B N : PTm n) : Γ ⊢[PRAAx] point p z R B N ≐ value p z R B N := by
-  have prog : Γ ⊢[PRAAx] point p z R B N ≐ pointTerm p (data z R B N) := by
-    simpa [point,pointF,ap2] using toPR_eq (Γ := Γ) (pointTerm (var 0) (var 1) : PTm 2) ![p,data z R B N]
-  refine prog.eqTrans ?_
-  simpa only [pointTerm,subst_value,Syn.subst_var,Matrix.cons_val_zero,Matrix.cons_val_one,Matrix.cons_val_two,Matrix.cons_val_three,Matrix.cons_val_four,Matrix.cons_val_succ,Matrix.head_cons,Matrix.tail_cons] using
-    Prf.eqCongr (value (var 0) (var 1) (var 2) (var 3) (var 4) : PTm 5)
-      (σ := ![p,fstT (data z R B N),fstT (sndT (data z R B N)),fstT (sndT (sndT (data z R B N))),sndT (sndT (sndT (data z R B N)))]) (σ' := ![p,z,R,B,N])
-      (fun i => by
-        fin_cases i
-        · exact .eqRefl _
-        · exact fst_pair _ _
-        · exact (snd_pair _ _).fstE
-        · exact (snd_pair _ _).sndE.fstE
-        · exact (snd_pair _ _).sndE.sndE)
+  simpa [point, pointF, pointTerm, data, pairVector, pairVectorField] using
+    (toPR_pairVector_eq (Γ := Γ) (k := 3) (value (var 0) (var 1) (var 2) (var 3) (var 4)) p ![z, R, B, N])
 
 theorem point_canonical (p z R B N : PTm n) : Γ ⊢[PRAAx] GaussianRationalHorner.canonical (point p z R B N) :=
   GaussianRationalHorner.canonical_congr (point_at p z R B N) (GaussianRationalHorner.ofGaussian_canonical _ _ (unit_positive p))

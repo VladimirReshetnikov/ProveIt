@@ -111,19 +111,9 @@ theorem observation_congr {p p' z z' R R' B B' a a' d d' : PTm n}
     [hp, hz, hR, hB, ha, hd] using [e5, e5']
 
 theorem sample_at (p z R B a d : PTm n) : Γ ⊢[PRAAx] sample p z R B a d ≐ observation p z R B a d := by
-  have raw := toPR_eq (Γ := Γ) (observation (var 0) (fstT (var 1)) (fstT (sndT (var 1)))
-    (fstT (sndT (sndT (var 1)))) (fstT (sndT (sndT (sndT (var 1))))) (sndT (sndT (sndT (sndT (var 1))))) : PTm 2)
-    ![p,data z R B a d]
-  have e : Γ ⊢[PRAAx] sample p z R B a d ≐ observation p (fstT (data z R B a d)) (fstT (sndT (data z R B a d)))
-      (fstT (sndT (sndT (data z R B a d)))) (fstT (sndT (sndT (sndT (data z R B a d)))))
-      (sndT (sndT (sndT (sndT (data z R B a d))))) := by
-    simpa only [sample,nameF,ap2,subst_observation,subst_fstT,subst_sndT,Syn.subst_var,
-      Matrix.cons_val_zero,Matrix.cons_val_one,Matrix.head_cons] using raw
-  have t₁ := snd_pair (Γ := Γ) z (pairT R (pairT B (pairT a d)))
-  have t₂ := (congrSnd t₁).eqTrans (snd_pair R (pairT B (pairT a d)))
-  have t₃ := (congrSnd t₂).eqTrans (snd_pair B (pairT a d))
-  exact e.eqTrans (observation_congr (.eqRefl _) (fst_pair _ _) t₁.fstE
-    t₂.fstE t₃.fstE t₃.sndE)
+  simpa [sample, nameF, data, pairVector, pairVectorField] using
+    (toPR_pairVector_eq (Γ := Γ) (k := 4)
+      (observation (var 0) (var 1) (var 2) (var 3) (var 4) (var 5)) p ![z, R, B, a, d])
 
 theorem sample_canonical (p z R B a d : PTm n) : Γ ⊢[PRAAx]
     GaussianRationalHorner.canonical (sample p z R B a d) :=

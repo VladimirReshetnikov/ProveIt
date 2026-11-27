@@ -37,34 +37,9 @@ ipra_subst rawTerm
 ipra_subst nameData
 ipra_subst clock
 
-private theorem value_congr (p z R B d z' R' B' d' : PTm n)
-    (hz : Γ ⊢[PRAAx] z ≐ z') (hR : Γ ⊢[PRAAx] R ≐ R')
-    (hB : Γ ⊢[PRAAx] B ≐ B') (hd : Γ ⊢[PRAAx] d ≐ d') : Γ ⊢[PRAAx]
-    rawValue p z R B d ≐ rawValue p z' R' B' d' := by
-  have e1 : Γ ⊢[PRAAx] rawValue p z R B d ≐ rawValue p z' R B d := by
-    simpa only [GaussianGammaShiftedDeflatedPolynomial.subst_rawValue,Syn.subst_var,Syn.inst_zero,Syn.subst_inst_shift] using
-      Prf.eqCongr1 (rawValue (Syn.shift p) (var 0) (Syn.shift R) (Syn.shift B) (Syn.shift d)) hz
-  have e2 : Γ ⊢[PRAAx] rawValue p z' R B d ≐ rawValue p z' R' B d := by
-    simpa only [GaussianGammaShiftedDeflatedPolynomial.subst_rawValue,Syn.subst_var,Syn.inst_zero,Syn.subst_inst_shift] using
-      Prf.eqCongr1 (rawValue (Syn.shift p) (Syn.shift z') (var 0) (Syn.shift B) (Syn.shift d)) hR
-  have e3 : Γ ⊢[PRAAx] rawValue p z' R' B d ≐ rawValue p z' R' B' d := by
-    simpa only [GaussianGammaShiftedDeflatedPolynomial.subst_rawValue,Syn.subst_var,Syn.inst_zero,Syn.subst_inst_shift] using
-      Prf.eqCongr1 (rawValue (Syn.shift p) (Syn.shift z') (Syn.shift R') (var 0) (Syn.shift d)) hB
-  have e4 : Γ ⊢[PRAAx] rawValue p z' R' B' d ≐ rawValue p z' R' B' d' := by
-    simpa only [GaussianGammaShiftedDeflatedPolynomial.subst_rawValue,Syn.subst_var,Syn.inst_zero,Syn.subst_inst_shift] using
-      Prf.eqCongr1 (rawValue (Syn.shift p) (Syn.shift z') (Syn.shift R') (Syn.shift B') (var 0)) hd
-  exact e1.eqTrans (e2.eqTrans (e3.eqTrans e4))
-
 theorem raw_at (p z R B d : PTm n) : Γ ⊢[PRAAx] ap2 rawF p (data z R B d) ≐ rawValue p z R B d := by
-  have actual : Γ ⊢[PRAAx] ap2 rawF p (data z R B d) ≐ rawTerm p (data z R B d) := by
-    simpa only [rawF,ap2,subst_rawTerm,Syn.subst_var,Matrix.cons_val_zero,Matrix.cons_val_one] using
-      toPR_eq (Γ := Γ) (rawTerm (var 0) (var 1) : PTm 2) ![p,data z R B d]
-  have first := snd_pair (Γ := Γ) z (pairT R (pairT B d))
-  have second := (congrSnd first).eqTrans (snd_pair R (pairT B d))
-  exact actual.eqTrans (value_congr _ _ _ _ _ _ _ _ _ (fst_pair _ _)
-    first.fstE
-    second.fstE
-    second.sndE)
+  simpa [rawF, rawTerm, data, pairVector, pairVectorField] using
+    (toPR_pairVector_eq (Γ := Γ) (k := 3) (rawValue (var 0) (var 1) (var 2) (var 3) (var 4)) p ![z, R, B, d])
 
 theorem name_at (p z R B d : PTm n) : Γ ⊢[PRAAx]
     ap2 nameF p (nameData z R B d) ≐ rawValue (clock p B) z R B d :=

@@ -41,14 +41,8 @@ def plain (z B N : PTm n) : PTm n := qprod (unweighted rowF) N (data z B)
   simp [translatedValue,translated,ComplexLogarithmRemainder.oneCode,one]
 
 theorem row_at (z B i : PTm n) : Γ ⊢[PRAAx] ap2 rowF i (data z B) ≐ translatedValue z B (succ i) := by
-  let x := data z B
-  have read : Γ ⊢[PRAAx] ap2 rowF i x ≐ translatedValue (fstT x) (sndT x) (succ i) := by
-    simpa [rowF,ap2,translatedValue] using
-      toPR_eq (Γ := Γ) (translatedValue (fstT (var 1)) (sndT (var 1)) (succ (var 0)) : PTm 2) ![i,x]
-  refine read.eqTrans ?_
-  dsimp only [x,data]
-  ipra_congr (translatedValue (var 0) (var 1) (var 2) : PTm 3) with
-    [fst_pair z B, snd_pair z B, .eqRefl (succ i)]
+  simpa [rowF, data] using
+    (toPR_pair_eq (Γ := Γ) (translatedValue (var 1) (var 2) (succ (var 0))) i z B)
 
 theorem translate_succ (z B i : PTm n) : Γ ⊢[PRAAx]
     equal (translated (translated z B one) B (succ i)) (translated z B (succ (succ i))) := by

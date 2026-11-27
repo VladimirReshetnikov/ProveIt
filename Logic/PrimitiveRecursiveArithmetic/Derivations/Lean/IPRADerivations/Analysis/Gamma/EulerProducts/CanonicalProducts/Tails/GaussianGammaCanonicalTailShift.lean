@@ -36,20 +36,8 @@ ipra_subst localTerm
 ipra_subst localPoint
 
 theorem local_at (p z R D : PTm n) : Γ ⊢[PRAAx] localPoint p z R D ≐ localValue p z R D := by
-  have prog : Γ ⊢[PRAAx] localPoint p z R D ≐ localTerm p (localData z R D) := by
-    simpa [localPoint,localF,ap2] using toPR_eq (Γ := Γ) (localTerm (var 0) (var 1) : PTm 2) ![p,localData z R D]
-  refine prog.eqTrans ?_
-  simpa only [localTerm,GaussianGammaCanonicalTailMetric.subst_localValue,Syn.subst_var,
-    Matrix.cons_val_zero,Matrix.cons_val_one,Matrix.cons_val_two,Matrix.cons_val_three,
-    Matrix.cons_val_succ,Matrix.head_cons,Matrix.tail_cons] using
-    Prf.eqCongr (localValue (var 0) (var 1) (var 2) (var 3) : PTm 4)
-      (σ := ![p,fstT (localData z R D),fstT (sndT (localData z R D)),sndT (sndT (localData z R D))])
-      (σ' := ![p,z,R,D]) (fun i => by
-        fin_cases i
-        · exact .eqRefl _
-        · exact fst_pair _ _
-        · exact (snd_pair _ _).fstE
-        · exact (snd_pair _ _).sndE)
+  simpa [localPoint, localF, localTerm, localData, pairVector, pairVectorField] using
+    (toPR_pairVector_eq (Γ := Γ) (k := 2) (localValue (var 0) (var 1) (var 2) (var 3)) p ![z, R, D])
 
 /-- The original independently rounded local-factor observations already
 have the correct two-precision Gaussian regularity. -/

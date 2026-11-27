@@ -107,11 +107,9 @@ theorem raw_regularity (p q R d w : PTm n) (hR : Γ ⊢[PRAAx] le one R) (hw : �
 theorem raw_value_congr {p q d e w v : PTm n} (hp : Γ ⊢[PRAAx] p ≐ q) (hd : Γ ⊢[PRAAx] d ≐ e)
     (hw : Γ ⊢[PRAAx] w ≐ v) : Γ ⊢[PRAAx] rawValue p d w ≐ rawValue q e v := by
   ipra_congr (rawValue (var 0) (var 1) (var 2) : PTm 3) with [hp, hd, hw]
-theorem raw_at (p d w : PTm n) : Γ ⊢[PRAAx] ap2 rawF p (pairT d w) ≐ rawValue p d w :=
-  (show Γ ⊢[PRAAx] ap2 rawF p (pairT d w) ≐ rawValue p (fstT (pairT d w)) (sndT (pairT d w)) by
-    simpa only [rawF,ap2,subst_rawValue,subst_fstT,subst_sndT,Syn.subst_var,Matrix.cons_val_zero,Matrix.cons_val_one] using
-      toPR_eq (Γ := Γ) (rawValue (var 0) (fstT (var 1)) (sndT (var 1)) : PTm 2) ![p,pairT d w]).eqTrans
-        (raw_value_congr (.eqRefl _) (fst_pair _ _) (snd_pair _ _))
+theorem raw_at (p d w : PTm n) : Γ ⊢[PRAAx] ap2 rawF p (pairT d w) ≐ rawValue p d w := by
+  simpa [rawF] using
+    (toPR_pair_eq (Γ := Γ) (rawValue (var 0) (var 1) (var 2)) p d w)
 
 theorem raw_regular (R d w : PTm n) (hR : Γ ⊢[PRAAx] le one R) (hw : Γ ⊢[PRAAx] bounded w R one) : Γ ⊢[PRAAx]
     GaussianFastValueCut.regular rawF (modulus R d) (pairT d w) := by

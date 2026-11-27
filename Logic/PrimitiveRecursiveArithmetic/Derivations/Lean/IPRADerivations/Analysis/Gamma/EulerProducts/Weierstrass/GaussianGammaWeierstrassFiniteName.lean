@@ -66,22 +66,8 @@ ipra_subst comparisonBudget
 ipra_subst modulus [foldedModulus]
 
 theorem raw_at (p z R B N : PTm n) : Γ ⊢[PRAAx] ap2 rawF p (data z R B N) ≐ rawPoint p z R B N := by
-  let x := data z R B N
-  let read : PTm 2 := rawPoint (var 0) (fstT (var 1)) (fstT (sndT (var 1)))
-    (fstT (sndT (sndT (var 1)))) (sndT (sndT (sndT (var 1))))
-  have ep : Γ ⊢[PRAAx] ap2 rawF p x ≐ rawPoint p (fstT x) (fstT (sndT x))
-      (fstT (sndT (sndT x))) (sndT (sndT (sndT x))) := by
-    simpa [ap2,rawF,read] using toPR_eq (Γ := Γ) read ![p,x]
-  have s1 : Γ ⊢[PRAAx] sndT x ≐ pairT R (pairT B N) := snd_pair _ _
-  have s2 := s1.sndE
-  have er := s1.fstE
-  have eb := s2.fstE
-  have en := s2.sndE
-  exact ep.eqTrans (by
-    simpa using Prf.eqCongr (Γ := Γ) (Ax := PRAAx) (rawPoint (var 0) (var 1) (var 2) (var 3) (var 4) : PTm 5)
-      (σ := ![p,fstT x,fstT (sndT x),fstT (sndT (sndT x)),sndT (sndT (sndT x))])
-      (σ' := ![p,z,R,B,N])
-      (fun i => by fin_cases i; exact .eqRefl _; exact fst_pair _ _; exact er; exact eb; exact en))
+  simpa [rawF, data, pairVector, pairVectorField] using
+    (toPR_pairVector_eq (Γ := Γ) (k := 3) (rawPoint (var 0) (var 1) (var 2) (var 3) (var 4)) p ![z, R, B, N])
 
 theorem exponent_input (z R B N : PTm n) (h : Γ ⊢[PRAAx] source z R B) :
     Γ ⊢[PRAAx] GaussianRadiusExponentialName.input constantF (width R N) (harmonicArgument z B N) := by
