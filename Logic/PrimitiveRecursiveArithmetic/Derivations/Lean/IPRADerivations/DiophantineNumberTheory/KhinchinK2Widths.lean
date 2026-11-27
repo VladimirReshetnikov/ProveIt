@@ -48,9 +48,8 @@ variable {n : ℕ} {Γ : List (Fm PTm n)}
 /-- `1 ≤ t` gives `t = succ (pred t)`. -/
 alias pos_of_one := Common.pos_of_one_le
 
-theorem one_le_pw (K : PTm n) : Γ ⊢[PRAAx] le one (pw two K) := by
-  have e := natEq (DiophantineNumberTheory.FLTMultiples.pw_pos (Γ := Γ) one K)
-  ipra_le 𝔞 (pred (pw two K)) with e
+theorem one_le_pw (K : PTm n) : Γ ⊢[PRAAx] le one (pw two K) :=
+  pw_one_le (Common.one_le_succ one) K
 
 /-! ## Monotone numerators -/
 

@@ -32,12 +32,8 @@ local notation "𝔟" t:max => Groth.ι (IPRA.Q.mk _ t)
 
 /-- Monotonicity of powers in the exponent: `x ≥ 1`, `k ≤ l` give `x^k ≤ x^l`. -/
 theorem pw_mono_exp {x k l : PTm n} (hx : Γ ⊢[PRAAx] le one x) (hkl : Γ ⊢[PRAAx] le k l) :
-    Γ ⊢[PRAAx] le (pw x k) (pw x l) := by
-  have e : Γ ⊢[PRAAx] pw x l ≐ pw x k * pw x (monus l k) :=
-    (congrAp2 powF (eq_add_of_le hkl) (.eqRefl x)).eqTrans (pw_add _ _ _)
-  have hp := one_le_pw_of (Γ := Γ) (monus l k) hx
-  have e' := natEq e
-  ipra_le 𝔟 (pw x k) * sl hp with e'
+    Γ ⊢[PRAAx] le (pw x k) (pw x l) :=
+  pw_le_pw_exp hx hkl
 
 /-- `p(n) + q(p(n)) + n + 1 ≤ (a + b(a+1)^s + 1)(n+1)^{rs}` for `p = a(n+1)^r`, `q(m) = b(m+1)^s`. -/
 theorem compose_majorant {a b r s : PTm n} (hr : Γ ⊢[PRAAx] le one r) (hs : Γ ⊢[PRAAx] le one s) (k : PTm n) :

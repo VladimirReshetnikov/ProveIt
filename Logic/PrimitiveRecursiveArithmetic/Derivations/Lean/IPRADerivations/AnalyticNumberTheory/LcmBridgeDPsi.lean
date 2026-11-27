@@ -44,12 +44,8 @@ variable {n : ℕ} {Γ : List (Fm PTm n)}
 /-! ## Powers and exponents -/
 
 theorem pw_mono_exp {p a b : PTm n} (hp : Γ ⊢[PRAAx] le one p) (h : Γ ⊢[PRAAx] le a b) :
-    Γ ⊢[PRAAx] le (pw p a) (pw p b) := by
-  have e1 : Γ ⊢[PRAAx] pw p b ≐ pw p a * pw p (monus b a) :=
-    (congrAp2 powF (eq_add_of_le h) (.eqRefl _)).eqTrans (pw_add _ _ _)
-  have x := natEq (pw_pos' (Γ := Γ) (pos_of_one_le hp) (monus b a))
-  refine le_congr (.eqRefl _) e1.eqSymm ?_
-  ipra_le 𝔞 (pw p a * pred (pw p (monus b a))) with 𝔞 (pw p a) * x
+    Γ ⊢[PRAAx] le (pw p a) (pw p b) :=
+  pw_le_pw_exp hp h
 
 /-- `2^j ≤ a` gives `j ≤ e(a)`. -/
 theorem eb_ge {a j : PTm n} (h1 : Γ ⊢[PRAAx] le one a) (h : Γ ⊢[PRAAx] le (pw two j) a) :

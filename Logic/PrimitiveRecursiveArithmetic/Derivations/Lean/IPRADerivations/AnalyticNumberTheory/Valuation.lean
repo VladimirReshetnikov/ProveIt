@@ -52,7 +52,7 @@ theorem lt_pw {p : PTm n} (hp : Γ ⊢[PRAAx] le two p) (m : PTm n) : Γ ⊢[PRA
 
 theorem pw_pos' {p : PTm n} (hp : Γ ⊢[PRAAx] p ≐ succ (pred p)) (k : PTm n) :
     Γ ⊢[PRAAx] pw p k ≐ succ (pred (pw p k)) :=
-  eq_succ_pred ((congrAp2 powF (.eqRefl _) hp).eqTrans (DiophantineNumberTheory.FLTMultiples.pw_pos _ _))
+  Common.pos_pw hp k
 
 /-! ## Indicator facts -/
 

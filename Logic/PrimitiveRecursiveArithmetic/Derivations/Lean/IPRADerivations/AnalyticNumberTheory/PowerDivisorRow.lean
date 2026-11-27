@@ -50,7 +50,7 @@ theorem lt_succ_pw {h : PTm n} (hp : Γ ⊢[PRAAx] h ≐ succ (pred h)) (x : PTm
   le_congr (.eqRefl _) (congrAp2 powF hp.eqSymm (.eqRefl _)) (le_self_pw x (pred h))
 
 theorem pw_pos1 {h : PTm n} (x : PTm n) : Γ ⊢[PRAAx] pw (succ x) h ≐ succ (pred (pw (succ x) h)) :=
-  pos_of_one_le (one_le_pw' (by ipra_le 𝔞 x) _)
+  Common.pos_pw (Common.succ_pos x) h
 
 variable (a : PTm 2)
 

@@ -33,7 +33,7 @@ variable {n : ℕ} {Γ : List (Fm PTm n)}
 /-! ## Geometric block ends and monotone weights -/
 
 theorem one_le_pw' {Q : PTm n} (hQ : Γ ⊢[PRAAx] le one Q) (k : PTm n) : Γ ⊢[PRAAx] le one (pw Q k) :=
-  le_congr (pw_one_base k) (.eqRefl _) (pw_le_pw k hQ)
+  pw_one_le hQ k
 
 /-- `E₀ ≤ E₀ Q^k`. -/
 theorem e0_le {E0 Q : PTm n} (hQ : Γ ⊢[PRAAx] le one Q) (k : PTm n) : Γ ⊢[PRAAx] le E0 (E0 * pw Q k) := by

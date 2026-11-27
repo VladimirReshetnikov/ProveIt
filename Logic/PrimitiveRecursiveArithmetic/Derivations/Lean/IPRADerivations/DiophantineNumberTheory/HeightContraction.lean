@@ -28,12 +28,8 @@ variable {n : ℕ} {Γ : List (Fm PTm n)}
 local notation "𝔟" t:max => Groth.ι (IPRA.Q.mk _ t)
 
 /-- `e ≤ f` gives `2^e ≤ 2^f`. -/
-theorem pw_exp_mono {e f : PTm n} (h : Γ ⊢[PRAAx] le e f) : Γ ⊢[PRAAx] le (pw two e) (pw two f) := by
-  have eA := natEq ((congrAp2 powF (eq_add_of_le h) (.eqRefl (two : PTm n))).eqTrans
-    (pw_add (Γ := Γ) two e (monus f e)))
-  have eB := natEq (pw_pos (Γ := Γ) one (monus f e))
-  ipra_le 𝔟(pw two e) * 𝔟(pred (pw (succ one) (monus f e))) using
-    linear_combination eA + 𝔟(pw two e) * eB
+theorem pw_exp_mono {e f : PTm n} (h : Γ ⊢[PRAAx] le e f) : Γ ⊢[PRAAx] le (pw two e) (pw two f) :=
+  pw_le_pw_exp (Common.one_le_succ one) h
 
 /-- `lem:bitcontract`: comparing powers of two, `4h′ < d + 2h(P)`. -/
 theorem exponent_compare {HQ HP D hQ' hP d : PTm n}

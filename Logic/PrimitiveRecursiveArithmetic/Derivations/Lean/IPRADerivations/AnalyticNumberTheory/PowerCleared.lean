@@ -47,10 +47,8 @@ theorem pw_le_cancel {a b k : PTm n} (h : Γ ⊢[PRAAx] le (pw a (succ k)) (pw b
 
 /-- `e₁ ≤ e₂ → c^{e₁} ≤ c^{e₂}` for `c ≥ 1`. -/
 theorem pw_le_exp {c e₁ e₂ : PTm n} (hc : Γ ⊢[PRAAx] c ≐ succ (pred c)) (h : Γ ⊢[PRAAx] le e₁ e₂) :
-    Γ ⊢[PRAAx] le (pw c e₁) (pw c e₂) := by
-  refine le_of_eq_add (d := pw c e₁ * pred (pw c (monus e₂ e₁))) ?_
-  ipra_lc natEq ((congrPw (.eqRefl c) (eq_add_of_le h)).eqTrans (pw_add c e₁ (monus e₂ e₁))) +
-    Groth.ι (IPRA.Q.mk Γ (pw c e₁)) * natEq (pw_pos' hc (monus e₂ e₁))
+    Γ ⊢[PRAAx] le (pw c e₁) (pw c e₂) :=
+  pw_le_pw_exp (Common.one_le_of_pos hc) h
 
 /-! ## Products and sums over primes -/
 

@@ -58,7 +58,7 @@ theorem geom_sum {x : PTm n} (hx : Γ ⊢[PRAAx] le one x) (I : PTm n) :
   exact .impE i hx
 
 theorem one_le_pw {r : PTm n} (hr : Γ ⊢[PRAAx] le one r) (s : PTm n) : Γ ⊢[PRAAx] le one (pw r s) :=
-  le_congr (Order.pw_one_base s) (.eqRefl _) (pw_le_pw s hr)
+  pw_one_le hr s
 
 /-- `lem:geom-den`, cleared by `x^I (x − 1)` with `x = r^s`: `r^{sI} = (r^s − 1) ∑_{i<I} r^{si} + 1`
 (the terms `x^{I−i}`, `1 ≤ i ≤ I`, are the `x^i`, `i < I`). -/

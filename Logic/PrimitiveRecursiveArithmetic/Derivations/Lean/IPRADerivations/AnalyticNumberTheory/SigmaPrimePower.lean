@@ -40,7 +40,7 @@ theorem sig_congr {K K' : PTm n} (h : Γ ⊢[PRAAx] K ≐ K') : Γ ⊢[PRAAx] si
 
 theorem pos_pw {p : PTm n} (hp : Γ ⊢[PRAAx] p ≐ succ (pred p)) (a : PTm n) :
     Γ ⊢[PRAAx] pw p a ≐ succ (pred (pw p a)) :=
-  pos_of_one_le (one_le_pw' (one_le_of_pos hp) a)
+  Common.pos_pw hp a
 
 /-- `σ(1) = 1`. -/
 theorem sig_one : Γ ⊢[PRAAx] sig one ≐ one := by

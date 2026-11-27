@@ -43,7 +43,7 @@ theorem cancel_pos {X a b : PTm n} (hX : Γ ⊢[PRAAx] le one X) (h : Γ ⊢[PRA
     exact le_congr (congrMul Prf.hyp0 (.eqRefl _)) (congrMul Prf.hyp0 (.eqRefl _)) h.wk
 
 theorem one_le_pw_of {X : PTm n} (m : PTm n) (h : Γ ⊢[PRAAx] le one X) : Γ ⊢[PRAAx] le one (pw X m) :=
-  le_congr (pw_one_base m) (.eqRefl _) (pw_le_pw m h)
+  pw_one_le h m
 
 /-- `thm:simultaneous`, the grid count: `M^{d+1} < A B^d` for `HB ≤ Mk < H(B + 1)`, `k ≤ H` qualifying. -/
 theorem grid_count {N' d' k B : PTm n}

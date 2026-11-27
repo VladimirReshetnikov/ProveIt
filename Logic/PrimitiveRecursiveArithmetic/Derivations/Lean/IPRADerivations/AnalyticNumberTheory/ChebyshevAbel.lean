@@ -111,13 +111,8 @@ theorem lam0 (K F : PTm n) : Γ ⊢[PRAAx] inst2 (LamB wt) zero (pairT K F) ≐ 
   rw [inst2_LamB]; exact lam_zero wt _
 
 /-- `2^a ≤ 2^b` for `a ≤ b`. -/
-theorem pw_exp_le {a b : PTm n} (h : Γ ⊢[PRAAx] le a b) : Γ ⊢[PRAAx] le (pw two a) (pw two b) := by
-  have e := eq_add_of_le h
-  have pb : Γ ⊢[PRAAx] pw two b ≐ pw two a * pw two (monus b a) :=
-    (congrAp2 powF e (.eqRefl two)).eqTrans (pw_add two a _)
-  have pd := natEq (pw_pos' (Γ := Γ) two_pos' (monus b a))
-  have f := natEq pb
-  ipra_le 𝔞 (pw two a) * 𝔞 (pred (pw two (monus b a))) with f + 𝔞 (pw two a) * pd
+theorem pw_exp_le {a b : PTm n} (h : Γ ⊢[PRAAx] le a b) : Γ ⊢[PRAAx] le (pw two a) (pw two b) :=
+  pw_le_pw_exp (Common.one_le_succ one) h
 
 section Cheb
 variable {x K L : PTm n} (hK : Γ ⊢[PRAAx] le one K) (hP : Γ ⊢[PRAAx] le (K * pw two (two * (two * x))) L)

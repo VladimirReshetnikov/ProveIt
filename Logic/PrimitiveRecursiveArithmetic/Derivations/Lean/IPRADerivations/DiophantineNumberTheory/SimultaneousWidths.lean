@@ -53,7 +53,7 @@ theorem widths_top (N' d' : PTm n) :
 /-- `1 ≤ H^{d'}`. -/
 theorem one_le_pw (N' d' : PTm n) : Γ ⊢[PRAAx] le one (pw (HT N' d') d') := by
   have h1 : Γ ⊢[PRAAx] le one (HT N' d') := le_of_eq_add (d := hT N' d') (by ipra_ring)
-  exact le_congr (pw_one_base d') (.eqRefl _) (pw_le_pw d' h1)
+  exact pw_one_le h1 d'
 
 /-- `eq:sim-S`: if `k − 1` does not qualify and `k + 1 ≤ H`, then `N (k + 1)^d < H^d`. -/
 theorem widths_S {N' d' k' : PTm n}

@@ -66,12 +66,8 @@ theorem convex_lipschitz {w t u δ Fx Fy Fb M : PTm n} (e : Γ ⊢[PRAAx] w ≐ 
 
 /-- `G^k ≤ G^N` for `k ≤ N` and `G = G′ + 1`. -/
 theorem pw_exp_le {G' k N : PTm n} (h : Γ ⊢[PRAAx] le k N) :
-    Γ ⊢[PRAAx] le (pw (succ G') k) (pw (succ G') N) := by
-  have e₁ := natEq ((congrAp2 powF (eq_add_of_le h) (Prf.eqRefl (succ G'))).eqTrans
-    (pw_add (Γ := Γ) (succ G') k (monus N k)))
-  have e₂ := natEq (pw_pos (Γ := Γ) G' (monus N k))
-  ipra_le 𝔟 (pw (succ G') k) * 𝔟 (pred (pw (succ G') (monus N k))) using
-    linear_combination e₁ + 𝔟 (pw (succ G') k) * e₂
+    Γ ⊢[PRAAx] le (pw (succ G') k) (pw (succ G') N) :=
+  pw_le_pw_exp (Common.one_le_succ G') h
 
 /-- A weighted defect is at most `ε G^N`: `e ≤ ε`, `W ≤ G^k`, `k ≤ N` give `e W ≤ ε G^N`. -/
 theorem defect_weight {e W ε G' k N : PTm n} (he : Γ ⊢[PRAAx] le e ε)

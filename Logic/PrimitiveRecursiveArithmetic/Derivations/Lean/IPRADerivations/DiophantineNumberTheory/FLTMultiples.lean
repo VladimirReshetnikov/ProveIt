@@ -27,20 +27,9 @@ open LeanProofs.IPRA.DiophantineNumberTheory.FermatQuartic (flt4 flt4Formula)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
-/-- Variables: `0 = m`, `1 = a`. -/
-private abbrev pwPosF : Fm PTm 2 :=
-  pw (succ (var 1)) (var 0) ≐ succ (pred (pw (succ (var 1)) (var 0)))
-
-private theorem pw_pos₀ : ([] : List (Fm PTm 2)) ⊢[PRAAx] pwPosF := by
-  ipra_ind [subst_ap2]
-  · exact eq_succ_pred (pw_zero _)
-  · exact (pw_succ _ _).eqTrans (pos_mul Prf.hyp0 (congrSucc (pred_succ _).eqSymm)) |>.eqTrans
-      (congrSucc (congrPred (pw_succ _ _).eqSymm))
-
 /-- `(a + 1)ᵐ ≥ 1`. -/
-theorem pw_pos (a m : PTm n) : Γ ⊢[PRAAx] pw (succ a) m ≐ succ (pred (pw (succ a) m)) := by
-  have h := inst (Γ := Γ) pw_pos₀ (![m, a] : Fin 2 → PTm n)
-  simpa using h
+theorem pw_pos (a m : PTm n) : Γ ⊢[PRAAx] pw (succ a) m ≐ succ (pred (pw (succ a) m)) :=
+  Common.pos_pw (Common.succ_pos a) m
 
 /-- `a⁴ = q4 a`. -/
 theorem pw_four (a : PTm n) : Γ ⊢[PRAAx] pw a (two * two) ≐ q4 a := by

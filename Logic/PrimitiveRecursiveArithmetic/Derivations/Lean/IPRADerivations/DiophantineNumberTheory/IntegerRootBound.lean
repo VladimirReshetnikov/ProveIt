@@ -41,11 +41,8 @@ theorem pw_pos_of {t : PTm n} (h : Γ ⊢[PRAAx] le one t) (m : PTm n) :
 
 /-- `1 ≤ t` and `e ≤ f` give `t^e ≤ t^f`. -/
 theorem pw_exp_mono {t e f : PTm n} (ht : Γ ⊢[PRAAx] le one t) (h : Γ ⊢[PRAAx] le e f) :
-    Γ ⊢[PRAAx] le (pw t e) (pw t f) := by
-  have eA := natEq ((congrAp2 powF (eq_add_of_le h) (.eqRefl t)).eqTrans (pw_add (Γ := Γ) t e (monus f e)))
-  have eB := natEq (pw_pos_of ht (monus f e))
-  ipra_le 𝔟(pw t e) * 𝔟(pred (pw (succ (monus t one)) (monus f e))) using
-    linear_combination eA + 𝔟(pw t e) * eB
+    Γ ⊢[PRAAx] le (pw t e) (pw t f) :=
+  pw_le_pw_exp ht h
 
 section Sums
 

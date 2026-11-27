@@ -7,6 +7,7 @@ With `pw a m = aᵐ` (the symbol `powF` of `Core.Definitions`):
 
 * `pw_add`: `a^{m+k} = aᵐ aᵏ`;
 * `pw_le_pw`: `a ≤ b → aᵐ ≤ bᵐ`;
+* `pw_one_le`, `pw_le_pw_exp`: for a base at least one, powers stay at least one and increase with the exponent;
 * `le_self_pw`: `S a ≤ (S a)^{S m}`;
 * `no_square_between`: there is no square strictly between `k²` and `(k + 1)²`.
 -/
@@ -87,21 +88,22 @@ theorem pw_le_pw {a b : PTm n} (m : PTm n) (h : Γ ⊢[PRAAx] le a b) :
   simp at i
   exact .impE i h
 
-/-- Variables: `0 = m` (induction), `1 = a`. -/
-private abbrev selfPwF : Fm PTm 2 := le (succ (var 1)) (pw (succ (var 1)) (succ (var 0)))
+/-- Every power of a base at least one is at least one. -/
+theorem pw_one_le {a : PTm n} (ha : Γ ⊢[PRAAx] le one a) (m : PTm n) :
+    Γ ⊢[PRAAx] le one (pw a m) :=
+  le_congr (pw_base_one m) (.eqRefl _) (pw_le_pw m ha)
 
-private theorem le_self_pw₀ : ([] : List (Fm PTm 2)) ⊢[PRAAx] selfPwF := by
-  refine ind _ (le_QF _ _) ?_ ?_
-  · pw_subst
-    exact le_congr (.eqRefl _) (pw_one _).eqSymm (le_refl _)
-  · pw_subst
-    refine le_trans (Prf.hyp0 : [selfPwF] ⊢[PRAAx] _) ?_
-    refine le_congr (.eqRefl _) (pw_succ _ _).eqSymm ?_
-    refine le_of_eq_add (d := pw (succ (var 1)) (succ (var 0)) * var 1) ?_
-    exact (mul_succ _ _).eqTrans (add_comm _ _)
+/-- Powers of a base at least one are nondecreasing in the exponent. -/
+theorem pw_le_pw_exp {a m k : PTm n} (ha : Γ ⊢[PRAAx] le one a) (hmk : Γ ⊢[PRAAx] le m k) :
+    Γ ⊢[PRAAx] le (pw a m) (pw a k) := by
+  have expansion := (congrAp2 powF (eq_add_of_le hmk) (.eqRefl a)).eqTrans (pw_add a m (monus k m))
+  exact le_congr ((mul_comm _ _).eqTrans (one_mul _)) expansion.eqSymm
+    (mul_le_mul_left (pw a m) (pw_one_le ha (monus k m)))
 
-theorem le_self_pw (a m : PTm n) : Γ ⊢[PRAAx] le (succ a) (pw (succ a) (succ m)) := by
-  simpa using inst (Γ := Γ) le_self_pw₀ (![m, a] : Fin 2 → PTm n)
+theorem le_self_pw (a m : PTm n) : Γ ⊢[PRAAx] le (succ a) (pw (succ a) (succ m)) :=
+  le_congr (pw_one _) (.eqRefl _)
+    (pw_le_pw_exp ((succ_monus_succ zero a).eqTrans (zero_le a))
+      ((succ_monus_succ zero m).eqTrans (zero_le m)))
 
 /-- No square lies strictly between `k²` and `(k + 1)²`. -/
 theorem no_square_between {k y : PTm n} (φ : Fm PTm n) (h₁ : Γ ⊢[PRAAx] lt (k * k) (y * y))
