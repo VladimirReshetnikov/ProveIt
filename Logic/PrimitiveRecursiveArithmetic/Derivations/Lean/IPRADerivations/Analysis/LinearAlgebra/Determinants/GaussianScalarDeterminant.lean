@@ -209,9 +209,8 @@ theorem determinant_evaluation_specialization (M m L z : PTm n) (hM : Γ ⊢[PRA
   have terms : Γ ⊢[PRAAx] cellValuesEqual M (constantTable (evaluatedTable M m z) m) m z qzero := by
     refine .allI (.impI (.allI (.impI ?_)))
     let Δ := lt (var 0) (Syn.shift (Syn.shift m)) :: List.map Fm.shift (lt (var 0) (Syn.shift m) :: Γ.map Fm.shift)
-    have rr0 : Δ ⊢[PRAAx] (lt (var 0) (Syn.shift m)).shift := Prf.hyp1
-    have rr : Δ ⊢[PRAAx] lt (var 1) (Syn.shift (Syn.shift m)) := by
-      simpa only [Fm.shift,subst_lt,Syn.shift,Syn.subst_var,Fin.succ_zero_eq_one] using rr0
+    have rr : Δ ⊢[PRAAx] lt (var 1) (Syn.shift (Syn.shift m)) :=
+      (Order.shift_lt (Γ := _ :: Γ.map Fm.shift) (a := var 0) (b := Syn.shift m) Prf.hyp0).wk
     have jj : Δ ⊢[PRAAx] lt (var 0) (Syn.shift (Syn.shift m)) := Prf.hyp0
     have e := (constant_cell_evaluation (Γ := Δ) (evaluatedTable (Syn.shift (Syn.shift M)) (Syn.shift (Syn.shift m)) (Syn.shift (Syn.shift z)))
       (Syn.shift (Syn.shift m)) (var 1) (var 0) qzero rr jj).eqTrans
@@ -239,9 +238,8 @@ theorem scalar_det_congr (A B m : PTm n) (h : Γ ⊢[PRAAx] scalarCellsEqual A B
   have values : Γ ⊢[PRAAx] cellValuesEqual (constantTable A m) (constantTable B m) m qzero qzero := by
     refine .allI (.impI (.allI (.impI ?_)))
     let Δ := lt (var 0) (Syn.shift (Syn.shift m)) :: List.map Fm.shift (lt (var 0) (Syn.shift m) :: Γ.map Fm.shift)
-    have rr0 : Δ ⊢[PRAAx] (lt (var 0) (Syn.shift m)).shift := Prf.hyp1
-    have rr : Δ ⊢[PRAAx] lt (var 1) (Syn.shift (Syn.shift m)) := by
-      simpa only [Fm.shift,subst_lt,Syn.shift,Syn.subst_var,Fin.succ_zero_eq_one] using rr0
+    have rr : Δ ⊢[PRAAx] lt (var 1) (Syn.shift (Syn.shift m)) :=
+      (Order.shift_lt (Γ := _ :: Γ.map Fm.shift) (a := var 0) (b := Syn.shift m) Prf.hyp0).wk
     have jj : Δ ⊢[PRAAx] lt (var 0) (Syn.shift (Syn.shift m)) := Prf.hyp0
     have hs : Δ ⊢[PRAAx] scalarCellsEqual (Syn.shift (Syn.shift A)) (Syn.shift (Syn.shift B)) (Syn.shift (Syn.shift m)) := by
       simpa only [Δ,List.map_cons,Fm.shift,subst_scalarCellsEqual,Syn.shift] using h.shift.shift.wk.wk

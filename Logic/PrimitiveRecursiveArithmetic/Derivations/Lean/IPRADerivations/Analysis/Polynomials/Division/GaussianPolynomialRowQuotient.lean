@@ -96,9 +96,8 @@ theorem Qhat_shape (A m B t x : PTm n) (hA : Γ ⊢[PRAAx] tableShape A m B) : �
   · let Δ := lt (var 0) (Syn.shift (Syn.shift m)) :: List.map Fm.shift (lt (var 0) (Syn.shift m) :: Γ.map Fm.shift)
     have hs : Δ ⊢[PRAAx] tableShape (Syn.shift (Syn.shift A)) (Syn.shift (Syn.shift m)) (Syn.shift (Syn.shift B)) := by
       simpa only [Δ,List.map_cons,Fm.shift,GaussianPolynomialDeterminantTerms.subst_tableShape,Syn.shift] using hA.shift.shift.wk.wk
-    have rr0 : Δ ⊢[PRAAx] (lt (var 0) (Syn.shift m)).shift := Prf.hyp1
-    have rr : Δ ⊢[PRAAx] lt (var 1) (Syn.shift (Syn.shift m)) := by
-      simpa only [Fm.shift,subst_lt,Syn.shift,Syn.subst_var,Fin.succ_zero_eq_one] using rr0
+    have rr : Δ ⊢[PRAAx] lt (var 1) (Syn.shift (Syn.shift m)) :=
+      (Order.shift_lt (Γ := _ :: Γ.map Fm.shift) (a := var 0) (b := Syn.shift m) Prf.hyp0).wk
     simpa only [Δ,Syn.shift,subst_Qhat,Syn.subst_var,Fin.succ_zero_eq_one] using Qhat_cell_length (Syn.shift (Syn.shift A)) (Syn.shift (Syn.shift m))
       (Syn.shift (Syn.shift B)) (Syn.shift (Syn.shift t)) (Syn.shift (Syn.shift x)) (var 1) (var 0) hs rr Prf.hyp0
 
