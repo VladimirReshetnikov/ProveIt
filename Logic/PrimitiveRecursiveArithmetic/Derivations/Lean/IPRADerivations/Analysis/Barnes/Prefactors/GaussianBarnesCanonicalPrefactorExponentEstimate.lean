@@ -17,6 +17,7 @@ set_option maxHeartbeats 1000000
 namespace LeanProofs.IPRA.Analysis.GaussianBarnesCanonicalPrefactorExponentEstimate
 
 open_ipra
+open GaussianRationalPowerDifference (bounded_sum_one)
 open ComplexLogarithmRemainder (add)
 open GaussianBarnesCanonicalPrefactor
   (linearF quadraticCoefficientF quadraticCoefficientData quadraticF polynomialF negativeHalf correctionF quadratic_coefficient_regular)
@@ -129,8 +130,8 @@ theorem derivative_sample_bound (p z R B : PTm n) (hB : Γ ⊢[PRAAx] le one B)
     Γ ⊢[PRAAx] bounded (ap2 exponentF p (derivativeData z B)) (exponentGain R) one := by
   let a := ofGaussian z B
   have b := GaussianGammaEulerHead.fraction_disk z R B hB hz
-  have twoB : Γ ⊢[PRAAx] bounded (twicePoint z B) (two*R) one := bound_congr (.eqRefl _) (by ipra_ring) (one_mul one)
-    (bounded_sum a a R one R one (le_refl one) (le_refl one) b b)
+  have twoB : Γ ⊢[PRAAx] bounded (twicePoint z B) (two*R) one := bound_congr (.eqRefl _) (by ipra_ring) (.eqRefl _)
+    (bounded_sum_one b b)
   exact bound_congr (.eqRefl _) (by unfold exponentGain; ipra_ring) (.eqRefl _)
     (exponent_sample_bound p qone (twicePoint z B) one (two*R) one (le_refl one) qone_bounded twoB)
 

@@ -47,12 +47,12 @@ theorem fraction_bound (a b T : PTm n) (hb : Γ ⊢[PRAAx] le one b) (h : Γ ⊢
 
 theorem exponent_bound (p z R B E T a b : PTm n) (hz : Γ ⊢[PRAAx] source z R B E) (ht : Γ ⊢[PRAAx] domain a b E T) : Γ ⊢[PRAAx]
     bounded (ap2 exponentF p (exponentData z B a b)) (radius R E T) one := by
-  have prod := GaussianRationalReciprocal.bounded_product _ _ (R+one) one (GaussianCompactLogarithmBounds.radius E T) one
-    (le_refl one) (le_refl one) (GaussianEulerIntegrandName.coefficient_bound z R B hz.andE₁ hz.andE₂.andE₂)
+  have prod := GaussianRationalReciprocal.bounded_product_one
+    (GaussianEulerIntegrandName.coefficient_bound z R B hz.andE₁ hz.andE₂.andE₂)
     (GaussianCompactLogarithmBounds.sample_bound (clock p z B a b) a b E T hz.andE₂.andE₁ ht)
   have neg := GaussianRationalReciprocal.bounded_negative _ T one (le_refl one) (fraction_bound a b T ht.andE₁.andE₂ ht.andE₂.andE₂)
-  have sum := GaussianRationalReciprocal.bounded_sum _ _ _ (one*one) T one (positive_product _ _ (le_refl one) (le_refl one)) (le_refl one) prod neg
-  exact GaussianRationalReciprocal.bound_congr (exponent_at p z B a b).eqSymm (by unfold radius; ipra_ring) (by ipra_ring) sum
+  exact GaussianRationalReciprocal.bound_congr (exponent_at p z B a b).eqSymm (.eqRefl _) (.eqRefl _)
+    (GaussianRationalPowerDifference.bounded_sum_one prod neg)
 
 theorem clock_later (p z B a b : PTm n) : Γ ⊢[PRAAx] le p (clock p z B a b) := by
   unfold clock GaussianEulerIntegrandName.powerClock GaussianFastValueCut.exponent

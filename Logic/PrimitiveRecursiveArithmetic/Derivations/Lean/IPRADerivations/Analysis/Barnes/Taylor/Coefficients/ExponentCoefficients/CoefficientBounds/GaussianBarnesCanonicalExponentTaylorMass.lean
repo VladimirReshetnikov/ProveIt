@@ -70,7 +70,7 @@ private theorem product_one (x y A E : PTm n) (hx : Γ ⊢[PRAAx] bounded x A on
 
 private theorem add_one (x y A E : PTm n) (hx : Γ ⊢[PRAAx] bounded x A one)
     (hy : Γ ⊢[PRAAx] bounded y E one) : Γ ⊢[PRAAx] bounded (qadd x y) (A+E) one :=
-  GaussianRationalPowerDifference.bounded_sum_same x y A E one (le_refl one) hx hy
+  GaussianRationalPowerDifference.bounded_sum_one hx hy
 
 private theorem weaken_one (x A B E : PTm n) (hb : Γ ⊢[PRAAx] le one B)
     (ha : Γ ⊢[PRAAx] le A E) (hx : Γ ⊢[PRAAx] bounded x A B) : Γ ⊢[PRAAx] bounded x E one := by
