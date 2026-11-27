@@ -1,6 +1,6 @@
 import IPRADerivations.Analysis.Euler.Derivatives.GaussianEulerDerivativeCommonInterval
-import IPRADerivations.Analysis.Euler.Logarithms.GaussianEulerLogarithmicContinuity
-import IPRADerivations.Analysis.Euler.Logarithms.GaussianEulerLogarithmicImproperInputProperness
+import IPRADerivations.Analysis.Euler.Logarithms.Improper.GaussianEulerLogarithmicContinuity
+import IPRADerivations.Analysis.Euler.Logarithms.Improper.GaussianEulerLogarithmicImproperInputProperness
 
 /-!
 # Original endpoint observations at the compact derivative path

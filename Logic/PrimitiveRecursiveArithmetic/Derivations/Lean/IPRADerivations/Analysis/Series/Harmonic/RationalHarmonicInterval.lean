@@ -1,5 +1,5 @@
 import IPRADerivations.Analysis.Gamma.EulerProducts.GammaEulerConstantName
-import IPRADerivations.Analysis.Gamma.EulerProducts.GammaMeshRobinLogBridge
+import IPRADerivations.Analysis.Gamma.EulerProducts.RationalLogarithm.GammaMeshRobinLogBridge
 
 /-!
 # Actual finite harmonic intervals on positive rational arguments

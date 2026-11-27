@@ -1,4 +1,4 @@
-import IPRADerivations.Analysis.Gamma.EulerProducts.GaussianGammaEulerDenominator
+import IPRADerivations.Analysis.Gamma.EulerProducts.FiniteHeads.GaussianGammaEulerDenominator
 import IPRADerivations.Analysis.RationalArithmetic.FiniteProducts.GaussianRationalRectangularProduct
 
 /-!

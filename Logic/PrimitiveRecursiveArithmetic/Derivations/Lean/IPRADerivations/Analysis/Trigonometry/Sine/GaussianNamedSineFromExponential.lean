@@ -1,6 +1,6 @@
 import IPRADerivations.Analysis.Trigonometry.Arctangent.Cayley.GaussianArctangentCayleyValues
 import IPRADerivations.Analysis.Exponential.IntegerPowers.GaussianBoundedIntegerExponential
-import IPRADerivations.Analysis.Gamma.EulerProducts.GaussianGammaWeierstrassApproximant
+import IPRADerivations.Analysis.Gamma.EulerProducts.Weierstrass.GaussianGammaWeierstrassApproximant
 import IPRADerivations.Analysis.Exponential.Names.Derivatives.GaussianNamedExponentialDifferenceIdentity
 import IPRADerivations.Analysis.Names.FiniteOperations.Sums.GaussianNamedSumDifference
 

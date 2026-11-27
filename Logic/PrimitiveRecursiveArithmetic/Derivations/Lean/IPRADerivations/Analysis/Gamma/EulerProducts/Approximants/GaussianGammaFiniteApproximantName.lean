@@ -1,5 +1,5 @@
 import IPRADerivations.Analysis.Gamma.FunctionalEquations.ReciprocalGamma.GaussianGammaCutoffName
-import IPRADerivations.Analysis.Gamma.EulerProducts.GammaMeshRobinLogBridge
+import IPRADerivations.Analysis.Gamma.EulerProducts.RationalLogarithm.GammaMeshRobinLogBridge
 
 /-!
 # Actual names of the folded finite Gamma approximants

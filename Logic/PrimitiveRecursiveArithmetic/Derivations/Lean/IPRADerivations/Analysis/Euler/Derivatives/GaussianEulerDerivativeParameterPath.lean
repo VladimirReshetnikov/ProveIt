@@ -1,4 +1,4 @@
-import IPRADerivations.Analysis.Euler.Logarithms.ParameterRates.GaussianEulerLogarithmicParameterTaylor
+import IPRADerivations.Analysis.Euler.Logarithms.ParameterRates.Pointwise.GaussianEulerLogarithmicParameterTaylor
 import IPRADerivations.Analysis.Euler.PositiveAxis.LowerBounds.Powers.GaussianEulerLowerPowerCoefficients
 
 /-!

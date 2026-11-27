@@ -1,7 +1,7 @@
 import IPRADerivations.Analysis.Logarithm.Robin.GaussianRobinOddLogarithmName
 import IPRADerivations.Analysis.Gamma.EulerProducts.Exponents.Folded.GaussianGammaFoldedApproximantBalance
 import IPRADerivations.Analysis.Gamma.FunctionalEquations.ReciprocalGamma.GaussianGammaAdjacentCutoff
-import IPRADerivations.Analysis.Gamma.EulerProducts.GaussianGammaWeierstrassApproximant
+import IPRADerivations.Analysis.Gamma.EulerProducts.Weierstrass.GaussianGammaWeierstrassApproximant
 
 /-!
 # Exponential relation for the original Robin odd logarithm

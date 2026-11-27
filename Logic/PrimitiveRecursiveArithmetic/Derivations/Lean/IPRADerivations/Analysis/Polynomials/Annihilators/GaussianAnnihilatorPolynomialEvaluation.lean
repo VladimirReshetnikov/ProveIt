@@ -1,5 +1,5 @@
 import IPRADerivations.Analysis.Polynomials.Annihilators.GaussianAnnihilatorPolynomial
-import IPRADerivations.Analysis.Polynomials.Elimination.Bivariate.GaussianBivariateFlatSum
+import IPRADerivations.Analysis.Polynomials.Elimination.Bivariate.Gaussian.GaussianBivariateFlatSum
 import IPRADerivations.Analysis.Polynomials.Elimination.RowReduction.GaussianRationalRowElimination
 
 /-!

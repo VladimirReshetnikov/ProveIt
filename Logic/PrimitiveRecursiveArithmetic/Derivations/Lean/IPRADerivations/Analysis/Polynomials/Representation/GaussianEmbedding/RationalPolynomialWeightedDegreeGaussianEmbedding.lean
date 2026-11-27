@@ -1,5 +1,5 @@
 import IPRADerivations.Analysis.Polynomials.Evaluation.RationalPolynomialNonvanishing
-import IPRADerivations.Analysis.Polynomials.Elimination.Bivariate.RationalBivariateGaussianEmbedding
+import IPRADerivations.Analysis.Polynomials.Elimination.Bivariate.Rational.RationalBivariateGaussianEmbedding
 import IPRADerivations.Analysis.Polynomials.Representation.GaussianPolynomialWeightedDegree
 
 /-!

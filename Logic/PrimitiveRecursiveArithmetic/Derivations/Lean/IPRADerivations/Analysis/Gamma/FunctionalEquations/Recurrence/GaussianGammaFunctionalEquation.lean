@@ -1,5 +1,5 @@
 import IPRADerivations.Analysis.Gamma.FunctionalEquations.Recurrence.GaussianGammaEulerShiftLimit
-import IPRADerivations.Analysis.Gamma.EulerProducts.GaussianGammaEulerApproximationName
+import IPRADerivations.Analysis.Gamma.EulerProducts.Approximants.GaussianGammaEulerApproximationName
 
 /-!
 # The C20 shift from the actual finite Euler identity

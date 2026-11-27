@@ -1,5 +1,5 @@
 import IPRADerivations.Analysis.Exponential.Polynomials.GaussianRationalPolynomialExponential
-import IPRADerivations.Analysis.Polynomials.Elimination.Bivariate.GaussianBivariatePowerExpansion
+import IPRADerivations.Analysis.Polynomials.Elimination.Bivariate.Gaussian.GaussianBivariatePowerExpansion
 import IPRADerivations.Analysis.Exponential.Polynomials.LogarithmExponentialCoefficients
 
 /-!

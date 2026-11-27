@@ -3,7 +3,7 @@ import IPRADerivations.Analysis.Exponential.Estimates.Lipschitz.GaussianRadiusEx
 import IPRADerivations.Analysis.Names.FiniteOperations.Products.Bounds.GaussianNamedMultiplyRate
 import IPRADerivations.Analysis.Names.Rates.Perturbations.GaussianNamedDifferenceRate
 import IPRADerivations.Analysis.Names.Rates.Transport.GaussianNamedRateTransport
-import IPRADerivations.Analysis.Gamma.EulerProducts.GaussianGammaEulerHead
+import IPRADerivations.Analysis.Gamma.EulerProducts.FiniteHeads.GaussianGammaEulerHead
 
 /-!
 # Actual exponential substitution kernel on a common input disk

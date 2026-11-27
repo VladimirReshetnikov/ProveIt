@@ -1,4 +1,4 @@
-import IPRADerivations.Analysis.LinearAlgebra.Cofactors.GaussianRationalAnnihilatorVector
+import IPRADerivations.Analysis.LinearAlgebra.Cofactors.Vectors.GaussianRationalAnnihilatorVector
 import IPRADerivations.Analysis.Polynomials.Elimination.Superelliptic.Subspaces.GaussianSuperellipticSubspaceFromSpan
 
 /-!

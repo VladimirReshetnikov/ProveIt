@@ -4,7 +4,7 @@ import IPRADerivations.Analysis.Beta.Partitions.Splits.GaussianBetaFixedCutoffSp
 import IPRADerivations.Analysis.Beta.Partitions.Schedules.GaussianBetaRefinedFixedCompactBudget
 import IPRADerivations.Analysis.Beta.Endpoints.Upper.GaussianBetaUpperTailDyadic
 import IPRADerivations.Analysis.Euler.CompactExhaustion.Cutoffs.GaussianEulerLaterCutoffObservation
-import IPRADerivations.Analysis.Gamma.EulerProducts.GaussianGammaEulerInverseApproximationName
+import IPRADerivations.Analysis.Gamma.EulerProducts.Approximants.GaussianGammaEulerInverseApproximationName
 
 /-!
 # The original improper Euler integral equals Gamma at encoded rational inputs

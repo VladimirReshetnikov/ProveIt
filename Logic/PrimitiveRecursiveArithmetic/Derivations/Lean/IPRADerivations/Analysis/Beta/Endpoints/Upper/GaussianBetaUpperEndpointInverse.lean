@@ -1,5 +1,5 @@
 import IPRADerivations.Analysis.Beta.Endpoints.Upper.GaussianBetaUpperEndpointName
-import IPRADerivations.Analysis.Gamma.EulerProducts.GaussianGammaEulerReciprocalInverse
+import IPRADerivations.Analysis.Gamma.EulerProducts.Approximants.GaussianGammaEulerReciprocalInverse
 import IPRADerivations.Analysis.Gamma.FunctionalEquations.Recurrence.GaussianGammaEulerShiftLimit
 import IPRADerivations.Analysis.Beta.Endpoints.Upper.GaussianBetaUpperPowerCancellation
 

@@ -4,7 +4,7 @@ The certified half disk controls the Mercator argument.
 -/
 import IPRADerivations.Analysis.Barnes.FunctionalEquations.UnitShift.FiniteProducts.GaussianBarnesCanonicalBaseProductShift
 import IPRADerivations.Analysis.Logarithm.Local.GaussianLocalLogarithmMultiplicativeIncrement
-import IPRADerivations.Analysis.Gamma.EulerProducts.GaussianGammaWeierstrassApproximant
+import IPRADerivations.Analysis.Gamma.EulerProducts.Weierstrass.GaussianGammaWeierstrassApproximant
 import IPRADerivations.Analysis.RationalArithmetic.Complex.GaussianRationalInverseQuadraticAlgebra
 
 set_option autoImplicit false

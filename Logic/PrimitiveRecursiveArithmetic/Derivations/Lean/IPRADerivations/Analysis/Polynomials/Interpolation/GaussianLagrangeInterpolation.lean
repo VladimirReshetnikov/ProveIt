@@ -1,6 +1,6 @@
 import IPRADerivations.Analysis.RationalArithmetic.Fibers.GaussianRationalFiberRightInverse
 import IPRADerivations.Analysis.Polynomials.Interpolation.GaussianRationalGridCoefficientEquality
-import IPRADerivations.Analysis.Polynomials.Elimination.Bivariate.GaussianBivariatePowerExpansion
+import IPRADerivations.Analysis.Polynomials.Elimination.Bivariate.Gaussian.GaussianBivariatePowerExpansion
 
 /-!
 # Actual finite Lagrange recovery on the numerical natural grid

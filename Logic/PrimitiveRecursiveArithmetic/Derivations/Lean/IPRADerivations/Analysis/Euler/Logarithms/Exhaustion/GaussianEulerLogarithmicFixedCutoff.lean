@@ -1,4 +1,4 @@
-import IPRADerivations.Analysis.Euler.Logarithms.GaussianEulerLogarithmicImproperName
+import IPRADerivations.Analysis.Euler.Logarithms.Improper.GaussianEulerLogarithmicImproperName
 
 /-!
 # Compare the original logarithmic name with a fixed late cutoff

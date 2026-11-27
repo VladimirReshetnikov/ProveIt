@@ -1,4 +1,4 @@
-import IPRADerivations.Analysis.Stirling.Binet.WeightedIntegrals.GaussianBinetReciprocalPrefix
+import IPRADerivations.Analysis.Stirling.Binet.WeightedIntegrals.Reciprocal.GaussianBinetReciprocalPrefix
 import IPRADerivations.Analysis.Gamma.Digamma.LogGammaDerivative.GaussianLogGammaEulerDigammaFractionsCofinal
 import IPRADerivations.Analysis.Gamma.EulerProducts.LogGamma.Recurrence.GaussianLogGammaEulerTerminalShiftError
 import IPRADerivations.Analysis.Names.Rates.Transport.GaussianNamedRateTransport

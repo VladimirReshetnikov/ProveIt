@@ -1,5 +1,5 @@
 import IPRADerivations.Analysis.Polynomials.Determinants.RationalEmbedding.RationalPolynomialDeterminantTermsGaussianEmbedding
-import IPRADerivations.Analysis.Polynomials.Elimination.Bivariate.RationalBivariateGaussianEmbedding
+import IPRADerivations.Analysis.Polynomials.Elimination.Bivariate.Rational.RationalBivariateGaussianEmbedding
 import IPRADerivations.Analysis.Polynomials.CompanionMatrices.GaussianPolynomialMonicCompanion
 
 /-!

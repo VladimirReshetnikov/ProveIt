@@ -1,4 +1,4 @@
-import IPRADerivations.Analysis.Polynomials.Elimination.Bivariate.RationalBivariateGaussianEmbedding
+import IPRADerivations.Analysis.Polynomials.Elimination.Bivariate.Rational.RationalBivariateGaussianEmbedding
 import IPRADerivations.Analysis.RationalArithmetic.Fibers.GaussianRationalCurveFibers
 
 /-!

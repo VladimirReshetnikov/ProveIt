@@ -1,6 +1,6 @@
 import IPRADerivations.Analysis.Gamma.FunctionalEquations.Reflection.GaussianGammaEulerReflectionHead
-import IPRADerivations.Analysis.Gamma.EulerProducts.GaussianGammaEulerReciprocalInverse
-import IPRADerivations.Analysis.Gamma.EulerProducts.GaussianGammaWeierstrassApproximant
+import IPRADerivations.Analysis.Gamma.EulerProducts.Approximants.GaussianGammaEulerReciprocalInverse
+import IPRADerivations.Analysis.Gamma.EulerProducts.Weierstrass.GaussianGammaWeierstrassApproximant
 import IPRADerivations.Analysis.Names.Differences.GaussianNamedDifference
 import IPRADerivations.Analysis.Integration.Moments.GaussianMomentReflection
 

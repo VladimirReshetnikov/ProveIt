@@ -1,4 +1,4 @@
-import IPRADerivations.Analysis.Gamma.EulerProducts.GaussianGammaEulerReciprocalInverse
+import IPRADerivations.Analysis.Gamma.EulerProducts.Approximants.GaussianGammaEulerReciprocalInverse
 import IPRADerivations.Analysis.Names.Rates.Order.GaussianRationalLowerPerturbation
 
 /-!

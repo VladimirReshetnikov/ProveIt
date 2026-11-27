@@ -1,6 +1,6 @@
 import IPRADerivations.Analysis.Gamma.EulerProducts.Exponents.Folded.GaussianGammaFoldedC9Bound
 import IPRADerivations.Analysis.Gamma.EulerProducts.Approximants.GaussianGammaExactTailDisk
-import IPRADerivations.Analysis.Gamma.EulerProducts.GaussianGammaEulerConvergence
+import IPRADerivations.Analysis.Gamma.EulerProducts.Approximants.GaussianGammaEulerConvergence
 
 /-!
 # The quantitative C11 rate of the original folded Weierstrass products

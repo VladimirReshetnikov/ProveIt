@@ -1,6 +1,6 @@
 import IPRADerivations.Analysis.Logarithm.FiniteSeries.Composition.GaussianFiniteLogarithmDyadicTail
 import IPRADerivations.Analysis.Names.Arithmetic.GaussianNameEquivalence
-import IPRADerivations.Analysis.Gamma.EulerProducts.GammaLogarithmFactorBridge
+import IPRADerivations.Analysis.Gamma.EulerProducts.CanonicalProducts.GammaLogarithmFactorBridge
 
 /-!
 # The actual cofinal finite C4 composition as a regular Gaussian name

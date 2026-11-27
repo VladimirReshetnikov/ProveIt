@@ -1,5 +1,5 @@
 import IPRADerivations.Analysis.Stirling.Binet.GaussianBinetFirstFormulaDecay
-import IPRADerivations.Analysis.Stirling.Binet.WeightedIntegrals.GaussianBinetWeightedResolvent
+import IPRADerivations.Analysis.Stirling.Binet.WeightedIntegrals.Resolvent.GaussianBinetWeightedResolvent
 import IPRADerivations.Analysis.Names.Differences.GaussianNamedDifferenceAlgebra
 import IPRADerivations.Analysis.Names.Differences.GaussianNamedDifferenceZero
 

@@ -1,5 +1,5 @@
-import IPRADerivations.Analysis.Euler.Logarithms.GaussianEulerLogarithmicImproperInputProperness
-import IPRADerivations.Analysis.Euler.Logarithms.GaussianEulerLogarithmicZeroIdentification
+import IPRADerivations.Analysis.Euler.Logarithms.Improper.GaussianEulerLogarithmicImproperInputProperness
+import IPRADerivations.Analysis.Euler.Logarithms.Improper.GaussianEulerLogarithmicZeroIdentification
 import IPRADerivations.Analysis.Stirling.GammaLogarithm.GaussianStirlingGammaLogarithm
 
 /-!

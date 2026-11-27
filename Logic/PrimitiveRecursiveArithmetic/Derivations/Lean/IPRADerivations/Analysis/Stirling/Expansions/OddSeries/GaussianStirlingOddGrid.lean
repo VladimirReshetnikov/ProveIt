@@ -1,4 +1,4 @@
-import IPRADerivations.Analysis.Gamma.EulerProducts.GammaMeshRobinLogBridge
+import IPRADerivations.Analysis.Gamma.EulerProducts.RationalLogarithm.GammaMeshRobinLogBridge
 import IPRADerivations.Analysis.RationalArithmetic.Powers.PowerIncrement
 
 /-!

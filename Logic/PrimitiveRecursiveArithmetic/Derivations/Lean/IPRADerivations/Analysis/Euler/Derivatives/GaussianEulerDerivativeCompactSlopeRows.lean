@@ -1,5 +1,5 @@
 import IPRADerivations.Analysis.Euler.Derivatives.GaussianEulerDerivativeCompactSlopeBinding
-import IPRADerivations.Analysis.Euler.Logarithms.ParameterRates.GaussianEulerLogarithmicPathCompactRows
+import IPRADerivations.Analysis.Euler.Logarithms.ParameterRates.Compact.GaussianEulerLogarithmicPathCompactRows
 
 /-!
 # Original compact slope samples as finite telescope rows

@@ -1,7 +1,7 @@
 import IPRADerivations.Analysis.Barnes.Prefactors.GaussianBarnesCanonicalPrefactor
 import IPRADerivations.Analysis.Names.Differences.GaussianNamedStrictOrderDifference
 import IPRADerivations.Analysis.Gamma.EulerProducts.Exponents.Folded.GaussianGammaFoldedApproximantBalance
-import IPRADerivations.Analysis.Gamma.EulerProducts.GaussianGammaEulerHeadLower
+import IPRADerivations.Analysis.Gamma.EulerProducts.FiniteHeads.GaussianGammaEulerHeadLower
 
 /-!
 # The exact shift of the original Barnes prefactor

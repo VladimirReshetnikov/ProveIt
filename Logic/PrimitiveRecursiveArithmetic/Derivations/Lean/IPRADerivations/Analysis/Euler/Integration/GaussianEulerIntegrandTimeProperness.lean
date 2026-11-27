@@ -1,5 +1,5 @@
 import IPRADerivations.Analysis.Euler.Integration.Parameters.GaussianEulerPowerInputProperness
-import IPRADerivations.Analysis.Gamma.EulerProducts.GaussianGammaWeierstrassApproximant
+import IPRADerivations.Analysis.Gamma.EulerProducts.Weierstrass.GaussianGammaWeierstrassApproximant
 
 /-!
 # Original normalized Euler integrands at equal positive rational times

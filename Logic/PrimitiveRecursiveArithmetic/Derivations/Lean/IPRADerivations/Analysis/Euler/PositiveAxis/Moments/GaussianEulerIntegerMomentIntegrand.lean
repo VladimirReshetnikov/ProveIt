@@ -1,6 +1,6 @@
 import IPRADerivations.Analysis.Euler.HarmonicLogarithms.GaussianHarmonicIntegerExponential
 import IPRADerivations.Analysis.Euler.Derivatives.GaussianEulerParameterExponentialIncrement
-import IPRADerivations.Analysis.Euler.Logarithms.GaussianEulerLogarithmicInputProperness
+import IPRADerivations.Analysis.Euler.Logarithms.Compact.GaussianEulerLogarithmicInputProperness
 import IPRADerivations.Analysis.Gamma.FunctionalEquations.Recurrence.GaussianGammaShiftTrajectory
 
 /-!

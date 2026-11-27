@@ -1,4 +1,4 @@
-import IPRADerivations.Analysis.Euler.Logarithms.GaussianEulerLogarithmicIntervalName
+import IPRADerivations.Analysis.Euler.Logarithms.Compact.GaussianEulerLogarithmicIntervalName
 
 /-!
 # Logarithmic interval names with independent geometry and client guards

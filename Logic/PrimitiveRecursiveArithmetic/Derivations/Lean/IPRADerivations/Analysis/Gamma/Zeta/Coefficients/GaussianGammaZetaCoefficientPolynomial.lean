@@ -1,5 +1,5 @@
 import IPRADerivations.Analysis.Gamma.Zeta.Coefficients.GaussianGammaZetaDegreeName
-import IPRADerivations.Analysis.Polynomials.Elimination.Bivariate.GaussianBivariatePowerExpansion
+import IPRADerivations.Analysis.Polynomials.Elimination.Bivariate.Gaussian.GaussianBivariatePowerExpansion
 
 /-!
 # Actual stored coefficients for the original Gamma zeta-tail polynomial

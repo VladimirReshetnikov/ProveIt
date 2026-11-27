@@ -1,5 +1,5 @@
 import IPRADerivations.Analysis.Euler.Derivatives.GaussianEulerDerivativeSubdivisionBudget
-import IPRADerivations.Analysis.Euler.Logarithms.ParameterRates.GaussianEulerLogarithmicPathCompactTaylor
+import IPRADerivations.Analysis.Euler.Logarithms.ParameterRates.Compact.GaussianEulerLogarithmicPathCompactTaylor
 
 /-!
 # Numerical precision budgets for the actual derivative telescope

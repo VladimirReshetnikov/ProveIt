@@ -1,4 +1,4 @@
-import IPRADerivations.Analysis.LinearAlgebra.Cofactors.RationalCofactorSupport
+import IPRADerivations.Analysis.LinearAlgebra.Cofactors.Vectors.RationalCofactorSupport
 import IPRADerivations.Analysis.LinearAlgebra.Matrices.RationalMatrixInputHeight
 
 /-!

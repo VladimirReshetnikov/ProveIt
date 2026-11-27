@@ -1,5 +1,5 @@
 import IPRADerivations.Analysis.Gamma.EulerProducts.RationalLogarithm.GaussianGammaEulerRationalLog
-import IPRADerivations.Analysis.Gamma.EulerProducts.GaussianGammaEulerInverseConvergence
+import IPRADerivations.Analysis.Gamma.EulerProducts.Approximants.GaussianGammaEulerInverseConvergence
 import IPRADerivations.Analysis.Euler.VerticalBounds.Projections.GaussianEulerVerticalProjection
 
 /-!

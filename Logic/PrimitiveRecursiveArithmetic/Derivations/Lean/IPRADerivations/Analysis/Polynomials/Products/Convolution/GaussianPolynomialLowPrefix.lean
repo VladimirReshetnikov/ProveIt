@@ -1,5 +1,5 @@
 import IPRADerivations.Analysis.Polynomials.Representation.GaussianRationalPolynomialDilation
-import IPRADerivations.Analysis.Polynomials.Elimination.Bivariate.GaussianBivariatePowerExpansion
+import IPRADerivations.Analysis.Polynomials.Elimination.Bivariate.Gaussian.GaussianBivariatePowerExpansion
 
 /-!
 # The actual stored low-degree power prefix

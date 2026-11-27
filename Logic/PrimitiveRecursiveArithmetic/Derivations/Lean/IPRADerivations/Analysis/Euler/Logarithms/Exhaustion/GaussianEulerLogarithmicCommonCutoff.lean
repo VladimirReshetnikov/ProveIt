@@ -1,5 +1,5 @@
 import IPRADerivations.Analysis.Euler.Logarithms.LowerBounds.GaussianEulerLogarithmicLowerCutoffBudget
-import IPRADerivations.Analysis.LinearAlgebra.Cofactors.RationalCofactorMinorBounds
+import IPRADerivations.Analysis.LinearAlgebra.Cofactors.Minors.RationalCofactorMinorBounds
 
 /-!
 # One numerical cutoff schedule for both logarithmic Euler tails

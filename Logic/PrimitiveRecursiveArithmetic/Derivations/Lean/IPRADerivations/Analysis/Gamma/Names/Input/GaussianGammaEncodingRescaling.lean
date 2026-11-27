@@ -1,5 +1,5 @@
 import IPRADerivations.Analysis.Gamma.Names.Input.GaussianGammaInputProperness
-import IPRADerivations.Analysis.Gamma.EulerProducts.GaussianGammaEulerApproximationName
+import IPRADerivations.Analysis.Gamma.EulerProducts.Approximants.GaussianGammaEulerApproximationName
 import IPRADerivations.Analysis.Exponential.IntegerPowers.GaussianRobinMeshExponential
 import IPRADerivations.Analysis.Gamma.FunctionalEquations.Recurrence.GaussianGammaRepeatedShift
 import IPRADerivations.Analysis.Gamma.Names.PoleFree.GaussianGammaRadiusOverlap

@@ -1,5 +1,5 @@
 import IPRADerivations.Analysis.Gamma.FunctionalEquations.Reflection.GaussianGammaEulerReflectionName
-import IPRADerivations.Analysis.Gamma.EulerProducts.GaussianGammaEulerApproximationName
+import IPRADerivations.Analysis.Gamma.EulerProducts.Approximants.GaussianGammaEulerApproximationName
 import IPRADerivations.Analysis.Trigonometry.SineProducts.GaussianSineProductName
 
 /-!

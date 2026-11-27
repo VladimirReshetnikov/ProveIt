@@ -1,5 +1,5 @@
-import IPRADerivations.Analysis.Euler.Logarithms.GaussianEulerLogarithmicHalfDecay
-import IPRADerivations.Analysis.Euler.Logarithms.GaussianEulerLogarithmicCompactName
+import IPRADerivations.Analysis.Euler.Logarithms.Compact.GaussianEulerLogarithmicHalfDecay
+import IPRADerivations.Analysis.Euler.Logarithms.Compact.GaussianEulerLogarithmicCompactName
 import IPRADerivations.Analysis.Euler.Integration.Parts.GaussianEulerIntegrationByPartsObservation
 import IPRADerivations.Analysis.Euler.PositiveAxis.UpperBounds.GaussianEulerUpperTailPointwise
 

@@ -1,5 +1,5 @@
 import IPRADerivations.Analysis.Stirling.Binet.ExponentialIntegrals.GaussianBinetExponentialRectangleResolvent
-import IPRADerivations.Analysis.Stirling.Binet.WeightedIntegrals.GaussianBinetWeightedResolvent
+import IPRADerivations.Analysis.Stirling.Binet.WeightedIntegrals.Resolvent.GaussianBinetWeightedResolvent
 
 /-!
 # Cofinal comparison of the actual rectangle and weighted resolvent

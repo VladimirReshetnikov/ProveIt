@@ -1,4 +1,4 @@
-import IPRADerivations.Analysis.Stirling.Binet.WeightedIntegrals.GaussianBinetReciprocalRows
+import IPRADerivations.Analysis.Stirling.Binet.WeightedIntegrals.Reciprocal.GaussianBinetReciprocalRows
 import IPRADerivations.Analysis.Polynomials.Coefficients.GaussianRationalCoefficientScaling
 import IPRADerivations.Analysis.Trigonometry.Hyperbolic.ProductEstimates.GaussianSineProductImaginaryLogDerivative
 

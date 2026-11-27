@@ -1,4 +1,4 @@
-import IPRADerivations.Analysis.Euler.Logarithms.GaussianEulerLogarithmicCompactName
+import IPRADerivations.Analysis.Euler.Logarithms.Compact.GaussianEulerLogarithmicCompactName
 import IPRADerivations.Analysis.RationalArithmetic.OrderBounds.GaussianRationalSlackRemoval
 
 /-!

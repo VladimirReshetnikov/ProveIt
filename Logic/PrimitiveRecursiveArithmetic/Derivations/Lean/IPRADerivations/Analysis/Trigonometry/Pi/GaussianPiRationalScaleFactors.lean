@@ -1,5 +1,5 @@
 import IPRADerivations.Analysis.Trigonometry.Pi.GaussianPiRationalScale
-import IPRADerivations.Analysis.Gamma.EulerProducts.GaussianGammaWeierstrassApproximant
+import IPRADerivations.Analysis.Gamma.EulerProducts.Weierstrass.GaussianGammaWeierstrassApproximant
 
 /-!
 # Factoring signed π steps through a positive rational step

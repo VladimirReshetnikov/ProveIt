@@ -1,7 +1,7 @@
 import IPRADerivations.Analysis.Gamma.Convexity.GaussianGammaNativeMidpointLogGap
 import IPRADerivations.Analysis.Gamma.Convexity.GaussianGammaWeightedMidpointGrouping
 import IPRADerivations.Analysis.Exponential.PositiveAxis.GaussianPositiveExponentialMajorant
-import IPRADerivations.Analysis.Gamma.EulerProducts.GaussianGammaEulerDenominator
+import IPRADerivations.Analysis.Gamma.EulerProducts.FiniteHeads.GaussianGammaEulerDenominator
 
 /-!
 # A positive weighted margin for the native rational log-Gamma chord

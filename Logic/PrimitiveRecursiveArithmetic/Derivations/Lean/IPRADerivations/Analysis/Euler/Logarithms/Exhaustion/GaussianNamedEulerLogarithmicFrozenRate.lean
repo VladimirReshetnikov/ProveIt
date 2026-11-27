@@ -1,4 +1,4 @@
-import IPRADerivations.Analysis.Euler.Logarithms.GaussianNamedEulerLogarithmicImproper
+import IPRADerivations.Analysis.Euler.Logarithms.Improper.GaussianNamedEulerLogarithmicImproper
 
 /-!
 # Compare a named logarithmic integral to any sufficiently late native input

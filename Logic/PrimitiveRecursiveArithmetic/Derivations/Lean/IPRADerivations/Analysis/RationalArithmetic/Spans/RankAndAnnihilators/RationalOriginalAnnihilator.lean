@@ -1,5 +1,5 @@
 import IPRADerivations.Analysis.RationalArithmetic.Spans.Membership.RationalRowSpanGaussianEmbedding
-import IPRADerivations.Analysis.LinearAlgebra.Cofactors.GaussianRationalAnnihilatorVector
+import IPRADerivations.Analysis.LinearAlgebra.Cofactors.Vectors.GaussianRationalAnnihilatorVector
 import IPRADerivations.Analysis.RationalArithmetic.Spans.RankAndAnnihilators.GaussianRationalRankNullityCriterion
 
 /-!

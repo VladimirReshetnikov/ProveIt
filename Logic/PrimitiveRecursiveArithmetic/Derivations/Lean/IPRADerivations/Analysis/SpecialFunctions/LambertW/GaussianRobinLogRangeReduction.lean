@@ -1,5 +1,5 @@
 import IPRADerivations.Analysis.Exponential.IntegerPowers.GaussianRobinOddExponential
-import IPRADerivations.Analysis.Gamma.EulerProducts.GammaMeshRobinLogBridge
+import IPRADerivations.Analysis.Gamma.EulerProducts.RationalLogarithm.GammaMeshRobinLogBridge
 
 /-!
 # Exponentials of the original range-reduced logarithm components

@@ -1,6 +1,6 @@
 import IPRADerivations.Analysis.Stirling.Binet.Kernel.HyperbolicForm.GaussianBinetKernelHalfExponential
 import IPRADerivations.Analysis.Stirling.Binet.Kernel.HyperbolicForm.GaussianBinetKernelRationalTimeCleared
-import IPRADerivations.Analysis.Stirling.Binet.WeightedIntegrals.GaussianBinetWeightedExponential
+import IPRADerivations.Analysis.Stirling.Binet.WeightedIntegrals.Exponential.GaussianBinetWeightedExponential
 import IPRADerivations.Analysis.Names.Differences.GaussianNamedStrictOrderDifference
 import IPRADerivations.Analysis.Names.Differences.GaussianNamedDifferenceAlgebra
 

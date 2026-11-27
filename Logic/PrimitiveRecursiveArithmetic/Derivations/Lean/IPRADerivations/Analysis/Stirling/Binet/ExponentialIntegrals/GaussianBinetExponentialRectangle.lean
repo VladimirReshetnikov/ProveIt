@@ -1,4 +1,4 @@
-import IPRADerivations.Analysis.Stirling.Binet.WeightedIntegrals.GaussianBinetWeightedExponentialGrid
+import IPRADerivations.Analysis.Stirling.Binet.WeightedIntegrals.Exponential.GaussianBinetWeightedExponentialGrid
 import IPRADerivations.Analysis.Stirling.Binet.ExponentialIntegrals.GaussianBinetExponentialIntegralGrid
 import IPRADerivations.Analysis.RationalArithmetic.FiniteSums.Reindexing.GaussianRationalFubini
 

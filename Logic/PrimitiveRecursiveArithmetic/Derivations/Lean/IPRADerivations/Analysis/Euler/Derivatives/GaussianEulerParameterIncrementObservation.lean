@@ -1,4 +1,4 @@
-import IPRADerivations.Analysis.Euler.Logarithms.ParameterRates.GaussianEulerLogarithmicParameterIncrement
+import IPRADerivations.Analysis.Euler.Logarithms.ParameterRates.Pointwise.GaussianEulerLogarithmicParameterIncrement
 import IPRADerivations.Analysis.Euler.Derivatives.GaussianEulerParameterExponentialIncrement
 
 /-!

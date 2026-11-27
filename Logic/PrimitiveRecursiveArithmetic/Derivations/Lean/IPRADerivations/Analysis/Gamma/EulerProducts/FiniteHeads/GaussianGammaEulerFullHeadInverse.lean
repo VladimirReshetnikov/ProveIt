@@ -1,4 +1,4 @@
-import IPRADerivations.Analysis.Gamma.EulerProducts.GaussianGammaEulerReciprocalInverse
+import IPRADerivations.Analysis.Gamma.EulerProducts.Approximants.GaussianGammaEulerReciprocalInverse
 import IPRADerivations.Analysis.Trigonometry.SineProducts.Bounds.GaussianSineProductReflectionLower
 
 /-!

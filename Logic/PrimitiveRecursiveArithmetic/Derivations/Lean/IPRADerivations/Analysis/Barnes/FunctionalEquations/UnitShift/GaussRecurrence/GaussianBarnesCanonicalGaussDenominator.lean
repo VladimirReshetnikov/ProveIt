@@ -1,5 +1,5 @@
 import IPRADerivations.Analysis.Barnes.FunctionalEquations.UnitShift.FiniteProducts.GaussianBarnesCanonicalPolynomialShift
-import IPRADerivations.Analysis.Gamma.EulerProducts.GaussianGammaEulerDenominator
+import IPRADerivations.Analysis.Gamma.EulerProducts.FiniteHeads.GaussianGammaEulerDenominator
 
 /-!
 # The Barnes plain polynomial is the original Euler denominator

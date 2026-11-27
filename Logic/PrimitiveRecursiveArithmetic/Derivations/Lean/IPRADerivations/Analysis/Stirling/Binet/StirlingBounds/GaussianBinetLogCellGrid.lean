@@ -1,5 +1,5 @@
 import IPRADerivations.Analysis.Stirling.Binet.StirlingBounds.GaussianBinetLogHorizontalStep
-import IPRADerivations.Analysis.Stirling.Binet.WeightedIntegrals.GaussianBinetReciprocalMean
+import IPRADerivations.Analysis.Stirling.Binet.WeightedIntegrals.Reciprocal.GaussianBinetReciprocalMean
 
 /-!
 # The canonical logarithm across a finite reciprocal grid

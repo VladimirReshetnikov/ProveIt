@@ -1,5 +1,5 @@
 import IPRADerivations.Analysis.Euler.Logarithms.UpperBounds.GaussianEulerLogarithmicUpperQuadrature
-import IPRADerivations.Analysis.Euler.Logarithms.GaussianEulerLogarithmicIntervalName
+import IPRADerivations.Analysis.Euler.Logarithms.Compact.GaussianEulerLogarithmicIntervalName
 import IPRADerivations.Analysis.Euler.PositiveAxis.UpperBounds.GaussianEulerUpperTailNameBudget
 
 /-!

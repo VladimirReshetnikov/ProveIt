@@ -1,6 +1,6 @@
 import IPRADerivations.Analysis.RationalArithmetic.OrderBounds.GaussianRationalLowerBounds
 import IPRADerivations.Analysis.Names.Order.GaussianFastValueCut
-import IPRADerivations.Analysis.Euler.Logarithms.ParameterRates.GaussianEulerLogarithmicParameterIncrement
+import IPRADerivations.Analysis.Euler.Logarithms.ParameterRates.Pointwise.GaussianEulerLogarithmicParameterIncrement
 
 /-!
 # Numerical separation and subdivision budgets for Euler differentiation

@@ -1,5 +1,5 @@
 import IPRADerivations.Analysis.RationalArithmetic.GoldenRatio.RationalPhiSharpFamily
-import IPRADerivations.Analysis.Polynomials.Elimination.Bivariate.RationalBivariateGridCoefficients
+import IPRADerivations.Analysis.Polynomials.Elimination.Bivariate.Rational.RationalBivariateGridCoefficients
 import IPRADerivations.Foundations.BoundedDecision
 
 /-!
