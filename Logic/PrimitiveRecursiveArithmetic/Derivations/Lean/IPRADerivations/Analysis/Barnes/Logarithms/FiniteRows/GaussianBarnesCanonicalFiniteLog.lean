@@ -17,7 +17,7 @@ open_ipra
 open LeanProofs.IPRA.AnalyticNumberTheory.PhiLower (le_mul_mono)
 open GaussianBarnesCanonicalLogRow (boundNumerator)
 open GaussianBarnesCanonicalLogTail (source tailDenominator tail_denominator_positive tail_bound)
-open GaussianCoefficientNameBounds (unit unit_positive bounded_radius_mono)
+open GaussianCoefficientNameBounds (unit unit_positive bounded_radius_mono_den)
 open GaussianEuclideanDistanceName (pointCN)
 open GaussianExponentialReference (unit_monotone)
 open GaussianFastValueCut (exponent query_budget)
@@ -124,8 +124,7 @@ theorem rounded_bound (v z R B N r : PTm n) (h : Γ ⊢[PRAAx] source z R B N)
   let exactSum := GaussianBarnesCanonicalLogTail.value z B N r (DyadicComplexLogarithm.precision v)
   have hD := tail_denominator_positive N h.andE₂.andE₁
   have exactBound : Γ ⊢[PRAAx] bounded exactSum (boundNumerator R) one :=
-    bounded_radius_mono _ _ _ _ _ hD (le_refl one)
-      (mul_le_mul_left (boundNumerator R) hD)
+    bounded_radius_mono_den (le_refl one) hD
       (tail_bound z R B N r _ h)
   have approx : Γ ⊢[PRAAx] distanceBounded (value v z R B N r) exactSum one one :=
     distance_radius_mono _ _ _ _ _ _ (GaussianLocalLogarithmName.unit_positive v) (le_refl one)

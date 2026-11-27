@@ -18,7 +18,7 @@ namespace LeanProofs.IPRA.Analysis.GaussianHarmonicLogarithmProduct
 open_ipra
 open GaussianHarmonicLogarithmName (nameF data sample observation sample_at name_regular clock)
 open GaussianRationalMetric (distanceBounded)
-open GaussianRationalDistanceOrder (distance_congr distance_radius_mono distance_triangle_same distance_symmetric)
+open GaussianRationalDistanceOrder (distance_congr distance_radius_mono_den distance_triangle_same distance_symmetric)
 open GaussianCoefficientNameBounds (unit unit_positive)
 open GaussianNameEquivalence (crossEquivalent)
 
@@ -49,8 +49,7 @@ theorem finite_samples (p a b c d : PTm n) (h : Γ ⊢[PRAAx] source a b c d) : 
     h.andE₁.andE₁ h.andE₁.andE₂ h.andE₂.andE₁ h.andE₂.andE₂ hQ
   have old := distance_congr (sample_at p (a*c) (b*d)).eqSymm
     (GaussianRationalSyntheticDivision.qadd_congr (sample_at p a b) (sample_at p c d)).eqSymm (.eqRefl _) (.eqRefl _) raw
-  exact distance_radius_mono _ _ _ _ two (unit p) hQ (unit_positive p)
-    (AnalyticNumberTheory.PhiLower.le_mul_mono (le_refl two) (mesh_later p)) old
+  exact distance_radius_mono_den (unit_positive p) (mesh_later p) old
 
 theorem diagonal_error (p a b c d : PTm n) (h : Γ ⊢[PRAAx] source a b c d) : Γ ⊢[PRAAx]
     distanceBounded (sample p (a*c) (b*d)) (ap2 addedF p (addedData a b c d)) (num 5) (unit p) := by

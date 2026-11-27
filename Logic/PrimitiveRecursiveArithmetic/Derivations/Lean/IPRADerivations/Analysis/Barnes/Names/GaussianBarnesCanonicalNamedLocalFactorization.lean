@@ -27,7 +27,7 @@ open GaussianNameEquivalence (crossEquivalent cross_refl cross_to_diagonal diago
 open GaussianNamedBoundedProductObservation (sample_bounds sample_error)
 open GaussianNamedInverseRate (rateNumerator rateDenominator rate_at denominator_positive)
 open GaussianNamedMultiplyRate (sampleBound)
-open GaussianRationalDistanceOrder (distance_congr distance_radius_mono distance_symmetric distance_triangle_same)
+open GaussianRationalDistanceOrder (distance_congr distance_radius_mono distance_symmetric distance_triangle_same distance_radius_mono_den)
 open GaussianRationalHorner (qmul)
 open GaussianRationalL1 (rawGaussian rawDen)
 open GaussianRationalMetric (distanceBounded)
@@ -95,8 +95,7 @@ theorem regular (f : PR 2) (x R m : PTm n) (h : Γ ⊢[PRAAx] source f x R m)
 
 private theorem later_to_earlier (a b A p q : PTm n) (hpq : Γ ⊢[PRAAx] le p q)
     (h : Γ ⊢[PRAAx] distanceBounded a b A (unit q)) : Γ ⊢[PRAAx] distanceBounded a b A (unit p) :=
-  distance_radius_mono _ _ _ _ _ _ (unit_positive q) (unit_positive p)
-    (mul_le_mul_left A (unit_monotone hpq)) h
+  distance_radius_mono_den (unit_positive p) (unit_monotone hpq) h
 
 private theorem value_readback (f : PR 2) (p k x R : PTm n)
     (h : Γ ⊢[PRAAx] GaussianBarnesCanonicalNamedDemand.source f x R)

@@ -23,7 +23,7 @@ open GaussianRationalHorner (qadd qmul canonical positive_product)
 open GaussianRationalMetric (bounded distanceBounded)
 open GaussianRationalPolynomialExponential (scalarSum scalarBody)
 open GaussianRationalReciprocal (bound_congr)
-open GaussianRationalDistanceOrder (distance_congr distance_radius_mono distance_triangle_same)
+open GaussianRationalDistanceOrder (distance_congr distance_radius_mono distance_triangle_same distance_radius_mono_den)
 open GaussianRadiusExponentialName (input index inputPrecision sample sample_at value query_bound
   boundedSamples bounded_samples_at precision_budget commonDenominator)
 open GaussianRationalExponentialTail (cutoff lastIndex last_successor precisionDenominator precision_positive)
@@ -44,8 +44,7 @@ theorem unit_monotone {s t : PTm n} (h : Γ ⊢[PRAAx] le s t) : Γ ⊢[PRAAx] l
 
 theorem dyadic_weaken (a b A s t : PTm n) (hst : Γ ⊢[PRAAx] le s t)
     (h : Γ ⊢[PRAAx] distanceBounded a b A (unit t)) : Γ ⊢[PRAAx] distanceBounded a b A (unit s) :=
-  distance_radius_mono _ _ _ _ _ _ (unit_positive t) (unit_positive s)
-    (mul_le_mul_left A (unit_monotone hst)) h
+  distance_radius_mono_den (unit_positive s) (unit_monotone hst) h
 
 theorem later_query (f : PR 2) (R x p j : PTm n) (h : Γ ⊢[PRAAx] input f R x)
     (hj : Γ ⊢[PRAAx] le (inputPrecision R p) j) : Γ ⊢[PRAAx]

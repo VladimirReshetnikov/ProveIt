@@ -32,7 +32,7 @@ open GaussianNamedExponentialLocalUniqueness (lateSmall)
 open GaussianRadiusExponentialName (input data inputPrecision index)
 open GaussianRationalHorner (qadd qmul canonical)
 open GaussianRationalMetric (bounded distanceBounded)
-open GaussianRationalDistanceOrder (distance_congr distance_symmetric distance_radius_mono distance_triangle_same)
+open GaussianRationalDistanceOrder (distance_congr distance_symmetric distance_radius_mono_den distance_triangle_same)
 open GaussianRationalReciprocal (bounded_product bound_congr qone)
 open GaussianRationalSyntheticDivision (qmul_congr qsub_congr)
 open GaussianRationalPolynomialExponential (scalarSum)
@@ -176,8 +176,7 @@ private theorem fourth_reflection (f : PR 2) (R x C anchor : PTm n)
   have later := GaussianExponentialReference.unit_monotone (Γ := Δ) (le_add_right p (sh C))
   have q := GaussianRationalFourthRootBranch.cancel_fourth _ _ _ hk
     (near_one f (sh R) (sh x) (sh C) k hs' (le_add_left _ _)) (fourth_at g (data (sh R) (sh x)) (sh anchor) k hg' he')
-  have step := distance_radius_mono _ _ _ _ _ (unit p) hk hp
-    (AnalyticNumberTheory.PhiLower.le_mul_mono (le_refl _) later) q
+  have step := distance_radius_mono_den hp later q
   have earliest := distance_symmetric _ _ _ _ hp
     (GaussianNameEquivalence.point_at_later g (data (sh R) (sh x)) p k hg' (le_add_right p (sh C)))
   simpa [diagonalRate,Syn.shift,sh,p,Δ,K,g,y,fourthBudget,squareData,two,one] using

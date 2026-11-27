@@ -139,6 +139,12 @@ theorem bounded_radius_mono_one {z A C : PTm n}
     (hz : Γ ⊢[PRAAx] bounded z A one) : Γ ⊢[PRAAx] bounded z C one :=
   bounded_radius_mono_same (le_refl one) hAC hz
 
+/-- Decreasing the positive denominator increases the radius at a fixed numerator. -/
+theorem bounded_radius_mono_den {z A B D : PTm n}
+    (hD : Γ ⊢[PRAAx] le one D) (hDB : Γ ⊢[PRAAx] le D B)
+    (hz : Γ ⊢[PRAAx] bounded z A B) : Γ ⊢[PRAAx] bounded z A D :=
+  bounded_radius_mono z A B A D (le_trans hD hDB) hD (le_mul_mono (le_refl A) hDB) hz
+
 def unit (s : PTm n) : PTm n := pw two s
 ipra_subst unit
 theorem unit_positive (s : PTm n) : Γ ⊢[PRAAx] le one (unit s) :=

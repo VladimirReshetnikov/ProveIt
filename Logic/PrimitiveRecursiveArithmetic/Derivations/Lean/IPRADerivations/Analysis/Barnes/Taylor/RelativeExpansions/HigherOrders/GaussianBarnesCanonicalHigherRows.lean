@@ -26,7 +26,7 @@ open GaussianRationalMetric (bounded qnegative)
 open GaussianRationalReciprocal (power reciprocal bounded_power bounded_negative bounded_product bound_congr)
 open GaussianRationalSyntheticDivision (qmul_congr)
 open GaussianReciprocalHorner (qmul_associative)
-open GaussianCoefficientNameBounds (bounded_radius_mono)
+open GaussianCoefficientNameBounds (bounded_radius_mono_den)
 open Products (fact)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
@@ -127,14 +127,12 @@ theorem coefficient_square_bound (z R B k j : PTm n) (h : Γ ⊢[PRAAx] source z
   have fit : Γ ⊢[PRAAx] le (k*k) (coefficientDenominator k j) :=
     le_trans (square_le k j hk)
       (le_congr (one_mul P) (.eqRefl _) (mul_le_mul_right P (degree_positive j)))
-  exact bounded_radius_mono _ _ _ _ _ (coefficient_denominator_positive k j hk) (positive_product _ _ hk hk)
-    (mul_le_mul_left (coefficientGain j) fit) (coefficient_bound z R B k j h)
+  exact bounded_radius_mono_den (positive_product _ _ hk hk) fit (coefficient_bound z R B k j h)
 
 theorem derivative_square_bound (z R B k j : PTm n) (h : Γ ⊢[PRAAx] source z R B k) :
     Γ ⊢[PRAAx] bounded (derivative z B k j) (derivativeGain j) (k*k) := by
   let hk := h.andE₂.andE₁
-  exact bounded_radius_mono _ _ _ _ _ (power_denominator_positive k j hk) (positive_product _ _ hk hk)
-    (mul_le_mul_left (derivativeGain j) (square_le k j hk))
+  exact bounded_radius_mono_den (positive_product _ _ hk hk) (square_le k j hk)
     (derivative_bound z R B k j h)
 
 theorem factorial_binding (z B k j : PTm n) (hk : Γ ⊢[PRAAx] le one k) :

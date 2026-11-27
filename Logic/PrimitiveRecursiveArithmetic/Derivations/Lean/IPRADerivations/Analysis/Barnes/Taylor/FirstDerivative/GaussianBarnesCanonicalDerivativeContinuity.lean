@@ -24,7 +24,7 @@ open GaussianBarnesCanonicalDerivativeRow (offset offset_bound base_lower invers
 open GaussianBarnesCanonicalLogCofinal (source data)
 open GaussianBarnesCanonicalLogCofinalRate (initial_source)
 open GaussianBarnesCanonicalLogSchedule (initial initial_positive)
-open GaussianCoefficientNameBounds (unit unit_positive bounded_radius_mono)
+open GaussianCoefficientNameBounds (unit unit_positive bounded_radius_mono bounded_radius_mono_den)
 open GaussianNamedInverseRate (independentRate)
 open GaussianRationalDistanceOrder (distance_congr distance_radius_mono)
 open GaussianRationalHorner (qmul ofGaussian positive_product)
@@ -170,8 +170,7 @@ theorem sample_bound (p z R B : PTm n) (h : Γ ⊢[PRAAx] source z R B) :
     (GaussianBarnesCanonicalDerivativeCofinal.length p R) (initial_source z R B h)
   have hi := initial_positive (Γ := Γ) R
   exact bound_congr (sample_at p z R B).eqSymm (.eqRefl _) (.eqRefl _)
-    (bounded_radius_mono _ _ _ _ _ hi (le_refl one)
-      (mul_le_mul_left (boundNumerator R) hi) b)
+    (bounded_radius_mono_den (le_refl one) hi b)
 
 theorem samples (z R B : PTm n) (h : Γ ⊢[PRAAx] source z R B) :
     Γ ⊢[PRAAx] GaussianNamedMultiplyRate.sampleBound nameF (data z R B) (boundNumerator R) := by

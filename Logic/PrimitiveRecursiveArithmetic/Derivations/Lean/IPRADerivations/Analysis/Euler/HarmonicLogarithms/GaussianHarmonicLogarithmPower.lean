@@ -23,7 +23,7 @@ open GaussianHarmonicLogarithmName (nameF data sample sample_at)
 open GaussianHarmonicLogarithmProduct (mesh mesh_later)
 open GaussianRationalNaturalScale (natScale)
 open GaussianRationalMetric (distanceBounded)
-open GaussianRationalDistanceOrder (distance_congr distance_radius_mono distance_triangle_same)
+open GaussianRationalDistanceOrder (distance_congr distance_radius_mono distance_triangle_same distance_radius_mono_den)
 open GaussianCoefficientNameBounds (unit unit_positive)
 open GaussianEuclideanDistanceName (pointCN)
 open GaussianNameEquivalence (crossEquivalent cross_trans)
@@ -57,8 +57,7 @@ theorem finite_sample_error (p a b m : PTm n) (h : Γ ⊢[PRAAx] GaussianPositiv
   have raw := GaussianHarmonicIntervalPower.finite_power a b (mesh p) m h.andE₁ h.andE₂ hQ
   have old := distance_congr (sample_at p (pw a m) (pw b m)).eqSymm
     (GaussianRationalNaturalScale.natScale_congr (.eqRefl m) (sample_at p a b)).eqSymm (.eqRefl _) (.eqRefl _) raw
-  exact distance_radius_mono _ _ _ _ (two*m) (unit p) hQ (unit_positive p)
-    (AnalyticNumberTheory.PhiLower.le_mul_mono (le_refl (two*m)) (mesh_later p)) old
+  exact distance_radius_mono_den (unit_positive p) (mesh_later p) old
 
 theorem actual_scale_clock_error (p a b m : PTm n) (h : Γ ⊢[PRAAx] GaussianPositiveRationalLogarithm.source a b) : Γ ⊢[PRAAx]
     distanceBounded (natScale m (sample p a b)) (ap2 scaledF p (scaledData a b m)) (two*m) (unit p) := by
