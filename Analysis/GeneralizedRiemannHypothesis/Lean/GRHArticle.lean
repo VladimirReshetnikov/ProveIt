@@ -66,6 +66,7 @@ import GRHArticle.ProgressionFree.SatelliteProfiles
 import GRHArticle.SingularModuli.BaseChange
 import GRHArticle.SingularModuli.Binomial
 import GRHArticle.SingularModuli.CMPoints
+import GRHArticle.SingularModuli.ClassPolynomialConstants
 import GRHArticle.SingularModuli.ClassPolynomialTruncation
 import GRHArticle.SingularModuli.ConductorBound
 import GRHArticle.SingularModuli.ConjugateDisks
@@ -81,6 +82,7 @@ import GRHArticle.SingularModuli.PadicExpSubstitution
 import GRHArticle.SingularModuli.PermutationTest
 import GRHArticle.SingularModuli.QuarticDiskCertificates
 import GRHArticle.SingularModuli.QuarticSupport
+import GRHArticle.SingularModuli.RationalComplexEnclosure
 import GRHArticle.SingularModuli.ReducedCuspSeparation
 import GRHArticle.SingularModuli.ReducedForms
 import GRHArticle.SingularModuli.RootCertificates

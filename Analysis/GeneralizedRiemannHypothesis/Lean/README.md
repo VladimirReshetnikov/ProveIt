@@ -34,6 +34,8 @@ Each entry below identifies the part of the article covered by the Lean statemen
 | Permutation dominance in `smd:lem:perm` | [PermutationTest.lean](GRHArticle/SingularModuli/PermutationTest.lean) | Proves the generalized Vandermonde determinant is nonzero for arbitrary increasing exponents whenever the article’s permutation inequality holds for consecutive exponents. |
 | Analytic error in the class polynomial certificates | [ClassPolynomialTruncation.lean](GRHArticle/SingularModuli/ClassPolynomialTruncation.lean), [EisensteinTruncation.lean](GRHArticle/SingularModuli/EisensteinTruncation.lean), [EtaTruncation.lean](GRHArticle/SingularModuli/EtaTruncation.lean) | Proves the 164-term E₄ error bound 960·165³/200¹⁶⁵ and the 164-factor error 8/200¹⁶⁵ for the unpowered Euler product at every enumerated form. |
 
+[RationalComplexEnclosure.lean](GRHArticle/SingularModuli/RationalComplexEnclosure.lean) proves rational enclosures for complex arithmetic, including inversion and perturbations. [ClassPolynomialConstants.lean](GRHArticle/SingularModuli/ClassPolynomialConstants.lean) proves a 50-decimal-place enclosure for $\pi$ using the Machin formula and the arctangent series.
+
 The five-term classification still needs the CM reduction, bounds on the conjugates
 to place them in the disks, and finite certificates from the
 [singular-moduli section](../Article/sections/smd.tex).
