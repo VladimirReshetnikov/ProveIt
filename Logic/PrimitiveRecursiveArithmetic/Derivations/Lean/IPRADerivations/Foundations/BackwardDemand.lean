@@ -1,4 +1,5 @@
 import IPRADerivations.Foundations.MasterCertificate
+import IPRADerivations.Core.BoundedSums
 
 /-!
 # Backward schedules for nonmonotone finite observations
@@ -160,42 +161,27 @@ theorem transfer (A : BF) (D : PR 3) (N K x : PTm n)
     (hbase : Γ ⊢[PRAAx] observation A zero (horizon D N K zero x) x)
     (hstep : Γ ⊢[PRAAx] localStep A D N x) :
     Γ ⊢[PRAAx] observation A N K x := by
-  have all : Γ ⊢[PRAAx] .all (le (var 0) (Syn.shift N) ⟶
-      observationBit A (var 0)
-        (horizon D (Syn.shift N) (Syn.shift K) (var 0) (Syn.shift x)) (Syn.shift x) ≐ one) := by
-    refine PRA.qfInd _ ⟨le_QF _ _, trivial⟩ ?_ ?_
-    · simp only [Fm.subst_imp, subst_le, Fm.subst_eq, subst_observationBit,
-        subst_horizon, subst_one, Syn.subst_var, Syn.inst_zero, Syn.subst_inst_shift,
-        ConciseIPRA.PTm.subst_zero, PTm.subst_monus]
-      exact .impI (bit_of_observation A _ _ _ hbase.wk)
-    · simp only [Fm.subst_imp, subst_le, Fm.subst_eq, subst_observationBit,
-        subst_horizon, subst_one, Syn.subst_var, Syn.repl_zero, subst_repl_shift,
-        ConciseIPRA.PTm.subst_zero, PTm.subst_monus]
+  let P : Fm PTm (n + 1) := observationBit A (var 0)
+    (horizon D (Syn.shift N) (Syn.shift K) (var 0) (Syn.shift x)) (Syn.shift x) ≐ one
+  have atEnd : Γ ⊢[PRAAx] P.subst (Syn.inst N) := by
+    refine qfIndUpTo N trivial ?_ ?_
+    · simp only [P, Fm.subst_eq, subst_observationBit, subst_horizon, subst_one,
+        Syn.subst_var, Syn.inst_zero, Syn.subst_inst_shift]
+      exact bit_of_observation A _ _ _ hbase
+    · simp only [P, Fm.subst_eq, subst_observationBit, subst_horizon, subst_one,
+        Syn.subst_var, Syn.repl_zero, subst_repl_shift]
       refine .impI ?_
-      let Δ : List (Fm PTm (n + 1)) := le (succ (var 0)) (Syn.shift N) ::
-        (le (var 0) (Syn.shift N) ⟶ observationBit A (var 0)
-          (horizon D (Syn.shift N) (Syn.shift K) (var 0) (Syn.shift x)) (Syn.shift x) ≐ one) ::
-        Γ.map Fm.shift
+      let Δ := lt (var 0) (Syn.shift N) :: P :: Γ.map Fm.shift
       have range : Δ ⊢[PRAAx] lt (var 0) (Syn.shift N) := Prf.hyp0
-      have previous : Δ ⊢[PRAAx] observation A (var 0)
-          (horizon D (Syn.shift N) (Syn.shift K) (var 0) (Syn.shift x)) (Syn.shift x) :=
-        observation_of_bit A _ _ _
-          (Prf.impE Prf.hyp1 (le_trans (le_succ_self (var 0)) Prf.hyp0))
-      have scheduled : Δ ⊢[PRAAx] observation A (var 0)
-          (ap3 D (var 0) (horizon D (Syn.shift N) (Syn.shift K) (succ (var 0)) (Syn.shift x))
-            (Syn.shift x)) (Syn.shift x) :=
-        observation_demand_congr A _ _ (horizon_step D _ _ _ _ range) previous
+      have previous := observation_of_bit A _ _ _ (Prf.hyp1 : Δ ⊢[PRAAx] P)
+      have scheduled := observation_demand_congr A _ _ (horizon_step D _ _ _ _ range) previous
       have shifted : Γ.map Fm.shift ⊢[PRAAx] localStep A D (Syn.shift N) (Syn.shift x) := by
         simpa only [Fm.shift, subst_localStep, Syn.shift] using hstep.shift
       exact bit_of_observation A _ _ _ (localStep_at A D shifted.wk.wk
         (var 0) (horizon D (Syn.shift N) (Syn.shift K) (succ (var 0)) (Syn.shift x)) range scheduled)
-  have endpoint := Prf.allE N all
   have terminal : Γ ⊢[PRAAx] observationBit A N (horizon D N K N x) x ≐ one := by
-    have guarded : Γ ⊢[PRAAx] le N N ⟶ observationBit A N (horizon D N K N x) x ≐ one := by
-      simpa only [Fm.subst_imp, subst_le, Fm.subst_eq, subst_observationBit,
-        subst_horizon, subst_one, Syn.subst_var, Syn.inst_zero, Syn.subst_inst_shift,
-        PTm.subst_monus] using endpoint
-    exact Prf.impE guarded (le_refl N)
+    simpa only [P, Fm.subst_eq, subst_observationBit, subst_horizon, subst_one,
+      Syn.subst_var, Syn.inst_zero, Syn.subst_inst_shift] using atEnd
   exact observation_demand_congr A N x (horizon_final D N K x)
     (observation_of_bit A _ _ _ terminal)
 

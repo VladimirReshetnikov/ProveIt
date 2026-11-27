@@ -1,5 +1,6 @@
 import IPRADerivations.DiophantineNumberTheory.GcdList
 import IPRADerivations.Core.OrderCertificates
+import IPRADerivations.Core.BoundedSums
 
 /-!
 # Normalizing a vector by its gcd
@@ -49,24 +50,17 @@ theorem gcd_zero_zero : Γ ⊢[PRAAx] gcd (zero : PTm k) zero ≐ zero := by
 theorem gv_all_zero (f : PTm 2) {N x : PTm k}
     (h : Γ ⊢[PRAAx] Fm.all (lt (var 0) (Syn.shift N) ⟶ inst2 f (var 0) (Syn.shift x) ≐ zero)) :
     Γ ⊢[PRAAx] gv f N x ≐ zero := by
-  have hall : Γ ⊢[PRAAx] Fm.all (le (var 0) (Syn.shift N) ⟶ gv f (var 0) (Syn.shift x) ≐ zero) := by
-    refine PRA.qfInd _ ⟨le_QF _ _, trivial⟩ ?_ ?_
-    · simp only [Fm.subst_imp, Fm.subst_eq, subst_le, subst_ap2, Syn.subst_var, Syn.inst_zero, Syn.subst_inst_shift,
-        ConciseIPRA.PTm.subst_zero, ConciseIPRA.PTm.subst_succ]
-      exact .impI (gv_zero f x)
-    · simp only [Fm.subst_imp, Fm.subst_eq, subst_le, subst_ap2, Syn.subst_var, Syn.repl_zero, subst_repl_shift,
-        ConciseIPRA.PTm.subst_zero, ConciseIPRA.PTm.subst_succ]
+  let P : Fm PTm (k + 1) := gv f (var 0) (Syn.shift x) ≐ zero
+  have atEnd : Γ ⊢[PRAAx] P.subst (Syn.inst N) := by
+    refine qfIndUpTo N trivial ?_ ?_
+    · simpa [P] using gv_zero (Γ := Γ) f x
+    · simp only [P, Fm.subst_eq, subst_ap2, Syn.subst_var, Syn.repl_zero,
+        subst_repl_shift, ConciseIPRA.PTm.subst_zero]
       refine .impI ?_
-      let Δ := le (succ (var 0)) (Syn.shift N) ::
-        (le (var 0) (Syn.shift N) ⟶ gv f (var 0) (Syn.shift x) ≐ zero) :: Γ.map Fm.shift
-      have hle : Δ ⊢[PRAAx] le (var 0) (Syn.shift N) := le_trans (le_succ_self _) Prf.hyp0
-      have ih : Δ ⊢[PRAAx] gv f (var 0) (Syn.shift x) ≐ zero := Prf.impE Prf.hyp1 hle
-      have hf : Δ ⊢[PRAAx] inst2 f (var 0) (Syn.shift x) ≐ zero := Prf.impE h.allOpen.wk.wk Prf.hyp0
-      exact (gv_succ f (var 0) (Syn.shift x)).eqTrans ((congrGcd ih hf).eqTrans gcd_zero_zero)
-  have h2 := Prf.allE N hall
-  simp only [Fm.subst_imp, Fm.subst_eq, subst_le, subst_ap2, Syn.subst_var, Syn.inst_zero, Syn.subst_inst_shift,
-    ConciseIPRA.PTm.subst_zero, ConciseIPRA.PTm.subst_succ] at h2
-  exact Prf.impE h2 (le_refl N)
+      let Δ := lt (var 0) (Syn.shift N) :: P :: Γ.map Fm.shift
+      have hf : Δ ⊢[PRAAx] inst2 f (var 0) (Syn.shift x) ≐ zero := .impE h.allOpen.wk.wk Prf.hyp0
+      exact (gv_succ f (var 0) (Syn.shift x)).eqTrans ((congrGcd Prf.hyp1 hf).eqTrans gcd_zero_zero)
+  simpa [P] using atEnd
 
 /-- The quotient vector `q_i = f_i / g`, over `0 = i`, `1 = ⟨N, x⟩`. -/
 abbrev qBody (f : PTm 2) : PTm 2 :=

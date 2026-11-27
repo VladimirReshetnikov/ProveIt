@@ -1,5 +1,6 @@
 import IPRADerivations.Combinatorics.LegendreDigits
 import IPRADerivations.Core.OrderCertificates
+import IPRADerivations.Core.BoundedSums
 
 /-!
 # Base-`b` codes of vectors
@@ -56,35 +57,25 @@ theorem entry_lt {V : PTm 2} {b x N i : PTm k} (h : Γ ⊢[PRAAx] entriesLt V b 
 /-- `E(M) < b^M` for `M ≤ N`. -/
 theorem code_lt {V : PTm 2} {b x N M : PTm k} (hV : Γ ⊢[PRAAx] entriesLt V b x N) (hM : Γ ⊢[PRAAx] le M N) :
     Γ ⊢[PRAAx] lt (code V b x M) (pw b M) := by
-  have hall : Γ ⊢[PRAAx] Fm.all (le (var 0) (Syn.shift N) ⟶
-      lt (code V (Syn.shift b) (Syn.shift x) (var 0)) (pw (Syn.shift b) (var 0))) := by
-    refine PRA.qfInd _ ⟨le_QF _ _, le_QF _ _⟩ ?_ ?_
-    · simp only [Fm.subst_imp, subst_lt, subst_le, subst_ap2, subst_pairT, Syn.subst_var, Syn.inst_zero,
-        Syn.subst_inst_shift, ConciseIPRA.PTm.subst_zero, ConciseIPRA.PTm.subst_succ]
-      refine .impI ?_
-      have z := natEq (sum_zero (Γ := le zero N :: Γ) (cB V) (pairT b x))
-      have p := natEq (pw_zero (Γ := le zero N :: Γ) b)
-      show _ ⊢[PRAAx] le (succ (code V b x zero)) (pw b zero)
+  let P : Fm PTm (k + 1) :=
+    lt (code V (Syn.shift b) (Syn.shift x) (var 0)) (pw (Syn.shift b) (var 0))
+  have atIndex : Γ ⊢[PRAAx] P.subst (Syn.inst M) := by
+    refine qfIndAtMost hM (le_QF _ _) ?_ ?_
+    · simp only [P, subst_lt, subst_ap2, subst_pairT, Syn.subst_var, Syn.inst_zero, Syn.subst_inst_shift]
+      have z := natEq (sum_zero (Γ := Γ) (cB V) (pairT b x))
+      have p := natEq (pw_zero (Γ := Γ) b)
       ipra_le 0 using linear_combination p - z
-    · simp only [Fm.subst_imp, subst_lt, subst_le, subst_ap2, subst_pairT, Syn.subst_var, Syn.repl_zero,
-        subst_repl_shift, ConciseIPRA.PTm.subst_zero, ConciseIPRA.PTm.subst_succ]
+    · simp only [P, subst_lt, subst_ap2, subst_pairT, Syn.subst_var, Syn.repl_zero, subst_repl_shift]
       refine .impI ?_
-      let Δ := le (succ (var 0)) (Syn.shift N) ::
-        (le (var 0) (Syn.shift N) ⟶ lt (code V (Syn.shift b) (Syn.shift x) (var 0)) (pw (Syn.shift b) (var 0))) ::
-        Γ.map Fm.shift
-      have hle : Δ ⊢[PRAAx] le (var 0) (Syn.shift N) := le_trans (le_succ_self _) Prf.hyp0
-      have ih : Δ ⊢[PRAAx] le (succ (code V (Syn.shift b) (Syn.shift x) (var 0))) (pw (Syn.shift b) (var 0)) :=
-        Prf.impE Prf.hyp1 hle
+      let Δ := lt (var 0) (Syn.shift N) :: P :: Γ.map Fm.shift
+      have ih : Δ ⊢[PRAAx] P := Prf.hyp1
       have hv : Δ ⊢[PRAAx] le (succ (inst2 V (var 0) (Syn.shift x))) (Syn.shift b) :=
-        Prf.impE hV.allOpen.wk.wk Prf.hyp0
+        .impE hV.allOpen.wk.wk Prf.hyp0
       have c := natEq (code_succ (Γ := Δ) V (Syn.shift b) (Syn.shift x) (var 0))
       have p := natEq (pw_succ (Γ := Δ) (Syn.shift b) (var 0))
       show Δ ⊢[PRAAx] le (succ (code V (Syn.shift b) (Syn.shift x) (succ (var 0)))) (pw (Syn.shift b) (succ (var 0)))
       ipra_le sl ih + 𝔞 (pw (Syn.shift b) (var 0)) * sl hv using linear_combination p - c
-  have h2 := Prf.allE M hall
-  simp only [Fm.subst_imp, subst_lt, subst_le, subst_ap2, subst_pairT, Syn.subst_var, Syn.inst_zero,
-    Syn.subst_inst_shift, ConciseIPRA.PTm.subst_succ] at h2
-  exact Prf.impE h2 hM
+  simpa only [P, subst_lt, subst_ap2, subst_pairT, Syn.subst_var, Syn.inst_zero, Syn.subst_inst_shift] using atIndex
 
 /-- `z mod b = z` for `z < b`. -/
 theorem rem_small {b z : PTm k} (hb : Γ ⊢[PRAAx] b ≐ succ (pred b)) (h : Γ ⊢[PRAAx] lt z b) :

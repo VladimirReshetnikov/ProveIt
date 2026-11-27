@@ -1,4 +1,5 @@
 import IPRADerivations.AnalyticNumberTheory.Order
+import IPRADerivations.Core.BoundedSums
 
 /-!
 # The gcd of a vector
@@ -139,26 +140,18 @@ theorem gv_dvd (f : PTm 2) {i N x : PTm k} (h : Γ ⊢[PRAAx] lt i N) : Γ ⊢[P
 theorem gv_greatest (f : PTm 2) {d' N x : PTm k}
     (h : Γ ⊢[PRAAx] Fm.all (lt (var 0) (Syn.shift N) ⟶ dvd (succ (Syn.shift d')) (inst2 f (var 0) (Syn.shift x)))) :
     Γ ⊢[PRAAx] dvd (succ d') (gv f N x) := by
-  have hall : Γ ⊢[PRAAx] Fm.all (le (var 0) (Syn.shift N) ⟶
-      dvd (succ (Syn.shift d')) (gv f (var 0) (Syn.shift x))) := by
-    refine PRA.qfInd _ ⟨le_QF _ _, trivial⟩ ?_ ?_
-    · simp only [Fm.subst_imp, Fm.subst_eq, subst_le, subst_ap2, Syn.subst_var, Syn.inst_zero, Syn.subst_inst_shift,
-        ConciseIPRA.PTm.subst_zero, ConciseIPRA.PTm.subst_succ]
-      exact .impI (dvd_congr (gv_zero f x).eqSymm (dvd_zero _))
-    · simp only [Fm.subst_imp, Fm.subst_eq, subst_le, subst_ap2, Syn.subst_var, Syn.repl_zero, subst_repl_shift,
-        ConciseIPRA.PTm.subst_zero, ConciseIPRA.PTm.subst_succ]
+  let P : Fm PTm (k + 1) := dvd (succ (Syn.shift d')) (gv f (var 0) (Syn.shift x))
+  have atEnd : Γ ⊢[PRAAx] P.subst (Syn.inst N) := by
+    refine qfIndUpTo N trivial ?_ ?_
+    · simpa [P] using dvd_congr (gv_zero (Γ := Γ) f x).eqSymm (dvd_zero d')
+    · simp only [P, Fm.subst_eq, subst_ap2, Syn.subst_var, Syn.repl_zero,
+        subst_repl_shift, ConciseIPRA.PTm.subst_zero, ConciseIPRA.PTm.subst_succ]
       refine .impI ?_
-      let Δ := le (succ (var 0)) (Syn.shift N) ::
-        (le (var 0) (Syn.shift N) ⟶ dvd (succ (Syn.shift d')) (gv f (var 0) (Syn.shift x))) :: Γ.map Fm.shift
-      have hle : Δ ⊢[PRAAx] le (var 0) (Syn.shift N) := le_trans (le_succ_self _) Prf.hyp0
-      have ih : Δ ⊢[PRAAx] dvd (succ (Syn.shift d')) (gv f (var 0) (Syn.shift x)) := Prf.impE Prf.hyp1 hle
+      let Δ := lt (var 0) (Syn.shift N) :: P :: Γ.map Fm.shift
       have hf : Δ ⊢[PRAAx] dvd (succ (Syn.shift d')) (inst2 f (var 0) (Syn.shift x)) :=
-        Prf.impE h.allOpen.wk.wk Prf.hyp0
-      exact dvd_congr (gv_succ f (var 0) (Syn.shift x)).eqSymm (gcd_greatest_at ih hf)
-  have h2 := Prf.allE N hall
-  simp only [Fm.subst_imp, Fm.subst_eq, subst_le, subst_ap2, Syn.subst_var, Syn.inst_zero, Syn.subst_inst_shift,
-    ConciseIPRA.PTm.subst_zero, ConciseIPRA.PTm.subst_succ] at h2
-  exact Prf.impE h2 (le_refl N)
+        .impE h.allOpen.wk.wk Prf.hyp0
+      exact dvd_congr (gv_succ f (var 0) (Syn.shift x)).eqSymm (gcd_greatest_at Prf.hyp1 hf)
+  simpa [P] using atEnd
 
 /-- `G(N) = 0` forces `f(i) = 0` for `i < N`. -/
 theorem gv_eq_zero (f : PTm 2) {i N x : PTm k} (h0 : Γ ⊢[PRAAx] gv f N x ≐ zero) (h : Γ ⊢[PRAAx] lt i N) :
