@@ -1,5 +1,5 @@
 import IPRADerivations.Analysis.Euler.CompactExhaustion.ParameterBounds.GaussianEulerCompactPowerMajorant
-import IPRADerivations.Analysis.RationalArithmetic.Powers.GaussianRationalRoundedPower
+import IPRADerivations.Analysis.RationalArithmetic.Powers.GaussianPowers.GaussianRationalRoundedPower
 
 /-!
 # Replacing the decay factor of an original compact Euler sample

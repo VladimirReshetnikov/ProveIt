@@ -1,6 +1,6 @@
 import IPRADerivations.Analysis.Barnes.Logarithms.FiniteRows.GaussianBarnesCanonicalFiniteLogRows
-import IPRADerivations.Analysis.Exponential.Names.GaussianNamedFiniteExponentialFold
-import IPRADerivations.Analysis.Names.FiniteOperations.Products.GaussianNamedFiniteProductFamilyCongruence
+import IPRADerivations.Analysis.Exponential.Names.Identities.GaussianNamedFiniteExponentialFold
+import IPRADerivations.Analysis.Names.FiniteOperations.Products.Families.GaussianNamedFiniteProductFamilyCongruence
 
 /-!
 # Exponentiating the actual finite Barnes logarithmic interval

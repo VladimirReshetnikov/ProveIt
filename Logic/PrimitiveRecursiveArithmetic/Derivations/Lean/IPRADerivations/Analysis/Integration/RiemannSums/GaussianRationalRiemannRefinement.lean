@@ -1,6 +1,6 @@
-import IPRADerivations.Analysis.RationalArithmetic.FiniteSums.GaussianRationalBlockSums
+import IPRADerivations.Analysis.RationalArithmetic.FiniteSums.Reindexing.GaussianRationalBlockSums
 import IPRADerivations.Analysis.RationalArithmetic.Scaling.GaussianRationalNaturalScale
-import IPRADerivations.Analysis.RationalArithmetic.Powers.GaussianRationalRoundedPower
+import IPRADerivations.Analysis.RationalArithmetic.Powers.GaussianPowers.GaussianRationalRoundedPower
 import IPRADerivations.Analysis.Names.Arithmetic.GaussianNameArithmetic
 
 /-!

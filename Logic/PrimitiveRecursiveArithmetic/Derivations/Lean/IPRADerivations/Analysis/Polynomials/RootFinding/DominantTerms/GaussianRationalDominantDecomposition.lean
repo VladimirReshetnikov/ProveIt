@@ -1,5 +1,5 @@
-import IPRADerivations.Analysis.RationalArithmetic.FiniteSums.GaussianRationalSumSegments
-import IPRADerivations.Analysis.RationalArithmetic.Powers.GaussianRationalPowerExpansion
+import IPRADerivations.Analysis.RationalArithmetic.FiniteSums.Reindexing.GaussianRationalSumSegments
+import IPRADerivations.Analysis.RationalArithmetic.Powers.GaussianPowers.GaussianRationalPowerExpansion
 import IPRADerivations.Analysis.Geometry.GeometricBounds.GaussianGeometricSumBound
 
 /-!

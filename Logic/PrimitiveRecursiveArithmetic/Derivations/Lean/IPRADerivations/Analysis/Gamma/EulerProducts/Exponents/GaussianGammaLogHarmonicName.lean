@@ -1,5 +1,5 @@
 import IPRADerivations.Analysis.Gamma.EulerProducts.Approximants.GaussianGammaFiniteApproximantName
-import IPRADerivations.Analysis.Exponential.Names.GaussianExponentialReference
+import IPRADerivations.Analysis.Exponential.Names.Evaluators.GaussianExponentialReference
 
 /-!
 # The exact named harmonic identity for the two finite approximants

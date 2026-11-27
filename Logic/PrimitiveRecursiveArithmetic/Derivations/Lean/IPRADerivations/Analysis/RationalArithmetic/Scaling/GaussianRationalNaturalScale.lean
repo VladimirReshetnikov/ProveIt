@@ -1,6 +1,6 @@
 import IPRADerivations.Analysis.Polynomials.Coefficients.GaussianRationalCoefficientScaling
 import IPRADerivations.Analysis.Polynomials.RootFinding.Descent.GaussianTranslatedNonconstant
-import IPRADerivations.Analysis.RationalArithmetic.Powers.GaussianRationalRoundedPower
+import IPRADerivations.Analysis.RationalArithmetic.Powers.GaussianPowers.GaussianRationalRoundedPower
 
 /-!
 # Actual natural scaling of arbitrary Gaussian-rational codes

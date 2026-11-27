@@ -1,5 +1,5 @@
 import IPRADerivations.Analysis.Trigonometry.Arctangent.GaussianArctangentQuarterExponential
-import IPRADerivations.Analysis.Exponential.Names.GaussianExponentialAddition
+import IPRADerivations.Analysis.Exponential.Names.Identities.GaussianExponentialAddition
 import IPRADerivations.Analysis.Names.Arithmetic.GaussianNameConjugation
 
 /-!

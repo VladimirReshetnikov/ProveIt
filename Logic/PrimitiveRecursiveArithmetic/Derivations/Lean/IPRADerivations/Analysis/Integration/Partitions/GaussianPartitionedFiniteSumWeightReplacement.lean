@@ -1,5 +1,5 @@
 import IPRADerivations.Analysis.Integration.Partitions.GaussianPartitionedFiniteSumDistance
-import IPRADerivations.Analysis.Euler.Integration.Decay.GaussianEulerDampedTimeRate
+import IPRADerivations.Analysis.Euler.Integration.Decay.Damping.GaussianEulerDampedTimeRate
 
 /-!
 # Replace exact integer-cell weights by signed rational widths

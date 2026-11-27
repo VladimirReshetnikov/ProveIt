@@ -3,7 +3,7 @@ import IPRADerivations.Analysis.Euler.Integration.Parameters.GaussianEulerPowerI
 import IPRADerivations.Analysis.Euler.PositiveAxis.PowerCharts.Logarithms.GaussianEulerPositivePowerChartLogarithm
 import IPRADerivations.Analysis.Euler.HarmonicLogarithms.GaussianHarmonicLogarithmPower
 import IPRADerivations.Analysis.Euler.HarmonicLogarithms.GaussianHarmonicIntegerExponential
-import IPRADerivations.Analysis.Euler.Integration.Decay.GaussianEulerDampedTimeRate
+import IPRADerivations.Analysis.Euler.Integration.Decay.Damping.GaussianEulerDampedTimeRate
 
 /-!
 # Exact rational values of the original power chart at rational powers

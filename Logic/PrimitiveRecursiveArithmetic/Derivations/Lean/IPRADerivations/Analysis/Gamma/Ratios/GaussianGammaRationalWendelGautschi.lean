@@ -1,7 +1,7 @@
 import IPRADerivations.Analysis.Gamma.Ratios.GaussianGammaRationalGautschi
 import IPRADerivations.Analysis.Gamma.Ratios.GaussianGammaRationalLogWendel
 import IPRADerivations.Analysis.Stirling.Duplication.GaussianStirlingLogDuplication
-import IPRADerivations.Analysis.Exponential.Names.GaussianExponentialInverse
+import IPRADerivations.Analysis.Exponential.Names.Identities.GaussianExponentialInverse
 
 /-!
 # The strict rational Wendel and Gautschi inequalities

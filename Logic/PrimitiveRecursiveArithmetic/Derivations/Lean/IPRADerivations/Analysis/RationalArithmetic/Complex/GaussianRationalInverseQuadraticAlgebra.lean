@@ -1,5 +1,5 @@
 import IPRADerivations.Analysis.Polynomials.Coefficients.GaussianRationalCoefficientScaling
-import IPRADerivations.Analysis.RationalArithmetic.Powers.GaussianRationalPowerAlgebra
+import IPRADerivations.Analysis.RationalArithmetic.Powers.GaussianPowers.GaussianRationalPowerAlgebra
 import IPRADerivations.Analysis.Polynomials.Division.GaussianRationalSyntheticCoefficientValues
 import IPRADerivations.Analysis.Names.Arithmetic.GaussianNameRingLaws
 

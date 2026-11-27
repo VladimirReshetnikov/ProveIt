@@ -1,5 +1,5 @@
 import IPRADerivations.Analysis.Euler.PositiveAxis.UnitSubstitution.GaussianEulerUnitSubstitutionTiltedNodes
-import IPRADerivations.Analysis.Euler.PositiveAxis.UnitTime.GaussianEulerUnitDecayInput
+import IPRADerivations.Analysis.Euler.PositiveAxis.UnitTime.Bounds.GaussianEulerUnitDecayInput
 import IPRADerivations.Analysis.RationalArithmetic.Grids.RationalUnitFloorBounds
 import IPRADerivations.Analysis.Integration.Partitions.GaussianPartitionedFiniteSum
 

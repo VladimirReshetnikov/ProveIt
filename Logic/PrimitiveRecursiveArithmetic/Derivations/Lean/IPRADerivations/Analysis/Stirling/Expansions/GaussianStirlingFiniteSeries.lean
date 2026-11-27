@@ -1,5 +1,5 @@
 import IPRADerivations.Analysis.Stirling.Expansions.StirlingRationalSeries
-import IPRADerivations.Analysis.Stirling.Expansions.GaussianStirlingOddSeries
+import IPRADerivations.Analysis.Stirling.Expansions.OddSeries.GaussianStirlingOddSeries
 import IPRADerivations.Analysis.Stirling.Telescoping.GaussianStirlingRationalTelescopers
 import IPRADerivations.AnalyticNumberTheory.EnergyWitness
 

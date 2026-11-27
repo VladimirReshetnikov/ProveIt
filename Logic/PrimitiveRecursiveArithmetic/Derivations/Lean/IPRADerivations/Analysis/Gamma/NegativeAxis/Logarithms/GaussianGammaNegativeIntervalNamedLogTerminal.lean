@@ -1,5 +1,5 @@
 import IPRADerivations.Analysis.Gamma.NegativeAxis.Values.GaussianGammaNegativeIntervalUniformBounds
-import IPRADerivations.Analysis.Stirling.Expansions.GaussianStirlingOddCoefficients
+import IPRADerivations.Analysis.Stirling.Expansions.OddSeries.GaussianStirlingOddCoefficients
 
 /-!
 # Uniform variation of the positive terminal Gamma

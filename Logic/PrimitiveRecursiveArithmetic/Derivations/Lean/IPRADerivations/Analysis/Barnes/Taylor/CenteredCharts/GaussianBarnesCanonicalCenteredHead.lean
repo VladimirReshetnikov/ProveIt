@@ -1,6 +1,6 @@
 import IPRADerivations.Analysis.Barnes.Taylor.FirstDerivative.FiniteFactors.GaussianBarnesCanonicalHeadPolynomialDerivative
 import IPRADerivations.Analysis.Gamma.EulerProducts.FiniteHeads.GaussianGammaEulerFactorPolynomial
-import IPRADerivations.Analysis.Polynomials.Products.GaussianRationalPolynomialPowers
+import IPRADerivations.Analysis.Polynomials.Products.Powers.GaussianRationalPolynomialPowers
 
 /-!
 # Centered coefficient buffer for the original Barnes base powers

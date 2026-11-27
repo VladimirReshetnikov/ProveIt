@@ -1,4 +1,4 @@
-import IPRADerivations.Analysis.Exponential.Names.GaussianNamedExponentialShiftDerivative
+import IPRADerivations.Analysis.Exponential.Names.Derivatives.GaussianNamedExponentialShiftDerivative
 import IPRADerivations.Analysis.Trigonometry.Pi.GaussianPiRationalScaleRepresentation
 import IPRADerivations.Analysis.Trigonometry.Hyperbolic.GaussianSineProductImaginaryHyperbolic
 

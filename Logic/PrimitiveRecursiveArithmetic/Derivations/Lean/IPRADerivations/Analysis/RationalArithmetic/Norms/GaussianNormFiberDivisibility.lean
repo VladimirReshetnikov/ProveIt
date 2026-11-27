@@ -1,6 +1,6 @@
 import IPRADerivations.Analysis.LinearAlgebra.Determinants.GaussianFiberDeterminantNonzero
-import IPRADerivations.Analysis.Polynomials.Determinants.GaussianPolynomialScalarLeftDeterminant
-import IPRADerivations.Analysis.Polynomials.Determinants.GaussianPolynomialRowFactorDeterminant
+import IPRADerivations.Analysis.Polynomials.Determinants.Multilinearity.GaussianPolynomialScalarLeftDeterminant
+import IPRADerivations.Analysis.Polynomials.Determinants.Multilinearity.GaussianPolynomialRowFactorDeterminant
 
 /-!
 # Actual local fiber divisibility of the original norm polynomial

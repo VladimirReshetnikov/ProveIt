@@ -1,5 +1,5 @@
 import IPRADerivations.Analysis.Gamma.EulerProducts.LogGamma.GaussianLogGammaEulerNamed
-import IPRADerivations.Analysis.Exponential.Names.GaussianNamedRadiusExponentialFreeze
+import IPRADerivations.Analysis.Exponential.Names.Evaluators.GaussianNamedRadiusExponentialFreeze
 import IPRADerivations.Analysis.Gamma.EulerProducts.LogGamma.Exponentiation.GaussianLogGammaEulerExponentialFrozen
 import IPRADerivations.Analysis.Gamma.Names.PoleFree.GaussianGammaNamedHalfPlanePoleFree
 

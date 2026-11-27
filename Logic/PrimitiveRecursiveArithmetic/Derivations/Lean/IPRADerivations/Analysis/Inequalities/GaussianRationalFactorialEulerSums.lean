@@ -1,4 +1,4 @@
-import IPRADerivations.Analysis.Polynomials.Products.GaussianRationalPolynomialPowerEuler
+import IPRADerivations.Analysis.Polynomials.Products.Powers.GaussianRationalPolynomialPowerEuler
 import IPRADerivations.Analysis.Exponential.Polynomials.GaussianRationalPolynomialExponentialCoefficients
 
 /-!

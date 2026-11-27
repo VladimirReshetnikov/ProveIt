@@ -1,7 +1,7 @@
 import IPRADerivations.Analysis.Gamma.Names.Input.GaussianGammaHalfPlaneInputContinuity
 import IPRADerivations.Analysis.Names.RightHalfPlane.GaussianNamedRightHalfPlane
 import IPRADerivations.Foundations.FiniteQueryDemand
-import IPRADerivations.Analysis.Exponential.Names.GaussianExponentialReference
+import IPRADerivations.Analysis.Exponential.Names.Evaluators.GaussianExponentialReference
 import IPRADerivations.Analysis.Names.Rates.Transport.GaussianNamedRateRadius
 
 /-!

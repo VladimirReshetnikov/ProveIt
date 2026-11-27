@@ -1,6 +1,6 @@
-import IPRADerivations.Analysis.Polynomials.RootFinding.DominantTerms.GaussianDominantPairAlgebra
+import IPRADerivations.Analysis.Polynomials.RootFinding.DominantTerms.DirectionSelection.GaussianDominantPairAlgebra
 import IPRADerivations.Analysis.RationalArithmetic.Translations.GaussianRationalTranslation
-import IPRADerivations.Analysis.Polynomials.RootFinding.DominantTerms.GaussianDominantScalarOrder
+import IPRADerivations.Analysis.Polynomials.RootFinding.DominantTerms.DirectionSelection.GaussianDominantScalarOrder
 
 /-!
 # Actual largest radius-weighted translated coefficient

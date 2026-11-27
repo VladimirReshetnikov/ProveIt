@@ -1,7 +1,7 @@
 import IPRADerivations.Analysis.Polynomials.RootFinding.Deflation.GaussianRationalSeparatedDeflation
 import IPRADerivations.Analysis.RationalArithmetic.Representations.GaussianRationalReconstruction
 import IPRADerivations.Analysis.Polynomials.Division.GaussianRationalSyntheticCoefficientValues
-import IPRADerivations.Analysis.Polynomials.RootFinding.Descent.GaussianMonicResidualRadius
+import IPRADerivations.Analysis.Polynomials.RootFinding.Descent.Monic.GaussianMonicResidualRadius
 import IPRADerivations.AnalyticNumberTheory.PowerCleared
 
 /-!

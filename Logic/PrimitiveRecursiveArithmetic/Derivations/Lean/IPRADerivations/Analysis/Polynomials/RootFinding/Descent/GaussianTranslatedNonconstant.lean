@@ -1,6 +1,6 @@
 import IPRADerivations.Analysis.RationalArithmetic.Translations.GaussianRationalTranslation
 import IPRADerivations.Analysis.RationalArithmetic.Distances.GaussianRationalL1
-import IPRADerivations.Analysis.Polynomials.RootFinding.Descent.GaussianMonicNonconstant
+import IPRADerivations.Analysis.Polynomials.RootFinding.Descent.Monic.GaussianMonicNonconstant
 import IPRADerivations.Foundations.BoundedSyntaxInduction
 
 /-!

@@ -1,6 +1,6 @@
 import IPRADerivations.Analysis.Integration.Quadrature.BaselRiemann
 import IPRADerivations.Analysis.Stirling.Wallis.GaussianGammaHalfWallisRate
-import IPRADerivations.Analysis.Stirling.Expansions.GaussianStirlingOddCoefficients
+import IPRADerivations.Analysis.Stirling.Expansions.OddSeries.GaussianStirlingOddCoefficients
 import IPRADerivations.Analysis.Names.Arithmetic.RationalReciprocalPowerName
 
 /-!

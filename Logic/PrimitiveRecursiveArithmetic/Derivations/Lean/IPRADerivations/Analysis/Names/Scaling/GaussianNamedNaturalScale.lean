@@ -1,8 +1,8 @@
 import IPRADerivations.Analysis.RationalArithmetic.Scaling.GaussianRationalNaturalScale
 import IPRADerivations.Analysis.Names.Arithmetic.GaussianNameRingLaws
-import IPRADerivations.Analysis.Exponential.Names.GaussianRadiusExponentialName
+import IPRADerivations.Analysis.Exponential.Names.Evaluators.GaussianRadiusExponentialName
 import IPRADerivations.Analysis.RationalArithmetic.RationalClosure
-import IPRADerivations.Analysis.Exponential.Names.GaussianExponentialReference
+import IPRADerivations.Analysis.Exponential.Names.Evaluators.GaussianExponentialReference
 
 /-!
 # Actual capped natural multiples of Gaussian names

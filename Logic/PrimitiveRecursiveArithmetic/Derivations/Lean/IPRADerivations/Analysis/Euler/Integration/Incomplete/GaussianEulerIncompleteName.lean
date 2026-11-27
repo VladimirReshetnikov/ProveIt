@@ -1,4 +1,4 @@
-import IPRADerivations.Analysis.Euler.Integration.Incomplete.GaussianEulerIncompleteCofinalRate
+import IPRADerivations.Analysis.Euler.Integration.Incomplete.Cutoffs.GaussianEulerIncompleteCofinalRate
 
 /-!
 # Regular names for the original incomplete Euler integrals

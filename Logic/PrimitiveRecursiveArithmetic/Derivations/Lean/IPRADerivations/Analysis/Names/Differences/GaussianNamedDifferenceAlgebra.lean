@@ -1,5 +1,5 @@
 import IPRADerivations.Analysis.Names.Differences.GaussianNamedDifference
-import IPRADerivations.Analysis.RationalArithmetic.Powers.GaussianRationalRoundedPower
+import IPRADerivations.Analysis.RationalArithmetic.Powers.GaussianPowers.GaussianRationalRoundedPower
 
 /-!
 # Exact identities for actual named differences

@@ -3,7 +3,7 @@ import IPRADerivations.Analysis.RationalArithmetic.Spans.RankAndAnnihilators.Rat
 import IPRADerivations.Analysis.LinearAlgebra.Determinants.RationalScalarDeterminantGaussianEmbedding
 import IPRADerivations.Analysis.LinearAlgebra.Determinants.GaussianScalarDiagonalDeterminant
 import IPRADerivations.Analysis.LinearAlgebra.Determinants.GaussianScalarDeterminantMultiplication
-import IPRADerivations.Analysis.RationalArithmetic.Powers.GaussianRationalPowerNonzero
+import IPRADerivations.Analysis.RationalArithmetic.Powers.GaussianPowers.GaussianRationalPowerNonzero
 
 /-!
 # Actual rational minors and their denominator-cleared counterparts

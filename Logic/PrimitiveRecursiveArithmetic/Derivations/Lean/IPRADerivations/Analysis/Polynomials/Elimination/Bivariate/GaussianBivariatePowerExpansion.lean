@@ -1,5 +1,5 @@
 import IPRADerivations.Analysis.Polynomials.CompanionMatrices.GaussianPolynomialMultiplicationMatrix
-import IPRADerivations.Analysis.RationalArithmetic.Powers.GaussianRationalPowerExpansion
+import IPRADerivations.Analysis.RationalArithmetic.Powers.GaussianPowers.GaussianRationalPowerExpansion
 
 /-!
 # Finite power sums for the original bivariate evaluator

@@ -1,6 +1,6 @@
 import IPRADerivations.Analysis.Gamma.Taylor.ExponentCoefficients.GaussianGammaExponentCoefficientPolynomial
 import IPRADerivations.Analysis.Polynomials.Coefficients.GaussianPolynomialNormBuffers
-import IPRADerivations.Analysis.RationalArithmetic.Powers.GaussianRationalRoundedPower
+import IPRADerivations.Analysis.RationalArithmetic.Powers.GaussianPowers.GaussianRationalRoundedPower
 
 /-!
 # A numerical input coefficient-norm envelope for Gamma

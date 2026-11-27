@@ -1,8 +1,8 @@
 import IPRADerivations.Analysis.Gamma.FunctionalEquations.Multiplication.PowerEstimates.GaussianGaussMultiplicationPowerPerturbation
 import IPRADerivations.Analysis.Gamma.FunctionalEquations.Recurrence.GaussianNamedGammaHalfShift
 import IPRADerivations.Analysis.Euler.VerticalBounds.GaussianEulerVerticalRealSamples
-import IPRADerivations.Analysis.Exponential.Names.GaussianExponentialRealPart
-import IPRADerivations.Analysis.Names.FiniteOperations.Products.GaussianNamedBoundedProductObservation
+import IPRADerivations.Analysis.Exponential.Names.Identities.GaussianExponentialRealPart
+import IPRADerivations.Analysis.Names.FiniteOperations.Products.Bounds.GaussianNamedBoundedProductObservation
 
 /-!
 # The real half-power in the Gauss multiplication formula

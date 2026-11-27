@@ -1,5 +1,5 @@
 import IPRADerivations.Analysis.Gamma.FunctionalEquations.Multiplication.ReferenceProduct.GaussianGammaGaussReferencePrefix
-import IPRADerivations.Analysis.Trigonometry.Cyclic.GaussianCyclicSineProductRatio
+import IPRADerivations.Analysis.Trigonometry.Cyclic.SineProducts.GaussianCyclicSineProductRatio
 
 /-!
 # Canceling the explicit nonzero sine normalization factor

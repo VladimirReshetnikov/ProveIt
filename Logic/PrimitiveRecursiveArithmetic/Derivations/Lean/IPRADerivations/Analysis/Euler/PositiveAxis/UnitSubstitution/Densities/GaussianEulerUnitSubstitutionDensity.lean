@@ -1,5 +1,5 @@
-import IPRADerivations.Analysis.Euler.Integration.Parts.GaussianEulerIntegrationByPartsGridObservation
-import IPRADerivations.Analysis.Euler.Integration.Decay.GaussianEulerDecayQuadrature
+import IPRADerivations.Analysis.Euler.Integration.Parts.Grids.GaussianEulerIntegrationByPartsGridObservation
+import IPRADerivations.Analysis.Euler.Integration.Decay.Quadrature.GaussianEulerDecayQuadrature
 
 /-!
 # Original Euler rows weighted by actual unit-substitution cells

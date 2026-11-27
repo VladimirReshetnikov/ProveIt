@@ -1,4 +1,4 @@
-import IPRADerivations.Analysis.Euler.Integration.Decay.GaussianEulerDecayCompactLower
+import IPRADerivations.Analysis.Euler.Integration.Decay.CompactBounds.GaussianEulerDecayCompactLower
 import IPRADerivations.Analysis.Exponential.PositiveAxis.GaussianSignedNameExponentialOrder
 import IPRADerivations.Analysis.RationalArithmetic.Representations.RationalUpperRepresentation
 

@@ -1,5 +1,5 @@
 import IPRADerivations.Analysis.Optimization.Convexity.RationalConvexSourceRLC
-import IPRADerivations.Analysis.RationalArithmetic.Powers.RationalCofinalPowerOrder
+import IPRADerivations.Analysis.RationalArithmetic.Powers.RationalPowerBounds.RationalCofinalPowerOrder
 import IPRADerivations.Analysis.Names.Approximation.RationalIntervalArithmeticNames
 
 /-!

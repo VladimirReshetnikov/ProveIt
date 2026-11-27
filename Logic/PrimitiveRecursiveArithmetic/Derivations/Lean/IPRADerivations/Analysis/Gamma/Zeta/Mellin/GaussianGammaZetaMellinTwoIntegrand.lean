@@ -3,7 +3,7 @@ import IPRADerivations.Analysis.Euler.PositiveAxis.Moments.GaussianEulerNaturalP
 import IPRADerivations.Analysis.Euler.PositiveAxis.PositiveScaling.GaussianEulerPositiveScalingConstant
 import IPRADerivations.Analysis.Gamma.FunctionalEquations.ReciprocalGamma.GaussianGammaAdjacentCutoff
 import IPRADerivations.Analysis.Gamma.EulerProducts.Factorials.GaussianGammaFactorialValues
-import IPRADerivations.Analysis.RationalArithmetic.Powers.GaussianRationalPowerAlgebra
+import IPRADerivations.Analysis.RationalArithmetic.Powers.GaussianPowers.GaussianRationalPowerAlgebra
 
 /-!
 # The literal Mellin integrand at two

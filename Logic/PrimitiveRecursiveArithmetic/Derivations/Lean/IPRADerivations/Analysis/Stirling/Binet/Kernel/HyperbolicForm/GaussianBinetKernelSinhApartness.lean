@@ -3,7 +3,7 @@ import IPRADerivations.Analysis.Stirling.Binet.Kernel.HyperbolicForm.GaussianBin
 import IPRADerivations.Analysis.Exponential.PositiveAxis.GaussianPositiveExponentialSeparation
 import IPRADerivations.Analysis.LinearAlgebra.Determinants.GaussianScalarColumnSelection
 import IPRADerivations.Analysis.Trigonometry.SineProducts.Bounds.GaussianSineReflectionLower
-import IPRADerivations.Analysis.Names.FiniteOperations.Products.GaussianNamedFiniteProductApartness
+import IPRADerivations.Analysis.Names.FiniteOperations.Products.Bounds.GaussianNamedFiniteProductApartness
 
 /-!
 # Apartness of the original positive-time hyperbolic sine name

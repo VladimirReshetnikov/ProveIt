@@ -1,6 +1,6 @@
 import IPRADerivations.Analysis.Stirling.AllOrders.Bernoulli.GaussianStirlingAllOrderBernoulliMesh
-import IPRADerivations.Analysis.RationalArithmetic.FiniteSums.RationalFiniteSum
-import IPRADerivations.Analysis.RationalArithmetic.Powers.GaussianFactorBudget
+import IPRADerivations.Analysis.RationalArithmetic.FiniteSums.RationalIdentities.RationalFiniteSum
+import IPRADerivations.Analysis.Polynomials.RootFinding.Deflation.FactorTransport.GaussianFactorBudget
 import IPRADerivations.Analysis.Geometry.Distances.GaussianEuclideanDistanceName
 import IPRADerivations.Foundations.NumeralPrimes
 

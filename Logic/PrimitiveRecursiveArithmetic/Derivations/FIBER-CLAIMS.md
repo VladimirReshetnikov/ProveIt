@@ -211,7 +211,7 @@ variables. There is no requirement to produce one infinite witness array.
 The additional A2 claim in [07_analysis.tex §7.2](../docs/proofs/foundations/fiber_ipra_2026-11-16/paper/sections/07_analysis.tex)
 has no theorem environment. It is **checked for signed rational sequences with
 independently varying positive sample and error denominators** in
-[RationalSummableTails](Lean/IPRADerivations/Analysis/RationalArithmetic/FiniteSums/RationalSummableTails.lean).
+[RationalSummableTails](Lean/IPRADerivations/Analysis/RationalArithmetic/FiniteSums/RationalIdentities/RationalSummableTails.lean).
 For fixed PR symbols, a sample is `(p(k,x)−q(k,x))/d(k,x)` and its adjacent
 error is `e(k,x)/f(k,x)`. The actual PR accumulator starts at `(E,D)=(0,1)`
 and adds the next error by `(E,D) ↦ (E*f+e*D,D*f)`.

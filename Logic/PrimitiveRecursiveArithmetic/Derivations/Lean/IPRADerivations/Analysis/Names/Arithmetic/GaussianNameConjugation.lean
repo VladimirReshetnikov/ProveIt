@@ -1,6 +1,6 @@
 import IPRADerivations.Analysis.RationalArithmetic.Complex.GaussianRationalConjugation
 import IPRADerivations.Analysis.Names.Arithmetic.GaussianNameRingLaws
-import IPRADerivations.Analysis.Exponential.Names.GaussianExponentialReference
+import IPRADerivations.Analysis.Exponential.Names.Evaluators.GaussianExponentialReference
 import IPRADerivations.Analysis.Names.Arithmetic.RationalGaussianNameEmbedding
 
 /-!

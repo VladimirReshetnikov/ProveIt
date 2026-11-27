@@ -1,5 +1,5 @@
 import IPRADerivations.Analysis.LinearAlgebra.Determinants.GaussianScalarDeterminant
-import IPRADerivations.Analysis.Polynomials.Determinants.GaussianPolynomialColumnAlternation
+import IPRADerivations.Analysis.Polynomials.Determinants.Multilinearity.GaussianPolynomialColumnAlternation
 import IPRADerivations.Analysis.LinearAlgebra.Determinants.GaussianDeterminantSignTransport
 import IPRADerivations.Foundations.RuntimeWordSorting
 

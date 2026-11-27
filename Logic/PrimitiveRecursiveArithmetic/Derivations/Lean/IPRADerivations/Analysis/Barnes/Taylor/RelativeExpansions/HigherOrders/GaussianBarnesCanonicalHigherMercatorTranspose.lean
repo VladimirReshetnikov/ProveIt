@@ -1,6 +1,6 @@
 import IPRADerivations.Analysis.Barnes.Taylor.RelativeExpansions.HigherOrders.GaussianBarnesCanonicalHigherMercatorSum
 import IPRADerivations.Analysis.Barnes.Taylor.RelativeExpansions.HigherOrders.GaussianBarnesCanonicalHigherTail
-import IPRADerivations.Analysis.RationalArithmetic.FiniteSums.GaussianRationalFubini
+import IPRADerivations.Analysis.RationalArithmetic.FiniteSums.Reindexing.GaussianRationalFubini
 
 /-!
 # Transpose the original finite Barnes row and Taylor degree sums

@@ -1,4 +1,4 @@
-import IPRADerivations.Analysis.Euler.Integration.Decay.GaussianEulerDecayQuadraturePrecision
+import IPRADerivations.Analysis.Euler.Integration.Decay.Quadrature.GaussianEulerDecayQuadraturePrecision
 
 /-!
 # Exact half-decay change of variables on the original compact grid

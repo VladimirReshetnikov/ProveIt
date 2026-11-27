@@ -1,6 +1,6 @@
 import IPRADerivations.Analysis.Stirling.AllOrders.Covariance.GaussianStirlingAllOrderBoxProductGap
 import IPRADerivations.Analysis.Stirling.AllOrders.PanelParts.GaussianStirlingAllOrderPanelTail
-import IPRADerivations.Analysis.RationalArithmetic.FiniteSums.RationalCrossedProductSums
+import IPRADerivations.Analysis.RationalArithmetic.FiniteSums.RationalIdentities.RationalCrossedProductSums
 
 /-!
 # Crossed-product comparison on the original reflected Bernoulli mesh

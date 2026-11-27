@@ -1,6 +1,6 @@
 import IPRADerivations.Analysis.Beta.Primitives.GaussianBetaPrimitiveLinearStep
 import IPRADerivations.Analysis.RationalArithmetic.FiniteProducts.GaussianRationalFirstOrderProductError
-import IPRADerivations.Analysis.Euler.Integration.Decay.GaussianEulerDecayIncrement
+import IPRADerivations.Analysis.Euler.Integration.Decay.Increments.GaussianEulerDecayIncrement
 
 /-!
 # The exact original Euler linear term for integration by parts

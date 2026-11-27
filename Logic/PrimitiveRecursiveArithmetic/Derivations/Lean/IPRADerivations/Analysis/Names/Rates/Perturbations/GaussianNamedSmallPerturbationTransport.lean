@@ -1,4 +1,4 @@
-import IPRADerivations.Analysis.Exponential.Names.GaussianExponentialSmallPerturbation
+import IPRADerivations.Analysis.Exponential.Names.LocalEstimates.GaussianExponentialSmallPerturbation
 
 /-!
 # Exact named transport of a small multiplicative perturbation

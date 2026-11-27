@@ -1,7 +1,7 @@
 import IPRADerivations.Analysis.Gamma.EulerProducts.Derivatives.GaussianGammaEulerFirstDerivative
 import IPRADerivations.Analysis.Gamma.Names.Input.GaussianGammaPositiveRationalProperness
 import IPRADerivations.Analysis.Gamma.Digamma.GaussianGammaDigammaNative
-import IPRADerivations.Analysis.Polynomials.RootFinding.DominantTerms.GaussianOffDominantWeights
+import IPRADerivations.Analysis.Polynomials.RootFinding.DominantTerms.OffDominantTerms.GaussianOffDominantWeights
 import IPRADerivations.Probability.MedianWeighted
 
 /-!

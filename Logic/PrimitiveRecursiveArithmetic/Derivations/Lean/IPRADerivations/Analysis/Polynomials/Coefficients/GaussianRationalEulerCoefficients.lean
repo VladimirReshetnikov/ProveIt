@@ -1,4 +1,4 @@
-import IPRADerivations.Analysis.Polynomials.Products.GaussianRationalWeightedCoefficientConvolution
+import IPRADerivations.Analysis.Polynomials.Products.Convolution.GaussianRationalWeightedCoefficientConvolution
 import IPRADerivations.Analysis.Logarithm.FiniteSeries.GaussianFiniteLogarithmPolynomial
 
 /-!

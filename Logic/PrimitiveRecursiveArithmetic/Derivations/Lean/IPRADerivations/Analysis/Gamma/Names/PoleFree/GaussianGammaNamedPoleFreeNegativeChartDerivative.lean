@@ -1,6 +1,6 @@
 import IPRADerivations.Analysis.Gamma.Names.PoleFree.GaussianGammaNamedPoleFreeRealAdmission
 import IPRADerivations.Analysis.Gamma.Names.PoleFree.GaussianGammaNamedHalfPlanePoleFreeQuotient
-import IPRADerivations.Analysis.Gamma.NegativeAxis.Derivatives.GaussianGammaNegativeIntervalNamedIncrementDerivative
+import IPRADerivations.Analysis.Gamma.NegativeAxis.Derivatives.NamedIncrements.GaussianGammaNegativeIntervalNamedIncrementDerivative
 
 /-!
 # Gamma and its derivative in the computed negative chart

@@ -1,4 +1,4 @@
-import IPRADerivations.Analysis.RationalArithmetic.Powers.RationalPowerMoments
+import IPRADerivations.Analysis.RationalArithmetic.Powers.RationalPowerBounds.RationalPowerMoments
 import IPRADerivations.Analysis.Series.Bernoulli.BernoulliBounds
 import IPRADerivations.Foundations.NumeralPrimes
 

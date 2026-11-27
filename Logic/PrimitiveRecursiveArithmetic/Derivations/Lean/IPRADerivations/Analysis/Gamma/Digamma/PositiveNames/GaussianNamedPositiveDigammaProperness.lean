@@ -1,5 +1,5 @@
 import IPRADerivations.Analysis.Gamma.Digamma.PositiveNames.GaussianNamedPositiveDigamma
-import IPRADerivations.Analysis.Gamma.NegativeAxis.Derivatives.GaussianGammaNegativeIntervalNamedTerminalProperness
+import IPRADerivations.Analysis.Gamma.NegativeAxis.Derivatives.Terminal.GaussianGammaNegativeIntervalNamedTerminalProperness
 
 /-!
 # Properness of the original positive digamma and derivative names

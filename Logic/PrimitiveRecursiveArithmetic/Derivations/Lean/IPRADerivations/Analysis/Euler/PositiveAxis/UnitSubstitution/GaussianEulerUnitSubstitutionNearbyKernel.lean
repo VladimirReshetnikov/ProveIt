@@ -1,4 +1,4 @@
-import IPRADerivations.Analysis.Euler.PositiveAxis.UnitKernel.GaussianNamedEulerUnitKernelAtDecay
+import IPRADerivations.Analysis.Euler.PositiveAxis.UnitKernel.Named.GaussianNamedEulerUnitKernelAtDecay
 import IPRADerivations.Analysis.Names.Arithmetic.RationalGaussianNameEmbedding
 
 /-!

@@ -1,5 +1,5 @@
 import IPRADerivations.Analysis.RationalArithmetic.OrderBounds.GaussianRationalThreeTermBudget
-import IPRADerivations.Analysis.RationalArithmetic.Powers.GaussianRationalPowerAlgebra
+import IPRADerivations.Analysis.RationalArithmetic.Powers.GaussianPowers.GaussianRationalPowerAlgebra
 
 /-!
 # Two actual rational Gaussian terms with a common relative norm bound

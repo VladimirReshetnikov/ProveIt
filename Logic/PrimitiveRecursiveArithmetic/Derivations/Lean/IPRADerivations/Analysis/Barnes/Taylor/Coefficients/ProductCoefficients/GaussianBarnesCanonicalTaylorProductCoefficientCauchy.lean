@@ -3,7 +3,7 @@ import IPRADerivations.Analysis.Barnes.Taylor.Coefficients.ExponentCoefficients.
 import IPRADerivations.Analysis.Barnes.Taylor.Coefficients.ProductCoefficients.GaussianBarnesCanonicalTaylorProduct
 import IPRADerivations.Analysis.Exponential.Polynomials.GaussianPolynomialExponentialCoefficientVariation
 import IPRADerivations.Analysis.FiniteOperations.FiniteSums.GaussianFiniteSumL1Variation
-import IPRADerivations.Analysis.Polynomials.Products.GaussianPolynomialProductLeftPadding
+import IPRADerivations.Analysis.Polynomials.Products.LinearFactors.GaussianPolynomialProductLeftPadding
 import IPRADerivations.Analysis.Polynomials.Coefficients.GaussianPolynomialNormBuffers
 
 /-!

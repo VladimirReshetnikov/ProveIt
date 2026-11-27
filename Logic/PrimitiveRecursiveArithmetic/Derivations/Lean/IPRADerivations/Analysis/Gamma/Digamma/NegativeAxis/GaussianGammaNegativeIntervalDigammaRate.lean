@@ -1,5 +1,5 @@
 import IPRADerivations.Analysis.Gamma.NegativeAxis.Derivatives.GaussianGammaNegativeIntervalDerivativeRate
-import IPRADerivations.Analysis.Gamma.NegativeAxis.Derivatives.GaussianGammaNegativeIntervalQuotientNormalization
+import IPRADerivations.Analysis.Gamma.NegativeAxis.Derivatives.StepQuotients.GaussianGammaNegativeIntervalQuotientNormalization
 
 /-!
 # Original negative-interval digamma rate for native unit steps

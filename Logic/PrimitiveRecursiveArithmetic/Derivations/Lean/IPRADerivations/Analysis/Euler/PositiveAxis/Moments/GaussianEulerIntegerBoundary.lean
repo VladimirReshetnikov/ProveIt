@@ -1,5 +1,5 @@
-import IPRADerivations.Analysis.Euler.PositiveAxis.UnitTime.GaussianEulerUnitNormalizationIntegrand
-import IPRADerivations.Analysis.Euler.Integration.Parts.GaussianEulerIntegrationByPartsParameterShiftObservation
+import IPRADerivations.Analysis.Euler.PositiveAxis.UnitTime.Normalization.GaussianEulerUnitNormalizationIntegrand
+import IPRADerivations.Analysis.Euler.Integration.Parts.Recurrences.GaussianEulerIntegrationByPartsParameterShiftObservation
 import IPRADerivations.Analysis.Gamma.EulerProducts.Factorials.GaussianGammaFactorialValues
 
 /-!

@@ -1,7 +1,7 @@
 import IPRADerivations.Analysis.Gamma.EulerProducts.GaussianGammaEulerHeadContinuity
 import IPRADerivations.Analysis.Gamma.EulerProducts.Exponents.GaussianGammaLogExponentContinuity
 import IPRADerivations.Analysis.Gamma.EulerProducts.GaussianGammaEulerApproximationName
-import IPRADerivations.Analysis.Exponential.Names.GaussianExponentialRadiusIndependence
+import IPRADerivations.Analysis.Exponential.Names.Evaluators.GaussianExponentialRadiusIndependence
 import IPRADerivations.Analysis.Exponential.PositiveAxis.GaussianPositiveExponentialMajorant
 
 /-!

@@ -1,5 +1,5 @@
 import IPRADerivations.Analysis.Exponential.PositiveAxis.GaussianPositiveExponentialOrder
-import IPRADerivations.Analysis.Exponential.Names.GaussianExponentialReference
+import IPRADerivations.Analysis.Exponential.Names.Evaluators.GaussianExponentialReference
 import IPRADerivations.Analysis.Gamma.Names.Symmetry.GaussianGammaRealValues
 
 /-!

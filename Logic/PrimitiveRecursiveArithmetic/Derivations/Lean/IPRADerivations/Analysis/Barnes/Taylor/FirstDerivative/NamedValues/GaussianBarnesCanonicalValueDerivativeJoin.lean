@@ -2,7 +2,7 @@ import IPRADerivations.Analysis.Barnes.TailControl.GaussianBarnesCanonicalTailEx
 import IPRADerivations.Analysis.Barnes.CanonicalProducts.GaussianBarnesCanonicalUniformContinuity
 import IPRADerivations.Analysis.Barnes.Taylor.FirstDerivative.FiniteFactors.GaussianBarnesCanonicalHeadCorrectionDerivative
 import IPRADerivations.Analysis.Names.Rates.DifferenceQuotients.GaussianNamedNativeProductDerivativeRate
-import IPRADerivations.Analysis.Names.FiniteOperations.Products.GaussianNamedBoundedProductObservation
+import IPRADerivations.Analysis.Names.FiniteOperations.Products.Bounds.GaussianNamedBoundedProductObservation
 
 /-!
 # Derivative assembly at the original Barnes split

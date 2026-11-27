@@ -1,5 +1,5 @@
 import IPRADerivations.Analysis.Logarithm.Local.GaussianLocalLogarithmExponentialIdentity
-import IPRADerivations.Analysis.Exponential.Names.GaussianNamedExponentialQuarterUniqueness
+import IPRADerivations.Analysis.Exponential.Names.LocalEstimates.GaussianNamedExponentialQuarterUniqueness
 import IPRADerivations.Analysis.Names.Differences.GaussianNamedStrictOrderDifference
 import IPRADerivations.Analysis.Gamma.FunctionalEquations.ReciprocalGamma.GaussianGammaAdjacentCutoff
 

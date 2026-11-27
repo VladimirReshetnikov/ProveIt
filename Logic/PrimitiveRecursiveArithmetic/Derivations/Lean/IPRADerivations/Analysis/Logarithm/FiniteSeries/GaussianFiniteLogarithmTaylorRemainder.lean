@@ -1,6 +1,6 @@
 import IPRADerivations.Analysis.Logarithm.FiniteSeries.GaussianFiniteLogarithmWeightedNorm
 import IPRADerivations.Analysis.LinearAlgebra.Matrices.GaussianRationalMatrixFiniteSums
-import IPRADerivations.Analysis.RationalArithmetic.Powers.GaussianRationalPowerDifference
+import IPRADerivations.Analysis.RationalArithmetic.Powers.GaussianPowers.GaussianRationalPowerDifference
 
 /-!
 # Geometric Taylor remainder for the original finite Mercator polynomial

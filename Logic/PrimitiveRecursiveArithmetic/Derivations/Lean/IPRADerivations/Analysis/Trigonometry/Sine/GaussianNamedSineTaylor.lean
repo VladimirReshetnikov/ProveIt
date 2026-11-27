@@ -1,5 +1,5 @@
 import IPRADerivations.Analysis.Trigonometry.Sine.GaussianScalarSineTaylor
-import IPRADerivations.Analysis.Exponential.Names.GaussianExponentialReference
+import IPRADerivations.Analysis.Exponential.Names.Evaluators.GaussianExponentialReference
 
 /-!
 # Original named sine and its literal factorial Taylor observations

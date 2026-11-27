@@ -1,6 +1,6 @@
 import IPRADerivations.Analysis.Gamma.Digamma.Polygamma.GaussianGammaPolygammaTailRows
-import IPRADerivations.Analysis.RationalArithmetic.FiniteSums.GaussianRationalSumMajorant
-import IPRADerivations.Analysis.RationalArithmetic.Powers.RationalReciprocalPowerTail
+import IPRADerivations.Analysis.RationalArithmetic.FiniteSums.WeightedSums.GaussianRationalSumMajorant
+import IPRADerivations.Analysis.RationalArithmetic.Powers.RationalPowerBounds.RationalReciprocalPowerTail
 
 /-!
 # The literal complex polygamma tail bound

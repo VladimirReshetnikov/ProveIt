@@ -1,5 +1,5 @@
 import IPRADerivations.Analysis.Gamma.FunctionalEquations.Multiplication.ReferenceProduct.GaussianGammaGaussReflectionDomain
-import IPRADerivations.Analysis.Trigonometry.Cyclic.GaussianCyclicFullHalfAngle
+import IPRADerivations.Analysis.Trigonometry.Cyclic.Chords.GaussianCyclicFullHalfAngle
 import IPRADerivations.Analysis.Gamma.FunctionalEquations.Reflection.GaussianGammaReflectionSineTransfer
 
 /-!

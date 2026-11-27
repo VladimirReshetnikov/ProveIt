@@ -2,7 +2,7 @@ import IPRADerivations.Analysis.Euler.PositiveAxis.UnitSubstitution.Lattices.Gau
 import IPRADerivations.Analysis.Euler.PositiveAxis.UnitSubstitution.Densities.GaussianEulerUnitSubstitutionReversedWeights
 import IPRADerivations.Analysis.Euler.PositiveAxis.UnitSubstitution.GaussianEulerUnitSubstitutionNearbyKernel
 import IPRADerivations.Analysis.Euler.PositiveAxis.UnitSubstitution.Densities.GaussianEulerUnitSubstitutionDensityPrecision
-import IPRADerivations.Analysis.Euler.PositiveAxis.UnitKernel.GaussianEulerUnitKernelLatticeSum
+import IPRADerivations.Analysis.Euler.PositiveAxis.UnitKernel.Lattices.GaussianEulerUnitKernelLatticeSum
 import IPRADerivations.Analysis.RationalArithmetic.Distances.RationalSandwichRadius
 
 /-!

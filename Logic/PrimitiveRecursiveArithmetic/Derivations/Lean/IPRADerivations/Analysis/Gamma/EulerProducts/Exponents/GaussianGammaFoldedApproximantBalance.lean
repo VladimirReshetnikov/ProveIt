@@ -1,6 +1,6 @@
 import IPRADerivations.Analysis.Gamma.EulerProducts.Exponents.GaussianGammaFoldedExponentBalance
-import IPRADerivations.Analysis.Exponential.Names.GaussianExponentialAddition
-import IPRADerivations.Analysis.Exponential.Names.GaussianExponentialRadiusIndependence
+import IPRADerivations.Analysis.Exponential.Names.Identities.GaussianExponentialAddition
+import IPRADerivations.Analysis.Exponential.Names.Evaluators.GaussianExponentialRadiusIndependence
 
 /-!
 # The two folded C8 identities

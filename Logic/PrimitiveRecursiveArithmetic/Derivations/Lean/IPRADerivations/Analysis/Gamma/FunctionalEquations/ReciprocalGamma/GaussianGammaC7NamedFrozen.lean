@@ -1,5 +1,5 @@
 import IPRADerivations.Analysis.Gamma.FunctionalEquations.ReciprocalGamma.GaussianGammaC7Named
-import IPRADerivations.Analysis.RationalArithmetic.Powers.GaussianRationalPowerDifference
+import IPRADerivations.Analysis.RationalArithmetic.Powers.GaussianPowers.GaussianRationalPowerDifference
 
 /-!
 # Freeze the original named reciprocal Gamma at an arbitrary late observation

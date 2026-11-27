@@ -1,5 +1,5 @@
 import IPRADerivations.Analysis.Euler.PositiveAxis.PositiveScaling.GaussianEulerPositiveScalingConstant
-import IPRADerivations.Analysis.Euler.Integration.Parts.GaussianEulerIntegrationByPartsParameterShiftObservation
+import IPRADerivations.Analysis.Euler.Integration.Parts.Recurrences.GaussianEulerIntegrationByPartsParameterShiftObservation
 
 /-!
 # Actual original Euler pullback under the exponential substitution

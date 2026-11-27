@@ -1,5 +1,5 @@
-import IPRADerivations.Analysis.Exponential.Names.GaussianExponentialReference
-import IPRADerivations.Analysis.Names.FiniteOperations.Products.GaussianNamedMultiplyRate
+import IPRADerivations.Analysis.Exponential.Names.Evaluators.GaussianExponentialReference
+import IPRADerivations.Analysis.Names.FiniteOperations.Products.Bounds.GaussianNamedMultiplyRate
 
 /-!
 # Observations of the actual named sum with prescribed bounds

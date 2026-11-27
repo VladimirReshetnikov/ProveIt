@@ -1,4 +1,4 @@
-import IPRADerivations.Analysis.RationalArithmetic.FiniteSums.GaussianRationalBlockSums
+import IPRADerivations.Analysis.RationalArithmetic.FiniteSums.Reindexing.GaussianRationalBlockSums
 import IPRADerivations.Foundations.RuntimeWordAppend
 
 /-!

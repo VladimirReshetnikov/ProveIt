@@ -1,5 +1,5 @@
 import IPRADerivations.Analysis.Exponential.PositiveAxis.GaussianRealNameExponentialUnitReflection
-import IPRADerivations.Analysis.Exponential.Names.GaussianNamedExponentialDifferenceIdentity
+import IPRADerivations.Analysis.Exponential.Names.Derivatives.GaussianNamedExponentialDifferenceIdentity
 
 /-!
 # Injectivity of the actual exponential on real regular Gaussian names

@@ -1,4 +1,4 @@
-import IPRADerivations.Analysis.Euler.Integration.Decay.GaussianEulerDecayRealSamples
+import IPRADerivations.Analysis.Euler.Integration.Decay.Quadrature.GaussianEulerDecayRealSamples
 import IPRADerivations.Analysis.RationalArithmetic.Representations.RationalRepresentedUpper
 
 /-!

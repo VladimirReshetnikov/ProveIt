@@ -1,6 +1,6 @@
 import IPRADerivations.Analysis.RationalArithmetic.FiniteSums.GaussianRationalFiniteSum
 import IPRADerivations.Analysis.Polynomials.Translation.GaussianTranslationCoefficientValues
-import IPRADerivations.Analysis.RationalArithmetic.Powers.GaussianRationalPowerAlgebra
+import IPRADerivations.Analysis.RationalArithmetic.Powers.GaussianPowers.GaussianRationalPowerAlgebra
 import IPRADerivations.Combinatorics.Vandermonde
 import IPRADerivations.Foundations.BoundedSyntaxBackwardInduction
 

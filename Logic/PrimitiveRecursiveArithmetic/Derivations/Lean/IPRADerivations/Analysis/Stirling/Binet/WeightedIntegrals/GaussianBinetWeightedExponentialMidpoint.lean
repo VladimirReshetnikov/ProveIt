@@ -2,7 +2,7 @@ import IPRADerivations.Analysis.Stirling.Binet.WeightedIntegrals.GaussianBinetWe
 import IPRADerivations.Analysis.Euler.PositiveAxis.PowerCharts.ImageGrids.GaussianEulerPositivePowerChartImageWeights
 import IPRADerivations.Analysis.RationalArithmetic.Powers.GaussianCompactScalarMajorant
 import IPRADerivations.Analysis.Trigonometry.Pi.GaussianPiRationalScaleRepresentation
-import IPRADerivations.Analysis.Polynomials.Products.GaussianPolynomialLinearFactorCoefficients
+import IPRADerivations.Analysis.Polynomials.Products.LinearFactors.GaussianPolynomialLinearFactorCoefficients
 
 /-!
 # Uniform finite midpoint readback of the weighted Binet quadrature

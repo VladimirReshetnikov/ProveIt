@@ -1,6 +1,6 @@
 import IPRADerivations.Analysis.Polynomials.RootFinding.Descent.GaussianTranslatedNonconstant
 import IPRADerivations.Analysis.RationalArithmetic.FiniteSums.GaussianRationalSumAlgebra
-import IPRADerivations.Analysis.RationalArithmetic.Powers.GaussianRationalPowerAlgebra
+import IPRADerivations.Analysis.RationalArithmetic.Powers.GaussianPowers.GaussianRationalPowerAlgebra
 
 /-!
 # Actual synthetic coefficient identities for arbitrary raw fractions

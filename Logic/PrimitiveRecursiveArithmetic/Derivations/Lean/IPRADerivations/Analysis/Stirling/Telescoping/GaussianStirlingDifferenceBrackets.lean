@@ -1,5 +1,5 @@
-import IPRADerivations.Analysis.Stirling.Expansions.GaussianStirlingOddReadback
-import IPRADerivations.Analysis.Names.FiniteOperations.Products.GaussianNamedBoundedProductObservation
+import IPRADerivations.Analysis.Stirling.Expansions.OddSeries.GaussianStirlingOddReadback
+import IPRADerivations.Analysis.Names.FiniteOperations.Products.Bounds.GaussianNamedBoundedProductObservation
 import IPRADerivations.Analysis.RationalArithmetic.Embeddings.RationalGaussianRealPart
 
 /-!

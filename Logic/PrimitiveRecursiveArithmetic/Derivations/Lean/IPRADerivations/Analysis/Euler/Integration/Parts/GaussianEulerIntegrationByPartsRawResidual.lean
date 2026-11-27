@@ -1,4 +1,4 @@
-import IPRADerivations.Analysis.Euler.Integration.Parts.GaussianEulerIntegrationByPartsCompactNamedIdentity
+import IPRADerivations.Analysis.Euler.Integration.Parts.CompactNames.GaussianEulerIntegrationByPartsCompactNamedIdentity
 
 /-!
 # The original compact integration-by-parts residual at a later query

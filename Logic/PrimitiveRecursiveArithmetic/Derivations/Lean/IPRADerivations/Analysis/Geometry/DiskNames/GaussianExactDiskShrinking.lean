@@ -1,4 +1,4 @@
-import IPRADerivations.Analysis.Exponential.Names.GaussianExponentialSmallPerturbation
+import IPRADerivations.Analysis.Exponential.Names.LocalEstimates.GaussianExponentialSmallPerturbation
 
 /-!
 # Actual regular names with an exact rational disk

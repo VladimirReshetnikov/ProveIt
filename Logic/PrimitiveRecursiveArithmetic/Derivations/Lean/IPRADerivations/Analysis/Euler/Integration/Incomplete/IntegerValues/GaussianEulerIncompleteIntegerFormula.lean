@@ -1,6 +1,6 @@
 import IPRADerivations.Analysis.Euler.Integration.Incomplete.IntegerValues.GaussianEulerIncompleteIntegerStep
 import IPRADerivations.Analysis.Euler.Integration.Incomplete.IntegerValues.GaussianEulerIncompleteFactorialCombination
-import IPRADerivations.Analysis.Euler.Integration.Incomplete.GaussianEulerIncompleteUnitUpper
+import IPRADerivations.Analysis.Euler.Integration.Incomplete.Endpoints.GaussianEulerIncompleteUnitUpper
 
 /-!
 # The original upper incomplete Gamma factorial formula

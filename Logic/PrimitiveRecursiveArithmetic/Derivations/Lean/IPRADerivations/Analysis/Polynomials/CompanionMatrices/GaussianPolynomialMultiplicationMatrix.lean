@@ -1,5 +1,5 @@
 import IPRADerivations.Analysis.Polynomials.CompanionMatrices.GaussianPolynomialMonicCompanion
-import IPRADerivations.Analysis.RationalArithmetic.Powers.GaussianRationalPowerExpansion
+import IPRADerivations.Analysis.RationalArithmetic.Powers.GaussianPowers.GaussianRationalPowerExpansion
 import IPRADerivations.Foundations.BoundedSyntaxInduction
 
 /-!

@@ -1,5 +1,5 @@
 import IPRADerivations.Analysis.Euler.PositiveAxis.LowerBounds.EtaToOne.GaussianEulerEtaToOneBound
-import IPRADerivations.Analysis.Euler.PositiveAxis.UnitTime.GaussianEulerUnitToTopCompactBound
+import IPRADerivations.Analysis.Euler.PositiveAxis.UnitTime.Bounds.GaussianEulerUnitToTopCompactBound
 import IPRADerivations.Analysis.Euler.Integration.GaussianEulerIntegralUpperTransfer
 
 /-!

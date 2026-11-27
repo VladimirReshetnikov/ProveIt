@@ -2,7 +2,7 @@ import IPRADerivations.Analysis.Names.Rates.Reciprocals.GaussianApproximateInver
 import IPRADerivations.Analysis.Stirling.Binet.Bose.CompactIntegrand.GaussianBinetBoseExponential
 import IPRADerivations.Analysis.Exponential.IntegerPowers.GaussianBoundedIntegerExponentialStages
 import IPRADerivations.Analysis.Names.Scaling.GaussianNamedNaturalScale
-import IPRADerivations.Analysis.Names.FiniteOperations.Products.GaussianNamedProductObservationBound
+import IPRADerivations.Analysis.Names.FiniteOperations.Products.Bounds.GaussianNamedProductObservationBound
 
 /-!
 # Bind integer scaling to the original signed Pi chart

@@ -1,4 +1,4 @@
-import IPRADerivations.Analysis.Exponential.Names.GaussianExponentialInverseSamples
+import IPRADerivations.Analysis.Exponential.Names.Identities.GaussianExponentialInverseSamples
 import IPRADerivations.Analysis.Trigonometry.SineProducts.Roots.GaussianSineSquaredResidual
 
 /-!

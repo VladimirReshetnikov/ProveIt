@@ -1,6 +1,6 @@
 import IPRADerivations.Analysis.Gamma.Ratios.GaussianGammaRationalUnscaledChord
 import IPRADerivations.Analysis.Names.Differences.GaussianNamedStrictOrderDifference
-import IPRADerivations.Analysis.Stirling.Expansions.GaussianStirlingOddCoefficients
+import IPRADerivations.Analysis.Stirling.Expansions.OddSeries.GaussianStirlingOddCoefficients
 import IPRADerivations.Analysis.Logarithm.PositiveAxis.GaussianPositiveRationalLogarithmOrder
 
 /-!

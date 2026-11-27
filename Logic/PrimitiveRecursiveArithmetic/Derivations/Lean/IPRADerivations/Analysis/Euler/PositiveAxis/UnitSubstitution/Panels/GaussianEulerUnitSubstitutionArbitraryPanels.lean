@@ -1,6 +1,6 @@
 import IPRADerivations.Analysis.Euler.PositiveAxis.UnitSubstitution.Endpoints.GaussianEulerUnitSubstitutionOrdinaryContainment
-import IPRADerivations.Analysis.Euler.PositiveAxis.UnitKernel.GaussianEulerUnitKernelNativePanel
-import IPRADerivations.Analysis.Euler.PositiveAxis.UnitKernel.GaussianEulerUnitKernelNestedPanels
+import IPRADerivations.Analysis.Euler.PositiveAxis.UnitKernel.Panels.GaussianEulerUnitKernelNativePanel
+import IPRADerivations.Analysis.Euler.PositiveAxis.UnitKernel.Panels.GaussianEulerUnitKernelNestedPanels
 import IPRADerivations.Analysis.Euler.PositiveAxis.UnitSubstitution.Panels.GaussianEulerUnitSubstitutionCofinalPanelRate
 
 /-!

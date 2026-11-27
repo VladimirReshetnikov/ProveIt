@@ -1,7 +1,7 @@
 import IPRADerivations.Analysis.Logarithm.FiniteSeries.GaussianFiniteLogarithmBellIdentification
-import IPRADerivations.Analysis.RationalArithmetic.Powers.GaussianRationalPowerExpansion
+import IPRADerivations.Analysis.RationalArithmetic.Powers.GaussianPowers.GaussianRationalPowerExpansion
 import IPRADerivations.Analysis.Polynomials.Coefficients.GaussianCoefficientNameBounds
-import IPRADerivations.Analysis.Polynomials.RootFinding.Descent.GaussianMonicResidualRadius
+import IPRADerivations.Analysis.Polynomials.RootFinding.Descent.Monic.GaussianMonicResidualRadius
 
 /-!
 # An actual finite tail on the original C4 half disk

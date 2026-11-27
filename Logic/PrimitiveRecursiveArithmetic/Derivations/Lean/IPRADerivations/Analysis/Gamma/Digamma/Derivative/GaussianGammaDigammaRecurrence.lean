@@ -1,5 +1,5 @@
 import IPRADerivations.Analysis.Gamma.Digamma.Derivative.GaussianGammaDigammaDerivativeShift
-import IPRADerivations.Analysis.Euler.Integration.Decay.GaussianEulerDampedTimeRate
+import IPRADerivations.Analysis.Euler.Integration.Decay.Damping.GaussianEulerDampedTimeRate
 
 /-!
 # The recurrence for the original positive rational digamma name

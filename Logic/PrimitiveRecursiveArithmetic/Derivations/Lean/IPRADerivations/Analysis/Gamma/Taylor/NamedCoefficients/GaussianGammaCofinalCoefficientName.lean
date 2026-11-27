@@ -1,7 +1,7 @@
 import IPRADerivations.Analysis.Gamma.Taylor.FinitePolynomials.GaussianGammaFiniteCoefficientPolynomial
 import IPRADerivations.Analysis.Gamma.EulerProducts.Exponents.GaussianGammaSynchronousExponentCompatibility
-import IPRADerivations.Analysis.Names.FiniteOperations.Products.GaussianBoundedConstantProductName
-import IPRADerivations.Analysis.Exponential.Names.GaussianExponentialRadiusIndependence
+import IPRADerivations.Analysis.Names.FiniteOperations.Products.Bounds.GaussianBoundedConstantProductName
+import IPRADerivations.Analysis.Exponential.Names.Evaluators.GaussianExponentialRadiusIndependence
 import IPRADerivations.Analysis.Gamma.FunctionalEquations.ReciprocalGamma.GaussianGammaC7Name
 
 /-!

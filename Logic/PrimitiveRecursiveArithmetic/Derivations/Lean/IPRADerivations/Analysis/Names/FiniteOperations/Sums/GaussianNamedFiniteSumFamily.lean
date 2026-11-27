@@ -1,4 +1,4 @@
-import IPRADerivations.Analysis.Names.FiniteOperations.Products.GaussianNamedFiniteProductFamily
+import IPRADerivations.Analysis.Names.FiniteOperations.Products.Families.GaussianNamedFiniteProductFamily
 import IPRADerivations.Analysis.Integration.RiemannSums.GaussianRationalRiemannRefinement
 
 /-!

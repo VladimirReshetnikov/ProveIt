@@ -1,4 +1,4 @@
-import IPRADerivations.Analysis.Polynomials.Products.GaussianWeightedPolynomialPowerBound
+import IPRADerivations.Analysis.Polynomials.Products.Powers.GaussianWeightedPolynomialPowerBound
 import IPRADerivations.Analysis.Beta.EulerProducts.GaussianEulerBetaPolynomialPrimitive
 import IPRADerivations.AnalyticNumberTheory.BinomialThree
 

@@ -1,6 +1,6 @@
 import IPRADerivations.Analysis.FiniteOperations.FiniteSums.GaussianPositiveRadiusFiniteSum
 import IPRADerivations.Analysis.Integration.RiemannSums.GaussianRationalRiemannRefinement
-import IPRADerivations.Analysis.Euler.Integration.Decay.GaussianEulerWeightedHalfDecay
+import IPRADerivations.Analysis.Euler.Integration.Decay.Damping.GaussianEulerWeightedHalfDecay
 
 /-!
 # Euclidean comparison of weighted rational sums

@@ -1,8 +1,8 @@
 import IPRADerivations.DiophantineNumberTheory.MinkowskiSlabInterval
 import IPRADerivations.DiophantineNumberTheory.MinkowskiWellFormed
 import IPRADerivations.Analysis.RationalArithmetic.RationalAlgebra
-import IPRADerivations.Analysis.RationalArithmetic.FiniteSums.RationalSumLinearity
-import IPRADerivations.Analysis.RationalArithmetic.FiniteSums.RationalSumAdditivity
+import IPRADerivations.Analysis.RationalArithmetic.FiniteSums.RationalIdentities.RationalSumLinearity
+import IPRADerivations.Analysis.RationalArithmetic.FiniteSums.RationalIdentities.RationalSumAdditivity
 import IPRADerivations.Core.Header
 
 /-!

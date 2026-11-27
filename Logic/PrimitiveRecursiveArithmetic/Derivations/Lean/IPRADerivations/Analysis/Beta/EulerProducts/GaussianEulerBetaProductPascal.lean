@@ -1,6 +1,6 @@
 import IPRADerivations.Analysis.Beta.EulerProducts.GaussianEulerBetaProductValue
 import IPRADerivations.Analysis.Gamma.EulerProducts.Exponents.GaussianGammaExponentStep
-import IPRADerivations.Analysis.RationalArithmetic.Powers.GaussianRationalRoundedPower
+import IPRADerivations.Analysis.RationalArithmetic.Powers.GaussianPowers.GaussianRationalRoundedPower
 
 /-!
 # Pascal recurrence of the original reciprocal Euler head

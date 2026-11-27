@@ -1,6 +1,6 @@
 import IPRADerivations.Analysis.Stirling.Raabe.GaussianRaabeRightSide
-import IPRADerivations.Analysis.Stirling.Raabe.GaussianRaabeLogPrimitiveRescale
-import IPRADerivations.Analysis.Stirling.Raabe.GaussianRaabeStirlingRemainder
+import IPRADerivations.Analysis.Stirling.Raabe.LogPrimitives.GaussianRaabeLogPrimitiveRescale
+import IPRADerivations.Analysis.Stirling.Raabe.StirlingComparisons.GaussianRaabeStirlingRemainder
 
 /-!
 # The Raabe right side at the encoded unit argument

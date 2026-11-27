@@ -1,5 +1,5 @@
 import IPRADerivations.Analysis.Logarithm.Local.GaussianLocalLogarithmLinearRemainder
-import IPRADerivations.Analysis.Exponential.Names.GaussianExponentialReference
+import IPRADerivations.Analysis.Exponential.Names.Evaluators.GaussianExponentialReference
 
 /-!
 # Late Mercator observations at arguments of modulus at most one eighth

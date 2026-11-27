@@ -1,5 +1,5 @@
-import IPRADerivations.Analysis.Gamma.EulerProducts.Gauss.GaussianGaussEulerFixedFamilyFactors
-import IPRADerivations.Analysis.Gamma.EulerProducts.Gauss.GaussianGaussEulerPositiveFamily
+import IPRADerivations.Analysis.Gamma.EulerProducts.Gauss.Factors.GaussianGaussEulerFixedFamilyFactors
+import IPRADerivations.Analysis.Gamma.EulerProducts.Gauss.Factors.GaussianGaussEulerPositiveFamily
 import IPRADerivations.Analysis.Gamma.EulerProducts.Gauss.GaussianGaussEulerProductAlgebra
 import IPRADerivations.Analysis.Gamma.FunctionalEquations.Multiplication.GaussianGaussMultiplicationM2Transport
 

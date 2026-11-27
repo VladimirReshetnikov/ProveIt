@@ -1,4 +1,4 @@
-import IPRADerivations.Analysis.Euler.Integration.Incomplete.GaussianEulerIncompleteFixedCutoff
+import IPRADerivations.Analysis.Euler.Integration.Incomplete.Cutoffs.GaussianEulerIncompleteFixedCutoff
 import IPRADerivations.Analysis.Euler.Integration.Incomplete.GaussianEulerIncompleteRadiusAlignment
 
 /-!

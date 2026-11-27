@@ -1,5 +1,5 @@
 import IPRADerivations.Analysis.Barnes.Vigneras.GaussianBarnesVignerasIntegerPeriod
-import IPRADerivations.Analysis.FiniteOperations.PeriodicGrids.GaussianDiscretePeriodicMetricCertificate
+import IPRADerivations.Analysis.FiniteOperations.PeriodicGrids.Certificates.GaussianDiscretePeriodicMetricCertificate
 
 /-!
 # Actual quotient observations on a translated refinement

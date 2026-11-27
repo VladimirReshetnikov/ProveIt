@@ -1,7 +1,7 @@
 import IPRADerivations.Analysis.Barnes.Taylor.Coefficients.ExponentCoefficients.GaussianBarnesCanonicalExponentTaylorMass
 import IPRADerivations.Analysis.Inequalities.WeightedComparison.GaussianWeightedErrorBudget
 import IPRADerivations.Analysis.Polynomials.Representation.GaussianRationalPolynomialDilation
-import IPRADerivations.Analysis.RationalArithmetic.Powers.GaussianRationalPowerExpansion
+import IPRADerivations.Analysis.RationalArithmetic.Powers.GaussianPowers.GaussianRationalPowerExpansion
 import IPRADerivations.AnalyticNumberTheory.LocalFactor
 
 /-!

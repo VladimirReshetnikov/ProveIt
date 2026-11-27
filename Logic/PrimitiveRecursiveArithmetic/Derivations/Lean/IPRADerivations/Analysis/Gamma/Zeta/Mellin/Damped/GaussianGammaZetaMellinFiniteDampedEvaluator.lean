@@ -1,5 +1,5 @@
 import IPRADerivations.Analysis.Gamma.Zeta.Mellin.Damped.GaussianGammaZetaMellinDampedPoint
-import IPRADerivations.Analysis.Euler.Integration.Decay.GaussianEulerDampedCompactName
+import IPRADerivations.Analysis.Euler.Integration.Decay.Damping.GaussianEulerDampedCompactName
 
 /-!
 # An evaluator for the original finite damped prefix

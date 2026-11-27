@@ -2,7 +2,7 @@ import IPRADerivations.Analysis.Gamma.Zeta.Dirichlet.GaussianGammaZetaDirichletR
 import IPRADerivations.Analysis.Trigonometry.Arctangent.GaussianArctangentExponentialPeriod
 import IPRADerivations.Analysis.Euler.Integration.Decay.GaussianEulerDecayOrder
 import IPRADerivations.Analysis.Polynomials.Elimination.RowReduction.GaussianRationalRowElimination
-import IPRADerivations.Analysis.RationalArithmetic.Powers.RationalReciprocalPowerTail
+import IPRADerivations.Analysis.RationalArithmetic.Powers.RationalPowerBounds.RationalReciprocalPowerTail
 
 /-!
 # The original Dirichlet row at two

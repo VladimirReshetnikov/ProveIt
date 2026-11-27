@@ -1,4 +1,4 @@
-import IPRADerivations.Analysis.RationalArithmetic.Powers.GaussianFactorErrorStep
+import IPRADerivations.Analysis.Polynomials.RootFinding.Deflation.FactorTransport.GaussianFactorErrorStep
 import IPRADerivations.Analysis.Inequalities.WeightedComparison.GaussianWeightedErrorBudget
 
 /-!

@@ -1,5 +1,5 @@
 import IPRADerivations.Analysis.Euler.PositiveAxis.SharpRates.GaussianEulerSharpScheduleBudget
-import IPRADerivations.Analysis.Euler.Integration.Decay.GaussianEulerDecayRealSamples
+import IPRADerivations.Analysis.Euler.Integration.Decay.Quadrature.GaussianEulerDecayRealSamples
 
 /-!
 # The literal sharp degree with the exact real decay radius

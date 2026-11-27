@@ -1,5 +1,5 @@
-import IPRADerivations.Analysis.Euler.Integration.Parts.GaussianEulerIntegrationByPartsParameterShift
-import IPRADerivations.Analysis.Exponential.Names.GaussianExponentialInverse
+import IPRADerivations.Analysis.Euler.Integration.Parts.Recurrences.GaussianEulerIntegrationByPartsParameterShift
+import IPRADerivations.Analysis.Exponential.Names.Identities.GaussianExponentialInverse
 import IPRADerivations.Analysis.Names.Arithmetic.GaussianBoundedInverseApartness
 
 /-!

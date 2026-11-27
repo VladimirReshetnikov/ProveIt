@@ -1,5 +1,5 @@
 import IPRADerivations.Analysis.Gamma.FunctionalEquations.Multiplication.ReferenceProduct.GaussianGammaGaussReflectionFamily
-import IPRADerivations.Analysis.Trigonometry.Cyclic.GaussianCyclicSineProductName
+import IPRADerivations.Analysis.Trigonometry.Cyclic.SineProducts.GaussianCyclicSineProductName
 
 /-!
 # The sine factor of the Gauss reflection family is the original M1 product

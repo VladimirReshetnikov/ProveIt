@@ -1,6 +1,6 @@
-import IPRADerivations.Analysis.Stirling.Raabe.GaussianRaabeCofinalSchedule
-import IPRADerivations.Analysis.Stirling.Raabe.GaussianRaabeStirlingGridRemainder
-import IPRADerivations.Analysis.Stirling.Raabe.GaussianRaabeLogPrimitiveRescale
+import IPRADerivations.Analysis.Stirling.Raabe.UnitPanels.GaussianRaabeCofinalSchedule
+import IPRADerivations.Analysis.Stirling.Raabe.StirlingComparisons.GaussianRaabeStirlingGridRemainder
+import IPRADerivations.Analysis.Stirling.Raabe.LogPrimitives.GaussianRaabeLogPrimitiveRescale
 
 /-!
 # Cofinal comparison for the original positive-argument Raabe quadrature

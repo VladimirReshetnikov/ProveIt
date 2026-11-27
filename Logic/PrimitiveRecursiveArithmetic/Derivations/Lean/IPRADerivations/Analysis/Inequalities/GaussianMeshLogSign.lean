@@ -1,5 +1,5 @@
 import IPRADerivations.Analysis.Gamma.FunctionalEquations.Recurrence.GaussianGammaEulerShiftLimit
-import IPRADerivations.Analysis.Exponential.Names.GaussianExponentialInverse
+import IPRADerivations.Analysis.Exponential.Names.Identities.GaussianExponentialInverse
 import IPRADerivations.Analysis.RationalArithmetic.Scaling.GaussianRationalNaturalScale
 
 /-!

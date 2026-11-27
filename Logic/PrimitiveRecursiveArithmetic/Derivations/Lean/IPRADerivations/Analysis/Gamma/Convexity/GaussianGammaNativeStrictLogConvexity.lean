@@ -1,6 +1,6 @@
 import IPRADerivations.Analysis.Gamma.Convexity.GaussianGammaNativeWeightedLogGap
 import IPRADerivations.Analysis.Stirling.Bounds.GaussianStirlingMultiplicativeBoundsCaps
-import IPRADerivations.Analysis.Euler.PositiveAxis.UnitTime.GaussianEulerUnitLogarithmicMargin
+import IPRADerivations.Analysis.Euler.PositiveAxis.UnitTime.Logarithms.GaussianEulerUnitLogarithmicMargin
 
 /-!
 # Strict log convexity for positive rational Gamma arguments

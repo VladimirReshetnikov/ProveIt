@@ -1,5 +1,5 @@
 import IPRADerivations.Analysis.Gamma.Names.Derivatives.GaussianNamedGammaIncrementInput
-import IPRADerivations.Analysis.Exponential.Names.GaussianExponentialSmallPerturbation
+import IPRADerivations.Analysis.Exponential.Names.LocalEstimates.GaussianExponentialSmallPerturbation
 
 /-!
 # Original right-half-plane input plus a small certified complex name

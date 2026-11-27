@@ -1,4 +1,4 @@
-import IPRADerivations.Analysis.Gamma.EulerProducts.Gauss.GaussianGaussEulerCutoffUniform
+import IPRADerivations.Analysis.Gamma.EulerProducts.Gauss.Cutoffs.GaussianGaussEulerCutoffUniform
 import IPRADerivations.Analysis.Gamma.FunctionalEquations.Multiplication.GaussianGaussMultiplicationCofinalRows
 
 /-!

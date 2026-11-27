@@ -1,6 +1,6 @@
 import IPRADerivations.Analysis.Geometry.HalfAngles.GaussianRationalHalfAngleRecovery
 import IPRADerivations.Analysis.RationalArithmetic.Directions.GaussianRationalDirectionClock
-import IPRADerivations.Analysis.RationalArithmetic.Powers.GaussianRationalRoundedPower
+import IPRADerivations.Analysis.RationalArithmetic.Powers.GaussianPowers.GaussianRationalRoundedPower
 
 /-!
 # A computed rational root direction for an actual unit input

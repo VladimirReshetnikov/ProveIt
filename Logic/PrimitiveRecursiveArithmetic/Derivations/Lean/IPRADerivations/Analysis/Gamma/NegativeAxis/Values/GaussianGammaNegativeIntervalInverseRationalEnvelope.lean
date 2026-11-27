@@ -1,5 +1,5 @@
-import IPRADerivations.Analysis.Gamma.NegativeAxis.CriticalPoints.GaussianGammaNegativeIntervalChordInverse
-import IPRADerivations.Analysis.Euler.PositiveAxis.UnitTime.GaussianEulerUnitCompactTimeBounds
+import IPRADerivations.Analysis.Gamma.NegativeAxis.CriticalPoints.Chords.GaussianGammaNegativeIntervalChordInverse
+import IPRADerivations.Analysis.Euler.PositiveAxis.UnitTime.Bounds.GaussianEulerUnitCompactTimeBounds
 import IPRADerivations.Analysis.Beta.EulerProducts.GaussianEulerBetaProductPascal
 
 /-!

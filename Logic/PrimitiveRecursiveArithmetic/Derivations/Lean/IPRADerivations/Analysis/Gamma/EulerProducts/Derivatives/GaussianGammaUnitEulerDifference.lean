@@ -1,5 +1,5 @@
 import IPRADerivations.Analysis.Gamma.EulerProducts.Derivatives.GaussianGammaEulerFirstDerivative
-import IPRADerivations.Analysis.Euler.PositiveAxis.UnitTime.GaussianEulerUnitNormalization
+import IPRADerivations.Analysis.Euler.PositiveAxis.UnitTime.Normalization.GaussianEulerUnitNormalization
 
 /-!
 # Positive rational increments for the original Gamma derivative at one

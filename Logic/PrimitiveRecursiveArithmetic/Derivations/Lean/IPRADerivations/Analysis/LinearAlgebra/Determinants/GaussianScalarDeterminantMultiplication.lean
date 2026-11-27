@@ -1,6 +1,6 @@
 import IPRADerivations.Analysis.LinearAlgebra.Determinants.GaussianScalarDeterminantExpansion
 import IPRADerivations.Analysis.LinearAlgebra.Determinants.GaussianScalarColumnSelection
-import IPRADerivations.Analysis.RationalArithmetic.FiniteSums.GaussianRationalBlockSums
+import IPRADerivations.Analysis.RationalArithmetic.FiniteSums.Reindexing.GaussianRationalBlockSums
 
 /-!
 # Multiplicativity of the actual scalar determinant

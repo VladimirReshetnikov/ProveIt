@@ -1,4 +1,4 @@
-import IPRADerivations.Analysis.Polynomials.Determinants.GaussianPolynomialDeterminantNorm
+import IPRADerivations.Analysis.Polynomials.Determinants.ErrorBounds.GaussianPolynomialDeterminantNorm
 import IPRADerivations.Analysis.Polynomials.Coefficients.GaussianCoefficientNormOrder
 import IPRADerivations.Analysis.Inequalities.NonnegativeArithmetic.RationalNonnegativePowers
 

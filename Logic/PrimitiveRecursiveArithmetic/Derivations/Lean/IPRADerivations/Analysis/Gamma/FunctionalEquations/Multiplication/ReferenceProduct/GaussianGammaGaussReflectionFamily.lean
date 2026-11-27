@@ -1,6 +1,6 @@
 import IPRADerivations.Analysis.Gamma.FunctionalEquations.Multiplication.ReferenceProduct.GaussianGammaGaussReflectionRow
-import IPRADerivations.Analysis.Names.FiniteOperations.Products.GaussianNamedFiniteProductFamilyCongruence
-import IPRADerivations.Analysis.Trigonometry.Cyclic.GaussianCyclicSineProductSquare
+import IPRADerivations.Analysis.Names.FiniteOperations.Products.Families.GaussianNamedFiniteProductFamilyCongruence
+import IPRADerivations.Analysis.Trigonometry.Cyclic.SineProducts.GaussianCyclicSineProductSquare
 
 /-!
 # The finite reflection family in the original cyclic sine order

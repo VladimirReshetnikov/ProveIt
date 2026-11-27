@@ -1,4 +1,4 @@
-import IPRADerivations.Analysis.Polynomials.Products.GaussianPolynomialProductLeftPadding
+import IPRADerivations.Analysis.Polynomials.Products.LinearFactors.GaussianPolynomialProductLeftPadding
 import IPRADerivations.Analysis.Gamma.Taylor.CoefficientEstimates.GaussianGammaFiniteCoefficientStability
 
 /-!

@@ -1,7 +1,7 @@
 import IPRADerivations.Analysis.Barnes.HeadProducts.GaussianBarnesCanonicalFactor
 import IPRADerivations.Analysis.Gamma.Poles.GaussianGammaPoleZeros
 import IPRADerivations.Analysis.RationalArithmetic.Norms.GaussianProductNorm
-import IPRADerivations.Analysis.Polynomials.RootFinding.Descent.GaussianMonicResidualRadius
+import IPRADerivations.Analysis.Polynomials.RootFinding.Descent.Monic.GaussianMonicResidualRadius
 
 /-!
 # Exact native numerator of the original Barnes base

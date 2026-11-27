@@ -1,6 +1,6 @@
 import IPRADerivations.Analysis.Stirling.Binet.Laplace.Moments.Improper.GaussianBinetLaplaceMomentImproperTaylor
 import IPRADerivations.Analysis.Names.Rates.DifferenceQuotients.GaussianNamedDifferenceQuotient
-import IPRADerivations.Analysis.Euler.Integration.Decay.GaussianEulerWeightedHalfDecay
+import IPRADerivations.Analysis.Euler.Integration.Decay.Damping.GaussianEulerWeightedHalfDecay
 import IPRADerivations.Analysis.Integration.Moments.GaussianMomentReflection
 
 /-!

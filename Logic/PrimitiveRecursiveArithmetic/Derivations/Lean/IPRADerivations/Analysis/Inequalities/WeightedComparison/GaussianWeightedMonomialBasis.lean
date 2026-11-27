@@ -1,6 +1,6 @@
 import IPRADerivations.Foundations.FilteredEnumerationCode
 import IPRADerivations.Foundations.RuntimeWordAppend
-import IPRADerivations.Analysis.RationalArithmetic.Powers.GaussianRationalPowerAlgebra
+import IPRADerivations.Analysis.RationalArithmetic.Powers.GaussianPowers.GaussianRationalPowerAlgebra
 
 /-!
 # Actual weighted monomial lists and evaluation vectors

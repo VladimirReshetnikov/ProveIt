@@ -1,4 +1,4 @@
-import IPRADerivations.Analysis.Exponential.Names.GaussianUnitDiskExponentialName
+import IPRADerivations.Analysis.Exponential.Names.Evaluators.GaussianUnitDiskExponentialName
 import IPRADerivations.Analysis.Logarithm.FiniteSeries.GaussianFiniteLogarithmCompositionName
 
 /-!

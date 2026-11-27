@@ -1,4 +1,4 @@
-import IPRADerivations.Analysis.Euler.PositiveAxis.UnitKernel.GaussianEulerUnitKernelCompactName
+import IPRADerivations.Analysis.Euler.PositiveAxis.UnitKernel.Compact.GaussianEulerUnitKernelCompactName
 import IPRADerivations.Analysis.Integration.CompactGrids.GaussianCompactMeshIndependence
 
 /-!

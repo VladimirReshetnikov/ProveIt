@@ -1,4 +1,4 @@
-import IPRADerivations.Analysis.Polynomials.Products.GaussianPolynomialPowerNormVariation
+import IPRADerivations.Analysis.Polynomials.Products.Powers.GaussianPolynomialPowerNormVariation
 import IPRADerivations.Analysis.Exponential.Polynomials.GaussianRationalPolynomialExponentialCoefficients
 import IPRADerivations.Analysis.Exponential.Polynomials.GaussianFiniteExponentialWeightedNorm
 

@@ -1,5 +1,5 @@
 import IPRADerivations.Analysis.Stirling.AllOrders.Covariance.GaussianStirlingAllOrderCrossedRectangles
-import IPRADerivations.Analysis.RationalArithmetic.FiniteSums.RationalSumMirror
+import IPRADerivations.Analysis.RationalArithmetic.FiniteSums.RationalIdentities.RationalSumMirror
 
 /-!
 # Exact reflected averaging of the unweighted reciprocal factor

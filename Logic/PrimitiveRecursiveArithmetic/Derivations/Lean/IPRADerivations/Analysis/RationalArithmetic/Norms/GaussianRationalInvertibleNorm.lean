@@ -1,4 +1,4 @@
-import IPRADerivations.Analysis.RationalArithmetic.Powers.GaussianRationalPowerAlgebra
+import IPRADerivations.Analysis.RationalArithmetic.Powers.GaussianPowers.GaussianRationalPowerAlgebra
 
 /-!
 # Reflecting rational norm contraction through an actual inverse

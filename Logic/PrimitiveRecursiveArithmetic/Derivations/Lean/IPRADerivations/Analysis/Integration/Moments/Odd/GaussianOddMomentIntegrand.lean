@@ -1,5 +1,5 @@
 import IPRADerivations.Analysis.Integration.Moments.Odd.GaussianOddSymmetricQuadrature
-import IPRADerivations.Analysis.Euler.PositiveAxis.UnitTime.GaussianEulerUnitNormalization
+import IPRADerivations.Analysis.Euler.PositiveAxis.UnitTime.Normalization.GaussianEulerUnitNormalization
 
 /-!
 # Original quadratic kernels at positive integer Gamma arguments

@@ -1,5 +1,5 @@
 import IPRADerivations.Analysis.Barnes.Prefactors.GaussianBarnesCanonicalPrefactor
-import IPRADerivations.Analysis.Exponential.Names.GaussianExponentialInverseSamples
+import IPRADerivations.Analysis.Exponential.Names.Identities.GaussianExponentialInverseSamples
 import IPRADerivations.Analysis.Gamma.FunctionalEquations.ReciprocalGamma.GaussianGammaAdjacentCutoff
 
 /-!

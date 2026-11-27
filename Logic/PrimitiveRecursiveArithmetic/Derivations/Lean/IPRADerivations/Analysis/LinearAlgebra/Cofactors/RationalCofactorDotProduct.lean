@@ -1,5 +1,5 @@
 import IPRADerivations.Analysis.LinearAlgebra.Cofactors.RationalCofactorBorderedMinors
-import IPRADerivations.Analysis.Polynomials.Determinants.RationalCofactorCoefficientValues
+import IPRADerivations.Analysis.Polynomials.Determinants.Coefficients.RationalCofactorCoefficientValues
 
 /-!
 # The actual cofactor vector annihilates the cleared rows

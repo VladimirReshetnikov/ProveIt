@@ -1,5 +1,5 @@
 import IPRADerivations.Analysis.Polynomials.Elimination.Superelliptic.GaussianSuperellipticWordTerms
-import IPRADerivations.Analysis.RationalArithmetic.Powers.GaussianRationalPowerProduct
+import IPRADerivations.Analysis.RationalArithmetic.Powers.GaussianPowers.GaussianRationalPowerProduct
 
 /-!
 # Leading value of the original cyclic determinant word

@@ -1,7 +1,7 @@
 import IPRADerivations.Analysis.RationalArithmetic.Intervals.RationalNestedIntervals
 import IPRADerivations.Analysis.Optimization.Convexity.RationalMultiplicativeConvexity
-import IPRADerivations.Analysis.RationalArithmetic.Powers.GaussianRationalPowerDifference
-import IPRADerivations.Analysis.RationalArithmetic.Powers.RationalIntervalPowerComparison
+import IPRADerivations.Analysis.RationalArithmetic.Powers.GaussianPowers.GaussianRationalPowerDifference
+import IPRADerivations.Analysis.RationalArithmetic.Powers.RationalPowerBounds.RationalIntervalPowerComparison
 
 /-!
 # Computed precision for positive rational interval powers and products

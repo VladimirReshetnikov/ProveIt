@@ -1,4 +1,4 @@
-import IPRADerivations.Analysis.Polynomials.Products.GaussianPolynomialLinearFactorCoefficients
+import IPRADerivations.Analysis.Polynomials.Products.LinearFactors.GaussianPolynomialLinearFactorCoefficients
 import IPRADerivations.Analysis.Exponential.Polynomials.GaussianRationalPolynomialExponentialCoefficients
 
 /-!

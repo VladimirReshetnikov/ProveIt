@@ -1,5 +1,5 @@
-import IPRADerivations.Analysis.RationalArithmetic.Powers.RationalReciprocalPowerTail
-import IPRADerivations.Analysis.RationalArithmetic.FiniteSums.RationalSumLinearity
+import IPRADerivations.Analysis.RationalArithmetic.Powers.RationalPowerBounds.RationalReciprocalPowerTail
+import IPRADerivations.Analysis.RationalArithmetic.FiniteSums.RationalIdentities.RationalSumLinearity
 import IPRADerivations.Analysis.Optimization.Convexity.RationalConvexClockRescale
 import IPRADerivations.Analysis.RationalArithmetic.Powers.GaussianCompactScalarMajorant
 

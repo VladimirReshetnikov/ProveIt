@@ -1,4 +1,4 @@
-import IPRADerivations.Analysis.Euler.Integration.Parts.GaussianEulerIntegrationByPartsParameterShift
+import IPRADerivations.Analysis.Euler.Integration.Parts.Recurrences.GaussianEulerIntegrationByPartsParameterShift
 
 /-!
 # The actual Euler name after an arbitrary encoded parameter increment

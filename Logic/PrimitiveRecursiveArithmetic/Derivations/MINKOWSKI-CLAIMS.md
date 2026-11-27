@@ -31,13 +31,13 @@ The numerical specialization for rational bases and rational slab bodies
 following `thm:main` is partially checked.
 [RationalArithmetic](Lean/IPRADerivations/Analysis/RationalArithmetic/RationalArithmetic.lean)
 proves actual signed rational multiplication and min/max endpoint bounds.
-[RationalFiniteSum](Lean/IPRADerivations/Analysis/RationalArithmetic/FiniteSums/RationalFiniteSum.lean)
+[RationalFiniteSum](Lean/IPRADerivations/Analysis/RationalArithmetic/FiniteSums/RationalIdentities/RationalFiniteSum.lean)
 constructs the canonical sums and derives their monotonicity from bounded
 coordinate comparisons, with independently computed product denominators.
-[RationalSumLinearity](Lean/IPRADerivations/Analysis/RationalArithmetic/FiniteSums/RationalSumLinearity.lean)
+[RationalSumLinearity](Lean/IPRADerivations/Analysis/RationalArithmetic/FiniteSums/RationalIdentities/RationalSumLinearity.lean)
 proves literal scalar homogeneity of the actual sum program, including zero,
 negative scalars and empty sums.
-[RationalSumAdditivity](Lean/IPRADerivations/Analysis/RationalArithmetic/FiniteSums/RationalSumAdditivity.lean)
+[RationalSumAdditivity](Lean/IPRADerivations/Analysis/RationalArithmetic/FiniteSums/RationalIdentities/RationalSumAdditivity.lean)
 `sum_additive_closed` proves literal additivity for the actual pointwise sum
 of two independent input families. Its QF invariant retains all three raw
 denominator products, with no supplied common scale or global sum equation.

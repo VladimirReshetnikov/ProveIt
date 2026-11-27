@@ -1,6 +1,6 @@
 import IPRADerivations.Analysis.Polynomials.Division.GaussianPolynomialRowQuotient
 import IPRADerivations.Analysis.Polynomials.Products.GaussianRationalPolynomialProductDegree
-import IPRADerivations.Analysis.RationalArithmetic.Powers.GaussianRationalPowerNonzero
+import IPRADerivations.Analysis.RationalArithmetic.Powers.GaussianPowers.GaussianRationalPowerNonzero
 
 /-!
 # Actual accumulated factors of the original numerical abscissa groups

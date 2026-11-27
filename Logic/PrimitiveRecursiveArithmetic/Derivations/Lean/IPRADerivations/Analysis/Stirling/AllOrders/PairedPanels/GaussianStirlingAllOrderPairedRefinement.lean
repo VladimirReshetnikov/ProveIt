@@ -1,6 +1,6 @@
 import IPRADerivations.Analysis.Stirling.AllOrders.PairedPanels.GaussianStirlingAllOrderPairedWeight
 import IPRADerivations.Analysis.Optimization.Convexity.RationalConvexClockRescale
-import IPRADerivations.Analysis.RationalArithmetic.Powers.RationalReciprocalPowerTail
+import IPRADerivations.Analysis.RationalArithmetic.Powers.RationalPowerBounds.RationalReciprocalPowerTail
 
 /-!
 # Uniform strict separation of the reflected Stirling weights

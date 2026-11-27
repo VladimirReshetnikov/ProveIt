@@ -1,5 +1,5 @@
 import IPRADerivations.Analysis.RationalArithmetic.OrderBounds.RationalHalfNinthProductLower
-import IPRADerivations.Analysis.RationalArithmetic.Powers.RationalReciprocalPowerTail
+import IPRADerivations.Analysis.RationalArithmetic.Powers.RationalPowerBounds.RationalReciprocalPowerTail
 
 /-!
 # A margin-preserving cell for reverse Chebyshev sums

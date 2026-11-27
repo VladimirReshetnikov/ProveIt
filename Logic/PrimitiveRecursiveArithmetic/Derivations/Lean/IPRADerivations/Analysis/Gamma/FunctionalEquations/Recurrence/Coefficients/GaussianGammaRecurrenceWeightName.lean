@@ -1,6 +1,6 @@
 import IPRADerivations.Analysis.Gamma.FunctionalEquations.Recurrence.Coefficients.GaussianGammaRecurrenceWeights
 import IPRADerivations.Analysis.Names.GaussianNameBounds
-import IPRADerivations.Analysis.Polynomials.RootFinding.Descent.GaussianMonicResidualRadius
+import IPRADerivations.Analysis.Polynomials.RootFinding.Descent.Monic.GaussianMonicResidualRadius
 import IPRADerivations.Analysis.Names.Arithmetic.RationalGaussianNameEmbedding
 
 /-!

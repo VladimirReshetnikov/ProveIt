@@ -1,6 +1,6 @@
 import IPRADerivations.Analysis.Stirling.Binet.Laplace.Moments.FiniteRows.GaussianBinetLaplaceMomentCompact
 import IPRADerivations.Analysis.Stirling.Binet.Laplace.GaussianBinetLaplaceRealFloor
-import IPRADerivations.Analysis.Euler.Integration.Decay.GaussianEulerDecayGlobalIncrement
+import IPRADerivations.Analysis.Euler.Integration.Decay.Increments.GaussianEulerDecayGlobalIncrement
 import IPRADerivations.Analysis.Stirling.Binet.Oscillatory.SineTransforms.GaussianBinetSineDampedAxis
 
 /-!

@@ -1,7 +1,7 @@
 import IPRADerivations.Analysis.Names.Arithmetic.GaussianBoundedInverseApartness
 import IPRADerivations.Analysis.Gamma.EulerProducts.GaussianGammaEulerHeadLower
 import IPRADerivations.Analysis.Gamma.EulerProducts.Approximants.GaussianGammaC9Bound
-import IPRADerivations.Analysis.Exponential.Names.GaussianExponentialInverse
+import IPRADerivations.Analysis.Exponential.Names.Identities.GaussianExponentialInverse
 
 /-!
 # The original Gamma reciprocal on a disk with the C12 pole guard

@@ -1,6 +1,6 @@
 import IPRADerivations.Analysis.Polynomials.FiniteDifferences.GaussianPolynomialForwardDifferenceGridLinearity
 import IPRADerivations.Analysis.Polynomials.Horner.GaussianRationalHornerLeadingSplit
-import IPRADerivations.Analysis.RationalArithmetic.Powers.GaussianRationalParityPower
+import IPRADerivations.Analysis.RationalArithmetic.Powers.GaussianPowers.GaussianRationalParityPower
 import IPRADerivations.Analysis.LinearAlgebra.Determinants.GaussianDeterminantSignTransport
 
 /-!

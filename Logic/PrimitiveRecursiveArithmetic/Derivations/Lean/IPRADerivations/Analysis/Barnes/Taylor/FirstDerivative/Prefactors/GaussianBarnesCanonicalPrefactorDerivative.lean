@@ -1,5 +1,5 @@
 import IPRADerivations.Analysis.Barnes.Prefactors.GaussianBarnesCanonicalPrefactorExponentEstimate
-import IPRADerivations.Analysis.Exponential.Names.GaussianNamedExponentialTaylorTransport
+import IPRADerivations.Analysis.Exponential.Names.Derivatives.GaussianNamedExponentialTaylorTransport
 
 /-!
 # First-order estimate for the original Barnes prefactor

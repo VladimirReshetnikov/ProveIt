@@ -1,5 +1,5 @@
 import IPRADerivations.Analysis.RationalArithmetic.Representations.RationalRepresentations
-import IPRADerivations.Analysis.RationalArithmetic.FiniteSums.RationalFiniteSum
+import IPRADerivations.Analysis.RationalArithmetic.FiniteSums.RationalIdentities.RationalFiniteSum
 
 /-!
 # Canonical rational algebra and affine order

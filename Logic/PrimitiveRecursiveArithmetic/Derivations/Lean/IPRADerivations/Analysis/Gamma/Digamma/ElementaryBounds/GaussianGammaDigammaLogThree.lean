@@ -1,4 +1,4 @@
-import IPRADerivations.Analysis.Stirling.Expansions.GaussianStirlingOddLogBrackets
+import IPRADerivations.Analysis.Stirling.Expansions.OddSeries.GaussianStirlingOddLogBrackets
 import IPRADerivations.Analysis.Names.Order.GaussianNamedRealOrderEnvelope
 import IPRADerivations.Analysis.Stirling.Bounds.GaussianStirlingMultiplicativeBoundsOrder
 

@@ -1,5 +1,5 @@
 import IPRADerivations.Analysis.Polynomials.RootFinding.Characteristic.GaussianCharacteristicNames
-import IPRADerivations.Analysis.Polynomials.RootFinding.Descent.GaussianMonicRootAdequacy
+import IPRADerivations.Analysis.Polynomials.RootFinding.Descent.Monic.GaussianMonicRootAdequacy
 
 /-!
 # Actual characteristic names in the concrete monic root-support program

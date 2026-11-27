@@ -1,6 +1,6 @@
 import IPRADerivations.Analysis.Stirling.Binet.Laplace.GaussianBinetLaplaceImproperName
 import IPRADerivations.Analysis.Stirling.Binet.Laplace.Strips.GaussianBinetLaplaceStripTail
-import IPRADerivations.Analysis.Euler.Integration.Decay.GaussianEulerDecayQuadratureAtZero
+import IPRADerivations.Analysis.Euler.Integration.Decay.Quadrature.GaussianEulerDecayQuadratureAtZero
 
 /-!
 # The sharp norm bound for the actual improper Binet integral

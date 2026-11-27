@@ -1,5 +1,5 @@
 import IPRADerivations.Analysis.Polynomials.Coefficients.GaussianCoefficientNameBounds
-import IPRADerivations.Analysis.Exponential.Names.GaussianExponentialReference
+import IPRADerivations.Analysis.Exponential.Names.Evaluators.GaussianExponentialReference
 import IPRADerivations.AnalyticNumberTheory.ZetaFiniteContract
 import IPRADerivations.AnalyticNumberTheory.RSA
 

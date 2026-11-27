@@ -1,4 +1,4 @@
-import IPRADerivations.Analysis.Euler.Integration.Decay.GaussianEulerDecayQuadrature
+import IPRADerivations.Analysis.Euler.Integration.Decay.Quadrature.GaussianEulerDecayQuadrature
 import IPRADerivations.Analysis.Gamma.Names.Input.GaussianGammaEncodingRescaling
 
 /-!

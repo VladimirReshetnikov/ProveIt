@@ -1,6 +1,6 @@
 import IPRADerivations.Analysis.Beta.EulerProducts.GaussianEulerBetaPolynomialPrimitive
 import IPRADerivations.Analysis.Exponential.Polynomials.GaussianPolynomialExponentialCapStability
-import IPRADerivations.Analysis.Polynomials.Products.GaussianPolynomialRightLinearRows
+import IPRADerivations.Analysis.Polynomials.Products.LinearFactors.GaussianPolynomialRightLinearRows
 import IPRADerivations.Analysis.Gamma.EulerProducts.Approximants.GaussianGammaFiniteValueProperness
 import IPRADerivations.Core.CertificateTactics
 

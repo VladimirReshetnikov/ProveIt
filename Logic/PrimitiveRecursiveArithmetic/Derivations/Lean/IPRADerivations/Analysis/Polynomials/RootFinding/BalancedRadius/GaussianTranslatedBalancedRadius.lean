@@ -1,5 +1,5 @@
 import IPRADerivations.Analysis.RationalArithmetic.Translations.GaussianRationalTranslation
-import IPRADerivations.Analysis.Polynomials.RootFinding.Descent.GaussianMonicNonconstant
+import IPRADerivations.Analysis.Polynomials.RootFinding.Descent.Monic.GaussianMonicNonconstant
 
 /-!
 # Actual translation and balanced radius for the original monic input

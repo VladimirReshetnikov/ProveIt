@@ -1,6 +1,6 @@
 import IPRADerivations.Analysis.Stirling.Binet.Oscillatory.Arctangent.GaussianBinetArctangentSineUniform
 import IPRADerivations.Analysis.Stirling.Binet.SecondFormula.Decay.GaussianBinetSecondDecayPointwise
-import IPRADerivations.Analysis.Names.FiniteOperations.Products.GaussianNamedProductObservationBound
+import IPRADerivations.Analysis.Names.FiniteOperations.Products.Bounds.GaussianNamedProductObservationBound
 
 /-!
 # Replacing the weighted arctangent by the scheduled sine rectangle

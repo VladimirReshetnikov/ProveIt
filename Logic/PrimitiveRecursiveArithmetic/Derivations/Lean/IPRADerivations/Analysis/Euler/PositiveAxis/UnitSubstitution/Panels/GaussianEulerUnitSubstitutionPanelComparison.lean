@@ -1,5 +1,5 @@
 import IPRADerivations.Analysis.Euler.PositiveAxis.UnitSubstitution.Panels.GaussianEulerUnitSubstitutionPanelSchedule
-import IPRADerivations.Analysis.Euler.PositiveAxis.UnitKernel.GaussianEulerUnitKernelNamedLatticeBound
+import IPRADerivations.Analysis.Euler.PositiveAxis.UnitKernel.Lattices.GaussianEulerUnitKernelNamedLatticeBound
 
 /-!
 # Ordinary unit-panel quadrature compared to the original compact Euler name

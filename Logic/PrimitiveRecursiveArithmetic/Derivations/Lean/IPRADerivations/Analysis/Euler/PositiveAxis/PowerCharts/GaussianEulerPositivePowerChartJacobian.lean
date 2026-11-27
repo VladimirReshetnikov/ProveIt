@@ -1,6 +1,6 @@
 import IPRADerivations.Analysis.Euler.PositiveAxis.PowerCharts.GaussianEulerPositivePowerChart
 import IPRADerivations.Analysis.Euler.Integration.Parameters.GaussianEulerPowerIncrement
-import IPRADerivations.Analysis.Euler.Integration.Decay.GaussianEulerDampedTimeRate
+import IPRADerivations.Analysis.Euler.Integration.Decay.Damping.GaussianEulerDampedTimeRate
 
 /-!
 # Evaluated Jacobian and exact first-order step of the positive power chart

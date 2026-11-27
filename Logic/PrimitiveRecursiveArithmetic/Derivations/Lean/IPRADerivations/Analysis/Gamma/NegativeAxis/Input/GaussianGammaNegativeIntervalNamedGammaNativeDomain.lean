@@ -1,5 +1,5 @@
 import IPRADerivations.Analysis.Gamma.NegativeAxis.GaussianGammaNegativeIntervalNative
-import IPRADerivations.Analysis.Euler.PositiveAxis.UnitTime.GaussianNamedEulerUnitTime
+import IPRADerivations.Analysis.Euler.PositiveAxis.UnitTime.Named.GaussianNamedEulerUnitTime
 import IPRADerivations.Analysis.Gamma.Names.PoleFree.GaussianGammaRadiusOverlap
 
 /-!

@@ -1,5 +1,5 @@
 import IPRADerivations.Analysis.Inequalities.NonnegativeArithmetic.RationalNonnegativeFloor
-import IPRADerivations.Analysis.Euler.PositiveAxis.UnitTime.GaussianEulerUnitCompactTimeBounds
+import IPRADerivations.Analysis.Euler.PositiveAxis.UnitTime.Bounds.GaussianEulerUnitCompactTimeBounds
 
 /-!
 # Genuine compact-domain guards for original rational floor cuts

@@ -1,6 +1,6 @@
 import IPRADerivations.Analysis.Stirling.AllOrders.ImproperBounds.GaussianStirlingAllOrderPanelPositive
 import IPRADerivations.Analysis.Stirling.AllOrders.PanelParts.GaussianStirlingAllOrderPanelPartsOuterFold
-import IPRADerivations.Analysis.RationalArithmetic.FiniteSums.RationalSumReversal
+import IPRADerivations.Analysis.RationalArithmetic.FiniteSums.RationalIdentities.RationalSumReversal
 
 /-!
 # The same positive bound for every nonempty original panel prefix

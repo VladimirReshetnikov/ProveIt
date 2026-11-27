@@ -1,5 +1,5 @@
 import IPRADerivations.Analysis.Exponential.Polynomials.GaussianRationalPolynomialExponentialRecomposition
-import IPRADerivations.Analysis.Polynomials.Products.GaussianPolynomialLowPrefix
+import IPRADerivations.Analysis.Polynomials.Products.Convolution.GaussianPolynomialLowPrefix
 import IPRADerivations.Analysis.Polynomials.Representation.GaussianRationalPolynomialDilation
 
 /-!

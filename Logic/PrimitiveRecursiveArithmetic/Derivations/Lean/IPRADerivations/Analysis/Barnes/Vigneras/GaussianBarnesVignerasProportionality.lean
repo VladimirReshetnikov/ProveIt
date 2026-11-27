@@ -1,5 +1,5 @@
 import IPRADerivations.Analysis.Barnes.Vigneras.GaussianBarnesVignerasLogQuotient
-import IPRADerivations.Analysis.Exponential.Names.GaussianNamedExponentialDifferenceIdentity
+import IPRADerivations.Analysis.Exponential.Names.Derivatives.GaussianNamedExponentialDifferenceIdentity
 
 /-!
 # Recover the candidate value from the real Barnes logarithmic quotient

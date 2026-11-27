@@ -1,5 +1,5 @@
 import IPRADerivations.Analysis.Stirling.AllOrders.ImproperBounds.GaussianStirlingAllOrderPanelPositiveRows
-import IPRADerivations.Analysis.RationalArithmetic.FiniteSums.RationalSumSegments
+import IPRADerivations.Analysis.RationalArithmetic.FiniteSums.RationalIdentities.RationalSumSegments
 
 /-!
 # A mesh-independent lower bound for the original weighted panel

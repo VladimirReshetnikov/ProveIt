@@ -1,6 +1,6 @@
 import IPRADerivations.Analysis.Stirling.AllOrders.PanelParts.GaussianStirlingAllOrderPanelDerivative
 import IPRADerivations.Analysis.RationalArithmetic.OrderBounds.RationalHalfNinthProductLower
-import IPRADerivations.Analysis.RationalArithmetic.Powers.RationalReciprocalPowerTail
+import IPRADerivations.Analysis.RationalArithmetic.Powers.RationalPowerBounds.RationalReciprocalPowerTail
 
 /-!
 # Exact discrete second-order integration by parts

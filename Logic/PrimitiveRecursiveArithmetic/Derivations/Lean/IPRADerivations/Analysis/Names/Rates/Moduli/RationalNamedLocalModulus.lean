@@ -1,5 +1,5 @@
 import IPRADerivations.Analysis.Optimization.Convexity.RationalNestedConvexDistance
-import IPRADerivations.Analysis.RationalArithmetic.Powers.RationalIntervalPowerComparison
+import IPRADerivations.Analysis.RationalArithmetic.Powers.RationalPowerBounds.RationalIntervalPowerComparison
 
 /-!
 # The named local modulus from the two actual power comparisons

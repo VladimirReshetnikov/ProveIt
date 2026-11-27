@@ -1,5 +1,5 @@
 import IPRADerivations.Analysis.Polynomials.RootFinding.Descent.GaussianDescentClockArithmetic
-import IPRADerivations.Analysis.RationalArithmetic.Powers.GaussianFactorBudget
+import IPRADerivations.Analysis.Polynomials.RootFinding.Deflation.FactorTransport.GaussianFactorBudget
 
 /-!
 # Actual finite precision schedule for collision-tolerant root support

@@ -1,5 +1,5 @@
-import IPRADerivations.Analysis.Polynomials.Products.GaussianPolynomialLowJetProduct
-import IPRADerivations.Analysis.Polynomials.Products.GaussianPolynomialLinearFactorCoefficients
+import IPRADerivations.Analysis.Polynomials.Products.Convolution.GaussianPolynomialLowJetProduct
+import IPRADerivations.Analysis.Polynomials.Products.LinearFactors.GaussianPolynomialLinearFactorCoefficients
 import IPRADerivations.Analysis.Gamma.Taylor.ExponentCoefficients.GaussianGammaExponentCoefficientStability
 
 /-!

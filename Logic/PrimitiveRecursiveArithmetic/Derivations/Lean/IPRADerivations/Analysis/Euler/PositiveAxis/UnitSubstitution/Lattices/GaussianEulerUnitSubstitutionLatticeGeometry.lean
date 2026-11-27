@@ -1,7 +1,7 @@
 import IPRADerivations.Analysis.Euler.PositiveAxis.UnitSubstitution.Endpoints.GaussianEulerUnitSubstitutionFloorCuts
 import IPRADerivations.Analysis.Euler.PositiveAxis.UnitSubstitution.Densities.GaussianEulerUnitSubstitutionReversedDensity
 import IPRADerivations.Analysis.Integration.Partitions.GaussianPartitionedFiniteSumDistance
-import IPRADerivations.Analysis.Euler.PositiveAxis.UnitKernel.GaussianEulerUnitKernelCompactName
+import IPRADerivations.Analysis.Euler.PositiveAxis.UnitKernel.Compact.GaussianEulerUnitKernelCompactName
 
 /-!
 # Native indices of the original floor-cut lattice

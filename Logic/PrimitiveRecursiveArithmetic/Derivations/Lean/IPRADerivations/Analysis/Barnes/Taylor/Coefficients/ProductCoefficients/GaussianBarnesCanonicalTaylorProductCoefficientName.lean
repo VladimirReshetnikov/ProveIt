@@ -1,6 +1,6 @@
 import IPRADerivations.Analysis.Barnes.Taylor.Coefficients.ProductCoefficients.GaussianBarnesCanonicalTaylorProductCoefficientCauchy
 import IPRADerivations.Analysis.Gamma.Taylor.CoefficientEstimates.GaussianGammaFixedCoefficientVariation
-import IPRADerivations.Analysis.Exponential.Names.GaussianExponentialReference
+import IPRADerivations.Analysis.Exponential.Names.Evaluators.GaussianExponentialReference
 
 /-!
 # Regular names of the original Barnes Taylor product coefficients

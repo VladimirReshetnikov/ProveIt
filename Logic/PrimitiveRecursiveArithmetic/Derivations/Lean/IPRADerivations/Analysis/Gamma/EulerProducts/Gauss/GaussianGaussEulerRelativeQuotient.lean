@@ -1,5 +1,5 @@
 import IPRADerivations.Analysis.Gamma.EulerProducts.Gauss.GaussianGaussEulerFiniteIdentity
-import IPRADerivations.Analysis.Gamma.EulerProducts.Gauss.GaussianGaussEulerFiniteApartness
+import IPRADerivations.Analysis.Gamma.EulerProducts.Gauss.Cutoffs.GaussianGaussEulerFiniteApartness
 import IPRADerivations.Analysis.Gamma.FunctionalEquations.Reflection.GaussianGammaReflectionQuotient
 
 /-!

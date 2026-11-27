@@ -1,5 +1,5 @@
 import IPRADerivations.Analysis.Gamma.FunctionalEquations.Recurrence.Taylor.GaussianGammaUnitReciprocalShift
-import IPRADerivations.Analysis.RationalArithmetic.Powers.GaussianRationalUnitInverseExpansion
+import IPRADerivations.Analysis.RationalArithmetic.Powers.GaussianPowers.GaussianRationalUnitInverseExpansion
 
 /-!
 # The actual Gamma sample and its reciprocal residual near one

@@ -1,6 +1,6 @@
 import IPRADerivations.Analysis.RationalArithmetic.Distances.GaussianRationalL1
-import IPRADerivations.Analysis.RationalArithmetic.Powers.RationalReciprocalPowerTail
-import IPRADerivations.Analysis.RationalArithmetic.FiniteSums.RationalSumLinearity
+import IPRADerivations.Analysis.RationalArithmetic.Powers.RationalPowerBounds.RationalReciprocalPowerTail
+import IPRADerivations.Analysis.RationalArithmetic.FiniteSums.RationalIdentities.RationalSumLinearity
 
 /-!
 # Reciprocal-square majorant for the Binet kernel tail

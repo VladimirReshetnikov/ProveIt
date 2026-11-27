@@ -1,5 +1,5 @@
 import IPRADerivations.Analysis.Polynomials.RootFinding.RealRoots.GaussianGaussPiPowerSquareRoot
-import IPRADerivations.Analysis.Names.FiniteOperations.Products.GaussianNamedFiniteProductFamilyAppend
+import IPRADerivations.Analysis.Names.FiniteOperations.Products.Families.GaussianNamedFiniteProductFamilyAppend
 
 /-!
 # The independently sampled π half-power in Gauss triplication

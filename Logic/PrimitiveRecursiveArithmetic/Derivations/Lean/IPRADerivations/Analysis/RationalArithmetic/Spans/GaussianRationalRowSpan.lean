@@ -1,5 +1,5 @@
 import IPRADerivations.Analysis.Polynomials.Elimination.RowReduction.GaussianRationalRowElimination
-import IPRADerivations.Analysis.RationalArithmetic.FiniteSums.GaussianRationalFubini
+import IPRADerivations.Analysis.RationalArithmetic.FiniteSums.Reindexing.GaussianRationalFubini
 
 /-!
 # Actual finite row combinations and their homogeneous dot equations

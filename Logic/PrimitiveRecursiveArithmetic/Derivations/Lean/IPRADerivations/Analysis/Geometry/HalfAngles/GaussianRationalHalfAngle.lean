@@ -4,7 +4,7 @@ import IPRADerivations.Analysis.Geometry.Distances.GaussianRelativeNormTriangle
 import IPRADerivations.Analysis.RationalArithmetic.Distances.GaussianRationalL1
 import IPRADerivations.Analysis.RationalArithmetic.Complex.Circle.GaussianIntegerCircleProjection
 import IPRADerivations.Combinatorics.FiniteBijection
-import IPRADerivations.Analysis.RationalArithmetic.Powers.GaussianRationalPowerDifference
+import IPRADerivations.Analysis.RationalArithmetic.Powers.GaussianPowers.GaussianRationalPowerDifference
 import IPRADerivations.Analysis.Polynomials.RootFinding.Reconstruction.GaussianReconstructionRoots
 
 /-!

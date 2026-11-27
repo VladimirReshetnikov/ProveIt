@@ -1,5 +1,5 @@
 import IPRADerivations.Analysis.Stirling.AllOrders.Covariance.GaussianStirlingAllOrderCrossedRectangles
-import IPRADerivations.Analysis.RationalArithmetic.FiniteSums.RationalSumSegments
+import IPRADerivations.Analysis.RationalArithmetic.FiniteSums.RationalIdentities.RationalSumSegments
 
 /-!
 # Exact subinterval splits for the three reflected-grid sums

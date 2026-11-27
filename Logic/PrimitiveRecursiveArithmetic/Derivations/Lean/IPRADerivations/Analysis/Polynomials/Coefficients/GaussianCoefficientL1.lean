@@ -1,5 +1,5 @@
 import IPRADerivations.Analysis.RationalArithmetic.Distances.GaussianRationalL1Algebra
-import IPRADerivations.Analysis.RationalArithmetic.FiniteSums.RationalSumAdditivity
+import IPRADerivations.Analysis.RationalArithmetic.FiniteSums.RationalIdentities.RationalSumAdditivity
 
 /-!
 # Actual finite Gaussian-rational coefficient norms

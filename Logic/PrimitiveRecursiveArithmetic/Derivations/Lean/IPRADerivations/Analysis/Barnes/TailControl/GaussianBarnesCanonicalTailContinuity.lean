@@ -3,7 +3,7 @@ import IPRADerivations.Analysis.Barnes.HeadProducts.GaussianBarnesCanonicalHeadL
 import IPRADerivations.Analysis.Barnes.TailControl.GaussianBarnesCanonicalTailExponential
 import IPRADerivations.Analysis.Names.Rates.Transport.GaussianNamedRateTransport
 import IPRADerivations.Analysis.Names.Rates.Transport.GaussianNamedRateComposition
-import IPRADerivations.Analysis.Trigonometry.Cyclic.GaussianCyclicExponentialSamples
+import IPRADerivations.Analysis.Trigonometry.Cyclic.ExponentialRoots.GaussianCyclicExponentialSamples
 
 /-!
 # Disk continuity of the original cofinal Barnes tail

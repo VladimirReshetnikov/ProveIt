@@ -1,6 +1,6 @@
 import IPRADerivations.Analysis.Polynomials.Elimination.Vandermonde.GaussianRationalFiberVandermonde
 import IPRADerivations.Analysis.RationalArithmetic.Representations.GaussianRationalReconstruction
-import IPRADerivations.Analysis.RationalArithmetic.Powers.GaussianRationalPowerAlgebra
+import IPRADerivations.Analysis.RationalArithmetic.Powers.GaussianPowers.GaussianRationalPowerAlgebra
 
 /-!
 # Actual uniform row quotients and repeated-root polynomials

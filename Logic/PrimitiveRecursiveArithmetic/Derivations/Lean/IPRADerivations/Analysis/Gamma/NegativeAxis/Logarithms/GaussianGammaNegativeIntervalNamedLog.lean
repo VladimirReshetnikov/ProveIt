@@ -1,5 +1,5 @@
 import IPRADerivations.Analysis.Gamma.NegativeAxis.Logarithms.GaussianGammaNegativeIntervalNamedLogVariation
-import IPRADerivations.Analysis.Euler.PositiveAxis.UnitTime.GaussianNamedEulerUnitTime
+import IPRADerivations.Analysis.Euler.PositiveAxis.UnitTime.Named.GaussianNamedEulerUnitTime
 import IPRADerivations.Foundations.FiniteQueryDemand
 import IPRADerivations.Analysis.Names.Rates.Transport.GaussianNamedRateRadius
 

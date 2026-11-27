@@ -1,4 +1,4 @@
-import IPRADerivations.Analysis.Exponential.Names.GaussianExponentialRealPart
+import IPRADerivations.Analysis.Exponential.Names.Identities.GaussianExponentialRealPart
 
 /-!
 # An actual nonnegative representative of the signed real exponential

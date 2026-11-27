@@ -1,6 +1,6 @@
 import IPRADerivations.Analysis.Polynomials.Division.GaussianRationalSyntheticDivision
 import IPRADerivations.Analysis.RationalArithmetic.Distances.GaussianRationalL1Algebra
-import IPRADerivations.Analysis.RationalArithmetic.Powers.GaussianFactorBudget
+import IPRADerivations.Analysis.Polynomials.RootFinding.Deflation.FactorTransport.GaussianFactorBudget
 import IPRADerivations.Analysis.RationalArithmetic.RationalAlgebra
 
 /-!

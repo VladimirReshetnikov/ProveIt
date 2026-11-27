@@ -1,6 +1,6 @@
 import IPRADerivations.Analysis.Gamma.EulerProducts.FiniteHeads.GaussianGammaEulerHeadQuadratic
 import IPRADerivations.Analysis.Gamma.Taylor.DegreeTails.GaussianGammaReciprocalDegreeCells
-import IPRADerivations.Analysis.RationalArithmetic.Powers.GaussianRationalRoundedPower
+import IPRADerivations.Analysis.RationalArithmetic.Powers.GaussianPowers.GaussianRationalRoundedPower
 
 /-!
 # Original finite harmonic-power points for the Gamma head

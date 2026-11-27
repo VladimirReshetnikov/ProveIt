@@ -1,5 +1,5 @@
 import IPRADerivations.Analysis.Names.Rates.Reciprocals.GaussianApproximateInverseDistance
-import IPRADerivations.Analysis.Exponential.Names.GaussianExponentialSmallPerturbation
+import IPRADerivations.Analysis.Exponential.Names.LocalEstimates.GaussianExponentialSmallPerturbation
 
 /-!
 # The exact C15 rate for bounded inverse names

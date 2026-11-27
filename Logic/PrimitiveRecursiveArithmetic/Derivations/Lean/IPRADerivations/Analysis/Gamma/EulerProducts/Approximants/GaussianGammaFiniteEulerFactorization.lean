@@ -1,4 +1,4 @@
-import IPRADerivations.Analysis.Polynomials.Products.GaussianPolynomialProductEulerFactorization
+import IPRADerivations.Analysis.Polynomials.Products.LinearFactors.GaussianPolynomialProductEulerFactorization
 import IPRADerivations.Analysis.Gamma.EulerProducts.Exponents.GaussianGammaCombinedEulerKernelPolynomial
 import IPRADerivations.Analysis.Gamma.Taylor.FinitePolynomials.GaussianGammaFiniteCoefficientPolynomial
 

@@ -1,4 +1,4 @@
-import IPRADerivations.Analysis.Stirling.Expansions.GaussianStirlingExpansionErrorProgram
+import IPRADerivations.Analysis.Stirling.Expansions.ExpansionErrors.GaussianStirlingExpansionErrorProgram
 import IPRADerivations.Analysis.Stirling.GammaIncrements.GaussianStirlingGammaFractionalIncrement
 import IPRADerivations.Analysis.Stirling.Robbins.GaussianStirlingFactorialRobbinsExponential
 

@@ -1,4 +1,4 @@
-import IPRADerivations.Analysis.Polynomials.RootFinding.DominantTerms.GaussianDominantScoreWeights
+import IPRADerivations.Analysis.Polynomials.RootFinding.DominantTerms.DominantBounds.GaussianDominantScoreWeights
 import IPRADerivations.Analysis.Geometry.Distances.GaussianRelativeNormTriangle
 
 /-!

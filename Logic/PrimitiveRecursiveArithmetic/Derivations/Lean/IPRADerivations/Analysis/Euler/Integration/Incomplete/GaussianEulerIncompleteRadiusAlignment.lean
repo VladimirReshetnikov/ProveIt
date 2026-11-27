@@ -1,4 +1,4 @@
-import IPRADerivations.Analysis.Euler.Integration.Incomplete.GaussianEulerIncompleteCutoffParts
+import IPRADerivations.Analysis.Euler.Integration.Incomplete.Cutoffs.GaussianEulerIncompleteCutoffParts
 import IPRADerivations.Analysis.Integration.CompactGrids.GaussianCompactMeshIndependence
 
 /-!

@@ -1,5 +1,5 @@
-import IPRADerivations.Analysis.Euler.QuadraticSubstitution.GaussianEulerQuadraticImproperKernel
-import IPRADerivations.Analysis.Euler.QuadraticSubstitution.GaussianEulerSquareFactorInverse
+import IPRADerivations.Analysis.Euler.QuadraticSubstitution.Kernels.GaussianEulerQuadraticImproperKernel
+import IPRADerivations.Analysis.Euler.QuadraticSubstitution.Factors.GaussianEulerSquareFactorInverse
 import IPRADerivations.Analysis.Gamma.Integrals.GaussianEulerIntegralGammaIdentification
 
 /-!

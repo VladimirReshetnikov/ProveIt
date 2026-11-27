@@ -4,7 +4,7 @@ import IPRADerivations.Analysis.Gamma.Names.Derivatives.GaussianNamedGammaIncrem
 import IPRADerivations.Analysis.Names.Rates.DifferenceQuotients.GaussianNamedIncrementDifferenceQuotient
 import IPRADerivations.Analysis.Names.Rates.Reciprocals.GaussianNamedReciprocalFrozenRate
 import IPRADerivations.Analysis.Names.Rates.Perturbations.GaussianNamedDifferenceRate
-import IPRADerivations.Analysis.Names.FiniteOperations.Products.GaussianNamedMultiplyRate
+import IPRADerivations.Analysis.Names.FiniteOperations.Products.Bounds.GaussianNamedMultiplyRate
 import IPRADerivations.Analysis.Names.Rates.Transport.GaussianNamedRateRadius
 
 /-!

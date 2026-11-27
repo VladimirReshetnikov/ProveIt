@@ -1,4 +1,4 @@
-import IPRADerivations.Analysis.Polynomials.Products.GaussianPolynomialLinearFactorCoefficients
+import IPRADerivations.Analysis.Polynomials.Products.LinearFactors.GaussianPolynomialLinearFactorCoefficients
 import IPRADerivations.Analysis.Gamma.Taylor.FinitePolynomials.GaussianGammaPolynomialConstantLinear
 import IPRADerivations.Analysis.Polynomials.RootFinding.Reconstruction.GaussianRationalFiniteRoots
 

@@ -1,4 +1,4 @@
-import IPRADerivations.Analysis.Polynomials.Products.GaussianRationalPolynomialPowers
+import IPRADerivations.Analysis.Polynomials.Products.Powers.GaussianRationalPolynomialPowers
 
 /-!
 # Literal finite factorial exponentials of a stored polynomial

@@ -1,6 +1,6 @@
 import IPRADerivations.Analysis.Polynomials.PolynomialBisection
 import IPRADerivations.Analysis.RationalArithmetic.RationalClosure
-import IPRADerivations.Analysis.RationalArithmetic.FiniteSums.RationalSummableTails
+import IPRADerivations.Analysis.RationalArithmetic.FiniteSums.RationalIdentities.RationalSummableTails
 
 /-!
 # A regular rational name from the actual polynomial bisection

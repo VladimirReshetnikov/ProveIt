@@ -1,6 +1,6 @@
 import IPRADerivations.Analysis.Logarithm.Local.GaussianLocalLogarithmLinearRemainder
 import IPRADerivations.Analysis.Euler.Integration.GaussianEulerIntegrandName
-import IPRADerivations.Analysis.Exponential.Names.GaussianExponentialRadiusIndependence
+import IPRADerivations.Analysis.Exponential.Names.Evaluators.GaussianExponentialRadiusIndependence
 
 /-!
 # The actual beta-kernel logarithm and its compact quadratic rate

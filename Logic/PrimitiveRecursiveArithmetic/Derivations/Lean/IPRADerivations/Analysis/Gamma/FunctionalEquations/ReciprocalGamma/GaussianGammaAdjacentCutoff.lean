@@ -1,6 +1,6 @@
 import IPRADerivations.Analysis.Gamma.EulerProducts.Exponents.GaussianGammaExponentStep
-import IPRADerivations.Analysis.Exponential.Names.GaussianExponentialAddition
-import IPRADerivations.Analysis.Exponential.Names.GaussianExponentialRadiusIndependence
+import IPRADerivations.Analysis.Exponential.Names.Identities.GaussianExponentialAddition
+import IPRADerivations.Analysis.Exponential.Names.Evaluators.GaussianExponentialRadiusIndependence
 import IPRADerivations.Analysis.Logarithm.Local.GaussianLocalLogarithmExponentialIdentity
 
 /-!

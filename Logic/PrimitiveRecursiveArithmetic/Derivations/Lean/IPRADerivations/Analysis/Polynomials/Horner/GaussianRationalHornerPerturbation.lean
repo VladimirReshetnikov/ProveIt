@@ -1,5 +1,5 @@
 import IPRADerivations.Analysis.Polynomials.RootFinding.Deflation.GaussianRationalDeflationError
-import IPRADerivations.Analysis.Polynomials.RootFinding.Descent.GaussianMonicResidualRadius
+import IPRADerivations.Analysis.Polynomials.RootFinding.Descent.Monic.GaussianMonicResidualRadius
 import IPRADerivations.Analysis.Polynomials.Coefficients.GaussianCoefficientNormOrder
 
 /-!

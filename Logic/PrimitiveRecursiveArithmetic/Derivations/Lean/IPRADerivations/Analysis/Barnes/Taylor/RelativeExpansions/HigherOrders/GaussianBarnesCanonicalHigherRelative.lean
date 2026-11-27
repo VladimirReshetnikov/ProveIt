@@ -1,7 +1,7 @@
 import IPRADerivations.Analysis.Barnes.Taylor.RelativeExpansions.HigherOrders.GaussianBarnesCanonicalHigherRows
 import IPRADerivations.Analysis.Barnes.Taylor.RelativeExpansions.GaussianBarnesCanonicalRelativeTaylor
 import IPRADerivations.Analysis.Barnes.Taylor.RelativeExpansions.SecondDerivative.GaussianBarnesCanonicalSecondDerivativeRow
-import IPRADerivations.Analysis.RationalArithmetic.Powers.GaussianRationalParityPower
+import IPRADerivations.Analysis.RationalArithmetic.Powers.GaussianPowers.GaussianRationalParityPower
 
 /-!
 # The higher Barnes Taylor rows are the weighted Mercator terms

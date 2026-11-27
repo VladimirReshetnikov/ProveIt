@@ -1,5 +1,5 @@
 import IPRADerivations.Analysis.Gamma.EulerProducts.FiniteHeads.GaussianGammaEulerHeadNewton
-import IPRADerivations.Analysis.RationalArithmetic.Powers.GaussianRationalParityPower
+import IPRADerivations.Analysis.RationalArithmetic.Powers.GaussianPowers.GaussianRationalParityPower
 import IPRADerivations.Analysis.Gamma.EulerProducts.Exponents.GaussianGammaHarmonicPowerPoints
 
 /-!

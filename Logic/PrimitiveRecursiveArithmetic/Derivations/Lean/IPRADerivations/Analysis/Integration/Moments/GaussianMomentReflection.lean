@@ -1,4 +1,4 @@
-import IPRADerivations.Analysis.RationalArithmetic.Powers.GaussianRationalParityPower
+import IPRADerivations.Analysis.RationalArithmetic.Powers.GaussianPowers.GaussianRationalParityPower
 import IPRADerivations.Analysis.Logarithm.Robin.GaussianRobinLogarithmParity
 import IPRADerivations.Analysis.Integration.Moments.Even.GaussianEvenMomentIntegrand
 

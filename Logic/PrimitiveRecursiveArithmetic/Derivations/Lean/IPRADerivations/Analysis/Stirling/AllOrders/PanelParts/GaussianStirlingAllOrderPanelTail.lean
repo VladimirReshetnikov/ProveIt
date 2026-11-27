@@ -1,5 +1,5 @@
 import IPRADerivations.Analysis.Stirling.AllOrders.GaussianStirlingAllOrderKernel
-import IPRADerivations.Analysis.RationalArithmetic.FiniteSums.RationalSumConstants
+import IPRADerivations.Analysis.RationalArithmetic.FiniteSums.RationalIdentities.RationalSumConstants
 
 /-!
 # Mesh-uniform tails of the original periodic Bernoulli panel sums

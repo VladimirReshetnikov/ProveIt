@@ -1,6 +1,6 @@
 import IPRADerivations.Analysis.Stirling.AllOrders.Logarithms.GaussianStirlingAllOrderSharpRadiusBridge
 import IPRADerivations.Analysis.Stirling.AllOrders.ImproperBounds.GaussianStirlingAllOrderSignedParity
-import IPRADerivations.Analysis.Stirling.Expansions.GaussianStirlingExpansionErrorProgram
+import IPRADerivations.Analysis.Stirling.Expansions.ExpansionErrors.GaussianStirlingExpansionErrorProgram
 
 /-!
 # The sharp logarithmic bound discharges the original expansion program

@@ -1,7 +1,7 @@
 import IPRADerivations.Analysis.Euler.CompactExhaustion.Tails.GaussianEulerCompactUpperTail
 import IPRADerivations.Analysis.Gamma.Integrals.GaussianGammaCompactCutoffGeometry
 import IPRADerivations.Analysis.Euler.CompactExhaustion.GaussianEulerCompactModulus
-import IPRADerivations.Analysis.Euler.Integration.Decay.GaussianEulerDecayCompactAntiderivative
+import IPRADerivations.Analysis.Euler.Integration.Decay.CompactBounds.GaussianEulerDecayCompactAntiderivative
 
 /-!
 # Native budgets for actual upper-tail compact-name observations

@@ -1,6 +1,6 @@
 import IPRADerivations.Analysis.Stirling.Binet.Bose.GaussianBinetBoseSeries
 import IPRADerivations.Analysis.Stirling.Binet.Bose.CompactIntegrand.GaussianBinetBoseIntegerScale
-import IPRADerivations.Analysis.Exponential.Names.GaussianExponentialInverseSamples
+import IPRADerivations.Analysis.Exponential.Names.Identities.GaussianExponentialInverseSamples
 
 /-!
 # Match geometric powers to the original damping rows

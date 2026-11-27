@@ -1,5 +1,5 @@
 import IPRADerivations.Analysis.Barnes.CanonicalProducts.GaussianBarnesCanonicalFiniteRadius
-import IPRADerivations.Analysis.Polynomials.RootFinding.DominantTerms.GaussianDominantPairAlgebra
+import IPRADerivations.Analysis.Polynomials.RootFinding.DominantTerms.DirectionSelection.GaussianDominantPairAlgebra
 import IPRADerivations.Analysis.Gamma.Names.Input.GaussianGammaEncodingRescaling
 import IPRADerivations.Analysis.Gamma.Names.Input.GaussianGammaInputProperness
 

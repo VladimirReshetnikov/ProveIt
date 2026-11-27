@@ -1,6 +1,6 @@
 import IPRADerivations.Analysis.Barnes.FunctionalEquations.UnitShift.GaussianBarnesCanonicalBaseProductShift
 import IPRADerivations.Analysis.Gamma.EulerProducts.FiniteHeads.GaussianGammaEulerFactorPolynomial
-import IPRADerivations.Analysis.Polynomials.Products.GaussianRationalPolynomialPowers
+import IPRADerivations.Analysis.Polynomials.Products.Powers.GaussianRationalPolynomialPowers
 
 /-!
 # Rational coefficient polynomial for the original Barnes base powers

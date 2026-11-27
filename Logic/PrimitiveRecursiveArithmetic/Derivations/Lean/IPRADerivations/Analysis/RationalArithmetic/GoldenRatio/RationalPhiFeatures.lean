@@ -1,5 +1,5 @@
 import IPRADerivations.Analysis.RationalArithmetic.Spans.RankAndAnnihilators.RationalAnnihilatorOnSpan
-import IPRADerivations.Analysis.RationalArithmetic.Powers.GaussianRationalPowerExpansion
+import IPRADerivations.Analysis.RationalArithmetic.Powers.GaussianPowers.GaussianRationalPowerExpansion
 
 /-!
 # The original (1,x,...,x^s,y) feature buffer and annihilator equation

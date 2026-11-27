@@ -2,7 +2,7 @@ import IPRADerivations.Analysis.Gamma.Zeta.GaussianGammaZetaNamedChart
 import IPRADerivations.Analysis.Gamma.Zeta.GaussianGammaZetaNamedInput
 import IPRADerivations.Analysis.Names.RightHalfPlane.GaussianNamedRightHalfPlaneDemandComparison
 import IPRADerivations.Analysis.Gamma.Names.PoleFree.GaussianGammaNamedPoleFreeEncoding
-import IPRADerivations.Analysis.Gamma.NegativeAxis.Derivatives.GaussianGammaNegativeIntervalNamedTerminalProperness
+import IPRADerivations.Analysis.Gamma.NegativeAxis.Derivatives.Terminal.GaussianGammaNegativeIntervalNamedTerminalProperness
 
 /-!
 # The Gamma factor agrees with the original named evaluator

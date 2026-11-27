@@ -1,7 +1,7 @@
 import IPRADerivations.Analysis.Gamma.Names.Derivatives.GaussianGammaNamedRealDerivative
 import IPRADerivations.Analysis.Gamma.Names.PoleFree.GaussianGammaNamedPoleFreeIncrementSource
 import IPRADerivations.Analysis.Gamma.Names.Derivatives.GaussianGammaNamedRealDerivativeStep
-import IPRADerivations.Analysis.Gamma.NegativeAxis.CriticalPoints.GaussianGammaNegativeIntervalNamedCritical
+import IPRADerivations.Analysis.Gamma.NegativeAxis.CriticalPoints.NamedExtrema.GaussianGammaNegativeIntervalNamedCritical
 
 /-!
 # Derivative and critical points of the original Gamma off the real poles

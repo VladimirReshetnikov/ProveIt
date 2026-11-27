@@ -1,6 +1,6 @@
 import IPRADerivations.Analysis.Barnes.Growth.GaussianBarnesCanonicalDiskBound
-import IPRADerivations.Analysis.Trigonometry.Cyclic.GaussianCyclicExponentialSamples
-import IPRADerivations.Analysis.Names.FiniteOperations.Products.GaussianNamedFiniteProductApartness
+import IPRADerivations.Analysis.Trigonometry.Cyclic.ExponentialRoots.GaussianCyclicExponentialSamples
+import IPRADerivations.Analysis.Names.FiniteOperations.Products.Bounds.GaussianNamedFiniteProductApartness
 
 /-!
 # Disk-uniform separation of the original Barnes prefactor

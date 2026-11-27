@@ -4,7 +4,7 @@ import IPRADerivations.Analysis.Gamma.EulerProducts.LogGamma.Convergence.Gaussia
 import IPRADerivations.Analysis.Gamma.EulerProducts.LogGamma.GaussianLogGammaEulerFactorSum
 import IPRADerivations.Analysis.Names.FiniteOperations.Sums.GaussianNamedFiniteSumFamilyRange
 import IPRADerivations.Analysis.Integration.Quadrature.GaussianRationalQuadratureDifference
-import IPRADerivations.Analysis.RationalArithmetic.FiniteSums.GaussianRationalSumMajorant
+import IPRADerivations.Analysis.RationalArithmetic.FiniteSums.WeightedSums.GaussianRationalSumMajorant
 
 /-!
 # Quadratic error of an actual Euler logarithm interval

@@ -1,7 +1,7 @@
 import IPRADerivations.Analysis.Barnes.Taylor.FirstDerivative.GaussianBarnesCanonicalDerivativeContinuity
 import IPRADerivations.Analysis.Barnes.Taylor.FirstDerivative.TailFactors.GaussianBarnesCanonicalTailExponentialDerivative
 import IPRADerivations.Analysis.Barnes.TailControl.GaussianBarnesCanonicalTailContinuity
-import IPRADerivations.Analysis.Names.FiniteOperations.Products.GaussianNamedBoundedProductObservation
+import IPRADerivations.Analysis.Names.FiniteOperations.Products.Bounds.GaussianNamedBoundedProductObservation
 
 /-!
 # Uniform disk continuity of the original Barnes tail exponential derivative

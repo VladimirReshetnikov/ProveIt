@@ -1,5 +1,5 @@
 import IPRADerivations.Analysis.Polynomials.Elimination.Bivariate.GaussianBivariatePowerExpansion
-import IPRADerivations.Analysis.RationalArithmetic.FiniteSums.GaussianRationalBlockSums
+import IPRADerivations.Analysis.RationalArithmetic.FiniteSums.Reindexing.GaussianRationalBlockSums
 import IPRADerivations.Analysis.Inequalities.WeightedComparison.GaussianWeightedMonomialBasis
 
 /-!

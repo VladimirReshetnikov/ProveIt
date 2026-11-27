@@ -1,5 +1,5 @@
 import IPRADerivations.Analysis.Beta.Primitives.GaussianBetaPrimitiveLinearStep
-import IPRADerivations.Analysis.Euler.Integration.Decay.GaussianEulerDecayMesh
+import IPRADerivations.Analysis.Euler.Integration.Decay.Quadrature.GaussianEulerDecayMesh
 
 /-!
 # The actual beta primitive telescope on the original compact grid

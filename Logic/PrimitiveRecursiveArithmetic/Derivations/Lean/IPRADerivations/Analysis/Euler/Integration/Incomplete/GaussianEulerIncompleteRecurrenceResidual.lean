@@ -1,5 +1,5 @@
-import IPRADerivations.Analysis.Euler.Integration.Incomplete.GaussianEulerIncompleteBoundary
-import IPRADerivations.Analysis.Euler.Integration.Incomplete.GaussianEulerIncompleteFixedCutoff
+import IPRADerivations.Analysis.Euler.Integration.Incomplete.Endpoints.GaussianEulerIncompleteBoundary
+import IPRADerivations.Analysis.Euler.Integration.Incomplete.Cutoffs.GaussianEulerIncompleteFixedCutoff
 import IPRADerivations.Analysis.Euler.Integration.Parts.GaussianEulerIntegrationByPartsRawResidual
 import IPRADerivations.Analysis.Euler.Integration.Parts.GaussianEulerIntegrationByPartsDomain
 

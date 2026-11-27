@@ -1,6 +1,6 @@
 import IPRADerivations.Analysis.LinearAlgebra.Determinants.GaussianScalarDeterminant
-import IPRADerivations.Analysis.RationalArithmetic.FiniteSums.GaussianRationalPermutationSum
-import IPRADerivations.Analysis.RationalArithmetic.FiniteSums.GaussianRationalBlockSums
+import IPRADerivations.Analysis.RationalArithmetic.FiniteSums.Reindexing.GaussianRationalPermutationSum
+import IPRADerivations.Analysis.RationalArithmetic.FiniteSums.Reindexing.GaussianRationalBlockSums
 import IPRADerivations.Foundations.RuntimePermutationPacking
 
 /-!

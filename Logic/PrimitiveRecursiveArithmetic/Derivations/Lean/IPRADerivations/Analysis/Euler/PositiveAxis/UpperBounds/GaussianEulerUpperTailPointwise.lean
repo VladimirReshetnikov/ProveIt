@@ -1,4 +1,4 @@
-import IPRADerivations.Analysis.Euler.Integration.Decay.GaussianEulerWeightedHalfDecay
+import IPRADerivations.Analysis.Euler.Integration.Decay.Damping.GaussianEulerWeightedHalfDecay
 import IPRADerivations.Analysis.Euler.PositiveAxis.HalfDecay.GaussianEulerHalfDecayReference
 
 /-!

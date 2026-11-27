@@ -1,7 +1,7 @@
 import IPRADerivations.Analysis.Gamma.Taylor.FinitePolynomials.GaussianGammaPolynomialQuadratic
 import IPRADerivations.Analysis.Gamma.Taylor.DegreeTails.GaussianGammaUnitCoefficientMass
 import IPRADerivations.Analysis.Polynomials.Taylor.GaussianShrinkingPolynomialTail
-import IPRADerivations.Analysis.RationalArithmetic.Powers.GaussianRationalRoundedPower
+import IPRADerivations.Analysis.RationalArithmetic.Powers.GaussianPowers.GaussianRationalRoundedPower
 
 /-!
 # A genuine cubic finite expansion of the original Gamma polynomials

@@ -1,7 +1,7 @@
 import IPRADerivations.Analysis.Polynomials.Representation.GaussianRationalPolynomialDilation
 import IPRADerivations.Analysis.Logarithm.FiniteSeries.GaussianFiniteLogarithmPolynomial
 import IPRADerivations.Analysis.RationalArithmetic.Powers.GaussianIntegerFractionPowers
-import IPRADerivations.Analysis.Polynomials.RootFinding.DominantTerms.GaussianDominantPairAlgebra
+import IPRADerivations.Analysis.Polynomials.RootFinding.DominantTerms.DirectionSelection.GaussianDominantPairAlgebra
 import IPRADerivations.Analysis.Polynomials.Coefficients.GaussianCoefficientNormEntries
 
 /-!

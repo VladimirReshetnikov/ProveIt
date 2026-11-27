@@ -1,7 +1,7 @@
 import IPRADerivations.Analysis.Barnes.Growth.GaussianBarnesCanonicalDyadicCentralExponent
 import IPRADerivations.Analysis.Barnes.HeadProducts.GaussianBarnesCanonicalDyadicHeadPower
 import IPRADerivations.Analysis.Barnes.Names.GaussianBarnesCanonicalNamed
-import IPRADerivations.Analysis.Names.FiniteOperations.Products.GaussianNamedBoundedProductObservation
+import IPRADerivations.Analysis.Names.FiniteOperations.Products.Bounds.GaussianNamedBoundedProductObservation
 
 /-!
 # Dyadic upper growth of the original Barnes evaluator

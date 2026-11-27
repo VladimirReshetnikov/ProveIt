@@ -1,6 +1,6 @@
 import IPRADerivations.Analysis.RationalArithmetic.Fibers.GaussianRationalFiberRightInverse
 import IPRADerivations.Analysis.Series.Telescoping.GaussianRationalParameterTelescope
-import IPRADerivations.Analysis.Stirling.Expansions.GaussianStirlingOddCoefficients
+import IPRADerivations.Analysis.Stirling.Expansions.OddSeries.GaussianStirlingOddCoefficients
 
 /-!
 # The exact mean of the centered unit mesh

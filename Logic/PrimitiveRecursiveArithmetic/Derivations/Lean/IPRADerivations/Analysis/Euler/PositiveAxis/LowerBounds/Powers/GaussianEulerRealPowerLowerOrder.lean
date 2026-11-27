@@ -1,6 +1,6 @@
 import IPRADerivations.Analysis.Euler.PositiveAxis.UpperBounds.GaussianEulerUpperPowerCompatibility
 import IPRADerivations.Analysis.Euler.PositiveAxis.LowerBounds.Powers.GaussianEulerLowerRationalPowerReference
-import IPRADerivations.Analysis.Euler.Integration.Decay.GaussianEulerDecayRealSamples
+import IPRADerivations.Analysis.Euler.Integration.Decay.Quadrature.GaussianEulerDecayRealSamples
 
 /-!
 # Real Euler powers above time one are at least the reciprocal time

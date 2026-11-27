@@ -1,4 +1,4 @@
-import IPRADerivations.Analysis.Polynomials.RootFinding.Descent.GaussianMonicRootAdequacy
+import IPRADerivations.Analysis.Polynomials.RootFinding.Descent.Monic.GaussianMonicRootAdequacy
 import IPRADerivations.AnalyticNumberTheory.RobinThreePos
 
 /-!

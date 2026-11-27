@@ -1,9 +1,9 @@
-import IPRADerivations.Analysis.Exponential.Names.GaussianNamedConstantExponentialSmallTail
+import IPRADerivations.Analysis.Exponential.Names.LocalEstimates.GaussianNamedConstantExponentialSmallTail
 import IPRADerivations.Analysis.Names.Rates.Moduli.GaussianNamedLipschitzRate
 import IPRADerivations.Analysis.Polynomials.Horner.GaussianRationalHornerPrefixTaylor
 import IPRADerivations.Analysis.Gamma.Names.Input.GaussianGammaInputStaticNorm
 import IPRADerivations.Analysis.Exponential.Polynomials.GaussianFiniteExponentialCoefficientMajorant
-import IPRADerivations.Analysis.Stirling.Expansions.GaussianStirlingExpansionFiniteError
+import IPRADerivations.Analysis.Stirling.Expansions.ExpansionErrors.GaussianStirlingExpansionFiniteError
 
 /-!
 # Recompose the original exponential on a shrinking Gaussian disk

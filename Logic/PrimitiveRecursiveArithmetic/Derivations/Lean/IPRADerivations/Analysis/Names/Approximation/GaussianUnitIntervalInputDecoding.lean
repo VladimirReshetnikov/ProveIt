@@ -1,4 +1,4 @@
-import IPRADerivations.Analysis.Euler.PositiveAxis.UnitTime.GaussianEulerUnitCompactTimeBounds
+import IPRADerivations.Analysis.Euler.PositiveAxis.UnitTime.Bounds.GaussianEulerUnitCompactTimeBounds
 import IPRADerivations.Analysis.RationalArithmetic.Representations.RationalUpperRepresentation
 import IPRADerivations.Analysis.RationalArithmetic.Embeddings.RationalGaussianEmbedding
 import IPRADerivations.Analysis.Names.Order.GaussianFastValueCut

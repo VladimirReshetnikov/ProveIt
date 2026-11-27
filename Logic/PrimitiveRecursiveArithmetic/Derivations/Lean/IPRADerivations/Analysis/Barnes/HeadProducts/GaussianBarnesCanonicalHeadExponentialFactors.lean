@@ -2,8 +2,8 @@ import IPRADerivations.Analysis.Barnes.HeadProducts.GaussianBarnesCanonicalHead
 import IPRADerivations.Analysis.Barnes.FunctionalEquations.UnitShift.GaussianBarnesCanonicalBaseProductShift
 import IPRADerivations.Analysis.Barnes.FunctionalEquations.UnitShift.GaussianBarnesCanonicalCorrectionShift
 import IPRADerivations.Analysis.Names.FiniteOperations.GaussianNamedFiniteConstantFolds
-import IPRADerivations.Analysis.Exponential.Names.GaussianNamedFiniteExponentialFold
-import IPRADerivations.Analysis.Names.FiniteOperations.Products.GaussianNamedFiniteProductFamilyAlgebra
+import IPRADerivations.Analysis.Exponential.Names.Identities.GaussianNamedFiniteExponentialFold
+import IPRADerivations.Analysis.Names.FiniteOperations.Products.Families.GaussianNamedFiniteProductFamilyAlgebra
 
 /-!
 # Grouping the exponential corrections of the original Barnes head

@@ -1,4 +1,4 @@
-import IPRADerivations.Analysis.Polynomials.Determinants.RationalPolynomialDeterminantTermsGaussianEmbedding
+import IPRADerivations.Analysis.Polynomials.Determinants.RationalEmbedding.RationalPolynomialDeterminantTermsGaussianEmbedding
 import IPRADerivations.Analysis.Polynomials.Determinants.GaussianPolynomialDeterminant
 
 /-!

@@ -1,4 +1,4 @@
-import IPRADerivations.Analysis.RationalArithmetic.Powers.RationalReciprocalPowerTail
+import IPRADerivations.Analysis.RationalArithmetic.Powers.RationalPowerBounds.RationalReciprocalPowerTail
 import IPRADerivations.Analysis.Optimization.CubeInfimum.RationalCubeInfimumName
 import IPRADerivations.Analysis.RationalArithmetic.RationalClosure
 

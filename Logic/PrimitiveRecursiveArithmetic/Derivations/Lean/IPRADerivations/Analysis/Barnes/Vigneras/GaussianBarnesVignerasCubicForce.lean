@@ -1,6 +1,6 @@
 import IPRADerivations.Analysis.Barnes.Logarithms.PositiveAxis.ThirdDerivative.GaussianBarnesCanonicalThirdLogarithmOrder
-import IPRADerivations.Analysis.FiniteOperations.PeriodicGrids.GaussianSignedObservationOrder
-import IPRADerivations.Analysis.FiniteOperations.PeriodicGrids.SignedCubicTaylorGrid
+import IPRADerivations.Analysis.FiniteOperations.PeriodicGrids.Observations.GaussianSignedObservationOrder
+import IPRADerivations.Analysis.FiniteOperations.PeriodicGrids.CubicTaylor.SignedCubicTaylorGrid
 import IPRADerivations.Analysis.Names.Rates.Moduli.GaussianRationalModulus
 
 /-!

@@ -1,5 +1,5 @@
 import IPRADerivations.Analysis.Polynomials.Coefficients.GaussianPolynomialCoefficientDifferences
-import IPRADerivations.Analysis.Polynomials.Determinants.GaussianPolynomialDeterminantNorm
+import IPRADerivations.Analysis.Polynomials.Determinants.ErrorBounds.GaussianPolynomialDeterminantNorm
 
 /-!
 # Finite L1 error for the original Gaussian sum program

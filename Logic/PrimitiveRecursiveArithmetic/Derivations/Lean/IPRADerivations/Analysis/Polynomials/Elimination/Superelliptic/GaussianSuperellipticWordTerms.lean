@@ -1,6 +1,6 @@
 import IPRADerivations.Analysis.Polynomials.Elimination.Superelliptic.GaussianSuperellipticMatrixLeading
 import IPRADerivations.Analysis.Polynomials.Elimination.Superelliptic.GaussianSuperellipticWordWeights
-import IPRADerivations.Analysis.Polynomials.Determinants.GaussianPolynomialDeterminantTermDegree
+import IPRADerivations.Analysis.Polynomials.Determinants.Coefficients.GaussianPolynomialDeterminantTermDegree
 
 /-!
 # Original superelliptic cells in the actual determinant word product

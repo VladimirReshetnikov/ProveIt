@@ -1,4 +1,4 @@
-import IPRADerivations.Analysis.Polynomials.Products.GaussianRationalLowCoefficientConvolution
+import IPRADerivations.Analysis.Polynomials.Products.Convolution.GaussianRationalLowCoefficientConvolution
 
 /-!
 # Exact first three coefficients of actual polynomial convolution

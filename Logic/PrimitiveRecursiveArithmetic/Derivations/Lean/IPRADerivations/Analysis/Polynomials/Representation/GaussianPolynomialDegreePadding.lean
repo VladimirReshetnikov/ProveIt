@@ -1,5 +1,5 @@
 import IPRADerivations.Analysis.Polynomials.Evaluation.GaussianGeneralPolynomialSamples
-import IPRADerivations.Analysis.RationalArithmetic.Powers.GaussianRationalPowerDifference
+import IPRADerivations.Analysis.RationalArithmetic.Powers.GaussianPowers.GaussianRationalPowerDifference
 import IPRADerivations.Analysis.RationalArithmetic.RationalArithmetic
 import IPRADerivations.AnalyticNumberTheory.Totatives
 

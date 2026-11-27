@@ -1,6 +1,6 @@
 import IPRADerivations.Analysis.Gamma.Digamma.Comparison.GaussianGammaDigammaGammaComparison
 import IPRADerivations.Analysis.Gamma.Digamma.Derivative.GaussianGammaDigammaDerivativeShift
-import IPRADerivations.Analysis.Euler.Integration.Decay.GaussianEulerDampedTimeRate
+import IPRADerivations.Analysis.Euler.Integration.Decay.Damping.GaussianEulerDampedTimeRate
 
 /-!
 # Order of the original Gamma derivative products

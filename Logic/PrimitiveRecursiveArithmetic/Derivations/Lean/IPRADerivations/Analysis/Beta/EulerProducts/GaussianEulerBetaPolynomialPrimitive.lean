@@ -3,7 +3,7 @@ import IPRADerivations.Analysis.Polynomials.Coefficients.GaussianRationalEulerCo
 import IPRADerivations.Analysis.Gamma.EulerProducts.FiniteHeads.GaussianGammaEulerHeadShift
 import IPRADerivations.Analysis.Gamma.EulerProducts.GaussianGammaEulerHeadLower
 import IPRADerivations.Analysis.Polynomials.Translation.GaussianInverseBinomialRows
-import IPRADerivations.Analysis.Polynomials.Products.GaussianPolynomialLinearFactorCoefficients
+import IPRADerivations.Analysis.Polynomials.Products.LinearFactors.GaussianPolynomialLinearFactorCoefficients
 
 /-!
 # A literal finite Beta primitive for arbitrary complex rational exponents

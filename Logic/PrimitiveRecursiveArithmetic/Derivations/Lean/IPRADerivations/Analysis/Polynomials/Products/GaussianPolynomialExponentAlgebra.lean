@@ -1,4 +1,4 @@
-import IPRADerivations.Analysis.Polynomials.Products.GaussianPolynomialLowJetProduct
+import IPRADerivations.Analysis.Polynomials.Products.Convolution.GaussianPolynomialLowJetProduct
 import IPRADerivations.Analysis.Logarithm.FiniteSeries.GaussianFiniteLogarithmCoefficientRecursion
 
 /-!

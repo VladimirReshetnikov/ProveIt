@@ -1,4 +1,4 @@
-import IPRADerivations.Analysis.Stirling.Expansions.GaussianStirlingCubicRate
+import IPRADerivations.Analysis.Stirling.Expansions.Cubic.GaussianStirlingCubicRate
 
 /-!
 # The actual second-order multiplicative Stirling error program

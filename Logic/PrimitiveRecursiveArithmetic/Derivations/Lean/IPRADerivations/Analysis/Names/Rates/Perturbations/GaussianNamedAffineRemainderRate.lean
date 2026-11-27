@@ -1,5 +1,5 @@
 import IPRADerivations.Analysis.Names.Rates.Moduli.GaussianNamedLipschitzRate
-import IPRADerivations.Analysis.RationalArithmetic.Powers.GaussianRationalRoundedPower
+import IPRADerivations.Analysis.RationalArithmetic.Powers.GaussianPowers.GaussianRationalRoundedPower
 
 /-!
 # Independent observations of an actual affine name remainder

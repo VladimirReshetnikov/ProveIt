@@ -1,6 +1,6 @@
 import IPRADerivations.Analysis.Stirling.AllOrders.PanelParts.GaussianStirlingAllOrderDiscreteParts
-import IPRADerivations.Analysis.RationalArithmetic.FiniteSums.RationalSumAdditivity
-import IPRADerivations.Analysis.RationalArithmetic.FiniteSums.RationalSumLinearity
+import IPRADerivations.Analysis.RationalArithmetic.FiniteSums.RationalIdentities.RationalSumAdditivity
+import IPRADerivations.Analysis.RationalArithmetic.FiniteSums.RationalIdentities.RationalSumLinearity
 
 /-!
 # Exact subtraction of two finite rational sums

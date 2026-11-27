@@ -1,6 +1,6 @@
 import IPRADerivations.Analysis.Exponential.Polynomials.GaussianRationalPolynomialExponentialRecomposition
-import IPRADerivations.Analysis.Polynomials.Products.GaussianPolynomialLowPrefixMass
-import IPRADerivations.Analysis.Polynomials.Products.GaussianRationalPolynomialProductTruncation
+import IPRADerivations.Analysis.Polynomials.Products.Convolution.GaussianPolynomialLowPrefixMass
+import IPRADerivations.Analysis.Polynomials.Products.Convolution.GaussianRationalPolynomialProductTruncation
 
 /-!
 # Stored product with the exponential recomposition polynomial

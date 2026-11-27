@@ -1,4 +1,4 @@
-import IPRADerivations.Analysis.Exponential.Names.GaussianNamedExponentialQuarterUniqueness
+import IPRADerivations.Analysis.Exponential.Names.LocalEstimates.GaussianNamedExponentialQuarterUniqueness
 import IPRADerivations.Analysis.Logarithm.RightHalfPlane.GaussianRightHalfPlaneLogarithmMercator
 
 /-!

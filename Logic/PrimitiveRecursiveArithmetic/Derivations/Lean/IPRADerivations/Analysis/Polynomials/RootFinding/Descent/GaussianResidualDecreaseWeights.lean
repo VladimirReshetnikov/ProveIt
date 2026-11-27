@@ -1,4 +1,4 @@
-import IPRADerivations.Analysis.Polynomials.RootFinding.DominantTerms.GaussianDominantScalarOrder
+import IPRADerivations.Analysis.Polynomials.RootFinding.DominantTerms.DirectionSelection.GaussianDominantScalarOrder
 
 /-!
 # Exact natural weights for residual decrease

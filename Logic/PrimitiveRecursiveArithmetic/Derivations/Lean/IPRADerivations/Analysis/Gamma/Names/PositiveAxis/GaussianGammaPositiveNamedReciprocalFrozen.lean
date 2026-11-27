@@ -2,7 +2,7 @@ import IPRADerivations.Analysis.Gamma.Digamma.PositiveNames.GaussianNamedPositiv
 import IPRADerivations.Analysis.Gamma.Names.PositiveAxis.GaussianGammaPositiveNamedRationalFreeze
 import IPRADerivations.Analysis.Gamma.Digamma.GaussianGammaDigammaNative
 import IPRADerivations.Analysis.Names.Rates.Perturbations.GaussianNamedDifferenceRate
-import IPRADerivations.Analysis.Names.FiniteOperations.Products.GaussianNamedMultiplyRate
+import IPRADerivations.Analysis.Names.FiniteOperations.Products.Bounds.GaussianNamedMultiplyRate
 
 /-!
 # Freeze the certified reciprocal of the original positive Gamma

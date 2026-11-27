@@ -1,5 +1,5 @@
 import IPRADerivations.Analysis.Barnes.Vigneras.GaussianBarnesVignerasCubicForce
-import IPRADerivations.Analysis.FiniteOperations.PeriodicGrids.GaussianCyclicCubicTaylor
+import IPRADerivations.Analysis.FiniteOperations.PeriodicGrids.CubicTaylor.GaussianCyclicCubicTaylor
 
 /-!
 # Finite Vignéras step with the original far-axis cubic derivative

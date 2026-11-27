@@ -1,4 +1,4 @@
-import IPRADerivations.Analysis.Polynomials.Products.GaussianRationalPolynomialPowerSupport
+import IPRADerivations.Analysis.Polynomials.Products.Powers.GaussianRationalPolynomialPowerSupport
 
 /-!
 # Actual finite exponential coefficients stabilize at their exponent

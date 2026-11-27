@@ -1,4 +1,4 @@
-import IPRADerivations.Analysis.Gamma.NegativeAxis.Derivatives.GaussianGammaNegativeIntervalDerivativeTarget
+import IPRADerivations.Analysis.Gamma.NegativeAxis.Derivatives.CoefficientVariation.GaussianGammaNegativeIntervalDerivativeTarget
 
 /-!
 # The original C24 inverse recurrence and its derivative target

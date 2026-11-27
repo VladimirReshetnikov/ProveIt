@@ -1,4 +1,4 @@
-import IPRADerivations.Analysis.RationalArithmetic.Powers.GaussianRationalPowerEnvelope
+import IPRADerivations.Analysis.RationalArithmetic.Powers.GaussianPowers.GaussianRationalPowerEnvelope
 import IPRADerivations.Analysis.Polynomials.Horner.GaussianRationalHornerRadiusPerturbation
 import IPRADerivations.Analysis.Polynomials.Evaluation.GaussianPolynomialValueName
 import IPRADerivations.Analysis.Names.Approximation.GaussianRepresentedPointBounds

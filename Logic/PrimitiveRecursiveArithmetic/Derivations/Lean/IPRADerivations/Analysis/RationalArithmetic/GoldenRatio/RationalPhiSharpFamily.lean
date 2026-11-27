@@ -1,4 +1,4 @@
-import IPRADerivations.Analysis.Polynomials.Products.RationalPolynomialPowers
+import IPRADerivations.Analysis.Polynomials.Products.Powers.RationalPolynomialPowers
 import IPRADerivations.Analysis.RationalArithmetic.GoldenRatio.RationalPhiSharpness
 
 /-!

@@ -1,6 +1,6 @@
 import IPRADerivations.Analysis.Names.Arithmetic.GaussianNameRingLaws
 import IPRADerivations.Analysis.Polynomials.Coefficients.GaussianGeneralCoefficientNames
-import IPRADerivations.Analysis.Polynomials.RootFinding.DominantTerms.GaussianDominantScalarOrder
+import IPRADerivations.Analysis.Polynomials.RootFinding.DominantTerms.DirectionSelection.GaussianDominantScalarOrder
 
 /-!
 # An actual reciprocal name from a finite fractional apartness certificate

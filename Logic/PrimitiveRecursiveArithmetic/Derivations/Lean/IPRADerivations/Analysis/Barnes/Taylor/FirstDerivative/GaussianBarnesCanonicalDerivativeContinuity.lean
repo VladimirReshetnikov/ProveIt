@@ -2,7 +2,7 @@ import IPRADerivations.Analysis.Barnes.Taylor.FirstDerivative.Cofinal.GaussianBa
 import IPRADerivations.Analysis.Barnes.HeadProducts.GaussianBarnesCanonicalFactorLipschitz
 import IPRADerivations.Analysis.Series.ReciprocalSquares.GaussianReciprocalSquareSumDistance
 import IPRADerivations.Analysis.Names.Rates.Moduli.GaussianNamedLipschitzRate
-import IPRADerivations.Analysis.Names.FiniteOperations.Products.GaussianNamedMultiplyRate
+import IPRADerivations.Analysis.Names.FiniteOperations.Products.Bounds.GaussianNamedMultiplyRate
 
 /-!
 # Disk Lipschitz bound for the original cofinal Barnes logarithmic derivative

@@ -1,4 +1,4 @@
-import IPRADerivations.Analysis.RationalArithmetic.FiniteSums.RationalSumLinearity
+import IPRADerivations.Analysis.RationalArithmetic.FiniteSums.RationalIdentities.RationalSumLinearity
 import IPRADerivations.Analysis.RationalArithmetic.RationalAlgebra
 import IPRADerivations.Analysis.Inequalities.WeightedComparison.GaussianWeightedErrorBudget
 import IPRADerivations.Foundations.BoundedSyntaxInduction

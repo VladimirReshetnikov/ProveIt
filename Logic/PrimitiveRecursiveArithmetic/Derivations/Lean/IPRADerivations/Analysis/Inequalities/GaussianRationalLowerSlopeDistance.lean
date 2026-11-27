@@ -2,7 +2,7 @@ import IPRADerivations.Analysis.Beta.Endpoints.GaussianBetaRowMonomialReference
 import IPRADerivations.Analysis.Gamma.Digamma.ElementaryBounds.GaussianGammaDigammaHarmonicCells
 import IPRADerivations.Analysis.Integration.Partitions.GaussianRationalSignedPanelTailDistance
 import IPRADerivations.Analysis.Exponential.PositiveAxis.GaussianNamedPositiveExponentialOrder
-import IPRADerivations.Analysis.Stirling.Expansions.GaussianStirlingOddCoefficients
+import IPRADerivations.Analysis.Stirling.Expansions.OddSeries.GaussianStirlingOddCoefficients
 
 /-!
 # Recover a rational input distance from a lower scalar slope

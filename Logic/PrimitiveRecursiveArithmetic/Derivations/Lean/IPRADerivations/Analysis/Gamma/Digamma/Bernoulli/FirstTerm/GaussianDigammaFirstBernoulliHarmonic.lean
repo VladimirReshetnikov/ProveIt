@@ -1,6 +1,6 @@
 import IPRADerivations.Analysis.Gamma.Digamma.Bernoulli.FirstTerm.GaussianDigammaFirstBernoulliPanelSum
 import IPRADerivations.Analysis.Stirling.AllOrders.PowerIntegrals.GaussianStirlingAllOrderHarmonicIntegral
-import IPRADerivations.Analysis.RationalArithmetic.FiniteSums.RationalSumSegments
+import IPRADerivations.Analysis.RationalArithmetic.FiniteSums.RationalIdentities.RationalSumSegments
 
 /-!
 # Exact harmonic mass correction on the original digamma panel

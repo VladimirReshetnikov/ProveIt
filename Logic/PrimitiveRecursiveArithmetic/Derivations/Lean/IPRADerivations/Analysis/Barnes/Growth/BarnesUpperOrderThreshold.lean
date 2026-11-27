@@ -2,7 +2,7 @@ import IPRADerivations.AnalyticNumberTheory.BrunElementary
 import IPRADerivations.AnalyticNumberTheory.LocalFactor
 import IPRADerivations.AnalyticNumberTheory.RSA
 import IPRADerivations.AnalyticNumberTheory.SumReindex
-import IPRADerivations.Analysis.RationalArithmetic.Powers.GaussianFactorBudget
+import IPRADerivations.Analysis.Polynomials.RootFinding.Deflation.FactorTransport.GaussianFactorBudget
 
 /-!
 # Constructive upper order threshold for Barnes growth

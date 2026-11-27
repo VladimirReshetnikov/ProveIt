@@ -1,5 +1,5 @@
 import IPRADerivations.Analysis.Barnes.Taylor.CenteredCharts.GaussianBarnesCanonicalCenteredProductRate
-import IPRADerivations.Analysis.Exponential.Names.GaussianNamedExponentialRateFromConstant
+import IPRADerivations.Analysis.Exponential.Names.LocalEstimates.GaussianNamedExponentialRateFromConstant
 import IPRADerivations.Analysis.Exponential.Polynomials.GaussianRationalPolynomialExponentialRecomposition
 import IPRADerivations.Analysis.Names.Rates.Transport.GaussianNamedRateComposition
 

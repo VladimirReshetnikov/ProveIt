@@ -1,5 +1,5 @@
 import IPRADerivations.Analysis.Integration.Quadrature.GaussianRationalQuadratureDilation
-import IPRADerivations.Analysis.Euler.Integration.Decay.GaussianEulerWeightedHalfDecay
+import IPRADerivations.Analysis.Euler.Integration.Decay.Damping.GaussianEulerWeightedHalfDecay
 
 /-!
 # Actual quadratic grid cells and their Jacobian remainder

@@ -1,6 +1,6 @@
 import IPRADerivations.Analysis.Polynomials.Horner.GaussianRationalHornerRadiusPerturbation
 import IPRADerivations.Analysis.Polynomials.Horner.GaussianRationalHornerLipschitz
-import IPRADerivations.Analysis.RationalArithmetic.Powers.GaussianRationalPowerEnvelope
+import IPRADerivations.Analysis.RationalArithmetic.Powers.GaussianPowers.GaussianRationalPowerEnvelope
 
 /-!
 # Exact rational-disk point perturbation for actual Horner evaluation

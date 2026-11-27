@@ -1,7 +1,7 @@
 import IPRADerivations.Analysis.Euler.Integration.Parameters.GaussianEulerPowerExponentIncrement
 import IPRADerivations.Analysis.Euler.CompactExhaustion.ParameterBounds.GaussianEulerCompactPowerMajorant
 import IPRADerivations.Analysis.Exponential.Estimates.GaussianRadiusExponentialLipschitzRate
-import IPRADerivations.Analysis.Exponential.Names.GaussianExponentialRadiusIndependence
+import IPRADerivations.Analysis.Exponential.Names.Evaluators.GaussianExponentialRadiusIndependence
 
 /-!
 # Comparing the original Euler power exponent to its linear shift

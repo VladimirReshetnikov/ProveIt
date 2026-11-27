@@ -1,5 +1,5 @@
-import IPRADerivations.Analysis.RationalArithmetic.FiniteSums.RationalSumAdditivity
-import IPRADerivations.Analysis.RationalArithmetic.FiniteSums.RationalSumConstants
+import IPRADerivations.Analysis.RationalArithmetic.FiniteSums.RationalIdentities.RationalSumAdditivity
+import IPRADerivations.Analysis.RationalArithmetic.FiniteSums.RationalIdentities.RationalSumConstants
 import IPRADerivations.Analysis.RationalArithmetic.Distances.GaussianRationalL1
 
 /-!

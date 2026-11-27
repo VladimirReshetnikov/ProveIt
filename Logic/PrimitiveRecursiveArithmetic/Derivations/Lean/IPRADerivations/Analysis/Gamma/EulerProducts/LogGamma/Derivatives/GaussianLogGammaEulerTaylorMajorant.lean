@@ -1,5 +1,5 @@
 import IPRADerivations.Analysis.Gamma.EulerProducts.LogGamma.Convergence.GaussianLogGammaEulerResidualIntervalMajorant
-import IPRADerivations.Analysis.RationalArithmetic.FiniteSums.GaussianRationalSumMajorant
+import IPRADerivations.Analysis.RationalArithmetic.FiniteSums.WeightedSums.GaussianRationalSumMajorant
 
 /-!
 # Uniform quadratic bounds for the finite Euler logarithm rows

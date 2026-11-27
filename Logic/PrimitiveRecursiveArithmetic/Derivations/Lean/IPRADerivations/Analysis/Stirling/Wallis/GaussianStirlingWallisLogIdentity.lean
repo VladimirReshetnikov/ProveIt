@@ -1,5 +1,5 @@
 import IPRADerivations.Analysis.Stirling.Wallis.GaussianStirlingWallisLogRate
-import IPRADerivations.Analysis.Names.FiniteOperations.Products.GaussianNamedProductSquare
+import IPRADerivations.Analysis.Names.FiniteOperations.Products.Identities.GaussianNamedProductSquare
 
 /-!
 # Exact Gamma logarithm identity for the Stirling Wallis half-step

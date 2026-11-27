@@ -1,7 +1,7 @@
 import IPRADerivations.Analysis.Gamma.Digamma.TwoShift.GaussianGammaDigammaTwoShiftBinding
 import IPRADerivations.Analysis.Gamma.Digamma.ElementaryBounds.GaussianGammaDigammaHarmonicCells
-import IPRADerivations.Analysis.Exponential.Names.GaussianExponentialUnitPerturbation
-import IPRADerivations.Analysis.Exponential.Names.GaussianExponentialRadiusIndependence
+import IPRADerivations.Analysis.Exponential.Names.LocalEstimates.GaussianExponentialUnitPerturbation
+import IPRADerivations.Analysis.Exponential.Names.Evaluators.GaussianExponentialRadiusIndependence
 import IPRADerivations.Analysis.Names.Order.GaussianNamedRealOrderEnvelope
 
 /-!

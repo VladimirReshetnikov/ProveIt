@@ -1,6 +1,6 @@
 import IPRADerivations.Analysis.Gamma.Names.GaussianNamedGammaLateInput
 import IPRADerivations.Analysis.Euler.Integration.GaussianEulerIntegralPositiveLower
-import IPRADerivations.Analysis.Euler.Integration.Decay.GaussianEulerDecayRealSamples
+import IPRADerivations.Analysis.Euler.Integration.Decay.Quadrature.GaussianEulerDecayRealSamples
 import IPRADerivations.Analysis.Euler.Integration.Parameters.GaussianNamedEulerQuadrature
 
 /-!

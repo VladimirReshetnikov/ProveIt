@@ -1,5 +1,5 @@
 import IPRADerivations.Analysis.Euler.VerticalBounds.GaussianEulerVerticalProjection
-import IPRADerivations.Analysis.Exponential.Names.GaussianExponentialRealPart
+import IPRADerivations.Analysis.Exponential.Names.Identities.GaussianExponentialRealPart
 import IPRADerivations.Analysis.Euler.Integration.GaussianEulerIntegrandName
 
 /-!

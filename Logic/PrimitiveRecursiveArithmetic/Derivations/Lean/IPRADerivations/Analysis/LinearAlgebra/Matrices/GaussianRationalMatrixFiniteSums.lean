@@ -1,5 +1,5 @@
 import IPRADerivations.Analysis.Polynomials.Interpolation.GaussianRationalLagrangeCardinals
-import IPRADerivations.Analysis.RationalArithmetic.FiniteSums.GaussianRationalPermutationSum
+import IPRADerivations.Analysis.RationalArithmetic.FiniteSums.Reindexing.GaussianRationalPermutationSum
 import IPRADerivations.Analysis.RationalArithmetic.FiniteProducts.GaussianRationalFiniteProduct
 import IPRADerivations.Analysis.Polynomials.Translation.GaussianInverseBinomialRows
 

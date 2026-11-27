@@ -1,6 +1,6 @@
 import IPRADerivations.Analysis.Polynomials.Horner.GaussianRationalHornerLipschitz
 import IPRADerivations.Analysis.RationalArithmetic.Representations.GaussianRationalNormalization
-import IPRADerivations.Analysis.RationalArithmetic.Powers.GaussianRationalPowerDifference
+import IPRADerivations.Analysis.RationalArithmetic.Powers.GaussianPowers.GaussianRationalPowerDifference
 
 /-!
 # Actual coefficient-dependent Horner size and variation budgets
