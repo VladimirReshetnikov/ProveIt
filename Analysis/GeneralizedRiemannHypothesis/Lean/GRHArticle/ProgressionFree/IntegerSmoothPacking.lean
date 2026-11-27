@@ -70,7 +70,9 @@ private theorem omitted_packing_mass (integral : Bool) (A : Set ℕ)
       rw [one_mul, mul_comm]
       exact_mod_cast hcap
 
-private theorem smooth_reciprocal_add_omitted_le {Y : ℕ} {A : Set ℕ}
+/-- A smooth template and any finite family of omitted smooth integers together
+have at most the full Euler-product weight. -/
+theorem smooth_reciprocal_add_omitted_le {Y : ℕ} {A : Set ℕ}
     (hA : A ⊆ Nat.smoothNumbers (Y+1)) (D : Finset ℕ)
     (hD : ∀ n ∈ D, n ∈ Nat.smoothNumbers (Y+1) ∧ n ∉ A) :
     (∑' a : A, (a.val:ℝ)⁻¹) + ∑ n ∈ D, (n:ℝ)⁻¹ ≤ (integerSmoothDensityFactor Y)⁻¹ := by
