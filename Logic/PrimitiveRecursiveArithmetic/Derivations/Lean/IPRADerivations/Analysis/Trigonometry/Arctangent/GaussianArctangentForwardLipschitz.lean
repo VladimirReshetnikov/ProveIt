@@ -28,6 +28,7 @@ open GaussianCoefficientNameBounds (unit unit_positive)
 open GaussianRationalDistanceOrder (distance_congr)
 open GaussianRationalHorner (ofGaussian_represents represents_rescale positive_product)
 open GaussianRationalMetric (distanceBounded bounded_difference_iff)
+open GaussianRationalPolynomialExponential (factorial_positive)
 open Products (fact)
 open RationalArithmetic (add)
 open RationalCubeMidpoint (fraction fraction_represents)
@@ -113,9 +114,6 @@ theorem ordinate_radius (p q A B C D H K : PTm n)
     exact radius_congr (.eqRefl _) (.eqRefl _) (by ipra_ring) (by ipra_ring)
       (radius_symmetric _ _ _ _ swap)
 
-private theorem fact_positive (L : PTm n) : Γ ⊢[PRAAx] le one (fact L) :=
-  le_congr (.eqRefl _) (AnalyticNumberTheory.Primes.fact_pos L).eqSymm (zero_lt_succ _)
-
 private theorem prefix_distance (j M L k S T H K : PTm n) (hK : Γ ⊢[PRAAx] le one K)
     (h : Γ ⊢[PRAAx] radius (sndT (prefixValue j M L)) (sndT (prefixValue k S T)) H K) :
     Γ ⊢[PRAAx] distanceBounded (prefixValue j M L) (prefixValue k S T) H K := by
@@ -126,8 +124,8 @@ private theorem prefix_distance (j M L k S T H K : PTm n) (hK : Γ ⊢[PRAAx] le
   let E := fact L*fact T
   let c := scale (fact T) a
   let d := scale (fact L) b
-  have hL := fact_positive (Γ := Γ) L
-  have hT := fact_positive (Γ := Γ) T
+  have hL := factorial_positive (Γ := Γ) L
+  have hT := factorial_positive (Γ := Γ) T
   have hE := positive_product (fact L) (fact T) hL hT
   have hc := represents_rescale u a (fact L) (fact T) (ofGaussian_represents _ _ hL)
   have hd := GaussianRationalSyntheticDivision.rescale_to v b (fact T) (fact L) E

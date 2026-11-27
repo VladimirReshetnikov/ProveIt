@@ -52,6 +52,12 @@ theorem bounded_samples_at (f : PR 2) (R x p : PTm n) (h : Γ ⊢[PRAAx] bounded
 theorem query_bound (f : PR 2) (R x p : PTm n) (h : Γ ⊢[PRAAx] input f R x) : Γ ⊢[PRAAx] bounded (query f R p x) R one :=
   bounded_samples_at f R x (inputPrecision R p) h.andE₂
 
+theorem index_positive (R p : PTm n) : Γ ⊢[PRAAx] le one (index R p) := by
+  have h : Γ ⊢[PRAAx] le two (GaussianRationalExponentialTail.cutoff R (p+num 4)) :=
+    le_of_eq_add (d := R+R+R*(R+R)+p+num 6) (by unfold GaussianRationalExponentialTail.cutoff ExponentialTail.Nt; ipra_ring)
+  exact (succ_monus_succ one (index R p)).eqSymm.eqTrans
+    (le_congr (.eqRefl _) (GaussianRationalExponentialTail.last_successor R (p+num 4)).eqSymm h)
+
 theorem index_add (R p k : PTm n) : Γ ⊢[PRAAx] index R (p+k) ≐ index R p+k := by
   have eq : Γ ⊢[PRAAx] succ (index R (p+k)) ≐ succ (index R p+k) :=
     (GaussianRationalExponentialTail.last_successor R (p+k+num 4)).eqTrans

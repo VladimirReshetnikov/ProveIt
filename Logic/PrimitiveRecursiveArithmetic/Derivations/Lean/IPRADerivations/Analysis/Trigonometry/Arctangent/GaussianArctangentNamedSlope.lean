@@ -32,6 +32,7 @@ open GaussianCoefficientNameBounds (unit unit_positive)
 open GaussianRationalDistanceOrder (distance_congr distance_radius_mono)
 open GaussianRationalHorner (positive_product ofGaussian_represents scalar_congr)
 open GaussianRationalMetric (distanceBounded comparison_of_cleared)
+open GaussianRationalPolynomialExponential (factorial_positive)
 open Products (fact)
 open RationalArithmetic (represents add)
 open RationalArgmin (rationalLE)
@@ -46,12 +47,9 @@ def gap (A B C D : PTm n) : PTm n := fraction (gapNumerator A B C D) (B*D)
 def twiceGap (A B C D : PTm n) : PTm n := fraction (two*gapNumerator A B C D) (B*D)
 def ordinate (p A B : PTm n) : PTm n := sndT (ap2 nameF p (data A B))
 
-private theorem fact_positive (L : PTm n) : Γ ⊢[PRAAx] le one (fact L) :=
-  le_congr (.eqRefl _) (AnalyticNumberTheory.Primes.fact_pos L).eqSymm (zero_lt_succ _)
-
 private theorem prefix_represents (j M L : PTm n) : Γ ⊢[PRAAx]
     represents (sndT (prefixValue j M L)) (ZT.ofNat (two*total j M L)) (fact L) := by
-  apply scalar_congr (.eqRefl _) ?_ (.eqRefl _) (ofGaussian_represents _ _ (fact_positive L)).andE₂
+  apply scalar_congr (.eqRefl _) ?_ (.eqRefl _) (ofGaussian_represents _ _ (factorial_positive L)).andE₂
   apply ZT.derive
   simp only [im_scale,imaginaryCode,eval_im_code,ZT.toZ_ofNat]
   ipra_simps
@@ -91,7 +89,7 @@ theorem common_grid_order (A B C D N : PTm n)
   let Y := two*total r M L
   have hE := positive_product B D hB hD
   have hM := positive_product E N hE hN
-  have hF := fact_positive (Γ := Γ) L
+  have hF := factorial_positive (Γ := Γ) L
   have hEnd : Γ ⊢[PRAAx] j+k ≐ r :=
     (by dsimp only [j,k]; ipra_ring : Γ ⊢[PRAAx] j+k ≐ (A*D+G)*N).eqTrans
       (congrMul (eq_add_of_le hord).eqSymm (.eqRefl _))

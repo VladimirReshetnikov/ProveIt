@@ -3,6 +3,7 @@ import IPRADerivations.Analysis.Exponential.RightHalfPlane.GaussianRightHalfPlan
 import IPRADerivations.Analysis.Exponential.Estimates.GaussianExponentialLinearRemainder
 import IPRADerivations.Analysis.RationalArithmetic.Complex.GaussianCoordinateRadius
 import IPRADerivations.Analysis.RationalArithmetic.Representations.RationalRepresentedUpper
+import IPRADerivations.Analysis.Exponential.Names.Evaluators.GaussianRadiusExponentialName
 
 /-!
 # Exact nonnegative cosine observations for the small argument
@@ -58,15 +59,6 @@ theorem small_unit_bound (j A B : PTm n) (hA : Γ ⊢[PRAAx] le one A) (hB : Γ 
     (le_refl one) (le_of_eq_add (d := zero) (by ipra_ring))
     (bound_congr e.eqSymm (.eqRefl _) (.eqRefl _) b)
 
-private theorem index_positive (p : PTm n) : Γ ⊢[PRAAx] le one (GaussianRadiusExponentialName.index two p) := by
-  let K := GaussianRadiusExponentialName.index two p
-  let c := GaussianRationalExponentialTail.cutoff two (p+num 4)
-  have e : Γ ⊢[PRAAx] succ K ≐ c := GaussianRationalExponentialTail.last_successor two (p+num 4)
-  have h : Γ ⊢[PRAAx] le two c := by
-    unfold c GaussianRationalExponentialTail.cutoff ExponentialTail.Nt
-    ipra_le Groth.ι (Q.mk Γ p)+18
-  exact (succ_monus_succ one K).eqSymm.eqTrans (le_congr (.eqRefl two) e.eqSymm h)
-
 private theorem one_real : Γ ⊢[PRAAx] fstT (qone : PTm n) ≐ scalarOne :=
   ((congrFst RationalGaussianEmbedding.embed_one).eqSymm.eqTrans (fst_pair _ _)).eqTrans
     (RationalNormalForm.normalize_fixed_point _ (RationalNormalForm.normalize_well_formed _ _ (le_refl one)))
@@ -106,7 +98,7 @@ theorem nonnegative_at (p A B : PTm n) (hA : Γ ⊢[PRAAx] le one A) (hB : Γ �
   have read := GaussianBoundedConstantProductName.sample_at (Γ := Γ) atanF j one H (atData B A)
   have can := GaussianRationalHorner.canonical_congr read (qmul_canonical H (ap2 atanF l (atData B A)))
   have dist := GaussianExponentialLinearRemainder.original_finite_linear_remainder q one one k
-    (le_refl one) (le_refl one) (small_unit_bound j A B hA hB) can (index_positive p)
+    (le_refl one) (le_refl one) (small_unit_bound j A B hA hB) can (GaussianRadiusExponentialName.index_positive two p)
   have same : Γ ⊢[PRAAx] GaussianRationalMetric.distanceBounded (qadd qone q) S one one :=
     GaussianRationalDistanceOrder.distance_symmetric _ _ _ _ (le_refl one)
       (GaussianRationalDistanceOrder.distance_congr (.eqRefl _) (.eqRefl _) (by ipra_ring) (by ipra_ring) dist)

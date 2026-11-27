@@ -33,17 +33,15 @@ open GaussianRationalL1 (rawDen rawGaussian raw_den_positive raw_represents)
 open GaussianRationalMetric (comparison_of_cleared bounded bounded_of_cleared bounded_difference_iff distanceBounded)
 open GaussianRootAlgebra (im_scale im_mul re_scale)
 open RationalValueBounds (upper upper_congr upper_triangle upper_mono upper_of_order upper_of_radius)
+open GaussianRationalPolynomialExponential (factorial_positive)
 open Products (fact)
 open LeanProofs.IPRA.AnalyticNumberTheory.PhiLower (le_mul_mono)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
-private theorem fact_positive (L : PTm n) : Γ ⊢[PRAAx] le one (fact L) :=
-  le_congr (.eqRefl _) (AnalyticNumberTheory.Primes.fact_pos L).eqSymm (zero_lt_succ _)
-
 private theorem imaginary_prefix_represents (j M L : PTm n) : Γ ⊢[PRAAx]
     RationalArithmetic.represents (sndT (prefixValue j M L)) (ZT.ofNat (two*total j M L)) (fact L) := by
-  apply scalar_congr (.eqRefl _) ?_ (.eqRefl _) (ofGaussian_represents _ _ (fact_positive L)).andE₂
+  apply scalar_congr (.eqRefl _) ?_ (.eqRefl _) (ofGaussian_represents _ _ (factorial_positive L)).andE₂
   apply ZT.derive
   simp only [im_scale,imaginaryCode,eval_im_code,ZT.toZ_ofNat]
   ipra_simps
@@ -53,7 +51,7 @@ private theorem imaginary_scaled_prefix_represents (A B j M L : PTm n) (hB : Γ 
     Γ ⊢[PRAAx] RationalArithmetic.represents (sndT (qmul (sinePoint B A) (prefixValue j M L)))
       (ZT.ofNat ((two*B*A)*(two*total j M L))) (denominator B A*fact L) := by
   have hd := denominator_positive B A hB
-  have hF := fact_positive (Γ := Γ) L
+  have hF := factorial_positive (Γ := Γ) L
   have h := qmul_represents (sinePoint B A) (prefixValue j M L) (sineCode B A)
     (scale (two*total j M L) imaginaryCode) (denominator B A) (fact L) hd hF
     (ofGaussian_represents _ _ hd) (ofGaussian_represents _ _ hF)
@@ -84,7 +82,7 @@ theorem observation_chord_order (A B N : PTm n) (hA : Γ ⊢[PRAAx] le one A)
   have hJ := le_mul_mono hAB (le_refl N)
   have hl : Γ ⊢[PRAAx] le (two*(J*J)) L :=
     le_mul_mono (le_refl two) (le_mul_mono hJ hJ)
-  have hFp := fact_positive (Γ := Γ) L
+  have hFp := factorial_positive (Γ := Γ) L
   have hd := denominator_positive B A hB
   have cmp := GaussianArctangentChordComparison.matched_prefix_bound J J M L hJ (le_refl _) (le_refl _)
   have reduced : Γ ⊢[PRAAx] le (d*total J M L) ((two*B*A)*total J J L) :=

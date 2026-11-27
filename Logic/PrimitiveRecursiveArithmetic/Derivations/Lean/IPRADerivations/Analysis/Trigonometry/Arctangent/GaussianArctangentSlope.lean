@@ -18,9 +18,9 @@ namespace LeanProofs.IPRA.Analysis.GaussianArctangentSlope
 open_ipra
 open LeanProofs.IPRA.AnalyticNumberTheory.PhiLower (le_mul_mono)
 open LeanProofs.IPRA.Foundations.FiniteHausdorff (sum_mono)
-open BaselQuadrature (Qb uq inst_Qb)
-open GaussianArctangentCayleyValues (denominator denominator_positive)
-open GaussianArctangentExponentialPrefix (source subst_source total subst_total)
+open BaselQuadrature (Qb uq)
+open GaussianArctangentCayleyValues (denominator)
+open GaussianArctangentExponentialPrefix (source subst_source total subst_total total_succ denominator_upper quotient_exact)
 open Products (fact)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
@@ -43,31 +43,14 @@ private theorem total_index_congr {i j : PTm n} (M L : PTm n) (h : Γ ⊢[PRAAx]
     Γ ⊢[PRAAx] total i M L ≐ total j M L :=
   congrAp2 (sumF Qb) h (.eqRefl _)
 
-private theorem total_succ (j M L : PTm n) : Γ ⊢[PRAAx]
-    total (succ j) M L ≐ total j M L+M*uq j M L :=
-  (sum_succ Qb j (pairT M L)).eqTrans (congrAdd (.eqRefl _) (inst_Qb j M L))
-
-private theorem denominator_bounds (j M : PTm n) (hj : Γ ⊢[PRAAx] lt j M) :
-    Γ ⊢[PRAAx] le (M*M) (denominator M j) ⋏ le (denominator M j) (two*(M*M)) := by
-  have hs : Γ ⊢[PRAAx] le (j*j) (M*M) := le_mul_mono (le_of_lt hj) (le_of_lt hj)
-  exact .andI (le_add_right _ _)
-    (le_congr (.eqRefl _) (by ipra_ring) (sum_mono (le_refl (M*M)) hs))
-
-private theorem quotient_exact (j M L : PTm n) (hs : Γ ⊢[PRAAx] source M L)
-    (hD : Γ ⊢[PRAAx] le (denominator M j) (two*(M*M))) :
-    Γ ⊢[PRAAx] fact L ≐ denominator M j*uq j M L := by
-  have hd := RationalIntegerNormalization.positive_form (denominator_positive M j hs.andE₁)
-  have hl : Γ ⊢[PRAAx] le (denominator M j) L := le_trans hD hs.andE₂
-  have hv := AnalyticNumberTheory.Primes.dvd_fact (le_congr hd (.eqRefl _) hl)
-  exact DiophantineNumberTheory.Coprime.eq_of_dvd' hd (dvd_congr_left hd.eqSymm hv)
-
 theorem row_slope (j M L : PTm n) (hs : Γ ⊢[PRAAx] source M L) (hj : Γ ⊢[PRAAx] lt j M) :
     Γ ⊢[PRAAx] le (fact L) (two*M*(M*uq j M L)) ⋏ le (M*(M*uq j M L)) (fact L) := by
-  have bd := denominator_bounds j M hj
-  have exactDiv := quotient_exact j M L hs bd.andE₂
+  have upper := denominator_upper j M hj
+  have lower : Γ ⊢[PRAAx] le (M*M) (denominator M j) := le_add_right _ _
+  have exactDiv := quotient_exact j M L hs hj
   exact .andI
-    (le_congr exactDiv.eqSymm (by ipra_ring) (le_mul_mono bd.andE₂ (le_refl (uq j M L))))
-    (le_congr (by ipra_ring) exactDiv.eqSymm (le_mul_mono bd.andE₁ (le_refl (uq j M L))))
+    (le_congr exactDiv.eqSymm (by ipra_ring) (le_mul_mono upper (le_refl (uq j M L))))
+    (le_congr (by ipra_ring) exactDiv.eqSymm (le_mul_mono lower (le_refl (uq j M L))))
 
 private theorem slope_zero (j M L : PTm n) : Γ ⊢[PRAAx] slope j zero M L := by
   have e := total_index_congr (Γ := Γ) M L (add_zero j)

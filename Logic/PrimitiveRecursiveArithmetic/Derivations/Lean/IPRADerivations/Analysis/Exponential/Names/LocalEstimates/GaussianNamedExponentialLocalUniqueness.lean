@@ -1,6 +1,7 @@
 import IPRADerivations.Analysis.Exponential.Names.LocalEstimates.GaussianFiniteExponentialLocalUniqueness
 import IPRADerivations.Analysis.Exponential.Names.Derivatives.GaussianNamedExponentialDifferenceIdentity
 import IPRADerivations.Analysis.Exponential.PositiveAxis.GaussianRealNameExponentialUnitReflection
+import IPRADerivations.Analysis.Exponential.Names.Evaluators.GaussianRadiusExponentialName
 
 /-!
 # Local uniqueness of the original complex exponential
@@ -51,15 +52,6 @@ theorem late_at (f : PR 2) (x C t : PTm n) (h : Γ ⊢[PRAAx] lateSmall f x C)
     simpa [lateSmall] using h.allE t
   exact .impE rule ht
 
-private theorem index_positive (R p : PTm n) : Γ ⊢[PRAAx] le one (index R p) := by
-  let K := index R p
-  let k := GaussianRationalExponentialTail.cutoff R (p+num 4)
-  have e : Γ ⊢[PRAAx] succ K ≐ k := GaussianRationalExponentialTail.last_successor R (p+num 4)
-  have h : Γ ⊢[PRAAx] le two k := by
-    unfold k GaussianRationalExponentialTail.cutoff ExponentialTail.Nt
-    ipra_le 𝔞 R+𝔞 R+𝔞 R*𝔞(R+R)+𝔞 p+6
-  exact (succ_monus_succ one K).eqSymm.eqTrans (le_congr (.eqRefl two) e.eqSymm h)
-
 theorem sample_zero (f : PR 2) (R x C anchor p : PTm n)
     (hf : Γ ⊢[PRAAx] input f R x) (hs : Γ ⊢[PRAAx] lateSmall f x C)
     (he : Γ ⊢[PRAAx] crossEquivalent (nameF f) oneF (data R x) anchor) :
@@ -88,7 +80,7 @@ theorem sample_zero (f : PR 2) (R x C anchor p : PTm n)
   have smaller : Γ ⊢[PRAAx] distanceBounded (value f R r x) qone one (tolerance p) :=
     distance_radius_mono _ _ _ _ _ _ (positive_product _ _ (unit_positive r) (unit_positive r)) den
       (by unfold tolerance; ipra_le 𝔞 V*sl budget) valueError
-  have bound : Γ ⊢[PRAAx] bounded q one U := contraction q (index R r) p ht.andE₁ (index_positive R r) ht.andE₂ smaller
+  have bound : Γ ⊢[PRAAx] bounded q one U := contraction q (index R r) p ht.andE₁ (GaussianRadiusExponentialName.index_positive R r) ht.andE₂ smaller
   have lateT : Γ ⊢[PRAAx] le U T := unit_monotone (le_trans hp (le_trans late rt))
   have dist : Γ ⊢[PRAAx] distanceBounded (ap2 f p x) q two U :=
     distance_radius_mono _ _ _ _ _ _ (positive_product _ _ (unit_positive p) (unit_positive t)) (unit_positive p)

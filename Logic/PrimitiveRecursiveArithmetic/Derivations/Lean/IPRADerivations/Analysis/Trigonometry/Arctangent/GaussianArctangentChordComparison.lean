@@ -1,4 +1,5 @@
 import IPRADerivations.Analysis.Trigonometry.Arctangent.PartialSums.GaussianArctangentPartialQuadrature
+import IPRADerivations.Analysis.Trigonometry.Arctangent.PartialSums.GaussianArctangentExponentialPrefix
 
 /-!
 # Matched-grid arctangent chord comparison
@@ -13,9 +14,9 @@ set_option autoImplicit false
 namespace LeanProofs.IPRA.Analysis.GaussianArctangentChordComparison
 
 open_ipra
-open BaselQuadrature (Qb uq inst_Qb u_eq)
+open BaselQuadrature (Qb uq)
 open GaussianArctangentCayleyValues (denominator denominator_positive)
-open GaussianArctangentExponentialPrefix (total subst_total)
+open GaussianArctangentExponentialPrefix (total subst_total total_succ quotient_exact)
 open Products (fact)
 open LeanProofs.IPRA.AnalyticNumberTheory.PhiLower (le_mul_mono)
 open LeanProofs.IPRA.Foundations.FiniteHausdorff (sum_mono)
@@ -35,16 +36,6 @@ theorem cleared_row (k J M : PTm n) (hk : Γ ⊢[PRAAx] le k J) (hJ : Γ ⊢[PRA
   rw [u,v]
   ring
 
-private theorem quotient_exact (k M L : PTm n) (hM : Γ ⊢[PRAAx] le one M)
-    (hL : Γ ⊢[PRAAx] le (two*(M*M)) L) (hk : Γ ⊢[PRAAx] lt k M) :
-    Γ ⊢[PRAAx] fact L ≐ denominator M k*uq k M L := by
-  have h := RationalIntegerNormalization.positive_form hM
-  have m := congrMul h h
-  have d := congrAdd m (.eqRefl (k*k))
-  have q := congrAp2 quoF (.eqRefl (fact L)) d
-  exact (u_eq (lt_congr (.eqRefl _) h hk) (le_congr (congrMul (.eqRefl two) m) (.eqRefl _) hL)).eqTrans
-    (congrMul d q).eqSymm
-
 private theorem matched_row (k J M L : PTm n) (hJ : Γ ⊢[PRAAx] le J M)
     (hL : Γ ⊢[PRAAx] le (two*(M*M)) L) (hk : Γ ⊢[PRAAx] lt k J) :
     Γ ⊢[PRAAx] le ((M*M+J*J)*(M*uq k M L)) ((two*M*J)*(J*uq k J L)) := by
@@ -56,8 +47,8 @@ private theorem matched_row (k J M L : PTm n) (hJ : Γ ⊢[PRAAx] le J M)
   have hd := denominator_positive M k hMp
   have he := denominator_positive J k hJp
   have hLJ := le_trans (le_mul_mono (le_refl two) (le_mul_mono hJ hJ)) hL
-  have u := natEq (quotient_exact k M L hMp hL hkM)
-  have v := natEq (quotient_exact k J L hJp hLJ hk)
+  have u := natEq (quotient_exact k M L (.andI hMp hL) hkM)
+  have v := natEq (quotient_exact k J L (.andI hJp hLJ) hk)
   have base := le_mul_mono (le_refl (M*fact L)) (cleared_row k J M (le_of_lt hk) hJ)
   refine RationalValueBounds.positive_cancel (GaussianRationalHorner.positive_product d e hd he)
     (le_congr ?_ ?_ base)
@@ -67,10 +58,6 @@ private theorem matched_row (k J M L : PTm n) (hJ : Γ ⊢[PRAAx] le J M)
   · apply deriveNat
     ipra_simps
     linear_combination 2*𝔞(M)*𝔞(d)*𝔞(J)*𝔞(J)*v
-
-private theorem total_succ (j M L : PTm n) :
-    Γ ⊢[PRAAx] total (succ j) M L ≐ total j M L+M*uq j M L :=
-  (sum_succ Qb j (pairT M L)).eqTrans (congrAdd (.eqRefl _) (inst_Qb j M L))
 
 private def prefixComparison (j J M L : PTm n) : Fm PTm n :=
   le ((M*M+J*J)*total j M L) ((two*M*J)*total j J L)

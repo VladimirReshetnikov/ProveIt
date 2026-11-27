@@ -15,6 +15,7 @@ namespace LeanProofs.IPRA.Analysis.GaussianArctangentExponentialPrefix
 
 open_ipra
 open BaselQuadrature (Qb uq inst_Qb)
+open GaussianRationalPolynomialExponential (factorial_positive)
 open Products (fact)
 open GaussianArctangentCayleyStep (increment incrementCode)
 open GaussianArctangentCayleyValues (denominator denominator_positive imaginaryCode)
@@ -46,26 +47,26 @@ ipra_subst total
 
 ipra_subst prefixValue [imaginaryCode, Products.fact]
 
-private theorem fact_positive (L : PTm n) : Γ ⊢[PRAAx] le one (fact L) :=
-  le_congr (.eqRefl _) (AnalyticNumberTheory.Primes.fact_pos L).eqSymm (zero_lt_succ _)
-
-private theorem total_succ (j M L : PTm n) : Γ ⊢[PRAAx]
+theorem total_succ (j M L : PTm n) : Γ ⊢[PRAAx]
     total (succ j) M L ≐ total j M L+M*uq j M L :=
   (sum_succ Qb j (pairT M L)).eqTrans (congrAdd (.eqRefl _) (inst_Qb j M L))
 
-private theorem quotient_exact (j M L : PTm n) (hs : Γ ⊢[PRAAx] source M L)
+theorem denominator_upper (j M : PTm n) (hj : Γ ⊢[PRAAx] lt j M) :
+    Γ ⊢[PRAAx] le (denominator M j) (two*(M*M)) := by
+  have square := le_mul_mono (le_of_lt hj) (le_of_lt hj)
+  unfold denominator
+  ipra_le sl square
+
+theorem quotient_exact (j M L : PTm n) (hs : Γ ⊢[PRAAx] source M L)
     (hj : Γ ⊢[PRAAx] lt j M) : Γ ⊢[PRAAx] fact L ≐ denominator M j*uq j M L := by
   have hd := RationalIntegerNormalization.positive_form (denominator_positive M j (Prf.andE₁ hs))
-  have hjj := le_mul_mono (le_of_lt hj) (le_of_lt hj)
-  have hsum : Γ ⊢[PRAAx] le (denominator M j) (two*(M*M)) := by
-    unfold denominator
-    ipra_le sl hjj
+  have hsum := denominator_upper j M hj
   have hl : Γ ⊢[PRAAx] le (denominator M j) L := le_trans hsum (Prf.andE₂ hs)
   have hv := AnalyticNumberTheory.Primes.dvd_fact (le_congr hd (.eqRefl _) hl)
   exact DiophantineNumberTheory.Coprime.eq_of_dvd' hd (dvd_congr_left hd.eqSymm hv)
 
 theorem prefix_zero (M L : PTm n) : Γ ⊢[PRAAx] prefixValue zero M L ≐ qzero := by
-  have hF := fact_positive (Γ := Γ) L
+  have hF := factorial_positive (Γ := Γ) L
   have eq : Γ ⊢[PRAAx] equal (scale (two*total zero M L) imaginaryCode) (scale (fact L) zeroCode) := by
     have e := natEq (sum_zero (Γ := Γ) Qb (pairT M L))
     apply equal_of_values <;>
@@ -85,7 +86,7 @@ theorem prefix_succ (j M L : PTm n) (hs : Γ ⊢[PRAAx] source M L)
   let a := scale (two*total j M L) imaginaryCode
   let b := scale (uq j M L) (incrementCode M)
   let c := scale (two*total (succ j) M L) imaginaryCode
-  have hF := fact_positive (Γ := Γ) L
+  have hF := factorial_positive (Γ := Γ) L
   have hd := denominator_positive M j (Prf.andE₁ hs)
   have inc := represents_congr (.eqRefl _) (equal_refl _) (quotient_exact j M L hs hj).eqSymm
     (represents_rescale (increment M j) (incrementCode M) (denominator M j) (uq j M L)
@@ -142,7 +143,7 @@ private theorem total_estimate (j M L : PTm n) (hs : Γ ⊢[PRAAx] source M L)
 theorem prefix_bound (j M L : PTm n) (hs : Γ ⊢[PRAAx] source M L)
     (hj : Γ ⊢[PRAAx] le j M) : Γ ⊢[PRAAx] bounded (prefixValue j M L) two one := by
   let a := scale (two*total j M L) imaginaryCode
-  have hF := fact_positive (Γ := Γ) L
+  have hF := factorial_positive (Γ := Γ) L
   have e := total_estimate j M L hs hj
   have cleared : Γ ⊢[PRAAx] le (total j M L) (fact L) :=
     RationalValueBounds.positive_cancel (Prf.andE₁ hs) (le_trans e (le_mul_mono hj (le_refl _)))
@@ -166,7 +167,7 @@ theorem at_pi_observation (p x : PTm n) : Γ ⊢[PRAAx]
   let a := scale (two*total M M L) imaginaryCode
   let b := scale (num 4*total M M L) oneCode
   let pi := GaussianGammaHalfPiName.observation p
-  have hF := fact_positive (Γ := Γ) L
+  have hF := factorial_positive (Γ := Γ) L
   have ht : Γ ⊢[PRAAx] le one two := zero_lt_succ one
   have hD := positive_product two (fact L) ht hF
   have lhs := represents_rescale (prefixValue M M L) a (fact L) two (ofGaussian_represents _ _ hF)

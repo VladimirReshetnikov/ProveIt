@@ -1,6 +1,7 @@
 import IPRADerivations.Analysis.Polynomials.RootFinding.RealRoots.GaussianRationalFourthRootBranch
 import IPRADerivations.Analysis.Exponential.Names.LocalEstimates.GaussianNamedExponentialLocalUniqueness
 import IPRADerivations.Analysis.Names.Arithmetic.GaussianNamedHalf
+import IPRADerivations.Analysis.Exponential.Names.Evaluators.GaussianRadiusExponentialName
 
 /-!
 # Complex exponential uniqueness for late differences of radius three
@@ -98,15 +99,6 @@ private theorem late_quarter (f : PR 2) (x C : PTm n) (h : Γ ⊢[PRAAx] lateRad
   simpa only [lateSmall,Syn.shift,GaussianNamedHalf.subst_data,LeanProofs.IPRA.PTm.subst_num,Δ] using
     quarter_at f (Syn.shift x) (Syn.shift C) (var 0) h' Prf.hyp0
 
-private theorem index_positive (R p : PTm n) : Γ ⊢[PRAAx] le one (index R p) := by
-  let K := index R p
-  let k := GaussianRationalExponentialTail.cutoff R (p+num 4)
-  have e : Γ ⊢[PRAAx] succ K ≐ k := GaussianRationalExponentialTail.last_successor R (p+num 4)
-  have h : Γ ⊢[PRAAx] le two k := by
-    unfold k GaussianRationalExponentialTail.cutoff ExponentialTail.Nt
-    ipra_le (Groth.ι (IPRA.Q.mk Γ R))*2+(Groth.ι (IPRA.Q.mk Γ R))^2*2+(Groth.ι (IPRA.Q.mk Γ p))+6
-  exact (succ_monus_succ one K).eqSymm.eqTrans (le_congr (.eqRefl two) e.eqSymm h)
-
 private theorem near_one (f : PR 2) (R x C p : PTm n) (hs : Γ ⊢[PRAAx] lateSmall f x C)
     (hp : Γ ⊢[PRAAx] le C p) :
     Γ ⊢[PRAAx] distanceBounded (ap2 (E f) p (data R x)) qone (num 21) (num 16) := by
@@ -118,7 +110,7 @@ private theorem near_one (f : PR 2) (R x C p : PTm n) (hs : Γ ⊢[PRAAx] lateSm
   have h4 : Γ ⊢[PRAAx] le one (num 4 : PTm n) := by ipra_le 3
   have h16 : Γ ⊢[PRAAx] le one (num 16 : PTm n) := by ipra_le 15
   have tail := GaussianExponentialLinearRemainder.original_finite_linear_remainder q (num 3) (num 4) K h4
-    (by ipra_le 1) hq.andE₂ hq.andE₁ (index_positive R p)
+    (by ipra_le 1) hq.andE₂ hq.andE₁ (GaussianRadiusExponentialName.index_positive R p)
   have raw : Γ ⊢[PRAAx] distanceBounded (scalarSum q K) (qadd qone q) (num 9) (num 16) :=
     distance_congr (.eqRefl _) (.eqRefl _) (by ipra_ring) (by ipra_ring) tail
   have linear : Γ ⊢[PRAAx] distanceBounded (qadd qone q) qone (num 12) (num 16) := by
