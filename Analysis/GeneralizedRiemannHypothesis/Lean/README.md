@@ -42,6 +42,8 @@ Each entry below identifies the part of the article covered by the Lean statemen
 
 [ClassPolynomialRealDescent.lean](GRHArticle/SingularModuli/ClassPolynomialRealDescent.lean) proves that every analytic class polynomial has real coefficients, by pairing reduced forms under complex conjugation. [CMHeckeDiagonal.lean](GRHArticle/SingularModuli/CMHeckeDiagonal.lean) proves that the four singular moduli in each quartic example are roots of their analytic Hecke orbit polynomials, at levels 59 and 17 respectively.
 
+[QuarticCoefficientChecks.lean](GRHArticle/SingularModuli/QuarticCoefficientChecks.lean) checks the endpoint comparisons for all ten real coefficients. [QuarticClassPolynomialCertificates.lean](GRHArticle/SingularModuli/QuarticClassPolynomialCertificates.lean) proves that the real part of each analytic coefficient lies strictly within one half of the printed integer. The polynomial identifications and exact five-term minimum support for the listed singular moduli follow under the remaining coefficient integrality hypothesis.
+
 The five-term classification still needs the CM reduction, bounds on the conjugates
 to place them in the disks, and finite certificates from the
 [singular-moduli section](../Article/sections/smd.tex).
