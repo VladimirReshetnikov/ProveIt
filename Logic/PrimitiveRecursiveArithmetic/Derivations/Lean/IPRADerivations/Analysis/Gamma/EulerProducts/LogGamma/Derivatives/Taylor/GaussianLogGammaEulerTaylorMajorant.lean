@@ -63,11 +63,9 @@ private theorem split_succ (N : PTm n) (h : Γ ⊢[PRAAx] squareSplit N) :
 
 private theorem split_square_tail (N : PTm n) : Γ ⊢[PRAAx] squareSplit N := by
   have all : Γ ⊢[PRAAx] .all (squareSplit (var 0)) := by
-    refine PRA.qfInd _ trivial ?_ ?_
-    · simp only [subst_squareSplit, Syn.subst_var, Syn.inst_zero]
-      exact split_zero
-    · simp only [subst_squareSplit, Syn.subst_var, Syn.repl_zero]
-      exact split_succ (var 0) Prf.hyp0
+    ipra_qfind [subst_squareSplit]
+    · exact split_zero
+    · exact split_succ (var 0) Prf.hyp0
   simpa only [subst_squareSplit, Syn.subst_var, Syn.inst_zero] using all.allE N
 
 private theorem tail_index_congr (m N r s : PTm n) (h : Γ ⊢[PRAAx] r ≐ s) :

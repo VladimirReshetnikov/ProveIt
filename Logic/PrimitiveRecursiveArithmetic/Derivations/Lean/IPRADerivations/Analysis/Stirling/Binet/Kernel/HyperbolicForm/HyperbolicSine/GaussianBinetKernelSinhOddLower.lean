@@ -76,10 +76,9 @@ theorem odd_first_order (q K : PTm n) (hq : Γ ⊢[PRAAx] canonical q) (h : Γ �
     Γ ⊢[PRAAx] rationalLE (fstT q) (fstT (oddSum q (succ K))) := by
   have hs : Γ.map Fm.shift ⊢[PRAAx] positive (Syn.shift q) := by simpa [Fm.shift,Syn.shift] using h.shift
   have all : Γ ⊢[PRAAx] .all (firstLaw (Syn.shift q) (var 0)) := by
-    refine PRA.qfInd _ trivial ?_ ?_
-    · simpa only [subst_firstLaw,Syn.subst_var,Syn.inst_zero,Syn.subst_inst_shift] using first_base q hq
-    · simp only [subst_firstLaw,Syn.subst_var,Syn.repl_zero,subst_repl_shift]
-      exact first_succ _ _ hs.wk Prf.hyp0
+    ipra_qfind [subst_firstLaw]
+    · exact first_base q hq
+    · exact first_succ _ _ hs.wk Prf.hyp0
   change Γ ⊢[PRAAx] firstLaw q K
   simpa only [subst_firstLaw,Syn.subst_var,Syn.inst_zero,Syn.subst_inst_shift] using all.allE K
 
