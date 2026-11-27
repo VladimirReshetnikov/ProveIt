@@ -41,21 +41,8 @@ theorem distance_congr {z z' w w' A A' B B' : PTm n}
   bound_congr (qsub_congr hz hw) hA hB h
 
 theorem reversed_difference (z w : PTm n) : Γ ⊢[PRAAx]
-    qnegative (qsub z w) ≐ qsub w z := by
-  let E := rawDen z*rawDen w
-  let a := scale (rawDen w) (rawGaussian z)
-  let b := scale (rawDen z) (rawGaussian w)
-  have hE : Γ ⊢[PRAAx] le one E := positive_product _ _ (raw_den_positive z) (raw_den_positive w)
-  have hz := rescale_to z (rawGaussian z) (rawDen z) (rawDen w) E (raw_represents (Γ := Γ) z)
-    (.eqRefl _)
-  have hw := rescale_to w (rawGaussian w) (rawDen w) (rawDen z) E (raw_represents (Γ := Γ) w)
-    (by unfold E; ipra_ring)
-  have lhs := qnegative_represents _ _ _ (qsub_represents z w a b E hE hz hw)
-  have rhs := qsub_represents w z b a E hE hw hz
-  apply canonical_unique _ _ _ _ (GaussianRationalMetric.qnegative_canonical _)
-    (GaussianRationalMetric.qsub_canonical _ _) hE (hrv := rhs)
-  apply represents_congr (.eqRefl _) (hAB := .eqRefl _) (h := lhs)
-  apply equal_of_values <;> simp only [re_neg,im_neg,re_sub,im_sub] <;> ring
+    qnegative (qsub z w) ≐ qsub w z :=
+  (GaussianRationalSyntheticDivision.reverse_difference z w).eqSymm
 
 theorem distance_symmetric (z w A B : PTm n) (hB : Γ ⊢[PRAAx] le one B)
     (h : Γ ⊢[PRAAx] distanceBounded z w A B) : Γ ⊢[PRAAx] distanceBounded w z A B :=

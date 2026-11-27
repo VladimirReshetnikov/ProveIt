@@ -86,10 +86,7 @@ private theorem reversed_raw (p a b c d : PTm n) : Γ ⊢[PRAAx] qnegative (rawS
       ((qmul_congr (.eqRefl _) (qmul_commutative w l)).eqTrans
         ((GaussianRationalMatrixFiniteSums.negative_as_minusOne (qmul l w)).eqSymm.eqTrans
           ((negative_mul l w).eqTrans ((qmul_congr (.eqRefl _) eV).eqTrans (qmul_commutative _ _)))))
-  have invol := GaussianDeterminantSignTransport.negative_involution (Γ := Γ) y (GaussianRationalHorner.qmul_canonical _ _)
-  have swap : Γ ⊢[PRAAx] qsub (qnegative x) (qnegative y) ≐ qsub y x :=
-    (GaussianRationalSyntheticDivision.qadd_congr (.eqRefl _) invol).eqTrans (GaussianReciprocalHorner.qadd_commutative _ _)
-  exact (reversed_difference x y).eqTrans (swap.eqSymm.eqTrans (qsub_congr eX eY))
+  exact (GaussianCharacteristicEntryNorm.negative_difference x y).eqSymm.eqTrans (qsub_congr eX eY)
 
 private theorem same_raw (p a b c : PTm n) : Γ ⊢[PRAAx] rawSample p a b c c ≐ qzero := by
   have e := GaussianCoefficientNormOrder.qsub_self (Γ := Γ) (logSample p c b)

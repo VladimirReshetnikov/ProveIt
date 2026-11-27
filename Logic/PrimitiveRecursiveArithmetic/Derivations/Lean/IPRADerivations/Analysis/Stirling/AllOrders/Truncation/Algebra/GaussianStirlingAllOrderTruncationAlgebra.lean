@@ -45,20 +45,8 @@ ipra_subst correction
   | zero => simp [truncation]
   | succ m ih => simp [truncation,ih]
 
-private theorem negative_sub_flip (a b : PTm n) : Γ ⊢[PRAAx] qnegative (qsub a b) ≐ qsub b a := by
-  let A := rawGaussian a
-  let B := rawGaussian b
-  let D := rawDen a*rawDen b
-  have hd : Γ ⊢[PRAAx] le one D := positive_product _ _ (raw_den_positive a) (raw_den_positive b)
-  have ha := GaussianRationalSyntheticDivision.rescale_to a A (rawDen a) (rawDen b) D
-    (raw_represents (Γ := Γ) a) (.eqRefl _)
-  have hb := GaussianRationalSyntheticDivision.rescale_to b B (rawDen b) (rawDen a) D
-    (raw_represents (Γ := Γ) b) (mul_comm _ _)
-  have hl := qnegative_represents _ _ _ (qsub_represents _ _ _ _ D hd ha hb)
-  have hr := qsub_represents _ _ _ _ D hd hb ha
-  apply canonical_unique _ _ _ _ (qnegative_canonical _) (qsub_canonical _ _) hd (hrv := hr)
-  apply represents_congr (.eqRefl _) (hAB := .eqRefl _) (h := hl)
-  apply equal_of_values <;> simp only [re_neg,im_neg,re_sub,im_sub] <;> ring
+private theorem negative_sub_flip (a b : PTm n) : Γ ⊢[PRAAx] qnegative (qsub a b) ≐ qsub b a :=
+  (GaussianRationalSyntheticDivision.reverse_difference a b).eqSymm
 
 theorem signed_initial_cancel : Γ ⊢[PRAAx]
     qmul (signedScale 0 : PTm n) initial ≐ GaussianRationalSyntheticDivision.qone := by

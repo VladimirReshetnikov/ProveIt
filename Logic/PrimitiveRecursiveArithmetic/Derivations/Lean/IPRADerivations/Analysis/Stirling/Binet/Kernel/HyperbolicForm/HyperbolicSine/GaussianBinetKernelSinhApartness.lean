@@ -48,16 +48,8 @@ local notation "𝔞" t:max => Groth.ι (Q.mk Γ t)
 private def negativeHalf : PTm n := point true one two
 private def positiveHalf : PTm n := point false one two
 
-private theorem reverse_sub (a b : PTm n) : Γ ⊢[PRAAx] qsub b a ≐ qnegative (qsub a b) := by
-  let E := rawDen a*rawDen b
-  have hE := positive_product _ _ (raw_den_positive (Γ := Γ) a) (raw_den_positive b)
-  have ha := rescale_to a (rawGaussian a) (rawDen a) (rawDen b) E (raw_represents (Γ := Γ) a) (.eqRefl _)
-  have hb := rescale_to b (rawGaussian b) (rawDen b) (rawDen a) E (raw_represents (Γ := Γ) b) (mul_comm _ _)
-  have l := qsub_represents _ _ _ _ _ hE hb ha
-  have r := qnegative_represents _ _ _ (qsub_represents _ _ _ _ _ hE ha hb)
-  apply canonical_unique _ _ _ E (qsub_canonical _ _) (qnegative_canonical _) hE (hrv := r)
-  apply represents_congr (.eqRefl _) (hAB := .eqRefl _) (h := l)
-  apply equal_of_values <;> simp only [re_sub,im_sub,re_neg,im_neg] <;> ring
+private theorem reverse_sub (a b : PTm n) : Γ ⊢[PRAAx] qsub b a ≐ qnegative (qsub a b) :=
+  GaussianRationalSyntheticDivision.reverse_difference a b
 
 private theorem half_double (a : PTm n) (h : Γ ⊢[PRAAx] canonical a) : Γ ⊢[PRAAx] qmul positiveHalf (qadd a a) ≐ a := by
   let E := rawDen a
