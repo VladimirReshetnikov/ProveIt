@@ -1,7 +1,7 @@
 # Generalized Riemann Hypothesis
 
 A research article on what lies beyond the generalized Riemann hypothesis for Dirichlet
-L-functions, merged from 184 delivered research reports.
+L-functions, merged from 194 delivered research reports.
 
 [`Article/article.pdf`](Article/article.pdf) states each result of the reports once, in the
 strongest form they prove. Repeated material and results implied by stronger or more general
@@ -17,8 +17,8 @@ sections.
 
 ## The reports
 
-The reports were delivered as 184 archives from 25 to 27 November 2026: 61 to the
-repository's [`docs/incoming`](../../docs/incoming/README.md) and 123 to this project's own
+The reports were delivered as 194 archives from 25 to 27 November 2026: 61 to the
+repository's [`docs/incoming`](../../docs/incoming/README.md) and 133 to this project's own
 `docs/incoming`. Each was placed, unchanged and without verification, in a directory
 `Research/<archive name>/`, with the archive's single wrapper directory removed and with
 checksum manifests, files matched by `.gitignore` and copies of files of earlier packets left
@@ -27,7 +27,8 @@ out (`Research/OMITTED.tsv` listed them).
 Once their content was merged into the article, the packets were removed from the working
 tree. They remain in the history. The first two batches, with their `Research/OMITTED.tsv`,
 are present at commit `10802a6b36`, the third batch at commit `f2f9fd7531`, the fourth at commit
-`64f3896557`, the fifth at commit `fd9a9cb2bd` and the sixth at commit `f6b5955e13`, each with its own
+`64f3896557`, the fifth at commit `fd9a9cb2bd`, the sixth at commit `f6b5955e13` and the seventh at commit
+`7f951e1dfd`, each with its own
 `Research/OMITTED.tsv`; each is the last commit before the removal
 of that batch. Packet names are
 unique across the batches:
@@ -38,6 +39,7 @@ git show f2f9fd7531:Analysis/GeneralizedRiemannHypothesis/Research/<packet>/<pat
 git show 64f3896557:Analysis/GeneralizedRiemannHypothesis/Research/<packet>/<path>   # batch 4
 git show fd9a9cb2bd:Analysis/GeneralizedRiemannHypothesis/Research/<packet>/<path>   # batch 5
 git show f6b5955e13:Analysis/GeneralizedRiemannHypothesis/Research/<packet>/<path>   # batch 6
+git show 7f951e1dfd:Analysis/GeneralizedRiemannHypothesis/Research/<packet>/<path>   # batch 7
 ```
 
 The article cites delivered certificates and data files by their path under `Research/`;
@@ -53,33 +55,10 @@ for each omitted result, the result that supersedes it.
 | Fourth | 11 | `Analysis/GeneralizedRiemannHypothesis/docs/incoming` | `22e5c8b7dd` to `42bca35561` | `28ec545c4d` |
 | Fifth | 11 | `Analysis/GeneralizedRiemannHypothesis/docs/incoming` | `9ab4d2073b` to `edca076fde` | `6f4c5c47e8` |
 | Sixth | 42 | `Analysis/GeneralizedRiemannHypothesis/docs/incoming` | `a4404ca024` to `05f6dcb1f6` | `44374877d8` |
+| Seventh | 10 | `Analysis/GeneralizedRiemannHypothesis/docs/incoming` | `8c6032a195` to `6d284fcf75` | `7f1f4e01e3` |
 
 By their own account, the reports start from `lsernau/grh-lean` and ask what its theorem
 settles elsewhere and which methods inside its proof carry over to other problems. Several
 packets contained excerpts of that development, under the Apache-2.0 licence. The excerpts
 left with the packets; the whole `grh` directory, at the commit the reports pin, is in
 [`vendor/grh-lean`](vendor/grh-lean/README.md).
-
-## Reports placed and not yet merged
-
-10 further archives arrived in `Analysis/GeneralizedRiemannHypothesis/docs/incoming` on
-27 November 2026, in 4 arrival commits from `8c6032a195` to `6d284fcf75`. They are placed as before, one
-directory per archive under `Research/`, and retired from the drop directory. Of their 145
-members, 136 are placed and the 9 matched by `.gitignore` are listed in
-[`Research/OMITTED.tsv`](Research/OMITTED.tsv). No member is a checksum manifest of its own
-packet or a copy of a file of an earlier packet. Their content is merged into the article
-next, after which these directories are removed like the earlier ones.
-
-| Directory | Archive | Arrival | Wrapper | Members | Placed | Omitted | Title in the delivery README |
-|---|---|---|---|---:|---:|---:|---|
-| [grh_quarter_density](Research/grh_quarter_density/README.md) | `grh_quarter_density.zip` | `8c6032a195` | `grh_quarter_density` | 9 | 9 | 0 | Exact quarter-density support for disjoint products of small primes |
-| [grh_zero_filter_tradeoff](Research/grh_zero_filter_tradeoff/README.md) | `grh_zero_filter_tradeoff.zip` | `8c6032a195` | none | 7 | 6 | 1 | Positive filters for Dirichlet zeros |
-| [prime_cubature_grh_2026-11-27](Research/prime_cubature_grh_2026-11-27/README.md) | `prime_cubature_grh_2026-11-27.zip` | `8c6032a195` | none | 9 | 9 | 0 | Exact prime cubature after adversarial erasures |
-| [prime_legendre_codes_2026-11-27](Research/prime_legendre_codes_2026-11-27/README.md) | `prime_legendre_codes_2026-11-27.zip` | `8c6032a195` | none | 11 | 10 | 1 | Prime-labelled codes with two-sided Gilbert–Varshamov distances |
-| [grh-two-open-questions](Research/grh-two-open-questions/README.md) | `grh-two-open-questions.zip` | `f04559d2e2` | none | 12 | 11 | 1 | Two open questions from the ProveIt GRH article |
-| [dirichlet_li_recovery](Research/dirichlet_li_recovery/README.md) | `dirichlet_li_recovery.zip` | `089c6881ea` | `dirichlet_li_recovery` | 18 | 17 | 1 | Finite Li measurements and two further transfers |
-| [gaussian-singular-moduli](Research/gaussian-singular-moduli/README.txt) | `gaussian-singular-moduli.zip` | `089c6881ea` | none | 7 | 6 | 1 | Sparse equations for Gaussian singular moduli |
-| [grh_uniform_extensions_2026-11-27](Research/grh_uniform_extensions_2026-11-27/README.md) | `grh_uniform_extensions_2026-11-27.zip` | `6d284fcf75` | `grh_uniform_extensions_2026-11-27` | 20 | 18 | 2 | Two extensions of the ProveIt GRH research program |
-| [rectangular_symplectic_blocks](Research/rectangular_symplectic_blocks/README.md) | `rectangular_symplectic_blocks.zip` | `6d284fcf75` | `rectangular_symplectic_blocks` | 32 | 31 | 1 | Uniform rank and joint-defect laws for rectangular symplectic blocks |
-| [uniform_symplectic_blocks](Research/uniform_symplectic_blocks/README.md) | `uniform_symplectic_blocks.zip` | `6d284fcf75` | `uniform_symplectic_blocks` | 20 | 19 | 1 | Uniform rank blindness in rectangular symplectic blocks |
-| Total | 10 archives | | | 145 | 136 | 9 | |
