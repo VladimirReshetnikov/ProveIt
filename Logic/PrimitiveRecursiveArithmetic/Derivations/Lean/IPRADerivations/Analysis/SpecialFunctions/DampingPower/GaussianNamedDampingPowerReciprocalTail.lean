@@ -110,11 +110,10 @@ private theorem conserve_succ (S k r : PTm n) (hk : Γ ⊢[PRAAx] le one k)
 private theorem conservation (S k r : PTm n) (hk : Γ ⊢[PRAAx] le one k) :
     Γ ⊢[PRAAx] conserved S k r := by
   have hall : Γ ⊢[PRAAx] .all (conserved (Syn.shift S) (Syn.shift k) (var 0)) := by
-    refine PRA.qfInd _ ⟨trivial,trivial⟩ ?_ ?_
-    · simpa only [subst_conserved,Syn.subst_var,Syn.subst_inst_shift,Syn.inst_zero,ConciseIPRA.PTm.subst_zero] using
+    ipra_qfind (⟨trivial,trivial⟩) [subst_conserved]
+    · exact
         conserve_zero S k hk
-    · simp only [subst_conserved,subst_repl_shift]
-      have hks : Γ.map Fm.shift ⊢[PRAAx] le one (Syn.shift k) := by simpa [Fm.shift,Syn.shift] using hk.shift
+    · have hks : Γ.map Fm.shift ⊢[PRAAx] le one (Syn.shift k) := by simpa [Fm.shift,Syn.shift] using hk.shift
       exact conserve_succ (Syn.shift S) (Syn.shift k) (var 0) hks.wk Prf.hyp0
   simpa only [subst_conserved,Syn.subst_var,Syn.subst_inst_shift,Syn.inst_zero] using hall.allE r
 

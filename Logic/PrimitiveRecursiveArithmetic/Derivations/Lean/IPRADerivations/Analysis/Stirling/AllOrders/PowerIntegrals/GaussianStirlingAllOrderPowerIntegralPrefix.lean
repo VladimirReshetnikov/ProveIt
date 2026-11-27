@@ -83,10 +83,9 @@ theorem prefix_integral_brackets (e : ℕ) (he : 2≤e) (A B M L : PTm n)
     (hA : Γ ⊢[PRAAx] le one A) (hM : Γ ⊢[PRAAx] le one M) :
     Γ ⊢[PRAAx] prefixLaw e A B M L := by
   have all : Γ ⊢[PRAAx] .all (prefixLaw e (Syn.shift A) (Syn.shift B) (Syn.shift M) (var 0)) := by
-    refine PRA.qfInd _ ⟨trivial,trivial⟩ ?_ ?_
-    · simpa only [subst_prefixLaw,Syn.subst_var,Syn.inst_zero,Syn.subst_inst_shift] using prefix_zero e he A B M hA
-    · simp only [subst_prefixLaw,subst_repl_shift,Syn.subst_var,Syn.repl_zero]
-      let δ := prefixLaw e (Syn.shift A) (Syn.shift B) (Syn.shift M) (var 0)
+    ipra_qfind (⟨trivial,trivial⟩) [subst_prefixLaw]
+    · exact prefix_zero e he A B M hA
+    · let δ := prefixLaw e (Syn.shift A) (Syn.shift B) (Syn.shift M) (var 0)
       let Δ := δ :: Γ.map Fm.shift
       have a : Δ ⊢[PRAAx] le one (Syn.shift A) := by
         simpa [Δ,Fm.shift,Syn.shift,one] using hA.shift.wk

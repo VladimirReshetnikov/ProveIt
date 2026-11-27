@@ -154,13 +154,11 @@ theorem grid_distance (p A B D sign x M : PTm n) (h : Γ ⊢[PRAAx] source A D s
     simp [s,Syn.shift,Q,rowDenominator,leadingDenominator,two]
   let form := prefixLaw (s p) (s A) (s B) (s D) (s sign) (s x) (s M) (s C) (s Q) (var 0)
   have all : Γ ⊢[PRAAx] .all form := by
-    refine PRA.qfInd _ (by unfold form prefixLaw; exact ⟨trivial,trivial⟩) ?_ ?_
-    · simp only [form,subst_prefixLaw,Syn.subst_var,Syn.inst_zero,s,Syn.subst_inst_shift]
-      refine .impI ?_
+    ipra_qfind (by unfold form prefixLaw; exact ⟨trivial,trivial⟩) [form, subst_prefixLaw, s]
+    · refine .impI ?_
       exact distance_congr (.eqRefl _) (.eqRefl _) (by ipra_ring) (.eqRefl _)
         (distance_refl_zero (sample p A B D sign x M zero) Q hQ.wk)
-    · simp only [form,subst_prefixLaw,Syn.subst_var,Syn.repl_zero,s,subst_repl_shift]
-      refine .impI ?_
+    · refine .impI ?_
       have hj : (le (succ (var 0)) (s M) :: form :: Δ) ⊢[PRAAx] lt (var 0) (s M) := Prf.hyp0
       have hprev : (le (succ (var 0)) (s M) :: form :: Δ) ⊢[PRAAx]
           distanceBounded (sample (s p) (s A) (s B) (s D) (s sign) (s x) (s M) (var 0))

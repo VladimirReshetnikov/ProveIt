@@ -149,11 +149,10 @@ theorem power_majorized (q r K : PTm n) (hr : Γ ⊢[PRAAx] positive r) (h : Γ 
   have hs : Γ.map Fm.shift ⊢[PRAAx] positive (Syn.shift r) := by simpa [Fm.shift,Syn.shift] using hr.shift
   have hm : Γ.map Fm.shift ⊢[PRAAx] majorized (Syn.shift q) (Syn.shift r) := by simpa [Fm.shift,Syn.shift] using h.shift
   have all : Γ ⊢[PRAAx] .all (majorized (power (Syn.shift q) (var 0)) (power (Syn.shift r) (var 0))) := by
-    refine PRA.qfInd _ (le_QF _ _) ?_ ?_
-    · simpa only [subst_majorized,GaussianRationalReciprocal.subst_power,Syn.subst_var,Syn.inst_zero,Syn.subst_inst_shift] using
+    ipra_qfind (le_QF _ _) [subst_majorized, GaussianRationalReciprocal.subst_power]
+    · exact
         congr (GaussianRationalReciprocal.power_zero q).eqSymm (GaussianRationalReciprocal.power_zero r).eqSymm one_majorized
-    · simp only [subst_majorized,GaussianRationalReciprocal.subst_power,Syn.subst_var,Syn.repl_zero,subst_repl_shift]
-      exact congr (GaussianRationalReciprocal.power_succ _ _).eqSymm (GaussianRationalReciprocal.power_succ _ _).eqSymm
+    · exact congr (GaussianRationalReciprocal.power_succ _ _).eqSymm (GaussianRationalReciprocal.power_succ _ _).eqSymm
         (multiply _ _ _ _ (GaussianPositiveRealArithmetic.positive_power _ _ hs.wk) hs.wk Prf.hyp0 hm.wk)
   simpa only [subst_majorized,GaussianRationalReciprocal.subst_power,Syn.subst_var,Syn.inst_zero,Syn.subst_inst_shift] using all.allE K
 
@@ -175,12 +174,11 @@ theorem scalar_sum_majorized (q r K : PTm n) (hr : Γ ⊢[PRAAx] positive r)
   have hs : Γ.map Fm.shift ⊢[PRAAx] positive (Syn.shift r) := by simpa [Fm.shift,Syn.shift] using hr.shift
   have hm : Γ.map Fm.shift ⊢[PRAAx] majorized (Syn.shift q) (Syn.shift r) := by simpa [Fm.shift,Syn.shift] using h.shift
   have all : Γ ⊢[PRAAx] .all (majorized (scalarSum (Syn.shift q) (var 0)) (scalarSum (Syn.shift r) (var 0))) := by
-    refine PRA.qfInd _ (le_QF _ _) ?_ ?_
-    · simpa only [subst_majorized,GaussianRationalPolynomialExponential.subst_scalarSum,Syn.subst_var,Syn.inst_zero,Syn.subst_inst_shift] using
+    ipra_qfind (le_QF _ _) [subst_majorized, GaussianRationalPolynomialExponential.subst_scalarSum]
+    · exact
         congr (GaussianRationalPolynomialExponential.scalar_sum_zero q).eqSymm
           (GaussianRationalPolynomialExponential.scalar_sum_zero r).eqSymm one_majorized
-    · simp only [subst_majorized,GaussianRationalPolynomialExponential.subst_scalarSum,Syn.subst_var,Syn.repl_zero,subst_repl_shift]
-      let u := Syn.shift q
+    · let u := Syn.shift q
       let v := Syn.shift r
       let j : PTm (n+1) := var 0
       let Δ := majorized (scalarSum u j) (scalarSum v j) :: Γ.map Fm.shift

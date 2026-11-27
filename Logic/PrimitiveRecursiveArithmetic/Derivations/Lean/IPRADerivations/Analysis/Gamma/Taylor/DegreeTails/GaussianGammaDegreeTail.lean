@@ -156,10 +156,9 @@ theorem finite_sharp_degree_bound (z R B N r L J : PTm n)
     simpa [Fm.shift,Syn.shift] using h.shift
   have hall : Γ ⊢[PRAAx] .all (prefixBound (Syn.shift z) (Syn.shift R) (Syn.shift B) (Syn.shift N)
       (Syn.shift L) (Syn.shift J) (var 0)) := by
-    refine PRA.qfInd _ (le_QF _ _) ?_ ?_
-    · simpa only [subst_prefixBound,Syn.subst_var,Syn.inst_zero,Syn.subst_inst_shift] using prefix_zero z R B N L J h.andE₂.andE₁
-    · simp only [subst_prefixBound,Syn.subst_var,Syn.repl_zero,subst_repl_shift]
-      exact prefix_step _ _ _ _ _ _ _ hs.wk Prf.hyp0
+    ipra_qfind (le_QF _ _) [subst_prefixBound]
+    · exact prefix_zero z R B N L J h.andE₂.andE₁
+    · exact prefix_step _ _ _ _ _ _ _ hs.wk Prf.hyp0
   simpa only [subst_prefixBound,Syn.subst_var,Syn.inst_zero,Syn.subst_inst_shift] using hall.allE r
 
 theorem finite_uniform_degree_bound (z R B N r L J : PTm n)

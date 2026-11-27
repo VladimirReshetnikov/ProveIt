@@ -116,10 +116,9 @@ theorem mesh_integral_brackets (e : ℕ) (he : 2≤e) (U B M N : PTm n)
     (hU : Γ ⊢[PRAAx] le one U) (hM : Γ ⊢[PRAAx] le one M) :
     Γ ⊢[PRAAx] meshLaw e U B M N := by
   have all : Γ ⊢[PRAAx] .all (meshLaw e (Syn.shift U) (Syn.shift B) (Syn.shift M) (var 0)) := by
-    refine PRA.qfInd _ ⟨trivial,trivial⟩ ?_ ?_
-    · simpa only [subst_meshLaw,Syn.subst_var,Syn.inst_zero,Syn.subst_inst_shift] using mesh_zero e he U B M hU hM
-    · simp only [subst_meshLaw,subst_repl_shift,Syn.subst_var,Syn.repl_zero]
-      let δ := meshLaw e (Syn.shift U) (Syn.shift B) (Syn.shift M) (var 0)
+    ipra_qfind (⟨trivial,trivial⟩) [subst_meshLaw]
+    · exact mesh_zero e he U B M hU hM
+    · let δ := meshLaw e (Syn.shift U) (Syn.shift B) (Syn.shift M) (var 0)
       let Δ := δ :: Γ.map Fm.shift
       have u : Δ ⊢[PRAAx] le one (Syn.shift U) := by
         simpa [Δ,Fm.shift,Syn.shift,one] using hU.shift.wk

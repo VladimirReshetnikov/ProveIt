@@ -70,11 +70,10 @@ theorem numerator_comparison (K a d b r s : PTm n) :
     Γ ⊢[PRAAx] compareNumerators K a d b r s := by
   have hall : Γ ⊢[PRAAx] .all (compareNumerators (var 0) (Syn.shift a) (Syn.shift d)
       (Syn.shift b) (Syn.shift r) (Syn.shift s)) := by
-    refine PRA.qfInd _ (le_QF _ _) ?_ ?_
-    · simpa only [subst_compareNumerators,Syn.subst_var,Syn.inst_zero,Syn.subst_inst_shift] using
+    ipra_qfind (le_QF _ _) [subst_compareNumerators]
+    · exact
         numerator_comparison_zero a d b r s
-    · simp only [subst_compareNumerators,Syn.subst_var,Syn.repl_zero,subst_repl_shift]
-      exact numerator_comparison_succ _ _ _ _ _ _ Prf.hyp0
+    · exact numerator_comparison_succ _ _ _ _ _ _ Prf.hyp0
   simpa only [subst_compareNumerators,Syn.subst_var,Syn.inst_zero,Syn.subst_inst_shift] using hall.allE K
 
 theorem denominator_power_scale (N b P : PTm n) : Γ ⊢[PRAAx]

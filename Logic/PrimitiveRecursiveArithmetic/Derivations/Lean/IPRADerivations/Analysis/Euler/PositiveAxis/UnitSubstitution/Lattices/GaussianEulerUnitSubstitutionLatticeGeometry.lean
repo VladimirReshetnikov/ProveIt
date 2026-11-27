@@ -59,11 +59,10 @@ private theorem from_zero (F : PR 2) (x i : PTm n) (h : Γ ⊢[PRAAx] GaussianPa
   have hs : Γ.map Fm.shift ⊢[PRAAx] GaussianPartitionedFiniteSum.increasing F (Syn.shift x) :=
     by simpa [Fm.shift,Syn.shift] using h.shift
   have steps : Γ ⊢[PRAAx] .all (le (ap2 F zero (Syn.shift x)) (ap2 F (var 0) (Syn.shift x))) := by
-    refine PRA.qfInd _ (le_QF _ _) ?_ ?_
-    · simpa only [subst_le,subst_ap2,ConciseIPRA.PTm.subst_zero,Syn.subst_var,Syn.inst_zero,Syn.subst_inst_shift] using
+    ipra_qfind (le_QF _ _) [subst_le, subst_ap2]
+    · exact
         le_refl (Γ := Γ) (ap2 F zero x)
-    · simp only [subst_le,subst_ap2,ConciseIPRA.PTm.subst_zero,Syn.subst_var,Syn.repl_zero,subst_repl_shift]
-      exact le_trans Prf.hyp0 (GaussianPartitionedFiniteSum.cut_step (Γ := _ :: Γ.map Fm.shift) F (Syn.shift x) (var 0) hs.wk)
+    · exact le_trans Prf.hyp0 (GaussianPartitionedFiniteSum.cut_step (Γ := _ :: Γ.map Fm.shift) F (Syn.shift x) (var 0) hs.wk)
   simpa only [subst_le,subst_ap2,ConciseIPRA.PTm.subst_zero,Syn.subst_var,Syn.inst_zero,Syn.subst_inst_shift] using steps.allE i
 
 theorem start_le_cut (i k N a C E T M : PTm n) (hs : Γ ⊢[PRAAx] GaussianEulerUnitSubstitutionFloorCuts.source k N a C E T M) :

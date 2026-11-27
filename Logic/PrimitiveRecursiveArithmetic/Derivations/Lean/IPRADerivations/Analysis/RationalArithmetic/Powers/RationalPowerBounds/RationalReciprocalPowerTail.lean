@@ -191,11 +191,10 @@ program preserves positivity and the endpoint potential simultaneously. -/
 theorem finite_bound (m N r : PTm n) (hm : Γ ⊢[PRAAx] le two m) (hN : Γ ⊢[PRAAx] le one N) :
     Γ ⊢[PRAAx] finiteBound m N r := by
   have hall : Γ ⊢[PRAAx] .all (finiteBound (Syn.shift m) (Syn.shift N) (var 0)) := by
-    refine PRA.qfInd _ ⟨trivial,trivial⟩ ?_ ?_
-    · simpa only [subst_finiteBound,Syn.subst_var,Syn.subst_inst_shift,Syn.inst_zero,ConciseIPRA.PTm.subst_zero] using
+    ipra_qfind (⟨trivial,trivial⟩) [subst_finiteBound]
+    · exact
         finite_bound_zero m N hm hN
-    · simp only [subst_finiteBound,subst_repl_shift,Syn.repl_zero]
-      have hms : Γ.map Fm.shift ⊢[PRAAx] le two (Syn.shift m) := by simpa [Fm.shift,Syn.shift] using hm.shift
+    · have hms : Γ.map Fm.shift ⊢[PRAAx] le two (Syn.shift m) := by simpa [Fm.shift,Syn.shift] using hm.shift
       have hNs : Γ.map Fm.shift ⊢[PRAAx] le one (Syn.shift N) := by simpa [Fm.shift,Syn.shift] using hN.shift
       exact finite_bound_succ (Syn.shift m) (Syn.shift N) (var 0) hms.wk hNs.wk Prf.hyp0
   simpa only [subst_finiteBound,Syn.subst_var,Syn.subst_inst_shift,Syn.inst_zero] using hall.allE r

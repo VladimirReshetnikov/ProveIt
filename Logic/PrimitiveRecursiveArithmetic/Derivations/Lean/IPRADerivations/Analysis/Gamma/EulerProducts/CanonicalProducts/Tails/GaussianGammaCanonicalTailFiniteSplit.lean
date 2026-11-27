@@ -86,10 +86,9 @@ theorem prefix_represents (z B N r L j : PTm n) (hB : Γ ⊢[PRAAx] le one B) (h
     represents (gaussianSum z B N j L) (finiteSum z B N j L (tailDenominator B N r L)) (tailDenominator B N r L) := by
   have bs : Γ.map Fm.shift ⊢[PRAAx] le one (Syn.shift B) := by simpa [Fm.shift,Syn.shift] using hB.shift
   have all : Γ ⊢[PRAAx] .all (prefixLaw (Syn.shift z) (Syn.shift B) (Syn.shift N) (Syn.shift r) (Syn.shift L) (var 0)) := by
-    refine PRA.qfInd _ ⟨le_QF _ _,⟨trivial,trivial⟩⟩ ?_ ?_
-    · simpa only [subst_prefixLaw,Syn.subst_var,Syn.inst_zero,Syn.subst_inst_shift] using prefix_zero (Γ := Γ) z B N r L
-    · simp only [subst_prefixLaw,Syn.subst_var,Syn.repl_zero,subst_repl_shift]
-      exact prefix_step _ _ _ _ _ _ bs.wk Prf.hyp0
+    ipra_qfind (⟨le_QF _ _,⟨trivial,trivial⟩⟩) [subst_prefixLaw]
+    · exact prefix_zero (Γ := Γ) z B N r L
+    · exact prefix_step _ _ _ _ _ _ bs.wk Prf.hyp0
   have atj : Γ ⊢[PRAAx] prefixLaw z B N r L j := by
     simpa only [subst_prefixLaw,Syn.subst_var,Syn.inst_zero,Syn.subst_inst_shift] using all.allE j
   exact .impE atj hj

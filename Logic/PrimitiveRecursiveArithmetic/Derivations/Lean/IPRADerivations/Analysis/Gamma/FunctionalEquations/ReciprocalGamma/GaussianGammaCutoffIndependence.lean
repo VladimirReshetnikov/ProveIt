@@ -58,10 +58,9 @@ theorem prefix_distance (p z R B N D : PTm n) (h : Γ ⊢[PRAAx] source z R B N)
   have hs : Γ.map Fm.shift ⊢[PRAAx] source (Syn.shift z) (Syn.shift R) (Syn.shift B) (Syn.shift N) := by
     simpa [Fm.shift,Syn.shift] using h.shift
   have all : Γ ⊢[PRAAx] .all (prefixLaw (Syn.shift p) (Syn.shift z) (Syn.shift R) (Syn.shift B) (Syn.shift N) (var 0)) := by
-    refine PRA.qfInd _ (by unfold prefixLaw GaussianRationalMetric.distanceBounded GaussianRationalMetric.bounded RationalArgmin.rationalLE; exact le_QF _ _) ?_ ?_
-    · simpa only [subst_prefixLaw,Syn.subst_var,Syn.inst_zero,Syn.subst_inst_shift] using prefix_zero (Γ := Γ) p z R B N
-    · simp only [subst_prefixLaw,Syn.subst_var,Syn.repl_zero,subst_repl_shift]
-      exact prefix_step _ _ _ _ _ _ hs.wk Prf.hyp0
+    ipra_qfind (by unfold prefixLaw GaussianRationalMetric.distanceBounded GaussianRationalMetric.bounded RationalArgmin.rationalLE; exact le_QF _ _) [subst_prefixLaw]
+    · exact prefix_zero (Γ := Γ) p z R B N
+    · exact prefix_step _ _ _ _ _ _ hs.wk Prf.hyp0
   simpa only [subst_prefixLaw,Syn.subst_var,Syn.inst_zero,Syn.subst_inst_shift] using all.allE D
 
 theorem cutoff_envelope (z R B N D : PTm n) (h : Γ ⊢[PRAAx] source z R B N) : Γ ⊢[PRAAx]

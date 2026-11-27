@@ -153,15 +153,13 @@ theorem first_lower (a b N : PTm n) (h : Γ ⊢[PRAAx] lt a b) :
   have h' : Γ.map Fm.shift ⊢[PRAAx] lt (Syn.shift a) (Syn.shift b) := by
     simpa [Fm.shift,Syn.shift] using h.shift
   have all : Γ ⊢[PRAAx] .all (firstLower (Syn.shift a) (Syn.shift b) (var 0)) := by
-    refine PRA.qfInd _ (by simp [firstLower,rationalLE,le_QF]) ?_ ?_
-    · simp only [subst_firstLower,Syn.subst_var,Syn.inst_zero,Syn.subst_inst_shift]
-      have canon : Γ ⊢[PRAAx] GaussianRationalHorner.canonical (row a b zero) :=
+    ipra_qfind (by simp [firstLower,rationalLE,le_QF]) [subst_firstLower]
+    · have canon : Γ ⊢[PRAAx] GaussianRationalHorner.canonical (row a b zero) :=
         ofGaussian_canonical _ _ (row_den_positive a b zero h)
       have e := (prefix_succ a b zero).eqTrans ((GaussianRationalSyntheticDivision.qadd_congr
         (GaussianRationalFiniteSum.sum_zero body _) (.eqRefl _)).eqTrans (qzero_add (row a b zero) canon))
       exact rationalLE_congr (.eqRefl _) (congrFst e).eqSymm (point_order_refl _)
-    · simp only [subst_firstLower,Syn.subst_var,Syn.repl_zero,subst_repl_shift]
-      let A := Syn.shift a
+    · let A := Syn.shift a
       let B := Syn.shift b
       let J := succ (var 0 : PTm (n+1))
       have c : (firstLower A B (var 0) :: Γ.map Fm.shift) ⊢[PRAAx]

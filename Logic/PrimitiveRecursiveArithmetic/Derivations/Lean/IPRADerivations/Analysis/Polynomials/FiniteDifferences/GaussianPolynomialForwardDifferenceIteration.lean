@@ -132,11 +132,9 @@ private def leadingLaw (C N h j : PTm n) : Fm PTm n :=
 theorem weighted_leading (C N h j : PTm n) (hC : Γ ⊢[PRAAx] length C ≐ succ N)
     (hj : Γ ⊢[PRAAx] le j N) : Γ ⊢[PRAAx] weightedHead C N h j ≐ target C N h j := by
   have all : Γ ⊢[PRAAx] .all (leadingLaw (Syn.shift C) (Syn.shift N) (Syn.shift h) (var 0)) := by
-    refine PRA.qfInd _ ⟨le_QF _ _,trivial⟩ ?_ ?_
-    · simp only [subst_leadingLaw,Syn.subst_var,Syn.inst_zero,Syn.subst_inst_shift]
-      exact .impI (head_zero C N h).wk
-    · simp only [subst_leadingLaw,Syn.subst_var,Syn.repl_zero,subst_repl_shift]
-      refine .impI ?_
+    ipra_qfind (⟨le_QF _ _,trivial⟩) [subst_leadingLaw]
+    · exact .impI (head_zero C N h).wk
+    · refine .impI ?_
       let A := le (succ (var 0)) (Syn.shift N)
       let I := leadingLaw (Syn.shift C) (Syn.shift N) (Syn.shift h) (var 0)
       let Δ := A :: I :: Γ.map Fm.shift

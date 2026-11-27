@@ -124,12 +124,10 @@ theorem grid_combined (V W a b N j : PTm n) (hj : Γ ⊢[PRAAx] le j N) :
     Γ ⊢[PRAAx] grid (combined V W a b (succ N)) N j ≐ combined (grid V N j) (grid W N j) a b (succ (remaining N j)) := by
   let sh (t : PTm n) := Syn.shift t
   have all : Γ ⊢[PRAAx] .all (stageLaw (sh V) (sh W) (sh a) (sh b) (sh N) (var 0)) := by
-    refine PRA.qfInd _ ⟨le_QF _ _,trivial⟩ ?_ ?_
-    · simp only [subst_stageLaw,Syn.subst_var,Syn.inst_zero,sh,Syn.subst_inst_shift]
-      exact .impI ((grid_zero _ _).eqTrans (combined_congr (grid_zero V N).eqSymm (grid_zero W N).eqSymm
+    ipra_qfind (⟨le_QF _ _,trivial⟩) [subst_stageLaw, sh]
+    · exact .impI ((grid_zero _ _).eqTrans (combined_congr (grid_zero V N).eqSymm (grid_zero W N).eqSymm
         (congrSucc (monus_zero N).eqSymm))).wk
-    · simp only [subst_stageLaw,Syn.subst_var,Syn.repl_zero,sh,subst_repl_shift]
-      refine .impI ?_
+    · refine .impI ?_
       let j' : PTm (n+1) := var 0
       let J := stageLaw (sh V) (sh W) (sh a) (sh b) (sh N) j'
       let Δ := le (succ j') (sh N) :: J :: Γ.map Fm.shift

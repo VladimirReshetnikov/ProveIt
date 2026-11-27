@@ -98,10 +98,9 @@ theorem finite_rescale (A B k N : PTm n) (hB : Γ ⊢[PRAAx] le one B) (hk : Γ 
       GaussianRationalFiniteSum.sum_zero _ _
     exact .andI ((p _ _).eqTrans (p _ _).eqSymm) ((q _ _).eqTrans (q _ _).eqSymm)
   have all : Γ ⊢[PRAAx] .all (invariance (s A) (s B) (s k) (var 0)) := by
-    refine PRA.qfInd _ (by constructor <;> trivial) ?_ ?_
-    · simpa only [subst_invariance, s, Syn.subst_var, Syn.inst_zero, Syn.subst_inst_shift] using base
-    · simp only [subst_invariance, s, Syn.subst_var, Syn.repl_zero, subst_repl_shift]
-      let a := s A
+    ipra_qfind (by constructor <;> trivial) [subst_invariance, s]
+    · exact base
+    · let a := s A
       let b := s B
       let m := s k
       let i : PTm (n+1) := var 0

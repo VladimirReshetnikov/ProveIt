@@ -47,10 +47,9 @@ private theorem step (B C N : PTm n) (h : Γ ⊢[PRAAx] law B C N) : Γ ⊢[PRAA
 
 theorem finite (B C N : PTm n) : Γ ⊢[PRAAx] law B C N := by
   have h : Γ ⊢[PRAAx] .all (law (Syn.shift B) (Syn.shift C) (var 0)) := by
-    refine PRA.qfInd _ (le_QF _ _) ?_ ?_
-    · simpa only [subst_law,Syn.subst_var,Syn.inst_zero,Syn.subst_inst_shift] using base B C
-    · simp only [subst_law,Syn.subst_var,Syn.repl_zero,subst_repl_shift]
-      exact step _ _ _ Prf.hyp0
+    ipra_qfind (le_QF _ _) [subst_law]
+    · exact base B C
+    · exact step _ _ _ Prf.hyp0
   simpa only [subst_law,Syn.subst_var,Syn.inst_zero,Syn.subst_inst_shift] using h.allE N
 
 theorem power_tail (q B C N : PTm n) (hB : Γ ⊢[PRAAx] le one B)

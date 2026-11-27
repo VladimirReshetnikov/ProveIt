@@ -164,10 +164,9 @@ theorem fold_error (p A B D neg R i : PTm n) (hs : Γ ⊢[PRAAx] source A B D ne
   have hs' : Γ.map Fm.shift ⊢[PRAAx] source (sh A) (sh B) (sh D) (sh neg) (sh R) := by
     simpa only [Fm.shift,Syn.shift,GaussianLogGammaEulerResidualDomain.subst_source,sh] using hs.shift
   have induction : Γ ⊢[PRAAx] .all (foldError (sh p) (sh A) (sh B) (sh D) (sh neg) (sh R) (var 0)) := by
-    refine PRA.qfInd _ (by unfold foldError distanceBounded bounded RationalArgmin.rationalLE; exact le_QF _ _) ?_ ?_
-    · simpa only [sh,subst_foldError,Syn.subst_var,Syn.inst_zero,Syn.subst_inst_shift] using fold_zero p A B D neg R
-    · simp only [sh,subst_foldError,Syn.subst_var,Syn.repl_zero,subst_repl_shift]
-      exact fold_succ _ _ _ _ _ _ _ hs'.wk Prf.hyp0
+    ipra_qfind (by unfold foldError distanceBounded bounded RationalArgmin.rationalLE; exact le_QF _ _) [sh, subst_foldError]
+    · exact fold_zero p A B D neg R
+    · exact fold_succ _ _ _ _ _ _ _ hs'.wk Prf.hyp0
   simpa only [sh,subst_foldError,Syn.subst_var,Syn.inst_zero,Syn.subst_inst_shift] using induction.allE i
 
 theorem exponential_product (A B D neg R i : PTm n) (hs : Γ ⊢[PRAAx] source A B D neg R) :

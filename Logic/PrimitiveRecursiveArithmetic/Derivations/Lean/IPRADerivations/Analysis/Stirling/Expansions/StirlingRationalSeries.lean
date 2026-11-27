@@ -76,10 +76,9 @@ private theorem lower_step (w u L k : PTm n) (h : Γ ⊢[PRAAx] lowerFormula w u
 theorem lower (w u L k : PTm n) (hL : Γ ⊢[PRAAx] le (num 3) L) :
     Γ ⊢[PRAAx] lowerFormula w u L k := by
   have all : Γ ⊢[PRAAx] .all (lowerFormula (Syn.shift w) (Syn.shift u) (Syn.shift L) (var 0)) := by
-    refine PRA.qfInd _ (le_QF _ _) ?_ ?_
-    · simpa only [subst_lowerFormula,Syn.subst_var,Syn.inst_zero,Syn.subst_inst_shift] using lower_base w u L hL
-    · simp only [subst_lowerFormula,Syn.subst_var,Syn.repl_zero,subst_repl_shift]
-      exact lower_step _ _ _ _ Prf.hyp0
+    ipra_qfind (le_QF _ _) [subst_lowerFormula]
+    · exact lower_base w u L hL
+    · exact lower_step _ _ _ _ Prf.hyp0
   simpa only [subst_lowerFormula,Syn.subst_var,Syn.inst_zero,Syn.subst_inst_shift] using all.allE k
 
 def upperWithBase (w v u L k : PTm n) : Fm PTm n :=

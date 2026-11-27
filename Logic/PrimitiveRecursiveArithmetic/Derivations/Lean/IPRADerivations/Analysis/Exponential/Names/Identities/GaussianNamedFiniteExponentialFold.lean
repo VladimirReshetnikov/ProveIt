@@ -201,21 +201,15 @@ theorem prefix_error (f : PR 2) (t : PTm 2) (p N i x : PTm n) (h : Γ ⊢[PRAAx]
       (ap2 (productF f t) (sh p) (productData f t k (sh x))) (error (cost f t (sh N) (sh x)) k) (unit (sh p))
   have h' : Δ ⊢[PRAAx] regularRows f t (sh N) (sh x) := by simpa [Δ,sh,Fm.shift,Syn.shift] using h.shift
   have all : Γ ⊢[PRAAx] .all (form (var 0)) := by
-    refine PRA.qfInd _ ⟨trivial,trivial⟩ ?_ ?_
-    · simp only [form,sh,Fm.subst_imp,subst_le,GaussianRationalMetric.subst_distanceBounded,
-        subst_ap2,subst_sumExpData,subst_productData,subst_error,subst_cost,GaussianCoefficientNameBounds.subst_unit,
-        Syn.subst_var,Syn.inst_zero,Syn.subst_inst_shift]
-      refine .impI ?_
+    ipra_qfind (⟨trivial,trivial⟩) [form, sh, subst_le, GaussianRationalMetric.subst_distanceBounded, subst_ap2, subst_sumExpData, subst_productData, subst_error, subst_cost, GaussianCoefficientNameBounds.subst_unit]
+    · refine .impI ?_
       have eq := (zero_observation (Γ := Γ) f t p x).wk (ψ := le zero N)
       have bounds : Γ ⊢[PRAAx] le (zero*unit p) (error (cost f t N x) zero*unit p) :=
         le_congr (zero_mul (unit p)).eqSymm (.eqRefl _) (zero_le _)
       exact distance_congr (.eqRefl _) eq (.eqRefl _) (.eqRefl _)
         (distance_radius_mono _ _ _ _ _ _ (unit_positive p) (unit_positive p) bounds.wk
           (GaussianRationalPowerDifference.distance_refl_zero _ (unit p) (unit_positive p)))
-    · simp only [form,sh,Fm.subst_imp,subst_le,GaussianRationalMetric.subst_distanceBounded,
-        subst_ap2,subst_sumExpData,subst_productData,subst_error,subst_cost,GaussianCoefficientNameBounds.subst_unit,
-        Syn.subst_var,Syn.repl_zero,subst_repl_shift]
-      refine .impI ?_
+    · refine .impI ?_
       let v : PTm (n+1) := var 0
       let Δ' := le (succ v) (sh N) :: form v :: Δ
       have hv : Δ' ⊢[PRAAx] le (succ v) (sh N) := Prf.hyp0

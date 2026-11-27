@@ -119,10 +119,9 @@ theorem majorant_step (R K : PTm n) (ih : Γ ⊢[PRAAx] majorantLaw R K) :
 
 theorem majorant_represents (R K : PTm n) : Γ ⊢[PRAAx] majorantLaw R K := by
   have all : Γ ⊢[PRAAx] .all (majorantLaw (Syn.shift R) (var 0)) := by
-    refine PRA.qfInd _ ⟨trivial,trivial⟩ ?_ ?_
-    · simpa only [subst_majorantLaw,Syn.subst_var,Syn.inst_zero,Syn.subst_inst_shift] using majorant_zero R
-    · simp only [subst_majorantLaw,Syn.subst_var,Syn.repl_zero,subst_repl_shift]
-      exact majorant_step _ _ Prf.hyp0
+    ipra_qfind (⟨trivial,trivial⟩) [subst_majorantLaw]
+    · exact majorant_zero R
+    · exact majorant_step _ _ Prf.hyp0
   simpa only [subst_majorantLaw,Syn.subst_var,Syn.inst_zero,Syn.subst_inst_shift] using all.allE K
 
 theorem real_majorant_represents (R K : PTm n) : Γ ⊢[PRAAx]

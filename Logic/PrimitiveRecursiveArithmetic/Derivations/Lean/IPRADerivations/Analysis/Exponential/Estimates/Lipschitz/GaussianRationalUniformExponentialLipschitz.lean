@@ -104,10 +104,9 @@ theorem prefix_bound (u v R A B k : PTm n) (hB : Γ ⊢[PRAAx] le one B)
   have vs : Γ.map Fm.shift ⊢[PRAAx] bounded (Syn.shift v) (Syn.shift R) one := by simpa [Fm.shift,Syn.shift] using hv.shift
   have ds : Γ.map Fm.shift ⊢[PRAAx] distanceBounded (Syn.shift u) (Syn.shift v) (Syn.shift A) (Syn.shift B) := by simpa [Fm.shift,Syn.shift] using hd.shift
   have all : Γ ⊢[PRAAx] .all (prefixLaw (Syn.shift u) (Syn.shift v) (Syn.shift R) (Syn.shift A) (Syn.shift B) (var 0)) := by
-    refine PRA.qfInd _ (le_QF _ _) ?_ ?_
-    · simpa only [subst_prefixLaw,Syn.subst_var,Syn.inst_zero,Syn.subst_inst_shift] using prefix_zero u v R A B hB hu hv hd
-    · simp only [subst_prefixLaw,Syn.subst_var,Syn.repl_zero,subst_repl_shift]
-      exact prefix_step _ _ _ _ _ _ bs.wk us.wk vs.wk ds.wk Prf.hyp0
+    ipra_qfind (le_QF _ _) [subst_prefixLaw]
+    · exact prefix_zero u v R A B hB hu hv hd
+    · exact prefix_step _ _ _ _ _ _ bs.wk us.wk vs.wk ds.wk Prf.hyp0
   simpa only [subst_prefixLaw,Syn.subst_var,Syn.inst_zero,Syn.subst_inst_shift] using all.allE k
 
 /-- Uniform in every numerical cutoff, including K=0 and radius R=0. -/

@@ -126,10 +126,9 @@ theorem bound_step (K R : PTm n) (ih : Γ ⊢[PRAAx] boundLaw K R) : Γ ⊢[PRAA
 /-- Uniform in the actual cutoff K, by genuine QF induction on the numerical radius R. -/
 theorem positive_real_majorant (R K : PTm n) : Γ ⊢[PRAAx] boundLaw K R := by
   have all : Γ ⊢[PRAAx] .all (boundLaw (Syn.shift K) (var 0)) := by
-    refine PRA.qfInd _ (le_QF _ _) ?_ ?_
-    · simpa only [subst_boundLaw,Syn.subst_var,Syn.inst_zero,Syn.subst_inst_shift] using bound_zero K
-    · simp only [subst_boundLaw,Syn.subst_var,Syn.repl_zero,subst_repl_shift]
-      exact bound_step _ _ Prf.hyp0
+    ipra_qfind (le_QF _ _) [subst_boundLaw]
+    · exact bound_zero K
+    · exact bound_step _ _ Prf.hyp0
   simpa only [subst_boundLaw,Syn.subst_var,Syn.inst_zero,Syn.subst_inst_shift] using all.allE R
 
 theorem disk_bound (q R K : PTm n) (hq : Γ ⊢[PRAAx] GaussianRationalMetric.bounded q R one) : Γ ⊢[PRAAx]

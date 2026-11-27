@@ -59,12 +59,11 @@ theorem prefix_axis (a b N : PTm n) (h : Γ ⊢[PRAAx] lt a b) :
   have hs : Γ.map Fm.shift ⊢[PRAAx] lt (Syn.shift a) (Syn.shift b) :=
     by simpa [Fm.shift,Syn.shift] using h.shift
   have all : Γ ⊢[PRAAx] .all (prefixAxis (Syn.shift a) (Syn.shift b) (var 0)) := by
-    refine PRA.qfInd _ (by simp [prefixAxis,axis,RationalArgmin.rationalEq,Fm.QF]) ?_ ?_
-    · simpa only [subst_prefixAxis,Syn.subst_var,Syn.inst_zero,Syn.subst_inst_shift] using
+    ipra_qfind (by simp [prefixAxis,axis,RationalArgmin.rationalEq,Fm.QF]) [subst_prefixAxis]
+    · exact
         (show Γ ⊢[PRAAx] prefixAxis a b zero from
           axis_congr (GaussianRationalFiniteSum.sum_zero body (pairT a b)).eqSymm axis_zero)
-    · simp only [subst_prefixAxis,Syn.subst_var,Syn.repl_zero,subst_repl_shift]
-      let A := Syn.shift a
+    · let A := Syn.shift a
       let B := Syn.shift b
       exact axis_congr (prefix_succ A B (var 0)).eqSymm (axis_add _ _ Prf.hyp0
         (fraction_axis B (bottomDen A B (var 0)) (row_den_positive A B (var 0) hs.wk)))

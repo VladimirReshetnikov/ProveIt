@@ -99,14 +99,10 @@ theorem prefix_bound (C K j : PTm n) : Γ ⊢[PRAAx]
     le (numerator C K j) (denominator C K j*pw (one+C) j) := by
   have all : Γ ⊢[PRAAx] .all (le (numerator (Syn.shift C) (Syn.shift K) (var 0))
       (denominator (Syn.shift C) (Syn.shift K) (var 0)*pw (one+Syn.shift C) (var 0))) := by
-    refine PRA.qfInd _ (le_QF _ _) ?_ ?_
-    · simp only [subst_le,subst_numerator,subst_denominator,subst_ap2,PTm.subst_add,PTm.subst_mul,
-        ConciseIPRA.PTm.subst_succ,ConciseIPRA.PTm.subst_zero,Syn.subst_var,Syn.inst_zero,Syn.subst_inst_shift]
-      exact le_congr (numerator_zero C K).eqSymm
+    ipra_qfind (le_QF _ _) [subst_le, subst_numerator, subst_denominator, subst_ap2]
+    · exact le_congr (numerator_zero C K).eqSymm
         ((congrMul (denominator_zero C K) (pw_zero (one+C))).eqTrans (one_mul one)).eqSymm (le_refl one)
-    · simp only [subst_le,subst_numerator,subst_denominator,subst_ap2,PTm.subst_add,PTm.subst_mul,
-        ConciseIPRA.PTm.subst_succ,ConciseIPRA.PTm.subst_zero,Syn.subst_var,Syn.repl_zero,subst_repl_shift]
-      let Δ := le (numerator (Syn.shift C) (Syn.shift K) (var 0))
+    · let Δ := le (numerator (Syn.shift C) (Syn.shift K) (var 0))
         (denominator (Syn.shift C) (Syn.shift K) (var 0)*pw (one+Syn.shift C) (var 0)) :: Γ.map Fm.shift
       have growing : Δ ⊢[PRAAx] le
           (numerator (Syn.shift C) (Syn.shift K) (var 0)*factor (Syn.shift C) (Syn.shift K) (var 0))

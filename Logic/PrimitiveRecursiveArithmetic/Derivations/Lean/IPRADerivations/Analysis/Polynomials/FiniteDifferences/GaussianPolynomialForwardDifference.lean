@@ -58,11 +58,9 @@ private def headLaw (C N h j : PTm n) : Fm PTm n := le j N ⟶
 theorem quotient_stage_head (C N h j : PTm n) (hj : Γ ⊢[PRAAx] le j N) :
     Γ ⊢[PRAAx] recode (entry (stage C N h j) zero) ≐ recode (entry C zero) := by
   have all : Γ ⊢[PRAAx] .all (headLaw (Syn.shift C) (Syn.shift N) (Syn.shift h) (var 0)) := by
-    refine PRA.qfInd _ ⟨le_QF _ _,trivial⟩ ?_ ?_
-    · simp only [subst_headLaw,Syn.subst_var,Syn.inst_zero,Syn.subst_inst_shift]
-      exact .impI (recode_congr (entry_congr (stage_zero C N h) (.eqRefl _))).wk
-    · simp only [subst_headLaw,Syn.subst_var,Syn.repl_zero,subst_repl_shift]
-      refine .impI ?_
+    ipra_qfind (⟨le_QF _ _,trivial⟩) [subst_headLaw]
+    · exact .impI (recode_congr (entry_congr (stage_zero C N h) (.eqRefl _))).wk
+    · refine .impI ?_
       let Δ := le (succ (var 0)) (Syn.shift N) ::
         headLaw (Syn.shift C) (Syn.shift N) (Syn.shift h) (var 0) :: Γ.map Fm.shift
       let P := stage (Syn.shift C) (Syn.shift N) (Syn.shift h) (var 0)
@@ -120,14 +118,12 @@ theorem quotient_stage_second (C N h j : PTm n) (hj : Γ ⊢[PRAAx] lt j N) :
     Γ ⊢[PRAAx] recode (entry (stage C N h j) one) ≐
       qadd (recode (entry C one)) (natScale j (qmul (entry C zero) h)) := by
   have all : Γ ⊢[PRAAx] .all (secondLaw (Syn.shift C) (Syn.shift N) (Syn.shift h) (var 0)) := by
-    refine PRA.qfInd _ ⟨lt_QF _ _,trivial⟩ ?_ ?_
-    · simp only [subst_secondLaw,Syn.subst_var,Syn.inst_zero,Syn.subst_inst_shift]
-      refine .impI ?_
+    ipra_qfind (⟨lt_QF _ _,trivial⟩) [subst_secondLaw]
+    · refine .impI ?_
       exact (recode_congr (entry_congr (stage_zero C N h) (.eqRefl _))).eqTrans
         ((qadd_congr (.eqRefl _) (GaussianRationalNaturalScale.natScale_zero _)).eqTrans
           (GaussianReciprocalHorner.qadd_zero_right _ (recode_canonical _))).eqSymm
-    · simp only [subst_secondLaw,Syn.subst_var,Syn.repl_zero,subst_repl_shift]
-      refine .impI ?_
+    · refine .impI ?_
       have next : lt (succ (var 0)) (Syn.shift N) ::
           secondLaw (Syn.shift C) (Syn.shift N) (Syn.shift h) (var 0) :: Γ.map Fm.shift
           ⊢[PRAAx] lt (succ (var 0)) (Syn.shift N) := Prf.hyp0

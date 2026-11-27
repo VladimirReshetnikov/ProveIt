@@ -114,11 +114,10 @@ private theorem numerator_step (N a d b : PTm n)
 
 theorem numerator_gap (N a d b : PTm n) : Γ ⊢[PRAAx] numeratorComparison N a d b := by
   have hall : Γ ⊢[PRAAx] .all (numeratorComparison (var 0) (Syn.shift a) (Syn.shift d) (Syn.shift b)) := by
-    refine PRA.qfInd _ (le_QF _ _) ?_ ?_
-    · simpa only [subst_numeratorComparison,Syn.subst_var,Syn.inst_zero,Syn.subst_inst_shift] using
+    ipra_qfind (le_QF _ _) [subst_numeratorComparison]
+    · exact
         numerator_base a d b
-    · simp only [subst_numeratorComparison,Syn.subst_var,Syn.repl_zero,subst_repl_shift]
-      exact numerator_step _ _ _ _ Prf.hyp0
+    · exact numerator_step _ _ _ _ Prf.hyp0
   simpa only [subst_numeratorComparison,Syn.subst_var,Syn.inst_zero,Syn.subst_inst_shift] using hall.allE N
 
 def headComparison (N a d b : PTm n) : Fm PTm n :=

@@ -170,13 +170,11 @@ private theorem raw_succ (p N a b : PTm n) (hs : Γ ⊢[PRAAx] source a b)
 theorem raw_lower (p N a b : PTm n) (hs : Γ ⊢[PRAAx] source a b) : Γ ⊢[PRAAx] rawLower p N a b := by
   let sh (x : PTm n) := Syn.shift x
   have hall : Γ ⊢[PRAAx] .all (rawLower (sh p) (var 0) (sh a) (sh b)) := by
-    refine PRA.qfInd _ (le_QF _ _) ?_ ?_
-    · simp only [subst_rawLower,sh,Syn.subst_var,Syn.inst_zero,Syn.subst_inst_shift]
-      exact upper_congr (congrFst (qadd_congr (upper_first a b).eqSymm (.eqRefl _)))
+    ipra_qfind (le_QF _ _) [subst_rawLower, sh]
+    · exact upper_congr (congrFst (qadd_congr (upper_first a b).eqSymm (.eqRefl _)))
         (congrFst (qadd_congr (raw_first p a b).eqSymm (cubic_first a b hs).eqSymm))
         (.eqRefl _) (.eqRefl _) (strong_cell p a b hs)
-    · simp only [subst_rawLower,sh,Syn.subst_var,Syn.repl_zero,subst_repl_shift]
-      let Δ := rawLower (sh p) (var 0) (sh a) (sh b) :: Γ.map Fm.shift
+    · let Δ := rawLower (sh p) (var 0) (sh a) (sh b) :: Γ.map Fm.shift
       have hs' : Δ ⊢[PRAAx] source (sh a) (sh b) := by simpa [Δ,sh,Fm.shift,Syn.shift] using hs.shift.wk
       exact raw_succ _ _ _ _ hs' Prf.hyp0
   simpa only [subst_rawLower,sh,Syn.subst_var,Syn.inst_zero,Syn.subst_inst_shift] using hall.allE N

@@ -131,11 +131,10 @@ theorem residual_bound (b g : ZB) (x L i D E M : PTm n)
   have h' : Γ.map Fm.shift ⊢[PRAAx] source b g (sh x) (sh L) (sh D) (sh E) := by
     simpa only [sh,Fm.shift,Syn.shift,subst_source] using h.shift
   have universal : Γ ⊢[PRAAx] .all (law b g (sh x) (sh L) (sh i) (sh D) (sh E) (var 0)) := by
-    refine PRA.qfInd _ ⟨le_QF _ _, ⟨le_QF _ _,le_QF _ _⟩⟩ ?_ ?_
-    · simpa only [subst_law,sh,Syn.subst_var,Syn.inst_zero,Syn.subst_inst_shift] using
+    ipra_qfind (⟨le_QF _ _, ⟨le_QF _ _,le_QF _ _⟩⟩) [subst_law, sh]
+    · exact
         law_zero (Γ := Γ) b g x L i D E
-    · simp only [subst_law,sh,Syn.subst_var,Syn.repl_zero,subst_repl_shift]
-      exact law_succ b g _ _ _ _ _ _ h'.wk Prf.hyp0
+    · exact law_succ b g _ _ _ _ _ _ h'.wk Prf.hyp0
   have atM : Γ ⊢[PRAAx] law b g x L i D E M := by
     simpa only [subst_law,sh,Syn.subst_var,Syn.inst_zero,Syn.subst_inst_shift] using universal.allE M
   exact .impE atM hm

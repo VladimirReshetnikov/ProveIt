@@ -27,11 +27,10 @@ theorem sum_axis (t : PTm 2) (N x : PTm n) (h : Γ ⊢[PRAAx] rowAxes t x) : Γ 
   let motive : Fm PTm (n+1) := axis (sum t (var 0) y)
   have rows : Δ ⊢[PRAAx] rowAxes t y := by simpa only [Δ,y,Fm.shift,Syn.shift,subst_rowAxes] using h.shift
   have all : Γ ⊢[PRAAx] .all motive := by
-    refine PRA.qfInd _ (by simp [motive,axis,RationalArgmin.rationalEq,Fm.QF]) ?_ ?_
-    · simpa only [motive,y,subst_axis,subst_sum,Syn.subst_var,Syn.inst_zero,Syn.subst_inst_shift] using
+    ipra_qfind (by simp [motive,axis,RationalArgmin.rationalEq,Fm.QF]) [motive, y, subst_axis, subst_sum]
+    · exact
         (axis_congr (GaussianRationalFiniteSum.sum_zero (Γ := Γ) t x).eqSymm axis_zero)
-    · simp only [motive,y,subst_axis,subst_sum,Syn.subst_var,Syn.repl_zero,subst_repl_shift]
-      exact axis_congr (GaussianRationalFiniteSum.sum_succ t (var 0) y).eqSymm
+    · exact axis_congr (GaussianRationalFiniteSum.sum_succ t (var 0) y).eqSymm
         (axis_add _ _ Prf.hyp0 (row_axis t y (var 0) rows.wk))
   simpa only [motive,y,subst_axis,subst_sum,Syn.subst_var,Syn.inst_zero,Syn.subst_inst_shift] using all.allE N
 

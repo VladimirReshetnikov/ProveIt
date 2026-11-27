@@ -103,10 +103,9 @@ theorem prefix_bound (u v A B k : PTm n) (hB : Γ ⊢[PRAAx] le one B)
   have ds : Γ.map Fm.shift ⊢[PRAAx] distanceBounded (Syn.shift u) (Syn.shift v) (Syn.shift A) (Syn.shift B) := by
     simpa [Fm.shift,Syn.shift] using hd.shift
   have all : Γ ⊢[PRAAx] .all (boundLaw (Syn.shift u) (Syn.shift v) (Syn.shift A) (Syn.shift B) (var 0)) := by
-    refine PRA.qfInd _ (le_QF _ _) ?_ ?_
-    · simpa only [subst_boundLaw,Syn.subst_var,Syn.inst_zero,Syn.subst_inst_shift] using bound_zero u v A B hB hu hv hd
-    · simp only [subst_boundLaw,Syn.subst_var,Syn.repl_zero,subst_repl_shift]
-      exact bound_step _ _ _ _ _ bs.wk us.wk vs.wk ds.wk Prf.hyp0
+    ipra_qfind (le_QF _ _) [subst_boundLaw]
+    · exact bound_zero u v A B hB hu hv hd
+    · exact bound_step _ _ _ _ _ bs.wk us.wk vs.wk ds.wk Prf.hyp0
   simpa only [subst_boundLaw,Syn.subst_var,Syn.inst_zero,Syn.subst_inst_shift] using all.allE k
 
 theorem en_bound_succ (k : PTm n) : Γ ⊢[PRAAx] le (en (succ k)) (num 3*fact (succ k)) := by

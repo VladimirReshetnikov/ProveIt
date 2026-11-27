@@ -105,11 +105,10 @@ theorem head_lower (z B a d N : PTm n) (hB : Γ ⊢[PRAAx] le one B)
     simpa [Fm.shift,Syn.shift] using h.shift
   have all : Γ ⊢[PRAAx] .all (le (var 0) (Syn.shift N) ⟶
       prefixBound (Syn.shift z) (Syn.shift B) (Syn.shift a) (Syn.shift d) (var 0)) := by
-    refine PRA.qfInd _ ⟨le_QF _ _,le_QF _ _⟩ ?_ ?_
-    · simpa only [Fm.subst_imp,subst_le,subst_prefixBound,Syn.subst_var,Syn.inst_zero,Syn.subst_inst_shift] using
+    ipra_qfind (⟨le_QF _ _,le_QF _ _⟩) [subst_le, subst_prefixBound]
+    · exact
         (Prf.impI (prefix_zero (Γ := le zero N :: Γ) z B a d))
-    · simp only [Fm.subst_imp,subst_le,subst_prefixBound,Syn.subst_var,Syn.repl_zero,subst_repl_shift]
-      exact .impI (prefix_succ _ _ _ _ _ bs.wk.wk ds.wk.wk
+    · exact .impI (prefix_succ _ _ _ _ _ bs.wk.wk ds.wk.wk
         (pole_at _ _ _ _ _ _ hs.wk.wk.andE₁ Prf.hyp0) (pole_at _ _ _ _ _ _ hs.wk.wk.andE₂ Prf.hyp0)
         (.impE Prf.hyp1 (le_trans (le_succ_self _) Prf.hyp0)))
   have last : Γ ⊢[PRAAx] le N N ⟶ prefixBound z B a d N := by

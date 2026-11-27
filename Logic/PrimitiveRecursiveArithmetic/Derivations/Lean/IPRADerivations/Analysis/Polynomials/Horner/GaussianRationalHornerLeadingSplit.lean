@@ -85,11 +85,9 @@ theorem prefix_split (C w N j : PTm n) (hj : Γ ⊢[PRAAx] le j N) :
     Γ ⊢[PRAAx] horner C w (succ j) ≐ qadd (leadingTerm C w j) (horner (lowerCoefficients C N) w j) := by
   let a (t : PTm n) := Syn.shift t
   have all : Γ ⊢[PRAAx] .all (splitLaw (a C) (a w) (a N) (var 0)) := by
-    refine PRA.qfInd _ ⟨le_QF _ _,trivial⟩ ?_ ?_
-    · simp only [a,subst_splitLaw,Syn.subst_var,Syn.inst_zero,Syn.subst_inst_shift]
-      exact .impI (split_zero C w N).wk
-    · simp only [a,subst_splitLaw,Syn.subst_var,Syn.repl_zero,subst_repl_shift]
-      refine .impI ?_
+    ipra_qfind (⟨le_QF _ _,trivial⟩) [a, subst_splitLaw]
+    · exact .impI (split_zero C w N).wk
+    · refine .impI ?_
       exact split_step _ _ _ _ Prf.hyp0 (.impE Prf.hyp1 (le_trans (le_succ_self _) Prf.hyp0))
   have current : Γ ⊢[PRAAx] splitLaw C w N j := by
     simpa only [a,subst_splitLaw,Syn.subst_var,Syn.inst_zero,Syn.subst_inst_shift] using all.allE j

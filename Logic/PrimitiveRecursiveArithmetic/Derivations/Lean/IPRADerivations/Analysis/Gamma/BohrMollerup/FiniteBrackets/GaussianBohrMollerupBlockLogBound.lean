@@ -93,14 +93,12 @@ theorem raw_order (p a b N : PTm n) (hN : Γ ⊢[PRAAx] le one N) :
   let Δ := Γ.map Fm.shift
   have ns : Δ ⊢[PRAAx] le one (sh N) := by simpa [Δ,sh,Fm.shift,Syn.shift,one] using hN.shift
   have out : Γ ⊢[PRAAx] .all (sumLaw (sh p) (sh a) (sh b) (sh N) (var 0)) := by
-    refine PRA.qfInd _ ⟨le_QF _ _,le_QF _ _⟩ ?_ ?_
-    · simp only [subst_sumLaw,sh,Syn.subst_var,Syn.inst_zero,Syn.subst_inst_shift]
-      exact .impI (rationalLE_congr
+    ipra_qfind (⟨le_QF _ _,le_QF _ _⟩) [subst_sumLaw, sh]
+    · exact .impI (rationalLE_congr
         (congrFst (GaussianRationalFiniteSum.sum_zero row (pairT p (pairT a b)))).eqSymm
         (congrFst (GaussianRationalFiniteSum.sum_zero constantBody (observed p a b N))).eqSymm
         (RationalArgmin.reflexive _))
-    · simp only [subst_sumLaw,sh,Syn.subst_var,Syn.repl_zero,subst_repl_shift]
-      exact .impI (raw_step _ _ _ _ _ ns.wk.wk Prf.hyp0
+    · exact .impI (raw_step _ _ _ _ _ ns.wk.wk Prf.hyp0
         (Prf.hyp1.impE (le_trans (le_succ_self _) Prf.hyp0)))
   have e : Γ ⊢[PRAAx] sumLaw p a b N N := by
     simpa only [subst_sumLaw,sh,Syn.subst_var,Syn.inst_zero,Syn.subst_inst_shift] using out.allE N

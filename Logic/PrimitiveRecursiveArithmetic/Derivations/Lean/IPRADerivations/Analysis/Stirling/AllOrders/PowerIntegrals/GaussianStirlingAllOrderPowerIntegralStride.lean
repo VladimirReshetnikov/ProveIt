@@ -53,10 +53,9 @@ private theorem lo_succ (q k d : PTm n) (ih : Γ ⊢[PRAAx] lo q k d) :
 
 theorem gd_lower (q k d : PTm n) : Γ ⊢[PRAAx] le (succ q*pw k q) (gd (k+d) k (succ q)) := by
   have all : Γ ⊢[PRAAx] .all (lo (var 0) (Syn.shift k) (Syn.shift d)) := by
-    refine PRA.qfInd _ (le_QF _ _) ?_ ?_
-    · simpa only [subst_lo,Syn.subst_var,Syn.inst_zero,Syn.subst_inst_shift] using lo_zero k d
-    · simp only [subst_lo,Syn.subst_var,Syn.repl_zero,subst_repl_shift]
-      exact lo_succ _ _ _ Prf.hyp0
+    ipra_qfind (le_QF _ _) [subst_lo]
+    · exact lo_zero k d
+    · exact lo_succ _ _ _ Prf.hyp0
   change Γ ⊢[PRAAx] lo q k d
   simpa only [subst_lo,Syn.subst_var,Syn.inst_zero,Syn.subst_inst_shift] using all.allE q
 

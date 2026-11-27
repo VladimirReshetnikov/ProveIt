@@ -102,12 +102,10 @@ theorem grid_slice (V d N M j : PTm n) (hd : Γ ⊢[PRAAx] le (d+M) N) (hj : Γ 
     Γ ⊢[PRAAx] grid (slice V d (succ M)) M j ≐ slice (grid V N j) d (succ (remaining M j)) := by
   let a (t : PTm n) := Syn.shift t
   have all : Γ ⊢[PRAAx] .all (stageLaw (a V) (a d) (a N) (a M) (var 0)) := by
-    refine PRA.qfInd _ ⟨le_QF _ _,trivial⟩ ?_ ?_
-    · simp only [subst_stageLaw,Syn.subst_var,Syn.inst_zero,a,Syn.subst_inst_shift]
-      exact .impI ((grid_zero _ _).eqTrans (slice_congr (grid_zero V N).eqSymm
+    ipra_qfind (⟨le_QF _ _,trivial⟩) [subst_stageLaw, a]
+    · exact .impI ((grid_zero _ _).eqTrans (slice_congr (grid_zero V N).eqSymm
         (congrSucc (monus_zero M).eqSymm))).wk
-    · simp only [subst_stageLaw,Syn.subst_var,Syn.repl_zero,a,subst_repl_shift]
-      refine .impI ?_
+    · refine .impI ?_
       let i : PTm (n+1) := var 0
       let J := stageLaw (a V) (a d) (a N) (a M) i
       let Δ := le (succ i) (a M) :: J :: Γ.map Fm.shift

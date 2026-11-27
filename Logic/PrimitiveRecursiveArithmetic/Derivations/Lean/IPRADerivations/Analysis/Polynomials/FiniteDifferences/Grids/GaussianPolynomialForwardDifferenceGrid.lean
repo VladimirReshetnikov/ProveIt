@@ -133,13 +133,11 @@ private def sampleLaw (C N x h j : PTm n) : Fm PTm n := le j N ⟶
 theorem stage_readback (C N x h j : PTm n) (hC : Γ ⊢[PRAAx] length C ≐ succ N) (hj : Γ ⊢[PRAAx] le j N) :
     Γ ⊢[PRAAx] grid (samples C (succ N) x h) N j ≐ samples (stage C N h j) (succ (remaining N j)) x h := by
   have all : Γ ⊢[PRAAx] .all (sampleLaw (Syn.shift C) (Syn.shift N) (Syn.shift x) (Syn.shift h) (var 0)) := by
-    refine PRA.qfInd _ ⟨le_QF _ _,trivial⟩ ?_ ?_
-    · simp only [subst_sampleLaw,Syn.subst_var,Syn.inst_zero,Syn.subst_inst_shift]
-      exact .impI ((grid_zero (samples C (succ N) x h) N).eqTrans
+    ipra_qfind (⟨le_QF _ _,trivial⟩) [subst_sampleLaw]
+    · exact .impI ((grid_zero (samples C (succ N) x h) N).eqTrans
         (samples_congr (GaussianPolynomialForwardDifferenceIteration.stage_zero C N h).eqSymm
           (congrSucc (monus_zero N).eqSymm))).wk
-    · simp only [subst_sampleLaw,Syn.subst_var,Syn.repl_zero,subst_repl_shift]
-      refine .impI ?_
+    · refine .impI ?_
       let C' := Syn.shift C
       let N' := Syn.shift N
       let x' := Syn.shift x

@@ -56,11 +56,9 @@ private def forwardLaw (C U k j : PTm n) : Fm PTm n := le (variation C U k) (var
 private theorem variation_forward (C U k j : PTm n) (hU : Γ ⊢[PRAAx] le one U) : Γ ⊢[PRAAx] forwardLaw C U k j := by
   have us : Γ.map Fm.shift ⊢[PRAAx] le one (Syn.shift U) := by simpa [Fm.shift,Syn.shift,one] using hU.shift
   have all : Γ ⊢[PRAAx] .all (forwardLaw (Syn.shift C) (Syn.shift U) (Syn.shift k) (var 0)) := by
-    refine PRA.qfInd _ (le_QF _ _) ?_ ?_
-    · simp only [subst_forwardLaw,Syn.subst_var,Syn.inst_zero,Syn.subst_inst_shift]
-      exact le_congr (.eqRefl _) (variation_index_congr C U (add_zero k)).eqSymm (le_refl _)
-    · simp only [subst_forwardLaw,Syn.subst_var,Syn.repl_zero,subst_repl_shift]
-      exact le_trans Prf.hyp0 (le_congr (.eqRefl _)
+    ipra_qfind (le_QF _ _) [subst_forwardLaw]
+    · exact le_congr (.eqRefl _) (variation_index_congr C U (add_zero k)).eqSymm (le_refl _)
+    · exact le_trans Prf.hyp0 (le_congr (.eqRefl _)
         (variation_index_congr _ _ (add_succ (Syn.shift k) (var 0))).eqSymm (variation_increases _ _ _ us.wk))
   simpa only [subst_forwardLaw,Syn.subst_var,Syn.inst_zero,Syn.subst_inst_shift] using all.allE j
 
