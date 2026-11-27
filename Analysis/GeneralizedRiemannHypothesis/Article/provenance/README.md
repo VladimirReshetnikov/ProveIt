@@ -14,9 +14,6 @@ report (or one result in it) and says what happened to it:
 | `other-unit` | It belongs to another section; `target` is that section's key. |
 | `non-mathematical` | Audits, inventories of earlier reports, reproduction and formalization plans, and similar material, which the article leaves out. |
 
-The `packet` and `file` columns name files under `Analysis/GeneralizedRiemannHypothesis/Research/`
-in the history (the first 103 at commit `10802a6b36`, the next 17 at commit `f2f9fd7531` and the last 11 at commit `64f3896557`); the packets are no longer in the working tree.
-
 Labels have the form `<key>:<kind>:<name>`, and `<key>` names the section file. The
 `conflict` rows mostly concern how the reports describe the upstream proof; the article
 uses the latest, corrected description.
@@ -25,13 +22,13 @@ uses the latest, corrected description.
 |---|---:|---:|---:|---:|---:|---:|---:|---:|
 | [`src.tsv`](src.tsv) | 68 | 90 | 5 | 0 | 9 | 28 | 53 | 253 |
 | [`ana.tsv`](ana.tsv) | 118 | 19 | 17 | 4 | 1 | 20 | 21 | 200 |
-| [`li.tsv`](li.tsv) | 57 | 2 | 2 | 0 | 0 | 7 | 9 | 77 |
+| [`li.tsv`](li.tsv) | 73 | 9 | 2 | 1 | 0 | 10 | 13 | 108 |
 | [`nab.tsv`](nab.tsv) | 42 | 3 | 11 | 2 | 0 | 32 | 19 | 109 |
 | [`grp.tsv`](grp.tsv) | 72 | 4 | 7 | 3 | 0 | 14 | 8 | 108 |
 | [`hec.tsv`](hec.tsv) | 60 | 11 | 6 | 0 | 0 | 14 | 5 | 96 |
-| [`zer.tsv`](zer.tsv) | 124 | 8 | 10 | 3 | 0 | 43 | 33 | 221 |
-| [`rec.tsv`](rec.tsv) | 222 | 20 | 13 | 5 | 0 | 13 | 29 | 302 |
-| [`dir.tsv`](dir.tsv) | 115 | 8 | 3 | 2 | 2 | 39 | 12 | 181 |
+| [`zer.tsv`](zer.tsv) | 145 | 12 | 12 | 5 | 0 | 47 | 41 | 262 |
+| [`rec.tsv`](rec.tsv) | 268 | 26 | 16 | 7 | 0 | 20 | 31 | 368 |
+| [`dir.tsv`](dir.tsv) | 122 | 10 | 5 | 3 | 2 | 39 | 13 | 194 |
 | [`cls.tsv`](cls.tsv) | 23 | 7 | 11 | 5 | 0 | 20 | 6 | 72 |
 | [`smd.tsv`](smd.tsv) | 30 | 7 | 21 | 5 | 0 | 16 | 1 | 80 |
 | [`gpp.tsv`](gpp.tsv) | 55 | 3 | 8 | 6 | 0 | 0 | 6 | 78 |
@@ -41,14 +38,14 @@ uses the latest, corrected description.
 | [`cost.tsv`](cost.tsv) | 52 | 10 | 7 | 7 | 0 | 10 | 6 | 92 |
 | [`lub.tsv`](lub.tsv) | 57 | 9 | 9 | 3 | 0 | 6 | 6 | 90 |
 | [`sel.tsv`](sel.tsv) | 64 | 16 | 5 | 4 | 2 | 8 | 10 | 109 |
-| [`spn.tsv`](spn.tsv) | 152 | 30 | 10 | 4 | 0 | 4 | 26 | 226 |
+| [`spn.tsv`](spn.tsv) | 173 | 30 | 12 | 5 | 0 | 6 | 28 | 254 |
 | [`corpus.tsv`](corpus.tsv) | 0 | 0 | 2 | 0 | 0 | 0 | 46 | 48 |
-| Total | 1449 | 267 | 168 | 67 | 14 | 323 | 308 | 2596 |
+| Total | 1560 | 286 | 177 | 74 | 14 | 339 | 325 | 2775 |
 
 `corpus.tsv` covers the source files that no section table names: bibliographies, layout
 files, main files that hold only a title, an abstract and the list of included files,
 inventories of earlier reports, verification records, and two tables comparing superseded
 bounds. With it, every `.tex` file of every report has at least one row.
 
-131 of the 131 reports appear in at least one table with a disposition other than
+142 of the 142 reports appear in at least one table with a disposition other than
 `other-unit`.

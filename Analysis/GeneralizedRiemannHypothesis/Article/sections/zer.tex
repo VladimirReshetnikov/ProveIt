@@ -1098,8 +1098,8 @@ Partial summation with the prime number theorem gives the last equality, since
 \]
 \end{proof}
 
-\subsection{Covariance and oscillation of smoothed prime errors}\label{zer:sec:cov}
-{\emergencystretch=6em\sources{multiscale_prime_fluctuations; grh_multiscale_covariance; grh_spectral_rigidity; grh_filtered_prime_races; grh_prime_error_balancing; prime_peak_rigidity}}
+\subsection{Covariance and oscillation of prime errors at several scales}\label{zer:sec:cov}
+{\emergencystretch=6em\sources{multiscale_prime_fluctuations; grh_multiscale_covariance; grh_spectral_rigidity; grh_filtered_prime_races; grh_prime_error_balancing; prime_peak_rigidity; grh_extensions_2026-11-27}}
 
 The kernel $(1/n-1/x)_+$ of the prime remainder in the source proof has Mellin denominator
 $s(s-1)$, and $\rho(1-\rho)=\tfrac14+\gamma^2$ at $\rho=\tfrac12+i\gamma$. Under
@@ -1107,7 +1107,8 @@ $s(s-1)$, and $\rho(1-\rho)=\tfrac14+\gamma^2$ at $\rho=\tfrac12+i\gamma$. Under
 almost periodic functions of $\log x$. This subsection proves that their joint covariances,
 at several multiplicative scales, in all residue classes, with derivatives, or after a
 compact filter, are positive definite even after any finite set of zero frequencies is
-deleted, and derives uniform two-sided oscillation in every direction. Simplicity of zeros,
+deleted, and derives uniform two-sided oscillation in every direction; the multiscale statement
+also holds for the ordinary counts $\pi(x;q,a)$ (\cref{zer:thm:unsmoothed}). Simplicity of zeros,
 disjointness of zero sets and rational independence of ordinates are never assumed:
 coincident ordinates are grouped before squares are formed, and positivity comes from the
 arithmetic of prime powers.
@@ -1389,6 +1390,190 @@ exact rational checks are in the files
 \artifact{grh_multiscale_covariance/numerical_check.py}
 \end{center}
 \end{example}
+
+\paragraph{Unsmoothed prime counts.}
+For the ordinary counting function $\pi(x;q,a)$ the zero series converges only in a local mean, but
+the positivity of \cref{zer:cor:multiscale} persists once the prime squares and the central zeros are
+removed. The two statements do not imply each other: the smoothed and the unsmoothed vectors have
+different coefficients, $1/(\tfrac14+\gamma^2)$ against $-1/(\tfrac12+i\gamma)$, and different
+centering constants, because the Mellin denominator is now $s$ instead of $s(s-1)$. Stepanov almost
+periodicity of normalized prime-counting remainders in $L^2$ is classical
+\cite[Theorem~1(e)]{KaczorowskiRamare2003Almost}; the additions are an explicit local $L^4$ bound, the
+transfer to $\pi(x;q,a)$, and the arithmetic separation of the scales.
+
+With $v_a$ as in \eqref{zer:eq:va}, put $r_q(a)=\#\set{b\in G:b^2=a}$ and
+\[
+ \mathcal X_a(t)=te^{-t/2}\Bigl(\pi(e^t;q,a)-\frac{\li(e^t)}{n_q}\Bigr)+\frac{r_q(a)}{n_q}+2v_a(0),
+ \qquad t\ge\log2,
+\]
+where $\li(x)=\int_2^x\dd u/\log u$; the term $r_q(a)/n_q$ removes the prime squares and $2v_a(0)$ the
+possible central zeros, whose absence is not assumed. For distinct real $h_1,\dots,h_r$, $D=rn_q$ and
+$\gamma\ne0$ put $\widetilde z(\gamma)_{j,a}=-e^{i\gamma h_j}v_a(\gamma)/(\tfrac12+i\gamma)$, and for a
+finite set $J\subset\Gamma_q\setminus\set0$ with $J=-J$ let
+\[
+ \mathcal X_J(t)_{j,a}=\mathcal X_a(t+h_j)-\sum_{\gamma\in J}\widetilde z(\gamma)_{j,a}e^{i\gamma t},
+\]
+a real vector defined for $t\ge u_0$, where $u_0+h_j\ge\log2$ for every $j$.
+
+\begin{theorem}[Unsmoothed multiscale covariance and occupation; \stG]\label{zer:thm:unsmoothed}
+The series $\widetilde{\mathcal G}_J=\sum_{\gamma\in\Gamma_q\setminus(J\cup\set0)}\widetilde z(\gamma)\widetilde z(\gamma)^*$
+converges to a real symmetric positive definite matrix, and uniformly in $u\ge u_0$, as $L\to\infty$,
+\[
+ \frac1L\int_u^{u+L}\mathcal X_J(t)\,\dd t\to0,\qquad
+ \frac1L\int_u^{u+L}\mathcal X_J(t)\mathcal X_J(t)^{\mathsf T}\dd t\to\widetilde{\mathcal G}_J .
+\]
+There are $\eps,\eta,L_0>0$ such that for every real unit $w\in\R^D$, every $u\ge u_0$ and every
+$L\ge L_0$,
+\[
+ \abs{\set{t\in[u,u+L]:w\cdot\mathcal X_J(t)\ge\eps}}\ge\eta L,\qquad
+ \abs{\set{t\in[u,u+L]:w\cdot\mathcal X_J(t)\le-\eps}}\ge\eta L,
+\]
+so the closed convex hull of the essential values of $\mathcal X_J$ on each such interval contains the
+closed ball of radius $\eps$ about $0$. Moreover, with $c,K,T_0>0$ depending only on $q$ and the
+shifts,
+\[
+ \lambda_{\min}(\widetilde{\mathcal G}_J)\ge\frac{cH}{T^2\log(2T)}
+\]
+whenever $T\ge T_0$, $K\log(2T)\le H\le T$ and $T>\max_{\gamma\in J}\abs\gamma$.
+\end{theorem}
+
+In terms of $x=e^t$ the intervals are $[e^u,e^{u+L}]$ with the measure $\dd x/x$: every centered
+linear contrast of the unsmoothed counts at the scales $e^{h_j}$ lies above $\eps$ and below $-\eps$ on
+a positive proportion of every sufficiently long logarithmic interval. The constants may deteriorate
+as shifts coalesce, and no uniformity in the number of coordinates is asserted. The proof needs a
+fourth-moment form of \cref{zer:lem:bins}.
+
+\begin{lemma}[Local fourth moments; \stU]\label{zer:lem:bins4}
+Let $P(t)=\sum_\lambda c_\lambda e^{i\lambda t}$ be a finite sum with real frequencies and
+$b_j=\sum_{\lambda\in[j,j+1)}\abs{c_\lambda}$. With an absolute constant $A$,
+$\norm P_{S^4}\le A\norm b_{\ell^{4/3}}$, where
+$\norm f_{S^4}=\sup_u(\int_u^{u+1}\norm{f(t)}^4\dd t)^{1/4}$. Consequently, if a locally finite family
+of coefficients has $b\in\ell^{4/3}(\Z)$, its finite symmetric truncations converge in $S^4$.
+\end{lemma}
+\begin{proof}
+\Cref{zer:lem:bins} with $h=1$ gives $\norm P_{S^2}\ll\norm b_{\ell^2}$. Apply it to $P^2$: adding
+frequencies in the bins $j$ and $\ell$ gives a frequency in the bin $j+\ell$ or $j+\ell+1$, and
+grouping coincident frequencies can only decrease absolute mass, so the bin masses of $P^2$ satisfy
+$d_k\le(b*b)_k+(b*b)_{k-1}$. Young's inequality gives
+$\norm P_{S^4}^4=\norm{P^2}_{S^2}^2\ll\norm{b*b}_{\ell^2}^2\le\norm b_{\ell^{4/3}}^4$. Apply this to
+differences of truncations.
+\end{proof}
+
+By the local zero count, the bin masses of
+\[
+ F_a(t)=-\sum_{\substack{\gamma\in\Gamma_q\\\gamma\ne0}}\frac{v_a(\gamma)}{\tfrac12+i\gamma}e^{i\gamma t}
+\]
+are $O_q(\log(2+\abs j)/(1+\abs j))$, so the series converges in $S^4$; comparing the tails of
+$\sum b_j^{4/3}$ and $\sum b_j^2$ with integrals, its truncation to $0<\abs\gamma\le Y$ has error
+$O_q(Y^{-1/4}\log(2Y))$ in $S^4$ and $O_q(Y^{-1/2}\log(2Y))$ in $S^2$. No lower bound on gaps between
+ordinates enters.
+
+\begin{lemma}[The unsmoothed expansion; \stG]\label{zer:lem:unsmoothed}
+For each $a\in G$, almost everywhere on $t\ge\log2$, $\mathcal X_a(t)=F_a(t)+R_a(t)$, where $R_a$ is
+locally bounded, square integrable on $[\log2,\infty)$, has uniformly bounded local fourth moments, and
+satisfies $\norm{R_a}_{L^4([U,U+1])}\ll_qU^{-1}$ for $U\ge2$.
+\end{lemma}
+\begin{proof}
+For a primitive $\chi$, with $\delta_\chi=1$ in conductor one and $0$ otherwise, the explicit formula,
+read as an identity of distributions on $t>0$ (integrate $-L'/L(s,\chi)$ against a smooth compactly
+supported Mellin test and move the contour; \cref{src:thm:dgrh} makes each nontrivial zero term a
+pure phase), is
+\[
+ e^{-t/2}\bigl(\psi(e^t,\chi)-\delta_\chi e^t\bigr)=-\sum_\gamma\frac{m_\chi(\gamma)e^{i\gamma t}}{\tfrac12+i\gamma}
+ +O_\chi\bigl((1+t)e^{-t/2}\bigr)\qquad(t\ge\log2),
+\]
+the remainder collecting the constant, the pole at $s=0$ and the trivial zeros. The zero series
+converges in $S^4$ by \cref{zer:lem:bins4}, hence in $L^1_{\mathrm{loc}}$, so the identity holds almost
+everywhere for the arithmetic step function. Imprimitive characters lose prime powers of total size
+$O_q(1+t)$ before normalization. Orthogonality, with the central term $-(\tfrac12)^{-1}v_a(0)$, gives
+\[
+ \begin{aligned}E_{\psi,a}(t)&:=e^{-t/2}\Bigl(\psi(e^t;q,a)-\frac{e^t}{n_q}\Bigr)\\
+ &=F_a(t)-2v_a(0)+O_q\bigl((1+t)e^{-t/2}\bigr).\end{aligned}
+\]
+Prime squares contribute $\sum_{b^2=a}\vartheta(\sqrt x;q,b)$ to the difference
+$\psi(x;q,a)-\vartheta(x;q,a)$ and higher powers $O_q(x^{1/3}\log^2(2x))$; the pointwise bound
+$\vartheta(x;q,b)=x/n_q+O_q(\sqrt x\log^2(2x))$, used only for such deterministic remainders, gives
+\[
+ \begin{aligned}E_{\vartheta,a}(t)&:=e^{-t/2}\Bigl(\vartheta(e^t;q,a)-\frac{e^t}{n_q}\Bigr)\\
+ &=E_{\psi,a}(t)-\frac{r_q(a)}{n_q}+O_q\bigl((1+t)^2e^{-t/6}\bigr).\end{aligned}
+\]
+Each coordinate is centered against $\li(x)/n_q$, the principal direction included, which is why the
+correction is $r_q(a)/n_q$. Partial summation gives exactly
+\[
+ te^{-t/2}\Bigl(\pi(e^t;q,a)-\frac{\li(e^t)}{n_q}\Bigr)=E_{\vartheta,a}(t)+V_a(t)+\frac{2te^{-t/2}}{n_q\log2},\qquad
+ V_a(t)=te^{-t/2}\int_{\log2}^t\frac{e^{v/2}E_{\vartheta,a}(v)}{v^2}\,\dd v .
+\]
+Split the integral at $v=t/2$. On the earlier part $E_{\vartheta,a}(v)\ll_q(1+v)^2$, which contributes
+$O_q(t^2e^{-t/4})$. On the later part put $s=t-v$ and use $t/(t-s)^2\le4/t$: for $t\in[U,U+1]$,
+$\abs{V_{a,\mathrm{late}}(t)}\le(4/U)\int_0^{(U+1)/2}e^{-s/2}\abs{E_{\vartheta,a}(t-s)}\,\dd s$, and
+Minkowski's inequality with the bounded local fourth moments of $E_{\vartheta,a}$ gives
+$\norm{V_a}_{L^4([U,U+1])}\ll_qU^{-1}$. The remainders are locally bounded, and
+$\int_U^{U+1}R_a^2\le(\int_U^{U+1}R_a^4)^{1/2}\ll_qU^{-2}$ summed over integers $U$ gives square
+integrability.
+\end{proof}
+
+\begin{lemma}[Occupation from a fourth moment; \stU]\label{zer:lem:occupation4}
+Let $Y$ be a real vector-valued function with uniform long-window mean $0$ and uniform long-window
+second moment $\mathcal G$, $\lambda=\lambda_{\min}(\mathcal G)>0$, and suppose that
+$\abs I^{-1}\int_I\abs{w\cdot Y}^4\le M^4$ for every real unit $w$ and every sufficiently long allowed
+interval $I$, with $M\ge1$. Then the two occupation inequalities of \cref{zer:thm:unsmoothed} hold
+uniformly with
+\[
+ a=\frac{(\lambda/2)^{3/2}}{M^2},\qquad\eps=\frac a8,\qquad\eta=\Bigl(\frac a{8M}\Bigr)^2 .
+\]
+\end{lemma}
+\begin{proof}
+Let $\mathbb E$ be the window average and $f=w\cdot Y$. For long windows, uniformly in unit $w$,
+$\mathbb Ef^2\ge\lambda/2$ and $\abs{\mathbb Ef}\le a/2$. H\"older's inequality between $L^1$ and $L^4$
+gives $\mathbb E\abs f\ge(\mathbb Ef^2)^{3/2}/(\mathbb Ef^4)^{1/2}\ge a$, so $\mathbb Ef_\pm\ge a/4$. With
+$\eps=a/8$, $a/8\le\mathbb E[f_+\mathbf 1_{f\ge\eps}]\le(\mathbb Ef^2)^{1/2}\mathbb P(f\ge\eps)^{1/2}
+\le M\,\mathbb P(f\ge\eps)^{1/2}$, and likewise for $-f$.
+\end{proof}
+
+\begin{proof}[Proof of \cref{zer:thm:unsmoothed}]
+By \cref{zer:lem:unsmoothed}, $\mathcal X_J=F_J+R$ with $F_J$ the $S^4$ limit of exponential sums with
+coefficients $\widetilde z(\gamma)$, $\gamma\notin J\cup\set0$, square summable by the bin bound, and
+$R\in L^2$ on a half-line. For a finite sum the long-window limits follow by expanding products,
+since the mean of $e^{i\omega t}$ over $[u,u+L]$ has modulus at most $2/(L\abs\omega)$. If $P$
+approximates $F_J$ in $S^2$, covering $[u,u+L]$ by at most $L+1$ unit intervals gives
+$L^{-1}\int_u^{u+L}\norm{F_J-P}^2\le2\norm{F_J-P}_{S^2}^2$, and $L^{-1}\int_u^{u+L}\norm R^2\le
+L^{-1}\norm R_{L^2}^2$; Cauchy--Schwarz then gives the two limits uniformly in $u$, with
+$\widetilde{\mathcal G}_J$ real because $\widetilde z(-\gamma)=\overline{\widetilde z(\gamma)}$.
+
+For positivity, the proof of \cref{zer:thm:coercive} shows, for $T\ge T_0$ and $K\log(2T)\le H\le T$,
+that $\sum_{T<\gamma\le T+H}\abs{A_w(\gamma)}^2\ge\alpha^2H\norm w_2^2/(4DC_0\log(2T))$; it uses only the
+fixed-argument Landau formula \eqref{zer:eq:landaufixed}, the probes of \cref{zer:lem:probes} and
+Cauchy--Schwarz over the distinct ordinates of the band. For real $w$,
+$w\cdot\widetilde z(\gamma)=-A_w(\gamma)/(\tfrac12+i\gamma)$, and pairing $\gamma$ with $-\gamma$ gives
+$w^{\mathsf T}\widetilde{\mathcal G}_Jw\ge2\sum_{T<\gamma\le T+H}\abs{A_w(\gamma)}^2/(\tfrac14+\gamma^2)$ for
+every band above $\max J$; with $\tfrac14+\gamma^2\le5T^2$ this is the eigenvalue bound. The probes
+separate scaled prime powers, not individual zeros.
+
+The Fourier part has bounded $S^4$ norm and the remainder bounded local fourth moments, so covering a
+long interval by unit intervals gives a common $M$ in \cref{zer:lem:occupation4}, which gives the
+occupation inequalities. If the closed convex hull of the essential values missed a point of the
+$\eps$-ball, separation would give a unit direction with essential supremum less than $\eps$.
+\end{proof}
+
+\begin{corollary}[No exact finite linear explanation; \stG]\label{zer:cor:unsmoothedpred}
+For a nonzero real array $w=(w_{j,a})$, a real finite trigonometric polynomial $P$ and a real
+constant $b$, the long-window mean square of $\sum_{j,a}w_{j,a}\mathcal X_a(t+h_j)-P(t)-b$ has a
+positive limit, uniformly in the origin. In particular no nonzero contrast at one scale is predicted
+exactly in mean square by real linear combinations of the other scales and a finite trigonometric
+correction.
+\end{corollary}
+\begin{proof}
+Let $J$ consist of the nonzero frequencies of $P$ in $\Gamma_q$ and their negatives. The frequencies
+outside $J$ keep the coefficients of $w\cdot\mathcal X_J$, and the mean-square computation in the proof
+above, which allows extra frequencies of $P$, bounds the limit below by
+$w^{\mathsf T}\widetilde{\mathcal G}_Jw>0$. For a predictor, collect all coefficients in one array, whose
+block at the predicted scale is the given nonzero contrast.
+\end{proof}
+
+The lower bound is not uniform over all corrections, since longer Fourier truncations approximate the
+error in mean square. Positive covariance and two-sided directional occupation do not force the
+limiting values to fill an open set, so they do not give every ordering of the counts or inclusivity
+of ordinary prime races.
 
 \paragraph{A certificate from one isolated prime atom.}
 The probe argument also has a distributional form. For a primitive character $\eta$ of conductor
@@ -2586,7 +2771,7 @@ This kernel is the prime error itself; the autocorrelation of the prime error at
 behaves differently and is treated next.
 
 \subsection{Merging scales: a cubic logarithmic law}\label{zer:sec:coalesce}
-\sources{prime_scale_coalescence_2026-11-26}
+\sources{prime_scale_coalescence_2026-11-26; dirichlet-zero-multiplicity-and-reconstruction}
 
 \Cref{zer:thm:coercive} keeps the scales fixed. For the zeta function the rate at which the
 covariance degenerates as the scales merge is determined exactly up to a bounded factor. Let
@@ -2615,20 +2800,20 @@ and let $b_1\ge\dots\ge b_{r-2}>0$ be the eigenvalues of $\mathcal B$ on $W$.
 The long-time limit is taken first, then $\eps\downarrow0$.
 \begin{enumerate}[label=\textup{(\roman*)}]
 \item Uniformly for $c$ in the unit sphere of $W$,
-$\mathcal B(c)-o(1)\le c^{\mathsf T}G_\eps c/\tau_\eps\le\tfrac43\mathcal B(c)+o(1)$.
+$\mathcal B(c)-o(1)\le c^{\mathsf T}G_\eps c/\tau_\eps\le1.3208\,\mathcal B(c)+o(1)$.
 \item $\lambda_1(G_\eps)\sim rC_0$, $\lambda_2(G_\eps)\sim D_2\norm v^2\eps^2$, and for $1\le j\le r-2$
 \[
- b_j\le\liminf_{\eps\downarrow0}\frac{\lambda_{j+2}(G_\eps)}{\tau_\eps}\le\limsup_{\eps\downarrow0}\frac{\lambda_{j+2}(G_\eps)}{\tau_\eps}\le\frac43b_j .
+ b_j\le\liminf_{\eps\downarrow0}\frac{\lambda_{j+2}(G_\eps)}{\tau_\eps}\le\limsup_{\eps\downarrow0}\frac{\lambda_{j+2}(G_\eps)}{\tau_\eps}\le1.3208\,b_j .
 \]
 \item $\det G_\eps\asymp_u\eps^{3r-4}\log(1/\eps)^{r-2}$ and the condition number is
 $\asymp_u\eps^{-3}/\log(1/\eps)$.
 \end{enumerate}
 All conclusions persist after deleting any fixed finite set of positive ordinates with their
-negatives; $C_0$ and $D_2$ change, while $\mathcal B$ and the factor $\tfrac43$ do not.
+negatives; $C_0$ and $D_2$ change, while $\mathcal B$ and the factor $1.3208$ do not.
 \end{theorem}
 
 With two offsets only the first two statements of (ii) hold. No simplicity, independence or
-pair-correlation conjecture is used; the factor $\tfrac43$ is an explicit comparison, not a
+pair-correlation conjecture is used; the factor $1.3208$ is an explicit comparison, not a
 claim of optimality. The arithmetic input is Montgomery's theorem, proved under RH
 \cite{Montgomery1973Pair}, which gives the classical bound $M_2(T)\le(\tfrac43+o(1))N(T)$
 \cite{ConreyGhoshGonek1998Simple}. A cumulative bound does not compare nonmonotone test
@@ -2638,32 +2823,51 @@ functions; the following local form does.
 For fixed $0<a<b$,
 \[
  b-a\le\liminf_{T\to\infty}\frac{M_2(bT)-M_2(aT)}{T\log T/(2\pi)}\le
- \limsup_{T\to\infty}\frac{M_2(bT)-M_2(aT)}{T\log T/(2\pi)}\le\frac43(b-a),
+ \limsup_{T\to\infty}\frac{M_2(bT)-M_2(aT)}{T\log T/(2\pi)}\le Q(f)\,(b-a)
 \]
-and $M_2(T)=O(T\log(2+T))$.
+for every real even continuous $f\ge0$ with $f(0)=1$, $f,\widehat f\in L^1$ and $\widehat f(v)\le0$ for
+$\abs v\ge1$, where $\widehat f(v)=\int f(x)e^{-2\pi ivx}\dd x$ and
+$Q(f)=\widehat f(0)+\int_{-1}^1\abs v\widehat f(v)\dd v$. The Fej\'er kernel gives $Q=\tfrac43$, a
+closed-form test gives $Q=\tfrac12+\tfrac1{\sqrt2}\cot\tfrac1{\sqrt2}=1.3274992963\ldots$, and a test of
+Chirre, Gon\c calves and de Laat gives $Q\le1.3208$ \cite{ChirreGoncalvesdeLaat2020Pair}; so the
+upper constant is at most $1.3208$. Moreover $M_2(T)=O(T\log(2+T))$.
 \end{lemma}
 \begin{proof}
-Let $w(y)=4/(4+y^2)$. Montgomery's equation (6) gives, for $0<\alpha<1$ and uniformly for $\alpha$ in
-compact subintervals,
+Let $w(y)=4/(4+y^2)=\int_\R e^{-2\abs s}e^{isy}\dd s$, $D_T=T\log T/(2\pi)$, and for $I=(aT,bT]$
 \[
- \sum_{0<\gamma,\gamma'\le X}\zersinc^2\Bigl(\frac\alpha2(\gamma-\gamma')\log X\Bigr)w(\gamma-\gamma')
- =\Bigl(\frac1\alpha+\frac\alpha3+o(1)\Bigr)\frac{X\log X}{2\pi},
+ F_{I,T}(v)=D_T^{-1}\sum_{\gamma,\gamma'\in I}e^{iv(\gamma-\gamma')\log T}w(\gamma-\gamma'),
 \]
-the double sum repeating zeros with multiplicity: the left side divided by $X\log X/(2\pi)$ is
-$\alpha^{-2}\int_{-\alpha}^\alpha(\alpha-\abs\beta)F_X(\beta)\dd\beta$, and
-$F_X(\beta)=(1+o(1))X^{-2\abs\beta}\log X+\abs\beta+o(1)$ uniformly on $\abs\beta\le1-\delta$. Fix $\alpha$ and use
-the single kernel $k_T(y)=\zersinc^2(\tfrac\alpha2y\log T)w(y)\ge0$ for all $X=cT$, with
-$\alpha_X=\alpha\log T/\log(cT)\to\alpha$; uniformity gives
-$S_T(cT)=(1/\alpha+\alpha/3)cT\log T/(2\pi)+o(T\log T)$. Raising $X$ from $aT$ to $bT$ adds the
-diagonal terms $m_\gamma^2$ of the new ordinates and nonnegative off-diagonal terms, so
-$M_2(bT)-M_2(aT)\le S_T(bT)-S_T(aT)$. Subtracting the two asymptotic equalities and letting
-$\alpha\uparrow1$ after the height limit gives the upper bound. The lower bound follows from
-$m_\gamma^2\ge m_\gamma$ and the Riemann--von Mangoldt formula, and the global bound from one fixed
-$\alpha$.
+each zero repeated with its multiplicity; $F_{I,T}\ge0$, being an integral of absolute squares. On each
+compact subinterval of $(-1,1)$ the measures $F_{I,T}(v)\dd v$ converge weakly to
+$(b-a)(\delta_0+\abs v\dd v)$. Indeed, for the prefix $(0,cT]$ Montgomery's theorem
+\cite{Montgomery1973Pair} at height $X=cT$ gives the form factor
+$(1+o(1))X^{-2\abs\beta}\log X+\abs\beta+o(1)$ uniformly on $\abs\beta\le1-\delta$; change variables to
+$\beta=v\log T/\log X$ and multiply by $D_X/D_T\to c$, the peak having mass tending to one. Subtracting
+the prefixes $c=b$ and $c=a$ leaves the pairs on opposite sides of $aT$, whose total absolute
+contribution is $O_{a,b}(\log^3T)$ uniformly in $v$: each unit distance bin on either side holds
+$O_b(\log T)$ zeros, and $\sum_{0\le j,k\le bT+1}(1+(j+k)^2)^{-1}=O_b(\log T)$.
+
+The diagonal pairs contribute $M_2(bT)-M_2(aT)$. For $0<d<1$ and $f_d(x)=f(dx)$, positivity of $f$ in the
+ordinate variable, Fourier inversion, $F_{I,T}\ge0$ and the sign of $\widehat f_d$ outside $[-d,d]$ give
+\[
+ \frac{M_2(bT)-M_2(aT)}{D_T}\le\int_\R\widehat f_d(v)F_{I,T}(v)\dd v\le\int_{-d}^d\widehat f_d(v)F_{I,T}(v)\dd v ,
+\]
+and the weak limit applies to the sharp cutoff, whose endpoints carry no limiting mass. Letting
+$T\to\infty$ and then $d\uparrow1$ gives the bound $(b-a)Q(f)$. For the Fej\'er kernel $\widehat f$ is the
+triangle $(1-\abs v)_+$ and $Q=\tfrac43$. For $g(t)=\cos(\sqrt2t)/(\sqrt2\sin(1/\sqrt2))$ on
+$J=[-\tfrac12,\tfrac12]$, zero elsewhere, and $f=\abs{\widehat g}^2$, one has $\int g=1$, $f(0)=1$, $\widehat f$
+supported in $[-1,1]$ and $Q(f)=\int_Jg(t)[g(t)+\int_J\abs{t-u}g(u)\dd u]\dd t$; the bracket has second
+derivative $g''+2g=0$ inside $J$ and is even, hence constant, equal to $g(\tfrac12)+\tfrac12$. The
+rational choice $g(t)=1+z(\tfrac1{12}-t^2)$ gives $Q=\tfrac43-z/90+z^2/189$, which is $\tfrac{531}{400}$ at
+$z=\tfrac{21}{20}$. The test of \cite[proof of Theorem~1]{ChirreGoncalvesdeLaat2020Pair} is
+$f(x)=\widehat h(x/R)/\widehat h(0)$ for their even polynomial times a Gaussian $h$ with $h(x)\le0$ for
+$\abs x\ge R$ and $\widehat h\ge0$; then $Q(f)$ is their rigorously bounded quantity, at most $1.3208$.
+The lower bound follows from $m_\gamma^2\ge m_\gamma$ and the Riemann--von Mangoldt formula, and the global
+bound from dyadic summation.
 \end{proof}
 
-Subtracting two upper bounds for $M_2$ would be invalid; the proof subtracts asymptotic
-equalities for one kernel, and stays in the proved range of Montgomery's theorem.
+A bound for $M_2(T)$ alone would not bound these differences, since two upper bounds cannot be
+subtracted; the proof uses the local pair correlation of one height interval.
 
 \begin{proof}[Proof of \cref{zer:thm:coalesce}]
 \emph{Spline identity.} For $c\in W$, $H_c$ vanishes outside $[\min u_i,\max u_i]$ by the two
@@ -2674,7 +2878,7 @@ $\mathcal B(c)=\pi^{-1}\int_0^\infty\abs{p_c(x)}^2x^{-4}\dd x$ with $p_c(x)=\sum
 
 \emph{Scaled measures.} Let $\nu_T=\frac{2\pi}{T\log T}\sum_{\gamma>0}m_\gamma^2\delta_{\gamma/T}$. By
 \cref{zer:lem:localM2} and approximation by step functions,
-$\int f\le\liminf\int f\dd\nu_T\le\limsup\int f\dd\nu_T\le\tfrac43\int f$ for continuous nonnegative
+$\int f\le\liminf\int f\dd\nu_T\le\limsup\int f\dd\nu_T\le1.3208\int f$ for continuous nonnegative
 compactly supported $f$ on $(0,\infty)$. Since $\abs{p_c(x)}\le A_u\norm c\min(x^2,1)$ by the two
 cancellations, and $\limsup\nu_T((0,\delta])=O(\delta)$,
 $\limsup\int_R^\infty x^{-4}\dd\nu_T=O((1+\log R)/R^3)$, the comparison extends to
@@ -2692,7 +2896,7 @@ $G_\eps=C_0\mathbf 1\mathbf 1^{\mathsf T}+\eps^2A+O(\tau_\eps)$ with
 $A=-\tfrac12D_2(u^{\circ2}\mathbf 1^{\mathsf T}+\mathbf 1(u^{\circ2})^{\mathsf T}-2uu^{\mathsf T})$, whose
 compression to $\mathbf 1^\perp$ is $D_2uu^{\mathsf T}$ and to $W$ is $0$. In an orthonormal basis
 $\mathbf 1/\sqrt r$, $u/\norm u$, $W$, the matrix has blocks $rC_0+O(\eps^2)$,
-$D_2\norm u^2\eps^2+O(\tau_\eps)$ and $\tau_\eps Q_\eps$ with $\mathcal B-o(1)\preceq Q_\eps\preceq\tfrac43\mathcal B+o(1)$,
+$D_2\norm u^2\eps^2+O(\tau_\eps)$ and $\tau_\eps Q_\eps$ with $\mathcal B-o(1)\preceq Q_\eps\preceq1.3208\,\mathcal B+o(1)$,
 off-diagonal blocks $O(\eps^2)$ against the first and $O(\tau_\eps)$ between the last two (this
 uses both cancellations). Eliminating the first block changes the $W$-block by $O(\eps^4)$, and the
 second by $O(\tau_\eps^2/\eps^2)=o(\tau_\eps)$, through congruences tending to the identity. By
@@ -2704,14 +2908,14 @@ each deleted frequency contributes $O(\eps^4)$ to $c^{\mathsf T}G_\eps c$ for $c
 
 For fixed $c\ne0$ the mean square of $\sum_ic_iE(t+\eps u_i)$ thus has exactly three possible
 orders: $C_0(\sum c_i)^2$ if $\sum c_i\ne0$; $\sim D_2(\sum u_ic_i)^2\eps^2$ if $\sum c_i=0\ne\sum u_ic_i$;
-and between $\mathcal B(c)\tau_\eps$ and $\tfrac43\mathcal B(c)\tau_\eps$ asymptotically if $c\in W$. Further
+and between $\mathcal B(c)\tau_\eps$ and $1.3208\,\mathcal B(c)\tau_\eps$ asymptotically if $c\in W$. Further
 moment cancellations do not lower the order, since $\mathcal B>0$ on $W$.
 
 \begin{corollary}[Raw finite differences; \stG]\label{zer:cor:rawdiff}
 For a fixed integer $d\ge2$, the long-time mean square $V_d(\eps)$ of
 $\sum_{j=0}^d(-1)^{d-j}\binom djE(t+j\eps)$ satisfies
 \[
- \mathcal B_d\le\liminf\frac{V_d(\eps)}{\tau_\eps}\le\limsup\frac{V_d(\eps)}{\tau_\eps}\le\frac43\mathcal B_d,\qquad
+ \mathcal B_d\le\liminf\frac{V_d(\eps)}{\tau_\eps}\le\limsup\frac{V_d(\eps)}{\tau_\eps}\le1.3208\,\mathcal B_d,\qquad
  \mathcal B_d=\frac1{12}\sum_{i,j=0}^d(-1)^{i+j}\binom di\binom dj\abs{i-j}^3>0,
 \]
 with $\mathcal B_2,\mathcal B_3,\mathcal B_4,\mathcal B_5=\tfrac23,1,\tfrac83,\tfrac{25}3$.
@@ -2728,7 +2932,7 @@ For a target node $k$ let $V_k^*(\eps)$ be the infimum over real $a_i$ $(i\ne k)
 on $\eps$, of the long-time mean square of $E(t+\eps u_k)-\sum_{i\ne k}a_iE(t+\eps u_i)$, and
 $B_k^*=\min\set{\mathcal B(c):c\in W,\ c_k=1}>0$. Then
 \[
- B_k^*\le\liminf\frac{V_k^*(\eps)}{\tau_\eps}\le\limsup\frac{V_k^*(\eps)}{\tau_\eps}\le\frac43B_k^*,
+ B_k^*\le\liminf\frac{V_k^*(\eps)}{\tau_\eps}\le\limsup\frac{V_k^*(\eps)}{\tau_\eps}\le1.3208\,B_k^*,
 \]
 and an intercept does not help, since all observations have mean zero.
 \end{theorem}
@@ -2741,15 +2945,15 @@ $\tau_\eps G_\eps^{-1}=P_WQ_\eps^{-1}P_W+o(1)$, since $\tau_\eps/\eps^2\to0$; in
 
 For $u=(-1,0,1)$, $W$ is spanned by $(1,-2,1)$, $\mathcal B(1,-2,1)=\tfrac23$, $b_1=\tfrac19$ and
 $B^*_{\mathrm{middle}}=\tfrac16$. So $\lambda_3(G_\eps)/\tau_\eps$ lies asymptotically in
-$[\tfrac19,\tfrac4{27}]$, and the optimal prediction error of the middle value in
-$[\tfrac16,\tfrac29]$ after division by $\tau_\eps$; the midpoint predictor $\tfrac12(E(t-\eps)+E(t+\eps))$
+$[\tfrac19,1.3208/9]$, and the optimal prediction error of the middle value in
+$[\tfrac16,1.3208/6]$ after division by $\tau_\eps$; the midpoint predictor $\tfrac12(E(t-\eps)+E(t+\eps))$
 is optimal up to a factor $1+o(1)$, its excess error being
 $[C_0+C(2\eps)-2C(\eps)]^2/(2[C_0+C(2\eps)])=O(\eps^4)$. These finite constants are checked in exact
 rational arithmetic in
 \begin{center}\artifact{prime_scale_coalescence_2026-11-26/verification/verify_geometry.py}.\end{center}
 
 \begin{proposition}[Exact constants; \stG, with the asymptotic for $M_2$ as a hypothesis]\label{zer:prop:kappa}
-If moreover $M_2(T)\sim\kappa T\log T/(2\pi)$, then $1\le\kappa\le\tfrac43$,
+If moreover $M_2(T)\sim\kappa T\log T/(2\pi)$, then $1\le\kappa\le1.3208$,
 $G_\eps|_W/\tau_\eps\to\kappa\mathcal B$,
 $\lambda_{j+2}(G_\eps)/\tau_\eps\to\kappa b_j$, $V_k^*(\eps)/\tau_\eps\to\kappa B_k^*$, the optimal predictor
 converges to the minimizer defining $B_k^*$, and
@@ -2766,13 +2970,246 @@ For $C(h)$ scale the remainder $K$, using
 $\int_0^\infty K(x)x^{-4}\dd x=\tfrac16\int_0^\infty(1-\cos x)x^{-2}\dd x=\pi/12$.
 \end{proof}
 
-If all but finitely many zeros are simple then $\kappa=1$; that almost all zeros are simple would
-not suffice, because the covariance involves squared multiplicities. The mean-square derivative
+By \cref{zer:thm:coalesceinverse} below, $\kappa=1$ holds exactly when simple zeros have density one;
+squared multiplicities are controlled by the density of multiple zeros through Korolev's uniform
+multiplicity tail. The mean-square derivative
 of the limiting signal exists, its squared coefficients summing to $D_2$, but no second
 derivative does, since $\sum m_\gamma^2\gamma^4/(\tfrac14+\gamma^2)^2=\infty$; this roughness at the scale
-$\gamma\asymp1/\eps$, together with the density of zeros, produces the factor $\eps^3\log(1/\eps)$. The
-corresponding matrix problem for residue classes, where coincident zeros of different
-$L$-functions add structure, is not settled by this argument.
+$\gamma\asymp1/\eps$, together with the density of zeros, produces the factor $\eps^3\log(1/\eps)$.
+
+\paragraph{The converse: multiplicities from one variance.}
+The forward comparison has a converse, already for one three-point contrast. For $a,b>0$ put
+\[
+ D_hf(t)=bf(t)-(a+b)f(t+ah)+af(t+(a+b)h),\qquad P(x)=b-(a+b)e^{iax}+ae^{i(a+b)x},
+\]
+let $V_{a,b}(h)$ be the long-time mean square of $D_hE$, $\tau(h)=h^3\log(1/h)$, and
+$B_{a,b}=a^2b^2(a+b)/3$, which is $\mathcal B(c)$ for $u=(0,a,a+b)$ and $c=(b,-(a+b),a)$: the spline
+$H_c$ is a tent of base $a+b$ and height $ab$. Let $K(x)=\abs{P(x)}^2/x^4$, continuous at $0$ with
+$K(0)=a^2b^2(a+b)^2/4$.
+
+\begin{theorem}[Inverse theorem for positive measures; \stU]\label{zer:thm:inversemeasure}
+Let $A$ be a positive locally finite measure on $[0,\infty)$ with $\int_1^\infty x^{-4}\dd A(x)<\infty$, put
+$A(X)=A([0,X])$ and $U(h)=h^4\int K(hx)\dd A(x)$. For finite $d\ge0$,
+\[
+ \frac{\pi A(T)}{T\log T}\to d\quad\Longleftrightarrow\quad\frac{U(h)}{\tau(h)}\to dB_{a,b},
+\]
+and for the reverse implication it suffices that the right-hand limit hold along one decreasing
+sequence $h_n\to0$ with $h_{n+1}/h_n\to1$.
+\end{theorem}
+\begin{proof}
+Let $\mu_T(E)=\pi A(TE)/(T\log T)$. Then
+$U(s/T)/(T^{-3}\log T)=\pi^{-1}\int_0^\infty\abs{P(sx)}^2x^{-4}\dd\mu_T(x)$, and $\abs{P(x)}\ll\min(x^2,1)$. If the
+counting limit holds, $A(X)\ll(1+X)\log(2+X)$, $\mu_T\to d\,\dd x$ vaguely, the integral over $x>R$ is
+$O(R^{-3}(1+\log 2R))$ by a dyadic sum, and the integrand is locally uniformly continuous in $(s,x)$;
+with $s=1$ and $\pi^{-1}\int_0^\infty K=\int H_c^2=B_{a,b}$ (Plancherel, $H_c''=\sum_ic_i\delta_{u_i}$) this
+gives the forward direction.
+
+Conversely $K$ is bounded below near $0$, so $U(h_n)\ll\tau(h_n)$ gives $A(\delta/h_n)\ll h_n^{-1}\log(1/h_n)$,
+and monotonicity with $h_{n+1}/h_n\to1$ gives $A(X)\ll(1+X)\log(2+X)$. Every vague limit $\nu$ of the
+$\mu_T$ satisfies $\nu([0,R])\le CR$, and choosing $n=n(T)$ with $Th_n\to s$ gives
+$\int\abs{P(sx)}^2x^{-4}\dd\nu=\pi dB_{a,b}s^3$ for every $s>0$, the value given by $d\,\dd x$. For
+$\sigma=\nu-d\,\dd x$ put $R_\sigma(t)=\int_0^\infty(\cos(tx)-1+(tx)^2/2)x^{-4}\dd\sigma(x)$, so
+$\abs{R_\sigma(t)}\ll\abs t^3$. Expanding $\abs P^2$ cancels the constant and quadratic terms and gives
+$abR_\sigma((a+b)s)=b(a+b)R_\sigma(as)+a(a+b)R_\sigma(bs)$; with $M=\sup_{t>0}\abs{R_\sigma(t)}/t^3$ this gives
+$M\le\frac{a^2+b^2}{(a+b)^2}M$, so $R_\sigma=0$. Its fourth distributional derivative is the cosine
+transform of $\sigma$ (truncate to compact subintervals and integrate by parts against Schwartz
+functions), so the even extension of $\sigma$ has zero Fourier transform and $\sigma=0$. All limits
+equal $d\,\dd x$, and evaluating on $[0,1]$ gives the counting limit.
+\end{proof}
+
+When $x^{-4}$ is replaced by $(\tfrac14+x^2)^{-2}$ and $\int(1+x^2)^{-1}\dd A<\infty$, the change costs
+$O(h^4)=o(\tau(h))$, since $\abs{P(hx)}^2\ll h^4x^4$ and $0\le1-x^4/(\tfrac14+x^2)^2\ll(1+x^2)^{-1}$.
+
+\begin{theorem}[Reading multiplicities from the variance; \stG]\label{zer:thm:coalesceinverse}
+\begin{enumerate}[label=\textup{(\roman*)}]
+\item For fixed $a,b>0$ and every finite $\kappa\ge0$, one has
+$V_{a,b}(h)/\tau(h)\to B_{a,b}\kappa$ as $h\downarrow0$ if and only if
+$2\pi M_2(T)/(T\log T)\to\kappa$; on the left it suffices to take $h=1/k$ with $k\to\infty$.
+\item For every nonzero $c\in W$, with any nodes $u$, the following are equivalent: simple zeros of
+$\zeta$ have density one among all zeros counted with multiplicity; $M_2(T)/N(T)\to1$;
+$c^{\mathsf T}G_\eps c/\tau_\eps\to\mathcal B(c)$. In the last condition it suffices to take $\eps=h_n$ along
+any decreasing sequence with $h_n/h_{n+1}$ bounded, for instance $h_n=2^{-n}$.
+\end{enumerate}
+\end{theorem}
+
+For $a=b=1$ the measured coefficient is $\tfrac23\kappa$: knowing that one such limit exists gives the
+limiting coefficient for every contrast. The criterion does not decide whether it holds.
+
+\begin{proof}
+(i) By the spectral formula, $V_{a,b}(h)=2\sum_{\gamma>0}m_\gamma^2\abs{P(h\gamma)}^2/(\tfrac14+\gamma^2)^2$. Apply
+\cref{zer:thm:inversemeasure} to $A=2\sum_{\gamma>0}m_\gamma^2\delta_\gamma$, whose unit-bin masses are
+$O(\log^2(2+y))$, with the change of denominator.
+
+(ii) Let $D_j(T)$ count distinct zeros of multiplicity $j$ up to height $T$. Korolev's theorem gives
+absolute $A_0,c_0>0$ with $D_j(T)\le A_0N(T)e^{-c_0j}$ for all $j\ge1$ and large $T$
+\cite[Theorem~A]{Korolev2006Multiple}. With $d_T=1-D_1(T)/N(T)$ and $e_T=M_2(T)/N(T)-1$, weighting by
+$j(j-1)$ against $j$ for $j\ge2$ and separating at $K$ gives
+$d_T\le e_T\le Kd_T+A_0\sum_{j>K}j^2e^{-c_0j}$, which proves the equivalence of the first two
+conditions (and $e_T=O(d_T\log(e/d_T))$). Replacing $m_\gamma^2$ by $m_\gamma$ in the spectral formula gives a
+baseline with limit $\mathcal B(c)$ by the Riemann--von Mangoldt formula and the scaling of the proof
+of \cref{zer:thm:coalesce}; the excess has weights $m_\gamma(m_\gamma-1)\ge0$, so the second condition
+implies the third. Conversely, $p_c(x)=\sum_ic_ie^{iu_ix}$ is a nonzero exponential polynomial whose
+zeros do not accumulate at $0$; choose $z>0$ with $p_c\ne0$ on $(0,z]$. For large $T$ take the first
+$n$ with $h_n\le z/T$, so $z/R\le h_nT\le z$ with $R=\sup h_n/h_{n+1}$; for $T/2<\gamma\le T$, $\abs{p_c(h_n\gamma)}$
+is bounded below and $(\tfrac14+\gamma^2)^{-2}\gg T^{-4}$, and $\tau(h_n)\asymp T^{-3}\log T$, so the vanishing
+normalized excess gives $\sum_{T/2<\gamma\le T}m_\gamma(m_\gamma-1)=o(T\log T)$; dyadic summation gives
+$M_2(T)-N(T)=o(T\log T)$.
+\end{proof}
+
+The positivity of the spectral weights is essential. On $x\ge1$ let
+$\dd A(x)=\log(2+x)(1+\epsilon\cos(\omega\log x))\dd x$ with $0<\epsilon<1$ and $\omega=\pi/\log2$. Then
+$A(T)/(T\log T)=1+\epsilon\Re\{T^{i\omega}/(1+i\omega)\}+o(1)$ has no limit, while for $a=b=1$
+$U(h)/\tau(h)=\int K+\epsilon\Re\{h^{-i\omega}\int K(y)y^{i\omega}\dd y\}+o(1)$, and replacing $h$ by $2h$ reverses
+the oscillation, so $(U(h)+U(2h)/8)/\tau(h)$ converges. This is the variance of one real five-point
+contrast: with $s=(1+\sqrt3)/2$ and $Q(z)$ the real quadratic with coefficients
+$(s+\sqrt s)/2,\ 1/(2s),\ (s-\sqrt s)/2$, $\abs{Q(z)}^2=1+\abs{1+z}^4/8$ on $\abs z=1$, and the coefficients of
+$(1-z)^2Q(z)$ annihilate affine functions, with squared modulus $\abs{1-z}^4+\abs{1-z^2}^4/8$. So a
+five-point contrast can have a limiting coefficient while the normalized count oscillates; whether
+zeta zeros realize such a measure is a separate question.
+
+\paragraph{Residue classes.}
+Fix $q$, let $\chi$ run over the $n_q$ characters modulo $q$, with the multiplicities $m_\chi(\gamma)$ of the
+primitive inducers at distinct signed ordinates and $M(\gamma)=\sum_\chi m_\chi(\gamma)$, and let $Z_a$ be as in
+\eqref{zer:eq:va}. By \cref{zer:lem:ramp}, $F_\chi=\sum_a\chi(a)Z_a$ is a constant plus
+$\sum_{\gamma\ne0}m_\chi(\gamma)(\tfrac14+\gamma^2)^{-1}e^{i\gamma t}$ plus a decaying term, and $D_h$ kills the constant.
+With long-time inner products,
+\[
+ W_{\chi\psi}(h)=\langle D_hF_\chi,D_hF_\psi\rangle=\sum_{\gamma\ne0}\frac{\abs{P(h\gamma)}^2m_\chi(\gamma)m_\psi(\gamma)}{(1/4+\gamma^2)^2},
+ \qquad C_{ab}(h)=\langle D_hZ_a,D_hZ_b\rangle ,
+\]
+and $C=HWH^*$ with $H_{a\chi}=\overline{\chi(a)}/n_q$, $HH^*=I/n_q$.
+
+\begin{theorem}[Pairwise inversion and the identity class; \stG]\label{zer:thm:identityclass}
+\begin{enumerate}[label=\textup{(\roman*)}]
+\item For characters $\chi,\psi$ modulo $q$ and finite $d\ge0$, $W_{\chi\psi}(h)/\tau(h)\to B_{a,b}d$ if and only
+if
+\[
+ \frac\pi{T\log T}\sum_{0<\abs\gamma\le T}m_\chi(\gamma)m_\psi(\gamma)\to d ;
+\]
+$h=1/k$ suffices. Hence $C/\tau$
+converges entrywise exactly when all these folded pair counts converge, with limit $B_{a,b}HDH^*$ for
+the matrix $D$ of their limits.
+\item $\liminf C_{11}(h)/\tau(h)\ge B_{a,b}/n_q$, and the following are equivalent:
+$C_{11}(h)/\tau(h)\to B_{a,b}/n_q$ for one pair $a,b>0$; $\sum_{0<\abs\gamma\le T}M(\gamma)(M(\gamma)-1)=o(T\log T)$;
+$C(h)/\tau(h)\to(B_{a,b}/n_q)I$ for every $a,b>0$; simple zeros have density one among the zeros of the
+Dedekind zeta function of $\Q(\zeta_q)$, counted with multiplicity. In the first condition it suffices
+to take $h=2^{-k}$.
+\end{enumerate}
+\end{theorem}
+\begin{proof}
+(i) is \cref{zer:thm:inversemeasure} with mass $m_\chi(\gamma)m_\psi(\gamma)$ at $\abs\gamma$; the unit-bin mass is
+$O_q(\log^2(2+\abs y))$. For (ii) let $J_\chi$ be $W_{\chi\chi}$ with $m_\chi^2$ replaced by $m_\chi$;
+Riemann--von Mangoldt gives $J_\chi/\tau\to B_{a,b}$, and $C^0=H\operatorname{diag}(J_\chi)H^*$ has
+$C^0/\tau\to B_{a,b}I/n_q$. All entries of $W-\operatorname{diag}(J_\chi)$ are nonnegative, every entry of $H$
+has modulus $1/n_q$ and its identity row is constant, so
+\[
+ \abs{C_{uv}-C^0_{uv}}\le C_{11}-C^0_{11}=\frac1{n_q^2}\sum_{\gamma\ne0}\frac{\abs{P(h\gamma)}^2M(\gamma)(M(\gamma)-1)}{(1/4+\gamma^2)^2}.
+\]
+This gives the lower bound, and \cref{zer:thm:inversemeasure} with $d=0$ applied to the excess gives the
+equivalence of the first two conditions and then the third. The dyadic sufficiency follows from the
+shell argument of \cref{zer:thm:coalesceinverse}(ii) with $\abs P$ bounded below on
+$[2^{-s-1},2^{-s}]$. By the cyclotomic factorization $M(\gamma)$ is the multiplicity of the Dedekind zeta
+zero, whose count is $\sim n_qT\log T/\pi$. The bound $\sum_{0<\abs\gamma\le T}M(\gamma)^4\ll_qT\log T$ (from the
+fourth moment of the positive test counts $Y_j$ in the proof of \cref{zer:thm:familyrate} below, and
+$(\sum_jm_j)^4\le n_q^3\sum_jm_j^4$) and Cauchy--Schwarz show that density-one simplicity makes the
+total squared multiplicity of the multiple zeros $o(T\log T)$; conversely $M\le M(M-1)$ when $M\ge2$.
+\end{proof}
+
+For $q=4$ the inducers are $\zeta$ and the Dirichlet beta function; with multiplicities $m,r$ at an
+ordinate, $(m+r)(m+r-1)=m(m-1)+r(r-1)+2mr$, so the coefficient $\tfrac13$ for the second difference in
+the class $1\bmod4$ forces all three weighted excesses to be $o(T\log T)$, the same coefficient in the
+class $3\bmod4$ and zero limiting cross coefficient.
+
+\begin{theorem}[Local bounds for the multiplicity matrix; \stG]\label{zer:thm:familyrate}
+Let $\chi_1,\dots,\chi_d$ be distinct primitive characters, the conductor-one character allowed, and
+$m(\gamma)=(m_j(\gamma))_j$. There are $0<c<C$ depending only on the family such that for fixed
+$0<A<B$ and all large $T$,
+\[
+ c(B-A)T\log T\,I_d\preceq\sum_{AT<\gamma\le BT}m(\gamma)m(\gamma)^{\mathsf T}\preceq C(B-A)T\log T\,I_d ,
+\]
+as Hermitian forms, and likewise on negative heights. The same holds on $[T,T+H]$ with
+$T^\delta\le H\le T$, with bounds multiples of $H\log T$ and constants depending also on $\delta$.
+\end{theorem}
+\begin{proof}
+Let $L=\log T$, let $w\ne0$ be smooth with compact support in $(\alpha,\beta)$, $0<\alpha<\beta<\tfrac18$, and
+$f(x)=\int w(v)e^{ivx}\dd v$. For a unit $c\in\C^d$ put $z(\gamma)=\sum_jc_jm_j(\gamma)$,
+$U(n)=\sum_jc_j\chi_j(n)$ and $X(t)=\sum_\gamma z(\gamma)f(L(\gamma-t))$. The explicit formula
+\cite[Lemma~2.1]{LiuYe2005Distribution} for each primitive inducer gives, uniformly for $t/T$ in compact
+positive ranges,
+$X(t)=-L^{-1}\sum_{n\le T^\beta}\Lambda(n)U(n)n^{-1/2}w(\log n/L)n^{-it}+o(1)$: only positive frequencies
+occur, the archimedean constant vanishes since $\int f=2\pi w(0)=0$, and the pole terms of the
+conductor-one character are $o(1)$ by integration by parts. On an interval $J$ of length $H\asymp T$,
+$H^{-1}\int_J\abs{\sum_{n\le N}d_nn^{-it}}^2\dd t=(1+O(N\log(2N)/H))\sum\abs{d_n}^2$. For the prime part $P$,
+the prime number theorem in reduced classes and orthogonality of the distinct induced characters give
+$\sum_p\abs{d_p}^2\to\int v\abs{w(v)}^2\dd v>0$ uniformly in $c$, while higher prime powers contribute
+$O(L^{-2})$; so $\norm{X+P}_{L^2(J,\dd t/H)}=o(1)$. The same estimate for $P^2$ and unique factorization
+give $\norm P_4=O(1)$, and $\norm P_2\le\norm P_1^{1/3}\norm P_4^{2/3}$ gives $H^{-1}\int_J\abs X\gg1$. With $J$
+the middle half of $[AT,BT]$, the ordinates outside contribute $o(1)$ by rapid decay, and each ordinate
+inside at most $\abs{z(\gamma)}\norm f_1/L$, so $\sum_{AT<\gamma\le BT}\abs{z(\gamma)}\gg(B-A)TL$; the
+Riemann--von Mangoldt count and Cauchy--Schwarz give the lower bound. For the upper bound take a
+nonnegative Schwartz $g$ with $g(0)>0$ and smooth Fourier transform supported in $(-\beta,\beta)$; for
+$Y_j(t)=\sum_\gamma m_j(\gamma)g(L(\gamma-t))$ the same formula gives two short polynomials with bounded
+coefficient square sums and a bounded archimedean term, so $\int_{AT-1}^{BT+1}\abs{Y_j}^2\ll(B-A)T$, and the
+diagonal terms bound this below by $L^{-1}\int_{-1}^1g^2\cdot\sum_{AT<\gamma\le BT}m_j(\gamma)^2$; sum over $j$ and use
+$\abs{z(\gamma)}^2\le\sum_jm_j(\gamma)^2$. The same positivity applied to $Y_j^4$, whose prime polynomials have
+bounded fourth moments, gives $\sum_{T<\gamma\le2T}m_j(\gamma)^4\ll T\log T$. For short intervals choose
+$2\beta<\delta$.
+\end{proof}
+
+For two functions and the difference of their multiplicities, lower bounds of order $T\log T$ are due
+to Fujii and to Bombieri and Perelli \cite{Fujii1976Zeros,BombieriPerelli1998Distinct}; the matrix form
+is uniform in the direction.
+
+\begin{corollary}[Orders of the residue-class covariance; \stG]\label{zer:cor:classorders}
+Let $d=n_q$, fix distinct offsets $u_1,\dots,u_r$, and let $b_j\in\R^d$ satisfy $\sum_jb_j=\sum_ju_jb_j=0$,
+with $H_b(v)=\sum_jb_j(v-u_j)_+$. Uniformly in such $b$, as $h\downarrow0$,
+\[
+ \mathcal M\Bigl\lvert\sum_jb_j^{\mathsf T}Z(t+hu_j)\Bigr\rvert^2\asymp_q h^3\log(1/h)\int_\R\norm{H_b(v)}^2\dd v ,
+\]
+$\mathcal M$ the long-time mean. For $r\ge3$ the $rd$-dimensional covariance of
+$(Z(t+hu_1),\dots,Z(t+hu_r))$ has $d$ eigenvalues of order $1$, $d$ of order $h^2$ and $(r-2)d$ of order
+$\tau(h)$, even with coincidences among ordinates; its determinant has order
+$h^{(3r-4)d}\log(1/h)^{(r-2)d}$.
+\end{corollary}
+\begin{proof}
+Place $m(\gamma)m(\gamma)^{\mathsf T}/(T\log T)$ at $\gamma/T$, $T=1/h$. By \cref{zer:thm:familyrate} every vague
+limit lies between $cI_d\,\dd x$ and $CI_d\,\dd x$, and dyadic summation gives
+$\sum_{0<\abs\gamma\le X}\norm{m(\gamma)}^2\ll X\log(2+X)$, which controls the ends since
+$\norm{\sum_jb_je^{iu_jx}}\ll\norm b\min(x^2,1)$. The character-to-class matrix and Parseval bound the
+normalized variance by constant multiples of $d^{-1}\int\norm{\sum_jb_je^{iu_jx}}^2x^{-4}\dd x
+=2\pi d^{-1}\int\norm{H_b}^2$, a positive definite form on the contrast space. For the eigenvalues use an
+orthonormal offset basis beginning with the constant and the centred vectors. The first observation
+vector converges in $\ell^2$ of the ordinates to a multiple of the ramp vector, the second divided by
+$h$ to a multiple of its derivative, and their joint limiting Gram is positive definite: a relation
+would give $m(\gamma)^{\mathsf T}(v+i\gamma w)=0$ for all ordinates, and on $[T,2T]$
+\cref{zer:thm:familyrate} forces $w=0$, then $v=0$. The remaining vectors divided by $\sqrt{\tau}$ have
+Gram matrices bounded above and below by the first part and converge weakly to zero, so the mixed
+entries vanish; min--max gives the orders.
+\end{proof}
+
+\begin{corollary}[A criterion including the critical line; \stU]\label{zer:cor:critline}
+For $a=b=1$ the following are equivalent: the mean squares $C_{11}(2^{-k})$ exist for all large $k$ and
+$C_{11}(2^{-k})/\tau(2^{-k})\to2/(3n_q)$; every nontrivial zero of $\zeta_{\Q(\zeta_q)}$ lies on the
+critical line and its simple zeros have density one.
+\end{corollary}
+\begin{proof}
+Use the unconditional centering constant given by the constant Laurent coefficients of $-L'/L$ at
+$s=1$. With $\lambda=s-\tfrac12$, the Laplace transform of the identity-class ramp is
+$\sum_\chi(-L'/L)(1+\lambda,\chi)/(n_q\lambda(1+\lambda))-1/(n_q\lambda^2)-c/\lambda$, and that of its second
+difference is $(e^{hs}-1)^2$ times this plus an entire function. A finite long-time mean square at one
+$h$ makes the latter holomorphic on $\Re s>0$ by Cauchy--Schwarz, whereas a zero with real part above
+$\tfrac12$ would give a pole, since multiplicities add. The functional equation and the cyclotomic
+factorization give the critical line, and \cref{zer:thm:identityclass}(ii), whose proof uses the Riemann
+hypothesis only for the primitive inducers modulo $q$, gives the rest.
+\end{proof}
+
+The infinite-time average removes all unequal frequencies before the lag tends to zero, so these
+statements are insensitive to any finite set of zeros and differ from the short-interval variance
+problems of full pair correlation. Inverse problems for regular variation and logarithmically periodic
+obstructions have a general theory \cite{JacobsenMikoschRosinskiSamorodnitsky2009Inverse}. Exact checks of
+the spline norms $\mathcal B_2,\dots,\mathcal B_5$ and of the minimal covariance $\tfrac16I_4$ at modulus
+$8$ are in
+\begin{center}\artifact{dirichlet-zero-multiplicity-and-reconstruction/checks/contrast-results.txt}.\end{center}
 
 \subsection{A prime race in a fixed window}\label{zer:sec:window}
 \sources{grh_transfers; grh-transfer}
@@ -4082,7 +4519,7 @@ and $(s-1)\zeta(s)$.
 \end{example}
 
 \subsection{Graph-coupled real-rooted functions}\label{zer:sec:graph}
-\sources{graph_coupled_zeros_2026-11-26}
+\sources{graph_coupled_zeros_2026-11-26; grh_exact_extensions_2026-11-27; grh_path_rigidity_2026-11-27}
 
 This subsection is a statement about real-rooted polynomials and real canonical products; the
 only arithmetic input is that \cref{src:thm:dgrh} makes the phase-normalized completed Dirichlet
@@ -4219,6 +4656,217 @@ conductance $t$, $\mathcal P_t(z)=2z(3t^2z^4+8tz^3+(4-28t^2)z^2-36tz+49t^2)$ and
 displacement from the critical points $0,\pm\sqrt{7/3},\pm\sqrt7$ is $8/(15t)$; adding an edge of
 conductance $h$ between the ends moves the five zeros by $4h/(1+2h)$ in total.
 
+\paragraph{Optimal couplings.}
+Which graph moves the zeros least? Fix $n\ge2$, degrees $d_1,\dots,d_n\ge1$ and a budget $W>0$,
+put $d=(d_i)$, $N=\sum_id_i$, $H=\mathbf 1_n^\perp\subset\R^n$ and
+\begin{equation}\label{zer:eq:Cdeg}
+ C=\zerdiag(d_1,\dots,d_n)-\frac{dd^{\mathsf T}}N .
+\end{equation}
+An admissible graph has the $n$ labelled vertices, conductances $w_{ij}=w_{ji}\ge0$ whose positive
+support is connected, and $\sum_{i<j}w_{ij}=W$; the topology is free, its Laplacian $L$ is positive
+definite on $H$, and $\tr L=2W$. For $1\le p<\infty$ let $\mathcal E_p(G)$ be the supremum, over all
+monic real-rooted $p_i$ of degree $d_i$, of
+\[
+ W_p(\mu_G,\nu)=\Bigl(\frac1{N-1}\sum_{k=1}^{N-1}\abs{\beta_k-\lambda_k}^p\Bigr)^{1/p},
+\]
+and let $\mathcal E_\infty(G)$ be the supremum of $\max_k(\beta_k-\lambda_k)$; in dimension one the
+ordered matching is optimal for every $W_p$, so these are Wasserstein distances between the
+empirical measures of \cref{zer:thm:electrical}. They are guarantees depending only on the degrees.
+
+\begin{lemma}[The reduced displacement operator; \stU]\label{zer:lem:reducedB}
+The operator $B_G$ of \cref{zer:thm:electrical} is positive semidefinite of rank $n-1$, and its
+nonzero eigenvalues are the eigenvalues on $H$ of
+\[
+ T_L=C^{1/2}(L|_H)^{-1}C^{1/2}.
+\]
+\end{lemma}
+\begin{proof}
+$V^{\mathsf T}QV=C$, so with $X=QV(L^+)^{1/2}$ the equal nonzero spectra of $XX^{\mathsf T}$ and
+$X^{\mathsf T}X$ identify the positive spectrum of $B_G$ with that of $T_L$. The identity
+$y^{\mathsf T}Cy=N^{-1}\sum_{i<j}d_id_j(y_i-y_j)^2$ shows that $C$ is positive definite on $H$, which
+gives the rank.
+\end{proof}
+
+\begin{lemma}[Convex displacement bound; \stU]\label{zer:lem:convex}
+Let $A$ be real symmetric and $B\succeq0$ of the same size $m$, order eigenvalues increasingly, and
+put $\Delta_k=\lambda_k(A)-\lambda_k(A-B)\ge0$. For every continuous convex
+$\phi\colon[0,\infty)\to\R$,
+\[
+ \sum_{k=1}^m\phi(\Delta_k)\le\tr\phi(B),
+\]
+with equality for $A=cI$, and for every $A$ when $\phi(t)=t$.
+\end{lemma}
+\begin{proof}
+This is a form of Lidskii majorization \cite[Theorem~2.1]{Argentati2008Bounds}. Suppose first that $A$
+has simple spectrum. The discriminant of the characteristic polynomial of $A-tB$ is a polynomial in
+$t$, nonzero at $0$, so only finitely many $t\in[0,1]$ have repeated eigenvalues; elsewhere
+$-\lambda_k'(t)=u_k(t)^{\mathsf T}Bu_k(t)=b_k(t)\ge0$ for an orthonormal eigenbasis $u_k(t)$. The
+ordered eigenvalues are Lipschitz, so $\Delta_k=\int_0^1b_k(t)\,\dd t$ and Jensen's inequality gives
+$\phi(\Delta_k)\le\int_0^1\phi(b_k(t))\,\dd t$. In an eigenbasis of $B$ each $b_k(t)$ is a convex
+combination of the eigenvalues of $B$, with weights the squared entries of an orthogonal matrix, so a
+second application of Jensen's inequality, summed over $k$, gives $\sum_k\phi(b_k(t))\le\tr\phi(B)$.
+Integrate, and approximate a general $A$ by matrices with simple spectrum. The equality cases are
+read off from the spectra and from the trace.
+\end{proof}
+
+Applied with $\phi(t)=t^p$ to $A_\infty$ and $B_G$, and with min--max for $p=\infty$, the lemmas give
+the exact envelopes
+\begin{equation}\label{zer:eq:envelope}
+ \mathcal E_p(G)^p=\frac{\tr_H(T_L^p)}{N-1}\quad(1\le p<\infty),\qquad\mathcal E_\infty(G)=\norm{T_L},
+\end{equation}
+attained when every input root is one common real number, as in the sharpness part of
+\cref{zer:thm:electrical}. Arbitrarily small distinct perturbations of a common root give the same
+suprema, by continuity of eigenvalues.
+
+\begin{theorem}[Exact minimax couplings; \stU]\label{zer:thm:minimax}
+For $1\le p<\infty$ put $r=p/(p+1)$ and $S_r=\tr(C^r)$, the zero eigenvalue contributing zero. The
+unique optimal graph has Laplacian
+\[
+ L_p=\frac{2W}{S_r}C^r,\qquad
+ \min_G\mathcal E_p(G)=\frac{S_r^{1+1/p}}{2W(N-1)^{1/p}} .
+\]
+For the largest displacement the unique optimum is
+\[
+ L_\infty=\frac{2W}{\tr C}C,\qquad w^{(\infty)}_{ij}=\frac{Wd_id_j}{\sum_{a<b}d_ad_b},\qquad
+ \min_G\mathcal E_\infty(G)=\frac{\tr C}{2W}=\frac{N^2-\sum_id_i^2}{2WN}.
+\]
+Every optimizer is a complete graph with strictly positive conductances. If the input roots are
+required to be distinct, or the budget is only $\sum_{i<j}w_{ij}\le W$, the suprema and the optimal
+graphs are unchanged.
+\end{theorem}
+
+At $p=1$ the displacement does not depend on the input roots, by \eqref{zer:eq:resistance}. For
+$p>1$ the common root is an attaining configuration, not claimed to be the only one. The
+normalization by $N-1$ matters: the perturbation $B_G$ has rank $n-1$, while there are $N-1$ output
+zeros.
+
+\begin{proof}
+Work on $H$ in an orthonormal eigenbasis of $C$, with eigenvalues $c_1,\dots,c_{n-1}>0$, and put
+$\ell_i=L_{ii}$ in this basis, so that $\sum_i\ell_i=\tr L=2W$. For finite $p\ge1$, the spectral
+Jensen inequality and Cauchy--Schwarz give
+\[
+ \tr(T_L^p)\ge\sum_i\bigl((T_L)_{ii}\bigr)^p=\sum_i\bigl(c_i(L^{-1})_{ii}\bigr)^p
+ \ge\sum_i\Bigl(\frac{c_i}{\ell_i}\Bigr)^p\ge\frac{\bigl(\sum_ic_i^{p/(p+1)}\bigr)^{p+1}}{(2W)^p}.
+\]
+Here $(L^{-1})_{ii}\ell_i\ge1$ is Cauchy--Schwarz for $L^{1/2}e_i$ and $L^{-1/2}e_i$, with equality
+only if $e_i$ is an eigenvector of $L$; the last step is the minimum of the strictly convex function
+$\sum_ic_i^p\ell_i^{-p}$ under $\sum_i\ell_i=2W$, attained only at $\ell_i=2Wc_i^r/S_r$. Equality
+throughout forces $L=(2W/S_r)C^r$. At $p=1$ the first inequality is an equality, but the second still
+forces diagonality and the scalar minimum is still unique. For $p=\infty$ let $t=\norm{T_L}$; then
+$T_L\preceq tI$ is equivalent to $C\preceq tL$, so taking traces $t\ge\tr C/(2W)$, and at equality
+$tL-C\succeq0$ has trace zero, hence vanishes.
+
+These lower bounds hold for every positive definite $L|_H$ of trace $2W$, without the sign
+conditions of a Laplacian; it remains to show that the candidates are graphs. For $0<r<1$,
+\[
+ C^r=\frac{\sin(\pi r)}\pi\int_0^\infty t^{r-1}C(C+tI)^{-1}\,\dd t ,
+\]
+which annihilates $\mathbf 1_n$, and for $i\ne j$ the rank-one inverse formula applied to
+$C+tI=\zerdiag(d_i+t)-dd^{\mathsf T}/N$ gives
+$((C+tI)^{-1})_{ij}=\frac{[d_i/(t+d_i)][d_j/(t+d_j)]}{t\sum_\ell d_\ell/(t+d_\ell)}>0$, so that
+\begin{equation}\label{zer:eq:edgeintegral}
+ -(C^r)_{ij}=\frac{\sin(\pi r)}\pi\int_0^\infty
+ \frac{t^{r-1}d_id_j}{(t+d_i)(t+d_j)\sum_\ell d_\ell/(t+d_\ell)}\,\dd t>0 ,
+\end{equation}
+the integrand being $O(t^{r-1})$ at $0$ and $O(t^{r-2})$ at infinity. Thus $C^r$ is the Laplacian of
+a complete graph with positive conductances; at $r=1$ this is $C_{ij}=-d_id_j/N$. Scaling gives
+trace $2W$, and \eqref{zer:eq:envelope} gives the minima. Scaling all conductances by $c>0$ divides
+every objective by $c$, so a graph using less than the budget is never optimal.
+\end{proof}
+
+At $p=\infty$ the optimum equalizes the displacements of the extremal input: for $p_i=(z-c)^{d_i}$ the
+coupled zeros are $c-\tr C/(2W)$ with multiplicity $n-1$ and $c$ with multiplicity $N-n$. The
+mean-optimal graph distributes them unequally and reduces their sum. Its edges keep the order of the
+degree products but compress their contrasts.
+
+Fractional powers of graph Laplacians are classical objects, with general preservation theorems
+\cite[Theorem~3.1]{BenziSimunec2022Rational}; \eqref{zer:eq:edgeintegral} gives an explicit positive
+integral for every optimal edge.
+
+\begin{corollary}[Edges of the square-root network; \stU]\label{zer:cor:sqrtedges}
+With $\eta(t)=\sum_kd_k/(t+d_k)$, the mean-optimal conductances are
+\[
+ w^{(1)}_{ij}=\frac{2Wd_id_j}{\pi\tr\sqrt C}\int_0^\infty\frac{\dd t}{\sqrt t\,(t+d_i)(t+d_j)\eta(t)},
+\]
+and for distinct $i,j,k$ with $d_j>d_k$,
+\[
+ 1<\frac{w^{(1)}_{ij}}{w^{(1)}_{ik}}<\frac{d_j}{d_k}=\frac{w^{(\infty)}_{ij}}{w^{(\infty)}_{ik}};
+\]
+both ratios are one if $d_j=d_k$.
+\end{corollary}
+\begin{proof}
+The formula is \eqref{zer:eq:edgeintegral} at $r=\tfrac12$. Cancelling common factors, the ratio
+$w^{(1)}_{ij}/w^{(1)}_{ik}$ is the average of $(d_j/d_k)(t+d_k)/(t+d_j)$, which lies strictly between
+$1$ and $d_j/d_k$ for every $t>0$, against the probability measure with density proportional to
+$t^{-1/2}d_id_k/((t+d_i)(t+d_k)\eta(t))$.
+\end{proof}
+
+\begin{corollary}[Dependence on the displacement cost; \stU]\label{zer:cor:exponents}
+If $n\ge3$, two distinct exponents $p\in[1,\infty]$ have the same optimal graph exactly when
+$d_1=\dots=d_n$, and then every edge has conductance $2W/(n(n-1))$. For $n=2$ every exponent gives
+the single edge of conductance $W$.
+\end{corollary}
+\begin{proof}
+Equal normalized powers of $C$ with different exponents force all positive eigenvalues of $C$ to
+coincide, so $C=c(I_n-\mathbf 1_n\mathbf 1_n^{\mathsf T}/n)$; its off-diagonal entries make all
+products $d_id_j$, $i\ne j$, equal, which for $n\ge3$ means equal degrees. The converse and the case
+$n=2$ are immediate.
+\end{proof}
+
+\begin{proposition}[Stability of the optimal couplings; \stU]\label{zer:prop:stability}
+Let $L$ be an admissible Laplacian and $\norm\cdot_{S_1}$ the nuclear norm.
+\begin{enumerate}[label=\textup{(\roman*)}]
+\item If $\mathcal E_\infty(L)\le(1+\eps)\tr C/(2W)$, then
+$\norm{L-L_\infty}_{S_1}\le4W\eps/(1+\eps)$ and $\norm{L-L_\infty}\le2W\eps/(1+\eps)$.
+\item Let $L_*=L_1$, $\Delta=L-L_*$ and $\delta=\mathcal E_1(L)/\mathcal E_1(L_*)-1$. Then
+\[
+ \delta=\frac1{2W}\tr(\Delta L^+\Delta),\qquad\norm{L-L_*}_{S_1}\le2W\sqrt\delta ,
+\]
+and for $n\ge3$ the exponent $\tfrac12$ cannot be improved in a local bound uniform over admissible
+Laplacians, in the nuclear or in the Frobenius norm.
+\end{enumerate}
+\end{proposition}
+\begin{proof}
+All inverses act on $H$; put $b=2W$. (i) Let $t=\mathcal E_\infty(L)$, $t_*=\tr C/b$ and
+$\eta=t/t_*-1\le\eps$. By the proof of \cref{zer:thm:minimax}, $\Delta_\infty=tL-C\succeq0$, and
+$L-L_\infty=\Delta_\infty/t-(t-t_*)C/(tt_*)$ is a difference of two positive semidefinite matrices of
+trace $b\eta/(1+\eta)$; the triangle inequality gives the nuclear bound, and both terms lie below
+$b\eta/(1+\eta)$ times the identity, which gives the operator bound.
+
+(ii) With $\alpha=b/\tr\sqrt C$ one has $C=L_*^2/\alpha^2$, and the resolvent identity
+$L^{-1}=L_*^{-1}-L_*^{-1}\Delta L_*^{-1}+L_*^{-1}\Delta L^{-1}\Delta L_*^{-1}$, multiplied by $C$, gives on
+taking traces, since $\tr\Delta=0$,
+$\tr(CL^{-1})-\tr(CL_*^{-1})=\alpha^{-2}\tr(\Delta L^{-1}\Delta)$ and $\tr(CL_*^{-1})=b/\alpha^2$, so
+\eqref{zer:eq:envelope} gives the identity for $\delta$. Equivalently, with $\sigma=\tr\sqrt C$,
+$\tr(CL^{-1})-\sigma^2/b=(\sigma/b)^2\norm{L^{-1/2}\Delta}_{\mathrm F}^2$, and
+$\norm{XY}_{S_1}\le\norm X_{\mathrm F}\norm Y_{\mathrm F}$ with $X=L^{1/2}$, $\norm{L^{1/2}}_{\mathrm F}^2=b$,
+gives $\norm\Delta_{S_1}\le(b\sqrt b/\sigma)(\delta\sigma^2/b)^{1/2}=b\sqrt\delta$. For sharpness exchange a
+small amount of conductance between two edges of the strictly positive optimal complete graph:
+$L(t)=L_*+tK$ with $K\ne0$ symmetric, $K\mathbf 1_n=0$ and $\tr K=0$. Then
+$\delta(t)=t^2\tr(KL_*^+K)/b+O(t^3)$ with a positive coefficient, while both norms of $L(t)-L_*$ are
+proportional to $\abs t$.
+\end{proof}
+
+For $(d_1,d_2,d_3)=(1,1,2)$ and $W=1$ the positive eigenvalues of $C$ are $1$ and $\tfrac32$, with
+eigenvectors $(1,-1,0)$ and $(1,1,-2)$, and with $s=(3/2)^r$ the optimal conductances are
+$w_{12}=(3-s)/(3(1+s))$ and $w_{13}=w_{23}=2s/(3(1+s))$. At $p=\infty$ they are
+$(\tfrac15,\tfrac25,\tfrac25)$ with optimal largest displacement $\tfrac54$; at $p=1$,
+$s=\sqrt6/2$, they are $(-3+4\sqrt6/3,\,2-2\sqrt6/3,\,2-2\sqrt6/3)$ with optimal mean displacement
+$(5+2\sqrt6)/12$. The graph optimal for the maximum has mean $\tfrac56$, and the graph optimal for the
+mean has maximum $(3+\sqrt6)/4>\tfrac54$. For the attaining inputs $(z,z,z^2)$ and conductances
+$(x,y,y)$, $\mathcal P_G(z)=2z+(4x+6y)z^2+4(2xy+y^2)z^3$, which at the maximum-optimal graph is
+$\tfrac{32}{25}z(z+\tfrac54)^2$, against $(p_1p_2p_3)'=4z^3$; at the mean-optimal graph the
+displacements are $0$, $(1+s)/2$ and $s(1+s)/2$. These identities, a noncollapsed
+forest-compression example and the stability identity are checked symbolically, together with
+numerical comparisons of $75$ optimal configurations against $750$ competing graphs, in
+\artifact{grh_exact_extensions_2026-11-27/code/verify_graph_minimax.py} (record
+\artifact{grh_exact_extensions_2026-11-27/results/graph_verification.json}). For
+$(d_1,d_2,d_3)=(1,1,4)$ and $W=1$ the positive eigenvalues of $C$ are $1$ and $2$; the minimax network has
+$w_{12}=\tfrac19$, $w_{13}=w_{23}=\tfrac49$, largest displacement $\tfrac32$ and total displacement $3$,
+and the mean network has $w_{12}=(3-\sqrt2)/(3(1+\sqrt2))$, $w_{13}=w_{23}=2\sqrt2/(3(1+\sqrt2))$, largest
+displacement $(2+\sqrt2)/2$ and total displacement $(3+2\sqrt2)/2$, to be divided by $N-1=5$ for the
+mean \artifact{grh_path_rigidity_2026-11-27/checks/network_checks.json}.
+
 \paragraph{Entire functions.}
 Let $F_1,\dots,F_n$ be nonzero entire functions of the form
 \begin{equation}\label{zer:eq:realcanonical}
@@ -4322,6 +4970,13 @@ $\Re s=\tfrac12$ after $z=-i(s-\tfrac12)$. For every finite packet of zeros of t
 their multiplicities, \cref{zer:thm:electrical,zer:thm:edgelaw} apply to the polynomials with these
 roots, and the displacement budget depends only on the graph and the packet sizes.
 \end{corollary}
+
+In particular, for packets of $d_i$ zeros at vertex $i$ and a conductance budget $W$,
+\cref{zer:thm:minimax} gives the best guarantee for every $W_p$ that depends only on the packet sizes
+and the budget, whatever the multiplicities, coincidences and spacings of the selected zeros. A
+particular arithmetic packet may have a smaller error and a different optimal graph, since the
+common-root extremizer need not occur for Dirichlet $L$-functions; no optimum for an entire infinite
+zero set is asserted.
 
 No Euler product, automorphic interpretation or Riemann hypothesis for a further $L$-function is
 asserted for these determinants, and central zeros need no exception, since their multiplicities
@@ -4590,7 +5245,7 @@ for a length $e^{-T}$; the statement concerns a continuous sampling variable and
 what a discrete grid resolves.
 
 \subsection{Open questions}\label{zer:sec:open}
-{\emergencystretch=6em\sources{grh-transfer; grh_transfers; dirichlet-grh-research; exponent_seven_and_grh_transfers; grh-torsion-and-zero-data; grh-methods-polynomial-density; grh_cm_four_terms_and_prime_bias; grh_method_transfers_2026-11-26; grh_multiscale_covariance; multiscale_prime_fluctuations; grh_spectral_rigidity; grh_filtered_prime_races; grh_prime_error_balancing; prime_peak_rigidity; sparse_grh_balanced_windows; sharp_multiscale_prime_windows; prime_scale_coalescence_2026-11-26; Gaussian_prime_races; prime_endpoints_and_symplectic_compressions; graph_coupled_zeros_2026-11-26}}
+{\emergencystretch=6em\sources{grh-transfer; grh_transfers; dirichlet-grh-research; exponent_seven_and_grh_transfers; grh-torsion-and-zero-data; grh-methods-polynomial-density; grh_cm_four_terms_and_prime_bias; grh_method_transfers_2026-11-26; grh_multiscale_covariance; multiscale_prime_fluctuations; grh_spectral_rigidity; grh_filtered_prime_races; grh_prime_error_balancing; prime_peak_rigidity; sparse_grh_balanced_windows; sharp_multiscale_prime_windows; prime_scale_coalescence_2026-11-26; Gaussian_prime_races; prime_endpoints_and_symplectic_compressions; graph_coupled_zeros_2026-11-26; grh_extensions_2026-11-27; grh_exact_extensions_2026-11-27; grh_path_rigidity_2026-11-27; dirichlet-zero-multiplicity-and-reconstruction}}
 
 \begin{enumerate}
 \item \emph{Fixed-height Euler products.} Can $F_0(v)/v$ in \eqref{zer:eq:single} be
@@ -4626,17 +5281,22 @@ efficient probe primes chosen.
 \item \emph{The eigenvalue gap.} The two bounds of \eqref{zer:eq:coercive} differ by three powers
 of $\log T$. Can information on pair correlation and multiplicities close the gap, and what are
 the sharp asymptotics for arbitrary shifts under stronger hypotheses?
-\item \emph{Merging scales.} \Cref{zer:thm:coalesce} settles the rate for $\zeta$. What is the
-corresponding law for the full residue-class matrix of \cref{zer:cor:multiscale}, where coincident
-zeros of different $L$-functions add structure? Is the factor $\tfrac43$ optimal, and does
-$M_2(T)\sim\kappa T\log T/(2\pi)$ hold, as \cref{zer:prop:kappa} requires?
+\item \emph{Merging scales.} \Cref{zer:thm:coalesce} settles the rate for $\zeta$, and
+\cref{zer:cor:classorders} the order of every eigenvalue of the residue-class matrix. What is the best
+upper factor in \cref{zer:lem:localM2}, now at most $1.3208$, over all arithmetic methods, and does
+$M_2(T)\sim\kappa T\log T/(2\pi)$ hold, as \cref{zer:prop:kappa} requires (equivalently, by
+\cref{zer:thm:coalesceinverse}, does one three-point variance have a normalized limit)? What are the
+exact leading constants of the residue-class matrix, which by \cref{zer:thm:identityclass} are the
+limits of the folded pair counts? Can a quantitative error term for the variance give an effective
+error term for $M_2(T)$, and which other individual stencils characterize arbitrary finite limits?
 \item \emph{Beyond covariance.} Can the convex-hull statements be upgraded to the interior of the
 actual limiting support, to every ordering of the unsmoothed counts, or to inclusivity of
 ordinary prime races, without a hypothesis on the ordinates? Which nonlinear constraints hold on
 the cluster sets? Positive covariance excludes affine hyperplanes only.
-\item \emph{Less smoothing and other families.} Does strict positivity of the multiscale or jet
-covariance survive for unsmoothed prime counts, where only a mean-square expansion is available,
-after the prime-square biases are removed? Does \cref{zer:thm:polyrigid} extend to families with
+\item \emph{Less smoothing and other families.} \Cref{zer:thm:unsmoothed} gives strict positivity
+of the multiscale covariance for the unsmoothed counts. Does the jet covariance of
+\cref{zer:thm:jets} survive for unsmoothed counts after the prime-square biases are removed? Can the constants of \cref{zer:thm:unsmoothed} be made uniform as shifts coalesce or as the
+number of scales grows? Does \cref{zer:thm:polyrigid} extend to families with
 other Gamma factors and distinct Euler coefficients, and do the probe arguments extend to
 Frobenius-class functions of Artin $L$-functions under their own Riemann hypothesis (which
 \cref{src:thm:dgrh} does not provide)?
@@ -4670,6 +5330,10 @@ leading constant under \eqref{zer:eq:rankloss}, improvable under \cref{src:thm:d
 substantially weaker bound on the rational rank defect preserve the conductor term in
 \eqref{zer:eq:visitlaw}? Are there useful finite-height rates for the actual densities without any
 assumption on small integer combinations of ordinates?
-\item \emph{Optimal couplings.} Which graph minimizes the largest zero displacement
-$\norm{B_G}$ of \cref{zer:thm:electrical} under a conductance budget and prescribed input degrees?
+\item \emph{Couplings on a prescribed topology.} \Cref{zer:thm:minimax} determines the optimal graph
+for every $W_p$ when all edges are allowed. Which conductances are optimal when the support of the
+graph is prescribed, for instance a path or a tree, or with edge caps or integral conductances (the
+lower bounds of \cref{zer:thm:minimax} remain valid, but equality needs the displayed optimizer), and
+which graph is optimal for a particular
+arithmetic packet of zeros rather than for the worst case given the degrees?
 \end{enumerate}
