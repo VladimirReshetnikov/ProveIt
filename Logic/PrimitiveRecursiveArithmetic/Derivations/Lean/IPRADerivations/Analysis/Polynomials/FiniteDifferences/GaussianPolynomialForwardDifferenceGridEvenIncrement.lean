@@ -30,17 +30,12 @@ open GaussianRationalHorner (positive_product qadd qmul)
 open GaussianRationalLowerBounds (lower)
 open GaussianRationalMetric (distanceBounded qnegative qsub)
 open GaussianRationalParityPower (parity_succ)
-open GaussianRationalPowerAlgebra (qmul_commutative)
+open GaussianRationalPowerAlgebra (qmul_commutative commute_nested)
 open GaussianRationalReciprocal (bound_congr bounded_product reciprocal)
 open GaussianRationalRoundedPower (multiplication_difference)
 open GaussianRationalSyntheticDivision (qadd_congr qmul_congr qone qsub_congr)
-open GaussianReciprocalHorner (qmul_associative)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
-
-private theorem swap_factors (s a x : PTm n) : Γ ⊢[PRAAx] qmul s (qmul a x) ≐ qmul a (qmul s x) :=
-  (qmul_associative s a x).eqSymm.eqTrans
-    ((qmul_congr (qmul_commutative s a) (.eqRefl x)).eqTrans (qmul_associative a s x))
 
 private theorem backward_difference (e x y : PTm n) : Γ ⊢[PRAAx]
     qsub (qmul (parityPoint e) x) (qmul (parityPoint e) y) ≐
@@ -74,9 +69,9 @@ theorem increment (V W e h : PTm n) : Γ ⊢[PRAAx]
   have split := (qsub_congr left right).eqTrans
     ((sum_difference (qmul qone (f one)) (qmul qone (f zero)) (qmul p (g zero)) (qmul p (g one))).eqTrans
       (qadd_congr (multiplication_difference qone (f one) (f zero)) (backward_difference e (g zero) (g one))))
-  have advance_f := (swap_factors (Γ := Γ) z qone (qsub (f one) (f zero))).eqTrans
+  have advance_f := (commute_nested (Γ := Γ) z qone (qsub (f one) (f zero))).eqTrans
     (qmul_congr (.eqRefl qone) (normalized_increment V e h))
-  have advance_g := (swap_factors (Γ := Γ) z q (qsub (g one) (g zero))).eqTrans
+  have advance_g := (commute_nested (Γ := Γ) z q (qsub (g one) (g zero))).eqTrans
     (qmul_congr (.eqRefl q) (normalized_increment W e h))
   exact (qmul_congr (.eqRefl z) split).eqTrans
     ((qmul_add z _ _).eqTrans ((qadd_congr advance_f advance_g).eqTrans

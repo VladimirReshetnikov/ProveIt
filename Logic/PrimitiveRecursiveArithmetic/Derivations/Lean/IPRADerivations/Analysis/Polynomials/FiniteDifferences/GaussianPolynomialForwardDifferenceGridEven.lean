@@ -32,19 +32,14 @@ open GaussianRationalMatrixFiniteSums (minusOne negative_as_minusOne)
 open GaussianRationalMetric (qnegative)
 open GaussianRationalNaturalScale (natScale natScale_as_product natScale_canonical natScale_congr natScale_product)
 open GaussianRationalParityPower (minus_one_power negative_power parity_succ)
-open GaussianRationalPowerAlgebra (qmul_commutative power_product)
+open GaussianRationalPowerAlgebra (qmul_commutative power_product commute_nested)
 open GaussianRationalReciprocal (power)
-open GaussianRationalSumAlgebra (qadd_associative)
 open GaussianRationalSyntheticCoefficientValues (qmul_recode_right)
 open GaussianRationalSyntheticDivision (qadd_congr qmul_congr qone qone_canonical qzero_add)
-open GaussianReciprocalHorner (qadd_commutative qmul_associative qmul_one_right)
+open GaussianReciprocalHorner (qmul_associative qmul_one_right)
 open GaussianTranslatedNonconstant (recode recode_canonical)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
-
-private theorem swap_mul (a b c : PTm n) : Γ ⊢[PRAAx] qmul a (qmul b c) ≐ qmul b (qmul a c) :=
-  (qmul_associative a b c).eqSymm.eqTrans
-    ((qmul_congr (qmul_commutative a b) (.eqRefl _)).eqTrans (qmul_associative b a c))
 
 private theorem one_mul (a : PTm n) (ha : Γ ⊢[PRAAx] canonical a) : Γ ⊢[PRAAx] qmul qone a ≐ a :=
   (qmul_commutative qone a).eqTrans (qmul_one_right a ha)
@@ -59,7 +54,7 @@ theorem parity_square (e : PTm n) : Γ ⊢[PRAAx] qmul (parityPoint e) (parityPo
 theorem parity_product_succ (e : PTm n) : Γ ⊢[PRAAx] qmul (parityPoint e) (parityPoint (succ e)) ≐ minusOne := by
   let p := parityPoint e
   have step := (parity_succ (Γ := Γ) e).eqTrans (negative_as_minusOne p)
-  exact (qmul_congr (.eqRefl p) step).eqTrans ((swap_mul p minusOne p).eqTrans
+  exact (qmul_congr (.eqRefl p) step).eqTrans ((commute_nested p minusOne p).eqTrans
     ((qmul_congr (.eqRefl minusOne) (parity_square e)).eqTrans
       (qmul_one_right minusOne (GaussianRationalMetric.qnegative_canonical qone))))
 
@@ -70,21 +65,14 @@ theorem point_negative (h j : PTm n) : Γ ⊢[PRAAx] point qzero (qnegative h) j
   let x := GaussianRationalNaturalScale.naturalPoint j
   have scale : Γ ⊢[PRAAx] natScale j (qnegative h) ≐ qnegative (natScale j h) :=
     (natScale_as_product j _).eqTrans ((qmul_congr (.eqRefl x) (negative_as_minusOne h)).eqTrans
-      ((swap_mul x minusOne h).eqTrans (((qmul_congr (.eqRefl minusOne) (natScale_as_product j h).eqSymm)).eqTrans
+      ((commute_nested x minusOne h).eqTrans (((qmul_congr (.eqRefl minusOne) (natScale_as_product j h).eqSymm)).eqTrans
         (negative_as_minusOne (natScale j h)).eqSymm)))
   exact (point_at_zero (qnegative h) j).eqTrans (scale.eqTrans
     (GaussianInverseBinomialRows.negative_congr (point_at_zero h j).eqSymm))
 
 private theorem leading_negative (C w e : PTm n) :
     Γ ⊢[PRAAx] leadingTerm C (qnegative w) e ≐ qmul (parityPoint e) (leadingTerm C w e) :=
-  (qmul_congr (.eqRefl _) (negative_power w e)).eqTrans (swap_mul (entry C zero) (parityPoint e) (power w e))
-
-private theorem exchange_sums (a b c d : PTm n) :
-    Γ ⊢[PRAAx] qadd (qadd a b) (qadd c d) ≐ qadd (qadd a c) (qadd b d) :=
-  (qadd_associative a b (qadd c d)).eqTrans
-    ((qadd_congr (.eqRefl _) (((qadd_associative b c d).eqSymm.eqTrans
-      (qadd_congr (qadd_commutative b c) (.eqRefl _))).eqTrans (qadd_associative c b d))).eqTrans
-      (qadd_associative a c (qadd b d)).eqSymm)
+  (qmul_congr (.eqRefl _) (negative_power w e)).eqTrans (commute_nested (entry C zero) (parityPoint e) (power w e))
 
 private theorem drop_opposite (a l m p q : PTm n) (ha : Γ ⊢[PRAAx] canonical a)
     (hp : Γ ⊢[PRAAx] qmul p q ≐ minusOne) :
@@ -96,7 +84,7 @@ private theorem drop_opposite (a l m p q : PTm n) (ha : Γ ⊢[PRAAx] canonical 
       ((qmul_congr hp (.eqRefl _)).eqTrans (negative_as_minusOne a).eqSymm))).eqTrans
       (GaussianCoefficientNormOrder.qsub_self a)
   exact (qadd_congr (qmul_add qone a l) (qmul_add p (qmul q a) m)).eqTrans
-    ((exchange_sums (qmul qone a) x (qmul p (qmul q a)) y).eqTrans
+    ((GaussianRationalFiniteSum.add_shuffle (qmul qone a) x (qmul p (qmul q a)) y).eqTrans
       ((qadd_congr cancel (.eqRefl _)).eqTrans (qzero_add _ (GaussianRationalHorner.qadd_canonical x y))))
 
 def evenRows (C e h : PTm n) : PTm n :=
@@ -147,8 +135,8 @@ private theorem inverse_parity_cancel (a e h R : PTm n) (hR : Γ ⊢[PRAAx] le o
   let w := power h e
   have move : Γ ⊢[PRAAx] qmul p (qmul s (qmul a (qmul p w))) ≐ qmul (qmul p p) (qmul s (qmul w a)) :=
     (qmul_congr (.eqRefl p) (qmul_congr (.eqRefl s)
-      ((swap_mul a p w).eqTrans (qmul_congr (.eqRefl p) (qmul_commutative a w))))).eqTrans
-      ((qmul_congr (.eqRefl p) (swap_mul s p (qmul w a))).eqTrans
+      ((commute_nested a p w).eqTrans (qmul_congr (.eqRefl p) (qmul_commutative a w))))).eqTrans
+      ((qmul_congr (.eqRefl p) (commute_nested s p (qmul w a))).eqTrans
         (qmul_associative p p (qmul s (qmul w a))).eqSymm)
   have cancel : Γ ⊢[PRAAx] qmul s (qmul w a) ≐ recode a :=
     (qmul_associative s w a).eqSymm.eqTrans

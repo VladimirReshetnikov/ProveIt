@@ -202,9 +202,7 @@ theorem root_from_relation (C Q J T D E t x r : PTm n) (h : Γ ⊢[PRAAx] input 
     (input_nonzero _ _ _ _ _ _ _ _ h) productZero
 
 theorem commute_left (a b c : PTm n) : Γ ⊢[PRAAx] qmul a (qmul b c) ≐ qmul b (qmul a c) :=
-  (GaussianReciprocalHorner.qmul_associative _ _ _).eqSymm.eqTrans
-    ((qmul_congr (GaussianRationalPowerAlgebra.qmul_commutative _ _) (.eqRefl _)).eqTrans
-      (GaussianReciprocalHorner.qmul_associative _ _ _))
+  GaussianRationalPowerAlgebra.commute_nested a b c
 theorem power_remaining (t r x z : PTm n) (hr : Γ ⊢[PRAAx] lt r t) : Γ ⊢[PRAAx]
     power (qsub z x) (remaining t r) ≐ qmul (qsub z x) (power (qsub z x) (remaining t (succ r))) :=
   (congrAp2 powerF (remaining_step _ _ hr) (.eqRefl _)).eqTrans

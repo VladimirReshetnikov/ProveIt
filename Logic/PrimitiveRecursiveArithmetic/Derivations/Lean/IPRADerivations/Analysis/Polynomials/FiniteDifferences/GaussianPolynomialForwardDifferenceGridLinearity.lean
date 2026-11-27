@@ -22,6 +22,7 @@ open GaussianPolynomialForwardDifferenceGrid (adjacent adjacent_lookup differenc
 open GaussianPolynomialForwardDifferenceNormalization (normalized inversePower)
 open GaussianRationalHorner (qadd qmul)
 open GaussianRationalMetric (qsub)
+open GaussianRationalPowerAlgebra (commute_nested)
 open GaussianRationalSyntheticDivision (qadd_congr qmul_congr qsub_congr)
 open GaussianRationalTranslationStages (remaining remaining_step)
 
@@ -150,11 +151,6 @@ theorem value_combined (V W a b N : PTm n) :
   (entry_congr (grid_combined V W a b N N (le_refl _)) (.eqRefl zero)).eqTrans
     (combined_at _ _ _ _ _ _ (zero_lt_succ _))
 
-private theorem swap_factors (s t x : PTm n) : Γ ⊢[PRAAx] qmul s (qmul t x) ≐ qmul t (qmul s x) :=
-  (GaussianReciprocalHorner.qmul_associative s t x).eqSymm.eqTrans
-    ((qmul_congr (GaussianRationalPowerAlgebra.qmul_commutative s t) (.eqRefl _)).eqTrans
-      (GaussianReciprocalHorner.qmul_associative t s x))
-
 theorem normalized_combined (V W a b N h : PTm n) :
     Γ ⊢[PRAAx] normalized (combined V W a b (succ N)) N h ≐
       qadd (qmul a (normalized V N h)) (qmul b (normalized W N h)) := by
@@ -163,7 +159,7 @@ theorem normalized_combined (V W a b N h : PTm n) :
   let y := value W N
   exact (qmul_congr (.eqRefl s) (value_combined V W a b N)).eqTrans
     ((GaussianRationalCoefficientScaling.qmul_add s (qmul a x) (qmul b y)).eqTrans
-      (qadd_congr (swap_factors s a x) (swap_factors s b y)))
+      (qadd_congr (commute_nested s a x) (commute_nested s b y)))
 
 theorem actual_Gaussian_normalized_grid_linearity_closed : ([] : List (Fm PTm 0)) ⊢[PRAAx] univ 6
     (let V := var 0

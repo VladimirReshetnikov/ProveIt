@@ -66,9 +66,7 @@ theorem multiply_inverse_cancel (a b c : PTm n) (hInverse : Γ ⊢[PRAAx] qmul a
       ((qmul_congr hInverse (.eqRefl _)).eqTrans (GaussianPolynomialDeterminantTerms.one_mul_canonical _ hCanonical)))
 theorem multiply_exchange (a b c : PTm n) : Γ ⊢[PRAAx]
     qmul a (qmul b c) ≐ qmul b (qmul a c) :=
-  (GaussianReciprocalHorner.qmul_associative _ _ _).eqSymm.eqTrans
-    ((qmul_congr (GaussianRationalPowerAlgebra.qmul_commutative _ _) (.eqRefl _)).eqTrans
-      (GaussianReciprocalHorner.qmul_associative _ _ _))
+  GaussianRationalPowerAlgebra.commute_nested a b c
 
 theorem quotient_length (R M m B t x : PTm n) : Γ ⊢[PRAAx]
     length (quotient R M m B t x) ≐ succ (m*B) :=

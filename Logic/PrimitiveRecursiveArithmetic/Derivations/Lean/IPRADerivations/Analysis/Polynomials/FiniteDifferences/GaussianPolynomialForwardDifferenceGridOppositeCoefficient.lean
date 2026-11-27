@@ -27,7 +27,7 @@ open GaussianRationalHorner (qmul)
 open GaussianRationalMetric (qnegative)
 open GaussianRationalNaturalScale (natScale natScale_add natScale_as_product natScale_canonical natScale_congr natScale_one_canonical natScale_product)
 open GaussianRationalParityPower (negative_power)
-open GaussianRationalPowerAlgebra (qmul_commutative)
+open GaussianRationalPowerAlgebra (qmul_commutative commute_nested)
 open GaussianRationalReciprocal (power)
 open GaussianRationalSyntheticCoefficientValues (qmul_recode_right)
 open GaussianRationalSyntheticDivision (qadd_congr qmul_congr qone qone_canonical)
@@ -35,10 +35,6 @@ open GaussianReciprocalHorner (qmul_associative qmul_one_right)
 open GaussianTranslatedNonconstant (recode recode_canonical)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
-
-private theorem swap_mul (a b c : PTm n) : Γ ⊢[PRAAx] qmul a (qmul b c) ≐ qmul b (qmul a c) :=
-  (qmul_associative a b c).eqSymm.eqTrans
-    ((qmul_congr (qmul_commutative a b) (.eqRefl _)).eqTrans (qmul_associative b a c))
 
 private theorem cancel_orientation (a N h R : PTm n) (hR : Γ ⊢[PRAAx] le one R) (hh : Γ ⊢[PRAAx] lower h R) :
     Γ ⊢[PRAAx] qmul (parityPoint N) (qmul (inversePower h N) (qmul a (power (qnegative h) N))) ≐ recode a := by
@@ -48,11 +44,11 @@ private theorem cancel_orientation (a N h R : PTm n) (hR : Γ ⊢[PRAAx] le one 
   let d := power (qnegative h) N
   have sign : Γ ⊢[PRAAx] qmul p (qmul b d) ≐ qone :=
     (qmul_congr (.eqRefl p) (qmul_congr (.eqRefl b) (negative_power h N))).eqTrans
-      ((qmul_congr (.eqRefl p) (swap_mul b p c)).eqTrans
+      ((qmul_congr (.eqRefl p) (commute_nested b p c)).eqTrans
         ((qmul_associative p p (qmul b c)).eqSymm.eqTrans
           ((qmul_congr (parity_square N) (inverse_power_product h N R hR hh)).eqTrans (qmul_one_right qone qone_canonical))))
-  exact (qmul_congr (.eqRefl p) (swap_mul b a d)).eqTrans
-    ((swap_mul p a (qmul b d)).eqTrans
+  exact (qmul_congr (.eqRefl p) (commute_nested b a d)).eqTrans
+    ((commute_nested p a (qmul b d)).eqTrans
       ((qmul_congr (.eqRefl a) sign).eqTrans
         ((qmul_commutative a qone).eqTrans (GaussianRationalFiniteProduct.raw_one_left a))))
 

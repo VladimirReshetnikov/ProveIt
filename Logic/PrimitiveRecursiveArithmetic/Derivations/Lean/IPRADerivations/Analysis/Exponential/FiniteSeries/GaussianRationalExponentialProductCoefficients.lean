@@ -65,9 +65,7 @@ theorem stage_successor_value (C N K j z : PTm n) : Γ ⊢[PRAAx]
       (qadd_congr (pad_evaluation _ _ _) (evaluation_linearity _ _ _)))
 
 theorem scalar_shuffle (a b c : PTm n) : Γ ⊢[PRAAx] qmul a (qmul b c) ≐ qmul b (qmul a c) :=
-  (GaussianReciprocalHorner.qmul_associative _ _ _).eqSymm.eqTrans
-    ((qmul_congr (GaussianRationalPowerAlgebra.qmul_commutative a b) (.eqRefl _)).eqTrans
-      (GaussianReciprocalHorner.qmul_associative _ _ _))
+  GaussianRationalPowerAlgebra.commute_nested a b c
 
 theorem product_successor_value (C N K j z : PTm n) : Γ ⊢[PRAAx]
     evaluate (productPrefix C N K (succ j)) z ≐ evaluate (productStep C N K j) z := by
