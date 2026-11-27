@@ -36,6 +36,8 @@ Each entry below identifies the part of the article covered by the Lean statemen
 
 [RationalComplexEnclosure.lean](GRHArticle/SingularModuli/RationalComplexEnclosure.lean) proves rational enclosures for complex arithmetic, including inversion and perturbations. [ClassPolynomialConstants.lean](GRHArticle/SingularModuli/ClassPolynomialConstants.lean) proves a 50-decimal-place enclosure for $\pi$ using the Machin formula and the arctangent series.
 
+[ClassPolynomialQEnclosure.lean](GRHArticle/SingularModuli/ClassPolynomialQEnclosure.lean) proves the eight complex $q$-parameters for the reduced forms of discriminants −55 and −68 lie in explicit rational rectangles. [ClassPolynomialRootEnclosure.lean](GRHArticle/SingularModuli/ClassPolynomialRootEnclosure.lean) transfers such a rectangle to the actual modular invariant when its computed denominator box is bounded away from zero.
+
 The five-term classification still needs the CM reduction, bounds on the conjugates
 to place them in the disks, and finite certificates from the
 [singular-moduli section](../Article/sections/smd.tex).

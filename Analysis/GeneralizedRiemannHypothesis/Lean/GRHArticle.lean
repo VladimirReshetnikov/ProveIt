@@ -75,6 +75,8 @@ import GRHArticle.SingularModuli.BaseChange
 import GRHArticle.SingularModuli.Binomial
 import GRHArticle.SingularModuli.CMPoints
 import GRHArticle.SingularModuli.ClassPolynomialConstants
+import GRHArticle.SingularModuli.ClassPolynomialQEnclosure
+import GRHArticle.SingularModuli.ClassPolynomialRootEnclosure
 import GRHArticle.SingularModuli.ClassPolynomialTruncation
 import GRHArticle.SingularModuli.ConductorBound
 import GRHArticle.SingularModuli.ConjugateDisks
