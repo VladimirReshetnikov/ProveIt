@@ -1101,7 +1101,7 @@ independent of \cref{src:thm:dgrh}:
 \end{example}
 
 \subsection{Zero multisets from prime sums: Bohr means and sharp upper limits}\label{rec:sec:prime}
-\sources{prime_zero_reconstruction; dirichlet_inverse_problems; three_scale_reconstruction; grh_positive_spectral_extensions_2026-11-27}
+\sources{prime_zero_reconstruction; dirichlet_inverse_problems; three_scale_reconstruction; grh_positive_spectral_extensions_2026-11-27; dirichlet-zero-multiplicity-and-reconstruction}
 
 Three prime-side observations determine zero multisets with multiplicities: the autocorrelation
 of one real positive prime signal (all primitive characters at once), the lag averages of a
@@ -1235,23 +1235,25 @@ $\sum_k\delta_{a_0-\delta+k\beta}$ are distinct and interchanged by every $R_a$;
 $a_0\pm\delta$.
 \end{proof}
 
-For $m:\R\to\Z_{\ge0}$ of locally finite support put $S_a(x)=m(a+x)+m(a-x)$ and
-$\Delta_a(y)=S_a(y+a)-S_0(y)=m(y+2a)-m(y)$. Write $(1+\sqrt2)^k=e_k+f_k\sqrt2$ with positive integers
-$e_k,f_k$ and $u_k=2(f_k\sqrt2-e_k)=-2(1-\sqrt2)^k$, so $u_k\ne0$ and $u_k\to0$. The path of $f_k$ steps
-$+2\sqrt2$ followed by $e_k$ steps $-2$ gives
-\begin{equation}\label{rec:eq:pell}
- T_k(t)=\sum_{r=0}^{f_k-1}\Delta_{\sqrt2}(t+2r\sqrt2)-\sum_{s=1}^{e_k}\Delta_1(t+2f_k\sqrt2-2s)=m(t+u_k)-m(t).
-\end{equation}
+For $m:\R\to\Z_{\ge0}$ of locally finite support put $S_a(x)=m(a+x)+m(a-x)$. With the reflection
+$R_a(y)=2a-y$, the value $S_a(y-a)=m(y)+m(R_ay)$ is the \emph{edge sum} of the pair $\set{y,R_ay}$. The compositions
+$R_{\sqrt2}R_0$ and $R_0R_1$ are the translations by $2\sqrt2$ and by $-2$.
 
-\begin{proposition}[An exact stopping rule; \stU]\label{rec:prop:stop}
-For real $t$, inspect $k=1,2,\dots$ until $S_0(t+u_k)=0$. This happens for all large $k$, and then
-$m(t)=-T_k(t)$.
+\begin{proposition}[Bounded-height inversion; \stU]\label{rec:prop:stop}
+Let $t\in\R$, $y_n=t+2\set{n\sqrt2}$ for $n\ge0$ (fractional part), and let $N$ be the least $n$ with
+$S_0(y_n)=0$. Then $N$ exists and is at most the number of points of $\supp m$ in
+$[t,t+2)\cup(-t-2,-t]$. Each hop $y_n\to y_{n+1}=y_n+2\sqrt2-2d_n$, $d_n\in\set{1,2}$, is a chain of at most six
+reflections from $\set{R_0,R_1,R_{\sqrt2}}$, all edge sums on the chain from $t$ to $y_N$ are values $S_a(x)$
+with $a\in\set{0,1,\sqrt2}$ and $\abs x\le\abs t+10$, and if $t=z_0,z_1,\dots,z_L=y_N$ are its vertices and $e_i$
+the edge sum of $\set{z_i,z_{i+1}}$, then $m(t)=\sum_{i<L}(-1)^ie_i$.
 \end{proposition}
 
 \begin{proof}
-Local finiteness gives punctured neighbourhoods of $t$ and $-t$ free of support, so
-$m(t+u_k)=m(-t-u_k)=0$ for large $k$. Conversely $S_0(t+u_k)=0$ certifies $m(t+u_k)=0$, both summands
-being nonnegative, and \eqref{rec:eq:pell} gives the formula.
+The points $y_n$ are distinct and lie in $[t,t+2)$, since $\sqrt2$ is irrational, and
+$S_0(y_n)=m(y_n)+m(-y_n)>0$ requires a point of $\supp m$ at $y_n$ or at $-y_n$; local finiteness gives the
+bound on $N$. Write the hop as $R_{\sqrt2}R_0$ followed $d_n$ times by $R_0R_1$; every vertex has absolute
+value at most $\abs t+2+2\sqrt2+2$. Both summands of $S_0(y_N)=0$ are nonnegative, so $m(y_N)=0$, and
+$m(z_i)=e_i-m(z_{i+1})$ backwards along the chain gives the formula.
 \end{proof}
 
 \begin{proof}[Proof of \cref{rec:thm:universal}]
@@ -1277,7 +1279,8 @@ $A(\lambda)=\abs{D(\lambda)}\sqrt{P(\lambda)}$. By the local count of \cref{rec:
 $20+4\log(q_j(\abs\lambda+5))\le H_\lambda w_j$ for $H_\lambda=\ceil{30+10\log(\abs\lambda+5)}$, and the zeta coordinate is
 below $2H_\lambda$, so \cref{rec:lem:prefix} recovers $S_{\chi,a}(\lambda)=m_\chi(a+\lambda)+m_\chi(a-\lambda)$ for every primitive
 nonprincipal $\chi$, every $a\in\set{0,1,\sqrt2}$ and every $\lambda$, and $m_\zeta$ itself. \Cref{rec:prop:stop} applied to
-$m_\chi$ recovers $m_\chi(t)$.
+$m_\chi$ recovers $m_\chi(t)$. By the local count, it uses $O(\log((q+2)(\abs t+2)))$ values $P(\lambda)$, all with
+$\abs\lambda\le\abs t+10$.
 \end{proof}
 
 Primes alone also suffice (\stG): with
@@ -1303,12 +1306,64 @@ $\abs{P'-P(\lambda)}<d_n^2/(64\abs{D(\lambda)}^2)$ gives $\abs{\abs{D(\lambda)}\
 $n+1\ge H_\lambda$ is decoded; the thresholds $d_n$ are extremely small. For a finite set $E$ of frequencies
 with tail $\eps'=\sum_{\lambda\notin E}A(\lambda)/\abs{D(\lambda)}$, total mass $B'=\sum_\lambda A(\lambda)/\abs{D(\lambda)}$ and minimal spacing
 $\Delta_0$, $\bigl\lvert\frac1T\int_0^TF(t+h)F(t)\dd t-C(h)\bigr\rvert\le O(1/T)+3B'\eps'+2B'^2/(T\Delta_0)$ for $h\ge0$;
-without control of $\Delta_0$ this is no complexity bound. The stopping rule is an exact-oracle statement
-and does not decide from a noisy value whether a coefficient vanishes. Exact arithmetic in
-$\Q(\sqrt2)$ checks $65$ instances of \eqref{rec:eq:pell} and recovers $13$ prescribed multiplicities:
+without control of $\Delta_0$ this is no complexity bound. The inversion of \cref{rec:prop:stop} is an
+exact-oracle statement and does not decide from a noisy value whether a coefficient vanishes. Exact
+arithmetic in $\Q(\sqrt2)$ checks $65$ translation identities along reflection paths and recovers $13$
+prescribed multiplicities; synthetic signed divisors with forced collisions are recovered in the
+second file:
 \begin{center}
-\artifact{grh_positive_spectral_extensions_2026-11-27/results/real_weight_checks.json}
+\artifact{grh_positive_spectral_extensions_2026-11-27/results/real_weight_checks.json}\\
+\artifact{dirichlet-zero-multiplicity-and-reconstruction/checks/carriers-results.txt}
 \end{center}
+
+\paragraph{Near-linear precision.}
+The threshold $d_n$ of \cref{rec:lem:prefix} needs about $2^n\log n$ bits. A mixed-radix code needs only
+$O(n\log n)$, which is the optimal order. Let $w_i\ge1$ be integers, $i\ge0$. Use consecutive blocks indexed by
+$L=1,2,4,\dots$; block $L$ has slots $i=0,\dots,L$, all of radix
+$R_L=2^{\ceil{\log_2(8(L+1)\max_{i\le L}w_i)}}$. Let $D_{L,i}$ be the product of the radices of all slots from
+the first one through $(L,i)$ inclusive, and put
+\begin{equation}\label{rec:eq:radix}
+ c'_i=\mathbf 1_{i=0}+\sum_{L\ge i}D_{L,i}^{-1},\qquad E'(b)=\sum_ic'_ib_i,
+\end{equation}
+summing over dyadic $L$.
+
+\begin{proposition}[A mixed-radix code; \stU]\label{rec:prop:radix}
+The coefficients \eqref{rec:eq:radix} are computable from the $w_i$ and satisfy
+$\sum_i(c'_i-\mathbf 1_{i=0})w_i<\tfrac14$. If $0\le b_i\le Hw_i$ for all $i$ and $L\ge H$ is a block index, then for
+every slot $(L,i)$ the nearest integer to $D_{L,i}x$, reduced modulo $R_L$, is $b_i$ whenever
+$\abs{x-E'(b)}<1/(4D_{L,i})$; in particular $E'$ is injective on $\bigcup_H\set{b:0\le b_i\le Hw_i}$. If
+$w_i=O(i+1)$ and $N\ge\max(1,H)$, the entries $b_0,\dots,b_N$ are determined by $O(N\log(2N))$ absolute
+fractional bits of $E'(b)$. For $H=N$ this order is optimal among all codes whose coefficients have
+bounded $\ell^1$ norm.
+\end{proposition}
+
+\begin{proof}
+If $D_-$ is the denominator preceding a slot (initially $1$), that slot contributes at most $1/(8D_-)$ to
+$\sum_i(c'_i-\mathbf 1_{i=0})w_i$, and all radices are at least $16$, which gives the bound. Multiply by $D=D_{L,i}$:
+the term $Db_0$ and the contributions of all earlier slots are multiples of $R_L$; the current slot
+contributes $b_i\in[0,R_L/8]$; each later slot contributes at most one eighth of its own radix divided by
+the intermediate radices, in total less than $\tfrac18\sum_{h\ge0}16^{-h}<\tfrac14$. An error below $1/(4D)$ leaves
+the nearest integer unchanged. All of $b_0,\dots,b_N$ are read in the first dyadic block $L\ge N$, which
+costs $\sum_{J\le L}(J+1)\log_2R_J=O(N\log(2N))$ bits over dyadic $J$, since $\log_2R_J=O(\log(2J))$. For the lower bound,
+the $(N+1)^{N+1}$ prefixes with digits in $[0,N]$ and zero tail give values in an interval of length
+$O(N)$, so two of them are at most $O(N)/((N+1)^{N+1}-1)$ apart.
+\end{proof}
+
+Take $\chi_0=1$ and the primitive characters $\chi_j$ enumerated by conductor, the shifts $u_0=0$, $u_1=1$,
+$u_2=\sqrt2$, the indices $i=3j+k$ with $w_i=q_j+1$, and the coefficients \eqref{rec:eq:radix}. The weight
+$W'(n)=\sum_{j\ge0}\sum_{k=0}^2c'_{3j+k}\Re\{\chi_j(n)n^{iu_k}\}$ takes values in $[\tfrac34,\tfrac54]$. With the main
+term $\sum_kc'_k\Re\bigl(x^{1+iu_k}/((1+iu_k)(2+iu_k))\bigr)$ in place of $x/2$, the conclusions of
+\cref{rec:thm:universal} (existence, continuity and positive definiteness of $C$, and the determination of every
+$m_\chi(t)$) hold for $W'$ with the same proof, the prime-only signal included, with \cref{rec:prop:radix} in place
+of \cref{rec:lem:prefix}, now with
+\[
+ C(h)=\sum_\lambda\frac{A(\lambda)^2}{4\abs{D(\lambda)}^2}e^{i\lambda h}.
+\]
+Here $q_j\le4(j+2)$, since a prime in
+$(2(j+2),4(j+2))$ carries at least $j+1$ primitive nonprincipal characters, so $w_i=O(i+1)$, and an error
+below $1/(64D_{L,i}^2\abs{D(\lambda)}^2)$ in a nonnegative estimate of $P(\lambda)$ suffices for the digit of slot $(L,i)$. The
+lower bound of \cref{rec:prop:radix} concerns arbitrary digits; the multiplicities that actually occur form a
+smaller class.
 
 The finite-family version of the same statistic detects zeros off the line.
 
@@ -2948,6 +3003,217 @@ outside the strip, a zero-free intermediate function is excluded by the right-ed
 $\abs{P(D)\Xi_\chi(2+it)/A(2+it)}\gg(\log\abs t)^d$, and Jensen's formula on disks of radius $5$ about
 $2+iu$ gives the unit-interval count; the rest of the proof is unchanged.
 
+\subsection{Blurred zero measures and a critical width}\label{rec:sec:blur}
+\sources{dirichlet-zero-recovery}
+
+For a primitive $\chi$ of conductor $q_\chi$ and parity $\epsilon_\chi\in\set{0,1}$ let $Z_\chi=\sum_\gamma m_\chi(\gamma)\delta_\gamma$ over its distinct
+ordinates, both signs kept; under \cref{src:thm:dgrh} this is a measure on $\R$. For a finite family $\mathcal X$ of
+distinct primitive characters and finite complex measures $\nu_\chi$ one observes
+\begin{equation}\label{rec:eq:blurobs}
+ M=\sum_{\chi\in\mathcal X}Z_\chi*\nu_\chi .
+\end{equation}
+An atom of $\nu_\chi$ at $u$ translates the whole zero list of $\chi$ by $u$; a probability law gives the intensity of the
+list after each zero is displaced independently with that law. Unlike \cref{rec:thm:moving}, a single
+character may carry a continuous law with unbounded support, and only the sum is observed. For $a,b>0$ let
+$\mathcal M_{a,b}$ be the finite complex measures with
+$\norm\nu_{a,b}=\int_{u<0}e^{-au}\dd\abs\nu(u)+\int_{u\ge0}e^{bu}\dd\abs\nu(u)<\infty$, and $\mathcal M_d=\mathcal M_{d,d}$. The bound
+$Z_\chi([v,v+1])\ll_\chi\log(3+\abs v)$ \cite{BennettMartinOBryantRechnitzer2021Counting} makes $M$ locally finite and tempered.
+
+\begin{theorem}[Sharp recovery threshold; \stG]\label{rec:thm:blur}
+If $a+b\ge\pi$, the map \eqref{rec:eq:blurobs} is injective on $\mathcal M_{a,b}^{\mathcal X}$ for every finite family $\mathcal X$. If $0<a+b<\pi$, it
+is injective exactly when $\mathcal X$ is a singleton, a pair of nonprincipal characters of opposite parity, or $\zeta$
+together with one nonprincipal character; for every other family, distinct tuples of smooth strictly
+positive probability densities with finite $\norm\cdot_{a,b}$ give the same $M$.
+\end{theorem}
+
+At $a+b\ge\pi$ the family need not be known: apply the theorem to the union of two candidate families,
+completing with zero measures. For symmetric tails the critical exponent is $\pi/2$.
+
+\begin{theorem}[One law erases all prime frequencies; \stG]\label{rec:thm:blurlaw}
+There is a smooth, strictly positive, even probability density $K$ with $\int e^{d\abs u}K(u)\dd u<\infty$ for every
+$d<\pi/2$ such that $Z_\chi*K=Z_{\chi'}*K$ if and only if $q_\chi=q_{\chi'}$ and $\chi(-1)=\chi'(-1)$. For a finite multiset of primitive
+characters blurred by $K$, the combined observation determines exactly the number of factors, the number
+of odd factors, the number of $\zeta$ factors and the product of the conductors.
+\end{theorem}
+
+For example, the quartic character modulo $5$ with $\chi(2)=i$ and its conjugate have the same conductor and
+parity, so their zero measures become identical after convolution with $K$, while \cref{rec:thm:blur} forbids this
+for every law with a finite moment at the critical exponent; the difference between the endpoint moment
+and all smaller ones is therefore necessary.
+
+Write $\widehat f(x)=\int f(t)e^{-itx}\dd t$, extended by duality, $N_\chi(z)=\int e^{-izu}\dd\nu_\chi(u)$, bounded and holomorphic on
+$-a<\Im z<b$, so that $\widehat M=\sum_\chi N_\chi\widehat Z_\chi$ by Fubini and the unit-interval bound.
+
+\begin{lemma}[The transform of a zero measure; \stG]\label{rec:lem:blurspec}
+At $x=\log n$ and $x=-\log n$, $n\ge2$, the Dirac coefficients of $\widehat Z_\chi$ are $-\Lambda(n)\overline{\chi(n)}/\sqrt n$ and
+$-\Lambda(n)\chi(n)/\sqrt n$. At $0$ there is the conductor mass $\log(q_\chi/\pi)\delta_0$, and elsewhere $\widehat Z_\chi$ has the even density
+\[
+ D_\chi(x)=-\frac{e^{-(1/2+\epsilon_\chi)\abs x}}{1-e^{-2\abs x}}+\mathbf 1_{q_\chi=1}\,2\cosh(x/2).
+\]
+\end{lemma}
+
+\begin{proof}
+Insert $h=\widehat\varphi$, $\varphi\in C_c^\infty(\R)$, in \eqref{rec:eq:gwstrip}, where \cref{src:thm:dgrh} makes every $z_\rho$ real; then
+$\widehat h(v)=2\pi\varphi(-v)$, which fixes the conjugations. Up to constants, the digamma series for
+$\Re\psi((\tfrac12+\epsilon+it)/2)$ has the terms $-2d_j/(d_j^2+t^2)$, $d_j=2j+\epsilon+\tfrac12$, with transforms $-2\pi e^{-d_j\abs x}$; the partial sums
+are $O(\log(3+\abs t))$ uniformly, so they converge as tempered distributions, and off $0$ the exponential
+series sums to the first term of $D_\chi$. The pole terms give $2\cosh(x/2)$.
+\end{proof}
+
+Let $Q$ be a common multiple of the conductors, $G=(\Z/Q\Z)^\times$, and inflate the characters to $G$ (they stay
+distinct). For $r\in G$ put
+\begin{equation}\label{rec:eq:blurrow}
+ A_r(z)=\sum_{\chi\in\mathcal X}\overline{\chi(r)}N_\chi(z),\qquad N_\chi(z)=\frac1{\abs G}\sum_{r\in G}\chi(r)A_r(z).
+\end{equation}
+By \cref{rec:lem:blurspec}, the atom of $\widehat M$ at $\log p$, divided by $-\log p/\sqrt p$, is $A_r(\log p)$ for $p\equiv r\pmod Q$, and the
+atom at $-\log p$ gives $A_r(-\log p)$ for $p\equiv r^{-1}\pmod Q$.
+
+\begin{lemma}[Prime logarithms determine a strip function; \stU]\label{rec:lem:blurstrip}
+Let $a+b\ge\pi$. If $F$ is bounded and holomorphic on $-a<\Im z<b$ and $F(\log p)=0$ for all primes $p$ in one reduced
+class modulo $Q$, then $F=0$.
+\end{lemma}
+
+\begin{proof}
+With $W_0=a+b$ and $c_0=(b-a)/2$, $w=\exp(\pi(z-ic_0)/W_0)$ maps the strip onto the right half-plane and $(w-1)/(w+1)$
+onto the disk. The zero at $\log p$ goes to a point at distance $\asymp_{a,b}p^{-\pi/W_0}$ from the circle, since
+$1-\abs{(w_p-1)/(w_p+1)}^2=4\Re w_p/\abs{w_p+1}^2$ and $\abs{c_0}<W_0/2$. As $\pi/W_0\le1$ and $\sum1/p$ diverges in each class
+\cite{Williams1974Mertens}, the Blaschke condition fails.
+\end{proof}
+
+\begin{proof}[Proof of \cref{rec:thm:blur}, the case $a+b\ge\pi$]
+Apply \cref{rec:lem:blurstrip} to the difference of the rows of two candidate tuples; orthogonality in
+\eqref{rec:eq:blurrow} and uniqueness of Fourier transforms of finite measures finish the proof.
+\end{proof}
+
+In the symmetric critical strip the disk coordinate is $\tanh(z/2)$ and the deficit at a prime is $2/(p+1)$.
+Any set of primes whose reciprocal sum diverges in each class suffices, and laws supported on a fixed
+half-line are recovered from one positive exponential moment on the unbounded side.
+
+\begin{proof}[Proof of \cref{rec:thm:blur}, the case $a+b<\pi$]
+For a difference of two tuples with the same $M$, let $N_\chi$ be the difference transforms,
+$E=\sum_{\epsilon_\chi=0}N_\chi$ (including $\zeta$), $O=\sum_{\epsilon_\chi=1}N_\chi$, $Z=N_\zeta$ if $\zeta\in\mathcal X$ and $0$ otherwise, and $H(z)=2+2\cosh z$.
+The continuous part of \cref{rec:lem:blurspec} gives $E+e^{-x}O=P(x)Z$ for $x>0$ and $E+e^xO=P(-x)Z$ for $x<0$ between
+prime frequencies, with $P(z)=(e^z+1)(1-e^{-2z})=H(z)(1-e^{-z})$; by continuation both hold on the strip, and
+subtracting gives
+\begin{equation}\label{rec:eq:blurpar}
+ E=HZ,\qquad O=-HZ.
+\end{equation}
+So without $\zeta$ both parity sums are determined, hence all measures if each parity occurs at most once; with
+$\zeta$ and one other character, $O=0$ or $E=Z$, and \eqref{rec:eq:blurpar} forces $Z=0$. This gives the injective cases.
+For the converse put $c_0=(b-a)/2$ and
+\[
+ F_{c_0}(z)=e^{-(z-ic_0)\sinh(z-ic_0)}\sin(\pi e^z)\sin(\pi e^{-z}),
+\]
+entire, nonzero (evaluate at $\log\tfrac32$), vanishing to order two at $0$ and at every $\pm\log n$, $n\ge2$. On each substrip
+$\abs{\Im z-c_0}\le d<\pi/2$ it decays faster than every $e^{-L\abs{\Re z}}$, since
+$\Re((x+iv)\sinh(x+iv))=x\sinh x\cos v-v\cosh x\sin v$, and $F_{c_0}(-\bar z)=\overline{F_{c_0}(z)}$; contour shifts make its inverse
+transform a smooth real density of finite $(a,b)$ norm, also after multiplication by $H$, a polynomial in $\cosh z$
+or $z^{2k}$. If two nonprincipal characters have the same parity give them $F_{c_0},-F_{c_0}$; if $\zeta$, an even
+nonprincipal and an odd character occur, give them $F_{c_0}$, $(H-1)F_{c_0}$, $-HF_{c_0}$; all others get $0$. These cover every
+other family. Then \eqref{rec:eq:blurpar} holds identically, every prime-power atom and the conductor term vanish,
+and the observation vanishes also at $0$, since $x^2\widehat g_\epsilon=-\widehat{g_\epsilon''}$ is continuous by Stirling and the
+multipliers are smoothly divisible by $x^2$. If $f_j$ are the real inverse transforms ($\int f_j=0$),
+$b_j=g_j/\int g_j$ with $g_j=\sqrt{f_j^2+e^{-2t^2}}$, then for small $\lambda>0$ the tuples $(b_j+\lambda f_j)$ and $(b_j-\lambda f_j)$ are strictly
+positive smooth probability densities with the same observation.
+\end{proof}
+
+For $c_0=0$ the densities are even and have every subcritical exponential moment, and the factor $z^{2k}$
+makes any finite number of ordinary moments agree.
+
+\begin{lemma}[Positivity by convolution; \stU]\label{rec:lem:blurpos}
+Let $A_0>0$, let $h$ be real with $\int\abs{h(s)}e^{d\abs s}\dd s<\infty$ for $0\le d<A_0$, and suppose its bilateral Laplace
+transform $L(y)=\int h(s)e^{ys}\dd s$ satisfies $\inf_{\abs y<A_0}L(y)=\mu_0>0$. There is an even integrable $k>0$ with the same
+subcritical moments and $(h*k)(t)\ge(\mu_0/2)k(t)$ for all $t$.
+\end{lemma}
+
+\begin{proof}
+Choose $0=d_0<d_1<\dots\uparrow A_0$, increasing $L_j\ge j$ with $\int_{\abs s>L_j}\abs{h(s)}e^{d_j\abs s}\dd s<\mu_0/4$, and decreasing $\eta_j>0$
+with $(\eta_jL_j^2/2)\int\abs{h(s)}e^{d_j\abs s}\dd s<\mu_0/4$. Let $V$ be even, convex and $C^1$ with $V(0)=V'(0)=0$, whose derivative on
+the positive half-line rises in stage $j$ from $d_{j-1}$ to $d_j$ at rate $\eta_j$ and then stays at $d_j$ for length $L_{j+1}$; put
+$k=e^{-V}$. In stage $j$, $\abs{V'}\le d_j$ and $V'$ is $\eta_j$-Lipschitz on $[t-L_j,t+L_j]$, so by convexity and Taylor
+$\abs{k(t-s)/k(t)-e^{sV'(t)}}\le e^{d_j\abs s}\eta_jL_j^2/2$ for $\abs s\le L_j$, and the difference is at most $e^{d_j\abs s}$ beyond. Hence
+$\abs{(h*k)(t)/k(t)-L(V'(t))}<\mu_0/2$; and $V(t)/\abs t\to A_0$.
+\end{proof}
+
+\begin{proof}[Proof of \cref{rec:thm:blurlaw}]
+Let $S(w)=\sin(\pi w)/(1-w)$, $S(1)=\pi$, and $U_0(z)=e^{-z\sinh z}S(e^z)S(e^{-z})$. Its inverse transform $h$ is real, even, smooth,
+with all exponential moments of rate below $\pi/2$, and $L(y)=U_0(iy)=e^{y\sin y}\abs{S(e^{iy})}^2$ extends to a positive
+continuous function on $[-\pi/2,\pi/2]$, since the only integer on that half of the unit circle is $1$. By
+\cref{rec:lem:blurpos}, $h*k>0$; normalized, it is $K$, with
+\begin{equation}\label{rec:eq:blurkill}
+ \widehat K(0)=1,\qquad\widehat K(\pm\log n)=0\quad(n\ge2).
+\end{equation}
+For two packets let $e,o,z_0$ be the differences of their numbers of even, odd and $\zeta$ factors. Equal
+observations give $e=H(x)z_0$ and $o=-H(x)z_0$ near $0$ by \eqref{rec:eq:blurpar}, so $e=o=z_0=0$; then the gamma and pole
+densities cancel and what remains is the mass $\log$ of the ratio of the conductor products at $0$.
+Conversely, equal invariants cancel these terms and \eqref{rec:eq:blurkill} kills all arithmetic atoms.
+\end{proof}
+
+For $\abs{c_0}<\pi/2$ the same argument applied to $e^{c_0t}h_{c_0}(t)$, with $h_{c_0}$ the inverse transform of
+$U_{c_0}(z)=e^{-(z-ic_0)\sinh(z-ic_0)}S(e^z)S(e^{-z})$, gives a positive law with \eqref{rec:eq:blurkill} and finite bilateral Laplace moments
+at every parameter in $(c_0-\pi/2,c_0+\pi/2)$, so every subcritical asymmetric moment class contains such a law.
+Positive convolution factors for signed functions of positive integral are studied in
+\cite{RuzsaSzekely1983Convolution}.
+
+\paragraph{Finite prime data and the endpoint.}
+At the symmetric endpoint $A_0=\pi/2$ let $M_0=\sum_\chi\norm{\nu_\chi}_{A_0,A_0}$ bound a row $A_r$ on the strip. For $t\in\R$ put $w=\tanh(t/2)$,
+take the distinct disk nodes $s_j=(p-1)/(p+1)$ for $p\le X$, $p\equiv r$, and $s_j=-(p-1)/(p+1)$ for $p\le X$, $p\equiv r^{-1}\pmod Q$, the
+Blaschke product $B(w)=\prod_j(w-s_j)/(1-s_jw)$ and the measured values $D_j=A_r(2\operatorname{artanh}s_j)$.
+
+\begin{proposition}[A convergent reconstruction; \stG]\label{rec:prop:blurdecode}
+The interpolant $I_X(w)=\sum_jD_jB(w)/(B'(s_j)(w-s_j))$ satisfies $\abs{A_r(t)-I_X(w)}\le M_0\cosh(t/2)\abs{B(w)}$, and
+\[
+ \abs{B(w)}=\prod_{\substack{p\le X\\p\equiv r}}\Bigl\lvert\frac{p-e^t}{p+e^t}\Bigr\rvert\prod_{\substack{p\le X\\p\equiv r^{-1}}}\Bigl\lvert\frac{p-e^{-t}}{p+e^{-t}}\Bigr\rvert\ll_{Q,t}(\log X)^{-4\cosh(t)/\varphi(Q)},
+\]
+uniformly in $r$. Errors $\delta_j$ in the normalized atoms add $\sum_j\delta_j\abs{B(w)/(B'(s_j)(w-s_j))}$.
+\end{proposition}
+
+\begin{proof}
+For $f(w)=A_r(2\operatorname{artanh}w)$, bounded by $M_0$ on the disk, integrate $f(v)/(B(v)(v-w))$ over circles of radius tending
+to one; the residues give $(f(w)-I_X(w))/B(w)$, $\min\abs B\to1$ on these circles, and the mean of $\abs{e^{i\theta}-w}^{-1}$ is at
+most $(1-\abs w^2)^{-1/2}=\cosh(t/2)$. For the rate expand $\log\abs{(p-u)/(p+u)}=-2u/p+O_u(p^{-3})$ with $u=e^{\pm t}$ and use
+Mertens' theorem in progressions \cite{Williams1974Mertens}.
+\end{proof}
+
+For the quartic example ($Q=5$, $r=2$, $r^{-1}=3$) the product is $0.06579295$ at $t=0$, $X=100$, and $0.02623577$ at
+$X=10^5$. Exact erasure has a finite cost: if a probability law $K_*$ with $M_*=\int e^{A_0\abs u}\dd K_*(u)$ satisfies
+$\widehat K_*(\pm\log n)=0$ for $2\le n\le L$, dividing its transform by the disk factors and evaluating at $w=0$ gives
+$M_*\ge\prod_{n=2}^L((n+1)/(n-1))^2=(L(L+1)/2)^2$.
+
+\begin{corollary}[Polynomial losses at the endpoint; \stG]\label{rec:cor:blurend}
+Injectivity holds if for each measure and some $k_0\ge0$, $\int e^{\pi\abs u/2}(1+\abs u)^{-k_0}\dd\abs{\nu_\chi}(u)<\infty$.
+\end{corollary}
+
+\begin{proof}
+For $\beta<A_0$ a difference row is $O((A_0-\beta)^{-k_0})$ on $\abs{\Im z}<\beta$. With $s=\pi/(2\beta)>1$ and $t>0$ fixed, the zeros at
+$\log p$, $p>2e^t$, $p\equiv r$, and $\log((1-v)/(1+v))\le-2v$ give
+$\abs{A_r(t)}\ll(A_0-\beta)^{-k_0}\exp[-2e^{st}\sum_{p>2e^t,\,p\equiv r}p^{-s}]$, and
+$\sum_{p\equiv r}p^{-s}=\varphi(Q)^{-1}\log(1/(s-1))+O_Q(1)$ as $s\downarrow1$, with $s-1\asymp A_0-\beta$; so the bound tends to zero when
+$2e^t/\varphi(Q)>k_0$, the row vanishes on a ray and hence everywhere.
+\end{proof}
+
+So the density $K$ of \cref{rec:thm:blurlaw} fails every polynomially discounted critical moment.
+
+\begin{proposition}[Sparse high windows; \stG]\label{rec:prop:blurwin}
+Let $T_j\to\infty$ arbitrarily fast and $H_j-\pi^{-1}\log\log\log T_j\to\infty$, and assume
+$\int\log(3+\abs y)\dd\abs{\nu_\chi}(y)<\infty$. The restrictions of $M$ to $[T_j-H_j,T_j+H_j]$, even with error measures whose total
+variation on the windows tends to zero, determine $\sum_\chi\chi(p)\widehat\nu_\chi(-\log p)$ and $\sum_\chi\overline{\chi(p)}\widehat\nu_\chi(\log p)$ for
+every prime $p$. Hence the injectivity of \cref{rec:thm:blur} for $a+b\ge\pi$ holds from these windows alone.
+\end{proposition}
+
+\begin{proof}
+Fix $p$, $u=\log p$, $m\ge4$, and use the test $h$ of \cref{rec:thm:localcoeff} with $T=T_j$, so $\widehat h(0)=0$, $\widehat h(u)=1$, and
+translation by $y$ multiplies $\widehat h(v)$ by $e^{ivy}$. By \cref{rec:lem:lefreq} the other prime-power terms are $O(2^{-m})$
+uniformly in $T$ and $y$. The conductor constant integrates to zero; integration by parts bounds the gamma term
+by $u^{-1}\int K(s-T)\abs{G'_\chi(s-y)}\dd s$, which tends to zero for each $y$, and so do the pole terms, by
+\cref{rec:lem:lekernel}; bounded convergence handles integration against $\nu_\chi$. The unit-interval count and the
+logarithmic moment give $\abs M([v,v+1])\ll\log(3+\abs v)$, and outside $\abs{t-T}\le D+2B$ the kernel is
+$\ll_{p,m}e^{-R/4}e^{-(\abs{t-T}-B)}$, so the discarded part is $O(e^{-R/4}\log T)=o(1)$. Thus
+$E_{p,m,j}=-(2\pi\sqrt p/u)\int_{T_j-H_j}^{T_j+H_j}h\dd M$ has
+$\limsup_j\abs{E_{p,m,j}-\sum_\chi\chi(p)\widehat\nu_\chi(-u)}\le C2^{-m}\sum_\chi\norm{\nu_\chi}_{\mathrm{TV}}$; let $m\to\infty$, and use $\bar h$ for the other
+reading.
+\end{proof}
+
 \subsection{Weights and multiplicity vectors from poles of prime series}\label{rec:sec:poles}
 \sources{prime_pole_windows; dirichlet_zero_recovery; large_kernels_and_dirichlet_zeros; dirichlet_inverse_problems; local_euler_recovery; translated_dirichlet_zero_divisors}
 
@@ -4213,8 +4479,465 @@ $\norm{H^2}_A\le B^2$ and $\mathbb EH^2\ge B$. In the high-agreement range $\mat
 $4^d\delta/2=B/2$ by \cref{rec:thm:qmatch}.
 \end{proof}
 
+\subsection{Matching Euler factors at odd prime order}\label{rec:sec:omatch}
+\sources{euler-packet-rigidity; odd-order-euler-factor-matching; odd_prime_order_euler_packets}
+
+Let $\ell$ be an odd prime and $X$ a group of Dirichlet characters modulo $Q$ of exponent $\ell$ and rank
+$r\ge1$ over $\F_\ell$, written additively, $V=X^*$, $\zeta_\ell=e^{2\pi i/\ell}$, and for $p\nmid Q$ let $v_p\in V$ be given by
+$\chi(p)=\zeta_\ell^{v_p(\chi)}$. Packets $A,C$ are multisets of $k$ members of $X$, compared through
+$\prod_{\chi\in A}(1-\chi(p)T)$, and $\delta(A,C)$ is the density of primes at which these local polynomials differ.
+Put $c_x=\operatorname{mult}_A(x)-\operatorname{mult}_C(x)$, let $m=\sum_xc_x^+\le k$ be the mass of each side after cancellation,
+\[
+ H(v)=\sum_{x\in X}c_x\zeta_\ell^{v(x)},\qquad S=\set{v\in V:H(v)\ne0},\qquad \beta_m=\frac{\ell-1}{\ell m},
+\]
+and let $d_\ell(r,k)$ be the least $\delta(A,C)$ over distinct packets of size $k$. Common entries are allowed, and
+a packet may lie in a proper subspace. The results below are unconditional except
+\cref{rec:thm:ofinite}; they answer the extremal question for $\ell=3,5$ completely.
+
+\begin{lemma}[Traces decide; \stU]\label{rec:lem:otrace}
+The local polynomials agree at $p$ exactly when $H(v_p)=0$, and $\delta(A,C)=\abs S/\ell^r$. The set $S$ omits $0$,
+is a nonempty union of punctured lines through the origin when $A\ne C$, and $\delta$ depends only on
+$(\ell,r,c)$.
+\end{lemma}
+
+\begin{proof}
+With $h_j(v)=\sum_{v(x)=j}c_x$, agreement means $h_j(v)=0$ for all $j$. If $H(v)=0$, the integer polynomial
+$\sum_jh_j(v)T^j$ of degree below $\ell$ vanishes at $\zeta_\ell$, so it is a multiple of $1+T+\dots+T^{\ell-1}$, and its
+value $\sum c_x=0$ at $T=1$ makes it zero. The image of the reduced residues in $V$ is a subspace whose
+annihilator consists of characters trivial on all units, so the map is onto with equal fibres, and the
+prime number theorem in progressions gives the density. $H(0)=\sum c_x=0$, the automorphism $\zeta_\ell\mapsto\zeta_\ell^u$
+carries $H(v)$ to $H(uv)$, and Fourier inversion gives $S\ne\varnothing$ for $c\ne0$.
+\end{proof}
+
+Every rank occurs: choose $r$ primes $q\equiv1\pmod\ell$ and an order-$\ell$ character at each. In rank one every
+distinct pair has $\delta=1-1/\ell$.
+
+\begin{lemma}[Anchored projection count; \stU]\label{rec:lem:oradon}
+For $a\in X$ let $J_a$ be the signed mass of the projection fibre through $a$, that is,
+$J_a(v)=\sum_xc_x\mathbf 1_{v(x-a)=0}$. Then
+\[
+ \mathbb E_vJ_a=(1-1/\ell)c_a,\qquad\abs{J_a}\le m\mathbf 1_S,\qquad\norm{J_a/m}_A\le2(1-1/\ell),
+\]
+where $\norm f_A=\sum_{x\in X}\abs{\widehat f(x)}$ for $f(v)=\sum_x\widehat f(x)\zeta_\ell^{v(x)}$. Hence $\delta(A,C)\ge\beta_m\norm c_\infty$.
+\end{lemma}
+
+\begin{proof}
+The indicator for $x=a$ is identically one and the others have mean $1/\ell$, so the mean is
+$c_a+\ell^{-1}\sum_{x\ne a}c_x=(1-1/\ell)c_a$. Each fibre has signed mass in $[-m,m]$ and all fibres vanish off $S$. For
+the norm write $\mathbf 1_{v(y)=0}=\ell^{-1}\sum_{t\in\F_\ell}\zeta_\ell^{v(ty)}$; the terms $t=0$ cancel since $\sum c_x=0$.
+\end{proof}
+
+\begin{lemma}[Unions of hyperplanes; \stU]\label{rec:lem:ounion}
+Let $r\ge2$ and let $H_1,\dots,H_d$ be distinct linear hyperplanes of $V$, $1\le d\le\ell$. Then
+$\abs{\bigcup_iH_i}\le\ell^{r-1}+(d-1)(\ell^{r-1}-\ell^{r-2})$, with equality for $d\ge2$ exactly when all $H_i$ contain a
+common subspace of codimension two. A linear hyperplane is never covered by $d\le\ell$ other linear
+hyperplanes.
+\end{lemma}
+
+\begin{proof}
+Add each $H_i\setminus H_1$, of size $\ell^{r-1}-\ell^{r-2}$. Equality means these pieces are disjoint, so
+$H_i\cap H_j\subseteq H_1$ for $i,j>1$, and by dimensions $H_i\cap H_1=H_j\cap H_1$; the converse is clear. The traces of $d$
+other hyperplanes on a hyperplane are proper subspaces containing $0$, so their union has at most
+$1+d(\ell^{r-2}-1)<\ell^{r-1}$ points.
+\end{proof}
+
+Let $\OO=\Z[\zeta_\ell]$ and $\pi=\zeta_\ell-1$, so $\OO/(\pi)=\F_\ell$ and $(\ell)=(\pi)^{\ell-1}$. All $H(v)$ lie in $\pi\OO$; let $t$ be the
+least $\pi$-adic valuation of a nonzero value. Write $a=\floor{\log_\ell k}$ and $b=\floor{k/\ell^a}\in\set{1,\dots,\ell-1}$.
+
+\begin{lemma}[The first nonzero reduction; \stU]\label{rec:lem:ored}
+If $t=j(\ell-1)+s$ with $j\ge0$ and $1\le s\le\ell-1$, then $k\ge\ell^js$; hence $t\le a(\ell-1)+b$. The function
+$f(v)=\pi^{-t}H(v)\bmod\pi$ is a nonzero polynomial function on $V$ of degree at most $t$ with $f(0)=0$ and
+$f(uv)=u^tf(v)$ for $u\in\F_\ell^\times$.
+\end{lemma}
+
+\begin{proof}
+Evaluation at $\zeta_\ell$ is an additive isomorphism from the zero-sum vectors of $\Z^\ell$ onto $\pi\OO$ (injective by
+the cyclotomic argument above, surjective since the $\zeta_\ell^{i+1}-\zeta_\ell^i$ form a $\Z$-basis). At $v$ attaining $t$,
+$H(v)\in\ell^j\pi\OO$, so the histogram difference is $\ell^jn$ for an integral zero-sum $n$ whose positive and
+negative parts have mass $m'\le k/\ell^j$. Expanding $\zeta_\ell^i=(1+\pi)^i$, valuation $s$ forces
+$\sum_in_i\binom i\lambda\equiv0\pmod\ell$ for $\lambda<s$, so the two $m'$-element multisets represented by $n^\pm$ have equal power
+sums through degree $s-1$; if $m'<s$, Newton's identities (valid as $m'<\ell$) make them equal, a
+contradiction. So $k\ge\ell^jm'\ge\ell^js$, and the numbers $\ell^js$ increase with $j(\ell-1)+s$. For $f$, lift coordinates
+to $\set{0,\dots,\ell-1}$ and expand $\zeta_\ell^{v(x)}=\prod_i\sum_{u_i}\binom{v_i}{u_i}(\zeta_\ell^{x_i}-1)^{u_i}$: the coefficient of the tensor
+binomial indexed by $u$ is divisible by $\pi^{\abs u}$, and, being an iterated forward difference of values of $H$,
+by $\pi^t$. Dividing by $\pi^t$ and reducing kills the terms with $\abs u>t$. Finally $\sigma_u(\pi)/\pi\equiv u\pmod\pi$ for
+the automorphism $\sigma_u:\zeta_\ell\mapsto\zeta_\ell^u$, which acts trivially on the residue field, so $f(uv)=u^tf(v)$.
+\end{proof}
+
+For $n,D\ge0$ put $W(n,D)=\min\set{\prod_{i=1}^n(\ell-e_i):0\le e_i\le\ell-1,\ \sum e_i\le D}$. Moving a unit between unsaturated
+exponents shows $W(n,D)=1$ if $D\ge n(\ell-1)$, and otherwise $W(n,D)=(\ell-h)\ell^{n-j-1}$ for $D=j(\ell-1)+h$, $0\le h<\ell-1$;
+$W(n,\cdot)$ decreases strictly until it reaches $1$.
+
+\begin{lemma}[Surviving directions; \stU]\label{rec:lem:oproj}
+A nonzero polynomial function of degree at most $D$ in $n$ variables over $\F_\ell$ has at least $W(n,D)$
+nonzero values. If a nonzero polynomial function on $\F_\ell^{n+1}$ of degree at most $t\ge1$ vanishes at $0$
+and its support is a union of punctured lines, its support contains at least $W(n,t-1)$ projective
+directions.
+\end{lemma}
+
+\begin{proof}
+Reduce exponents below $\ell$. If $e_1$ is the top exponent of the first variable, above each point where its
+coefficient is nonzero at least $\ell-e_1$ values survive; iterate on that coefficient. For the second claim
+induct on $n$, the case $n=0$ being clear. If some projective hyperplane, say $x_0=0$, misses the support,
+then $F(0,x')$ vanishes identically and $F=x_0G$ with $\deg G\le t-1$; the chart $x_0=1$ meets every supported
+line once, and the first claim applies. Otherwise induction in each of the $(\ell^{n+1}-1)/(\ell-1)$ hyperplanes and
+double counting give more than $\ell W(n-1,t-1)\ge W(n,t-1)$ directions.
+\end{proof}
+
+\begin{construction}[Extremal packets]\label{rec:con:opack}
+In rank two:
+\emph{split}, if $b\mid\ell-1$: for $H_0\le\F_\ell^\times$ of order $b$, the packets $H_0e_1$ and $H_0e_2$ agree at $(u,w)\ne0$
+exactly when $uw\ne0$ and $u/w\in H_0$;
+\emph{nonsplit}, if $b\mid\ell+1$: identify the plane with $K=\F_{\ell^2}$ and its dual through $\Tr_{K/\F_\ell}(vx)$, let $U$ be the
+norm-one group, $H_0\le U$ of order $b$ and $c_0\in U\setminus H_0$; for $v\ne0$ all elements of $vH_0$ and $vc_0H_0$ have the same norm,
+equal traces and norms force equality or Frobenius conjugacy, so the packets $H_0$, $c_0H_0$ agree exactly
+when $v^{\ell-1}\in c_0H_0$, and $v\mapsto v^{\ell-1}$ is a bijection $K^\times/\F_\ell^\times\to U$.
+Either way exactly $b$ of the $\ell+1$ directions agree. \emph{Cosets}: for a subspace $U'\le X$ of dimension $s$ and
+$y-x\notin U'$, $H(v)=\ell^s\mathbf 1_{U'^\perp}(v)(\zeta_\ell^{v(x)}-\zeta_\ell^{v(y)})$ and $\delta(x+U',y+U')=(\ell-1)/\ell^{s+1}$. \emph{Lifting}: replacing every
+entry $x$ by $x+L$ for a subspace $L$ of dimension $a$ independent of the support multiplies $H$ by
+$\ell^a\mathbf 1_{L^\perp}$ and divides $\delta$ by $\ell^a$. Embedding a plane in $X$, padding both sides with common entries and a
+common translation preserve agreement; in a plane a translation outside the at most $2k<\ell^2$ points of
+$-(A\cup C)$ makes every factor of exact order $\ell$.
+\end{construction}
+
+\begin{theorem}[Packets below the character order; \stU]\label{rec:thm:osmall}
+Let $r\ge2$ and $1\le k\le\ell$, and put $D_1(k)=(\ell-1)(\ell+1-k)/\ell^2$.
+\begin{enumerate}
+\item Every distinct pair has $\delta\ge D_1(k)$.
+\item For $2\le k\le\ell$ a pair attains equality if and only if nothing cancels and $A,C$ are disjoint $k$-sets in
+a common affine plane of $X$ whose cross differences $x-y$, $x\in A$, $y\in C$, occupy exactly $k$ projective
+directions, each exactly once from every point of either set. The agreement set is then a pencil of $k$
+hyperplanes, and $A$, $C$ and the $k$ directions at infinity form an embedded dual $3$-net of order $k$.
+\item Equality is attained, in every rank $r\ge2$, if and only if $k=1$, $k=\ell$, $k\mid\ell-1$ or $k\mid\ell+1$.
+\item If $3\le k<\ell$ and $k$ divides neither $\ell-1$ nor $\ell+1$, every distinct pair of size $k$ has
+$\delta\ge(\ell-1)(\ell+2-k)/\ell^2$, with equality attained when $k-1$ divides $\ell-1$ or $\ell+1$.
+\end{enumerate}
+\end{theorem}
+
+The criterion in (iii) is the same in every rank; for $k=2,3,4$ it always holds, and $k=\ell-1$ gives
+$2(\ell-1)/\ell^2$.
+
+\begin{lemma}[Separating a point; \stU]\label{rec:lem:osep}
+Let $n\ge2$ and let $S_0$ be a set of at most $2n+2$ points of an affine space over a field, contained in no affine
+plane. There are $P\in S_0$ and a polynomial of degree at most $n$ vanishing on $S_0\setminus\set P$ and not at $P$.
+\end{lemma}
+
+\begin{proof}
+If a line contains at least $n+2$ points of $S_0$, take $P$ off it, one hyperplane through the line avoiding $P$
+and one hyperplane avoiding $P$ through each of the at most $n-1$ remaining points. Otherwise fix $P$ and
+group the vectors $x-P$ by their spans; each group has at most $n$ members and at most two have $n$. Choose
+an independent triple meeting every group of size $n$ (the vectors have rank at least three); the at most
+$2(n-1)$ others, in groups of size at most $n-1$, split into at most $n-1$ independent pairs or singletons
+(pad to $2(n-1)$ entries in new groups, sort by group and pair entries $n-1$ places apart). For each part
+choose a linear form equal to $1$ on its vectors; the product of the at most $n$ affine equations works.
+\end{proof}
+
+\begin{proof}[Proof of \cref{rec:thm:osmall}]
+(i) Cancel, and fix $x\in A$. Agreement at $v$ forces $v(x)=v(y)$ for some $y\in C$, so the agreement set lies in
+at most $d\le m\le k$ distinct hyperplanes $(x-y)^\perp$, and \cref{rec:lem:ounion} gives $\delta\ge(\ell-1)(\ell+1-d)/\ell^2$.
+(ii) At equality $d=m=k$, so nothing cancels, $C$ is a set, the union is the whole agreement set and is a
+pencil with axis $W'$ of codimension two; by symmetry $A$ is a set. By the last clause of
+\cref{rec:lem:ounion} the $k$ hyperplanes of every anchor are members of this pencil, so all cross differences
+lie in the plane $W'^\perp\subset X$ with the $k$ normal directions, each once from each anchor, and fixing one point of
+each set puts both in one translate of $W'^\perp$. Conversely, each cross direction then matches $A$ with $C$, so
+the $k$ hyperplanes it defines all agree, and no other $v$ agrees by the inclusion; the pencil attains the
+bound. With the directions at infinity, every line meeting two of the three sets meets each once.
+(iii) Singletons, the coset construction with $s=1$, and the split and nonsplit constructions give
+sufficiency. For necessity let $3\le k<\ell$ (for $k=2$ the condition holds). Theorem~5.1 of
+\cite{BlokhuisKorchmarosMazzocca2011Structure} applies to the dual $3$-net, whose third component is collinear,
+and puts $A\cup C$ on a possibly reducible conic. A line meeting both colours contains only two packet points,
+so for $k\ge3$ each component line is monochromatic. Parametrize the components: on two intersecting
+lines the chord direction is a function of the ratio of the parameters, on parallel lines of their difference,
+and on the nonsingular models $xy=1$, $y=x^2$ and the norm-one group of $\F_{\ell^2}$ an injective function of
+the product, the sum, respectively the product of the parameters
+\cite[\S5]{BlokhuisKorchmarosMazzocca2011Structure}. So the parameter sets $U_0,W_0$ are $k$-subsets of an abelian
+group of order $\ell-1$, $\ell$ or $\ell+1$ with $\abs{U_0W_0}=k$; then $uW_0=U_0W_0$ for every $u\in U_0$, so $u_0^{-1}U_0$ lies in the
+stabilizer of $W_0$, which acts freely and therefore has order exactly $k$. As $1<k<\ell$, $k\mid\ell\pm1$.
+(iv) If the support $S_0$ of $c$ (at most $2k$ points) lies in an affine plane, translate it into a linear plane;
+restriction of $v$ to that plane is uniform, the disagreement count there is a multiple of $\ell-1$, and strict
+inequality in (i) gives the bound. Otherwise \cref{rec:lem:osep} with $n=k-1$ gives a polynomial $F$ of degree at
+most $k-1$ with $\sum_xc_xF(x)\ne0$ in $\F_\ell$, hence, as $\sum c_x=0$, a monomial $x^\alpha$ of degree $1\le j\le k-1$ with
+$\sum_xc_xx^\alpha\ne0$. Then $M_j(v)=\sum_xc_xv(x)^j$ has coefficient $\binom j\alpha\sum_xc_xx^\alpha\ne0$ at $v^\alpha$, since $j<\ell$; it
+vanishes wherever the projections agree, and \cref{rec:lem:oproj} gives at least $W(r-1,j-1)$ disagreeing
+directions, density at least $(\ell-1)(\ell+1-j)/\ell^2\ge(\ell-1)(\ell+2-k)/\ell^2$. Pad an extremal pair of size $k-1$ for the
+equality.
+\end{proof}
+
+\begin{corollary}[Order seven; \stU]\label{rec:cor:oseven}
+For $\ell=7$, every $r\ge2$ and packets of size $5$, the least disagreement density is $24/49$: two distinct
+products of five septic $L$-functions agree at no more than $25/49$ of the primes, and this is attained.
+In rank two the positive disagreement densities of size-$5$ pairs are exactly
+$\set{24,30,36,42,48}/49$.
+\end{corollary}
+
+\begin{proof}
+Five divides neither $6$ nor $8$ and four divides $8$. In rank two $\delta=(\ell-1)(\ell+1-d)/\ell^2$ with $d\le m\le k$ the
+number of agreeing directions; $d=5$ is excluded, $d=1,\dots,4$ are realized at size $d$ and padded, and
+$d=0$ by two copies of $0$ against two independent points, padded.
+\end{proof}
+
+\begin{theorem}[The leading base-$\ell$ digit; \stU]\label{rec:thm:odigit}
+For distinct packets of size $k$,
+\[
+ \delta(A,C)\ge D_\ell(r,k)=\begin{cases}(\ell-1)(\ell+1-b)/\ell^{a+2},&a\le r-2,\\ (\ell-1)/\ell^r,&a\ge r-1.\end{cases}
+\]
+\begin{enumerate}
+\item If $a\ge r-1$ this is the exact minimum, and a pair attains it exactly when $c$ is nonzero and constant on the
+cosets of some hyperplane of $X$.
+\item If $a\le r-2$ it is the exact minimum if and only if $b\mid\ell-1$ or $b\mid\ell+1$. In every equality case there is a
+subspace $L\le X$ of dimension $a$ such that, after cancellation, both packets are full inverse images under
+$X\to X/L$ of disjoint $b$-sets in a common affine plane, which for $b\ge2$ form a dual $3$-net as in
+\cref{rec:thm:osmall}; conversely every lift of a base equality case, padded to size $k$, attains $D_\ell(r,k)$.
+\item For $k=\ell^a$ with $a\le r-1$, $d_\ell(r,k)=(\ell-1)/\ell^{a+1}$, and the minimizers are exactly two distinct cosets of one
+$a$-dimensional subspace, each point once. Equality in $\delta\ge(\ell-1)/(\ell k)$ forces $k$ to be such a power.
+\item $D_\ell(r,k)=d_\ell(r,k)$ for every $r$ and $k$ when $\ell=3$ or $\ell=5$.
+\end{enumerate}
+\end{theorem}
+
+\begin{proof}
+By \cref{rec:lem:ored,rec:lem:oproj} with $n=r-1$, $S$ contains at least $W(r-1,t-1)\ge W(r-1,a(\ell-1)+b-1)$ directions, each
+with $\ell-1$ points, which is the bound. (i) The coset construction with $s=r-1$, padded, attains it. A
+minimizing $S$ is one punctured line $\Lambda\setminus\set0$, so by inversion $c$ is invariant under the hyperplane $\Lambda^\perp$;
+conversely such a nonzero balanced $c$ has Fourier support in $\Lambda$ containing all its nonzero points, by
+Galois conjugacy, and occurs at size $k$ exactly when its positive mass, a multiple of $\ell^{r-1}$, is at most $k$.
+(ii) Sufficiency: lift the rank-two construction for $b$ by an $a$-dimensional $L$ and pad. Necessity: as
+$W(r-1,\cdot)$ is strictly decreasing here, equality forces $t=e:=a(\ell-1)+b$ and $S=\supp f$. By \cref{rec:lem:ored}
+the reduced representative of $f$ has only monomials of degree $\equiv e\pmod{\ell-1}$ and no constant term;
+raising one positive exponent of each makes it homogeneous of degree $e$ with the same values. So $f$ is a
+minimum-weight word of the projective Reed--Muller code of degree $e$ on $\mathbf P^{r-1}(\F_\ell)$, and by
+\cite[Thm.~4.3]{GhorpadeLudhani2024Minimum} it has a factor $L_a\prod_{i<a}(L_a^{\ell-1}-L_i^{\ell-1})$ with independent linear
+forms; hence $S$ lies in the common kernel $U$ of $L_0,\dots,L_{a-1}$, of codimension $a$. Fourier inversion makes $c$
+invariant under $L=U^\perp$; the induced $c'$ on $X/L$ has masses at most $\floor{k/\ell^a}=b$ and density $\ell^aD_\ell(r,k)=D_1(b)$,
+so \cref{rec:thm:osmall} applies. (iii) For $a\le r-2$ this is (ii) with $b=1$; for $a=r-1$ use (i), since a
+hyperplane-invariant $c$ of positive mass $\ell^{r-1}$ is a difference of two coset indicators. Since
+$b(\ell+1-b)\ge\ell$ with equality only for $b=1$, $D_\ell(r,k)\ge(\ell-1)/(\ell\min(k,\ell^{r-1}))$, with equality only at the powers.
+(iv) The admissible digits $1,2$ for $\ell=3$ and $1,2,3,4$ for $\ell=5$ all divide $\ell\pm1$.
+\end{proof}
+
+\begin{corollary}[A gap at the smallest unsaturated rank; \stU]\label{rec:cor:ogap}
+If $r=a+2$, $b$ divides neither $\ell-1$ nor $\ell+1$, and $b-1$ divides one of them, then
+$d_\ell(r,k)=(\ell-1)(\ell+2-b)/\ell^{a+2}$. For $\ell=7$, $r=a+2$ and $5\cdot7^a\le k<6\cdot7^a$ it equals $24/7^{a+2}$.
+\end{corollary}
+
+\begin{proof}
+Densities are multiples of $(\ell-1)/\ell^r$; \cref{rec:thm:odigit} excludes $D_\ell(r,k)$, and the lift of the construction
+for the digit $b-1$, padded, attains the next multiple.
+\end{proof}
+
+For example, the least disagreement densities at rank two, for $k=1,\dots,7$ (constant from $k=\ell$ on), are
+$2/3,4/9,2/9,\dots$ for $\ell=3$; $4/5,16/25,12/25,8/25,4/25,\dots$ for $\ell=5$; and
+$6/7,36/49,30/49,24/49,24/49,12/49,6/49$ for $\ell=7$. Two cubic packets of size $3^s$ can agree at exactly $1-2/3^{s+1}$
+of the primes, and at no more in rank at least $s+1$.
+
+\paragraph{The second level.}
+Normalize by the reduced mass: $\delta/\beta_m\ge\norm c_\infty$ by \cref{rec:lem:oradon}, so a repeated coefficient already gives ratio
+at least $2$. For $c=\mathbf 1_A-\mathbf 1_B$ with disjoint $m$-sets let $P=\set{t:c(x-t)=c(x)\ \forall x}$ be its period subspace and
+$h=m/\abs P$ the number of $P$-cosets on each side. Passing to $X/P$ divides $m$ by $\abs P$, multiplies $\delta$ by $\abs P$ and
+keeps the ratio. Put $T_\ell=2(1-1/\ell)$.
+
+\begin{theorem}[Isolation of the two lowest levels; \stU]\label{rec:thm:olevel}
+For every distinct pair $\delta\ge\beta_m$, with equality exactly when $c=\mathbf 1_{x+P}-\mathbf 1_{y+P}$ for a subspace $P$ and $y-x\notin P$
+(so $m=\abs P$). A simple pair with $h\ge2$ has $\delta/\beta_m\ge(3h-2)/(2h-1)$. For $r\ge2$ the least value of $\delta/\beta_m$ over
+all other pairs and all sizes is $T_\ell$, and it is attained exactly, after passing to the quotient by the period
+subspace and up to translation and exchange of sides, by the opposite vertex pairs $\set{0,u+w}$, $\set{u,w}$ of a
+parallelogram ($u,w$ independent), and by two intersecting affine lines each with the common point deleted.
+At $\ell=3$ the two descriptions coincide and $T_3=4/3$. In rank one $\delta/\beta_m=m$.
+\end{theorem}
+
+\begin{proof}
+For $h=1$ the coset construction gives $\delta=\beta_m$; together with $\norm c_\infty\ge2$ otherwise and the bound below, this
+proves the first assertion. Fix $a\in A$ and $g_a=J_a/m$. On $S$, dropping the contribution of $B$,
+\begin{equation}\label{rec:eq:oanchor}
+ \mathbf 1_S-g_a\ge\frac1m\sum_{y\in A}\mathbf 1_{S\cap\set{v(y-a)\ne0}},
+\end{equation}
+and off $S$ both sides vanish. For $y\notin a+P$ and $t=y-a$, $c_t(x)=c(x)-c(x-t)$ is nonzero and balanced with
+transform $H(v)(1-\zeta_\ell^{v(t)})$, so its disagreement set is the summand; its positive part comes from $A\cup(B+t)$
+and the $\abs P$ points of $y+P$ cancel against $A+t$, so its mass is $m_t\le2m-\abs P$. By \cref{rec:lem:oradon} each
+summand has mean at least $(1-1/\ell)/(2m-\abs P)$, and the $m-\abs P$ such $y$ give
+$\delta/\beta_m\ge1+(m-\abs P)/(2m-\abs P)=(3h-2)/(2h-1)$; the terms with $y\in a+P$ vanish since $S\subset P^\perp$.
+
+Assume $P=0$ after the quotient. If $c_t=\mathbf 1_{u'+D}-\mathbf 1_{v'+D}$ with $\abs D=N$, then
+\begin{equation}\label{rec:eq:oflat}
+ N\le h/(1-1/\ell).
+\end{equation}
+Indeed $c_t$ sums to zero along every line parallel to $t$, so $t\notin D$, both cosets project onto the same $N$ points
+modulo $\langle t\rangle$, and $v'+D=u'+D+st$ for one $1\le s\le\ell-1$; on each of these $N$ lines $c$ takes values $0,1$ on
+$s$ points or $-1,0$ on $\ell-s$ points, so with $j$ lines of the first type
+$h\ge\max\set{js,(N-j)(\ell-s)}\ge Ns(\ell-s)/\ell\ge N(1-1/\ell)$.
+
+Let $\alpha$ be the infimum of $\delta/\beta_m$ over pairs not of coset form, at fixed $\ell$ and all ranks. The parallelogram has
+$H=(1-\zeta_\ell^{v(u)})(1-\zeta_\ell^{v(w)})$ up to a unit, $\delta=(1-1/\ell)^2$ and $m=2$, so $\alpha\le T_\ell$. Repeated coefficients give
+ratio at least $2$, a quotient of rank one gives ratio $h\ge2$, and for quotient rank at least two and
+$2\le h\le\ell-1$, \cref{rec:thm:osmall} gives $\delta/\beta_h\ge h(\ell+1-h)/\ell\ge T_\ell$, with equality only for $h\in\set{2,\ell-1}$. For
+$h\ge\ell$ average \eqref{rec:eq:oanchor}: a summand with $c_t$ not of coset form has mean at least $\alpha\beta_N$ with $N\le2h-1$,
+and one of coset form has mean $\beta_N$ with \eqref{rec:eq:oflat}, so
+\[
+ \delta/\beta_h\ge\min\set{1+(1-1/h)(1-1/\ell),\ 1+\alpha(h-1)/(2h-1)}.
+\]
+The first entry exceeds $T_\ell$ by at least $1/\ell^2$; if $\alpha\le T_\ell$ the second exceeds $\alpha$ by at least
+$1-T_\ell\ell/(2\ell-1)=1/(2\ell-1)$. Hence every ratio is at least $\min\set{T_\ell,\alpha+1/(2\ell-1)}$, so $\alpha=T_\ell$, and $h\ge\ell$ never
+attains it. At $h=2$ the vector sums must agree, since otherwise $\delta\ge1-1/\ell$; after translation the pairs are
+$\set{0,u+w}$, $\set{u,w}$, with $u,w$ independent as proportional ones give $1-1/\ell$. At $h=\ell-1\ge4$, $\delta=D_1(\ell-1)$, so
+\cref{rec:thm:osmall}(ii) puts the $2\ell-2>\ell+1$ points in a plane on a reducible conic with monochromatic lines;
+parallel lines would need an additive subgroup of order $\ell-1$, so the lines intersect, the common point lies in
+neither packet, and each packet is its line minus that point. Conversely $c$ is then the difference of the two
+full line indicators, with Fourier support the two punctured annihilator lines, $\delta=2(\ell-1)/\ell^2$ and ratio $T_\ell$.
+\end{proof}
+
+\paragraph{Factors of one primitive conductor.}
+
+\begin{theorem}[Primitive common-conductor floor; \stU]\label{rec:thm:oprim}
+If every character of both packets is primitive modulo the same $Q$, then $\delta(A,C)\ge(\ell-1)2^{r-1}/\ell^r$. For every
+$Q$ supporting a primitive character of order $\ell$ this is the exact minimum in the full exponent-$\ell$ group
+modulo $Q$, of rank $r=\omega(Q)$, attained for every $k\ge2^{r-1}\ell^{r-1}$. In local coordinates, an extremal
+disagreement set is, in rank two, the union of two punctured lines of nonzero finite slopes, and in rank $r\ge3$
+the set $\set{(t,\epsilon_2d_2t,\dots,\epsilon_rd_rt):t\in\F_\ell^\times,\ \epsilon_i=\pm1}$ for some $d_2,\dots,d_r\in\F_\ell^\times$.
+\end{theorem}
+
+\begin{proof}
+For odd $\ell$ the order-$\ell$ characters of each prime-power factor of $Q$ form a group of dimension at most one,
+and the restrictions separate $X$; take $r$ independent ones as coordinates. A primitive character is
+nontrivial at every factor, so $c$ vanishes when a coordinate is zero, and orthogonality gives
+$\sum_{t\in\F_\ell}H(v+te_i)=0$ for all $i$ and $v$. A nonzero array on $\F_\ell^n$ with zero sums along all coordinate lines has at
+least $2^n$ nonzero entries (two nonzero slices in any coordinate, and induction); a nonzero slice at $v_1\ne0$
+exists, Galois conjugation gives all $\ell-1$ such slices, and each has at least $2^{r-1}$ nonzero entries.
+For sharpness, $Q$ is a product of distinct primes $q\equiv1\pmod\ell$, possibly times $\ell^2$, and at each factor the
+nontrivial local order-$\ell$ characters are exactly the primitive ones. Put $\lambda(t)=1$ for even $r$,
+$\lambda(t)=\zeta_\ell^t-\zeta_\ell^{-t}$ for odd $r$, $J(0,v')=0$ and $J(t,v')=\lambda(t)\prod_{i=2}^r(\mathbf 1_{v_i=t}-\mathbf 1_{v_i=-t})$ for $t\ne0$; the line
+sums vanish, using $\lambda(-t)=(-1)^r\lambda(t)$. With $u_\epsilon=x_1+\sum_{i\ge2}\epsilon_ix_i$ and $e_\epsilon=\prod_{i\ge2}\epsilon_i$, the inverse transform
+is $c_x=\sum_\epsilon e_\epsilon\mathbf 1_{u_\epsilon=0}$ for even $r$ and $\sum_\epsilon e_\epsilon(\mathbf 1_{u_\epsilon=1}-\mathbf 1_{u_\epsilon=-1})$ for odd $r$: integers of sum zero,
+masses at most $2^{r-1}\ell^{r-1}$, vanishing at every character with a zero coordinate, with exactly $(\ell-1)2^{r-1}$
+disagreement points; pad with a primitive character. For the shape, equality in the array bound forces
+exactly two nonzero, pointwise opposite slices in each coordinate, so the support of the slice $v_1=1$ is a
+product $D_2\times\dots\times D_r$ of two-element subsets of $\F_\ell^\times$, and the slice $v_1=t$ has support $tD_2\times\dots\times tD_r$. For
+$r\ge3$ the line through a chosen point of the slice $v_1=1$ in the first direction has a second support point
+$t\ne1$, so each chosen element divided by $t$ is its partner; the common ratio squares to one and is not one,
+so $D_i=\set{\pm d_i}$.
+\end{proof}
+
+\begin{theorem}[Primitive cubic packets; \stU]\label{rec:thm:ocubic}
+Let $\ell=3$ and $k\ge1$, and put $d=\min\set{r,\floor{\log_2(2k)}}$. Two distinct size-$k$ packets of primitive
+characters of one conductor, in a rank-$r$ space, satisfy $\delta\ge(2/3)^d$, with equality achieved for every $k$ in the full cubic
+group of every conductor supporting a primitive cubic character. The common-conductor minimum
+$(2/3)^r$ is first reached at $k=2^{r-1}$.
+\end{theorem}
+
+\begin{proof}
+In local coordinates every $x$ with $c_x\ne0$ has $x_i\in\set{1,2}$; with $z_i=\zeta_3^{v_i}$, $H(v)/\prod_iz_i$ is a multilinear
+polynomial with $n\le2k$ monomials on the cube of cube roots of unity. Such a nonzero polynomial is nonzero
+on a fraction at least $(2/3)^{\min(r,\floor{\log_2n})}$: split $P=P_0+z_iP_1$ in a coordinate where both parts are nonzero, apply
+induction to the part with at most $\floor{n/2}$ monomials, and note that where it is nonzero at most one value of
+$z_i$ kills $P$. For equality take the coefficients of $\prod_iz_i\prod_{i\le d}(z_i-1)$: disjoint packets of size $2^{d-1}$ of
+primitive characters, disagreeing exactly where $z_i\ne1$ for $i\le d$; pad.
+\end{proof}
+
+In rank three the primitive cubic minima for $k=1,2,3,4$ are $2/3,4/9,4/9,8/27$, against $2/3,4/9,2/9,2/9$
+without primitivity.
+
+\begin{proposition}[Two factors; \stU]\label{rec:prop:otwo}
+The agreement densities of distinct pairs of size two are $1/\ell$ in rank one; $1/\ell$, $(2\ell-1)/\ell^2$, $1/\ell^2$ in rank
+two; and $1/\ell$, $(2\ell-1)/\ell^2$, $1/\ell^2$, $(2\ell-1)/\ell^3$ in rank at least three.
+\end{proposition}
+
+\begin{proof}
+Write the packets as $\set{s\pm u}$ and $\set{t\pm w}$; as $2$ is invertible they agree exactly on
+$(s-t)^\perp\cap\bigl((u-w)^\perp\cup(u+w)^\perp\bigr)$. Inside the first hyperplane (or the whole space if $s=t$) the conditional
+fraction is $1$, $1/\ell$ or $(2\ell-1)/\ell^2$ according as one of the other forms vanishes there, their restrictions are
+proportional, or independent; the three vectors can be prescribed freely.
+\end{proof}
+
+\begin{example}[Fifteen quintic factors]\label{rec:ex:oquintic}
+Let $Q=11\cdot31\cdot41=13981$, let $\chi_1,\chi_2,\chi_3$ send the least primitive roots $2,3,6$ of the three primes to
+$e^{2\pi i/5}$, and write $(i,j,t)$ for $\chi_1^i\chi_2^j\chi_3^t$. The packets $A=\set{(1,0),(2,2),(2,3)}\times\F_5$ and $C=-A$ consist of
+characters of exact order five (the first two coordinates are the order-three subgroup of the norm-one
+conic in $\F_5[\theta]/(\theta^2-2)$ and its negative). Exactly $12$ of the $125$ evaluation vectors distinguish them, so the two
+products of fifteen $L$-functions have the same Euler factor at $113/125$ of the primes, the maximum in rank
+three by \cref{rec:thm:odigit} ($a=1$, $b=3\mid6$). The smallest distinguishing primes are $3,79,163,173,191$, and $906$ of the
+$9589$ unramified primes up to $10^5$ distinguish them.
+\end{example}
+
+\begin{example}[Five primitive septic factors]\label{rec:ex:oseptic}
+For $Q=29\cdot43=1247$ and coordinates given by order-seven characters at the two primes, the packets
+$\set{(4,3),(2,3),(3,4),(3,2),(3,3)}$ and $\set{(5,5),(1,5),(5,1),(1,1),(3,3)}$ consist of primitive characters of
+conductor $1247$. After translating by $-(3,3)$ and cancelling the common entry, they are $\set{\pm1,\pm i}$ and
+$(2+2i)\set{\pm1,\pm i}$ in $\F_7[i]$, where $2+2i$ has norm one; four of the eight directions agree, and the products
+agree at $25/49$ of the primes, the maximum by \cref{rec:cor:oseven}. For the translated four-element packets the
+primes up to $10^6$, apart from $29,43$, give $38{,}440$ disagreements and $40{,}056$ agreements.
+\end{example}
+
+Exhaustive enumerations confirm the minima on all $220{,}813{,}980$ pairs in ten small parameter sets and
+$7{,}913{,}653$ primitive cubic pairs, all $189{,}471$ pairs in further small planes with $103$ constructions, and all
+$4{,}276{,}350$ pairs at $(\ell,r,k)=(5,2,3)$:
+\begin{center}
+\artifact{odd-order-euler-factor-matching/checks.json}\\
+\artifact{euler-packet-rigidity/checks/output.txt}\\
+\artifact{odd_prime_order_euler_packets/verification.txt}
+\end{center}
+Related matching problems for Galois representations are studied in \cite{Walji2016Matching}; the planar bound
+for $k<\ell$ also follows from Lev's bound on perfect directions \cite{Lev2020Point}, and the projective
+counts are the minimum distance of projective Reed--Muller codes \cite{GhorpadeLudhani2024Minimum}.
+
+\begin{theorem}[Distinguishing primes in one window; \stG]\label{rec:thm:ofinite}
+Let $w\ge0$ be smooth, supported in $(\tfrac12,1)$, $\int w=1$, $M_Y(f)=\sum_{p\nmid Q}(\log p)w(p/Y)f(v_p)$, and let all implied
+constants depend only on $w$ (in particular not on $\ell,r,k,m,Q$). For distinct packets:
+\begin{enumerate}
+\item $M_Y(\mathbf 1_S)\ge\Lambda\beta_mY-O(\sqrt Y\log(2Q))$, where $\Lambda=\norm c_\infty$ for repeated coefficients, $\Lambda=(3h-2)/(2h-1)\ge4/3$ for simple
+pairs not of coset form, and $\Lambda=1$ in general, two-sided for coset pairs;
+\item $M_Y(\mathbf 1_S)\ge(\ell-1)\ell^{-r}Y-O(\sqrt Y\log(2Q))$, and for $r\ge2$, $k\le\ell$, $M_Y(\mathbf 1_S)\ge D_1(k)Y-O(k\sqrt Y\log(2Q))$;
+\item for pairs not of coset form, $M_Y(\mathbf 1_S)\ge T_\ell\beta_mY-O(\log(2\ell)\sqrt Y\log(2Q))$, and two-sided
+$M_Y(\mathbf 1_S)=T_\ell\beta_mY+O(\sqrt Y\log(2Q))$ for the second-level pairs of \cref{rec:thm:olevel};
+\item every interval $(Y/2,Y)$ contains a distinguishing prime once $Y\ge C\min(m,\ell^{r-1})^2\log^2(2Q)$;
+\item a pair attaining $D_\ell(r,k)$ with $a\le r-2$ has $\norm{\mathbf 1_S}_A=2b(\ell+1-b)(\ell-1)/\ell^2$ exactly, so
+$M_Y(\mathbf 1_S)=Y\delta+O(2b\ell^a\delta\sqrt Y\log(2Q))$; at saturation the norm is $2(1-1/\ell)$. Given $a$ and the promise of an
+unsaturated equality case, rounding one weighted count recovers $b$ once $Y\ge C_\ell\ell^{2a}\log^2(2Q)$;
+\item with prime weights $(\log p)w(p/Y)/M_Y(1)$ and weighted Hamming distance, every word of local factors
+within weighted distance below $(1-\eta)D_0/2$ of a packet, $D_0=(\ell-1)/(\ell\min(k,\ell^{r-1}))$, determines it once
+$Y\ge C\eta^{-2}\min(k,\ell^{r-1})^2\log^2(2Q)$; where $d_\ell(r,k)=D$ is attained by a coset or saturated pair or a small equality
+case, no uniform correction radius above $D/2$ survives as $Y\to\infty$.
+\end{enumerate}
+\end{theorem}
+
+\begin{proof}
+As in \cref{rec:thm:qmatchfinite}, \cref{rec:lem:gram} and Fourier expansion give
+\[
+ \abs{M_Y(f)-Y\mathbb Ef}\ll\norm f_A\sqrt Y\log(2Q),
+\]
+and $w\ge0$ turns a pointwise minorant $f\le\mathbf 1_S$ into a lower bound.
+(i) Exchange sides so that $c_a=\norm c_\infty$; $g_a$ is a minorant of mean $\beta_mc_a$ and norm at most $2$, equal to $\mathbf 1_S$ for
+coset pairs since the means agree. For simple pairs add to $g_a$ the sum over $y\notin a+P$ of $1/m$ times the
+minorant $g$ of the summand of \eqref{rec:eq:oanchor}, anchored and signed so that its largest coefficient is positive;
+the result is below $\mathbf 1_S$, of norm at most $4$, with the mean of the proof of \cref{rec:thm:olevel}.
+(ii) Use $\mathbf 1_\Lambda-\mathbf 1_{\set0}$ for a line $\Lambda$ with $\Lambda\setminus\set0\subset S$ (norm at most $2$), respectively
+$(1-\mathbf 1_{H_1})(1-\sum_{j=2}^d\mathbf 1_{H_j})$ for the anchored hyperplanes of \cref{rec:thm:osmall}, which is $1$ off their union and
+nonpositive on it, has mean $(\ell-1)(\ell+1-d)/\ell^2$ and norm at most $2d$.
+(iii) Let $s=1-1/\ell$. With a repeated coefficient use (i). Otherwise pass to the period quotient, with $n$ points of
+each sign; extension by zero from $P^\perp$ divides the mean by $\abs P$ and keeps the norm. For $2\le n\le(\ell-1)/2$ the
+minorant of (ii), scaled by $T_\ell\beta_n/D_1(n)\le1$, has norm at most $2T_\ell\ell/(\ell+1-n)\le8$. For larger $n$ iterate
+\eqref{rec:eq:oanchor} starting from $L_0=1$: a summand of coset form has $m_t\le n/s$ by \eqref{rec:eq:oflat}, so $1+(n-1)/m_t\ge T_\ell$
+(for $n\le\ell-2$ use $m_t\le n$), and its indicator has norm at most $2$; a summand not of coset form has, by the
+previous stage, a minorant of mean at least $L_is/m_t$ with $m_t\le2n-1$. This gives minorants of mean
+$L_{i+1}\beta_n$, $L_{i+1}=\min\set{T_\ell,1+\alpha L_i}$ with $\alpha=(\ell-1)/(2\ell)\le(n-1)/(2n-1)$, the norm growing by at most $2$ per step.
+The fixed point $2\ell/(\ell+1)=T_\ell+2/(\ell(\ell+1))$ is approached with ratio below $\tfrac12$, so $\ceil{\log_2(\ell(\ell+1))}$ steps reach $T_\ell$.
+For the two-sided claim, the parallelogram indicator is a product of two indicators $1-\mathbf 1_{\text{hyperplane}}$, and that
+of two punctured lines is $\mathbf 1_\Lambda+\mathbf 1_{\Lambda'}-2\mathbf 1_{\set0}$; both have norm at most $4$, also after pullback and extension.
+(iv) Combine (i) and (ii) with $\beta_m\ge2/(3m)$ and $(\ell-1)\ell^{-r}\ge\tfrac23\ell^{1-r}$.
+(v) By \cref{rec:thm:odigit}(ii), $S$ is the inverse image of a union $\Pi$ of $d'=\ell+1-b$ punctured lines in a plane. The
+coefficient of $\mathbf 1_\Pi$ is $d'(\ell-1)/\ell^2$ at $0$, $(\ell-d')/\ell^2$ at the $d'(\ell-1)$ nonzero characters trivial on a selected line and
+$-d'/\ell^2$ at the other $b(\ell-1)$; the sum of absolute values is $2bd'(\ell-1)/\ell^2$, and pullback and extension by zero
+preserve the norm, while $\delta=d'(\ell-1)/\ell^{a+2}$. Densities for different digits differ by at least $(\ell-1)/\ell^{a+2}$.
+(vi) Two packets within weighted distance $e$ of one word are within $2e$ of each other, and by (ii) and (i)
+any two distinct packets are at relative distance at least $(D_0-2\eps)/(1+\eps)$, $\eps=C\log(2Q)/\sqrt Y$. For sharpness, on the
+agreeing primes of an extremal pair use the common factor and split the differing primes into two parts of
+nearly equal weight, assigning one packet to each; the largest single weight is $O(\log Y/Y)$, and the
+distances of extremal pairs converge to $D$ by the two-sided bounds.
+\end{proof}
+
+In rank two a disagreement set is a union of at most $\ell+1$ punctured lines, so its indicator has norm at most
+$2(\ell+1)$; all distances of a fixed rank-two size converge with error $O(\ell\log(2Q)/\sqrt Y)$, and $24/49$ is also the limiting
+minimum of the windowed problem at $(\ell,r,k)=(7,2,5)$.
+
 \subsection{Shortest positive averages that cancel prescribed zeros}\label{rec:sec:dilation}
-\sources{quadratic_spectra; logarithmic_dirichlet_zero_filters_2026-11-26; grh_positive_spectral_extensions_2026-11-27}
+\sources{quadratic_spectra; logarithmic_dirichlet_zero_filters_2026-11-26; grh_positive_spectral_extensions_2026-11-27; dirichlet_zero_filters}
 
 A probability measure $\mu$ on the logarithmic scale acts on a power $x^s$ by the multiplier
 $F_\mu(s)=\int e^{su}\dd\mu(u)$, and a positive average preserves inequalities between the averaged
@@ -4485,6 +5208,149 @@ shifts $0$, $0.178719$, $0.357438$ (rounded):
 \artifact{grh_positive_spectral_extensions_2026-11-27/results/cusp.csv}
 \end{center}
 
+\paragraph{Zero-free intervals and the position inside the convolution bound.}
+The two-frequency problem is dual to the longest interval on which a trigonometric polynomial with
+prescribed spectrum keeps one sign; this answers the two-frequency case of a question of Kozma and Oravecz
+\cite{KozmaOravecz2003Gaps}.
+
+\begin{corollary}[Gaps for two integer frequencies; \stU]\label{rec:cor:kozma}
+For integers $0<N<M$ the supremum of the lengths of zero-free intervals on $\R/\Z$ of real trigonometric
+polynomials with spectrum in $\set{\pm N,\pm M}$ is $\mathcal B(M/N)/(2\pi N)$; for $M=3N$ it is $1/(2N)$.
+\end{corollary}
+
+\begin{proof}
+With $Y(u)=(\cos u,\sin u,\cos ru,\sin ru)$, $r=M/N$: on a compact interval shorter than $\mathcal B(r)$ the convex hull of $Y$
+omits $0$, since a convex combination equal to $0$ would be an admissible probability measure, so some real
+functional is strictly positive on it; on every closed interval of length $\mathcal B(r)$ a translated minimizer
+integrates every coordinate to zero. Rescale by $2\pi N$.
+\end{proof}
+
+In the variables $u=\pi(r-n)/2$, $t=\pi/2-(u+y)/r$, $T=\pi/2+z/r$, the equations of \cref{rec:thm:twofreq}(ii) read
+$\tan y=r\tan((u+y)/r)$ and $\sin(u+z)=M\sin(z/r)$ with $M=\sin y/\sin((u+y)/r)$, $y\in(0,\pi/2)$, $z\in(0,\pi-u)$. Convolving the
+two single-frequency minimizers gives $\mathcal B(r)\le\pi+\pi/r$.
+
+\begin{theorem}[Ratios attaining the convolution bound; \stU]\label{rec:thm:twosat}
+For each odd $n\ge3$ exactly one $r\in(n,n+2)$ has $\mathcal B(r)=\pi+\pi/r$. It lies in $(n,n+1)$, satisfies
+$\tan(\pi(r-n)/2)=r^{-1}\cot(\pi/(2r))$, and $r-n\to(2/\pi)\arctan(2/\pi)$ as $n\to\infty$. Uniformly for $u$ in compact subsets of $(0,\pi)$,
+\[
+ \mathcal B(r)=\pi+2Z(u)/r+O(r^{-3}),
+\]
+where $Y(u)\in(0,\pi/2)$ solves $\tan Y=u+Y$ and $Z(u)$ is the first positive root of $\sin(u+Z)=Z\cos Y$.
+\end{theorem}
+
+\begin{proof}
+The convolution has nodes $\pm(\pi/2\pm\pi/(2r))$, so equality forces the inner node to be the unique contact,
+$u+y=\pi/2$, and the contact equation becomes the criterion; conversely the criterion makes $y=\pi/2-u$ the
+contact and $z=\pi/2$ a root of the crossing equation. With $v=\pi/(2r)$, $\frac{\dd}{\dd r}(r^{-1}\cot v)=(v-\sin v\cos v)/(r^2\sin^2v)\le\pi^2v/(6r^2)<\pi/2$,
+using $v-\sin v\cos v\le2v^3/3$ and $\sin v\ge2v/\pi$, while $\tan(\pi(r-n)/2)$ increases from $0$ to $\infty$ on $(n,n+1)$ with
+derivative at least $\pi/2$, and the phase lies outside $(0,\pi/2)$ on $(n+1,n+2)$; and $r^{-1}\cot(\pi/(2r))\to2/\pi$. For the
+expansion, $r\tan((u+y)/r)=u+y+O(r^{-2})$ and the limiting equation has derivative $\sec^2Y-1>0$, so $y=Y+O(r^{-2})$;
+the crossing equation, written $\sin(u+z)=z(M/r)\sin(z/r)/(z/r)$, is a smooth perturbation of its limit, whose
+derivative at the root is negative since $\sin(u+z)/z$ decreases before $z=\pi-u$.
+\end{proof}
+
+Under \cref{src:thm:dgrh}, for positive ordinates $\alpha<\gamma$ the least logarithmic span of a positive average
+cancelling $\tfrac12+i\alpha$ and $\tfrac12+i\gamma$ is $d(\alpha,\gamma)=\alpha^{-1}\mathcal B(\gamma/\alpha)\in[\pi/\alpha,\pi/\alpha+\pi/\gamma]$. Put
+$E_\alpha(\gamma)=\gamma(d(\alpha,\gamma)-\pi/\alpha)=r(\mathcal B(r)-\pi)\in[0,\pi]$, $r=\gamma/\alpha$.
+
+\begin{theorem}[A universal law for the extra width; \stG]\label{rec:thm:twolaw}
+Fix an ordinate $\alpha>0$ of some Dirichlet $L$-function and a primitive $\chi$, possibly of conductor one, and let
+$N_{\chi,\alpha}(T)$ count the ordinates $\alpha<\gamma\le T$ of $L(s,\chi)$ with multiplicity. For every continuous $f$ on $[0,\pi]$,
+\[
+ \lim_{T\to\infty}\frac1{N_{\chi,\alpha}(T)}\sum_{\alpha<\gamma\le T}f(E_\alpha(\gamma))=\frac1\pi\int_0^\pi f(2Z(u))\dd u.
+\]
+The law $X$ of $2Z(U)$, $U$ uniform on $(0,\pi)$, has no atoms and support $[0,\pi]$, so $\liminf E_\alpha(\gamma)=0$ and
+$\limsup E_\alpha(\gamma)=\pi$. With $Y_\pi\in(0,\pi/2)$ solving $\tan Y_\pi=\pi+Y_\pi$ and $t_0=\pi/2$, as $e\downarrow0$,
+\[
+ \Pr(X\le e)\sim\frac{1+\cos Y_\pi}{2\pi}\,e,\qquad\Pr(X\ge\pi-e)\sim\frac2\pi\frac{\sqrt{2t_0^3}}{1+t_0^2}\sqrt e.
+\]
+\end{theorem}
+
+\begin{proof}
+The positive ordinates of $L(s,\chi)$ are equidistributed modulo one after multiplication by any fixed nonzero
+real \cite[Cor.~8]{AkbaryMurty2008Uniform}, so the phases $u_\gamma=\pi\set{\gamma/(2\alpha)-\tfrac12}$ are equidistributed on $[0,\pi)$; this is
+unconditional, and \cref{src:thm:dgrh} places all multipliers on one vertical line. On $[\eta,\pi-\eta]$,
+\cref{rec:thm:twosat} gives $E_\alpha(\gamma)=2Z(u_\gamma)+O_\eta(r^{-2})$; uniform continuity and $\eta\downarrow0$ give the limit. As $u\uparrow\pi$, $Z\to0$,
+and at $u_*=\arctan(2/\pi)$ one has $Y=\pi/2-u_*$, $Z=\pi/2$, so the support is $[0,\pi]$; $Z$ is real analytic and
+nonconstant, so level sets are null. At $u\downarrow0$, $u=\tan Y-Y\sim Y^3/3$ and $Z\sim2(3u)^{1/3}$; at $u=\pi-v$, $Z\sim v/(1+\cos Y_\pi)$,
+which gives the lower edge. A stationary point of $Z$ satisfies $\cot(u+Z)=-\cot Y$, hence $Z=\tan Y=u+Y$, forcing
+$Z=t_0$ and $u=u_*$; there $Z''(u_*)=-(1+t_0^2)^2/(2t_0^3)$, and the set where $2Z\ge\pi-e$ has length $\sim2\sqrt{e/\abs{Z''(u_*)}}$.
+\end{proof}
+
+Numerically $\Pr(X\le\pi/2)=0.328039432\ldots$, and the median of $X/\pi$ is $0.711649171\ldots$
+(\artifact{dirichlet_zero_filters/law_results.txt}).
+
+\begin{theorem}[Arithmetic second term; \stG]\label{rec:thm:twobias}
+Fix $\alpha>0$, a primitive $\chi$ and a smooth $\varphi$ supported in $(0,\pi)$; put $\kappa=1/(2\alpha)$, $H_\varphi(t)=\varphi(2Z(\pi\set{t-1/2}))$, and let
+$N_\chi^+(T)$ count the zeros with $0<\gamma\le T$. Then
+\[
+ \sum_{\alpha<\gamma\le T}\varphi(E_\alpha(\gamma))=N_\chi^+(T)\int_0^1H_\varphi+T\int_0^1H_\varphi(t)g_{\chi,\kappa}(t)\dd t+o(T),
+\]
+where $g_{\chi,\kappa}=0$ unless $\kappa=A\log p/(2\pi B)$ for a prime $p$ and coprime positive integers $A,B$, and then
+$g_{\chi,\kappa}(t)=-\frac{\log p}\pi\Re\sum_{j\ge1}\chi(p)^{Aj}e^{-2\pi iBjt}p^{-Aj/2}$. A prime dividing the conductor gives no correction.
+\end{theorem}
+
+\begin{proof}
+Away from odd ratios $E_\alpha(\gamma)=2z$ with band phase $u=\pi\set{\kappa\gamma-1/2}$, and $2z=2Z(u)+O(r^{-2})$ on compact phase intervals;
+both profiles tend to $0$ uniformly at the seam (as $u\to\pi$, $0<z<\pi-u$; as $u\to0$, $y\to0$, $M/r\to1$ and $z\to0$), so
+for large $r$ both tests vanish near the seam and differ by $O(r^{-2})$ elsewhere, and $\sum\gamma^{-2}<\infty$. Apply
+\cite[Thm.~5, (3.2)]{FordSoundararajanZaharescu2009Distribution} to the smooth periodic $H_\varphi$; the orientation for complex
+characters matches Landau's formula at $x=p^{Aj}$ \cite{Landau1911Nullstellen}.
+\end{proof}
+
+For $\alpha=\gamma_1$ and the zeta ordinates $\gamma_{10}$, $\gamma_{20}$ (ratios $3.521387$, $5.457824$) the joint widths are $0.283311228$ and
+$0.262502497$, against $0.285377967$ and $0.262983914$ for the two separate filters
+(\artifact{dirichlet_zero_filters/pair_results.txt}).
+
+\paragraph{Wide arithmetic progressions.}
+For positive integers $N,b$ and $K\ge0$ let $M_K=M_K(N,b)$ be the supremum of the lengths of intervals of $\R/\Z$ on which
+a real trigonometric polynomial with spectrum in $\set{\pm(N+jb):0\le j\le K}$ is strictly positive. For $b<2N$,
+$M_K=(K+1)/(2N+Kb)$ \cite[Thm.~3]{KozmaOravecz2003Gaps}, and the wide-step case was asked there.
+
+\begin{theorem}[Wide-step limit and sharp order; \stU]\label{rec:thm:wide}
+Let $b\ge2N$, $\beta=N/b$ and $c=\ceil{1/(2\beta)}$. If $b/(2N)$ is an integer then $bM_K=c$ for every $K$. Otherwise
+$(2\beta c-1)/(K+2\beta)\le c-bM_K$ for every $K\ge0$, and $c-bM_K\le C_\beta/K$ for large $K$. In both cases $M_K\to\ceil{b/(2N)}/b$.
+\end{theorem}
+
+\begin{proof}
+In $t=2\pi bx$ the allowed functions are $\Re(e^{i\beta t}P(e^{it}))$ with $\deg P\le K$. At $t=2\pi j$, $0\le j\le c$, every mode equals
+$e^{ij\theta}$, $\theta=2\pi\beta$, and these points have $0$ in their convex hull (all circular gaps are at most $\pi$), so a
+probability measure on them annihilates the whole progression and $bM_K\le c$; at resonance the lowest cosine
+attains it. Otherwise $c\ge2$; on a positive interval of length $2\pi(c-\eps)$, $0\le\eps<1$, $P$ has no root on the circle,
+the argument of $e^{i\beta t}P(e^{it})$ changes by less than $\pi$, an exterior root $w$ contributes at least $-\pi\eps$ since
+$\frac{\dd}{\dd t}\arg(e^{it}-w)<\tfrac12$ and the change over $c$ full turns is zero, and an interior root contributes a
+nonnegative amount; so $2\pi\beta(c-\eps)-K\pi\eps<\pi$, the lower bound. For the upper bound let $\alpha'=2\beta<1$,
+$H_\rho(t)=e^{i\beta t}(1-\rho e^{it})^{-\alpha'}$ and $P_K(z)=\sum_{j\le K}\frac{(\alpha')_j}{j!}\rho^jz^j$. The argument $\psi_\rho$ of $H_\rho$ has
+$\psi_\rho'=\beta(1-\rho^2)/\abs{1-\rho e^{it}}^2>0$ and $\psi_\rho(t+2\pi)=\psi_\rho(t)+2\pi\beta$, so after rotation by $e^{-i\pi c\beta}$ its phase on
+$[\delta,2\pi c-\delta]$ stays within $\pi/2-m_0$ of $0$, with
+$m_0=\pi(\tfrac12-(c-1)\beta)-\alpha'\arctan\bigl(\frac{1-\rho}{1+\rho}\cot\frac\delta2\bigr)$. The relative truncation error on $\abs z=\rho$ is at most
+$2(K+2)^{\alpha'-1}\rho^{K+1}(1-\rho)^{\alpha'-1}$. Choosing $\rho=1-D/(K+2)$ and $\delta=U/(K+2)$ with $D$ and then $U/D$ large gives a
+positive real part on the interval and $bM_K\ge c-U/(\pi(K+2))$.
+\end{proof}
+
+By the convex-hull duality of \cref{rec:cor:kozma}, the infinite progression has a shortest annihilating
+probability measure of diameter exactly $c/b$ in circle units. Rational enclosures for nine instances, for
+example $1.98724292\le bM_{256}\le1.99766356$ at $(N,b)=(2,5)$, are in \artifact{dirichlet_zero_filters/progression_results.txt}.
+
+\begin{theorem}[A growing collection of zeros; \stG]\label{rec:thm:twopack}
+Fix $N,b\ge1$ with $b\ge2N$, a primitive $\chi$, $p_0>1$ and $0<\kappa<1/(2p_0)$, and let $K=K(T)\to\infty$ with
+$K\le\kappa\log T/\log\log T$. There is $H_\chi$ such that for large $T$ every interval $[T(N+bj),T(N+bj)+H_\chi]$, $0\le j\le K$, contains
+an ordinate $\gamma_j$ of $L(s,\chi)$, and for every such choice the least logarithmic span $D_T$ of a positive average
+cancelling all $\tfrac12+i\gamma_j$ satisfies $\abs{TD_T-2\pi M_K}\le K^{-p_0}$. In particular $2\pi c/b-TD_T\asymp_{N,b}K^{-1}$ if $c>b/(2N)$; one
+may take $p_0=2$ for $\kappa<1/4$.
+\end{theorem}
+
+\begin{proof}
+The count $N^+(X)=X\log X/(2\pi)+c_\chi X+O_\chi(\log X)$ \cite{Selberg1992Old,FordSoundararajanZaharescu2009Distribution} gives the
+$\gamma_j$. With $\lambda_j=N+bj$ and $\lambda'_j=\gamma_j/T$, tilting gives $TD_T=W(\lambda')$ and duality $W(\lambda)=2\pi M_K$, where $W$ is the least
+width annihilating the frequencies. Let $d=K+1$, $m'=2d+1$, $\delta=K^{-p_0}$. An optimal measure for $\lambda$ has at most $m'$
+atoms (Carath\'eodory), one of mass at least $1/m'$; convolving with the uniform law on $j\delta/(m'-1)$, $0\le j<m'$,
+costs width $\delta$, keeps the annihilation, gives mass at least $m'^{-2}$ at each new point, and leaves target
+moments $O(H_\chi/T)$. The Vandermonde matrix of the reserved weights has nodes at distances $\gg\Delta\abs{\ell-h}$,
+$\Delta=\delta/(m'-1)$, so the entries of its inverse are at most $(C'/\delta)^{2d}$, and the real correction has size
+$T^{-1+2p_0\kappa+o(1)}<m'^{-2}$; so $W(\lambda')\le W(\lambda)+\delta$, and symmetrically. The last claim follows from \cref{rec:thm:wide}.
+\end{proof}
+
 \paragraph{Many frequencies on the critical line: logarithmic support.}
 The theorems above prescribe one frequency $\tau$ (or a block of harmonics) and several real parts, or two frequencies. The
 complementary problem prescribes all zero ordinates up to a height $B$ on the critical line. Here
@@ -4616,7 +5482,7 @@ At these small cutoffs the construction is not shorter than one uniform factor p
 the improvement is in asymptotic order.
 
 \subsection{Open questions}\label{rec:sec:open}
-\sources{dirichlet_inverse_problems; dirichlet_li_rigidity; dirichlet_zero_packet_homometry; dirichlet_zero_recovery; large_kernels_and_dirichlet_zeros; one_gap_dirichlet_zeros; prime_pole_windows; prime_power_rigidity; prime_zero_reconstruction; quadratic_spectra; three_scale_reconstruction; grh_zero_count_certificate; zeta_zero_moment_bounds; grh_periods_sampling_and_zeros; dirichlet-grh-research; grh-torsion-and-zero-data; dirichlet_low_zero_identification; dirichlet_zeros_and_abelian_fields; local_euler_recovery; robust_dirichlet_spectra_2026-11-26; dirichlet_packet_reconstruction; dirichlet_prime_frequency_inverse; prime_observations_and_progression_free_sets; translated_dirichlet_zero_divisors; logarithmic_dirichlet_zero_filters_2026-11-26; dirichlet-character-zero-windows; dirichlet-zero-reconstruction; dirichlet_zero_windows; dirichlet-zero-windows; dirichlet_li_heat_kernel; grh_positive_spectral_extensions_2026-11-27}
+\sources{dirichlet_inverse_problems; dirichlet_li_rigidity; dirichlet_zero_packet_homometry; dirichlet_zero_recovery; large_kernels_and_dirichlet_zeros; one_gap_dirichlet_zeros; prime_pole_windows; prime_power_rigidity; prime_zero_reconstruction; quadratic_spectra; three_scale_reconstruction; grh_zero_count_certificate; zeta_zero_moment_bounds; grh_periods_sampling_and_zeros; dirichlet-grh-research; grh-torsion-and-zero-data; dirichlet_low_zero_identification; dirichlet_zeros_and_abelian_fields; local_euler_recovery; robust_dirichlet_spectra_2026-11-26; dirichlet_packet_reconstruction; dirichlet_prime_frequency_inverse; prime_observations_and_progression_free_sets; translated_dirichlet_zero_divisors; logarithmic_dirichlet_zero_filters_2026-11-26; dirichlet-character-zero-windows; dirichlet-zero-reconstruction; dirichlet_zero_windows; dirichlet-zero-windows; dirichlet_li_heat_kernel; grh_positive_spectral_extensions_2026-11-27; dirichlet-zero-multiplicity-and-reconstruction; dirichlet-zero-recovery; dirichlet_zero_filters; euler-packet-rigidity; odd-order-euler-factor-matching; odd_prime_order_euler_packets}
 
 \begin{enumerate}
 \item \emph{Effective versions.} The limits in \cref{rec:thm:universal,rec:thm:factorial,rec:thm:threescale,rec:thm:primepower,rec:thm:liseparation,rec:thm:dyadic,rec:thm:mellin,rec:thm:operatorinverse}
@@ -4667,9 +5533,17 @@ $e^{\abs t}\asymp T^2$? What is the smallest packet size giving a nontrivial amb
 exponent? For a fixed small mass, what are the exact measurement counts of
 \cref{rec:thm:probecount} as functions of $(E,m)$, what is the least maximum order at the optimal
 adaptive count for general $E$, and how small can the height constant of \cref{rec:cor:probewindow} be
-made? Do products of $L$-functions of characters of odd prime order admit an equally explicit range of
-local matching densities as in \cref{rec:thm:qmatch}, and can one density measurement in
-\cref{rec:thm:qmatchfinite} be made at a smaller scale?
+made? Can one density measurement in \cref{rec:thm:qmatchfinite} be made at a smaller scale?
+For Euler packets of odd prime order, \cref{rec:thm:odigit,rec:thm:osmall,rec:thm:olevel} give the least
+disagreement density whenever the leading base-$\ell$ digit $b$ divides $\ell\pm1$ or the size is saturated, and the two
+lowest normalized levels. What is the exact minimum when $b$ divides neither $\ell-1$ nor $\ell+1$ and $r>a+2$ (the first
+case is $\ell=7$, $a\ge1$, $b=5$: does $24/7^{a+2}$ persist?), and, in rank two, for which such $(\ell,k)$ does it exceed the gap
+value of \cref{rec:thm:osmall}(iv)? What is the next normalized level above $2(1-1/\ell)$, the next density at a fixed size
+$k=\ell^s$ (at least $T_\ell\beta_k$), and the whole spectrum, already the second-smallest density and the range below twice
+the minimum for $\ell=3,5$? Is there a sharp primitive bound at each packet size for $\ell\ge5$ refining
+\cref{rec:thm:oprim}? How large can the least distinguishing prime of an extremal pair be, is there an efficient
+decoder at the correction radius of \cref{rec:thm:ofinite}, and what replaces trace equality for characters of
+composite exponent?
 \item \emph{Omitted primes.} For primes bounded by $B$, distinct sets of at least three primes have
 distinct short-gap polynomials (\cref{rec:thm:gaps}); how does the minimal separation of their
 coefficient vectors depend on $B$, and what finite height and precision distinguish them? For two
@@ -4682,8 +5556,9 @@ For \cref{rec:thm:oneinterval}, how should the markers and the interval be chose
 observation errors, and are there finite bounds like \cref{rec:thm:onegapbounds} for a complex
 character, whose two signs of ordinates carry different masses?
 \item \emph{Fewer filters and weights.} Can the three scales of \cref{rec:thm:threescale} be replaced by
-two different nonnegative filters with an injective spectral map? Can the prefix precision of
-\cref{rec:thm:universal} be improved, and does a finite family of characters of bounded conductor admit one
+two different nonnegative filters with an injective spectral map? Can a periodic weight without
+modulations replace the three shifts of \cref{rec:thm:universal} (whose precision \cref{rec:prop:radix} makes
+near-linear), what observation horizon resolves its Fourier coefficients, and does a finite family of characters of bounded conductor admit one
 positive real weight with quantitative finite-time reconstruction guarantees under explicit separation
 assumptions, or in a weaker metric that tolerates clusters? Does the finite-family converse
 \cref{rec:prop:finiteconverse} extend to the countable aggregate?
@@ -4698,11 +5573,20 @@ reconstructions extend to families for which the corresponding Riemann hypothesi
 are the minimum width, the support transitions and the fractional powers at resonances for three
 noncommensurate frequencies, and what is the least width when vanishing derivatives are required at
 both of two frequencies? What is the optimal constant in the support $O(\log B)$ of \cref{rec:thm:logfilter}, between the
-Jensen lower bound $\tfrac12\log B$ for $\zeta$ and the construction?
+Jensen lower bound $\tfrac12\log B$ for $\zeta$ and the construction? For the progressions of
+\cref{rec:thm:wide}, what is the exact value at each finite $K$ off resonance, does $K(c-bM_K)$ converge, and which
+polynomials attain the leading constant? At what rate do finite lists of zeros approach the law of
+\cref{rec:thm:twolaw}, in particular near the maximum of its phase profile?
 \item \emph{Li heat kernels.} Can \cref{rec:thm:liheat} give practical bounds on the number and precision of
 Fourier modes that suffice for all characters of conductor at most $Q$? After subtracting $L\log L/\log2$ in
-\cref{rec:thm:litypical}, what is the next term of the typical negative log-density, and what is the
-Hausdorff dimension of the exceptional set for a prescribed decay rate? Which equal products of Cayley
+\cref{rec:thm:litypical}, what is the next term of the typical negative log-density? (The Hausdorff
+dimension of the set with a prescribed decay rate is given by \cref{li:thm:spectrum}.) Which equal products of Cayley
 factors $1-1/\rho$ from different tuples of zeros can be proved, beyond the extremal construction of
 \cref{rec:ex:liquartic}?
+\item \emph{Blurred zeros.} What is the optimal modulus of continuity for recovering the translating measures
+of \cref{rec:thm:blur} from finitely many noisy atoms or high windows? Can the unbounded excess in
+\cref{rec:prop:blurwin} be replaced by a fixed constant for continuous laws? Which critical weights, between the
+polynomial discounts of \cref{rec:cor:blurend} and arbitrary subcritical exponential moments, still force
+identification? For other families of $L$-functions, which gamma and pole profiles survive after a positive law
+removes the arithmetic atoms?
 \end{enumerate}

@@ -30,7 +30,7 @@ subsection.
 
 %======================================================================
 \subsection{A sharp spanning interface}\label{spn:sec:spanning}
-\sources{grh_spanning_and_s5_2026-11-26}
+\sources{grh_spanning_and_s5_2026-11-26; grh_path_rigidity_2026-11-27}
 
 Let $S,T$ be finite-dimensional complex Hilbert spaces, with $s=\dim S>0$. Let a
 finite group $G$ act unitarily on $T$, by $\rho$, and let $P$ be the orthogonal
@@ -141,25 +141,76 @@ $S$, so $1\le u+\sqrt{z\dim F/d}$, whence $\dim F\ge\alpha_*d$. Integrality
 gives the stated floor.
 \end{proof}
 
-\begin{proposition}[Sharpness under the moment hypotheses; \stU]\label{spn:prop:sharp}
+With $d$ and $s$ fixed, the possible total spans are determined exactly. Put
+$F=\sum_{g\in G}\spnim C_g$ and $r=\dim F$; the spaces, the group, the representation and the map
+may vary.
+
+\begin{theorem}[The complete feasible rank spectrum; \stU]\label{spn:thm:rank-spectrum}
+For fixed $(d,s,u,v)$ with $0\le u<1$ and $v\ge0$, a system satisfying \eqref{spn:eq:near} and
+\eqref{spn:eq:moment} exists if and only if $as\le d$, and then the possible values of $r$ are exactly
+\[
+ \set{r_*,r_*+1,\dots,d},\qquad r_*=\max\Bigl\{\ceil{as},\ceil*{\frac{a^2d}z}\Bigr\}.
+\]
+Every such $r$ is attained with $T=W=\C^d$, $P=I$, a cyclic group of order $r$, a contraction $B$
+and $\rank B=\ceil{as}$.
+\end{theorem}
+
+\begin{proof}
+\Cref{spn:lem:sqrt} gives $r\ge\rank(PB)\ge as$, so $as\le d$ is necessary. With $M$ as in its proof
+let $A=(PMP)|_W$; since $P$ commutes with $\rho$, $A$ is the covariance of the maps $C_g$, its image
+is $F$, and $\tr A=\norm{PB}_{\spnHS}^2\ge as$. In the decomposition $T=W\oplus W^\perp$,
+$\tr(M^2)\ge\tr(A^2)$, so Cauchy--Schwarz over the $r$ positive eigenvalues of $A$ gives
+$(as)^2\le r\tr(A^2)\le r\tr(M^2)\le rzs^2/d$, that is $r\ge a^2d/z$.
+
+For the construction let $r_*\le r\le d$ and $k=\ceil{as}$, so $1\le k\le\min(s,r)$. Choose
+$\lambda_1,\dots,\lambda_k\in(0,1]$ with sum $as$ (the first $k-1$ equal to one), let
+$E\colon\C^s\to\C^r$ send $e_j$ to $\sqrt{\lambda_j}e_j$ for $j\le k$ and to $0$ otherwise, let $Q$ be
+the unitary Fourier matrix of order $r$, and put $B=QE$, embedded in the first $r$ coordinates of
+$T=W=\C^d$, with $P=I$. As $B^*B\le I_S$ and $\tr(I_S-B^*B)=us$, positivity gives
+$\norm{BP_U}_{\spnHS}^2=\dim U-\tr(P_U(I_S-B^*B))\ge\dim U-us$ for every $U$. Let the generator of
+$\Z/r\Z$ act by $\operatorname{diag}(1,\omega,\dots,\omega^{r-1})$, $\omega=e^{2\pi i/r}$, on the first $r$
+coordinates and trivially on the others. Distinct Fourier characters kill the off-diagonal entries
+of the averaged covariance, and every entry of $Q$ has modulus $r^{-1/2}$, so $M=(as/r)P_{\C^r}$: the
+orbit images span the first $r$ coordinates, and
+$\frac d{\abs G}\sum_g\norm{B^*\rho(g)B}_{\spnHS}^2=d\tr(M^2)=d(as)^2/r\le zs^2$. For $r=1$ use the
+trivial group. Finally $a^2d/z\le d$.
+\end{proof}
+
+\begin{proposition}[Equality in the second-moment bound; \stU]\label{spn:prop:rank-equality}
+A feasible system has $r=a^2d/z$ if and only if $\spnim B\subseteq W$, $0\le B^*B\le I_S$ with
+$\tr(B^*B)=as$, and $M=(as/r)P_F$. Such a system exists exactly when $a^2d/z$ is an integer at least
+$\ceil{as}$.
+\end{proposition}
+
+\begin{proof}
+Equality throughout the chain above forces the off-diagonal and $W^\perp$ blocks of $M$ to vanish, so
+$0=\abs G^{-1}\sum_g\norm{(I-P)\rho(g)B}_{\spnHS}^2=\norm{(I-P)B}_{\spnHS}^2$; it makes the positive
+eigenvalues of $A$ equal and their sum $as$, whence $M=(as/r)P_F$ and $\tr(B^*B)=as$. Applying
+\eqref{spn:eq:near} to the span of the eigenvectors of $B^*B$ with eigenvalue $\mu_j<1$ gives
+$\sum_j(1-\mu_j)_+\le us=\sum_j(1-\mu_j)$, so every $\mu_j\le1$. Conversely, a contraction of trace
+$as$ satisfies \eqref{spn:eq:near} by the positivity argument, and the covariance gives equality in
+\eqref{spn:eq:moment}. Existence follows from \cref{spn:thm:rank-spectrum}.
+\end{proof}
+
+There are two independent obstructions: one map needs $\ceil{(1-u)s}$ image directions, and the
+second moment forces $\ceil{(1-u)^2d/(1+v)}$ orbit directions; the larger is attained, and so is every
+larger rank. For $(d,s,u,v)=(100,90,\tfrac1{10},\tfrac15)$ the two bounds are $81$ and $68$ and the
+answer is $81$; for $(100,10,\tfrac1{10},\tfrac15)$ they are $9$ and $68$ and the answer is $68$; for
+$(100,120,\tfrac1{10},\tfrac15)$ there is no system, as $(1-u)s=108>d$. Exact rational checks of the
+thresholds and constructions are in
+\artifact{grh_path_rigidity_2026-11-27/checks/rank_checks.json}.
+
+\begin{corollary}[Sharpness under the moment hypotheses; \stU]\label{spn:prop:sharp}
 For every rational pair $0\le u<1$, $v\ge0$, there are examples satisfying
 \eqref{spn:eq:near} and \eqref{spn:eq:moment} whose total span has dimension
 exactly $\alpha_*d$. Thus $\delta_*$ cannot be decreased as a universal bound
 under these hypotheses.
-\end{proposition}
+\end{corollary}
 
 \begin{proof}
-Since $\alpha_*$ is positive and rational, choose positive integers $d,r$ with
-$r/d=\alpha_*$. Take $S=\C$, $W=T=\C^d$, and $P=I$. Let the cyclic group of
-order $r$ rotate the first $r$ coordinate vectors, fixing the other $d-r$
-vectors. Put $B(1)=\sqrt{1-u}\,e_1$. The only subspaces of $S$ are zero and
-$S$, so \eqref{spn:eq:near} holds, with equality for $S$. Moreover
-\[
- \frac1{\abs{G}}\sum_g\norm{B^*\rho(g)B}_{\spnHS}^2=\frac{(1-u)^2}{r},\qquad
- \frac{d(1-u)^2}{r}=1+v .
-\]
-Thus \eqref{spn:eq:moment} is also an equality. The orbit images span exactly
-the first $r$ coordinate directions.
+Choose $d$ with $\alpha_*d$ a positive integer and take $s=1$; then $r_*=\alpha_*d$ in
+\cref{spn:thm:rank-spectrum}. (Equivalently, $B(1)=\sqrt{1-u}\,e_1$ with the cyclic group of order
+$r=\alpha_*d$ rotating the first $r$ coordinates.)
 \end{proof}
 
 \begin{corollary}[Equal errors]\label{spn:cor:equal}
@@ -1574,7 +1625,7 @@ correction persists at every congruence precision over a local ring.
 
 %======================================================================
 \subsection{Lagrangian projections of an arbitrary alternating form}\label{spn:sec:lagrangian}
-\sources{symplectic_rank_blindness_2026-11-26; grh_sharp_torsion_and_symplectic_blocks}
+\sources{symplectic_rank_blindness_2026-11-26; grh_sharp_torsion_and_symplectic_blocks; grh_exact_extensions_2026-11-27; grh_extensions_2026-11-27}
 
 In this subsection the ambient space is $\F_q^{2n}$, with
 \[
@@ -1696,7 +1747,7 @@ $a_\infty=\prod_{i\ge1}(1-q^{-i})$, and
  \delta_q=a_\infty\sum_{k=2}^\infty\frac{q^{-k^2}}{a_k^2}\Bigl(1-q^{-\binom k2}\Bigr).
 \end{equation}
 
-\begin{theorem}[Rank tests miss a persistent obstruction; \stU]\label{spn:thm:rank-blind}
+\begin{corollary}[Rank tests miss a persistent obstruction; \stU]\label{spn:thm:rank-blind}
 For nonsingular $H$ and even $n$,
 \begin{equation}\label{spn:eq:rank-blind}
  \spnTV\bigl(\dim\ker A,\dim\ker U_n\bigr)=(u_n(0)+u_n(1))(C_n^{-1}-1)
@@ -1706,45 +1757,25 @@ which equals
 $\dfrac{a_\infty}{q^2-1}\Bigl(1+\dfrac{q}{(q-1)^2}\Bigr)q^{-n}+O_q(q^{-2n})$ as $n\to\infty$;
 the optimal rank-only event is $\set{\rank M\ge n-1}$. In contrast,
 \begin{equation}\label{spn:eq:full-blind}
- \spnTV(A,U_n)=\spnP\bigl(H|_{\ker U_n\times\ker U_n}\ne0\bigr)\longrightarrow\delta_q>0 .
+ \spnTV(A,U_n)=\spnP\bigl(H|_{\ker U_n\times\ker U_n}\ne0\bigr)
+ =1-\sum_{k\ge0}u_n(k)q^{-\binom k2}R_{n,k}\longrightarrow\delta_q>0 ,
 \end{equation}
-The event that the kernel is not $H$-isotropic never occurs for $A$ and is an optimal
-distinguishing event at every finite $n$.
-\end{theorem}
+with $R_{n,k}$ as in \eqref{spn:eq:local-Rnk}, and
+$\abs{\spnTV(A,U_n)-\delta_q}\le\bigl(\tfrac4{3(q-1)}+\tfrac1{q^2-1}\bigr)q^{-n}$. The event that the
+kernel is not $H$-isotropic never occurs for $A$ and is an optimal distinguishing event at every
+finite $n$.
+\end{corollary}
 
 \begin{proof}
-By \cref{spn:thm:lagrangian} the likelihood is
-$\mathbf 1_{\set{\ker M\text{ is $H$-isotropic}}}\,q^{\binom k2}/C_n$. A uniform $k$-subspace of
-$\F_q^n$ is $H$-isotropic with probability $q^{-\binom k2}R_{n,k}$, where
-\[
- R_{n,k}=\prod_{i=0}^{k-1}\frac{1-q^{2i-n}}{1-q^{i-n}}\quad(0\le k\le m),\qquad
- R_{n,k}=0\quad(k>m),
-\]
-by dividing the number of ordered isotropic independent frames by the number of all ordered
-independent frames. Hence $\spnP(\dim\ker A=k)=u_n(k)R_{n,k}/C_n$. The ratio $R_{n,k}/C_n$
-exceeds one for $k=0,1$, because $R_{n,0}=R_{n,1}=1>C_n$, and is less than one for $k\ge2$:
-this is clear for $k>m$, and for $2\le k\le m$ every factor of $R_{n,k}$ is at most one, so
-\[
- 1-R_{n,k}\ge1-\frac{1-q^{2-n}}{1-q^{1-n}}=\frac{(q^2-q)q^{-n}}{1-q^{1-n}}\ge q(q-1)q^{-n},
-\]
-while $1-C_n\le\sum_{j=m+1}^nq^{-2j}<q^{-n}/(q^2-1)<q(q-1)q^{-n}$. Total variation is the sum
-of the positive discrepancies, which proves the first equality in \eqref{spn:eq:rank-blind}
-and the optimal rank event; the second follows from $u_n(0)=a_n$ and
-$u_n(1)=a_nq(1-q^{-n})/(q-1)^2$. Since
-$\sum_{j=m+1}^nq^{-2j}=q^{-n}(1-q^{-n})/(q^2-1)$, expanding the product gives
-$C_n^{-1}-1=q^{-n}/(q^2-1)+O_q(q^{-2n})$, and $a_n=a_\infty(1+O_q(q^{-n}))$; this gives the
-asymptotic.
-
-Every supported likelihood exceeds one, so all negative discrepancy lies off the support and
-\[
- \spnTV(A,U_n)=1-\sum_{k=0}^nu_n(k)q^{-\binom k2}R_{n,k},
-\]
-which is the exact form of \eqref{spn:eq:full-blind}. The obstruction is visible directly:
-for $x,y\in\ker A$, $x^{\spnT}Hy=x^{\spnT}(A^{\spnT}B-B^{\spnT}A)y=0$. For fixed $k$,
-$u_n(k)\to p_q(k)=a_\infty q^{-k^2}/a_k^2$ and $R_{n,k}\to1$. Since
-$\spnE q^{\dim\ker U_n}=2-q^{-n}<2$, the nullity tails beyond $r$ are at most $2q^{-r}$
-uniformly in $n$, so the limit may be taken termwise. As $\sum_kp_q(k)=1$, the limit is
-$\delta_q$, and its term $k=2$ is positive.
+Over $\F_q$, which is the residue field of the complete discrete valuation ring $\F_q[[t]]$, the
+model \eqref{spn:eq:lagrangian-model} with nonsingular $H$ is the first digit $h=1$ of the model of
+\cref{spn:sec:local}, the frame being immaterial by \cref{spn:lem:gram-frames}. At $h=1$ the Smith
+type is the nullity, so \eqref{spn:eq:rank-blind}, its asymptotic and the optimal rank event are
+\cref{spn:cor:local-smith-tv}; \eqref{spn:eq:full-blind} and the optimality of the isotropy test are
+\eqref{spn:eq:local-support-tv} and \eqref{spn:eq:local-field}, the sum being \eqref{spn:eq:local-Delta}
+with $f_1(k)=q^{-\binom k2}$; and since $\delta_{q,1}=\delta_q$, the limit with its rate is
+\cref{spn:thm:local-limit} at $h=1$. The obstruction is visible directly: for $x,y\in\ker A$,
+$x^{\spnT}Hy=x^{\spnT}(A^{\spnT}B-B^{\spnT}A)y=0$.
 \end{proof}
 
 The limiting nullity law $p_q$ is the classical one \cite{Fulman2015Stein}. For binary
@@ -1842,6 +1873,157 @@ tested.\footnote{\raggedright\artifact{symplectic_rank_blindness_2026-11-26/resu
 \artifact{symplectic_rank_blindness_2026-11-26/results/certified_constants.json}}
 Classical counts of subspaces in symplectic spaces are in
 \cite{Wan1993Anzahl,GuoLiWang2013Anzahl}.
+
+\paragraph{Wide blocks.}
+Keep the Lagrangian target, but let the nondegenerate source have more columns than the target has
+rows. Fix integers $n\ge c\ge1$ with $b=n+c$ even, and put $\ell=n-c$, which is even with
+$0\le\ell\le n-1$, and $Q=q^{-1}$. Let $H$ be a nondegenerate alternating $b\times b$ matrix, choose
+$X_0\in\spnMat_{2n,b}(\F_q)$ with $X_0^{\spnT}J_nX_0=H$, which exists since $b\le2n$, and for uniform
+$g\in\Sp_{2n}(\F_q)$ write $gX_0=(A;B)$ with $A,B\in\spnMat_{n,b}(\F_q)$; let $U$ be uniform on
+$\spnMat_{n,b}(\F_q)$. With $a_j$ as in \eqref{spn:eq:uniform-nullity}, $a_0=1$, put
+\[
+ C'=\prod_{j=\ell/2+1}^{n}(1-Q^{2j}),\quad D'=\prod_{j=b/2+1}^{n}(1-Q^{2j}),\quad
+ E'=\prod_{j=n+1}^{n+c}(1-Q^j),
+\]
+\[
+ u'(k)=Q^{k(k-c)}\frac{a_na_b}{a_ka_{k-c}a_{b-k}}\quad(c\le k\le b),\qquad
+ R'_{b,k}=\prod_{i=0}^{k-1}\frac{1-Q^{b-2i}}{1-Q^{b-i}}\quad(k\le b/2),
+\]
+and $R'_{b,k}=0$ for $k>b/2$. A proposed $M$ has kernel $K$ of dimension $k\ge c$.
+
+\begin{theorem}[Exact law of a wide Lagrangian projection; \stU]\label{spn:thm:wide}
+Over every finite field,
+\[
+ \frac{\spnP(A=M)}{q^{-nb}}=\mathbf 1_{\set{K\text{ is $H$-isotropic}}}\frac{q^{\binom k2}}{C'},\qquad
+ \spnTV(A,U)=\spnP\bigl(H|_{\ker U\times\ker U}\ne0\bigr).
+\]
+Moreover $\spnP(\dim\ker U=k)=u'(k)$ and $\spnP(\dim\ker A=k)=u'(k)R'_{b,k}/C'$; full row rank is the
+only rank with more probability under $A$ than under $U$, and
+\[
+ \delta_{\mathrm{rk}}:=\spnTV(\rank A,\rank U)=\frac{a_n}{a_c}\Bigl(\frac1{D'}-E'\Bigr),\qquad
+ \Omega:=1-\spnTV(A,U)=\sum_{k=c}^{b/2}u'(k)Q^{\binom k2}R'_{b,k}.
+\]
+\end{theorem}
+
+\begin{proof}
+This is the case of \cref{spn:thm:complete-law} with a Lagrangian target, and the fibre count of
+\cref{spn:thm:lagrangian} gives it directly. By \cref{spn:lem:gram-frames} there are
+$\spnEmb_n(b,b/2)=q^{2nb-\binom b2}C'$ frames with Gram matrix $H$. For $M$ of rank $r=b-k$, the
+condition $M^{\spnT}B-B^{\spnT}M=H$ vanishes on $K\times K$, so isotropy is necessary; with
+$PMT=\operatorname{diag}(I_r,0)$ and blocks of sizes $r,n-r$ for rows and $r,k$ for columns it reads
+$B_{11}-B_{11}^{\spnT}=H_{11}$, $B_{12}=H_{12}$, $H_{22}=0$, with $q^{r(r+1)/2}$ choices of $B_{11}$ and
+the last $n-r$ rows of $B$ free. That is $q^{nb-\binom b2+\binom k2}$ solutions, each an injective frame
+because $\operatorname{rad}H=0$, which gives the likelihood. Every supported likelihood exceeds one, so
+all deficit lies off the support. Counting a $k$-subspace of $\F_q^b$ and an injection of its quotient
+into $\F_q^n$ gives $u'(k)$, and conditional on $k$ the kernel is uniform; choosing an independent
+isotropic frame vector by vector leaves $q^{b-i}-q^i$ choices for the next vector, so a uniform
+$k$-subspace is isotropic with probability $Q^{\binom k2}R'_{b,k}$, which gives the rank law and
+$\Omega$.
+
+For the signs, cancellation gives $R'_{b,c}/C'=(D'E')^{-1}>1$, and
+$R'_{b,k+1}/R'_{b,k}=(1-Q^{b-2k})/(1-Q^{b-k})<1$ for $1\le k<b/2$, so it suffices that
+$R'_{b,c+1}<C'$. If $c=n$ this is immediate. Otherwise $\ell\ge2$ and
+\[
+ \frac{R'_{b,c+1}}{C'}=\frac{1-Q^{\ell}}{\prod_{j=n}^{n+c}(1-Q^j)\prod_{j=b/2+1}^{n}(1-Q^{2j})};
+\]
+the sum of the quantities subtracted from one in the denominator, divided by $Q^\ell$, is at most
+$Q^c(1-Q^{c+1})/(1-Q)+Q^{2c+2}/(1-Q^2)$, which is at most $\tfrac34+\tfrac1{12}$ for $c=1$ and
+$\tfrac12+\tfrac1{48}$ for $c\ge2$, using only $Q\le\tfrac12$. By $\prod(1-x_i)\ge1-\sum x_i$ the
+denominator exceeds the numerator. The excess at full row rank is
+$u'(c)((D'E')^{-1}-1)$ with $u'(c)=a_b/a_c$ and $a_b/E'=a_n$.
+\end{proof}
+
+\begin{theorem}[Almost singular matrices with almost equal ranks; \stU]\label{spn:thm:wide-separation}
+Fix $q$. Throughout the admissible range, $\abs{(q-1)q^n\delta_{\mathrm{rk}}-1}\le3q^{-c}$, so
+$\delta_{\mathrm{rk}}=q^{-n}(1+O_q(q^{-c}))/(q-1)$ uniformly in $n\ge c$. With
+\[
+ \Omega_0=q^{-\binom c2}\frac{a_n}{a_c}\prod_{j=\ell/2+1}^{b/2}(1-q^{-2j}),\qquad
+ \varepsilon_q(c)=\frac{a_\infty^{-2}q^{-(2c+1)}}{1-q^{-(2c+4)}},
+\]
+one has $\Omega_0\le\Omega\le\Omega_0(1+\varepsilon_q(c))$. Consequently, with
+$B_{q,\ell}=\prod_{j=\ell/2+1}^\infty(1-q^{-2j})$, uniformly in $\ell\ge0$,
+\[
+ 1-\spnTV(A,U)=B_{q,\ell}\,q^{-\binom c2}\bigl(1+O_q(q^{-c})\bigr),
+\]
+so as $c\to\infty$ the rank distance tends to zero while the matrix distance tends to one, with no
+condition on $n-c$.
+\end{theorem}
+
+\begin{proof}
+Put $S_E=\sum_{j=n+1}^{n+c}Q^j=Q^n(1-Q^c)/(q-1)$ and $S_D=\sum_{j=b/2+1}^{n}Q^{2j}\le Q^{n+c}/(q^2-1)\le\tfrac1{12}$.
+Bonferroni and the product inequalities give $S_E-\tfrac12S_E^2\le1-E'\le S_E$,
+$0\le D'^{-1}-1\le S_D/(1-S_D)$ and $1-Q^c/(q-1)\le a_n/a_c\le1$. Dividing the formula for
+$\delta_{\mathrm{rk}}$ by $Q^n/(q-1)$ gives at most $1+\tfrac4{11}Q^c$ and at least
+$(1-Q^c/(q-1))(1-Q^c-Q^n/(2(q-1)))\ge1-\tfrac52Q^c$. The term $k=c$ of $\Omega$ is $\Omega_0$. For
+$k=c+j$, $R'_{b,c+j}\le R'_{b,c}$ and
+$u'(c+j)/u'(c)=Q^{j(c+j)}a_ca_n/(a_{c+j}a_ja_{n-j})\le a_\infty^{-2}Q^{j(c+j)}$, so the $j$th term
+is at most $a_\infty^{-2}Q^{2cj+(3j^2-j)/2}$ times $\Omega_0$; successive exponents increase by at
+least $2c+4$, and a geometric majorant gives the enclosure. Finally $a_n/a_c=1+O_q(Q^c)$, and the
+finite even product in $\Omega_0$ differs from $B_{q,\ell}$ by a relative $O_q(Q^{n+c})$, with
+$n+c\ge2c$.
+\end{proof}
+
+At the boundary $c=n$ the source frame fills the ambient space, $A$ has full row rank surely,
+\[
+ \delta_{\mathrm{rk}}=1-\prod_{j=n+1}^{2n}(1-q^{-j}),\qquad\Omega=q^{-\binom n2}\prod_{j=1}^n(1-q^{-2j}),
+\]
+and the second number is also the probability that the $n$-dimensional kernel of a uniform $n\times2n$
+matrix is Lagrangian.
+
+Small total variation for one observation does not by itself give the number of observations needed.
+Write $\chi^2(P\Vert V)=\sum_x(P(x)-V(x))^2/V(x)$.
+
+\begin{theorem}[Rank-only information and its sharp sample scale; \stU]\label{spn:thm:wide-sample}
+Let $P$ and $V$ be the laws of $\rank A$ and $\rank U$. For fixed $q$ and $c\to\infty$, uniformly in
+$n\ge c$,
+\[
+ \chi^2(P\Vert V)=\frac{q^{-(2n-c)}}{q-1}\bigl(1+O_q(q^{-c})\bigr).
+\]
+For $t$ independent observations of which only the ranks are kept: if $t=o(q^{2n-c})$ the two joint
+rank laws have total variation tending to zero, so every rank-only rule has equal-prior error
+tending to at least $\tfrac12$; if $t/q^{2n-c}\to\infty$, a threshold on the number of matrices
+without full row rank has error tending to zero. For a fixed target error in $(0,\tfrac12)$ the
+required number of rank observations is therefore $\Theta_q(q^{2n-c})$. One complete matrix has
+optimal equal-prior error
+\[
+ \frac\Omega2=\frac{B_{q,\ell}}2\,q^{-\binom c2}\bigl(1+O_q(q^{-c})\bigr).
+\]
+\end{theorem}
+
+\begin{proof}
+Index by the row deficiency $j$, so $k=c+j$, and put $u_j=u'(c+j)$, $r_j=R'_{b,c+j}/C'$; then
+$\chi^2(P\Vert V)=\sum_{j=0}^nu_j(r_j-1)^2$. One has
+$u_1=Q^c(1-Q^n)\prod_{i=c+2}^{n+c}(1-Q^i)/(q-1)=Q^c(1+O_q(Q^c))/(q-1)$, $r_0=1+O_q(Q^n)$, and
+$r_1=r_0(1-Q^\ell)/(1-Q^n)$, so $1-r_1=Q^\ell(1+O_q(Q^c))$ (exactly $r_1=0$ when $\ell=0$), and the term
+$j=1$ is $Q^{c+2\ell}(1+O_q(Q^c))/(q-1)$, with $c+2\ell=2n-c$; the term $j=0$ is $O_q(Q^{2n})$. For
+$j\ge1$, $0\le1-r_j\le Q^{\ell-2(j-1)}/(1-Q^2)$: if $c+j\le b/2$, then
+$r_j\ge R'_{b,c+j}\ge\prod_{i<c+j}(1-Q^{b-2i})$, and otherwise $r_j=0$ and $\ell-2(j-1)\le0$. With
+$u_j\le a_\infty^{-1}Q^{j(c+j)}$, the terms $j\ge2$ divided by $Q^{c+2\ell}$ are at most
+$Q^{(j-1)c+(j-2)^2}/(a_\infty(1-Q^2)^2)$, which sum to $O(Q^c)$.
+
+For $t$ observations, $1+\chi^2(P^{\otimes t}\Vert V^{\otimes t})=(1+\chi^2(P\Vert V))^t$, and
+Cauchy--Schwarz gives
+\[
+ \spnTV(P^{\otimes t},V^{\otimes t})\le\tfrac12\bigl((1+\chi^2(P\Vert V))^t-1\bigr)^{1/2}.
+\]
+For the test, let $p_U$ and $p_A$ be the probabilities of rank below $n$; by the sign pattern $p_U-p_A=\delta_{\mathrm{rk}}$,
+and $0\le p_A\le p_U\le Q^c/(q-1)$. Comparing the observed fraction of rank-deficient matrices with
+$(p_A+p_U)/2$, Chebyshev's inequality bounds each error by
+$4p_U/(t\delta_{\mathrm{rk}}^2)=O_q(q^{2n-c}/t)$. The complete-matrix test accepts the symplectic model
+exactly when the kernel is $H$-isotropic; it never errs under that model, errs with probability
+$\Omega$ under the uniform one, and is optimal by \cref{spn:thm:wide}.
+\end{proof}
+
+If $c/n\to\alpha\in(0,1)$, the rank distance is asymptotic to $q^{-n}/(q-1)$ and the rank-only sample
+scale is $q^{(2-\alpha)n+o(n)}$, while one complete matrix errs with probability
+$\tfrac12q^{-\alpha^2n^2/2+o(n^2)}$. Over $\F_2$, for $(n,c)=(40,20)$ one has
+$\delta_{\mathrm{rk}}\approx9.095\cdot10^{-13}$, $\Omega\approx6.372\cdot10^{-58}$ and a rank-only sample
+scale $2^{60}$; for $(n,c)=(12,12)$, $\delta_{\mathrm{rk}}\approx2.441\cdot10^{-4}$ and
+$\Omega\approx9.331\cdot10^{-21}$. Enumeration of $313{,}170$ prescribed-Gram frames over $\F_2$, $\F_3$
+and $\F_4$ checks the likelihood on $11{,}295$ matrices, and exact rational arithmetic checks the rank
+law, its sign pattern and the formula for $\delta_{\mathrm{rk}}$ for all $288$ admissible triples with
+$q\le5$ and $n\le16$.\footnote{\raggedright\artifact{grh_extensions_2026-11-27/code/verify_symplectic.py},
+\artifact{grh_extensions_2026-11-27/results/symplectic_validation.json}}
 
 %======================================================================
 \subsection{Nondegenerate frames: residual forms and rank blindness}\label{spn:sec:nondegenerate}
@@ -2771,6 +2953,311 @@ specific to compressions. Related exact local laws concern corners of Haar $\GL_
 different ensemble \cite{ShenVanPeski2025NonArchimedean}, matrix Hua measures
 \cite{Neretin2013Hua}, and cokernels of $I-S$ for full symplectic similitudes
 \cite{Garton2015Random}.
+
+%======================================================================
+\subsection{Lagrangian projections at every precision: cokernels conceal the dependence}\label{spn:sec:local}
+\sources{grh_exact_extensions_2026-11-27}
+
+Over a finite field the Lagrangian projection of a nondegenerate frame keeps a positive distance from
+independent entries while its rank law becomes indistinguishable (\cref{spn:thm:rank-blind}). Over a
+complete discrete valuation ring the whole Smith normal form, including every higher invariant
+factor and at every precision, has exactly the distinguishing power of the rank modulo the maximal
+ideal, whereas the full matrix gains information with every digit, at the sharp rate $q^{-5h}$.
+
+Let $\OO$ be a complete discrete valuation ring with uniformizer $\varpi$ and residue field $\F_q$,
+with no restriction on the characteristic, the ramification or the parity of $q$, and put
+$R_h=\OO/\varpi^h\OO$ for $h\ge1$. Let $n=2m\ge2$, let $J$ be the standard alternating matrix of size
+$2n$, and let $H\in\spnMat_n(\OO)$ be unimodular and alternating ($x^{\spnT}Hx=0$ for all $x$). Fix
+$X_0\in\spnMat_{2n,n}(\OO)$ with $X_0^{\spnT}JX_0=H$; for instance $X_0=(I_n;B_0)$ with $B_0$ strictly upper
+triangular and $B_0-B_0^{\spnT}=H$. For Haar $g\in\Sp_{2n}(\OO)$ write $gX_0=(A;B)$, let $U\in\spnMat_n(\OO)$
+have independent additive Haar entries, and let a subscript $h$ denote reduction modulo $\varpi^h$;
+equivalently $A_h$ comes from uniform $g_h\in\Sp_{2n}(R_h)$. Put
+\begin{gather}
+ a_r=\prod_{j=1}^r(1-q^{-j}),\quad a_\infty=\prod_{j\ge1}(1-q^{-j}),\quad
+ u_r(k)=q^{-k^2}\frac{a_r^2}{a_k^2a_{r-k}}\ (0\le k\le r),\notag\\
+ C_n=\prod_{j=m+1}^n(1-q^{-2j}),\notag\\
+ R_{n,k}=\prod_{i=0}^{k-1}\frac{1-q^{2i-n}}{1-q^{i-n}}\quad(0\le k\le m),\qquad R_{n,k}=0\quad(k>m),
+ \label{spn:eq:local-Rnk}
+\end{gather}
+with $a_0=1$ and $u_r(k)=0$ outside $[0,r]$; $u_r$ is the nullity law of a uniform $r\times r$ matrix
+over $\F_q$ \eqref{spn:eq:uniform-nullity}, and $R_{n,0}=R_{n,1}=1$.
+
+\begin{lemma}[Prescribed nondegenerate frames; \stU]\label{spn:lem:local-frames}
+$\Sp_{2n}(R_h)$ acts transitively on $\mathcal X_H(R_h)=\set{X\in\spnMat_{2n,n}(R_h):X^{\spnT}JX=H}$,
+every such $X$ is a split injection, and $\abs{\mathcal X_H(R_h)}=q^{hD_n}C_n$ with $D_n=(3n^2+n)/2$.
+\end{lemma}
+\begin{proof}
+$H^{-1}X^{\spnT}J$ is a left inverse of $X$, so the image is a free nondegenerate summand with free
+nondegenerate complement of rank $n$. Over a local ring a unimodular alternating form has a
+symplectic basis (find a unit pairing, normalize, split off the hyperbolic plane, continue), with no
+division by two; applied to the complement this gives transitivity with stabilizer $\Sp_n(R_h)$. The
+reduction $\Sp_{2t}(R_{r+1})\to\Sp_{2t}(R_r)$ is onto with kernel of order $q^{t(2t+1)}$, as in the
+proof of \cref{spn:thm:padic-tangent}, and
+$\abs{\Sp_{2t}(\F_q)}=q^{t(2t+1)}\prod_{j\le t}(1-q^{-2j})$; the orbit size
+$\abs{\Sp_{2n}(R_h)}/\abs{\Sp_n(R_h)}$ is the count.
+\end{proof}
+
+For $M\in\spnMat_n(R_h)$ choose a Smith decomposition $PMT=\operatorname{diag}(\varpi^{a_1},\dots,\varpi^{a_n})$
+with $P,T\in\GL_n(R_h)$ and $0\le a_i\le h$, the value $\varpi^h$ standing for zero, and put
+\[
+ H'=T^{\spnT}HT,\qquad S_h(a)=\sum_{i<j}\min(a_i,a_j)=\sum_{\ell=1}^h\binom{k_\ell(a)}2,\qquad
+ k_\ell(a)=\#\set{i:a_i\ge\ell}.
+\]
+
+\begin{theorem}[Density at every finite precision; \stU]\label{spn:thm:local-density}
+Call $M$ admissible if $H'_{ij}\in\varpi^{\min(a_i,a_j)}R_h$ for all $i<j$; this does not depend on the
+Smith decomposition, and it is equivalent to
+\[
+ H\bigl(K_\ell(M),K_\ell(M)\bigr)\subseteq\varpi^\ell R_h\quad(1\le\ell\le h),\qquad
+ K_\ell(M)=\set{x\in R_h^n:Mx\in\varpi^\ell R_h^n}.
+\]
+The likelihood relative to independent uniform entries is
+\[
+ \frac{\spnP(A_h=M)}{\spnP(U_h=M)}=\frac{q^{S_h(a)}}{C_n}\mathbf 1_{\set{M\text{ admissible}}}.
+\] Every supported
+likelihood exceeds one, so with $\mathcal E_h$ the admissible set
+\begin{equation}\label{spn:eq:local-support-tv}
+ \Delta_{n,h}:=\spnTV(A_h,U_h)=\spnP(U_h\notin\mathcal E_h),
+\end{equation}
+and inadmissibility is an optimal distinguishing event: the kernel modules must stay isotropic to
+the corresponding precision.
+\end{theorem}
+\begin{proof}
+The fibre over $M$ is the set of $B$ with $M^{\spnT}B-B^{\spnT}M=H$. With $B'=P^{-\spnT}BT$ this becomes
+$DB'-B'^{\spnT}D=H'$, one equation $\varpi^{a_i}b'_{ij}-\varpi^{a_j}b'_{ji}=H'_{ij}$ for each $i<j$. The
+map $(b'_{ij},b'_{ji})\mapsto\varpi^{a_i}b'_{ij}-\varpi^{a_j}b'_{ji}$ has image $\varpi^{\min(a_i,a_j)}R_h$
+and kernel of order $q^{h+\min(a_i,a_j)}$, also when an exponent is $h$, and the diagonal entries are
+free. So the fibre is empty unless $M$ is admissible, and otherwise has $q^{hn(n+1)/2+S_h(a)}$
+elements; divide by $q^{hD_n}C_n$ and by $q^{-hn^2}$. Admissibility is solvability of the equation,
+hence intrinsic. In Smith coordinates the $i$th coordinate of $K_\ell(D)$ is
+$\varpi^{\max(\ell-a_i,0)}R_h$, and $\min(a_i,a_j)+\max(\ell-a_i,0)+\max(\ell-a_j,0)\ge\ell$ gives one
+direction; conversely, for $a=\min(a_i,a_j)\ge1$ both coordinate vectors lie in $K_a(D)$.
+\end{proof}
+
+\begin{lemma}[The support inside a Smith orbit; \stU]\label{spn:lem:local-orientation}
+For a fixed Smith type $a$ with $k=\#\set{i:a_i\ge1}$, a uniform matrix of that type is admissible
+with probability $q^{-S_h(a)}R_{n,k}$.
+\end{lemma}
+\begin{proof}
+A uniform element of the Smith orbit is $PDT$ with independent uniform $P,T\in\GL_n(R_h)$, and $H'$ is
+then uniform among unimodular alternating forms, which form one congruence orbit: its strict upper
+entries are uniform subject only to nonsingularity of the reduction, with independent uniform higher
+digits. In the first digit the $k$-space of positive exponents must be isotropic, which for a
+nondegenerate alternating $n$-space has probability
+$\prod_{i<k}(q^{n-i}-q^i)/(q^n-q^i)=q^{-\binom k2}R_{n,k}$ (zero for $k>m$), by transitivity of
+$\GL_n(\F_q)$ on $k$-spaces. The remaining divisibility conditions have independent total cost
+$q^{-(S_h(a)-\binom k2)}$.
+\end{proof}
+
+\begin{theorem}[Exact blindness of the entire Smith form; \stU]\label{spn:thm:local-smith}
+For every $h\ge1$ and every capped Smith type $a$, with $k=\#\set{i:a_i\ge1}$,
+\[
+ \spnP(\mathrm{SN}(A_h)=a)=\frac{R_{n,k}}{C_n}\,\spnP(\mathrm{SN}(U_h)=a).
+\]
+Conditional on the nullity $k\le m$ modulo $\varpi$, the entire Smith forms of $A_h$ and $U_h$ have
+the same law, every higher exponent included, for every $h$.
+\end{theorem}
+\begin{proof}
+On a Smith orbit the supported likelihood is the constant $q^{S_h(a)}/C_n$; average it with
+\cref{spn:lem:local-orientation}.
+\end{proof}
+
+\begin{corollary}[Exact Smith testing distance; \stU]\label{spn:cor:local-smith-tv}
+For every $h\ge1$,
+\[
+ s_n:=\spnTV(\mathrm{SN}(A_h),\mathrm{SN}(U_h))=(u_n(0)+u_n(1))(C_n^{-1}-1)
+ =a_n\Bigl[1+\frac{q(1-q^{-n})}{(q-1)^2}\Bigr](C_n^{-1}-1),
+\]
+an optimal Smith-only event is nullity at most one modulo $\varpi$, and
+$s_n=\frac{a_\infty}{q^2-1}\bigl(1+\frac q{(q-1)^2}\bigr)q^{-n}+O_q(q^{-2n})$. At $h=1$,
+\begin{equation}\label{spn:eq:local-field}
+ \Delta_{n,1}=\spnP\bigl(H|_{\ker U_1\times\ker U_1}\ne0\bigr).
+\end{equation}
+\end{corollary}
+\begin{proof}
+By \cref{spn:thm:local-smith} the Smith distance is the distance between the first nullities, with
+likelihood $R_{n,k}/C_n$, which exceeds one for $k=0,1$. For $2\le k\le m$ every factor of $R_{n,k}$ is
+at most one, and
+$1-R_{n,k}\ge1-R_{n,2}=(q^2-q)q^{-n}/(1-q^{1-n})\ge q(q-1)q^{-n}>q^{-n}/(q^2-1)>\sum_{j=m+1}^nq^{-2j}\ge1-C_n$,
+so $R_{n,k}<C_n$; for $k>m$ the likelihood is zero. Summing the positive discrepancies, with
+$u_n(0)=a_n$ and $u_n(1)=a_nq(1-q^{-n})/(q-1)^2$, gives the formula, and
+$C_n^{-1}-1=q^{-n}/(q^2-1)+O_q(q^{-2n})$, $a_n=a_\infty(1+O_q(q^{-n}))$ give the asymptotic. At $h=1$
+admissibility is isotropy of $\ker U_1$.
+\end{proof}
+
+\begin{proposition}[Infinite precision; \stU]\label{spn:prop:local-infinity}
+$A$ is almost surely nonsingular over the fraction field, and relative to independent Haar entries
+its density is
+\[
+ h_\infty(M)=C_n^{-1}q^{\sum_{i<j}\min(a_i,a_j)}\mathbf 1_{\set{H'_{ij}\in\varpi^{\min(a_i,a_j)}\OO\ \forall i<j}}
+\]
+at every matrix with finite Smith exponents. Its Smith law satisfies \cref{spn:thm:local-smith}, and
+the distance between the full cokernel laws of $A$ and $U$ is exactly $s_n$.
+\end{proposition}
+\begin{proof}
+An iid Haar square matrix is almost surely nonsingular: by induction and Fubini, off the null set
+where a chosen $(n-1)$-minor vanishes, the determinant is a nonconstant affine function of the
+remaining diagonal entry. Once $h$ exceeds the largest exponent the finite densities stabilize to
+$h_\infty$. \Cref{spn:lem:local-orientation} holds with Haar changes of basis in $\GL_n(\OO)$, so the
+conditional expectation of $h_\infty$ on a Smith type is $R_{n,k}/C_n$, and
+$\int h_\infty=C_n^{-1}\sum_ku_n(k)R_{n,k}=1$ by normalization at $h=1$. The finite densities are
+nonnegative with integral one, so Scheff\'e's lemma gives convergence in $L^1$; the limit agrees with
+the law of $A$ on cylinder sets, hence on all Borel sets, and there is no singular part.
+\end{proof}
+
+\begin{corollary}[Every finite cokernel; \stU]\label{spn:cor:local-cokernel}
+Let $G$ be a finite $\OO$-module with $k=\dim_{\F_q}(G/\varpi G)\le n$. Then
+\[
+ \spnP(\spncoker A\cong G)=\frac{R_{n,k}}{C_n}\,\frac{a_n^2}{a_{n-k}\abs{\Aut_\OO(G)}},
+\]
+which vanishes for $k>m$. Conditional on any $k\le m$ the cokernel has the independent-entry
+conditional law, and the optimal cokernel-only test is whether the cokernel is cyclic, the trivial
+module included.
+\end{corollary}
+\begin{proof}
+For iid Haar $U$ a fixed lattice $L\subset\OO^n$ with quotient $G$ is the image with probability
+$\abs G^{-n}a_n$, and there are $\abs G^n\abs{\Aut_\OO(G)}^{-1}\prod_{i<k}(1-q^{i-n})$ such lattices, by
+reduction modulo $\varpi$ and Nakayama's lemma, so
+$\spnP(\spncoker U\cong G)=a_n^2/(a_{n-k}\abs{\Aut_\OO(G)})$ \cite{WangStanley2017Smith}. Multiply by
+the Smith likelihood.
+\end{proof}
+
+As even $n$ grows, this cokernel law tends in total variation to the Cohen--Lenstra law
+$a_\infty/\abs{\Aut_\OO(G)}$: the iid first-nullity tail is at most $2q^{-K}$ beyond $K$, and in the
+chain of \cref{spn:lem:local-markov} below each step stays positive with probability at most
+$1-a_\infty$, so the largest exponent is at least $h$ with probability at most $(1-a_\infty)^h$,
+uniformly in $n$; this tightness, the pointwise limit of the iid formula and $s_n\to0$ give the
+claim.
+
+\begin{lemma}[Successive iid nullities; \stU]\label{spn:lem:local-markov}
+For an iid Haar square matrix with Smith exponents $a_i$, put $k_\ell=\#\set{i:a_i\ge\ell}$. Then $k_1$
+has law $u_n$, and $(k_\ell)$ is a Markov chain with $\spnP(k_{\ell+1}=j\mid k_\ell=k)=u_k(j)$; the same
+holds through level $h$ for a uniform matrix over $R_h$.
+\end{lemma}
+\begin{proof}
+Given that the reduction has rank $n-k$, lift row and column operations making an upper
+$(n-k)$-block invertible and eliminate. Conditional on the other blocks, the Schur complement is a
+translate of a uniform lift of its zero residue, so it is uniform in $\varpi\spnMat_k(\OO)$; dividing by
+$\varpi$ leaves a fresh iid $k\times k$ Haar matrix, and the Smith form consists of $n-k$ units and
+$\varpi$ times the factors of that matrix.
+\end{proof}
+
+Put $f_0(k)=1$ and $f_h(k)=q^{-\binom k2}\sum_{j=0}^ku_k(j)f_{h-1}(j)$ for $h\ge1$, so that
+$f_h(0)=f_h(1)=1$, $f_1(k)=q^{-\binom k2}$, and $f_h(k)$ is the expectation of
+$q^{-\sum_{\ell\le h}\binom{k_\ell}2}$ along the chain started at $k_1=k$.
+
+\begin{theorem}[Exact matrix distance at every precision; \stU]\label{spn:thm:local-precision}
+For every $h\ge1$,
+\begin{equation}\label{spn:eq:local-Delta}
+ \Delta_{n,h}=1-\sum_{k=0}^mu_n(k)R_{n,k}f_h(k).
+\end{equation}
+With $f_\infty(0)=f_\infty(1)=1$ and, for $k\ge2$ in increasing order,
+\[
+ f_\infty(k)=\frac{q^{-\binom k2}\sum_{j<k}u_k(j)f_\infty(j)}{1-q^{-(3k^2-k)/2}},
+\]
+$f_h(k)$ decreases to $f_\infty(k)$, the full $\OO$-valued matrix distance is
+$\Delta_{n,\infty}=1-\sum_{k\le m}u_n(k)R_{n,k}f_\infty(k)$, and $f_\infty(2)=(q^4-1)/(q^5-1)$.
+\end{theorem}
+\begin{proof}
+By \eqref{spn:eq:local-support-tv} and \cref{spn:lem:local-orientation},
+$1-\Delta_{n,h}=\spnE[q^{-S_h(a)}R_{n,k_1(a)}]$ under iid entries, and the formula
+$S_h(a)=\sum_\ell\binom{k_\ell}2$ with \cref{spn:lem:local-markov} gives \eqref{spn:eq:local-Delta}. The
+path interpretation shows that $f_h$ decreases; the limit of the recurrence uses $u_k(k)=q^{-k^2}$, and
+\cref{spn:prop:local-infinity} passes from cylinder distances to the full distance. For $k=2$ the
+states below have value one, so $f_\infty(2)=q^{-1}(1-q^{-4})/(1-q^{-5})$.
+\end{proof}
+
+\begin{theorem}[The sharp fifth-power precision law; \stU]\label{spn:thm:local-five}
+For every even $n\ge2$ and $h\ge1$, $0\le\Delta_{n,\infty}-\Delta_{n,h}\le q^{-5h}$. For even $n\ge4$
+also
+\[
+ \Delta_{n,\infty}-\Delta_{n,h}\ge u_n(2)R_{n,2}\Bigl(1-\frac{q^4-1}{q^5-1}\Bigr)q^{-5h},
+\]
+so the exponent five is sharp and the full distance increases strictly with every digit. For $n=2$
+the distance is $q^{-4}$ at every precision.
+\end{theorem}
+\begin{proof}
+On the states $k\ge2$ let $Q(k,j)=q^{-\binom k2}u_k(j)$, $2\le j\le k$. The error
+$e_h=f_h-f_\infty$ vanishes at $k=0,1$, satisfies $e_h=Qe_{h-1}$ and $0\le e_0\le1$. Every row sum of
+$Q$ is at most $q^{-5}$: at $k=2$ it is $q^{-1}q^{-4}$; at $k=3$ counting independent ordered pairs in
+the kernel gives $\spnP(\text{nullity}\ge2)\le1/((q^2-1)(q^2-q))$, so the row sum is at most
+$1/(q^4(q-1)^2(q+1))\le q^{-5}$; for $k\ge4$ the discount alone is at most $q^{-6}$. So
+$0\le e_h\le q^{-5h}$, and averaging in \eqref{spn:eq:local-Delta} with $0\le R_{n,k}\le1$ gives the upper
+bound. At state two the recursion is exact, $f_h(2)-f_\infty(2)=(1-f_\infty(2))q^{-5h}$, which gives the
+lower bound, positive for $n\ge4$, and the strict increase. For $n=2$ only $k=0,1$ carry weight, and
+the forbidden first-digit matrix is the zero matrix.
+\end{proof}
+
+After the first nullity has reached two, staying at two for one more digit costs $q^{-4}$ and keeping
+admissibility at that digit costs a further $q^{-1}$; higher nullities have smaller diagonal factors
+$q^{-(3k^2-k)/2}$.
+
+\begin{theorem}[Simultaneous dimension and precision limits; \stU]\label{spn:thm:local-limit}
+Let $p_q(k)=a_\infty q^{-k^2}/a_k^2$ be the limiting iid nullity law \cite{Fulman2015Stein}, and for
+$h\in\set{1,2,\dots,\infty}$ put $\delta_{q,h}=\sum_{k\ge0}p_q(k)(1-f_h(k))$. Uniformly in $h$,
+\[
+ \abs{\Delta_{n,h}-\delta_{q,h}}\le q^{-n}\Bigl(\frac1{(q-1)-q^{-n}}+\frac1{q^2-1}\Bigr)\le
+ \Bigl(\frac4{3(q-1)}+\frac1{q^2-1}\Bigr)q^{-n},
+\]
+for finite $h$ moreover $\abs{\Delta_{n,h}-\delta_{q,\infty}}\le(\frac4{3(q-1)}+\frac1{q^2-1})q^{-n}+q^{-5h}$,
+and
+\[
+ \delta_{q,\infty}-\delta_{q,1}\ge p_q(2)\frac{q-1}{q(q^5-1)}>0 .
+\]
+\end{theorem}
+\begin{proof}
+With $B_n=a_n/a_\infty$, $u_n(k)/p_q(k)=B_na_n/a_{n-k}\le B_n$ for $k\le n$, and trivially for $k>n$,
+so $\spnTV(u_n,p_q)\le B_n-1\le q^{-n}/((q-1)-q^{-n})$ by $\prod_{j>n}(1-q^{-j})\ge1-q^{-n}/(q-1)$.
+Normalization of the first-digit law gives $\sum_ku_n(k)R_{n,k}=C_n$ with $1-C_n\le q^{-n}/(q^2-1)$.
+Since $0\le f_h\le1$,
+$\abs{\Delta_{n,h}-\delta_{q,h}}=\abs{\sum_k(p_q(k)-u_n(k))f_h(k)+\sum_ku_n(k)(1-R_{n,k})f_h(k)}\le\spnTV(u_n,p_q)+1-C_n$,
+and $q^{-n}/(q-1)\le\tfrac14$. The second bound adds $0\le f_h-f_\infty\le q^{-5h}$ from the proof of
+\cref{spn:thm:local-five}, and the gap is the term $k=2$:
+$p_q(2)(q^{-1}-(q^4-1)/(q^5-1))$.
+\end{proof}
+
+Hence every coupled growth of even $n$ and of $h$ has the full-matrix limit $\delta_{q,\infty}$, while
+the Smith distance tends to zero uniformly in the precision; at $h=1$, $\delta_{q,1}$ is the constant
+$\delta_q$ of \eqref{spn:eq:deltaq}. All quantities are rational for given $q,n,h$, and the limiting
+constants are enclosed by the method described after \cref{spn:thm:rank-blind}. For $q=2$ and $n=4$,
+\[
+ s_4=\frac{7337}{417792},\quad \Delta_{4,1}=\frac{2213}{32768},\quad\Delta_{4,2}=\frac{72391}{1048576},\quad
+ \Delta_{4,h}=\frac{35089}{507904}-\frac{1575}{31744}\,2^{-5h}\ (h\ge1),
+\]
+only the state $k=2$ contributing to the dependence on $h$. Further values, rounded:
+\begin{center}\small
+\begin{tabular}{rrlll}
+\toprule
+$q$ & $n$ & Smith, every precision & full matrix, one digit & full matrix, all digits\\
+\midrule
+$2$ & $4$ & $0.017561370251$ & $0.067535400391$ & $0.069085890247$\\
+$2$ & $8$ & $0.0011263070836$ & $0.068730737837$ & $0.070799468377$\\
+$2$ & $20$ & $2.7540968411\cdot10^{-7}$ & $0.068804988454$ & $0.070908663442$\\
+$3$ & $4$ & $0.0014973991965$ & $0.013120650932$ & $0.013168571188$\\
+$3$ & $20$ & $3.5140566616\cdot10^{-11}$ & $0.013212149417$ & $0.01326643453$\\
+\midrule
+$q$ & & $\delta_{q,1}$ & $\delta_{q,\infty}$ &\\
+\midrule
+$2$ & & $0.068805006506694520573$ & $0.070908690034008657231$ &\\
+$3$ & & $0.013212149418894995143$ & $0.013266434532721205987$ &\\
+$4$ & & $0.0040856198990187158379$ & $0.0040896087111604532303$ &\\
+$5$ & & $0.0016506931112074708975$ & $0.0016512212975639941216$ &\\
+\bottomrule
+\end{tabular}
+\end{center}
+For binary $20\times20$ matrices every test based on the complete cokernel has probability gap at most
+$2.7540968411\cdot10^{-7}$, while inspecting the kernel pairings of the matrix gives
+$0.070908663442\ldots$; higher precision improves the full-matrix distinction and leaves the
+Smith-only one unchanged. Exact enumeration checks the binary fibres of all $65{,}536$ matrices in
+$\spnMat_4(\F_2)$, all pairs of $2\times2$ matrices over $\Z/4$ and $\F_3$, the $15$ capped Smith types
+over $\Z/4$ in dimension four, and normalization, Smith distances and monotonicity for $70$ pairs
+$(q,n)$.\footnote{\raggedright\artifact{grh_exact_extensions_2026-11-27/code/verify_exact.py},
+\artifact{grh_exact_extensions_2026-11-27/results/exact_verification.json},
+\artifact{grh_exact_extensions_2026-11-27/results/tables_and_certificates.json}}
+Classical rank and Smith distributions \cite{Fulman2015Stein,WangStanley2017Smith} are the background;
+the symplectic likelihood, its cancellation on every Smith orbit and the precision estimates are
+specific to the compression. The model differs from that of \cref{spn:sec:padic}, whose target is a
+symplectic summand and whose full distance does not change with the precision.
 
 %======================================================================
 \subsection{Exact tests for a block of a split orthogonal matrix}\label{spn:sec:orthogonal}
@@ -4346,10 +4833,9 @@ higher Stickelberger theory treats related Galois-cohomological annihilators
 \subsection{Open questions}\label{spn:sec:open}
 
 \begin{question}[Optimal selection]\label{spn:q:selection}
-Under \eqref{spn:eq:near} and \eqref{spn:eq:moment}, the universal rank
-fraction $\alpha_*$ is sharp (\cref{spn:prop:sharp}), but the minimum
-possible total rank for a fixed quadruple $(d,s,u,v)$ and the optimal number
-of translates needed to reach a given rank are not determined.
+Under \eqref{spn:eq:near} and \eqref{spn:eq:moment}, the possible total ranks for a fixed quadruple
+$(d,s,u,v)$ are determined by \cref{spn:thm:rank-spectrum}, but the optimal number of translates
+needed to reach a given intermediate rank is not.
 \end{question}
 
 \begin{question}[Cheap completions]\label{spn:q:completion}
@@ -4374,7 +4860,8 @@ scale.
 \Cref{spn:thm:complete-law} gives the exact law of every symplectic compression, and its
 limiting distance from the uniform matrix law is known for fixed frames
 (\cref{spn:thm:first-correction}), isotropic pairs (\cref{spn:thm:symplectic-exact}),
-Lagrangian targets (\cref{spn:thm:rank-blind,spn:thm:growing-form}), a fixed source with a
+Lagrangian targets (\cref{spn:thm:rank-blind,spn:thm:growing-form}), wide Lagrangian projections of
+nondegenerate sources (\cref{spn:thm:wide-separation}), a fixed source with a
 nondegenerate target of fixed codimension (\cref{spn:thm:complement-boundary}), and
 complementary nondegenerate frames that are square or increasingly tall
 (\cref{spn:thm:nondeg-blind,spn:thm:square-block}). Determine it in the remaining regimes, where
@@ -4384,8 +4871,11 @@ complementary nondegenerate frames with $a-b$ fixed and positive only the lower 
 \cref{spn:cor:balanced-lower} is available. Over a complete discrete valuation ring, determine
 the complete local density when both frames contain several symplectic pairs, so that the
 residual form is a matrix rather than a scalar, and the frame types for which the distance at
-the first digit persists at all precisions (\cref{spn:thm:padic} treats one source pair, and
-\cref{spn:rem:padic-endpoint} shows that persistence is not automatic). The analogous laws for
+the first digit persists at all precisions (\cref{spn:thm:padic} treats one source pair, where it
+persists; \cref{spn:rem:padic-endpoint} and the Lagrangian projections of \cref{spn:thm:local-five},
+where it grows with each digit, show that persistence is not automatic). For wide blocks, the
+distinguishing power of correlated observations and of observations with an unknown source form is
+not determined. The analogous laws for
 nonuniform positive-type weights, which need representation-theoretic information beyond orbit
 counts, and for orthogonal, unitary, symmetric or Hermitian forms, where in characteristic two
 quadratic data cannot be replaced by a symmetric matrix, are also open.

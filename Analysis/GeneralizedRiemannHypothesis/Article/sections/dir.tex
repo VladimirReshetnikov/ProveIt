@@ -3185,7 +3185,7 @@ quadratic signs occur in the retained set.
 
 
 \subsection{Simultaneous congruences for the factors of a squarefree product}\label{dir:sec:factorizations}
-\sources{squarefree_factorizations; squarefree_prime_products}
+\sources{squarefree_factorizations; squarefree_prime_products; disjoint-prime-products}
 
 Suppose that a squarefree integer is to be split into three factors $F_1,F_2,F_3$, with $F_1$
 prescribed modulo $12$, $F_2$ modulo $15$ and $F_3$ modulo $20$, and with a prescribed number of
@@ -3432,74 +3432,115 @@ primes, fixes the sign of each factor, and changing both target signs gives a co
 unattained tuple.
 
 \paragraph{Smaller retained densities.}
-For a fixed number of factors any positive retained density still gives an exact support
-theorem, with the extra obstruction living in a quotient of bounded size. This is the
-factorization analogue of \cref{dir:thm:quotient}, for a selected set of primes instead of all
-primes up to $C(\log q)^2$.
+At any positive retained density there is still an exact support theorem, with the extra obstruction
+living in a quotient of bounded index, and it holds for a number of factors growing as fast as in
+\cref{dir:thm:factorization}. This is the factorization analogue of \cref{dir:thm:quotient}, for a
+selected list of primes instead of all primes up to $C(\log q)^2$. Occupied quotient classes are shown
+not to be rare by an integer-table repair.
+
+\begin{lemma}[Table repair; \stU]\label{dir:lem:repair}
+Let $m$ labelled items carry colours in a finite abelian group $\Gamma$ of order $d$ and exponent
+$e$, and let $Y$ and $X'$ be two allocations of the items into $k$ labelled blocks with the same block
+sizes. Then $X'$ is within $6edk$ changed labels of an allocation with the same block sizes in which
+every block has the same product of colours as in $Y$. Consequently, if the allocations with given
+block sizes are equally likely, every attained vector of block colour products has probability at
+least $(1+mk)^{-6edk}$.
+\end{lemma}
+\begin{proof}
+Record an allocation by its $k\times d$ table of colour counts per block; $X'$ and $Y$ have equal row
+and column sums. Let $\sigma_{ij}\in\set{0,\dots,e-1}$ be the residue of $Y_{ij}$ modulo $e$, take the
+margins of $(Y-\sigma)/e$ as target margins, and start from
+$Z_{ij}=\max\set{0,\floor{(X'_{ij}-\sigma_{ij})/e}}$, so that $\norm{\sigma+eZ-X'}_1\le ekd$ and the
+total absolute row and column discrepancies of $Z$ from the target margins are at most $kd$ each.
+Delete units from overfull rows and then from overfull columns, at cost at most $kd$ per stage, since
+row deletions only decrease column excesses; the remaining row deficit equals the column deficit and
+is at most $3kd$, and adding units at intersections of deficient rows and columns fills it. With the
+repaired table $Z_*$, the table $X''=\sigma+eZ_*$ has the margins of $X'$ and entries congruent to those
+of $Y$ modulo $e$, hence the colour products of $Y$, and $\norm{X''-X'}_1\le6ekd$. Moving individual
+items of each colour from surplus to deficient blocks realizes $X''$ with at most $6ekd$ changed
+labels. An allocation has at most $(1+mk)^{6edk}$ allocations within that many changes (pad a list of
+edits with empty moves), and the neighbourhoods of the allocations with the target products cover all
+allocations.
+\end{proof}
 
 \begin{theorem}[Factorizations at any positive density; \stG]\label{dir:thm:minority}
-Fix $r\ge2$, $0<a\le1$ and $A>0$, and put $d=\floor{1/a}$. For every large $Q$ there is a set of
-$O_{a,r,A}(\log Q)$ distinct primes of size $O_{a,r,A}(\log^2Q)$ such that the following holds
-for all $q_1,\dots,q_r\le Q$. Let $M=\lcm_jq_j$, let $U$ be the selected primes coprime to $M$,
-and let $T\subseteq U$ with $\abs T\ge a\abs U$. The group $H=\prod_j\dirU(q_j)$ has a character
-subgroup $E$, independent of the quotas, containing the diagonal group
-$\Delta_g\simeq\widehat{\dirU(g)}$, with $[E:\Delta_g]\le d^{r-1}$. Let
-$\varpi\colon H\to\widehat E$ be the evaluation map, $\mu$ the factorization law of $T$ and
-$\nu=\varpi_*\mu$. For all quotas $k_j\ge b_{a,r,A}\log Q$ summing to $\abs T$, a vector $u\in H$
-occurs exactly when $\nu(\varpi(u))>0$, and on each occupied fibre
+Fix $0<a\le1$ and $A>0$, and put $D=\floor{1/a}$. There are $B,K_1,K_2,c>0$, depending only on $a$
+and $A$, such that, with $L=\log Q$, for every sufficiently large $Q$ and every integer
+$2\le R\le cL/\log L$ there is one list $S$ of between $K_1RL$ and $2K_1RL+2$ distinct primes in
+$[x,2x]$, where $x\asymp_aL^2$ and $x\le K_2L^2$, with the following property. Let $2\le r\le R$ and
+$1\le q_1,\dots,q_r\le Q$, put $M=\lcm_jq_j$ and $g=\gcd_jq_j$, let $U$ be the primes of $S$ coprime to
+$M$, and let $T\subseteq U$ with $m=\abs T\ge a\abs U$. Let $\mu$ be the factorization law of $T$ in
+$H=\prod_j\dirU(q_j)$ for quotas $k_j$ with $k_*=\min_jk_j\ge BL$; balanced such quotas exist for
+every such $T$. There is a character subgroup $E\subseteq\widehat H$, independent of the quotas,
+containing the diagonal group $\Delta_g\simeq\widehat{\dirU(g)}$, with $[E:\Delta_g]\le D^{r-1}$. With the
+evaluation map $\varpi\colon H\to\widehat E$ and $\nu=\varpi_*\mu$, a vector $u\in H$ occurs exactly
+when $\nu(\varpi(u))>0$, and then
 \[
- \mu(u)=\frac{\abs E}{\abs H}\,\nu(\varpi(u))\bigl(1+O_{a,r,A}(Q^{-A})\bigr).
+ \mu(u)=\frac{\abs E}{\abs H}\,\nu(\varpi(u))(1+\theta_u),\qquad\abs{\theta_u}\le Q^{-A}.
 \]
-At most $d^{r-1}$ projections are occupied, and the index bound is sharp.
+At most $[E:\Delta_g]$ projections are occupied, and the index bound is sharp. For $a>1/2$ the only
+constraint is $\prod_ju_j\equiv P_T\pmod g$.
 \end{theorem}
 
 \begin{proof}
-\emph{Characters of large bias.} Apply \cref{dir:lem:oneset} with $Q^r$ in place of $Q$, a small
-bias $\eta>0$, and $L$ a large constant multiple of $\log Q$, enlarged after $b_{a,r,A}$ is
-chosen so that balanced quotas exist for every permitted $T$. Removing the primes dividing $M$
-costs $o(L)$ since $r$ is fixed, and every nonprincipal character of $\dirU(M)$ has mean of
-modulus at most $\eta$ on $U$. In the probability inner product over $U$, with
-$\alpha=\abs T/\abs U\ge a$, if $t$ distinct characters have bias at least $u$ on $T$ then their
-Gram matrix over $U$ has norm at most $1+(t-1)\eta$, and Bessel's inequality for the indicator of
-$T$ gives $t\alpha u^2\le1+(t-1)\eta$. Let $J$ be generated by the characters of bias greater than
-$1-\tau$ on $T$. Each generator and its inverse is within $\sqrt{2\tau}$ of a unimodular constant
-in normalized $L^2(T)$, so products of at most $d$ of them have bias at least $1-d^2\tau$. Choose
-$\tau$ and then $\eta$ with $1-d^2\tau>0$ and $(d+1)a(1-d^2\tau)^2>1+d\eta$; then the word ball of
-radius $d$ in $J$ has at most $d$ elements, and since word balls grow strictly until they exhaust
-the group, $\abs J\le d$, as in the proof of \cref{dir:thm:quotient}.
+\emph{The list.} Choose $\tau,\eta>0$ with $\eta<1$, $1-D^2\tau>0$ and
+$(D+1)a(1-D^2\tau)^2>1+D\eta$, and apply \cref{dir:lem:oneset} with $\delta=\eta/4$ and $Q^{2D}$ in
+place of $Q$: for every admissible length $N_*$ there is a list of between $N_*$ and $2N_*$ primes in
+$[x,2x]$, $x=K_\delta\log^2(2Q^{2D})$, on which every nonprincipal character of modulus at most
+$Q^{4D}$ has mean of modulus at most $\delta$. Take $B\ge\max\set{1,(2/\tau)(A+36D^2+13)}$, then $K_1$
+so large that $N_*=\ceil{K_1RL}$ is admissible and $aK_1/2\ge2(B+1)$, then $c\le1$ so small that
+$N_*$ stays admissible for $R\le cL/\log L$. At most $rL/\log x=o(\abs S)$ primes of the list divide
+$M$, so every such character has mean of modulus at most $\eta$ on $U$, $m\ge aK_1RL/2$, balanced
+quotas exceed $BL$, and for large $Q$, since $r\le L/\log L$,
+\begin{equation}\label{dir:eq:mixedsize}
+ r\log(m+1)\le3L .
+\end{equation}
 
-\emph{The quotient.} Let $E\subseteq\widehat H$ consist of the tuples all of whose ratios of
-inflated characters lie in $J$. The map sending a tuple to the ratios with its first coordinate
-has kernel $\Delta_g$ and image in $J^{r-1}$, which gives the index bound, and orthogonality gives
-the contribution $\abs E\nu(\varpi(u))/\abs H$ of $E$ to Fourier inversion at $u$. Outside $E$
-group the labels by the cosets of $J$ containing their pullbacks; different cosets have pairwise
-bias at most $1-\tau$. In \cref{dir:lem:partition} keep the original $r$ labels for the
-conditioning factor and discard the pairs inside a coset from the nonnegative exponent; since
-some label lies outside every largest coset, the remaining pair mass is at least $k_*/(2m)$. So
-every coefficient outside $E$ is at most $(m+1)^{r-1}\exp(-\tau k_*/2)$, and as $\abs H\le Q^r$
-with $r$ fixed, their total is at most $Q^{-A-2}$ for large $b_{a,r,A}$.
+\emph{The subgroup.} Inflate block characters to $\dirU(M)$, writing $\widetilde\psi_j$, and let $J$ be
+generated by the ratios $\widetilde\psi_i\overline{\widetilde\psi_j}$ of bias greater than $1-\tau$ on $T$.
+The quotient of two distinct words of length at most $D$ in these generators involves at most $4D$
+block characters, so it is induced by a nonprincipal character of modulus at most $Q^{4D}$, and the
+induced and inflated values agree on $U$; this bounds the Gram entries by $\eta$ even though $M$ may
+exceed every fixed power of $Q$. Each word has bias at least $1-D^2\tau$ on $T$, and the Gram and
+word-ball argument of \cref{dir:thm:quotient} with $\abs T/\abs U\ge a$ gives $d=\abs J\le D$. Let $E$
+consist of the tuples whose inflated characters lie in one coset of $J$. Taking ratios with
+$\widetilde\psi_1$ gives a homomorphism $E\to J^{r-1}$ whose kernel consists of equal inflated characters;
+a common character has conductor dividing every $q_j$, so the kernel is $\Delta_g$, and
+$[E:\Delta_g]\le D^{r-1}$.
 
-\emph{Occupied classes are not rare.} Fix an assignment with the desired projection. From any
-other assignment with the same quotas draw an edge, for each misplaced prime, from its current to
-its desired label. Equal quotas balance in- and out-degrees, so the edges split into directed
-simple cycles of length at most $r$, and rotating the primes along a cycle preserves the quotas.
-The projected change of a cycle is trivial on $\Delta_g$, since the total product is fixed, so all
-changes lie in a group of order $s=[E:\Delta_g]$. Among $s$ or more changes two partial products
-coincide, including the empty one, and the block between them can be dropped; so at most $s-1$
-cycles, moving at most $r(s-1)$ primes, reach the target projection. Each assignment has at most
-$\sum_{j\le r(s-1)}\binom mjr^j$ assignments within that distance, so every positive projected
-mass is at least an inverse polynomial in $m=O(\log Q)$, which dominates the Fourier error. All
-occupied projections restrict to the same character of $\Delta_g$, fixed by the total product, so
-there are at most $[E:\Delta_g]$ of them.
+\emph{Fourier decay.} For a tuple outside $E$ let $t\ge1$ be the number of labels outside a coset of
+largest combined quota. Labels in different cosets have ratios of bias at most $1-\tau$ on $T$; in
+\cref{dir:lem:partition} keep the $r$ labels for the conditioning factor and discard the pairs inside
+a coset, so that the coefficient is at most $(m+1)^re^{-\tau tk_*/2}$. For each $t$ there are at most
+$rQ\binom rtd^rQ^t$ such tuples: a character in the dominant coset from one block, the outside labels
+and their characters, and at most $d$ choices for every inside label. As $rQe^{-\tau k_*/2}\le1/2$ for
+large $Q$, \eqref{dir:eq:mixedsize}, $d\le m+1$ and $r\le Q$ give
+\[
+ \sum_{\boldsymbol\psi\notin E}\abs{\widehat\mu(\boldsymbol\psi)}\le(m+1)^rrQd^r\bigl[(1+Qe^{-\tau k_*/2})^r-1\bigr]
+ \le2Q^{10-\tau B/2},
+\]
+while Fourier inversion over $E$ contributes exactly $\abs E\nu(\varpi(u))$ to $\abs H\mu(u)$.
 
-\emph{Sharpness.} Let all moduli equal a prime $\ell\equiv1\pmod d$ and retain the most populous
-coset in $U$ of the subgroup of index $d$ of $\dirU(\ell)$; it contains at least
-$\abs U/d\ge a\abs U$ primes. Every character of the cyclic quotient of order $d$ has bias one on
-this set, so $J$ is that character group, the ratio map $E/\Delta_g\to J^{r-1}$ is onto, and
-$[E:\Delta_g]=d^{r-1}$. Each label's quota fixes its quotient residue, and compatibility imposes
-only one relation among the $r$ residues, so the support is a $d^{1-r}$ fraction of the
-compatible fibre.
+\emph{Occupied projections.} Colour each prime by its value in $\widehat J$. For a tuple in $E$ with
+$\delta_j=\widetilde\psi_j/\widetilde\psi_1\in J$, its value on factors $F_j$ is
+$\widetilde\psi_1(P_T)\prod_j\delta_j(F_j)$, so the $r$ colour products of a witness determine its
+$E$-projection. By \cref{dir:lem:repair} with $k=r$ and $e\le d\le D$, every occupied projection has
+mass at least $(1+mr)^{-6D^2r}\ge Q^{-36D^2}$ by \eqref{dir:eq:mixedsize}, which exceeds $Q^A$ times the
+Fourier error by the choice of $B$. All occupied projections restrict to the same character of
+$\Delta_g$, fixed by $P_T$, which bounds their number and gives the case $D=1$.
+
+\emph{Sharpness.} Let all moduli equal a prime $\ell\equiv1\pmod D$ and retain the most populous coset
+in $U$ of the subgroup of index $D$ of $\dirU(\ell)$, at least $\abs U/D\ge a\abs U$ primes. Every
+character of the cyclic quotient of order $D$ has bias one on this set, so $J$ is that character
+group, $E/\Delta_g\to J^{r-1}$ is onto and $[E:\Delta_g]=D^{r-1}$; each quota fixes its label's quotient
+residue, and compatibility imposes one relation among the $r$ residues, so the support is a $D^{1-r}$
+fraction of the compatible fibre.
 \end{proof}
+
+The growing range is sharp in order for this size of primes and the balanced-quota guarantee: even
+without deletions, $r$ blocks of size $BL$ use $rBL$ distinct primes, while $[1,2K_2L^2]$ contains only
+$O(L^2/\log L)$ primes. For $a>1/2$ the theorem contains \cref{dir:thm:factorization} up to the
+constants, which are explicit there.
 
 The projected law $\nu$ can be computed before any full tuple is tested. Start from the
 allocation placing every prime in label $1$, with residue vector $(P_T,1,\dots,1)$; for each
@@ -3534,6 +3575,242 @@ Common prime lists and Boolean subset products for almost all moduli are treated
 Shparlinski and Ter\"av\"ainen \cite{KlurmanShparlinskiTeravainen2026Generation}, and Hughes
 obtains a first-order optimal size for that covering problem \cite{Hughes2026Few};
 \cref{dir:thm:factorization} does not optimize the leading constant for Boolean coverage.
+
+\subsection{Disjoint products of small primes in one modulus}\label{dir:sec:disjoint}
+\sources{disjoint-prime-products}
+
+How can a few extra primes change which products are possible? If every retained prime is a
+quadratic residue modulo an odd prime except one nonresidue, that prime can go into either of two
+products or stay unused, so each product separately can have either sign but the two can never both
+be negative; a second nonresidue removes this joint obstruction, although the four sign patterns
+still have different probabilities. This subsection describes every attainable tuple of several
+disjoint products above quarter density, with a sharp coverage threshold and an exact criterion for
+uniform counts. It also answers the question of \cref{dir:sec:products} whether the distance from a
+quadratic fibre can replace a fixed density margin above one half: the right quantity is the number of
+minority primes times the relative quota.
+
+Keep the notation of \cref{dir:sec:products}: $q\ge3$, $G=(\Z/q\Z)^\times$, $L=\log q$, $y=CL^2$,
+$\mathcal P$ the primes up to $y$ not dividing $q$, $N=\abs{\mathcal P}$, $S\subseteq\mathcal P$ with
+$m=\abs S\ge aN$. Fix $r\ge1$ and choose a uniform ordered partition $S=S_0\sqcup S_1\sqcup\dots\sqcup S_r$
+with prescribed sizes $n_0,\dots,n_r$, $\sum_in_i=m$; block $0$ is a reserve. Put
+\[
+ X=(X_1,\dots,X_r),\qquad X_j=\prod_{p\in S_j}p\bmod q,\qquad h=\min_{0\le i\le r}n_i,\qquad t=h/m .
+\]
+By unique factorization the $m!/\prod_in_i!$ equally likely partitions are the ordered tuples of
+pairwise coprime squarefree integers with these numbers of prime factors from $S$. For $r=1$ this is
+the product $X_k$ of \cref{dir:sec:products} with $k=n_1$. The constants $B,C$ depend only on $a,r$
+(and on $A$ where it occurs), and the conclusions hold for all large $q$ and all admissible $S$ and
+quotas with $h\ge BL$.
+
+\begin{theorem}[A growing number of products at any positive density; \stG]\label{dir:thm:disjoint-growing}
+Fix $0<a\le1$ and $A>0$, and put $D=\floor{1/a}$. There are $C=C(a)$ and $B=B(a,A)$ such that the
+following holds for all large $q$, every $S$ with $m\ge aN$ and every $r\ge1$ with $h\ge BL$. The
+subgroup $H_\tau$ of \cref{dir:thm:quotient} has order $d\le D$; with the evaluation quotient
+$\pi\colon G\to\widehat{H_\tau}$ and $\nu$ the joint law of the projected products, the support of $X$ is
+exactly the inverse image of $\supp\nu$, and at every occupied $g$
+\[
+ \dirP(X=g)=\frac{d^r}{\abs G^r}\,\nu(\pi^r(g))(1+\theta_g),\qquad\abs{\theta_g}\le q^{-A}.
+\]
+Balanced quotas allow $r\asymp_{a,A}L/\log L$ at every permitted retained set, and this order is
+maximal for quotas of size $BL$.
+\end{theorem}
+
+\begin{proof}
+The Gram argument of \cref{dir:thm:quotient} works with any fixed $D$ and gives $\tau=\tau(a)$, then
+$C$, with $d\le D$. Put $k=r+1$; since $kh\le m\le N$ and $N\sim CL^2/\log(CL^2)$, there is $K=3(C+1)$
+with $k\log(m+1)\le KL$. The Fourier and repair steps of the proof of \cref{dir:thm:minority} apply
+with $k$ labels, the reserve label carrying the trivial character, $J=H_\tau$, and $q$ in place of
+$Q$: a tuple outside $H_\tau^r$ has $t_*\ge1$ labels outside a coset of $H_\tau$ of largest weight,
+because the reserve character is trivial, its coefficient is at most $(m+1)^ke^{-\tau t_*h/2}$, there
+are at most $q\binom k{t_*}d^kq^{t_*}$ such tuples, and for $B\ge8/\tau$ the total error is at most
+$2q^{2K+3-\tau B/2}$; orthogonality on $H_\tau^r$ gives the main term $d^r\nu(\pi^r(g))$ on the
+normalized scale. Colouring primes by their values in $\widehat{H_\tau}$, \cref{dir:lem:repair} gives
+$\nu(\pi^r(g))\ge(1+mk)^{-6D^2k}\ge q^{-12D^2K}$ at every occupied point, and
+$B\ge(2/\tau)(A+12D^2K+2K+6)$ gives the relative error. Finally $kh\le m$ gives $r=O_{a,A}(L/\log L)$,
+balanced quotas with $k=\floor{aN/(2BL)}$ attain this order, and $r$ blocks of size $BL$ need $rBL$
+primes, of which there are only $O(L^2/\log L)$.
+\end{proof}
+
+For $r=1$ this sharpens the relative asymptotic of \cref{dir:thm:quotient} to $1+O(q^{-A})$ when $B$
+may depend on $A$. Above quarter density $d\le3$, and the projected law can be decided by closed tests.
+For a character $\chi$ of order $2$ or $3$ choose a most frequent value $b$ of $\chi$ on $S$, put
+$s_\chi=\#\set{p\in S:\chi(p)\ne b}$, and for a target $g\in G^r$ call $w_j=\chi(g_j)b^{-n_j}$ its
+corrected values; let $\omega=e^{2\pi i/3}$.
+
+\begin{theorem}[Exact support above quarter density; \stG]\label{dir:thm:disjoint-support}
+Let $1/4<a\le1$ and fix $r$. A target $g\in G^r$ occurs if and only if, for every character of order
+two, the number of $j$ with $w_j=-1$ is at most $s_\chi$, and for every character of order three,
+with $u=\#\set{p\in S:\chi(p)=b\omega}$, $v=\#\set{p\in S:\chi(p)=b\omega^{-1}}$ and $i,j$ the numbers of
+corrected entries equal to $\omega$ and $\omega^{-1}$,
+\[
+ 2u+v\ge2i+j,\qquad u+2v\ge i+2j .
+\]
+In particular $X$ covers all of $G^r$ if and only if
+\[
+ s_\chi\ge r\quad(\operatorname{ord}\chi=2),\qquad u+v+\min(u,v)\ge2r\quad(\operatorname{ord}\chi=3).
+\]
+For $a>1/3$ the quadratic tests alone suffice, and ties for $b$ may be broken arbitrarily. These
+tests and thresholds also hold throughout the growing range of \cref{dir:thm:disjoint-growing}.
+\end{theorem}
+
+\begin{proof}
+Necessity follows by projecting under each character. Conversely $d\le3$, and for $a>1/3$ even
+$d\le2$. If $d>1$, a generator $\chi$ of $H_\tau$ maps $G$ onto the $d$th roots of unity, the tests
+apply to it, and it suffices by \cref{dir:thm:disjoint-growing} to give the projected target positive
+mass; if $d=1$ every tuple occurs. Call the primes outside the most frequent class of $\chi$
+exceptional. The allocations below need only $n_0\ge2r$, every recorded quota at least two, and at least
+$2r$ primes of class $b$, which hold for large $q$ since $h\ge BL\ge2r$ and a most frequent class has
+at least $m/3$ primes.
+
+\emph{Order two.} Each requested minus sign uses an exceptional prime. If $s_\chi<r$ and at most
+$s_\chi$ minus signs are requested, give one exceptional prime to each such block, put the other
+exceptions in the reserve, and fill the quotas from class $b$. If $s_\chi\ge r$, put $r$ exceptional
+primes in the reserve and one prime of class $b$ in each recorded block, fill the rest arbitrarily,
+and swap the reserved pair of any block whose sign must change; the swaps have disjoint supports.
+
+\emph{Order three.} Call an exceptional prime positive or negative as its value divided by $b$ is
+$\omega$ or $\omega^{-1}$, with costs two and one. A block with target $\omega$ costs at least two, since
+one negative prime has the wrong value, and a target $\omega^{-1}$ costs at least one; reversing the
+costs gives the other inequality. If $u+v<2r$ all unused exceptional primes fit in the reserve: if
+$u\ge i$ and $v\ge j$ supply each target directly; if $u<i$ supply $u$ positive targets directly and
+use two negative primes for each of the other $i-u$, which the first inequality,
+$v\ge2(i-u)+j$, permits; the case $v<j$ is symmetric; fill the rest from class $b$. If $u+v\ge2r$ put
+$2r$ exceptional primes in the reserve and two primes of class $b$ in each recorded block, pair the
+reserved exceptions with these, two pairs per block, and swap: for two nonzero changes in $\Z/3$ the
+subset sums give the whole group, so independent swaps reach every target. Maximizing $2i+j$ and
+$i+2j$ over $i+j\le r$ gives $2r$, which yields the coverage thresholds. In the growing range the
+same allocations apply, since the quotas hold $2r$ exceptional primes and $m/3\ge2r$.
+\end{proof}
+
+For $a>1/3$ and $s=\min_{\operatorname{ord}\chi=2}s_\chi$, a minimizing character generates $H_\tau$ when
+$s<r$, since its bias is $1-2s/m>1-\tau$, so
+\[
+ \abs{\supp X}=\Bigl(\frac{\abs G}2\Bigr)^r\sum_{j=0}^{\min(r,s)}\binom rj ;
+\]
+for $s=r-1$ every proper marginal has full support while the joint law misses one sign class. For
+$r=1$ the theorem is the criterion of \cref{dir:rem:thresholds}.
+
+For the probabilities on the support put
+\[
+ D_q=\max_{g\in G^r}\bigl\lvert\abs G^r\dirP(X=g)-1\bigr\rvert,\qquad B_2(t)=1-2t,\qquad B_3(t)=\sqrt{1-3t(1-t)},
+\]
+and $\mathcal M_q=\max_\chi B_{\operatorname{ord}\chi}(t)^{s_\chi}$ over the characters of orders two and
+three, with $0^0=1$ and an empty maximum zero.
+
+\begin{theorem}[Pointwise mixing; \stG]\label{dir:thm:disjoint-mixing}
+Let $1/4<a\le1$ and fix $r$. Uniformly in the retained primes and the quotas,
+\[
+ \mathcal M_q-O_{a,r}\Bigl(\frac{\log(2h)}h\Bigr)\le D_q\le(3^r-1)\mathcal M_q+O_{a,r}\Bigl(\frac{\log(2h)}h\Bigr),
+\]
+so $D_q\to0$ along an admissible sequence if and only if $\mathcal M_q\to0$. For $a>1/3$ the quadratic
+characters suffice and $3^r-1$ may be replaced by $2^r-1$; for $r=1$ and $a>1/3$,
+$D_q=(1-2h/m)^{\min_{\operatorname{ord}\chi=2}s_\chi}+O_a(\log(2h)/h)$.
+\end{theorem}
+
+For $r\ge2$ one has $t\le1/3$, and $-\log B_d(t)$ is comparable to $t$ there, so uniformity is
+equivalent to $t\min_\chi s_\chi\to\infty$. For one product the quadratic exception at $t=1/2$ is real:
+half of the partitions put a single exceptional prime in the product, and its sign is balanced. A
+cubic exception has $B_3(1/2)=1/2$, so boundedly many such primes can keep a detectable bias.
+
+The proof compares the projected law with independent placement. For the generator of $H_\tau$, of
+order $d\in\set{2,3}$, write the exceptional values as $b\xi_1,\dots,b\xi_s$, $s=s_\chi$, $\xi_\ell\ne1$,
+put each of the $s$ labelled exceptions independently into box $i$ with probability $\alpha_i=n_i/m$,
+multiply the $\xi_\ell$ in each recorded box and multiply block $j$ by $b^{n_j}$; call the law
+$\widetilde\nu$.
+
+\begin{lemma}[Independent placement; \stU]\label{dir:lem:disjoint-iid}
+For fixed $r$, every Fourier coefficient of $\nu$ differs from that of $\widetilde\nu$ by
+$O_{a,r}(\log(2h)/h)$.
+\end{lemma}
+\begin{proof}
+In the actual partition the exceptions occupy $s$ distinct slots chosen without replacement. After
+$\ell$ draws with box occupancies $H_i$ the next draw has probabilities $p_i=(n_i-H_i)/(m-\ell)$;
+relative entropy is at most $\sum(p_i-\alpha_i)^2/\alpha_i$, the hypergeometric variance is
+$\ell\alpha_i(1-\alpha_i)(m-\ell)/(m-1)$, and the chain rule bounds the divergence of the label
+sequence from independence by $r\sum_{\ell<s}\ell/((m-1)(m-\ell))\ll_r(s/m)^2$, as $s\le2m/3$. Pinsker's
+inequality gives a difference $O_r(s/m)$ for every Fourier coefficient. Alternatively, in a nontrivial
+coefficient some exponent differs from that of a block of largest quota, and the corresponding ratio in
+\cref{dir:lem:partition} is $\chi^{\pm1}$, with gap $2s/m$ for $d=2$ and at least $s/(2m)$ for $d=3$,
+since $1-b_\chi^2=3((m-s)s+uv)/m^2\ge s/m$; so the actual coefficient is at most
+$(m+1)^{r+1}e^{-hs/(2(r+1)m)}$. The independent coefficient has modulus $\abs z^s$ with
+$z=\sum_i\alpha_i\zeta^{k_i}$, $\zeta=e^{2\pi i/d}$: for $d=2$, $\abs z\le1-2t$, and for $d=3$,
+$\abs z^2=1-3(P_0P_1+P_1P_2+P_2P_0)\le1-3t(1-t)$ with $P_c$ the weights of the three phases; both are
+attained by isolating a smallest block. So it is at most $e^{-cts}$. As $m\ll_{a,r}h^2$, the entropy
+bound suffices when $s/m\le K_r\log(2h)/h$, and otherwise both coefficients are $O(h^{-1})$.
+\end{proof}
+
+\begin{proof}[Proof of \cref{dir:thm:disjoint-mixing}]
+A character outside $H_\tau$ has $s_\psi\ge\tau m/2$, so $B_{\operatorname{ord}\psi}(t)^{s_\psi}=O(e^{-c\tau h})$.
+Inside $H_\tau$ the largest nontrivial independent coefficient is exactly $B_d(t)^s$, conjugate cubic
+generators having the same $s$, so by \cref{dir:lem:disjoint-iid} the largest nontrivial coefficient of
+the projected law is $\mathcal M_q$ up to the stated error. A nontrivial coefficient is the average of
+$\abs G^r\dirP(X=g)-1$ against a unit phase, so it is at most $D_q$; conversely Fourier inversion bounds
+$D_q$ by the $d^r-1\le3^r-1$ nontrivial coefficients inside the quotient and the $q^{-2}$ bound for all
+others. For $r=1$ and $a>1/3$ there is at most one nonconstant coefficient inside the quotient.
+\end{proof}
+
+For one product and $a>1/3$, with a quadratic character minimizing $s$ and $k=n_1$, the parity
+coefficient
+\[
+ P_{m,s}(k)=\binom ms^{-1}\sum_{j=0}^s(-1)^j\binom kj\binom{m-k}{s-j}
+\]
+gives $D_q=\abs{P_{m,s}(k)}+O(q^{-2})$, an integer formula valid even where the independent
+approximation vanishes; it is the coefficient $E$ of \cref{dir:rem:thresholds}. For $y=L^F$ with fixed
+$F>2$ the same one-product criterion holds for $h\ge cL/\log L$ with $c>2(F-1)/(F(F-2))$, the remainder
+$q^{-2}$ being replaced by the bound $\exp(-\gamma L/\log L)$ of \cref{dir:thm:short}, while
+\cref{dir:lem:disjoint-iid} keeps the error $O(\log(2h)/h)$ since $m$ is polynomial in $h$.
+
+\paragraph{A continuum of limiting laws at half retention.}
+Let $q$ be prime, $a\in(1/3,1/2]$ and $m=\ceil{N/2}$. Choose a most frequent quadratic sign in
+$\mathcal P$; at least $m$ primes have it, and \cref{dir:lem:bias} gives a positive proportion of the
+other sign. Take $k=\ceil{BL}$ recorded places, so $h=k$ for large $q$, and for fixed $\lambda\ge0$
+retain exactly $s=\floor{\lambda m/k}$ primes of the other sign and $m-s$ of the first. Then
+$sk/m\to\lambda$ and \cref{dir:thm:disjoint-mixing} gives $D_q\to e^{-2\lambda}$: for $\lambda>0$ every class
+is eventually reached, and the two normalized class counts tend to $1\pm e^{-2\lambda}$. Any criterion
+based only on a retained fraction tending to $\tfrac12$ misses this range of limiting laws.
+
+\paragraph{Sharpness at quarter retention.}
+Take primes $q\equiv5\pmod{12}$: there is one quadratic character, none of order three, and a
+character $\theta$ of order four. Retain a most frequent quartic class $c$, with at least $N/4$
+primes, and exactly $r$ primes of the class $ic$, which has $\gg N$ primes by expanding its indicator
+in $1,\theta,\theta^2,\theta^3$ and \cref{dir:lem:bias}. The quadratic character has $r$ minority primes,
+so every test of \cref{dir:thm:disjoint-support} passes, but prescribing $\theta(g_j)c^{-n_j}=-1$ in
+every recorded block needs two exceptional primes per block. So the tests cease to suffice at $a=1/4$.
+
+\begin{example}\label{dir:ex:disjoint}
+Modulo $11$ keep the smallest $18-s$ residue primes and $s$ nonresidue primes up to $199$, excluding
+$11$; modulo $13$ use the smallest requested numbers of primes up to $239$ in the three classes
+$p^4\equiv1,3,9$, with counts $15-u-v,u,v$. With two recorded blocks and the reserve:
+\begin{center}\small
+\begin{tabular}{@{}llllr@{}}
+\toprule
+modulus & class data & quotas (reserve first) & occupied classes & residue pairs\\
+\midrule
+$11$ & $s=0$ & $6,6,6$ & $1/4$ & $25/100$\\
+ & $s=1$ & $6,6,6$ & $3/4$ & $75/100$\\
+ & $s=2$ & $6,6,6$ & $4/4$ & $100/100$\\
+$13$ & $(u,v)=(0,0)$ & $5,5,5$ & $1/9$ & $16/144$\\
+ & $(u,v)=(1,1)$ & $5,5,5$ & $7/9$ & $112/144$\\
+ & $(u,v)=(2,0)$ & $5,5,5$ & $6/9$ & $96/144$\\
+ & $(u,v)=(2,1)$ & $5,5,5$ & $9/9$ & $144/144$\\
+\bottomrule
+\end{tabular}
+\end{center}
+For $s=2$ modulo $11$ there are $17\,153\,136$ allocations; the sign class $++$ gets $5\,045\,040$ and
+each other class $4\,036\,032$. Modulo $13$, two exceptions of opposite types give strictly larger
+support than two of the same type. Urn checks cover $2\,464$ binary cases, $15\,072$ binary Fourier
+coefficients and $104\,505$ cubic target vectors; the table repair is checked on $28\,183$ pairs of
+tables, and for moduli $15,21$ with quotas $7,7$ exactly the $48$ of $96$ unit pairs with
+$g_1g_2\equiv2\pmod3$ occur, with $65$ to $80$ representations each.
+\dirfiles{\artifact{disjoint-prime-products/checks/results.txt},
+\artifact{disjoint-prime-products/checks/repair_results.txt}}
+\end{example}
+
+Squarefree smooth representatives of single classes go back to Booker and Pomerance
+\cite{BookerPomerance2017Squarefree}; common short prime lists for Boolean subset products are due to
+Klurman, Shparlinski and Ter\"av\"ainen and to Hughes
+\cite{KlurmanShparlinskiTeravainen2026Generation,Hughes2026Few}, and fixed-cardinality subset sums of
+an abelian group are treated by Pach \cite{Pach2025Equidistribution}.
 
 \subsection{Primes with a prescribed majority of quadratic signs}\label{dir:sec:signs}
 \sources{hermite_thresholds_and_quadratic_primes}
@@ -3845,7 +4122,7 @@ small-bias laws on few central layers in \cite{DerksenIvanovLeeViola2025Pseudora
 integers with prescribed Legendre symbols in \cite{HansonVaughanZhang2016Least}.
 
 \subsection{Open questions}\label{dir:sec:open}
-\sources{grh-transfer; grh-lean-transfers; grh-arithmetic-transfers; grh_cm_prime_applications; grh-exponent-six-and-transfers; dirichlet-grh-research; squarefree_prime_products; orthogonal_nullity_and_prime_products; squarefree_factorizations; hermite_thresholds_and_quadratic_primes}
+\sources{grh-transfer; grh-lean-transfers; grh-arithmetic-transfers; grh_cm_prime_applications; grh-exponent-six-and-transfers; dirichlet-grh-research; squarefree_prime_products; orthogonal_nullity_and_prime_products; squarefree_factorizations; hermite_thresholds_and_quadratic_primes; disjoint-prime-products}
 
 \begin{enumerate}
 \item \emph{The least pair sum.} For $n$ outside Euler's list let $b(n)$ be the
@@ -3906,15 +4183,17 @@ integers with prescribed Legendre symbols in \cite{HansonVaughanZhang2016Least}.
  Corollary~\ref{dir:cor:squarefree}. For $y=(\log q)^A$, $A>2$, what is the optimal constant in
  front of $\log q/\log\log q$ for uniform relative counts? Theorem~\ref{dir:thm:short} and the
  counting obstruction after it leave a gap.
-\item \emph{Density near one half.} As the retained density tends to $1/2$, can the distance
- of the retained set from a quadratic fibre replace the fixed margin $\eps$ of
- Proposition~\ref{dir:prop:explicit} and Corollary~\ref{dir:cor:squarefree} uniformly?
+\item \emph{Density one quarter.} At retained density $1/4$ the quotient of
+ Theorem~\ref{dir:thm:disjoint-growing} can have order four, cyclic or of exponent two. What are the
+ exact support inequalities for disjoint products in these two cases? For growing $r$, which
+ statistics determine the approach to uniformity across the occupied quotient classes, beyond the
+ relative counts within each class?
 \item \emph{Constants for factorizations.} For fixed $A$ and deletion fraction, what is the best
  leading constant in the logarithmic quota of Theorem~\ref{dir:thm:factorization} for growing $r$?
  Can the largest prime be made smaller than $K\log^2Q$ for a fixed number of factors while
- keeping the pointwise bound? At retained density $a\le1/2$, how fast may $r$ grow while relative
- equidistribution still holds on every occupied fibre of the quotient of
- Theorem~\ref{dir:thm:minority}?
+ keeping the pointwise bound? At a fixed retained density, what is the optimal leading constant of
+ the logarithmic quota giving a prescribed relative error in Theorems~\ref{dir:thm:minority}
+ and~\ref{dir:thm:disjoint-growing}?
 \item \emph{Hermite thresholds.} What are the subsequential leading constants of $b_k(a)$ at the
  roots $h_2,h_3,\dots$ in Lemma~\ref{dir:lem:hamming}, where already at $h_1=0$ the two parities of
  $k$ give different constants? How does $b_k(a)$ behave when $a$ approaches a root at rate
