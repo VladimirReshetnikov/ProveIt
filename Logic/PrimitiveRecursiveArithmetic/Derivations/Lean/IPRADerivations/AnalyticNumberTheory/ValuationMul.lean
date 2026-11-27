@@ -25,10 +25,12 @@ set_option linter.unusedSimpArgs false
 namespace LeanProofs.IPRA.AnalyticNumberTheory.ValuationMul
 
 open_ipra
+open LeanProofs.IPRA.Analysis.Products (fact)
 open LeanProofs.IPRA.AnalyticNumberTheory.Valuation (val val_dvd val_not_dvd cof_eq cof_not_dvd pw_pos' pw_val_pos)
 open LeanProofs.IPRA.AnalyticNumberTheory.Primes (prime)
-open LeanProofs.IPRA.DiophantineNumberTheory.Coprime (dvd_of_eq' eq_of_dvd')
-open LeanProofs.IPRA.Combinatorics.BinomialIdentities (mul_cancel)
+open LeanProofs.IPRA.DiophantineNumberTheory.Coprime (dvd_of_eq' eq_of_dvd' pos_of_eq_mul)
+open LeanProofs.IPRA.Combinatorics.Binomial (binom)
+open LeanProofs.IPRA.Combinatorics.BinomialIdentities (mul_cancel binom_eq)
 open LeanProofs.IPRA.Combinatorics.LegendreDigits (pos_mul')
 open LeanProofs.IPRA.Probability.SortingBound (fct fact_pos)
 open LeanProofs.IPRA.AnalyticNumberTheory.BinomialThree (pos_of_one_le)
@@ -111,6 +113,28 @@ theorem val_mul {p a b : PTm n} (hp : Γ ⊢[PRAAx] prime p) (ha : Γ ⊢[PRAAx]
   · refine .impI (.orE (euclid_lemma_at hp.wk Prf.hyp0) ?_ ?_)
     · exact .impE (cof_not_dvd h2.wk.wk ha.wk.wk) Prf.hyp0
     · exact .impE (cof_not_dvd h2.wk.wk hb.wk.wk) Prf.hyp0
+
+/-- An in-range binomial coefficient is positive. -/
+theorem binom_pos {N K : PTm n} (h : Γ ⊢[PRAAx] le K N) :
+    Γ ⊢[PRAAx] binom N K ≐ succ (pred (binom N K)) :=
+  pos_of_eq_mul (Primes.fact_pos N) (binom_eq h)
+
+/-- Read the valuation of a factorization of a factorial with two factorial factors. -/
+theorem val_fact_factor {p N K L c : PTm n} (hp : Γ ⊢[PRAAx] prime p)
+    (h : Γ ⊢[PRAAx] fact N ≐ (fact K * fact L) * c) :
+    Γ ⊢[PRAAx] val p (fact N) ≐ (val p (fact K) + val p (fact L)) + val p c := by
+  have hK := Primes.fact_pos (Γ := Γ) K
+  have hL := Primes.fact_pos (Γ := Γ) L
+  have hc := pos_of_eq_mul (Primes.fact_pos N) h
+  exact (val_congr p h).eqTrans ((val_mul hp (pos_mul' hK hL) hc).eqTrans
+    (congrAdd (val_mul hp hK hL) (.eqRefl _)))
+
+/-- The factorial valuation splits into the two lower factorials and the binomial coefficient. -/
+theorem val_binom_factorials {p N K : PTm n} (hp : Γ ⊢[PRAAx] prime p)
+    (h : Γ ⊢[PRAAx] le K N) :
+    Γ ⊢[PRAAx] val p (fact N) ≐
+      (val p (fact K) + val p (fact (monus N K))) + val p (binom N K) :=
+  val_fact_factor hp (binom_eq h)
 
 /-- `v_p((m + 1)!) = v_p(m!) + v_p(m + 1)`. -/
 theorem val_fact_succ {p : PTm n} (hp : Γ ⊢[PRAAx] prime p) (m : PTm n) :

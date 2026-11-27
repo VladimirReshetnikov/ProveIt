@@ -1,8 +1,7 @@
 import IPRADerivations.AnalyticNumberTheory.Mobius
+import IPRADerivations.AnalyticNumberTheory.ValuationMul
 import IPRADerivations.Combinatorics.LegendreFact
 import IPRADerivations.Combinatorics.LegendreDigits
-import IPRADerivations.Combinatorics.BinomialIdentities
-import IPRADerivations.Foundations.CrossingSearch
 
 /-!
 # Kummer's formula in digit-sum form
@@ -29,16 +28,13 @@ namespace LeanProofs.IPRA.Combinatorics.KummerDigits
 
 open_ipra
 open LeanProofs.IPRA.Analysis.Products (fact)
-open LeanProofs.IPRA.AnalyticNumberTheory.Primes (prime fact_pos)
+open LeanProofs.IPRA.AnalyticNumberTheory.Primes (prime)
 open LeanProofs.IPRA.AnalyticNumberTheory.Valuation (val)
 open LeanProofs.IPRA.AnalyticNumberTheory.Mobius (prime_two)
-open LeanProofs.IPRA.AnalyticNumberTheory.ValuationMul (val_mul val_congr)
-open LeanProofs.IPRA.Combinatorics.Binomial (binom pos_mul)
-open LeanProofs.IPRA.Combinatorics.BinomialIdentities (binom_eq)
-open LeanProofs.IPRA.Combinatorics.LegendreDigits (qB' legendre_digits)
+open LeanProofs.IPRA.AnalyticNumberTheory.ValuationMul (val_congr val_binom_factorials)
+open LeanProofs.IPRA.Combinatorics.Binomial (binom)
+open LeanProofs.IPRA.Combinatorics.LegendreDigits (legendre_digits)
 open LeanProofs.IPRA.Combinatorics.LegendreFact (legendre_fact)
-open LeanProofs.IPRA.DiophantineNumberTheory.Coprime (pos_of_eq_mul)
-open LeanProofs.IPRA.Foundations.CrossingSearch (monus_of_eq)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
@@ -57,18 +53,15 @@ theorem kummer_alg {P Va Vb Vn Vc sa sb sn a b : PTm n} (vn : Γ ⊢[PRAAx] Vn �
     (kn : Γ ⊢[PRAAx] sn + P * Vn ≐ a + b) : Γ ⊢[PRAAx] P * Vc + sn ≐ sa + sb := by
   ipra_lc natEq kn - natEq ka - natEq kb - 𝔞 P * natEq vn
 
+/-- Factorial valuation at the two summands of the addition in Kummer's formula. -/
+theorem val_binom_add {p : PTm n} (hp : Γ ⊢[PRAAx] prime p) (a b : PTm n) :
+    Γ ⊢[PRAAx] val p (fact (a + b)) ≐ (val p (fact a) + val p (fact b)) + val p (binom (a + b) a) :=
+  (val_binom_factorials hp (le_add_right a b)).eqTrans
+    (congrAdd (congrAdd (.eqRefl _) (val_congr p (congrAp2 factF (add_monus' b a) (.eqRefl _)))) (.eqRefl _))
+
 /-- **Kummer's formula**, digit-sum form: `(p − 1) v_p(C(a + b, a)) + s_p(a + b) = s_p(a) + s_p(b)`. -/
 theorem kummer_digits {p : PTm n} (hp : Γ ⊢[PRAAx] prime p) (a b : PTm n) :
-    Γ ⊢[PRAAx] monus p one * val p (binom (a + b) a) + ds p (a + b) ≐ ds p a + ds p b := by
-  have hle : Γ ⊢[PRAAx] le a (a + b) := le_add_right a b
-  have mb : Γ ⊢[PRAAx] monus (a + b) a ≐ b := monus_of_eq (.eqRefl _)
-  have e1 : Γ ⊢[PRAAx] fact (a + b) ≐ (fact a * fact b) * binom (a + b) a :=
-    (binom_eq hle).eqTrans (congrMul (congrMul (.eqRefl _) (congrAp2 factF mb (.eqRefl _))) (.eqRefl _))
-  have fab := pos_mul (fact_pos (Γ := Γ) a) (fact_pos b)
-  have bpos := pos_of_eq_mul (fact_pos (Γ := Γ) (a + b)) e1
-  have vn : Γ ⊢[PRAAx] val p (fact (a + b)) ≐ (val p (fact a) + val p (fact b)) + val p (binom (a + b) a) :=
-    (val_congr p e1).eqTrans ((val_mul hp fab bpos).eqTrans
-      (congrAdd (val_mul hp (fact_pos a) (fact_pos b)) (.eqRefl _)))
-  exact kummer_alg vn (legendre_sum hp a) (legendre_sum hp b) (legendre_sum hp (a + b))
+    Γ ⊢[PRAAx] monus p one * val p (binom (a + b) a) + ds p (a + b) ≐ ds p a + ds p b :=
+  kummer_alg (val_binom_add hp a b) (legendre_sum hp a) (legendre_sum hp b) (legendre_sum hp (a + b))
 
 end LeanProofs.IPRA.Combinatorics.KummerDigits

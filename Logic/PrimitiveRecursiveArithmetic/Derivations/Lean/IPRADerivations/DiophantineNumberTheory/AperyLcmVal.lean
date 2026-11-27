@@ -25,10 +25,11 @@ namespace LeanProofs.IPRA.DiophantineNumberTheory.AperyLcmVal
 
 open_ipra
 open LeanProofs.IPRA.Analysis.Products (fact)
-open LeanProofs.IPRA.AnalyticNumberTheory.Primes (fact_pos prime)
+open LeanProofs.IPRA.AnalyticNumberTheory.Primes (prime)
 open LeanProofs.IPRA.AnalyticNumberTheory.Valuation (val)
-open LeanProofs.IPRA.AnalyticNumberTheory.ValuationMul (val_mul val_congr)
-open LeanProofs.IPRA.Combinatorics.Binomial (binom bden bden_pos binom_rem_zero eq_of_rem_zero pos_mul)
+open LeanProofs.IPRA.AnalyticNumberTheory.ValuationMul (val_mul val_congr val_binom_factorials)
+open LeanProofs.IPRA.Combinatorics.Binomial (binom bden pos_mul)
+open LeanProofs.IPRA.Combinatorics.BinomialIdentities (binom_eq)
 open LeanProofs.IPRA.Combinatorics.LegendreDigits (qB')
 open LeanProofs.IPRA.Combinatorics.LegendreFact (legendre_fact)
 open LeanProofs.IPRA.DiophantineNumberTheory.AperyMultinomial (Mm)
@@ -38,21 +39,15 @@ variable {k : ℕ} {Γ : List (Fm PTm k)}
 local notation "𝔞" t:max => Groth.ι (IPRA.Q.mk _ t)
 
 theorem binom_fact {n j : PTm k} (h : Γ ⊢[PRAAx] le j n) : Γ ⊢[PRAAx] fact n ≐ bden n j * binom n j :=
-  eq_of_rem_zero (bden_pos n j) (binom_rem_zero h)
+  binom_eq h
 
-theorem binom_pos {n j : PTm k} (h : Γ ⊢[PRAAx] le j n) : Γ ⊢[PRAAx] binom n j ≐ succ (pred (binom n j)) := by
-  refine .orE (zero_or_succ (binom n j)) ?_ Prf.hyp0
-  have h0 : ((binom n j ≐ zero) :: Γ) ⊢[PRAAx] binom n j ≐ zero := Prf.hyp0
-  have c : ((binom n j ≐ zero) :: Γ) ⊢[PRAAx] succ (pred (fact n)) ≐ zero := by
-    ipra_lc -natEq ((fact_pos (Γ := (binom n j ≐ zero) :: Γ) n)) + natEq ((binom_fact h).wk (ψ := binom n j ≐ zero)) +
-      𝔞 (fact j) * 𝔞 (fact (monus n j)) * natEq h0
-  exact succ_ne_zero' _ c
+theorem binom_pos {n j : PTm k} (h : Γ ⊢[PRAAx] le j n) : Γ ⊢[PRAAx] binom n j ≐ succ (pred (binom n j)) :=
+  AnalyticNumberTheory.ValuationMul.binom_pos h
 
 /-- `v_p(C(n, j)) + v_p(j!) + v_p((n − j)!) = v_p(n!)`. -/
 theorem val_binom {p n j : PTm k} (hp : Γ ⊢[PRAAx] prime p) (h : Γ ⊢[PRAAx] le j n) :
-    Γ ⊢[PRAAx] val p (binom n j) + (val p (fact j) + val p (fact (monus n j))) ≐ val p (fact n) := by
-  ipra_lc -natEq ((val_congr p (binom_fact (Γ := Γ) h)).eqTrans (val_mul hp (bden_pos n j) (binom_pos h))) -
-    natEq (val_mul (Γ := Γ) hp (fact_pos j) (fact_pos (monus n j)))
+    Γ ⊢[PRAAx] val p (binom n j) + (val p (fact j) + val p (fact (monus n j))) ≐ val p (fact n) :=
+  (add_comm _ _).eqTrans (val_binom_factorials hp h).eqSymm
 
 /-- `L(N) = ∑_{j<N} ⌊N/p^{j+1}⌋`. -/
 abbrev L (p N : PTm k) : PTm k := ap2 (sumF qB') N (pairT p N)

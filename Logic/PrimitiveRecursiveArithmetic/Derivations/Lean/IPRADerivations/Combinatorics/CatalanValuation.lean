@@ -25,11 +25,11 @@ open_ipra
 open LeanProofs.IPRA.Combinatorics.Catalan (cb cb_fact cat cat_spec)
 open LeanProofs.IPRA.AnalyticNumberTheory.Valuation (val)
 open LeanProofs.IPRA.AnalyticNumberTheory.Primes (prime)
-open LeanProofs.IPRA.AnalyticNumberTheory.ValuationMul (val_mul val_fact_succ val_congr)
-open LeanProofs.IPRA.Combinatorics.LegendreDigits (qB' legendre_digits pos_mul')
+open LeanProofs.IPRA.AnalyticNumberTheory.ValuationMul (val_fact_factor val_fact_succ)
+open LeanProofs.IPRA.Combinatorics.LegendreDigits (legendre_digits)
 open LeanProofs.IPRA.Combinatorics.LegendreFact (legendre_fact)
-open LeanProofs.IPRA.Probability.SortingBound (fct fact_pos)
-open LeanProofs.IPRA.AnalyticNumberTheory.BinomialThree (pos_of_one_le)
+open LeanProofs.IPRA.Probability.SortingBound (fct)
+open LeanProofs.IPRA.DiophantineNumberTheory.Coprime (pos_of_eq_mul)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
@@ -41,12 +41,9 @@ theorem fact_cat (k : PTm n) : Γ ⊢[PRAAx] fct (two * k) ≐ fct k * (fct (suc
     𝔞 (fct k) * 𝔞 (fct k) * natEq (cat_spec (Γ := Γ) k) - 𝔞 (fct k) * 𝔞 (cat k) * natEq (fact_succ (Γ := Γ) k zero)
 
 /-- `Cat_n ≥ 1`. -/
-theorem cat_pos (k : PTm n) : Γ ⊢[PRAAx] cat k ≐ succ (pred (cat k)) := by
-  refine .orE (zero_or_succ (cat k)) ?_ Prf.hyp0
-  have f := fact_cat (Γ := (cat k ≐ zero) :: Γ) k
-  have z : ((cat k ≐ zero) :: Γ) ⊢[PRAAx] fct (two * k) ≐ zero :=
-    f.eqTrans ((congrMul (.eqRefl _) ((congrMul (.eqRefl _) Prf.hyp0).eqTrans (mul_zero _))).eqTrans (mul_zero _))
-  exact lt_zero_absurd _ (le_congr (.eqRefl _) z (fact_pos (two * k)))
+theorem cat_pos (k : PTm n) : Γ ⊢[PRAAx] cat k ≐ succ (pred (cat k)) :=
+  pos_of_eq_mul (AnalyticNumberTheory.Primes.fact_pos (two * k))
+    ((fact_cat k).eqTrans (mul_assoc _ _ _).eqSymm)
 
 /-- `thm:valuation`, multiplied by `p − 1`: `(p − 1)(v_p(Cat_n) + v_p(n + 1)) + s_p(2n) = 2 s_p(n)`,
 with `s_p(m) = ∑_{j<m} (⌊m/p^j⌋ mod p)`. -/
@@ -54,10 +51,10 @@ theorem catalan_valuation {p : PTm n} (hp : Γ ⊢[PRAAx] prime p) (k : PTm n) :
     Γ ⊢[PRAAx] monus p one * (val p (cat k) + val p (succ k)) + ap2 (sumF LegendreDigits.dB) (two * k) (pairT p (two * k)) ≐
       two * ap2 (sumF LegendreDigits.dB) k (pairT p k) := by
   have h2 : Γ ⊢[PRAAx] le two p := Prf.andE₁ hp
-  have fk := pos_of_one_le (fact_pos (Γ := Γ) k)
-  have fs := pos_of_one_le (fact_pos (Γ := Γ) (succ k))
+  have f := val_fact_factor (N := two * k) (K := k) (L := succ k) hp
+    ((fact_cat k).eqTrans (mul_assoc _ _ _).eqSymm)
   ipra_lc natEq (legendre_digits h2 (two * k)) - 2 * natEq (legendre_digits h2 k) +
     𝔞 (monus p one) * natEq (legendre_fact hp (two * k)) - 2 * 𝔞 (monus p one) * natEq (legendre_fact hp k) -
-    𝔞 (monus p one) * (natEq ((val_congr p (fact_cat (Γ := Γ) k)).eqTrans (val_mul hp fk (pos_mul' fs (cat_pos k)))) + natEq (val_mul hp fs (cat_pos (Γ := Γ) k)) + natEq (val_fact_succ hp k))
+    𝔞 (monus p one) * (natEq f + natEq (val_fact_succ hp k))
 
 end LeanProofs.IPRA.Combinatorics.CatalanValuation

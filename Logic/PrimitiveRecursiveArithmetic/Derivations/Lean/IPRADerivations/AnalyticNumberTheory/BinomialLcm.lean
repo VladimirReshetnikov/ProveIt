@@ -36,7 +36,7 @@ open LeanProofs.IPRA.AnalyticNumberTheory.Valuation (val isP isP_01 prime_of_isP
 open LeanProofs.IPRA.AnalyticNumberTheory.FactorVector (R fB f_zero f_one f_pos R_pos R_succ reconstruct subst_dvd)
 open LeanProofs.IPRA.AnalyticNumberTheory.LcmUpto (lcmu Inv lcm_valuation lcmu_pos)
 open LeanProofs.IPRA.AnalyticNumberTheory.Mobius (prime_two congrSg)
-open LeanProofs.IPRA.AnalyticNumberTheory.ValuationMul (p_pos val_mul val_congr)
+open LeanProofs.IPRA.AnalyticNumberTheory.ValuationMul (p_pos val_mul val_fact_factor)
 open LeanProofs.IPRA.DiophantineNumberTheory.Coprime (dvd_of_eq' eq_of_dvd' dvd_le' dvd_self')
 open LeanProofs.IPRA.Combinatorics.Catalan (cb cb_fact)
 open LeanProofs.IPRA.Combinatorics.LegendreDigits (qB' qB'_at quo_small)
@@ -127,10 +127,7 @@ theorem binom_val {p : PTm n} (hp : Γ ⊢[PRAAx] prime p) (k : PTm n) :
     Γ ⊢[PRAAx] val p (cb k) + two * ap2 (sumF qB') (two * k) (pairT p k) ≐
       ap2 (sumF qB') (two * k) (pairT p (two * k)) := by
   have hp2 := prime_two hp
-  have fk := Primes.fact_pos (Γ := Γ) k
-  have cpos := BinomialThree.pos_of_one_le (Combinatorics.CentralBinomial.central_pos (Γ := Γ) k)
-  have e1 := natEq ((val_congr p (cb_fact (Γ := Γ) k)).eqTrans ((val_mul hp (Combinatorics.Binomial.pos_mul fk fk) cpos).eqTrans
-    (congrAdd (val_mul hp fk fk) (.eqRefl _))))
+  have e1 := natEq (val_fact_factor hp (cb_fact k))
   have f2 := natEq (legendre_fact (Γ := Γ) hp (two * k))
   have f1 := natEq (legendre_fact (Γ := Γ) hp k)
   have s1 := natEq (sum_succ' (Γ := Γ) qB' (two * k) (pairT p k))

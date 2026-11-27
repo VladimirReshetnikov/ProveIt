@@ -33,19 +33,17 @@ namespace LeanProofs.IPRA.Combinatorics.KummerCarries
 
 open_ipra
 open LeanProofs.IPRA.Analysis.Products (fact)
-open LeanProofs.IPRA.AnalyticNumberTheory.Primes (prime fact_pos)
+open LeanProofs.IPRA.AnalyticNumberTheory.Primes (prime)
 open LeanProofs.IPRA.AnalyticNumberTheory.Valuation (val pw_pos' lt_pw)
 open LeanProofs.IPRA.AnalyticNumberTheory.Mobius (prime_two)
 open LeanProofs.IPRA.AnalyticNumberTheory.MobiusBounds (shift_pos)
-open LeanProofs.IPRA.AnalyticNumberTheory.ValuationMul (val_mul val_congr p_pos)
+open LeanProofs.IPRA.AnalyticNumberTheory.ValuationMul (p_pos)
 open LeanProofs.IPRA.AnalyticNumberTheory.FactorialLambda (fB sB inst2_fB inst2_sB sum_add2)
-open LeanProofs.IPRA.Combinatorics.Binomial (binom pos_mul)
-open LeanProofs.IPRA.Combinatorics.BinomialIdentities (binom_eq)
+open LeanProofs.IPRA.Combinatorics.Binomial (binom)
 open LeanProofs.IPRA.Combinatorics.BinomialTheorem (congrPw)
 open LeanProofs.IPRA.Combinatorics.LegendreDigits (dm dmu pos_mul' quo_quo quo_small qB' qB'_at)
 open LeanProofs.IPRA.Combinatorics.LegendreFact (legendre_fact)
-open LeanProofs.IPRA.DiophantineNumberTheory.Coprime (pos_of_eq_mul)
-open LeanProofs.IPRA.Foundations.CrossingSearch (monus_of_eq)
+open LeanProofs.IPRA.Combinatorics.KummerDigits (val_binom_add)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
@@ -202,15 +200,6 @@ theorem kummer_carries {p : PTm n} (hp : Γ ⊢[PRAAx] prime p) (a b : PTm n) :
     Γ ⊢[PRAAx] val p (binom (a + b) a) ≐ ap2 (sumF cyB) (a + b) (pairT p (pairT a b)) := by
   have h2 := prime_two hp
   have ppos := p_pos h2
-  have hle : Γ ⊢[PRAAx] le a (a + b) := le_add_right a b
-  have mb : Γ ⊢[PRAAx] monus (a + b) a ≐ b := monus_of_eq (.eqRefl _)
-  have e1 : Γ ⊢[PRAAx] fact (a + b) ≐ (fact a * fact b) * binom (a + b) a :=
-    (binom_eq hle).eqTrans (congrMul (congrMul (.eqRefl _) (congrAp2 factF mb (.eqRefl _))) (.eqRefl _))
-  have fab := pos_mul (fact_pos (Γ := Γ) a) (fact_pos b)
-  have bpos := pos_of_eq_mul (fact_pos (Γ := Γ) (a + b)) e1
-  have vn : Γ ⊢[PRAAx] val p (fact (a + b)) ≐ (val p (fact a) + val p (fact b)) + val p (binom (a + b) a) :=
-    (val_congr p e1).eqTrans ((val_mul hp fab bpos).eqTrans
-      (congrAdd (val_mul hp (fact_pos a) (fact_pos b)) (.eqRefl _)))
   have La : Γ ⊢[PRAAx] val p (fact a) ≐ ap2 (sumF qB') (a + b) (pairT p a) :=
     (legendre_fact hp a).eqTrans (Qs_ext h2 b).eqSymm
   have Lb : Γ ⊢[PRAAx] val p (fact b) ≐ ap2 (sumF qB') (a + b) (pairT p b) :=
@@ -230,6 +219,6 @@ theorem kummer_carries {p : PTm n} (hp : Γ ⊢[PRAAx] prime p) (a b : PTm n) :
       simp [Syn.shift]
     rw [s1, s2, s3, s4]
     exact pt_split (shift_pos ppos).wk _ _ _
-  exact fin_alg vn La Lb Ln S3
+  exact fin_alg (val_binom_add hp a b) La Lb Ln S3
 
 end LeanProofs.IPRA.Combinatorics.KummerCarries
