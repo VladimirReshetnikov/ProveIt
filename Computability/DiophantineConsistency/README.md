@@ -3926,3 +3926,11 @@ The ordinary proof retains the actual canonical `R>3q` repair and complete
 indexed native/controller/refutation interpretation. Every predecessor,
 including the complete92/283 page, remains preserved. The327-variable
 quartic is unchanged. Lean remains paused and the reduction goal active.
+
+## Archived equation proposals
+
+The [original three-anchor radix-47 controller probe](research/compact66-three-anchor-radix47-controller-probe/README.md) preserves the four files identified by the [historical amendment](reviews/compact66-complemented-three-anchor47-probe-code-only-amendment.md). The [original inventory](reviews/compact66-three-anchor47-original-probe-inventory.json) records their byte counts and hashes. The subsequent complemented probe used a different tile encoding.
+
+The [ten-positive transfer](research/compact134-three-anchor-radix47-transfer/README.md) gives conditional radix-47 constructions with proposed operation/degree pairs 77/630 and 78/468. Their finite controller hypotheses and the proposed operation counts remain open. The [1117-position construction](research/tile-biased49-wrap1117/README.md) details the repeated-origin correction and records its open finite conditions. Its [source pins](research/tile-biased49-wrap1117/SOURCE_PINS.json) refer to the historical equation snapshot at commit `eaaabe0c02`.
+
+The [q-cube normalization](research/qcube-input-normalization/README.md) has 97 operations at exact degree 572. The [V-weight circuits](research/ten-positive-reused-v-weight/README.md) have 96 operations at degree 432 and 101 at degree 400.
