@@ -97,9 +97,7 @@ theorem val_Aq_le {p : PTm n} (hp : Γ ⊢[PRAAx] prime p) (z q : PTm n) :
 
 theorem shift_dvd_Aq {d z q : PTm n} (h : Γ ⊢[PRAAx] dvd d (Aq z q)) :
     Γ.map Fm.shift ⊢[PRAAx] dvd (Syn.shift d) (Aq (Syn.shift z) (Syn.shift q)) := by
-  have e := h.shift
-  simp only [Fm.shift, subst_dvd, subst_ap2, ConciseIPRA.PTm.subst_succ] at e
-  exact e
+  simpa only [Syn.shift, subst_ap2, ConciseIPRA.PTm.subst_succ] using Gcd.shift_dvd h
 
 /-- A divisor `d ≥ 1` of `A_q(z)` has no square prime factor. -/
 theorem sq_zero_of_dvd {d z q : PTm n} (hd : Γ ⊢[PRAAx] d ≐ succ (pred d))

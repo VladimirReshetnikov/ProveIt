@@ -55,11 +55,7 @@ theorem coprime_pow {j p : PTm n} (hj : Γ ⊢[PRAAx] j ≐ succ (pred j)) (h : 
     · simp only [Fm.subst_eq, subst_ex2, subst_ap2, Syn.subst_var, Syn.repl_zero, subst_repl_shift,
         ConciseIPRA.PTm.subst_succ, ConciseIPRA.PTm.subst_zero]
       have hj' := Common.pos_shift hj
-      have h' : Γ.map Fm.shift ⊢[PRAAx] gcd (Syn.shift j) (Syn.shift p) ≐ one := by
-        have e := h.shift
-        simp only [Fm.shift, Fm.subst_eq, subst_ex2, ConciseIPRA.PTm.subst_succ,
-          ConciseIPRA.PTm.subst_zero] at e
-        exact e
+      have h' := Gcd.shift_coprime h
       have c := coprime_mul (c := pw (Syn.shift p) (var 0)) (c' := Syn.shift p) hj'.wk Prf.hyp0 h'.wk
       have hd := gcd_pos (Γ := (gcd (Syn.shift j) (pw (Syn.shift p) (var 0)) ≐ one) :: Γ.map Fm.shift)
         (B := pw (Syn.shift p) (succ (var 0))) hj'.wk

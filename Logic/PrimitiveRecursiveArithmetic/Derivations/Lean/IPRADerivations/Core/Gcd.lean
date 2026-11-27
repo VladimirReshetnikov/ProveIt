@@ -35,6 +35,11 @@ variable {n : ℕ} {Γ : List (Fm PTm n)}
 /-- `d ∣ x`. -/
 abbrev dvd (d x : PTm n) : Fm PTm n := rem x d ≐ zero
 
+/-- Shift a divisibility derivation into a context with one fresh variable. -/
+theorem Gcd.shift_dvd {d x : PTm n} (h : Γ ⊢[PRAAx] dvd d x) :
+    Γ.map Fm.shift ⊢[PRAAx] dvd (Syn.shift d) (Syn.shift x) := by
+  simpa only [dvd, Syn.shift, subst_ap2, ConciseIPRA.PTm.subst_zero] using Order.shift_eq h
+
 theorem dvd_of_eq {d' x w : PTm n} (h : Γ ⊢[PRAAx] x ≐ succ d' * w) : Γ ⊢[PRAAx] dvd (succ d') x :=
   Prf.andE₂ (div_mod_unique (h.eqTrans (add_zero _).eqSymm) (zero_lt_succ _))
 
@@ -253,6 +258,12 @@ theorem euclid_terminates :
 
 /-- `gcd(a, b) = x_{b+1}`. -/
 abbrev gcd (a b : PTm n) : PTm n := ex (succ b) ![a, b]
+
+/-- Shift a derivation of coprimality into a context with one fresh variable. -/
+theorem Gcd.shift_coprime {a b : PTm n} (h : Γ ⊢[PRAAx] gcd a b ≐ one) :
+    Γ.map Fm.shift ⊢[PRAAx] gcd (Syn.shift a) (Syn.shift b) ≐ one := by
+  simpa only [Syn.shift, subst_ex2, ConciseIPRA.PTm.subst_succ, ConciseIPRA.PTm.subst_zero]
+    using Order.shift_eq h
 
 /-- Every common divisor `d = S d'` of `a` and `b` divides `gcd(a, b)`.
 Variables `0 = a`, `1 = b`, `2 = d'`. -/

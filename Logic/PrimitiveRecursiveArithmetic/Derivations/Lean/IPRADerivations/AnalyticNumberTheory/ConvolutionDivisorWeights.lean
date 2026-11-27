@@ -48,8 +48,8 @@ theorem product_law_at {f : PTm 2} {a b m N y : PTm n} (h : Γ ⊢[PRAAx] produc
   exact .impE (.impE atB ha) hb
 
 theorem dvd_shift {d M : PTm n} (h : Γ ⊢[PRAAx] dvd d M) :
-    Γ.map Fm.shift ⊢[PRAAx] dvd (Syn.shift d) (Syn.shift M) := by
-  simpa only [dvd, Fm.shift, Syn.shift, Fm.subst_eq, subst_ap2, ConciseIPRA.PTm.subst_zero] using h.shift
+    Γ.map Fm.shift ⊢[PRAAx] dvd (Syn.shift d) (Syn.shift M) :=
+  Gcd.shift_dvd h
 
 theorem weight_true (f g : PTm 2) {d M y : PTm n}
     (hM : Γ ⊢[PRAAx] M ≐ succ (pred M)) (h : Γ ⊢[PRAAx] dvd d M) :

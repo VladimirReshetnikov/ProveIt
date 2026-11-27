@@ -168,14 +168,8 @@ theorem period_two {q l a : PTm n} (hq : Γ ⊢[PRAAx] le two q) (hc : Γ ⊢[PR
     refine sum_congr_bounded _ _ _ _ _ (.allI (.impI ?_))
     have hq' : (Γ.map Fm.shift) ⊢[PRAAx] le two (Syn.shift q) := by
       simpa [Fm.shift, Syn.shift] using hq.shift
-    have hc' : (Γ.map Fm.shift) ⊢[PRAAx] gcd (Syn.shift l) (Syn.shift q) ≐ one := by
-      have h := hc.shift
-      simp only [Fm.shift, Fm.subst_eq, subst_ex2, ConciseIPRA.PTm.subst_succ, ConciseIPRA.PTm.subst_zero] at h
-      exact h
-    have ha' : (Γ.map Fm.shift) ⊢[PRAAx] gcd (Syn.shift a) (Syn.shift q) ≐ one := by
-      have h := ha.shift
-      simp only [Fm.shift, Fm.subst_eq, subst_ex2, ConciseIPRA.PTm.subst_succ, ConciseIPRA.PTm.subst_zero] at h
-      exact h
+    have hc' := Gcd.shift_coprime hc
+    have ha' := Gcd.shift_coprime ha
     have sh1 : Syn.shift (pairT l (pairT q a)) = pairT (Syn.shift l) (pairT (Syn.shift q) (Syn.shift a)) := by
       simp [Syn.shift]
     have sh0 : Syn.shift (zero : PTm n) = zero := by simp [Syn.shift]

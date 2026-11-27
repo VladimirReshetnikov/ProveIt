@@ -24,7 +24,7 @@ open LeanProofs.IPRA.DiophantineNumberTheory.Coprime
 open LeanProofs.IPRA.AnalyticNumberTheory.Totient (phi totBody inst2_tot coprime_pow)
 open LeanProofs.IPRA.AnalyticNumberTheory.Euler (congrEqb)
 open LeanProofs.IPRA.AnalyticNumberTheory.GcdFiber (eqb_iff shift_pos)
-open LeanProofs.IPRA.AnalyticNumberTheory.SumPhi (shift_eq' shift_mul' shift_rem')
+open LeanProofs.IPRA.AnalyticNumberTheory.SumPhi (shift_mul')
 open LeanProofs.IPRA.AnalyticNumberTheory.Multiplicative (cop_left)
 open LeanProofs.IPRA.AnalyticNumberTheory.PhiDouble (shiftBy inst2_shiftBy sum_split gcd_period)
 
@@ -88,9 +88,7 @@ theorem pow_point (k : PTm n) : Γ ⊢[PRAAx] eqb (gcd k (N * M)) one ≐ eqb (g
 /-- `φ(nM) = M φ(n)` when `M ∣ nᵗ`. -/
 theorem phi_mul_pow_at : Γ ⊢[PRAAx] phi (N * M) ≐ M * phi N := by
   have hd' : Γ.map Fm.shift ⊢[PRAAx] dvd (Syn.shift M) (pw (Syn.shift N) (Syn.shift t)) := by
-    have e := shift_eq' hd
-    rw [shift_rem'] at e
-    simpa [Syn.shift] using e
+    simpa only [Syn.shift, subst_ap2] using Gcd.shift_dvd hd
   refine (sum_congr_bounded totBody totBody (N * M) N (N * M) (.allI (.impI ?_))).eqTrans (per_sum hN M)
   rw [inst2_tot, inst2_tot, shift_mul']
   exact pow_point (shift_pos hN).wk (shift_pos hM).wk hd'.wk _

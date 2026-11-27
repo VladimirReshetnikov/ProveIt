@@ -42,8 +42,8 @@ theorem unimodular {V : PTm 2} {N x m d : PTm k} (hg : Γ ⊢[PRAAx] gv V N x �
       (Common.pos_shift hd).wk
     have hms : (lt (var 0) (Syn.shift N) :: Γ.map Fm.shift) ⊢[PRAAx] Syn.shift m ≐ succ (pred (Syn.shift m)) :=
       (Common.pos_shift hm).wk
-    have hdms : (lt (var 0) (Syn.shift N) :: Γ.map Fm.shift) ⊢[PRAAx] dvd (Syn.shift d) (Syn.shift m) := by
-      have e := hdm.shift; simpa [Fm.shift, Syn.shift] using e.wk
+    have hdms : (lt (var 0) (Syn.shift N) :: Γ.map Fm.shift) ⊢[PRAAx] dvd (Syn.shift d) (Syn.shift m) :=
+      (Gcd.shift_dvd hdm).wk
     have dv := Prf.andE₁ (dm hms (inst2 V (var 0) (Syn.shift x)))
     have d1 := dvd_add' hds (dvd_mul' hds (quo (inst2 V (var 0) (Syn.shift x)) (Syn.shift m)) hdms)
       (Prf.impE hdr.allOpen.wk Prf.hyp0)

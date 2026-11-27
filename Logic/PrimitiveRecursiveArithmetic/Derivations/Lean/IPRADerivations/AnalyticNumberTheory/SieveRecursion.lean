@@ -150,11 +150,8 @@ theorem shift_isP_eq {p : PTm n} (h : Γ ⊢[PRAAx] isP p ≐ one) :
   exact e
 
 theorem shift_cop {p P : PTm n} (h : Γ ⊢[PRAAx] gcd p P ≐ one) :
-    Γ.map Fm.shift ⊢[PRAAx] gcd (Syn.shift p) (Syn.shift P) ≐ one := by
-  have e := h.shift
-  simp only [Fm.shift, Fm.subst_eq, ConciseIPRA.PTm.subst_succ, ConciseIPRA.PTm.subst_zero] at e
-  rw [subst_gcd'] at e
-  exact e
+    Γ.map Fm.shift ⊢[PRAAx] gcd (Syn.shift p) (Syn.shift P) ≐ one :=
+  Gcd.shift_coprime h
 
 theorem shift_mul' (a b : PTm n) : Syn.shift (a * b) = Syn.shift a * Syn.shift b := by
   simp only [Syn.shift, PTm.subst_mul]

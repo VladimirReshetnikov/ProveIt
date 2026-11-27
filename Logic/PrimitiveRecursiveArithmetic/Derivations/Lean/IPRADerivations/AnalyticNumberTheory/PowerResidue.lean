@@ -137,11 +137,7 @@ theorem cop_pw {d q : PTm n} (hq : Γ ⊢[PRAAx] le two q) (hd : Γ ⊢[PRAAx] g
     · simp only [Fm.subst_eq, subst_ap2, subst_ex2, Syn.subst_var, Syn.repl_zero, subst_repl_shift,
         ConciseIPRA.PTm.subst_succ, ConciseIPRA.PTm.subst_zero]
       have hq' := (shift_le_two hq).wk (ψ := gcd (pw (Syn.shift d) (var 0)) (Syn.shift q) ≐ one)
-      have hd₀ : Γ.map Fm.shift ⊢[PRAAx] gcd (Syn.shift d) (Syn.shift q) ≐ one := by
-        have e := hd.shift
-        simp only [Fm.shift, Fm.subst_eq, subst_ap2, subst_ex2, ConciseIPRA.PTm.subst_succ, ConciseIPRA.PTm.subst_zero] at e
-        exact e
-      have hd' := hd₀.wk (ψ := gcd (pw (Syn.shift d) (var 0)) (Syn.shift q) ≐ one)
+      have hd' := (Gcd.shift_coprime hd).wk (ψ := gcd (pw (Syn.shift d) (var 0)) (Syn.shift q) ≐ one)
       exact (congrGcd (pw_succ _ _) (.eqRefl _)).eqTrans (cop_mul hq' Prf.hyp0 hd')
   have e := Prf.allE h hall
   simp only [Fm.subst_eq, subst_ap2, subst_ex2, Syn.subst_var, Syn.inst_zero, Syn.subst_inst_shift,

@@ -37,7 +37,7 @@ open LeanProofs.IPRA.Analysis.Products (fact)
 open LeanProofs.IPRA.AnalyticNumberTheory.Totient (phi totBody)
 open LeanProofs.IPRA.AnalyticNumberTheory.Mobius (congrSg congrEqb' zero_mul_l)
 open LeanProofs.IPRA.AnalyticNumberTheory.MobiusBounds (shift_pos)
-open LeanProofs.IPRA.AnalyticNumberTheory.SumPhi (shift_eq' shift_mul' shift_rem')
+open LeanProofs.IPRA.AnalyticNumberTheory.SumPhi (shift_mul')
 open LeanProofs.IPRA.AnalyticNumberTheory.PhiPower (pow_point phi_mul_pow_at)
 open LeanProofs.IPRA.AnalyticNumberTheory.Smooth (lpf_two K_split cof_pos cof_lt)
 open LeanProofs.IPRA.AnalyticNumberTheory.SumReindex (riB inst2_riB reindex_le le_quo_of_mul_le)
@@ -175,9 +175,7 @@ theorem harm_step {p : PTm n} (hp : Γ ⊢[PRAAx] prime p) (a F N : PTm n) :
 theorem Hq_pow {a M t : PTm n} (ha : Γ ⊢[PRAAx] a ≐ succ (pred a)) (hM : Γ ⊢[PRAAx] M ≐ succ (pred M))
     (hd : Γ ⊢[PRAAx] dvd M (pw a t)) (F N : PTm n) : Γ ⊢[PRAAx] Hq (a * M) F N ≐ Hq a F N := by
   have hd' : Γ.map Fm.shift ⊢[PRAAx] dvd (Syn.shift M) (pw (Syn.shift a) (Syn.shift t)) := by
-    have e := shift_eq' hd
-    rw [shift_rem'] at e
-    simpa [Syn.shift] using e
+    simpa only [Syn.shift, subst_ap2] using Gcd.shift_dvd hd
   refine sum_congr_bounded hqB hqB (pairT (a * M) F) (pairT a F) N (.allI (.impI ?_))
   simp only [shift_pairT, shift_mul']
   exact (hq_at _ _ _).eqTrans ((congrMul (.eqRefl _)
