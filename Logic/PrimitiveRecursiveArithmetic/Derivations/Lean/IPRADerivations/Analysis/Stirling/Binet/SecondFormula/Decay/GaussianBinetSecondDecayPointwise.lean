@@ -118,7 +118,7 @@ theorem angle_half_bound (p X Y D sign a b H J m K : PTm n)
     exact bounded_radius_mono _ _ _ _ _ (positive_product _ _ d.wk hp) hm.wk
       (by ipra_le 2*𝔞(K)*𝔞(b)*𝔞(X)*𝔞(unit p)) prod
   · let Δ := (a ≐ ConciseIPRA.PTm.succ (pred a)) :: Γ
-    have ha : Δ ⊢[PRAAx] le one a := le_congr (.eqRefl _) Prf.hyp0.eqSymm (zero_lt_succ _)
+    have ha : Δ ⊢[PRAAx] le one a := Order.zero_lt_of_eq_succ Prf.hyp0
     have hH : Δ ⊢[PRAAx] le one H := le_trans (positive_product _ _ hm.wk hJ.wk) hRate.wk
     have hA := positive_product _ _ ha hH
     have hw := GaussianBinetSecondDecayEnvelope.inverse_linear p (a*H) (b*J) hA s.wk hclock.wk

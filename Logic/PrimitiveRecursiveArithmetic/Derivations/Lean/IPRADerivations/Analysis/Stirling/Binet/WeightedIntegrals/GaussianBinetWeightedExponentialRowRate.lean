@@ -58,7 +58,7 @@ private theorem old_decay_bound (a b p : PTm n) (hb : Γ ⊢[PRAAx] le one b) :
       (GaussianCoefficientNameBounds.bounded_radius_mono _ _ _ _ _ (le_refl one) (le_refl one)
         (by ipra_le 2) qone_bounded)
   · have ha : (a ≐ succ (pred a))::Γ ⊢[PRAAx] le one a :=
-      le_congr (.eqRefl _) Prf.hyp0.eqSymm (zero_lt_succ _)
+      Order.zero_lt_of_eq_succ Prf.hyp0
     exact bound_congr (.eqRefl _) (by unfold GaussianNameRingLaws.three; ipra_ring) (.eqRefl _)
       (GaussianEulerDecayIncrement.decay_observation_uniform_bound a b p ha hb.wk)
 

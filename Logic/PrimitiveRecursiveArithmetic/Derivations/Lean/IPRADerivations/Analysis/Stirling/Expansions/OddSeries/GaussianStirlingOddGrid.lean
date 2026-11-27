@@ -48,8 +48,8 @@ theorem square_split (X i : PTm n) : Γ ⊢[PRAAx]
 
 theorem denominator_positive (X K i : PTm n) (hX : Γ ⊢[PRAAx] le one X) :
     Γ ⊢[PRAAx] le one (denominator X K i) :=
-  le_congr (.eqRefl _) (LeanProofs.IPRA.AnalyticNumberTheory.RobinLogName.Dz_pos
-    (pos_of_one_le (parameter_positive X i hX)) K i).eqSymm (zero_lt_succ _)
+  Order.zero_lt_of_eq_succ (LeanProofs.IPRA.AnalyticNumberTheory.RobinLogName.Dz_pos
+    (pos_of_one_le (parameter_positive X i hX)) K i)
 
 private theorem power_absorbs (X G K i : PTm n) (hX : Γ ⊢[PRAAx] le one X)
     (hK : Γ ⊢[PRAAx] le one K) (hi : Γ ⊢[PRAAx] le (G*i) K) :

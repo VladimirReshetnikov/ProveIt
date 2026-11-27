@@ -113,7 +113,7 @@ theorem ordered_rate (X Y D sign T L K : PTm n)
   · let Δ := (c ≐ succ (pred c))::Γ
     let short := data X Y D sign T (one+c) (k*w) f
     let full := data X Y D sign T one (c+k*w) f
-    have hc : Δ ⊢[PRAAx] le one c := le_congr (.eqRefl _) Prf.hyp0.eqSymm (zero_lt_succ (pred c))
+    have hc : Δ ⊢[PRAAx] le one c := Order.zero_lt_of_eq_succ Prf.hyp0
     have hw : Δ ⊢[PRAAx] le one (k*w) := positive_product _ _ hk.wk (width_positive T L hT).wk
     have beginEq : Δ ⊢[PRAAx] one+c ≐ k*one := kEq.wk.eqSymm.eqTrans (by ipra_ring : Δ ⊢[PRAAx] k ≐ k*one)
     have fullEq : Δ ⊢[PRAAx] f*T ≐ one+(c+k*w) := by

@@ -134,7 +134,7 @@ theorem ordered_rate (j X D R L K : PTm n) (h : Γ ⊢[PRAAx] realSource X zero 
   · let Δ := (C ≐ succ (pred C))::Γ
     let u := data j X D R K zero L one
     let v := data j X D R K zero (L+C) one
-    have hc : Δ ⊢[PRAAx] le one C := le_congr (.eqRefl _) Prf.hyp0.eqSymm (zero_lt_succ (pred C))
+    have hc : Δ ⊢[PRAAx] le one C := Order.zero_lt_of_eq_succ Prf.hyp0
     have hw : Δ ⊢[PRAAx] le (L+C) K := le_congr ec.wk (.eqRefl _) (le_refl K)
     have first : Δ ⊢[PRAAx] crossEquivalent nameF nameF x u :=
       GaussianBinetLaplaceMomentHorizon.coherence j X D R L R K zero L one

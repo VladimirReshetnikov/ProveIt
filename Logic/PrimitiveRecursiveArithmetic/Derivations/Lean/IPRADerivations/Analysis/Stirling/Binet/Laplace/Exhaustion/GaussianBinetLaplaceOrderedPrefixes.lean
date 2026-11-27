@@ -89,7 +89,7 @@ theorem ordered_rate (X Y D sign R L K : PTm n) (h : Γ ⊢[PRAAx] source X Y D 
   · let Δ := (c ≐ succ (pred c))::Γ
     let s := data X Y D sign R b zero zero a one
     let t := data X Y D sign R b zero zero (a+c) one
-    have hc : Δ ⊢[PRAAx] le one c := le_congr (.eqRefl _) Prf.hyp0.eqSymm (zero_lt_succ (pred c))
+    have hc : Δ ⊢[PRAAx] le one c := Order.zero_lt_of_eq_succ Prf.hyp0
     have hwide : Δ ⊢[PRAAx] GaussianBinetLaplaceStrip.source X Y D sign R b zero (a+c) one :=
       panel_source X Y D sign R _ _ h.wk (le_congr ec.wk (.eqRefl _) (le_refl b))
     have hsmall : Δ ⊢[PRAAx] GaussianBinetLaplaceStrip.source X Y D sign R b zero a one :=

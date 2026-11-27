@@ -46,8 +46,8 @@ theorem gap_positive (A B : PTm n) (hA : Γ ⊢[PRAAx] le one A) : Γ ⊢[PRAAx]
 
 theorem upper_denominator_positive (A B K : PTm n) (hA : Γ ⊢[PRAAx] le one A) :
     Γ ⊢[PRAAx] le one (Ud K B (parameter A B) (gap A B)) :=
-  le_congr (.eqRefl _) (Ud_pos (pos_of_one_le (parameter_positive A B hA))
-    (pos_of_one_le (gap_positive A B hA)) K B).eqSymm (zero_lt_succ _)
+  Order.zero_lt_of_eq_succ (Ud_pos (pos_of_one_le (parameter_positive A B hA))
+    (pos_of_one_le (gap_positive A B hA)) K B)
 
 private theorem frame_value (A B Q : PTm n) :
     Γ ⊢[PRAAx] RationalArithmetic.represents (interval (A+B) A Q)

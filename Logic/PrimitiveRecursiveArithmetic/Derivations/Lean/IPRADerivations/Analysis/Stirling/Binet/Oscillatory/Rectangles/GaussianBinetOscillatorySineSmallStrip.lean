@@ -92,7 +92,7 @@ theorem row_bound (j p X Y D sign A B R U L N : PTm n)
       (by dsimp only [numerator,P]; ipra_le 7*𝔞 A*𝔞 B*𝔞(unit p)+8*𝔞 B^2)
       (bound_congr e.eqSymm (.eqRefl _) (.eqRefl _) (fraction_bound A B hB.wk))
   · let Δ := (j ≐ succ (pred j)) :: Γ
-    have pos : Δ ⊢[PRAAx] le one j := le_congr (.eqRefl _) Prf.hyp0.eqSymm (zero_lt_succ _)
+    have pos : Δ ⊢[PRAAx] le one j := Order.zero_lt_of_eq_succ Prf.hyp0
     have e := value_at_positive j p X Y D sign A B R U L N pos
     have sinc := GaussianBinetSineQuotientMajorant.clocked_mesh_bound p A B C T j N hB.wk hT.wk pos hN.wk angle.wk
     have src := GaussianBinetLaplaceExponential.exponent_bound (Γ := Δ) X Y D sign R T (T*j) N hz.wk hN.wk tj.wk

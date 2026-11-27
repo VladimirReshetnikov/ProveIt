@@ -96,7 +96,7 @@ theorem sharp_bound (p q X Y D sign R T N A C E : PTm n)
   · exact bound_congr (zero_width .cofinal p X Y D sign R T N A C E h.wk.andE₂.andE₁ Prf.hyp0).eqSymm
       (.eqRefl _) (.eqRefl _) (GaussianMonicResidualRadius.zero_bounded _ _ hd.wk)
   · have hC : (C ≐ ConciseIPRA.PTm.succ (LeanProofs.IPRA.PTm.pred C))::Γ ⊢[PRAAx] le one C :=
-      le_congr (.eqRefl _) Prf.hyp0.eqSymm (zero_lt_succ _)
+      Order.zero_lt_of_eq_succ Prf.hyp0
     have raw := strip_endpoint_observation_bound p q X Y D sign R T N A C E
       (M*U+two*F) (F*U) h.wk hA.wk hC hQ.wk (positive_decay_observation q a b hb.wk)
     apply bounded_radius_mono _ _ _ _ _ (positive_product _ _ (positive_product _ _ hK.wk

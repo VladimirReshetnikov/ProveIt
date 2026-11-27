@@ -108,7 +108,7 @@ theorem compact_ordered_rate (X Y D sign K T U L : PTm n)
     let full := panel X Y D sign U one (a+c) e
     let right := panel X Y D sign U (one+a) c e
     have dz : Δ ⊢[PRAAx] le one d :=
-      le_congr (.eqRefl _) Prf.hyp0.eqSymm (zero_lt_succ (pred d))
+      Order.zero_lt_of_eq_succ Prf.hyp0
     have hc : Δ ⊢[PRAAx] le one c := positive_product _ _ he.wk dz
     have ha : Δ ⊢[PRAAx] le one a := (GaussianBinetBoseOriginExhaustion.width_positive T L ht).wk
     have et : Δ ⊢[PRAAx] e*T ≐ one+a := (endpoint T L ht).wk

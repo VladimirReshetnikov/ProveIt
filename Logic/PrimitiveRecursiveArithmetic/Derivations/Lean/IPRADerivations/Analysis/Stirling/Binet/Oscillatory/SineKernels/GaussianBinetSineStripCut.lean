@@ -49,7 +49,7 @@ theorem remaining_margin (j N T E : PTm n) (hT : Γ ⊢[PRAAx] le one T) (hE : �
       have grow : Δ ⊢[PRAAx] le d (two*d) := le_of_eq_add (d := d) (by ipra_ring)
       have leq : Δ ⊢[PRAAx] le d r := le_congr (.eqRefl _) y (le_trans grow hN.wk)
       exact le_lt_absurd _ leq qr.andE₂.wk
-    · exact le_congr (.eqRefl _) Prf.hyp0.eqSymm (zero_lt_succ _)
+    · exact Order.zero_lt_of_eq_succ Prf.hyp0
   have rsmall : Γ ⊢[PRAAx] le r (d*Q) :=
     le_trans (le_of_lt qr.andE₂) (le_congr (by ipra_ring) (mul_comm _ _) (mul_le_mul_right d hQ))
   have mid : Γ ⊢[PRAAx] le N (two*(d*Q)) :=

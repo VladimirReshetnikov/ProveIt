@@ -137,7 +137,7 @@ private theorem decay_bound (a b p : PTm n) (hb : Γ ⊢[PRAAx] le one b) :
       (bounded_radius_mono _ _ _ _ _ (le_refl one) (le_refl one)
         (by dsimp only [three]; ipra_le 2) GaussianRationalReciprocal.qone_bounded)
   · have ha : (a ≐ succ (pred a)) :: Γ ⊢[PRAAx] le one a :=
-      le_congr (.eqRefl _) Prf.hyp0.eqSymm (zero_lt_succ _)
+      Order.zero_lt_of_eq_succ Prf.hyp0
     exact GaussianEulerDecayIncrement.decay_observation_uniform_bound a b p ha hb.wk
 
 private theorem adjacent_decay (a b j N p : PTm n) (ha : Γ ⊢[PRAAx] le one a)
@@ -170,7 +170,7 @@ private theorem adjacent_decay (a b j N p : PTm n) (ha : Γ ⊢[PRAAx] le one a)
           (le_of_eq_add (d := (two*a*a*U+num 18*(d*d))*(d*d*U)) (by dsimp only [three]; ipra_ring))
           (GaussianEulerDecayAddition.original_decay_linear_remainder a d p hd.wk had.wk))
     · have e : (x ≐ succ (pred x)) :: Γ ⊢[PRAAx] le one x :=
-        le_congr (.eqRefl _) Prf.hyp0.eqSymm (zero_lt_succ _)
+        Order.zero_lt_of_eq_succ Prf.hyp0
       have next : (x ≐ succ (pred x)) :: Γ ⊢[PRAAx]
           observation (x*d+a*d) (d*d) p ≐ observation (a*succ j) d p :=
         (observation_numerator_congr (x*d+a*d) ((a*succ j)*d) (d*d) p (by dsimp only [x]; ipra_ring)).eqTrans

@@ -83,7 +83,7 @@ theorem all_time_column_error (j p M X Y D sign A B R U L N : PTm n)
         le_congr (zero_mul _).eqSymm (.eqRefl _) (zero_le _)
       exact distance_congr a.eqSymm b.eqSymm (.eqRefl _) (.eqRefl _)
         (distance_radius_mono _ _ zero (Q*M) G (Q*M) h₂.wk h₂.wk increase zero')
-    · have pos : ((j ≐ succ (pred j)) :: Γ) ⊢[PRAAx] le one j := le_congr (.eqRefl _) Prf.hyp0.eqSymm (zero_lt_succ _)
+    · have pos : ((j ≐ succ (pred j)) :: Γ) ⊢[PRAAx] le one j := Order.zero_lt_of_eq_succ Prf.hyp0
       have b := value_at_positive j p X Y D sign A B R U L N pos
       exact distance_congr (.eqRefl _) b.eqSymm (.eqRefl _) (.eqRefl _)
         (quotient_error j p M X Y D sign A B R U L N hz.wk hB.wk hM.wk hN.wk hL.wk hA.wk pos hj.wk hC.wk)
