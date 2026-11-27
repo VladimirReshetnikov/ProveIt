@@ -402,36 +402,11 @@ satisfying the integral Burnside condition:
 \end{equation}
 \Cref{sel:thm:smith} is the general Smith formula and covers the rationally
 self-dual case $a=\infty$; \cref{sel:thm:tracedepth} identifies the finite
-congruence depth with a trace ideal.
-
-\begin{corollary}[Sharp scalar-discrepancy bound; \stU]\label{sel:cor:scalar}
-Under the integral Burnside condition, suppose $\rho(g)=\alpha I$ and
-$\rho((g^c)^{-1})=\alpha'I$ for some $g\in G$. Then
-\[
- C(T)\le v_\pi\bigl(\alpha-\chi(g^c)\alpha'\bigr).
-\]
-\end{corollary}
-
-\begin{proof}
-The intertwining equation at $g$ says that
-$\Delta=\alpha-\chi(g^c)\alpha'$ annihilates $H_n$. Since $H_n$ is cyclic,
-its length is at most $v_\pi(\Delta)$. If $\Delta=0$ the bound is vacuous.
-\end{proof}
-
-The source's \code{congruenceTerm_le} gives $d\,v_\pi(\Delta)$ instead: its
-proof embeds the $\Hom$ module into a rank-$d$ character module, and
-cyclicity removes the factor $d$. In \code{MainSummands.lean}, the proof of
-\code{IsMainSummandLike.normLength_congruenceTerm_le} already establishes
-the necessary scalar discrepancy, so with the same hypotheses its conclusion
-improves to
-\[
- \lambda_{\OO}\bigl(\text{\code{congruenceTerm}}\bigr)\le
- v_\ell(\text{\code{D.chosenGroupOrder}})
-\]
-instead of $d$ times the right-hand side. This changes only the global
-congruence term. The local terms in the full Selmer budget keep their
-original estimates, and no factor-$d$ improvement of the source proof as a
-whole is asserted.
+congruence depth with a trace ideal. Without the integral Burnside
+condition the trace depth still bounds the congruence term, up to a sharp
+correction measured by the conductor of the image order
+(\cref{sel:sec:orders}); a scalar group element gives a bound without
+traces (\cref{sel:cor:scalar}).
 
 \begin{example}[Exact model]\label{sel:ex:tracemodel}
 Let $G$ be free on $x,y,z$, and over $\Z_p$ put
@@ -578,62 +553,441 @@ $24^2=576$; the relation matrix has Smith factors $1,1,1,24$
 (\artifact{grh_arithmetic_transfers_2026-11-26/certificates/transfer_extensions.json}).
 \end{example}
 
-The full \emph{integral} matrix-span hypothesis in
-\cref{sel:thm:tracedepth} is essential. Absolute irreducibility over the
-fraction field is too weak, even in rank two.
+\subsection{Nonmaximal image orders and bad coefficient primes}\label{sel:sec:orders}
+\sources{grh_sharp_extensions_2026-11-27; grh_arithmetic_transfers_2026-11-26}
 
-\begin{theorem}[Extra torsion invisible to the trace depth; \stU]\label{sel:thm:bad}
-Fix an odd prime $p$ and positive integers $a,c$. Let $\OO=\Z_p$ and let $G$
-be free on $u,v,z$. Define
+The integral Burnside condition of \cref{sel:thm:tracedepth} says that the
+image order is maximal. Without it the traces no longer determine the
+congruence module (\cref{sel:thm:bad} below), but they still bound it, with
+a sharp correction measured by how far the image order is from being
+maximal.
+
+Let $\OO$ be a complete discrete valuation ring with fraction field $F$,
+uniformizer $\pi$ and residue field $k$; normalize $v(\pi)=1$ and set
+$v(0)=\infty$. Let $G$ be an arbitrary group and
+$\rho,\sigma\colon G\to\GL_d(\OO)$, $d\ge1$, with full rational matrix
+spans, $\operatorname{span}_F\rho(G)=M_d(F)=\operatorname{span}_F\sigma(G)$.
+The integral spans $A_\rho=\operatorname{span}_{\OO}\rho(G)$ and
+$A_\sigma=\operatorname{span}_{\OO}\sigma(G)$ are orders in $M_d(F)$. Put
+\[
+ e_\rho=\min\set{j\ge0:\pi^jM_d(\OO)\subseteq A_\rho},\qquad
+ e_\sigma=\min\set{j\ge0:\pi^jM_d(\OO)\subseteq A_\sigma},\qquad
+ e=\min(e_\rho,e_\sigma).
+\]
+This \emph{conductor exponent} is a containment exponent, not an Artin
+conductor; $e=0$ exactly when one of the two integral spans is all of
+$M_d(\OO)$. As in \cref{sel:thm:tracedepth} let
+\[
+ a=\min_{g\in G}v\bigl(\tr\rho(g)-\tr\sigma(g)\bigr),\qquad
+ H_n=\set{X\in M_d(\OO/\pi^n):\sigma(g)X=X\rho(g)\ \text{for all }g\in G},
+\]
+and use the convention $\min(n,\infty)=n$. In all the upper bounds below
+$e_\rho$ and $e_\sigma$ may be replaced by certified upper bounds, and $a$ by
+the valuation of any one nonzero trace discrepancy.
+
+\begin{theorem}[Sharp trace-and-order bound; \stU]\label{sel:thm:orderdefect}
+Under these assumptions, for every integer $n\ge1$,
+\begin{equation}\label{sel:eq:odmain}
+ \sellen_{\OO}H_n\le\min(n,a)+(d^2-1)\min(n,e).
+\end{equation}
+If $a<\infty$, then the rational representations are inequivalent and
+\begin{equation}\label{sel:eq:odtotal}
+ C(\rho,\sigma):=\sup_n\sellen_{\OO}H_n\le a+(d^2-1)e.
+\end{equation}
+Write the Smith exponents of the relation module of \cref{sel:thm:smith},
+including zero exponents, as $0\le b_1\le\dots\le b_{d^2}$, with an
+exponent $\infty$ for each free summand. There is at most one infinite
+exponent, and
+\begin{equation}\label{sel:eq:odprofile}
+ b_{d^2-1}\le e\quad(d\ge2),\qquad b_{d^2}\le a+e\quad(a<\infty).
+\end{equation}
+Consequently $\pi^eH_n$ is cyclic for every $n$. Both the coefficient
+$d^2-1$ in \eqref{sel:eq:odtotal} and the loss $e$ in the last inequality
+of \eqref{sel:eq:odprofile} are sharp.
+\end{theorem}
+
+When $e=0$ the bound is $\sellen H_n\le\min(n,a)$, and
+\cref{sel:thm:tracedepth}, Carayol's trace rigidity
+\cite{Carayol1994Representations,Carayol1994Formes} (see also
+\cite[Theorem~1]{Serre1993Representations}), gives equality. For $e>0$
+there need not be equality, and traces alone do not determine the module.
+The defect contribution in \eqref{sel:eq:odmain} stops growing once
+$n\ge e$. The theorem needs no residual irreducibility.
+
+\paragraph{Proof of \cref{sel:thm:orderdefect}.}
+Put $m=d^2$, $V=M_d(\OO)$ and $D_g(X)=\sigma(g)X-X\rho(g)$. By
+\cref{sel:thm:smith}, the submodule $R\subseteq V^*$ generated by all
+coordinate functions of all $D_g$ has a Smith decomposition
+$V^*/R\simeq\bigoplus_{i=1}^m\OO/\pi^{b_i}$, where a factor with $b_i=0$ is
+zero and a factor with $b_i=\infty$ denotes $\OO$, and
+\begin{equation}\label{sel:eq:odlength}
+ \sellen H_n=\sum_{i=1}^m\min(n,b_i).
+\end{equation}
+There is an $\OO$-basis $C_1,\dots,C_m$ of $V$ such that every $D_g(C_i)$
+has all entries in $\pi^{b_i}\OO$ when $b_i<\infty$ and vanishes when
+$b_i=\infty$; for finite $b_i$ some relation has valuation exactly $b_i$.
+Every $C_i$ is primitive, that is, has a unit entry. If $s=b_1<\infty$, every
+entry of every $D_g(X)$ is divisible by $\pi^s$ for every integral $X$, and
+$X=I$ gives
+\begin{equation}\label{sel:eq:odmintrace}
+ s\le a.
+\end{equation}
+If all relations are zero, full rational span forces $d=1$ and $\rho=\sigma$,
+and the theorem is immediate; this degenerate case is excluded below when
+$s$ is used.
+
+\begin{lemma}[Singular intertwiners]\label{sel:lem:singular}
+Let $X\in M_d(\OO)$ be primitive and singular. If
+$D_g(X)\in\pi^rM_d(\OO)$ for all $g$, then $r\le e$. The same holds after a
+finite extension of the valued field, with valuations still normalized by
+$v(\pi)=1$.
+\end{lemma}
+
+\begin{proof}
+Clearing denominators in a nonzero kernel vector over $F$ gives a primitive
+$w\in\OO^d$ with $Xw=0$. Then $X\rho(g)w\in\pi^r\OO^d$ for every $g$, hence
+$XAw\in\pi^r\OO^d$ for every $A\in A_\rho$. Choose $j$ with $w_j$ a unit.
+Since $\pi^{e_\rho}E_{ij}\in A_\rho$,
+\[
+ \pi^{e_\rho}w_jXe_i\in\pi^r\OO^d\qquad(1\le i\le d).
+\]
+If $r>e_\rho$, every entry of $X$ lies in the maximal ideal, contradicting
+primitivity. The same argument applied to $X^{\mathsf T}$ and the transposed
+equations gives $r\le e_\sigma$. Over the valuation ring of a finite
+extension the order containments survive scalar extension, and the same
+argument applies.
+\end{proof}
+
+\begin{lemma}[One direction above the defect]\label{sel:lem:pencil}
+For every integer $r>e$, the image of $H_r$ under reduction to $M_d(k)$ has
+dimension at most one. In particular $b_{m-1}\le e$ when $m>1$.
+\end{lemma}
+
+\begin{proof}
+Suppose two classes have linearly independent residual matrices, and lift
+them to $X,Y\in M_d(\OO)$. Every linear combination satisfies the
+intertwining equations modulo $\pi^r$. Over an algebraic closure of $F$ the
+binary form $\det(\lambda X+\mu Y)$ of degree $d>0$ has a projective zero:
+this is immediate if it is the zero form, and otherwise every binary form
+of positive degree has a zero on the projective line. The zero is defined
+over a finite extension. Normalize it so that $\lambda,\mu$ are integral and
+one of them is a unit. Independence of the residual matrices survives
+residue-field extension, so $Z=\lambda X+\mu Y$ is primitive. It is singular
+and intertwines modulo $\pi^r$, contradicting \cref{sel:lem:singular}. In
+Smith coordinates the image in question has dimension exactly
+$\#\set{i:b_i\ge r}$; take $r=e+1$.
+\end{proof}
+
+The pencil argument is why the result concerns the absolute matrix span.
+Over a residue field without extension a two-dimensional pencil can avoid
+singular matrices at every rational projective point; passing to a finite
+extension is essential, and it is permitted because the order containments
+remain valid there.
+
+\emph{The longest direction.} Assume first $a<\infty$. A nonzero rational
+intertwiner between two absolutely irreducible representations of equal
+dimension is an isomorphism and would force equal traces, so the rational
+$\Hom$ space vanishes and all $b_i$ are finite. Write $b=b_m$ and let
+$X=C_m$. If $b\le e$, then \eqref{sel:eq:odmintrace} and
+\eqref{sel:eq:odlength} already give $C=\sum_ib_i\le a+(m-1)e$.
+
+Suppose now $b>e$. By \cref{sel:lem:singular}, $X$ is invertible over $F$.
+Let $0=t_1\le\dots\le t_d=t$ be its matrix Smith exponents; the first is
+zero because $X$ is primitive. If $t>0$, write
+$X=P\operatorname{diag}(\pi^{t_i})Q$ with $P,Q$ integral and invertible and
+put $Y=PE_{dd}Q$, $Z=X-\pi^tY$. The matrix $Z$ is singular and still
+primitive, since the zero Smith exponent occurs in a different position
+because $t>0$. Every relation on every integral matrix is divisible by
+$\pi^s$, so
+\[
+ D_g(Z)\in\pi^{\min(b,t+s)}M_d(\OO)\qquad(g\in G),
+\]
+and \cref{sel:lem:singular} with $b>e$ gives
+\begin{equation}\label{sel:eq:odcompensation}
+ t+s\le e .
+\end{equation}
+In particular $t\le e$; if $t=0$ this is immediate. Now
+$X^{-1}\in\pi^{-t}M_d(\OO)$ and
+\[
+ \sigma(g)-X\rho(g)X^{-1}=D_g(X)X^{-1}\in\pi^{b-t}M_d(\OO),
+\]
+and taking traces gives
+\begin{equation}\label{sel:eq:odlong}
+ b\le a+t\le a+e .
+\end{equation}
+If $t=0$, \cref{sel:lem:pencil} gives $C\le b+(m-1)e\le a+(m-1)e$. If $t>0$,
+then $m>1$ and
+\[
+ C\le b+s+(m-2)e\le(a+t)+(e-t)+(m-2)e=a+(m-1)e .
+\]
+Thus the order loss that can enlarge the longest invariant factor is paid
+back by a smaller shortest factor; bounding the factors separately would
+lose one more copy of $e$.
+
+For $a=\infty$, \cref{sel:lem:pencil} still bounds all but one exponent by
+$e$, which includes the assertion that there is at most one free factor, and
+gives $\sellen H_n\le n+(m-1)\min(n,e)$. Finally let $a<\infty$ and fix $n$.
+If $n\le e$, use $s\le a$ to get $\sellen H_n\le\min(n,a)+(m-1)n$. If $n>e$
+and $a\ge n$, use \cref{sel:lem:pencil}. If $n>e$ and $a<n$, use the total
+bound just proved. This proves \eqref{sel:eq:odmain} in every case, and the
+cyclicity of $\pi^eH_n$ follows from the Smith profile. The sharpness
+assertions are the next two examples. \qed
+
+\begin{example}[The exponent loss is necessary]\label{sel:ex:odexponent}
+Let $\OO=\Zp$, $a,e\ge1$, and let $G$ be free on $u,v,z$, with
+\[
+\begin{array}{lll}
+ \rho(u)=I+p^eE_{12},&\rho(v)=I+E_{21},&\rho(z)=I,\\
+ \sigma(u)=I+E_{12},&\sigma(v)=I+p^eE_{21},&
+ \sigma(z)=\operatorname{diag}(1,1+p^a).
+\end{array}
+\]
+Both conductor exponents equal $e$. The $u$ and $v$ equations force
+$X=\operatorname{diag}(x,p^ex)$ over every quotient ring, with no further
+torsion coordinates, and the $z$ equation is $p^{a+e}x=0$. So the relation
+Smith exponents are $(0,0,0,a+e)$ and $\sellen H_n=\min(n,a+e)$. The trace
+depth is $a$: conjugating $\rho$ by $\operatorname{diag}(1,p^e)$ gives
+integral matrices that agree with $\sigma$ on $u,v$ and modulo $p^a$ on
+$z$, so the traces agree modulo $p^a$ on every word, and the discrepancy at
+$z$ is $-p^a$. For the orders, $A_\rho$ has basis
+$I,E_{21},p^eE_{12},p^eE_{11}$ and $A_\sigma$ has basis
+$I,E_{12},p^eE_{21},p^{\min(a,e)}E_{11}$; these modules are closed under
+multiplication, contain the generators and their inverses, and are
+generated by the indicated differences and products, and the off-diagonal
+entries show that both conductor exponents are exactly $e$. Hence
+$b_{d^2}=a+e$ is attained.
+\end{example}
+
+\begin{example}[The length coefficient is necessary]\label{sel:ex:odlength}
+Let $d\ge2$, let $p\nmid d$ be prime and $a\ge e\ge1$. Let $G$ be free on $z$
+and $x_{ij}$, $1\le i,j\le d$, and put
+\[
+ \rho(x_{ij})=\sigma(x_{ij})=I+p^eE_{ij},\qquad\rho(z)=I,\qquad\sigma(z)=(1+p^a)I .
+\]
+Both image orders are $\OO I+p^eM_d(\OO)$, of conductor exponent $e$.
+Commuting with every matrix unit means that all off-diagonal entries vanish
+and all diagonal entries are equal, so the centralizer relations have one
+zero Smith factor and $d^2-1$ factors $p^e$, and the scalar $z$ relation
+gives
+\[
+ (b_1,\dots,b_{d^2})=(e,\dots,e,a),\qquad
+ \sellen H_n=\min(n,a)+(d^2-1)\min(n,e).
+\]
+The trace discrepancy at $z$ is $-dp^a$, of valuation $a$, and all
+discrepancies are divisible by $p^a$. This is equality in
+\eqref{sel:eq:odmain} and \eqref{sel:eq:odtotal}.
+\end{example}
+
+The two examples saturate different assertions: the largest total length and
+the longest single direction need not occur together. For $d=2$, $p=3$,
+$a=3$, $e=2$, the first family has profile $(0,0,0,5)$ and the second has
+profile $(2,2,2,3)$, with lengths $4$, $8$, $9$, $9$ at $n=1,2,3,4$. These Smith forms,
+and finite-level kernel enumerations, are recorded in
+\begin{center}
+\artifact{grh_sharp_extensions_2026-11-27/data/order_defect_certificates.json}.
+\end{center}
+
+For scalar twists the whole defect profile can be computed.
+
+\begin{proposition}[Scalar twists; \stU]\label{sel:prop:scalartwist}
+Let $\tau\colon J\to\GL_d(\OO)$ have full rational span, and let the relation
+module of \cref{sel:thm:smith} for the commutant of $\tau$ be
+\[
+ Q_{\mathrm{ad}}\simeq\OO\oplus\bigoplus_{i=1}^{d^2-1}\OO/\pi^{c_i},\qquad c_i\ge0.
+\]
+Let $u\in\OO^\times$, $u\ne1$, $b=v(u-1)$, and on $G=J\times\Z$ put
+$\rho(h,r)=\tau(h)$ and $\sigma(h,r)=u^r\tau(h)$. If $t$ is the valuation of
+the ideal generated by $\set{\tr\tau(h):h\in J}$, then the trace depth is
+$a=b+t$, and
+\[
+ \sellen H_n=\min(n,b)+\sum_i\min(n,b,c_i),\qquad C=b+\sum_i\min(b,c_i).
+\]
+\end{proposition}
+
+\begin{proof}
+The equations for $J$ are commutation with $\tau$, and the equation for the
+generator of $\Z$ is $(u-1)X=0$. So $H_n$ is the $\pi^b$-torsion of the
+commutant modulo $\pi^n$, which is $\Hom_{\OO}(Q_{\mathrm{ad}},\OO/\pi^n)$
+by \cref{sel:thm:smith}(iii); this gives the length. Every trace
+discrepancy is $(1-u^r)\tr\tau(h)$, and the ideal generated by the $1-u^r$,
+$r\in\Z$, is $(1-u)$: $r=1$ occurs, and the geometric sum works also for
+negative $r$ because $u$ is a unit. This proves $a=b+t$. The trace ideal is
+nonzero because the matrix span is full and the trace form on $M_d(F)$ is
+nonzero in every characteristic.
+\end{proof}
+
+The proposition is an exact replacement for the trace depth at a bad order,
+with the full centralizer-defect profile retained. Its simplest instance
+shows that the integral Burnside hypothesis of \cref{sel:thm:tracedepth}
+cannot be weakened to absolute irreducibility over the fraction field, even
+in rank two.
+
+\begin{corollary}[Extra torsion invisible to the trace depth; \stU]\label{sel:thm:bad}
+Fix an odd prime $p$ and positive integers $a,c$. Let $\OO=\Zp$, let $G$ be
+free on $u,v,z$, and put
 \[
  \rho(u)=\sigma(u)=I+p^cE_{12},\quad
  \rho(v)=\sigma(v)=I+p^cE_{21},\quad
  \rho(z)=I,\quad\sigma(z)=(1+p^a)I .
 \]
-Both representations are absolutely irreducible over $\Q_p$, and their
+Both representations are absolutely irreducible over $\Qp$ and their
 trace-congruence depth is exactly $a$, but
-\begin{align}
- \sellen_{\OO}\Hom_{(\OO/p^n)[G]}(\rho_n,\sigma_n)
- &=\min(n,a)+3\min(n,a,c),\label{sel:eq:badlength}\\
- \sup_n\sellen_{\OO}\Hom_{(\OO/p^n)[G]}(\rho_n,\sigma_n)
- &=a+3\min(a,c).\notag
-\end{align}
+\begin{equation}\label{sel:eq:badlength}
+ \sellen_{\OO}H_n=\min(n,a)+3\min(n,a,c),\qquad
+ \sup_n\sellen_{\OO}H_n=a+3\min(a,c).
+\end{equation}
 The image order generated by $u,v$ is
-$\mathcal R=\OO I+\OO p^cE_{12}+\OO p^cE_{21}+\OO p^{2c}E_{11}$. It has
-colength $4c$ in $M_2(\OO)$ and conductor exponent $2c$:
-$p^{2c}M_2(\OO)\subseteq\mathcal R$ but
-$p^{2c-1}M_2(\OO)\nsubseteq\mathcal R$.
-\end{theorem}
+$\mathcal R=\OO I+\OO p^cE_{12}+\OO p^cE_{21}+\OO p^{2c}E_{11}$, of colength
+$4c$ in $M_2(\OO)$ and conductor exponent $2c$.
+\end{corollary}
 
 \begin{proof}
-Over the algebraic closure the first unipotent has the unique invariant
-line spanned by the first coordinate vector, and the second has the unique
-invariant line spanned by the second; they have no common line. The
-representations agree modulo $p^a$ on generators and hence on all group
-elements, and at $z$ the trace discrepancy is $-2p^a$, of valuation $a$.
-
-Write an intertwiner as
-$X=\bigl(\begin{smallmatrix}t&y\\z'&t+h\end{smallmatrix}\bigr)$.
-Commutation with the first two matrices imposes exactly
-$p^cy=p^cz'=p^ch=0$ modulo $p^n$. The third equation imposes $p^aX=0$,
-which kills all four coordinates. Their lengths are $\min(n,a)$ and three
-copies of $\min(n,a,c)$.
-
-The displayed order is closed under products and contains the generators
-and their inverses. Conversely their differences from $I$ give the
-off-diagonal generators, and their product gives $p^{2c}E_{11}$. Its
-elementary divisor valuations are $0,c,c,2c$, which proves the colength and
-conductor statements.
+Over the algebraic closure the two unipotents have the distinct unique
+invariant lines spanned by the two coordinate vectors, so there is no common
+line. Since $\rho(z)$ and $\sigma(z)$ are central, both representations
+factor through $J\times\Z$ with $J$ free on $u,v$, as in
+\cref{sel:prop:scalartwist} with $b=a$. For
+$X=\bigl(\begin{smallmatrix}t&y\\z'&t+h\end{smallmatrix}\bigr)$,
+commutation with the two unipotents imposes exactly $p^cy=p^cz'=p^ch=0$, so
+$Q_{\mathrm{ad}}\simeq\OO\oplus(\OO/p^c)^3$. The trace ideal of $\tau$
+contains $\tr I=2$, a unit, so $t=0$, and \cref{sel:prop:scalartwist} gives
+\eqref{sel:eq:badlength}. The displayed order is closed under products and
+contains the generators and their inverses; conversely their differences
+from $I$ give the off-diagonal generators, and their product gives
+$p^{2c}E_{11}$. Its elementary divisor valuations are $0,c,c,2c$, which gives
+the colength and the conductor exponent.
 \end{proof}
 
 For $a\ge c$ the excess over the trace depth is exactly $3c$; for instance
-$p=3$, $a=2$, $c=1$ gives trace depth $2$ and intertwiner length $5$. The
-relation matrix has Smith factors
-$p^{\min(a,c)},p^{\min(a,c)},p^{\min(a,c)},p^a$. This is not a sampling
-problem: the traces on \emph{all} group elements fail to determine the
-extra torsion. An integral model, or an explicitly measured defect of the
-image order, must accompany any extension of \eqref{sel:eq:Ctrace} to bad
-coefficient primes.
+$p=3$, $a=2$, $c=1$ gives trace depth $2$ and intertwiner length $5$. This is
+not a sampling problem: the traces on \emph{all} group elements fail to
+determine the extra torsion. Here $e=2c$, and
+\cref{sel:thm:orderdefect} gives the bound $a+6c$, which is not attained;
+\cref{sel:ex:odlength} shows that the coefficient $d^2-1$ cannot be lowered
+in general.
+
+A scalar group element gives a bound that does not pass through traces.
+
+\begin{corollary}[Sharp scalar-discrepancy bound; \stU]\label{sel:cor:scalar}
+In the setting of \cref{sel:thm:orderdefect}, suppose that $\rho(g)=\alpha I$
+and $\sigma(g)=\beta I$ for some $g\in G$, with $\alpha\ne\beta$, and put
+$\delta=v(\alpha-\beta)$. Then, regardless of trace cancellation when the
+residue characteristic divides $d$,
+\[
+ \sellen H_n\le\min(n,\delta)+(d^2-1)\min(n,\delta,e),\qquad
+ C\le\delta+(d^2-1)\min(\delta,e).
+\]
+These bounds are sharp for every $\delta,e\ge1$ and $d\ge2$. In particular,
+under the integral Burnside condition, if $\rho(g)=\alpha I$ and
+$\rho((g^c)^{-1})=\alpha'I$, then
+$C(T)\le v_\pi\bigl(\alpha-\chi(g^c)\alpha'\bigr)$.
+\end{corollary}
+
+\begin{proof}
+The equation at $g$ is $(\beta-\alpha)X=0$, so every invariant factor is at
+most $\delta$; combine this with \eqref{sel:eq:odprofile}. The family of
+\cref{sel:ex:odlength} with its scalar exponent $a$ replaced by an arbitrary
+$\delta\ge1$, without requiring $\delta\ge e$ or $p\nmid d$, has Smith
+profile $\min(\delta,e),\dots,\min(\delta,e),\delta$ and attains the bound.
+For $\sigma=D(\rho)$ one has $\sigma(g)=\chi(g^c)\alpha'I$ by
+\eqref{sel:eq:conjdual}, and $e=0$.
+\end{proof}
+
+The source's \code{congruenceTerm_le} gives $d\,v_\pi(\alpha-\chi(g^c)\alpha')$
+under the integral Burnside condition: its proof embeds the $\Hom$ module
+into a rank-$d$ character module, and cyclicity removes the factor $d$. In
+\code{MainSummands.lean}, the proof of
+\begin{center}
+\code{IsMainSummandLike.normLength_congruenceTerm_le}
+\end{center}
+already establishes the necessary scalar discrepancy, so with the same hypotheses its conclusion
+improves to
+\[
+ \lambda_{\OO}\bigl(\text{\code{congruenceTerm}}\bigr)\le
+ v_\ell(\text{\code{D.chosenGroupOrder}})
+\]
+instead of $d$ times the right-hand side. This changes only the global
+congruence term. The local terms in the full Selmer budget keep their
+original estimates, and no factor-$d$ improvement of the source proof as a
+whole is asserted.
+
+\paragraph{Finite certificates.}
+The three quantities in \cref{sel:thm:orderdefect} can be certified by
+finite computations.
+
+\begin{proposition}[Certificates for the defect bound; \stU]\label{sel:prop:odcert}
+\leavevmode
+\begin{enumerate}[label=\textup{(\roman*)}]
+\item If the joint image of $(\rho,\sigma)$ is generated by a finite set
+ $S$, the intertwining equations for $S$ imply those for every group
+ element over every quotient ring, so the Smith form of the stacked
+ generator equations computes $H_n$ exactly for all $n$.
+\item If finitely many words have matrices spanning a lattice
+ $L\subseteq A_\rho$ of full rank in $M_d(\OO)$, the largest Smith exponent
+ of $L$ relative to $M_d(\OO)$ is an upper bound for $e_\rho$; likewise for
+ $\sigma$. Any exact nonzero trace discrepancy bounds $a$. Substituting
+ these certified quantities in \cref{sel:thm:orderdefect} is sound even if
+ the words do not span the whole order and the trace sample does not attain
+ the minimum.
+\item When the entries admit exact arithmetic, starting from $\OO I$ and
+ adjoining products by the generator matrices and their inverses until the
+ module stabilizes computes $A_\rho$ in finitely many steps.
+\end{enumerate}
+\end{proposition}
+
+\begin{proof}
+(i) Use $D_{gh}(X)=\sigma(g)D_h(X)+D_g(X)\rho(h)$ and
+$D_{g^{-1}}(X)=-\sigma(g)^{-1}D_g(X)\rho(g)^{-1}$. (ii) If every Smith
+exponent of $L$ is at most $j$, then $\pi^jM_d(\OO)\subseteq L\subseteq A_\rho$.
+(iii) The modules form an increasing chain of submodules of the
+Noetherian module $A_\rho$, so the chain stabilizes; a stable module contains
+the identity and is stable under multiplication by all generator words, so
+it is $A_\rho$.
+\end{proof}
+
+Part (i) makes \cref{sel:thm:smith}(i) explicit for finitely generated joint
+images, and generators of only one of the two images are insufficient
+(compare the remark after \cref{sel:thm:finitewords}). Part (iii) is an
+algorithm for an explicitly presented joint image, not a claim that
+arbitrary Galois images can be determined effectively.
+
+\begin{corollary}[The congruence term at bad coefficient primes; \stU]\label{sel:cor:badprimes}
+\leavevmode
+\begin{enumerate}[label=\textup{(\roman*)}]
+\item Let $\rho$ have full rational span and $\sigma=D(\rho)$ as in
+ \eqref{sel:eq:conjdual}. Then $e_\sigma=e_\rho=e$, and a nonzero trace
+ discrepancy of valuation $a$ certifies $C(T)\le a+(d^2-1)e$. If a scalar
+ element as in \cref{sel:cor:scalar} has discrepancy of valuation $\delta$,
+ then $C(T)\le\delta+(d^2-1)\min(\delta,e)$, which at $e=0$ is the cyclic
+ bound.
+\item In the situation of \cref{sel:cor:frobenius}\textup{(ii)}, suppose
+ that at every place $\lambda$ of a set $\Lambda$ of coefficient places
+ outside $S$ the local pair is integral with full rational span, that
+ $J$ is a nonzero ideal generated by exact common trace discrepancies, and
+ that the local orders have certified conductor exponents $e_\lambda$, all
+ but finitely many equal to zero. With
+ $\mathfrak f=\prod_{\lambda\in\Lambda}\lambda^{e_\lambda}$,
+ \[
+  C_\lambda\le v_\lambda(J)+(d^2-1)e_\lambda,\qquad
+  \sum_{\lambda\in\Lambda}C_\lambda\log N\lambda\le\log N_S(J)+(d^2-1)\log N(\mathfrak f).
+ \]
+\end{enumerate}
+\end{corollary}
+
+\begin{proof}
+(i) Inversion and conjugation permute the group elements, transposition
+preserves the full matrix lattice, and multiplying individual group matrices
+by units does not change their span; so the two conductor exponents
+coincide, and \cref{sel:thm:orderdefect,sel:cor:scalar} apply. (ii) Apply
+\eqref{sel:eq:odtotal} at each $\lambda$ with $a\le v_\lambda(J)$ and sum.
+\end{proof}
+
+This is the additive form needed for the product-formula budget of the
+source, with a separately visible correction at bad coefficient primes; at
+places where $e_\lambda=0$ it is \eqref{sel:eq:idealbound}. It does not
+remove the integral matrix-span hypothesis from the other places where the
+source uses it: the local cocycle ranks, the scalar inertia condition and
+the twisting construction need their own arguments.
 
 \subsection{Polarized Tate modules and the symmetry of the mirror pairing}\label{sel:sec:mirror}
 \sources{grh_structural_transfers_2026-11-25; grh_arithmetic_transfers_2026-11-26}
@@ -2252,11 +2606,19 @@ for the off-central Tate shifts $T_\ell(j)$ of \cref{sel:thm:delta},
 including their crystalline local conditions. Alternatively, can the
 small-twist argument be reworked to admit rank-two representations without
 the special scalar inertia?
-\item \emph{Bad coefficient primes.} Extend the trace-depth formula
-\eqref{sel:eq:Ctrace} to representations whose image order is not maximal,
-in terms of a measured defect of the order, as \cref{sel:thm:bad} shows to
-be necessary; and find an effective complete finite set of Galois relations
-for \cref{sel:thm:smith}.
+\item \emph{Bad coefficient primes.} \Cref{sel:thm:orderdefect} bounds the
+congruence term at a nonmaximal image order sharply in terms of the trace
+depth and the conductor exponent, but by \cref{sel:thm:bad} these two
+numbers do not determine it. Is there an exact formula, or a bound that is
+sharp in each example, in terms of finer invariants of the two image
+orders, such as their full elementary-divisor profiles? For Galois
+representations, find an effective complete finite set of relations for
+\cref{sel:thm:smith}: \cref{sel:prop:odcert}(i) needs generators of the
+joint image, and an arbitrary list of Frobenius elements is not known to
+provide them. Finally, the other uses of the integral matrix-span
+hypothesis in a \code{SelmerDatum} (local cocycle ranks, scalar inertia,
+the twisting construction) would have to be replaced before the bound of
+\cref{sel:cor:badprimes} can enter an enlarged Selmer construction.
 \item \emph{Local conditions.} Identify the source's local relations with
 Bloch--Kato local conditions for a specified representation, so that the
 divisible Selmer bound of \cref{sel:sec:quantifiers} becomes a statement
