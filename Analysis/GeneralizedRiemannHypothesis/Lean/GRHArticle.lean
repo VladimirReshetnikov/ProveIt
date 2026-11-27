@@ -9,6 +9,7 @@ import GRHArticle.ProgressionFree.ExplicitWeightCast
 import GRHArticle.ProgressionFree.FourMarkerDensity
 import GRHArticle.ProgressionFree.FourMarkerExchange
 import GRHArticle.ProgressionFree.FourMarkerMass
+import GRHArticle.ProgressionFree.GreedyLengthExponents
 import GRHArticle.ProgressionFree.IntegerBlockGluing
 import GRHArticle.ProgressionFree.IntegerBoundaryDensityBridge
 import GRHArticle.ProgressionFree.IntegerBoundaryExchangeMargin

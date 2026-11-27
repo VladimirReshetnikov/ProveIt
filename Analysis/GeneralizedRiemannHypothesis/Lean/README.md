@@ -87,7 +87,7 @@ For the exchange used in McNew’s Question 7.4, [IntegerBoundaryExchangeReplace
 
 [IntegerBoundaryExchangeMargin.lean](GRHArticle/ProgressionFree/IntegerBoundaryExchangeMargin.lean) proves that the proposed local gain at cutoff 6619 would yield a natural-density gap greater than $0.000135206$. Balanced integer computations certify the smooth density factor and all sieve blocks through 524287. The wheel estimate accounts for the entire remaining prime tail.
 
-[SharedDeletionProgressions.lean](GRHArticle/ProgressionFree/SharedDeletionProgressions.lean) proves the shared-deletion lemma `gpi:lem:kavoid` for signed arithmetic progressions in exponent vectors. [IntegerSharedDeletion.lean](GRHArticle/ProgressionFree/IntegerSharedDeletion.lean) applies it to positive integers and excludes geometric progressions of the specified length with rational ratio.
+[GreedyLengthExponents.lean](GRHArticle/ProgressionFree/GreedyLengthExponents.lean) defines the executable greedy exponent set for each progression length and proves that every rejected exponent completes a forbidden progression. Its integer specialization verifies admissibility of the edited greedy set. [SharedDeletionProgressions.lean](GRHArticle/ProgressionFree/SharedDeletionProgressions.lean) proves the shared-deletion lemma `gpi:lem:kavoid` for signed arithmetic progressions in exponent vectors. [IntegerSharedDeletion.lean](GRHArticle/ProgressionFree/IntegerSharedDeletion.lean) applies it to positive integers and excludes geometric progressions of the specified length with rational ratio.
 
 ## Geometric progressions of ideals in number fields
 
