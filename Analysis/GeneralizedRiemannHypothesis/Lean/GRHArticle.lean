@@ -131,6 +131,7 @@ import GRHArticle.ProgressionFree.SingletonPrimeBlocks
 import GRHArticle.SingularModuli.BaseChange
 import GRHArticle.SingularModuli.Binomial
 import GRHArticle.SingularModuli.CMHeckeDiagonal
+import GRHArticle.SingularModuli.CMHeckeIntegralDiagonal
 import GRHArticle.SingularModuli.CMHeckeInvariance
 import GRHArticle.SingularModuli.CMHeckePolynomialDescent
 import GRHArticle.SingularModuli.CMPoints
@@ -142,6 +143,7 @@ import GRHArticle.SingularModuli.ClassPolynomialTruncation
 import GRHArticle.SingularModuli.ClearedSeriesPolynomialDescent
 import GRHArticle.SingularModuli.ConductorBound
 import GRHArticle.SingularModuli.ConjugateDisks
+import GRHArticle.SingularModuli.ConvergentPowerSeriesEvaluation
 import GRHArticle.SingularModuli.CuspEstimate
 import GRHArticle.SingularModuli.CuspSeparation
 import GRHArticle.SingularModuli.DepthOne
