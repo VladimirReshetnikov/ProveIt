@@ -39,16 +39,8 @@ def rawF : PR 2 := PTm.toPR (rawSample (var 0) (fstT (var 1)) (sndT (var 1)) : P
 ipra_subst rawSample [late, cutoff]
 
 theorem raw_at (p A B : PTm n) : Γ ⊢[PRAAx] ap2 rawF p (pairT A B) ≐ rawSample p A B := by
-  let x := pairT A B
-  have read : Γ ⊢[PRAAx] ap2 rawF p x ≐ rawSample p (fstT x) (sndT x) := by
-    simpa only [rawF,ap2,subst_rawSample,subst_fstT,subst_sndT,Syn.subst_var,Matrix.cons_val_zero,Matrix.cons_val_one] using
-      toPR_eq (Γ := Γ) (rawSample (var 0) (fstT (var 1)) (sndT (var 1)) : PTm 2) ![p,x]
-  exact read.eqTrans (by
-    simpa only [subst_rawSample,Syn.subst_var,Matrix.cons_val_zero,Matrix.cons_val_one,Matrix.cons_val_two,
-      Matrix.head_cons,Matrix.tail_cons] using
-      Prf.eqCongr (Γ := Γ) (Ax := PRAAx) (rawSample (var 0) (var 1) (var 2) : PTm 3)
-        (σ := ![p,fstT x,sndT x]) (σ' := ![p,A,B])
-        (fun i => by fin_cases i; exact .eqRefl _; exact fst_pair _ _; exact snd_pair _ _))
+  simpa [rawF] using
+    (toPR_pair_eq (Γ := Γ) (rawSample (var 0) (var 1) (var 2)) p A B)
 
 private theorem row_clock_later (p B : PTm n) : Γ ⊢[PRAAx] le p (rowClock p B) := by
   let d := GaussianBinetBoseSeries.denominatorClock p B

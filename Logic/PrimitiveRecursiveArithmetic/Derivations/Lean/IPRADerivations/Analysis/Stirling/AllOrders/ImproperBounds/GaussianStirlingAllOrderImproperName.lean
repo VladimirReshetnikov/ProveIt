@@ -43,16 +43,8 @@ ipra_subst rate
 ipra_subst data
 
 theorem raw_at (m : ℕ) (p A B : PTm n) : Γ ⊢[PRAAx] ap2 (rawF m) p (rawData A B) ≐ raw m p A B := by
-  let x := rawData A B
-  have c : Γ ⊢[PRAAx] ap2 (rawF m) p x ≐ raw m p (fstT x) (sndT x) := by
-    simpa [rawF,ap2] using toPR_eq (Γ := Γ)
-      (raw m (var 0) (fstT (var 1)) (sndT (var 1)) : PTm 2) ![p,x]
-  exact c.eqTrans (by
-    simpa only [subst_raw,Syn.subst_var,Matrix.cons_val_zero,Matrix.cons_val_one,
-      Matrix.cons_val_two,Matrix.head_cons,Matrix.tail_cons] using
-        Prf.eqCongr (Γ := Γ) (raw m (var 0) (var 1) (var 2) : PTm 3)
-          (σ := ![p,fstT x,sndT x]) (σ' := ![p,A,B])
-          (fun i => by fin_cases i; exact .eqRefl _; exact fst_pair _ _; exact snd_pair _ _))
+  simpa [rawF, rawData] using
+    (toPR_pair_eq (Γ := Γ) (raw m (var 0) (var 1) (var 2)) p A B)
 
 theorem raw_distance (m : ℕ) (p A B x : PTm n) (hs : Γ ⊢[PRAAx] source A B) : Γ ⊢[PRAAx]
     distanceBounded (raw m p A B) (ap2 (T m) p (TData m A B x)) (radius m B) (unit p) :=

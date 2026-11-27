@@ -135,15 +135,8 @@ def rawF : PR 2 := PTm.toPR (rawSample (var 0) (fstT (var 1)) (sndT (var 1)) : P
 ipra_subst rawSample [mesh]
 
 theorem raw_at (p a b : PTm n) : Γ ⊢[PRAAx] ap2 rawF p (pairT a b) ≐ rawSample p a b := by
-  let x := pairT a b
-  have read : Γ ⊢[PRAAx] ap2 rawF p x ≐ rawSample p (fstT x) (sndT x) := by
-    simpa only [rawF,ap2,subst_rawSample,subst_fstT,subst_sndT,Syn.subst_var,Matrix.cons_val_zero,Matrix.cons_val_one] using
-      toPR_eq (Γ := Γ) (rawSample (var 0) (fstT (var 1)) (sndT (var 1)) : PTm 2) ![p,x]
-  exact read.eqTrans (by
-    simpa only [subst_rawSample,Syn.subst_var,Matrix.cons_val_zero,Matrix.cons_val_one,Matrix.cons_val_two,Matrix.head_cons,Matrix.tail_cons] using
-      Prf.eqCongr (Γ := Γ) (Ax := PRAAx) (rawSample (var 0) (var 1) (var 2) : PTm 3)
-        (σ := ![p,fstT x,sndT x]) (σ' := ![p,a,b])
-        (fun i => by fin_cases i; exact .eqRefl _; exact fst_pair _ _; exact snd_pair _ _))
+  simpa [rawF] using
+    (toPR_pair_eq (Γ := Γ) (rawSample (var 0) (var 1) (var 2)) p a b)
 
 theorem raw_error (p a b : PTm n) (h : Γ ⊢[PRAAx] source a b) :
     Γ ⊢[PRAAx] distanceBounded (ap2 rawF p (pairT a b)) (ap2 endpointF p (endpointData a b)) (budget a b) (unit p) :=

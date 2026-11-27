@@ -46,16 +46,8 @@ ipra_subst rawData
 ipra_subst data
 
 theorem raw_at (p A B : PTm n) : Γ ⊢[PRAAx] ap2 rawF p (rawData A B) ≐ raw p A B := by
-  let w := rawData A B
-  have e : Γ ⊢[PRAAx] ap2 rawF p w ≐ raw p (fstT w) (sndT w) := by
-    simpa [rawF,ap2] using toPR_eq (Γ := Γ) (raw (var 0) (fstT (var 1)) (sndT (var 1)) : PTm 2) ![p,w]
-  exact e.eqTrans (by
-    simpa using Prf.eqCongr (Γ := Γ) (raw (var 0) (var 1) (var 2) : PTm 3)
-      (σ := ![p,fstT w,sndT w]) (σ' := ![p,A,B]) (fun i => by
-        fin_cases i
-        exact .eqRefl _
-        exact fst_pair _ _
-        exact snd_pair _ _))
+  simpa [rawF, rawData] using
+    (toPR_pair_eq (Γ := Γ) (raw (var 0) (var 1) (var 2)) p A B)
 
 theorem cutoff_error (p A B x : PTm n) (h : Γ ⊢[PRAAx] source A B) :
     Γ ⊢[PRAAx] distanceBounded (raw p A B) (ap2 remainderF p (remainderData A B x)) (num 46) (unit p) := by

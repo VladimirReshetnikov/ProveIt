@@ -52,12 +52,8 @@ def data (x m : PTm n) : PTm n := GaussianFastValueCut.nameData m (pairT x m)
     Syn.subst σ (data x m) = data (Syn.subst σ x) (Syn.subst σ m) := by simp [data]
 
 theorem raw_at (f : PR 2) (p x m : PTm n) : Γ ⊢[PRAAx] ap2 (rawF f) p (pairT x m) ≐ frozen f p x m := by
-  let X := pairT x m
-  have read : Γ ⊢[PRAAx] ap2 (rawF f) p X ≐ frozen f p (fstT X) (sndT X) := by
-    simpa [rawF,ap2] using toPR_eq (Γ := Γ) (frozen f (var 0) (fstT (var 1)) (sndT (var 1)) : PTm 2) ![p,X]
-  exact read.eqTrans (by
-    ipra_congr (frozen f (var 0) (var 1) (var 2) : PTm 3) with
-      [.eqRefl p, fst_pair x m, snd_pair x m] using [X])
+  simpa [rawF] using
+    (toPR_pair_eq (Γ := Γ) (frozen f (var 0) (var 1) (var 2)) p x m)
 
 theorem sample_at (f : PR 2) (p x m : PTm n) :
     Γ ⊢[PRAAx] ap2 (nameF f) p (data x m) ≐ frozen f (exponent m p) x m := by

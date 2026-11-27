@@ -37,13 +37,8 @@ ipra_subst cutoff
 ipra_subst sample [finiteData]
 
 theorem sample_at (p A B : PTm n) : Γ ⊢[PRAAx] ap2 nameF p (inputData A B) ≐ sample p A B := by
-  let x := inputData A B
-  have e : Γ ⊢[PRAAx] ap2 nameF p x ≐ sample p (fstT x) (sndT x) := by
-    simpa only [nameF, ap2, subst_sample, subst_fstT, subst_sndT, Syn.subst_var,
-      Matrix.cons_val_zero, Matrix.cons_val_one] using
-      toPR_eq (Γ := Γ) (sample (var 0) (fstT (var 1)) (sndT (var 1)) : PTm 2) ![p,x]
-  exact e.eqTrans (congrAp2 finiteF (.eqRefl _) (congrPairT (.eqRefl _)
-    (congrPairT (fst_pair A B) (snd_pair A B))))
+  simpa [nameF, inputData] using
+    (toPR_pair_eq (Γ := Γ) (sample (var 0) (var 1) (var 2)) p A B)
 
 private theorem unit_successor (p : PTm n) : Γ ⊢[PRAAx] unit (succ p) ≐ two*unit p :=
   (pw_succ two p).eqTrans (mul_comm _ _)

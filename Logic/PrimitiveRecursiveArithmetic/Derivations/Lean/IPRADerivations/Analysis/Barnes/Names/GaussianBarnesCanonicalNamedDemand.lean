@@ -79,15 +79,8 @@ def nameF (modulus : Modulus) (f : PR 2) : PR 2 :=
 
 theorem sample_at (modulus : Modulus) (f : PR 2) (p x R : PTm n) :
     Γ ⊢[PRAAx] ap2 (nameF modulus f) p (data x R) ≐ sample modulus f p x R := by
-  let X := data x R
-  have raw : Γ ⊢[PRAAx] ap2 (nameF modulus f) p X ≐ sample modulus f p (fstT X) (sndT X) := by
-    simpa [nameF,ap2] using
-      toPR_eq (Γ := Γ) (sample modulus f (var 0) (fstT (var 1)) (sndT (var 1)) : PTm 2) ![p,X]
-  have first : Γ ⊢[PRAAx] fstT X ≐ x := fst_pair x R
-  have second : Γ ⊢[PRAAx] sndT X ≐ R := snd_pair x R
-  refine raw.eqTrans ?_
-  ipra_congr (sample modulus f (var 0) (var 1) (var 2) : PTm 3) with
-    [.eqRefl p, first, second]
+  simpa [nameF, data] using
+    (toPR_pair_eq (Γ := Γ) (sample modulus f (var 0) (var 1) (var 2)) p x R)
 
 theorem source_of_regular (f : PR 2) (x : PTm n) (h : Γ ⊢[PRAAx] pointCN f x) :
     Γ ⊢[PRAAx] source f x (GaussianNameBounds.U f x) :=

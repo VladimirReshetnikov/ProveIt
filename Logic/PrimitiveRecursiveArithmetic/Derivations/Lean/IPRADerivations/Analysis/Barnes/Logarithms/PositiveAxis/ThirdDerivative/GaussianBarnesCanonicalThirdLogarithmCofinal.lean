@@ -50,14 +50,8 @@ def nameF : PR 2 := PTm.toPR (sample (var 0) (fstT (var 1)) (sndT (var 1)) : PTm
     Syn.subst σ (sample p A B) = sample (Syn.subst σ p) (Syn.subst σ A) (Syn.subst σ B) := by simp [sample]
 
 theorem sample_at (p A B : PTm n) : Γ ⊢[PRAAx] ap2 nameF p (data A B) ≐ sample p A B := by
-  let d := data A B
-  have raw : Γ ⊢[PRAAx] ap2 nameF p d ≐ sample p (fstT d) (sndT d) := by
-    simpa [nameF,ap2] using toPR_eq (Γ := Γ)
-      (sample (var 0) (fstT (var 1)) (sndT (var 1)) : PTm 2) ![p,d]
-  have decode : Γ ⊢[PRAAx] sample p (fstT d) (sndT d) ≐ sample p A B := by
-    dsimp only [d,data]
-    ipra_congr (sample (var 0) (var 1) (var 2) : PTm 3) with [.eqRefl _, fst_pair A B, snd_pair A B]
-  exact raw.eqTrans decode
+  simpa [nameF, data] using
+    (toPR_pair_eq (Γ := Γ) (sample (var 0) (var 1) (var 2)) p A B)
 
 theorem cutoff_positive (p : PTm n) : Γ ⊢[PRAAx] le one (cutoff p) :=
   positive_product gain (unit p) (positive_product two two (le_succ_self one) (le_succ_self one)) (unit_positive p)

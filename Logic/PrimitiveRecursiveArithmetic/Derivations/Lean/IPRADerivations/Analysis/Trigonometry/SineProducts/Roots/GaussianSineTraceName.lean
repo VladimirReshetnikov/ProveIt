@@ -37,13 +37,8 @@ ipra_subst modulus
 ipra_subst data
 
 theorem raw_at (f : PR 2) (k p x : PTm n) : Γ ⊢[PRAAx] ap2 (rawF f) p (rawData k x) ≐ raw f p k x := by
-  refine (show Γ ⊢[PRAAx] ap2 (rawF f) p (rawData k x) ≐ raw f p (fstT (rawData k x)) (sndT (rawData k x)) by
-    have e := toPR_eq (Γ := Γ) (raw f (var 0) (fstT (var 1)) (sndT (var 1)) : PTm 2) ![p,rawData k x]
-    simp only [raw,GaussianSineMultipleAngleRecurrence.subst_value,subst_ap2,subst_fstT,subst_sndT,
-      Syn.subst_var,Matrix.cons_val_zero,Matrix.cons_val_one] at e
-    simpa only [raw,rawF,ap2] using e).eqTrans ?_
-  exact congrSnd (congrAp2 GaussianSineMultipleAngleRecurrence.stateF (fst_pair k x)
-    (congrAp2 f (.eqRefl p) (snd_pair k x)))
+  simpa [rawF, rawData, raw] using
+    (toPR_pair_eq (Γ := Γ) (raw f (var 0) (var 1) (var 2)) p k x)
 
 theorem raw_regular_at (f : PR 2) (k p q x : PTm n) (h : Γ ⊢[PRAAx] pointCN f x) :
     Γ ⊢[PRAAx] distanceBounded (ap2 (rawF f) p (rawData k x)) (ap2 (rawF f) q (rawData k x))
