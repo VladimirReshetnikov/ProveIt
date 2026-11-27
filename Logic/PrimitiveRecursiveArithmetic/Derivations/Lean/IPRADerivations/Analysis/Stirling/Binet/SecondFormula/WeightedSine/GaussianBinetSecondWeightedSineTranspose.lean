@@ -26,7 +26,7 @@ open GaussianRationalFiniteSum (sum termsEqual multiplyBody multiply_body_at sum
 open GaussianRationalFubini
   (column rowSumBody columnSumBody columnBody column_entry row_sum_at column_sum_at rowFirst columnFirst)
 open GaussianRationalHorner (qmul)
-open GaussianRationalPowerAlgebra (qmul_commutative)
+open GaussianRationalPowerAlgebra (commute_nested)
 open GaussianRationalRiemannRefinement (leftSum weight)
 open GaussianRationalSyntheticDivision (qmul_congr)
 open GaussianReciprocalHorner (qmul_associative)
@@ -81,9 +81,6 @@ theorem suffix_at (j p M T H J X Y D sign R L N cut : PTm n) :
   exact (multiply_body_at (rowSumBody matrix) w j (pairT C d)).eqTrans
     ((qmul_congr (.eqRefl _) (row_sum_at matrix j C d)).eqTrans (suffix_row_at j p M T H J X Y D sign R L N cut))
 
-private theorem commute_weights (a b c : PTm n) : Γ ⊢[PRAAx] qmul a (qmul b c) ≐ qmul b (qmul a c) :=
-  (qmul_associative a b c).eqSymm.eqTrans ((qmul_congr (qmul_commutative a b) (.eqRefl _)).eqTrans (qmul_associative b a c))
-
 theorem scaled_transpose (p M T H J X Y D sign R L N cut : PTm n) : Γ ⊢[PRAAx]
     qmul (fraction two one) (suffixValue p M T H J X Y D sign R L N cut) ≐
       transposedValue p M T H J X Y D sign R L N cut := by
@@ -96,9 +93,9 @@ theorem scaled_transpose (p M T H J X Y D sign R L N cut : PTm n) : Γ ⊢[PRAAx
   let s := columnFirst matrix M C d
   have removed : Γ ⊢[PRAAx] suffixValue p M T H J X Y D sign R L N cut ≐ qmul ft (qmul fs r) :=
     qmul_congr (.eqRefl _) (sum_multiply (rowSumBody matrix) fs M (pairT C d))
-  have order : Γ ⊢[PRAAx] qmul ft (qmul fs r) ≐ qmul fs (qmul ft r) := commute_weights ft fs r
+  have order : Γ ⊢[PRAAx] qmul ft (qmul fs r) ≐ qmul fs (qmul ft r) := commute_nested ft fs r
   have commute : Γ ⊢[PRAAx] qmul c (qmul fs (qmul ft r)) ≐ qmul fs (qmul (qmul c ft) s) :=
-    (commute_weights c fs (qmul ft r)).eqTrans (qmul_congr (.eqRefl _) ((qmul_associative c ft r).eqSymm.eqTrans
+    (commute_nested c fs (qmul ft r)).eqTrans (qmul_congr (.eqRefl _) ((qmul_associative c ft r).eqSymm.eqTrans
       (qmul_congr (.eqRefl _) (GaussianRationalFubini.fubini matrix M C d))))
   exact (qmul_congr (.eqRefl _) (removed.eqTrans order)).eqTrans
     (commute.eqTrans (qmul_congr (.eqRefl _) (sum_multiply (columnSumBody matrix) (qmul c ft) C (pairT M d)).eqSymm))
@@ -154,7 +151,7 @@ private theorem column_weighted_at (r p k i M T X Y D sign R L N cut : PTm n)
     have exactSum : Γ ⊢[PRAAx] sum (columnBody matrix) M (pairT r d) ≐ sum (multiplyBody f) M (pairT e x) :=
       GaussianRationalFiniteSum.sum_congr_bounded (columnBody matrix) (multiplyBody f) M (pairT r d) (pairT e x) terms
     exact exactSum.eqTrans (sum_multiply f e M x)
-  exact (qmul_congr (.eqRefl w) bind).eqTrans (commute_weights w e z)
+  exact (qmul_congr (.eqRefl w) bind).eqTrans (commute_nested w e z)
 
 theorem transposed_at (r p k i M T X Y D sign R L N cut : PTm n)
     (hcut : Γ ⊢[PRAAx] le one cut) :
@@ -173,7 +170,7 @@ theorem transposed_at (r p k i M T X Y D sign R L N cut : PTm n)
     (qmul_congr (.eqRefl _) (column_sum_at matrix r M d))
   have middle := (qmul_associative c w q).eqTrans
     (qmul_congr (.eqRefl _) (column_weighted_at r p k i M T X Y D sign R L N cut hcut))
-  exact first.eqTrans (middle.eqTrans (commute_weights c e z))
+  exact first.eqTrans (middle.eqTrans (commute_nested c e z))
 
 theorem actual_weighted_second_Binet_positive_suffix_transpose_closed :
     ([] : List (Fm PTm 0)) ⊢[PRAAx] univ 13
