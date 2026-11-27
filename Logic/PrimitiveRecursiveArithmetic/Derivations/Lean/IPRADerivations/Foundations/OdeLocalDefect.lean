@@ -66,29 +66,20 @@ theorem defect_sum (u e : PTm 2) {x A B K : PTm n}
     (hc : Γ ⊢[PRAAx] Fm.all (lt (Syn.var 0) (Syn.shift K) ⟶
       Cell u e (Syn.shift x) (Syn.shift A) (Syn.shift B) (Syn.var 0))) :
     Γ ⊢[PRAAx] DInv u e x A B K := by
-  have hall : Γ ⊢[PRAAx] Fm.all (le (Syn.var 0) (Syn.shift K) ⟶
-      DInv u e (Syn.shift x) (Syn.shift A) (Syn.shift B) (Syn.var 0)) := by
-    refine PRA.qfInd _ ⟨le_QF _ _, le_QF _ _⟩ ?_ ?_
-    · simp only [Fm.subst_imp, subst_le, subst_ap2, subst_inst2, PTm.subst_add, PTm.subst_mul, Syn.subst_var,
-        Syn.inst_zero, Syn.subst_inst_shift, ConciseIPRA.PTm.subst_zero, ConciseIPRA.PTm.subst_succ]
-      refine .impI ?_
-      have z := natEq (sum_zero (Γ := le zero K :: Γ) e x)
+  let P := DInv u e (Syn.shift x) (Syn.shift A) (Syn.shift B) (Syn.var 0)
+  have atBound : Γ ⊢[PRAAx] P.subst (Syn.inst K) := by
+    refine qfIndUpTo K (le_QF _ _) ?_ ?_
+    · simp only [P, subst_le, subst_ap2, subst_inst2, PTm.subst_add, PTm.subst_mul,
+        Syn.subst_var, Syn.inst_zero, Syn.subst_inst_shift, ConciseIPRA.PTm.subst_zero,
+        ConciseIPRA.PTm.subst_succ]
+      have z := natEq (sum_zero (Γ := Γ) e x)
       ipra_le 0 using rw [z]; ring
-    · simp only [Fm.subst_imp, subst_le, subst_ap2, subst_inst2, PTm.subst_add, PTm.subst_mul,
+    · simp only [P, subst_le, subst_ap2, subst_inst2, PTm.subst_add, PTm.subst_mul,
         PTm.subst_monus, Syn.subst_var, Syn.repl_zero, subst_repl_shift, ConciseIPRA.PTm.subst_zero,
         ConciseIPRA.PTm.subst_succ]
-      refine .impI ?_
-      let Δ : List (Fm PTm (n + 1)) := le (succ (Syn.var 0)) (Syn.shift K) ::
-        (le (Syn.var 0) (Syn.shift K) ⟶ DInv u e (Syn.shift x) (Syn.shift A) (Syn.shift B) (Syn.var 0)) ::
-          Γ.map Fm.shift
-      have hk : Δ ⊢[PRAAx] le (succ (Syn.var 0)) (Syn.shift K) := Prf.hyp0
-      have ih : Δ ⊢[PRAAx] DInv u e (Syn.shift x) (Syn.shift A) (Syn.shift B) (Syn.var 0) :=
-        Prf.impE Prf.hyp1 (le_trans (le_succ_self _) hk)
-      exact defect_step (Prf.impE hm.allOpen.wk.wk hk) (Prf.impE hc.allOpen.wk.wk hk) ih
-  have h2 := Prf.allE K hall
-  simp only [Fm.subst_imp, subst_le, subst_ap2, subst_inst2, PTm.subst_add, PTm.subst_mul, Syn.subst_var,
-    Syn.inst_zero, Syn.subst_inst_shift, ConciseIPRA.PTm.subst_zero, ConciseIPRA.PTm.subst_succ] at h2
-  exact .impE h2 (le_refl K)
+      exact .impI (defect_step (.impE hm.allOpen.wk.wk Prf.hyp0)
+        (.impE hc.allOpen.wk.wk Prf.hyp0) Prf.hyp1)
+  simpa [P] using atBound
 
 /-- `eq:ode-localdefect`: from the start `u(0) = 0` to `u(K) = v`, `2 ∑ e ≤ 2A v + B v²`. -/
 theorem local_defect (u e : PTm 2) {x A B K v : PTm n}

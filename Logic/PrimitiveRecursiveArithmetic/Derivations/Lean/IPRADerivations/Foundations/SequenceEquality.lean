@@ -2,6 +2,7 @@ import IPRADerivations.Foundations.MasterCertificate
 import IPRADerivations.Core.CongruenceTactic
 import IPRADerivations.Core.CommonLemmas
 import IPRADerivations.Core.Header
+import IPRADerivations.Core.BoundedSums
 
 /-!
 # Literal equality of sequences constructed by the checked stack program
@@ -46,29 +47,20 @@ theorem agree_at (A B : PTm 2) (N x y i : PTm n) (h : Γ ⊢[PRAAx] agree A B N 
 
 theorem stack_equal (A B : PTm 2) (N x y : PTm n) (h : Γ ⊢[PRAAx] agree A B N x y) :
     Γ ⊢[PRAAx] stack A N x ≐ stack B N y := by
-  have all : Γ ⊢[PRAAx] .all (le (var 0) (Syn.shift N) ⟶
-      (stack A (var 0) (Syn.shift x) ≐ stack B (var 0) (Syn.shift y))) := by
-    refine PRA.qfInd _ ⟨le_QF _ _,trivial⟩ ?_ ?_
-    · simp only [Fm.subst_imp,Fm.subst_eq,subst_le,subst_stack,Syn.subst_var,
-        Syn.inst_zero,Syn.subst_inst_shift]
-      exact .impI ((stack_zero A x).eqTrans (stack_zero B y).eqSymm)
-    · simp only [Fm.subst_imp,Fm.subst_eq,subst_le,subst_stack,Syn.subst_var,
-        Syn.repl_zero,subst_repl_shift]
+  let P : Fm PTm (n + 1) := stack A (var 0) (Syn.shift x) ≐ stack B (var 0) (Syn.shift y)
+  have atBound : Γ ⊢[PRAAx] P.subst (Syn.inst N) := by
+    refine qfIndUpTo N trivial ?_ ?_
+    · simpa only [P,Fm.subst_eq,subst_stack,Syn.subst_var,Syn.inst_zero,Syn.subst_inst_shift]
+        using (stack_zero (Γ := Γ) A x).eqTrans (stack_zero B y).eqSymm
+    · simp only [P,Fm.subst_eq,subst_stack,Syn.subst_var,Syn.repl_zero,subst_repl_shift]
       refine .impI ?_
-      let IH : Fm PTm (n+1) := le (var 0) (Syn.shift N) ⟶
-        (stack A (var 0) (Syn.shift x) ≐ stack B (var 0) (Syn.shift y))
-      let Δ : List (Fm PTm (n+1)) := le (succ (var 0)) (Syn.shift N) :: IH :: Γ.map Fm.shift
-      have previous : Δ ⊢[PRAAx] stack A (var 0) (Syn.shift x) ≐ stack B (var 0) (Syn.shift y) :=
-        .impE Prf.hyp1 (le_trans (le_succ_self _) Prf.hyp0)
+      let Δ := lt (var 0) (Syn.shift N) :: P :: Γ.map Fm.shift
       have contract : Γ.map Fm.shift ⊢[PRAAx] agree A B (Syn.shift N) (Syn.shift x) (Syn.shift y) := by
         simpa only [Fm.shift,subst_agree,Syn.shift] using h.shift
       have head := agree_at A B (Syn.shift N) (Syn.shift x) (Syn.shift y) (var 0)
         contract.wk.wk (Prf.hyp0 : Δ ⊢[PRAAx] _)
-      exact (stack_succ A _ _).eqTrans ((pair_congr head previous).eqTrans (stack_succ B _ _).eqSymm)
-  have rule : Γ ⊢[PRAAx] le N N ⟶ (stack A N x ≐ stack B N y) := by
-    simpa only [Fm.subst_imp,Fm.subst_eq,subst_le,subst_stack,Syn.subst_var,
-      Syn.inst_zero,Syn.subst_inst_shift] using Prf.allE N all
-  exact .impE rule (le_refl _)
+      exact (stack_succ A _ _).eqTrans ((pair_congr head Prf.hyp1).eqTrans (stack_succ B _ _).eqSymm)
+  simpa only [P,Fm.subst_eq,subst_stack,Syn.subst_var,Syn.inst_zero,Syn.subst_inst_shift] using atBound
 
 theorem sequence_equal (A B : PTm 2) (N x y : PTm n) (h : Γ ⊢[PRAAx] agree A B N x y) :
     Γ ⊢[PRAAx] sequence A N x ≐ sequence B N y := pair_congr (.eqRefl _) (stack_equal A B N x y h)

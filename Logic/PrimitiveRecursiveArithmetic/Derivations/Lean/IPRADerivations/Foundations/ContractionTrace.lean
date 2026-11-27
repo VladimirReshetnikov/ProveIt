@@ -55,30 +55,18 @@ theorem contraction_iter (D : PTm 2) {a b x N : PTm n}
     (hs : Γ ⊢[PRAAx] Fm.all (lt (Syn.var 0) (Syn.shift N) ⟶
       le (Syn.shift b * inst2 D (succ (Syn.var 0)) (Syn.shift x)) (Syn.shift a * inst2 D (Syn.var 0) (Syn.shift x)))) :
     Γ ⊢[PRAAx] CInv D a b N x := by
-  have hall : Γ ⊢[PRAAx] Fm.all (le (Syn.var 0) (Syn.shift N) ⟶
-      CInv D (Syn.shift a) (Syn.shift b) (Syn.var 0) (Syn.shift x)) := by
-    refine PRA.qfInd _ ⟨le_QF _ _, le_QF _ _⟩ ?_ ?_
-    · simp only [Fm.subst_imp, subst_le, subst_ap2, subst_inst2, PTm.subst_mul, Syn.subst_var, Syn.inst_zero,
-        Syn.subst_inst_shift, ConciseIPRA.PTm.subst_zero]
-      refine .impI ?_
-      have p1 := natEq (pw_zero (Γ := le zero N :: Γ) b)
-      have p2 := natEq (pw_zero (Γ := le zero N :: Γ) a)
+  let P := CInv D (Syn.shift a) (Syn.shift b) (Syn.var 0) (Syn.shift x)
+  have atBound : Γ ⊢[PRAAx] P.subst (Syn.inst N) := by
+    refine qfIndUpTo N (le_QF _ _) ?_ ?_
+    · simp only [P, subst_le, subst_ap2, subst_inst2, PTm.subst_mul,
+        Syn.subst_var, Syn.inst_zero, Syn.subst_inst_shift, ConciseIPRA.PTm.subst_zero]
+      have p1 := natEq (pw_zero (Γ := Γ) b)
+      have p2 := natEq (pw_zero (Γ := Γ) a)
       ipra_le 0 using rw [p1, p2]; ring
-    · simp only [Fm.subst_imp, subst_le, subst_ap2, subst_inst2, PTm.subst_mul, Syn.subst_var, Syn.repl_zero,
-        subst_repl_shift, ConciseIPRA.PTm.subst_zero, ConciseIPRA.PTm.subst_succ]
-      refine .impI ?_
-      let Δ : List (Fm PTm (n + 1)) := le (succ (Syn.var 0)) (Syn.shift N) ::
-        (le (Syn.var 0) (Syn.shift N) ⟶ CInv D (Syn.shift a) (Syn.shift b) (Syn.var 0) (Syn.shift x)) ::
-          Γ.map Fm.shift
-      have hk : Δ ⊢[PRAAx] le (succ (Syn.var 0)) (Syn.shift N) := Prf.hyp0
-      have ih : Δ ⊢[PRAAx] CInv D (Syn.shift a) (Syn.shift b) (Syn.var 0) (Syn.shift x) :=
-        Prf.impE Prf.hyp1 (le_trans (le_succ_self _) hk)
-      have st := Prf.impE hs.allOpen.wk.wk hk
-      exact trace_step st ih
-  have h2 := Prf.allE N hall
-  simp only [Fm.subst_imp, subst_le, subst_ap2, subst_inst2, PTm.subst_mul, Syn.subst_var, Syn.inst_zero,
-    Syn.subst_inst_shift, ConciseIPRA.PTm.subst_zero] at h2
-  exact .impE h2 (le_refl N)
+    · simp only [P, subst_le, subst_ap2, subst_inst2, PTm.subst_mul, Syn.subst_var,
+        Syn.repl_zero, subst_repl_shift, ConciseIPRA.PTm.subst_zero]
+      exact .impI (trace_step (.impE hs.allOpen.wk.wk Prf.hyp0) Prf.hyp1)
+  simpa [P] using atBound
 
 /-- Uniqueness: `b d ≤ a d` with `a < b` gives `d = 0`. -/
 theorem contraction_unique {a b d : PTm n} (hab : Γ ⊢[PRAAx] lt a b) (h : Γ ⊢[PRAAx] le (b * d) (a * d)) :

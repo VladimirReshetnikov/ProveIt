@@ -1,5 +1,6 @@
 import IPRADerivations.Foundations.FiniteQueryTable
 import IPRADerivations.Core.Header
+import IPRADerivations.Core.BoundedSums
 
 /-!
 # Forward validity of a topologically ordered contract graph
@@ -40,28 +41,19 @@ abbrev Step (v : PTm 2) (L x : PTm n) : Fm PTm n :=
 /-- The forward run: every node of the order is valid, `∏_{i<L} v(i) = 1`. -/
 theorem forward_all (v : PTm 2) {L x : PTm n} (h : Γ ⊢[PRAAx] Step v L x) :
     Γ ⊢[PRAAx] ap2 (prodF v) L x ≐ one := by
-  have hall : Γ ⊢[PRAAx] Fm.all (le (Syn.var 0) (Syn.shift L) ⟶
-      (ap2 (prodF v) (Syn.var 0) (Syn.shift x) ≐ one)) := by
-    refine PRA.qfInd _ ⟨le_QF _ _, trivial⟩ ?_ ?_
-    · simp only [Fm.subst_imp, Fm.subst_eq, subst_le, subst_ap2, Syn.subst_var, Syn.inst_zero,
-        Syn.subst_inst_shift, ConciseIPRA.PTm.subst_zero, ConciseIPRA.PTm.subst_succ]
-      exact .impI (prod_zero v x)
-    · simp only [Fm.subst_imp, Fm.subst_eq, subst_le, subst_ap2, Syn.subst_var, Syn.repl_zero,
-        subst_repl_shift, ConciseIPRA.PTm.subst_zero, ConciseIPRA.PTm.subst_succ]
+  let P : Fm PTm (n + 1) := ap2 (prodF v) (Syn.var 0) (Syn.shift x) ≐ one
+  have atBound : Γ ⊢[PRAAx] P.subst (Syn.inst L) := by
+    refine qfIndUpTo L trivial ?_ ?_
+    · simpa [P] using prod_zero (Γ := Γ) v x
+    · simp only [P, Fm.subst_eq, subst_ap2, Syn.subst_var, Syn.repl_zero, subst_repl_shift,
+        ConciseIPRA.PTm.subst_zero, ConciseIPRA.PTm.subst_succ]
       refine .impI ?_
-      let Δ : List (Fm PTm (n + 1)) := le (succ (Syn.var 0)) (Syn.shift L) ::
-        (le (Syn.var 0) (Syn.shift L) ⟶ (ap2 (prodF v) (Syn.var 0) (Syn.shift x) ≐ one)) :: Γ.map Fm.shift
-      have hk : Δ ⊢[PRAAx] le (succ (Syn.var 0)) (Syn.shift L) := Prf.hyp0
-      have ih : Δ ⊢[PRAAx] ap2 (prodF v) (Syn.var 0) (Syn.shift x) ≐ one :=
-        Prf.impE Prf.hyp1 (le_trans (le_succ_self _) hk)
+      let Δ := lt (Syn.var 0) (Syn.shift L) :: P :: Γ.map Fm.shift
+      have ih : Δ ⊢[PRAAx] P := Prf.hyp1
       have hv : Δ ⊢[PRAAx] inst2 v (Syn.var 0) (Syn.shift x) ≐ one :=
-        Prf.impE (Prf.impE h.allOpen.wk.wk hk) ih
-      have ps := prod_succ (Γ := Δ) v (Syn.var 0) (Syn.shift x)
-      exact ps.eqTrans ((congrMul ih hv).eqTrans (one_mul _))
-  have h2 := Prf.allE L hall
-  simp only [Fm.subst_imp, Fm.subst_eq, subst_le, subst_ap2, Syn.subst_var, Syn.inst_zero,
-    Syn.subst_inst_shift, ConciseIPRA.PTm.subst_zero, ConciseIPRA.PTm.subst_succ] at h2
-  exact .impE h2 (le_refl L)
+        .impE (.impE h.allOpen.wk.wk Prf.hyp0) ih
+      exact (prod_succ v (Syn.var 0) (Syn.shift x)).eqTrans ((congrMul ih hv).eqTrans (one_mul _))
+  simpa [P] using atBound
 
 /-- `thm:forward-validity`: every node `j < L` is valid at its computed demand. -/
 theorem forward_node (v : PTm 2) {L j x : PTm n} (h : Γ ⊢[PRAAx] Step v L x)
