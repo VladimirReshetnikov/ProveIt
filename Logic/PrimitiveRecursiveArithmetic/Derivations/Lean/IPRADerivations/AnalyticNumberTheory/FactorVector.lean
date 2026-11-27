@@ -49,7 +49,7 @@ theorem lpf_prime' {z : PTm n} (h : Γ ⊢[PRAAx] le two z) : Γ ⊢[PRAAx] prim
   prime_congr (lpf_congr (two_eq h)).eqSymm (lpf_prime _)
 
 theorem lt_two_le_one {z : PTm n} (h : Γ ⊢[PRAAx] lt z two) : Γ ⊢[PRAAx] le z one :=
-  (succ_monus_succ _ _).eqSymm.eqTrans h
+  Order.le_of_lt_succ h
 
 /-- A prime dividing a power divides the base. -/
 theorem prime_dvd_pw_step {q x e : PTm n} (hq : Γ ⊢[PRAAx] prime q)

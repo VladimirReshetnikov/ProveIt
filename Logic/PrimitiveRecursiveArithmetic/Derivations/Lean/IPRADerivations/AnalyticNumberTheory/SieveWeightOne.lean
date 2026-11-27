@@ -177,7 +177,7 @@ theorem YP_one (P : PTm n) : Γ ⊢[PRAAx] inst2 YP one P ≐ fact (sndT (sndT P
 /-- `z! ≤ A` for `z ≥ 1`: `G ≥ 1`. -/
 theorem A_ge {P : PTm n} (hz : Γ ⊢[PRAAx] le one (sndT (sndT P))) :
     Γ ⊢[PRAAx] le (fact (sndT (sndT P))) (Asum P) := by
-  have h1 : Γ ⊢[PRAAx] lt one (succ (sndT (sndT P))) := (succ_monus_succ _ _).eqTrans hz
+  have h1 : Γ ⊢[PRAAx] lt one (succ (sndT (sndT P))) := Order.lt_succ_of_le hz
   exact le_trans (le_congr (YP_one P) (.eqRefl _) (term_le_sum YP (x := P) h1)) (le_add_right _ _)
 
 end LeanProofs.IPRA.AnalyticNumberTheory.SieveWeightOne

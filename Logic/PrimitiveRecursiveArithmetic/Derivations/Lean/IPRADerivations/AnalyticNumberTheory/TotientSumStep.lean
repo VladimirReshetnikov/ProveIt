@@ -141,7 +141,7 @@ theorem W_scale {p a z t : PTm n} (hp : Γ ⊢[PRAAx] prime p) (hc : Γ ⊢[PRAA
     rw [sq] at h0
     exact h0
   have hk : C ⊢[PRAAx] le (var 0) (quo (Syn.shift t) (Syn.shift p)) :=
-    (succ_monus_succ _ _).eqSymm.eqTrans hlt
+    Order.le_of_lt_succ hlt
   have hp1' : C ⊢[PRAAx] Syn.shift p ≐ succ (pred (Syn.shift p)) := p_pos (prime_two hp'.wk)
   have hpk : C ⊢[PRAAx] le (Syn.shift p * var 0) (Syn.shift z) :=
     le_trans (mul_le_of_le_quo hp1' hk) htz'.wk
@@ -155,7 +155,7 @@ theorem Gs_mono {a z N N' : PTm n} (h : Γ ⊢[PRAAx] le N N') : Γ ⊢[PRAAx] l
 /-- `W` is nondecreasing in `t`. -/
 theorem Ws_mono {p a z t t' : PTm n} (h : Γ ⊢[PRAAx] le (quo t p) (quo t' p)) :
     Γ ⊢[PRAAx] le (Ws p a z t) (Ws p a z t') :=
-  sum_le_bound HB ((succ_monus_succ _ _).eqTrans h)
+  sum_le_bound HB (Order.lt_succ_of_le h)
 
 end LeanProofs.IPRA.AnalyticNumberTheory.TotientSumStep
 

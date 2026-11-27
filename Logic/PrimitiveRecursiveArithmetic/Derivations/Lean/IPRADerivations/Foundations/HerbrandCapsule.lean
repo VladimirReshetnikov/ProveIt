@@ -88,7 +88,7 @@ theorem candidates_program (f : PTm 2) (N x : PTm n) : Γ ⊢[PRAAx] runList f N
 theorem candidates_value_bound (f : PTm 2) (N x i : PTm n) (hi : Γ ⊢[PRAAx] lt i N) :
     Γ ⊢[PRAAx] lt (entry (candidates f N x) i) (valueCap f N x) :=
   lt_congr (candidates_lookup f N x i hi).eqSymm (.eqRefl _)
-    ((succ_monus_succ _ _).eqTrans (finiteMaximum_at f hi))
+    (Order.lt_succ_of_le (finiteMaximum_at f hi))
 theorem candidates_code_bound (f : PTm 2) (N x : PTm n) :
     Γ ⊢[PRAAx] lt (candidates f N x) (codeBound f N x) := by
   have points : Γ ⊢[PRAAx] .all (lt (var 0) (Syn.shift N) ⟶
@@ -97,7 +97,7 @@ theorem candidates_code_bound (f : PTm 2) (N x : PTm n) :
     have bound := le_trans (finiteMaximum_at (Γ := lt (var 0) (Syn.shift N) :: Γ.map Fm.shift) f Prf.hyp0)
       (le_succ_self (finiteMaximum f (Syn.shift N) (Syn.shift x)))
     simpa only [inst2,Syn.subst_var,Matrix.cons_val_one,Matrix.cons_val_zero,Matrix.head_cons,Matrix.tail_cons,Syn.shift,subst_valueCap,valueCap,ConciseIPRA.PTm.subst_succ,subst_finiteMaximum] using bound
-  exact (succ_monus_succ _ _).eqTrans (sequence_mono f (var 1) N x (valueCap f N x) points)
+  exact Order.lt_succ_of_le (sequence_mono f (var 1) N x (valueCap f N x) points)
 
 /-- The actual compiled finite disjunction over the actual list decoder. -/
 def checkerFormula (A : BFm 2) : BFm 2 :=

@@ -89,7 +89,7 @@ theorem chain_lookup (I : Instance) (s : PTm 1) (p t : PTm n)
     (ht : Γ ⊢[PRAAx] le t (I.h p)) : Γ ⊢[PRAAx]
     entry (chainCode I s p) t ≐ chain I s t p := by
   have e := MasterCertificate.sequence_decode (chainBody I s) (x := p)
-    ((succ_monus_succ _ _).eqTrans ht)
+    (Order.lt_succ_of_le ht)
   simpa [chainCode,chainBody,inst2] using e
 theorem chain_start (I : Instance) (s : PTm 1) (p : PTm n) : Γ ⊢[PRAAx]
     entry (chainCode I s p) zero ≐ start s p :=
@@ -208,9 +208,9 @@ theorem produced_size_bound (I : Instance) (s : PTm 1) (p : PTm n)
         (boundStack_zero I p).eqSymm (le_refl zero)
     · have shiftBound : Syn.shift (succ (I.h p)) = succ (I.h (Syn.shift p)) := by simp [Syn.shift]
       simp [P, shiftBound]
-      exact .impI (stack_bound_step I s _ _ hs.wk.wk ((succ_monus_succ _ _).eqSymm.eqTrans Prf.hyp0)
+      exact .impI (stack_bound_step I s _ _ hs.wk.wk (Order.le_of_lt_succ Prf.hyp0)
         Prf.hyp1)
-  exact (succ_monus_succ _ _).eqTrans (pair_mono (le_refl _) (by simpa [P] using result))
+  exact Order.lt_succ_of_le (pair_mono (le_refl _) (by simpa [P] using result))
 
 theorem chain_exists (I : Instance) (s : PTm 1) (p : PTm n)
     (h : Γ ⊢[PRAAx] viableStart I (start s p) p) : Γ ⊢[PRAAx] hasChain I (start s p) p := by

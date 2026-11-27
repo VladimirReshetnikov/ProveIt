@@ -126,7 +126,7 @@ theorem sh_pt
   have h₀ : Γ ⊢[PRAAx] lt j (succ (monus M m)) :=
     lt_congr (.eqRefl j) (congrSucc mp).eqSymm (le_trans hj' (le_succ_self _))
   have h₁ : Γ ⊢[PRAAx] lt (succ j) (succ (monus M m)) :=
-    lt_congr (.eqRefl (succ j)) (congrSucc mp).eqSymm ((succ_monus_succ _ _).eqTrans hj')
+    lt_congr (.eqRefl (succ j)) (congrSucc mp).eqSymm (Order.succ_le_succ hj')
   have a₀ := sh_elim L R (all_elim (shB L R) ih h₀)
   have a₁ := sh_elim L R (all_elim (shB L R) ih h₁)
   have cL := congrInst3 L (.eqRefl m) (add_succ (Γ := Γ) b j) (.eqRefl x)

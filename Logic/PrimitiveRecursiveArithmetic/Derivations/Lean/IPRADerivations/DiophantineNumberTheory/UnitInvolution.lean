@@ -95,15 +95,15 @@ theorem pred_lt_pred {t p : PTm n} (hq : Γ ⊢[PRAAx] le two p) (ht : Γ ⊢[PR
   have l : Γ ⊢[PRAAx] le two (succ (pred p)) := le_congr (.eqRefl _) hp1 hq
   refine .orE (zero_or_succ t) ?_ ?_
   · exact lt_congr ((congrPred Prf.hyp0).eqTrans pred_zero).eqSymm (.eqRefl _)
-      ((succ_monus_succ _ _).eqSymm.eqTrans l.wk)
+      (Order.le_of_lt_succ l.wk)
   · have h : ((t ≐ succ (pred t)) :: Γ) ⊢[PRAAx] le (succ (succ (pred t))) (succ (pred p)) :=
       le_congr (congrSucc Prf.hyp0) hp1.wk ht.wk
-    exact (succ_monus_succ _ _).eqSymm.eqTrans h
+    exact Order.le_of_lt_succ h
 
 /-- `i + 1 < p` for `i < p − 1`. -/
 theorem succ_lt_of {i p : PTm n} (hp1 : Γ ⊢[PRAAx] p ≐ succ (pred p)) (hi : Γ ⊢[PRAAx] lt i (pred p)) :
     Γ ⊢[PRAAx] lt (succ i) p :=
-  le_congr (.eqRefl _) hp1.eqSymm ((succ_monus_succ _ _).eqTrans hi)
+  le_congr (.eqRefl _) hp1.eqSymm (Order.succ_le_succ hi)
 
 /-! ## The involution on indices -/
 

@@ -113,9 +113,9 @@ theorem dist_dvd {A B C : PTm n} (hA : Γ ⊢[PRAAx] A ≐ succ (pred A)) (hB : 
   have ap := gcd_pos (B := C) (lcm_pos hA hB)
   have bp := lcm_pos (gcd_pos (B := C) hA) (gcd_pos (B := C) hB)
   have la : Γ ⊢[PRAAx] lt (gcd (lcm A B) C) (succ (gcd (lcm A B) C + lcm (gcd A C) (gcd B C))) :=
-    (succ_monus_succ _ _).eqTrans (le_add_right _ _)
+    Order.lt_succ_of_le (le_add_right _ _)
   have lb : Γ ⊢[PRAAx] lt (lcm (gcd A C) (gcd B C)) (succ (gcd (lcm A B) C + lcm (gcd A C) (gcd B C))) :=
-    (succ_monus_succ _ _).eqTrans (le_add_left _ _)
+    Order.lt_succ_of_le (le_add_left _ _)
   refine dvd_of_val_le ap bp la lb (.allI (.impI (.impI ?_)))
   have sA := shift_pos hA; have sB := shift_pos hB; have sC := shift_pos hC
   have s1 : Syn.shift (gcd (lcm A B) C) = gcd (lcm (Syn.shift A) (Syn.shift B)) (Syn.shift C) := by

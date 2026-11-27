@@ -28,7 +28,7 @@ theorem gcd_two_of_odd {p : PTm n} (hp : Γ ⊢[PRAAx] p ≐ succ (pred p)) (hod
   have hgp := gcd_pos (B := two) hp
   have hle : Γ ⊢[PRAAx] le (gcd p two) two := dvd_le' hgp (Prf.andE₂ hg) two_pos'
   refine .orE (lt_or_eq_of_le hle) ?_ ?_
-  · exact le_antisymm ((succ_monus_succ _ _).eqSymm.eqTrans Prf.hyp0) (one_le_of_pos hgp.wk)
+  · exact le_antisymm (Order.le_of_lt_succ Prf.hyp0) (one_le_of_pos hgp.wk)
   · have h2 : ((gcd p two ≐ two) :: Γ) ⊢[PRAAx] rem p two ≐ zero := dvd_congr_left Prf.hyp0 (Prf.andE₁ hg).wk
     exact succ_ne_zero' _ (hodd.wk.eqSymm.eqTrans h2)
 
