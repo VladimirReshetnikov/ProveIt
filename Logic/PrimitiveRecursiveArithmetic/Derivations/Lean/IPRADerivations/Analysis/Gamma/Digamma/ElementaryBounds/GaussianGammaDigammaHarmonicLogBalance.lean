@@ -21,7 +21,7 @@ open GaussianGammaFiniteApproximantName (logF log_regular)
 open GaussianHarmonicLogarithmName (sample sample_at clock)
 open GaussianHarmonicLogarithmProduct (mesh mesh_later finite_samples)
 open GaussianNamedDifference (difference_distance)
-open GaussianRationalDistanceOrder (distance_congr distance_radius_mono distance_symmetric distance_triangle_same)
+open GaussianRationalDistanceOrder (distance_congr distance_radius_mono distance_symmetric distance_triangle_same distance_radius_mono_den)
 open GaussianRationalHorner (qadd qzero positive_product)
 open GaussianRationalMetric (qsub bounded distanceBounded)
 open GaussianRationalPowerDifference (distance_refl_zero)
@@ -41,8 +41,7 @@ private theorem same_ratio_at (p a b c d : PTm n)
   have hQ := le_trans (unit_positive (Γ := Γ) p) (mesh_later p)
   have raw := RationalGaussianNameEmbedding.distance_from_radius _ _ _ _ hQ
     (RationalHarmonicInterval.equal_ratio_finite a b c d (mesh p) ha hb hc hd hQ e)
-  exact distance_radius_mono _ _ _ _ two (unit p) hQ (unit_positive p)
-    (AnalyticNumberTheory.PhiLower.le_mul_mono (le_refl two) (mesh_later p))
+  exact distance_radius_mono_den (unit_positive p) (mesh_later p)
     (distance_congr (sample_at p a b).eqSymm (sample_at p c d).eqSymm (.eqRefl _) (.eqRefl _) raw)
 
 private theorem nearby_at (p a b N : PTm n) (hs : Γ ⊢[PRAAx] source a b) (hN : Γ ⊢[PRAAx] le one N) :
@@ -108,8 +107,7 @@ theorem cutoff_balance_of_le (p a b N : PTm n) (hs : Γ ⊢[PRAAx] source a b) (
       (distance_congr (.eqRefl _) eV.eqSymm (.eqRefl _) (.eqRefl _) original)
   have logClock := difference_distance old V L L two zero U hU originalV (distance_refl_zero L U hU)
   have hX := GaussianRationalHorner.canonical_congr (sample_at (Γ := Γ) p a b) (embed_canonical (interval a b (mesh p)))
-  have near := distance_radius_mono _ _ _ _ _ _ hN hU
-    (AnalyticNumberTheory.PhiLower.le_mul_mono (le_refl a) hLater) (nearby_at p a b N hs hN)
+  have near := distance_radius_mono_den hU hLater (nearby_at p a b N hs hN)
   have endGap := difference_distance X X T qzero zero a U hU (distance_refl_zero X U hU) near
   have shifted := distance_triangle_same _ _ _ _ _ U hU logClock balanced
   exact distance_congr (.eqRefl _) (GaussianRationalReconstruction.qsub_zero_right _ hX)

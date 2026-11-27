@@ -30,7 +30,7 @@ open GaussianNameBounds (U)
 open GaussianNameEquivalence (crossEquivalent cross_symm cross_trans cross_refl cross_at)
 open GaussianNameRingLaws (negativeF negativeData oneF)
 open GaussianRadiusExponentialName (input boundedSamples inputPrecision index)
-open GaussianRationalDistanceOrder (distance_congr distance_radius_mono distance_symmetric distance_triangle_same)
+open GaussianRationalDistanceOrder (distance_congr distance_radius_mono distance_symmetric distance_triangle_same distance_radius_mono_den)
 open GaussianRationalHorner (qzero positive_product)
 open GaussianRationalMetric (qsub qnegative qnegative_canonical distanceBounded bounded)
 open GaussianRationalSyntheticDivision (qzero_add)
@@ -151,8 +151,7 @@ private theorem negative_exponentials_near (p A B D neg N : PTm n)
   have clocks : Γ ⊢[PRAAx] le (unit t) (unit k) :=
     GaussianExponentialReference.unit_monotone (le_add_right t _)
   have sameClock : Γ ⊢[PRAAx] distanceBounded u v two (unit t) :=
-    distance_radius_mono _ _ _ _ _ _ hk ht
-      (AnalyticNumberTheory.PhiLower.le_mul_mono (le_refl two) clocks) changed
+    distance_radius_mono_den ht clocks changed
   have raw := GaussianRationalRadiusExponentialLipschitz.scalar_sum_lipschitz u v W two (unit t) K ht
     (GaussianRadiusExponentialName.bounded_samples_at _ _ _ _ left.andE₂)
     (GaussianRadiusExponentialName.bounded_samples_at _ _ _ _ right.andE₂) sameClock
