@@ -1,4 +1,4 @@
-import IPRADerivations.Analysis.Logarithm.RightHalfPlane.GaussianRightHalfPlaneLogarithmHalfDiskBound
+import IPRADerivations.Analysis.Logarithm.RightHalfPlane.NearOne.GaussianRightHalfPlaneLogarithmHalfDiskBound
 import IPRADerivations.Analysis.Gamma.EulerProducts.LogGamma.Convergence.GaussianLogGammaEulerResidualCanonicalError
 
 /-!

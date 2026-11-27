@@ -1,5 +1,5 @@
 import IPRADerivations.Analysis.Euler.PowerScaling.GaussianEulerPowerScalingCompactRate
-import IPRADerivations.Analysis.Logarithm.PositiveAxis.GaussianNamedPositiveLogarithm
+import IPRADerivations.Analysis.Logarithm.PositiveAxis.NamedValues.GaussianNamedPositiveLogarithm
 
 /-!
 # Compact power chart with named positive damping and exponent

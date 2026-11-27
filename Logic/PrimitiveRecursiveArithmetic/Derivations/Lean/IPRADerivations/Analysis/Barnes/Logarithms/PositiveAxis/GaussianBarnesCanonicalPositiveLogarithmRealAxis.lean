@@ -2,7 +2,7 @@ import IPRADerivations.Analysis.Barnes.Logarithms.PositiveAxis.GaussianBarnesCan
 import IPRADerivations.Analysis.Barnes.Logarithms.PositiveAxis.GaussianBarnesCanonicalPositiveHeadRealAxis
 import IPRADerivations.Analysis.Barnes.Logarithms.GaussianBarnesCanonicalLogarithmRealTail
 import IPRADerivations.Analysis.Barnes.CanonicalProducts.GaussianBarnesCanonicalProperness
-import IPRADerivations.Analysis.Logarithm.PositiveAxis.GaussianNamedPositiveLogarithmScale
+import IPRADerivations.Analysis.Logarithm.PositiveAxis.NamedValues.GaussianNamedPositiveLogarithmScale
 
 /-!
 # The real positive-axis logarithm of the original Barnes evaluator

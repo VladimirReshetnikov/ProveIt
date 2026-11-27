@@ -1,5 +1,5 @@
 import IPRADerivations.Analysis.Gamma.BohrMollerup.FiniteBrackets.GaussianBohrMollerupBracketEndpoints
-import IPRADerivations.Analysis.Logarithm.PositiveAxis.GaussianPositiveRationalLogarithmOrder
+import IPRADerivations.Analysis.Logarithm.PositiveAxis.Bounds.GaussianPositiveRationalLogarithmOrder
 import IPRADerivations.Analysis.Names.Order.GaussianNamedRealOrderEnvelope
 
 /-!

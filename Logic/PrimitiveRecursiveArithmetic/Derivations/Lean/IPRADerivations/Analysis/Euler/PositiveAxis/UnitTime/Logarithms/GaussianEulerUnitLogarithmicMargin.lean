@@ -1,4 +1,4 @@
-import IPRADerivations.Analysis.Logarithm.PositiveAxis.GaussianUpperTimeLogarithmBound
+import IPRADerivations.Analysis.Logarithm.PositiveAxis.Bounds.GaussianUpperTimeLogarithmBound
 import IPRADerivations.AnalyticNumberTheory.LogElementary
 
 /-!

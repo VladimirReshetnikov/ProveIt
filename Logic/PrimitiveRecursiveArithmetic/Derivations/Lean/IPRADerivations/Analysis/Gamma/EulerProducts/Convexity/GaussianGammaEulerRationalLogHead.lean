@@ -2,7 +2,7 @@ import IPRADerivations.Analysis.Gamma.EulerProducts.RationalLogarithm.GaussianGa
 import IPRADerivations.Analysis.Gamma.EulerProducts.Convexity.GaussianGammaEulerRationalHeadConvexity
 import IPRADerivations.Analysis.Euler.HarmonicLogarithms.GaussianHarmonicLogarithmPower
 import IPRADerivations.Analysis.Names.Scaling.GaussianNaturalScaleProductName
-import IPRADerivations.Analysis.Logarithm.PositiveAxis.GaussianPositiveRationalLogarithmOrder
+import IPRADerivations.Analysis.Logarithm.PositiveAxis.Bounds.GaussianPositiveRationalLogarithmOrder
 import IPRADerivations.Analysis.Gamma.FunctionalEquations.Recurrence.GaussianNamedGammaHalfShift
 
 /-!

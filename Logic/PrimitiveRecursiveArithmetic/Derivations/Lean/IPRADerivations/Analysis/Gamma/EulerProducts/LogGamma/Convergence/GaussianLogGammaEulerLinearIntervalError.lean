@@ -1,5 +1,5 @@
 import IPRADerivations.Analysis.Gamma.EulerProducts.LogGamma.Convergence.GaussianLogGammaEulerLinearInterval
-import IPRADerivations.Analysis.Logarithm.PositiveAxis.GaussianPositiveRationalLogarithmIncrement
+import IPRADerivations.Analysis.Logarithm.PositiveAxis.Increments.GaussianPositiveRationalLogarithmIncrement
 
 /-!
 # The original Euler logarithm interval and its harmonic interval

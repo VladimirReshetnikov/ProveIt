@@ -1,7 +1,7 @@
 import IPRADerivations.Analysis.Gamma.NegativeAxis.Derivatives.CoefficientVariation.GaussianGammaNegativeIntervalCenterVariation
 import IPRADerivations.Analysis.Gamma.NegativeAxis.Logarithms.GaussianGammaNegativeIntervalLogAbsoluteRetiming
 import IPRADerivations.Analysis.Gamma.NegativeAxis.CriticalPoints.Chords.GaussianGammaNegativeIntervalLogChordStationary
-import IPRADerivations.Analysis.Logarithm.PositiveAxis.GaussianNamedPositiveLogarithmRate
+import IPRADerivations.Analysis.Logarithm.PositiveAxis.NamedValues.GaussianNamedPositiveLogarithmRate
 
 /-!
 # Original negative log-Gamma variation at a small derivative

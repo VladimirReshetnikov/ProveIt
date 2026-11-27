@@ -1,4 +1,4 @@
-import IPRADerivations.Analysis.Trigonometry.Hyperbolic.GaussianSineProductImaginaryLogDerivativeTail
+import IPRADerivations.Analysis.Trigonometry.Hyperbolic.ProductEstimates.GaussianSineProductImaginaryLogDerivativeTail
 import IPRADerivations.Analysis.Names.Arithmetic.GaussianNameConjugation
 
 /-!

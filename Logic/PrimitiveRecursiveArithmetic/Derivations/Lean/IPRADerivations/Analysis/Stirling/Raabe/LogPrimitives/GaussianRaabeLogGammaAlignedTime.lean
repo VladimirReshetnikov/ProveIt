@@ -1,6 +1,6 @@
 import IPRADerivations.Analysis.Stirling.Raabe.UnitPanels.GaussianRaabeUnitGridRecurrence
 import IPRADerivations.Analysis.Integration.CompactGrids.GaussianCompactAlignedTime
-import IPRADerivations.Analysis.Logarithm.PositiveAxis.GaussianCompactLogarithmBounds
+import IPRADerivations.Analysis.Logarithm.PositiveAxis.Bounds.GaussianCompactLogarithmBounds
 import IPRADerivations.Analysis.Stirling.GammaIncrements.GaussianStirlingGammaFractionalIncrementConvexity
 
 /-!

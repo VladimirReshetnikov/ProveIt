@@ -1,6 +1,6 @@
 import IPRADerivations.Analysis.Names.GoldenRatio.GaussianNamedGoldenRatio
 import IPRADerivations.Analysis.RationalArithmetic.GoldenRatio.GaussianGoldenRatioRationalUniqueness
-import IPRADerivations.Analysis.Logarithm.PositiveAxis.GaussianNamedPositiveLogarithm
+import IPRADerivations.Analysis.Logarithm.PositiveAxis.NamedValues.GaussianNamedPositiveLogarithm
 
 /-!
 # The positive named golden-ratio equation

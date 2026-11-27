@@ -1,7 +1,7 @@
 import IPRADerivations.Analysis.Barnes.Logarithms.PositiveAxis.GaussianBarnesCanonicalPositiveHeadLogarithm
 import IPRADerivations.Analysis.Barnes.Logarithms.PositiveAxis.FirstDerivative.GaussianBarnesCanonicalPositiveFirstDerivativeRow
 import IPRADerivations.Analysis.Euler.Integration.Decay.GaussianEulerDecayFactorBounds
-import IPRADerivations.Analysis.Logarithm.PositiveAxis.GaussianPositiveRationalLogarithmSignedIncrement
+import IPRADerivations.Analysis.Logarithm.PositiveAxis.Increments.GaussianPositiveRationalLogarithmSignedIncrement
 import IPRADerivations.Analysis.Series.Telescoping.SignedTelescope
 
 /-!

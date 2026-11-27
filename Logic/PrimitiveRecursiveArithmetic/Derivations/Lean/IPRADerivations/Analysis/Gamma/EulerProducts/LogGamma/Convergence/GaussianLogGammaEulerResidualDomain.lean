@@ -1,4 +1,4 @@
-import IPRADerivations.Analysis.Logarithm.RightHalfPlane.GaussianRightHalfPlaneLogarithmOffset
+import IPRADerivations.Analysis.Logarithm.RightHalfPlane.NearOne.GaussianRightHalfPlaneLogarithmOffset
 import IPRADerivations.Analysis.Logarithm.RightHalfPlane.GaussianRightHalfPlaneLogarithmRescale
 
 /-!

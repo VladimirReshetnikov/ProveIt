@@ -1,4 +1,4 @@
-import IPRADerivations.Analysis.Logarithm.RightHalfPlane.GaussianRightHalfPlaneLogarithmHalfDiskBound
+import IPRADerivations.Analysis.Logarithm.RightHalfPlane.NearOne.GaussianRightHalfPlaneLogarithmHalfDiskBound
 import IPRADerivations.Analysis.Logarithm.Local.GaussianLocalLogarithmTaylorRemainder
 import IPRADerivations.Analysis.Names.Rates.Transport.GaussianNamedRateTransport
 

@@ -1,4 +1,4 @@
-import IPRADerivations.Analysis.Trigonometry.Hyperbolic.GaussianSineProductImaginaryCofinalLogDerivative
+import IPRADerivations.Analysis.Trigonometry.Hyperbolic.Derivatives.GaussianSineProductImaginaryCofinalLogDerivative
 
 /-!
 # Cleared partial fractions for the original hyperbolic cotangent

@@ -1,4 +1,4 @@
-import IPRADerivations.Analysis.Logarithm.RightHalfPlane.GaussianRightHalfPlaneLogarithmRationalContinuity
+import IPRADerivations.Analysis.Logarithm.RightHalfPlane.Increments.GaussianRightHalfPlaneLogarithmRationalContinuity
 import IPRADerivations.Analysis.Gamma.EulerProducts.LogGamma.GaussianLogGammaEulerCommonDenominator
 import IPRADerivations.Analysis.Names.RightHalfPlane.GaussianNamedRightHalfPlaneLift
 

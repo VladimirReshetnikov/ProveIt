@@ -1,5 +1,5 @@
 import IPRADerivations.Analysis.Gamma.EulerProducts.LogGamma.Convergence.GaussianLogGammaEulerResidualRadius
-import IPRADerivations.Analysis.Logarithm.PositiveAxis.GaussianCompactLogarithmBounds
+import IPRADerivations.Analysis.Logarithm.PositiveAxis.Bounds.GaussianCompactLogarithmBounds
 
 /-!
 # A uniform disk for the original complex logarithm observations

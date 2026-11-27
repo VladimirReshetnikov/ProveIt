@@ -1,6 +1,6 @@
 import IPRADerivations.Analysis.FiniteOperations.FiniteProducts.GaussianInverseSquareProductGrowth
-import IPRADerivations.Analysis.Trigonometry.Hyperbolic.GaussianSineProductImaginaryFirstOrder
-import IPRADerivations.Analysis.Trigonometry.Hyperbolic.GaussianSineProductImaginaryLogDerivativeTail
+import IPRADerivations.Analysis.Trigonometry.Hyperbolic.ProductEstimates.GaussianSineProductImaginaryFirstOrder
+import IPRADerivations.Analysis.Trigonometry.Hyperbolic.ProductEstimates.GaussianSineProductImaginaryLogDerivativeTail
 
 /-!
 # Uniform first-order error for the imaginary-axis sine product

@@ -1,5 +1,5 @@
 import IPRADerivations.Analysis.Names.Differences.GaussianNamedDifferenceAlgebra
-import IPRADerivations.Analysis.Logarithm.PositiveAxis.GaussianPositiveRationalLogarithmIncrement
+import IPRADerivations.Analysis.Logarithm.PositiveAxis.Increments.GaussianPositiveRationalLogarithmIncrement
 import IPRADerivations.Analysis.RationalArithmetic.Powers.GaussianPowers.GaussianRationalPowerDifference
 import IPRADerivations.Analysis.Stirling.Expansions.OddSeries.GaussianStirlingOddCoefficients
 

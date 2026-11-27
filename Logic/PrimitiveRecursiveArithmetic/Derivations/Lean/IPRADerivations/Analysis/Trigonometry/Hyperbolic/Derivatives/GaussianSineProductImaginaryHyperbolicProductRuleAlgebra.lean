@@ -1,6 +1,6 @@
 import IPRADerivations.Analysis.Trigonometry.Pi.GaussianPiRationalScale
 import IPRADerivations.Analysis.Polynomials.Coefficients.GaussianRationalCoefficientScaling
-import IPRADerivations.Analysis.Trigonometry.Hyperbolic.GaussianSineProductImaginaryFirstOrderBound
+import IPRADerivations.Analysis.Trigonometry.Hyperbolic.ProductEstimates.GaussianSineProductImaginaryFirstOrderBound
 
 /-!
 # Exact finite remainder of the imaginary sine product with its linear factor

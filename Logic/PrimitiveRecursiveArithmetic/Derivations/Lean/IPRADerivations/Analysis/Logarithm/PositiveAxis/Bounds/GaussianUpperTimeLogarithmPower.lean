@@ -1,4 +1,4 @@
-import IPRADerivations.Analysis.Logarithm.PositiveAxis.GaussianUpperTimeLogarithmBound
+import IPRADerivations.Analysis.Logarithm.PositiveAxis.Bounds.GaussianUpperTimeLogarithmBound
 
 /-!
 # Actual integer logarithmic powers above time one

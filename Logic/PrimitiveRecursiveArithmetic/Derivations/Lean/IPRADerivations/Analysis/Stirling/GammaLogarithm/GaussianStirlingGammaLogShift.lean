@@ -1,5 +1,5 @@
 import IPRADerivations.Analysis.Stirling.GammaLogarithm.GaussianStirlingGammaLogarithm
-import IPRADerivations.Analysis.Logarithm.PositiveAxis.GaussianNamedPositiveLogarithmScale
+import IPRADerivations.Analysis.Logarithm.PositiveAxis.NamedValues.GaussianNamedPositiveLogarithmScale
 import IPRADerivations.Analysis.Gamma.FunctionalEquations.Recurrence.GaussianGammaShift
 import IPRADerivations.Analysis.Gamma.Names.PoleFree.GaussianGammaRadiusOverlap
 import IPRADerivations.Analysis.Euler.HarmonicLogarithms.GaussianHarmonicLogarithmName

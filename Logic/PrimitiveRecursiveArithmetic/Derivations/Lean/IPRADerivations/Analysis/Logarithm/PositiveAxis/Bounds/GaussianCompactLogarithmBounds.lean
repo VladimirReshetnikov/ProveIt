@@ -1,4 +1,4 @@
-import IPRADerivations.Analysis.Logarithm.PositiveAxis.GaussianPositiveRationalLogarithmVariation
+import IPRADerivations.Analysis.Logarithm.PositiveAxis.Increments.GaussianPositiveRationalLogarithmVariation
 import IPRADerivations.Core.CertificateTactics
 
 /-!

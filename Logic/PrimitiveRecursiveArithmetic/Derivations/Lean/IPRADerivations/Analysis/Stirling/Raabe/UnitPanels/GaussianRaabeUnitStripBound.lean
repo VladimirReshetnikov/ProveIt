@@ -1,5 +1,5 @@
 import IPRADerivations.Analysis.Stirling.Raabe.StirlingComparisons.GaussianRaabeStirlingRemainder
-import IPRADerivations.Analysis.Logarithm.PositiveAxis.GaussianCompactLogarithmBounds
+import IPRADerivations.Analysis.Logarithm.PositiveAxis.Bounds.GaussianCompactLogarithmBounds
 import IPRADerivations.Analysis.Euler.CompactExhaustion.ParameterBounds.GaussianEulerExponentCompactBounds
 
 /-!

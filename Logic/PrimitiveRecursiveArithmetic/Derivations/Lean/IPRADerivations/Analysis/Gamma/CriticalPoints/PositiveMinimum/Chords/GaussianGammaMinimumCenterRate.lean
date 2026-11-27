@@ -1,6 +1,6 @@
 import IPRADerivations.Analysis.Gamma.CriticalPoints.PositiveMinimum.Chords.GaussianGammaMinimumSignedStep
 import IPRADerivations.Analysis.Gamma.CriticalPoints.PositiveMinimum.Chords.GaussianGammaMinimumQuotientReadback
-import IPRADerivations.Analysis.Logarithm.PositiveAxis.GaussianNamedPositiveLogarithmRate
+import IPRADerivations.Analysis.Logarithm.PositiveAxis.NamedValues.GaussianNamedPositiveLogarithmRate
 
 /-!
 # Small log-Gamma variation along the thin chord

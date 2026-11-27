@@ -1,4 +1,4 @@
-import IPRADerivations.Analysis.Trigonometry.Hyperbolic.GaussianSineProductImaginaryHyperbolicDerivative
+import IPRADerivations.Analysis.Trigonometry.Hyperbolic.Derivatives.GaussianSineProductImaginaryHyperbolicDerivative
 
 /-!
 # The original hyperbolic derivative as π cosh

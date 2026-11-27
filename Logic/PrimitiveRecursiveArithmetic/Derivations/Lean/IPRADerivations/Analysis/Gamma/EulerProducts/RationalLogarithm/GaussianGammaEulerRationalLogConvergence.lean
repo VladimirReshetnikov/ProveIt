@@ -1,5 +1,5 @@
 import IPRADerivations.Analysis.Gamma.EulerProducts.RationalLogarithm.GaussianGammaEulerRationalLogConvergenceSource
-import IPRADerivations.Analysis.Logarithm.PositiveAxis.GaussianNamedPositiveLogarithmRate
+import IPRADerivations.Analysis.Logarithm.PositiveAxis.NamedValues.GaussianNamedPositiveLogarithmRate
 
 /-!
 # Actual finite Euler logarithms converge to the original log Gamma

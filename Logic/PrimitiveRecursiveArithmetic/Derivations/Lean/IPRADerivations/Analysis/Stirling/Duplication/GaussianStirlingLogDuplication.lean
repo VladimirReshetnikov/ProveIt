@@ -1,5 +1,5 @@
 import IPRADerivations.Analysis.Stirling.Duplication.GaussianStirlingNativeDuplication
-import IPRADerivations.Analysis.Logarithm.PositiveAxis.GaussianNamedPositiveLogarithmScale
+import IPRADerivations.Analysis.Logarithm.PositiveAxis.NamedValues.GaussianNamedPositiveLogarithmScale
 import IPRADerivations.Analysis.Gamma.FunctionalEquations.Multiplication.Normalization.GaussianGaussMultiplicationHalfPower
 import IPRADerivations.Analysis.Stirling.GammaLogarithm.GaussianStirlingNames
 

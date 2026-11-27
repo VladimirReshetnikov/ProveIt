@@ -1,4 +1,4 @@
-import IPRADerivations.Analysis.Trigonometry.Hyperbolic.GaussianSineProductImaginaryLogDerivative
+import IPRADerivations.Analysis.Trigonometry.Hyperbolic.ProductEstimates.GaussianSineProductImaginaryLogDerivative
 
 /-!
 # Cofinal imaginary-axis sine product logarithmic derivative

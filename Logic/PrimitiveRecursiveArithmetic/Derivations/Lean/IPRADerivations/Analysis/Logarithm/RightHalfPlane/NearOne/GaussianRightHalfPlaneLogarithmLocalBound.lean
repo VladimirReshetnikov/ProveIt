@@ -1,6 +1,6 @@
 import IPRADerivations.Analysis.RationalArithmetic.Complex.GaussianRightHalfPlaneArgumentLocalBound
 import IPRADerivations.Analysis.Logarithm.RightHalfPlane.GaussianRightHalfPlaneLogarithm
-import IPRADerivations.Analysis.Logarithm.PositiveAxis.GaussianPositiveRationalLogarithmVariation
+import IPRADerivations.Analysis.Logarithm.PositiveAxis.Increments.GaussianPositiveRationalLogarithmVariation
 import IPRADerivations.Analysis.Beta.Endpoints.Upper.GaussianBetaUpperPowerCancellation
 
 /-!

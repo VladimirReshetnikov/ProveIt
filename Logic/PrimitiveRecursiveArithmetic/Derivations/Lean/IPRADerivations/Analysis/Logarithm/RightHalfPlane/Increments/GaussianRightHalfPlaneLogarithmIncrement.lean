@@ -1,4 +1,4 @@
-import IPRADerivations.Analysis.Logarithm.RightHalfPlane.GaussianRightHalfPlaneLogarithmIncrementBound
+import IPRADerivations.Analysis.Logarithm.RightHalfPlane.Increments.GaussianRightHalfPlaneLogarithmIncrementBound
 import IPRADerivations.Analysis.Names.Differences.GaussianNamedStrictOrderDifference
 import IPRADerivations.Analysis.Names.Rates.DifferenceQuotients.GaussianNamedDifferenceQuotientProperness
 

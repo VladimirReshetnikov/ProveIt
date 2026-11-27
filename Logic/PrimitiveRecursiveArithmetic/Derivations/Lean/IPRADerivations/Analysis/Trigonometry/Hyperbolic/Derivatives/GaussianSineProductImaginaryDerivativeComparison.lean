@@ -1,6 +1,6 @@
 import IPRADerivations.Analysis.Names.Rates.Transport.GaussianNamedRateComposition
 import IPRADerivations.Analysis.Names.Differences.GaussianNamedScaledDerivativeUniqueness
-import IPRADerivations.Analysis.Trigonometry.Hyperbolic.GaussianSineProductImaginaryHyperbolicDerivative
+import IPRADerivations.Analysis.Trigonometry.Hyperbolic.Derivatives.GaussianSineProductImaginaryHyperbolicDerivative
 
 /-!
 # Comparing the product and exponential derivatives of the original sinh

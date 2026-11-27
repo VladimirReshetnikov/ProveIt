@@ -1,5 +1,5 @@
 import IPRADerivations.Analysis.Euler.ExponentialSubstitution.GaussianEulerExponentialLogGrid
-import IPRADerivations.Analysis.Logarithm.PositiveAxis.GaussianPositiveRationalLogarithmSign
+import IPRADerivations.Analysis.Logarithm.PositiveAxis.Bounds.GaussianPositiveRationalLogarithmSign
 import IPRADerivations.Analysis.Series.Telescoping.GaussianRationalParameterTelescope
 
 /-!

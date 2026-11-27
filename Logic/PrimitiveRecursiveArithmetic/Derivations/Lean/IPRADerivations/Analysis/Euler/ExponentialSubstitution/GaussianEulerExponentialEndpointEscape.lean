@@ -1,6 +1,6 @@
 import IPRADerivations.AnalyticNumberTheory.Doubling
 import IPRADerivations.AnalyticNumberTheory.PsiModulus
-import IPRADerivations.Analysis.Logarithm.PositiveAxis.GaussianPositiveRationalLogarithmSign
+import IPRADerivations.Analysis.Logarithm.PositiveAxis.Bounds.GaussianPositiveRationalLogarithmSign
 import IPRADerivations.Analysis.Gamma.Integrals.GaussianGammaIntegralCutoffs
 
 /-!

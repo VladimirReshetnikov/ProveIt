@@ -3,7 +3,7 @@ import IPRADerivations.Analysis.Names.Rates.Scaling.GaussianBoundedConstantProdu
 import IPRADerivations.Analysis.Gamma.FunctionalEquations.ReciprocalGamma.GaussianGammaAdjacentCutoff
 import IPRADerivations.Analysis.Names.Rates.Transport.GaussianNamedRateRadius
 import IPRADerivations.Analysis.Names.Rates.Transport.GaussianNamedRateTransport
-import IPRADerivations.Analysis.Trigonometry.Hyperbolic.GaussianSineProductImaginaryLogDerivativeTail
+import IPRADerivations.Analysis.Trigonometry.Hyperbolic.ProductEstimates.GaussianSineProductImaginaryLogDerivativeTail
 
 /-!
 # Uniqueness of a derivative from dyadically scaled names

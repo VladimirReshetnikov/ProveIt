@@ -2,7 +2,7 @@ import IPRADerivations.Analysis.Names.Rates.Scaling.GaussianBoundedConstantProdu
 import IPRADerivations.Analysis.Names.Differences.GaussianNamedDifferenceAlgebra
 import IPRADerivations.Analysis.Names.Rates.Transport.GaussianNamedRateRadius
 import IPRADerivations.Analysis.Trigonometry.Pi.GaussianPiRationalScaleFactors
-import IPRADerivations.Analysis.Trigonometry.Hyperbolic.GaussianSineProductImaginaryExponentialShift
+import IPRADerivations.Analysis.Trigonometry.Hyperbolic.Derivatives.GaussianSineProductImaginaryExponentialShift
 
 /-!
 # A uniform first-order rate for the original hyperbolic sine name

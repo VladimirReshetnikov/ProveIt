@@ -1,5 +1,5 @@
 import IPRADerivations.Analysis.Gamma.EulerProducts.LogGamma.Convergence.GaussianLogGammaEulerResidualError
-import IPRADerivations.Analysis.Logarithm.RightHalfPlane.GaussianRightHalfPlaneLogarithmMercator
+import IPRADerivations.Analysis.Logarithm.RightHalfPlane.NearOne.GaussianRightHalfPlaneLogarithmMercator
 import IPRADerivations.Analysis.Integration.Partitions.GaussianRationalPanelTailDistance
 
 /-!

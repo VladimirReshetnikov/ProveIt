@@ -1,6 +1,6 @@
 import IPRADerivations.Analysis.Stirling.Binet.WeightedIntegrals.GaussianBinetReciprocalRows
-import IPRADerivations.Analysis.Logarithm.RightHalfPlane.GaussianRightHalfPlaneLogarithmIncrement
-import IPRADerivations.Analysis.Logarithm.RightHalfPlane.GaussianRightHalfPlaneLogarithmIncrementMargin
+import IPRADerivations.Analysis.Logarithm.RightHalfPlane.Increments.GaussianRightHalfPlaneLogarithmIncrement
+import IPRADerivations.Analysis.Logarithm.RightHalfPlane.Increments.GaussianRightHalfPlaneLogarithmIncrementMargin
 
 /-!
 # Actual logarithm sample increments on a horizontal mesh

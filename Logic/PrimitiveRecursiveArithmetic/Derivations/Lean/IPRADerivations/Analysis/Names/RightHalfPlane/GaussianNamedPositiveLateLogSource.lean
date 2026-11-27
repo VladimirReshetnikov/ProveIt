@@ -1,4 +1,4 @@
-import IPRADerivations.Analysis.Logarithm.PositiveAxis.GaussianNamedPositiveLogarithm
+import IPRADerivations.Analysis.Logarithm.PositiveAxis.NamedValues.GaussianNamedPositiveLogarithm
 import IPRADerivations.Analysis.Names.RightHalfPlane.GaussianNamedRightHalfPlane
 import IPRADerivations.Analysis.RationalArithmetic.Representations.RationalRepresentedUpper
 

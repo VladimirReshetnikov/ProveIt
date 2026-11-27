@@ -1,5 +1,5 @@
 import IPRADerivations.Analysis.Exponential.Names.LocalEstimates.GaussianNamedExponentialQuarterUniqueness
-import IPRADerivations.Analysis.Logarithm.RightHalfPlane.GaussianRightHalfPlaneLogarithmMercator
+import IPRADerivations.Analysis.Logarithm.RightHalfPlane.NearOne.GaussianRightHalfPlaneLogarithmMercator
 
 /-!
 # Canonical and Mercator logarithms on the half disk

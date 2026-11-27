@@ -1,6 +1,6 @@
 import IPRADerivations.Analysis.Stirling.Raabe.GaussianRaabeAffineMean
 import IPRADerivations.Analysis.Stirling.Raabe.StirlingComparisons.GaussianRaabeStirlingCell
-import IPRADerivations.Analysis.Logarithm.PositiveAxis.GaussianCompactLogarithmBounds
+import IPRADerivations.Analysis.Logarithm.PositiveAxis.Bounds.GaussianCompactLogarithmBounds
 import IPRADerivations.Analysis.RationalArithmetic.Powers.GaussianCompactScalarMajorant
 import IPRADerivations.Analysis.Integration.Partitions.GaussianRationalPanelTailDistance
 

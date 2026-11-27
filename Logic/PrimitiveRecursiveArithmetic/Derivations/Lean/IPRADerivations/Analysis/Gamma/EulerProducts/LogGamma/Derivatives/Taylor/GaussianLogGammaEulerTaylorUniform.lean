@@ -1,5 +1,5 @@
 import IPRADerivations.Analysis.Gamma.EulerProducts.LogGamma.Derivatives.Taylor.GaussianLogGammaEulerTaylorCofinal
-import IPRADerivations.Analysis.Logarithm.RightHalfPlane.GaussianRightHalfPlaneLogarithmIncrementMargin
+import IPRADerivations.Analysis.Logarithm.RightHalfPlane.Increments.GaussianRightHalfPlaneLogarithmIncrementMargin
 
 /-!
 # Canonical log-Gamma Taylor bound on a certified rational rectangle

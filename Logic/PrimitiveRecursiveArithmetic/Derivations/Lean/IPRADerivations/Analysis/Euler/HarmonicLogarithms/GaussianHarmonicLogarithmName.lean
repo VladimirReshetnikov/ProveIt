@@ -1,7 +1,7 @@
-import IPRADerivations.Analysis.Logarithm.PositiveAxis.GaussianPositiveRationalLogarithmSign
+import IPRADerivations.Analysis.Logarithm.PositiveAxis.Bounds.GaussianPositiveRationalLogarithmSign
 import IPRADerivations.Analysis.Exponential.PositiveAxis.NamedValues.GaussianSignedNameExponentialOrder
 import IPRADerivations.Analysis.RationalArithmetic.OrderBounds.RationalClosure
-import IPRADerivations.Analysis.Logarithm.PositiveAxis.GaussianCompactLogarithmBounds
+import IPRADerivations.Analysis.Logarithm.PositiveAxis.Bounds.GaussianCompactLogarithmBounds
 
 /-!
 # A genuinely ordered representative of the original rational logarithm

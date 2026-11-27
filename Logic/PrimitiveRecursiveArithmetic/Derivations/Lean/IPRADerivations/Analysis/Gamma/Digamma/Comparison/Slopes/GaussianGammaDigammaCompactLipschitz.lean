@@ -3,7 +3,7 @@ import IPRADerivations.Analysis.Gamma.Digamma.GaussianGammaDigammaReal
 import IPRADerivations.Analysis.Gamma.Digamma.Comparison.GaussianGammaDigammaMonotone
 import IPRADerivations.Analysis.Gamma.Digamma.Series.GaussianGammaDigammaRescale
 import IPRADerivations.Analysis.Gamma.Digamma.Series.GaussianGammaDigammaRescaling
-import IPRADerivations.Analysis.Logarithm.PositiveAxis.GaussianPositiveRationalLogarithmVariation
+import IPRADerivations.Analysis.Logarithm.PositiveAxis.Increments.GaussianPositiveRationalLogarithmVariation
 import IPRADerivations.Analysis.Names.Rates.Moduli.GaussianNamedLipschitzRate
 import IPRADerivations.Analysis.Names.Rates.Transport.GaussianNamedRateTransport
 

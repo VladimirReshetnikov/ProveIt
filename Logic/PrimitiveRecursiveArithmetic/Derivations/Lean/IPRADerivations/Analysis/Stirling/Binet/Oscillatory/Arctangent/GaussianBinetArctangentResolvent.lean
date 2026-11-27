@@ -1,6 +1,6 @@
 import IPRADerivations.Analysis.Stirling.Binet.WeightedIntegrals.GaussianBinetReciprocalRows
 import IPRADerivations.Analysis.Polynomials.Coefficients.GaussianRationalCoefficientScaling
-import IPRADerivations.Analysis.Trigonometry.Hyperbolic.GaussianSineProductImaginaryLogDerivative
+import IPRADerivations.Analysis.Trigonometry.Hyperbolic.ProductEstimates.GaussianSineProductImaginaryLogDerivative
 
 /-!
 # The two actual right-half-plane resolvents for Binet's arctangent
