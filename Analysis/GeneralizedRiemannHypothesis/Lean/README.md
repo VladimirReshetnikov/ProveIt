@@ -48,6 +48,8 @@ Each entry below identifies the part of the article covered by the Lean statemen
 
 [CMHeckePolynomialDescent.lean](GRHArticle/SingularModuli/CMHeckePolynomialDescent.lean) determines the leading cusp coefficient of the diagonal function. For every prime $p$, the negative of the diagonal function is a monic polynomial in the modular invariant of exact degree $2p$ over the complex numbers.
 
+[ModularIntegralExpansions.lean](GRHArticle/SingularModuli/ModularIntegralExpansions.lean) proves integrality of the actual q-expansion of the modular discriminant and constructs an integer power series, with constant coefficient one, converging locally to $qj$.
+
 The five-term classification still needs the CM reduction, bounds on the conjugates
 to place them in the disks, and finite certificates from the
 [singular-moduli section](../Article/sections/smd.tex).

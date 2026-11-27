@@ -133,6 +133,7 @@ import GRHArticle.SingularModuli.CuspSeparation
 import GRHArticle.SingularModuli.DepthOne
 import GRHArticle.SingularModuli.DiskRootTransfer
 import GRHArticle.SingularModuli.HasseCoefficients
+import GRHArticle.SingularModuli.ModularIntegralExpansions
 import GRHArticle.SingularModuli.ModularInvariantPolynomial
 import GRHArticle.SingularModuli.NewtonValuation
 import GRHArticle.SingularModuli.PadicCutoff
