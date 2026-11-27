@@ -53,10 +53,20 @@ theorem weighted_congr {C D N M t u : PTm n} (hC : Γ ⊢[PRAAx] C ≐ D)
 theorem weighted_nonnegative (C N t : PTm n) : Γ ⊢[PRAAx]
     le (numeratorOf (weightedNorm C N t)).neg (numeratorOf (weightedNorm C N t)).pos :=
   GaussianCoefficientNormOrder.coefficient_numerator_nonnegative _
+private theorem power_numerator_nonnegative (A D j : PTm n) (hD : Γ ⊢[PRAAx] le one D) :
+    Γ ⊢[PRAAx] le (numeratorOf (RationalNonnegativePowers.power A D j)).neg
+      (numeratorOf (RationalNonnegativePowers.power A D j)).pos :=
+  GaussianRationalL1.nonnegative_of_lower (fraction zero one) _
+    (GaussianRationalSyntheticBounds.natCode_nonnegative zero) (RationalNonnegativePowers.power_nonnegative A D j hD)
+
 theorem power_nonnegative (j : PTm n) : Γ ⊢[PRAAx]
     le (numeratorOf (powerBudget j)).neg (numeratorOf (powerBudget j)).pos :=
-  GaussianRationalL1.nonnegative_of_representation _ _ _ (power_denominator_positive j)
-    (RationalNonnegativePowers.power_represents _ _ _ denominator_positive)
+  power_numerator_nonnegative (num 65) (num 72) j denominator_positive
+
+/-- Rational powers with denominator one are natural codes for the original natural powers. -/
+theorem rational_power_denominator_one (A j : PTm n) : Γ ⊢[PRAAx]
+    RationalNonnegativePowers.power A one j ≐ GaussianRationalSyntheticBounds.natCode (pw A j) :=
+  RationalNonnegativePowers.fraction_congr (.eqRefl _) (LeanProofs.IPRA.pw_base_one j)
 
 /-- Two actual scalar comparisons multiply through derived nonnegative
 factors; no coefficient-output norm law is introduced. -/
@@ -90,47 +100,65 @@ theorem weighted_zero_of_singleton {C : PTm n} (N t : PTm n)
     (h : Γ ⊢[PRAAx] C ≐ singleton qone) : Γ ⊢[PRAAx] weightedNorm C (zero*N) t ≐ fraction one one :=
   (weighted_congr h (zero_mul N) (.eqRefl _)).eqTrans (singleton_weighted_norm t)
 
+def rationalPowerLaw (C N K t A D j : PTm n) : Fm PTm n := le j K ⟶
+  rationalLE (weightedNorm (powerPrefix C N K j) (j*N) t) (RationalNonnegativePowers.power A D j)
+ipra_subst rationalPowerLaw
+
+theorem rational_power_zero (C N K t A D : PTm n) : Γ ⊢[PRAAx] rationalPowerLaw C N K t A D zero := by
+  refine .impI ?_
+  have actual := weighted_zero_of_singleton (Γ := le zero K :: Γ) N t
+    (GaussianRationalPolynomialPowers.prefix_zero C N K)
+  exact RationalArgmin.rationalLE_congr actual.eqSymm (RationalNonnegativePowers.power_zero A D).eqSymm (RationalArgmin.reflexive _)
+
+theorem rational_power_step (C N K t A D j : PTm n) (hC : Γ ⊢[PRAAx] length C ≐ succ N)
+    (hD : Γ ⊢[PRAAx] le one D) (hNorm : Γ ⊢[PRAAx] rationalLE (weightedNorm C N t) (fraction A D))
+    (hj : Γ ⊢[PRAAx] lt j K)
+    (ih : Γ ⊢[PRAAx] rationalLE (weightedNorm (powerPrefix C N K j) (j*N) t) (RationalNonnegativePowers.power A D j)) : Γ ⊢[PRAAx]
+    rationalLE (weightedNorm (powerPrefix C N K (succ j)) (succ j*N) t) (RationalNonnegativePowers.power A D (succ j)) := by
+  have actual := GaussianRationalPolynomialDilation.weighted_product_bound (powerPrefix C N K j) C (j*N) N t (prefix_length _ _ _ _) hC
+  have nonnegative := power_numerator_nonnegative A D j hD
+  have multiplied := multiply_bounds _ _ _ _ (weighted_nonnegative C N t) nonnegative ih hNorm
+  exact RationalArgmin.rationalLE_congr (weighted_congr (GaussianRationalPolynomialPowers.prefix_succ C N K j hj).eqSymm (by ipra_ring) (.eqRefl _))
+    (RationalNonnegativePowers.power_succ A D j hD).eqSymm (RationalArgmin.transitive actual multiplied)
+
+/-- The stored fixed-cap powers obey the bound induced by a nonnegative rational input cap. -/
+theorem rational_power_bound (C N K t A D j : PTm n) (hC : Γ ⊢[PRAAx] length C ≐ succ N)
+    (hD : Γ ⊢[PRAAx] le one D) (hNorm : Γ ⊢[PRAAx] rationalLE (weightedNorm C N t) (fraction A D))
+    (hj : Γ ⊢[PRAAx] le j K) : Γ ⊢[PRAAx]
+    rationalLE (weightedNorm (powerPrefix C N K j) (j*N) t) (RationalNonnegativePowers.power A D j) := by
+  have cs : Γ.map Fm.shift ⊢[PRAAx] length (Syn.shift C) ≐ succ (Syn.shift N) := by simpa [Fm.shift,Syn.shift] using hC.shift
+  have ds : Γ.map Fm.shift ⊢[PRAAx] le one (Syn.shift D) := by simpa [Fm.shift,Syn.shift] using hD.shift
+  have ns : Γ.map Fm.shift ⊢[PRAAx] rationalLE (weightedNorm (Syn.shift C) (Syn.shift N) (Syn.shift t))
+      (fraction (Syn.shift A) (Syn.shift D)) := by simpa [Fm.shift,Syn.shift] using hNorm.shift
+  have all : Γ ⊢[PRAAx] .all (rationalPowerLaw (Syn.shift C) (Syn.shift N) (Syn.shift K) (Syn.shift t) (Syn.shift A) (Syn.shift D) (var 0)) := by
+    ipra_qfind (⟨le_QF _ _,le_QF _ _⟩) [subst_rationalPowerLaw]
+    · exact rational_power_zero _ _ _ _ _ _
+    · exact .impI (rational_power_step _ _ _ _ _ _ _ cs.wk.wk ds.wk.wk ns.wk.wk Prf.hyp0
+        (.impE Prf.hyp1 (le_trans (le_succ_self _) Prf.hyp0)))
+  have rule : Γ ⊢[PRAAx] rationalPowerLaw C N K t A D j := by
+    simpa only [subst_rationalPowerLaw,Syn.subst_var,Syn.inst_zero,Syn.subst_inst_shift] using all.allE j
+  exact .impE rule hj
+
 def powerLaw (C N K t j : PTm n) : Fm PTm n := le j K ⟶
   rationalLE (weightedNorm (powerPrefix C N K j) (j*N) t) (powerBudget j)
 ipra_subst powerLaw
 
-theorem power_zero (C N K t : PTm n) : Γ ⊢[PRAAx] powerLaw C N K t zero := by
-  refine .impI ?_
-  have actual := weighted_zero_of_singleton (Γ := le zero K :: Γ) N t (GaussianRationalPolynomialPowers.prefix_zero C N K)
-  exact RationalArgmin.rationalLE_congr actual.eqSymm (RationalNonnegativePowers.power_zero (num 65) (num 72)).eqSymm
-    (RationalArgmin.reflexive _)
+theorem power_zero (C N K t : PTm n) : Γ ⊢[PRAAx] powerLaw C N K t zero :=
+  rational_power_zero C N K t (num 65) (num 72)
 
 theorem power_step (C N K t j : PTm n) (hC : Γ ⊢[PRAAx] length C ≐ succ N)
     (hNorm : Γ ⊢[PRAAx] rationalLE (weightedNorm C N t) ratio)
     (hj : Γ ⊢[PRAAx] lt j K)
     (ih : Γ ⊢[PRAAx] rationalLE (weightedNorm (powerPrefix C N K j) (j*N) t) (powerBudget j)) :
-    Γ ⊢[PRAAx] rationalLE (weightedNorm (powerPrefix C N K (succ j)) (succ j*N) t) (powerBudget (succ j)) := by
-  have productBound := GaussianRationalPolynomialDilation.weighted_product_bound
-    (powerPrefix C N K j) C (j*N) N t (prefix_length _ _ _ _) hC
-  have monotone := multiply_bounds _ _ _ _ (weighted_nonnegative C N t) (power_nonnegative j) ih hNorm
-  have joined := RationalArgmin.transitive productBound monotone
-  exact RationalArgmin.rationalLE_congr
-    (weighted_congr (GaussianRationalPolynomialPowers.prefix_succ C N K j hj).eqSymm (by ipra_ring) (.eqRefl _))
-    (RationalNonnegativePowers.power_succ (num 65) (num 72) j denominator_positive).eqSymm joined
+    Γ ⊢[PRAAx] rationalLE (weightedNorm (powerPrefix C N K (succ j)) (succ j*N) t) (powerBudget (succ j)) :=
+  rational_power_step C N K t (num 65) (num 72) j hC denominator_positive hNorm hj ih
 
 /-- Actual original fixed-cap power prefixes obey the source coefficient
 norm majorant. The cap is retained inside the QF induction guard. -/
 theorem power_bound (C N K t j : PTm n) (hC : Γ ⊢[PRAAx] length C ≐ succ N)
     (hNorm : Γ ⊢[PRAAx] rationalLE (weightedNorm C N t) ratio) (hj : Γ ⊢[PRAAx] le j K) :
-    Γ ⊢[PRAAx] rationalLE (weightedNorm (powerPrefix C N K j) (j*N) t) (powerBudget j) := by
-  have cs : Γ.map Fm.shift ⊢[PRAAx] length (Syn.shift C) ≐ succ (Syn.shift N) := by
-    simpa only [Fm.shift,Fm.subst_eq,subst_length,ConciseIPRA.PTm.subst_succ,Syn.shift] using hC.shift
-  have ns : Γ.map Fm.shift ⊢[PRAAx] rationalLE (weightedNorm (Syn.shift C) (Syn.shift N) (Syn.shift t)) ratio := by
-    simpa only [Fm.shift,RationalArgmin.subst_rationalLE,GaussianRationalPolynomialDilation.subst_weightedNorm,subst_ratio,Syn.shift] using hNorm.shift
-  have all : Γ ⊢[PRAAx] .all (powerLaw (Syn.shift C) (Syn.shift N) (Syn.shift K) (Syn.shift t) (var 0)) := by
-    ipra_qfind (⟨le_QF _ _,le_QF _ _⟩) [subst_powerLaw]
-    · exact power_zero _ _ _ _
-    · exact .impI (power_step _ _ _ _ _ cs.wk.wk ns.wk.wk Prf.hyp0
-        (.impE Prf.hyp1 (le_trans (le_succ_self _) Prf.hyp0)))
-  have rule : Γ ⊢[PRAAx] powerLaw C N K t j := by
-    simpa only [subst_powerLaw,Syn.subst_var,Syn.inst_zero,Syn.subst_inst_shift] using all.allE j
-  exact .impE rule hj
-
+    Γ ⊢[PRAAx] rationalLE (weightedNorm (powerPrefix C N K j) (j*N) t) (powerBudget j) :=
+  rational_power_bound C N K t (num 65) (num 72) j hC denominator_positive hNorm hj
 
 theorem inverse_factorial_norm (r : PTm n) : Γ ⊢[PRAAx]
     qL1 (inverseFactorial r) ≐ fraction one (Products.fact r) :=

@@ -22,9 +22,9 @@ open GaussianRationalPolynomialDilation (weightedNorm)
 open GaussianRationalPolynomialPowers (powerPrefix prefix_length)
 open GaussianRationalPolynomialExponential (stage inverseFactorial factorial_positive polynomial)
 open GaussianRationalCoefficientScaling (scaled)
-open GaussianFiniteExponentialWeightedNorm (weighted_congr weighted_nonnegative multiply_bounds inverse_factorial_norm
-  weighted_zero_of_singleton weighted_stage_step)
-open GaussianRationalSyntheticBounds (natCode natCode_represents natCode_nonnegative)
+open GaussianFiniteExponentialWeightedNorm (inverse_factorial_norm weighted_zero_of_singleton weighted_stage_step
+  rational_power_zero rational_power_step rational_power_bound rational_power_denominator_one)
+open GaussianRationalSyntheticBounds (natCode natCode_represents)
 open GaussianPositiveExponentialMajorant (value natCode_congr)
 open GaussianExponentialDiskMajorant (numerator real_majorant_represents)
 open GaussianEuclideanDistanceName (fraction fraction_represents)
@@ -50,39 +50,24 @@ def powerLaw (C N K t A j : PTm n) : Fm PTm n := le j K ⟶
   rationalLE (weightedNorm (powerPrefix C N K j) (j*N) t) (powerBudget A j)
 ipra_subst powerLaw
 
-theorem power_zero (C N K t A : PTm n) : Γ ⊢[PRAAx] powerLaw C N K t A zero := by
-  refine .impI ?_
-  have actual := weighted_zero_of_singleton (Γ := le zero K :: Γ) N t (GaussianRationalPolynomialPowers.prefix_zero C N K)
-  exact RationalArgmin.rationalLE_congr actual.eqSymm (power_budget_zero A).eqSymm (RationalArgmin.reflexive _)
+theorem power_zero (C N K t A : PTm n) : Γ ⊢[PRAAx] powerLaw C N K t A zero :=
+  .impI (RationalArgmin.rationalLE_congr (.eqRefl _) (rational_power_denominator_one A zero)
+    (.impE (rational_power_zero C N K t A one).wk Prf.hyp0))
 
 theorem power_step (C N K t A j : PTm n) (hC : Γ ⊢[PRAAx] length C ≐ succ N)
     (hNorm : Γ ⊢[PRAAx] rationalLE (weightedNorm C N t) (natCode A))
     (hj : Γ ⊢[PRAAx] lt j K)
     (ih : Γ ⊢[PRAAx] rationalLE (weightedNorm (powerPrefix C N K j) (j*N) t) (powerBudget A j)) :
-    Γ ⊢[PRAAx] rationalLE (weightedNorm (powerPrefix C N K (succ j)) (succ j*N) t) (powerBudget A (succ j)) := by
-  have first := GaussianRationalPolynomialDilation.weighted_product_bound
-    (powerPrefix C N K j) C (j*N) N t (prefix_length _ _ _ _) hC
-  have second := multiply_bounds _ _ _ _ (weighted_nonnegative C N t) (natCode_nonnegative _) ih hNorm
-  exact RationalArgmin.rationalLE_congr
-    (weighted_congr (GaussianRationalPolynomialPowers.prefix_succ C N K j hj).eqSymm (by ipra_ring) (.eqRefl _))
-    (power_budget_succ A j).eqSymm (RationalArgmin.transitive first second)
+    Γ ⊢[PRAAx] rationalLE (weightedNorm (powerPrefix C N K (succ j)) (succ j*N) t) (powerBudget A (succ j)) :=
+  RationalArgmin.rationalLE_congr (.eqRefl _) (rational_power_denominator_one A (succ j))
+    (rational_power_step C N K t A one j hC (le_refl one) hNorm hj
+      (RationalArgmin.rationalLE_congr (.eqRefl _) (rational_power_denominator_one A j).eqSymm ih))
 
 theorem power_bound (C N K t A j : PTm n) (hC : Γ ⊢[PRAAx] length C ≐ succ N)
     (hNorm : Γ ⊢[PRAAx] rationalLE (weightedNorm C N t) (natCode A)) (hj : Γ ⊢[PRAAx] le j K) :
-    Γ ⊢[PRAAx] rationalLE (weightedNorm (powerPrefix C N K j) (j*N) t) (powerBudget A j) := by
-  have cs : Γ.map Fm.shift ⊢[PRAAx] length (Syn.shift C) ≐ succ (Syn.shift N) := by
-    simpa only [Fm.shift,Fm.subst_eq,subst_length,ConciseIPRA.PTm.subst_succ,Syn.shift] using hC.shift
-  have ns : Γ.map Fm.shift ⊢[PRAAx] rationalLE (weightedNorm (Syn.shift C) (Syn.shift N) (Syn.shift t)) (natCode (Syn.shift A)) := by
-    simpa only [Fm.shift,RationalArgmin.subst_rationalLE,GaussianRationalPolynomialDilation.subst_weightedNorm,
-      GaussianRationalSyntheticBounds.subst_natCode,Syn.shift] using hNorm.shift
-  have all : Γ ⊢[PRAAx] .all (powerLaw (Syn.shift C) (Syn.shift N) (Syn.shift K) (Syn.shift t) (Syn.shift A) (var 0)) := by
-    ipra_qfind (⟨le_QF _ _,le_QF _ _⟩) [subst_powerLaw]
-    · exact power_zero _ _ _ _ _
-    · exact .impI (power_step _ _ _ _ _ _ cs.wk.wk ns.wk.wk Prf.hyp0
-        (.impE Prf.hyp1 (le_trans (le_succ_self _) Prf.hyp0)))
-  have rule : Γ ⊢[PRAAx] powerLaw C N K t A j := by
-    simpa only [subst_powerLaw,Syn.subst_var,Syn.inst_zero,Syn.subst_inst_shift] using all.allE j
-  exact .impE rule hj
+    Γ ⊢[PRAAx] rationalLE (weightedNorm (powerPrefix C N K j) (j*N) t) (powerBudget A j) :=
+  RationalArgmin.rationalLE_congr (.eqRefl _) (rational_power_denominator_one A j)
+    (rational_power_bound C N K t A one j hC (le_refl one) hNorm hj)
 
 /-- The factorial is retained, rather than replaced by the unit bound. -/
 theorem factorial_power_budget (A j : PTm n) : Γ ⊢[PRAAx]
