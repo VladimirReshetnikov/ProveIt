@@ -138,15 +138,9 @@ theorem sq_succ {re im : ZT n} {k : PTm n} (ih : Γ ⊢[PRAAx] SqP re im k) :
 /-- Variables: `0 = k` (induction), `1, 2 = re⁺, re⁻`, `3, 4 = im⁺, im⁻`. -/
 private theorem sq₀ :
     ([] : List (Fm PTm 5)) ⊢[PRAAx] SqP (⟨var 1, var 2⟩ : ZT 5) (⟨var 3, var 4⟩ : ZT 5) (var 0) := by
-  refine ind _ ⟨trivial, trivial⟩ ?_ ?_
-  · simp only [SqP, sqRe, sqIm, Fm.subst_and, ZT.subst_eq, subst_cRe, subst_cIm, ZT.subst_sub, ZT.subst_mul,
-      ZT.subst_add, subst_mk, PTm.subst_add, Syn.subst_var, Syn.inst_zero, Syn.inst_one, inst_two, inst_three,
-      inst_four, ConciseIPRA.PTm.subst_zero, ConciseIPRA.PTm.subst_succ]
-    exact sq_zero _ _
-  · simp only [SqP, sqRe, sqIm, Fm.subst_and, ZT.subst_eq, subst_cRe, subst_cIm, ZT.subst_sub, ZT.subst_mul,
-      ZT.subst_add, subst_mk, PTm.subst_add, Syn.subst_var, Syn.repl_zero, repl_one, repl_two, repl_three,
-      repl_four, ConciseIPRA.PTm.subst_zero, ConciseIPRA.PTm.subst_succ]
-    exact sq_succ Prf.hyp0
+  ipra_ind (⟨trivial, trivial⟩) [SqP, sqRe, sqIm, ZT.subst_eq, subst_cRe, subst_cIm, ZT.subst_sub, ZT.subst_mul, ZT.subst_add, subst_mk]
+  · exact sq_zero _ _
+  · exact sq_succ Prf.hyp0
 
 /-- The power law: `(z²)^k = z^{k+k}`. -/
 theorem cpow_sq (re im : ZT n) (k : PTm n) : Γ ⊢[PRAAx] SqP re im k := by
@@ -307,17 +301,9 @@ theorem d_succ {a b k : PTm n} (ih : Γ ⊢[PRAAx] nle (Zx a b k) (Zy a b k) (Td
 /-- Variables: `0 = k` (induction), `1 = a`, `2 = b`. -/
 private theorem d₀ : ([] : List (Fm PTm 3)) ⊢[PRAAx]
     nle (Zx (var 1) (var 2) (var 0)) (Zy (var 1) (var 2) (var 0)) (Td (var 1) (var 2) (var 0)) := by
-  refine ind _ trivial ?_ ?_
-  · simp only [Zx, Zy, Td, subst_zle, ZT.subst_add, ZT.subst_sub, ZT.subst_mul, ZT.subst_sq, ZT.subst_ofNat,
-      subst_cRe, subst_cIm, subst_aRe, subst_aIm, subst_rotRe, subst_rotIm, subst_nrm, subst_dA, subst_dDel,
-      subst_ap2, PTm.subst_add, PTm.subst_mul, Syn.subst_var, Syn.inst_zero, Syn.inst_one, inst_two,
-      ConciseIPRA.PTm.subst_zero, ConciseIPRA.PTm.subst_succ]
-    exact d_zero _ _
-  · simp only [Zx, Zy, Td, subst_zle, ZT.subst_add, ZT.subst_sub, ZT.subst_mul, ZT.subst_sq, ZT.subst_ofNat,
-      subst_cRe, subst_cIm, subst_aRe, subst_aIm, subst_rotRe, subst_rotIm, subst_nrm, subst_dA, subst_dDel,
-      subst_ap2, PTm.subst_add, PTm.subst_mul, Syn.subst_var, Syn.repl_zero, repl_one, repl_two,
-      ConciseIPRA.PTm.subst_zero, ConciseIPRA.PTm.subst_succ]
-    exact d_succ Prf.hyp0
+  ipra_ind [Zx, Zy, Td, subst_zle, ZT.subst_add, ZT.subst_sub, ZT.subst_mul, ZT.subst_sq, ZT.subst_ofNat, subst_cRe, subst_cIm, subst_aRe, subst_aIm, subst_rotRe, subst_rotIm, subst_nrm, subst_dA, subst_dDel, subst_ap2]
+  · exact d_zero _ _
+  · exact d_succ Prf.hyp0
 
 /-- `|a A B (α^k B^k − β^k A^k)| ≤ k A^k B^k · 2b³ N' N` for `α = g'⁴`, `β = g²`. -/
 theorem doubling (a b k : PTm n) : Γ ⊢[PRAAx] nle (Zx a b k) (Zy a b k) (Td a b k) := by

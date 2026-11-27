@@ -108,10 +108,9 @@ private theorem factor_step (p N x i : PTm n) (ih : Γ ⊢[PRAAx] factorLaw p N 
 theorem product_agrees (p N x : PTm n) :
     Γ ⊢[PRAAx] product (roots p N x) N qone ≐ sample chordF p N (data N x) := by
   have h : Γ ⊢[PRAAx] .all (factorLaw (Syn.shift p) (Syn.shift N) (Syn.shift x) (var 0)) := by
-    refine PRA.qfInd _ ⟨le_QF _ _,trivial⟩ ?_ ?_
-    · simp only [subst_factorLaw,Syn.subst_var,Syn.inst_zero,Syn.subst_inst_shift]
-      exact .impI ((factors_zero _ _ _).eqTrans (sample_zero _ _ _).eqSymm).wk
-    · simpa only [subst_factorLaw,Syn.subst_var,Syn.repl_zero,subst_repl_shift] using
+    ipra_qfind (⟨le_QF _ _,trivial⟩) [subst_factorLaw]
+    · exact .impI ((factors_zero _ _ _).eqTrans (sample_zero _ _ _).eqSymm).wk
+    · exact
         factor_step (Γ := factorLaw (Syn.shift p) (Syn.shift N) (Syn.shift x) (var 0) :: Γ.map Fm.shift)
           (Syn.shift p) (Syn.shift N) (Syn.shift x) (var 0) Prf.hyp0
   have e : Γ ⊢[PRAAx] factorLaw p N x N := by

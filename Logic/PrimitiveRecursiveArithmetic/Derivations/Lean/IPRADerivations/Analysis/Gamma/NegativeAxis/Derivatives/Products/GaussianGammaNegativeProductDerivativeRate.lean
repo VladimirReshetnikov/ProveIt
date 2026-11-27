@@ -149,11 +149,9 @@ theorem prefix_bounds (a c b j A D i : PTm n)
   have hIn' : Δ ⊢[PRAAx] distanceBounded (fraction (sh c) (sh b)) (fraction (sh a) (sh b)) (sh A) (sh D) := by
     simpa [Δ,sh,Fm.shift,Syn.shift] using hIn.shift
   have all : Γ ⊢[PRAAx] .all (le (var 0) (sh j) ⟶ prefixBounds (sh a) (sh c) (sh b) (sh j) (sh A) (sh D) (var 0)) := by
-    refine PRA.qfInd _ ⟨le_QF _ _,⟨trivial,⟨trivial,trivial⟩⟩⟩ ?_ ?_
-    · simp only [Fm.subst_imp,subst_le,subst_prefixBounds,Syn.subst_var,Syn.inst_zero,Syn.subst_inst_shift,sh]
-      exact .impI (bounds_zero a c b j A D hD.wk)
-    · simp only [Fm.subst_imp,subst_le,subst_prefixBounds,Syn.subst_var,Syn.repl_zero,subst_repl_shift,sh]
-      refine .impI ?_
+    ipra_qfind (⟨le_QF _ _,⟨trivial,⟨trivial,trivial⟩⟩⟩) [subst_le, subst_prefixBounds, sh]
+    · exact .impI (bounds_zero a c b j A D hD.wk)
+    · refine .impI ?_
       exact bounds_succ (sh a) (sh c) (sh b) (sh j) (sh A) (sh D) (var 0)
         ha'.wk.wk hc'.wk.wk hD'.wk.wk hIn'.wk.wk Prf.hyp0
         (Prf.hyp1.impE (le_trans (le_succ_self _) Prf.hyp0))

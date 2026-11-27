@@ -258,22 +258,16 @@ theorem discrepancy (p q d e f : PR 2) (N r x : PTm n)
         zabs (difference p q d (Syn.shift N) (Syn.shift N + var 0) (Syn.shift x)))
       (sumNum e f (Syn.shift N) (var 0) (Syn.shift x) * ap2 d (Syn.shift N) (Syn.shift x) *
         ap2 d (Syn.shift N + var 0) (Syn.shift x))) := by
-    refine PRA.qfInd _ (le_QF _ _) ?_ ?_
-    · simp only [subst_le, subst_zabs, PTm.subst_mul, subst_difference,
-        subst_sumDen, subst_sumNum, subst_ap2, Syn.subst_var,
-        Syn.inst_zero, Syn.subst_inst_shift, ConciseIPRA.PTm.subst_zero]
-      simp only [PTm.subst_add, Syn.subst_var, Syn.inst_zero, Syn.subst_inst_shift]
-      have left : Γ ⊢[PRAAx] sumDen e f N zero x *
+    refine PRA.qfInd _ (le_QF _ _) ?_ ?_ <;>
+      simp only [subst_le, subst_zabs, PTm.subst_mul, subst_difference, subst_sumDen, subst_sumNum, subst_ap2] <;>
+      simp only [PTm.subst_add, Syn.subst_var, Syn.inst_zero, Syn.repl_zero, Syn.subst_inst_shift, subst_repl_shift]
+    · have left : Γ ⊢[PRAAx] sumDen e f N zero x *
           zabs (difference p q d N (N + zero) x) ≐ zero :=
         (congrMul (.eqRefl _) (difference_zero p q d N x)).eqTrans (mul_zero _)
       have right : Γ ⊢[PRAAx] sumNum e f N zero x * ap2 d N x * ap2 d (N + zero) x ≐ zero :=
         (congrMul (congrMul (sumNum_zero e f N x) (.eqRefl _)) (.eqRefl _)).eqTrans (by ipra_ring)
       exact le_congr left.eqSymm right.eqSymm (le_refl zero)
-    · simp only [subst_le, subst_zabs, PTm.subst_mul, subst_difference,
-        subst_sumDen, subst_sumNum, subst_ap2, Syn.subst_var,
-        Syn.repl_zero, subst_repl_shift]
-      simp only [PTm.subst_add, Syn.subst_var, Syn.repl_zero, subst_repl_shift]
-      have hd' : Γ.map Fm.shift ⊢[PRAAx] positive d (Syn.shift x) := by
+    · have hd' : Γ.map Fm.shift ⊢[PRAAx] positive d (Syn.shift x) := by
         simpa only [Fm.shift, subst_positive, Syn.shift] using hd.shift
       have hm' : Γ.map Fm.shift ⊢[PRAAx] motion p q d e f (Syn.shift x) := by
         simpa only [Fm.shift, subst_motion, Syn.shift] using hm.shift
