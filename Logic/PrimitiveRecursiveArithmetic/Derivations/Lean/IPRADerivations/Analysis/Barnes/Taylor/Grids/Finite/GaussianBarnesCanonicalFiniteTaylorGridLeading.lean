@@ -103,7 +103,7 @@ theorem scaled_leading (u q z R B H r M : PTm n) :
   have hP : Γ ⊢[PRAAx] length P ≐ succ (previous M) :=
     GaussianBarnesCanonicalFiniteWeightedTaylorValue.polynomial_length q z (R+one) B (previous M*H) r M
   have h0 : Γ ⊢[PRAAx] lt zero (length P) :=
-    lt_congr (.eqRefl _) hP.eqSymm (zero_lt_succ _)
+    Order.zero_lt_of_eq_succ hP
   have step := scaled_lookup P u zero h0
   exact (natScale_as_product k _).eqTrans ((qmul_congr (.eqRefl a) step).eqTrans
     ((GaussianReciprocalHorner.qmul_associative a u v).eqSymm.eqTrans

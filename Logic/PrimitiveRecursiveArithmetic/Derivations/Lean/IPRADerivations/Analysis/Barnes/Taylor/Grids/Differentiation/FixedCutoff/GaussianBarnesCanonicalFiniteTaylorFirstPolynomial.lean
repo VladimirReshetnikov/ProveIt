@@ -110,7 +110,7 @@ theorem leading_bound (t q z R B H r : PTm n) (hz : Γ ⊢[PRAAx] source z (R+on
   have product := GaussianRationalReciprocal.bounded_product s (entry P zero) _ _ _ _ (le_refl one) (le_refl one) observable
     (GaussianRationalReciprocal.bound_congr at0.eqSymm (.eqRefl _) (.eqRefl _) level)
   exact GaussianRationalReciprocal.bound_congr
-    (scaled_lookup P s zero (lt_congr (.eqRefl _) hP.eqSymm (zero_lt_succ two))).eqSymm
+    (scaled_lookup P s zero (Order.zero_lt_of_eq_succ hP)).eqSymm
       (.eqRefl _) (one_mul one) product
 
 theorem to_linear (t q z h R B H r : PTm n) (hz : Γ ⊢[PRAAx] source z (R+one) B)
