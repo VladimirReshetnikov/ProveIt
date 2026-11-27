@@ -52,4 +52,52 @@ theorem sum_le_params (f g : PTm 2) (x y N : PTm n)
     Syn.subst_inst_shift, ConciseIPRA.PTm.subst_zero] at h2
   exact .impE h2 (le_refl N)
 
+private theorem weighted_sum_pair_zero (f g : PTm 2) (a b x y : PTm n) :
+    Γ ⊢[PRAAx] a * ap2 (sumF f) zero x + b * ap2 (sumF g) zero y ≐ zero :=
+  (congrAdd ((congrMul (.eqRefl _) (sum_zero f x)).eqTrans (mul_zero a))
+    ((congrMul (.eqRefl _) (sum_zero g y)).eqTrans (mul_zero b))).eqTrans (add_zero _)
+
+private theorem weighted_sum_pair_succ (f g : PTm 2) (a b x y j : PTm n) :
+    Γ ⊢[PRAAx] a * ap2 (sumF f) (succ j) x + b * ap2 (sumF g) (succ j) y ≐
+      (a * ap2 (sumF f) j x + b * ap2 (sumF g) j y) +
+        (a * inst2 f j x + b * inst2 g j y) :=
+  (congrAdd (congrMul (.eqRefl _) (sum_succ' f j x))
+    (congrMul (.eqRefl _) (sum_succ' g j y))).eqTrans (by ipra_ring)
+
+/-- Sum an inequality between two weighted pairs with independent parameters. -/
+theorem sum_weighted_pair_le (f1 f2 g1 g2 : PTm 2) (a b c d x1 x2 y1 y2 N : PTm n)
+    (h : Γ ⊢[PRAAx] Fm.all (lt (var 0) (Syn.shift N) ⟶
+      le (Syn.shift a * inst2 f1 (var 0) (Syn.shift x1) + Syn.shift b * inst2 f2 (var 0) (Syn.shift x2))
+        (Syn.shift c * inst2 g1 (var 0) (Syn.shift y1) + Syn.shift d * inst2 g2 (var 0) (Syn.shift y2)))) :
+    Γ ⊢[PRAAx] le (a * ap2 (sumF f1) N x1 + b * ap2 (sumF f2) N x2)
+      (c * ap2 (sumF g1) N y1 + d * ap2 (sumF g2) N y2) := by
+  let P : Fm PTm (n + 1) :=
+    le (Syn.shift a * ap2 (sumF f1) (var 0) (Syn.shift x1) +
+        Syn.shift b * ap2 (sumF f2) (var 0) (Syn.shift x2))
+      (Syn.shift c * ap2 (sumF g1) (var 0) (Syn.shift y1) +
+        Syn.shift d * ap2 (sumF g2) (var 0) (Syn.shift y2))
+  have atBound : Γ ⊢[PRAAx] P.subst (Syn.inst N) := by
+    refine qfIndUpTo N (le_QF _ _) ?_ ?_
+    · simpa [P] using le_congr (weighted_sum_pair_zero (Γ := Γ) f1 f2 a b x1 x2).eqSymm
+        (weighted_sum_pair_zero g1 g2 c d y1 y2).eqSymm (le_refl zero)
+    · simp only [P, subst_le, subst_ap2, PTm.subst_mul, PTm.subst_add, Syn.subst_var,
+        Syn.repl_zero, subst_repl_shift]
+      refine .impI (le_congr (weighted_sum_pair_succ f1 f2 _ _ _ _ (var 0)).eqSymm
+        (weighted_sum_pair_succ g1 g2 _ _ _ _ (var 0)).eqSymm ?_)
+      exact add_le_add₂ Prf.hyp1 (.impE h.allOpen.wk.wk Prf.hyp0)
+  simpa [P] using atBound
+
+/-- The weighted pair inequality when the left side has one summand. -/
+theorem sum_scaled_le_weighted_pair (f g1 g2 : PTm 2) (a c d x y1 y2 N : PTm n)
+    (h : Γ ⊢[PRAAx] Fm.all (lt (var 0) (Syn.shift N) ⟶
+      le (Syn.shift a * inst2 f (var 0) (Syn.shift x))
+        (Syn.shift c * inst2 g1 (var 0) (Syn.shift y1) + Syn.shift d * inst2 g2 (var 0) (Syn.shift y2)))) :
+    Γ ⊢[PRAAx] le (a * ap2 (sumF f) N x)
+      (c * ap2 (sumF g1) N y1 + d * ap2 (sumF g2) N y2) := by
+  refine le_congr ((congrAdd (.eqRefl _) (zero_mul _)).eqTrans (add_zero _)) (.eqRefl _)
+    (sum_weighted_pair_le f f g1 g2 a zero c d x x y1 y2 N (.allI (.impI ?_)))
+  rw [show Syn.shift (zero : PTm n) = zero by simp [Syn.shift]]
+  exact le_congr ((congrAdd (.eqRefl _) (zero_mul _)).eqTrans (add_zero _)).eqSymm (.eqRefl _)
+    (.impE h.allOpen.wk Prf.hyp0)
+
 end LeanProofs.IPRA

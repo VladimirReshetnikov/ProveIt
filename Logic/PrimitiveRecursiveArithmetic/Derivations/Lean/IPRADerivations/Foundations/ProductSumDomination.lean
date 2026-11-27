@@ -60,39 +60,10 @@ theorem sum_lin_le (F G H K : PTm 2) {a b c d x N : PTm n}
           Syn.shift d * inst2 K (var 0) (Syn.shift x)))) :
     Γ ⊢[PRAAx] le (ap2 (sumF F) N x * a + b * ap2 (sumF G) N x)
       (ap2 (sumF H) N x * c + d * ap2 (sumF K) N x) := by
-  have hall : Γ ⊢[PRAAx] Fm.all (linLeF F G H K a b c d x N) := by
-    refine PRA.qfInd _ ⟨le_QF _ _, le_QF _ _⟩ ?_ ?_
-    · simp only [Fm.subst_imp, subst_le, subst_ap2, PTm.subst_add, PTm.subst_mul,
-        Syn.subst_var, Syn.inst_zero, Syn.subst_inst_shift, ConciseIPRA.PTm.subst_zero]
-      refine .impI ?_
-      refine le_of_eq_add (d := zero) ?_
-      ipra_lc 𝔞 c * natEq (sum_zero (Γ := le zero N :: Γ) H x) + 𝔞 d * natEq (sum_zero (Γ := le zero N :: Γ) K x) -
-        𝔞 a * natEq (sum_zero (Γ := le zero N :: Γ) F x) - 𝔞 b * natEq (sum_zero (Γ := le zero N :: Γ) G x)
-    · simp only [Fm.subst_imp, subst_le, subst_ap2, PTm.subst_add, PTm.subst_mul,
-        Syn.subst_var, Syn.repl_zero, subst_repl_shift, ConciseIPRA.PTm.subst_zero,
-        ConciseIPRA.PTm.subst_succ]
-      refine .impI ?_
-      have ih := Prf.impE (Prf.hyp1 (Γ := Γ.map Fm.shift)
-        (φ := linLeF F G H K a b c d x N) (ψ := le (succ (var 0)) (Syn.shift N)))
-        (le_trans (le_succ_self _) Prf.hyp0)
-      have pt := Prf.impE hp.allOpen.wk.wk
-        (Prf.hyp0 (Γ := linLeF F G H K a b c d x N :: Γ.map Fm.shift)
-          (φ := le (succ (var 0)) (Syn.shift N)))
-      have eF := natEq (sum_succ' (Γ := le (succ (var 0)) (Syn.shift N) ::
-        linLeF F G H K a b c d x N :: Γ.map Fm.shift) F (var 0) (Syn.shift x))
-      have eG := natEq (sum_succ' (Γ := le (succ (var 0)) (Syn.shift N) ::
-        linLeF F G H K a b c d x N :: Γ.map Fm.shift) G (var 0) (Syn.shift x))
-      have eH := natEq (sum_succ' (Γ := le (succ (var 0)) (Syn.shift N) ::
-        linLeF F G H K a b c d x N :: Γ.map Fm.shift) H (var 0) (Syn.shift x))
-      have eK := natEq (sum_succ' (Γ := le (succ (var 0)) (Syn.shift N) ::
-        linLeF F G H K a b c d x N :: Γ.map Fm.shift) K (var 0) (Syn.shift x))
-      refine le_congr ?_ ?_ (add_le_add₂ ih pt)
-      · ipra_lc -(𝔞 (Syn.shift a)) * eF - 𝔞 (Syn.shift b) * eG
-      · ipra_lc -(𝔞 (Syn.shift c)) * eH - 𝔞 (Syn.shift d) * eK
-  have h2 := Prf.allE N hall
-  simp only [Fm.subst_imp, subst_le, subst_ap2, PTm.subst_add, PTm.subst_mul,
-    Syn.subst_var, Syn.inst_zero, Syn.subst_inst_shift, ConciseIPRA.PTm.subst_zero] at h2
-  exact .impE h2 (le_refl N)
+  refine le_congr (congrAdd (mul_comm _ _) (.eqRefl _)) (congrAdd (mul_comm _ _) (.eqRefl _))
+    (sum_weighted_pair_le F G H K a b c d x x x x N (.allI (.impI ?_)))
+  exact le_congr (congrAdd (mul_comm _ _) (.eqRefl _)) (congrAdd (mul_comm _ _) (.eqRefl _))
+    (.impE hp.allOpen.wk Prf.hyp0)
 
 /-! ## Truncation of a sum -/
 

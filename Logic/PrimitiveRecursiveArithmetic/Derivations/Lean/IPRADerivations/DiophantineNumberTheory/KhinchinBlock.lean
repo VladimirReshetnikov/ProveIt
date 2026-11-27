@@ -3,6 +3,7 @@ import IPRADerivations.DiophantineNumberTheory.KhinchinBlockArith
 import IPRADerivations.DiophantineNumberTheory.KhinchinScaleCount
 import IPRADerivations.AnalyticNumberTheory.Primes
 import IPRADerivations.Core.Header
+import IPRADerivations.Core.SumOrder
 
 /-!
 # A finite Khinchin block covers a fixed fraction (`hurwitz_khinchin_ipra`, (K11))
@@ -62,39 +63,7 @@ theorem sum_le_lin (f g1 g2 : PTm 2) (a c1 c2 x y1 y2 N : PTm n)
       le (Syn.shift a * inst2 f (var 0) (Syn.shift x))
         (Syn.shift c1 * inst2 g1 (var 0) (Syn.shift y1) + Syn.shift c2 * inst2 g2 (var 0) (Syn.shift y2)))) :
     Γ ⊢[PRAAx] le (a * ap2 (sumF f) N x) (c1 * ap2 (sumF g1) N y1 + c2 * ap2 (sumF g2) N y2) := by
-  have hall : Γ ⊢[PRAAx] Fm.all (le (var 0) (Syn.shift N) ⟶
-      le (Syn.shift a * ap2 (sumF f) (var 0) (Syn.shift x))
-        (Syn.shift c1 * ap2 (sumF g1) (var 0) (Syn.shift y1) + Syn.shift c2 * ap2 (sumF g2) (var 0) (Syn.shift y2))) := by
-    refine PRA.qfInd _ ⟨le_QF _ _, le_QF _ _⟩ ?_ ?_
-    · simp only [Fm.subst_imp, subst_le, subst_ap2, Syn.subst_var, Syn.inst_zero, Syn.subst_inst_shift,
-        PTm.subst_mul, PTm.subst_add, ConciseIPRA.PTm.subst_zero]
-      refine .impI ?_
-      have e1 := natEq (sum_zero (Γ := le zero N :: Γ) f x)
-      have e2 := natEq (sum_zero (Γ := le zero N :: Γ) g1 y1)
-      have e3 := natEq (sum_zero (Γ := le zero N :: Γ) g2 y2)
-      ipra_le 0 with 𝔞 c1 * e2 + 𝔞 c2 * e3 - 𝔞 a * e1
-    · simp only [Fm.subst_imp, subst_le, subst_ap2, Syn.subst_var, Syn.repl_zero, subst_repl_shift,
-        PTm.subst_mul, PTm.subst_add, ConciseIPRA.PTm.subst_zero]
-      refine .impI ?_
-      let Θ : List (Fm PTm (n + 1)) := le (succ (var 0)) (Syn.shift N) ::
-        (le (var 0) (Syn.shift N) ⟶ le (Syn.shift a * ap2 (sumF f) (var 0) (Syn.shift x))
-          (Syn.shift c1 * ap2 (sumF g1) (var 0) (Syn.shift y1) + Syn.shift c2 * ap2 (sumF g2) (var 0) (Syn.shift y2))) ::
-        Γ.map Fm.shift
-      have hle : Θ ⊢[PRAAx] le (var 0) (Syn.shift N) := le_trans (le_succ_self _) Prf.hyp0
-      have ih : Θ ⊢[PRAAx] le (Syn.shift a * ap2 (sumF f) (var 0) (Syn.shift x))
-          (Syn.shift c1 * ap2 (sumF g1) (var 0) (Syn.shift y1) + Syn.shift c2 * ap2 (sumF g2) (var 0) (Syn.shift y2)) :=
-        Prf.impE Prf.hyp1 hle
-      have pt : Θ ⊢[PRAAx] le (Syn.shift a * inst2 f (var 0) (Syn.shift x))
-          (Syn.shift c1 * inst2 g1 (var 0) (Syn.shift y1) + Syn.shift c2 * inst2 g2 (var 0) (Syn.shift y2)) :=
-        Prf.impE h.allOpen.wk.wk Prf.hyp0
-      have e1 := natEq (sum_succ' (Γ := Θ) f (var 0) (Syn.shift x))
-      have e2 := natEq (sum_succ' (Γ := Θ) g1 (var 0) (Syn.shift y1))
-      have e3 := natEq (sum_succ' (Γ := Θ) g2 (var 0) (Syn.shift y2))
-      ipra_le sl ih + sl pt with 𝔞 (Syn.shift c1) * e2 + 𝔞 (Syn.shift c2) * e3 - 𝔞 (Syn.shift a) * e1
-  have h2 := Prf.allE N hall
-  simp only [Fm.subst_imp, subst_le, subst_ap2, Syn.subst_var, Syn.inst_zero, Syn.subst_inst_shift,
-    PTm.subst_mul, PTm.subst_add, ConciseIPRA.PTm.subst_zero] at h2
-  exact .impE h2 (le_refl N)
+  exact sum_scaled_le_weighted_pair f g1 g2 a c1 c2 x y1 y2 N h
 
 /-- `a f_i ≤ c g_i` for `i < N` gives `a Σf ≤ c Σg`. -/
 theorem sum_le_lin1 (f g : PTm 2) (a c x y N : PTm n)

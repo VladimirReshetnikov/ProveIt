@@ -3,6 +3,7 @@ import IPRADerivations.AnalyticNumberTheory.HarmonicUpper
 import IPRADerivations.AnalyticNumberTheory.SquareReciprocal
 import IPRADerivations.Core.LinearCombination
 import IPRADerivations.Core.Header
+import IPRADerivations.Core.SumOrder
 
 /-!
 # The bad-pair estimate of (K3) (`hurwitz_khinchin_ipra`)
@@ -57,42 +58,7 @@ theorem sum_lin_le (f g h : PTm 2) (a b c x N : PTm n)
       le (Syn.shift a * inst2 f (var 0) (Syn.shift x))
         (Syn.shift b * inst2 g (var 0) (Syn.shift x) + Syn.shift c * inst2 h (var 0) (Syn.shift x)))) :
     Γ ⊢[PRAAx] le (a * ap2 (sumF f) N x) (b * ap2 (sumF g) N x + c * ap2 (sumF h) N x) := by
-  have hall : Γ ⊢[PRAAx] Fm.all (le (var 0) (Syn.shift N) ⟶
-      le (Syn.shift a * ap2 (sumF f) (var 0) (Syn.shift x))
-        (Syn.shift b * ap2 (sumF g) (var 0) (Syn.shift x) + Syn.shift c * ap2 (sumF h) (var 0) (Syn.shift x))) := by
-    refine PRA.qfInd _ ⟨le_QF _ _, le_QF _ _⟩ ?_ ?_
-    · have L0 : (le zero N :: Γ) ⊢[PRAAx] a * ap2 (sumF f) zero x ≐ zero :=
-        (congrMul (.eqRefl _) (sum_zero f x)).eqTrans (mul_zero _)
-      have R0 : (le zero N :: Γ) ⊢[PRAAx] b * ap2 (sumF g) zero x + c * ap2 (sumF h) zero x ≐ zero :=
-        (congrAdd ((congrMul (.eqRefl _) (sum_zero g x)).eqTrans (mul_zero _))
-          ((congrMul (.eqRefl _) (sum_zero h x)).eqTrans (mul_zero _))).eqTrans (add_zero _)
-      simpa using .impI (le_congr L0.eqSymm R0.eqSymm (le_refl (zero : PTm n)))
-    · simp only [Fm.subst_imp, subst_le, subst_ap2, PTm.subst_mul, PTm.subst_add, Syn.subst_var,
-        Syn.repl_zero, subst_repl_shift]
-      have hf := hp.allOpen
-      refine .impI ?_
-      let IH : Fm PTm (n + 1) := le (var 0) (Syn.shift N) ⟶
-        le (Syn.shift a * ap2 (sumF f) (var 0) (Syn.shift x))
-          (Syn.shift b * ap2 (sumF g) (var 0) (Syn.shift x) + Syn.shift c * ap2 (sumF h) (var 0) (Syn.shift x))
-      let Δ : List (Fm PTm (n + 1)) := le (succ (var 0)) (Syn.shift N) :: IH :: Γ.map Fm.shift
-      have hle : Δ ⊢[PRAAx] le (var 0) (Syn.shift N) := le_trans (le_succ_self _) Prf.hyp0
-      have h₁ : Δ ⊢[PRAAx] le (Syn.shift a * ap2 (sumF f) (var 0) (Syn.shift x))
-          (Syn.shift b * ap2 (sumF g) (var 0) (Syn.shift x) + Syn.shift c * ap2 (sumF h) (var 0) (Syn.shift x)) :=
-        Prf.impE Prf.hyp1 hle
-      have h₂ : Δ ⊢[PRAAx] le (Syn.shift a * inst2 f (var 0) (Syn.shift x))
-          (Syn.shift b * inst2 g (var 0) (Syn.shift x) + Syn.shift c * inst2 h (var 0) (Syn.shift x)) :=
-        Prf.impE hf.wk.wk Prf.hyp0
-      refine le_congr (congrMul (.eqRefl _) (sum_succ' f (var 0) _)).eqSymm
-        (congrAdd (congrMul (.eqRefl _) (sum_succ' g (var 0) _)) (congrMul (.eqRefl _) (sum_succ' h (var 0) _))).eqSymm ?_
-      refine le_of_eq_add (d := monus (Syn.shift b * ap2 (sumF g) (var 0) (Syn.shift x) +
-          Syn.shift c * ap2 (sumF h) (var 0) (Syn.shift x)) (Syn.shift a * ap2 (sumF f) (var 0) (Syn.shift x)) +
-        monus (Syn.shift b * inst2 g (var 0) (Syn.shift x) + Syn.shift c * inst2 h (var 0) (Syn.shift x))
-          (Syn.shift a * inst2 f (var 0) (Syn.shift x))) ?_
-      ipra_lc natEq (eq_add_of_le h₁) + natEq (eq_add_of_le h₂)
-  have h2 := Prf.allE N hall
-  simp only [Fm.subst_imp, subst_le, subst_ap2, PTm.subst_mul, PTm.subst_add, Syn.subst_var, Syn.inst_zero,
-    Syn.subst_inst_shift] at h2
-  exact .impE h2 (le_refl N)
+  exact sum_scaled_le_weighted_pair f g h a b c x x x N hp
 
 /-! ## Gates -/
 

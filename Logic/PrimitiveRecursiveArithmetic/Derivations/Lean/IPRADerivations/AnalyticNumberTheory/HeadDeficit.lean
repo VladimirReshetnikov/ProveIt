@@ -1,6 +1,7 @@
 import IPRADerivations.AnalyticNumberTheory.BlockDeficitMain
 import IPRADerivations.AnalyticNumberTheory.ContractionSplit
 import IPRADerivations.Core.Header
+import IPRADerivations.Core.SumOrder
 
 /-!
 # The head of the weighted sum with its deficit (`pnt_ipra_constructive_2026-11-14`, `con:one-step`)
@@ -58,41 +59,11 @@ theorem sum_le_three (f1 f2 g : PTm 2) (a1 a2 c x1 x2 y N : PTm n)
       le (Syn.shift a1 * inst2 f1 (var 0) (Syn.shift x1) + Syn.shift a2 * inst2 f2 (var 0) (Syn.shift x2))
         (Syn.shift c * inst2 g (var 0) (Syn.shift y)))) :
     Γ ⊢[PRAAx] le (a1 * ap2 (sumF f1) N x1 + a2 * ap2 (sumF f2) N x2) (c * ap2 (sumF g) N y) := by
-  have hall : Γ ⊢[PRAAx] Fm.all (le (var 0) (Syn.shift N) ⟶
-      le (Syn.shift a1 * ap2 (sumF f1) (var 0) (Syn.shift x1) + Syn.shift a2 * ap2 (sumF f2) (var 0) (Syn.shift x2))
-        (Syn.shift c * ap2 (sumF g) (var 0) (Syn.shift y))) := by
-    refine PRA.qfInd _ ⟨le_QF _ _, le_QF _ _⟩ ?_ ?_
-    · simp only [Fm.subst_imp, subst_le, subst_ap2, Syn.subst_var, Syn.inst_zero, Syn.subst_inst_shift,
-        PTm.subst_mul, PTm.subst_add, ConciseIPRA.PTm.subst_zero]
-      refine .impI ?_
-      have e1 := natEq (sum_zero (Γ := le zero N :: Γ) f1 x1)
-      have e2 := natEq (sum_zero (Γ := le zero N :: Γ) f2 x2)
-      have e3 := natEq (sum_zero (Γ := le zero N :: Γ) g y)
-      ipra_le 0 with 𝔞 c * e3 - 𝔞 a1 * e1 - 𝔞 a2 * e2
-    · simp only [Fm.subst_imp, subst_le, subst_ap2, Syn.subst_var, Syn.repl_zero, subst_repl_shift,
-        PTm.subst_mul, PTm.subst_add, ConciseIPRA.PTm.subst_zero]
-      refine .impI ?_
-      let Θ : List (Fm PTm (n + 1)) := le (succ (var 0)) (Syn.shift N) ::
-        (le (var 0) (Syn.shift N) ⟶
-          le (Syn.shift a1 * ap2 (sumF f1) (var 0) (Syn.shift x1) + Syn.shift a2 * ap2 (sumF f2) (var 0) (Syn.shift x2))
-            (Syn.shift c * ap2 (sumF g) (var 0) (Syn.shift y))) ::
-        Γ.map Fm.shift
-      have hle : Θ ⊢[PRAAx] le (var 0) (Syn.shift N) := le_trans (le_succ_self _) Prf.hyp0
-      have ih : Θ ⊢[PRAAx]
-          le (Syn.shift a1 * ap2 (sumF f1) (var 0) (Syn.shift x1) + Syn.shift a2 * ap2 (sumF f2) (var 0) (Syn.shift x2))
-            (Syn.shift c * ap2 (sumF g) (var 0) (Syn.shift y)) := Prf.impE Prf.hyp1 hle
-      have pt : Θ ⊢[PRAAx]
-          le (Syn.shift a1 * inst2 f1 (var 0) (Syn.shift x1) + Syn.shift a2 * inst2 f2 (var 0) (Syn.shift x2))
-            (Syn.shift c * inst2 g (var 0) (Syn.shift y)) :=
-        Prf.impE h.allOpen.wk.wk Prf.hyp0
-      have e1 := natEq (sum_succ' (Γ := Θ) f1 (var 0) (Syn.shift x1))
-      have e2 := natEq (sum_succ' (Γ := Θ) f2 (var 0) (Syn.shift x2))
-      have e3 := natEq (sum_succ' (Γ := Θ) g (var 0) (Syn.shift y))
-      ipra_le sl ih + sl pt with 𝔞 (Syn.shift c) * e3 - 𝔞 (Syn.shift a1) * e1 - 𝔞 (Syn.shift a2) * e2
-  have h2 := Prf.allE N hall
-  simp only [Fm.subst_imp, subst_le, subst_ap2, Syn.subst_var, Syn.inst_zero, Syn.subst_inst_shift,
-    PTm.subst_mul, PTm.subst_add, ConciseIPRA.PTm.subst_zero] at h2
-  exact .impE h2 (le_refl N)
+  refine le_congr (.eqRefl _) ((congrAdd (.eqRefl _) (zero_mul _)).eqTrans (add_zero _))
+    (sum_weighted_pair_le f1 f2 g g a1 a2 c zero x1 x2 y y N (.allI (.impI ?_)))
+  rw [show Syn.shift (zero : PTm n) = zero by simp [Syn.shift]]
+  exact le_congr (.eqRefl _) ((congrAdd (.eqRefl _) (zero_mul _)).eqTrans (add_zero _)).eqSymm
+    (.impE h.allOpen.wk Prf.hyp0)
 
 /-! ## The weight `u_d` in the block layout -/
 
