@@ -269,30 +269,12 @@ theorem ev_found {N p x : PTm n} (hN : Γ ⊢[PRAAx] N ≐ succ (pred N)) (hp : 
     (hV : Γ ⊢[PRAAx] ap2 (sumF evB) N x ≐ zero) :
     Γ ⊢[PRAAx] dvd (pw two (oddR N)) (phi N) := by
   have hp2 : Γ ⊢[PRAAx] le two p := by have h := hp; unfold prime at h; exact Prf.andE₁ h
-  have hp1 := prime_eq_succ_pred hp
-  -- `a = v_p(n) ≥ 1`.
-  have ha : Γ ⊢[PRAAx] val p N ≐ succ (pred (val p N)) := by
-    refine .orE (zero_or_succ (val p N)) ?_ Prf.hyp0
-    have e : ((val p N ≐ zero) :: Γ) ⊢[PRAAx] p ≐ pw p (succ (val p N)) :=
-      (pw_one _).eqSymm.eqTrans (congrAp2 powF (congrSucc Prf.hyp0).eqSymm (.eqRefl _))
-    exact .botE _ (.impE (val_not_dvd hp2.wk hN.wk) (dvd_congr_left e hpN.wk))
+  have ha := val_eq_succ_pred_of_dvd hp2 hN hpN
   have hP := pw_val_pos (m := N) hp2
   have hNe := cof_eq (m := N) hp2
-  have hrm : Γ ⊢[PRAAx] rem (quo N (pw p (val p N))) p ≐ succ (pred (rem (quo N (pw p (val p N))) p)) := by
-    refine .orE (zero_or_succ (rem (quo N (pw p (val p N))) p)) ?_ Prf.hyp0
-    exact .botE _ (.impE (cof_not_dvd hp2.wk hN.wk) Prf.hyp0)
-  have hm : Γ ⊢[PRAAx] quo N (pw p (val p N)) ≐ succ (pred (quo N (pw p (val p N)))) := by
-    refine .orE (zero_or_succ (quo N (pw p (val p N)))) ?_ Prf.hyp0
-    exact succ_ne_zero' _ (hN.wk.eqSymm.eqTrans (hNe.wk.eqTrans ((congrMul (.eqRefl _) Prf.hyp0).eqTrans (mul_zero _))))
-  -- `m < n`.
-  have hPp : Γ ⊢[PRAAx] le two (pw p (val p N)) := by
-    refine le_trans hp2 (le_of_eq_add (d := pred (pw p (pred (val p N))) * p) ?_)
-    have e₁ := natEq ((congrAp2 powF ha (.eqRefl p)).eqTrans (pw_succ p (pred (val p N))))
-    ipra_lc e₁ + Groth.ι (Q.mk _ p) * natEq (pw_pos' hp1 (pred (val p N)))
-  have hlt : Γ ⊢[PRAAx] lt (quo N (pw p (val p N))) N := by
-    refine le_of_eq_add (d := pred (quo N (pw p (val p N))) +
-      monus (pw p (val p N)) two * quo N (pw p (val p N))) ?_
-    ipra_lc natEq hNe + Groth.ι (Q.mk _ (quo N (pw p (val p N)))) * natEq (eq_add_of_le hPp) + natEq hm
+  have hrm := cof_rem_eq_succ_pred hp2 hN
+  have hm := cof_eq_succ_pred hp2 hN
+  have hlt := cof_lt_of_dvd hp2 hN hpN
   -- The induction hypothesis at `m`.
   have h₀ := sum_zero_elim evB hV hlt
   rw [inst2_ev] at h₀

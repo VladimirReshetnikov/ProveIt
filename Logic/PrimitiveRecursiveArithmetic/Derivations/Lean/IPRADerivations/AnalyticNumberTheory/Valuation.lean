@@ -132,6 +132,44 @@ theorem cof_not_dvd : Γ ⊢[PRAAx] neg (dvd p (quo m (pw p (val p m)))) := by
 
 end Val
 
+/-- Divisibility by `p` forces its valuation to be positive. -/
+theorem val_eq_succ_pred_of_dvd {p m : PTm n} (hp : Γ ⊢[PRAAx] le two p)
+    (hm : Γ ⊢[PRAAx] m ≐ succ (pred m)) (hd : Γ ⊢[PRAAx] dvd p m) :
+    Γ ⊢[PRAAx] val p m ≐ succ (pred (val p m)) := by
+  refine .orE (zero_or_succ (val p m)) ?_ Prf.hyp0
+  have e : ((val p m ≐ zero) :: Γ) ⊢[PRAAx] p ≐ pw p (succ (val p m)) :=
+    (pw_one _).eqSymm.eqTrans (congrAp2 powF (congrSucc Prf.hyp0).eqSymm (.eqRefl _))
+  exact .botE _ (.impE (val_not_dvd hp.wk hm.wk) (dvd_congr_left e hd.wk))
+
+/-- A positive input has a positive cofactor. -/
+theorem cof_eq_succ_pred {p m : PTm n} (hp : Γ ⊢[PRAAx] le two p)
+    (hm : Γ ⊢[PRAAx] m ≐ succ (pred m)) :
+    Γ ⊢[PRAAx] quo m (pw p (val p m)) ≐ succ (pred (quo m (pw p (val p m)))) := by
+  refine .orE (zero_or_succ (quo m (pw p (val p m)))) ?_ Prf.hyp0
+  exact succ_ne_zero' _ (hm.wk.eqSymm.eqTrans
+    ((cof_eq (m := m) hp).wk.eqTrans ((congrMul (.eqRefl _) Prf.hyp0).eqTrans (mul_zero _))))
+
+/-- The cofactor's remainder modulo its removed base is positive. -/
+theorem cof_rem_eq_succ_pred {p m : PTm n} (hp : Γ ⊢[PRAAx] le two p)
+    (hm : Γ ⊢[PRAAx] m ≐ succ (pred m)) :
+    Γ ⊢[PRAAx] rem (quo m (pw p (val p m))) p ≐
+      succ (pred (rem (quo m (pw p (val p m))) p)) := by
+  refine .orE (zero_or_succ (rem (quo m (pw p (val p m))) p)) ?_ Prf.hyp0
+  exact .botE _ (.impE (cof_not_dvd hp.wk hm.wk) Prf.hyp0)
+
+/-- Dividing out a nontrivial valuation strictly reduces a positive input. -/
+theorem cof_lt_of_dvd {p m : PTm n} (hp : Γ ⊢[PRAAx] le two p)
+    (hm : Γ ⊢[PRAAx] m ≐ succ (pred m)) (hd : Γ ⊢[PRAAx] dvd p m) :
+    Γ ⊢[PRAAx] lt (quo m (pw p (val p m))) m := by
+  have hval := val_eq_succ_pred_of_dvd hp hm hd
+  have hpow := (congrAp2 powF hval (.eqRefl p)).eqTrans (pw_succ p (pred (val p m)))
+  have hpow_pos := pw_pos' (AnalyticNumberTheory.Euler.N_pos hp) (pred (val p m))
+  have hbase := le_congr (one_mul p) hpow.eqSymm
+    (mul_le_mul_right p (Order.zero_lt_of_eq_succ hpow_pos))
+  have hlt : Γ ⊢[PRAAx] lt one (pw p (val p m)) := le_trans hp hbase
+  exact lt_congr (one_mul _) (cof_eq hp).eqSymm
+    (Order.mul_lt_mul_right (Order.zero_lt_of_eq_succ (cof_eq_succ_pred hp hm)) hlt)
+
 /-! ## A prime indicator -/
 
 /-- `[q is prime] = sg(q − 1) · [lpf q = q]`. -/

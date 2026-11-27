@@ -44,14 +44,8 @@ variable {n : ℕ} {Γ : List (Fm PTm n)}
 
 /-- `v_p(a) ≥ 1` when `p ∣ a`, for `p ≥ 2` and `a ≥ 1`. -/
 theorem val_pos {p a : PTm n} (hp2 : Γ ⊢[PRAAx] le two p) (ha : Γ ⊢[PRAAx] a ≐ succ (pred a))
-    (hd : Γ ⊢[PRAAx] rem a p ≐ zero) : Γ ⊢[PRAAx] le one (val p a) := by
-  refine .orE (lt_or_le zero (val p a)) Prf.hyp0 ?_
-  have v0 : (le (val p a) zero :: Γ) ⊢[PRAAx] val p a ≐ zero := le_antisymm Prf.hyp0 (zero_le _)
-  have nd : (le (val p a) zero :: Γ) ⊢[PRAAx] neg (dvd (pw p (succ (val p a))) a) :=
-    Valuation.val_not_dvd hp2.wk ha.wk
-  have e : (le (val p a) zero :: Γ) ⊢[PRAAx] pw p (succ (val p a)) ≐ p :=
-    (congrPw (.eqRefl _) (congrSucc v0)).eqTrans (pw_one _)
-  exact .botE _ (Prf.impE nd ((congrAp2 remF (.eqRefl _) e).eqTrans hd.wk))
+    (hd : Γ ⊢[PRAAx] rem a p ≐ zero) : Γ ⊢[PRAAx] le one (val p a) :=
+  Order.zero_lt_of_eq_succ (Valuation.val_eq_succ_pred_of_dvd hp2 ha hd)
 
 /-- `v_p(a) = 0` when `p ∤ a`, for `p ≥ 2` and `a ≥ 1`. -/
 theorem val_zero' {p a : PTm n} (hp2 : Γ ⊢[PRAAx] le two p) (ha : Γ ⊢[PRAAx] a ≐ succ (pred a))
