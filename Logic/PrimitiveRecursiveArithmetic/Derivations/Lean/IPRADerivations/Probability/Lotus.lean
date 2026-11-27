@@ -168,13 +168,14 @@ end Eval
 
 /-! ## The theorem -/
 
-/-- `thm:finite-lotus`: `∑_{i<M} w_i g(σ(i)) = ∑_{j<N} g(j) v_j`, for `σ < N`. -/
-theorem lotus (w σ g : PTm 2) {N x : PTm n} (hr : Γ ⊢[PRAAx] Permutation.rangeAll σ N x) (M : PTm n) :
+/-- Finite LOTUS only requires the range hypothesis on the outcomes being summed. -/
+theorem lotus_bounded (w σ g : PTm 2) {N x M : PTm n}
+    (hr : Γ ⊢[PRAAx] Fm.all (lt (var 0) (Syn.shift M) ⟶ lt (inst2 σ (var 0) (Syn.shift x)) (Syn.shift N))) :
     Γ ⊢[PRAAx] ap2 (sumF (w * gσ σ g)) M x ≐ ap2 (sumF (rB w σ g)) N (pairT M x) := by
   have e₁ : Γ ⊢[PRAAx] ap2 (sumF (w * gσ σ g)) M x ≐ ap2 (sumF (oB (aB w σ g))) M (pairT N x) := by
     refine sum_congr_bounded (w * gσ σ g) (oB (aB w σ g)) x (pairT N x) M (.allI (.impI ?_))
     rw [Expectation.inst2_mul', inst2_gσ, shift_pairT]
-    exact ((oB_at _ _ _ _).eqTrans (row_eval w σ g hr.allOpen.wk)).eqSymm
+    exact ((oB_at _ _ _ _).eqTrans (row_eval w σ g (Prf.impE hr.allOpen.wk Prf.hyp0))).eqSymm
   have e₂ : Γ ⊢[PRAAx] ap2 (sumF (pB (aB w σ g))) N (pairT M x) ≐ ap2 (sumF (rB w σ g)) N (pairT M x) := by
     refine sum_congr_bounded (pB (aB w σ g)) (rB w σ g) (pairT M x) (pairT M x) N (.allI (.impI ?_))
     rw [inst2_pB, inst2_rB, shift_pairT]
@@ -182,6 +183,11 @@ theorem lotus (w σ g : PTm 2) {N x : PTm n} (hr : Γ ⊢[PRAAx] Permutation.ran
       ((col_eval w σ g _ _ _).eqTrans (congrMul (congrInst2 g (.eqRefl _) (snd_pair _ _)).eqSymm
         (congrAp2 (sumF (vB w σ)) (fst_pair _ _) (congrPairT (.eqRefl _) (snd_pair _ _))).eqSymm))
   exact e₁.eqTrans ((fubini (aB w σ g) M N x).eqTrans e₂)
+
+/-- `thm:finite-lotus`: `∑_{i<M} w_i g(σ(i)) = ∑_{j<N} g(j) v_j`, for `σ < N`. -/
+theorem lotus (w σ g : PTm 2) {N x : PTm n} (hr : Γ ⊢[PRAAx] Permutation.rangeAll σ N x) (M : PTm n) :
+    Γ ⊢[PRAAx] ap2 (sumF (w * gσ σ g)) M x ≐ ap2 (sumF (rB w σ g)) N (pairT M x) :=
+  lotus_bounded w σ g (.allI (.impI hr.allOpen.wk))
 
 /-- `v_j = ∑_{i < fst y} w_i [σ(i) = j]` as a body in `j`. -/
 def pvB (w σ : PTm 2) : PTm 2 := ap2 (sumF (vB w σ)) (fstT (var 1)) (pairT (var 0) (sndT (var 1)))

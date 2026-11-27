@@ -29,7 +29,7 @@ open_ipra
 open LeanProofs.IPRA.Probability.Expectation (Ew inst2_mul')
 open LeanProofs.IPRA.Probability.Variance (ad)
 open LeanProofs.IPRA.Probability.ExpectationCorollaries (ad_zero)
-open LeanProofs.IPRA.Probability.Lotus (aB rB vB gσ inst2_gσ inst2_rB inst2_vB row_eval col_eval)
+open LeanProofs.IPRA.Probability.Lotus (rB vB gσ inst2_gσ inst2_vB)
 open LeanProofs.IPRA.Foundations.BoundedReflection (eqb_cases eq_of_eqb)
 open LeanProofs.IPRA.AnalyticNumberTheory.Euler (congrEqb)
 
@@ -40,18 +40,8 @@ variable {n : ℕ} {Γ : List (Fm PTm n)}
 /-- `thm:finite-lotus` with `σ(i) < N` assumed only for `i < M`. -/
 theorem lotus_bounded (w σ g : PTm 2) {N x M : PTm n}
     (hr : Γ ⊢[PRAAx] Fm.all (lt (var 0) (Syn.shift M) ⟶ lt (inst2 σ (var 0) (Syn.shift x)) (Syn.shift N))) :
-    Γ ⊢[PRAAx] ap2 (sumF (w * gσ σ g)) M x ≐ ap2 (sumF (rB w σ g)) N (pairT M x) := by
-  have e₁ : Γ ⊢[PRAAx] ap2 (sumF (w * gσ σ g)) M x ≐ ap2 (sumF (oB (aB w σ g))) M (pairT N x) := by
-    refine sum_congr_bounded (w * gσ σ g) (oB (aB w σ g)) x (pairT N x) M (.allI (.impI ?_))
-    rw [Expectation.inst2_mul', inst2_gσ, shift_pairT]
-    exact ((oB_at _ _ _ _).eqTrans (row_eval w σ g (Prf.impE hr.allOpen.wk Prf.hyp0))).eqSymm
-  have e₂ : Γ ⊢[PRAAx] ap2 (sumF (pB (aB w σ g))) N (pairT M x) ≐ ap2 (sumF (rB w σ g)) N (pairT M x) := by
-    refine sum_congr_bounded (pB (aB w σ g)) (rB w σ g) (pairT M x) (pairT M x) N (.allI (.impI ?_))
-    rw [inst2_pB, inst2_rB, shift_pairT]
-    exact (congrAp2 (sumF (colB (aB w σ g))) (fst_pair _ _) (congrPairT (.eqRefl _) (snd_pair _ _))).eqTrans
-      ((col_eval w σ g _ _ _).eqTrans (congrMul (congrInst2 g (.eqRefl _) (snd_pair _ _)).eqSymm
-        (congrAp2 (sumF (vB w σ)) (fst_pair _ _) (congrPairT (.eqRefl _) (snd_pair _ _))).eqSymm))
-  exact e₁.eqTrans ((fubini (aB w σ g) M N x).eqTrans e₂)
+    Γ ⊢[PRAAx] ap2 (sumF (w * gσ σ g)) M x ≐ ap2 (sumF (rB w σ g)) N (pairT M x) :=
+  Lotus.lotus_bounded w σ g hr
 
 /-! ## The first-occurrence representative -/
 
