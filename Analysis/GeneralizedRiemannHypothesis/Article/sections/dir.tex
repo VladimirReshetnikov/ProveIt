@@ -4503,8 +4503,7 @@ For $2\le h\le m/2$ and $0\le s\le m/2$, with $t=h/m$ and $\lambda=ts$,
 \[
  \bigl|P_{m,s}(h)-(1-2t)^s\bigr|\ll\frac{\lambda^2e^{-\lambda/16}}h\ll\frac{\min(1,\lambda)}h,
 \]
-with absolute constants; the difference vanishes for $s=0,1$. If $h\to\infty$, $h/m\to0$ and
-$hs/m\to\lambda_0\in(0,\infty)$, then $h\bigl(P_{m,s}(h)-(1-2t)^s\bigr)\to-2\lambda_0^2e^{-2\lambda_0}$.
+with absolute constants; the difference vanishes for $s=0,1$.
 \end{theorem}
 
 \begin{proof}
@@ -4520,15 +4519,12 @@ the identity by exchangeability and conditioning on a specified successful draw.
 $(h-1)(i-1)/(m-1)\ge hi/(4m)$ for $i,h\ge2$, and the case $i=1$ is trivial. So the correction term is at
 most $K_1(ti/m)e^{-ti/16}$, and iterating from $F_0=1$ with $0\le1-2t\le e^{-2t}$ gives
 $\abs{F_s-(1-2t)^s}\le K_1(t/m)e^{-t(s-1)/16}\sum_{i<s}i\ll(\lambda^2/h)e^{-\lambda/16}$, as $ts^2/m=\lambda^2/h$.
-
-For the limit expand $(-1)^{J_s}=(1-2)^{J_s}$ in factorial moments:
-$P_{m,s}(h)=\sum_j\binom sj(-2)^j(h)_j/(m)_j$ and $(1-2t)^s=\sum_j\binom sj(-2t)^j$. With
-$r_j=(h)_j/((m)_jt^j)$ one has $0\le1-r_j\le j(j-1)/h$ and $h(r_j-1)\to-j(j-1)/2$ for fixed $j$, while
-$\binom sjt^j\le\lambda^j/j!$ and $\binom sjt^j\to\lambda_0^j/j!$. Dominated convergence gives the limit
-$-\frac12\sum_jj(j-1)(-2\lambda_0)^j/j!=-2\lambda_0^2e^{-2\lambda_0}$.
 \end{proof}
 
-So the order $1/h$ of the error cannot be improved, even in the sparse critical window. For one product,
+If $h\to\infty$, $h/m\to0$ and $hs/m\to\lambda_0\in(0,\infty)$, then
+$h\bigl(P_{m,s}(h)-(1-2t)^s\bigr)\to-2\lambda_0^2e^{-2\lambda_0}$; this is the case $F=C_2$ of
+\cref{dir:cor:cp} below, \eqref{dir:eq:paritylimit}. So the order $1/h$ of the error cannot be improved,
+even in the sparse critical window. For one product,
 with no reserve block, $h=\min(k,m-k)$ and $t=h/m$; let $s$ be the least number of retained primes outside
 one fibre of a nonprincipal quadratic character, attained by a pair $(\chi_*,\sigma)$ (ties allowed), put
 $\lambda=ts$ and $\epsilon_k=\sigma^k(-1)^{s[k>m/2]}$, and let
@@ -4581,7 +4577,7 @@ fixed, then $D_q\to(1-2v)^s$, so nearly balanced quotas mix with a single minori
 \begin{proof}
 Both sign classes are nonempty of equal size; apply (c), the reverse triangle inequality and averaging.
 If $t\to0$ then $\log(1-2t)=-2t+O(t^2)$. In the critical window the residual in the proof of
-\cref{dir:thm:fibre} is $o(1/h)$ since $h\le m=O(L^2)$; apply the limit in \cref{dir:thm:parity}.
+\cref{dir:thm:fibre} is $o(1/h)$ since $h\le m=O(L^2)$; apply the limit \eqref{dir:eq:paritylimit}.
 \end{proof}
 
 The criterion replaces a fixed density margin above one half by the number of minority primes in a
@@ -4665,6 +4661,375 @@ Klurman, Shparlinski and Ter\"av\"ainen and to Hughes
 \cite{KlurmanShparlinskiTeravainen2026Generation,Hughes2026Few}, and fixed-cardinality subset sums of
 an abelian group are treated by Pach \cite{Pach2025Equidistribution}. Zero-sum-free sequences in random
 subsets of cyclic groups are studied in \cite{LeeOh2023ZeroSum}.
+
+\subsection{Sparse transition profiles at every density}\label{dir:sec:profiles}
+\sources{grh_extensions_2026-11-27_3}
+
+For one product, \cref{dir:thm:fibre} describes the approach to uniformity above density one third,
+where at most one quadratic character survives in the bounded quotient. Below that density the quotient
+of \cref{dir:thm:quotient} may be cyclic of order four or a product of quadratic quotients, and several
+fibres interact. In the sparse range $BL\le h=o(m)$ this subsection gives a necessary and sufficient
+mixing criterion at every fixed retained density, shows that every subsequential limit of the normalized
+residue profile is, after a deterministic phase correction, the lift of a compound Poisson law on a
+quotient of order at most $\floor{1/a}$, and shows that every such law occurs. The probabilistic input is
+an expansion of a fixed-size sample from a population with few defects, with a signed correction of
+order $1/h$.
+
+Keep the notation of \cref{dir:sec:products} with $y=CL^2$, fix $0<a\le1$, put $D=\floor{1/a}$, and let
+$S\subseteq\mathcal P$ have $m\ge aN$ elements. For $1\le k<m$ put $h=\min(k,m-k)$, $t=h/m$ and
+$U_S=\prod_{p\in S}p\bmod q$, and let
+\[
+ Y=X_k\quad(k\le m/2),\qquad Y=U_SX_k^{-1}\quad(k>m/2),
+\]
+which has the law of the product of a uniform $h$-subset of $S$; translation and inversion preserve the
+distance from uniform. Let $R(g)=\binom mk\dirP(X_k=g)$ and
+$D_q=\max_{g\in G}\abs{\varphi(q)R(g)/\binom mk-1}$, as in \cref{dir:cor:fibre}. For a nonprincipal
+character $\chi$ modulo $q$ put
+\[
+ s_\chi(S)=m-\max_\zeta\#\set{p\in S:\chi(p)=\zeta},\qquad s_D(S)=\min_{1<\ord\chi\le D}s_\chi(S),
+\]
+the number of retained primes outside a largest fibre of $\chi$, and its least value over the
+characters of order at most $D$; an empty minimum is $+\infty$. For characters of order two or three
+$s_\chi(S)$ is the number $s_\chi$ of \cref{dir:thm:disjoint-support}.
+
+\paragraph{Compound Poisson laws.} Let $F$ be a finite abelian group, written multiplicatively with
+identity $e$. Signed measures on $F$ form an algebra under convolution $*$, with the norm
+$\norm{\mu}_1=\sum_{x\in F}\abs{\mu(x)}$; convolution is submultiplicative, a probability measure has
+norm one, and the total variation distance is half the norm of the difference. For rates $\lambda_x\ge0$,
+$x\in F\setminus\set e$, let $J_x$ be independent Poisson variables of means $\lambda_x$ and
+\begin{equation}\label{dir:eq:cp}
+ P_\Lambda=\mathcal L\Bigl(\prod_{x\ne e}x^{J_x}\Bigr)=\exp_*(\Lambda),\qquad
+ \Lambda=\sum_{x\ne e}\lambda_x(\delta_x-\delta_e),
+\end{equation}
+where $\mathcal L$ denotes the law and the exponential is taken in the convolution algebra. Its Fourier
+coefficients are
+\begin{equation}\label{dir:eq:cpfourier}
+ \widehat{P_\Lambda}(\chi)=\exp\Bigl(\sum_{x\ne e}\lambda_x\bigl(\chi(x)-1\bigr)\Bigr)\ne0 .
+\end{equation}
+So a compound Poisson law on a nontrivial group is never uniform. Its support is the subgroup generated by
+the jumps of positive rate, since in a finite group the semigroup generated by a set is the subgroup it
+generates.
+
+\paragraph{Two finite sampling estimates.} The first extends \cref{dir:lem:paritydecay} to roots of
+unity of any bounded order. It has no growing factor in front of the exponential, so the minority scale
+$hs/m$ may tend to infinity arbitrarily slowly.
+
+\begin{lemma}[Split-pair decay; \stU]\label{dir:lem:splitpair}
+Let $2\le d\le D$, let $z_1,\dots,z_m$ be roots of unity of order dividing $d$, put
+$s=m-\max_\zeta\#\set{j:z_j=\zeta}$, and let $1\le h\le m/2$. If $E_h$ is the mean of $\prod_{j\in T}z_j$
+over a uniform $h$-subset $T$ of $\set{1,\dots,m}$, then
+\begin{equation}\label{dir:eq:splitpair}
+ \abs{E_h}\le20\exp\Bigl(-c_D\frac{hs}m\Bigr),\qquad c_D=\frac{1-\cos(\pi/D)}{\max(D,8)} .
+\end{equation}
+\end{lemma}
+
+\begin{proof}
+If $m<8$ then $hs/m<4$ and $c_D\le1/8$, so the right side exceeds one. Let $m\ge8$. A largest value
+class has $n_{\max}\ge m/D$ elements. Pair
+\[
+ \rho=\min\bigl(n_{\max},s,\floor{m/4}\bigr)\ge\frac s{\max(D,8)}
+\]
+of its labels with distinct labels of other values; at least $m/2$ labels remain unpaired. Conditional on
+the number of selected labels in every pair and on the selected unpaired labels, the orientations of the
+split pairs (those with exactly one selected member) are independent fair choices. For distinct $d$th
+roots of unity $z,z'$ one has $\abs{(z+z')/2}\le\cos(\pi/d)\le\kappa:=\cos(\pi/D)$. Hence
+$\abs{E_h}\le\dirE(\kappa^Z\mid B_m=h)$, where the subset is generated by independent Bernoulli$(t)$
+selection of all labels, $t=h/m$, conditioned on the total $B_m=h$, and $Z$ is the number of split pairs.
+
+Under independent selection $\dirE\kappa^Z=(1-2(1-\kappa)t(1-t))^\rho$. Tilt the independent law by the
+nonnegative weight $\kappa^Z$; this is well defined also for $\kappa=0$, since the event of no split pair
+has positive probability. Under the tilt the unpaired labels remain independent Bernoulli$(t)$,
+independent of the pairs, and
+\[
+ \dirE(\kappa^Z\mid B_m=h)=\dirE\kappa^Z\,\frac{\dirP_{\mathrm{tilt}}(B_m=h)}{\dirP(B_m=h)} .
+\]
+The denominator is at least $3/(20\sqrt h)$: the integer mean $h$ is a mode, and by Chebyshev's inequality
+at least $3/4$ of the mass lies in an interval containing at most $5\sqrt h$ integers. With
+$n=m-2\rho\ge m/2$, Fourier inversion gives
+\[
+ \sup_j\dirP\bigl(\mathrm{Bin}(n,t)=j\bigr)\le\frac1{2\pi}\int_{-\pi}^{\pi}e^{-2nt(1-t)\sin^2(\theta/2)}\,d\theta
+ \le\frac{\sqrt\pi}{2\sqrt{2nt(1-t)}}\le\frac{\sqrt\pi}{\sqrt{2h}} .
+\]
+The tilted total is the sum of this unpaired binomial and an independent variable, so its atoms obey the
+same bound, and the ratio of atoms is less than $20$. Finally $t\le1/2$ gives
+$(1-2(1-\kappa)t(1-t))^\rho\le e^{-(1-\kappa)t\rho}\le e^{-c_Dts}$.
+\end{proof}
+
+For $d=2$ the pairing argument of \cref{dir:lem:paritydecay} gives the better exponent $hs/(4m)$.
+
+For the second estimate consider a population of $m-s$ labels equal to $e$ and $s$ labelled defects
+$x_1,\dots,x_s\ne e$ in $F$, and let $\mu_{m,h}$ be the law of the product over a uniform $h$-subset.
+Assume $1\le h\le m/2$ and $0\le s\le m/2$, and put $t=h/m$ and $\lambda=ts$. Let
+\begin{equation}\label{dir:eq:nu}
+ \nu(v)=\mathop{\ast}_{i=1}^s\bigl(\delta_e+v(\delta_{x_i}-\delta_e)\bigr),\qquad0\le v\le1,
+\end{equation}
+a polynomial in $v$ with values in signed measures. Thus $\nu(t)$ includes each defect independently with
+probability $t$, whereas $\mu_{m,h}$ respects the fixed quota; derivatives of $\nu$ are derivatives in $v$.
+
+\begin{theorem}[Uniform second-order correction; \stU]\label{dir:thm:fpc}
+In this setting
+\begin{equation}\label{dir:eq:fpcfirst}
+ \norm{\mu_{m,h}-\nu(t)}_1\le\frac{4\lambda^2e^{2\lambda}}h ,
+\end{equation}
+and more precisely
+\begin{equation}\label{dir:eq:fpcsecond}
+ \Bigl\|\mu_{m,h}-\nu(t)+\Bigl(\frac1{2h}-\frac1{2m}\Bigr)t^2\nu''(t)\Bigr\|_1\le\frac{\mathcal R(\lambda)}{h^2},
+ \qquad
+ \mathcal R(\lambda)=2e^{2\lambda}\bigl((2\lambda)^4+6(2\lambda)^3+7(2\lambda)^2+2\lambda\bigr).
+\end{equation}
+In particular the remainder is $O_M(h^{-2})$ uniformly for $\lambda\le M$, independently of the finite
+group and of the defect types. The correction satisfies $\norm{t^2\nu''(t)}_1\le4t^2s(s-1)\le4\lambda^2$.
+\end{theorem}
+
+\begin{proof}
+Put $d_i=\delta_{x_i}-\delta_e$, and let $e_j$ be the sum of all $j$-fold convolutions of distinct
+$d_i$, with $e_0=\delta_e$. A specified $j$-set of labels is contained in a uniform $h$-subset with
+probability $(h)_j/(m)_j$, where $(n)_j=n(n-1)\cdots(n-j+1)$ and $(h)_j=0$ for $j>h$. Expanding the
+selected factors gives
+\begin{equation}\label{dir:eq:factorial}
+ \mu_{m,h}=\sum_{j=0}^s\frac{(h)_j}{(m)_j}e_j,\qquad\nu(t)=\sum_{j=0}^st^je_j,\qquad
+ \norm{e_j}_1\le\binom sj2^j .
+\end{equation}
+Set $r_j=(h)_j/((m)_jt^j)$, so $r_j=0$ for $j>h$. We claim
+\begin{equation}\label{dir:eq:ratios}
+ 0\le1-r_j\le\frac{j(j-1)}h,\qquad
+ \Bigl|r_j-1+\frac{j(j-1)}2\Bigl(\frac1h-\frac1m\Bigr)\Bigr|\le\frac{2j^4}{h^2}.
+\end{equation}
+For $j\le h$ write $r_j=\prod_{\ell=0}^{j-1}(1-a_\ell)$ with $a_\ell=(\ell/h-\ell/m)/(1-\ell/m)$. Since
+$j\le s\le m/2$, one has $0\le a_\ell\le1$ and $a_\ell\le2\ell/h$. The union bound and its second-order
+Bonferroni refinement give
+\[
+ 0\le1-r_j\le\sum_\ell a_\ell,\qquad0\le\sum_\ell a_\ell-(1-r_j)\le\frac12\Bigl(\sum_\ell a_\ell\Bigr)^2,
+\]
+and
+\[
+ \Bigl|\sum_\ell a_\ell-\Bigl(\frac1h-\frac1m\Bigr)\sum_\ell\ell\Bigr|\le\frac2{hm}\sum_{\ell<j}\ell^2
+ \le\frac{2j^3}{3h^2}.
+\]
+These imply \eqref{dir:eq:ratios}. For $j>h$ the claims follow from $r_j=0$ and $j\ge h+1$, and the cases
+$j=0,1$ are exact.
+
+Insert the first inequality of \eqref{dir:eq:ratios} into \eqref{dir:eq:factorial}. Since
+\[
+ \sum_jj(j-1)\binom sj(2t)^j=4t^2s(s-1)(1+2t)^{s-2}\le4\lambda^2e^{2\lambda},
+\]
+with the cases $s<2$ read separately, this gives \eqref{dir:eq:fpcfirst}. For \eqref{dir:eq:fpcsecond}
+use the second inequality of \eqref{dir:eq:ratios}, the identity $t^2\nu''(t)=\sum_jj(j-1)t^je_j$, and
+$\binom sjt^j\le\lambda^j/j!$; the remainder is at most
+$(2/h^2)\sum_{j\ge0}j^4(2\lambda)^j/j!=\mathcal R(\lambda)/h^2$. The bound for the correction follows from
+its expression as a sum over ordered pairs of defects: each summand is
+$t^2d_i*d_{i'}$ convolved with probability measures, of norm at most $4t^2$.
+\end{proof}
+
+\begin{corollary}[Critical compound Poisson law and its first correction; \stU]\label{dir:cor:cp}
+Suppose $h\to\infty$, $t=h/m\to0$, and $\lambda_x^{(m)}=t\,\#\set{i:x_i=x}\to\lambda_x<\infty$ for every
+$x\ne e$. With $\Lambda$ as in \eqref{dir:eq:cp},
+\begin{equation}\label{dir:eq:cpcorrection}
+ \mu_{m,h}\longrightarrow P_\Lambda,\qquad h\bigl(\mu_{m,h}-\nu(t)\bigr)\longrightarrow-\tfrac12\Lambda^{*2}*P_\Lambda
+\end{equation}
+in $\norm\cdot_1$. Moreover, if $\Lambda_m=\sum_x\lambda_x^{(m)}(\delta_x-\delta_e)$, then
+$\norm{\mu_{m,h}-\exp_*(\Lambda_m)}_1\le4\lambda^2e^{2\lambda}/h+2t\lambda$.
+\end{corollary}
+
+\begin{proof}
+The Bernoulli$(t)$ law and the Poisson$(t)$ law of the number of jumps of one label differ in $\ell^1$ by
+$2t(1-e^{-t})\le2t^2$. Pushing both forward by $j\mapsto x_i^j$ and telescoping the $s$ convolutions gives
+$\norm{\nu(t)-\exp_*(\Lambda_m)}_1\le2st^2=2t\lambda$; with \cref{dir:thm:fpc} and the convergence of the
+finitely many rates this proves the first assertion and the last bound.
+
+For the correction fix a character $\chi$ of $F$ and put $\alpha_i=\chi(x_i)-1$. Then
+$\widehat{\nu(t)}(\chi)=\prod_i(1+t\alpha_i)\to\exp(\sum_x\lambda_x(\chi(x)-1))$. For small $t$ the
+factors are nonzero, and
+\[
+ t^2\widehat{\nu''(t)}(\chi)=\widehat{\nu(t)}(\chi)\Bigl[\Bigl(\sum_i\frac{t\alpha_i}{1+t\alpha_i}\Bigr)^2
+ -\sum_i\frac{t^2\alpha_i^2}{(1+t\alpha_i)^2}\Bigr].
+\]
+The first sum tends to $\widehat\Lambda(\chi)$ and the second is $O(t\lambda)\to0$. Finite Fourier
+inversion gives $t^2\nu''(t)\to\Lambda^{*2}*P_\Lambda$ in norm. Multiply \eqref{dir:eq:fpcsecond} by $h$:
+the coefficient $h(1/(2h)-1/(2m))$ tends to $1/2$ and the remainder tends to zero.
+\end{proof}
+
+The correction in \eqref{dir:eq:cpcorrection} is relative to the current Bernoulli law $\nu(t)$, not to
+the limit $P_\Lambda$: the drift of the rates and the Poisson approximation error $O(t\lambda)$ can exceed
+$1/h$. At $h\asymp L$ and $m\asymp L^2/\log L$, for example, $h^2/m\asymp\log L$; \eqref{dir:eq:fpcsecond}
+avoids this by keeping $t$ and every defect count exactly. For $F=C_2$ with $s$ defects the nontrivial
+Fourier coefficients of $\mu_{m,h}$ and $\nu(t)$ are $P_{m,s}(h)$ and $(1-2t)^s$, and $\widehat\Lambda=-2\lambda_0$,
+so \cref{dir:cor:cp} gives
+\begin{equation}\label{dir:eq:paritylimit}
+ h\bigl(P_{m,s}(h)-(1-2t)^s\bigr)\longrightarrow-2\lambda_0^2e^{-2\lambda_0}
+ \qquad\Bigl(h\to\infty,\ \frac hm\to0,\ \frac{hs}m\to\lambda_0\Bigr),
+\end{equation}
+the sharp correction to \cref{dir:thm:parity}. For one product, \eqref{dir:eq:fpcfirst} compares the
+law with independent inclusion of the exceptions within $O_M(1/h)$ in total variation whenever
+$hs/m\le M$, without the restriction $s=o(\sqrt m)$ of \cref{dir:prop:sparseexc}, and
+\eqref{dir:eq:fpcsecond} improves the remainder to $O_M(h^{-2})$; \cref{dir:prop:sparseexc} is uniform in
+the number of blocks and in $hs/m$.
+
+\paragraph{The mixing criterion.}
+
+\begin{theorem}[Mixing criterion at every fixed density; \stG]\label{dir:thm:allmix}
+For every $0<a\le1$ and $A>0$ there are $B,C>0$ such that, along every sequence $q\to\infty$ with
+$y=CL^2$, $m\ge aN$, $h\ge BL$ and $h/m\to0$,
+\[
+ D_q\longrightarrow0\quad\Longleftrightarrow\quad\frac{h\,s_D(S)}m\longrightarrow+\infty .
+\]
+For $D\ge2$ and all large $q$, without the assumption $h/m\to0$,
+\begin{equation}\label{dir:eq:allmix}
+ D_q\le20(D-1)\exp\Bigl(-c_D\frac{h\,s_D(S)}m\Bigr)+q^{-A},
+\end{equation}
+with $c_D$ as in \cref{dir:lem:splitpair}. For $D=1$, $D_q\le q^{-A}$.
+\end{theorem}
+
+\begin{proof}
+Apply \cref{dir:thm:quotient} with $k=h$, the $h$-subsets being those defining $Y$, and $B$ enlarged in
+terms of $A$: the proof gives $\abs{H_\tau}\le D$ and
+$\sum_{\chi\notin H_\tau}\abs{\dirE\chi(Y)}\le q(m+1)e^{-\tau h/2}\le q^{-A}$. Every nonprincipal
+character in $H_\tau$ has order at most $D$, so $s_\chi(S)\ge s_D(S)$, and \cref{dir:lem:splitpair}
+bounds its coefficient by $20\exp(-c_Dhs_D(S)/m)$. There are at most $D-1$ such characters, and none for
+$D=1$. Fourier inversion gives \eqref{dir:eq:allmix}, and with it the sufficiency of the criterion.
+
+For necessity suppose that $\lambda=hs_D(S)/m\le M<\infty$ on a subsequence. The minimum is then over a
+nonempty set; choose a minimizing character $\chi$ and a most frequent value $\zeta$ of $\chi$ on $S$, and
+divide all values by $\zeta$. In the cyclic group $\chi(G)$ the population has $m-s$ identities and
+$s=s_D(S)$ defects, with $s/m=\lambda/h\to0$, so $s\le m/2$ eventually. Let $Q$ be the $\chi$-coefficient
+under independent inclusion of these defects. \Cref{dir:thm:fpc} gives
+$\abs{\zeta^{-h}\dirE\chi(Y)-Q}\le4\lambda^2e^{2\lambda}/h$. For every defect value $z$ on the unit circle
+and $t<1/2$, $\abs{1+t(z-1)}\ge1-2t$, so $\abs Q\ge(1-2t)^s\ge\exp(-2\lambda/(1-2t))$. As $t\to0$ and
+$\lambda\le M$, $\abs{\dirE\chi(Y)}$ stays bounded away from zero. But for every nonprincipal $\chi$
+\[
+ \abs{\dirE\chi(Y)}=\Bigl|\frac1{\varphi(q)}\sum_g\chi(g)\bigl(\varphi(q)\dirP(Y=g)-1\bigr)\Bigr|\le D_q ,
+\]
+so $D_q$ does not tend to zero.
+\end{proof}
+
+For $a>1/4$ one has $D\le3$, and for $t\to0$ both $-\log B_2(t)$ and $-\log B_3(t)$ are of order $t$; so
+for one product in the sparse range \cref{dir:thm:allmix} agrees with the criterion of
+\cref{dir:thm:disjoint-mixing}, and for $a>1/3$ with that of \cref{dir:cor:fibre}. Below density one quarter
+the criterion involves all character orders up to $D$.
+
+\paragraph{Classification of the limiting profiles.}
+
+\begin{theorem}[Sparse transition profiles; \stG]\label{dir:thm:profiles}
+The constants $B,C$ of \cref{dir:thm:allmix} may be chosen so that the following holds. Every sequence
+$q_n\to\infty$ with $m_n\ge aN_n$, $h_n\ge BL_n$ and $h_n/m_n\to0$ has a subsequence on which there are a
+fixed finite abelian group $F$ with $\abs F\le D$, surjective homomorphisms $\pi_n\colon G_{q_n}\to F$,
+phases $b_n\in F$ and finite rates $\lambda_x\ge0$, $x\in F\setminus\set e$, such that
+\begin{equation}\label{dir:eq:profiles}
+ \max_{g\in G_{q_n}}\Bigl|\varphi(q_n)\dirP(Y_n=g)-\abs F\,P_\Lambda\bigl(\pi_n(g)b_n^{-h_n}\bigr)\Bigr|\longrightarrow0 .
+\end{equation}
+Conversely, every compound Poisson law on every finite abelian group $F$ with $\abs F\le D$ occurs in this
+way, for some sequence of moduli and retained sets of density at least $a$, with $h_n=\ceil{B\log q_n}$.
+\end{theorem}
+
+The normalization in \eqref{dir:eq:profiles} matters: each residue probability is of order $1/\varphi(q)$,
+and the theorem determines the relative profile, which is more than convergence of a projected law or an
+unnormalized error tending to zero. The quotient is allowed to vary with $n$ before the subsequence is
+taken; no single quotient is claimed to serve every retained set. By \eqref{dir:eq:cpfourier} a limiting
+profile on a nontrivial $F$ is never uniform, and it may have limiting holes even when a few exceptional
+primes make the exact support of \cref{dir:thm:quotient} larger.
+
+\begin{proof}[Proof of the forward direction]
+Apply \cref{dir:thm:quotient} at each $n$ to $Y_n$, which has the law of $X_{h_n}$, obtaining quotients
+$\pi_n^0\colon G_{q_n}\to A_n$ with $\abs{A_n}\le D$ and remainder at most $q_n^{-2}$ in
+\eqref{dir:eq:profile}. There are finitely many abelian groups of order at most $D$;
+pass to a subsequence and identify every $A_n$ with a fixed group $A$ of order $d$. Choose a most frequent
+value $a_{0,n}\in A$ of the projected primes, whose count is at least $m_n/d$; after a further subsequence
+$a_{0,n}=a_0$ is fixed. For $x\in A\setminus\set e$ put
+\[
+ s_x^{(n)}=\#\set{p\in S_n:\pi_n^0(p)=a_0x},\qquad\lambda_x^{(n)}=\frac{h_ns_x^{(n)}}{m_n}.
+\]
+Since $[0,+\infty]$ is compact and $A$ is finite, pass to a subsequence along which every $\lambda_x^{(n)}$
+has a limit $\lambda_x\in[0,+\infty]$, and let $K=\langle x\in A:\lambda_x=+\infty\rangle$.
+
+If a character $\chi$ of $A$ is nontrivial on $K$, there is a generator $x$ with $\lambda_x=+\infty$ and
+$\chi(x)\ne1$. The labels with values $a_0$ and $a_0x$ lie in distinct $\chi$-fibres, so at least
+$\min(m_n/d,s_x^{(n)})$ labels lie outside a largest $\chi$-fibre, and after multiplication by $h_n/m_n$
+this is at least $\min(h_n/d,\lambda_x^{(n)})\to\infty$. By \cref{dir:lem:splitpair} the coefficient of
+$\chi\circ\pi_n^0$ tends to zero; normalizing by the unit phase $\chi(a_0)^{h_n}$ does not change its
+modulus.
+
+Now let $F=A/K$, let $\pi_n$ be the composite quotient and $b_n=a_0K$. For $y\in F\setminus\set e$ every
+$x$ mapping to $y$ has finite $\lambda_x$, so the scaled number of $y$-defects converges to
+$\lambda'_y=\sum_{xK=y}\lambda_x<\infty$. In $F$, after division of each label by $b_n$, the total scaled
+defect count is bounded, so the proportion of defects is $O(1/h_n)$, and \cref{dir:cor:cp} gives
+convergence of the normalized projected product to the compound Poisson law with rates $\lambda'_y$.
+
+Every Fourier coefficient on $A$ is now determined: it tends to zero for characters nontrivial on $K$, and
+to the compound Poisson coefficient for characters factoring through $F$. By Fourier inversion the law on
+$A$, after normalization by $a_0^{h_n}$, converges uniformly to the lift of that law that is uniform on each
+coset of $K$, whose mass at $\alpha\in A$ is $P_\Lambda(\alpha K)/\abs K$; multiplication by $d=\abs A$
+gives $\abs FP_\Lambda(\alpha K)$. The arithmetic remainder of \cref{dir:thm:quotient} tends to zero
+uniformly in $g\in G_{q_n}$, which gives \eqref{dir:eq:profiles}.
+\end{proof}
+
+So two regimes coexist in one bounded quotient: a defect type whose expected selected count diverges forces
+uniformity on the subgroup it generates, and the remaining finite rates form a compound Poisson law on the
+quotient by that subgroup. A limit therefore need not retain the quotient produced by the large-bias
+argument.
+
+\begin{proof}[Proof of the converse]
+Let $F$ have order $d\le D$, and fix finite rates $\lambda_x\ge0$. Write $F$ as a product of cyclic groups
+$C_{n_i}$, choose by Dirichlet's theorem distinct fixed primes $\ell_i\equiv1\pmod{n_i}$, and put
+$q_0=\prod_i\ell_i$ ($q_0=1$ for the trivial group), so that the unit group modulo $q_0$ surjects onto $F$.
+For primes $r\to\infty$ with $r\nmid q_0$ let $q=q_0r$, with the induced surjection $\pi_q\colon G\to F$.
+Each fibre of $\pi_q$ contains a positive proportion of the $N$ pool primes, by the prime number theorem in
+the fixed progressions modulo $q_0$, or by \cref{dir:lem:bias} with small fixed $\eps$ and the character
+expansion of a fibre indicator. Choose a most frequent fibre $a_0$ and retain all of its $m_0\ge N/d$
+primes; put $h=\ceil{B\log q}$ and retain in addition $s_x=\floor{\lambda_xm_0/h}$ primes from the fibre
+$a_0x$ for each $x\ne e$, which is possible for large $q$ since $s_x=o(N)$. Then
+\[
+ m=m_0+\sum_xs_x\ge N/d\ge aN,\qquad h/m\to0,\qquad hs_x/m\to\lambda_x,
+\]
+and the projected profile converges to $P_\Lambda$ by \cref{dir:cor:cp}.
+
+It remains to exclude other large modes. If $\chi$ does not factor through $\pi_q$, then
+$\chi\cdot(\psi\circ\pi_q)$ is nonprincipal for every $\psi\in\widehat F$, and the fibre-indicator expansion
+gives
+\[
+ \Bigl|\sum_{p\in\mathcal P,\ \pi_q(p)=a_0}\chi(p)\Bigr|\le\frac1d\sum_{\psi\in\widehat F}
+ \Bigl|\sum_{p\in\mathcal P}\chi(p)\psi(\pi_q(p))\Bigr|\le N\eps .
+\]
+Divide by $m_0\ge N/d$ and add the $o(m_0)$ defects: for $\eps$ small in terms of $D$ every such $\chi$ has
+bias on $S$ bounded away from one by a fixed amount. \Cref{dir:lem:circle}, summed over at most $q$
+characters, makes their total contribution $O(q^{-A})$ after enlarging $B$, and Fourier inversion gives
+the full normalized profile with $b_n=a_0$. This realizes every permitted profile, including the density
+boundary $a=1/d$.
+\end{proof}
+
+\begin{example}[Four fibres]\label{dir:ex:fourfibre}
+For $F=C_4=\langle z\rangle$ with the single positive rate $\lambda_z=\lambda$, the corrected product is
+$z^J$ with $J$ Poisson of mean $\lambda$, and Fourier inversion gives
+\begin{equation}\label{dir:eq:c4}
+ 4\dirP(J\equiv c\pmod4)=1+(-1)^ce^{-2\lambda}+2e^{-\lambda}\cos(\lambda-\pi c/2),\qquad c=0,1,2,3 .
+\end{equation}
+The four normalized fibre densities oscillate with damping; at $\lambda=1$ they are approximately
+$1.532868$, $1.483784$, $0.737803$, $0.245545$ for $c=0,1,2,3$. Retained density $1/4$ permits this
+profile, and the quadratic quotient alone sees only the term $e^{-2\lambda}$. For $F=C_2\times C_2$ with
+rates $\lambda_{10},\lambda_{01},\lambda_{11}$, the normalized density at $(\sigma,\tau)\in\set{0,1}^2$ is
+\begin{equation}\label{dir:eq:v4}
+ 4P_\Lambda(\sigma,\tau)=1+(-1)^\sigma e^{-2(\lambda_{10}+\lambda_{11})}+(-1)^\tau e^{-2(\lambda_{01}+\lambda_{11})}
+ +(-1)^{\sigma+\tau}e^{-2(\lambda_{10}+\lambda_{01})} .
+\end{equation}
+The rate $\lambda_{11}$ couples the two quadratic signs, since one selected defect changes both; when
+$\lambda_{10}=\lambda_{01}=0<\lambda_{11}$ the limit is supported on the diagonal subgroup although each
+sign separately is nonconstant. \Cref{dir:cor:cp} gives the first correction for every Fourier mode at
+once; for $C_2$ it is \eqref{dir:eq:paritylimit}. Exact rational arithmetic checks the finite identities
+of \cref{dir:thm:fpc} in $2\,026$ population and quota cases against $77\,166$ enumerated subsets, and
+$44\,280$ coefficient-ratio inequalities \eqref{dir:eq:ratios}; these checks do not cover the asymptotic
+statements.
+\dirfiles{\artifact{grh_extensions_2026-11-27_3/code/verify_prime_products.py},
+\artifact{grh_extensions_2026-11-27_3/data/prime_product_verification.json}}
+\end{example}
+
+The relation between hypergeometric and binomial laws is classical; Ehm's Stein--Chen bounds include
+sampling with and without replacement \cite{Ehm1991Binomial}, L\'opez-Bl\'azquez and Salamanca Mi\~no give
+Krawtchouk expansions of hypergeometric probabilities \cite{LopezBlazquezSalamancaMino2000Binomial}, and
+Darroch, Ji\v rina and Speed give signed approximations to the full law of a sample without replacement
+\cite{DarrochJirinaSpeed1988Sampling}; the scalar correction mechanism is therefore not new. Poisson laws
+for the prime factors of a random integer \cite{Ford2021Joint} concern a different model from a uniform
+fixed-size sample from an arbitrarily retained pool of small primes. The constants $B,C$ are not optimized;
+the theorems require $h\ge B\log q$ at the cutoff $C\log^2q$ and make no claim for shorter quotas, for
+vanishing retained density, or uniformly as $a\to0$.
 
 \subsection{Rainbow routing with small prime multipliers}\label{dir:sec:routing}
 \sources{grh_prime_routing_2026-11-27}
@@ -6103,7 +6468,7 @@ the success probability.
 \end{example}
 
 \subsection{Open questions}\label{dir:sec:open}
-\sources{grh-transfer; grh-lean-transfers; grh-arithmetic-transfers; grh_cm_prime_applications; grh-exponent-six-and-transfers; dirichlet-grh-research; squarefree_prime_products; orthogonal_nullity_and_prime_products; squarefree_factorizations; hermite_thresholds_and_quadratic_primes; disjoint-prime-products; entropy_optimal_prime_factorizations_2026-11-27; grh_entropy_products_2026-11-27; grh_growing_factorizations; grh_quadratic_fibre; grh_prime_routing_2026-11-27; prime_character_codes_2026-11-27; prime_sparse_recovery_2026-11-27; prime_sparse_recovery_2026-11-27_2; grh_prime_fingerprints_2026-11-27; hermite_threshold_research; grh_quarter_density; prime_cubature_grh_2026-11-27; prime_legendre_codes_2026-11-27}
+\sources{grh-transfer; grh-lean-transfers; grh-arithmetic-transfers; grh_cm_prime_applications; grh-exponent-six-and-transfers; dirichlet-grh-research; squarefree_prime_products; orthogonal_nullity_and_prime_products; squarefree_factorizations; hermite_thresholds_and_quadratic_primes; disjoint-prime-products; entropy_optimal_prime_factorizations_2026-11-27; grh_entropy_products_2026-11-27; grh_growing_factorizations; grh_quadratic_fibre; grh_prime_routing_2026-11-27; prime_character_codes_2026-11-27; prime_sparse_recovery_2026-11-27; prime_sparse_recovery_2026-11-27_2; grh_prime_fingerprints_2026-11-27; hermite_threshold_research; grh_quarter_density; prime_cubature_grh_2026-11-27; prime_legendre_codes_2026-11-27; grh_extensions_2026-11-27_3}
 
 \begin{enumerate}
 \item \emph{The least pair sum.} For $n$ outside Euler's list let $b(n)$ be the
@@ -6166,13 +6531,19 @@ the success probability.
  almost all prime moduli (Theorems~\ref{dir:thm:typical} and~\ref{dir:thm:typicalsharp}); pointwise,
  Theorem~\ref{dir:thm:short} and Corollary~\ref{dir:cor:almostshort} give $2(A-1)/(A(A-2))$ under
  Dirichlet GRH and $2/(A-1)$ for almost all prime moduli. Can the typical constant
- $(A-1)/(A(A-2))$ under Dirichlet GRH be lowered to $1/(A-1)$ for every modulus? For one product
- above density one third, what happens when $\min(k,m-k)=o(\log q)$, and below density one third
- which higher-order fibre statistics replace Theorem~\ref{dir:thm:fibre}?
+ $(A-1)/(A(A-2))$ under Dirichlet GRH be lowered to $1/(A-1)$ for every modulus? For one product,
+ what happens when $\min(k,m-k)=o(\log q)$? Below density one third and in the sparse range
+ $B\log q\le h=o(m)$, the fibre distances of the characters of order at most $\floor{1/a}$ decide mixing
+ (Theorem~\ref{dir:thm:allmix}) and compound Poisson laws on a bounded quotient give every limiting
+ profile (Theorem~\ref{dir:thm:profiles}); what replaces them for dense quotas $h\asymp m$, and do they
+ hold uniformly as $a\to0$?
 \item \emph{Mixing at density one quarter.} The support at retained density $1/4$ is given by
- Theorem~\ref{dir:thm:quarter}. For growing $r$, which statistics determine the approach to uniformity
- across the occupied quotient classes, beyond the relative counts within each class, once the number of
- exceptional primes is not $o(\sqrt m)$ as in Proposition~\ref{dir:prop:sparseexc}?
+ Theorem~\ref{dir:thm:quarter}, and for one product the sparse-quota profiles at every density are
+ classified by Theorem~\ref{dir:thm:profiles}, with an $O(1/h)$ comparison in the critical window that
+ needs no bound on the number of exceptional primes (Theorem~\ref{dir:thm:fpc}). For $r\ge2$ products,
+ and in particular for growing $r$, which statistics determine the approach to uniformity across the
+ occupied quotient classes, beyond the relative counts within each class, once the number of exceptional
+ primes is not $o(\sqrt m)$ as in Proposition~\ref{dir:prop:sparseexc}?
 \item \emph{Constants for factorizations.} For one tuple of moduli and coverage alone the leading
  constant is the entropy threshold of Theorem~\ref{dir:thm:entropy}. What is the second-order term,
  between the lower bound of order $\log\log M$ and the upper bound $O(\log M/\log B)$, and can a fixed

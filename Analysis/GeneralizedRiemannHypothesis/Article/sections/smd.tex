@@ -41,7 +41,11 @@ for which the trivial bound \eqref{smd:eq:trivial} is an equality
 (\cref{smd:thm:seven}) and the orders of every prime conductor below $456{,}193$ in
 $\Q(i)$; for integer disk depths the factorial criterion is refined by a trace condition
 (\cref{smd:thm:trace}). It also determines the exact number of roots that a polynomial with
-at most six terms can have in a deep multiplicative $p$-adic disk
+a prescribed support of at most $p$ exponents can have in a deep multiplicative $p$-adic
+disk, by a finite rank rule (\cref{smd:thm:rankrule}); in the open disk of relative depth
+greater than $1/(p-1)$ the maximum for at most $t\le p+1$ terms is a triangular-number
+formula, and for $p+2$ terms it jumps to $p^2$ (\cref{smd:thm:opendisk,smd:thm:jump});
+for at most six terms the dependence on the depth is explicit
 (\cref{smd:thm:rootcount,smd:thm:sixroot}).
 
 \subsection{Coefficients in the CM field}
@@ -209,65 +213,31 @@ $n=4$ the weight is $7$, and for $n\ge5$ it is at least $3n/2+1$. Hence
 $B_2(4,5/2)=3$ and $s(-68)=5$.
 \end{example}
 
-\subsection{Exact root counts for at most six terms}\label{smd:sec:exact}
-{\raggedright\sources{padic-fewnomial-root-count; padic-six-term}}
+\subsection{Exact root counts in a deep disk}\label{smd:sec:exact}
+{\raggedright\sources{padic-fewnomial-root-count; padic-six-term; padic-support-rank; sparse-padic-roots-and-graph-towers}}
 
 When $t\le p$ the factorial bound $B_p(t,r)$ of \cref{smd:lem:disk} can be far from the
 truth at shallow depths. For a prime $p$, an integer $t\ge2$ and a real $r>1/(p-1)$, let
 $N_p(t,r)$ be the largest number of distinct roots that a nonzero polynomial with at most
 $t$ terms can have in a closed multiplicative disk $v_p(x/a-1)\ge r$ about a nonzero centre
-$a$, the roots being allowed in any finite extension of $\Qp$.
-
-\begin{theorem}[Two to five terms; \stU]\label{smd:thm:rootcount}
-Let $2\le t\le\min\set{5,p}$ and $r>1/(p-1)$. Then $N_p(2,r)=1$,
+$a$, the roots being allowed in any finite extension of $\Qp$. For a finite set $E$ of
+nonnegative integers let $N_p(E,r)$ be the same maximum over nonzero polynomials with all
+exponents in $E$. Write
 \[
- N_p(t,r)=\begin{cases}p,& r\le1/(p-t+1),\\ t-1,& r>1/(p-t+1),\end{cases}\qquad(t=3,4),
+ D(a)=\set{x : v_p(x/a-1)>1/(p-1)}
 \]
-and
-\[
- N_p(5,r)=\begin{cases}p+1,& r\le1/(p-3),\\ p,& 1/(p-3)<r\le1/(p-4),\\ 4,& r>1/(p-4).\end{cases}
-\]
-The upper bounds hold for roots counted with multiplicity, about every centre. In every
-range the maximum is attained, about the centre $1$, by a polynomial with integer
-coefficients that is irreducible over $\Q$. Moreover, for all $2\le t\le p$ and all
-$r>1/(p-1)$,
-\begin{equation}\label{smd:eq:uniform}
- N_p(t,r)\le\max\set{t-1,\ p(t-2)} .
-\end{equation}
-\end{theorem}
-
-\begin{theorem}[Six terms; \stU]\label{smd:thm:sixroot}
-Let $p\ge7$ and $r>1/(p-1)$. Then
-\[
- N_p(6,r)=\begin{cases}
- 2p,& r\le1/(p-2),\\
- p+1,& 1/(p-2)<r\le1/(p-4),\\
- p,& 1/(p-4)<r\le1/(p-5),\\
- 5,& r>1/(p-5),
- \end{cases}
-\]
-with the same statements on multiplicity and on rational irreducible witnesses about $1$
-as in \cref{smd:thm:rootcount}. At $p=7$ the four values are $14,8,7,5$.
-\end{theorem}
-
-\begin{example}[Comparison with the factorial bound]\label[example]{smd:ex:factorial}
-Let $p=t=5$ and $r=1/4+10^{-9}$. Then $\max_{i<5}w_{5,r}(i)=w_{5,r}(4)=1+4\cdot10^{-9}$,
-while $k=2\cdot5^{12}=488{,}281{,}250$ has
-$w_{5,r}(k)=(r-1/4)k+S_5(k)/4=0.48828125+0.5<w_{5,r}(4)$. Hence
-$B_5(5,r)\ge488{,}281{,}250$, whereas $N_5(5,r)=6$ by \cref{smd:thm:rootcount}.
-\end{example}
-
-The general estimate $(n-2)p$ of order $n$ over $\Qp$, for $p>n\ge3$, is classical
-\cite{vanderPoortenRumely1987Zeros}, and \cite{Avendano2011Sharp} bounds the roots
-in a fixed local field; \eqref{smd:eq:uniform} has the same shape, while the two theorems give
-the exact dependence on the depth, with roots in arbitrary finite extensions. The proofs
-refine the moment argument of \cref{smd:lem:disk} by reducing the moment recurrence modulo
-$p$.
+for the open disk, and $N^\circ_p(t)$, $N^\circ_p(E)$ for the corresponding maxima on
+$D(a)$. Since $D(a)$ is the union of the closed disks of rational depth $r>1/(p-1)$ and a
+nonzero polynomial has finitely many roots, $N^\circ_p(t)=\sup_rN_p(t,r)$ and
+$N^\circ_p(E)=\sup_rN_p(E,r)$. Multiplying by a monomial and scaling the variable show
+that none of these numbers depends on the centre. All upper bounds below count roots with
+multiplicity, and all maxima are attained by polynomials with distinct roots.
 
 \paragraph{The residue algebra.}
-Let $2\le t\le p$, let $P=\sum_{j=1}^tc_jX^{n_j}$ be nonzero with $t$ distinct nonnegative
-exponents (zero coefficients are allowed, which covers polynomials with fewer terms), and
-let $a\ne0$ and $r>1/(p-1)$ be rational. As in the proof of \cref{smd:lem:disk}, the
+Let $2\le t\le p$, let $P=\sum_{j=1}^tc_jX^{n_j}$ be nonzero with exponent set
+$E=\set{n_1,\dots,n_t}$ of $t$ distinct nonnegative integers (zero coefficients are
+allowed, which covers polynomials with fewer terms), and let $a\ne0$ and $r>1/(p-1)$ be
+rational. As in the proof of \cref{smd:lem:disk}, the
 coefficient of $Y^k$ in $P(a\exp(bY))$, $v_p(b)=r$, is $M_kb^k/k!$ with
 $M_k=\sum_jc_ja^{n_j}n_j^k$, and its valuation is $v_p(M_k)+w(k)$, where
 \[
@@ -286,7 +256,9 @@ $\Lambda=\Z[T]/\prod_j(T-n_j)$, which is integral. Put
 \]
 On the factor of $\mathcal R$ at a residue $c$, of multiplicity at most $t\le p$, one has
 $U=c^p+(T-c)^p=c$ and $V=T-c$; hence $T^{p^j}=U$ for all $j\ge1$. The \emph{profile} is the
-multiset of multiplicities of the residues $\bar n_j$.
+multiset of multiplicities of the residues $\bar n_j$. Upper bounds at an irrational depth
+follow from those at a slightly smaller rational depth, since the disk only grows; all
+thresholds below are rational.
 
 \begin{lemma}[Excluded indices]\label[lemma]{smd:lem:excluded}
 In this situation:
@@ -299,7 +271,6 @@ $S_p(\ell)\le S_p(k)$;
 \item if $k=\sum_ja_jp^j\ge t$ in base $p$ is not excluded, then $k=a_0+pa_1$ with
 $a_0+a_1\le t-2$.
 \end{enumerate}
-Consequently $N_p(t,r)\le\max\set{t-1,p(t-2)}$.
 \end{lemma}
 
 \begin{proof}
@@ -323,11 +294,336 @@ ramified extensions, because reduction is modulo the ideal $p\OO$.
 (c) By (a), $S_p(k)\le t-2\le p-2$. Put $k'=a_0+p\sum_{j\ge1}a_j$. Then $T^k$ and $T^{k'}$
 have the same class $T^{a_0}U^{\sum_{j\ge1}a_j}$ in $\mathcal R$, $k'\le k$, and
 $S_p(k')=S_p(k)$ since $\sum_{j\ge1}a_j<p$. If $k'<k$, part (b) excludes $k$.
-
-Finally the largest non-excluded index is either at most $t-1$ or of the form $a_0+pa_1$
-with $a_0+a_1\le t-2$, hence at most $(t-2-a_1)+pa_1\le p(t-2)$. For an irrational depth
-apply the bound at a slightly smaller rational depth; the disk only grows.
 \end{proof}
+
+The lemma is sharp in the following sense: the indices it leaves, tested against the span
+of strictly lower weights inside the same finite set of indices, give the exact maximum for
+every prescribed support of at most $p$ exponents and every depth.
+
+\begin{theorem}[Rank rule for a prescribed support; \stU]\label{smd:thm:rankrule}
+Let $E$ be a set of $t$ distinct nonnegative integers with $2\le t\le p$, and let
+$r>1/(p-1)$ be real. Put
+\[
+ \mathcal R_E=\F_p[T]\Big/\prod_{n\in E}(T-\bar n),\qquad
+ w_r(k)=rk-\floor{k/p},
+\]
+\[
+ \mathcal K_t=\set{i+pj : i,j\ge0,\ i+j\le t-2}\cup\set{t-1}.
+\]
+Then $N_p(E,r)$ is the largest of $t-1$ and those $k\in\mathcal K_t$ with
+$w_r(k)\le w_r(t-1)$ for which
+\begin{equation}\label{smd:eq:rankrule}
+ T^k\notin\operatorname{span}_{\F_p}\set{T^\ell : \ell\in\mathcal K_t,\ w_r(\ell)<w_r(k)}
+ \quad\text{in }\mathcal R_E .
+\end{equation}
+The maximum is attained with distinct roots and with every exponent of $E$ present; about
+the centre $1$ it is attained by a polynomial with rational coefficients which, after
+division by $X^{\min E}$, is irreducible over $\Q$.
+\end{theorem}
+
+The strict inequality in \eqref{smd:eq:rankrule} is essential: indices of equal weight are
+tested against the same lower-weight span. There are at most $1+t(t-1)/2$ vectors, and
+$N_p(E,r)$ is a nonincreasing step function of $r$ whose breakpoints are among the finitely
+many rational depths at which two weights $w_r(k)$, $w_r(\ell)$ with $k,\ell\in\mathcal K_t$
+cross. It depends on $E$ only through the residues of its elements modulo $p$, but at
+deeper disks not only through their multiplicities (\cref{smd:ex:twosupports}).
+
+\begin{proof}
+Every element of $\mathcal K_t$ is less than $p^2$, so $w_r(k)=rk-v_p(k!)=w_{p,r}(k)$ on
+$\mathcal K_t$. Let first $r$ be rational.
+
+\emph{Upper bound.} Let $P$ have exponents in $E$, and use the notation of
+\cref{smd:lem:excluded}, with $\mathcal R=\mathcal R_E$. The number of roots of $P$ in
+the disk is the largest non-excluded index $k$. If $k\ge t$, then $k\in\mathcal K_t$ and
+$w(k)\le w(t-1)$ by \cref{smd:lem:excluded}(a),(c), and $k$ satisfies
+\eqref{smd:eq:rankrule} by \cref{smd:lem:excluded}(b), the span in
+\eqref{smd:eq:rankrule} being contained in the span of all classes of weight below $w(k)$.
+
+\emph{Lower bound.} Let $k>t-1$ satisfy the conditions; then $k\ge p$. Choose an
+$\F_p$-linear functional $\lambda$ on $\mathcal R_E$ with $\lambda(T^k)=1$ that annihilates
+the span in \eqref{smd:eq:rankrule}. Define an integral functional $L$ on
+$\Lambda_E=\Z_{(p)}[T]/\prod_{n\in E}(T-n)$ by its values on the power basis
+$1,T,\dots,T^{t-1}$: exactly zero at the indices $i<t$ with $w(i)<w(k)$ (where
+$\lambda(T^i)=0$ because $i\in\mathcal K_t$), and an integer lift of $\lambda(T^i)$ at the
+other indices. Let $\ell_n\in\Q[T]$ ($n\in E$) be the Lagrange cardinal polynomials on $E$,
+put $c_n=L(\ell_n)$ and $P=\sum_{n\in E}c_nX^n$. Then $\sum_nc_nf(n)=L(f)$ for every
+$f\in\Z_{(p)}[T]$, so the moments of $P$ about the centre $1$ are $M_j=L(T^j)$; they are
+integral, and $M_k\equiv\lambda(T^k)=1\pmod p$ is a unit. Let $j$ be an index with
+$w(j)<w(k)$. If $j<t$ then $M_j=0$. Otherwise $j\ge p$, since $w(j)=rj>w(t-1)$ for
+$t\le j<p$, and $S_p(j)\le t-2$, since otherwise $w(j)>w(t-1)$ as in
+\cref{smd:lem:excluded}(a). Compressing the higher digits of $j$ into the $p$-digit, as in
+\cref{smd:lem:excluded}(c), gives an index $j'\le j$ in $\mathcal K_t$ with
+$S_p(j')=S_p(j)$, hence $w(j')\le w(j)<w(k)$, and with the same class in $\mathcal R_E$.
+So $\lambda(T^j)=\lambda(T^{j'})=0$ and $p\mid M_j$. The coefficient of index $j$ therefore
+has valuation at least $1+w(j)\ge1+w(p)$, and $w(t-1)-w(p)=1-(p-t+1)r<1$ gives
+$1+w(p)>w(t-1)\ge w(k)$. Every index of weight at least $w(k)$ has coefficient valuation at
+least $w(k)$, and the index $k$ attains it. So the minimum is $w(k)$, and the largest
+minimizing index is at least $k$: $P$ has at least $k$ roots in the disk. For the value
+$t-1$ let $L$ extract the coefficient of $T^{t-1}$ in the power basis; then
+$M_0=\dots=M_{t-2}=0$ and $M_{t-1}=1$, and $P$ vanishes to order $t-1$ at $1$. With the
+upper bound this proves the formula at rational depths, about the centre $1$, and scaling
+gives every centre.
+
+\emph{Witnesses.} First make every coefficient nonzero, then perturb the rational
+coefficients by multiples of a high power of $p$. Each perturbation changes the
+coefficient of $Y^j$ by an amount of valuation at least the precision plus $w(j)\ge0$, so
+the minimum and the last minimizing index are preserved. After clearing denominators and
+factoring out $X^{\min E}$, use the Chinese remainder theorem to impose, in addition, the
+Eisenstein congruences at a prime different from $p$ that does not divide the leading
+coefficient. The result keeps its support, is irreducible over $\Q$, and so has simple
+roots.
+
+\emph{Irrational depths.} The right side of the formula is constant on each open interval
+between consecutive crossings, which are rational. For irrational $r$ choose rational
+$r_1<r<r_2$ in the same interval; monotonicity gives
+$N_p(E,r_2)\le N_p(E,r)\le N_p(E,r_1)$, and the outer terms agree with the formula.
+\end{proof}
+
+\paragraph{The open disk.}
+In the open disk the answer depends only on the multiplicities. Let $E$ be a set of $t$
+distinct nonnegative exponents and $\nu_c=\#\set{n\in E : n\equiv c\pmod p}$ for
+$c\in\F_p$. Form the diagram with row lengths
+\[
+ m_b=\#\set{c : \nu_c>b},\qquad b=0,1,\dots,
+\]
+whose boxes are the pairs $(i,b)$ with $0\le i<m_b$; it has $t$ boxes. Let $\eta_d$ be the
+number of boxes $(i,b)$ with $i+b=d$.
+
+\begin{theorem}[Fixed-support formula; \stU]\label{smd:thm:fixedsupport}
+For a set $E$ of $1\le t\le p$ distinct nonnegative integers,
+\[
+ N^\circ_p(E)=C_p(E):=\max_{d:\,\eta_d>0}\bigl(d+(p-1)(\eta_d-1)\bigr).
+\]
+The upper bound holds with arbitrary algebraic $p$-adic coefficients. About $1$ the maximum
+is attained by a polynomial with integer coefficients, every exponent of $E$ present, and
+distinct roots.
+\end{theorem}
+
+For instance, when $p\ge7$ the supports $\set{0,1,\dots,5}$ and $\set{0,p,2p,1,p+1,2}$ both
+have six elements. The first has row lengths $(6)$ and maximum $5$. The second has
+$(3,2,1)$ and diagonal lengths $1,2,3$, giving maximum $2p$. The actual representatives in
+each residue class can be arbitrarily large.
+
+\begin{proof}
+The case $t=1$ is trivial, so let $t\ge2$. In $\mathcal R=\mathcal R_E$, with
+$U=T^p$ and $V=T-U$ as above, filter by total degree in $U,V$. For every $b$,
+\[
+ V^b\prod_{c:\,\nu_c>b}(U-c)=0,
+\]
+as one checks on each factor: $U=c$ where $\nu_c>b$, and $V^b=(T-c)^b=0$ where
+$\nu_c\le b$. This monic relation reduces every monomial $U^iV^b$ with $i\ge m_b$ to
+monomials of no greater degree, strictly lowering the degree outside the diagram. Hence
+the monomials $U^iV^b$ indexed by boxes span $\mathcal R$, since $T=U+V$ generates it, and
+form a basis adapted to the filtration because there are $t=\dim\mathcal R$ of them.
+
+Fix $d$ with $\eta_d>0$. A box $(i,b)$ requires the $(i+1)(b+1)=i+b+1+ib$ boxes of its
+southwest rectangle, so $d\le t-1<p$. In degree $d$ of the associated graded algebra
+consider the $\eta_d$ classes $T^{d-j}U^j$, $0\le j<\eta_d$. Their coefficient on the box
+$(d-b,b)$ is $\binom{d-j}b=\binom db(d-b)_j/(d)_j$, with $(x)_j=x(x-1)\cdots(x-j+1)$. All
+row and column factors are units modulo $p$, and the remaining matrix evaluates monic
+polynomials of degrees $0,1,\dots$ at the distinct residues $d-b$, so it is a unit
+Vandermonde-type matrix. Hence these classes form a basis of the graded piece of degree
+$d$, and every class of filtered degree at most $d$ is spanned by the classes
+$T^{d'-j}U^j=T^{\ell}$ with $d'\le d$, $j<\eta_{d'}$ and $\ell=d'+(p-1)j$. Since
+$0\le j\le d'<p$, the base-$p$ digits of $\ell$ are $d'-j$ and $j$, so $S_p(\ell)=d'$ and
+these $t$ indices are distinct; their maximum is $C_p(E)$, and $C_p(E)\ge t-1$.
+
+\emph{Upper bound.} Let $r>1/(p-1)$ be rational and suppose a non-excluded index
+$k>C_p(E)$. Then $k\ge t$, $d=S_p(k)\le t-2$ by \cref{smd:lem:excluded}(a), and the
+compression in the proof of \cref{smd:lem:excluded}(c) writes $T^k=T^{d-j}U^j$ in
+$\mathcal R$ for the sum $j$ of the higher digits; this class has filtered degree at most
+$d$. By the previous paragraph it is a combination of classes $T^\ell$ with
+$\ell\le C_p(E)<k$ and $S_p(\ell)\le d$, and \cref{smd:lem:excluded}(b) excludes $k$, a
+contradiction. Hence $N_p(E,r)\le C_p(E)$ for every rational $r>1/(p-1)$, and so
+$N^\circ_p(E)\le C_p(E)$.
+
+\emph{Lower bound.} If $C_p(E)=t-1$, \cref{smd:thm:rankrule} gives $t-1$ roots. Otherwise
+choose $d$ with $C=C_p(E)=d+(p-1)j$, $j=\eta_d-1\ge1$. A box $(i,b)$ of degree $t-1$
+would give $(i+1)(b+1)=t+ib\le t$, so $ib=0$ and the diagram would be a single row or
+column, where every $\eta_d\le1$ and $C=t-1$; hence $d\le t-2$. Also $j\le d$, since
+$\eta_d\le d+1$. Then $C=(d-j)+pj$ with $d-j\ge0$ and $(d-j)+j\le t-2$, so
+$C\in\mathcal K_t$. Take $r$ rational with $\delta=r-1/(p-1)>0$ so small that
+$\delta\max\mathcal K_t<1/(p-1)$. Then
+$w_r(\ell)=\delta\ell+S_p(\ell)/(p-1)$ orders $\mathcal K_t$ first by digit sum and then
+by size, and $w_r(C)<w_r(t-1)$ since $d<t-1$. The indices $\ell\in\mathcal K_t$ with
+$w_r(\ell)<w_r(C)$ have $S_p(\ell)<d$, so that $T^\ell$ has filtered degree below $d$, or
+have $\ell=(d-j')+pj'$ with $j'<j$, which are the other basis classes of degree $d$. Since
+$T^C=T^{d-j}U^j$ is independent of them in the graded piece, \eqref{smd:eq:rankrule}
+holds for $k=C$, and \cref{smd:thm:rankrule} gives a polynomial supported on $E$ with $C$
+distinct roots in the closed disk of depth $r$ about $1$, hence in $D(1)$. Clearing
+denominators gives integer coefficients.
+\end{proof}
+
+\begin{theorem}[Sharp bound in the open disk; \stU]\label{smd:thm:opendisk}
+Let $2\le t\le p$ and write $t=h(h+1)/2+e$ with $0\le e\le h$. Then
+\[
+ N^\circ_p(t)=b_p(t):=(h-1)p+\mathbf 1_{e=h}.
+\]
+An integer polynomial of degree $b_p(t)$ with at most $t$ terms attains this with distinct
+roots in $D(1)$. For $p>2$ moreover $N_p(t,r)=b_p(t)$ for every $r$ with
+$1/(p-1)<r\le1/(p-2)$. For $p=t=2$ one has $N_2(2,r)=1$ for every $r>1$.
+\end{theorem}
+
+For example, subject to $t\le p$, the maxima for $t=6,7,8,9,10$ are $2p,2p,2p,2p+1,3p$,
+and for $t=p$ the answer is $\sqrt2\,p^{3/2}+O(p)$ as $p\to\infty$. A closed disk of depth
+exactly $1/(p-1)$ can contain additional roots, so the strict inequality in $D(a)$ is
+essential.
+
+\begin{proof}
+By \cref{smd:thm:fixedsupport}, applied to supports of exactly $t$ elements (pad a smaller
+support by unused exponents), it suffices to bound $d+(p-1)(s-1)$ for a diagonal of degree
+$d$ carrying $s\ge1$ boxes, at rows $b_1<\dots<b_s$. Set $g_0=b_1$, $g_s=d-b_s$ and
+$g_i=b_{i+1}-b_i-1$ for $1\le i<s$; these are nonnegative with sum $d+1-s$. The diagram
+contains the union of the southwest rectangles below these boxes, whose area is
+\[
+ \sum_{i=1}^{s}(1+g_{i-1})\Bigl(s-i+1+\sum_{j=i}^{s}g_j\Bigr)
+ =\frac{s(s+1)}2+s(d+1-s)+\sum_{0\le i<j\le s}g_ig_j ,
+\]
+the successive row blocks having the heights and widths of the two factors. As this is at
+most $t$, we get $s\le h$. If $s=h$, then $h(d+1-h)\le e$ and $d\le h-1+\floor{e/h}$, so
+$d+(p-1)(s-1)\le b_p(t)$. If $s<h$, then $d\le t-1\le p-1$ gives
+$d+(p-1)(s-1)\le(p-1)(h-1)\le b_p(t)$. Hence $N^\circ_p(t)\le b_p(t)$, and
+$N_p(t,r)\le N^\circ_p(t)$ for every $r$.
+
+For the lower bound let $p>2$, $m=h-1$, and for $1\le i\le m$ put
+\[
+ G_i(X)=X^p-pX+(p-1)+ip^3,\qquad
+ F(X)=(X-1)^{\mathbf1_{e=h}}\prod_{i=1}^mG_i(X).
+\]
+The exponents of the product are among $a+pb$ with $a,b\ge0$, $a+b\le m$, at most
+$(m+1)(m+2)/2=h(h+1)/2$ of them; multiplication by $X-1$ adds at most $h$ further exponents,
+those $a+pb$ with $a+b=m+1$ and $a\ge1$. So $F$ has at most $t$ terms, and its degree is
+$b_p(t)$. In $Y=X-1$ the constant coefficient of $G_i(1+Y)$ is $ip^3$, of valuation at least
+three, its linear coefficient vanishes, and the coefficients in degrees $2,\dots,p-1$ have
+valuation one. If $v_p(Y)<1/(p-2)$, the monic term of degree $p$ has strictly smaller
+valuation than every other term (for the constant use $3\ge p/(p-2)$), so every root of
+$G_i$ has relative depth at least $1/(p-2)$. Two factors differ by a nonzero constant, and
+a multiple root of $G_i$ would satisfy $X^{p-1}=1$ and $X=1+ip^3/(p-1)$, which are
+incompatible; also $G_i(1)\ne0$. So $F$ has $b_p(t)$ distinct roots of relative depth at
+least $1/(p-2)$. For $t=2$, including $p=2$, the polynomial $X-1$ suffices.
+\end{proof}
+
+In particular, for all $2\le t\le p$ and all $r>1/(p-1)$,
+\begin{equation}\label{smd:eq:uniform}
+ N_p(t,r)\le b_p(t)\le\max\set{t-1,\ p(t-2)} .
+\end{equation}
+The general estimate $(n-2)p$ of order $n$ over $\Qp$, for $p>n\ge3$, is classical
+\cite{vanderPoortenRumely1987Zeros}; van der Poorten's Hermite interpolation theorem bounds
+the zeros of more general exponential polynomials in terms of a valuation margin of the
+frequencies \cite{vanderPoorten1976Hermite}, and \cite{Avendano2011Sharp} bounds the roots
+in a fixed local field. The results here concern geometric roots, in arbitrary finite
+extensions, of sums with integer frequencies. The triangular formula persists for one more
+term, and then jumps.
+
+\begin{theorem}[The jump at $p+2$ terms; \stU]\label{smd:thm:jump}
+For every prime $p$, $N^\circ_p(p+1)=b_p(p+1)$, computed by the same triangular formula,
+and $N^\circ_p(p+2)=p^2$. In both cases integer polynomials attain the maximum with
+distinct roots.
+\end{theorem}
+
+At $p=11$ this gives $33$ roots with twelve terms and $121$ with thirteen; as $p$ grows,
+the extra term multiplies the maximum by a factor asymptotic to $\sqrt{p/2}$.
+
+\begin{proof}
+Work about $1$. If all exponents of a support of size $t\ge2$ have the same residue, factor
+out the smallest monomial and let $p^k$ be the largest power of $p$ dividing all exponent
+differences, so that $P=X^aQ(X^{p^k})$ with $Q$ having the same number of terms and at
+least two residues. The map $x\mapsto x^{p^k}$ sends $D(1)$ injectively into itself (use
+$\log$) with nonzero derivative, so the count for $P$ is at most that for $Q$. Supports
+with fewer terms are covered by the earlier cases, so let $t\in\set{p+1,p+2}$ be the exact
+size of a support occupying at least two residues, let $r>1/(p-1)$ be rational, and
+normalize the moments as in the residue algebra, so that some $m_{i_0}$, $i_0<t$, is a unit.
+
+Let $p\ge3$. All $i<t\le p+2$ have $S_p(i)\le p-1$, so a minimizing index $k\ge t$ satisfies
+\[
+ v_p(m_k)\le w(i_0)-w(k)<\frac{p-1-S_p(k)}{p-1},
+\]
+because $w(i)-w(k)\le\delta(t-1-k)+(p-1-S_p(k))/(p-1)$ with $\delta=r-1/(p-1)$. Hence
+$S_p(k)\le p-2$ and $v_p(m_k)<1$, and the lifting argument of
+\cref{smd:lem:excluded}(b) excludes $k$ whenever $T^k$ lies in the span of classes of
+smaller weight. For $p=2$ and $t=3$ the initial digit sums are at most one, so no $k\ge3$
+can minimize; for $p=2$ and $t=4$ they are at most two, and the same comparison gives
+$S_2(k)\le1$ and $v_2(m_k)<1$ for a minimizing $k\ge4$.
+
+Let $t=p+1$. Every residue has multiplicity at most $p$. For $p\ge3$ the diagram argument
+in the proof of \cref{smd:thm:fixedsupport} applies to every filtered degree $d\le p-2$,
+and the area bound in the proof of \cref{smd:thm:opendisk}, with $d\le p-2$, shows that
+all the power indices it produces are at most $b_p(p+1)$; the initial indices are at most
+$t-1=p\le b_p(p+1)$. The product construction gives matching witnesses, since its term
+count used only $p>2$. For $p=2$ the polynomial $(X-1)(X-5)$ has two distinct roots of
+depth greater than one.
+
+Let $t=p+2$. If every residue has multiplicity at most $p$, the compression of a
+minimizing $k\ge t$ has index at most $pS_p(k)<p^2$, also for $p=2$; for $k>p^2$ compression
+strictly lowers the weight, and $k$ is excluded. The only other profile is $(p+1,1)$. A
+monomial shift places the large class at the residue $0$; then
+$\mathcal R\cong\F_p[T]/(T^{p+1})\times\F_p$, the second factor evaluating $T$ at some
+$c\ne0$, and for every $k>p^2$
+\[
+ T^k=c^{\,k-p^2}T^{p^2},
+\]
+since both sides vanish on the first factor. As $S_p(k)\ge1=S_p(p^2)$, the index $p^2$ has
+strictly smaller weight, and $k$ is excluded. This proves $N^\circ_p(p+2)\le p^2$.
+
+For sharpness let
+\[
+ P(X)=(X^p-1)^p-p^p\bigl(X^p-1-p(X-1)\bigr),
+\]
+supported in $\set{0,p,2p,\dots,p^2}\cup\set{1}$. Choose $\pi$ with $\pi^{p-1}=p$ and put
+$X=1+\pi Z$. The polynomial $H(Z)=((1+\pi Z)^p-1)/\pi^p$ is monic of degree $p$ with
+integral coefficients and reduces to $Z+Z^p$ modulo the maximal ideal. Hence
+\[
+ \pi^{-p^2}P(1+\pi Z)=H(Z)^p-H(Z)+Z\equiv Z^{p^2}.
+\]
+This is a monic integral polynomial, so all its roots are integral with reduction zero, and
+all $p^2$ roots of $P$ lie in $D(1)$. Adding a sufficiently $p$-divisible integer to the
+constant term preserves the congruence and avoids the finitely many critical values, giving
+$p^2$ distinct roots.
+\end{proof}
+
+For $p=3,5,7,11,13,17$ the maxima with $p+1$ terms are $3,10,14,33,40,68$, and with $p+2$
+terms $9,25,49,121,169,289$. At $p=11$ the polynomial
+$(X^{11}-1)^{11}-11^{11}(X^{11}-1-11(X-1))+11^{14}$ is a squarefree witness for $121$.
+
+\paragraph{All depths for at most six terms.}
+For at most six terms the rank rule can be evaluated in closed form for every $p$. In the
+shallowest range the values below are $b_p(t)$ of \cref{smd:thm:opendisk}; the theorems
+add the exact dependence on the depth.
+
+\begin{theorem}[Two to five terms; \stU]\label{smd:thm:rootcount}
+Let $2\le t\le\min\set{5,p}$ and $r>1/(p-1)$. Then $N_p(2,r)=1$,
+\[
+ N_p(t,r)=\begin{cases}p,& r\le1/(p-t+1),\\ t-1,& r>1/(p-t+1),\end{cases}\qquad(t=3,4),
+\]
+and
+\[
+ N_p(5,r)=\begin{cases}p+1,& r\le1/(p-3),\\ p,& 1/(p-3)<r\le1/(p-4),\\ 4,& r>1/(p-4).\end{cases}
+\]
+The upper bounds hold for roots counted with multiplicity, about every centre. In every
+range the maximum is attained, about the centre $1$, by a polynomial with integer
+coefficients that is irreducible over $\Q$.
+\end{theorem}
+
+\begin{theorem}[Six terms; \stU]\label{smd:thm:sixroot}
+Let $p\ge7$ and $r>1/(p-1)$. Then
+\[
+ N_p(6,r)=\begin{cases}
+ 2p,& r\le1/(p-2),\\
+ p+1,& 1/(p-2)<r\le1/(p-4),\\
+ p,& 1/(p-4)<r\le1/(p-5),\\
+ 5,& r>1/(p-5),
+ \end{cases}
+\]
+with the same statements on multiplicity and on rational irreducible witnesses about $1$
+as in \cref{smd:thm:rootcount}. At $p=7$ the four values are $14,8,7,5$.
+\end{theorem}
+
+\begin{example}[Comparison with the factorial bound]\label[example]{smd:ex:factorial}
+Let $p=t=5$ and $r=1/4+10^{-9}$. Then $\max_{i<5}w_{5,r}(i)=w_{5,r}(4)=1+4\cdot10^{-9}$,
+while $k=2\cdot5^{12}=488{,}281{,}250$ has
+$w_{5,r}(k)=(r-1/4)k+S_5(k)/4=0.48828125+0.5<w_{5,r}(4)$. Hence
+$B_5(5,r)\ge488{,}281{,}250$, whereas $N_5(5,r)=6$ by \cref{smd:thm:rootcount}.
+\end{example}
 
 Write $T^iU^j$ for the class of $T^{i+pj}$. By \cref{smd:lem:excluded}(c) the indices $k\ge t$
 that remain are those of the classes $T^iU^j$ with $j\ge1$ and $i+j\le t-2$, and the index of
@@ -499,10 +795,70 @@ witness also serves at every shallower depth of its range, and a general centre 
 scaling the variable. This completes the proofs of \cref{smd:thm:rootcount,smd:thm:sixroot}.
 \qed
 
+\paragraph{Seven terms at $p=7$.}
+For $t=p$ the rank rule is a finite computation for each $p$. At $p=7$ it gives the
+complete profile, and it separates supports with the same residue multiplicities.
+
+\begin{proposition}[The seven-term profile at $7$; \stU]\label[proposition]{smd:prop:seventerm}
+For $r>1/6$,
+\[
+ N_7(7,r)=\begin{cases}
+ 14,& r\le1/5,\\
+ 9,& 1/5<r\le1/3,\\
+ 8,& 1/3<r\le1/2,\\
+ 7,& 1/2<r\le1,\\
+ 6,& r>1.
+ \end{cases}
+\]
+At the right endpoints $1/5,1/3,1/2,1$ of the first four ranges the maxima are attained by
+the supports $(0,1,2,7,8,14,21)$, $(0,1,2,4,7,14,21)$, $(0,1,6,7,14,21,28)$ and
+$(0,1,7,14,21,28,35)$ respectively.
+\end{proposition}
+
+\begin{proof}
+Every polynomial with at most seven terms is supported on a set of exactly seven exponents
+(pad with zero coefficients), and every multiset of seven residues modulo $7$ is the
+residue multiset of seven distinct nonnegative integers. By \cref{smd:thm:rankrule} the
+value of $N_7(E,r)$ depends only on that multiset, and the profile is the maximum of the
+rank-rule staircases over the $\binom{13}7=1716$ multisets, a finite exact computation.
+It may be restricted to one representative of each orbit under the affine maps
+$T\mapsto\alpha T+\beta$, $\alpha\ne0$: these send $U$ to $\alpha U+\beta$ and change each
+class $T^iU^j$, and the class $T^{t-1}$, only by a nonzero scalar and terms of strictly
+smaller weight, since lowering $i$ costs $r>0$ and lowering $j$ costs $pr-1>0$; so they
+preserve \eqref{smd:eq:rankrule}. The values in the first and last ranges agree with
+\cref{smd:thm:opendisk} and \cref{smd:lem:excluded}(a).
+\end{proof}
+
+\begin{example}[Two supports with one profile]\label[example]{smd:ex:twosupports}
+At $p=7$ the supports $(0,1,2,7,8,14)$ and $(0,1,3,7,8,14)$ both have profile $(3,2,1)$,
+and both have $C_7(E)=14$ by \cref{smd:thm:fixedsupport}. By \cref{smd:thm:rankrule},
+with the larger value retained at each transition depth,
+\[
+ N_7\bigl(\set{0,1,2,7,8,14},r\bigr)=\begin{cases}14,&r\le1/5,\\7,&1/5<r\le1/2,\\5,&r>1/2,\end{cases}
+\]
+\[
+ N_7\bigl(\set{0,1,3,7,8,14},r\bigr)=\begin{cases}14,&r\le2/11,\\8,&2/11<r\le1/4,\\7,&1/4<r\le1/2,\\5,&r>1/2.\end{cases}
+\]
+At $r=1/5$ the exact maxima $14$ and $8$ are attained by the integer coefficient vectors
+\[
+ (-17792,50400,-36946,14976,-10465,170),\qquad(86,504,-343,255,-161,2)
+\]
+in the displayed exponent orders, as a direct binomial expansion at $X=1$ confirms. The
+value $8$ of \cref{smd:thm:sixroot} on $1/5<r\le1/3$ is attained by neither support on the
+whole range; the witness of profile $(3,1,1,1)$ in the proof of that theorem attains it.
+\end{example}
+
 The residue spans and Newton profiles are checked by exact scripts:
 \smdcert{\artifact{padic-fewnomial-root-count/verify.py} with output
 \artifact{padic-fewnomial-root-count/verification.txt};
-\artifact{padic-six-term/verify.py} with output \artifact{padic-six-term/verification.txt}.}
+\artifact{padic-six-term/verify.py} with output \artifact{padic-six-term/verification.txt};
+\artifact{sparse-padic-roots-and-graph-towers/fewnomial/verify.py} with output
+\artifact{sparse-padic-roots-and-graph-towers/fewnomial/verification.txt} (diagram maxima
+for $3{,}934$ multiplicity partitions, $1{,}274$ residue-jet rank comparisons, and Newton
+polygons and separability of $85$ witnesses);
+\artifact{padic-support-rank/rank.py} with output
+\artifact{padic-support-rank/verification.txt} (the seven-term classification and $7{,}218$
+rank-to-witness checks by exact binomial expansion).}
 
 \subsection{Separated complex conjugates}\label{smd:sec:arch}
 {\raggedright\sources{grh_cm_prime_applications; grh_cm_four_terms_and_prime_bias; grh_sparse_singular_moduli}}
@@ -2240,14 +2596,16 @@ for the strict tests; \artifact{gaussian-singular-moduli/check.py}, with output
 \end{remark}
 
 \subsection{The discriminant \texorpdfstring{$-87$}{-87}: powers and residue patterns}\label{smd:sec:powered}
-{\raggedright\sources{grh_transfer_bridges_2026-11-25; padic-six-term; singular-modulus-support}}
+{\raggedright\sources{grh_transfer_bridges_2026-11-25; padic-six-term; singular-modulus-support; residue87_2026-11-27}}
 
 For an algebraic number $\gamma$ write $s(\gamma)$ for the least number of nonzero terms
 of a nonzero rational polynomial vanishing at $\gamma$. At discriminant $-87$ one knows
 $6\le s(-87)\le7$ (\cref{smd:prop:sextics}), and no five of its conjugates lie in a disk deep enough for a
 disk certificate (\cref{smd:rem:disklimit}). The higher-depth case of
 \cref{smd:thm:confluent} settles the relations in one residue class of exponents, and more
-generally every relation whose pattern of residues passes a finite rank test.
+generally every relation whose pattern of residues passes a finite rank test; keeping the
+$2$-adic precision of each confluent column separately and testing the resulting lattice
+modulo $16$ covers $88.788\%$ of the residue patterns.
 
 \begin{theorem}[A powered singular modulus; \stU]\label{smd:thm:powered}
 Let $\alpha$ be any singular modulus of discriminant $-87$. Then $s(\alpha^{63t})=7$ for
@@ -2281,55 +2639,135 @@ $x^{182}\equiv26+9(2x^2+x^3+2x^5)\pmod{27}$ in $\Z_{(3)}[X]/(H_{-152})$, now fol
 $\beta$ with at most six terms, and $\beta^{182t}$ lies in a six-dimensional algebra.
 
 \begin{proposition}[Residue-pattern certificate at $-87$; \stU]\label[proposition]{smd:prop:eightyseven}
-Let $\F_2[X]/(X^6+X^5+X^2+X+1)$ be the reduction of $\Z_{(2)}[X]/(H_{-87})$, in which the
-class of $X$ has order $63$, and put $\ell=X+X^2+X^3$. Let $e_1<\dots<e_6$ be integers, write
-$e_i-e_1=a_i+63q_i$ with $0\le a_i<63$, and let $\mu_a$ be the number of $i$ with $a_i=a$.
-If the six columns
-\[
- X^a\ell^{\,j},\qquad 0\le a<63,\quad 0\le j<\mu_a,
-\]
-are linearly independent over $\F_2$, then the powers $\alpha^{e_1},\dots,\alpha^{e_6}$ of a
-singular modulus $\alpha$ of discriminant $-87$ are linearly independent over $\Q$. The test
-depends only on the multiset of residues $a_i$; among the $\binom{67}5=9{,}657{,}648$
-multisets of six residues modulo $63$ containing $0$, exactly $3{,}892{,}897$ pass it.
+Let $\alpha$ be a singular modulus of discriminant $-87$. For integers $e_1<\dots<e_6$ call
+the multiset of the residues of $e_i-e_1$ modulo $63$ their \emph{anchored residue
+multiset}. Among the $\binom{67}5=9{,}657{,}648$ multisets of six residues modulo $63$
+containing $0$, at least $8{,}574{,}847$, that is $88.788\%$, have the following property:
+whenever the anchored residue multiset of $e_1<\dots<e_6$ is one of them, the powers
+$\alpha^{e_1},\dots,\alpha^{e_6}$ are linearly independent over $\Q$. By number of distinct
+residues the certified multisets are distributed as follows.
+\begin{center}
+\begin{tabular}{rrr}
+\toprule
+distinct residues & certified & total\\
+\midrule
+1 & 1 & 1\\
+2 & 234 & 310\\
+3 & 14{,}880 & 18{,}910\\
+4 & 313{,}800 & 378{,}200\\
+5 & 2{,}379{,}690 & 2{,}789{,}225\\
+6 & 5{,}866{,}242 & 6{,}471{,}002\\
+\midrule
+all & 8{,}574{,}847 & 9{,}657{,}648\\
+\bottomrule
+\end{tabular}
+\end{center}
 \end{proposition}
 
+The certificate is a finite computation; the property is the criterion of the following
+proof, evaluated on every multiset. It counts residue multisets, not a proportion of
+integer tuples for any density.
+
 \begin{proof}
-Multiplication by $\alpha^{-e_1}$ reduces to nonnegative exponents with $e_1=0$. In the
-notation of the proof of \cref{smd:thm:powered}, $x^{63}=1+16D_0$ with $D_0\equiv\ell$
-modulo $2$, each residue block has at most six elements and $6<2^4$, so
-\cref{smd:thm:confluent} with $p=2$, $\sigma=4$, $m=63$ and $a=1$ applies; its columns
-$x^aD_0^{\,j}$ reduce to $X^a\ell^{\,j}$. A full-rank residue matrix therefore certifies all
-lifts of that residue multiset at once. For a single residue the six powers of $\ell$ have
-bit masks $1,14,51,7,42,48$ and are independent, which recovers \cref{smd:thm:powered}. The
-count is an exhaustive enumeration of the weakly increasing residue multisets with smallest
-entry $0$, to which every pattern can be translated by a common exponent shift.
+Multiplication by $\alpha^{-e_1}$ reduces to $e_1=0$. Let $A=\Z_{(2)}[X]/(H_{-87})$, with
+$x$ the class of $X$ and the power basis $1,x,\dots,x^5$; the coefficients of $H_{-87}$
+modulo $16$, constant term first, are $(1,9,5,8,14,3,1)$. Exact reduction of $x^{63}$
+modulo $256$ gives
+\[
+ x^{63}=1+16D,\qquad D\equiv6+9x+3x^2+7x^3+8x^4\pmod{16A},
+\]
+in agreement with the congruence modulo $32$ in the proof of \cref{smd:thm:powered}.
+
+\emph{Column precision.} Inside one residue block $a$ write the exponents as $a+63q_i$ with
+distinct integers $q_i\ge0$, and let $n_a\le6$ be their number. For $0\le j<n_a$ replace
+the corresponding powers by the divided difference of order $j$ at the first $j+1$ nodes,
+multiplied by $j!/16^j$, as in the proof of \cref{smd:thm:confluent}; this is an
+invertible triangular column operation over $\Q$. By the finite binomial expansion the new
+column of order $j$ is
+\[
+ x^aD^j+x^a\sum_{h>j}\frac{j!\,16^{h-j}}{h!}\,
+ [q_0,\dots,q_j]\bigl(T(T-1)\cdots(T-h+1)\bigr)\,D^h ,
+\]
+and the divided differences of integer polynomials at integer nodes are integers. So the
+summand of index $h$ has valuation at least $4(h-j)-v_2(h!/j!)$. For $h=j+1$ this is
+$4-v_2(j+1)$. For $h-j\ge2$, Legendre's formula gives at least $3(h-j)-1\ge5$, since the
+binary digit sum of $j\le5$ is at most two and that of $h$ is positive. Hence the column of
+order $j$ is congruent to $x^aD^j$ modulo $2^{s_j}A$, uniformly in the nodes, where
+\[
+ (s_0,s_1,s_2,s_3,s_4,s_5)=(4,3,4,2,4,3).
+\]
+
+\emph{A test valid for every lift.} Multiply the column of order $j$ in each block by
+$2^{4-s_j}$. The resulting integral $6\times6$ matrix in the power basis is congruent modulo
+$16$ to the matrix $\bar M$ with columns $2^{4-s_j}x^aD^j$. Over $\Z/16\Z$ apply complete
+pivoting to $\bar M$: at each stage choose an entry of least $2$-adic valuation in the
+remaining block, permute it into the pivot position, and clear the entries below it by row
+operations; a remaining block that is zero modulo $16$ makes the test fail. Suppose every
+pivot is nonzero modulo $16$, and perform the same operations on any lift of $\bar M$ to
+$\Z_{(2)}$. If pivot $i$ has valuation $r_i<4$, the entries on and to the right of it in its
+row are divisible by $2^{r_i}$ by the pivot rule, and those to its left are multiples of
+$16$. Dividing each row by $2^{r_i}$ gives a matrix that is upper triangular modulo $2$ with
+unit diagonal, so its determinant is nonzero. Hence every lift is nonsingular, and since the
+column operations preserve rational independence, the six powers are independent.
+
+\emph{Count.} The multisets $0=a_1\le\dots\le a_6<63$ were enumerated, the columns of
+orders $0,\dots,n_a-1$ appended for each residue $a$ of multiplicity $n_a$, and the test
+applied. A second implementation uses odd pivots only, dividing the remaining block by two
+and lowering the modulus whenever the block becomes even; the two tests agree on every
+multiset.
 \end{proof}
 
-A failed rank test is inconclusive, and the remaining $5{,}764{,}751$ residue multisets are
-not covered by this certificate.
+\begin{remark}[The modulo-two test]\label[remark]{smd:rem:mod2}
+The reduction of $A$ modulo $2$ is $\F_2[X]/(X^6+X^5+X^2+X+1)$, in which the class of $X$
+has order $63$, and $D\equiv\ell=X+X^2+X^3\pmod2$. By \cref{smd:thm:confluent} with
+$p=2$, $\sigma=4$, $m=63$ and $a=1$ (each block has at most $6<2^4$ elements), linear
+independence over $\F_2$ of the columns $X^a\ell^{\,j}$, $0\le j<n_a$, already certifies all
+lifts of the residue multiset. For a single residue the six powers of $\ell$ have bit masks
+$1,14,51,7,42,48$ and are independent, which recovers \cref{smd:thm:powered}. Exactly
+$3{,}892{,}897$ multisets pass this test, and the checker confirms that each of them also
+passes the modulo-$16$ test, which certifies $4{,}681{,}950$ further multisets.
+\end{remark}
+
+A failed test is inconclusive: it allows a singular matrix among arbitrary congruent lifts,
+which need not be realized by any choice of quotient nodes. The remaining $1{,}082{,}801$
+anchored residue multisets are not decided.
 \smdcert{\artifact{grh_transfer_bridges_2026-11-25/checks/confluent_certificates.json}, where the
 polynomials coincide with those of
 \artifact{grh_sparse_singular_moduli/checks/five_small_witnesses.json}; checker
 \artifact{grh_transfer_bridges_2026-11-25/checks/check_confluent_refinement.py}, with
 output \artifact{grh_transfer_bridges_2026-11-25/evidence/confluent_replay.txt}; congruence
-modulo $32$ and the multiset count \artifact{padic-six-term/verify_87.py}, with output
-\artifact{padic-six-term/verification_87.txt}.}
+modulo $32$ and the modulo-two count \artifact{padic-six-term/verify_87.py}, with output
+\artifact{padic-six-term/verification_87.txt}; reduction modulo $256$
+\artifact{residue87_2026-11-27/input.py}, with the two vectors in
+\artifact{residue87_2026-11-27/input.txt}; both modulo-$16$ tests and the replay of the
+modulo-two test \artifact{residue87_2026-11-27/certify.cpp}, with output
+\artifact{residue87_2026-11-27/verification.txt}.}
 
 \subsection{Open questions}\label{smd:sec:open}
-{\raggedright\sources{grh_sparse_singular_moduli; grh_cm_sparse_equations; grh_transfers_singular_moduli_and_symmetric_powers; grh_transfer_bridges_2026-11-25; singular-modulus-support; singular_moduli_seven_terms_2026-11-26; padic-six-term; gaussian-singular-moduli}}
+{\raggedright\sources{grh_sparse_singular_moduli; grh_cm_sparse_equations; grh_transfers_singular_moduli_and_symmetric_powers; grh_transfer_bridges_2026-11-25; singular-modulus-support; singular_moduli_seven_terms_2026-11-26; padic-six-term; gaussian-singular-moduli; residue87_2026-11-27; sparse-padic-roots-and-graph-towers}}
 
 \begin{question}[Six terms]\label{smd:q:six}
 Does every singular modulus of degree $h\ge6$ require at least seven terms, that is, does
 $h(\Delta)\ge6$ imply $s(\Delta)\ge7$? In particular, is $s(-87)=7$? For $-152$ and nine
 further sextic orders, and for $-4075$, the answer is yes
 (\cref{smd:thm:seven,smd:ex:4075}), and four orders of degree seven have $s=8$. At $-87$,
-\cref{smd:thm:powered,smd:prop:eightyseven} exclude six-term relations for $3{,}892{,}897$
+\cref{smd:thm:powered,smd:prop:eightyseven} exclude six-term relations for $8{,}574{,}847$
 of the $9{,}657{,}648$ anchored residue patterns modulo $63$, including the relations whose
-exponents lie in one residue class. A global statement would need, in addition to a finite
+exponents lie in one residue class; $1{,}082{,}801$ patterns remain. Can a higher precision
+that uses the constraints on the quotient nodes, or supplementary local tests at other
+primes, remove them? A global statement would need, in addition to a finite
 residue cover for the low-degree orders, a large-discriminant reduction of the kind supplied
 by \cref{smd:prop:global} for five terms. More generally, is there a uniform larger
 threshold?
+\end{question}
+
+\begin{question}[Root counts beyond $p$ terms]\label{smd:q:roots}
+\Cref{smd:thm:rankrule} determines $N_p(E,r)$ at every depth for supports of at most $p$
+exponents, and \cref{smd:thm:jump} gives the open-disk maximum for $p+1$ and $p+2$ terms.
+For more than $p$ exponents the Frobenius power $T^p$ can retain a nonzero nilpotent part
+on a residue factor of $\mathcal R_E$. Which additional residue data determine the sharp
+bound in that regime, in the open disk for $t\ge p+3$ terms and on deeper closed disks for
+$t>p$?
 \end{question}
 
 \begin{question}[A fixed fraction of the class number]\label{smd:q:fraction}

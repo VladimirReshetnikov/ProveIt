@@ -1327,22 +1327,24 @@ The Lagrangian intersection count used when $c=0$ also appears in
 $n-\min(a,b)\to\infty$ suffices. Along the symplectic family just constructed
 this quantity grows without bound, yet the full-row-rank test detects a
 nonvanishing discrepancy. The boundary calculation quantifies the discrepancy
-at each fixed deficit. For arbitrary restricted forms on both subspaces the
-law is determined exactly in the next subsection. When one of the two
-subspaces is not isotropic, the law conditional on rank is no longer uniform,
-and rank can miss almost all of the discrepancy
-(\cref{spn:sec:lagrangian,spn:sec:nondegenerate}); for a symplectic pair the
-law is lifted to every congruence precision in \cref{spn:sec:padic}.
+at each fixed deficit. For arbitrary restricted forms on both subspaces, and
+for any number of frames, the law is determined exactly in the next
+subsection. When one of the two subspaces is not isotropic, the law
+conditional on rank is no longer uniform, and rank can miss almost all of the
+discrepancy (\cref{spn:sec:lagrangian,spn:sec:nondegenerate}); many frames are
+compared in \cref{spn:sec:many}, and symplectic frames are lifted to every
+congruence precision in \cref{spn:sec:padic}.
 
 %======================================================================
 \subsection{The complete law of an arbitrary symplectic compression}\label{spn:sec:complete-law}
-\sources{symplectic_compression_2026-11-26; prime_endpoints_and_symplectic_compressions; exact_symplectic_compressions_2026-11-26; symplectic_compression_2026-11-26_2}
+\sources{symplectic_compression_2026-11-26; prime_endpoints_and_symplectic_compressions; exact_symplectic_compressions_2026-11-26; symplectic_compression_2026-11-26_2; symplectic_joint_observations_2026-11-27}
 
 The two preceding theorems bound or compute the discrepancy for special pairs
 of subspaces. Counting fibres instead of estimating Fourier coefficients gives
 the probability of every matrix of pairings between one fixed frame and a
 uniform symplectic translate of another, for arbitrary restricted alternating
-forms on both frames and arbitrary rectangular sizes. In this subsection $q$
+forms on both frames and arbitrary rectangular sizes, and more generally of all
+pairings among any number of independent frames. In this subsection $q$
 is any prime power, $V$ has dimension $2n$ with a nondegenerate alternating
 form $\langle\ ,\ \rangle$ of matrix $J$, and an alternating form is a bilinear
 form $B$ with $B(x,x)=0$ for all $x$; its matrix has zero diagonal as well as
@@ -1396,7 +1398,107 @@ alternating case of Witt's extension theorem, and the argument works in
 characteristic two.
 \end{proof}
 
-For a proposed value $M\in\spnMat_{a,b}(\F_q)$ form the alternating matrix
+\paragraph{Any number of frames.}
+The law of one compression is the two-frame case of an exact law for the complete set of pairings
+among any number of independent frames. For $1\le i\le k$ let $E_i$ be a space of dimension
+$d_i\ge1$ carrying an alternating form $H_i$ of rank $2s_i$, with $d_i-s_i\le n$, and let
+$X_i\colon E_i\to V$ be independent uniform isometric injections. These are ordered frames, not
+subspaces, and their images may meet. Put $E=\bigoplus_iE_i$ and $D=\sum_id_i$. The observation
+\[
+ M_{ij}(u,v)=\langle X_iu,X_jv\rangle\qquad(i<j)
+\]
+is equivalently the alternating form $\Gamma$ on $E$ with diagonal blocks $H_i$ and upper
+off-diagonal blocks $M_{ij}$; it has at most $q^B$ values, where
+$B=\sum_{i<j}d_id_j=\binom D2-\sum_i\binom{d_i}2$. For a candidate $\Gamma$ write
+\[
+ \rank\Gamma=2s,\quad R=\operatorname{rad}\Gamma,\quad r=\dim R=D-2s,\quad R_i=R\cap E_i,\quad
+ t_i=\dim R_i .
+\]
+The spaces $R_i$ form a direct sum, which need not be all of $R$. Let $T_\ell$ be the number of
+$\ell$-dimensional subspaces $L\le R$ with $L\cap R_i=0$ for every $i$.
+
+\begin{theorem}[Exact joint likelihood; \stU]\label{spn:thm:joint-law}
+For every finite field and every candidate $\Gamma$,
+\begin{equation}\label{spn:eq:joint-mobius}
+ T_\ell=\sum_{0\le j_i\le t_i}(-1)^Jq^{\sum_i\binom{j_i}2}\Bigl(\prod_i\spnqbin{t_i}{j_i}q\Bigr)
+ \spnqbin{r-J}{\ell-J}q,\qquad J=\sum_ij_i,
+\end{equation}
+and
+\begin{equation}\label{spn:eq:joint-law}
+ \spnP(\text{the observation is }\Gamma)=
+ \frac{\sum_{\ell=0}^rT_\ell\,\spnEmb_n(D-\ell,s)}{\prod_i\spnEmb_n(d_i,s_i)} ;
+\end{equation}
+the $\ell$th summand divided by the same denominator is the probability of $\Gamma$ together with an
+$\ell$-dimensional space of linear relations among the combined frame columns. If
+$\prod_{i=1}^k\prod_{h=0}^{t_i-1}(1-q^hz)=\sum_Jb_Jz^J$, then
+$T_\ell=\sum_{J\le\ell}b_J\spnqbin{r-J}{\ell-J}q$, so once Gaussian elimination has produced the
+invariants of $\Gamma$ the likelihood costs $O(D^2+\log(n+1))$ further arithmetic operations.
+\end{theorem}
+
+\begin{proof}
+For a finite vector space $W$ of dimension $t$, the sum
+$\sum_{U\le W}(-1)^{\dim U}q^{\binom{\dim U}2}$ is one if $t=0$ and zero otherwise: it is the value at
+$z=1$ of $\prod_{h=0}^{t-1}(1-q^hz)=\sum_j(-1)^jq^{\binom j2}\spnqbin tjqz^j$, which follows by
+induction from the recurrence of the Gaussian coefficients. Apply this to each intersection
+$L\cap R_i$ and multiply the indicators. On summing over the $\ell$-subspaces $L\le R$, subspaces
+$U_i\le R_i$ of dimensions $j_i$ span a direct sum of dimension $J$, which lies in
+$\spnqbin{r-J}{\ell-J}q$ of them; this is \eqref{spn:eq:joint-mobius}, and collecting the terms of
+total index $J$ gives the polynomial form.
+
+A tuple of frames is a linear map $F\colon E\to V$, $F(v_1,\dots,v_k)=\sum_iX_iv_i$, with Gram form
+$\Gamma$ and injective restrictions to every $E_i$. Its kernel $L$ lies in $R$, since
+$\Gamma(z,w)=\langle Fz,Fw\rangle$ vanishes for all $w$ when $Fz=0$, and injectivity on the summands
+says $L\cap R_i=0$ for all $i$. Conversely each such $L$ of dimension $\ell$ and each isometric
+injection of $E/L$, which has dimension $D-\ell$ and rank $2s$, determine exactly one admissible
+tuple with kernel $L$. \Cref{spn:lem:gram-frames} counts these injections, and division by the
+number $\prod_i\spnEmb_n(d_i,s_i)$ of frame tuples gives \eqref{spn:eq:joint-law} and its
+refinement. For the cost, the product has at most $r$ linear factors; it, the table of Gaussian
+coefficients and the triangular sums take $O(D^2)$ operations each, and after cancellation the
+ratio of embedding counts has at most $D$ factors, computed from $q^{2n}$ and a table of powers of
+$q$.
+\end{proof}
+
+For fixed individual forms the likelihood is therefore a function of the $k+1$ integers
+$(s,t_1,\dots,t_k)$, which retain all the information for a likelihood test against independent
+uniform cross blocks; the separate ranks of the cross blocks need not.
+
+\begin{theorem}[Simultaneous realization and least ambient dimension; \stU]\label{spn:thm:joint-support}
+An alternating form $\Gamma$ on $E=\bigoplus_iE_i$, with arbitrary diagonal blocks, is the Gram form
+of a map into a symplectic space of dimension $2n$ that is injective on every $E_i$ if and only if
+\begin{equation}\label{spn:eq:joint-support}
+ s+\max_it_i\le n .
+\end{equation}
+The least such dimension is $2(s+\max_it_i)$. The statement does not presuppose that the individual
+forms are realizable.
+\end{theorem}
+
+\begin{proof}
+If $L\le R$ is the kernel of a realization and $\ell=\dim L$, then $L\cap R_i=0$ gives
+$\ell\le r-t_i$ for every $i$, and the quotient, of dimension $D-\ell$ and rank $2s$, embeds only if
+$n\ge D-\ell-s\ge D-r+\max_it_i-s=s+\max_it_i$ (\cref{spn:lem:gram-frames}). Conversely put
+$t=\max_it_i$, choose injections $f_i\colon R_i\to\F_q^t$, and extend their sum to
+$f\colon R\to\F_q^t$ by zero on a complement of $\bigoplus_iR_i$; $f$ is onto because one $f_i$ is,
+also when $t=0$. Its kernel $L$ has dimension $r-t$ and meets every $R_i$ trivially. The quotient
+$E/L$ has rank $2s$ and a radical of dimension $t$: send its nondegenerate part to $s$ standard
+hyperbolic pairs and its radical to one vector from each of $t$ further hyperbolic pairs, and compose
+with the quotient map. Every summand stays injective because $L\cap E_i=L\cap R_i=0$.
+\end{proof}
+
+The proof constructs a smallest realization by linear algebra, without enumerating a symplectic
+group. If every $H_i$ is nondegenerate, all $R_i$ vanish and feasibility is simply
+$\rank\Gamma\le2n$; for degenerate forms the radical intersections matter. A two-frame implementation
+of the construction, which outputs and checks the frames, passes $805$ exhaustive cross-matrix
+cases.\footnote{\artifact{symplectic_compression_2026-11-26/results/minimal_realization.json}}
+Enumeration of $733{,}531$ frame tuples in nine configurations with three or four frames over $\F_2$
+and $\F_3$, all $753$ possible observations included, agrees with \cref{spn:thm:joint-law} and
+\eqref{spn:eq:joint-support}, and a second implementation by the polynomial form agrees at every
+observation.\footnote{\raggedright\artifact{symplectic_joint_observations_2026-11-27/results/exhaustive_checks.json},
+\artifact{symplectic_joint_observations_2026-11-27/results/verification_summary.json}}
+
+\paragraph{Two frames.}
+The compression \eqref{spn:eq:complete-observation} is the case of two frames, with $E_1=\F_q^a$
+carrying $H_1$ and $E_0=\F_q^b$ carrying $H_0$. For a proposed value $M\in\spnMat_{a,b}(\F_q)$ form the alternating
+matrix
 \begin{equation}\label{spn:eq:combined-gram}
  \Gamma_M=\begin{pmatrix}H_1&M\\-M^{\spnT}&H_0\end{pmatrix}
 \end{equation}
@@ -1406,8 +1508,8 @@ $r=a+b-2s$, let $R=\operatorname{rad}\Gamma_M$, and put
  t_1=\dim(R\cap E_1)=\dim(\ker H_1\cap\ker M^{\spnT}),\qquad
  t_0=\dim(R\cap E_0)=\dim(\ker H_0\cap\ker M),
 \]
-and $c=r-t_0-t_1$.
-With $\spnqbin uvq$ the number of $v$-subspaces of $\F_q^u$ (zero outside
+and $c=r-t_0-t_1$. For two frames the relation count of \cref{spn:thm:joint-law} also has a direct
+evaluation. With $\spnqbin uvq$ the number of $v$-subspaces of $\F_q^u$ (zero outside
 $0\le v\le u$) and $\abs{\GL_0(\F_q)}=1$, define for $0\le\ell\le r$ the
 nonnegative integer
 \begin{equation}\label{spn:eq:T-count}
@@ -1437,7 +1539,7 @@ isomorphism between subspaces of $R_0$ and $R_1$ of dimension
 $\min(t_0,t_1)$, add $C$, and pass to any smaller subspace.
 \end{proof}
 
-\begin{theorem}[Complete compression law; \stU]\label{spn:thm:complete-law}
+\begin{corollary}[Complete compression law; \stU]\label{spn:thm:complete-law}
 Over every finite field and for every $M\in\spnMat_{a,b}(\F_q)$,
 \begin{equation}\label{spn:eq:complete-law}
  \spnP\bigl(M(g)=M\bigr)=
@@ -1455,7 +1557,7 @@ More generally, for arbitrary alternating $H_1,H_0$ and an arbitrary cross
 matrix $M$, with no frames assumed to exist, the least dimension of a
 nondegenerate alternating space containing injective realizations of both
 forms with cross pairing $M$ is $2(s+\max(t_0,t_1))$.
-\end{theorem}
+\end{corollary}
 
 \begin{proof}
 By \cref{spn:lem:gram-frames}, $gX_0$ is uniform among its
@@ -1463,39 +1565,12 @@ $\spnEmb_n(b,s_0)$ possible values. A symplectic change of coordinates
 carrying one target frame to another carries the source frames giving a
 prescribed $M$, and a prescribed intersection dimension, bijectively onto each
 other. So the target may also be taken uniform among its $\spnEmb_n(a,s_1)$
-values, independently, and it suffices to count pairs $(Y,X)$ of
-prescribed-Gram injections with $Y^{\spnT}JX=M$.
-
-Each such pair is the map $F\colon E\to V$, $F(u,v)=Yu+Xv$, with Gram matrix
-$\Gamma_M$ and injective restrictions to $E_1$ and $E_0$. Its kernel $L$ lies
-in $R$, since $\Gamma_M(z,w)=\langle Fz,Fw\rangle$ vanishes for all $w$ when
-$Fz=0$, and injectivity on the summands says $L\cap E_1=L\cap E_0=0$.
-Conversely, for such an $L$ of dimension $\ell$ the form descends to $E/L$,
-of dimension $a+b-\ell$ and rank $2s$, and each isometric injection
-$E/L\to V$ gives exactly one admissible $F$ with kernel $L$. Lemmas
-\ref{spn:lem:gram-frames} and \ref{spn:lem:transverse} count the two choices,
-which proves \eqref{spn:eq:complete-law}. The map $(u,v)\mapsto Yu=-Xv$
-identifies $\ker F$ with $\spnim Y\cap\spnim X$, which gives the refinement.
-
-A summand is positive exactly when a transverse kernel of dimension $\ell$
-exists and its quotient embeds, that is, when $\ell\le r-\max(t_0,t_1)$ and
-$\ell\ge a+b-s-n$. Since $r=a+b-2s$, these are compatible exactly when
-$s+\max(t_0,t_1)\le n$. The largest transverse kernel has dimension
-$r-\max(t_0,t_1)$; its quotient has rank $2s$ and radical dimension
-$\max(t_0,t_1)$, so it embeds in dimension $2(s+\max(t_0,t_1))$ by
-\cref{spn:lem:gram-frames}, and the quotient map is injective on each summand.
-Any realization produces a transverse kernel and so cannot use less. This
-argument does not presuppose that the two frames are realizable separately.
+values, independently, and the law is the case of two frames of
+\cref{spn:thm:joint-law}, whose relation count is evaluated by
+\cref{spn:lem:transverse}. The map $(u,v)\mapsto Yu=-Xv$ identifies the kernel of
+$F(u,v)=Yu+Xv$ with $\spnim Y\cap\spnim X$, which gives the refinement. The support
+and the least dimension are the case of two frames of \cref{spn:thm:joint-support}.
 \end{proof}
-
-The minimum is attained constructively. Write $R=R_1\oplus R_0\oplus C$ with
-bases $u_i$ of $R_1$ and $v_i$ of $R_0$, and take
-$L=\operatorname{span}\set{u_i+v_i:i\le\min(t_0,t_1)}\oplus C$; map hyperbolic
-pairs of the nondegenerate part of $\Gamma_M$ to standard pairs, $L$ to zero,
-and a completion of $L$ to a basis of $R$ to independent isotropic vectors in
-$2\max(t_0,t_1)$ further coordinates. An implementation that outputs and
-checks such frames passes $805$ exhaustive cross-matrix
-cases.\footnote{\artifact{symplectic_compression_2026-11-26/results/minimal_realization.json}}
 
 Both the symplectic law and the uniform law are constant on each class of
 matrices sharing a triple $(s,t_0,t_1)$, so the triple is sufficient for every
@@ -2024,6 +2099,267 @@ and $\F_4$ checks the likelihood on $11{,}295$ matrices, and exact rational arit
 law, its sign pattern and the formula for $\delta_{\mathrm{rk}}$ for all $288$ admissible triples with
 $q\le5$ and $n\le16$.\footnote{\raggedright\artifact{grh_extensions_2026-11-27/code/verify_symplectic.py},
 \artifact{grh_extensions_2026-11-27/results/symplectic_validation.json}}
+
+%======================================================================
+\subsection{A hidden source form shared by many wide blocks}\label{spn:sec:hidden}
+\sources{grh_hidden_forms_and_filters_2026-11-27}
+
+When the source form of a wide Lagrangian projection is unknown and uniform, one observed block carries no
+information about it, but many blocks sharing the same unknown form constrain it jointly. For
+blocks with two-dimensional kernels the problem is exactly that of recovering a nondegenerate
+alternating form from random isotropic planes, and it has a sharp additive threshold at the number
+of free parameters of the form.
+
+Fix a prime power $q$, an even integer $n\ge4$ and $V=\F_q^n$. An alternating form is a bilinear
+form $H$ with $H(v,v)=0$ for every $v$, also in characteristic two. Put
+\[
+ D_n=\binom n2,\qquad d=D_n-1,\qquad \gamma_q=\prod_{j\ge1}(1-q^{-j}),
+\]
+\[
+ c_n=\prod_{j=2}^{n/2}\bigl(1-q^{-(2j-1)}\bigr),\qquad c_q=\prod_{j\ge2}\bigl(1-q^{-(2j-1)}\bigr),
+\]
+with empty products equal to one. Let $\mathcal H_n$ be the set of nondegenerate alternating forms
+on $V$ modulo nonzero scalars and $\mathcal G_n$ the set of two-dimensional subspaces of $V$; a
+plane $K$ is $H$-isotropic if $H|_{K\times K}=0$. Then
+\begin{equation}\label{spn:eq:hidden-counts}
+ \abs{\mathcal H_n}=M_n=q^dc_n,\qquad
+ p_n=\frac{q^{n-2}-1}{q^{n-1}-1}<q^{-1},
+\end{equation}
+where $p_n$ is the fraction of planes that are $H$-isotropic, the same for every nondegenerate $H$.
+Under $Q_{n,t}$ an ordered $t$-tuple of planes is independent and uniform on $\mathcal G_n$. Under
+$P_{n,t}$ one first chooses $[H]\in\mathcal H_n$ uniformly, once for all the observations, and then
+$t$ independent uniform $H$-isotropic planes. For observed planes $K_1,\dots,K_t$ let
+\[
+ \mathcal N(K_1,\dots,K_t)=\set{G\in\spnAlt(V):G|_{K_i\times K_i}=0\text{ for every }i},
+\]
+the solution space of $t$ homogeneous linear equations in the $D_n$ entries of $G$ above the
+diagonal, and let $Z$ be the number of projective nondegenerate forms in $\mathcal N$; under
+$P_{n,t}$ it contains $\langle H\rangle$.
+
+\begin{theorem}[A sharp additive sample threshold; \stU]\label{spn:thm:hidden-threshold}
+Fix $q$, let $n\to\infty$ through even integers, and let $w_n\to\infty$ be positive.
+\begin{enumerate}
+\item If $0\le t_n\le d-w_n$, then $\spnTV(P_{n,t_n},Q_{n,t_n})\to0$, and the optimal probability of
+recovering the hidden projective form from the observations tends to zero.
+\item If $t_n\ge d+w_n$, then $\spnTV(P_{n,t_n},Q_{n,t_n})\to1$, and, uniformly in the nondegenerate
+hidden form $H$, with conditional probability tending to one,
+$\mathcal N(K_1,\dots,K_{t_n})=\langle H\rangle$; so Gaussian elimination recovers $[H]$.
+\end{enumerate}
+\end{theorem}
+
+\begin{theorem}[The bounded window; \stU]\label{spn:thm:hidden-window}
+For each fixed integer $a$,
+\[
+ \chi^2(P_{n,d+a}\Vert Q_{n,d+a})\longrightarrow c_q^{-1}q^a .
+\]
+Consequently, for each fixed integer $w\ge0$,
+\begin{gather*}
+ \limsup_{n}\spnTV(P_{n,d-w},Q_{n,d-w})\le\tfrac12c_q^{-1/2}q^{-w/2},\qquad
+ \liminf_{n}\spnTV(P_{n,d+w},Q_{n,d+w})\ge1-c_qq^{-w},\\
+ \limsup_{n}\spnP(\text{optimal recovery at }d-w)\le c_q^{-1}q^{-w},\\
+ \limsup_{n}\sup_H\spnP_H\bigl(\mathcal N\ne\langle H\rangle\text{ at }d+w\bigr)\le\frac{q^{-w}}{q-1}.
+\end{gather*}
+\end{theorem}
+
+The window needed for any fixed accuracy is therefore bounded independently of $n$. The second
+moment limit does not identify the limiting total variation inside the window, nor the law of $Z$.
+Both theorems follow from explicit finite bounds. Put
+\[
+ \rho_q=\frac{2q-1}{q^2}<1,\qquad K_q=4q(q-1),\qquad A_q=\frac q{\gamma_qc_q}.
+\]
+
+\begin{proposition}[Finite bounds; \stU]\label{spn:prop:hidden-finite}
+The likelihood is
+\begin{equation}\label{spn:eq:hidden-likelihood}
+ \frac{dP_{n,t}}{dQ_{n,t}}=\frac{Z}{M_np_n^t},
+\end{equation}
+so in particular $P_{n,1}=Q_{n,1}$. For every $t$ and every integer $0\le R<n$,
+\begin{gather}
+ \chi^2(P_{n,t}\Vert Q_{n,t})\le e^{K_qtq^{-R}}-1+\frac1{M_np_n^t}
+ +A_qq^{-\binom{n-R}2}\Bigl(\frac{\rho_q}{p_n}\Bigr)^t,\label{spn:eq:hidden-chi}\\
+ Q_{n,t}(Z>0)\le M_np_n^t,\qquad
+ \spnP(\text{optimal recovery})=\frac{Q_{n,t}(Z>0)}{M_np_n^t}\le\frac1{M_np_n^t},
+ \label{spn:eq:hidden-bayes}\\
+ \sup_H\spnP_H\bigl(\mathcal N\ne\langle H\rangle\bigr)\le\frac{q^d}{q-1}\bigl[p_ne^{K_qq^{-R}}\bigr]^t
+ +\frac{q^{D_n-\binom{n-R}2}}{(q-1)\gamma_q}\rho_q^t.\label{spn:eq:hidden-recovery}
+\end{gather}
+\end{proposition}
+
+\begin{proof}[Counts and the likelihood]
+$\GL_n(\F_q)$ acts transitively on the nondegenerate alternating forms with stabilizer the
+symplectic group, and $\abs{\GL_n(\F_q)}/\abs{\Sp_n(\F_q)}=q^{D_n}\prod_{j=1}^{n/2}(1-q^{-(2j-1)})$;
+dividing by $q-1$ gives $M_n$. For an isotropic plane choose an ordered independent pair $(u,v)$: for
+$u\ne0$ the functional $H(u,\cdot)$ is nonzero, its kernel has $q^{n-1}$ elements, and removing
+$\langle u\rangle$ leaves $q^{n-1}-q$ choices of $v$ out of $q^n-q$, which gives $p_n$. Each compatible
+$[H]$ has conditional likelihood $p_n^{-t}$ relative to $Q_{n,t}$, and averaging gives
+\eqref{spn:eq:hidden-likelihood}; hence $\spnE_QZ=M_np_n^t$, which bounds $Q_{n,t}(Z>0)$. The
+posterior under $P_{n,t}$ is uniform among the $Z$ compatible forms, so the optimal Bayes success is
+$\spnE_P(1/Z)=\sum_{Z>0}Q(\boldsymbol K)\frac{Z}{M_np_n^t}\frac1Z=Q(Z>0)/(M_np_n^t)$. Transitivity of
+$\GL(V)$ on planes makes the number of compatible forms constant on $\mathcal G_n$, so one plane is
+uniform after averaging the form.
+\end{proof}
+
+\begin{lemma}[Common isotropic planes; \stU]\label{spn:lem:hidden-pair}
+Fix a nondegenerate alternating $H$ and an alternating $G$, and put
+\[
+ e(H,G)=\sum_{a\in\F_q}\bigl(q^{\dim\ker(G-aH)}-1\bigr),\qquad r(H,G)=\frac{e(H,G)}{q^n-1},\qquad
+ x=q^{n-1}.
+\]
+The probability $p_2(H,G)$ that a uniform plane is isotropic for both forms satisfies
+\begin{gather}
+ p_2(H,G)=\frac{e(H,G)(q^{n-1}-q)+(q^n-1-e(H,G))(q^{n-2}-q)}{(q^n-1)(q^n-q)},\notag\\
+ \frac{p_2(H,G)}{p_n^2}=1+\frac{(q-1)x\bigl[(x-1)r(H,G)-(q-1)\bigr]}{(x-q)^2}.\label{spn:eq:hidden-explicit}
+\end{gather}
+If $G$ is not proportional to $H$, then $p_2(H,G)/p_n\le\rho_q$, and with
+$s=\min_a\rank(G-aH)$, $p_2(H,G)/p_n^2\le1+K_qq^{-s}$.
+\end{lemma}
+
+\begin{proof}
+For nonzero $u$ the functionals $H(u,\cdot)$ and $G(u,\cdot)$ are dependent exactly when
+$(G-aH)u=0$ for some scalar $a$, which is unique because $H$ is nondegenerate; so there are
+$e(H,G)$ such $u$. Their common kernel then has dimension $n-1$, and otherwise $n-2$, and both
+kernels contain $u$ because both forms are alternating. Counting the admissible $v$ gives $p_2$, and
+substitution gives \eqref{spn:eq:hidden-explicit}. Since $(q^n-1)(q^n-q)p_n=(q^n-1)(q^{n-1}-q)$,
+\[
+ \frac{p_2(H,G)}{p_n}=r+(1-r)\frac{q^{n-2}-q}{q^{n-1}-q},\qquad r=r(H,G).
+\]
+If $G$ is not proportional to $H$, each $G-aH$ is a nonzero alternating form, of rank at least two,
+so $r\le q(q^{n-2}-1)/(q^n-1)<q^{-1}$, and the display is at most
+$q^{-1}+(1-q^{-1})q^{-1}=\rho_q$. For the last bound, $n\ge4$ gives $x\ge q^3$ and
+$x(x-1)/(x-q)^2\le2$, while $r\le q\,q^{n-s}/(q^n-1)\le2q\,q^{-s}$; dropping the negative term of
+\eqref{spn:eq:hidden-explicit} gives $1+4q(q-1)q^{-s}$.
+\end{proof}
+
+\begin{lemma}[Few forms are close to a scalar multiple; \stU]\label{spn:lem:hidden-rank}
+The number $B_{n,R}$ of alternating forms on $V$ of rank at most $R$ satisfies
+$B_{n,R}\le\gamma_q^{-1}q^{D_n-\binom{n-R}2}$. For a fixed nondegenerate $H$ and a uniform
+nondegenerate $G$, $\spnP\set{\min_a\rank(G-aH)\le R}\le A_qq^{-\binom{n-R}2}$.
+\end{lemma}
+
+\begin{proof}
+A form of rank at most $R$ has a kernel containing some $(n-R)$-subspace $W$; there are at most
+$\gamma_q^{-1}q^{R(n-R)}$ such $W$, by the product formula for the Gaussian coefficient, and the
+forms vanishing on $W$ descend to the $R$-dimensional quotient, which carries $q^{\binom R2}$
+alternating forms; $R(n-R)+\binom R2=D_n-\binom{n-R}2$. For nondegenerate $G$ and $R<n$ the scalar
+$a=0$ does not contribute, the union over the other $q-1$ scalars has at most $(q-1)B_{n,R}$
+elements, and there are $(q-1)M_n$ nondegenerate $G$; divide, using $c_n\ge c_q$.
+\end{proof}
+
+\begin{proof}[Proof of \cref{spn:prop:hidden-finite}]
+Squaring \eqref{spn:eq:hidden-likelihood} and averaging under $Q$ gives
+\begin{equation}\label{spn:eq:hidden-second}
+ 1+\chi^2(P_{n,t}\Vert Q_{n,t})=\spnE_{[H],[G]\in\mathcal H_n}\Bigl(\frac{p_2(H,G)}{p_n^2}\Bigr)^t,
+\end{equation}
+with independent uniform classes. Equal classes have probability $1/M_n$ and contribute exactly
+$1/(M_np_n^t)$. Pairs with $\min_a\rank(G-aH)>R$ contribute at most $e^{K_qtq^{-R}}$ by
+\cref{spn:lem:hidden-pair} and $(1+z)^t\le e^{tz}$, and the remaining nonproportional pairs at most
+$A_qq^{-\binom{n-R}2}(\rho_q/p_n)^t$ by \cref{spn:lem:hidden-pair,spn:lem:hidden-rank}; this is
+\eqref{spn:eq:hidden-chi}, and \eqref{spn:eq:hidden-bayes} was proved above.
+
+Fix $H$. A competitor $G\notin\langle H\rangle$ defines the same event on $H$-isotropic planes as
+$aG+bH$ for every $a\ne0$ and every $b$, so the distinct events are indexed by the $(q^d-1)/(q-1)$
+projective points of $\spnAlt(V)/\langle H\rangle$, each represented by $q(q-1)$ forms. The quantity
+$\min_b\rank(G-bH)$ does not depend on the representative; at most $qB_{n,R}$ representatives have
+it at most $R$, so at most $B_{n,R}/(q-1)$ points are near, and each survives all $t$ observations
+with probability at most $\rho_q^t$. A far point survives with probability at most
+$[p_ne^{K_qq^{-R}}]^t$, by \cref{spn:lem:hidden-pair}. The union bound and \cref{spn:lem:hidden-rank}
+give \eqref{spn:eq:hidden-recovery}, and when no competitor survives the solution space is exactly
+$\langle H\rangle$.
+\end{proof}
+
+\begin{proof}[Proof of \cref{spn:thm:hidden-threshold,spn:thm:hidden-window}]
+Take $R=\floor{n/5}$, so that $tq^{-R}\to0$ whenever $t=O(n^2)$, and put
+$\lambda_q=\log_q(q\rho_q)=\log_q(2-q^{-1})$; then $\lambda_2=\log_2(3/2)<16/25$ and
+$\lambda_q<\log_32<16/25$ for $q\ge3$. Since $\binom{n-R}2=(16/25+o(1))D_n$,
+$p_n=q^{-1}(1+O_q(q^{2-n}))$ and $M_n=q^d(c_q+o(1))$, the near terms of \eqref{spn:eq:hidden-chi}
+and \eqref{spn:eq:hidden-recovery} are at most $q^{-(16/25-\lambda_q+o(1))D_n}=o(1)$, uniformly for
+$0\le t\le d+O(1)$.
+
+At $t=d+a$ the proportional term tends to $c_q^{-1}q^a$, which gives the upper bound for the
+chi-square limit. For the lower bound, \eqref{spn:eq:hidden-explicit} with $r\ge0$ gives
+$p_2/p_n^2\ge1-\delta_n$ with $\delta_n=(q-1)^2q^{n-1}/(q^{n-1}-q)^2=O_q(q^{1-n})$, so the unequal
+pairs contribute at least $(1-M_n^{-1})(1-\delta_n)^t\to1$ to \eqref{spn:eq:hidden-second}; their
+contribution is also at most $1+o(1)$ by the near and far estimates. This proves the chi-square
+limit. Cauchy--Schwarz, $\spnTV(P,Q)\le\frac12\chi^2(P\Vert Q)^{1/2}$, and \eqref{spn:eq:hidden-bayes}
+give the two bounds below the threshold. The event $\set{Z>0}$ has planted probability one, so
+$\spnTV(P,Q)\ge1-Q(Z>0)\ge1-M_np_n^t$, which tends to $1-c_qq^{-w}$ at $t=d+w$; and the far term of
+\eqref{spn:eq:hidden-recovery} tends to $q^{-w}/(q-1)$ there. This proves
+\cref{spn:thm:hidden-window}.
+
+For diverging gaps, additional observations cannot decrease the total variation or the optimal
+recovery probability, nor increase the probability that $\dim\mathcal N>1$. For instance, for each
+fixed $w$ the experiment at $t_n\le d-w_n$ is eventually a projection of the one at $d-w$; let
+$n\to\infty$ and then $w\to\infty$. The other assertions are obtained in the same way.
+\end{proof}
+
+\paragraph{The connection with wide blocks.}
+In \cref{spn:thm:wide} take the ambient dimension $2(n-2)$, a target with $n-2$ rows and a
+nondegenerate source of dimension $n$, so that $c=2$ there.
+
+\begin{proposition}[Conditioned wide blocks with a shared unknown form; \stU]\label{spn:prop:hidden-wide}
+Conditional on full row rank, the kernel of $A$ is uniform among the $H$-isotropic planes and, given
+its kernel, $A$ is uniform among the full-row-rank matrices with that kernel; for the
+independent-entry block $U$ conditioned on full row rank, the kernel is uniform on $\mathcal G_n$
+and, given it, $U$ is uniform in the same set. The full-row-rank probability of $A$ does not depend
+on $H$. Consequently $t$ blocks sharing one uniform unknown $[H]$, each conditioned on full row
+rank, against $t$ independent conditioned uniform blocks, is the experiment of
+\cref{spn:thm:hidden-threshold}, and passing to the kernels loses no information for testing or for
+recovery.
+\end{proposition}
+
+\begin{proof}
+By \cref{spn:thm:wide}, the likelihood of a full-row-rank $M$ is $q/C'$ when $\ker M$ is
+$H$-isotropic and zero otherwise, a constant on the supported full-row-rank matrices. For each plane
+$K$ the full-row-rank matrices with kernel $K$ are in bijection with the isomorphisms
+$V/K\to\F_q^{n-2}$, so there are $\abs{\GL_{n-2}(\F_q)}$ of them for every $K$. This gives both
+conditional descriptions, and since the number of $H$-isotropic planes is $p_n\abs{\mathcal G_n}$ for
+every nondegenerate $H$, the full-row-rank probability does not depend on $H$; conditioning each
+block therefore leaves the uniform prior on $[H]$ unchanged.
+\end{proof}
+
+This settles, for blocks with two-dimensional kernels and full row rank, the problem of
+observations with an unknown shared source form. No conclusion is drawn for unconditioned blocks.
+
+\begin{remark}[Recovery by elimination]\label{spn:rem:hidden-recovery}
+Represent each observed plane by an ordered basis $(u_i,v_i)$ and form the row
+$z_i=(u_{i,r}v_{i,s}-u_{i,s}v_{i,r})_{r<s}\in\F_q^{D_n}$; a change of basis multiplies the row by a
+nonzero scalar, so the null space of the stacked $t\times D_n$ matrix is intrinsic and consists of
+the coefficient vectors of $\mathcal N$. If the null space is one-dimensional, put a generator above
+the diagonal of an alternating matrix and check that it is nonsingular. This takes
+$O(tD_n^2+D_n^3)$ field operations, hence $O(n^6)$ at the threshold. Under the planted law a
+one-dimensional null space automatically has a nonsingular generator; under the null law an output
+implies $Z>0$, whose probability is bounded by \eqref{spn:eq:hidden-bayes}. The same procedure is
+therefore a polynomial-time test above the threshold.
+\end{remark}
+
+For $n=4$ independent enumeration of reduced row spaces gives $35$ planes, $28$ projective
+nondegenerate forms and $15$ isotropic planes per form over $\F_2$, and $130$, $234$ and $40$ over
+$\F_3$; the largest conditional overlap $p_2/p_n$ between nonproportional forms is $3/5$ and $2/5$,
+against the bound $\rho_q=3/4$ and $5/9$. For $(q,n)=(2,4)$, where $d=5$, exact transition counts
+over all $2356$ reachable spans of exterior coordinates give the following distances
+$\spnTV(P_{4,t},Q_{4,t})$ and probabilities of recovery by elimination, rounded to five places:
+\begin{center}\small
+\begin{tabular}{rcccccccc}
+\toprule
+$t$ & $1$ & $2$ & $4$ & $5$ & $6$ & $8$ & $10$ & $12$\\
+\midrule
+distance & $0$ & $0.11429$ & $0.37280$ & $0.66308$ & $0.84036$ & $0.96869$ & $0.99417$ & $0.99893$\\
+elimination & $0$ & $0$ & $0$ & $0.23893$ & $0.49557$ & $0.81123$ & $0.93361$ & $0.97679$\\
+\bottomrule
+\end{tabular}
+\end{center}
+These finite values are not limits; statistical distinction, and uniqueness among nonsingular
+forms, can occur before the linear equations determine a unique form. For $q=2$ and $n=200$, where
+$d=19899$, the finite bounds certify by exact rational comparison that at $t=19889$ the distance is
+below $0.0171$ and the optimal recovery probability below $0.001165$, and that at $t=19909$
+elimination fails with probability below $0.000977$ while its false-positive probability under the
+null law is below
+$0.00082$.\footnote{\raggedright\artifact{grh_hidden_forms_and_filters_2026-11-27/data/independent_hidden_forms.json},
+\artifact{grh_hidden_forms_and_filters_2026-11-27/data/finite_bound_checks.json},
+\artifact{grh_hidden_forms_and_filters_2026-11-27/data/recovery_demo.json}}
+The pair-incidence counts are classical finite geometry, close to the eigenvector counts for
+symplectic Grassmann codes \cite{CardinaliGiuzzi2016Minimum}, and the Pl\"ucker description of the
+symplectic Grassmannian is treated in \cite{Blok2003Generating}.
 
 %======================================================================
 \subsection{Nondegenerate frames: residual forms and rank blindness}\label{spn:sec:nondegenerate}
@@ -3008,12 +3344,721 @@ direct sums of nondegenerate spaces are studied in \cite{GlasbyNiemeyerPraeger20
 $\spnP(\Lambda(U)\text{ nonsingular})$ and the single probability $\spnP(B\text{ invertible})$.
 
 %======================================================================
-\subsection{A symplectic pair at every congruence precision}\label{spn:sec:padic}
-\sources{padic_symplectic_corners; symplectic_compression_2026-11-26; symplectic_compression_2026-11-26_2; exact_symplectic_compressions_2026-11-26; prime_endpoints_and_symplectic_compressions}
+\subsection{Many frames: total dimension, hidden dependence and cycle laws}\label{spn:sec:many}
+\sources{symplectic_joint_observations_2026-11-27; symplectic_dependence_research_2026-11-27}
+
+\Cref{spn:thm:joint-law} gives the exact law of all pairings among $k$ independent frames. Compared
+with independent uniform cross pairings, this law has a transition at total frame dimension equal to
+the ambient dimension, located by one exact kernel moment; inside the critical window the limiting
+distance is universal when no frame dominates; and observations indexed by a forest are exactly
+independent, so the dependence can be invisible in every proper collection of frames. For the
+simplest frames, single nonzero vectors observed along the edges of a graph, every cycle law is
+explicit and the detection threshold for a growing cactus is sharp.
+
+The notation is that of \cref{spn:thm:joint-law}: $V$ is symplectic of dimension $2n$ over $\F_q$,
+the frames $X_i\colon(E_i,H_i)\to V$, $1\le i\le k$, are independent and uniform, $d_i-s_i\le n$,
+$D=\sum_id_i$, and $\Gamma$ is the assembled alternating form. Let $\mu$ be its law and $\nu$ the law
+that keeps the diagonal blocks $H_i$ and makes every entry of every cross block independent and
+uniform, so that $\nu(\Gamma)=q^{-B}$. Put $\eta_j=\prod_{i=1}^j(1-q^{-2i})$,
+$\gamma_j=\prod_{i=1}^j(1-q^{-i})$ and $\theta_\infty=\gamma_\infty/\eta_\infty$, with empty products
+equal to one. All results hold in every characteristic.
+
+\paragraph{The transition at total dimension $2n$.}
+Define
+\begin{equation}\label{spn:eq:joint-A}
+ A=1+\Bigl(q^D-1-\sum_i(q^{d_i}-1)\Bigr)q^{1-D}+\sum_i(q^{d_i-2s_i}-1)q^{d_i-D}.
+\end{equation}
+
+\begin{theorem}[Uniform joint comparison; \stU]\label{spn:thm:joint-threshold}
+\begin{enumerate}
+\item If $c=2n-D\ge0$, then $\spnTV(\mu,\nu)\le\min\set{1,Aq^{-c}/(q^2-1)}$.
+\item If $w=D-2n>0$, then $\spnTV(\mu,\nu)\ge1-(A-1)/(q^w-1)$: the test $\rank\Gamma\le2n$ accepts
+with probability one under $\mu$ and with probability at most $(A-1)/(q^w-1)$ under $\nu$.
+\item $A=\spnE_\nu q^{\dim\ker\Gamma}$ and $A\le q+1+\sum_iq^{2(d_i-s_i)-D}$; in particular
+$A\le q+1+k$ when $\max_i(d_i-s_i)\le D/2$, which always holds when $D>2n$. Hence, for $c\ge0$,
+\begin{equation}\label{spn:eq:joint-shape}
+ \spnTV(\mu,\nu)\le\frac{(q+1)q^{D-2n}+\sum_iq^{-2(n-d_i+s_i)}}{q^2-1}.
+\end{equation}
+\end{enumerate}
+\end{theorem}
+
+\begin{corollary}[Total dimension determines the transition; \stU]\label{spn:cor:joint-transition}
+Fix $q$ and $k$. Along any sequence of admissible frames with $\max_i(d_i-s_i)\le D/2$, the distance
+$\spnTV(\mu,\nu)$ tends to zero if $2n-D\to+\infty$ and to one if $D-2n\to+\infty$, with errors
+$O_{q,k}(q^{-\abs{D-2n}})$.
+\end{corollary}
+
+For two frames, \eqref{spn:eq:joint-shape} improves the exponent $(2n+1-a-b)/2$ of
+\cref{spn:thm:symplectic} to $2n-a-b$ when the frames are balanced. For unbalanced frames, for
+instance a Lagrangian one, a term $q^{-2(n-d_i+s_i)}$ is not small, and \cref{spn:thm:symplectic}
+remains the bound that is uniform in the frames. The bounds do not give a limit for fixed $D-2n$;
+that is \cref{spn:thm:joint-profile} below.
+
+\begin{lemma}[The evaluation map; \stU]\label{spn:lem:joint-eval}
+Let $\mathcal W$ be the space of alternating forms on $E$ with zero diagonal blocks. For nonzero
+$v=(v_1,\dots,v_k)\in E$ the linear map $\mathcal W\to E^*$, $B\mapsto Bv$, has rank $D-d_i$ if
+$v_i$ is the only nonzero component of $v$, and otherwise rank $D-1$, with image the annihilator of
+$v$.
+\end{lemma}
+
+\begin{proof}
+If only $v_i$ is nonzero, the $i$th output block vanishes and every other output block is free,
+obtained by varying the cross block incident to $i$. If at least two components are nonzero, a
+vector $w$ annihilates every $Bv$ exactly when $w_iv_j^{\spnT}-v_iw_j^{\spnT}=0$ for all $i<j$. For two
+nonzero components $v_i,v_j$, equality of these rank-one products forces $w_i=\lambda v_i$ and
+$w_j=\lambda v_j$ with one scalar $\lambda$, also when one of $w_i,w_j$ vanishes, and pairing a
+nonzero component with every other one gives $w_h=\lambda v_h$ for all $h$. So the cokernel is the
+line of $v$; by alternation the image lies in the annihilator of $v$, which has the same dimension.
+No division by two occurs.
+\end{proof}
+
+\begin{lemma}[Exact first kernel moment; \stU]\label{spn:lem:joint-moment}
+$\spnE_\nu q^{\dim\ker\Gamma}=A$. If every $H_i$ is zero,
+$A=q+1-q^{1-D}+q^{-D}\sum_i(q^{d_i}-1)(q^{d_i}-q)$.
+\end{lemma}
+
+\begin{proof}
+$\spnE_\nu\abs{\ker\Gamma}=\sum_{v\in E}\spnP_\nu(\Gamma v=0)$. The zero vector contributes one. A
+nonzero $v$ supported in $E_i$ can be in the kernel only if $v_i\in\operatorname{rad}H_i$; there are
+$q^{d_i-2s_i}-1$ such $v$, each with probability $q^{-(D-d_i)}$ by \cref{spn:lem:joint-eval}. For
+each of the $q^D-1-\sum_i(q^{d_i}-1)$ vectors supported in at least two blocks, the random part of
+$\Gamma v$ is uniform on the annihilator of $v$, and the fixed diagonal part lies in that annihilator
+because $\sum_iH_i(v_i,v_i)=0$, so the probability is $q^{-(D-1)}$. Summing gives
+\eqref{spn:eq:joint-A}, and $s_i=0$ gives the isotropic form. The vectors supported in at least two
+blocks contribute at most $q$, and those in $E_i$ at most $q^{2(d_i-s_i)-D}$, which is the bound in
+\cref{spn:thm:joint-threshold}(3).
+\end{proof}
+
+\begin{lemma}[Injective realizations; \stU]\label{spn:lem:joint-injective}
+Let $c=2n-D\ge0$, and let $\mu_0\le\mu$ be the contribution of the frame tuples whose combined map
+$E\to V$ is injective. At every $\Gamma$ of nullity $r$,
+\[
+ \frac{\mu_0(\Gamma)}{\nu(\Gamma)}=\mathbf 1_{\set{r\le c}}
+ \frac{\prod_i\eta_{n-d_i+s_i}}{\eta_n^{k-1}\,\eta_{(c-r)/2}} ,
+\]
+and $r\equiv c\pmod2$ when $r\le c$.
+\end{lemma}
+
+\begin{proof}
+This is the term $\ell=0$ of \eqref{spn:eq:joint-law}, where $T_0=1$, multiplied by $q^B$. By
+\eqref{spn:eq:E-count}, $\spnEmb_n(a,s)=q^{2na-\binom a2}\eta_n/\eta_{n-a+s}$ when $a-s\le n$, the
+powers of $q$ cancel because $B=\binom D2-\sum_i\binom{d_i}2$, and $n-D+s=(c-r)/2$. The embedding
+count vanishes exactly when $r>c$, and an alternating form has even rank, so $r\equiv D\equiv c$.
+\end{proof}
+
+\begin{proof}[Proof of \cref{spn:thm:joint-threshold}]
+(1) The sequence $\eta_j$ decreases and $0\le n-d_i+s_i\le n$, so the constant
+$\prod_i\eta_{n-d_i+s_i}/\eta_n^{k-1}$ is at least $\eta_n\ge\eta_\infty$. If $r\le c$ put
+$m=(c-r)/2$; then $f_0=\mu_0/\nu\ge\eta_\infty/\eta_m=\prod_{j>m}(1-q^{-2j})\ge1-q^{-2m}/(q^2-1)
+=1-q^{r-c}/(q^2-1)$. If $r>c$, parity gives $r-c\ge2$ and $q^{r-c}/(q^2-1)>1$. So
+$(1-f_0)_+\le q^{r-c}/(q^2-1)$ everywhere, and since $f=\mu/\nu\ge f_0$,
+\[
+ \spnTV(\mu,\nu)=\spnE_\nu(1-f)_+\le\spnE_\nu(1-f_0)_+\le\frac{q^{-c}}{q^2-1}\spnE_\nu q^r
+ =\frac{A}{q^2-1}q^{-c},
+\]
+by \cref{spn:lem:joint-moment}. It is the missing likelihood that is bounded, not the
+contributions of the dependent tuples one by one.
+
+(2) Every actual observation is $F^{\spnT}JF$, of rank at most $2n$ and nullity at least $w$. Under
+$\nu$, Markov's inequality for $q^r-1\ge0$ gives $\spnP_\nu(r\ge w)\le(A-1)/(q^w-1)$. Part (3) is
+\cref{spn:lem:joint-moment}, and \eqref{spn:eq:joint-shape} is (1) with that bound for $A$.
+\end{proof}
+
+Below the threshold the injective tuples alone supply almost all of the uniform likelihood, and
+above it one rank obstruction rejects almost all independent data; neither step needs the law of the
+invariants $(s,t_1,\dots,t_k)$.
+
+\paragraph{The critical window when no frame dominates.}
+For an integer $w$ of parity $\varepsilon\in\set{0,1}$ put
+\begin{equation}\label{spn:eq:joint-profile}
+ \delta_q(w)=
+ \begin{cases}
+ \dfrac{\theta_\infty}{\gamma_\varepsilon}\Bigl(1-\dfrac{\eta_\infty}{\eta_{(\varepsilon-w)/2}}\Bigr),
+ &w\le1,\\[10pt]
+ \displaystyle\sum_{0\le j<w,\ j\equiv w\ (\mathrm{mod}\ 2)}\frac{\theta_\infty q^{-j(j-1)/2}}{\gamma_j},
+ &w\ge2.
+ \end{cases}
+\end{equation}
+
+\begin{theorem}[Universal critical profile; \stU]\label{spn:thm:joint-profile}
+Fix $q$ and an integer $w$, let $D=2n+w$, and let $d_{\max}=\max_id_i=o(D)$. Then, uniformly over all
+partitions of $D$ and all prescribed forms $H_i$, degenerate ones included,
+\[
+ \spnTV(\mu,\nu)\longrightarrow\delta_q(w).
+\]
+For $w\le1$ the test $\dim\ker\Gamma>\varepsilon$, and for $w\ge2$ the test $\rank\Gamma\le2n$,
+attains the limiting distance. Quantitatively, if $D\ge8$ and $d_{\max}\le n$, then
+\begin{equation}\label{spn:eq:joint-profile-bound}
+ \bigl|\spnTV(\mu,\nu)-\Delta_{q,D,n}\bigr|
+ \le\frac{q^{2d_{\max}-\floor{D/4}}}{1-q^{-1}}+\beta^D+e^{C_1S}-1+C_2S,
+\end{equation}
+where $\Delta_{q,D,n}$ is the complement discrepancy \eqref{spn:eq:complement-discrepancy} with
+$b=D$ and $c=n$, $\beta=(151959/160000)^{1/4}<1$, $S=\sum_iq^{2d_i-2n}\le Dq^{2d_{\max}-2n}$,
+$C_1=q^{-3}/(\eta_\infty(1-q^{-3}))$ and $C_2=\eta_\infty^{-1}(C_1+(q^2-1)^{-1})$; and
+$\Delta_{q,D,n}=\delta_q(w)+O_{q,w}(q^{-2n})$.
+\end{theorem}
+
+At even $w$ the profile is $\delta_q(w)=\mathcal D_q(-w/2)$, the two-frame profile of
+\cref{spn:thm:offset-profile} at offset $e=-w/2$. The two theorems never apply to the same
+configuration, since two frames have $d_{\max}\ge D/2$; together they show that the even profile is
+the same for two large nondegenerate frames and for arbitrarily many small frames with arbitrary
+forms. The odd values, rounded to six places, are:
+\begin{center}\small
+\begin{tabular}{lrrr}
+\toprule
+ & $w=-1$ & $w=1$ & $w=3$\\
+\midrule
+$q=2$ & $0.068743$ & $0.261269$ & $0.838845$\\
+$q=3$ & $0.013294$ & $0.118318$ & $0.958507$\\
+$q=4$ & $0.004096$ & $0.065300$ & $0.983350$\\
+$q=5$ & $0.001653$ & $0.041253$ & $0.991669$\\
+\bottomrule
+\end{tabular}
+\end{center}
+Over $\F_2$ the limit is about $0.130634$ at $D=2n$ and $0.261269$ at $D=2n+1$. As $w\to-\infty$
+along a parity class, $\delta_q(w)\sim\theta_\infty q^{w-\varepsilon}/(\gamma_\varepsilon(q^2-1))$, and as
+$w\to+\infty$, $1-\delta_q(w)\sim\eta_\infty^{-1}q^{-w(w-1)/2}$; these concern the limiting profile,
+not offsets growing with $n$.
+
+\begin{corollary}[Dependence invisible to bounded collections; \stU]\label{spn:cor:joint-local}
+Under the hypotheses of \cref{spn:thm:joint-profile}, fix $\ell\ge1$. The joint cross pairings of
+any collection of at most $\ell$ of the frames converge in total variation to independent uniform
+entries, uniformly over the collection and the forms, while the distance for the complete
+collection tends to $\delta_q(w)>0$.
+\end{corollary}
+
+The proof compares the nullity of a block-constrained uniform alternating matrix with an
+unrestricted one, and then transfers the unrestricted Gram law to the conditioned frame experiment.
+
+\begin{lemma}[Block-nullity universality; \stU]\label{spn:lem:block-nullity}
+Let $A_D$ be uniform among the alternating $D\times D$ matrices with arbitrary prescribed diagonal
+blocks of sizes at most $d_{\max}$, and let $T_D$ be uniform on $\spnAlt_D(\F_q)$. If $D\ge8$, then
+\[
+ \spnTV(\dim\ker A_D,\dim\ker T_D)\le\frac{q^{2d_{\max}-\floor{D/4}}}{1-q^{-1}}+\beta^D .
+\]
+\end{lemma}
+
+\begin{proof}
+Expose the rows and columns in a fixed order. At size $m$ let $S$ be the set of previously exposed
+coordinates in the same prescribed block as the next one, so $\abs S\le d_{\max}$. Conditional on
+the exposed matrix $A_m$, the new column is fixed on $S$ and independent uniform off $S$. If
+$\ker A_m\cap\F_q^S=0$, its restriction to $(\ker A_m)^*$ is uniform, since the annihilator in that
+dual of the image of the random coordinate subspace is exactly this intersection. Bordering an
+alternating matrix of nullity $k$ by a column whose restriction to the kernel is uniform raises the
+nullity to $k+1$ with probability $q^{-k}$ and lowers it to $k-1$ otherwise, with no division by
+two. For each nonzero $v$ supported on $S$ the equations $A_mv=0$ outside its block are
+$m-\abs S$ independent uniform equations, so $\spnP(\ker A_m\cap\F_q^S\ne0)\le q^{2d_{\max}-m}$, and
+coupling with the standard alternating nullity chain from size $m_0$ onwards costs at most
+$q^{2d_{\max}-m_0}/(1-q^{-1})$.
+
+The standard chain forgets its initial nullity: couple the chains from all initial states at most
+$m_0$ of the right parity by one sequence of uniform variables. The upward probability $q^{-k}$
+decreases in $k$, so the coupling preserves order, states of equal parity never cross, and all
+chains coalesce by the first time $\tau$ the chain started at $m_0$ reaches one (or zero). Before
+$\tau$ the state is at least two, so with $r=6/5$,
+$\spnE[r^{Z_{t+1}}\mid Z_t=k]=r^k(q^{-k}r+(1-q^{-k})r^{-1})\le\frac{37}{40}r^k$, and
+$\spnP(\tau>L)\le r^{m_0-2}(37/40)^L$. The nullity at size $m_0$ of an unrestricted uniform
+alternating matrix is at most $m_0$, of the same parity. Take $m_0=\floor{D/4}$ and $L=D-m_0$; since
+$\frac65(\frac{37}{40})^3=\frac{151959}{160000}$, the last bound is at most $\beta^D$.
+\end{proof}
+
+Let $T$ be uniform on $\spnMat_{2n,D}(\F_q)$ and $G=T^{\spnT}J_nT$; this is $G_n$ of
+\cref{spn:lem:alt-gram} with $b=D$, and its density relative to $T_D$ depends only on the nullity
+$k$. With $w=D-2n$ and $k\equiv w\pmod 2$, choosing the kernel of $T$ inside the radical of the
+Gram matrix and embedding the quotient by \cref{spn:lem:gram-frames} gives
+\begin{equation}\label{spn:eq:unrestricted-gram}
+ f_{n,D}(k)=\eta_n\sum_{t=\max(0,(w+k)/2)}^{k}\spnqbin ktq\frac{q^{wt-t(t+1)/2}}{\eta_{t-(w+k)/2}},
+\end{equation}
+an empty sum meaning zero.
+
+\begin{lemma}[Unrestricted Gram laws; \stU]\label{spn:lem:unrestricted-gram}
+Every feasible nullity $k\ge2$, that is $k\ge w$ of the parity of $w$, has $f_{n,D}(k)>1$. Write
+$D=2d+\varepsilon$ with $\varepsilon\in\set{0,1}$. If $d\le n$, then
+$\spnTV(G,T_D)=\spnP(\dim\ker T_D=\varepsilon)(1-\eta_n/\eta_{n-d})$; if $D\ge2n+2$, then
+$\spnTV(G,T_D)=\spnP(\rank T_D>2n)$. Moreover
+\[
+ \spnP(\dim\ker T_D=k)=q^{-k(k-1)/2}\frac{\gamma_D}{\gamma_k\,\eta_{(D-k)/2}}\qquad(k\equiv D\ (\mathrm{mod}\ 2)),
+\]
+which tends to $\theta_\infty q^{-k(k-1)/2}/\gamma_k$, and for fixed $w$,
+$\spnTV(G,T_D)=\delta_q(w)+O_{q,w}(q^{-2n})$.
+\end{lemma}
+
+\begin{proof}
+Put $F=f_{n,D}/\eta_n$. If $(w+k)/2\ge2$, the first summand of \eqref{spn:eq:unrestricted-gram} is at
+least $q^{t(t-1)/2}\ge q$, using $\spnqbin ktq\ge q^{t(k-t)}$; if $(w+k)/2=1$ it is
+$\spnqbin k1qq^{1-k}\ge1+q^{-1}$. Both exceed $\eta_\infty^{-1}$, because $q\eta_\infty>1$ and
+$(1+q^{-1})\eta_\infty>1$, by $\eta_\infty>1-(q^2-1)^{-1}$, strictly at $q=2$. Otherwise
+$h=-(w+k)/2\ge0$; with $Q=q^{-2h-2}$ the terms $t=0,1$ give $F\ge(1+aQ)/\eta_{h+1}$ with
+$a=(1-q^{1-k})/(q-1)\ge q^{-1}$, and $\eta_\infty/\eta_{h+1}\ge1-Q/(q^2-1)$, so
+$\eta_\infty F\ge(1+aQ)(1-Q/(q^2-1))>1$, since $a(q^2-1-Q)>1$ for $a\ge q^{-1}$, $Q\le q^{-2}$ and
+$q\ge2$. In each case $f_{n,D}(k)\ge\eta_\infty F>1$.
+
+If $d\le n$, the only possible deficit is at the least nullity $\varepsilon$, where
+$f_{n,D}(\varepsilon)=\eta_n/\eta_{n-d}$; for $\varepsilon=1$ this follows from the two terms of
+\eqref{spn:eq:unrestricted-gram} or by placing the radical vector after the nondegenerate part. If
+$D\ge2n+2$ the likelihood vanishes off rank at most $2n$ and exceeds one on it. The rank law follows
+by choosing the radical and then a nonsingular form on the quotient; it tends to the stated limit,
+whose tails are bounded by a constant times $q^{-k(k-1)/2}$, so the limits form a probability law.
+For fixed $w$ the two distance formulas converge to \eqref{spn:eq:joint-profile} with the stated
+error.
+\end{proof}
+
+\begin{proof}[Proof of \cref{spn:thm:joint-profile}]
+Note that $\spnTV(G,T_D)=\Delta_{q,D,n}$ by definition. For a uniform $2n\times d$ matrix with
+$d\le n$ let $F_{n,d}(H)$ be the density of its Gram matrix at $H$ relative to the uniform law on
+$\spnAlt_d(\F_q)$. By \cref{spn:lem:alt-gram} and Fourier inversion, a character indexed by a form of
+rank $2t$ contributes $q^{-2nt}$, and there are at most $\eta_\infty^{-1}q^{t(2d-2t-1)}$ such forms
+\eqref{spn:eq:alt-rank-count}; summing the geometric majorant,
+\begin{equation}\label{spn:eq:small-block}
+ \abs{F_{n,d}(H)-1}\le C_1q^{2d-2n}.
+\end{equation}
+If $\rank H=2s$, the injective maps alone contribute $\Phi_{n,d,s}=\eta_n/\eta_{n-d+s}$, with
+$1-\Phi_{n,d,s}\le q^{2d-2n}/(q^2-1)$; since $F_{n,d}(H)\ge\Phi_{n,d,s}\ge\eta_\infty$, a map with Gram
+matrix $H$ fails to be injective with conditional probability at most $C_2q^{2d-2n}$.
+
+Now condition a uniform $2n\times D$ matrix only on its diagonal-block Gram matrices $H_i$, and let
+$P'$ be the resulting law of the cross blocks. Its density relative to $\nu$ is
+$f_{n,D}(\dim\ker\Gamma)/Z$ with $Z=\prod_iF_{n,d_i}(H_i)$, by independence of the column blocks, so
+$\abs{Z-1}\le e^{C_1S}-1$. Conditioning each block further on injectivity produces the frame law,
+so $\spnTV(\mu,P')\le C_2S$. Let $g(k)=(1-f_{n,D}(k))_+\in[0,1]$. Since $\spnE_\nu f_{n,D}=Z$, the
+Lipschitz property of $x\mapsto(1-x)_+$ gives
+$\abs{\spnTV(P',\nu)-\spnE_\nu g(\dim\ker\Gamma)}\le\abs{Z-1}$. Under $\nu$, $\Gamma$ is uniform with
+prescribed diagonal blocks, so replacing its nullity law by that of $T_D$ costs at most the bound of
+\cref{spn:lem:block-nullity}, and $\spnE g(\dim\ker T_D)=\spnTV(G,T_D)$. This proves
+\eqref{spn:eq:joint-profile-bound}, and with \cref{spn:lem:unrestricted-gram} the limit, since all
+error terms tend to zero when $d_{\max}=o(D)$.
+
+For $w\le1$ the likelihood is constant at nullity $\varepsilon$, so
+$P'(\dim\ker\Gamma>\varepsilon)-\nu(\dim\ker\Gamma>\varepsilon)=\nu(\dim\ker\Gamma=\varepsilon)
+(1-f_{n,D}(\varepsilon)/Z)\to\delta_q(w)$, and replacing $P'$ by $\mu$ costs $o(1)$. For $w\ge2$ every
+actual Gram matrix has rank at most $2n$, and the probability under $\nu$ that this fails tends to
+$\delta_q(w)$.
+\end{proof}
+
+\begin{proof}[Proof of \cref{spn:cor:joint-local}]
+A collection of at most $\ell$ frames has total dimension $D'\le\ell d_{\max}=o(n)$, eventually at
+most $n$. Apply \eqref{spn:eq:small-block} to its whole $D'$-column Gram matrix and to its diagonal
+blocks: the unnormalized density differs uniformly from one by $O_q(q^{2D'-2n})$, the product
+normalizer by $O_{q,\ell}(q^{2d_{\max}-2n})$, and conditioning on injectivity costs
+$O_{q,\ell}(q^{2d_{\max}-2n})$.
+\end{proof}
+
+Enumeration of $1{,}607{,}096$ vector arrays in $16$ cases over $\F_2,\F_3,\F_4,\F_5$ checks
+\eqref{spn:eq:unrestricted-gram} at all $55{,}631$ Gram fibres, with both parities and all three
+regimes; $473$ block-constrained prefixes and all their $16{,}274$ bordering columns confirm the
+upward probability $q^{-k}$; and $262{,}144$ arrays and $53{,}550$ frame tuples check the normalizer
+$Z$, the density $f/Z$ and the injectivity conditioning, which separates the Gram-conditioned law
+from the frame law for degenerate
+forms.\footnote{\raggedright\artifact{symplectic_dependence_research_2026-11-27/companion/results/verification.json},
+\artifact{symplectic_dependence_research_2026-11-27/companion/results/summary.json}}
+Rank universality for matrices with some deterministic entries goes back to
+\cite{KoenigNguyen2022Rank}, whose alternating theorem assumes odd $q$; the block argument above
+works in every characteristic. Classical alternating rank laws are in \cite{Fulman2015Stein}.
+
+\paragraph{Forests and hidden dependence.}
+
+\begin{theorem}[Forest observations are independent; \stU]\label{spn:thm:forest}
+Let $\mathcal F$ be a forest on the frame labels $\set{1,\dots,k}$. The cross blocks $M_{ij}$,
+$ij\in\mathcal F$, are mutually independent, for arbitrary prescribed forms and at every finite size.
+\end{theorem}
+
+\begin{proof}
+Choose a leaf $i$ with neighbour $j$ and condition on all frames except $X_i$. The law of $M_{ij}$
+does not depend on the value of $X_j$: by \cref{spn:lem:gram-frames} any two values of $X_j$ are
+conjugate under $\Sp(V)$, and that transformation preserves the law of the independent uniform
+$X_i$. So the leaf block has its unconditional law, independently of all other frames and blocks.
+Remove the leaf and iterate.
+\end{proof}
+
+For three frames every pair of the three blocks is a forest, so the three blocks are pairwise
+independent. Cycles are treated below.
+
+\begin{theorem}[Dependence invisible in every proper frame marginal; \stU]\label{spn:thm:hierarchy}
+Fix $q$, $k\ge3$ and $2/k<\alpha<2/(k-1)$, and let all $k$ frames be isotropic of dimension
+$d=\floor{\alpha n}$. For large $n$ the frames are admissible, there is $\varepsilon>0$ such that the
+complete cross pairings of every proper subset of the frames are within $O_{q,k,\alpha}(q^{-\varepsilon n})$
+of independent uniform entries, and the full observation is at distance
+$1-O_{q,k,\alpha}(q^{-\varepsilon n})$ from that law and from the product of its own block marginals.
+\end{theorem}
+
+\begin{proof}
+Here $\alpha<1$, so $d\le n$. A proper subset of $j\ge2$ frames has total dimension at most
+$(k-1)d$, is balanced, and has gap at least $[2-(k-1)\alpha]n$, so
+\cref{spn:thm:joint-threshold} bounds its distance by $\frac{q+1+j}{q^2-1}q^{-[2-(k-1)\alpha]n}$;
+a single frame has no cross blocks. The full observation has $kd-2n\ge(k\alpha-2)n-k$, and the
+supercritical bound applies. Any $\varepsilon$ below $2-(k-1)\alpha$ and $k\alpha-2$ works. Each block
+marginal is exponentially close to uniform, the product of the actual marginals is within the sum of
+the $\binom k2$ marginal distances of the uniform product, and the triangle inequality preserves the
+separation.
+\end{proof}
+
+Proper frame marginals discard all blocks incident to a removed frame; deleting a single block from
+the full observation need not remove its distinguishing power.
+
+\begin{example}[Three almost uniform binary blocks; \stU]\label{spn:ex:three-blocks}
+Let $q=2$, $n=50$, and let $X_1,X_2,X_3$ be independent uniform isotropic $40$-frames in $\F_2^{100}$.
+The three blocks $M_{12},M_{13},M_{23}$ are exactly pairwise independent, each is within
+$\frac53\,2^{-20}<1.59\cdot10^{-6}$ of a uniform $40\times40$ binary matrix, and the triple is at
+distance greater than $0.99999809$ from three independent uniform matrices and greater than
+$0.99999332$ from the product of its own marginals. The separating event is
+$\rank\Gamma\le100$ for the assembled $120\times120$ matrix, which always holds for the blocks and has
+probability below $0.00000191$ for independent uniform blocks; with equal priors the rank test
+succeeds with probability above $0.99999904$.
+\end{example}
+
+\begin{proof}
+For two frames the isotropic form of \cref{spn:lem:joint-moment} gives
+$A_2=5-6\cdot2^{-40}+2\cdot2^{-80}<5$ with gap $20$, which proves the marginal bound by
+\cref{spn:thm:joint-threshold}(1). For three frames $A_3=3+3\cdot2^{-40}-9\cdot2^{-80}+4\cdot2^{-120}$ and
+$3d-2n=20$, so the distance exceeds
+$1-(2+3\cdot2^{-40}-9\cdot2^{-80}+4\cdot2^{-120})/(2^{20}-1)>0.99999809$. Pairwise independence is
+\cref{spn:thm:forest}, and if $P$ is the product of the actual block laws,
+$\spnTV(\mu,P)\ge\spnTV(\mu,\nu)-3A_2/(3\cdot2^{20})>0.99999332$.
+\end{proof}
+
+In the smallest case, three independent nonzero vectors of $\F_2^2$ have pairings $000$ with
+probability $1/9$ and $011,101,110,111$ with probability $2/9$ each: each bit is Bernoulli with
+parameter $2/3$, any two are independent, and the distance from three fair bits is $7/18$. The
+enumeration recorded after \cref{spn:thm:joint-support}, with exact distances
+$25/32$, $2/9$ and $179/243$ for four vectors over $\F_2$ in dimension two, three vectors over $\F_3$
+in dimension two, and a nondegenerate plane with two vectors over $\F_3$ in dimension two, confirms the moment and both
+bounds, and all $83$ nontrivial forest marginals checked are
+independent.\footnote{\raggedright\artifact{symplectic_joint_observations_2026-11-27/results/exhaustive_checks.json},
+\artifact{symplectic_joint_observations_2026-11-27/results/independent_moment_results.json},
+\artifact{symplectic_joint_observations_2026-11-27/results/headline_example.json},
+\artifact{symplectic_joint_observations_2026-11-27/results/certified_envelopes.csv}}
+Finite-field rank laws and total variation are studied in \cite{Fulman2015Stein}, a symmetric-Gram
+comparison over odd fields is \cite[Proposition~5.2]{Li2026Average}, finite symplectic matrices occur
+in random Clifford circuits \cite{Farshi2022Mixing}, and a different random walk on symplectic forms
+has a cutoff \cite{He2020Random}.
+
+\paragraph{Cycles of vector observations.}
+The simplest frames are single vectors: an isometric injection of a line with the zero form is a
+nonzero vector. Let $\mathcal G$ be a finite simple graph, choose independent uniform nonzero vectors
+$X_v\in V$ at its vertices, and observe $Y_{uv}=\langle X_u,X_v\rangle$ along oriented edges. Put
+$N=q^{2n}$. One edge has the law
+\[
+ p_N(0)=\frac{N-q}{q(N-1)},\qquad p_N(a)=\frac N{q(N-1)}\quad(a\ne0),
+\]
+positive since $N\ge q^2$; reversing an edge negates its label, which preserves $p_N$ and every
+distance below. The comparison law is now the product $Q_{\mathcal G}=p_N^{\otimes E(\mathcal G)}$ of
+the true one-edge marginals, which removes the bias already visible on single edges. For a cyclically
+oriented cycle of length $\ell\ge3$ let $\mu_{\ell,N}$ be its edge law and
+$\pi_{\ell,N}=p_N^{\otimes\ell}$, and put $\kappa(0)=q-1$, $\kappa(a)=-1$ for $a\ne0$. Fix a nontrivial
+additive character $\psi$ of $\F_q$ and write $\widehat\mu(t)=\spnE\psi(\sum_it_iY_i)$.
+
+\begin{theorem}[Complete cycle Fourier law; \stU]\label{spn:thm:cycle-fourier}
+If some $t_i$ vanishes, then
+$\widehat\mu_{\ell,N}(t)=(-1/(N-1))^{\#\set{i:t_i\ne0}}=\widehat\pi_{\ell,N}(t)$. If all $t_i\ne0$, then
+\[
+ \widehat\mu_{2k+1,N}(t)=\frac{N^{k+1}-1}{(N-1)^{2k+1}},\qquad
+ \widehat\mu_{2k,N}(t)=\frac{1+N^k\bigl((N-1)\mathbf 1_{\set{t_1t_3\cdots t_{2k-1}=t_2t_4\cdots t_{2k}}}-1\bigr)}{(N-1)^{2k}} .
+\]
+\end{theorem}
+
+\begin{proof}
+Zero frequencies remove edges and leave a forest, whose labels are independent by
+\cref{spn:thm:forest}. For the full cycle define matrices indexed by $V\setminus\set0$,
+$F_t(x,y)=\psi(t\langle x,y\rangle)$, $P_c(x,z)=\mathbf 1_{\set{z=cx}}$ and $\mathbf J(x,z)=1$. For
+$t\ne0$, additive orthogonality gives $F_t\mathbf 1=-\mathbf 1$ and $F_sF_t=NP_{s/t}-\mathbf J$. The
+constants and their orthogonal complement $\mathcal K$ are invariant. On $\mathcal K$, pairing the
+factors in the cycle trace, an even cycle gives $N^kP_c$ with
+$c=t_1t_3\cdots t_{2k-1}/(t_2t_4\cdots t_{2k})$, whose trace on $\mathcal K$ is
+$(N-1)\mathbf 1_{\set{c=1}}-1$; an odd cycle gives $N^kP_cF_t$, every diagonal entry of $P_cF_t$ is one
+because the form is alternating, so its trace is $N-1$, its constant eigenvalue is $-1$, and its
+trace on $\mathcal K$ is $N$. Adding the constant eigenvalue $(-1)^\ell$ and dividing by
+$(N-1)^\ell$ gives the formulas, with no division by two.
+\end{proof}
+
+\begin{theorem}[Exact pointwise cycle law; \stU]\label{spn:thm:cycle-law}
+For odd $\ell=2k+1$,
+\begin{equation}\label{spn:eq:cycle-odd}
+ \mu_{\ell,N}(a)-\pi_{\ell,N}(a)=\frac{N^{k+1}}{q^\ell(N-1)^\ell}\prod_{i=1}^\ell\kappa(a_i).
+\end{equation}
+For even $\ell=2k$,
+\begin{equation}\label{spn:eq:cycle-even}
+ \mu_{\ell,N}(a)-\pi_{\ell,N}(a)=\frac{N^k}{q^\ell(N-1)^\ell}\Bigl((N-1)K_\ell(a)-\prod_i\kappa(a_i)\Bigr),
+\end{equation}
+where $K_\ell(a)=\sum\psi(-\sum_it_ia_i)$ over $t\in(\F_q^\times)^\ell$ with
+$t_1t_3\cdots t_{\ell-1}=t_2t_4\cdots t_\ell$ has the evaluation
+\[
+ K_\ell(a)=\begin{cases}
+ \dfrac{\prod_i\kappa(a_i)}{q-1},&\text{some }a_i=0,\\[8pt]
+ \dfrac{1+q^k\bigl((q-1)\mathbf 1_{\mathcal R(a)}-1\bigr)}{q-1},&\text{all }a_i\ne0,
+ \end{cases}
+\]
+where $\mathcal R(a)$ is the multiplicative resonance $a_1a_3\cdots a_{2k-1}=(-1)^ka_2a_4\cdots a_{2k}$.
+\end{theorem}
+
+\begin{proof}
+By Fourier inversion and \cref{spn:thm:cycle-fourier}, only frequencies with all $t_i\ne0$
+contribute to $\mu-\pi$. For odd $\ell$ the Fourier difference is then constant and
+$\sum_{t\ne0}\psi(-ta)=\kappa(a)$ gives \eqref{spn:eq:cycle-odd}; for even $\ell$, separating the
+balanced-frequency indicator from the constant gives \eqref{spn:eq:cycle-even}. For $K_\ell$, insert
+multiplicative-character orthogonality for the constraint. The trivial character contributes
+$\prod_i\kappa(a_i)/(q-1)$, and if some $a_i=0$ every other term vanishes. If all $a_i\ne0$, the
+nontrivial characters contribute $k$ copies of each of the Gauss sums
+$G(\chi)=\sum_{x\ne0}\chi(x)\psi(x)$ and $G(\chi^{-1})$, and $G(\chi)G(\chi^{-1})=\chi(-1)q$, which
+follows by putting $x=uy$ and summing over $y$; so the contribution is
+$\frac{q^k}{q-1}\sum_{\chi\ne1}\chi\bigl((-1)^ka_2a_4\cdots a_{2k}/(a_1a_3\cdots a_{2k-1})\bigr)$, and
+the character sum is $q-2$ on $\mathcal R(a)$ and $-1$ otherwise.
+\end{proof}
+
+\begin{theorem}[Exact one-cycle distances; \stU]\label{spn:thm:cycle-distances}
+For odd $\ell=2k+1$,
+\[
+ \spnTV(\mu_{\ell,N},\pi_{\ell,N})=2^{\ell-1}(1-q^{-1})^\ell\frac{N^{k+1}}{(N-1)^\ell},\qquad
+ \chi^2(\mu_{\ell,N}\Vert\pi_{\ell,N})=(q-1)^\ell\frac N{(N-q)^\ell}.
+\]
+For even $\ell=2k$,
+\begin{gather*}
+ \spnTV(\mu_{\ell,N},\pi_{\ell,N})=\frac{N^k(q-1)^{\ell-2}}{q^\ell(N-1)^\ell}
+ \Bigl[(N-q)\bigl((q-1)2^{\ell-1}-(q-2)\bigr)+(N-1)(q-2)q^k\Bigr],\\
+ \chi^2(\mu_{\ell,N}\Vert\pi_{\ell,N})=(q-1)^{\ell-2}\bigl((N-q)^{2-\ell}+(q-2)(N-1)^{2-\ell}\bigr).
+\end{gather*}
+\end{theorem}
+
+\begin{proof}
+Odd case: \eqref{spn:eq:cycle-odd} and $\sum_a\abs{\kappa(a)}=2(q-1)$ give the distance. With
+$b_N(0)=(q-1)N/(N-q)$ and $b_N(a)=-1$ for $a\ne0$ one has $\spnE_{p_N}b_N=0$,
+$\spnE_{p_N}b_N^2=(q-1)N/(N-q)$ and $\mu/\pi-1=N^{-k}\prod_ib_N(a_i)$; square and factor.
+
+Even case: write $A_N=N-q$, $C_N=(N-1)q^k$ and $B(a)=(N-1)K_\ell(a)-\prod_i\kappa(a_i)$. If $z\ge1$
+coordinates of $a$ vanish, $B(a)=A_N\prod_i\kappa(a_i)/(q-1)$, of sign $(-1)^z$. If none vanishes,
+$B(a)=(A_N+(q-2)C_N)/(q-1)$ on $\mathcal R(a)$ and $(A_N-C_N)/(q-1)$ otherwise, positive and negative
+respectively when the class is nonempty; there are $(q-1)^{\ell-1}$ resonant and
+$(q-2)(q-1)^{\ell-1}$ nonresonant vectors. The vectors with a zero coordinate give
+$\sum\abs B=A_N(q-1)^{\ell-1}(2^\ell-1)$, the others $(q-1)^{\ell-2}((3-q)A_N+2(q-2)C_N)$, and
+multiplication by $N^k/(2q^\ell(N-1)^\ell)$ gives the distance. For the chi-square,
+$\chi^2=\frac1{q^\ell(N-1)^\ell}\sum_a(N/(N-q))^zB(a)^2$; the terms with $z\ge1$ sum to
+$(q-1)^{\ell-2}A_N^2[(q(N-1)/A_N)^\ell-1]$ and those with $z=0$ to $(q-1)^{\ell-2}(A_N^2+(q-2)C_N^2)$,
+and the $A_N^2$ terms cancel, with $q^{2k}=q^\ell$.
+\end{proof}
+
+A cactus is a finite simple graph in which two distinct simple cycles share at most one vertex; its
+blocks with edges are bridges and simple cycles.
+
+\begin{theorem}[Cactus factorization; \stU]\label{spn:thm:cactus}
+For a cactus, the edge vectors of its blocks are mutually independent; each bridge has law $p_N$
+and each cyclically oriented cycle of length $\ell$ the law $\mu_{\ell,N}$.
+\end{theorem}
+
+\begin{proof}
+For a block meeting the rest in an articulation vertex $v$, condition on all vectors outside the
+block other than $X_v$. The other vectors of the block are independent and uniform, and the
+conditional law of its labels given $X_v=x$ does not depend on $x\ne0$, because $\Sp(V)$ is transitive
+on nonzero vectors, preserves all labels and carries uniform vectors to uniform vectors. So the block
+is independent of the rest. Remove leaf blocks of the block-cut tree and iterate, componentwise.
+\end{proof}
+
+\begin{corollary}[Independence characterizes forests; \stU]\label{spn:cor:forest-only}
+The edge labels of a finite simple graph are independent if and only if the graph is a forest.
+\end{corollary}
+
+\begin{proof}
+Forests are \cref{spn:thm:forest}. A cycle has an edge marginal at the positive distance of
+\cref{spn:thm:cycle-distances}.
+\end{proof}
+
+\begin{corollary}[Paired cycle lengths carry equal information; \stU]\label{spn:cor:paired}
+For fixed $q$ and $r\ge1$ both lengths $\ell=2r+1$ and $\ell=2r+2$ satisfy
+\[
+ v_{\ell,N}:=\chi^2(\mu_{\ell,N}\Vert\pi_{\ell,N})=(q-1)^{2r+1}N^{-2r}\bigl(1+O_{q,r}(N^{-1})\bigr),
+\]
+and uniformly in $a$, $\mu_{\ell,N}(a)/\pi_{\ell,N}(a)-1=O_{q,\ell}(N^{-r})$.
+\end{corollary}
+
+\begin{proof}
+Expand \cref{spn:thm:cycle-distances}; in the even case the leading factor is
+$(q-1)^{2r}(1+q-2)$. The uniform bound follows from \eqref{spn:eq:cycle-odd},
+\eqref{spn:eq:cycle-even} and $p_N\to1/q$.
+\end{proof}
+
+Adding one edge to an odd cycle therefore leaves its leading information unchanged, although the two
+laws differ. A cycle reveals dependence only through all of its edges: every proper subset of its
+edges is a forest.
+
+\begin{lemma}[Many small independent likelihood increments; \stU]\label{spn:lem:product-experiments}
+For each $n$ let $Q_n=\bigotimes_jQ_{n,j}$ and $P_n=\bigotimes_jP_{n,j}$ be finite products, write
+$dP_{n,j}/dQ_{n,j}=1+u_{n,j}$, $v_{n,j}=\spnE_{Q_{n,j}}u_{n,j}^2$, $I_n=\sum_jv_{n,j}$ and
+$\delta_n=\max_j\norm{u_{n,j}}_\infty$, and assume $\delta_n\to0$. If $I_n\to\tau\in[0,\infty)$,
+then $\spnTV(P_n,Q_n)\to2\Phi(\sqrt\tau/2)-1$, with $\Phi$ the standard normal distribution
+function; if $I_n\to\infty$, then $\spnTV(P_n,Q_n)\to1$; and if $0<\tau<\infty$, the log-likelihood
+ratio converges in law to $\mathcal N(-\tau/2,\tau)$ under $Q_n$ and to $\mathcal N(\tau/2,\tau)$
+under $P_n$.
+\end{lemma}
+
+\begin{proof}
+Each $u_{n,j}$ has mean zero under $Q_{n,j}$. For $\abs u\le\delta<1/2$,
+$\log(1+u)=u-\frac12u^2+O(\delta u^2)$ and $\abs{\log(1+u)}\le2\abs u$. For
+$Z_n=\sum_j\log(1+u_{n,j})$ this gives $\spnE_{Q_n}Z_n=-\frac12I_n+O(\delta_nI_n)$ and
+$\operatorname{Var}_{Q_n}Z_n=I_n+O(\delta_nI_n)$, the squared means summing to
+$O(\delta_n^2I_n)$, and the centred third absolute moments sum to $O(\delta_nI_n)$, so the Lyapunov
+central limit theorem gives $Z_n\Rightarrow\mathcal N(-\tau/2,\tau)$ under $Q_n$. Under $P_{n,j}$,
+$\spnE_{P_{n,j}}f=\spnE_{Q_{n,j}}(1+u_{n,j})f$, and the same estimates give mean $v_{n,j}/2+O(\delta_nv_{n,j})$,
+variance $v_{n,j}+O(\delta_nv_{n,j})$ and the same third-moment control. Since
+$\spnTV(P_n,Q_n)=\spnE_{Q_n}(1-e^{Z_n})_+$ with a bounded continuous integrand, and
+$\spnE(1-e^Z)_+=\Phi(\sqrt\tau/2)-\Phi(-\sqrt\tau/2)$ for $Z\sim\mathcal N(-\tau/2,\tau)$, the
+distance converges as claimed. If $I_n\to0$, Cauchy--Schwarz gives
+$\spnTV\le\frac12(\prod_j(1+v_{n,j})-1)^{1/2}\le\frac12(e^{I_n}-1)^{1/2}\to0$. If $I_n\to\infty$, the
+Hellinger affinity $A_n=\spnE_{Q_n}(dP_n/dQ_n)^{1/2}$ satisfies, by Taylor's theorem and
+$-\frac{d^2}{du^2}\sqrt{1+u}\ge1/(4(1+\delta)^{3/2})$,
+$A_n\le\exp(-I_n/(8(1+\delta_n)^{3/2}))\to0$, and $1-\spnTV(P_n,Q_n)\le A_n$.
+\end{proof}
+
+\begin{theorem}[Sharp detection on growing cactus graphs; \stU]\label{spn:thm:cactus-detection}
+Fix $q$ and $L\ge3$. For each $n$ let $\mathcal G_n$ be any cactus with cycle lengths in
+$\set{3,\dots,L}$, any number of vertices and bridges, set of cycles $\mathcal C_n$, law $P_n$ and
+product of true marginals $Q_n$, and put $I_n=\sum_{C\in\mathcal C_n}v_{\abs C,q^{2n}}$. If
+$I_n\to\tau\in[0,\infty)$, then $\spnTV(P_n,Q_n)\to2\Phi(\sqrt\tau/2)-1$; if $I_n\to\infty$, the
+distance tends to one; and for $0<\tau<\infty$ the log-likelihood ratio is asymptotically
+$\mathcal N(\mp\tau/2,\tau)$ under $Q_n$ and $P_n$, and the least equal-prior error tends to
+$\Phi(-\sqrt\tau/2)$. For finite parameters, with $\delta=\max_C\norm{\mu_{\abs C,N}/\pi_{\abs C,N}-1}_\infty<1$
+and $I=\sum_Cv_{\abs C,N}$,
+\begin{equation}\label{spn:eq:cactus-finite}
+ 1-\exp\Bigl(-\frac I{8(1+\delta)^{3/2}}\Bigr)\le\spnTV(P_{\mathcal G},Q_{\mathcal G})
+ \le\min\Bigl\{1,\tfrac12\sqrt{e^I-1}\Bigr\}.
+\end{equation}
+\end{theorem}
+
+\begin{proof}
+By \cref{spn:thm:cactus},
+$dP_{\mathcal G}/dQ_{\mathcal G}=\prod_C\mu_{\abs C,N}(y_C)/\pi_{\abs C,N}(y_C)$ and
+$1+\chi^2(P_{\mathcal G}\Vert Q_{\mathcal G})=\prod_C(1+v_{\abs C,N})$, the bridges having identical
+factors. \Cref{spn:cor:paired} gives $\delta_n=O_{q,L}(N^{-1})$; apply
+\cref{spn:lem:product-experiments}. The finite bounds are the last two estimates of its proof, and
+the least equal-prior error is $(1-\spnTV)/2$.
+\end{proof}
+
+Consequently a cactus with $m_n$ cycles, all of lengths $2r+1$ or $2r+2$ in any mixture, has critical
+scale $m_n\asymp q^{4nr}/(q-1)^{2r+1}$, and $m_n(q-1)^{2r+1}q^{-4nr}\to\tau$ gives the profile. Also,
+when $I_n=O(1)$, both relative entropies $\mathrm{KL}(P_n\Vert Q_n)$ and $\mathrm{KL}(Q_n\Vert P_n)$ are
+$\frac12I_n+o(1)$, all cycle likelihoods are eventually positive, and the likelihood-ratio test has
+both error probabilities tending to $\Phi(-\sqrt\tau/2)$, by the two expectations of $Z_n$ in the
+proof of \cref{spn:lem:product-experiments}.
+
+\begin{proposition}[An asymptotically optimal reduced score; \stU]\label{spn:prop:cactus-score}
+Put $r(\ell)=\floor{(\ell-1)/2}$, $g_\ell(a)=\prod_i\kappa(a_i)$ for odd $\ell$ and $g_\ell=K_\ell$ for
+even $\ell$. Uniformly in $a$, $\mu_{\ell,N}/\pi_{\ell,N}-1=N^{-r(\ell)}g_\ell+O_{q,\ell}(N^{-r(\ell)-1})$,
+and under uniform labels $g_\ell$ has mean zero and variance $(q-1)^{2r(\ell)+1}$. If $I_n\to\tau\in(0,\infty)$
+in \cref{spn:thm:cactus-detection} and
+$T_n=\sum_CN^{-r(\abs C)}(g_{\abs C}(Y_C)-\spnE_{\pi_{\abs C,N}}g_{\abs C})$, then
+$\log(dP_n/dQ_n)=T_n-\frac12I_n+o(1)$ in probability under $Q_n$ and under $P_n$, so the test
+$T_n>I_n/2$ is asymptotically optimal.
+\end{proposition}
+
+\begin{proof}
+The expansion is \cref{spn:cor:paired} with the leading terms of \eqref{spn:eq:cycle-odd},
+\eqref{spn:eq:cycle-even}. For odd $\ell$ the variance factors as $(\spnE\kappa^2)^\ell$ with
+$\spnE\kappa^2=q-1$; for even $\ell$, Parseval counts the $(q-1)^{\ell-1}$ nonzero frequency vectors
+satisfying the product constraint. Let $u_C=\mu/\pi-1$ and $w_C$ its centred leading term. Then
+$\spnE_{Q_n}(u_C-w_C)=0$ and $\spnE_{Q_n}(u_C-w_C)^2=O_{q,L}(N^{-2}v_{\abs C,N})$, so by independence
+$\sum_C(u_C-w_C)=o_{Q_n}(1)$; also $\sum_Cu_C^2-I_n=o_{Q_n}(1)$, its variance being at most
+$\delta_n^2I_n$, and the Taylor remainder has expected absolute value $O(\delta_nI_n)$. Under $P_n$
+the mean of the first difference is $\sum_C\spnE_Qu_C(u_C-w_C)=O_{q,L}(I_n/N)$ by Cauchy--Schwarz, its
+variance tends to zero by the same estimates and $1+u_C\le1+\delta_n$, and the other two terms are
+controlled in the same way.
+\end{proof}
+
+\begin{remark}[Over $\F_2$ cycle parity suffices]\label{spn:rem:binary-parity}
+For $q=2$ both scores reduce to $g_\ell(a)=(-1)^{a_1+\cdots+a_\ell}$, the single nonzero frequency
+vector satisfying the product constraint. So one parity bit per cycle, weighted by $N^{-r(\ell)}$,
+is asymptotically sufficient, and for cycles of one adjacent pair of lengths the number of
+even-parity cycles suffices after centring. For triangles or squares over $\F_2$ the critical scale
+is $m\asymp2^{4n}$; at $m/2^{4n}\to1$ the limiting distance is $2\Phi(1/2)-1=0.3829249225\ldots$
+and the least equal-prior error $0.3085375387\ldots$, and at $m/2^{4n}\to4$ the distance is
+$2\Phi(1)-1=0.6826894921\ldots$, while every tree-shaped subset of the observations remains exactly
+independent.
+\end{remark}
+
+The likelihood ratio of a cycle depends only on the number $z$ of zero labels and, for even
+cycles without zeros, on the resonance bit, so each cycle reduces exactly to at most $\ell+2$
+outcomes, which is how $I$ and $\delta$ are computed in rational arithmetic. Enumeration of
+$1{,}745{,}891$ nonzero-vector assignments in $16$ cycle, four cactus and five tree cases over
+$\F_2,\F_3,\F_4,\F_5$ in dimensions two and four checks all $1{,}976$ cycle label probabilities,
+their distances and divergences, and $11{,}614$ marginal equalities on $608$ proper edge subsets;
+$432$ further cases with $q$ up to $25$ check the grouped likelihoods against the closed
+formulas.\footnote{\raggedright\artifact{symplectic_dependence_research_2026-11-27/results/independent_enumeration.json},
+\artifact{symplectic_dependence_research_2026-11-27/results/grouped_law_checks.json},
+\artifact{symplectic_dependence_research_2026-11-27/results/cycle_information.csv},
+\artifact{symplectic_dependence_research_2026-11-27/results/example_q4_cycle4.json}}
+Cycle counts in finite-field distance and dot-product graphs \cite{IosevichJardineMcDonald2021Cycles},
+general nondegenerate bilinear forms \cite{Bright2023Generalized} and symplectic graphs
+\cite{TangWan2006Symplectic} are background, and observation-graph-dependent detectability has a
+counterpart for real Wishart matrices \cite{BrennanBreslerHuang2021Finetti}.
+
+\paragraph{Overlapping cycles.}
+The cactus hypothesis is essential. Let $2\le a\le2n$, assign independent uniform nonzero vectors
+$X_1,\dots,X_a$ to one side of the complete bipartite graph $K_{a,m}$ and $Z_1,\dots,Z_m$ to the
+other, and observe the columns $Y_j=(\langle X_i,Z_j\rangle)_{i\le a}\in\F_q^a$. Let $P_{a,m,N}$ be
+their law and $Q_{a,m,N}=(p_N^{\otimes a})^{\otimes m}$. Define the probability law
+$\rho_{a,N}(0)=(N-q^a)/(q^a(N-1))$, $\rho_{a,N}(y)=N/(q^a(N-1))$ for $y\ne0$, and put
+$\alpha_{a,N}=\prod_{i=0}^{a-1}(N-q^i)/(N-1)$, $\delta_{a,N}=1-\alpha_{a,N}$ and
+$J_{a,q}=q^a-1-a(q-1)>0$.
+
+\begin{proposition}[Independent anchors; \stU]\label{spn:prop:anchors}
+The anchors $X_1,\dots,X_a$ are independent with probability $\alpha_{a,N}$, and conditional on this
+the columns are independent with law $\rho_{a,N}$. Hence, for every $m$,
+\[
+ \spnTV(P_{a,m,N},\rho_{a,N}^{\otimes m})\le\delta_{a,N}\le\frac{(q^a-1)/(q-1)-a}{N-1}.
+\]
+Moreover, uniformly in $y\in\F_q^a$,
+$\rho_{a,N}(y)/p_N^{\otimes a}(y)=1+h_a(y)/N+O_{a,q}(N^{-2})$ with
+$h_a(y)=\sum_i\kappa(y_i)-(q^a\mathbf 1_{\set{y=0}}-1)$, which under uniform coordinates has mean zero and
+second moment $J_{a,q}$; so $\chi^2(\rho_{a,N}\Vert p_N^{\otimes a})=J_{a,q}N^{-2}+O_{a,q}(N^{-3})$.
+\end{proposition}
+
+\begin{proof}
+After $i$ independent anchors, $q^i-1$ of the $N-1$ candidates lie in their span, which gives
+$\alpha_{a,N}$, and $1-\prod_i(1-b_i)\le\sum_ib_i$ gives the bound. For independent anchors the map
+$z\mapsto(\langle X_i,z\rangle)_i$ is onto $\F_q^a$ with fibres of size $N/q^a$, and removing $z=0$
+gives $\rho_{a,N}$, whatever the anchors; so
+$P_{a,m,N}=\alpha_{a,N}\rho_{a,N}^{\otimes m}+\delta_{a,N}\mathcal D$ for a probability law $\mathcal D$.
+For $y\ne0$ with $z$ zero coordinates the likelihood is $(1-N^{-1})^{a-1}(1-q/N)^{-z}$, and at $y=0$ it
+is $(1-q^a/N)(1-N^{-1})^{a-1}(1-q/N)^{-a}$; expanding gives $h_a$. Since
+$q^a\mathbf 1_{\set{y=0}}=\prod_i(1+\kappa(y_i))$, $h_a=-\sum_{\abs S\ge2}\prod_{i\in S}\kappa(y_i)$, an
+orthogonal sum with squared norms $\sum_{s\ge2}\binom as(q-1)^s=J_{a,q}$; the reference law differs
+from uniform by $O_{a,q}(N^{-1})$ pointwise.
+\end{proof}
+
+\begin{theorem}[The fixed-anchor critical profile; \stU]\label{spn:thm:anchors}
+Fix $q$ and $a\ge2$, let $n\to\infty$ and let $m=m_n$ be arbitrary. If $mJ_{a,q}/N^2\to\tau\in[0,\infty]$,
+then $\spnTV(P_{a,m,N},Q_{a,m,N})\to2\Phi(\sqrt\tau/2)-1$, read as one when $\tau=\infty$.
+\end{theorem}
+
+\begin{proof}
+Apply \cref{spn:lem:product-experiments} to $\rho_{a,N}^{\otimes m}$ and $(p_N^{\otimes a})^{\otimes m}$
+with \cref{spn:prop:anchors}; the actual distance differs by at most $\delta_{a,N}=O_{a,q}(N^{-1})$,
+uniformly in $m$.
+\end{proof}
+
+For $a=2$ the graph $K_{2,m}$ has $\binom m2$ four-cycles, each with information
+$v_{4,N}\sim(q-1)^3N^{-2}$, and $\delta_{2,N}=(q-1)/(N-1)$,
+$\chi^2(\rho_{2,N}\Vert p_N^{\otimes2})=(q-1)^2/(N-q)^2$, so
+\[
+ \spnTV(P_{2,m,N},Q_{2,m,N})\le\frac{q-1}{N-1}+\frac12\Bigl(\Bigl(1+\frac{(q-1)^2}{(N-q)^2}\Bigr)^m-1\Bigr)^{1/2}.
+\]
+For fixed $1<\beta<2$ and $m=\floor{N^\beta}$ this tends to zero, while
+$\binom m2v_{4,N}\sim\frac12(q-1)^3N^{2\beta-2}\to\infty$: adding the information of overlapping cycle
+marginals predicts the wrong threshold by a power of $N$. The full chi-square divergence even
+diverges: for $c\in\F_q^\times$ the event $Y_{2j}=cY_{1j}$ for all $j$ has probability at least
+$1/(N-1)$ under $P_{2,m,N}$, forced by $X_2=cX_1$, and $s_N^m$ under $Q_{2,m,N}$, with
+$s_N=1/q+(q-1)/(q(N-1)^2)$, so Cauchy--Schwarz on this event gives
+$1+\chi^2(P_{2,m,N}\Vert Q_{2,m,N})\ge1/((N-1)^2s_N^m)$, whose logarithm is at least
+$m\log q-2\log(N-1)-O_q(m/N^2)\to\infty$. Rare dependent anchors carry negligible probability but
+very large likelihood ratios, so a direct second-moment bound for the mixture is poor, whereas
+conditioning on independent anchors gives the correct profile. Twenty complete bipartite cases
+enumerating $4{,}094{,}368$ assignments check $7{,}382$ label probabilities and sixteen limiting score
+variances.\footnote{\artifact{symplectic_dependence_research_2026-11-27/results/anchor_verification.json}}
+
+%======================================================================
+\subsection{Symplectic frames at every congruence precision}\label{spn:sec:padic}
+\sources{padic_symplectic_corners; symplectic_compression_2026-11-26; symplectic_compression_2026-11-26_2; exact_symplectic_compressions_2026-11-26; prime_endpoints_and_symplectic_compressions; grh_extensions_2026-11-27_3}
 
 A finite-field compression is the first digit of a compression over a local ring, and local
 arithmetic can see the further digits. When the source is a single symplectic pair and the target
-a symplectic summand, the law is exact at every precision. In this subsection $\OO$ is a complete
+a symplectic summand, the law is exact at every precision, and when both frames consist of several
+symplectic pairs in a stable range, the distance and the optimal test are the same at every precision. In this subsection $\OO$ is a complete
 discrete valuation ring with uniformizer $\varpi$ and finite residue field $\kappa$ of order $q$; its
 fraction field may have characteristic zero or $p$, and $q$ may be even. Put
 $R_e=\OO/\varpi^e\OO$ for $e\ge1$ and $R_\infty=\OO$, normalize Haar measures to mass one, and
@@ -3094,15 +4139,13 @@ $\spnMat_{2a,2}(\OO)$, agree with $h$ off $\set{1-\Omega\in\varpi^e\OO}$ and dif
 $O(q^{-(N-1)e})$ there, so they converge uniformly to $h$; this gives the density of the
 projective limit and its continuity. Only cardinalities of ideals and unimodularity are used.
 
-For (2) put $\epsilon=q^{-N}\le q^{-2}$. Off $E=\set{\Omega\equiv1\pmod\varpi}$ the density is
-$\alpha=(1-\epsilon)/(1-\epsilon q^{-2a})<1$. On $E$ it exceeds one: for $e=1$ the numerator is
-$1+(q-1)\epsilon>1>d_n$, and for $e\ge2$, including $e=\infty$, it is at least
-$(1-\epsilon)(1+q\epsilon)$, with
-$(1-\epsilon)(1+q\epsilon)-(1-\epsilon q^{-2a})=\epsilon(q-1+q^{-2a}-q\epsilon)>0$. So $E$ is the
-positive set of the density difference. Under $\nu_e$ the first column is nonzero modulo $\varpi$
-with probability $1-q^{-2a}$, and then its pairing with the second is uniform, so
-$\nu_e(E)=\beta=q^{-1}(1-q^{-2a})$, and $\spnTV(\mu_e,\nu_e)=(1-\beta)(1-\alpha)$ with
-$1-\alpha=(q^{2a}-1)/(q^{2n}-1)$.
+Part (2) is the case $b=1$ of \cref{spn:thm:padic-pairs} below, whose range condition is then
+$a<n$: there $H(M)=(1-\Omega(M))J_1$, so its event is $E=\set{\Omega\equiv1\pmod\varpi}$, and its
+constant is $\alpha=(1-q^{-N})/d_n$. The density is the constant $\alpha$ off $E$, as (1) also shows
+directly. Under $\nu_e$ the first column is nonzero modulo $\varpi$ with probability $1-q^{-2a}$, and
+then its pairing with the second is uniform, so $\nu_e(E)=\beta_e=q^{-1}(1-q^{-2a})$ and
+$\spnTV(\mu_e,\nu_e)=(1-\beta_e)(1-\alpha)$ with $1-\alpha=(q^{2a}-1)/(q^{2n}-1)$. Put
+$\epsilon=q^{-N}\le q^{-2}$.
 
 For (3) the two densities agree where $v(1-\Omega)<k$. On the rest the numerator of the density of
 $\widetilde\mu_{k,e}$ is $(1-\epsilon)\sum_{r<k}(q\epsilon)^r+(q\epsilon)^k$, over the same
@@ -3111,8 +4154,8 @@ where $1-\Omega\equiv0\pmod{\varpi^{k+1}}$ it is larger, by $(q\epsilon)^k(q\eps
 $e=k+1$ and by at least $\epsilon(q\epsilon)^k(q-1-q\epsilon)$ if $e>k+1$. Conditional on a residue
 class in $E$, one coordinate of the first column is a unit, and varying the paired coordinate of
 the second column makes $\Omega$ uniform in $1+\varpi R_e$; so $\nu_e(v(1-\Omega)=k)
-=\beta(1-q^{-1})q^{-(k-1)}$. Integrating the negative part gives
-$\beta(1-q^{-1})q^{-(k-1)}\epsilon(q\epsilon)^k/d_n=(1-q^{-1})(1-\alpha)q^{-Nk}$. For $a=1$ there
+=\beta_e(1-q^{-1})q^{-(k-1)}$. Integrating the negative part gives
+$\beta_e(1-q^{-1})q^{-(k-1)}\epsilon(q\epsilon)^k/d_n=(1-q^{-1})(1-\alpha)q^{-Nk}$. For $a=1$ there
 are $(q^{2n}-1)q^{2n-2}/(q^2-1)$ nondegenerate planes in $\kappa^{2n}$, by counting pairs with pairing
 one and dividing by $\abs{\Sp_2(\kappa)}=q(q^2-1)$, and the symplectic group is transitive on them.
 \end{proof}
@@ -3263,6 +4306,190 @@ $3$ & $3$ & $19/2457$ & $2/22113$\\
 \end{center}
 None of these depends on the ramification index or on the characteristic of the fraction field.
 \end{example}
+
+\paragraph{Several symplectic pairs.}
+Now let the source be a symplectic frame of any size: $X\in\spnMat_{2n,2b}(\OO)$ with
+$X^{\spnT}JX=J_b$, $b\ge1$, while $Y^{\spnT}JY=J_a$ as before, and let $\mu_e$ and $\nu_e$ be the law of
+$M=Y^{\spnT}JgX$ and the independent-entry law on $\spnMat_{2a,2b}(R_e)$. Put
+$D(v,k)=\prod_{i=v-k+1}^{v}(1-q^{-2i})$, with $D(v,0)=1$, and let
+\[
+ H(M)=J_b+M^{\spnT}J_a^{-1}M ,
+\]
+the residual form, alternating in every characteristic. Let $E$ be the event that its reduction
+$\overline{H(M)}$ modulo $\varpi$ is singular, and $\beta_{q,a,b}=\nu_1(E^c)$. For $b=1$,
+$H(M)=(1-\Omega(M))J_1$ and $E=\set{\Omega(M)\equiv1\pmod\varpi}$.
+
+\begin{theorem}[First-digit optimality for several pairs; \stU]\label{spn:thm:padic-pairs}
+Let $a,b\ge1$ and $n\ge a+b+\min(a,b)-1$, and put $\alpha=D(n-a,b)/D(n,b)$. For every
+$e\in\set{1,2,\dots,\infty}$,
+\[
+ \spnTV(\mu_e,\nu_e)=(1-\alpha)\,\beta_{q,a,b}=\spnTV(\mu_1,\nu_1),
+\]
+and $E$ is an optimal distinguishing event at all these precisions. At each finite precision the
+likelihood is exactly $\alpha<1$ on $E^c$ and strictly greater than one on $E$; over $\OO$ the two
+measures have a continuous likelihood with the same strict signs.
+\end{theorem}
+
+So the rule that declares the symplectic model exactly when the residual form is singular modulo
+$\varpi$ achieves the best equal-prior success probability $\frac12(1+\spnTV(\mu_e,\nu_e))$ even when
+every digit is observed. This concerns equal-prior testing, not sufficiency: higher digits need not be
+uniform and can matter for unequal priors or costs, and the range is sufficient, not claimed to be
+sharp. At $e=1$ the statement is contained in \cref{spn:thm:offset-test}(1), with frame dimensions
+$2a,2b$ and offset $n-a-b\ge\min(a,b)-1$; the content is the independence of the precision. With
+$P_v=\prod_{i=1}^v(1-q^{-2i})$ one has $\alpha=P_{n-a}P_{n-b}/(P_{n-a-b}P_n)=D(n-b,a)/D(n,a)$, and
+$\det(I+UV)=\det(I+VU)$ makes the residual events agree after transposition; since interchanging the
+frames replaces $M$ by $-M^{\spnT}$ with $g\mapsto g^{-1}$, it suffices to prove the theorem when
+$c=n-a\ge2b-1$.
+
+For $s\ge2$ and $C$ uniform in $\spnMat_{2c,s}(R_e)$ put $m=\binom s2$ and
+\[
+ f_{c,s,e}(H)=q^{me}\,\spnP(C^{\spnT}J_cC=H)\qquad(H\in\spnAlt_s(R_e)),
+\]
+the density of the Gram matrix relative to the uniform alternating law; at $e=1$ it is the density
+$F_c$ of \cref{spn:sec:nondegenerate}.
+
+\begin{lemma}[The Gram differential; \stU]\label{spn:lem:gram-differential}
+For $C_0\in\spnMat_{2c,s}(\kappa)$ with kernel $K$ of dimension $\ell$, the image of
+$Z\mapsto C_0^{\spnT}J_cZ+Z^{\spnT}J_cC_0$ is exactly the set of alternating forms vanishing on
+$K\times K$, of codimension $\binom\ell2$; the map is onto when $\ell\le1$. Consequently, if
+$\dim\ker C_0\le1$ and $C_0^{\spnT}J_cC_0=H_0$, every lift $H$ of $H_0$ to $R_e$ is the Gram matrix of
+exactly $q^{(2cs-m)(e-1)}$ lifts of $C_0$, so the residue class of $C_0$ contributes the constant
+$q^{m-2cs}$ to $f_{c,s,e}(H)$, whatever the higher digits of $H$.
+\end{lemma}
+
+\begin{proof}
+In a source basis with $C_0=[C'\;0]$ and $C'$ injective, $C'^{\spnT}J_c$ has full row rank, so the
+upper left block of the image is an arbitrary matrix minus its transpose, the cross block is arbitrary
+and the lower right $\ell\times\ell$ block vanishes; every alternating matrix is a matrix minus its
+transpose, by choosing one triangle, with no division by two. Lifting from precision $j$ to $j+1$,
+replacing $C$ by $C+\varpi^jZ$ changes the new Gram digit by the differential at $\overline Z$, the
+quadratic term being divisible by $\varpi^{2j}$; so every required correction has exactly
+$q^{2cs-m}$ solutions, and induction gives the count.
+\end{proof}
+
+\begin{lemma}[Likelihood reduction; \stU]\label{spn:lem:padic-reduction}
+For finite $e$ and $c=n-a$, $\mu_e(M)/\nu_e(M)=f_{c,2b,e}(H(M))/D(n,b)$.
+\end{lemma}
+
+\begin{proof}
+Symplectic Gram--Schmidt extends a frame with Gram matrix $J_b$ to a symplectic basis over $R_e$, so
+the group acts transitively on such frames. In a symplectic basis beginning with $Y$ write
+$gX=(B;C)$; then $M=J_aB$ and $C^{\spnT}J_cC=J_b-B^{\spnT}J_aB=H(M)$, and a matrix with Gram
+matrix $J_b$ has a left inverse, so there is no further injectivity condition. By
+\cref{spn:lem:gram-frames} over the residue field and \cref{spn:lem:gram-differential} there are
+$q^{(4nb-m)e}D(n,b)$ source frames, and for fixed $B$ there are $q^{(4cb-m)e}f_{c,2b,e}(H(M))$
+admissible $C$; divide by $\nu_e(M)=q^{-4abe}$.
+\end{proof}
+
+\begin{proposition}[A sign that cannot change with the precision; \stU]\label{spn:prop:padic-sign}
+Let $s=2b\ge2$ and $c\ge s-1$. If $\overline H$ is singular, then $f_{c,s,e}(H)>1$ for every finite
+$e$, with a lower bound independent of $e$; if $\overline H$ is nonsingular, $f_{c,s,e}(H)=D(c,b)$.
+\end{proposition}
+
+\begin{proof}
+Let $\rank\overline H=2r$ and $t=s-2r\ge2$. The kernel of a matrix with Gram matrix $\overline H$
+lies in its radical, which has $(q^t-1)/(q-1)$ lines, and by \cref{spn:lem:gram-differential} the
+residue classes of kernel dimension zero and one contribute
+\[
+ f_{c,s,e}(H)\ge q^{m-2cs}\Bigl(\spnEmb_c(s,r)+\tfrac{q^t-1}{q-1}\spnEmb_c(s-1,r)\Bigr)
+ =\prod_{j=u+1}^{c}(1-q^{-2j})\Bigl(1+q^{-2u}\sum_{j=1}^{t-1}q^{-j}\Bigr)
+\]
+with $u=c-s+r+1\ge0$; for $u=0$ the first count vanishes and the second alone gives the same
+expression. With $A=q^{-2u}\le1$ the product exceeds $1-A/(q^2-1)$, and $t\ge2$ gives
+$f>(1-A/(q^2-1))(1+A/q)=1+A(q^2-q-1-A)/(q(q^2-1))\ge1$. If $\overline H$ is nonsingular, every matrix
+with that Gram matrix is injective, there are $q^{2cs-m}D(c,b)$ of them and all their lifts are flat.
+\end{proof}
+
+\begin{proof}[Proof of \cref{spn:thm:padic-pairs}]
+Assume $c=n-a\ge2b-1$. Since $a>0$, $D(c,b)<D(n,b)<1$, so by \cref{spn:lem:padic-reduction} and
+\cref{spn:prop:padic-sign} the likelihood is $\alpha<1$ on $E^c$ and exceeds one on $E$, uniformly in
+the precision. The negative part of $\mu_e-\nu_e$ is $(1-\alpha)\nu_e|_{E^c}$, of mass
+$(1-\alpha)\beta_{q,a,b}$, as $E$ depends only on the first digit. Over $\OO$ the cylinder sets
+generate the Borel sets and the total variation is the supremum over the finite quotients, so the
+same distance holds and the cylinder event $E$ attains it; the continuous likelihood and its strict
+signs come from \cref{spn:thm:gram-regularity} below and the precision-independent lower bound.
+\end{proof}
+
+For general $s\ge2$, even or odd, the Gram densities have an exact Fourier expansion and a sharp
+regularity threshold. Let $\psi_e$ be a primitive additive character of $R_e$ and
+$\langle W,H\rangle=\sum_{i<j}W_{ij}H_{ij}$, put
+$\mathcal Z_e(c,s)=\sum_{W\in\spnAlt_s(R_e)}q^{-c\,\mathrm{length}_\OO(\spnim W)}$, $\mathcal Z_0(c,s)=1$, and
+$\mathcal Z_e(c,s)=1$ for $s\le1$, and let $A_s(r)$ be the number of alternating $s\times s$ matrices of rank
+$2r$ over $\kappa$, as in \eqref{spn:eq:alt-rank-count}.
+
+\begin{theorem}[Local Gram densities; \stU]\label{spn:thm:gram-regularity}
+\begin{enumerate}
+\item For every $H\in\spnAlt_s(R_e)$,
+$f_{c,s,e}(H)=\sum_{W\in\spnAlt_s(R_e)}q^{-c\,\mathrm{length}_\OO(\spnim W)}\psi_e(-\langle W,H\rangle)$.
+\item For $e\ge1$,
+$\mathcal Z_e(c,s)-\mathcal Z_{e-1}(c,s)=\sum_{r=1}^{\floor{s/2}}A_s(r)q^{-2cr}q^{-r(2c-2s+2r+1)(e-1)}\mathcal Z_{e-1}(c,s-2r)$.
+\item For $C$ additive-Haar in $\spnMat_{2c,s}(\OO)$, the law of $C^{\spnT}J_cC$ has a bounded Haar
+density if and only if $c\ge s-1$. In that range the density $f_{c,s,\infty}$ is continuous, the
+uniform limit of the finite densities, with
+$\norm{f_{c,s,\infty}-f_{c,s,e}}_\infty=\mathcal Z_\infty(c,s)-\mathcal Z_e(c,s)$, and with $\lambda=2c-2s+3>0$,
+\[
+ \mathcal Z_\infty(c,s)-\mathcal Z_e(c,s)\sim\frac{A_s(1)q^{-2c}\mathcal Z_\infty(c,s-2)}{1-q^{-\lambda}}\,q^{-\lambda e}.
+\]
+\end{enumerate}
+\end{theorem}
+
+\begin{proof}
+(1) Group the rows of $C$ into $c$ independent pairs $x,y$, whose Gram contribution
+$xy^{\spnT}-yx^{\spnT}$ pairs with $W$ to $x^{\spnT}Wy$. For fixed $x$ the average of
+$\psi_e(x^{\spnT}Wy)$ over $y$ is one if $Wx=0$ and zero otherwise, by primitivity of $\psi_e$, and
+averaging over $x$ gives $\abs{\ker W}/\abs{R_e}^s=q^{-\mathrm{length}(\spnim W)}$; independence and
+Fourier inversion finish. At $e=1$ this is \cref{spn:lem:alt-gram}(1).
+
+(2) Matrices divisible by $\varpi$ contribute $\mathcal Z_{e-1}(c,s)$. For a residue matrix of rank $2r>0$, an
+integral change of basis makes its upper left $2r$-block $A$ invertible, and congruence eliminates the
+cross block, leaving the alternating Schur complement $D+B^{\spnT}A^{-1}B=\varpi T$ with
+$T\in\spnAlt_{s-2r}(R_{e-1})$; the inverse of a nonsingular alternating matrix is alternating, also in
+characteristic two. For each $T$ the choices of $A,B$ number
+$q^{(e-1)(\binom s2-\binom{s-2r}2)}$, and the image length is $2re+\mathrm{length}(\spnim T)$.
+
+(3) Choose compatible primitive characters at all levels. The Fourier characters of exact conductor
+$e$ have total absolute coefficient mass $\mathcal Z_e-\mathcal Z_{e-1}$. If $c\ge s-1$, then
+$r(2c-2s+2r+1)\ge r(2r-1)>0$, and induction on $s$ with (2) shows that $\mathcal Z_e(c,s)$ is bounded, so the
+series converges absolutely and uniformly to a continuous function whose integrals over the finite
+quotients agree with the Gram law. The omitted tail is at most $\mathcal Z_\infty-\mathcal Z_e$, with equality at
+$H=0$. The term $r=1$ of (2) is $A_s(1)q^{-2c}q^{-\lambda(e-1)}\mathcal Z_{e-1}(c,s-2)$, and every term $r\ge2$
+decays faster, which gives the asymptotic. If $c\le s-2$, the term $r=1$ alone gives
+$\mathcal Z_e-\mathcal Z_{e-1}\ge A_s(1)q^{-2c}q^{-(2c-2s+3)(e-1)}$, which does not tend to zero, so
+$f_{c,s,e}(0)=\mathcal Z_e(c,s)$, the average density on $\varpi^e\spnAlt_s(\OO)$, is unbounded.
+\end{proof}
+
+The density threshold $c=s-1$ is sharp; it is not claimed that the testing range of
+\cref{spn:thm:padic-pairs} is, since a measure with an unbounded density can still have likelihood
+above one on the relevant residue classes. The constant $\beta_{q,a,b}$ involves only the residue
+field: for uniform $M$ the matrix $G=B^{\spnT}J_aB$ with $B=J_a^{-1}M$ satisfies $H(M)=J_b-G$, so,
+with $Z_a(2b,r)$ the count of \cref{spn:sec:nondegenerate} of $2a\times2b$ matrices with a prescribed
+Gram matrix of rank $2r$,
+\[
+ \beta_{q,a,b}=q^{-4ab}\sum_{\substack{G\in\spnAlt_{2b}(\kappa)\\ \det(J_b-G)\ne0}}Z_a\bigl(2b,\tfrac12\rank G\bigr),
+\]
+a sum over $q^{\binom{2b}2}$ matrices; the half-rank chain after \cref{spn:thm:offset-test}, started
+at $b$ and run for $a$ steps, gives it in $O(ab)$ rational operations.
+
+\begin{example}[Two pairs on both sides]\label{spn:ex:padic-pairs}
+For $q=2$, $a=b=2$ and $n=5$, a $4\times4$ block in a symplectic $10$-dimensional space,
+$\alpha=5376/5797$ and $\beta_{2,2,2}=469/1024$; exactly $30{,}016$ of the $65{,}536$ binary matrices
+have a nonsingular residual. So
+\[
+ \spnTV(\mu_e,\nu_e)=\frac{197449}{5936128}=0.0332622544527\ldots
+\]
+for every $e$, including $e=\infty$, and the best equal-prior success probability is about
+$0.5166311272$ however many digits are observed. Likewise $q=3$, $(a,b,n-a)=(2,2,3)$ gives
+$\alpha=597051/605242$, $\beta=38089/59049$ and distance $7609439/871681338$, and $q=3$,
+$(a,b,n-a)=(1,2,3)$ gives $81/82$, $163/243$ and $163/19926$.
+\end{example}
+
+Integer Fourier transforms of the four-column Gram likelihoods over $\Z/2$, $\Z/3$, $\Z/4$ and
+$\F_2[t]/(t^2)$, the last two separating mixed and equal characteristic, an independent enumeration
+of $137{,}889$ one-pair Gram inputs, the sign, normalization and distance at all $9{,}714$ residual
+matrices of the displayed cases, the enumeration of $72{,}097$ observed matrices for $\beta$, $1{,}728$
+rational cases of the strict lower bound and $60$ cases of the recursion against direct image-length
+enumeration agree with these
+statements.\footnote{\artifact{grh_extensions_2026-11-27_3/data/symplectic_precision_checks.json}}
 
 \paragraph{Arbitrary primitive frames.}
 Now let $X\in\spnMat_{2n,b}(\OO)$ and $Y\in\spnMat_{2n,a}(\OO)$ be any matrices whose reductions
@@ -5284,18 +6511,37 @@ prescribed degenerate Gram form can be realized by a noninjective map and the re
 \cref{spn:prop:residual} must then retain an injectivity constraint. For complementary
 nondegenerate frames, the exactly optimal rank-only test at finite size, and whether the two-bit
 test of \cref{spn:cor:xor} is exactly optimal at finite size, are not determined. Over a complete
-discrete valuation ring, determine
-the complete local density and the optimal test when both frames contain several symplectic
-pairs, so that the residual form is a matrix rather than a scalar and its rank over the residue
-field forgets the higher elementary divisors, and the frame types for which the distance at
-the first digit persists at all precisions (\cref{spn:thm:padic} treats one source pair, where it
-persists; \cref{spn:rem:padic-endpoint} and the Lagrangian projections of \cref{spn:thm:local-five},
-where it grows with each digit, show that persistence is not automatic). For wide blocks, the
-distinguishing power of correlated observations and of observations with an unknown source form is
-not determined. The analogous laws for
+discrete valuation ring, \cref{spn:thm:padic-pairs} shows that for two symplectic frames with
+$n\ge a+b+\min(a,b)-1$ singularity of the residual form modulo $\varpi$ is an optimal equal-prior
+test and the first-digit distance persists at every precision, and \cref{spn:thm:gram-regularity}
+gives the local Gram densities as exact Fourier sums. Below that range it is not known for which
+frame types the distance persists (\cref{spn:rem:padic-endpoint} and the Lagrangian projections of
+\cref{spn:thm:local-five}, where it grows with each digit, show that persistence is not automatic);
+a closed form of the local density in the elementary divisors of the residual form and the optimal
+tests for unequal priors are also open. For wide blocks with an unknown shared source form,
+\cref{spn:thm:hidden-threshold,spn:prop:hidden-wide} settle the blocks with two-dimensional kernels
+conditioned on full row rank; unconditioned blocks, larger kernels, which impose several dependent
+linear constraints, and noisy observations are open, as are the limiting total variation and the
+law of the number of compatible forms inside the window of \cref{spn:thm:hidden-window}. The
+analogous laws for
 nonuniform positive-type weights, which need representation-theoretic information beyond orbit
 counts, and for orthogonal, unitary, symmetric or Hermitian forms, where in characteristic two
 quadratic data cannot be replaced by a symmetric matrix, are also open.
+\end{question}
+
+\begin{question}[Dependence among many observations]\label{spn:q:dependence}
+\Cref{spn:thm:joint-threshold,spn:thm:joint-profile} locate the transition for many frames at total
+dimension $2n$ and identify the limiting profile inside the window when the largest frame has
+dimension $o(D)$. The fixed-gap profile for general frame types, for instance when one frame has
+dimension comparable with the total, and the exactly optimal finite-size tests are not determined;
+they would follow from the law of the invariants $(s,t_1,\dots,t_k)$ under independent uniform cross
+blocks. Forests are the only independent observation graphs (\cref{spn:cor:forest-only}), and growing
+cacti with bounded cycle lengths have the sharp profile of \cref{spn:thm:cactus-detection}; the
+information carried by overlapping cycles in general graphs, of which \cref{spn:thm:anchors} treats
+complete bipartite graphs with a fixed side, the case of cycle lengths growing with $n$, graphs of
+frames of larger dimension, finite local rings and nonuniform sampling are open. A general theorem
+must allow for rare configurations with very large likelihood ratios, which make the chi-square
+divergence of $K_{2,m}$ diverge while its total variation tends to zero.
 \end{question}
 
 \begin{question}[The binary principal nullity in the critical window]\label{spn:q:binary}
