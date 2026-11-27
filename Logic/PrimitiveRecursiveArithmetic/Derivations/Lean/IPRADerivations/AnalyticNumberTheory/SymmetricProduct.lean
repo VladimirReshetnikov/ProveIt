@@ -1,6 +1,7 @@
 import IPRADerivations.AnalyticNumberTheory.SymmetricMoment
 import IPRADerivations.AnalyticNumberTheory.BlockTests
 import IPRADerivations.Core.Header
+import IPRADerivations.Core.ProdLemmas
 
 /-!
 # The product test on a whole prefix (`riemann_ipra_prime_criteria_2026-11-20`, `thm:symmetric-prefix`, eq:sym-char)
@@ -21,11 +22,8 @@ namespace LeanProofs.IPRA.AnalyticNumberTheory.SymmetricProduct
 
 open_ipra
 open LeanProofs.IPRA.AnalyticNumberTheory.AbsDiff (absd le_absd_l)
-open LeanProofs.IPRA.AnalyticNumberTheory.BlockTests (one_le_mul)
 open LeanProofs.IPRA.AnalyticNumberTheory.SymmetricPrefix (term_le_sum Below)
 open LeanProofs.IPRA.AnalyticNumberTheory.CubeScan (inst2_subst)
-open LeanProofs.IPRA.AnalyticNumberTheory.PNTStageStep (pos_of_one_le)
-open LeanProofs.IPRA.AnalyticNumberTheory.Mobius (zero_mul_l)
 
 set_option autoImplicit false
 
@@ -43,60 +41,13 @@ theorem inst2_shift (f : PTm 2) (a b : PTm n) :
 theorem prod_pos {f : PTm 2} {N x : PTm n}
     (h : Γ ⊢[PRAAx] Fm.all (lt (var 0) (Syn.shift N) ⟶ le one (inst2 f (var 0) (Syn.shift x)))) :
     Γ ⊢[PRAAx] le one (ap2 (prodF f) N x) := by
-  have hall : Γ ⊢[PRAAx] Fm.all (le (var 0) (Syn.shift N) ⟶ le one (ap2 (prodF f) (var 0) (Syn.shift x))) := by
-    refine PRA.qfInd _ (by simp [Fm.QF, le_QF]) ?_ ?_
-    · simp only [Fm.subst_imp, subst_le, subst_ap2, Syn.subst_var, Syn.inst_zero, Syn.subst_inst_shift,
-        ConciseIPRA.PTm.subst_succ, ConciseIPRA.PTm.subst_zero]
-      exact .impI (le_congr (.eqRefl _) (prod_zero f x).eqSymm (le_refl _))
-    · simp only [Fm.subst_imp, subst_le, subst_ap2, Syn.subst_var, Syn.repl_zero, subst_repl_shift,
-        ConciseIPRA.PTm.subst_succ, ConciseIPRA.PTm.subst_zero]
-      refine .impI ?_
-      let Δ : List (Fm PTm (n + 1)) := le (succ (var 0)) (Syn.shift N) ::
-        (le (var 0) (Syn.shift N) ⟶ le one (ap2 (prodF f) (var 0) (Syn.shift x))) :: Γ.map Fm.shift
-      have hv : Δ ⊢[PRAAx] le (succ (var 0)) (Syn.shift N) := Prf.hyp0
-      have ih := Prf.impE (Prf.hyp1 : Δ ⊢[PRAAx] _) (le_trans (le_succ_self _) hv)
-      have hf := Prf.impE (h.allOpen.wk.wk : Δ ⊢[PRAAx] _) hv
-      have ps : Δ ⊢[PRAAx] ap2 (prodF f) (succ (var 0)) (Syn.shift x) ≐
-          ap2 (prodF f) (var 0) (Syn.shift x) * inst2 f (var 0) (Syn.shift x) := prod_succ f (var 0) (Syn.shift x)
-      exact le_congr (.eqRefl _) ps.eqSymm (one_le_mul ih hf)
-  have a := Prf.allE N hall
-  simp only [Fm.subst_imp, subst_le, subst_ap2, Syn.subst_var, Syn.inst_zero, Syn.subst_inst_shift,
-    ConciseIPRA.PTm.subst_succ, ConciseIPRA.PTm.subst_zero] at a
-  exact .impE a (le_refl _)
+  refine Common.one_le_of_pos (prod_pos_bounded f x N (.allI (.impI ?_)))
+  exact Common.pos_of_one_le (.impE h.allOpen.wk Prf.hyp0)
 
 /-- One zero factor makes the product zero. -/
 theorem prod_zero_at {f : PTm 2} {N x j : PTm n} (hj : Γ ⊢[PRAAx] lt j N)
-    (hf : Γ ⊢[PRAAx] inst2 f j x ≐ zero) : Γ ⊢[PRAAx] ap2 (prodF f) N x ≐ zero := by
-  have hf' : (Γ.map Fm.shift) ⊢[PRAAx] inst2 f (Syn.shift j) (Syn.shift x) ≐ zero := by
-    have a := hf.shift
-    rw [inst2_shift] at a
-    exact a
-  have hall : Γ ⊢[PRAAx] Fm.all (lt (Syn.shift j) (var 0) ⟶ ap2 (prodF f) (var 0) (Syn.shift x) ≐ zero) := by
-    refine PRA.qfInd _ (by simp [Fm.QF, le_QF, lt_QF]) ?_ ?_
-    · simp only [Fm.subst_imp, Fm.subst_eq, subst_lt, subst_ap2, Syn.subst_var, Syn.inst_zero, Syn.subst_inst_shift,
-        ConciseIPRA.PTm.subst_succ, ConciseIPRA.PTm.subst_zero]
-      exact .impI (lt_zero_absurd _ Prf.hyp0)
-    · simp only [Fm.subst_imp, Fm.subst_eq, subst_lt, subst_ap2, Syn.subst_var, Syn.repl_zero, subst_repl_shift,
-        ConciseIPRA.PTm.subst_succ, ConciseIPRA.PTm.subst_zero]
-      refine .impI ?_
-      let Δ : List (Fm PTm (n + 1)) := lt (Syn.shift j) (succ (var 0)) ::
-        (lt (Syn.shift j) (var 0) ⟶ ap2 (prodF f) (var 0) (Syn.shift x) ≐ zero) :: Γ.map Fm.shift
-      have hv : Δ ⊢[PRAAx] le (Syn.shift j) (var 0) :=
-        (succ_monus_succ _ _).eqSymm.eqTrans (Prf.hyp0 : Δ ⊢[PRAAx] lt (Syn.shift j) (succ (var 0)))
-      have ps : Δ ⊢[PRAAx] ap2 (prodF f) (succ (var 0)) (Syn.shift x) ≐
-          ap2 (prodF f) (var 0) (Syn.shift x) * inst2 f (var 0) (Syn.shift x) := prod_succ f (var 0) (Syn.shift x)
-      refine .orE (lt_or_eq_of_le hv) ?_ ?_
-      · have ih := Prf.impE ((Prf.hyp1 : Δ ⊢[PRAAx]
-          (lt (Syn.shift j) (var 0) ⟶ ap2 (prodF f) (var 0) (Syn.shift x) ≐ zero)).wk) Prf.hyp0
-        exact ps.wk.eqTrans (zero_mul_l ih _)
-      · have hfv : ((Syn.shift j ≐ var 0) :: Δ) ⊢[PRAAx] inst2 f (var 0) (Syn.shift x) ≐ zero :=
-          (congrInst2 f (Prf.hyp0 : ((Syn.shift j ≐ var 0) :: Δ) ⊢[PRAAx] Syn.shift j ≐ var 0).eqSymm
-            (.eqRefl _)).eqTrans hf'.wk.wk.wk
-        exact ps.wk.eqTrans ((congrMul (.eqRefl _) hfv).eqTrans (mul_zero _))
-  have a := Prf.allE N hall
-  simp only [Fm.subst_imp, Fm.subst_eq, subst_lt, subst_ap2, Syn.subst_var, Syn.inst_zero, Syn.subst_inst_shift,
-    ConciseIPRA.PTm.subst_succ, ConciseIPRA.PTm.subst_zero] at a
-  exact .impE a hj
+    (hf : Γ ⊢[PRAAx] inst2 f j x ≐ zero) : Γ ⊢[PRAAx] ap2 (prodF f) N x ≐ zero :=
+  prod_zero_of f hj hf
 
 /-! ## The test -/
 
