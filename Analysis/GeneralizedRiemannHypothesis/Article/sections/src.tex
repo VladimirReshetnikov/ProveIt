@@ -4,6 +4,7 @@
 \providecommand{\srcB}{\mathcal{B}}
 \providecommand{\srcT}{\mathcal{T}}
 \providecommand{\srcRR}{\mathcal{R}}
+\providecommand{\srctr}{\mathsf{T}}
 \begingroup\emergencystretch=3em
 
 This section fixes the statement that is used as input in the rest of the article, describes
@@ -76,7 +77,7 @@ was repeated. A result marked ``\stG'' is a theorem exactly to the extent that
 
 \subsection{Architecture of the source proof}\label{src:sec:mechanism}
 \begingroup\raggedright
-\sources{grh_transfer_analysis; grh_transfer_analysis_2026-11-25; grh_lean_transfer_analysis; grh_beyond_dirichlet_grh_2026-11-25; grh_beyond_dirichlet_2026-11-25; grh_fixed_field_transfer_2026-11-25; grh_exact_torsion_transfer_2026-11-25; grh_method_transfers_2026-11-25; grh_method_transfers_2026-11-25_1; grh_method_transfers_2026-11-25_2; grh_method_transfers_orthogonal_jets_2026-11-26; grh_sharp_transfers_2026-11-25; grh_structural_transfers_2026-11-25; grh_transfer_bridges_2026-11-25; grh_transfer_extensions_2026-11-26; grh_transfer_synthesis_2026-11-25; grh_transfer_advances_2026-11-26; grh_arithmetic_transfers_2026-11-26; grh_nonabelian_transfer_2026-11-25; grh_spanning_and_s5_2026-11-26; grh_ideal_densities_and_transfer_conditions_2026-11-26; grh_a6_transfer_2026-11-25; grh_cyclic_generator_transfer_2026-11-25; grh_deficit_transfer_2026-11-25; grh_kummer_window_transfer_2026-11-25; grh_relative_prime_races_2026-11-25; grh_sylow_transfer_2026-11-25; psl2_grh_transfer; grh-arithmetic-transfers; grh-lean-transfers}
+\sources{grh_transfer_analysis; grh_transfer_analysis_2026-11-25; grh_lean_transfer_analysis; grh_beyond_dirichlet_grh_2026-11-25; grh_beyond_dirichlet_2026-11-25; grh_fixed_field_transfer_2026-11-25; grh_exact_torsion_transfer_2026-11-25; grh_method_transfers_2026-11-25; grh_method_transfers_2026-11-25_1; grh_method_transfers_2026-11-25_2; grh_method_transfers_orthogonal_jets_2026-11-26; grh_sharp_transfers_2026-11-25; grh_structural_transfers_2026-11-25; grh_transfer_bridges_2026-11-25; grh_transfer_extensions_2026-11-26; grh_transfer_synthesis_2026-11-25; grh_transfer_advances_2026-11-26; grh_arithmetic_transfers_2026-11-26; grh_nonabelian_transfer_2026-11-25; grh_spanning_and_s5_2026-11-26; grh_ideal_densities_and_transfer_conditions_2026-11-26; grh_a6_transfer_2026-11-25; grh_cyclic_generator_transfer_2026-11-25; grh_deficit_transfer_2026-11-25; grh_kummer_window_transfer_2026-11-25; grh_relative_prime_races_2026-11-25; grh_sylow_transfer_2026-11-25; psl2_grh_transfer; grh-arithmetic-transfers; grh-lean-transfers; grh_new_results_2026-11-26; symplectic_rank_blindness_2026-11-26; squarefree_prime_products}
 \endgroup
 
 The proof has an arithmetic part, which bounds a smoothed prime sum from above, and an
@@ -405,6 +406,156 @@ not control the average of $(L+2I)/\alpha$; an averaged version must retain the 
 The averaged analytic criteria of \cref{sec:ana} are formulated accordingly.
 \end{remark}
 
+\subsection{Integral Gram determinants with vanishing minors}\label{src:sec:gram}
+\begingroup\raggedright
+\sources{grh_new_results_2026-11-26}
+\endgroup
+
+Input (C) is a lower bound for the Gram determinant of an integral family, and inputs (A) and
+(B) ask for many short independent forms. A finite-dimensional question isolates the tension
+between these requirements: how small can the Gram determinant of an integer matrix be when
+many of its maximal minors are nonzero? Cauchy--Binet and integrality give one lower bound; the
+Pl\"ucker relations between the minors force a stronger one, with an explicit penalty for
+vanishing minors.
+
+\begin{theorem}[Arithmetic determinant amplification; \stU]\label{src:thm:gram}
+Let $A\in\Z^{r\times n}$ have rank $r$, where $n\ge5$ and $2\le r\le n-2$. For an $r$-element
+set $B\subseteq\set{1,\dots,n}$ let $A_B$ be the square matrix of the columns in $B$, in
+increasing order, and put
+\[
+ N=\binom nr,\qquad z=\#\set{B:\det A_B=0},\qquad
+ D=\gcd\set{\abs{\det A_B}:\det A_B\ne0}.
+\]
+Then
+\begin{equation}\label{src:eq:gram}
+ \frac{\det(AA^{\srctr})}{D^2}\ \ge\ \max\Bigl\{N-z,\ \frac85N-4z,\ \frac{12}5N-12z\Bigr\}.
+\end{equation}
+In particular, if every $r$ columns are linearly independent,
+$\det(AA^{\srctr})\ge\tfrac{12}5\binom nrD^2$. The coefficient $12/5$ cannot be increased
+uniformly over this class, and each of the three affine bounds in \eqref{src:eq:gram} is
+attained.
+\end{theorem}
+
+The theorem does not assert that the maximum in \eqref{src:eq:gram} is optimal for every fixed
+triple $(r,n,z)$. Cauchy--Binet and integrality alone give only $N-z$. On four labels the
+relevant relation is
+\begin{equation}\label{src:eq:plucker}
+ p_{12}p_{34}-p_{13}p_{24}+p_{14}p_{23}=0,
+\end{equation}
+which holds for the two-row minors of any matrix by direct expansion.
+
+\begin{lemma}[Local Pl\"ucker bounds; \stU]\label{src:lem:plucker}
+\begin{enumerate}[label=\textup{(\roman*)}]
+\item If the six integers in \eqref{src:eq:plucker} are nonzero, their squares sum to at least
+$9$.
+\item If ten nonzero integers $p_{ij}$, $1\le i<j\le5$, satisfy \eqref{src:eq:plucker} on every
+four-element set of labels, their squares sum to at least $24$.
+\item For ten integers $p_{ij}$, $1\le i<j\le5$, satisfying \eqref{src:eq:plucker} on every
+four labels, let $w$ be the number of zeros and $V$ the sum of squares. Then
+$V\ge\max\set{10-w,\ 16-4w,\ 24-12w}$.
+\end{enumerate}
+\end{lemma}
+
+\begin{proof}
+(i) If all six absolute values were one, the left side of \eqref{src:eq:plucker} would be a
+signed sum of three ones and could not vanish; so one square is at least four.
+
+(ii) Suppose the sum is at most $23$. No coordinate has absolute value four or more, since
+that contributes at least $16+9=25$, and at most one has absolute value three, since two
+contribute at least $18+8=26$. If the edge $\set{a,b}$ has absolute value three, at most one
+edge has absolute value two, because relative to the baseline $10$ the three adds $8$ and two
+twos would add $6$. Choose four labels containing $\set{a,b}$ and avoiding that edge, by
+omitting one of its endpoints outside $\set{a,b}$; the three absolute products in the relation
+are then $3,1,1$, which have no vanishing signed sum. So all absolute values are one or two.
+Call an edge heavy if its absolute value is two. On any four labels the absolute products lie
+in $\set{1,2,4}$, and a signed sum of three nonzero reals vanishes only if one absolute value is
+the sum of the other two, so the product multiset is $\set{2,1,1}$ or $\set{4,2,2}$, with one or
+four heavy edges among the six. There are five four-label subsets and each edge lies in three of
+them. If $h$ edges are heavy and $k$ subsets have four heavy edges, double counting gives
+$3h=(5-k)+4k=5+3k$, which is impossible modulo three.
+
+(iii) Integrality gives $V\ge10-w$, and (ii) gives $V\ge24$ for $w=0$. If $w=1$, delete an
+endpoint of the zero edge: the six coordinates on the remaining four labels are nonzero and
+contribute at least $9$ by (i), and the three other nonzero coordinates at least $3$, so
+$V\ge12$. These cases prove $V\ge24-12w$, whose right side is nonpositive for $w\ge2$, and
+$V\ge16-4w$ for $w\le1$; for $w\ge2$, $10-w\ge16-4w$.
+\end{proof}
+
+\begin{proof}[Proof of \cref{src:thm:gram}]
+Put $p_B=\det(A_B)/D\in\Z$. By Cauchy--Binet,
+$S:=\det(AA^{\srctr})/D^2=\sum_{\abs B=r}p_B^2$. First let $r\le n-3$. For disjoint sets
+$I,J$ with $\abs I=r-2$ and $\abs J=5$, and distinct $a,b\in J$, let
+$q_{ab}=D^{-1}\det(A_{I,a,b})$, the columns of $I$ in increasing order followed by $a,b$. These
+are signed versions of $p_{I\cup\set{a,b}}$ and satisfy the four-label relations: if the
+columns of $I$ are dependent all $q_{ab}$ vanish, and otherwise an invertible real row
+operation sends them to the first $r-2$ standard basis vectors, and expansion along those
+columns writes the $q_{ab}$ as a common real multiple of two-row minors. Let $V_{I,J}$ and
+$w_{I,J}$ be the local sum of squares and number of zeros. There are
+$\binom n{r-2}\binom{n-r+2}5$ local systems, and each $p_B$ occurs in exactly
+$t=\binom r2\binom{n-r}3>0$ of them: choose the two elements of $B$ outside $I$, then the three
+elements of $J$ outside $B$. Hence $10\binom n{r-2}\binom{n-r+2}5=Nt$,
+$\sum_{I,J}V_{I,J}=tS$ and $\sum_{I,J}w_{I,J}=tz$. Summing each of the three affine
+inequalities of \cref{src:lem:plucker}(iii) and dividing by $t$ gives the three bounds.
+
+If $r=n-2$, the complementary coordinates $p^*_{ij}=\pm p_{\set{1,\dots,n}\setminus\set{i,j}}$,
+with the signs of the complementary permutation, are, up to one common nonzero real factor, the
+two-row minors of a basis of the two-dimensional orthogonal complement of the row space of $A$,
+by Laplace expansion. So they are integers satisfying the rank-two relations, with the same
+sum of squares and number of zeros, and $\binom n2=N$; apply the case $r=2$. The examples below
+give the sharpness assertions.
+\end{proof}
+
+\begin{example}[Equality cases]\label{src:ex:gram}
+Let $e_1=(1,0)^{\srctr}$, $e_2=(0,1)^{\srctr}$, $u=(1,1)^{\srctr}$, $v=(1,-1)^{\srctr}$
+and $w=(1,2)^{\srctr}$. The following matrices have $r=2$, $n=5$, $N=10$ and $D=1$.
+\begin{center}\small
+\begin{tabular}{cllc}
+\toprule
+$z$ & columns of $A$ & $AA^{\srctr}$ & $\det(AA^{\srctr})$\\
+\midrule
+$0$ & $e_1,e_2,u,v,w$ & $\left(\begin{smallmatrix}4&2\\2&7\end{smallmatrix}\right)$ & $24$\\
+$1$ & $e_1,e_1,e_2,u,v$ & $\left(\begin{smallmatrix}4&0\\0&3\end{smallmatrix}\right)$ & $12$\\
+$2$ & $e_1,e_1,e_2,e_2,u$ & $\left(\begin{smallmatrix}3&1\\1&3\end{smallmatrix}\right)$ & $8$\\
+$3$ & $e_1,e_1,e_1,e_2,u$ & $\left(\begin{smallmatrix}4&1\\1&2\end{smallmatrix}\right)$ & $7$\\
+\bottomrule
+\end{tabular}
+\end{center}
+The first attains $12N/5-12z$, the second both nontrivial bounds, the third $8N/5-4z$ and the
+baseline, and the fourth the baseline alone. The rows of
+\[
+ \begin{pmatrix}-1&-1&1&0&0\\-1&1&0&1&0\\-1&-2&0&0&1\end{pmatrix}
+\]
+form an integral basis of the kernel of the first example; this rank-three matrix has ten
+nonzero maximal minors with gcd one and Gram determinant $24$. Exact integer arithmetic confirms
+all five values, Cauchy--Binet and every maximal minor
+(\artifact{grh_new_results_2026-11-26/artifacts/determinant_results.json}).
+\end{example}
+
+With $\delta=z/N$ the normalized bound is $12/5-12\delta$ for $\delta\le1/10$,
+$8/5-4\delta$ for $1/10\le\delta\le1/5$, and $1-\delta$ for $\delta\ge1/5$.
+
+\begin{corollary}[Short integral columns are limited; \stU]\label{src:cor:gram}
+Under the hypotheses of \cref{src:thm:gram} let $E=\sum_{j=1}^n\norm{A_j}^2$ be the total
+squared length of the columns and $F$ the right side of \eqref{src:eq:gram}. Then
+$E\ge rD^{2/r}F^{1/r}$. If every maximal minor is nonzero and every column has length at most
+$H$, then $(nH^2/r)^r\ge\tfrac{12}5\binom nrD^2$.
+\end{corollary}
+
+\begin{proof}
+The eigenvalues of $AA^{\srctr}$ are positive with sum $E$, so the arithmetic--geometric mean
+inequality gives $(E/r)^r\ge\det(AA^{\srctr})$; apply \cref{src:thm:gram}, and $E\le nH^2$.
+\end{proof}
+
+A common determinantal divisor, many independent column subsets and a small total squared
+length are therefore competing requirements. This does not by itself improve the comparison of
+\cref{src:sec:comparison}: an application would have to match the forms and lattices of the
+source to the hypotheses and the normalization used here. The weaker fact that a generic
+two-row integer matrix with five columns has a minor of absolute value at least three is known
+from the study of generic integer matrices with bounded maximal minors
+\cite{KriepkeKyureghyanSchymura2023Size,KriepkeSchymura2025Generic}; the aggregate
+sum-of-squares inequality and its dependence on vanishing minors are the content of
+\cref{src:thm:gram}.
+
 \subsection{Why almost all of the target must be spanned}\label{src:sec:span}
 \begingroup\raggedright
 \sources{grh_lean_transfer_analysis; grh_fixed_field_transfer_2026-11-25; grh_transfer_bridges_2026-11-25; grh_beyond_dirichlet_grh_2026-11-25; grh_beyond_dirichlet_2026-11-25; grh_arithmetic_transfers_2026-11-26; grh_transfer_synthesis_2026-11-25; grh_spanning_and_s5_2026-11-26; grh_transfer_advances_2026-11-26; grh_method_transfers_orthogonal_jets_2026-11-26}
@@ -695,7 +846,7 @@ larger development that is absent from the shortened source tree.
 
 \subsection{Open questions}\label{src:sec:open}
 \begingroup\raggedright
-\sources{grh-lean-transfers; grh_method_transfers_2026-11-25; grh_fixed_field_transfer_2026-11-25; grh_transfer_bridges_2026-11-25; grh_relative_prime_races_2026-11-25; grh_a6_transfer_2026-11-25; grh_beyond_dirichlet_grh_2026-11-25}
+\sources{grh-lean-transfers; grh_method_transfers_2026-11-25; grh_fixed_field_transfer_2026-11-25; grh_transfer_bridges_2026-11-25; grh_relative_prime_races_2026-11-25; grh_a6_transfer_2026-11-25; grh_beyond_dirichlet_grh_2026-11-25; grh_new_results_2026-11-26}
 \endgroup
 
 \begin{question}\label{src:q:divisibility}
@@ -722,5 +873,11 @@ the target suffices in place of near-full spanning?
 Can a comparison of covolumes be set up whose remainder is directly a difference of the prime
 statistic at two nearby scales, so that neither the centring constant nor a second, remote
 cutoff is needed?
+\end{question}
+
+\begin{question}\label{src:q:gram}
+For fixed $(r,n,z)$, what is the least value of $\det(AA^{\srctr})/D^2$ in
+\cref{src:thm:gram}? The three affine bounds are each attained for $r=2$, $n=5$, but their
+maximum is not claimed to be optimal for every triple.
 \end{question}
 \endgroup

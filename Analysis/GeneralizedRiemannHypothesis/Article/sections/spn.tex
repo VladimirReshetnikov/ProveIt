@@ -1273,8 +1273,288 @@ The Lagrangian intersection count used when $c=0$ also appears in
 $n-\min(a,b)\to\infty$ suffices. Along the symplectic family just constructed
 this quantity grows without bound, yet the full-row-rank test detects a
 nonvanishing discrepancy. The boundary calculation quantifies the discrepancy
-at each fixed deficit; it leaves scope for finer estimates when the two
-specific subspaces are known.
+at each fixed deficit. When one of the two subspaces is not isotropic, the law
+conditional on rank is no longer uniform, and rank can miss almost all of the
+discrepancy; this is the subject of the next subsection.
+
+%======================================================================
+\subsection{Lagrangian projections of an arbitrary alternating form}\label{spn:sec:lagrangian}
+\sources{symplectic_rank_blindness_2026-11-26; grh_sharp_torsion_and_symplectic_blocks}
+
+In this subsection the ambient space is $\F_q^{2n}$, with
+\[
+ J_n=\begin{pmatrix}0&I_n\\-I_n&0\end{pmatrix},\qquad
+ \Sp_{2n}(\F_q)=\set{g:g^{\spnT}J_ng=J_n},
+\]
+and $q$ is any prime power. An alternating matrix has zero diagonal and satisfies
+$H^{\spnT}=-H$; the zero diagonal is a separate condition in characteristic two. Fix $n\ge1$,
+$0\le2s\le n$ and an alternating $H\in\spnMat_n(\F_q)$ of rank $2s$, and put $d=n-2s$. Choose
+an injective $X_0\in\spnMat_{2n,n}(\F_q)$ with $X_0^{\spnT}J_nX_0=H$; one exists, since a
+symplectic $2s$-space and a $d$-dimensional isotropic subspace of its orthogonal complement
+can be embedded. For uniform $g\in\Sp_{2n}(\F_q)$ write
+\begin{equation}\label{spn:eq:lagrangian-model}
+ gX_0=\begin{pmatrix}A\\B\end{pmatrix},\qquad A,B\in\spnMat_n(\F_q).
+\end{equation}
+In the notation of \cref{spn:sec:positive-type}, $A$ is the compression of $g$ between the
+column space of $X_0$, on which the symplectic form restricts to $H$, and the first $n$
+coordinate functionals; under the symplectic identification of $V$ with $V^*$ these functionals
+span the Lagrangian $\langle f_1,\dots,f_n\rangle$. For $H=0$ both spaces are Lagrangian, which
+is the case $c=0$ of \cref{spn:thm:symplectic-exact}. Let $U_n$ be uniform on
+$\spnMat_n(\F_q)$. For a fixed matrix $M$ put
+\[
+ K=\ker M,\qquad k=\dim K,\qquad t=\dim(K\cap\operatorname{rad}H),\qquad
+ C_{n,s}=\prod_{j=s+1}^n(1-q^{-2j}),
+\]
+and call $K$ \emph{$H$-isotropic} if $x^{\spnT}Hy=0$ for all $x,y\in K$. Empty products equal
+one.
+
+\begin{theorem}[Likelihood of every Lagrangian projection; \stU]\label{spn:thm:lagrangian}
+Over every finite field,
+\begin{equation}\label{spn:eq:lagrangian-density}
+ \frac{\spnP(A=M)}{q^{-n^2}}=
+ \begin{cases}
+ \dfrac{q^{\binom k2}}{C_{n,s}}\displaystyle\prod_{j=k-t+1}^{k}(1-q^{-j}),
+ &K\text{ is $H$-isotropic},\\[8pt]
+ 0,&\text{otherwise}.
+ \end{cases}
+\end{equation}
+\end{theorem}
+
+\begin{proof}
+\emph{The frame orbit.} By Witt's extension theorem, an isometry between two subspaces of a
+nondegenerate alternating space, degenerate or not, extends to an isometry of the whole
+space. Applied to the column spans of two injective frames with Gram matrix $H$, it shows
+that $\Sp_{2n}(\F_q)$ acts transitively on
+\[
+ \mathcal X_H=\set{X\in\spnMat_{2n,n}(\F_q):\rank X=n,\ X^{\spnT}J_nX=H},
+\]
+so $gX_0$ is uniform on $\mathcal X_H$; see also the form-prescribed sampling framework of
+\cite{Ishizuka2026Uniform}. To count $\mathcal X_H$, change the basis of the domain so that
+$H$ consists of a standard nondegenerate $2s$-block and a zero $d$-block. Choose the $s$
+symplectic pairs in order: in a nondegenerate space of dimension $2N$ the first member has
+$q^{2N}-1$ choices and its partner, with prescribed pairing one, has $q^{2N-1}$; then pass to
+the orthogonal complement. The $d$ radical vectors must form an independent isotropic frame in
+the remaining nondegenerate space of dimension $2(n-s)$, and after $i$ of them the next has
+$q^{2(n-s)-i}-q^i$ choices. Hence
+\begin{equation}\label{spn:eq:frame-orbit}
+ \abs{\mathcal X_H}=\prod_{i=0}^{s-1}(q^{2n-2i}-1)q^{2n-2i-1}
+ \prod_{i=0}^{d-1}(q^{2(n-s)-i}-q^i)=q^{n(3n+1)/2}C_{n,s},
+\end{equation}
+the non-power factors of the two products having the indices $n-s+1,\dots,n$ and
+$s+1,\dots,n-s$.
+
+\emph{The fibre over $M$.} The Gram condition on $(M;B)$ is
+\begin{equation}\label{spn:eq:lagrangian-gram}
+ M^{\spnT}B-B^{\spnT}M=H .
+\end{equation}
+Its restriction to $K\times K$ vanishes, so there is no solution unless $K$ is
+$H$-isotropic. Put $r=n-k$ and choose invertible $P,T$ with
+$PMT=\operatorname{diag}(I_r,0_k)$; replacing $B$ by $P^{-\spnT}BT$ and $H$ by $T^{\spnT}HT$
+preserves \eqref{spn:eq:lagrangian-gram}, injectivity of the frame and the invariants $k,t$. In
+these coordinates write $B=(B_{ij})$ and
+$H=\left(\begin{smallmatrix}H_{11}&H_{12}\\-H_{12}^{\spnT}&0\end{smallmatrix}\right)$ in blocks
+of sizes $r$ and $k$. Equation \eqref{spn:eq:lagrangian-gram} becomes
+$B_{11}-B_{11}^{\spnT}=H_{11}$ and $B_{12}=H_{12}$. There are $q^{r(r+1)/2}$ choices of
+$B_{11}$, choosing its diagonal and one entry of each off-diagonal pair, which needs no
+division by two, and $q^{kr}$ free choices of $B_{21}$. On $K$ the kernel of $H_{12}$ is
+$K\cap\operatorname{rad}H$, of dimension $t$, and the frame is injective exactly when
+$v\mapsto(H_{12}v,B_{22}v)$ is injective on $K$, that is when $B_{22}$ is injective on that
+$t$-dimensional space. This leaves $q^{k(k-t)}\prod_{i=0}^{t-1}(q^k-q^i)
+=q^{k^2}\prod_{j=k-t+1}^k(1-q^{-j})$ choices of $B_{22}$. Since
+$r(r+1)/2+kr+k^2=n(n+1)/2+\binom k2$, the fibre has
+\[
+ q^{n(n+1)/2+\binom k2}\prod_{j=k-t+1}^k(1-q^{-j})
+\]
+elements. Divide by \eqref{spn:eq:frame-orbit} and by $q^{-n^2}$.
+\end{proof}
+
+If $H$ is nonsingular then $t=0$ for every $K$, and every solution of
+\eqref{spn:eq:lagrangian-gram} is automatically injective, since a kernel vector of $(M;B)$
+lies in $\operatorname{rad}H$; every supported likelihood then exceeds one. For degenerate $H$
+this can fail: for $q=2$ and $k=t=2$ the numerator in \eqref{spn:eq:lagrangian-density} is
+$2(1-2^{-1})(1-2^{-2})=3/4$, while $C_{n,s}>\prod_{j\ge2}(1-2^{-2j})>11/12$ when $s\ge1$, so
+this supported likelihood is less than one.
+
+The likelihood converts into finite sums without enumerating the group. Let
+$I_s(l)=\prod_{i=0}^{l-1}(q^{2s-i}-q^i)/(q^l-q^i)$ for $0\le l\le s$ and $I_s(l)=0$
+otherwise; this is the number of isotropic $l$-subspaces of a nondegenerate alternating
+$2s$-space, counted by ordered independent isotropic bases. The number of $H$-isotropic
+$k$-subspaces $K$ with $\dim(K\cap\operatorname{rad}H)=t$ is
+\begin{equation}\label{spn:eq:kernel-types}
+ N_{n,s}(k,t)=\spnqbin{d}{t}{q}\,q^{(d-t)(k-t)}I_s(k-t):
+\end{equation}
+choose $K\cap\operatorname{rad}H$, then the isotropic image of $K$ in the nondegenerate
+quotient by $\operatorname{rad}H$, and then $K$ as the graph of a linear map from that image to
+$\operatorname{rad}H/(K\cap\operatorname{rad}H)$, after splitting the quotient. Conditional on
+its nullity $k$, the kernel of $U_n$ is uniform among the $k$-subspaces, and
+\begin{equation}\label{spn:eq:uniform-nullity}
+ u_n(k)=\spnP(\dim\ker U_n=k)=q^{-k^2}\frac{a_n^2}{a_k^2a_{n-k}},\qquad
+ a_j=\prod_{i=1}^j(1-q^{-i}),
+\end{equation}
+by choosing the kernel and then an injective map from its quotient. Put
+\[
+ w_{n,s}(k,t)=u_n(k)\,N_{n,s}(k,t)\Big/\spnqbin nkq ,
+\]
+and let $L_{n,s}(k,t)$ be the supported value of \eqref{spn:eq:lagrangian-density}. Summation
+of the likelihood and of the overlap $\min\set{\spnP(A=M),\spnP(U_n=M)}$ gives
+\begin{gather}
+ \spnP(\dim\ker A=k)=\sum_{t=0}^kw_{n,s}(k,t)L_{n,s}(k,t),\label{spn:eq:lagrangian-laws}\\
+ \spnTV(A,U_n)=1-\sum_{k=0}^n\sum_{t=0}^kw_{n,s}(k,t)\min\set{1,L_{n,s}(k,t)} .\notag
+\end{gather}
+
+\paragraph{The nondegenerate endpoint.}
+Let $n=2m$ and let $H$ be nonsingular. Write $C_n=C_{n,m}=\prod_{j=m+1}^n(1-q^{-2j})$,
+$a_\infty=\prod_{i\ge1}(1-q^{-i})$, and
+\begin{equation}\label{spn:eq:deltaq}
+ \delta_q=a_\infty\sum_{k=2}^\infty\frac{q^{-k^2}}{a_k^2}\Bigl(1-q^{-\binom k2}\Bigr).
+\end{equation}
+
+\begin{theorem}[Rank tests miss a persistent obstruction; \stU]\label{spn:thm:rank-blind}
+For nonsingular $H$ and even $n$,
+\begin{equation}\label{spn:eq:rank-blind}
+ \spnTV\bigl(\dim\ker A,\dim\ker U_n\bigr)=(u_n(0)+u_n(1))(C_n^{-1}-1)
+ =a_n\Bigl[1+\frac{q(1-q^{-n})}{(q-1)^2}\Bigr](C_n^{-1}-1),
+\end{equation}
+which equals
+$\dfrac{a_\infty}{q^2-1}\Bigl(1+\dfrac{q}{(q-1)^2}\Bigr)q^{-n}+O_q(q^{-2n})$ as $n\to\infty$;
+the optimal rank-only event is $\set{\rank M\ge n-1}$. In contrast,
+\begin{equation}\label{spn:eq:full-blind}
+ \spnTV(A,U_n)=\spnP\bigl(H|_{\ker U_n\times\ker U_n}\ne0\bigr)\longrightarrow\delta_q>0 .
+\end{equation}
+The event that the kernel is not $H$-isotropic never occurs for $A$ and is an optimal
+distinguishing event at every finite $n$.
+\end{theorem}
+
+\begin{proof}
+By \cref{spn:thm:lagrangian} the likelihood is
+$\mathbf 1_{\set{\ker M\text{ is $H$-isotropic}}}\,q^{\binom k2}/C_n$. A uniform $k$-subspace of
+$\F_q^n$ is $H$-isotropic with probability $q^{-\binom k2}R_{n,k}$, where
+\[
+ R_{n,k}=\prod_{i=0}^{k-1}\frac{1-q^{2i-n}}{1-q^{i-n}}\quad(0\le k\le m),\qquad
+ R_{n,k}=0\quad(k>m),
+\]
+by dividing the number of ordered isotropic independent frames by the number of all ordered
+independent frames. Hence $\spnP(\dim\ker A=k)=u_n(k)R_{n,k}/C_n$. The ratio $R_{n,k}/C_n$
+exceeds one for $k=0,1$, because $R_{n,0}=R_{n,1}=1>C_n$, and is less than one for $k\ge2$:
+this is clear for $k>m$, and for $2\le k\le m$ every factor of $R_{n,k}$ is at most one, so
+\[
+ 1-R_{n,k}\ge1-\frac{1-q^{2-n}}{1-q^{1-n}}=\frac{(q^2-q)q^{-n}}{1-q^{1-n}}\ge q(q-1)q^{-n},
+\]
+while $1-C_n\le\sum_{j=m+1}^nq^{-2j}<q^{-n}/(q^2-1)<q(q-1)q^{-n}$. Total variation is the sum
+of the positive discrepancies, which proves the first equality in \eqref{spn:eq:rank-blind}
+and the optimal rank event; the second follows from $u_n(0)=a_n$ and
+$u_n(1)=a_nq(1-q^{-n})/(q-1)^2$. Since
+$\sum_{j=m+1}^nq^{-2j}=q^{-n}(1-q^{-n})/(q^2-1)$, expanding the product gives
+$C_n^{-1}-1=q^{-n}/(q^2-1)+O_q(q^{-2n})$, and $a_n=a_\infty(1+O_q(q^{-n}))$; this gives the
+asymptotic.
+
+Every supported likelihood exceeds one, so all negative discrepancy lies off the support and
+\[
+ \spnTV(A,U_n)=1-\sum_{k=0}^nu_n(k)q^{-\binom k2}R_{n,k},
+\]
+which is the exact form of \eqref{spn:eq:full-blind}. The obstruction is visible directly:
+for $x,y\in\ker A$, $x^{\spnT}Hy=x^{\spnT}(A^{\spnT}B-B^{\spnT}A)y=0$. For fixed $k$,
+$u_n(k)\to p_q(k)=a_\infty q^{-k^2}/a_k^2$ and $R_{n,k}\to1$. Since
+$\spnE q^{\dim\ker U_n}=2-q^{-n}<2$, the nullity tails beyond $r$ are at most $2q^{-r}$
+uniformly in $n$, so the limit may be taken termwise. As $\sum_kp_q(k)=1$, the limit is
+$\delta_q$, and its term $k=2$ is positive.
+\end{proof}
+
+The limiting nullity law $p_q$ is the classical one \cite{Fulman2015Stein}. For binary
+$20\times20$ matrices the two distances are $2.75409684107\cdot10^{-7}$ and
+$0.0688049884541$. The following values come from the exact formulas; the constants $\delta_q$
+are certified by rational arithmetic, using $a_M(1-q^{-M}/(q-1))\le a_\infty\le a_M$ and the
+tail bound $q^{-(K+1)^2}/\bigl(b_-(1-q^{-(2K+3)})\bigr)$ for the terms $k>K$ of
+\eqref{spn:eq:deltaq}, where $b_-$ is the displayed lower bound for $a_\infty$; with $M=140$ and
+$K=12$ the rational enclosure of $\delta_2$ has width below $4.94\cdot10^{-44}$.
+\begin{center}\small
+\begin{tabular}{rll}
+\toprule
+$q$ & $\delta_q$ & coefficient of $q^{-n}$ in \eqref{spn:eq:rank-blind}\\
+\midrule
+$2$ & $0.0688050065066945\ldots$ & $0.288788095086602$\\
+$3$ & $0.0132121494188950\ldots$ & $0.122527579546740$\\
+$4$ & $0.00408561989901872\ldots$ & $0.066303614685662$\\
+$5$ & $0.00165069311120747\ldots$ & $0.041580699774208$\\
+\bottomrule
+\end{tabular}
+\end{center}
+A kernel test is elementary: if $Z$ is a basis matrix of $\ker M$ and $Z^{\spnT}HZ\ne0$, then
+$M$ is not a value of \eqref{spn:eq:lagrangian-model}.
+
+The separation does not need a nonsingular form. Put $P_q=a_\infty$,
+$B_q=\prod_{j\ge1}(1-q^{-2j})$ and
+\[
+ \kappa_q=\frac1{2B_q}\Bigl[\frac1{q^2-1}+\frac1{P_q}\Bigl(\frac{2q+3}{q^2-1}
+ +\frac{q}{(q-1)^2}\Bigr)\Bigr].
+\]
+
+\begin{theorem}[A growing symplectic part suffices; \stU]\label{spn:thm:growing-form}
+For an alternating $H$ of rank $2s$ as above,
+\[
+ \spnTV\bigl(\dim\ker A,\dim\ker U_n\bigr)\le\kappa_q\,q^{-2s},
+\]
+and $\kappa_2<12$. Along every sequence with $s\to\infty$ and $2s\le n$, the full-matrix
+distance $\spnTV(A,U_n)$ tends to the constant $\delta_q$ of \eqref{spn:eq:deltaq}.
+\end{theorem}
+
+\begin{proof}
+Condition on the nullity $k$ of $U_n$, so that $K$ is a uniform $k$-subspace, and put
+$D_{n,k}=\prod_{i=0}^{k-1}(1-q^{i-n})\ge P_q$, $F_{s,k}=\prod_{i=0}^{k-1}(1-q^{2i-2s})$ for
+$k\le s$ and $F_{s,k}=0$ for $k>s$. Counting the $H$-isotropic $K$ with
+$K\cap\operatorname{rad}H=0$ by \eqref{spn:eq:kernel-types} with $t=0$ gives
+\begin{equation}\label{spn:eq:transverse}
+ \spnP\bigl(K\text{ isotropic},\ t=0\bigm|k\bigr)=q^{-\binom k2}\,\frac{F_{s,k}}{D_{n,k}} .
+\end{equation}
+With $h(K)=\mathbf 1_{\set{K\text{ isotropic}}}q^{\binom k2}\prod_{j=k-t+1}^k(1-q^{-j})$ the
+likelihood of nullity $k$ is $\spnE(h(K)\mid k)/C_{n,s}$; its part with $t=0$ is
+$F_{s,k}/D_{n,k}$, and the rest lies between $0$ and $q^{\binom k2}\spnP(t>0\mid k)$. Counting
+lines of $K$ inside the $d$-dimensional radical,
+\begin{equation}\label{spn:eq:radical-lines}
+ \spnP(t>0\mid k)\le\frac{(q^d-1)(q^k-1)}{(q-1)(q^n-1)}\le\frac{q}{(q-1)^2}(q^k-1)q^{-2s}.
+\end{equation}
+The elementary product bound gives
+\[
+ \Bigl|\frac{F_{s,k}}{D_{n,k}}-1\Bigr|\le P_q^{-1}\Bigl[q^{-2s}\frac{q^{2k}-1}{q^2-1}
+ +q^{-n}\frac{q^k-1}{q-1}\Bigr],\qquad 1-C_{n,s}\le\frac{q^{-2s}}{q^2-1},\qquad
+ C_{n,s}\ge B_q;
+\]
+for $k>s$ the first bound still holds, since then $q^{-2s}(q^{2k}-1)/(q^2-1)\ge1$. For the
+uniform model, $\spnE(q^k-1)\le1$; counting pairs of kernel vectors by the dimension of their
+span gives $\spnE q^{2k}=1+(q+1)(1-q^{-n})+(1-q^{-n})(1-q^{1-n})\le q+3$; and
+$u_n(k)\le P_q^{-1}q^{-k^2}$ by \eqref{spn:eq:uniform-nullity}, so that
+\[
+ \spnE\bigl[q^{\binom k2}(q^k-1)\bigr]\le P_q^{-1}\sum_{k\ge1}
+ \bigl(q^{-k(k-1)/2}-q^{-k(k+1)/2}\bigr)=P_q^{-1}.
+\]
+Write the likelihood minus one as $(F_{s,k}/D_{n,k}-1)/C_{n,s}$ plus the rest divided by
+$C_{n,s}$ plus $C_{n,s}^{-1}-1$, average against $u_n(k)$ using $q^{-n}\le q^{-2s}$, and divide
+by two; this gives the bound with the constant $\kappa_q$. The bounds $P_2>0.2887$ and
+$B_2>0.6885$ give $\kappa_2<12$.
+
+For the full law, again conditional on $k$, the likelihood equals
+$q^{\binom k2}/C_{n,s}\ge1$ on the event \eqref{spn:eq:transverse} and vanishes off the
+isotropic event. The contributions with $t>0$ have uniform probability tending to zero by
+\eqref{spn:eq:radical-lines}, and \eqref{spn:eq:transverse} tends to $q^{-\binom k2}$ for fixed
+$k$ as $s\to\infty$. So the conditional negative discrepancy tends to $1-q^{-\binom k2}$, and
+the uniform nullity tail bound permits summation over $k$, which gives $\delta_q$.
+\end{proof}
+
+This rate is not claimed to be sharp for all degeneracies; the nondegenerate formula
+\eqref{spn:eq:rank-blind} is exact. At the isotropic input $s=0$ the conditional law given
+rank is uniform and rank detects the whole discrepancy, as in
+\cref{spn:thm:symplectic-exact}. The likelihood was compared with exhaustive enumeration of all pairs $(A,B)$
+over prime fields for $(q,n)=(2,2),(3,2),(2,3)$, which covers $268{,}961$ pairs and $4{,}371$
+comparisons of a matrix with a form, including degenerate forms in characteristic two; the
+general laws, normalization, the exact nondegenerate distances and every sign in the rank
+comparison were evaluated in exact rational arithmetic for $q\in\set{2,3,4,5,8,9}$,
+$1\le n\le12$ and $0\le s\le\floor{n/2}$, where for extension fields only the counting
+formulas are
+tested.\footnote{\raggedright\artifact{symplectic_rank_blindness_2026-11-26/results/exhaustive_check.json},
+\artifact{symplectic_rank_blindness_2026-11-26/results/formula_checks.json},
+\artifact{symplectic_rank_blindness_2026-11-26/results/certified_constants.json}}
+Classical counts of subspaces in symplectic spaces are in
+\cite{Wan1993Anzahl,GuoLiWang2013Anzahl}.
 
 %======================================================================
 \subsection{Exact tests for a block of a split orthogonal matrix}\label{spn:sec:orthogonal}
@@ -1437,172 +1717,476 @@ leaves a precise parity signature, and averaging the two components leaves a
 precise full-rank signature.
 
 %======================================================================
-\subsection{A tail bound for every principal binary orthogonal kernel}\label{spn:sec:binary}
-\sources{grh_method_transfers_orthogonal_jets_2026-11-26}
+\subsection{The largest principal kernel of a random binary orthogonal matrix}\label{spn:sec:binary}
+\sources{orthogonal_nullity_and_prime_products; large_kernels_and_dirichlet_zeros; grh_method_transfers_orthogonal_jets_2026-11-26}
 
-Let $\spnOrth_n=\set{Q\in\GL_n(\F_2):Q^{\spnT}Q=I}$, and for
-$Q\in\spnOrth_n$ and $J\subseteq[n]$ let $Q[J]$ be the principal submatrix on
-$J$. Vaas \cite{Vaas2026Principal} asks about
+Let $\spnOrth_n=\set{Q\in\GL_n(\F_2):Q^{\spnT}Q=I}$, the isometries of the dot product, and
+for $Q\in\spnOrth_n$ and $S\subseteq[n]$ let $Q[S]$ be the principal submatrix on $S$, the empty
+matrix having nullity zero. Vaas \cite{Vaas2026Principal} asks for the typical size of
 \[
- \nu(Q)=\max_{J\subseteq[n]}\dim\ker Q[J],\qquad
+ \nu(Q)=\max_{S\subseteq[n]}\dim\ker Q[S],\qquad
  Q\text{ uniform in }\spnOrth_n ,
 \]
-including whether constants $c,\alpha>0$ can make
-$\spnP(\nu(Q)\ge cn)\ge1-2^{-\alpha n^2}$. The proposed linear alternative
-fails, and $\nu(Q)$ is at most of square-root size with exponentially high
-probability. Everything below uses the symmetric bilinear dot product over
-$\F_2$; replacing it with an orthogonal group attached to a quadratic form
-would change the problem.
+and whether constants $c,\alpha>0$ can make
+$\spnP(\nu(Q)\ge cn)\ge1-2^{-\alpha n^2}$. The answer is that $\nu(Q)$ is concentrated on the
+two integers next to $\sqrt n$; in particular the proposed linear behaviour fails. Far above
+$\sqrt n$, and up to saturation at $n/2$, the probability of a large kernel is determined up to a
+factor $1+o(1)$. Everything
+below uses the symmetric bilinear dot product over $\F_2$; an orthogonal group attached to a
+quadratic form would be a different problem.
 
-\begin{lemma}[Subspaces mapped into a prescribed subspace; \stU]\label{spn:lem:symp-incidence}
-Let $V$ be a nondegenerate symplectic space of even dimension $N$ over
-$\F_2$. Fix subspaces $U,T\subseteq V$ of dimensions $d,t$. Let $S$ be
-uniform in $\Sp(V)$. For $1\le s\le N/2$,
+Write $\mathbf j_m=(1,\dots,1)^{\spnT}\in\F_2^m$. Every $Q\in\spnOrth_n$ fixes $\mathbf j_n$:
+$x\cdot x=x\cdot\mathbf j_n$ for all $x$, so $Qx\cdot\mathbf j_n=Qx\cdot Qx=x\cdot\mathbf j_n$,
+and nondegeneracy gives $Q^{-1}\mathbf j_n=\mathbf j_n$. Call an $m\times d$ binary matrix
+\emph{regular} if its columns are independent and $\mathbf j_m$ is not in their span.
+
+\begin{lemma}[Comparison on free rows; \stU]\label{spn:lem:fibre}
+Let $X$ be a regular $n\times d$ binary matrix, let $Q$ be uniform in $\spnOrth_n$, and let
+$Y$ be an $n\times d$ matrix of independent fair bits. Then $QX$ is uniform on the regular
+frames with Gram matrix $X^{\spnT}X$. If an event $E$ of positive probability for $n\times d$
+matrices leaves $m\ge2d+5$ specified rows completely unrestricted, then
 \[
- \spnP\set{\exists L\subseteq U:\dim L=s,\ SL\subseteq T}
- \le6\cdot2^{-s(N-d-t)-s(s+1)/2}.
+ \Bigl|\frac{\spnP(QX\in E)}{\spnP(Y\in E)}-1\Bigr|\le8\cdot2^{2d-m},
 \]
-If $s>d$ or $s>t$, the event is empty. For $s=0$ the bound with right side
-$6$ also holds.
+uniformly in $X$, in its Gram matrix and in the conditions $E$ imposes on the other rows.
 \end{lemma}
 
 \begin{proof}
-Fix an independent ordered $s$-frame $x_1,\dots,x_s$ spanning one candidate
-$L$. Its orbit consists of all independent $s$-frames with the same
-alternating Gram matrix. The extension fact used to identify that orbit is
-the following. In the span of any frame, choose a symplectic basis for a
-nondegenerate summand and a basis for its radical. Pair the radical basis
-with dual vectors in the orthogonal complement of the nondegenerate summand,
-adjust those vectors to make the pairs hyperbolic, and complete to a
-symplectic basis of $V$. An isometry between the original spans carries
-these choices to compatible bases. The resulting basis map extends it to all
-of $V$. Thus the extension fact also covers a degenerate restricted form.
+\emph{The orbit.} Let $n$ be odd. The projection $v\mapsto v+(v\cdot v)\mathbf j_n$ along
+$\mathbf j_n$ maps onto $\mathbf j_n^\perp$, on which the dot product is alternating and
+nondegenerate, and is injective on the span of each regular frame; the projected pairings are
+$v\cdot w+(v\cdot v)(w\cdot w)$, so two regular frames with the same Gram matrix induce an
+isometry of the projected spans. Witt's extension theorem for alternating forms, valid also for
+degenerate subspaces (split off a nondegenerate summand, pair a basis of its radical with
+suitable vectors in the orthogonal complement of the summand, and complete by symplectic
+pairs), extends it to $\mathbf j_n^\perp$, and fixing $\mathbf j_n$ gives an orthogonal map
+carrying one frame to the other. For even $n$ adjoin a unit vector $e$, embed the frames with
+last coordinate zero and append $e$; the augmented frames are regular because
+$\mathbf j_{n+1}=\mathbf j_n+e$, and the odd-dimensional extension fixes $e$, hence restricts to
+$e^\perp$. So $QX$ has the law of $Y$ conditioned on regularity and $Y^{\spnT}Y=X^{\spnT}X$.
 
-Suppose $i$ independent images $y_1,\dots,y_i$ have already been selected.
-The conditions
-\[
- \langle y_j,y_{i+1}\rangle=\langle x_j,x_{i+1}\rangle\qquad(1\le j\le i)
-\]
-are $i$ independent linear equations. They have $2^{N-i}$ solutions. At most
-$2^i$ lie in the previous span, so there are at least $2^{N-i}-2^i$
-admissible next vectors. Consequently the orbit contains at least
-\[
- \prod_{i=0}^{s-1}(2^{N-i}-2^i)
- =2^{Ns-s(s-1)/2}\prod_{i=0}^{s-1}(1-2^{2i-N})
- \ge\frac23\,2^{Ns-s(s-1)/2}
-\]
-frames. Indeed $s\le N/2$ makes the finite product at least
-$\prod_{j\ge1}(1-4^{-j})\ge1-\sum_{j\ge1}4^{-j}=2/3$. There are at most
-$2^{ts}$ ordered frames in $T$, so
-\[
- \spnP(SL\subseteq T)\le\frac32\,2^{ts-Ns+s(s-1)/2}.
-\]
-The number of $s$-dimensional subspaces of $U$ satisfies
-\[
- \spnqbin{d}{s}{2}=\prod_{i=0}^{s-1}\frac{2^d-2^i}{2^s-2^i}
- \le4\cdot2^{s(d-s)}.
-\]
-For the constant, $\prod_{j\ge1}(1-2^{-j})>1/4$; for example its first two
-factors times the elementary tail bound give
-$(1/2)(3/4)(1-\sum_{j\ge3}2^{-j})=9/32>1/4$. A union bound over the candidate
-subspaces gives the stated exponent and the constant $6$.
+\emph{Local counts.} Let $Z$ be an $m\times d$ matrix of fair bits, $D=d(d+1)/2$, $H$ any
+symmetric $d\times d$ binary matrix and $a=2^{2d-m}$. Then
+\begin{equation}\label{spn:eq:fibre-bounds}
+ 2^D\spnP(Z^{\spnT}Z=H,\ Z\text{ regular})\ge1-\tfrac43a,\qquad
+ 2^D\spnP(Z^{\spnT}Z=H)\le(1-4a)^{-1}.
+\end{equation}
+For the first, expose the columns: given $i$ regular columns, the $i$ products and the norm of
+the next column, which is its product with $\mathbf j_m$, are $i+1$ independent linear
+conditions; of the $2^{m-i-1}$ solutions at most $2^{i+1}$ lie in the span of $\mathbf j_m$ and
+the earlier columns. Multiply and use $\prod(1-t_i)\ge1-\sum t_i$ and
+$\sum_{i<d}2^{2i+2-m}<4a/3$. For the second, a Fourier character on symmetric matrices,
+evaluated at a row contribution $zz^{\spnT}$, has the form $(-1)^{Q(z)}$ with $Q$ a
+squarefree polynomial of degree at most two without constant term. If its alternating polar
+form $B$ has rank $2s$, then $(\spnE_z(-1)^{Q(z)})^2=2^{-d}\sum_{h\in\operatorname{rad}B}(-1)^{Q(h)}$,
+by writing two independent inputs as $z,z+h$. So the bias vanishes unless $Q$ vanishes on the
+radical, and otherwise has absolute value $2^{-s}$. For fixed $B$ at most $2^{2s}$ linear
+adjustments of $Q$ vanish on the radical, there are at most $2^{2ds}$ forms $B$ of rank $2s$,
+and the only character of rank zero with nonzero bias is trivial. Fourier inversion and
+independence of the $m$ rows bound the deviation of $2^D\spnP(Z^{\spnT}Z=H)$ from $1$ by
+$\sum_{s\ge1}2^{(2d+2-m)s}=4a/(1-4a)$.
+
+\emph{Conclusion.} Condition on the restricted rows of $Y$; they contribute a fixed symmetric
+matrix to the Gram matrix, and a regular free-row block makes the whole matrix regular. By
+\eqref{spn:eq:fibre-bounds} the conditional probability of a regular frame with a prescribed
+Gram matrix lies between $2^{-D}(1-4a/3)$ and $2^{-D}(1-4a)^{-1}$, with or without $E$. Bayes'
+rule and the orbit description give the ratio bound, since $a\le1/32$ and
+$[(1-4a)(1-4a/3)]^{-1}-1\le8a$.
 \end{proof}
 
-An $s$-dimensional kernel supplies a subspace, while the orbit of a whole
-independent frame is much larger than the orbit of one vector. The quadratic
-exponent in $s$ pays for the later union over every principal submatrix.
-
-Put $c=(1,\dots,1)\in\F_2^n$ and write $B(x,y)=x^{\spnT}y$. Then
-$B(x,x)=B(x,c)$. Every isometry fixes $c$: for all $x$,
-$B(Qx,c)=B(Qx,Qx)=B(x,x)=B(x,c)$, and nondegeneracy gives $Q^{-1}c=c$. For
-$J\subseteq[n]$ let $E_J$ be its coordinate subspace, and put $j=\abs{J}$. A
-vector in the kernel of $Q[J]$ is precisely a vector in
-\begin{equation}\label{spn:eq:kernel-intersection}
- K_J=E_J\cap Q^{-1}E_{J^c}.
+For $S\subseteq[n]$ let $V_S$ be the coordinate subspace of vectors supported on $S$. A kernel
+vector of $Q[S]$ is a vector of $V_S\cap Q^{-1}V_{S^c}$; applying $Q$ identifies this space
+with the kernel of $Q^{-1}[S^c]=Q^{\spnT}[S^c]$, so
+\begin{equation}\label{spn:eq:comp}
+ \dim\ker Q[S]=\dim\ker Q[S^c],
 \end{equation}
-Therefore $\dim K_J\le\min(j,n-j)\le\floor{n/2}$. The empty and full sets
-have zero nullity, so only nonempty proper $J$ matter.
+and $\nu(Q)\le\floor{n/2}$. Let $G(b,r)$ be the number of $r$-dimensional subspaces of
+$\F_2^b$, zero for $r>b$, and put $c_\infty=\prod_{i\ge1}(1-2^{-i})^{-1}$. Counting ordered
+bases, $G(b,r)\le c_\infty2^{r(b-r)}$, and $c_\infty<4$, since the first two factors of the
+product times $1-\sum_{i\ge3}2^{-i}$ give $9/32>1/4$.
 
-\begin{theorem}[Uniform tail for the maximum principal nullity; \stU]\label{spn:thm:binary}
-For a uniform $Q\in\spnOrth_n$ and every integer $r$ with
-$1\le r\le\floor{n/2}$,
+\begin{theorem}[An explicit tail for the maximum principal nullity; \stU]\label{spn:thm:binary}
+For every integer $r$ with $1\le r\le(n-2)/2$,
 \[
- \spnP\set{\nu(Q)\ge r}\le\min\set{1,\ 6\cdot2^{\,n-r(r-1)/2}} .
+ \spnP\set{\nu(Q)\ge r}\le\tfrac32\,c_\infty\,2^{\,n-r^2+r}.
 \]
-For $r>\floor{n/2}$ the probability is zero.
 \end{theorem}
 
 \begin{proof}
-We prove the bound $6\cdot2^{-r(r-1)/2}$ for each fixed nonempty proper $J$,
-then sum over at most $2^n$ choices.
-
-\emph{Odd $n$.} Now $B(c,c)=1$ and $\F_2^n=\langle c\rangle\perp H$ with
-$H=c^\perp$. The form on $H$ is alternating and nondegenerate, of dimension
-$N=n-1$. Restriction identifies $\spnOrth_n$ with $\Sp(H)$: every symplectic
-map extends by fixing $c$. A uniform $Q$ therefore induces a uniform
-$S\in\Sp(H)$. Let $\rho$ be projection to $H$ along $c$. Since $c$ belongs to
-neither proper coordinate space, $\rho$ is injective on both $E_J$ and
-$E_{J^c}$. Their images have dimensions $d=j$ and $t=n-j$, so $d+t=N+1$. The
-projection commutes with $Q$. If $\dim K_J\ge r$, an $r$-dimensional subspace
-of $\rho(E_J)$ is mapped by $S$ into $\rho(E_{J^c})$. Apply
-\cref{spn:lem:symp-incidence} with $s=r\le N/2$. It gives
-$6\cdot2^{r-r(r+1)/2}=6\cdot2^{-r(r-1)/2}$. Ignoring the remaining
-$c$-component imposes fewer conditions, which is legitimate for this upper
-bound.
-
-\emph{Even $n$.} Here $c\in H=c^\perp$ and the radical of $B|_H$ is exactly
-$\langle c\rangle$. The quotient $\overline H=H/\langle c\rangle$ is a
-nondegenerate symplectic space of dimension $N=n-2$. The natural map
-$\spnOrth_n\to\Sp(\overline H)$ is onto. To see this directly, choose
-$f=e_1$. The plane $D=\langle c,f\rangle$ has Gram matrix
-$\left(\begin{smallmatrix}0&1\\1&1\end{smallmatrix}\right)$ and is
-nondegenerate. Its orthogonal complement is alternating and identifies with
-$\overline H$. Every symplectic map of that complement extends by the
-identity on $D$. Hence the induced $S$ is uniform.
-
-The spaces $E_J\cap H$ and $E_{J^c}\cap H$ have dimensions $j-1$ and
-$n-j-1$; both inject into the quotient. Their quotient images $U,T$ satisfy
-$d+t=N$. If $\dim K_J\ge r$, the subspace $K_J\cap H$ has dimension at least
-$r-1$. Its image in $\overline H$ remains injective and is mapped into $T$.
-Apply \cref{spn:lem:symp-incidence} with $s=r-1\le N/2$. The bound is
-$6\cdot2^{-(r-1)r/2}$. When $r=1$ this step is just the trivial bound by $6$.
-
-Both parity cases give the same fixed-$J$ estimate. The union bound and the
-deterministic restriction following \eqref{spn:eq:kernel-intersection}
-finish the proof.
+By \eqref{spn:eq:comp} it suffices to consider supports $S$ with $b=\abs S\le n/2$. A basis
+$X$ of an $r$-plane in $V_S$ is regular, and the plane lies in $\ker Q[S]$ exactly when $QX$ is
+supported on $S^c$. Write $g(r)=r(r+1)/2$. The column exposure in the proof of
+\eqref{spn:eq:fibre-bounds}, with $m=n$, shows that the orbit of $X$ has at least
+$(1-\tfrac43 2^{2r-n})2^{nr-g(r)}\ge\tfrac23 2^{nr-g(r)}$ elements when $r\le(n-2)/2$. Within
+the $n-b$ coordinates outside $S$ there are at most $2^{(n-b)r-r(r-1)/2}$ independent frames
+with the prescribed Gram matrix, since after $i$ columns the pairings with them are $i$
+independent linear conditions on the next one in this nondegenerate space. By the orbit
+description of \cref{spn:lem:fibre}, the plane is a kernel plane with probability at most
+$\tfrac32 2^{-br+r}$. Summing over the at most $c_\infty2^{r(b-r)}$ planes of $V_S$ and the at
+most $2^n$ supports gives the bound.
 \end{proof}
 
-\begin{corollary}[No linear maximum with high probability; \stU]\label{spn:cor:no-linear}
-For fixed $0<c\le1/2$,
+At $r=\floor{n/2}$, apply the theorem at $r-1$. Comparing exponents, the resulting bounds imply
+$\spnP\set{\nu(Q)\ge r}\le6\cdot2^{\,n-r(r-1)/2}$ for every $1\le r\le\floor{n/2}$; for
+$r\le(n-2)/2$ this is immediate from $r^2-r\ge r(r-1)/2$ and $\tfrac32c_\infty<6$, and at
+$r=\floor{n/2}$ the bound at $r-1$ is the smaller one when $r\ge4$, while for $r\le5$ the right
+side $6\cdot2^{n-r(r-1)/2}$ is at least one.
+
+\begin{theorem}[Threshold and two-point concentration; \stU]\label{spn:thm:threshold}
+There are absolute constants $c,C>0$ such that for all sufficiently large $n$ and all integers
+$\sqrt n/2\le r\le2\sqrt n$,
+\begin{align}
+ \spnP(\nu(Q)<r)&\le C\bigl(2^{r^2-n}+2^{-r}\bigr),\label{spn:eq:fail}\\
+ c\min\set{1,2^{n-r^2}}\le\spnP(\nu(Q)\ge r)&\le\min\set{1,C2^{n-r^2}}.\label{spn:eq:hit}
+\end{align}
+If $h$ is the nearest integer to $\sqrt n$, then
+$\spnP\set{\nu(Q)\in\set{h-1,h}}=1-O(2^{-c\sqrt n})$. Along every sequence with
+$\min_{j\ge0}\abs{n-j^2}\to\infty$ one has $\spnP\set{\nu(Q)=\floor{\sqrt n}}\to1$.
+\end{theorem}
+
+The quantity $2^{n-r^2}$ is a first moment: a fixed central principal block contains about a
+constant times $2^{-r^2}$ kernel subspaces of dimension $r$ in expectation, and there are about
+$2^n$ blocks. A second moment shows that these witnesses do not concentrate on a small
+exceptional set of matrices.
+
+\begin{proof}
+\emph{First moment.} For a support of size $b\le n/2$ and an $r$-plane $U\le V_S$ with basis
+$X$, the event $U\le\ker Q[S]$ asks the rows of $QX$ in $S$ to vanish; for independent bits it
+has probability $2^{-br}$, and \cref{spn:lem:fibre} applies with $n-b$ free rows. Summing over
+at most $c_\infty2^{r(b-r)}$ planes and over the $2^{n-1}$ complementary pairs of supports gives,
+whenever $n/2\ge2r+5$,
+\begin{equation}\label{spn:eq:upper}
+ \spnP(\nu(Q)\ge r)\le2^{n-1}c_\infty2^{-r^2}\bigl(1+8\cdot2^{2r-n/2}\bigr),
+\end{equation}
+which is the upper bound in \eqref{spn:eq:hit}.
+
+\emph{Second moment.} Let $W_S(Q)$ be the number of $r$-planes $U\le V_S$ with $(Qx)_i=0$ for
+all $x\in U$ and $i\in S$; it equals $G(\dim\ker Q[S],r)$. Put
 \[
- \spnP\set{\nu(Q)\ge cn}\le6\cdot2^{-c^2n^2/2+(1+c/2)n}
+ Z=\sum_{S\in\mathcal C}W_S(Q),\qquad\mathcal C=\set{S\subseteq[n]:n/3\le\abs S\le2n/3},
 \]
-whenever the integer threshold is feasible. If $c>1/2$ the event is empty.
-In particular the high-probability linear lower bound proposed in
-\cite{Vaas2026Principal} is impossible.
+so that $\abs{\mathcal C}\ge(1-9/n)2^n$ by Chebyshev's inequality. Constants below are
+absolute, $\tfrac12\sqrt n\le r\le2\sqrt n$, and $n$ is large. Let $Q_0$ have independent fair
+entries, and $c_r=\prod_{i=1}^r(1-2^{-i})^{-1}$. For $\abs S=b$,
+$\mu_b=\spnE W_S(Q_0)=G(b,r)2^{-br}=c_r2^{-r^2}\prod_{i<r}(1-2^{i-b})$, and the last product
+differs from $1$ by at most $2^{r-b}$. Since the event ignores $n-b$ rows,
+\cref{spn:lem:fibre} gives, uniformly on $\mathcal C$,
+\begin{equation}\label{spn:eq:onecentral}
+ \spnE W_S(Q)=\bigl(1+O(2^{-cn})\bigr)c_r2^{-r^2}.
+\end{equation}
+For $S,R\in\mathcal C$ write $b=\abs S$, $b'=\abs R$, $a=\abs{S\cap R}$ and $D=b+b'-2a$, and
+draw $U\le V_S$, $V\le V_R$ independently and uniformly among $r$-planes, with
+$i=\dim(U\cap V)$. In the independent model each row in $S\cap R$ carries $2r-i$ independent
+constraints and each row in $S\triangle R$ carries $r$, so
+$\spnE[W_S(Q_0)W_R(Q_0)]/(\mu_b\mu_{b'})=\spnE_{U,V}2^{ai}$. Counting linear maps
+$\F_2^a\to U\cap V$ by the dimension of their image,
+$2^{ai}=\sum_{j\le\min(a,i)}G(i,j)\prod_{h<j}(2^a-2^h)$. A common $j$-plane lies in
+$V_{S\cap R}$, and it lies in $U$ with probability
+$\prod_{h<j}(2^r-2^h)/(2^b-2^h)\le2^{-j(b-r)}$, similarly for $V$. With
+$G(a,j)\le c_\infty2^{j(a-j)}$ this gives
+\begin{equation}\label{spn:eq:overlap}
+ 0\le\spnE_{U,V}2^{ai}-1\le B_D,\qquad B_D=c_\infty\sum_{j=1}^r2^{j(2r-D-j)}.
+\end{equation}
+For $S,T\in\mathcal C$, choose $R\in\set{T,T^c}$ minimizing $D=\abs{S\triangle R}$; then
+$D\le n/2$, $R\in\mathcal C$ and $n-\abs{S\cup R}\ge n/12$, and $W_T(Q)=W_R(Q)$ by
+\eqref{spn:eq:comp}. For any pair of planes on $S,R$, a basis of their sum spans no
+$\mathbf j_n$, because $S\cup R$ omits a coordinate, and the joint witness event ignores at
+least $n/12$ rows. \Cref{spn:lem:fibre} with at most $2r$ columns therefore compares its
+probability with the independent model up to a factor $1+O(2^{-cn})$; a row of fair bits
+applied to a matrix of full column rank is uniform on the output rows. Summing over planes,
+\[
+ \frac{\spnE Z^2}{(\spnE Z)^2}\le\bigl(1+O(2^{-cn})\bigr)\bigl(1+\spnE_{S,T}B_D\bigr),
+\]
+with $S,T$ independent and uniform in $\mathcal C$.
+
+\emph{Averaging the overlap.} For fixed $S$, the proportion of $T$ with $D=d$ is at most
+$2\binom nd/\abs{\mathcal C}\ll2^{-n}\binom nd$. Completing the square gives
+$B_d\ll2^{(r-d/2)^2}$, since $\sum_{j\in\Z}2^{-(j-t)^2}$ is bounded uniformly in real $t$.
+For $d<r$, $\binom ndB_d\ll2^{r^2+d\log_2n-rd+d^2/4}\le2^{r^2-rd/2}$, and these $d$ contribute
+$O(2^{r^2-n})$ to $\spnE B_D$. For $r\le d\le3r$ each exponent in \eqref{spn:eq:overlap} is at
+most $r^2/4$, and these distances contribute $O(2^{-n+r^2/4+O(r\log n)})=O(2^{r^2-n})$, since
+$r\asymp\sqrt n$. For $d>3r$ the geometric majorant gives $B_d\ll2^{-r}$. Hence
+\begin{equation}\label{spn:eq:variance}
+ \frac{\operatorname{Var}Z}{(\spnE Z)^2}\ll2^{r^2-n}+2^{-r},
+\end{equation}
+the factor $1+O(2^{-cn})$ being absorbed. Chebyshev's inequality gives
+$\spnP(\nu(Q)<r)\le\spnP(Z=0)\le\operatorname{Var}Z/(\spnE Z)^2$, which is \eqref{spn:eq:fail},
+and Cauchy--Schwarz gives $\spnP(\nu(Q)\ge r)\ge\spnP(Z>0)\ge(\spnE Z)^2/\spnE Z^2$, the lower
+bound in \eqref{spn:eq:hit}.
+
+\emph{Concentration.} Since $(h-\tfrac12)^2\le n\le(h+\tfrac12)^2$, both $n-(h-1)^2$ and
+$(h+1)^2-n$ are at least $h-1$; apply \eqref{spn:eq:fail} at $r=h-1$ and the upper bound of
+\eqref{spn:eq:hit} at $r=h+1$. If $k=\floor{\sqrt n}$ and $n$ recedes from the squares, both
+$n-k^2$ and $(k+1)^2-n$ tend to infinity, and the bounds at $k$ and $k+1$ give the last
+assertion.
+\end{proof}
+
+\begin{corollary}[Two values are sometimes necessary; \stU]\label{spn:cor:twovalues}
+Along $n=k^2-1$ both $\spnP(\nu(Q)=k-1)$ and $\spnP(\nu(Q)=k)$ have positive lower limits. At
+$n=k^2+k$, by contrast, $\nu(Q)=k$ with probability tending to one.
 \end{corollary}
 
 \begin{proof}
-Use $r=\ceil{cn}$ in \cref{spn:thm:binary} and $r(r-1)\ge cn(cn-1)$.
+By \cref{spn:thm:threshold} the maximum lies in $\set{k-1,k}$ with probability tending to one.
+The lower bound of \eqref{spn:eq:hit} at $r=k$ is at least $c/2$, and by \eqref{spn:eq:upper}
+the probability of $\nu(Q)\ge k$ is at most $c_\infty/4+o(1)<1$. The second assertion is the
+last part of \cref{spn:thm:threshold}.
 \end{proof}
 
-\begin{corollary}[A square-root upper scale; \stU]\label{spn:cor:sqrt-scale}
-For every $a>0$ put
+\begin{proposition}[The leading constant above the threshold; \stU]\label{spn:prop:raretail}
+If $r/\sqrt n\to1$ and $r^2-n\to+\infty$, then
 \[
- r_n=\ceil*{\frac{1+\sqrt{1+8(1+a)n}}2}.
+ \spnP\bigl(\nu(Q)\ge r\bigr)\sim\tfrac12\,c_\infty\,2^{\,n-r^2}.
 \]
-Then $\spnP(\nu(Q)\ge r_n)\le6\cdot2^{-an}$, with probability zero if the
-threshold exceeds $n/2$. Consequently $\nu(Q)=O(\sqrt n)$ with exponentially
-high probability; more specifically, for every $\epsilon>0$, the probability
-that $\nu(Q)>(\sqrt2+\epsilon)\sqrt n$ tends to zero exponentially in $n$.
+The factor $\tfrac12$ reflects the coincidence \eqref{spn:eq:comp} of complementary supports.
+\end{proposition}
+
+\begin{proof}
+Put $\lambda=2^{n-r^2}$, choose one member of each complementary pair of central supports,
+and let $N$ count the chosen supports with nullity at least $r$. For a block of nullity $h$,
+counting flags of dimensions $r,r+1$ gives $G(h,r)(2^{h-r}-1)=G(h,r+1)(2^{r+1}-1)$, so on
+$h\ge r+1$ the witness count $G(h,r)$ is at most $(2^{r+1}-1)G(h,r+1)$. By
+\eqref{spn:eq:onecentral} at $r$ and $r+1$, replacing the witness count by the indicator of
+$h\ge r$ costs $O(2^{-r})$ of its mean, so $\spnE N\sim c_\infty\lambda/2$. For the second
+factorial moment use $\mathbf 1_{h\ge r}\le G(h,r)$ at two distinct representatives and repeat
+the pair comparison; now $D=0$ is impossible, each representative has at most $2\binom nd$
+partners at distance $d$, the distances $1\le d<r$ contribute $O(\lambda^{-1}2^{-r/2})$ to the
+normalized pair bound, the distances $r\le d\le3r$ contribute $o(1)$ because $r^2/n\to1$, and
+larger distances $O(2^{-r})$. Hence $\spnE[N(N-1)]\ll\lambda^2+\lambda2^{-r/2}=o(\lambda)$, and
+the first two Bonferroni inequalities give $\spnP(N>0)=\spnE N+o(\lambda)$. Among the remaining
+supports take the smaller member of each complementary pair, of size $b<n/3$; those with
+$b<r$ cannot witness the event, and for the others the single-plane comparison on $n-b$ free
+rows gives $\spnE W_S(Q)\ll2^{-r^2}$. There are $o(2^n)$ noncentral supports, so they
+contribute $o(\lambda)$.
+\end{proof}
+
+\paragraph{Large kernels far above the threshold.}
+For $r/\sqrt n\to\infty$ the rare event is carried by a single complementary pair, and its
+probability is known up to a factor $1+o(1)$. Write $\gamma=c_\infty^{-1}=\prod_{j\ge1}(1-2^{-j})$,
+$a=\prod_{j\ge1}(1-2^{-2j})$, $b_S=\dim\ker Q[S]$, and
+\[
+ B_{n,r}=\sum_{s=r}^{n-r}\binom ns ;
+\]
+by \eqref{spn:eq:comp}, $b_S\ge r$ forces $r\le\abs S\le n-r$, so $B_{n,r}/2$ counts the feasible
+complementary pairs. By \cref{spn:lem:fibre}, all vectors of a given parity other than $0$ and
+$\mathbf j_d$ form one orbit when present; counting the orbit of a unit vector, which has
+$2^{d-1}-\mathbf 1_{d\text{ odd}}$ elements for $d\ge2$, and then its stabilizer gives
+\begin{equation}\label{spn:eq:orth-order}
+ \abs{\spnOrth_d}=2^{d(d-1)/2}a_d,\qquad a_d=\prod_{1\le i\le\floor{(d-1)/2}}(1-2^{-2i}),
+\end{equation}
+with $\abs{\spnOrth_0}=\abs{\spnOrth_1}=1$. Call a $j$-plane of $\F_2^v$ \emph{standard} if it is
+in the isometry orbit of a coordinate plane. Its stabilizer is $\spnOrth_j\times\spnOrth_{v-j}$,
+so by \eqref{spn:eq:orth-order} and $2^{j(v-j)}\le G(v,j)\le\gamma^{-1}2^{j(v-j)}$ the standard
+planes form at least an absolute positive fraction of all $j$-planes, uniformly in $v,j$.
+
+\begin{lemma}[One principal submatrix; \stU]\label{spn:lem:onesupport}
+Let $\abs S=s$ and $W_j(S)=G(b_S,j)$. Uniformly for $j\le\min(s,n-s)$,
+$\spnE W_j(S)\asymp2^{-j^2}$. If $j\to\infty$ and $\min(s-j,n-s-j)\to\infty$, then
+$\spnE W_j(S)\sim\abs{\GL_j(\F_2)}^{-1}$, and the same equivalent and comparison hold, as
+$j\to\infty$, for $\spnP(b_S\ge j)$ and $\spnP(b_S=j)$.
+\end{lemma}
+
+\begin{proof}
+The kernel of $Q[S]$ is identified with $QV_S\cap V_{S^c}$. For an unrestricted uniform
+$s$-plane the expected number of $j$-planes in its intersection with $V_{S^c}$ is
+$G(n-s,j)G(s,j)/G(n,j)$, and domination by standard planes gives the upper estimate. For the
+lower estimate restrict to the $\abs{\spnOrth_s}/(\abs{\spnOrth_j}\abs{\spnOrth_{s-j}})$ standard
+$j$-planes in $V_S$; fix an orthonormal basis of each and require its image to be an orthonormal
+frame in $V_{S^c}$ extendible to an orthonormal basis there. This has probability at least
+$(\abs{\spnOrth_{n-s}}/\abs{\spnOrth_{n-s-j}})/(\abs{\spnOrth_n}/\abs{\spnOrth_{n-j}})$, and
+\eqref{spn:eq:orth-order} gives the lower bound, also when a complement is zero-dimensional.
+
+For the constant put $D=j(j+1)/2$. By the column exposure of \eqref{spn:eq:fibre-bounds}, for
+every symmetric Gram matrix the number of regular $n\times j$ frames with that Gram matrix is
+$2^{nj-D}(1+O(2^{2j-n}))$ as $n-2j\to\infty$. Independent frames whose span contains
+$\mathbf j_n$ add at most $(2^j-1)2^{n(j-1)-j(j-1)/2}$, by moving the coefficient vector of
+$\mathbf j_n$ to the last column; in particular for the zero Gram matrix there are at most
+$2\cdot2^{nj-D}$ independent frames whenever $2j\le n$. An ordered kernel witness with its image
+is a pair of rank-$j$ frames $X,Y$ supported on $S$ and $S^c$ with $X^{\spnT}X=Y^{\spnT}Y$ and
+$QX=Y$; stacking their nonzero rows gives an $n\times j$ matrix $Z$ with $Z^{\spnT}Z=0$. In a
+uniform regular such $Z$ every nonzero combination of columns is uniform on the even vectors
+other than $0,\mathbf j_n$, so a union bound shows that either restricted rank fails with
+probability $O(2^{j-s}+2^{j-(n-s)})$, and the number of eligible pairs is $(1+o(1))2^{nj-D}$. Each
+of $X,Y$ is regular, and $\spnP(QX=Y)=(1+o(1))2^{-nj+D}$ by the Gram count. Dividing by the
+$\abs{\GL_j(\F_2)}$ ordered bases gives the equivalent. Finally
+$0\le W_j-\mathbf 1_{b_S\ge j}\le(2^{j+1}-1)W_{j+1}$ by counting flags, and the upper estimate
+bounds the excess by $O(2^{-j^2-j})$.
+\end{proof}
+
+A second exceptional pair is controlled through self-dual codes. A self-dual binary code is an
+$n$-plane $L=L^\perp$ of $\F_2^{2n}$ for the dot product; it contains $\mathbf j_{2n}$ and is even,
+and self-dual codes correspond to the Lagrangians of the symplectic space
+$\mathbf j_{2n}^\perp/\langle\mathbf j_{2n}\rangle$ of dimension $2(n-1)$, of which there are
+$\prod_{i=1}^{n-1}(2^i+1)$. A uniform self-dual code is the graph of a linear map on the first
+$n$ coordinates with probability $p_n=\abs{\spnOrth_n}/\prod_{i=1}^{n-1}(2^i+1)\gg1$, since those
+maps are exactly the isometries; conditioning on the graph event costs only a constant in an
+upper bound. For $S\subseteq[n]$ put $X_S=V_S\oplus V_{S^c}$, the first summand in the input and
+the second in the output, so that $X_S^\perp=X_{S^c}$, and $d_S=\dim(L\cap X_S)$. For a graph
+$d_S=b_S$, and for every self-dual code $(\operatorname{proj}_{X_S}L)^{\perp}=L\cap X_S$ inside
+$X_S$, so $d_S=d_{S^c}$. For fixed $S$,
+\begin{equation}\label{spn:eq:sdone}
+ \spnP_{\mathrm{sd}}(d_S\ge r)\ll2^{-r^2}:
+\end{equation}
+an isotropic $r$-plane in $X_S$ omits $\mathbf j_{2n}$ and lies in a random self-dual code with
+probability $\prod_{i=n-r}^{n-1}(2^i+1)^{-1}\le2^{-nr+r(r+1)/2}$, by passing to the quotient by
+its image, and the zero-Gram count above bounds the number of such planes by
+$2\cdot2^{nr-r(r+1)/2}/\abs{\GL_r(\F_2)}$.
+
+\begin{lemma}[Two complementary pairs; \stU]\label{spn:lem:twopairs}
+Let $S,T$ represent distinct complementary pairs, and let
+$e=\min(\abs{S\triangle T},n-\abs{S\triangle T})$. There are absolute constants $c,C>0$ such
+that, for all sufficiently large $r$, conditional on $d_S=r$ in the self-dual ensemble,
+\[
+ \spnP_{\mathrm{sd}}(d_T\ge r\mid d_S=r)\le
+ \begin{cases}C2^{-e(r-e)/2},&1\le e\le r/2,\\ C2^{-cr^2},&r/2\le e\le n/2.\end{cases}
+\]
+\end{lemma}
+
+\begin{proof}
+Replacing $T$ by $T^c$ if necessary, $X_T$ is the sum of an $(n-e)$-plane of $X=X_S$ and an
+$e$-plane of $Y=X_S^\perp$. Conditional on $d_S=r$ the law of $L$ is invariant under
+$\spnOrth(X)\times\spnOrth(Y)$, so one may fix $L$ and randomize those two planes over their
+standard orbits; up to an absolute constant this reduces to independent uniform planes
+$P\subset X$ and $P'\subset Y$ of dimensions $n-e$ and $e$. Put $W=L\cap X$, $U=\operatorname{proj}_XL$,
+and $W',U'$ likewise in $Y$; their dimensions are $r,n-r,r,n-r$, and $(x,y)\in L$ induces an
+isomorphism $f\colon U/W\to U'/W'$ of spaces of dimension $n-2r$. With
+$a=\dim(W\cap P)$, $g=\dim(U\cap P)$, $a'=\dim(W'\cap P')$, $g'=\dim(U'\cap P')$, and $J,J'$ the
+images of $U\cap P$, $U'\cap P'$ in the two quotients,
+\begin{equation}\label{spn:eq:residual}
+ d:=\dim\bigl(L\cap(P\oplus P')\bigr)=a+a'+\dim(fJ\cap J'),
+\end{equation}
+since sending a pair in the intersection to its common quotient coordinate is onto the last
+intersection with kernel $(W\cap P)\oplus(W'\cap P')$. Conditional on the four dimensions, $J$ and
+$J'$ are independent uniform planes, because automorphisms of either quotient lift to
+automorphisms preserving the flag $W\subset U$. For a uniform $p$-plane and a fixed $v$-plane in
+dimension $N$, the intersection dimension exceeds its minimum $(p+v-N)_+$ by at least $t\ge1$
+with probability at most
+\begin{equation}\label{spn:eq:planetail}
+ C2^{-t(t+\abs{N-p-v})},
+\end{equation}
+by counting $t$-planes in the intersection when $p+v\le N$, and using annihilators otherwise. The
+minima of $a,a',g,g'$ are $(r-e)_+$, $0$, $n-r-e$ and $(e-r)_+$. If $e\le r/2$, projection to $Y$
+gives $d\le a+g'$, so $d\ge r$ requires $a-(r-e)$ or $g'$ to reach $\ceil{e/2}$, and in both cases
+$\abs{N-p-v}=r-e$ in \eqref{spn:eq:planetail}; this gives the first bound. If $e\ge r/2$, apply
+\eqref{spn:eq:planetail} to the four dimensions and, conditionally, to the last term of
+\eqref{spn:eq:residual}; outside an event of probability $O(2^{-t^2})$ all five excesses are less
+than $t$, and then $d\le\max(a+a',g+g'-(n-2r))+t\le(r-e)_++3t$. Taking $t=\floor{r/8}$ gives
+$d<r$.
+\end{proof}
+
+\begin{theorem}[The probability of a large principal kernel; \stU]\label{spn:thm:rare}
+Let $r=r(n)\le\floor{n/2}$ with $r/\sqrt n\to\infty$. Conditional on $\nu(Q)\ge r$, with
+probability tending to one exactly one complementary pair has nullity at least $r$, and its
+nullity is exactly $r$. If moreover $n-2r\to\infty$, then
+\begin{equation}\label{spn:eq:rare}
+ \spnP(\nu(Q)\ge r)\sim\frac{B_{n,r}}{2\abs{\GL_r(\F_2)}}\sim\frac{B_{n,r}}{2\gamma}\,2^{-r^2},
+\end{equation}
+and choosing a side of the exceptional pair by a fair coin gives, in total variation, the uniform
+distribution on the $B_{n,r}$ feasible sets.
+\end{theorem}
+
+\begin{proof}
+For fixed $S$ there are at most $2\binom ne$ oriented sets at folded distance $e$. Summing the
+first bound of \cref{spn:lem:twopairs} with $\binom ne\le n^e$ and $r-e\ge r/2$, and the second over
+at most $2^n$ sets, gives
+$\spnP_{\mathrm{sd}}(\exists\,T\notin\set{S,S^c}:d_T\ge r\mid d_S=r)\ll n2^{-r/4}+2^{n-cr^2}=o(1)$,
+since $r/\sqrt n\to\infty$. Multiplying by \eqref{spn:eq:sdone} and dividing by $p_n$ returns to
+isometries: uniformly in feasible $S$,
+$\spnP(b_S=r,\ \exists\,T\notin\set{S,S^c}:b_T\ge r)=o(2^{-r^2})$, while
+$\spnP(b_S>r)=O(2^{-(r+1)^2})$ by \cref{spn:lem:onesupport}. Summing over feasible pairs,
+\begin{equation}\label{spn:eq:raresum}
+ \spnP(\nu(Q)\ge r)=(1+o(1))\frac12\sum_{r\le\abs S\le n-r}\spnP(b_S=r)\asymp B_{n,r}2^{-r^2},
+\end{equation}
+the lower bound summing disjoint events on which the indicated pair is unique with nullity $r$,
+and the upper bound summing single-pair events; this proves conditional uniqueness. If
+$n-2r\to\infty$, remove the $\ell$ layers $\abs S$ nearest either endpoint, with $\ell\to\infty$
+and $\ell=o(\min(n-2r,\sqrt n))$; the removed proportion of feasible sets is
+$O(\ell/\min(n-2r,\sqrt n))$, since each layer is at most a central binomial coefficient and the
+middle $\asymp\min(n-2r,\sqrt n)$ layers are each at least a constant times it. On the retained
+layers \cref{spn:lem:onesupport} gives a uniform equivalent $\abs{\GL_r(\F_2)}^{-1}$, and
+elsewhere an upper bound of the same order, which gives \eqref{spn:eq:rare} and the
+total-variation statement.
+\end{proof}
+
+When $(n-2r)/\sqrt n\to t\in(0,\infty)$, $B_{n,r}/2^n$ tends to $2\Phi(t)-1$ with $\Phi$ the
+standard normal distribution function, and for $1\ll n-2r\ll\sqrt n$,
+$B_{n,r}\sim(n-2r+1)2^n\sqrt{2/(\pi n)}$: the shortening of the feasible interval changes the
+prefactor while the exponent stays $-r^2$.
+
+\begin{corollary}[The linear-deviation asymptotic; \stU]\label{spn:cor:no-linear}
+For fixed $0<\alpha<1/2$ and $r=\floor{\alpha n}$,
+\[
+ \log_2\spnP\set{\nu(Q)\ge r}=-r^2+n-1-\log_2\gamma+o(1).
+\]
+In particular $n^{-2}\log_2\spnP\set{\nu(Q)\ge\floor{\alpha n}}\to-\alpha^2$ for every
+$0<\alpha\le1/2$, the endpoint $\alpha=1/2$ following from \cref{spn:thm:saturation}, and the
+high-probability linear lower bound proposed in \cite{Vaas2026Principal} is impossible.
 \end{corollary}
 
-The proof does not treat independent-entry random matrices as interchangeable
-with orthogonal matrices: the fixed vector $c$ and the even-dimensional
-quotient are essential. Exhaustive verification for $1\le n\le6$ (group
-orders, the deterministic maximum $\floor{n/2}$, complete nullity histograms
-and the tail bound) is
-recorded.\footnote{\artifact{grh_method_transfers_orthogonal_jets_2026-11-26/checks/binary_orthogonal_checks.json}}
+\begin{proof}
+The feasible sets have proportion tending to one, so $B_{n,r}\sim2^n$ in \eqref{spn:eq:rare}.
+Keeping the integer $r$ inside the square matters at this precision.
+\end{proof}
+
+\begin{theorem}[Saturation; \stU]\label{spn:thm:saturation}
+As $m\to\infty$,
+\begin{align*}
+ n&=2m: &\spnP(\nu(Q)=m)&\sim\frac a2\binom{2m}m2^{-m^2},\\
+ n&=2m+1: &\spnP(\nu(Q)=m)&\sim a\binom{2m+1}m2^{-m^2}.
+\end{align*}
+\end{theorem}
+
+\begin{proof}
+The summation \eqref{spn:eq:raresum} holds also for bounded $n-2r$. For $n=2m$ and $\abs S=m$,
+$b_S=m$ exactly when $Q$ maps $V_S$ onto $V_{S^c}$, with probability
+$\abs{\spnOrth_m}^2/\abs{\spnOrth_{2m}}$; take the $\binom{2m}m/2$ complementary pairs and use
+\eqref{spn:eq:orth-order}. For $n=2m+1$ take the side of size $m$: the image of $V_S$ must be a
+standard $m$-plane of the $(m+1)$-dimensional space $V_{S^c}$, whose orthogonal complement there is
+spanned by a norm-one vector $v$. There are $2^m-\mathbf 1_{m\text{ even}}$ admissible $v$,
+excluding $\mathbf j_{m+1}$ when it is odd, since its orthogonal hyperplane is alternating, and
+for $m\ge2$ this counts the targets exactly. The probability for one support is
+$(2^m-\mathbf 1_{m\text{ even}})\abs{\spnOrth_m}\abs{\spnOrth_{m+1}}/\abs{\spnOrth_{2m+1}}$;
+multiply by $\binom{2m+1}m$ and use \eqref{spn:eq:orth-order}.
+\end{proof}
+
+\begin{proposition}[Exact count at saturation in even dimension; \stU]\label{spn:prop:saturated-count}
+Let $o_j=\abs{\spnOrth_j}$, $o_0=1$, and let $N_{2m}$ be the number of $Q\in\spnOrth_{2m}$ with
+$\nu(Q)=m$. Then
+\[
+ N_{2m}=(2m)!\,[z^m]\Bigl(\sum_{j\ge0}\Bigl(\frac{o_j}{j!}\Bigr)^2z^j\Bigr)^{1/2},
+\]
+the square root being the formal power series with constant term one. The first values are
+$N_2=1$, $N_4=9$, $N_6=225$ and $N_8=71505$.
+\end{proposition}
+
+\begin{proof}
+Associate to $Q$ the graph on $[2m]$ with an edge $ij$, loops included, whenever $Q_{ij}$ or
+$Q_{ji}$ is nonzero. Saturation means a partition into two classes with zero diagonal blocks,
+that is a proper two-colouring. On each connected component the two classes have equal size,
+since the corresponding diagonal component of $Q$ is invertible and interchanges the two
+coordinate spaces, so a properly coloured matrix on $2j$ labels has $\binom{2j}jo_j^2$
+possibilities, the two off-diagonal blocks being arbitrary isometries. Each uncoloured bipartite
+component has exactly two colourings, so the exponential generating series of coloured
+configurations is the square of that of uncoloured ones. Substituting $z=x^2$ gives the formula.
+\end{proof}
+
+In dimension six, $225$ of the $23{,}040$ matrices attain the maximum three; this finite count
+includes collisions of distinct complementary pairs, which \cref{spn:thm:rare} shows to be
+negligible as the dimension grows. The group orders, nullity histograms through dimension six,
+the saturated counts through dimension twelve and the quotient-intersection identity
+\eqref{spn:eq:residual} are checked by exact
+computation.\footnote{\raggedright\artifact{large_kernels_and_dirichlet_zeros/check_orthogonal.txt}}
+
+The proofs do not treat independent-entry matrices as interchangeable with orthogonal ones: the
+fixed vector $\mathbf j_n$ and the regularity condition are essential. Exhaustive verification
+for $1\le n\le6$ (group orders, the deterministic maximum $\floor{n/2}$, complete nullity
+histograms) is
+recorded.\footnote{\raggedright\artifact{grh_method_transfers_orthogonal_jets_2026-11-26/checks/binary_orthogonal_checks.json}}
+Enumeration of the orthogonal groups in dimensions $2$ to $5$ compares frame orbits with complete
+Gram fibres for frames of up to three columns and tests \eqref{spn:eq:comp}; over all $65{,}536$
+binary $4\times4$ matrices, the one-dimensional witnesses on the six two-element supports have
+$\spnE Z=9/2$ and $\spnE Z^2=201/8$, as the row-wise and overlap counts
+predict.\footnote{\raggedright\artifact{orthogonal_nullity_and_prime_products/checks/check_matrices_output.txt}}
 
 %======================================================================
 \subsection{When local torsion data become global twists}\label{spn:sec:characters}
@@ -2571,16 +3155,22 @@ scale.
 \end{question}
 
 \begin{question}[General symplectic compressions]\label{spn:q:symplectic}
-For arbitrary compressed subspaces in a symplectic space, determine the
-limiting discrepancy from the uniform matrix law in terms of the ranks of
-their restricted alternating forms. \Cref{spn:thm:symplectic-exact} gives the
-isotropic endpoint of that classification.
+For two arbitrary compressed subspaces of a symplectic space, neither of them
+Lagrangian, determine the law of the compression, or at least its limiting
+discrepancy from the uniform matrix law, in terms of the restricted
+alternating forms. \Cref{spn:thm:symplectic-exact} treats two isotropic
+subspaces and \cref{spn:thm:lagrangian} a Lagrangian target with an arbitrary
+source form.
 \end{question}
 
-\begin{question}[The scale of the binary principal nullity]\label{spn:q:binary}
-\Cref{spn:cor:sqrt-scale} gives $\nu(Q)=O(\sqrt n)$ with exponentially high
-probability and no matching lower bound. Is the typical order of
-$\nu(Q)$ logarithmic, of square-root size, or another sublinear scale?
+\begin{question}[The binary principal nullity in the critical window]\label{spn:q:binary}
+For fixed $t\in\Z$, does $\spnP\set{\nu(Q)\ge k}$ converge along $n=k^2+t$,
+and what is the limiting distribution of the number of complementary pairs
+with nullity at least $k$? A second moment alone cannot identify that law.
+For a fixed gap $n-2r\ge2$, is the constant implicit in
+\eqref{spn:eq:raresum} a closed product for each parity?
+\Cref{spn:thm:rare,spn:thm:saturation} treat diverging gaps and the gaps
+zero and one.
 \end{question}
 
 \begin{question}[An arithmetic family of constrained twists]\label{spn:q:twists}
