@@ -1,5 +1,6 @@
 import IPRADerivations.Foundations.AuxiliaryEnvelope
 import IPRADerivations.DiophantineNumberTheory.KhinchinBlockGeo
+import IPRADerivations.Core.BoundedSums
 
 /-!
 # The dyadic majorant of the divergence modulus (`hurwitz_khinchin_ipra`)
@@ -66,32 +67,25 @@ theorem dyadic (Ψ : PTm 2) (K B x : PTm n)
         (pw two (Syn.shift K + var 0) * inst2 Ψ (pw two (Syn.shift K + var 0)) (Syn.shift x)))) :
     Γ ⊢[PRAAx] le (ap2 (sumF Ψ) (pw two (K + B)) x)
       (ap2 (sumF Ψ) (pw two K) x + ap2 (sumF (dyB Ψ)) B (pairT K x)) := by
-  have hall : Γ ⊢[PRAAx] Fm.all (le (var 0) (Syn.shift B) ⟶
-      le (ap2 (sumF Ψ) (pw two (Syn.shift K + var 0)) (Syn.shift x))
-        (ap2 (sumF Ψ) (pw two (Syn.shift K)) (Syn.shift x) + ap2 (sumF (dyB Ψ)) (var 0) (pairT (Syn.shift K) (Syn.shift x)))) := by
-    refine PRA.qfInd _ ⟨le_QF _ _, le_QF _ _⟩ ?_ ?_
-    · simp only [Fm.subst_imp, subst_le, subst_ap2, subst_pairT, PTm.subst_add, ConciseIPRA.PTm.subst_succ, ConciseIPRA.PTm.subst_zero, Syn.subst_var, Syn.inst_zero,
-        Syn.subst_inst_shift]
-      refine .impI ?_
-      have e1 := natEq (congrAp2 (Γ := le zero B :: Γ) (sumF Ψ) (congrPw2 (add_zero K)) (.eqRefl x))
-      have e2 := natEq (sum_zero (Γ := le zero B :: Γ) (dyB Ψ) (pairT K x))
+  let P : Fm PTm (n + 1) := le (ap2 (sumF Ψ) (pw two (Syn.shift K + var 0)) (Syn.shift x))
+    (ap2 (sumF Ψ) (pw two (Syn.shift K)) (Syn.shift x) +
+      ap2 (sumF (dyB Ψ)) (var 0) (pairT (Syn.shift K) (Syn.shift x)))
+  have atEnd : Γ ⊢[PRAAx] P.subst (Syn.inst B) := by
+    refine qfIndUpTo B (le_QF _ _) ?_ ?_
+    · simp only [P, subst_le, subst_ap2, subst_pairT, PTm.subst_add, ConciseIPRA.PTm.subst_succ,
+        ConciseIPRA.PTm.subst_zero, Syn.subst_var, Syn.inst_zero, Syn.subst_inst_shift]
+      have e1 := natEq (congrAp2 (Γ := Γ) (sumF Ψ) (congrPw2 (add_zero K)) (.eqRefl x))
+      have e2 := natEq (sum_zero (Γ := Γ) (dyB Ψ) (pairT K x))
       ipra_le 0 with e2 - e1
-    · simp only [Fm.subst_imp, subst_le, subst_ap2, subst_pairT, PTm.subst_add, ConciseIPRA.PTm.subst_succ, ConciseIPRA.PTm.subst_zero, Syn.subst_var, Syn.repl_zero,
-        subst_repl_shift]
+    · simp only [P, subst_le, subst_ap2, subst_pairT, PTm.subst_add, ConciseIPRA.PTm.subst_succ,
+        ConciseIPRA.PTm.subst_zero, Syn.subst_var, Syn.repl_zero, subst_repl_shift]
       refine .impI ?_
-      let Θ : List (Fm PTm (n + 1)) := le (succ (var 0)) (Syn.shift B) ::
-        (le (var 0) (Syn.shift B) ⟶
-          le (ap2 (sumF Ψ) (pw two (Syn.shift K + var 0)) (Syn.shift x))
-            (ap2 (sumF Ψ) (pw two (Syn.shift K)) (Syn.shift x) +
-              ap2 (sumF (dyB Ψ)) (var 0) (pairT (Syn.shift K) (Syn.shift x)))) :: Γ.map Fm.shift
-      have hle : Θ ⊢[PRAAx] le (var 0) (Syn.shift B) := le_trans (le_succ_self _) Prf.hyp0
-      have ih : Θ ⊢[PRAAx] le (ap2 (sumF Ψ) (pw two (Syn.shift K + var 0)) (Syn.shift x))
-          (ap2 (sumF Ψ) (pw two (Syn.shift K)) (Syn.shift x) +
-            ap2 (sumF (dyB Ψ)) (var 0) (pairT (Syn.shift K) (Syn.shift x))) := Prf.impE Prf.hyp1 hle
+      let Θ := lt (var 0) (Syn.shift B) :: P :: Γ.map Fm.shift
+      have ih : Θ ⊢[PRAAx] P := Prf.hyp1
       have hb : Θ ⊢[PRAAx] le (ap2 (sumF (offB Ψ)) (pw two (Syn.shift K + var 0))
             (pairT (pw two (Syn.shift K + var 0)) (Syn.shift x)))
           (pw two (Syn.shift K + var 0) * inst2 Ψ (pw two (Syn.shift K + var 0)) (Syn.shift x)) :=
-        Prf.impE hblk.allOpen.wk.wk Prf.hyp0
+        .impE hblk.allOpen.wk.wk Prf.hyp0
       have eP : Θ ⊢[PRAAx] pw two (Syn.shift K + succ (var 0)) ≐
           pw two (Syn.shift K + var 0) + pw two (Syn.shift K + var 0) := by
         have a := (congrPw2 (Γ := Θ) (add_succ (Syn.shift K) (var 0))).eqTrans (pw_succ two (Syn.shift K + var 0))
@@ -101,9 +95,7 @@ theorem dyadic (Ψ : PTm 2) (K B x : PTm n)
       have e2 := natEq (sum_succ' (Γ := Θ) (dyB Ψ) (var 0) (pairT (Syn.shift K) (Syn.shift x)))
       have e3 := natEq (dy_at (Γ := Θ) Ψ (var 0) (Syn.shift K) (Syn.shift x))
       ipra_le sl ih + sl hb with e2 + e3 - e1
-  have h2 := Prf.allE B hall
-  simp only [Fm.subst_imp, subst_le, subst_ap2, subst_pairT, PTm.subst_add, ConciseIPRA.PTm.subst_succ, ConciseIPRA.PTm.subst_zero, Syn.subst_var, Syn.inst_zero,
-    Syn.subst_inst_shift] at h2
-  exact .impE h2 (le_refl B)
+  simpa only [P, subst_le, subst_ap2, subst_pairT, PTm.subst_add, ConciseIPRA.PTm.subst_succ,
+    ConciseIPRA.PTm.subst_zero, Syn.subst_var, Syn.inst_zero, Syn.subst_inst_shift] using atEnd
 
 end LeanProofs.IPRA.DiophantineNumberTheory.KhinchinDyadic

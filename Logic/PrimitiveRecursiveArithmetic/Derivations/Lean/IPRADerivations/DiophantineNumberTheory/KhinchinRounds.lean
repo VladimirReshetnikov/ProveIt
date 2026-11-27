@@ -1,4 +1,5 @@
 import IPRADerivations.DiophantineNumberTheory.KhinchinAmplify
+import IPRADerivations.Core.BoundedSums
 
 /-!
 # The rounds of the (K2) amplification (`hurwitz_khinchin_ipra`)
@@ -32,35 +33,25 @@ theorem contract (b c T : PTm n) (R : PTm (n + 1))
     (h : Γ ⊢[PRAAx] Fm.all (lt (var 0) (Syn.shift T) ⟶
       le (Syn.shift b * Syn.subst (repl (succ (var 0))) R) (Syn.shift c * R))) :
     Γ ⊢[PRAAx] le (pw b T * Syn.subst (Syn.inst T) R) (pw c T * Syn.subst (Syn.inst zero) R) := by
-  have hall : Γ ⊢[PRAAx] Fm.all (le (var 0) (Syn.shift T) ⟶
-      le (pw (Syn.shift b) (var 0) * R) (pw (Syn.shift c) (var 0) * Syn.shift (Syn.subst (Syn.inst zero) R))) := by
-    refine PRA.qfInd _ ⟨le_QF _ _, le_QF _ _⟩ ?_ ?_
-    · simp only [Fm.subst_imp, subst_le, subst_ap2, PTm.subst_mul, Syn.subst_var, Syn.inst_zero,
-        Syn.subst_inst_shift]
-      refine .impI ?_
-      have eb := natEq (pw_zero (Γ := le zero T :: Γ) b)
-      have ec := natEq (pw_zero (Γ := le zero T :: Γ) c)
+  let P : Fm PTm (n + 1) := le (pw (Syn.shift b) (var 0) * R)
+    (pw (Syn.shift c) (var 0) * Syn.shift (Syn.subst (Syn.inst zero) R))
+  have atEnd : Γ ⊢[PRAAx] P.subst (Syn.inst T) := by
+    refine qfIndUpTo T (le_QF _ _) ?_ ?_
+    · simp only [P, subst_le, subst_ap2, PTm.subst_mul, Syn.subst_var, Syn.inst_zero, Syn.subst_inst_shift]
+      have eb := natEq (pw_zero (Γ := Γ) b)
+      have ec := natEq (pw_zero (Γ := Γ) c)
       ipra_le 0 with 𝔞 (Syn.subst (Syn.inst zero) R) * (ec - eb)
-    · simp only [Fm.subst_imp, subst_le, subst_ap2, PTm.subst_mul, Syn.subst_var, Syn.repl_zero,
-        subst_repl_shift]
+    · simp only [P, subst_le, subst_ap2, PTm.subst_mul, Syn.subst_var, Syn.repl_zero, subst_repl_shift]
       refine .impI ?_
-      let Θ : List (Fm PTm (n + 1)) := le (succ (var 0)) (Syn.shift T) ::
-        (le (var 0) (Syn.shift T) ⟶
-          le (pw (Syn.shift b) (var 0) * R) (pw (Syn.shift c) (var 0) * Syn.shift (Syn.subst (Syn.inst zero) R))) ::
-        Γ.map Fm.shift
-      have hle : Θ ⊢[PRAAx] le (var 0) (Syn.shift T) := le_trans (le_succ_self _) Prf.hyp0
-      have ih : Θ ⊢[PRAAx] le (pw (Syn.shift b) (var 0) * R)
-          (pw (Syn.shift c) (var 0) * Syn.shift (Syn.subst (Syn.inst zero) R)) := Prf.impE Prf.hyp1 hle
+      let Θ := lt (var 0) (Syn.shift T) :: P :: Γ.map Fm.shift
+      have ih : Θ ⊢[PRAAx] P := Prf.hyp1
       have pt : Θ ⊢[PRAAx] le (Syn.shift b * Syn.subst (repl (succ (var 0))) R) (Syn.shift c * R) :=
-        Prf.impE h.allOpen.wk.wk Prf.hyp0
+        .impE h.allOpen.wk.wk Prf.hyp0
       have eb := natEq (pw_succ (Γ := Θ) (Syn.shift b) (var 0))
       have ec := natEq (pw_succ (Γ := Θ) (Syn.shift c) (var 0))
       ipra_le 𝔞 (pw (Syn.shift b) (var 0)) * sl pt + 𝔞 (Syn.shift c) * sl ih with
         𝔞 (Syn.shift (Syn.subst (Syn.inst zero) R)) * ec - 𝔞 (Syn.subst (repl (succ (var 0))) R) * eb
-  have h2 := Prf.allE T hall
-  simp only [Fm.subst_imp, subst_le, subst_ap2, PTm.subst_mul, Syn.subst_var, Syn.inst_zero,
-    Syn.subst_inst_shift] at h2
-  exact .impE h2 (le_refl T)
+  simpa only [P, subst_le, subst_ap2, PTm.subst_mul, Syn.subst_var, Syn.inst_zero, Syn.subst_inst_shift] using atEnd
 
 /-- (K2) amplification count: if every round `j < T = (c+1)(m+1)` shrinks the residual by the factor
 `1 − 1/(c+1)`, then `R_T ≤ 2^{−(m+1)} R_0`. -/

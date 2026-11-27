@@ -1,4 +1,5 @@
 import IPRADerivations.DiophantineNumberTheory.HurwitzLoop
+import IPRADerivations.Core.BoundedSums
 
 /-!
 # Precision independence of the continued-fraction prefix (`hurwitz_khinchin_ipra`)
@@ -97,33 +98,21 @@ theorem loop_agree (s0 Y W Z V N : PTm n)
       dig (state (var 0) (Syn.shift s0) (Syn.shift Y) (Syn.shift W)) (Syn.shift Y) (Syn.shift W) ≐
         dig (state (var 0) (Syn.shift s0) (Syn.shift Y) (Syn.shift W)) (Syn.shift Z) (Syn.shift V))) :
     Γ ⊢[PRAAx] state N s0 Y W ≐ state N s0 Z V := by
-  have hall : Γ ⊢[PRAAx] Fm.all (le (var 0) (Syn.shift N) ⟶
-      state (var 0) (Syn.shift s0) (Syn.shift Y) (Syn.shift W) ≐
-        state (var 0) (Syn.shift s0) (Syn.shift Z) (Syn.shift V)) := by
-    refine PRA.qfInd _ (by simp [Fm.QF, le_QF]) ?_ ?_
-    · simp only [Fm.subst_imp, Fm.subst_eq, subst_le, subst_state, Syn.subst_var, Syn.inst_zero,
-        Syn.subst_inst_shift]
-      exact .impI ((state_zero _ _ _).eqTrans (state_zero _ _ _).eqSymm)
-    · simp only [Fm.subst_imp, Fm.subst_eq, subst_le, subst_state, Syn.subst_var, Syn.repl_zero,
-        subst_repl_shift]
+  let P : Fm PTm (n + 1) := state (var 0) (Syn.shift s0) (Syn.shift Y) (Syn.shift W) ≐
+    state (var 0) (Syn.shift s0) (Syn.shift Z) (Syn.shift V)
+  have atEnd : Γ ⊢[PRAAx] P.subst (Syn.inst N) := by
+    refine qfIndUpTo N trivial ?_ ?_
+    · simp only [P, Fm.subst_eq, subst_state, Syn.subst_var, Syn.inst_zero, Syn.subst_inst_shift]
+      exact (state_zero _ _ _).eqTrans (state_zero _ _ _).eqSymm
+    · simp only [P, Fm.subst_eq, subst_state, Syn.subst_var, Syn.repl_zero, subst_repl_shift]
       refine .impI ?_
-      let Θ : List (Fm PTm (n + 1)) := le (succ (var 0)) (Syn.shift N) ::
-        (le (var 0) (Syn.shift N) ⟶
-          state (var 0) (Syn.shift s0) (Syn.shift Y) (Syn.shift W) ≐
-            state (var 0) (Syn.shift s0) (Syn.shift Z) (Syn.shift V)) ::
-        Γ.map Fm.shift
-      have hle : Θ ⊢[PRAAx] le (var 0) (Syn.shift N) := le_trans (le_succ_self _) Prf.hyp0
-      have ih : Θ ⊢[PRAAx] state (var 0) (Syn.shift s0) (Syn.shift Y) (Syn.shift W) ≐
-          state (var 0) (Syn.shift s0) (Syn.shift Z) (Syn.shift V) := Prf.impE Prf.hyp1 hle
+      let Θ := lt (var 0) (Syn.shift N) :: P :: Γ.map Fm.shift
       have hd : Θ ⊢[PRAAx]
           dig (state (var 0) (Syn.shift s0) (Syn.shift Y) (Syn.shift W)) (Syn.shift Y) (Syn.shift W) ≐
             dig (state (var 0) (Syn.shift s0) (Syn.shift Y) (Syn.shift W)) (Syn.shift Z) (Syn.shift V) :=
-        Prf.impE hdig.allOpen.wk.wk Prf.hyp0
+        .impE hdig.allOpen.wk.wk Prf.hyp0
       exact (state_succ _ _ _ _).eqTrans ((nxt_of_dig hd).eqTrans
-        ((congrNxt ih (.eqRefl _) (.eqRefl _)).eqTrans (state_succ _ _ _ _).eqSymm))
-  have h2 := Prf.allE N hall
-  simp only [Fm.subst_imp, Fm.subst_eq, subst_le, subst_state, Syn.subst_var, Syn.inst_zero,
-    Syn.subst_inst_shift] at h2
-  exact .impE h2 (le_refl N)
+        ((congrNxt Prf.hyp1 (.eqRefl _) (.eqRefl _)).eqTrans (state_succ _ _ _ _).eqSymm))
+  simpa only [P, Fm.subst_eq, subst_state, Syn.subst_var, Syn.inst_zero, Syn.subst_inst_shift] using atEnd
 
 end LeanProofs.IPRA.DiophantineNumberTheory.HurwitzPrefix

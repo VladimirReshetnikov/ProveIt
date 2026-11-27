@@ -1,4 +1,5 @@
 import IPRADerivations.DiophantineNumberTheory.HurwitzExtraction
+import IPRADerivations.Core.BoundedSums
 
 /-!
 # The extraction loop of the continued-fraction prefix (`hurwitz_khinchin_ipra`)
@@ -180,22 +181,18 @@ theorem loop_inv_all (s0 Y W N : PTm n) (h0 : Γ ⊢[PRAAx] Inv s0 Y W)
         succ (pred (Dn (state (var 0) (Syn.shift s0) (Syn.shift Y) (Syn.shift W)) (Syn.shift Y) (Syn.shift W))))) :
     Γ ⊢[PRAAx] Fm.all (le (var 0) (Syn.shift N) ⟶
       Inv (state (var 0) (Syn.shift s0) (Syn.shift Y) (Syn.shift W)) (Syn.shift Y) (Syn.shift W)) := by
-  refine PRA.qfInd _ ⟨le_QF _ _, inv_QF _ _ _⟩ ?_ ?_
-  · simp only [Fm.subst_imp, subst_le, subst_Inv, subst_state, Syn.subst_var, Syn.inst_zero, Syn.subst_inst_shift]
-    exact .impI (inv_congr (state_zero _ _ _).eqSymm h0.wk)
-  · simp only [Fm.subst_imp, subst_le, subst_Inv, subst_state, Syn.subst_var, Syn.repl_zero, subst_repl_shift]
+  refine qfIndAllUpTo N (inv_QF _ _ _) ?_ ?_
+  · simp only [subst_Inv, subst_state, Syn.subst_var, Syn.inst_zero, Syn.subst_inst_shift]
+    exact inv_congr (state_zero _ _ _).eqSymm h0
+  · simp only [subst_Inv, subst_state, Syn.subst_var, Syn.repl_zero, subst_repl_shift]
     refine .impI ?_
-    let Θ : List (Fm PTm (n + 1)) := le (succ (var 0)) (Syn.shift N) ::
-      (le (var 0) (Syn.shift N) ⟶
-        Inv (state (var 0) (Syn.shift s0) (Syn.shift Y) (Syn.shift W)) (Syn.shift Y) (Syn.shift W)) ::
+    let Θ := lt (var 0) (Syn.shift N) ::
+      Inv (state (var 0) (Syn.shift s0) (Syn.shift Y) (Syn.shift W)) (Syn.shift Y) (Syn.shift W) ::
       Γ.map Fm.shift
-    have hle : Θ ⊢[PRAAx] le (var 0) (Syn.shift N) := le_trans (le_succ_self _) Prf.hyp0
-    have ih : Θ ⊢[PRAAx] Inv (state (var 0) (Syn.shift s0) (Syn.shift Y) (Syn.shift W)) (Syn.shift Y) (Syn.shift W) :=
-      Prf.impE Prf.hyp1 hle
     have hD : Θ ⊢[PRAAx] Dn (state (var 0) (Syn.shift s0) (Syn.shift Y) (Syn.shift W)) (Syn.shift Y) (Syn.shift W) ≐
         succ (pred (Dn (state (var 0) (Syn.shift s0) (Syn.shift Y) (Syn.shift W)) (Syn.shift Y) (Syn.shift W))) :=
-      Prf.impE hpos.allOpen.wk.wk Prf.hyp0
-    exact inv_congr (state_succ _ _ _ _).eqSymm (inv_step ih hD)
+      .impE hpos.allOpen.wk.wk Prf.hyp0
+    exact inv_congr (state_succ _ _ _ _).eqSymm (inv_step Prf.hyp1 hD)
 
 /-- The loop invariant at the final state `N`. -/
 theorem loop_inv (s0 Y W N : PTm n) (h0 : Γ ⊢[PRAAx] Inv s0 Y W)
