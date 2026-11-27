@@ -56,15 +56,8 @@ theorem constant_regular (a : PTm n) : Γ ⊢[PRAAx] pointCN constantF a := by
   simpa only [pointCN,GaussianEuclideanPointDistance.unit,unit,Syn.shift] using bound
 
 theorem raw_at (f : PR 2) (p a x : PTm n) : Γ ⊢[PRAAx] ap2 (rawF f) p (rawData a x) ≐ rawValue f p a x := by
-  have base : Γ ⊢[PRAAx] ap2 (rawF f) p (rawData a x) ≐ qmul (fstT (rawData a x)) (ap2 f p (sndT (rawData a x))) := by
-    have e : Γ ⊢[PRAAx] PTm.app (PTm.toPR (rawValue f (var 0) (fstT (var 1)) (sndT (var 1)) : PTm 2)) ![p,rawData a x] ≐
-        rawValue f p (fstT (rawData a x)) (sndT (rawData a x)) := by
-      simpa only [subst_rawValue,subst_fstT,subst_sndT,Syn.subst_var,
-        Matrix.cons_val_zero,Matrix.cons_val_one,Matrix.head_cons] using
-        toPR_eq (Γ := Γ) (rawValue f (var 0) (fstT (var 1)) (sndT (var 1)) : PTm 2) ![p,rawData a x]
-    simpa only [rawF,ap2,rawValue] using e
-  exact base.eqTrans (GaussianRationalSyntheticDivision.qmul_congr (fst_pair _ _)
-    (congrAp2 f (.eqRefl _) (snd_pair _ _)))
+  simpa [rawF, rawData] using
+    (toPR_pair_eq (Γ := Γ) (rawValue f (var 0) (var 1) (var 2)) p a x)
 
 theorem raw_regularity (f : PR 2) (s t A a x : PTm n) (h : Γ ⊢[PRAAx] input f A a x) : Γ ⊢[PRAAx]
     distanceBounded (rawValue f s a x) (rawValue f t a x) (A*(unit s+unit t)) (unit s*unit t) :=

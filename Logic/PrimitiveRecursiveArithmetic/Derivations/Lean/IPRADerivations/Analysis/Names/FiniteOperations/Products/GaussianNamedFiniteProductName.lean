@@ -103,15 +103,8 @@ theorem cofinal_rows_at (f g : PR 3) (p N C x y : PTm n) (h : Γ ⊢[PRAAx] cofi
   simpa [cofinalRows] using h.allE p
 
 theorem raw_at (f : PR 3) (p N x : PTm n) : Γ ⊢[PRAAx] ap2 (rawF f) p (rawData N x) ≐ sample f p N x := by
-  have first : Γ ⊢[PRAAx] ap2 (rawF f) p (rawData N x) ≐ sample f p (fstT (rawData N x)) (sndT (rawData N x)) := by
-    simpa [rawF,rawBody,ap2] using toPR_eq (Γ := Γ) (rawBody f) ![p,rawData N x]
-  have last := Prf.eqCongr (Γ := Γ) (Ax := PRAAx) (sample f (var 0) (var 1) (var 2) : PTm 3)
-    (σ := ![p,fstT (rawData N x),sndT (rawData N x)]) (σ' := ![p,N,x]) (fun i => by
-      fin_cases i
-      · exact .eqRefl _
-      · exact fst_pair _ _
-      · exact snd_pair _ _)
-  exact first.eqTrans (by simpa using last)
+  simpa [rawF, rawBody, rawData] using
+    (toPR_pair_eq (Γ := Γ) (sample f (var 0) (var 1) (var 2)) p N x)
 
 theorem clock_later (N R L p : PTm n) : Γ ⊢[PRAAx] le p (clock N R L p) := le_add_right _ _
 

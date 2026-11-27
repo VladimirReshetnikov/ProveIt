@@ -47,19 +47,13 @@ ipra_subst value
 
 theorem lower_program_at (A : PR 3) (mu : PR 2) (d k x : PTm n) : Γ ⊢[PRAAx]
     RationalArgmin.value (lowerF A mu) k (data d x) ≐ RationalValueBounds.negate (RationalCubeInfimumIntervals.lower A mu d k x) := by
-  have e := toPR_eq (Γ := Γ) (lowerBody A mu) ![k,data d x]
-  have f : Γ ⊢[PRAAx] fstT (data d x) ≐ d := fst_pair _ _
-  have s : Γ ⊢[PRAAx] sndT (data d x) ≐ x := snd_pair _ _
-  have q := Prf.eqCongr (Γ := Γ) (RationalValueBounds.negate (RationalCubeInfimumIntervals.lower A mu (var 0) (var 1) (var 2)) : PTm 3)
-    (σ := ![fstT (data d x),k,sndT (data d x)]) (σ' := ![d,k,x]) (fun i => by fin_cases i; exact f; exact .eqRefl _; exact s)
-  exact e.eqTrans (by simpa [lowerBody,Matrix.cons_val_succ',Matrix.cons_val_zero'] using q)
+  simpa [RationalArgmin.value, lowerF, lowerBody, data] using
+    (toPR_pair_eq (Γ := Γ)
+      (RationalValueBounds.negate (RationalCubeInfimumIntervals.lower A mu (var 1) (var 0) (var 2))) k d x)
 theorem upper_program_at (A : PR 3) (mu : PR 2) (d k x : PTm n) : Γ ⊢[PRAAx]
     RationalArgmin.value (upperF A mu) k (data d x) ≐ RationalCubeInfimumIntervals.upper A mu d k x := by
-  have e := toPR_eq (Γ := Γ) (upperBody A mu) ![k,data d x]
-  have q := Prf.eqCongr (Γ := Γ) (RationalCubeInfimumIntervals.upper A mu (var 0) (var 1) (var 2) : PTm 3)
-    (σ := ![fstT (data d x),k,sndT (data d x)]) (σ' := ![d,k,x])
-    (fun i => by fin_cases i; exact fst_pair _ _; exact .eqRefl _; exact snd_pair _ _)
-  exact e.eqTrans (by simpa [upperBody,Matrix.cons_val_succ',Matrix.cons_val_zero'] using q)
+  simpa [RationalArgmin.value, upperF, upperBody, data] using
+    (toPR_pair_eq (Γ := Γ) (RationalCubeInfimumIntervals.upper A mu (var 1) (var 0) (var 2)) k d x)
 
 theorem lower_index_bound (A : PR 3) (mu : PR 2) (d k x : PTm n) : Γ ⊢[PRAAx] le (lowerIndex A mu d k x) k := RationalArgmin.selected_spec _ _ _
 theorem upper_index_bound (A : PR 3) (mu : PR 2) (d k x : PTm n) : Γ ⊢[PRAAx] le (upperIndex A mu d k x) k := RationalArgmin.selected_spec _ _ _
@@ -240,11 +234,8 @@ def nameBody (A : PR 3) (mu : PR 2) : PTm 2 := value A mu (fstT (var 1)) (var 0)
 def nameF (A : PR 3) (mu : PR 2) : PR 2 := PTm.toPR (nameBody A mu)
 theorem name_at (A : PR 3) (mu : PR 2) (d k x : PTm n) : Γ ⊢[PRAAx]
     ap2 (nameF A mu) k (data d x) ≐ value A mu d k x := by
-  have e := toPR_eq (Γ := Γ) (nameBody A mu) ![k,data d x]
-  have q := Prf.eqCongr (Γ := Γ) (value A mu (var 0) (var 1) (var 2) : PTm 3)
-    (σ := ![fstT (data d x),k,sndT (data d x)]) (σ' := ![d,k,x])
-    (fun i => by fin_cases i; exact fst_pair _ _; exact .eqRefl _; exact snd_pair _ _)
-  exact e.eqTrans (by simpa [nameBody,Matrix.cons_val_succ',Matrix.cons_val_zero'] using q)
+  simpa [nameF, nameBody, data] using
+    (toPR_pair_eq (Γ := Γ) (value A mu (var 1) (var 0) (var 2)) k d x)
 
 def regular (f : PR 2) (x : PTm n) : Fm PTm n := .all (.all
   (RationalValueBounds.radius (ap2 f (var 1) (Syn.shift (Syn.shift x))) (ap2 f (var 0) (Syn.shift (Syn.shift x)))

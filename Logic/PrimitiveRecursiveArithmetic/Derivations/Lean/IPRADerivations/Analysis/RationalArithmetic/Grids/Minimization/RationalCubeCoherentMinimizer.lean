@@ -208,18 +208,12 @@ def evaluationF (A : PR 3) (mu u : PR 2) : PR 2 := PTm.toPR (evaluationBody A mu
 
 theorem point_at (A : PR 3) (mu u : PR 2) (d k x : PTm n) : Γ ⊢[PRAAx]
     ap2 (pointF A mu u) k (data d x) ≐ point A mu u d k x := by
-  have e := toPR_eq (Γ := Γ) (pointBody A mu u) ![k,data d x]
-  have q := Prf.eqCongr (Γ := Γ) (point A mu u (var 0) (var 1) (var 2) : PTm 3)
-    (σ := ![fstT (data d x),k,sndT (data d x)]) (σ' := ![d,k,x])
-    (fun i => by fin_cases i; exact fst_pair _ _; exact .eqRefl _; exact snd_pair _ _)
-  exact e.eqTrans (by simpa [pointBody,Matrix.cons_val_succ',Matrix.cons_val_zero'] using q)
+  simpa [pointF, pointBody, RationalCubeInfimumName.data] using
+    (toPR_pair_eq (Γ := Γ) (point A mu u (var 1) (var 0) (var 2)) k d x)
 theorem evaluation_at (A : PR 3) (mu u : PR 2) (d p x : PTm n) : Γ ⊢[PRAAx]
     ap2 (evaluationF A mu u) p (data d x) ≐ evaluation A mu u d p x := by
-  have e := toPR_eq (Γ := Γ) (evaluationBody A mu u) ![p,data d x]
-  have q := Prf.eqCongr (Γ := Γ) (evaluation A mu u (var 0) (var 1) (var 2) : PTm 3)
-    (σ := ![fstT (data d x),p,sndT (data d x)]) (σ' := ![d,p,x])
-    (fun i => by fin_cases i; exact fst_pair _ _; exact .eqRefl _; exact snd_pair _ _)
-  exact e.eqTrans (by simpa [evaluationBody,Matrix.cons_val_succ',Matrix.cons_val_zero'] using q)
+  simpa [evaluationF, evaluationBody, RationalCubeInfimumName.data] using
+    (toPR_pair_eq (Γ := Γ) (evaluation A mu u (var 1) (var 0) (var 2)) p d x)
 
 def pointName (f : PR 2) (d z : PTm n) : Fm PTm n := .all (.all
   (pointRadius (ap2 f (var 1) (Syn.shift (Syn.shift z))) (ap2 f (var 0) (Syn.shift (Syn.shift z)))

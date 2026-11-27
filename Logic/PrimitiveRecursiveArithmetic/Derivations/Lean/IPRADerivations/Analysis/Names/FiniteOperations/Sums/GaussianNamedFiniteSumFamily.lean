@@ -49,21 +49,10 @@ theorem term_at (f : PR 2) (t : PTm 2) (i k x : PTm n) :
   simpa only [subst_ap2,subst_inst2,subst_fstT,subst_sndT,Syn.subst_var,Matrix.cons_val_zero,Matrix.cons_val_one] using
     congrAp2 f (fst_pair k x) (congrInst2 t (.eqRefl i) (snd_pair k x))
 
-private theorem observation_congr (f : PR 2) (t : PTm 2) (p : PTm n) {M N x y : PTm n}
-    (hn : Γ ⊢[PRAAx] M ≐ N) (hx : Γ ⊢[PRAAx] x ≐ y) :
-    Γ ⊢[PRAAx] observation f t p M x ≐ observation f t p N y := by
-  simpa only [subst_observation,Syn.subst_var,Matrix.cons_val_zero,Matrix.cons_val_one,Matrix.cons_val_two,
-    Matrix.head_cons,Matrix.tail_cons] using Prf.eqCongr (Γ := Γ) (Ax := PRAAx)
-      (observation f t (var 0) (var 1) (var 2) : PTm 3)
-      (σ := ![p,M,x]) (σ' := ![p,N,y]) (fun i => by fin_cases i; exact .eqRefl _; exact hn; exact hx)
-
 theorem sample_at (f : PR 2) (t : PTm 2) (p N x : PTm n) :
     Γ ⊢[PRAAx] ap2 (nameF f t) p (data N x) ≐ observation f t p N x := by
-  let y := data N x
-  have e : Γ ⊢[PRAAx] ap2 (nameF f t) p y ≐ observation f t p (fstT y) (sndT y) := by
-    simpa [nameF,ap2] using toPR_eq (Γ := Γ)
-      (observation f t (var 0) (fstT (var 1)) (sndT (var 1)) : PTm 2) ![p,y]
-  exact e.eqTrans (observation_congr f t p (fst_pair N x) (snd_pair N x))
+  simpa [nameF, data] using
+    (toPR_pair_eq (Γ := Γ) (observation f t (var 0) (var 1) (var 2)) p N x)
 
 /-- Comparison at arbitrary row clocks before any increase of precision. -/
 theorem finite_distance (f : PR 2) (t : PTm 2) (p q N x : PTm n)

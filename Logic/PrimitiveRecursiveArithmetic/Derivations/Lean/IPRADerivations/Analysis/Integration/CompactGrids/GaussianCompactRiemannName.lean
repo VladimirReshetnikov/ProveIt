@@ -45,11 +45,8 @@ ipra_subst nameData
 
 theorem evaluator_at (F : PR 3) (p t x : PTm n) : Γ ⊢[PRAAx]
     ap2 (evaluatorName F) p (nameData t x) ≐ ap3 F p t x := by
-  have old := toPR_eq (Γ := Γ) (ap3 F (var 0) (fstT (var 1)) (sndT (var 1)) : PTm 2) ![p,nameData t x]
-  have e : Γ ⊢[PRAAx] ap2 (evaluatorName F) p (nameData t x) ≐
-      ap3 F p (fstT (nameData t x)) (sndT (nameData t x)) := by
-    simpa only [evaluatorName,ap2,subst_ap3,subst_fstT,subst_sndT,Syn.subst_var,Matrix.cons_val_zero,Matrix.cons_val_one] using old
-  exact e.eqTrans (congrAp3 F (.eqRefl _) (fst_pair _ _) (snd_pair _ _))
+  simpa [evaluatorName, nameData] using
+    (toPR_pair_eq (Γ := Γ) (ap3 F (var 0) (var 1) (var 2)) p t x)
 
 /-- Transport a distance bound on decoded samples to the two wrapped evaluators. -/
 theorem wrapped_distance_from_decoded {F G : PR 3} {p q t u x y left right A D : PTm n}
@@ -226,34 +223,7 @@ theorem packed_observation_at (body : PTm 7) (r a b c d e x : PTm n) :
     Γ ⊢[PRAAx] ap2 (PTm.toPR (Syn.subst
       ![var 0, field0 (var 1), field1 (var 1), field2 (var 1), field3 (var 1), field4 (var 1), field5 (var 1)] body))
       r (sampleData a b c d e x) ≐ Syn.subst ![r, a, b, c, d, e, x] body := by
-  let input := sampleData a b c d e x
-  let decode : Fin 7 → PTm 2 :=
-    ![var 0, field0 (var 1), field1 (var 1), field2 (var 1), field3 (var 1), field4 (var 1), field5 (var 1)]
-  change Γ ⊢[PRAAx] ap2 (PTm.toPR (Syn.subst decode body)) r input ≐ Syn.subst ![r, a, b, c, d, e, x] body
-  apply (toPR_eq (Γ := Γ) (Syn.subst decode body) ![r, input]).eqTrans
-  rw [Syn.subst_subst]
-  apply Prf.eqCongr
-  intro i
-  fin_cases i
-  · exact .eqRefl _
-  · change Γ ⊢[PRAAx] Syn.subst ![r, input] (field0 (var 1)) ≐ a
-    rw [subst_field0]
-    exact field0_at a b c d e x
-  · change Γ ⊢[PRAAx] Syn.subst ![r, input] (field1 (var 1)) ≐ b
-    rw [subst_field1]
-    exact field1_at a b c d e x
-  · change Γ ⊢[PRAAx] Syn.subst ![r, input] (field2 (var 1)) ≐ c
-    rw [subst_field2]
-    exact field2_at a b c d e x
-  · change Γ ⊢[PRAAx] Syn.subst ![r, input] (field3 (var 1)) ≐ d
-    rw [subst_field3]
-    exact field3_at a b c d e x
-  · change Γ ⊢[PRAAx] Syn.subst ![r, input] (field4 (var 1)) ≐ e
-    rw [subst_field4]
-    exact field4_at a b c d e x
-  · change Γ ⊢[PRAAx] Syn.subst ![r, input] (field5 (var 1)) ≐ x
-    rw [subst_field5]
-    exact field5_at a b c d e x
+  exact toPR_pairVector_eq (Γ := Γ) (k := 5) body r ![a, b, c, d, e, x]
 
 def sampleBody (F : PR 3) : PTm 2 := ap3 F (field0 (var 1))
   (grid (var 0) (field1 (var 1)) (field2 (var 1)) (field3 (var 1)) (field4 (var 1))) (field5 (var 1))

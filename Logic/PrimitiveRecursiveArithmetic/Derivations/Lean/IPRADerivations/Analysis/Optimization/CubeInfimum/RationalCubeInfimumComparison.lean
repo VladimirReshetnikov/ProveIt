@@ -120,11 +120,8 @@ def pointBody (A : PR 3) (mu : PR 2) : PTm 2 := RationalCubeMinimum.minimizer A 
 def pointF (A : PR 3) (mu : PR 2) : PR 2 := PTm.toPR (pointBody A mu)
 theorem point_at (A : PR 3) (mu : PR 2) (d k x : PTm n) : Γ ⊢[PRAAx]
     ap2 (pointF A mu) k (data d x) ≐ RationalCubeMinimum.minimizer A mu d k x := by
-  have e := toPR_eq (Γ := Γ) (pointBody A mu) ![k,data d x]
-  have q := Prf.eqCongr (Γ := Γ) (RationalCubeMinimum.minimizer A mu (var 0) (var 1) (var 2) : PTm 3)
-    (σ := ![fstT (data d x),k,sndT (data d x)]) (σ' := ![d,k,x])
-    (fun i => by fin_cases i; exact fst_pair _ _; exact .eqRefl _; exact snd_pair _ _)
-  exact e.eqTrans (by simpa [pointBody,Matrix.cons_val_succ',Matrix.cons_val_zero'] using q)
+  simpa [pointF, pointBody, RationalCubeInfimumName.data] using
+    (toPR_pair_eq (Γ := Γ) (RationalCubeMinimum.minimizer A mu (var 1) (var 0) (var 2)) k d x)
 
 theorem source_cube_points (A : PR 3) (mu : PR 2) (d x : PTm n) : Γ ⊢[PRAAx] cubePoints (pointF A mu) d (data d x) := by
   refine .allI ?_
