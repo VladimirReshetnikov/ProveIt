@@ -99,13 +99,7 @@ theorem inside_source (z R B a C E G t : PTm n) (h : Γ ⊢[PRAAx] source z R B 
     have ending : Γ ⊢[PRAAx] le ((G*(a+C)+E)*d) (E*(G*d)) :=
       le_congr (.eqRefl _) (by ipra_ring) second
     exact RationalValueBounds.positive_cancel h.andE₂.andE₁ (le_trans beginning ending)
-  have strict : Γ ⊢[PRAAx] lt m d := by
-    refine .orE (lt_or_le m d) Prf.hyp0 ?_
-    have reversed : (le d m)::Γ ⊢[PRAAx] le (G*d) (G*m) :=
-      le_congr (mul_comm _ _) (mul_comm _ _) (mul_le_mul_right G Prf.hyp0)
-    have bad : (le d m)::Γ ⊢[PRAAx] lt (G*d) (G*d) :=
-      le_trans (le_congr (by ipra_ring) (.eqRefl _) (add_le_add₂ reversed ht.andE₂.andE₁.wk)) upper.wk
-    exact le_lt_absurd _ (le_refl _) bad
+  have strict := Order.lt_of_mul_add_le_mul ht.andE₂.andE₁ upper
   exact .andI h.andE₁ (.andI (.andI ht.andE₁ strict) (.andI h.andE₁.andE₂.andE₁ (.andI lower upper)))
 
 theorem evaluator_bound (p t z R B a C E G : PTm n) (h : Γ ⊢[PRAAx] source z R B a C E G)

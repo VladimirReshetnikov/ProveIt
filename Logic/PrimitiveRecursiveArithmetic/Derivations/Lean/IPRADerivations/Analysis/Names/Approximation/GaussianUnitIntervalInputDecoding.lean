@@ -96,15 +96,8 @@ theorem decoded_upper (q E : PTm n) (h : Γ ⊢[PRAAx] source q E) : Γ ⊢[PRAA
   ipra_simps
   linear_combination -e+𝔞(E)*en+𝔞(denominator q)*ee
 
-theorem decoded_strict (q E : PTm n) (h : Γ ⊢[PRAAx] source q E) : Γ ⊢[PRAAx] lt (numerator q) (denominator q) := by
-  have upperBound := decoded_upper q E h
-  have hd := denominator_positive (Γ := Γ) q
-  refine .orE (lt_or_le (numerator q) (denominator q)) Prf.hyp0 ?_
-  have order : (le (denominator q) (numerator q))::Γ ⊢[PRAAx] le (E*denominator q) (E*numerator q) :=
-    mul_le_mul_left E Prf.hyp0
-  have bad : (le (denominator q) (numerator q))::Γ ⊢[PRAAx] lt (E*denominator q) (E*denominator q) :=
-    le_trans (le_congr (by ipra_ring) (.eqRefl _) (add_le_add₂ order hd.wk)) upperBound.wk
-  exact le_lt_absurd _ (le_refl _) bad
+theorem decoded_strict (q E : PTm n) (h : Γ ⊢[PRAAx] source q E) : Γ ⊢[PRAAx] lt (numerator q) (denominator q) :=
+  Order.lt_of_mul_add_le_mul (denominator_positive q) (decoded_upper q E h)
 
 theorem decoded_source (q E : PTm n) (h : Γ ⊢[PRAAx] source q E) : Γ ⊢[PRAAx]
     GaussianEulerUnitCompactTimeBounds.source (numerator q) (denominator q) E :=

@@ -45,11 +45,9 @@ theorem transfer {R A p : ZT n} {q D N H k b₁ b₂ : PTm n}
 /-- A natural `b` with `2 M b < M (2N + 1)` is at most `N`. -/
 theorem q_bound {M b N : PTm n}
     (h : Γ ⊢[PRAAx] lt (num 2 * M * b) (M * (num 2 * N + one))) : Γ ⊢[PRAAx] le b N := by
-  refine .orE (lt_or_le N b) ?_ Prf.hyp0
-  -- `N < b` gives `M (2N + 1) < 2 M b`
-  have hNb : (lt N b :: Γ) ⊢[PRAAx] le (succ N) b := Prf.hyp0
-  refine le_lt_absurd _ (a := M * (num 2 * N + one)) (b := num 2 * M * b) ?_ h.wk
-  ipra_le 2 * 𝔞 M * sl hNb + 𝔞 M
+  have scaled : Γ ⊢[PRAAx] lt (M * (num 2 * b)) (M * (num 2 * succ N)) :=
+    lt_of_lt_of_le (lt_congr (by ipra_ring) (.eqRefl _) h) (by ipra_le 𝔞 M)
+  exact Order.le_of_lt_succ (Order.lt_of_mul_lt_mul_left (Order.lt_of_mul_lt_mul_left scaled))
 
 /-- An integer of absolute value at most `b` with `b < 1` is `0`. -/
 theorem zero_of_abs_lt_one {p : ZT n} {b : PTm n} (hp : Γ ⊢[PRAAx] AbsLe p b) (hb : Γ ⊢[PRAAx] lt b one) :

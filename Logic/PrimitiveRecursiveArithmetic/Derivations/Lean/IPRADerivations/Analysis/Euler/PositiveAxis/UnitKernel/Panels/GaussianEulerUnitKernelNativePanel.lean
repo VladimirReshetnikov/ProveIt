@@ -26,13 +26,9 @@ theorem denominator_positive (a C E : PTm n) (h : Γ ⊢[PRAAx] proper a C E) : 
   le_trans h.andE₁ (le_trans (le_add_right a C) (le_of_lt h.andE₂))
 
 theorem proper_from_source (z R B a C E G : PTm n) (h : Γ ⊢[PRAAx] source z R B a C E G) :
-    Γ ⊢[PRAAx] proper a C E := by
-  refine .andI (start_positive z R B a C E G h) (.orE (lt_or_le (a+C) E) Prf.hyp0 ?_)
-  have left := add_le_add_right (G*(a+C)) h.andE₂.andE₁
-  have narrower : Γ ⊢[PRAAx] lt (G*(a+C)) (G*E) := le_trans
-    (le_congr (by ipra_ring) (by ipra_ring) left) h.andE₂.andE₂.andE₂
-  have opposite := le_congr (mul_comm _ _) (mul_comm _ _) (mul_le_mul_right G (Prf.hyp0 : _ :: Γ ⊢[PRAAx] le E (a+C)))
-  exact .botE _ (lt_irrefl _ _ (le_trans narrower.wk opposite))
+    Γ ⊢[PRAAx] proper a C E :=
+  .andI (start_positive z R B a C E G h)
+    (Order.lt_of_mul_add_le_mul h.andE₂.andE₁ h.andE₂.andE₂.andE₂)
 
 theorem source_at_denominator (z R B a C E : PTm n)
     (hz : Γ ⊢[PRAAx] GaussianEulerUpperPowerCoefficients.source z R B)

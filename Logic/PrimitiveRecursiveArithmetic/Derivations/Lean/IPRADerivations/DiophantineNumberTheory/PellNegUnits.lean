@@ -44,11 +44,8 @@ theorem R_lt_A {A B D R T : PTm n} (hA : Γ ⊢[PRAAx] A * A ≐ one + D * (B * 
 
 /-- `RT < AB`. -/
 theorem RT_lt_AB {A B R T : PTm n} (hRA : Γ ⊢[PRAAx] lt R A) (hT : Γ ⊢[PRAAx] T ≐ succ (pred T))
-    (hTB : Γ ⊢[PRAAx] le T B) : Γ ⊢[PRAAx] lt (R * T) (A * B) := by
-  have h₁ : Γ ⊢[PRAAx] le (succ (R * T)) (succ R * T) := by
-    refine le_of_eq_add (d := pred T) ?_
-    ipra_lc natEq hT
-  exact le_trans h₁ (le_trans (le_mul_mono hRA (le_refl T)) (le_mul_mono (le_refl A) hTB))
+    (hTB : Γ ⊢[PRAAx] le T B) : Γ ⊢[PRAAx] lt (R * T) (A * B) :=
+  lt_of_lt_of_le (Order.mul_lt_mul_right (Common.one_le_of_pos hT) hRA) (mul_le_mul_left A hTB)
 
 /-- `thm:negativeunits`: `v² = u`. -/
 theorem neg_square {A B D R T : PTm n} (hA : Γ ⊢[PRAAx] A * A ≐ one + D * (B * B))

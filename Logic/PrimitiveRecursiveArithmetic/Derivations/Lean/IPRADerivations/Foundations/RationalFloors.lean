@@ -60,10 +60,8 @@ theorem quo_le_succ {A B r s cr cs : PTm n} (hr : Γ ⊢[PRAAx] r ≐ succ cr) (
   have hB : Γ ⊢[PRAAx] le B (s * succ (quo B s)) := le_trans (le_succ_self _) (Division.lt_mul_succ_quo hs)
   have bound : Γ ⊢[PRAAx] le (B * r + r * s) (upper * s) :=
     le_congr (.eqRefl _) (by unfold upper; ipra_ring) (add_le_add_right (r * s) (mul_le_mul_right r hB))
-  have hA : Γ ⊢[PRAAx] lt A upper := by
-    refine .orE (lt_or_le A upper) Prf.hyp0 ?_
-    exact le_lt_absurd _ (le_trans bound.wk (mul_le_mul_right s Prf.hyp0)) h.wk
-  exact Order.le_of_lt_succ (Division.quo_lt_of_lt_mul hr hA)
+  exact Order.le_of_lt_succ
+    (Division.quo_lt_of_lt_mul hr (Order.lt_of_mul_lt_mul_right (lt_of_lt_of_le h bound)))
 
 /-- `|A/r − B/s| < 1` gives `|⌊A/r⌋ − ⌊B/s⌋| ≤ 1`. -/
 theorem quo_near {A B r s cr cs : PTm n} (hr : Γ ⊢[PRAAx] r ≐ succ cr) (hs : Γ ⊢[PRAAx] s ≐ succ cs)

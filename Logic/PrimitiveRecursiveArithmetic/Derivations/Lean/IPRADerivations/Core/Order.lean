@@ -228,6 +228,34 @@ theorem Order.mul_add_lt_mul {i j N R : PTm n} (hi : Γ ⊢[PRAAx] lt i N) (hj :
   lt_of_lt_of_le (le_congr (add_succ _ _) (succ_mul _ _).eqSymm (add_le_add_left _ hj))
     (mul_le_mul_right R hi)
 
+namespace Order
+
+/-- Multiplication by a positive natural term preserves strict order. -/
+theorem mul_lt_mul_right {a b c : PTm n} (hc : Γ ⊢[PRAAx] le (succ zero) c)
+    (h : Γ ⊢[PRAAx] lt a b) : Γ ⊢[PRAAx] lt (a * c) (b * c) :=
+  lt_congr (add_zero _) (.eqRefl _) (mul_add_lt_mul h hc)
+
+theorem mul_lt_mul_left {a b c : PTm n} (hc : Γ ⊢[PRAAx] le (succ zero) c)
+    (h : Γ ⊢[PRAAx] lt a b) : Γ ⊢[PRAAx] lt (c * a) (c * b) :=
+  lt_congr (mul_comm _ _) (mul_comm _ _) (mul_lt_mul_right hc h)
+
+/-- Strict order of the products entails strict order before scaling. -/
+theorem lt_of_mul_lt_mul_left {a b c : PTm n} (h : Γ ⊢[PRAAx] lt (c * a) (c * b)) :
+    Γ ⊢[PRAAx] lt a b :=
+  .orE (lt_or_le a b) Prf.hyp0 (le_lt_absurd _ (mul_le_mul_left c Prf.hyp0) h.wk)
+
+theorem lt_of_mul_lt_mul_right {a b c : PTm n} (h : Γ ⊢[PRAAx] lt (a * c) (b * c)) :
+    Γ ⊢[PRAAx] lt a b :=
+  lt_of_mul_lt_mul_left (lt_congr (mul_comm _ _) (mul_comm _ _) h)
+
+/-- A positive margin between scaled terms gives a strict comparison of the original terms. -/
+theorem lt_of_mul_add_le_mul {a b c d : PTm n} (hd : Γ ⊢[PRAAx] le (succ zero) d)
+    (h : Γ ⊢[PRAAx] le (c * a + d) (c * b)) : Γ ⊢[PRAAx] lt a b :=
+  lt_of_mul_lt_mul_left
+    (le_trans (le_congr (succ_eq_add_one _).eqSymm (.eqRefl _) (add_le_add_left (c * a) hd)) h)
+
+end Order
+
 /-- Variables: `0 = c` (induction), `1 = a`, `2 = b`. -/
 private abbrev mcF : Fm PTm 3 := monus (var 1 + var 0) (var 2 + var 0) ≐ monus (var 1) (var 2)
 

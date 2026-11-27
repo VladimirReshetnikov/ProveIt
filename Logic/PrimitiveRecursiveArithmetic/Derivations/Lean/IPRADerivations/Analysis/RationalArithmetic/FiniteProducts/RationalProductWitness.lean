@@ -52,9 +52,8 @@ theorem scaled_product_congr (P : PTm 2) {N M B x : PTm n} (h : Γ ⊢[PRAAx] N 
 /-! ## Strict multiplication and the quantifier-free prefix invariant -/
 
 theorem strict_mul_left {a b c : PTm n} (hc : Γ ⊢[PRAAx] le one c) (hab : Γ ⊢[PRAAx] lt a b) :
-    Γ ⊢[PRAAx] lt (c*a) (c*b) := by
-  refine le_of_eq_add (d := c*monus b (succ a)+monus c one) ?_
-  ipra_lc 𝔞(c)*natEq (eq_add_of_le hab)+natEq (eq_add_of_le hc)
+    Γ ⊢[PRAAx] lt (c*a) (c*b) :=
+  Order.mul_lt_mul_left hc hab
 
 def allLarge (P Q : PTm 2) (N A B x : PTm n) : Fm PTm n :=
   .all (lt (var 0) (Syn.shift N) ⟶

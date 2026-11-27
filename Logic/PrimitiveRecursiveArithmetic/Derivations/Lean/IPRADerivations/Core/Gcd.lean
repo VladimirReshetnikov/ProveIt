@@ -71,13 +71,10 @@ theorem dvd_congr {d x x' : PTm n} (h : Γ ⊢[PRAAx] x ≐ x') (hx : Γ ⊢[PRA
 
 /-- Cancellation of a positive factor in `≤`. -/
 theorem mul_le_cancel {d' a b : PTm n} (h : Γ ⊢[PRAAx] le (succ d' * a) (succ d' * b)) :
-    Γ ⊢[PRAAx] le a b := by
-  refine .orE (lt_or_le b a) ?_ Prf.hyp0
-  have w := eq_add_of_le (Prf.hyp0 : (lt b a :: Γ) ⊢[PRAAx] le (succ b) a)
-  refine not_succ_le_self (succ d' * b) _ (le_trans ?_ h.wk)
-  refine le_of_eq_add (d := d' + succ d' * monus a (succ b)) ?_
-  refine withEq w fun e => ?_
-  apply deriveNat; ipra_simps; rw [e]; ring
+    Γ ⊢[PRAAx] le a b :=
+  .orE (lt_or_le b a)
+    (le_lt_absurd _ h.wk (Order.mul_lt_mul_left (Order.succ_le_succ (zero_le d')) Prf.hyp0))
+    Prf.hyp0
 
 /-- Cancel a factor known to be a successor. -/
 theorem mul_le_cancel_at {d c a b : PTm n} (hd : Γ ⊢[PRAAx] d ≐ succ c)

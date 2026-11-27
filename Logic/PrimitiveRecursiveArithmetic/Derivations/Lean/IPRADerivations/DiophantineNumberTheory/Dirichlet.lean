@@ -22,12 +22,8 @@ variable {n : ℕ} {Γ : List (Fm PTm n)}
 
 /-- `⌊x (N+1) / b⌋ ≤ N` for `x < b`. -/
 theorem quo_le {x b N : PTm n} (hb : Γ ⊢[PRAAx] b ≐ succ (pred b)) (hx : Γ ⊢[PRAAx] lt x b) :
-    Γ ⊢[PRAAx] le (quo (x * succ N) b) N := by
-  apply Order.le_of_lt_succ (Division.quo_lt_of_lt_mul hb ?_)
-  change Γ ⊢[PRAAx] le (succ (x * succ N)) (b * succ N)
-  refine le_trans ?_ (mul_le_mul_right (succ N) hx)
-  exact le_congr (succ_eq_add_one _).eqSymm (succ_mul _ _).eqSymm
-    (add_le_add_left _ (zero_lt_succ N))
+    Γ ⊢[PRAAx] le (quo (x * succ N) b) N :=
+  Order.le_of_lt_succ (Division.quo_lt_of_lt_mul hb (Order.mul_lt_mul_right (zero_lt_succ N) hx))
 
 /-- Decoding `x = ⟨a, ⟨b, N⟩⟩`. -/
 abbrev code (a b N : PTm n) : PTm n := pairT a (pairT b N)

@@ -43,10 +43,7 @@ theorem alt_D {Q C u l e δ : PTm n} (H1 : Γ ⊢[PRAAx] le (num 64 * succ C * e
   have h2 : Γ ⊢[PRAAx] le (succ (Q + num 8 * C * l)) (num 8 * u) := H2
   have h8 : Γ ⊢[PRAAx] le (succ (num 8 * (C * δ))) (num 8 * Q) := by
     ipra_le 8 * 𝔞 C * sl H5 + sl h2 + 4 * sl H3 + 5 * sl H1 + 304 * 𝔞 C * 𝔞 e + 312 * 𝔞 e
-  have h8' : Γ ⊢[PRAAx] lt (num 8 * (C * δ)) (num 8 * Q) := h8
-  refine .orE (lt_or_le (C * δ) Q) Prf.hyp0 ?_
-  have hq : (le Q (C * δ) :: Γ) ⊢[PRAAx] le Q (C * δ) := Prf.hyp0
-  exact le_lt_absurd _ (a := num 8 * Q) (b := num 8 * (C * δ)) (by ipra_le 8 * sl hq) h8'.wk
+  exact Order.lt_of_mul_lt_mul_left (c := num 8) h8
 
 /-- `p² = 2h²` forces `h = 0`. -/
 theorem sqrt2_core {h p : PTm n} (e : Γ ⊢[PRAAx] p * p ≐ two * (h * h)) : Γ ⊢[PRAAx] h ≐ zero := by

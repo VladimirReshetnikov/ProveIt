@@ -318,11 +318,7 @@ theorem transfer_theta {m k Kθ Kh : PTm n} (hm : Γ ⊢[PRAAx] le (num 16) m) (
   have hU := hiD_pos (Γ := Γ) hD1 cge (K3 (lcmu (m * m)) k)
   have dl := dloss (Kh := Kh) (k := k) hm hK
   have c := tr_alg hU dl H
-  have hPi1 : Γ ⊢[PRAAx] le one (prim (m * m)) := one_le_of_pos' (prim_pos _)
-  have htd1 : Γ ⊢[PRAAx] le one (tD m Kθ) := one_le_of_pos' (hiD_pos (le_refl one) hPi1 Kθ)
-  have htn := td_le_tn hm hK
-  have hHm := pos_mul (hiD_pos htd1 htn Kh) (pos_of_one_le (le_trans (by ipra_le 1) hm2))
-  have c' := LcmBridgeTransfer.lt_cancel hHm c
+  have c' := Order.lt_of_mul_lt_mul_left c
   exact LcmBridgeTransfer.transfer hm2
     (lt_congr (congrAdd (congrMul (.eqRefl _) eUp.eqSymm) (congrMul (.eqRefl _) eUd.eqSymm))
       (congrMul (.eqRefl _) eUd.eqSymm) c')

@@ -101,15 +101,7 @@ theorem native_source (q G M : PTm n) (hs : Γ ⊢[PRAAx] source q G)
   have hI := cut_positive q G M hs hM
   have hG : Γ ⊢[PRAAx] le one (two*G) := le_trans hs.andE₁ (le_of_eq_add (d := G) (by ipra_ring))
   have up := upper_margin (Γ := Γ) q G M hs
-  have strict : Γ ⊢[PRAAx] lt (index q M) M := by
-    have sum : Γ ⊢[PRAAx] le (G*index q M+one) (G*M) :=
-      le_trans (add_le_add₂ (le_refl _) (le_trans hG hM)) up
-    refine .orE (lt_or_le (index q M) M) Prf.hyp0 ?_
-    have bad : (le M (index q M))::Γ ⊢[PRAAx] lt (G*M) (G*M) := by
-      have mult := mul_le_mul_right G (Prf.hyp0 : (le M (index q M))::Γ ⊢[PRAAx] le M (index q M))
-      exact le_trans (le_congr (by ipra_ring) (by ipra_ring)
-        (add_le_add₂ mult (le_refl one))) sum.wk
-    exact lt_irrefl _ _ bad
+  have strict := Order.lt_of_mul_add_le_mul (le_trans hG hM) up
   have wide : Γ ⊢[PRAAx] le ((two*G)*index q M+M) ((two*G)*M) := by
     ipra_le 2*sl up + 𝔞 M
   exact .andI (.andI hI strict) (.andI hG (.andI (lower_margin q G M hs hM) wide))

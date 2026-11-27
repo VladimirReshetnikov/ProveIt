@@ -245,7 +245,7 @@ theorem s1_alg {m X C Y Gp : PTm n} (hX : Γ ⊢[PRAAx] X ≐ succ (pred X)) (w 
 
 theorem lt_cancel {c a b : PTm n} (_hc : Γ ⊢[PRAAx] c ≐ succ (pred c)) (h : Γ ⊢[PRAAx] lt (c * a) (c * b)) :
     Γ ⊢[PRAAx] lt a b :=
-  .orE (lt_or_le a b) Prf.hyp0 (le_lt_absurd _ (le_mul_mono (le_refl c) Prf.hyp0) h.wk)
+  Order.lt_of_mul_lt_mul_left h
 
 /-- `lcm_bridge.tex`, finite counterexample transfer, product form: for `m ≥ 2` and `L = lcm(1, …, m²)`, if
 `m Φ Uup + 2 Π Uud < m Π Uud` at `(L, k)` — `∏_{p∣L}(1 − 1/p) · [e^γ log log L]_hi < 1 − 2/m` — then `NegR(L, k)`:
@@ -268,8 +268,7 @@ theorem transfer {m k : PTm n} (hm : Γ ⊢[PRAAx] le two m)
   have S1 := le_congr (congrMul (.eqRefl _) (y_eq hP)) (congrAdd (.eqRefl _) (congrMul (.eqRefl _) (y_eq hP))) S0
   have SP := sigma_product hLp
   have k1 := key_alg hLp SP S1 H
-  have mp := Combinatorics.Binomial.pos_mul hm1 (phi_pos (lcmu (m * m)))
-  have k2 := lt_cancel mp k1
+  have k2 := Order.lt_of_mul_lt_mul_left k1
   exact .andI hL2 (le_trans k2 (le_add_right _ _))
 
 end LeanProofs.IPRA.AnalyticNumberTheory.LcmBridgeTransfer

@@ -56,9 +56,7 @@ theorem fixed_tail_strict_budget (p R : PTm n) : Γ ⊢[PRAAx]
     ring
   have he : Γ ⊢[PRAAx] le one E := fixed_denominator_positive _ _
   have gap : Γ ⊢[PRAAx] lt (num 8*E) (num 10*E) := by ipra_le 2*sl he+1
-  refine .orE (lt_or_le (F*unit (p+num 3)) E) Prf.hyp0 ?_
-  have backwards := mul_le_mul_right (num 10) (Prf.hyp0 : (_ :: Γ) ⊢[PRAAx] le E (F*unit (p+num 3)))
-  exact le_lt_absurd _ (le_trans (le_congr (by ipra_ring) (by ipra_ring) backwards) actual.wk) gap.wk
+  exact Order.lt_of_mul_lt_mul_left (lt_congr (mul_assoc _ _ _) (.eqRefl _) (lt_of_le_of_lt actual gap))
 
 theorem literal_sharp_Euler_report_terms_strict_closed : ([] : List (Fm PTm 0)) ⊢[PRAAx] univ 2
     (lt (coefficient (var 1)*unit ((var 0)+num 3)) (degree (var 0) (var 1)) ⋏
