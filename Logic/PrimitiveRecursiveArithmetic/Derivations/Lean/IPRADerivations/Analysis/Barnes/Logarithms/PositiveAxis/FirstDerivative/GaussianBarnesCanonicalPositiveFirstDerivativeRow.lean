@@ -24,14 +24,14 @@ open GaussianNameArithmetic (sum_difference)
 open GaussianRationalCoefficientScaling (qmul_add)
 open GaussianRationalHorner (canonical canonical_unique ofGaussian ofGaussian_canonical ofGaussian_represents
   positive_product qadd qadd_canonical qmul qmul_canonical qzero represents_congr)
-open GaussianRationalInverseQuadraticAlgebra (subtract_sum subtract_zero_difference cancel_nested_product)
+open GaussianRationalInverseQuadraticAlgebra (subtract_sum subtract_zero_difference)
 open GaussianRationalLowerBounds (lower)
 open GaussianRationalMetric (bounded distanceBounded qnegative qnegative_canonical qsub qsub_canonical)
 open GaussianRationalPowerAlgebra (qmul_commutative)
-open GaussianRationalReciprocal (bounded_product bound_congr qone reciprocal reciprocal_identity)
+open GaussianRationalReciprocal (bounded_product bound_congr qone reciprocal)
 open GaussianRationalRoundedPower (multiplication_difference)
 open GaussianRationalSumAlgebra (qadd_associative)
-open GaussianRationalSyntheticDivision (qadd_congr qadd_sub_cancel qmul_congr qsub_congr qzero_add)
+open GaussianRationalSyntheticDivision (qadd_congr qmul_congr qsub_congr qzero_add)
 open GaussianReciprocalHorner (qadd_commutative qadd_zero_right qmul_associative qmul_one_right qsub_add_cancel)
 open GaussianRootAlgebra (equal equal_of_values sub)
 
@@ -55,34 +55,8 @@ def remainder (A C B k : PTm n) : PTm n :=
 
 theorem fraction_identity (z B k K : PTm n) (hB : Γ ⊢[PRAAx] le one B) (hk : Γ ⊢[PRAAx] le one k)
     (hK : Γ ⊢[PRAAx] le one K) (hz : Γ ⊢[PRAAx] lower (base z B k) one K) :
-    Γ ⊢[PRAAx] qsub (qadd (reciprocal (base z B k)) (offset z B k)) qone ≐ first z B k := by
-  let w := offset z B k
-  let b := base z B k
-  let i := reciprocal b
-  let u := qmul w w
-  let v := first z B k
-  let l := qadd qone v
-  let r := qadd i w
-  have hb : Γ ⊢[PRAAx] canonical b := qadd_canonical _ _
-  have nonzero := GaussianNameReciprocal.lower_norm_positive b K hK hz
-  have inverse : Γ ⊢[PRAAx] qmul b i ≐ qone := reciprocal_identity b nonzero
-  have fold : Γ ⊢[PRAAx] qmul b v ≐ u :=
-    (qmul_congr (.eqRefl b) (qmul_commutative u i)).eqTrans
-      ((qmul_associative b i u).eqSymm.eqTrans ((qmul_congr inverse (.eqRefl u)).eqTrans
-        ((qmul_commutative qone u).eqTrans (qmul_one_right u (qmul_canonical _ _)))))
-  have lhs : Γ ⊢[PRAAx] qmul b l ≐ qadd b u :=
-    (qmul_add b qone v).eqTrans (qadd_congr (qmul_one_right b hb) fold)
-  have hw : Γ ⊢[PRAAx] canonical w := ofGaussian_canonical _ _ (positive_product _ _ hB hk)
-  have lin : Γ ⊢[PRAAx] qmul b w ≐ qadd w u :=
-    (qmul_commutative b w).eqTrans ((qmul_add w qone w).eqTrans (qadd_congr (qmul_one_right w hw) (.eqRefl u)))
-  have rhs : Γ ⊢[PRAAx] qmul b r ≐ qadd b u :=
-    (qmul_add b i w).eqTrans ((qadd_congr inverse lin).eqTrans (qadd_associative qone w u).eqSymm)
-  have comm := (qmul_commutative i b).eqTrans inverse
-  have same : Γ ⊢[PRAAx] r ≐ l :=
-    (cancel_nested_product i b r (qadd_canonical _ _) comm).eqSymm.eqTrans
-      ((qmul_congr (.eqRefl i) (rhs.eqTrans lhs.eqSymm)).eqTrans
-        (cancel_nested_product i b l (qadd_canonical _ _) comm))
-  exact (qsub_congr same (.eqRefl qone)).eqTrans (qadd_sub_cancel qone v (qmul_canonical _ _))
+    Γ ⊢[PRAAx] qsub (qadd (reciprocal (base z B k)) (offset z B k)) qone ≐ first z B k :=
+  GaussianBarnesCanonicalDerivativeRow.fraction_identity_of_lower z B k K hB hk hK hz
 
 theorem offset_difference (A C B k : PTm n) (hB : Γ ⊢[PRAAx] le one B) (hk : Γ ⊢[PRAAx] le one k) :
     Γ ⊢[PRAAx] qsub (offset (center C B) B k) (offset (center A B) B k) ≐ offset (step A C) B k := by

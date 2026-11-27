@@ -25,10 +25,10 @@ open GaussianGammaEulerHeadLower (translated)
 open GaussianGammaLocalPoleGuards (center translated_pole_right)
 open GaussianRationalCoefficientScaling (qmul_add)
 open GaussianRationalHorner (ofGaussian ofGaussian_represents positive_product qadd qadd_canonical qmul qmul_canonical)
-open GaussianRationalLowerBounds (lower lower_from_representation inverse_bound)
+open GaussianRationalLowerBounds (lower lower_from_representation inverse_bound reciprocal_identity_of_lower)
 open GaussianRationalMetric (bounded bounded_of_cleared qsub)
 open GaussianRationalPowerAlgebra (qmul_commutative)
-open GaussianRationalReciprocal (reciprocal reciprocal_identity bounded_product)
+open GaussianRationalReciprocal (reciprocal bounded_product)
 open GaussianRationalSumAlgebra (qadd_associative)
 open GaussianRationalSyntheticDivision (qadd_congr qmul_congr qsub_congr qadd_sub_cancel)
 open GaussianReciprocalHorner (qmul_associative qmul_one_right)
@@ -112,7 +112,9 @@ theorem row_bound (z R B k : PTm n) (h : Γ ⊢[PRAAx] source z R B k) :
   have product := bounded_product (qmul w w) i (R*R) d two one hd (le_refl one) square (inverse_base_bound z R B k h)
   exact GaussianRationalReciprocal.bound_congr (.eqRefl _) (mul_comm _ _) (by ipra_ring) product
 
-theorem fraction_identity (z R B k : PTm n) (h : Γ ⊢[PRAAx] source z R B k) :
+/-- Evaluate the corrected first row from a lower bound on the original factor base. -/
+theorem fraction_identity_of_lower (z B k K : PTm n) (hB : Γ ⊢[PRAAx] le one B) (hk : Γ ⊢[PRAAx] le one k)
+    (hK : Γ ⊢[PRAAx] le one K) (hz : Γ ⊢[PRAAx] lower (base z B k) one K) :
     Γ ⊢[PRAAx] qsub (qadd (reciprocal (base z B k)) (offset z B k)) qone ≐ value z B k := by
   let w := offset z B k
   let b := base z B k
@@ -122,8 +124,7 @@ theorem fraction_identity (z R B k : PTm n) (h : Γ ⊢[PRAAx] source z R B k) :
   let l := qadd qone v
   let r := qadd i w
   have hb : Γ ⊢[PRAAx] GaussianRationalHorner.canonical b := qadd_canonical _ _
-  have nonzero := GaussianNameReciprocal.lower_norm_positive b two (zero_lt_succ one) (base_lower z R B k h)
-  have inverse : Γ ⊢[PRAAx] qmul b i ≐ qone := reciprocal_identity b nonzero
+  have inverse : Γ ⊢[PRAAx] qmul b i ≐ qone := reciprocal_identity_of_lower b one K (le_refl one) hK hz
   have one_mul (a : PTm n) (ha : Γ ⊢[PRAAx] GaussianRationalHorner.canonical a) :
       Γ ⊢[PRAAx] qmul qone a ≐ a :=
     (qmul_commutative qone a).eqTrans (qmul_one_right a ha)
@@ -134,7 +135,7 @@ theorem fraction_identity (z R B k : PTm n) (h : Γ ⊢[PRAAx] source z R B k) :
   have lhs : Γ ⊢[PRAAx] qmul b l ≐ qadd b u :=
     (qmul_add b qone v).eqTrans (qadd_congr (qmul_one_right b hb) fold)
   have hw : Γ ⊢[PRAAx] GaussianRationalHorner.canonical w :=
-    GaussianRationalHorner.ofGaussian_canonical _ _ (positive_product _ _ h.andE₁ h.andE₂.andE₁)
+    GaussianRationalHorner.ofGaussian_canonical _ _ (positive_product _ _ hB hk)
   have lin : Γ ⊢[PRAAx] qmul b w ≐ qadd w u :=
     (qmul_commutative b w).eqTrans ((qmul_add w qone w).eqTrans
       (qadd_congr (qmul_one_right w hw) (.eqRefl u)))
@@ -148,6 +149,10 @@ theorem fraction_identity (z R B k : PTm n) (h : Γ ⊢[PRAAx] source z R B k) :
     (release r (qadd_canonical _ _)).eqSymm.eqTrans
       ((qmul_congr (.eqRefl i) (rhs.eqTrans lhs.eqSymm)).eqTrans (release l (qadd_canonical _ _)))
   exact (qsub_congr same (.eqRefl qone)).eqTrans (qadd_sub_cancel qone v (qmul_canonical _ _))
+
+theorem fraction_identity (z R B k : PTm n) (h : Γ ⊢[PRAAx] source z R B k) :
+    Γ ⊢[PRAAx] qsub (qadd (reciprocal (base z B k)) (offset z B k)) qone ≐ value z B k :=
+  fraction_identity_of_lower z B k two h.andE₁ h.andE₂.andE₁ (zero_lt_succ one) (base_lower z R B k h)
 
 theorem actual_Barnes_first_derivative_row_closed : ([] : List (Fm PTm 0)) ⊢[PRAAx] univ 4
     (source (var 0) (var 1) (var 2) (var 3) ⟶
