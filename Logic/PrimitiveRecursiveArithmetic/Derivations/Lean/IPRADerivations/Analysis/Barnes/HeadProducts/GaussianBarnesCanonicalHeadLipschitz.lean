@@ -69,8 +69,7 @@ theorem row_bounds (p z R B N r : PTm n) (h : Γ ⊢[PRAAx] source z R B) :
   have hi : Δ ⊢[PRAAx] le k (sh N+sh r) := index_bound (sh N) i (sh r) Prf.hyp0
   have fact := GaussianBarnesCanonicalFactor.sample_bound (sh p) (sh z) (sh R) (sh B) k
     (factor_source _ _ _ _ hs (zero_lt_succ _))
-  have bigger := GaussianCoefficientNameBounds.bounded_radius_mono _ _ _ _ _ (le_refl one) (le_refl one)
-    (mul_le_mul_right one (cap_mono (sh R) k (sh N+sh r) hi)) fact
+  have bigger := GaussianCoefficientNameBounds.bounded_radius_mono_one (cap_mono (sh R) k (sh N+sh r) hi) fact
   simpa only [rowBoundsAt,Syn.shift,sh,Δ,i,GaussianBarnesCanonicalHead.subst_parameters,
     GaussianBarnesCanonicalFactor.subst_cap,PTm.subst_add] using
     GaussianRationalReciprocal.bound_congr (factor_at (sh p) i (sh z) (sh R) (sh B) (sh N)).eqSymm

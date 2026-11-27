@@ -67,8 +67,7 @@ private theorem power_bound_step (z R B N : PTm n)
     ipra_ring
   have hA := le_add_left (Γ := Γ) one R
   have radius := power_monotone_length A (N*N+k) (k*k) hA order
-  exact GaussianCoefficientNameBounds.bounded_radius_mono _ _ _ _ _ (le_refl one) (le_refl one)
-    (mul_le_mul_right one radius) new
+  exact GaussianCoefficientNameBounds.bounded_radius_mono_one radius new
 
 theorem power_bound (z R B N : PTm n) (hz : Γ ⊢[PRAAx] source z R B) :
     Γ ⊢[PRAAx] bounded (powerProduct z B N) (pw (R+one) (N*N)) one := by
@@ -99,8 +98,7 @@ theorem dyadic_bound (z B N j : PTm n) (hz : Γ ⊢[PRAAx] source z (unit j) B) 
   have pow : Γ ⊢[PRAAx] pw (unit (succ j)) D ≐ unit (D*succ j) :=
     (pw_mul two (succ j) D).eqTrans (congrAp2 powF (mul_comm _ _) (.eqRefl _))
   have radius := le_congr (.eqRefl _) pow (pw_le_pw D edge')
-  exact GaussianCoefficientNameBounds.bounded_radius_mono _ _ _ _ _ (le_refl one) (le_refl one)
-    (mul_le_mul_right one radius) (power_bound z R B N hz)
+  exact GaussianCoefficientNameBounds.bounded_radius_mono_one radius (power_bound z R B N hz)
 
 theorem initial_dyadic_bound (z B j : PTm n) (hz : Γ ⊢[PRAAx] source z (unit j) B) :
     Γ ⊢[PRAAx] bounded (powerProduct z B (initial (unit j))) (unit (num 4*unit j*unit j*succ j)) one := by

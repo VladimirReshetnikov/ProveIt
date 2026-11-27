@@ -18,7 +18,7 @@ open LeanProofs.IPRA.AnalyticNumberTheory.PhiLower (le_mul_mono)
 open GaussianBarnesCanonicalLogCofinal (source)
 open GaussianBarnesCanonicalLogSchedule (initial)
 open GaussianBarnesCanonicalPrefactor
-open GaussianCoefficientNameBounds (bounded_radius_mono)
+open GaussianCoefficientNameBounds (bounded_radius_mono_one)
 open GaussianEuclideanDistanceName (fraction_represents)
 open GaussianGammaCanonicalExponent (constantF constant_at gammaF gamma_regular)
 open GaussianGeneralFTAConstants (ceilL1 l1_natural_representation)
@@ -134,7 +134,7 @@ private theorem exponential_bound (f : PR 2) (x r R p : PTm n)
   have leF : Γ ⊢[PRAAx] le (factor r) (factor R) :=
     GaussianFactorBudget.power_monotone_length (num 3) r R (le_trans (le_succ_self one) (le_succ_self two)) hr
   exact bound_congr (GaussianRadiusExponentialName.sample_at f r p x).eqSymm (.eqRefl _) (.eqRefl _)
-    (bounded_radius_mono _ _ _ _ _ (le_refl one) (le_refl one) (mul_le_mul_right one leF) base)
+    (bounded_radius_mono_one leF base)
 
 theorem prefactor_sample_bound (p z R B : PTm n) (h : Γ ⊢[PRAAx] source z R B) :
     Γ ⊢[PRAAx] bounded (ap2 nameF p (data z B)) (prefactorBound R) one :=

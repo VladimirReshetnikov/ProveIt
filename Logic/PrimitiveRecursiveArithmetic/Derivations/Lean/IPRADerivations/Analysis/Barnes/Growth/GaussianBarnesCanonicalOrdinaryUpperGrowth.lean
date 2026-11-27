@@ -23,7 +23,7 @@ open ComplexLogarithmRemainder (normSq_neg normSq_one oneCode)
 open GaussianBarnesCanonicalDyadicUpperGrowth (exponent growthConstant named_sample_bound transfer_bound)
 open GaussianBarnesCanonicalNamedDemand (source data)
 open GaussianBarnesCanonicalNamedFrozen (source_widen independent_radii)
-open GaussianCoefficientNameBounds (bounded_radius_mono unit unit_positive)
+open GaussianCoefficientNameBounds (bounded_radius_mono_one unit unit_positive)
 open GaussianExponentialReference (unit_monotone)
 open GaussianFactorBudget (power_monotone_length)
 open GaussianGammaCanonicalExponent (constantF)
@@ -68,8 +68,7 @@ theorem named_shell_bound (f : PR 2) (p x R j : PTm n)
   have hS := source_widen f x R S hf hR
   have moved := transfer_bound (B f) (B f) p (data x R) (data x S) (exponent (j+two))
     (independent_radii f x R S hf hS) (named_sample_bound f p x (j+two) hS)
-  exact bounded_radius_mono _ _ _ _ _ (le_refl one) (le_refl one)
-    (mul_le_mul_right one (unit_monotone (shell_allowance j))) moved
+  exact bounded_radius_mono_one (unit_monotone (shell_allowance j)) moved
 
 def minusOne : PTm n := ofGaussian (ComplexLogarithmRemainder.neg oneCode) one
 

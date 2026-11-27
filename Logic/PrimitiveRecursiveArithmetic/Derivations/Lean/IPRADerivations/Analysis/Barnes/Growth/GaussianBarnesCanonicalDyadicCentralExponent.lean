@@ -19,7 +19,7 @@ open GaussianBarnesCanonicalDyadicCentralBound (centralCap centralExponent centr
 open GaussianBarnesCanonicalLogCofinal (source)
 open GaussianBarnesCanonicalLogSchedule (initial)
 open GaussianBarnesCanonicalSingleExponential (exponentF)
-open GaussianCoefficientNameBounds (bounded_radius_mono unit unit_positive)
+open GaussianCoefficientNameBounds (bounded_radius_mono_one unit unit_positive)
 open GaussianNameBounds (U)
 open GaussianNamedMultiplyRate (sample_bound_at)
 open GaussianRationalMetric (bounded)
@@ -85,8 +85,7 @@ theorem dyadic_unit_cap_bound (j : PTm n) : Γ ⊢[PRAAx]
 theorem observation (p z R B j : PTm n) (hz : Γ ⊢[PRAAx] source z R B)
     (hj : Γ ⊢[PRAAx] le (initial R) (pw two j)) :
     Γ ⊢[PRAAx] bounded (ap2 (E exponentF) p (baseData z R B)) (unit (dyadicExponent R j)) one :=
-  bounded_radius_mono _ _ _ _ _ (le_refl one) (le_refl one) (mul_le_mul_right one (cap_bound R j))
-    (sample_bound_at _ _ _ p (central_samples z R B j hz hj))
+  bounded_radius_mono_one (cap_bound R j) (sample_bound_at _ _ _ p (central_samples z R B j hz hj))
 
 theorem actual_Barnes_central_scalar_quadratic_dyadic_growth_closed :
     ([] : List (Fm PTm 0)) ⊢[PRAAx] univ 5

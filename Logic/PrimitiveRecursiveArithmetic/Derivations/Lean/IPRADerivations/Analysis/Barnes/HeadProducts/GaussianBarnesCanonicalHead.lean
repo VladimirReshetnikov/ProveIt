@@ -127,8 +127,7 @@ theorem sample_bound (p z R B N r : PTm n) (h : Γ ⊢[PRAAx] source z R B) :
       mul_le_mul_right _ (GaussianFactorBudget.power_monotone_length _ _ _ (le_add_left one (sh R)) hi)
     have bound := GaussianBarnesCanonicalFactor.sample_bound (sh s) (sh z) (sh R) (sh B) m
       (.andI hs.andE₁ (.andI (zero_lt_succ _) hs.andE₂))
-    have e := GaussianCoefficientNameBounds.bounded_radius_mono _ _ _ _ _ (le_refl one) (le_refl one)
-      (mul_le_mul_right one order) bound
+    have e := GaussianCoefficientNameBounds.bounded_radius_mono_one order bound
     simpa only [Syn.shift,sh,Δ,A,GaussianBarnesCanonicalFactor.subst_cap,PTm.subst_add,subst_parameters] using
       bound_congr (factor_at (sh s) (var 0) (sh z) (sh R) (sh B) (sh N)).eqSymm (.eqRefl _) (.eqRefl _) e
   exact bound_congr (sample_at p z R B N r).eqSymm (.eqRefl _) (.eqRefl _)

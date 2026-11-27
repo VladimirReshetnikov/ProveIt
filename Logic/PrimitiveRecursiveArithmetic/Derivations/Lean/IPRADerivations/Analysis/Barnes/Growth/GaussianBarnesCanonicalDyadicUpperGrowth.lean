@@ -25,7 +25,7 @@ open GaussianBarnesCanonicalDyadicCentralExponent (dyadicGrowthConstant dyadic_u
 open GaussianBarnesCanonicalLogCofinal (source)
 open GaussianBarnesCanonicalLogSchedule (initial)
 open GaussianBarnesCanonicalSingleExponential (exponentF exponentData)
-open GaussianCoefficientNameBounds (bounded_radius_mono unit unit_positive)
+open GaussianCoefficientNameBounds (bounded_radius_mono unit unit_positive bounded_radius_mono_one)
 open GaussianExponentialReference (unit_monotone)
 open GaussianGammaCanonicalExponent (constantF constant_at)
 open GaussianGammaFiniteApproximantName (exponentialInputData)
@@ -67,8 +67,7 @@ theorem factorized_bound (p z B j : PTm n) (hz : Γ ⊢[PRAAx] source z (unit j)
     bound_congr (constant_at k a).eqSymm (.eqRefl _) (.eqRefl _)
       (GaussianBarnesCanonicalDyadicHeadPower.initial_dyadic_bound z B j hz)
   have hb := sample_bound_at E b (centralCap R (succ j)) k (central_samples z R B (succ j) hz (initial_le j))
-  have hc := bounded_radius_mono _ _ _ _ _ (le_refl one) (le_refl one)
-    (mul_le_mul_right one (dyadic_unit_cap_bound j)) hb
+  have hc := bounded_radius_mono_one (dyadic_unit_cap_bound j) hb
   have read := GaussianNamedBoundedProductObservation.name_at (Γ := Γ) constantF E p a b
   have sum : Γ ⊢[PRAAx] H+C ≐ factorExponent j := by dsimp [H,C,R,factorExponent]; ipra_ring
   have power := (pw_add two H C).eqSymm.eqTrans (congrAp2 powF sum (.eqRefl _))
@@ -110,8 +109,7 @@ theorem sample_bound (p z B j : PTm n) (hz : Γ ⊢[PRAAx] source z (unit j) B) 
     Γ ⊢[PRAAx] bounded (ap2 V p (vd z (unit j) B)) (unit (exponent j)) one := by
   have near := transfer_bound V S p (vd z (unit j) B) (sd z (unit j) B) (factorExponent j)
     (GaussianBarnesCanonicalSingleExponential.factorization z (unit j) B hz) (factorized_bound p z B j hz)
-  exact bounded_radius_mono _ _ _ _ _ (le_refl one) (le_refl one)
-    (mul_le_mul_right one (unit_monotone (allowance j))) near
+  exact bounded_radius_mono_one (unit_monotone (allowance j)) near
 
 theorem named_sample_bound (f : PR 2) (p x j : PTm n)
     (hf : Γ ⊢[PRAAx] GaussianBarnesCanonicalNamedDemand.source f x (unit j)) :

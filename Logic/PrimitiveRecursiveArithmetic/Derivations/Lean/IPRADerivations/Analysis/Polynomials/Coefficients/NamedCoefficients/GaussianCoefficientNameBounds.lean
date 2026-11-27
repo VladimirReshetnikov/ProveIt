@@ -127,6 +127,18 @@ theorem bounded_radius_mono (z A B C D : PTm n) (hB : Γ ⊢[PRAAx] le one B) (h
       (le_congr (by ipra_ring) (by ipra_ring) sq)
   exact RationalArgmin.transitive hz tol
 
+/-- Increase the radius numerator with the positive denominator fixed. -/
+theorem bounded_radius_mono_same {z A C B : PTm n}
+    (hB : Γ ⊢[PRAAx] le one B) (hAC : Γ ⊢[PRAAx] le A C)
+    (hz : Γ ⊢[PRAAx] bounded z A B) : Γ ⊢[PRAAx] bounded z C B :=
+  bounded_radius_mono z A B C B hB hB (le_mul_mono hAC (le_refl B)) hz
+
+/-- Increase an integer radius. -/
+theorem bounded_radius_mono_one {z A C : PTm n}
+    (hAC : Γ ⊢[PRAAx] le A C)
+    (hz : Γ ⊢[PRAAx] bounded z A one) : Γ ⊢[PRAAx] bounded z C one :=
+  bounded_radius_mono_same (le_refl one) hAC hz
+
 def unit (s : PTm n) : PTm n := pw two s
 ipra_subst unit
 theorem unit_positive (s : PTm n) : Γ ⊢[PRAAx] le one (unit s) :=

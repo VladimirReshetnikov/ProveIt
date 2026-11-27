@@ -24,7 +24,7 @@ open GaussianBarnesCanonicalLogRow (boundNumerator)
 open GaussianBarnesCanonicalLogSchedule (initial initial_positive initial_radius length)
 open GaussianBarnesCanonicalLogTail (tailDenominator tail_denominator_positive)
 open GaussianBarnesCanonicalSingleExponential (exponentF exponentData exponent_regular prefixF prefixData prefactorExponentData)
-open GaussianCoefficientNameBounds (bounded_radius_mono unit unit_positive)
+open GaussianCoefficientNameBounds (bounded_radius_mono unit unit_positive bounded_radius_mono_one)
 open GaussianGammaCanonicalExponent (constantF constant_at)
 open GaussianGammaFiniteApproximantName (exponentialInputData exponential_input)
 open GaussianNameBounds (U)
@@ -108,8 +108,7 @@ private theorem widen_samples (f : PR 2) (x A C : PTm n)
     by simpa [Fm.shift,sh,Syn.shift] using h.shift
   have hAs : Γ.map Fm.shift ⊢[PRAAx] le (sh A) (sh C) := by simpa [Fm.shift,sh,Syn.shift] using hA.shift
   simpa only [sampleBound,sh,Syn.shift] using
-    bounded_radius_mono _ _ _ _ _ (le_refl one) (le_refl one) (mul_le_mul_right one hAs)
-      (sample_bound_at f (sh x) (sh A) (var 0) hs)
+    bounded_radius_mono_one hAs (sample_bound_at f (sh x) (sh A) (var 0) hs)
 
 theorem prefix_argument_samples (z R B j : PTm n) (hz : Γ ⊢[PRAAx] source z R B)
     (hj : Γ ⊢[PRAAx] le (initial R) (pw two j)) :
