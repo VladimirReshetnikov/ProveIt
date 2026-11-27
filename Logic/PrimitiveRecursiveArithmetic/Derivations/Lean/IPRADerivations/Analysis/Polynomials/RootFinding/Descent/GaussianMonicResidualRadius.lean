@@ -97,16 +97,43 @@ theorem qone_bound (A B : PTm n) (hB : Γ ⊢[PRAAx] le one B)
   exact le_congr ((congrMul (.eqRefl _) ComplexLogarithmRemainder.normSq_one).eqTrans (by ipra_ring))
     (by ipra_ring) raw
 
-theorem tail_bound_step (C w N A k : PTm n)
+/-- Every stored original coefficient has its actual Euclidean norm at
+most A. The two scalar component denominators remain independently decoded. -/
+def euclideanCoefficientBounds (C A : PTm n) : Fm PTm n := .all
+  (lt (var 0) (length (Syn.shift C)) ⟶ bounded (entry (Syn.shift C) (var 0)) (Syn.shift A) one)
+
+ipra_subst euclideanCoefficientBounds [Fm.subst_all, Fm.subst_imp, subst_lt, subst_length,
+    GaussianRationalMetric.subst_bounded, subst_entry, ConciseIPRA.PTm.subst_zero, ConciseIPRA.PTm.subst_succ,
+    Syn.subst_var, Syn.up_zero, Syn.up_succ, Syn.subst_shift, Syn.shift_subst]
+
+theorem euclidean_coefficient_at (C A i : PTm n) (h : Γ ⊢[PRAAx] euclideanCoefficientBounds C A)
+    (hi : Γ ⊢[PRAAx] lt i (length C)) : Γ ⊢[PRAAx] bounded (entry C i) A one := by
+  have rule : Γ ⊢[PRAAx] lt i (length C) ⟶ bounded (entry C i) A one := by
+    simpa only [euclideanCoefficientBounds,Fm.subst_imp,subst_lt,subst_length,
+      GaussianRationalMetric.subst_bounded,subst_entry,ConciseIPRA.PTm.subst_zero,ConciseIPRA.PTm.subst_succ,
+      Syn.subst_var,Syn.inst_zero,Syn.subst_inst_shift] using h.allE i
+  exact .impE rule hi
+
+/-- A coefficientwise L1 certificate gives the Euclidean certificate with the same constant. -/
+theorem coefficients_euclidean (C A : PTm n) (h : Γ ⊢[PRAAx] coefficientBounds C A) :
+    Γ ⊢[PRAAx] euclideanCoefficientBounds C A := by
+  have hs : Γ.map Fm.shift ⊢[PRAAx] coefficientBounds (Syn.shift C) (Syn.shift A) := by
+    simpa only [Fm.shift,GaussianRationalSyntheticBounds.subst_coefficientBounds,Syn.shift] using h.shift
+  exact .allI (.impI (bounded_of_l1 _ _ (coefficient_at _ _ _ hs.wk Prf.hyp0)))
+
+theorem euclidean_tail_bound_step (C w N A k : PTm n)
     (hLen : Γ ⊢[PRAAx] length C ≐ succ N)
-    (hC : Γ ⊢[PRAAx] coefficientBounds C A)
+    (hC : Γ ⊢[PRAAx] euclideanCoefficientBounds C A)
     (hw : Γ ⊢[PRAAx] bounded w one (radius A))
     (ih : Γ ⊢[PRAAx] bounded (tail C w N k) (A*geometric A k) (pw (radius A) k)) :
     Γ ⊢[PRAAx] bounded (tail C w N (succ k)) (A*geometric A (succ k)) (pw (radius A) (succ k)) := by
   have positive := GaussianPolynomialPerturbation.power_positive (Γ := Γ) (radius A) k
     (GaussianRadiusBudget.radius_positive A)
   have sum := bounded_sum _ _ _ _ _ _ positive (le_refl _)
-    ih (coefficient_euclidean C N A (monus N k) hLen hC (monus_le_left N k))
+    ih (euclidean_coefficient_at C A (monus N k) hC
+      (le_congr (succ_eq_add_one _).eqSymm
+        ((succ_eq_add_one N).eqSymm.eqTrans hLen.eqSymm)
+        (add_le_add_right one (monus_le_left N k))))
   have product := bounded_product _ _ _ _ _ _ (GaussianRadiusBudget.radius_positive A)
     (GaussianRationalHorner.positive_product _ _ positive (le_refl _)) hw sum
   apply bound_congr (tail_succ C w N k).eqSymm ?_ ?_ product
@@ -121,15 +148,15 @@ theorem tail_bound_step (C w N A k : PTm n)
 /-- The actual backwards coefficient tail satisfies the exact finite
 geometric budget. Quantifier-free induction ranges over its runtime length;
 every coefficient bound is obtained from the original input list. -/
-theorem tail_bound (C w N A k : PTm n)
+theorem euclidean_tail_bound (C w N A k : PTm n)
     (hLen : Γ ⊢[PRAAx] length C ≐ succ N)
-    (hC : Γ ⊢[PRAAx] coefficientBounds C A)
+    (hC : Γ ⊢[PRAAx] euclideanCoefficientBounds C A)
     (hw : Γ ⊢[PRAAx] bounded w one (radius A)) : Γ ⊢[PRAAx]
     bounded (tail C w N k) (A*geometric A k) (pw (radius A) k) := by
   have lenShift : Γ.map Fm.shift ⊢[PRAAx] length (Syn.shift C) ≐ succ (Syn.shift N) := by
     simpa only [Fm.shift,Fm.subst_eq,subst_length,ConciseIPRA.PTm.subst_succ,Syn.shift] using hLen.shift
-  have cShift : Γ.map Fm.shift ⊢[PRAAx] coefficientBounds (Syn.shift C) (Syn.shift A) := by
-    simpa only [Fm.shift,GaussianRationalSyntheticBounds.subst_coefficientBounds,Syn.shift] using hC.shift
+  have cShift : Γ.map Fm.shift ⊢[PRAAx] euclideanCoefficientBounds (Syn.shift C) (Syn.shift A) := by
+    simpa only [Fm.shift,subst_euclideanCoefficientBounds,Syn.shift] using hC.shift
   have wShift : Γ.map Fm.shift ⊢[PRAAx] bounded (Syn.shift w) one (radius (Syn.shift A)) := by
     simpa only [Fm.shift,GaussianRationalMetric.subst_bounded,GaussianRadiusBudget.subst_radius,
       ConciseIPRA.PTm.subst_zero,ConciseIPRA.PTm.subst_succ,Syn.shift] using hw.shift
@@ -139,18 +166,18 @@ theorem tail_bound (C w N A k : PTm n)
         GaussianRadiusBudget.subst_radius, subst_ap2]
     · exact bound_congr (tail_zero C w N).eqSymm (.eqRefl _) (.eqRefl _)
         (zero_bounded _ _ (GaussianPolynomialPerturbation.power_positive _ _ (GaussianRadiusBudget.radius_positive A)))
-    · exact tail_bound_step _ _ _ _ _ lenShift.wk cShift.wk wShift.wk Prf.hyp0
+    · exact euclidean_tail_bound_step _ _ _ _ _ lenShift.wk cShift.wk wShift.wk Prf.hyp0
   simpa only [GaussianRationalMetric.subst_bounded,subst_tail,PTm.subst_mul,
     GaussianRadiusBudget.subst_geometric,GaussianRadiusBudget.subst_radius,subst_ap2,
     Syn.subst_var,Syn.inst_zero,Syn.subst_inst_shift] using Prf.allE k all
 
 /-- The monic reciprocal-Horner identity and the genuine residual bound
 contradict the strict finite geometric budget at every outside point. -/
-theorem outside_impossible (C z N A : PTm n)
+theorem euclidean_outside_impossible (C z N A : PTm n)
     (hN : Γ ⊢[PRAAx] le one N) (hA : Γ ⊢[PRAAx] le one A)
     (hLen : Γ ⊢[PRAAx] length C ≐ succ N)
     (hMonic : Γ ⊢[PRAAx] entry C zero ≐ qone)
-    (hC : Γ ⊢[PRAAx] coefficientBounds C A)
+    (hC : Γ ⊢[PRAAx] euclideanCoefficientBounds C A)
     (hResidual : Γ ⊢[PRAAx] bounded (evaluate C z) one one)
     (hOutside : Γ ⊢[PRAAx] normLower z (radius A)) : Γ ⊢[PRAAx] .bot := by
   have hR : Γ ⊢[PRAAx] le one (radius A) := le_trans hA (le_add_right A two)
@@ -161,7 +188,7 @@ theorem outside_impossible (C z N A : PTm n)
   have productBound : Γ ⊢[PRAAx]
       bounded (qmul (evaluate C z) (power (reciprocal z) N)) one (pw (radius A) N) :=
     bound_congr (.eqRefl _) (one_mul one) (one_mul _) hProduct
-  have tailBound := tail_bound C (reciprocal z) N A N hLen hC hInv
+  have tailBound := euclidean_tail_bound C (reciprocal z) N A N hLen hC hInv
   have difference := bounded_difference_same_den _ _ _ _ _ positive productBound tailBound
   have actualOne := GaussianReciprocalHorner.isolated_one C z (reciprocal z) N hLen hMonic
     (GaussianRationalReciprocal.reciprocal_identity z (GaussianRationalReciprocal.norm_positive z (radius A) hR hOutside))
@@ -171,15 +198,55 @@ theorem outside_impossible (C z N A : PTm n)
 
 /-- Source04's monic residual-radius estimate on actual original rational
 coefficients and points. Both the degree and all input codes are internal. -/
+theorem euclidean_residual_radius (C z N A : PTm n)
+    (hN : Γ ⊢[PRAAx] le one N) (hA : Γ ⊢[PRAAx] le one A)
+    (hLen : Γ ⊢[PRAAx] length C ≐ succ N)
+    (hMonic : Γ ⊢[PRAAx] entry C zero ≐ qone)
+    (hC : Γ ⊢[PRAAx] euclideanCoefficientBounds C A)
+    (hResidual : Γ ⊢[PRAAx] bounded (evaluate C z) one one) :
+    Γ ⊢[PRAAx] bounded z (A+two) one := by
+  refine .orE (RationalArgmin.total (qnormSq z) (squaredTolerance (radius A) one)) Prf.hyp0 ?_
+  exact .botE _ (euclidean_outside_impossible C z N A hN.wk hA.wk hLen.wk hMonic.wk hC.wk hResidual.wk Prf.hyp0)
+
+theorem tail_bound_step (C w N A k : PTm n)
+    (hLen : Γ ⊢[PRAAx] length C ≐ succ N)
+    (hC : Γ ⊢[PRAAx] coefficientBounds C A)
+    (hw : Γ ⊢[PRAAx] bounded w one (radius A))
+    (ih : Γ ⊢[PRAAx] bounded (tail C w N k) (A*geometric A k) (pw (radius A) k)) :
+    Γ ⊢[PRAAx] bounded (tail C w N (succ k)) (A*geometric A (succ k)) (pw (radius A) (succ k)) :=
+  euclidean_tail_bound_step C w N A k hLen (coefficients_euclidean C A hC) hw ih
+
+/-- The actual backwards coefficient tail satisfies the exact finite
+geometric budget. Quantifier-free induction ranges over its runtime length;
+every coefficient bound is obtained from the original input list. -/
+theorem tail_bound (C w N A k : PTm n)
+    (hLen : Γ ⊢[PRAAx] length C ≐ succ N)
+    (hC : Γ ⊢[PRAAx] coefficientBounds C A)
+    (hw : Γ ⊢[PRAAx] bounded w one (radius A)) : Γ ⊢[PRAAx]
+    bounded (tail C w N k) (A*geometric A k) (pw (radius A) k) :=
+  euclidean_tail_bound C w N A k hLen (coefficients_euclidean C A hC) hw
+
+/-- The monic reciprocal-Horner identity and the genuine residual bound
+contradict the strict finite geometric budget at every outside point. -/
+theorem outside_impossible (C z N A : PTm n)
+    (hN : Γ ⊢[PRAAx] le one N) (hA : Γ ⊢[PRAAx] le one A)
+    (hLen : Γ ⊢[PRAAx] length C ≐ succ N)
+    (hMonic : Γ ⊢[PRAAx] entry C zero ≐ qone)
+    (hC : Γ ⊢[PRAAx] coefficientBounds C A)
+    (hResidual : Γ ⊢[PRAAx] bounded (evaluate C z) one one)
+    (hOutside : Γ ⊢[PRAAx] normLower z (radius A)) : Γ ⊢[PRAAx] .bot :=
+  euclidean_outside_impossible C z N A hN hA hLen hMonic (coefficients_euclidean C A hC) hResidual hOutside
+
+/-- Source04's monic residual-radius estimate on actual original rational
+coefficients and points. Both the degree and all input codes are internal. -/
 theorem residual_radius (C z N A : PTm n)
     (hN : Γ ⊢[PRAAx] le one N) (hA : Γ ⊢[PRAAx] le one A)
     (hLen : Γ ⊢[PRAAx] length C ≐ succ N)
     (hMonic : Γ ⊢[PRAAx] entry C zero ≐ qone)
     (hC : Γ ⊢[PRAAx] coefficientBounds C A)
     (hResidual : Γ ⊢[PRAAx] bounded (evaluate C z) one one) :
-    Γ ⊢[PRAAx] bounded z (A+two) one := by
-  refine .orE (RationalArgmin.total (qnormSq z) (squaredTolerance (radius A) one)) Prf.hyp0 ?_
-  exact .botE _ (outside_impossible C z N A hN.wk hA.wk hLen.wk hMonic.wk hC.wk hResidual.wk Prf.hyp0)
+    Γ ⊢[PRAAx] bounded z (A+two) one :=
+  euclidean_residual_radius C z N A hN hA hLen hMonic (coefficients_euclidean C A hC) hResidual
 
 theorem l1_euclidean_bound_closed : ([] : List (Fm PTm 0)) ⊢[PRAAx] univ 2
     (RationalArgmin.rationalLE (qL1 (var 0)) (natCode (var 1)) ⟶ bounded (var 0) (var 1) one) :=
