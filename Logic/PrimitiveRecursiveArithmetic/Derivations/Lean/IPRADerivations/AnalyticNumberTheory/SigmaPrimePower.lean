@@ -84,30 +84,19 @@ theorem nB_at (d p P : PTm n) :
 /-- `[pk ∣ pQ] = [k ∣ Q]` for `p, Q ≥ 1`. -/
 theorem dvd_scale {p Q : PTm n} (hp : Γ ⊢[PRAAx] p ≐ succ (pred p)) (hQ : Γ ⊢[PRAAx] Q ≐ succ (pred Q)) (k : PTm n) :
     Γ ⊢[PRAAx] eqb (rem (p * Q) (p * k)) zero ≐ eqb (rem Q k) zero := by
-  refine .orE (eqb_cases (Γ := Γ) (rem Q k) zero) ?_ ?_
-  · -- `k ∤ Q`: then `pk ∤ pQ`
-    refine Prf.eqTrans ?_ Prf.hyp0.eqSymm
-    refine eqb_of_ne (.impI ?_)
-    let C : List (Fm PTm n) := (rem (p * Q) (p * k) ≐ zero) :: (eqb (rem Q k) zero ≐ zero) :: Γ
-    have hd : C ⊢[PRAAx] dvd (p * k) (p * Q) := Prf.hyp0
-    have hpQ : C ⊢[PRAAx] p * Q ≐ succ (pred (p * Q)) := pos_mul hp.wk.wk hQ.wk.wk
-    have hpk := pos_of_dvd hpQ hd
-    have e := eq_of_dvd' hpk hd
-    have c : C ⊢[PRAAx] p * Q ≐ p * (k * quo (p * Q) (p * k)) :=
-      e.eqTrans (by ipra_ring)
-    have hk : C ⊢[PRAAx] k ≐ succ (pred k) := by
-      refine .orE (zero_or_succ k) ?_ Prf.hyp0
-      have z : ((k ≐ zero) :: C) ⊢[PRAAx] p * k ≐ zero := (congrMul (.eqRefl _) Prf.hyp0).eqTrans (mul_zero _)
-      exact succ_ne_zero' _ (hpk.wk.eqSymm.eqTrans z)
-    have dq : C ⊢[PRAAx] dvd k Q := dvd_of_eq' hk (mul_cancel hp.wk.wk c)
-    exact succ_ne_zero' _ ((eqb_of_eq dq).eqSymm.eqTrans Prf.hyp1)
-  · -- `k ∣ Q`: then `pk ∣ pQ`
-    refine Prf.eqTrans ?_ Prf.hyp0.eqSymm
-    have hk : ((eqb (rem Q k) zero ≐ one) :: Γ) ⊢[PRAAx] dvd k Q := eq_of_eqb Prf.hyp0
-    have pk := pos_of_dvd hQ.wk hk
-    have e := eq_of_dvd' pk hk
-    refine eqb_of_eq (dvd_of_eq' (pos_mul hp.wk pk) (w := quo Q k) ?_)
-    exact (congrMul (.eqRefl _) e).eqTrans (by ipra_ring)
+  refine .orE (zero_or_succ k) ?_ ?_
+  · let C : List (Fm PTm n) := (k ≐ zero) :: Γ
+    have scaled_zero : C ⊢[PRAAx] p * k ≐ zero :=
+      (congrMul (.eqRefl _) Prf.hyp0).eqTrans (mul_zero _)
+    have scaled_ne : C ⊢[PRAAx] neg (dvd (p * k) (p * Q)) :=
+      .impI (succ_ne_zero' _ ((pos_of_dvd (pos_mul hp.wk.wk hQ.wk.wk) Prf.hyp0).eqSymm.eqTrans scaled_zero.wk))
+    have ne : C ⊢[PRAAx] neg (dvd k Q) :=
+      .impI (succ_ne_zero' _ ((pos_of_dvd hQ.wk.wk Prf.hyp0).eqSymm.eqTrans Prf.hyp1))
+    exact (eqb_of_ne scaled_ne).eqTrans (eqb_of_ne ne).eqSymm
+  · let C : List (Fm PTm n) := (k ≐ succ (pred k)) :: Γ
+    have hk : C ⊢[PRAAx] k ≐ succ (pred k) := Prf.hyp0
+    exact GcdFiber.eqb_iff (.impI (GcdFiber.dvd_cancel hp.wk.wk hk.wk Prf.hyp0))
+      (.impI (GcdFiber.dvd_mul_both hp.wk.wk hk.wk Prf.hyp0))
 
 /-- The split of one divisor term: `[d ∣ pQ] d = [p ∣ d] h(d/p) + (1 − [p ∣ d]) [d ∣ pQ] d`. -/
 theorem split_pt {p Q : PTm n} (hp : Γ ⊢[PRAAx] p ≐ succ (pred p)) (d : PTm n) :

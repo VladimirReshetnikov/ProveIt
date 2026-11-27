@@ -104,24 +104,16 @@ theorem main_pt {p D r P : PTm n} (hq : Γ ⊢[PRAAx] le one (fstT P)) (hp : Γ 
       have hdv : C ⊢[PRAAx] rem r (D * p) ≐ zero := Prf.hyp0
       have hp1' : C ⊢[PRAAx] p ≐ succ (pred p) := hp1.wk.wk
       have hD' : C ⊢[PRAAx] D ≐ succ (pred D) := hD.wk.wk
-      have e0 : C ⊢[PRAAx] r ≐ (D * p) * quo r (D * p) := eq_of_dvd' hDp.wk.wk hdv
-      have eK : C ⊢[PRAAx] r ≐ p * (D * quo r (D * p)) + zero := by
-        ipra_lc natEq e0
-      have eDr : C ⊢[PRAAx] r ≐ D * (p * quo r (D * p)) + zero := by
-        ipra_lc natEq e0
-      have hrp : C ⊢[PRAAx] rem r p ≐ zero := rem_eq' hp1' eK (zero_lt' hp1')
-      have hK : C ⊢[PRAAx] quo r p ≐ D * quo r (D * p) := quo_eq hp1' eK (zero_lt' hp1')
-      have hrD : C ⊢[PRAAx] rem r D ≐ zero := rem_eq' hD' eDr (zero_lt' hD')
-      have hKD : C ⊢[PRAAx] rem (quo r p) D ≐ zero :=
-        (congrAp2 remF hK (.eqRefl _)).eqTrans
-          (rem_eq' hD' (q := quo r (D * p)) (r := zero) (add_zero _).eqSymm (zero_lt' hD'))
-      have eRK : C ⊢[PRAAx] r ≐ quo r p * p := by
-        ipra_lc natEq e0 - 𝔞 p * natEq hK
-      have hKpos : C ⊢[PRAAx] quo r p ≐ succ (pred (quo r p)) := by
-        refine .orE (zero_or_succ (quo r p)) ?_ Prf.hyp0
-        have z : ((quo r p ≐ zero) :: C) ⊢[PRAAx] r ≐ zero :=
-          eRK.wk.eqTrans ((congrMul Prf.hyp0 (.eqRefl _)).eqTrans (zero_mul _))
-        exact succ_ne_zero' _ (hr1.wk.eqSymm.eqTrans z)
+      have splitPD := Prf.andE₂ (Division.div_mod_mul hp1' hD' (x := r))
+      have splitDP := Prf.andE₂ (Division.div_mod_mul hD' hp1' (x := r))
+      have combined := splitPD.eqSymm.eqTrans ((congrAp2 remF (.eqRefl _) (mul_comm _ _)).eqTrans hdv)
+      have hrp := Common.add_eq_zero_right combined
+      have hrD := Common.add_eq_zero_right (splitDP.eqSymm.eqTrans hdv)
+      have hKD := Common.mul_cancel_eq hp1'
+        ((Common.add_eq_zero_left combined).eqTrans (mul_zero _).eqSymm)
+      have decomposed := eq_of_dvd' hp1' hrp
+      have eRK := decomposed.eqTrans (mul_comm _ _)
+      have hKpos := DiophantineNumberTheory.Coprime.pos_of_eq_mul hr1 decomposed
       have hz' : C ⊢[PRAAx] le (quo r p * p) (sndT (sndT P)) := le_congr eRK (.eqRefl _) hrz.wk.wk
       have ehv : C ⊢[PRAAx] hv r P ≐ hv (quo r p * p) P :=
         congrAdd (congrInst2 YP eRK (.eqRefl _)) (congrInst2 YN eRK (.eqRefl _))

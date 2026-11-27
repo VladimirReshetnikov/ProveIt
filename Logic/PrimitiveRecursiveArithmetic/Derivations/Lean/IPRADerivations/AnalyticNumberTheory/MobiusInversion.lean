@@ -42,43 +42,22 @@ namespace LeanProofs.IPRA.AnalyticNumberTheory.MobiusInversion
 /-- `[i ∣ N][j ∣ N/i] = [i j ∣ N]` for `i, j ≥ 1`. -/
 theorem dv_prod {N i j : PTm n} (hi : Γ ⊢[PRAAx] i ≐ succ (pred i)) (hj : Γ ⊢[PRAAx] j ≐ succ (pred j)) :
     Γ ⊢[PRAAx] eqb (rem N i) zero * eqb (rem (quo N i) j) zero ≐ eqb (rem N (i * j)) zero := by
-  have hij := pos_mul hi hj
-  refine .orE (eq_or_ne (rem N i) zero) ?_ ?_
-  · let C : List (Fm PTm n) := (rem N i ≐ zero) :: Γ
-    have hd : C ⊢[PRAAx] dvd i N := Prf.hyp0
-    have eN := eq_of_dvd' hi.wk hd
-    have one_l : C ⊢[PRAAx] eqb (rem N i) zero ≐ one := eqb_of_eq Prf.hyp0
-    refine (congrMul one_l (.eqRefl _)).eqTrans ((one_mul _).eqTrans ?_)
-    refine .orE (eq_or_ne (rem (quo N i) j) zero) ?_ ?_
-    · let D : List (Fm PTm n) := (rem (quo N i) j ≐ zero) :: C
-      have eq := eq_of_dvd' hj.wk.wk (Prf.hyp0 : D ⊢[PRAAx] dvd j (quo N i))
-      have e₁ := natEq (eN.wk : D ⊢[PRAAx] _); have e₂ := natEq eq
-      have hd2 : D ⊢[PRAAx] dvd (i * j) N := by
-        refine dvd_of_eq' hij.wk.wk (w := quo (quo N i) j) ?_
-        ipra_lc e₁ + 𝔞 i * e₂
-      exact (eqb_of_eq Prf.hyp0).eqTrans (eqb_of_eq hd2).eqSymm
-    · let D : List (Fm PTm n) := neg (rem (quo N i) j ≐ zero) :: C
-      have ne : D ⊢[PRAAx] neg (dvd (i * j) N) := by
-        refine .impI ?_
-        let D' : List (Fm PTm n) := dvd (i * j) N :: D
-        have e := natEq (eq_of_dvd' hij.wk.wk.wk (Prf.hyp0 : D' ⊢[PRAAx] _))
-        -- `N/i = j (N/(ij))`
-        have q : D' ⊢[PRAAx] quo N i ≐ j * quo N (i * j) := by
-          refine quo_eq hi.wk.wk.wk (z := N) (q := j * quo N (i * j)) (r := zero) ?_ (zero_lt' hi.wk.wk.wk)
-          ipra_lc e
-        have hdj : D' ⊢[PRAAx] dvd j (quo N i) := dvd_of_eq' hj.wk.wk.wk q
-        exact Prf.impE Prf.hyp1 hdj
-      exact (eqb_of_ne Prf.hyp0).eqTrans (eqb_of_ne ne).eqSymm
-  · let C : List (Fm PTm n) := neg (rem N i ≐ zero) :: Γ
-    have ne : C ⊢[PRAAx] neg (dvd (i * j) N) := by
-      refine .impI ?_
-      let D : List (Fm PTm n) := dvd (i * j) N :: C
-      have e := natEq (eq_of_dvd' hij.wk.wk (Prf.hyp0 : D ⊢[PRAAx] _))
-      have hdi : D ⊢[PRAAx] dvd i N := by
-        refine dvd_of_eq' hi.wk.wk (w := j * quo N (i * j)) ?_
-        ipra_lc e
-      exact Prf.impE Prf.hyp1 hdi
-    exact (zero_mul_l (eqb_of_ne Prf.hyp0) _).eqTrans (eqb_of_ne ne).eqSymm
+  let r := rem N i
+  let s := rem (quo N i) j
+  have combined := Prf.andE₂ (Division.div_mod_mul hi hj (x := N))
+  refine Prf.eqTrans ?_ (congrEqb' combined (.eqRefl _)).eqSymm
+  refine .orE (eq_or_ne r zero) ?_ ?_
+  · let C : List (Fm PTm n) := (r ≐ zero) :: Γ
+    have hr : C ⊢[PRAAx] r ≐ zero := Prf.hyp0
+    have scaled : C ⊢[PRAAx] eqb s zero ≐ eqb (i * s) zero :=
+      GcdFiber.eqb_iff (.impI ((congrMul (.eqRefl _) Prf.hyp0).eqTrans (mul_zero _)))
+        (.impI (Common.mul_cancel_eq hi.wk.wk (Prf.hyp0.eqTrans (mul_zero _).eqSymm)))
+    have reduced := (congrAdd (.eqRefl (i * s)) hr).eqTrans (add_zero _)
+    exact (congrMul (eqb_of_eq hr) (.eqRefl _)).eqTrans
+      ((one_mul _).eqTrans (scaled.eqTrans (congrEqb' reduced.eqSymm (.eqRefl _))))
+  · have nonzero : (neg (r ≐ zero) :: Γ) ⊢[PRAAx] neg (i * s + r ≐ zero) :=
+      .impI (Prf.impE Prf.hyp1 (Common.add_eq_zero_right Prf.hyp0))
+    exact (zero_mul_l (eqb_of_ne Prf.hyp0) _).eqTrans (eqb_of_ne nonzero).eqSymm
 
 /-- The symmetric form: `sg i [i ∣ N] sg j [j ∣ N/i] = sg j [j ∣ N] sg i [i ∣ N/j]`. -/
 theorem dv_symm (N i j : PTm n) :
