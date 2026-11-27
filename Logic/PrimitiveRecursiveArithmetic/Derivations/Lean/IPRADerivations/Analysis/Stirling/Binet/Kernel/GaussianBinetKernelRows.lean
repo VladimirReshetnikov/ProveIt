@@ -142,7 +142,8 @@ private theorem natural_multiply_distance (C u v E D : PTm n) (hD : Γ ⊢[PRAAx
     (h : Γ ⊢[PRAAx] distanceBounded u v E D) :
     Γ ⊢[PRAAx] distanceBounded (qmul (fraction C one) u) (qmul (fraction C one) v) (C*E) D :=
   bound_congr (GaussianRationalRoundedPower.multiplication_difference (fraction C one) u v).eqSymm
-    (.eqRefl _) (one_mul D) (bounded_product _ _ _ _ _ _ (le_refl one) hD (natural_coefficient_bound C) h)
+    (.eqRefl _) (.eqRefl _)
+    (GaussianRationalReciprocal.bounded_product_one_left hD (natural_coefficient_bound C) h)
 
 private theorem inverse_distance (u v R E D : PTm n)
     (hR : Γ ⊢[PRAAx] le one R) (hD : Γ ⊢[PRAAx] le one D)

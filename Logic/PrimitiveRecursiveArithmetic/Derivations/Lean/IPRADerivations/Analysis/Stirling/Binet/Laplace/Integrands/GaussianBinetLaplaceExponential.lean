@@ -113,7 +113,8 @@ theorem time_rate (X Y D sign R T A B a b E Q : PTm n)
   have dz := bounded_negative z R one (le_refl one) (parameter_bound X Y D sign R hz)
   have dxy : Γ ⊢[PRAAx] distanceBounded x y (R*E) Q :=
     bound_congr (GaussianRationalRoundedPower.multiplication_difference (qnegative z) _ _).eqSymm
-      (.eqRefl _) (one_mul _) (bounded_product _ _ R one E Q (le_refl one) hQ dz ht.andE₂.andE₂.andE₂.andE₂.andE₂)
+      (.eqRefl _) (.eqRefl _)
+      (GaussianRationalReciprocal.bounded_product_one_left hQ dz ht.andE₂.andE₂.andE₂.andE₂.andE₂)
   have rd := GaussianRadiusExponentialLipschitzRate.independent_rate constantF constantF (R*T) x y (R*E) Q
     (.andI hQ (.andI (GaussianSignedNameExponentialOrder.constant_input x _ bx)
       (.andI (GaussianSignedNameExponentialOrder.constant_input y _ by₀)

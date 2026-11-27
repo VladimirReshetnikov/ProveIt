@@ -92,8 +92,8 @@ theorem original_grid_bound_from_half (p N a C E d U V : PTm n) (hN : Γ ⊢[PRA
       reference_row (var 0) (Syn.shift p) (Syn.shift N) (Syn.shift a) (Syn.shift C) (Syn.shift E)
         (Syn.shift d) n'.wk e'.wk
   have ref : Γ ⊢[PRAAx] bounded (quadrature scaledF p N a C E M) (M*U) V :=
-    GaussianRationalReciprocal.bound_congr (scaled_quadrature p N a C E M).eqSymm (.eqRefl _) (one_mul V)
-      (GaussianRationalReciprocal.bounded_product _ _ _ _ _ _ (le_refl one) hV (radius_bounded M one (le_refl one)) hHalf)
+    GaussianRationalReciprocal.bound_congr (scaled_quadrature p N a C E M).eqSymm (.eqRefl _) (.eqRefl _)
+      (GaussianRationalReciprocal.bounded_product_one_left hV (radius_bounded M one (le_refl one)) hHalf)
   exact GaussianCompactScalarMajorant.compact_majorant_bound evaluatorF scaledF scalarBody
     p p N a C E x Y M (budget d) (unit p) (M*U) V hN hE (unit_positive p) hV hm er ref
 

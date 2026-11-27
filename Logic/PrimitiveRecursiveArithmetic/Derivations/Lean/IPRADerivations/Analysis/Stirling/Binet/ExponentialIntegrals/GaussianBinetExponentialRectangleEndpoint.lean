@@ -76,8 +76,7 @@ theorem shifted_endpoint (p X Y D sign R L M j : PTm n)
     bounded_radius_mono _ _ _ _ _ hp (le_refl one)
       (by ipra_le sl hp) (original_decay_unit_bound p (T*j) (one*M) (positive_product _ _ (le_refl one) hM))
   have prod : Γ ⊢[PRAAx] bounded (qmul x y) ((P+num 4*U)*two) d :=
-    bound_congr (.eqRefl _) (.eqRefl _) (by ipra_ring)
-      (bounded_product _ _ _ d two one hd (le_refl one) (original_endpoint p X Y D sign R L h) hy)
+    GaussianRationalReciprocal.bounded_product_one_right hd (original_endpoint p X Y D sign R L h) hy
   have est : Γ ⊢[PRAAx] distanceBounded v (qmul x y) (num 10) P :=
     GaussianBinetExponentialRectangleShift.original_product p X Y D sign R T T one M j h (le_refl one)
       (le_of_eq_add (d := zero) (by ipra_ring)) hM hj

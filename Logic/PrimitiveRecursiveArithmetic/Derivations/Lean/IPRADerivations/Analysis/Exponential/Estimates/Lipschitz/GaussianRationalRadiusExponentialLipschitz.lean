@@ -70,7 +70,7 @@ theorem term_bound (u v R A B k : PTm n) (hB : Γ ⊢[PRAAx] le one B)
       (le_congr (by ipra_ring) (by ipra_ring) (factorial_positive _)) inv
   have pwr := GaussianRationalPowerDifference.power_distance_bound u v R A B (succ k) hB hu hv hd
   have old := bound_congr (GaussianPolynomialCoefficientDifferences.scalar_scaled_difference _ _ _).eqSymm
-    (one_mul _) (by ipra_ring) (bounded_product _ _ _ _ _ _ (le_refl one) hB invUnit pwr)
+    (one_mul _) (.eqRefl _) (GaussianRationalReciprocal.bounded_product_one_left hB invUnit pwr)
   have budget : Γ ⊢[PRAAx] le (GaussianRationalPowerDifference.budget R A (succ k)) ((succ R)*factor R k*A) := by
     have native := le_trans (derivative_power_bound (Γ := Γ) R k)
       (le_congr (pw_succ (succ R) k).eqSymm (.eqRefl _)

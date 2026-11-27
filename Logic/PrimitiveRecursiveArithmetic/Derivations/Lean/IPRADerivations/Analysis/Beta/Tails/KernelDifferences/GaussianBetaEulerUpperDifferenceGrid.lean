@@ -129,8 +129,8 @@ theorem original_grid_bound_from_half (p M a C E z R B N U V : PTm n)
       (quadrature GaussianEulerIntegrandName.evaluatorF p M a C E (GaussianEulerIntegrandName.fixedData z B))
       ((C*referenceError R)*V+(majorant R*U)*(E*unit p)) ((E*unit p)*V) :=
   original_grid_bound_from_scaled_half p M a C E z R B N (majorant R*U) V hM hE hea h hN hRight hV
-    (GaussianRationalReciprocal.bound_congr (.eqRefl _) (.eqRefl _) (one_mul V)
-      (GaussianRationalReciprocal.bounded_product _ _ _ _ _ _ (le_refl one) hV (radius_bounded (majorant R) one (le_refl one)) hHalf))
+    (GaussianRationalReciprocal.bounded_product_one_left hV
+      (radius_bounded (majorant R) one (le_refl one)) hHalf)
 
 theorem original_shared_upper_difference_one_half_decay_grid_closed : ([] : List (Fm PTm 0)) ⊢[PRAAx] univ 11
     ((le one (var 1) ⋏ le one (var 4) ⋏ le (var 4) (var 2)) ⟶ source (var 5) (var 6) (var 7) ⟶

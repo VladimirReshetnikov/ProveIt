@@ -123,8 +123,8 @@ theorem denominator_error (p A B : PTm n) (hB : Γ ⊢[PRAAx] le one B) (small :
   have t := bound_congr (GaussianEulerDecayFactorBounds.fraction_is_radius_point A B hB).eqSymm
     (.eqRefl _) (.eqRefl _) (radius_bounded A B hB)
   have qB : Γ ⊢[PRAAx] bounded Q (num 10*A) B :=
-    bound_congr (query_factor p A B hB).eqSymm (by ipra_ring) (by ipra_ring)
-      (bounded_product _ _ _ _ _ _ hB (le_refl one) t (coefficient_bound (coefficientClock p A)))
+    bound_congr (query_factor p A B hB).eqSymm (by ipra_ring) (.eqRefl _)
+      (GaussianRationalReciprocal.bounded_product_one_right hB t (coefficient_bound (coefficientClock p A)))
   have can := (scale_positive (queryClock p A) A B hB).andE₂
   have cutoff := GaussianPositiveExponentialSeparation.original_cutoff_positive (Γ := Γ) R r
   have error := GaussianExponentialLinearRemainder.original_finite_linear_remainder Q (num 10*A) B L hB small qB can cutoff

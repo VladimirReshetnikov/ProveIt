@@ -68,7 +68,7 @@ theorem point_error_late (s p N X Y D sign A B T E : PTm n)
   have sub := distance_symmetric w v (num 4) (unit s) hp
     (GaussianBinetBoseLiteralLate.finite_uniform_late s p N A B E hA hB hE lower hs hN)
   have product := GaussianRationalReciprocal.bound_congr (multiplication_difference u v w).eqSymm
-    (.eqRefl _) (one_mul _) (GaussianRationalReciprocal.bounded_product _ _ _ _ _ _ (le_refl one) hp norm sub)
+    (.eqRefl _) (.eqRefl _) (GaussianRationalReciprocal.bounded_product_one_left hp norm sub)
   exact distance_triangle_same _ _ _ _ _ _ hp
     (GaussianExponentialReference.dyadic_weaken _ _ _ s p hs read) product
 

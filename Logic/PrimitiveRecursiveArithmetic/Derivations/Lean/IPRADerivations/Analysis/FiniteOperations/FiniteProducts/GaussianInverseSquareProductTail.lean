@@ -87,10 +87,9 @@ theorem tail_succ (f : PTm 2) (x C K r : PTm n)
   let E := k*k
   have hD := denominator_positive (Γ := Γ) K r hK
   have hE := positive_product (Γ := Γ) k k (zero_lt_succ _) (zero_lt_succ _)
-  have small : Γ ⊢[PRAAx] bounded (qmul P (qsub F qone)) (two*C) E := by
-    exact bound_congr (.eqRefl _) (.eqRefl _) (one_mul E)
-      (bounded_product P (qsub F qone) two one C E (le_refl one) hE
-        (partial_product_bound f x C K r hK hC h) (factor_bound_at f x C K r hf))
+  have small : Γ ⊢[PRAAx] bounded (qmul P (qsub F qone)) (two*C) E :=
+    GaussianRationalReciprocal.bounded_product_one_left hE
+      (partial_product_bound f x C K r hK hC h) (factor_bound_at f x C K r hf)
   have e : Γ ⊢[PRAAx] distanceBounded (qmul P F) P (two*C) E :=
     distance_congr (.eqRefl _) (qmul_one_right P (product_canonical _ _ _)) (.eqRefl _) (.eqRefl _)
       (bound_congr (GaussianRationalRoundedPower.multiplication_difference P F qone).eqSymm

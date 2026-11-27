@@ -62,10 +62,10 @@ private theorem scaled_log_rate (p r x : PTm n) (hn : Γ ⊢[PRAAx] le (num 6) (
   have hu := (GaussianSignedNameExponentialOrder.real_sample_at (Γ := Γ) H d q (GaussianStirlingWallisLogRate.name_real r x)).andE₁
   have logBound : Γ ⊢[PRAAx] bounded u (num 12*V+num 29*a) (a*V) :=
     bound_congr (qsub_zero_right u hu) (.eqRefl _) (.eqRefl _) (GaussianStirlingWallisLogRate.ratio_log_rate q r x hn)
-  have product := bounded_product c u one one (num 12*V+num 29*a) (a*V) (le_refl one) hE hc logBound
+  have product := GaussianRationalReciprocal.bounded_product_one_left hE hc logBound
   have atClock : Γ ⊢[PRAAx] distanceBounded (qmul c u) qzero (num 12*V+num 29*a) (a*V) :=
     norm_to_zero _ _ _ (qmul_canonical _ _)
-      (bound_congr (.eqRefl _) (one_mul _) (one_mul _) product)
+      (bound_congr (.eqRefl _) (one_mul _) (.eqRefl _) product)
   have read : Γ ⊢[PRAAx] ap2 scaledLogF p (scaledLogData r x) ≐ GaussianFastValueCut.recode (qmul c u) :=
     (multiply_at constantF H c d p).eqTrans (recode_congr (qmul_congr (constant_at q c) (.eqRefl _)))
   have clocks : Γ ⊢[PRAAx] le U V := GaussianExponentialReference.unit_monotone (le_add_right p _)

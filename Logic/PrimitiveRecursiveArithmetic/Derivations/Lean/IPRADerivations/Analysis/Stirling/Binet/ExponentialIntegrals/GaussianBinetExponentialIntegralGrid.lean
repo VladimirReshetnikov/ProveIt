@@ -82,8 +82,7 @@ theorem step_bound (q R T N : PTm n) (hb : Γ ⊢[PRAAx] bounded q R one) (hN : 
     Γ ⊢[PRAAx] bounded (exponent q T N) (R*T) N := by
   have f := bound_congr (GaussianEulerDecayFactorBounds.fraction_is_radius_point T N hN).eqSymm (.eqRefl _) (.eqRefl _)
     (GaussianDominantPairAlgebra.radius_bounded T N hN)
-  exact bound_congr (.eqRefl _) (.eqRefl _) (one_mul N)
-    (bounded_product _ _ R one T N (le_refl one) hN hb f)
+  exact GaussianRationalReciprocal.bounded_product_one_left hN hb f
 
 theorem exponent_input (q R T j N : PTm n) (hb : Γ ⊢[PRAAx] bounded q R one)
     (hN : Γ ⊢[PRAAx] le one N) (hj : Γ ⊢[PRAAx] le j N) :

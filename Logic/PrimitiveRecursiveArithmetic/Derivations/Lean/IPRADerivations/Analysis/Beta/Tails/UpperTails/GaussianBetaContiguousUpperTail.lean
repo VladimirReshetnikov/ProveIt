@@ -116,9 +116,8 @@ theorem original_grid (p q k A S z R B N T : PTm n) (h : Γ ⊢[PRAAx] source z 
       (numerator p q k A R N T S (coefficient R*sampleNumerator q N) (sampleDenominator q N))
       (denominator p q k A R N T S (sampleDenominator q N)) :=
   original_grid_from_quarter_decay_bound p q k A S z R B N T _ _ h (raw_den_positive _)
-    (bound_congr (.eqRefl _) (.eqRefl _) (one_mul _)
-      (GaussianRationalReciprocal.bounded_product _ _ _ _ _ _ (le_refl one) (raw_den_positive _)
-        (radius_bounded (coefficient R) one (le_refl one)) (actual_quarter_sample_bound q N)))
+    (GaussianRationalReciprocal.bounded_product_one_left (raw_den_positive _)
+      (radius_bounded (coefficient R) one (le_refl one)) (actual_quarter_sample_bound q N))
 
 theorem original_contiguous_upper_tail_one_quarter_degree_observation_closed : ([] : List (Fm PTm 0)) ⊢[PRAAx] univ 10
     (source (var 5) (var 6) (var 7) (var 3) (var 8) (var 9) (var 4) ⟶

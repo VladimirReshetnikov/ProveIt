@@ -84,8 +84,9 @@ theorem fractional_term_bound (q A B k : PTm n) (hb : Γ ⊢[PRAAx] le one B)
   have all : Γ ⊢[PRAAx] bounded (power q (two+k)) (A*A) (B*B) :=
     bound_congr (GaussianRationalPowerAlgebra.power_add q two k).eqSymm
       ((by ipra_ring : Γ ⊢[PRAAx] pw A two*one ≐ pw A two).eqTrans (square_power A))
-      ((by ipra_ring : Γ ⊢[PRAAx] pw B two*one ≐ pw B two).eqTrans (square_power B))
-      (bounded_product _ _ _ _ _ _ (GaussianPolynomialPerturbation.power_positive B two hb) (le_refl one) sq small)
+      (square_power B)
+      (GaussianRationalReciprocal.bounded_product_one_right
+        (GaussianPolynomialPerturbation.power_positive B two hb) sq small)
   have inv : Γ ⊢[PRAAx] bounded (inverseFactorial (two+k)) one (weight k) :=
     GaussianCoefficientNormEntries.l1_to_euclidean _ _ _ (factorial_positive _)
       (RationalArgmin.rationalLE_congr (GaussianFiniteExponentialWeightedNorm.inverse_factorial_norm _).eqSymm

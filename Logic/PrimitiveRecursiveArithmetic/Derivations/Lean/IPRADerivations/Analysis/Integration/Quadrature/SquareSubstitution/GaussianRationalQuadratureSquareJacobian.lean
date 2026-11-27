@@ -118,7 +118,7 @@ theorem row_error (F : PR 3) (i p N c d a C E x M : PTm n) (h : Γ ⊢[PRAAx] so
   have factor : Γ ⊢[PRAAx] bounded (fraction (c*C) (d*(E*N))) (c*C) (d*(E*N)) :=
     GaussianRationalReciprocal.bound_congr (GaussianEulerDecayFactorBounds.fraction_is_radius_point _ _ den).eqSymm
       (.eqRefl _) (.eqRefl _) (GaussianDominantPairAlgebra.radius_bounded _ _ den)
-  have bound := GaussianRationalReciprocal.bounded_product _ _ _ _ _ _ den (le_refl one) factor mapped
+  have bound := GaussianRationalReciprocal.bounded_product_one_right den factor mapped
   have difference : Γ ⊢[PRAAx] qsub
       (ap3 (correctedF F) p (grid i N a C E) (correctedData N c d C E x))
       (ap3 (jacobianF F) p (grid i N a C E) (pullData c d x)) ≐
@@ -128,7 +128,7 @@ theorem row_error (F : PR 3) (i p N c d a C E x M : PTm n) (h : Γ ⊢[PRAAx] so
   have point : Γ ⊢[PRAAx] distanceBounded
       (ap3 (correctedF F) p (grid i N a C E) (correctedData N c d C E x))
       (ap3 (jacobianF F) p (grid i N a C E) (pullData c d x)) (c*C*M) (d*(E*N)) :=
-    GaussianRationalReciprocal.bound_congr difference.eqSymm (.eqRefl _) (by ipra_ring) bound
+    GaussianRationalReciprocal.bound_congr difference.eqSymm (.eqRefl _) (.eqRefl _) bound
   exact distance_congr (sample_body_at (correctedF F) i p N a C E _).eqSymm
     (sample_body_at (jacobianF F) i p N a C E _).eqSymm (.eqRefl _) (.eqRefl _) point
 

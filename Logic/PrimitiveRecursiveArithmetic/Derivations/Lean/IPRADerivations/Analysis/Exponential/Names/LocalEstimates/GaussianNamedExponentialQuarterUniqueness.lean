@@ -82,9 +82,9 @@ private theorem quarter_at (f : PR 2) (x C p : PTm n) (h : Γ ⊢[PRAAx] lateRad
   have hj : Γ ⊢[PRAAx] le k j := le_add_right _ _
   have ht : Γ ⊢[PRAAx] le one two := le_succ_self one
   have inner : Γ ⊢[PRAAx] bounded b (num 3) two :=
-    bound_congr (half_at f x k).eqSymm (one_mul _) (by ipra_ring)
-    (bounded_product halfPoint (ap2 f j x) one two (num 3) one ht (le_refl one) half_bound
-      (late_at f x C j h (le_trans hp (le_trans hk hj))))
+    bound_congr (half_at f x k).eqSymm (one_mul _) (.eqRefl _)
+      (GaussianRationalReciprocal.bounded_product_one_right ht half_bound
+        (late_at f x C j h (le_trans hp (le_trans hk hj))))
   have outer : Γ ⊢[PRAAx] bounded (ap2 (H (H f)) p (hd (H f) a)) (num 3) (num 4) :=
     bound_congr (half_at (H f) a p).eqSymm (one_mul _) (by ipra_ring)
     (bounded_product halfPoint b one two (num 3) two ht ht half_bound inner)

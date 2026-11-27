@@ -139,11 +139,11 @@ theorem high_contribution_bound (u v K e i H A B : PTm n)
           (descending_at v K j hj)))
   have degrees := large_degree (contribution_degree K e i he.wk.wk hi.wk.wk hk.wk hj) hH.wk.wk
   refine .orE degrees ?_ ?_
-  · exact bound_congr hEntry.wk.eqSymm (one_mul _) (by ipra_ring)
-      (bounded_product _ _ one B A one hB.wk.wk.wk (le_refl _)
+  · exact bound_congr hEntry.wk.eqSymm (one_mul _) (.eqRefl _)
+      (GaussianRationalReciprocal.bounded_product_one_right hB.wk.wk.wk
         (small_at _ _ _ (monus K i) hsu.wk.wk.wk Prf.hyp0) (coarse_at _ _ (monus K j) hv.wk.wk.wk))
-  · exact bound_congr hEntry.wk.eqSymm (by ipra_ring) (one_mul _)
-      (bounded_product _ _ A one one B (le_refl _) hB.wk.wk.wk
+  · exact bound_congr hEntry.wk.eqSymm (Common.mul_one_right _) (.eqRefl _)
+      (GaussianRationalReciprocal.bounded_product_one_left hB.wk.wk.wk
         (coarse_at _ _ (monus K i) hu.wk.wk.wk) (small_at _ _ _ (monus K j) hsv.wk.wk.wk Prf.hyp0))
 
 theorem high_exponent_bound (u v K e H A B : PTm n)

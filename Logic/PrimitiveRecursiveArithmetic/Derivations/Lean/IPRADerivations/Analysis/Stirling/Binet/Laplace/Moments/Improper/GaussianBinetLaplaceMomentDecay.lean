@@ -69,8 +69,8 @@ private theorem reciprocal_bound (p a b k : PTm n) (ha : Γ ⊢[PRAAx] le one a)
       ((qmul_associative v w y).eqSymm.eqTrans
         ((qmul_congr (radius_reciprocal A B hA hB) (.eqRefl y)).eqTrans
           (GaussianPolynomialDeterminantTerms.one_mul_canonical y hcan)))
-  exact bound_congr same (.eqRefl _) (one_mul _)
-    (bounded_product (qmul w y) v (fact k) one B A (le_refl one) hA base (radius_bounded B A hA))
+  exact bound_congr same (.eqRefl _) (.eqRefl _)
+    (GaussianRationalReciprocal.bounded_product_one_left hA base (radius_bounded B A hA))
 
 private theorem power_plus_two (A j : PTm n) : Γ ⊢[PRAAx] pw A (j+two) ≐ pw A j*(A*A) :=
   (pw_add A j two).eqTrans (congrMul (.eqRefl _) ((pw_succ A one).eqTrans (congrMul (pw_one A) (.eqRefl _))))
@@ -172,8 +172,8 @@ theorem observation_inverse_square_bound (p j X D R T A B : PTm n)
   have ek : Γ ⊢[PRAAx] qmul (qmul y w) k ≐ z' :=
     GaussianRationalPowerAlgebra.swap_last y w k
   have ref : Γ ⊢[PRAAx] bounded z' (tailScale j D*(B*B)) (A*A) :=
-    bound_congr ek (by ipra_ring) (by ipra_ring)
-      (bounded_product _ _ _ _ _ _ hAA (le_refl one) b kBound)
+    bound_congr ek (by ipra_ring) (.eqRefl _)
+      (GaussianRationalReciprocal.bounded_product_one_right hAA b kBound)
   exact GaussianReconstructionRoots.norm_from_distance z z' _ _ _ _ hp hAA ds ref
 
 theorem actual_weighted_Binet_inverse_square_bound_closed : ([] : List (Fm PTm 0)) ⊢[PRAAx] univ 8

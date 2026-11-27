@@ -150,6 +150,24 @@ theorem bounded_product_one {q r A C : PTm n}
   bound_congr (.eqRefl _) (.eqRefl _) (one_mul one)
     (bounded_product q r A one C one (le_refl one) (le_refl one) hq hr)
 
+/-- Multiply a unit-denominator Euclidean bound on the left by a rational bound. -/
+theorem bounded_product_one_left {q r A C D : PTm n}
+    (hD : Γ ⊢[PRAAx] le one D)
+    (hq : Γ ⊢[PRAAx] GaussianRationalMetric.bounded q A one)
+    (hr : Γ ⊢[PRAAx] GaussianRationalMetric.bounded r C D) : Γ ⊢[PRAAx]
+    GaussianRationalMetric.bounded (qmul q r) (A*C) D :=
+  bound_congr (.eqRefl _) (.eqRefl _) (one_mul D)
+    (bounded_product q r A one C D (le_refl one) hD hq hr)
+
+/-- Multiply a rational Euclidean bound by a unit-denominator bound on the right. -/
+theorem bounded_product_one_right {q r A B C : PTm n}
+    (hB : Γ ⊢[PRAAx] le one B)
+    (hq : Γ ⊢[PRAAx] GaussianRationalMetric.bounded q A B)
+    (hr : Γ ⊢[PRAAx] GaussianRationalMetric.bounded r C one) : Γ ⊢[PRAAx]
+    GaussianRationalMetric.bounded (qmul q r) (A*C) B :=
+  bound_congr (.eqRefl _) (.eqRefl _) (Common.mul_one_right B)
+    (bounded_product q r A B C one hB (le_refl one) hq hr)
+
 theorem cleared_bound (q A B : PTm n) (hB : Γ ⊢[PRAAx] le one B)
     (hq : Γ ⊢[PRAAx] GaussianRationalMetric.bounded q A B) : Γ ⊢[PRAAx]
     ComplexLogarithmRemainder.bounded (scale B (rawGaussian q)) (A*rawDen q) :=

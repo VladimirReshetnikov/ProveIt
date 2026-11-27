@@ -180,9 +180,8 @@ private theorem frozen_error (p q X Y D sign A B K : PTm n) (hz : Γ ⊢[PRAAx] 
     exact le_congr (by dsimp only [T,cube]; ipra_ring) (by dsimp only [T,cube]; ipra_ring)
       (mul_le_mul_right (A*A*B*B) (le_mul_mono A_le Dcube))
   have lb : Γ ⊢[PRAAx] bounded l (A*K) B :=
-    bound_congr (.eqRefl _) (.eqRefl _) (by ipra_ring)
-      (bounded_product (fraction A B) (factor X Y D sign) A B K one hB (le_refl one)
-        (rational_time_bound A B hB) (factor_bound X Y D sign K hz margin))
+    GaussianRationalReciprocal.bounded_product_one_right hB
+      (rational_time_bound A B hB) (factor_bound X Y D sign K hz margin)
   have raw := scaled_distance l w v (A*K) B (num 100) one hB (le_refl one) lb (inverse_error q A B hA hB small)
   have e2 : Γ ⊢[PRAAx] distanceBounded (qmul l w) (qmul l v) ((A*K)*num 100) B :=
     distance_congr (.eqRefl _) (.eqRefl _) (.eqRefl _) (by ipra_ring) raw
