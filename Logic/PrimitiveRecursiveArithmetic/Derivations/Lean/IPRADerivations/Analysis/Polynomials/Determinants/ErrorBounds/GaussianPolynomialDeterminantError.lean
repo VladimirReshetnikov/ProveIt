@@ -20,7 +20,7 @@ open GaussianPolynomialDeterminant (summand partialDeterminant determinant width
 open GaussianCoefficientL1 (coefficientNorm subCoefficients)
 open GaussianCoefficientNormOrder (coefficientNorm_congr subCoefficients_congr)
 open GaussianRationalSyntheticBounds (natCode natCode_order add_monotone)
-open GaussianPolynomialDeterminantNorm (natural_scale_zero natural_scale_succ)
+open GaussianPolynomialDeterminantNorm (additive_prefix_bound)
 open RationalArithmetic (add multiply)
 open RationalArgmin (rationalLE rationalLE_congr)
 open RationalSupMetric (numeratorOf)
@@ -80,29 +80,19 @@ theorem difference_succ_bound (A B m L t : PTm n) : Γ ⊢[PRAAx]
 theorem prefix_error_bound (A B m L K t : PTm n) (h : Γ ⊢[PRAAx] summandBounds A B m L K)
     (ht : Γ ⊢[PRAAx] le t (count m)) : Γ ⊢[PRAAx]
     rationalLE (coefficientNorm (difference A B m L t)) (multiply (natCode t) K) := by
-  have all : Γ ⊢[PRAAx] .all (prefixBound (Syn.shift A) (Syn.shift B) (Syn.shift m) (Syn.shift L) (Syn.shift K) (var 0)) := by
-    ipra_qfind (⟨le_QF _ _,le_QF _ _⟩) [subst_prefixBound]
-    · refine .impI ?_
-      exact rationalLE_congr (difference_zero_norm A B m L).eqSymm (natural_scale_zero K).eqSymm
-        (RationalArgmin.reflexive (natCode zero))
-    · refine .impI ?_
-      let C := Syn.shift A
-      let D := Syn.shift B
-      let b := Syn.shift m
-      let W := Syn.shift L
-      let V := Syn.shift K
-      let r : PTm (n+1) := var 0
-      let Δ := le (succ r) (count b) :: prefixBound C D b W V r :: Γ.map Fm.shift
-      have hr : Δ ⊢[PRAAx] lt r (count b) := Prf.hyp0
-      have ih := Prf.impE (Prf.hyp1 : Δ ⊢[PRAAx] prefixBound C D b W V r) (le_of_lt hr)
-      have shifted : Δ ⊢[PRAAx] summandBounds C D b W V := by
-        simpa only [C,D,b,W,V,Δ,Fm.shift,subst_summandBounds,Syn.shift] using h.shift.wk.wk
-      have estimate := RationalArgmin.transitive (difference_succ_bound (Γ := Δ) C D b W r)
-        (add_monotone _ _ _ _ ih (summand_bound_at C D b W V r shifted hr))
-      exact rationalLE_congr (.eqRefl _) (natural_scale_succ r V) estimate
-  have guarded : Γ ⊢[PRAAx] prefixBound A B m L K t := by
-    simpa only [subst_prefixBound,Syn.subst_var,Syn.inst_zero,Syn.subst_inst_shift] using all.allE t
-  exact .impE guarded ht
+  let sh (u : PTm n) := Syn.shift u
+  let prefixNorm := coefficientNorm (difference (sh A) (sh B) (sh m) (sh L) (var 0))
+  suffices bound : Γ ⊢[PRAAx] rationalLE (Syn.subst (Syn.inst t) prefixNorm) (multiply (natCode t) K) by
+    simpa [prefixNorm,sh] using bound
+  refine additive_prefix_bound prefixNorm (count m) K t ?_ ?_ ht
+  · simpa [prefixNorm,sh] using difference_zero_norm (Γ := Γ) A B m L
+  · simp [prefixNorm,sh,subst_repl_shift, show Syn.shift (count m) = count (Syn.shift m) by simp [Syn.shift]]
+    refine .impI ?_
+    let Δ := lt (var 0) (count (sh m)) :: Γ.map Fm.shift
+    have shifted : Δ ⊢[PRAAx] summandBounds (sh A) (sh B) (sh m) (sh L) (sh K) := by
+      simpa [sh,Δ,Fm.shift,Syn.shift] using h.shift.wk
+    exact RationalArgmin.transitive (difference_succ_bound _ _ _ _ _)
+      (add_monotone _ _ _ _ (RationalArgmin.reflexive _) (summand_bound_at _ _ _ _ _ _ shifted Prf.hyp0))
 
 theorem determinant_count_bound (A B m L K : PTm n) (h : Γ ⊢[PRAAx] summandBounds A B m L K) : Γ ⊢[PRAAx]
     rationalLE (coefficientNorm (subCoefficients (determinant A m L) (determinant B m L) (width m L)))

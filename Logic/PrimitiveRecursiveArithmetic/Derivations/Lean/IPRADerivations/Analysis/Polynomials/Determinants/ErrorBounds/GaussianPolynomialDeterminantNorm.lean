@@ -76,38 +76,49 @@ theorem natural_scale_succ (t K : PTm n) : Γ ⊢[PRAAx]
     (RationalAlgebra.positive_product (le_refl one) hd)
   ipra_lc
 
+/-- A scalar prefix starting at zero and increasing by at most `K` per
+admissible step is bounded after `t` steps by the natural multiple `t*K`. -/
+theorem additive_prefix_bound (P : PTm (n + 1)) (N K t : PTm n)
+    (hzero : Γ ⊢[PRAAx] Syn.subst (Syn.inst zero) P ≐ natCode zero)
+    (hstep : Γ.map Fm.shift ⊢[PRAAx] lt (var 0) (Syn.shift N) ⟶
+      rationalLE (Syn.subst (Syn.repl (succ (var 0))) P) (add P (Syn.shift K)))
+    (ht : Γ ⊢[PRAAx] le t N) : Γ ⊢[PRAAx]
+    rationalLE (Syn.subst (Syn.inst t) P) (multiply (natCode t) K) := by
+  let invariant := rationalLE P (multiply (natCode (var 0)) (Syn.shift K))
+  have bound : Γ ⊢[PRAAx] invariant.subst (Syn.inst t) := by
+    refine qfIndAtMost ht (le_QF _ _) ?_ ?_
+    · simpa [invariant] using rationalLE_congr hzero.eqSymm (natural_scale_zero K).eqSymm
+        (RationalArgmin.reflexive (natCode zero))
+    · simp [invariant, subst_repl_shift]
+      refine .impI ?_
+      exact rationalLE_congr (.eqRefl _) (natural_scale_succ (var 0) (Syn.shift K))
+        (RationalArgmin.transitive (.impE hstep.wk.wk Prf.hyp0)
+          (add_monotone _ _ _ _ Prf.hyp1 (RationalArgmin.reflexive _)))
+  simpa [invariant] using bound
+
 theorem prefix_norm_bound (M m L K t : PTm n) (h : Γ ⊢[PRAAx] summandBounds M m L K)
     (ht : Γ ⊢[PRAAx] le t (count m)) : Γ ⊢[PRAAx]
     rationalLE (coefficientNorm (partialDeterminant M m L t)) (multiply (natCode t) K) := by
-  have all : Γ ⊢[PRAAx] .all (prefixBound (Syn.shift M) (Syn.shift m) (Syn.shift L) (Syn.shift K) (var 0)) := by
-    ipra_qfind (⟨le_QF _ _,le_QF _ _⟩) [subst_prefixBound]
-    · refine .impI ?_
-      exact rationalLE_congr
-        ((coefficientNorm_congr (GaussianPolynomialDeterminant.prefix_zero M m L)).eqTrans
-          (GaussianPolynomialNormBuffers.norm_zeros _)).eqSymm
-        (natural_scale_zero K).eqSymm (RationalArgmin.reflexive (natCode zero))
-    · refine .impI ?_
-      let A := Syn.shift M
-      let b := Syn.shift m
-      let B := Syn.shift L
-      let V := Syn.shift K
-      let r : PTm (n+1) := var 0
-      let Δ := le (succ r) (count b) :: prefixBound A b B V r :: Γ.map Fm.shift
-      have hr : Δ ⊢[PRAAx] lt r (count b) := Prf.hyp0
-      have ih := Prf.impE (Prf.hyp1 : Δ ⊢[PRAAx] prefixBound A b B V r) (le_of_lt hr)
-      have shifted : Δ ⊢[PRAAx] summandBounds A b B V := by
-        simpa only [A,b,B,V,Δ,Fm.shift,subst_summandBounds,Syn.shift] using h.shift.wk.wk
-      have termBound := summand_bound_at A b B V r shifted hr
-      have triangle := GaussianPolynomialNormBuffers.norm_added
-        (Γ := Δ) (partialDeterminant A b B r) (summand A b B r) (width b B)
-        (GaussianPolynomialDeterminant.prefix_length A b B r)
-        (GaussianPolynomialDeterminantTerms.term_length A b B (GaussianPolynomialDeterminant.wordCode b r))
-      have estimate := RationalArgmin.transitive triangle (add_monotone _ _ _ _ ih termBound)
-      exact rationalLE_congr (coefficientNorm_congr (GaussianPolynomialDeterminant.prefix_succ A b B r)).eqSymm
-        (natural_scale_succ r V) estimate
-  have guarded : Γ ⊢[PRAAx] prefixBound M m L K t := by
-    simpa only [subst_prefixBound,Syn.subst_var,Syn.inst_zero,Syn.subst_inst_shift] using all.allE t
-  exact .impE guarded ht
+  let sh (u : PTm n) := Syn.shift u
+  let prefixNorm := coefficientNorm (partialDeterminant (sh M) (sh m) (sh L) (var 0))
+  suffices bound : Γ ⊢[PRAAx] rationalLE (Syn.subst (Syn.inst t) prefixNorm) (multiply (natCode t) K) by
+    simpa [prefixNorm,sh] using bound
+  refine additive_prefix_bound prefixNorm (count m) K t ?_ ?_ ht
+  · simpa [prefixNorm,sh] using
+      (coefficientNorm_congr (GaussianPolynomialDeterminant.prefix_zero M m L)).eqTrans
+        (GaussianPolynomialNormBuffers.norm_zeros _)
+  · simp [prefixNorm,sh,subst_repl_shift, show Syn.shift (count m) = count (Syn.shift m) by simp [Syn.shift]]
+    refine .impI ?_
+    let Δ := lt (var 0) (count (sh m)) :: Γ.map Fm.shift
+    have shifted : Δ ⊢[PRAAx] summandBounds (sh M) (sh m) (sh L) (sh K) := by
+      simpa [sh,Δ,Fm.shift,Syn.shift] using h.shift.wk
+    have term := summand_bound_at _ _ _ _ _ shifted Prf.hyp0
+    have triangle := GaussianPolynomialNormBuffers.norm_added
+      (Γ := Δ) (partialDeterminant (sh M) (sh m) (sh L) (var 0)) (summand (sh M) (sh m) (sh L) (var 0))
+      (width (sh m) (sh L)) (GaussianPolynomialDeterminant.prefix_length _ _ _ _)
+      (GaussianPolynomialDeterminantTerms.term_length _ _ _ _)
+    exact rationalLE_congr (coefficientNorm_congr (GaussianPolynomialDeterminant.prefix_succ _ _ _ _)).eqSymm
+      (.eqRefl _) (RationalArgmin.transitive triangle (add_monotone _ _ _ _ (RationalArgmin.reflexive _) term))
 
 theorem determinant_count_bound (M m L K : PTm n) (h : Γ ⊢[PRAAx] summandBounds M m L K) :
     Γ ⊢[PRAAx] rationalLE (coefficientNorm (determinant M m L)) (multiply (natCode (count m)) K) :=
