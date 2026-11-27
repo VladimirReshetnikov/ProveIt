@@ -1,6 +1,7 @@
 import IPRADerivations.Foundations.MasterCertificate
 import IPRADerivations.Core.SumOrder
 import IPRADerivations.Core.CongruenceTactic
+import IPRADerivations.Core.BoundedSums
 
 /-!
 # Finite capped coordinate demands
@@ -589,17 +590,15 @@ theorem nonprefixed_growth {F : PTm 2} {r caps x L : PTm n}
     (hNot : Γ ⊢[PRAAx] neg (prefixed F r (iterate F L r x) x)) :
     Γ ⊢[PRAAx] .all (le (var 0) (succ (Syn.shift L)) ⟶
       le (var 0) (rank (Syn.shift r) (iterate F (var 0) (Syn.shift r) (Syn.shift x)))) := by
-  refine PRA.qfInd _ ⟨le_QF _ _, le_QF _ _⟩ ?_ ?_
-  · simp only [Fm.subst_imp, subst_le, subst_rank, subst_iterate, Syn.subst_var,
-      Syn.inst_zero, Syn.subst_inst_shift, ConciseIPRA.PTm.subst_succ]
-    exact .impI (zero_le _)
-  · simp only [Fm.subst_imp, subst_le, subst_rank, subst_iterate, Syn.subst_var,
-      Syn.repl_zero, subst_repl_shift, ConciseIPRA.PTm.subst_succ]
+  have shiftBound : Syn.shift (succ L) = succ (Syn.shift L) := by simp [Syn.shift]
+  rw [← shiftBound]
+  refine qfIndAllUpTo (succ L) (le_QF _ _) ?_ ?_
+  · simp only [subst_le, subst_rank, subst_iterate, Syn.subst_var, Syn.inst_zero, Syn.subst_inst_shift]
+    exact zero_le _
+  · simp only [subst_le, subst_rank, subst_iterate, Syn.subst_var, Syn.repl_zero, subst_repl_shift, shiftBound]
     refine .impI ?_
-    let Δ := le (succ (var 0)) (succ (Syn.shift L)) ::
-      (le (var 0) (succ (Syn.shift L)) ⟶
-        le (var 0) (rank (Syn.shift r) (iterate F (var 0) (Syn.shift r) (Syn.shift x)))) ::
-      Γ.map Fm.shift
+    let Δ := lt (var 0) (succ (Syn.shift L)) ::
+      le (var 0) (rank (Syn.shift r) (iterate F (var 0) (Syn.shift r) (Syn.shift x))) :: Γ.map Fm.shift
     have hm : Δ ⊢[PRAAx] mapsInto F (Syn.shift r) (Syn.shift caps) (Syn.shift x) := by
       simpa only [Δ, Fm.shift, subst_mapsInto, Syn.shift] using hMaps.shift.wk.wk
     have hn : Δ ⊢[PRAAx] monotoneOn F (Syn.shift r) (Syn.shift caps) (Syn.shift x) := by
@@ -609,15 +608,10 @@ theorem nonprefixed_growth {F : PTm 2} {r caps x L : PTm n}
       simpa only [Δ, Fm.shift, subst_neg, subst_prefixed, subst_iterate, Syn.shift] using hNot.shift.wk.wk
     have hindex : Δ ⊢[PRAAx] le (var 0) (Syn.shift L) :=
       (succ_monus_succ _ _).eqSymm.eqTrans Prf.hyp0
-    have ih : Δ ⊢[PRAAx] le (var 0)
-        (rank (Syn.shift r) (iterate F (var 0) (Syn.shift r) (Syn.shift x))) :=
-      Prf.impE Prf.hyp1 (le_trans hindex (le_succ_self _))
+    have ih : Δ ⊢[PRAAx] le (var 0) (rank (Syn.shift r) (iterate F (var 0) (Syn.shift r) (Syn.shift x))) :=
+      Prf.hyp1
     refine .orE (rank_step_or_prefixed F (var 0) (Syn.shift r) (Syn.shift x)) ?_ ?_
-    · have ihSucc : (lt (rank (Syn.shift r) (iterate F (var 0) (Syn.shift r) (Syn.shift x)))
-          (rank (Syn.shift r) (iterate F (succ (var 0)) (Syn.shift r) (Syn.shift x))) :: Δ) ⊢[PRAAx]
-          le (succ (var 0)) (succ (rank (Syn.shift r) (iterate F (var 0) (Syn.shift r) (Syn.shift x)))) :=
-        (succ_monus_succ (var 0) (rank (Syn.shift r) (iterate F (var 0) (Syn.shift r) (Syn.shift x)))).eqTrans ih.wk
-      exact le_trans ihSucc Prf.hyp0
+    · exact le_trans ((succ_monus_succ _ _).eqTrans ih.wk) Prf.hyp0
     · exact .botE _ (.impE hno.wk (prefixed_later hm.wk hn.wk hindex.wk Prf.hyp0))
 
 /-- Stabilization occurs by the sum of all coordinate caps. -/

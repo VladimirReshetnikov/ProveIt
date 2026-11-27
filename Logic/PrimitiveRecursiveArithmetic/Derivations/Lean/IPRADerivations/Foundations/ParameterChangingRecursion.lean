@@ -1,4 +1,5 @@
 import IPRADerivations.Foundations.BackwardDemand
+import IPRADerivations.Core.BoundedSums
 
 /-!
 # Compile predetermined parameter-changing recursion
@@ -152,48 +153,28 @@ The guard is part of the QF induction invariant, not a global schedule premise. 
 theorem forward_coherence (b : PR 2) (D : PR 3) (F : PR 4) (N K t x : PTm n)
     (ht : Γ ⊢[PRAAx] le t N) :
     Γ ⊢[PRAAx] forward b D F (succ N) K t x ≐ forward b D F N (ap3 D N K x) t x := by
-  have all : Γ ⊢[PRAAx] .all (le (var 0) (Syn.shift N) ⟶
-      forward b D F (succ (Syn.shift N)) (Syn.shift K) (var 0) (Syn.shift x) ≐
-        forward b D F (Syn.shift N) (ap3 D (Syn.shift N) (Syn.shift K) (Syn.shift x))
-          (var 0) (Syn.shift x)) := by
-    refine PRA.qfInd _ ⟨le_QF _ _, trivial⟩ ?_ ?_
-    · simp only [Fm.subst_imp, subst_le, Fm.subst_eq, subst_forward, subst_ap3,
-        ConciseIPRA.PTm.subst_succ, Syn.subst_var, Syn.inst_zero, Syn.subst_inst_shift,
-        PTm.subst_monus]
-      refine .impI ?_
+  let P : Fm PTm (n + 1) :=
+    forward b D F (succ (Syn.shift N)) (Syn.shift K) (var 0) (Syn.shift x) ≐
+      forward b D F (Syn.shift N) (ap3 D (Syn.shift N) (Syn.shift K) (Syn.shift x)) (var 0) (Syn.shift x)
+  have atIndex : Γ ⊢[PRAAx] P.subst (Syn.inst t) := by
+    refine qfIndAtMost ht trivial ?_ ?_
+    · simp only [P, Fm.subst_eq, subst_forward, subst_ap3, ConciseIPRA.PTm.subst_succ,
+        Syn.subst_var, Syn.inst_zero, Syn.subst_inst_shift]
       exact (forward_zero b D F (succ N) K x).eqTrans
         ((congrAp2 b (horizon_coherence D N K zero x (zero_le N)) (.eqRefl _)).eqTrans
           (forward_zero b D F N (ap3 D N K x) x).eqSymm)
-    · simp only [Fm.subst_imp, subst_le, Fm.subst_eq, subst_forward, subst_ap3,
-        ConciseIPRA.PTm.subst_succ, Syn.subst_var, Syn.repl_zero, subst_repl_shift,
-        PTm.subst_monus]
+    · simp only [P, Fm.subst_eq, subst_forward, subst_ap3, ConciseIPRA.PTm.subst_succ,
+        Syn.subst_var, Syn.repl_zero, subst_repl_shift]
       refine .impI ?_
-      let Δ : List (Fm PTm (n + 1)) := le (succ (var 0)) (Syn.shift N) ::
-        (le (var 0) (Syn.shift N) ⟶
-          forward b D F (succ (Syn.shift N)) (Syn.shift K) (var 0) (Syn.shift x) ≐
-            forward b D F (Syn.shift N) (ap3 D (Syn.shift N) (Syn.shift K) (Syn.shift x))
-              (var 0) (Syn.shift x)) :: Γ.map Fm.shift
-      have previous : Δ ⊢[PRAAx]
-          forward b D F (succ (Syn.shift N)) (Syn.shift K) (var 0) (Syn.shift x) ≐
-            forward b D F (Syn.shift N) (ap3 D (Syn.shift N) (Syn.shift K) (Syn.shift x))
-              (var 0) (Syn.shift x) :=
-        Prf.impE Prf.hyp1 (le_trans (le_succ_self (var 0)) Prf.hyp0)
-      have schedule : Δ ⊢[PRAAx]
-          horizon D (succ (Syn.shift N)) (Syn.shift K) (succ (var 0)) (Syn.shift x) ≐
-            horizon D (Syn.shift N) (ap3 D (Syn.shift N) (Syn.shift K) (Syn.shift x))
-              (succ (var 0)) (Syn.shift x) :=
-        horizon_coherence D (Syn.shift N) (Syn.shift K) (succ (var 0)) (Syn.shift x) Prf.hyp0
+      let Δ := lt (var 0) (Syn.shift N) :: P :: Γ.map Fm.shift
+      have range : Δ ⊢[PRAAx] lt (var 0) (Syn.shift N) := Prf.hyp0
+      have schedule := horizon_coherence D (Syn.shift N) (Syn.shift K) (succ (var 0)) (Syn.shift x) range
       exact (forward_succ b D F (succ (Syn.shift N)) (Syn.shift K) (var 0) (Syn.shift x)).eqTrans
-        ((congrApply4 F (.eqRefl _) schedule previous (.eqRefl _)).eqTrans
+        ((congrApply4 F (.eqRefl _) schedule Prf.hyp1 (.eqRefl _)).eqTrans
           (forward_succ b D F (Syn.shift N) (ap3 D (Syn.shift N) (Syn.shift K) (Syn.shift x))
             (var 0) (Syn.shift x)).eqSymm)
-  have instantiated := Prf.allE t all
-  have guarded : Γ ⊢[PRAAx] le t N ⟶
-      forward b D F (succ N) K t x ≐ forward b D F N (ap3 D N K x) t x := by
-    simpa only [Fm.subst_imp, subst_le, Fm.subst_eq, subst_forward, subst_ap3,
-      ConciseIPRA.PTm.subst_succ, Syn.subst_var, Syn.inst_zero, Syn.subst_inst_shift,
-      PTm.subst_monus] using instantiated
-  exact Prf.impE guarded ht
+  simpa only [P, Fm.subst_eq, subst_forward, subst_ap3, ConciseIPRA.PTm.subst_succ,
+    Syn.subst_var, Syn.inst_zero, Syn.subst_inst_shift] using atIndex
 
 /-- The constructed changing-parameter value is the final forward value. -/
 def compiledRecursion (b : PR 2) (D : PR 3) (F : PR 4) (N K x : PTm n) : PTm n :=

@@ -1,4 +1,5 @@
 import IPRADerivations.Foundations.MixedRadix
+import IPRADerivations.Core.BoundedSums
 
 /-!
 # Lexicographic rank and the fuel of a fixed-dimensional descent
@@ -91,27 +92,22 @@ theorem descent_fuel (ρ : PTm 2) (N x : PTm n)
     (hd : Γ ⊢[PRAAx] Fm.all (lt (var 0) (Syn.shift N) ⟶
       lt (inst2 ρ (succ (var 0)) (Syn.shift x)) (inst2 ρ (var 0) (Syn.shift x)))) :
     Γ ⊢[PRAAx] le (inst2 ρ N x + N) (inst2 ρ zero x) := by
-  have hall : Γ ⊢[PRAAx] Fm.all (le (var 0) (Syn.shift N) ⟶
-      le (inst2 ρ (var 0) (Syn.shift x) + var 0) (inst2 ρ zero (Syn.shift x))) := by
-    refine PRA.qfInd _ ⟨le_QF _ _, le_QF _ _⟩ ?_ ?_
-    · simp only [Fm.subst_imp, subst_le, subst_inst2, PTm.subst_add, Syn.subst_var, Syn.inst_zero,
+  let P : Fm PTm (n + 1) := le (inst2 ρ (var 0) (Syn.shift x) + var 0) (inst2 ρ zero (Syn.shift x))
+  have atEnd : Γ ⊢[PRAAx] P.subst (Syn.inst N) := by
+    refine qfIndUpTo N (le_QF _ _) ?_ ?_
+    · simp only [P, subst_le, subst_inst2, PTm.subst_add, Syn.subst_var, Syn.inst_zero,
         Syn.subst_inst_shift, ConciseIPRA.PTm.subst_zero]
-      exact .impI (by ipra_le 0)
-    · simp only [Fm.subst_imp, subst_le, subst_inst2, PTm.subst_add, Syn.subst_var, Syn.repl_zero,
-        subst_repl_shift, ConciseIPRA.PTm.subst_zero, ConciseIPRA.PTm.subst_succ]
+      ipra_le 0
+    · simp only [P, subst_le, subst_inst2, PTm.subst_add, Syn.subst_var, Syn.repl_zero,
+        subst_repl_shift, ConciseIPRA.PTm.subst_zero]
       refine .impI ?_
-      have hk : (le (succ (var 0)) (Syn.shift N) ::
-          (le (var 0) (Syn.shift N) ⟶
-            le (inst2 ρ (var 0) (Syn.shift x) + var 0) (inst2 ρ zero (Syn.shift x))) ::
-          Γ.map Fm.shift) ⊢[PRAAx] le (succ (var 0)) (Syn.shift N) := Prf.hyp0
-      have h₁ : _ ⊢[PRAAx] le (succ (inst2 ρ (succ (var 0)) (Syn.shift x))) (inst2 ρ (var 0) (Syn.shift x)) :=
-        Prf.impE hd.allOpen.wk.wk hk
-      have h₂ := Prf.impE Prf.hyp1 (le_trans (le_succ_self _) hk)
-      ipra_le sl h₁ + sl h₂
-  have h2 := Prf.allE N hall
-  simp only [Fm.subst_imp, subst_le, subst_inst2, PTm.subst_add, Syn.subst_var, Syn.inst_zero,
-    Syn.subst_inst_shift, ConciseIPRA.PTm.subst_zero] at h2
-  exact .impE h2 (le_refl N)
+      let Δ := lt (var 0) (Syn.shift N) :: P :: Γ.map Fm.shift
+      have hd' : Δ ⊢[PRAAx] le (succ (inst2 ρ (succ (var 0)) (Syn.shift x))) (inst2 ρ (var 0) (Syn.shift x)) :=
+        .impE hd.allOpen.wk.wk Prf.hyp0
+      have ih : Δ ⊢[PRAAx] P := Prf.hyp1
+      ipra_le sl hd' + sl ih
+  simpa only [P, subst_le, subst_inst2, PTm.subst_add, Syn.subst_var, Syn.inst_zero,
+    Syn.subst_inst_shift, ConciseIPRA.PTm.subst_zero] using atEnd
 
 /-- "Fuel from fixed-dimensional descent": the run length `N + 1` is at most `1 + ρ(0)`, and at most `R`
 when `ρ(0) < R`. -/

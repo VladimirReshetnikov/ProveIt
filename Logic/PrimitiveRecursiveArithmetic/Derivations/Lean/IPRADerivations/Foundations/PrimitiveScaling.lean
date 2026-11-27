@@ -1,5 +1,6 @@
 import IPRADerivations.DiophantineNumberTheory.Coprime
 import IPRADerivations.Core.ProdLemmas
+import IPRADerivations.Core.BoundedSums
 
 /-!
 # Primitive scaling: the gcd of a list (`ipra_presentations_to_witnesses`, `lem:primitive-scaling`)
@@ -159,27 +160,19 @@ theorem G_greatest {e s x N : PTm k} (he : Γ ⊢[PRAAx] e ≐ succ (pred e))
     (hall : Γ ⊢[PRAAx] Fm.all (lt (var 0) (Syn.shift N) ⟶
       dvd (Syn.shift e) (inst2 ω (var 0) (Syn.shift x)))) :
     Γ ⊢[PRAAx] dvd e (G ω N s x) := by
-  have h : Γ ⊢[PRAAx] Fm.all (le (var 0) (Syn.shift N) ⟶
-      dvd (Syn.shift e) (G ω (var 0) (Syn.shift s) (Syn.shift x))) := by
-    refine PRA.qfInd _ ⟨le_QF _ _, trivial⟩ ?_ ?_
-    · simpa using .impI (dvd_congr (G_zero (Γ := le zero N :: Γ) ω s x).eqSymm hse.wk)
-    · simp only [Fm.subst_imp, Fm.subst_eq, subst_le, subst_ap2, subst_pairT, Syn.subst_var,
+  let P : Fm PTm (k + 1) := dvd (Syn.shift e) (G ω (var 0) (Syn.shift s) (Syn.shift x))
+  have atEnd : Γ ⊢[PRAAx] P.subst (Syn.inst N) := by
+    refine qfIndUpTo N trivial ?_ ?_
+    · simpa [P] using dvd_congr (G_zero ω s x).eqSymm hse
+    · simp only [P, Fm.subst_eq, subst_ap2, subst_pairT, Syn.subst_var,
         Syn.repl_zero, subst_repl_shift, ConciseIPRA.PTm.subst_zero]
       refine .impI ?_
       have he' := he.shift
       rw [shift_pos'] at he'
-      have hm : (le (succ (var 0)) (Syn.shift N) ::
-          (le (var 0) (Syn.shift N) ⟶
-            dvd (Syn.shift e) (G ω (var 0) (Syn.shift s) (Syn.shift x))) ::
-          Γ.map Fm.shift) ⊢[PRAAx] le (var 0) (Syn.shift N) :=
-        le_trans (le_succ_self _) Prf.hyp0
       exact dvd_congr (G_succ ω (var 0) _ _).eqSymm
-        (gcd_greatest' he'.wk.wk (Prf.impE Prf.hyp1 hm)
-          (Prf.impE hall.allOpen.wk.wk Prf.hyp0))
-  have h2 := Prf.allE N h
-  simp only [Fm.subst_imp, Fm.subst_eq, subst_le, subst_ap2, subst_pairT, Syn.subst_var,
-    Syn.inst_zero, Syn.subst_inst_shift, ConciseIPRA.PTm.subst_zero] at h2
-  exact .impE h2 (le_refl N)
+        (gcd_greatest' he'.wk.wk Prf.hyp1 (.impE hall.allOpen.wk.wk Prf.hyp0))
+  simpa only [P, Fm.subst_eq, subst_ap2, subst_pairT, Syn.subst_var,
+    Syn.inst_zero, Syn.subst_inst_shift, ConciseIPRA.PTm.subst_zero] using atEnd
 
 /-- The scaled vector is primitive: if `d G_N` divides the seed and every entry below `N`,
 then `d = 1`. -/
