@@ -65,8 +65,7 @@ theorem power_width (L U : PR 3) (q e p s o k x : PTm n)
   have old := RationalIntervalArithmeticPrecision.power_endpoint_width L U q e p s (k+d) x h hp
   have moved := RationalValueBounds.upper_congr (power_translate U q e small o k x ho).eqSymm
     (power_translate L q e small o k x ho).eqSymm (.eqRefl _) (.eqRefl _) old
-  exact RationalValueBounds.upper_mono _ _ _ _ _ _ (RationalCubeGrid.scale_positive (k+d)) moved
-    (le_congr (one_mul _).eqSymm (one_mul _).eqSymm (scale_later k d))
+  exact RationalValueBounds.upper_mono_den (RationalCubeGrid.scale_positive (k+d)) (scale_later k d) moved
 
 theorem product_width (L U : PR 3) (X Y a b p sx sy o k x : PTm n)
     (hx : Γ ⊢[PRAAx] regular L U X x) (hy : Γ ⊢[PRAAx] regular L U Y x)
@@ -79,8 +78,7 @@ theorem product_width (L U : PR 3) (X Y a b p sx sy o k x : PTm n)
   have old := RationalIntervalArithmeticPrecision.product_endpoint_width L U X Y a b p sx sy (k+d) x hx hy hpx hpy
   have moved := RationalValueBounds.upper_congr (product_translate U X Y a b small o k x ho).eqSymm
     (product_translate L X Y a b small o k x ho).eqSymm (.eqRefl _) (.eqRefl _) old
-  exact RationalValueBounds.upper_mono _ _ _ _ _ _ (RationalCubeGrid.scale_positive (k+d)) moved
-    (le_congr (one_mul _).eqSymm (one_mul _).eqSymm (scale_later k d))
+  exact RationalValueBounds.upper_mono_den (RationalCubeGrid.scale_positive (k+d)) (scale_later k d) moved
 
 theorem power_nested (L U : PR 3) (q e p s o k l x : PTm n)
     (h : Γ ⊢[PRAAx] regular L U q x) (hp : Γ ⊢[PRAAx] positiveWitness L q p s x)

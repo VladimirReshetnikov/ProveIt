@@ -138,8 +138,7 @@ theorem late_enclosure (r p s x : PTm n) : Γ ⊢[PRAAx]
   have old := finite_enclosure (Γ := Γ) r (meshIndex t) F (le_refl _)
   have read : Γ ⊢[PRAAx] P ≐ fstT (piGrid M F) := congrFst (GaussianGammaHalfPiName.sample_at t x)
   have first : Γ ⊢[PRAAx] upper A P one U :=
-    upper_mono _ _ _ _ _ _ hM (upper_congr (.eqRefl _) read.eqSymm (.eqRefl _) (.eqRefl _) old.andE₁)
-      (le_congr (.eqRefl _) (one_mul M).eqSymm gm)
+    RationalValueBounds.upper_mono_one hM gm (upper_congr (.eqRefl _) read.eqSymm (.eqRefl _) (.eqRefl _) old.andE₁)
   have lastRaw : Γ ⊢[PRAAx] upper P A (two*M+N*C) (N*M) :=
     upper_congr read.eqSymm (.eqRefl _) (.eqRefl _) (.eqRefl _) old.andE₂
   have last : Γ ⊢[PRAAx] upper P A (two*U+N) (N*U) :=

@@ -106,10 +106,9 @@ theorem later_sharp_upper (m N r s : PTm n) (hm : Γ ⊢[PRAAx] le two m) (hr : 
 theorem later_upper (m N r s : PTm n) (hm : Γ ⊢[PRAAx] le two m) (hr : Γ ⊢[PRAAx] le one r)
     (hrs : Γ ⊢[PRAAx] le r s) : Γ ⊢[PRAAx] upper (tail m N s) (tail m N r) one r := by
   have start : Γ ⊢[PRAAx] le one (N+r) := le_trans hr (le_add_left r N)
-  exact upper_mono _ _ _ _ _ _ (potential_denominator_positive m (N+r) hm start)
+  exact RationalValueBounds.upper_mono_den (potential_denominator_positive m (N+r) hm start)
+    (le_trans (le_add_left r N) (potential_denominator_dominates m (N+r) hm start))
     (later_sharp_upper m N r s hm hr hrs)
-    (le_congr (one_mul _).eqSymm (one_mul _).eqSymm
-      (le_trans (le_add_left r N) (potential_denominator_dominates m (N+r) hm start)))
 
 /-- One-sided comparison is valid without ordering the two cutoffs: if
 the first is earlier, positivity supplies the stronger exact order. -/

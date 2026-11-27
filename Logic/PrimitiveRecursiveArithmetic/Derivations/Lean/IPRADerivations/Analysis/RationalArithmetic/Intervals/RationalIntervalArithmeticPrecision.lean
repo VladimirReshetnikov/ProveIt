@@ -309,9 +309,8 @@ theorem power_endpoint_width (L U : PR 3) (q e p s k x : PTm n)
   have old := (RationalNestedIntervals.step_at L U q r x h).andE₂.andE₂.andE₂
   have powered := power_width _ _ (M U q q x) e one (RationalCubeGrid.scale r)
     (M_positive U q q x) (RationalCubeGrid.scale_positive r) nn.andE₂ nn.andE₁ bb.andE₂ bb.andE₁ old
-  exact RationalValueBounds.upper_mono _ _ _ _ _ _ (RationalCubeGrid.scale_positive r) powered
-    (le_congr (by ipra_ring) (one_mul _).eqSymm
-      (shifted_budget _ o k (offset_covers_slope U q q e p x)))
+  exact RationalValueBounds.upper_mono_one (RationalCubeGrid.scale_positive r)
+    (le_congr (by ipra_ring) (.eqRefl _) (shifted_budget _ o k (offset_covers_slope U q q e p x))) powered
 
 theorem product_endpoint_width (L U : PR 3) (X Y a b p sx sy k x : PTm n)
     (hx : Γ ⊢[PRAAx] RationalNestedIntervals.regular L U X x)
@@ -334,9 +333,8 @@ theorem product_endpoint_width (L U : PR 3) (X Y a b p sx sy k x : PTm n)
   have result := product_power_width _ _ _ _ (M U X Y x) a b (RationalCubeGrid.scale r)
     (M_positive U X Y x) (RationalCubeGrid.scale_positive r) xn.andE₂ xn.andE₁ yn.andE₂ yn.andE₁
     xb.andE₂ xb.andE₁ yb.andE₂ yb.andE₁ xd yd
-  exact RationalValueBounds.upper_mono _ _ _ _ _ _ (RationalCubeGrid.scale_positive r) result
-    (le_congr (.eqRefl _) (one_mul _).eqSymm
-      (shifted_budget _ o k (offset_covers_slope U X Y (a+b) p x)))
+  exact RationalValueBounds.upper_mono_one (RationalCubeGrid.scale_positive r)
+    (shifted_budget _ o k (offset_covers_slope U X Y (a+b) p x)) result
 
 theorem power_endpoint_nested (L U : PR 3) (q e p s k l x : PTm n)
     (h : Γ ⊢[PRAAx] RationalNestedIntervals.regular L U q x)

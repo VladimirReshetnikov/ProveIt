@@ -137,6 +137,22 @@ theorem upper_mono (a b A B C D : PTm n) (hB : Γ ⊢[PRAAx] le one B)
     (Groth.ι (Q.mk Γ (denominatorOf a)) * Groth.ι (Q.mk Γ (denominatorOf b))) * sl hAD
 
 
+/-- Keep the numerator while decreasing the error denominator. -/
+theorem upper_mono_den {a b A B D : PTm n} (hB : Γ ⊢[PRAAx] le one B) (hDB : Γ ⊢[PRAAx] le D B)
+    (h : Γ ⊢[PRAAx] upper a b A B) : Γ ⊢[PRAAx] upper a b A D :=
+  upper_mono a b A B A D hB h (le_mul_mono (le_refl A) hDB)
+
+/-- Use a unit numerator once the target denominator pays for the old numerator. -/
+theorem upper_mono_one {a b A B D : PTm n} (hB : Γ ⊢[PRAAx] le one B) (hAD : Γ ⊢[PRAAx] le (A*D) B)
+    (h : Γ ⊢[PRAAx] upper a b A B) : Γ ⊢[PRAAx] upper a b one D :=
+  upper_mono a b A B one D hB h (le_congr (.eqRefl _) (one_mul B).eqSymm hAD)
+
+/-- Absorb a numerator weight by decreasing the denominator. -/
+theorem upper_mono_scaled {a b A C B D : PTm n} (hB : Γ ⊢[PRAAx] le one B) (hCD : Γ ⊢[PRAAx] le (C*D) B)
+    (h : Γ ⊢[PRAAx] upper a b (A*C) B) : Γ ⊢[PRAAx] upper a b A D :=
+  upper_mono a b (A*C) B A D hB h
+    (le_congr (mul_assoc A C D).eqSymm (.eqRefl _) (le_mul_mono (le_refl A) hCD))
+
 theorem radius_mono (a b A B C D : PTm n) (hB : Γ ⊢[PRAAx] le one B)
     (h : Γ ⊢[PRAAx] radius a b A B) (hAD : Γ ⊢[PRAAx] le (A*D) (C*B)) :
     Γ ⊢[PRAAx] radius a b C D := by

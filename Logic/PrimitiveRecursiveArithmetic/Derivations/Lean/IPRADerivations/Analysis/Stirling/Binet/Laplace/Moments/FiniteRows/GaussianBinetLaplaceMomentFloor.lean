@@ -89,8 +89,7 @@ theorem observation_floor_with_cap (p j X D R T A B S : PTm n)
   have raw := weighted_floor q (pw A j) (pw B j) W (floorDenominator S T) (unit (clock p j T))
     hB (floor_denominator_positive S T) low high (sample_floor_with_cap (clock p j T) X D R T A B S h hCap)
   have budget := GaussianFastValueCut.query_budget (Γ := Γ) W p
-  exact upper_mono _ _ _ _ _ _ (unit_positive _) raw
-    (le_congr (by ipra_ring) (.eqRefl _) (le_mul_mono (le_refl eight) budget))
+  exact RationalValueBounds.upper_mono_scaled (unit_positive _) budget raw
 
 theorem observation_floor (p j X D R T A B : PTm n)
     (h : Γ ⊢[PRAAx] input X zero D zero R T A B) (hlo : Γ ⊢[PRAAx] le B A) :
@@ -185,16 +184,11 @@ theorem unit_panel_floor_with_cap (p j X D R S : PTm n) (h : Γ ⊢[PRAAx] realS
     (sampleData q M (one+one) one one x) one one two (floorDenominator S two) eight (unit q)
     (le_refl one) hM (floor_denominator_positive S two) (unit_rows q M j X D R S h hM hCap)
   have read := GaussianCompactRiemannName.name_at (Γ := Γ) evaluatorF p (one+one) one one L two x
-  have f : Γ ⊢[PRAAx] fraction (one*two) (one*floorDenominator S two) ≐ floor S two := by
-    simpa only [floor,GaussianEuclideanDistanceName.subst_fraction,Syn.subst_var,
-      Matrix.cons_val_zero,Matrix.cons_val_one] using
-      Prf.eqCongr (fraction (var 0) (var 1) : PTm 2)
-        (σ := ![one*two,one*floorDenominator S two]) (σ' := ![two,floorDenominator S two])
-        (fun i => by fin_cases i <;> apply one_mul)
+  have f : Γ ⊢[PRAAx] fraction (one*two) (one*floorDenominator S two) ≐ floor S two :=
+    RationalNonnegativePowers.fraction_congr (one_mul _) (one_mul _)
   have canon := upper_congr f (congrFst read).eqSymm (one_mul _) (one_mul _) raw
-  exact upper_mono _ _ _ _ _ _ (unit_positive _) canon
-    (le_mul_mono (le_refl eight) (GaussianExponentialReference.unit_monotone
-      (le_trans (le_add_right p two) (le_add_right (p+two) (num 6)))))
+  exact RationalValueBounds.upper_mono_den (unit_positive _)
+    (GaussianExponentialReference.unit_monotone (le_trans (le_add_right p two) (le_add_right (p+two) (num 6)))) canon
 
 theorem unit_panel_floor (p j X D R : PTm n) (h : Γ ⊢[PRAAx] realSource X zero D zero R) :
     Γ ⊢[PRAAx] upper (floor X two) (fstT (ap2 nameF p (unitPanelData j X D R))) eight (unit p) :=

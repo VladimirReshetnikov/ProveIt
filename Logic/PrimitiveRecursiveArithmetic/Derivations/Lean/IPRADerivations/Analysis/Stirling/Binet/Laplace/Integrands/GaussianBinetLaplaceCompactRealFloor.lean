@@ -101,16 +101,11 @@ theorem unit_panel_floor (p X D R : PTm n) (h : Γ ⊢[PRAAx] realSource X zero 
   have src : Γ ⊢[PRAAx] source X zero D zero R two one one one :=
     .andI h (.andI (le_refl one) (le_of_eq_add (d := zero) (by ipra_ring)))
   have raw := compact_floor p X D R two one one one src
-  have f : Γ ⊢[PRAAx] fraction (one*two) (one*floorDenominator X two) ≐ floor X two := by
-    simpa only [floor,GaussianEuclideanDistanceName.subst_fraction,Syn.subst_var,
-      Matrix.cons_val_zero,Matrix.cons_val_one] using
-      Prf.eqCongr (fraction (var 0) (var 1) : PTm 2)
-        (σ := ![one*two,one*floorDenominator X two]) (σ' := ![two,floorDenominator X two])
-        (fun i => by fin_cases i <;> apply one_mul)
+  have f : Γ ⊢[PRAAx] fraction (one*two) (one*floorDenominator X two) ≐ floor X two :=
+    RationalNonnegativePowers.fraction_congr (one_mul _) (one_mul _)
   have canon := upper_congr f (.eqRefl _) (one_mul _) (one_mul _) raw
-  exact upper_mono _ _ _ _ _ _ (unit_positive _) canon
-    (le_mul_mono (le_refl eight) (GaussianExponentialReference.unit_monotone
-      (le_trans (le_add_right p two) (le_add_right (p+two) (num 6)))))
+  exact RationalValueBounds.upper_mono_den (unit_positive _)
+    (GaussianExponentialReference.unit_monotone (le_trans (le_add_right p two) (le_add_right (p+two) (num 6)))) canon
 
 theorem late_unit_panel_floor (p X D R : PTm n) (h : Γ ⊢[PRAAx] realSource X zero D zero R)
     (hp : Γ ⊢[PRAAx] le (eight*floorDenominator X two) (unit p)) :

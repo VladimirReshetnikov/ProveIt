@@ -29,8 +29,8 @@ theorem upper_of_coarse_midpoint (a b lo hi : PTm n)
     (hc : Γ ⊢[PRAAx] rationalLE (midpoint lo hi) (natCode (coarseCeiling a b))) :
     Γ ⊢[PRAAx] rationalLE hi (natCode (coarseBudget a b)) := by
   have hhalf := RationalCubeInfimumName.midpoint_half_right lo hi one one hw
-  have hfull := upper_mono hi (midpoint lo hi) one (two*one) one one
-    (le_of_eq_add (d := one) (by ipra_ring)) hhalf (le_of_eq_add (d := one) (by ipra_ring))
+  have hD : Γ ⊢[PRAAx] le one (two*one) := le_of_eq_add (d := one) (by ipra_ring)
+  have hfull := RationalValueBounds.upper_mono_den hD hD hhalf
   have h := order_of_upper hi (natCode (coarseCeiling a b)) one one (le_refl one)
     (upper_order_right _ _ _ _ _ hfull hc)
   have e : Γ ⊢[PRAAx] RationalArithmetic.add (natCode (coarseCeiling a b))

@@ -156,11 +156,10 @@ private theorem upper_slack_at (f : PR 2) (p q t x z : PTm n) (hf : Γ ⊢[PRAAx
     upper_of_radius _ _ _ _
       (imaginary_coordinate_radius _ _ _ _ hpt (point_at (nameF f) x p t (name_regular f x hf)))
   have mid : Γ ⊢[PRAAx] upper b c one T :=
-    upper_mono _ _ one V one T hv
+    RationalValueBounds.upper_mono_den hv hT
       (upper_congr (congrSnd (sample_at f t x)).eqSymm (.eqRefl _) (.eqRefl _) (.eqRefl _)
         (partial_unit_upper (clock t) (numerator f t x) (denominator f t x) (denominator_positive f t x)
           (numerator_le f t x)))
-      (le_congr (one_mul T).eqSymm (one_mul V).eqSymm hT)
   have right : Γ ⊢[PRAAx] upper c d (T+Q) (T*Q) :=
     RationalValueBounds.upper_two_errors_retime hVQ hT (le_refl Q)
       (upper_of_radius _ _ _ _

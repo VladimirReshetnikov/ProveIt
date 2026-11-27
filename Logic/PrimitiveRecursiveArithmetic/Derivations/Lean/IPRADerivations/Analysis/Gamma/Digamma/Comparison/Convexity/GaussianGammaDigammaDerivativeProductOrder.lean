@@ -200,7 +200,7 @@ theorem diagonal_order (p a c b : PTm n) (ha : Γ ⊢[PRAAx] source a b) (hc : �
   have hl := late (quotientCost a b D) (le_trans (le_trans (le_add_left _ _) (le_add_right _ _)) (le_add_right _ _))
   have hr := late (quotientCost c b D) (le_trans (le_add_left _ _) (le_add_right _ _))
   have s := raw_slope_order t a c b D ha hc hac hd
-  have mid := upper_mono _ _ _ _ one (unit p) ht' s (le_congr (.eqRefl _) (one_mul _).eqSymm hm)
+  have mid := RationalValueBounds.upper_mono_one ht' hm s
   have l := scalar_upper _ _ _ _ hp (distance_symmetric _ _ _ _ hp (product_near p t a c b D ha hc hda ht hl))
   have raw := product_near p t c a b D hc ha hdc ht hr
   have r := scalar_upper _ _ _ _ hp

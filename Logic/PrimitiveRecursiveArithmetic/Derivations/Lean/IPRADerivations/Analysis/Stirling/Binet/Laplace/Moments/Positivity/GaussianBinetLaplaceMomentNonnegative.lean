@@ -76,8 +76,7 @@ theorem observation_nonnegative (p j X D R T A B : PTm n)
   have base := upper_order_left _ _ _ _ _ floorPos (sample_floor (clock p j T) X D R T A B h)
   have raw := weight_nonnegative q (pw A j) (pw B j) W (unit (clock p j T)) hB hi base
   have budget := GaussianFastValueCut.query_budget (Γ := Γ) W p
-  exact upper_mono _ _ _ _ _ _ (unit_positive _) raw
-    (le_congr (by ipra_ring) (.eqRefl _) (le_mul_mono (le_refl eight) budget))
+  exact RationalValueBounds.upper_mono_scaled (unit_positive _) budget raw
 
 private theorem zero_fraction (C E : PTm n) (hE : Γ ⊢[PRAAx] le one E) :
     Γ ⊢[PRAAx] fraction (C*zero) (E*one) ≐ fraction zero one := by
@@ -143,8 +142,7 @@ theorem panel_nonnegative (p j X D R T A C E : PTm n) (h : Γ ⊢[PRAAx] source 
   have pad : Γ ⊢[PRAAx] le ((C*eight)*unit p) (E*unit q) :=
     le_trans (le_congr (by ipra_ring) (by ipra_ring) (le_mul_mono width power))
       (le_mul_mono (le_refl _) (GaussianCompactRiemannName.precision_lower p T))
-  exact upper_mono _ _ _ _ _ _ (positive_product _ _ e (unit_positive q)) next
-    (le_congr (.eqRefl _) (one_mul _).eqSymm pad)
+  exact RationalValueBounds.upper_mono_one (positive_product _ _ e (unit_positive q)) pad next
 
 theorem actual_weighted_Binet_panel_nonnegative_closed : ([] : List (Fm PTm 0)) ⊢[PRAAx] univ 9
     (source (var 2) zero (var 3) zero (var 4) (var 5) (var 6) (var 7) (var 8) ⟶

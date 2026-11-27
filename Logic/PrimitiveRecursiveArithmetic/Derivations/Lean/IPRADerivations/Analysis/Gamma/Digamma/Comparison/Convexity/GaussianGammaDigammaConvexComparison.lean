@@ -202,10 +202,9 @@ theorem diagonal_order (p a c b D : PTm n) (ha : Γ ⊢[PRAAx] source a b)
   have cm := GaussianRationalNaturalScaleOrder.reflect_upper m (qadd L R) (qadd X Y) _ (unit p) cl
   have hm : Γ ⊢[PRAAx] le one m := le_trans ha.andE₂ (le_add_right _ _)
   let A := weightedCost m b s (lg l B) (lg v B) (lg u B)+weightedCost m b s (lg r B) (lg u B) (lg v B)
-  have grow : Γ ⊢[PRAAx] le (A*unit p) (A*(m*unit p)) := by
-    exact le_congr (by ipra_ring) (by ipra_ring) (mul_le_mul_right (A*unit p) hm)
+  have grow := le_congr (one_mul (unit p)) (.eqRefl _) (mul_le_mul_right (unit p) hm)
   have mid : Γ ⊢[PRAAx] upper (fstT (qadd L R)) (fstT (qadd X Y)) A (unit p) :=
-    upper_mono _ _ A (m*unit p) A (unit p) (positive_product _ _ hm hp) cm grow
+    RationalValueBounds.upper_mono_den (positive_product _ _ hm hp) grow cm
   have left := scalar_upper _ _ _ _ hp (replace_left_log p a c b D ha hc hD)
   have right := scalar_upper _ _ _ _ hp (distance_symmetric _ _ _ _ hp (replace_right_log p a c b D ha hc hD))
   have middle := upper_triangle _ _ _ _ _ _ _ (upper_triangle _ _ _ _ _ _ _ left mid) right

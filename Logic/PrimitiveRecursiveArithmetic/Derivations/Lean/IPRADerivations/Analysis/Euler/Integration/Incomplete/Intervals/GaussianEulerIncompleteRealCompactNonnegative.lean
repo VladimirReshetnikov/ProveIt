@@ -115,9 +115,8 @@ theorem original_compact_nonnegative (p z R B a C E T : PTm n) (h : Γ ⊢[PRAAx
   have width := le_trans (le_add_left C a) h.andE₁.andE₂.andE₂
   have native := original_sampler_nonnegative p a C E (lipschitz R E T) T z B
     (.andI h.andE₁.andE₁.andE₁ h.andE₂) h.andE₁.andE₂.andE₁ hE
-  exact upper_mono _ _ C (E*unit (precision p T)) one (unit p)
-    (positive_product _ _ hE (unit_positive _)) native
-    (le_congr (.eqRefl _) (one_mul _).eqSymm (clock_budget p C E T width))
+  exact RationalValueBounds.upper_mono_one (positive_product _ _ hE (unit_positive _))
+    (clock_budget p C E T width) native
 
 theorem actual_original_real_Euler_compact_nonnegative_closed :
     ([] : List (Fm PTm 0)) ⊢[PRAAx] univ 8
