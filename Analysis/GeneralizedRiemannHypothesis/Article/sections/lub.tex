@@ -8,7 +8,9 @@ coefficients. This section computes the least possible truncation. The answer is
 the pole order of an inverse interpolation denominator. Over the residue field it is a sum
 of contact orders; modulo $\pi^r$ it grows linearly in $r$ with a slope read from the
 deepest contact, up to a bounded, eventually periodic defect that vanishes exactly under a
-base-$p$ carry condition. The optimal choice of directions is the same at every precision.
+base-$p$ carry condition. The defect has an eventual period that depends only on $p$, $e$ and
+the multiplicity of the deepest contact, and for contacts of depth at most one its least period
+is an explicit power of $p$. The optimal choice of directions is the same at every precision.
 Specialized to the multiplicative group, the pole computation becomes a simultaneous
 congruence for weighted Fleck sums. The last subsection treats a related invariant of
 \cite[Definition~5.1]{BergerSprang2025Integer}, the coefficient depth $s_0(n)$, through an
@@ -348,7 +350,7 @@ $D=(q-1)\kappa$. By the last assertion of Lemma~\ref{lub:lem:face},
 In particular the defect $\omega+(r-1)D-t_b(r)$ is always divisible by $q-1$.
 
 \begin{theorem}[The exact defect at every precision; \stU]\label{lub:thm:defect}
-Let $h_*\ge1$. There is a bounded, eventually periodic sequence of integers $\eta_r$ with
+Let $h_*\ge1$. There is a sequence of integers $\eta_r$ with
 \[
  t_b(r)=\omega+(q-1)\bigl(\kappa(r-1)-\eta_r\bigr),\qquad 0\le\eta_r\le(m-1)\kappa .
 \]
@@ -364,14 +366,8 @@ $i\in[0,(m-1)\kappa]$ satisfying
 \begin{equation}\label{lub:eq:survival}
  v_\rho\bigl(\gamma_{\kappa(r-1)-i}\bigr)<\kappa+i .
 \end{equation}
-Moreover, with
-\[
- N_1=mN,\qquad b_0=\ceil{m/e},\qquad
- \Theta=2p^{\,b_0+\floor{\log_p\max\set{1,N_1-1}}},
-\]
-one has $\eta_{r+\Theta}=\eta_r$ for all $r$ with $\kappa(r-m)\ge\deg C$, where
-$C\in S[z]$ is the polynomial \eqref{lub:eq:C} below. The period $\Theta$ is explicit and
-possibly not minimal.
+The sequence $\eta_r$ is eventually periodic, with a period and an onset given in
+Theorem~\ref{lub:thm:period} below.
 \end{theorem}
 \begin{proof}
 The ring $\OO[\rho]$ is a discrete valuation ring with uniformizer $\rho$ and
@@ -394,22 +390,6 @@ $v_\rho(\theta_j\rho^{-j})<\kappa+i$, since $v(\theta_j)$ is an integer. All the
 are at most $N$, so the test can be made in $S$. By \eqref{lub:eq:polebound} the largest
 surviving index $j$ lies in the range $\kappa(r-1)-(m-1)\kappa\le j\le\kappa(r-1)$. This
 proves the formula for $t_b(r)$, the bounds on $\eta_r$ and the test \eqref{lub:eq:survival}.
-
-For the period put $E=G-(1+z^{\kappa})^m\in S[z]$ and
-\begin{equation}\label{lub:eq:C}
- C(z)=\sum_{k=0}^{N-1}(-E)^k(1+z^{\kappa})^{m(N-1-k)} .
-\end{equation}
-By \eqref{lub:eq:Gmod} all coefficients of $E$ lie in $\rho S$, so $E^N=0$ and
-$G^{-1}=C(z)/(1+z^{\kappa})^{N_1}$ in $S[[z]]$. For $j\ge\deg C$, the coefficient
-$\gamma_j$ is a finite $S$-linear combination of the shifted sequences
-$(-1)^u\binom{u+N_1-1}{N_1-1}$, indexed by $u=(j-k)/\kappa$ for the monomials
-$z^k$ of $C$ with $k\equiv j\bmod\kappa$. Now $p^{b_0}=0$ in $S$, because
-$v_\rho(p)=\kappa e$. For $1\le l\le N_1-1$ the identity
-$l\binom{\Theta}{l}=\Theta\binom{\Theta-1}{l-1}$ gives $p^{b_0}\mid\binom{\Theta}{l}$.
-Vandermonde's identity then shows that the displayed signed binomial sequence has period
-dividing $\Theta$ in $S$; this includes $N_1=1$, where the evenness of $\Theta$
-suffices. Hence $\gamma_{j+\kappa\Theta}=\gamma_j$ for $j\ge\deg C$, and
-$\eta_{r+\Theta}=\eta_r$ whenever $\kappa(r-1)-(m-1)\kappa\ge\deg C$.
 \end{proof}
 
 \begin{remark}[Computation over the original local ring]\label{lub:rem:original}
@@ -449,39 +429,9 @@ $k+e\,v_p\binom{m+k-1}{k}$, so it survives exactly under the condition in the ma
 candidate set contains $k=0$. No cancellation between different $k$ is possible.
 \end{proof}
 
-\begin{corollary}[An explicit period at depth one; \stU]\label{lub:cor:depthoneperiod}
-In Proposition~\ref{lub:prop:depthone} let $m\ge2$, let $p^{\sigma}$ be the least power of $p$ with
-$p^{\sigma}\ge m$, and put
-\[
- \ell=\floor{(p^{\sigma}-1)/e},\qquad \vartheta=\ell+v_p\bigl((m-1)!\bigr)+1 .
-\]
-Then $K_m(r)\ge\max(0,r-p^{\sigma})$ for every $r\ge1$, and for $r\ge p^{\sigma}$
-\[
- K_m(r+p^{\vartheta})=K_m(r)+p^{\vartheta},\qquad\text{so that}\qquad
- t_b(r+p^{\vartheta})=t_b(r)+(q-1)p^{\vartheta}.
-\]
-For $m=1$ one has $K_1(r)=r-1$ from the start.
-\end{corollary}
-\begin{proof}
-Every $k$ divisible by $p^{\sigma}$ has no carry when added to $m-1<p^{\sigma}$, so its
-binomial coefficient is a $p$-adic unit. The largest such $k\le r-1$ proves the first
-assertion. For $r\ge p^{\sigma}$ write a potential maximum as $k=r-1-\delta$ with
-$0\le\delta<p^{\sigma}$. With $n=m-1$ it is
-admissible exactly when
-\[
- e\,v_p\binom{k+n}{n}\le\delta .
-\]
-All thresholds for the binomial valuation are at most $\ell$. Since
-$\binom{k+n}{n}=\prod_{i=1}^{n}(k+i)/n!$, these comparisons are determined by
-$k\bmod p^{\vartheta}$: if the valuation of a numerator factor reaches $\vartheta$, the
-binomial valuation already exceeds every relevant threshold; below that, the valuation of
-each factor is determined by its residue modulo $p^{\vartheta}$. Replacing $r$ by
-$r+p^{\vartheta}$ leaves the set of admissible $\delta$ unchanged, hence also its smallest
-element, which gives the largest $k$.
-\end{proof}
-
-The period $p^{\vartheta}$ is a safe explicit period and is not claimed to be minimal;
-the finite maximum in \eqref{lub:eq:depthone} is usually the simpler algorithm.
+For $m=1$ one has $K_1(r)=r-1$ for every $r$, in accordance with
+Corollary~\ref{lub:cor:unique}(b). The least period of the correction for $m\ge2$ is
+determined in Theorem~\ref{lub:thm:leastperiod} below.
 
 \begin{proposition}[Second precision at arbitrary contact depths; \stU]\label{lub:prop:second}
 For every contact multiset,
@@ -557,6 +507,226 @@ and $\set{0,3,6}$ over $\Z_3$:
 \end{itemize}
 These computations use unramified coefficient rings; the proofs, including the factor $e$,
 cover ramified fields.
+\end{remark}
+
+\subsection{The period of the defect}\label{lub:ssec:period}
+\begingroup\raggedright\sources{grh_periods_sampling_and_zeros; grh_prime_patterns_and_branch_precision; grh_transfers_lubin_tate_and_graph_towers; grh_method_transfers_orthogonal_jets_2026-11-26}\endgroup
+
+Keep the notation of Theorem~\ref{lub:thm:defect}: $h_*\ge1$ is the deepest contact of the
+branch $b$, $m=\nu_{h_*}$ its multiplicity, $D=D_{h_*}=(q-1)\kappa$, and
+\[
+ t_b(r)=\omega+D(r-1)-(q-1)\eta_r .
+\]
+Thus $t_b(r)-Dr$ and $\eta_r$ have the same eventual periods, and $(q-1)\eta_r$ is the loss of
+$t_b(r)$ against the upper endpoint of \eqref{lub:eq:polebound}. For $m=1$ the defect vanishes
+identically by Corollary~\ref{lub:cor:unique}(b). Throughout this subsection $m\ge2$ and
+$\mu=m-1$. The first result bounds the eventual period and its onset independently of the
+depth $h_*$ and of the shallower multiplicities $m_j$, $j<h_*$.
+
+\begin{theorem}[A period independent of the depth; \stU]\label{lub:thm:period}
+Let $m\ge2$ and put
+\[
+ \Theta=p^{\,\floor{\log_p\mu}+\ceil{\mu/e}},\qquad
+ r_0=\ceil*{\frac{q\mu}{q-1}} .
+\]
+Then $0\le(q-1)\eta_r\le D\mu$ for every $r\ge1$, and $\eta_{r+\Theta}=\eta_r$ for every
+$r\ge r_0$. Consequently the least eventual period of $r\mapsto t_b(r)-Dr$ is the least power
+of $p$ whose cyclic shift fixes the word $(\eta_{r_0},\dots,\eta_{r_0+\Theta-1})$; in
+particular it divides $\Theta$.
+\end{theorem}
+
+\begin{proof}
+Write $H=h_*$ and $n=r-1$, and put $\Delta(n)=(q-1)\eta_{n+1}=\omega+Dn-t_b(n+1)$. The bound
+$0\le\Delta(n)\le D\mu$ is a restatement of \eqref{lub:eq:polebound}. In the coordinate
+\eqref{lub:eq:coordinate}, Lemma~\ref{lub:lem:normal}(ii) gives
+$P^{(b)}=X^{d-1}\prod_{j=1}^H\Phi_j^{\,m_j}$ with $m_H=m$. For $1\le j\le H$ define
+\[
+ A_j(X)=X^{D-D_j}\,\frac{\Phi_j(X)-X^{D_j}}{\pi}.
+\]
+Since $\phi_{j-1}\equiv X^{q^{j-1}}\pmod\pi$, these are polynomials with coefficients in
+$\OO$; $A_j$ is divisible by $X^{D-D_j}$, the constant coefficient of $A_H$ is $1$, and
+$\Phi_j=X^{D_j}(1+\pi X^{-D}A_j)$. Hence
+\[
+ \frac1{P^{(b)}}=X^{-\omega}\,(1+\pi X^{-D}A_H)^{-m}\prod_{j<H}(1+\pi X^{-D}A_j)^{-m_j}.
+\]
+Multiply by the unit $(-1)^nX^{\omega+Dn}A_H^{-n}$ of $(\OO/\pi^{n+1})((X))$. By
+Lemma~\ref{lub:lem:normal}(iii) the result is a power series whose order is exactly $\Delta(n)$,
+since $A_H$ is a unit of $\OO[[X]]$; removing this unit power is the step that eliminates the
+depth from the period. Expand the negative binomial series, with index $k$ at the deepest
+factor and indices $s_j\ge0$ at the factors $j<H$, and put $u=\sum_{j<H}s_j$. Terms with
+$k+u>n$ vanish modulo $\pi^{n+1}$. With $\ell=n-k-u$ and $v=\ell+u$ the remaining term is
+\[
+ (-1)^{\ell}\pi^{n-\ell}\binom{n-v+\mu}{\mu}X^{D\ell}A_H^{-v}
+ \prod_{j<H}\binom{m_j+s_j-1}{s_j}A_j^{s_j},
+\]
+of order at least $D\ell+\sum_{j<H}(D-D_j)s_j$. Since $D_j\le D/q$ for $j<H$, a contribution
+to a degree $a<D\mu$ requires $\ell+u(q-1)/q<\mu$, hence $v<q\mu/(q-1)$, that is $v\le
+r_0-1$. For $n\ge r_0-1$ all these index tuples have $k=n-v\ge0$, so the set of contributing
+tuples $(\ell,(s_j))$ does not depend on $n$.
+
+Fix a degree $a<D\mu$ and put $b_a=\floor{a/D}\le\mu-1$. Every term contributing to degree $a$
+has $\ell\le b_a$. Divide the coefficient of $X^a$ by $\pi^{n-b_a}$ and test it modulo
+$\pi^{b_a+1}$; this is exactly its survival test modulo $\pi^{n+1}$. After the division each
+summand depends on $n$ only through $\binom{n-v+\mu}{\mu}$, which is needed modulo $\pi^{\mu}$.
+For $1\le i\le\mu$ the identity $i\binom{\Theta}{i}=\Theta\binom{\Theta-1}{i-1}$ gives
+\[
+ v_p\binom{\Theta}{i}\ \ge\ v_p(\Theta)-v_p(i)\ \ge\ \ceil{\mu/e},
+\]
+so $\pi^{\mu}$ divides $\binom{\Theta}{i}$, and Vandermonde's identity makes
+$n\mapsto\binom{n-v+\mu}{\mu}$ periodic modulo $\pi^{\mu}$ with period $\Theta$. Thus the
+survival of every coefficient in degree below $D\mu$ is $\Theta$-periodic in $n\ge r_0-1$.
+Since $\Delta(n)$ is the least surviving degree, and equals $D\mu$ when no degree below $D\mu$
+survives, $\Delta(n+\Theta)=\Delta(n)$ for $n\ge r_0-1$. The last assertion holds because the
+periods of a sequence that is purely $\Theta$-periodic from $r_0$ on form, modulo $\Theta$, a
+subgroup of $\Z/\Theta\Z$, and every eventual period is a period from $r_0$ on.
+\end{proof}
+
+When the contacts have depth at most one, the least period has a closed form. In the notation
+of Proposition~\ref{lub:prop:depthone} one has $\kappa=1$, $D=q-1$ and
+$\eta_r=r-1-K_m(r)$. Put
+\begin{equation}\label{lub:eq:leastexp}
+ \Lambda=\max_{1\le j\le\mu}\Bigl(\ceil{j/e}+v_p(j)\Bigr),\qquad T=p^{\Lambda}.
+\end{equation}
+
+\begin{theorem}[The least period at depth one; \stU]\label{lub:thm:leastperiod}
+Suppose that every contact of $b$ has depth $0$ or $1$ and that $m\ge2$ contacts have depth
+one. Then $r\mapsto\eta_r$ is periodic from $r=1$ with least period $T$, and for every $r\ge1$
+\[
+ 0\le\eta_r\le\mu,\qquad \eta_r=\mu\iff T\mid r .
+\]
+In particular $T$ is the first precision at which the loss $(q-1)\eta_r$ attains its maximum
+$(q-1)(m-1)$, and the worst precisions have density $1/T$.
+\end{theorem}
+
+The proof identifies the first worst precision with a divisibility threshold for an integer
+matrix, and that threshold translates all later precisions by the same amount.
+
+\begin{lemma}[A Jordan block realizes the threshold; \stU]\label{lub:lem:jordan}
+Let $N$ be the nilpotent $m\times m$ Jordan block with ones just above the diagonal and put
+$J=\pi I+N$. Let $\nu_r$ be the least $s\ge1$ with $J^s\in\pi^rM_m(\OO)$. Then
+\[
+ \nu_r=m+K_m(r),\qquad r\le\nu_r\le r+\mu,\qquad \eta_r=r+\mu-\nu_r .
+\]
+\end{lemma}
+
+\begin{proof}
+Over $A_r$ the action of $J$ on its cyclic module is multiplication by $X$ on
+$A_r[X]/((X-\pi)^m)$: the last standard basis vector and its images under the powers of
+$J-\pi I$ form a basis. Since $\pi$ is nilpotent in $A_r$, the inverse of $(X-\pi)^m$ in
+$A_r((X))$ is the Laurent polynomial
+\[
+ X^{-m}\sum_{k=0}^{r-1}\pi^k\binom{k+\mu}{\mu}X^{-k}.
+\]
+By the argument of Lemma~\ref{lub:lem:normal}(iii), $X^s$ lies in the ideal $((X-\pi)^m)$ of
+$A_r[X]$ exactly when this inverse times $X^s$ has no negative exponent, so the least such $s$
+is $m+K_m(r)$. The diagonal of $J^s$ is $\pi^s$, which gives $\nu_r\ge r$; the upper bound
+follows from $K_m(r)\le r-1$, and the formula for $\eta_r$ by substitution.
+\end{proof}
+
+\begin{lemma}[Return of a unipotent matrix to the lattice; \stU]\label{lub:lem:return}
+For every positive integer $s$,
+\[
+ (I+\pi^{-1}N)^s\in M_m(\OO)\iff T\mid s,
+\]
+and whenever the power is integral it lies in $\GL_m(\OO)$.
+\end{lemma}
+
+\begin{proof}
+The $j$th superdiagonal entry of the power is $\pi^{-j}\binom sj$ for $1\le j\le\mu$. Let $a$
+satisfy $p^{a-1}\le\mu<p^a$, and put $u=v_p(s)$. The term $j=p^{a-1}$ of
+\eqref{lub:eq:leastexp} gives $\Lambda\ge a$. If $u<a$, take $j=p^u\le\mu$: in $\F_p[z]$ the
+coefficient of $z^{p^u}$ in $(1+z)^s=(1+z^{p^u})^{s/p^u}$ is nonzero, so this entry is not
+integral. If $u\ge a$, every $j\le\mu$ is less than $p^u$, and
+$\binom sj=(s/j)\binom{s-1}{j-1}$ gives $v_p\binom sj=u-v_p(j)$, because $s-1$ ends in $u$
+base-$p$ digits $p-1$ and $j-1<p^u$. The $j$th entry is then integral exactly when
+$e(u-v_p(j))\ge j$, and all entries are integral exactly when $u\ge\Lambda$. The power has
+determinant one, so its inverse is integral whenever its entries are.
+\end{proof}
+
+\begin{proof}[Proof of Theorem~\ref{lub:thm:leastperiod}]
+Put $U=(I+\pi^{-1}N)^T\in\GL_m(\OO)$. For $s\ge0$ the identity $J^{s+T}=\pi^TJ^sU$ gives
+$J^{s+T}\in\pi^{r+T}M_m(\OO)$ if and only if $J^s\in\pi^rM_m(\OO)$. At $s=\nu_r$ and
+$s=\nu_r-1$ this shows $\nu_{r+T}=\nu_r+T$, so $\eta_{r+T}=\eta_r$ for all $r\ge1$ by
+Lemma~\ref{lub:lem:jordan}. The value $\mu$ is attained exactly when $\nu_r=r$, that is when
+$\pi^{-r}J^r=(I+\pi^{-1}N)^r$ is integral, and Lemma~\ref{lub:lem:return} gives $T\mid r$. An
+eventual period must preserve the set of multiples of $T$ at all large indices, so it is a
+multiple of $T$.
+\end{proof}
+
+The exponent \eqref{lub:eq:leastexp} takes at most $1+\floor{\log_p\mu}$ evaluations: with
+$j_i=p^i\floor{\mu/p^i}$,
+\[
+ \Lambda=\max_{0\le i\le\floor{\log_p\mu}}\bigl(i+\ceil{j_i/e}\bigr),
+\]
+since $p^i\mid j_i$ and every $j\le\mu$ with $v_p(j)=i$ satisfies $j\le j_i$. In particular
+the least period is weakly increasing in the multiplicity $m$, and weakly decreasing in $e$;
+for $e\ge\mu$ it is $p^{1+\floor{\log_p\mu}}$, the least power of $p$ exceeding $\mu$.
+
+\begin{corollary}[Exponential periods in an unramified field; \stU]\label{lub:cor:power}
+If $e=1$ and $m=p^a$ with $a\ge1$, the least period is $p^{m-1}$.
+\end{corollary}
+
+\begin{proof}
+Here $j_i=m-p^i$ for $0\le i<a$, so $\Lambda=\max_i(m-p^i+i)=m-1$, since $p^i\ge i+1$ with
+equality at $i=0$.
+\end{proof}
+
+\begin{example}\label{lub:ex:period}
+\begin{enumerate}[label=\textup{(\arabic*)}]
+\item Over $\Q_2$ take $b=0$ together with eight distinct directions congruent to $2$ modulo
+$4$. Then $m=8$, $D=1$ and $\omega=16$, so $1+t_b(r)\le16+r$; the shortfall from this bound is
+at most $7$, first equals $7$ at $r=2^7=128$, and equals $7$ precisely at the multiples of
+$128$. With sixteen such directions the first worst precision is $r=2^{15}=32768$. The size
+of the worst loss grows linearly in $m$, the waiting time for it exponentially.
+\item For $p=2$ and $m=4$ the defect words $(\eta_1,\dots,\eta_T)$ over one period are
+$(0,1,2,1,0,1,2,3)$ for $e=1$, where $T=8$, and $(0,1,2,3)$ for $e=2$, where $T=4$. For
+$p=2$, $e=1$ and $m=10$ the term $j=8$ gives $\Lambda=8+v_2(8)=11$ and $T=2048$, so the
+maximum in \eqref{lub:eq:leastexp} can occur strictly before $j=\mu$.
+\end{enumerate}
+\end{example}
+
+When $\mu$ is a power of $p$, including $\mu=1$, the period $\Theta$ of
+Theorem~\ref{lub:thm:period} is attained at every ramification index: for contacts of depth
+one, the term $j=\mu$ of \eqref{lub:eq:leastexp} equals $\floor{\log_p\mu}+\ceil{\mu/e}$, so
+$T=\Theta$. The shallower contacts can nevertheless change the least period.
+
+\begin{example}[Shallow contacts can double the least period]\label{lub:ex:mixed}
+Over $\Q_2$ take $b=0$ and the five directions $4,12,20,28,36$ of depth two, and compare
+this configuration with the one obtained by adding the two directions $2,6$ of depth one.
+Both have $h_*=2$, $m=5$, $D=2$, $r_0=8$ and $\Theta=64$. Their least eventual periods are
+$32$ and $64$ respectively. Write $\Delta(n)=\eta_{n+1}$ and let $j$ be the least nonnegative
+residue of $n$ modulo $16$. For $n\ge7$, in both configurations $\Delta(n)=0$ for
+$j\in\set{0,1,2,3,8,9,10,11}$ and $\Delta(n)=1$ for $j\in\set{4,12}$; the remaining values are
+\begin{center}\small
+\begin{tabular}{c|cccccc}
+\toprule
+contact multiset & $j=5$ & $j=6$ & $j=7$ & $j=13$ & $j=14$ & $j=15$\\
+\midrule
+$(2,2,2,2,2)$ & $3$ & $2$ & $2$ & $2$ & $3$ & $4,5$\\
+$(2,2,2,2,2,1,1)$ & $2$ & $2$ & $2$ & $3$ & $4,5$ & $4,6,4,7$\\
+\bottomrule
+\end{tabular}
+\end{center}
+where a list is read cyclically as $\floor{n/16}$ increases from zero. For instance the
+second configuration has $\Delta(31)=6\ne7=\Delta(63)$, which excludes the period $32$. Each
+entry is obtained by reducing $1,X,X^2,\dots$ modulo $P^{(b)}=\prod_{c\ne b}\phi_{h_c}$ and
+$2^{n+1}$ until the first zero, at exponent $t$, and recording $\deg P^{(b)}+2n-t$; by
+Theorem~\ref{lub:thm:period} the $64$ values $7\le n\le70$ suffice.
+\end{example}
+
+\begin{remark}[Finite checks]\label{lub:rem:periodchecks}
+The depth-one defect, evaluated directly from the surviving integer coefficients, was
+compared with Theorem~\ref{lub:thm:leastperiod} on $280$ parameter triples by locating the
+shortest repeating word in two complete periods, and periodicity together with an obstruction
+to shorter periods was tested on $80$ further triples; $288$ computations of powers of $X$ in
+polynomial quotient rings over $\Z/p^r$ and $1881$ evaluations of Jordan powers, including
+ramified fields and precisions $r<m$, reproduce the cutoffs. The values of
+Example~\ref{lub:ex:mixed} are recomputed and cross-checked by the scaled reciprocal
+recurrence. The records are
+\begin{itemize}[leftmargin=2em]
+\item \artifact{grh_periods_sampling_and_zeros/checks/jet_period.txt},
+\item \artifact{grh_periods_sampling_and_zeros/checks/mixed_period.txt}.
+\end{itemize}
 \end{remark}
 
 \subsection{Optimal directions and a multiplication rule}\label{lub:ssec:directions}
@@ -1041,7 +1211,7 @@ not affected.
 \end{remark}
 
 \subsection{Open questions}\label{lub:ssec:open}
-\begingroup\raggedright\sources{grh_transfers_cycle_signings_and_lubin_tate; grh_transfers_lubin_tate_and_graph_towers; grh_prime_patterns_and_branch_precision; grh_method_transfers_orthogonal_jets_2026-11-26; grh_transfer_advances_2026-11-26}\endgroup
+\begingroup\raggedright\sources{grh_transfers_cycle_signings_and_lubin_tate; grh_transfers_lubin_tate_and_graph_towers; grh_prime_patterns_and_branch_precision; grh_method_transfers_orthogonal_jets_2026-11-26; grh_transfer_advances_2026-11-26; grh_periods_sampling_and_zeros}\endgroup
 
 \begin{question}\label{lub:q:closed}
 When the carry criterion \eqref{lub:eq:carry} fails and $h_*\ge2$, the defect $\eta_r$ of
@@ -1051,9 +1221,12 @@ $\nu_j$, in particular over ramified fields?
 \end{question}
 
 \begin{question}\label{lub:q:period}
-Determine the least eventual period of $r\mapsto t_b(r)-Dr$ directly from the contact
-multiplicities. The periods $\Theta$ of Theorem~\ref{lub:thm:defect} and $p^{\vartheta}$ of
-Corollary~\ref{lub:cor:depthoneperiod} are explicit but not claimed to be minimal.
+For contact depths $h_*\ge2$, can the least eventual period of $r\mapsto t_b(r)-Dr$ and the set
+of precisions at which the loss is largest be described by a digit formula of the size of
+\eqref{lub:eq:leastexp}? Theorem~\ref{lub:thm:period} reduces the least period to a finite
+computation, and Example~\ref{lub:ex:mixed} shows that it depends on the shallower contacts.
+For which mixed contact profiles is the largest possible loss attained on a single residue
+class of precisions?
 \end{question}
 
 \begin{question}\label{lub:q:growth}

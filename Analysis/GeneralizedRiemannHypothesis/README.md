@@ -33,7 +33,7 @@ licence. Its `LICENSE`, `NOTICE` and `ATTRIBUTION.md` texts are in
 
 ## Merged article
 
-[`Article/article.pdf`](Article/article.pdf) merges all 61 reports into one article. Each
+[`Article/article.pdf`](Article/article.pdf) merges all 103 reports, of both batches, into one article. Each
 result is stated once, in the strongest form the reports prove; repeated material and results
 implied by stronger or more general ones are left out, and the reports' many accounts of the
 upstream proof are replaced by one section. Like the packets, the article is not an

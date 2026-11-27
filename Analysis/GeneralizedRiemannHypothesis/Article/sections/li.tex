@@ -1,0 +1,1732 @@
+% Section li: Li coefficients, moment pencils and positivity certificates
+\providecommand{\liE}{\mathcal{E}}
+\providecommand{\liD}{\mathcal{D}}
+\providecommand{\liZ}{\mathcal{Z}}
+\providecommand{\liT}{\mathbb{T}}
+\providecommand{\lidist}[1]{\lVert #1\rVert_{\mathbb{T}}}
+\providecommand{\liEx}{\mathbb{E}}
+\providecommand{\liind}{\mathbf{1}}
+\providecommand{\liHk}{\mathcal{H}}
+\providecommand{\liKk}{\mathcal{K}}
+
+\section{Li coefficients, moment pencils and positivity certificates}\label{sec:li}
+
+Li's criterion expresses the Riemann hypothesis as the positivity of a sequence of sums over
+zeros \cite{Li1997Positivity,BombieriLagariasComplements,Lagarias2007Li}. This section collects
+what sparse or finite portions of such sequences, and of the closely related power sums of
+transformed zeros, decide. \Cref{li:sec:sampling,li:sec:curv} determine the index sets on
+which an off-line zero must produce negative Li coefficients, and the sign patterns that the
+actual coefficients of $\zeta$ repeat. \Cref{li:sec:ritz,li:sec:match} recover individual
+zeros from Li moments: a moment pencil converges to each zero at a sharp rate, finite
+inequalities certify simplicity, and mixed moments of two functions certify the separation
+of their ordinates. \Cref{li:sec:hermite,li:sec:cluster} turn near-positivity of power-sum
+matrices into quantitative zero location and complete zero counts, and show what finite data
+cannot decide. \Cref{li:sec:univ} shows that the Cayley angles of the zeros generate a L\'evy
+process with a universal small-time law. The recovery of a Dirichlet character from filtered
+Li coefficients is in \cref{sec:rec}.
+
+Most results below are statements about an abstract spectrum and are unconditional. They
+become statements about $\zeta$ and Dirichlet $L$-functions through \cref{src:thm:dgrh},
+which places the zeros on the critical line; such statements are marked \stG.
+
+\paragraph{Notation.} For a zero $\rho$ put $u_\rho=1-1/\rho$. Then
+\begin{equation}\label{li:eq:cayley}
+ \abs{u_\rho}^2=1+\frac{1-2\Re\rho}{\abs\rho^2},\qquad \abs{1-u_\rho}=\abs\rho^{-1},
+\end{equation}
+so the critical line is mapped onto the unit circle. Write
+$\xi(s)=\frac12s(s-1)\pi^{-s/2}\Gamma(s/2)\zeta(s)$. The Li coefficients are defined by
+$\log[\xi(1/(1-z))/\xi(1)]=\sum_{n\ge1}\lambda_nz^n/n$, equivalently
+$\lambda_n=\frac1{(n-1)!}\bigl(\frac{\dd}{\dd s}\bigr)^n\bigl[s^{n-1}\log\xi(s)\bigr]_{s=1}$;
+for a number field $K$ the coefficients $\lambda_n(K)$ are defined in the same way from the
+completed Dedekind zeta function $\xi_K$. Euler's constant is $\gamma$, or $\gamma_E$ where
+$\gamma$ denotes an ordinate, and $\gamma_1,\gamma_2$ are the Stieltjes constants in
+$\zeta(1+x)=x^{-1}+\gamma-\gamma_1x+\frac12\gamma_2x^2+O(x^3)$.
+
+\subsection{Sampling Li coefficients}\label{li:sec:sampling}
+\sources{grh_method_transfers_research; li_sampling_and_curvature}
+
+\begin{definition}[Symmetric strip spectra]\label{li:def:spectrum}
+A \emph{symmetric strip spectrum} is a locally finite multiset $\liZ$ in the open strip
+$0<\Re\rho<1$, with finite multiplicities, invariant under $\rho\mapsto\bar\rho$ and
+$\rho\mapsto1-\rho$, such that
+\begin{equation}\label{li:eq:spectrum}
+ W=\sum_{\rho\in\liZ}\abs\rho^{-2}<\infty .
+\end{equation}
+Sums over $\liZ$ count multiplicity. Its Li coefficients are
+\begin{equation}\label{li:eq:Ln}
+ L_0=0,\qquad L_n=\sum_{\rho\in\liZ}\bigl(1-\Re u_\rho^n\bigr)\quad(n\ge1),\qquad L_{-n}=L_n .
+\end{equation}
+\end{definition}
+
+For Riemann's $\xi$ these are the classical $\lambda_n$. For a number field $K$ the
+nontrivial zeros of $\zeta_K$ form a symmetric strip spectrum, and $L_n$ is the Li
+coefficient $\lambda_n(K)=\lim_{T\to\infty}\sum_{\abs{\Im\rho}\le T}(1-u_\rho^n)$, which is
+real. For a nonreal primitive Dirichlet character the union of the nontrivial zero multisets
+of $L(s,\chi)$ and $L(s,\bar\chi)$ has both symmetries. The usual $O(T\log(T+2))$ zero count
+for a fixed completed zeta or Dirichlet $L$-function gives \eqref{li:eq:spectrum} by partial
+summation \cite{Lagarias2007Li}.
+
+\begin{lemma}[Dominant phases; \stU]\label{li:lem:dom}
+If every $\rho\in\liZ$ lies on the critical line, then $L_n\ge0$ for all $n$. Otherwise there
+is a largest radius $R>1$ of the points $u_\rho$. List the arguments of the points on the
+circle of radius $R$, with multiplicity, as $2\pi\alpha_1,\dots,2\pi\alpha_m$. There is
+$1<r<R$ with
+\[
+ R^{-n}L_n=-\sum_{j=1}^m\cos(2\pi n\alpha_j)+O_{\liZ}\bigl(n^2(r/R)^n\bigr).
+\]
+\end{lemma}
+
+\begin{proof}
+On the line every summand of \eqref{li:eq:Ln} is nonnegative. Otherwise
+\eqref{li:eq:cayley} and the reflection $\rho\mapsto1-\rho$ give a point with $\abs{u_\rho}>1$.
+Since $\abs{1-u_\rho}=\abs\rho^{-1}$, only finitely many $u_\rho$ lie outside any fixed
+neighbourhood of $1$, by \eqref{li:eq:spectrum}. This gives a finite dominant circle and a
+strict gap to the remaining radii. For the remaining points the segment from $1$ to $u_\rho$
+lies in $\abs z\le r$, and Taylor's integral remainder gives
+\[
+ \bigl|u_\rho^n-1+n/\rho\bigr|\le\tfrac12n(n-1)r^{n-2}\abs\rho^{-2}\qquad(n\ge2).
+\]
+Also $0<\Re(1/\rho)<\abs\rho^{-2}$. Thus \eqref{li:eq:Ln} converges absolutely, and summation
+over the complement of the dominant circle gives the stated error.
+\end{proof}
+
+\begin{definition}[Schedules and Bohr recurrence]\label{li:def:bohr}
+A \emph{schedule} is a family of positive indices $n_1(k),\dots,n_s(k)$, $s\ge1$, with
+$\min_in_i(k)\to\infty$; dropping finitely many parameters $k$ gives the same eventual test.
+Write $\liT=\R/\Z$ and $\lidist x=\min_{j\in\Z}\abs{x-j}$. The schedule has
+\emph{simultaneous Bohr recurrence} if for every $d\ge1$, $\alpha\in\liT^d$ and $\delta>0$
+there are arbitrarily large $k$ with
+\begin{equation}\label{li:eq:return}
+ \max_{i\le s,\,j\le d}\lidist{n_i(k)\alpha_j}<\delta .
+\end{equation}
+\end{definition}
+
+\begin{theorem}[Universal Li sampling; \stU]\label{li:thm:sampling}
+For every schedule the following are equivalent.
+\begin{enumerate}[label=\textup{(\roman*)}]
+\item The schedule has simultaneous Bohr recurrence.
+\item For every symmetric strip spectrum with an off-line zero, $\max_iL_{n_i(k)}<0$ for
+ arbitrarily large $k$.
+\item For every such spectrum, with $R,m$ as in \cref{li:lem:dom},
+ \[
+  \liminf_{k\to\infty}\ \max_{1\le i\le s}R^{-n_i(k)}L_{n_i(k)}=-m .
+ \]
+\end{enumerate}
+When \textup{(i)} fails there is a single finite off-line spectrum for which at least one
+sampled coefficient is strictly positive at every parameter $k$. Its zeros may be taken
+arbitrarily close to the critical line.
+\end{theorem}
+
+\begin{proof}
+Apply \eqref{li:eq:return} to the dominant phases of \cref{li:lem:dom} with tolerances tending
+to zero. All the cosines then approach one at every coordinate of the schedule. Their sum is
+at most $m$, which gives (iii). Since $m\ge1$, (iii) implies (ii).
+
+Suppose (i) fails. Choose phases $\alpha_1,\dots,\alpha_d$ and $0<\delta<1/2$ for which
+\eqref{li:eq:return} eventually fails. If necessary append one irrational phase and shrink
+$\delta$ to exclude the finitely many exceptional parameters: all their indices are positive,
+so none of their multiples of that phase is zero. Then for every $k$ some $n=n_i(k)$ has
+$n\alpha$ outside the open $\delta$-cube about zero. Consider
+\[
+ K_b(x)=\prod_{j=1}^d\Bigl(\frac{1+\cos(2\pi x_j)}2\Bigr)^b=\sum_ha_he^{2\pi ih\cdot x}\qquad(b\in\N).
+\]
+All $a_h$ are nonnegative dyadic rationals and $a_{-h}=a_h$. In one coordinate the constant
+coefficient $4^{-b}\binom{2b}b$ is the largest, by the binomial theorem, and there are $2b+1$
+coefficients of total mass one; hence $a_0\ge(2b+1)^{-d}$. Outside the cube
+$K_b(x)\le\cos^{2b}(\pi\delta)$. Choose $b$ so that this is strictly below $a_0$. Put
+$c=\sum_{h:\,h\cdot\alpha\in\Z}a_h\ge a_0$. Clearing a common denominator $D_0$ and collecting
+equal phases gives
+\[
+ T(n)=D_0\bigl(K_b(n\alpha)-c\bigr)=\sum_{v\in V}b_vv^n,\qquad\abs v=1,\quad v\ne1,\quad
+ b_v=b_{\bar v}\in\N .
+\]
+The finite set $V$ is nonempty, since $T(n)<0$ at every missed index just described.
+
+Take the Cayley points $Rv$ and $R^{-1}v$, each with multiplicity $b_v$, where $R>1$ is
+sufficiently close to one. At $R=1$ each inverse image $1/(1-v)$ has real part $1/2$.
+Continuity and finiteness put all the perturbed inverse images inside the strip, as close to
+the line as desired. Conjugation and inversion preserve the Cayley multiset, so both zero
+symmetries hold. With $B=\sum_vb_v$, direct substitution gives
+\begin{equation}\label{li:eq:counter}
+ L_n=2B-(R^n+R^{-n})T(n).
+\end{equation}
+At each $k$ at least one sampled value exceeds $2B$. This contradicts (ii).
+\end{proof}
+
+\begin{corollary}[Finite perturbations of Riemann's $\xi$; \stG]\label{li:cor:xi}
+If a schedule fails \textup{(i)} of \cref{li:thm:sampling}, a counterexample can be taken to be
+an entire function of order one, real on the real axis and invariant under $z\mapsto1-z$,
+whose zeros agree with those of $\xi$, with multiplicities, above some finite height, and whose
+number of zeros in $\abs{\Im z}\le T$ equals that of $\xi$ for all sufficiently large $T$.
+\end{corollary}
+
+\begin{proof}
+Let $A$ be the monic polynomial with the $2B$ zeros of \eqref{li:eq:counter}. Choose $B$
+conjugate pairs of nonreal zeros of $\xi$, respecting their multiplicities, and let $H$ be
+their monic polynomial. Both polynomials are real, monic of degree $2B$ and even about $1/2$.
+The function $F=\xi A/H$ is entire with the stated symmetry and zero counts. At infinity
+$A/H=1+O(\abs z^{-2})$, since the leading terms and the sums of the roots agree, so the order is
+preserved. The retained zeros of $\xi$ lie on the line by \cref{src:thm:dgrh} and contribute
+nonnegatively at every index, so the strictly positive witness survives.
+\end{proof}
+
+The construction uses the functional equation and the zeros only; an Euler product would be
+an additional arithmetic constraint (\cref{li:q:euler}). \Cref{li:thm:surgery} gives a
+related obstruction for the multiplicity of zeros.
+
+\paragraph{A prescribed sparse index set.} Put
+\begin{equation}\label{li:eq:E}
+ M_j=2^{2^{j^2}},\qquad\liE=\bigcup_{j\ge1}\{M_j,2M_j,\dots,jM_j\}.
+\end{equation}
+The set $\liE$ contains $O(1+\log\log N)$ indices up to $N$: $M_j\le N$ implies
+$j^2\le\log_2\log_2N$, and the first $j$ blocks contain $j(j+1)/2$ indices. It is the index set
+of \cref{ana:thm:blocks}, whose extremal values of the prime remainder detect an off-line zero
+only when the largest real part of a zero is attained. Li coefficients on the same set detect
+every failure, and do so on a positive proportion of each late block.
+
+\begin{theorem}[Sparse Li criterion; \stU]\label{li:thm:sparse}
+For every number field $K$ the following are equivalent.
+\begin{enumerate}[label=\textup{(\roman*)}]
+\item All nontrivial zeros of $\zeta_K$ lie on the critical line.
+\item $\lambda_n(K)\ge0$ for all sufficiently large $n\in\liE$.
+\item The proportion of indices $k\in\{1,\dots,j\}$ with $\lambda_{kM_j}(K)<0$ tends to zero as
+ $j\to\infty$.
+\end{enumerate}
+If \textup{(i)} fails, let $\varrho>1$ be the largest value of $\abs{u_\rho}$ and $m$ the number
+of zeros attaining it, with multiplicity. Then
+\[
+ \lim_{j\to\infty}\min_{1\le k\le j}\varrho^{-kM_j}\lambda_{kM_j}(K)=-m .
+\]
+\end{theorem}
+
+\begin{proof}
+By \cref{li:lem:dom}, (i) implies (ii) and (iii). Suppose (i) fails. By \cref{li:lem:dom},
+$\varrho^{-n}\lambda_n(K)=-\sum_{i=1}^m\cos(2\pi n\alpha_i)+o(1)$, which is at least $-m-o(1)$.
+Let $\theta_1,\dots,\theta_t$ be the distinct values among the $\alpha_i$ and take an integer
+$q\ge5$. The fractional parts of $0,M_j\theta,2M_j\theta,\dots,jM_j\theta$ are $N=j+1$ points in
+$q^t$ half-open boxes of side $1/q$ in $[0,1)^t$. By the Cauchy--Schwarz inequality the number
+of pairs in a common box is at least $(N^2/q^t-N)/2$. Each positive difference of the
+multipliers occurs in at most $N$ pairs, so at least $(N/q^t-1)/2$ values $1\le k\le j$ satisfy
+$\lidist{kM_j\theta_i}\le1/q$ for all $i$. For these $k$ the normalized coefficient is at most
+$-m\cos(2\pi/q)+o(1)<0$. Letting $q\to\infty$ gives the limit $-m$, and the positive proportion
+$(2q^t)^{-1}$ of negative coefficients in every late block contradicts (ii) and (iii).
+\end{proof}
+
+The proof allows any sequence of positive integer dilations $M_j\to\infty$ with block lengths
+tending to infinity; the same pigeonhole argument shows that $\liE$, enumerated increasingly,
+has simultaneous Bohr recurrence. For a field such as $\Q(\sqrt[3]2)$ the sampled
+inequalities in (ii) are open.
+
+\paragraph{Polynomial schedules.} For $E\subset\N$ the lower Banach density is
+\[
+ \underline d_{\mathrm B}(E)=\liminf_{H\to\infty}\inf_{a\in\Z_{\ge0}}\frac{\#(E\cap(a,a+H])}H .
+\]
+For sets of primes use the lower relative density
+$\liminf_{X\to\infty}\#\{p\in E:p\le X\}/\pi(X)$.
+These measure the abundance of good parameters; the sampled indices themselves, such as the
+squares, may have density zero.
+
+\begin{theorem}[The common-root criterion; \stU]\label{li:thm:poly}
+Let $P_1,\dots,P_s\in\Z[x]$ be nonconstant with positive leading coefficients, and ignore
+parameters at which some index is nonpositive.
+\begin{enumerate}[label=\textup{(\alph*)}]
+\item Over integers $k\ge1$, the equivalent conditions of \cref{li:thm:sampling} hold for
+ $n_i(k)=P_i(k)$ if and only if the $P_i$ have a common root modulo every $q\ge1$.
+\item Over primes $p$, they hold if and only if the $P_i$ have a common root coprime to $q$
+ modulo every $q\ge1$.
+\end{enumerate}
+Under the corresponding condition, for every off-line spectrum and $0<\eta<1$ the set where
+$\max_iR^{-P_i(k)}L_{P_i(k)}<-(1-\eta)m$ has positive lower Banach density in \textup{(a)} and
+positive lower relative density among the primes in \textup{(b)}. One set of good parameters
+works for any finite family of off-line spectra, each with its own $R,m$.
+\end{theorem}
+
+\begin{proof}
+For necessity take the phase $1/q$ in \eqref{li:eq:return} with tolerance $1/(2q)$; a prime
+larger than $q$ is a unit modulo $q$. \Cref{li:thm:sampling} supplies a strip counterexample if
+the test fails.
+
+For sufficiency fix $\alpha\in\liT^d$. Choose real representatives and a rational basis
+$1,\beta_1,\dots,\beta_t$ of their rational span together with $1$. Write
+$D\alpha_j=b_j+\sum_\ell a_{j\ell}\beta_\ell$ with integral coefficients and $D\ge1$. Choose a
+common root $u\bmod D$, a unit in the prime case. In that class consider
+$X(k)=(P_i(k)\alpha_j)_{ij}$. For a character $h=(h_{ij})\in\Z^{sd}$ put
+$C_\ell(x)=\sum_{i,j}h_{ij}a_{j\ell}P_i(x)$. If $C_\ell$ is constant, evaluation at a common
+root modulo each $q$ shows that the constant is zero. Set
+$\Lambda=\{h:C_\ell\equiv0\text{ for all }\ell\}$ and
+$H=\{x\in\liT^{sd}:h\cdot x=0\bmod1\text{ for all }h\in\Lambda\}$. On $k\equiv u\bmod D$ the
+rational term $D^{-1}\sum h_{ij}b_jP_i(k)$ is integral. If $h\notin\Lambda$, the polynomial
+$D^{-1}\sum_\ell\beta_\ell C_\ell(x)$ has an irrational leading coefficient in positive degree,
+by rational independence. Along $k=u+Dt'$ the corresponding character has mean zero by Weyl's
+theorem \cite{Weyl1916Gleichverteilung}, uniformly over the starting point of a long interval in
+$t'$: in degree one the geometric sum is bounded uniformly, and in higher degree induction by the
+van der Corput difference inequality applies, because for each fixed nonzero step the difference
+has an irrational leading coefficient independent of the starting point. Taking the interval
+length to infinity first, then the number of differences, gives uniform convergence.
+
+For primes in the same reduced class, expand the indicator of $p\equiv u\bmod D$ as a sum of
+additive characters in $p$. Each added term $ap/D$ preserves the irrationality of a nonconstant
+coefficient. Rhin's theorem \cite{Rhin1973Repartition} gives mean zero over primes for each
+resulting exponential, and the prime number theorem in arithmetic progressions gives the class
+relative mass $1/\varphi(D)$. Characters in $\Lambda$ are identically one on the class.
+
+In both settings the limiting probability measure on the progression is Haar probability on
+$H$: its Fourier transform is one on $\Lambda$ and zero off $\Lambda$, by the annihilator identity
+for subgroups of $\Z^{sd}$. Approximation by trigonometric polynomials gives convergence for
+continuous functions, uniformly over starting points in the integer case; this includes $t=0$,
+when all phases are rational. Every relative neighbourhood of zero in $H$ has positive measure.
+Testing against a continuous nonnegative function supported in the chosen cube and positive at
+zero gives positive lower density of returns on the progression, hence in the full parameter
+set. For the last assertion concatenate all dominant angles and apply \cref{li:lem:dom}.
+\end{proof}
+
+\begin{example}[Schedules that detect and schedules that fail]\label{li:ex:schedules}
+Detection means simultaneously negative values for every off-line spectrum.
+\begin{center}\small
+\begin{tabular}{@{}lll@{}}
+\toprule
+Indices at parameter $x$ & Integer parameters & Prime parameters\\
+\midrule
+$x^2,\ x^3$ & detect & fail modulo $2$\\
+$(x-1)^2,\ x^2-1$ & detect & detect\\
+$x,\ x+1$ & fail modulo $2$ & fail modulo $2$\\
+$J(x),\ (x+2)J(x)$ & detect & detect\\
+\bottomrule
+\end{tabular}
+\end{center}
+A prime can use the residue class $0\bmod2$ only once. Here
+$J(x)=(x^2-13)(x^2-17)(x^2-221)$ has no integer root but a unit root modulo every $q$. At an odd
+prime $\ell\nmid221$ one of $13,17,221$ is a nonzero square modulo $\ell$, since if the first two
+are nonsquares their product is a square; the root of the relevant quadratic is simple and lifts
+to every power of $\ell$. At $13$ use $17\equiv4$, at $17$ use $13\equiv8^2$, and at $2$ use
+$17\equiv1\bmod8$. The Chinese remainder theorem gives a unit root modulo every $q$.
+
+For a failed modulus $q\ge2$ take Cayley points of both radii $R,R^{-1}$ above all nonidentity
+$q$th roots of unity, with $R>1$ rational and close to one. The phase sum is $q-1$ at multiples of
+$q$ and $-1$ elsewhere, so
+\begin{equation}\label{li:eq:cyclo}
+ L_n=\begin{cases}(q-1)(2-R^n-R^{-n})<0,&q\mid n,\\ 2(q-1)+R^n+R^{-n}>0,&q\nmid n.\end{cases}
+\end{equation}
+The zeros are the roots of a rational polynomial proportional to
+$\prod_{t\in\{R,R^{-1}\}}\frac{(z-1)^q-t^qz^q}{(z-1)-tz}$. For $q=2$, $R=2$ this is $9z^2-9z+2$,
+with zeros $1/3,2/3$ and Cayley points $-2,-1/2$; its Li coefficients are negative exactly at the
+positive even indices, and no two consecutive ones are both negative.
+
+Divisibility does not control arbitrary index sets. Put $v=(3+4i)/5=e^{2\pi i\theta}$, of
+infinite order since $v+\bar v=6/5$ is not an algebraic integer. The set
+$S=\{n:\Re(v^n)\le-1/2\}$ meets every $q\N$ infinitely often, yet the Cayley points
+$R^{\pm1}v,R^{\pm1}\bar v$ with $R=6/5$ give $L_n=4-2(R^n+R^{-n})\Re(v^n)>0$ on $S$. The four
+zeros form the rectangle $\{7/25,18/25\}+\{24i/25,-24i/25\}$.
+\end{example}
+
+\paragraph{Arithmetic equivalence from sparse windows.} For two number fields $K$ and $L$ put
+$D_n=\lambda_n(K)-\lambda_n(L)$. The next result needs no hypothesis on the location of zeros.
+
+\begin{theorem}[Arithmetic equivalence from sparse Li coefficients; \stU]\label{li:thm:rigidity}
+If $\zeta_K\ne\zeta_L$, then
+\[
+ \lim_{H\to\infty}\ \inf_{A\ge1}\ \frac1H\sum_{n=A}^{A+H-1}\abs{D_n}=+\infty\qquad(A,H\in\N).
+\]
+Thus a bounded mean absolute discrepancy on a single sequence of windows of increasing length
+forces $\zeta_K=\zeta_L$, and then $D_n=0$ for every $n$. The windows may be arbitrarily far
+apart: those starting at $2^{2^{j^2}}$ and of length $j$ use only $O(1+\log\log N)$ indices up
+to $N$. The same holds with $\abs{D_n}^2$ in place of $\abs{D_n}$.
+\end{theorem}
+
+\begin{proof}
+The statement for squares follows from the one for absolute values by the Cauchy--Schwarz
+inequality. Write $m_u$ for the difference of the multiplicities, for $K$ and for $L$, of the
+transformed zero $u=1-1/\rho$. Second differences of the two symmetric sums give
+\[
+ a_n:=-(D_{n+2}-2D_{n+1}+D_n)=\sum_uc_uu^n,\qquad c_u=m_u(1-u)^2,\qquad\sum_u\abs{c_u}<\infty,
+\]
+because $\abs{1-u}=\abs\rho^{-1}$. All $\abs u$ are bounded. Suppose that there are windows
+$[A,A+H-1]$ with $H\to\infty$ on which the mean of $\abs{D_n}$ is at most $C$. Then
+$\abs{D_n}\le CH$ on each window.
+
+\emph{Points off the unit circle.} Suppose some $u$ with $m_u\ne0$ has modulus above $1$, and
+let $\varrho$ be the largest such modulus. It is attained at finitely many distinct points
+$u_1,\dots,u_t$, and the other moduli with $m_u\ne0$ are at most some $r<\varrho$. Put
+$z_i=u_i/\varrho$. For $N=A+H-t-2$ and $0\le h<t$,
+\[
+ \varrho^{-N-h}a_{N+h}=\sum_{i=1}^tz_i^h\,c_{u_i}z_i^N+O\bigl((r/\varrho)^{N+h}\bigr).
+\]
+The left sides tend to zero, since $N\ge H-t-1$ and $\abs{a_{N+h}}\le4CH$. The Vandermonde matrix
+$(z_i^h)_{h,i}$ is invertible, so $c_{u_i}z_i^N\to0$, which contradicts $\abs{c_{u_i}}>0$. Hence
+$m_u=0$ for $\abs u>1$. The reflection $\rho\mapsto1-\rho$ induces $u\mapsto1/u$ and preserves
+multiplicity, so $m_u=0$ for $\abs u<1$ as well.
+
+\emph{Points on the unit circle.} Let $\Gamma$ be the countable subgroup of the circle generated
+by the remaining points $u$ with $m_u\ne0$, with the discrete topology. Its dual $G$ is compact
+and metrizable. Write $g_n\in G$ for the character $u\mapsto u^n$. On each window take
+nonnegative triangular weights $t_n$ of total mass one, obtained by normalizing
+$\min(i+1,H-2-i)$, $0\le i\le H-3$, and zero at the last two positions. They satisfy
+$\sup t_n=O(1/H)$ and $\sup\abs{t_{n+1}-t_n}=O(1/H^2)$. The measures $\sum_nt_nD_n\delta_{g_n}$
+on $G$ have total variation $O(C)$, so a subsequence converges weak-star to a finite measure
+$\nu$. For $z\in\Gamma$, Abel summation shows that the $t_n$-weighted average of $(u/z)^n$ tends
+to zero for $u\ne z$, the total variation of the weights being $O(1/H)$. Since the $c_u$ are
+absolutely summable, the weighted average of $a_nz^{-n}$ tends to $c_z$, with $c_z=0$ when
+$m_z=0$. Shifting the indices in the second difference gives
+\[
+ \sum_nt_na_nz^{-n}=-(z-1)^2\sum_nt_nD_nz^{-n}+O\Bigl(H^{-2}\sum_n\abs{D_n}\Bigr),
+\]
+and the error is $O(C/H)$. Hence $\hat\nu(z)=-m_z$ for $z\ne1$. Subtracting $\hat\nu(1)$ times
+the Haar probability makes the coefficient at $1$ vanish.
+
+The resulting Fourier transform is bounded and integer-valued. Choose a polynomial that vanishes
+at $0$ and takes the value $1$ at every nonzero integer of its finite range. Applying the
+corresponding convolution polynomial to the measure gives a finite measure whose Fourier
+transform is the indicator of $\{u:m_u\ne0\}$. By the idempotent theorem of Cohen, Helson and
+Rudin \cite{GreenSanders2008Quantitative}, this set lies in the coset ring of $\Gamma$.
+
+An infinite member of the coset ring of a subgroup of the circle is dense in the circle. To see
+this, write a Boolean combination of finitely many cosets as a union of atoms. The positive
+cosets of an atom intersect in a single coset of a subgroup $T$. Split it into finitely many
+smaller cosets so as to settle all excluded cosets whose subgroups meet $T$ in finite index. Each
+surviving piece is a coset of a subgroup $T_0$ with finitely many cosets of subgroups of infinite
+index removed. If $T_0$ is infinite, it is dense in the circle. For a translation-invariant
+finitely additive probability on the abelian group $T_0$, every coset of infinite index has
+measure zero, by disjoint translates, and the trace on $T_0$ of every nonempty open arc has
+positive measure, since finitely many translates cover $T_0$. So each surviving infinite piece is
+dense. But the only possible accumulation point of $\{u:m_u\ne0\}$ is $1$, because
+$u_\rho\to1$ as the height grows. Thus this set is finite.
+
+\emph{Finitely many differing zeros.} The completed functions $\xi_K,\xi_L$ are entire of order
+one, and Hadamard factorization now gives $\xi_K/\xi_L=e^{\alpha+\beta s}P(s)/Q(s)$ with
+polynomials $P,Q$. Put $Z=\zeta_K/\zeta_L$. The gamma factors of a number field are products of
+$\Gamma_\R(s)$ and $\Gamma_\R(s+1)$, and $\Gamma_\R(s+2)/\Gamma_\R(s)=s/(2\pi)$, while the
+discriminant factor contributes a constant under $s\mapsto s+2$. Hence $Z(s+2)/Z(s)$ is a
+rational function. On the positive real axis $\zeta_K(s)=1+O_K(2^{-s})$, and likewise for $L$, so
+$Z(s+2)/Z(s)=1+O(2^{-s})$. A rational function with this decay towards $1$ is identically $1$.
+For real $s>1$ this gives $Z(s)=Z(s+2m)\to1$, so $\zeta_K=\zeta_L$.
+\end{proof}
+
+The theorem identifies a zeta function up to equality, so it does not separate nonisomorphic
+arithmetically equivalent fields. It concerns infinitely many samples and gives no effective
+window length for a given pair of fields (\cref{li:q:rigidity}).
+
+\subsection{Second differences of Li coefficients}\label{li:sec:curv}
+\sources{li_sampling_and_curvature}
+
+For a nonempty symmetric spectrum on the critical line write
+\[
+ d_n=L_{n+1}-2L_n+L_{n-1},\qquad C=d_0=2L_1,\qquad a_\rho=\abs{1-u_\rho}^2=\abs\rho^{-2}\qquad(n\in\Z).
+\]
+Centered second differences of \eqref{li:eq:Ln} give the absolutely and uniformly convergent
+Fourier series
+\begin{equation}\label{li:eq:fourier}
+ d_n=\sum_\rho a_\rho u_\rho^n,\qquad C=\sum_\rho a_\rho ,
+\end{equation}
+which is real by conjugation. For $\xi$, $C=2\lambda_1=2+\gamma-\log(4\pi)$.
+
+\begin{theorem}[Uniform recurrence of Li second differences; \stU]\label{li:thm:curv}
+For every $h\in\Z$,
+\begin{equation}\label{li:eq:curvcert}
+ C-d_h\le\sup_{n\in\Z}\abs{d_{n+h}-d_n}\le\sqrt{2C(C-d_h)} .
+\end{equation}
+The upper bound is sharp on symmetric on-line spectra. For polynomial schedules satisfying
+\cref{li:thm:poly}\textup{(a)} or \textup{(b)} and any $\epsilon>0$,
+\[
+ \max_i\sup_{n\in\Z}\abs{d_{n+P_i(k)}-d_n}<\epsilon
+\]
+on a set of positive lower Banach density, respectively of positive lower relative density
+among the primes. The same parameters work for any prescribed finite family of such spectra. In
+particular $\limsup_k\min_id_{P_i(k)}=C$.
+\end{theorem}
+
+\begin{proof}
+Taking $n=0$ in the supremum gives the lower bound. For the upper bound apply the
+Cauchy--Schwarz inequality to $\sum_\rho a_\rho\abs{u_\rho^h-1}$, using
+$\sum_\rho a_\rho\abs{u_\rho^h-1}^2=2(C-d_h)$. A conjugate pair $u_\rho=e^{\pm2\pi i\theta}$ with
+$\theta$ irrational has $d_n=C\cos(2\pi n\theta)$, and density of irrational rotations gives the
+supremum $2C\abs{\sin(\pi h\theta)}$, which attains the bound. For recurrence truncate
+\eqref{li:eq:fourier} so that the omitted mass is below $\epsilon/4$. Simultaneous returns make
+$\sum_{\mathrm{retained}}a_\rho\abs{u_\rho^{P_i(k)}-1}<\epsilon/2$ for every $i$, and the tail costs
+at most twice its mass, uniformly in $n$. Apply the density argument of the proof of
+\cref{li:thm:poly} to the retained phases, and use their union for finitely many spectra.
+\end{proof}
+
+By \cref{src:thm:dgrh} this applies to $\xi$, to a real primitive Dirichlet character, and to the
+paired zeros of a nonreal primitive character and its conjugate. For $\xi$ the ceiling $C$ is
+approached arbitrarily closely, and $d_h<C$ for every $h\ne0$, since equality would require every
+Cayley point to be an $h$th root of unity, whereas $\xi$ has infinitely many distinct zeros.
+From now on in this subsection $d_n$ denotes the second differences of the Li coefficients of
+$\xi$, and $\tau=C-d_1=4\lambda_1-\lambda_2$.
+
+\begin{proposition}[Convexity windows from two Li coefficients; \stG]\label{li:prop:windows}
+A set of integers $k$ of positive lower Banach density satisfies
+\begin{align}
+ d_{k^2+j},\ d_{k^3+j}&>0.00034&&(\abs j\le39),\label{li:eq:79window}\\
+ d_{k^2+j},\ d_{k^3+j}&>0.00070&&(\abs j\le35).\label{li:eq:71window}
+\end{align}
+Every finite family of polynomials satisfying \cref{li:thm:poly}\textup{(a)} or \textup{(b)} may
+replace $k^2,k^3$, for instance $(p-1)^2,p^2-1$ over primes.
+\end{proposition}
+
+\begin{proof}
+Under RH the probability measure $\mu=C^{-1}\sum_\rho a_\rho\delta_{\Re u_\rho}$ on $[-1,1]$
+satisfies $d_j/C=\int T_{\abs j}\,\dd\mu$, where $T_j(\cos\theta)=\cos(j\theta)$, and
+$a:=\int x\,\dd\mu=d_1/C=1-\tau/C$. For $j\ge2$ put $b_j=\cos(\pi/j)$. The function equal to $-1$
+on $[-1,b_j]$ and to $T_j$ on $[b_j,1]$ is a convex minorant of $T_j$: for $0<\theta<\pi/j$,
+$T_j'(\cos\theta)=j\sin(j\theta)/\sin\theta=j\sum_{r=0}^{j-1}\cos((j-1-2r)\theta)$, each summand is
+nonincreasing in $\theta$, so $T_j'$ is nondecreasing on $[b_j,1]$ and vanishes at $b_j$. Jensen's
+inequality gives
+\begin{equation}\label{li:eq:jensen}
+ a\ge b_j\ \Longrightarrow\ d_j\ge CT_j(a).
+\end{equation}
+For $\abs u=1$, $\abs{1-u^j}\le\abs j\,\abs{1-u}$, and summation gives
+$C-d_j=\frac12\sum_\rho a_\rho\abs{1-u_\rho^j}^2\le j^2\tau$.
+
+Li's derivative formula gives $\lambda_1=L'(1)$ and $\lambda_2=2L'(1)+L''(1)$ for
+$L=\log\xi$; expanding $(s-1)\zeta(s)$ at $s=1$ and using $\psi(1/2)=-\gamma-2\log2$ and
+$\psi'(1/2)=\pi^2/2$ yields
+\[
+ \lambda_1=1+\frac{\gamma-\log(4\pi)}2,\qquad
+ \lambda_2=2\lambda_1-1+\frac{\pi^2}8-\gamma^2-2\gamma_1 .
+\]
+Rational interval evaluation (Euler--Maclaurin at $N=256$ for $\gamma,\gamma_1$, Machin's
+formula for $\pi$, the arctanh series for logarithms) certifies
+\begin{gather*}
+ 0.0007430<C-35^2\tau<0.0007433,\qquad 0.0003500<CT_{39}(a)<0.0003504,\\
+ -0.0015012<CT_{40}(a)<-0.0015008,
+\end{gather*}
+and $a>1-2/40^2\ge\cos(\pi/40)$, so $0\le j\arccos a<\pi$ for $0\le j\le40$. On $0\le j\le39$ the
+least $T_j(a)$ occurs at $j=39$. This gives $d_j>0.00035$ for $\abs j\le39$ and $d_j>0.00074$ for
+$\abs j\le35$; the value at $j=40$ shows where the two-moment bound stops certifying positivity.
+\Cref{li:thm:curv} with uniform error below $10^{-5}$ transfers both windows to $k^2$ and $k^3$.
+The certificate and its output are
+\begin{center}
+\artifact{li_sampling_and_curvature/constants_verify.py},\\
+\artifact{li_sampling_and_curvature/constants_output.txt}.
+\end{center}
+\end{proof}
+
+For $-1<a<1$ the bound \eqref{li:eq:jensen} is attained on $[b_j,1]$ by $\mu=\delta_a$, which is
+realized by a single conjugate pair of critical-line zeros with Cayley phases $\pm\arccos a$.
+
+\begin{proposition}[Negative second differences; \stG]\label{li:prop:negative}
+One has $\liminf_{n\to\infty}d_n\le-\tau/\lambda_1<-0.00160638$. Moreover, for a set of $k$ of positive
+lower Banach density, both windows of \cref{li:prop:windows} hold and
+$d_{k^2+t},d_{k^3+t}<-0.00160$ for a fixed $t$.
+\end{proposition}
+
+\begin{proof}
+Grouping equal phases in \eqref{li:eq:fourier} gives coefficients $c_u=m_u\abs{1-u}^2$, with $m_u$
+the multiplicity. No phase is $1$, so the Ces\`aro mean of $d_n$ is zero, and the Ces\`aro mean
+of $d_n^2$ is $V=\sum_uc_u^2\ge\sum_\rho a_\rho^2=2\tau$; finite geometric sums prove both mean
+identities for partial sums, and absolute convergence passes them to the full series. Let
+$B=-\liminf_nd_n$. For each $\varepsilon>0$ and all large $n$, $(C-d_n)(d_n+B+\varepsilon)\ge0$;
+taking means and letting $\varepsilon\downarrow0$ gives $V\le CB$, hence $B\ge2\tau/C=\tau/\lambda_1$.
+The numerical inequality is certified with the constants above. Fix $t$ with $d_t<-0.00160638$
+and apply \cref{li:thm:curv} with uniform error below $10^{-6}$.
+\end{proof}
+
+\begin{theorem}[The first negative second difference; \stG]\label{li:thm:firstchange}
+For the Riemann Li coefficients
+\[
+ d_j>0.00014\quad(0\le j\le117),\qquad d_{118}<-0.00026 .
+\]
+For a set of $k$ of positive lower Banach density, each of the two centers $k^2$ and $k^3$ lies
+at the middle of a maximal run of exactly $235$ positive second differences, immediately preceded
+and followed by negative values, with the same strict bounds. The same holds at the centers
+$(p-1)^2$ and $(p-1)^3$ for a set of primes $p$ of positive lower relative density.
+\end{theorem}
+
+\begin{proof}
+Let $t_1,\dots,t_{40}$ be the forty certified ordinates of \cref{li:cor:signs} below, and put
+$w_j=2/(\frac14+t_j^2)$, $\theta_j=2\arctan(1/(2t_j))$. For a phase $\theta$ let $x=1-\cos\theta$.
+Let $M_i$ be the total mass of $x^i$ in the measure of \eqref{li:eq:fourier}, and $r_i$ its mass
+after deleting the forty pairs. The double-angle identity gives $M_0=C$, $M_1=C-d_1$,
+$M_2=(3C-4d_1+d_2)/2$. With $L=\log\xi$ near $1$,
+$L'''(1)=2-\frac74\zeta(3)+3\gamma_2+6\gamma\gamma_1+2\gamma^3$ and
+$\lambda_3=3L'(1)+3L''(1)+\frac12L'''(1)$; this gives all three moments, in particular
+$718389301443\cdot10^{-19}\le M_2\le718389301444\cdot10^{-19}$. For a pair, $x_j=w_j/4$, so
+$r_i=M_i-\sum_{j\le40}w_j(w_j/4)^i$.
+
+For $0\le x\le2$ and $n\ge0$ the Chebyshev polynomial satisfies
+\begin{equation}\label{li:eq:chebtail}
+ 1-n^2x\le T_n(1-x)\le1-n^2x+\frac{n^2(n^2-1)}6x^2 .
+\end{equation}
+Indeed $\abs{T_n'}\le n^2$ on $[-1,1]$ follows from $\abs{\sin n\theta}\le n\abs{\sin\theta}$, and
+$T_n'=n\sum_{j=0}^{n-1}T_{\abs{n-1-2j}}$ gives
+$\max\abs{T_n''}\le n\sum_{j=0}^{n-1}(n-1-2j)^2=n^2(n^2-1)/3$; the mean value theorem and Taylor's
+theorem at $1$ give the two bounds. Put $S_n=\sum_{j\le40}w_j\cos(n\theta_j)$. Summing
+\eqref{li:eq:chebtail} against the omitted positive measure gives
+\[
+ S_n+r_0-n^2r_1\le d_n\le S_n+r_0-n^2r_1+\frac{n^2(n^2-1)}6r_2 .
+\]
+Rational interval evaluation at all $119$ indices gives the displayed inequalities, including
+\[
+ 0.000147247112\le d_{117}\le0.000201258543,\qquad-0.000325756767\le d_{118}\le-0.000269874914 ;
+\]
+the program and the outward-rounded endpoints are
+\begin{center}
+\artifact{li_sampling_and_curvature/certify_window.py},\\
+\artifact{li_sampling_and_curvature/window_bounds.csv}.
+\end{center}
+
+Since $d_{-j}=d_j$, the bilateral sequence has a run of $235$ positive terms on $[-117,117]$,
+bracketed by two negative ones. Take a uniform recurrence tolerance below the least strict margin
+in this pattern; \cref{li:thm:curv} with $k^2,k^3$ transfers every sign and bound to both
+translated patterns. In the prime case the polynomials $(p-1)^2,(p-1)^3$ have the common unit
+root $1$ modulo every integer.
+\end{proof}
+
+The finite sign pattern also follows, independently of the zero location, from the power series
+of $\log(2\xi(s))$ at $s=-z/(1-z)$: its degree-$n$ coefficient is
+$\sum_{j=1}^n\binom{n-1}{j-1}L^{(j)}(1)/j!=\lambda_n/n$. A $512$-bit ball-arithmetic evaluation
+through degree $119$ gives, each within $5\cdot10^{-28}$,
+\[
+ d_{117}=0.000200146986527119643036209,\qquad d_{118}=-0.000271044467116152907821086,
+\]
+in agreement with the rigorous Keiper coefficients of Johansson \cite{Johansson2015Rigorous}. The
+program is
+\begin{center}
+\artifact{li_sampling_and_curvature/verify_keiper.py}.
+\end{center}
+
+\begin{corollary}[Four sign patterns; \stG]\label{li:cor:signs}
+For each $(a,b)\in\{-1,1\}^2$ the set $\{n\ge1:\ ad_n>11/1000,\ bd_{n^2}>11/1000\}$ has positive
+lower Banach density. For the corresponding $h$ in the table below, the same inequalities hold
+at $n=h+p-1$ for a set of primes $p$ of positive lower relative density, and one set of primes
+serves all four rows.
+\begin{center}\small
+\begin{tabular}{rcc@{\qquad}rr}
+\toprule
+$h$ & $a$ & $b$ & lower bound for $ad_h$ & lower bound for $bd_{h^2}$\\
+\midrule
+891327 & $+$ & $+$ & 0.01161 & 0.01387\\
+842728 & $+$ & $-$ & 0.01180 & 0.01349\\
+602346 & $-$ & $+$ & 0.01165 & 0.01133\\
+673696 & $-$ & $-$ & 0.01119 & 0.01148\\
+\bottomrule
+\end{tabular}
+\end{center}
+\end{corollary}
+
+\begin{proof}
+The polynomials $u$ and $2hu+u^2$ vanish at $u=0$, so \cref{li:thm:curv} gives a set of $u$ of
+positive lower Banach density on which $d_{h+u}$ and $d_{h^2+2hu+u^2}$ are arbitrarily close to
+$d_h$ and $d_{h^2}$; take the tolerance below the least margin of the row and put $n=h+u$. For
+primes, $p-1$ and $(p-1)(2h+p-1)$ have the common unit root $1$ modulo every integer; taking the
+family of $p-1$ and all four polynomials $(p-1)(2h+p-1)$ gives simultaneous returns for every row.
+
+For the table, a pair of zeros with positive ordinate $t$ contributes $w(t)\cos(n\theta(t))$ to
+$d_n$, with $w(t)=2/(\frac14+t^2)$ and $\theta(t)=2\arctan(1/(2t))$. For forty certified ordinates
+$t_1,\dots,t_{40}$ put $W=C-\sum_jw(t_j)$; then for $e\in\{-1,1\}$
+\begin{equation}\label{li:eq:signedtail}
+ ed_n\ge\sum_{j=1}^{40}e\,w(t_j)\cos(n\theta(t_j))-W ,
+\end{equation}
+and $0.01022325<W<0.01022326$. The ordinates are certified without resolving all zeros below a
+height. Forty centers $s_0=\frac12+it_0$ with $13<t_0<130$ receive disks of radius $10^{-18}$ with
+disjoint ordinate intervals. At $s_0$ and $s_0+10^{-6}$, $\zeta$ is evaluated by Euler--Maclaurin
+summation with cutoff $N=256$ and $20$ Bernoulli corrections, whose remainder is below $10^{-34}$,
+in outward-rounded $192$-bit interval arithmetic. Every center has $\abs{\zeta(s_0)}<2\cdot10^{-25}$
+and a difference quotient with a coordinate of modulus above $0.1$. First-order Euler summation
+gives $\abs{\zeta(s)}<300$ on $\abs{s-s_0}\le1/4$, so by Cauchy's estimate the Taylor terms of
+degree at least two are at most $5000\abs v^2$ for $\abs v\le10^{-6}$, and
+$\abs{\zeta'(s_0)}>0.09$. On $\abs v=10^{-18}$ the linear term dominates, and Rouch\'e's theorem
+gives exactly one zero in each disk. Inserting the ordinate intervals into
+\eqref{li:eq:signedtail} gives the table
+(\artifact{li_sampling_and_curvature/certify_zeta.py},
+\artifact{li_sampling_and_curvature/certify_zeta_output.txt}).
+\end{proof}
+
+\subsection{Moment pencils and Ritz values}\label{li:sec:ritz}
+\sources{li_ritz_zero_recovery; grh_new_results_2026-11-26; li_zero_separation}
+
+Let $0<\gamma_1<\gamma_2<\cdots$ be the distinct positive ordinates of zeros of $\zeta$, and $m_i$
+the multiplicity of $\frac12+i\gamma_i$. Under \cref{src:thm:dgrh} put
+\begin{equation}\label{li:eq:mu}
+ x_i=(\tfrac14+\gamma_i^2)^{-1},\qquad p_k=\sum_{i\ge1}m_ix_i^k\quad(k\ge1),\qquad
+ \mu=\sum_{i\ge1}m_ix_i\,\delta_{x_i}.
+\end{equation}
+Thus $\int t^{k-1}\,\dd\mu=p_k$. The numbers $x_i$ are the denominators $\rho(1-\rho)$ of the
+residues of the source transform at critical-line zeros. The Riemann--von Mangoldt count gives
+$p_1<\infty$, and $\zeta$ has no real zero in $(0,1)$, as the alternating eta series shows.
+
+\begin{proposition}[Moment coordinate; \stG]\label{li:prop:moments}
+The function $E(z)=2\xi\bigl(\frac12+\sqrt{\frac14-z}\bigr)$ is entire and independent of the
+choice of square root, and $E(z)=\prod_i(1-x_iz)^{m_i}$ with locally uniform convergence. Hence
+\begin{equation}\label{li:eq:logmoments}
+ p_k=-k[z^k]\log E(z)=\sum_{n=1}^k(-1)^{n+1}\binom{2k}{k-n}\lambda_n,\qquad
+ p_1=\lambda_1=1+\frac\gamma2-\frac12\log(4\pi).
+\end{equation}
+\end{proposition}
+
+\begin{proof}
+The entire function $w\mapsto\xi(\frac12+w)$ is even, so its power series is a power series in
+$w^2$, and substituting $w^2=\frac14-z$ shows that $E$ is entire. Under RH the paired Hadamard
+product is $\xi(\frac12+w)=\xi(\frac12)\prod_{\gamma_n>0}(1+w^2/\gamma_n^2)$, with zeros listed with
+multiplicity: pairing removes the exponential factors of genus one, evenness removes a linear
+exponential prefactor, and $\sum\gamma_n^{-2}<\infty$; there is no central zero, since
+$\zeta(1/2)\ne0$ (the alternating eta series at $1/2$ is positive while $1-\sqrt2<0$). Dividing by
+the value at $w^2=\frac14$ and using $\xi(1)=\frac12$ gives
+$2\xi(\frac12+w)=\prod_n(\gamma_n^2+w^2)/(\gamma_n^2+\frac14)$, which is the product for $E$.
+Summability justifies the logarithmic series. The second formula in \eqref{li:eq:logmoments} is
+Voros's inverse formula \cite[eq.~(11)]{Voros2006Sharpenings}: writing
+$1-1/(\frac12+i\gamma_i)=e^{i\theta_i}$, one has $2-2\cos\theta_i=x_i$, the conjugate pair contributes
+$2m_i(1-\cos n\theta_i)$ to $\lambda_n$, and the finite binomial expansion of $(2-2\cos\theta)^k$
+gives the identity after summation; for fixed $n$ the pairing converges absolutely since
+$1-\cos n\theta\le n^2(1-\cos\theta)$. Finally $p_1=-E'(0)/E(0)=\xi'(1)/\xi(1)=\lambda_1$, evaluated
+with $\zeta(1+u)=u^{-1}+\gamma+O(u)$ and $\psi(1/2)=-\gamma-2\log2$.
+\end{proof}
+
+The alternating sum and monomial moment matrices both amplify roundoff; for computation the
+Taylor coefficients of $\log E$ give the $p_k$ without subtracting rounded Li coefficients.
+
+For $0\le a,b<N$ define the Hankel matrices $\liHk_N=(p_{a+b+1})$ and $\liKk_N=(p_{a+b+2})$, and
+write $r_{1,N}>\cdots>r_{N,N}$ for the roots of $\det(\liKk_N-r\liHk_N)=0$. These are the
+\emph{Ritz values} of multiplication by $t$ on polynomials of degree below $N$ in $L^2(\mu)$.
+
+\begin{theorem}[Sharp error at every fixed rank; \stG]\label{li:thm:ritz}
+For $N\ge j$ one has $0<r_{j,N}<x_j$, and $r_{j,N}$ increases to $x_j$. For every fixed $j$,
+\begin{equation}\label{li:eq:ritzrate}
+ \log(x_j-r_{j,N})=-4N\log N+4N\log\log N+O_j(N).
+\end{equation}
+The same expansion holds for $\log\bigl(\sqrt{1/r_{j,N}-1/4}-\gamma_j\bigr)$. Arbitrary finite
+multiplicities are allowed.
+\end{theorem}
+
+Each pencil approximates several zeros simultaneously, and earlier zeros are not inputs. The
+error law is for exact moments. The lower bound needs many distinct tail atoms at controlled
+separation; counting zeros with multiplicity would not suffice.
+
+\begin{lemma}\label{li:lem:packing}
+For all large $T$ the interval $[T,2T]$ contains $\gg T\log T$ ordinates with consecutive selected
+ordinates at least $1/\log(2T)$ apart.
+\end{lemma}
+
+\begin{proof}
+Montgomery's Corollary~1, formula~(6) \cite{Montgomery1973Pair}, proved under RH, at height $U=2T$
+and parameter $1/2$, bounds by $O(U\log U)$ the sum over ordered pairs $0<\gamma,\gamma'\le U$, with
+multiplicity, of
+\[
+ \Bigl(\frac{\sin((\gamma-\gamma')\log U/4)}{(\gamma-\gamma')\log U/4}\Bigr)^2\frac4{4+(\gamma-\gamma')^2}.
+\]
+The summand is nonnegative and bounded below by a positive constant when
+$\abs{\gamma-\gamma'}\le1/\log U$. Partition $[T,2T]$ into bins of that length, with a shorter final
+bin. If the occupancies are $n_b$, then $\sum_bn_b^2\ll T\log T$, while $\sum_bn_b\asymp T\log T$ by
+the Riemann--von Mangoldt formula; the Cauchy--Schwarz inequality gives $\gg T\log T$ occupied bins.
+Keep the more numerous parity of the bin indices and one ordinate per retained bin.
+\end{proof}
+
+\begin{proof}[Proof of \cref{li:thm:ritz}]
+\emph{Structure of the pencil.} On the space $V_N$ of polynomials of degree below $N$ with the
+$L^2(\mu)$ inner product consider $R(P)=\int t\abs{P}^2\dd\mu/\int\abs P^2\dd\mu$. The pencil
+represents the compression of multiplication by $t$ to $V_N$. Both Gram forms are positive definite,
+since a nonzero polynomial cannot vanish on an infinite set. The full multiplication operator is
+diagonal on the atoms with distinct eigenvalues $x_i$ and limit point zero, so min--max gives
+$r_{j,N}\le x_j$ and $r_{j,N}\le r_{j,N+1}$. The monic orthogonal polynomial $Q_N$ of degree $N$
+has the Ritz values as roots: $(t-r)P(t)$ for a Ritz vector $P$ is orthogonal to $V_N$, hence a
+multiple of $Q_N$. This also gives one-dimensional eigenspaces and simple Ritz values, and the
+three-term recurrence, with nonzero subdiagonal coefficients, gives strict interlacing for
+consecutive $N$.
+
+\emph{Upper estimate.} Write $w_i=m_ix_i$ and, for $i\le j$,
+$P_{i,N}(t)=\prod_{k\le N,\,k\ne i}(t-x_k)/(x_i-x_k)$. For $0\le t\le x_{N+1}$ each numerator is
+at most $x_k$, and for fixed $i$ each denominator is bounded below by a constant depending on $i$,
+since $x_i$ is isolated. The zero count gives $x_k\ll(\log(k+1)/k)^2$ even for distinct ordinates
+indexed without repetition. Hence, uniformly for $i\le j$ on this tail,
+\begin{equation}\label{li:eq:ritzB}
+ \abs{P_{i,N}(t)}\le B_{j,N},\qquad\log B_{j,N}\le-2N\log N+2N\log\log N+O_j(N),
+\end{equation}
+using $\sum_{k\le N}\log k=N\log N+O(N)$ and $\sum_{k\le N}\log\log(k+1)\le N\log\log(N+1)$. For
+$P=\sum_{i\le j}a_iP_{i,N}$ the squared norm on the first $N$ atoms is $\sum_{i\le j}w_i\abs{a_i}^2$
+and on the tail at most $p_1jB_{j,N}^2\sum_{i\le j}\abs{a_i}^2$. On the leading atoms where $P\ne0$
+we have $t\ge x_j$. Hence $x_j-R(P)\le C_jB_{j,N}^2$ on this $j$-dimensional space, which gives the
+upper bound for $x_j-r_{j,N}$ in \eqref{li:eq:ritzrate}.
+
+\emph{Lower estimate.} Choose $T=DN/\log N$ with a large fixed $D$ and take $N$ ordinates from \cref{li:lem:packing}.
+Their images $y_1,\dots,y_N$ under $t\mapsto(\frac14+t^2)^{-1}$, in monotone order, lie below
+$x_{j+1}$ for large $N$ and satisfy, by the mean value theorem,
+\begin{equation}\label{li:eq:ritzsep}
+ y_i\gg(\log N/N)^2,\qquad\abs{y_i-y_k}\ge c\abs{i-k}\,d_N,\qquad d_N=\frac{(\log N)^2}{N^3}.
+\end{equation}
+For $P\in V_N$, interpolation at these nodes gives
+\begin{equation}\label{li:eq:ritzinterp}
+\begin{gathered}
+ \abs{P(x_j)}\le\max_i\abs{P(y_i)}\sum_{i=1}^N\frac{(x_j/d_N)^{N-1}}{(i-1)!\,(N-i)!}
+ =A_{j,N}\max_i\abs{P(y_i)},\\
+ \log A_{j,N}\le2N\log N-2N\log\log N+O_j(N);
+\end{gathered}
+\end{equation}
+the factorials contribute $2^{N-1}/(N-1)!$. Every $y_i$ carries mass at least $y_i$, so the squared
+tail norm $S=\sum_{k>j}w_k\abs{P(x_k)}^2$ satisfies $S\ge(\min_iy_i)A_{j,N}^{-2}\abs{P(x_j)}^2$.
+On the subspace of codimension $j-1$ where $P(x_1)=\cdots=P(x_{j-1})=0$,
+\[
+ x_j-R(P)\ge(x_j-x_{j+1})\frac S{w_j\abs{P(x_j)}^2+S},
+\]
+and the fraction is at least $c_N/(w_j+c_N)$ with $c_N=(\min_iy_i)A_{j,N}^{-2}$ (it is one if
+$P(x_j)=0$). By the codimension form of min--max, $r_{j,N}$ is at most the maximal Rayleigh
+quotient on this subspace, and \eqref{li:eq:ritzsep}, \eqref{li:eq:ritzinterp} give the lower bound
+in \eqref{li:eq:ritzrate}. At finite $N$ that maximum is strictly below $x_j$, since $S>0$ for every
+nonzero polynomial. Finally $x\mapsto\sqrt{1/x-1/4}$ has finite nonzero derivative at $x_j$.
+\end{proof}
+
+For fixed $N\ge j$ abbreviate $r_i=r_{i,N}$ and put
+\begin{equation}\label{li:eq:septest}
+ b_{j,N}=\min_{1\le k\le2N}\Bigl(\frac{p_k-\sum_{i<j}r_i^k}2\Bigr)^{1/k}.
+\end{equation}
+Form $S_j(t)=Q_N(t)/(t-r_j)$ and put $v_j=\int Q_N^2\,\dd\mu\big/\int S_j^2\,\dd\mu$. These are
+exact functions of $p_1,\dots,p_{2N+1}$; for example
+$\int Q_N^2\,\dd\mu=\det\liHk_{N+1}/\det\liHk_N$.
+
+\begin{theorem}[Finite simplicity and enclosure test; \stG]\label{li:thm:ritzcert}
+If $b_{j,N}<r_j$, then $m_1=\cdots=m_j=1$ and
+\begin{equation}\label{li:eq:ritzcert}
+ r_j\le x_j\le r_j+\frac{v_j}{r_j-b_{j,N}} .
+\end{equation}
+For fixed $j$ a passing test exists if and only if the first $j$ distinct ordinates are simple,
+and then it passes for all sufficiently large $N$. The logarithm of the width in
+\eqref{li:eq:ritzcert} has the same two leading terms and the same $O_j(N)$ precision as
+\eqref{li:eq:ritzrate}.
+\end{theorem}
+
+\begin{proof}
+Write $b=b_{j,N}$. In $p_k$ the first $j-1$ distinct sites contribute at least $\sum_{i<j}r_i^k$,
+and the next two sites at least $2x_{j+1}^k$; thus $b\ge x_{j+1}$. If one of the top $j$
+multiplicities exceeds one, then after one copy at each site $i<j$ is removed, at least two copies
+at sites $\ge x_j$ remain, so $b\ge x_j\ge r_j$ and the test fails.
+
+Under the probability measure $S_j^2\dd\mu/\int S_j^2\dd\mu$ the mean of $t$ is $r_j$, by
+orthogonality of $Q_N$ to $S_j$, and the variance is $v_j$. When $b<r_j$ the support avoids
+$(b,x_j)$, so $(t-b)(t-x_j)\ge0$ on it; taking expectations gives $v_j\ge(r_j-b)(x_j-r_j)$, which is
+\eqref{li:eq:ritzcert}.
+
+If the first $j$ sites are simple, $\sum_{i>j}m_i(x_i/x_j)^k\to0$ by dominated convergence. For a
+fixed $k$ with this sum below one, the $k$th candidate in \eqref{li:eq:septest} tends to a value
+strictly below $x_j$ as $N\to\infty$, so $r_j-b$ stays bounded away from zero. For the width, the
+monic norm of $Q_N$ is minimal, and testing $\prod_{i\le N}(t-x_i)$ gives
+$\int Q_N^2\dd\mu\le p_1\prod_{i\le N}x_i^2$. Also
+$\int S_j^2\dd\mu\ge w_j\prod_{i\ne j,\,i\le N}\abs{x_j-r_i}^2\ge w_jc_j^{2(N-1)}$ eventually, since
+the first $j-1$ Ritz values converge to points above $x_j$ and $r_i\le x_{j+1}$ for $i>j$. This
+gives the upper rate; the lower rate follows from $x_j-r_j$ and \cref{li:thm:ritz}.
+\end{proof}
+
+The certificate uses that a multiplicity is at least one. An arbitrary positive measure can hide an
+arbitrarily small extra atom above a proposed cutoff, so an ordinary moment support bound cannot
+give the simplicity conclusion.
+
+\begin{corollary}[Size of the Li moment determinant; \stG]\label{li:cor:hankel}
+$\log\det\liHk_N=-2N^2\log N+2N^2\log\log N+O(N^2)$.
+\end{corollary}
+
+\begin{proof}
+Let $h_n=\int Q_n^2\dd\mu$, with $Q_0=1$; then $\det\liHk_N=\prod_{n<N}h_n$. The trial polynomial
+in the last proof bounds $h_n$ above. For the reverse bound use $n+1$ separated tail nodes from
+\eqref{li:eq:ritzsep} with $N=n+1$. Comparing leading coefficients in the interpolation identity
+for the monic $Q_n$ gives
+$1=\sum_{i=1}^{n+1}Q_n(y_i)/\prod_{k\ne i}(y_i-y_k)$, so $\max_i\abs{Q_n(y_i)}\ge n!\,d_{n+1}^n/2^n$.
+Each node has mass at least $\min_iy_i$. Hence $\log h_n=-4n\log n+4n\log\log n+O(n)$; sum over
+$n<N$.
+\end{proof}
+
+\begin{corollary}[A local version for Dirichlet zeros; \stG]\label{li:cor:ritzdir}
+Fix a primitive nonprincipal character $\chi$ of conductor $q$, a height $t_0\in\R$ and $a>1/2$.
+Let $\gamma$ run over the ordinates of the completed function $\Lambda_\chi$, with multiplicity, and
+assign to each distinct value $x=(a^2+(\gamma-t_0)^2)^{-1}$ the total multiplicity of its distance
+$\abs{\gamma-t_0}$. The moments of this local distance spectrum are determined by Taylor data in
+$\Re s>1$, and the $j$th Ritz value recovers the $j$th largest atom with
+\[
+ \lim_{N\to\infty}\frac{\log(x_j-r_{j,N})}{N\log N}=-4 .
+\]
+\Cref{li:thm:ritzcert} applies, with simplicity meaning total multiplicity one at a distance. All
+assertions fix $q,t_0,a,j$ before the limit.
+\end{corollary}
+
+\begin{proof}
+Put $G(w)=\Lambda_\chi(\frac12+it_0+w)\Lambda_{\bar\chi}(\frac12-it_0+w)$. The functional equation,
+with the two root numbers multiplying to one, makes $G$ even. Then $E(z)=G(\sqrt{a^2-z})/G(a)$ is
+entire of order at most $1/2$ with zeros $z=a^2+(\gamma-t_0)^2$; the two factors supply the two
+symmetric $w$-roots of each zero, and a root at $w=0$ has twice the original multiplicity in $G$
+and the original multiplicity in $E$. The genus-zero product and $E(0)=1$ give
+$p_k=-k[z^k]\log E(z)$, computed from the completed functions at $\frac12+a\pm it_0$, where the
+series converge absolutely. For the rate, the count of distances up to $T$ has main term
+$(T/\pi)\log(qT/(2\pi e))$ with error $O_{q,t_0}(\log T)$, by sandwiching between centered counts
+at $T\pm\abs{t_0}$ \cite{BennettMartinOBryantRechnitzer2021Counting}. This gives the upper bound
+of \eqref{li:eq:ritzB}, and a distance in every interval of a fixed large length $L$ above a
+threshold. Taking every other interval in a block of $2N$ such intervals starting at $N$ gives $N$
+distinct distances of size $\asymp N$ separated by at least $L$, whose images have mass at least
+$c/N^2$ and separation at least $c/N^3$. Interpolation gives $\log A_{j,N}\le2N\log N+O_j(N)$ and
+the lower bound $-4N\log N-O_j(N)$.
+\end{proof}
+
+\begin{proposition}[A certificate from seventeen moments; \stG]\label{li:prop:ritz17}
+The first four distinct positive ordinates of $\zeta$ are simple and satisfy
+\begin{center}\small
+\begin{tabular}{rrrr}
+\toprule
+$j$ & lower endpoint & upper endpoint & separating power $k$\\
+\midrule
+1 & 14.13472514173191 & 14.13472514173536 & 3\\
+2 & 21.02201044341552 & 21.02204411662634 & 5\\
+3 & 25.00089451502082 & 25.01282713231148 & 5\\
+4 & 26.62873848826057 & 30.86048319178881 & 7\\
+\bottomrule
+\end{tabular}
+\end{center}
+\end{proposition}
+
+\begin{proof}
+The input is the first $17$ power sums of the scaled atoms $y=200x$. They come from the expansion
+$\log(2\xi(1+u))=\sum_{k\ge1}(-1)^{k-1}p_k(u+u^2)^k/k$, with $Z(u)=u\zeta(1+u)$ expanded at $0$ by
+Euler--Maclaurin with cutoff $n=256$ and last Bernoulli index $2p=192$. On $\abs u=1/2$ the
+periodic Bernoulli remainder is at most $E=4(2p+1)!\,n/(6n)^{2p}$, because the normalized periodic
+Bernoulli polynomial is bounded by $2\zeta(2p)/(2\pi)^{2p}<4/6^{2p}$, $\abs{(1+u)_{2p}}\le(2p+1)!$ and
+the remaining integral is at most $n^{1-2p}$; the error of coefficient $k$ is at most $2^kE$.
+Together with the expansions of $\log(1+u)$ and $\log\Gamma((1+u)/2)$, with integer zeta values
+enclosed by rational Euler--Maclaurin bounds, all $17$ intervals for $200^kp_k$ have width below
+$10^{-130}$.
+
+For each $j$ a rational checker verifies three facts in the scaled variable. On a $j$-dimensional
+rational trial space the form $\int(t-c_j)PQ\,\dd\mu$ is positive definite, by strict diagonal
+dominance with positive diagonal; if at most $j-1$ atoms exceeded $c_j$, a nonzero combination
+vanishing on them would make the form nonpositive, so the $j$th atom exceeds $c_j$. Next,
+$p_k-\sum_{i<j}c_i^k\le2b^k$ for the listed $k$ and a rational $b<c_j$, which as in
+\cref{li:thm:ritzcert} gives multiplicity one and an upper bound for the next atom. Finally the
+variance about a rational trial center bounds the mean square deviation, and the product inequality
+of \cref{li:thm:ritzcert} gives the upper bound. The data and checker are
+\begin{center}
+\artifact{li_ritz_zero_recovery/verification/certified_moments.json},\\
+\artifact{li_ritz_zero_recovery/verification/witness.json},\\
+\artifact{li_ritz_zero_recovery/verification/verify_zeros.py}.
+\end{center}
+\end{proof}
+
+An uncertified floating-point run of the pencil with $N=8$ reproduces $\gamma_1$ to about $13$
+digits from the upper side (\artifact{li_ritz_zero_recovery/verification/ritz_output.txt}).
+
+Voros derived \eqref{li:eq:logmoments} and studied the associated secondary zeta functions
+\cite{Voros2006Sharpenings,Voros2003Zeta}. Pavesi treats the same symmetric coordinate, Li
+transforms and Hankel inertia \cite{Pavesi2026Klein}; Lasserre derives monotone support estimates
+from generalized eigenvalues of moment matrices \cite{Lasserre2011Bounding}; Kawalec recovers
+individual ordinates by limits of deflated power sums \cite{Kawalec2022Analytical}.
+
+\subsection{Matched ordinates of two \texorpdfstring{$L$}{L}-functions}\label{li:sec:match}
+\sources{li_zero_separation; li_ritz_zero_recovery}
+
+Let $H$ be the entire completion of a primitive Dirichlet $L$-function, with the polar factors
+removed in conductor one (so $H=\xi$ for $\zeta$). It has order one, its zeros are the nontrivial
+zeros with multiplicity, and $H(s)=\epsilon\overline{H(1-\bar s)}$ with $\abs\epsilon=1$
+\cite{Lagarias2007Li}. By \cref{src:thm:dgrh} each zero is $\rho=\frac12+i\gamma$ with $\gamma\in\R$.
+For a center $c\in\R$ and a scale $a>0$ define
+\[
+ s_\pm=\tfrac12+ic\pm a,\quad d=2a,\quad S(u)=s_++\frac{du}{1-u},\quad
+ z_\gamma=\frac{\rho-s_-}{\rho-s_+},\quad w_\gamma=\abs{1-z_\gamma}^2=\frac{d^2}{a^2+(\gamma-c)^2}.
+\]
+Then $\abs{z_\gamma}=1$, $0<w_\gamma\le4$ and $\sum_\gamma w_\gamma<\infty$; each occurrence of a zero
+has its own label. Define the shifted Li coefficients
+\[
+ \ell_n=n[u^n]\log H(S(u))\ (n>0),\qquad\ell_0=0,\qquad\ell_{-n}=\overline{\ell_n},
+\]
+which do not depend on the branch of the logarithm. At $a=\frac12$, $c=0$ this is the usual Li
+expansion; real shifts of the evaluation point go back to Sekatskii \cite{Sekatskii2014Generalized}.
+
+\begin{lemma}[Circle moments of shifted Li coefficients; \stG]\label{li:lem:shifted}
+Let $(Db)_n=2b_n-b_{n-1}-b_{n+1}$. For all $r\ge1$ and $n\in\Z$,
+\begin{equation}\label{li:eq:shiftmoment}
+ b_{r,n}:=-(D^r\ell)_n=\sum_\gamma w_\gamma^rz_\gamma^n .
+\end{equation}
+\end{lemma}
+
+\begin{proof}
+Write $G=H'/H$. The difference of genus-one logarithmic derivatives cancels the exponential
+factor of the Hadamard product:
+\[
+ d\{G(S(u))-G(s_-)\}=d\sum_\rho\Bigl(\frac1{S(u)-\rho}-\frac1{s_--\rho}\Bigr)
+ =\sum_\gamma\frac{w_\gamma}{1-z_\gamma u}\qquad(\abs u<1),
+\]
+since $S(u)-s_-=d/(1-u)$ and $w_\gamma=-d^2/[(\rho-s_-)(\rho-s_+)]$; both sums converge locally
+uniformly. Differentiating the defining series gives $\sum_{n\ge1}\ell_nu^n=duG(S(u))/(1-u)^2$, so
+for $n\ge1$ the coefficient of $u^n$ in $dG(S(u))$ is $\ell_{n+1}-2\ell_n+\ell_{n-1}$. At $u=0$ the
+left side equals $2\Re\ell_1$, since $G(s_-)=-\overline{G(s_+)}$. Conjugation handles negative
+indices, and $D$ multiplies the mode $z^n$ by $2-z-z^{-1}=\abs{1-z}^2$.
+\end{proof}
+
+For $r=1$, $a=\frac12$, $c=0$ and $H=\xi$, \eqref{li:eq:shiftmoment} is the Fourier series
+\eqref{li:eq:fourier}. On the unit circle put $K_N(v)=\abs{N^{-1}\sum_{j=0}^{N-1}v^j}^2$ and
+$K_N(v)^r=\sum_{\abs k\le r(N-1)}h_kv^k$; the rational coefficients $h_k$ are symmetric and
+nonnegative, being the $r$-fold convolution of $(N-\abs k)/N^2$, and $K_N(1)=1$, $0\le K_N\le1$,
+$K_N(v)\to0$ for $v\ne1$. For two primitive Dirichlet $L$-functions $A,B$ (possibly $\zeta$), with
+centers $c_A,c_B$ and a common scale $a$, define the \emph{mixed test}
+\begin{equation}\label{li:eq:F}
+ F_{r,N}=\sum_{\abs k\le r(N-1)}h_kb^A_{r,k}\overline{b^B_{r,k}} .
+\end{equation}
+For the \emph{multiplicity test} take $A=B$, $c_A=c_B$, and subtract $b^A_{2r,0}$ from the right
+side. Both use only indices $\abs n\le rN$.
+
+\begin{lemma}[Pair expansion; \stG]\label{li:lem:pairs}
+Write $z_i,v_j$ for the circle points of the zero labels of $A$ and $B$, $w_i,w'_j$ for their
+weights, $p_{ij}=w_iw'_j$ and $q_{ij,N}=p_{ij}K_N(z_i\bar v_j)$. Then
+$F_{r,N}=\sum_{i,j}q_{ij,N}^{\,r}\ge0$, the sum running over all ordered pairs in the mixed test
+and over pairs of distinct labels in the multiplicity test.
+\end{lemma}
+
+\begin{proof}
+Expand \eqref{li:eq:F} and apply \eqref{li:eq:shiftmoment}. All sums converge absolutely, since
+$0\le q_{ij,N}\le p_{ij}\le16$ and $C:=\sum_{i,j}p_{ij}<\infty$. In the multiplicity test each
+diagonal pair contributed $w_i^{2r}$; two distinct labels of the same zero survive.
+\end{proof}
+
+Put $x_i=\gamma_i-c_A$ and $y_j=\eta_j-c_B$. The map $x\mapsto(ix+a)/(ix-a)$ is injective, so
+$z_i=v_j$ exactly when $x_i=y_j$, a \emph{match}. For $t>0$ only finitely many pairs have
+$p_{ij}\ge t$. As $N$ grows, unequal pairs among them have $q_{ij,N}\to0$ and matched pairs keep
+$q_{ij,N}=p_{ij}$; so for large $N$ the multiset of $q_{ij,N}\ge t$ is the multiset of matched
+products $p_{ij}\ge t$.
+
+\begin{theorem}[Completeness of the matched-pair test; \stG]\label{li:thm:match}
+Let $T\ge0$ and $W=d^2/(a^2+T^2)$. In the mixed test there is no match with $\abs{x_i}\le T$ if and
+only if $F_{r,N}<W^{2r}$ for some $r\ge1$, $N\ge2$. In the multiplicity test the same holds with
+threshold $2W^{2r}$. On a clear window the strict inequality eventually holds along every joint
+sequence $r,N\to\infty$.
+\end{theorem}
+
+\begin{proof}
+A match in the window has $q_{ij,N}=w_i^2\ge W^2$, and a zero of multiplicity $m\ge2$ supplies
+$m(m-1)\ge2$ ordered pairs; this gives necessity. Conversely let $R$ be the supremum of matched
+products ($R=0$ if there is none); a positive supremum is attained. If the window is clear,
+$R<W^2$, also when a match lies at the boundary. Choose $R<t<W^2$. Then $q_{ij,N}<t$ for all pairs
+and all large $N$, and uniformly in these $N$,
+$0\le F_{r,N}/W^{2r}\le(C/W^2)(t/W^2)^{r-1}\to0$.
+\end{proof}
+
+\begin{corollary}[Rate of the test; \stG]\label{li:cor:match}
+Along every such joint sequence $F_{r,N}^{1/r}\to R$. If $R>0$ and $M$ ordered pairs realize the
+largest matched product, there are $b<1$ and $N_0$ with $0\le F_{r,N}/R^r-M\le(C/R)b^{r-1}$ for
+$N\ge N_0$. The least absolute centered ordinate of a match is $\sqrt{d^2/\sqrt R-a^2}$, read as
+$+\infty$ when $R=0$.
+\end{corollary}
+
+\begin{proof}
+For $R=0$ use $F_{r,N}\le Ct^{r-1}$ for any $t>0$. For $R>0$ remove the maximizing matched pairs;
+the remaining matched supremum is strictly smaller, and the stabilization argument with threshold
+$bR$ bounds the remainder. The formula inverts $R=w(x)^2$ with $w(x)=d^2/(a^2+x^2)$.
+\end{proof}
+
+Since $K_{mN}(v)=K_N(v)K_m(v^N)$, $F_{r,mN}\le F_{r,N}$, and for fixed $N$, $F_{r,N}^{1/r}$ is an
+$\ell^r$ norm over pairs and decreases with $r$; so $N=2^j$, $r=j$ approach $R$ from above. No
+uniform bound on the required $j$ is asserted.
+
+\begin{theorem}[A gap bound from one strict test; \stG]\label{li:thm:gap}
+Let $x_i,y_j\in[-T,T]$ be the centered ordinates of an admissible pair, and suppose a known
+symmetry gives at least $k$ pair contributions equal to that of this pair in
+\cref{li:lem:pairs} ($k=1$ always; $k=2$ in the multiplicity test, by reversal). Put $P_0=W^2$ and
+$Q=(F_{r,N}/k)^{1/r}$. If $Q<P_0$, then
+\begin{equation}\label{li:eq:gap}
+ \abs{x_i-y_j}\ge d\sqrt{\frac{12}{N^2-1}\min\Bigl\{\frac{P_0-Q}{P_0^2},\frac{16-Q}{256}\Bigr\}} .
+\end{equation}
+\end{theorem}
+
+\begin{proof}
+Write $P=p_{ij}\in[P_0,16]$. For $v$ on the circle, $\abs{v^j-v^l}\le\abs{j-l}\,\abs{1-v}$, so
+$1-K_N(v)=\frac1{2N^2}\sum_{j,l<N}\abs{v^j-v^l}^2\le\frac{N^2-1}{12}\abs{1-v}^2$. Subtracting the two
+Cayley fractions gives $\abs{1-z_i\bar v_j}^2=\abs{z_i-v_j}^2=(P/d^2)\abs{x_i-y_j}^2$. By positivity
+$Q\ge PK_N(z_i\bar v_j)$. Hence $\abs{x_i-y_j}^2\ge12d^2(P-Q)/[(N^2-1)P^2]$, and the derivative of
+$(P-Q)/P^2$ has the sign of $2Q-P$, so its minimum on $[P_0,16]$ is at an endpoint.
+\end{proof}
+
+Let $\beta(s)=L(s,\chi_{-4})$, with completion
+$H_\beta(s)=(4/\pi)^{(s+1)/2}\Gamma(\frac{s+1}2)4^{-s}\{\zeta(s,\frac14)-\zeta(s,\frac34)\}$. Both
+$\xi$ and $H_\beta$ are real self-dual and centered at zero, and $\zeta(1/2)\ne0$, so simultaneous
+negation gives $k=2$ in the mixed test for $\zeta,\beta$.
+
+\begin{theorem}[Gaps between zeros of $\zeta$ and $\beta$; \stG]\label{li:thm:zetabeta}
+If $\gamma$ and $\eta$ run over the ordinates of the nontrivial zeros of $\zeta$ and of $\beta$,
+\[
+ 0.361<\min_{\abs\gamma,\abs\eta\le22}\abs{\gamma-\eta}<0.429 .
+\]
+Moreover all nontrivial zeros of $\zeta$ with $\abs\gamma\le30$ are simple, and any two of them with
+distinct labels differ by more than $1.29$.
+\end{theorem}
+
+\begin{proof}
+With $c_A=c_B=0$ and $k=2$, ball arithmetic evaluates the shifted Li coefficients by power-series
+arithmetic, forms $b_{r,k}=-\sum_{j=-r}^r(-1)^j\binom{2r}{r+j}\ell_{k+j}$ and the integer kernel
+polynomial, and certifies:
+\begin{center}\small
+\begin{tabular}{@{}lrrrrrrr@{}}
+\toprule
+functions & $T$ & $a$ & $N$ & $r$ & degree & $F/W^{2r}<$ & gap $>$\\
+\midrule
+$\zeta,\beta$ & 20 & 14.5 & 50 & 5 & 250 & 0.682658 & 0.477\\
+$\zeta,\beta$ & 22 & 24 & 90 & 5 & 450 & 0.737047 & 0.361\\
+$\zeta$, distinct labels & 30 & 24 & 30 & 3 & 90 & 1.151405 & 1.29\\
+\bottomrule
+\end{tabular}
+\end{center}
+The last column is \eqref{li:eq:gap}, rounded down. A multiple zero would give gap zero between
+distinct labels in the last row. For the upper bound, the signs of $\xi$ at $\frac12+21.022i$ and
+$\frac12+21.023i$ are $(-,+)$, and those of $H_\beta$ at $\frac12+21.450i$ and $\frac12+21.451i$ are
+$(-,+)$; continuity gives zeros with $0<\eta-\gamma<0.429$. No ordinates enter the lower-bound
+verifier. The program and its output are
+\begin{center}
+\artifact{li_zero_separation/verify_collisions.py},\\
+\artifact{li_zero_separation/collisions-output.txt}.
+\end{center}
+\end{proof}
+
+\begin{example}[A prescribed gap from three coefficients per center]\label{li:ex:shifted}
+Take two copies of $\zeta$ with $c_A=21$, $c_B=14$, $a=T=0.15$, $N=3$, $r=k=1$. Taylor expansions
+through degree three give $F/W^2<0.761429$, so every pair with $\abs{\gamma-21},\abs{\eta-14}\le0.15$
+satisfies $\abs{(\gamma-\eta)-7}>0.082$. By \cref{li:prop:ritz17} the first two positive zeros of
+$\zeta$ lie in these windows.
+\end{example}
+
+Brown used finite Li data for zero-free regions \cite{Brown2005Li}, and Ernvall-Hyt\"onen,
+Od\v{z}ak, Smajlovi\'c and Su\v{s}i\'c studied Li coefficients of products of shifted functions
+\cite{ErnvallHytonenOdzakSmajlovicSusic2015Modified}. A finite-height simplicity criterion for $\zeta$
+by trace defects is in \cite{Alderliefste2026Finite}.
+
+\subsection{Hermite power-sum matrices}\label{li:sec:hermite}
+\sources{grh_zero_certificates_2026-11-26}
+
+Let $Z=(z_1,\dots,z_n)$ be a multiset in $\C$, conjugation invariant in the sense that a point and
+its conjugate have the same multiplicity. Put
+\begin{equation}\label{li:eq:hermite}
+\begin{gathered}
+ s_k=\sum_{\ell=1}^nz_\ell^k,\quad s_0=n,\qquad H_n(Z)=(s_{i+j})_{0\le i,j<n},\\
+ b(Z)=\max_\ell\abs{\Im z_\ell},\qquad\liD(Z)=\max\{0,-\lambda_{\min}(H_n(Z))\}.
+\end{gathered}
+\end{equation}
+The $s_k$ are real, so $H_n(Z)$ is real symmetric. The defect $\liD$ is the least $e\ge0$ with
+$H_n(Z)+eI$ positive semidefinite, and also the operator-norm distance to the positive
+semidefinite cone.
+
+\begin{theorem}[Two sharp powers; \stU]\label{li:thm:hermite}
+Let $n\ge2$, let $Z$ be conjugation invariant with $\abs{z_\ell}\le1$ for all $\ell$, and put
+$K_n=4\floor{n/2}$, $C_n=n^2(n-1)(7n-11)/6$. Then
+\begin{equation}\label{li:eq:hmain}
+ 2\Bigl(\frac{b(Z)}{K_n}\Bigr)^{2n-2}\le\liD(Z)\le C_nb(Z)^2 ,
+\end{equation}
+and consequently
+\begin{equation}\label{li:eq:hinverse}
+ \sqrt{\liD(Z)/C_n}\le b(Z)\le\min\Bigl\{1,K_n\Bigl(\frac{\liD(Z)}2\Bigr)^{1/(2n-2)}\Bigr\}.
+\end{equation}
+Repeated roots are allowed and no separation is assumed. For each $n$ the exponent $1/(2n-2)$ on
+the right of \eqref{li:eq:hinverse} and the exponent $2$ on the right of \eqref{li:eq:hmain}
+cannot be increased. The constants are not asserted optimal.
+\end{theorem}
+
+In particular $\liD=0$ if and only if all roots are real; this is the classical Hermite--Sylvester
+theorem, with Nathanson's interpolation proof \cite{Nathanson2021Hermite}. For $n=3$ the theorem
+reads $b^4/128\le\liD\le30b^2$.
+
+For a real polynomial $p(x)=\sum_{r<n}c_rx^r$,
+\begin{equation}\label{li:eq:hquad}
+ c^{\mathsf T}H_n(Z)c=\sum_{\ell=1}^np(z_\ell)^2 ,
+\end{equation}
+with ordinary squares: an interpolated value $i$ at a nonreal point contributes $-1$.
+
+\begin{lemma}[Grouped divided differences]\label{li:lem:dd}
+Assume $b=b(Z)>0$, let $d\le n$ be the number of distinct root locations, and list the distinct
+nonnegative imaginary heights as $0=y_0<y_1<\cdots<y_k=b$, so $k\le\floor{d/2}$. Choose $j$ with
+$\delta=y_j-y_{j-1}\ge b/k$, and put $L=\{z:\Im z\le-y_j\}$, $U=\{z:\Im z\ge y_j\}$,
+$M=\{z:\abs{\Im z}\le y_{j-1}\}$. Prescribe the values $-i,0,i$ on $L,M,U$ and order the distinct
+nodes with $L$ first, then $M$, then $U$. Every divided difference of positive order $r$ of these
+data on a consecutive block satisfies $\abs{f[x_a,\dots,x_{a+r}]}\le2^{r-1}\delta^{-r}$, with no
+separation of nodes inside a group.
+\end{lemma}
+
+\begin{proof}
+The groups are exhaustive because no height lies in the selected gap; $L$ and $U$ are nonempty;
+distinct groups are at distance at least $\delta$, and $L,U$ at distance at least $2\delta$. A
+positive-order divided difference of constant data vanishes, so blocks inside a group contribute
+nothing. In order one, neighbouring groups have value difference $1$ at distance at least $\delta$,
+and $L,U$ have difference $2$ at distance at least $2\delta$. For a mixed block of order $r\ge2$ the
+first and last nodes lie in different groups, at distance at least $\delta$, and the recursion with
+the two bounds of order $r-1$ gives $2\cdot2^{r-2}\delta^{-(r-1)}/\delta$.
+\end{proof}
+
+\begin{proof}[Proof of \cref{li:thm:hermite}]
+\emph{Lower bound.} If $b=0$, \eqref{li:eq:hquad} makes $H_n$ positive semidefinite. Otherwise
+there is a unique polynomial $p$ of degree at most $d-1$ with the values of \cref{li:lem:dd}; the
+data respect conjugation, so by uniqueness $p$ has real coefficients. Suppose $\abs{z_\ell}\le R$.
+The coefficient norm of $\prod_{a<r}(x-x_a)$ is at most $(1+R)^r$, and Newton's expansion with
+\cref{li:lem:dd} gives, for $T=2(1+R)/\delta>2$,
+$\norm p_{\mathrm{coef},2}\le\norm p_{\mathrm{coef},1}\le1+\frac12\sum_{r=1}^{d-1}T^r\le T^{d-1}$.
+By \eqref{li:eq:hquad} the padded coefficient vector has
+$c^{\mathsf T}H_nc=-\#\{\ell:z_\ell\in L\cup U\}\le-2$, with multiplicity; interpolation used only
+distinct locations. The Rayleigh quotient gives
+\begin{equation}\label{li:eq:hradius}
+ \liD(Z)\ge2\Bigl(\frac\delta{2(1+R)}\Bigr)^{2d-2}\ge2\Bigl(\frac b{2k(1+R)}\Bigr)^{2d-2},
+\end{equation}
+and replacing $k$ by $\floor{n/2}$, $d$ by $n$ and $R$ by $1$ gives the lower half.
+
+\emph{Upper bound.} Put $a_\ell=\Re z_\ell$ and $v_r=\sum_\ell a_\ell^r$; the matrix $H_\R=(v_{i+j})$ is
+positive semidefinite. For $r\ge2$ Taylor's formula on the vertical segment from $a_\ell$ to $z_\ell$,
+inside the unit disk, gives $\abs{\Re(z_\ell^r)-a_\ell^r}\le\frac{r(r-1)}2\abs{\Im z_\ell}^2$, the linear
+term being imaginary. As $s_r$ is real, $\abs{s_r-v_r}\le\frac{nr(r-1)}2b^2$, with equality of the
+terms for $r\le1$. The maximal absolute row sum, attained on the last row, gives
+$\norm{H_n-H_\R}_{\mathrm{op}}\le\frac{nb^2}2\sum_{j=0}^{n-1}(n-1+j)(n-2+j)=C_nb^2$, and positivity of
+$H_\R$ gives $c^{\mathsf T}H_nc\ge-C_nb^2$ for unit $c$.
+\end{proof}
+
+\begin{proposition}[Sharpness of both exponents; \stU]\label{li:prop:hsharp}
+The following examples show that both exponents of \cref{li:thm:hermite} are optimal.
+\begin{enumerate}[label=\textup{(\roman*)}]
+\item Fix $n\ge2$, distinct nonzero real numbers $a_1,\dots,a_{n-2}$, and a small $h>0$.
+ Let $Z_t$ consist of $t$ times the roots $a_1,\dots,a_{n-2},ih,-ih$. Then $\liD(Z_t)\sim(-\sigma)t^{2n-2}$ as
+ $t\downarrow0$, for a constant $\sigma<0$, while $b(Z_t)=ht$.
+\item Adding $-\sigma t^{2n-2}$ to the single moment $s_{2n-2}$ of $Z_t$ makes the Hankel matrix
+ positive semidefinite. So the exponent $1/(2n-2)$ is optimal even for the implication ``a measured
+ Hankel matrix is positive semidefinite and every measured moment has error at most $e$''.
+\item For $Z_b=\{ib,-ib,0,\dots,0\}$ with $n-2$ zeros and $0<b\le1$,
+ $\liD(Z_b)=2b^2\sum_{r=0}^{\floor{n/2}-1}b^{4r}\sim2b^2$.
+\end{enumerate}
+\end{proposition}
+
+\begin{proof}
+(i) At $h=0$ the leading $(n-1)\times(n-1)$ block $A$ is positive definite: a nonzero real
+polynomial of degree at most $n-2$ cannot vanish at the $n-1$ points $0,a_1,\dots,a_{n-2}$, which
+carry positive weights. It stays positive definite for small $h$. Write
+$H=\begin{pmatrix}A&v\\v^{\mathsf T}&c\end{pmatrix}$. The Vandermonde factorization shows $\det H<0$:
+the conjugate pair has squared difference $-4h^2$, real nodes have positive squared differences,
+and the factors linking a real node to the pair combine to $(a_j^2+h^2)^2>0$. So
+$\sigma=c-v^{\mathsf T}A^{-1}v=\det H/\det A<0$; this includes $n=2$. Scaling gives
+$H(t)=D_tHD_t$ with $D_t=\mathrm{diag}(1,t,\dots,t^{n-1})$, and with
+$D_t'=\mathrm{diag}(1,\dots,t^{n-2})$ completion of the square gives
+\[
+ \binom xy^{\!\mathsf T}H(t)\binom xy=(D_t'x+t^{n-1}A^{-1}vy)^{\mathsf T}A(D_t'x+t^{n-1}A^{-1}vy)
+ +\sigma t^{2n-2}y^2\ge\sigma t^{2n-2}(\norm x^2+y^2).
+\]
+The vector $y=1$, $x=-t^{n-1}(D_t')^{-1}A^{-1}v$ has $\norm x^2=O(t^2)$, so
+$\sigma t^{2n-2}\le\lambda_{\min}(H(t))\le\sigma t^{2n-2}/(1+O(t^2))$. A bound $b\le C\liD^\alpha$ with
+$\alpha>1/(2n-2)$ would give $t\ll t^{(2n-2)\alpha}$.
+
+(ii) The change affects only the bottom-right entry and makes the Schur complement zero.
+
+(iii) The odd power sums vanish, so $H_n$ splits into its even-index and odd-index blocks. With
+$v=(1,-b^2,b^4,\dots)$ of the appropriate length, the even block is
+$2vv^{\mathsf T}+(n-2)e_0e_0^{\mathsf T}$, positive semidefinite, and the odd block, of size
+$\floor{n/2}$, is $-2b^2vv^{\mathsf T}$.
+\end{proof}
+
+\begin{example}[An exact cubic family]\label{li:ex:hcubic}
+For the roots $\{t,it/2,-it/2\}$, $0<t\le1$,
+\[
+ H(t)=\begin{pmatrix}3&t&t^2/2\\t&t^2/2&t^3\\t^2/2&t^3&9t^4/8\end{pmatrix},
+\]
+the leading $2\times2$ block has determinant $t^2/2$ and the Schur complement is $-25t^4/8$. The
+vector $u_t=(3t^2/2,-5t,1)^{\mathsf T}$ has $u_t^{\mathsf T}H(t)u_t=-25t^4/8$ and
+$\norm{u_t}^2=1+25t^2+9t^4/4$, so
+\[
+ \frac{25t^4}{8(1+25t^2+9t^4/4)}\le\liD\le\frac{25t^4}8,\qquad b=t/2 .
+\]
+Replacing $9t^4/8$ by $17t^4/4$ gives a positive semidefinite matrix. The family $\{0,ib,-ib\}$
+instead has $\liD=2b^2$. Exact checks are in
+\begin{center}
+\artifact{grh_zero_certificates_2026-11-26/data/exact_certificates.json}.
+\end{center}
+\end{example}
+
+\begin{remark}[Fewer distinct locations and weights]\label{li:rem:distinct}
+If at most $d\ge2$ distinct locations occur, \eqref{li:eq:hradius} gives
+$\liD(Z)\ge2(b(Z)/(4\floor{d/2}))^{2d-2}$ even when $n>d$; repetition does not force the worst
+exponent. For $d$ distinct conjugation-invariant nodes in the unit disk with positive
+conjugation-invariant weights, minimum weight $w_*$ and total weight $W$, the $d\times d$ weighted
+power-sum matrix satisfies $2w_*(b/(4\floor{d/2}))^{2d-2}\le\liD\le\frac{Wd(d-1)(7d-11)}6b^2$. For
+roots in $\abs z\le R$ the lower constant becomes $2\floor{n/2}(1+R)$ and the upper constant
+$\frac n2\max_{i<n}\sum_{j<n,\,i+j\ge2}(i+j)(i+j-1)R^{i+j-2}$. The defect depends on the monomial basis
+and on the normalization of the disk.
+\end{remark}
+
+Suppose real approximate moments satisfy $\abs{s_k-\widehat s_k}\le e_k$ for $0\le k\le2n-2$, and put
+$\widehat H=(\widehat s_{i+j})$ and
+$E=\min\{\max_i\sum_je_{i+j},(\sum_{i,j}e_{i+j}^2)^{1/2}\}$, a bound for
+$\norm{H-\widehat H}_{\mathrm{op}}$.
+
+\begin{corollary}[Certificates from inaccurate moments; \stU]\label{li:cor:hnoise}
+Under \cref{li:thm:hermite}, if a certified interval $[\ell,u]$ contains $\lambda_{\min}(\widehat H)$,
+then with $D_-=\max\{0,-u-E\}$ and $D_+=\max\{0,-\ell+E\}$,
+\begin{equation}\label{li:eq:hcertified}
+ \sqrt{D_-/C_n}\le b(Z)\le\min\{1,K_n(D_+/2)^{1/(2n-2)}\}.
+\end{equation}
+A certified $\widehat H\succeq-\tau I$, $\tau\ge0$, gives
+\begin{equation}\label{li:eq:hslack}
+ b(Z)\le\min\{1,K_n((\tau+E)/2)^{1/(2n-2)}\},
+\end{equation}
+and $E=ne$ may be used if every $e_k\le e$. If $\widehat H\succeq\gamma I$ is certified with
+$\gamma>E$, then all $n$ roots are real and distinct.
+\end{corollary}
+
+\begin{proof}
+The quadratic forms of $H$ and $\widehat H$ differ by at most $E$ on unit vectors, so
+$\lambda_{\min}(H)\in[\ell-E,u+E]$; apply \eqref{li:eq:hinverse}. If $\widehat H\succeq\gamma I$ with
+$\gamma>E$, then $H\succ0$; the roots are real, and fewer than $n$ distinct locations would make $H$
+singular by the Vandermonde factorization.
+\end{proof}
+
+For $n=3$, $\tau=0$ and uniform error $e$, \eqref{li:eq:hslack} gives $b\le4(3e/2)^{1/4}$, so
+$e\le\eta^4/384$ certifies $b\le\eta$; by \cref{li:prop:hsharp}(ii) the fourth power cannot be
+improved for this certificate. Symmetric Schur elimination decides positive semidefiniteness of a
+rational matrix exactly.
+
+\begin{theorem}[A local analytic certificate; \stU]\label{li:thm:contour}
+Let $\Omega$ be a bounded conjugation-invariant domain in the unit disk with positively oriented
+piecewise smooth boundary $\Gamma$. Let $F$ be holomorphic near $\overline\Omega$, with
+$F(\bar z)=\overline{F(z)}$, nonzero on $\Gamma$, and with exactly $n\ge2$ zeros in $\Omega$ counted
+with multiplicity. Then the moments
+\[
+ s_k=\frac1{2\pi i}\int_\Gamma z^k\frac{F'(z)}{F(z)}\,\dd z\qquad(0\le k\le2n-2)
+\]
+satisfy \cref{li:thm:hermite} and \cref{li:cor:hnoise}, with $b$ the largest absolute imaginary
+part of a zero in $\Omega$.
+\end{theorem}
+
+\begin{proof}
+The residues of $F'/F$ are the multiplicities, so the residue theorem gives \eqref{li:eq:hermite};
+the zeros in $\Omega$ are conjugation invariant and lie in the unit disk.
+\end{proof}
+
+The zero count must be certified before choosing the matrix size; an error below $1/2$ in $s_0$
+identifies it by rounding. For $n\le1$ conjugation symmetry already makes the zeros real. For
+meromorphic $F$ poles would contribute negative weights. The contour representation and the
+qualitative inertia test are due to Deng, Yang and L\"u \cite{DengYangLu2026Contour}.
+
+\begin{corollary}[Horizontal distance of $\xi$ and Dirichlet zeros in a window; \stU]\label{li:cor:hstrip}
+For a height $T\in\R$ and a scale $A>0$ let $F(z)=\Xi(T+Az)$ with $\Xi(w)=\xi(\frac12+iw)$, or
+$F(z)=e^{-i\theta/2}\Lambda_\chi(\frac12+i(T+Az))$ for a primitive nonprincipal $\chi$ with root number
+$e^{i\theta}$ and completion
+$\Lambda_\chi(s)=(q/\pi)^{(s+\mathfrak a)/2}\Gamma((s+\mathfrak a)/2)L(s,\chi)$, $\chi(-1)=(-1)^{\mathfrak a}$.
+Then $F$ is real entire. If its normalized contour moments over a domain as in
+\cref{li:thm:contour} satisfy the certified slack condition \eqref{li:eq:hslack}, every enclosed zero
+$\rho=\frac12+i(T+Az)$ satisfies
+\[
+ \abs{\Re\rho-\tfrac12}\le A\min\{1,K_n((\tau+E)/2)^{1/(2n-2)}\}.
+\]
+\end{corollary}
+
+\begin{proof}
+$\Xi$ is real entire by the functional equation and conjugation. For $\chi$,
+$\overline{\Lambda_\chi(s)}=\Lambda_{\bar\chi}(\bar s)$ and $\Lambda_\chi(s)=e^{i\theta}\Lambda_{\bar\chi}(1-s)$
+give $\overline{F(z)}=F(\bar z)$. A zero $z$ corresponds to $\rho$ with $\abs{\Re\rho-\frac12}=A\abs{\Im z}$.
+\end{proof}
+
+No hypothesis on zeros is used. By \cref{src:thm:dgrh} the left side is zero for these functions;
+the finite statement applies to audited numerical data and to other real entire functions. The
+phase cancels from $F'/F$. An imprimitive character should be reduced to its primitive completion,
+since the extra Euler factors have their own zeros. The moments of high order are poorly conditioned
+for large $n$, and smaller windows, each with certified boundary and count, give better bounds.
+
+Certified Hermite matrices from approximate roots are due to Ayyildiz Akoglu and Szanto
+\cite{AyyildizAkogluSzanto2023Certified}, and Hankel relaxations for zeros of entire functions under
+a spacing condition to Bickel, Pascoe and Sargent \cite{BickelPascoeSargent2023Zero}.
+
+\subsection{Complete cluster counts and what finite data cannot decide}\label{li:sec:cluster}
+\sources{grh_new_results_2026-11-26}
+
+Let $(x_n)$ be a finite or countable multiset of positive reals, with positive integer
+multiplicities, such that
+\begin{equation}\label{li:eq:summ}
+ p_1=\sum_nx_n<\infty,\qquad p_j=\sum_nx_n^j\quad(j\ge1).
+\end{equation}
+Then $x_n\le p_1$ and only finitely many occurrences lie above any positive threshold. Choose
+distinct centers $a_1,\dots,a_m>0$, radii $0<r_i<a_i$ with pairwise disjoint intervals
+$I_i=(a_i-r_i,a_i+r_i)$, and an integer $K\ge1$. Put
+\[
+ P(x)=\prod_{i=1}^m(x-a_i),\quad D_i=\prod_{j\ne i}(a_i-a_j),\quad
+ L_i(x)=\frac{\prod_{j\ne i}(x-a_j)}{D_i},\quad d_i=\frac K{a_i}+2\sum_{j\ne i}\frac1{a_i-a_j},
+\]
+\[
+ Q_i(x)=\Bigl(\frac x{a_i}\Bigr)^K\bigl[1-d_i(x-a_i)\bigr]L_i(x)^2,\qquad
+ R_K=\sum_nx_n^KP(x_n)^2\ge0,\qquad S_i=\sum_nQ_i(x_n).
+\]
+Then $Q_i(a_j)=\delta_{ij}$, $Q_i'(a_j)=0$ and $x^K\mid Q_i$, and $R_K$, $S_i$ use only the $2m+1$
+moments $p_K,\dots,p_{K+2m}$. Put $b_i=a_i-r_i$, $g_{ij}=\abs{a_i-a_j}-r_i$,
+$A_i=\prod_{j\ne i}g_{ij}^{-2}$, $T_i=K/b_i+2\sum_{j\ne i}g_{ij}^{-1}$,
+$U_i=K/b_i^2+2\sum_{j\ne i}g_{ij}^{-2}$ and
+\[
+ C_i=\max\Bigl\{\frac{b_i^{-K}A_i}2(T_i^2+U_i),\ \frac{a_i^{-K}}{D_i^2}\bigl(r_i^{-2}+\abs{d_i}r_i^{-1}\bigr)\Bigr\}.
+\]
+
+\begin{theorem}[Residual certificate; \stU]\label{li:thm:residual}
+Let $N_i$ be the number of occurrences in $I_i$. Then $\abs{N_i-S_i}\le C_iR_K$. For $\tau>0$ the
+number $N_{\mathrm{miss}}$ of occurrences $x_n\ge\tau$ outside $\bigcup_iI_i$ satisfies
+$N_{\mathrm{miss}}\le R_K/(\tau^K\prod_ir_i^2)$. Consequently, if $R_K<\tau^K\prod_ir_i^2$, the
+intervals lie above $\tau$, and each interval $[S_i-C_iR_K,S_i+C_iR_K]$ contains exactly one
+nonnegative integer $n_i$, then the spectrum at or above $\tau$ lies in the intervals with exact
+counts $(n_1,\dots,n_m)$.
+\end{theorem}
+
+\begin{proof}
+We show $\abs{\liind_{I_i}(x)-Q_i(x)}\le C_ix^KP(x)^2$ for $x>0$. Outside $I_i$, with $u=x-a_i$,
+$\abs u\ge r_i$, and away from other centers,
+$\abs{Q_i(x)}/(x^KP(x)^2)=a_i^{-K}D_i^{-2}\abs{1-d_iu}/u^2\le a_i^{-K}D_i^{-2}(r_i^{-2}+\abs{d_i}r_i^{-1})$;
+at another center both sides vanish. Inside $I_i$ let $h_i(x)=x^{-K}L_i(x)^{-2}$, so
+$h_i(a_i)=a_i^{-K}$ and $h_i'(a_i)=-d_ia_i^{-K}$; then $Q_i$ is $x^KL_i^2$ times the linear Taylor
+polynomial of $h_i$ at $a_i$, while $1=x^KL_i^2h_i$. Since $P=(x-a_i)D_iL_i$, Taylor's theorem gives
+$\abs{1-Q_i(x)}/(x^KP(x)^2)\le\frac1{2D_i^2}\sup_{I_i}\abs{h_i''}$, and logarithmic differentiation gives
+\[
+ \frac{h_i''(t)}{D_i^2}=t^{-K}\prod_{j\ne i}(t-a_j)^{-2}\Bigl\{\Bigl(\frac Kt+2\sum_{j\ne i}\frac1{t-a_j}\Bigr)^2
+ +\frac K{t^2}+2\sum_{j\ne i}\frac1{(t-a_j)^2}\Bigr\}\le b_i^{-K}A_i(T_i^2+U_i).
+\]
+Summing the pointwise bound gives the count estimate. Each missed occurrence contributes at least
+$\tau^K\prod_ir_i^2$ to $R_K$. A nonnegative integer below one is zero, and $N_i$ lies in its
+certified interval.
+\end{proof}
+
+A count of one certifies one simple occurrence; a larger count may be a repeated value or several
+nearby values. With $x^KP^2=\sum_ju_jx^j$ and $Q_i=\sum_jv_{ij}x^j$, and enclosures
+$\abs{p_j-\widehat p_j}\le\epsilon_j$, put $\widehat R=\sum u_j\widehat p_j$,
+$R^+=\widehat R+\sum\abs{u_j}\epsilon_j$, $\widehat S_i=\sum v_{ij}\widehat p_j$ and
+$E_i=\sum\abs{v_{ij}}\epsilon_j$.
+
+\begin{corollary}[Robust verification; \stU]\label{li:cor:robust}
+Valid enclosures give $0\le R_K\le R^+$, $\abs{N_i-\widehat S_i}\le E_i+C_iR^+$ and
+$N_{\mathrm{miss}}\le R^+/(\tau^K\prod_ir_i^2)$. A sufficient rounding test for a proposed integer
+$n_i\ge0$ is $\abs{\widehat S_i-n_i}+E_i+C_iR^+<\frac12$. All operations are rational for rational
+data.
+\end{corollary}
+
+If $R^+<0$ the enclosures contradict the nonnegative residual and must be rejected.
+
+\begin{theorem}[Eventual certificates; \stU]\label{li:thm:eventual}
+Let $\tau>0$ lie outside the spectrum and let $m$ be the number of distinct spectral values above
+$\tau$. There is a certificate of the preceding form using $2m+1$ consecutive moments, with
+rational centers and radii in arbitrarily narrow disjoint intervals about those values. If $\tau$ is
+rational and the moments can be enclosed to any precision, an exhaustive rational search
+eventually finds a complete correct certificate above $\tau$.
+\end{theorem}
+
+\begin{proof}
+Let $m\ge1$ and take the centers at the actual values, with narrow intervals and $b_i>\tau$. The
+other occurrences lie in $(0,\sigma]$ for some $\sigma<\tau$; let $S_{\mathrm{tail}}$ be their first
+moment. Then $R_K\le S_{\mathrm{tail}}\sigma^{K-1}\prod_ia_i^2$, while $C_i=O((K+1)^2b_i^{-K})$, so
+$R_K/(\tau^K\prod r_i^2)\to0$ and $C_iR_K\to0$; the rounding test holds for large $K$, since
+$\abs{S_i-N_i}+C_iR_K\le2C_iR_K$. Fix such a $K$ with strict slack. The formulas are continuous in
+centers, radii and moments, so nearby rational centers and radii enclosing the same values, and
+accurate rational enclosures, keep all strict inequalities. For $m=0$ the test $p_K<\tau^K$
+eventually holds since $p_K\le p_1\sigma^{K-1}$. Dovetailing over rational configurations, $K$ and
+precisions terminates.
+\end{proof}
+
+If the leading values $\lambda_i\le B$ have total multiplicity $M$, $\abs{a_i-\lambda_i}\le\eta$ and the
+tail lies below $\sigma<\min a_i$, then
+$R_K\le MB^K\eta^2(2B+\eta)^{2m-2}+S_{\mathrm{tail}}\sigma^{K-1}\prod_ia_i^2$: larger $K$ may demand more
+accurate centers, and close centers enlarge $D_i^{-2}$.
+
+\begin{corollary}[Complete zeta-zero cluster certificates; \stG]\label{li:cor:zetacluster}
+Take $x_n=(\frac14+\gamma_n^2)^{-1}$ over the positive ordinates with multiplicity, with moments from
+\cref{li:prop:moments}. If $0<\tau<a_i-r_i<a_i+r_i<4$ and the tests of \cref{li:cor:robust} succeed,
+then every positive ordinate $\gamma\le T=\sqrt{\tau^{-1}-\frac14}$ lies in one of the disjoint
+intervals
+$J_i=\bigl(\sqrt{(a_i+r_i)^{-1}-\frac14},\sqrt{(a_i-r_i)^{-1}-\frac14}\bigr)$, which contains exactly
+$n_i$ zeros with multiplicity. If $\tau$ is not a spectral value, arbitrarily narrow such
+certificates exist.
+\end{corollary}
+
+\begin{proof}
+The map $x\mapsto\sqrt{x^{-1}-1/4}$ is decreasing on $(0,4)$; apply
+\cref{li:thm:residual,li:thm:eventual}.
+\end{proof}
+
+For a primitive nonprincipal $\chi$ the product of the completions of $\chi$ and $\bar\chi$ is even
+about $\frac12$; under \cref{src:thm:dgrh} its noncentral zeros lie on the line, and after removing
+the central factor the even paired product certifies combined noncentral counts for the pair. For a
+real character one may instead use the single completion after removing a central zero. Central
+vanishing is not excluded by Dirichlet GRH and must be treated separately.
+
+\begin{example}[An exact certificate with an infinite tail]\label{li:ex:tail}
+The multiset $1,\frac12,\frac12,\frac14,\frac1{16},\frac1{32},\frac1{64},\dots$ has moments
+$p_j=1+2\cdot2^{-j}+4^{-j}+16^{-j}/(1-2^{-j})$. With centers $(1,\frac12,\frac14)$, radii
+$(\frac1{20},\frac1{40},\frac1{80})$ and $\tau=\frac18$, exact rational arithmetic first succeeds at
+$K=25$, using $p_{25},\dots,p_{31}$: the missed-count bound is about $0.722<1$ and the counts are
+$(1,2,1)$, with error radii about $9.9\cdot10^{-29}$, $1.1\cdot10^{-19}$ and $4.3\cdot10^{-12}$
+(\artifact{grh_new_results_2026-11-26/artifacts/certificate_results.json}). A floating-point zeta run
+with $K=16$ suggests one zero in $(13.79,14.50)$ and none other below $16.9$; it is not certified.
+\end{example}
+
+Recovery of a nonnegative measure on $s$ points from $2s+1$ moments, and the conditioning of Prony
+systems, are classical \cite{DeCastroGamboa2012Exact,BatenkovYomdin2013Accuracy}.
+
+Finite moment data certify local statements but cannot force global simplicity, even within real
+zero entire functions with the same eventual zero count.
+
+\begin{theorem}[Finite-jet surgery; \stU]\label{li:thm:surgery}
+Let $F(z)=F(0)\prod_{n\ge1}(1-a_nz^2)$ with $F(0)\in\R\setminus\{0\}$, $a_n>0$, $\sum a_n<\infty$ and
+infinitely many distinct $a_n$, listed with multiplicity. Fix $d,r\ge1$, $d$ distinct anchor nodes
+$a_1,\dots,a_d$ and $\epsilon>0$. There is $L>0$ such that for any $r$ other factor occurrences
+with positive zero ordinates $\beta_1,\dots,\beta_r\ge L$ and any $T\ge L$ with $F(T)\ne0$, there are
+distinct positive $u_i$ with $\abs{u_i-a_i}<\epsilon$ for which
+\begin{equation}\label{li:eq:surgery}
+ G(z)=F(z)\frac{\prod_{i=1}^d(1-u_iz^2)(1-z^2/T^2)^r}{\prod_{i=1}^d(1-a_iz^2)\prod_{j=1}^r(1-z^2/\beta_j^2)}
+\end{equation}
+has the following properties.
+\begin{enumerate}[label=\textup{(\roman*)}]
+\item $G$ is even, entire, real on the real axis and has only real zeros; its zeros at $\pm T$ have
+ multiplicity exactly $r$.
+\item $G(0)=F(0)$ and $G-F=O(z^{2d+2})$; the first $d$ nonconstant logarithmic Taylor coefficients
+ agree.
+\item The counts $N_H(Y)$ of positive zeros up to $Y$ satisfy $\abs{N_G(Y)-N_F(Y)}\le d+r$ for all
+ $Y\ge0$ and $N_G(Y)=N_F(Y)$ for large $Y$.
+\item $\log M_G(R)-\log M_F(R)=O(1)$ for $M_H(R)=\max_{\abs z=R}\abs{H(z)}$; order and type are
+ preserved.
+\end{enumerate}
+\end{theorem}
+
+\begin{proof}
+Put $b_j=\beta_j^{-2}$, $c=T^{-2}$ and $\Phi(u)=(\sum_iu_i^k)_{k=1}^d$, with
+$\det D\Phi(a)=d!\prod_{i<j}(a_j-a_i)\ne0$. By the inverse function theorem a neighbourhood of
+$\Phi(a)$ has preimages in small disjoint positive intervals about the anchors. We solve
+$\sum_iu_i^k=\sum_ia_i^k+\sum_jb_j^k-rc^k$, $1\le k\le d$; for $b_j,c\le\eta\le1$ each perturbation is at
+most $r\eta$, so small $\eta$ and $L\ge\eta^{-1/2}$ suffice, and $L$ is increased beyond the anchor
+ordinates and their perturbations. The removed factors are factors of $F$, so $G$ is entire, and its
+node sequence is positive and summable. Since $F(T)\ne0$ the multiplicity at $T$ is $r$. From
+$\log(F(z)/F(0))=-\sum_kz^{2k}k^{-1}\sum_na_n^k$ the chosen equations cancel the first $d$ terms of
+$\log(G/F)$. Exactly $d+r$ positive zero occurrences were removed and inserted. Finally
+$G/F\to c^r\prod u_i/(\prod a_i\prod b_j)>0$ as $\abs z\to\infty$.
+\end{proof}
+
+The inverse function theorem may be replaced by a finite certificate: with
+$q_k=\sum_ia_i^k+\sum_jb_j^k-rc^k$ and Newton's identities $e_k=\frac1k\sum_{j=1}^k(-1)^{j-1}e_{k-j}q_j$,
+opposite endpoint signs of $X^d-e_1X^{d-1}+\cdots+(-1)^de_d$ on disjoint intervals about the anchors
+give all its roots \cite{MelanovaSturmfelsWinter2021Recovery}. The anchors may be chosen above any
+fixed height, leaving the zeros below it unchanged, and $\sup_{\abs z\le R}\abs{G-F}$ can be made
+arbitrarily small.
+
+\begin{example}[A double zero planted in the sine product]\label{li:ex:surgery}
+For $F(t)=\sin(\pi t)/(\pi t)$ use the anchors $1,2$, delete the zeros $10,11$ and plant a double
+zero at $T=25/2$. With $q_1=189889/151250$ and $e_2=194206753/756250000$, the polynomial
+$X^2-q_1X+e_2$ has discriminant $3139703802/5719140625>0$ and roots in $(99/100,101/100)$ and
+$(6/25,27/100)$, so
+\[
+ G(t)=\frac{\sin(\pi t)}{\pi t}\cdot
+ \frac{(1-q_1t^2+e_2t^4)(1-4t^2/625)^2}{(1-t^2)(1-t^2/4)(1-t^2/100)(1-t^2/121)}
+\]
+is entire with only real zeros, the relocated anchors are about $1.0009018469$ and $1.9715556473$,
+the pair $\pm25/2$ is exactly double and every other zero is simple. Its derivatives through order
+five agree with those of $F$, and $N_G(Y)=\floor Y$ for $Y\ge25/2$. The rational checks are in
+\begin{center}
+\artifact{grh_new_results_2026-11-26/artifacts/surgery_results.json}.
+\end{center}
+\end{example}
+
+Under \cref{src:thm:dgrh} the paired product of $\Xi(t)=\xi(\frac12+it)$ satisfies the hypotheses of
+\cref{li:thm:surgery}. Thus any finite central jet and any finite window of exact zeros are
+compatible, within real-zero entire functions, with an arbitrarily high multiple zero and the same
+eventual counting function. No Euler product or arithmetic explicit formula is preserved, so this
+does not decide the multiplicities of $\Xi$. Finite-jet nonrigidity by Hermite interpolation was
+recorded by Eberwein \cite{Eberwein2026Truncated}.
+
+\subsection{A universal process from the Cayley angles}\label{li:sec:univ}
+\sources{rh_li_universality_2026-11-26}
+
+In this subsection $\liZ$ is a locally finite multiset of real numbers with multiplicities, and
+$N(T)=\#\{\gamma\in\liZ:\abs\gamma\le T\}$ satisfies, for constants $d>0$ and $B\in\R$,
+\begin{equation}\label{li:eq:count}
+ N(T)=\frac d\pi T\log T+\frac B\pi T+O(\log(T+2))\qquad(T\to\infty).
+\end{equation}
+Put $\theta(\gamma)=2\arctan(1/(2\gamma))$ for $\gamma\ne0$, $\theta(0)=\pi$,
+$\nu=\frac12\sum_{\gamma\in\liZ}(\delta_{\theta(\gamma)}+\delta_{-\theta(\gamma)})$, so that $m$ occurrences
+of $0$ give mass $m/2$ at each of $\pm\pi$, and
+\begin{equation}\label{li:eq:symbol}
+ \Psi(u)=\int_\R(1-\cos uy)\,\nu(\dd y)=\sum_{\gamma\in\liZ}(1-\cos(u\theta(\gamma))).
+\end{equation}
+Euler's constant is $\gamma_E$ here.
+
+\begin{lemma}[The process; \stU]\label{li:lem:levy}
+$\nu$ is a symmetric L\'evy measure on $[-\pi,\pi]$ with $\nu(\R)=\infty$, $\int\abs y\,\nu(\dd y)=\infty$
+and $0<V:=\int y^2\,\nu(\dd y)<\infty$. There is a symmetric L\'evy process $(X_t)_{t\ge0}$ with
+$\liEx e^{iuX_t}=e^{-t\Psi(u)}$; it has no Gaussian part, infinitely many jumps, infinite variation,
+and $\liEx X_t^2=tV$.
+\end{lemma}
+
+\begin{proof}
+By \eqref{li:eq:count} and partial summation $\sum_{\abs\gamma>1}\gamma^{-2}<\infty$ and
+$\sum_{\abs\gamma>1}\abs\gamma^{-1}=\infty$, and $\abs{\theta(\gamma)}\sim\abs\gamma^{-1}$. L\'evy--Khintchine
+gives the process with zero Gaussian coefficient and drift, the variation criterion gives infinite
+variation, and two derivatives of the characteristic function at zero give the variance.
+\end{proof}
+
+\begin{lemma}[The symbol at large frequency; \stU]\label{li:lem:symbol}
+With $A=d/2$ and $\kappa=\gamma_E+B/d$,
+\[
+ \Psi(u)=A\abs u(\log\abs u+\kappa)+O(\sqrt{\abs u}\log(\abs u+2))\qquad(\abs u\to\infty).
+\]
+\end{lemma}
+
+\begin{proof}
+Take $u\ge2$ and $T=\sqrt u$. Ordinates with $\abs\gamma\le T$ contribute $O(T\log(T+2))$. Beyond,
+$\theta(\gamma)=\gamma^{-1}+O(\abs\gamma^{-3})$, and replacing $\theta$ by $1/\gamma$ costs
+$O(u\int_T^\infty v^{-3}\,\dd N(v))=O(\log u)$. Let $M(v)=(dv\log v+Bv)/\pi$ and $R=N-M$. For
+$g(v)=1-\cos(u/v)$, integration by parts and $\abs{g'(v)}\le u/v^2$ give
+$\int_T^\infty g\,\dd R=O(\log(T+2)+u\int_T^\infty\log(v+2)v^{-2}\,\dd v)=O(\sqrt u\log u)$, and extending the
+main integral down to zero costs $O(T\log(T+2))$. Hence
+\begin{align*}
+ \Psi(u)&=\frac1\pi\int_0^\infty(1-\cos(u/v))(d\log v+d+B)\,\dd v+O(\sqrt u\log u)\\
+ &=\frac u\pi[(d\log u+d+B)I_0-dI_1]+O(\sqrt u\log u),
+\end{align*}
+with $I_0=\int_0^\infty(1-\cos y)y^{-2}\dd y=\pi/2$ and
+$I_1=\int_0^\infty(1-\cos y)y^{-2}\log y\,\dd y=\frac\pi2(1-\gamma_E)$. Both follow by differentiating
+$\int_0^\infty(1-\cos y)y^{-1-\alpha}\dd y=\pi/(2\Gamma(1+\alpha)\sin(\pi\alpha/2))$, $0<\alpha<2$, at
+$\alpha=1$; this identity follows from the Laplace representation of $y^{-1-\alpha}$, Tonelli's theorem
+and $\int_0^\infty e^{-ty}(1-\cos y)\dd y=1/[t(1+t^2)]$.
+\end{proof}
+
+Let $W_0$ be the positive branch of Lambert's function and put
+\begin{equation}\label{li:eq:scale}
+ w(t)=W_0\Bigl(\frac{e^\kappa}{At}\Bigr),\qquad a(t)=Atw(t),\qquad\text{so}\quad a=e^{\kappa-w},\quad
+ \log(1/a)+\kappa=w,\quad t=\frac a{Aw}.
+\end{equation}
+For $k\ge0$ define, with the principal logarithm,
+\begin{equation}\label{li:eq:profiles}
+ Q_k(x)=\frac{(-1)^k}{\pi k!}\Re\Bigl.\frac{\partial^k}{\partial z^k}\bigl[\Gamma(z)(1-ix)^{-z}\bigr]\Bigr|_{z=k+1}.
+\end{equation}
+
+\begin{theorem}[Universal expansion at every logarithmic order; \stU]\label{li:thm:allorders}
+For every $t>0$, $X_t$ has a density $f_t$ that extends to an entire function. For fixed integers
+$K,r\ge0$, as $t\downarrow0$,
+\[
+ \sup_{x\in\R}\Bigl|\frac{\dd^r}{\dd x^r}\Bigl[a(t)f_t(a(t)x)-\sum_{k=0}^K\frac{Q_k(x)}{w(t)^k}\Bigr]\Bigr|
+ =O_{K,r}\bigl(w(t)^{-K-1}+\sqrt{a(t)}\bigr)=O_{K,r}(w(t)^{-K-1}).
+\]
+The constants depend on the multiset and its counting estimate.
+\end{theorem}
+
+\begin{proof}
+\Cref{li:lem:symbol} makes $\exp(-t\Psi(u)+c\abs u)$ integrable for all $c>0$, so Fourier inversion
+gives an entire density. Put $F_w(s)=s+s\log s/w$ for $s>0$; by \eqref{li:eq:scale},
+$tA\frac sa(\log\frac sa+\kappa)=F_w(s)$. We first show
+\begin{equation}\label{li:eq:fcomp}
+ \int_0^\infty s^r\bigl|e^{-t\Psi(s/a)}-e^{-F_w(s)}\bigr|\,\dd s=O_r(\sqrt a).
+\end{equation}
+On $0<s<\sqrt a$ both exponentials are bounded (the negative part of $F_w$ is at most $e^{-w-1}/w$).
+On $s\ge\sqrt a$ both exponents are at least $cs$ for small $t$, since $F_w(s)/s\ge\frac12+\kappa/(2w)$
+and the remainder in \cref{li:lem:symbol} is a small fraction of its main term for
+$s/a\ge a^{-1/2}$; the exponential mean value bound gives
+$\abs{e^{-t\Psi(s/a)}-e^{-F_w(s)}}\le Ct\sqrt{s/a}\log(2+s/a)e^{-cs}$, and $t=a/(Aw)$ with
+$\log(2+s/a)\le w+C_\kappa+\log(2+s)$ gives \eqref{li:eq:fcomp}. Next, Taylor's remainder for
+$e^{-z}$, $z\ge0$, and $\abs{s\log s}\le1/e$ on $(0,1)$ give
+\[
+ \int_0^\infty s^re^{-s}\Bigl|e^{-s\log s/w}-\sum_{k=0}^K\frac{(-s\log s)^k}{k!\,w^k}\Bigr|\,\dd s=O_{K,r}(w^{-K-1}).
+\]
+These are $L^1$ bounds for the Fourier transforms with polynomial weights; Fourier inversion and
+differentiation give the uniform claim, and
+$\int_0^\infty s^k(\log s)^ke^{-(1-ix)s}\dd s=\partial_z^k[\Gamma(z)(1-ix)^{-z}]_{z=k+1}$ identifies the
+profiles. As $a=e^{\kappa-w}$, $\sqrt a$ is smaller than every power of $1/w$.
+\end{proof}
+
+The first profiles are
+\begin{gather*}
+ Q_0(x)=\frac1{\pi(1+x^2)},\qquad Q_1(x)=-\frac1\pi\Re\frac{1-\gamma_E-\log(1-ix)}{(1-ix)^2},\\
+ Q_2(x)=\frac1\pi\Re\frac{(\frac32-\gamma_E-\log(1-ix))^2+\frac{\pi^2}6-\frac54}{(1-ix)^3},
+\end{gather*}
+so the leading shape is the standard Cauchy density.
+
+\begin{corollary}[Universality beyond every logarithmic order; \stU]\label{li:cor:universal}
+If two multisets satisfy \eqref{li:eq:count} with the same $d,B$, their scaled densities differ by
+$O_r(\sqrt a)$ in $C_b^r(\R)$, and in particular have the same expansion to every order in
+$1/\log(1/t)$.
+\end{corollary}
+
+\begin{proof}
+Both scaled characteristic functions differ from $e^{-F_w(\abs s)}$ by $O_r(\sqrt a)$ in the weighted
+$L^1$ norm \eqref{li:eq:fcomp}; apply Fourier inversion.
+\end{proof}
+
+For the ordinates of a fixed primitive Dirichlet $L$-function of conductor $q$, counted with
+multiplicity and both signs, $N_\chi(T)=\frac T\pi\log\frac{qT}{2\pi e}+O_\chi(\log(T+2))$
+\cite{BennettMartinOBryantRechnitzer2021Counting}, and $q=1$ gives $\zeta$. Thus $d=1$,
+$B=\log(q/(2\pi))-1$, and
+\[
+ w_q(t)=W_0\Bigl(\frac{qe^{\gamma_E-1}}{\pi t}\Bigr),\qquad a_q(t)=\frac t2w_q(t)\sim\tfrac12t\log(1/t).
+\]
+These density statements are unconditional, and all primitive characters of one conductor share the
+expansion to every logarithmic order; no uniformity in $q$ is asserted. By \cref{src:thm:dgrh}
+every zero is $\rho=\frac12+i\gamma$ with $1-1/\rho=e^{i\theta(\gamma)}$ (with $e^{i\pi}=-1$ at a central zero),
+so the Li coefficients satisfy
+\begin{equation}\label{li:eq:liident}
+ \Re\lambda_\chi(n)=\sum_\rho\Re\bigl[1-(1-1/\rho)^n\bigr]=\Psi_\chi(n),\qquad
+ \liEx e^{inX_t}=e^{-t\Re\lambda_\chi(n)}\quad(\text{\stG}),
+\end{equation}
+and $\liEx e^{inX_t}=e^{-t\lambda_n}$ for $\zeta$. For nonreal characters the real part is essential.
+
+Reduce $X_t$ modulo $2\pi$, with density $p_t(y)=\frac1{2\pi}\sum_{n\in\Z}e^{-t\Psi(n)}e^{iny}$ on
+$[-\pi,\pi]$, an entire periodic function. By \eqref{li:eq:liident} the generator $\mathcal A$ of this
+circle semigroup has eigenvalues $\Re\lambda_\chi(\abs n)$.
+
+\begin{proposition}[Circle kernel and heat trace; \stU]\label{li:prop:trace}
+For fixed $R>0$ and $K,r\ge0$,
+$\sup_{\abs x\le R}\bigl|\frac{\dd^r}{\dd x^r}[ap_t(ax)-\sum_{k\le K}Q_k(x)w^{-k}]\bigr|=O_{R,K,r}(w^{-K-1}+\sqrt a)$,
+and
+\[
+ \Tr(e^{-t\mathcal A})=2\pi p_t(0)=\frac2a\Bigl[1-\frac{1-\gamma_E}w+\frac{(\frac32-\gamma_E)^2+\frac{\pi^2}6-\frac54}{w^2}
+ +O(w^{-3})\Bigr].
+\]
+For a primitive Dirichlet character the leading term is $4/(tw_q(t))$.
+\end{proposition}
+
+\begin{proof}
+The scaled series has frequency mesh $a$. Splitting at $an=\sqrt a$ and the estimates of
+\eqref{li:eq:fcomp} bound its difference from the model Riemann sum by $O_r(\sqrt a)$. The model
+function $s^re^{-F_w(s)}e^{ixs}$ has uniformly integrable derivative for $\abs x\le R$, so the
+Riemann-sum error is $O_{R,r}(a)$; the Taylor step is unchanged, and $x=0$ gives the trace.
+\end{proof}
+
+Uniformity over all real $x$ fails on the circle: periodicity produces returning peaks at distance
+$2\pi/a$.
+
+\begin{theorem}[Moment transition; \stU]\label{li:thm:moments}
+Let $L=\log(1/t)$. As $t\downarrow0$,
+\[
+ \liEx\abs{X_t}^p\sim\frac{a(t)^p}{\cos(\pi p/2)}\ (0<p<1),\qquad
+ \liEx\abs{X_t}\sim\frac d{2\pi}tL^2,\qquad
+ \liEx\abs{X_t}^p\sim t\int\abs y^p\,\nu(\dd y)\ (1<p<2),
+\]
+and $\liEx X_t^2=tV$. Moreover $X_t/a(t)\Rightarrow\mathrm{Cauchy}(0,1)$ as $t\downarrow0$ and
+$X_t/\sqrt{tV}\Rightarrow N(0,1)$ as $t\to\infty$.
+\end{theorem}
+
+\begin{proof}
+For $0<p<2$, $\liEx\abs{X_t}^p=c_p\int_0^\infty(1-e^{-t\Psi(u)})u^{-p-1}\dd u$ with
+$c_p=2\Gamma(1+p)\sin(\pi p/2)/\pi$, by Tonelli and the cosine integral of \cref{li:lem:symbol}. For
+$0<p<1$ put $u=s/a$: the range $s\le aU_0$ contributes $O(ta^{-p})=o(1)$ to the normalized moment by
+$\Psi(u)\le Vu^2/2$; on $aU_0\le s\le1$, $t\Psi(s/a)\le Cs$, and on $s\ge1$, $1-e^{-t\Psi}\le1$;
+dominated convergence gives the limit $c_p\int_0^\infty(1-e^{-s})s^{-p-1}\dd s=1/\cos(\pi p/2)$. For
+$1<p<2$ divide by $t$ and use $(1-e^{-t\Psi})/t\le\Psi$ with the majorant from $\Psi=O(u^2)$ at $0$ and
+\cref{li:lem:symbol} at infinity. For $p=1$ the range $u<1$ is $O(t)$; splitting at $1/t$ with
+$1-e^{-z}\le\min(z,1)$ gives the upper bound $\frac A\pi tL^2+O(tL)$, and keeping
+$1\le u\le1/(tL^2)$ with $1-e^{-z}\ge z-z^2/2$ gives the lower bound $\frac A\pi t(L-2\log L)^2+O(tL)$.
+The weak limits follow from $t\Psi(s/a)\to\abs s$ and from $\Psi(u)=Vu^2/2+o(u^2)$ at $0$.
+\end{proof}
+
+The Cauchy limit has no variance because second moments are not uniformly integrable under the
+small-time scaling. Nakamura and Suzuki relate RH to infinitely divisible distributions built from
+ordinates with inverse-square weights \cite{NakamuraSuzuki2023Infinitely}; here the jumps are the
+transformed angles with equal weights. General small-time moment asymptotics for L\'evy processes are
+in \cite{FigueroaLopez2008Small}.
+
+\subsection{Open questions}\label{li:sec:open}
+
+\begin{question}[Euler products and weaker recurrence]\label{li:q:euler}
+Can a universal Li sampling test requiring less than simultaneous Bohr recurrence be proved for a
+class of functions restricted by an Euler product? The perturbations of \cref{li:cor:xi} preserve
+the functional equation and the high zeros, whereas an Euler product constrains all Dirichlet
+coefficients.
+\end{question}
+
+\begin{question}[Frequencies of sign patterns]\label{li:q:signs}
+What are the limiting frequencies of the four sign regions of $(d_n,d_{n^2})$ in
+\cref{li:cor:signs}, away from their boundaries? A quantitative first-return bound for the certified
+patterns of \cref{li:thm:curv} would also give a search length for further examples.
+\end{question}
+
+\begin{question}[Effective rigidity]\label{li:q:rigidity}
+Give an effective window length in \cref{li:thm:rigidity}: for two number fields with different zeta
+functions, bound the length $H$ beyond which every window has mean $\abs{D_n}$ above a given size.
+This requires quantitative control of ordinates, of their separation and of the tails as the fields
+vary.
+\end{question}
+
+\begin{question}[Finer Ritz asymptotics]\label{li:q:ritz}
+Does the remainder $O_j(N)$ in \eqref{li:eq:ritzrate}, divided by $N$, have a limit? How does the
+estimate change when $j$ grows with $N$? The proof uses the isolation of each of the first $j$ atoms;
+uniform control would need quantitative information on their spacings and on the tail.
+\end{question}
+
+\begin{question}[Economy of the matched-pair test]\label{li:q:economy}
+Minimize the largest Taylor index needed in \cref{li:thm:gap} for a prescribed gap bound, by
+optimizing the nonnegative trigonometric kernel in place of $K_N^r$. The simplicity of all zeros of
+$\zeta$ and the global disjointness of the ordinates of $\zeta$ and $\beta$ remain open.
+\end{question}

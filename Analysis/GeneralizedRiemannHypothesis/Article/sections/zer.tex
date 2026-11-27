@@ -8,9 +8,9 @@
 
 This section collects the consequences of \cref{src:thm:dgrh} that are statements about the
 zeros themselves and about the prime sums they govern: sharp partial Euler products on the
-critical line, the arithmetic content of the signed zero multiplicities that occur as Mellin
-residues in the source proof, the distribution of those signed multiplicities in short ranges,
-and the sign and size of several weighted prime sums. Every result marked ``\stG'' uses
+critical line, the distribution and rigidity of signed zero multiplicities, the covariance,
+oscillation and extremal values of the smoothed prime errors of the source proof at several
+scales, and the sign and size of several weighted prime sums. Every result marked ``\stG'' uses
 \cref{src:thm:dgrh} as its only input on the location of zeros; simplicity of zeros and linear
 independence of ordinates are never assumed. Nontrivial zeros are written
 $\rho=\tfrac12+i\gamma$ and are counted with multiplicity unless stated otherwise, $\Lambda$ is
@@ -366,522 +366,22 @@ by $h$ for the third.
 No optimality is claimed for the constant $2\pi$; it comes from the two-sided zero count and
 the cutoff used in the proof.
 
-\subsection{Recovering the modulus and the twist from the signed zero spectrum}\label{zer:sec:spectrum}
-\sources{dirichlet-grh-research; exponent_seven_and_grh_transfers; grh-torsion-and-zero-data}
-
-The Mellin residues of the smoothed prime remainder in the source proof record only the
-difference between two sums of zero multiplicities; the relevant declaration of the source is
-\code{New.isPolar_primeRemainder} (see \cref{src:sec:mechanism}). Contributions at a common zero can cancel exactly,
-and the names of the characters have disappeared. Nevertheless the signed data determine both
-arithmetic parameters, and for the parameters of the lattice argument a finite part of the
-data does so with a certificate.
-
-\paragraph{Setting.}
-Two classes of parameters occur.
-\begin{itemize}
-\item The \emph{general class}: $q>0$ with $8\mid q$, and a prime $d\equiv7\pmod8$ coprime
-to $q$.
-\item The \emph{lattice class}: $18480\mid q$ and $d$ a prime with $d\equiv q/2-1\pmod q$.
-Then $(d,q)=1$, $8\mid q$, $d\equiv7\pmod8$ and $q\mid2(d+1)$, so that $q\le2(d+1)$; this is
-a subclass of the general class, and it is the one used in the source.
-\end{itemize}
-Write $h=\varphi(q)$ and $\eta(n)=(n/d)$. For each $\chi\bmod q$ let $\chi^*$ be its inducing
-primitive character. For a real ordinate $\gamma$ put $\rho_\gamma=\tfrac12+i\gamma$ and
-\begin{equation}\label{zer:eq:mgamma}
- m(\gamma)=\frac1h\sum_{\chi\bmod q}\Bigl(\ord_{\rho_\gamma}L(s,\chi^*)-
-   \ord_{\rho_\gamma}L(s,\chi^*\eta)\Bigr),\qquad
- b_\gamma=\frac{m(\gamma)}{1/4+\gamma^2},\qquad
- F(t)=\sum_\gamma b_\gamma e^{i\gamma t}.
-\end{equation}
-Removing imprimitive Euler factors preserves orders in the open critical strip, so $b_\gamma$
-is precisely the residue in the source, and by \cref{src:thm:dgrh} every nontrivial zero in
-these sums is of the form $\rho_\gamma$. The input to the inverse problem is the signed
-coefficient at each frequency, with coincident frequencies combined; both signs of the
-ordinate are used.
-
-\begin{proposition}[The spectral function; \stG]\label{zer:prop:ode}
-In the general class the series $F$ is absolutely and uniformly convergent, real and even.
-For a prime power $n=p^k$ let $Q_p=p^{v_p(q)}$, $q^{(p)}=q/Q_p$ and
-\[
- a(p^k)=\frac{1-\eta(p^k)}{\varphi(Q_p)}\,\mathbf 1_{p^k\equiv1\bmod q^{(p)}} .
-\]
-Then, as distributions on $\R$, with $\delta_u$ the unit point mass at $u$,
-\begin{equation}\label{zer:eq:ode}
- F''-\tfrac14F=(\log d)\,\delta_0-\frac2h\cosh(t/2)\,\dd t
- +\sum_{p^k\ge2}\frac{\log p}{p^{k/2}}\,a(p^k)\bigl(\delta_{\log p^k}+\delta_{-\log p^k}\bigr).
-\end{equation}
-Equivalently, for every real test function $g\in C_c^\infty(\R)$, with
-$\widehat g(\gamma)=\int g(t)e^{i\gamma t}\,\dd t$,
-\begin{equation}\label{zer:eq:weil}
- -\sum_\gamma m(\gamma)\widehat g(\gamma)
- =(\log d)\,g(0)-\frac2h\int g(t)\cosh(t/2)\,\dd t
- +\sum_{n=p^k}\frac{\log p}{\sqrt n}\,a(n)\bigl[g(\log n)+g(-\log n)\bigr].
-\end{equation}
-\end{proposition}
-\begin{proof}
-The classical zero count $N(T)=O_{q,d}(T\log(2+T))$ ensures $\sum_\gamma\abs{b_\gamma}<\infty$
-by partial summation. Both families are closed under complex conjugation, whence
-$b_{-\gamma}=b_\gamma\in\R$. Since $F''-F/4=-\sum_\gamma m(\gamma)e^{i\gamma t}$, the two
-displays are equivalent, and it suffices to check \eqref{zer:eq:weil}. The Guinand--Weil
-explicit formula for a primitive character of conductor $f$ contributes $\log(f/\pi)\,g(0)$,
-the gamma term for its parity, and a negative sum over prime powers with coefficients
-$\Lambda(n)\chi^*(n)/\sqrt n$ at one sign of $\log n$ and the conjugate coefficients at the
-other. The primitive principal character also contributes
-$\widehat g(i/2)+\widehat g(-i/2)$ from the poles at $0,1$ of the completed zeta function.
-This is the normalization of \cite[\S2.1]{ChirrePereiraDeLaat2021Primes}; see also
-\cite{Booker2015Lfunctions}. Equivalently the formula follows by shifting the contour of the
-logarithmic derivative of the completed primitive $L$-function.
-
-As $q>2$, half the characters have each parity, and the odd character $\eta$ interchanges
-the parities. All gamma terms therefore cancel between the two families. The two conductors
-for $\chi^*$ and $\chi^*\eta$ are $f$ and $fd$, since $(f,d)=1$, which gives $\log d$ at the
-origin after the signed subtraction. Only the untwisted family contains the primitive
-principal character, which gives the density after division by $h$. At $p^k$ the average of
-the untwisted primitive character values is
-$\mathbf 1_{p^k\equiv1\bmod q^{(p)}}/\varphi(Q_p)$: a nonprincipal $p$-component makes the
-primitive value zero, and orthogonality over the characters modulo $q^{(p)}$ evaluates the
-remaining sum. Multiplication by $1-\eta(p^k)$ gives the displayed $a$, also at $p=d$.
-\end{proof}
-
-For a point $u$ write $J(u)=F'(u+)-F'(u-)$, with $J(u)=0$ where $F$ is differentiable.
-
-\begin{theorem}[Jumps and uniqueness; \stG]\label{zer:thm:jumps}
-In the general class, $F$ is analytic away from the atoms of \eqref{zer:eq:ode}, and
-\begin{equation}\label{zer:eq:mass}
- J(0)=\log d,\qquad
- J(\log p)=\frac{\log p}{\sqrt p}\bigl(1-\eta(p)\bigr)\mathbf 1_{p\equiv1\bmod q}
- \quad\text{for every prime }p\nmid qd .
-\end{equation}
-Thus $F'$ has a jump at $\log p$ precisely if $p\equiv1\pmod q$ and $\eta(p)=-1$, in which
-case the jump is $2\log p/\sqrt p$. Let $S$ be the set of primes $p$ at which $F'$ has a
-positive jump at $\log p$. For all sufficiently large $X$,
-\[
- d=\exp J(0),\qquad q=\gcd\set{p-1:\ p\in S,\ p>X}.
-\]
-Consequently the data $\set{(\gamma,b_\gamma)}$ determine $(q,d)$, even after they have been
-changed at finitely many frequencies; more generally the same reconstruction works after
-adding any continuously differentiable function to $F$.
-\end{theorem}
-\begin{proof}
-The right side of \eqref{zer:eq:ode} is smooth apart from a locally finite set of point
-masses. Integrating across one such point shows that the jump of $F'$ equals its mass. Away
-from the atoms $F$ satisfies an ordinary differential equation with analytic coefficients,
-hence is analytic there. This gives \eqref{zer:eq:mass}; evenness then gives
-$F(t)=F(0)+\tfrac12\log d\,\abs t+O_{q,d}(t^2)$ near zero.
-
-Every entry $p-1$ with $p\in S$ is divisible by $q$ after the finitely many primes dividing
-$qd$ have been discarded. Suppose a prime $\ell$ divided the gcd after division by $q$. We
-produce infinitely many primes in $S$ with $\ell\nmid(p-1)/q$. If $\ell\mid q$, require
-$p\equiv1+q\pmod{q\ell}$ and independently choose a nonzero quadratic nonresidue modulo $d$.
-If $\ell\nmid qd$, then $\ell$ is odd; choose a unit other than $1$ modulo $\ell$, the
-residue $1$ modulo $q$, and a nonresidue modulo $d$. If $\ell=d$, the conditions
-$p\equiv1\pmod q$ and $\eta(p)=-1$ already imply $p\not\equiv1\pmod\ell$. Each construction
-gives a reduced class by the Chinese remainder theorem and infinitely many primes by
-Dirichlet's theorem. Thus no $\ell$ divides the quotient. All these jumps survive a $C^1$
-perturbation, including any finite trigonometric polynomial.
-\end{proof}
-
-\paragraph{The spectral function on actual prime sums.}
-Let $R$ be the remainder of the source proof,
-\[
- R(x)=\sum_{\substack{n\le x\\n\equiv1\bmod q}}\Lambda(n)\bigl(1-\eta(n)\bigr)
-   \Bigl(\frac1n-\frac1x\Bigr)-\frac{\log x}h-c,
-\]
-where $c$ gives $R(x)\to0$ by the prime number theorem for fixed progressions; in the
-source this is the declaration \code{New.primeRemainder}.
-
-\begin{proposition}[\stG]\label{zer:prop:remainder}
-In the general class,
-\begin{equation}\label{zer:eq:remainder}
- \sqrt x\,R(x)=F(\log x)+O_{q,d}\Bigl(\frac{1+\log x}{\sqrt x}\Bigr)\qquad(x\ge1).
-\end{equation}
-In the lattice class the comparison is exact for every $x\ge1$:
-\[
- F(0)=-2c-\log d,\qquad
- \sqrt x\,R(x)=F(\log x)+\frac{c+\log d-h^{-1}\log x}{\sqrt x} .
-\]
-\end{proposition}
-\begin{proof}
-Use $F'(0+)=(\log d)/2$ and solve \eqref{zer:eq:ode} on $t\ge0$. Write
-$S^*(x)=\sum_{p^k\le x}\log(p)\,a(p^k)(p^{-k}-x^{-1})$. The homogeneous solutions are
-$\cosh(t/2)$ and $\sinh(t/2)$, the particular solution for the continuous forcing is
-$-2t\sinh(t/2)/h$, and an atom of mass $B$ at $u>0$ adds $2B\sinh((t-u)/2)$ for $t\ge u$.
-Consequently
-\[
- \frac{F(\log x)}{\sqrt x}=S^*(x)-\frac{1-x^{-1}}h\log x+\frac{F(0)}2(1+x^{-1})
- +\frac{\log d}2(1-x^{-1}).
-\]
-The difference between $S^*(x)$ and the sum in $R(x)$ comes exclusively from powers of
-$p\mid q$. It is $C_{\mathrm{bad}}+O_q((1+\log x)/x)$, where
-$C_{\mathrm{bad}}=\sum_{p\mid q}\sum_{k\ge1}\log(p)\,a(p^k)p^{-k}$; this follows by bounding
-a geometric tail for each such $p$ and at most $\log x/\log p$ terms of size $2\log(p)/x$.
-Taking $x\to\infty$ gives $c+C_{\mathrm{bad}}+(F(0)+\log d)/2=0$, proving
-\eqref{zer:eq:remainder}. In the lattice class the source proves $\eta(p)=1$ for every
-$p\mid q$ (\code{New.Parameters.chiK_eq_one_of_dvd}). Then $C_{\mathrm{bad}}=0$ and every
-correction at $p\mid q$ vanishes.
-\end{proof}
-
-\begin{example}\label{zer:ex:9239}
-The pair $(q,d)=(18480,9239)$ lies in the lattice class. The two prime jumps at $258721$ and
-$794641$ have $p-1=14q$ and $p-1=43q$, respectively, so their gcd is already $q$. Trial
-division and Euler's criterion verify both primes and both nonresidues; the output is in
-\artifact{dirichlet-grh-research/critical-line/prime-jumps-output.txt}.
-\end{example}
-
-\begin{corollary}[Oscillation at the critical scale; \stG]\label{zer:cor:oscillation}
-In the general class the logarithmic mean of $\sqrt x\,R(x)$ is $b_0$, and for every
-$\gamma\ne0$ with $b_\gamma\ne0$,
-\[
- \liminf_{x\to\infty}\sqrt x\,R(x)\le b_0-\abs{b_\gamma},\qquad
- \limsup_{x\to\infty}\sqrt x\,R(x)\ge b_0+\abs{b_\gamma}.
-\]
-Infinitely many nonzero frequencies have $b_\gamma\ne0$.
-\end{corollary}
-\begin{proof}
-The mean is obtained by termwise averaging. The averages of $F(t)$ times
-$1\pm\cos(\gamma t)$ over $[0,T]$ tend to $b_0\pm b_\gamma$, and each weight is nonnegative
-with mean one. Equation \eqref{zer:eq:remainder} transfers the bounds to the prime sum. The
-cusp of $F$ at zero is not removed by any finite trigonometric polynomial, so infinitely
-many nonzero frequencies survive. The mean includes any genuine central zero; the argument
-uses neither simplicity nor linear independence of the ordinates.
-\end{proof}
-
-\begin{corollary}[Four central values at once; \stG]\label{zer:cor:chowla}
-Take $q=8$ and let $d\equiv7\pmod8$ be prime. Write $\chi_D(n)=(D/n)$ for the primitive
-quadratic character of fundamental discriminant $D$, and $R_{8,d}$ for the remainder above.
-Then
-\[
- B_d:=\lim_{X\to\infty}\frac1{\log X}\int_1^XR_{8,d}(x)\,\frac{\dd x}{\sqrt x}
- =-\sum_{D\in\set{-d,\,4d,\,-8d,\,8d}}\ord_{s=1/2}L(s,\chi_D)\ \in\ -2\Z_{\ge0}.
-\]
-Thus $B_d>-2$ is equivalent to the simultaneous nonvanishing at $1/2$ of these four
-quadratic $L$-functions.
-\end{corollary}
-\begin{proof}
-Equation \eqref{zer:eq:remainder} identifies the mean with $b_0$. The untwisted functions
-are $\zeta$ and the $L$-functions of the characters of discriminants $-4,8,-8$. The
-alternating eta series gives $\zeta(1/2)<0$, and the alternating beta series gives
-$L(1/2,\chi_{-4})>0$. For $8$ and $-8$ the signs on each block of four successive odd
-integers are respectively $(+,-,-,+)$ and $(+,+,-,-)$; the sums of these blocks are positive
-because $y^{-1/2}$ is strictly decreasing and strictly convex. The twist is $\chi_{-d}$ and
-the four resulting discriminants are the ones displayed. Finally each completed quadratic
-$L$-function has root number $+1$, so each central order is even.
-\end{proof}
-
-Proving the strict lower bound $B_d>-2$ for every such $d$ would establish this subfamily of
-Chowla's conjecture on central nonvanishing \cite{Soundararajan2000Nonvanishing}. The
-one-sided estimate $R(x)\ll x^{-1/2+\eps}$ of the source allows every fixed value of $B_d$
-and supplies no such bound.
-
-\paragraph{Reading a jump from one high band.}
-The reconstruction can discard every zero of height below $T$, and its errors can be made
-explicit.
-
-\begin{lemma}[\stG]\label{zer:lem:Fbound}
-In the general class $\norm F_\infty\le6\log q+3\log d+48$. In the lattice class
-$\norm F_\infty\le9\log d+60$.
-\end{lemma}
-\begin{proof}
-For a primitive character of conductor $f$, let $\Xi$ be its completed function, with an
-additional factor $s(s-1)$ in the zeta case. Its Hadamard logarithmic derivative and
-functional equation give
-\[
- \sum_\rho\Re\frac1{2-\rho}=\Re\frac{\Xi'}{\Xi}(2)\le\tfrac12\log f+4 .
-\]
-Indeed the constant in the real part of the Hadamard logarithmic derivative vanishes by
-evaluating at a regular point on the critical line, where both real parts vanish by GRH and
-reflection. At $2$ the gamma contribution is at most $1/2$, since the digamma function is
-increasing and $\psi(2)<1$. The logarithmic Euler derivative has absolute value at most
-$\sum_{n\ge2}(\log n)/n^2<2$ by the integral test, and the zeta correction is $1+1/2$.
-Discard $-\tfrac12\log\pi$. On GRH, $(1/4+\gamma^2)^{-1}\le6\Re(2-\rho)^{-1}$. Adding the
-two families therefore gives $\norm F_\infty\le6\log q+3\log d+48$. In the lattice class
-$q\le2(d+1)\le4d$.
-\end{proof}
-
-Use the convention $\widehat g(s)=\int g(t)e^{-ist}\,\dd t$ in the next statement and set
-\[
- g(t)=\cos(3t/2)\Bigl(\frac{\sin(t/16)}{t/16}\Bigr)^8,\qquad g(0)=1 .
-\]
-Each sinc factor has frequency support $[-1/16,1/16]$, so $\widehat g$ is supported on
-$[-2,-1]\cup[1,2]$; it is an explicit piecewise polynomial, obtained by eight convolutions
-of interval indicators followed by two translations. Define the band reading
-\begin{equation}\label{zer:eq:AT}
- A_T(u)=-\frac1T\sum_{T\le\abs\gamma\le2T}m(\gamma)\,\widehat g(\gamma/T)\,e^{i\gamma u}.
-\end{equation}
-
-\begin{proposition}[Explicit band reading; \stG]\label{zer:prop:band}
-Let $(q,d)$ be in the general class and $u\in\R$. Choose $0<r\le1$ such that $(u-2r,u+2r)$
-contains no potential atom of \eqref{zer:eq:ode} except possibly $u$; at $u=0$ one may take
-$r=\log(2)/3$, and at $u=\log p$ one third of
-$\min\set{\log(p/(p-1)),\log((p+1)/p)}$. For $Tr\ge1$ put
-\[
- B_u(T)=\frac{512}{7T}\cosh\bigl((\abs u+2r)/2\bigr),\qquad
- K_u(T)=\frac{2\cdot16^8}{7r^7T^8}\Bigl(108T^2+\frac{40T}r+\frac6{r^2}+\frac14\Bigr).
-\]
-Then
-\begin{equation}\label{zer:eq:error}
- \abs{A_T(u)-J(u)}\le B_u(T)+\norm F_\infty K_u(T),
-\end{equation}
-and in the lattice class $\norm F_\infty$ may be replaced by $9\log d+60$.
-\end{proposition}
-\begin{proof}
-Write $\mu=F''-\tfrac14F$. The reading $A_T(u)$ equals the pairing
-$\langle\mu,g(T(\cdot-u))\rangle$, defined as
-$\int F(t)(D^2-\tfrac14)[g(T(t-u))]\,\dd t$; termwise integration follows from the absolute
-uniform convergence of $F$. Multiply the test by a cutoff equal to one on $\abs{t-u}\le r$,
-zero on $\abs{t-u}\ge2r$, and between these equal to $1-10z^3+15z^4-6z^5$ at
-$z=\abs{t-u}/r-1$. Its first two derivatives are bounded by $2/r$ and $6/r^2$. On the local
-part only the selected mass and the density of \eqref{zer:eq:ode} contribute. Since
-$\int\abs g\le2(16+16/7)=256/7$, the density costs at most $B_u(T)$. For the complementary
-part integrate by parts onto the test. Writing $g(t)=16^8t^{-8}\cos(3t/2)\sin^8(t/16)$ shows
-that for $\abs t\ge1$ its derivatives of orders $0,1,2$ are bounded by $16^8\abs t^{-8}$
-times $1,10,108$, respectively: the trigonometric factor has frequency at most $2$ and total
-absolute exponential coefficients at most $1$. The product rule and
-$\int_{\abs{t-u}\ge r}\abs{t-u}^{-8}\,\dd t=2/(7r^7)$ give $K_u$. The cutoff is $C^2$, which
-suffices by approximation, and the integrable differentiated tests justify passage to the
-full real line. This last step permits localization even though the positive prime masses
-and the smooth density on the right of \eqref{zer:eq:ode} individually grow exponentially at
-infinity.
-\end{proof}
-
-\begin{remark}\label{zer:rem:fastband}
-A test with vanishing moments removes the term $B_u(T)$ at the cost of explicit constants.
-Take a real even $w\in C_c^\infty(\set{s:1<\abs s<2})$ with $\int_\R w=2\pi$ and
-$g(v)=(2\pi)^{-1}\int w(s)e^{isv}\,\dd s$. Then $g(0)=1$ and $\int v^jg(v)\,\dd v=0$ for
-every $j\ge0$, since $w$ vanishes near zero, and the same localization gives, for every
-fixed $u\in\R$ and $A>0$ in the general class,
-\[
- J(u)=-\frac1T\sum_{T<\abs\gamma<2T}m(\gamma)w(\gamma/T)e^{i\gamma u}+O_{q,d,u,w,A}(T^{-A}):
-\]
-the atom contributes $J(u)$, the smooth compactly supported density contributes
-$O_A(T^{-A})$ by Taylor expansion and the vanishing moments, and away from $u$ the $L^1$
-norms of the test and of its first two derivatives are $O_A(T^{-A})$ by Schwartz decay.
-\end{remark}
-
-\paragraph{Errors in the spectral data.}
-The formulas quantify errors in the data. Let $E_T$ bound the total absolute missing,
-inserted or altered weight and let $\delta_T\le1$ bound the displacement of matched
-ordinates; use records in a padded band, so that every entry that can cross an endpoint is
-included. If $M_T$ bounds the absolute weight of the matched entries, a valid absolute error
-for the reading \eqref{zer:eq:AT} is
-\begin{equation}\label{zer:eq:noise}
- e_u(T)=\frac{\norm{\widehat g}_\infty E_T}T+\frac{M_T\delta_T}T
- \Bigl(\abs u\,\norm{\widehat g}_\infty+\frac{\norm{\widehat g'}_\infty}T\Bigr)
- +e_{\mathrm{arithmetic}},
-\end{equation}
-because $\widehat g(v/T)e^{ivu}$ is Lipschitz in $v$ with constant
-$\norm{\widehat g'}_\infty/T+\abs u\norm{\widehat g}_\infty$. Both norms can be bounded from
-the explicit spline. For each fixed packet $M_T=O_{q,d}(T\log(2+T))$ by zero counting, so
-$E_T=o(T)$ and $\delta_T=o(1/\log T)$ preserve every fixed jump in the limit; for actual
-certificates $M_T$ can be bounded by the observed absolute weight plus the certified weight
-budget. The readings use signed entries and do not require pairing two nearby ordinates
-before summation.
-
-\begin{corollary}[\stG]\label{zer:cor:discrepancy}
-Two distinct parameter pairs of the general class have absolute signed multiplicity
-discrepancy $\gg T$ in each sufficiently high dyadic band $T<\abs\gamma<2T$.
-\end{corollary}
-\begin{proof}
-Their jump functions differ at some point by \cref{zer:thm:jumps}, and \cref{zer:rem:fastband}
-at that point bounds the discrepancy from below.
-\end{proof}
-
-\begin{theorem}[A certified stopping rule from one band; \stG]\label{zer:thm:band}
-Let $(q,d)$ be in the lattice class. From a sufficiently high band $T\le\abs\gamma\le2T$ of
-the aggregate signed data one can recover $(q,d)$ with a computable certificate. No upper
-bound for $q$ or $d$ is part of the input. On an insufficient band the procedure may return
-\emph{undetermined}. If the band readings \eqref{zer:eq:AT} have certified absolute errors
-$e_u(T)$ tending to zero for each fixed observation site $u$, the procedure succeeds on
-every sufficiently high band.
-\end{theorem}
-\begin{proof}
-Let $a$ be the real part of the observed $A_T(0)$ and write $K=K_0(T)$,
-$D=B_0(T)+60K+e_0(T)$. When $9K<1$, \eqref{zer:eq:error} confines $\log d$ to
-\[
- \Bigl[\frac{a-D}{1+9K},\ \frac{a+D}{1-9K}\Bigr].
-\]
-Use outward-rounded arithmetic and test the primes in the exponential of this interval. If
-there is a unique eligible prime, it is $d$; otherwise decline this band. For fixed true $d$
-the interval shrinks to $\log d$. List the divisors $q'$ of $2(d+1)$ with $18480\mid q'$ and
-$d\equiv q'/2-1\pmod{q'}$.
-
-For every pair of distinct candidate moduli, find a prime $p$ coprime to all candidates and
-to $d$, with $\eta(p)=-1$, for which their indicators in \eqref{zer:eq:mass} differ.
-Enumerating primes terminates: choose a prime power $\ell^a$ occurring to a higher exponent
-in one modulus than in the other. Modulo the least common multiple of the candidates choose
-$1$ at all other components and a unit congruent to $1$ modulo the lower $\ell$-power but
-distinct from $1$ modulo $\ell^a$. If the lower power is $1$, then $\ell$ is odd, since $8$
-divides each candidate. Set a nonresidue at $d$ independently. Dirichlet's theorem supplies
-infinitely many primes in this class. For each witness intersect the two possible masses,
-$0$ and $2\log p/\sqrt p$, with the certified interval around the observed
-$\Re A_T(\log p)$ from \eqref{zer:eq:error} plus the measurement error. Retain compatible
-moduli. Each witness eventually separates its pair because $p$ is fixed and $B_u,K_u,e_u$
-tend to zero. A surviving singleton is certified.
-\end{proof}
-
-A single accepted band certifies both integers. This assumes a genuine packet in the stated
-parameter class; authenticating a putative spectrum is a separate problem. The affine bound
-\eqref{zer:eq:error} is what supplies a test for accepting a band before either parameter is
-known.
-
-\begin{example}\label{zer:ex:band}
-Take $d=46199$ and either $q=18480$ or $q=92400$. A genuine band at $T=10^{12}$ suffices,
-even with absolute reading error $10^{-7}$ at each of the two sites. Use $r=1/8$ at zero and
-$r=1/(4p)$ at $p=110881$. The origin interval contains only $d$, which leaves exactly these
-two candidate moduli. The witness $p$ has $\eta(p)=-1$ and $p-1=6\cdot18480$. The two
-possible masses differ by more than $2/334$. This is an a priori guarantee for either
-packet; no zero ordinate at height $10^{12}$ was computed. The error margins are verified
-by rational arithmetic in the following files.
-\begin{center}
-\artifact{exponent_seven_and_grh_transfers/other-results/check_decoder_example.py}\\
-\artifact{exponent_seven_and_grh_transfers/other-results/decoder_example.txt}
-\end{center}
-\end{example}
-
-\paragraph{Recovery from an initial segment, with a height bound.}
-When the signed list is known through a height $T$, probes that annihilate the smooth
-density of \eqref{zer:eq:ode} exactly give a bound for the height that suffices.
-
-\begin{theorem}[Finite recovery with a height bound; \stG]\label{zer:thm:recovery}
-Let $(q,d)$ be in the lattice class. Knowing the signed list $\set{(\gamma,m(\gamma))}$
-through a sufficiently high finite height determines $q$ and $d$. The algorithm needs no
-prior numerical upper bound on either. For approximate input it accepts enclosures for the
-finite sums it uses; with complete lists and arbitrarily refinable certified errors it
-terminates. For exact input a sufficient height is $O(d^2\log^3(2d))$ with an absolute
-implied constant.
-\end{theorem}
-
-The height estimate is independent of the cost of computing or certifying the input lists.
-
-\begin{proof}
-\emph{Probes.} In this proof $\widehat g(\gamma)=\int g(t)e^{i\gamma t}\,\dd t$, as in
-\eqref{zer:eq:weil}. If a real compactly supported $g$ kills the $\cosh(t/2)$ integral, has
-value one at $u$, and its support isolates $u$ among the potential atoms, then by
-\eqref{zer:eq:weil} the quantity $-\sum_\gamma m(\gamma)\widehat g(\gamma)$ equals $J(u)$,
-with $J$ as in \eqref{zer:eq:mass}. The origin and prime identities alone would only give
-an asymptotic reconstruction; to certify a finite stopping time one must estimate the unseen
-zero contribution before knowing the conductors.
-
-\emph{A bound containing the unknown on both sides.} For a primitive character of conductor
-$f$ and parity $a\in\set{0,1}$, let $B_f$ denote the sum of $(1+\gamma^2)^{-1}$ over its
-nontrivial zeros, with multiplicity. Hadamard factorization and the functional equation give
-at $s=2$
-\[
- \sum_\gamma\frac{3/2}{9/4+\gamma^2}=\Re\frac{L'}L(2)+\tfrac12\log(f/\pi)
- +\tfrac12\psi(1+a/2)+\tfrac32\mathbf 1_{f=1}.
-\]
-This is the real logarithmic derivative of the completed entire function, with $s(s-1)$
-included for zeta \cite{LamzouriLiSoundararajan2015Conditional}; GRH gives the indicated
-denominators. Multiplying the summand by $3/2$ majorizes $(1+\gamma^2)^{-1}$. For $f>1$,
-$\abs{L'/L(2)}\le\sum_{n\ge2}(\log n)/n^2<1$ (isolate $2$ and $3$, integrate from $3$). For
-$f=1$ the logarithmic derivative is negative. Since $\psi(1+a/2)\le\psi(2)<\log\pi$, in
-both cases $B_f\le\tfrac34\log f+\tfrac94$. Averaging absolute values before taking the
-signed difference yields
-\[
- W:=\sum_\gamma\frac{\abs{m(\gamma)}}{1+\gamma^2}
- \le\tfrac32\log q+\tfrac34\log d+\tfrac92\le\tfrac94\log d+7,
-\]
-using $q\le3d$. For any chosen test $g$, suppose $A$ bounds
-$\sup_{\abs\gamma>T}(1+\gamma^2)\abs{\widehat g(\gamma)}$, and let $[\ell_-,\ell_+]$ enclose the real
-part of the negative sum through height $T$. The imaginary part of the exact full sum
-vanishes. For the origin probe put $y=\log d$. Whenever $9A/4<1$, the arithmetic certificate
-is
-\begin{equation}\label{zer:eq:certificate}
- \frac{\ell_--7A}{1+9A/4}\ \le\ y\ \le\ \frac{\ell_++7A}{1-9A/4}.
-\end{equation}
-Exponentiate with outward rounding and stop the first stage when there is just one
-admissible prime in the resulting interval. After that stage the error for each new probe
-is at most $A(\tfrac94\log d+7)$, independent of $q$. A finite interval can likewise be
-certified by summing enclosures of $m(\gamma)\widehat g(\gamma)$; omitted or uncertain
-entries require an enclosure of their possible total contribution. Without such an input
-error guarantee a list may omit a decisive term.
-
-\emph{Two explicit probes.} A simple choice at location $v$ is the translate by $v$ of
-\[
- g_a(t)=\frac{f_a''(t)-f_a(t)/4}{f_a''(0)-1/4},\qquad f_a(t)=\bigl(1-(t/a)^2\bigr)_+^8 .
-\]
-It equals one at its center and kills both $e^{t/2}$ and $e^{-t/2}$ by integration by parts.
-Use $a=1/2$ at zero, or $a=1/[3(p+1)]$ at $\log p$; the distance to the nearest other
-logarithm of a positive integer is at least $\log(1+1/p)\ge1/(p+1)$. Four integrations by
-parts permit $A=\norm{g_a^{(4)}}_1(1+T^2)/T^4$.
-
-For the sharper height estimate, take $b=1/6$ at zero and $b=1/[10(p+1)]$ at $\log p$. Set
-$k=\floor{bT/2}\ge4$. Convolve the uniform probability density on $[-b/k,b/k]$ with itself
-$k$ times and divide by its value at zero to obtain $w$. It is symmetric and unimodal
-(averaging any symmetric unimodal density on a centered interval preserves this property).
-Before normalization its maximum is at least $1/(2b)$ by total mass and support. Define
-\[
- g(t)=w(t-v)-\frac{w(t-v-2b)+w(t-v+2b)}{2\cosh b}.
-\]
-The support lies within $3b$ of the center, $g(v)=1$, and translation of $e^{\pm t/2}$ by
-$\pm2b$ cancels its integral. The Fourier transform of the unnormalized $w$ is
-$\zersinc(b\gamma/k)^k$, where $\zersinc(x)=\sin(x)/x$. For $\abs\gamma>T$ its absolute
-value is at most $2^{-k}(T/\abs\gamma)^k$. The translation multiplier is at most two, so one
-can use
-\[
- A=4b(1+T^2)\,2^{-\floor{bT/2}} .
-\]
-The probes have sufficient differentiability for the explicit formula: convolution with
-smooth approximate identities gives the same identity in the limit, with spectral domination
-by a multiple of $(1+\gamma^2)^{-1}$. Increasing $T$ and refining enclosures therefore
-certifies $d$ at the origin; one can, for example, choose $T$ dyadically and refine the
-finite-sum enclosure to width $1/T^2$ or smaller. For exact data $T=O(\log(2d))$ suffices at
-the origin, since adjacent integer logarithms near $d$ are separated by $\gg1/d$.
-
-\emph{Separating the finitely many moduli.} Form $M=2(d+1)$. The remaining candidates are
-the divisors $q$ of $M$ with $18480\mid q$ and $M/q$ odd. For two distinct candidates
-$q_1<q_2$ there is a unit $y\bmod M$ congruent to one modulo $q_1$ and different from one
-modulo $q_2$: choose a prime $\ell$ with $v_\ell(q_1)<v_\ell(q_2)$, prescribe the residue
-$1+\ell^{v_\ell(q_1)}$ modulo the full $\ell$-power in $M$, and one at all other prime
-powers. If $v_\ell(q_1)=0$, this residue is two and $\ell$ is odd. Now require
-$p\equiv y\bmod M$ and $\eta(p)=-1$. These conditions specify one coset of index
-$2\varphi(M)$ modulo $Md$, since $(M,d)=1$. Dirichlet's theorem gives a prime in this
-coset, and a search with integer tests finds one. The two possible values of $J(\log p)$
-are separated by $2\log p/\sqrt p$. A certified interval excluding one value eliminates a
-candidate. Continuing until only one remains proves finite recovery.
-
-\emph{The height.} Theorem~1.4 of \cite{LamzouriLiSoundararajan2015Conditional} bounds the
-least prime in a coset of index $I>1$ modulo $Q\ge20000$ by $O(I^2\log^2Q)$ under Dirichlet
-GRH; the explicit alternatives are $p\le10^9$ or
-$p\le((I-1)\log Q+3(I+1)+\tfrac52(\log\log Q)^2)^2$. Here $I\le2M$ and $Q=Md$, so each
-witness can be taken with $p\ll d^2\log^2(2d)$. For a sufficiently large absolute constant,
-$T$ of order $p\log(2pd)$ makes the spline tail times $W$ less than half the two-value
-separation. All witnesses use the same spectral list, so the maximum of these heights
-proves the claimed bound.
-\end{proof}
-
-\begin{example}\label{zer:ex:recovery}
-Take $d=109909799$. Sixteen candidate moduli survive the divisor tests. Even knowing the
-totient would leave the pair $1127280,1201200$ at totient $230400$. The prime $34945681$ is
-a quadratic nonresidue modulo $d$, and $\gcd(p-1,2(d+1))=1127280$; its jump distinguishes
-the two. At $T=768$ the spline at the origin has a tail below $1.045\cdot10^{-12}$ for this
-$d$. At $T=6\cdot10^{10}$ the witness probe has a tail below $5.220\cdot10^{-11}$, against a
-jump greater than $0.005875$. These are calculations on known parameters; an observed
-spectral list of these heights was not computed. Primes, characters, candidate enumeration
-and tail arithmetic are checked in the following files.
-\begin{center}
-\artifact{grh-torsion-and-zero-data/check_recovery.py}\\
-\artifact{grh-torsion-and-zero-data/verification/check_recovery.txt}
-\end{center}
-\end{example}
-
-The band rule of \cref{zer:thm:band} and the initial-segment rule of
-\cref{zer:thm:recovery} use different data and neither contains the other: the first
-discards all zeros below $T$ and comes with the noise model \eqref{zer:eq:noise}, the second
-uses the whole list through $T$ and comes with an explicit sufficient height. Both are
-confined to the lattice class, where $q\mid2(d+1)$ leaves finitely many candidate moduli
-once $d$ is known; \cref{zer:thm:jumps} and \cref{zer:rem:fastband} cover the general class
-in the limit.
+\paragraph{The signed zero spectrum.}
+The Mellin residues of the smoothed prime remainder in the source proof are signed
+differences of zero multiplicities. How these signed data determine the modulus and the
+twist, in the limit and from a finite band or a finite initial segment of zeros, and the
+resulting criterion for four central values at once, are treated in \cref{sec:rec}.
 
 \subsection{Signed multiplicity differences in short intervals and in phase boxes}\label{zer:sec:short}
-\sources{grh-methods-polynomial-density; grh_cm_four_terms_and_prime_bias}
+{\emergencystretch=6em\sources{grh-methods-polynomial-density; grh_cm_four_terms_and_prime_bias; grh_spectral_rigidity; grh_filtered_prime_races; grh_prime_error_balancing}}
 
-The preceding subsection reads arithmetic from the whole signed spectrum. The next two
-theorems locate both signs of such differences on the critical line: in every interval of
-triple-logarithmic length for an arbitrary fixed finite family, and in every prescribed box
-of prime phases for the twist-family difference of the source proof. A third statement
-records that the multiplicity vectors of all characters to a fixed modulus have full rank in
-windows of logarithmic length.
+The next two theorems locate both signs of differences of zero multiplicities on the
+critical line: in every interval of triple-logarithmic length for an arbitrary fixed finite
+family, and in every prescribed box of prime phases for the twist-family difference of the
+source proof. A third statement records that the multiplicity vectors of all characters to a
+fixed modulus have full rank in windows of logarithmic length, and a fourth that no nonzero
+polynomially weighted combination of the multiplicity divisors of distinct primitive
+characters has finite support.
 
 \paragraph{Intervals of triple-logarithmic length.}
 Let $\chi_1,\dots,\chi_r$ be distinct primitive Dirichlet characters, of conductors
@@ -1025,8 +525,8 @@ put
    -\ord_{1/2+i\gamma}L(s,\chi^*\eta)\Bigr),\qquad z_\pm=\max(\pm z,0).
 \]
 Omitted Euler factors have their zeros on $\Re s=0$, so the same integer is obtained with
-the imprimitive functions; in the general class of \cref{zer:sec:spectrum} it is
-$h\,m(\gamma)$, the residue numerator of the source. Write $\mathbb T=\R/(2\pi\Z)$. For a
+the imprimitive functions; for $8\mid q$ and $d\equiv7\pmod8$ it is the residue numerator of
+the source, studied as a whole in \cref{sec:rec}. Write $\mathbb T=\R/(2\pi\Z)$. For a
 finite set $\mathcal B$ of primes put
 $\theta_{\mathcal B}(t)=(t\log b\bmod2\pi)_{b\in\mathcal B}$.
 
@@ -1154,9 +654,9 @@ different multiplicities at a common zero; simplicity, disjointness of zero sets
 conjectural $H\log T$ scale for almost all excess multiplicity are stronger assertions.
 
 \paragraph{Full rank of the multiplicity vectors.}
-The next statement is used in \cref{zer:sec:balancing}.
+The next statement is used in \cref{zer:sec:balancing} and \cref{zer:sec:cov}.
 
-\begin{theorem}[Multiplicity rank; \stU]\label{zer:thm:rank}
+\begin{corollary}[Multiplicity rank; \stU]\label{zer:thm:rank}
 Fix $q\ge1$ and put $n_q=\varphi(q)$. There is $K_q$ such that if $T$ is sufficiently large
 and $K_q\log T\le H\le T$, the vectors
 \[
@@ -1166,21 +666,11 @@ and $K_q\log T\le H\le T$, the vectors
 span $\R^{n_q}$. Distinct zeros index the vectors; a zero absent from one $L$-function
 contributes a zero entry. Under \cref{src:thm:dgrh} the same vectors are indexed by
 distinct positive ordinates.
-\end{theorem}
+\end{corollary}
 \begin{proof}
-Choose a prime $p_a>2$ in each class $a\in(\Z/q\Z)^\times$ by Dirichlet's theorem. Banks's
-short-interval Landau formula \cite[Theorem~1.2]{Banks2023Comparing} gives
-\[
- A_{a\chi}:=\sum_{T<\Im\rho<T+H}p_a^\rho M(\rho)_\chi
- =-\frac{H\log p_a}{2\pi}\chi(a)+O_q(\log T),
-\]
-where the sum is over the union of distinct nontrivial zeros; at these primes
-$\chi^*(p_a)=\chi(a)$, and the conductor-one case is the classical Landau formula. The
-implied constant can be fixed for the finite list of characters and chosen primes. The
-row-scaled character table multiplying $H$ is invertible. Choose $K_q$ so that its smallest
-singular value times $H$ exceeds the operator norm of the error matrix. Then $A$ is
-invertible. Its rows belong to the complex span of the real vectors $M(\rho)$, proving
-their full real rank.
+For large $T$ the window $(T,T+H)$ contains a window of the much shorter length allowed in
+\cref{rec:thm:localrank}, around its midpoint, so the vectors $M(\rho)$ span over $\C$, and
+being real they span $\R^{n_q}$.
 \end{proof}
 
 This yields a nonsingular integer multiplicity matrix of size $\varphi(q)$ in every such
@@ -1188,6 +678,101 @@ height window, including when different characters share zeros. In particular on
 choose $\gg_qT/\log T$ pairwise disjoint bases with ordinates in $[T,2T]$, by dividing it
 into intervals of length $2K_q\log(2T)$. The rank argument keeps $q$ fixed; nonsingularity
 places no condition on rational linear relations among the heights themselves.
+
+\paragraph{Polynomially weighted multiplicity divisors.}
+The rank theorem localizes in height but uses constant weights. The next statement allows
+weights that are polynomials in the zero, characters of different conductors, and an
+arbitrary finite exceptional set; it is the algebraic input of the covariance theorems of
+\cref{zer:sec:cov}. Let $\chi_1,\dots,\chi_r$ be distinct primitive Dirichlet characters, of
+conductors $q_j$, including the conductor-one character if desired. Write $a_j\in\set{0,1}$ for
+the parity, $\chi_j(-1)=(-1)^{a_j}$, and $\delta_j=1$ for the conductor-one character and $0$
+otherwise. The completed functions
+\[
+ X_j(s)=[s(s-1)]^{\delta_j}(q_j/\pi)^{(s+a_j)/2}\Gamma\bigl((s+a_j)/2\bigr)L(s,\chi_j)
+\]
+are entire of order one, do not vanish at $0$ and $1$, and their zeros are precisely the
+nontrivial zeros. Put $m_j(\rho)=\ord_{s=\rho}X_j(s)$, with $m_j(\rho)=0$ when $X_j(\rho)\ne0$.
+By Hadamard factorization,
+\begin{equation}\label{zer:eq:hadamard}
+ \frac{X_j'}{X_j}(s)=B_j+\sum_{\rho}m_j(\rho)\Bigl(\frac1{s-\rho}+\frac1\rho\Bigr),\qquad
+ \sum_{\rho}\frac{m_j(\rho)}{\abs\rho^2}<\infty,
+\end{equation}
+with locally normal convergence away from the zeros and no assumption of simple zeros.
+
+\begin{theorem}[Polynomial zero-divisor rigidity; \stU]\label{zer:thm:polyrigid}
+If polynomials $P_1,\dots,P_r\in\C[s]$ satisfy
+\[
+ \sum_{j=1}^rP_j(\rho)m_j(\rho)=0
+\]
+at every point $\rho$ of the union of the zero sets of the $X_j$ except finitely many, then
+$P_1=\dots=P_r=0$.
+\end{theorem}
+
+\begin{proof}
+Let $d\ge0$ bound the degrees and put
+\[
+ F(s)=\sum_jP_j(s)\frac{X_j'}{X_j}(s),\qquad A(s)=\sum_jP_j(s)\frac{L'}{L}(s,\chi_j).
+\]
+First, $F$ is a rational function. Truncate the sums in \eqref{zer:eq:hadamard} to a common
+disk $\abs\rho\le R$ containing the exceptional points. For each $\rho$,
+$P_j(s)/(s-\rho)=P_j(\rho)/(s-\rho)+(P_j(s)-P_j(\rho))/(s-\rho)$ splits a simple pole and a
+polynomial of degree at most $d-1$; the terms $P_j(s)/\rho$ and $B_jP_j(s)$ have degree at most
+$d$. By hypothesis the pole part of the truncated $F$ does not change once $R$ is large, and the
+remaining polynomial has degree at most $d$. Convergence at $d+1$ distinct regular points forces
+convergence of its coefficients, by invertibility of the Vandermonde matrix. So $F$ is a fixed
+finite sum of simple fractions plus a polynomial.
+
+Second, write $g_a(s)=\tfrac12\psi((s+a)/2)$ with $\psi=\Gamma'/\Gamma$. Logarithmic
+differentiation gives
+\[
+ F(s)=A(s)+\sum_jP_j(s)\Bigl[\tfrac12\log(q_j/\pi)+g_{a_j}(s)
+ +\delta_j\Bigl(\frac1s+\frac1{s-1}\Bigr)\Bigr].
+\]
+Let $\Delta f(s)=f(s+2)-f(s)$. The recurrence of the Gamma function gives
+$g_a(s+2k)=g_a(s)+\sum_{h=0}^{k-1}(s+a+2h)^{-1}$. In $\Delta^{d+1}(P_jg_{a_j})$ the
+coefficient of $g_{a_j}(s)$ is $\Delta^{d+1}P_j=0$, and every other term is rational. Hence
+$\Delta^{d+1}A$ is rational. For real $\sigma\to+\infty$ the Euler product gives
+\begin{equation}\label{zer:eq:polydir}
+ A(\sigma)=-\sum_{n\ge2}\Lambda(n)n^{-\sigma}\sum_jP_j(\sigma)\chi_j(n)
+ =O\bigl((1+\sigma)^d2^{-\sigma}\bigr),
+\end{equation}
+for instance because $\sum_{n\ge2}(\log n)n^{-\sigma}\le2^{2-\sigma}\sum_{n\ge2}(\log n)n^{-2}$
+for $\sigma\ge2$, and the same bound holds for the fixed difference $\Delta^{d+1}A$. A nonzero
+rational function does not decay exponentially along the positive axis, so $\Delta^{d+1}A=0$ on
+$\Re s>1$. For each real $\sigma>1$ the sequence $u_n=A(\sigma+2n)$ then has vanishing
+difference of order $d+1$, so it is a polynomial in $n$; it tends to zero by
+\eqref{zer:eq:polydir}, so it vanishes, and $A(\sigma)=0$.
+
+Third, all coefficients $C_n(s)=\Lambda(n)\sum_jP_j(s)\chi_j(n)$ vanish identically: if $n_0$
+were the least index with $C_{n_0}\ne0$, multiplying \eqref{zer:eq:polydir} by $n_0^\sigma$
+would give $\abs{C_{n_0}(\sigma)}\ll(1+\sigma)^d(n_0/(n_0+1))^{\sigma-2}$, which is impossible
+for a nonzero polynomial. Put $Q=\lcm(q_1,\dots,q_r)$. Dirichlet's theorem gives a prime
+$p\equiv b\pmod Q$ for every unit $b$, and $\Lambda(p)>0$, so $\sum_jP_j(s)\chi_j(b)=0$ for
+every $b\in(\Z/Q\Z)^\times$. The characters induced by the $\chi_j$ modulo $Q$ are distinct, by
+uniqueness of the primitive inducing character, and orthogonality gives $P_j=0$ for all $j$.
+\end{proof}
+
+\begin{corollary}[Tail spanning; \stG]\label{zer:cor:tail}
+Write $m_j(\gamma)=m_j(\tfrac12+i\gamma)$. For every $H\ge0$ and every integer $d\ge0$ the
+vectors
+\[
+ v(\gamma)=\bigl(m_j(\gamma)(i\gamma)^\ell\bigr)_{1\le j\le r,\ 0\le\ell\le d},\qquad
+ \abs\gamma>H,
+\]
+span $\C^{r(d+1)}$.
+\end{corollary}
+\begin{proof}
+A linear functional with coefficients $c_{j\ell}$ annihilating these vectors gives polynomials
+$P_j(s)=\sum_\ell c_{j\ell}(s-\tfrac12)^\ell$ that satisfy the hypothesis of
+\cref{zer:thm:polyrigid}: by \cref{src:thm:dgrh} every zero is $\tfrac12+i\gamma$, and only
+finitely many distinct ordinates have $\abs\gamma\le H$. Hence all $c_{j\ell}=0$.
+\end{proof}
+
+Common zeros, arbitrary multiplicities and both signs of the ordinates are allowed. For $d=0$
+and characters to one modulus the statement also follows from \cref{zer:thm:rank} (applied
+modulo the least common multiple of the conductors), which in addition localizes the spanning
+zeros in every window of logarithmic length; the polynomial weights $(i\gamma)^\ell$ are what
+the derivatives in \cref{zer:thm:jets} require.
 
 \subsection{Suzuki's prime-power questions}\label{zer:sec:suzuki}
 \sources{grh_cm_four_terms_and_prime_bias; grh_method_transfers_2026-11-26}
@@ -1510,8 +1095,516 @@ Partial summation with the prime number theorem gives the last equality, since
 \]
 \end{proof}
 
+\subsection{Covariance and oscillation of smoothed prime errors}\label{zer:sec:cov}
+{\emergencystretch=6em\sources{multiscale_prime_fluctuations; grh_multiscale_covariance; grh_spectral_rigidity; grh_filtered_prime_races; grh_prime_error_balancing; prime_peak_rigidity}}
+
+The kernel $(1/n-1/x)_+$ of the prime remainder in the source proof has Mellin denominator
+$s(s-1)$, and $\rho(1-\rho)=\tfrac14+\gamma^2$ at $\rho=\tfrac12+i\gamma$. Under
+\cref{src:thm:dgrh} the normalized smoothed errors are therefore absolutely convergent
+almost periodic functions of $\log x$. This subsection proves that their joint covariances,
+at several multiplicative scales, in all residue classes, with derivatives, or after a
+compact filter, are positive definite even after any finite set of zero frequencies is
+deleted, and derives uniform two-sided oscillation in every direction. Simplicity of zeros,
+disjointness of zero sets and rational independence of ordinates are never assumed:
+coincident ordinates are grouped before squares are formed, and positivity comes from the
+arithmetic of prime powers.
+
+\paragraph{Setting.}
+Fix $q\ge1$, put $G=(\Z/q\Z)^\times$ (the trivial group for $q=1$) and $n_q=\varphi(q)$, and let
+$\chi$ run over the characters modulo $q$, extended by zero to nonunits, with primitive
+inducing character $\chi^*$ and $\delta_\chi=1$ for the principal character, $0$ otherwise. For
+$x\ge1$ and $a\in G$ put
+\[
+ S_\chi(x)=\sum_{n\le x}\Lambda(n)\chi(n)\Bigl(\frac1n-\frac1x\Bigr),\qquad
+ S_a(x)=\sum_{\substack{n\le x\\n\equiv a\bmod q}}\Lambda(n)\Bigl(\frac1n-\frac1x\Bigr)
+ =\frac1{n_q}\sum_\chi\overline{\chi(a)}S_\chi(x),
+\]
+and
+\[
+ c_\chi=\lim_{s\to1}\Bigl(-\frac{L'}{L}(s,\chi)-\frac{\delta_\chi}{s-1}\Bigr)-\delta_\chi,\qquad
+ c_a=\frac1{n_q}\sum_\chi\overline{\chi(a)}c_\chi .
+\]
+For the principal character $c_\chi=-1-\zergE-\sum_{p\mid q}\log p/(p-1)$. The weight vanishes at
+$n=x$, so $S_\chi$ and $S_a$ are continuous. Under \cref{src:thm:dgrh} let $m_\chi(\gamma)$ be the
+order of $L(s,\chi^*)$ at $\tfrac12+i\gamma$, let $\Gamma_q$ be the set of distinct ordinates of
+all the $L(s,\chi^*)$, and put
+\begin{equation}\label{zer:eq:va}
+ v_a(\gamma)=\frac1{n_q}\sum_\chi\overline{\chi(a)}\,m_\chi(\gamma),\qquad
+ \beta_a=4v_a(0),\qquad
+ Z_a(t)=e^{t/2}\Bigl(S_a(e^t)-\frac t{n_q}-c_a\Bigr)-\beta_a\quad(t\ge0).
+\end{equation}
+Since $m_{\overline\chi}(-\gamma)=m_\chi(\gamma)$, one has $v_a(-\gamma)=\overline{v_a(\gamma)}$, and
+$c_a,\beta_a$ are real. The constant $\beta_a$ records possible central zeros; their absence is
+not assumed. For a character put
+\[
+ K_\chi(t)=\sum_{\gamma}\frac{m_\chi(\gamma)e^{i\gamma t}}{1/4+\gamma^2},
+\]
+the sum over all ordinates of $L(s,\chi^*)$, the central one included. The local zero count
+$O_q(\log(2+\abs y))$ in $[y-1,y+1]$ makes this series absolutely and uniformly convergent.
+
+\begin{lemma}[Ramp explicit formula; \stG]\label{zer:lem:ramp}
+For every $\chi$ modulo $q$ and $x\ge2$,
+\[
+ S_\chi(x)=\delta_\chi\log x+c_\chi+x^{-1/2}K_\chi(\log x)+O_q\bigl((1+\log x)/x\bigr).
+\]
+Consequently, uniformly in $a\in G$, for $t\ge\log2$,
+\begin{equation}\label{zer:eq:Zexp}
+ Z_a(t)=\sum_{\substack{\gamma\in\Gamma_q\\\gamma\ne0}}\frac{v_a(\gamma)}{1/4+\gamma^2}\,e^{i\gamma t}
+ +O_q\bigl((1+t)e^{-t/2}\bigr),
+\end{equation}
+and the series converges absolutely and uniformly on $\R$.
+\end{lemma}
+\begin{proof}
+First let $\chi$ be primitive and $A(s)=-L'(s,\chi)/L(s,\chi)$. For $c>1$, termwise Mellin
+inversion of $y^s/(s(s-1))$, whose inverse transform is $(y-1)_+$, gives
+\[
+ S_\chi(x)=\frac1{2\pi i}\int_{c-i\infty}^{c+i\infty}A(s)\frac{x^{s-1}}{s(s-1)}\,\dd s .
+\]
+Move the line to $\Re s=-\tfrac12$. The functional equation and Stirling's formula give
+$A(-\tfrac12+iy)=O_q(\log(2+\abs y))$. The local zero count lets the horizontal edges pass at
+heights tending to $\pm\infty$ at distance $\gg_q1/\log(2+\abs y)$ from every ordinate; there
+the local partial-fraction expansion bounds $A$ by $O_q(\log^2(2+\abs y))$, so these edges
+vanish for fixed $x$, and the new vertical integral is $O_q(x^{-3/2})$. The residue at $s=1$
+is $\delta_\chi\log x+c_\chi$. At a zero $\rho=\tfrac12+i\gamma$ of multiplicity $m$ it is
+$mx^{\rho-1}/(\rho(1-\rho))=mx^{-1/2+i\gamma}/(\tfrac14+\gamma^2)$. At $s=0$ the function $A$
+has at most a simple pole, so the residue is $x^{-1}$ times a polynomial of degree at most one
+in $\log x$; no other pole is crossed. For imprimitive $\chi$, each prime $p\mid q$ with
+$p\nmid f_\chi$ removes
+\[
+ \sum_{p^k\le x}\chi^*(p)^k\log p\Bigl(\frac1{p^k}-\frac1x\Bigr)
+ =\frac{\chi^*(p)\log p}{p-\chi^*(p)}+O_p\Bigl(\frac{1+\log x}x\Bigr),
+\]
+by the geometric tail and the at most $\log x/\log p$ terms of the $1/x$ sum. The constant is
+the change of $c_\chi$ caused by the removed Euler factor, and the nontrivial zeros are those
+of $\chi^*$. Character orthogonality gives \eqref{zer:eq:Zexp}; the frequency $\gamma=0$
+contributes $4v_a(0)=\beta_a$.
+\end{proof}
+
+All the statements below rest on one elementary principle.
+
+\begin{lemma}[Almost periodic vectors; \stU]\label{zer:lem:ap}
+Let $F\subset\R\setminus\set0$ be countable with $F=-F$, let $z_\gamma\in\C^N$ satisfy
+$z_{-\gamma}=\overline{z_\gamma}$ and $B=\sum_{\gamma\in F}\norm{z_\gamma}<\infty$, and put
+$V(t)=\sum_\gamma z_\gamma e^{i\gamma t}$. Let $X:[t_0,\infty)\to\R^N$ be locally bounded and
+measurable.
+\begin{enumerate}[label=\textup{(\roman*)}]
+\item If $\norm{X(t)-V(t)}\to0$, or if $X-V$ is bounded and $\int_{t_0}^\infty\norm{X-V}\,\dd t<\infty$,
+then, uniformly in $u\ge t_0$ as $L\to\infty$,
+\[
+ \frac1L\int_u^{u+L}X\,\dd t\to0,\qquad
+ \frac1L\int_u^{u+L}XX^{\mathsf T}\dd t\to\mathcal G:=\sum_\gamma z_\gamma z_\gamma^*,
+\]
+and $\mathcal G$ is real symmetric positive semidefinite. For every $w\in\R^N$ and $c\in\R$ the
+mean of $(w\cdot X-c)^2$ over $[u,u+L]$ tends to $w^{\mathsf T}\mathcal Gw+c^2$.
+\item Suppose $\lambda=\lambda_{\min}(\mathcal G)>0$ and $\norm{X-V}\to0$. Put
+$\eps=\lambda/(32B)$ and $\eta=\lambda/(16B^2)$. There are $L_0,T_0$ such that for every
+unit $w\in\R^N$, every $T\ge T_0$ and every $L\ge L_0$,
+\[
+ \abs{\set{t\in[T,T+L]:w\cdot X(t)\ge\eps}}\ge\eta L,\qquad
+ \abs{\set{t\in[T,T+L]:w\cdot X(t)\le-\eps}}\ge\eta L .
+\]
+If $X$ is continuous, the convex hull of $\set{X(t):T\le t\le T+L}$ contains the closed ball
+of radius $\eps$ about $0$. In any case the closed convex hull of the cluster set of $X(t)$ as
+$t\to\infty$ contains that ball.
+\item Suppose $\lambda>0$, $X$ is continuous, $X-V$ is bounded and integrable on
+$[t_0,\infty)$, and put $B'=\max(1,\sup\norm X)$. There is $L_1$ such that every interval
+$[u,u+L]$ with $u\ge t_0$ and $L\ge L_1$ contains points $t_\pm$ with
+$\pm w\cdot X(t_\pm)\ge\lambda/(8B')$, for every unit $w$.
+\end{enumerate}
+\end{lemma}
+\begin{proof}
+(i) The mean of $e^{i\omega t}$ over $[u,u+L]$ has modulus at most $2/(L\abs\omega)$ for
+$\omega\ne0$. This proves the limits for finite truncations of $V$, the second by retaining
+only the pairs $(\gamma,-\gamma)$. Absolute summability bounds the truncation error uniformly,
+and the hypothesis on $X-V$ makes its contribution to both means $o(1)$ uniformly in $u$. The
+matrix is real because $z_{-\gamma}=\overline{z_\gamma}$. The last assertion follows by
+expanding the square.
+
+(ii) Let $g=w\cdot V$, so $\abs g\le B$. By (i), uniformly in $u$ and in unit $w$ (the
+convergence is that of finitely many vector and matrix entries), there is $L_0$ with
+$\abs{\mathbb E g}\le\lambda/(4B)$ and $\mathbb Eg^2\ge\lambda/2$ for windows of length
+$L\ge L_0$, where $\mathbb E$ is the window average. Since $g^2\le B\abs g$, we get
+$\mathbb E\abs g\ge\lambda/(2B)$ and $\mathbb Eg_\pm=(\mathbb E\abs g\pm\mathbb Eg)/2\ge\lambda/(8B)$.
+With $\theta=2\eps=\lambda/(16B)$, the inequality $g_+\le\theta+B\mathbf 1_{g\ge\theta}$ gives
+$\mathbb P(g\ge\theta)\ge\eta$, and likewise for $-g$. Choose $T_0$ with $\norm{X-V}\le\eps$
+beyond $T_0$. For continuous $X$ the hull of a compact image is compact; if a point of the
+ball were outside it, strict separation would give a unit $w$ whose maximum on the hull is
+less than $\eps$, contradicting what was just proved. For the cluster set, each unit $w$ has
+arbitrarily late $t$ with $w\cdot X(t)\ge\eps$; a convergent subsequence gives a cluster point
+with the same inequality, and separation again gives the inclusion.
+
+(iii) Let $f=w\cdot X$, so $\abs f\le B'$. By (i) there is $L_1$ with $\mathbb Ef^2\ge\lambda/2$
+and $\abs{\mathbb Ef}\le\lambda/(4B')$ on every window $[u,u+L]$, $u\ge t_0$, $L\ge L_1$. Then
+$\mathbb E\abs f\ge\lambda/(2B')$ and $\mathbb Ef_\pm\ge\lambda/(8B')$, and a continuous function
+attains a maximum at least its mean.
+\end{proof}
+
+\paragraph{Several scales.}
+Fix $r\ge1$ distinct real numbers $h_1,\dots,h_r$; the observed multiplicative scales are
+$e^{h_j}$. Put $D=rn_q$. For $w=(w_{j,a})\in\C^D$, real $\gamma$, and $1<T<T+H$, define
+\[
+ A_w(\gamma)=\sum_{j=1}^r\sum_{a\in G}w_{j,a}e^{i\gamma h_j}v_a(\gamma),\qquad
+ V_{T,H}(w)=2\sum_{\substack{\gamma\in\Gamma_q\\T<\gamma\le T+H}}
+ \frac{\abs{A_w(\gamma)}^2}{(1/4+\gamma^2)^2}.
+\]
+For real $w$, $V_{T,H}(w)$ is the mean square of the real signal
+$2\Re\sum_{T<\gamma\le T+H}A_w(\gamma)(\tfrac14+\gamma^2)^{-1}e^{i\gamma t}$ carried by the band.
+
+\begin{theorem}[Multiscale spectral coercivity; \stG]\label{zer:thm:coercive}
+For fixed $q$ and distinct $h_1,\dots,h_r$ there are positive constants $c,C,K,T_0$,
+depending only on $q$ and the shifts, such that for every $T\ge T_0$, every $H$ with
+$K\log(2T)\le H\le T$ and every $w\in\C^D$,
+\begin{equation}\label{zer:eq:coercive}
+ \frac{cH}{T^4\log(2T)}\norm w_2^2\ \le\ V_{T,H}(w)\ \le\ \frac{CH\log^2(2T)}{T^4}\norm w_2^2 .
+\end{equation}
+In particular each such band contains at least $D$ distinct ordinates, and the vectors
+$(e^{i\gamma h_j}v_a(\gamma))_{j,a}$ for the ordinates in the band span $\C^D$.
+\end{theorem}
+
+No uniformity in $q$, in the number of scales, or as two shifts approach each other is
+asserted; the dependence on merging scales is the subject of \cref{zer:sec:coalesce}. The proof
+uses two ingredients. The first is Landau's formula at a fixed argument: for real $u\ge2$,
+uniformly for $1<T<T+H\le2T$,
+\begin{equation}\label{zer:eq:landaufixed}
+ \sum_{T<\gamma\le T+H}m_\chi(\gamma)e^{i\gamma\log u}
+ =-\frac{H}{2\pi\sqrt u}\Lambda(u)\chi^*(u)+O_{q,u}(\log(2T)),
+\end{equation}
+where the main term is zero unless $u$ is an integral prime power. This is Banks's extension of
+the Landau--Gonek formula \cite[Theorem~1.2]{Banks2023Comparing}, divided by $\sqrt u$ using
+\cref{src:thm:dgrh}; for fixed $u$ the distance to the nearest other prime power is positive,
+and half-open instead of open endpoints change the sum by $O_{q,u}(\log(2T))$.
+
+\begin{lemma}[Prime probes; \stU]\label{zer:lem:probes}
+For a real $R>0$ with $R\ne1$, only finitely many primes $p$ make $Rp$ an integral prime power.
+Consequently, for each $a\in G$ there is a prime $p_a\equiv a\pmod q$ such that
+$u_{a,j,k}=p_ae^{h_k-h_j}\ge2$ for all $j,k$, and $u_{a,j,k}$ is an integral prime power only for
+$j=k$.
+\end{lemma}
+\begin{proof}
+If $Rp$ is an integer, $R=u/v$ is rational in lowest terms. If $v>1$ then $v\mid p$, which
+allows one prime at most; if $v=1$ then $u\ge2$ and $up$ is a prime power only if $p\mid u$.
+For the probes, exclude the finitely many primes dividing a numerator or denominator of a
+rational ratio $e^{h_k-h_j}\ne1$, require $p_a\min_{j,k}e^{h_k-h_j}\ge2$, and use Dirichlet's
+theorem.
+\end{proof}
+
+\begin{proof}[Proof of \cref{zer:thm:coercive}]
+Let $B_{T,H}$ be the set of ordinates in $(T,T+H]$ and $L=\log(2T)$. For fixed $j,a$,
+\[
+ \sum_{\gamma\in B_{T,H}}A_w(\gamma)e^{i\gamma(\log p_a-h_j)}
+ =\frac1{n_q}\sum_{k,b,\chi}w_{k,b}\overline{\chi(b)}\sum_{\gamma\in B_{T,H}}
+ m_\chi(\gamma)e^{i\gamma\log u_{a,j,k}} .
+\]
+By \eqref{zer:eq:landaufixed} and \cref{zer:lem:probes} only $k=j$ gives a main term. There
+$u=p_a$ is prime to $q$, so $\chi^*(p_a)=\chi(a)$, and orthogonality isolates $w_{j,a}$:
+\begin{equation}\label{zer:eq:recover}
+ \sum_{\gamma\in B_{T,H}}A_w(\gamma)e^{i\gamma(\log p_a-h_j)}
+ =-\frac{H\log p_a}{2\pi\sqrt{p_a}}\,w_{j,a}+O_{q,h}\bigl(\norm w_2L\bigr),
+\end{equation}
+uniformly in $j,a,w$, since the errors total at most a constant times
+$\sum_{k,b}\abs{w_{k,b}}L\le\sqrt D\norm w_2L$. Put $\alpha=\min_a\log p_a/(2\pi\sqrt{p_a})$,
+choose $(j,a)$ with $\abs{w_{j,a}}\ge\norm w_2/\sqrt D$, and take $K$ so large that for
+$H\ge KL$ the left side of \eqref{zer:eq:recover} has modulus at least
+$H\alpha\norm w_2/(2\sqrt D)$. With $M_\gamma=\sum_\chi m_\chi(\gamma)$ the zero count gives
+$\abs{B_{T,H}}\le\sum_{\gamma\in B_{T,H}}M_\gamma\le C_0HL$ and $\max M_\gamma\le C_1L$.
+Cauchy--Schwarz over the distinct ordinates gives
+\[
+ \sum_{\gamma\in B_{T,H}}\abs{A_w(\gamma)}^2\ge\frac{\alpha^2}{4DC_0}\frac HL\norm w_2^2 ,
+\]
+and $\tfrac14+\gamma^2\le5T^2$ in the band gives the lower bound with $c=\alpha^2/(50DC_0)$. For
+the upper bound, $\abs{v_a(\gamma)}\le M_\gamma/n_q$ gives
+$\abs{A_w(\gamma)}\le(\sqrt D/n_q)M_\gamma\norm w_2$, so the sum of squares is at most
+$(D/n_q^2)C_0C_1HL^2\norm w_2^2$, and $(\tfrac14+\gamma^2)^2\ge T^4$. The lower bound makes
+$w\mapsto(A_w(\gamma))_{\gamma\in B_{T,H}}$ injective, which gives the last assertion.
+\end{proof}
+
+Thus any coefficient array is recovered from aggregated zero data of one band by
+\eqref{zer:eq:recover}, with error $O(\norm w_2\log(2T)/H)$ per entry. For real arrays the
+matrix $Q_{T,H}$ of the form $V_{T,H}$ has all its eigenvalues between the two bounds of
+\eqref{zer:eq:coercive}, so $\det Q_{T,H}\ge(cH/(T^4\log(2T)))^D$ and its condition number is
+at most $(C/c)\log^3(2T)$.
+
+\begin{corollary}[All-lag strict positivity; \stG]\label{zer:cor:multiscale}
+Let $J$ be a finite subset of $\Gamma_q$ with $J=-J$, and define the real vector
+$U_J(t)\in\R^D$ by
+\[
+ U_J(t)_{j,a}=Z_a(t+h_j)-\sum_{\gamma\in J\setminus\set0}\frac{v_a(\gamma)}{1/4+\gamma^2}e^{i\gamma(t+h_j)} .
+\]
+Its long-time covariance in the sense of \cref{zer:lem:ap}\textup{(i)} is
+\[
+ \mathcal G_J=\sum_{\gamma\in\Gamma_q\setminus(J\cup\set0)}z(\gamma)z(\gamma)^*,\qquad
+ z(\gamma)=\Bigl(\frac{e^{i\gamma h_j}v_a(\gamma)}{1/4+\gamma^2}\Bigr)_{j,a},
+\]
+and it is positive definite: $\lambda_{\min}(\mathcal G_J)\ge cH/(T^4\log(2T))$ for every band
+$(T,T+H]$ of \cref{zer:thm:coercive} lying above $\max J$. Consequently
+\cref{zer:lem:ap}\textup{(ii)} applies to $U_J$ with constants depending only on $q$, the
+shifts and $J$: for every real unit array $w$, each of $w\cdot U_J(\log x)\ge\eps$ and
+$w\cdot U_J(\log x)\le-\eps$ holds on a set of logarithmic measure at least $\eta\log K$ in
+every interval $[X,KX]$ with $X$ and $K$ sufficiently large; the convex hull of the values on
+each such interval contains the ball of radius $\eps$. Moreover, for one scale $j$, a nonzero
+$w\in\R^{n_q}$, arbitrary real predictor coefficients $b_{k,a}$ $(k\ne j)$ and an arbitrary
+intercept $c$,
+\[
+ \lim_{L\to\infty}\frac1L\int_u^{u+L}\Bigl(\sum_aw_aZ_a(t+h_j)-\sum_{k\ne j,\,a}b_{k,a}Z_a(t+h_k)-c\Bigr)^2\dd t
+ \ \ge\ \lambda_{\min}(\mathcal G_\varnothing)\norm w_2^2 .
+\]
+\end{corollary}
+\begin{proof}
+By \eqref{zer:eq:Zexp}, $U_J(t)=\sum_{\gamma\notin J\cup\set0}z(\gamma)e^{i\gamma t}+O((1+t)e^{-t/2})$,
+with $z(-\gamma)=\overline{z(\gamma)}$ and $\sum\norm{z(\gamma)}<\infty$, so \cref{zer:lem:ap}(i)
+gives $\mathcal G_J$. For real $w$, $w\cdot z(\gamma)=A_w(\gamma)/(\tfrac14+\gamma^2)$; pairing $\gamma$
+with $-\gamma$ gives $w^{\mathsf T}\mathcal G_Jw\ge V_{T,H}(w)$ for every band above $\max J$, and
+\eqref{zer:eq:coercive} gives the bound. The ramp sums are continuous, so the hull statement
+applies. For prediction, collect the coefficients in an array whose block at scale $j$ is
+$w$; its squared norm is at least $\norm w_2^2$, and \cref{zer:lem:ap}(i) gives the limit
+$v^{\mathsf T}\mathcal G_\varnothing v+c^2$.
+\end{proof}
+
+The theorem says more than distinctness of zero sets: common ordinates contribute to the
+same vector $z(\gamma)$, and positivity survives the deletion of any bounded part of the
+spectrum. Arbitrary real shifts are allowed, including logarithms of rational numbers
+arbitrarily close to $1$, because the probes separate scaled prime powers rather than zeros.
+The characters attached to a modulus give an invertible change of coordinates of the vector
+$(Z_a)_a$, so the same conclusions hold for the errors of any family of distinct primitive
+characters whose conductors divide $q$ (their imprimitive Euler factors only add terms
+$O_q((1+t)e^{-t/2})$). If $\sum_jw_{j,a}=0$ for every $a$, the central constants cancel, so
+with $R_a(x)=S_a(x)-\log x/n_q-c_a$ the combination
+$\sum_{j,a}w_{j,a}\sqrt{e^{h_j}x}\,R_a(e^{h_j}x)$ oscillates in both directions without any
+information on central zeros; for instance $\sqrt{cx}\,R_a(cx)-\sqrt x\,R_a(x)$, for fixed
+$c>1$, exceeds a positive constant and falls below its negative on sets of positive lower
+logarithmic density.
+
+\begin{example}\label{zer:ex:probes}
+For $q=12$ and the four shifts $0,\log2,\log(3/2),\log5$ (scales $1,2,3/2,5$), the primes
+$13,17,19,11$ in the classes $1,5,7,11$ are probes in the sense of \cref{zer:lem:probes}: each
+product with an off-diagonal scale ratio is either not an integer or has two distinct prime
+factors. \Cref{zer:thm:coercive} therefore gives rank $16$ in every band of the stated sizes.
+For $q=3$ and scales $1,2,3/2$ the primes $7$ and $5$ serve the classes $1$ and $2$. These
+exact rational checks are in the files
+\begin{center}
+\artifact{multiscale_prime_fluctuations/verify_examples.py}\\
+\artifact{grh_multiscale_covariance/numerical_check.py}
+\end{center}
+\end{example}
+
+\paragraph{A certificate from one isolated prime atom.}
+The probe argument also has a distributional form. For a primitive character $\eta$ of conductor
+$Q$, parity $\kappa$ and $\delta=1$ for conductor one, the distribution
+$U_\eta(t)=\sum_\gamma m_\eta(\gamma)e^{i\gamma t}$ (pairing with test functions converges by the
+zero count) satisfies, on $(0,\infty)$,
+\begin{equation}\label{zer:eq:atoms}
+ U_\eta=-\sum_{n\ge2}\frac{\Lambda(n)\eta(n)}{\sqrt n}\,\delta_{\log n}+g_\eta,\qquad
+ g_\eta(t)=-\frac{e^{-(\kappa+1/2)t}}{1-e^{-2t}}+\delta\bigl(e^{-t/2}+e^{t/2}\bigr).
+\end{equation}
+Indeed the second logarithmic derivative of the completed function $\Xi_\eta$ is
+$\sum_\gamma m_\eta(\gamma)(s-\tfrac12-i\gamma)^{-2}$, and for $\Re s>1$ it equals
+$-\sum_n\Lambda(n)\eta(n)(\log n)n^{-s}-\sum_{k\ge0}(s+\kappa+2k)^{-2}+\delta(s^{-2}+(s-1)^{-2})$.
+At $s=\tfrac12+c+iy$, $c>\tfrac12$, the function $(c+i(y-\gamma))^{-2}$ is the Fourier transform of
+$\mathbf 1_{t>0}te^{-ct}e^{i\gamma t}$; testing against $e^{ct}\phi(t)/t$ with
+$\phi\in C_c^\infty(0,\infty)$, and using
+$\sum_\gamma m_\eta(\gamma)/(c^2+(y-\gamma)^2)=O(\log(2+\abs y))$, the exchanges are justified, and
+dividing by $te^{-ct}$ gives \eqref{zer:eq:atoms}.
+
+\begin{proposition}[Atom certificate; \stG]\label{zer:prop:atoms}
+Let $J\subset\Gamma_q$ be finite. For each coordinate $l=(j,a)$ take an isolated probe
+$p_l=p_a$ as in \cref{zer:lem:probes}, a bounded interval $I_l$ about
+$t_l=\log p_l-h_j$ containing no other atom location of the translates
+$U_{\chi^*}(\cdot+h_k)$ and with $t+h_k>0$ on it, and $\phi_l\in C_c^\infty(I_l)$ with
+$\phi_l(t_l)=1$ that annihilates the functions $g_{\chi^*}(t+h_k)$ and $e^{i\gamma t}$,
+$\gamma\in J\cup\set0$. Such tests exist, the numbers
+\[
+ K_l=\frac{p_l}{(\log p_l)^2}\sum_{\gamma\in\Gamma_q\setminus J}(1/4+\gamma^2)^2
+ \Bigl|\int\phi_l(t)e^{i\gamma t}\dd t\Bigr|^2
+\]
+are finite, and
+\[
+ \lambda_{\min}\Bigl(\sum_{\gamma\in\Gamma_q\setminus(J\cup\set0)}z(\gamma)z(\gamma)^*\Bigr)\ge\Bigl(\sum_lK_l\Bigr)^{-1}.
+\]
+\end{proposition}
+\begin{proof}
+Existence: if evaluation at $t_l$ vanished on the common kernel of the finitely many
+functionals $\phi\mapsto\int\phi f$, it would be a combination of them, and a point mass would be
+a smooth function on $I_l$. For $v\in\C^D$ put $d_\gamma=\sum_lv_lz(\gamma)_l$ and
+$c_{j,\chi}=n_q^{-1}\sum_av_{j,a}\overline{\chi(a)}$. The distribution
+$\sum_{j,\chi}c_{j,\chi}U_{\chi^*}(t+h_j)$ has coefficient $(\tfrac14+\gamma^2)d_\gamma$ at each
+$\gamma\ne0$. Pairing it with $\phi_l$ removes the frequencies in $J\cup\set0$ and the smooth part
+of \eqref{zer:eq:atoms}, and leaves only the isolated atom, whose coefficient is
+$-(\log p_l)p_l^{-1/2}\sum_\chi c_{j,\chi}\chi^*(p_l)=-(\log p_l)p_l^{-1/2}v_l$. Cauchy--Schwarz gives
+$\abs{v_l}^2\le K_l\sum_{\gamma\notin J}\abs{d_\gamma}^2$; summing over $l$ bounds the Rayleigh
+quotient. Finiteness of $K_l$ follows from the zero count and the rapid decay of
+$\int\phi_le^{i\gamma t}\dd t$.
+\end{proof}
+
+\paragraph{Derivatives.}
+Let $\chi_1,\dots,\chi_r$ be distinct primitive characters as in \cref{zer:thm:polyrigid}, with
+$\delta_j=1$ for conductor one. For $t\ge0$ and integers $k\ge1$ define the logarithmic Riesz
+means and their errors
+\[
+ S_{j,k}(t)=\frac1{k!}\sum_{n\le e^t}\Lambda(n)\chi_j(n)(t-\log n)^k,\qquad
+ E_{j,k}(t)=e^{-t/2}\bigl(S_{j,k}(t)-\delta_je^t\bigr).
+\]
+Let $\mathcal G$ be the set of distinct ordinates of the family and fix $d\ge0$, $k\ge d+1$.
+
+\begin{lemma}[Riesz-mean explicit formula; \stG]\label{zer:lem:riesz}
+For $k\ge1$ and $t\ge0$,
+$S_{j,k}(t)=\delta_je^t-\sum_\rho m_j(\rho)e^{\rho t}\rho^{-k-1}+O_{j,k}((1+t)^{k+1})$. Consequently,
+for $0\le\ell\le d$,
+\begin{equation}\label{zer:eq:jetexp}
+ E_{j,k}^{(\ell)}(t)=-\sum_{\gamma\in\mathcal G}\frac{m_j(\gamma)(i\gamma)^\ell}{(1/2+i\gamma)^{k+1}}e^{i\gamma t}
+ +O_{j,k,d}\bigl((1+t)^{k+1}e^{-t/2}\bigr),
+\end{equation}
+with absolutely and uniformly convergent series ($0^0=1$).
+\end{lemma}
+\begin{proof}
+The Laplace transform of $S_{j,k}$ is $-L'(s,\chi_j)/(s^{k+1}L(s,\chi_j))$ for $\Re s>1$. Write
+$-L'/L$ through \eqref{zer:eq:hadamard} and the digamma series: it is a constant, plus
+$\delta/(s-1)$, plus a multiple of $1/s$, minus $\sum_\rho m(\rho)(1/(s-\rho)+1/\rho)$, minus
+$\sum_{b_n>0}(1/(s+b_n)-1/b_n)$ with $b_n=a+2n$. For $z\ne0$ the inverse Laplace transform of
+$(1/(s-z)+1/z)s^{-k-1}$ is $\bigl(e^{zt}-\sum_{h<k}(zt)^h/h!\bigr)z^{-k-1}$. Since
+$\sum\abs z^{-2}$ converges over both families of $z$, and $\Re z\le\tfrac12$, termwise inversion
+is justified by uniqueness of Laplace transforms of continuous functions of exponential
+order. The pole terms give $\delta(e^t-\sum_{h\le k}t^h/h!)$ and polynomials of degree at most
+$k+1$, the polynomial parts are $O((1+t)^{k-1})$ and the trivial zeros are bounded. Since
+$S_{j,k}'=S_{j,k-1}$ for $k\ge2$, one has
+$E_{j,k}^{(\ell)}=\sum_{h\le\ell}\binom\ell h(-\tfrac12)^{\ell-h}E_{j,k-h}$; inserting the formula
+at each order $k-h\ge1$ turns the zero numerator into $(\rho-\tfrac12)^\ell=(i\gamma)^\ell$ by
+\cref{src:thm:dgrh}, and $k+1-\ell\ge2$ gives absolute convergence.
+\end{proof}
+
+For a cut $H\ge0$ remove the low frequencies completely:
+\[
+ Y_{j\ell,H}(t)=E_{j,k}^{(\ell)}(t)+\sum_{\abs\gamma\le H}
+ \frac{m_j(\gamma)(i\gamma)^\ell}{(1/2+i\gamma)^{k+1}}e^{i\gamma t},
+\]
+and stack these coordinates in $Y_H(t)\in\C^N$, $N=r(d+1)$.
+
+\begin{theorem}[High-pass jet covariance; \stG]\label{zer:thm:jets}
+For every finite family of distinct primitive characters, every $d\ge0$, $k\ge d+1$ and
+$H\ge0$, uniformly in $u\ge0$,
+\[
+ \lim_{L\to\infty}\frac1L\int_u^{u+L}Y_H(t)Y_H(t)^*\dd t
+ =\mathcal G_H:=\sum_{\abs\gamma>H}\frac{v(\gamma)v(\gamma)^*}{\abs{1/2+i\gamma}^{2k+2}},
+\]
+with $v(\gamma)$ as in \cref{zer:cor:tail}, and $\mathcal G_H$ is positive definite. The mean of
+$Y_H$ tends to zero in the same sense. The same holds if any finite set of ordinates, zero
+included, is removed instead of a full band.
+\end{theorem}
+\begin{proof}
+By \eqref{zer:eq:jetexp}, $Y_H$ is an absolutely convergent series with frequencies $\abs\gamma>H$
+plus a bounded integrable remainder, so the complex analogue of \cref{zer:lem:ap}(i) gives the
+limits. For $c\ne0$, $c^*\mathcal G_Hc=\sum_{\abs\gamma>H}\abs{c^*v(\gamma)}^2\abs{1/2+i\gamma}^{-2k-2}>0$ by
+\cref{zer:cor:tail}. A finite deletion leaves all sufficiently high frequencies.
+\end{proof}
+
+In particular, for coefficients $c_{j\ell}$ not all zero and any finite trigonometric polynomial
+$P(t)$ with real frequencies, the mean square of $\sum c_{j\ell}E_{j,k}^{(\ell)}-P$ has a positive
+limit: choose $H$ above the frequencies of $P$. No finite set of frequencies explains a
+nonzero combination of the smoothed errors and their derivatives. If $\gamma_1,\dots,\gamma_N$
+are tail ordinates whose vectors form a basis and $W$ is the matrix with columns
+$v(\gamma_h)(1/2+i\gamma_h)^{-k-1}$, then $\mathcal G_H\succeq WW^*$ and
+\begin{equation}\label{zer:eq:jetcert}
+ \lambda_{\min}(\mathcal G_H)\ge\frac{\abs{\det W}^2}{(\tr WW^*)^{N-1}}>0,
+\end{equation}
+since the product of the $N-1$ largest eigenvalues of $WW^*$ is at most $(\tr WW^*)^{N-1}$;
+computing this bound needs certified multiplicities.
+
+For residue classes take the characters modulo $q$ with their distinct primitive inducing
+characters, and for $b\in G$ put
+\[
+ E^{[q]}_{b,k}(t)=e^{-t/2}\Bigl(\frac1{k!}\sum_{n\le e^t,\ n\equiv b}\Lambda(n)(t-\log n)^k-\frac{e^t}{n_q}\Bigr).
+\]
+Passing to primitive characters changes $S_k$ by $O_q((1+t)^{k+1})$, since each prime $p\mid q$
+has at most $t/\log p$ powers of weight at most $t^k\log p/k!$. Let $Z_H(t)\in\R^{n_q(d+1)}$ be the
+vector of $(E^{[q]}_{b,k})^{(\ell)}$ with the low-frequency terms
+$n_q^{-1}\sum_\chi\overline{\chi(b)}\sum_{\abs\gamma\le H}m_{\chi^*}(\gamma)(i\gamma)^\ell(1/2+i\gamma)^{-k-1}e^{i\gamma t}$
+added; it is real, because conjugate characters have reflected conjugate terms and the cut is
+symmetric. Up to a decaying error it is $MY_H$ with $M=(\overline{\chi(b)}/n_q)\otimes I_{d+1}$ and
+$MM^*=I/n_q$, so its covariance $M\mathcal G_HM^*$ is real symmetric positive definite.
+
+\begin{corollary}[Uniform directional oscillation; \stG]\label{zer:cor:jetosc}
+For fixed $q,k,d,H$ as above there are $\eta>0$ and $T_0$ such that for every $u\ge0$, every
+$T\ge T_0$ and every real unit vector $c$, there are $t_\pm\in[u,u+T]$ with
+$\pm c^{\mathsf T}Z_H(t_\pm)\ge\eta$. Equivalently, the convex hull of
+$\set{Z_H(t):u\le t\le u+T}$ contains the closed ball of radius $\eta$ about $0$.
+\end{corollary}
+\begin{proof}
+Apply \cref{zer:lem:ap}(iii); the remainder in \eqref{zer:eq:jetexp} is bounded and
+integrable on $[0,\infty)$. The converse direction of the equivalence follows by maximizing a
+linear functional over the hull.
+\end{proof}
+
+For $d=0$ and $H=0$ every nonzero real contrast of centred smoothed residue-class counts
+changes sign with bounded waiting time on the logarithmic scale. A covariance statement does
+not say that every ordering of the unsmoothed counts occurs, nor that the limiting law has full
+support: a distribution on a curve can have positive definite covariance and miss open sets.
+
+\paragraph{A filter computed from primes alone.}
+The constants $c_a$ and $\beta_a$ require $L'/L(1,\chi)$ and the central orders. A compact filter
+removes them. Fix $h>0$ and put
+\[
+ (A_hf)(t)=\frac1h\int_0^hf(t-u)\,\dd u,\qquad d_h=\frac{2(1-e^{-h/2})}h\in(0,1),
+\]
+\[
+ \mathcal D_a(t)=(I-A_h)(d_hI-A_h)^2\bigl[e^{t/2}S_a(e^t)\bigr].
+\]
+Only prime powers up to $e^t$ enter $\mathcal D_a(t)$, and only the values on $[t-3h,t]$. The
+operator sends $e^{zt}$ to $M_h(z)e^{zt}$ with
+\[
+ a_h(z)=\frac{1-e^{-hz}}{hz},\quad a_h(0)=1,\qquad M_h(z)=(1-a_h(z))(d_h-a_h(z))^2 .
+\]
+Since $M_h(0)=M_h(\tfrac12)=M_h'(\tfrac12)=0$ (note $a_h(\tfrac12)=d_h$), it annihilates $1$,
+$e^{t/2}$ and $te^{t/2}$.
+
+\begin{lemma}\label{zer:lem:multiplier}
+For $h>0$ and real $\gamma\ne0$, $M_h(i\gamma)\ne0$.
+\end{lemma}
+\begin{proof}
+$a_h(i\gamma)$ is the mean of $e^{-i\gamma u}$ over $[0,h]$, of modulus less than $1$, so
+$a_h(i\gamma)\ne1$. If it is real, its imaginary part $-(1-\cos\gamma h)/(\gamma h)$ vanishes, so
+$e^{i\gamma h}=1$ and $a_h(i\gamma)=0\ne d_h$.
+\end{proof}
+
+\begin{theorem}[Filtered prime races; \stG]\label{zer:thm:filtered}
+For every $q\ge1$ and $h>0$ there are $\eps,\eta,L_0>0$ and $T_0$, depending only on $q,h$, such
+that for every real unit $w\in\R^G$, every $T\ge T_0$ and every $L\ge L_0$,
+\[
+ \abs{\set{t\in[T,T+L]:w\cdot\mathcal D(t)\ge\eps}}\ge\eta L,\qquad
+ \abs{\set{t\in[T,T+L]:w\cdot\mathcal D(t)\le-\eps}}\ge\eta L,
+\]
+and the convex hull of $\set{\mathcal D(t):T\le t\le T+L}$ contains the ball of radius $\eps$. The
+same holds, with constants depending also on the deleted set, after subtracting from $\mathcal D$
+the terms $M_h(i\gamma)v_a(\gamma)(\tfrac14+\gamma^2)^{-1}e^{i\gamma t}$ of any finite symmetric set of
+nonzero ordinates.
+\end{theorem}
+\begin{proof}
+By \cref{zer:lem:ramp},
+$e^{t/2}S_a(e^t)=te^{t/2}/n_q+c_ae^{t/2}+\beta_a+\sum_{\gamma\ne0}v_a(\gamma)(\tfrac14+\gamma^2)^{-1}e^{i\gamma t}+O((1+t)e^{-t/2})$.
+The filter has operator norm at most $2(1+d_h)^2$ on bounded functions and memory $3h$; it
+removes the first three terms and multiplies each frequency by $M_h(i\gamma)$. So
+$\mathcal D(t)=\sum_{\gamma\ne0}M_h(i\gamma)u_\gamma e^{i\gamma t}+O((1+t)e^{-t/2})$ with
+$u_\gamma=(v_a(\gamma)/(\tfrac14+\gamma^2))_a$. If
+$\sum_{\abs\gamma>H}\abs{M_h(i\gamma)}^2\abs{w\cdot u_\gamma}^2=0$ for a real $w$, then by
+\cref{zer:lem:multiplier}
+$\sum_\chi\bigl(\sum_aw_a\overline{\chi(a)}\bigr)m_\chi(\gamma)=0$ for $\abs\gamma>H$, and
+\cref{zer:thm:polyrigid} with constant polynomials gives $w=0$. \Cref{zer:lem:ap}(ii) completes
+the proof.
+\end{proof}
+
+For evaluation, $e^{t/2}S_a(e^t)=\sum_{n\equiv a}\Lambda(n)n^{-1/2}b(t-\log n)$ with
+$b(v)=\mathbf 1_{v\ge0}(e^{v/2}-e^{-v/2})$, and the filter expands as
+$d_h^2I-(d_h^2+2d_h)A_h+(1+2d_h)A_h^2-A_h^3$ with
+$A_h^jb(v)=h^{-j}\sum_{k\le j}(-1)^k\binom jkb_j(v-kh)$, where $b_j$ is the $j$-fold primitive
+of $b$ vanishing on $v<0$,
+\[
+ b_j(v)=2^j\Bigl(e^{v/2}-\sum_{k<j}\frac{(v/2)^k}{k!}\Bigr)
+ -(-2)^j\Bigl(e^{-v/2}-\sum_{k<j}\frac{(-v/2)^k}{k!}\Bigr)\quad(v\ge0).
+\]
+For $v\ge3h$ the filtered kernel is exactly $-M_h(-\tfrac12)e^{-v/2}$, so each prime power far
+below the cutoff contributes a decaying term and no growing terms cancel. Floating-point
+samples for $q=1,4,5,8$ are in \artifact{grh_filtered_prime_races/experiment_output.txt}.
+
 \subsection{Balancing all prime-power races in one multiplicative interval}\label{zer:sec:balancing}
-\sources{grh_cm_four_terms_and_prime_bias}
+\sources{grh_cm_four_terms_and_prime_bias; grh_prime_error_balancing; multiscale_prime_fluctuations}
 
 Fix a positive integer $q$, put $G=(\Z/q\Z)^\times$ and $n_q=\abs G$, and let $\chi$ run
 over the characters of $G$. Write $\chi^*$ for the primitive character inducing $\chi$ and
@@ -1705,6 +1798,758 @@ are verified with integer sieving and rational estimates for logarithms in
 \artifact{grh_cm_four_terms_and_prime_bias/checks/prime_race_triangle.py}
 \end{center}
 \end{example}
+
+\paragraph{Smoothed sums in bounded logarithmic windows.}
+For the ramp sums of \cref{zer:sec:cov} the balance holds at real scales in windows of bounded
+logarithmic length centred anywhere. With the notation \eqref{zer:eq:va} put
+$R_a(x)=S_a(x)-\log x/n_q-c_a$, $F(v)=(e^{v/2}R_a(e^v))_{a\in G}$ and $\beta=(\beta_a)_{a\in G}$.
+
+\begin{corollary}[Uniform balancing of smoothed errors; \stG]\label{zer:cor:smoothbalance}
+For each $q$ there are $H>0$, $r>0$ and $T_0$ such that for every real $T\ge T_0$
+\[
+ \beta+\set{y\in\R^{n_q}:\norm y_2\le r}\ \subseteq\ \zerconv\set{F(v):T-H\le v\le T+H}.
+\]
+Hence every target $y$ with $\norm{y-\beta}\le r$, in particular $y=\beta$, equals
+$\sum_{j\le k}w_j\sqrt{x_j}R_a(x_j)$ simultaneously for all $a\in G$, for some $k\le n_q+1$,
+scales $x_j\in[e^{T-H},e^{T+H}]$ and convex weights $w_j$.
+\end{corollary}
+\begin{proof}
+$F(v)-\beta=Z(v)$. Apply \cref{zer:cor:multiscale} with $r=1$, $h_1=0$ and $J=\varnothing$,
+and \cref{zer:lem:ap}(ii) with windows of length $2H\ge L_0$; finish with Carath\'eodory's
+theorem.
+\end{proof}
+
+The scales and weights depend on the centre and the target, and no single scale balances all
+classes; for $q=1$ the intermediate value theorem gives one scale for every target in the
+ball. This ball concerns the smoothed sums at real scales and \cref{zer:thm:balancing} the
+unsmoothed $\psi(x;q,a)$ at integers; neither statement implies the other. The radius can be
+certified from finite data: for a finite symmetric set $E$ of nonzero ordinates with tail
+$\tau=\sum_{\gamma\notin E}\norm{c(\gamma)}$, where $c(\gamma)=(v_a(\gamma)/(\tfrac14+\gamma^2))_a$ and
+$K=\sum_\gamma\norm{c(\gamma)}$, the uniform error of the window mean is at most
+$\tau+H^{-1}\sum_{\gamma\in E}\norm{c(\gamma)}/\abs\gamma$, and that of the second moment is at most
+$3K\tau+H^{-1}\sum_{\gamma,\eta\in E,\ \gamma+\eta\ne0}\norm{c(\gamma)}\norm{c(\eta)}/\abs{\gamma+\eta}$; any
+certified bound for $K$ and positive lower bound for the least eigenvalue may be inserted in
+the proof of \cref{zer:lem:ap}.
+
+A different averaging rule is independent of the centre and of the target.
+
+\begin{theorem}[Common compact kernel; \stG]\label{zer:thm:kernel}
+For $B\ge2$ let $\mathcal Z_B$ be the multiset of the absolute values $0<\abs\gamma\le B$ of the
+ordinates of all $L(s,\chi^*)$, $\chi\bmod q$, with multiplicity and both signs, $N_B=\abs{\mathcal Z_B}$,
+\[
+ H_B=\pi\sum_{g\in\mathcal Z_B}\frac1g,\qquad
+ \mu_B=\mathop{\ast}_{g\in\mathcal Z_B}\operatorname{Unif}[-\pi/g,\pi/g].
+\]
+Then $\mu_B$ is a probability measure on $[-H_B,H_B]$, and for $T\ge H_B$ and fixed
+$0<\delta<\tfrac12$,
+\[
+ \Bigl\|\int F(T+w)\,\dd\mu_B(w)-\beta\Bigr\|_2\le K\pi^{-N_B}+C_{q,\delta}e^{-(1/2-\delta)(T-H_B)}.
+\]
+Moreover $H_B=O_q(1+\log^2B)$ and $N_B\gg B\log B$. With $B=T$, for every fixed
+$0<\eps<\tfrac12$,
+\[
+ \Bigl\|\int F(T+w)\,\dd\mu_T(w)-\beta\Bigr\|_2=O_{q,\eps}\bigl(e^{-(1/2-\eps)T}\bigr),\qquad
+ H_T=O_q(\log^2T).
+\]
+\end{theorem}
+\begin{proof}
+Convolution adds support radii and preserves mass, and
+\[
+ \widehat\mu_B(\omega)=\prod_{g\in\mathcal Z_B}\frac{\sin(\pi\omega/g)}{\pi\omega/g}.
+\]
+This vanishes at every
+nonzero ordinate of modulus at most $B$, and for $\abs\omega>B$ each factor has modulus at most
+$g/(\pi\abs\omega)\le1/\pi$. Integrating \eqref{zer:eq:Zexp} termwise, the high frequencies
+contribute at most $K\pi^{-N_B}$, and the remainder is bounded on the support. The zero count
+$O_q(B\log(B+2))$ and partial summation give $\sum_{g\le B}1/g=O_q(1+\log^2B)$, with a fixed
+positive minimum among the finitely many small ordinates; the zeta factor and the
+Riemann--von Mangoldt formula give $N_B\gg B\log B$. For $B=T$ the first term is
+$\exp(-cT\log T)$; take $\delta=\eps/2$ and absorb $\exp((\tfrac12-\delta)H_T)$ into
+$\exp(\eps T/2)$.
+\end{proof}
+
+Writing $X=e^T$ and $R=(R_a)_a$, the same kernel gives
+\[
+ \Bigl\|\int\sqrt{e^w}\,R(Xe^w)\,\dd\mu_T(w)-X^{-1/2}\beta\Bigr\|_2=O_{q,\eps}(X^{-1+\eps}),
+\]
+with all scales in $[X\exp(-O_q((\log\log X)^2)),X\exp(O_q((\log\log X)^2))]$. The weight
+$\sqrt{e^w}$ matters, and this is a positive averaging statement, not a pointwise bound of size
+$X^{-1+\eps}$. For a spectral accuracy $\eps$, ignoring the decaying remainder, $B\asymp\log(1/\eps)$
+suffices, with logarithmic support radius $O_q((\log\log(1/\eps))^2)$.
+
+\begin{remark}[The remainder of the source proof]\label{zer:rem:sourceremainder}
+Let $d\equiv7\pmod8$ be prime, $(M,d)=1$, and let $R_{d,M}$ be the centred remainder of
+$\sum_{n\le x,\ n\equiv1\bmod M}\Lambda(n)(1-\chi_d(n))(1/n-1/x)$, whose main term is
+$\log x/\varphi(M)$; its constant is the regular part at $1$ of the weighted logarithmic
+derivative minus the pole coefficient, as in the source's \code{logDerivMean}. Take $q=Md$ and
+$w(a)=\mathbf 1_{a\equiv1\bmod M}(1-\chi_d(a))$ on $(\Z/q\Z)^\times$; then $\sum_aw(a)=d-1$, so
+$\sum_aw(a)/n_q=1/\varphi(M)$. The powers of $d$ add
+$\log d\sum_{d^k\le x,\ d^k\equiv1\bmod M}(d^{-k}-x^{-1})$, a constant plus $O_{d,M}((1+\log x)/x)$, so
+\[
+ \sqrt xR_{d,M}(x)=\sum_aw(a)F_a(\log x)+O_{d,M}\bigl((1+\log x)/\sqrt x\bigr).
+\]
+Since $w\ne0$, \cref{zer:cor:multiscale} applies to the shifted copies
+$(\sqrt{e^{h_j}x}\,R_{d,M}(e^{h_j}x)-\sum_aw(a)\beta_a)_j$: their covariance is positive definite,
+every nonzero real combination has both signs on sets of positive lower logarithmic density,
+and the centred remainder of the source has infinitely many spectral frequencies and is not a
+linear combination of finitely many other scales. If $\varphi(M)>1$, the weights of $R_{d,M}$ and
+of $R_{d,1}$ (computed on the same modulus, with the finitely many powers of primes dividing $M$
+added back) are linearly independent, so the pair $(\sqrt xR_{d,M},\sqrt xR_{d,1})$ has a
+two-dimensional ball about its central biases in every sufficiently late window of the fixed
+logarithmic length of \cref{zer:cor:smoothbalance}, and both biases are attained by one convex
+average of at most three scales.
+\end{remark}
+
+\subsection{Positive spectral weights: peaks, sharp windows and resonance}\label{zer:sec:peaks}
+{\emergencystretch=6em\sources{prime_peak_rigidity; sparse_grh_balanced_windows; sharp_multiscale_prime_windows; grh_prime_resonance_2026-11-26}}
+
+On the critical line $1/(\rho(1-\rho))=1/(\tfrac14+\gamma^2)$ is positive. In the identity class,
+and for suitably balanced or autocorrelated windows, all spectral coefficients of a smoothed
+prime error are then nonnegative. Such a function is bounded by its value at $0$, which is an
+arithmetic constant, and returns arbitrarily close to it. This gives exact extremal values,
+rigidity near the extremum, sharp inequalities between windows, and a covariance kernel whose
+local structure is arithmetic. We keep the notation of \cref{zer:sec:cov}; $K_\chi$ depends only
+on $\chi^*$.
+
+\begin{lemma}[Positive spectra; \stU]\label{zer:lem:posspec}
+\begin{enumerate}[label=\textup{(\roman*)}]
+\item Let $F_1,\dots,F_k:\R\to\C^N$ be absolutely convergent trigonometric series and $\eps>0$. The
+set of $\tau$ with $\sup_{u\in\R}\norm{F_i(u+\tau)-F_i(u)}<\eps$ for all $i$ is relatively dense
+and unbounded above.
+\item Let $f(t)=\sum_\gamma c_\gamma e^{i\gamma t}$ with $c_\gamma\ge0$ and $\sum c_\gamma<\infty$.
+Then $\abs{f(t)}\le f(0)$ for all $t$. If $t_j\to\infty$ and $t_{j+1}-t_j\to0$, then
+$\limsup_j\Re f(t_j)=f(0)$.
+\item Let $\widehat G$ be the characters of a finite abelian group $G$, let
+$w_{\chi,\gamma}\ge0$ be summable, and put
+\[
+ \mathcal K(a,t)=\sum_{\chi\in\widehat G}\sum_\gamma w_{\chi,\gamma}\overline{\chi(a)}e^{i\gamma t}.
+\]
+For $(a_i,t_i)\in G\times\R$ and $c_i\in\C$ put
+\[
+ Q=\sum_{i,j}c_i\overline{c_j}\mathcal K(a_ia_j^{-1},t_i-t_j),\qquad
+ \mathcal S(T)=\sum_{i,j}c_i\overline{c_j}\mathcal K(a_ia_j^{-1},T+t_i-t_j).
+\]
+Then $Q\ge0$, $\abs{\mathcal S(T)}\le Q$, and $\limsup_{T\to\infty}\abs{\mathcal S(T)}=Q$.
+\end{enumerate}
+\end{lemma}
+\begin{proof}
+(i) Discard tails of total coefficient norm below $\eps/4$. For the finitely many remaining
+frequencies, the closure of $\set{(e^{i\gamma t})_\gamma:t\in\R}$ is a compact subgroup $\mathcal T$
+of a torus. For a symmetric neighbourhood $U$ of the identity, the translates by the dense
+orbit cover $\mathcal T$, so finitely many, by $s_1,\dots,s_m\in[A,B]$, already do; for every $t$
+some $t-s_j$ has its phases in $U$, so returns occur in every interval of length $B-A+1$, and
+arbitrarily far to the right. No independence of the frequencies is used. (ii) The bound is
+the triangle inequality. By (i) there are arbitrarily large $\tau$ with $\abs{f(\tau)-f(0)}$
+small, and uniform continuity transfers this to a mesh with gaps tending to zero.
+(iii) $\mathcal S(T)=\sum_{\chi,\gamma}w_{\chi,\gamma}e^{i\gamma T}\abs{\sum_ic_i\overline{\chi(a_i)}e^{i\gamma t_i}}^2$
+has nonnegative coefficients and $\mathcal S(0)=Q$; apply (ii).
+\end{proof}
+
+\begin{lemma}[Mass of the zero spectrum; \stG]\label{zer:lem:mass}
+For a primitive character $\chi$ of conductor $f$ and parity $b$,
+\[
+ M_\chi:=K_\chi(0)=\sum_\gamma\frac{m_\chi(\gamma)}{1/4+\gamma^2}=
+ \begin{cases}2+\zergE-\log(4\pi),&f=1,\\[2pt]
+ \log(f/\pi)+\psi\bigl((1+b)/2\bigr)+2\Re\dfrac{L'}{L}(1,\chi),&f>1,\end{cases}
+\]
+and $M_\chi>0$. For $f=1$ and $t\ge0$ one has exactly
+\begin{equation}\label{zer:eq:zetaexact}
+ K_\zeta(t)=e^{t/2}\Bigl[S(e^t)-t+1+\zergE-e^{-t}\log(2\pi)+\mathcal T(e^{-t})\Bigr],\qquad
+ \mathcal T(z)=\sum_{k\ge1}\frac{z^{2k+1}}{2k(2k+1)},
+\end{equation}
+where $S(x)=\sum_{n\le x}\Lambda(n)(1/n-1/x)$ and
+$\mathcal T(z)=z+\tfrac12(1-z)\log(1-z)-\tfrac12(1+z)\log(1+z)$.
+\end{lemma}
+\begin{proof}
+For the completed entire function $\Xi_\chi$ the Hadamard product gives
+$\Xi_\chi'/\Xi_\chi(1)-\Xi_\chi'/\Xi_\chi(0)=\sum_\rho(1/(1-\rho)+1/\rho)=M_\chi$, an absolutely convergent
+sum of positive terms by \cref{src:thm:dgrh}, and the functional equation with conjugation makes
+the left side $2\Re\Xi_\chi'/\Xi_\chi(1)$. Inserting the Gamma factors, with
+$\xi'/\xi(1)=1+\zergE-\tfrac12\log\pi+\tfrac12\psi(\tfrac12)$ and $\psi(\tfrac12)=-\zergE-2\log2$, gives the
+values (the same identity appears in the proof of \cref{ana:thm:excursion}). For
+\eqref{zer:eq:zetaexact}, the contour argument of \cref{zer:lem:ramp} for $-\zeta'/\zeta$, carried to
+the left past all trivial zeros, gives residues $\log x-1-\zergE$ at $1$,
+$x^{\rho-1}/(\rho(1-\rho))$ at each zero, $x^{-1}\log(2\pi)$ at $0$ and $-x^{-2k-1}/(2k(2k+1))$ at $-2k$;
+multiply by $x^{1/2}$. At $t=0$, $S(1)=0$ and $\mathcal T(1)=1-\log2$.
+\end{proof}
+
+\paragraph{Peak rigidity.}
+Put $E_a(x)=\sqrt x\bigl(S_a(x)-\log x/n_q-c_a\bigr)$, so $E_a(e^t)=Z_a(t)+\beta_a$, and
+\[
+ B_a(t)=\frac1{n_q}\sum_\chi\overline{\chi(a)}K_\chi(t),\qquad v_a=B_a(0),\qquad D(t)=v_1-B_1(t),
+\]
+where $B_1$ is the identity class. By \cref{zer:lem:ramp},
+$E_a(x)=B_a(\log x)+O_q((1+\log x)/\sqrt x)$. Conjugation shows that $B_a$ and $v_a$ are real and
+$v_a=v_{a^{-1}}$; $v_1=n_q^{-1}\sum_\chi M_{\chi^*}>0$, and every $v_a$ is a finite Fourier transform
+of the masses of \cref{zer:lem:mass}.
+
+\begin{theorem}[Peak rigidity; \stG]\label{zer:thm:peak}
+The following hold for every $q\ge1$.
+\begin{enumerate}[label=\textup{(\roman*)}]
+\item $\limsup_{x\to\infty}E_1(x)=v_1$, and $\limsup_{x\to\infty}\abs{E_a(x)}\le v_1$ for every
+$a$, with $\abs{v_a}<v_1$ for $a\ne1$.
+\item $D(t)\ge0$, and for all $a$ and all real $t,u$,
+\[
+ \abs{B_a(t+u)-B_a(u)}^2\le2v_1D(t).
+\]
+\item For all $a$ and $t$,
+\[
+ \Bigl|\frac{B_a(t)+B_{a^{-1}}(t)}2-v_a\Bigr|\le D(t),\qquad
+ \frac1{n_q}\sum_\chi\frac{\abs{K_\chi(t)-M_{\chi^*}}^2}{M_{\chi^*}}\le2D(t).
+\]
+The matrices $V_{a,b}=v_{ab^{-1}}$ and $H(t)_{a,b}=\tfrac12(B_{ab^{-1}}(t)+B_{ba^{-1}}(t))$ satisfy
+$V\succ0$ and $V-H(t)\succeq0$, and $\tr(V-H(t))=n_qD(t)$.
+\item For every $\eps>0$ the set of $t$ with $\sup_{a,u}\abs{B_a(t+u)-B_a(u)}<\eps$ is relatively
+dense. Hence the near-peak scales of $E_1$ are relatively dense on the logarithmic axis.
+\end{enumerate}
+\end{theorem}
+\begin{proof}
+With $w_\gamma=(\tfrac14+\gamma^2)^{-1}$ and multiplicities retained, exactly
+\[
+ D(t)=\frac1{n_q}\sum_\chi\sum_\gamma w_\gamma(1-\cos\gamma t)=\frac1{2n_q}\sum_\chi\sum_\gamma w_\gamma\abs{e^{i\gamma t}-1}^2\ge0 .
+\]
+The translate difference is $n_q^{-1}\sum_{\chi,\gamma}w_\gamma\overline{\chi(a)}e^{i\gamma u}(e^{i\gamma t}-1)$, and
+Cauchy--Schwarz for the measure of mass $w_\gamma/n_q$, of total mass $v_1$, gives (ii). Put
+$D_\chi(t)=M_{\chi^*}-\Re K_\chi(t)\ge0$, whose average is $D(t)$. Then
+$\abs{M_{\chi^*}-K_\chi(t)}^2\le M_{\chi^*}\sum_\gamma w_\gamma\abs{1-e^{i\gamma t}}^2=2M_{\chi^*}D_\chi(t)$, and
+$v_a-\tfrac12(B_a(t)+B_{a^{-1}}(t))=n_q^{-1}\sum_\chi\Re\chi(a)D_\chi(t)$, which give (iii); the
+vectors $(\overline{\chi(a)})_a$ diagonalize $V$ and $H(t)$ with eigenvalues $M_{\chi^*}$ and
+$\Re K_\chi(t)$. \Cref{zer:lem:posspec}(i) makes $D(t)$ small on a relatively dense set, which with
+(ii) gives (iv), and then $\limsup E_1=v_1$. Since all $M_{\chi^*}>0$ and some character separates
+$a\ne1$ from $1$, the triangle inequality is strict in $\abs{v_a}<v_1$.
+\end{proof}
+
+\begin{corollary}[A unique exposed peak; \stG]\label{zer:cor:peak}
+For $x_j\to\infty$ the following are equivalent: $E_1(x_j)\to v_1$;
+$(E_a(x_j))_a\to(v_a)_a$; $E_a(x_je^u)\to B_a(u)$ for every $a$, uniformly for
+$u\ge-\tfrac12\log x_j$. The hyperplane where the identity coordinate equals $v_1$ meets the
+cluster set of $(E_a(x))_a$ in one point. The same holds along integers $x$.
+\end{corollary}
+\begin{proof}
+If $E_1(x_j)\to v_1$ then $D(\log x_j)\to0$, and (ii) gives uniformity in $u$; the error in
+$E_a=B_a+O(\cdot)$ tends to zero uniformly for $x_je^u\ge\sqrt{x_j}$. Rounding $e^t$ to an integer
+changes $t$ by $o(1)$, and the $B_a$ are uniformly continuous.
+\end{proof}
+
+\begin{theorem}[Universal simultaneous peaks; \stG]\label{zer:thm:univpeak}
+There are integers $n_j\to\infty$ such that for every $q\ge1$ and $a\in(\Z/q\Z)^\times$,
+$E_{q,a}(n_je^u)-B_{q,a}(u)\to0$ uniformly for $u\ge-\tfrac12\log n_j$. In particular
+$E_{q,1}(n_j)\to v_{q,1}$ for every $q$. Let $F:\Z\to\C$ have period $Q$, put
+$\mu_F=\varphi(Q)^{-1}\sum_{a\in G_Q}F(a)$,
+$c_F=\sum_{a\in G_Q}F(a)c_{Q,a}+\sum_{p\mid Q}\log p\sum_{k\ge1}F(p^k)p^{-k}$, and
+$E_F(x)=\sqrt x\bigl(\sum_{n\le x}\Lambda(n)F(n)(1/n-1/x)-\mu_F\log x-c_F\bigr)$. Then
+$E_F(x)=B_F(\log x)+O_{F}((1+\log x)/\sqrt x)$ with $B_F=\sum_{a\in G_Q}F(a)B_{Q,a}$, and
+$E_F(n_je^u)\to B_F(u)$ uniformly for $u\ge-\tfrac12\log n_j$.
+\end{theorem}
+\begin{proof}
+For moduli $1,\dots,j$ take, by \cref{zer:lem:posspec}(i) applied to the finitely many series
+$B_{q,a}$, a return $t_j$ with uniform translate errors below $1/(2j)$, large enough that the
+arithmetic errors are below $1/j$ for $x\ge\tfrac12e^{t_j/2}$ and that rounding $e^{t_j}$ to an
+integer $n_j>n_{j-1}$ moves all these series by less than $1/(2j)$. For a periodic weight,
+nonunits $n$ with $\Lambda(n)\ne0$ are powers of primes dividing $Q$, which give the additional
+constant and an error $O((1+\log x)/x)$; the unit classes follow by linearity.
+\end{proof}
+
+This includes the weight $\mathbf 1_{n\equiv1\bmod q}(1-\chi_d(n))$ of the source proof. For a signed
+combination the recurring value $B_F(0)$ need not be the maximum, but the recurrence of the
+whole profile holds. Conversely, an eventual bound $E_1(x)\le C$ already excludes zeros of the
+$L(s,\chi)$, $\chi\bmod q$, from $\Re s>\tfrac12$, by \cref{ana:thm:zerotest} with all weights
+$1/n_q$. Thus GRH for the characters modulo $q$ holds if and only if $\limsup E_1(x)<\infty$, and
+then the limsup is $v_1$. For example $v_1\approx0.0461914179$ for $q=1$; for $q=3$,
+$v_1\approx0.0797106939$ and $v_2\approx-0.0335192760$; and for $q=5$ the classes $1$, $2$,
+$3$, $4$ give approximately $0.1522978093$, $-0.0275913840$, $-0.0275913840$ and
+$-0.0509236233$. These decimals are
+evaluated in floating point from \cref{zer:lem:mass} in \artifact{prime_peak_rigidity/check.py}.
+
+\paragraph{A balanced window with a sharp normalized law.}
+Let $b_\chi\ge0$ $(\chi\bmod q)$ be real, not all zero, with $b_{\overline\chi}=b_\chi$, and put
+$w(n)=\sum_\chi b_\chi\chi(n)$, $\mu=b_{\chi_0}$, $S_w(x)=\sum_{n\le x}\Lambda(n)w(n)(1/n-1/x)$. For
+$c>1$ let $\alpha=c/(c+1)$, $\alpha'=1/(c+1)$ and
+\[
+ \mathcal W_w(x;c)=S_w(x)-\alpha S_w(cx)-\alpha'S_w(x/c)+\mu(\alpha-\alpha')\log c\qquad(x\ge c),
+\]
+which equals $E_w(x)-\alpha E_w(cx)-\alpha'E_w(x/c)$ with $E_w=S_w-\mu\log x$; no constant of the
+prime sum is needed. Its Mellin transform carries the factor
+$P_c(s)=1-\alpha c^{s-1}-\alpha'c^{1-s}=(1-u)(cu-1)/((c+1)u)$, $u=c^{s-1}$, which vanishes only on
+$\Re s\in\set{0,1}$ and on the critical line equals $1-\kappa_c\cos(\gamma\log c)>0$, where
+$\kappa_c=2\sqrt c/(c+1)<1$.
+
+\begin{theorem}[Sharp balanced-window law; \stG]\label{zer:thm:balanced}
+Put
+\[
+ L_w(c)=\sum_\chi b_\chi\sum_\gamma m_\chi(\gamma)\frac{1-\kappa_c\cos(\gamma\log c)}{1/4+\gamma^2}>0 .
+\]
+For every strictly increasing $x_j\to\infty$ with $x_{j+1}/x_j\to1$,
+\[
+ \limsup_{j\to\infty}\sqrt{x_j}\,\mathcal W_w(x_j;c)=\limsup_{j\to\infty}\sqrt{x_j}\,\abs{\mathcal W_w(x_j;c)}=L_w(c),
+\]
+and the same value is the limsup over all real $x$.
+\end{theorem}
+\begin{proof}
+By \cref{zer:lem:ramp}, $E_w(x)=\sum_\chi b_\chi c_\chi+x^{-1/2}f_w(\log x)+O((1+\log x)/x)$ with
+$f_w=\sum_\chi b_\chi K_\chi$. Since $\alpha+\alpha'=1$ and $\alpha c^{-1/2}=\alpha'c^{1/2}=\kappa_c/2$,
+\[
+ \sqrt x\,\mathcal W_w(x;c)=f_w(t)-\tfrac{\kappa_c}2\bigl(f_w(t+\log c)+f_w(t-\log c)\bigr)
+ +O\bigl((1+t)e^{-t/2}\bigr),\qquad t=\log x,
+\]
+a series with coefficients $b_\chi m_\chi(\gamma)(1-\kappa_c\cos(\gamma\log c))/(\tfrac14+\gamma^2)\ge0$ and value
+$L_w(c)$ at $t=0$. Apply \cref{zer:lem:posspec}(ii); $\log x_j$ has gaps tending to zero.
+\end{proof}
+
+The positive weights are essential, and the statement uses neither simplicity nor
+independence of ordinates. On a mesh with power-saving gaps, the sparse one-sided criterion of
+\cref{sec:ana} shows conversely that a finite limsup forces all active zeros onto the critical
+line, and that without GRH the limsup is $+\infty$. For $\zeta$ ($q=1$, $w=1$), \eqref{zer:eq:zetaexact}
+evaluates the constant from one prime sum:
+\[
+ L_1(c)=M_\zeta-\kappa_cK_\zeta(\log c)
+ =2+\zergE-\log(4\pi)-\frac{2c}{c+1}\Bigl(S(c)-\log c+1+\zergE-\frac{\log(2\pi)}c+\mathcal T(1/c)\Bigr),
+\]
+and $S(2)=0$ gives $L_1(2)=0.0625323180445\ldots$ (a numerical evaluation of this closed form).
+Consequently, for every fixed integer $k\ge1$,
+\[
+ \limsup_{n\to\infty}n^{k/2}\Bigl(S(n^k)-\tfrac23S(2n^k)-\tfrac13S(n^k/2)+\tfrac13\log2\Bigr)=L_1(2).
+\]
+Since $P_c(0)=0$, the term $\log(2\pi)/x$ of \eqref{zer:eq:zetaexact} cancels exactly in
+$\mathcal W_1$, so for all $x\ge c$ the corrected quantity
+$\sqrt x\bigl(\mathcal W_1(x;c)+\mathcal T(1/x)-\alpha\mathcal T(1/(cx))-\alpha'\mathcal T(c/x)\bigr)$ is exactly the
+positive-coefficient series at $\log x$ and has absolute value at most $L_1(c)$; the constant is
+optimal on every mesh of the theorem.
+
+\paragraph{Sharp inequalities between compact prime windows.}
+Fix an odd prime $q$, $d=q-1$, $G=(\Z/q\Z)^\times$ and $0<h<\log2$. Define
+\[
+ g_h(u)=\begin{cases}e^{h-\abs u/2}-e^{\abs u/2},&\abs u\le h,\\0,&\abs u>h,\end{cases}\qquad
+ \mathsf H=e^h-1,\qquad\mathsf B=h\mathsf H,
+\]
+and $b_j(u)=e^{-(j+1/2)u}/(1-e^{-2u})$ for $u>0$ and $j=0,1$.
+\[
+\]
+For $a\in G$ and $t>h$ put
+\begin{align*}
+ P(a,t)&=\sum_{n\equiv a\bmod q}\frac{\Lambda(n)}{\sqrt n}g_h(\log n-t)+\frac1d\sum_{k\ge1}\frac{\log q}{q^{k/2}}g_h(k\log q-t),\\
+ A(a,t)&=\frac12\int_{t-h}^{t+h}g_h(u-t)\bigl[\mathbf 1_{a=1}(b_0+b_1)(u)+\mathbf 1_{a=-1}(b_0-b_1)(u)\bigr]\dd u,\\
+ C(t)&=\frac{\mathsf B}d\bigl(e^{t/2}+e^{-t/2}\bigr),\qquad \mathsf E(a,t)=C(t)-P(a,t)-A(a,t).
+\end{align*}
+The prime sum samples $e^{t-h}\le n\le e^{t+h}$; the second term comes from $\zeta$, the
+primitive character inducing the principal one. With
+$J_j=2\int_0^\infty(\mathsf H-g_h(u))b_j(u)\,\dd u$,
+$\mathcal D(f,j,\delta)=\mathsf H(\log(f/\pi)+\psi(\tfrac14+\tfrac j2))+J_j+2\delta\mathsf B$ and
+\[
+ \mathsf M=\frac1d\Bigl(\mathcal D(1,0,1)+\frac{q-3}2\mathcal D(q,0,0)+\frac{q-1}2\mathcal D(q,1,0)\Bigr),
+\]
+no prime or zero enters $\mathsf M$, because $h<\log2$.
+
+\begin{theorem}[Sharp multiscale contrast; \stG]\label{zer:thm:sharpwin}
+$\mathsf E$ extends to a continuous real positive-definite function $\mathcal K$ on $G\times\R$,
+\[
+ \mathcal K(a,t)=\frac1d\sum_{\chi\bmod q}\overline{\chi(a)}\sum_\gamma m_\chi(\gamma)w_h(\gamma)e^{i\gamma t},\qquad
+ w_h(y)=\frac{e^h+1-2e^{h/2}\cos(hy)}{1/4+y^2}>0,
+\]
+with $\mathcal K(1,0)=\mathsf M>0$ and $\mathcal K(a^{-1},-t)=\mathcal K(a,t)$. Hence
+\[
+ \abs{\mathsf E(a,t)}\le\mathsf M\quad(t>h),\qquad\limsup_{t\to\infty}\mathsf E(1,t)=\mathsf M .
+\]
+For a finite family $(a_i,t_i)$ and $c_i\in\C$ let
+$Q=\sum_{i,j}c_i\overline{c_j}\mathcal K(a_ia_j^{-1},t_i-t_j)\ge0$. For
+$T>h+\max\abs{t_i-t_j}$,
+\[
+ \Bigl|\sum_{i,j}c_i\overline{c_j}\,\mathsf E(a_ia_j^{-1},T+t_i-t_j)\Bigr|\le Q,
+\]
+and the limsup of the left side as $T\to\infty$ is $Q$. If all differences $\abs{t_i-t_j}$, $i\ne j$,
+exceed $h$, then $Q$ is computed from the displayed prime sums, integrals and $\mathsf M$.
+\end{theorem}
+\begin{proof}
+With $k(v)=e^{v/2}\mathbf 1_{[0,h]}(v)$ one has $g_h(u)=\int k(v)k(v+u)\,\dd v$, so
+$\widehat g_h(y)=\int g_h(u)e^{iyu}\dd u=\abs{(e^{(1/2+iy)h}-1)/(1/2+iy)}^2=w_h(y)$, and
+$\int g_h(u)e^{\pm u/2}\dd u=\mathsf B$. For a primitive character of conductor $f$, parity $j$ and
+$\delta=1$ for conductor one, and for a real compactly supported Lipschitz $F$ that is piecewise
+smooth, the Weil explicit formula reads
+\begin{align*}
+ \sum_\gamma m(\gamma)\widehat F(\gamma)={}&\delta\int F(u)(e^{u/2}+e^{-u/2})\dd u
+ +F(0)\bigl(\log(f/\pi)+\psi(\tfrac14+\tfrac j2)\bigr)\\
+ &+\int_0^\infty(2F(0)-F(u)-F(-u))b_j(u)\dd u\\
+ &-\sum_{n\ge2}\frac{\Lambda(n)}{\sqrt n}\bigl(\chi(n)F(\log n)+\overline{\chi(n)}F(-\log n)\bigr),
+\end{align*}
+obtained from the residue theorem for the completed logarithmic derivative, integrated
+against the transform $\int F(u)e^{(s-1/2)u}\dd u$, with the digamma integral representation for the Gamma
+terms \cite{Koukoulopoulos2019Distribution}; smooth compact mollification and the bound
+$\widehat F(y)=O((1+y^2)^{-1})$ justify it for these $F$. Take $F=g_h(\cdot-t)$ with $t>h$, so
+$F(0)=F(-\log n)=0$, and average with $\overline{\chi(a)}/d$: the pole terms give $C(t)$;
+orthogonality gives the class $a$ for $(n,q)=1$, and $n=q^k$ only through $\zeta$, with weight
+$1/d$, which is $P(a,t)$; and writing
+\[
+ b_j=\tfrac12(b_0+b_1)+\tfrac12\chi(-1)(b_0-b_1)
+\]
+gives $A(a,t)$.
+So $\mathcal K=\mathsf E$ for $t>h$. At $(1,0)$ the prime terms vanish since $h<\log2$, each character
+gives $\mathcal D(f,j,\delta)$, and the $d/2$ even characters include the principal one. The
+remaining assertions are \cref{zer:lem:posspec}(iii), the weights $m_\chi(\gamma)w_h(\gamma)/d$ being
+positive.
+\end{proof}
+
+\begin{corollary}[Two and three windows; \stG]\label{zer:cor:sharpwin}
+For $u>h$, $a\in G$ and $T>u+h$,
+\[
+ \abs{2\mathsf E(1,T)-\mathsf E(a,T+u)-\mathsf E(a^{-1},T-u)}\le2\bigl(\mathsf M-\mathsf E(a,u)\bigr),
+\]
+sharp in the limsup, which improves the triangle bound $4\mathsf M$ whenever $\mathsf E(a,u)>-\mathsf M$.
+For $g_1,g_2\in G\times\R$ with $X=\mathcal K(g_1)$, $Y=\mathcal K(g_2)$, $Z=\mathcal K(g_1g_2^{-1})$,
+\[
+ \mathsf M^3+2XYZ-\mathsf M(X^2+Y^2+Z^2)\ge0,
+\]
+equivalently, if $\abs Z<\mathsf M$, $\dfrac{(X+Y)^2}{2\mathsf M(\mathsf M+Z)}+\dfrac{(X-Y)^2}{2\mathsf M(\mathsf M-Z)}\le1$.
+\end{corollary}
+\begin{proof}
+Take $(1,0),(a,u)$ with coefficients $(1,-1)$, so $Q=2(\mathsf M-\mathcal K(a,u))$; and use the
+nonnegative determinant of the Gram matrix of $(1,0),g_1,g_2$.
+\end{proof}
+
+For $q=5$, $h=0.4$, $a=2$, $u=\log10$ and $T=\log1000$, the prime-sum evaluation gives
+$\mathsf M\approx0.44998$, a translated contrast $\approx-0.21147$ and the sharp bound $\approx0.63564$,
+about $35\%$ of the triangle bound $4\mathsf M$; these are floating-point values from
+\begin{center}\artifact{sharp_multiscale_prime_windows/check_windows.py}.\end{center}
+
+\paragraph{Arithmetic tangents of the zero spectrum.}
+For a primitive real character $\chi$ of conductor $q$ (conductor one gives $\zeta$) the kernel
+$K_\chi$ is real, even, and positive semidefinite:
+\[
+ \sum_{i,j}c_i\overline{c_j}K_\chi(t_i-t_j)=\sum_\gamma m_\chi(\gamma)\frac{\abs{\sum_ic_ie^{i\gamma t_i}}^2}{1/4+\gamma^2}.
+\]
+It is
+the covariance of a centred stationary Gaussian process $X_\chi$: take, for each distinct
+positive ordinate, the coordinates $\sqrt{2m_\chi(\gamma)/(1/4+\gamma^2)}(\cos\gamma t,\sin\gamma t)$, and
+$2\sqrt{m_\chi(0)}$ for a central zero, and multiply by independent standard normal variables.
+These coordinates also give a deterministic Hilbert-space realization with
+$\langle v_\chi(t),v_\chi(u)\rangle=K_\chi(t-u)$. By \cref{zer:lem:ramp}, $K_\chi(\log x)$ is the
+normalized prime error $\sqrt x(S_\chi(x)-\delta_\chi\log x-c_\chi)$ up to $O((1+\log x)/\sqrt x)$. Put
+\[
+ d_q=1-\zergE-\log(2\pi)+\log q,\qquad J_\chi(a)=\begin{cases}\chi(n)\Lambda(n)/\sqrt n,&e^a=n\in\N,\ n\ge2,\\0,&\text{otherwise},\end{cases}
+\]
+and $B(u,v)=-\tfrac12(u\log u+v\log v-\abs{u-v}\log\abs{u-v})$ with $0\log0=0$.
+
+\begin{lemma}[Cusps of the kernel; \stG]\label{zer:lem:cusp}
+As $t\downarrow0$, $K_\chi(t)=M_\chi+\tfrac t2(\log t-d_q)+O_\chi(t^2)$. Near each $a>0$,
+$K_\chi(t)=G_a(t)+J_\chi(a)(t-a)_+$ with $G_a$ of class $C^2$. For $q>1$ and parity $b$, for $t\ge0$,
+\begin{align*}
+ K_\chi(t)={}&K_\zeta(t)+(M_\chi-M_\zeta)\cosh(t/2)-\log q\,\sinh(t/2)
+ +(2-b)t\sinh(t/2)\\
+ &+2b\cosh(t/2)\log\cosh(t/2)-\sum_{n\le e^t}\frac{2\Lambda(n)(1-\chi(n))}{\sqrt n}\sinh\Bigl(\frac{t-\log n}2\Bigr).
+\end{align*}
+\end{lemma}
+\begin{proof}
+For $0<t<\log2$ the prime sum in \eqref{zer:eq:zetaexact} is empty, and expanding
+$1-e^{-t}=t(1-t/2+O(t^2))$ in $\mathcal T$ gives the zeta case. The prime power $n$ enters
+\eqref{zer:eq:zetaexact} through $2\Lambda(n)n^{-1/2}\sinh((t-\log n)/2)\mathbf 1_{t\ge\log n}$, whose linear
+part is $J_\zeta(\log n)(t-\log n)_+$ and whose remainder is $C^2$. For $\chi$, let
+$F_\chi(s)=(q/\pi)^{(s+b)/2}\Gamma((s+b)/2)L(s,\chi)$ and $H_\chi(s)=F_\chi'/F_\chi(\tfrac12+s)=\sum_\gamma s/(s^2+\gamma^2)$
+for $s>\tfrac12$, pairing $\pm\gamma$ (a central zero contributes $m/s$); the same holds for $\xi$. Pairing
+gives $\int_0^\infty e^{-st}K_\chi(t)\dd t=(sM_\chi-H_\chi(s))/(s^2-\tfrac14)$. The Dirichlet series and
+\[
+ \tfrac12\bigl[\psi(\tfrac{z+1}2)-\psi(\tfrac z2)\bigr]=\int_0^\infty\frac{e^{-zu}}{1+e^{-u}}\dd u,\qquad z=\tfrac12+s,
+\]
+give $H_\chi-H_\zeta=\tfrac12\log q+\int_0^\infty e^{-st}\bigl(b/(2\cosh(t/2))-2\cosh(t/2)\bigr)\dd t
++\sum_n\Lambda(n)(1-\chi(n))n^{-1/2-s}$, where $2\cosh(t/2)$ inverts the terms $1/z+1/(z-1)$ of
+$\xi'/\xi$. Inverting with $(s^2-\tfrac14)^{-1}\leftrightarrow2\sinh(t/2)$ gives the formula, and the
+convolution integral evaluates to the two elementary terms. For $t<\log2$ the prime sum is empty
+and the local expansion follows from the zeta case; at $\log n$ the two prime contributions
+combine to $2\chi(n)\Lambda(n)n^{-1/2}\sinh((t-\log n)/2)\mathbf 1_{t\ge\log n}$.
+\end{proof}
+
+Consequently $V_\chi(t)=2(K_\chi(0)-K_\chi(t))=t(\log(1/t)+d_q)+O_\chi(t^2)$, and $X_\chi$ has a
+continuous version.
+
+\begin{theorem}[Brownian tangents with an arithmetic correction; \stG]\label{zer:thm:tangent}
+Fix $U>0$ and distinct reals $a_1,\dots,a_m$, and let $A_\chi(\boldsymbol a)$ be the symmetric matrix
+with zero diagonal and entries $J_\chi(\abs{a_i-a_j})$. As $h\downarrow0$, uniformly for $u,v\in[0,U]$,
+\begin{multline*}
+ \frac1h\operatorname{Cov}\bigl(X_\chi(a_i+hu)-X_\chi(a_i),X_\chi(a_j+hv)-X_\chi(a_j)\bigr)\\
+ =\delta_{ij}\bigl[(\log(1/h)+d_q)\min(u,v)+B(u,v)\bigr]-A_\chi(\boldsymbol a)_{ij}\min(u,v)+O(h).
+\end{multline*}
+The processes $Y_{i,h}(u)=(X_\chi(a_i+hu)-X_\chi(a_i))/\sqrt{h\log(1/h)}$ converge jointly in
+$C([0,U])^m$ to independent standard Brownian motions. Moreover, for $a=\log n$ and $\abs v\le M$,
+\[
+ \frac{2K_\chi(a+vh)-K_\chi(a+(v+1)h)-K_\chi(a+(v-1)h)}h=-\frac{\chi(n)\Lambda(n)}{\sqrt n}(1-\abs v)_++O(h),
+\]
+and the numerator is $O(h^2)$ at a fixed positive lag outside the logarithms of prime powers
+with $\chi(n)\ne0$.
+\end{theorem}
+\begin{proof}
+By stationarity the covariance is
+$K(\Delta+h(u-v))-K(\Delta+hu)-K(\Delta-hv)+K(\Delta)$ with $\Delta=a_i-a_j$. For $i=j$ it is
+$\tfrac12(V(hu)+V(hv)-V(h\abs{u-v}))$, and the local expansion with $u+v-\abs{u-v}=2\min(u,v)$
+gives the diagonal, with error $O(h^2)$. For $i\ne j$ use \cref{zer:lem:cusp} near $\Delta$ (the
+even reflection has the same jump at negative lags): the $C^2$ part contributes $O(h^2uv)$, and the
+ramp contributes $A_{ij}h((u-v)_+-u)=-A_{ij}h\min(u,v)$. After division by $h\log(1/h)$ the
+covariance tends to $\delta_{ij}\min(u,v)$, which gives finite-dimensional convergence of these
+centred Gaussian processes, and $\mathbb E\abs{Y_{i,h}(u)-Y_{i,h}(v)}^4=3(V(h\abs{u-v})/(h\log(1/h)))^2
+\ll\abs{u-v}^{3/2}$ gives tightness. The triangular profile follows from
+$2v_+-(v+1)_+-(v-1)_+=-(1-\abs v)_+$.
+\end{proof}
+
+The Gaussian process is built from the zero spectrum; nothing is asserted about the
+distribution of prime errors themselves. Take now $a_i=\log i$, $1\le i\le N$, and write
+$A_{\chi,N}$ for the matrix: for $i<j$ its entry is $\chi(p)^k\log p/p^{k/2}$ if $j=ip^k$, and $0$
+otherwise. Let $V_\chi(h)=2(K_\chi(0)-K_\chi(h))$,
+$R_{\chi,N}(h)_{ij}=\bigl(2K_\chi(\log(i/j))-K_\chi(\log(i/j)+h)-K_\chi(\log(i/j)-h)\bigr)/V_\chi(h)$, the
+correlation matrix of $N$ increments of length $h$, and $\ell_q(h)=\log(1/h)+d_q$. Let $A_N^{(q)}$ be
+the zeta matrix $A_{\zeta,N}$ with every edge at a power of a prime dividing $q$ removed.
+
+\begin{theorem}[Determinants to every logarithmic order; \stG]\label{zer:thm:det}
+For fixed $\chi$ and $N$, as $h\downarrow0$, $\ell_q(h)(I-R_{\chi,N}(h))=A_{\chi,N}+O(h)$ in operator
+norm, $R_{\chi,N}(h)$ is positive definite for small $h$, and for $\ell_q(h)>\norm{A_{\chi,N}}$
+\[
+ \log\det R_{\chi,N}(h)=-\sum_{r\ge2}\frac{\tr(A_{\chi,N}^r)}{r\,\ell_q(h)^r}+O\Bigl(\frac h{\ell_q(h)}\Bigr),
+\]
+with a convergent series. There is a diagonal matrix $D_\chi$ with entries $\pm1$ such that
+$A_{\chi,N}=D_\chi A^{(q)}_ND_\chi$. Consequently every coefficient of the expansion depends only on
+the set of primes dividing $q$, and if $\chi,\psi$ have conductors $q,r$ with the same prime
+divisors,
+\[
+ \log\det R_{\chi,N}(q\eps)-\log\det R_{\psi,N}(r\eps)=O\Bigl(\frac\eps{\log(1/\eps)}\Bigr)\qquad(\eps\downarrow0).
+\]
+Explicitly, with
+\[
+ S_2(N;q)=\sum_{\substack{p^k\le N\\p\nmid q}}\Bigl\lfloor\frac N{p^k}\Bigr\rfloor\frac{(\log p)^2}{p^k},\qquad
+ S_3(N;q)=\sum_{\substack{p^k\le N\\p\nmid q}}(k-1)\Bigl\lfloor\frac N{p^k}\Bigr\rfloor\frac{(\log p)^3}{p^k},
+\]
+\[
+ \log\det R_{\chi,N}(h)=-\frac{S_2(N;q)}{\ell_q(h)^2}-\frac{2S_3(N;q)}{\ell_q(h)^3}
+ +O\bigl(\ell_q(h)^{-4}+h/\ell_q(h)\bigr).
+\]
+\end{theorem}
+\begin{proof}
+With $u=v=1$, $B(1,1)=0$ and \cref{zer:thm:tangent}, the covariance matrix of the increments is
+$h(\ell I-A+E_h)$ with $\norm{E_h}=O(h)$, and $V_\chi(h)=h(\ell+O(h))$; hence
+$R=I-A/\ell+F_h$ with $\norm{F_h}=O(h/\ell)$. For large $\ell$ the smallest eigenvalues of $I-A/\ell$
+and $R$ exceed $\tfrac12$ and $\tfrac14$; the derivative of $\log\det$ along the segment gives
+$\abs{\log\det R-\log\det(I-A/\ell)}\le4N\norm{F_h}$, and
+$\log\det(I-A/\ell)=-\sum_{r\ge1}\tr(A^r)/(r\ell^r)$ with vanishing $r=1$ term. For the gauge write
+$n=n_{\mathrm{ram}}n_{\mathrm{unr}}$ with the primes of $n_{\mathrm{ram}}$ dividing $q$ and
+$(n_{\mathrm{unr}},q)=1$, and let $D_\chi=\operatorname{diag}(\chi(n_{\mathrm{unr}}))_{n\le N}$; if $j=ip^k$
+with $p\nmid q$ then $\chi(i_{\mathrm{unr}})\chi(j_{\mathrm{unr}})=\chi(p)^k$, and edges at $p\mid q$ vanish
+in both matrices. Similar matrices have equal traces of powers, and
+$\ell_q(q\eps)=\ell_r(r\eps)=\log(1/\eps)+1-\zergE-\log(2\pi)$. Finally each edge $\set{i,ip^k}$
+contributes twice to $\tr(A^2)$, so $\tr(A^2)=2S_2$; in a triangle $i<j<l$ the ratios $j/i=p^a$,
+$l/j=r^b$ and $l/i$ are prime powers only if $p=r$, so the triangles are $i,ip^a,ip^{a+b}$, each
+traversed six times, and $\tr(A^3)=6S_3$.
+\end{proof}
+
+For $\zeta$ and $N=8$ one finds $\tr(A^2)/2=3.1248179\ldots$ and
+$\tr(A^3)/3=0.4995370\ldots$. The convergence in
+$1/\log(1/h)$ is slow, as the numerical record
+\begin{center}\artifact{grh_prime_resonance_2026-11-26/results/verification.json}\end{center}
+shows. At higher orders
+$\tr(A^r)$ is the weighted number of closed walks of length $r$ in the graph whose edges join $i$
+and $ip^k$.
+
+\begin{theorem}[Coalescing Gram determinants; \stG]\label{zer:thm:gramcoal}
+Fix $x_0<x_1<\dots<x_n$, let $\Delta_j=x_j-x_{j-1}$ and $L=\log(1/h)$. As $h\downarrow0$,
+\[
+ \det\bigl(K_\chi(h(x_i-x_j))\bigr)_{0\le i,j\le n}
+ =M_\chi(hL)^n\prod_{j=1}^n\Delta_j\Bigl[1+\frac{nd_q-\sum_j\log\Delta_j}L+O(L^{-2})\Bigr].
+\]
+\end{theorem}
+\begin{proof}
+Replace $v_\chi(hx_j)$, $j\ge1$, by the consecutive differences, a change of determinant one. The
+top-left entry is $M_\chi$; by \cref{zer:lem:cusp} the lower block is
+$h(L\operatorname{diag}(\Delta_j)+Q+O(h))$ with $Q_{jj}=\Delta_j(d_q-\log\Delta_j)$, the leading
+off-diagonal terms cancelling because disjoint consecutive intervals are orthogonal for
+$\min(u,v)$; the top-right entries are $O(hL)$. The Schur complement changes the block by
+$O(h^2L^2)$, and $\det(D+Q/L+O(hL))=\det D\,[1+\tr(D^{-1}Q)/L+O(L^{-2})]$.
+\end{proof}
+
+This kernel is the prime error itself; the autocorrelation of the prime error at merging scales
+behaves differently and is treated next.
+
+\subsection{Merging scales: a cubic logarithmic law}\label{zer:sec:coalesce}
+\sources{prime_scale_coalescence_2026-11-26}
+
+\Cref{zer:thm:coercive} keeps the scales fixed. For the zeta function the rate at which the
+covariance degenerates as the scales merge is determined exactly up to a bounded factor. Let
+\[
+ E(t)=e^{t/2}\bigl(S(e^t)-t+\zergE+1\bigr),\qquad S(x)=\sum_{n\le x}\Lambda(n)\Bigl(\frac1n-\frac1x\Bigr),
+\]
+let $\gamma>0$ run over the distinct positive ordinates of zeta zeros, $m_\gamma$ the
+multiplicities, $N(T)=\sum_{0<\gamma\le T}m_\gamma$ and $M_2(T)=\sum_{0<\gamma\le T}m_\gamma^2$. Since
+$\zeta(\tfrac12)\ne0$ (the alternating eta series is positive at $\tfrac12$), \cref{zer:lem:ramp}
+gives $E(t)=2\sum_{\gamma>0}m_\gamma\cos(\gamma t)/(\tfrac14+\gamma^2)+O((1+t)e^{-t/2})$, and by
+\cref{zer:lem:ap}(i) the long-time covariance of $E(t+h_i)$ and $E(t+h_j)$ is $C(h_i-h_j)$, where
+\[
+ C(h)=2\sum_{\gamma>0}\frac{m_\gamma^2\cos(\gamma h)}{(1/4+\gamma^2)^2},\qquad C_0=C(0),\qquad
+ D_2=2\sum_{\gamma>0}\frac{m_\gamma^2\gamma^2}{(1/4+\gamma^2)^2}.
+\]
+The multiplicity is squared because coincident frequencies are combined first. Fix $r\ge3$
+distinct reals $u_1,\dots,u_r$, put $G_\eps=(C(\eps(u_i-u_j)))_{i,j}$, $\tau_\eps=\eps^3\log(1/\eps)$,
+$\bar u$ the mean of the $u_i$, $v=u-\bar u\mathbf 1$, and
+$W=\set{c\in\R^r:c\cdot\mathbf 1=c\cdot u=0}$. For $c\in W$ let
+\[
+ H_c(t)=\sum_ic_i(t-u_i)_+,\qquad \mathcal B(c)=\int_\R H_c(t)^2\dd t=\frac1{12}\sum_{i,j}c_ic_j\abs{u_i-u_j}^3,
+\]
+and let $b_1\ge\dots\ge b_{r-2}>0$ be the eigenvalues of $\mathcal B$ on $W$.
+
+\begin{theorem}[Arithmetic coalescence law; \stG]\label{zer:thm:coalesce}
+The long-time limit is taken first, then $\eps\downarrow0$.
+\begin{enumerate}[label=\textup{(\roman*)}]
+\item Uniformly for $c$ in the unit sphere of $W$,
+$\mathcal B(c)-o(1)\le c^{\mathsf T}G_\eps c/\tau_\eps\le\tfrac43\mathcal B(c)+o(1)$.
+\item $\lambda_1(G_\eps)\sim rC_0$, $\lambda_2(G_\eps)\sim D_2\norm v^2\eps^2$, and for $1\le j\le r-2$
+\[
+ b_j\le\liminf_{\eps\downarrow0}\frac{\lambda_{j+2}(G_\eps)}{\tau_\eps}\le\limsup_{\eps\downarrow0}\frac{\lambda_{j+2}(G_\eps)}{\tau_\eps}\le\frac43b_j .
+\]
+\item $\det G_\eps\asymp_u\eps^{3r-4}\log(1/\eps)^{r-2}$ and the condition number is
+$\asymp_u\eps^{-3}/\log(1/\eps)$.
+\end{enumerate}
+All conclusions persist after deleting any fixed finite set of positive ordinates with their
+negatives; $C_0$ and $D_2$ change, while $\mathcal B$ and the factor $\tfrac43$ do not.
+\end{theorem}
+
+With two offsets only the first two statements of (ii) hold. No simplicity, independence or
+pair-correlation conjecture is used; the factor $\tfrac43$ is an explicit comparison, not a
+claim of optimality. The arithmetic input is Montgomery's theorem, proved under RH
+\cite{Montgomery1973Pair}, which gives the classical bound $M_2(T)\le(\tfrac43+o(1))N(T)$
+\cite{ConreyGhoshGonek1998Simple}. A cumulative bound does not compare nonmonotone test
+functions; the following local form does.
+
+\begin{lemma}[Local squared multiplicities; \stG]\label{zer:lem:localM2}
+For fixed $0<a<b$,
+\[
+ b-a\le\liminf_{T\to\infty}\frac{M_2(bT)-M_2(aT)}{T\log T/(2\pi)}\le
+ \limsup_{T\to\infty}\frac{M_2(bT)-M_2(aT)}{T\log T/(2\pi)}\le\frac43(b-a),
+\]
+and $M_2(T)=O(T\log(2+T))$.
+\end{lemma}
+\begin{proof}
+Let $w(y)=4/(4+y^2)$. Montgomery's equation (6) gives, for $0<\alpha<1$ and uniformly for $\alpha$ in
+compact subintervals,
+\[
+ \sum_{0<\gamma,\gamma'\le X}\zersinc^2\Bigl(\frac\alpha2(\gamma-\gamma')\log X\Bigr)w(\gamma-\gamma')
+ =\Bigl(\frac1\alpha+\frac\alpha3+o(1)\Bigr)\frac{X\log X}{2\pi},
+\]
+the double sum repeating zeros with multiplicity: the left side divided by $X\log X/(2\pi)$ is
+$\alpha^{-2}\int_{-\alpha}^\alpha(\alpha-\abs\beta)F_X(\beta)\dd\beta$, and
+$F_X(\beta)=(1+o(1))X^{-2\abs\beta}\log X+\abs\beta+o(1)$ uniformly on $\abs\beta\le1-\delta$. Fix $\alpha$ and use
+the single kernel $k_T(y)=\zersinc^2(\tfrac\alpha2y\log T)w(y)\ge0$ for all $X=cT$, with
+$\alpha_X=\alpha\log T/\log(cT)\to\alpha$; uniformity gives
+$S_T(cT)=(1/\alpha+\alpha/3)cT\log T/(2\pi)+o(T\log T)$. Raising $X$ from $aT$ to $bT$ adds the
+diagonal terms $m_\gamma^2$ of the new ordinates and nonnegative off-diagonal terms, so
+$M_2(bT)-M_2(aT)\le S_T(bT)-S_T(aT)$. Subtracting the two asymptotic equalities and letting
+$\alpha\uparrow1$ after the height limit gives the upper bound. The lower bound follows from
+$m_\gamma^2\ge m_\gamma$ and the Riemann--von Mangoldt formula, and the global bound from one fixed
+$\alpha$.
+\end{proof}
+
+Subtracting two upper bounds for $M_2$ would be invalid; the proof subtracts asymptotic
+equalities for one kernel, and stays in the proved range of Montgomery's theorem.
+
+\begin{proof}[Proof of \cref{zer:thm:coalesce}]
+\emph{Spline identity.} For $c\in W$, $H_c$ vanishes outside $[\min u_i,\max u_i]$ by the two
+moment conditions. With $J_c(t)=\sum_ic_i\abs{t-u_i}^3$ one has $J_c''=12H_c$ and
+$H_c''=\sum_ic_i\delta_{u_i}$, so $12\int H_c^2=\sum_ic_iJ_c(u_i)$, which is the displayed cubic form;
+it is positive for $c\ne0$, since $H_c=0$ would make all slope jumps vanish. By Parseval,
+$\mathcal B(c)=\pi^{-1}\int_0^\infty\abs{p_c(x)}^2x^{-4}\dd x$ with $p_c(x)=\sum_ic_ie^{iu_ix}$.
+
+\emph{Scaled measures.} Let $\nu_T=\frac{2\pi}{T\log T}\sum_{\gamma>0}m_\gamma^2\delta_{\gamma/T}$. By
+\cref{zer:lem:localM2} and approximation by step functions,
+$\int f\le\liminf\int f\dd\nu_T\le\limsup\int f\dd\nu_T\le\tfrac43\int f$ for continuous nonnegative
+compactly supported $f$ on $(0,\infty)$. Since $\abs{p_c(x)}\le A_u\norm c\min(x^2,1)$ by the two
+cancellations, and $\limsup\nu_T((0,\delta])=O(\delta)$,
+$\limsup\int_R^\infty x^{-4}\dd\nu_T=O((1+\log R)/R^3)$, the comparison extends to
+$f_c=\abs{p_c}^2/x^4$, also with $x^4$ replaced by $(x^2+1/(4T^2))^2$, uniformly over unit $c\in W$
+by a finite net. Since
+\[
+ \frac{c^{\mathsf T}G_\eps c}{\tau_\eps}=\frac1\pi\int_0^\infty\frac{\abs{p_c(x)}^2}{(x^2+1/(4T^2))^2}\dd\nu_T(x),\qquad T=1/\eps,
+\]
+this proves (i).
+
+\emph{Separating the scales.} With $K(x)=\cos x-1+x^2/2\in[0,\min(x^4/24,x^2/2)]$ and
+$M_2(T)=O(T\log T)$, $\sum_{\gamma>T}m_\gamma^2/\gamma^2=O(\log T/T)$, so
+$C(h)=C_0-\tfrac12D_2h^2+O(\abs h^3\log(1/\abs h))$. Centre the nodes, so $v=u$. Then
+$G_\eps=C_0\mathbf 1\mathbf 1^{\mathsf T}+\eps^2A+O(\tau_\eps)$ with
+$A=-\tfrac12D_2(u^{\circ2}\mathbf 1^{\mathsf T}+\mathbf 1(u^{\circ2})^{\mathsf T}-2uu^{\mathsf T})$, whose
+compression to $\mathbf 1^\perp$ is $D_2uu^{\mathsf T}$ and to $W$ is $0$. In an orthonormal basis
+$\mathbf 1/\sqrt r$, $u/\norm u$, $W$, the matrix has blocks $rC_0+O(\eps^2)$,
+$D_2\norm u^2\eps^2+O(\tau_\eps)$ and $\tau_\eps Q_\eps$ with $\mathcal B-o(1)\preceq Q_\eps\preceq\tfrac43\mathcal B+o(1)$,
+off-diagonal blocks $O(\eps^2)$ against the first and $O(\tau_\eps)$ between the last two (this
+uses both cancellations). Eliminating the first block changes the $W$-block by $O(\eps^4)$, and the
+second by $O(\tau_\eps^2/\eps^2)=o(\tau_\eps)$, through congruences tending to the identity. By
+min--max, congruence by matrices with singular values tending to $1$ changes positive
+eigenvalues by factors $1+o(1)$, which gives (ii), and (iii) follows by multiplying and dividing
+eigenvalues. Deleting finitely many frequencies changes $N$ and $M_2$ by bounded amounts, and
+each deleted frequency contributes $O(\eps^4)$ to $c^{\mathsf T}G_\eps c$ for $c\in W$.
+\end{proof}
+
+For fixed $c\ne0$ the mean square of $\sum_ic_iE(t+\eps u_i)$ thus has exactly three possible
+orders: $C_0(\sum c_i)^2$ if $\sum c_i\ne0$; $\sim D_2(\sum u_ic_i)^2\eps^2$ if $\sum c_i=0\ne\sum u_ic_i$;
+and between $\mathcal B(c)\tau_\eps$ and $\tfrac43\mathcal B(c)\tau_\eps$ asymptotically if $c\in W$. Further
+moment cancellations do not lower the order, since $\mathcal B>0$ on $W$.
+
+\begin{corollary}[Raw finite differences; \stG]\label{zer:cor:rawdiff}
+For a fixed integer $d\ge2$, the long-time mean square $V_d(\eps)$ of
+$\sum_{j=0}^d(-1)^{d-j}\binom djE(t+j\eps)$ satisfies
+\[
+ \mathcal B_d\le\liminf\frac{V_d(\eps)}{\tau_\eps}\le\limsup\frac{V_d(\eps)}{\tau_\eps}\le\frac43\mathcal B_d,\qquad
+ \mathcal B_d=\frac1{12}\sum_{i,j=0}^d(-1)^{i+j}\binom di\binom dj\abs{i-j}^3>0,
+\]
+with $\mathcal B_2,\mathcal B_3,\mathcal B_4,\mathcal B_5=\tfrac23,1,\tfrac83,\tfrac{25}3$.
+\end{corollary}
+\begin{proof}
+The difference coefficients annihilate constants and linear functions, so they lie in $W$.
+\end{proof}
+
+These are raw differences; a finite truncation of the zero series would give $O(\eps^{2d})$, so
+no fixed table of zeros can confirm the cubic law.
+
+\begin{theorem}[Saturation of linear prediction; \stG]\label{zer:thm:predict}
+For a target node $k$ let $V_k^*(\eps)$ be the infimum over real $a_i$ $(i\ne k)$, which may depend
+on $\eps$, of the long-time mean square of $E(t+\eps u_k)-\sum_{i\ne k}a_iE(t+\eps u_i)$, and
+$B_k^*=\min\set{\mathcal B(c):c\in W,\ c_k=1}>0$. Then
+\[
+ B_k^*\le\liminf\frac{V_k^*(\eps)}{\tau_\eps}\le\limsup\frac{V_k^*(\eps)}{\tau_\eps}\le\frac43B_k^*,
+\]
+and an intercept does not help, since all observations have mean zero.
+\end{theorem}
+\begin{proof}
+The projection $w_k$ of $e_k$ to $W$ is nonzero, since otherwise a nonzero affine function would
+vanish at the other $r-1\ge2$ nodes. Then $V_k^*=1/(e_k^{\mathsf T}G_\eps^{-1}e_k)$ and
+$B_k^*=1/(w_k^{\mathsf T}\mathcal B^{-1}w_k)$. The block elimination gives
+$\tau_\eps G_\eps^{-1}=P_WQ_\eps^{-1}P_W+o(1)$, since $\tau_\eps/\eps^2\to0$; invert the bounds on $Q_\eps$.
+\end{proof}
+
+For $u=(-1,0,1)$, $W$ is spanned by $(1,-2,1)$, $\mathcal B(1,-2,1)=\tfrac23$, $b_1=\tfrac19$ and
+$B^*_{\mathrm{middle}}=\tfrac16$. So $\lambda_3(G_\eps)/\tau_\eps$ lies asymptotically in
+$[\tfrac19,\tfrac4{27}]$, and the optimal prediction error of the middle value in
+$[\tfrac16,\tfrac29]$ after division by $\tau_\eps$; the midpoint predictor $\tfrac12(E(t-\eps)+E(t+\eps))$
+is optimal up to a factor $1+o(1)$, its excess error being
+$[C_0+C(2\eps)-2C(\eps)]^2/(2[C_0+C(2\eps)])=O(\eps^4)$. These finite constants are checked in exact
+rational arithmetic in
+\begin{center}\artifact{prime_scale_coalescence_2026-11-26/verification/verify_geometry.py}.\end{center}
+
+\begin{proposition}[Exact constants; \stG, with the asymptotic for $M_2$ as a hypothesis]\label{zer:prop:kappa}
+If moreover $M_2(T)\sim\kappa T\log T/(2\pi)$, then $1\le\kappa\le\tfrac43$,
+$G_\eps|_W/\tau_\eps\to\kappa\mathcal B$,
+$\lambda_{j+2}(G_\eps)/\tau_\eps\to\kappa b_j$, $V_k^*(\eps)/\tau_\eps\to\kappa B_k^*$, the optimal predictor
+converges to the minimizer defining $B_k^*$, and
+$\det G_\eps/(\eps^{3r-4}\log(1/\eps)^{r-2})\to rC_0D_2\norm v^2\kappa^{r-2}\det\mathcal B$. Also
+$C(h)=C_0-\tfrac12D_2h^2+\tfrac\kappa{12}\abs h^3\log(1/\abs h)+o(\abs h^3\log(1/\abs h))$.
+\end{proposition}
+\begin{proof}
+Now $\nu_T$ converges vaguely to $\kappa\,\dd x$, and the tail bounds upgrade this to the quadratic
+forms; the block elimination and inversion give the limits, the optimal contrast being
+\[
+ \frac{G_\eps^{-1}e_k}{e_k^{\mathsf T}G_\eps^{-1}e_k}\to\frac{\mathcal B^{-1}w_k}{w_k^{\mathsf T}\mathcal B^{-1}w_k}.
+\]
+For $C(h)$ scale the remainder $K$, using
+$\int_0^\infty K(x)x^{-4}\dd x=\tfrac16\int_0^\infty(1-\cos x)x^{-2}\dd x=\pi/12$.
+\end{proof}
+
+If all but finitely many zeros are simple then $\kappa=1$; that almost all zeros are simple would
+not suffice, because the covariance involves squared multiplicities. The mean-square derivative
+of the limiting signal exists, its squared coefficients summing to $D_2$, but no second
+derivative does, since $\sum m_\gamma^2\gamma^4/(\tfrac14+\gamma^2)^2=\infty$; this roughness at the scale
+$\gamma\asymp1/\eps$, together with the density of zeros, produces the factor $\eps^3\log(1/\eps)$. The
+corresponding matrix problem for residue classes, where coincident zeros of different
+$L$-functions add structure, is not settled by this argument.
 
 \subsection{A prime race in a fixed window}\label{zer:sec:window}
 \sources{grh_transfers; grh-transfer}
@@ -2444,7 +3289,7 @@ and $(s-1)\zeta(s)$.
 \end{example}
 
 \subsection{Open questions}\label{zer:sec:open}
-{\emergencystretch=6em\sources{grh-transfer; grh_transfers; dirichlet-grh-research; exponent_seven_and_grh_transfers; grh-torsion-and-zero-data; grh-methods-polynomial-density; grh_cm_four_terms_and_prime_bias; grh_method_transfers_2026-11-26}}
+{\emergencystretch=6em\sources{grh-transfer; grh_transfers; dirichlet-grh-research; exponent_seven_and_grh_transfers; grh-torsion-and-zero-data; grh-methods-polynomial-density; grh_cm_four_terms_and_prime_bias; grh_method_transfers_2026-11-26; grh_multiscale_covariance; multiscale_prime_fluctuations; grh_spectral_rigidity; grh_filtered_prime_races; grh_prime_error_balancing; prime_peak_rigidity; sparse_grh_balanced_windows; sharp_multiscale_prime_windows; prime_scale_coalescence_2026-11-26}}
 
 \begin{enumerate}
 \item \emph{Fixed-height Euler products.} Can $F_0(v)/v$ in \eqref{zer:eq:single} be
@@ -2457,18 +3302,11 @@ but supplies no upper bound on it.
 $\eps>a^2/(2\pi)$. Does the fraction vanish for every fixed tolerance, and is the constant
 $2\pi$ optimal? An improvement would have to retain some phase information of the zeros
 below the cutoff or use different arithmetic input.
-\item \emph{The height needed for recovery.} How low can the height needed to recover
-$(q,d)$ in the lattice class be? The bound $O(d^2\log^3(2d))$ of \cref{zer:thm:recovery}
-narrows a test around $\log p$ to isolate a single atom; probes designed to distinguish
-two entire arithmetic signatures could use more of the prime data at one time.
 \item \emph{Short intervals.} Does a bounded-length interval suffice for each directional
 multiplicity excess for a fixed pair of characters, and is the coefficient $2/\pi$ in
 \cref{zer:thm:short} optimal? Can one force a genuinely unshared zero in every
 triple-logarithmic interval? The first asks for a stronger localization argument, the last
 for information on individual orders at common zeros.
-\item \emph{Four central values.} Is $B_d>-2$ in \cref{zer:cor:chowla} for every prime
-$d\equiv7\pmod8$? This is a subfamily of Chowla's conjecture; the one-sided estimate of the
-source does not decide it.
 \item \emph{The boundary value in Suzuki's question.} Does the ordinary logarithmic
 density of $\set{x:E(x)\le0}$ exist, and what is its value? An atom-free limiting
 distribution at the threshold $c$ would give it; a quantitative small-interval estimate at
@@ -2477,9 +3315,36 @@ $c$ surviving the infinite-tail limit would address the missing point.
 intermediate regime $Q\to\infty$ with $Q=o(x)$? Can the exceptional set of finite
 logarithmic measure in \cref{zer:prop:UQ} be replaced by an eventual pointwise statement
 at fixed $Q$?
-\item \emph{Effective balancing.} Can the radius $r_q$ and the interval ratio $C_q$ of
-\cref{zer:thm:balancing} be made effective in terms of the modulus? A ranking at one
-sample would require stronger information than convex balance.
+\item \emph{Effective constants.} Can the radius $r_q$ and ratio $C_q$ of
+\cref{zer:thm:balancing}, the window $H$ and radius of \cref{zer:cor:smoothbalance}, the
+constants $c,C,K$ of \cref{zer:thm:coercive}, the least eigenvalues in
+\cref{zer:thm:jets,zer:thm:filtered} and a certified window length $L_0$, and the return lengths
+near the peak in \cref{zer:thm:peak}, be made explicit, ideally uniformly in $q$, in the number
+of scales, or in the cut $H$? Near-coincident ordinates must then be separated rigorously, and
+efficient probe primes chosen.
+\item \emph{The eigenvalue gap.} The two bounds of \eqref{zer:eq:coercive} differ by three powers
+of $\log T$. Can information on pair correlation and multiplicities close the gap, and what are
+the sharp asymptotics for arbitrary shifts under stronger hypotheses?
+\item \emph{Merging scales.} \Cref{zer:thm:coalesce} settles the rate for $\zeta$. What is the
+corresponding law for the full residue-class matrix of \cref{zer:cor:multiscale}, where coincident
+zeros of different $L$-functions add structure? Is the factor $\tfrac43$ optimal, and does
+$M_2(T)\sim\kappa T\log T/(2\pi)$ hold, as \cref{zer:prop:kappa} requires?
+\item \emph{Beyond covariance.} Can the convex-hull statements be upgraded to the interior of the
+actual limiting support, to every ordering of the unsmoothed counts, or to inclusivity of
+ordinary prime races, without a hypothesis on the ordinates? Which nonlinear constraints hold on
+the cluster sets? Positive covariance excludes affine hyperplanes only.
+\item \emph{Less smoothing and other families.} Does strict positivity of the multiscale or jet
+covariance survive for unsmoothed prime counts, where only a mean-square expansion is available,
+after the prime-square biases are removed? Does \cref{zer:thm:polyrigid} extend to families with
+other Gamma factors and distinct Euler coefficients, and do the probe arguments extend to
+Frobenius-class functions of Artin $L$-functions under their own Riemann hypothesis (which
+\cref{src:thm:dgrh} does not provide)?
+\item \emph{Kernels and filters.} Which compact filters retain every noncentral frequency with the
+shortest memory or the smallest error, and which other Mellin kernels have nonnegative spectral
+weights on the critical line, with sharper laws or shorter recurrence? Can the compact window
+kernel of \cref{zer:thm:sharpwin} be optimized for given contrasts, or constrained so that the pole
+terms cancel, and do its finite Gram conditions on separated windows have a converse forcing GRH
+without the full positivity criterion of the explicit formula?
 \item \emph{Prime-square bias against the zero sum.} Which other self-dual Artin or
 modular $L$-functions have a prime-square bias large enough to dominate their zero sum?
 Inequality \eqref{zer:eq:liminf} and the curvature bound of \cref{zer:prop:eta} give

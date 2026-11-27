@@ -1,6 +1,8 @@
 % A ragged line listing delivered files (the paths are unbreakable).
 \providecommand{\dirfiles}[1]{\par\smallskip\noindent
   {\footnotesize\raggedright\emph{Files:} #1.\par}\smallskip}
+\providecommand{\dirP}{\mathbb{P}}
+\providecommand{\dirE}{\mathbb{E}}
 
 \section{Direct arithmetic consequences of Dirichlet GRH}\label{sec:dir}
 
@@ -2752,8 +2754,433 @@ the $A_4$ action the stabilizer of order two lies in the Klein four subgroup, gi
 cubic intermediate field, which the stated exclusion takes into account.
 \end{proof}
 
+\subsection{Squarefree products of small primes after deletions}\label{dir:sec:products}
+\sources{squarefree_prime_products; orthogonal_nullity_and_prime_products}
+
+A positive integer is $y$-smooth if all its prime factors are at most $y$. Booker and
+Pomerance asked how small $y$ can be if every nonzero class modulo a prime $p$ must contain a
+squarefree $y$-smooth integer, and suggested that GRH should give $y=O((\log p)^2)$
+\cite[\S6]{BookerPomerance2017Squarefree}. Squarefreeness matters: a set of primes can generate
+the unit group by multiplication while exhausting its elements before a squarefree product
+reaches a given class. This subsection answers the question in a stronger form, with a
+prescribed number of distinct prime factors, uniform counts, and an arbitrary retained subset of
+the primes.
+
+Let $q\ge3$, $G=(\Z/q\Z)^\times$, $L=\log q$, and for a cutoff $y$ let
+$\mathcal P=\set{p\le y:\ p\text{ prime},\ p\nmid q}$ and $N=\abs{\mathcal P}$; distinct primes
+in the same class modulo $q$ are distinct elements of $\mathcal P$. For
+$S\subseteq\mathcal P$ with $m=\abs S$ and $1\le k<m$ let $X_k$ be the product, in $G$, of a
+uniformly chosen $k$-element subset of $S$, so that $\binom mk\dirP(X_k=g)$ counts squarefree
+integers with exactly $k$ prime factors in $S$ that are congruent to $g$. Put $h=\min(k,m-k)$,
+and for $\chi\in\widehat G$ and nonempty $U\subseteq\mathcal P$ let
+$b_\chi(U)=\abs{\abs U^{-1}\sum_{p\in U}\chi(p)}$. Characters vanish on nonunits.
+
+\begin{lemma}[Small bias of the full pool; \stG]\label{dir:lem:bias}
+Given $\eps>0$ there is $C$ such that for $y=CL^2$ and all sufficiently large $q$,
+$\max_{\chi\ne1}b_\chi(\mathcal P)\le\eps$. For $y=L^A$ with $A>2$,
+$\max_{\chi\ne1}b_\chi(\mathcal P)\le L^{1-A/2+o(1)}$. In both regimes $N\sim y/\log y$.
+\end{lemma}
+
+\begin{proof}
+At most $L/\log2$ primes divide $q$, so $N\sim y/\log y$ by the prime number theorem. For
+$y=L^A$ the sharp-cutoff estimate $\sum_{p\le x}\chi(p)\ll\sqrt x\log(qx)$ for $\chi\ne1$
+\cite[Theorem~13.7, (13.21)]{MontgomeryVaughan2007Multiplicative}, which holds under
+\cref{src:thm:dgrh} also for imprimitive characters, gives the second bound. For $y=CL^2$ use
+the once-integrated estimate
+\[
+ \sum_{n\le t}(t-n)\Lambda(n)\chi(n)\ll t^{3/2}\log(2q)\qquad(t\ge2,\ \chi\ne1)
+\]
+of \cite[(13.28)]{MontgomeryVaughan2007Multiplicative}; its Mellin kernel contains
+$1/(s(s+1))$, so each critical-line zero contributes $t^{\rho+1}/(\rho(\rho+1))$ with an
+absolutely summable weight, and no factor $\log t$ is lost. Fix $0<\eta<1/2$ and let
+$w(n)=((y-n)_+-((1-\eta)y-n)_+)/(\eta y)$, which is $1$ up to $(1-\eta)y$ and decreases
+linearly to $0$ at $y$. The estimate bounds $\abs{\sum_nw(n)\Lambda(n)\chi(n)}$ by
+$O(\sqrt y\log(2q)/\eta)$. Removing prime powers costs $O(\sqrt y\log^2y)$, restoring the last
+$\eta y$ of the interval costs at most $(\eta+o(1))y$, and replacing $\log p$ by $\log y$ costs
+$\pi(y)\log y-\vartheta(y)=o(y)$, uniformly in $\chi$. Dividing by $N\log y\sim y$ gives
+$b_\chi(\mathcal P)\le\eta+O(1/(\eta\sqrt C))+o(1)$; choose $\eta$ and then $C$.
+\end{proof}
+
+The bias of the retained set $S$ is controlled by Fourier analysis on $G$ alone. Write
+\[
+ E_k(\chi)=\dirE\chi(X_k)=\binom mk^{-1}[z^k]\prod_{p\in S}\bigl(1+z\chi(p)\bigr).
+\]
+
+\begin{lemma}[Fixed-cardinality coefficients; \stU]\label{dir:lem:circle}
+Let $z_1,\dots,z_m$ be complex numbers of absolute value one, $b=\abs{m^{-1}\sum_jz_j}$, and
+$1\le k<m$. Then
+\[
+ \Bigl|\binom mk^{-1}\sum_{\abs T=k}\prod_{j\in T}z_j\Bigr|
+ \le\min\set{m+1,\ 8\sqrt{1+h}}\exp\Bigl(-(1-b)\frac{k(m-k)}m\Bigr).
+\]
+\end{lemma}
+
+\begin{proof}
+Put $u=k/(m-k)$. For real $\theta$, $\abs{1+ue^{i\theta}z_j}^2/(1+u)^2
+=1-2u(1-\Re(e^{i\theta}z_j))/(1+u)^2$; with $1-x\le e^{-x}$ and multiplication over $j$,
+\[
+ \prod_j\abs{1+ue^{i\theta}z_j}\le(1+u)^m\exp\Bigl(-\frac{um}{(1+u)^2}(1-b)\Bigr),
+\]
+and $um/(1+u)^2=k(m-k)/m$. Cauchy's estimate on the circle of radius $u$ gives the bound up to
+the factor $(1+u)^m/(u^k\binom mk)$, the reciprocal of the probability that
+$\mathrm{Bin}(m,k/m)$ takes the value $k$. This value is a mode, so its probability is at least
+$1/(m+1)$. The variance is at most $h$, so by Chebyshev's inequality the interval of radius
+$2\sqrt{1+h}$ about $k$ carries mass at least $3/4$ and contains at most $5\sqrt{1+h}$
+integers; hence the modal probability is also at least $1/(8\sqrt{1+h})$.
+\end{proof}
+
+For $0<\tau<1$ let $H_\tau\le\widehat G$ be the subgroup generated by the characters with
+$b_\chi(S)>1-\tau$, let $K=\bigcap_{\chi\in H_\tau}\ker\chi$ and $\mathcal Q=G/K$, so that
+$\widehat{\mathcal Q}=H_\tau$ and $d:=\abs{\mathcal Q}=\abs{H_\tau}$. Let $\pi\colon G\to\mathcal Q$
+be the quotient map and $\lambda_k(v)=\dirP(\pi(X_k)=v)$. Its values are computed by expanding
+$\prod_{p\in S}(1+z[\pi(p)])$ in the group ring $\Z[\mathcal Q][z]$.
+
+\begin{theorem}[Exact support and relative counts; \stG]\label{dir:thm:quotient}
+Fix $0<a\le1$ and put $D=\floor{1/a}$. There are $\tau>0$ and $B,C>0$ depending only on $a$
+such that the following holds for all sufficiently large $q$. Let $y=CL^2$, $m\ge aN$ and
+$h\ge BL$. Then the subgroup $H_\tau$ is the same for all such $k$, $d\le D$, and
+\begin{equation}\label{dir:eq:profile}
+ \bigl|\varphi(q)\dirP(X_k=g)-d\,\lambda_k(\pi(g))\bigr|\le q^{-2}\qquad(g\in G).
+\end{equation}
+The support of $X_k$ is exactly $\pi^{-1}(\supp\lambda_k)$, and on it
+$\dirP(X_k=g)=d\lambda_k(\pi(g))(1+o(1))/\varphi(q)$. Thus every fibre of $\pi$ that contains
+one product contains every residue as a product, with asymptotically equal counts.
+\end{theorem}
+
+\begin{proof}
+\emph{A quotient of bounded order.} Suppose $b_\chi(\mathcal P)\le\eps$ for every
+$\chi\ne1$ and put $\alpha=m/N$. In the probability inner product on functions on
+$\mathcal P$, distinct characters have inner products of absolute value at most $\eps$, so any
+$t$ of them have a Gram matrix of largest eigenvalue at most $1+(t-1)\eps$. Bessel's inequality
+for the indicator of $S$ shows: if $b_\chi(S)\ge u$ for $t$ distinct characters, then
+\begin{equation}\label{dir:eq:gram}
+ t\alpha^2u^2\le\alpha\bigl(1+(t-1)\eps\bigr),\qquad\text{so}\qquad
+ t\le\frac{1-\eps}{\alpha u^2-\eps}\quad(\alpha u^2>\eps).
+\end{equation}
+On $S$ a character of bias greater than $1-\tau$ is within $\sqrt{2\tau}$, in normalized $L^2$,
+of a unimodular constant, and so is its inverse. Telescoping a product shows that every word
+of length at most $D$ in these generators and their inverses is within $D\sqrt{2\tau}$ of a
+unimodular constant, hence has bias at least $1-D^2\tau$. Since $1/a<D+1$, choose $\tau>0$
+with $1-D^2\tau>0$ and then $\eps>0$ with
+$(1-\eps)/(a(1-D^2\tau)^2-\eps)<D+1$ and positive denominator. By \eqref{dir:eq:gram} the
+ball of radius $D$ in the word metric of $H_\tau$ has at most $D$ elements. A word ball
+gains a new element at each step until it is the whole group, so $\abs{H_\tau}\le D$; and
+$b_\chi(S)\le1-\tau$ for every $\chi\notin H_\tau$. By \cref{dir:lem:bias} the hypothesis on
+$\mathcal P$ holds for $y=CL^2$ with $C=C(a)$.
+
+\emph{Fourier inversion.} The characters in $H_\tau$ factor through $\mathcal Q$ and contribute
+exactly $d\lambda_k(\pi(g))$, so
+\[
+ \bigl|\varphi(q)\dirP(X_k=g)-d\lambda_k(\pi(g))\bigr|\le\sum_{\chi\notin H_\tau}\abs{E_k(\chi)}
+ \le q(m+1)e^{-\tau h/2}
+\]
+by \cref{dir:lem:circle}, since $k(m-k)/m\ge h/2$. As $m\le CL^2$, the choice $B=10/\tau$
+gives \eqref{dir:eq:profile}.
+
+\emph{Reachable values are not rare.} For any abelian quotient of order $d$, every nonzero
+value of $\lambda_k$ is at least
+\[
+ \Bigl(\sum_{i=0}^{d-1}\binom ki\binom{m-k}i\Bigr)^{-1}\ge\bigl(d\,m^{2(d-1)}\bigr)^{-1}.
+\]
+Fix a $k$-subset $T$ with the desired quotient value. For another $k$-subset $U$, pair
+$U\setminus T$ bijectively with $T\setminus U$; the swaps along these pairs correct the value of
+$U$ to that of $T$. Among $d$ or more swap ratios two partial products, the empty one included,
+coincide, and the block between them can be removed; repeating, at most $d-1$ swaps remain.
+So every $U$ lies within $d-1$ swaps of a $k$-subset with the target value, and the displayed
+sum bounds the size of such a neighbourhood. Since $d\le D$ is fixed and $m$ is
+polylogarithmic in $q$, a positive value of $\lambda_k$ is far larger than the error $q^{-2}$,
+which gives the exact support and the relative asymptotic.
+\end{proof}
+
+\begin{corollary}[Squarefree representatives with a prescribed number of factors; \stG]\label{dir:cor:squarefree}
+Given $0<\delta<1/2$ there are $B,C>0$ such that for all sufficiently large $q$, with $y=CL^2$,
+every $S\subseteq\mathcal P$ with $m\ge(1/2+\delta)N$ and every $BL\le k\le m-BL$,
+\[
+ \#\Bigl\{T\subseteq S:\ \abs T=k,\ \prod_{p\in T}p\equiv g\pmod q\Bigr\}
+ =\frac{\binom mk}{\varphi(q)}\bigl(1+O(q^{-2})\bigr)\qquad(g\in G).
+\]
+In particular every unit modulo $q$ is a product of exactly $\ceil{B\log q}$ distinct primes
+below $C(\log q)^2$, which is the smoothness scale proposed by Booker and Pomerance.
+\end{corollary}
+
+\begin{proof}
+For $a>1/2$, $D=1$ in \cref{dir:thm:quotient}, so $d=1$ and $\lambda_k$ is the point mass. Take
+$S=\mathcal P$ for the last assertion. For the finitely many small prime moduli the constant $C$
+can be enlarged, since Dirichlet's theorem gives a prime in each nonzero class.
+\end{proof}
+
+\begin{remark}[The half and third thresholds; sharpness]\label{dir:rem:thresholds}
+For $a>1/3$ the only other possibility is $d=2$, given by one nonprincipal quadratic character
+$\chi$. If $S$ contains primes of both signs, a swap of two primes of opposite sign changes the
+quotient value, so both values occur and every unit is represented; if $S$ lies in one sign
+class, all products lie in the class fixed by $k$. So for $a>1/3$ full coverage in the range of
+\cref{dir:thm:quotient} holds exactly when no nonprincipal quadratic character is constant on
+$S$. If $s$ of the $m$ primes have sign $-1$, the two quotient masses are $(1\pm E)/2$ with
+$E=\binom mk^{-1}[z^k](1+z)^{m-s}(1-z)^s$; one prime of the opposite sign suffices for coverage,
+although the two counts can differ markedly. Conversely, for an integer $d\ge2$ take primes
+$q\equiv1\pmod d$ and a quotient of $G$ of order $d$, and retain the most populous coset among
+the primes of $\mathcal P$. This retains at least $N/d$ primes, confines all products of a fixed
+length to one coset, and any quotient explaining this support exactly has order at least $d$.
+In particular the majority hypothesis of \cref{dir:cor:squarefree} cannot be lowered to one
+half: retaining the primes with $\chi(p)=1$ for the quadratic character modulo a prime $q$
+keeps $(1/2+o(1))N$ primes, all of whose products lie in an index-two subgroup.
+\end{remark}
+
+For the polylogarithmic pool $y=(\log q)^B$, $B>2$, the same argument runs with explicit
+constants and characters treated individually by order. Write
+\[
+ \rho=\max_{\chi\ne1}b_\chi(\mathcal P),
+\]
+which is $O_B(\log\log q/(\log q)^{B/2-1})$ under \cref{src:thm:dgrh}. This follows by
+partial summation from the estimate
+$\sum_{p\le x}\chi(p)\log p\ll\sqrt x\log(2x)\log(2qx)$ of Jao, Miller and Venkatesan
+\cite[proof of Theorem~1.1, (2.6)]{JaoMillerVenkatesan2009Expander}, extended to imprimitive
+characters by passing to the inducing character.
+
+\begin{proposition}[Explicit constants for a polylogarithmic pool; \stG]\label{dir:prop:explicit}
+Let $B>2$ and $y=(\log q)^B$, and let $A\subseteq\mathcal P$ have $M$ elements, $1\le k<M$ and
+$h=\min(k,M-k)$.
+\begin{enumerate}[label=\textup{(\alph*)}]
+\item Fix $0<\eps<1/2$. For all sufficiently large $q$, depending on $B$ and $\eps$, if
+$M\ge(1/2+\eps)N$ then
+\[
+ \max_{g\in G}\Bigl|\frac{\varphi(q)\,\#\set{T\subseteq A:\abs T=k,\ \prod_{p\in T}p\equiv g}}
+ {\binom Mk}-1\Bigr|\le8\varphi(q)\sqrt{1+h}\,e^{-\eps h/2};
+\]
+in particular $h\ge(4/\eps)\log q$ gives relative error $O_\eps(q^{-1}\sqrt{\log q})$.
+\item Fix $d\ge2$ and $0<\eps<1-1/d$. If $M\ge(1/d+\eps)N$, then for all sufficiently large $q$
+and every character $\chi$ of order at least $d$,
+\[
+ \bigl|\dirE\chi(X_k)\bigr|\le8\sqrt{1+h}\exp\Bigl(-\frac{d^2\eps}{4C_d}h\Bigr),\qquad
+ C_d=\frac{d^2(d^2-1)}6 .
+\]
+\end{enumerate}
+The density thresholds $1/2$ in \textup{(a)} and $1/d$ in \textup{(b)} are sharp.
+\end{proposition}
+
+\begin{proof}
+(a) For $\chi\ne1$, deleting $N-M$ unimodular summands gives
+$\abs{\sum_{p\in A}\chi(p)}\le\rho N+N-M$, so $1-b_\chi(A)\ge(2M-(1+\rho)N)/M\ge\eps$ for large
+$q$. Apply \cref{dir:lem:circle} with $k(M-k)/M\ge h/2$ and sum over $\chi\ne1$ by orthogonality.
+
+(b) Choose $\theta$ so that the mean of $z_p=e^{-i\theta}\chi(p)$ over $A$ is real and
+nonnegative, and put $F_d(z)=\abs{1+z+\dots+z^{d-1}}^2$ on the unit circle. Since $\chi^j$ is
+nonprincipal for $1\le j<d$, positivity gives
+$\sum_{p\in A}F_d(z_p)\le\sum_{p\in\mathcal P}F_d(z_p)\le N(d+d(d-1)\rho)$. Telescoping $1-z^j$
+gives $1-\Re z^j\le j^2(1-\Re z)$, hence $F_d(z)\ge d^2-C_d(1-\Re z)$. So
+$1-b_\chi(A)\ge[d^2M-N(d+d(d-1)\rho)]/(C_dM)\ge d^2\eps/(2C_d)$ for large $q$, and
+\cref{dir:lem:circle} applies.
+
+For sharpness take primes $q\equiv1\pmod d$, a character of exact order $d$, and retain its
+kernel in $\mathcal P$; averaging $1,\chi,\dots,\chi^{d-1}$ shows that the retained density is
+$1/d+o(1)$, and every product has character value one. For $d=2$ this is the example of
+\cref{dir:rem:thresholds}.
+\end{proof}
+
+Once the retained density exceeds $1/3$ by a fixed amount, every nonprincipal character except
+those of order two therefore has an exponentially small coefficient; this makes no independence
+assumption on the retained primes. At the larger cutoff the required number of factors drops
+below $\log q$.
+
+\begin{theorem}[Short products; \stG]\label{dir:thm:short}
+Let $A>2$, $y=L^A$, $0<a\le1$, $m\ge aN$, and $c_A=2(A-1)/(A(A-2))$, and let $H_\tau$ be the
+subgroup of \cref{dir:thm:quotient}. For every fixed $c>c_A$ there is $\gamma>0$, independent of
+$q$, $S$ and $k$, such that for all sufficiently large $q$
+\[
+ h\ge c\frac{L}{\log L}\quad\Longrightarrow\quad
+ \sum_{\chi\notin H_\tau}\abs{E_k(\chi)}\le\exp\Bigl(-\gamma\frac L{\log L}\Bigr).
+\]
+Consequently the quotient law and the exact support of \cref{dir:thm:quotient} hold on this
+scale, and for $k=\ceil{cL/\log L}$ every attainable class has a positive squarefree
+representative at most $q^{Ac+o(1)}$.
+\end{theorem}
+
+\begin{proof}
+By \cref{dir:lem:bias}, $N\sim L^A/(A\log L)$ and $\max_{\chi\ne1}b_\chi(\mathcal P)\le\eps_L
+=L^{1-A/2+o(1)}$. Let $j=\floor{\log(q-1)/\log y}$. A product of $j$ primes of $\mathcal P$,
+repetitions allowed, is less than $q$, so congruence of two such products is equality, and by
+unique factorization each ordered $j$-tuple has at most $j!$ congruent partners. Orthogonality
+gives
+\begin{equation}\label{dir:eq:shortmoment}
+ \sum_\chi b_\chi(\mathcal P)^{2j}\le\frac{\varphi(q)j!}{N^j}\le q^{1/A+o(1)},
+\end{equation}
+since $j=(1/A+o(1))L/\log L$ and $\log(j/N)=-(A-1)\log L+O(1)$. Fix $c'$ strictly between $c_A$
+and $c$, and let $s$ be the least even integer at least $c'L/\log L$; as $c_A>2/A$, $s>2j$.
+Multiplying the nonprincipal terms of \eqref{dir:eq:shortmoment} by $\eps_L^{s-2j}$ bounds
+their $s$th moment by $q^{1/A-(A/2-1)(c'-2/A)+o(1)}=o(1)$, the exponent being negative by the
+definition of $c_A$. For even $s$ the $s$th moment counts, with positive weights, ordered pairs
+of $(s/2)$-tuples with congruent products, and each such pair from $S$ is one from
+$\mathcal P$; so, including the principal term,
+\begin{equation}\label{dir:eq:momenttransfer}
+ \sum_\chi b_\chi(S)^s\le(N/m)^s\sum_\chi b_\chi(\mathcal P)^s\le a^{-s}(1+o(1)).
+\end{equation}
+
+Complementation gives $\abs{E_k(\chi)}=\abs{E_h(\chi)}$. If $h\ge BL$ with $B$ large, the
+bound $q(m+1)e^{-\tau h/2}$ from the proof of \cref{dir:thm:quotient} suffices, so let
+$cL/\log L\le h\le BL$. For $u\ge b_\chi(S)$ and $\abs z=r=h/(mu)$ one has
+$\prod_{p\in S}\abs{1+z\chi(p)}\le\exp(mru+mr^2/2)$, by $1+x\le e^x$ applied to each squared
+modulus. Cauchy's estimate and $\binom mh\ge(m/h)^h$ give
+\begin{equation}\label{dir:eq:smallcoeff}
+ \abs{E_h(\chi)}\le u^h\exp\Bigl(h+\frac{h^2}{2mu^2}\Bigr)\le e^{3h/2}u^h
+ \qquad\text{if }u\ge u_0:=\sqrt{h/m}.
+\end{equation}
+Uniformly in this range $u_0=L^{-(A-1)/2+o(1)}$. The characters with $b_\chi(S)\le u_0$
+contribute at most $q(e^{3/2}u_0)^h\le q^{1-c(A-1)/2+o(1)}$, which is exponentially small in
+$L$ because $c_A>2/(A-1)$. For $u_0<b_\chi(S)\le\zeta$ use \eqref{dir:eq:smallcoeff} with
+$u=b_\chi(S)$ and \eqref{dir:eq:momenttransfer}: the contribution is at most
+$(1+o(1))e^{3h/2}\zeta^{h-s}a^{-s}$, where $h-s\ge\kappa h$ for a fixed $\kappa>0$; choosing
+$0<\zeta<1-\tau$ small in terms of $a,c,c'$ makes this at most $e^{-h}$. By \eqref{dir:eq:gram}
+only $O_{a,\zeta}(1)$ characters have $b_\chi(S)>\zeta$, the full-pool coherence being
+$\eps_L=o(1)$; for those outside $H_\tau$ the circle bound gives $(m+1)e^{-\tau h/2}$ each, and
+$\log m=O(\log L)$. The minimum positive quotient mass is an inverse power of $m$, so the error
+suffices for exact support. Finally $y^k=\exp(Ak\log L)=q^{Ac+o(1)}$.
+\end{proof}
+
+For $a>1/2$ the quotient is trivial, so for each fixed $\eta>0$ every unit has a squarefree
+representative at most $q^{2(A-1)/(A-2)+\eta}$ composed of primes from any retained fraction at
+least $a$ of the primes up to $(\log q)^A$; $A=4$ gives the exponent $3+\eta$. The order
+$L/\log L$ of the number of factors is correct: for prime $q$ and $k=(b+o(1))L/\log L$,
+Stirling's formula gives $\binom Nk=q^{b(A-1)+o(1)}$, so even the full pool has fewer than
+$q-1$ subsets of size $k$ when $b<1/(A-1)$. The optimal leading constant is not determined.
+
+For prime moduli the large sieve replaces \cref{src:thm:dgrh} outside a sparse exceptional set,
+which can be bounded before the retained primes are chosen.
+
+\begin{theorem}[An unconditional version for almost all prime moduli; \stU]\label{dir:thm:almostall}
+Fix $0<a\le1$ and $b>0$. There are $B=B(a)>0$ and $C=C(a,b)>0$ with the following property.
+Let $y=C(\log Q_0)^2$. For all sufficiently large $Q_0$, apart from at most
+$Q_0\exp(-b\log Q_0/\log\log Q_0)$ primes $q\in[Q_0,2Q_0]$, the conclusions of
+\cref{dir:thm:quotient} hold for every $S$ of density at least $a$ and every $h\ge B\log q$.
+\end{theorem}
+
+\begin{proof}
+Write $Q=Q_0$, $L=\log Q$, $\ell=\log L$ and $N=\pi(y)$; for large $Q$ all primes up to $y$ are
+eligible. Fix $\xi>0$ small in terms of $a$, and call a prime $q\in[Q,2Q]$ exceptional if some
+nonprincipal $\chi$ modulo $q$ has $\abs{\sum_{p\le y}\chi(p)}>\xi N$. Let $j=\floor{2L/\log y}$
+and let $a_n$ count ordered $j$-tuples of primes up to $y$ with product $n$; then
+$0\le a_n\le j!$ and $\sum_na_n^2\le j!N^j$. Since $y^j\le Q^2$, the multiplicative large sieve
+\cite[Theorem~25.15]{Koukoulopoulos2019Distribution}, with an absolute implied constant,
+gives
+\[
+ \sum_{d\le2Q}\frac d{\varphi(d)}\sideset{}{^*}\sum_{\chi\bmod d}
+ \Bigl|\sum_{n\le y^j}a_n\chi(n)\Bigr|^2\ll(Q^2+y^j)\sum_na_n^2,
+\]
+the star restricting to primitive characters. Every nonprincipal character modulo a prime is
+primitive, and each exceptional prime contributes at least $(\xi N)^{2j}$, so the number $E$ of
+exceptional primes satisfies $E\ll Q^2j!/(\xi^2N)^j$. With $N\sim y/\log y$ and
+$j=2L/(2\ell+\log C)+O(1)$ one has $\log(N/j)=\ell+\log(C/2)+o(1)$, and Stirling's formula
+gives
+\[
+ \log\Bigl(Q^2\frac{j!}{(\xi^2N)^j}\Bigr)
+ =L-\Bigl(\tfrac12\log C+1+2\log\xi-\log2+o(1)\Bigr)\frac L\ell+O(1).
+\]
+Choose $C$ so that the coefficient without $o(1)$ exceeds $b$. For every other modulus all
+full-pool nonprincipal biases are at most $\xi$; taking $\xi$ at most the tolerance $\eps$ in
+the proof of \cref{dir:thm:quotient}, the Gram bound, the circle estimate and the swap argument
+give all the conclusions with $B=10/\tau$.
+\end{proof}
+
+\begin{corollary}[Short products for almost every prime modulus; \stU]\label{dir:cor:almostshort}
+Fix $A>2$, $0<a\le1$ and $c>2/(A-1)$, and let $y=(\log Q_0)^A$. There is $\eta>0$ such that
+the conclusions of \cref{dir:thm:short}, with $c$ in place of the constant in the length
+threshold, hold for all but $O(Q_0^{1-\eta})$ primes $q\in[Q_0,2Q_0]$.
+\end{corollary}
+
+\begin{proof}
+Put $L=\log Q_0$ and choose $2/(A-1)<c'<\min(c,4/A)$, possible since $A>2$. Take $s=2j$ even
+with $s=c'L/\log L+O(1)$; then $y^j\le Q_0^2$ for large $Q_0$, and the large sieve of the
+preceding proof gives
+\[
+ \sum_{\substack{Q_0\le q\le2Q_0\\ q\text{ prime}}}\ \sum_{\chi\ne1}b_\chi(\mathcal P)^s
+ \ll Q_0^2\frac{j!}{N^j}=Q_0^{2-c'(A-1)/2+o(1)},
+\]
+with exponent below one. Choose $\eta>0$ with right side $O(Q_0^{1-2\eta})$. Outside
+$O(Q_0^{1-\eta})$ prime moduli the inner sum is at most $Q_0^{-\eta}$, so the moment including
+the principal character is $1+o(1)$ and each nonprincipal bias is at most
+$Q_0^{-\eta/s}=o(1)$. These are the two full-pool estimates used in the proof of
+\cref{dir:thm:short}; with this $s$, \eqref{dir:eq:momenttransfer} and \eqref{dir:eq:smallcoeff}
+apply, the low-bias range is controlled because $c>2/(A-1)$, the middle range because $c>c'$,
+and the remaining characters by the Gram and circle bounds. Replacing $\log q$ by $L+O(1)$
+does not affect these strict inequalities.
+\end{proof}
+
+\begin{corollary}[One short list of primes for many moduli; \stG\ and \stU]\label{dir:cor:list}
+Fix $0<\delta<1/2$ and $b>0$. There are $C,D>0$ and, for each sufficiently large $Q$, a list
+$U$ of $M=\ceil{D\log Q}$ distinct primes at most $C(\log Q)^2$ with the following property,
+where $U_q=\set{p\in U:p\nmid q}$ and $k=\floor{M/4}$: for every $S\subseteq U_q$ with
+$\abs S=m\ge(1/2+\delta)\abs{U_q}$ and every unit $g$ modulo $q$, the number of $k$-subsets of
+$S$ with product congruent to $g$ is $\binom mk(1+O(Q^{-2}))/\varphi(q)$. Under
+\cref{src:thm:dgrh} \textup{(\stG)} one list works for all integers $q\in[Q,2Q]$.
+Unconditionally \textup{(\stU)} one list works for all primes $q\in[Q,2Q]$ outside a set of at
+most $Q\exp(-b\log Q/\log\log Q)$ exceptions.
+\end{corollary}
+
+\begin{proof}
+Put $y=C(\log Q)^2$ and $\gamma=\delta/8$. For all relevant $q$, the mean of each nonprincipal
+$\chi$ over all primes up to $y$ has modulus at most $\gamma$: under \cref{src:thm:dgrh} by the
+proof of \cref{dir:lem:bias}, uniformly since $\log q\le\log(2Q)$, and unconditionally by the
+exceptional-set estimate in the proof of \cref{dir:thm:almostall} with $\xi=\gamma$. Choose $U$
+uniformly among the $M$-subsets of these primes. Hoeffding's inequality for sampling without
+replacement \cite[\S6]{Hoeffding1963Probability}, applied to real and imaginary parts, bounds the
+probability that one sample mean differs from its population mean by more than $\gamma$ by
+$4\exp(-M\gamma^2/4)$. There are $O(Q^2)$ characters with moduli up to $2Q$, so a large $D$
+gives a list with all these sample biases at most $2\gamma$. Since $\omega(q)!\le q$ gives
+$\omega(q)=O(\log Q/\log\log Q)$, one has $\abs{U_q}=M-o(M)$, hence $b_\chi(U_q)\le3\gamma$, and
+deletion gives $b_\chi(S)\le(1/2-\delta+3\gamma)/(1/2+\delta)=:1-\kappa<1$. For large $Q$,
+$h\ge M/5$, and \cref{dir:lem:circle} bounds the sum over nonprincipal characters by
+$2Q(M+1)e^{-\kappa M/10}$, which is $O(Q^{-2})$ for large $D$.
+\end{proof}
+
+Even with unrestricted subset sizes, covering all units modulo a prime $q\in[Q,2Q]$ needs
+$2^{\abs U}\ge q-1$, so the order $\log Q$ of the common list is optimal. Klurman, Shparlinski
+and Ter\"av\"ainen observed under GRH that unrestricted subset products of all primes up to
+$(\log q)^B$, $B>4$, cover every unit, and constructed a common small set of primes for almost
+all moduli \cite{KlurmanShparlinskiTeravainen2026Generation}. Related results are due to
+Munsch and Shparlinski on smooth squarefree representatives
+\cite{MunschShparlinski2020Smooth}, Martin and Parvardi on subproducts of small residues
+\cite{MartinParvardi2022Subproducts}, Matom\"aki and Ter\"av\"ainen on products of a bounded
+number of larger primes \cite{MatomakiTeravainen2023Products}, and Pach on fixed-cardinality
+subset sums in a finite abelian group \cite{Pach2025Equidistribution}. The results above add an
+endpoint cutoff, exact numbers of factors, arbitrary retained sets and relative counts through
+a bounded quotient.
+
+\begin{example}\label{dir:ex:products}
+\begin{enumerate}[label=\textup{(\arabic*)}]
+\item For $q=101$ and $y=251$ there are $53$ eligible primes. Retain the $26$ with quadratic
+character $+1$ and the nine smallest with character $-1$. The $\binom{35}{14}=2\,319\,959\,400$
+products of fourteen distinct retained primes reach all $100$ units, with between
+$23\,197\,877$ and $23\,201\,277$ representations each; the $26$ residues alone reach only $50$
+classes, with between $0$ and $193\,232$ representations.
+\item Exhaustive enumeration over all retained sets of the given size $m$, with representation
+counts computed both directly and by a recurrence in the residue and the number of primes
+used:
+\begin{center}\small
+\begin{tabular}{rrrrrrr}
+\toprule
+$q$&$y$&$N$&$m$&$k$&sets missing a unit / all sets&minimum count\\
+\midrule
+$7$&$47$&$14$&$8$&$3$&$1/3003$&$0$\\
+$7$&$47$&$14$&$9$&$3$&$0/2002$&$5$\\
+$15$&$37$&$10$&$6$&$3$&$21/210$&$0$\\
+$15$&$37$&$10$&$7$&$3$&$0/120$&$2$\\
+\bottomrule
+\end{tabular}
+\end{center}
+For $q=15$ exactly five of the ten primes have character $+1$ under the quadratic character
+modulo $3$; retaining them gives ten triples of positive sign, and adding two primes of negative
+sign gives fifteen positive and twenty negative triples, as the quotient polynomial predicts.
+\item Modulo $13$, retain the thirteen primes up to $211$ lying in the subgroup of cubes,
+together with the prime $2$. Products of five of them occupy eight of the twelve units, with
+counts $\binom{13}5=1287$, $\binom{13}4=715$ and $0$ in the three cubic classes, although both
+quadratic signs occur in the retained set.
+\end{enumerate}
+\dirfiles{\artifact{squarefree_prime_products/results.json},
+\artifact{orthogonal_nullity_and_prime_products/checks/prime_products.txt}}
+\end{example}
+
+
 \subsection{Open questions}\label{dir:sec:open}
-\sources{grh-transfer; grh-lean-transfers; grh-arithmetic-transfers; grh_cm_prime_applications; grh-exponent-six-and-transfers; dirichlet-grh-research}
+\sources{grh-transfer; grh-lean-transfers; grh-arithmetic-transfers; grh_cm_prime_applications; grh-exponent-six-and-transfers; dirichlet-grh-research; squarefree_prime_products; orthogonal_nullity_and_prime_products}
 
 \begin{enumerate}
 \item \emph{The least pair sum.} For $n$ outside Euler's list let $b(n)$ be the
@@ -2808,4 +3235,16 @@ cubic intermediate field, which the stated exclusion takes into account.
  exist over a field of the two sextic families, or over a cubic field, at each prime
  of \eqref{dir:eq:heavenlylist}, in particular at $4027$? Which field-specific classes
  occur at each of the $25$ candidates of Corollary~\ref{dir:cor:heavenlycubic}?
+\item \emph{Short squarefree products at the logarithm-squared scale.} At $y=C(\log q)^2$, can
+ every unit be reached after majority retention with $O(\log q/\log\log q)$ distinct prime
+ factors? This would give representatives of polynomial size at the smoothness scale of
+ Corollary~\ref{dir:cor:squarefree}. For $y=(\log q)^A$, $A>2$, what is the optimal constant in
+ front of $\log q/\log\log q$ for uniform relative counts? Theorem~\ref{dir:thm:short} and the
+ counting obstruction after it leave a gap.
+\item \emph{Density near one half.} As the retained density tends to $1/2$, can the distance
+ of the retained set from a quadratic fibre replace the fixed margin $\eps$ of
+ Proposition~\ref{dir:prop:explicit} and Corollary~\ref{dir:cor:squarefree} uniformly?
+\item \emph{Computing the quotient.} Can the bounded quotient of Theorem~\ref{dir:thm:quotient}
+ be computed from the retained primes in time polynomial in $\log q$, without enumerating the
+ characters modulo $q$?
 \end{enumerate}
