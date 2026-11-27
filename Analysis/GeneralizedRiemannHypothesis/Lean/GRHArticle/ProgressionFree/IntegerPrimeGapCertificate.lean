@@ -1,3 +1,4 @@
+import GRHArticle.ProgressionFree.IntegerDyadicArithmetic
 import GRHArticle.ProgressionFree.IntegerWheelTail
 import GRHArticle.ProgressionFree.IntegerPrefixEightyExact
 import GRHArticle.ProgressionFree.IntegerPrefixTransfer
@@ -44,35 +45,30 @@ private theorem integerPrimeSquareTerm_le_upperWeight (Y p : ℕ) :
   · rw [integerPrimeSquareTerm, if_neg h]
     positivity
 
-/-- Sum over a dyadic block with logarithmic recursion depth. -/
-private def blockSum (f : ℕ → ℕ) : ℕ → ℕ → ℕ
-  | 0, a => f a
-  | h+1, a => blockSum f h a + blockSum f h (a+2^h)
-
-private theorem blockSum_eq (f : ℕ → ℕ) (h a : ℕ) :
-    blockSum f h a = ∑ i ∈ range (2^h), f (a+i) := by
+theorem integerDyadicSum_eq (f : ℕ → ℕ) (h a : ℕ) :
+    integerDyadicSum f h a = ∑ i ∈ range (2^h), f (a+i) := by
   induction h generalizing a with
-  | zero => simp [blockSum]
+  | zero => simp [integerDyadicSum]
   | succ h ih =>
-    rw [blockSum, ih, ih, pow_succ, Nat.mul_two, sum_range_add]
+    rw [integerDyadicSum, ih, ih, pow_succ, Nat.mul_two, sum_range_add]
     simp only [Nat.add_assoc]
 
 set_option maxRecDepth 1000000 in
 set_option maxHeartbeats 0 in
 private theorem finite_prime_square_bounds :
-    blockSum (upperWeight 293) 14 0 ≤ 48517433775 ∧
-      blockSum (upperWeight 83) 14 0 ≤ 204544244887 := by decide +kernel
+    integerDyadicSum (upperWeight 293) 14 0 ≤ 48517433775 ∧
+      integerDyadicSum (upperWeight 83) 14 0 ≤ 204544244887 := by decide +kernel
 
 private theorem tail_le_certified {Y B : ℕ} (hY : Y ≤ 16383)
-    (h : blockSum (upperWeight Y) 14 0 ≤ B) :
+    (h : integerDyadicSum (upperWeight Y) 14 0 ≤ B) :
     integerPrimeSquareTail Y ≤ (B : ℝ)/scale + (48:ℝ)/210^2/77 := by
   rw [integerPrimeSquareTail_split hY]
   apply add_le_add _ integerPrimeSquareTail_wheel_bound
   calc
     _ ≤ ∑ p ∈ range (16383+1), (upperWeight Y p : ℝ)/scale :=
       sum_le_sum (fun p _ ↦ integerPrimeSquareTerm_le_upperWeight Y p)
-    _ = (blockSum (upperWeight Y) 14 0 : ℝ) / scale := by
-      rw [blockSum_eq, Nat.cast_sum, sum_div]
+    _ = (integerDyadicSum (upperWeight Y) 14 0 : ℝ) / scale := by
+      rw [integerDyadicSum_eq, Nat.cast_sum, sum_div]
       simp only [Nat.zero_add]
       rfl
     _ ≤ _ := div_le_div_of_nonneg_right (Nat.cast_le.mpr h) (Nat.cast_nonneg _)

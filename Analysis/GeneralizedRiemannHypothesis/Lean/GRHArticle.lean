@@ -17,6 +17,7 @@ import GRHArticle.ProgressionFree.IntegerBoundaryExchangeTail
 import GRHArticle.ProgressionFree.IntegerBoundaryExchangeVertices
 import GRHArticle.ProgressionFree.IntegerBoundaryPatch
 import GRHArticle.ProgressionFree.IntegerDensityExtrema
+import GRHArticle.ProgressionFree.IntegerDyadicArithmetic
 import GRHArticle.ProgressionFree.IntegerFiniteTemplateOptimization
 import GRHArticle.ProgressionFree.IntegerFordBlocks
 import GRHArticle.ProgressionFree.IntegerFordDensity
