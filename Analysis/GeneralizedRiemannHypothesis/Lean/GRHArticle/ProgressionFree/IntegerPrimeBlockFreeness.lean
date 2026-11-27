@@ -57,16 +57,21 @@ theorem rationalGP_of_primeExponentAffine {k : ℕ} (hk : 2 ≤ k) {a : Fin k �
 private def blockExponent (P : Finset ℕ) (v : ↥P → ℕ) (p : ℕ) : ℕ :=
   if hp : p ∈ P then v ⟨p,hp⟩ else 0
 
-private def blockProduct (P : Finset ℕ) (v : ↥P → ℕ) : ℕ :=
+/-- The positive integer with a prescribed vector of prime exponents on the block. -/
+def integerPrimeBlockProduct (P : Finset ℕ) (v : ↥P → ℕ) : ℕ :=
   ∏ p ∈ P, p ^ blockExponent P v p
 
-private theorem blockProduct_ne_zero {P : Finset ℕ} (hP : ∀ p ∈ P, p.Prime)
-    (v : ↥P → ℕ) : blockProduct P v ≠ 0 :=
+theorem integerPrimeBlockProduct_ne_zero {P : Finset ℕ} (hP : ∀ p ∈ P, p.Prime)
+    (v : ↥P → ℕ) : integerPrimeBlockProduct P v ≠ 0 :=
   prod_ne_zero_iff.mpr fun p hp ↦ pow_ne_zero _ (hP p hp).ne_zero
 
-private theorem factorization_blockProduct {P : Finset ℕ} (hP : ∀ p ∈ P, p.Prime)
-    (v : ↥P → ℕ) (q : ℕ) : (blockProduct P v).factorization q = blockExponent P v q := by
-  unfold blockProduct
+/-- Valuations of a product of prime powers agree with the given vector and
+are zero off the block. -/
+theorem factorization_integerPrimeBlockProduct {P : Finset ℕ} (hP : ∀ p ∈ P, p.Prime)
+    (v : ↥P → ℕ) (q : ℕ) :
+    (integerPrimeBlockProduct P v).factorization q = if h : q ∈ P then v ⟨q,h⟩ else 0 := by
+  change _ = blockExponent P v q
+  unfold integerPrimeBlockProduct
   rw [Nat.factorization_prod_apply (fun p hp ↦ pow_ne_zero _ (hP p hp).ne_zero)]
   calc
     _ = ∑ p ∈ P, if p = q then blockExponent P v p else 0 := by
@@ -82,21 +87,21 @@ private theorem exists_replace_block_exponents {P : Finset ℕ} (hP : ∀ p ∈ 
     ∃ m : ℕ, m ≠ 0 ∧
       ∀ p : ℕ, m.factorization p = if hp : p ∈ P then v ⟨p,hp⟩ else n.factorization p := by
   let w (p : ↥P) := n.factorization p.val
-  let t := blockProduct P w
-  have ht := blockProduct_ne_zero hP w
+  let t := integerPrimeBlockProduct P w
+  have ht := integerPrimeBlockProduct_ne_zero hP w
   have hfac : t.factorization ≤ n.factorization := by
     intro p
-    rw [factorization_blockProduct hP]
-    by_cases hp : p ∈ P <;> simp [blockExponent,hp,w]
+    rw [factorization_integerPrimeBlockProduct hP]
+    by_cases hp : p ∈ P <;> simp [hp,w]
   have hdvd : t ∣ n := (Nat.factorization_le_iff_dvd ht hn).mp hfac
   let s := n/t
   have hs : s ≠ 0 := (Nat.div_pos (Nat.le_of_dvd (Nat.pos_of_ne_zero hn) hdvd)
     (Nat.pos_of_ne_zero ht)).ne'
-  refine ⟨s*blockProduct P v, mul_ne_zero hs (blockProduct_ne_zero hP v), fun p ↦ ?_⟩
-  rw [Nat.factorization_mul hs (blockProduct_ne_zero hP v), Finsupp.add_apply,
-    factorization_blockProduct hP]
+  refine ⟨s*integerPrimeBlockProduct P v, mul_ne_zero hs (integerPrimeBlockProduct_ne_zero hP v), fun p ↦ ?_⟩
+  rw [Nat.factorization_mul hs (integerPrimeBlockProduct_ne_zero hP v), Finsupp.add_apply,
+    factorization_integerPrimeBlockProduct hP]
   simp only [s,Nat.factorization_div hdvd,Finsupp.tsub_apply]
-  by_cases hp : p ∈ P <;> simp [blockExponent,hp,t,w,factorization_blockProduct hP]
+  by_cases hp : p ∈ P <;> simp [hp,t,w,factorization_integerPrimeBlockProduct hP]
 
 /-- Every block rule of a nonempty progression-free integer product is itself
 free of nonconstant signed progressions of exponent vectors. -/

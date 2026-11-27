@@ -105,6 +105,8 @@ For the exchange used in McNew’s Question 7.4, [IntegerBoundaryExchangeReplace
 
 [BoundedPrimeBlockStrictGap.lean](GRHArticle/ProgressionFree/BoundedPrimeBlockStrictGap.lean) proves that every positive finite block width gives a strict loss against the unrestricted natural-density supremum, for every progression length at least three. The proof constructs a relative gain uniform in the bounded-width rule, so the strict inequality holds for the suprema themselves.
 
+[BoundedPrimeBlockConvergence.lean](GRHArticle/ProgressionFree/BoundedPrimeBlockConvergence.lean) proves convergence of the bounded-width density suprema to the unrestricted supremum. At width $d$, with $p$ the next prime after the first $d$, the loss is at most $1/((k-2)(p-1)^{k-2})$. For three-term progressions the sharper bound is $1/p$.
+
 ## Geometric progressions of ideals in number fields
 
 [Density.lean](GRHArticle/ProgressionFree/NumberFieldIdeals/Density.lean) counts nonzero integral ideals in norm order. Multiplying an arbitrary set with natural density by a fixed ideal divides that density by the ideal norm. [LocalFactors.lean](GRHArticle/ProgressionFree/NumberFieldIdeals/LocalFactors.lean) computes the density of ideals coprime to finitely many primes. [ValuationCylinders.lean](GRHArticle/ProgressionFree/NumberFieldIdeals/ValuationCylinders.lean) proves that the exponents at any finite set of prime ideals have the independent geometric densities in `gpi:lem:product`, for every number field.

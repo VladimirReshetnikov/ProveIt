@@ -13,12 +13,13 @@ namespace GRHArticle.ProgressionFree
 open Finset
 open scoped BigOperators Classical
 
-private def smoothFiber (A : Set ℕ) (Y r : ℕ) : Set ℕ :=
+/-- Smooth multipliers in the fiber indexed by the rough part `r`. -/
+def integerSmoothFiber (A : Set ℕ) (Y r : ℕ) : Set ℕ :=
   {s | s ∈ Nat.smoothNumbers (Y+1) ∧ r*s ∈ A}
 
 private theorem smoothFiber_admissible {A : Set ℕ} {integral : Bool} {Y r : ℕ}
     (hA : IntegerPrefixAdmissible integral A) (hr : 0 < r) :
-    IntegerPrefixAdmissible integral (smoothFiber A Y r) := by
+    IntegerPrefixAdmissible integral (integerSmoothFiber A Y r) := by
   intro a b c ha hb hc hab hbc he hd
   apply hA ha.2 hb.2 hc.2 (Nat.mul_lt_mul_of_pos_left hab hr) (Nat.mul_lt_mul_of_pos_left hbc hr)
   · calc
@@ -52,14 +53,14 @@ private theorem prefixSlice_mem {A : Set ℕ} {n N : ℕ} :
 
 private theorem finiteSmoothFiber_reciprocal_le (A : Set ℕ) (Y N r : ℕ) :
     (∑ n ∈ (integerPrefixSlice A N).filter (fun n ↦ integerRoughPart Y n = r),
-      (n:ℝ)⁻¹) ≤ (r:ℝ)⁻¹ * ∑' s : smoothFiber A Y r, (s.val:ℝ)⁻¹ := by
+      (n:ℝ)⁻¹) ≤ (r:ℝ)⁻¹ * ∑' s : integerSmoothFiber A Y r, (s.val:ℝ)⁻¹ := by
   let T := (integerPrefixSlice A N).filter (fun n ↦ integerRoughPart Y n = r)
   have readBack {n : ℕ} (hn : n ∈ T) : r * integerSmoothPart Y n = n := by
     obtain ⟨h₁, h₂⟩ := mem_filter.mp hn
     have hpos := (prefixSlice_mem.mp h₁).1
     have h := integerSmoothPart_mul_roughPart Y (Nat.ne_of_gt hpos)
     rwa [h₂, mul_comm] at h
-  let f : ↥T → smoothFiber A Y r := fun n ↦ ⟨integerSmoothPart Y n.val,
+  let f : ↥T → integerSmoothFiber A Y r := fun n ↦ ⟨integerSmoothPart Y n.val,
     integerSmoothPart_mem Y n.val, by
       rw [readBack n.property]
       exact (prefixSlice_mem.mp (mem_filter.mp n.property).1).2.2⟩
@@ -67,9 +68,9 @@ private theorem finiteSmoothFiber_reciprocal_le (A : Set ℕ) (Y N r : ℕ) :
     intro a b h
     apply Subtype.ext
     have he : integerSmoothPart Y a.val = integerSmoothPart Y b.val :=
-      congrArg (fun x : smoothFiber A Y r ↦ x.val) h
+      congrArg (fun x : integerSmoothFiber A Y r ↦ x.val) h
     exact (readBack a.property).symm.trans ((congrArg (fun s : ℕ ↦ r*s) he).trans (readBack b.property))
-  have hs : Summable (fun s : smoothFiber A Y r ↦ (s.val:ℝ)⁻¹) :=
+  have hs : Summable (fun s : integerSmoothFiber A Y r ↦ (s.val:ℝ)⁻¹) :=
     smoothSubset_reciprocal_summable (fun _ h ↦ h.1)
   have hm := hs.sum_le_tsum (Finset.univ.map ⟨f,hfi⟩) (fun _ _ ↦ by positivity)
   rw [Finset.sum_map, Finset.univ_eq_attach] at hm
@@ -81,6 +82,29 @@ private theorem finiteSmoothFiber_reciprocal_le (A : Set ℕ) (Y N r : ℕ) :
   intro n hn
   have hn' := congrArg (fun x : ℕ ↦ (x:ℝ)⁻¹) (readBack hn).symm
   simpa only [Nat.cast_mul, mul_inv_rev, mul_comm] using hn'.le
+
+/-- A bound on every fixed-rough-part fiber controls the whole reciprocal
+mass, independently of the progression condition used to obtain it. -/
+theorem reciprocalMassUpTo_le_of_smoothFiber_weight_bound (A : Set ℕ) (Y : ℕ) (M : ℝ)
+    (hM : ∀ r : ℕ, 0 < r → (∑' s : integerSmoothFiber A Y r, (s.val:ℝ)⁻¹) ≤ M)
+    (N : ℕ) :
+    reciprocalMassUpTo A N ≤ M * reciprocalMassUpTo (integerRoughNumbers Y) N := by
+  have hmaps (n : ℕ) (hn : n ∈ integerPrefixSlice A N) :
+      integerRoughPart Y n ∈ integerPrefixSlice (integerRoughNumbers Y) N := by
+    obtain ⟨hn₀, hnN, _⟩ := prefixSlice_mem.mp hn
+    have hr := integerRoughPart_mem Y n
+    have hdiv : integerRoughPart Y n ∣ n := by
+      refine ⟨integerSmoothPart Y n, ?_⟩
+      rw [mul_comm, integerSmoothPart_mul_roughPart Y (Nat.ne_of_gt hn₀)]
+    exact prefixSlice_mem.mpr
+      ⟨Nat.pos_of_ne_zero hr.1, (Nat.le_of_dvd hn₀ hdiv).trans hnN, hr⟩
+  simp only [reciprocalMassUpTo]
+  rw [← sum_fiberwise_of_maps_to hmaps, mul_sum]
+  apply sum_le_sum
+  intro r hr
+  exact (finiteSmoothFiber_reciprocal_le A Y N r).trans
+    ((mul_le_mul_of_nonneg_left (hM r (prefixSlice_mem.mp hr).1) (by positivity)).trans_eq
+      (mul_comm _ _))
 
 /-- Finite reciprocal mass is bounded by the rough reciprocal mass times
 the supremal fixed smooth-fiber weight. -/
@@ -98,26 +122,11 @@ theorem reciprocalMassUpTo_le_smoothLower (integral : Bool) (Y : ℕ)
   have heq : integerSmoothLowerOptimization integral Y / integerSmoothDensityFactor Y = sSup W := by
     change integerSmoothDensityFactor Y * sSup W / integerSmoothDensityFactor Y = _
     rw [mul_comm, mul_div_cancel_right₀ _ (integerSmoothDensityFactor_pos Y).ne']
-  have hmaps (n : ℕ) (hn : n ∈ integerPrefixSlice A N) :
-      integerRoughPart Y n ∈ integerPrefixSlice (integerRoughNumbers Y) N := by
-    obtain ⟨hn₀, hnN, _⟩ := prefixSlice_mem.mp hn
-    have hr := integerRoughPart_mem Y n
-    have hdiv : integerRoughPart Y n ∣ n := by
-      refine ⟨integerSmoothPart Y n, ?_⟩
-      rw [mul_comm, integerSmoothPart_mul_roughPart Y (Nat.ne_of_gt hn₀)]
-    exact prefixSlice_mem.mpr
-      ⟨Nat.pos_of_ne_zero hr.1, (Nat.le_of_dvd hn₀ hdiv).trans hnN, hr⟩
   rw [heq]
-  simp only [reciprocalMassUpTo]
-  rw [← sum_fiberwise_of_maps_to hmaps, mul_sum]
-  apply sum_le_sum
+  apply reciprocalMassUpTo_le_of_smoothFiber_weight_bound
   intro r hr
-  have hr' := (prefixSlice_mem.mp hr).1
-  have hsub : smoothFiber A Y r ⊆ Nat.smoothNumbers (Y+1) := fun _ h ↦ h.1
-  have hsup : (∑' s : smoothFiber A Y r, (s.val:ℝ)⁻¹) ≤ sSup W := by
-    exact le_csSup hW ⟨smoothFiber A Y r, hsub, smoothFiber_admissible hA hr', rfl⟩
-  exact (finiteSmoothFiber_reciprocal_le A Y N r).trans
-    ((mul_le_mul_of_nonneg_left hsup (by positivity)).trans_eq (mul_comm _ _))
+  exact le_csSup hW ⟨integerSmoothFiber A Y r, fun _ h ↦ h.1,
+    smoothFiber_admissible hA hr, rfl⟩
 
 /-- Every admissible set with a natural density is bounded by the same
 fixed-set smooth optimization. -/
