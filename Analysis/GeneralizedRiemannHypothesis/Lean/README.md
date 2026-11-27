@@ -39,7 +39,7 @@ exchange in `gpi:thm:onedigit`. The same file proves the exact finite
 reciprocal-mass difference and uses divergence of prime reciprocals to find
 a finite set of odd-prime satellites giving a strict gain with marker two.
 [Density.lean](GRHArticle/ProgressionFree/Density.lean) proves the exact natural density for fixed prime valuations, finite correlated families of valuation tuples, and finite independent exponent rules. [RankinTruncation.lean](GRHArticle/ProgressionFree/RankinTruncation.lean) specializes this formula to finitely many Rankin primes and exponents, and bounds which integers the truncation can misclassify.
-The limiting density comparison and the specific 225-prime exchange remain open in Lean. [Article section](../Article/sections/gpi.tex)
+[DensityBounds.lean](GRHArticle/ProgressionFree/DensityBounds.lean) bounds the contribution of omitted prime squares by the reciprocal of the cutoff, uniformly in the sample size. [RankinApproximation.lean](GRHArticle/ProgressionFree/RankinApproximation.lean) uses this bound to prove that Rankin’s set has a natural density. [EulerLowerBound.lean](GRHArticle/ProgressionFree/EulerLowerBound.lean) bounds every finite product of the squarefree factors from below by one half. The comparison with the exchanged set and the specific 225-prime exchange remain open in Lean. [Article section](../Article/sections/gpi.tex)
 
 ## RH and Dirichlet GRH input
 
