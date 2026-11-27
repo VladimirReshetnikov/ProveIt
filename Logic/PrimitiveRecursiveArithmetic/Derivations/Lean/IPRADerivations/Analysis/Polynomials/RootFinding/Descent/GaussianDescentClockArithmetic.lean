@@ -47,39 +47,22 @@ theorem rate_positive (d : PTm n) : Γ ⊢[PRAAx] le one (rateDenominator d) :=
     (GaussianPolynomialPerturbation.power_positive two d (le_succ_self one))
     (GaussianPolynomialPerturbation.power_positive four (two*d*d) four_positive))
 
-/-- The first two finite binomial terms, proved directly by QF induction. -/
+/-- The first two finite binomial terms for an increment of one. -/
 theorem bernoulli (a k : PTm n) : Γ ⊢[PRAAx]
     le (pw a k*(a+succ k)) (pw (succ a) (succ k)) := by
-  have all : Γ ⊢[PRAAx] .all (le (pw (Syn.shift a) (var 0)*(Syn.shift a+succ (var 0)))
-      (pw (succ (Syn.shift a)) (succ (var 0)))) := by
-    ipra_qfind (le_QF _ _) [subst_le, subst_ap2]
-    · exact le_congr ((congrMul (pw_zero a) (.eqRefl _)).eqTrans (one_mul _)).eqSymm
-        (pw_one (succ a)).eqSymm (le_of_eq_add (d := zero) (by ipra_ring))
-    · let Δ := le (pw (Syn.shift a) (var 0)*(Syn.shift a+succ (var 0)))
-        (pw (succ (Syn.shift a)) (succ (var 0))) :: Γ.map Fm.shift
-      have step : Δ ⊢[PRAAx] le
-          (pw (Syn.shift a) (succ (var 0))*(Syn.shift a+succ (succ (var 0))))
-          ((pw (Syn.shift a) (var 0)*(Syn.shift a+succ (var 0)))*succ (Syn.shift a)) := by
-        refine le_of_eq_add (d := pw (Syn.shift a) (var 0)*succ (var 0)) ?_
-        have p := natEq (pw_succ (Γ := (le (pw (Syn.shift a) (var 0)*(Syn.shift a+succ (var 0)))
-          (pw (succ (Syn.shift a)) (succ (var 0)))) :: Γ.map Fm.shift) (Syn.shift a) (var 0))
-        apply deriveNat; ipra_simps; rw [p]; ring
-      exact le_trans step (le_congr (.eqRefl _) (pw_succ _ _).eqSymm (mul_le_mul_right _ Prf.hyp0))
-  simpa only [subst_le,PTm.subst_mul,PTm.subst_add,subst_ap2,ConciseIPRA.PTm.subst_succ,
-    Syn.subst_var,Syn.inst_zero,Syn.subst_inst_shift] using Prf.allE k all
+  refine le_congr ?_ (.eqRefl _) (pw_bernoulli_unit a k)
+  have h := natEq (pw_succ (Γ := Γ) a k)
+  apply deriveNat
+  ipra_simps
+  rw [h]
+  ring
 
 /-- q^M≤1/2 for q=(M−1)/M, including M=1. -/
 theorem block_decay (M : PTm n) (hM : Γ ⊢[PRAAx] le one M) : Γ ⊢[PRAAx]
     le (two*pw (pred M) M) (pw M M) := by
-  have m := positive_form hM
-  have first : Γ ⊢[PRAAx] le (two*pw (pred M) M)
-      (pw (pred M) (pred M)*(pred M+succ (pred M))) := by
-    refine le_of_eq_add (d := pw (pred M) (pred M)) ?_
-    have p := natEq ((congrAp2 powF m (.eqRefl (pred M))).eqTrans (pw_succ _ _))
-    apply deriveNat; ipra_simps; rw [p]; ring
-  have second := bernoulli (Γ := Γ) (pred M) (pred M)
-  exact le_trans first (le_congr (.eqRefl _)
-    (congrAp2 powF m.eqSymm m.eqSymm) second)
+  have hm := positive_form hM
+  exact le_congr (congrMul (.eqRefl _) (congrAp2 powF hm.eqSymm (.eqRefl _)))
+    (congrAp2 powF hm.eqSymm hm.eqSymm) (pw_bernoulli_half (pred M))
 
 theorem power_composition (a M K : PTm n) : Γ ⊢[PRAAx] pw (pw a M) K ≐ pw a (M*K) :=
   pw_pow a M K

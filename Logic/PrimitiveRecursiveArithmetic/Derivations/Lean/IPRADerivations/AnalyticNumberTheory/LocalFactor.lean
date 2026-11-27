@@ -34,27 +34,16 @@ theorem pw_mul_base (a b m : PTm n) : Γ ⊢[PRAAx] pw (a * b) m ≐ pw a m * pw
 theorem bern_step {X m : PTm n}
     (ih : Γ ⊢[PRAAx] le (pw X (succ m) + succ m * pw X m) (pw (succ X) (succ m))) :
     Γ ⊢[PRAAx] le (pw X (succ (succ m)) + succ (succ m) * pw X (succ m)) (pw (succ X) (succ (succ m))) := by
-  have h := le_mul_mono ih (le_refl (succ X))
-  refine le_trans ?_ (le_congr (.eqRefl _) (pw_succ _ _).eqSymm h)
-  refine le_of_eq_add (d := succ m * pw X m) ?_
-  ipra_lc -natEq (pw_succ X (succ m)) - (Groth.ι (IPRA.Q.mk Γ m) + 1) * natEq (pw_succ X m)
-
-/-- Variables: `0 = m`, `1 = X`. -/
-private abbrev bernF : Fm PTm 2 :=
-  le (pw (var 1) (succ (var 0)) + succ (var 0) * pw (var 1) (var 0)) (pw (succ (var 1)) (succ (var 0)))
-
-private theorem bernoulli₀ : ([] : List (Fm PTm 2)) ⊢[PRAAx] bernF := by
-  ipra_ind (le_QF _ _) [subst_le, subst_ap2]
-  · refine le_congr ?_ (pw_one _).eqSymm (le_refl _)
-    refine withEq (pw_one (Γ := []) (var 0 : PTm 1)) fun e₁ => withEq (pw_zero (Γ := []) (var 0 : PTm 1)) fun e₂ => ?_
-    apply deriveNat; ipra_simps; rw [e₁, e₂]; ring
-  · exact bern_step Prf.hyp0
+  have h := le_congr (by ipra_ring : Γ ⊢[PRAAx]
+      pw X (succ m) + succ m * pw X m ≐ pw X (succ m) + succ m * pw X m * one)
+    (congrAp2 powF (.eqRefl _) (succ_eq_add_one X)) ih
+  exact le_congr (by ipra_ring) (congrAp2 powF (.eqRefl _) (succ_eq_add_one X).eqSymm)
+    (pw_bernoulli_step h)
 
 /-- `X^{m+1} + (m+1) X^m ≤ (X + 1)^{m+1}`. -/
 theorem bernoulli (X m : PTm n) :
-    Γ ⊢[PRAAx] le (pw X (succ m) + succ m * pw X m) (pw (succ X) (succ m)) := by
-  have h := inst (Γ := Γ) bernoulli₀ (![m, X] : Fin 2 → PTm n)
-  simpa using h
+    Γ ⊢[PRAAx] le (pw X (succ m) + succ m * pw X m) (pw (succ X) (succ m)) :=
+  pw_bernoulli_unit X m
 
 /-! ## The decreasing step -/
 

@@ -46,35 +46,24 @@ section Bernoulli
 variable {u d : PTm n}
 
 theorem bern_base :
-    Γ ⊢[PRAAx] le (pw u (succ zero) + succ zero * d * pw u zero) (pw (u + d) (succ zero)) := by
-  have p₁ := natEq (pw_succ (Γ := Γ) u zero); have p₂ := natEq (pw_succ (Γ := Γ) (u + d) zero)
-  have z₁ := natEq (pw_zero (Γ := Γ) u); have z₂ := natEq (pw_zero (Γ := Γ) (u + d))
-  ipra_le 0 using rw [p₁, p₂, z₁, z₂]; ring
+    Γ ⊢[PRAAx] le (pw u (succ zero) + succ zero * d * pw u zero) (pw (u + d) (succ zero)) :=
+  le_congr (by ipra_ring) (.eqRefl _) (pw_bernoulli_base u d)
 
 theorem bern_step {e : PTm n}
     (ih : Γ ⊢[PRAAx] le (pw u (succ e) + succ e * d * pw u e) (pw (u + d) (succ e))) :
-    Γ ⊢[PRAAx] le (pw u (succ (succ e)) + succ (succ e) * d * pw u (succ e)) (pw (u + d) (succ (succ e))) := by
-  have p₁ := natEq (pw_succ (Γ := Γ) u (succ e))
-  have p₂ := natEq (pw_succ (Γ := Γ) u e)
-  have p₃ := natEq (pw_succ (Γ := Γ) (u + d) (succ e))
-  ipra_le sl ih * (𝔟 u + 𝔟 d) + (𝔟 e + 1) * 𝔟 d * 𝔟 d * 𝔟 (pw u e) using
-    rw [p₁, p₃]
-    linear_combination (-(𝔟 e + 1) * 𝔟 d) * p₂
-
-theorem bern_all (u d : PTm n) :
-    Γ ⊢[PRAAx] Fm.all (le (pw (Syn.shift u) (succ (var 0)) + succ (var 0) * Syn.shift d * pw (Syn.shift u) (var 0))
-      (pw (Syn.shift u + Syn.shift d) (succ (var 0)))) := by
-  ipra_qfind (le_QF _ _) [subst_le, subst_ap2]
-  · exact bern_base
-  · exact bern_step Prf.hyp0
+    Γ ⊢[PRAAx] le (pw u (succ (succ e)) + succ (succ e) * d * pw u (succ e)) (pw (u + d) (succ (succ e))) :=
+  le_congr (by ipra_ring) (.eqRefl _)
+    (pw_bernoulli_step (a := u) (b := d) (m := e) (le_congr (by ipra_ring) (.eqRefl _) ih))
 
 /-- Bernoulli's inequality `u^{e+1} + (e + 1) d u^e ≤ (u + d)^{e+1}`. -/
 theorem bernoulli (u d e : PTm n) :
-    Γ ⊢[PRAAx] le (pw u (succ e) + succ e * d * pw u e) (pw (u + d) (succ e)) := by
-  have a := Prf.allE e (bern_all (Γ := Γ) u d)
-  simp only [subst_le, subst_ap2, PTm.subst_add, PTm.subst_mul, Syn.subst_var, Syn.inst_zero,
-    Syn.subst_inst_shift, ConciseIPRA.PTm.subst_zero, ConciseIPRA.PTm.subst_succ] at a
-  exact a
+    Γ ⊢[PRAAx] le (pw u (succ e) + succ e * d * pw u e) (pw (u + d) (succ e)) :=
+  le_congr (by ipra_ring) (.eqRefl _) (pw_bernoulli u d e)
+
+theorem bern_all (u d : PTm n) :
+    Γ ⊢[PRAAx] Fm.all (le (pw (Syn.shift u) (succ (var 0)) + succ (var 0) * Syn.shift d * pw (Syn.shift u) (var 0))
+      (pw (Syn.shift u + Syn.shift d) (succ (var 0)))) :=
+  .allI (bernoulli (Syn.shift u) (Syn.shift d) (var 0))
 
 end Bernoulli
 

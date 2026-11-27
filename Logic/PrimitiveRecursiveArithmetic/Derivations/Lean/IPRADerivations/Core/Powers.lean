@@ -10,6 +10,7 @@ With `pw a m = aᵐ` (the symbol `powF` of `Core.Definitions`):
 * `pw_le_pw`: `a ≤ b → aᵐ ≤ bᵐ`;
 * `pw_one_le`, `pw_le_pw_exp`: for a base at least one, powers stay at least one and increase with the exponent;
 * `le_self_pw`: `S a ≤ (S a)^{S m}`;
+* `pw_bernoulli`: the first two terms of a power of a sum give a lower bound;
 * `no_square_between`: there is no square strictly between `k²` and `(k + 1)²`.
 -/
 
@@ -137,6 +138,63 @@ theorem le_self_pw (a m : PTm n) : Γ ⊢[PRAAx] le (succ a) (pw (succ a) (succ 
   le_congr (pw_one _) (.eqRefl _)
     (pw_le_pw_exp ((succ_monus_succ zero a).eqTrans (zero_le a))
       ((succ_monus_succ zero m).eqTrans (zero_le m)))
+
+/-! ## Homogeneous Bernoulli inequality -/
+
+theorem pw_bernoulli_base (a b : PTm n) :
+    Γ ⊢[PRAAx] le (pw a (succ zero) + succ zero * pw a zero * b) (pw (a + b) (succ zero)) := by
+  refine le_of_eq_add (d := zero) ?_
+  have ha := natEq (pw_one (Γ := Γ) a)
+  have hb := natEq (pw_one (Γ := Γ) (a + b))
+  have h0 := natEq (pw_zero (Γ := Γ) a)
+  apply deriveNat
+  ipra_simps
+  rw [ha, hb, h0]
+  ring
+
+theorem pw_bernoulli_step {a b m : PTm n}
+    (ih : Γ ⊢[PRAAx] le (pw a (succ m) + succ m * pw a m * b) (pw (a + b) (succ m))) :
+    Γ ⊢[PRAAx] le (pw a (succ (succ m)) + succ (succ m) * pw a (succ m) * b) (pw (a + b) (succ (succ m))) := by
+  refine le_trans (le_of_eq_add (d := succ m * pw a m * b * b) ?_)
+    (le_congr (.eqRefl _) (pw_succ (a + b) (succ m)).eqSymm (mul_le_mul_right (a + b) ih))
+  have h₁ := natEq (pw_succ (Γ := Γ) a m)
+  have h₂ := natEq (pw_succ (Γ := Γ) a (succ m))
+  apply deriveNat
+  ipra_simps
+  rw [h₂, h₁]
+  ring
+
+private abbrev pwBernoulliF : Fm PTm 3 :=
+  le (pw (var 1) (succ (var 0)) + succ (var 0) * pw (var 1) (var 0) * var 2)
+    (pw (var 1 + var 2) (succ (var 0)))
+
+private theorem pw_bernoulli₀ : ([] : List (Fm PTm 3)) ⊢[PRAAx] pwBernoulliF := by
+  refine ind _ (le_QF _ _) ?_ ?_
+  · pw_subst
+    exact pw_bernoulli_base _ _
+  · pw_subst
+    exact pw_bernoulli_step Prf.hyp0
+
+/-- Homogeneous Bernoulli inequality, at every encoded successor exponent. -/
+theorem pw_bernoulli (a b m : PTm n) :
+    Γ ⊢[PRAAx] le (pw a (succ m) + succ m * pw a m * b) (pw (a + b) (succ m)) := by
+  simpa using inst (Γ := Γ) pw_bernoulli₀ (![m, a, b] : Fin 3 → PTm n)
+
+/-- Homogeneous Bernoulli with increment one. -/
+theorem pw_bernoulli_unit (a m : PTm n) :
+    Γ ⊢[PRAAx] le (pw a (succ m) + succ m * pw a m) (pw (succ a) (succ m)) :=
+  le_congr (by ipra_ring) (congrAp2 powF (.eqRefl _) (succ_eq_add_one a).eqSymm)
+    (pw_bernoulli a one m)
+
+/-- The ratio a/(a+1), raised to a+1, is at most one half after clearing denominators. -/
+theorem pw_bernoulli_half (a : PTm n) :
+    Γ ⊢[PRAAx] le (num 2 * pw a (succ a)) (pw (succ a) (succ a)) := by
+  refine le_trans (le_of_eq_add (d := pw a a) ?_) (pw_bernoulli_unit a a)
+  have h := natEq (pw_succ (Γ := Γ) a a)
+  apply deriveNat
+  ipra_simps
+  rw [h]
+  ring
 
 /-- No square lies strictly between `k²` and `(k + 1)²`. -/
 theorem no_square_between {k y : PTm n} (φ : Fm PTm n) (h₁ : Γ ⊢[PRAAx] lt (k * k) (y * y))
