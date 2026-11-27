@@ -11,6 +11,7 @@ import GRHArticle.ProgressionFree.FourMarkerExchange
 import GRHArticle.ProgressionFree.FourMarkerMass
 import GRHArticle.ProgressionFree.IntegerPrefix
 import GRHArticle.ProgressionFree.IntegerPrefixEighty
+import GRHArticle.ProgressionFree.IntegerPrefixEightyExact
 import GRHArticle.ProgressionFree.PolynomialBlocks
 import GRHArticle.ProgressionFree.PolynomialBoundedReplacement
 import GRHArticle.ProgressionFree.PolynomialCoefficientConcentration
