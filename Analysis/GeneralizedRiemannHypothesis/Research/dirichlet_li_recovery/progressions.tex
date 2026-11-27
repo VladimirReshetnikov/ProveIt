@@ -1,0 +1,286 @@
+\section{Finite blocks determine weighted primitive Dirichlet factors}
+\label{sec:prog}
+
+In this section assume the critical-line statement for primitive Dirichlet
+$L$-functions in the pinned source. For a primitive character $\chi$,
+including the character of conductor one, let $m_\chi(\rho)$ be the multiplicity
+of a nontrivial zero. Write
+\[
+   z_\rho=1-1/\rho,\qquad
+   \lambda_\chi(n)=\lim_{R\to\infty}
+      \sum_{|\rho|\le R}m_\chi(\rho)(1-z_\rho^n).
+\]
+Here and below sums using $m_\chi$ run over distinct zeros. These are the
+starred Li sums, with the orientation of the Cayley map fixed as displayed.
+The classical zero count gives $\sum m_\chi(\rho)|1-z_\rho|^2<\infty$,
+and the starred first sum converges. See Lagarias \cite{LagariasLi}.
+The only possible limit point of the $z_\rho$ on the circle is $1$.
+The repository proves identification from all positive modes for primitive
+products at one time, and identification in natural density for individual
+characters. Classical comparison theorems can use the zero divisors
+directly. For instance, Banks proves a short-height-window discrepancy for
+a pair of distinct primitive characters of the same conductor
+(\href{https://arxiv.org/abs/2302.07073}{arXiv:2302.07073}, Thm.~1.1).
+Our data consist of exponentiated Li coefficients at finitely many indices
+in a prescribed progression.
+
+Fix a nonempty finite set $\mathcal C$ of distinct primitive characters,
+a stride $h\ge1$, a residue $0\le r<h$, and a nonnegative integer $d$.
+For $b\in\mathbb C^{\mathcal C}$ put
+\[
+          A_b(k)=\sum_{\chi\in\mathcal C} b_\chi\lambda_\chi(r+hk).
+\]
+When the weights are positive, $\exp(-A_b)$ is a product of
+heat coefficients at the indicated times. Complex weights allow comparison
+and subtraction without choosing a branch of a complex power. A calibration
+polynomial $P$ multiplies the observed sequence by $\exp(P(k))$.
+It includes an unknown normalization and rotation.
+
+\begin{theorem}[Uniform separation on a finite block]\label{thm:calibrated}
+For each $M>0$ there exist an integer $W\ge1$ and a constant $c>0$,
+depending only on $\mathcal C,h,r,d,M$, such that every interval $I$
+of $W$ consecutive positive integers and every $b$ with $\|b\|_2\le M$ satisfy
+\begin{equation}
+ \inf_{\substack{P\in\mathbb C[X]\\ \deg P\le d}}
+     \max_{k\in I}\left|\exp\big(-A_b(k)+P(k)\big)-1\right|
+      \ \ge\ c\,\|b\|_2 .
+ \label{eq:calibration}
+\end{equation}
+The same constants apply when a different calibration polynomial is fitted
+on each interval.
+\end{theorem}
+
+For a catalogue of $m$ characters, every admissible $W$ satisfies
+$W\ge m+d+1$. Indeed, on $W$ points the values of the polynomials of
+degree at most $d$ form a subspace of dimension $\min(d+1,W)$.
+If its codimension is smaller than $m$, the linear map $b\mapsto A_b|_I$
+followed by the quotient has a nonzero kernel element. Scale it to have
+norm at most $M$ and interpolate its values to make the left side zero.
+
+\begin{lemma}[Rigidity of a finite weighted zero discrepancy]\label{lem:logr}
+If $\sum_{\chi\in\mathcal C} b_\chi m_\chi(\rho)=0$ at all but finitely
+many nontrivial zeros in the union of the zero sets, then $b=0$.
+This lemma holds without a critical-line hypothesis.
+\end{lemma}
+
+\begin{proof}
+Let $\xi_\chi$ be the entire order-one completion of $L(s,\chi)$, including
+the factor $s(s-1)$ for the conductor-one character. Its zeros are exactly
+the nontrivial zeros. The genus-one Hadamard formula gives
+\[
+  \frac{\xi_\chi'}{\xi_\chi}(s)
+   =B_\chi+\sum_\rho m_\chi(\rho)
+     \left(\frac{1}{s-\rho}+\frac{1}{\rho}\right).
+\]
+The paired summands converge normally away from their poles. Thus the
+$b$-weighted sum of these logarithmic derivatives is a rational function,
+a constant plus finitely many simple fractions. Write
+$V(s)=\sum_\chi b_\chi L'(s,\chi)/L(s,\chi)$. The logarithmic derivative
+of a gamma factor is $\tfrac12\psi((s+a_\chi)/2)$ with
+$a_\chi\in\{0,1\}$. Its increment under $s\mapsto s+2$ is
+$1/(s+a_\chi)$, by the gamma recurrence. The conductor contributes a
+constant and the elementary factors contribute rational functions.
+Consequently $V(s+2)-V(s)$ is rational. On the positive real axis it is
+$O(2^{-s})$ by absolute convergence of the logarithmic Euler series.
+A rational function with this decay vanishes identically.
+Iterating the resulting period to the right gives $V=0$ on $\Re s>1$.
+
+Uniqueness of Dirichlet series now yields
+$\sum_\chi b_\chi\chi(p)=0$ at every prime $p$ coprime to the least
+common multiple $q$ of the conductors. Every reduced class modulo $q$
+contains a prime. Distinct primitive characters induce distinct characters
+of $(\mathbb Z/q\mathbb Z)^\times$, so orthogonality gives $b_\chi=0$
+for all $\chi$.
+\end{proof}
+
+\begin{proof}[Proof of Theorem~\ref{thm:calibrated}]
+Set $j=\max(2,d+1)$ and $\Delta f(k)=f(k+1)-f(k)$.
+The sequence $u_b=\Delta^j A_b$ has an absolutely convergent expansion
+\begin{equation}
+ u_b(k)=-\sum_z B_z z^r (z^h-1)^j(z^h)^k,\qquad
+ B_{z_\rho}=\sum_{\chi\in\mathcal C}b_\chi m_\chi(\rho).
+ \label{eq:push-prog}
+\end{equation}
+Indeed $|z^h-1|\le h|1-z|$ and $j\ge2$.
+It follows that $u_b$ is uniformly almost periodic on $\mathbb Z$ and
+depends continuously, in the supremum norm, on $b$.
+
+Suppose $\exp(-u_b(k))=1$ for all $k\in\mathbb Z$.
+The values of $u_b$ then lie in $2\pi i\mathbb Z$.
+An almost period with error less than $2\pi$ is an exact period. Choose
+such a positive period $v$. By uniqueness of Fourier coefficients of
+finite measures on the circle, the measure in \eqref{eq:push-prog} after
+grouping at $w=z^h$ is supported on $w^v=1$.
+Choose an open arc about $1$ on which $z\mapsto z^h$ is injective.
+There are finitely many atoms outside the arc. Remove their images and
+the $v$th roots of unity. Above every remaining $w$, any contributing
+atom is the sole preimage in that arc. Its coefficient in
+\eqref{eq:push-prog} must vanish, and $w\ne1$, so $B_z=0$.
+The discarded finite set has finite fibers. Thus $B_z$ is zero except
+at finitely many $z$. Lemma~\ref{lem:logr} implies $b=0$.
+In particular $u_b$ itself is nonzero whenever $b\ne0$.
+
+For $\|a\|_2=1$ and $0\le s\le M$ consider the bounded sequences
+\[
+ g_{a,s}=
+ \begin{cases}
+  (\exp(-s u_a)-1)/s,& s>0,\\
+  -u_a,&s=0.
+ \end{cases}
+\]
+They are uniformly almost periodic. The map $(a,s)\mapsto g_{a,s}$ is
+continuous into the space of bounded sequences with its supremum norm,
+including at $s=0$ by the exponential series. Each sequence is nonzero
+by the preceding argument. For a nonzero uniformly almost-periodic
+sequence choose an index where its modulus exceeds $2\eta>0$.
+The translates of this index by its $\eta$-almost periods have bounded
+gaps, so some excursion above $\eta$ occurs in every interval of a
+fixed length. The same length works with threshold $\eta/2$ throughout a
+supremum-norm neighborhood of the sequence. A finite subcover of the compact
+parameter space gives $L$ and $\eta_0>0$ such that for every $b$ with
+$0<\|b\|_2\le M$ there is a $k$ in each block of length $L$ with
+\begin{equation}
+          |\exp(-u_b(k))-1|\ge\eta_0\|b\|_2 .
+ \label{eq:recurrentdiff}
+\end{equation}
+
+Write $R(k)=\exp(-A_b(k)+P(k))$. Since $\Delta^jP=0$,
+\[
+     \prod_{i=0}^{j} R(k+i)^{(-1)^{j-i}\binom{j}{i}}
+       =\exp(-u_b(k)).
+\]
+This rational function of $j+1$ inputs equals $1$ at $(1,\ldots,1)$.
+On the closed polydisc $|R_i-1|\le1/2$, its first derivatives are bounded,
+so its difference from $1$ is at most $C_j\max_i|R_i-1|$.
+Take $W=L+j$ and choose $k$ from its first $L$ positions using
+\eqref{eq:recurrentdiff}. Either some $|R(k+i)-1|>1/2$, or the
+last display gives $\max_i|R(k+i)-1|\ge (\eta_0/C_j)\|b\|_2$.
+Taking $c=\min(1/(2M),\eta_0/C_j)$ proves \eqref{eq:calibration}.
+\end{proof}
+
+\paragraph{Reading the estimate.}
+Suppose two weighted lists from the fixed catalogue give coefficient
+sequences whose ratio, after calibration, differs from $1$ by at most
+$\varepsilon$ on a block of length $W$. If their weight difference has
+norm at most $M$, that difference has norm at most $\varepsilon/c$.
+At zero error the weights agree exactly. At a common known time, this
+recovers every factor multiplicity of a primitive product. If time is
+unknown, the identifiable quantities are time times multiplicity:
+$P$ at time $at$ and $P^a$ at time $t$ yield exactly the same data for every
+positive integer $a$. A fixed roster and a weight bound allow a common
+block length. The general proof gives existence of $W,c$. An explicit instance for two
+real characters follows below.
+
+For any two individual finite mixtures one can take the union of their
+catalogues and choose $M$ after their weights are specified.
+Consequently even a sequence of blocks whose union has natural density
+zero determines a finite mixture, provided their lengths tend to infinity
+and the ratio approaches $1$ in relative measure on them after
+polynomial calibration of fixed degree. Indeed, for distinct mixtures
+every full subblock of length $W$ contains an error of at least
+$c\|b\|_2$, a positive lower fraction. For example, testing the modes
+$r+hk$ with $2^{j^2}\le k<2^{j^2}+j$ suffices in this asymptotic sense.
+This conclusion controls relative errors in the Fourier coefficients;
+they can themselves be very small.
+
+\subsection{An explicit 255-mode theorem for zeta and Dirichlet beta}
+Let $\beta(s)=L(s,\chi_{-4})$ be the Dirichlet beta function. Its coefficients
+and those of $\zeta$ are real, so their Li coefficients are real.
+Write $A_{u,v}(k)=u\lambda_\zeta(r+20k)+v\lambda_\beta(r+20k)$ for
+$0\le r<20$. The following constants apply to all starting indices.
+
+\begin{theorem}\label{thm:explicit255}
+For every interval $I$ of $255$ consecutive positive integers, all real
+$u,v$, and every real affine function $P$, one has
+\[
+  \max_{k\in I}|A_{u,v}(k)-P(k)|
+          \ \ge\ \tfrac16\max(|u|,|v|).
+\]
+Consequently the logarithms of the heat-coefficient magnitudes of
+$\zeta^a\beta^b$ at time one, at these 255 indices in any residue class
+modulo 20, determine the nonnegative integer multiplicities $a,b$ even
+in the presence of unknown affine drift. Uniform errors strictly below
+$1/12$ in the log magnitudes permit at most one such integer pair.
+\end{theorem}
+
+\begin{proof}
+We give the numerical inputs and bounds explicitly. The first two positive
+ordinates of $\zeta$ lie in $(14.13,14.14)$ and $(21,22)$.
+The first four for $\beta$ lie in $(6.02,6.03)$, $(10.24,10.25)$,
+$(12.98,13.00)$ and $(16.34,16.35)$. The certified data come from
+\href{https://flintlib.org/doc/acb_dirichlet/zeta-zeros.html}{FLINT's
+indexed zeta zero enclosures} and the
+\href{https://www.lmfdb.org/L/1/2e2/4.3/r1/0/0}{LMFDB entry for $\chi_{-4}$}
+with its linked zero list and reliability statement. Both spectra are
+symmetric and have no central zero.
+
+For $\gamma>0$ put $w(\gamma)=z_{1/2+i\gamma}^{20}
+=\exp(40i\arctan(1/(2\gamma)))$.
+Choose as targets $w_\zeta,w_\beta$ from the first positive zero of
+each function. They satisfy, for either target $w_*$,
+\begin{equation}
+ |1-w_*|^2>5/3,\qquad |w-w_*|>3/25
+       \quad\text{at every other folded zero in the two spectra}.
+ \label{eq:boxes}
+\end{equation}
+Here is the full gap check. In increasing order of positive ordinate,
+the real parts of the first four folded frequencies in the union lie in
+\[
+ (-.987,-.984),\quad (-.373,-.369),\quad
+ (.030,.034),\quad (.155,.157).
+\]
+The fourth belongs to $\zeta$. All remaining positive ordinates give real
+part greater than $.340$. Conjugate frequencies have the same real part.
+The absolute imaginary parts at the two targets exceed $.16$ and $.98$,
+respectively, separating each from its conjugate. For $\gamma\ge10$ the
+angle in the exponential decreases in $(0,\pi)$, so its cosine increases.
+On the first interval the angle lies between $\pi$ and $3\pi/2$.
+Thus rational endpoint evaluations of
+$((\gamma^2-1/4+i\gamma)/(\gamma^2+1/4))^{20}$ prove all these bounds.
+
+We also need a bound on the mass of all the other frequencies. With
+multiplicity in each sum, the two completed functional equations give
+\begin{equation}
+ \sum_{\rho\text{ of }\zeta}\frac1{|\rho|^2}
+ +\sum_{\rho\text{ of }\beta}\frac1{|\rho|^2}
+   =2-2\log\pi+2\frac{\beta'(1)}{\beta(1)}<\tfrac12 .
+ \label{eq:bothmass}
+\end{equation}
+Indeed for either real completion $\xi$ the difference of its logarithmic
+derivatives at $1$ and $0$ equals $2\xi'(1)/\xi(1)$ by symmetry.
+The Hadamard expansion gives the same difference as
+$\sum 1/(\rho(1-\rho))=\sum 1/|\rho|^2$ by the critical-line input.
+For $\zeta$ the resulting expression is $2+\gamma_E-\log(4\pi)$, and for
+$\beta$ it is $\log(4/\pi)-\gamma_E+2\beta'(1)/\beta(1)$, where
+$\gamma_E$ is Euler's constant. To check the strict bound, use
+$\beta(1)=\pi/4>0.78$, $\log\pi>1.14$, and $\beta'(1)<0.30$.
+For the last inequality the alternating series for $\beta'(1)$ is bounded
+above by the five terms from $\log(3)/3$ through $\log(11)/11$.
+Termwise differentiation at $1$ follows from uniform convergence of the
+alternating derivative series on a real neighborhood of $1$.
+The script \texttt{check\_window.py} verifies these elementary
+inequalities and the frequency enclosures using rational arithmetic.
+
+Write $D(k)=A_{u,v}(k+1)-2A_{u,v}(k)+A_{u,v}(k-1)$ and
+$B=\max(|u|,|v|)$. Its Fourier series has an atom for each zero at
+$w=z^{20}$ with coefficient $b_\rho z^r|1-w|^2$, where $b_\rho$ is the
+corresponding scalar $u$ or $v$, counted with the multiplicity of the zero.
+By $|1-z^{20}|\le20|1-z|$ and \eqref{eq:bothmass}, the sum of the absolute
+coefficients is less than $200B$ when $B>0$. Choose the target belonging to
+a scalar of modulus $B$. It has coefficient of absolute value greater
+than $5B/3$ by \eqref{eq:boxes}.
+
+Let $K(X)=(64^{-1}\sum_{j=0}^{63}X^j)^4=\sum_{j=0}^{252}a_jX^j$.
+Its coefficients are nonnegative and sum to one. In the average
+$\sum_{j=0}^{252}a_j\overline w_*^{\,j}D(k_0+j)$ the chosen atom contributes
+its full coefficient times a unit factor. Every other frequency is
+multiplied in modulus by at most $(25/96)^4$, by the geometric sum and
+\eqref{eq:boxes}. Since $200(25/96)^4<1$, the average has absolute
+value greater than $2B/3$. Some $|D(k_0+j)|$ therefore exceeds $2B/3$.
+An affine function has zero second difference, and the absolute coefficient
+sum of a second difference is $4$. At least one of the $255$ indices
+from $k_0-1$ to $k_0+253$ has $|A_{u,v}-P|>B/6$.
+The case $B=0$ is immediate. For two integer pairs, their nonzero difference
+has $B\ge1$. Two fits with errors strictly below $1/12$ would violate the
+inequality by the triangle inequality.
+\end{proof}

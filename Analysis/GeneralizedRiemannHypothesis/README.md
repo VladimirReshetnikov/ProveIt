@@ -59,3 +59,27 @@ settles elsewhere and which methods inside its proof carry over to other problem
 packets contained excerpts of that development, under the Apache-2.0 licence. The excerpts
 left with the packets; the whole `grh` directory, at the commit the reports pin, is in
 [`vendor/grh-lean`](vendor/grh-lean/README.md).
+
+## Reports placed and not yet merged
+
+10 further archives arrived in `Analysis/GeneralizedRiemannHypothesis/docs/incoming` on
+27 November 2026, in 4 arrival commits from `8c6032a195` to `6d284fcf75`. They are placed as before, one
+directory per archive under `Research/`, and retired from the drop directory. Of their 145
+members, 136 are placed and the 9 matched by `.gitignore` are listed in
+[`Research/OMITTED.tsv`](Research/OMITTED.tsv). No member is a checksum manifest of its own
+packet or a copy of a file of an earlier packet. Their content is merged into the article
+next, after which these directories are removed like the earlier ones.
+
+| Directory | Archive | Arrival | Wrapper | Members | Placed | Omitted | Title in the delivery README |
+|---|---|---|---|---:|---:|---:|---|
+| [grh_quarter_density](Research/grh_quarter_density/README.md) | `grh_quarter_density.zip` | `8c6032a195` | `grh_quarter_density` | 9 | 9 | 0 | Exact quarter-density support for disjoint products of small primes |
+| [grh_zero_filter_tradeoff](Research/grh_zero_filter_tradeoff/README.md) | `grh_zero_filter_tradeoff.zip` | `8c6032a195` | none | 7 | 6 | 1 | Positive filters for Dirichlet zeros |
+| [prime_cubature_grh_2026-11-27](Research/prime_cubature_grh_2026-11-27/README.md) | `prime_cubature_grh_2026-11-27.zip` | `8c6032a195` | none | 9 | 9 | 0 | Exact prime cubature after adversarial erasures |
+| [prime_legendre_codes_2026-11-27](Research/prime_legendre_codes_2026-11-27/README.md) | `prime_legendre_codes_2026-11-27.zip` | `8c6032a195` | none | 11 | 10 | 1 | Prime-labelled codes with two-sided Gilbert–Varshamov distances |
+| [grh-two-open-questions](Research/grh-two-open-questions/README.md) | `grh-two-open-questions.zip` | `f04559d2e2` | none | 12 | 11 | 1 | Two open questions from the ProveIt GRH article |
+| [dirichlet_li_recovery](Research/dirichlet_li_recovery/README.md) | `dirichlet_li_recovery.zip` | `089c6881ea` | `dirichlet_li_recovery` | 18 | 17 | 1 | Finite Li measurements and two further transfers |
+| [gaussian-singular-moduli](Research/gaussian-singular-moduli/README.txt) | `gaussian-singular-moduli.zip` | `089c6881ea` | none | 7 | 6 | 1 | Sparse equations for Gaussian singular moduli |
+| [grh_uniform_extensions_2026-11-27](Research/grh_uniform_extensions_2026-11-27/README.md) | `grh_uniform_extensions_2026-11-27.zip` | `6d284fcf75` | `grh_uniform_extensions_2026-11-27` | 20 | 18 | 2 | Two extensions of the ProveIt GRH research program |
+| [rectangular_symplectic_blocks](Research/rectangular_symplectic_blocks/README.md) | `rectangular_symplectic_blocks.zip` | `6d284fcf75` | `rectangular_symplectic_blocks` | 32 | 31 | 1 | Uniform rank and joint-defect laws for rectangular symplectic blocks |
+| [uniform_symplectic_blocks](Research/uniform_symplectic_blocks/README.md) | `uniform_symplectic_blocks.zip` | `6d284fcf75` | `uniform_symplectic_blocks` | 20 | 19 | 1 | Uniform rank blindness in rectangular symplectic blocks |
+| Total | 10 archives | | | 145 | 136 | 9 | |

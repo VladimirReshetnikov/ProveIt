@@ -1,0 +1,363 @@
+\documentclass[11pt]{article}
+\usepackage[letterpaper,margin=1in]{geometry}
+\usepackage{amsmath,amssymb,amsthm,mathtools,booktabs,array,microtype}
+\usepackage[T1]{fontenc}
+\usepackage{lmodern}
+\usepackage{xcolor}
+\usepackage[colorlinks=true,linkcolor=blue!45!black,citecolor=blue!45!black,urlcolor=blue!45!black]{hyperref}
+\hypersetup{pdftitle={Prime-labelled codes with two-sided Gilbert--Varshamov distances},pdfauthor={Research note for the ProveIt project}}
+\setlength{\emergencystretch}{1.5em}
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{corollary}[theorem]{Corollary}
+\newtheorem{proposition}[theorem]{Proposition}
+\theoremstyle{remark}\newtheorem{remark}[theorem]{Remark}
+\newcommand{\F}{\mathbb F_2}
+\newcommand{\E}{\mathbb E}
+\newcommand{\Prb}{\mathbb P}
+\newcommand{\rank}{\operatorname{rank}}
+\newcommand{\wt}{\operatorname{wt}}
+\newcommand{\Leg}[2]{\left(\frac{#1}{#2}\right)}
+\newcommand{\eps}{\varepsilon}
+\newcommand{\Hbin}{H_2}
+\newcommand{\DGRH}{\textup{DGRH}}
+\newcommand{\floor}[1]{\left\lfloor #1\right\rfloor}
+\newcommand{\ceil}[1]{\left\lceil #1\right\rceil}
+\title{Prime-labelled codes with two-sided Gilbert--Varshamov distances\protect\\[3pt]\large Uniform rectangle ranks from Dirichlet GRH}
+\author{Research note for the ProveIt project}
+\date{27 November 2026}
+\begin{document}
+\maketitle
+\begin{abstract}
+We construct binary linear codes whose generator matrices consist entirely of quadratic residue symbols between two disjoint lists of distinct small primes. Assuming the Dirichlet GRH theorem exported by the vendored Lean development, for any fixed rate $0<R<1$ the code and its dual simultaneously attain any relative distances strictly below the two Gilbert--Varshamov thresholds. All primes can be bounded by $O(n^2\log^2 n)$. Moreover, with the same prime bound, every submatrix has rank within any prescribed positive fraction of $n$ of its maximal possible rank. For every $\eta>0$, a bound $O(n^{2+\eta})$ permits all rectangle rank deficits to be $O_{R,\eta}(n/\log n)$ and both distances to approach their thresholds. An asymmetric version fixes the first list to the first $r$ odd primes and retains the two distance bounds at prime cutoff $O(r^3\log^4 r)$. The latter proof combines a deterministic exclusion of short dual relations with Fourier bounds for long relations. The results use only Dirichlet $L$-functions; no conjectures about Artin or higher-degree $L$-functions, and no independence of zeros, are needed. Exact finite certificates accompany the paper.
+\end{abstract}
+\noindent\textbf{Status.} The implications from Dirichlet GRH below are proved in ordinary mathematics. The upstream formal proof is taken as input, not independently replayed here. The downstream proof is not yet formalized in Lean. Priority is not established by the limited comparison with the literature and merged article.
+
+\section{Results and arithmetic meaning}
+For disjoint lists of odd primes $Q=(q_1,\ldots,q_r)$ and $P=(p_1,\ldots,p_n)$, with no repetitions within either list, define
+\begin{equation}\label{eq:matrix}
+ A=A(Q,P)\in\F^{r\times n},\qquad
+ A_{ij}=\frac{1-\Leg{p_j}{q_i}}{2}\pmod 2.
+\end{equation}
+Let $C=\{uA:u\in\F^r\}$ and $C^\perp=\{v\in\F^n:Av^t=0\}$. All vectors in this paper are binary, and the distances $d(C),d(C^\perp)$ are their minimum nonzero Hamming weights. Write
+\[
+ \Hbin(t)=-t\log_2t-(1-t)\log_2(1-t),\quad 0\le t\le1,
+\]
+with the usual convention $0\log_20=0$. We use the inverse on $[0,1/2]$ only. The symbol $\log$ without a subscript means the natural logarithm. For $I\subseteq[r]$, $J\subseteq[n]$, let
+\[
+ \Delta_A(I,J)=\min(|I|,|J|)-\rank_{\F} A_{I,J},\qquad
+ \Delta(A)=\max_{I,J}\Delta_A(I,J).
+\]
+Empty submatrices have rank zero. The rank requirement is uniform over all $2^{r+n}$ rectangles, not an average over random deletions.
+
+\begin{theorem}[Near-quadratic prime cutoff]\label{thm:main}
+Assume Dirichlet GRH. Fix $0<R<1$, $0<\delta,\delta^\perp<1/2$ and $\tau>0$, with
+\begin{equation}\label{eq:entropy}
+ \Hbin(\delta)<1-R,\qquad \Hbin(\delta^\perp)<R.
+\end{equation}
+There is a constant $K$ depending only on these parameters such that, for every sufficiently large integer $n$, with $r=\floor{Rn}$ and $X=\ceil{Kn^2\log^2 n}$, one can select distinct primes
+\[
+ q_i\in(X,2X),\qquad p_j\in(3X,6X)
+\]
+with all of the following properties:
+\begin{align*}
+ \rank A&=r,\\
+ d(C)&\ge\ceil{\delta n},\qquad d(C^\perp)\ge\ceil{\delta^\perp n},\\
+ \Delta(A)&<\ceil{\tau n}.
+\end{align*}
+For the explicitly specified sampling law in Section~\ref{sec:analytic}, conditioned on no repeated primes, the probability of failure is exponentially small in $n$.
+\end{theorem}
+
+\begin{theorem}[Approaching both entropy thresholds]\label{thm:limit}
+Assume Dirichlet GRH. Fix $0<R<1$ and $\eta>0$. For $X=\ceil{n^{2+\eta}}$ and $r=\floor{Rn}$, primes in the same two intervals as Theorem~\ref{thm:main} can be chosen so that $\rank A=r$ and, as $n\to\infty$,
+\begin{align*}
+ \frac{d(C)}n &\ge \Hbin^{-1}(1-R)-o(1),\\
+ \frac{d(C^\perp)}n &\ge \Hbin^{-1}(R)-o(1),\\
+ \Delta(A)&<\ceil{c n/\log_2 n}
+\end{align*}
+for any fixed $c>2(R+\log_2 3)/\eta$. The success probability under the no-repeat sampling law tends to one.
+\end{theorem}
+
+The arithmetic interpretation does not require coding terminology. For $S\subseteq[r]$, attach the sign word
+\[
+ \sigma_S(j)=\prod_{i\in S}\Leg{p_j}{q_i}.
+\]
+A bit vector with support $S$ gives exactly this word after replacing bit $b$ by $(-1)^b$. Theorem~\ref{thm:main} simultaneously separates all $2^r$ possible subsets, supplies exact uniformity of sign patterns on small sets of column primes, and controls the rank of arbitrary restrictions.
+\begin{corollary}[Robust identification and exact local uniformity]\label{cor:arithmetic}
+For the primes in Theorem~\ref{thm:main}, distinct subsets $S$ disagree at at least $\ceil{\delta n}$ column primes. One can identify an unknown $S$ uniquely from any sign word with at most $\floor{(\ceil{\delta n}-1)/2}$ sign errors. For each $J\subseteq[n]$ of size $<\ceil{\delta^\perp n}$, every assignment of signs on $J$ occurs for exactly $2^{r-|J|}$ choices of $S$. More generally, for arbitrary $I,J$, varying $S\subseteq I$ realizes exactly $2^{\rank A_{I,J}}$ distinct sign patterns on $J$, each with $2^{|I|-\rank A_{I,J}}$ preimages. In particular the number of realized patterns is at least $2^{\min(|I|,|J|)-\Delta(A)}$.
+\end{corollary}
+\begin{proof}
+The difference of two messages is nonzero, hence its codeword has weight at least $d(C)$; disjoint Hamming balls give uniqueness. The projection to coordinates $J$ is onto precisely when the columns indexed by $J$ are independent: otherwise there is a nonzero dual word supported in $J$. The general count is the rank-nullity formula for the map $\F^I\to\F^J$. All statements are exact, not approximate independence claims.
+\end{proof}
+
+The near-quadratic prime bound is the arithmetic content; the two entropy thresholds themselves are classical random-code bounds \cite{gv}. We make no claim to improve the unrestricted Gilbert--Varshamov bound. Ordinary quadratic-residue cyclic codes (and Paley matrices formed from $\Leg{j-i}{p}$ for one fixed $p$) are a different construction: here both row and column labels are prime numbers, and the symbol has a varying prime denominator. The rectangle assertion also differs from a lower bound on the minimum distance of a single code.
+
+\section{The analytic input and the exact sampling law}\label{sec:analytic}
+\subsection{What the repository supplies}
+The vendored readable edition of \texttt{lsernau/grh-lean} is documented as the byte-identical import of its \texttt{grh/} directory at commit
+\begin{center}\small\texttt{72fead102f663d5c7a407964a13dc0cf9d977207}.\end{center}
+Its \texttt{src/Statements.lean} imports Mathlib and defines the right-half-plane and critical-strip statements; \texttt{src/Main.lean} exports
+\begin{center}
+\small\texttt{LFunction\_ne\_zero\_of\_half\_lt\_re},\\
+\texttt{LFunction\_eq\_zero\_re},\\
+\texttt{LFunction\_eq\_zero\_re\_of\_isPrimitive}.
+\end{center}
+These apply to all Dirichlet characters over all positive moduli. The principal pole is explicitly excepted from the first statement; the other two concern zeros in the open critical strip. In \texttt{src/New/Main.lean}, the critical-strip statement follows from half-plane nonvanishing by the functional equation. The final analytic module \texttt{src/New/Reduction/Zeros/Criterion.lean} converts a one-sided bound on a regularized prime-power sum to a zero-free region; \texttt{OneSidedBound.lean} supplies the arithmetic-to-analytic reduction and the half-plane conclusion \cite{vendor,article}. The README reports builds and independent kernel checks using the three standard Lean axioms. It also says that the vendored package is separate from the ProveIt root Lake project. We did not reproduce these checks.
+
+The merged article, \emph{Beyond the Riemann hypothesis for Dirichlet $L$-functions: consequences, transfers and limits}, assembles 131 prior reports, taking the same Dirichlet GRH input as given. Three particularly relevant results are:
+\begin{itemize}
+\item \texttt{sections/dir.tex}, \texttt{dir:lem:bias}, controls prime-character bias, including the logarithm-squared scale in the modulus;
+\item \texttt{dir:thm:quotient}, \texttt{dir:thm:factorization}, \texttt{dir:sec:signs} concern squarefree products, simultaneous congruences and prescribed majority sign patterns;
+\item \texttt{sections/rec.tex}, \texttt{rec:thm:ofinite}, uses smooth prime measures and Fourier expansion to distinguish packets of Euler factors.
+\end{itemize}
+Our argument uses this prime-measure interface rather than reusing the arithmetic covolume proof itself. It adds a simultaneous row/column sampling argument, a rank-defect union bound, and a fixed-prefix variant that exploits quadratic reciprocity through the discriminant character. There is no need to assume a stronger GRH than the one actually exported. Section~\ref{sec:novelty} records the scope of the comparison.
+
+\subsection{An unweighted smooth probability measure}
+Let
+\[
+ w(t)=\begin{cases}(t-1)^4(2-t)^4,&1\le t\le2,\\0,&\text{otherwise},\end{cases}
+ \qquad W_X=\sum_p w(p/X).
+\]
+For $X$ sufficiently large, define a probability law $\mu_X$ on primes by $\mu_X(p)=w(p/X)/W_X$. This is a smoothened, unweighted prime law (there is no $\log p$ factor). Its probabilities are rational for integral $X$; its mass is concentrated strictly inside the interval. We need both bias and maximum atom estimates.
+\begin{lemma}[Uniform window bias]\label{lem:window}
+Assume Dirichlet GRH. There are absolute positive constants $B_0,B_1,X_0$ such that for $X\ge X_0$ and every primitive nonprincipal Dirichlet character $\chi$ of conductor $D$,
+\begin{align}
+ \left|\E_{p\sim\mu_X}\chi(p)\right|&\le B_0\frac{\log(2DX)}{\sqrt X},\label{eq:bias}\\
+ \max_p\mu_X(p)&\le B_1\frac{\log X}{X}.\label{eq:atom}
+\end{align}
+No restriction such as $D\le X$ is imposed.
+\end{lemma}
+\begin{proof}
+The prime number theorem and partial summation give
+\[
+ W_X\sim \frac{X}{\log X}\int_1^2w(t)\,dt,
+ \qquad \int_1^2 w(t)\,dt=\frac{4!4!}{9!}=\frac1{630}.
+\]
+Thus $W_X\gg X/\log X$ and \eqref{eq:atom} holds. For the bias, put $g_X(t)=w(t)/\log(Xt)$ on $[1,2]$, zero elsewhere, and $G_X(s)=\int_1^2g_X(t)t^{s-1}\,dt$. In the fixed strip $-1/2\le\sigma\le2$, three integrations by parts in $v=\log t$ show uniformly in $X\ge2$ that
+\[
+ |G_X(\sigma+it)|\ll \frac{(1+|t|)^{-3}}{\log X}.
+\]
+Indeed $w$ and its first three derivatives vanish at the endpoints, and the derivatives through order three of $1/\log(Xe^v)$ are bounded by constants times $1/\log X$ on $[0,\log2]$.
+
+Use the classical explicit formula (Mellin inversion of $-L'/L$), in the form obtained by shifting the line from $\Re s=2$ to $\Re s=-1/2$:
+\begin{equation}\label{eq:explicit}
+ \sum_{m\ge1}\Lambda(m)\chi(m)g_X(m/X)
+ =-\sum_{\rho}X^\rho G_X(\rho)+O\left(\frac1{\log X}+\frac{\log(2D)}{\sqrt X\log X}\right).
+\end{equation}
+Here $\rho$ runs over nontrivial zeros with multiplicity. For completeness, the only additional crossed possible trivial zero is at $0$, of order one for even primitive nonprincipal characters, contributing $O(1/\log X)$. On the new line the functional equation and the absolutely convergent logarithmic derivative at $1-s$ bound $L'/L$ by $O(\log(2D(|t|+2)))$. The displayed decay of $G_X$ bounds the remaining integral as in \eqref{eq:explicit}. Horizontal integrals vanish along the standard sequence of heights avoiding zero ordinates, using the local zero count and the logarithmic derivative bound away from zeros; this is the usual contour proof of the Dirichlet explicit formula (see \cite[Chs.~10,13]{mv}). No residue at $1$ occurs for nonprincipal $\chi$.
+
+Under Dirichlet GRH, $|X^\rho|=\sqrt X$. The standard unit-interval zero count $\#\{\rho:k\le |\Im\rho|<k+1\}\ll\log(2D(k+2))$ gives
+\[
+ \sum_{\rho}|X^\rho G_X(\rho)|
+ \ll \frac{\sqrt X}{\log X}\sum_{k\ge0}\frac{\log(2D(k+2))}{(1+k)^3}
+ \ll \frac{\sqrt X\log(2D)}{\log X}.
+\]
+For $m=p$ the summand on the left of \eqref{eq:explicit} is exactly $w(p/X)\chi(p)$. For $m=p^k$, $k\ge2$, the factor $\Lambda(m)/\log m=1/k$ is bounded by $1$. There are $O(\sqrt X)$ prime powers with exponent at least two up to $2X$: the squares contribute $O(\sqrt X)$ and higher powers contribute $O(X^{1/3}\log X)=O(\sqrt X)$. Removing them therefore costs $O(\sqrt X)$. Divide by $W_X\gg X/\log X$ to obtain \eqref{eq:bias}. All implied constants are independent of $D$.
+\end{proof}
+\begin{remark}
+One could alternatively use the sharp-cutoff prime estimate of Montgomery--Vaughan, Theorem 13.7, equation (13.21), $\sum_{p\le x}\chi(p)\ll\sqrt x\log(Dx)$. The extra normalization factor $\log X$ would give a weaker logarithmic prime budget. Lemma~\ref{lem:window} is the smooth analogue of the bias estimate used in the merged article; the rational unweighted law is convenient for exact sampling.
+\end{remark}
+
+\section{A finite matrix theorem}\label{sec:matrix}
+We first prove a finite statement with an explicit probability bound, separating the arithmetic from the combinatorics. Write
+\[
+ V(n,k)=\sum_{j=0}^k\binom nj\quad(0\le k\le n),\qquad V(n,-1)=0.
+\]
+For $0\le k/n\le1/2$, $V(n,k)\le 2^{n\Hbin(k/n)}$. For $0<k\le n/2$ this follows by multiplying the binomial sum by $(k/n)^k(1-k/n)^{n-k}$, which is at most the Bernoulli probability of each vector of weight at most $k$; the case $k=0$ is immediate.
+
+\begin{lemma}[Small bias and affine subspaces]\label{lem:space}
+Let $Z$ be a random vector in $\F^a$ and suppose $|\E(-1)^{u\cdot Z}|\le\eps$ for each nonzero $u\in\F^a$. For any linear or affine subspace $U$ of codimension $b$,
+\[
+ \Prb(Z\in U)\le 2^{-b}+(1-2^{-b})\eps\le 2^{-b}+\eps.
+\]
+\end{lemma}
+\begin{proof}
+For an affine translate $U=z+U_0$, the indicator is $2^{-b}\sum_{u\in U_0^\perp}(-1)^{u\cdot(Z-z)}$. Take expectations and isolate the trivial character. The bound does not require pointwise equidistribution of $Z$.
+\end{proof}
+
+\begin{lemma}[All-rectangle rank estimate]\label{lem:rectangle}
+Let an $r\times n$ binary random matrix have independent columns, each with bias at most $\eps$ for all nonzero linear characters. For every integer $h\ge1$,
+\begin{equation}\label{eq:rectprob}
+ \Prb(\Delta(A)\ge h)\le 2^r3^n(2^{-h}+\eps)^h.
+\end{equation}
+If $2^{-h}+\eps>1$, replace the bound by $1$ if desired.
+\end{lemma}
+\begin{proof}
+Fix $I,J$, $a=|I|$, $b=|J|$, with $\min(a,b)\ge h$. A rank defect at least $h$ means rank at most $t=\min(a,b)-h$. Then some $t$ columns of $A_{I,J}$ span all its columns: take a basis and pad with arbitrary distinct columns of $J$ to size $t$. For each candidate set $T\subseteq J$ of size $t$, condition on its columns. Their span in $\F^a$ has dimension at most $t$ and codimension at least $a-t\ge h$. Restrictions of every other column to $I$ have bias at most $\eps$ (extend a test character by zero). By Lemma~\ref{lem:space}, and independence conditional on the chosen columns, the chance all $b-t\ge h$ remaining columns of $J$ lie in the span is at most $(2^{-h}+\eps)^h$ when the base is at most one. The number of choices of $I$ is $2^r$, and assigning every column to $T$, $J\setminus T$, or outside $J$ gives at most $3^n$ pairs $(J,T)$. Union bound yields \eqref{eq:rectprob}. If the base exceeds one, the right-hand side already exceeds one. This proof includes $t=0$, using the zero span.
+\end{proof}
+
+\begin{proposition}[Finite two-sided failure bound]\label{prop:finite}
+Assume Dirichlet GRH. Fix integers $1\le r\le n$, $1\le a,b\le n$, and $h\ge1$. Sample $r$ independent primes with law $\mu_X$ and $n$ independent primes with law $\mu_{3X}$, independently between the lists. Define $A$ by \eqref{eq:matrix} even if there are repeated primes within a list; all entries are defined because the intervals are disjoint. Let $\mathcal D$ be the event of no repetitions in either list. For $X\ge X_0$ there is an absolute constant $B$ such that, with
+\[
+ \eps=B\frac{n\log(12X)}{\sqrt X},
+ \qquad M=\binom r2 B_1\frac{\log X}{X}+\binom n2 B_1\frac{\log(3X)}{3X},
+\]
+the probability that at least one of the conclusions
+\[
+ \mathcal D,\quad \rank A=r,\quad d(C)\ge a,\quad d(C^\perp)\ge b,\quad\Delta(A)<h
+\]
+fails is bounded above by
+\begin{equation}\label{eq:failure}
+ M+2^{r-n}V(n,a-1)(1+\eps)^n
+ +2^{-r}\bigl(V(n,b-1)-1\bigr)(1+\eps)^r
+ +2^r3^n(2^{-h}+\eps)^h.
+\end{equation}
+If $M<1$, the conditional probability of a matrix failure given $\mathcal D$ is at most the sum of the last three terms divided by $1-M$.
+\end{proposition}
+\begin{proof}
+A collision of two i.i.d. draws with law $\mu$ has probability $\sum_p\mu(p)^2\le\max_p\mu(p)$; the union bound and \eqref{eq:atom} give $\Prb(\mathcal D^c)\le M$.
+
+First condition on any distinct row-prime list. For $0\ne u\in\F^r$, the column character is
+\[
+ (-1)^{u\cdot A_{*,j}}=\prod_{i:u_i=1}\Leg{p_j}{q_i}.
+\]
+This is a primitive nonprincipal quadratic character of conductor $D=\prod_{i:u_i=1}q_i$. Primitivity and nonprincipality follow from the Chinese remainder theorem and nontriviality of every local Legendre character. Since $\log D\le r\log(2X)$, Lemma~\ref{lem:window} gives bias at most $\eps$ for every nonzero $u$, simultaneously. Each bit of $uA$ is independent over column samples, with either probability at most $(1+\eps)/2$. Thus
+\[
+ \Prb(\exists u\ne0:\wt(uA)<a\mid Q)
+ \le (2^r-1)V(n,a-1)\left(\frac{1+\eps}{2}\right)^n.
+\]
+Since $a\ge1$, this event includes rank deficiency. On its complement $\dim C=r$ and the desired primal distance holds. Lemma~\ref{lem:rectangle} with the same column laws gives the rectangle term in \eqref{eq:failure}.
+
+Now condition instead on any distinct column-prime list. For $v\in\F^n\setminus\{0\}$ put $m_v=\prod_{j:v_j=1}p_j$, an odd squarefree integer $>1$. On odd primes $q$ in the row window,
+\[
+ (-1)^{(Av^t)_i}=\Leg{m_v}{q_i}=\chi_{D_v}(q_i),\qquad
+ D_v=\begin{cases}m_v,&m_v\equiv1\pmod4,\\4m_v,&m_v\equiv3\pmod4.\end{cases}
+\]
+Here $D_v$ is the fundamental discriminant of $\mathbb Q(\sqrt{m_v})$, and $\chi_{D_v}$ is its primitive nonprincipal quadratic Dirichlet character. This step, which accounts for the reciprocity sign, does not incorrectly treat $(m_v/q)$ as a character modulo $m_v$ in all cases. As $\log D_v\le\log4+n\log(6X)$, the same bias bound applies to the distribution of each row bit. Independence of row samples gives
+\[
+ \Prb(Av^t=0\mid P)\le\left(\frac{1+\eps}{2}\right)^r.
+\]
+Union bound over the $V(n,b-1)-1$ nonzero $v$ of weight $<b$ proves the dual term.
+
+The three matrix-failure estimates were obtained under different conditionings. This is legitimate: on $\mathcal D$ each list is distinct, so the probability of the corresponding failure intersected with $\mathcal D$ is at most its uniform conditional bound given the relevant distinct list. We do not assert that both lists remain i.i.d. after conditioning on $\mathcal D$. Summing and then adding $\Prb(\mathcal D^c)$ proves \eqref{eq:failure}; division by $\Prb(\mathcal D)\ge1-M$ proves the conditional claim.
+\end{proof}
+
+\section{Asymptotic consequences}
+\begin{proof}[Proof of Theorem~\ref{thm:main}]
+Let $a=\ceil{\delta n}$, $b=\ceil{\delta^\perp n}$, $h=\ceil{\tau n}$ and $r=\floor{Rn}$. We have $M=O(1/\log n)$ at $X=\ceil{Kn^2\log^2n}$ with $K$ fixed. Furthermore
+\[
+ \eps\le \frac{3B}{\sqrt K}
+\]
+for all sufficiently large $n$ (since $\log(12X)/\log n\to2$). Write $g_1=1-R-\Hbin(\delta)>0$, $g_2=R-\Hbin(\delta^\perp)>0$. Choose $K$ sufficiently large so that $\eps\le e_0$, where $0<e_0<1/2$ obeys
+\begin{align*}
+ \log_2(1+e_0)&<g_1/2,\\
+ R\log_2(1+e_0)&<g_2/2,\\
+ \tau\log_2(1/(2e_0))&>R+\log_2 3+1.
+\end{align*}
+Such an $e_0$ exists for every fixed $\tau>0$. The primal and dual terms in \eqref{eq:failure} are $2^{-\Omega(n)}$ by the entropy bound (the floor in $r$ costs at most a constant factor). Since $2^{-h}\le e_0$ eventually, the rectangle term is at most $2^{r+n\log_2 3}(2e_0)^h\le2^{-n}$ for sufficiently large $n$. Conditioning on no repeats preserves exponentially small failure by Proposition~\ref{prop:finite}. In particular the conditional success probability is positive. The chosen lists lie in the announced intervals, so all prime labels are $O(n^2\log^2 n)$.
+\end{proof}
+\begin{proof}[Proof of Theorem~\ref{thm:limit}]
+For $X=\ceil{n^{2+\eta}}$, $M=O(n^{-\eta}\log n)=o(1)$ and $\eps=O_\eta(n^{-\eta/2}\log n)$. Set
+\[
+ \gamma_n=n^{-\min(\eta/4,1/4)},\qquad
+ \delta_n=\Hbin^{-1}(1-R-\gamma_n),\quad
+ \delta_n^\perp=\Hbin^{-1}(R-\gamma_n)
+\]
+for all sufficiently large $n$. Here $\eps=o(\gamma_n)$, $\gamma_n\to0$ and $n\gamma_n\to\infty$. Substitute $a=\ceil{n\delta_n}$ and $b=\ceil{n\delta_n^\perp}$ in \eqref{eq:failure}. The primal and dual terms tend to zero as $2^{-n\gamma_n+o(n\gamma_n)}$ (up to a constant factor). With $h=\ceil{cn/\log_2 n}$, we have $2^{-h}=o(n^{-\eta/2})$, hence
+\[
+ 2^r3^n(2^{-h}+\eps)^h
+ \le 2^{n(R+\log_2 3-c\eta/2+o(1))}=o(1).
+\]
+All hypotheses of Proposition~\ref{prop:finite} hold eventually. Continuity of $\Hbin^{-1}$ gives the two limiting distances, and the rectangle conclusion follows directly.
+\end{proof}
+
+\section{Fixing the row primes in advance}
+The preceding proofs sampled both sides. We can instead prescribe the first $r$ odd primes, at the expense of raising the cutoff for the column primes. This requires a different argument for the dual: a uniform bias estimate for one column does not by itself imply a uniform code-dual distance. We use a short-relation exclusion based on a second application of Dirichlet GRH.
+\begin{theorem}[Fixed-prefix arithmetic code]\label{thm:prefix}
+Assume Dirichlet GRH. Fix $0<R<1$, $r=\floor{Rn}$, and let $q_i$ be the $i$-th odd prime for $1\le i\le r$. For every sufficiently large $n$, there exist $n$ distinct primes $p_j\in(X,2X)$, where
+\[
+ X=\ceil{r^3(\log r)^4},
+\]
+such that $A(Q,P)$ has rank $r$, and
+\begin{align*}
+ d(C)/n&\ge\Hbin^{-1}(1-R)-o(1),\\
+ d(C^\perp)/n&\ge\Hbin^{-1}(R)-o(1),\\
+ \Delta(A)&<\ceil{c n/\log_2 n}\qquad(c>2(R+\log_2 3)).
+\end{align*}
+The success probability tends to one for the law of $n$ i.i.d. $\mu_X$ draws conditioned on distinctness.
+\end{theorem}
+\begin{lemma}[Deterministic exclusion of short relations]\label{lem:short}
+In the setting of Theorem~\ref{thm:prefix}, there is an absolute $c_0>0$ such that for every sufficiently large $r$, for any distinct column primes in $(X,2X)$, every set of between $1$ and
+\[
+ H=\floor{c_0\sqrt{r/\log r}}
+\]
+columns of $A$ has nonzero sum in $\F^r$.
+\end{lemma}
+\begin{proof}
+Let $S$ be such a set, $s=|S|$, $m=\prod_{j\in S}p_j$ and $D=m$ or $4m$ as appropriate for its fundamental discriminant. If the column sum is zero, $\chi_D(q_i)=1$ for all $1\le i\le r$. Put $y=q_r$. The prime number theorem gives $y\sim r\log r$. For sufficiently large $r$, $X>y$, and every prime in $(y/2,y)$ is one of the fixed row primes. Thus the expectation of $\chi_D$ under $\mu_{y/2}$ would equal exactly one. However Lemma~\ref{lem:window} gives
+\[
+ \left|\E_{q\sim\mu_{y/2}}\chi_D(q)\right|
+ \ll \frac{\log(2Dy)}{\sqrt y}
+ \ll \frac{(s+1)\log r}{\sqrt{r\log r}}.
+\]
+The last inequality uses $\log(2X)=O(\log r)$. Choosing $c_0$ sufficiently small bounds the last expression by $1/2$ for all $s\le H$ and large $r$, a contradiction. Primitivity and nonprincipality rely on distinctness of the primes in $S$: their product is squarefree and not a square.
+\end{proof}
+\begin{proof}[Proof of Theorem~\ref{thm:prefix}]
+Fix the row list and sample columns independently using $\mu_X$. The product of all $q_i$ has logarithm at most $r\log q_r=O(r\log r)$, so Lemma~\ref{lem:window} gives a uniform column bias bound
+\begin{equation}\label{eq:prefixbias}
+ \eps=O\left(\frac{r\log r}{\sqrt X}\right)=O(r^{-1/2}/\log r).
+\end{equation}
+The probability of repeats is $O(n^2\log X/X)=o(1)$. For the primal distance and rectangle ranks use exactly the first conditioning argument in Proposition~\ref{prop:finite} and Lemma~\ref{lem:rectangle}, now without randomness of the rows. Choose $\gamma_n=n^{-1/4}$, $a=\ceil{n\Hbin^{-1}(1-R-\gamma_n)}$, $b=\ceil{n\Hbin^{-1}(R-\gamma_n)}$. The primal failure bound tends to zero since $\eps=o(\gamma_n)$, and for $h=\ceil{cn/\log_2n}$ the rectangle bound is $2^{n(R+\log_2 3-c/2+o(1))}=o(1)$.
+
+For the dual, on the no-repeat event Lemma~\ref{lem:short} already excludes every nonzero $v$ with $\wt(v)\le H$. For $s>H$ and a fixed set $S$ of $s$ columns, independence before conditioning and Fourier inversion on $\F^r$ give
+\begin{align*}
+ \Prb\left(\sum_{j\in S}A_{*,j}=0\right)
+ &=2^{-r}\sum_{u\in\F^r}\prod_{j\in S}\E(-1)^{u\cdot A_{*,j}}\\
+ &\le 2^{-r}+\eps^s.
+\end{align*}
+Thus the probability that a dual relation with $H<s<b$ occurs is bounded by
+\begin{align*}
+ 2^{-r}V(n,b-1)+\sum_{s=H+1}^{b-1}\binom ns\eps^s
+ &\le 2^{-r}V(n,b-1)+\sum_{s\ge H+1}^{n}\left(\frac{en\eps}{s}\right)^s.
+\end{align*}
+The entropy term is $O(2^{-n\gamma_n})$. Set $\alpha_n=en\eps/(H+1)$; since $r\sim Rn$, \eqref{eq:prefixbias} implies $\alpha_n=O_R(1/\sqrt{\log r})\to0$. For large $n$ the remaining sum is at most $\alpha_n^{H+1}/(1-\alpha_n)=o(1)$. If $b\le H+1$, the long-relation sum is empty, which is also consistent with the bound. All these estimates are unconditional in the sampling probability space (using Dirichlet GRH analytically), except that the deterministic exclusion only applies on the no-repeat event; adding the collision probability suffices. Conditioning on distinctness divides by $1-o(1)$, so success still tends to one. As before $\Hbin^{-1}$ is continuous and the distance claims follow.
+\end{proof}
+
+\section{Finite certificates, algorithms and scope}\label{sec:novelty}
+\subsection{Reproducibility}
+The Python program \texttt{verify.py} uses integer weights $(p-X)^4(2X-p)^4$ to sample from the exact rational law $\mu_X$ for integral $X$; sampling rejects entire lists that repeat a prime. It computes binary entries by Euler's criterion, then independently checks them using explicit quadratic residue sets. Exact row reduction gives the rank and a basis for the kernel. Gray-code enumeration produces both complete weight enumerators, with an independent MacWilliams-transform check \cite{ms}. For the smallest example the program also exhausts all rectangles and records a witness for the maximum rank defect. The fixed-prefix example samples columns from $(3X,6X)$ rather than $(X,2X)$, a harmless fixed rescaling for the finite example. No finite example is asserted to meet the asymptotic proof's implicit constants.
+
+\begin{center}
+\begin{tabular}{rrrrrl}
+\toprule
+$n$ & $r$ & $d(C)$ & $d(C^\perp)$ & $X$ & row-prime choice\\
+\midrule
+12 & 6 & 3 & 3 & 300 & window\\
+24 & 12 & 5 & 5 & 1500 & window\\
+32 & 16 & 5 & 5 & 3000 & window\\
+24 & 12 & 5 & 4 & 2500 & fixed prefix\\
+\bottomrule
+\end{tabular}
+\end{center}
+For the first example the exact maximum rank defect is $3$, verified on $2^{18}=262144$ rectangles. The other examples' rectangle ranks were not exhaustively checked. The code samples several candidates and selects the best by $(\min(d,d^\perp),d+d^\perp)$, so these are existence witnesses, not unbiased empirical estimates of the theorem's probability. The JSON file includes both prime lists, the matrix and both weight enumerators. Verification uses only Python's standard library and exact integer arithmetic.
+
+For asymptotic construction, the two-window random sampler can use a sieve up to $6X$ and integer rejection sampling. Given a fixed entropy gap and fixed $\tau$, it constructs a good matrix with probability $1-2^{-\Omega(n)}$ after rejection of repeated prime lists. This is a Monte Carlo construction with a mathematical guarantee under Dirichlet GRH, not a polynomial-time certified search for distance or for the worst rectangle. Exhaustive validation of all distances and rectangles may be exponential in $n$. No efficient general decoder is claimed by the unique-decoding statement.
+
+\subsection{Comparison and limitations}
+The merged article already gives character-sum and Fourier tools for squarefree products, signs and recovery of Euler packets, and has a section on frames and rank blindness. Its arithmetic application sections \texttt{dir.tex}, \texttt{rec.tex}, \texttt{zer.tex}, \texttt{gra.tex}, \texttt{spn.tex}, \texttt{gpp.tex}, \texttt{gpi.tex}, \texttt{cost.tex}, \texttt{tors.tex} were searched for code-distance, Gilbert--Varshamov, Legendre matrix and submatrix-rank terminology, and relevant portions of the first two were read. The checked portions did not state the simultaneous two-family distance and uniform rectangle theorem, nor its fixed-prefix version. A limited external search found the usual fixed-prime quadratic-residue codes, Legendre determinant work and the classical random-linear-code distance bound, not the precise prime-labelled construction here. This is evidence of a distinct research contribution relative to the inspected material, not a comprehensive priority claim. In particular, the underlying analytic bias lemma and the two entropy thresholds are not new.
+
+The proof uses the following chain of dependencies:
+\begin{center}
+\begin{tabular}{p{0.30\linewidth}p{0.61\linewidth}}
+\toprule
+Input & Output\\
+\midrule
+Lean Dirichlet GRH + standard explicit formula & Uniform small prime-character bias (Lemma~\ref{lem:window})\\
+Finite Fourier analysis + independence & Subspace mass and simultaneous rectangle ranks (Lemmas~\ref{lem:space}, \ref{lem:rectangle})\\
+Quadratic character multiplicativity and discriminants & Two-sided failure bound (Proposition~\ref{prop:finite})\\
+Entropy and asymptotics & Theorems~\ref{thm:main} and \ref{thm:limit}\\
+Short-product reverse test + long-product Fourier inversion & Fixed-prefix Theorem~\ref{thm:prefix}\\
+\bottomrule
+\end{tabular}
+\end{center}
+No use is made of a nonabelian GRH, Artin holomorphy, simplicity of zeros, zero independence or unproved prime-tuple heuristics. Constants are not optimized or made numerically explicit here. Neither optimality of the prime cutoff nor optimality of the uniform rank defect is established. The source development was inspected at the exported-theorem and selected analytic-module level, not audited declaration by declaration. The 723-page merged article was not checked in its entirety. The ordinary mathematical proof can be read independently of the proposed Lean formalization roadmap in \texttt{formalization.md}.
+
+\clearpage
+\begin{thebibliography}{9}
+\bibitem{vendor} L. Sernau and collaborators, \emph{The Generalized Riemann Hypothesis for Dirichlet L-functions, in Lean 4}, based on L. Alp\"oge's proof with Claude. Readable edition, commit \texttt{72fead102f663d5c7a407964a13dc0cf9d977207} (25 Nov. 2026), vendored at \href{https://github.com/VladimirReshetnikov/ProveIt/tree/main/Analysis/GeneralizedRiemannHypothesis/vendor/grh-lean}{ProveIt: vendor/grh-lean}; \href{https://github.com/lsernau/grh-lean}{upstream repository}. See \texttt{Statements.lean}, \texttt{Main.lean}, and the README.
+\bibitem{article} ProveIt contributors, \emph{Beyond the Riemann hypothesis for Dirichlet $L$-functions: consequences, transfers and limits}, merged article dated 26 Nov. 2026. \href{https://github.com/VladimirReshetnikov/ProveIt/tree/main/Analysis/GeneralizedRiemannHypothesis/Article}{Article sources}, especially sections \texttt{src.tex}, \texttt{dir.tex}, \texttt{rec.tex}. Exact source-tree and selected blob hashes in \texttt{sources.md}.
+\bibitem{mv} H. L. Montgomery and R. C. Vaughan, \emph{Multiplicative Number Theory I: Classical Theory}, Cambridge Studies in Advanced Mathematics 97, Cambridge University Press, 2007. Chapters 10 and 13; Theorem 13.7, formulas (13.19)--(13.21) for the sharp-cutoff form of the GRH estimates.
+\bibitem{gv} V. Guruswami, A. Rudra and M. Sudan, \emph{Essential Coding Theory}, online book, 31 Jan. 2022 version, Theorem 4.2.1. \href{https://cse.buffalo.edu/faculty/atri/courses/coding-theory/book/prev-ver/web-coding-book-Jan31-2022.pdf}{Book}.
+\bibitem{ms} F. J. MacWilliams and N. J. A. Sloane, \emph{The Theory of Error-Correcting Codes}, North-Holland, 1977. Standard duality and MacWilliams identity.
+\end{thebibliography}
+\end{document}

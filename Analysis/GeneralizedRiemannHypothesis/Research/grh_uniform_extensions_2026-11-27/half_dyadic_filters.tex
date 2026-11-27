@@ -1,0 +1,325 @@
+\documentclass[11pt]{article}
+\usepackage[a4paper,margin=28mm]{geometry}
+\usepackage[T1]{fontenc}
+\usepackage{lmodern,amsmath,amssymb,amsthm,mathtools,booktabs,microtype}
+\usepackage[colorlinks=true,linkcolor=blue,citecolor=blue,urlcolor=blue]{hyperref}
+\hypersetup{pdftitle={Half of the dyadic filters suffice},pdfauthor={Research note prepared for Vladimir Reshetnikov},pdfsubject={Exact deletion stability for Mellin pole detection}}
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{corollary}[theorem]{Corollary}
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{remark}[theorem]{Remark}
+\newcommand{\C}{\mathbb C}
+\newcommand{\R}{\mathbb R}
+\newcommand{\abs}[1]{\left|#1\right|}
+\newcommand{\Arg}{\operatorname{Arg}}
+\newcommand{\Res}{\operatorname{Res}}
+\title{Half of the dyadic filters suffice:\\exact deletion stability for Mellin pole detection}
+\author{Research note prepared for Vladimir Reshetnikov}
+\date{27 November 2026}
+\begin{document}
+\maketitle
+\begin{abstract}
+The ProveIt article computes the sharp uniform residue-visibility constant for the filters with multipliers $1+z,1+z^2,\ldots,1+z^{2^{n-1}}$ and asks what happens when filters are deleted. For every even $n=2m$, we prove that all positive even-index filters can be deleted simultaneously: the $m+1$ multipliers with exponents $1,2,8,32,\ldots,2^{2m-1}$ retain exactly the full family's sharp constant and its two minimizers. We give a self-contained proof, the same quantitative stability bounds as for the full family, the sharp adversarial error bound for residue recovery after these deletions, and an exact first-order law for the angular frequency of near-worst amplification. The theorem is unconditional; RH or GRH is not an input. The new assertion is deletion stability, rather than the already established full-family constant.
+\end{abstract}
+
+\section{The result and its relation to the source}
+
+For $n=2m\ge2$, write
+\[
+ L=2^{n-1},\qquad J_n=\{0,1,3,5,\ldots,n-1\},\qquad
+ M_S(z)=\max_{j\in S}|1+z^{2^j}|.
+\]
+Thus $J_n$ has $m+1$ elements. The suppressed indices are $2,4,\ldots,n-2$, numbering $m-1$.
+Let $r_n\in(1/2,1)$ be the unique solution of
+\begin{equation}\label{eq:r}
+ r_n+r_n^L=1,
+ \qquad c_n=\sqrt{1-r_n+r_n^2}.
+\end{equation}
+Existence and uniqueness follow from strict monotonicity of $r+r^L$.
+
+\begin{theorem}[Exact simultaneous deletion]\label{thm:main}
+For every even $n\ge2$ and every index set
+\[
+ J_n\subseteq S\subseteq\{0,1,\ldots,n-1\},
+\]
+one has
+\begin{equation}\label{eq:main}
+ \min_{z\in\C}M_S(z)=c_n.
+\end{equation}
+The only minimizers are
+\[
+ z=r_n e^{2\pi i/3}\quad\hbox{and}\quad z=r_n e^{-2\pi i/3}.
+\]
+Consequently deleting any selection of positive even-index filters, including all of them, leaves both the constant and the minimizing points unchanged.
+\end{theorem}
+
+For example, the $12$ filters with exponents $1,2,4,\ldots,2048$ can be replaced by the seven filters with exponents
+\[
+ 1,\ 2,\ 8,\ 32,\ 128,\ 512,\ 2048
+\]
+without changing the sharp constant $c_{12}$. This is a statement about worst-case residue attenuation, not just about the absence of a common zero.
+
+The full-family formula \eqref{eq:r}, including uniqueness, occurs in the source article, Theorem \texttt{ana:thm:dyadiceven}; its proof uses a strictly concave angular envelope. The question \texttt{ana:q:dyadic} explicitly asks for sharp constants after deletion of prescribed exponents. Theorem~\ref{thm:main} resolves the simultaneous deletion of every positive even index for all even lengths. The new ingredient is that the retained fourth-power chain imposes the same upper angular barrier as the full doubling chain. We do not claim a classification for deletion of odd indices. The proof below re-establishes the needed estimates in full rather than relying on unverified numerical optimization.
+
+\section{The angular barrier}
+
+\begin{lemma}[Retained powers force the same last sector]\label{lem:barrier}
+Let $n=2m\ge2$, $L=2^{n-1}$, and suppose $M_{J_n}(z)<1$. After conjugating $z$ if necessary, write $z=v e^{i\theta}$ with $0\le\theta\le\pi$. Then
+\begin{equation}\label{eq:barrier}
+ \frac\pi2<\theta<\frac{2\pi}3+\frac{\pi}{6L}.
+\end{equation}
+If $Q$ is the odd integer for which
+\[
+ \beta=L\theta-Q\pi\in(-\pi/2,\pi/2),
+\]
+then
+\begin{equation}\label{eq:Q}
+ Q\le\frac{2L-1}{3},\qquad
+ L(\pi-\theta)+\beta\ge\frac{L+1}{3}\pi.
+\end{equation}
+\end{lemma}
+
+\begin{proof}
+The strict bound implies $z\ne0$ and $\Re(z^{2^j})<0$ for every retained $j$: if $\Re w\ge0$, then $|1+w|^2\ge1$. The cases $j=0,1$ therefore give
+\[
+ \pi/2<\theta<3\pi/4.
+\]
+When $\theta\le2\pi/3$, \eqref{eq:barrier} is immediate. Otherwise put $a=\theta-2\pi/3>0$ and $e_t=2\cdot4^t$ for $0\le t\le m-1$. Since $e_t\equiv2\pmod3$, the argument of $z^{e_t}$, modulo $2\pi$, is
+\[
+ \frac{4\pi}{3}+e_ta.
+\]
+We claim $0<e_ta<\pi/6$. For $t=0$ this follows from $\theta<3\pi/4$. If it holds at $t$, then $0<e_{t+1}a<2\pi/3$. Thus the displayed argument at the next step lies strictly between $4\pi/3$ and $2\pi$, with no wrap around $2\pi$. Its cosine is negative only if it is below $3\pi/2$. Hence $e_{t+1}a<\pi/6$, proving the induction. At $e_{m-1}=L$ this is \eqref{eq:barrier}.
+
+As $L\equiv2\pmod3$, the integer $Q_0=(2L-1)/3$ is odd. The upper bound in \eqref{eq:barrier} gives
+\[
+ L\theta<Q_0\pi+\pi/2.
+\]
+The left-half-plane sector containing $L\theta$ consequently has odd center $Q\pi$ with $Q\le Q_0$. With $\alpha=\pi-\theta$, we have
+\[
+ L\alpha+\beta=(L-Q)\pi\ge(L-Q_0)\pi=(L+1)\pi/3.
+\]
+\end{proof}
+
+The signed angle $\beta$ is intentional. It need not be positive. Retaining its sign makes the argument work even for additional sectors admitted by the deleted observations.
+
+\begin{remark}[A shorter proof of the endpoint inequality]
+Put $\alpha_j=|\Arg(-z^{2^j})|<\pi/2$ at the retained indices. The first squaring gives $\alpha_1=\pi-2\alpha_0$. Every subsequent retained step is a fourth power, and elementary argument reduction gives
+\[
+ \alpha_{j+2}=|\pi-4\alpha_j|\ge4\alpha_j-\pi
+ \qquad(j=1,3,\ldots,n-3).
+\]
+Iterating yields
+\[
+ \alpha_{n-1}\ge4^{m-1}(\pi-2\alpha_0)
+ -\pi\frac{4^{m-1}-1}{3}
+ =\frac{L+1}{3}\pi-L\alpha_0.
+\]
+Thus $L\alpha_0+\alpha_{n-1}\ge(L+1)\pi/3$, which by itself suffices for the concavity proof. The sector formulation above also identifies the exact angular barrier checked by the supplied program.
+\end{remark}
+
+
+\section{Concavity and the sharp minimum}
+
+For $0<d<1$ define
+\[
+ A_d(v)=\arccos\!\left(\frac{v+d/v}{2}\right)
+ \quad\hbox{when }v>0,\ v+d/v\le2,
+\]
+and put $g_d(u)=A_d(e^u)$. Its domain is a closed interval, and
+\begin{equation}\label{eq:g}
+ g_d(u)=\arccos\!\left(\sqrt d\cosh\!\left(u-\tfrac12\log d\right)\right),
+ \qquad g_d(u)=g_d(\log d-u).
+\end{equation}
+On the interior of the domain,
+\begin{equation}\label{eq:curvature}
+ g_d''(u)=
+ -\frac{\sqrt d(1-d)\cosh(u-\tfrac12\log d)}
+ {\left(1-d\cosh^2(u-\tfrac12\log d)\right)^{3/2}}
+ \le-\sqrt{\frac{d}{1-d}}<0.
+\end{equation}
+In particular $g_d$ is strictly concave on its closed domain, by continuity at the endpoints.
+
+\begin{proof}[Proof of Theorem~\ref{thm:main}]
+Write $r=r_n$, $c=c_n$ and $d=1-c^2$. Equation~\eqref{eq:r} gives
+\[
+ d=r(1-r)=r^{L+1}.
+\]
+At $z=r e^{\pm2\pi i/3}$, every dyadic power has cosine $-1/2$, so
+\[
+ |1+z^{2^j}|^2=1-r^{2^j}+r^{2^{j+1}}.
+\]
+Every $r^{2^j}$ lies in $[r^L,r]=[1-r,r]$. The strictly convex function $t\mapsto1-t+t^2$ is at most $c^2$ on that interval, with equality only at its endpoints. Thus the full family, and every family $S$ in the theorem, has maximum exactly $c$ at both displayed points.
+
+For the reverse inequality and uniqueness, suppose $M_{J_n}(z)\le c<1$. Use Lemma~\ref{lem:barrier}, write $v=|z|$, and put $\alpha=\pi-\theta$. The bounds for the retained first and last multipliers are
+\[
+ 1+v^2-2v\cos\alpha\le c^2,
+ \qquad 1+v^{2L}-2v^L\cos\beta\le c^2.
+\]
+Equivalently,
+\[
+ \alpha\le A_d(v),\qquad |\beta|\le A_d(v^L).
+\]
+Both values of $A_d$ are therefore defined. The angular barrier, the symmetry in \eqref{eq:g}, and Jensen's inequality give
+\begin{align*}
+ \frac\pi3
+ &\le\frac{L\alpha+\beta}{L+1}
+ \le\frac{L A_d(v)+A_d(v^L)}{L+1}\\
+ &=\frac{L g_d(\log v)+g_d(\log d-L\log v)}{L+1}\\
+ &\le g_d\!\left(\frac{\log d}{L+1}\right)
+ =A_d(r)
+ =\arccos\!\left(\frac{r+r^L}{2}\right)=\frac\pi3.
+\end{align*}
+All inequalities are equalities. Strict concavity forces
+\[
+ \log v=\log d-L\log v,
+\]
+so $v=r$. Equality in the angular inequalities then forces $\alpha=A_d(r)=\pi/3$, giving $\theta=2\pi/3$. Restoring conjugation gives exactly the two stated points. No point has maximum strictly below $c$, since any such point would also satisfy the preceding inequalities and hence have maximum exactly $c$.
+
+Finally $M_{J_n}\le M_S\le M_{\{0,\ldots,n-1\}}$, and the same two points attain $c$ for all three functions. This proves the theorem for every intervening $S$.
+\end{proof}
+
+\begin{corollary}[Shifted dyadic blocks]\label{cor:shift}
+For an integer $a\ge0$, replace each retained exponent $2^j$ by $2^{a+j}$. The sharp constant remains $c_n$. The minimizers are exactly the $2^{a+1}$ solutions of
+\[
+ z^{2^a}=r_n e^{\pm2\pi i/3}.
+\]
+\end{corollary}
+\begin{proof}
+Apply Theorem~\ref{thm:main} to $w=z^{2^a}$; the power map is onto $\C$.
+\end{proof}
+
+\section{Quantitative stability survives deletion}
+
+\begin{theorem}[Uniform bounds for near minimizers]\label{thm:stability}
+Let $S$ be as in Theorem~\ref{thm:main}, and suppose $M_S(z)\le B<1$. Define
+\[
+ d=1-B^2,\quad r_*=d^{1/(L+1)},\quad
+ \kappa=\frac{\sqrt d}{B},\quad
+ \Delta=A_d(r_*)-\frac\pi3.
+\]
+Then $A_d(r_*)$ is defined, $\Delta\ge0$, and
+\begin{equation}\label{eq:stable-radius}
+ \left|\log\frac{|z|}{r_*}\right|
+ \le\sqrt{\frac{2\Delta}{\kappa L}}.
+\end{equation}
+Writing $\alpha=|\Arg(-z)|$, one also has
+\begin{equation}\label{eq:stable-angle}
+ A_d(|z|)-\frac{L+1}{L}\Delta\le\alpha\le A_d(|z|).
+\end{equation}
+In particular all near minimizers converge to the two points of Theorem~\ref{thm:main} as $B\downarrow c_n$.
+\end{theorem}
+
+\begin{proof}
+Repeat the chain of inequalities in the preceding proof with this $d$ and $B$. The first and last arguments of $g_d$ lie in its interval domain, so their weighted mean does also. The same chain gives $A_d(r_*)\ge\pi/3$.
+
+By \eqref{eq:curvature}, $g_d$ is $\kappa$-strongly concave. Its Jensen gap at $u_1=\log|z|$, $u_2=\log d-Lu_1$ with weights $L/(L+1)$ and $1/(L+1)$ is at least
+\[
+ \frac{\kappa}{2}\frac{L}{(L+1)^2}(u_1-u_2)^2
+ =\frac{\kappa L}{2}\left(\log|z|-\frac{\log d}{L+1}\right)^2.
+\]
+It is at most $\Delta$, since the weighted angular lower bound is $\pi/3$. This proves \eqref{eq:stable-radius}.
+
+Both slacks $A_d(|z|)-\alpha$ and $A_d(|z|^L)-\beta$ are nonnegative. The same inequalities imply
+\[
+ L\bigl(A_d(|z|)-\alpha\bigr)
+ +\bigl(A_d(|z|^L)-\beta\bigr)\le(L+1)\Delta.
+\]
+Discarding the second slack proves \eqref{eq:stable-angle}. As $B\downarrow c_n$, $r_*\to r_n$ and $\Delta\to0$, giving the last assertion.
+\end{proof}
+
+These are the same numerical stability estimates as for the full family in the source article. The result is stronger in its hypotheses, because only the retained observations are assumed bounded.
+
+\section{Consequences for residues and near-worst angles}
+
+Let $R:[1,\infty)\to\R$ be locally integrable and of at most polynomial growth. Suppose its Mellin transform
+\[
+ F(s)=\int_1^\infty R(x)x^{-s}\,dx
+\]
+continues meromorphically to a neighborhood of a nonreal point $\rho$, where it has at most a simple pole of residue $w$. For $a>0$, $\lambda>1$ and $j\in S$, form
+\[
+ R_j(x)=R(x)+a^{2^j}R(\lambda^{2^j}x),\qquad z(s)=a\lambda^{s-1}.
+\]
+A change of variable gives
+\[
+ F_j(s)=\bigl(1+z(s)^{2^j}\bigr)F(s)-E_j(s),
+\]
+where
+\[
+ E_j(s)=a^{2^j}\lambda^{2^j(s-1)}
+ \int_1^{\lambda^{2^j}}R(u)u^{-s}\,du
+\]
+is entire.
+
+\begin{corollary}[Sharp visibility after simultaneous deletion]\label{cor:residue}
+For even $n$ and $S$ as in Theorem~\ref{thm:main},
+\[
+ \max_{j\in S}|\Res_{s=\rho}F_j(s)|\ge c_n|w|.
+\]
+The constant is best possible, even among real smooth $R$.
+If observations $y_j$ satisfy
+\[
+ |y_j-\Res_\rho F_j|\le\eta\qquad(j\in S),
+\]
+then at known $\rho$ an estimate of $w$ with error at most $\eta/c_n$ is obtained by dividing the observation with largest multiplier modulus by that multiplier. No estimator has a smaller worst-case bound uniformly over the signal class and the allowed pole locations. At a particular fixed $\rho$, the sharper optimal bound is $\eta/M_S(z(\rho))$, which can be smaller than $\eta/c_n$.
+\end{corollary}
+
+\begin{proof}
+The residue vector is $((1+z(\rho)^{2^j})w)_{j\in S}$, so the first assertion and the estimator bound follow from Theorem~\ref{thm:main}. For sharpness choose a logarithm of $r_ne^{2\pi i/3}/a$ and set
+\[
+ \rho=1+\frac{\log(r_n/a)+2\pi i/3}{\log\lambda},\qquad
+ R(x)=2\Re(w x^{\rho-1}).
+\]
+Then $R$ is real and smooth and $F(s)=w/(s-\rho)+\bar w/(s-\bar\rho)$. Every multiplier has modulus at most $c_n$ and one has modulus exactly $c_n$. For the minimax lower bound, the all-zero observations are compatible with both residues $w=\eta/c_n$ and $w=-\eta/c_n$, whose distance is $2\eta/c_n$.
+\end{proof}
+
+The observations in this corollary are residues themselves. Finite evaluations of transforms require a separate bound for their regular parts; no such bound is implied here.
+
+\begin{theorem}[Angular frequency near the sharp loss]\label{thm:angular}
+Fix even $n$ and $S$ as in Theorem~\ref{thm:main}. Put $r=r_n$, $c=c_n$, and let $\theta$ be uniformly distributed on $[0,2\pi)$. As $\varepsilon\downarrow0$,
+\begin{equation}\label{eq:angular}
+ \mathbb P\{M_S(r e^{i\theta})\le c+\varepsilon\}
+ =\frac{2c}{\pi\sqrt3}\left(\frac1r+\frac1{Lr^L}\right)\varepsilon
+ +O_n(\varepsilon^2).
+\end{equation}
+The leading coefficient is independent of which positive even-index observations are deleted. Along even $n\to\infty$ it tends to $2/(\pi\sqrt3)$.
+\end{theorem}
+
+\begin{proof}
+At each minimizing point exactly the exponents $1$ and $L$ attain the maximum; all intermediate exponents have a strict gap by the strict convexity argument in the proof of Theorem~\ref{thm:main}. Near $\theta_0=2\pi/3$ the maximum is therefore the maximum of these two endpoint functions. Their angular derivatives at $\theta_0$ are
+\[
+ -\frac{\sqrt3 r}{2c},\qquad
+ \frac{\sqrt3 Lr^L}{2c},
+\]
+respectively, since $L\equiv2\pmod3$. The sublevel interval around this point has length
+\[
+ \frac{2c}{\sqrt3}\left(\frac1r+\frac1{Lr^L}\right)\varepsilon
+ +O_n(\varepsilon^2).
+\]
+There is an identical interval at the conjugate point. Compactness and Theorem~\ref{thm:main} exclude all other angles for sufficiently small $\varepsilon$. Twice this length divided by $2\pi$ gives \eqref{eq:angular}.
+
+Finally $r\to1$. If $L(1-r)$ were bounded along an infinite subsequence, then $r^L$ would be bounded below by a positive constant there, contradicting $r^L=1-r\to0$. Hence $Lr^L=L(1-r)\to\infty$, proving the limit.
+\end{proof}
+
+This angular theorem is unconditional. When a family of phases is known to be equidistributed, the same coefficient describes its asymptotic near-worst fraction. In particular, the source article explains the use of Landau's formula and Weyl's criterion for phases of Dirichlet zero ordinates; applying that separate input gives an arithmetic interpretation. It is not needed for any proof above.
+
+\section{Verification and novelty boundary}
+
+The accompanying \texttt{verify\_half\_dyadic.py} uses exact rational arithmetic to compute the admissible angular sectors for the retained powers and verifies the barrier endpoint for $n=2,4,\ldots,18$. It also brackets $r_n$ by exact rational bisection with outward-rounded fixed-point powers and checks the endpoint modulus identities and strict inequalities at retained intermediate exponents using exact rational polynomial evaluations, with certified brackets. The checks verify representative instances and the algebraic bookkeeping. The proofs above establish all even $n$; no finite experiment is used as a universal proof.
+
+The source already supplies the full-family constant, its two minimizers, stability bounds, and the residue interpretation. This note's contributions are the unchanged sharp constant after simultaneous deletion, the extension of the stability bounds under the weaker observations, and the explicit angular law for this retained even-length family. We found no such simultaneous-deletion theorem in the inspected article at the pinned commit. This is a claim of novelty relative to that inspected corpus, not an exhaustive priority claim for the literature.
+
+\begin{thebibliography}{9}
+\raggedright
+\bibitem{proveit}
+ProveIt research repository, maintained by Vladimir Reshetnikov, \emph{Beyond the Riemann hypothesis for Dirichlet $L$-functions: consequences, transfers and limits}, commit
+\texttt{497c1844e71393df41914f5b783d5dc9a618eb61},
+\href{https://github.com/VladimirReshetnikov/ProveIt/blob/497c1844e71393df41914f5b783d5dc9a618eb61/Analysis/GeneralizedRiemannHypothesis/Article/sections/ana.tex}{\texttt{Article/sections/ana.tex}}.
+See Theorem \texttt{ana:thm:dyadiceven}, Proposition \texttt{ana:prop:dyadicstab}, Remark \texttt{ana:rem:dyadicactive}, and Question \texttt{ana:q:dyadic}. Accessed 27 November 2026.
+\bibitem{source}
+L. Sernau et al., \emph{grh-lean}, commit
+\texttt{72fead102f663d5c7a407964a13dc0cf9d977207},
+\url{https://github.com/lsernau/grh-lean}.
+The source proof's one-sided Mellin--Landau criterion motivates the residue detectors; its arithmetic theorem is not used in the present note.
+\end{thebibliography}
+\end{document}
