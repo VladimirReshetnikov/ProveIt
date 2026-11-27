@@ -16,18 +16,17 @@ namespace LeanProofs.IPRA.Analysis.GaussianNamedSincCongruence
 
 open_ipra
 open GaussianArctangentCayleyValues (imaginaryPoint right_endpoint unit_bound)
-open GaussianNamedSincSamples (argument argumentClock clock clock_unit next_unit_lower argument_clock_later
-  value value_canonical sineValue sineBudget sampleSize sine_sample_error product_at sample_bound norm_cases cancel_factor)
-open GaussianNamedSinc (nameF data rawF raw_at raw_regular modulus sample_near name_regular subst_data)
+open GaussianNamedSincSamples (argument argumentClock clock argument_clock_later
+  value sineValue sineBudget sampleSize sine_sample_error norm_cases)
+open GaussianNamedSinc (nameF data rawF raw_at raw_regular modulus sample_distance_near sample_distance_away name_regular subst_data)
 open GaussianNamedSineTaylor (imaginaryF imaginary_at imaginary_input rawData)
 open GaussianNamedSineFromExponential (sineF sineData sine_regular sine_proper)
-open GaussianRationalHorner (qmul positive_product)
+open GaussianRationalHorner (positive_product)
 open GaussianRationalMetric (bounded distanceBounded)
 open GaussianRationalReciprocal (qone reciprocal bound_congr)
 open GaussianRationalDistanceOrder (distance_congr distance_radius_mono distance_symmetric distance_triangle_same)
-open GaussianRationalLowerBounds (lower inverse_bound)
-open GaussianRationalPowerAlgebra (qmul_commutative)
-open GaussianCoefficientNameBounds (unit unit_positive bounded_radius_mono)
+open GaussianRationalLowerBounds (lower)
+open GaussianCoefficientNameBounds (unit unit_positive)
 open GaussianExponentialReference (unit_monotone dyadic_weaken)
 open GaussianApproximateInverseDistance (multiply_distance)
 open GaussianNameEquivalence (crossEquivalent cross_at diagonal_at cross_to_diagonal)
@@ -91,65 +90,23 @@ private theorem near_error (f g : PR 2) (R S x y p : PTm n)
     (hgap : Γ ⊢[PRAAx] distanceBounded (argument f R x p) (argument g S y p) two (unit (clock p)))
     (hnear : Γ ⊢[PRAAx] bounded (argument f R x p) one (unit (succ p))) :
     Γ ⊢[PRAAx] distanceBounded (value f R x p) (value g S y p) (rawCost f g R S x y) (unit (succ p)) := by
-  let U := unit (succ p)
-  let V := unit (clock p)
-  let D := two*(U*U)
-  let a := argument f R x p
-  let b := argument g S y p
   have hU := unit_positive (Γ := Γ) (succ p)
-  have hV := unit_positive (Γ := Γ) (clock p)
-  have h2U := next_unit_lower (Γ := Γ) p
-  have hUU := positive_product U U hU hU
-  have hD : Γ ⊢[PRAAx] le one D := positive_product _ _ (le_succ_self one) hUU
-  have gap : Γ ⊢[PRAAx] distanceBounded a b one U :=
-    distance_radius_mono a b two V one U hV hU
-      (le_congr (.eqRefl _) ((clock_unit p).eqSymm.eqTrans (one_mul V).eqSymm)
-        (le_mul_mono h2U (le_refl U))) hgap
-  have hb := GaussianReconstructionRoots.norm_from_distance b a one U one U hU hU
-    (distance_symmetric a b one U hU gap) hnear
-  have bSmall : Γ ⊢[PRAAx] bounded b two U :=
-    bounded_radius_mono b _ _ two U hUU hU (le_of_eq_add (d := zero) (by ipra_ring)) hb
-  have cmp : Γ ⊢[PRAAx] le ((two*two)*U) (two*D) := by dsimp only [D]; ipra_le 4*𝔞 U*sl hU
-  have left := distance_radius_mono _ _ (one*one) D two U hD hU
-    (le_trans (by ipra_le 3*𝔞 U) cmp) (sample_near f R x p one U hU hU hnear)
-  have right := distance_radius_mono _ _ (two*two) D two U hD hU cmp
-    (sample_near g S y p two U hU h2U bSmall)
-  have c : Γ ⊢[PRAAx] le (two+two) (rawCost f g R S x y) := by
+  have cost : Γ ⊢[PRAAx] le (two+two) (rawCost f g R S x y) := by
     unfold rawCost
     ipra_le 𝔞 (sineCost f g R S x y)+2*𝔞 (sampleSize g S y)
-  exact distance_radius_mono _ _ _ _ _ _ hU hU (le_mul_mono c (le_refl U))
-    (distance_triangle_same _ _ _ _ _ _ hU left (distance_symmetric _ _ _ _ hU right))
+  exact distance_radius_mono _ _ _ _ _ _ hU hU (le_mul_mono cost (le_refl _))
+    (sample_distance_near f g R S x y p p hgap hnear)
 
 private theorem away_error (f g : PR 2) (R S x y p : PTm n) (hg : Γ ⊢[PRAAx] input g S y)
     (hgap : Γ ⊢[PRAAx] distanceBounded (argument f R x p) (argument g S y p) two (unit (clock p)))
     (hSin : Γ ⊢[PRAAx] distanceBounded (sineValue f R x p) (sineValue g S y p) (sineCost f g R S x y) (unit (clock p)))
     (hfar : Γ ⊢[PRAAx] lower (argument f R x p) one (unit (succ p))) :
     Γ ⊢[PRAAx] distanceBounded (value f R x p) (value g S y p) (rawCost f g R S x y) (unit (succ p)) := by
-  let U := unit (succ p)
-  let V := unit (clock p)
-  let a := argument f R x p
-  let b := argument g S y p
-  let v := value f R x p
-  let w := value g S y p
-  let M := sampleSize g S y
-  let E := sineCost f g R S x y
-  let C := E+M*two
   have hU := unit_positive (Γ := Γ) (succ p)
-  have hV := unit_positive (Γ := Γ) (clock p)
-  have left : Γ ⊢[PRAAx] distanceBounded (qmul a v) (qmul b w) E V :=
-    distance_congr (product_at f R x p).eqSymm (product_at g S y p).eqSymm (.eqRefl _) (.eqRefl _) hSin
-  have right : Γ ⊢[PRAAx] distanceBounded (qmul b w) (qmul a w) (M*two) V :=
-    distance_congr (qmul_commutative w b) (qmul_commutative w a) (.eqRefl _) (.eqRefl _)
-      (multiply_distance w b a M two V hV (sample_bound g S y p hg) (distance_symmetric a b _ _ hV hgap))
-  have joined := distance_triangle_same _ _ _ _ _ _ hV left right
-  have near : Γ ⊢[PRAAx] distanceBounded v w (U*C) V :=
-    distance_congr (cancel_factor a v U hU hfar (value_canonical f R x p))
-      (cancel_factor a w U hU hfar (value_canonical g S y p)) (.eqRefl _) (.eqRefl _)
-      (multiply_distance (reciprocal a) _ _ U C V hV (inverse_bound a one U (le_refl _) hU hfar) joined)
-  have c : Γ ⊢[PRAAx] le C (rawCost f g R S x y) := le_add_right _ _
-  exact distance_radius_mono _ _ _ _ _ _ hV hU
-    (le_congr (by ipra_ring) (congrMul (.eqRefl _) (clock_unit p).eqSymm)
-      (le_mul_mono c (le_refl (U*U)))) near
+  have cost : Γ ⊢[PRAAx] le (sineCost f g R S x y+sampleSize g S y*two) (rawCost f g R S x y) :=
+    le_add_right _ _
+  exact distance_radius_mono _ _ _ _ _ _ hU hU (le_mul_mono cost (le_refl _))
+    (sample_distance_away f g R S x y p p _ hg hgap hSin hfar)
 
 theorem raw_error (f g : PR 2) (R S x y p : PTm n)
     (hf : Γ ⊢[PRAAx] input f R x) (hg : Γ ⊢[PRAAx] input g S y) (h : Γ ⊢[PRAAx] crossEquivalent f g x y) :
