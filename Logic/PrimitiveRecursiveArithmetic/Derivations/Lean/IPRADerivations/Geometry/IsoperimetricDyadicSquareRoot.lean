@@ -42,41 +42,22 @@ theorem scale_positive (t : PTm n) : Γ ⊢[PRAAx] le one (scale t) :=
 theorem index_bracket (A B t : PTm n) (hB : Γ ⊢[PRAAx] le one B) : Γ ⊢[PRAAx]
     le (B * (index A B t * index A B t)) (scaled A t) ⋏
       lt (scaled A t) (B * (succ (index A B t) * succ (index A B t))) := by
-  let z := scaled A t
-  let q := quo z B
-  let r := rem z B
-  let j := index A B t
-  have hb := pos_of_eq_succ ((eq_add_of_le hB).eqTrans (by ipra_ring))
-  have div : Γ ⊢[PRAAx] (z ≐ B*q+r) ⋏ lt r B := div_mod_at hb
-  have lo : Γ ⊢[PRAAx] le (j*j) q := isqrt_le q
-  have hi : Γ ⊢[PRAAx] lt q (succ j*succ j) :=
-    lt_congr (.eqRefl _) (congrMul (succ_eq_add_one j) (succ_eq_add_one j)).eqSymm (lt_isqrt_succ_sq q)
-  refine .andI ?_ ?_
-  · have h := mul_le_mul_right B lo
-    exact le_trans (le_congr (mul_comm _ _) (mul_comm _ _) h)
-      (le_congr (.eqRefl _) (Prf.andE₁ div).eqSymm (le_add_right _ _))
-  · have h1 : Γ ⊢[PRAAx] lt z (B * succ q) := by
-      have h := Prf.andE₂ div
-      have hi' : Γ ⊢[PRAAx] le (succ (B*q+r)) (B*succ q) := by ipra_le sl h
-      exact lt_congr (Prf.andE₁ div).eqSymm (.eqRefl _) hi'
-    exact lt_of_lt_of_le h1
-      (mul_le_mul_left B hi)
+  have hb := Common.pos_of_one_le hB
+  have ceiling := lt_congr (Γ := Γ) (.eqRefl _)
+    (congrMul (succ_eq_add_one _).eqSymm (succ_eq_add_one _).eqSymm)
+    (lt_isqrt_succ_sq (quo (scaled A t) B))
+  exact .andI
+    (le_trans (mul_le_mul_left B (isqrt_le _)) (Division.mul_quo_le hb))
+    (lt_of_lt_of_le (Division.lt_mul_succ_quo hb) (mul_le_mul_left B ceiling))
 
 theorem index_greatest (A B t k : PTm n) (hB : Γ ⊢[PRAAx] le one B)
-    (hk : Γ ⊢[PRAAx] le (B*(k*k)) (scaled A t)) : Γ ⊢[PRAAx] le k (index A B t) := by
-  refine .orE (lt_or_le (index A B t) k) ?_ Prf.hyp0
-  have h := sq_le_sq (Γ := lt (index A B t) k :: Γ) Prf.hyp0
-  have h' := mul_le_mul_right B h
-  exact le_lt_absurd _ (le_trans (le_congr (mul_comm _ _) (mul_comm _ _) h') hk.wk)
-    (.andE₂ (index_bracket _ _ _ hB.wk))
+    (hk : Γ ⊢[PRAAx] le (B*(k*k)) (scaled A t)) : Γ ⊢[PRAAx] le k (index A B t) :=
+  Isqrt.le_of_sq_le (Division.le_quo_of_mul_le (Common.pos_of_one_le hB) hk)
 
 theorem index_fits_bound (A B t M : PTm n) (hB : Γ ⊢[PRAAx] le one B)
-    (hM : Γ ⊢[PRAAx] lt (scaled A t) (B*(M*M))) : Γ ⊢[PRAAx] le (index A B t) M := by
-  refine .orE (lt_or_le M (index A B t)) ?_ Prf.hyp0
-  have h := sq_le_sq (le_of_lt (Γ := lt M (index A B t) :: Γ) Prf.hyp0)
-  have h' := mul_le_mul_right B h
-  exact le_lt_absurd _ (le_trans (le_congr (mul_comm _ _) (mul_comm _ _) h')
-    (.andE₁ (index_bracket _ _ _ hB.wk))) hM.wk
+    (hM : Γ ⊢[PRAAx] lt (scaled A t) (B*(M*M))) : Γ ⊢[PRAAx] le (index A B t) M :=
+  Common.le_of_sq_le
+    (le_trans (isqrt_le _) (le_of_lt (Division.quo_lt_of_lt_mul (Common.pos_of_one_le hB) hM)))
 
 theorem rational_bracket (A B t : PTm n) (hB : Γ ⊢[PRAAx] le one B) : Γ ⊢[PRAAx]
     rationalLE (square (sd A B t)) (fraction A B) ⋏

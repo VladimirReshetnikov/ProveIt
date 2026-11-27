@@ -64,9 +64,8 @@ theorem root_unit_bound (A B H : PTm n) (hAB : Γ ⊢[PRAAx] le A B) : Γ ⊢[PR
 /-- This local arithmetic helper is used only after deriving the square
 comparison from the original A/B guard. -/
 theorem root_ge (A B H x : PTm n) (h : Γ ⊢[PRAAx] le (x*x) (radicand A B H)) : Γ ⊢[PRAAx]
-    le x (root A B H) := by
-  refine .orE (lt_or_le (root A B H) x) ?_ Prf.hyp0
-  exact le_lt_absurd _ (le_trans (sq_le_sq Prf.hyp0) h.wk) (root_strict A B H).wk
+    le x (root A B H) :=
+  Isqrt.le_of_sq_le h
 
 theorem root_unit_lower (A B H : PTm n) (hBA : Γ ⊢[PRAAx] le B A) : Γ ⊢[PRAAx]
     le (denominator B H) (root A B H) :=
