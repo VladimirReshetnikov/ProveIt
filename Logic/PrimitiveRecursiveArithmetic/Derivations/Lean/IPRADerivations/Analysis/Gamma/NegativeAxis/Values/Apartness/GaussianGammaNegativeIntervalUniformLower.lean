@@ -32,7 +32,7 @@ open GaussianPositiveRationalLogarithm (fraction)
 open GaussianRationalHorner (ofGaussian_represents positive_product qmul)
 open GaussianRationalMetric (bounded bounded_iff)
 open GaussianRationalPowerAlgebra (unit_bounded unit_power norm_one)
-open GaussianRationalReciprocal (bound_congr bounded_product)
+open GaussianRationalReciprocal (bound_congr bounded_product_one)
 open GaussianRationalSyntheticDivision (qone)
 open GaussianStirlingGammaLogarithm (arg gammaMargin gammaData gamma_regular gammaRealF gamma_real_cross gamma_real_positive)
 open GaussianStirlingMultiplicativeBoundsLog (constant_order fractions_order)
@@ -55,19 +55,16 @@ theorem shift_product_bound (a b N : PTm n) (h : Γ ⊢[PRAAx] guard a b) :
     Γ ⊢[PRAAx] bounded (signedProduct a b N) (productBound N) one := by
   let j := succ N
   let P := GaussianGammaNegativeIntervalNative.product a b N
-  let I := fraction a b
-  let f := GaussianGammaPoleFiniteFactors.differenceProduct (arg a) b j
   let sign := signUnit j
   have hb := le_trans h.andE₁ (le_of_lt h.andE₂)
   have prefixBound := (prefix_bounds a a b j zero one j h h (le_refl one)
     (GaussianRationalPowerDifference.distance_refl_zero _ _ (le_refl one)) (le_refl j)).andE₁
   have prod : Γ ⊢[PRAAx] bounded P (productBound N) one :=
-    bound_congr (rising_product (arg a) b j hb).eqSymm (by ipra_ring) (by ipra_ring)
-      (bounded_product f I (productBound N) one one one (le_refl one) (le_refl one) prefixBound (unit_fraction a b h))
+    bound_congr (rising_product (arg a) b j hb).eqSymm (Common.mul_one_right (productBound N)) (.eqRefl _)
+      (bounded_product_one prefixBound (unit_fraction a b h))
   have sb : Γ ⊢[PRAAx] bounded sign one one :=
     unit_bounded _ (unit_power _ j ((GaussianRationalRelativeTwoTerm.norm_negative qone).eqTrans norm_one))
-  exact bound_congr (.eqRefl _) (by ipra_ring) (by ipra_ring)
-    (bounded_product sign P one one (productBound N) one (le_refl one) (le_refl one) sb prod)
+  exact bound_congr (.eqRefl _) (one_mul (productBound N)) (.eqRefl _) (bounded_product_one sb prod)
 
 theorem numerator_bound (a b N : PTm n) (h : Γ ⊢[PRAAx] guard a b) : Γ ⊢[PRAAx]
     le (productNumerator a b N) (productBound N*productDenominator b N) := by
