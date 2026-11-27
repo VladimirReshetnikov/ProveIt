@@ -1,6 +1,6 @@
 import IPRADerivations.Analysis.Euler.PositiveAxis.UnitSubstitution.GaussianEulerUnitSubstitutionKernel
-import IPRADerivations.Analysis.Euler.VerticalBounds.GaussianEulerVerticalIntegrandSquare
-import IPRADerivations.Analysis.Euler.VerticalBounds.GaussianEulerVerticalRealSamples
+import IPRADerivations.Analysis.Euler.VerticalBounds.Integrands.GaussianEulerVerticalIntegrandSquare
+import IPRADerivations.Analysis.Euler.VerticalBounds.Integrands.GaussianEulerVerticalRealSamples
 
 /-!
 # Actual squared vertical identity for the original rational unit kernel

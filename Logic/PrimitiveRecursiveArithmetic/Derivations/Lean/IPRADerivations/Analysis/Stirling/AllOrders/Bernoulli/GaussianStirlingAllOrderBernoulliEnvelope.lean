@@ -1,4 +1,4 @@
-import IPRADerivations.Analysis.Stirling.AllOrders.Bernoulli.GaussianStirlingAllOrderBernoulliMeshRefinement
+import IPRADerivations.Analysis.Stirling.AllOrders.Bernoulli.Mesh.GaussianStirlingAllOrderBernoulliMeshRefinement
 
 /-!
 # Full-panel bounds for the actual centered Bernoulli sampler

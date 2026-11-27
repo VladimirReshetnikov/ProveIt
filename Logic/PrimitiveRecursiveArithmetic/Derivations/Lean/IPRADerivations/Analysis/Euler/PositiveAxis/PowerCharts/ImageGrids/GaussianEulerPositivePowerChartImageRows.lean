@@ -1,6 +1,6 @@
 import IPRADerivations.Analysis.Euler.PositiveAxis.PowerCharts.ImageGrids.GaussianEulerPositivePowerChartImageWeights
 import IPRADerivations.Analysis.Euler.PositiveAxis.PowerCharts.ImageGrids.GaussianEulerPositivePowerChartImageUniformGrid
-import IPRADerivations.Analysis.Euler.PowerScaling.GaussianEulerPowerScalingCorrectedQuadrature
+import IPRADerivations.Analysis.Euler.PowerScaling.Quadrature.GaussianEulerPowerScalingCorrectedQuadrature
 
 /-!
 # Original Euler samples on native chart blocks

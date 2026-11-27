@@ -1,6 +1,6 @@
 import IPRADerivations.Analysis.Exponential.Estimates.GaussianRationalExponentialLipschitz
 import IPRADerivations.Analysis.Exponential.Names.Evaluators.GaussianRationalExponentialName
-import IPRADerivations.Analysis.Names.GaussianNameEquivalence
+import IPRADerivations.Analysis.Names.Arithmetic.GaussianNameEquivalence
 
 /-!
 # Actual exponentiation of regular names with unit-disk observations

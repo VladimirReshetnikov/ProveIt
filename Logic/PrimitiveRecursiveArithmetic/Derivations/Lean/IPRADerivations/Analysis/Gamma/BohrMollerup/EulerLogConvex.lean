@@ -1,4 +1,4 @@
-import IPRADerivations.Analysis.Optimization.WeightedAMGM
+import IPRADerivations.Analysis.Inequalities.Weighted.WeightedAMGM
 import IPRADerivations.AnalyticNumberTheory.PhiLower
 
 /-!

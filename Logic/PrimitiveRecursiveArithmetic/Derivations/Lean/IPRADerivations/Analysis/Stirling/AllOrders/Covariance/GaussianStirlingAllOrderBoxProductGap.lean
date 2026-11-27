@@ -1,5 +1,5 @@
 import IPRADerivations.Analysis.Polynomials.SpecialPolynomials.RationalReverseChebyshevCell
-import IPRADerivations.Analysis.Stirling.AllOrders.Bernoulli.GaussianStirlingAllOrderBernoulliMeshMargin
+import IPRADerivations.Analysis.Stirling.AllOrders.Bernoulli.Mesh.GaussianStirlingAllOrderBernoulliMeshMargin
 import IPRADerivations.Analysis.Stirling.AllOrders.PairedPanels.GaussianStirlingAllOrderPairedRefinement
 
 /-!

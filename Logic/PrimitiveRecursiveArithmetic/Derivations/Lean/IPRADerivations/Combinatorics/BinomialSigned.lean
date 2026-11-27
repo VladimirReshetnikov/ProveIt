@@ -1,5 +1,5 @@
 import IPRADerivations.Combinatorics.BinomialTheorem
-import IPRADerivations.Analysis.Series.TerminatingSeries
+import IPRADerivations.Analysis.SpecialFunctions.Hypergeometric.TerminatingSeries
 import IPRADerivations.Probability.Independence
 
 /-!

@@ -4,7 +4,7 @@ import IPRADerivations.Core.Search
 import IPRADerivations.Probability.Variance
 import IPRADerivations.Core.Fubini
 import IPRADerivations.Combinatorics.CatalanConvolution
-import IPRADerivations.Analysis.RationalArithmetic.RationalClosure
+import IPRADerivations.Analysis.RationalArithmetic.OrderBounds.RationalClosure
 import IPRADerivations.Core.LinearCombination
 import IPRADerivations.Core.CommonLemmas
 import IPRADerivations.Core.Header

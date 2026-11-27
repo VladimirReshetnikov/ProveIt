@@ -1,4 +1,4 @@
-import IPRADerivations.Analysis.Barnes.Taylor.CenteredCharts.GaussianBarnesCanonicalFiniteCentralDiskBound
+import IPRADerivations.Analysis.Barnes.Taylor.CenteredCharts.FiniteApproximants.GaussianBarnesCanonicalFiniteCentralDiskBound
 import IPRADerivations.Analysis.Barnes.Taylor.GaussianBarnesCanonicalFiniteWeightedTaylorValue
 import IPRADerivations.Analysis.Barnes.Taylor.CenteredCharts.GaussianBarnesCanonicalHeadUniformMass
 

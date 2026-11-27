@@ -1,7 +1,7 @@
 import IPRADerivations.Analysis.Euler.Integration.Decay.Increments.GaussianEulerDecayAddition
 import IPRADerivations.Analysis.Euler.Integration.Decay.GaussianEulerDecayOrder
 import IPRADerivations.Analysis.Names.Arithmetic.GaussianNameRingLaws
-import IPRADerivations.Analysis.Optimization.Convexity.RationalConvexClockRescale
+import IPRADerivations.Analysis.Optimization.Convexity.Moduli.RationalConvexClockRescale
 
 /-!
 # The two actual half-decay factors in the Euler integrand

@@ -1,4 +1,4 @@
-import IPRADerivations.Analysis.Gamma.EulerProducts.Exponents.GaussianGammaFoldedMajorantExponent
+import IPRADerivations.Analysis.Gamma.EulerProducts.Exponents.Folded.GaussianGammaFoldedMajorantExponent
 import IPRADerivations.Analysis.Gamma.EulerProducts.Exponents.GaussianGammaLogHarmonicName
 
 /-!

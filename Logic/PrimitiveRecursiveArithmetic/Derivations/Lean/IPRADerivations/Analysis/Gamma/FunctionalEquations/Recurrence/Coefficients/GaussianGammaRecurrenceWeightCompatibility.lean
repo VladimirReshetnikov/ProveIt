@@ -1,5 +1,5 @@
 import IPRADerivations.Analysis.Gamma.FunctionalEquations.Recurrence.Coefficients.GaussianGammaRecurrenceWeightName
-import IPRADerivations.Analysis.Names.GaussianNameEquivalence
+import IPRADerivations.Analysis.Names.Arithmetic.GaussianNameEquivalence
 
 /-!
 # Original recurrence weights and full original zeta names

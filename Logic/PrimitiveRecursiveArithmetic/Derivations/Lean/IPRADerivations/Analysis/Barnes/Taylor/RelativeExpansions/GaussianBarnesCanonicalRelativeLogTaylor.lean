@@ -4,7 +4,7 @@ Both finite exponents are evaluated exactly. The kept Mercator and the
 corrected cofinal tail contribute cubic error, with a scheduled dyadic
 error for freezing the latter at a finite cutoff.
 -/
-import IPRADerivations.Analysis.Barnes.Taylor.CenteredCharts.GaussianBarnesCanonicalHeadRelativeLogTaylor
+import IPRADerivations.Analysis.Barnes.Taylor.CenteredCharts.RelativeLogarithms.GaussianBarnesCanonicalHeadRelativeLogTaylor
 import IPRADerivations.Analysis.Barnes.Taylor.RelativeExpansions.GaussianBarnesCanonicalRelativeExponentTaylor
 import IPRADerivations.Analysis.Barnes.Taylor.RelativeExpansions.CorrectedMercator.GaussianBarnesCanonicalCorrectedMercatorCofinal
 

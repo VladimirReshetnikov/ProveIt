@@ -1,5 +1,5 @@
 import IPRADerivations.Analysis.Barnes.Logarithms.GaussianBarnesCanonicalLogarithmRealTail
-import IPRADerivations.Analysis.Barnes.Taylor.CenteredCharts.GaussianBarnesCanonicalHeadRelativeLog
+import IPRADerivations.Analysis.Barnes.Taylor.CenteredCharts.RelativeLogarithms.GaussianBarnesCanonicalHeadRelativeLog
 import IPRADerivations.Analysis.Euler.Integration.Decay.Quadrature.GaussianEulerDecayRealSamples
 
 /-! The original relative logarithm of the kept Barnes product is real at a real step. -/

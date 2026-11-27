@@ -1,6 +1,6 @@
 import IPRADerivations.Analysis.Stirling.Binet.SecondFormula.Decay.GaussianBinetSecondDecaySharedTail
 import IPRADerivations.Analysis.RationalArithmetic.FiniteSums.Reindexing.GaussianRationalSuffixMask
-import IPRADerivations.Analysis.Euler.VerticalBounds.GaussianEulerNamedUpperTail
+import IPRADerivations.Analysis.Euler.CompactExhaustion.Tails.GaussianEulerNamedUpperTail
 
 /-!
 # The original frozen-row majorant bounds any time suffix

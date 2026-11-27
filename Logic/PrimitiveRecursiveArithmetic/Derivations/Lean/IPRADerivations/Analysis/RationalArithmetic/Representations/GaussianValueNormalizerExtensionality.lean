@@ -1,4 +1,4 @@
-import IPRADerivations.Analysis.Names.GaussianNameEquivalence
+import IPRADerivations.Analysis.Names.Arithmetic.GaussianNameEquivalence
 
 /-!
 # Independent value normalizers preserve a vanishing observation discrepancy

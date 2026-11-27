@@ -1,5 +1,5 @@
 import IPRADerivations.Analysis.Euler.PositiveAxis.PowerCharts.GaussianEulerPositivePowerChart
-import IPRADerivations.Analysis.Gamma.EulerProducts.Exponents.GaussianGammaFoldedApproximantBalance
+import IPRADerivations.Analysis.Gamma.EulerProducts.Exponents.Folded.GaussianGammaFoldedApproximantBalance
 
 /-!
 # The logarithmic coordinate of the original positive rational power chart

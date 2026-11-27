@@ -1,5 +1,5 @@
 import IPRADerivations.Analysis.Barnes.Taylor.Coefficients.ProductCoefficients.GaussianBarnesCanonicalTaylorProductDerivativeName
-import IPRADerivations.Analysis.Barnes.Taylor.CenteredCharts.GaussianBarnesCanonicalFiniteCentralExponential
+import IPRADerivations.Analysis.Barnes.Taylor.CenteredCharts.FiniteApproximants.GaussianBarnesCanonicalFiniteCentralExponential
 
 /-!
 # Late readback with the actual finite Barnes central exponential

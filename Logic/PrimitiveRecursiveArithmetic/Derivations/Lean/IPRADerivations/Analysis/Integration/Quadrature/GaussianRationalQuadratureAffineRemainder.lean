@@ -1,6 +1,6 @@
 import IPRADerivations.Analysis.Integration.Quadrature.GaussianRationalQuadratureDifference
 import IPRADerivations.Analysis.Euler.Integration.Parameters.GaussianEulerPowerShiftRate
-import IPRADerivations.Analysis.Inequalities.GaussianRationalFactorialEulerSums
+import IPRADerivations.Analysis.Exponential.Polynomials.GaussianRationalFactorialEulerSums
 
 /-!
 # Exact finite integration of an affine row remainder

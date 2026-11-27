@@ -1,5 +1,5 @@
 import IPRADerivations.Analysis.Stirling.AllOrders.PairedPanels.GaussianStirlingAllOrderPairedWeight
-import IPRADerivations.Analysis.Optimization.Convexity.RationalConvexClockRescale
+import IPRADerivations.Analysis.Optimization.Convexity.Moduli.RationalConvexClockRescale
 import IPRADerivations.Analysis.RationalArithmetic.Powers.RationalPowerBounds.RationalReciprocalPowerTail
 
 /-!

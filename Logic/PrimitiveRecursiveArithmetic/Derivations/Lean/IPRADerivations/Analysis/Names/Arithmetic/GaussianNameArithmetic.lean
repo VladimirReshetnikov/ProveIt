@@ -1,4 +1,4 @@
-import IPRADerivations.Analysis.Names.GaussianNameBounds
+import IPRADerivations.Analysis.Names.Approximation.GaussianNameBounds
 import IPRADerivations.Analysis.RationalArithmetic.Representations.GaussianValueNormalizerExtensionality
 
 /-!

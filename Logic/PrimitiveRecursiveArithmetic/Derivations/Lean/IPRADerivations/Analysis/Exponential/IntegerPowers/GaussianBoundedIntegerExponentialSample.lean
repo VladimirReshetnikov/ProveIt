@@ -1,5 +1,5 @@
 import IPRADerivations.Analysis.Exponential.IntegerPowers.GaussianBoundedIntegerExponential
-import IPRADerivations.Analysis.Names.GaussianNameEquivalence
+import IPRADerivations.Analysis.Names.Arithmetic.GaussianNameEquivalence
 
 /-!
 # Integer-scaled exponential at a numerical base sample

@@ -1,5 +1,5 @@
 import IPRADerivations.Analysis.Euler.PositiveAxis.PowerCharts.Endpoints.GaussianEulerPowerChartRoundedEndpoints
-import IPRADerivations.Analysis.Euler.PowerScaling.GaussianEulerPowerScalingGridSchedule
+import IPRADerivations.Analysis.Euler.PowerScaling.Quadrature.GaussianEulerPowerScalingGridSchedule
 import IPRADerivations.Analysis.Euler.CompactExhaustion.GaussianEulerCompactExhaustion
 
 /-!

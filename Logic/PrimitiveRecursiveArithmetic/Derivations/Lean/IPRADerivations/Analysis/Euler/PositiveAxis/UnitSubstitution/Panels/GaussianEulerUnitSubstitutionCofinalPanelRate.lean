@@ -1,5 +1,5 @@
 import IPRADerivations.Analysis.Euler.PositiveAxis.UnitSubstitution.Endpoints.GaussianEulerUnitSubstitutionOrdinaryEndpoints
-import IPRADerivations.Analysis.Euler.VerticalBounds.GaussianEulerVerticalNativeProjection
+import IPRADerivations.Analysis.Euler.VerticalBounds.Projections.GaussianEulerVerticalNativeProjection
 
 /-!
 # Independent observations of a fixed computed ordinary unit panel

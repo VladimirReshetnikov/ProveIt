@@ -1,4 +1,4 @@
-import IPRADerivations.Analysis.Names.GaussianNameEquivalence
+import IPRADerivations.Analysis.Names.Arithmetic.GaussianNameEquivalence
 
 /-!
 # Removing a finite same-clock comparison allowance

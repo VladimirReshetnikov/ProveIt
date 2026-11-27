@@ -1,5 +1,5 @@
 import IPRADerivations.Analysis.Euler.PositiveAxis.PowerCharts.Endpoints.GaussianEulerPowerChartUniformRounded
-import IPRADerivations.Analysis.Euler.PowerScaling.GaussianEulerPowerScalingCofinalObservation
+import IPRADerivations.Analysis.Euler.PowerScaling.Observations.GaussianEulerPowerScalingCofinalObservation
 
 /-!
 # A uniform physical cutoff schedule for the original power substitution

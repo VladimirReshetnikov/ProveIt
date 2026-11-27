@@ -1,4 +1,4 @@
-import IPRADerivations.Analysis.Stirling.AllOrders.Bernoulli.GaussianStirlingAllOrderFullGridCovariance
+import IPRADerivations.Analysis.Stirling.AllOrders.Bernoulli.GridBounds.GaussianStirlingAllOrderFullGridCovariance
 
 /-!
 # Bounds for the exact midpoint correction

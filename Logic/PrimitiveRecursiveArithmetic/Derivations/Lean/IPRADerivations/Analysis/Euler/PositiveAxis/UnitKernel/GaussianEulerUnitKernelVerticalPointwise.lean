@@ -1,5 +1,5 @@
 import IPRADerivations.Analysis.Euler.PositiveAxis.UnitKernel.GaussianEulerUnitKernelVerticalSquare
-import IPRADerivations.Analysis.Euler.VerticalBounds.GaussianEulerVerticalPointwise
+import IPRADerivations.Analysis.Euler.VerticalBounds.Integrands.GaussianEulerVerticalPointwise
 
 /-!
 # Source-only projected-real domination of the actual unit kernel

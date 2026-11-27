@@ -1,5 +1,5 @@
 import IPRADerivations.Analysis.Gamma.EulerProducts.FiniteHeads.GaussianGammaEulerRationalHead
-import IPRADerivations.Analysis.Optimization.WeightedAMGM
+import IPRADerivations.Analysis.Inequalities.Weighted.WeightedAMGM
 import IPRADerivations.AnalyticNumberTheory.RSA
 
 /-!

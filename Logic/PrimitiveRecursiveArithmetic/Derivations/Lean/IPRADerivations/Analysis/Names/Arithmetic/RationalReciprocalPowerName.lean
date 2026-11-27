@@ -1,6 +1,6 @@
 import IPRADerivations.Analysis.RationalArithmetic.Powers.RationalPowerBounds.RationalReciprocalPowerTail
 import IPRADerivations.Analysis.Optimization.CubeInfimum.RationalCubeInfimumName
-import IPRADerivations.Analysis.RationalArithmetic.RationalClosure
+import IPRADerivations.Analysis.RationalArithmetic.OrderBounds.RationalClosure
 
 /-!
 # Actual cofinal reciprocal-power names

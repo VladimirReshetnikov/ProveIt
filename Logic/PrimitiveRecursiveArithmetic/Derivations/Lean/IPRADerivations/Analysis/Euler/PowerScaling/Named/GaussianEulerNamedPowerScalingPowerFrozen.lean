@@ -1,6 +1,6 @@
 import IPRADerivations.Analysis.Euler.PowerScaling.Named.GaussianEulerNamedPowerScalingFormula
 import IPRADerivations.Analysis.Euler.PowerScaling.Named.GaussianEulerNamedPowerScalingParameterFrozen
-import IPRADerivations.Analysis.Euler.PowerScaling.GaussianEulerPowerScalingFrozenIntegrand
+import IPRADerivations.Analysis.Euler.PowerScaling.Quadrature.GaussianEulerPowerScalingFrozenIntegrand
 import IPRADerivations.Analysis.Names.Rates.Transport.GaussianNamedRateRadius
 import IPRADerivations.Analysis.Names.FiniteOperations.Products.Bounds.GaussianNamedMultiplyRate
 

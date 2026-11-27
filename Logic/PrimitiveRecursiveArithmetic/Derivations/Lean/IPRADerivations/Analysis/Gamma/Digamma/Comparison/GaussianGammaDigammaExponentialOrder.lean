@@ -1,5 +1,5 @@
 import IPRADerivations.Analysis.Stirling.Bounds.GaussianStirlingMultiplicativeBoundsOrder
-import IPRADerivations.Analysis.Optimization.Convexity.RationalConvexEndpointBudget
+import IPRADerivations.Analysis.Optimization.Convexity.Moduli.RationalConvexEndpointBudget
 
 /-!
 # Signed exponentiation of the real order of Gamma logarithm names

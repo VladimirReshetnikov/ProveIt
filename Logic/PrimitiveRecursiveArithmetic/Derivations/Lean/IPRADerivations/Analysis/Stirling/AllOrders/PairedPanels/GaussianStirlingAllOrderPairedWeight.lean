@@ -1,5 +1,5 @@
 import IPRADerivations.Analysis.Stirling.AllOrders.PowerIntegrals.GaussianStirlingAllOrderPowerGap
-import IPRADerivations.Analysis.Optimization.Convexity.RationalConvexFiniteModulus
+import IPRADerivations.Analysis.Optimization.Convexity.Moduli.RationalConvexFiniteModulus
 
 /-!
 # Reflected mesh weights for the signed Stirling remainder

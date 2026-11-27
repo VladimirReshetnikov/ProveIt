@@ -1,4 +1,4 @@
-import IPRADerivations.Analysis.Stirling.Binet.StirlingBounds.GaussianBinetStirlingVerticalBound
+import IPRADerivations.Analysis.Stirling.Binet.StirlingBounds.Vertical.GaussianBinetStirlingVerticalBound
 import IPRADerivations.Analysis.Stirling.Binet.Laplace.GaussianBinetLaplaceImproperBound
 import IPRADerivations.Analysis.Names.Rates.GaussianNamedRecurrencePinning
 

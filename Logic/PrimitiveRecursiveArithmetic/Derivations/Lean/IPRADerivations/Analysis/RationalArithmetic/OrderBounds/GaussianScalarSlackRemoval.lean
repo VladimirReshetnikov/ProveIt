@@ -1,5 +1,5 @@
 import IPRADerivations.Analysis.Geometry.Distances.GaussianLinearDistanceName
-import IPRADerivations.Analysis.RationalArithmetic.RationalClosure
+import IPRADerivations.Analysis.RationalArithmetic.OrderBounds.RationalClosure
 
 /-!
 # Finite dyadic slack removal for nonnegative rational observations

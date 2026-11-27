@@ -1,5 +1,5 @@
 import IPRADerivations.Foundations.SignedSums
-import IPRADerivations.Analysis.Polynomials.PolynomialBisection
+import IPRADerivations.Analysis.Polynomials.RootFinding.RealRoots.PolynomialBisection
 
 /-!
 # Signed step bounds on finite grids

@@ -1,5 +1,5 @@
 import IPRADerivations.Analysis.Gamma.EulerProducts.Exponents.GaussianGammaFixedEulerExponent
-import IPRADerivations.Analysis.Gamma.EulerProducts.Exponents.GaussianGammaFoldedExponentBalance
+import IPRADerivations.Analysis.Gamma.EulerProducts.Exponents.Folded.GaussianGammaFoldedExponentBalance
 import IPRADerivations.Analysis.RationalArithmetic.FiniteSums.GaussianRationalSumAlgebra
 
 /-!

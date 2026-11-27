@@ -4,7 +4,7 @@ import IPRADerivations.Analysis.Exponential.Names.Evaluators.GaussianExponential
 import IPRADerivations.Analysis.Exponential.PositiveAxis.GaussianPositiveExponentialMajorant
 import IPRADerivations.Analysis.Names.Rates.Perturbations.GaussianNamedSmallPerturbationTransport
 import IPRADerivations.Analysis.Exponential.Names.Identities.GaussianExponentialInverse
-import IPRADerivations.Analysis.Names.GaussianNameEquivalence
+import IPRADerivations.Analysis.Names.Arithmetic.GaussianNameEquivalence
 import IPRADerivations.Analysis.Gamma.EulerProducts.CanonicalProducts.GaussianGammaCanonicalExponent
 
 /-!

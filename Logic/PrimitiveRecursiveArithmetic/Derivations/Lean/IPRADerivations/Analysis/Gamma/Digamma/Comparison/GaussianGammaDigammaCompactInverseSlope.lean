@@ -1,5 +1,5 @@
 import IPRADerivations.Analysis.Gamma.Digamma.Comparison.GaussianGammaDigammaCompactSlopeLower
-import IPRADerivations.Analysis.Inequalities.GaussianRationalLowerSlopeDistance
+import IPRADerivations.Analysis.RationalArithmetic.Distances.GaussianRationalLowerSlopeDistance
 
 /-!
 # Invert the positive digamma lower slope at rational samples

@@ -1,5 +1,5 @@
 import IPRADerivations.Analysis.Euler.PowerScaling.Named.GaussianEulerNamedPowerScalingImproper
-import IPRADerivations.Analysis.Euler.PowerScaling.GaussianEulerPowerScalingArbitraryTails
+import IPRADerivations.Analysis.Euler.PowerScaling.Exhaustion.GaussianEulerPowerScalingArbitraryTails
 import IPRADerivations.Analysis.SpecialFunctions.DampingPower.GaussianNamedDampingPowerCompactBound
 
 /-!

@@ -1,4 +1,4 @@
-import IPRADerivations.Analysis.Euler.VerticalBounds.GaussianEulerNamedUpperTail
+import IPRADerivations.Analysis.Euler.CompactExhaustion.Tails.GaussianEulerNamedUpperTail
 
 /-!
 # Original-cutoff upper-tail budget for the Cauchy comparison

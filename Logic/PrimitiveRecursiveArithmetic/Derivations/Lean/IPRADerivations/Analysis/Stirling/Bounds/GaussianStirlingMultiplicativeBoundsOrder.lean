@@ -1,6 +1,6 @@
 import IPRADerivations.Analysis.Names.Order.GaussianNamedRealOrderEnvelope
 import IPRADerivations.Analysis.Stirling.Bounds.GaussianStirlingMultiplicative
-import IPRADerivations.Analysis.Optimization.Convexity.RationalConvexEndpointBudget
+import IPRADerivations.Analysis.Optimization.Convexity.Moduli.RationalConvexEndpointBudget
 
 /-!
 # Exponentiation of order between original real names

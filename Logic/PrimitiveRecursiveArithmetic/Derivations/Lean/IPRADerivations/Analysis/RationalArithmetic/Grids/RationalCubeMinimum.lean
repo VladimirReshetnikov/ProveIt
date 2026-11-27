@@ -1,5 +1,5 @@
 import IPRADerivations.Analysis.RationalArithmetic.Grids.RationalCubeGrid
-import IPRADerivations.Analysis.Inequalities.GapRemoval
+import IPRADerivations.Analysis.RationalArithmetic.OrderBounds.GapRemoval
 
 /-!
 # Actual sampled minima on the numerical dyadic cube grid

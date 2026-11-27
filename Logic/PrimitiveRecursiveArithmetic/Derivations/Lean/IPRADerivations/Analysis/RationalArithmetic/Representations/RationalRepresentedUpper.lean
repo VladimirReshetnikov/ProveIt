@@ -1,5 +1,5 @@
 import IPRADerivations.Analysis.RationalArithmetic.Representations.RationalRepresentations
-import IPRADerivations.Analysis.Polynomials.PolynomialBisection
+import IPRADerivations.Analysis.Polynomials.RootFinding.RealRoots.PolynomialBisection
 import IPRADerivations.Analysis.RationalArithmetic.RationalAlgebra
 
 /-!

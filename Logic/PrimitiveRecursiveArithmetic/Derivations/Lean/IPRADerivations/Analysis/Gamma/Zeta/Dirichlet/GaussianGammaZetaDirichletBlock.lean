@@ -1,6 +1,6 @@
 import IPRADerivations.Analysis.Gamma.Zeta.Dirichlet.GaussianGammaZetaDirichletRowDecay
 import IPRADerivations.Analysis.Names.FiniteOperations.Sums.GaussianNamedFiniteSumFamilyRange
-import IPRADerivations.Analysis.Inequalities.GaussianRationalFactorialEulerSums
+import IPRADerivations.Analysis.Exponential.Polynomials.GaussianRationalFactorialEulerSums
 
 /-!
 # Finite Dirichlet mass inside one dyadic block

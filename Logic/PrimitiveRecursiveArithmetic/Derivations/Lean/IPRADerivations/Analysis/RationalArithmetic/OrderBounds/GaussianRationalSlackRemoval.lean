@@ -1,5 +1,5 @@
 import IPRADerivations.Analysis.RationalArithmetic.Complex.GaussianRationalReciprocal
-import IPRADerivations.Analysis.RationalArithmetic.RationalClosure
+import IPRADerivations.Analysis.RationalArithmetic.OrderBounds.RationalClosure
 
 /-!
 # Removing dyadic slack from original rational Euclidean bounds

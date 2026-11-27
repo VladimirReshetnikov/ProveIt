@@ -1,6 +1,6 @@
 import IPRADerivations.AnalyticNumberTheory.EnergyJordan
 import IPRADerivations.AnalyticNumberTheory.EnergyMobius
-import IPRADerivations.Analysis.Optimization.WeightedCauchySchwarz
+import IPRADerivations.Analysis.Inequalities.Weighted.WeightedCauchySchwarz
 import IPRADerivations.AnalyticNumberTheory.AbsDiff
 import IPRADerivations.Core.LinearCombination
 import IPRADerivations.Core.CommonLemmas

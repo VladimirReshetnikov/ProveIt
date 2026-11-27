@@ -1,5 +1,5 @@
 import IPRADerivations.Analysis.Gamma.NegativeAxis.Recurrence.GaussianGammaNegativeIntervalInverseRecurrence
-import IPRADerivations.Analysis.Gamma.CriticalPoints.PositiveMinimum.GaussianGammaMinimumSignedStep
+import IPRADerivations.Analysis.Gamma.CriticalPoints.PositiveMinimum.Chords.GaussianGammaMinimumSignedStep
 
 /-!
 # Literal signed steps to a thin chord center on a negative interval

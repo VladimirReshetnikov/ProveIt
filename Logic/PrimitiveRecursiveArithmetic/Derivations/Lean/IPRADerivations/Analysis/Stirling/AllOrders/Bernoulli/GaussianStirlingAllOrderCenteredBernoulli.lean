@@ -1,4 +1,4 @@
-import IPRADerivations.Analysis.Stirling.AllOrders.Bernoulli.GaussianStirlingAllOrderBernoulliMesh
+import IPRADerivations.Analysis.Stirling.AllOrders.Bernoulli.Mesh.GaussianStirlingAllOrderBernoulliMesh
 import IPRADerivations.Analysis.RationalArithmetic.FiniteSums.RationalIdentities.RationalFiniteSum
 import IPRADerivations.Analysis.Polynomials.RootFinding.Deflation.FactorTransport.GaussianFactorBudget
 import IPRADerivations.Analysis.Geometry.Distances.GaussianEuclideanDistanceName

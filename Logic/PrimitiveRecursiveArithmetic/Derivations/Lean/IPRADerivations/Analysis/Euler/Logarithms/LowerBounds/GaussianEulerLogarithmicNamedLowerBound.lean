@@ -1,5 +1,5 @@
 import IPRADerivations.Analysis.Euler.Logarithms.LowerBounds.GaussianEulerLogarithmicLowerFiniteBudget
-import IPRADerivations.Analysis.Euler.VerticalBounds.GaussianEulerNamedLowerTail
+import IPRADerivations.Analysis.Euler.CompactExhaustion.Tails.GaussianEulerNamedLowerTail
 
 /-!
 # The original named logarithmic lower compact tail

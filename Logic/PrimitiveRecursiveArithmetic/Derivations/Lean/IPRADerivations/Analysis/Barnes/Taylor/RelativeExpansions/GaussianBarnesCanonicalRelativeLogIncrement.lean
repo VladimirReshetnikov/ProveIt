@@ -3,12 +3,12 @@ A local logarithmic increment for the original Barnes evaluator.
 The kept base powers use Mercator on their relative displacement. The
 prefactor, finite correction and cofinal tail use their original exponents.
 -/
-import IPRADerivations.Analysis.Barnes.Taylor.CenteredCharts.GaussianBarnesCanonicalHeadRelativeLog
+import IPRADerivations.Analysis.Barnes.Taylor.CenteredCharts.RelativeLogarithms.GaussianBarnesCanonicalHeadRelativeLog
 import IPRADerivations.Analysis.Barnes.HeadProducts.GaussianBarnesCanonicalHeadExponentialFactors
 import IPRADerivations.Analysis.Barnes.Taylor.FirstDerivative.Prefactors.GaussianBarnesCanonicalPrefactorExponentDerivative
 import IPRADerivations.Analysis.Barnes.CanonicalProducts.GaussianBarnesCanonicalValue
 import IPRADerivations.Analysis.Gamma.Ratios.GaussianGammaRationalRatioBinding
-import IPRADerivations.Analysis.Gamma.EulerProducts.Exponents.GaussianGammaFoldedApproximantBalance
+import IPRADerivations.Analysis.Gamma.EulerProducts.Exponents.Folded.GaussianGammaFoldedApproximantBalance
 
 set_option autoImplicit false
 set_option maxHeartbeats 650000

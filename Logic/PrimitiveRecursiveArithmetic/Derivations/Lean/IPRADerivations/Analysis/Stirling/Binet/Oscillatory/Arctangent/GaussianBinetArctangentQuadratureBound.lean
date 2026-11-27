@@ -1,5 +1,5 @@
 import IPRADerivations.Analysis.Stirling.Binet.Oscillatory.Arctangent.GaussianBinetArctangentQuadrature
-import IPRADerivations.Analysis.Inequalities.GaussianRationalFactorialEulerSums
+import IPRADerivations.Analysis.Exponential.Polynomials.GaussianRationalFactorialEulerSums
 
 /-!
 # The exact arctangent quadrature majorant

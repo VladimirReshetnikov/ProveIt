@@ -1,6 +1,6 @@
 import IPRADerivations.Analysis.Barnes.CanonicalProducts.GaussianBarnesCanonicalValue
 import IPRADerivations.Analysis.Exponential.Names.Evaluators.GaussianExponentialReference
-import IPRADerivations.Analysis.Names.GaussianNameBounds
+import IPRADerivations.Analysis.Names.Approximation.GaussianNameBounds
 import IPRADerivations.Foundations.FiniteQueryDemand
 import IPRADerivations.Analysis.Names.Rates.Transport.GaussianNamedRateRadius
 

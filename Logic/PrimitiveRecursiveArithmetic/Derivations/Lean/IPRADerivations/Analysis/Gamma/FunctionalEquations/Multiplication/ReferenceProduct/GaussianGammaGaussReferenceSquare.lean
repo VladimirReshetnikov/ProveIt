@@ -1,5 +1,5 @@
 import IPRADerivations.Analysis.Gamma.FunctionalEquations.Multiplication.ReferenceProduct.GaussianGammaGaussReferenceSquareAlgebra
-import IPRADerivations.Analysis.Gamma.FunctionalEquations.Multiplication.ReferenceProduct.GaussianGammaGaussReflectionPowerConstant
+import IPRADerivations.Analysis.Gamma.FunctionalEquations.Multiplication.ReferenceProduct.Reflection.GaussianGammaGaussReflectionPowerConstant
 import IPRADerivations.Analysis.Names.FiniteOperations.Products.Families.GaussianNamedFiniteProductFamilyAlgebra
 
 /-!

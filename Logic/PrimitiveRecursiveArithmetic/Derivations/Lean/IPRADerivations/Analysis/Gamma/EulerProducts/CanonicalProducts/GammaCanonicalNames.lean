@@ -1,6 +1,6 @@
 import IPRADerivations.Analysis.Gamma.EulerProducts.CanonicalProducts.GammaCanonicalFactors
 import IPRADerivations.Analysis.Logarithm.Local.DyadicComplexLogarithm
-import IPRADerivations.Analysis.RationalArithmetic.RationalClosure
+import IPRADerivations.Analysis.RationalArithmetic.OrderBounds.RationalClosure
 
 /-!
 # A joint finite-query name for the canonical Gamma logarithmic tail

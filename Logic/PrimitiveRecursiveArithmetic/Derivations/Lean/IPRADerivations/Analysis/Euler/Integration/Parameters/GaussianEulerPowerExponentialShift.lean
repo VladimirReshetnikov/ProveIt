@@ -1,6 +1,6 @@
 import IPRADerivations.Analysis.Euler.Integration.Parameters.GaussianEulerPowerShiftRate
 import IPRADerivations.Analysis.Exponential.Estimates.GaussianExponentialLinearRemainder
-import IPRADerivations.Analysis.Gamma.EulerProducts.Exponents.GaussianGammaFoldedApproximantBalance
+import IPRADerivations.Analysis.Gamma.EulerProducts.Exponents.Folded.GaussianGammaFoldedApproximantBalance
 
 /-!
 # The original Euler power after a linear exponent displacement

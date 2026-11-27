@@ -1,5 +1,5 @@
 import IPRADerivations.Probability.MedianWeighted
-import IPRADerivations.Analysis.Observation.PrefixObject
+import IPRADerivations.Analysis.Observation.Certificates.PrefixObject
 import IPRADerivations.Foundations.FiniteObservations.MetricKernel
 import IPRADerivations.Core.OrderCertificates
 

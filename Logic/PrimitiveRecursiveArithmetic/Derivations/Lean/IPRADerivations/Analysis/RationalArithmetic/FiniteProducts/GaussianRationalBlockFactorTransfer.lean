@@ -1,4 +1,4 @@
-import IPRADerivations.Analysis.RationalArithmetic.GaussianRationalFixedWidthStrip
+import IPRADerivations.Analysis.Polynomials.Division.GaussianRationalFixedWidthStrip
 import IPRADerivations.Analysis.RationalArithmetic.Complex.GaussianRationalLinearCancellation
 import IPRADerivations.Analysis.RationalArithmetic.Powers.GaussianPowers.GaussianRationalPowerNonzero
 import IPRADerivations.Analysis.Polynomials.Division.GaussianPolynomialRowQuotient

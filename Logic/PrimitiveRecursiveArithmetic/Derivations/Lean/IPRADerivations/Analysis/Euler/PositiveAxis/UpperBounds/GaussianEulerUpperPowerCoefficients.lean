@@ -1,7 +1,7 @@
 import IPRADerivations.Analysis.Euler.Integration.GaussianEulerIntegrandName
 import IPRADerivations.Analysis.Exponential.Estimates.GaussianExponentialRealPartMajorant
 import IPRADerivations.Analysis.Euler.HarmonicLogarithms.GaussianHarmonicLogarithmName
-import IPRADerivations.Analysis.Polynomials.PolynomialBisection
+import IPRADerivations.Analysis.Polynomials.RootFinding.RealRoots.PolynomialBisection
 
 /-!
 # Actual real multipliers for the upper-time Euler power comparison

@@ -1,7 +1,7 @@
 import IPRADerivations.Core.ProdLemmas
 import IPRADerivations.Core.ParityArith
 import IPRADerivations.Combinatorics.BinomialIdentities
-import IPRADerivations.Analysis.RationalArithmetic.RationalClosure
+import IPRADerivations.Analysis.RationalArithmetic.OrderBounds.RationalClosure
 
 /-!
 # The triangular norm and its 2-adic descent

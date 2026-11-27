@@ -1,6 +1,6 @@
 import IPRADerivations.Analysis.RationalArithmetic.Powers.RationalPowerBounds.RationalReciprocalPowerTail
 import IPRADerivations.Analysis.RationalArithmetic.FiniteSums.RationalIdentities.RationalSumLinearity
-import IPRADerivations.Analysis.Optimization.Convexity.RationalConvexClockRescale
+import IPRADerivations.Analysis.Optimization.Convexity.Moduli.RationalConvexClockRescale
 import IPRADerivations.Analysis.RationalArithmetic.Powers.GaussianCompactScalarMajorant
 
 /-!

@@ -1,5 +1,5 @@
 import IPRADerivations.Foundations.RuntimePermutationSums
-import IPRADerivations.Analysis.Polynomials.Elimination.Superelliptic.GaussianSuperellipticMatrixEntries
+import IPRADerivations.Analysis.Polynomials.Elimination.Superelliptic.Matrices.GaussianSuperellipticMatrixEntries
 import IPRADerivations.Analysis.Polynomials.Representation.GaussianPolynomialWeightedDegree
 import IPRADerivations.Foundations.AuxiliaryEnvelope
 

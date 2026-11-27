@@ -1,4 +1,4 @@
-import IPRADerivations.Analysis.Gamma.EulerProducts.Exponents.GaussianGammaFoldedC9Bound
+import IPRADerivations.Analysis.Gamma.EulerProducts.Exponents.Folded.GaussianGammaFoldedC9Bound
 import IPRADerivations.Analysis.Gamma.EulerProducts.Approximants.GaussianGammaExactTailDisk
 import IPRADerivations.Analysis.Gamma.EulerProducts.GaussianGammaEulerConvergence
 

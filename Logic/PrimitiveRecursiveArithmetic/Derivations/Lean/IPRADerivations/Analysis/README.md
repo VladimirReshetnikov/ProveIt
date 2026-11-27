@@ -85,6 +85,16 @@ The Lean modules in this directory construct derivations in the object theory. T
 | Rational and Gaussian finite sums | [Rational sum identities and tails](RationalArithmetic/FiniteSums/RationalIdentities/), [Gaussian reindexing and segments](RationalArithmetic/FiniteSums/Reindexing/), [derivative weights and norm bounds](RationalArithmetic/FiniteSums/WeightedSums/) |
 | Finite products of names | [Products of finite families](Names/FiniteOperations/Products/Families/), [apartness and observation bounds](Names/FiniteOperations/Products/Bounds/), [product identities and concatenation](Names/FiniteOperations/Products/Identities/) |
 | Polynomial deflation | [Approximate factorization and transport](Polynomials/RootFinding/Deflation/FactorTransport/) |
+| Barnes centered charts | [Finite approximants](Barnes/Taylor/CenteredCharts/FiniteApproximants/) and [head-relative logarithms](Barnes/Taylor/CenteredCharts/RelativeLogarithms/) |
+| Euler power scaling | [Quadrature](Euler/PowerScaling/Quadrature/), [exhaustion](Euler/PowerScaling/Exhaustion/), and [observation estimates](Euler/PowerScaling/Observations/) |
+| Euler vertical bounds | [Projections](Euler/VerticalBounds/Projections/), [integrand estimates](Euler/VerticalBounds/Integrands/), and [quadrature](Euler/VerticalBounds/Quadrature/) |
+| Gamma positive minimum | [Chord estimates](Gamma/CriticalPoints/PositiveMinimum/Chords/), [frozen inputs](Gamma/CriticalPoints/PositiveMinimum/FrozenInputs/), and [global comparison](Gamma/CriticalPoints/PositiveMinimum/GlobalComparison/) |
+| Gamma products | [Folded Euler exponents](Gamma/EulerProducts/Exponents/Folded/) and [reflection for the multiplication reference product](Gamma/FunctionalEquations/Multiplication/ReferenceProduct/Reflection/) |
+| Stirling estimates | Bernoulli [grid bounds](Stirling/AllOrders/Bernoulli/GridBounds/) and [mesh estimates](Stirling/AllOrders/Bernoulli/Mesh/), and [vertical Stirling bounds](Stirling/Binet/StirlingBounds/Vertical/) |
+| Superelliptic elimination | [Finite covers](Polynomials/Elimination/Superelliptic/Covers/), [matrices](Polynomials/Elimination/Superelliptic/Matrices/), and [subspace certificates](Polynomials/Elimination/Superelliptic/Subspaces/) |
+| Convexity | [Secants](Optimization/Convexity/Secants/), [moduli](Optimization/Convexity/Moduli/), and [regular names](Optimization/Convexity/Named/) |
+| Observations and quantum proofs | [Replay](Observation/Replay/), [observation certificates](Observation/Certificates/), [amplitudes](Quantum/Amplitudes/), and [Hilbert spaces](Quantum/HilbertSpace/) |
+| Contraction and weighted inequalities | [Exact and inexact contraction](Inequalities/Contraction/) and [weighted AM–GM and Cauchy–Schwarz](Inequalities/Weighted/) |
 
 
 Import a file using its path within the Lean library. For example, `IPRADerivations.Analysis.Gamma.BohrMollerup.Named.GaussianBohrMollerupNamedGamma` contains `LeanProofs.IPRA.Analysis.GaussianBohrMollerupNamedGamma.actual_named_Bohr_Mollerup_Gamma_closed`.

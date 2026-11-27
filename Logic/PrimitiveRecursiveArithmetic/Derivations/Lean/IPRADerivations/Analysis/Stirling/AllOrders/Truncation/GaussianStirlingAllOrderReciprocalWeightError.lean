@@ -1,7 +1,7 @@
 import IPRADerivations.Analysis.Stirling.AllOrders.Truncation.GaussianStirlingAllOrderReciprocalTaylorBound
 import IPRADerivations.Analysis.Stirling.AllOrders.Bernoulli.GaussianStirlingAllOrderCentralBernoulliError
 import IPRADerivations.Analysis.Stirling.AllOrders.GaussianStirlingAllOrderKernel
-import IPRADerivations.Analysis.Optimization.Convexity.RationalConvexFiniteModulus
+import IPRADerivations.Analysis.Optimization.Convexity.Moduli.RationalConvexFiniteModulus
 
 /-!
 # Actual reciprocal-power central-difference observations

@@ -3,7 +3,7 @@ import IPRADerivations.Analysis.Names.Rates.RightHalfPlane.GaussianRightHalfPlan
 import IPRADerivations.Analysis.Names.Rates.RightHalfPlane.GaussianRightHalfPlaneRadialContinuity
 import IPRADerivations.Analysis.Exponential.Names.LocalEstimates.GaussianNamedExponentialLocalUniqueness
 import IPRADerivations.Analysis.Logarithm.Local.GaussianLocalLogarithmQuarterBound
-import IPRADerivations.Analysis.RationalArithmetic.RationalClosure
+import IPRADerivations.Analysis.RationalArithmetic.OrderBounds.RationalClosure
 
 /-!
 # Bounds selecting the canonical logarithm increment

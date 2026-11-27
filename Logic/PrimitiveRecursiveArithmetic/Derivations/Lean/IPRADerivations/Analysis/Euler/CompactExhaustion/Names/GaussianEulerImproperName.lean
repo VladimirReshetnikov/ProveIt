@@ -1,4 +1,4 @@
-import IPRADerivations.Analysis.Euler.VerticalBounds.GaussianEulerNamedLowerTail
+import IPRADerivations.Analysis.Euler.CompactExhaustion.Tails.GaussianEulerNamedLowerTail
 import IPRADerivations.Analysis.Euler.CompactExhaustion.Cutoffs.GaussianEulerVaryingCutoffName
 
 /-!

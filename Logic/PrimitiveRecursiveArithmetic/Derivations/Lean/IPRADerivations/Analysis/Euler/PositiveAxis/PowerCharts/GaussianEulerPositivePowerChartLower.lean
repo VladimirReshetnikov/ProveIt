@@ -2,7 +2,7 @@ import IPRADerivations.Analysis.Euler.PositiveAxis.PowerCharts.GaussianEulerPosi
 import IPRADerivations.Analysis.Exponential.PositiveAxis.GaussianRealExponentialCompactLower
 import IPRADerivations.Analysis.Euler.Integration.Decay.Damping.GaussianEulerDampedTimeRate
 import IPRADerivations.Analysis.RationalArithmetic.Intervals.RationalCompactObservationTightening
-import IPRADerivations.Analysis.Euler.VerticalBounds.GaussianEulerVerticalRealSamples
+import IPRADerivations.Analysis.Euler.VerticalBounds.Integrands.GaussianEulerVerticalRealSamples
 
 /-!
 # A positive compact lower envelope for the genuine power chart

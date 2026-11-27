@@ -1,4 +1,4 @@
-import IPRADerivations.Analysis.Inequalities.PowerGap
+import IPRADerivations.Analysis.RationalArithmetic.Powers.PowerGap
 import IPRADerivations.Combinatorics.BinomialTheorem
 import IPRADerivations.Foundations.EigenvalueBound
 import IPRADerivations.Probability.Variance

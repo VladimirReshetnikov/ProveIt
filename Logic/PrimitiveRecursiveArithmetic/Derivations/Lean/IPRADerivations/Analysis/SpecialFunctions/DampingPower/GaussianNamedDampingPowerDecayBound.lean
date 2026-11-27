@@ -1,5 +1,5 @@
 import IPRADerivations.Analysis.SpecialFunctions.DampingPower.GaussianNamedDampingPowerPositive
-import IPRADerivations.Analysis.Euler.VerticalBounds.GaussianEulerNamedUpperTail
+import IPRADerivations.Analysis.Euler.CompactExhaustion.Tails.GaussianEulerNamedUpperTail
 
 /-!
 # Uniform unit bound for the actual named damping factor

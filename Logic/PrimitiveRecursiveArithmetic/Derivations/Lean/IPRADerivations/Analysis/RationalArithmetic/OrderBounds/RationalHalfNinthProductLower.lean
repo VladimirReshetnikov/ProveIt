@@ -1,4 +1,4 @@
-import IPRADerivations.Analysis.Optimization.Convexity.RationalConvexEndpointBudget
+import IPRADerivations.Analysis.Optimization.Convexity.Moduli.RationalConvexEndpointBudget
 import IPRADerivations.Analysis.RationalArithmetic.Complex.GaussianPositiveRealArithmetic
 import IPRADerivations.Analysis.Optimization.CubeInfimum.RationalCubeInfimumIntervals
 

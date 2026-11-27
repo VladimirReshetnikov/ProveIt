@@ -1,4 +1,4 @@
-import IPRADerivations.Analysis.Gamma.EulerProducts.Exponents.GaussianGammaFoldedExponentBalance
+import IPRADerivations.Analysis.Gamma.EulerProducts.Exponents.Folded.GaussianGammaFoldedExponentBalance
 import IPRADerivations.Analysis.Geometry.DiskNames.GaussianExactDiskShrinking
 
 /-!

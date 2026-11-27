@@ -1,5 +1,5 @@
 import IPRADerivations.Analysis.Euler.CompactExhaustion.GaussianEulerCompactExhaustion
-import IPRADerivations.Analysis.Euler.PowerScaling.GaussianEulerPowerScalingCell
+import IPRADerivations.Analysis.Euler.PowerScaling.Quadrature.GaussianEulerPowerScalingCell
 import IPRADerivations.Analysis.Names.Rates.Reciprocals.GaussianApproximateInverseDistance
 
 /-!

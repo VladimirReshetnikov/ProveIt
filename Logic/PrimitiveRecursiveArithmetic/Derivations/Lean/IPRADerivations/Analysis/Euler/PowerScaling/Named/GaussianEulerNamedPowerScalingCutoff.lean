@@ -1,6 +1,6 @@
 import IPRADerivations.Analysis.Euler.PowerScaling.Named.GaussianEulerNamedPowerScalingFormulaFrozen
 import IPRADerivations.Analysis.SpecialFunctions.DampingPower.GaussianNamedDampingPowerCompactPaid
-import IPRADerivations.Analysis.Euler.PowerScaling.GaussianEulerPowerScalingUniformObservation
+import IPRADerivations.Analysis.Euler.PowerScaling.Observations.GaussianEulerPowerScalingUniformObservation
 import IPRADerivations.Analysis.Euler.Derivatives.GaussianEulerDerivativePrecision
 
 /-!

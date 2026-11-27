@@ -1,5 +1,5 @@
 import IPRADerivations.Analysis.Euler.PositiveAxis.UpperBounds.GaussianEulerUpperTailPointwise
-import IPRADerivations.Analysis.Optimization.Convexity.RationalConvexEndpointBudget
+import IPRADerivations.Analysis.Optimization.Convexity.Moduli.RationalConvexEndpointBudget
 
 /-!
 # Original Gaussian product bounds respect positive scalar order

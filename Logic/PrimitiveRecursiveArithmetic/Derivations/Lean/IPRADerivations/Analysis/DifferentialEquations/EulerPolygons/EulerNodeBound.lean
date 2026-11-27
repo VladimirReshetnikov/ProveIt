@@ -1,6 +1,6 @@
 import IPRADerivations.Analysis.DifferentialEquations.EulerPolygons.EulerProgram
 import IPRADerivations.Analysis.DifferentialEquations.EulerPolygons.EulerAlgebra
-import IPRADerivations.Analysis.DifferentialEquations.OdeGrowth
+import IPRADerivations.Analysis.DifferentialEquations.EulerPolygons.OdeGrowth
 
 /-!
 # The bound of the exact Euler array at its nodes

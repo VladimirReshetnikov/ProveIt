@@ -1,6 +1,6 @@
 import IPRADerivations.Analysis.RationalArithmetic.OrderBounds.RationalValueBounds
 import IPRADerivations.Analysis.RationalArithmetic.RationalArithmetic
-import IPRADerivations.Analysis.Polynomials.PolynomialBisection
+import IPRADerivations.Analysis.Polynomials.RootFinding.RealRoots.PolynomialBisection
 import IPRADerivations.Analysis.Polynomials.Horner.GaussianRationalHorner
 
 /-!

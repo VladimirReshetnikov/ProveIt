@@ -1,6 +1,6 @@
 import IPRADerivations.Analysis.RationalArithmetic.Spans.Pivoting.GaussianRationalRowSpanPivotForward
 import IPRADerivations.Analysis.RationalArithmetic.Spans.Pivoting.GaussianRationalRowSpanRewind
-import IPRADerivations.Analysis.Polynomials.Elimination.Superelliptic.GaussianSuperellipticSubspaceFromSpan
+import IPRADerivations.Analysis.Polynomials.Elimination.Superelliptic.Subspaces.GaussianSuperellipticSubspaceFromSpan
 
 /-!
 # Actual forward coefficients through rectangular elimination

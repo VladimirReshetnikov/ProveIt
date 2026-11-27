@@ -1,6 +1,6 @@
 import IPRADerivations.Analysis.RationalArithmetic.Representations.RationalUpperRepresentation
 import IPRADerivations.Analysis.Names.Rates.Order.GaussianNamedRealOrderTransport
-import IPRADerivations.Analysis.Names.GaussianNameBounds
+import IPRADerivations.Analysis.Names.Approximation.GaussianNameBounds
 import IPRADerivations.Analysis.Euler.PositiveAxis.LowerBounds.Powers.GaussianEulerLowerPowerCoefficients
 
 /-!

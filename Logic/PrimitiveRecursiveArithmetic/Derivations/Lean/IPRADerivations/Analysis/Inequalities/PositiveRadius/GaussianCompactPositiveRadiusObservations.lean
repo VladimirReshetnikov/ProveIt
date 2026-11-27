@@ -1,5 +1,5 @@
 import IPRADerivations.Analysis.Inequalities.PositiveRadius.GaussianCompactPositiveRadiusDominance
-import IPRADerivations.Analysis.Euler.VerticalBounds.GaussianEulerVerticalShiftedRadius
+import IPRADerivations.Analysis.Euler.VerticalBounds.Integrands.GaussianEulerVerticalShiftedRadius
 
 /-!
 # Independent observations from actual compact row dominance

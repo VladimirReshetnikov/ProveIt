@@ -1,6 +1,6 @@
 import IPRADerivations.Analysis.Euler.PowerScaling.Named.GaussianEulerNamedPowerScalingPowerFrozen
 import IPRADerivations.Analysis.Gamma.Integrals.GaussianEulerNamedPowerScalingGammaFrozen
-import IPRADerivations.Analysis.Euler.PowerScaling.GaussianEulerPowerScalingImproper
+import IPRADerivations.Analysis.Euler.PowerScaling.Exhaustion.GaussianEulerPowerScalingImproper
 
 /-!
 # The original named Gamma-side formula at frozen parameters

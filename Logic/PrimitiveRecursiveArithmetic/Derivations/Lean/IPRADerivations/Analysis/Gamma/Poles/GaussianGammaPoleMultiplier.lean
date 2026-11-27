@@ -1,5 +1,5 @@
 import IPRADerivations.Analysis.Gamma.Poles.GaussianGammaPoleFiniteFactors
-import IPRADerivations.Analysis.Inequalities.GaussianMeshLogSign
+import IPRADerivations.Analysis.Gamma.EulerProducts.Exponents.GaussianMeshLogSign
 
 /-!
 # Exact inverse of the original pole factor product

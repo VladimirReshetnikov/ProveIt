@@ -1,5 +1,5 @@
 import IPRADerivations.Analysis.Euler.Integration.Parts.Recurrences.GaussianEulerIntegrationByPartsRecurrence
-import IPRADerivations.Analysis.Euler.VerticalBounds.GaussianEulerVerticalNamedReference
+import IPRADerivations.Analysis.Euler.VerticalBounds.Projections.GaussianEulerVerticalNamedReference
 import IPRADerivations.Analysis.Gamma.Names.Input.GaussianEulerNamedShiftInput
 
 /-!

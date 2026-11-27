@@ -1,7 +1,7 @@
 import IPRADerivations.Analysis.Logarithm.RightHalfPlane.GaussianRightHalfPlaneLogarithmRelativeStep
 import IPRADerivations.Analysis.Exponential.RightHalfPlane.GaussianRightHalfPlaneLogarithmExponential
 import IPRADerivations.Analysis.Logarithm.Local.GaussianLocalLogarithmExponentialIdentity
-import IPRADerivations.Analysis.Gamma.EulerProducts.Exponents.GaussianGammaFoldedApproximantBalance
+import IPRADerivations.Analysis.Gamma.EulerProducts.Exponents.Folded.GaussianGammaFoldedApproximantBalance
 
 /-!
 # Recover the shifted argument from the relative logarithm program

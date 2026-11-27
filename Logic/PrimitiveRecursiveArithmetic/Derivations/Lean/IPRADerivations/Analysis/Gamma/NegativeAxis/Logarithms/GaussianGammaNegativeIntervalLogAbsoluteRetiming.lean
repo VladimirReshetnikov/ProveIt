@@ -2,8 +2,8 @@ import IPRADerivations.Analysis.Gamma.NegativeAxis.Values.GaussianGammaNegativeI
 import IPRADerivations.Analysis.Gamma.NegativeAxis.Logarithms.GaussianGammaNegativeIntervalLogAbsolute
 import IPRADerivations.Analysis.Names.RightHalfPlane.GaussianNamedPositiveLateLogSource
 import IPRADerivations.Analysis.Exponential.PositiveAxis.GaussianNamedPositiveLogarithmExponential
-import IPRADerivations.Analysis.Euler.VerticalBounds.GaussianEulerVerticalProjection
-import IPRADerivations.Analysis.Euler.VerticalBounds.GaussianEulerVerticalRealSamples
+import IPRADerivations.Analysis.Euler.VerticalBounds.Projections.GaussianEulerVerticalProjection
+import IPRADerivations.Analysis.Euler.VerticalBounds.Integrands.GaussianEulerVerticalRealSamples
 
 /-!
 # Positive logarithm of the retimed signed original negative Gamma

@@ -1,5 +1,5 @@
 import IPRADerivations.Analysis.Euler.PositiveAxis.LowerBounds.EtaToOne.GaussianEulerEtaToOneQuadratureBound
-import IPRADerivations.Analysis.Euler.VerticalBounds.GaussianEulerNamedLowerTail
+import IPRADerivations.Analysis.Euler.CompactExhaustion.Tails.GaussianEulerNamedLowerTail
 
 /-!
 # The actual original eta-to-one Euler compact name has radius A

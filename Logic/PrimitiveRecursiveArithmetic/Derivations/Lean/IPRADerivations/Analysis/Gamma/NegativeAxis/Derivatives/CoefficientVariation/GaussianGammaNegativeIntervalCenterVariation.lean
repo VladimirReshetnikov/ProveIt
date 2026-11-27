@@ -1,6 +1,6 @@
 import IPRADerivations.Analysis.Gamma.NegativeAxis.CriticalPoints.Chords.GaussianGammaNegativeIntervalChordRate
 import IPRADerivations.Analysis.Gamma.NegativeAxis.Values.GaussianGammaNegativeIntervalGammaSign
-import IPRADerivations.Analysis.Gamma.CriticalPoints.PositiveMinimum.GaussianGammaMinimumQuotientReadback
+import IPRADerivations.Analysis.Gamma.CriticalPoints.PositiveMinimum.Chords.GaussianGammaMinimumQuotientReadback
 import IPRADerivations.Analysis.Names.FiniteOperations.Sums.GaussianNamedAddRate
 
 /-!

@@ -1,6 +1,6 @@
 import IPRADerivations.Analysis.Stirling.Binet.Laplace.GaussianBinetLaplaceIntegrand
 import IPRADerivations.Analysis.Euler.Integration.Decay.Quadrature.GaussianEulerDecayQuadraturePrecision
-import IPRADerivations.Analysis.Euler.VerticalBounds.GaussianEulerVerticalIntegrandSquare
+import IPRADerivations.Analysis.Euler.VerticalBounds.Integrands.GaussianEulerVerticalIntegrandSquare
 
 /-!
 # Real decay of the actual Binet Laplace exponential

@@ -1,4 +1,4 @@
-import IPRADerivations.Analysis.Inequalities.PowerGap
+import IPRADerivations.Analysis.RationalArithmetic.Powers.PowerGap
 import IPRADerivations.Probability.Variance
 import IPRADerivations.Foundations.MixedRadix
 

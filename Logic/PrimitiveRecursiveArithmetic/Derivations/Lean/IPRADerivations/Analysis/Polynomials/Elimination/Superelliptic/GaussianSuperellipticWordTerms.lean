@@ -1,4 +1,4 @@
-import IPRADerivations.Analysis.Polynomials.Elimination.Superelliptic.GaussianSuperellipticMatrixLeading
+import IPRADerivations.Analysis.Polynomials.Elimination.Superelliptic.Matrices.GaussianSuperellipticMatrixLeading
 import IPRADerivations.Analysis.Polynomials.Elimination.Superelliptic.GaussianSuperellipticWordWeights
 import IPRADerivations.Analysis.Polynomials.Determinants.Coefficients.GaussianPolynomialDeterminantTermDegree
 

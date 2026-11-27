@@ -1,4 +1,4 @@
-import IPRADerivations.Analysis.Optimization.Convexity.RationalConvexSecants
+import IPRADerivations.Analysis.Optimization.Convexity.Secants.RationalConvexSecants
 import IPRADerivations.Analysis.Optimization.CubeInfimum.RationalCubeInfimumIntervals
 import IPRADerivations.Analysis.Geometry.Distances.GaussianEuclideanDistanceName
 

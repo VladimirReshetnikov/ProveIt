@@ -1,5 +1,5 @@
 import IPRADerivations.Analysis.Gamma.FunctionalEquations.Multiplication.ReferenceProduct.GaussianGammaGaussReferenceProduct
-import IPRADerivations.Analysis.Gamma.FunctionalEquations.Multiplication.ReferenceProduct.GaussianGammaGaussReflectionDomain
+import IPRADerivations.Analysis.Gamma.FunctionalEquations.Multiplication.ReferenceProduct.Reflection.GaussianGammaGaussReflectionDomain
 import IPRADerivations.Analysis.Gamma.Names.Input.GaussianGammaEncodingRescaling
 
 /-!

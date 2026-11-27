@@ -1,6 +1,6 @@
 import IPRADerivations.Analysis.Gamma.NegativeAxis.Logarithms.GaussianGammaNegativeIntervalLogAbsoluteProperness
 import IPRADerivations.Analysis.Gamma.NegativeAxis.Input.GaussianGammaNegativeIntervalNamedInput
-import IPRADerivations.Analysis.Optimization.Convexity.RationalMultiplicativeConvexity
+import IPRADerivations.Analysis.Optimization.Convexity.Secants.RationalMultiplicativeConvexity
 
 /-!
 # Rational input properness for negative Gamma and the critical point

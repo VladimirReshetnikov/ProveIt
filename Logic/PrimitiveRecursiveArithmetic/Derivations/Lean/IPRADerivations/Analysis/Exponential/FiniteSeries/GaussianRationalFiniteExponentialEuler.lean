@@ -1,4 +1,4 @@
-import IPRADerivations.Analysis.Inequalities.GaussianRationalFactorialEulerSums
+import IPRADerivations.Analysis.Exponential.Polynomials.GaussianRationalFactorialEulerSums
 import IPRADerivations.Analysis.Exponential.FiniteSeries.GaussianRationalExponentialProductCoefficients
 
 /-!

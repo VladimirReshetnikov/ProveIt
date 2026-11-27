@@ -1,5 +1,5 @@
 import IPRADerivations.Analysis.Logarithm.FiniteSeries.GaussianFiniteLogarithmDyadicTail
-import IPRADerivations.Analysis.Names.GaussianNameEquivalence
+import IPRADerivations.Analysis.Names.Arithmetic.GaussianNameEquivalence
 import IPRADerivations.Analysis.Gamma.EulerProducts.GammaLogarithmFactorBridge
 
 /-!

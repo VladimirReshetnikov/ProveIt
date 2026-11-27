@@ -1,4 +1,4 @@
-import IPRADerivations.Analysis.Euler.VerticalBounds.GaussianEulerVerticalNamedReference
+import IPRADerivations.Analysis.Euler.VerticalBounds.Projections.GaussianEulerVerticalNamedReference
 import IPRADerivations.Analysis.Gamma.Integrals.GaussianEulerVerticalGammaBound
 import IPRADerivations.Analysis.Gamma.Names.PositiveAxis.GaussianNamedGammaPositiveLower
 

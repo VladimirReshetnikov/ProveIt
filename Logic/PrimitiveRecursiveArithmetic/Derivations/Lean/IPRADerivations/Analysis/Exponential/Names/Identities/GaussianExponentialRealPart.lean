@@ -1,5 +1,5 @@
 import IPRADerivations.Analysis.Names.Arithmetic.GaussianNameConjugation
-import IPRADerivations.Analysis.Gamma.EulerProducts.Exponents.GaussianGammaFoldedApproximantBalance
+import IPRADerivations.Analysis.Gamma.EulerProducts.Exponents.Folded.GaussianGammaFoldedApproximantBalance
 import IPRADerivations.Analysis.RationalArithmetic.Scaling.GaussianRationalNaturalScale
 import IPRADerivations.Analysis.RationalArithmetic.Complex.GaussianPositiveRealArithmetic
 
