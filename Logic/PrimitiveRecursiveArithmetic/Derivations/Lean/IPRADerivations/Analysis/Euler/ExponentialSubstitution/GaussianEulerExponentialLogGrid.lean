@@ -51,11 +51,13 @@ ipra_subst source
 ipra_subst rowNumerator [observationCost]
 ipra_subst rowDenominator
 
-theorem image_row_at (i p z B N a C E : PTm n) : Γ ⊢[PRAAx]
-    inst2 imageBody i (imageData p z B N a C E) ≐ imageCell p z B (a*N+C*i) (E*N) C := by
+/-- The two logarithmic image grids read the same six cell coordinates. -/
+theorem image_cell_congr (f : PTm 6) (i p z B N a C E : PTm n) :
+    let y := imageData p z B N a C E
+    Γ ⊢[PRAAx] Syn.subst ![field0 y,fstT (field5 y),sndT (field5 y),
+      field2 y*field1 y+field3 y*i,field4 y*field1 y,field3 y] f ≐ Syn.subst ![p,z,B,a*N+C*i,E*N,C] f := by
   let x := GaussianEulerIntegrandName.fixedData z B
   let y := imageData p z B N a C E
-  let f : PTm 6 := imageCell (var 0) (var 1) (var 2) (var 3) (var 4) (var 5)
   let args : Fin 6 → PTm n := ![field0 y,fstT (field5 y),sndT (field5 y),field2 y*field1 y+field3 y*i,field4 y*field1 y,field3 y]
   let vals : Fin 6 → PTm n := ![p,z,B,a*N+C*i,E*N,C]
   have time := GaussianCompactRiemannName.field1_at (Γ := Γ) p N a C E x
@@ -72,14 +74,15 @@ theorem image_row_at (i p z B N a C E : PTm n) : Γ ⊢[PRAAx]
     · exact congrAdd (congrMul left time) (congrMul width (.eqRefl _))
     · exact congrMul den time
     · exact width
-  have first : Syn.subst args f = inst2 imageBody i y := by
-    simp only [f,GaussianEulerExponentialLogCell.subst_imageCell,Syn.subst_var,imageBody,inst2,subst_imageRow,
-      Matrix.cons_val_zero,Matrix.cons_val_one]
-    rfl
-  have second : Syn.subst vals f = imageCell p z B (a*N+C*i) (E*N) C := by
-    simp only [f,GaussianEulerExponentialLogCell.subst_imageCell,Syn.subst_var]
-    rfl
-  simpa only [first,second] using Prf.eqCongr f same
+  exact Prf.eqCongr f same
+
+theorem image_row_at (i p z B N a C E : PTm n) : Γ ⊢[PRAAx]
+    inst2 imageBody i (imageData p z B N a C E) ≐ imageCell p z B (a*N+C*i) (E*N) C := by
+  have read := image_cell_congr (Γ := Γ)
+    (imageCell (var 0) (var 1) (var 2) (var 3) (var 4) (var 5)) i p z B N a C E
+  simp only [GaussianEulerExponentialLogCell.subst_imageCell, Syn.subst_var] at read
+  simp only [imageBody, inst2, subst_imageRow]
+  exact read
 
 theorem uniform_cell_budget (p u N C T M : PTm n) (hu : Γ ⊢[PRAAx] le one u) (hn : Γ ⊢[PRAAx] le N u) : Γ ⊢[PRAAx]
     le (GaussianEulerExponentialLogCell.errorNumerator p u C T M*rowDenominator p N)

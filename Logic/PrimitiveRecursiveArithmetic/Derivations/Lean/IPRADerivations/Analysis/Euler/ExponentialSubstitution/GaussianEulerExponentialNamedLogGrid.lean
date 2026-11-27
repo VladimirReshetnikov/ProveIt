@@ -47,30 +47,11 @@ ipra_subst rowNumerator
 
 theorem image_row_at (i p z B N a C E : PTm n) : Γ ⊢[PRAAx]
     inst2 imageBody i (imageData p z B N a C E) ≐ imageCell p z B (a*N+C*i) (E*N) C := by
-  let x := GaussianEulerIntegrandName.fixedData z B
-  let y := imageData p z B N a C E
-  let f : PTm 6 := imageCell (var 0) (var 1) (var 2) (var 3) (var 4) (var 5)
-  let args : Fin 6 → PTm n := ![field0 y,fstT (field5 y),sndT (field5 y),field2 y*field1 y+field3 y*i,field4 y*field1 y,field3 y]
-  let vals : Fin 6 → PTm n := ![p,z,B,a*N+C*i,E*N,C]
-  have time := GaussianCompactRiemannName.field1_at (Γ := Γ) p N a C E x
-  have left := GaussianCompactRiemannName.field2_at (Γ := Γ) p N a C E x
-  have width := GaussianCompactRiemannName.field3_at (Γ := Γ) p N a C E x
-  have den := GaussianCompactRiemannName.field4_at (Γ := Γ) p N a C E x
-  have fixed := GaussianCompactRiemannName.field5_at (Γ := Γ) p N a C E x
-  have same : ∀ j, Γ ⊢[PRAAx] args j ≐ vals j := by
-    intro j
-    fin_cases j
-    · exact GaussianCompactRiemannName.field0_at p N a C E x
-    · exact fixed.fstE
-    · exact fixed.sndE
-    · exact congrAdd (congrMul left time) (congrMul width (.eqRefl _))
-    · exact congrMul den time
-    · exact width
-  have first : Syn.subst args f = inst2 imageBody i y := by
-    simp only [f,subst_imageCell,Syn.subst_var,imageBody,inst2,subst_imageRow,Matrix.cons_val_zero,Matrix.cons_val_one]
-    rfl
-  have second : Syn.subst vals f = imageCell p z B (a*N+C*i) (E*N) C := by simp only [f,subst_imageCell,Syn.subst_var]; rfl
-  simpa only [first,second] using Prf.eqCongr f same
+  have read := GaussianEulerExponentialLogGrid.image_cell_congr (Γ := Γ)
+    (imageCell (var 0) (var 1) (var 2) (var 3) (var 4) (var 5)) i p z B N a C E
+  simp only [subst_imageCell, Syn.subst_var] at read
+  simp only [imageBody, inst2, subst_imageRow]
+  exact read
 
 theorem row_domains (i N a C E T : PTm n) (ha : Γ ⊢[PRAAx] le one a) (hE : Γ ⊢[PRAAx] le one E)
     (hN : Γ ⊢[PRAAx] le one N) (hend : Γ ⊢[PRAAx] le (a+C) (E*T)) (hi : Γ ⊢[PRAAx] lt i N) : Γ ⊢[PRAAx]
