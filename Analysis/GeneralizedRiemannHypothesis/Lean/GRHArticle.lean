@@ -27,7 +27,9 @@ import GRHArticle.ProgressionFree.PolynomialRoughDensityBound
 import GRHArticle.ProgressionFree.PolynomialRoughParts
 import GRHArticle.ProgressionFree.PolynomialRoughReplacement
 import GRHArticle.ProgressionFree.PolynomialSearchCutoff
+import GRHArticle.ProgressionFree.PolynomialSmoothApproximation
 import GRHArticle.ProgressionFree.PolynomialSmoothCount
+import GRHArticle.ProgressionFree.PolynomialSmoothOptimization
 import GRHArticle.ProgressionFree.PolynomialSmoothSeries
 import GRHArticle.ProgressionFree.PolynomialSupremum
 import GRHArticle.ProgressionFree.Rankin

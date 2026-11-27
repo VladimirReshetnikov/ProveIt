@@ -67,6 +67,8 @@ For the distinct four-marker construction in `gpi:thm:explicit`, [ExplicitArithm
 
 For the explicit margins, [PolynomialIrreducibleDegrees.lean](GRHArticle/ProgressionFree/PolynomialIrreducibleDegrees.lean) proves the exact divisor recurrence for the counts of monic irreducibles by factoring the Frobenius polynomial. [PolynomialRoughDensityBound.lean](GRHArticle/ProgressionFree/PolynomialRoughDensityBound.lean) bounds the prime-weight sum by a harmonic number and proves $c_2>2^{-12}$. [PolynomialSearchCutoff.lean](GRHArticle/ProgressionFree/PolynomialSearchCutoff.lean) defines the article's upward-rounded budgets and proves all five displayed numerical bounds on $R_q^*$, including $R_2^*+13<2^{476}$. The concentration estimate is still needed to locate a positive coefficient within these bounds.
 
+[PolynomialSmoothOptimization.lean](GRHArticle/ProgressionFree/PolynomialSmoothOptimization.lean) computes the maximum size of a progression-free subset of the monic smooth degree ball. [PolynomialSmoothApproximation.lean](GRHArticle/ProgressionFree/PolynomialSmoothApproximation.lean) gives rational truncations of the article's upper approximation $U_T$, proves that they converge, and bounds the error explicitly in the number of enumerated primes, the field size and the truncation degree.
+
 ## RH and Dirichlet GRH input
 
 The article uses the five theorems in
