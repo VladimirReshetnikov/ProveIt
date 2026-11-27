@@ -93,8 +93,7 @@ theorem double_half_vector (N m a : PTm n) (hm : Γ ⊢[PRAAx] le one m) :
   apply sequence_equal doubleBody centerBody N (halfVector N m a) (pairT m a)
   refine .allI (.impI ?_)
   let Δ := lt (var 0) (Syn.shift N) :: Γ.map Fm.shift
-  have pos : Δ ⊢[PRAAx] le one (Syn.shift m) := by
-    simpa only [Fm.shift,subst_le,ConciseIPRA.PTm.subst_zero,ConciseIPRA.PTm.subst_succ,Syn.shift] using hm.shift.wk
+  have pos : Δ ⊢[PRAAx] le one (Syn.shift m) := (Order.shift_one_le hm).wk
   have e := (double_congr (half_lookup (Γ := Δ) (Syn.shift N) (Syn.shift m) (Syn.shift a) (var 0) Prf.hyp0)).eqTrans
     ((double_half_center _ _ pos).eqTrans (center_body_at _ _ _).eqSymm)
   simpa [Δ,doubleBody,inst2,Syn.shift] using e
@@ -252,7 +251,7 @@ theorem half_box_contains (N B j a : PTm n) (hj : Γ ⊢[PRAAx] lt j (length B))
   refine .allI (.impI ?_)
   let Δ := lt (var 0) (Syn.shift N) :: Γ.map Fm.shift
   have jbound : Δ ⊢[PRAAx] lt (Syn.shift j) (length (Syn.shift B)) := by
-    simpa only [Fm.shift,subst_lt,Foundations.SequenceComposition.subst_length,Syn.shift] using hj.shift.wk
+    simpa only [Foundations.SequenceComposition.subst_length, Syn.shift] using (Order.shift_lt hj).wk
   have member : Δ ⊢[PRAAx] cellInside (Syn.shift N) (Syn.shift B) (Syn.shift j) (Syn.shift a) := by
     simpa only [Fm.shift,subst_cellInside,Syn.shift] using hi.shift.wk
   have r := half_box_coordinate (Syn.shift N) (Syn.shift B) (Syn.shift j) (Syn.shift a) (var 0) jbound Prf.hyp0 member

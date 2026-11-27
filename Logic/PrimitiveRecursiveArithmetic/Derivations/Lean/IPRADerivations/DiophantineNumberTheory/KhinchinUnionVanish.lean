@@ -56,7 +56,7 @@ theorem union_vanish_lo (wb : PTm 2) {B K0 M R G α γ b0 L H : PTm n}
   refine .allI (.impI ?_)
   have hL0 : Γ.map Fm.shift ⊢[PRAAx] le (Syn.shift L * succ (Syn.shift b0))
       (fact (Syn.shift R) * Syn.shift G * Syn.shift α) := by
-    simpa [Fm.shift, Syn.shift] using hL.shift
+    simpa [Syn.shift] using Order.shift_le hL
   have z := block_out wb (c := var 0) hL0.wk (hH_shift wb hH).wk (.orI₁ Prf.hyp0)
   rw [show Syn.shift (pairT B (Xt K0 M R G α γ b0)) = pairT (Syn.shift B)
       (Xt (Syn.shift K0) (Syn.shift M) (Syn.shift R) (Syn.shift G) (Syn.shift α) (Syn.shift γ) (Syn.shift b0)) by
@@ -78,7 +78,7 @@ theorem union_vanish_hi (wb : PTm 2) {B K0 M R G α γ b0 L H N : PTm n}
   refine .allI (.impI ?_)
   have hL0 : Γ.map Fm.shift ⊢[PRAAx] le (Syn.shift L * succ (Syn.shift b0))
       (fact (Syn.shift R) * Syn.shift G * Syn.shift α) := by
-    simpa [Fm.shift, Syn.shift] using hL.shift
+    simpa [Syn.shift] using Order.shift_le hL
   have hc : (lt (var 0) (Syn.shift N) :: Γ.map Fm.shift) ⊢[PRAAx]
       lt (Syn.shift H + var 0) (Syn.shift L) ⋎ le (Syn.shift H) (Syn.shift H + var 0) :=
     .orI₂ (by ipra_le 𝔞 (var 0))

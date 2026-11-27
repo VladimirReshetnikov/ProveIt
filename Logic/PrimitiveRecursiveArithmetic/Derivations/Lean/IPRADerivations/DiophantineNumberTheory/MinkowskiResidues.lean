@@ -79,8 +79,7 @@ theorem color_range (N m a : PTm n) (hm : Γ ⊢[PRAAx] le one m) :
   have all : Γ ⊢[PRAAx] .all (lt (color (var 0) (Syn.shift m) (Syn.shift a)) (pw (Syn.shift m) (var 0))) := by
     ipra_qfind (lt_QF _ _) [subst_lt, subst_color, subst_ap2]
     · exact lt_congr (color_zero m a).eqSymm (pw_zero m).eqSymm (zero_lt_succ zero)
-    · have positive : Γ.map Fm.shift ⊢[PRAAx] le one (Syn.shift m) := by
-        simpa only [Fm.shift, subst_le, ConciseIPRA.PTm.subst_succ, ConciseIPRA.PTm.subst_zero, Syn.shift] using hm.shift
+    · have positive : Γ.map Fm.shift ⊢[PRAAx] le one (Syn.shift m) := Order.shift_one_le hm
       exact lt_congr (color_succ _ _ _).eqSymm (pw_succ _ _).eqSymm
         (range_step Prf.hyp0 (digit_bound _ _ _ positive.wk))
   simpa only [subst_lt, subst_color, subst_ap2, Syn.subst_var, Syn.inst_zero, Syn.subst_inst_shift] using Prf.allE N all
@@ -127,8 +126,7 @@ theorem coordinate_injective (N m a b k : PTm n) (hm : Γ ⊢[PRAAx] le one m)
         (digit (Syn.shift a) (Syn.shift k) (Syn.shift m) ≐ digit (Syn.shift b) (Syn.shift k) (Syn.shift m))) := by
     ipra_qfind (⟨lt_QF _ _, ⟨trivial,trivial⟩⟩) [subst_lt, subst_color, subst_digit]
     · exact .impI (lt_zero_absurd _ Prf.hyp0)
-    · have positive : Γ.map Fm.shift ⊢[PRAAx] le one (Syn.shift m) := by
-        simpa only [Fm.shift, subst_le, ConciseIPRA.PTm.subst_succ, ConciseIPRA.PTm.subst_zero, Syn.shift] using hm.shift
+    · have positive : Γ.map Fm.shift ⊢[PRAAx] le one (Syn.shift m) := Order.shift_one_le hm
       exact coordinate_step _ _ _ _ _ positive.wk Prf.hyp0
   have contract : Γ ⊢[PRAAx] lt k N ⟶ (color N m a ≐ color N m b) ⟶ (digit a k m ≐ digit b k m) := by
     simpa only [Fm.subst_imp, Fm.subst_eq, subst_lt, subst_color, subst_digit, Syn.subst_var,
@@ -142,8 +140,7 @@ def sameResidues (N m a b : PTm n) : Fm PTm n :=
 theorem collision_residues (N m a b : PTm n) (hm : Γ ⊢[PRAAx] le one m)
     (h : Γ ⊢[PRAAx] color N m a ≐ color N m b) : Γ ⊢[PRAAx] sameResidues N m a b := by
   refine .allI (.impI ?_)
-  have positive : Γ.map Fm.shift ⊢[PRAAx] le one (Syn.shift m) := by
-    simpa only [Fm.shift, subst_le, ConciseIPRA.PTm.subst_succ, ConciseIPRA.PTm.subst_zero, Syn.shift] using hm.shift
+  have positive : Γ.map Fm.shift ⊢[PRAAx] le one (Syn.shift m) := Order.shift_one_le hm
   have eq : Γ.map Fm.shift ⊢[PRAAx] color (Syn.shift N) (Syn.shift m) (Syn.shift a) ≐ color (Syn.shift N) (Syn.shift m) (Syn.shift b) := by
     simpa only [Fm.shift, Fm.subst_eq, subst_color, Syn.shift] using h.shift
   exact coordinate_injective _ _ _ _ _ positive.wk Prf.hyp0 eq.wk
