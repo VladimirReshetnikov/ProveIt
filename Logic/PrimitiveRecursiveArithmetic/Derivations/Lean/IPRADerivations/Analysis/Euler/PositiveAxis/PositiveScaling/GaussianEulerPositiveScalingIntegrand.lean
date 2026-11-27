@@ -102,42 +102,19 @@ ipra_subst fixedData
 ipra_subst evaluatorTerm
 ipra_subst sample
 
-private theorem damped_data_congr (z B a b c d z' B' a' b' c' d' : PTm n)
-    (hz : Γ ⊢[PRAAx] z ≐ z') (hB : Γ ⊢[PRAAx] B ≐ B') (ha : Γ ⊢[PRAAx] a ≐ a')
-    (hb : Γ ⊢[PRAAx] b ≐ b') (hc : Γ ⊢[PRAAx] c ≐ c') (hd : Γ ⊢[PRAAx] d ≐ d') : Γ ⊢[PRAAx]
-    dampedData z B a b c d ≐ dampedData z' B' a' b' c' d' := by
-  have e1 : Γ ⊢[PRAAx] dampedData z B a b c d ≐ dampedData z' B a b c d := by
-    simpa only [subst_dampedData,Syn.subst_var,Syn.inst_zero,Syn.subst_inst_shift] using
-      Prf.eqCongr1 (dampedData (var 0) (Syn.shift B) (Syn.shift a) (Syn.shift b) (Syn.shift c) (Syn.shift d)) hz
-  have e2 : Γ ⊢[PRAAx] dampedData z' B a b c d ≐ dampedData z' B' a b c d := by
-    simpa only [subst_dampedData,Syn.subst_var,Syn.inst_zero,Syn.subst_inst_shift] using
-      Prf.eqCongr1 (dampedData (Syn.shift z') (var 0) (Syn.shift a) (Syn.shift b) (Syn.shift c) (Syn.shift d)) hB
-  have e3 : Γ ⊢[PRAAx] dampedData z' B' a b c d ≐ dampedData z' B' a' b c d := by
-    simpa only [subst_dampedData,Syn.subst_var,Syn.inst_zero,Syn.subst_inst_shift] using
-      Prf.eqCongr1 (dampedData (Syn.shift z') (Syn.shift B') (var 0) (Syn.shift b) (Syn.shift c) (Syn.shift d)) ha
-  have e4 : Γ ⊢[PRAAx] dampedData z' B' a' b c d ≐ dampedData z' B' a' b' c d := by
-    simpa only [subst_dampedData,Syn.subst_var,Syn.inst_zero,Syn.subst_inst_shift] using
-      Prf.eqCongr1 (dampedData (Syn.shift z') (Syn.shift B') (Syn.shift a') (var 0) (Syn.shift c) (Syn.shift d)) hb
-  have e5 : Γ ⊢[PRAAx] dampedData z' B' a' b' c d ≐ dampedData z' B' a' b' c' d := by
-    simpa only [subst_dampedData,Syn.subst_var,Syn.inst_zero,Syn.subst_inst_shift] using
-      Prf.eqCongr1 (dampedData (Syn.shift z') (Syn.shift B') (Syn.shift a') (Syn.shift b') (var 0) (Syn.shift d)) hc
-  have e6 : Γ ⊢[PRAAx] dampedData z' B' a' b' c' d ≐ dampedData z' B' a' b' c' d' := by
-    simpa only [subst_dampedData,Syn.subst_var,Syn.inst_zero,Syn.subst_inst_shift] using
-      Prf.eqCongr1 (dampedData (Syn.shift z') (Syn.shift B') (Syn.shift a') (Syn.shift b') (Syn.shift c') (var 0)) hd
-  exact e1.eqTrans (e2.eqTrans (e3.eqTrans (e4.eqTrans (e5.eqTrans e6))))
-
 theorem evaluator_at (p t x : PTm n) : Γ ⊢[PRAAx] ap3 evaluatorF p t x ≐ evaluatorTerm p t x := by
   simpa [evaluatorF,ap3] using toPR_eq (Γ := Γ) (evaluatorTerm (var 0) (var 1) (var 2) : PTm 3) ![p,t,x]
 
 theorem sample_at (p z B a b c d : PTm n) : Γ ⊢[PRAAx]
     sample p z B a b c d ≐ ap2 dampedF p (dampedData z B a b c d) := by
-  have left := fst_pair (Γ := Γ) (pairT z B) (pairT c d)
-  have right := snd_pair (Γ := Γ) (pairT z B) (pairT c d)
-  exact (evaluator_at p (pairT a b) (fixedData z B c d)).eqTrans
-    (congrAp2 dampedF (.eqRefl _) (damped_data_congr _ _ _ _ _ _ _ _ _ _ _ _
-      left.fstE left.sndE
-      (fst_pair _ _) (snd_pair _ _)
-      right.fstE right.sndE))
+  have read := toPR_pairVector3_eq (Γ := Γ)
+    (ap2 dampedF (var 0)
+      (dampedData (fstT (var 2)) (sndT (var 2)) (fstT (var 1)) (sndT (var 1))
+        (fstT (var 3)) (sndT (var 3))) : PTm 4) p (pairT a b) ![pairT z B, pairT c d]
+  simp only [subst_ap2, subst_dampedData, subst_fstT, subst_sndT, Syn.subst_var] at read
+  refine read.eqTrans (congrAp2 dampedF (.eqRefl p) ?_)
+  ipra_congr (dampedData (var 0) (var 1) (var 2) (var 3) (var 4) (var 5) : PTm 6) with
+    [fst_pair z B, snd_pair z B, fst_pair a b, snd_pair a b, fst_pair c d, snd_pair c d]
 
 theorem product_evaluator_readback (p z B a b c d : PTm n) : Γ ⊢[PRAAx]
     ap2 productF p (productData z B a b c d) ≐

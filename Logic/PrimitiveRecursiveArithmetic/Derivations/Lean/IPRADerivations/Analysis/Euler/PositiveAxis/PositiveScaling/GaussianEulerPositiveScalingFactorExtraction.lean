@@ -48,40 +48,15 @@ ipra_subst costTerm
 ipra_subst costData
 ipra_subst maximumCost
 
-private theorem cost_congr (z B a b c d z' B' a' b' c' d' : PTm n)
-    (hz : Γ ⊢[PRAAx] z ≐ z') (hB : Γ ⊢[PRAAx] B ≐ B') (ha : Γ ⊢[PRAAx] a ≐ a')
-    (hb : Γ ⊢[PRAAx] b ≐ b') (hc : Γ ⊢[PRAAx] c ≐ c') (hd : Γ ⊢[PRAAx] d ≐ d') : Γ ⊢[PRAAx]
-    rowCost z B a b c d ≐ rowCost z' B' a' b' c' d' := by
-  have e1 : Γ ⊢[PRAAx] rowCost z B a b c d ≐ rowCost z' B a b c d := by
-    simpa only [subst_rowCost,Syn.subst_var,Syn.inst_zero,Syn.subst_inst_shift] using
-      Prf.eqCongr1 (rowCost (var 0) (Syn.shift B) (Syn.shift a) (Syn.shift b) (Syn.shift c) (Syn.shift d)) hz
-  have e2 : Γ ⊢[PRAAx] rowCost z' B a b c d ≐ rowCost z' B' a b c d := by
-    simpa only [subst_rowCost,Syn.subst_var,Syn.inst_zero,Syn.subst_inst_shift] using
-      Prf.eqCongr1 (rowCost (Syn.shift z') (var 0) (Syn.shift a) (Syn.shift b) (Syn.shift c) (Syn.shift d)) hB
-  have e3 : Γ ⊢[PRAAx] rowCost z' B' a b c d ≐ rowCost z' B' a' b c d := by
-    simpa only [subst_rowCost,Syn.subst_var,Syn.inst_zero,Syn.subst_inst_shift] using
-      Prf.eqCongr1 (rowCost (Syn.shift z') (Syn.shift B') (var 0) (Syn.shift b) (Syn.shift c) (Syn.shift d)) ha
-  have e4 : Γ ⊢[PRAAx] rowCost z' B' a' b c d ≐ rowCost z' B' a' b' c d := by
-    simpa only [subst_rowCost,Syn.subst_var,Syn.inst_zero,Syn.subst_inst_shift] using
-      Prf.eqCongr1 (rowCost (Syn.shift z') (Syn.shift B') (Syn.shift a') (var 0) (Syn.shift c) (Syn.shift d)) hb
-  have e5 : Γ ⊢[PRAAx] rowCost z' B' a' b' c d ≐ rowCost z' B' a' b' c' d := by
-    simpa only [subst_rowCost,Syn.subst_var,Syn.inst_zero,Syn.subst_inst_shift] using
-      Prf.eqCongr1 (rowCost (Syn.shift z') (Syn.shift B') (Syn.shift a') (Syn.shift b') (var 0) (Syn.shift d)) hc
-  have e6 : Γ ⊢[PRAAx] rowCost z' B' a' b' c' d ≐ rowCost z' B' a' b' c' d' := by
-    simpa only [subst_rowCost,Syn.subst_var,Syn.inst_zero,Syn.subst_inst_shift] using
-      Prf.eqCongr1 (rowCost (Syn.shift z') (Syn.shift B') (Syn.shift a') (Syn.shift b') (Syn.shift c') (var 0)) hd
-  exact e1.eqTrans (e2.eqTrans (e3.eqTrans (e4.eqTrans (e5.eqTrans e6))))
-
 theorem cost_at (p z B a b c d : PTm n) : Γ ⊢[PRAAx]
     ap3 costF p (pairT a b) (fixedData z B c d) ≐ rowCost z B a b c d := by
-  have program : Γ ⊢[PRAAx] ap3 costF p (pairT a b) (fixedData z B c d) ≐ costTerm p (pairT a b) (fixedData z B c d) := by
-    simpa [costF,ap3] using toPR_eq (Γ := Γ) (costTerm (var 0) (var 1) (var 2) : PTm 3) ![p,pairT a b,fixedData z B c d]
-  have left := fst_pair (Γ := Γ) (pairT z B) (pairT c d)
-  have right := snd_pair (Γ := Γ) (pairT z B) (pairT c d)
-  exact program.eqTrans (cost_congr _ _ _ _ _ _ _ _ _ _ _ _
-    left.fstE left.sndE
-    (fst_pair _ _) (snd_pair _ _)
-    right.fstE right.sndE)
+  have read := toPR_pairVector3_eq (Γ := Γ)
+    (rowCost (fstT (var 2)) (sndT (var 2)) (fstT (var 1)) (sndT (var 1))
+        (fstT (var 3)) (sndT (var 3)) : PTm 4) p (pairT a b) ![pairT z B, pairT c d]
+  simp only [subst_rowCost, subst_fstT, subst_sndT, Syn.subst_var] at read
+  refine read.eqTrans ?_
+  ipra_congr (rowCost (var 0) (var 1) (var 2) (var 3) (var 4) (var 5) : PTm 6) with
+    [fst_pair z B, snd_pair z B, fst_pair a b, snd_pair a b, fst_pair c d, snd_pair c d]
 
 theorem row_cost_at (i N z B a C E c d : PTm n) : Γ ⊢[PRAAx]
     inst2 (sampleBody costF) i (costData N z B a C E c d) ≐ rowCost z B (a*N+C*i) (E*N) c d :=
