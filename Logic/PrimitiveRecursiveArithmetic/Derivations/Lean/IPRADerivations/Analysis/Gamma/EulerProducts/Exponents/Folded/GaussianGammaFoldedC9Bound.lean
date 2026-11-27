@@ -19,7 +19,7 @@ set_option linter.unusedSimpArgs false
 namespace LeanProofs.IPRA.Analysis.GaussianGammaFoldedC9Bound
 
 open_ipra
-open GaussianGammaFoldedMajorantExponent (input majorant majorantF majorantData correctedF correctedData)
+open GaussianGammaFoldedMajorantExponent (input majorant majorantF majorantData correctedF correctedData envelope_of_sample_bound)
 open GaussianGammaFiniteApproximantName (pF pData p_regular)
 open GaussianGammaCanonicalExponent (constantF constant_regular exponentF exponentialF exponentData exponentialData)
 open GaussianNameArithmetic (multiplyF multiplyData multiply_fast)
@@ -149,16 +149,12 @@ theorem original_P_observation_bound (p z R B N : PTm n) (h : Γ ⊢[PRAAx] inpu
 
 theorem original_P_envelope (z R B N : PTm n) (h : Γ ⊢[PRAAx] input z R B N) : Γ ⊢[PRAAx]
     GaussianFastValueCut.rawEnvelope pF (pData z B N) (majorant R) one two := by
-  refine .allI ?_
+  apply envelope_of_sample_bound
   have hs : Γ.map Fm.shift ⊢[PRAAx] input (Syn.shift z) (Syn.shift R) (Syn.shift B) (Syn.shift N) := by
     simpa [Fm.shift,Syn.shift] using h.shift
-  simpa only [GaussianFastValueCut.rawEnvelope,Syn.shift,subst_pData,
-    GaussianGammaFoldedMajorantExponent.subst_majorant,PTm.subst_mul,ConciseIPRA.PTm.subst_succ,
-    ConciseIPRA.PTm.subst_zero] using
-    GaussianRationalReciprocal.bound_congr (.eqRefl _) (show Γ.map Fm.shift ⊢[PRAAx]
-      majorant (Syn.shift R)*unit (var 0)+two ≐ majorant (Syn.shift R)*unit (var 0)+two*one by ipra_ring)
-      (show Γ.map Fm.shift ⊢[PRAAx] unit (var 0) ≐ one*unit (var 0) by ipra_ring)
-      (original_P_observation_bound (var 0) (Syn.shift z) (Syn.shift R) (Syn.shift B) (Syn.shift N) hs)
+  simpa only [Syn.shift,subst_pData,GaussianGammaFoldedMajorantExponent.subst_majorant,
+    PTm.subst_mul,ConciseIPRA.PTm.subst_succ,ConciseIPRA.PTm.subst_zero] using
+    original_P_observation_bound (var 0) (Syn.shift z) (Syn.shift R) (Syn.shift B) (Syn.shift N) hs
 
 theorem actual_withdrawal_original_P_closed : ([] : List (Fm PTm 0)) ⊢[PRAAx] univ 4
     (input (var 0) (var 1) (var 2) (var 3) ⟶ crossEquivalent withdrawalF pF

@@ -94,16 +94,23 @@ theorem combined_regular (z R B N : PTm n) (h : Γ ⊢[PRAAx] input z R B N) :
   GaussianNameArithmetic.add_fast _ _ _ _ (GaussianGammaCanonicalExponent.exponent_regular z R B h.andE₁)
     (GaussianNameRingLaws.negative_fast _ _ (GaussianGammaCanonicalTailName.name_regular z R B N (tail_source z R B N h)))
 
-theorem combined_point_bound (p z R B N : PTm n) (h : Γ ⊢[PRAAx] input z R B N) :
-    Γ ⊢[PRAAx] bounded (combinedPoint p z R B N) (numericalRadius R*unit p+one) (unit p) := by
+/-- The scheduled sum of an exponent observation and the negative canonical
+tail fits the sharp folded disk when the exponent meets its half-unit budget. -/
+theorem combined_point_bound_of_exponent (f : PR 2) (p x z R B N : PTm n)
+    (ht : Γ ⊢[PRAAx] GaussianGammaCanonicalTailName.source z R B N)
+    (hexponent : Γ ⊢[PRAAx] bounded (ap2 f (addPrecision p) x)
+      (((one+two*R)*R)*(two*unit p)+(R*unit p+one)) (two*unit p)) :
+    Γ ⊢[PRAAx] bounded
+      (ap2 (GaussianNameArithmetic.addF f (negativeF GaussianGammaCanonicalTailName.pointF)) p
+        (GaussianNameArithmetic.addData x (negativeData (GaussianGammaCanonicalTailName.data z R B N))))
+      (numericalRadius R*unit p+one) (unit p) := by
   let s := addPrecision p
   let t := GaussianFastValueCut.exponent (one+one) s
   let D := two*unit p
   have dp : Γ ⊢[PRAAx] le one D := positive_product _ _ (le_succ_self one) (unit_positive p)
   have ps : Γ ⊢[PRAAx] le p s := le_add_right _ _
   have pt : Γ ⊢[PRAAx] le p t := le_trans ps (le_add_right _ _)
-  have en := later_exponent_bound p s z R B h.andE₁ ps
-  have tn := later_tail_half_bound p t z R B N (tail_source z R B N h) pt
+  have tn := later_tail_half_bound p t z R B N ht pt
   have rawNegative := GaussianRationalReciprocal.bounded_difference qzero (GaussianGammaCanonicalTailName.point t z R B N)
     zero one (R*unit p+one) D (le_refl _) dp
     (GaussianMonicResidualRadius.zero_bounded zero one (le_refl _)) tn
@@ -113,27 +120,39 @@ theorem combined_point_bound (p z R B N : PTm n) (h : Γ ⊢[PRAAx] input z R B 
     bound_congr (GaussianNameRingLaws.negative_at GaussianGammaCanonicalTailName.pointF _ s).eqSymm (.eqRefl _) (.eqRefl _)
       ((GaussianFastValueCut.recode_bound_iff _ _ _ dp).iffMpr
         (bound_congr (.eqRefl _) (by ipra_ring) (by ipra_ring) rawNegative))
-  have sum := GaussianRationalPowerDifference.bounded_sum_same _ _ _ _ _ dp en negativeBound
+  have sum := GaussianRationalPowerDifference.bounded_sum_same _ _ _ _ _ dp hexponent negativeBound
   have normalized := (GaussianFastValueCut.recode_bound_iff _ _ _ dp).iffMpr sum
   have actual := bound_congr
-    (GaussianNameArithmetic.add_at exponentF (negativeF GaussianGammaCanonicalTailName.pointF)
-      (exponentData z R B) (negativeData (GaussianGammaCanonicalTailName.data z R B N)) p).eqSymm
+    (GaussianNameArithmetic.add_at f (negativeF GaussianGammaCanonicalTailName.pointF)
+      x (negativeData (GaussianGammaCanonicalTailName.data z R B N)) p).eqSymm
     (.eqRefl _) (.eqRefl _) normalized
   exact GaussianCoefficientNameBounds.bounded_radius_mono _ _ _ _ _ dp (unit_positive p)
     (le_of_eq_add (d := zero) (by unfold D numericalRadius; ipra_ring)) actual
 
+theorem combined_point_bound (p z R B N : PTm n) (h : Γ ⊢[PRAAx] input z R B N) :
+    Γ ⊢[PRAAx] bounded (combinedPoint p z R B N) (numericalRadius R*unit p+one) (unit p) :=
+  combined_point_bound_of_exponent exponentF p (exponentData z R B) z R B N
+    (tail_source z R B N h) (later_exponent_bound p (addPrecision p) z R B h.andE₁ (le_add_right _ _))
+
+/-- Package pointwise dyadic slack as a unit-denominator envelope. -/
+theorem envelope_of_sample_bound (f : PR 2) (x A K : PTm n)
+    (h : Γ.map Fm.shift ⊢[PRAAx] bounded (ap2 f (var 0) (Syn.shift x))
+      (Syn.shift A*unit (var 0)+Syn.shift K) (unit (var 0))) :
+    Γ ⊢[PRAAx] rawEnvelope f x A one K := by
+  refine .allI ?_
+  simpa only [Syn.shift,ConciseIPRA.PTm.subst_succ,ConciseIPRA.PTm.subst_zero] using
+    bound_congr (.eqRefl _) (show Γ.map Fm.shift ⊢[PRAAx]
+      Syn.shift A*unit (var 0)+Syn.shift K ≐ Syn.shift A*unit (var 0)+Syn.shift K*one by ipra_ring)
+      (show Γ.map Fm.shift ⊢[PRAAx] unit (var 0) ≐ one*unit (var 0) by ipra_ring) h
+
 theorem combined_envelope (z R B N : PTm n) (h : Γ ⊢[PRAAx] input z R B N) :
     Γ ⊢[PRAAx] rawEnvelope combinedF (combinedData z R B N) (numericalRadius R) one one := by
-  refine .allI ?_
+  apply envelope_of_sample_bound
   have hs : Γ.map Fm.shift ⊢[PRAAx] input (Syn.shift z) (Syn.shift R) (Syn.shift B) (Syn.shift N) := by
     simpa [Fm.shift,Syn.shift] using h.shift
-  simpa only [rawEnvelope,combinedPoint,Syn.shift,subst_combinedData,
-    GaussianGammaCanonicalExponentBound.subst_numericalRadius,PTm.subst_mul,
+  simpa only [combinedPoint,Syn.shift,subst_combinedData,GaussianGammaCanonicalExponentBound.subst_numericalRadius,
     ConciseIPRA.PTm.subst_succ,ConciseIPRA.PTm.subst_zero] using
-    bound_congr (.eqRefl _) (show Γ.map Fm.shift ⊢[PRAAx]
-      numericalRadius (Syn.shift R)*unit (var 0)+one ≐ numericalRadius (Syn.shift R)*unit (var 0)+one*one by ipra_ring)
-      (show Γ.map Fm.shift ⊢[PRAAx] unit (var 0) ≐ one*unit (var 0) by ipra_ring)
-      (combined_point_bound (var 0) (Syn.shift z) (Syn.shift R) (Syn.shift B) (Syn.shift N) hs)
+    combined_point_bound (var 0) (Syn.shift z) (Syn.shift R) (Syn.shift B) (Syn.shift N) hs
 
 def correctedF : PR 2 := GaussianExactDiskShrinking.nameF combinedF
 def correctedData (z R B N : PTm n) : PTm n := GaussianExactDiskShrinking.data (combinedData z R B N) (numericalRadius R) one one
@@ -148,14 +167,23 @@ theorem corrected_cross (z R B N : PTm n) (h : Γ ⊢[PRAAx] input z R B N) : Γ
 theorem corrected_point_bound (p z R B N : PTm n) (h : Γ ⊢[PRAAx] input z R B N) :
     Γ ⊢[PRAAx] bounded (ap2 correctedF p (correctedData z R B N)) (numericalRadius R) one :=
   GaussianExactDiskShrinking.sample_bound _ p _ _ _ _ (le_refl _) (combined_envelope z R B N h)
+/-- A regular exponent inside the one-unit envelope gives an exact
+disk input for the original exponential evaluator after correction. -/
+theorem corrected_exponential_input_of_envelope (f : PR 2) (x A : PTm n)
+    (hreg : Γ ⊢[PRAAx] pointCN f x) (henv : Γ ⊢[PRAAx] rawEnvelope f x A one one) :
+    Γ ⊢[PRAAx] GaussianRadiusExponentialName.input (GaussianExactDiskShrinking.nameF f) A
+      (GaussianExactDiskShrinking.data x A one one) := by
+  refine .andI (GaussianExactDiskShrinking.name_regular _ _ _ _ _ (le_refl _) hreg henv) (.allI ?_)
+  have hs : Γ.map Fm.shift ⊢[PRAAx] rawEnvelope f (Syn.shift x) (Syn.shift A) one one := by
+    simpa [Fm.shift,Syn.shift] using henv.shift
+  simpa only [GaussianExactDiskShrinking.sample,Syn.shift,GaussianExactDiskShrinking.subst_data,
+    ConciseIPRA.PTm.subst_succ,ConciseIPRA.PTm.subst_zero] using
+    GaussianExactDiskShrinking.sample_bound f (var 0) (Syn.shift x) (Syn.shift A) one one (le_refl _) hs
+
 theorem corrected_exponential_input (z R B N : PTm n) (h : Γ ⊢[PRAAx] input z R B N) :
-    Γ ⊢[PRAAx] GaussianRadiusExponentialName.input correctedF (numericalRadius R) (correctedData z R B N) := by
-  refine .andI (corrected_regular z R B N h) (.allI ?_)
-  have hs : Γ.map Fm.shift ⊢[PRAAx] input (Syn.shift z) (Syn.shift R) (Syn.shift B) (Syn.shift N) := by
-    simpa [Fm.shift,Syn.shift] using h.shift
-  simpa only [GaussianRadiusExponentialName.boundedSamples,Syn.shift,subst_correctedData,
-    GaussianGammaCanonicalExponentBound.subst_numericalRadius] using
-    corrected_point_bound (var 0) (Syn.shift z) (Syn.shift R) (Syn.shift B) (Syn.shift N) hs
+    Γ ⊢[PRAAx] GaussianRadiusExponentialName.input correctedF (numericalRadius R) (correctedData z R B N) :=
+  corrected_exponential_input_of_envelope combinedF (combinedData z R B N) (numericalRadius R)
+    (combined_regular z R B N h) (combined_envelope z R B N h)
 
 theorem corrected_finite_exponential_bound (p K z R B N : PTm n) (h : Γ ⊢[PRAAx] input z R B N) : Γ ⊢[PRAAx]
     bounded (GaussianRationalPolynomialExponential.scalarSum (ap2 correctedF p (correctedData z R B N)) K)

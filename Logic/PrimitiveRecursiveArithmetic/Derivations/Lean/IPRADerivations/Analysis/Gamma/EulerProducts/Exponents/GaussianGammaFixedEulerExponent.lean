@@ -18,12 +18,13 @@ set_option linter.unusedSimpArgs false
 namespace LeanProofs.IPRA.Analysis.GaussianGammaFixedEulerExponent
 
 open_ipra
-open GaussianRationalHorner (positive_product qzero ofGaussian)
+open GaussianRationalHorner (positive_product ofGaussian)
 open GaussianRationalMetric (bounded qnegative)
 open GaussianRationalReciprocal (bound_congr bounded_sum bounded_product bounded_negative)
 open GaussianGammaCanonicalExponent (source constantF constant_regular constant_at harmonicPoint addPrecision)
 open GaussianGammaLogHarmonicName (fixedF fixed_regular)
-open GaussianGammaFoldedMajorantExponent (input tail_source later_tail_half_bound)
+open GaussianGammaFoldedMajorantExponent (input tail_source later_tail_half_bound
+  combined_point_bound_of_exponent envelope_of_sample_bound corrected_exponential_input_of_envelope)
 open GaussianGammaCanonicalExponentBound (numericalRadius harmonic_point_bound numerator_range scalar_representation_bound)
 open GaussianNameRingLaws (negativeF negativeData)
 open GaussianCoefficientNameBounds (unit unit_positive)
@@ -115,45 +116,18 @@ theorem combined_regular (z R B N : PTm n) (h : Γ ⊢[PRAAx] input z R B N) :
     (GaussianNameRingLaws.negative_fast _ _ (GaussianGammaCanonicalTailName.name_regular z R B N (tail_source z R B N h)))
 
 theorem combined_point_bound (p z R B N : PTm n) (h : Γ ⊢[PRAAx] input z R B N) :
-    Γ ⊢[PRAAx] bounded (combinedPoint p z R B N) (numericalRadius R*unit p+one) (unit p) := by
-  let s := addPrecision p
-  let t := GaussianFastValueCut.exponent (one+one) s
-  let D := two*unit p
-  have dp : Γ ⊢[PRAAx] le one D := positive_product _ _ (le_succ_self one) (unit_positive p)
-  have ps : Γ ⊢[PRAAx] le p s := le_add_right _ _
-  have pt : Γ ⊢[PRAAx] le p t := le_trans ps (le_add_right _ _)
-  have en := later_exponent_bound p s z R B N h ps
-  have tn := later_tail_half_bound p t z R B N (tail_source z R B N h) pt
-  have rawNegative := GaussianRationalReciprocal.bounded_difference qzero (GaussianGammaCanonicalTailName.point t z R B N)
-    zero one (R*unit p+one) D (le_refl _) dp
-    (GaussianMonicResidualRadius.zero_bounded zero one (le_refl _)) tn
-  have negativeBound : Γ ⊢[PRAAx] bounded
-      (ap2 (negativeF GaussianGammaCanonicalTailName.pointF) s (negativeData (GaussianGammaCanonicalTailName.data z R B N)))
-      (R*unit p+one) D :=
-    bound_congr (GaussianNameRingLaws.negative_at GaussianGammaCanonicalTailName.pointF _ s).eqSymm (.eqRefl _) (.eqRefl _)
-      ((GaussianFastValueCut.recode_bound_iff _ _ _ dp).iffMpr
-        (bound_congr (.eqRefl _) (by ipra_ring) (by ipra_ring) rawNegative))
-  have sum := GaussianRationalPowerDifference.bounded_sum_same _ _ _ _ _ dp en negativeBound
-  have normalized := (GaussianFastValueCut.recode_bound_iff _ _ _ dp).iffMpr sum
-  have actual := bound_congr
-    (GaussianNameArithmetic.add_at exponentF (negativeF GaussianGammaCanonicalTailName.pointF)
-      (exponentData z R B N) (negativeData (GaussianGammaCanonicalTailName.data z R B N)) p).eqSymm
-    (.eqRefl _) (.eqRefl _) normalized
-  exact GaussianCoefficientNameBounds.bounded_radius_mono _ _ _ _ _ dp (unit_positive p)
-    (le_of_eq_add (d := zero) (by unfold D numericalRadius; ipra_ring)) actual
+    Γ ⊢[PRAAx] bounded (combinedPoint p z R B N) (numericalRadius R*unit p+one) (unit p) :=
+  combined_point_bound_of_exponent exponentF p (exponentData z R B N) z R B N
+    (tail_source z R B N h) (later_exponent_bound p (addPrecision p) z R B N h (le_add_right _ _))
 
 theorem combined_envelope (z R B N : PTm n) (h : Γ ⊢[PRAAx] input z R B N) :
     Γ ⊢[PRAAx] rawEnvelope combinedF (combinedData z R B N) (numericalRadius R) one one := by
-  refine .allI ?_
+  apply envelope_of_sample_bound
   have hs : Γ.map Fm.shift ⊢[PRAAx] input (Syn.shift z) (Syn.shift R) (Syn.shift B) (Syn.shift N) := by
     simpa [Fm.shift,Syn.shift] using h.shift
-  simpa only [rawEnvelope,combinedPoint,Syn.shift,subst_combinedData,
-    GaussianGammaCanonicalExponentBound.subst_numericalRadius,PTm.subst_mul,
+  simpa only [combinedPoint,Syn.shift,subst_combinedData,GaussianGammaCanonicalExponentBound.subst_numericalRadius,
     ConciseIPRA.PTm.subst_succ,ConciseIPRA.PTm.subst_zero] using
-    bound_congr (.eqRefl _) (show Γ.map Fm.shift ⊢[PRAAx]
-      numericalRadius (Syn.shift R)*unit (var 0)+one ≐ numericalRadius (Syn.shift R)*unit (var 0)+one*one by ipra_ring)
-      (show Γ.map Fm.shift ⊢[PRAAx] unit (var 0) ≐ one*unit (var 0) by ipra_ring)
-      (combined_point_bound (var 0) (Syn.shift z) (Syn.shift R) (Syn.shift B) (Syn.shift N) hs)
+    combined_point_bound (var 0) (Syn.shift z) (Syn.shift R) (Syn.shift B) (Syn.shift N) hs
 
 def correctedF : PR 2 := GaussianExactDiskShrinking.nameF combinedF
 def correctedData (z R B N : PTm n) : PTm n := GaussianExactDiskShrinking.data (combinedData z R B N) (numericalRadius R) one one
@@ -169,13 +143,9 @@ theorem corrected_point_bound (p z R B N : PTm n) (h : Γ ⊢[PRAAx] input z R B
     Γ ⊢[PRAAx] bounded (ap2 correctedF p (correctedData z R B N)) (numericalRadius R) one :=
   GaussianExactDiskShrinking.sample_bound _ p _ _ _ _ (le_refl _) (combined_envelope z R B N h)
 theorem corrected_exponential_input (z R B N : PTm n) (h : Γ ⊢[PRAAx] input z R B N) :
-    Γ ⊢[PRAAx] GaussianRadiusExponentialName.input correctedF (numericalRadius R) (correctedData z R B N) := by
-  refine .andI (corrected_regular z R B N h) (.allI ?_)
-  have hs : Γ.map Fm.shift ⊢[PRAAx] input (Syn.shift z) (Syn.shift R) (Syn.shift B) (Syn.shift N) := by
-    simpa [Fm.shift,Syn.shift] using h.shift
-  simpa only [GaussianRadiusExponentialName.boundedSamples,Syn.shift,subst_correctedData,
-    GaussianGammaCanonicalExponentBound.subst_numericalRadius] using
-    corrected_point_bound (var 0) (Syn.shift z) (Syn.shift R) (Syn.shift B) (Syn.shift N) hs
+    Γ ⊢[PRAAx] GaussianRadiusExponentialName.input correctedF (numericalRadius R) (correctedData z R B N) :=
+  corrected_exponential_input_of_envelope combinedF (combinedData z R B N) (numericalRadius R)
+    (combined_regular z R B N h) (combined_envelope z R B N h)
 
 theorem corrected_finite_exponential_bound (p K z R B N : PTm n) (h : Γ ⊢[PRAAx] input z R B N) : Γ ⊢[PRAAx]
     bounded (GaussianRationalPolynomialExponential.scalarSum (ap2 correctedF p (correctedData z R B N)) K)
