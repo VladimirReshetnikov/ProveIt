@@ -34,6 +34,14 @@ theorem induction (A : BFm (n+1))
   refine .allI ?_
   simpa only [Fm.subst_id] using (bounded_reflection A var).iffMp all.allOpen
 
+/-- Run bounded induction using a named formula for the reflected invariant. -/
+theorem induction_of_formula (A : BFm (n+1)) {P : Fm PTm (n+1)} (h : formula A = P)
+    (h0 : Γ ⊢[PRAAx] P.subst (Syn.inst zero))
+    (hs : P :: Γ.map Fm.shift ⊢[PRAAx] P.subst (repl (succ (var 0)))) :
+    Γ ⊢[PRAAx] .all (formula A) := by
+  subst P
+  exact induction A h0 hs
+
 theorem induction_at (A : BFm (n+1)) (k : PTm n)
     (h0 : Γ ⊢[PRAAx] (formula A).subst (Syn.inst zero))
     (hs : formula A :: Γ.map Fm.shift ⊢[PRAAx] (formula A).subst (repl (succ (var 0)))) :

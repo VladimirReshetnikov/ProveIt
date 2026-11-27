@@ -327,11 +327,10 @@ theorem forward_step (H B D t : PTm n) (ih : Γ ⊢[PRAAx] forwardLaw H B D t) :
 
 theorem forward_all (H B D : PTm n) : Γ ⊢[PRAAx] .all
     (formula (forwardSyntax (Syn.shift H) (Syn.shift B) (Syn.shift D) (var 0))) := by
-  refine Foundations.BoundedSyntaxInduction.induction _ ?_ ?_
-  · simpa only [forward_formula,subst_forwardLaw,Syn.subst_var,Syn.inst_zero,Syn.subst_inst_shift] using forward_zero (Γ := Γ) H B D
-  · simpa only [forward_formula,subst_forwardLaw,Syn.subst_var,Syn.repl_zero,subst_repl_shift] using
-      forward_step (Γ := formula (forwardSyntax (Syn.shift H) (Syn.shift B) (Syn.shift D) (var 0)) :: Γ.map Fm.shift)
-        (Syn.shift H) (Syn.shift B) (Syn.shift D) (var 0) (by simpa only [forward_formula] using (Prf.hyp0 (Ax := PRAAx)))
+  refine Foundations.BoundedSyntaxInduction.induction_of_formula _ (forward_formula _ _ _ _) ?_ ?_
+  · simpa only [subst_forwardLaw,Syn.subst_var,Syn.inst_zero,Syn.subst_inst_shift] using forward_zero (Γ := Γ) H B D
+  · simpa only [subst_forwardLaw,Syn.subst_var,Syn.repl_zero,subst_repl_shift] using
+      forward_step (Syn.shift H) (Syn.shift B) (Syn.shift D) (var 0) (Prf.hyp0 (Γ := Γ.map Fm.shift))
 
 theorem table_negation (h B D : PTm n) : Γ ⊢[PRAAx] localLaw h B D (QuadraticTowerSignTable.table h B D) := by
   have gate : Γ ⊢[PRAAx] forwardLaw h B D h := by

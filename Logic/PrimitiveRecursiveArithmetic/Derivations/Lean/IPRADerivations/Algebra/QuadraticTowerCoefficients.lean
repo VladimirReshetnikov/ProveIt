@@ -116,11 +116,10 @@ theorem size_step (h K : PTm n) (hs : Γ ⊢[PRAAx] sizeLaw h K) : Γ ⊢[PRAAx]
     ((append_length _ _).eqTrans ((congrAdd left right).eqTrans (width_succ _).eqSymm))
 theorem all_sizes (h K : PTm n) : Γ ⊢[PRAAx] sizeLaw h K := by
   have all : Γ ⊢[PRAAx] .all (formula (sizeSyntax (var 0) (Syn.shift K))) := by
-    refine Foundations.BoundedSyntaxInduction.induction _ ?_ ?_
-    · simpa only [size_formula,subst_sizeLaw,Syn.subst_var,Syn.inst_zero,Syn.subst_inst_shift] using size_zero (Γ := Γ) K
-    · simpa only [size_formula,subst_sizeLaw,Syn.subst_var,Syn.repl_zero,subst_repl_shift] using
-        size_step (Γ := formula (sizeSyntax (var 0) (Syn.shift K)) :: Γ.map Fm.shift)
-          (var 0) (Syn.shift K) (by simpa only [size_formula] using (Prf.hyp0 (Ax := PRAAx)))
+    refine Foundations.BoundedSyntaxInduction.induction_of_formula _ (size_formula _ _) ?_ ?_
+    · simpa only [subst_sizeLaw,Syn.subst_var,Syn.inst_zero,Syn.subst_inst_shift] using size_zero (Γ := Γ) K
+    · simpa only [subst_sizeLaw,Syn.subst_var,Syn.repl_zero,subst_repl_shift] using
+        size_step (var 0) (Syn.shift K) (Prf.hyp0 (Γ := Γ.map Fm.shift))
   simpa only [size_formula,subst_sizeLaw,Syn.subst_var,Syn.inst_zero,Syn.subst_inst_shift] using all.allE h
 theorem coefficients_length (h K x : PTm n) (hx : Γ ⊢[PRAAx] lt x K) : Γ ⊢[PRAAx]
     length (coefficients h K x) ≐ width h := size_at _ _ _ (all_sizes h K) hx
@@ -156,11 +155,10 @@ theorem coherent_step (h K L : PTm n) (ih : Γ ⊢[PRAAx] coherent h K L) : Γ �
     ((append_congr a b).eqTrans (coefficients_succ _ _ _ Prf.hyp0).eqSymm)
 theorem all_coherent (h K L : PTm n) : Γ ⊢[PRAAx] coherent h K L := by
   have all : Γ ⊢[PRAAx] .all (formula (coherentSyntax (var 0) (Syn.shift K) (Syn.shift L))) := by
-    refine Foundations.BoundedSyntaxInduction.induction _ ?_ ?_
-    · simpa only [coherent_formula,subst_coherent,Syn.subst_var,Syn.inst_zero,Syn.subst_inst_shift] using coherent_zero (Γ := Γ) K L
-    · simpa only [coherent_formula,subst_coherent,Syn.subst_var,Syn.repl_zero,subst_repl_shift] using
-        coherent_step (Γ := formula (coherentSyntax (var 0) (Syn.shift K) (Syn.shift L)) :: Γ.map Fm.shift)
-          (var 0) (Syn.shift K) (Syn.shift L) (by simpa only [coherent_formula] using (Prf.hyp0 (Ax := PRAAx)))
+    refine Foundations.BoundedSyntaxInduction.induction_of_formula _ (coherent_formula _ _ _) ?_ ?_
+    · simpa only [subst_coherent,Syn.subst_var,Syn.inst_zero,Syn.subst_inst_shift] using coherent_zero (Γ := Γ) K L
+    · simpa only [subst_coherent,Syn.subst_var,Syn.repl_zero,subst_repl_shift] using
+        coherent_step (var 0) (Syn.shift K) (Syn.shift L) (Prf.hyp0 (Γ := Γ.map Fm.shift))
   simpa only [coherent_formula,subst_coherent,Syn.subst_var,Syn.inst_zero,Syn.subst_inst_shift] using all.allE h
 theorem coefficients_coherent (h K L x : PTm n) (hx : Γ ⊢[PRAAx] lt x K) (hy : Γ ⊢[PRAAx] lt x L) : Γ ⊢[PRAAx]
     coefficients h K x ≐ coefficients h L x := coherent_at _ _ _ _ (all_coherent h K L) hx hy
