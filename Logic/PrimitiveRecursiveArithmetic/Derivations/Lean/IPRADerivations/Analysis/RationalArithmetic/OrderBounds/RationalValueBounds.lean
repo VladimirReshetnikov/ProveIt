@@ -1,4 +1,5 @@
 import IPRADerivations.Analysis.Names.Aggregation.AggregateChain
+import IPRADerivations.Core.OrderCertificates
 
 /-!
 # Independent-denominator scalar rational error budgets
@@ -110,12 +111,12 @@ theorem upper_triangle (a b c A B C D : PTm n)
     (hab : Γ ⊢[PRAAx] upper a b A B) (hbc : Γ ⊢[PRAAx] upper b c C D) :
     Γ ⊢[PRAAx] upper a c (A*D+C*B) (B*D) := by
   apply positive_cancel (denominator_positive b)
-  apply le_of_eq_add (d := D*denominatorOf c*monus
-      (B*crossLeft b a+A*denominatorOf a*denominatorOf b) (B*crossLeft a b) +
-    B*denominatorOf a*monus
-      (D*crossLeft c b+C*denominatorOf b*denominatorOf c) (D*crossLeft b c))
-  ipra_lc [crossLeft] (Groth.ι (Q.mk Γ D)*Groth.ι (Q.mk Γ (denominatorOf c)))*natEq (eq_add_of_le hab) +
-    (Groth.ι (Q.mk Γ B)*Groth.ι (Q.mk Γ (denominatorOf a)))*natEq (eq_add_of_le hbc)
+  ipra_le (Groth.ι (Q.mk Γ D) * Groth.ι (Q.mk Γ (denominatorOf c))) * sl hab +
+    (Groth.ι (Q.mk Γ B) * Groth.ι (Q.mk Γ (denominatorOf a))) * sl hbc using
+      unfold crossLeft
+      ipra_simps
+      ring
+
 
 theorem upper_of_order (a b A B : PTm n)
     (h : Γ ⊢[PRAAx] le (crossLeft a b) (crossLeft b a)) :
@@ -131,23 +132,18 @@ theorem order_of_upper_zero {a b B : PTm n} (hB : Γ ⊢[PRAAx] le one B)
 theorem upper_mono (a b A B C D : PTm n) (hB : Γ ⊢[PRAAx] le one B)
     (h : Γ ⊢[PRAAx] upper a b A B) (hAD : Γ ⊢[PRAAx] le (A*D) (C*B)) :
     Γ ⊢[PRAAx] upper a b C D := by
-  have first := mul_le_mul_right D h
-  have second := add_le_add_right (D*B*crossLeft b a)
-    (le_mul_mono hAD (le_refl (denominatorOf a*denominatorOf b)))
-  have first' : Γ ⊢[PRAAx] le (B*(D*crossLeft a b))
-      (D*B*crossLeft b a+A*D*(denominatorOf a*denominatorOf b)) :=
-    le_congr (by ipra_ring) (by ipra_ring) first
-  have second' : Γ ⊢[PRAAx] le
-      (D*B*crossLeft b a+A*D*(denominatorOf a*denominatorOf b))
-      (B*(D*crossLeft b a+C*denominatorOf a*denominatorOf b)) :=
-    le_congr (by ipra_ring) (by ipra_ring) second
-  exact positive_cancel hB (le_trans first' second')
+  apply positive_cancel hB
+  ipra_le Groth.ι (Q.mk Γ D) * sl h +
+    (Groth.ι (Q.mk Γ (denominatorOf a)) * Groth.ι (Q.mk Γ (denominatorOf b))) * sl hAD
+
 
 theorem radius_mono (a b A B C D : PTm n) (hB : Γ ⊢[PRAAx] le one B)
     (h : Γ ⊢[PRAAx] radius a b A B) (hAD : Γ ⊢[PRAAx] le (A*D) (C*B)) :
-    Γ ⊢[PRAAx] radius a b C D :=
-  radius_of_upper a b C D (upper_mono a b A B C D hB (upper_of_radius a b A B h) hAD)
-    (upper_mono b a A B C D hB (upper_of_radius b a A B (radius_symmetric a b A B h)) hAD)
+    Γ ⊢[PRAAx] radius a b C D := by
+  apply positive_cancel hB
+  ipra_le Groth.ι (Q.mk Γ D) * sl h +
+    (Groth.ι (Q.mk Γ (denominatorOf a)) * Groth.ι (Q.mk Γ (denominatorOf b))) * sl hAD
+
 
 theorem radius_triangle (a b c A B C D : PTm n)
     (hab : Γ ⊢[PRAAx] radius a b A B) (hbc : Γ ⊢[PRAAx] radius b c C D) :
