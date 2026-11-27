@@ -116,12 +116,14 @@ theorem mul_cancel_eq {c a b : PTm n} (hc : Γ ⊢[PRAAx] c ≐ succ (pred c)) (
 theorem two_mul_cancel {a b : PTm n} (h : Γ ⊢[PRAAx] two * a ≐ two * b) : Γ ⊢[PRAAx] a ≐ b :=
   mul_cancel_eq (succ_pos _) h
 
-theorem le_of_sq_le {a b : PTm n} (h : Γ ⊢[PRAAx] le (a * a) (b * b)) : Γ ⊢[PRAAx] le a b := by
-  refine .orE (lt_or_le b a) ?_ Prf.hyp0
-  have hba : (lt b a :: Γ) ⊢[PRAAx] lt b a := Prf.hyp0
-  exact le_lt_absurd _ h.wk
-    (lt_of_le_of_lt (mul_le_mul_left b (le_of_lt hba))
-      (Order.mul_lt_mul_right (lt_of_le_of_lt (zero_le b) hba) hba))
+/-- Strict order on natural terms is preserved by squaring. -/
+theorem sq_lt_sq {a b : PTm n} (h : Γ ⊢[PRAAx] lt a b) :
+    Γ ⊢[PRAAx] lt (a * a) (b * b) :=
+  lt_of_le_of_lt (mul_le_mul_left a (le_of_lt h))
+    (Order.mul_lt_mul_right (lt_of_le_of_lt (zero_le a) h) h)
+
+theorem le_of_sq_le {a b : PTm n} (h : Γ ⊢[PRAAx] le (a * a) (b * b)) : Γ ⊢[PRAAx] le a b :=
+  .orE (lt_or_le b a) (le_lt_absurd _ h.wk (sq_lt_sq Prf.hyp0)) Prf.hyp0
 
 /-- Natural terms with equal squares are equal. -/
 theorem eq_of_sq_eq {a b : PTm n} (h : Γ ⊢[PRAAx] a * a ≐ b * b) : Γ ⊢[PRAAx] a ≐ b :=

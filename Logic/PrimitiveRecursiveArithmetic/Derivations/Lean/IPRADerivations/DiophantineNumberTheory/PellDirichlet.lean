@@ -75,10 +75,9 @@ theorem w_bounds {Q : PTm n} (hQ : Γ ⊢[PRAAx] Q ≐ succ (pred Q)) (D j : PTm
   refine .andI (le_isqrt (le_congr (by ipra_ring) (by ipra_ring)
     (mul_le_mul_right (Q * Q) (isqrt_le (D * (j * j)))))) ?_
   refine lt_of_sq_lt (lt_of_le_of_lt (isqrt_le _) ?_)
-  have l1 := mul_le_mul_right (Q * Q) (lt_isqrt_succ_sq (Γ := Γ) (D * (j * j)))
-  refine le_trans (le_of_eq_add (d := pred (Q * Q)) ?_) (le_congr (.eqRefl _) ?_ l1)
-  · ipra_lc natEq (pos_mul hQ hQ)
-  · ipra_ring
+  have gap := Order.mul_lt_mul_right (c := Q * Q) (Common.one_le_of_pos (pos_mul hQ hQ))
+    (lt_isqrt_succ_sq (D * (j * j)))
+  exact lt_congr (by ipra_ring) (by ipra_ring) gap
 
 /-! ## The construction -/
 

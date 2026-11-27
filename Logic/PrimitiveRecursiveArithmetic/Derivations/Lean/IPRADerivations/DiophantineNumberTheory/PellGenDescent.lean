@@ -33,12 +33,9 @@ variable {n : ℕ} {Γ : List (Fm PTm n)}
 /-- `A²K < y²` from `AK < y` and `K ≥ 1`. -/
 theorem sq_gap {A K y : PTm n} (hK : Γ ⊢[PRAAx] K ≐ succ (pred K)) (hy : Γ ⊢[PRAAx] lt (A * K) y) :
     Γ ⊢[PRAAx] lt (A * A * K) (y * y) := by
-  have hKK := le_congr (Common.mul_one_right K) (.eqRefl _) (mul_le_mul_left K (Common.one_le_of_pos hK))
-  have lower : Γ ⊢[PRAAx] le (A * A * K) ((A * K) * (A * K)) :=
-    le_congr (.eqRefl _) (by ipra_ring) (mul_le_mul_left (A * A) hKK)
-  have hypos : Γ ⊢[PRAAx] le one y := le_trans (Order.succ_le_succ (zero_le (A * K))) hy
-  exact lt_of_le_of_lt lower
-    (lt_of_le_of_lt (mul_le_mul_left (A * K) (le_of_lt hy)) (Order.mul_lt_mul_right hypos hy))
+  refine lt_of_le_of_lt ?_ (Common.sq_lt_sq hy)
+  exact le_congr (Common.mul_one_right _) (by ipra_ring)
+    (mul_le_mul_left (A * A * K) (Common.one_le_of_pos hK))
 
 /-- The shared tail of both descents: positivity, `t < y`, reconstruction. -/
 theorem assemble {A B D x y : PTm n} (hA : Γ ⊢[PRAAx] A * A ≐ one + D * (B * B))
