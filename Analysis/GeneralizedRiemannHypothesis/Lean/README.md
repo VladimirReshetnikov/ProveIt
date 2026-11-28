@@ -74,6 +74,8 @@ to place them in the disks, and finite certificates from the
 
 [Prime59/InvariantValidity.lean](GRHArticle/SingularModuli/Prime59/InvariantValidity.lean) proves that the first 6,963 supplied coefficients agree with the actual normalized modular invariant. Fifteen certified divisor-sum blocks feed the discriminant and invariant prefix identities for the degree-59 Hecke calculation.
 
+[NearFullRelativeDensity.lean](GRHArticle/SingularModuli/NearFullRelativeDensity.lean) proves the relative density 9/13 in `smd:thm:nearfull` by counting actual order discriminants and their Legendre symbols at 7 and 13. [MinimumSupportDepthOne.lean](GRHArticle/SingularModuli/MinimumSupportDepthOne.lean) proves the logarithmic support estimate whenever the conjugates occupy one depth-one disk, over any eligible coefficient field. The inert-prime CM reduction needed to place the conjugates in that disk remains open. [FullSupportIntervals.lean](GRHArticle/SingularModuli/FullSupportIntervals.lean) proves the full interval criterion `smd:lem:criterion`, including its one-sided test and the exact cutoff.
+
 ## Integer geometric progressions
 
 [Rankin.lean](GRHArticle/ProgressionFree/Rankin.lean) proves that Rankin's

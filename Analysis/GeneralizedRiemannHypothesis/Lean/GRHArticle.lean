@@ -289,6 +289,7 @@ import GRHArticle.SingularModuli.DepthOne
 import GRHArticle.SingularModuli.DiskRootTransfer
 import GRHArticle.SingularModuli.DivisorPowerBlockCertificate
 import GRHArticle.SingularModuli.DivisorPowerPrefixCertificate
+import GRHArticle.SingularModuli.FullSupportIntervals
 import GRHArticle.SingularModuli.HasseCoefficients
 import GRHArticle.SingularModuli.HeckeChunkedPrefixCertificate
 import GRHArticle.SingularModuli.HeckeCofactorEnclosure
@@ -308,10 +309,13 @@ import GRHArticle.SingularModuli.HeckeSeriesPrefixArithmetic
 import GRHArticle.SingularModuli.HeckeTraceCoefficientFormula
 import GRHArticle.SingularModuli.HeckeWeightedCoefficientBound
 import GRHArticle.SingularModuli.IntegerListCheckpoint
+import GRHArticle.SingularModuli.MinimumSupportDepthOne
 import GRHArticle.SingularModuli.ModularIntegralExpansions
 import GRHArticle.SingularModuli.ModularInvariantPolynomial
 import GRHArticle.SingularModuli.ModularInvariantPrefixCertificate
+import GRHArticle.SingularModuli.NearFullRelativeDensity
 import GRHArticle.SingularModuli.NewtonValuation
+import GRHArticle.SingularModuli.OrderDiscriminantCongruences
 import GRHArticle.SingularModuli.PadicCutoff
 import GRHArticle.SingularModuli.PadicDiskRoots
 import GRHArticle.SingularModuli.PadicExpSubstitution
