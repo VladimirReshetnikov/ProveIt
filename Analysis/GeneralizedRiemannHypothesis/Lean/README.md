@@ -215,6 +215,8 @@ For the explicit margins, [PolynomialIrreducibleDegrees.lean](GRHArticle/Progres
 
 [PolynomialFiniteValuationDensity.lean](GRHArticle/ProgressionFree/PolynomialFiniteValuationDensity.lean) proves the finite joint valuation law for arbitrary exponent sets at monic irreducibles of any degree, with either unrestricted or greedy exponents elsewhere. [PolynomialMonicBallDensity.lean](GRHArticle/ProgressionFree/PolynomialMonicBallDensity.lean) transfers a monic degree-layer limit to the natural density of all its nonzero scalar multiples.
 
+[PolynomialExteriorValuationProduct.lean](GRHArticle/ProgressionFree/PolynomialExteriorValuationProduct.lean) identifies the greedy cofactor density with the article's exterior Euler product, verifies the squarefree product over all monic primes, and gives the joint valuation law with its stated constant. [PolynomialExteriorValuationTail.lean](GRHArticle/ProgressionFree/PolynomialExteriorValuationTail.lean) bounds the omitted prime-square events uniformly at every degree.
+
 ## RH and Dirichlet GRH input
 
 The article uses the five theorems in
