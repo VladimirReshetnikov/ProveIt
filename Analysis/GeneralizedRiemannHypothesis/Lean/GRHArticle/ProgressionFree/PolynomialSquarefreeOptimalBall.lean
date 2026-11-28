@@ -29,10 +29,15 @@ theorem polynomialSmoothOptimizer_properties (F : Type*) [Field F] [Fintype F] [
 
 /-- The finite selection with a separate optimal smooth choice in each
 squarefree monic rough class. -/
+def polynomialSquarefreeTemplateBall {F : Type*} [Field F] (T N : ℕ)
+    (H : ℕ → Finset (Polynomial F)) : Set (Polynomial F) :=
+  {f | f ≠ 0 ∧ f.natDegree ≤ N ∧ Squarefree (polynomialRoughPart T f) ∧
+    polynomialSmoothPart T f ∈ H (N - (polynomialRoughPart T f).natDegree)}
+
+/-- Use a finite optimizer for each remaining degree. -/
 def polynomialSquarefreeOptimalBall (F : Type*) [Field F] [Fintype F] [DecidableEq F]
     (T N : ℕ) : Set (Polynomial F) :=
-  {f | f ≠ 0 ∧ f.natDegree ≤ N ∧ Squarefree (polynomialRoughPart T f) ∧
-    polynomialSmoothPart T f ∈ polynomialSmoothOptimizer F T (N - (polynomialRoughPart T f).natDegree)}
+  polynomialSquarefreeTemplateBall T N (polynomialSmoothOptimizer F T)
 
 omit [Fintype F] [DecidableEq F] in
 private theorem roughFactors_mul (T : ℕ) {a b : Polynomial F} (ha : a ≠ 0) (hb : b ≠ 0) :
@@ -75,11 +80,13 @@ theorem polynomialSquarefreeOptimalBall_free (T N : ℕ) :
     (polynomialSmoothPart T f) (polynomialSmoothPart T r)
     (monic_polynomialSmoothPart T f).ne_zero (hsd ▸ hr) ⟨hfB.2.2.2, hmem₁, hmem₂⟩
 
+variable (H : ℕ → Finset (Polynomial F))
+
 private noncomputable def squarefreeOptimalBallFinset (T N : ℕ) : Finset (Polynomial F) :=
-  (polynomialDegreeLTFinset F (N + 1)).filter (· ∈ polynomialSquarefreeOptimalBall F T N)
+  (polynomialDegreeLTFinset F (N + 1)).filter (· ∈ polynomialSquarefreeTemplateBall T N H)
 
 private noncomputable def squarefreeOptimalBallFiber (T N t : ℕ) : Finset (Polynomial F) :=
-  (squarefreeOptimalBallFinset (F := F) T N).filter
+  (squarefreeOptimalBallFinset H T N).filter
     (fun f ↦ N - (polynomialRoughPart T f).natDegree = t)
 
 omit [Fintype F] [DecidableEq F] in
@@ -89,39 +96,39 @@ private theorem natDegree_scalar_rough_smooth (c : Fˣ) {g h : Polynomial F}
   rw [natDegree_mul (mul_ne_zero (C_ne_zero.mpr c.ne_zero) hg.ne_zero) hh.ne_zero,
     natDegree_C_mul c.ne_zero]
 
-private theorem parts_of_scalar_optimizer_mul {T n t : ℕ} (c : Fˣ) {g h : Polynomial F}
-    (hg : g ∈ polynomialSquarefreeRoughLayer F T n) (hh : h ∈ polynomialSmoothOptimizer F T t) :
+private theorem parts_of_scalar_optimizer_mul {T n t : ℕ} (hH : ∀ j, H j ⊆ polynomialSmoothBall F T j) (c : Fˣ) {g h : Polynomial F}
+    (hg : g ∈ polynomialSquarefreeRoughLayer F T n) (hh : h ∈ H t) :
     polynomialRoughPart T (C (c : F) * g * h) = g ∧
       polynomialSmoothPart T (C (c : F) * g * h) = h := by
   have heq : instEq = Classical.decEq F := Subsingleton.elim _ _
   subst instEq
   obtain ⟨hgm, _, _, hgr⟩ := mem_polynomialSquarefreeRoughLayer.mp hg
   obtain ⟨hhm, _, hhr⟩ := mem_polynomialSmoothBall.mp
-    ((polynomialSmoothOptimizer_properties F T t).1 hh)
+    (hH t hh)
   exact parts_of_scalar_mul T c hgm hhm hgr hhr
 
-private noncomputable def squarefreeOptimalBallFiberEquiv (T N t : ℕ) (ht : t ≤ N) :
-    (Fˣ × polynomialSquarefreeRoughLayer F T (N - t) × polynomialSmoothOptimizer F T t) ≃
-      squarefreeOptimalBallFiber (F := F) T N t := by
+private noncomputable def squarefreeOptimalBallFiberEquiv (T N t : ℕ) (hH : ∀ j, H j ⊆ polynomialSmoothBall F T j) (ht : t ≤ N) :
+    (Fˣ × polynomialSquarefreeRoughLayer F T (N - t) × H t) ≃
+      squarefreeOptimalBallFiber H T N t := by
   let toFiber (x : Fˣ × polynomialSquarefreeRoughLayer F T (N - t) ×
-      polynomialSmoothOptimizer F T t) : squarefreeOptimalBallFiber (F := F) T N t := by
+      H t) : squarefreeOptimalBallFiber H T N t := by
     refine ⟨C (x.1 : F) * x.2.1.1 * x.2.2.1, ?_⟩
     rcases x with ⟨c, ⟨g, hg⟩, ⟨h, hh⟩⟩
     let f := C (c : F) * g * h
     obtain ⟨hgm, hgd, hgs, _⟩ := mem_polynomialSquarefreeRoughLayer.mp hg
     obtain ⟨hhm, hhd, _⟩ := mem_polynomialSmoothBall.mp
-      ((polynomialSmoothOptimizer_properties F T t).1 hh)
+      (hH t hh)
     have hf₀ : f ≠ 0 := mul_ne_zero (mul_ne_zero (C_ne_zero.mpr c.ne_zero) hgm.ne_zero) hhm.ne_zero
     have hdeg : f.natDegree ≤ N := by
       dsimp [f]
       rw [natDegree_scalar_rough_smooth c hgm hhm, hgd]
       omega
-    obtain ⟨hrough, hsmooth⟩ := parts_of_scalar_optimizer_mul c hg hh
+    obtain ⟨hrough, hsmooth⟩ := parts_of_scalar_optimizer_mul H hH c hg hh
     have hbudget : N - (polynomialRoughPart T f).natDegree = t := by
       change N - (polynomialRoughPart T (C (c : F) * g * h)).natDegree = t
       rw [hrough, hgd]
       omega
-    have hmem : f ∈ polynomialSquarefreeOptimalBall F T N := by
+    have hmem : f ∈ polynomialSquarefreeTemplateBall T N H := by
       refine ⟨hf₀, hdeg, ?_, ?_⟩
       · simpa only [f, hrough] using hgs
       · rw [hbudget]
@@ -129,8 +136,8 @@ private noncomputable def squarefreeOptimalBallFiberEquiv (T N t : ℕ) (ht : t 
     refine Finset.mem_filter.mpr ⟨Finset.mem_filter.mpr ⟨?_, hmem⟩, hbudget⟩
     exact mem_polynomialDegreeLTFinset.mpr
       (by rw [degree_eq_natDegree hf₀, Nat.cast_lt, Nat.lt_succ_iff]; exact hdeg)
-  let fromFiber (x : squarefreeOptimalBallFiber (F := F) T N t) :
-    Fˣ × polynomialSquarefreeRoughLayer F T (N - t) × polynomialSmoothOptimizer F T t := by
+  let fromFiber (x : squarefreeOptimalBallFiber H T N t) :
+    Fˣ × polynomialSquarefreeRoughLayer F T (N - t) × H t := by
     have hx := Finset.mem_filter.mp x.2
     have hmem := (Finset.mem_filter.mp hx.1).2
     refine ⟨Units.mk0 x.1.leadingCoeff (leadingCoeff_ne_zero.mpr hmem.1),
@@ -149,8 +156,8 @@ private noncomputable def squarefreeOptimalBallFiberEquiv (T N t : ℕ) (ht : t 
   · rintro ⟨c, ⟨g, hg⟩, ⟨h, hh⟩⟩
     obtain ⟨hgm, _, _, _⟩ := mem_polynomialSquarefreeRoughLayer.mp hg
     obtain ⟨hhm, _, _⟩ := mem_polynomialSmoothBall.mp
-      ((polynomialSmoothOptimizer_properties F T t).1 hh)
-    obtain ⟨hrough, hsmooth⟩ := parts_of_scalar_optimizer_mul c hg hh
+      (hH t hh)
+    obtain ⟨hrough, hsmooth⟩ := parts_of_scalar_optimizer_mul H hH c hg hh
     refine Prod.ext (Units.ext ?_) (Prod.ext (Subtype.ext hrough) (Subtype.ext hsmooth))
     change (C (c : F) * g * h).leadingCoeff = (c : F)
     rw [leadingCoeff_mul, leadingCoeff_mul, leadingCoeff_C, hgm.leadingCoeff, hhm.leadingCoeff,
@@ -159,25 +166,32 @@ private noncomputable def squarefreeOptimalBallFiberEquiv (T N t : ℕ) (ht : t 
     apply Subtype.ext
     exact polynomial_eq_leadingCoeff_mul_roughPart_mul_smoothPart T x.1
 
-private theorem card_squarefreeOptimalBallFiber (T N t : ℕ) (ht : t ≤ N) :
-    (squarefreeOptimalBallFiber (F := F) T N t).card = (Fintype.card F - 1) *
-      (polynomialSquarefreeRoughLayer F T (N - t)).card * polynomialSmoothMaximum F T t := by
-  simpa only [Fintype.card_prod, Fintype.card_units, Fintype.card_coe, mul_assoc,
-    (polynomialSmoothOptimizer_properties F T t).2.2] using
-    (Fintype.card_congr (squarefreeOptimalBallFiberEquiv (F := F) T N t ht)).symm
+private theorem card_squarefreeOptimalBallFiber (T N t : ℕ) (hH : ∀ j, H j ⊆ polynomialSmoothBall F T j) (ht : t ≤ N) :
+    (squarefreeOptimalBallFiber H T N t).card = (Fintype.card F - 1) *
+      (polynomialSquarefreeRoughLayer F T (N - t)).card * (H t).card := by
+  simpa only [Fintype.card_prod, Fintype.card_units, Fintype.card_coe, mul_assoc] using
+    (Fintype.card_congr (squarefreeOptimalBallFiberEquiv H T N t hH ht)).symm
 
 /-- The selected ball counts one product of scalar, squarefree rough, and
 optimal smooth choices for each remaining degree. -/
+theorem card_polynomialSquarefreeTemplateBall (T N : ℕ) (hH : ∀ j, H j ⊆ polynomialSmoothBall F T j) :
+    ((polynomialDegreeLTFinset F (N + 1)).filter (· ∈ polynomialSquarefreeTemplateBall T N H)).card =
+      ∑ t ∈ Finset.range (N + 1), (Fintype.card F - 1) *
+        (polynomialSquarefreeRoughLayer F T (N - t)).card * (H t).card := by
+  change (squarefreeOptimalBallFinset H T N).card = _
+  have hmaps : Set.MapsTo (fun f : Polynomial F ↦ N - (polynomialRoughPart T f).natDegree)
+      (squarefreeOptimalBallFinset H T N : Set (Polynomial F)) (Finset.range (N + 1)) :=
+    fun f _ ↦ Finset.mem_range.mpr (Nat.lt_succ_of_le (Nat.sub_le ..))
+  rw [Finset.card_eq_sum_card_fiberwise hmaps]
+  exact Finset.sum_congr rfl fun t ht ↦ card_squarefreeOptimalBallFiber H T N t hH
+    (Nat.lt_succ_iff.mp (Finset.mem_range.mp ht))
+
 theorem card_polynomialSquarefreeOptimalBall (T N : ℕ) :
     ((polynomialDegreeLTFinset F (N + 1)).filter (· ∈ polynomialSquarefreeOptimalBall F T N)).card =
       ∑ t ∈ Finset.range (N + 1), (Fintype.card F - 1) *
         (polynomialSquarefreeRoughLayer F T (N - t)).card * polynomialSmoothMaximum F T t := by
-  change (squarefreeOptimalBallFinset (F := F) T N).card = _
-  have hmaps : Set.MapsTo (fun f : Polynomial F ↦ N - (polynomialRoughPart T f).natDegree)
-      (squarefreeOptimalBallFinset (F := F) T N : Set (Polynomial F)) (Finset.range (N + 1)) :=
-    fun f _ ↦ Finset.mem_range.mpr (Nat.lt_succ_of_le (Nat.sub_le ..))
-  rw [Finset.card_eq_sum_card_fiberwise hmaps]
-  exact Finset.sum_congr rfl fun t ht ↦ card_squarefreeOptimalBallFiber T N t
-    (Nat.lt_succ_iff.mp (Finset.mem_range.mp ht))
+  simpa only [polynomialSquarefreeOptimalBall, (polynomialSmoothOptimizer_properties F T _).2.2] using
+    card_polynomialSquarefreeTemplateBall (polynomialSmoothOptimizer F T) T N
+      (fun j ↦ (polynomialSmoothOptimizer_properties F T j).1)
 
 end GRHArticle.ProgressionFree

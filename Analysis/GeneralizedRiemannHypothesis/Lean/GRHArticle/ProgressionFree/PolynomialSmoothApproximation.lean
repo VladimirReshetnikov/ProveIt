@@ -121,30 +121,48 @@ theorem polynomialSmoothMaximum_weight_tail_le (T L : ℕ)
   rw [← hgeometric]
   simpa only [optimumWeight, Nat.add_comm] using htail.tsum_le_tsum (optimumWeight_tail_majorized T L h) hg
 
+/-- Evaluate a finite smooth cutoff with any executable coefficient function. -/
+def polynomialSmoothUpperApproxWith (F : Type*) [Field F] [Fintype F] [DecidableEq F]
+    (T L : ℕ) (M : ℕ → ℕ) : ℚ :=
+  let z := (Fintype.card F : ℚ)⁻¹
+  (1-z) * ((polynomialSmoothPrimeDegrees F T).map (fun d ↦ 1-z^d)).prod *
+    ∑ t ∈ Finset.range (L+1), (M t : ℚ) * z^t
+
+/-- The rational computation is exactly the finite truncation of `U_T`. -/
+theorem polynomialSmoothUpperApproxWith_cast (T L : ℕ) (M : ℕ → ℕ) :
+    (polynomialSmoothUpperApproxWith F T L M : ℝ) =
+      (1 - (Fintype.card F : ℝ)⁻¹) *
+        (∏ p ∈ polynomialSmoothPrimes F T, (1 - (Fintype.card F : ℝ)⁻¹^p.natDegree)) *
+        (∑ t ∈ Finset.range (L+1), (M t : ℝ) * (Fintype.card F : ℝ)⁻¹^t) := by
+  simp only [polynomialSmoothUpperApproxWith, polynomialSmoothPrimeDegrees_eq, Rat.cast_mul, Rat.cast_sub,
+    Rat.cast_one, Rat.cast_inv, Rat.cast_natCast, Rat.cast_multiset_prod, Multiset.map_map, Rat.cast_sum,
+    Function.comp_def, Rat.cast_pow, Finset.prod]
+
 /-- The rational upper-density bound with the smooth optimization series cut off at `L`. -/
 def polynomialSmoothUpperApprox (F : Type*) [Field F] [Fintype F] [DecidableEq F]
     (T L : ℕ) : ℚ :=
-  let z := (Fintype.card F : ℚ)⁻¹
-  (1-z) * ((polynomialSmoothPrimeDegrees F T).map (fun d ↦ 1-z^d)).prod *
-    ∑ t ∈ Finset.range (L+1), (polynomialSmoothMaximum F T t : ℚ) * z^t
+  polynomialSmoothUpperApproxWith F T L (polynomialSmoothMaximum F T)
 
 /-- The rational computation is exactly the finite truncation of `U_T`. -/
 theorem polynomialSmoothUpperApprox_cast (T L : ℕ) :
     (polynomialSmoothUpperApprox F T L : ℝ) =
       (1 - (Fintype.card F : ℝ)⁻¹) *
         (∏ p ∈ polynomialSmoothPrimes F T, (1 - (Fintype.card F : ℝ)⁻¹^p.natDegree)) *
-        (∑ t ∈ Finset.range (L+1), (polynomialSmoothMaximum F T t : ℝ) * (Fintype.card F : ℝ)⁻¹^t) := by
-  simp only [polynomialSmoothUpperApprox, polynomialSmoothPrimeDegrees_eq, Rat.cast_mul, Rat.cast_sub,
-    Rat.cast_one, Rat.cast_inv, Rat.cast_natCast, Rat.cast_multiset_prod, Multiset.map_map, Rat.cast_sum,
-    Function.comp_def, Rat.cast_pow, Finset.prod]
+        (∑ t ∈ Finset.range (L+1), (polynomialSmoothMaximum F T t : ℝ) * (Fintype.card F : ℝ)⁻¹^t) :=
+  polynomialSmoothUpperApproxWith_cast T L _
+
+/-- The weighted cutoff series with an arbitrary smooth-ball size function. -/
+noncomputable def polynomialDensityUpperWith (F : Type*) [Field F] [Fintype F]
+    [DecidableEq F] (T : ℕ) (M : ℕ → ℕ) : ℝ :=
+  let z := (Fintype.card F : ℝ)⁻¹
+  (1-z) * (∏ p ∈ polynomialSmoothPrimes F T, (1-z^p.natDegree)) *
+    ∑' t : ℕ, (M t : ℝ) * z^t
 
 /-- `U_T` in the article, with every smooth-ball coefficient given by the
 verified finite optimizer. -/
 noncomputable def polynomialDensityUpperApproximation (F : Type*) [Field F] [Fintype F]
     [DecidableEq F] (T : ℕ) : ℝ :=
-  let z := (Fintype.card F : ℝ)⁻¹
-  (1-z) * (∏ p ∈ polynomialSmoothPrimes F T, (1-z^p.natDegree)) *
-    ∑' t : ℕ, (polynomialSmoothMaximum F T t : ℝ) * z^t
+  polynomialDensityUpperWith F T (polynomialSmoothMaximum F T)
 
 /-- The computed truncation is below `U_T` and has an explicit error bound. -/
 theorem polynomialDensityUpperApproximation_truncation_error (T L : ℕ)

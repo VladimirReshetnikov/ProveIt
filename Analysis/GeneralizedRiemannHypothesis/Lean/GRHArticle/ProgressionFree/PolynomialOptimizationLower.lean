@@ -45,13 +45,15 @@ private theorem roughDensity_eq_ratio_mul (F : Type*) [Field F] [Fintype F] (T :
 
 /-- The finite progression-free squarefree-rough selections attain the lower
 approximation in the limit of their ball proportions. -/
-theorem tendsto_polynomialSquarefreeOptimalBall_proportion
-    (F : Type*) [Field F] [Fintype F] [DecidableEq F] (T : ℕ) :
-    Tendsto (fun N ↦ polynomialBallProportion (polynomialSquarefreeOptimalBall F T N) N) atTop
-      (𝓝 (polynomialSquarefreeRoughRatio F T * polynomialDensityUpperApproximation F T)) := by
+theorem tendsto_polynomialSquarefreeTemplateBall_proportion
+    (F : Type*) [Field F] [Fintype F] [DecidableEq F] (T : ℕ) (H : ℕ → Finset (Polynomial F))
+    (M : ℕ → ℕ) (hH : ∀ t, H t ⊆ polynomialSmoothBall F T t) (hM : ∀ t, (H t).card = M t)
+    (hs : Summable (fun t ↦ (M t : ℝ) * (Fintype.card F : ℝ)⁻¹^t)) :
+    Tendsto (fun N ↦ polynomialBallProportion (polynomialSquarefreeTemplateBall T N H) N) atTop
+      (𝓝 (polynomialSquarefreeRoughRatio F T * polynomialDensityUpperWith F T M)) := by
   let q := (Fintype.card F : ℝ)
   let z := q⁻¹
-  let w (t : ℕ) := (polynomialSmoothMaximum F T t : ℝ) * z ^ t
+  let w (t : ℕ) := (M t : ℝ) * z ^ t
   let r (n : ℕ) := ((polynomialSquarefreeRoughLayer F T n).card : ℝ) / q ^ n
   have hq : 0 < q := by
     dsimp only [q]
@@ -64,19 +66,20 @@ theorem tendsto_polynomialSquarefreeOptimalBall_proportion
       (Finset.card_le_card hsub).trans_eq (card_monicLayer n)
     exact ⟨div_nonneg (Nat.cast_nonneg _) (pow_nonneg hq.le _),
       (div_le_one (pow_pos hq _)).2 (by dsimp only [q]; exact_mod_cast hcard)⟩
-  have hlimit := tendsto_polynomialSmoothMaximum_weighted_convolution F T hr
+  have hlimit := tendsto_weighted_rough_convolution _ hs (fun _ ↦ by positivity) hr
     (tendsto_polynomialSquarefreeRoughLayer_card_div_pow F T)
-  have hcount (N : ℕ) : polynomialBallProportion (polynomialSquarefreeOptimalBall F T N) N =
+  have hcount (N : ℕ) : polynomialBallProportion (polynomialSquarefreeTemplateBall T N H) N =
       (1 - z) * ∑ t ∈ Finset.range (N + 1), r (N - t) * w t := by
     unfold polynomialBallProportion
-    rw [card_polynomialSquarefreeOptimalBall]
+    rw [card_polynomialSquarefreeTemplateBall H T N hH]
+    simp only [hM]
     simp only [mul_assoc]
     rw [← Finset.mul_sum]
-    exact polynomialSmoothMaximum_weighted_convolution_scale F T N
-      (fun n ↦ (polynomialSquarefreeRoughLayer F T n).card)
+    exact polynomial_weighted_convolution_scale F N
+      (fun n ↦ (polynomialSquarefreeRoughLayer F T n).card) M
   have htarget : (1 - z) * (polynomialRoughDensity F T * ∑' t : ℕ, w t) =
-      polynomialSquarefreeRoughRatio F T * polynomialDensityUpperApproximation F T := by
-    rw [roughDensity_eq_ratio_mul, polynomialDensityUpperApproximation]
+      polynomialSquarefreeRoughRatio F T * polynomialDensityUpperWith F T M := by
+    rw [roughDensity_eq_ratio_mul, polynomialDensityUpperWith]
     change (1 - z) * (polynomialSquarefreeRoughRatio F T *
       (∏ p ∈ polynomialSmoothPrimes F T, (1 - z ^ p.natDegree)) * ∑' t : ℕ, w t) =
       polynomialSquarefreeRoughRatio F T * ((1 - z) *
@@ -84,6 +87,15 @@ theorem tendsto_polynomialSquarefreeOptimalBall_proportion
     ring
   rw [← htarget]
   exact (hlimit.const_mul (1 - z)).congr fun N ↦ (hcount N).symm
+
+theorem tendsto_polynomialSquarefreeOptimalBall_proportion
+    (F : Type*) [Field F] [Fintype F] [DecidableEq F] (T : ℕ) :
+    Tendsto (fun N ↦ polynomialBallProportion (polynomialSquarefreeOptimalBall F T N) N) atTop
+      (𝓝 (polynomialSquarefreeRoughRatio F T * polynomialDensityUpperApproximation F T)) :=
+  tendsto_polynomialSquarefreeTemplateBall_proportion F T (polynomialSmoothOptimizer F T)
+    (polynomialSmoothMaximum F T) (fun t ↦ (polynomialSmoothOptimizer_properties F T t).1)
+    (fun t ↦ (polynomialSmoothOptimizer_properties F T t).2.2)
+    (summable_polynomialSmoothMaximum_weight (F := F) T)
 
 /-- The squarefree-corrected finite-prime approximation is below the supremum.
 A single progression-free set witnesses this lower bound. -/
