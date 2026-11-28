@@ -433,10 +433,10 @@ The heads of these files give an overview of a theory: `Lib/ClassField/Global/Ar
 
 - `New/Appendix/DiscreteSeries/SteepParameters` (49): Steep parameters and the setting of Laplace's method
 - `New/Appendix/DiscreteSeries/Localization` (497): Localizing products of discrete series coefficients near the compact subgroups
-- `New/Appendix/DiscreteSeries/MinorSecondOrder` (410): One minor of a product of three exponentials, to second order
+- `New/Appendix/DiscreteSeries/MinorSecondOrder` (260): One minor of a product of three exponentials, to second order
 - `New/Appendix/DiscreteSeries/Positions` (306): Positions of a smaller unitary group, and the two traces
 - `New/Appendix/DiscreteSeries/StationaryPosition` (501): The stationary position
-- `New/Appendix/DiscreteSeries/OneMinor` (429): One minor near the identity
+- `New/Appendix/DiscreteSeries/OneMinor` (416): One minor near the identity
 - `New/Appendix/DiscreteSeries/GaussianShape` (271): The Gaussian shape of the coefficient
 - `New/Appendix/DiscreteSeries/Periods` (366): Lower bounds for periods by Laplace's method
 - `New/Appendix/DiscreteSeries/PositionGroup` (499): The group of a position
@@ -893,7 +893,7 @@ The heads of these files give an overview of a theory: `Lib/ClassField/Global/Ar
 - `Lib/General/LinearAlgebra/Eigenvalues` (507): Eigenvalues: traces of powers, common eigenvectors, Amitsur's theorem, Sylvester's law
 - `Lib/General/LinearAlgebra/HermitianMatrices` (216): Determinants of positive semidefinite matrices, principal minors and hermitian involutions
 - `Lib/General/LinearAlgebra/IntegralLattices` (460): Integral matrices over subrings: Smith normal form, Gelfand's condition and lattices
-- `Lib/General/LinearAlgebra/MatricesNearIdentity` (262): Matrices near the identity: Jacobi's formula and norm estimates
+- `Lib/General/LinearAlgebra/MatricesNearIdentity` (260): Matrices near the identity: Jacobi's formula and norm estimates
 - `Lib/General/LinearAlgebra/MinorProducts` (296): Products of principal minors, Fischer's inequality and the Cauchy–Binet formula
 - `Lib/General/LinearAlgebra/GramDeterminant` (78): Gram determinants
 - `Lib/General/LinearAlgebra/MatrixPolynomials` (125): Minors, polynomials of matrices and twisted norms

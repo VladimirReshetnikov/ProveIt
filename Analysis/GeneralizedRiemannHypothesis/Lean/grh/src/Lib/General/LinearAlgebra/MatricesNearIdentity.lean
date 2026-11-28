@@ -5,7 +5,7 @@ import Lib.Shimura.ComplexTheta.AppellHumbertData
 # Matrices near the identity: Jacobi's formula and norm estimates
 
 This file collects known facts on complex matrices near the identity.
-It proves Jacobi's formula for the derivative of the determinant at the identity and
+It proves Jacobi's formula for the derivative of the determinant at invertible matrices and
 `det (exp M) = exp (tr M)`.
 Estimates in the Hilbert–Schmidt norm, which is the norm of all matrices in this file, control the
 inverse and the logarithm of `1 + X` and the exponential of `X`.
@@ -16,6 +16,7 @@ A matrix at distance less than `1` from the identity is accretive.
 
 * `New.hasDerivAt_det_of_eq_one`: along a differentiable curve of complex matrices through the
   identity, the derivative of the determinant there is the trace of the velocity.
+* `New.hasDerivAt_det_of_isUnit` gives the determinant derivative at any invertible matrix.
 * `New.DiscreteSeries.logOneAdd` and `exp_logOneAdd`: the logarithm of `1 + X` for `‖X‖ ≤ 1 / 2`.
 
 Notions from other files:
@@ -42,6 +43,15 @@ lemma New.hasDerivAt_det_of_eq_one {n : Type*} [Fintype n] [DecidableEq n] {γ :
   -- Its derivative at `1` replaces one row of `1` at a time by that row of `Y`; this gives `Y i i`.
   calc D.linearDeriv (γ s) Y = ∑ i, ((γ s).updateRow i (Y i)).det := sum_apply ..
     _ = Y.trace := by simp [hγ_one, ← Matrix.cramer_transpose_apply, Matrix.trace]
+
+open Matrix Norms.Frobenius in
+/-- Along a differentiable curve through an invertible matrix `γ s`, the derivative of the
+determinant is the trace of the velocity times the inverse, multiplied by the determinant. -/
+lemma New.hasDerivAt_det_of_isUnit {n : Type*} [Fintype n] [DecidableEq n] {γ : ℝ → Matrix n n ℂ}
+    {Y : Matrix n n ℂ} {s : ℝ} (hγ : HasDerivAt γ Y s) (hu : IsUnit (γ s).det) :
+    HasDerivAt (fun t ↦ (γ t).det) ((Y * (γ s)⁻¹).trace * (γ s).det) s := by
+  have h := New.hasDerivAt_det_of_eq_one (Matrix.mul_nonsing_inv _ hu) (hγ.mul_const (γ s)⁻¹)
+  simpa [det_mul, ← mul_assoc, Matrix.det_nonsing_inv, hu.ne_zero] using h.mul_const (γ s).det
 
 /-!
 ## Matrices near the identity in the Hilbert–Schmidt norm
@@ -102,9 +112,6 @@ lemma norm_smul_le_of_le_one {X : Matrix n n ℂ} {σ : ℝ} (ρ : ℝ) (hX : �
 lemma det_one_add_ne_zero (hX : ‖X‖ < 1) : (1 + X).det ≠ 0 := by
   have h_unit : IsUnit (1 - -X) := isUnit_one_sub_of_norm_lt_one (by rwa [norm_neg])
   simpa [isUnit_iff_isUnit_det] using h_unit
-
-lemma one_add_mul_inv_one_add (hX : ‖X‖ < 1) : (1 + X) * (1 + X)⁻¹ = 1 :=
-  mul_nonsing_inv _ (det_one_add_ne_zero hX).isUnit
 
 lemma inv_one_add_mul_one_add (hX : ‖X‖ < 1) : (1 + X)⁻¹ * (1 + X) = 1 :=
   nonsing_inv_mul _ (det_one_add_ne_zero hX).isUnit
@@ -183,14 +190,10 @@ lemma integral_trace_mul_inv_one_add_smul_mul (hX : ‖X‖ ≤ 2⁻¹) (D : Mat
 lemma hasDerivAt_det_exp_smul (M : Matrix n n ℂ) (s : ℝ) :
     HasDerivAt (fun t : ℝ ↦ (NormedSpace.exp (t • M)).det)
       ((NormedSpace.exp (s • M)).det * M.trace) s := by
-  have h_path : HasDerivAt (fun t : ℝ ↦ NormedSpace.exp ((t - s) • M)) M s := by
-    -- `using!`: the two instances of the topology on matrices agree only up to defeq.
-    simpa using! (hasDerivAt_exp_smul_const M (s - s)).comp_sub_const s s
-  have h_split (t : ℝ) : NormedSpace.exp (t • M) =
-      NormedSpace.exp (s • M) * NormedSpace.exp ((t - s) • M) := by
-    simp [← Matrix.exp_add_of_commute _ _ (((Commute.refl M).smul_left s).smul_right _), ← add_smul]
-  simpa only [← det_mul, ← h_split] using
-    (hasDerivAt_det_of_eq_one (by simp) h_path).const_mul (NormedSpace.exp (s • M)).det
+  have hu := (Matrix.isUnit_iff_isUnit_det _).mp (Matrix.isUnit_exp (s • M))
+  refine (New.hasDerivAt_det_of_isUnit (hasDerivAt_exp_smul_const' M s) hu).congr_deriv ?_
+  exact (congrArg (fun Z : Matrix n n ℂ ↦ Z.trace * (NormedSpace.exp (s • M)).det)
+    (Matrix.mul_nonsing_inv_cancel_right _ M hu)).trans (mul_comm ..)
 
 /-- The determinant of the exponential of a matrix is the exponential of its trace. -/
 lemma det_exp (M : Matrix n n ℂ) : (NormedSpace.exp M).det = cexp M.trace := by
@@ -259,10 +262,6 @@ lemma exp_logOneAdd (hX : ‖X‖ ≤ 2⁻¹) : NormedSpace.exp (logOneAdd X) = 
   have h_exp_inv : NormedSpace.exp (logOneAdd X) * NormedSpace.exp (-logOneAdd X) = 1 := by
     simp [← Matrix.exp_add_of_commute _ _ (Commute.refl (logOneAdd X)).neg_right]
   exact left_inv_eq_right_inv h_exp_inv (by simpa [L, G, logOneAdd] using h_const)
-
-lemma det_one_add_eq_exp_trace_logOneAdd (hX : ‖X‖ ≤ 2⁻¹) :
-    (1 + X).det = cexp (logOneAdd X).trace := by
-  rw [← det_exp, exp_logOneAdd hX]
 
 /-- If `1 + X` preserves the form `J`, that is `(1 + X)ᴴ * J * (1 + X) = J`, and `‖X‖ ≤ 1 / 2`, then
 for `0 ≤ s ≤ 1` the integrand `G s = (1 + s • X)⁻¹ * X` of `logOneAdd X` satisfies

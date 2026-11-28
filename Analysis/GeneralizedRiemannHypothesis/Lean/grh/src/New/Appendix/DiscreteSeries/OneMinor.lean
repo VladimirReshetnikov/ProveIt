@@ -199,14 +199,6 @@ lemma det_reducedExp : (reducedExp ε o Z).det = cexp Z.trace := by
   have trace_zero (c : n → ℤ) : (-lowerMask ε c Z).trace = 0 := by simp [trace]
   simp only [reducedExp, det_mul, det_exp, trace_zero, exp_zero, one_mul, mul_one]
 
-/-- If `X` and `Y` are within `ρ` and `σ` of the identity in the Frobenius norm, then their product
-is within `ρ σ + ρ + σ` of it. -/
-
-lemma norm_mul_sub_one_le {ρ σ : ℝ} (hX : ‖X - 1‖ ≤ ρ) (hY : ‖Y - 1‖ ≤ σ) :
-    ‖X * Y - 1‖ ≤ ρ * σ + ρ + σ := by
-  rw [show X * Y - 1 = (X - 1) * (Y - 1) + (X - 1) + (Y - 1) by noncomm_ring]
-  exact norm_add_le_of_le (norm_add_le_of_le (norm_mul_le_of_le hX hY) hX) hY
-
 /-- Let `ε` be a vector of signs; a matrix is block diagonal if its entry `(i, j)` vanishes whenever
 `ε i ≠ ε j`. Let the integer vector `l = 2λ : HCParam ε` be a doubled Harish-Chandra parameter of
 gap `h`: its entries are distinct and congruent to `card n - 1` mod 2, and `|λ i - λ j| ≥ h`
@@ -345,22 +337,6 @@ lemma norm_trace_conj_coordProj_mul_sub_le (ho : o.Injective) (hZ_le : ‖Z‖ �
     _ ≤ δ * ‖⁅coordProj p, k⁆‖ ^ 2 := by
         grw [← sum_mul, sum_norm_conj_coordProj_sub_le hk, mul_comm]
         exact (norm_nonneg _).trans hZ_le
-
-/-- Multiplication on the right by an orthogonal projection does not increase the Frobenius
-norm. -/
-
-lemma norm_mul_proj_le {ρ : ℝ} (hP : IsStarProjection P) (hX : ‖X‖ ≤ ρ) : ‖X * P‖ ≤ ρ := by
-  rw [← norm_star, star_mul, hP.isSelfAdjoint.star_eq]
-  exact norm_proj_mul_le hP (by rwa [norm_star])
-
-/-- The block `P A (1 - P)` of a matrix `A`, which maps the kernel of an orthogonal projection `P`
-to its range, has Frobenius norm at most that of the commutator `[P, A] = P A - A P`. -/
-lemma norm_cross_le (hP : IsStarProjection P) : ‖P * A * (1 - P)‖ ≤ ‖⁅P, A⁆‖ := by
-  have hPP : P * P = P := hP.isIdempotentElem
-  rw [show P * A * (1 - P) = P * ⁅P, A⁆ by
-    rw [Ring.lie_def]
-    linear_combination (norm := noncomm_ring) -hPP * A]
-  exact norm_proj_mul_le hP le_rfl
 
 /-- For an orthogonal projection `P`, consider the block `P A (1 - P)` of a matrix `A`, which maps
 the kernel of `P` to its range. If `‖A‖ ≤ δ` in the Frobenius norm, then these blocks for two
