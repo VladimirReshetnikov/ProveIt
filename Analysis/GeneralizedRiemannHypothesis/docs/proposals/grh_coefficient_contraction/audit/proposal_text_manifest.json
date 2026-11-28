@@ -1,0 +1,3429 @@
+{
+  "commit": "1a59f50680e470fb5269bbe70c06f974c95ad930",
+  "previous_review_commit": "d417d0b5b08edd4f5f67224fd310add7f1618ca0",
+  "scope": "All non-attribution Markdown and LaTeX texts in all 26 proposal directories",
+  "directory_count": 26,
+  "text_count": 79,
+  "total_bytes": 1057880,
+  "directories": [
+    "GRH_false_lift_averaging_proposal",
+    "centered_theta_lift_simplification",
+    "cm_norm_theta_simplification",
+    "cyclotomic-interpolation-and-theta-lifts",
+    "discrete_hecke_simplification",
+    "edge_hecke_simplification",
+    "gram_adjoint_simplification",
+    "grh-class-count-finite-quotient",
+    "grh_diagonal_sweep_proposal",
+    "grh_dual_fitting",
+    "grh_exchange_sweeps",
+    "grh_integral_field_presentation_proposal",
+    "grh_order_tests_2026-11-27",
+    "grh_real_samples_and_nearest_poles",
+    "newton_torsion_simplification",
+    "orbital_theta_exchange",
+    "projective_incidence_grh",
+    "proof_simplifications",
+    "rh-simplifications",
+    "rh_sparse_theta_proof",
+    "rh_two_order_tests_proposal",
+    "ribet_lattice_simplification",
+    "ribet_module_duality",
+    "shorter-theta-lift-proof",
+    "signed_theta_gain_simplification",
+    "theta-lift-simplifications"
+  ],
+  "added_directories_since_previous_review": [
+    "grh_diagonal_sweep_proposal",
+    "grh_exchange_sweeps",
+    "grh_integral_field_presentation_proposal",
+    "grh_real_samples_and_nearest_poles",
+    "projective_incidence_grh",
+    "ribet_lattice_simplification"
+  ],
+  "removed_directories_since_previous_review": [
+    "robust_theta_labels"
+  ],
+  "previously_reviewed_removed_proposals_remain_excluded": true,
+  "readable_lean_changes_since_previous_review": [
+    "Analysis/GeneralizedRiemannHypothesis/Lean/grh/CONTENTS.md",
+    "Analysis/GeneralizedRiemannHypothesis/Lean/grh/INDEX.md",
+    "Analysis/GeneralizedRiemannHypothesis/Lean/grh/src/Lib/General/LinearAlgebra/IntegralLattices.lean",
+    "Analysis/GeneralizedRiemannHypothesis/Lean/grh/src/New/Congruences/GaloisRepresentations/AttachedRepresentations.lean",
+    "Analysis/GeneralizedRiemannHypothesis/Lean/grh/src/New/Spanning/Multiplicities/EqualMultiplicities.lean",
+    "Analysis/GeneralizedRiemannHypothesis/Lean/grh/src/New/UpperBound/Objects/LabelsAndIndexTypes.lean"
+  ],
+  "files": [
+    {
+      "path": "GRH_false_lift_averaging_proposal/LEAN_PLAN.md",
+      "bytes": 8176,
+      "lines": 42,
+      "sha256": "cd2456e41bc9ae4fe989c7e668db244c42dcb79f9cba1347cea4de9fc815f241",
+      "git_blob": "99c92a801ce167bcb949d635b90b66ace64ab4da",
+      "headings": [
+        [
+          1,
+          "# Lean migration plan (not compiled)"
+        ],
+        [
+          3,
+          "## Preserve the public theorem"
+        ],
+        [
+          21,
+          "## Implementation order"
+        ],
+        [
+          31,
+          "## Candidate regions"
+        ],
+        [
+          35,
+          "## Acceptance checks"
+        ]
+      ]
+    },
+    {
+      "path": "GRH_false_lift_averaging_proposal/README.md",
+      "bytes": 1674,
+      "lines": 16,
+      "sha256": "240e0dabafb0f714fb302069e2ef6fd4f03b8091880e5aea67ff140cd3b09925",
+      "git_blob": "b9794b403dc54eec506e15cf40f3253fe35f44de",
+      "headings": [
+        [
+          1,
+          "# Eliminate the shrinking-coset argument at the bottom of the theta tower"
+        ],
+        [
+          7,
+          "## Files"
+        ]
+      ]
+    },
+    {
+      "path": "GRH_false_lift_averaging_proposal/false_lift_averaging.tex",
+      "bytes": 28387,
+      "lines": 229,
+      "sha256": "6540c9d5d95f7f9b9a470ade4d1843755ecf31c6b8d1f9a8d9512fb193cdfd09",
+      "git_blob": "da63bdc33219d07fb7ad2dca8f6cb936db0d7c00",
+      "headings": [
+        [
+          26,
+          "\\section{Where the simplification belongs}"
+        ],
+        [
+          45,
+          "\\section{The precise local interface}"
+        ],
+        [
+          105,
+          "\\section{A finite average with no limiting argument}"
+        ],
+        [
+          106,
+          "\\begin{lemma}[Finite quotient for a test function]\\label{lem:finite}"
+        ],
+        [
+          116,
+          "\\begin{lemma}[Annihilation and datum vanishing on the orbit span]\\label{lem:span}"
+        ],
+        [
+          133,
+          "\\section{The stabilizer removes the bad locus}"
+        ],
+        [
+          134,
+          "\\begin{lemma}[Every bad point has an annihilating stabilizer sum]\\label{lem:bad}"
+        ],
+        [
+          150,
+          "\\section{The surviving orbits are exactly block translates}"
+        ],
+        [
+          151,
+          "\\begin{lemma}[Open good orbits]\\label{lem:good}"
+        ],
+        [
+          162,
+          "\\section{The replacement theorem}"
+        ],
+        [
+          163,
+          "\\begin{theorem}[Vector-valued Reynolds descent]\\label{thm:main}"
+        ],
+        [
+          196,
+          "\\section{Why this should shorten the readable Lean development}"
+        ],
+        [
+          217,
+          "\\section{Nonduplication audit and limitations}"
+        ],
+        [
+          224,
+          "\\section{Verification and further research}"
+        ]
+      ]
+    },
+    {
+      "path": "GRH_false_lift_averaging_proposal/proposal_audit.md",
+      "bytes": 7198,
+      "lines": 57,
+      "sha256": "f0708b0b417e4c3cafbc60c4871e87b7c1e8b10e4f0c5ce1d5451437f191be87",
+      "git_blob": "fcebc8838b87342a2c9356aa9f85be2bc525483d",
+      "headings": [
+        [
+          1,
+          "# Nonduplication audit"
+        ],
+        [
+          26,
+          "### Closest overlaps"
+        ],
+        [
+          32,
+          "### Principal source identifiers (Git blob SHA-1)"
+        ]
+      ]
+    },
+    {
+      "path": "centered_theta_lift_simplification/FORMALIZATION.md",
+      "bytes": 7828,
+      "lines": 78,
+      "sha256": "2f9dd8d86531eef1c7873846789ab5e4ff95cebd77ea784c5288ecfba4979f19",
+      "git_blob": "aed03eca58c67f3049e955b23fbbb54ef5d4a619",
+      "headings": [
+        [
+          1,
+          "# Lean integration blueprint (not yet elaborated)"
+        ],
+        [
+          5,
+          "## 1. Generic finite-dimensional lemma"
+        ],
+        [
+          23,
+          "## 2. Bridge to existing automorphic hypotheses"
+        ],
+        [
+          44,
+          "## 3. Weaken only the completion step of Theorem C"
+        ],
+        [
+          55,
+          "## 4. Top-level substitution"
+        ],
+        [
+          71,
+          "## 5. Acceptance checklist"
+        ]
+      ]
+    },
+    {
+      "path": "centered_theta_lift_simplification/README.md",
+      "bytes": 2306,
+      "lines": 29,
+      "sha256": "d31bdaae70a569d382d0b6d78f5a92fa3adb561374f7f34f8a304780f3f788fe",
+      "git_blob": "e8c552cd9cc0ecd08f45487316460a21800c273e",
+      "headings": [
+        [
+          1,
+          "# Centered moments and adaptive completion in the theta-lift proof"
+        ],
+        [
+          5,
+          "## Main contribution"
+        ],
+        [
+          9,
+          "## Files"
+        ],
+        [
+          19,
+          "## Reproduction"
+        ]
+      ]
+    },
+    {
+      "path": "centered_theta_lift_simplification/centered_theta_lifts.tex",
+      "bytes": 34275,
+      "lines": 337,
+      "sha256": "72845ade0f24d5cbbc902aaa646f3f4a10b6e3cf123881464eb9a6644154dde0",
+      "git_blob": "48053a8e8682e327ac6b2e607166c72c2042a5f5",
+      "headings": [
+        [
+          32,
+          "\\section{Scope and proposed change}"
+        ],
+        [
+          37,
+          "\\subsection{Why target this particular interface?}"
+        ],
+        [
+          53,
+          "\\section{The exact interface supplied by the existing proof}"
+        ],
+        [
+          54,
+          "\\subsection{Notation and analytic target}"
+        ],
+        [
+          71,
+          "\\subsection{Theorem A and the moment inputs}"
+        ],
+        [
+          87,
+          "\\subsection{Theorem C before its last estimate}"
+        ],
+        [
+          94,
+          "\\section{A centered second-moment rank lemma}"
+        ],
+        [
+          95,
+          "\\subsection{Orbit covariance and its defect}"
+        ],
+        [
+          102,
+          "\\begin{lemma}[Centered covariance]\\label{lem:cov}"
+        ],
+        [
+          123,
+          "\\begin{theorem}[Direct rank increment on the ramified source]\\label{thm:increment}"
+        ],
+        [
+          149,
+          "\\subsection{Why this improves on the uncentered argument}"
+        ],
+        [
+          152,
+          "\\begin{corollary}[Quantitative spanning]\\label{cor:span}"
+        ],
+        [
+          167,
+          "\\section{Adaptive completion: weaken Theorem C exactly}"
+        ],
+        [
+          168,
+          "\\begin{theorem}[Budget version of Theorem C]\\label{thm:C}"
+        ],
+        [
+          193,
+          "\\section{New rank and main inequalities for the admissible data}"
+        ],
+        [
+          194,
+          "\\subsection{A smaller translate budget}"
+        ],
+        [
+          219,
+          "\\subsection{Compare the same determinant}"
+        ],
+        [
+          247,
+          "\\section{Return to the analytic criterion}"
+        ],
+        [
+          269,
+          "\\subsection{Why this is enough for RH and Dirichlet GRH}"
+        ],
+        [
+          278,
+          "\\section{A nonadaptive alternative: products of contractions}"
+        ],
+        [
+          281,
+          "\\begin{theorem}[Sampling translates without adapting to the current span]\\label{thm:random}"
+        ],
+        [
+          309,
+          "\\section{Limits, checks, and further research}"
+        ],
+        [
+          310,
+          "\\subsection{Two tests that keep the proposal honest}"
+        ],
+        [
+          315,
+          "\\subsection{Recommended formalization sequence}"
+        ],
+        [
+          320,
+          "\\subsection{Further research questions (ordered by feasibility)}"
+        ]
+      ]
+    },
+    {
+      "path": "cm_norm_theta_simplification/report.tex",
+      "bytes": 49468,
+      "lines": 1113,
+      "sha256": "53b96a6ebbf64bf62f8da2ba105a4044c217f784bfb15f29d333bc8d329c990f",
+      "git_blob": "8e8f14ee87528e949dd976b80776d0f2abdd398e",
+      "headings": [
+        [
+          102,
+          "\\section{What was analyzed and what is being proposed}"
+        ],
+        [
+          134,
+          "\\subsection{Why choose this simplification}"
+        ],
+        [
+          151,
+          "\\section{Where local sharpness enters the proof}"
+        ],
+        [
+          197,
+          "\\subsection{An analytic shortcut that the review does not endorse}"
+        ],
+        [
+          208,
+          "\\section{Exclusion audit: how this differs from the existing proposals}"
+        ],
+        [
+          259,
+          "\\section{Notation and the exact coefficient interface}"
+        ],
+        [
+          321,
+          "\\section{The unused generality: cancellation by CM norms}"
+        ],
+        [
+          344,
+          "\\begin{lemma}[Norm-balanced theta product]\\label{lem:balance}"
+        ],
+        [
+          388,
+          "\\section{Local constructions with two or three factors}"
+        ],
+        [
+          391,
+          "\\subsection{Inert odd primes: a root of unity of norm minus one}"
+        ],
+        [
+          419,
+          "\\subsection{Split primes, including two: the closure point \\texorpdfstring{$(1,-1)$}{(1,-1)}}"
+        ],
+        [
+          461,
+          "\\subsection{The ramified prime: three rational scales}"
+        ],
+        [
+          497,
+          "\\section{Transferring cancellation to a coefficient witness}"
+        ],
+        [
+          500,
+          "\\begin{lemma}[Copy-independent transfer]\\label{lem:transfer}"
+        ],
+        [
+          526,
+          "\\subsection{The same Katz bound with fewer copies}"
+        ],
+        [
+          560,
+          "\\subsection{The one-copy spanning witness is already in the source}"
+        ],
+        [
+          582,
+          "\\section{The coupling estimate also needs only two copies}"
+        ],
+        [
+          649,
+          "\\section{The four-copy replacement theorem}"
+        ],
+        [
+          685,
+          "\\begin{theorem}[Four-copy local sharpness]\\label{thm:four}"
+        ],
+        [
+          767,
+          "\\subsection{Why the same argument does not establish three copies uniformly}"
+        ],
+        [
+          780,
+          "\\section{Why the local multipliers do not create global height costs}"
+        ],
+        [
+          821,
+          "\\section{A concrete Lean integration plan}"
+        ],
+        [
+          824,
+          "\\subsection{Stage one: replace the local proof and preserve its public interface}"
+        ],
+        [
+          860,
+          "\\subsection{Stage two: optionally change the actual derivative block}"
+        ],
+        [
+          889,
+          "\\subsection{Files and declarations at the integration boundary}"
+        ],
+        [
+          919,
+          "\\section{Checks performed and what remains to verify}"
+        ],
+        [
+          922,
+          "\\subsection{Source and mathematical checks}"
+        ],
+        [
+          937,
+          "\\subsection{Exact finite computations}"
+        ],
+        [
+          965,
+          "\\subsection{Formal status and next validation gate}"
+        ],
+        [
+          983,
+          "\\section{Assessment}"
+        ],
+        [
+          1001,
+          "\\section{Reproduction and archive contents}"
+        ]
+      ]
+    },
+    {
+      "path": "cyclotomic-interpolation-and-theta-lifts/README.md",
+      "bytes": 2604,
+      "lines": 40,
+      "sha256": "c3ac34d72237564e21e83c25213672e22733ec53a87799466feaac878edc1945",
+      "git_blob": "080ea32f50a3da9ecd95faa5f33c52c24d3e33cc",
+      "headings": [
+        [
+          1,
+          "# Choosing Selmer twists by cyclotomic interpolation"
+        ],
+        [
+          5,
+          "## Files"
+        ],
+        [
+          17,
+          "## Reading the argument"
+        ],
+        [
+          23,
+          "## Reproduction"
+        ]
+      ]
+    },
+    {
+      "path": "cyclotomic-interpolation-and-theta-lifts/theta_simplifications.tex",
+      "bytes": 29921,
+      "lines": 257,
+      "sha256": "c5eacf5b65e314b441ee1ba965d7f9dc272f719b4332df1ac2f3f22daeba8519",
+      "git_blob": "ed596f05ef8cc0d9e6563b10b6e38c0dc67483e1",
+      "headings": [
+        [
+          25,
+          "\\section{Where the two changes enter}"
+        ],
+        [
+          36,
+          "\\section{A uniform torsion selection theorem}\\label{sec:statement}"
+        ],
+        [
+          43,
+          "\\begin{theorem}[Simultaneous torsion selection]\\label{th:main}"
+        ],
+        [
+          65,
+          "\\section{An interpolation grid with an integral bound}\\label{sec:grid}"
+        ],
+        [
+          72,
+          "\\begin{lemma}[Interpolation weights]\\label{lem:grid}"
+        ],
+        [
+          89,
+          "\\begin{lemma}[Interpolation in any number of variables]\\label{lem:tensor}"
+        ],
+        [
+          105,
+          "\\section{One choice of scales for all the tests}\\label{sec:bands}"
+        ],
+        [
+          137,
+          "\\section{One character for every power in the chain}\\label{sec:powers}"
+        ],
+        [
+          139,
+          "\\begin{corollary}\\label{cor:power}"
+        ],
+        [
+          155,
+          "\\section{Near-spanning from two moment estimates}\\label{sec:cover}"
+        ],
+        [
+          165,
+          "\\begin{theorem}[Rank after a prescribed number of translates]\\label{th:span}"
+        ],
+        [
+          195,
+          "\\subsection*{The constants paid by the determinant}"
+        ],
+        [
+          214,
+          "\\section{From the determinant comparison to RH}\\label{sec:end}"
+        ],
+        [
+          240,
+          "\\section*{Source correspondence and verification}"
+        ]
+      ]
+    },
+    {
+      "path": "discrete_hecke_simplification/LEAN_PLAN.md",
+      "bytes": 8951,
+      "lines": 45,
+      "sha256": "7c59579ec4f7ffe54bf0bb8928121e43ea7b7d1af9020213fbbe48354ece2189",
+      "git_blob": "1c34d86bcb8882f1c0619fb18790f2d60f1d7065",
+      "headings": [
+        [
+          1,
+          "# Lean migration plan (not compiled Lean)"
+        ],
+        [
+          6,
+          "## Phase A: remove the geometric counting bridge"
+        ],
+        [
+          22,
+          "### Deletion / compatibility audit"
+        ],
+        [
+          28,
+          "## Phase B: direct bad Smith directions (independent of A)"
+        ],
+        [
+          38,
+          "### Verification gates"
+        ]
+      ]
+    },
+    {
+      "path": "discrete_hecke_simplification/README.md",
+      "bytes": 1796,
+      "lines": 20,
+      "sha256": "6d43add630ebe06f62f883d39f3313567b4f073cdb3f62b5649770d537a5bd65",
+      "git_blob": "a17caf5865f6877cc6799e7943cdc9ade038d363",
+      "headings": [
+        [
+          1,
+          "# Discrete local Hecke estimates: two proof simplifications"
+        ],
+        [
+          5,
+          "## Contents"
+        ],
+        [
+          12,
+          "## Reproduce"
+        ]
+      ]
+    },
+    {
+      "path": "discrete_hecke_simplification/discrete_hecke.tex",
+      "bytes": 36870,
+      "lines": 350,
+      "sha256": "bab727551bf6f06ee7f873a81217abdcacfd8a2efc2645555f8c436bed18e1cb",
+      "git_blob": "53ef64e9d16583f0d3039e3037e8dd4bb09b13b3",
+      "headings": [
+        [
+          24,
+          "\\section{Scope and recommendation}"
+        ],
+        [
+          47,
+          "\\section{The precise combinatorial input from the existing proof}"
+        ],
+        [
+          82,
+          "\\section{A finite signed identity}"
+        ],
+        [
+          85,
+          "\\begin{lemma}[Integer-lattice signed count]\\label{lem:signed}"
+        ],
+        [
+          110,
+          "\\begin{lemma}[Cycle determinant]\\label{lem:det}"
+        ],
+        [
+          124,
+          "\\section{Evaluate the signed sum by monomial orbits}\\label{sec:orbits}"
+        ],
+        [
+          127,
+          "\\begin{lemma}[Alternating Molien identity]\\label{lem:molien}"
+        ],
+        [
+          155,
+          "\\section{A discrete density theorem without measure theory}\\label{sec:density}"
+        ],
+        [
+          158,
+          "\\begin{lemma}[Density in a full integer lattice]\\label{lem:lattice}"
+        ],
+        [
+          178,
+          "\\begin{lemma}[Uniform interior shift]\\label{lem:shift}"
+        ],
+        [
+          187,
+          "\\begin{theorem}[Arithmetic Pieri counting bound]\\label{thm:count}"
+        ],
+        [
+          215,
+          "\\section{Recover the existing bound, with its original constants}\\label{sec:recover}"
+        ],
+        [
+          235,
+          "\\section{A direct saturation lemma for the Hecke factor}\\label{sec:saturation}"
+        ],
+        [
+          238,
+          "\\begin{theorem}[Bad Smith directions inject into the residue budget]\\label{thm:smith}"
+        ],
+        [
+          274,
+          "\\section{Apply the saturation theorem to the existing local data}\\label{sec:apply}"
+        ],
+        [
+          313,
+          "\\section{Integration, expected size and novelty audit}"
+        ],
+        [
+          340,
+          "\\section{Verification and further research}"
+        ],
+        [
+          346,
+          "\\section*{Source references}"
+        ]
+      ]
+    },
+    {
+      "path": "edge_hecke_simplification/LEAN_PLAN.md",
+      "bytes": 8540,
+      "lines": 130,
+      "sha256": "74fca69698f127e975d357f029fe676a1c25917d74ed11ae1988eb8e6a808083",
+      "git_blob": "3f56dcabbbd4d7d48e299b5de3aa2beebe4de408",
+      "headings": [
+        [
+          1,
+          "# Lean integration specification — not compiled code"
+        ],
+        [
+          10,
+          "## A. Direct threshold-rank bound (implement first)"
+        ],
+        [
+          70,
+          "## B. Integral orbit trace average"
+        ],
+        [
+          120,
+          "## Acceptance gates"
+        ]
+      ]
+    },
+    {
+      "path": "edge_hecke_simplification/README.md",
+      "bytes": 2039,
+      "lines": 22,
+      "sha256": "b4d846c27873b87575c1b8a1b128523e80997abb8bdfca1196262425dabe8ec1",
+      "git_blob": "f91e1c822c483398c13d0e7a1fdf02f2fdfc94f8",
+      "headings": [
+        [
+          1,
+          "# Integral orbit traces and the direct exceptional-divisor bound"
+        ]
+      ]
+    },
+    {
+      "path": "edge_hecke_simplification/report.tex",
+      "bytes": 28705,
+      "lines": 237,
+      "sha256": "692c6d3a90d99702088e63cc4e0b81b91879fd794e3efeb1bae856cfa076bd67",
+      "git_blob": "f7fd6a0337f46b0ccb4cde5ad0077eb153d9eaaf",
+      "headings": [
+        [
+          31,
+          "\\section{Target and scope}"
+        ],
+        [
+          53,
+          "\\section{The exact invariant-average contract}"
+        ],
+        [
+          60,
+          "\\begin{theorem}[Required invariant average]\\label{thm:avg}"
+        ],
+        [
+          72,
+          "\\section{Integral interpolation and the orbit lattice}"
+        ],
+        [
+          74,
+          "\\begin{lemma}[Integral evaluation span]\\label{lem:density}"
+        ],
+        [
+          100,
+          "\\section{The short proof of the invariant average}"
+        ],
+        [
+          108,
+          "\\begin{lemma}[Naturality without weighted adjointness]\\label{lem:natural}"
+        ],
+        [
+          148,
+          "\\section{A direct exceptional-divisor lemma}\\label{sec:rank}"
+        ],
+        [
+          151,
+          "\\begin{theorem}[Threshold rank lemma]\\label{thm:rank}"
+        ],
+        [
+          175,
+          "\\begin{corollary}[Truncated determinant]\\label{cor:trunc}"
+        ],
+        [
+          190,
+          "\\begin{lemma}[Two-sided change of coordinates]\\label{lem:ends}"
+        ],
+        [
+          202,
+          "\\section{Insert the replacements into the existing proof}"
+        ],
+        [
+          225,
+          "\\section{Comparison, risks, and further research}"
+        ],
+        [
+          234,
+          "\\section*{Verification and provenance}"
+        ]
+      ]
+    },
+    {
+      "path": "gram_adjoint_simplification/LEAN_PLAN.md",
+      "bytes": 7929,
+      "lines": 69,
+      "sha256": "f5b4f46de31af7d2c8e8077c187f02de478d05bf7014244dcff98bd8c066e728",
+      "git_blob": "fb6120e7b9183db841b6ca344574e4b781411ec2",
+      "headings": [
+        [
+          1,
+          "# Integration blueprint"
+        ],
+        [
+          5,
+          "## 1. First preserve the original comparison operator"
+        ],
+        [
+          9,
+          "### A. Integer Gram matrix certificate"
+        ],
+        [
+          13,
+          "### B. Adapted coordinates at a finite prime"
+        ],
+        [
+          32,
+          "### C. Integral adjoint"
+        ],
+        [
+          40,
+          "### D. Conjugate norm of the adjoint"
+        ],
+        [
+          54,
+          "### E. Scalar bounds"
+        ],
+        [
+          58,
+          "## 2. Optional normalization change"
+        ],
+        [
+          62,
+          "## 3. Acceptance gates"
+        ]
+      ]
+    },
+    {
+      "path": "gram_adjoint_simplification/README.md",
+      "bytes": 1890,
+      "lines": 23,
+      "sha256": "808e37ab61867ae230e2eda39b0a48df1b029548b91ce216566a97d3be28b35a",
+      "git_blob": "6b7e0b7b1cf783fe37b74be0efa7e81b6d28d39c",
+      "headings": [
+        [
+          1,
+          "# The integral adjoint without a tight frame"
+        ],
+        [
+          5,
+          "## Files"
+        ],
+        [
+          13,
+          "## Reproduction"
+        ]
+      ]
+    },
+    {
+      "path": "gram_adjoint_simplification/gram_adjoint.tex",
+      "bytes": 27927,
+      "lines": 276,
+      "sha256": "5bae430df05970202cd00e6b472dbbed3415e92f895b4bd325d6af07d7a0d478",
+      "git_blob": "d1ce355c7b95cd83a2af6dd4187098a0f477afe4",
+      "headings": [
+        [
+          29,
+          "\\section{Target of the simplification}"
+        ],
+        [
+          47,
+          "\\section{Finite-place duality instead of integral frames}"
+        ],
+        [
+          48,
+          "\\subsection{An abstract scaled-adjoint lemma}"
+        ],
+        [
+          52,
+          "\\begin{lemma}[Integral adjoint by Gram duality]\\label{lem:local}"
+        ],
+        [
+          75,
+          "\\subsection{The hook number occurs only once}"
+        ],
+        [
+          93,
+          "\\subsection{Local bases of actual form tuples}\\label{sec:bases}"
+        ],
+        [
+          123,
+          "\\section{Archimedean duality without counting vectors}"
+        ],
+        [
+          124,
+          "\\subsection{The conjugation issue}"
+        ],
+        [
+          134,
+          "\\begin{lemma}[Paired dual norm]\\label{lem:dual}"
+        ],
+        [
+          150,
+          "\\begin{theorem}[Two-conjugate adjoint bound]\\label{thm:arch}"
+        ],
+        [
+          171,
+          "\\subsection{Recovering the original constants}"
+        ],
+        [
+          193,
+          "\\section{Preserving the determinant and the RH endpoint}"
+        ],
+        [
+          240,
+          "\\section{What can be removed and how to formalize it}"
+        ],
+        [
+          250,
+          "\\section{Nonduplication, source provenance, and checks}"
+        ]
+      ]
+    },
+    {
+      "path": "grh-class-count-finite-quotient/report.tex",
+      "bytes": 6275,
+      "lines": 122,
+      "sha256": "71a80d53acab1ff95d64499f62c19352f946b9ea118751aee1430f31ecc948a0",
+      "git_blob": "c52303f9fe264427fa90b4ce6273ecdf025afcb6",
+      "headings": [
+        [
+          21,
+          "\\section*{1. The replacement invariant}"
+        ],
+        [
+          52,
+          "\\section*{2. Cardinality and the explicit constant}"
+        ],
+        [
+          83,
+          "\\section*{3. Lean integration and verification boundary}"
+        ]
+      ]
+    },
+    {
+      "path": "grh_diagonal_sweep_proposal/LEAN_PLAN.md",
+      "bytes": 4399,
+      "lines": 27,
+      "sha256": "241b4bc7691cc20e22b3631bf445cd10f8264a7402763a1a1e0e46271baa1cbd",
+      "git_blob": "973e9fa570f65f308f9e05717f7a14718dd04ec5",
+      "headings": [
+        [
+          1,
+          "# Integration plan (not a compiled Lean patch)"
+        ],
+        [
+          5,
+          "## Phase 1 — replace the global induction, preserve public statements"
+        ],
+        [
+          15,
+          "## Phase 2 — sharpen the coefficient bound"
+        ],
+        [
+          19,
+          "## Phase 3 — optional endpoint count"
+        ],
+        [
+          23,
+          "## Phase 4 — validate and measure"
+        ]
+      ]
+    },
+    {
+      "path": "grh_diagonal_sweep_proposal/README.md",
+      "bytes": 2077,
+      "lines": 16,
+      "sha256": "ca4297c698e75863bf5cbd3b3f83e79c773bfa24dcbc7f1654d428a763fadc48",
+      "git_blob": "faf39267be1d8a1063f5b30013f606f9c0c1944a",
+      "headings": [
+        [
+          1,
+          "# A deterministic diagonal sweep for the theta-lift proof"
+        ]
+      ]
+    },
+    {
+      "path": "grh_diagonal_sweep_proposal/report.tex",
+      "bytes": 29026,
+      "lines": 244,
+      "sha256": "e271fe783016b50100f834ebd8a4928682cebefbafd8e921bef4ac83c3dbae32",
+      "git_blob": "bd58d29b4ad2606897537373addef4f9ca2bb635",
+      "headings": [
+        [
+          28,
+          "\\section{Recommendation and scope}"
+        ],
+        [
+          39,
+          "\\section{The source contract}"
+        ],
+        [
+          40,
+          "\\subsection{Path notation}"
+        ],
+        [
+          45,
+          "\\subsection{Period transfers and scalar factors}"
+        ],
+        [
+          63,
+          "\\section{An explicit replacement for the path induction}"
+        ],
+        [
+          78,
+          "\\begin{lemma}[Explicit corner]\\label{lem:corner}"
+        ],
+        [
+          98,
+          "\\begin{theorem}[Deterministic weighted transfer]\\label{thm:sweep}"
+        ],
+        [
+          123,
+          "\\section{The exact diagonal budget}\\label{sec:exact}"
+        ],
+        [
+          136,
+          "\\begin{theorem}[Sharp input to the transfer fold]\\label{thm:exact}"
+        ],
+        [
+          153,
+          "\\section{A second improvement: count the endpoints, not a worst-case square}"
+        ],
+        [
+          156,
+          "\\subsection{First-path coefficients}"
+        ],
+        [
+          163,
+          "\\subsection{Last-path tuples}"
+        ],
+        [
+          177,
+          "\\begin{theorem}[Combined endpoint-sensitive estimate]"
+        ],
+        [
+          202,
+          "\\section{Integration and preservation of the determinant}"
+        ],
+        [
+          203,
+          "\\subsection{A safe compatibility proof}"
+        ],
+        [
+          208,
+          "\\subsection{End-to-end logical placement}"
+        ],
+        [
+          211,
+          "\\subsection{What to remove}"
+        ],
+        [
+          221,
+          "\\section{Nonduplication audit and limitations}"
+        ],
+        [
+          228,
+          "\\section{Further research questions}"
+        ],
+        [
+          236,
+          "\\section*{Source and reproduction record}"
+        ]
+      ]
+    },
+    {
+      "path": "grh_dual_fitting/LEAN_PLAN.md",
+      "bytes": 8958,
+      "lines": 58,
+      "sha256": "9c8a9d65e488c73390902af0f6acb77920ad37e7a73a041ec246f7d7dfb70a3d",
+      "git_blob": "9681ca3afc38eb19003e0cb275f0d6ba952df2ba",
+      "headings": [
+        [
+          1,
+          "# Interface-preserving Lean migration"
+        ],
+        [
+          5,
+          "## Stage 1 — specialization at zero (lowest risk)"
+        ],
+        [
+          18,
+          "## Stage 2 — direct relative Fitting cost"
+        ],
+        [
+          36,
+          "## Stage 3 — main-block relation rows"
+        ],
+        [
+          46,
+          "## Stage 4 — downstream invariants"
+        ],
+        [
+          52,
+          "## Acceptance and measurements"
+        ]
+      ]
+    },
+    {
+      "path": "grh_dual_fitting/README.md",
+      "bytes": 2264,
+      "lines": 28,
+      "sha256": "1f4711b3679e54a79294726ba205784c7ec028b9e1f71e19eb294441991a9ece",
+      "git_blob": "748c253abc7a7891a82a43fafa72c81df713b9fe",
+      "headings": [
+        [
+          1,
+          "# Finite duality instead of iterative Fitting costs"
+        ],
+        [
+          7,
+          "## Contents"
+        ],
+        [
+          15,
+          "## Reproduction"
+        ],
+        [
+          26,
+          "## Status"
+        ]
+      ]
+    },
+    {
+      "path": "grh_dual_fitting/report.tex",
+      "bytes": 30991,
+      "lines": 234,
+      "sha256": "5945fb5edc22d8e8bbee83b146e5c91665d1088bcc1c3f5cb7de53b4f37ac16a",
+      "git_blob": "03cf4a77680d15cbdbb0abbd13597c2b832e21d9",
+      "headings": [
+        [
+          26,
+          "\\section{Recommendation and scope}"
+        ],
+        [
+          42,
+          "\\subsection{Source snapshot and verification boundary}"
+        ],
+        [
+          45,
+          "\\section{The exact duality needed}"
+        ],
+        [
+          47,
+          "\\begin{lemma}[Finite duality]\\label{lem:duality}"
+        ],
+        [
+          62,
+          "\\begin{lemma}[One alternating determinant cost]\\label{lem:cost}"
+        ],
+        [
+          74,
+          "\\section{Replacement I: the relative cost in one step}"
+        ],
+        [
+          82,
+          "\\begin{theorem}[Canonical relative Fitting cost]\\label{thm:relative}"
+        ],
+        [
+          103,
+          "\\section{Replacement II: a determinant at the origin}"
+        ],
+        [
+          109,
+          "\\begin{theorem}[Specialize first, then take one determinant]\\label{thm:constant}"
+        ],
+        [
+          128,
+          "\\section{The triangular Fitting theorem with unchanged cost}"
+        ],
+        [
+          138,
+          "\\begin{corollary}[Same triangular contract]\\label{cor:triangle}"
+        ],
+        [
+          159,
+          "\\section{Replacement III: exact block determinant by the row lattice}"
+        ],
+        [
+          169,
+          "\\begin{lemma}[Row packing]\\label{lem:packing}"
+        ],
+        [
+          175,
+          "\\begin{theorem}[Optimal determinant]\\label{thm:block}"
+        ],
+        [
+          188,
+          "\\begin{corollary}[The two original contracts]"
+        ],
+        [
+          195,
+          "\\section{Integration into the common Ribet element}"
+        ],
+        [
+          215,
+          "\\subsection{What a successful Lean patch would simplify}"
+        ],
+        [
+          220,
+          "\\section{Comparison with the existing proposal corpus}"
+        ],
+        [
+          230,
+          "\\section{Further research and validation}"
+        ]
+      ]
+    },
+    {
+      "path": "grh_exchange_sweeps/LEAN_PLAN.md",
+      "bytes": 6672,
+      "lines": 34,
+      "sha256": "a9db3f52a9285271d0e288039321c2ee6456c1ba01a034b448c39cbe60c81cfa",
+      "git_blob": "3cddc5a3276943e159f21ee101e9cb58f4a1d974",
+      "headings": [
+        [
+          1,
+          "# Lean migration: two independent changes"
+        ],
+        [
+          5,
+          "## A. Sharpen the transfer bound without restructuring anything"
+        ],
+        [
+          11,
+          "## B. Canonical sweep instead of arbitrary-path search"
+        ],
+        [
+          17,
+          "## C. Use the tighter bound downstream"
+        ],
+        [
+          21,
+          "## D. Normalize the triangle's weight bookkeeping"
+        ],
+        [
+          27,
+          "## Acceptance and reproducibility"
+        ]
+      ]
+    },
+    {
+      "path": "grh_exchange_sweeps/README.md",
+      "bytes": 2159,
+      "lines": 15,
+      "sha256": "901fbb453907a4447eef4ce334786d172ef4dcf7d2dc9bd0e271e324638b05a5",
+      "git_blob": "834afd395d414423a32765d25af0f2abd9ae1973",
+      "headings": [
+        [
+          1,
+          "# Canonical exchange sweeps and normalized Gram pairings"
+        ],
+        [
+          5,
+          "## Files and reproduction"
+        ],
+        [
+          13,
+          "## Limitations"
+        ]
+      ]
+    },
+    {
+      "path": "grh_exchange_sweeps/report.tex",
+      "bytes": 27458,
+      "lines": 269,
+      "sha256": "41616a3dd2a1461e04b8b575525c6d43460102f0b16d8ee70ba675a4151935de",
+      "git_blob": "cb5cd5c9d71d959afd5f7b8d391f1a9b76064ebd",
+      "headings": [
+        [
+          26,
+          "\\section{Scope and the location of the savings}"
+        ],
+        [
+          42,
+          "\\section{What an exchange actually costs}"
+        ],
+        [
+          71,
+          "\\begin{theorem}[Exact diagonal charge]\\label{thm:charge}"
+        ],
+        [
+          89,
+          "\\section{A deterministic sweep of the two grids}\\label{sec:sweep}"
+        ],
+        [
+          106,
+          "\\begin{lemma}[Sweep schedule]\\label{lem:sched}"
+        ],
+        [
+          140,
+          "\\section{Exact column counts and the auxiliary-form estimate}"
+        ],
+        [
+          161,
+          "\\section{A second shortening: remove weights from the triangle laws}\\label{sec:triangle}"
+        ],
+        [
+          175,
+          "\\begin{lemma}[Weight gauge]\\label{lem:gauge}"
+        ],
+        [
+          207,
+          "\\begin{lemma}[Normalized chain laws]\\label{lem:chain}"
+        ],
+        [
+          222,
+          "\\begin{theorem}[One Gram recurrence]\\label{thm:gram}"
+        ],
+        [
+          250,
+          "\\section{Lean integration and deletion criteria}"
+        ],
+        [
+          260,
+          "\\section{Nonduplication, checks and further questions}"
+        ]
+      ]
+    },
+    {
+      "path": "grh_integral_field_presentation_proposal/README.md",
+      "bytes": 2837,
+      "lines": 40,
+      "sha256": "b5aac90100fe2dac290b32fc3d1a6de4d2de3e13f157afa0226671d927b20989",
+      "git_blob": "bb8e20af5716f5157851d95c80728c2e45534026",
+      "headings": [
+        [
+          1,
+          "# One integral presentation instead of three local arguments"
+        ],
+        [
+          5,
+          "## Contents"
+        ],
+        [
+          15,
+          "## Reproduce"
+        ],
+        [
+          26,
+          "## Audit scope"
+        ]
+      ]
+    },
+    {
+      "path": "grh_integral_field_presentation_proposal/lean_plan.md",
+      "bytes": 5652,
+      "lines": 36,
+      "sha256": "2efc405e0a567a3abb98d300b528381dee793ac0682cdb928b9e969e266f126c",
+      "git_blob": "39364fc90a1b14eeffa2191e7504575e2402d016",
+      "headings": [
+        [
+          1,
+          "# Lean migration plan (not a compiled patch)"
+        ],
+        [
+          5,
+          "## Stage 0: establish baseline"
+        ],
+        [
+          9,
+          "## Stage 1: integral order and trace dual"
+        ],
+        [
+          15,
+          "## Stage 2: phase"
+        ],
+        [
+          19,
+          "## Stage 3: geometric orbits (small version first)"
+        ],
+        [
+          25,
+          "## Stage 4: full-ring congruences and consumers"
+        ],
+        [
+          29,
+          "## Acceptance criteria"
+        ]
+      ]
+    },
+    {
+      "path": "grh_integral_field_presentation_proposal/report.tex",
+      "bytes": 29433,
+      "lines": 233,
+      "sha256": "2c3b0e2c063594a63492566fbbec41fb897d566f45931931625f766e7e50e3e5",
+      "git_blob": "4db06033d54b9455a230e2f0a3114cdad70236a7",
+      "headings": [
+        [
+          19,
+          "\\section{Where the proposal fits}"
+        ],
+        [
+          38,
+          "\\section{Setup and the replacement interface}"
+        ],
+        [
+          50,
+          "\\begin{theorem}[Integral-field package]\\label{thm:package}"
+        ],
+        [
+          78,
+          "\\section{A short direct proof of the integral presentation}"
+        ],
+        [
+          79,
+          "\\begin{lemma}[Coprime discriminants]\\label{lem:disc}"
+        ],
+        [
+          89,
+          "\\section{Trace duality and an explicit conjugation phase}"
+        ],
+        [
+          90,
+          "\\begin{lemma}[Monogenic trace pairing]\\label{lem:trace}"
+        ],
+        [
+          120,
+          "\\section{One finite algebra for every prime}"
+        ],
+        [
+          133,
+          "\\begin{lemma}[Geometric orbit model]\\label{lem:orbits}"
+        ],
+        [
+          146,
+          "\\section{The Frobenius action and self-conjugate places}"
+        ],
+        [
+          151,
+          "\\begin{corollary}[Exact self-conjugacy criterion]\\label{cor:star}"
+        ],
+        [
+          160,
+          "\\section{The crucial nonreduced-ring safeguard}"
+        ],
+        [
+          169,
+          "\\begin{corollary}[Partner congruence at inert primes]"
+        ],
+        [
+          181,
+          "\\section{Integration into the readable Lean development}"
+        ],
+        [
+          203,
+          "\\section{Overlap audit and validation}"
+        ],
+        [
+          217,
+          "\\section{Further research questions}"
+        ],
+        [
+          226,
+          "\\section*{Sources and reproducibility}"
+        ]
+      ]
+    },
+    {
+      "path": "grh_order_tests_2026-11-27/grh_order_tests/README.md",
+      "bytes": 6242,
+      "lines": 133,
+      "sha256": "0950584d78261db8a5826a54c45cf22a4209af1026cb59704de4b75f54683bba",
+      "git_blob": "044011b7327c97bbdec810d5ac4610eebf508336",
+      "headings": [
+        [
+          1,
+          "# Replacing primitive labels with norm tests"
+        ],
+        [
+          9,
+          "## Main result"
+        ],
+        [
+          25,
+          "## Status and scope"
+        ],
+        [
+          42,
+          "## Contents"
+        ],
+        [
+          65,
+          "## Reproduce the arithmetic checks"
+        ],
+        [
+          90,
+          "## Reproduce the source audit"
+        ],
+        [
+          113,
+          "## Build the PDF"
+        ],
+        [
+          127,
+          "## Independent verification of the starting proof"
+        ]
+      ]
+    },
+    {
+      "path": "grh_order_tests_2026-11-27/grh_order_tests/audit/existing_proposals.md",
+      "bytes": 15716,
+      "lines": 106,
+      "sha256": "ba6dbdf579923ccc3abf959c151a4e614abe32232a7a6d27ff7dcec5565f1b64",
+      "git_blob": "8de070f7f5b10ee35231ec995bf02cfe3820f663",
+      "headings": [
+        [
+          1,
+          "# Audit of existing GRH proof-simplification proposals"
+        ],
+        [
+          8,
+          "## Completeness and method"
+        ],
+        [
+          20,
+          "## Complete proposal inventory"
+        ],
+        [
+          30,
+          "## Exclusion matrix by mechanism"
+        ],
+        [
+          34,
+          "### A. Spanning and rank–covolume interface"
+        ],
+        [
+          49,
+          "### B. Local torsion specialization"
+        ],
+        [
+          59,
+          "### C. Good quadratic twists and zero detection"
+        ],
+        [
+          73,
+          "### D. Cutoff, data existence and classical prime estimates"
+        ],
+        [
+          88,
+          "## What remains genuinely different at the level of the proposal collection"
+        ],
+        [
+          102,
+          "## Practical novelty test for the new report"
+        ]
+      ]
+    },
+    {
+      "path": "grh_order_tests_2026-11-27/grh_order_tests/audit/lean_migration.md",
+      "bytes": 14711,
+      "lines": 316,
+      "sha256": "782cda24225facbbfd4d9e9947ad93bc21299a4074ffa8de9847cc440821ebbd",
+      "git_blob": "28bf57ddf9e32ab6c281a4d91db59773b240ce96",
+      "headings": [
+        [
+          1,
+          "# Good labels: complete consumer audit and migration boundaries"
+        ],
+        [
+          10,
+          "## Conclusion"
+        ],
+        [
+          24,
+          "## Recommended predicate"
+        ],
+        [
+          53,
+          "### Why the norm tests suffice"
+        ],
+        [
+          66,
+          "### Why every prime-power image retains degree r"
+        ],
+        [
+          86,
+          "### Why normalization preserves the predicate"
+        ],
+        [
+          97,
+          "## Exact count"
+        ],
+        [
+          131,
+          "### Uniform repository bound, with no analytic totient estimate"
+        ],
+        [
+          161,
+          "### Shorter formalization path: omit CRT and the exact polynomial count"
+        ],
+        [
+          192,
+          "## Correct use of Green's weight: a subtle distinction"
+        ],
+        [
+          230,
+          "## Complete consumer map"
+        ],
+        [
+          270,
+          "## What is actually removable"
+        ],
+        [
+          286,
+          "## Novelty against existing proposals"
+        ],
+        [
+          298,
+          "## Checks and remaining implementation work"
+        ]
+      ]
+    },
+    {
+      "path": "grh_order_tests_2026-11-27/grh_order_tests/order_tests.tex",
+      "bytes": 46350,
+      "lines": 1043,
+      "sha256": "3938f1fe684121d61408a156bfd021ced3b86295058358a4d7130ae64f56c229",
+      "git_blob": "7ac97dbdf258aad02498f58faa270ee69dd5a3be",
+      "headings": [
+        [
+          95,
+          "\\section{What the proof does, and where the excess hypothesis occurs}"
+        ],
+        [
+          98,
+          "\\subsection{The comparison that drives the proof}"
+        ],
+        [
+          137,
+          "\\subsection{What the distinguished label is actually used for}"
+        ],
+        [
+          164,
+          "\\subsection{Status of the starting proof and of this analysis}"
+        ],
+        [
+          181,
+          "\\section{The replacement theorem}"
+        ],
+        [
+          220,
+          "\\begin{theorem}[Sufficient properties and exact count]"
+        ],
+        [
+          261,
+          "\\section{Proof of the arithmetic properties}"
+        ],
+        [
+          270,
+          "\\subsection{The coprime decomposition}"
+        ],
+        [
+          272,
+          "\\begin{lemma}"
+        ],
+        [
+          288,
+          "\\subsection{Why every prime-power image still has full degree}"
+        ],
+        [
+          320,
+          "\\subsection{Norm divisibility and the common power}"
+        ],
+        [
+          349,
+          "\\subsection{Frobenius and scalar invariance}"
+        ],
+        [
+          371,
+          "\\subsection{Why old primitive labels are included}"
+        ],
+        [
+          383,
+          "\\section{Exact counting and the uniform bound needed by the source}"
+        ],
+        [
+          386,
+          "\\subsection{Counting roots by exponents}"
+        ],
+        [
+          427,
+          "\\subsection{Using the source's already available exponent margin}"
+        ],
+        [
+          440,
+          "\\begin{lemma}[An elementary uniform density]"
+        ],
+        [
+          462,
+          "\\begin{corollary}[Uniform polynomial count]"
+        ],
+        [
+          485,
+          "\\subsection{A shorter counting route for the Lean implementation}"
+        ],
+        [
+          527,
+          "\\section{The resulting bad-type estimate}"
+        ],
+        [
+          533,
+          "\\subsection{The comparison weight is not an exact representation mass}"
+        ],
+        [
+          562,
+          "\\subsection{From counting to a tuple projector}"
+        ],
+        [
+          596,
+          "\\subsection{The numerical obligation that disappears}"
+        ],
+        [
+          621,
+          "\\section{How to integrate the replacement into Lean}"
+        ],
+        [
+          624,
+          "\\subsection{Preserve the output contract}"
+        ],
+        [
+          653,
+          "\\subsection{Definition and lemma boundaries}"
+        ],
+        [
+          691,
+          "\\subsection{The audited edit sites}"
+        ],
+        [
+          734,
+          "\\subsection{What must be rebuilt, and what is actually removed}"
+        ],
+        [
+          763,
+          "\\section{Why this does not repeat the existing proposals}"
+        ],
+        [
+          809,
+          "\\section{Examples, counterexamples, and executable checks}"
+        ],
+        [
+          812,
+          "\\subsection{A qualifying polynomial that is not primitive}"
+        ],
+        [
+          861,
+          "\\subsection{Why the hypotheses cannot simply be dropped}"
+        ],
+        [
+          891,
+          "\\subsection{What the included programs verify}"
+        ],
+        [
+          916,
+          "\\section{Assessment and next implementation step}"
+        ],
+        [
+          952,
+          "\\section{Reproducing the report and checks}"
+        ],
+        [
+          976,
+          "\\section{Notation and source dictionary}"
+        ]
+      ]
+    },
+    {
+      "path": "grh_real_samples_and_nearest_poles/LEAN_PLAN.md",
+      "bytes": 6462,
+      "lines": 35,
+      "sha256": "eba30314b2020dd2be20a40f4eeb0357669e0576003992db0bb7d9be0f30c980",
+      "git_blob": "5f2c68f24e07effcce9cb8faaa84bf09880592af",
+      "headings": [
+        [
+          1,
+          "# Implementation plan (not compiled Lean code)"
+        ],
+        [
+          3,
+          "## First pass: preserve the public theorem"
+        ],
+        [
+          17,
+          "## Second pass: real-only contract (optional)"
+        ],
+        [
+          21,
+          "## Third pass: optional localized selector"
+        ],
+        [
+          25,
+          "## Acceptance gates"
+        ],
+        [
+          33,
+          "## Status"
+        ]
+      ]
+    },
+    {
+      "path": "grh_real_samples_and_nearest_poles/README.md",
+      "bytes": 2979,
+      "lines": 22,
+      "sha256": "1bc530415d454060f9ad39a8641863528f033f5fd26135d9c12aaabe29430d03",
+      "git_blob": "b794596f718bfd50bb6ba795947e895311ad59c5",
+      "headings": [
+        [
+          1,
+          "# Real samples and nearest poles"
+        ],
+        [
+          5,
+          "## Contents and reproduction"
+        ],
+        [
+          16,
+          "## Retrieval scope and reproducibility"
+        ]
+      ]
+    },
+    {
+      "path": "grh_real_samples_and_nearest_poles/report.tex",
+      "bytes": 28662,
+      "lines": 250,
+      "sha256": "38aaf283a6c68cbbf76ae95e3ef1cc628e7ff2495496c4c965bfb356e90411dd",
+      "git_blob": "641290e0e214e7738e963a1843f7515f5f46e395",
+      "headings": [
+        [
+          39,
+          "\\section{Where the replacement fits}"
+        ],
+        [
+          58,
+          "\\subsection{Why the existing implementation is long}"
+        ],
+        [
+          61,
+          "\\section{The analytic replacement}"
+        ],
+        [
+          62,
+          "\\subsection{A real finite-difference certificate}"
+        ],
+        [
+          64,
+          "\\begin{lemma}[Real samples imply positive coefficients]\\label{lem:coeff}"
+        ],
+        [
+          91,
+          "\\subsection{The one-disk pole lemma}"
+        ],
+        [
+          92,
+          "\\begin{lemma}[Nearest-pole certificate]\\label{lem:disk}"
+        ],
+        [
+          109,
+          "\\subsection{The real-pole obstruction theorem}"
+        ],
+        [
+          110,
+          "\\begin{theorem}[One-sided bound, real samples only]\\label{thm:real}"
+        ],
+        [
+          133,
+          "\\begin{corollary}[Rightmost-real obstruction]\\label{cor:right}"
+        ],
+        [
+          141,
+          "\\section{Substitution into the supplied GRH proof}\\label{sec:dirichlet}"
+        ],
+        [
+          159,
+          "\\subsection{Immediate interface-preserving port}"
+        ],
+        [
+          164,
+          "\\subsection{A strictly weaker sufficient twist-selection condition}\\label{sec:selector}"
+        ],
+        [
+          166,
+          "\\begin{corollary}[Targeted twist criterion]\\label{cor:twist}"
+        ],
+        [
+          181,
+          "\\section{Second-stage refactor: compute only real samples}"
+        ],
+        [
+          196,
+          "\\subsection{A removable-pole shortcut at one}"
+        ],
+        [
+          203,
+          "\\section{Formalization and assessment}\\label{sec:formal}"
+        ],
+        [
+          204,
+          "\\subsection{Concrete migration}"
+        ],
+        [
+          209,
+          "\\subsection{What can actually be removed}"
+        ],
+        [
+          225,
+          "\\subsection{Nonduplication against the combined baseline}"
+        ],
+        [
+          234,
+          "\\section{Boundary examples and further research}"
+        ]
+      ]
+    },
+    {
+      "path": "newton_torsion_simplification/LEAN_PLAN.md",
+      "bytes": 6978,
+      "lines": 32,
+      "sha256": "cefb409379473acfbf618890b4b60e9252b92e67486000d42c1d034142bdc93b",
+      "git_blob": "d1f1aa22fd13554a7a7ef56b3b0262c6e13e0a78",
+      "headings": [
+        [
+          1,
+          "# Lean integration plan (specification, not compiled Lean code)"
+        ],
+        [
+          5,
+          "## 1. Preserve the public interface"
+        ],
+        [
+          9,
+          "## 2. Suggested new lemmas (names are proposed)"
+        ],
+        [
+          21,
+          "## 3. Reuse the existing arithmetic callers"
+        ],
+        [
+          28,
+          "## 4. Validation gates"
+        ]
+      ]
+    },
+    {
+      "path": "newton_torsion_simplification/README.md",
+      "bytes": 1836,
+      "lines": 20,
+      "sha256": "f641a675b9091fa1ad73d2da8830a9c4ae83d1078eaeb35723af4ee9f47b11ca",
+      "git_blob": "db098291c15d2dca23ca82e8670876fda994cb0c",
+      "headings": [
+        [
+          1,
+          "# Newton divided differences for the theta-lift proof of RH and Dirichlet GRH"
+        ],
+        [
+          5,
+          "## Files"
+        ],
+        [
+          12,
+          "## Reproduce"
+        ]
+      ]
+    },
+    {
+      "path": "newton_torsion_simplification/newton_torsion.tex",
+      "bytes": 29783,
+      "lines": 265,
+      "sha256": "7953e3341bf0449098e4893298b850d285548d12926ed8d302040302911781f6",
+      "git_blob": "702f032f548bfa57d35ae3975c5b5cd9f644b417",
+      "headings": [
+        [
+          22,
+          "\\section{Where to simplify after the existing proposals}"
+        ],
+        [
+          30,
+          "\\section{Statement and proof strategy}\\label{sec:statement}"
+        ],
+        [
+          43,
+          "\\begin{theorem}[Uniform common-order specialization]\\label{thm:main}"
+        ],
+        [
+          62,
+          "\\section{A primitive shell has inexpensive prefixes}"
+        ],
+        [
+          73,
+          "\\begin{lemma}[Prefix denominator bound]\\label{lem:prefix}"
+        ],
+        [
+          95,
+          "\\section{Newton coefficients expose the low-cost sample}\\label{sec:newton}"
+        ],
+        [
+          102,
+          "\\begin{lemma}[Weighted triangularity]\\label{lem:triangular}"
+        ],
+        [
+          119,
+          "\\begin{lemma}[Tensor divided-difference extraction]\\label{lem:dd}"
+        ],
+        [
+          133,
+          "\\section{The harmonic budget and proof of the theorem}\\label{sec:proof}"
+        ],
+        [
+          144,
+          "\\begin{lemma}[One-shell sampling]\\label{lem:shell}"
+        ],
+        [
+          184,
+          "\\section{All powers of a single twist, and integration}\\label{sec:integration}"
+        ],
+        [
+          185,
+          "\\begin{corollary}[A single primitive order for a chain]\\label{cor:powers}"
+        ],
+        [
+          193,
+          "\\subsection*{Exact order of choices in the Lean caller}"
+        ],
+        [
+          202,
+          "\\subsection*{From the local lemma back to RH}"
+        ],
+        [
+          218,
+          "\\section{Comparison with the proposal archive}\\label{sec:audit}"
+        ],
+        [
+          239,
+          "\\section{Limits, exact tests, and formalization}"
+        ],
+        [
+          240,
+          "\\subsection*{Fixed-order obstruction and a lower bound}"
+        ],
+        [
+          243,
+          "\\subsection*{Tests and Lean plan}"
+        ],
+        [
+          248,
+          "\\subsection*{Further research questions}"
+        ],
+        [
+          256,
+          "\\section*{Source and verification record}\\addcontentsline{toc}{section}{Source and verification record}"
+        ]
+      ]
+    },
+    {
+      "path": "orbital_theta_exchange/FORMALIZATION.md",
+      "bytes": 7771,
+      "lines": 65,
+      "sha256": "fedd4f34326968e3df8dce98033433778c9ac641e6c202bf11ed16ad1589ba1d",
+      "git_blob": "e0d1eb2db786d9689340254722475ae8f4978aa7",
+      "headings": [
+        [
+          1,
+          "# Lean migration plan"
+        ],
+        [
+          5,
+          "## 1. Add a local orbital module"
+        ],
+        [
+          29,
+          "## 2. Complementary primitive matching"
+        ],
+        [
+          47,
+          "## 3. Construct the equivariant difference directly"
+        ],
+        [
+          57,
+          "## 4. Acceptance gates"
+        ]
+      ]
+    },
+    {
+      "path": "orbital_theta_exchange/README.md",
+      "bytes": 1302,
+      "lines": 16,
+      "sha256": "7d664e6eed17a75f7c77244adf42b70085f05bb4e959835ecfb28f2548ba0dc7",
+      "git_blob": "859a9b368d6fada467dc4ccaba42a8e1fbe1f329",
+      "headings": [
+        [
+          1,
+          "# Canonical orbital sections for the theta exchange argument"
+        ]
+      ]
+    },
+    {
+      "path": "orbital_theta_exchange/orbital_theta_exchange.tex",
+      "bytes": 31037,
+      "lines": 301,
+      "sha256": "a55ace6d3a73732b5734b790ec5a1a651056b27b4261e6a71af9ae1895570a42",
+      "git_blob": "9a41a032d2adb7981f03977e5e516dfee2685ae0",
+      "headings": [
+        [
+          37,
+          "\\section{Position in the existing proof}"
+        ],
+        [
+          68,
+          "\\section{Setup and canonical sections}"
+        ],
+        [
+          78,
+          "\\begin{lemma}[Primitive frames]\\label{lem:frames}"
+        ],
+        [
+          106,
+          "\\section{A finite certificate for twisted coinvariants}\\label{sec:projection}"
+        ],
+        [
+          113,
+          "\\begin{theorem}[Primitive-frame projection]\\label{thm:projection}"
+        ],
+        [
+          143,
+          "\\begin{corollary}"
+        ],
+        [
+          148,
+          "\\subsection{Why this is simpler than a chosen coset sum}"
+        ],
+        [
+          153,
+          "\\section{Complementary frames and matching}\\label{sec:matching}"
+        ],
+        [
+          161,
+          "\\begin{lemma}[Simultaneous integral completion]\\label{lem:completion}"
+        ],
+        [
+          173,
+          "\\begin{theorem}[Matching isomorphism on primitive data]\\label{thm:iso}"
+        ],
+        [
+          185,
+          "\\begin{lemma}[Matching extends to arbitrary frames]\\label{lem:global}"
+        ],
+        [
+          204,
+          "\\section{Canonical partners for all full-rank data}\\label{sec:partners}"
+        ],
+        [
+          211,
+          "\\begin{theorem}[Full-space partner theorem]\\label{thm:partner}"
+        ],
+        [
+          221,
+          "\\begin{corollary}[Factorization without continuity]\\label{cor:factor}"
+        ],
+        [
+          230,
+          "\\begin{proposition}[Translation and original matched data]\\label{prop:translate}"
+        ],
+        [
+          243,
+          "\\section{How the replacement enters the formal proof}"
+        ],
+        [
+          244,
+          "\\subsection{The equivariant difference}"
+        ],
+        [
+          255,
+          "\\subsection{Practical Lean migration}"
+        ],
+        [
+          260,
+          "\\section{Nonduplication and verification}"
+        ],
+        [
+          284,
+          "\\section{Further research questions}"
+        ],
+        [
+          293,
+          "\\section*{Sources and reproducibility}"
+        ]
+      ]
+    },
+    {
+      "path": "projective_incidence_grh/LEAN_PLAN.md",
+      "bytes": 6956,
+      "lines": 45,
+      "sha256": "a68cae5e9d61cf919e100b50884efb4c79d562665cf617997d91e9dfc3451b58",
+      "git_blob": "ec176cf448552f6068a9ae8f4201181a443cc080",
+      "headings": [
+        [
+          1,
+          "# Lean migration: projective point–hyperplane incidence"
+        ],
+        [
+          5,
+          "## Stage 1 — introduce a generic finite incidence lemma"
+        ],
+        [
+          15,
+          "## Stage 2 — retain the existing positive-type representation"
+        ],
+        [
+          23,
+          "## Stage 3 — exact interface and edge cases"
+        ],
+        [
+          35,
+          "## Stage 4 — acceptance gates"
+        ],
+        [
+          43,
+          "## Further research (not required by this port)"
+        ]
+      ]
+    },
+    {
+      "path": "projective_incidence_grh/README.md",
+      "bytes": 2393,
+      "lines": 22,
+      "sha256": "b055c7a616b981917621f9c97875ef68ddf7f507d512a0d92d6b533f378ff1ca",
+      "git_blob": "e3a565ef0e01785b723941a31d810d18f054a78b",
+      "headings": [
+        [
+          1,
+          "# Projective incidence instead of additive Fourier analysis"
+        ]
+      ]
+    },
+    {
+      "path": "projective_incidence_grh/report.tex",
+      "bytes": 18135,
+      "lines": 193,
+      "sha256": "8501262bb72bdca5df6dab7ee328e6c25abbe3fd1a88499e83f3eb43be4ec101",
+      "git_blob": "c91173fe9c3811e498074f2abadda909fdb8b781",
+      "headings": [
+        [
+          22,
+          "\\section{Where the simplification fits}"
+        ],
+        [
+          29,
+          "\\section{Precise replacement}"
+        ],
+        [
+          41,
+          "\\begin{theorem}[Projective corank bound]\\label{thm:corank}"
+        ],
+        [
+          54,
+          "\\section{Positive type on projective stabilizers}"
+        ],
+        [
+          56,
+          "\\begin{lemma}[Normalizer-coset estimate]\\label{lem:coset}"
+        ],
+        [
+          66,
+          "\\begin{corollary}\\label{cor:line}"
+        ],
+        [
+          71,
+          "\\section{An incidence mixing identity without characters}"
+        ],
+        [
+          84,
+          "\\begin{lemma}[Hilbert-valued incidence mixing]\\label{lem:mix}"
+        ],
+        [
+          117,
+          "\\section{From incidence to the distribution of corank}"
+        ],
+        [
+          144,
+          "\\subsection{Nonuniform version and sharper source interface}"
+        ],
+        [
+          156,
+          "\\subsection{Why positivity cannot be omitted}"
+        ],
+        [
+          159,
+          "\\section{Preserving the downstream arithmetic bound}"
+        ],
+        [
+          164,
+          "\\section{Source audit and implementation plan}"
+        ],
+        [
+          187,
+          "\\section{Validation and further questions}"
+        ]
+      ]
+    },
+    {
+      "path": "proof_simplifications/README.md",
+      "bytes": 3508,
+      "lines": 39,
+      "sha256": "e234f94b7bd99a5628e4ff5cf34f9cf923d8fb132630dbca366fff66cbf805c8",
+      "git_blob": "a648afd59ff775999e8c124004321c0cfd952a79",
+      "headings": [
+        [
+          1,
+          "# Three shorter steps in the theta-lift proof of Dirichlet GRH"
+        ],
+        [
+          17,
+          "## Rebuild the PDF"
+        ],
+        [
+          23,
+          "## Exact finite checks"
+        ],
+        [
+          33,
+          "## Source provenance"
+        ]
+      ]
+    },
+    {
+      "path": "proof_simplifications/fourier.tex",
+      "bytes": 6301,
+      "lines": 57,
+      "sha256": "40f2825a56a3e4b1a364c45b6ae66c6b10bb780cb878d00f2a454f0ebfa1022e",
+      "git_blob": "48cb7db154c57da5af418ef114a9aa41f80a2370",
+      "headings": [
+        [
+          2,
+          "\\section{Selecting the twist by elementary Fourier completion}\\label{sec:fourier}"
+        ]
+      ]
+    },
+    {
+      "path": "proof_simplifications/perron.tex",
+      "bytes": 3278,
+      "lines": 69,
+      "sha256": "4209e547b2c66102a8d689c78995c57b57bc16fe9b5badd5273b35b6da264b92",
+      "git_blob": "e3773584dbedaf952a5c661d570207d4bf23ecbd",
+      "headings": [
+        [
+          1,
+          "\\section{A contour shift at the distant cutoff}"
+        ]
+      ]
+    },
+    {
+      "path": "proof_simplifications/proof_simplifications.tex",
+      "bytes": 20953,
+      "lines": 227,
+      "sha256": "b16f28fc01d9568a9c35cd891f9c88767fca57140cbbae7687da8c8af12127b4",
+      "git_blob": "9065f4264f406427a423bd69a31d5a33fbe131a1",
+      "headings": [
+        [
+          54,
+          "\\section{Where the three changes enter}\\label{sec:setup}"
+        ],
+        [
+          83,
+          "\\section{Selecting the auxiliary prime with two short polynomials}\\label{sec:selector}"
+        ],
+        [
+          85,
+          "\\begin{theorem}\\label{th:selector}"
+        ],
+        [
+          150,
+          "\\section{Why this choice of prime still proves RH}\\label{sec:endgame}"
+        ],
+        [
+          180,
+          "\\section{Source interfaces and verification}\\label{sec:sources}"
+        ]
+      ]
+    },
+    {
+      "path": "proof_simplifications/spanning.tex",
+      "bytes": 6845,
+      "lines": 146,
+      "sha256": "4364cbfd4aef007fbcdc9727aadf48137eb6707e929ad9c1077c54ba8efa8a65",
+      "git_blob": "e297aad417dc35e177af24ff242e302b576a5fc9",
+      "headings": [
+        [
+          1,
+          "\\section{Choosing translates directly on the ramified source}"
+        ],
+        [
+          23,
+          "\\subsection*{An affine recurrence for the missing dimension}"
+        ],
+        [
+          60,
+          "\\subsection*{Checking the hypotheses against the source}"
+        ],
+        [
+          121,
+          "\\subsection*{Why the number of translates contains a logarithm}"
+        ]
+      ]
+    },
+    {
+      "path": "rh-simplifications/README.md",
+      "bytes": 3146,
+      "lines": 49,
+      "sha256": "87931fef8acbc8ca8bd18e438a2a5b9636be0c5f0adad5d10f676a55aba2a29e",
+      "git_blob": "a6e93618db83f494b13e145449aab81cc4707017",
+      "headings": [
+        [
+          1,
+          "# Three simplifications of the theta-lift proof of RH"
+        ],
+        [
+          5,
+          "## Rebuild the PDF"
+        ],
+        [
+          13,
+          "## Reproduce the finite checks"
+        ],
+        [
+          29,
+          "## Check the standalone Lean lemmas"
+        ],
+        [
+          39,
+          "## Compare with the source"
+        ]
+      ]
+    },
+    {
+      "path": "rh-simplifications/endpoint.tex",
+      "bytes": 10584,
+      "lines": 75,
+      "sha256": "5b0bff7ceb69c842cf4fba1293b668cb31e82fc3c8e1e659e0b1629e40b2934c",
+      "git_blob": "261eeb7941a50b6f529810505ffabdddffac37a3",
+      "headings": [
+        [
+          1,
+          "\\section{Assembly and the Riemann hypothesis}\\label{sec:endpoint}"
+        ],
+        [
+          2,
+          "\\subsection*{What the determinant proves}"
+        ],
+        [
+          27,
+          "\\subsection*{Why the new prime selection suffices}"
+        ],
+        [
+          42,
+          "\\subsection*{Specialization and scope}"
+        ],
+        [
+          49,
+          "\\section{Verification and remaining formal work}"
+        ],
+        [
+          66,
+          "\\subsection*{Further research questions}"
+        ]
+      ]
+    },
+    {
+      "path": "rh-simplifications/rh-simplifications.tex",
+      "bytes": 6370,
+      "lines": 76,
+      "sha256": "169521165712218fa3c393d9a925b18e25a78e5b21b492e4202bf499f92c05a4",
+      "git_blob": "54d25cdf8bf976dba4f377dea83664e56fead2a8",
+      "headings": [
+        [
+          46,
+          "\\section{Where the three arguments enter}"
+        ]
+      ]
+    },
+    {
+      "path": "rh-simplifications/sieve.tex",
+      "bytes": 5905,
+      "lines": 52,
+      "sha256": "24406c388c6362a8f7d0580c0c1c3fca83df7f12f1050d717d6f11ea9b0c6523",
+      "git_blob": "ea2daf99acd3893f1439f15da387b981af1634fb",
+      "headings": [
+        [
+          1,
+          "\\section{A finite Dirichlet polynomial selects the auxiliary prime}"
+        ]
+      ]
+    },
+    {
+      "path": "rh-simplifications/spanning.tex",
+      "bytes": 6484,
+      "lines": 124,
+      "sha256": "6e4bd2637e87951bfaaf8bf0abf3a1552b59c77cdc681b942b525c70d3c89350",
+      "git_blob": "ec17eda48aa8e10bd5705335eb7b53cfb1e75990",
+      "headings": [
+        [
+          1,
+          "\\section{A direct rank estimate on the ramified source}"
+        ]
+      ]
+    },
+    {
+      "path": "rh-simplifications/torsion.tex",
+      "bytes": 7595,
+      "lines": 68,
+      "sha256": "2accda9056c07f2e4f0117604993af862b601671c2d6f15c77b582af0d57b42d",
+      "git_blob": "51da4c5c9b6f06513b7c764ab4fe952979d0446b",
+      "headings": [
+        [
+          1,
+          "\\section{Simultaneous torsion specialization by interpolation}"
+        ],
+        [
+          7,
+          "\\begin{theorem}[Uniform torsion specialization]\\label{thm:torsion}"
+        ],
+        [
+          15,
+          "\\subsection*{A finite set on which interpolation costs little}"
+        ],
+        [
+          35,
+          "\\begin{lemma}[Weight of unsuccessful nodes]\\label{lem:capacity}"
+        ],
+        [
+          49,
+          "\\subsection*{Moving many different reference points at once}"
+        ],
+        [
+          61,
+          "\\subsection*{Every power of the same character}"
+        ]
+      ]
+    },
+    {
+      "path": "rh_sparse_theta_proof/LEAN_PLAN.md",
+      "bytes": 4926,
+      "lines": 22,
+      "sha256": "2737f5a7b10157b85f3ef51d43a0a55c3178773017c95a3676359f8a7b621ca0",
+      "git_blob": "10a7cb561fb574049dbbe1999677c512d29cf60b",
+      "headings": [
+        [
+          1,
+          "# Formalization plan (not compiled)"
+        ],
+        [
+          5,
+          "## Phase 1: sparse interpolation"
+        ],
+        [
+          14,
+          "## Phase 2: quadratic twists"
+        ],
+        [
+          20,
+          "## Validation"
+        ]
+      ]
+    },
+    {
+      "path": "rh_sparse_theta_proof/README.md",
+      "bytes": 1734,
+      "lines": 12,
+      "sha256": "381b1c9224d4fae3a54984c3b1e6dc04bd51d5b6132a50d7573daa5f04714123",
+      "git_blob": "0411e2f0df0c4dc2688874c7653c298caab40935",
+      "headings": [
+        [
+          1,
+          "# Sparse cutoffs and averaged twist selection"
+        ]
+      ]
+    },
+    {
+      "path": "rh_sparse_theta_proof/sparse_theta_proof.tex",
+      "bytes": 41530,
+      "lines": 355,
+      "sha256": "1e7033be4d2d3c79302df997d0f17d8d326beaf7a24660edde4afb4e26fcef6a",
+      "git_blob": "d75a839b4f965bd286f3b4dd402aa25698dd7ee4",
+      "headings": [
+        [
+          29,
+          "\\section{Scope, source, and conclusions}"
+        ],
+        [
+          45,
+          "\\section{The arithmetic interface of the original proof}\\label{sec:interface}"
+        ],
+        [
+          46,
+          "\\subsection{The one-sided quantity}"
+        ],
+        [
+          61,
+          "\\subsection{Why the determinant calculation is indispensable}"
+        ],
+        [
+          94,
+          "\\section{Reciprocal convexity: the sparse-cutoff theorem}\\label{sec:sparse}"
+        ],
+        [
+          95,
+          "\\begin{theorem}[Interpolation with a quadratic mesh loss]\\label{thm:interp}"
+        ],
+        [
+          123,
+          "\\begin{corollary}[General sparse mesh]\\label{cor:mesh}"
+        ],
+        [
+          129,
+          "\\begin{corollary}[Fourth powers suffice]\\label{cor:fourth}"
+        ],
+        [
+          136,
+          "\\subsection{A grid respecting the dyadic chain length}"
+        ],
+        [
+          145,
+          "\\subsection{Sharpness and the limits of coarsening}"
+        ],
+        [
+          154,
+          "\\section{A second relaxation: local averages instead of samples}"
+        ],
+        [
+          165,
+          "\\section{A shorter route to a good quadratic twist}\\label{sec:twists}"
+        ],
+        [
+          166,
+          "\\subsection{The exact obstacle}"
+        ],
+        [
+          174,
+          "\\subsection{Theta tails and an elementary second moment}"
+        ],
+        [
+          186,
+          "\\begin{lemma}[Logarithmic Gaussian mean]\\label{lem:gaussian}"
+        ],
+        [
+          211,
+          "\\begin{corollary}[Joint second moment of tail integrals]\\label{cor:moment}"
+        ],
+        [
+          222,
+          "\\subsection{Mollifier and a short uniform selection proof}"
+        ],
+        [
+          240,
+          "\\subsection{A stronger density statement, if wanted}"
+        ],
+        [
+          241,
+          "\\begin{theorem}[Exceptional primes with a second-moment saving]\\label{thm:density}"
+        ],
+        [
+          265,
+          "\\section{A weakened sufficient criterion for GRH}\\label{sec:criterion}"
+        ],
+        [
+          268,
+          "\\begin{theorem}[Sparse-cutoff, divergent-twist criterion]\\label{thm:criterion}"
+        ],
+        [
+          311,
+          "\\section{What could be simplified further?}\\label{sec:future}"
+        ],
+        [
+          325,
+          "\\section{Formalization and verification plan}\\label{sec:formal}"
+        ],
+        [
+          344,
+          "\\section*{Conclusion}\\addcontentsline{toc}{section}{Conclusion}"
+        ]
+      ]
+    },
+    {
+      "path": "rh_two_order_tests_proposal/two_order_tests/two_order_tests.tex",
+      "bytes": 44967,
+      "lines": 1024,
+      "sha256": "e5d17f4f54d67a0a6de946f6aab7da8bbf16e7a0ed44eb39746750c1cecec021",
+      "git_blob": "6f145414f61102a622b3916ea4b8732e302262b4",
+      "headings": [
+        [
+          98,
+          "\\section{Recommendation and scope}"
+        ],
+        [
+          136,
+          "\\subsection{What improves, quantitatively}"
+        ],
+        [
+          166,
+          "\\section{Where this sits in the original argument}"
+        ],
+        [
+          174,
+          "\\subsection{The common inequality}"
+        ],
+        [
+          209,
+          "\\subsection{Why local labels matter to both sides}"
+        ],
+        [
+          243,
+          "\\section{Non-overlap with the existing proposals}"
+        ],
+        [
+          285,
+          "\\section{The exact interface currently supplied by primitivity}"
+        ],
+        [
+          317,
+          "\\section{A replacement finite-field theorem}"
+        ],
+        [
+          367,
+          "\\begin{theorem}[Replacement labels]"
+        ],
+        [
+          392,
+          "\\subsection{Elementary arithmetic of the excluded subgroup}"
+        ],
+        [
+          408,
+          "\\subsection{Full degree after every prime-power operation}"
+        ],
+        [
+          455,
+          "\\subsection{Common power and the order that survives}"
+        ],
+        [
+          480,
+          "\\subsection{Stability under normalization}"
+        ],
+        [
+          499,
+          "\\subsection{Exact counting}"
+        ],
+        [
+          519,
+          "\\section{Why two surviving order components are sufficient}"
+        ],
+        [
+          538,
+          "\\begin{lemma}[Two-prime nonresonance]"
+        ],
+        [
+          574,
+          "\\subsection{The required source edit}"
+        ],
+        [
+          598,
+          "\\section{The improved weighted projector estimate}"
+        ],
+        [
+          611,
+          "\\subsection{Bound the complement, not just the witness mass}"
+        ],
+        [
+          649,
+          "\\subsection{The tuple argument}"
+        ],
+        [
+          680,
+          "\\subsection{Comparison with the inspected bound}"
+        ],
+        [
+          715,
+          "\\section{Concrete examples and failure modes}"
+        ],
+        [
+          726,
+          "\\subsection{A strictly larger family}"
+        ],
+        [
+          755,
+          "\\subsection{Primitive norm does not suffice}"
+        ],
+        [
+          767,
+          "\\subsection{Full \\texorpdfstring{\\(M\\)}{M}-order need not survive}"
+        ],
+        [
+          777,
+          "\\subsection{What the square divisibility is doing}"
+        ],
+        [
+          787,
+          "\\section{Implementation map}"
+        ],
+        [
+          797,
+          "\\subsection{The six direct source files}"
+        ],
+        [
+          852,
+          "\\subsection{A useful abstraction for the counting layer}"
+        ],
+        [
+          872,
+          "\\subsection{A staged integration with clear stopping points}"
+        ],
+        [
+          892,
+          "\\section{Verification, artifacts, and limitations}"
+        ],
+        [
+          895,
+          "\\subsection{Exact executable checks}"
+        ],
+        [
+          927,
+          "\\subsection{Lean support}"
+        ],
+        [
+          967,
+          "\\subsection{What this proposal establishes}"
+        ],
+        [
+          992,
+          "\\section{Reproducibility and source record}"
+        ]
+      ]
+    },
+    {
+      "path": "ribet_lattice_simplification/LEAN_PLAN.md",
+      "bytes": 8921,
+      "lines": 54,
+      "sha256": "efdcd39ab184b081418f3472f151f8b7d4a9a82d77dc38a91b3a1115809a5b39",
+      "git_blob": "a82857f2dc28e6f12f11d45c6e1d5b000bc4366a",
+      "headings": [
+        [
+          1,
+          "# Lean integration specification (not compiled Lean)"
+        ],
+        [
+          5,
+          "## Stage 1 — direct constant-coefficient determinant (smallest independent change)"
+        ],
+        [
+          17,
+          "## Stage 2 — finite dual cost, no Noetherian induction"
+        ],
+        [
+          33,
+          "## Stage 3 — direct row-lattice determinant"
+        ],
+        [
+          44,
+          "## Acceptance and measurement"
+        ]
+      ]
+    },
+    {
+      "path": "ribet_lattice_simplification/README.md",
+      "bytes": 1981,
+      "lines": 22,
+      "sha256": "17dbcecf7b6cf357ee28ff309c9bd9771ab4ea40ea4ca8d604d823353b81d0a8",
+      "git_blob": "f76086f727898440efdfd3ac3104eb4f9a2a9751",
+      "headings": [
+        [
+          1,
+          "# Direct lattice duality in the Ribet denominator argument"
+        ]
+      ]
+    },
+    {
+      "path": "ribet_lattice_simplification/report.tex",
+      "bytes": 32430,
+      "lines": 270,
+      "sha256": "ff417505542c1b5fb65335f9eed9e31e05eb2a4da5dd56e33752ab23bda1083e",
+      "git_blob": "ad2fa6d2a85ca26d5943ad751186b8d59fa39026",
+      "headings": [
+        [
+          42,
+          "\\section{Position in the argument}"
+        ],
+        [
+          63,
+          "\\section{One elementary-divisor interface}"
+        ],
+        [
+          70,
+          "\\begin{lemma}[Duality and row lattices]\\label{lem:duality}"
+        ],
+        [
+          87,
+          "\\section{Finite certificates for relative Fitting-ideal cost}\\label{sec:relative}"
+        ],
+        [
+          102,
+          "\\begin{theorem}[Relative-length certificate]\\label{thm:relative}"
+        ],
+        [
+          137,
+          "\\section{Read the distinguished coefficient from one lattice}\\label{sec:constant}"
+        ],
+        [
+          148,
+          "\\begin{lemma}[One specialized determinant]\\label{lem:constant}"
+        ],
+        [
+          170,
+          "\\subsection{The full triangular contract}"
+        ],
+        [
+          184,
+          "\\begin{theorem}[Triangular determinant, refined cost]\\label{thm:triangle}"
+        ],
+        [
+          214,
+          "\\section{The main block: no padding by the precision element}\\label{sec:block}"
+        ],
+        [
+          217,
+          "\\begin{lemma}[Row assembly]\\label{lem:assembly}"
+        ],
+        [
+          224,
+          "\\begin{theorem}[Direct block determinant]\\label{thm:block}"
+        ],
+        [
+          237,
+          "\\section{Integration and scope of the reduction}"
+        ],
+        [
+          255,
+          "\\section{Nonduplication and verification}"
+        ],
+        [
+          262,
+          "\\section{Further research questions}"
+        ]
+      ]
+    },
+    {
+      "path": "ribet_module_duality/LEAN_PLAN.md",
+      "bytes": 8051,
+      "lines": 31,
+      "sha256": "07dea0b5ef2f735ffb9867d1f8107915ad0276908d8e45b4913d74a9a612c568",
+      "git_blob": "3b8b34ea4d028ce586e1cbb21c7efa0cc76ab060",
+      "headings": [
+        [
+          1,
+          "# Integration plan — not a compiled Lean patch"
+        ],
+        [
+          5,
+          "## Patch A: the finite evaluation-module certificate"
+        ],
+        [
+          14,
+          "### Deletion audit"
+        ],
+        [
+          18,
+          "## Patch B: direct Cayley–Hamilton"
+        ],
+        [
+          26,
+          "## Acceptance gates"
+        ]
+      ]
+    },
+    {
+      "path": "ribet_module_duality/README.md",
+      "bytes": 2187,
+      "lines": 25,
+      "sha256": "bfdcd6a514c968367bcbc54780d2c09f3b9589b01507c0092f37b450ef081782",
+      "git_blob": "d663b2791d7f380917a350c7578b7aab4e636788",
+      "headings": [
+        [
+          1,
+          "# Direct module duality and Cayley–Hamilton in the first-order Ribet argument"
+        ],
+        [
+          10,
+          "## Contents and reproduction"
+        ]
+      ]
+    },
+    {
+      "path": "ribet_module_duality/report.tex",
+      "bytes": 28057,
+      "lines": 230,
+      "sha256": "b991a1e24e63bdee381f5b863131e25d4a94707ac4dcae2154b3c078b2ba3942",
+      "git_blob": "ae2eb67e1d5aca350ee3325c3760b2823e14ad3e",
+      "headings": [
+        [
+          21,
+          "\\section{Recommendation and scope}"
+        ],
+        [
+          27,
+          "\\section{The exact dual of a module of evaluations}"
+        ],
+        [
+          30,
+          "\\begin{lemma}[Finite torsion duality]\\label{lem:dual}"
+        ],
+        [
+          48,
+          "\\begin{lemma}[Evaluation-dual identification]\\label{lem:eval}"
+        ],
+        [
+          60,
+          "\\section{Transporting determinants without extra relation modules}"
+        ],
+        [
+          62,
+          "\\begin{lemma}[One added vector]\\label{lem:transport}"
+        ],
+        [
+          72,
+          "\\section{The triangular Fitting-ideal replacement}"
+        ],
+        [
+          73,
+          "\\subsection{Exact hypotheses}"
+        ],
+        [
+          90,
+          "\\begin{theorem}[Direct certificate]\\label{thm:main}"
+        ],
+        [
+          151,
+          "\\subsection{An explicit certificate with a strict saving}"
+        ],
+        [
+          164,
+          "\\section{Why the specialization cannot be moved earlier}"
+        ],
+        [
+          168,
+          "\\section{Cayley--Hamilton directly on the Ribet quotient}"
+        ],
+        [
+          174,
+          "\\begin{theorem}[Direct Ribet polynomial]\\label{thm:ch}"
+        ],
+        [
+          190,
+          "\\subsection{A smaller Amitsur lifting lemma}"
+        ],
+        [
+          192,
+          "\\section{Integration and expected effect}"
+        ],
+        [
+          208,
+          "\\section{Nonduplication against the current archive}"
+        ],
+        [
+          224,
+          "\\section{Verification and next research questions}"
+        ]
+      ]
+    },
+    {
+      "path": "shorter-theta-lift-proof/README.md",
+      "bytes": 1728,
+      "lines": 29,
+      "sha256": "d5d07c5ba07dfcb07143395a87ddc37574a3945c0c5cbecdd6001b0ef1da6836",
+      "git_blob": "704eea084532a32113ae12ebb99351cd6436fb7e",
+      "headings": [
+        [
+          1,
+          "# Shortening the theta-lift proof of Dirichlet GRH"
+        ],
+        [
+          5,
+          "## Files"
+        ],
+        [
+          13,
+          "## Reproduce"
+        ]
+      ]
+    },
+    {
+      "path": "shorter-theta-lift-proof/shorter_theta_proof.tex",
+      "bytes": 33448,
+      "lines": 315,
+      "sha256": "f0fa6f966cb967df18267612a72642dc66c449d4b1769a11013698a2e03b3ef1",
+      "git_blob": "90a7d890256e4d05b5e17328eb30afe4b4e4557c",
+      "headings": [
+        [
+          46,
+          "\\section{Which parts of the proof carry the square-root bound?}\\label{sec:map}"
+        ],
+        [
+          75,
+          "\\section{The estimate for short character sums}\\label{sec:short}"
+        ],
+        [
+          99,
+          "\\section{A smooth block at every length}\\label{sec:block}"
+        ],
+        [
+          131,
+          "\\section{How a zero costs area}\\label{sec:disk}"
+        ],
+        [
+          157,
+          "\\section{A one-page route using the quadratic large sieve}\\label{sec:sieve}"
+        ],
+        [
+          187,
+          "\\section{Putting the chosen prime back into the proof}\\label{sec:insert}"
+        ],
+        [
+          205,
+          "\\section{A direct spanning argument on the ramified forms}\\label{sec:span}"
+        ],
+        [
+          238,
+          "\\subsection*{Closing the recurrence}"
+        ],
+        [
+          261,
+          "\\section{Two uses of a classical prime number theorem}\\label{sec:classical}"
+        ],
+        [
+          281,
+          "\\section{Source correspondence and reproducibility}"
+        ]
+      ]
+    },
+    {
+      "path": "signed_theta_gain_simplification/FORMALIZATION.md",
+      "bytes": 8143,
+      "lines": 80,
+      "sha256": "76203f6ca38fa3ee8adb8629125eca15e27f8feaea3175d455a6e9dc05c67ad6",
+      "git_blob": "bc6d812967d072f6f4d2f0060b3c8f79012ea90b",
+      "headings": [
+        [
+          1,
+          "# Lean integration plan"
+        ],
+        [
+          5,
+          "## Stage I: separate the local costs, keep the existing global scalar"
+        ],
+        [
+          27,
+          "## Stage II: remove global gain normalization from the maps"
+        ],
+        [
+          29,
+          "### Signed product formula (`New/Reduction/Lattices/Heights.lean`)"
+        ],
+        [
+          46,
+          "### Local Gram bound (`New/Reduction/Lattices/TwistedLattice.lean`)"
+        ],
+        [
+          56,
+          "### Signed comparison"
+        ],
+        [
+          66,
+          "### Raw source map and final assembly"
+        ],
+        [
+          73,
+          "## Verification gates"
+        ]
+      ]
+    },
+    {
+      "path": "signed_theta_gain_simplification/README.md",
+      "bytes": 2403,
+      "lines": 28,
+      "sha256": "bff8a8122577f87b8e653119e3a33953ff25660f71f7deb361f56819309ef6ab",
+      "git_blob": "682d57aaf1675ffad05d32cc72a9cc0359fecb43",
+      "headings": [
+        [
+          1,
+          "# Signed local gains and cheaper colength"
+        ],
+        [
+          5,
+          "## Files"
+        ],
+        [
+          16,
+          "## Reproduction"
+        ],
+        [
+          26,
+          "## Scope and status"
+        ]
+      ]
+    },
+    {
+      "path": "signed_theta_gain_simplification/signed_theta_gain.tex",
+      "bytes": 37952,
+      "lines": 339,
+      "sha256": "cdb1f4cda5988d8e289dcaa4e97b98b2ac3f051e765c36eba6f3436e35099b4a",
+      "git_blob": "6c675dddeb1d945eef61442d6d5aa60c372124b1",
+      "headings": [
+        [
+          36,
+          "\\section{Where the new argument belongs}"
+        ],
+        [
+          80,
+          "\\section{Extract the stronger local colength bound}\\label{sec:cost}"
+        ],
+        [
+          81,
+          "\\subsection{The source already proves more than it exports}"
+        ],
+        [
+          107,
+          "\\begin{theorem}[Two local budgets]\\label{thm:two}"
+        ],
+        [
+          133,
+          "\\section{A signed product formula}\\label{sec:signed}"
+        ],
+        [
+          141,
+          "\\begin{lemma}[Product formula with finite signed credit]\\label{lem:signed}"
+        ],
+        [
+          169,
+          "\\section{The normalization-free determinant theorem}\\label{sec:det}"
+        ],
+        [
+          176,
+          "\\begin{lemma}[Local signed Gram bound]\\label{lem:local}"
+        ],
+        [
+          187,
+          "\\begin{theorem}[Signed twisted-lattice comparison]\\label{thm:compare}"
+        ],
+        [
+          218,
+          "\\section{Feed the source estimates into the signed comparison}\\label{sec:assembly}"
+        ],
+        [
+          219,
+          "\\subsection{The raw short-form estimate}"
+        ],
+        [
+          228,
+          "\\subsection{Transfer the local certificate to projected forms}"
+        ],
+        [
+          235,
+          "\\subsection{Spanning and completion unchanged}"
+        ],
+        [
+          246,
+          "\\begin{theorem}[New main inequality, with explicit rank dependence]\\label{thm:main}"
+        ],
+        [
+          262,
+          "\\section{Quantitative consequence and compatibility}\\label{sec:constants}"
+        ],
+        [
+          289,
+          "\\section{The RH and GRH endpoint is preserved}"
+        ],
+        [
+          299,
+          "\\section{Nonduplication, integration and limits}"
+        ],
+        [
+          300,
+          "\\subsection{Comparison with the five proposal folders}"
+        ],
+        [
+          313,
+          "\\subsection{Suggested formalization order}"
+        ],
+        [
+          326,
+          "\\subsection{Further research questions}"
+        ],
+        [
+          334,
+          "\\section*{Source and reproduction record}\\addcontentsline{toc}{section}{Source and reproduction record}"
+        ]
+      ]
+    },
+    {
+      "path": "theta-lift-simplifications/README.md",
+      "bytes": 2577,
+      "lines": 38,
+      "sha256": "a508dada3a0fbd9792ae15f46f6cb1af5dfb86f4fb804fe3050cb5785ae6534f",
+      "git_blob": "07ffca7babaec4bba746eab21529f2594ed56fc9",
+      "headings": [
+        [
+          1,
+          "# Three local simplifications of the theta-lift proof of Dirichlet GRH"
+        ],
+        [
+          5,
+          "## Rebuild"
+        ],
+        [
+          11,
+          "## Reproduce the checks"
+        ],
+        [
+          30,
+          "## Source correspondence"
+        ]
+      ]
+    },
+    {
+      "path": "theta-lift-simplifications/labels.tex",
+      "bytes": 7596,
+      "lines": 60,
+      "sha256": "ea3fc7a6ad84f5ac90a3f87864cecac830c8239bc3f42cc9b1de47ab873677ba",
+      "git_blob": "35ce0e8f64e6104a25459e78a126a551e12eeb01",
+      "headings": [
+        [
+          1,
+          "\\section{A denser choice of finite-field types}"
+        ]
+      ]
+    },
+    {
+      "path": "theta-lift-simplifications/paraboloid.tex",
+      "bytes": 4095,
+      "lines": 72,
+      "sha256": "8d0eb5f37fe0ad77633fdb8f1b2ba9bcfb1d15c69c419e283d4786e791ca6a2d",
+      "git_blob": "d5c8083868b64ab93c85beaf823de7f9f07319fa",
+      "headings": [
+        [
+          1,
+          "\\section{An explicit set of sparse infinite places}"
+        ]
+      ]
+    },
+    {
+      "path": "theta-lift-simplifications/theta-lift-simplifications.tex",
+      "bytes": 15980,
+      "lines": 128,
+      "sha256": "e1e43ba4743f4c809265b7a5bfec193a11339cd657219b11557c9feb65508db5",
+      "git_blob": "89197fe9ded77efb5c08c846f73ecc93c110a61b",
+      "headings": [
+        [
+          40,
+          "\\section{What the comparison proves}"
+        ],
+        [
+          63,
+          "\\section{Clearing the projection one row at a time}\\label{sec:flag}"
+        ],
+        [
+          68,
+          "\\subsection{An integral basis compatible with a flag}"
+        ],
+        [
+          70,
+          "\\begin{lemma}\\label{lem:pivot}"
+        ],
+        [
+          84,
+          "\\subsection{The row construction and its determinant}"
+        ],
+        [
+          85,
+          "\\begin{theorem}\\label{thm:rows}"
+        ],
+        [
+          104,
+          "\\subsection{Restoring the stabilizer factor and integral pairings}"
+        ],
+        [
+          117,
+          "\\subsection{Why the choice of basis matters}"
+        ]
+      ]
+    },
+    {
+      "path": "theta-lift-simplifications/verification.tex",
+      "bytes": 6207,
+      "lines": 28,
+      "sha256": "af50818a5e5ad4d3e55a21f0dff045c65e5da6c8f4327ca72809b421080f8195",
+      "git_blob": "4f3a952cbfb94ca91a1b5880ce07cec0cdf8476a",
+      "headings": [
+        [
+          1,
+          "\\section{Comparison with the proposal archive and verification}\\label{sec:verify}"
+        ]
+      ]
+    }
+  ]
+}

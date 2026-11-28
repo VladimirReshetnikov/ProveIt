@@ -1,0 +1,564 @@
+\input{preamble.tex}
+\begin{document}
+\hypersetup{pageanchor=false}
+\begin{titlepage}
+\vspace*{10mm}
+{\Large\color{accent}RESEARCH AND IMPLEMENTATION PROPOSAL\par}
+\vspace{14mm}
+{\Huge\bfseries\color{ink}Collapse the initial\par gauge average\par}
+\vspace{8mm}
+{\Large Character-valued coefficients, an endpoint-only\par normalization, and simpler arithmetic contracts\par}
+\vspace{14mm}
+\begin{minipage}{.94\linewidth}
+\large
+The initial auxiliary coefficient is an average over many finite gauge choices. Every nonempty fibre has the same, twist-independent stabilizer multiplicity. Character orthogonality therefore evaluates the average exactly.
+
+After removing this common multiplicity, every coefficient is zero or a single root of unity:
+\[
+\boxed{\qquad N_{\mathrm{first}}=1.\qquad}
+\]
+This removes the entire initial coefficient-count factor. The normalization of the first-column period also collapses from a product over all intermediate nodes to one endpoint ratio.
+\end{minipage}
+\vfill
+\begin{tabularx}{\linewidth}{@{}lY@{}}
+\toprule
+Source & VladimirReshetnikov/ProveIt, readable Lean RH/Dirichlet-GRH development\\
+Core snapshot & \code{1a59f50680e470fb5269bbe70c06f974c95ad930}\\
+Proposal audit & 26 directories / 79 texts at the core snapshot; two later directories / 20 texts additionally reviewed\\
+Date & 27 November 2026 (Los Angeles)\\
+Status & Mathematical replacement, source audit, exact finite tests; Lean source draft uncompiled\\
+\bottomrule
+\end{tabularx}
+\par\vspace{5mm}
+\small The fixed sweep, diagonal Fourier count, active-frontier suggestion, and single redundant initial-node deletion are treated as existing proposals. They are not claimed as contributions of this report.
+\end{titlepage}
+\hypersetup{pageanchor=true}\pagenumbering{roman}
+\begingroup\small\setlength{\parskip}{0pt}\tableofcontents\endgroup
+\newpage\pagenumbering{arabic}
+
+\section{Recommendation and established result}
+
+Replace the first-path symmetrization by a character-valued function on one finite orbit. More precisely, evaluate its transporter fibres, divide by their common multiplicity, and use the resulting \emph{zero-or-root-of-unity} datum. This is stronger than refining the number of summands in the average: after normalization the number needed to represent any coefficient is at most one.
+
+The main result proved here is an explicit normalization theorem for \aux{GridFirstColumns}{\code{firstPathDatum}}. Let $d_0$ be the size of the unused true initial-node quotient already identified in the existing proposals, and let $h_i$ be the size of the false-node congruence kernel at position $i$. The new content is the exact evaluation of \emph{all remaining fibres}:
+\begin{equation}\label{eq:mainresult}
+ \Psi^0_\vartheta(S)
+ =d_0\left(\prod_{i=1}^{m-1}h_i\right)\Omega_\vartheta(S),
+ \qquad \Omega_\vartheta(S)\in\{0\}\cup\mu_\infty.
+\end{equation}
+Every $h_i$, and hence the positive integer multiplying $\Omega$, is independent of the twist $\vartheta$. If the unused initial quotient has already been removed, simply omit $d_0$ from the coefficient normalization. The residual product remains and is the main object of this proposal.
+
+There is a second exact simplification. In the first-column comparison, the scalar accompanying the original average is
+\[
+ \alpha=\prod_{i=0}^{m-1}h_i^{-1}.
+\]
+After~\eqref{eq:mainresult}, its coefficient becomes
+\begin{equation}\label{eq:endpointscalar}
+ \alpha_{\mathrm{new}}=\frac{d_0}{h_0}.
+\end{equation}
+All interior factors cancel. This is the scalar for the first-column comparison. Other fixed factors from later period comparisons are retained.
+
+A complementary simplification, developed in Section~\ref{sec:arithmetic}, replaces the exact multiset-of-roots certificate by the properties actually consumed downstream: coefficient integrality for all twists and a bound under every complex automorphism only at the trivial twist. One joint terminal finite sum then supplies the two estimates directly.
+
+\subsection{What is and is not verified}
+
+The orbit lemma, stabilizer identification, twist independence, normalized coefficient theorem, and endpoint scalar are mathematical deductions from the inspected source contracts. The archive includes proofs, exact finite regression tests, and a source manifest. It contains a standalone Lean draft of the finite character-sum argument, with no admitted proof placeholders, but that draft is \emph{uncompiled}. No Lean executable was available, no full kernel replay was performed, and the replacement has not been integrated into the GRH development.
+
+The significant established improvement is the exact collapse of the initial coefficient and normalization machinery. Net source-line savings and compilation-time savings remain to be measured. A small compatibility patch can establish the stronger theorem while retaining the old average; the shorter final design uses the orbit section directly.
+
+\subsection{Snapshot and changed proposal corpus}
+
+The review began at commit \code{d417d0b5b08edd4f5f67224fd310add7f1618ca0}. A final remote check found that \code{main} had advanced to \code{1a59f50680e470fb5269bbe70c06f974c95ad930}. Six proposal directories had been added and one removed. The new reports already contained the fixed sweep and its exact diagonal budget, so that candidate was withdrawn as a new recommendation.
+
+The core analysis uses the later snapshot and audits its 26 directories, comprising 79 non-attribution Markdown/LaTeX texts. The removed \code{robust_theta_labels} proposal was also considered and is excluded as previously seen work. The first-average and terminal source files central to this report are unchanged between the snapshots; the entire Lean tree is not unchanged.
+
+A supplemental audit is pinned at \code{0ae2eb38ee385fa1a22fb36bb5ad65d909a259b1}. It reviews two subsequently added directories, \code{grh_frobenius_jet_simplification} and \code{grh_simplification}, comprising 20 further non-license prose texts. Their Frobenius-jet, positive-power height, actual-scalar cost, determinant-interface, and branching-norm proposals are also excluded. All 79 earlier proposal texts and all auxiliary-form files remain unchanged there; other Lean files, including \code{PAdicGauge}, changed. The supplemental manifest records that cutoff without changing the pinned core-source audit.
+
+\section{The role of auxiliary forms in the proof}
+
+The exported statements in \src{Statements}{\code{Statements}} and \src{Main}{\code{Main}} concern RH and GRH for all Dirichlet characters. This is the scope meant by GRH here; no extension to all Artin or automorphic $L$-functions is asserted.
+
+The central comparison in \src{New/Reduction/MainInequality}{\code{star_inequality}} bounds one corrected covolume from both sides. Let $d$ be the target dimension, $n$ the size of an almost-full independent family, $V$ its logarithmic squared-covolume bound, $\delta$ its index allowance, and $A$ the common main amount. Suppressing the explicit error terms, the structure is
+\[
+ A-\text{error}\ \leq\frac{V+2\delta}{d}
+ \ \leq A-\frac nd\,m\,\mathrm{rem}+\text{error}.
+\]
+The main amount cancels, giving the source inequality
+\[
+ m\,\mathrm{rem}\leq f a(\log b)^5.
+\]
+The \href{https://github.com/VladimirReshetnikov/ProveIt/blob/1a59f50680e470fb5269bbe70c06f974c95ad930/Analysis/GeneralizedRiemannHypothesis/docs/guide/theta_lifts_and_dirichlet_zeros.tex}{human-readable guide} traces this to the smoothed prime estimate and the zero detector.
+
+The three inputs are short forms with controlled denominators, enough translates to span almost all the target, and a lower bound for corrected covolumes. The auxiliary forms in \code{Determinant/AuxiliaryForms} support the last branch: their twisted integrality and untwisted size bounds feed \src{New/Determinant/Twist/LongForms}{\code{LongForms}}. The source starts with a first-path coefficient, carries it through local theta exchanges, and estimates the final period.
+
+The proposed change is at the \emph{initial coefficient}. It preserves the local exchange identities, the analytic seesaws, the product of special-value ratios, the chosen twists, the later determinant argument, and the analytic endpoint. It does not replace the separate triangular norm calculation in \src{New/Determinant/Chain/NormOfChain}{\code{NormOfChain}}.
+
+\section{What the existing proposals already supply}
+\label{sec:novelty}
+
+The two nearest current reports are \proposal{grh_diagonal_sweep_proposal}{\code{grh_diagonal_sweep_proposal}} and \proposal{grh_exchange_sweeps}{\code{grh_exchange_sweeps}}. They already give a prescribed traversal, charge only the diagonal Fourier sums, and obtain the exact turn factor
+\begin{equation}\label{eq:knownturn}
+ q_\vartheta^{\Delta},\qquad
+ \Delta=mr+tm^2=m(n_m-1),
+ \qquad q_\vartheta=\card{\Rring_\vartheta}.
+\end{equation}
+They also discuss active-frontier data, sharper endpoint cardinalities, and removing the unused true initial-node coset. These improvements are assumed available. This report does not propose them again.
+
+The diagonal-sweep report bounds the first average by the number of coset choices, with rank-sensitive improvements, while explicitly retaining the averaging and its equivariance. Its further question about the unused true initial slot removes one redundant factor. The theorem here is different: after that deletion, every nonempty fibre of \emph{all the remaining choices} is a coset of a fixed congruence-kernel product, and the weighted sum on that fibre is evaluated exactly. The resulting initial budget is $1$, not an improved upper bound for the size of the averaging group.
+
+The standard character-orthogonality lemma itself is not claimed to be new. The source-specific contribution is identifying the correct observed action, its stabilizer, the twist-independent multiplicity, and the normalization that remains compatible with all arithmetic consumers.
+
+\begin{tabularx}{\linewidth}{@{}L{.31\linewidth}Y@{}}
+\toprule
+Related existing work & Why the present replacement is additional\\
+\midrule
+Diagonal/exchange sweeps & Keep their schedule and Fourier count; eliminate the entire remaining initial-average multiplicity.\\
+Orbital theta exchange & Changes local matching/coinvariants. The present orbit is the joint initial-column gauge orbit, with coupled endpoints and two reduction moduli.\\
+False-lift Reynolds average & Simplifies a bottom-of-tower vanishing argument. It does not identify this first-datum stabilizer or its arithmetic normalization.\\
+Gram adjoint; signed gain & Retain their one-lift and determinant improvements. The new normalization occurs before auxiliary period transport.\\
+Integral field; Ribet lattice & Treat the CM integer ring and Fitting/Smith algebra, respectively. Neither changes these coefficient fibres.\\
+Frobenius jets; height descent & Compress congruence witnesses or height certificates. The present normalization concerns the initial gauge action and preserves the actual period scalars.\\
+\bottomrule
+\end{tabularx}
+
+The archive's full inventory also excludes the existing sieve/Fourier twist selectors, sparse and real-sample zero tests, nearest-pole endpoint, torsion interpolation, power-test labels, centered spanning, projective-incidence moment calculation, derivative witnesses, Hecke enumeration, and class counting. Novelty here is relative to that audited corpus, not a claim of global literature priority.
+
+\section{The first coefficient as an observed gauge action}
+\label{sec:setup}
+
+Let $\mathcal O$ be the ring of integers of the source CM field. Write $\mathcal I$ for the fixed chosen-place modulus, let $b\geq1$ be the source's \code{D.natB}, and let $\mathcal Q_\vartheta$ be the twist-place product. The chosen and twist places are disjoint, so $\mathcal I+\mathcal Q_\vartheta=\mathcal O$. The relevant rings are
+\begin{center}
+\begin{tabular}{@{}lll@{}}
+\toprule
+Notation & Ring & Source role\\
+\midrule
+$B$ & $\mathcal O/\mathcal I^b$ & True triangle ring, independent of twist\\
+$A$ & $\mathcal O/\mathcal I$ & Fixed first-depth quotient\\
+$\Rring_\vartheta$ & $\mathcal O/(\mathcal I^b\mathcal Q_\vartheta)$ & Grid residue ring\\
+$\Rring_{0,\vartheta}$ & $\mathcal O/(\mathcal I\mathcal Q_\vartheta)$ & False triangle ring\\
+\bottomrule
+\end{tabular}
+\end{center}
+These are the definitions and reduction maps in \aux{PathData}{\code{PathData}}; disjointness is recorded in \src{New/UpperBound/Objects/Rows}{\code{Rows}}. The source has $m\geq2$; the argument below works for $m\geq1$.
+
+At first-column position $i$, the false and true ranks are
+\[
+ a_i=r+it,\qquad \widetilde a_i=r+1+i(t-1).
+\]
+Let $E_i^-$ and $E_i^+$ denote the standard inclusions along the two columns. They have left inverses. The source's \aux{GridFirstColumns}{\code{edgePointDatum}} is the indicator that an edge matrix reduces to the relevant standard inclusion: modulo $\mathcal I\mathcal Q_\vartheta$ on the false column and modulo $\mathcal I^b$ on the true column. Thus \code{firstPointDatum} is a point indicator after these reductions.
+
+\subsection{The actual group after the known redundant-slot deletion}
+
+The effective finite group is
+\begin{equation}\label{eq:group}
+ G_\vartheta=
+ \prod_{0\leq i<m}\GL_{a_i}(\Rring_\vartheta)
+ \ \times\prod_{1\leq i<m}\GL_{\widetilde a_i}(B).
+\end{equation}
+Both endpoint gauges at $i=m$ are identity. The true gauge at $i=0$ is determined by the false one:
+\[
+ g_0^+=\operatorname{diag}(g_0^-\bmod B,1),
+\]
+using the source's fixed index equivalence. Every other displayed coordinate in~\eqref{eq:group} is independent.
+
+The original \code{LevelCosets} includes a true slot at $i=0$, but \code{LevelCosets.family} overwrites it with the block matrix above. Its multiplicity is
+\begin{equation}\label{eq:d0}
+ d_0=\card{\GL_{r+1}(B)}.
+\end{equation}
+That deletion is already proposed elsewhere. We retain $d_0$ only to give an exact comparison to the original source.
+
+The remaining true quotients are exactly $\GL(B)$: the node level is the kernel of reduction to $B$, and \aux{PathData}{\code{levelIndex_eq_card_GL_untwisted}} uses the required surjectivity. This is not an assumption that arbitrary chosen coset representatives multiply. The \emph{observed action} and its character descend to the quotient groups.
+
+\subsection{Action and character}
+
+Let $X_\vartheta$ be the finite product of false edge matrices over $\Rring_{0,\vartheta}$ and true edge matrices over $B$. Its distinguished element $e$ is the tuple of standard inclusions. The observed tuple of a grid assignment $S$ is denoted $\overline S$.
+
+The right action is
+\begin{equation}\label{eq:action}
+ (S\cdot g)_i=(g_{i+1})^{-1}S_i g_i,
+\end{equation}
+read in the appropriate quotient ring, with the endpoint conventions above. The edge-character product defines a character
+\[
+ \chi_\vartheta:G_\vartheta\longrightarrow\C^\times.
+\]
+Its values have finite order. The source proves multiplicativity of \code{edgeCharProd} and triviality of the true-edge characters on the reduction kernels in \aux{GridFirstColumns}{\code{map_eq_one_and_edgeChar_eq_one_of_mem_nodeLevel}}. These facts justify descent of the weight independently of the chosen quotient representatives.
+
+Consequently the original coefficient is exactly
+\begin{equation}\label{eq:average}
+ \Psi^0_\vartheta(S)=d_0\,F_\vartheta(\overline S),
+ \qquad
+ F_\vartheta(x)=\sum_{g\in G_\vartheta}\chi_\vartheta(g)
+                              \mathbf1_{x\cdot g=e}.
+\end{equation}
+The single factor $d_0$ is absent if the previously proposed redundant-slot deletion has already been made.
+
+\section{Evaluate a weighted transporter fibre}
+\label{sec:orbit}
+
+\begin{lemma}[Finite weighted orbit]\label{lem:orbit}
+Let a finite group $G$ act on a set $X$ on the right, fix $e\in X$, and let $\chi:G\to\C^\times$ be a character. Put $H=\operatorname{Stab}_G(e)$. For
+\[
+ F(x)=\sum_{g\in G}\chi(g)\mathbf1_{x\cdot g=e},
+\]
+every value $F(x)/\card H$ is zero or a root of unity.
+\end{lemma}
+\begin{proof}
+If no $g$ carries $x$ to $e$, the sum is zero. Otherwise choose $g_0$ with $x\cdot g_0=e$. The transporter is exactly $g_0H$, and therefore
+\[
+ F(x)=\chi(g_0)\sum_{h\in H}\chi(h).
+\]
+If $\chi|_H=1$, the inner sum is $\card H$. Otherwise choose $h_0\in H$ with $\chi(h_0)\ne1$. Reindexing multiplication by $h_0$ shows that the inner sum $T$ satisfies $T=\chi(h_0)T$, so $T=0$. Finally $\chi(g_0)$ has finite order because $G$ is finite. The group need not be commutative.
+\end{proof}
+
+No hypothesis that the stabilizer character is trivial is needed. Its nontrivial case gives cancellation, rather than an obstruction to the coefficient bound. The empty transporter is a separate zero case; no representative is chosen there.
+
+\begin{corollary}[Covariance and direct definition]
+The normalized function $\Omega=F/\card H$ satisfies
+\[
+ \chi(k)\Omega(x\cdot k)=\Omega(x).
+\]
+It may be defined directly as zero off the orbit, as zero if $\chi|_H$ is nontrivial, and otherwise as $\chi(g_0)$ for any transporter $g_0$ carrying $x$ to $e$.
+\end{corollary}
+\begin{proof}
+For covariance, reindex $g\mapsto kg$ in the defining sum. For the direct definition, if two transporters differ by an element of $H$, their characters agree when $\chi|_H=1$. Lemma~\ref{lem:orbit} proves agreement with the normalized average.
+\end{proof}
+
+The normalization is by the \emph{stabilizer size}, not the size of the full averaging group. Normalizing by $\card G$ would ordinarily leave a reciprocal orbit-size denominator. The stabilizer calculation in the next section is what makes the arithmetic normalization legitimate.
+
+\section{The anchored-chain stabilizer}
+\label{sec:stabilizer}
+
+\begin{theorem}[Exact residual stabilizer]\label{thm:stabilizer}
+For the action~\eqref{eq:action} on the standard-inclusion tuple,
+\begin{equation}\label{eq:stabilizer}
+ H_\vartheta\simeq
+ \prod_{i=1}^{m-1}
+ \ker\!\left(\GL_{a_i}(\Rring_\vartheta)
+       \longrightarrow\GL_{a_i}(\Rring_{0,\vartheta})\right).
+\end{equation}
+The false gauge at $i=0$ and all true gauges are identity. Only the displayed false interior kernels remain free.
+\end{theorem}
+\begin{proof}
+On the false column, stabilizing the standard edge means
+\[
+ E_i^-\,\overline g_i^-=\overline g_{i+1}^-\,E_i^-,
+\]
+where the bars mean reduction to $\Rring_{0,\vartheta}$. Start with $\overline g_m^-=1$. Multiplying the equation by a left inverse of $E_{m-1}^-$ gives $\overline g_{m-1}^-=1$. Descending induction gives $\overline g_i^-=1$ for every $i$.
+
+The same argument on the true column, over $B$, forces every true interior gauge to be identity and also
+\[
+ \operatorname{diag}(g_0^-\bmod B,1)=1.
+\]
+The block embedding is injective, so $g_0^-$ is identity modulo both $\mathcal I\mathcal Q_\vartheta$ and $\mathcal I^b$.
+
+The joint reduction
+\begin{equation}\label{eq:jointreduction}
+ \mathcal O/(\mathcal I^b\mathcal Q_\vartheta)
+ \longrightarrow
+ \mathcal O/(\mathcal I\mathcal Q_\vartheta)\times\mathcal O/\mathcal I^b
+\end{equation}
+is injective: coprimality and $b\geq1$ give
+$(\mathcal I\mathcal Q_\vartheta)\cap\mathcal I^b
+=\mathcal I^b\mathcal Q_\vartheta$. Hence $g_0^-=1$ in the full grid ring.
+
+Every other false gauge is constrained only to reduce to identity in $\Rring_{0,\vartheta}$. Conversely any family in those kernels, with the remaining gauges identity, fixes every observed standard inclusion. This proves equality of the stabilizer with the product in~\eqref{eq:stabilizer}.
+\end{proof}
+
+The map~\eqref{eq:jointreduction} need not be surjective. Its two components overlap modulo $\mathcal I$. The proof uses injectivity, not an incorrect assertion that these two quotient rings form a direct CRT product. The anchor at $i=m$ and the coupled node at $i=0$ are both essential: they remove the common endpoint gauge that would otherwise survive.
+
+\subsection{Why the residual cardinal does not depend on the twist}
+
+Put $T_\vartheta=\mathcal O/\mathcal Q_\vartheta$. The genuine compatible CRT decompositions are
+\[
+ \Rring_\vartheta\simeq B\times T_\vartheta,
+ \qquad
+ \Rring_{0,\vartheta}\simeq A\times T_\vartheta,
+\]
+with reduction $(B\to A)\times\mathrm{id}$. In each rank $a_i$ this identifies the kernel in~\eqref{eq:stabilizer} with the fixed group
+\[
+ K_i=\ker\!\left(\GL_{a_i}(B)\longrightarrow\GL_{a_i}(A)\right).
+\]
+Define
+\begin{equation}\label{eq:h}
+ h_i=\card{K_i},\qquad C_D=\prod_{i=1}^{m-1}h_i.
+\end{equation}
+All these are positive integers independent of $\vartheta$. Thus $\card{H_\vartheta}=C_D$.
+
+For the shortest Lean port, the full GL/product-ring equivalence may be unnecessary. The source already proves that
+\[
+ \frac{\card{\GL_{a_i}(\Rring_{0,\vartheta})}}
+      {\card{\GL_{a_i}(\Rring_\vartheta)}}
+\]
+is independent of the twist, in \aux{GridFirstColumns}{\code{exists_triangleGLCard_eq_mul_levelIndex}}. Reduction is surjective on GL because the ring map is surjective and local. Counting its fibres identifies the reciprocal ratio with the kernel cardinal. This reuses an existing quantitative fact to establish the needed exact independence.
+
+An optional closed formula is available because the kernel of $B\to A$ is nilpotent: every matrix $1+Z$ with entries in that kernel is invertible, and these are precisely the congruence-kernel elements. Consequently
+\[
+ h_i=\card{\mathcal I/\mathcal I^b}^{a_i^2},
+ \qquad
+ C_D=\card{\mathcal I/\mathcal I^b}^{\sum_{i=1}^{m-1}(r+it)^2}.
+\]
+No upper bound for this integer is needed in the replacement.
+
+\section{Normalized first datum and endpoint scalar}
+\label{sec:normalized}
+
+\begin{theorem}[Initial budget one]\label{thm:normalized}
+Let $\Psi^0_\vartheta$ be the original source coefficient. With $d_0$ and $C_D$ as above, define
+\begin{equation}\label{eq:newdatum}
+ \Omega_\vartheta(S)=\frac{\Psi^0_\vartheta(S)}{d_0C_D}.
+\end{equation}
+Then $\Omega_\vartheta$ is an admissible first-path datum with coefficient root budget one, uniformly in $\vartheta$. If the redundant true slot has already been deleted, divide the resulting average only by $C_D$.
+\end{theorem}
+\begin{proof}
+Equations~\eqref{eq:average},~\eqref{eq:stabilizer}, and~\eqref{eq:h}, together with Lemma~\ref{lem:orbit}, show that every value is zero or a root of unity. The empty multiset or a singleton supplies \code{IsSumOfRootsOfUnity 1}.
+
+Dependence on the active edges and covariance follow by scaling the original datum by the nonzero constant $(d_0C_D)^{-1}$. If the normalized value is nonzero, the original value is nonzero, so its existing split-injective support property applies. Alternatively covariance follows directly from the orbit-section formula. The three geometric conditions and the new coefficient certificate give the source's \code{IsPathDatum} with budget $1$.
+\end{proof}
+
+The quotient in~\eqref{eq:newdatum} is an equality in $\C$. Its coefficients are integral because the theorem \emph{evaluates them} as roots of unity or zero. It is not an inference that dividing an arbitrary algebraic integer by $d_0C_D$ preserves integrality. In particular, primes dividing this integer require no exception.
+
+\subsection{Exact cancellation in the first-column period}
+
+The source's expansion of the two transposed chains contributes
+\[
+ P_\vartheta=
+ \prod_{i<m}\card{\GL_{a_i}(\Rring_{0,\vartheta})}
+                  \card{\GL_{\widetilde a_i}(B)}.
+\]
+The symmetrized datum contributes the number of original level-coset families,
+\[
+ L_\vartheta=
+ \prod_{i<m}\card{\GL_{a_i}(\Rring_\vartheta)}
+                  \card{\GL_{\widetilde a_i}(B)}.
+\]
+The period invariance in \aux{GridFirstColumns}{\code{sum_firstPathDatum_mul}} gives the first-column scalar
+\begin{equation}\label{eq:alphaprod}
+ \alpha=P_\vartheta/L_\vartheta=\prod_{i=0}^{m-1}h_i^{-1}.
+\end{equation}
+These quantities are nonzero finite group cardinalities, so the displayed divisions are legitimate. Substitute~\eqref{eq:newdatum} into the period, which is linear in the coefficient:
+\begin{align*}
+ \alpha\,\Period(\Psi^0_\vartheta)
+ &=\left(\prod_{i=0}^{m-1}h_i^{-1}\right)
+       d_0\left(\prod_{i=1}^{m-1}h_i\right)\Period(\Omega_\vartheta)\\
+ &=\frac{d_0}{h_0}\Period(\Omega_\vartheta).
+\end{align*}
+This proves~\eqref{eq:endpointscalar}. It is independent of all interior ranks and of the twist. It gives the same endpoint ratio whether the redundant slot is removed before or during the normalization.
+
+The result applies to \aux{GridFirstColumns}{\code{exists_diagonalPeriodForm_transposedChain_eq}}. In the later \aux{FirstPath}{\code{exists_isPathDatum_first}}, any additional fixed comparison factor is simply multiplied by $d_0C_D$. No assertion is made that all later constants equal $d_0/h_0$.
+
+\section{Why the gain is not paid back downstream}
+\label{sec:downstream}
+
+It is necessary to inspect the final normalization, not merely assert that a twist-independent factor is harmless. The first-path identity has a free scalar $\alpha$, independent of the twist and the input forms. Replacing $\Psi^0$ by $\Omega$ multiplies that scalar by $d_0C_D$.
+
+The local coefficient transformations are linear: an unnormalized finite Fourier sum followed by representative evaluation times a character. With coherent fixed choices, all terminal coefficients and the terminal period are divided by the same integer. The local square/line constants and the actual twist-dependent factor $c(\vartheta)\in\C^\times$ stay unchanged, as do their product of special-value ratios and the applicable downstream height certificate. This preserves the current \code{HasAbsUpToNormPower} API and is also compatible with the newer proposal to track the actual scalars by additive squared-modulus costs. Independently chosen existential witnesses need not be definitionally equal; the comparison uses these coherent linear choices.
+
+In \aux{SpanningForms}{\code{exists_lowerChain_integral_and_weylNormSq_le}}, the source eventually chooses $s\ne0$ and $\varepsilon\in\{0,1\}$ such that
+\begin{equation}\label{eq:s}
+ s\beta=\mathrm{dualHook}\cdot(\varepsilon N).
+\end{equation}
+There is no separate integrality or norm condition on $s$. If $\beta\ne0$, multiplying $\beta$ by $d_0C_D$ permits $s$ to be divided by that same number. If $\beta=0$, the source's existing choice $s=1$, $\varepsilon=0$ still works. No possibly zero period scalar is cancelled.
+
+After~\eqref{eq:s}, the relevant pairing is expressed as
+\[
+ \mathrm{dualHook}\cdot\varepsilon\cdot(N\Xi_{\mathrm{normalized}}).
+\]
+The source proves arithmetic and complex bounds for this expression; $\beta$ has disappeared. The clearing factor
+\[
+ N=M_{\mathrm{pair}}\,\mathrm{liftDenominator}^{2m}
+\]
+is unchanged. It still clears the normalized terminal period at every prime allowed by the original theorem, namely $p\nmid\vartheta.\mathrm{normQ}$, because its initial coefficients are roots of unity or zero, and the local unnormalized Fourier/matching maps preserve integral root sums.
+
+The coefficients themselves are integral at every prime. The terminal period retains the source's exclusion of twist primes; among the allowed primes, divisibility by $d_0C_D$ creates no new exception. This proves the terminal integrality anew from the normalized coefficients. It does not divide an old integral output form by a nonunit and assume the result integral. Complex automorphisms also preserve the initial bound one, since they preserve finite order. No estimate for the size or valuation of $C_D$ is needed.
+
+\subsection{The resulting quantitative simplification}
+
+Let $N_{\mathrm{init}}(\vartheta)$ be whatever initial bound remains after the existing proposals have been implemented, and let $T_\vartheta$ be the exact number of terminal boundary assignments. Using their already-proposed turn factor~\eqref{eq:knownturn} gives:
+\begin{center}
+\begin{tabular}{@{}lll@{}}
+\toprule
+Quantity & Before this proposal & After this proposal\\
+\midrule
+Initial coefficient budget & $N_{\mathrm{init}}(\vartheta)$ & $1$\\
+Terminal coefficient budget & $N_{\mathrm{init}}(\vartheta)q_\vartheta^\Delta$ & $q_\vartheta^\Delta$\\
+Boundary/coeff. sum factor & $T_\vartheta N_{\mathrm{init}}(\vartheta)q_\vartheta^\Delta$ & $T_\vartheta q_\vartheta^\Delta$\\
+First-column scalar & $\prod_{i<m}h_i^{-1}$ with old average & $d_0/h_0$ with new datum\\
+\bottomrule
+\end{tabular}
+\end{center}
+For the rank-sensitive notation in the diagonal-sweep report, this removes its entire initial exponent $A_{\mathrm{init}}$ from $q^{A_{\mathrm{init}}+\Delta+B_{\mathrm{end}}}$. It retains the terminal tuple exponent $B_{\mathrm{end}}$, the $2m+1$ class-number factors, the kernel and branching estimates, and the diagonal Fourier cost. A reduction of the final global exponent, such as the source's $x^{200}b^2$, would require a separate audit of all remaining terms and is not claimed here.
+
+\section{A complementary arithmetic contract simplification}
+\label{sec:arithmetic}
+
+The normalized initial datum can be used with the existing \code{IsSumOfRootsOfUnity} machinery unchanged. There is also an independent opportunity to shorten the later proof by retaining only its necessary arithmetic consequences.
+
+\subsection{Only the trivial twist needs a size budget}
+
+The source audit found one substantive consumer of the root-multiset certificate: \aux{LastPath}{\code{exists_lastPathPeriod_mem_smul_norm_le}}. Its two consumers in \code{SpanningForms} use it differently:
+\begin{itemize}
+\item \code{exists_mul_lastPathPeriod_mem_embValRing} applies to every twist but discards the number of summands. It uses closure of an integral-valued additive subgroup.
+\item \code{norm_lastPathPeriod_le} uses the summand count, but its twist is explicitly $1$.
+\end{itemize}
+The final auxiliary-form theorem has exactly the same asymmetry: twisted integrality for all required twists, untwisted conjugate-size control. Therefore a twist-dependent family of quantitative root budgets is stronger than the downstream contract needs.
+
+For a coefficient family $F_\vartheta:X_\vartheta\to\C$, keep covariance and support, and replace its arithmetic field by
+\begin{equation}\label{eq:arithmetic}
+ \begin{split}
+ &\forall\vartheta,S,\quad F_\vartheta(S)\text{ is integral over }\mathbb Z,\\
+ &\forall S,\sigma\in\operatorname{Aut}(\C),\quad
+            |\sigma(F_1(S))|\leq B_0.
+ \end{split}
+\end{equation}
+Alternatively use membership in every required \code{embValRing} as the first clause; the intersection of these valuation subrings is a subring of $\C$. This matches the existing Lean local API directly. Algebraic integrality implies membership in each such subring: if the image of a monic integral root had nonarchimedean norm greater than one, the leading term would strictly dominate all other terms in its polynomial equation.
+
+The bound in~\eqref{eq:arithmetic} must range over every complex field automorphism used by the source, not just the identity and complex conjugation. No common coefficient number field or common cyclotomic conductor need be selected.
+
+\subsection{Integral finite operators preserve the weaker contract}
+
+\begin{proposition}\label{prop:operator}
+Let $B_0,K\geq0$, and let $T_\vartheta$ be finite linear operators whose matrix entries are algebraic integers. Suppose only the operator at twist $1$ satisfies
+\[
+ \sup_j\sum_i|\sigma(T_1(j,i))|\leq K
+ \quad\text{for every }\sigma\in\operatorname{Aut}(\C).
+\]
+Then the image of a family satisfying~\eqref{eq:arithmetic} with bound $B_0$ has universal integrality and trivial-twist bound $KB_0$.
+\end{proposition}
+\begin{proof}
+Algebraic integers are closed under finite sums and products. At twist one, apply $\sigma$ to the finite linear combination, use the ordinary triangle inequality, and bound each input coefficient by $B_0$.
+\end{proof}
+
+The identical argument proves the valuation-ring version when both the coefficients and operator entries belong to each required valuation subring. This local hypothesis proves that local conclusion; algebraic integrality is the stronger alternative used in the displayed contract.
+
+The existing unnormalized Fourier maps and matching maps have root-of-unity entries, so the proposition applies. Matching is one evaluation times a root, or zero; the relevant Fourier row sum gives the same coefficient cost as before. Composition multiplies scalar budgets. Thus the family-transfer budget can be one natural or nonnegative real number, while its period scalar $c(\vartheta)$ remains a function of the twist.
+
+This does not change the analytic diagonal contract. Data are constructed forward and simultaneous proportionality of periods propagates backward, with a scalar independent of input forms. Both seesaws and the twist-independent polynomial line transformation remain. The line-reversal normalization stays in $c(\vartheta)$; it is not absorbed into a Fourier coefficient or divided out of a valuation-ring assertion. The present coefficient budget is distinct from the actual-period-scalar cost proposed in \code{grh_simplification}; the two contracts can be used together.
+
+\subsection{One terminal expansion, then two short estimates}
+
+For fixed outer-level-invariant starting forms, define
+\[
+ \mathcal C_\vartheta=
+ \left(\prod_{j=0}^{m}\mathrm{Cl}(K^-_{\vartheta,j})\right)
+ \times
+ \left(\prod_{j=0}^{m-1}\mathrm{Cl}(K^+_{\vartheta,j})\right).
+\]
+There are $2m+1$ class variables. The true final point is the source's block point determined by the false final point; it is not an additional variable. Write $X_{\mathrm{last},\vartheta}$ for the finite assignments to the terminal boundary edges over the full grid ring; this is different from the initial reduced observation space of Section~\ref{sec:setup}. Let $F_\vartheta$ now be the terminal coefficient on this space, and let $a_\vartheta(c,S)$ be the branching pairing of the two pointwise kernel products. The exact identity to establish once is
+\begin{equation}\label{eq:terminal}
+ \Xi_\vartheta=\sum_{c\in\mathcal C_\vartheta}\sum_{S\in X_{\mathrm{last},\vartheta}}
+           F_\vartheta(S)a_\vartheta(c,S).
+\end{equation}
+
+Apply the existing \src{New/UpperBound/Objects/LiftChains}{\code{IsJointlyInvariant.sum_chain_eq_sum_kernelProduct}} to the two halves successively, then convert the shared-endpoint integral to its class sum. The source proves the levels free and supplies \code{FixedByOuterLevels} and joint invariance in \aux{LastPath}{\code{LastPath}}. These hypotheses are essential. Only the entire weighted sum over $S$ is invariant; individual summands need not be. Keep that sum inside every class-expansion step. Free levels ensure no missing stabilizer denominators.
+
+Now suppose $M a_\vartheta(c,S)$ is integral at a required place, as supplied by the existing kernel and pairing bounds. Then
+\[
+ M\Xi_\vartheta=\sum_{c,S}F_\vartheta(S)
+                            (M a_\vartheta(c,S))
+\]
+is integral by subring closure. No summand-count bound is used. At twist one, if $|\sigma(a_1(c,S))|\leq R$, then simply
+\begin{equation}\label{eq:arch}
+ |\sigma(\Xi_1)|\leq\card{\mathcal C_1}\card{X_{\mathrm{last},1}}B_0R.
+\end{equation}
+This replaces the multiset expansion, nested set-\code{nsmul} memberships, and subsequent unpacking into an auxiliary finite family by one equality and two direct estimates.
+
+The existing exact chain theorem and generic tensor-chain infrastructure remain. Only the now-unused \code{sum_chain_mem_nsmul} wrapper and the auxiliary callers become removal candidates. This secondary change does not inherit the much larger source-line scope of the already-proposed path refactor.
+
+\section{Implementation plan and limits on savings}
+\label{sec:plan}
+
+\subsection{A conservative implementation sequence}
+
+\begin{enumerate}
+\item \textbf{Prove finite character orthogonality and transporter evaluation.} The standalone draft in \code{formal/OrbitCharacterSum.lean} isolates this elementary argument. Its torsor form takes an explicit equivalence and factorization of the weights.
+\item \textbf{Expose the effective observed gauge group.} Identify true quotient cosets with $\GL(B)$, using the existing surjective reduction and character-kernel lemmas. Do not use chosen representatives as a group homomorphism.
+\item \textbf{Prove the stabilizer theorem.} Use the anchored descending inclusion argument, then injectivity of the joint reduction for the coupled zero node. Identify or count the remaining false congruence kernels. Reuse the existing twist-independent GL-ratio theorem where economical.
+\item \textbf{Add the normalized datum and compatibility identity.} Initially keep the old average and define~\eqref{eq:newdatum}. Establish \code{IsPathDatum 1}, the exact period identity, and the endpoint scalar $d_0/h_0$.
+\item \textbf{Use initial budget one.} Feed the new datum into the already-proposed transfer theorem. Preserve the downstream theorem statements by weakening to the old bounds where convenient. Check the free final normalization~\eqref{eq:s}, including its zero branch.
+\item \textbf{Replace the average by its direct orbit section.} Once compatibility is checked, define the coefficient by the zero-or-character case distinction of Section~\ref{sec:orbit}. The large sum, arbitrary true representative bookkeeping, and first coefficient-count estimate then leave the main construction.
+\item \textbf{Optionally weaken the arithmetic family interface.} Prove~\eqref{eq:terminal} once, use universal integrality and a trivial-twist size bound, and remove the root-multiset and set-\code{nsmul} packaging after its two consumers compile.
+\end{enumerate}
+
+The direct orbit-section definition can use classical choice of a transporter, as the existing matching operation does. An executable membership procedure is also possible by solving the anchored inclusion equations backward and checking the coupled endpoint compatibility, but an efficient algorithm is not needed for the mathematical theorem and is not claimed as implemented.
+
+\subsection{What becomes simpler}
+
+The initial construction becomes: specify the observed standard-inclusion orbit, give its character, and prove one stabilizer identity. A coefficient then requires a single character value or zero. Its integrality and size certificate are immediate. The first-column period normalization uses one endpoint ratio instead of a product of all interior ratios. The main transfer starts with $N=1$.
+
+The secondary change removes three unnecessary intermediate requirements: an exact multiset of roots for every coefficient, a quantitative budget at every nontrivial twist, and a nested set-of-sums certificate whose arithmetic consumer ignores the count. These are changes to the proof's mathematical contracts, independent of how the fixed sweep or active frontier is encoded.
+
+\subsection{What cannot yet be claimed}
+
+The safe compatibility port initially adds lemmas; it need not shorten the source immediately. Net deletion comes only after the direct orbit-section construction replaces the old averaging path and unused wrappers are removed. The source footprint of the old path machinery is not an estimate for this proposal. No thousand-line or percentage reduction is asserted.
+
+The arithmetic-packaging changes directly affect a few hundred lines of statements and proofs in \code{PathData}, \code{Turns}, \code{LastPath}, \code{LiftChains}, and \code{SpanningForms}, but many of those lines contain retained hypotheses or estimates. The new stabilizer/quotient bridges also have an implementation cost. Measure net lines, declarations, dependencies, and build time after the replacement compiles.
+
+What is already exact is the elimination of the full initial coefficient factor, the interior normalization product, and the stronger-than-needed coefficient contract. The proposal preserves the rest of the proof's quantitative requirements and introduces no new arithmetic or analytic conjecture.
+
+\section{Exact checks and artifact status}
+\label{sec:checks}
+
+\subsection{Finite gauge models}
+
+\code{checks/check_initial_average.py} uses exact integer modular arithmetic. It tests the coupled two-chain mechanism over $\mathbb Z/(4q)\mathbb Z$ for $q=1,3,5,7,11$, with false triangle quotient $\mathbb Z/(2q)\mathbb Z$ and true quotient $\mathbb Z/4\mathbb Z$. The model has two edges per half, false ranks $(1,1,2)$ and true ranks $(2,2,3)$; the terminal edges are rectangular inclusions. These are models of the general stabilizer argument, not the proof's large numerical rank regime.
+
+The true internal factor is the full noncommutative group $\GL_2(\mathbb Z/4\mathbb Z)$ of size $96$. Across the five cases the checker enumerates 60,288 gauges and 30,144 orbit fibres, performs 422,016 direct transporter-predicate checks and 9,216 GL-character multiplicativity checks, and checks ten off-orbit controls. One off-orbit example has split-injective edge matrices but fails the joint endpoint compatibility, so the tests do not simply conflate support with orbit membership.
+
+\begin{center}
+\begin{tabular}{@{}rrrrr@{}}
+\toprule
+$q$ & $\card G$ & Orbit size & Residual stabilizer & Original multiplicity\\
+\midrule
+1 & 384 & 192 & 2 & 192\\
+3 & 1,536 & 768 & 2 & 192\\
+5 & 6,144 & 3,072 & 2 & 192\\
+7 & 13,824 & 6,912 & 2 & 192\\
+11 & 38,400 & 19,200 & 2 & 192\\
+\bottomrule
+\end{tabular}
+\end{center}
+The residual stabilizer size stays $2$ while the twist factor and orbit size change. The original multiplicity includes the redundant factor $96$. Characters trivial on the stabilizer give normalized values $\pm1$; characters nontrivial on it give zero. All cases pass. The all-rank/all-modulus argument is the proof in Sections~\ref{sec:orbit}--\ref{sec:normalized}, not extrapolation from these examples.
+
+\subsection{Source and proposal audits}
+
+The source audit checks the core commit, 27 source-file hashes and line counts, and 116 declaration anchors. The core proposal manifest covers all 79 non-attribution texts in its 26 directories. The supplemental audit records the two later directories and their 20 texts at the separate commit specified above. These checks establish snapshot integrity and make the source claims reproducible; they do not verify the mathematical correctness of those sources or establish novelty by themselves.
+
+The full novelty review reads the mechanisms and implementation boundaries, including the six directories added before the core snapshot and the two later additions. It distinguishes the exact initial-average collapse from the already-proposed single redundant-slot deletion. The archive includes a specific overlap note explaining why the earlier sweep candidate was discarded.
+
+\subsection{Formal and document status}
+
+The Lean draft gives proposed proofs of the finite character-sum/torsor statements by reindexing finite sums. It contains complete proof text with no \code{sorry}, \code{admit}, or new axiom, but has not been elaborated in Lean. It does not formalize the source-specific gauge action, its stabilizer, the CRT comparison, or the full first-path replacement. Those are explicit integration tasks, not hidden hypotheses presented as completed work.
+
+The report was compiled from the supplied TeX, rendered, and visually checked. The archive includes both TeX files, the PDF, the Lean draft, exact Python checks and outputs, source/proposal manifests, implementation instructions, the detailed derivation, and the adversarial scalar review. The README contains reproduction commands and verification limits; a SHA-256 manifest covers the delivered contents.
+
+\Needspace{21\baselineskip}
+\appendix
+\section{Principal source anchors}
+\small
+\begin{longtable}{@{}L{.30\linewidth}L{.65\linewidth}@{}}
+\toprule
+Claim & Pinned source\\
+\midrule\endfirsthead
+\toprule Claim & Pinned source\\\midrule\endhead
+Endpoint scope & \src{Statements}{\code{Statements}}; \src{Main}{\code{Main}}.\\
+Main comparison & \src{New/Reduction/MainInequality}{\code{star_inequality}}.\\
+Moduli and reductions & \aux{PathData}{\code{gridModulus}, \code{triangleModulus}, \code{reduceToTriangle}, \code{nodeLevel}}.\\
+Chosen/twist disjointness & \src{New/UpperBound/Objects/Rows}{\code{Rows}}, chosen-place and twist-place comparisons.\\
+Quotient-to-GL identification & \aux{PathData}{\code{levelIndex_eq_card_GL_untwisted}} and the reduction-surjectivity proof.\\
+Indicator on observed tuple & \aux{GridFirstColumns}{\code{edgePointDatum}, \code{columnPointDatum}, \code{firstPointDatum}}.\\
+Character descent & \aux{GridFirstColumns}{\code{map_eq_one_and_edgeChar_eq_one_of_mem_nodeLevel}}.\\
+Actual average & \aux{GridFirstColumns}{\code{LevelCosets}, \code{LevelCosets.family}, \code{firstPathDatum}}.\\
+Twist-independent GL ratio & \aux{GridFirstColumns}{\code{exists_triangleGLCard_eq_mul_levelIndex}}.\\
+Original first datum & \aux{GridFirstColumns}{\code{isPathDatum_firstPathDatum}}.\\
+Period/count normalization & \aux{GridFirstColumns}{\code{sum_firstPathDatum_mul}, \code{card_levelCosets_eq}, \code{exists_diagonalPeriodForm_transposedChain_eq}}.\\
+First-path endpoint & \aux{FirstPath}{\code{exists_isPathDatum_integral_eq}, \code{exists_isPathDatum_first}}.\\
+Uniform transfer contract & \aux{Turns}{\code{TransfersPeriods}}, \aux{DiagonalTurns}{\code{exists_transfersPeriods_first_last}}.\\
+Universal p-adic consumer & \aux{SpanningForms}{\code{exists_mul_lastPathPeriod_mem_embValRing}}.\\
+Untwisted norm consumer & \aux{SpanningForms}{\code{norm_lastPathPeriod_le}}.\\
+Free final scalar & \aux{SpanningForms}{\code{exists_lowerChain_integral_and_weylNormSq_le}}, especially the choice of $s,\varepsilon$.\\
+Exact chain sum & \src{New/UpperBound/Objects/LiftChains}{\code{IsJointlyInvariant.sum_chain_eq_sum_kernelProduct}}.\\
+Terminal invariance/levels & \aux{LastPath}{\code{FixedByOuterLevels}, \code{sum_lastPathPairing_omega_invariant}, and the free-level proof in the terminal summation theorem}.\\
+\bottomrule
+\end{longtable}
+\normalsize
+\end{document}
