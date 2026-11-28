@@ -72,6 +72,8 @@ to place them in the disks, and finite certificates from the
 
 [HeckeWeightedCoefficientBound.lean](GRHArticle/SingularModuli/HeckeWeightedCoefficientBound.lean) bounds truncated series products at a dyadic weight. [HeckeChunkedPrefixCertificate.lean](GRHArticle/SingularModuli/HeckeChunkedPrefixCertificate.lean) checks packed coefficient prefixes in chunks. [PrimeHeckeWeightedTrace.lean](GRHArticle/SingularModuli/PrimeHeckeWeightedTrace.lean) applies the bounds to prime Hecke trace rows.
 
+[Prime59/InvariantValidity.lean](GRHArticle/SingularModuli/Prime59/InvariantValidity.lean) proves that the first 6,963 supplied coefficients agree with the actual normalized modular invariant. Fifteen certified divisor-sum blocks feed the discriminant and invariant prefix identities for the degree-59 Hecke calculation.
+
 ## Integer geometric progressions
 
 [Rankin.lean](GRHArticle/ProgressionFree/Rankin.lean) proves that Rankin's
