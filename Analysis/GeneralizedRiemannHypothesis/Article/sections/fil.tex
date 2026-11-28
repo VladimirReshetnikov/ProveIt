@@ -27,18 +27,23 @@ of a zero $\rho$ by $F_\mu(\rho)$; on the critical line it is convenient to writ
 $\widehat\mu(\omega)=\int e^{i\omega u}\dd\mu(u)$, so that $F_\mu(\tfrac12+i\gamma)$ is the Fourier
 transform of the tilted measure $e^{u/2}\dd\mu/\int e^{v/2}\dd\mu$ at $\gamma$. This section asks how
 short such a positive average can be if it must annihilate prescribed zero contributions. It treats,
-in turn: exact optima for finite sets of complex exponents and their analytic dependence on the
-exponents; the mean-frequency lower bound for arbitrary real spectra and the exact quadratic cost of
-splitting a multiple frequency asymmetrically; two frequencies in arbitrary ratio; the optimal logarithmic support of a filter that
-cancels every zero up to a height $B$; one filter cancelling every noncentral zero; the resulting
-averages of prime sums, among them an explicit compact kernel for all residue classes; and finite
-positive grids of prime sums that read off the central multiplicity (\cref{fil:sec:grids}). All
-extremal statements are unconditional; \cref{src:thm:dgrh} enters only to put the zeros of Dirichlet
-$L$-functions on one vertical line, where they become real Fourier frequencies of normalized prime
-errors. Balancing and oscillation of prime errors at a single centre are in \cref{sec:flu}.
+in turn: exact optima for finite sets of complex exponents, the central multiplicity that makes a
+wide reflected band optimal, and the analytic dependence of the optima on the exponents, with their exact second variation at every strictly
+positive mirror configuration; the
+mean-frequency lower bound for arbitrary spectra and the exact quadratic cost of splitting a
+multiple frequency asymmetrically; the logarithmic support, sharp up to a bounded error, of a filter
+that cancels every zero up to a height $B$; one filter cancelling every noncentral zero, with the
+exact supremal coefficient $\pi d/Q_*$ of its double-exponential decay; the resulting averages of
+prime sums, among them an explicit compact kernel for all residue classes; and finite positive grids
+of prime sums that read off the central multiplicity (\cref{fil:sec:grids}). All extremal statements
+for prescribed frequencies are unconditional; \cref{src:thm:dgrh} enters only to put the zeros of
+Dirichlet $L$-functions on one vertical line, where they become real Fourier frequencies of normalized
+prime errors. Two frequencies in arbitrary ratio, progressions of frequencies and zero-free intervals
+of positive trigonometric sums are in \cref{sec:zfg}; balancing and oscillation of prime errors at a
+single centre are in \cref{sec:flu}.
 
 \subsection{Exact optima for reflection-paired spectra}\label{fil:sec:reflect}
-\sources{quadratic_spectra; sharp_positive_zero_filters; optimal_zero_filters; optimal_dirichlet_zero_filters; grh_cayley_and_filters}
+\sources{quadratic_spectra; sharp_positive_zero_filters; optimal_zero_filters; optimal_dirichlet_zero_filters; grh_cayley_and_filters; erdelyi_ellipse_and_proveit_extensions; ProveIt_research_2026-11-27; proveit_three_extensions_2026-11-27_1}
 
 Fix distinct $s_1,\dots,s_r$ in the open upper half-plane and positive integers $m_j$, put
 $n=\sum_jm_j$, and require of a compactly supported probability measure $\mu$
@@ -222,6 +227,146 @@ orders $1,2,1$ the width is $\pi/3$ and the weights are
 $(\tfrac12-\tfrac{\sqrt3}4,\tfrac14,-\tfrac12+\tfrac{\sqrt3}2,\tfrac14,\tfrac12-\tfrac{\sqrt3}4)$.
 \end{example}
 
+\paragraph{Central multiplicity for wide bands.}
+\Cref{fil:cor:pair,fil:cor:triple} show that a pair of frequencies spanning a ratio above $3$ loses the
+reflection optimum, and that one central root restores it up to ratio $5$. In general, fix $\kappa>0$,
+$h=\pi/\kappa$, frequencies $0<\alpha_j<\kappa$ ($1\le j\le m$, repetitions allowed) with their reflected
+partners $2\kappa-\alpha_j$, and the central frequency $\kappa$ with multiplicity $r\ge0$; put
+$\theta_j=h\alpha_j\in(0,\pi)$ and $N=r+2m$. By \cref{fil:thm:reflect} applied to $s=i\lambda$, the least
+diameter of a probability measure whose Fourier transform vanishes at these frequencies to the prescribed
+orders is at least $Nh$, with equality if and only if
+\[
+ P(z)=(1+z)^r\prod_{j=1}^m\bigl(1-2\cos\theta_j\,z+z^2\bigr)
+\]
+has nonnegative coefficients; the minimizer then has the masses $[z^\ell]P/P(1)$ at $\ell h$. A common real
+part of the targets tilts these masses and changes nothing else. Factors with $\cos\theta_j\le0$ have
+nonnegative coefficients; the question is how many central roots compensate the others.
+
+\begin{theorem}[Central multiplicity criterion; \stU]\label{fil:thm:central}
+If $a_1,\dots,a_m\in[0,1]$ and $r\ge0$ is an integer, then $(1+z)^r\prod_j(1-a_jz+z^2)$ has
+nonnegative coefficients if and only if $r\ge\sum_ja_j$. Consequently, if $\pi/3\le\theta_j\le\pi/2$ for
+all $j$, that is $\kappa/3\le\alpha_j\le\kappa/2$, the width $Nh$ is attained if and only if
+$r\ge2\sum_j\cos\theta_j$, and the least central multiplicity with this property is
+$\lceil2\sum_j\cos\theta_j\rceil$.
+\end{theorem}
+
+\begin{proof}
+The coefficient of $z$ is $r-\sum_ja_j$, which gives necessity. For sufficiency induct on $m$; the cases
+$m\le1$ are covered by the last step below. Fix all parameters but two fractional ones $u,v$ and vary these
+with $u+v$ fixed. The product of their two factors is $(1+z^2)^2-(u+v)z(1+z^2)+uvz^2$, and the remaining
+factors times $(1+z)^r$ have nonnegative coefficients by induction, their parameters summing to at most $r$.
+Moving $(u,v)$ to the endpoint of its admissible segment that minimizes $uv$ makes one of them $0$ or $1$
+and decreases every coefficient of the whole product weakly. Repeating, one reaches $b$ parameters equal to
+$1$, some equal to $0$, and at most one fractional $a$, with a product dominated coefficientwise by the
+original one. Pair $b$ binomials with the unit parameters by $(1+z)(1-z+z^2)=1+z^3$; if $0<a<1$, integrality
+gives $r\ge b+1$ and $(1+z)(1-az+z^2)=1+(1-a)z+(1-a)z^2+z^3$. All remaining factors have nonnegative
+coefficients. For the consequence take $a_j=2\cos\theta_j\in[0,1]$.
+\end{proof}
+
+For one pair and $r=1$ this is \cref{fil:cor:triple}. Below $\theta=\pi/3$ the linear coefficient no longer
+decides. For a repeated pair let $Q_c(z)=1-2cz+z^2$ and let $R_m(c)$ be the least $r\ge0$ for which
+$(1+z)^rQ_c^m$ has nonnegative coefficients; $R_m(c)=0$ for $c\le0$. For $0<c<1$ put
+\[
+ G_c(a)=\frac{1+c}{(a+1)(1-c)}\Bigl(\frac{a(1+c)}{2(a+1)}\Bigr)^a\qquad(a>0),
+\]
+and let $W$ be the inverse of $w\mapsto we^w$ on $(0,\infty)$.
+
+\begin{theorem}[Phase transition for a repeated pair; \stU]\label{fil:thm:centralphase}
+For $0<c\le\tfrac12$, $R_m(c)=\lceil2cm\rceil$ for every $m\ge1$. For $\tfrac12<c<1$ there is a unique
+$a_c>c$ with $G_c(a_c)=1$, and
+\[
+ R_m(c)>2a_cm\quad(m\ge1),\qquad \tau(c)=\lim_{m\to\infty}\frac{R_m(c)}m=2a_c,\qquad
+ \lim_{c\uparrow1}(1-c)\tau(c)=4W(e^{-1}).
+\]
+Also $R_1(c)=2\lceil(1-c)^{-1}\rceil-3$ for $0<c<1$.
+\end{theorem}
+
+The transition at $c=\tfrac12$ is at $\alpha=\kappa/3$, where the upper frequency is five times the lower; up
+to that ratio the linear coefficient detects every failure, and beyond it a modulus test at a nonreal point
+of the unit circle forces more central roots.
+
+\begin{proof}
+The first assertion is \cref{fil:thm:central} with $a_j=2c$. For $m=1$ and $D=r+2$ the $j$th coefficient divided
+by $\binom Dj$ is $1-2(1+c)j(D-j)/(D(D-1))$, minimal at $j=\lfloor D/2\rfloor$; the two parities of $D$ give the
+formula for $R_1$. So $R_m\le mR_1$ is finite, and $R_m$ is subadditive in $m$, whence
+$\lim R_m/m=\inf R_m/m$.
+
+A polynomial with nonnegative coefficients is bounded in modulus by its value at $\abs z$, so any admissible
+$(r,m)$ satisfies, with $\lambda=r/m$,
+\begin{equation}\label{fil:eq:modtest}
+ \Bigl(\frac{\abs{1+z}}{1+\abs z}\Bigr)^\lambda\frac{\abs{Q_c(z)}}{Q_c(\abs z)}\le1\qquad(z\in\C).
+\end{equation}
+Conversely, if \eqref{fil:eq:modtest} holds at some $\lambda_0\ge2c$ and $A/B>\lambda_0$ is rational, then
+$P=(1+z)^AQ_c^B$ satisfies $\abs{P(z)}<P(\abs z)$ off $[0,\infty)$, has endpoint coefficients $1$ and linear and
+penultimate coefficients $A-2cB>0$; by De Angelis's theorem on positive powers \cite{DeAngelis2003Asymptotic}
+all coefficients of $P^k$ are positive for large $k$, so $R_{Bk}\le Ak$, and subadditivity gives
+$\lim R_m/m\le\lambda_0$.
+
+Let $\tfrac12<c<1$, $d=1-c$, $b=(1+c)/2$, $z=xe^{it}$ with $x>0$, and $v=4x/(1+x)^2$, $s=v\sin^2(t/2)$,
+$u=1-bv$; it suffices to take $0<s<1$. The squared binomial ratio in \eqref{fil:eq:modtest} is $1-s$, and
+\[
+ \frac{\abs{Q_c(z)}^2}{Q_c(x)^2}=1+\frac{2s}u+\frac{s(s-2d)}{u^2},\qquad \frac d2\le u\le1-bs,
+\]
+since $Q_c(x)/(1+x)^2=1-bv$ and $(\abs{Q_c(z)}^2-Q_c(x)^2)/(1+x)^4=s(s+2c-2bv)$; every pair in this range occurs.
+One needs the supremum of the logarithm of this ratio divided by $-\log(1-s)$. At fixed $s$ it is a quadratic
+in $1/u$; an interior maximum has $u=2d-s$ and value $1/(1-s/(2d))$, admissible for $0<s\le3d/2$, and
+$\log(1-s/(2d))/\log(1-s)$ increases there (it is a weighted average of the increasing function
+$(1-t)/(2d-t)$), so interior maxima are dominated by the endpoint $u=d/2$. At $u=1-bs$ (that is $z=-x$) the
+unsquared ratio is $(1-(1-b)s)/(1-bs)$, whose logarithm is $\sum_j(b^j-(1-b)^j)s^j/j\le c\sum_js^j/j$; this
+endpoint costs at most $\lambda=2c$. At $u=d/2$ (that is $\abs z=1$) the unsquared ratio is $\abs{1-2s/d}$, and
+with $\lambda=2a$ the condition is $(1-s)^a\abs{1-2s/d}\le1$ on $[0,1]$. It holds for $s\le d/2$; beyond, the
+left side has its maximum $G_c(a)$ at $s=(2+ad)/(2(a+1))$. $G_c$ decreases strictly from $(1+c)/(1-c)>1$ to
+$0$, and $G_c(c)=(c/2)^c/(1-c)>1$ for $c>\tfrac12$, since $c\log(c/2)-\log(1-c)$ is strictly convex, vanishes
+at $\tfrac12$ and has positive derivative there. This gives the unique root $a_c>c$, \eqref{fil:eq:modtest} at
+$\lambda=2a_c$ and its failure below. At $\lambda=2a_c$ equality occurs at a nonreal point of the unit circle,
+where a polynomial with positive constant and linear coefficients has strict triangle inequality; as
+$2a_cm-2cm>0$, this excludes $r=2a_cm$, so $R_m(c)>2a_cm$, and the limit follows from the previous paragraph.
+Finally, with $a=2w/d$, $G_{1-d}(2w/d)\to e^{-1-w}/w$ as $d\downarrow0$, a strictly decreasing function equal to
+$1$ only at $w=W(e^{-1})$; monotonicity gives $da_c/2\to W(e^{-1})$.
+\end{proof}
+
+\begin{center}
+\small
+\begin{tabular}{@{}lrrrrrr@{}}
+\toprule
+$c$ & $R_1$ & $R_2$ & $R_5$ & $R_{10}$ & $R_{20}$ & $\tau(c)$\\
+\midrule
+$1/4$ & 1 & 1 & 3 & 5 & 10 & 0.5000\\
+$1/2$ & 1 & 2 & 5 & 10 & 20 & 1.0000\\
+$3/5$ & 3 & 5 & 10 & 17 & 33 & 1.5449\\
+$3/4$ & 5 & 9 & 19 & 35 & 67 & 3.1998\\
+$9/10$ & 17 & 27 & 57 & 106 & 206 & 9.8688\\
+\bottomrule
+\end{tabular}
+\end{center}
+The entries are exact integer computations, reproduced by
+\begin{center}\artifact{erdelyi_ellipse_and_proveit_extensions/02_positive_filters/check_filters.py};\end{center}
+the last column is $2a_c$ rounded. At $c=\tfrac34$, $m=1$ the linear coefficient would allow $r=2$, while the minimum is $5$.
+
+\begin{corollary}[Lorentz degree of a centred quadratic power; \stU]\label{fil:cor:lorentz}
+Let $d_L(p)$ be the least $D$ for which $p(X)$ is a nonnegative combination of $(1-X)^j(1+X)^{D-j}$,
+$0\le j\le D$. For $0<\eps<1$ and $m\ge1$,
+\[
+ d_L\bigl((X^2+\eps^2)^m\bigr)=2m+R_m\Bigl(\frac{1-\eps^2}{1+\eps^2}\Bigr),
+\]
+which is $2m+\lceil2m(1-\eps^2)/(1+\eps^2)\rceil$ for $1/\sqrt3\le\eps<1$, and
+\[
+ \lim_{\eps\downarrow0}\eps^2\lim_{m\to\infty}\frac{d_L((X^2+\eps^2)^m)}m=2W(e^{-1})=0.556929\ldots .
+\]
+\end{corollary}
+
+\begin{proof}
+With $X=(1-z)/(1+z)$, $d_L(p)\le D$ for $D\ge\deg p$ exactly when $(1+z)^Dp((1-z)/(1+z))$ has nonnegative
+coefficients (multiplying by $1+z$ raises the degree), and $(1+z)^2((1-z)^2/(1+z)^2+\eps^2)=(1+\eps^2)Q_c(z)$ with
+$c=(1-\eps^2)/(1+\eps^2)$, which is at most $\tfrac12$ exactly when $\eps\ge1/\sqrt3$. Apply
+\cref{fil:thm:centralphase}, with $1-c\sim2\eps^2$.
+\end{proof}
+
+Erd\'elyi bounded this degree above and below by multiples of $m/\eps^2$ \cite{Erdelyi1991Estimates}; the
+corollary gives the exact first-order constant in the centred case. For $c>\tfrac12$ the size of
+$R_m(c)-m\tau(c)$ is not known, and for distinct angles below $\pi/3$ different evaluation points constrain
+different quadratic factors.
+
 \paragraph{The mean-frequency bound without symmetry.}
 For real frequencies the lower bound of \cref{fil:cor:cluster} needs no reflection symmetry: the mean
 frequency alone bounds the width, and the equality cases are exactly the strictly or weakly positive
@@ -261,8 +406,14 @@ transform vanishes at each $\lambda_j$ to the order of its repetition. Then
 Put $h=\pi/\kappa$. Equality holds if and only if every $\lambda_j<2\kappa$, the multiset is invariant under
 $\lambda\mapsto2\kappa-\lambda$, and the polynomial $A(z)=\prod_j(z-e^{ih\lambda_j})$ has nonnegative
 coefficients; then the coefficients of $A(z)/A(1)$ are the masses of the optimizer on $0,h,\dots,Nh$, unique
-up to translation. The same statements hold for targets $\beta+i\lambda_j$ with a common real part $\beta$
-in \eqref{rec:eq:fjets}.
+up to translation.
+
+More generally, let $s_1,\dots,s_N$ be targets in the open upper half-plane, listed with multiplicity and
+with arbitrary real parts, put $\kappa=N^{-1}\sum_j\Im s_j$ and $h=\pi/\kappa$, and let $D$ be the least
+width in \eqref{rec:eq:fjets}. Then $D\ge N\pi/\kappa$, with equality if and only if $\Im s_j<2\kappa$ for
+every $j$, the multiset is invariant under $s\mapsto\bar s+2i\kappa$, and $P(z)=\prod_j(z-e^{hs_j})$ has
+nonnegative coefficients; the optimizer is then the measure of \cref{fil:thm:reflect}, unique up to
+translation.
 \end{theorem}
 
 \begin{proof}
@@ -270,30 +421,29 @@ An optimum exists, as noted before \cref{fil:thm:reflect}. For a feasible measur
 vector of the constraints is continuous on its support, and its mean lies in the convex hull of its values
 there, so Carath\'eodory's theorem replaces the measure by a finite one with the same constraints and no larger
 diameter. Translate such an optimal finite measure to start at $0$; it has atoms at both ends of $[0,L]$,
-$L=B(\boldsymbol\lambda)$, and $G(s)=\int e^{st}\dd\mu(t)$ satisfies the hypotheses of \cref{fil:lem:strip}. Its zeros
-include the points $i\lambda_j$ with their orders. At $T=2\kappa$ the zero sum is at least
-$\sum_j(T-\lambda_j)_+\ge NT-\sum_j\lambda_j=N\kappa$, so $J(T)\ge0$ gives $2\kappa^2L\ge2\pi N\kappa$, which is the
-bound.
+$L$ the optimal width, and $G(s)=\int e^{st}\dd\mu(t)$ satisfies the hypotheses of \cref{fil:lem:strip}. Its zeros
+include the targets $s_j$ with their orders; the first statement is the case $s_j=i\lambda_j$. At $T=2\kappa$ the
+zero sum is at least $\sum_j(T-\Im s_j)_+\ge NT-\sum_j\Im s_j=N\kappa$, so $J(T)\ge0$ gives $2\kappa^2L\ge2\pi N\kappa$,
+which is the bound. (It is also the case $m=n$ of \cref{zfg:prop:prefix}.)
 
-At equality, $J(T)=0$ and $\lambda_j\le T$ for every $j$. Then the triangle inequality is an equality at every
+At equality, $J(T)=0$ and $\Im s_j\le T$ for every $j$. Then the triangle inequality is an equality at every
 real $x$, by continuity (a zero of $G$ on the line $\Im s=T$ would make the integral positive). At $x=0$ all
-phases $e^{it_jT}$ equal $e^{it_0T}=1$, so every node lies in $h\Z$ and $G(iT)=1$; this excludes $\lambda_j=T$. Now
-$G(s)=A_0(e^{hs})$ for a real polynomial $A_0$ of degree exactly $N$ with nonnegative coefficients and $A_0(1)=1$.
-The map $s\mapsto e^{hs}$ is injective on the $N$ targets in the open segment $0<\Im s<T$ of the imaginary axis
-and locally invertible, so $A_0$ vanishes at the $e^{ih\lambda_j}$ to the prescribed orders, and $A_0=A/A(1)$.
-Real coefficients make the root multiset closed under conjugation, which is the invariance under
-$\lambda\mapsto2\kappa-\lambda$, and the leading coefficient and the masses being nonnegative give nonnegative
-coefficients of $A$. Conversely, under these three conditions the targets satisfy the hypotheses of
-\cref{fil:thm:reflect} with $n=N$, which gives a minimizer of width $Nh$, unique up to translation. For a common
-real part $\beta$ the tilt $\dd\nu=e^{\beta t}\dd\mu/\int e^{\beta v}\dd\mu(v)$ identifies the conditions at
-$\beta+i\lambda_j$ for $\mu$ with the Fourier conditions at $\lambda_j$ for $\nu$; it is invertible and preserves
-the support.
+phases $e^{it_jT}$ equal $e^{it_0T}=1$, so every node lies in $h\Z$ and $G(x+iT)=G(x)>0$; this excludes
+$\Im s_j=T$. Now $G(s)=A_0(e^{hs})$ for a real polynomial $A_0$ of degree exactly $N$ with nonnegative
+coefficients and $A_0(1)=1$. The map $s\mapsto e^{hs}$ is injective on the strip $0<\Im s<T$, which contains the
+targets, and locally invertible, so $A_0$ vanishes at the $e^{hs_j}$ to the prescribed orders, and $A_0=P/P(1)$.
+Real coefficients make the root multiset closed under conjugation; since $\overline{e^{hs}}=e^{h(\bar s+2i\kappa)}$,
+this is the invariance under $s\mapsto\bar s+2i\kappa$, and the leading coefficient and the masses being
+nonnegative give nonnegative coefficients of $P$. Conversely, under these three conditions the targets satisfy
+the hypotheses of \cref{fil:thm:reflect} with $n=N$ and this $h$, which gives a minimizer of width $Nh$, unique
+up to translation. For $s_j=i\lambda_j$ the three conditions are those of the first statement, with $P=A$.
 \end{proof}
 
 Thus a cluster that is not mirror symmetric about its mean always costs more than $N\pi/\kappa$, and within the
 mirror locus the boundary of the equality region is the coefficient nonnegativity of the explicit polynomial
-$A$. For a common real part this contains the lower bound of \cref{fil:thm:reflect}; that theorem also allows
-different real parts. For $N=2$ the criterion is $\lambda_2\le3\lambda_1$, as in \cref{fil:cor:pair}.
+$A$. The bound does not depend on the real parts of the targets; attaining it does. It contains the lower
+bound of \cref{fil:thm:reflect}, since reflection invariance forces $\kappa=\pi/h$. For $N=2$ the criterion is
+$\lambda_2\le3\lambda_1$, as in \cref{fil:cor:pair}.
 
 For prime sums, let $W$ be smooth with compact support in the interval $(1,2)$, and put
 $S_W(x)=\sum_n\Lambda(n)W(n/x)$. A zeta zero contributes $-x^\rho\widetilde W(\rho)$ to $S_W$, with
@@ -309,7 +459,7 @@ $\int(\log x+u)^ke^{\rho u}\dd\mu(u)=0$, which matters for differentiated explic
 uncertain zero locations; mere cancellation of a multiple zero needs only a simple zero of $F_\mu$.
 
 \subsection{Independent perturbations, splitting and stability}\label{fil:sec:perturb}
-\sources{sharp_positive_zero_filters; optimal_zero_filters; optimal_dirichlet_zero_filters; quadratic_spectra; gram-euler-and-zero-filters; grh_cayley_and_filters; grh_hidden_forms_and_filters_2026-11-27}
+\sources{sharp_positive_zero_filters; optimal_zero_filters; optimal_dirichlet_zero_filters; quadratic_spectra; gram-euler-and-zero-filters; grh_cayley_and_filters; grh_hidden_forms_and_filters_2026-11-27; ProveIt_research_2026-11-27; deep_padic_roots_2026-11-27; proveit_three_extensions_2026-11-27_1}
 
 Exact reflection pairing is not natural for actual zero ordinates. It can be removed locally. Write
 $\sigma=(s_1,\dots,s_r)$ with fixed multiplicities and $Y_\sigma(u)\in\R^{2n}$ for the real and
@@ -327,6 +477,17 @@ and the weights, the nodes and the width $L(\sigma)=u_n(\sigma)$ are real analyt
 analytic family of certificates is positive off the nodes, with double interior and simple endpoint
 zeros. The targets may move independently in both directions; no reflection symmetry is needed at
 the perturbed point.
+
+The same holds in coordinates in which targets may collide or split. Let $\kappa=\pi/h$, translate the
+real parts of the base to mean $0$ (exponential tilting changes no width), and describe a multiset of $n$
+targets with mean $i\kappa$ by the coefficients $c=(c_2,\dots,c_n)\in\C^{n-1}$ of its centred polynomial
+\[
+ P_c(y)=\prod_{s}\bigl(y-(s-i\kappa)\bigr)=y^n+\sum_{r=2}^nc_ry^{n-r},
+\]
+the product running over the multiset. On a neighbourhood of the base coefficients $c^0$ in the real
+coordinates $(\Re c,\Im c)$ the minimizer is again unique up to translation, has $n+1$ positive atoms,
+and has nodes, weights and width real analytic in $c$, including where $P_c$ has repeated roots. Tilting
+and positive rescaling of the targets remove the restriction on the mean.
 \end{theorem}
 
 \begin{proof}
@@ -353,6 +514,21 @@ and positivity off neighbourhoods of the nodes, persist under perturbation, so a
 $g_\sigma\ge0$ on $[0,L(\sigma)]$ with exactly the nodes as zeros. A feasible measure of width at most
 $L(\sigma)$ is forced onto the nodes, where \eqref{fil:eq:system} fixes the weights (the weight columns
 with the mass row are independent), and both endpoint weights are positive.
+
+In coefficient coordinates fix a contour $C$ about the roots of $P_{c^0}$ and put
+\[
+ (\mathcal R_cf)(y)=\frac1{2\pi i}\oint_C\frac{f(z)}{P_c(z)}\,\frac{P_c(z)-P_c(y)}{z-y}\dd z
+\]
+for entire $f$. By Cauchy's formula this is $f(y)$ minus $P_c(y)$ times a holomorphic function, so it is the
+polynomial of degree below $n$ that agrees with $f$ at the roots of $P_c$ to their multiplicities; it is
+holomorphic in $c$, and \eqref{rec:eq:fjets} is equivalent to the vanishing of the $n$ complex coefficients of
+$\mathcal R_c[F_\mu(i\kappa+\cdot)]$, also at collisions. These replace the jet equations in
+\eqref{fil:eq:system}. A variation in the kernel of the Jacobian at the base now makes
+$A(-e^{hy})+(y+i\kappa)B(-e^{hy})$ divisible by $P_{c^0}(y)$, with real $A$, $B$ as before. As $P_{c^0}$ is real,
+conjugating coefficients gives the same with $-i\kappa$, and subtraction gives $P_{c^0}(y)\mid B(-e^{hy})$; since
+$y\mapsto-e^{hy}$ is injective with nonzero derivative on $\abs{\Im y}<\kappa$, this means $P\mid B$, and the
+argument concludes as before without using distinct roots. The certificate is built in the same way from
+the real and imaginary parts $Y_c(u)$ of the coefficients of $\mathcal R_c[e^{(i\kappa+\cdot)u}]$.
 \end{proof}
 
 \begin{proposition}[Sensitivity of the minimum; \stU]\label{fil:prop:sense}
@@ -378,27 +554,16 @@ All derivatives in the real parts vanish, even when they vary independently.
 \end{theorem}
 
 \begin{proof}
-Work in $x=u/h$, with $a_j=hs_j$, $b_j=a_j-i\pi$, $z_j=e^{b_j}=q_j$. Expand
-$E(x)=\sum_je^{b_jx}\sum_{k<m_j}c_{jk}x^k$; differentiating $z^{x-1}$ exactly $m_j-1$ times in the
-residue formula gives
-$c_{j,m_j-1}=1/\bigl((m_j-1)!\,z_j^{m_j}\prod_{v\ne j}(z_j-z_v)^{m_v}\bigr)$. Freeze the $c_{jk}$ and let
-$a_j(\epsilon)$ move. Then $G_\epsilon(x)=(-1)^{n+1}\Im\sum_{j,k}c_{jk}x^ke^{a_j(\epsilon)x}$ is a
-combination of the current moment functions with $G_0=G(h\,\cdot)$, so
-$\sum_\ell w_\ell(\epsilon)G_\epsilon(x_\ell(\epsilon))=0$. Differentiating at $0$, the terms in
-$\dot w_\ell$ and in interior $\dot x_\ell$ vanish, and \eqref{fil:eq:slopes} gives
-$0=\sum_\ell w_\ell^0\dot G(\ell)-\pi w_n^0\dot x_n$. With $r_j=e^{a_j}$, one has
-$\sum_\ell w_\ell^0\ell^pr_j^\ell=(z\partial_z)^pP(r_j)/P(1)$, which vanishes for $p<m_j$ and equals
-$r_j^{m_j}m_j!\prod_{v\ne j}(r_j-r_v)^{m_v}/P(1)$ for $p=m_j$. Since $\dot G$ raises the degree in $x$ by
-one, only $k=m_j-1$ survives, and
-$c_{j,m_j-1}r_j^{m_j}m_j!\prod_{v\ne j}(r_j-r_v)^{m_v}=(-1)^nm_j$. Hence
-$\sum_\ell w_\ell^0\dot G(\ell)=-\Im\sum_jm_j\dot a_j/P(1)$, and $w_n^0=1/P(1)$ gives
-$\dot x_n=-\Im\sum_jm_j\dot a_j/\pi$, that is $\dot D=-h^2\sum_jm_j\dot\gamma_j/\pi$. Real analyticity
-gives the remainder.
+Put $\kappa_0=\pi/h$ and $a=n^{-1}\sum_jm_j\Delta\gamma_j$. At the base $\sum_jm_j\Im s_j^0=n\kappa_0$, so the targets
+divided by $1+a/\kappa_0$ have weighted mean imaginary part $\kappa_0$. On that hyperplane $D\ge n\pi/\kappa_0=nh$ by
+\cref{fil:thm:meanbound}, with equality at the base, and $D$ is real analytic there by \cref{fil:thm:perturb}; so its
+derivative along the hyperplane vanishes at the base. Positive scaling of the targets divides the width by the
+scale, whence $D(\boldsymbol s)=nh(1+a/\kappa_0)^{-1}+O(\norm{\Delta\boldsymbol s}^2)=nh-(h^2/\pi)\,na+O(\norm{\Delta\boldsymbol s}^2)$.
+Changes of the real parts do not move the mean imaginary part.
 \end{proof}
 
-Rescaling all exponents by $1+\epsilon$ divides $D$ by $1+\epsilon$, and since $\sum_jm_j\gamma_j=n\pi/h$ at a
-mirror configuration the theorem reproduces the derivative $-nh$; perturbations keeping the weighted
-mean imaginary part fixed have no first-order cost.
+Perturbations keeping the weighted mean imaginary part fixed thus have no first-order cost; their
+second-order cost is determined below (\cref{fil:thm:mirrorhessian,fil:cor:mirrorlabel}).
 
 \begin{example}[Detuned harmonics and slices off the mirror locus]\label{fil:ex:detune}
 For frequencies $(1+\epsilon_1,2+\epsilon_2,3+\epsilon_3)$ (so $h=\pi/2$, $P=1+z+z^2+z^3$),
@@ -414,8 +579,240 @@ shortest filter has width $3-\epsilon/\pi+O(\epsilon^2)$ (numerically $(D-3+\eps
 \artifact{optimal_zero_filters/results.json}).
 \end{example}
 
-\Cref{fil:thm:perturb} keeps the multiplicities fixed. Near a single frequency of high order, the
-prescribed frequencies may also split.
+\paragraph{Second order at a mirror configuration.}
+By \cref{fil:thm:differential,fil:thm:meanbound} the width is stationary, and minimal, along perturbations
+that keep the weighted mean imaginary part fixed. Its second variation there is an explicit positive
+quadratic form whose kernel is exactly the tangent space of the reflection locus. Use the coefficient
+coordinates of \cref{fil:thm:perturb}: $\kappa=\pi/h$, a base $P_{c^0}$ with real coefficients whose roots $y$,
+listed with multiplicity, lie in $\abs{\Im y}<\kappa$, and
+\[
+ P(z)=\prod_y\bigl(z+e^{hy}\bigr)=\sum_{k=0}^np_kz^k,\qquad p_k>0\quad(0\le k\le n),
+\]
+the polynomial of \cref{fil:thm:reflect} for the targets $i\kappa+y$. Let $D(c)$ be the least width at the
+roots of $P_c$ shifted by $i\kappa$. This multiset is reflection-paired exactly when $\Im c=0$, and for real $c$
+near $c^0$ the coefficients of its polynomial stay positive, so that $D(c)=nh$ there. Let
+$G_c(s)=\sum_kw_k(c)e^{t_k(c)s}$, $t_0=0$, be the transform of the minimizer, and $w_k=p_k/P(1)$ its base weights.
+
+\begin{lemma}[Exact deficit; \stU]\label{fil:lem:mirrordefect}
+After shrinking the neighbourhood, $G_c$ has exactly the $n$ prescribed zeros in $0<\Im s<2\kappa$, and with
+$\varpi_k(x,c)=w_k(c)e^{xt_k(c)}/G_c(x)$
+\begin{equation}\label{fil:eq:mirrordefect}
+ D(c)-nh=\frac1{2\kappa^2}\int_\R-\log\Bigl\lvert\sum_{k=0}^n\varpi_k(x,c)e^{2i\kappa t_k(c)}\Bigr\rvert\dd x .
+\end{equation}
+\end{lemma}
+
+\begin{proof}
+On a small closed neighbourhood the endpoint weights and the gaps between adjacent nodes are bounded below.
+For $\Re s>R$ division by the last term bounds the sum of the absolute values of the others by $Ce^{-gR}$, and
+the first term does the same for $\Re s<-R$; so for large $R$ no zero with $0\le\Im s\le2\kappa$ lies outside
+$\abs{\Re s}\le R$, uniformly in $c$. At the base $G_{c^0}(s)=P(e^{hs})/P(1)$ has exactly $n$ zeros in the strip,
+one logarithm of each root of $P$, and none on its edges, where $G_{c^0}(x)=G_{c^0}(x+2i\kappa)>0$. Rouch\'e's
+theorem on the rectangle keeps the count, and the $n$ prescribed zeros account for all of them; their imaginary
+parts sum to $n\kappa$. \Cref{fil:lem:strip} at $T=2\kappa$ gives $J(2\kappa)=2\kappa^2(D(c)-nh)$, and dividing the
+integrand by $G_c(x)$ gives \eqref{fil:eq:mirrordefect}.
+\end{proof}
+
+\begin{theorem}[Width Hessian at a mirror configuration; \stU]\label{fil:thm:mirrorhessian}
+In this setting the following hold on a neighbourhood of $c^0$.
+\begin{enumerate}[label=\textup{(\roman*)}]
+\item Let $V$ be a real polynomial of degree at most $n-2$, let $P_{c(\eps)}=P_{c^0}+i\eps V$, and write the nodes
+as $t_k=kh+\eps\sigma_k+O(\eps^2)$. Then $\sigma_0=\sigma_n=0$, and $B_V(z)=\sum_kw_k\sigma_kz^k$ is the unique real
+polynomial of degree below $n$ with
+\begin{equation}\label{fil:eq:hermite}
+ \kappa B_V(-e^{hy})\equiv V(y)H(y)\pmod{P_{c^0}(y)},\qquad H(y)=\frac{P(-e^{hy})}{P(1)P_{c^0}(y)},
+\end{equation}
+where $H$ is holomorphic and nonzero at the roots of $P_{c^0}$; also $B_V(0)=0$. The map
+$V\mapsto(\sigma_1,\dots,\sigma_{n-1})$ is a linear isomorphism. If the roots $y_j$ of $P_{c^0}$ are simple, then
+with $z_j=-e^{hy_j}$
+\[
+ B_V(z)=\frac h{\kappa P(1)}\sum_{j=1}^n\frac{z_jV(y_j)}{P_{c^0}'(y_j)}\,\frac{P(z)}{z-z_j}.
+\]
+\item Along every real analytic path of multisets with mean imaginary part $\kappa$ through the base, with node
+velocities $\sigma_k$, the width is $D=nh+\eps^2Q+O(\eps^3)$, where, with $\varpi_x(k)=p_ke^{khx}/P(e^{hx})$,
+\begin{equation}\label{fil:eq:mirrorvar}
+ Q=\int_\R\operatorname{Var}_{\varpi_x}(\sigma)\dd x
+ =\frac1h\sum_{0\le j<k\le n}p_jp_k(\sigma_j-\sigma_k)^2\int_0^\infty\frac{z^{j+k-1}}{P(z)^2}\dd z .
+\end{equation}
+For the path of \textup{(i)} write $Q=Q(V)$; then $Q(V)>0$ for $V\ne0$.
+\item In the coordinates $(\Re c,\Im c)$ the Hessian of $D$ at $c^0$ vanishes on the real and the mixed
+blocks and is $2Q$ on the imaginary block, so its kernel is exactly the tangent space $\Im c=0$ of the
+reflection locus. There are $0<C_1<C_2$ with
+\[
+ C_1\norm{\Im c}^2\le D(c)-nh\le C_2\norm{\Im c}^2 ,
+\]
+so that $D(c)=nh$ exactly when $\Im c=0$, and a real analytic change of coordinates
+$(\Re c,\Im c)\mapsto(\Re c,\eta)$, with $\eta=0$ exactly on $\Im c=0$, gives
+\[
+ D(c)=nh+\norm\eta^2 .
+\]
+\end{enumerate}
+\end{theorem}
+
+\begin{proof}
+(i) Along the path the mean stays $i\kappa$, so $D\ge nh=D(c^0)$ by \cref{fil:thm:meanbound}, and analyticity gives
+$\dot D=0$, that is $\sigma_n=0$; anchoring gives $\sigma_0=0$. The transform of the minimizer at $i\kappa+y$ is
+divisible by $P_{c(\eps)}(y)$, and at the base it is $P(-e^{hy})/P(1)=P_{c^0}(y)H(y)$. Differentiating at $\eps=0$,
+with $W(z)=\sum_k\dot w_kz^k$,
+\[
+ W(-e^{hy})+(y+i\kappa)B_V(-e^{hy})\equiv iV(y)H(y)\pmod{P_{c^0}(y)} .
+\]
+$H$ is holomorphic and nonzero at the roots of $P_{c^0}$, since $y\mapsto-e^{hy}$ has nonzero derivative. All of
+$P_{c^0}$, $H$, $W$, $B_V$, $V$ are real, so conjugating coefficients replaces $i\kappa$ and $i$ by $-i\kappa$ and
+$-i$, and subtraction gives \eqref{fil:eq:hermite}. If a real polynomial $B$ of degree below $n$ has
+$P_{c^0}(y)\mid B(-e^{hy})$, then $P\mid B$ and $B=0$; this gives uniqueness. If $B_V=0$, then $P_{c^0}\mid VH$,
+hence $P_{c^0}\mid V$ and $V=0$; so the map is injective between spaces of dimension $n-1$. For simple roots,
+$H(y_j)=hz_jP'(z_j)/(P(1)P_{c^0}'(y_j))$, and Lagrange interpolation at the $z_j$ gives the displayed formula;
+its value at $0$ is $-hP(0)(\kappa P(1))^{-1}\sum_jV(y_j)/P_{c^0}'(y_j)=0$, as $\deg V\le n-2$.
+
+(ii) For a probability vector $\varpi$ and real $\sigma$,
+$-\log\abs{\sum_k\varpi_ke^{2i\kappa\eps\sigma_k}}=2\kappa^2\eps^2\operatorname{Var}_\varpi(\sigma)+O(\eps^3)$. At the base all
+phases $e^{2i\kappa kh}$ equal $1$, so the variation of the weights and of $\varpi$, and the second-order terms of
+the nodes, do not enter the coefficient of $\eps^2$, the total mass being one. On each tail one endpoint carries
+all but $O(e^{-g\abs x})$ of the mass, uniformly near the base; after factoring out its phase the integrand of
+\eqref{fil:eq:mirrordefect} has three parameter derivatives bounded by $C(1+\abs x)^3e^{-g\abs x}$, and on the central
+compact interval the sum inside the modulus stays away from $0$. Differentiating under the integral in
+\cref{fil:lem:mirrordefect} (which uses only the mean imaginary part) gives the first form of $Q$, and
+$\operatorname{Var}_\varpi(\sigma)=\sum_{j<k}\varpi_j\varpi_k(\sigma_j-\sigma_k)^2$ with $z=e^{hx}$ gives the second; the integrals
+converge since $1\le j+k\le2n-1$. All edge weights are positive, so $Q(V)=0$ forces every $\sigma_k$ to equal
+$\sigma_0=0$, whence $B_V=0$ and $V=0$.
+
+(iii) Write $c=E+iO$ with $E$, $O$ real. Since $D(E,0)=nh$ and $D\ge nh$, $\partial_OD(E,0)=0$, and Taylor's formula
+in $O$ gives $D(E,O)-nh=O^{\mathsf T}M(E,O)O$ with $M(E,O)=\int_0^1(1-t)\,\partial^2_{OO}D(E,tO)\dd t$ real analytic and
+symmetric. So the real and mixed blocks of the Hessian vanish at $c^0$, and by \textup{(ii)} $M(c^0)$ is the matrix of
+$Q$, which is positive definite. Its eigenvalues stay between two positive constants nearby, which gives the
+two-sided bound. The derivative $Z\mapsto XZ+ZX$ of $X\mapsto X^2$ is invertible at a positive definite $X$ (in an
+eigenbasis it multiplies the entries by $\lambda_j+\lambda_k>0$), so $M$ has a real analytic positive definite
+square root, and $\eta=M(E,O)^{1/2}O$ is the required coordinate.
+\end{proof}
+
+The coefficients, not individual roots, are the regular coordinates. At a collision a root displacement
+changes the coefficients only at high order: along a root path on which $\Im c$ first becomes nonzero at
+order $r$ the width excess has exact order $2r$, as in \cref{fil:cor:ray}. At the coalesced base
+$P_{c^0}=y^n$, $P=(1+z)^n$, real frequencies near $\kappa$ have $c_r\in i^r\R$, so their odd coefficients are the
+imaginary ones; \cref{fil:thm:hessian} below evaluates $Q$ there in closed form. For labelled targets the
+velocity map and the full Hessian are explicit.
+
+\begin{corollary}[Labelled targets; \stU]\label{fil:cor:mirrorlabel}
+Let the base satisfy \cref{fil:thm:reflect} with all coefficients of $P$ positive, with distinct targets $s_j^0$ of
+multiplicities $m_j$, reflected partners $j^*$, $\kappa_0=\pi/h$ and $z_j=e^{hs_j^0}$, and move the targets as
+$s_j^0+\eps v_j$ ($v\in\C^r$) with fixed multiplicities. Put $d_j=(v_j-\overline{v_{j^*}})/i$.
+\begin{enumerate}[label=\textup{(\roman*)}]
+\item If $\sum_jm_j\Im v_j=0$, the node velocities $u_k$ satisfy $u_0=u_n=0$ and
+\[
+ \sum_{k=0}^nw_ku_kz^k=-\frac h{2\kappa_0P(1)}\sum_{j=1}^rm_jd_jz_j\frac{P(z)}{z-z_j},
+\]
+and $D=nh+\eps^2Q(v)+O(\eps^3)$, with $Q(v)$ given by \eqref{fil:eq:mirrorvar} for $\sigma=u$. Moreover $Q(v)=0$ if and
+only if $v_j=\overline{v_{j^*}}$ for every $j$.
+\item For arbitrary $v$ put $a=n^{-1}\sum_jm_j\Im v_j$ and $\hat v=v-(a/\kappa_0)\boldsymbol s^0$. Then
+\[
+ D(\boldsymbol s^0+\eps v)=nh-\frac{nha}{\kappa_0}\eps+\Bigl(\frac{nha^2}{\kappa_0^2}+Q(\hat v)\Bigr)\eps^2+O(\eps^3),
+\]
+so the second derivative along every line is nonnegative and vanishes exactly when $v_j=\overline{v_{j^*}}$ for
+every $j$.
+\item With $\kappa=n^{-1}\sum_jm_j\Im s_j$ and
+$\mathcal E(\boldsymbol s)^2=\sum_jm_j\abs{s_j-\overline{s_{j^*}}-2i\kappa}^2$ there are $0<c<C$ with
+$c\,\mathcal E(\boldsymbol s)^2\le D(\boldsymbol s)-n\pi/\kappa\le C\,\mathcal E(\boldsymbol s)^2$ near the base.
+\end{enumerate}
+\end{corollary}
+
+\begin{proof}
+(i) After tilting away the real mean the path has mean imaginary part $\kappa_0$, so
+\cref{fil:thm:mirrorhessian}\textup{(ii)} gives the expansion; $u_0=0$ by anchoring and $u_n=0$ by
+\cref{fil:thm:differential}. Let $U(z)=\sum_kw_ku_kz^k$; the first variation of the transform is
+$\delta F(s)=A_1(e^{hs})+sU(e^{hs})$ with $A_1$ real, and $F_0(s)=P(e^{hs})/P(1)$. Differentiating the zero of order
+$m_j$ at the moving target, $\delta F+v_jF_0'$ vanishes to order $m_j$ at $s_j^0$. Conjugating the same statement
+for $j^*$ and shifting by $2i\kappa_0$ (note $e^{2i\kappa_0h}=1$), subtraction shows that
+$2\kappa_0U(z)+(hd_j/P(1))zP'(z)$ is divisible by $(z-z_j)^{m_j}$ for every $j$. The displayed right side satisfies
+these congruences: modulo $(z-z_j)^{m_j}$ only its $j$th term survives, and $zP'(z)\equiv m_jz_jP(z)/(z-z_j)$. It is
+real by the pairing ($d_{j^*}=\overline{d_j}$, $z_{j^*}=\overline{z_j}$), has degree below $n$, and its constant term is a
+multiple of $\sum_jm_jd_j=2\sum_jm_j\Im v_j=0$. As $U$ also has degree below $n$, the difference is divisible by $P$
+and vanishes. Finally $Q(v)=0$ exactly when $U=0$, that is $\sum_jm_jd_jz_j/(z-z_j)=0$, which for distinct nonzero
+poles means $d_j=0$ for all $j$.
+
+(ii) The rescaled path $\boldsymbol s^0+\eps v$ divided by $1+\eps a/\kappa_0$ has mean imaginary part $\kappa_0$ and equals
+$\boldsymbol s^0+\eps\hat v+O(\eps^2)$. Positive scaling divides the width by the scale, and the term of order $\eps^2$ in
+the rescaled path does not affect the expansion, because the gradient of $D$ on the fixed-mean hyperplane vanishes
+at the base. Expanding gives the formula, and a velocity with $v_j=\overline{v_{j^*}}$ has $a=0$.
+
+(iii) The projection $s_j^{\mathrm{mir}}=(s_j+\overline{s_{j^*}}+2i\kappa)/2$ preserves the weighted mean and lands on the
+reflection locus, inside the positive region near the base; $\delta=\boldsymbol s-\boldsymbol s^{\mathrm{mir}}$ has weighted
+norm $\mathcal E/2$ and satisfies $\delta_{j^*}=-\overline{\delta_j}$, a direction on which the quadratic form of \textup{(i)} at
+$\boldsymbol s^{\mathrm{mir}}$ is positive definite, uniformly on a compact neighbourhood. Taylor's formula about
+$\boldsymbol s^{\mathrm{mir}}$, with a uniform cubic remainder, gives both bounds.
+\end{proof}
+
+The quadratic form has elementary explicit bounds. With $w_{\min}=\min_kw_k$ and $n\ge2$,
+\[
+ \frac{2e^{-2n}w_0w_{\min}}h\sum_{k=1}^{n-1}u_k^2\le Q
+ \le\frac1h\sum_{k=1}^{n-1}w_k\Bigl(\frac1{w_0k}+\frac1{w_n(n-k)}\Bigr)u_k^2 :
+\]
+for the lower bound, $\varpi_x(j)\ge e^{-n}w_j$ on $\abs{hx}\le1$, and one keeps the pairs $(0,k)$ in the variance; for
+the upper bound, $\operatorname{Var}(u)\le\sum_k\varpi_x(k)u_k^2$, with $\varpi_x(k)\le(w_k/w_n)e^{-(n-k)hx}$ for $x\ge0$ and
+$\varpi_x(k)\le(w_k/w_0)e^{khx}$ for $x\le0$. Together with the explicit linear maps of
+\cref{fil:thm:mirrorhessian,fil:cor:mirrorlabel} they give computable coercivity constants.
+
+\begin{example}[Explicit second variations]\label{fil:ex:mirror}
+(i) For $\boldsymbol s^0=(i,2i,3i)$, all simple, $\kappa_0=2$, $h=\pi/2$, $P=1+z+z^2+z^3$ and all $w_k=\tfrac14$. Write
+$v_j=\alpha_j+i\beta_j$ with $\beta_1+\beta_2+\beta_3=0$, and $X=\beta_1+\beta_3=-\beta_2$, $Y=\alpha_1-\alpha_3$. Then
+$u_1=\pi(X-Y)/4$, $u_2=-\pi(X+Y)/4$, and with $\int_0^\infty P^{-2}\dd y=\pi/8$,
+$\int_0^\infty yP^{-2}\dd y=\pi/8-\tfrac14$, $\int_0^\infty y^2P^{-2}\dd y=\tfrac12-\pi/8$ (the others follow by $y\mapsto1/y$),
+\[
+ D(\boldsymbol s^0+\eps v)=\frac{3\pi}2+\frac\pi{16}\bigl(3X^2+(\pi-1)Y^2\bigr)\eps^2+O(\eps^3).
+\]
+Asymmetry of the frequencies and unequal outer real parts cost separately; common changes of the real parts,
+changes of the middle real part and opposite shifts of the outer frequencies stay on the mirror locus.
+
+(ii) For real frequencies $(1-d,1,1+d)$, $0<d<\tfrac23$, $\kappa=1$, and the direction $(1,-2,1)$, put $c=\cos\pi d>-\tfrac12$.
+Then $P(z)=(z+1)(z^2+2cz+1)$, $u_1=-u_2=2\pi(1-c)/(1+2c)$, and
+\[
+ D(1-d+\eps,1-2\eps,1+d+\eps)=3\pi+\eps^2Q_d+O(\eps^3),\qquad
+ Q_d=6\pi\Bigl(1-\frac{3\pi d\cos\pi d}{(1+2\cos\pi d)\sin\pi d}\Bigr).
+\]
+Partial fractions reduce the variance integral to $\int_0^\infty\dd z/(z^2+2cz+1)=\arccos c/\sqrt{1-c^2}$ and
+$\int_0^\infty z\,\dd z/(z^2+2cz+1)^2=(1-c\arccos c/\sqrt{1-c^2})/(2(1-c^2))$. Thus $Q_{1/2}=6\pi$,
+$Q_d=\tfrac{3\pi^5}{10}d^4+\tfrac{3\pi^7}{28}d^6+O(d^8)$ as $d\downarrow0$, in agreement with \cref{fil:cor:sixth} (here
+$e_3=2d^2\eps+O(\eps^3)$), and $Q_d\sim4\pi/(\tfrac23-d)$ as $d\uparrow\tfrac23$, where the two inner masses tend to $0$. The
+neighbourhoods of \cref{fil:thm:perturb} therefore cannot be chosen with control uniform up to a vanishing weight.
+
+(iii) Two targets $s_\pm=\pm\beta+i(\kappa\pm\delta)$ collide at $\beta=\delta=0$. Their centred polynomial is
+$y^2-(\beta+i\delta)^2$, so $\Im c_2=-2\beta\delta$; at the base $P=(1+z)^2$, for $V=1$ one finds $B_V(z)=-h^2z/(4\kappa)$,
+$\sigma_1=-h^2/(2\kappa)$ and $Q(1)=4\sigma_1^2/(3h)=\pi^3/(3\kappa^5)$. Hence, for $\abs\beta+\abs\delta$ small relative to $\kappa$,
+\[
+ D=\frac{2\pi}\kappa+\frac{4\pi^3}{3\kappa^5}\beta^2\delta^2\Bigl[1+O\Bigl(\frac{\beta^2+\delta^2}{\kappa^2}\Bigr)\Bigr],
+\]
+and $D=2\pi/\kappa$ exactly when $\beta\delta=0$: pure damping and pure splitting cost nothing, their interaction a
+positive quartic.
+
+(iv) Mixed entries have no fixed sign. Let $\kappa=1$, $h=\pi$, $a=\log2/\pi$ and base roots $y=-2a,-a,3a$ (frequency
+one, different real parts), so that $P_{c^0}=y^3-7a^2y-6a^3$, $P(z)=(z+\tfrac14)(z+\tfrac12)(z+8)$, and the base weights are
+$(8,49,70,8)/135$. For $V=v_2y+v_3$ write $Q(V)=(v_2,v_3)\mathsf Q(v_2,v_3)^{\mathsf T}$. The interpolation formula of
+\cref{fil:thm:mirrorhessian} gives $(\sigma_1,\sigma_2)=(-\tfrac{173\pi}{980a},-\tfrac{7\pi}{50a})$ for $V=y$ and
+$(\tfrac\pi{20a^2},-\tfrac{13\pi}{350a^2})$ for $V=1$, and exact rational integration gives
+\begin{gather*}
+ \mathsf Q_{22}=\frac\pi{a^2}\Bigl(\frac{49}{200}-\frac{6646079\log2}{22785000}\Bigr),\\
+ \mathsf Q_{33}=\frac\pi{a^4}\Bigl(\frac{21}{200}-\frac{21933\log2}{155000}\Bigr),\\
+ \mathsf Q_{23}=\frac\pi{a^3}\Bigl(-\frac{27}{200}+\frac{29441\log2}{155000}\Bigr),
+\end{gather*}
+approximately $2.7633$, $9.1705$ and $-0.9776$; $\mathsf Q_{23}<0$ since $\log2<\tfrac7{10}$. Time reversal of a positive
+measure sends targets $s$ to $-\bar s$ and preserves the width; it replaces $P_c(y)$ by $(-1)^n\overline{P_c(-\bar y)}$
+and $(v_2,v_3)$ by $(-v_2,v_3)$. So the base with roots $2a,a,-3a$ has the opposite mixed entry, and along the bases
+with roots $ty$, $-1\le t\le1$, which are all strictly positive mirror configurations (the roots of $P$ are
+negative), the mixed entry passes through zero. The strict signs of all minors in \cref{fil:thm:hessian} concern
+real frequencies at a coalesced base.
+\end{example}
+
+The formulas of (i), (ii) and (iv) are checked in exact arithmetic and against high-precision solutions of
+the moment equations in
+\begin{center}\small
+\artifact{ProveIt_research_2026-11-27/04_mirror_hessian/mirror_hessian_checks.json}\\
+\artifact{deep_padic_roots_2026-11-27/data/filter_hessian_results.json}\\
+\artifact{proveit_three_extensions_2026-11-27_1/papers/positive_filters/mirror_checks.json}
+\end{center}
+for example, in (iv) the ratios of the computed excess to $\eps^2Q$ in the directions $(1,0)$, $(0,1)$, $(1,1)$ are
+$1-O(\eps)$ at $\eps=10^{-3},10^{-4},10^{-5}$. The proofs do not depend on these computations.
+
+\Cref{fil:thm:perturb,fil:thm:mirrorhessian} apply in particular near a single frequency of high order, where
+the prescribed frequencies split.
 
 \begin{theorem}[Splitting a multiple frequency; \stU]\label{fil:thm:split}
 For every $N\ge1$ there is $\eps_N>0$ such that, if $\lambda_1,\dots,\lambda_N>0$ satisfy
@@ -430,24 +827,14 @@ sixth order by \cref{fil:cor:sixth}.
 \end{theorem}
 
 \begin{proof}
-Scale to $\kappa=1$. For $0\le k<N$ let
-$f_k(t;\boldsymbol\lambda)=\frac{k!\,i^{-k}}{2\pi i}\oint_C e^{izt}\prod_{j\le k+1}(z-\lambda_j)^{-1}\dd z$, $C$ a
-fixed circle about $\kappa$ containing the entries; $f_k$ is analytic in the entries and equals
-$t^ke^{i\kappa t}$ on the diagonal. Integrating against $\mu$ turns $\int f_k\dd\mu$ into a nonzero multiple
-of the $k$th confluent divided difference of $\widehat\mu$, and the telescoping identity
-$\frac1{z-w}=\sum_{k<N}\frac{\prod_{j\le k}(w-\lambda_j)}{\prod_{j\le k+1}(z-\lambda_j)}+\frac{\prod_{j\le N}(w-\lambda_j)}{(z-w)\prod_{j\le N}(z-\lambda_j)}$
-shows that $\int f_k\dd\mu=0$ for $k<N$ is equivalent to the vanishing conditions, with no division by
-differences of entries. On the diagonal the system
-$\sum_jw_j=1$, $\sum_jw_jf_k(t_j)=0$ ($k<N$) is solved by the binomial filter, and its Jacobian is
-invertible: since $e^{i\kappa x_j}=(-1)^j$ at $x_j=j\pi/\kappa$, the imaginary parts involve only the node
-variations and give a Vandermonde system at $N$ distinct nonzero nodes, and the real parts leave the
-one-dimensional kernel $(2^{-N}\binom Nj)_j$, removed by the mass equation. The implicit function theorem
-gives the analytic nodes and weights. A certificate $g$ in the span of $\Re f_k,\Im f_k$ with
-$g(t_j)=0$ ($0\le j\le N$), $g'(t_j)=0$ ($1\le j<N$) exists with rank exactly $2N-1$; on the diagonal it is
-$\pm\sin(\kappa t)\prod_{j=1}^{N-1}(t-x_j)$, positive between the nodes with simple end and double interior
-zeros, and these sign properties persist as in \cref{fil:thm:perturb}. Hence the measure is the unique
-minimizer; uniqueness also gives invariance under reflection about the midpoint and under permutations of
-the entries.
+Scale to $\kappa=1$. For small $\eps_N$ the targets $i\lambda_j$ have mean $i\bar\lambda$ close to $i$, and after division by
+$\bar\lambda$ their centred polynomial $\prod_j(y-i(\lambda_j/\bar\lambda-1))$ is close to $y^N$. This is the base of
+\cref{fil:thm:reflect} with $h=\pi$, all $N$ targets at $i$ and $P(z)=(1+z)^N$, whose coefficients are all positive. The
+coefficient form of \cref{fil:thm:perturb} gives uniqueness, the $N+1$ positive atoms, and nodes and weights real
+analytic in the coefficients; these are symmetric polynomials in the entries, so nodes and weights are symmetric real
+analytic functions of the entries, also at coincidences. On the diagonal the minimizer is the binomial filter of
+\cref{rec:thm:fwidth}. For real frequencies the time reversal $t\mapsto-t$ preserves the vanishing conditions and the
+diameter, so uniqueness makes the minimizer symmetric about $t_N/2$.
 \end{proof}
 
 \paragraph{The cost of asymmetric splitting.}
@@ -474,15 +861,12 @@ continues the normalized width real analytically to all of $U$, also where the r
 \end{lemma}
 
 \begin{proof}
-For $x$ inside $C$, Cauchy's formula rewrites the integral as
-$f(1+x)-P_c(x)\frac1{2\pi i}\oint_Cf(1+z)\,\dd z/(P_c(z)(z-x))$, which gives the interpolation property, also at
-repeated roots; the denominator is nonzero on $C$ for $c$ near $0$, which gives analyticity. The unknowns are
-the $N+1$ weights and the $N$ nodes other than $t_0=0$, and the equations are the mass equation and the real
-and imaginary parts of the $N$ coefficients of $R_c\widehat\mu$. At $c=0$ they are
-$\sum_jw_j=1$ and $\sum_jw_jt_j^ke^{it_j}=0$ ($k<N$), the diagonal system in the proof of \cref{fil:thm:split},
-solved by the binomial filter with invertible Jacobian; the real analytic implicit function theorem gives the
-branch. At real roots near $0$ the minimizer of \cref{fil:thm:split} solves the same equations and is close
-to the base, so local uniqueness identifies it with $\mu_c$.
+The interpolation property is that of $\mathcal R_c$ in \cref{fil:thm:perturb}, in the variable $1+x$. With $\kappa=1$ the
+targets $i(1+u_j)$ have centred polynomial $\prod_j(y-iu_j)=y^N+\sum_ri^rc_ry^{N-r}$, so real $c$ near $0$ form a slice
+of the coefficient coordinates of \cref{fil:thm:perturb} at the base $y^N$ of \cref{fil:thm:split}, and the vanishing
+of $R_c\widehat\mu$ is the vanishing of $\mathcal R$ there. The coefficient form of \cref{fil:thm:perturb} restricted to
+this slice gives the branch, with the binomial filter at $c=0$; $\mu_c$ is the minimizer for every $c\in U$, in
+particular that of \cref{fil:thm:split} at real roots.
 \end{proof}
 
 \begin{lemma}[Defect integral; \stU]\label{fil:lem:defect}
@@ -495,21 +879,12 @@ near $0$: every monomial of the Taylor series of $b-N\pi$ contains at least two 
 \end{lemma}
 
 \begin{proof}
-At $c=0$, $G_0(s)=((1+e^{\pi s})/2)^N$, whose only zeros with $0<\Im s<2$ are the $N$ copies of $i$. For $c\in U$ the
-endpoint weights exceed a fixed $w>0$ and the adjacent node gaps a fixed $g>0$; at $x>R$, division by the last
-term bounds the sum of the other absolute values by $w^{-1}e^{-gx}$, and the first term does the same at $x<-R$.
-So endpoint dominance on $\abs{\Re s}>R$ is uniform, and Rouch\'e's theorem on the remaining rectangle gives
-exactly $N$ zeros of $G_c$ in the strip $0<\Im s<2$. Since $G_c(i(1+x))=\widehat{\mu_c}(1+x)$ is divisible by $P_c(x)$,
-these are the points $i(1+u_j)$, $u_j$ the possibly nonreal roots of $P_c$, with multiplicity, and
-$\sum_j\Im(i(1+u_j))=N+\Re\sum_ju_j=N$. \Cref{fil:lem:strip} at $T=2$ gives $J(2)=2b-2\pi N$, which is
-\eqref{fil:eq:defect}; the integrand is nonnegative since $\sum_jp_j=1$.
-
-If $O=0$, the real simple reflected configurations, distinct pairs $\pm a_j$ together with $0$ when $N$ is odd,
-form a nonempty relatively open subset of the even-coefficient space arbitrarily near $0$ (the squared roots
-are local coordinates, by their Vandermonde determinant). There $b=N\pi$ by \cref{fil:cor:cluster}, all weights
-being positive, and the real analytic identity theorem extends $b(E,0)=N\pi$ to all nearby $E$. As $b\ge N\pi$
-on $U$, the function $O\mapsto b(E,O)$ has a minimum at $O=0$, so $\partial_Ob(E,0)=0$, and Taylor's formula in $O$
-at fixed $E$ gives the last assertion.
+This is the coalesced case of \cref{fil:lem:mirrordefect,fil:thm:mirrorhessian}, with $\kappa=1$, $n=N$ and base $y^N$, in
+the slice of real $c$ of \cref{fil:lem:coeff}, where the coefficients of the centred polynomial are $i^rc_r$: the even
+$c_r$ give real and the odd ones imaginary coefficients. Thus \eqref{fil:eq:defect} is \eqref{fil:eq:mirrordefect}; the
+integrand is nonnegative since $\sum_jp_j=1$. The locus $O=0$ is the reflection locus, where $b=N\pi$, and the
+factorization $b-N\pi=O^{\mathsf T}M(E,O)O$ in the proof of \cref{fil:thm:mirrorhessian}\textup{(iii)}, restricted to the
+slice, gives $\partial_Ob(E,0)=0$ and the last assertion.
 \end{proof}
 
 \begin{theorem}[Width Hessian at a coalesced frequency; \stU]\label{fil:thm:hessian}
@@ -540,12 +915,7 @@ Finally
 
 \begin{proof}
 \emph{The quadratic coefficient.} Let $c=\eps(0,v)$ with $v$ supported on the odd indices and
-$s_j=\partial_\eps t_j\vert_{\eps=0}$. For a probability vector $p$ and small real $h_j$,
-$-\log\abs{\sum_jp_je^{2ih_j}}=2\operatorname{Var}_p(h)+O(\max_j\abs{h_j}^3)$, and the $\eps$-dependence of $p_j(x,c)$ does
-not enter the coefficient of $\eps^2$, the total mass being one. On each tail one endpoint carries all but
-$O(e^{-g\abs x})$ of the mass, uniformly for small $c$; after factoring out its phase the integrand of
-\eqref{fil:eq:defect} has two derivatives bounded by $C(1+\abs x)^2e^{-g\abs x}$, and the central compact interval is
-zero-free at height two. Differentiating under the integral, the coefficient of $\eps^2$ in $b$ is
+$s_j=\partial_\eps t_j\vert_{\eps=0}$. By \cref{fil:thm:mirrorhessian}\textup{(ii)} the coefficient of $\eps^2$ in $b$ is
 $\int_\R\operatorname{Var}_{p(x,0)}(s)\dd x$. At the base the weights $p_j(x,0)$ are binomial with
 $p=e^{\pi x}/(1+e^{\pi x})$, so this coefficient is
 \begin{equation}\label{fil:eq:variance}
@@ -881,354 +1251,6 @@ $\approx0.469945213$, scale ratio $\approx1.5999065$, against $\pi\sum_{i\le3}1/
 separate two-atom filters; the centred masses are $\approx0.15280708$ at each endpoint and
 $\approx0.34719292$ at each inner node.
 
-\subsection{Two frequencies in arbitrary ratio}\label{fil:sec:two}
-\sources{grh_positive_spectral_extensions_2026-11-27; dirichlet_zero_filters; grh_extensions_2026-11-27_2}
-
-\Cref{rec:thm:hblock} prescribes consecutive harmonics. For two frequencies in arbitrary ratio, possibly
-irrational, the problem is solved completely. Here $\widehat\mu(\omega)=\int e^{i\omega u}\dd\mu(u)$ for a compactly
-supported probability measure $\mu$, and for $r>1$
-\[
- \mathcal B(r)=\inf\set{\operatorname{diam}\supp\mu:\ \widehat\mu(1)=\widehat\mu(r)=0}.
-\]
-No symmetry of $\mu$ is assumed. For frequencies $0<\alpha<\gamma$ the least diameter is $\alpha^{-1}\mathcal B(\gamma/\alpha)$,
-attained by the rescaled minimizers below.
-
-\begin{theorem}[Exact two-frequency classification; \stU]\label{rec:thm:twofreq}
-Let $r>1$.
-\begin{enumerate}
-\item If $r=n\ge3$ is an odd integer, then $\mathcal B(n)=\pi$, and $\tfrac12(\delta_{-\pi/2}+\delta_{\pi/2})$ is the unique
-minimizer up to translation.
-\item Otherwise let $n=2k+1<r<n+2$ with $k\in\Z_{\ge0}$ and $s=(-1)^k$. If $k=0$ put $t=0$ and $M=1$; if $k\ge1$ let $t$
-be the unique solution in $(k\pi/r,(k+\tfrac12)\pi/r)$ of $\tan t=r\tan(rt-k\pi)$ and $M=s\cos(rt)/\cos t>0$.
-There is a unique $T\in(\pi/2,(n+2)\pi/(2r))$ with $s\cos(rT)/\cos T=M$. Then $\mathcal B(r)=2T$, and with
-\[
- P=\frac{-\cos T}{\cos t-\cos T},\qquad Q=\frac{\cos t}{\cos t-\cos T},
-\]
-the unique minimizer up to translation is $\mu_r=\tfrac P2(\delta_{-t}+\delta_t)+\tfrac Q2(\delta_{-T}+\delta_T)$, the inner
-atoms combined when $t=0$.
-\item For $1<r<3$ this is \cref{fil:cor:pair} with $\alpha=1$, $\gamma=r$, $m=1$: $T=2\pi/(1+r)$,
-$\mathcal B(r)=4\pi/(1+r)$, $P=-c/(1-c)$, $Q=1/(1-c)$, $c=\cos(2\pi/(1+r))$.
-\end{enumerate}
-\end{theorem}
-
-\begin{proof}
-Let $r$ be nonresonant and $f(u)=s\cos(ru)/\cos u$ on $[0,\pi/2)$; since $s\cos(r\pi/2)<0$, $f\to-\infty$ at
-$\pi/2$, so $\max f$ is attained. For $k=0$, $\cos(ru)\le\cos u$ on the only positive lobe $[0,\pi/(2r))$, so
-$\max f=f(0)=1$, attained only at $0$. For $k\ge1$ a point of an earlier positive lobe moves by a multiple
-of $2\pi/r$ into the last lobe $J=((k-\tfrac12)\pi/r,(k+\tfrac12)\pi/r)$ with the same numerator and a smaller
-denominator, so the maximum lies in $J$. With $V(u)=s\{-r\sin(ru)\cos u+\cos(ru)\sin u\}$, $f'=V/\cos^2u$ and
-$V'(u)=(1-r^2)s\cos(ru)\cos u<0$ on $J$; $V(k\pi/r)>0$ and $V<0$ at the right end of $J$, so there is exactly one
-stationary point $t$, the unique maximizer, and $V(t)=0$ is the tangent equation. On
-$(\pi/2,(n+2)\pi/(2r))$, $f>0$ runs from $+\infty$ to $0$ with $V'<0$ and $V(\pi/2^+)=s\cos(r\pi/2)<0$, so $f$ decreases
-and $T$ exists uniquely.
-
-Put $g(u)=M\cos u-s\cos(ru)$, even. On $[0,\pi/2)$, $g\ge0$ with equality only at $t$; on $(\pi/2,T)$,
-$g=\cos u\,(M-f(u))>0$; $g(\pi/2)>0$. So $g\ge0$ on $[-T,T]$ with zero set $\set{\pm t,\pm T}$, double at $\pm t$
-($g''(t)=(r^2-1)M\cos t>0$) and simple at $\pm T$. An admissible $\mu$ of diameter at most $2T$, translated into
-$[-T,T]$, has $\int g\dd\mu=0$, so it lives on these nodes. The measure $\mu_r$ is admissible:
-$P\cos t+Q\cos T=0$ and $\cos(ru)=sM\cos u$ at both nodes, and symmetry kills the sine moments. If
-$t>0$ and $d_t,d_T$ are the differences of the masses at the positive and negative nodes, the sine
-moments give $d_t\sin t+d_T\sin T=0=d_t\sin(rt)+d_T\sin(rT)$, and
-$\sin t\sin(rT)-\sin T\sin(rt)=\sin t\{\sin(rT)-\tfrac{sM}r\sin T\}\ne0$, using $r\sin(rt)=sM\sin t$ and
-$M\sin T-sr\sin(rT)>0$, which follows from $V(T)<0$ and $\cos T<0$. For $t=0$ the first sine moment
-already balances the endpoints. Total mass and the first cosine moment then fix $P,Q$. Since $Q>0$
-both endpoints carry mass, so no admissible measure is shorter. At an odd resonance $\cos u\ge0$ on
-$[-\pi/2,\pi/2]$ forces the endpoints, the sine moment equal masses, and this measure annihilates the
-odd frequency $n$; any shorter interval has positive cosine after centring. For $1<r<3$,
-$\cos u-\cos(ru)=2\sin\frac{(1+r)u}2\sin\frac{(r-1)u}2$ gives (iii), which is also \cref{fil:cor:pair}.
-\end{proof}
-
-For $r=(p+1)/p$ this is the case $H=2$, one real part, of \cref{rec:thm:hblock}. The first-band formula and numerical two-mode solutions are known in the
-input-shaping literature
-\cite{CrainSinghoseSeering1996Derivation,SinghoseCrainSeering1997Convolved,Convolve1995Minimizing}, and the
-setting belongs to the extremal theory of positive-definite bandlimited functions \cite{Logan1983Extremal}.
-The new feature is the behaviour at the odd resonances, which is asymmetric. Already the coalescence of the
-two frequencies is singular.
-
-\begin{corollary}[Merging frequencies; \stU]\label{fil:cor:merger}
-A single frequency imposed once needs diameter $\pi$, but $\lim_{r\downarrow1}\mathcal B(r)=2\pi$. The minimizers
-for $r\downarrow1$ converge weakly to $\tfrac14\delta_{-\pi}+\tfrac12\delta_0+\tfrac14\delta_\pi$, whose transform
-$\cos^2(\pi\omega/2)$ has a double zero at $\omega=1$; it is the unique shortest measure with
-$\widehat\mu(1)=\widehat\mu'(1)=0$, by \cref{rec:thm:fwidth}.
-\end{corollary}
-
-\begin{proof}
-Let $r\downarrow1$ in \cref{fil:cor:pair} with $\alpha=1$, $\gamma=r$, $m=1$, that is, in
-\cref{rec:thm:twofreq}(iii): $T\to\pi$, $c\to-1$, $P\to\tfrac12$, $Q\to\tfrac12$.
-\end{proof}
-
-\begin{theorem}[Asymmetric resonance law; \stU]\label{rec:thm:cusp}
-Fix an odd $n\ge3$ and put $A_n=n(n^2-1)/6$, $C_n=(3\pi/(2n(n^2-1)))^{1/3}$. As $\eps\downarrow0$, for $r=n+\eps$,
-\[
- t=\tfrac\pi2-C_n\eps^{1/3}+O_n(\eps),\qquad T=\tfrac\pi2+2C_n\eps^{1/3}+O_n(\eps),\qquad
- \mathcal B(n+\eps)=\pi+4C_n\eps^{1/3}+O_n(\eps),
-\]
-with $P=\tfrac23+O_n(\eps^{2/3})$ and $Q=\tfrac13+O_n(\eps^{2/3})$. With $s_n=(-1)^{(n-1)/2}$ and the finite
-maximum $M_n^-=\max_{0\le u<\pi/2}(-s_n\cos(nu)/\cos u)$,
-\[
- \mathcal B(n-\eps)=\pi+\frac{\pi}{n+M_n^-}\eps+O_n(\eps^2).
-\]
-In particular $M_3^-=1$, $\mathcal B(3-\eps)=\pi+\pi\eps/4+O(\eps^2)$, and $M_5^-=-\min_{0\le v\le1}(16v^4-20v^2+5)=\tfrac54$,
-$\mathcal B(5-\eps)=\pi+\tfrac{4\pi}{25}\eps+O(\eps^2)$.
-\end{theorem}
-
-\begin{proof}
-Put $h=\pi\eps/2$ and $t=\pi/2-y$, so $M=\sin(ry-h)/\sin y$. At $\eps=0$ the quotient $\sin(ny)/\sin y$, a sum of
-$n$ unit vectors with distinct adjacent phases, is below $n$ for $0<y\le\pi/2$, while the value at
-$y=\eps^{1/3}$ tends to $n$; hence $y\to0$. The stationary equation
-$H(\eps,y)=r\cos(ry-h)\sin y-\sin(ry-h)\cos y=0$ expands as
-$\tfrac\pi2\eps-2A_ny^3+O_n(y^5+\eps y^2+\eps^2y+\eps^3)$. With $z=\eps^{1/3}$ and $y=zv$, $H(z^3,zv)/z^3$ is
-real analytic at $z=0$ and equals $\tfrac\pi2-2A_nv^3+O_n(z^2)$, with $v$-derivative $-6A_nC_n^2\ne0$ at
-$(0,C_n)$, so $v=C_n+O_n(z^2)$. For the outer node $T=\pi/2+x$ the crossing equation reads
-$\sin(rx+h)/\sin x=\sin(ry-h)/\sin y$, and $x\to0$ as before. With $x=zw$,
-\[
- \frac{\sin((n+z^3)zw\pm\pi z^3/2)}{\sin(zw)}=n+z^3+z^2\Bigl(\pm\frac\pi{2w}-A_nw^2\Bigr)+O_n(z^4),
-\]
-so after subtracting the two sides and dividing by $z^2$ the equation becomes
-$A_n(2C_n^3/w-w^2+3C_n^2)+O_n(z^2)=0$; since $w^3-3C_n^2w-2C_n^3=(w-2C_n)(w+C_n)^2$ and the derivative at
-$2C_n$ is $-\tfrac92A_nC_n\ne0$, $w=2C_n+O_n(z^2)$, and uniqueness of $T$ identifies this root. The weights
-follow from $\cos t=\sin y$ and $-\cos T=\sin x$. For $r=n-\eps$ the sign of the band is $-s_n$, the limiting
-maximum $M_n^-$ is attained before $\pi/2$ (at $0$ for $n=3$, at a nondegenerate interior point for $n\ge5$),
-the maximum is $M_n^-+O_n(\eps)$, and with $x=\eps v$ the outer equation
-$-\sin((n-\eps)x-h)/\sin x=M_n^-+O_n(\eps)$ becomes $\pi/(2v)-n=M_n^-$ at $\eps=0$, with nonzero derivative.
-\end{proof}
-
-A perturbation $\eps$ of the higher frequency just above an odd multiple of the lower one therefore
-costs a window increase of order $\eps^{1/3}$, and just below it only of order $\eps$. For
-$\eps(\nu)=\max\set{\abs{\widehat\nu(1)},\abs{\widehat\nu(r)}}$ and nonresonant $r$, with $t,T,M,P,Q,g$ as above:
-
-\begin{proposition}[Sharp stability for two frequencies; \stU]\label{rec:prop:twostable}
-Every probability measure $\nu$ on $[-T,T]$ has $W_1(\nu,\mu_r)\le C_r\sqrt{\eps(\nu)}$, and the exponent $\tfrac12$
-cannot be increased. At an odd resonance, on $[-\pi/2,\pi/2]$, the optimal exponent is $1$.
-\end{proposition}
-
-\begin{proof}
-With $G$ the zero set of $g$, $g(u)\ge c_r\operatorname{dist}(u,G)^2$ on $[-T,T]$ and $\int g\dd\nu\le(M+1)\eps(\nu)$, so
-rounding to $G$ costs $O_r(\sqrt\eps)$ by Cauchy--Schwarz and moves the moments by as much; total mass and
-the two complex moments determine weights on $G$ through the invertible linear algebra of the
-uniqueness proof. Splitting an inner atom by $\pm a$ changes the moments by $O_r(a^2)$ at transport
-cost $\asymp a$. At a resonance $\cos u$ grows linearly from the endpoints, and moving them inward proves
-sharpness.
-\end{proof}
-
-For $1<r<3$ the first assertion is a case of \cref{fil:thm:stable}, at the strictly positive pair base
-of \cref{fil:cor:pair} with $\gamma<3\alpha$.
-
-\begin{theorem}[First-order cost of shortening at two frequencies; \stU]\label{rec:thm:twoshort}
-For nonresonant $r$ and small $d>0$ let $D_r(d)=\inf\set{\eps(\nu):\supp\nu\subset[-T+d/2,T-d/2]}$ over
-probability measures. Then $D_r(d)=L_rd+O_r(d^2)$ with $L_r=Q(-g'(T))/(2(M+1))>0$, and for odd $n\ge3$,
-$L_{n+\eps}=\frac{3A_nC_n^2}{2(n+1)}\eps^{2/3}+O_n(\eps)$. At an odd resonance $r=n\ge3$, with $T=\pi/2$,
-\[
- D_n(d)=\frac{n+M_n^-}{2(1+M_n^-)}\,d+O_n(d^2);
-\]
-thus $D_3(d)=d+O(d^2)$ and $D_5(d)=\tfrac{25}{18}d+O(d^2)$.
-\end{theorem}
-
-\begin{proof}
-Put $a=-g'(T)/2$, $K=Qa$ and $h_0(u)=K\cos u/\cos t$, equal to $K$ at the inner nodes and $K-a$ at the outer
-ones. On the shortened interval $g+dh_0\ge dK-O_r(d^2)$: near an inner node the quadratic minimum loses
-only $O(d^2)$, at each moved endpoint the increase is $da$, and elsewhere $g$ is bounded below.
-Integrating gives $(M+1+dK/\cos t)\eps(\nu)\ge dK-O_r(d^2)$. Conversely, keep the inner nodes, move the outer
-ones to $\pm(T-d/2)$ and choose symmetric weights with $\widehat\nu(1)+s\widehat\nu(r)=0$, possible for small $d$ since
-$\cos u+s\cos(ru)$ has opposite signs at the two nodes when $d=0$; then $(M+1)\widehat\nu(1)=\int g\dd\nu=dQa+O_r(d^2)$.
-At $r=n+\eps$, $g(\pi/2+x)=h+3A_ny^2x-A_nx^3+O_n(\eps^{4/3})$ with $y=C_n\eps^{1/3}+O_n(\eps)$ and $x=2y+O_n(\eps)$,
-which gives $-g'(T)=9A_nC_n^2\eps^{2/3}+O_n(\eps)$; use $Q=\tfrac13+O_n(\eps^{2/3})$ and $M=n+O_n(\eps^{2/3})$.
-
-At $r=n$ put $\sigma=\sin(n\pi/2)$ and let $a_*<\pi/2$ be the unique maximizer of $-\sigma\cos(nu)/\cos u$ on
-$[0,\pi/2)$ (the lobe argument above), with value $M=M_n^-$. Then $q(u)=M\cos u+\sigma\cos(nu)\ge0$ on
-$[-\pi/2,\pi/2]$, with double zeros at $\pm a_*$ and $q'(\pi/2)=-(M+n)$. The perturbation
-$q+\tfrac d2\,\frac{M+n}{\cos a_*}\cos u$ is at least $\tfrac d2(M+n)-O_n(d^2)$ on the shortened interval,
-which gives $D_n(d)\ge\frac{M+n}{2(M+1)}d-O_n(d^2)$. For the upper bound put total mass
-$\alpha_d=\frac{(n-1)d}{2(M+1)\cos a_*}$ on the pair $\pm a_*$ and $1-\alpha_d$ on $\pm(\pi/2-d/2)$; the two
-real moments are $\frac{M+n}{2(M+1)}d+O_n(d^2)$ and $\sigma$ times this, using
-$\cos(na_*)=-\sigma M\cos a_*$, and the imaginary moments vanish.
-\end{proof}
-
-\begin{corollary}[A second singularity at resonance; \stU]\label{fil:cor:kappa}
-For odd $n\ge3$, $L_{n-\eps}\to L_n=\frac{n+M_n^-}{2(1+M_n^-)}$, while $L_{n+\eps}\sim\frac{n(n-1)}4C_n^2\eps^{2/3}\to0$.
-For fixed $0<d<\pi$, $D_r(d)\to D_n(d)$ as $r\to n$, so the limits $d\downarrow0$ and $r\downarrow n$ of
-$D_r(d)/d$ do not commute.
-\end{corollary}
-
-\begin{proof}
-The left limit follows from the continuity of the maximizer used in \cref{rec:thm:cusp}; the right one is
-\cref{rec:thm:twoshort}, since $3A_n/(2(n+1))=n(n-1)/4$. For fixed $d$, compactness of probability measures on
-a common interval and linear rescaling of the support intervals give $D_r(d)\to D_n(d)$.
-\end{proof}
-
-\begin{example}\label{rec:ex:ratio4}
-For $r=4$ put $x=\sqrt{(2+\sqrt{10})/12}$ and $z=-x+\sqrt{1-2x^2}$. Tangency of $-\cos(4u)/\cos u$ gives
-$24x^4-8x^2-1=0$, and with $M=-(8x^4-8x^2+1)/x$ the identity $8v^4-8v^2+1+Mv=8(v-x)^2(v^2+2xv+3x^2-1)$ identifies
-$z\in(-1,0)$ as the outer crossing, the other quadratic root being below $-1$. Hence $t=\arccos x$,
-$T=\arccos z$ and
-\[
- \mathcal B(4)=2\arccos\Bigl(-\sqrt{\tfrac{2+\sqrt{10}}{12}}+\sqrt{\tfrac{4-\sqrt{10}}6}\Bigr)\approx3.7138292065,
-\]
-with $P\approx0.3008471646$ and $Q\approx0.6991528354$.
-\end{example}
-
-The width is unchanged by a common real part: for $\beta\in\R$ and $0<\alpha<\gamma$ the least support diameter
-of a probability measure with $\int e^{(\beta+i\alpha)u}\dd\mu=\int e^{(\beta+i\gamma)u}\dd\mu=0$ is $\alpha^{-1}\mathcal B(\gamma/\alpha)$, since the
-tilt $e^{\beta u}\dd\mu/\int e^{\beta v}\dd\mu$ preserves the support; the optimal nodes $u_j$ and masses $w_j$ become
-$\widetilde w_j=w_je^{-\beta u_j}/\sum_\ell w_\ell e^{-\beta u_\ell}$. Under \cref{src:thm:dgrh} two ordinates $\alpha<\gamma$ of the same or
-of different Dirichlet $L$-functions lie on $\beta=\tfrac12$, and averaging $S_W$, or any explicit formula in which a
-zero contributes $c_\rho x^\rho$, at the points $xe^{u_j}$ with the weights $\widetilde w_j$ cancels both contributions
-exactly, with the least possible multiplicative scale ratio $\exp(\mathcal B(\gamma/\alpha)/\alpha)$ (\stG). Equal
-vanishing orders at both frequencies are settled for $\gamma\le3\alpha$ by \cref{fil:cor:pair}. For the first two zeta ordinates
-$\gamma_2/\gamma_1\approx1.48726$ lies in the first band, so the least logarithmic width is
-$4\pi/(\gamma_1+\gamma_2)\approx0.357438$, with three positive weights $\approx0.30032$, $0.44851$, $0.25117$ at the
-shifts $0$, $0.178719$, $0.357438$ (rounded):
-\begin{center}
-\artifact{grh_positive_spectral_extensions_2026-11-27/results/filter_checks.json}\\
-\artifact{grh_positive_spectral_extensions_2026-11-27/results/cusp.csv}\\
-\artifact{grh_extensions_2026-11-27_2/evidence/two_frequency_data.json}
-\end{center}
-The last file checks the classification at 21 ratios and the right cusp at $n=3,5,7,9$ down to
-$\eps=10^{-18}$, at 90 digits; it is numerical, not an interval certificate.
-
-\paragraph{Zero-free intervals and the position inside the convolution bound.}
-The two-frequency problem is dual to the longest interval on which a trigonometric polynomial with
-prescribed spectrum keeps one sign; this answers the two-frequency case of a question of Kozma and Oravecz
-\cite{KozmaOravecz2003Gaps}.
-
-\begin{corollary}[Gaps for two integer frequencies; \stU]\label{rec:cor:kozma}
-For integers $0<N<M$ the supremum of the lengths of zero-free intervals on $\R/\Z$ of real trigonometric
-polynomials with spectrum in $\set{\pm N,\pm M}$ is $\mathcal B(M/N)/(2\pi N)$; for $M=3N$ it is $1/(2N)$.
-\end{corollary}
-
-\begin{proof}
-With $Y(u)=(\cos u,\sin u,\cos ru,\sin ru)$, $r=M/N$: on a compact interval shorter than $\mathcal B(r)$ the convex hull of $Y$
-omits $0$, since a convex combination equal to $0$ would be an admissible probability measure, so some real
-functional is strictly positive on it; on every closed interval of length $\mathcal B(r)$ a translated minimizer
-integrates every coordinate to zero. Rescale by $2\pi N$.
-\end{proof}
-
-In the variables $u=\pi(r-n)/2$, $t=\pi/2-(u+y)/r$, $T=\pi/2+z/r$, the equations of \cref{rec:thm:twofreq}(ii) read
-$\tan y=r\tan((u+y)/r)$ and $\sin(u+z)=M\sin(z/r)$ with $M=\sin y/\sin((u+y)/r)$, $y\in(0,\pi/2)$, $z\in(0,\pi-u)$. Convolving the
-two single-frequency minimizers gives $\mathcal B(r)\le\pi+\pi/r$.
-
-\begin{theorem}[Ratios attaining the convolution bound; \stU]\label{rec:thm:twosat}
-For each odd $n\ge3$ exactly one $r\in(n,n+2)$ has $\mathcal B(r)=\pi+\pi/r$. It lies in $(n,n+1)$, satisfies
-$\tan(\pi(r-n)/2)=r^{-1}\cot(\pi/(2r))$, and $r-n\to(2/\pi)\arctan(2/\pi)$ as $n\to\infty$. Uniformly for $u$ in compact subsets of $(0,\pi)$,
-\[
- \mathcal B(r)=\pi+2Z(u)/r+O(r^{-3}),
-\]
-where $Y(u)\in(0,\pi/2)$ solves $\tan Y=u+Y$ and $Z(u)$ is the first positive root of $\sin(u+Z)=Z\cos Y$.
-\end{theorem}
-
-\begin{proof}
-The convolution has nodes $\pm(\pi/2\pm\pi/(2r))$, so equality forces the inner node to be the unique contact,
-$u+y=\pi/2$, and the contact equation becomes the criterion; conversely the criterion makes $y=\pi/2-u$ the
-contact and $z=\pi/2$ a root of the crossing equation. With $v=\pi/(2r)$, $\frac{\dd}{\dd r}(r^{-1}\cot v)=(v-\sin v\cos v)/(r^2\sin^2v)\le\pi^2v/(6r^2)<\pi/2$,
-using $v-\sin v\cos v\le2v^3/3$ and $\sin v\ge2v/\pi$, while $\tan(\pi(r-n)/2)$ increases from $0$ to $\infty$ on $(n,n+1)$ with
-derivative at least $\pi/2$, and the phase lies outside $(0,\pi/2)$ on $(n+1,n+2)$; and $r^{-1}\cot(\pi/(2r))\to2/\pi$. For the
-expansion, $r\tan((u+y)/r)=u+y+O(r^{-2})$ and the limiting equation has derivative $\sec^2Y-1>0$, so $y=Y+O(r^{-2})$;
-the crossing equation, written $\sin(u+z)=z(M/r)\sin(z/r)/(z/r)$, is a smooth perturbation of its limit, whose
-derivative at the root is negative since $\sin(u+z)/z$ decreases before $z=\pi-u$.
-\end{proof}
-
-Under \cref{src:thm:dgrh}, for positive ordinates $\alpha<\gamma$ the least logarithmic span of a positive average
-cancelling $\tfrac12+i\alpha$ and $\tfrac12+i\gamma$ is $d(\alpha,\gamma)=\alpha^{-1}\mathcal B(\gamma/\alpha)\in[\pi/\alpha,\pi/\alpha+\pi/\gamma]$. Put
-$E_\alpha(\gamma)=\gamma(d(\alpha,\gamma)-\pi/\alpha)=r(\mathcal B(r)-\pi)\in[0,\pi]$, $r=\gamma/\alpha$.
-
-\begin{theorem}[A universal law for the extra width; \stG]\label{rec:thm:twolaw}
-Fix an ordinate $\alpha>0$ of some Dirichlet $L$-function and a primitive $\chi$, possibly of conductor one, and let
-$N_{\chi,\alpha}(T)$ count the ordinates $\alpha<\gamma\le T$ of $L(s,\chi)$ with multiplicity. For every continuous $f$ on $[0,\pi]$,
-\[
- \lim_{T\to\infty}\frac1{N_{\chi,\alpha}(T)}\sum_{\alpha<\gamma\le T}f(E_\alpha(\gamma))=\frac1\pi\int_0^\pi f(2Z(u))\dd u.
-\]
-The law $X$ of $2Z(U)$, $U$ uniform on $(0,\pi)$, has no atoms and support $[0,\pi]$, so $\liminf E_\alpha(\gamma)=0$ and
-$\limsup E_\alpha(\gamma)=\pi$. With $Y_\pi\in(0,\pi/2)$ solving $\tan Y_\pi=\pi+Y_\pi$ and $t_0=\pi/2$, as $e\downarrow0$,
-\[
- \Pr(X\le e)\sim\frac{1+\cos Y_\pi}{2\pi}\,e,\qquad\Pr(X\ge\pi-e)\sim\frac2\pi\frac{\sqrt{2t_0^3}}{1+t_0^2}\sqrt e.
-\]
-\end{theorem}
-
-\begin{proof}
-The positive ordinates of $L(s,\chi)$ are equidistributed modulo one after multiplication by any fixed nonzero
-real \cite[Cor.~8]{AkbaryMurty2008Uniform}, so the phases $u_\gamma=\pi\set{\gamma/(2\alpha)-\tfrac12}$ are equidistributed on $[0,\pi)$; this is
-unconditional, and \cref{src:thm:dgrh} places all multipliers on one vertical line. On $[\eta,\pi-\eta]$,
-\cref{rec:thm:twosat} gives $E_\alpha(\gamma)=2Z(u_\gamma)+O_\eta(r^{-2})$; uniform continuity and $\eta\downarrow0$ give the limit. As $u\uparrow\pi$, $Z\to0$,
-and at $u_*=\arctan(2/\pi)$ one has $Y=\pi/2-u_*$, $Z=\pi/2$, so the support is $[0,\pi]$; $Z$ is real analytic and
-nonconstant, so level sets are null. At $u\downarrow0$, $u=\tan Y-Y\sim Y^3/3$ and $Z\sim2(3u)^{1/3}$; at $u=\pi-v$, $Z\sim v/(1+\cos Y_\pi)$,
-which gives the lower edge. A stationary point of $Z$ satisfies $\cot(u+Z)=-\cot Y$, hence $Z=\tan Y=u+Y$, forcing
-$Z=t_0$ and $u=u_*$; there $Z''(u_*)=-(1+t_0^2)^2/(2t_0^3)$, and the set where $2Z\ge\pi-e$ has length $\sim2\sqrt{e/\abs{Z''(u_*)}}$.
-\end{proof}
-
-Numerically $\Pr(X\le\pi/2)=0.328039432\ldots$, and the median of $X/\pi$ is $0.711649171\ldots$
-(\artifact{dirichlet_zero_filters/law_results.txt}).
-
-\begin{theorem}[Arithmetic second term; \stG]\label{rec:thm:twobias}
-Fix $\alpha>0$, a primitive $\chi$ and a smooth $\varphi$ supported in $(0,\pi)$; put $\kappa=1/(2\alpha)$, $H_\varphi(t)=\varphi(2Z(\pi\set{t-1/2}))$, and let
-$N_\chi^+(T)$ count the zeros with $0<\gamma\le T$. Then
-\[
- \sum_{\alpha<\gamma\le T}\varphi(E_\alpha(\gamma))=N_\chi^+(T)\int_0^1H_\varphi+T\int_0^1H_\varphi(t)g_{\chi,\kappa}(t)\dd t+o(T),
-\]
-where $g_{\chi,\kappa}=0$ unless $\kappa=A\log p/(2\pi B)$ for a prime $p$ and coprime positive integers $A,B$, and then
-$g_{\chi,\kappa}(t)=-\frac{\log p}\pi\Re\sum_{j\ge1}\chi(p)^{Aj}e^{-2\pi iBjt}p^{-Aj/2}$. A prime dividing the conductor gives no correction.
-\end{theorem}
-
-\begin{proof}
-Away from odd ratios $E_\alpha(\gamma)=2z$ with band phase $u=\pi\set{\kappa\gamma-1/2}$, and $2z=2Z(u)+O(r^{-2})$ on compact phase intervals;
-both profiles tend to $0$ uniformly at the seam (as $u\to\pi$, $0<z<\pi-u$; as $u\to0$, $y\to0$, $M/r\to1$ and $z\to0$), so
-for large $r$ both tests vanish near the seam and differ by $O(r^{-2})$ elsewhere, and $\sum\gamma^{-2}<\infty$. Apply
-\cite[Thm.~5, (3.2)]{FordSoundararajanZaharescu2009Distribution} to the smooth periodic $H_\varphi$; the orientation for complex
-characters matches Landau's formula at $x=p^{Aj}$ \cite{Landau1911Nullstellen}.
-\end{proof}
-
-For $\alpha=\gamma_1$ and the zeta ordinates $\gamma_{10}$, $\gamma_{20}$ (ratios $3.521387$, $5.457824$) the joint widths are $0.283311228$ and
-$0.262502497$, against $0.285377967$ and $0.262983914$ for the two separate filters
-(\artifact{dirichlet_zero_filters/pair_results.txt}).
-
-\paragraph{Wide arithmetic progressions.}
-For positive integers $N,b$ and $K\ge0$ let $M_K=M_K(N,b)$ be the supremum of the lengths of intervals of $\R/\Z$ on which
-a real trigonometric polynomial with spectrum in $\set{\pm(N+jb):0\le j\le K}$ is strictly positive. For $b<2N$,
-$M_K=(K+1)/(2N+Kb)$ \cite[Thm.~3]{KozmaOravecz2003Gaps}, and the wide-step case was asked there.
-
-\begin{theorem}[Wide-step limit and sharp order; \stU]\label{rec:thm:wide}
-Let $b\ge2N$, $\beta=N/b$ and $c=\ceil{1/(2\beta)}$. If $b/(2N)$ is an integer then $bM_K=c$ for every $K$. Otherwise
-$(2\beta c-1)/(K+2\beta)\le c-bM_K$ for every $K\ge0$, and $c-bM_K\le C_\beta/K$ for large $K$. In both cases $M_K\to\ceil{b/(2N)}/b$.
-\end{theorem}
-
-\begin{proof}
-In $t=2\pi bx$ the allowed functions are $\Re(e^{i\beta t}P(e^{it}))$ with $\deg P\le K$. At $t=2\pi j$, $0\le j\le c$, every mode equals
-$e^{ij\theta}$, $\theta=2\pi\beta$, and these points have $0$ in their convex hull (all circular gaps are at most $\pi$), so a
-probability measure on them annihilates the whole progression and $bM_K\le c$; at resonance the lowest cosine
-attains it. Otherwise $c\ge2$; on a positive interval of length $2\pi(c-\eps)$, $0\le\eps<1$, $P$ has no root on the circle,
-the argument of $e^{i\beta t}P(e^{it})$ changes by less than $\pi$, an exterior root $w$ contributes at least $-\pi\eps$ since
-$\frac{\dd}{\dd t}\arg(e^{it}-w)<\tfrac12$ and the change over $c$ full turns is zero, and an interior root contributes a
-nonnegative amount; so $2\pi\beta(c-\eps)-K\pi\eps<\pi$, the lower bound. For the upper bound let $\alpha'=2\beta<1$,
-$H_\rho(t)=e^{i\beta t}(1-\rho e^{it})^{-\alpha'}$ and $P_K(z)=\sum_{j\le K}\frac{(\alpha')_j}{j!}\rho^jz^j$. The argument $\psi_\rho$ of $H_\rho$ has
-$\psi_\rho'=\beta(1-\rho^2)/\abs{1-\rho e^{it}}^2>0$ and $\psi_\rho(t+2\pi)=\psi_\rho(t)+2\pi\beta$, so after rotation by $e^{-i\pi c\beta}$ its phase on
-$[\delta,2\pi c-\delta]$ stays within $\pi/2-m_0$ of $0$, with
-$m_0=\pi(\tfrac12-(c-1)\beta)-\alpha'\arctan\bigl(\frac{1-\rho}{1+\rho}\cot\frac\delta2\bigr)$. The relative truncation error on $\abs z=\rho$ is at most
-$2(K+2)^{\alpha'-1}\rho^{K+1}(1-\rho)^{\alpha'-1}$. Choosing $\rho=1-D/(K+2)$ and $\delta=U/(K+2)$ with $D$ and then $U/D$ large gives a
-positive real part on the interval and $bM_K\ge c-U/(\pi(K+2))$.
-\end{proof}
-
-By the convex-hull duality of \cref{rec:cor:kozma}, the infinite progression has a shortest annihilating
-probability measure of diameter exactly $c/b$ in circle units. Rational enclosures for nine instances, for
-example $1.98724292\le bM_{256}\le1.99766356$ at $(N,b)=(2,5)$, are in \artifact{dirichlet_zero_filters/progression_results.txt}.
-
-\begin{theorem}[A growing collection of zeros; \stG]\label{rec:thm:twopack}
-Fix $N,b\ge1$ with $b\ge2N$, a primitive $\chi$, $p_0>1$ and $0<\kappa<1/(2p_0)$, and let $K=K(T)\to\infty$ with
-$K\le\kappa\log T/\log\log T$. There is $H_\chi$ such that for large $T$ every interval $[T(N+bj),T(N+bj)+H_\chi]$, $0\le j\le K$, contains
-an ordinate $\gamma_j$ of $L(s,\chi)$, and for every such choice the least logarithmic span $D_T$ of a positive average
-cancelling all $\tfrac12+i\gamma_j$ satisfies $\abs{TD_T-2\pi M_K}\le K^{-p_0}$. In particular $2\pi c/b-TD_T\asymp_{N,b}K^{-1}$ if $c>b/(2N)$; one
-may take $p_0=2$ for $\kappa<1/4$.
-\end{theorem}
-
-\begin{proof}
-The count $N^+(X)=X\log X/(2\pi)+c_\chi X+O_\chi(\log X)$ \cite{Selberg1992Old,FordSoundararajanZaharescu2009Distribution} gives the
-$\gamma_j$. With $\lambda_j=N+bj$ and $\lambda'_j=\gamma_j/T$, tilting gives $TD_T=W(\lambda')$ and duality $W(\lambda)=2\pi M_K$, where $W$ is the least
-width annihilating the frequencies. Let $d=K+1$, $m'=2d+1$, $\delta=K^{-p_0}$. An optimal measure for $\lambda$ has at most $m'$
-atoms (Carath\'eodory), one of mass at least $1/m'$; convolving with the uniform law on $j\delta/(m'-1)$, $0\le j<m'$,
-costs width $\delta$, keeps the annihilation, gives mass at least $m'^{-2}$ at each new point, and leaves target
-moments $O(H_\chi/T)$. The Vandermonde matrix of the reserved weights has nodes at distances $\gg\Delta\abs{\ell-h}$,
-$\Delta=\delta/(m'-1)$, so the entries of its inverse are at most $(C'/\delta)^{2d}$, and the real correction has size
-$T^{-1+2p_0\kappa+o(1)}<m'^{-2}$; so $W(\lambda')\le W(\lambda)+\delta$, and symmetrically. The last claim follows from \cref{rec:thm:wide}.
-\end{proof}
-
 \subsection{Robustness and deletion of prescribed modes}\label{fil:sec:robust}
 \sources{sharp_positive_zero_filters; optimal_zero_filters; optimal_dirichlet_zero_filters; grh_extensions_2026-11-27_2}
 
@@ -1298,7 +1320,7 @@ $L$-functions and order $m$ at both, it is $\exp(4\pi m/(\alpha+\gamma))$, for e
 A pole term is multiplied by $F_\mu(1)>0$, and a central real zero is not cancelled by a positive average.
 
 \subsection{Optimal logarithmic support for all low zeros}\label{fil:sec:logsupport}
-\sources{logarithmic_dirichlet_zero_filters_2026-11-26; grh_optimal_positive_filters; sharp_zero_filters; sharp_zeta_filters; grh_zero_filter_tradeoff}
+\sources{logarithmic_dirichlet_zero_filters_2026-11-26; grh_optimal_positive_filters; sharp_zero_filters; sharp_zeta_filters; grh_zero_filter_tradeoff; grh_bounded_support_2026-11-27}
 
 The theorems above prescribe a fixed finite set of frequencies. The complementary problem prescribes all
 zero ordinates up to a height $B$. Here $\widehat\mu(z)=\int e^{izt}\dd\mu(t)$, and a zero of order at least
@@ -1467,29 +1489,101 @@ $D=(f(\lambda-\kappa))$ is within $\tfrac14$ of the identity in the column-sum n
 has $\norm a_1\le\tfrac13$, is real and even by uniqueness, and $1+\sum a_\lambda e^{-i\lambda t}\in[\tfrac23,\tfrac43]$.
 \end{proof}
 
-\begin{theorem}[Multiplicity-preserving positive kernels; \stU]\label{fil:thm:cancel}
+\paragraph{Nested-bin allocation.}
+A single grid of long cells is cheap for the high frequencies but cannot hold the lowest ones, and paying
+for those separately costs the excess $\log\log B$. Instead the occurrences are allocated to nested bins,
+level by level, with a fixed capacity per unit length at each level; saturation of the earlier levels
+absorbs the low frequencies instead of charging them twice. Assume \eqref{fil:eq:count} and write
+$n(I)$ for the number of occurrences, with multiplicity, of positive elements of $\Lambda$ in an interval
+$I$. There are constants $c\ge\abs{a+b}$ and $K\ge1$ such that for all $x\ge0$ and $h\ge1$
+\begin{equation}\label{fil:eq:bincount}
+ a\log(x+2)-c-\frac Kh\log(x+h+2)\le\frac{n([x,x+h))}h\le a\log(x+h+2)+c+\frac Kh\log(x+h+2),
+\end{equation}
+by integrating the derivative $a\log(x+2)+a+b$ of the model $a(x+2)\log(x+2)+bx$, which differs from
+$N$ by $O(\log(x+2))$, and charging the endpoint errors to $K\log(x+h+2)$. Fix an integer
+$h_0\ge\max(1,64K/a)$ and, for levels $j\ge1$,
+\[
+ h_j=h_02^{j-1},\qquad \eta_j=j^{-2},\qquad M_j=100j^2,\qquad \delta_j=M_jh_j,\qquad R_j=(M_j+1)\delta_j ,
+\]
+an integer $D$ with $D\ge16(c+a\log2+1)$, $D/a\ge\log32$ and $e^{3D/(4a)}\ge4(R_2+h_2+2)$, and
+$T_j=\exp((j-\tfrac14)D/a)$. Since $R_{j+1}/R_j\le32$, these choices give
+\begin{equation}\label{fil:eq:Tlarge}
+ T_j\ge4(R_{j+1}+h_{j+1}+2)\qquad(j\ge1).
+\end{equation}
+
+\begin{lemma}[Bin capacities; \stU]\label{fil:lem:capacity}
+\textup{(i)} If $k=j=1$, or $j\ge2$ and $k=j-1$, every interval of length $h_k$ with right endpoint at most
+$T_j+h_j$ contains at most $Djh_k$ occurrences. \textup{(ii)} Every interval $[x,x+h_i)$ with
+$x\ge T_{i+1}/2$ contains at least $Dih_i$ occurrences.
+\end{lemma}
+
+\begin{proof}
+(i) By \eqref{fil:eq:Tlarge}, $h_j+2\le T_j$, so the right side of \eqref{fil:eq:bincount} is at most
+$Dj-D/4+a\log2+c+(K/h_k)((j-\tfrac14)D/a+\log2)$. For the indicated $k$, $j/h_k\le2/h_0$, so the $D$-term of
+the last summand is at most $D/32$ and $K\log2/h_k\le a\log2/64$; the choice of $D$ makes the total at most
+$Dj$. (ii) Here $h_i\le x+2$, so $\log(x+h_i+2)\le\log(x+2)+\log2$, the coefficient $a-K/h_i$ of
+$\log(x+2)$ is positive, and $\log(x+2)\ge(i+\tfrac34)D/a-\log2$; the left side of \eqref{fil:eq:bincount} is at
+least $Di+3D/4-a\log2-c-(K/h_i)(i+\tfrac34)D/a\ge Di$, as $(i+1)/h_i\le2/h_0$.
+\end{proof}
+
+Call the occurrences below $R_1$ the base set. For $j=1,2,\dots$ partition $[0,\infty)$ into the bins
+$[kh_j,(k+1)h_j)$ and, in every bin with left endpoint at least $R_j$, allocate to level $j$ up to $Dh_j$ of
+the occurrences not allocated before (all of them if there are fewer); the choice within a bin is arbitrary,
+and the occurrences of a repeated frequency are distinct items. The grids are nested and $R_j$ is a multiple
+of $h_j$.
+
+\begin{lemma}[Saturation and coverage; \stU]\label{fil:lem:allocate}
+For every $j\ge1$: \textup{(a)} each level-$j$ bin with left endpoint at least $T_{j+1}/2$ allocates exactly
+$Dh_j$ occurrences; \textup{(b)} every occurrence at height at most $T_j$ lies in the base set or is allocated
+at one of the levels $1,\dots,j$.
+\end{lemma}
+
+\begin{proof}
+(a) A level-$j$ bin $I$ starting at $x\ge T_{j+1}/2$ is eligible, lies beyond the base set and contains at least
+$Djh_j$ occurrences by \cref{fil:lem:capacity}(ii). For each $i<j$ it is a union of level-$i$ bins starting
+beyond $T_{i+1}/2$, which by induction allocated exactly $Dh_j$ occurrences of $I$ in total at level $i$. So at
+least $Dh_j$ remain, and exactly $Dh_j$ are allocated.
+
+(b) For $j=1$, an occurrence $\lambda\le T_1$ outside the base set lies in an eligible $h_1$-bin with right
+endpoint at most $T_1+h_1$, which has at most $Dh_1$ occurrences by \cref{fil:lem:capacity}(i). For $j\ge2$ let
+$\lambda\le T_j$ be unallocated after level $j-1$; by induction $\lambda>T_{j-1}$, so its level-$j$ bin $I$ starts
+beyond $T_{j-1}-h_j\ge T_{j-1}/2$ and is eligible, with all sub-bins of levels $i\le j-2$ starting beyond
+$T_{i+1}/2$. Each of the two level-$(j-1)$ halves $I'$ of $I$ has $n(I')\le Djh_{j-1}$ by
+\cref{fil:lem:capacity}(i), and the levels $i\le j-2$ allocated exactly $Dh_{j-1}$ in it each, by (a), so after level
+$j-1$ at most $\max(0,n(I')-D(j-1)h_{j-1})\le Dh_{j-1}$ remain in $I'$. Hence at most $Dh_j$ remain in $I$, and
+level $j$ allocates all of them.
+\end{proof}
+
+\begin{theorem}[Multiplicity-preserving positive kernels with bounded excess; \stU]\label{fil:thm:cancel}
 Under \eqref{fil:eq:count} there are even probability measures $\nu_B$ with $\ord_\lambda\widehat\nu_B\ge m_\Lambda(\lambda)$
-for $0<\abs\lambda\le B$, half-width at most $\pi a\log B+O_\Lambda(1+\log\log B)$, and
-$\int e^{ru}\dd\nu_B(u)\le e^{C_\Lambda r^2/2}$ for all real $r$, uniformly in $B$.
+for $0<\abs\lambda\le B$, half-width at most $\pi a\log B+C_\Lambda$, and
+$\int e^{ru}\dd\nu_B(u)\le e^{C_\Lambda r^2/2}$ for all real $r$, with $C_\Lambda$ independent of $B$.
 \end{theorem}
 
 \begin{proof}
-Put $D_B=\log B$, $\eta=D_B^{-1}$, $M=\ceil{100D_B}$, $C=M+1$, $\delta=D_B^2$, $B'=C\delta$, and fix $B_0$ with
-$2\le B'\le\sqrt B$ for $B>B_0$. For $B\le B_0$ convolve the measures $\tfrac12(\delta_{-\pi/(2\lambda)}+\delta_{\pi/(2\lambda)})$
-over the positive occurrences $\lambda\le B$. For $B>B_0$ take $\nu_{B'}$ for the ordinates up to $B'$, sort the
-occurrences in $(B',B]$ into the bins of \cref{fil:lem:phase}, and for each $j$ let $K_j$ be the largest bin
-occupancy; giving the occurrences of each bin distinct colours in $\set{1,\dots,K_j}$, each pair
-$(j,\text{colour})$ is a class for \cref{fil:lem:phase}, and the class densities are convolved with $\nu_{B'}$. An
-interval of length $h\subset[0,B]$ contains $ah\log B+O_\Lambda(h+\log(B+2))$ occurrences, so with $h=\delta/M$,
-$K=\sum_jK_j\le aD_B^3+O_\Lambda(D_B^2)$ and the high-frequency half-width is
-$KA\le(aD_B^3+O(D_B^2))(\pi+1/D_B)/D_B^2=\pi a\log B+O_\Lambda(1)$; the phase bins have length $\asymp\log B$, so the
-$O(\log B)$ error in the zero count is negligible and no spacing hypothesis is needed. Thus
-$H_0(B)\le\pi a\log B+O_\Lambda(1)+H_0(B')$; since $\log B'\le\tfrac12\log B$, iteration gives first
-$H_0(B)=O(1+\log B)$ and then the claim. An even measure on $[-A,A]$ has
-$\int e^{ru}\le\cosh(rA)\le e^{r^2A^2/2}$; one recursion level contributes proxy $KA^2=O(1/\log B)$, the
-cutoffs satisfy $\sum_j1/\log B_j\le2/\log B_0$, and the base factors have
-$\sum_{\lambda>0}m_\Lambda(\lambda)/\lambda^2<\infty$.
+For each base occurrence $\lambda\le B$ take the two-atom measure $\tfrac12(\delta_{-\pi/(2\lambda)}+\delta_{\pi/(2\lambda)})$;
+the base set is finite, so these contribute a bounded half-width $H_{\mathrm{base}}$ and a bounded sum
+$V_{\mathrm{base}}$ of squared half-widths. Let $J=\lceil a\log B/D+\tfrac14\rceil$, so $B\le T_J$ and, by
+\cref{fil:lem:allocate}(b), every occurrence up to $B$ outside the base set is allocated at a level $j\le J$.
+Write each eligible level-$j$ bin index as $kM_j+\rho$ with $0\le\rho<M_j$; its left endpoint is
+$\delta_j(k+\rho/M_j)$ and eligibility means $k\ge M_j+1$. Give the at most $Dh_j$ occurrences allocated in
+a bin distinct colours in $\set{1,\dots,Dh_j}$. For fixed $\rho$ and colour the allocated occurrences up to $B$
+have at most one point in each cell of \cref{fil:lem:phase} with $\eta=\eta_j$, $M=M_j=\ceil{100/\eta_j}$,
+$\delta=\delta_j$ and $j$ there replaced by $\rho$; apply the lemma to each such class. Level $j$ has at most
+$M_jDh_j=D\delta_j$ factors, each of half-width $(\pi+\eta_j)/\delta_j$, so it costs at most $D(\pi+\eta_j)$:
+the cost is proportional to the incremental density $D$, not to the full density below the current height.
+Let $\nu_B$ be the convolution of all these factors; the transforms multiply, so the vanishing orders add and
+no spacing across classes or levels is needed. Its half-width is at most
+\[
+ H_{\mathrm{base}}+\pi DJ+D\sum_{j\le J}\eta_j\le\pi a\log B+H_{\mathrm{base}}+\frac{5\pi D}4+\frac{\pi^2D}6 .
+\]
+An even measure on $[-A,A]$ has $\int e^{ru}\le\cosh(rA)\le e^{r^2A^2/2}$, so the variance proxy is at most
+$V_{\mathrm{base}}+D(\pi+1)^2\sum_{j\ge1}\delta_j^{-1}<\infty$.
 \end{proof}
+
+The bound holds for arbitrarily severe clusters of ordinates, since only the counts
+\eqref{fil:eq:bincount} enter. The constants are large and the construction does not compete with direct
+numerical filters at small heights.
 
 The phase bins are what bring the constant down to $\pi a$. For the zero ordinates of a family of $d$
 Dirichlet $L$-functions as in \cref{fil:cor:dirsupport}, colouring alone, by \cref{rec:thm:finitefilter} with the
@@ -1523,12 +1617,12 @@ $1=\abs{G(iB)}\le\eps\cosh(sB)$.
 This is a positive continuous analogue of the equiripple Chebyshev window \cite{Dolph1946Current}.
 
 \begin{theorem}[Optimal support with attenuation; \stU]\label{fil:thm:optsupport}
-Under \eqref{fil:eq:count}, uniformly for $L\ge0$ as $B\to\infty$,
+Under \eqref{fil:eq:count}, for all $B\ge2$ and $L\ge0$,
 \begin{multline*}
- \frac LB+\pi a\log B+\pi(b-a\log2)-O_\Lambda\Bigl(\frac{\log^2B}B\Bigr)\le H_\Lambda(B,L)\\
- \le\frac{\operatorname{arcosh}(e^L)}B+\pi a\log B+O_\Lambda(1+\log\log B).
+ \frac LB+\pi a\log B+\pi(b-a\log2)-O_\Lambda\Bigl(\frac{\log^2(B+2)}B\Bigr)\le H_\Lambda(B,L)\\
+ \le\frac{\operatorname{arcosh}(e^L)}B+\pi a\log B+O_\Lambda(1).
 \end{multline*}
-Thus $H_\Lambda(B,L)=L/B+\pi a\log B+O_\Lambda(1+\log\log B)$. The upper bound is attained by an even
+Thus $H_\Lambda(B,L)=L/B+\pi a\log B+O_\Lambda(1)$ uniformly in $L\ge0$. The upper bound is attained by an even
 probability measure with $\int e^{ru}\dd\mu(u)\le\exp\bigl(\frac{r^2}2(C_\Lambda+\operatorname{arcosh}(e^L)/B^2)\bigr)$, and by an
 absolutely continuous one at an extra half-width $B^{-1}$.
 \end{theorem}
@@ -1547,12 +1641,12 @@ multiset of nonzero ordinates of their nontrivial zeros,
 \[
  H_{\mathcal F}(B,L)\ge\frac LB+\frac d2\log B+\frac12\sum_{\chi\in\mathcal F}\log\frac{f_\chi}{4\pi e}-O_{\mathcal F}\Bigl(\frac{\log^2B}B\Bigr),\]
 \[
- H_{\mathcal F}(B,L)=\frac LB+\frac d2\log B+O_{\mathcal F}(1+\log\log B).
+ H_{\mathcal F}(B,L)=\frac LB+\frac d2\log B+O_{\mathcal F}(1)\qquad(B\ge2,\ L\ge0).
 \]
 In particular $H_{\mathcal F}(B,cB\log B)/\log B\to d/2+c$ for each fixed $c\ge0$: the leading half-width
 constant is $d/2$ for cancellation alone and $d/2+c_0$ with the attenuation $e^{-c_0B\log B}$, $c_0=-\log\sin1$.
 So there are even probability densities $\mu_B$ supported in $[-H_B,H_B]$ with
-$H_B=(d/2+c_0)\log B+O_{\mathcal F}(\log\log B)$, vanishing on $\Lambda\cap[-B,B]$ to at least the aggregate
+$H_B=(d/2+c_0)\log B+O_{\mathcal F}(1)$, vanishing on $\Lambda\cap[-B,B]$ to at least the aggregate
 multiplicity, with $\sup_{\abs\omega\ge B}\abs{\widehat\mu_B(\omega)}\le e^{-c_0B\log B}$.
 \end{corollary}
 
@@ -1567,12 +1661,12 @@ real by definition; \cref{src:thm:dgrh} enters only when they are used as Fourie
 For $\zeta$ the lower bound reads $H\ge\tfrac12\log B-\tfrac12\log(4\pi)-\tfrac12-o(1)$.
 
 \begin{corollary}[Free cutoff; \stU]\label{fil:cor:free}
-As $L\to\infty$, $\inf_{B\ge2}H_\Lambda(B,L)=\pi a\log L+O_\Lambda(1+\log\log L)$.
+As $L\to\infty$, $\inf_{B\ge2}H_\Lambda(B,L)=\pi a\log L+O_\Lambda(1)$.
 \end{corollary}
 
 \begin{proof}
-The lower bound $L/B+\pi a\log B-O_\Lambda(1)$ holds uniformly in $B\ge2$; its minimum over $B$ is at
-$B=L/(\pi a)$, and that $B$ in the upper bound gives the result.
+By \cref{fil:thm:optsupport}, uniformly in $B\ge2$, $H_\Lambda(B,L)$ equals $L/B+\pi a\log B$ up to a bounded
+error, and for large $L$ the minimum of this expression over $B$ is attained at $B=L/(\pi a)$.
 \end{proof}
 
 Finite near-lattice examples, including repeated ordinates in distinct colours, the stopband factor and the
@@ -1703,7 +1797,9 @@ $\int_0^BM(t)\dd t/t=\frac B\pi(\log(B/2\pi)-2)+O(\log^2B)$.
 \end{proof}
 
 For complex zeros the lower bound agrees with \cref{rec:lem:jensensupport} without RH; under RH the two
-formulations coincide. Numerical illustrations are in
+formulations coincide, and then \cref{fil:cor:dirsupport} with $L=0$ improves the upper bound to
+$\tfrac12\log B+O(1)$ and the lower one to $\tfrac12\log B-\tfrac12\log(4\pi)-\tfrac12-o(1)$, by
+filters that are not atomic and do not approximate $\Phi$. Numerical illustrations are in
 \begin{center}\artifact{sharp_zeta_filters/verification/results.json}\\
 \artifact{sharp_zero_filters/examples.json}\end{center}
 
@@ -1720,8 +1816,11 @@ $B$, and convolve $r$ and $s$ copies; the counts are
 $N_j(T)=\frac T{2\pi}\log\frac{q_jT}{2\pi}-\frac T{2\pi}+O(\log T)$, $q_\zeta=1$, $q_\beta=4$.
 \end{proof}
 
+Without the requirement of atoms at rational radii, \cref{fil:cor:dirsupport} gives half-width
+$\frac{r+s}2\log B+O_{r,s}(1)$.
+
 \subsection{One positive filter for every noncentral zero}\label{fil:sec:global}
-\sources{grh_global_positive_filters_2026-11-27}
+\sources{grh_global_positive_filters_2026-11-27; grh_sharp_endpoint; ProveIt_research_2026-11-27; sharp_global_filters; positive-fourier-zeros; quadratic-turning-points-and-critical-filters}
 
 Exact cancellation of \emph{all} noncentral zeros is impossible with compact support, by
 \cref{rec:lem:jensensupport}; the right question is the fastest possible decay. Let $\mathcal F$ be a nonempty
@@ -1818,25 +1917,337 @@ kernel exists if and only if $F$ has no real noncentral zero: necessity is the l
 divisor with real Fourier frequencies.
 \end{remark}
 
-\begin{corollary}[Endpoint constant; \stG]\label{fil:cor:endpoint}
-Let $Q_*=(\prod_{\chi\in\mathcal F}q_\chi)^{1/d}$, $q_\triv=1$. If the moment condition holds with $\alpha=2/d$, then
-$b\le2\pi d/Q_*$.
+\paragraph{The sharp coefficient.}
+The exponent $2/d$ leaves the coefficient of the double-exponential moment. Circular Jensen averaging as in
+the proof of \cref{fil:thm:global} gives only $b\le2\pi d/Q_*$; dividing the transform by the completed product
+keeps the directional growth and gives the exact value. Put
+\[
+ Q_*=\Bigl(\prod_{\chi\in\mathcal F}q_\chi\Bigr)^{1/d}\ (q_\triv=1),\qquad \alpha=\frac2d,\qquad b_*=\frac{\pi d}{Q_*},
+ \qquad I_b(\mu)=\int\exp\bigl(be^{\alpha\abs t}\bigr)\dd\mu(t),
+\]
+let $n_0$ be the number of trivial characters in $\mathcal F$, $m=\ord_{w=0}F$ and $H(w)=F(w)/w^m$ as in the proof
+of \cref{fil:thm:global}, and
+\[
+ \kappa_{\mathcal F}=2n_0+\frac12\sum_{\chi\in\mathcal F}a_\chi-\frac d4-m .
+\]
+$H$ is even, real on $\R$, and under \cref{src:thm:dgrh} positive on $\R$ with zero divisor exactly the points
+$i\gamma$, $\gamma\ne0$, with multiplicities $m(\gamma)$. Write $M_\mu(w)=\int e^{wt}\dd\mu(t)$; a finite $I_b(\mu)$
+makes $M_\mu$ entire. A probability measure $\mu$ with $I_b(\mu)<\infty$ for some $b>0$ is a \emph{full-divisor
+filter} if $\ord_\gamma\widehat\mu\ge m(\gamma)$ for every $\gamma\ne0$, that is, if $M_\mu/H$ is entire.
+
+\begin{theorem}[Sharp endpoint coefficient; \stG]\label{fil:thm:endpoint}\label{fil:cor:endpoint}
+Assume \cref{src:thm:dgrh}.
+\begin{enumerate}[label=\textup{(\roman*)}]
+\item If $\mu$ is a full-divisor filter and $I_b(\mu)<\infty$, then $b\le b_*=\pi d/Q_*$.
+\item For every $0<b<b_*$ there is a strictly positive continuous probability density $p$ with
+$\ord_\gamma\widehat p\ge m(\gamma)$ for all $\gamma\ne0$ and $I_b(p)<\infty$. Thus $b_*$ is the exact supremum, for
+every family.
+\item If $I_{b_*}(\mu)<\infty$ for a full-divisor filter $\mu$, then $M_\mu=PH/H(0)$ for a real polynomial $P$
+with $P(0)=1$ and $P>0$ on $\R$ (so of even degree with positive leading coefficient), and
+$\deg P+\kappa_{\mathcal F}<-\tfrac12$. No symmetry of $\mu$ is assumed.
+\item Let $h$ be the real even function with $\int h(t)e^{wt}\dd t=H(w)$ from the proof of \cref{fil:thm:global}.
+The full-divisor filters with $I_{b_*}<\infty$ are exactly the densities $P(-\partial_t)h/H(0)$ for real
+polynomials $P$ with $P(0)=1$, $\deg P+\kappa_{\mathcal F}<-\tfrac12$ and $P(-\partial_t)h\ge0$ on $\R$. In
+particular there is none if $\kappa_{\mathcal F}\ge-\tfrac12$, and at most one, $h/H(0)$, if
+$-\tfrac52\le\kappa_{\mathcal F}<-\tfrac12$.
+\end{enumerate}
+\end{theorem}
+
+Part (i) halves the bound of the Jensen argument, which averages the gamma-factor growth over all directions.
+The proof of (i), (iii) and (iv) uses factorization, Stirling's formula and a sector maximum principle, and no
+information on the spacing of zeros; (ii) uses a separation argument.
+
+\begin{lemma}[Sector asymptotics; \stU]\label{fil:lem:sector}
+Uniformly for $w=Re^{i\theta}$, $\abs\theta\le\pi/4$, $x=\Re w$, $y=\Im w$, as $R\to\infty$,
+\[
+ \log\abs{H(w)}=\frac d2\Bigl(x\log R-y\theta-x+x\log\frac{Q_*}{2\pi}\Bigr)+\kappa_{\mathcal F}\log R+O_{\mathcal F}(1),
+\]
+and $H(x)\sim C_{\mathcal F}x^{\kappa_{\mathcal F}}\exp\bigl[\frac x\alpha\bigl(\log\frac x{\alpha b_*}-1\bigr)\bigr]$ as $x\to+\infty$,
+with $C_{\mathcal F}\ne0$. By evenness the same holds about the negative axis with $\abs x$.
+\end{lemma}
+
+\begin{proof}
+In this sector every Dirichlet series at $\tfrac12+w$ is $1+o(1)$. With $c_\chi=\tfrac14+\tfrac{a_\chi}2$,
+$\Gamma(w/2+c_\chi)=\sqrt{2\pi}(w/2)^{w/2+c_\chi-1/2}e^{-w/2}(1+O(R^{-1}))$; the factor
+$(q_\chi/\pi)^{w/2+c_\chi}$ adds $\tfrac x2\log(q_\chi/\pi)+O(1)$, each factor $\tfrac12s(s-1)$ of $\xi$ adds
+$2\log R+O(1)$, and the division by $w^m$ subtracts $m\log R$. Sum over $\chi$, using $\alpha b_*=2\pi/Q_*$.
+\end{proof}
+
+\begin{lemma}[Entire quotient; \stG]\label{fil:lem:quotient}
+If $\mu$ is a full-divisor filter, then $G=M_\mu/H$ is entire and $\log^+\abs{G(w)}=O_\sigma(1+\abs w^\sigma)$ for
+every $\sigma>1$. If $I_b(\mu)<\infty$, then for $u=\abs{\Re w}\ge b\alpha$
+\begin{equation}\label{fil:eq:legendre}
+ \abs{M_\mu(w)}\le I_b(\mu)\exp\Bigl[\frac u\alpha\Bigl(\log\frac u{b\alpha}-1\Bigr)\Bigr],
+\end{equation}
+and $\abs{M_\mu(w)}\le I_b(\mu)$ for $u<b\alpha$.
+\end{lemma}
+
+\begin{proof}
+The bound follows by maximizing $uv-be^{\alpha v}$ over $v\ge0$; it also justifies differentiation under the
+integral and gives $\log\max_{\abs w=R}\abs{M_\mu}=O(R\log R)$. The completions have order at most one, and so
+has $H$. Under \cref{src:thm:dgrh} the zero divisor of $H$ is the prescribed one, so $G$ is entire. Both $M_\mu$
+and $H$ are nonzero at $0$; cancelling the divisor of $H$ in their genus-one Hadamard products gives
+$G(w)=e^{Aw+C}\prod_{z}E_1(w/z)$, $E_1(v)=(1-v)e^v$, over the surplus zeros of $M_\mu$, whose exponent of
+convergence is at most one. For $1<\sigma<2$, $\sum_z\abs z^{-\sigma}<\infty$ and $\log\abs{E_1(v)}\le C_\sigma\abs v^\sigma$.
+\end{proof}
+
+\begin{lemma}[Two narrow cones force a polynomial; \stU]\label{fil:lem:cones}
+Let $G$ be entire with $\log^+\abs{G(w)}=O_\sigma(1+\abs w^\sigma)$ for every $\sigma>1$, and let $N\ge0$ be an
+integer such that for every $\eta>0$ there are $0<\theta_0<\pi/4$ and $C_\eta$ with
+$\abs{G(w)}\le C_\eta(1+\abs w)^Ne^{\eta\abs{\Im w}}$ in the two cones $\abs{\arg(\pm w)}\le\theta_0$. Then $G$ is a
+polynomial of degree at most $N$.
+\end{lemma}
+
+\begin{proof}
+In the upper half-plane $g_\eta(w)=G(w)(w+i)^{-N}e^{i\eta w}$ is bounded in the two cones, as
+$\abs{w+i}\ge\max(1,\abs w)$ there. On the sector between them, of opening $\pi-2\theta_0<\pi$, it is bounded on the
+rays and has growth $\exp(O(\abs w^\sigma))$ with $1<\sigma<\pi/(\pi-2\theta_0)$, so the Phragm\'en--Lindel\"of
+principle \cite{Boas1954Entire} bounds it there. Thus $g_\eta$ is bounded on the upper half-plane; on $\R$ it is bounded by
+$C_0=\sup_x\abs{G(x)}/\abs{x+i}^N$, independently of $\eta$. Multiplying by $(1-i\delta w)^{-1}$ and using the
+maximum principle on half-discs, then $R\to\infty$ and $\delta\downarrow0$, gives $\abs{g_\eta}\le C_0$ there. Let
+$\eta\downarrow0$, and treat the lower half-plane with $(w-i)^N$ and $e^{-i\eta w}$; Cauchy's estimates conclude.
+\end{proof}
+
+\begin{lemma}[Moment series; \stU]\label{fil:lem:series}
+For a probability measure $\mu$ with all real exponential moments put
+$S_b=\sum_{n\ge0}\frac{b^n}{n!}\bigl(M_\mu(\alpha n)+M_\mu(-\alpha n)\bigr)$. Then $I_b(\mu)\le S_b\le2I_b(\mu)$. If
+$M_\mu=PH/H(0)$ with $P$ a real polynomial and $M_\mu>0$ on $\R$, then $I_b(\mu)<\infty$ for $b<b_*$, $I_b(\mu)=\infty$
+for $b>b_*$, and $I_{b_*}(\mu)<\infty$ if and only if $\deg P+\kappa_{\mathcal F}<-\tfrac12$.
+\end{lemma}
+
+\begin{proof}
+$e^{be^{\alpha\abs t}}\le e^{be^{\alpha t}}+e^{be^{-\alpha t}}\le2e^{be^{\alpha\abs t}}$; expand and use Tonelli. Positivity of
+$M_\mu$ and evenness of $H$ force $P$ to have even degree $k$ and positive leading coefficient, so by
+\cref{fil:lem:sector} $M_\mu(\alpha n)+M_\mu(-\alpha n)\sim C'n^{k+\kappa_{\mathcal F}}(n/(eb_*))^n$ with $C'>0$, and by Stirling's
+formula the $n$th term of $S_b$ is asymptotic to a positive multiple of $(b/b_*)^nn^{k+\kappa_{\mathcal F}-1/2}$. At
+$b=b_*$ the series converges exactly when the exponent is below $-1$; the boundary case diverges
+logarithmically.
+\end{proof}
+
+\begin{proof}[Proof of \cref{fil:thm:endpoint}\textup{(i)}, \textup{(iii)} and \textup{(iv)}]
+Let $I_b(\mu)<\infty$ with $b\ge b_*$; then $I_{b_*}(\mu)<\infty$. Subtracting \cref{fil:lem:sector} from
+\eqref{fil:eq:legendre} at $b_*$ cancels the terms of order $R\log R$ and the conductor-dependent linear terms:
+uniformly for $\abs\theta\le\pi/4$,
+\[
+ \abs{G(Re^{i\theta})}\le CR^{-\kappa_{\mathcal F}}\exp\Bigl[\frac d2R\bigl(\cos\theta\log\cos\theta+\theta\sin\theta\bigr)\Bigr],
+\]
+and the same about the negative axis, without any symmetry of $\mu$. As $\cos\theta\log\cos\theta\le0$, the
+exponential is at most $e^{(d/2)\theta_0\abs{\Im w}}$ for $\abs\theta\le\theta_0$. \Cref{fil:lem:cones} with
+$N=\max(0,\lceil-\kappa_{\mathcal F}\rceil)$ and $\theta_0\le2\eta/d$, together with \cref{fil:lem:quotient}, makes $G$ a polynomial;
+put $P=H(0)G$. It is real, $P(0)=1$, and $P>0$ on $\R$ because $M_\mu$ and $H$ are. If $b>b_*$,
+\eqref{fil:eq:legendre} and \cref{fil:lem:sector} on the positive axis give
+$\abs{P(x)}\ll x^{-\kappa_{\mathcal F}}\exp[-(x/\alpha)\log(b/b_*)]\to0$, which is impossible; this proves (i). The degree
+bound in (iii) is \cref{fil:lem:series}.
+
+For (iv), on every vertical strip of bounded width $\abs{H(c+iy)}\ll(1+\abs y)^{C}e^{-\pi d\abs y/4}$, by Stirling and the
+polynomial growth of $L$-functions in strips. So $h(t)=\frac1{2\pi}\int H(iy)e^{-iyt}\dd y$ is smooth, and shifting the
+contour to $\Re w=\pm c$ shows that $p_P=P(-\partial_t)h/H(0)$ is real with $\abs{p_P(t)}\ll_{P,c}e^{-c\abs t}$ for every
+$c$, and has bilateral Laplace transform $PH/H(0)$. If $M_\mu=PH/H(0)$, uniqueness of Fourier transforms gives
+$\mu=p_P\dd t$, and $p_P\ge0$ by continuity. Conversely, if $p_P\ge0$ and $P(0)=1$, it is a probability density
+with the full divisor, and \cref{fil:lem:series} decides $I_{b_*}$. A positive polynomial has even degree, which
+gives the last two assertions.
+\end{proof}
+
+For the subcritical construction (ii), expand $h$ by the first terms of its Dirichlet series. For $\chi\in\mathcal F$
+put $c_\chi=\tfrac12+a_\chi$, $v_\chi(t)=2e^{c_\chi t}\exp(-\pi e^{2t}/q_\chi)$, $v=\mathop{\ast}_\chi v_\chi$,
+$Rg(t)=\int_t^\infty g$, $v_m=R^mv$, $\beta_0=d^{-1}\sum_\chi c_\chi$, $\mathcal B(D)=((D^2-\tfrac14)/2)^{n_0}$ with
+$D=\dd/\dd t$, and $\sum_n\alpha_nn^{-s}=\prod_\chi L(s,\chi)$ ($\Re s>1$), so $\alpha_1=1$ and $\abs{\alpha_n}$ grows at most
+polynomially.
+
+\begin{lemma}[Leading Dirichlet term; \stU]\label{fil:lem:leading}
+\begin{enumerate}[label=\textup{(\alph*)}]
+\item The function $h$ has the expansion $h(t)=\sum_{n\ge1}\alpha_nn^{-1/2}\,\mathcal B(D)v_m(t+\log n)$.
+\item There is a positive measure $\rho$ on $[b_*,\infty)$ with $b_*\in\supp\rho$ and
+$v_m(t)=e^{\beta_0t}\int e^{-ue^{\alpha t}}\dd\rho(u)$, finite for every $t$.
+\item $h(t)>0$ for all large $t$, and $\lim_{t\to+\infty}e^{-\alpha t}\log h(t)=-b_*$.
+\item For $0<\eps<b_*$, a compact set $K$ in $\set{s:\Re e^{-\alpha s}>0}$ and $J\in\set{1,2}$, the sum over $n\ge J$ in
+\textup{(a)} with $t$ replaced by $t-s$ is bounded in absolute value by
+$C\exp[-(b_*-\eps)J^\alpha\Re(e^{-\alpha s})e^{\alpha t}]$ for $s\in K$ and large real $t$, and is holomorphic in $s$.
+\end{enumerate}
+\end{lemma}
+
+\begin{proof}
+(a) The bilateral transform of $v_\chi$ is the gamma and conductor part of $\Lambda_\chi(\tfrac12+w)$; $R$ divides
+the transform by $w$ for real $w>0$, $\mathcal B(D)$ supplies the polynomial factors of $\xi$, and translation by
+$\log n$ supplies $n^{-w}$. All of this converges absolutely on a far right vertical line, and Fourier uniqueness
+there gives (a). (b) In $v(t)$ write $t_\chi=t/d+y_\chi$ with $\sum y_\chi=0$; the exponent becomes
+$-e^{\alpha t}\sum_\chi(\pi/q_\chi)e^{2y_\chi}$ and the weight $e^{\beta_0t}e^{\sum c_\chi y_\chi}$. By the arithmetic--geometric
+mean inequality the sum $\sum_\chi(\pi/q_\chi)e^{2y_\chi}$ has minimum $b_*$ on the hyperplane, and $\rho$ is the
+image of the weight under it (a point mass if $d=1$). For $m>0$,
+$R^mv(t)=\int_0^\infty z^{m-1}v(t+z)\dd z/(m-1)!$ mixes $\rho$ under $u\mapsto ue^{\alpha z}$ with positive weights, which keeps
+the infimum of the support. (c) Under $e^{-ue^{\alpha t}}$, $\mathcal B(D)$ acts as multiplication by a polynomial in
+$ue^{\alpha t}$ of degree $2n_0$ with positive leading coefficient, positive for large $t$ uniformly in $u\ge b_*$; the
+mass of $\rho$ near $b_*$ gives the lower rate and the damping of polynomials the upper one. The terms $n\ge2$
+have the faster rate from $n^\alpha e^{\alpha t}$, since $(b_*-\eps)2^\alpha>b_*$ for small $\eps$, by (d). (d) Each term
+carries a fixed polynomial in $n^\alpha ue^{\alpha t}$ and a power of $n$; a fraction of the exponential absorbs these
+and $e^{\beta_0t}$, a further small fraction makes the sum over $n$ bounded and gives an integrable factor $e^{-u}$
+against $\rho$, and the compact lower bound for $\Re e^{-\alpha s}$ makes this uniform. The sum converges locally
+uniformly in $s$, hence is holomorphic.
+\end{proof}
+
+\begin{proof}[Proof of \cref{fil:thm:endpoint}\textup{(ii)}]
+By \cref{fil:lem:smooth}, as in the proof of \cref{fil:thm:global}, there is a nonnegative compactly supported
+$k_0$ with $h*k_0>0$. Fix $\delta>0$ and a strictly positive continuous $W$ on $\R$ equal to $h(\abs t-\delta)$
+for large $\abs t$. By \cref{fil:lem:leading}(c) and evenness, $f_s(t)=h(t-s)/W(t)$ ($\abs s\le\delta$) extends
+continuously to $[-\infty,+\infty]$; it vanishes at both ends for $\abs s<\delta$, while $f_\delta$ is $1$ at $+\infty$ and
+$0$ at $-\infty$, and $f_{-\delta}$ the reverse.
+
+We claim that the real span of the $f_s$ contains a strictly positive function on $[-\infty,+\infty]$. If not,
+separating the span from the open cone of strictly positive continuous functions and the Riesz representation
+theorem give a nonzero positive measure $\sigma$ annihilating the span. Put $\dd\lambda=\dd\sigma/W$ on $\R$; then
+\begin{equation}\label{fil:eq:orth}
+ \int_\R h(t-s)\dd\lambda(t)=0\qquad(\abs s<\delta).
+\end{equation}
+Let $r_\pm=\inf\set{r>0:\int_{\pm t\ge0}\exp(-re^{\alpha\abs t})\dd\lambda(t)<\infty}$ and $a_\pm=\alpha^{-1}\log(b_*/r_\pm)$
+($a_\pm=\infty$ if $r_\pm=0$). By \cref{fil:lem:leading}(c) for $W$, $r_\pm\le b_*e^{-\alpha\delta}$, so $a_\pm\ge\delta$; by
+\cref{fil:lem:leading}(d) and evenness the left side of \eqref{fil:eq:orth} is holomorphic near every point of
+$(-a_-,a_+)$ and so vanishes there. Suppose $a_+<\infty$. Near $s=a_+$ the part of the integral over $t<0$ is
+holomorphic, and so is the part of the terms $n\ge2$ over $t\ge0$, by \cref{fil:lem:leading}(d), because
+$2^\alpha b_*e^{-\alpha a_+}>r_+$. Hence the $n=1$ part over $t\ge0$, which is $\mathcal B(-\partial_s)V(s)$ with
+$V(s)=\int_{t\ge0}v_m(t-s)\dd\lambda(t)$, continues holomorphically across $a_+$, and so does $V$, as a solution of a
+linear differential equation with constant coefficients and holomorphic right side. But
+\cref{fil:lem:leading}(b) gives $V(s)=e^{-\beta_0s}\int e^{-z\nu'}\dd\nu(\nu')$ with $z=e^{-\alpha s}$, where $\nu$ is the
+image of $e^{\beta_0t}\mathbf1_{t\ge0}\dd\lambda(t)\dd\rho(u)$ under $\nu'=ue^{\alpha t}$, a positive measure whose real Laplace
+abscissa is exactly $z_0=r_+/b_*$ (above it use $u\ge b_*$; below it the mass of $\rho$ near $b_*$ forces divergence).
+A Laplace integral of a positive measure cannot be continued holomorphically across its real abscissa: the
+Taylor series at a point $z_1>z_0$ has nonnegative terms towards $z_2<z_0$, and monotone convergence would
+make the divergent integral at $z_2$ finite. As $s\mapsto e^{-\alpha s}$ is locally invertible, this contradiction
+gives $r_+=0$, and likewise $r_-=0$. Then \eqref{fil:eq:orth} holds for all real $s$, with absolute convergence
+locally uniformly in $s$; integrating against $k_0(s)\dd s$ gives $\int(h*k_0)\dd\lambda=0$, so $\lambda=0$, and pairing
+$\sigma$ with $f_{\pm\delta}$ removes its masses at $\pm\infty$. This contradicts $\sigma\ne0$.
+
+So some finite combination $g=\sum_\ell c_\ell h(\cdot-s_\ell)$, $\abs{s_\ell}\le\delta$, has $g/W$ strictly positive
+and bounded on $[-\infty,+\infty]$. Its transform is $H(w)\sum_\ell c_\ell e^{s_\ell w}$, so $g/\int g$ is a strictly
+positive continuous probability density with the full divisor, and $g\le CW$ with \cref{fil:lem:leading}(c) gives
+$I_b<\infty$ for every $b<b_*e^{-\alpha\delta}$. Choose $\delta<\alpha^{-1}\log(b_*/b)$.
+\end{proof}
+
+The separation gives no bound on the number or size of the coefficients $c_\ell$. The upper bound (i) and the
+rigidity (iii) need no Riemann hypothesis if the full complex zero divisor of $H$ is prescribed instead of
+the real ordinates; \cref{src:thm:dgrh} identifies the two conditions and gives $H>0$ on $\R$, which (ii) and
+(iv) use. Requiring only one vanishing per distinct ordinate is a different problem, to which the division
+argument does not apply.
+
+\paragraph{Exact examples.}
+For $\zeta$ and $L(s,\chi_{-4})$ the kernels of \cref{fil:lem:kernels} are positive; so is the kernel of the even
+quadratic character $\chi_5$ of conductor $5$.
+
+\begin{lemma}[A third positive kernel; \stU]\label{fil:lem:chifive}
+The kernel of \cref{fil:lem:tails} for $\chi_5$,
+\[
+ K_5(t)=2e^{t/2}\sum_{n\ge1}\chi_5(n)e^{-\pi n^2e^{2t}/5},
+\]
+is even and strictly positive, with $\int K_5(t)e^{wt}\dd t=\Lambda_{\chi_5}(\tfrac12+w)$, and $\log K_5(t)=-\tfrac\pi5e^{2\abs t}+O(1+\abs t)$.
+\end{lemma}
+
+\begin{proof}
+Evenness and the transform are \cref{fil:lem:tails}, the root number being $1$ (Gauss sum $\sqrt5$). For $t\ge0$,
+relative to the first term the later terms have total absolute value at most
+$\sum_{n\ge2}e^{-\pi(n^2-1)e^{2t}/5}\le\sum_{n\ge2}e^{-3\pi(n-1)/5}=e^{-3\pi/5}/(1-e^{-3\pi/5})<1$, using
+$n^2-1\ge3(n-1)$; this also gives the asymptotic.
+\end{proof}
+
+\begin{theorem}[Exact supremum and attainment for $\zeta$, $\chi_{-4}$ and $\chi_5$; \stG]\label{fil:thm:endpointex}
+Let $\mathcal F$ consist of $r$ copies of the trivial character, $s$ of $\chi_{-4}$ and $u$ of $\chi_5$, $d=r+s+u>0$.
+Then $m=0$, $\kappa_{\mathcal F}=(7r+s-u)/4$, the supremum of the admissible coefficients is
+$b_*=\pi d/(4^s5^u)^{1/d}$, and the normalized convolution $\mathbf h$ of the $d$ positive kernels has
+$I_b(\mathbf h)<\infty$ for every $b<b_*$. The supremum is attained if and only if $u>7r+s+2$; there is exactly one
+endpoint measure when $7r+s+2<u\le7r+s+10$, and there are infinitely many when $u>7r+s+10$. For $u$ copies of
+$\chi_5$ alone every even degree $2j<u/4-\tfrac12$ occurs for $P$ in \cref{fil:thm:endpoint}(iii).
+\end{theorem}
+
+\begin{proof}
+The kernels have positive integrals, so there is no central zero and $\mathbf h=h/H(0)$. By the leading terms,
+$\mathbb Ee^{c_je^{2\abs{X_j}}}<\infty$ for independent $X_j$ with these densities and every $c_j<\pi/q_j$; for
+$b<b_*$ choose $c_j=(b/b_*)\pi/q_j$, and the arithmetic--geometric mean and triangle inequalities give
+$\sum_jc_je^{2\abs{X_j}}\ge b\,e^{\alpha\abs{\sum_jX_j}}$, so $I_b(\mathbf h)\le\prod_j\mathbb Ee^{c_je^{2\abs{X_j}}}<\infty$. With
+$P=1$, \cref{fil:thm:endpoint}(iv) gives attainment exactly when $\kappa_{\mathcal F}<-\tfrac12$, which is $u>7r+s+2$,
+and uniqueness for $\kappa_{\mathcal F}\ge-\tfrac52$. If $u\ge1$, let $p$ be the normalized $K_5$. With $x=\pi e^{2t}/5$, the
+derivatives of its first term are $e^{t/2}e^{-x}R_k(x)$ with $R_0=1$, $R_{k+1}=(\tfrac12-2x)R_k+2xR_k'$, of degree $k$ and
+leading coefficient $(-2)^k$, and the other terms contribute $O_k(e^{t/2}x^ke^{-4x})$. So $p^{(2j)}>0$ for large
+$\abs t$, and $p_\eps=p+\eps p^{(2j)}$ is a positive probability density for small $\eps>0$, with transform
+$(1+\eps w^{2j})H_5(w)$, $H_5$ the normalized transform of $p$. Replacing one factor $p$ by $p_\eps$ realizes
+$P=1+\eps w^{2j}$, admissible when $2j+\kappa_{\mathcal F}<-\tfrac12$; distinct $\eps$ give distinct measures. For $j=1$ this
+is $u>7r+s+10$.
+\end{proof}
+
+\begin{center}
+\small
+\begin{tabular}{@{}lcccl@{}}
+\toprule
+Family & $d$ & $\kappa_{\mathcal F}$ & $b_*$ & endpoint\\
+\midrule
+$\zeta$ & $1$ & $7/4$ & $\pi$ & not attained\\
+$L(s,\chi_{-4})$ & $1$ & $1/4$ & $\pi/4$ & not attained\\
+$\zeta\,L(s,\chi_{-4})$ & $2$ & $2$ & $\pi$ & not attained\\
+$L(s,\chi_5)^2$ & $2$ & $-1/2$ & $2\pi/5$ & not attained\\
+$L(s,\chi_5)^3$ & $3$ & $-3/4$ & $3\pi/5$ & unique\\
+$L(s,\chi_5)^{10}$ & $10$ & $-5/2$ & $2\pi$ & unique\\
+$L(s,\chi_5)^{11}$ & $11$ & $-11/4$ & $11\pi/5$ & infinitely many\\
+$\zeta\,L(s,\chi_5)^{10}$ & $11$ & $-3/4$ & $11\pi/5^{10/11}$ & unique\\
+\bottomrule
+\end{tabular}
+\end{center}
+
+For $\zeta$ the range of admissible coefficients in $\int\exp(be^{2\abs t})\dd\mu<\infty$ is therefore exactly
+$0<b<\pi$, realized by the single density $\Phi/\xi(\tfrac12)$; for $u$ copies of $\chi_5$ a new degree $2j$
+appears at $u=8j+3$. The theta kernels of the real even primitive characters of conductors $8$, $12$, $13$ and
+$17$ are also positive \cite{LouboutinMunsch2013Positive}; each such factor contributes $-\tfrac14$ to $\kappa_{\mathcal F}$, and
+for any family made of these, $\zeta$, $\chi_{-4}$ and $\chi_5$ the normalized convolution of the kernels is the
+canonical density $h/H(0)\ge0$, so by \cref{fil:thm:endpoint}(iv) the endpoint is attained exactly when
+$\kappa_{\mathcal F}<-\tfrac12$. The degree and parity bookkeeping of the table is checked in
+\artifact{grh_sharp_endpoint/verification.json}.
+
+\begin{corollary}[A weighted endpoint for the zeta zeros; \stG]\label{fil:cor:zetaweighted}
+For $\mathcal F=\set\triv$ and $\lambda\in\R$ put $J_\lambda(\mu)=\int\exp(\pi e^{2\abs t}-\lambda\abs t)\dd\mu(t)$. No full-divisor
+filter has $J_\lambda<\infty$ for $\lambda\le\tfrac92$; for $\tfrac92<\lambda\le\tfrac{17}2$ exactly one does, the normalized
+Riemann kernel $\Phi/\xi(\tfrac12)$; for $\lambda>\tfrac{17}2$ infinitely many do.
 \end{corollary}
 
 \begin{proof}
-With $N_+(T)=\frac{dT}{2\pi}(\log T+\log(Q_*/2\pi)-1)+O(\log T)$ the prescribed Jensen sum is
-$\frac{dR}\pi(\log R+\log(Q_*/2\pi)-2)+O(\log^2R)$. Keeping the exact supremum, and using that $\abs{\sin\theta}$
-has mean $2/\pi$ and $\abs{\sin\theta}\log\abs{\sin\theta}$ mean $(2/\pi)(\log2-1)$, the upper Jensen mean is
-$\frac{2R}{\pi\alpha}(\log R-\log(b\alpha)+\log2-2)+O(1)$. Compare the coefficients of $R$ at $\alpha=2/d$.
+Here $\alpha=2$, $b_*=\pi$, $\kappa_{\mathcal F}=\tfrac74$. Maximizing $(u+\lambda)t-\pi e^{2t}$ instead of $ut-\pi e^{2t}$ changes the
+bound \eqref{fil:eq:legendre} by $\tfrac\lambda2\log u+O(1)$, so the proof of \cref{fil:thm:endpoint}(iii) again makes
+$M_\mu=PH/H(0)$ with $P$ a positive polynomial of even degree $k$. Expanding $e^{\pi e^{2\abs t}}$, the terms of
+$J_\lambda$ are comparable to $\frac{\pi^n}{n!}(M_\mu(2n-\lambda)+M_\mu(\lambda-2n))$, and
+$H(2n-\lambda)/H(2n)\sim(n/\pi)^{-\lambda/2}$ by \cref{fil:lem:sector}, so they are of order $n^{k+5/4-\lambda/2}$:
+convergence means $\lambda>\tfrac92+2k$. Degree $0$ is $\Phi/\xi(\tfrac12)$; for degree $2$, $\Phi''/\Phi\sim4\pi^2e^{4t}$ at
+both ends, so $\Phi+\eps\Phi''$ is positive for small $\eps>0$, with transform $(1+\eps w^2)\xi(\tfrac12+w)$.
 \end{proof}
 
-This is a necessary bound only; its sharpness is not known. For $\zeta$ alone, $\Phi/\xi(\tfrac12)$ is already
-such a density with exponent $2$ (a classical positive kernel \cite{Titchmarsh1986Theory}); for $L(s,\chi_{-4})$ the
-kernel $K_\beta$ is positive (\cref{fil:lem:kernels}), and the convolution of the two normalized kernels is a
-$d=2$ example (exponent $1$) without central division or smoothing. All primitive inducers modulo $q$ give
-exponent $2/\varphi(q)$. The checks in \artifact{grh_global_positive_filters_2026-11-27/}\allowbreak\artifact{examples_output.txt}
-are floating-point illustrations. The exponent is sharp for multiplicity-preserving cancellation; one vanishing
-per distinct ordinate might allow faster decay.
+\paragraph{Exact tails and truncation.}
+For a fixed filter put $T_\mu(H')=\mu(\set{\abs t>H'})$ and $c(\mu)=\sup\set{b:I_b(\mu)<\infty}$. Markov's inequality and
+layer-cake integration give $c(\mu)=\liminf_{H'\to\infty}e^{-\alpha H'}\log(1/T_\mu(H'))$.
+
+\begin{proposition}[Canonical tail and truncation constant; \stG]\label{fil:prop:tail}
+Let $\mathbf h$ be the normalized convolution of \cref{fil:thm:endpointex}. Then
+\[
+ \lim_{\abs t\to\infty}-e^{-\alpha\abs t}\log\mathbf h(t)=b_*,\qquad
+ \lim_{H'\to\infty}e^{-\alpha H'}\log\frac1{T_{\mathbf h}(H')}=b_*,
+\]
+and for $c>0$ the least $H_{x,c}$ with $T_{\mathbf h}(H_{x,c})\le x^{-c}$ satisfies
+$H_{x,c}=\frac d2\log\log x+\frac d2\log(c/b_*)+o(1)$ as $x\to\infty$. No full-divisor filter has
+$T_\mu(H')\le\exp(-(b_*+\eta)e^{\alpha H'})$ for all large $H'$, for any $\eta>0$.
+\end{proposition}
+
+\begin{proof}
+Write $\mathbf h=h_1*\dots*h_d$ with $\log h_i(t)=-c_ie^{2\abs t}+O(1+\abs t)$, $c_i=\pi/q_i$. The arithmetic--geometric
+mean inequality on $\sum t_i=t$, keeping a fraction $\eps$ of each exponent for integrability, gives
+$\mathbf h(t)\le C_\eps e^{-(1-2\eps)b_*e^{\alpha\abs t}}$. For the lower bound integrate over the box
+$\abs{t_i-t_i^*}\le\delta/d$ ($i<d$) about $t_i^*=t/d+\frac12\log(q_i/Q_*)$, where $c_ie^{2t_i^*}=b_*e^{\alpha t}/d$; this gives
+$\mathbf h(t)\ge C_\delta\exp(-e^{2\delta}b_*e^{\alpha t}-O(1+t))$. Integrating the two bounds gives the tail, positivity
+makes $T_{\mathbf h}$ continuous and strictly decreasing, and inversion gives $H_{x,c}$. The last claim is the formula
+for $c(\mu)$ with \cref{fil:thm:endpoint}(i).
+\end{proof}
+
+With \cref{fil:cor:globaltrunc} this identifies, for this fixed rule, the constant in the truncation radius:
+truncating at $H'$ and renormalizing changes the average of a bounded function $f$ by at most
+$2\norm f_\infty T_{\mathbf h}(H')$, so error $x^{-c}$ in normalized bounded tests costs exactly
+$H_{x,c}$. This is not an optimum over filters chosen depending on $x$.
+
+For $\zeta$ alone, $\Phi/\xi(\tfrac12)$ is a full-divisor filter without central division or smoothing (a classical
+positive kernel \cite{Titchmarsh1986Theory}), and so is the normalized convolution for $\zeta$ and $L(s,\chi_{-4})$. All
+primitive inducers modulo $q$ give exponent $2/\varphi(q)$. The checks in
+\artifact{grh_global_positive_filters_2026-11-27/}\allowbreak\artifact{examples_output.txt} are floating-point illustrations.
 
 \paragraph{Arithmetic consequence.}
 Let $W\in C_c^\infty((1,2))$ be real, $S_\chi(x)=\sum_n\Lambda(n)\chi(n)W(n/x)$, $\delta_\chi=1$ for conductor $1$ and
@@ -1889,7 +2300,7 @@ powers of primes dividing $q$, at most two of each in $[y,2y]$, so by $O_{q,W}(1
 \end{proof}
 
 \subsection{Averaging prime sums with one positive rule}\label{fil:sec:primes}
-\sources{logarithmic_dirichlet_zero_filters_2026-11-26; grh_optimal_positive_filters; sharp_zero_filters; sharp_zeta_filters}
+\sources{logarithmic_dirichlet_zero_filters_2026-11-26; grh_optimal_positive_filters; sharp_zero_filters; sharp_zeta_filters; grh_bounded_support_2026-11-27}
 
 \begin{theorem}[A uniform positive averaging rule; \stU]\label{rec:thm:uniformavg}
 Let $f(t)=b+\sum_{\gamma\in\Gamma}c_\gamma e^{i\gamma t}$ with $\Gamma\subset\R\setminus\set0$ locally finite and symmetric, coefficients in a
@@ -1904,48 +2315,85 @@ The difference from $b$ is $\sum_{\abs\gamma>B}c_\gamma e^{i\gamma t}\widehat\mu
 $B=2L/(c_0\log L)$, $L=\log(\mathcal A/\eps)$.
 \end{proof}
 
-By \cref{rec:thm:logfilter} the hypothesis $H_B\le C\log B$ holds with $C=d/2+c_0+o(1)$. If each low frequency
+By \cref{rec:thm:logfilter} the hypothesis $H_B\le C\log B$ holds with $C=d/2+c_0+O(1/\log B)$. If each low frequency
 is known only to within $\eta$ in a factor of half-width at most $A$, the bound becomes
 $\mathcal A(A\eta+e^{-c_0B\log B})$, by $\abs{\phi(\omega)-\phi(\lambda)}\le A\abs{\omega-\lambda}$ for a probability measure on $[-A,A]$;
 a numerical interpolation vector $\widetilde a$ with residual $r=M\widetilde a+b$ in \cref{rec:lem:sepfilter} satisfies
 $\norm{\widetilde a-a}_1\le\tfrac{12}{11}\norm r_1$, which certifies finite kernels from interval data. Exact
 cancellation of $t^je^{i\gamma t}$, $j<m$, at the low frequencies also persists, by expanding $(t+u)^j$.
 
-\begin{theorem}[Simultaneous averaging on a polylogarithmic range; \stG]\label{rec:thm:polylogavg}
-Fix $q$, and in the notation of \cref{zer:lem:ramp} let $R_a(x)=S_a(x)-\log x/n_q-c_a$ and $\beta_a=4v_a(0)$. For
-large $X$ there is one even probability measure $\mu_X$, independent of $a$, supported in $[-H_X,H_X]$ with
+The explicit formula can be continued to any fixed power accuracy. In the notation of \cref{zer:lem:ramp}, for
+$\chi$ modulo $q$ with primitive inducer $\chi^*$ of conductor $f_{\chi^*}$ put
 \[
- H_X\le\frac{\varphi(q)}2\log\log X+O_q(1+\log\log\log X),
+ E_\chi(x)=\sum_{\substack{p\mid q\\p\nmid f_{\chi^*}}}\sum_{p^k\le x}\chi^*(p)^k\log p\,(p^{-k}-x^{-1}),\qquad
+ E_\chi^\infty=\sum_{\substack{p\mid q\\p\nmid f_{\chi^*}}}\frac{\chi^*(p)\log p}{p-\chi^*(p)} ;
+\]
+let $-L'(s,\chi^*)/L(s,\chi^*)=r_{-1}/s+r_0+O(s)$ at $s=0$, $P_\chi(u)=-r_0-r_{-1}(1+u)$, $n_\chi(k)=\ord_{s=-k}L(s,\chi^*)$
+for $k\ge1$, and for an integer $m\ge0$
+\[
+ C_{\chi,m}(x)=E_\chi^\infty-E_\chi(x)+x^{-1}P_\chi(\log x)-\sum_{k=1}^m\frac{n_\chi(k)}{k(k+1)}x^{-k-1},
+\]
+\[
+ R^{\mathrm{corr}}_{a,m}(x)=R_a(x)-\frac1{n_q}\sum_\chi\overline{\chi(a)}C_{\chi,m}(x),
+\]
+with $R_a(x)=S_a(x)-\log x/n_q-c_a$. For $\zeta$, $P_\chi=\log(2\pi)$ and the Euler correction is empty.
+
+\begin{lemma}[Corrected ramp formula; \stG]\label{fil:lem:rampcorr}
+Under \cref{src:thm:dgrh}, for $x\ge2$,
+$S_\chi(x)-\delta_\chi\log x-c_\chi-C_{\chi,m}(x)=x^{-1/2}K_\chi(\log x)+O_{q,m}(x^{-m-3/2})$.
+\end{lemma}
+
+\begin{proof}
+For primitive $\chi$ shift the contour in the proof of \cref{zer:lem:ramp} to $\Re s=-m-\tfrac12$. On the new line
+$-L'/L=O_{q,m}(\log(2+\abs{\Im s}))$, the horizontal segments can be placed at heights $\gg_q1/\log(2+\abs t)$ from all
+ordinates, and the new vertical integral is $O_{q,m}(x^{-m-3/2})$. The residue at $1$ is $\delta_\chi\log x+c_\chi$; a
+zero $\tfrac12+i\gamma$ of order $n$ contributes $nx^{-1/2+i\gamma}/(\tfrac14+\gamma^2)$; at $0$ the kernel is
+$-x^{-1}(s^{-1}+1+\log x+O(s))$, giving $x^{-1}P_\chi(\log x)$; at $-k$ the residue is
+$-n_\chi(k)x^{-k-1}/(k(k+1))$. For imprimitive $\chi$, $S_\chi=S_{\chi^*}-E_\chi$ and $c_\chi=c_{\chi^*}-E_\chi^\infty$.
+\end{proof}
+
+\begin{theorem}[Simultaneous averaging at the sharp scale; \stG]\label{rec:thm:polylogavg}
+Fix $q$ and $m\ge0$, and let $\beta_a=4v_a(0)$. For all large $X$ there is one even smooth probability density
+$\mu_{X,m}$, independent of $a$, supported in $[-H_X,H_X]$ with
+\[
+ H_X\le\frac{\varphi(q)}2\log\log X+O_{q,m}(1),
 \]
 such that for every reduced class $a$
 \[
- \int e^{u/2}R_a(Xe^u)\dd\mu_X(u)=\frac{\beta_a}{\sqrt X}+O_q\Bigl(\frac{1+\log X}X\Bigr).
+ \int e^{u/2}R^{\mathrm{corr}}_{a,m}(Xe^u)\dd\mu_{X,m}(u)=\frac{\beta_a}{\sqrt X}+O_{q,m}(X^{-m-3/2}),
 \]
-The scales lie within a factor $(\log X)^{\varphi(q)/2}(\log\log X)^{O_q(1)}$ of $X$, the measure may be taken
-absolutely continuous, and at each $X$ the average can be realized by at most $\varphi(q)+1$ scales with
-nonnegative weights. Central zeros are retained in $\beta_a$; no nonvanishing at $\tfrac12$ is assumed.
+and without correction
+\[
+ \int e^{u/2}R_a(Xe^u)\dd\mu_{X,0}(u)=\frac{\beta_a}{\sqrt X}+O_q\Bigl(\frac{1+\log X}X\Bigr).
+\]
+The scales lie in $[X/(C_{q,m}(\log X)^{\varphi(q)/2}),\,C_{q,m}X(\log X)^{\varphi(q)/2}]$, and at each $X$ the average
+can be realized by at most $\varphi(q)+1$ scales with nonnegative weights. Central zeros are retained in
+$\beta_a$; no nonvanishing at $\tfrac12$ is assumed.
 \end{theorem}
 
 \begin{proof}
-Apply \cref{fil:thm:optsupport} to the $\varphi(q)$ distinct, conjugation-closed primitive inducers modulo $q$ with
-$T=\log X$, $B=T$ and $L=T/2$. Since $H_X=o(T)$, \eqref{zer:eq:Zexp} holds at $t=T+u$; integrating termwise, the
-modes $\abs\gamma\le B$ vanish and the others contribute $O_q(e^{-L})$. The remainder integrates to
-$O_q((1+T)e^{-T/2})\int e^{-u/2}\dd\mu_X$, and the moment bound of \cref{fil:thm:optsupport} at $r=-\tfrac12$ is
-bounded because $\operatorname{arcosh}(e^{T/2})/T^2=O(1/T)$; so no factor $e^{H_X/2}$ from a worst endpoint appears.
-Multiply by $X^{-1/2}$. For the atoms, the integral of the continuous vector $(e^{u/2}R_a(Xe^u))_a$ lies in the
-convex hull of its values, and Carath\'eodory's theorem gives at most $\varphi(q)+1$ points; this representation
-need not cancel the spectrum at other centres.
+Apply \cref{fil:thm:optsupport} (through \cref{fil:cor:dirsupport}) to the $\varphi(q)$ primitive inducers of the
+characters modulo $q$, a conjugation-closed multiset, with $T=\log X$, $B=T$ and $L=(m+1)T$, and convolve with a
+smooth even bump on $[-1/B,1/B]$. Then $L/B=m+1$ gives the bound for $H_X$, and the moment bound has variance
+proxy $O_{q,m}(1)$, since $\operatorname{arcosh}(e^L)/B^2=O_m(1/T)$. By \cref{fil:lem:rampcorr}, orthogonality and
+absolute convergence, the corrected average is $X^{-1/2}\sum_\gamma v_a(\gamma)e^{i\gamma T}\widehat\mu_{X,m}(\gamma)/(\tfrac14+\gamma^2)$
+plus $O_{q,m}(X^{-m-3/2}\int e^{-(m+1)u}\dd\mu_{X,m})$, and the integral is bounded by the moment estimate. The mode
+$\gamma=0$ gives $\beta_a/\sqrt X$, the modes $0<\abs\gamma\le B$ vanish, and the others contribute
+$O_q(X^{-1/2}e^{-L})=O_q(X^{-m-3/2})$. For $m=0$, $C_{\chi,0}(x)=O_q((1+\log x)/x)$, whose average is
+$O_q((1+T)/X)$, giving the uncorrected formula. For the atoms, the integral of the continuous vector
+$(e^{u/2}R^{\mathrm{corr}}_{a,m}(Xe^u))_a$ lies in the convex hull of its values, and Carath\'eodory's theorem gives at
+most $\varphi(q)+1$ points; this representation need not cancel the spectrum at other centres.
 \end{proof}
 
-The coefficient $\varphi(q)/2$ is sharp within this frequency-filtering model: for $L=T/2$ and any cutoff $B$,
-\cref{fil:cor:free} gives at least $(\varphi(q)/2)\log T-O_q(1)$. This is no lower bound for every method of
+The coefficient $\varphi(q)/2$ is sharp within this frequency-filtering model: for $L=(m+1)T$, the value used in the proof, or
+$L=T/2$, and any cutoff $B$, \cref{fil:cor:free} gives at least $(\varphi(q)/2)\log T-O_{q,m}(1)$. This is no lower bound for every method of
 balancing prime errors; a measure chosen at each $X$ for the actual finite vector of errors need not satisfy the
 stopband and multiplicity constraints. It is a translation-independent rule and does not compete with
 centre-dependent exact balancing in bounded windows (\cref{zer:sec:balancing}). With $B=\log X$ it supersedes
 the consequence of the explicit sinc-product kernel of \cref{zer:thm:kernel} below, which has remainder
 $O_{q,\eps}(X^{-1+\eps})$ on the scales $X\exp(\pm O_q((\log\log X)^2))$. For general $B$,
 \cref{rec:thm:uniformavg} with \cref{rec:thm:logfilter} gives one rule of half-width
-$(\frac d2+c_0)\log B+O(\log\log B)$ and high-frequency tail $e^{-c_0B\log B}$ for a family of $d$ characters,
+$(\frac d2+c_0)\log B+O(1)$ and high-frequency tail $e^{-c_0B\log B}$ for a family of $d$ characters,
 against the support $O_q(\log^2B)$ and tail $K\pi^{-N_B}$ of that kernel; since $N_B\gg B\log B$, the tails
 are not directly comparable. For two classes modulo $4$ the compression filters of \cref{fil:cor:zetabeta} with $\alpha=1$ attenuation
 give the window $\log T+\log\log T+O(1)$ with remainder $O(T^{3/2}(\log T)^{1/2}/X)$, which this theorem
@@ -2321,46 +2769,53 @@ $4M_X+O(\log(2U)/U)+O(e^{-t/4})$ with total shift $O(\log^2(2U))$, and the conve
 for any fixed finite product of such operators.
 
 \subsection{Open questions}\label{fil:sec:open}
-\sources{quadratic_spectra; dirichlet_zero_filters; grh_positive_spectral_extensions_2026-11-27; logarithmic_dirichlet_zero_filters_2026-11-26; grh_global_positive_filters_2026-11-27; grh_optimal_positive_filters; optimal_dirichlet_zero_filters; optimal_zero_filters; sharp_positive_zero_filters; sharp_zero_filters; sharp_zeta_filters; grh_extensions_2026-11-27_2; grh_zero_filter_tradeoff; gram-euler-and-zero-filters; grh_cayley_and_filters; grh_hidden_forms_and_filters_2026-11-27; grh_binomial_filter}
+\sources{quadratic_spectra; dirichlet_zero_filters; grh_positive_spectral_extensions_2026-11-27; logarithmic_dirichlet_zero_filters_2026-11-26; grh_global_positive_filters_2026-11-27; grh_optimal_positive_filters; optimal_dirichlet_zero_filters; optimal_zero_filters; sharp_positive_zero_filters; sharp_zero_filters; sharp_zeta_filters; grh_extensions_2026-11-27_2; grh_zero_filter_tradeoff; gram-euler-and-zero-filters; grh_cayley_and_filters; grh_hidden_forms_and_filters_2026-11-27; grh_binomial_filter; grh_sharp_endpoint; ProveIt_research_2026-11-27; sharp_global_filters; positive-fourier-zeros; grh_bounded_support_2026-11-27; erdelyi_ellipse_and_proveit_extensions; deep_padic_roots_2026-11-27; proveit_three_extensions_2026-11-27_1}
 
 \begin{enumerate}
 \item \emph{Global phase diagrams.} \Cref{rec:thm:twofreq,rec:thm:cusp} settle two arbitrary frequencies with
 simple vanishing, \cref{fil:cor:pair} equal orders up to ratio $3$, and \cref{fil:thm:reflect,fil:thm:perturb,fil:thm:split}
 open neighbourhoods of strictly positive configurations. What are the minimum width, the support transitions
 and the fractional powers at resonances for three noncommensurate frequencies outside these neighbourhoods, for
-equal orders $m\ge2$ above ratio $3$, and for unequal orders at two frequencies? Which reflected spectra have
-nonnegative coefficients, including wide bands rescued by extra central roots? For real frequencies this is
-exactly the equality region of \cref{fil:thm:meanbound}.
-\item \emph{Effective neighbourhoods and second order at mirror configurations.} Make the neighbourhoods of
-\cref{fil:thm:perturb,fil:thm:split} and the constants of \cref{fil:cor:sixth} explicit in terms of root separation,
-minimum weight and certificate curvature, so that interval certificates like \cref{fil:thm:three} can be produced
-systematically; no uniformity in the cluster size $N$ is known. \Cref{fil:thm:hessian} gives the Hessian of the width
-at a coalesced frequency. What is the Hessian at a general mirror configuration with a positive optimal measure
-(\cref{fil:thm:differential}), in particular its sign on perturbations that keep the weighted mean imaginary part
-fixed, and where can its minors change sign?
-\item \emph{Second-order term of the support.} Can the excess $O_{\mathcal F}(1+\log\log B)$ in
-\cref{fil:thm:optsupport,rec:thm:logfilter} be replaced by $O_{\mathcal F}(1)$, and what is the exact second-order term?
-The slit-plane constant $\pi(b-a\log2)$ is the lower target. For a finite prescribed divisor, what is the
-optimizer of the joint problem, including possible atoms at the endpoints of the support, and can
-\cref{fil:thm:slit} be sharpened to an exact constrained minimax formula like that of \cref{fil:prop:cheb}?
+equal orders $m\ge2$ above ratio $3$, and for unequal orders at two frequencies? \Cref{fil:thm:central} decides which
+paired bands with all angles in $[\pi/3,\pi/2]$ are rescued by central roots, and \cref{fil:thm:centralphase} gives the
+first-order central multiplicity for one repeated pair at any angle. What is the least central multiplicity for
+several distinct angles below $\pi/3$, and what is the size of $R_m(c)-m\tau(c)$ for $c>\tfrac12$? For real
+frequencies these are questions about the equality region of \cref{fil:thm:meanbound}.
+\item \emph{Effective neighbourhoods and degenerate mirror configurations.} Make the neighbourhoods of
+\cref{fil:thm:perturb,fil:thm:split,fil:thm:mirrorhessian} and the constants of \cref{fil:cor:sixth} explicit in terms of
+root separation, minimum weight and certificate curvature, so that interval certificates like \cref{fil:thm:three} can be
+produced systematically; no uniformity in the cluster size $N$ is known, and by \cref{fil:ex:mirror}\textup{(ii)} none
+can hold up to a vanishing weight. \Cref{fil:thm:mirrorhessian} gives the Hessian at every mirror configuration with
+strictly positive optimal weights: positive definite transverse to the reflection locus, with exactly its tangent
+space as kernel. At mirror configurations where some optimal weights vanish, what are the local order of the width
+excess and the support transitions? At a general base, which coordinates, if any, give a fixed sign pattern of
+the minors, as the frequency coordinates do at a coalesced base (\cref{fil:thm:hessian}), given that mixed entries
+change sign in the coefficient coordinates (\cref{fil:ex:mirror}\textup{(iv)})?
+\item \emph{Second-order term of the support.} By \cref{fil:thm:optsupport} the excess
+$H_\Lambda(B,L)-L/B-\pi a\log B$ is bounded. Does it converge, and is its limit the slit-plane constant
+$\pi(b-a\log2)$ of the lower bound? For a finite prescribed divisor, what is the optimizer of the joint problem,
+including possible atoms at the endpoints of the support, and can \cref{fil:thm:slit} be sharpened to an exact
+constrained minimax formula like that of \cref{fil:prop:cheb}?
 \item \emph{Distinct ordinates and uniformity.} If only one vanishing at each distinct ordinate is required, what
 are the leading support constant and the optimal decay exponent of a global filter, without assuming simplicity
 or a density asymptotic for distinct ordinates? Can the constructions be made uniform as the conductor or the
 number of functions grows, and can the support, variance proxy and number of atoms be optimized jointly?
-\item \emph{Global filters.} Is the endpoint constant $2\pi d/Q_*$ of \cref{fil:cor:endpoint} sharp, and what is the
-least width of a truncated approximate filter as in \cref{fil:cor:globaltrunc}? Which further completed $L$-functions
-have positive theta kernels or explicit compression constants like those of \cref{fil:thm:zetaexplicit}, and can
-the rational mesh and weights of \cref{fil:thm:quad} be bounded explicitly from zero enclosures? Beyond the
-residual certificate for separated classes after \cref{rec:thm:uniformavg}, can the positive interpolation of
-\cref{rec:lem:sepfilter,fil:lem:cosine} be certified when clustered or multiple ordinates are known only
-through interval enclosures, with control of both residual and width?
-\item \emph{Progressions and statistics of widths.} For the progressions of \cref{rec:thm:wide}, what is the exact
-value at each finite $K$ off resonance, does $K(c-bM_K)$ converge, and which polynomials attain the leading
-constant? At what rate do finite lists of zeros approach the law of \cref{rec:thm:twolaw}, in particular near the
-maximum of its phase profile?
-\item \emph{Sharper prime remainders.} Can explicit finite Euler-factor terms and the residue at $0$ be removed
-from \cref{rec:thm:polylogavg}, as \cref{fil:thm:zetaprime} does for $\zeta$, and does approximate cancellation alone
-have a universal leading support coefficient under a natural robustness requirement?
+\item \emph{Global filters.} By \cref{fil:thm:endpoint} the supremal coefficient is $\pi d/Q_*$ for every family,
+and the endpoint is a finite-dimensional positivity problem. When the canonical kernel $h$ changes sign, which
+polynomials $P$ of the admissible degree make $P(-\partial_t)h$ nonnegative, and for many copies of $\chi_5$ where is
+the boundary of that cone of coefficients? Can the number and size of the translations in the subcritical
+construction be bounded as $b\uparrow\pi d/Q_*$, and is there a rigidity statement for near-extremizers under a
+uniform moment normalization? What is the least width of a truncated approximate filter chosen depending on $x$,
+beyond the fixed rule of \cref{fil:prop:tail}? Does the division argument extend to completed Dedekind or
+automorphic $L$-functions with several gamma factors, under their own critical-line hypothesis? Which further
+completed $L$-functions have positive theta kernels or explicit compression constants like those of
+\cref{fil:thm:zetaexplicit}, and can the rational mesh and weights of \cref{fil:thm:quad} be bounded explicitly from zero
+enclosures? Beyond the residual certificate for separated classes after \cref{rec:thm:uniformavg}, can the positive
+interpolation of \cref{rec:lem:sepfilter,fil:lem:cosine} be certified when clustered or multiple ordinates are known
+only through interval enclosures, with control of both residual and width?
+\item \emph{Approximate cancellation.} \Cref{rec:thm:polylogavg} subtracts the finite Euler-factor terms and the
+residues at $0$ and at the trivial zeros explicitly and reaches any fixed power accuracy. Does approximate
+cancellation alone have a universal leading support coefficient under a natural robustness requirement?
 \item \emph{Uniform versions of the family statistics.} The constants in \cref{ana:thm:grid} are for a fixed
 family. Can they be made effective and uniform in the conductor, with explicit values of the
 local-count, remainder and gap constants $A$, $E$ and $\eta$ of \cref{ana:thm:alias} for a

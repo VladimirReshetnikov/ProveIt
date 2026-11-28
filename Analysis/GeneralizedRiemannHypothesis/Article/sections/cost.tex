@@ -42,8 +42,10 @@ powers, matrices and characters.
   closed form for abelian and for wild radical coefficient fields
   (\cref{cost:sec:abelian,cost:sec:radical}).
 \item \emph{Powers and matrices.} All selection theorems transfer to the first $m$ powers
-  of a torsion tuple, with sharp endpoints for the first two powers (up to one in one
-  case, \cref{tors:thm:twopowers}; see \cref{tors:sec:powers}), and to determinants, ranks and Fitting ideals
+  of a torsion tuple, with sharp endpoints for the first two powers (up to one in two
+  cases, \cref{tors:thm:twopowers,cost:cor:ponep}; see \cref{tors:sec:powers}); for powers
+  divisible by $p$ the leading cost is a finite covering density in every dimension
+  (\cref{cost:thm:chain}). They also transfer to determinants, ranks and Fitting ideals
   (\cref{tors:sec:matrices}).
 \item \emph{Characters.} Packets of selected tuples give packets of anticyclotomic
   characters on one support in the arithmetic twisting construction of the source
@@ -1058,7 +1060,7 @@ maximizing monic polynomials are related to the reduced bases of the theory of h
 Newton polygons~\cite{GuardiaMontesNart2015Higher}.
 
 \subsection{Simultaneous powers}\label{tors:sec:powers}
-\sources{grh_beyond_dirichlet_grh_2026-11-25; grh_quantitative_twists_2026-11-25; grh_exact_torsion_transfer_2026-11-25; grh_sharp_transfers_2026-11-25; dirichlet_li_recovery}
+\sources{grh_beyond_dirichlet_grh_2026-11-25; grh_quantitative_twists_2026-11-25; grh_exact_torsion_transfer_2026-11-25; grh_sharp_transfers_2026-11-25; dirichlet_li_recovery; torsion_power_patterns}
 
 The arithmetic construction needs one torsion tuple $\zeta$ that is good for the first
 $m$ powers $\zeta,\zeta^2,\dots,\zeta^m$ of a character. All selection theorems transfer
@@ -1223,6 +1225,324 @@ necessary at that budget. Exhaustive checks of $69$ geometric-progression covers
 the unit orbit sizes of $512$ mixed tuples are recorded in
 \artifact{dirichlet_li_recovery/checks/torsion.txt}.
 \end{example}
+
+\paragraph{Powers divisible by $p$.}
+A unit power permutes each shell, but multiplication of the exponent by $p$ maps $Z_h$ onto
+$Z_{h-1}$, so the covering problem no longer splits into independent shells. We keep the
+definitions of \cref{tors:thm:cover} with two changes: $J$ is an arbitrary finite nonempty
+set of positive integers, and the depth $r>0$ is arbitrary; $C_s(S,J;r)$ denotes the
+infimum of the budgets of families blocking $A_S^s$ at the powers $J$, and $H_s(B;h_0,J,r)$
+the least endpoint $H\ge h_0$ such that every admissible family of budget at most $B$ has a
+tuple $z\in A_{[h_0,H]}^s$ with $F_i([j]z)\ne0$ for all $i$ and $j\in J$. Put $Z_0=\set0$,
+the identity in the shifted coordinate. For rational $r$ the infimum $C_s(S,J;r)$ equals the
+infimum of $G_r(F)$ over single blocking integral series: replace a family by its product,
+using \cref{tors:lem:gauss}(a) and \eqref{tors:eq:witness}, and conversely, for $a,b\in\Cp^\times$
+with $v(a)=r$, $v(b)=G_r(F)$, the series $b^{-1}F(aY)$ is integral with nonzero reduction, and
+lifting a nonzero value of the reduction over $\overline{\F}_p$ gives a witness of depth $r$
+attaining $G_r(F)$.
+
+\begin{lemma}[Gauss transport under the $p$-th power]\label{cost:lem:transport}
+Put $\theta(\rho)=\min\set{p\rho,1+\rho}$. For rational $\rho>0$ and every nonzero integral
+series $F$ in $s$ variables,
+\[
+ G_\rho\bigl(F([p]T)\bigr)=G_{\theta(\rho)}(F),\qquad
+ G_\rho\bigl(F([p^a]T)\bigr)=G_{\theta^{\circ a}(\rho)}(F).
+\]
+In particular $\theta(r_h)=r_{h-1}$ for $h\ge2$ and $\theta(r_1)=r_1+1$.
+\end{lemma}
+
+\begin{proof}
+For $1\le k<p$ the coefficient of $T^k$ in $(1+T)^p-1$ has valuation one, and that of $T^p$
+is one, so the Gauss valuation of this polynomial at radius $\rho$ is $\theta(\rho)$. After
+scaling each variable to depth $\rho$ and the output by an element of valuation
+$\theta(\rho)$, each coordinate becomes a polynomial with nonconstant reduction and zero
+constant term. Substituting nonconstant one-variable polynomials into a nonzero reduction
+polynomial of $F$ gives a nonzero polynomial, since the induced homomorphism of polynomial
+rings over a field is injective (compare leading degrees in each variable). This gives the
+equality, also at the radius where two terms tie. Iterate. The radius formulas follow from
+$e_h=(p-1)p^{h-1}$.
+\end{proof}
+
+\begin{theorem}[Weighted torsion cover in one variable; \stU]\label{cost:thm:nonunitcover}
+Let $s=1$, put $V=\bigcup_{j\in J}[j]A_S$, and for $z\in A_S$ let $E_z=\set{[j]z:j\in J}$.
+Give $a\in V$ the weight $w(a)=\min\set{r,v(a)}$, so $w(0)=r$. Then
+\[
+ C_1(S,J;r)=\min\Bigl\{\sum_{a\in D}w(a):\ D\subseteq V,\ D\cap E_z\ne\varnothing
+ \ (z\in A_S)\Bigr\}.
+\]
+For rational $r$ the minimum is attained by one polynomial.
+\end{theorem}
+
+\begin{proof}
+The zero set in $V$ of a blocking series meets every $E_z$. An integral series vanishing at
+a point $a$ of positive valuation, or at $0$, is divisible by $T-a$ with integral quotient,
+and distinct zeros persist; extracting one linear factor for each zero in $V$ and using
+\cref{tors:lem:gauss}(a) gives $G_r(F)\ge\sum_{a\in D}\min\set{r,v(a)}$. Conversely, for a
+hitting set $D$ the polynomial $\prod_{a\in D}(T-a)$ blocks and has Gauss valuation equal
+to the weight of $D$; for rational $r$ a witness attains it. For real $r$ approximate $r$
+from above by rational depths.
+\end{proof}
+
+When $J$ consists of units, $[j]$ permutes each $Z_h$ and $w=r_h$ on $Z_h$, so a hitting set
+splits into covers of the shells and the theorem gives the one-variable formula
+$C_1(S,J)=\sum_{h\in S}c_h$ of \cref{tors:thm:cover}. For a level $t$ put
+$W_t=e_t\min\set{r,r_t}=\min\set{1,r/r_t}$ for $t\ge1$, and $W_0=r$.
+
+\begin{theorem}[Two arbitrary powers; \stU]\label{cost:thm:pairpowers}
+Let $s=1$ and $J=\set{j,k}$ with $b=\vp(j)\le c=\vp(k)$, $j=p^bu$, $k=p^cw$ with $u,w$
+prime to $p$, and $T_S=\set{\max(h-b,0):h\in S}$.
+\begin{enumerate}[label=\textup{(\alph*)}]
+\item If $b=c$, let $d_t$ be the order of $wu^{-1}$ in $\torsU_t$ for $t\in T_S\setminus\set0$.
+ Then $C_1(S,J;r)=\triv_{0\in T_S}\,r+\sum_{t\in T_S\setminus\set0}W_t\ceil{d_t/2}/d_t$.
+\item If $b<c$, put $a=c-b$, and form the graph on the output levels with an edge
+ $\set{t,\max(t-a,0)}$ for each $t\in T_S$, a singleton edge meaning a forced vertex. Then
+ $C_1(S,J;r)$ is the least weight of a vertex cover of this graph with weights $W_t$.
+\end{enumerate}
+\end{theorem}
+
+\begin{proof}
+The first power maps each input shell $Z_h$ onto $Z_t$, $t=\max(h-b,0)$, and on $Z_t$ the
+second output is obtained from the first by the action of $p^{c-b}wu^{-1}\in\Zp$. If
+$b=c$ and $t>0$, this action partitions $Z_t$ into cycles of length $d_t$, and covering the
+edges of a cycle needs $\ceil{d_t/2}$ vertices; level zero is a singleton. This gives (a).
+For (b) put $\lambda=wu^{-1}$ and choose primitive roots $\eta_t$ of order $p^t$ with
+$\eta_t^{p^a\lambda}=\eta_{t-a}$ for $t>a$, recursively, and $\eta_t^{p^a\lambda}=1$ for
+$t\le a$; put $\eta_0=1$. Sample $q$ uniformly from the units modulo $p^{\max T_S}$. Each
+vertex $\eta_t^q-1$ is uniform on $Z_t$, and for each $q$ a hitting set $D$ selects a set of
+levels $\set{t:\eta_t^q-1\in D}$ meeting every edge of the level graph. Taking expectations,
+the weight of $D$ is at least the least weight of a level cover, and the union of the full
+shells of a least level cover attains it. Apply \cref{cost:thm:nonunitcover}.
+\end{proof}
+
+The level graph in (b) is a union of chains of step $a$, possibly sharing the vertex zero,
+so a two-state dynamic program computes its least cover; a chain of $n$ edges with unit
+weights needs $\ceil{n/2}$ vertices.
+
+\begin{theorem}[Pure $p$-power patterns; \stU]\label{cost:thm:levels}
+Let $J=\set{p^a:a\in E}$ for a finite nonempty $E\subseteq\Z_{\ge0}$, or all these powers
+multiplied by one integer prime to $p$. For every $S$, $C_1(S,J;r)$ is the least weight,
+with the weights $W_t$, of a set of levels meeting every hyperedge
+$\set{\max(h-a,0):a\in E}$, $h\in S$.
+\end{theorem}
+
+\begin{proof}
+Take compatible primitive roots $\eta_t^p=\eta_{t-1}$, $\eta_0=1$, and sample a common unit
+$q$ as before. Along the chain $\eta_h^q$ all outputs lie on one coherent branch, so a
+hitting set selects levels covering every hyperedge; averaging the weights gives the lower
+bound, and full shells give equality. A common unit factor permutes the inputs.
+\end{proof}
+
+In every dimension each finite instance is a finite computation. Let
+$A'=\bigcup_{j\in J}[j]A_S$ in one variable, $g(T)=\prod_{a\in A'}(T-a)$ of degree $d$, and
+$\mathcal M=\set{T^\alpha:0\le\alpha_i<d}$. Put $V_s=\bigcup_{j\in J}[j]A_S^s$, with edges
+$\set{[j]z:j\in J}$ for $z\in A_S^s$. For a hitting set $D\subseteq V_s$ let
+$P_1,\dots,P_{k(D)}$ be a basis over the valuation ring of $K=\Qp(\mu_{p^{\max S}})$ of the
+integral coefficient kernel of the evaluation matrix $(a^\alpha)_{a\in D,\,\alpha\in\mathcal M}$.
+
+\begin{theorem}[Exact finite algorithm in every dimension; \stU]\label{cost:thm:finitealg}
+For rational $r>0$,
+\[
+ C_s(S,J;r)=\min\Bigl\{G_r(g),\ \min_{D}\ \min_{1\le i\le k(D)}G_r(P_i)\Bigr\},
+\]
+the inner minimum over inclusion-minimal hitting sets, an empty kernel contributing
+$+\infty$. The minimum is attained by one integral polynomial over $K$, and the linear
+algebra is exact in $\Q(\zeta_{p^{\max S}})$.
+\end{theorem}
+
+\begin{proof}
+The set $A'$ is a union of full shells and possibly $\set0$, so $g$ is monic and congruent
+to $T^d$ modulo $p$, and \cref{tors:lem:division} gives $F=\sum_ig(T_i)Q_i+R$ with $R$ in
+the $\OO$-span of $\mathcal M$. If $G_r(F)<G_r(g)$, then $G_r(R)=G_r(F)$ and $R$ vanishes
+wherever $F$ does on $V_s$, so $R$ lies in the kernel for some hitting set; otherwise
+$g(T_1)$ is a blocker of cost $G_r(g)$. Over the discrete valuation ring of $K$ the
+evaluation matrix has a Smith form, and the same invertible operations show that every
+integral kernel vector over $\OO$ is an integral combination of the basis, so
+$G_r(\sum_ib_iP_i)\ge\min_iG_r(P_i)$. Every hitting set contains a minimal one. Pivots of
+least valuation make the elimination exact in the cyclotomic number field.
+\end{proof}
+
+\paragraph{Covering words.}
+Let $E\subseteq\Z_{\ge0}$ be finite with $0\in E$, $L=\max E$ and $k=\#E$. For $M\ge L+1$ let
+$D_M(E)$ be the least number of ones in a binary word $b_0\cdots b_{M-1}$ with
+$\sum_{a\in E}b_{t+a}\ge1$ for $0\le t<M-L$; for $E=\set0$ put $D_M=M$. On the states
+$\set{0,1}^L$ let an edge append one bit, discard the oldest, have weight the appended bit,
+and be allowed exactly when the resulting block of $L+1$ bits hits $E$; for $L=0$ take one
+vertex with a loop of weight one. For $L>0$ the graph is strongly connected (append $L$ ones,
+then the target state). Let $\kappa(E)$ be the least mean weight of a directed cycle.
+
+\begin{proposition}[Finite-state covering constant; \stU]\label{cost:prop:words}
+For $L\ge1$ and $K_E=L+2^L-1$,
+\[
+ \kappa(E)(M-K_E)\le D_M(E)\le\kappa(E)M,\qquad \frac1k\le\kappa(E)\le1 .
+\]
+The value $\kappa(E)$ is rational and computable, and it is attained by a periodic marking.
+Moreover $\kappa(E)=1/k$ if and only if $E$ tiles $\Z$ by translations.
+\end{proposition}
+
+\begin{proof}
+A least mean cycle can be taken simple; repeating it gives a periodic word hitting every
+translate, and averaging over the shifts of one period gives a word of length $M$ with at
+most $\kappa M$ ones. Conversely an admissible word of length $M$ is a path of $M-L$ edges;
+removing cycles, each of mean at least $\kappa$, leaves at most $2^L-1$ edges, so the weight
+is at least $\kappa(M-L-2^L+1)$. Averaging the constraints of a periodic sequence gives
+$k\kappa\ge1$, and the all-ones word gives $\kappa\le1$. If $\kappa=1/k$, the periodic
+minimizer has exactly one hit in every translate, so the sets $d-E$, $d$ marked, partition
+$\Z$; conversely a tiling by $-E$ gives a marking with one hit per translate, hence words of
+length $M$ with $M/k+O_E(1)$ ones, and the lower bound gives $\kappa\le1/k$.
+\end{proof}
+
+\begin{theorem}[Chain amplification; \stU]\label{cost:thm:chain}
+Let $S=[h_0,H]\cap\Z$ with $N=H-h_0+1\ge1$, let $J=\set{p^a:a\in E}$, and assume
+\begin{equation}\label{cost:eq:deep}
+ r\ge\theta^{\circ L}(r_{h_0}) ;
+\end{equation}
+for $h_0>L$ this is $r\ge r_{h_0-L}$. Then for every $s\ge1$
+\begin{equation}\label{cost:eq:chain}
+ C_s(S,J;r)\ge\max\Bigl\{\frac Nk,\ \max_{L+1\le M\le N+L}\frac{D_M(E)}M\,(N-M+L+1)\Bigr\}.
+\end{equation}
+If $h_0>L$, then $C_1(S,J;r)=D_{N+L}(E)$ and $C_s(S,J;r)\le D_{N+L}(E)$. For every
+$h_0\ge1$ with \eqref{cost:eq:deep}, $C_s(S,J;r)\le\kappa(E)(N+L)+L$. Consequently
+\[
+ C_s([h_0,H],J;r)=\kappa(E)N+O_E\bigl(\sqrt{N+1}\bigr)
+\]
+uniformly in $s,p,h_0,r$ satisfying \eqref{cost:eq:deep}, with error $O_E(1)$ for $s=1$ and
+$h_0>L$.
+\end{theorem}
+
+\begin{proof}
+Let $F$ be a single blocking integral series with $G_r(F)\le B$. At each $z\in A_S^s$ some
+factor of $P_0(T)=\prod_{a\in E}F([p^a]T)$ vanishes. At $\rho=r_{h_0}$,
+\cref{cost:lem:transport}, \eqref{cost:eq:deep} and monotonicity of $G$ in the radius give
+$G_\rho(P_0)\le kB$, and \cref{tors:lem:grid} with $g=\prod_{h\in S}\Phi_{p^h}(1+T)$ and
+\eqref{tors:eq:gauss} gives $G_\rho(P_0)\ge G_\rho(g)=N$.
+
+For the amplified bound fix $M\in[L+1,N+L]$, put $h_*=h_0+M-L-1$ and $S_*=[h_*,H]\cap\Z$,
+with $N-M+L+1$ levels. For $z\in A_{S_*}^s$ and $0\le t<M-L$ the tuple $[p^t]z$ lies in
+$A_S^s$, since every coordinate order exponent drops by $t$ and stays in $[h_0,H]$. As $F$
+blocks $A_S^s$, the bits $b_j(z)=\triv_{F([p^j]z)=0}$, $0\le j<M$, satisfy the constraints
+defining $D_M(E)$, so at least $D_M(E)$ factors of $P_M(T)=\prod_{j=0}^{M-1}F([p^j]T)$ vanish
+at $z$, and $P_M$ vanishes to order at least $D_M(E)$ on $A_{S_*}^s$. At $\rho=r_{h_*}$ one
+has $\theta^{\circ(M-1)}(\rho)=\theta^{\circ L}(r_{h_0})\le r$, so $G_\rho(P_M)\le MB$, while
+\cref{tors:lem:grid} gives $G_\rho(P_M)\ge D_M(E)(N-M+L+1)$. Mixed coordinate levels are
+allowed throughout.
+
+If $h_0>L$, all output levels are positive and have weight one by \eqref{cost:eq:deep}.
+Indexing the levels $H,H-1,\dots,h_0-L$ as positions $0,\dots,N+L-1$, the input level $H-t$
+has outputs at the positions $t+E$, so \cref{cost:thm:levels} gives $C_1=D_{N+L}(E)$; a
+least set $D$ of levels gives the blocker $\prod_{h\in D}\Phi_{p^h}(1+T_1)$ of budget $\#D$
+at the witness $0$ in every dimension. If $h_0\le L$, take a shift of a periodic least
+marking on an interval of length $N+L$ with at most $\kappa(N+L)$ marks, discard the
+nonpositive levels and add every input level $h\le L$; each added level costs at most one by
+\eqref{cost:eq:deep}. For the asymptotic with $L\ge1$ choose $M$ of order $\sqrt{(K_E+1)N}$;
+\cref{cost:prop:words} gives
+$D_M(E)(N-M+L+1)/M\ge\kappa N-\kappa(M+K_EN/M)$. If $L=0$, the grid lemma and the full-shell
+blocker give $C_s=N$.
+\end{proof}
+
+\begin{corollary}[Endpoint law; \stU]\label{cost:cor:chainendpoint}
+For fixed $E$ and \eqref{cost:eq:deep}, as $B\to\infty$,
+\[
+ H_s(B;h_0,J,r)=h_0+\frac B{\kappa(E)}+O_E\bigl(\sqrt{B+1}\bigr),
+\]
+uniformly in $s,p,h_0,r$, with error $O_E(1)$ for $s=1$ and $h_0>L$. The elementary
+coefficient $k=\#E$ of the product bound is the correct leading coefficient if and only if
+$E$ tiles $\Z$.
+\end{corollary}
+
+\begin{proof}
+The cost is nondecreasing in the window, and for rational $r$ a blocker attains the cost
+(\cref{cost:thm:finitealg}). The lower estimate gives success at $N=B/\kappa+O_E(\sqrt{B+1})$
+and the explicit blockers give failure up to $N=B/\kappa-O_E(1)$; $H=h_0+N-1$. The last
+assertion is \cref{cost:prop:words}.
+\end{proof}
+
+\begin{corollary}[The first two powers, including $p=2$; \stU]\label{cost:cor:ponep}
+Let $J=\set{1,p}$ and $r\ge\theta(r_{h_0})$. Then $C_1=\ceil{N/2}$ and
+$N/2\le C_s\le\ceil{N/2}$ in every dimension, so every even window has exact cost $N/2$, and
+for all $B\ge0$
+\[
+ H_1=h_0+2\floor B,\qquad h_0+2\floor B\le H_s\le h_0+\floor{2B} .
+\]
+\end{corollary}
+
+\begin{proof}
+For $h_0\ge2$ the level graph of \cref{cost:thm:pairpowers}(b) is a path with $N$ edges and
+unit weights; for $h_0=1$ the bottom vertex has weight $r\ge1$ and a least alternating cover
+avoids it. This gives $C_1=\ceil{N/2}$, the product bound of \cref{cost:thm:chain} gives
+$C_s\ge N/2$, and the one-coordinate blocker gives the upper bound. The least $N$ with
+$\ceil{N/2}>B$ is $2\floor B+1$; a window of $2\floor B$ levels is blocked at budget
+$\floor B$ in every dimension, and a window of $\floor{2B}+1$ levels cannot be blocked.
+\end{proof}
+
+For $p=2$ and $h_0=h_*(r/2)$ one has $r\ge2r_{h_0}=\theta(r_{h_0})$, so
+\cref{cost:cor:ponep} applies in the normalization of \cref{tors:prop:powers}(a) with $m=2$:
+the endpoint $h_*(r/2)+\floor{2B}$ is optimal in every dimension when $B-\floor B<1/2$, and
+in one variable the optimal endpoint is $h_*(r/2)+2\floor B$ for all $B$.
+
+\begin{corollary}[Unramified coefficients at $p=2$; \stU]\label{cost:cor:unram}
+Let $p=2$, $h_0=1$, $r\ge2$, and let every $F_i$ have coefficients in the valuation ring of
+an unramified extension of $\Q_2$. Then the optimal endpoint for $J=\set{1,2}$ is
+$1+2\floor B$ in every dimension.
+\end{corollary}
+
+\begin{proof}
+For the product $F$ the numbers $G_1(F)$ and $G_2(F)$ are integers at most $B$. If $F$
+blocks, \cref{cost:lem:transport} and \cref{tors:lem:grid} at $\rho=1$ give
+$N\le G_1(F)+G_2(F)\le2\floor B$. The alternating shell blocker lies in $\Z_2[T_1]$. No
+assumption is made on the witnesses.
+\end{proof}
+
+For $E=\set{0,1,\dots,L}$ and $h_0>L$ the same argument gives $D_{N+L}=\ceil{N/(L+1)}$, so
+windows with $(L+1)\mid N$ have exactly this cost in every dimension and
+$h_0+(L+1)\floor B\le H_s\le h_0+\floor{(L+1)B}$.
+
+\begin{theorem}[A non-tiling pattern; \stU]\label{cost:thm:zeroonethree}
+For $E=\set{0,1,3}$ one has $\kappa(E)=2/5$ and $D_{N+3}(E)=\ceil{2N/5}$ for $N\ge1$. For
+$h_0>3$, $r\ge r_{h_0-3}$ and $J=\set{1,p,p^3}$,
+\[
+ H_1=h_0+\floor{\tfrac52\floor B},\qquad H_s=h_0+\tfrac52B+O\bigl(\sqrt{B+1}\bigr)\quad(s\ge1),
+\]
+with an absolute implied constant.
+\end{theorem}
+
+\begin{proof}
+The states are three-bit strings $abc$, and the edge $abc\to bcd$, of cost $d$, is allowed
+when $a+b+d\ge1$. With the potential
+\begin{center}
+\begin{tabular}{c|rrrrrrrr}
+$abc$&000&001&010&011&100&101&110&111\\\midrule
+$\phi$&$-6$&$-3$&$-2$&$0$&$-4$&$0$&$-2$&$0$
+\end{tabular}
+\end{center}
+each of the $14$ allowed edges satisfies $5d-2\ge\phi(bcd)-\phi(abc)$, so every cycle has
+mean at least $2/5$, and the cycle $000\to001\to011\to110\to100\to000$ has mean $2/5$. For
+a word of length $N+3$ with initial state $u$, final state $v$ and $\ell(u)$ initial ones,
+summation gives $5\sum_ib_i\ge2N+5\ell(u)+\phi(v)-\phi(u)\ge2N$, since $\min\phi=-6$ and
+$5\ell(u)-\phi(u)\ge6$ for all states. For equality write $N=5q+t$: for $t\ne2$ start at
+$000$ and follow $q$ cycles and the first $t$ edges of the cycle; for $t=2$ start at $010$,
+take $010\to100\to000$ and then $q$ cycles. The endpoint formulas follow from
+\cref{cost:thm:chain,cost:cor:chainendpoint}, since $\ceil{2N/5}\le B$ exactly when
+$N\le\frac52\floor B$.
+\end{proof}
+
+Counting the three powers separately gives the endpoint coefficient $3$; the sharp
+coefficient is $5/2$, in every dimension. For $N=100,200,1000$ the bound
+\eqref{cost:eq:chain} equals $372/11$, $141/2$, $11676/31$, against the elementary $N/3$ and
+the one-variable cost $2N/5$. In two variables a finite computation with
+\cref{cost:thm:finitealg} for $p=2$, $S=\set3$, $J=\set{1,2}$ and $r=1/2$, over the $16$
+minimal hitting sets of the four stars formed by each order-four parent tuple and its four
+children, gives $C_2(\set3,\set{1,2};1/2)=1$, attained by $\Phi_4(1+T_1)$
+(\artifact{torsion_power_patterns/grid_checks.txt}). Exhaustive checks of the word recurrence,
+the potential and the level covers are in \artifact{torsion_power_patterns/checks.txt}.
+
+\begin{remark}[Generic ranks at nonunit powers]\label{cost:rem:nonunitrank}
+Let $A_i(T)$ be integral matrices and $F_i$ a nonzero minor of maximal generic rank of each,
+with witnesses of depth $r$ and total budget $B$. If $h_0$ satisfies \eqref{cost:eq:deep}
+and the right side of \eqref{cost:eq:chain} exceeds $B$, there is a tuple $z$ in the window
+with $\rank A_i([p^a]z)$ equal to the generic rank for all $i$ and $a\in E$; for $h_0>L$ all
+the selected powers of every coordinate character remain nontrivial. This controls ranks
+only, not the valuations of the minors that a quantitative Selmer bound would need.
+\end{remark}
 
 \subsection{Matrices, determinants and Fitting ideals}\label{tors:sec:matrices}
 \sources{grh_method_transfers_2026-11-25_1; grh_beyond_dirichlet_grh_2026-11-25; grh_quantitative_twists_2026-11-25; grh_exact_torsion_transfer_2026-11-25; grh_sharp_transfers_2026-11-25; grh_fixed_field_transfer_2026-11-25}
@@ -2262,7 +2582,7 @@ identity, the integral normalization and a nonzero witness with a known valuatio
 the selection theorems do not provide.
 
 \subsection{Open questions}\label{tors:sec:open}\label{cost:sec:open}
-{\raggedright\sources{grh_quantitative_twists_2026-11-25; grh_fixed_field_transfer_2026-11-25; grh_beyond_dirichlet_grh_2026-11-25; grh_sharp_transfers_2026-11-25; grh_exact_torsion_transfer_2026-11-25; dirichlet_li_recovery; grh-torsion-and-prime-sampling; grh-torsion-and-zero-data; grh_method_transfers_sharp_torsion; grh_sharp_torsion_and_symplectic_blocks; grh_method_transfers_research; grh_fixed_cardinality_torsion; grh_transfer_bridges_2026-11-25}}
+{\raggedright\sources{grh_quantitative_twists_2026-11-25; grh_fixed_field_transfer_2026-11-25; grh_beyond_dirichlet_grh_2026-11-25; grh_sharp_transfers_2026-11-25; grh_exact_torsion_transfer_2026-11-25; dirichlet_li_recovery; grh-torsion-and-prime-sampling; grh-torsion-and-zero-data; grh_method_transfers_sharp_torsion; grh_sharp_torsion_and_symplectic_blocks; grh_method_transfers_research; grh_fixed_cardinality_torsion; grh_transfer_bridges_2026-11-25; grh_research_2026-11-27; torsion_power_patterns}}
 
 \begin{question}[Fixed packet cardinality]\label{cost:q:cardinality}
 At tolerance zero the cost of blocking with $n$ members is $s_{h_0}\log_p^{\circ(n-1)}H$
@@ -2272,13 +2592,13 @@ computed by Theorem~\ref{cost:thm:cardfinite}.
 \item Can the upper error $O(\log B)$ in \eqref{cost:eq:tower} be reduced to $O(1)$, or the
 next term be determined for $n=2$? Is the optimum always attained by consecutive blocks with
 one member each, or do mixed assignments within a shell do better?
-\item\label{tors:q:cardinality} At a fixed positive tolerance $\delta$, what is the
-asymptotic of $H_n(B,\delta)$ as $B\to\infty$, and what is the joint transition when
-$\delta$ decreases with $B$? The tower law at tolerance zero does not determine it. For
-$n=1$ the least endpoint at every tolerance is the recursion of \cref{cost:cor:shells}, and
-for unrestricted $n$ its logarithm is of order budget over tolerance
-(\cref{cost:cor:depth}). In particular, can the exponent $n/(c\eta)$ of
-\cref{tors:thm:fraction,tors:thm:packet} be lowered for $n\ge2$, as
+\item\label{tors:q:cardinality} At a fixed positive tolerance $\delta$ the growth exponent
+is known: $H_n(B,\delta)=B^{n+o(1)}$, more precisely between $cB^n$ and
+$CB^n(\log B)^2\log\log B$ (\cref{tors:thm:cardpos}). Is $H_n(B,\delta)=\Theta(B^n)$ for
+$n\ge2$, and is there a leading constant? What is the joint transition when $\delta$
+decreases with $B$, between this polynomial regime and the tower law at tolerance zero?
+For a positive fraction $1-\eta<1$ of good roots on one shell, can the exponent
+$n/(c\eta)$ of \cref{tors:thm:fraction,tors:thm:packet} be lowered for $n\ge2$, as
 \cref{tors:prop:linear} does for $n=1$?
 \item Over a fixed finite coefficient field, where the root multisets must be Galois
 stable, how do ramification and cyclotomic intersections constrain the activations and
@@ -2333,13 +2653,25 @@ conjugates are omitted.
 \end{question}
 
 \begin{question}[Several powers]\label{tors:q:powers}
-For $m=2$ and odd $p$ the endpoint $h_*(r/2)+\floor{2B}$ of \cref{tors:prop:powers}(a) is
-optimal at positive half-integral budgets exactly when $\ord_p(2)$ is even
-(\cref{tors:thm:twopowers,tors:rem:twopowers}). Is the endpoint $h_*(r/m)+\floor{mB}$
-optimal for $m\ge3$, and what is the optimal endpoint when some of the powers $j\le m$ are
-divisible by $p$, in particular for $p=2$ and $m=2$? More generally, when the covering
-densities $c_h$ of \cref{tors:thm:cover} are not constant on $S$, is
-$\sum_{h\in S}c_h$ the exact mixed-shell cost $C_s(S,J)$ for every $s\ge2$?
+For $m=2$ the endpoint of \cref{tors:prop:powers}(a) is settled at odd $p$ for half-integral
+budgets (\cref{tors:thm:twopowers,tors:rem:twopowers}); at $p=2$ the optimal one-variable
+endpoint is $h_*(r/2)+2\floor B$, and in every dimension it lies between this and
+$h_*(r/2)+\floor{2B}$ (\cref{cost:cor:ponep}), with the lower value exact for unramified
+coefficients at $h_0=1$ (\cref{cost:cor:unram}). For powers divisible by $p$, one-variable
+costs are exact finite covers (\cref{cost:thm:nonunitcover}), and for pure $p$-power
+patterns the leading cost $\kappa(E)N$ holds in every dimension (\cref{cost:thm:chain}).
+\begin{enumerate}[label=\textup{(\alph*)}]
+\item Is the endpoint $h_*(r/m)+\floor{mB}$ optimal for $m\ge3$?
+\item At $p=2$, $J=\set{1,2}$ and ramified coefficients, is the cost of an odd window $\ceil{N/2}$
+ in every dimension, or can a multi-coordinate blocker be cheaper than the best
+ one-coordinate blocker? More generally, is $D_{N+L}(E)$ the exact cost in every dimension
+ under \eqref{cost:eq:deep}, and can the error $O_E(\sqrt N)$ of \cref{cost:thm:chain} be
+ replaced by $O_E(1)$?
+\item For sets $J$ combining unit factors with distinct $p$-adic valuations, is there an
+ explicit leading constant uniform in the dimension?
+\item When the covering densities $c_h$ of \cref{tors:thm:cover} are not constant on $S$, is
+ $\sum_{h\in S}c_h$ the exact mixed-shell cost $C_s(S,J)$ for every $s\ge2$?
+\end{enumerate}
 \end{question}
 
 \begin{question}[Arithmetic families]\label{tors:q:arithmetic}

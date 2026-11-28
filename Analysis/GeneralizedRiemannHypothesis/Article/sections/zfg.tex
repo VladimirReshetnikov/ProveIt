@@ -1,0 +1,1268 @@
+\providecommand{\zerJ}{\mathcal{J}}
+\providecommand{\zerK}{\mathcal{K}}
+\providecommand{\zersinc}{\operatorname{sinc}}
+\providecommand{\zergE}{\gamma_{\mathrm{E}}}
+\providecommand{\zerLL}{\mathcal{L}}
+\providecommand{\zerconv}{\operatorname{conv}}
+\providecommand{\zerdiag}{\operatorname{diag}}
+\providecommand{\zerSym}{\mathfrak{D}}
+\providecommand{\zerLog}{\operatorname{Log}}
+\providecommand{\anapos}[1]{\bigl(#1\bigr)_{+}}
+\providecommand{\ananeg}[1]{\bigl(#1\bigr)_{-}}
+\providecommand{\anaone}{\mathbf{1}}
+\providecommand{\anaE}{\mathcal{E}}
+\providecommand{\anaEx}{\mathbb{E}}
+\providecommand{\anaPr}{\mathbb{P}}
+\providecommand{\anaM}{\mathcal{M}}
+\providecommand{\anaW}{\mathcal{W}}
+\providecommand{\anaZ}{\mathcal{Z}}
+\providecommand{\anaC}{\mathcal{C}}
+\providecommand{\filStir}[2]{\genfrac\{\}{0pt}{}{#1}{#2}}
+\providecommand{\zfgdL}{d_{\mathrm L}}
+\providecommand{\zfgE}{\mathcal E}
+\providecommand{\zfgconv}{\operatorname{conv}}
+\providecommand{\zfgdiam}{\operatorname{diam}}
+\section{Zero-free intervals and positivity for trigonometric and algebraic polynomials}\label{sec:zfg}
+
+This section treats extremal problems for positive measures and for real trigonometric and algebraic
+polynomials with prescribed zeros or prescribed zero-free intervals. For a finite set of integer
+frequencies, the longest interval on which a real trigonometric polynomial with that spectrum keeps one
+sign is, after scaling, the least support diameter of a probability measure whose Fourier transform
+vanishes on the spectrum (\cref{zfg:prop:duality}). On the side of measures this is the problem of the
+shortest positive average that cancels prescribed zero contributions; the positive zero filters for zeros
+of Dirichlet $L$-functions built on it are in \cref{sec:fil}, which uses the two-frequency classification
+of \cref{fil:sec:two}. The questions treated here come from three sources.
+\begin{itemize}
+\item Kozma and Oravecz \cite{KozmaOravecz2003Gaps} determined the longest zero-free interval for a
+progression of frequencies whose step is less than twice its first term. Their Question~1 asks for the
+wide-step case, and their Question~2 asks whether the uniform bound $O(1/N)$ for the squares
+$N^2,\dots,(N+K)^2$ has the right order. Two frequencies are classified in \cref{fil:sec:two}. Three-term
+progressions reduce to a finite algebraic rule, with closed analytic branches for odd-integer and
+half-odd-integer step ratios and for an infinite four-term family (\cref{zfg:sec:prog}). The order of
+magnitude for squares is determined in \cref{zfg:sec:squares}.
+\item Steinerberger \cite{Steinerberger2026Open} asked whether a nonnegative function on the circle
+supported in $(-r,r)$, with vanishing Fourier coefficients on a finite set $A$, must have $r$ at least a
+constant multiple of $(\sum_{a\in A}a^{-2})^{1/2}$. It must, with optimal constant $1/(\pi\sqrt2)$; this is a case
+of sharp reciprocal-moment inequalities for the zero heights of a positive exponential sum
+(\cref{zfg:sec:recip}).
+\item Erd\'elyi \cite{Erdelyi1991Estimates} asked whether a polynomial of degree $n$ with all zeros in the
+open ellipse with semiaxes $1$ and $\eps$ has Lorentz degree at least $cn/\eps^2$. It need not: the least
+finite Lorentz degree has order $\max\set{n/\eps,\eps^{-2}}$ (\cref{zfg:sec:lorentz}).
+\end{itemize}
+All results are unconditional except the applications to zeros of Dirichlet $L$-functions marked \stG.
+
+\subsection{Zero-free intervals and annihilating measures}\label{zfg:sec:dual}
+\sources{ProveIt_New_Results_2026-11-27; positive-fourier-zeros}
+
+For a finite nonempty set $A$ of positive integers let $M(A)$ be the supremum of the lengths of intervals of
+$\R/\Z$ on which some nonzero real trigonometric polynomial
+\[
+ P(x)=\sum_{a\in A}\bigl(c_a\cos(2\pi ax)+d_a\sin(2\pi ax)\bigr)
+\]
+has no zero; coefficients may vanish, so the spectrum is only required to lie in $\pm A$. A zero-free real
+function has constant sign, so $M(A)$ is also the supremum of the lengths of intervals on which such a $P$ is
+strictly positive. For a finite set $A$ of positive reals let $B(A)$ be the least diameter of the support of a
+probability measure $\mu$ on $\R$ with $\widehat\mu(a)=\int e^{iat}\dd\mu(t)=0$ for every $a\in A$.
+
+\begin{proposition}[Duality; \stU]\label{zfg:prop:duality}
+The minimum defining $B(A)$ exists, and for a finite set $A$ of positive integers $M(A)=B(A)/(2\pi)$. If
+$A=\set{a_1<\dots<a_n}$, then
+\[
+ \max_{1\le m\le n}\frac{m^2}{2\sum_{j=1}^ma_j}\ \le\ M(A)\ \le\ \frac12\sum_{j=1}^n\frac1{a_j}.
+\]
+For every positive integer $g$, $M(gA)=M(A)/g$.
+\end{proposition}
+
+\begin{proof}
+Convolving the measures $\tfrac12(\delta_0+\delta_{\pi/a})$, $a\in A$, gives an annihilating probability measure of
+diameter $\pi\sum_{a\in A}a^{-1}$. Translating a minimizing sequence to start at $0$ puts it in a common compact
+interval; a weakly convergent subsequence keeps the finitely many Fourier conditions, and its limit has
+support of diameter at most the infimum. For a compact interval $I$ put $v_A(t)=(\cos(at),\sin(at))_{a\in A}$. An
+annihilating probability measure on $I$ exists exactly when $0$ lies in the convex hull of $v_A(I)$. If
+$\abs I<B(A)$, strict separation gives a linear functional positive on $v_A(I)$, that is, a polynomial with
+spectrum in $\pm A$ that is strictly positive on $I$. Conversely, every interval longer than $B(A)$ contains a
+translate of the support of a minimizer, against which every such polynomial integrates to zero, so none keeps
+a strict sign there. For integer frequencies $B(A)\le2\pi$ (uniform measure on $[0,2\pi]$), so intervals on the
+circle and on the line give the same supremum, and $t=2\pi x$ gives $M(A)=B(A)/(2\pi)$.
+
+An annihilator of $A$ annihilates every prefix $\set{a_1,\dots,a_m}$, and \cref{fil:thm:meanbound} gives
+$B(\set{a_1,\dots,a_m})\ge\pi m^2/\sum_{j\le m}a_j$; this is the lower bound. The convolution above gives the upper
+bound, which is the one-dimensional case of the bound of Kozma and Oravecz \cite{KozmaOravecz2003Gaps}. Finally a
+polynomial with spectrum in $\pm gA$ is $Q(gx)$ with $Q$ of spectrum in $\pm A$; it has no zero on an interval of
+length $\ell$ exactly when $Q$ has none on an interval of length $g\ell$, and $Q$, having mean zero, vanishes on
+every interval of length $1$.
+\end{proof}
+
+For integer spectra it is convenient to pass to the cosine coordinate. Let $S$ be a finite nonempty set of
+positive integers, $T_n(\cos\phi)=\cos(n\phi)$, $V_S(x)=(T_n(x))_{n\in S}$, and $C_a=\zfgconv V_S([a,1])$ for
+$-1\le a\le1$.
+
+\begin{lemma}[Contact form; \stU]\label{zfg:lem:contact}
+Let $a_*=\max\set{a:0\in C_a}$. Then $M(S)=\arccos(a_*)/\pi$, and there is $h\ne0$ with $h\cdot V_S\ge0$ on
+$[a_*,1]$. The origin is a convex combination of at most $\abs S$ distinct contact vectors $V_S(x)$ with
+$h\cdot V_S(x)=0$, and every such combination with positive weights uses $x=a_*$.
+\end{lemma}
+
+\begin{proof}
+After the centre of an arc is translated to $0$, replacing $f(t)$ by $\tfrac12(f(t)+f(-t))$ preserves strict
+positivity, and $x=\cos(2\pi t)$ maps an arc of length $\ell$ centred at $0$ onto $[\cos(\pi\ell),1]$. So a polynomial
+strictly positive on such an arc amounts to a vector $h$ with $h\cdot V_S>0$ on $[\cos(\pi\ell),1]$, that is, to a
+strict separation of $0$ from $C_{\cos(\pi\ell)}$. The uniform measure on the circle shows $0\in C_{-1}$; the sets
+$C_a$ are compact and vary continuously in the Hausdorff distance, and $V_S(1)=(1,\dots,1)$, so the maximum exists
+and gives the gap. If $0$ were interior to $C_{a_*}$, every direction would have support function bounded below by
+a common positive number, and this would persist for slightly larger $a$; so a supporting hyperplane
+$h^\perp$ passes through $0$. A representing measure lives on its contacts, and Carath\'eodory's theorem inside
+the hyperplane bounds the number of nodes by $\abs S$. A positive representation using only nodes larger than
+$a_*$ would contradict maximality.
+\end{proof}
+
+\begin{corollary}[Rational or transcendental; \stU]\label{zfg:cor:dichotomy}
+For every finite set $S$ of positive integers, $M(S)$ is rational or transcendental.
+\end{corollary}
+
+\begin{proof}
+The condition $0\in C_a$ is a first-order formula over $\Q$ in $a$, with at most $\abs S+1$ nodes in $[a,1]$,
+nonnegative weights of sum one and the moment equations. By quantifier elimination for real closed fields
+$a_*$ is algebraic, so $z=e^{i\pi M(S)}$, a root of $z^2-2a_*z+1$, is algebraic. If $M(S)$ were algebraic and
+irrational, the Gelfond--Schneider theorem would make $z=(-1)^{M(S)}$ transcendental.
+\end{proof}
+
+\subsection{Two frequencies in arbitrary ratio}\label{fil:sec:two}
+\sources{grh_positive_spectral_extensions_2026-11-27; dirichlet_zero_filters; grh_extensions_2026-11-27_2}
+
+\Cref{rec:thm:hblock} prescribes consecutive harmonics. For two frequencies in arbitrary ratio, possibly
+irrational, the problem is solved completely. Here $\widehat\mu(\omega)=\int e^{i\omega u}\dd\mu(u)$ for a compactly
+supported probability measure $\mu$, and for $r>1$
+\[
+ \mathcal B(r)=\inf\set{\operatorname{diam}\supp\mu:\ \widehat\mu(1)=\widehat\mu(r)=0}.
+\]
+No symmetry of $\mu$ is assumed. For frequencies $0<\alpha<\gamma$ the least diameter is $\alpha^{-1}\mathcal B(\gamma/\alpha)$,
+attained by the rescaled minimizers below.
+
+\begin{theorem}[Exact two-frequency classification; \stU]\label{rec:thm:twofreq}
+Let $r>1$.
+\begin{enumerate}
+\item If $r=n\ge3$ is an odd integer, then $\mathcal B(n)=\pi$, and $\tfrac12(\delta_{-\pi/2}+\delta_{\pi/2})$ is the unique
+minimizer up to translation.
+\item Otherwise let $n=2k+1<r<n+2$ with $k\in\Z_{\ge0}$ and $s=(-1)^k$. If $k=0$ put $t=0$ and $M=1$; if $k\ge1$ let $t$
+be the unique solution in $(k\pi/r,(k+\tfrac12)\pi/r)$ of $\tan t=r\tan(rt-k\pi)$ and $M=s\cos(rt)/\cos t>0$.
+There is a unique $T\in(\pi/2,(n+2)\pi/(2r))$ with $s\cos(rT)/\cos T=M$. Then $\mathcal B(r)=2T$, and with
+\[
+ P=\frac{-\cos T}{\cos t-\cos T},\qquad Q=\frac{\cos t}{\cos t-\cos T},
+\]
+the unique minimizer up to translation is $\mu_r=\tfrac P2(\delta_{-t}+\delta_t)+\tfrac Q2(\delta_{-T}+\delta_T)$, the inner
+atoms combined when $t=0$.
+\item For $1<r<3$ this is \cref{fil:cor:pair} with $\alpha=1$, $\gamma=r$, $m=1$: $T=2\pi/(1+r)$,
+$\mathcal B(r)=4\pi/(1+r)$, $P=-c/(1-c)$, $Q=1/(1-c)$, $c=\cos(2\pi/(1+r))$.
+\end{enumerate}
+\end{theorem}
+
+\begin{proof}
+Let $r$ be nonresonant and $f(u)=s\cos(ru)/\cos u$ on $[0,\pi/2)$; since $s\cos(r\pi/2)<0$, $f\to-\infty$ at
+$\pi/2$, so $\max f$ is attained. For $k=0$, $\cos(ru)\le\cos u$ on the only positive lobe $[0,\pi/(2r))$, so
+$\max f=f(0)=1$, attained only at $0$. For $k\ge1$ a point of an earlier positive lobe moves by a multiple
+of $2\pi/r$ into the last lobe $J=((k-\tfrac12)\pi/r,(k+\tfrac12)\pi/r)$ with the same numerator and a smaller
+denominator, so the maximum lies in $J$. With $V(u)=s\{-r\sin(ru)\cos u+\cos(ru)\sin u\}$, $f'=V/\cos^2u$ and
+$V'(u)=(1-r^2)s\cos(ru)\cos u<0$ on $J$; $V(k\pi/r)>0$ and $V<0$ at the right end of $J$, so there is exactly one
+stationary point $t$, the unique maximizer, and $V(t)=0$ is the tangent equation. On
+$(\pi/2,(n+2)\pi/(2r))$, $f>0$ runs from $+\infty$ to $0$ with $V'<0$ and $V(\pi/2^+)=s\cos(r\pi/2)<0$, so $f$ decreases
+and $T$ exists uniquely.
+
+Put $g(u)=M\cos u-s\cos(ru)$, even. On $[0,\pi/2)$, $g\ge0$ with equality only at $t$; on $(\pi/2,T)$,
+$g=\cos u\,(M-f(u))>0$; $g(\pi/2)>0$. So $g\ge0$ on $[-T,T]$ with zero set $\set{\pm t,\pm T}$, double at $\pm t$
+($g''(t)=(r^2-1)M\cos t>0$) and simple at $\pm T$. An admissible $\mu$ of diameter at most $2T$, translated into
+$[-T,T]$, has $\int g\dd\mu=0$, so it lives on these nodes. The measure $\mu_r$ is admissible:
+$P\cos t+Q\cos T=0$ and $\cos(ru)=sM\cos u$ at both nodes, and symmetry kills the sine moments. If
+$t>0$ and $d_t,d_T$ are the differences of the masses at the positive and negative nodes, the sine
+moments give $d_t\sin t+d_T\sin T=0=d_t\sin(rt)+d_T\sin(rT)$, and
+$\sin t\sin(rT)-\sin T\sin(rt)=\sin t\{\sin(rT)-\tfrac{sM}r\sin T\}\ne0$, using $r\sin(rt)=sM\sin t$ and
+$M\sin T-sr\sin(rT)>0$, which follows from $V(T)<0$ and $\cos T<0$. For $t=0$ the first sine moment
+already balances the endpoints. Total mass and the first cosine moment then fix $P,Q$. Since $Q>0$
+both endpoints carry mass, so no admissible measure is shorter. At an odd resonance $\cos u\ge0$ on
+$[-\pi/2,\pi/2]$ forces the endpoints, the sine moment equal masses, and this measure annihilates the
+odd frequency $n$; any shorter interval has positive cosine after centring. For $1<r<3$,
+$\cos u-\cos(ru)=2\sin\frac{(1+r)u}2\sin\frac{(r-1)u}2$ gives (iii), which is also \cref{fil:cor:pair}.
+\end{proof}
+
+For $r=(p+1)/p$ this is the case $H=2$, one real part, of \cref{rec:thm:hblock}. The first-band formula and numerical two-mode solutions are known in the
+input-shaping literature
+\cite{CrainSinghoseSeering1996Derivation,SinghoseCrainSeering1997Convolved,Convolve1995Minimizing}, and the
+setting belongs to the extremal theory of positive-definite bandlimited functions \cite{Logan1983Extremal}.
+The new feature is the behaviour at the odd resonances, which is asymmetric. Already the coalescence of the
+two frequencies is singular.
+
+\begin{corollary}[Merging frequencies; \stU]\label{fil:cor:merger}
+A single frequency imposed once needs diameter $\pi$, but $\lim_{r\downarrow1}\mathcal B(r)=2\pi$. The minimizers
+for $r\downarrow1$ converge weakly to $\tfrac14\delta_{-\pi}+\tfrac12\delta_0+\tfrac14\delta_\pi$, whose transform
+$\cos^2(\pi\omega/2)$ has a double zero at $\omega=1$; it is the unique shortest measure with
+$\widehat\mu(1)=\widehat\mu'(1)=0$, by \cref{rec:thm:fwidth}.
+\end{corollary}
+
+\begin{proof}
+Let $r\downarrow1$ in \cref{fil:cor:pair} with $\alpha=1$, $\gamma=r$, $m=1$, that is, in
+\cref{rec:thm:twofreq}(iii): $T\to\pi$, $c\to-1$, $P\to\tfrac12$, $Q\to\tfrac12$.
+\end{proof}
+
+\begin{theorem}[Asymmetric resonance law; \stU]\label{rec:thm:cusp}
+Fix an odd $n\ge3$ and put $A_n=n(n^2-1)/6$, $C_n=(3\pi/(2n(n^2-1)))^{1/3}$. As $\eps\downarrow0$, for $r=n+\eps$,
+\[
+ t=\tfrac\pi2-C_n\eps^{1/3}+O_n(\eps),\qquad T=\tfrac\pi2+2C_n\eps^{1/3}+O_n(\eps),\qquad
+ \mathcal B(n+\eps)=\pi+4C_n\eps^{1/3}+O_n(\eps),
+\]
+with $P=\tfrac23+O_n(\eps^{2/3})$ and $Q=\tfrac13+O_n(\eps^{2/3})$. With $s_n=(-1)^{(n-1)/2}$ and the finite
+maximum $M_n^-=\max_{0\le u<\pi/2}(-s_n\cos(nu)/\cos u)$,
+\[
+ \mathcal B(n-\eps)=\pi+\frac{\pi}{n+M_n^-}\eps+O_n(\eps^2).
+\]
+In particular $M_3^-=1$, $\mathcal B(3-\eps)=\pi+\pi\eps/4+O(\eps^2)$, and $M_5^-=-\min_{0\le v\le1}(16v^4-20v^2+5)=\tfrac54$,
+$\mathcal B(5-\eps)=\pi+\tfrac{4\pi}{25}\eps+O(\eps^2)$.
+\end{theorem}
+
+\begin{proof}
+Put $h=\pi\eps/2$ and $t=\pi/2-y$, so $M=\sin(ry-h)/\sin y$. At $\eps=0$ the quotient $\sin(ny)/\sin y$, a sum of
+$n$ unit vectors with distinct adjacent phases, is below $n$ for $0<y\le\pi/2$, while the value at
+$y=\eps^{1/3}$ tends to $n$; hence $y\to0$. The stationary equation
+$H(\eps,y)=r\cos(ry-h)\sin y-\sin(ry-h)\cos y=0$ expands as
+$\tfrac\pi2\eps-2A_ny^3+O_n(y^5+\eps y^2+\eps^2y+\eps^3)$. With $z=\eps^{1/3}$ and $y=zv$, $H(z^3,zv)/z^3$ is
+real analytic at $z=0$ and equals $\tfrac\pi2-2A_nv^3+O_n(z^2)$, with $v$-derivative $-6A_nC_n^2\ne0$ at
+$(0,C_n)$, so $v=C_n+O_n(z^2)$. For the outer node $T=\pi/2+x$ the crossing equation reads
+$\sin(rx+h)/\sin x=\sin(ry-h)/\sin y$, and $x\to0$ as before. With $x=zw$,
+\[
+ \frac{\sin((n+z^3)zw\pm\pi z^3/2)}{\sin(zw)}=n+z^3+z^2\Bigl(\pm\frac\pi{2w}-A_nw^2\Bigr)+O_n(z^4),
+\]
+so after subtracting the two sides and dividing by $z^2$ the equation becomes
+$A_n(2C_n^3/w-w^2+3C_n^2)+O_n(z^2)=0$; since $w^3-3C_n^2w-2C_n^3=(w-2C_n)(w+C_n)^2$ and the derivative at
+$2C_n$ is $-\tfrac92A_nC_n\ne0$, $w=2C_n+O_n(z^2)$, and uniqueness of $T$ identifies this root. The weights
+follow from $\cos t=\sin y$ and $-\cos T=\sin x$. For $r=n-\eps$ the sign of the band is $-s_n$, the limiting
+maximum $M_n^-$ is attained before $\pi/2$ (at $0$ for $n=3$, at a nondegenerate interior point for $n\ge5$),
+the maximum is $M_n^-+O_n(\eps)$, and with $x=\eps v$ the outer equation
+$-\sin((n-\eps)x-h)/\sin x=M_n^-+O_n(\eps)$ becomes $\pi/(2v)-n=M_n^-$ at $\eps=0$, with nonzero derivative.
+\end{proof}
+
+A perturbation $\eps$ of the higher frequency just above an odd multiple of the lower one therefore
+costs a window increase of order $\eps^{1/3}$, and just below it only of order $\eps$. For
+$\eps(\nu)=\max\set{\abs{\widehat\nu(1)},\abs{\widehat\nu(r)}}$ and nonresonant $r$, with $t,T,M,P,Q,g$ as above:
+
+\begin{proposition}[Sharp stability for two frequencies; \stU]\label{rec:prop:twostable}
+Every probability measure $\nu$ on $[-T,T]$ has $W_1(\nu,\mu_r)\le C_r\sqrt{\eps(\nu)}$, and the exponent $\tfrac12$
+cannot be increased. At an odd resonance, on $[-\pi/2,\pi/2]$, the optimal exponent is $1$.
+\end{proposition}
+
+\begin{proof}
+With $G$ the zero set of $g$, $g(u)\ge c_r\operatorname{dist}(u,G)^2$ on $[-T,T]$ and $\int g\dd\nu\le(M+1)\eps(\nu)$, so
+rounding to $G$ costs $O_r(\sqrt\eps)$ by Cauchy--Schwarz and moves the moments by as much; total mass and
+the two complex moments determine weights on $G$ through the invertible linear algebra of the
+uniqueness proof. Splitting an inner atom by $\pm a$ changes the moments by $O_r(a^2)$ at transport
+cost $\asymp a$. At a resonance $\cos u$ grows linearly from the endpoints, and moving them inward proves
+sharpness.
+\end{proof}
+
+For $1<r<3$ the first assertion is a case of \cref{fil:thm:stable}, at the strictly positive pair base
+of \cref{fil:cor:pair} with $\gamma<3\alpha$.
+
+\begin{theorem}[First-order cost of shortening at two frequencies; \stU]\label{rec:thm:twoshort}
+For nonresonant $r$ and small $d>0$ let $D_r(d)=\inf\set{\eps(\nu):\supp\nu\subset[-T+d/2,T-d/2]}$ over
+probability measures. Then $D_r(d)=L_rd+O_r(d^2)$ with $L_r=Q(-g'(T))/(2(M+1))>0$, and for odd $n\ge3$,
+$L_{n+\eps}=\frac{3A_nC_n^2}{2(n+1)}\eps^{2/3}+O_n(\eps)$. At an odd resonance $r=n\ge3$, with $T=\pi/2$,
+\[
+ D_n(d)=\frac{n+M_n^-}{2(1+M_n^-)}\,d+O_n(d^2);
+\]
+thus $D_3(d)=d+O(d^2)$ and $D_5(d)=\tfrac{25}{18}d+O(d^2)$.
+\end{theorem}
+
+\begin{proof}
+Put $a=-g'(T)/2$, $K=Qa$ and $h_0(u)=K\cos u/\cos t$, equal to $K$ at the inner nodes and $K-a$ at the outer
+ones. On the shortened interval $g+dh_0\ge dK-O_r(d^2)$: near an inner node the quadratic minimum loses
+only $O(d^2)$, at each moved endpoint the increase is $da$, and elsewhere $g$ is bounded below.
+Integrating gives $(M+1+dK/\cos t)\eps(\nu)\ge dK-O_r(d^2)$. Conversely, keep the inner nodes, move the outer
+ones to $\pm(T-d/2)$ and choose symmetric weights with $\widehat\nu(1)+s\widehat\nu(r)=0$, possible for small $d$ since
+$\cos u+s\cos(ru)$ has opposite signs at the two nodes when $d=0$; then $(M+1)\widehat\nu(1)=\int g\dd\nu=dQa+O_r(d^2)$.
+At $r=n+\eps$, $g(\pi/2+x)=h+3A_ny^2x-A_nx^3+O_n(\eps^{4/3})$ with $y=C_n\eps^{1/3}+O_n(\eps)$ and $x=2y+O_n(\eps)$,
+which gives $-g'(T)=9A_nC_n^2\eps^{2/3}+O_n(\eps)$; use $Q=\tfrac13+O_n(\eps^{2/3})$ and $M=n+O_n(\eps^{2/3})$.
+
+At $r=n$ put $\sigma=\sin(n\pi/2)$ and let $a_*<\pi/2$ be the unique maximizer of $-\sigma\cos(nu)/\cos u$ on
+$[0,\pi/2)$ (the lobe argument above), with value $M=M_n^-$. Then $q(u)=M\cos u+\sigma\cos(nu)\ge0$ on
+$[-\pi/2,\pi/2]$, with double zeros at $\pm a_*$ and $q'(\pi/2)=-(M+n)$. The perturbation
+$q+\tfrac d2\,\frac{M+n}{\cos a_*}\cos u$ is at least $\tfrac d2(M+n)-O_n(d^2)$ on the shortened interval,
+which gives $D_n(d)\ge\frac{M+n}{2(M+1)}d-O_n(d^2)$. For the upper bound put total mass
+$\alpha_d=\frac{(n-1)d}{2(M+1)\cos a_*}$ on the pair $\pm a_*$ and $1-\alpha_d$ on $\pm(\pi/2-d/2)$; the two
+real moments are $\frac{M+n}{2(M+1)}d+O_n(d^2)$ and $\sigma$ times this, using
+$\cos(na_*)=-\sigma M\cos a_*$, and the imaginary moments vanish.
+\end{proof}
+
+\begin{corollary}[A second singularity at resonance; \stU]\label{fil:cor:kappa}
+For odd $n\ge3$, $L_{n-\eps}\to L_n=\frac{n+M_n^-}{2(1+M_n^-)}$, while $L_{n+\eps}\sim\frac{n(n-1)}4C_n^2\eps^{2/3}\to0$.
+For fixed $0<d<\pi$, $D_r(d)\to D_n(d)$ as $r\to n$, so the limits $d\downarrow0$ and $r\downarrow n$ of
+$D_r(d)/d$ do not commute.
+\end{corollary}
+
+\begin{proof}
+The left limit follows from the continuity of the maximizer used in \cref{rec:thm:cusp}; the right one is
+\cref{rec:thm:twoshort}, since $3A_n/(2(n+1))=n(n-1)/4$. For fixed $d$, compactness of probability measures on
+a common interval and linear rescaling of the support intervals give $D_r(d)\to D_n(d)$.
+\end{proof}
+
+\begin{example}\label{rec:ex:ratio4}
+For $r=4$ put $x=\sqrt{(2+\sqrt{10})/12}$ and $z=-x+\sqrt{1-2x^2}$. Tangency of $-\cos(4u)/\cos u$ gives
+$24x^4-8x^2-1=0$, and with $M=-(8x^4-8x^2+1)/x$ the identity $8v^4-8v^2+1+Mv=8(v-x)^2(v^2+2xv+3x^2-1)$ identifies
+$z\in(-1,0)$ as the outer crossing, the other quadratic root being below $-1$. Hence $t=\arccos x$,
+$T=\arccos z$ and
+\[
+ \mathcal B(4)=2\arccos\Bigl(-\sqrt{\tfrac{2+\sqrt{10}}{12}}+\sqrt{\tfrac{4-\sqrt{10}}6}\Bigr)\approx3.7138292065,
+\]
+with $P\approx0.3008471646$ and $Q\approx0.6991528354$.
+\end{example}
+
+The width is unchanged by a common real part: for $\beta\in\R$ and $0<\alpha<\gamma$ the least support diameter
+of a probability measure with $\int e^{(\beta+i\alpha)u}\dd\mu=\int e^{(\beta+i\gamma)u}\dd\mu=0$ is $\alpha^{-1}\mathcal B(\gamma/\alpha)$, since the
+tilt $e^{\beta u}\dd\mu/\int e^{\beta v}\dd\mu$ preserves the support; the optimal nodes $u_j$ and masses $w_j$ become
+$\widetilde w_j=w_je^{-\beta u_j}/\sum_\ell w_\ell e^{-\beta u_\ell}$. Under \cref{src:thm:dgrh} two ordinates $\alpha<\gamma$ of the same or
+of different Dirichlet $L$-functions lie on $\beta=\tfrac12$, and averaging $S_W$, or any explicit formula in which a
+zero contributes $c_\rho x^\rho$, at the points $xe^{u_j}$ with the weights $\widetilde w_j$ cancels both contributions
+exactly, with the least possible multiplicative scale ratio $\exp(\mathcal B(\gamma/\alpha)/\alpha)$ (\stG). Equal
+vanishing orders at both frequencies are settled for $\gamma\le3\alpha$ by \cref{fil:cor:pair}. For the first two zeta ordinates
+$\gamma_2/\gamma_1\approx1.48726$ lies in the first band, so the least logarithmic width is
+$4\pi/(\gamma_1+\gamma_2)\approx0.357438$, with three positive weights $\approx0.30032$, $0.44851$, $0.25117$ at the
+shifts $0$, $0.178719$, $0.357438$ (rounded):
+\begin{center}
+\artifact{grh_positive_spectral_extensions_2026-11-27/results/filter_checks.json}\\
+\artifact{grh_positive_spectral_extensions_2026-11-27/results/cusp.csv}\\
+\artifact{grh_extensions_2026-11-27_2/evidence/two_frequency_data.json}
+\end{center}
+The last file checks the classification at 21 ratios and the right cusp at $n=3,5,7,9$ down to
+$\eps=10^{-18}$, at 90 digits; it is numerical, not an interval certificate.
+
+\paragraph{Zero-free intervals and the position inside the convolution bound.}
+The two-frequency problem is dual to the longest interval on which a trigonometric polynomial with
+prescribed spectrum keeps one sign; this answers the two-frequency case of a question of Kozma and Oravecz
+\cite{KozmaOravecz2003Gaps}.
+
+\begin{corollary}[Gaps for two integer frequencies; \stU]\label{rec:cor:kozma}
+For integers $0<N<M$ the supremum of the lengths of zero-free intervals on $\R/\Z$ of real trigonometric
+polynomials with spectrum in $\set{\pm N,\pm M}$ is $\mathcal B(M/N)/(2\pi N)$; for $M=3N$ it is $1/(2N)$.
+\end{corollary}
+
+\begin{proof}
+Scaling $u=Nt$ gives $B(\set{N,M})=\mathcal B(M/N)/N$; apply \cref{zfg:prop:duality}.
+\end{proof}
+
+In the variables $u=\pi(r-n)/2$, $t=\pi/2-(u+y)/r$, $T=\pi/2+z/r$, the equations of \cref{rec:thm:twofreq}(ii) read
+$\tan y=r\tan((u+y)/r)$ and $\sin(u+z)=M\sin(z/r)$ with $M=\sin y/\sin((u+y)/r)$, $y\in(0,\pi/2)$, $z\in(0,\pi-u)$. Convolving the
+two single-frequency minimizers gives $\mathcal B(r)\le\pi+\pi/r$.
+
+\begin{theorem}[Ratios attaining the convolution bound; \stU]\label{rec:thm:twosat}
+For each odd $n\ge3$ exactly one $r\in(n,n+2)$ has $\mathcal B(r)=\pi+\pi/r$. It lies in $(n,n+1)$, satisfies
+$\tan(\pi(r-n)/2)=r^{-1}\cot(\pi/(2r))$, and $r-n\to(2/\pi)\arctan(2/\pi)$ as $n\to\infty$. Uniformly for $u$ in compact subsets of $(0,\pi)$,
+\[
+ \mathcal B(r)=\pi+2Z(u)/r+O(r^{-3}),
+\]
+where $Y(u)\in(0,\pi/2)$ solves $\tan Y=u+Y$ and $Z(u)$ is the first positive root of $\sin(u+Z)=Z\cos Y$.
+\end{theorem}
+
+\begin{proof}
+The convolution has nodes $\pm(\pi/2\pm\pi/(2r))$, so equality forces the inner node to be the unique contact,
+$u+y=\pi/2$, and the contact equation becomes the criterion; conversely the criterion makes $y=\pi/2-u$ the
+contact and $z=\pi/2$ a root of the crossing equation. With $v=\pi/(2r)$, $\frac{\dd}{\dd r}(r^{-1}\cot v)=(v-\sin v\cos v)/(r^2\sin^2v)\le\pi^2v/(6r^2)<\pi/2$,
+using $v-\sin v\cos v\le2v^3/3$ and $\sin v\ge2v/\pi$, while $\tan(\pi(r-n)/2)$ increases from $0$ to $\infty$ on $(n,n+1)$ with
+derivative at least $\pi/2$, and the phase lies outside $(0,\pi/2)$ on $(n+1,n+2)$; and $r^{-1}\cot(\pi/(2r))\to2/\pi$. For the
+expansion, $r\tan((u+y)/r)=u+y+O(r^{-2})$ and the limiting equation has derivative $\sec^2Y-1>0$, so $y=Y+O(r^{-2})$;
+the crossing equation, written $\sin(u+z)=z(M/r)\sin(z/r)/(z/r)$, is a smooth perturbation of its limit, whose
+derivative at the root is negative since $\sin(u+z)/z$ decreases before $z=\pi-u$.
+\end{proof}
+
+Under \cref{src:thm:dgrh}, for positive ordinates $\alpha<\gamma$ the least logarithmic span of a positive average
+cancelling $\tfrac12+i\alpha$ and $\tfrac12+i\gamma$ is $d(\alpha,\gamma)=\alpha^{-1}\mathcal B(\gamma/\alpha)\in[\pi/\alpha,\pi/\alpha+\pi/\gamma]$. Put
+$E_\alpha(\gamma)=\gamma(d(\alpha,\gamma)-\pi/\alpha)=r(\mathcal B(r)-\pi)\in[0,\pi]$, $r=\gamma/\alpha$.
+
+\begin{theorem}[A universal law for the extra width; \stG]\label{rec:thm:twolaw}
+Fix an ordinate $\alpha>0$ of some Dirichlet $L$-function and a primitive $\chi$, possibly of conductor one, and let
+$N_{\chi,\alpha}(T)$ count the ordinates $\alpha<\gamma\le T$ of $L(s,\chi)$ with multiplicity. For every continuous $f$ on $[0,\pi]$,
+\[
+ \lim_{T\to\infty}\frac1{N_{\chi,\alpha}(T)}\sum_{\alpha<\gamma\le T}f(E_\alpha(\gamma))=\frac1\pi\int_0^\pi f(2Z(u))\dd u.
+\]
+The law $X$ of $2Z(U)$, $U$ uniform on $(0,\pi)$, has no atoms and support $[0,\pi]$, so $\liminf E_\alpha(\gamma)=0$ and
+$\limsup E_\alpha(\gamma)=\pi$. With $Y_\pi\in(0,\pi/2)$ solving $\tan Y_\pi=\pi+Y_\pi$ and $t_0=\pi/2$, as $e\downarrow0$,
+\[
+ \Pr(X\le e)\sim\frac{1+\cos Y_\pi}{2\pi}\,e,\qquad\Pr(X\ge\pi-e)\sim\frac2\pi\frac{\sqrt{2t_0^3}}{1+t_0^2}\sqrt e.
+\]
+\end{theorem}
+
+\begin{proof}
+The positive ordinates of $L(s,\chi)$ are equidistributed modulo one after multiplication by any fixed nonzero
+real \cite[Cor.~8]{AkbaryMurty2008Uniform}, so the phases $u_\gamma=\pi\set{\gamma/(2\alpha)-\tfrac12}$ are equidistributed on $[0,\pi)$; this is
+unconditional, and \cref{src:thm:dgrh} places all multipliers on one vertical line. On $[\eta,\pi-\eta]$,
+\cref{rec:thm:twosat} gives $E_\alpha(\gamma)=2Z(u_\gamma)+O_\eta(r^{-2})$; uniform continuity and $\eta\downarrow0$ give the limit. As $u\uparrow\pi$, $Z\to0$,
+and at $u_*=\arctan(2/\pi)$ one has $Y=\pi/2-u_*$, $Z=\pi/2$, so the support is $[0,\pi]$; $Z$ is real analytic and
+nonconstant, so level sets are null. At $u\downarrow0$, $u=\tan Y-Y\sim Y^3/3$ and $Z\sim2(3u)^{1/3}$; at $u=\pi-v$, $Z\sim v/(1+\cos Y_\pi)$,
+which gives the lower edge. A stationary point of $Z$ satisfies $\cot(u+Z)=-\cot Y$, hence $Z=\tan Y=u+Y$, forcing
+$Z=t_0$ and $u=u_*$; there $Z''(u_*)=-(1+t_0^2)^2/(2t_0^3)$, and the set where $2Z\ge\pi-e$ has length $\sim2\sqrt{e/\abs{Z''(u_*)}}$.
+\end{proof}
+
+Numerically $\Pr(X\le\pi/2)=0.328039432\ldots$, and the median of $X/\pi$ is $0.711649171\ldots$
+(\artifact{dirichlet_zero_filters/law_results.txt}).
+
+\begin{theorem}[Arithmetic second term; \stG]\label{rec:thm:twobias}
+Fix $\alpha>0$, a primitive $\chi$ and a smooth $\varphi$ supported in $(0,\pi)$; put $\kappa=1/(2\alpha)$, $H_\varphi(t)=\varphi(2Z(\pi\set{t-1/2}))$, and let
+$N_\chi^+(T)$ count the zeros with $0<\gamma\le T$. Then
+\[
+ \sum_{\alpha<\gamma\le T}\varphi(E_\alpha(\gamma))=N_\chi^+(T)\int_0^1H_\varphi+T\int_0^1H_\varphi(t)g_{\chi,\kappa}(t)\dd t+o(T),
+\]
+where $g_{\chi,\kappa}=0$ unless $\kappa=A\log p/(2\pi B)$ for a prime $p$ and coprime positive integers $A,B$, and then
+$g_{\chi,\kappa}(t)=-\frac{\log p}\pi\Re\sum_{j\ge1}\chi(p)^{Aj}e^{-2\pi iBjt}p^{-Aj/2}$. A prime dividing the conductor gives no correction.
+\end{theorem}
+
+\begin{proof}
+Away from odd ratios $E_\alpha(\gamma)=2z$ with band phase $u=\pi\set{\kappa\gamma-1/2}$, and $2z=2Z(u)+O(r^{-2})$ on compact phase intervals;
+both profiles tend to $0$ uniformly at the seam (as $u\to\pi$, $0<z<\pi-u$; as $u\to0$, $y\to0$, $M/r\to1$ and $z\to0$), so
+for large $r$ both tests vanish near the seam and differ by $O(r^{-2})$ elsewhere, and $\sum\gamma^{-2}<\infty$. Apply
+\cite[Thm.~5, (3.2)]{FordSoundararajanZaharescu2009Distribution} to the smooth periodic $H_\varphi$; the orientation for complex
+characters matches Landau's formula at $x=p^{Aj}$ \cite{Landau1911Nullstellen}.
+\end{proof}
+
+For $\alpha=\gamma_1$ and the zeta ordinates $\gamma_{10}$, $\gamma_{20}$ (ratios $3.521387$, $5.457824$) the joint widths are $0.283311228$ and
+$0.262502497$, against $0.285377967$ and $0.262983914$ for the two separate filters
+(\artifact{dirichlet_zero_filters/pair_results.txt}).
+
+\paragraph{Wide arithmetic progressions.}
+For positive integers $N,b$ and $K\ge0$ let $M_K=M_K(N,b)$ be the supremum of the lengths of intervals of $\R/\Z$ on which
+a real trigonometric polynomial with spectrum in $\set{\pm(N+jb):0\le j\le K}$ is strictly positive. For $b<2N$,
+$M_K=(K+1)/(2N+Kb)$ \cite[Thm.~3]{KozmaOravecz2003Gaps}, and the wide-step case was asked there.
+
+\begin{theorem}[Wide-step limit and sharp order; \stU]\label{rec:thm:wide}
+Let $b\ge2N$, $\beta=N/b$ and $c=\ceil{1/(2\beta)}$. If $b/(2N)$ is an integer then $bM_K=c$ for every $K$. Otherwise
+$(2\beta c-1)/(K+2\beta)\le c-bM_K$ for every $K\ge0$, and $c-bM_K\le C_\beta/K$ for large $K$. In both cases $M_K\to\ceil{b/(2N)}/b$.
+\end{theorem}
+
+\begin{proof}
+In $t=2\pi bx$ the allowed functions are $\Re(e^{i\beta t}P(e^{it}))$ with $\deg P\le K$. At $t=2\pi j$, $0\le j\le c$, every mode equals
+$e^{ij\theta}$, $\theta=2\pi\beta$, and these points have $0$ in their convex hull (all circular gaps are at most $\pi$), so a
+probability measure on them annihilates the whole progression and $bM_K\le c$; at resonance the lowest cosine
+attains it. Otherwise $c\ge2$; on a positive interval of length $2\pi(c-\eps)$, $0\le\eps<1$, $P$ has no root on the circle,
+the argument of $e^{i\beta t}P(e^{it})$ changes by less than $\pi$, an exterior root $w$ contributes at least $-\pi\eps$ since
+$\frac{\dd}{\dd t}\arg(e^{it}-w)<\tfrac12$ and the change over $c$ full turns is zero, and an interior root contributes a
+nonnegative amount; so $2\pi\beta(c-\eps)-K\pi\eps<\pi$, the lower bound. For the upper bound let $\alpha'=2\beta<1$,
+$H_\rho(t)=e^{i\beta t}(1-\rho e^{it})^{-\alpha'}$ and $P_K(z)=\sum_{j\le K}\frac{(\alpha')_j}{j!}\rho^jz^j$. The argument $\psi_\rho$ of $H_\rho$ has
+$\psi_\rho'=\beta(1-\rho^2)/\abs{1-\rho e^{it}}^2>0$ and $\psi_\rho(t+2\pi)=\psi_\rho(t)+2\pi\beta$, so after rotation by $e^{-i\pi c\beta}$ its phase on
+$[\delta,2\pi c-\delta]$ stays within $\pi/2-m_0$ of $0$, with
+$m_0=\pi(\tfrac12-(c-1)\beta)-\alpha'\arctan\bigl(\frac{1-\rho}{1+\rho}\cot\frac\delta2\bigr)$. The relative truncation error on $\abs z=\rho$ is at most
+$2(K+2)^{\alpha'-1}\rho^{K+1}(1-\rho)^{\alpha'-1}$. Choosing $\rho=1-D/(K+2)$ and $\delta=U/(K+2)$ with $D$ and then $U/D$ large gives a
+positive real part on the interval and $bM_K\ge c-U/(\pi(K+2))$.
+\end{proof}
+
+By the convex-hull duality of \cref{zfg:prop:duality}, the infinite progression has a shortest annihilating
+probability measure of diameter exactly $c/b$ in circle units. Rational enclosures for nine instances, for
+example $1.98724292\le bM_{256}\le1.99766356$ at $(N,b)=(2,5)$, are in \artifact{dirichlet_zero_filters/progression_results.txt}.
+Exact values for $K=2$ and every $(N,b)$, and for $K=3$ when $b/N$ is an odd integer, are in \cref{zfg:sec:prog}.
+
+\begin{theorem}[A growing collection of zeros; \stG]\label{rec:thm:twopack}
+Fix $N,b\ge1$ with $b\ge2N$, a primitive $\chi$, $p_0>1$ and $0<\kappa<1/(2p_0)$, and let $K=K(T)\to\infty$ with
+$K\le\kappa\log T/\log\log T$. There is $H_\chi$ such that for large $T$ every interval $[T(N+bj),T(N+bj)+H_\chi]$, $0\le j\le K$, contains
+an ordinate $\gamma_j$ of $L(s,\chi)$, and for every such choice the least logarithmic span $D_T$ of a positive average
+cancelling all $\tfrac12+i\gamma_j$ satisfies $\abs{TD_T-2\pi M_K}\le K^{-p_0}$. In particular $2\pi c/b-TD_T\asymp_{N,b}K^{-1}$ if $c>b/(2N)$; one
+may take $p_0=2$ for $\kappa<1/4$.
+\end{theorem}
+
+\begin{proof}
+The count $N^+(X)=X\log X/(2\pi)+c_\chi X+O_\chi(\log X)$ \cite{Selberg1992Old,FordSoundararajanZaharescu2009Distribution} gives the
+$\gamma_j$. With $\lambda_j=N+bj$ and $\lambda'_j=\gamma_j/T$, tilting gives $TD_T=W(\lambda')$ and duality $W(\lambda)=2\pi M_K$, where $W$ is the least
+width annihilating the frequencies. Let $d=K+1$, $m'=2d+1$, $\delta=K^{-p_0}$. An optimal measure for $\lambda$ has at most $m'$
+atoms (Carath\'eodory), one of mass at least $1/m'$; convolving with the uniform law on $j\delta/(m'-1)$, $0\le j<m'$,
+costs width $\delta$, keeps the annihilation, gives mass at least $m'^{-2}$ at each new point, and leaves target
+moments $O(H_\chi/T)$. The Vandermonde matrix of the reserved weights has nodes at distances $\gg\Delta\abs{\ell-h}$,
+$\Delta=\delta/(m'-1)$, so the entries of its inverse are at most $(C'/\delta)^{2d}$, and the real correction has size
+$T^{-1+2p_0\kappa+o(1)}<m'^{-2}$; so $W(\lambda')\le W(\lambda)+\delta$, and symmetrically. The last claim follows from \cref{rec:thm:wide}.
+\end{proof}
+
+
+
+
+\subsection{Three and four frequencies in a wide progression}\label{zfg:sec:prog}
+\sources{positive-fourier-zeros; kozma_oravecz_147_2026-11-27; kozma_oravecz_three_frequency_2026-11-28; kozma_oravecz_half_integer_2026-11-28; proveit_three_extensions_2026-11-27}
+
+In the notation of \cref{rec:thm:wide}, $M_K(N,b)=M(\set{N+jb:0\le j\le K})$. If $b/(2N)$ is an integer then
+$M_K(N,b)=b^{-1}\ceil{b/(2N)}=1/(2N)$ for every $K$ by \cref{rec:thm:wide}. This subsection determines $M_2(N,b)$ for all $N,b$ by
+a finite algebraic rule, gives closed analytic branches when $b/N$ is an odd integer or half an odd integer at
+least $5/2$, and does the same for $K=3$ when $b/N$ is an odd integer.
+
+\paragraph{A finite rule for three frequencies.}
+By \cref{zfg:prop:duality} one may assume $\gcd(N,b)=1$. Put $m=N+b$,
+\[
+ V(x)=(T_N(x),T_m(x),T_{N+2b}(x)),\qquad D(x)=V(x)\times V'(x),
+\]
+and call a set of nodes in $[-1,1]$ feasible if the origin lies in the convex hull of its images under $V$; for at
+most three nodes this is linear algebra and sign comparisons.
+
+\begin{theorem}[A finite rule for three frequencies; \stU]\label{zfg:thm:threerule}
+Form the following finite list of feasible node sets.
+\begin{enumerate}
+\item Every feasible singleton or pair with nodes in the union of the grids $\set{\cos(j\pi/b):0\le j\le b}$ and
+$\set{\cos((2j+1)\pi/(2m)):0\le j<m}$.
+\item Let $E$ consist of $1$ and the common real zeros of the coordinates of $D$ at which $V\ne0$. For each nonzero
+normal $h$, up to scaling, of one of the forms
+\[
+\begin{aligned}
+ &V(u)\times V(v), && u,v\in E,\\
+ &D(v), && u\in E,\quad D(v)\cdot V(u)=0,\quad V(u)\times V(v)\ne0,\\
+ &D(u), && D(u)\times D(v)=0,\quad D(u),D(v)\ne0,\quad V(u)\times V(v)\ne0,
+\end{aligned}
+\]
+every feasible triple among the distinct real roots of $h\cdot V(x)$ in $[-1,1]$.
+\end{enumerate}
+The largest smallest node among the listed sets is the number $a_*$ of \cref{zfg:lem:contact}, so
+$M_2(N,b)=\arccos(a_*)/\pi$. The list requires univariate root computations and finitely many isolated solutions of
+bivariate polynomial systems.
+\end{theorem}
+
+\begin{proof}
+Every listed set is feasible, so its smallest node is at most $a_*$. Choose a positive representation of $0$ on
+$[a_*,1]$ with the fewest nodes; by \cref{zfg:lem:contact} it has at most three and uses $a_*$.
+
+A singleton is a common zero of the coordinates, hence a zero of $T_m$, in the second grid. For a pair write the
+nodes as $\cos\phi,\cos\theta$ with $0\le\phi<\theta\le\pi$; their vectors are antiparallel. If $T_m$ vanishes at
+$\cos\theta$ it vanishes at $\cos\phi$, and both nodes lie in the second grid. Otherwise the identity
+$\cos(Nt)+\cos((N+2b)t)=2\cos(bt)\cos(mt)$ forces $\cos(b\theta)=\cos(b\phi)$. If $\sin(b\theta)=0$, both nodes lie in the
+first grid. Otherwise write $b\phi\equiv\sigma b\theta\pmod{2\pi}$ with $\sigma=\pm1$. The first two coordinates and
+$\sin(b\theta)\ne0$ determine the cosine and the sine of $N\phi$ up to the same negative factor as those of $\sigma N\theta$;
+both being unit vectors, the factor is $-1$. Thus $d=\phi-\sigma\theta$ has $Nd/\pi$ odd and $bd/\pi$ even, so coprimality makes
+$d/\pi$ an odd integer, with $N$ odd and $b$ even. Then $\theta\ge\pi/2$, while $x=0$ is a feasible singleton because all
+three frequencies are odd; it is listed and at least as large.
+
+For a minimal triple no two vectors are proportional: opposite vectors give a feasible pair, and positively
+proportional ones can be merged after renormalizing the weights. The normal $h$ of the supporting plane through
+$0$ is therefore determined by two of the vectors. Each of the two nodes larger than $a_*$ is the endpoint $1$, a
+common zero of the coordinates of $D$, or an interior regular tangency, where $h$ is proportional to $D$. This
+gives the three cases of the list.
+
+It remains to see that the list is finite. The coordinates of $V$ have distinct degrees, so $h\cdot V\not\equiv0$ for
+$h\ne0$. $D\not\equiv0$, since otherwise the projective ratios of the coordinates of $V$ would be constant. For fixed
+$p=V(u)\ne0$, $D(v)\cdot p\not\equiv0$: in coordinates with $p=(0,0,1)$, identical vanishing says that the ratio of the
+first two transformed coordinates has zero derivative, contrary to their linear independence. Suppose a curve of
+pairs $(u,v)$ with $V(u)\times V(v)\ne0$ satisfied the conditions of the third case. On a smooth piece choose a
+smooth normal $h$ with one coordinate equal to one. Differentiating $h\cdot V(u)=h\cdot V(v)=0$ along the piece and
+using the tangencies gives $h'\cdot V(u)=h'\cdot V(v)=0$, so $h'$ is proportional to $h$ and the normalization gives
+$h'=0$; but a fixed $h$ has finitely many contacts. The same argument applies on the smooth locus of a complex
+component, so dividing the three minors of $D(u)\times D(v)$ by their polynomial greatest common divisor discards the
+common curve components (for instance the diagonal $u=v$) without losing a valid pair, and the remaining system is
+zero-dimensional.
+\end{proof}
+
+\paragraph{Contact certificates.}
+The closed values below rest on one deduction.
+
+\begin{lemma}[Contact certificate; \stU]\label{zfg:lem:cert}
+Let $S$ be a set of $k+1$ positive integers, $0<\theta_1,\dots,\theta_k<\theta_0<\pi$, and $g(\theta)=\sum_{n\in S}c_n\cos(n\theta)$.
+Suppose that
+\begin{enumerate}
+\item $g\ge0$ on $[-\theta_0,\theta_0]$, with zero set there exactly $\set{\pm\theta_0,\dots,\pm\theta_k}$;
+\item some $\lambda_0,\dots,\lambda_k>0$ satisfy $\sum_j\lambda_j\cos(n\theta_j)=0$ for every $n\in S$;
+\item the matrix $(\cos(n\theta_j))_{n\in S,\,1\le j\le k}$ has rank $k$, and $(\sin(n\theta_j))_{n\in S,\,0\le j\le k}$ is invertible;
+\item some $n_0\in S$ has $\cos(n_0\theta_j)>0$ for $1\le j\le k$.
+\end{enumerate}
+Then $M(S)=\theta_0/\pi$, and no polynomial with spectrum in $\pm S$ is zero-free on an open interval of length
+$\theta_0/\pi$. On the closed interval $I$ of that length centred at $0$, the polynomials with spectrum in $\pm S$ that are
+nonnegative on $I$ are the nonnegative multiples of $g(2\pi t)$, and the only probability measure on $I$ annihilating
+the spectrum puts mass $\lambda_j/(2\sum_i\lambda_i)$ at each of $\pm\theta_j/(2\pi)$; it has $2k+2$ atoms.
+\end{lemma}
+
+\begin{proof}
+Write $\theta=2\pi t$. The measure $\mu$ described is a probability measure on $I$; its cosine moments vanish by
+(ii) and its sine moments by symmetry. If a polynomial with spectrum in $\pm S$ had no zero on an open interval of
+length $\theta_0/\pi$, then after translation and a change of sign it would be strictly positive on the interior of
+$I$ and nonnegative at its endpoints, and its integral against $\mu$ would be positive, since $\mu$ charges the
+interior points $\pm\theta_j$, $j\ge1$. Larger intervals contain such an interval. Conversely, for $\theta'<\theta_0$ and
+small $\delta>0$ the polynomial $g+\delta\cos(n_0\theta)$ is strictly positive on $[-\theta',\theta']$: near the zeros
+$\pm\theta_j$, $j\ge1$, by (iv), and elsewhere because $g$ has a positive minimum there. So $M(S)=\theta_0/\pi$.
+
+A polynomial $P$ nonnegative on $I$ integrates to zero against $\mu$, so it vanishes at the $2k+2$ atoms. Its odd
+part vanishes at $\theta_0,\dots,\theta_k$, hence is zero by the sine part of (iii). Its even part lies in the left kernel
+of $C=(\cos(n\theta_j))_{n\in S,\,0\le j\le k}$; this square matrix is singular by (ii) and has rank at least $k$ by (iii),
+so its left kernel is the line through the coefficients of $g$, and the multiple is nonnegative because $g>0$
+somewhere on $I$. An annihilating probability measure $\nu$ on $I$ integrates $g$ to zero, so it lives on the atoms of
+$\mu$. The differences of its masses at $\pm\theta_j$ satisfy the homogeneous sine system, hence vanish, and the pair
+totals lie in the right kernel of $C$, the line through $(\lambda_j)$; normalization gives $\nu=\mu$.
+\end{proof}
+
+For $\eps\ge0$ put $h_\eps(s)=\sin(\eps s)/\eps$ if $\eps>0$, $h_0(s)=s$, and $L_\eps=\pi/(2\eps)$, $L_0=+\infty$. Consider
+the families
+\begin{align*}
+ \textup{(T)}\quad &F_\eps=h_\eps+A\cos((1+\eps)s)+B\sin((2+\eps)s), && 0\le\eps\le\tfrac13,\\
+ \textup{(H$_\sigma$)}\quad &F_\eps=h_\eps+A\bigl(\cos((1+\eps)s)+\sigma\sin((1+\eps)s)\bigr)+B\cos((2+\eps)s), && 0\le\eps\le\eps_\sigma,\\
+ \textup{(Q)}\quad &F_\eps=h_\eps+A\cos((1+\eps)s)+B\sin((2+\eps)s)+C\cos((3+\eps)s), && 0\le\eps\le\tfrac13,
+\end{align*}
+with $\sigma\in\set{\pm1}$, $\eps_{-1}=2/5$ and $\eps_{+1}=2/7$. In (T) and (H$_\sigma$) the unknowns are $(A,B,u,v,x)$ with
+$x<0<u<v<L_\eps$ and the five equations $F_\eps(u)=F_\eps(v)=F_\eps'(u)=F_\eps'(v)=F_\eps(x)=0$; in (Q) they are
+$(A,B,C,u,v,w,x)$ with $x<0<u<v<w<L_\eps$ and the seven equations $F_\eps=0$ at $u,v,w,x$ and $F_\eps'=0$ at $u,v,w$. Primes
+denote $\dd/\dd s$. The contacts other than $x$ are called inner, and the terms of $F_\eps$ other than $h_\eps$ oscillating.
+
+\begin{lemma}[Interval certificates; \stU]\label{zfg:lem:certs}
+For each family and each $\eps$ in its range there is a solution with $-2<x<0$, all contacts below $L_\eps$ (and
+$v<4$ in (T), $w<5$ in (Q)) and nonsingular Jacobian, such that:
+\begin{enumerate}
+\item $F_\eps\ge0$ on $[x,L_\eps]$ with zero set exactly the contacts, $F_\eps'(x)>0$, and $F_\eps''>0$ at the inner contacts;
+\item the vectors of values of the oscillating terms at the contacts satisfy a linear relation with positive
+coefficients $\lambda_s$, and those at the inner contacts are linearly independent;
+\item the square matrix with rows $(\cos(\eps s),\sin((1+\eps)s),\cos((2+\eps)s))$ in (T),
+$(\cos(\eps s),\sin((1+\eps)s)-\sigma\cos((1+\eps)s),\sin((2+\eps)s))$ in (H$_\sigma$), and
+$(\cos(\eps s),\sin((1+\eps)s),\cos((2+\eps)s),\sin((3+\eps)s))$ in (Q), $s$ running over the contacts, is invertible.
+\end{enumerate}
+\end{lemma}
+
+\begin{proof}
+This is a finite computation in exact rational interval arithmetic. The parameter range is covered by rational
+cells $E$ (588 cells for (T), 354 for (H$_{-1}$), 780 for (H$_{+1}$), 1127 for (Q)). For each cell the data give a
+rational centre $z_0$, a radius $r$ and a rational preconditioner $R$, which are proposals and not assumptions. With
+$g$ the vector of equations and $Z=z_0+[-r,r]^d$, the checker encloses $Rg(E,z_0)$ and $I-RD_zg(E,Z)$ and verifies, for
+every row $i$, $q_i=\sum_j\sup\abs{(I-RD_zg)_{ij}}<1$ and $\sup_E\abs{(Rg(\eps,z_0))_i}+rq_i<r$. Then $z\mapsto z-Rg(\eps,z)$ maps $Z$
+into its interior and contracts, $R$ and $D_zg$ are invertible, and the fixed point solves $g=0$. On each root box
+the checker verifies the ordering, $F'>0$ on a neighbourhood of the enclosure of $x$ and $F''>0$ on neighbourhoods of
+the inner contacts, and $F>0$ by bisection in between and up to $\min(c_0,L_\eps)$, where $c_0=7$ in (T) and $9$ in
+(H$_\sigma$) and (Q) (using $\pi<22/7$). Beyond $c_0$, concavity of the sine gives $h_\eps(s)\ge2s/\pi\ge2c_0/\pi$, which is
+checked to exceed the sum of the absolute values of the oscillating coefficients (weighted by $\sqrt2$ for the first
+term of (H$_\sigma$)). The relation (ii) is verified through signs: in (T), $\cos((1+\eps)s)>0$ at $x,u$ and $<0$ at $v$, and
+the ratios $\rho=\sin((2+\eps)s)/\cos((1+\eps)s)$ satisfy $\rho(x)<\rho(v)<\rho(u)$; in (H$_\sigma$) the three cyclic $2\times2$
+determinants have the same sign; in (Q) the four signed maximal minors $(-1)^j\det V_{\widehat j}$ are negative. The
+determinants in (iii) are enclosed away from $0$. All operations round outward on a fixed grid ($10^{-23}$, or
+$10^{-24}$ in (Q)), with sine and cosine evaluated by Taylor polynomials at a reduced argument followed by doubling
+steps, and with explicit remainder bounds. The data and checkers are
+\begin{center}\small
+\artifact{kozma_oravecz_three_frequency_2026-11-28/cells.json}, \artifact{kozma_oravecz_three_frequency_2026-11-28/all_odd.js},\\
+\artifact{kozma_oravecz_half_integer_2026-11-28/minus.json}, \artifact{kozma_oravecz_half_integer_2026-11-28/plus.json},\\
+\artifact{kozma_oravecz_half_integer_2026-11-28/certify_family.js},\\
+\artifact{proveit_three_extensions_2026-11-27/checks/spectral/four_frequency_cells.json},\\
+\artifact{proveit_three_extensions_2026-11-27/checks/spectral/four_frequency_certificate.py}.
+\end{center}
+\end{proof}
+
+Within each family the certified solution is unique at each parameter. Its oscillating terms and $h_\eps$ vanish
+against the positive weights $\lambda_s$ of (ii), since $F_\eps$ vanishes at the contacts. If two certified solutions had
+endpoints $x_1<x_2$, the first $F_\eps$ would be nonnegative at the contacts of the second and positive at $x_2$, so its
+sum against the second weights would be positive instead of zero. For equal endpoints the same sum forces the
+contact sets to agree, and the independence in (ii) fixes the coefficients. With the nonsingular Jacobian, the
+analytic implicit function theorem gives analytic branches on the cells that agree at common endpoints; hence each
+family has a real analytic branch on a neighbourhood of its parameter range, in particular at $\eps=0$. We write
+$x(\eps)$ for (T), $x_\sigma(\eps)$ for (H$_\sigma$) and $x^{(4)}(\eps)$ for (Q).
+
+\begin{theorem}[Three frequencies, odd-integer step ratio; \stU]\label{zfg:thm:three}
+Let $N\ge1$ and let $m\ge3$ be odd. Then
+\[
+ N\,M(\set{N,(m+1)N,(2m+1)N})=\frac12-\frac{x(1/m)}{\pi m}.
+\]
+The supremum is not attained, even on an open interval. On a closed interval of the critical length the
+nonnegative polynomials with this spectrum form a single ray, and exactly one probability measure annihilates
+the spectrum; it has six atoms. As $m\to\infty$ through odd values,
+\[
+ N\,M(\set{N,(m+1)N,(2m+1)N})=\frac12+\frac{c_1}m+\frac{c_2}{m^2}+O(m^{-3}),\qquad c_1=-\frac{x(0)}\pi,\quad c_2=-\frac{x'(0)}\pi,
+\]
+with $-1.355137<x(0)<-1.355132$ and $0.7859003465<x'(0)<0.7859187030$, so $c_1\approx0.4313527$ and $c_2\approx-0.2501628$.
+\end{theorem}
+
+\begin{proof}
+By \cref{zfg:prop:duality} take $N=1$. Put $\eps=1/m$ and $s=m(\pi/2-\theta)$. Since $m$ is odd,
+\[
+ \cos\theta=\eps h_\eps(s),\quad \cos((m+1)\theta)=(-1)^{(m+1)/2}\cos((1+\eps)s),\quad \cos((2m+1)\theta)=-\sin((2+\eps)s),
+\]
+so $F_\eps$ of (T) is an even polynomial $g(\theta)$ with spectrum $\set{1,m+1,2m+1}$, and $s\in[x,L_\eps]$ corresponds to
+$\theta\in[0,\theta_0]$ with $\theta_0=\pi/2-x/m<\pi$. Under this substitution the rows in (iii) of \cref{zfg:lem:certs} are, up to
+signs, the sine modes $\sin\theta,\sin((m+1)\theta),\sin((2m+1)\theta)$. Thus (i)--(iii) of \cref{zfg:lem:certs} give (i)--(iii) of
+\cref{zfg:lem:cert} with the nodes $\theta_s=\pi/2-s/m$, and (iv) holds with $n_0=1$ because the inner contacts lie in
+$(0,L_\eps)$. \Cref{zfg:lem:cert} gives everything except the expansion, which is the Taylor expansion of the analytic
+branch at $0$. The derivative $x'(0)$ is obtained by the linear solve $D_zg\,z'(0)=-\partial_\eps g$ at $\eps=0$, and the
+enclosures of $x(0)$ and $x'(0)$ come from a separate interval computation
+(\artifact{kozma_oravecz_three_frequency_2026-11-28/limit.js}).
+\end{proof}
+
+\begin{theorem}[Three frequencies, half-odd-integer step ratio; \stU]\label{zfg:thm:half}
+Let $n\ge1$, let $d\ge5$ be odd, and let $\sigma=-1$ if $d\equiv1\pmod4$ and $\sigma=1$ if $d\equiv3\pmod4$. Then
+\[
+ M(\set{2n,(d+2)n,(2d+2)n})=\frac1{4n}-\frac{x_\sigma(2/d)}{\pi dn}.
+\]
+The supremum is not attained, even on an open interval; on a closed interval of the critical length there is one ray
+of nonnegative polynomials and one annihilating probability measure, with six atoms. With $N=2n$ and $r=d/2$, for
+each residue class of $d$ modulo $4$,
+\[
+ N\,M=\frac12+\frac{c_{1,\sigma}}r+\frac{c_{2,\sigma}}{r^2}+O(r^{-3}),\qquad c_{1,\sigma}=-\frac{x_\sigma(0)}\pi,\quad c_{2,\sigma}=-\frac{x_\sigma'(0)}\pi,
+\]
+where $c_{1,-1}\approx0.6064836353$, $c_{2,-1}\approx-0.3704115178$, $c_{1,1}\approx0.2224839370$ and $c_{2,1}\approx-0.1254621878$.
+\end{theorem}
+
+\begin{proof}
+By \cref{zfg:prop:duality} take $n=1$, so the spectrum is $S=\set{2,d+2,2d+2}$. Put $r=d/2$, $\eps=1/r$, $\theta=2\phi$ and
+$s=r(\pi/2-\theta)$, where $\phi=2\pi t$. Then $\cos(2\phi)=\eps h_\eps(s)$; since $\tan((1+r)\pi/2)=\sigma$, $\cos((d+2)\phi)=\cos((1+r)\theta)$ is a
+nonzero multiple of $\cos((1+\eps)s)+\sigma\sin((1+\eps)s)$; and since $1+2r$ is even, $\cos((2d+2)\phi)$ is $\pm\cos((2+\eps)s)$. The
+range $d\ge5$ gives $\eps\le2/5$ for $\sigma=-1$ and $\eps\le2/7$ for $\sigma=1$. As in the proof of \cref{zfg:thm:three},
+\cref{zfg:lem:certs} for (H$_\sigma$) gives the hypotheses of \cref{zfg:lem:cert} at the angles $\phi_s=(\pi/2-s/r)/2$, with
+$n_0=2$; the rows in (iii) are, up to nonzero factors, the three sine modes. The critical half-angle is
+$\phi_0=(\pi/2-x_\sigma(\eps)/r)/2$, and $M=\phi_0/\pi$. The expansion is that of the analytic branch.
+\end{proof}
+
+\begin{theorem}[Four frequencies, odd-integer step ratio; \stU]\label{zfg:thm:four}
+Let $N\ge1$ and let $m\ge3$ be odd. Then
+\[
+ N\,M(\set{N,(m+1)N,(2m+1)N,(3m+1)N})=\frac12-\frac{x^{(4)}(1/m)}{\pi m}.
+\]
+The supremum is not attained, even on an open interval. On the centred closed interval of the critical length the
+nonnegative polynomials with this spectrum form one ray, and exactly one probability measure annihilates the spectrum;
+it has eight atoms, and every annihilating probability measure of least support diameter is a translate of it. The
+branch $x^{(4)}$ is real analytic on a neighbourhood of $[0,1/3]$, and
+\[
+ N\,M=\frac12+\frac{c_1^{(4)}}m+\frac{c_2^{(4)}}{m^2}+O(m^{-3}),
+\]
+where
+\[
+ c_1^{(4)}=-x^{(4)}(0)/\pi=0.45356051377648\ldots,\qquad c_2^{(4)}=-x^{(4)\prime}(0)/\pi=-0.18321967877208\ldots.
+\]
+In particular $0.63147839169477181<M(\set{1,4,7,10})<0.63147839169477182$.
+\end{theorem}
+
+\begin{proof}
+With $N=1$, $\eps=1/m$ and $s=m(\pi/2-\theta)$, the four terms of (Q) are nonzero multiples of
+$\cos\theta,\cos((m+1)\theta),\cos((2m+1)\theta),\cos((3m+1)\theta)$:
+\begin{gather*}
+ h_\eps(s)=m\cos\theta,\qquad \cos((1+\eps)s)=(-1)^{\frac{m+1}2}\cos((m+1)\theta),\\
+ \sin((2+\eps)s)=-\cos((2m+1)\theta),\qquad \cos((3+\eps)s)=(-1)^{\frac{3m+1}2}\cos((3m+1)\theta).
+\end{gather*}
+Apply \cref{zfg:lem:certs} and \cref{zfg:lem:cert} as before, with $n_0=1$; a measure of least support diameter lives on an
+interval of the critical length, so it is a translate of the one in \cref{zfg:lem:cert}. The decimals are evaluations
+of the analytic branch, enclosed separately; the enclosure at $m=3$ is also checked by an independent certificate for
+$T_1+aT_4+bT_7+cT_{10}$ in the coordinate $y=\cos\theta$, with integer Chebyshev arithmetic and no trigonometric evaluation
+(\artifact{proveit_three_extensions_2026-11-27/checks/spectral/verify_m3_polynomial.py}).
+\end{proof}
+
+When $m$ is even, $b/(2N)=m/2$ is an integer, and \cref{rec:thm:wide} gives the value $1/(2N)$ for both spectra; all
+frequencies are then odd, and the lowest cosine is zero-free on an open interval of length $1/(2N)$. Approximate
+values of $NM$ for the three-frequency spectra are $0.618557753484$, $0.576776857359$, $0.556692411116$ and
+$0.544918838243$ at $m=3,5,7,9$, and of $nM(\set{2n,(d+2)n,(2d+2)n})$ they are $0.346549538462$, $0.276881103951$,
+$0.309113910011$ and $0.268194148020$ at $d=5,7,9,11$. The leading coefficients $c_{1,-1}\ne c_{1,1}$ show that no single
+expansion in $1/r$ describes both residue classes of $d$.
+
+\begin{example}[The spectrum $\set{1,4,7}$; \stU]\label{zfg:ex:147}
+Let $s$ be the root within $10^{-18}$ of $1.12268200790234930920$ of
+\begin{align*}
+ H(s)={}&165888s^{18}-912384s^{16}+1974528s^{14}-2154240s^{12}+1297800s^{10}\\
+ &-467124s^8+105672s^6-15092s^4+1274s^2-49,
+\end{align*}
+and define
+\begin{align*}
+ 3924844\,p={}&-5579891712s^{16}+30121984512s^{14}-63425084544s^{12}+66376108800s^{10}\\
+ &-37602505764s^8+12510048822s^6-2542346352s^4+303526195s^2-18986709,\\
+ r={}&3s^2-2p-\tfrac74,\qquad e=\frac{2s^3+2sp-2sr}{8p^2-1},\\
+ q(y)={}&y^2-sy+p,\qquad C(y)=y^3+2sy^2+ry+e.
+\end{align*}
+Then $M(\set{1,4,7})=\arccos(a)/\pi$, where $a\approx-0.36390801664214987744$ is a root of $C$, and the other contacts are the
+roots $u\approx0.268082359$ and $v\approx0.854599649$ of $q$; thus
+\[
+ 0.61855775348402062<M(\set{1,4,7})<0.61855775348402063 .
+\]
+The number $2\cos(\pi M(\set{1,4,7}))=2a$ has degree $54$ over $\Q$, with primitive integral minimal polynomial of leading
+coefficient $729$, so $M(\set{1,4,7})$ is transcendental.
+\end{example}
+
+\begin{proof}
+This is the case $m=3$ of \cref{zfg:thm:three}, with an algebraic certificate. The decisive identity is
+\[
+ 64\,q(y)^2C(y)=A\,T_1(y)+B\,T_4(y)+T_7(y),\qquad A\approx1.6408563,\quad B\approx1.0859836,
+\]
+verified by expansion modulo $H(s)$, with $B=64p^2e$ from the constant coefficient and $A=7+[y]\,(64q^2C)$ from the linear
+one; $8p^2-1$ is invertible modulo $H$. The cubic $C$ increases on $[a,1]$, since $C'(a)>0$ and $C''(y)=6y+4s>0$ there, so
+the left side is nonnegative on $[a,1]$ with contacts exactly $a,u,v$. In the projected coordinates $(y,T_4(y))$ the
+determinants of consecutive columns at $(u,v)$, $(v,a)$, $(a,u)$ lie in $(-0.554,-0.552)$, $(-0.141,-0.140)$ and
+$(-0.192,-0.191)$, which gives positive weights annihilating $T_1$ and $T_4$, and the identity then annihilates $T_7$. The
+sine matrix $(U_{n-1}(z))_{n\in\set{1,4,7},\,z\in\set{a,u,v}}$, $U_{n-1}(\cos t)=\sin(nt)/\sin t$, has positive determinant by rational
+bounds. So \cref{zfg:lem:cert} applies with $\theta_0=\arccos a$, $\theta_1=\arccos u$, $\theta_2=\arccos v$.
+
+For the degree, work in $\Q[s]/(H)$ and take the primitive integral part with positive leading coefficient of
+$\Res_s(H(s),C(y/2))$. It is a polynomial $Q$ of degree $54$ with leading coefficient $729$ and a root at $y=2a$. Its monic
+reduction $Q_0$ modulo $211$ satisfies $y^{211^{54}}\equiv y\pmod{Q_0}$ and $\gcd(Q_0,y^{211^i}-y)=1$ for $i=18,27$; since the
+prime divisors of $54$ are $2$ and $3$, $Q_0$ is irreducible over $\mathbb F_{211}$ and $Q$ over $\Q$. As $Q$ is primitive and
+not monic, $2a$ is not an algebraic integer, whereas a rational $M$ would make $2a=\zeta+\zeta^{-1}$ for a root of unity
+$\zeta$. \Cref{zfg:cor:dichotomy} gives transcendence. The checks are in
+\artifact{positive-fourier-zeros/kozma/check_gaps.py} and \artifact{positive-fourier-zeros/kozma/verification.txt}.
+\end{proof}
+
+The polynomial was found from the normal $D$ of \cref{zfg:thm:threerule}: equating the ratios of its coordinates at $u,v$
+and dividing the antisymmetric minors by $u-v$ gives symmetric equations in $s=u+v$, $p=uv$; elimination yields $H$
+among the possible factors, the linear subresultant gives $p$, and the double contacts force the factor $q^2$. The sign
+checks above identify this branch as the global optimum without locating the real zeros of the other factors.
+
+\begin{remark}[Independent certificates]\label{zfg:rem:147}
+In the normalization $P(y)=T_4(y)+Ay+B_*T_7(y)$ the same optimum has $B_*\in[0.9208242456520,0.9208242456522]$ and double
+contacts $u\in[0.2680823592348,0.2680823592351]$, $v\in[0.8545996486673,0.8545996486676]$, isolated by monotone root
+branches of $\partial_y(P/y)$; $P=(y-u)^2(y-v)^2G$ with a cubic $G$ increasing on $[a,1]$, and
+\[
+ -0.36390801664214987744459<a<-0.36390801664214987744456,
+\]
+checked with outward-rounded integer intervals and exact rational endpoints by
+\begin{center}\artifact{kozma_oravecz_147_2026-11-27/certify.js} and \artifact{kozma_oravecz_147_2026-11-27/verify.py}.\end{center}
+For $d=5$ in
+\cref{zfg:thm:half}, the polynomial $P=T_2+A_0T_7+B_0T_{12}$ with
+\[
+ B_0\in[0.46688711936350,\,0.46688711936362]
+\]
+has double contacts $u_0\approx0.9422828922$ and $v_0\approx0.7295482273$ and a simple contact $\xi\in(0.46362209927,0.46362209930)$; after dividing out
+$(y-\xi)(y-u_0)^2(y-v_0)^2$, the quotient of degree seven has $256$ positive Bernstein bounds on $32$ subintervals of
+$[0.46362209927,1]$, and $M(\set{2,7,12})=\arccos(\xi)/\pi\approx0.346549538462$, checked by
+\artifact{kozma_oravecz_half_integer_2026-11-28/certify_2712.js}.
+\end{remark}
+
+\subsection{Square frequencies}\label{zfg:sec:squares}
+\sources{ProveIt_New_Results_2026-11-27; positive-fourier-zeros}
+
+For integers $N\ge1$ and $K\ge0$ put $H=K+1$, $M_{N,K}=M(\set{N^2,(N+1)^2,\dots,(N+K)^2})$ and
+$M_{N,\infty}=\sup_{K\ge0}M_{N,K}$; $M_{N,K}$ is nondecreasing in $K$. Kozma and Oravecz showed $M_{N,K}=O(1/N)$ uniformly in $K$
+and asked whether this order is correct (Question~2 of \cite{KozmaOravecz2003Gaps}). It is, exactly when $K$ is at least a
+fixed multiple of $N$.
+
+\begin{theorem}[Uniform order for squares; \stU]\label{zfg:thm:squares}
+For all $N\ge1$ and $K\ge0$,
+\[
+ \max_{1\le m\le H}\frac{m^2}{2\sum_{j=0}^{m-1}(N+j)^2}\ \le\ M_{N,K}\ \le\ \frac12\sum_{j=0}^{H-1}\frac1{(N+j)^2},
+\]
+and the left side is attained at the unique prefix length
+\[
+ m_*=\min(H,m_N),\qquad m_N=\floor*{\frac{1+\sqrt{12N^2-12N+1}}2}.
+\]
+Moreover
+\[
+ \frac{3\min(H,N)}{14N^2}\ \le\ M_{N,K}\ \le\ \frac H{N(N+H)},
+\]
+so $M_{N,K}\asymp\min(K+1,N)/N^2$ with absolute constants.
+\end{theorem}
+
+\begin{proof}
+The first display is \cref{zfg:prop:duality}. Write the prefix bound as $L_N(m)=m/(A'+B'm+C'm^2)$ with
+$A'=2N^2-2N+\tfrac13$, $B'=2N-1$, $C'=\tfrac23$. Cross multiplication gives $L_N(m+1)>L_N(m)$ if and only if
+$A'>C'm(m+1)$, that is $m(m+1)\le3N(N-1)$; there are no ties, since the unreduced threshold is
+$m(m+1)<3N(N-1)+\tfrac12$. The sign changes once, which gives $m_*$. For the lower estimate take $m=\min(H,N)$: the
+average of the first $N$ squares of the band is $(14N^2-9N+1)/6\le\tfrac73N^2$. For the upper estimate use
+$n^{-2}\le2/(n(n+1))$ and telescope.
+\end{proof}
+
+Since $\min(H,N)/N^2\ge H/(N(N+H))\ge\min(H,N)/(2N^2)$, the two sides differ by at most the factor $14/3$. Short bands are
+determined to fourth order.
+
+\begin{theorem}[Short bands; \stU]\label{zfg:thm:shortsq}
+Suppose $(N+K)^2\le3N^2$, and put $C=N+K/2$ and $V=K(K+2)/12$. Then
+\[
+ 1\ \le\ \frac{M_{N,K}}{H/(2(C^2+V))}\ \le\ 1+\frac{K(K-1)(K+2)(K+3)}{180\,C^2(C^2+V)}.
+\]
+In particular $M_{N,K}=\frac{H}{2(C^2+V)}\bigl(1+O((K/N)^4)\bigr)$ for $K=o(N)$, and the cases $K=0,1$ are exact.
+\end{theorem}
+
+\begin{proof}
+For $a<b\le3a$ the three-point rule with masses $1/(2(1-c))$ at $\pm1/(a+b)$ and $-c/(1-c)$ at $0$, where
+$c=\cos(2\pi a/(a+b))\le0$, cancels both frequencies on a span $2/(a+b)$ in circle units (this is \cref{fil:cor:pair} with
+$m=1$). Pair the indices $j$ and $K-j$ of the band, using the two-point rule at a middle index. The pair means are
+$C^2+(j-K/2)^2$. With $Y=(j-K/2)^2$ for $j$ uniform on $\set{0,\dots,K}$, convolution and the prefix bound with $m=H$ give
+\[
+ \frac H{2(C^2+\mathbb EY)}\le M_{N,K}\le\frac H2\,\mathbb E\frac1{C^2+Y}.
+\]
+Here $\mathbb EY=V$ and $\operatorname{Var}Y=K(K-1)(K+2)(K+3)/180$, and with $A=C^2+V$ the identity
+$A\,\mathbb E[(C^2+Y)^{-1}]-1=\mathbb E[(Y-V)^2/(A(C^2+Y))]$ gives the bound. The fourth-order gain comes from the cancellation of
+the terms linear in $j-K/2$ in the pair means.
+\end{proof}
+
+For example $0.0004984141368<M_{100,10}<0.0004984144560$, outward roundings of the two sums in the proof.
+
+\begin{theorem}[Long bands; \stU]\label{zfg:thm:longsq}
+As $N\to\infty$:
+\begin{enumerate}
+\item if $H/N\to\tau\in(0,\infty)$ and $u=\min(\tau,\sqrt3)$, then
+\[
+ \frac{3u}{2(u^2+3u+3)}\le\liminf NM_{N,K}\le\limsup NM_{N,K}\le\frac\tau{2(1+\tau)};
+\]
+\item $NM_{N,\infty}\le\tfrac{21}{62}+o(1)$;
+\item if $K/N\to\infty$, then $\sqrt3-\tfrac32\le\liminf NM_{N,K}\le\limsup NM_{N,K}\le\tfrac{21}{62}$, and the same holds for $NM_{N,\infty}$.
+\end{enumerate}
+\end{theorem}
+
+The constants in (iii) are about $0.23205$ and $0.33871$; whether $NM_{N,\infty}$ converges is open. The proof of (ii) uses the
+fact that the equal atoms at $\pm1/4$ cancel the frequencies $1,3,7$ together.
+
+\begin{lemma}[Stable cancellation near $1:3:7$; \stU]\label{zfg:lem:stable137}
+For every $\eta>0$ all triples $(1,a,b)$ sufficiently close to $(1,3,7)$ admit a probability measure on an interval of
+length $\tfrac12+\eta$ whose Fourier transform, in circle units, vanishes at $1,a,b$.
+\end{lemma}
+
+\begin{proof}
+Convolve $\tfrac12(\delta_{-1/4}+\delta_{1/4})$ with the uniform law on $[-\eta/2,\eta/2]$; the transform keeps the three zeros.
+The origin is interior to the convex hull of the six cosine and sine coordinates on the enlarged interval:
+otherwise a nonzero combination would be nonnegative there with integral zero against a measure with positive
+density on an open interval, contradicting analyticity and the linear independence of the six functions. The
+minimum over unit vectors of the maximal scalar product with the curve is then positive, and it moves by at most
+the size of a uniform perturbation of the curve, so the origin stays in the hull for nearby frequencies.
+\end{proof}
+
+\begin{proof}[Proof of \cref{zfg:thm:longsq}]
+For a prefix with $m/N\to t>0$, Riemann sums give $NL_N(m)\to t^2/(2\int_1^{1+t}x^2\dd x)=3t/(2(t^2+3t+3))$, which increases
+up to $t=\sqrt3$ and then decreases, with value $\sqrt3-\tfrac32$ at $t=\sqrt3$; the upper sum of \cref{zfg:thm:squares} tends
+to $\tfrac12\int_1^{1+\tau}x^{-2}\dd x$. This gives (i) and the lower bound in (iii), by monotonicity in $K$.
+
+For (ii) partition the indices $n\ge N$ into triples with size ratios tending to $1:\sqrt3:\sqrt7$. Choose disjoint
+periodic sets $U,V$ of positive integers formed by $58$ and $38$ residue classes modulo $100$, with increasing
+enumerations $u_k=k/0.58+O(1)$ and $v_k=k/0.38+O(1)$, and put $P(n)=u_{\floor{0.58\sqrt3\,n}}$ and $Q(n)=v_{\floor{0.38\sqrt7\,n}}$.
+Both indexing slopes exceed one, so these maps are injective with disjoint ranges, $P(n)=\sqrt3\,n+O(1)$ and
+$Q(n)=\sqrt7\,n+O(1)$, and both exceed $n$ for large $N$. Scanning upwards from $N$, take the triple $(n,P(n),Q(n))$ whenever
+$n$ is still unused; its larger members can be neither later starting points nor targets of another start, so this
+partitions the tail. By \cref{zfg:lem:stable137}, scaled, the three squares of a triple have a cancelling measure of
+diameter at most $(\tfrac12+o(1))/n^2$, uniformly in $n\ge N$, against the sum of the separate two-point widths
+$\tfrac1{2n^2}(1+\tfrac13+\tfrac17+O(1/N))$; the ratio is $\tfrac{21}{31}+o(1)$. For a finite band, convolve the laws of the
+finitely many triples meeting it. Hence $M_{N,\infty}\le(\tfrac{21}{31}+o(1))\tfrac12\sum_{n\ge N}n^{-2}=(\tfrac{21}{62}+o(1))/N$, which gives
+(ii) and, with $M_{N,K}\le M_{N,\infty}$, the upper bound in (iii).
+\end{proof}
+
+The partition argument works with any fixed list of distinct odd integers $h_1,\dots,h_l>1$ with $\sum_ih_i^{-1/2}<1$,
+using periodic sets of rational densities larger than $h_i^{-1/2}$; it replaces $\tfrac{21}{62}$ by
+$[2(1+\sum_ih_i^{-1})]^{-1}$, and $3,7,625$ already give a slightly smaller constant.
+
+\subsection{Higher-power frequencies}\label{zfg:sec:powers}
+\sources{ProveIt_New_Results_2026-11-27}
+
+The prefix and convolution bounds of \cref{zfg:prop:duality} apply equally to higher powers.
+
+\begin{corollary}[Power-frequency bands; \stU]\label{zfg:cor:powers}
+Fix an integer $d\ge2$, and put $M^{(d)}_{N,H}=M(\set{N^d,(N+1)^d,\dots,(N+H-1)^d})$ and $M_N^{(d),\infty}=\sup_{H\ge1}M^{(d)}_{N,H}$. Then
+$M^{(d)}_{N,H}\asymp_d\min(H,N)/N^d$ uniformly in $N,H\ge1$, and $M^{(d)}_{N,H}=H(1+O_d(H/N))/(2N^d)$ if $H=o(N)$. Moreover
+\[
+ \sup_{t>0}\frac{(d+1)t^2}{2((1+t)^{d+1}-1)}\ \le\ \liminf N^{d-1}M_N^{(d),\infty}\ \le\ \limsup N^{d-1}M_N^{(d),\infty}\ \le\ \frac1{2(d-1)},
+\]
+and the supremum on the left is attained at the unique positive solution $t_d$ of $(1+t)^d(2-(d-1)t)=2$.
+\end{corollary}
+
+\begin{proof}
+Apply \cref{zfg:prop:duality} with $a_j=(N+j-1)^d$. The prefix $m=\min(H,N)$ gives the lower bound $m/(2(2N)^d)$; the upper
+bound is at most $H/(2N^d)$ and at most $\tfrac12\sum_{n\ge N}n^{-d}=O_d(N^{1-d})$. In a short band $(N+j)^d=N^d(1+O_d(H/N))$
+uniformly. For $m/N\to t$ the scaled prefix bound tends to $t^2/(2\int_1^{1+t}x^d\dd x)$, and integral comparison gives the
+upper constant. The derivative of $(1+t)^d(2-(d-1)t)$ is $(d+1)(1+t)^{d-1}(1-(d-1)t)$, so this function starts at $2$, increases
+until $t=1/(d-1)$ and decreases to $0$ at $t=2/(d-1)$; it crosses $2$ exactly once, at the maximizer.
+\end{proof}
+
+\subsection{Reciprocal moments of zero heights and support uncertainty}\label{zfg:sec:recip}
+\sources{ProveIt_New_Results_2026-11-27; positive-fourier-zeros}
+
+Let $\mu$ be a compactly supported probability measure on $\R$ with $L=\zfgdiam\supp\mu>0$, and $G(z)=\int e^{zt}\dd\mu(t)$. A
+selected multiset of zeros of $G$ uses each zero at most as often as its multiplicity; distinct zeros may have the
+same imaginary part. \Cref{fil:thm:meanbound} bounds the mean height of zeros on one vertical line; the same bound holds
+for the prefixes of the heights of arbitrary complex zeros.
+
+\begin{proposition}[Prefix bound; \stU]\label{zfg:prop:prefix}
+Let $\rho_1,\dots,\rho_n$ be selected zeros of $G$ with heights $0<\lambda_1\le\dots\le\lambda_n$, $\lambda_j=\Im\rho_j$. Then
+\[
+ S_m=\sum_{j=1}^m\lambda_j\ \ge\ \frac{\pi m^2}L\qquad(1\le m\le n).
+\]
+In particular at most $LT/\pi$ selected zeros have height at most $T$, so the heights of the zeros of $G$ in the upper
+half-plane do not accumulate at any finite height.
+\end{proposition}
+
+\begin{proof}
+Fix $m$. For each distinct selected zero $\rho$ of selected order $k$ take the real and imaginary parts of $t^\ell e^{\rho t}$,
+$0\le\ell<k$. Their integral against $\mu$ vanishes and lies in the convex hull of their values on $\supp\mu$, so by
+Carath\'eodory's theorem an atomic probability measure on the same interval keeps every selected zero to its order.
+Translate its leftmost atom to $0$ and let $D\le L$ be its diameter; $D>0$, since a single atom has no zeros. Put
+$\kappa=S_m/m$ and apply \cref{fil:lem:strip} with $T=2\kappa$: the selected zeros contribute at least
+$\sum_{j\le m}(T-\lambda_j)_+\ge mT-S_m=m\kappa$, other zeros only increase the sum, so $0\le J(T)\le2D\kappa^2-2\pi m\kappa$, that is
+$S_m\ge\pi m^2/D\ge\pi m^2/L$. If $m$ selected heights are at most $T$, then $\pi m^2/L\le mT$.
+\end{proof}
+
+\begin{theorem}[Sharp reciprocal moments of zero heights; \stU]\label{zfg:thm:recip}
+Let $\rho_1,\dots,\rho_n$ be selected zeros of $G$ with heights $0<\lambda_1\le\dots\le\lambda_n$. For every real $p>0$,
+\[
+ \sum_{j=1}^n\lambda_j^{-p}\ \le\ \Bigl(\frac L\pi\Bigr)^p\sum_{j=1}^n\frac1{(2j-1)^p}.
+\]
+Equality holds if and only if, for some $u\in\R$ and $0<b<1$,
+\[
+ \mu=b\delta_u+(1-b)\delta_{u+L},\qquad \rho_j=\frac1L\log\frac b{1-b}+\frac{(2j-1)\pi i}L\quad(1\le j\le n);
+\]
+if all $\rho_j$ lie on the imaginary axis, equality requires $b=\tfrac12$. For an arbitrary finite or infinite selected
+multiset and $p>1$,
+\[
+ \sum_j\lambda_j^{-p}\ \le\ \Bigl(\frac L\pi\Bigr)^p(1-2^{-p})\zeta(p),
+\]
+with equality exactly for the measures above with all $j\ge1$. In particular $\sum_j(\Im\rho_j)^{-2}\le L^2/8$.
+\end{theorem}
+
+\begin{proof}
+Let $c=\pi/L$ and $v_j=c(2j-1)$, and put $H_\lambda(t)=\sum_{j\le n}(t-\lambda_j)_+$ and $H_v(t)=\sum_{j\le n}(t-v_j)_+$. For a sorted list,
+$H_\lambda(t)=\max_{0\le m\le n}(mt-S_m)$, the maximizing prefix consisting of the entries below $t$. Since $\sum_{j\le m}v_j=cm^2$,
+\cref{zfg:prop:prefix} gives $H_\lambda\le H_v$ everywhere. For $x,p>0$,
+\[
+ x^{-p}=p(p+1)\int_0^\infty(t-x)_+t^{-p-2}\dd t,
+\]
+and integrating $H_\lambda\le H_v$ against this positive weight gives the finite inequality. At equality the continuous
+function $H_v-H_\lambda\ge0$ has integral zero against a positive weight, so it vanishes; its derivative jumps recover the
+multisets, so $\lambda_j=(2j-1)\pi/L$. Then there is a zero $\rho=\beta+i\pi/L$. With the support translated to $[0,L]$, the
+imaginary part of $G(\rho)=0$ is $\int e^{\beta t}\sin(\pi t/L)\dd\mu(t)=0$, whose integrand is positive on $(0,L)$; so $\mu$ lives on
+the two endpoints, both charged since the diameter is $L$. With masses $b,1-b$ the real part gives $e^{\beta L}=b/(1-b)$, and the
+zeros of $b+(1-b)e^{Lz}$ are those displayed. Conversely these measures attain the bound, and $\beta=0$ forces $b=\tfrac12$.
+For an infinite multiset, \cref{zfg:prop:prefix} permits increasing enumeration; apply the finite inequality to every
+prefix and let $n\to\infty$. For equality, the hinge comparison holds with a supremum over all $m\ge0$, and Tonelli's
+theorem forces equality of the infinite hinge functions, so all odd heights occur and the endpoint argument applies.
+Finally $(1-2^{-2})\zeta(2)=\pi^2/8$.
+\end{proof}
+
+The heights are bounded without any restriction on the real parts of the zeros; a positive measure need not have
+any zero on the imaginary axis. The proof extends to every convex decreasing statistic.
+
+\begin{corollary}[Decreasing convex statistics; \stU]\label{zfg:cor:convex}
+Let $f:(0,\infty)\to[0,\infty)$ be twice continuously differentiable, decreasing and convex, with $f(t)\to0$ as $t\to\infty$.
+Then $\sum_{j\le n}f(\lambda_j)\le\sum_{j\le n}f((2j-1)\pi/L)$, and the infinite analogue holds whenever its right side is finite.
+In particular, for every selected finite or infinite multiset,
+\[
+ \sum_je^{-s\lambda_j}\le\frac1{2\sinh(\pi s/L)}\quad(s>0),\qquad \prod_j\Bigl(1+\frac{x^2}{\lambda_j^2}\Bigr)\le\cosh\frac{Lx}2\quad(x\ge0),
+\]
+with equality for some $s>0$ or $x>0$ exactly in the equality case of \cref{zfg:thm:recip}.
+\end{corollary}
+
+\begin{proof}
+Convexity and decay give $0\le-tf'(t)\le2f(t/2)\to0$, so integration by parts gives $f(x)=\int_0^\infty(t-x)_+f''(t)\dd t$, and the
+hinge comparison applies. The first bound sums a geometric series. For the second take $f(u)=\log(1+x^2/u^2)$, with
+$f''(u)=2x^2(3u^2+x^2)/(u^2(u^2+x^2)^2)>0$, and use $\cosh y=\prod_{j\ge1}(1+4y^2/((2j-1)^2\pi^2))$; the product converges by
+\cref{zfg:thm:recip}. Strict positivity of $f''$ gives the equality statement.
+\end{proof}
+
+\paragraph{Steinerberger's support problem.}
+On $\R/\Z$ write $\widehat f(a)=\int f(t)e^{-2\pi iat}\dd t$. Steinerberger \cite[Problem~41, \emph{A kind of uncertainty
+principle?}]{Steinerberger2026Open} asks whether a nonnegative $f$ with positive integral, support in $(-r,r)$ and
+$\widehat f(a)=0$ for all $a$ in a finite set $A\subset\N$ must have $r$ bounded below by a constant multiple of
+$(\sum_{a\in A}a^{-2})^{1/2}$.
+
+\begin{theorem}[Sharp support uncertainty; \stU]\label{zfg:thm:support}
+Let $A\subset\N$ be finite and nonempty, $n=\abs A$, and let $f\in L^1(\R/\Z)$ be nonnegative with positive integral,
+$\supp f\subset(-r,r)$ and $\widehat f(a)=0$ for $a\in A$. Then
+\[
+ r\ \ge\ C_n\Bigl(\sum_{a\in A}\frac1{a^2}\Bigr)^{1/2},\qquad C_n=\frac1{4\bigl(\sum_{j=1}^n(2j-1)^{-2}\bigr)^{1/2}},
+\]
+and in particular $r\ge(\pi\sqrt2)^{-1}(\sum_{a\in A}a^{-2})^{1/2}$. Each $C_n$ and the constant $1/(\pi\sqrt2)$ are optimal, also for smooth $f$,
+where sharpness is an infimum and is not attained.
+\end{theorem}
+
+\begin{proof}
+If $r<\tfrac12$, lift $f$ to $(-r,r)\subset\R$ and normalize it to a probability measure of diameter at most $2r$ whose transform
+vanishes at the angular frequencies $2\pi a$. The case $p=2$ of \cref{zfg:thm:recip} gives
+$\tfrac1{4\pi^2}\sum_{a\in A}a^{-2}\le\tfrac{4r^2}{\pi^2}\sum_{j\le n}(2j-1)^{-2}$. If $r\ge\tfrac12$ the bound is automatic, since its right
+side is at most $\pi/(4\sqrt6)<\tfrac12$. Letting the odd sum increase to $\pi^2/8$ gives the uniform constant. For sharpness take
+$A=\set{1,3,\dots,2n-1}$ and $\tfrac12(\delta_{-1/4}+\delta_{1/4})$, whose odd Fourier coefficients vanish, and convolve with a smooth
+probability density supported in $(-\eta,\eta)$; let $\eta\downarrow0$ and then $n\to\infty$. Equality for absolutely continuous
+measures is excluded by the equality case of \cref{zfg:thm:recip}.
+\end{proof}
+
+On the circle $\R/(2\pi\Z)$ with characters $e^{-iat}$ the radius scales by $2\pi$, and the optimal uniform constant is $\sqrt2$.
+The theorem proves the inequality asked for, with its best constant; it does not determine the least radius for a
+given set $A$. Near the extremal configuration the measure is close to the two endpoint atoms, linearly in the
+deficit.
+
+\begin{theorem}[Stability of the extremizer; \stU]\label{zfg:thm:stab}
+Let $\mu$ be a probability measure on $[-r,r]$ whose transform $\widehat\mu(a)=\int e^{2\pi iat}\dd\mu(t)$ has the selected positive
+real zeros $a_1\le\dots\le a_m$, and put
+\[
+ \mathcal D=\sum_{j=1}^m\Bigl(\frac1{(2j-1)^2}-\frac1{(4ra_j)^2}\Bigr),\qquad \nu_r=\tfrac12(\delta_{-r}+\delta_r).
+\]
+If $\mathcal D<\tfrac12$, then $0\le4ra_1-1\le2\mathcal D$ and $W_1(\mu,\nu_r)\le(2\pi+\pi^2/2)\,r\,\mathcal D$, uniformly in $m$.
+\end{theorem}
+
+\begin{proof}
+Put $x_j=4ra_j$, $\delta=x_1-1\ge0$ (by \cref{zfg:prop:prefix} with $L\le2r$), and let $H_x,H_b$ be the hinge functions of
+$(x_j)$ and of $b_j=2j-1$. For $1\le t\le2$ and $k\ge2$, $kt-k^2\le0$; hence $H_b(t)=t-1$ and, by the prefix bound,
+$H_x(t)=(t-1-\delta)_+$ on $[1,2]$. With $d=\min(\delta,1)$ and the integral representation of $x^{-2}$,
+\[
+ \mathcal D\ \ge\ 6\int_1^2\min(d,t-1)\,t^{-4}\dd t=1-(1+d)^{-2}-\frac d4\ \ge\ \frac d2,
+\]
+the last step by concavity on $[0,1]$ and the values at the endpoints. So $\delta\le2\mathcal D$ when $\mathcal D<\tfrac12$.
+
+Let $U=t/r$ under $\mu$. Since $\mathbb Ee^{i\pi x_1U/2}=0$, the Lipschitz bound for the cosine gives $\mathbb E\cos(\pi U/2)\le\pi\delta/2$, and
+$\cos(\pi U/2)\ge1-\abs U$ on $[-1,1]$, so $d_0=\mathbb E(1-\abs U)\le\pi\delta/2$. Sending $U$ to its sign $S$ (either endpoint at $0$) costs
+$d_0$ in normalized units, and the sine moment gives
+$\abs{\mathbb ES}\le\mathbb E\abs{S-\sin(\pi x_1U/2)}\le\tfrac\pi2(d_0+\delta)$. Moving the excess endpoint mass $\abs{\mathbb ES}/2$ across costs
+$\abs{\mathbb ES}$. Undoing the scale and using $\delta\le2\mathcal D$ gives the bound.
+\end{proof}
+
+With $L=2r$ and the full deficit $\Delta=\pi^2/8-(\pi/L)^2\sum_j(2\pi a_j)^{-2}$, one has $\Delta\ge\mathcal D$ for a finite selected
+multiset and $\Delta=\lim_m\mathcal D$ along the prefixes of an infinite one; hence $W_1(\mu,\nu_r)\le(\pi+\pi^2/4)L\Delta$ whenever
+$\Delta<\tfrac12$.
+
+\begin{remark}[Higher dimensions]\label{zfg:rem:dim}
+Steinerberger also suggests higher dimensions. The direct analogue with $\abs a^{-2}$ fails on $(\R/\Z)^d$ for every $d\ge2$:
+the atoms at $\pm e_1/4$ have transform $\cos(\pi a_1/2)$, which vanishes at every lattice vector with odd first
+coordinate, and the vectors with $2^k\le a_1<2^{k+1}$ odd and $2^k\le a_2<2^{k+1}$ contribute an amount bounded below at each
+scale $k$, so $\sum\abs a^{-2}$ diverges, while a smooth convolution keeps the support in a ball of radius less than $\tfrac12$.
+\end{remark}
+
+\subsection{The Lorentz degree of polynomials with zeros in a thin ellipse}\label{zfg:sec:lorentz}
+\sources{erdelyi_ellipse_and_proveit_extensions}
+
+A Lorentz representation of a real polynomial $P$ on $[-1,1]$ is an identity
+\[
+ P(x)=\sum_{j=0}^Da_j(1-x)^j(1+x)^{D-j}
+\]
+with all $a_j$ of the same weak sign; the least such $D$ is the Lorentz degree $\zfgdL(P)$, infinite if there is none. If $P>0$
+on $[-1,1]$, every such representation has nonnegative coefficients. In the variable $z=(1-x)/(1+x)$ a representation of
+degree $D$ is the statement that $(1+z)^DP((1-z)/(1+z))$ has nonnegative coefficients, so the Lorentz degree is the least
+number of factors $1+z$ that makes a polynomial with prescribed roots coefficientwise nonnegative. Positivity of the same kind decides sharpness in
+\cref{fil:thm:reflect}, where a central root of the filter polynomial supplies the same factor. For $0<\eps\le1$ let
+\[
+ \zfgE_\eps=\set{x+iy:x^2+y^2/\eps^2<1},
+\]
+and let $L_n(\eps)$ be the least finite Lorentz degree of a real polynomial of degree $n$ with all zeros in $\zfgE_\eps$.
+A real polynomial of odd degree with all zeros in $\zfgE_\eps$ has a zero in $(-1,1)$, where a nonzero polynomial with a
+same-sign representation cannot vanish; so $n$ is even. Erd\'elyi \cite[\S8, p.~197]{Erdelyi1991Estimates} asked whether
+$\zfgdL(p)\ge cn/\eps^2$, with an absolute $c>0$, for every polynomial $p$ of degree $n$ with all zeros in $\zfgE_\eps$.
+
+\begin{theorem}[The order of the least Lorentz degree; \stU]\label{zfg:thm:lorentz}
+For every even $n\ge2$ and $0<\eps\le1$, with $M_n(\eps)=\max\set{n/\eps,\eps^{-2}}$,
+\[
+ \frac3{100}\,M_n(\eps)\ \le\ L_n(\eps)\ \le\ 513\,M_n(\eps).
+\]
+The upper bound is attained by polynomials with rational coefficients and simple zeros, and for $n\eps>4$ its constant
+may be taken to be $64$.
+\end{theorem}
+
+The lower bound combines \cref{zfg:thm:ellipselow,zfg:thm:ellipsewidth}, and the upper bound is \cref{zfg:thm:ellipseup}.
+The following family already answers Erd\'elyi's question negatively, and defeats every bound $c_\alpha n/\eps^\alpha$ with fixed
+$\alpha>1$.
+
+\begin{theorem}[Scaled Chebyshev polynomials; \stU]\label{zfg:thm:erdelyi}
+For $n\equiv0\pmod4$ put $s_n=1+n^{-2}$, $P_n(x)=2+T_n(s_nx)$ and $\eps_n=2/n$. Then $P_n\in\Q[x]$ has degree $n$, is strictly positive
+on $[-1,1]$, has $n$ distinct zeros in $\zfgE_{\eps_n}$, and
+\[
+ \frac{s_n^2n^2}3\ \le\ \zfgdL(P_n)\ \le\ 8n^2 .
+\]
+In particular $\eps_n^2\zfgdL(P_n)/n\le32/n\to0$.
+\end{theorem}
+
+The upper bounds rest on the Bernstein operator $B_Df(t)=\sum_{j=0}^Df(j/D)\binom Djt^j(1-t)^{D-j}=\mathbb E[f(K/D)]$, $K\sim\mathrm{Binomial}(D,t)$,
+on $[0,1]$. It maps polynomials of degree at most $n\le D$ to themselves, since the falling factorials of $K$ have
+expectations $(D)_jt^j$.
+
+\begin{lemma}[Inverting the Bernstein operator; \stU]\label{zfg:lem:bernstein}
+On polynomials of degree at most $n\le D$ with the supremum norm on $[0,1]$, $\norm{I-B_D}\le2n^2/D$. If $\eta=2n^2/D<1$, then $B_D$
+is invertible there and $\norm{B_D^{-1}-I}\le\eta/(1-\eta)$.
+\end{lemma}
+
+\begin{proof}
+Let $g(\theta)=f((1+\cos\theta)/2)$ and $t=(1+\cos\theta)/2$; then $g''(\theta)=t(1-t)f''(t)-\tfrac12(2t-1)f'(t)$. Bernstein's inequality for
+trigonometric polynomials, applied twice, gives $\norm{g''}\le n^2\norm f$ \cite{QueffelecZarouf2019Bernstein}, and Markov's
+inequality on $[0,1]$ gives $\norm{f'}\le2n^2\norm f$, so $H=\sup_{0<t<1}t(1-t)\abs{f''(t)}\le2n^2\norm f$. With
+$h(t)=t\log t+(1-t)\log(1-t)$, $h''=1/(t(1-t))$, the functions $Hh\pm f$ are convex, and their tangent inequalities at $t$ give
+\[
+ \abs{f(u)-f(t)-(u-t)f'(t)}\le H\Bigl[u\log\frac ut+(1-u)\log\frac{1-u}{1-t}\Bigr]\le H\frac{(u-t)^2}{t(1-t)}\qquad(0\le u\le1).
+\]
+Take $u=K/D$ and expectations, using $\mathbb EK/D=t$ and $\operatorname{Var}(K/D)=t(1-t)/D$; at $t=0,1$ the error vanishes. The
+Neumann series gives the inverse.
+\end{proof}
+
+\begin{proof}[Proof of \cref{zfg:thm:erdelyi}]
+Let $a=\operatorname{arcosh}2$. The zeros are $z_j=s_n^{-1}\cos((2j+1)\pi/n+ia/n)$, $0\le j<n$, since $T_n$ multiplies the argument by $n$
+and gives $-\cosh a=-2$; they are distinct points of an ellipse with semiaxes $A_n=\cosh(a/n)/s_n$ and $B_n=\sinh(a/n)/s_n$.
+Termwise comparison of the series gives $\cosh(a/n)<1+(\cosh a-1)/n^2=s_n$ and $\sinh(a/n)\le\sinh(a)/n=\sqrt3/n$, so $A_n<1$,
+$B_n<2/n$, and all zeros lie in $\zfgE_{2/n}$. On $[-1,1]$, $P_n\ge1$ (for $\abs{s_nx}\ge1$, $T_n(s_nx)\ge1$ as $n$ is even), and
+$\norm{T_n(s_n\,\cdot)}\le T_n(s_n)=\cosh(n\operatorname{arcosh}(1+n^{-2}))\le\cosh\sqrt2<\tfrac94$.
+
+Upper bound: with $D=8n^2$, $\eta=\tfrac14$, $F_n(t)=P_n(2t-1)$ and $B_D1=1$, \cref{zfg:lem:bernstein} gives
+$\norm{B_D^{-1}F_n-F_n}\le\tfrac13\norm{T_n(s_n\,\cdot)}<\tfrac34$. Since $F_n\ge1$, all values $(B_D^{-1}F_n)(j/D)$ are positive, and
+$B_D(B_D^{-1}F_n)=F_n$ is a positive Lorentz representation of degree $D$ in $x=2t-1$.
+
+Lower bound: $h_j(x)=(1-x)^j(1+x)^{D-j}$ has $h_j(0)=1$ and $h_j''(0)=(D-2j)^2-D\ge-D$, so every $P>0$ with a representation of
+degree $D$ has $P''(0)\ge-DP(0)$. For $4\mid n$, $T_n(0)=1$ and the Chebyshev equation gives $T_n''(0)=-n^2$, so $P_n(0)=3$ and
+$P_n''(0)=-s_n^2n^2$.
+\end{proof}
+
+\begin{theorem}[A lower bound from many zeros; \stU]\label{zfg:thm:ellipselow}
+If $p$ is a real polynomial of degree $n\ge1$ with all zeros in $\zfgE_\eps$, $0<\eps\le1$, and $p$ has a Lorentz representation,
+then $\zfgdL(p)\ge n/(16\eps)$.
+\end{theorem}
+
+\begin{proof}
+Write $p=\sum_jb_j(1-X)^j(1+X)^{D-j}$ with $b_j\ge0$, $D=\zfgdL(p)$; $p>0$ on $[-1,1]$, since the open ellipse excludes $\pm1$. If
+$\eps\ge1/16$ then $D\ge n$ suffices, so let $v=4\eps<\tfrac14$. For $w\in\C$ let $g(w)\ge0$ be the logarithm of the larger modulus of
+the roots of $Z^2-2wZ+1$; $\set{g\le t}$ is the closed ellipse with foci $\pm1$ and semiaxes $\cosh t,\sinh t$. Parametrizing it by
+$w=(Z+Z^{-1})/2$, $\abs Z=e^t$, and applying Jensen's formula to $(Z-Z_1)(Z-Z_2)/(2Z)$ gives
+\[
+ \frac1{2\pi}\int_0^{2\pi}\log\abs{\cos(\theta+it)-w}\dd\theta=-\log2+\max(t,g(w)).
+\]
+For real $\theta$, $\abs{1\pm\cos(\theta+iv)}=\cosh v\pm\cos\theta$, so $b_j\ge0$ gives $\abs{p(\cos(\theta+iv))}\le(\cosh v)^Dp(\cos\theta/\cosh v)$.
+Taking logarithms and integrating, with the identity at $t=v$ on the left and at $t=0$, $w=(\cosh v)\zeta$ on the right,
+\[
+ \sum_{p(\zeta)=0}\bigl[\max(v,g(\zeta))-g((\cosh v)\zeta)\bigr]\le(D-n)\log\cosh v .
+\]
+Each term is nonnegative, because $\eps=v/4\le\tanh v$ puts $(\cosh v)\zfgE_\eps$ inside $\set{g\le v}$. A zero $\zeta=x+iy$ with $1-x^2\ge4v^2$
+contributes at least $v/2$: with $A=\cosh^2v/\cosh^2(v/2)$ and $B=\eps^2\cosh^2v/\sinh^2(v/2)$ one has $1\le A\le1+2v^2$ and $B\le\tfrac12$, and
+$y^2\le\eps^2(1-x^2)$ gives
+\[
+ \frac{\cosh^2v\,x^2}{\cosh^2(v/2)}+\frac{\cosh^2v\,y^2}{\sinh^2(v/2)}\le A-(A-B)(1-x^2)\le1+2v^2-\tfrac12(1-x^2)\le1,
+\]
+that is $g((\cosh v)\zeta)\le v/2$. If at least $n/2$ zeros are of this kind, $\log\cosh v\le v^2/2$ gives $D-n\ge n/(2v)$. Otherwise,
+after replacing $p(X)$ by $p(-X)$ if needed, at least $n/4$ zeros have $x\ge0$ and $1-x<4v^2$. Differentiating the
+representation at $1$, where $b_0>0$, gives $D\ge2p'(1)/p(1)=2\sum_\zeta(1-x)/((1-x)^2+y^2)$, with positive terms; since
+$y^2\le2\eps^2(1-x)$, each selected term is at least $1/(1-x+2\eps^2)\ge1/(5v^2)$, so $D\ge n/(10v^2)\ge n/(4v)$. Both cases give
+$D\ge n/(4v)=n/(16\eps)$.
+\end{proof}
+
+\begin{theorem}[A lower bound from one extreme zero; \stU]\label{zfg:thm:ellipsewidth}
+Under the hypotheses of \cref{zfg:thm:ellipselow}, $\zfgdL(p)\ge3/(100\eps^2)$.
+\end{theorem}
+
+\begin{proof}
+Let $D=\zfgdL(p)$ with $p>0$. For real $s$, $(\cosh s)^Dp(\tanh s)=\sum_ja_je^{(D-2j)s}$ has convex logarithm, whose second derivative is a
+variance of $D-2j$ and so nonnegative; differentiating, with $x=\tanh s$,
+\[
+ D\ \ge\ \sum_{p(\zeta)=0}\Bigl[(1-x^2)\Re\frac1{(x-\zeta)^2}+2x\Re\frac1{x-\zeta}\Bigr]\qquad(-1<x<1),
+\]
+zeros counted with multiplicity. Reflect so that the leftmost zero $\zeta_0=u+iy$ has $u\le0$, and let $h=1+u$. If $h\le32\eps^2$,
+differentiating at $-1$ gives $D\ge-2p'(-1)/p(-1)=2\sum_\zeta\Re(1+\zeta)^{-1}\ge2h/(h^2+y^2)\ge2/(h+2\eps^2)\ge1/(17\eps^2)$, using
+$y^2\le\eps^2(1-u^2)\le2\eps^2h$. If $h>32\eps^2$, put $\delta=2\eps\sqrt{1-u^2}$ and $x=u-\delta$. Then $\eps^2\le\delta\le h/2$, so $-1<x<0$ and
+$1-x^2\ge(1-u^2)/4$. For any zero $v'+iw'$ with $b=v'-u\ge0$, $w'^2\le\eps^2(1-v'^2)\le\eps^2(1-u^2+2b)\le(\delta+b)^2$, so every term in the
+display is nonnegative. For $\zeta_0$, $\abs y\le\delta/2$, and its first term alone gives
+$D\ge\tfrac{1-u^2}4\cdot\tfrac{12}{25\delta^2}=\tfrac3{100\eps^2}$.
+\end{proof}
+
+\begin{theorem}[Polynomials of small Lorentz degree; \stU]\label{zfg:thm:ellipseup}
+For each even $n\ge2$ and $0<\eps\le1$ there is a polynomial $p$ of degree $n$ with rational coefficients and simple zeros, all in
+$\zfgE_\eps$, with $\zfgdL(p)\le513/\eps^2$ if $n\eps\le4$ and $\zfgdL(p)\le64n/\eps$ if $n\eps>4$.
+\end{theorem}
+
+\begin{proof}
+Let $n\eps\le4$, $s=1+\eps^2/4$, $a=\eps/2$ and $P(X)=\cosh(na)+T_n(sX)$. Its zeros $s^{-1}\cos((2j+1)\pi/n+ia)$ lie on an ellipse with
+semiaxes $\cosh(a)/s<1$ and $\sinh(a)/s<\eps$, by $\cosh(\eps/2)-1\le\eps^2(\cosh\tfrac12-1)<\eps^2/4$ and $\sinh(\eps/2)\le\eps\sinh\tfrac12<\eps$. On
+$[-1,1]$, $P\ge\cosh(na)-1\ge n^2\eps^2/8$ and $\norm{T_n(s\,\cdot)}\le\cosh(n\operatorname{arcosh}(1+\eps^2/4))\le\cosh(n\eps/\sqrt2)\le\cosh(2\sqrt2)<9$. With
+$D=\ceil{512/\eps^2}$ and $\eta=2n^2/D\le\tfrac1{16}$, \cref{zfg:lem:bernstein} gives
+$\norm{B_D^{-1}F-F}\le36n^2/D<n^2\eps^2/8$ for $F(t)=P(2t-1)$, so $P$ has a positive Lorentz representation of degree
+$D\le513/\eps^2$.
+
+Let $n\eps>4$ and $m=2\max(2,\ceil{1/\eps})$, so $2/\eps\le m\le4/\eps<n$. Write $n$ as a sum of even integers $b$ with $m\le b<2m$
+($\floor{n/m}$ copies of $m$, the even remainder added to one of them). For each $b$ the proof of \cref{zfg:thm:erdelyi},
+which uses only that $b$ is even, shows that $2+T_b((1+b^{-2})X)$ has its zeros in $\zfgE_{2/b}\subseteq\zfgE_\eps$ and a positive
+representation of degree $8b^2$. The product has degree $n$ and a positive representation of degree $\sum_b8b^2\le16mn\le64n/\eps$.
+
+In both cases strict positivity of the coefficients in a fixed Lorentz basis and confinement of the zeros to the open
+ellipse survive small perturbations of the coefficients, and the discriminant is a nonzero polynomial on coefficient
+space, so a rational perturbation has simple zeros.
+\end{proof}
+
+\begin{remark}[Exact degrees]\label{zfg:rem:lorentztable}
+For $D\ge n$, $P_n$ has a representation of degree $D$ exactly when all coefficients of $(1+z)^{D-n}Q_n(z)$ are nonnegative,
+where $Q_n(z)=(n^2)^n(1+z)^nP_n((1-z)/(1+z))$. Integer arithmetic gives $\zfgdL(P_n)=15,56,125,221,495,880,1978,3516$ for
+$n=4,8,12,16,24,32,48,64$, with $\zfgdL(P_n)/n^2$ decreasing from $0.9375$ to $0.8584$
+(\artifact{erdelyi_ellipse_and_proveit_extensions/01_lorentz_ellipse/exact_degrees.txt}). The product question on the
+same page of \cite{Erdelyi1991Estimates} was treated by Ait-Haddou \cite{AitHaddou2015Lorentz}.
+\end{remark}
+
+\subsection{Open questions}\label{zfg:sec:open}
+\sources{dirichlet_zero_filters; positive-fourier-zeros; kozma_oravecz_half_integer_2026-11-28; ProveIt_New_Results_2026-11-27; erdelyi_ellipse_and_proveit_extensions}
+
+\begin{enumerate}
+\item \emph{Progressions and statistics of widths.} For $K=2$, \cref{zfg:thm:threerule} computes $M_2(N,b)$ by a finite
+algebraic rule, and closed analytic branches are known for odd-integer ratios $b/N$ with $K=2,3$
+(\cref{zfg:thm:three,zfg:thm:four}) and for ratios $d/2$, $d\ge5$ odd, with $K=2$ (\cref{zfg:thm:half}). What are the exact
+values for other ratios and for larger $K$, does $K(c-bM_K)$ converge in \cref{rec:thm:wide}, and which polynomials
+attain the leading constant? Which wide progressions have rational gaps (\cref{zfg:cor:dichotomy}), and which contact
+patterns and algebraic degrees occur for four or more frequencies? At what rate do finite lists of zeros approach
+the law of \cref{rec:thm:twolaw}, in particular near the maximum of its phase profile?
+\item \emph{Squares.} Does $NM_{N,\infty}$ converge, and to what? \Cref{zfg:thm:longsq} places its limit points in
+$[\sqrt3-\tfrac32,\tfrac{21}{62}]$. What is $M_{N,K}$ exactly beyond the short-band regime of \cref{zfg:thm:shortsq}?
+\item \emph{Support uncertainty.} What is the least support radius for a given finite set $A$ in
+\cref{zfg:thm:support}? Is the linear dependence on the deficit in \cref{zfg:thm:stab} optimal, and with which constant? Is there a sharp
+higher-dimensional inequality that takes the directions of the prescribed frequencies into account
+(\cref{zfg:rem:dim})?
+\item \emph{Lorentz degrees.} What are the best constants in \cref{zfg:thm:lorentz}? Does $\eps^2L_n(\eps)$ have a limiting
+profile as $n\to\infty$ and $\eps\downarrow0$ with $n\eps$ tending to a positive constant? Does $\zfgdL(P_n)/n^2$ converge along
+$4\mid n$ in \cref{zfg:thm:erdelyi}, and to what?
+\end{enumerate}

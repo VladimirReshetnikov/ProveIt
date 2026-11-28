@@ -13,6 +13,10 @@
 \providecommand{\zerdiag}{\operatorname{diag}}
 \providecommand{\zerSym}{\mathfrak{D}}
 \providecommand{\zerLog}{\operatorname{Log}}
+\providecommand{\chzA}{\mathcal{A}}
+\providecommand{\chzB}{\mathcal{B}}
+\providecommand{\chzC}{\mathcal{C}}
+\providecommand{\chzEx}{\mathbb{E}}
 \section{Characters and arithmetic parameters from zeros}\label{sec:chz}
 
 This section treats the inverse problems in which the zeros are the data: which finite or local
@@ -21,7 +25,8 @@ auxiliary twist, the primes omitted from an Euler product, the factors of a prod
 $L$-functions, or an abelian field. The data are the signed zero spectrum of
 the source construction (\cref{rec:sec:spectrum}), normalized spacings (\cref{rec:sec:gaps}), zeros in
 short windows at large height, where multiplicity vectors span and balanced multiplicity differences
-take both signs (\cref{rec:sec:localwin,zer:sec:short}), blurred zero measures (\cref{rec:sec:blur}),
+take both signs (\cref{rec:sec:localwin,zer:sec:short}), the cost of matching and the information in binned
+counts of two zero lists on a dyadic range (\cref{chz:sec:matching}), blurred zero measures (\cref{rec:sec:blur}),
 poles of prime series (\cref{rec:sec:poles}), finitely many low zeros
 (\cref{rec:sec:quadratic,rec:sec:lowzero}) and balanced statistics of pooled zeros
 (\cref{rec:sec:homometry}). The tools are \cref{rec:lem:char,rec:lem:gram} of \cref{rec:sec:tools}, the
@@ -1495,6 +1500,644 @@ amplifier is chosen, and the same height window works in both directions. The co
 different multiplicities at a common zero; simplicity, disjointness of zero sets, and the
 conjectural $H\log T$ scale for almost all excess multiplicity are stronger assertions.
 
+\subsection{Matching and binning the zeros of two products on a dyadic range}\label{chz:sec:matching}
+\sources{cycle-complements-and-dirichlet-zero-matching; proveit_three_extensions_2026-11-27}
+
+\Cref{rec:cor:localmatch,rec:cor:binomtransport,rec:cor:lowmatch} bound below the cost of matching two zero lists in
+short windows. Here the lists are all ordinates in a dyadic range $(T,2T]$, and the questions are the exact
+asymptotic cost of a matching that may also delete occurrences, the least displacement allowance for which
+almost all occurrences can be paired, and how much information on a mixture of the spectra survives when the
+ordinates are only counted in microscopic bins. The arithmetic input is the unconditional short-interval
+central limit theorem of Bombieri and Perelli \cite{BombieriPerelli1998Distinct} for fixed Dirichlet
+characters. Every statement concerns ordinates counted with multiplicity and needs no hypothesis on real
+parts, simplicity or noncoincidence; under \cref{src:thm:dgrh} the distances between ordinates are the
+distances between the zeros.
+
+Throughout, $\chi_1,\dots,\chi_d$ are fixed distinct primitive Dirichlet characters of conductors
+$q_1,\dots,q_d$, the conductor-one character allowed, and $a,b\in\Z_{\ge0}^d$ satisfy
+$\sum_ja_j=\sum_jb_j=r$ and $c=a-b\ne0$. Let $\chzA$ and $\chzB$ (or $Z_a(T)$ and $Z_b(T)$) be the multisets of
+ordinates in $(T,2T]$ of the nontrivial zeros of $\prod_jL(s,\chi_j)^{a_j}$ and $\prod_jL(s,\chi_j)^{b_j}$; a zero
+of order $m$ of the $j$th factor contributes $a_jm$ occurrences. Put
+\[
+ \kappa_c=\frac{\norm c_2}{\pi^{3/2}},\qquad \eta_c=\sqrt2\,\kappa_c,\qquad \sigma_c^2=\frac{\norm c_2^2}{2\pi^2},\qquad
+ \beta_c=\frac1{2\pi}\sum_jc_j\log q_j .
+\]
+Write $N_j(x)$ for the number of nontrivial zeros of $L(s,\chi_j)$ with ordinates in $(0,x]$,
+$C_j(t,h)=N_j(t+h)-N_j(t)$, $C_v=\sum_jv_jC_j$ and $F_0=\sum_jc_jN_j$. A \emph{partial matching} $P$ pairs
+occurrences of $\chzA$ with occurrences of $\chzB$, each used at most once; put $D(P)=\abs\chzA+\abs\chzB-2\abs P$ and
+\[
+ \chzC_\lambda=\min_P\Bigl\{\sum_{(x,y)\in P}\abs{x-y}+\lambda D(P)\Bigr\}\qquad(\lambda>0).
+\]
+Let $W_T$ be the least total displacement of a matching with exactly $\min(\abs\chzA,\abs\chzB)$ pairs, and $D_T(K)$
+the least number of unpaired occurrences, summed over both sides, of a matching all of whose pairs have
+displacement at most $K/\log T$. In this subsection $\chzEx$ denotes the average over a height $t$ (or $x$, $u$)
+uniform on $[T,2T]$; values at individual endpoints do not affect these averages.
+
+\begin{lemma}[The short-interval law; \stU]\label{chz:lem:bpclt}
+Let $M=M(T)\to\infty$ with $M\le\log T/\log\log T$, and $h=M/\log T$.
+\begin{enumerate}[label=\textup{(\roman*)}]
+\item The vector $\bigl((C_j(u,h)-M/(2\pi))/\sqrt{\log M}\bigr)_{j\le d}$ converges in distribution to a centred Gaussian
+vector with covariance $\pi^{-2}I_d$.
+\item With $G_c\sim\mathcal N(0,\norm c_2^2/\pi^2)$,
+\[
+ \frac{C_a(t,h)-C_b(t,h)}{\sqrt{\log M}}\Longrightarrow G_c,\qquad \chzEx\abs{C_a(t,h)-C_b(t,h)}=(\eta_c+o(1))\sqrt{\log M}.
+\]
+\item $C_v(t,h)/M\to r/(2\pi)$ in probability for $v=a,b$.
+\end{enumerate}
+\end{lemma}
+
+\begin{proof}
+Write $S_j(t)=\pi^{-1}\arg L(\tfrac12+it,\chi_j)$ with the standard continuation. The Riemann--von Mangoldt
+formula and Stirling's formula give, for almost every $t\in[T,2T]$ and $0<h\le1$,
+$C_j(t,h)=\frac h{2\pi}\log T+S_j(t+h)-S_j(t)+O_{\chi_j}(h+1/T)$, the conductor term and $h\log(t/T)$ being in the
+error; also $N_j(2T)-N_j(T)=\frac T{2\pi}\log T+O(T)$ and $N_j(u+1)-N_j(u)=O(\log T)$ for $u\asymp T$. Theorem~2 of
+\cite{BombieriPerelli1998Distinct} applies to these factors: their Euler parameters have modulus at most one,
+the continuations and functional equations are classical, the prime number theorem in the fixed progressions
+modulo $\lcm(q_j)$ and character orthogonality give their Hypothesis~B(IV) with diagonal parameter one, and
+their Hypothesis~D is the classical density estimate for Dirichlet $L$-functions recorded on p.~273 of that
+paper. The imaginary parts of their normalized logarithmic increments $V_j$ converge jointly to independent
+normal laws of variance $1/(2\pi)$, and $S_j(t+h)-S_j(t)=\sqrt{2\pi\log M}\,\Im V_j/\pi$; this gives (i), the
+distributional part of (ii) and (iii). For the first absolute moment, p.~279 of \cite{BombieriPerelli1998Distinct}
+approximates $V_j$ by normalized Dirichlet polynomials $U_j$ with $\chzEx\abs{V_j-U_j}\ll(\log M)^{-1/4}$, and
+their Lemma~2 bounds $\chzEx\abs{U_j}^2$ uniformly, also for every fixed linear combination of the imaginary
+parts. Bounded truncation and uniform integrability give convergence of the first absolute moment, the $L^1$
+approximation transfers it to the increments, and $\chzEx\abs{G_c}=\eta_c$.
+\end{proof}
+
+\paragraph{Matching with a deletion price.}
+For real multisets on $(l,r]$ put $F(x)=\#(\chzA\cap(l,x])-\#(\chzB\cap(l,x])$, and for an interval $I$ let
+$H_I(F)=\inf_{m\in\R}\int_I\abs{F(x)-m}\dd x$, attained at any median of $F$ on $I$. Then
+$\abs{H_I(F)-H_I(G)}\le\int_I\abs{F-G}$, and $H_I$ is unchanged by adding a constant; a constant may be added to
+$F$ provided the boundary values are translated with it.
+
+\begin{lemma}[Two inequalities for finite lists; \stU]\label{chz:lem:flow}
+Let $J=F(r)-F(l)$. For disjoint intervals $I$ of length $h\le\lambda$ inside $[l,r]$,
+\begin{equation}\label{chz:eq:flowlower}
+ \chzC_\lambda\ge(\lambda-h)\abs J+\sum_IH_I(F).
+\end{equation}
+For every integer-valued step function $g$ on $(l,r)$ with finitely many jumps,
+\begin{equation}\label{chz:eq:flowupper}
+ \chzC_\lambda\le\int_l^r\abs{F-g}\dd x+\lambda V(g),
+\end{equation}
+where $V(g)$ is the total variation of $g$ including the jumps from $F(l)$ at the left end and to $F(r)$ at
+the right end. If $g$, so extended, is monotone, then the maximum-cardinality matching of the two lists has
+total displacement at most $\int_l^r\abs{F-g}\dd x$.
+\end{lemma}
+
+\begin{proof}
+Any $1$-Lipschitz $f$ with $\abs f\le\lambda$ gives the lower bound $\sum_\chzA f-\sum_\chzB f$, by summing over a
+matching. On one block $I$ choose a median $m$, take $f_I'=-\operatorname{sgn}(F-m)$ away from the median level and
+values in $[-1,1]$ on that level giving mean zero, as the median inequalities allow; its primitive $f_I$,
+vanishing at both ends and extended by zero, has $\abs{f_I}\le h$ and $\int f_I\dd F=H_I(F)$ by integration by
+parts. Adding the block primitives to $(\lambda-h)\operatorname{sgn}J$ gives an admissible test and
+\eqref{chz:eq:flowlower}. For \eqref{chz:eq:flowupper} form a path on all list entries, jump positions and
+endpoints, with one auxiliary vertex joined to each jump at cost $\lambda$ per unit; send the signed integral flow
+$F-g$ along each consecutive interval, at cost its length times the absolute flow, and the signed jumps of $g$,
+including the end corrections, to the auxiliary vertex. Flow conservation gives the prescribed excess of
+first-list over second-list entries at each location. After cancelling coincident entries at zero cost and
+discarding cycles, decompose the integral flow into unit paths: a path between two list entries avoiding the
+auxiliary vertex matches them at no more than its cost, a path through that vertex pays for two omissions, and
+a path ending there for one. If $g$ is monotone, all auxiliary edges carrying flow have the same orientation,
+so exactly $\abs J$ occurrences are omitted and the transport costs at most the horizontal part of the flow.
+\end{proof}
+
+For a primitive character the Riemann--von Mangoldt formula gives, away from countably many heights,
+\begin{equation}\label{chz:eq:countdiff}
+ F_0(x)=m(x)+\sum_j\frac{c_j}\pi\Im\log L(\tfrac12+ix,\chi_j)+O(1/x),\qquad m(x)=\beta_cx+C_c,
+\end{equation}
+with the logarithm continued horizontally from the right and a constant $C_c$; the common term
+$\frac x{2\pi}\log\frac x{2\pi e}$ cancels because $\sum_jc_j=0$, and $F_0(x)=m(x)+O(\log(2+x))$ also at the
+endpoints. For $0<h\le1$ with $M=h\log T\to\infty$ put
+\[
+ L=\log M,\qquad X=\exp\bigl(\log T/L^{1/4}\bigr),\qquad Y=\exp(1/h),\qquad a_p=\sum_jc_j\chi_j(p),
+\]
+so that eventually $Y<X=T^{o(1)}$. Let $w(s)=v(e^s)$ be the smooth weight of \cite[\S2]{BombieriPerelli1998Distinct},
+bounded by one, with $w(0)=1$ and $w(s)=0$ for $s\ge1$, and
+\[
+ P_{\mathrm{lo}}(x)=\frac1\pi\Im\sum_{p\le Y}\frac{a_pw(\log p/\log X)}{\sqrt p}p^{-ix},\qquad
+ P_{\mathrm{hi}}(x)=\frac1\pi\Im\sum_{Y<p\le X}\frac{a_pw(\log p/\log X)}{\sqrt p}p^{-ix}.
+\]
+
+\begin{lemma}[Prime approximation and local Gaussian values; \stU]\label{chz:lem:prime}
+With $B=m+P_{\mathrm{lo}}$ and $Z=P_{\mathrm{hi}}$,
+\begin{equation}\label{chz:eq:primeerr}
+ \chzEx\abs{F_0(x)-B(x)-Z(x)}=O(1+L^{1/4}),\qquad \sup_{\abs v\le h}\chzEx\abs{B(x+v)-B(x)}=O(1),
+\end{equation}
+also over intervals shifted by at most two. For fixed distinct $u_1,\dots,u_s\in[0,1]$,
+$(Z(x+hu_1),\dots,Z(x+hu_s))/\sqrt L$ converges in distribution to independent $\mathcal N(0,\sigma_c^2)$ variables, and
+the normalized second moments of the coordinates are bounded uniformly in the offsets.
+\end{lemma}
+
+\begin{proof}
+Hypotheses B and D of \cite{BombieriPerelli1998Distinct} hold unconditionally for the fixed primitive
+characters, as in \cref{chz:lem:bpclt}. Their Lemma~1 approximates each logarithm in mean absolute value by its
+smoothed prime-power sum with error $O(\log T/\log X)$. The prime powers $p^k$, $k\ge2$, cost $O(1)$ in mean
+square, since their squared coefficients sum to $O(\sum_p\sum_{k\ge2}p^{-k})$ and the Dirichlet polynomial has
+length $X=o(T)$; the mean-value theorem for Dirichlet polynomials gives the first estimate, and covering by
+boundedly many dyadic intervals of comparable height the shifted versions. For the second,
+$\sum_{p\le Y}p^{-1}\abs{p^{-iv}-1}^2\ll h^2\sum_{p\le Y}(\log p)^2/p\ll h^2(\log Y)^2=1$, and the affine term moves by
+$O(h)$. By orthogonality of the distinct primitive characters, which induce distinct characters modulo
+$\lcm(q_j)$, and the prime number theorem in these progressions,
+\begin{equation}\label{chz:eq:primeorth}
+ \sum_{p\le y}\frac{\abs{a_p}^2}p=\norm c_2^2\log\log y+C+O_A((\log y)^{-A})\qquad(y\ge3)
+\end{equation}
+for every fixed $A$. Removing the squared weight in sums of $1/p$ up to $X$ costs $O(1)$, since
+$\abs{1-w(s)^2}\ll s$ on $[0,1]$, so the diagonal high-frequency sum is $\norm c_2^2L+o(L)$, while for fixed
+$0<\abs u\le1$, $\sum_{Y<p\le X}\abs{a_p}^2p^{-1}w(\log p/\log X)^2\cos(uh\log p)=O_u(1)$: the main integral is bounded
+after the substitution $v=h\log p$, and partial summation in \eqref{chz:eq:primeorth} with $A=2$ bounds the
+error. For real $b_1,\dots,b_s$ the combination $\sum_ib_iZ(x+hu_i)$ is the imaginary part of a prime polynomial
+with coefficients $d_p=a_pw(\log p/\log X)(\pi\sqrt p)^{-1}\sum_ib_ip^{-ihu_i}$. Replacing $p^{-ix}$ by independent
+uniform phases gives centred, uniformly bounded, independent summands of total variance
+$\tfrac12\sum_p\abs{d_p}^2=(\sigma_c^2\sum_ib_i^2+o(1))L$; Lindeberg's condition holds, and the cumulants of order
+$k\ge3$ total $O_k(\sum_pp^{-k/2})=O_k(1)$, so all fixed normalized moments converge to Gaussian moments. For the
+actual height average expand a fixed $k$th moment in prime products: the diagonal products give the
+independent-phase moments by unique factorization, and for unequal products $n,m\le X^k$ the mean of $(n/m)^{ix}$
+is $O(X^k/T)$, while the absolute coefficients total $O_k((C\sqrt X)^k)$, so the off-diagonal error is
+$T^{-1+o(1)}$. Moment determinacy of the Gaussian and the Cram\'er--Wold device give the joint limit, and the
+second-moment computation for one coordinate the uniform bound.
+\end{proof}
+
+\begin{theorem}[Matching with a deletion price; \stU]\label{chz:thm:deletion}
+For every $0<\lambda=\lambda(T)\le1$ with $M=\lambda\log T\to\infty$, however slowly,
+\[
+ \chzC_\lambda=(\kappa_c+o(1))\,T\sqrt{\log M}.
+\]
+\end{theorem}
+
+\begin{proof}
+For $I_x=(x,x+h]$ put $D_h(U;x)=h^{-1}H_{I_x}(U)$. We first show
+\begin{equation}\label{chz:eq:dispersion}
+ \frac1T\int_T^{2T-h}D_h(F_0;x)\dd x=(\kappa_c+o(1))\sqrt L .
+\end{equation}
+By \eqref{chz:eq:primeerr}, translation invariance and the $L^1$ bound for $H_I$, replacing $F_0$ by $Z$ costs
+$O(1+L^{1/4})$: subtract $B(x)$ throughout $I_x$ and average the error over $0\le v\le h$. For $Z$ the centre zero
+gives the upper bound $(\chzEx\abs{G_1}+o(1))\sqrt L$ by \cref{chz:lem:prime} and uniform integrability. For the
+lower bound take $s$ independent uniform offsets $U_i\in[0,1]$; since the infimum of an expectation is at least
+the expectation of the infimum,
+$D_h(Z;x)\ge\chzEx_U\inf_m s^{-1}\sum_{i=1}^s\abs{Z(x+hU_i)-m}$. For almost every tuple of offsets the entries are
+distinct, and the sample dispersion is continuous in them and bounded by their mean absolute value, so after
+division by $\sqrt L$ the height average converges to $\chzEx\inf_ms^{-1}\sum_i\abs{G_i-m}$; trimming a subinterval of
+length $h\le1$ at the upper end costs $o(1)$ by Cauchy--Schwarz. As $s\to\infty$ a sample median of the
+independent Gaussian values tends to zero almost surely and the sample dispersion converges in mean to
+$\chzEx\abs{G_1}=\sigma_c\sqrt{2/\pi}=\kappa_c$. The independent values arise only after the low prime frequencies
+are removed; centring a block at its first count value would introduce a shared fluctuating endpoint.
+
+For the lower bound in the theorem take $h=\lambda$, shift a grid of mesh $h$ by a uniform offset in $[0,h]$ and use
+its complete blocks in $(T,2T]$: the expected sum of $H_I(F_0)$ is $h^{-1}\int_T^{2T-h}H_{I_x}(F_0)\dd x$, the left side
+of \eqref{chz:eq:flowlower} does not depend on the shift, and \eqref{chz:eq:dispersion} applies. For the upper bound
+extend the shifted grid to $\R$ and put $g=\floor{B(x)+1/2}$ on the block with left end $x$, restricted to
+$(T,2T)$, in \eqref{chz:eq:flowupper} with $F_0$ and its absolute endpoint values. After averaging over the shift,
+\[
+ \chzEx_{\mathrm{grid}}\int_T^{2T}\abs{F_0(t)-g(t)}\dd t\le\int_T^{2T}\abs{Z(t)}\dd t+O\bigl(T(1+L^{1/4})\bigr)=(\kappa_c+o(1))T\sqrt L ,
+\]
+since the distance from $t$ to the preceding grid point is uniform on $[0,h]$ and the second estimate in
+\eqref{chz:eq:primeerr} bounds the averaged discrepancy of the baselines. Consecutive rounded values differ on
+average by $O(1)$, so the expected interior jump cost is $O(\lambda T/h)=O(T)$, and the two end corrections cost
+$O(\lambda(1+\log T+\sqrt X))=o(T)$ by the bound after \eqref{chz:eq:countdiff}, the affine slope and
+$\abs{P_{\mathrm{lo}}}\ll\sqrt X$. Some grid has cost at most the average.
+\end{proof}
+
+\begin{theorem}[Matching the whole smaller list; \stU]\label{chz:thm:fullmatch}
+If $\beta_c\ne0$, then $W_T=(\kappa_c+o(1))T\sqrt{\log\log T}$, and uniformly for $\lambda\ge1$,
+\[
+ \chzC_\lambda=\lambda\bigl\lvert\abs\chzA-\abs\chzB\bigr\rvert+(\kappa_c+o(1))T\sqrt{\log\log T}.
+\]
+\end{theorem}
+
+\begin{proof}
+Take $h=1$, so $L=\log\log T$. Then $J=F_0(2T)-F_0(T)=\beta_cT+O(\log T)$ is the difference of the list sizes, and
+\eqref{chz:eq:flowlower} averaged as before gives $\chzC_\lambda\ge\lambda\abs J+(\kappa_c+o(1))T\sqrt{\log\log T}$ for
+$\lambda\ge1$, the subtracted $\abs J=O(T)$ being of lower order. For the upper bound round $m(t)$ to the nearest
+integer and clip the result to the interval between $F_0(T)$ and $F_0(2T)$; the sign of $J$ is eventually that of
+$\beta_c$, so this step function is monotone with $V(g)=\abs J$. Clipping affects $O_c(\log T)$ units of length at
+the ends, at integrated cost $O_c((\log T)^2)$, and rounding costs at most $T/2$. At $h=1$ the low sum involves
+only $p\le e$ and is bounded, so $\int_T^{2T}\abs{F_0-m}\dd t=(\kappa_c+o(1))T\sqrt{\log\log T}$ by
+\eqref{chz:eq:primeerr} and the one-point limit of \cref{chz:lem:prime}. The monotone case of \cref{chz:lem:flow}
+gives a matching of the whole smaller list at this cost; conversely $\chzC_1\le W_T+\abs J$. Using this matching in
+$\chzC_\lambda$ gives the expansion for every $\lambda\ge1$.
+\end{proof}
+
+When the product conductors agree the two endpoint counts enter. Let $\beta_c=0$, so $m(x)=C_c$, put
+$s_T=\sqrt{\log\log T}$, let $G\sim\mathcal N(0,\sigma_c^2)$ and $f_T(z)=s_T\,\chzEx\abs{G-(z-C_c)/s_T}$ for real $z$.
+
+\begin{theorem}[Equal product conductors; \stU]\label{chz:thm:equalcond}
+If $\beta_c=0$, then uniformly in $\lambda\ge1$,
+\[
+ \chzC_\lambda=\min_{z\in\Z}\Bigl\{Tf_T(z)+\lambda\bigl(\abs{z-F_0(T)}+\abs{z-F_0(2T)}\bigr)\Bigr\}+o(Ts_T).
+\]
+If $z_*$ is the point of the closed interval with endpoints $F_0(T),F_0(2T)$ nearest to $C_c$ and
+$z_T=(z_*-C_c)/s_T$, then
+\[
+ \frac{W_T}{Ts_T}=\chzEx\abs{G-z_T}+o(1).
+\]
+The errors are absolute, also along sequences with $\abs{z_T}\to\infty$, and a bounded change of the centring
+constant changes the right side by $O(1/s_T)$.
+\end{theorem}
+
+\begin{proof}
+Take $h=1/\log\log T$, let $\eta_x$ be the law of $(F_0(x+hU)-C_c)/s_T$ for $U$ uniform on $[0,1]$, and $\gamma$ the law
+of $G$. Then $T^{-1}\int_T^{2T}W_1(\eta_x,\gamma)\dd x=o(1)$, $W_1$ the Wasserstein distance on the line: replacing the
+variable by $Z(x+hU)/s_T$ costs $o(1)$, since the $L^1$ error of \eqref{chz:eq:primeerr} divided by $s_T$ tends to zero
+and the low-prime mean square is $O(1+\log\log Y)=O(1+\log(1/h))=o(s_T^2)$, with $L/\log\log T\to1$; for the high
+part and real $v$, the first two height moments of the random distribution function at $v$ tend to
+$\gamma((-\infty,v])$ and its square, by Fubini and the joint limit at two distinct offsets; integrate over $[-R,R]$
+and bound the rest by $O(1/R)$ with the uniform second moments.
+
+Given an optimal partial matching, let $g(t)$ be $F_0(T)$ plus the cumulative signed omissions through $t$; its
+extended endpoints are $F_0(T)$ and $F_0(2T)$, the number of omissions dominates $V(g)$, and across each cut $F_0-g$
+is the signed number of matched pairs crossing it, so the total movement dominates $\int\abs{F_0-g}$. The constant
+nearest integer to $C_c$ in \eqref{chz:eq:flowupper} gives $\chzC_\lambda\ll Ts_T+\lambda\log T$, hence
+$V(g)\ll Ts_T/\lambda+\log T$. Extending $g$ by $F_0(2T)$ to the right and replacing its transport integral by
+$\int_T^{2T}\int_0^1\abs{F_0(x+hu)-g(x)}\dd u\dd x$ costs $o(Ts_T)$ uniformly in $\lambda$: replacing $g(x)$ by $g(x+hu)$ costs
+at most $hV(g)$, and translating the interval costs $O(h(\log T+V(g)))$. By the $W_1$ estimate and the
+$1$-Lipschitz property of the absolute deviation, the last integral is $\int_T^{2T}f_T(g(x))\dd x+o(Ts_T)$
+uniformly in the values of $g$. As $V(g)\ge\abs{g(x)-F_0(T)}+\abs{g(x)-F_0(2T)}$ at each $x$, integrating gives the
+minimum as a lower bound. Conversely, a constant integer $g=z$ in \eqref{chz:eq:flowupper} has extended variation
+$\abs{z-F_0(T)}+\abs{z-F_0(2T)}$ and movement $Tf_T(z)+o(Ts_T)$ uniformly in $z$, by the one-point $W_1$ convergence.
+
+For $\lambda>T/2$ an optimal matching pairs the whole smaller list, since a pair costs at most $T$ and saves $2\lambda$.
+Projecting $z$ onto the interval between the endpoint counts lowers the variation price by $2\lambda$ per step and
+raises the movement term by at most $T$ per step, so the minimum is attained there, where the price is
+$\lambda\abs{F_0(2T)-F_0(T)}$; the Gaussian absolute deviation is minimized at an integer within one of $z_*$, its
+median being $C_c$, and rounding costs $O(T)=o(Ts_T)$. Subtracting the forced omissions gives $W_T$.
+\end{proof}
+
+\begin{proposition}[A random height; \stU]\label{chz:prop:randomheight}
+Let $\beta_c=0$, let $t$ be uniform on $[X_0,2X_0]$ with $X_0\to\infty$, and consider the lists on $(t,2t]$. Let
+$G',G''$ be independent copies of $G$, $Z_*$ the point of their closed interval nearest zero and
+$\mathcal H(v)=\chzEx\abs{G-v}$. Then
+\[
+ \frac{W_t}{t\sqrt{\log\log t}}\Longrightarrow\mathcal H(Z_*),\qquad \Pr(Z_*=0)=\tfrac12,\qquad
+ \Pr(\abs{Z_*}>u)=2\bigl(1-\Phi_0(u/\sigma_c)\bigr)^2\quad(u\ge0),
+\]
+with $\Phi_0$ the standard normal distribution function. The limit law has an atom of mass exactly $\tfrac12$ at its
+minimum $\mathcal H(0)=\kappa_c$, and is continuous elsewhere.
+\end{proposition}
+
+\begin{proof}
+Apply \cref{chz:lem:prime} at $h=1$ with one cutoff $X=X_0^{1/(\log\log X_0)^{1/4}}$ for both $t$ and $2t$; the averaged
+errors divided by $s_{X_0}$ tend to zero on the two dyadic intervals and the low part is bounded. In the phase model
+the high-frequency summands of a prime at the two endpoints are proportional to $\Im(a_pU_p)$ and $\Im(a_pU_p^2)$
+for one uniform phase $U_p$; they are uncorrelated by orthogonality of the first and second harmonics and
+independent of the other primes, so the cumulant argument gives two independent Gaussian limits of variance
+$\sigma_c^2$. The height-moment comparison holds, as the prime products in a moment of order $k$ are at most
+$X^{2k}=X_0^{o(1)}$ and their equality imposes the same exponent conditions as phase averaging. So the normalized
+endpoint pair converges to $(G',G'')$, $s_t/s_{X_0}\to1$ uniformly, and \cref{chz:thm:equalcond} with the
+continuity of $\mathcal H$ gives the limit; $\abs{Z_*}>u$ means that both endpoints exceed $u$ or both lie below
+$-u$, and $\mathcal H$ increases strictly on $[0,\infty)$.
+\end{proof}
+
+For $\zeta(s)$ and $L(s,\chi_{-4})$ one has $\beta_c=-\log4/(2\pi)\ne0$, and the second list has
+$\frac{\log4}{2\pi}T+O(\log T)$ extra occurrences; by \cref{chz:thm:fullmatch}, even with the best choice of these
+omissions the mean displacement per matched zero is asymptotic to $2\sqrt{2/\pi}\,\sqrt{\log\log T}/\log T$. A
+mismatch of the smooth densities and the fluctuations about them thus enter in different orders. The constant
+$\kappa_c$ comes from the mean square on primes of $\sum_jc_j\chi_j(p)$ and detects common primitive factors with
+multiplicity: changing $(1,1,0)$ to $(1,0,1)$ costs as much as comparing the two distinct factors directly, and
+changing $(2,0,0)$ to $(0,1,1)$ costs $\sqrt3$ times as much. This is a minimum over all matchings, including
+those that exchange the labels of shared factors.
+
+\begin{remark}[The cost of \cref{rec:cor:binomtransport} on a dyadic range]\label{chz:rem:dyadicmetric}
+For two lists the cost of \cref{rec:cor:binomtransport}, one per unmatched occurrence and $\min(1,\abs{x-y})$ per
+pair, equals $\chzC_{1/2}+\tfrac12\bigl\lvert\abs\chzA-\abs\chzB\bigr\rvert$: all of the smaller list may be paired after
+capping each displacement at one, and in $\chzC_{1/2}$ a pair longer than one may instead be deleted at cost one.
+On $(T,2T]$ the cardinality difference is $O(T)$, so by \cref{chz:thm:deletion} that cost is
+$(\kappa_c+o(1))T\sqrt{\log\log T}$. For a finite family of products of equal degree, the matrix of these costs
+divided by $T\sqrt{\log\log T}$ converges to the Euclidean distance matrix of the exponent vectors divided by
+$\pi^{3/2}$. \Cref{rec:cor:binomtransport} itself concerns windows of triple-logarithmic length and is not a
+consequence.
+\end{remark}
+
+\paragraph{A hard displacement cap.}
+If every pair must have displacement at most $K/\log T$, at most a vanishing proportion of the occurrences can
+stay unpaired exactly when $K\to\infty$. The combined list of two degree-one factors has $(1/\pi+o(1))T\log T$
+entries, and the mean spacing within one list is $\sim2\pi/\log T$, so one hundred mean spacings is $K=200\pi$.
+
+\begin{corollary}[A growing cap; \stU]\label{chz:cor:hardcap}
+For $K=K(T)\to\infty$ with $K\le\log T$,
+\[
+ \frac{D_T(K)}{T\log T}=o\Bigl(\frac{\sqrt{\log K}}K\Bigr).
+\]
+\end{corollary}
+
+\begin{proof}
+Put $\lambda=K/(2\log T)$. In an optimal matching at price $\lambda$ no pair has displacement above $2\lambda$, since
+deleting it would be cheaper; if it omits $D\ge D_T(K)$ occurrences, using it at price $\lambda/2$ gives
+$(\lambda/2)D\le\chzC_\lambda-\chzC_{\lambda/2}$. By \cref{chz:thm:deletion} both costs are $(\kappa_c+o(1))T\sqrt{\log K}$.
+\end{proof}
+
+\begin{theorem}[The matching threshold; \stU]\label{chz:thm:threshold}
+For every fixed $K\ge0$,
+\[
+ \liminf_{T\to\infty}\frac{D_T(K)}{T\log T}>0 ,
+\]
+and every such matching leaves a positive proportion of each list unpaired. For every function $K(T)\ge0$,
+$D_T(K(T))=o(T\log T)$ if and only if $K(T)\to\infty$, and then an order-preserving matching attains it.
+\end{theorem}
+
+If the degrees differ, the difference of the list sizes, $(\abs{\sum_ja_j-\sum_jb_j}/(2\pi)+o(1))T\log T$, is a lower
+bound at every allowance, and if $a=b$ then $D_T(0)=0$. Distinct conjugate characters are allowed, the lists use
+positive ordinates only, and shared factors may take part in the matching in any way.
+
+\begin{proof}
+For $t\in[T,2T-h]$ a point $x$ lies in $(t,t+h]$ for starts in $[x-h,x)$, and two points at distance $\delta$ differ in
+membership on a set of starts of measure $2\min(\delta,h)$. For a matching with $U_\chzA,U_\chzB$ unpaired occurrences,
+\begin{equation}\label{chz:eq:transport}
+ \int_T^{2T-h}\abs{C_a(t,h)-C_b(t,h)}\dd t\le h(U_\chzA+U_\chzB)+2\sum_{\text{pairs}}\min(h,\abs{\gamma-\gamma'}).
+\end{equation}
+If the first assertion failed, $d_T=D_T(K)/(T\log T)\to0$ along a sequence; choose
+$M=\min\set{\log T/\log\log T,(d_T+1/(T\log T))^{-1/2}}$, so $M\to\infty$ and $Md_T\to0$, and use an optimal matching
+in \eqref{chz:eq:transport} with $h=M/\log T$. Divided by $T$, the right side is at most $Md_T+O_{a,b}(K)$, as there are
+$O(T\log T)$ pairs, while the left side is asymptotic to $\eta_c\sqrt{\log M}$ by \cref{chz:lem:bpclt}(ii), omitting the
+last interval of starts at cost $O(h\log T)$. Also $U_\chzA-U_\chzB=\abs\chzA-\abs\chzB=O(T)$, so each side contributes a
+positive proportion, and a bounded subsequence of allowances is excluded by monotonicity of $D_T$ in $K$. If
+$K\to\infty$, then $D_T(K)\le D_T(\min(K,\log T))=o(T\log T)$ by \cref{chz:cor:hardcap}. The greedy algorithm of
+\cref{chz:rem:greedy} is optimal and order-preserving.
+\end{proof}
+
+\begin{remark}[An exact linear-time matching]\label{chz:rem:greedy}
+For sorted lists and allowance $\delta$, compare the two smallest remaining entries: discard the smaller if their gap
+exceeds $\delta$, and otherwise match them. In the first case the smaller entry has no possible partner. In the
+second an optimal matching can use the proposed pair: if exactly one of the two is matched, replace its partner;
+if they have partners $a'\ge a$ and $b'\ge b$, replace the two pairs by $(a,b),(a',b')$, since $\abs{a-b'},\abs{a'-b}\le\delta$
+and the order give $\abs{a'-b'}\le\delta$; if neither is matched, adding the pair improves the matching. Induction gives
+optimality, ties included. The algorithm is checked against unrestricted bipartite matching, and the window
+inequality \eqref{chz:eq:transport} in exact integer arithmetic, in
+\begin{center}{\footnotesize\artifact{cycle-complements-and-dirichlet-zero-matching/03-hard-distance-matching/check_matching.py}}.\end{center}
+\end{remark}
+
+At fixed allowance the unpaired proportion decays faster than every power of $K$, but not like a Gaussian.
+
+\begin{theorem}[Rapid decay at fixed allowance; \stU]\label{chz:thm:rapid}
+For every $A>0$,
+\[
+ g(K):=\limsup_{T\to\infty}\frac{D_T(K)}{T\log T}\ll_{A,a,b}K^{-A}\qquad(K\ge2).
+\]
+\end{theorem}
+
+\begin{proof}
+Fujii's main theorem \cite[pp.~225--226]{Fujii1974ZerosI}, with the corrections of \cite{Fujii1981ZerosII}, gives for
+fixed primitive $\chi$ and integer $k\ge1$ and $0<u\le1/\log\log T$
+\[
+ \frac1T\int_T^{2T}\abs{S_\chi(t+u)-S_\chi(t)}^{2k}\dd t\ll_{k,\chi}\set{\log(2+u\log T)}^k,
+\]
+so for $v=a,b$, by the zero-count formula and the triangle inequality in $L^{2k}$,
+\begin{equation}\label{chz:eq:highmoment}
+ \chzEx\Bigl\lvert C_v(t,u)-\frac{ru\log T}{2\pi}\Bigr\rvert^{2k}\ll_{k,a,b}\set{\log(2+u\log T)}^k .
+\end{equation}
+Fix $B>A$, let $J=\ceil{K^B}$, $h=K/(4\log T)$, $H=Jh$ and $\mu=rK/(8\pi)$, and take $T$ so large that
+$H\le1/\log\log T$. Divide a block $(t,t+H]$ into $J$ cells of width $h$, and call it good if
+$\abs{C_v(t,jh)-j\mu}\le\mu/4$ for $v=a,b$ and $1\le j\le J$. In a good block pair the points in increasing rank up to
+the end of the shorter list: a point in cell $j$ has rank at most $(j+\tfrac14)\mu$ and, if $j>1$, greater than
+$(j-\tfrac54)\mu$, while the other list has count at least $(j+\tfrac34)\mu$ through cell $j+1$ and at most
+$(j-\tfrac74)\mu$ through cell $j-2$; so equal ranks lie in the same or adjacent cells, at displacement at most $2h$,
+and the totals differ by at most $\mu/2$, which bounds the number discarded. By the union bound and
+\eqref{chz:eq:highmoment}, a block is bad with probability $p\ll_{k,a,b}J\set{\log(2+JK)}^k/K^{2k}$. Discard all
+occurrences of a bad block; by \eqref{chz:eq:highmoment} with $k=1$ the square mean of the block count is
+$O((JK)^2)$, and Cauchy--Schwarz bounds the expected loss on the bad event by $O(JK\sqrt p)$. Tile by blocks of
+width $H$ with a uniform random origin; the two partial blocks hold $O(\log T)$ points. The expected cost is
+$T/H$ times the bound for one block, so $g(K)\ll J^{-1}+J^{1/2}\set{\log(2+JK)}^{k/2}K^{-k}$; take an integer
+$k>A+B/2+1$.
+\end{proof}
+
+\begin{theorem}[A lower bound as the allowance grows; \stU]\label{chz:thm:tails}
+For $f(K)=\liminf_{T\to\infty}D_T(K)/(T\log T)$ and every $s>0$,
+\[
+ \liminf_{K\to\infty}\frac{e^{sK^2}}Kf(K)\ge\chzEx\bigl[(\sqrt s\abs{G_c}-r/\pi)_+\bigr]>0 ,
+\]
+with $G_c$ as in \cref{chz:lem:bpclt}; in particular $K^{-2}\log f(K)\to0$.
+\end{theorem}
+
+\begin{proof}
+Fix $K_n\to\infty$ and choose $T_n\to\infty$ with $M=e^{sK_n^2}\le\log T_n/\log\log T_n$ and
+$D_{T_n}(K_n)/(T_n\log T_n)\le f(K_n)+o(K_n/M)$. Write $K=K_n$, $T=T_n$, $h=M/\log T$, $\delta=K/\log T$, and take starts
+uniform on $J=[T+\delta,2T-h-\delta]$, which changes probabilities by $O((h+2\delta)/T)$. With $W=(t,t+h]$ and
+$W^+=(t-\delta,t+h+\delta]$, every possible partner of an occurrence in $W$ lies in $W^+$. If $A_\partial,B_\partial$ count the
+occurrences of the two lists in $W^+\setminus W$ and $X=C_a(t,h)-C_b(t,h)$, at least $(X-B_\partial)_++(-X-A_\partial)_+$
+occurrences in $W$ are discarded; each discarded occurrence is counted for starts of measure at most $h$, so
+$\abs J/h$ times the expectation of this bound is at most $D_T(K)$. By \cref{chz:lem:bpclt}, $X/K\Rightarrow\sqrt sG_c$, and
+$A_\partial/K,B_\partial/K\to r/\pi$ in probability, the flank starts being uniform laws at total variation distance $o(1)$
+from the dyadic one; Slutsky's theorem gives the joint limit. Truncating the positive parts and then removing the
+truncation gives $\liminf_n(M/K)D_T(K)/(T\log T)\ge\chzEx[(\sqrt s\abs{G_c}-r/\pi)_+]$, which is positive since $G_c$ has
+unbounded support; the choice of $T_n$ concludes. The upper limit of $\log f(K)/K^2$ is at most zero since $f$ is
+bounded.
+\end{proof}
+
+\paragraph{Binned counts: a uniform frame.}
+Now the ordinates are only counted in bins. Let $\mathcal P_T$ be a partition of $(T,2T]$ into measurable bins of
+diameter at most $K/\log T$, with $K<\infty$ fixed; only the finitely many bins containing a zero of the family
+matter. Put $\mathcal L_T=T\log T$ and
+\[
+ v_S=(N_1(S),\dots,N_d(S))^{\mathsf T},\qquad s_S=\mathbf 1^{\mathsf T}v_S,\qquad G_T=\sum_{S:\,s_S>0}\frac{v_Sv_S^{\mathsf T}}{s_S},
+\]
+$N_j(S)$ counting the ordinates of $L(s,\chi_j)$ in $S$ with multiplicity.
+
+\begin{theorem}[Uniform microscopic frame; \stU]\label{chz:thm:frame}
+There are $c,C,T_0>0$ depending only on the family and $K$ such that for $T\ge T_0$, uniformly over all such
+partitions,
+\[
+ c\,\mathcal L_TI_d\preceq G_T\preceq C\,\mathcal L_TI_d,
+\]
+and $\sum_S\abs{b^{\mathsf T}v_S}\ge c_1\mathcal L_T\norm b_2$ for all $b\in\R^d$.
+\end{theorem}
+
+\begin{proof}
+Suppose the $\ell^1$ bound fails. Then along a sequence $T\to\infty$ there are allowed partitions and unit vectors
+$b_T\to b$ with $D_T:=\sum_S\abs{b_T^{\mathsf T}v_S}=o(\mathcal L_T)$; put $\delta_T=D_T/\mathcal L_T$ and
+$M=\min\set{\log T/\log\log T,(\delta_T+\mathcal L_T^{-1})^{-1/2}}$, so $M\to\infty$ and $M\delta_T\to0$. Move every
+occurrence in a nonempty bin to one representative $x_S$, at distance at most $K/\log T$. Moving $x$ to $x'$ changes the
+indicator of $x\in(u,u+h]$ on a set of starts of measure $2\min(h,\abs{x-x'})$, so
+\[
+ \int_T^{2T-h}\Bigl\lvert\sum_jb_{T,j}C_j(u,h)-\sum_Sb_T^{\mathsf T}v_S\mathbf 1_{(u,u+h]}(x_S)\Bigr\rvert\dd u
+ \le\frac{2K}{\log T}\sum_j\abs{b_{T,j}}\bigl(N_j(2T)-N_j(T)\bigr)=O(KT),
+\]
+and the integral of the absolute value of the second sum is at most $hD_T$. Hence
+$T^{-1}\int_T^{2T-h}\abs{\sum_jb_{T,j}C_j(u,h)}\dd u\le M\delta_T+O(K)$; dividing by $\sqrt{\log M}$, and noting that the
+omitted starts have probability $o(1)$,
+$\alpha_T+b_T^{\mathsf T}Z_T\to0$ in probability, where $Z_T$ is the vector of \cref{chz:lem:bpclt}(i) and
+$\alpha_T=M\sum_jb_{T,j}/(2\pi\sqrt{\log M})$. But $b_T^{\mathsf T}Z_T$ converges to a nondegenerate normal law: a bounded
+subsequence of $\alpha_T$ gives a translated nondegenerate limit, and $\abs{\alpha_T}\to\infty$ contradicts tightness. (For
+$d=1$ adjoin another primitive character and take a marginal.) Since $\sum_Ss_S=O(\mathcal L_T)$, Cauchy--Schwarz,
+$(\sum_S\abs{b^{\mathsf T}v_S})^2\le(\sum_Ss_S)(\sum_S(b^{\mathsf T}v_S)^2/s_S)$, gives the lower frame bound. For the upper bound,
+$(b^{\mathsf T}v_S)^2/s_S\le\sum_jb_j^2(v_S)_j$ in each bin, and each diagonal total is $O(\mathcal L_T)$.
+\end{proof}
+
+No simplicity, separation or noncoincidence of the zeros is used. The frame governs the estimation of an
+intensity superposition from Poisson counts in the bins: for known $t>0$ and known count vectors, observe
+independently
+\begin{equation}\label{chz:eq:poissonmix}
+ Y_S\sim\operatorname{Poisson}(t\,\theta^{\mathsf T}v_S),\qquad\theta\in[0,R]^d ,
+\end{equation}
+where $\theta$ need not have rational entries.
+
+\begin{theorem}[Minimax rate and an explicit estimator; \stU]\label{chz:thm:mixest}
+In the setting of \cref{chz:thm:frame} let $\widehat\theta=t^{-1}G_T^{-1}\sum_{S:s_S>0}(v_S/s_S)Y_S$. Then
+$\chzEx_\theta\widehat\theta=\theta$,
+\[
+ \operatorname{Cov}_\theta(\widehat\theta)=\frac1tG_T^{-1}\Bigl[\sum_S\frac{\theta^{\mathsf T}v_S}{s_S^2}v_Sv_S^{\mathsf T}\Bigr]G_T^{-1}\preceq\frac RtG_T^{-1},
+\]
+and if $G_T\succeq c\mathcal L_TI_d$, then
+$\Pr_\theta\set{\norm{\widehat\theta-\theta}_\infty\ge u}\le2d\exp\set{-ct\mathcal L_Tu^2/(2R+2u/3)}$ for every $u>0$. Its projection
+onto $[0,R]^d$ has worst-case squared Euclidean risk $O(\min\set{1,(t\mathcal L_T)^{-1}})$. Conversely, for fixed $0<r<R$
+even the unbinned observation of the band satisfies
+\[
+ \inf_{\widetilde\theta}\sup_{\theta\in[r,R]^d}\chzEx_\theta\norm{\widetilde\theta-\theta}_2^2\ge c_{r,R}\min\set{1,(t\mathcal L_T)^{-1}} .
+\]
+The constants are uniform over the partitions and depend on the family, $K$, $d$, $r$ and $R$; no uniformity in the
+conductors is claimed.
+\end{theorem}
+
+\begin{proof}
+The mean is $G_T^{-1}\sum_Sv_Sv_S^{\mathsf T}\theta/s_S=\theta$, independence and the Poisson variance give the covariance, and
+$\theta^{\mathsf T}v_S\le Rs_S$ the bound. For a coordinate $j$ put $q_S=e_j^{\mathsf T}G_T^{-1}v_S/s_S$; since
+$\norm{v_S}_2\le s_S$, $\abs{q_S}\le1/(c\mathcal L_T)$. The centred sum $t(\widehat\theta_j-\theta_j)$ has logarithmic moment generating
+function $t\sum_S(\theta^{\mathsf T}v_S)(e^{zq_S}-1-zq_S)$, and $e^x-1-x\le x^2/(2(1-\abs x/3))$ for $\abs x<3$ with the exponential
+Markov inequality gives a Bernstein bound with variance parameter at most $tR/(c\mathcal L_T)$ and jump size
+$1/(c\mathcal L_T)$; a union bound gives the tail. The trace of the covariance gives the risk, and clipping to the box
+does not increase the error and bounds it by $dR^2$. For the lower bound take two interior points differing by
+$\delta e_1$; from $D_{\mathrm{KL}}(\operatorname{Pois}(\alpha)\Vert\operatorname{Pois}(\beta))\le(\alpha-\beta)^2/\beta$,
+\[
+ D_{\mathrm{KL}}(P_\theta\Vert P_\eta)\le\frac{t\delta^2}r\sum_S\frac{(v_S)_1^2}{s_S}\le\frac{t\delta^2}r\sum_S(v_S)_1\le Ct\mathcal L_T\delta^2,
+\]
+also for the unbinned band. With $\delta$ a small constant times $\min\set{1,(t\mathcal L_T)^{-1/2}}$, Pinsker's inequality makes the
+total variation at most $\tfrac12$, and the two-point bound for squared loss concludes.
+\end{proof}
+
+For $\theta,\eta\in[r,R]^d$ the Fisher information
+$\mathcal I_T(\theta)=t\sum_Sv_Sv_S^{\mathsf T}/(\theta^{\mathsf T}v_S)$ satisfies $(t/R)G_T\preceq\mathcal I_T(\theta)\preceq(t/r)G_T$, and,
+rationalizing each square-root difference,
+\begin{equation}\label{chz:eq:mixhellinger}
+ \frac{(\theta-\eta)^{\mathsf T}G_T(\theta-\eta)}{4R}\le\sum_S\Bigl(\sqrt{\theta^{\mathsf T}v_S}-\sqrt{\eta^{\mathsf T}v_S}\Bigr)^2\le\frac{(\theta-\eta)^{\mathsf T}G_T(\theta-\eta)}{4r};
+\end{equation}
+the Poisson affinity of the two experiments is the exponential of $-t/2$ times the middle sum. So the frame bounds
+every Hellinger distance of the mixture experiment to within constant factors.
+
+\begin{theorem}[Exactly $d$ aggregated counters; \stU]\label{chz:thm:counters}
+For every large $T$ and every allowed partition there are disjoint collections $\mathcal A_1,\dots,\mathcal A_d$ of bins,
+chosen from the count vectors and not from $\theta$, such that the $d$ independent Poisson counts
+$Z_k=\sum_{S\in\mathcal A_k}Y_S$ alone give squared-error risk $O(\min\set{1,(t\mathcal L_T)^{-1}})$ uniformly on $[0,R]^d$. Fewer than
+$d$ fixed disjoint aggregated Poisson counters cannot identify an open box of parameters, even with arbitrarily long
+observation.
+\end{theorem}
+
+\begin{proof}
+Write $p_S=v_S/s_S$ in the probability simplex, so $G_T=\sum_Ss_Sp_Sp_S^{\mathsf T}$; let $G_T\succeq c\mathcal L_TI_d$ and
+$\sum_Ss_S\le C_0\mathcal L_T$. Partition the simplex into $J<\infty$ measurable cells of diameter at most $\delta$ with
+$C_0\delta^2\le c/4$, independently of $T$. For a nonempty cell $k$ put $S_k=\sum_{p_S\in k}s_S$,
+$\bar p_k=S_k^{-1}\sum_{p_S\in k}s_Sp_S$ and $G_T^{\mathrm{cell}}=\sum_kS_k\bar p_k\bar p_k^{\mathsf T}$. Then
+\[
+ G_T-G_T^{\mathrm{cell}}=\sum_k\sum_{p_S\in k}s_S(p_S-\bar p_k)(p_S-\bar p_k)^{\mathsf T}\preceq C_0\delta^2\mathcal L_TI_d,
+\]
+so $G_T^{\mathrm{cell}}\succeq\tfrac34c\mathcal L_TI_d$. Removing the cells with $S_k<\eta\mathcal L_T$, $\eta=c/(4J)$, removes a matrix of
+norm at most $J\eta\mathcal L_T$, since $\norm{\bar p_k}_2\le1$, and leaves $G_T^{\mathrm{heavy}}\succeq\tfrac c2\mathcal L_TI_d$ with
+$\eta\mathcal L_T\le S_k\le C_0\mathcal L_T$. By Cauchy--Binet, $\det G_T^{\mathrm{heavy}}=\sum_{\abs I=d}(\prod_{k\in I}S_k)\det(P_I)^2$, $P_I$ having the
+rows $\bar p_k^{\mathsf T}$, $k\in I$; so some $d$ remaining cells have
+$\abs{\det P_I}\ge\kappa=[\binom Jd^{-1}(c/(2C_0))^d]^{1/2}$, and $\norm{P_I^{-1}}_2\le d^{(d-1)/2}/\kappa$ as the rows have norm at
+most one. Keep exactly these $d$ cell counts, $Z_k\sim\operatorname{Pois}(tS_k\bar p_k^{\mathsf T}\theta)$; the unbiased estimator
+$P_I^{-1}(Z_k/(tS_k))_{k\in I}$ has covariance at most $(R/(t\eta\mathcal L_T))P_I^{-1}(P_I^{-1})^{\mathsf T}\preceq
+Rd^{d-1}(t\eta\kappa^2\mathcal L_T)^{-1}I_d$, and clipping gives the risk. With $A=\norm{P_I^{-1}}_{\infty\to\infty}$ the Poisson Bernstein
+bound gives $\Pr\set{\norm{\widehat\theta^{\mathrm{count}}-\theta}_\infty\ge u}\le2d\exp\set{-t\eta\mathcal L_T(u/A)^2/(2R+2u/(3A))}$. Finally $k<d$
+disjoint counters have mean $tA'\theta$ for a fixed $k\times d$ matrix $A'$; for $b\ne0$ in its kernel the parameters $\theta$
+and $\theta+\eps b$ give the same law of the whole count vector at every $t$.
+\end{proof}
+
+\begin{corollary}[Known total intensity; \stU]\label{chz:cor:knowntotal}
+If $\mathbf 1^{\mathsf T}\theta$ is known, $d-1$ disjoint aggregated counters suffice, with the same risk order on every compact
+part of the relative interior of that affine simplex, and fewer than $d-1$ cannot identify it.
+\end{corollary}
+
+\begin{proof}
+Write $\mathbf 1^{\mathsf T}=e^{\mathsf T}P$ for the matrix $P$ selected above. Every row of $P$ sums to one, so $\sum_je_j=d$ and some
+$e_j\ge1$; replacing that row by $\mathbf 1^{\mathsf T}$ gives a determinant of modulus $\abs{e_j\det P}\ge\kappa$ and rows of norm at
+most $\sqrt d$. Use the known total in this row and the other $d-1$ counters, with zero variance in the known
+coordinate; necessity is the kernel argument on the tangent hyperplane.
+\end{proof}
+
+\begin{theorem}[Collapse at growing bin width; \stU]\label{chz:thm:collapse}
+Let $d\ge2$ and $K(T)\to\infty$. There are partitions into intervals of length at most $K(T)/\log T$ with
+\[
+ \sup_{\norm b_2=1,\ \mathbf 1^{\mathsf T}b=0}b^{\mathsf T}G_Tb=o(\mathcal L_T),\qquad \mathbf 1^{\mathsf T}G_T\mathbf 1\asymp\mathcal L_T ,
+\]
+so $G_T$ has one eigenvalue of order $\mathcal L_T$ and all others $o(\mathcal L_T)$; the same holds for $\mathcal I_T(\theta)/t$
+uniformly on a fixed interior box.
+\end{theorem}
+
+\begin{proof}
+Put $m=\min\set{K(T),\log T/\log\log T}$, $h=m/\log T$, and partition into intervals of width $h$ with a common origin
+uniform in $[0,h)$. For every $j$ the expected sum over complete cells of $\abs{N_j(S)-N_1(S)}$ is
+$h^{-1}\int_T^{2T-h}\abs{C_j(u,h)-C_1(u,h)}\dd u=O(\mathcal L_T\sqrt{\log m}/m)$ by \cref{chz:lem:bpclt}(ii), and the two boundary
+cells contribute $O(\log T)$. For an origin at most the average,
+$E_T:=\sum_S\sum_j\abs{(v_S)_j-(v_S)_1}=o(\mathcal L_T)$. For $\mathbf 1^{\mathsf T}b=0$ and $\norm b_2=1$,
+$\abs{b^{\mathsf T}v_S}\le\sum_j\abs{(v_S)_j-(v_S)_1}$ and $\abs{b^{\mathsf T}v_S}\le s_S$, so $b^{\mathsf T}G_Tb\le E_T$, while
+$\mathbf 1^{\mathsf T}G_T\mathbf 1=\sum_Ss_S\asymp\mathcal L_T$; min--max and the frame comparison for $\mathcal I_T$ conclude.
+\end{proof}
+
+A bounded number of mean spacings thus preserves every mixture direction up to constant factors, while a growing
+number may keep the total intensity and lose, at the leading order $T\log T$, the information on every balanced
+change of composition; information of smaller order may still diverge, and the statement concerns some
+unfavourable partitions, not all.
+
+\begin{corollary}[Hellinger information of two binned products; \stU]\label{chz:cor:hellinger}
+Let $a\ne b$ be as at the start of this subsection, partition $(T,2T]$ into measurable bins of diameter at most
+$K/\log T$, $K$ fixed, and let $A_i,B_i$ be the bin counts of the two lists. Uniformly over such partitions,
+\[
+ \sum_i\bigl(\sqrt{A_i}-\sqrt{B_i}\bigr)^2\asymp_{a,b,K}T\log T .
+\]
+For a diverging allowance there are interval partitions with this diameter bound for which the sum is
+$o(T\log T)$. For independent Poisson counts of means $tA_i$ or $tB_i$ the Hellinger affinity is exactly
+$\exp[-(t/2)\sum_i(\sqrt{A_i}-\sqrt{B_i})^2]$, so bounded microscopic bin widths keep the order of this exponent.
+\end{corollary}
+
+\begin{proof}
+Pairing entries within each bin gives $\sum_i\abs{A_i-B_i}\ge D_T(K)$, and Cauchy--Schwarz gives
+\[
+ \frac{(\sum_i\abs{A_i-B_i})^2}{2\sum_i(A_i+B_i)}\le\sum_i\bigl(\sqrt{A_i}-\sqrt{B_i}\bigr)^2\le\sum_i\abs{A_i-B_i};
+\]
+\cref{chz:thm:threshold} and the total count give the first claim. For the second, $A_i-B_i=c^{\mathsf T}v_S$ with
+$\sum_jc_j=0$, so $\abs{A_i-B_i}\le\norm c_\infty\sum_j\abs{(v_S)_j-(v_S)_1}$, and the partition in the proof of
+\cref{chz:thm:collapse} makes the sum $o(T\log T)$. The affinity is multiplicative over the independent counts.
+\end{proof}
+
+The symmetric Li processes of \cref{li:sec:path} are Poisson processes of this kind. For primitive $\chi$ and
+$\gamma>0$ the jump rate of $X^\chi$ at each of $\pm\theta(\gamma)$, $\theta(\gamma)=2\arctan(1/(2\gamma))$, is
+$\tfrac12(m_\chi(\gamma)+m_{\bar\chi}(\gamma))$, by conjugation of the zeros, and the band $B_T$ corresponds to the ordinates
+in $(T,2T]$.
+
+\begin{corollary}[Information in the symmetric Li processes; \stU]\label{chz:cor:lihellinger}
+For nonconjugate primitive $\chi,\psi$ the Hellinger sum $H_T(\chi,\psi)$ of \cref{li:thm:information} has order
+$T\log T$, and so has the corresponding sum after the ordinates are grouped in bins of diameter at most $K/\log T$,
+$K$ fixed, uniformly over the bins. Consequently a test from these counts observed during time $t$ has least
+equal-prior error at most $\tfrac12\exp(-c\,tT\log T)$ with $c>0$ depending on $\chi,\psi$ and $K$.
+\end{corollary}
+
+\begin{proof}
+On the family of distinct primitive characters among $\chi,\bar\chi,\psi,\bar\psi$ take $a=e_\chi+e_{\bar\chi}$ and
+$b=e_\psi+e_{\bar\psi}$, with a repeated index for a real character; these are distinct products of degree two
+exactly when the conjugacy orbits differ. The rate at $\pm\theta(\gamma)$ is half the $a$-count at $\gamma$; halving both
+histograms halves the squared-root discrepancy and counting both signs of the angle restores the factor two, so
+$H_T(\chi,\psi)$ is the sum of \cref{chz:cor:hellinger} for the partition into single ordinates, completed by short
+empty intervals, and binning gives the second claim. The error bound is half the affinity, as in the proof of
+\cref{li:thm:information}.
+\end{proof}
+
+This gains two powers of $\log T$ over the single-prime lower bound $H_T\gg T/\log T$ of \cref{li:thm:information}, but
+gives no explicit constant. On the band $\abs{\theta'(\gamma)}=1/(\gamma^2+\frac14)\asymp T^{-2}$, so ordinate bins of diameter
+$O(1/\log T)$ are angle bins of width $O(T^{-2}/\log T)$.
+
+\begin{remark}[Mixtures of symmetric Li processes]\label{chz:rem:limixture}
+For primitive $\psi_1,\dots,\psi_d$ with distinct conjugacy orbits put $a_j(\gamma)=m_{\psi_j}(\gamma)+m_{\bar\psi_j}(\gamma)$; summing the
+two signs, the symmetric process of $\psi_j$ has rate $a_j(\gamma)$ at the magnitude $\theta(\gamma)$, the sign being an independent
+fair mark without parameter information. Grouping magnitudes by ordinate bins and using the $a$-count vectors in
+\eqref{chz:eq:poissonmix}, \cref{chz:thm:frame} applies after the injective linear change from the family of distinct
+primitive characters to the orbit sums, whose Euclidean norm is uniformly comparable to the original one, and every
+orbit sum has the same leading count $\frac1\pi T\log T$, so \cref{chz:thm:collapse} uses the same balanced subspace.
+Hence \cref{chz:thm:mixest,chz:thm:counters,chz:thm:collapse} apply to intensity superpositions of the symmetric Li
+processes. \Cref{src:thm:dgrh} is used only to identify these ordinate-built processes with the semigroups defined by
+the Li coefficients; the model assumes calibrated candidate histograms and exact bin membership, and makes no claim on
+converting noisy positions into counts or on an efficient conductor-uniform construction of the histograms. Rational
+checks of $400$ frames and $60$ compressions are in
+\artifact{proveit_three_extensions_2026-11-27/checks/mixtures/mixture_frame_checks.json}.
+\end{remark}
+
 \subsection{Blurred zero measures and a critical width}\label{rec:sec:blur}
 \sources{dirichlet-zero-recovery}
 
@@ -2951,7 +3594,7 @@ $(5,5,5,3,3,-21)$ gives $\pm729{,}000{,}000$:
 \end{center}
 
 \subsection{Open questions}\label{chz:sec:open}
-{\raggedright\sources{dirichlet_inverse_problems; dirichlet_li_rigidity; dirichlet_zero_packet_homometry; dirichlet_zero_recovery; large_kernels_and_dirichlet_zeros; prime_pole_windows; quadratic_spectra; dirichlet-grh-research; grh-torsion-and-zero-data; dirichlet_low_zero_identification; dirichlet_zeros_and_abelian_fields; local_euler_recovery; robust_dirichlet_spectra_2026-11-26; dirichlet_packet_reconstruction; dirichlet_prime_frequency_inverse; translated_dirichlet_zero_divisors; dirichlet-character-zero-windows; dirichlet-zero-reconstruction; dirichlet_zero_windows; dirichlet-zero-windows; dirichlet-zero-recovery; grh-methods-polynomial-density}}
+{\raggedright\sources{dirichlet_inverse_problems; dirichlet_li_rigidity; dirichlet_zero_packet_homometry; dirichlet_zero_recovery; large_kernels_and_dirichlet_zeros; prime_pole_windows; quadratic_spectra; dirichlet-grh-research; grh-torsion-and-zero-data; dirichlet_low_zero_identification; dirichlet_zeros_and_abelian_fields; local_euler_recovery; robust_dirichlet_spectra_2026-11-26; dirichlet_packet_reconstruction; dirichlet_prime_frequency_inverse; translated_dirichlet_zero_divisors; dirichlet-character-zero-windows; dirichlet-zero-reconstruction; dirichlet_zero_windows; dirichlet-zero-windows; dirichlet-zero-recovery; grh-methods-polynomial-density; cycle-complements-and-dirichlet-zero-matching; proveit_three_extensions_2026-11-27}}
 
 \begin{enumerate}
 \item \emph{The height needed for recovery.} How low can the height needed to recover $(q,d)$ in the
@@ -3014,4 +3657,13 @@ multiplicity excess for a fixed pair of characters, and is the coefficient $2/\p
 \cref{zer:thm:short} optimal? Can one force a genuinely unshared zero in every
 triple-logarithmic interval? The first asks for a stronger localization argument, the last
 for information on individual orders at common zeros.
+\item \emph{Dyadic matching and binning.} At a fixed $M$, does $\chzC_{M/\log T}/T$ have a limit, and how does it depend
+on $M$? This may need finer joint statistics than the mesoscopic Gaussian input of \cref{chz:lem:prime}. What is the
+rate of convergence in \cref{chz:prop:randomheight}, especially near its atom, and does the constant $\kappa_c$ of
+\cref{chz:thm:deletion} persist uniformly over conductors growing with $T$, or in the short windows of
+\cref{rec:sec:localwin}? Does $D_T(K)/(T\log T)$ have a limit for each fixed $K>0$, and at what rate does it decay
+between the bounds of \cref{chz:thm:rapid,chz:thm:tails}? A distance asymptotic after optimizing motion against
+omissions does not determine the density of exactly common zeros of two distinct primitive $L$-functions, which
+remains open. For the mixtures of \cref{chz:thm:mixest}, at what cost can noisy positions replace exact bin counts,
+and can the constants be made explicit and uniform in the conductors?
 \end{enumerate}

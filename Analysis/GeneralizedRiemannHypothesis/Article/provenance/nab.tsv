@@ -39,14 +39,14 @@ grh_cyclic_generator_transfer_2026-11-25	report.tex	Priorities beyond the immedi
 grh_cyclic_generator_transfer_2026-11-25	report.tex	Reproducibility and formalization plan	non-mathematical		
 grh_cyclic_generator_transfer_2026-11-25	report.tex	Conclusion	non-mathematical		
 grh_reflection_transfer_2026-11-25	report.tex	Source audit and scope	non-mathematical		
-grh_reflection_transfer_2026-11-25	report.tex	A multiplicity detector without Artin holomorphy	merged	nab:thm:reflection	with nab:cor:sn and nab:cor:coxeter; Heilbronn facts merged into nab:lem:heilbronn
-grh_reflection_transfer_2026-11-25	report.tex	A multiplicity detector without Artin holomorphy (Remark: how strong is the constant?)	answered	nab:thm:snsharp	the lower bound n-1 from the standard character is attained for 3<=n<=12; the obstruction is kept in the theorem
+grh_reflection_transfer_2026-11-25	report.tex	A multiplicity detector without Artin holomorphy	merged	nab:thm:reflection	with nab:cor:sn and nab:cor:coxeter; Heilbronn facts merged into nab:lem:heilbronn; nab:cor:sn demoted to a remark in batch 9, its bound 2(n-H_n) being superseded by nab:thm:snasym
+grh_reflection_transfer_2026-11-25	report.tex	A multiplicity detector without Artin holomorphy (Remark: how strong is the constant?)	answered	nab:thm:snsharp	the lower bound n-1 from the standard character is attained for 3<=n<=16 (13-16 added in batch 9); the obstruction is kept in the theorem
 grh_reflection_transfer_2026-11-25	report.tex	The one-sided prime criterion	other-unit	ana	part (a) of nab:prop:dedekind is recalled from ana:thm:primeonly without proof; the bound R_K=O(x^{-1/2}) under RH(zeta_K), part (b), is not in ana and keeps its proof
 grh_reflection_transfer_2026-11-25	report.tex	A single rational-prime inequality for an entire Galois closure	merged	nab:thm:reftest	prime-power removal lemma is ana's
 grh_reflection_transfer_2026-11-25	report.tex	Example: the normal closure of a quintic	merged	nab:ex:quintic	
 grh_reflection_transfer_2026-11-25	report.tex	What can actually be ported to Lean?	non-mathematical		formalization plan
-grh_reflection_transfer_2026-11-25	report.tex	Remaining geometric problem and research questions	merged	nab:sec:open	questions nab:q:lowdegree and nab:q:nonreflection; claim ledger dropped
-grh_reflection_transfer_2026-11-25	report.tex	Remaining geometric problem and research questions (can 2(n-H_n) be improved to n-1?)	answered	nab:thm:snsharp	yes for 3<=n<=12; n>=13 remains open as nab:q:un
+grh_reflection_transfer_2026-11-25	report.tex	Remaining geometric problem and research questions	merged	nab:sec:open	questions nab:q:lowdegree and nab:q:nonreflection; claim ledger dropped; nab:q:lowdegree answered by nab:thm:lowdegree in batch 9 and rewritten to the remaining optimality question
+grh_reflection_transfer_2026-11-25	report.tex	Remaining geometric problem and research questions (can 2(n-H_n) be improved to n-1?)	answered	nab:thm:snsharp	yes for 3<=n<=16; asymptotically in all degrees by nab:thm:snasym; n>=17 remains open as nab:q:un
 grh_relative_prime_races_2026-11-25	report.tex	Scope and evidence	non-mathematical		
 grh_relative_prime_races_2026-11-25	report.tex	The reusable parts of the proof	other-unit	src	
 grh_relative_prime_races_2026-11-25	report.tex	A general analytic detector	other-unit	ana	constant-free detector is ana:thm:primeonly(v); cited directly by nab:thm:tower and nab:prop:composita (the former restatement nab:prop:twoscale is deleted)
@@ -121,3 +121,43 @@ grh_spanning_and_s5_2026-11-26	sections/s5.tex	What remains open	merged	grp:rem:
 grh_spanning_and_s5_2026-11-26	sections/targets.tex	The uniform symmetric-group comparison	merged	grp:q:vn	taken as an open question; merged into nab:q:un as part (b) in the regrouping of 27 Nov 2026
 grh_cyclic_generator_transfer_2026-11-25	report.tex	A concrete degree-eight target	merged	grp:ex:s8	taken because the S_8 example is listed under this unit; the general S_n theorem of the same section is left to nab
 grh-transfer	report.tex	Detecting zeros with completely split rational primes (Theorem)	merged	grp:prop:split	Landau step by grp:prop:interface; merged into the remark after nab:prop:dedekind, which carries the label in the regrouping of 27 Nov 2026
+grh_lower_degree_detector_2026-11-27	detector.tex	Statement and relation to the source: Theorem (single-field compression)	merged	nab:thm:lowdegree	strongest degree bound of the batch: n!/(2^delta 3^r), r=floor((n-2)/3); kept over the code detector of proveit_zero_detection_research
+grh_lower_degree_detector_2026-11-27	detector.tex	Statement and relation to the source: relation to the source, Lean scope, comparison with the transposition field	non-mathematical		source discussion; the degree comparison is kept after nab:thm:lowdegree
+grh_lower_degree_detector_2026-11-27	detector.tex	The local positive identities: Lemma (five-letter identity) and Lemma (four-letter refinement)	merged	nab:lem:a5	
+grh_lower_degree_detector_2026-11-27	detector.tex	The local positive identities: Remark (optimality of the five-letter step)	merged	nab:rem:five	same example as the sharpness part of the three-cycle theorem of proveit_zero_detection_research
+grh_lower_degree_detector_2026-11-27	detector.tex	Iteration and proof of Theorem (single-field compression)	merged	nab:thm:lowdegree	
+grh_lower_degree_detector_2026-11-27	detector.tex	Iteration and proof: Corollary (Artin nonvanishing away from detected zeros)	merged	nab:thm:lowdegree	one sentence after the theorem; immediate from nab:lem:heilbronn(c)
+grh_lower_degree_detector_2026-11-27	detector.tex	The explicit prime statistic: Proposition (closed Frobenius weight)	merged	nab:prop:lowweight	
+grh_lower_degree_detector_2026-11-27	detector.tex	The explicit prime statistic: Corollary (one-sided prime criterion)	merged	nab:cor:lowtest	analytic proof duplicates nab:prop:dedekind, which is cited instead
+grh_lower_degree_detector_2026-11-27	detector.tex	The explicit prime statistic: example n=8 and T^8-T-1	merged	nab:ex:lowdeg8	
+grh_lower_degree_detector_2026-11-27	detector.tex	The small-degree boundary: Proposition (S_4: two smaller detectors)	merged	nab:prop:s4low	part (a)
+grh_lower_degree_detector_2026-11-27	detector.tex	The small-degree boundary: Proposition (limit of a single-field local positivity method)	merged	nab:prop:s4low	part (b)
+grh_lower_degree_detector_2026-11-27	detector.tex	Quantitative comparison and status: table	merged	nab:thm:lowdegree	table after the theorem; verification.json cited
+grh_lower_degree_detector_2026-11-27	detector.tex	Quantitative comparison and status: what is resolved	answered	nab:thm:lowdegree	answers the old nab:q:lowdegree; the question is rewritten to the optimality of degree and constant
+grh_lower_degree_detector_2026-11-27	detector.tex	Quantitative comparison and status: what is not resolved, verification status	non-mathematical		status and novelty statements
+proveit_zero_detection_research	paper.tex	Context, scope, and results	non-mathematical		source snapshot and scope
+proveit_zero_detection_research	paper.tex	Analytic interface: local positivity	duplicate	nab:lem:heilbronn	monomiality of dihedral groups and A_4 used in the proofs of nab:thm:snasym and nab:thm:lowdegree
+proveit_zero_detection_research	paper.tex	Coding-theoretic zero detection: An exact local criterion (Theorem and Corollary zeta-zero equivalence)	merged	nab:prop:codes	
+proveit_zero_detection_research	paper.tex	Coding-theoretic zero detection: Lemma (full-weight-spectrum dimension)	merged	nab:prop:codes	
+proveit_zero_detection_research	paper.tex	Coding-theoretic zero detection: Theorem (exponential degree reduction)	subsumed	nab:thm:lowdegree	degree n!/p^{floor(n/p)-d} is never smaller than n!/(2^delta 3^floor((n-2)/3)) (checked for all p<=n, n<=3000; asymptotically p^{n/p}<=3^{n/3}); the abelian order bound 3^{n/3} is kept in nab:prop:codes
+proveit_zero_detection_research	paper.tex	Coding-theoretic zero detection: Theorem (three-cycle detector)	duplicate	nab:thm:lowdegree	the case r=1 (the five-letter identity induced to G), stated after the theorem; sharpness example is nab:rem:five
+proveit_zero_detection_research	paper.tex	Coding-theoretic zero detection: Corollary (single detecting field below n!/2)	duplicate	nab:thm:lowdegree	
+proveit_zero_detection_research	paper.tex	Coding-theoretic zero detection: Explicit Frobenius weights and the prime-sum bridge (with table of examples)	subsumed	nab:prop:lowweight	weights of the code detector, which is subsumed; the weight of the retained detector is kept
+proveit_zero_detection_research	paper.tex	Improved transposition bound in all degrees: Lemma (reflection length bound)	subsumed	nab:thm:snasym	the bound 2(n-c(g))a is the argument of nab:cor:sn
+proveit_zero_detection_research	paper.tex	Improved transposition bound in all degrees: Lemma (subadditivity over disjoint cycles)	duplicate	nab:thm:snasym	Step 1
+proveit_zero_detection_research	paper.tex	Improved transposition bound in all degrees: Lemma (improved single-cycle bound), Theorem (uniform improved bound, C_infinity in (1.48335,1.48337)), Corollary (analytic consequence)	subsumed	nab:thm:snasym	per-cycle bound kappa(k)<=2(k-1)-eta(u_k)(u_k-1) for every k (write k=2^v u, odd primes of u decreasing q_i>=P: the excess terms sum to at most (u-P)/(P-1)), so the C_n of nab:thm:snasym is at most this C_n for every n, and C_n/n->1
+proveit_zero_detection_research	paper.tex	Sharp bound in degrees 13 through 16: Theorem (exact extension of the sharp bound)	merged	nab:thm:snsharp	extended to n<=16; certificates cert_13..16.json cited; same result as Theorem (exact new degrees) of symmetric_group_grh_multiplicity_2026-11-27, both certificate sets cited
+proveit_zero_detection_research	paper.tex	Sharp bound in degrees 13 through 16: Certificate encoding and independent verifier	merged	nab:thm:snsharp	block grammar summarized in the proof
+proveit_zero_detection_research	paper.tex	Assessment and next steps	non-mathematical		summary; the remaining part of nab:q:un is kept there
+symmetric_group_grh_multiplicity_2026-11-27	paper.tex	Scope and the question	non-mathematical		source snapshot; U_n(c) and the cone are defined before nab:thm:snasym
+symmetric_group_grh_multiplicity_2026-11-27	paper.tex	The main results: Theorem (uniform positive-cone bound)	merged	nab:thm:snasym	parts (a), (b)
+symmetric_group_grh_multiplicity_2026-11-27	paper.tex	The main results: Theorem (exact new degrees)	merged	nab:thm:snsharp	extended to n<=16; cert13..16.json cited
+symmetric_group_grh_multiplicity_2026-11-27	paper.tex	The main results: Theorem (second term of the explicit bound)	merged	nab:thm:snasym	part (c)
+symmetric_group_grh_multiplicity_2026-11-27	paper.tex	Positivity and trace deficits: Lemma (disjoint cycles), Lemma (prime cycles)	merged	nab:thm:snasym	Steps 1, 2
+symmetric_group_grh_multiplicity_2026-11-27	paper.tex	The cyclic wreath product inequality: Lemma (monomial), Theorem (wreath inequality), Corollary (recursive cycle bound)	merged	nab:thm:snasym	Steps 3-5
+symmetric_group_grh_multiplicity_2026-11-27	paper.tex	From a cycle bound to a cone theorem (with elementary convergence and the second term)	merged	nab:thm:snasym	Steps 5-7; table of values from bounds.csv
+symmetric_group_grh_multiplicity_2026-11-27	paper.tex	From a cycle bound to a cone theorem	answered	nab:thm:snasym	asymptotic form of nab:q:un(a): c_n^*/(n-1)->1; the exact question remains for n>=17
+symmetric_group_grh_multiplicity_2026-11-27	paper.tex	Four new exact certificates	merged	nab:thm:snsharp	
+symmetric_group_grh_multiplicity_2026-11-27	paper.tex	Consequences for Dedekind zeta functions: Corollary (unconditional analytic inequality), Corollary (Dirichlet GRH specialization)	merged	nab:thm:snasym	part (d)
+symmetric_group_grh_multiplicity_2026-11-27	paper.tex	Dependency audit and remaining problem: remaining problem	merged	nab:q:un	sufficient cycle condition recorded after nab:thm:snasym and in nab:q:un
+symmetric_group_grh_multiplicity_2026-11-27	paper.tex	Dependency audit and remaining problem: dependency audit, reproducibility	non-mathematical		

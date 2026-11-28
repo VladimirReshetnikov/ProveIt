@@ -39,7 +39,9 @@ zeros from Li moments: a moment pencil converges to each zero at a sharp rate, f
 inequalities certify simplicity, and mixed moments of two functions certify the separation
 of their ordinates. \Cref{li:sec:hermite,ana:sec:hankel,li:sec:cluster} turn near-positivity of
 power-sum and Hankel matrices into quantitative zero location and complete zero counts, and show
-what finite data cannot decide. The L\'evy process and the heat semigroup that the Cayley angles
+what finite data cannot decide. \Cref{li:sec:central} determines every turning point of the even
+central derivatives of quadratic Dirichlet $L$-functions, which answers a conjecture of Sheth and
+Voo under \cref{src:thm:dgrh} and for conductors below $512$ unconditionally. The L\'evy process and the heat semigroup that the Cayley angles
 of the zeros generate, and the random sums over zeros, are in \cref{sec:lih}.
 
 Most results below are statements about an abstract spectrum and are unconditional. They
@@ -1935,6 +1937,348 @@ real at $c=0,1$, while at $c=5$ with $K=b=2$,
 $\det H=(u\bar u)^2(u-\bar u)^2=-11226235159675972800/61^{24}<0$ for $u=(\gamma-5)^{-6}$; see
 \artifact{sparse_dirichlet_zero_tests/checks/verification.txt}.
 
+\subsection{Even central derivatives of quadratic Dirichlet \texorpdfstring{$L$}{L}-functions}\label{li:sec:central}
+\sources{quadratic-turning-points-and-critical-filters; ProveIt_New_Results_2026-11-27}
+
+Let $D$ be a fundamental discriminant with $\abs D>1$, $q=\abs D$, $\chi=\chi_D=(D/\cdot)$ its primitive
+quadratic character, $a\in\set{0,1}$ with $\chi(-1)=(-1)^a$, and, as in \cref{ana:cor:hankel},
+\[
+ \Lambda_\chi(s)=\Bigl(\frac q\pi\Bigr)^{(s+a)/2}\Gamma\Bigl(\frac{s+a}2\Bigr)L(s,\chi),\qquad
+ A_m=A_m(D)=\Lambda_\chi^{(2m)}(\tfrac12)\quad(m\ge0).
+\]
+These are ordinary derivatives, not Taylor coefficients; dividing by $(2m)!$ changes the question.
+Sheth and Voo complete with $q^{-a/2}\Lambda_\chi$, a positive multiple, which changes no comparison
+below. They conjecture \cite[Conjecture~1.5]{ShethVoo2026Super} that $(A_m)_{m\ge0}$ (1) is
+eventually increasing and (2) has at most one turning point, and they prove both when the theta
+function of $\chi$ is positive on $[1,\infty)$ \cite[Theorem~1.6]{ShethVoo2026Super}; testing the first
+ten derivatives up to conductor $10^4$, they found no turn beyond conductor $97$. Theta positivity can
+fail, for instance for $D=53$ \cite{LouboutinMunsch2013Positive}. Under the quadratic case of
+\cref{src:thm:dgrh} both parts hold, with the complete list of turning points
+(\cref{li:thm:turning}); for $q<512$ the list is unconditional, and part (1) holds unconditionally
+with an explicit threshold (\cref{li:thm:centralincrease}). Arbitrary-order asymptotics of central
+derivatives at a fixed conductor are due to Wagner \cite[Theorem~2.1, Corollary~1.4]{Wagner2020Jensen};
+\cref{li:thm:centralasymp} is a self-contained leading form of a known kind of asymptotic.
+
+\begin{theorem}[All turning points; \stG; \stU\ for $q<512$]\label{li:thm:turning}
+Assume that the nontrivial zeros of every primitive quadratic Dirichlet $L$-function lie on the
+critical line. The sequence $(A_m(D))_{m\ge0}$ changes direction exactly for the $31$ signed
+fundamental discriminants of \cref{li:tab:turning}; for each of them it decreases strictly to the
+indicated $A_j(D)$ and increases strictly thereafter. For every other $D$ it is nondecreasing and
+increases strictly from its first nonzero term; if the central value vanishes, the only equalities
+are between consecutive initial zeros. For every $q<512$ the classification of changes of direction
+holds unconditionally.
+\end{theorem}
+
+\begin{table}[ht]
+\centering\small
+\caption{All signed fundamental discriminants $D$ for which $(A_m(D))$ changes direction. The minimum
+is $A_j(D)$, a derivative of order $2j$.}\label{li:tab:turning}
+\begin{tabular}{@{}rrp{0.64\linewidth}@{}}
+\toprule
+$j$ & count & $D$\\
+\midrule
+1 & 21 & $-47$, $-39$, $-31$, $-24$, $-23$, $-20$, $-15$, $21$, $24$, $28$, $29$, $33$, $37$, $40$, $41$, $44$, $57$, $65$, $73$, $76$, $97$\\
+2 & 4 & $-11,12,13,17$\\
+3 & 3 & $-8,-7,8$\\
+5 & 2 & $-4,5$\\
+7 & 1 & $-3$\\
+\bottomrule
+\end{tabular}
+\end{table}
+
+For instance $A_0(97),A_1(97),A_2(97)$ are approximately $16.61430$, $15.53449$ and $34.67269$. The two
+characters of conductor $8$ have the same minimum index although their parities differ. The last
+conductor with a turn is $97$, and the latest minimum is at order $14$, for $D=-3$.
+
+\paragraph{A ratio bound from the zero multiset.} Assume the critical-line statement for $\chi$ and
+put $f(w)=\Lambda_\chi(\frac12+w)$. The functional equation of a primitive quadratic character has root
+number $1$, so $f$ is even, real on $\R$ and entire of order one. If $2\ell$ is its order at $0$, the
+paired Hadamard product is
+\begin{equation}\label{li:eq:centralproduct}
+ f(w)=Cw^{2\ell}\prod_{j\ge1}(1+w^2u_j),\qquad u_j=\gamma_j^{-2},\qquad\sum_ju_j<\infty,
+\end{equation}
+over the positive ordinates $\gamma_j$ with multiplicity: pairing $\rho$ with $1-\rho$ cancels the
+linear terms of the canonical factors, and evenness removes the exponential factor. Evaluation at a
+real $w>\frac12$, where the Euler product is positive, gives $C>0$, and there are infinitely many
+$\gamma_j$. With $e_k$ the $k$th elementary symmetric function of the $u_j$ ($e_0=1$),
+\begin{equation}\label{li:eq:centralsym}
+ A_m=0\quad(m<\ell),\qquad A_m=C(2m)!\,e_{m-\ell}>0\quad(m\ge\ell).
+\end{equation}
+No central nonvanishing, simplicity or independence of ordinates is assumed.
+
+\begin{lemma}[Subset averages; \stU]\label{li:lem:subsets}
+Let $u_j>0$ with $\sum_ju_j<\infty$. For $k\ge0$ and $r>0$,
+\[
+ (k+1)\frac{e_{k+1}}{e_k}\ge\sum_j\frac{u_j}{1+r^2u_j}-\frac k{r^2}.
+\]
+\end{lemma}
+
+\begin{proof}
+Give a $k$-element set $S$ of indices the weight $\prod_{j\in S}u_j/e_k$. Counting $(k+1)$-element sets
+with one distinguished element shows that the expected value of $\sum_{j\notin S}u_j$ is
+$(k+1)e_{k+1}/e_k$. For every $S$, $\sum_{j\notin S}u_j\ge\sum_{j\notin S}u_j/(1+r^2u_j)\ge
+\sum_ju_j/(1+r^2u_j)-k/r^2$, since each excluded index costs at most $1/r^2$. Summability justifies the
+countable sums.
+\end{proof}
+
+\begin{theorem}[Ratio test; \stG]\label{li:thm:ratio}
+Let $m\ge\ell$, $r>0$ and $G(r)=f'(r)/f(r)$. If $G(r)\ge2m/r$, then
+\[
+ \frac{A_{m+1}}{A_m}\ge\frac{2m+1}r\Bigl(G(r)-\frac{2m}r\Bigr).
+\]
+In particular $G(r)>r/(2m+1)+2m/r$ implies $A_{m+1}>A_m$.
+\end{theorem}
+
+\begin{proof}
+Logarithmic differentiation of \eqref{li:eq:centralproduct} gives
+$G(r)/(2r)=\ell/r^2+\sum_ju_j/(1+r^2u_j)$, so \cref{li:lem:subsets} with $k=m-\ell$ gives
+$(k+1)e_{k+1}/e_k\ge G(r)/(2r)-m/r^2$. By \eqref{li:eq:centralsym},
+$A_{m+1}/A_m=(2m+2)(2m+1)e_{k+1}/e_k\ge\frac{(m+1)(2m+1)}{(k+1)r}(G(r)-2m/r)$, and the factor
+$(m+1)/(k+1)\ge1$ can be dropped under the sign condition.
+\end{proof}
+
+The term $\ell/r^2$ cancels the contribution of the $\ell$ missing indices, so the test has the same
+threshold at every central multiplicity, and all zeros enter through one real value of $G$. Take
+$r=2m+2$ and $s_m=r+\frac12=2m+\frac52$. Then $r/(2m+1)+2m/r=2+\frac1{2m+1}-\frac1{m+1}\le2$, and for
+$s>1$ the Euler product and $\chi(n)\le1$ give $L'/L(s,\chi)\ge\zeta'/\zeta(s)$. With $\psi=\Gamma'/\Gamma$,
+\begin{equation}\label{li:eq:centralcut}
+ G(2m+2)\ge B(q,a,m):=\frac12\log\frac q\pi+\frac12\psi\Bigl(\frac{s_m+a}2\Bigr)+\frac{\zeta'}\zeta(s_m).
+\end{equation}
+$B$ increases in $q$, $a$ and $m$ ($\psi'>0$, and $\zeta'/\zeta$ is increasing on $(1,\infty)$), and tends to
+infinity with $m$.
+
+\begin{corollary}[An analytic cutoff; \stG]\label{li:cor:centralcut}
+If $B(q,a,M)>2$, then $A_{m+1}>A_m$ for every $m\ge\max(M,\ell)$. In particular this holds with $M=0$
+for every $q\ge384$.
+\end{corollary}
+
+\begin{proof}
+\Cref{li:thm:ratio} and \eqref{li:eq:centralcut} give the first statement, since then
+$G(2m+2)>2\ge r/(2m+1)+2m/r>2m/r$. Interval evaluation gives
+$2.00048888<B(384,0,0)<2.00048889$, and monotonicity covers $q\ge384$. An elementary bound suffices for
+$q\ge512$: $\psi(\frac54)=4-\gamma_E-\frac\pi2-3\log2>-0.231$ and
+\[
+ -\frac{\zeta'}\zeta\Bigl(\frac52\Bigr)\le\sum_{n\ge2}\frac{\log n}{n^{5/2}}\le\frac{\log2}{2^{5/2}}+\frac{\log3}{3^{5/2}}
+ +\int_3^\infty\frac{\log x}{x^{5/2}}\,\dd x<0.420,
+\]
+the integral being $3^{-3/2}(\frac23\log3+\frac49)$; hence $B(q,a,0)\ge B(512,0,0)>2.01$.
+\end{proof}
+
+\paragraph{The theta kernel.} Put $c=\pi/q$ and $\beta=a+\frac12$, and let the kernel of
+\cref{fil:lem:tails} be $K_\chi(t)=2e^{\beta t}\sum_{n\ge1}\chi(n)n^a\exp(-cn^2e^{2t})$, so that
+$\Lambda_\chi(\frac12+w)=\int_\R K_\chi(t)e^{wt}\dd t$ for all $w$. Theta inversion for a primitive real
+character, with root number $1$, makes $K_\chi$ even, and the kernel decays double exponentially at
+both ends; hence
+\begin{equation}\label{li:eq:centralkernel}
+ A_m=2\int_0^\infty t^{2m}K_\chi(t)\,\dd t,\qquad
+ A_{m+1}-A_m=2\int_0^\infty t^{2m}(t^2-1)K_\chi(t)\,\dd t,
+\end{equation}
+unconditionally. For $t$ with $B=ce^{2t}$, the terms $n\ge2$ are at most
+$\sum_{n\ge2}ne^{-B(n^2-1)}$ times the first. With $T=\max(1,\frac12\log(q/\pi))$ one has $B\ge1$ for
+$t\ge T$, and $(k+2)^2-1\ge3+5k$ gives $\sum_{n\ge2}ne^{-B(n^2-1)}\le e^{-3B}(2-e^{-5B})/(1-e^{-5B})^2<\frac12$,
+so
+\begin{equation}\label{li:eq:centraltail}
+ K_\chi(t)>e^{\beta t-ce^{2t}}>0\qquad(t\ge T).
+\end{equation}
+No sign of $K_\chi$ on $[0,T]$ is needed. High powers $t^{2m}$ suppress the possibly negative compact
+core and isolate this positive tail; all unconditional results below come from this comparison.
+
+\begin{proposition}[Unconditional signs for $q<512$; \stU]\label{li:prop:turning512}
+For each of the $312$ signed fundamental discriminants with $1<q<512$, put $g(t)=(t^2-1)K_\chi(t)$ and
+$T_q=1$ for $q\le56$, $T_q=2$ for $57\le q\le432$, $T_q=3$ otherwise. Then $g\ge0$ on $[T_q,\infty)$, and
+interval enclosures determine the signs of $A_{m+1}-A_m$ for $0\le m<16$ and prove
+\[
+ J_D:=\int_0^{T_q}t^{32}\min(g(t),0)\,\dd t+\int_{T_q}^\infty t^{32}g(t)\,\dd t>0.
+\]
+Consequently $A_{m+1}-A_m\ge2T_q^{2(m-16)}J_D>0$ for all $m\ge16$, and the finite signs give exactly the
+rows of \cref{li:tab:turning}:
+\begin{center}\small
+\artifact{quadratic-turning-points-and-critical-filters/verification/small-certificate.csv}
+\end{center}
+\end{proposition}
+
+\begin{proof}
+The choices of $T_q$ give $ce^{2T_q}\ge\pi/8$, and for $t\ge T_q$ the relative size of the terms $n\ge2$ is
+at most $\sum_{n\ge2}ne^{-(n^2-1)\pi/8}\le2e^{-3\pi/8}/(1-\frac32e^{-5\pi/8})<0.79$, by comparison of
+consecutive terms with a geometric progression; so $g\ge0$ there. For $m\ge16$ the factor $t^{2(m-16)}$
+is at most $T_q^{2(m-16)}$ on $[0,T_q]$ and at least that on $[T_q,\infty)$, which gives the lower bound from
+\eqref{li:eq:centralkernel}. The enclosures integrate on $[0,6]$ with $256$ theta terms: on each cell the
+positive and negative Gaussian subsums are separately decreasing, so their endpoint values enclose the
+signed sum, and $v\mapsto\min(v,0)$ is increasing and $1$-Lipschitz. On $[0,6]$ the omitted terms are at
+most $300e^{-3\cdot257^2/511}$ in absolute value, and beyond $t=6$, with $X=\pi e^{2t}/q>950(1+2(t-6))$,
+the theta sum is at most $2e^{-X}$ while the other factors are at most $e^{19t}$ for $m\le16$; both
+errors are below the allowance $10^{-18}$ used in each integration. Directed rounding is used
+throughout, and each sign requires an interval strictly on one side of $0$; the table records the
+$4{,}992$ differences and the $312$ positive bounds.
+\end{proof}
+
+\begin{proof}[Proof of \cref{li:thm:turning}]
+For $q<512$ this is \cref{li:prop:turning512}. For $q\ge512$, \cref{li:cor:centralcut} with $M=0$ gives
+$A_{m+1}>A_m$ for $m\ge\ell$, and $A_m=0$ for $m<\ell$ by \eqref{li:eq:centralsym}.
+\end{proof}
+
+\begin{remark}[An independent check under GRH]\label{li:rem:centralflint}
+For $q<384$ let $M$ be the least integer for which interval evaluation proves $B(q,a,M)>2$. For the
+$234$ primitive quadratic characters of conductor below $384$ only $\sum M=555$ comparisons remain, the
+largest $M$ being $56$. Rigorous ball arithmetic for the Taylor coefficients of $\Lambda_\chi(\frac12+x)$
+\cite{Johansson2017Arb} proves a positive central value and a strict sign for each of these differences,
+with no positive step followed by a negative one, and \cref{li:cor:centralcut} supplies the tails; this
+reproduces \cref{li:tab:turning}:
+\begin{center}
+\artifact{quadratic-turning-points-and-critical-filters/verification/signs.csv}
+\end{center}
+\end{remark}
+
+\begin{theorem}[Effective eventual increase; \stU]\label{li:thm:centralincrease}
+For every primitive quadratic $\chi$ of conductor $q$,
+\[
+ A_{m+1}(\chi)>A_m(\chi)\qquad\text{whenever}\qquad m\ge\ceil{500(1+\log q)^2}.
+\]
+\end{theorem}
+
+\begin{proof}
+On $[0,T]$, $\abs{K_\chi(t)}\le2e^{3T/2}\sum_{n\ge1}ne^{-cn^2}\le2qe^{3T/2}$, since
+$\sum_nne^{-cn^2}\le\int_0^\infty(x+1)e^{-cx^2}\dd x=\frac q{2\pi}+\frac{\sqrt q}2\le q$ for $q\ge3$. Hence
+$C:=\int_0^T\abs{t^2-1}\abs{K_\chi(t)}\dd t\le4qT^3e^{3T/2}$, and the part of $\frac12(A_{m+1}-A_m)$ from $[0,T]$ is
+at least $-T^{2m}C$. The part from $t\ge T$ is nonnegative because $T\ge1$, and on $[T+1,T+2]$
+\eqref{li:eq:centraltail} and $t^2-1\ge3$ give at least $3\exp(-ce^{2(T+2)})>e^{-440}$, since
+$ce^{2T}=\max(\pi e^2/q,1)<8$ and $e^4<55$. So $\frac12(A_{m+1}-A_m)>(T+1)^{2m}e^{-440}-T^{2m}C$. With
+$L=\log q$, $1\le T\le1+L/2$ and $\log T\le T$ give $\log C<\frac{13}2+\frac{13}4L$, and
+$\log(1+1/T)\ge1/(T+1)$; the difference is positive once
+$m>\frac{T+1}2(440+\log C)$, and this bound is less than
+$(1+\frac L4)(\frac{893}2+\frac{13}4L)<500(1+L)^2$.
+\end{proof}
+
+For $x>0$ let $W(x)$ be the positive solution of $We^W=x$.
+
+\begin{theorem}[Leading asymptotic; \stU]\label{li:thm:centralasymp}
+Fix $\chi$ and put $w_m=W(2mq/\pi)$. As $m\to\infty$,
+\[
+ A_m(\chi)=\frac{2\sqrt\pi\,w_m}{\sqrt{m(1+w_m)}}\Bigl(\frac{w_m}2\Bigr)^{2m}
+ \exp\Bigl(-\frac{2m}{w_m}+\frac{\beta w_m}2\Bigr)\Bigl(1+O_q\Bigl(\frac{\log m}m\Bigr)\Bigr),
+\]
+so $A_{m+1}/A_m\sim\frac14W(2mq/\pi)^2\to\infty$ and $A_m^{1/(2m)}\sim\frac12\log m$. Moreover, for every
+$0<\kappa<4\log2$,
+\[
+ A_m(\chi)=U_m(q,a)\bigl(1+O_{q,\kappa}(e^{-\kappa m/\log m})\bigr),\qquad
+ U_m(q,a)=4\int_0^\infty t^{2m}\exp\Bigl(\beta t-\frac\pi qe^{2t}\Bigr)\dd t.
+\]
+\end{theorem}
+
+The proof rests on a saddle-point estimate for $I_N(c,\beta)=\int_0^\infty t^Ne^{\beta t-ce^{2t}}\dd t$.
+
+\begin{lemma}[Saddle point; \stU]\label{li:lem:centralsaddle}
+For fixed $c>0$, $\beta\in\R$ and $w=W(N/c)$, as $N\to\infty$,
+\[
+ I_N(c,\beta)=\frac{\sqrt{2\pi}\,w}{2\sqrt{N(1+w)}}\Bigl(\frac w2\Bigr)^N
+ \exp\Bigl(-\frac Nw+\frac{\beta w}2\Bigr)\Bigl(1+O_{c,\beta}\Bigl(\frac wN\Bigr)\Bigr),
+\]
+and for every fixed $\lambda>1$,
+$\log\bigl(I_N(\lambda c,\beta)/I_N(c,\beta)\bigr)=-N\log\lambda/W(N/c)+O_{c,\beta,\lambda}(N/W(N/c)^2)$.
+\end{lemma}
+
+\begin{proof}
+Let $h(t)=N\log t+\beta t-ce^{2t}$; $h'$ decreases strictly from $+\infty$ to $-\infty$, so $h$ has a unique
+maximizer $r$. With $r_0=w/2$ one has $N/r_0=2ce^{2r_0}$ and $h'(r_0)=\beta$, and
+$V_0=N/r_0^2+4ce^{2r_0}=4N(1+w)/w^2$. The mean value theorem and one more Taylor step give
+$r-r_0=O(w/N)$, $h(r)=N\log(w/2)-N/w+\beta w/2+O(w/N)$ and $V=-h''(r)=V_0(1+O(w/N))$. On $\abs{t-r}\le1$,
+$-h''$ is comparable to $V$ and $h^{(j)}=O_j(N/r)$ for $3\le j\le6$; with $y=\sqrt V(t-r)$ and
+$\eps=(r/N)^{1/2}$, $h(t)-h(r)=-y^2/2+a_3y^3+a_4y^4+O(\eps^3\abs y^5+\eps^4y^6)$ with $a_3=O(\eps)$,
+$a_4=O(\eps^2)$. On $\abs y\le\eps^{-1/6}$ the cubic term integrates to zero and the rest contributes
+$O(\eps^2)$; concavity bounds the remaining ranges by $e^{-c_0y^2}$ and, beyond $\abs{t-r}=1$, by
+$O(e^{h(r)-c_1V}/V)$. Thus $I_N=e^{h(r)}\sqrt{2\pi/V}(1+O(r/N))$, which is the first formula. For the ratio,
+$\partial w/\partial\log c=-w/(1+w)$ and $\partial_{\log c}N(\log(w/2)-1/w)=-N/w$; integrating the
+explicit main expression over $[\log c,\log c+\log\lambda]$, on which $w$ changes by $O(1)$, gives the
+main term, and the $\beta$ term and prefactor change by $O(1)$. Only the explicit main expression is
+differentiated.
+\end{proof}
+
+\begin{proof}[Proof of \cref{li:thm:centralasymp}]
+By \eqref{li:eq:centralkernel} and absolute convergence, $A_m=4\sum_n\chi(n)n^aI_{2m}(cn^2,\beta)$. For $t\ge0$,
+$\sum_{n\ge2}n^ae^{-cn^2e^{2t}}\le e^{-4ce^{2t}}\sum_{n\ge2}n^ae^{-c(n^2-4)}$, so the terms $n\ge2$ contribute
+$O_q(I_{2m}(4c,\beta))$, and \cref{li:lem:centralsaddle} gives
+$I_{2m}(4c,\beta)/I_{2m}(c,\beta)=\exp(-(4\log2+o(1))m/\log m)$. This is the second statement, and the
+first is \cref{li:lem:centralsaddle} with $N=2m$. The logarithm of the main expression, as a function of
+the real variable $N$, has derivative $\log(W(N/c)/2)+o(1)$, so it changes by $2\log(W(N/c)/2)+o(1)$ when
+$N$ increases by $2$; with relative errors $o(1)$ at both indices this gives the ratio, and
+$W(N/c)\sim\log N$ gives the root asymptotic.
+\end{proof}
+
+\begin{theorem}[Hankel positivity in a linear range; \stU]\label{li:thm:centralhankel}
+For integers $r,m\ge0$ the matrix $H_{m,r}(\chi)=(A_{m+i+j}(\chi))_{0\le i,j\le r}$ is positive
+definite whenever, with $T=\max(1,\frac12\log(q/\pi))$,
+\[
+ m\ge\ceil[\big]{(T+1)\bigl(225+2\log q+\log(r+1)+r\log(2T+4)\bigr)}.
+\]
+For each fixed conductor this allows $r$ to grow linearly in $m$. Consequently $A_m>0$ and
+$A_mA_{m+2}>A_{m+1}^2$ for all large $m$, and every fixed forward difference $\Delta^jA_m$ is eventually
+positive.
+\end{theorem}
+
+\begin{proof}
+For $P(x)=\sum_{j\le r}v_jx^j$, \eqref{li:eq:centralkernel} gives $v^{\mathsf T}H_{m,r}v=2\int_0^\infty t^{2m}P(t^2)^2K_\chi(t)\dd t$.
+Let $B=(T+1)^2$, $C=(T+2)^2$, $D=C-B=2T+3$, $R=2T+4$. On $[B,C]$ the polynomials
+$\phi_j(x)=\sqrt{(2j+1)/D}\,\mathcal P_j((2x-B-C)/D)$, with $\mathcal P_j$ the Legendre polynomials
+($\mathcal P_j(1)=1$), are orthonormal; for $0\le x\le T^2$ the argument has absolute value at most
+$(B+C)/D<T+2$, and $\abs{\mathcal P_j(y)}\le(2E)^j$ for $\abs y\le E$, $E\ge1$, by Laplace's integral
+$\mathcal P_j(y)=\frac1\pi\int_0^\pi(y+\sqrt{y^2-1}\cos\theta)^j\dd\theta$ for $y\ge1$ and parity. Expanding $P$ in
+this basis and applying Cauchy--Schwarz with $\sum_{j\le r}(2j+1)=(r+1)^2$,
+\[
+ \sup_{0\le x\le T^2}P(x)^2\le\frac{(r+1)^2R^{2r}}D\int_B^CP(x)^2\,\dd x.
+\]
+With $C_0=2\int_0^T\abs{K_\chi}\le4qTe^{3T/2}$, the part from $[0,T]$ is at least
+$-C_0T^{2m}(r+1)^2R^{2r}D^{-1}\int_B^CP^2$; the part beyond $T$ is nonnegative, and on $[T+1,T+2]$ the
+substitution $x=t^2$ and \eqref{li:eq:centraltail} give at least $B^me^{-440}(T+2)^{-1}\int_B^CP^2$. Since
+$(T+2)/D<1$, positivity follows from $2m\log(1+1/T)>440+\log C_0+2\log(r+1)+2r\log R$. Now
+$\log C_0<\frac92+\frac94\log q$, and the hypothesis with $\log(1+1/T)\ge1/(T+1)$ makes the left side at least
+$450+4\log q+2\log(r+1)+2r\log R$. The cases $r=0,1$ give positivity and log-convexity. Finally
+$\Delta^jA_m=2\int_0^\infty t^{2m}(t^2-1)^jK_\chi(t)\dd t$, whose integrand is positive for $t\ge T+1$, and the same
+comparison of the compact core with a farther positive interval applies.
+\end{proof}
+
+\begin{theorem}[Hankel positivity in dimensions of order $m\log m$; \stU]\label{li:thm:centralsuper}
+With $T$ as above, $c=\pi/q$ and $C_q=4qTe^{3T/2}$, for real $T<U<V$ the matrix $H_{m,r}(\chi)$ is positive
+definite if
+\[
+ 2m\log\frac UT>ce^{2V}+\log\frac{C_qV}{V^2-U^2}+2\log(r+1)+2r\log\frac{V+U}{V-U}.
+\]
+Consequently, for every fixed $q$ and every $0<\alpha<1/(4eT)$ there is $M(q,\alpha)$ such that $H_{m,r}(\chi)$ is
+positive definite for all $m\ge M(q,\alpha)$ and all integers $0\le r\le\alpha m\log m$.
+\end{theorem}
+
+\begin{proof}
+Run the previous proof on $[U^2,V^2]$. The largest transformed coordinate for $x\in[0,T^2]$ is
+$E=(V^2+U^2)/(V^2-U^2)>1$, with $E+\sqrt{E^2-1}=(V+U)/(V-U)$, and Laplace's integral gives
+$\abs{\mathcal P_j(y)}\le(E+\sqrt{E^2-1})^j$ for $\abs y\le E$. So the compact core contributes at least
+$-C_qT^{2m}(r+1)^2((V+U)/(V-U))^{2r}(V^2-U^2)^{-1}\int_{U^2}^{V^2}P^2$, while on $[U,V]$
+\eqref{li:eq:centraltail} gives $K_\chi>e^{-ce^{2V}}$ and the positive part is at least
+$U^{2m}e^{-ce^{2V}}V^{-1}\int_{U^2}^{V^2}P^2$. For the range take $U=eT$ and
+$V=V_m=\frac12\log(m/c)-\log\log m$; then $ce^{2V_m}=m/(\log m)^2$, $\log((V_m+U)/(V_m-U))=(4U+o(1))/\log m$,
+the logarithmic terms are $O(\log m)$, and for $r\le\alpha m\log m$ the right side is at most
+$(8U\alpha+o(1))m<2m$, the left side.
+\end{proof}
+
+The coefficient $1/(4eT)$ is not asserted to be optimal. The increasing index is needed:
+
+\begin{remark}[A fixed index cannot cover every dimension]\label{li:rem:centralfixed}
+If $K_\chi$ is negative on a nonempty interval, then for every fixed $m$ some $H_{m,r}(\chi)$ is not positive
+semidefinite. Indeed $\dd\sigma_m(x)=x^{m-1/2}K_\chi(\sqrt x)\dd x$ on $x\ge0$ has a total variation with all
+exponential moments, so polynomials are dense in $L^2(\abs{\sigma_m})$: a function orthogonal to all of
+them gives, by Cauchy--Schwarz, a finite measure whose bilateral Laplace transform is entire with all
+derivatives zero at $0$. Approximating the indicator of a bounded negative interval by polynomials
+$P$, the integrals $\int P^2\dd\sigma_m$ tend to a negative number. The conductor-$53$ kernel has such an
+interval: its theta function at $1$ is negative \cite[Section~1.1]{LouboutinMunsch2013Positive}, about
+$-0.11074775738627$. No optimal dimension as a function of $m$ is obtained.
+\end{remark}
+
+The unconditional statements control no initial segment, and eventual log-convexity does not give part
+(2) of the conjecture; for unbounded conductors that part is proved here only through
+\cref{li:thm:turning}. The asymptotic is checked numerically against the exact derivatives for
+conductors $3,5,53$ at $m=10,50,200$; these are illustrations, not part of the proofs:
+\begin{center}\small
+\artifact{ProveIt_New_Results_2026-11-27/verification/central_derivatives_checks.json}
+\end{center}
+
 \subsection{Complete cluster counts and what finite data cannot decide}\label{li:sec:cluster}
 \sources{grh_new_results_2026-11-26}
 
@@ -2132,7 +2476,7 @@ does not decide the multiplicities of $\Xi$. Finite-jet nonrigidity by Hermite i
 recorded by Eberwein \cite{Eberwein2026Truncated}.
 
 \subsection{Open questions}\label{li:sec:open}
-\sources{li_sampling_and_curvature; grh_method_transfers_research; li_ritz_zero_recovery; grh_ritz_relative_asymptotics; li_zero_separation; sparse_dirichlet_zero_tests}
+\sources{li_sampling_and_curvature; grh_method_transfers_research; li_ritz_zero_recovery; grh_ritz_relative_asymptotics; li_zero_separation; sparse_dirichlet_zero_tests; quadratic-turning-points-and-critical-filters; ProveIt_New_Results_2026-11-27}
 
 \begin{question}[Euler products and weaker recurrence]\label{li:q:euler}
 Can a universal Li sampling test requiring less than simultaneous Bohr recurrence be proved for a
@@ -2177,5 +2521,15 @@ and for collisions be attained together? Under explicit separation of a bounded 
 how much absolute precision in each $P_k(c)$ certifies a negative eigenvalue of
 $H(c,m;K,b)$? How does the classification of \cref{ana:thm:centres} change for centres in a
 fixed real quadratic field?
+\end{question}
+
+\begin{question}[Central derivatives]\label{li:q:central}
+Can the one-turn statement of \cref{li:thm:turning} be proved for unbounded conductors without the
+critical-line input, through an unconditional substitute for the positive product
+\eqref{li:eq:centralproduct}? \Cref{li:lem:subsets} applies to every self-dual completion whose zeros lie
+on the critical line; for which families do the archimedean factor and the Euler product give an
+effective analogue of \eqref{li:eq:centralcut}? What is the largest dimension $r(m)$ for which
+$H_{m,r}(\chi)$ is positive definite, beyond the range $r\le\alpha m\log m$, $\alpha<1/(4eT)$, of
+\cref{li:thm:centralsuper}? The possible vanishing of quadratic central values is a separate question.
 \end{question}
 

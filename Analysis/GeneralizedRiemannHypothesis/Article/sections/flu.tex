@@ -1878,7 +1878,7 @@ This kernel is the prime error itself; the autocorrelation of the prime error at
 behaves differently and is treated next.
 
 \subsection{Merging scales: a cubic logarithmic law}\label{zer:sec:coalesce}
-\sources{prime_scale_coalescence_2026-11-26; dirichlet-zero-multiplicity-and-reconstruction; grh-two-open-questions; dirichlet-coupled-zeros-and-prime-variances}
+\sources{prime_scale_coalescence_2026-11-26; dirichlet-zero-multiplicity-and-reconstruction; grh-two-open-questions; dirichlet-coupled-zeros-and-prime-variances; grh_research_extensions_2026-11-27}
 
 \Cref{zer:thm:coercive} keeps the scales fixed. For the zeta function the rate at which the
 covariance degenerates as the scales merge is determined exactly up to a bounded factor. Let
@@ -2274,9 +2274,10 @@ $V_c(h)$ for the long-time mean square of $\sum_ic_iE(t+hu_i)$ and $\kappa(T)=2\
 \begin{theorem}[Reading multiplicities from the variance; \stG]\label{zer:thm:coalesceinverse}
 \begin{enumerate}[label=\textup{(\roman*)}]
 \item Let a finite family of stencils have symbols without a common real zero; for instance one
-three-point stencil, or one four-point stencil on four equally spaced nodes whose shape is not
+three-point stencil, one four-point stencil on four equally spaced nodes whose shape is not
 exceptional in
-\cref{zer:thm:fourpoint}. For every finite $\kappa\ge0$, $V_c(h)/\tau(h)\to\mathcal B(c)\kappa$ as $h\downarrow0$
+\cref{zer:thm:fourpoint}, or two five-point stencils on five equally spaced nodes with distinct shapes
+(\cref{flu:thm:fivepair}). For every finite $\kappa\ge0$, $V_c(h)/\tau(h)\to\mathcal B(c)\kappa$ as $h\downarrow0$
 for every stencil of the family if and only if $\kappa(T)\to\kappa$. On the left it suffices to take
 $h=h_n$ along a decreasing sequence with $h_{n+1}/h_n\to1$, for instance $h=1/k$, and by
 \cref{zer:rem:stencilexist} existence of the finite limits suffices. In particular, for a three-point
@@ -2447,9 +2448,48 @@ with $\zerSym_c(\omega)=0$; by \cref{zer:thm:stencilbank} the stencil is determi
 none, and at a missing frequency the perturbation $\cos(\omega\log x)$ of the leading density is invisible
 to the variance. Put $\alpha=\log3/\log2$.
 
+The two cancellations say exactly that $P(z)=(1-z)^2(e+fz+gz^2)$ for unique real $e,f,g$, not all zero, that
+is $c=(e,f-2e,e-2f+g,f-2g,g)$; zero entries are allowed. Put
+\[
+ R=e^2+f^2+g^2,\qquad s_1=\frac{f(e+g)}R,\qquad s_2=\frac{eg}R .
+\]
+These depend only on the normalized squared response,
+\begin{equation}\label{flu:eq:fiveresponse}
+ \frac{\abs{p_c(x)}^2}R=\abs{1-e^{ix}}^4\bigl(1+2s_1\cos x+2s_2\cos2x\bigr),
+\end{equation}
+and two stencils have the same \emph{shape} $(s_1,s_2)$ exactly when their normalized squared responses
+agree; reversing the weights or changing their sign does not change the shape. A four-point stencil on
+the nodes $0,1,2,3$ or $1,2,3,4$ has $g=0$ or $e=0$, so its five-point shape is $(t,0)$ with $t$ its shape in
+\cref{zer:thm:fourpoint}. With $z=2^{i\xi}$ and $w=3^{i\xi}$, direct expansion gives
+\begin{equation}\label{flu:eq:fivesymbol}
+ \frac{\zerSym_c(\xi)}R=A+Bz+Cw+Dz^2,\qquad
+ \begin{aligned}
+ A&=-4+7s_1-4s_2,& B&=8-32s_1+48s_2,\\
+ C&=27s_1-108s_2,& D&=64s_2,
+ \end{aligned}
+\end{equation}
+so $(b_1,b_2,b_3,b_4)=R(A,B,C,D)$, the value at $\xi=0$ is $4+2s_1$, and $\mathcal B(c)=R(4+2s_1)/6$.
+
+\begin{lemma}[The shapes; \stU]\label{flu:lem:fivedomain}
+The set of shapes is
+\[
+ \Omega=\Bigl\{(s_1,s_2):\ -\tfrac12\le s_2\le\tfrac12,\quad
+ s_1^2\le\begin{cases}(\tfrac12+s_2)^2,&-\tfrac12\le s_2\le\tfrac16,\\ 4s_2(1-2s_2),&\tfrac16\le s_2\le\tfrac12\end{cases}\Bigr\}.
+\]
+In particular $\abs{s_1}\le1/\sqrt2$ and $4+2s_1>0$.
+\end{lemma}
+\begin{proof}
+Normalize $R=1$ and put $q=f^2$. Then $(e+g)^2=1-q+2s_2$, $(e-g)^2=1-q-2s_2$ and $s_1^2=q(1-q+2s_2)$, with
+$0\le q\le1-2\abs{s_2}$. The maximum of this quadratic in $q$ on that range is attained at $q=\tfrac12+s_2$ if
+$s_2\le\tfrac16$ and at $q=1-2s_2$ if $s_2\ge\tfrac16$, and its continuous range contains $0$ and every value up to
+the maximum. Conversely, for such $q$ choose the signs of $f$ and $e+g$ to give $s_1$ and recover $e,g$ from the
+two squares. The bound on $s_1$ also follows from $\abs{f(e+g)}\le\sqrt2\abs f\sqrt{e^2+g^2}\le R/\sqrt2$.
+\end{proof}
+
 \begin{theorem}[Five consecutive observations; \stU]\label{zer:thm:fivepoint}
-If $b_3=0$, there are infinitely many missing positive frequencies when $b_1+b_2z+b_4z^2$ has a root on the
-unit circle, and none otherwise. If $b_3\ne0$, solve
+If $b_3=0$, there are infinitely many missing positive frequencies exactly for the shape
+$(s_1,s_2)=(\tfrac27,\tfrac1{14})$, and they are the odd multiples of $\pi/\log2$; every other shape with $b_3=0$
+misses none. If $b_3\ne0$, solve
 \begin{equation}\label{zer:eq:fivequad}
  4b_1b_4X^2+2b_2(b_1+b_4)X+(b_1-b_4)^2+b_2^2-b_3^2=0 .
 \end{equation}
@@ -2468,8 +2508,18 @@ cosine rule of the proof of \cref{zer:thm:fourpoint}, and \eqref{zer:eq:fivegrou
 interval $I$, the density of the exceptional shapes, $\mathcal B(c)$ and the certified example.
 \begin{proof}
 The cancellations give $\sum_{i,j}c_ic_j(i-j)^2=0$, that is $b_1+b_2/2+b_3/3+b_4/4=0$, and
-$\zerSym_c(0)=6\mathcal B(c)>0$. When $b_3=0$ the symbol is periodic in $\xi$ with period $2\pi/\log2$, which gives
-the first assertion. When $b_3\ne0$ let $z=2^{i\xi}$, $w=3^{i\xi}$. The equation $\zerSym_c(\xi)=0$ determines
+$\zerSym_c(0)=6\mathcal B(c)>0$. When $b_3=0$, that is $s_1=4s_2$, \cref{flu:lem:fivedomain} gives
+$-1/10\le s_2\le1/6$, and \eqref{flu:eq:fivesymbol} reduces to the real polynomial
+$(-4+24s_2)+(8-80s_2)z+64s_2z^2$ in $z=2^{i\xi}$; the symbol is periodic in $\xi$ with period $2\pi/\log2$, so
+there are infinitely many missing frequencies if this polynomial has a root on the unit circle and none
+otherwise. Its value at $z=1$ is $4+8s_2>0$, and at $z=-1$ it is $-12+168s_2$, which vanishes exactly when
+$s_2=1/14$. A nonreal root on the circle would come with its conjugate, so the constant and leading
+coefficients would agree, giving $s_2=-1/10$; there the polynomial is a nonzero multiple of
+$2z^2-5z+2$, with roots $2$ and $1/2$. At $s_2=0$ the only root is $1/2$. At $s_2=1/14$,
+\begin{equation}\label{flu:eq:fivespecial}
+ \zerSym_c(\xi)/R=\tfrac{16}7(z+1)(2z-1),
+\end{equation}
+which vanishes exactly at $z=-1$. When $b_3\ne0$ let $z=2^{i\xi}$, $w=3^{i\xi}$. The equation $\zerSym_c(\xi)=0$ determines
 $w$ from $z$, and on $\abs z=1$ the condition $\abs w=1$ expands to \eqref{zer:eq:fivequad} with $X=\Re z$. This
 quadratic does not vanish identically: otherwise $\abs{b_1+b_2z+b_4z^2}$ would be constant $\abs{b_3}$ on the
 circle, so the polynomial would be a monomial, since the autocorrelation at the difference of its extreme
@@ -2483,8 +2533,10 @@ one pair $(m,n)$; conjugation accounts for the negative frequency, and distinct 
 positive frequencies.
 \end{proof}
 
-The dyadic five-point contrast above has $b_3=0$: its symbol is $(1+2^{i\xi})\zerSym_{(1,-2,1)}(\xi)$, and it misses
-exactly the odd multiples of $\pi/\log2$.
+The dyadic five-point contrast above has the shape $(\tfrac27,\tfrac1{14})$: its symbol is
+$(1+2^{i\xi})\zerSym_{(1,-2,1)}(\xi)$, and it misses exactly the odd multiples of $\pi/\log2$. By
+\cref{zer:thm:fivepoint} it is, up to shape, the only five-point stencil with infinitely many missing
+frequencies.
 
 \begin{theorem}[Two missing frequencies; \stU]\label{zer:thm:fivetwo}
 Let $P_{s,t}(z)=(1-z)^2(1+sz+tz^2)$. In an open neighbourhood of $(s,t)=(8,14)$ every stencil has five nonzero
@@ -2515,11 +2567,190 @@ passing both tests, the points with exactly one coordinate in it are dense, and 
 families of coordinate lines has measure zero, also after the local change of variables.
 \end{proof}
 
-So a five-point variance can converge on a spectrum with two independently adjustable invisible
-oscillations: with missing frequencies $\omega_1,\omega_2$, a leading density proportional to
-$1+a\cos(\omega_1\log x)+b\cos(\omega_2\log x)$, $\abs a+\abs b<1$, leaves the variance unchanged while the counting
-statistic retains both terms, with factors $(1+i\omega_k)^{-1}$ in complex form. Whether the ratio of the two
-frequencies has a special arithmetic nature is not known.
+\begin{remark}[A certified two-frequency shape]\label{flu:rem:fivewitness}
+An explicit shape attaining the bound two is certified independently. Let
+\begin{gather*}
+ s_1^0=0.226581725372920248553022108864,\qquad s_2^0=0.021509738593496195392746518501,\\
+ x_0=5.698378161005081978098269879203,\qquad y_0=10.737241689185610111079863383138 .
+\end{gather*}
+In the closed supremum-norm box of radius $10^{-10}$ about $(s_1^0,s_2^0,x_0,y_0)$ the four real equations
+$\Re\zerSym_c(x)=\Im\zerSym_c(x)=\Re\zerSym_c(y)=\Im\zerSym_c(y)=0$, written through \eqref{flu:eq:fivesymbol} as
+equations in $(s_1,s_2,x,y)$, have exactly one solution. For the Newton map $G(v)=v-MF(v)$ with a rational
+preconditioner $M$, rational interval arithmetic gives $\norm{MF(v_0)}_\infty<10^{-25}$ and
+$\sup_v\norm{I-MDF(v)}_\infty<10^{-5}$ on the box, so $G$ maps the box into itself as a contraction, Banach's
+theorem gives a unique fixed point, and since $M$ is nonsingular it is the unique zero of $F$ in the box; $\log2$ and $\log3$ are enclosed by the series
+$2\sum_{j\ge0}r^{2j+1}/(2j+1)$, $r=(k-1)/(k+1)$, with a geometric tail, and sines and cosines by Taylor
+polynomials with factorial remainders. The whole shape box lies in the interior of $\Omega$ and has $b_3\ne0$,
+the frequency boxes lie in $(5,6)$ and $(10,11)$, and a reconstructed stencil is approximately
+\[
+ c\approx(0.9735081294,\ -1.7194339011,\ 0.5404384926,\ 0.1833922006,\ 0.0220950786),
+\]
+each weight enclosed away from zero; \cref{zer:thm:fivepoint} excludes a third positive missing frequency.
+\begin{center}
+\artifact{grh_research_extensions_2026-11-27/checks/certify_double_blind.py}\\
+\artifact{grh_research_extensions_2026-11-27/verification/double_blind_certificate.json}
+\end{center}
+\end{remark}
+
+\paragraph{Two five-point variances.}
+One defective five-point variance can hide two oscillations, but no two of them hide the same one.
+
+\begin{theorem}[Disjoint blind sets; \stU]\label{flu:thm:fivepair}
+The symbols of two five-point stencils with distinct shapes have no common real zero.
+\end{theorem}
+\begin{proof}
+Put $z=2^{i\xi}$, $w=3^{i\xi}$, $E=4(2z-1)$, $H=7-32z+27w$ and $v=s_1-4s_2$. Expanding \eqref{flu:eq:fivesymbol}
+gives the identity
+\begin{equation}\label{flu:eq:fivekey}
+ \zerSym_c/R=E\bigl(1+2s_2(4z-3)\bigr)+vH .
+\end{equation}
+On the unit circle $E\ne0$ and $4z-3\ne0$. Suppose both symbols vanish at $\xi$. If $v_1=v_2$, subtraction gives
+$s_{2,1}=s_{2,2}$, hence equal shapes. Otherwise eliminating $H$ gives
+$(v_2-v_1)+2(v_2s_{2,1}-v_1s_{2,2})(4z-3)=0$; the first coefficient is nonzero, so the second is too, and both are
+real, so $z=\pm1$. Then $\xi\ne0$, since the value at $0$ is $4+2s_1>0$, and irrationality of $\alpha$ gives
+$\Im w\ne0$. Taking imaginary parts in \eqref{flu:eq:fivekey}, where now $E$ and $4z-3$ are real, gives
+$v_1\Im H=v_2\Im H=0$ with $\Im H=27\Im w\ne0$, so $v_1=v_2=0$, a contradiction.
+\end{proof}
+
+Every second shape works, including one that is itself defective; what matters is the shape, not the weight
+vector. For two shapes on the line $s_2=0$ this is the four-point statement after \cref{zer:ex:fourexceptional},
+where the second difference is recovered by an explicit linear combination.
+
+\begin{corollary}[Recovery from two five-point variances; \stU]\label{flu:cor:fiverecover}
+For two five-point stencils $c^{(1)},c^{(2)}$ with distinct shapes and every positive measure $A$ as in
+\cref{zer:thm:stencilbank}, the following are equivalent: $a(T)=\pi A(T)/(T\log T)$ tends to a finite limit
+$d$; both $U_{c^{(j)}}(h)/\tau(h)$ have finite limits as $h\downarrow0$; both have finite limits along one
+decreasing sequence $h_n\to0$ with $h_{n+1}/h_n\to1$. The limits are then $d\,\mathcal B(c^{(j)})$.
+\end{corollary}
+\begin{proof}
+By \cref{flu:thm:fivepair} the family $\set{c^{(1)},c^{(2)}}$ satisfies the hypothesis of
+\cref{zer:thm:stencilbank}; \cref{zer:rem:stencilexist} turns existence of the limits into their proportionality
+to $\mathcal B$.
+\end{proof}
+
+Both measurements use the same five positions $v,v+h,\dots,v+4h$, so no further prime scales are needed to
+remove the ambiguity of a single five-point contrast; for $\zeta$ this is the case of
+\cref{zer:thm:coalesceinverse}(i) for two five-point stencils with distinct shapes, and the two normalized
+variances $V_{c^{(j)}}(h)/\tau(h)$ have finite limits exactly when $\kappa(T)$ has one.
+
+Exact nonvanishing need not be uniform. Put
+\[
+ L_1=4-52s_1+216s_2,\qquad L_2=-12+66s_1-96s_2,\qquad L_3=-12+12s_1+120s_2 ,
+\]
+the values of \eqref{flu:eq:fivesymbol} at $(z,w)=(1,-1),(-1,1),(-1,-1)$.
+
+\begin{theorem}[Uniform separation and the single gap; \stU]\label{flu:thm:fivegap}
+For two distinct shapes in $\Omega$,
+\[
+ \inf_{\xi\in\R}\bigl(\abs{\zerSym_{c^{(1)}}(\xi)}^2+\abs{\zerSym_{c^{(2)}}(\xi)}^2\bigr)>0
+\]
+if and only if the two shapes do not both lie on one of the three lines $L_j=0$. For one shape let
+$R_0(X)=4ADX^2+2B(A+D)X+(A-D)^2+B^2$, $r_-=\min_{[-1,1]}R_0$ and $r_+=\max_{[-1,1]}R_0$; then
+\begin{equation}\label{flu:eq:singlegap}
+ \inf_{\xi\in\R}\abs{\zerSym_c(\xi)}/R=\max\set{\sqrt{r_-}-\abs C,\ \abs C-\sqrt{r_+},\ 0}.
+\end{equation}
+\end{theorem}
+\begin{proof}
+The curve $(2^{i\xi},3^{i\xi})$ is dense in the two-torus: fixing the first phase and moving $\xi$ by multiples of
+$2\pi/\log2$ rotates the second by an irrational angle. By continuity and compactness the first infimum is zero
+exactly when the two torus polynomials \eqref{flu:eq:fivesymbol} have a common zero $(z,w)$. The elimination in
+the proof of \cref{flu:thm:fivepair} applies on the whole torus and forces $z=\pm1$; if $w$ is nonreal it gives
+$v_1=v_2=0$, contradicting $v_1\ne v_2$, so a common zero of distinct shapes is a corner $(z,w)\in\set{\pm1}^2$.
+The corner $(1,1)$ gives $4+2s_1>0$, and the other three give $L_1,L_2,L_3$. For one shape and fixed $z$, the
+minimum of $\abs{A+Bz+Dz^2+Cw}$ over $\abs w=1$ is $\bigl\lvert\abs{A+Bz+Dz^2}-\abs C\bigr\rvert$, and with $X=\Re z$,
+$\abs{A+Bz+Dz^2}^2=R_0(X)$, whose range on the circle is $[r_-,r_+]$.
+\end{proof}
+
+The infinitely defective shape $(\tfrac27,\tfrac1{14})$ lies on $L_2=L_3=0$, and the certified shape of
+\cref{flu:rem:fivewitness} lies on none of the lines, so these two defective measurements have uniformly
+separated finite symbols together. The gap concerns the finite symbols only; the full Mellin transform carries
+the further factor of \eqref{zer:eq:stencilmellin}, and no noise bound at finite height is claimed. By
+\eqref{flu:eq:singlegap} a five-point stencil is elliptic in the sense of \cref{zer:thm:mesh} exactly when
+$\sqrt{r_-}>\abs C$ or $\abs C>\sqrt{r_+}$.
+
+\begin{proposition}[Defective shapes are rare; \stU]\label{flu:prop:fivegeneric}
+The shapes with at least one missing real frequency form a subset of $\Omega$ of planar Lebesgue measure zero
+which is meagre.
+\end{proposition}
+\begin{proof}
+For fixed $\xi$, $\Re$ and $\Im$ of $\zerSym_c(\xi)/R=0$ are two affine equations in $(s_1,s_2)$. A singular
+consistent system would have a line of real solutions; for $\Im z\ne0$ the elimination of
+\cref{flu:thm:fivepair}, which does not use $\Omega$, allows at most one, and for $z=\pm1$, $\xi\ne0$, in the
+coordinates $(s_2,v)$ the coefficient of $s_2$ is real and nonzero while that of $v$ has imaginary part
+$27\Im w\ne0$; at $\xi=0$ there is no solution in $\Omega$. So at every $\xi$ where the determinant vanishes there is
+no defective shape. On each open interval where it is nonzero the solution $(s_1(\xi),s_2(\xi))$ is real analytic;
+countably many compact subintervals cover these intervals, and the image of each is compact, of measure zero
+and nowhere dense. These images cover the defective shapes.
+\end{proof}
+
+\paragraph{What one five-point variance leaves unknown.}
+Let $\mu_T(S)=\pi A(TS)/(T\log T)$ as in the proof of \cref{zer:thm:stencilbank}; a \emph{tangent} is a vague limit
+of $\mu_T$ along some $T\to\infty$.
+
+\begin{theorem}[All tangent measures of a five-point variance; \stU]\label{flu:thm:fivetangents}
+Let $c$ be a five-point stencil and suppose $U_c(h)/\tau(h)\to d\,\mathcal B(c)$, as $h\downarrow0$ or along a
+decreasing sequence with $h_{n+1}/h_n\to1$.
+\begin{enumerate}[label=\textup{(\roman*)}]
+\item If the positive missing frequencies are $\omega_1,\dots,\omega_k$, $k\le2$, every tangent has a density
+$d+\Re\sum_{j=1}^kC_jx^{i\omega_j}$ on $x>0$, with $C_j\in\C$, which is nonnegative everywhere.
+\item At the shape $(\tfrac27,\tfrac1{14})$ every tangent has a density $d+f(\log x)$ with
+$f(v+\log2)=-f(v)$ and $\abs{f(v)}\le d$ for almost every $v$.
+\end{enumerate}
+Conversely, every profile in (i) or (ii) is a tangent for some positive $A$ with this variance limit; these
+examples are abstract measures, not claimed to be zero spectra of Euler products.
+\end{theorem}
+\begin{proof}
+The compactness argument of \cref{zer:thm:stencilbank} applies, and for $\sigma=\nu-d\,\dd x$ the bounded
+function $H$ of that proof has Fourier transform supported on the set of missing frequencies. For a finite set
+the argument of \cref{zer:thm:missingfreq}, with finitely many frequencies in place of $\pm\omega$, gives (i):
+$H$ is a finite sum of exponentials with constant coefficients, the scalars $\int_0^\infty\Phi(x)x^{-4+i\omega_j}\dd x$
+are nonzero, injectivity gives the density, and positivity of $\nu$ its nonnegativity.
+
+For (ii) put $\ell=\log2$ and let $\mathcal T$ translate by $\ell$. By \eqref{flu:eq:fivespecial},
+$(\mathcal T+1)(2\mathcal T-1)H=0$. The bounded function $G=(\mathcal T+1)H$ satisfies $G(v+\ell)=G(v)/2$, and
+iterating towards $-\infty$ gives $G=0$, so $H(v+\ell)=-H(v)$, that is $R(2u)=-8R(u)$ for the function $R$ of that
+proof. The measure $\sigma_2(S)=\sigma(2S)/2$ has $R_{\sigma_2}(u)=8R(u/2)=-R(u)$, and injectivity of $\sigma\mapsto R$
+gives $\sigma(2S)=-2\sigma(S)$. On a bounded Lebesgue-null set $S$ both $\sigma(S)=\nu(S)$ and $\sigma(2S)=\nu(2S)$ are
+nonnegative, hence zero; so $\sigma$ is absolutely continuous with density $g$, $g(2x)=-g(x)$ almost everywhere,
+and positivity of $d+g$ and of $d+g(2x)=d-g(x)$ gives $\abs g\le d$; put $f(v)=g(e^v)$.
+
+For the converse put $\dd A(x)=\pi^{-1}\log x\,[d+g(x)]\dd x$ on $x\ge1$, with $g$ the profile minus $d$. In case (i),
+\eqref{zer:eq:stencilmellin} kills each oscillation, so the variance limit is $d\,\mathcal B(c)$, and along heights
+$T$ at which all phases $T^{i\omega_j}$ are close to $1$, which exist by recurrence of rotations of a torus, the
+tangent is the given profile. In case (ii) the normalized response is
+\[
+ \abs{p_c(y)}^2/(Ry^4)=\tfrac47K_0(y)+\tfrac87K_0(2y),\qquad K_0(y)=\abs{1-e^{iy}}^4/y^4,
+\]
+and by substitution and anti-periodicity its integral against $f(\log y+v)$ vanishes for every $v$; the
+logarithmic correction is $O(1/\log(1/h))$ after normalization since $K_c(y)\abs{\log y}$ is integrable, and
+$T=4^n$ gives the tangent.
+\end{proof}
+
+For a four-point exceptional shape, $s_2=0$ and $k=1$, part (i) is the first assertion of
+\cref{zer:thm:missingfreq}. Near $(8,14)$, by \cref{zer:thm:fivetwo}, a leading density proportional to
+$1+a\cos(\omega_1\log x)+b\cos(\omega_2\log x)$ with $\abs a+\abs b<1$ leaves the five-point variance unchanged while the
+counting statistic retains both terms, with factors $(1+i\omega_j)^{-1}$ in complex form. Whether the ratio of
+the two frequencies has a special arithmetic nature is not known.
+
+\begin{corollary}[Removing the hidden oscillations by dilations; \stU]\label{flu:cor:fiverepair}
+Under the hypotheses of \cref{flu:thm:fivetangents}, with $a(T)=\pi A(T)/(T\log T)$: in case (i), with
+$L_j=\exp(\pi/\omega_j)$,
+\[
+ 2^{-k}\sum_{E\subseteq\set{1,\dots,k}}a\Bigl(T\prod_{j\in E}L_j\Bigr)\longrightarrow d,
+\]
+so at most four dilations suffice; in case (ii), $\tfrac12\bigl(a(T)+a(2T)\bigr)\to d$.
+\end{corollary}
+\begin{proof}
+Along a tangent subsequence $a(uT)$ converges to the tangent mass of $[0,u]$ divided by $u$, since the tangents
+have densities. A mode $j$ contributes $\Re\bigl(C_ju^{i\omega_j}/(1+i\omega_j)\bigr)$, and the average over $E$
+multiplies it by a product containing the factor $(1+L_j^{i\omega_j})/2=0$. In case (ii),
+$\int_0^2g=2\int_0^1g(2y)\dd y=-2\int_0^1g$ gives the two-term identity. Relative compactness of the tangents
+turns these subsequential identities into the limits.
+\end{proof}
+
+For $k=1$ this is the last assertion of \cref{zer:thm:missingfreq}. For six or more equally spaced observations
+further independent prime logarithms enter the symbol, and the quadratic reduction of
+\cref{zer:thm:fivepoint} and the elimination of \cref{flu:thm:fivepair} need not carry over.
 
 \paragraph{How finely must the scales be sampled?}
 Call a stencil \emph{elliptic} if $\inf_{\xi\in\R}\abs{\zerSym_c(\xi)}>0$; every three-point stencil is elliptic
@@ -2830,7 +3061,7 @@ $8$ are in
 \begin{center}\artifact{dirichlet-zero-multiplicity-and-reconstruction/checks/contrast-results.txt}.\end{center}
 
 \subsection{Open questions}\label{flu:sec:open}
-{\raggedright\sources{grh_cm_four_terms_and_prime_bias; grh_multiscale_covariance; multiscale_prime_fluctuations; grh_spectral_rigidity; grh_filtered_prime_races; grh_prime_error_balancing; prime_peak_rigidity; sparse_grh_balanced_windows; sharp_multiscale_prime_windows; prime_scale_coalescence_2026-11-26; prime_endpoints_and_symplectic_compressions; grh_extensions_2026-11-27; dirichlet-zero-multiplicity-and-reconstruction; grh-two-open-questions; dirichlet-coupled-zeros-and-prime-variances; grh_method_transfers_sharp_torsion}}
+{\raggedright\sources{grh_cm_four_terms_and_prime_bias; grh_multiscale_covariance; multiscale_prime_fluctuations; grh_spectral_rigidity; grh_filtered_prime_races; grh_prime_error_balancing; prime_peak_rigidity; sparse_grh_balanced_windows; sharp_multiscale_prime_windows; prime_scale_coalescence_2026-11-26; prime_endpoints_and_symplectic_compressions; grh_extensions_2026-11-27; dirichlet-zero-multiplicity-and-reconstruction; grh-two-open-questions; dirichlet-coupled-zeros-and-prime-variances; grh_research_extensions_2026-11-27; grh_method_transfers_sharp_torsion}}
 
 \begin{enumerate}
 \item \emph{Effective constants.} Can the radius $r_q$ and ratio $C_q$ of
@@ -2854,7 +3085,12 @@ $(\log(1/h))^{-\delta}$ into a count remainder with saving $(\log T)^{-\delta/4}
 can such a remainder be proved for $\zeta$? Families of stencils characterize all finite limits exactly
 when their symbols have no common real zero (\cref{zer:thm:stencilbank}), on meshes whose logarithmic gaps
 tend to zero, which is necessary for elliptic stencils (\cref{zer:thm:mesh}); four and five equally spaced
-observations are classified by \cref{zer:thm:fourpoint,zer:thm:fivepoint}. Which small-divisor conditions on
+observations are classified by \cref{zer:thm:fourpoint,zer:thm:fivepoint}, any two five-point shapes recover
+together (\cref{flu:cor:fiverecover}), and the ambiguity of one five-point variance is described completely by
+\cref{flu:thm:fivetangents}. Is there a practical decision procedure, for a specified finite encoding of the
+weights, for the exact phase condition \eqref{zer:eq:fivegroup}? What error bound for noisy measurements at
+finite height follows from the uniform symbol separation of \cref{flu:thm:fivegap}, once the Mellin factor and the
+tails are tracked? Does two-shape recovery persist for six or more equally spaced observations? Which small-divisor conditions on
 symbols with arbitrarily small values suffice for the exact mesh characterization, and what condition is
 necessary and sufficient for asynchronously sampled families whose individual meshes have gaps while the
 set $\mathcal E$ of \cref{zer:thm:bankmesh} has none? For $\zeta$ itself, can arithmetic constraints on

@@ -52,7 +52,8 @@ Every result of the section is local and \stU; none depends on \cref{src:thm:dgr
   (\cref{cost:thm:packet,cost:cor:depth,cost:thm:transition}). For packets with a fixed
   number $n$ of members the least exponent at tolerance zero is finite and grows like an
   $(n-1)$-fold iterated exponential of the budget, in every dimension
-  (\cref{cost:thm:cardinality,cost:thm:cardmulti}).
+  (\cref{cost:thm:cardinality,cost:thm:cardmulti}); at a fixed positive tolerance it is
+  $B^{n+o(1)}$ (\cref{tors:thm:cardpos}).
 \item \emph{Separate bounds with a tolerance.} For a family of fixed cardinality the
   exponent can be taken polynomial in the inverse tolerance, and a positive fraction of the
   primitive roots of one order is good (\cref{tors:thm:fraction,tors:thm:packet}). For
@@ -1743,7 +1744,7 @@ digit. The recorded outputs are:
 \end{example}
 
 \subsection{Packets of fixed cardinality}\label{cost:sec:cardinality}
-{\raggedright\sources{grh_fixed_cardinality_torsion}}
+{\raggedright\sources{grh_fixed_cardinality_torsion; grh_research_2026-11-27}}
 
 Theorems~\ref{cost:thm:minimax} and~\ref{cost:thm:packet} are the two extremes of the packet
 problem in setting (C). A packet with one member $(g,t)$ blocks only if $g$ blocks in the
@@ -2076,6 +2077,188 @@ Lemma~\ref{cost:lem:shell} for $27$ pairs of shell and root count.
 \item \artifact{grh_fixed_cardinality_torsion/packet_exact.py}
 \item \artifact{grh_fixed_cardinality_torsion/verification.txt}}
 \end{example}
+
+\paragraph{A fixed positive tolerance: the growth exponent.}
+At tolerance zero $H_n(B)$ grows like an $(n-1)$-fold iterated exponential of the budget, and
+by \cref{cost:cor:cardtol} a tolerance below $r_{H_n(B)}$ changes nothing. A fixed positive
+tolerance changes the growth regime completely: the endpoint becomes polynomial in the
+budget, with exponent equal to the number of members.
+
+\begin{theorem}[Positive-tolerance growth exponent; \stU]\label{tors:thm:cardpos}
+Fix $p$, $h_0$, $n\ge1$ and $\delta>0$. There are positive constants $c,C,B_0$, depending
+only on these parameters, such that for $B\ge B_0$
+\[
+ c\,B^n\le H_n(B,\delta)\le C\,B^n(\log B)^2\log\log B .
+\]
+Consequently $\log H_n(B,\delta)/\log B\to n$ as $B\to\infty$. Both bounds are uniform in
+$\rho\ge r_{h_0}$, in the degrees of the polynomials and in the ramification of their
+coefficients. The lower bound is attained by packets with coefficients in a finite
+cyclotomic extension and thresholds $t_i=G_\rho(g_i)=v(g_i(0))$. For $n=1$,
+$H_1(B,\delta)=\Theta(B)$. Equivalently, for fixed $p,h_0,n$ and $\delta>0$,
+\[
+ C_n(H,\delta)=H^{1/n+o(1)}\qquad(H\to\infty).
+\]
+\end{theorem}
+
+The theorem concerns the exponent $h$ of the torsion order $p^h$; it gives
+$H_n(B,\delta)=B^{n+o(1)}$, not a polynomial bound for the order itself. The constants are
+not uniform as $\delta\downarrow0$. The upper bound comes from an explicit inequality.
+Throughout we use the root model of the reduction in Theorem~\ref{cost:thm:cardfinite},
+which is valid at every tolerance: the members are monic with all roots on the tested
+shells, at most $e_h$ roots of each member lie on shell $h$, the thresholds are the Gauss
+valuations, and the packet is padded to exactly $n$ members. Then $0\le w_{i,h}\le1$,
+$\sum_iW_i(H)\le B$, and by Lemma~\ref{cost:lem:cardmodel}(ii) the excess of member $i$ at
+$z\in Z_h$ is exactly $E_{i,h}(z)-S_i(h)$. Put $W_i(h_0-1)=0$.
+
+\begin{lemma}[Forced shifted growth]\label{tors:lem:shifted}
+On every shell $h$ blocked at tolerance $\delta>0$, with $w_h=\sum_iw_{i,h}$,
+\begin{equation}\label{tors:eq:shifted}
+ 1\le h\sum_{i=1}^n\frac{w_{i,h}}{S_i(h)+\delta}+w_h .
+\end{equation}
+\end{lemma}
+
+\begin{proof}
+For each member cap the excess of each of its roots at $c_i=S_i(h)+\delta$, and let
+$\widetilde E_i(z)$ be the sum of the capped root excesses. We claim
+$\sum_i\widetilde E_i(z)/c_i\ge1$ at every $z\in Z_h$. If some root is capped, its capped
+value is already $c_i$. Otherwise $\widetilde E_i=E_{i,h}$, and if the sum of the ratios
+were less than one, then each $E_{i,h}(z)<S_i(h)+\delta$, and
+\[
+ \bigl(E_{i,h}(z)-S_i(h)\bigr)_+\le\frac{\delta\,E_{i,h}(z)}{S_i(h)+\delta},
+\]
+since for $S_i<E<S_i+\delta$ this is $S_i(E-S_i-\delta)\le0$. Summing, the loss at $z$ would
+be less than $\delta$, contradicting blocking. Average the claim over $Z_h$ and apply
+\cref{tors:lem:capped} with the cap $c_i$ to every root: the average of the left side is at
+most $\sum_iw_{i,h}(h+c_i)/c_i$, which is the right side of \eqref{tors:eq:shifted}.
+\end{proof}
+
+\begin{proposition}[An explicit bound for every blocker; \stU]\label{tors:prop:shifted}
+Choose an integer $d\ge1$ and a real $K>1$, and put
+\[
+ \lambda=\frac{1-p^{-d}}K,\qquad L=n\log\Bigl(1+\frac B{n\delta}\Bigr),\qquad
+ D=d+\ceil*{\frac{dL}{\log K}} .
+\]
+If a packet with at most $n$ members and cost at most $B$ blocks every shell from $h_0$
+through $H$ at tolerance $\delta>0$, then, with $\mathrm e=\exp(1)$,
+\begin{equation}\label{tors:eq:cardposexplicit}
+ \Bigl(\frac{H+1}{h_0}\Bigr)^\lambda\le\Bigl(1+\frac B{n\delta}\Bigr)^n
+ \Bigl[1+\mathrm eD+\mathrm e(\delta+n)\log\Bigl(1+\frac B\delta\Bigr)\Bigr].
+\end{equation}
+\end{proposition}
+
+\begin{proof}
+Logarithms are natural. Put $Q_i(h)=\delta+W_i(h)$, $P_h=\prod_{i=1}^nQ_i(h)$ and
+$P_{h_0-1}=\delta^n$. All factors are positive and nondecreasing in $h$, and the
+arithmetic--geometric mean inequality gives
+\begin{equation}\label{tors:eq:Pshift}
+ P_H\le\Bigl(\delta+\frac Bn\Bigr)^n,\qquad \log\frac{P_H}{P_{h_0-1}}\le L .
+\end{equation}
+Call the first $d$ shells exceptional, and a later shell $h$ exceptional if
+$P_{h-1}/P_{h-d}>K$. Each increment $\log(P_j/P_{j-1})$ occurs in at most $d$ of these
+quotients, so at most $dL/\log K$ later shells are exceptional, and at most $D$ in all. On
+a nonexceptional shell each ratio $Q_i(h-1)/Q_i(h-d)\ge1$ is at most $K$, because their
+product is, and keeping in $S_i(h)$ only the roots on shells at most $h-d$ gives
+\begin{equation}\label{tors:eq:regularshift}
+ S_i(h)+\delta\ge(1-p^{-d})\bigl(W_i(h-d)+\delta\bigr)\ge\lambda\,Q_i(h-1).
+\end{equation}
+With $R_h=P_h/P_{h-1}=\prod_i\bigl(1+w_{i,h}/Q_i(h-1)\bigr)$, expanding the product,
+\eqref{tors:eq:regularshift} and \cref{tors:lem:shifted} give on a nonexceptional shell
+\[
+ R_h\ge1+\lambda\sum_i\frac{w_{i,h}}{S_i(h)+\delta}\ge1+\frac{\lambda(1-w_h)_+}h .
+\]
+Put $A_{h_0-1}=1$, $A_h=\prod_{j=h_0}^h(1+\lambda/j)$ and $F_h=A_h/P_h$. On a
+nonexceptional shell
+\[
+ F_h-F_{h-1}\le F_{h-1}\Bigl(\frac{1+\lambda/h}{1+\lambda(1-w_h)_+/h}-1\Bigr)
+ \le F_{h-1}\frac{\lambda w_h}h ,
+\]
+and on an exceptional shell $R_h\ge1$ gives $F_h-F_{h-1}\le F_{h-1}\lambda/h$. Since
+$0<\lambda<1$, $A_{h-1}\le\exp(\lambda(1+\log h))\le\mathrm e\,h^\lambda$, so
+$\lambda A_{h-1}/h\le\mathrm e$; together with $P_{h-1}\ge\delta^n$, summing the increments
+gives
+\[
+ F_H\le\delta^{-n}+\mathrm eD\delta^{-n}+\mathrm e\sum_{h=h_0}^H\frac{w_h}{P_{h-1}} .
+\]
+Write $W(h)=\sum_iW_i(h)$. Expanding the product gives
+$P_{h-1}\ge\delta^{n-1}(\delta+W(h-1))$, and $0\le w_h\le n$. For
+$x_h=w_h/(\delta+W(h-1))\le n/\delta$ the inequality $x\le(1+x)\log(1+x)$ yields
+\[
+ \sum_h\frac{w_h}{P_{h-1}}\le\delta^{1-n}\Bigl(1+\frac n\delta\Bigr)
+ \sum_h\log\frac{\delta+W(h)}{\delta+W(h-1)}\le\delta^{-n}(\delta+n)\log\Bigl(1+\frac B\delta\Bigr).
+\]
+Finally concavity gives $\log(1+\lambda/j)\ge\lambda\log(1+1/j)$, so
+$A_H\ge((H+1)/h_0)^\lambda$. Combine this with $A_H=F_HP_H$ and \eqref{tors:eq:Pshift}.
+\end{proof}
+
+\begin{lemma}[An inexpensive blocker for a late block]\label{tors:lem:lateblock}
+Let $2\le a\le b$ and $\delta>0$, and suppose $c=(\delta+3)/(a-1)<1$. There is a monic
+polynomial with all roots on the shells $a,\dots,b$ whose excess exceeds $\delta$ at every
+point of these shells, with threshold its Gauss valuation at any radius $\rho\ge r_a$, and
+with cost at most $c(b-a+1)+1$.
+\end{lemma}
+
+\begin{proof}
+On each shell $h$ take as roots the points $\xi_h^\beta-1$ for the first
+$m_h=\ceil{ce_h}\le e_h$ positive integers $\beta$ prime to $p$. If $m_h=e_h$ the excess is
+infinite on $Z_h$. Otherwise $m_h/e_h\ge c$, and by Lemma~\ref{cost:lem:shell}(iii) the
+on-shell excess at every unmarked point is at least
+\[
+ U_h(m_h)\ge(h-1)c-\frac1{p-1}\ge(h-1)c-1 ,
+\]
+replacing every floor in \eqref{cost:eq:capacity} by its argument minus one and using
+$\sum_{j=1}^{h-1}e_j/e_h<1/(p-1)$; marked points have infinite excess. The saving from
+earlier shells is at most
+\[
+ S(h)\le\sum_{k=a}^{h-1}\frac{m_k}{e_k}\le c(h-a)+\sum_{k\ge a}r_k\le c(h-a)+1,
+\]
+because $a\ge2$ and $\sum_{k\ge a}r_k=p^{2-a}/(p-1)^2\le1$. The excess is therefore at least
+$(a-1)c-2=\delta+1>\delta$. The same geometric sum bounds the cost by $c(b-a+1)+1$.
+\end{proof}
+
+\begin{proof}[Proof of Theorem~\ref{tors:thm:cardpos}]
+\emph{Upper bound.} For large $B$ put $q_B=\log(2+B/(n\delta))$, $d=\ceil{\log_pq_B}$ and
+$K=1+q_B^{-1}$ in \cref{tors:prop:shifted}. Then $p^{-d}\le q_B^{-1}$,
+$\lambda^{-1}=1+O(q_B^{-1})$ and $D=O_{p,n}(q_B^2\log q_B)$. Taking the $\lambda$-th root
+in \eqref{tors:eq:cardposexplicit}, the factor $(1+B/(n\delta))^{n/\lambda}$ is
+$O_{n,\delta}(B^n)$, and the bracket raised to the power $1/\lambda$ is
+$O_{p,n,\delta}(q_B^2\log q_B)$, since the extra power $O(1/q_B)$ changes it by a bounded
+factor. Every blocking endpoint $H$ therefore satisfies the upper bound, and adding one
+bounds $H_n(B,\delta)$.
+
+\emph{Lower bound.} Put $Q=\delta+3$ and assume $B\ge8n(\delta+4)$. Let $a_1=h_0$,
+$\ell_1=\floor{B/n}$ and $a_2=a_1+\ell_1$. The first member is
+$\prod_{h=a_1}^{a_2-1}\Phi_{p^h}(1+T)$ with threshold its Gauss valuation; it costs
+$\ell_1\le B/n$ and vanishes at every point of its block. For $2\le i\le n$ put
+\[
+ \ell_i=\floor*{\frac{(a_i-1)B}{2nQ}},\qquad a_{i+1}=a_i+\ell_i ,
+\]
+and use \cref{tors:lem:lateblock} on the $i$-th block, at cost at most $B/(2n)+1\le B/n$.
+The bound on $B$ ensures $a_i\ge2$, $Q/(a_i-1)<1$ and $(a_i-1)B/(2nQ)\ge2$ at every step.
+Members without roots on a shell have no loss there, so each member blocks its own block
+whatever the others do, and the packet has cost at most $B$ and blocks every shell from
+$h_0$ through $a_{n+1}-1$. Since $a_2-1\ge B/(2n)$ and
+$a_{i+1}-1\ge(a_i-1)B/(4nQ)$ for $2\le i\le n$,
+\[
+ H_n(B,\delta)\ge a_{n+1}\ge\frac{B^n}{2n\,[4n(\delta+3)]^{n-1}} .
+\]
+All roots are torsion points, so the coefficients lie in a finite cyclotomic extension, and
+all roots have valuation at most $\rho$, so $G_\rho(g_i)=v(g_i(0))$. For $n=1$ the full-shell
+member alone gives $H_1(B,\delta)\ge h_0+\floor B$, while $H_1(B,\delta)\le H_1(B)
+=h_0+\floor{B/s_{h_0}}$ by monotonicity in the tolerance and
+Theorem~\ref{cost:thm:cardinality}.
+
+\emph{Costs.} By attainment (Theorem~\ref{cost:thm:cardfinite}), $C_n(H,\delta)\le B$ if and
+only if $H<H_n(B,\delta)$; inverting the two bounds gives the last assertion.
+\end{proof}
+
+The new ingredient compared with Lemma~\ref{cost:lem:cardinterval} is the shift by $\delta$
+in the product potential, which keeps the activation denominators $S_i(h)+\delta$ away from
+zero. Whether $H_n(B,\delta)=\Theta(B^n)$ for $n\ge2$, whether a leading constant exists,
+and the joint transition in which $\delta$ tends to zero with $B$ are open
+(\cref{tors:q:cardinality}). Exact finite checks of greedy shell capacities, capped
+averages, late-block constructions and all two-member packets of subset roots on the first
+three shells for $p=2$ at tolerance $1/4$ are recorded in
+\artifact{grh_research_2026-11-27/results/torsion_phase_transition_checks.json}.
 
 \paragraph{Exact selection in any dimension.}
 For a nonzero integral power series $F=\sum_\nu c_\nu T^\nu\in\OO[[T_1,\dots,T_d]]$ put
@@ -2462,7 +2645,10 @@ $H_n(\sum_iB_i)$ of \cref{cost:thm:cardmulti}, and by \cref{cost:cor:cardtol} a 
 positive tolerance does not lower that endpoint. It does not depend on the tolerances, so
 it is the better bound when the tolerances tend to zero with the budgets fixed; for $n\ge2$
 and fixed tolerances it grows like a tower in the budget, much faster than the polynomial
-bound of \cref{tors:thm:packet}. Neither theorem contains the other: \cref{tors:thm:packet}
+bound of \cref{tors:thm:packet}. For one tuple in one variable and a fixed bound $\delta$ on
+the total positive excess, \cref{tors:thm:cardpos} gives the endpoint $B^{n+o(1)}$, whereas
+\cref{tors:thm:packet} with $\eta=1$ and tolerances $\delta/n$ gives a bound of order
+$B^{1+np/(p-1)}$. Neither theorem contains the other: \cref{tors:thm:packet}
 also gives $K^s$ tuples.
 
 (3) An exponent polynomial in budget and inverse tolerance, uniform in the cardinality of

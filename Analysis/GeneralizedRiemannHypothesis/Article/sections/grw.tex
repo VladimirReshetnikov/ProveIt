@@ -8,16 +8,26 @@
 \providecommand{\grafiles}[1]{\begin{center}\footnotesize#1\end{center}}
 \providecommand{\graJac}{\operatorname{Jac}}
 \providecommand{\grahat}[1]{\widehat{#1}}
+\providecommand{\grwarcosh}{\operatorname{arcosh}}
+\providecommand{\grwconv}{\operatorname{conv}}
+\providecommand{\grwCyc}{\mathrm{C}}
 \section{Quantum walks, signed square cycles and edge-polytope zeros}\label{sec:grw}
 
-Four spectral problems on finite graphs are settled here by cyclotomic
-integrality and finite certificates: exact spectral tests for periodic
+The section first settles four spectral problems on finite graphs by
+cyclotomic integrality and finite certificates: exact spectral tests for periodic
 Grover walks on abelian Cayley graphs (\cref{gra:sec:grover}), the least
-periods of oriented continuous-time Cayley walks (\cref{gra:sec:cayley}),
+periods of oriented continuous-time Cayley walks and all walks of least
+outdegree (\cref{gra:sec:cayley}),
 optimal signings of the square cycles $C_n(1,2)$, certified by Schur
 complements (\cref{gra:sec:cycles}), and a bipartite family of edge
 polytopes whose Ehrhart polynomials have all zeros on the canonical line,
-proved with Bezoutians (\cref{gra:sec:ehrhart}). Three devices of the source
+proved with Bezoutians (\cref{gra:sec:ehrhart}). The Ehrhart theory of
+graph polytopes is then carried further: the gamma vectors of complete
+multipartite symmetric edge polytopes, which determine the graph
+(\cref{grw:sec:multipartite}); the zeros of complete graphs with a matching
+deleted (\cref{grw:sec:matching}); face realizations of the gamma vectors of
+graph suspensions (\cref{grw:sec:gamma}); and the stable set polytopes of
+complements of odd cycles (\cref{grw:sec:stable}). Three devices of the source
 proof (\cref{src:sec:mechanism}) are transferred. The restriction of a
 positive form to a principal submatrix, followed by a Schur complement,
 gives the local obstruction used for signed cycles. A purely
@@ -349,7 +359,7 @@ same count in higher dimension; for $p\mid d$ the additional modes of
 
 
 \subsection{Least periods of oriented Cayley walks}\label{gra:sec:cayley}
-\sources{grh_cayley_and_filters}
+\sources{grh_cayley_and_filters; erdelyi_ellipse_and_proveit_extensions}
 
 The character projection of \cref{li:lem:norm}, which fixes the least size
 of a collision of one-time heat observations in \cref{li:thm:dist}, also
@@ -583,7 +593,238 @@ spacings, least outdegrees and fastest symbols agree with
 \cref{gra:thm:cayleyperiods,gra:thm:cayleyfast}:
 \grafiles{\artifact{grh_cayley_and_filters/cayley/exhaustion.json}}
 
-\begin{proposition}[Minimum degree at conductors three and four; \stU]\label[proposition]{gra:prop:cayleycoset}
+\paragraph{All walks of least outdegree.}
+The bound of \cref{gra:thm:cayleyperiods} is attained on every admissible
+host, and its equality cases can be listed completely. Describe an
+oriented Cayley graph by its symbol $b:G\to\{0,1,-1\}$, $b(-x)=-b(x)$, and
+let $H=\langle\supp b\rangle$; the component of zero has vertex set $H$,
+the other components are its translates, and since every character of $H$
+extends to $G$, passing to $H$ preserves the set of distinct eigenvalues.
+A \emph{sign character} is a homomorphism to $\{\pm1\}$, the trivial one
+included. Write $\grwCyc_n=\Z/n\Z$.
+
+\begin{theorem}[Classification of the minimum-outdegree symbols; \stU]\label{grw:thm:cayleyequality}
+Let $-f$ be a negative fundamental discriminant, $\chi=\chi_{-f}$,
+$\tau=i\sqrt f$ and $a\ge1$. A nonzero symbol $b$ has all eigenvalues in
+$a\tau\Z$ and outdegree $a\varphi(f)/2$ if and only if $b$ vanishes off
+$H=\langle\supp b\rangle$ and, up to one overall sign, has on $H$ one of
+the following forms, each with a surjection $j:H\to\grwCyc_f$.
+\begin{enumerate}[label=\textup{(\Alph*)}]
+\item $\abs H=af$ and $b(x)=\epsilon(x)\chi(j(x))$, where $\epsilon$ is
+any sign character if $f$ is odd and $\epsilon=1$ if $f$ is even.
+\item $f$ is odd, $\abs H=2af$, and
+$b(x)=\epsilon(x)\chi(j(x))\mathbf 1_{\eta(x)=-1}$, with $\epsilon$ a sign
+character and $\eta$ a nontrivial sign character.
+\item $8\mid f$, $\abs H=2af$, and there is a homomorphism
+$\lambda:H\to\grwCyc_4$ with $(j,\lambda):H\to\grwCyc_f\times\grwCyc_4$
+surjective and
+$b(x)=\chi(j(x))\,\mathbf 1_{\lambda(x)\in\{0,\ j(x)\bmod4\}}$.
+\end{enumerate}
+In particular every component has exactly $af$ or $2af$ vertices.
+\end{theorem}
+
+\begin{corollary}[Connected attainment; \stU]\label[corollary]{grw:cor:cayleyconnected}
+Let $f\mid n$ and $af\mid N$. The least outdegree $a\varphi(f)/2$ of
+\cref{gra:thm:cayleyperiods} is attained by a graph connected on the whole
+host $G$ exactly when $N=af$; or $N=2af$ and $f$ is odd; or $N=2af$,
+$8\mid f$ and $G$ surjects onto $\grwCyc_f\times\grwCyc_4$. In particular
+no connected equality case with $N=2af$ exists when $f\equiv4\pmod8$.
+\end{corollary}
+
+For example, at an odd prime conductor $p\equiv3\pmod4$ on an odd host,
+case (A) is the Paley tournament on $\F_p$ blown up by independent fibres
+of size $a$: on $\F_7^3$ with $a=7$ every minimiser has components of
+order $49$, given by a plane and a nonzero linear form on it. Case (C)
+already occurs on $\grwCyc_8\times\grwCyc_4$ with $j(s,k)=s$,
+$\lambda(s,k)=k$ and $a=2$: the four positive steps lie over the odd
+residues $s$ with $k=0$ or $k\equiv s\pmod4$, and they generate the group.
+
+\begin{proof}[Proof of \cref{grw:thm:cayleyequality}]
+\emph{Equality conditions.} The eigenvalues lie in $\tau\Q$, so $b$
+transforms by $\chi$ (\cref{gra:lem:cayleydual}) and
+$\lambda_\psi=\sum_xb(x)P(\psi(x))$ with $P$ as in \cref{li:lem:norm}.
+For an active character $\psi$ (one with $\lambda_\psi\ne0$),
+$a\sqrt f\le\abs{\lambda_\psi}\le\abs{\supp b}\sqrt f/\varphi(f)$. At
+outdegree $a\varphi(f)/2$ equality holds throughout: every active
+eigenvalue is $\pm a\tau$, all nonzero terms $b(x)P(\psi(x))$ have one
+argument, and $\abs{P(\psi(x))}=\sqrt f/\varphi(f)$ for occupied $x$,
+so that $\psi(x)$ has order $f$, or $2f$ with $f$ odd, by
+\cref{li:lem:norm}.
+
+\emph{Reduction.} Put $q=2f$ for odd $f$ and $q=f$ for even $f$. Since
+the occupied elements generate $H$, every active character has order
+dividing $q$, and Fourier inversion shows that $b$ factors through
+$D=H/qH$. Passing to $D$ divides all eigenvalues and the outdegree by
+$\abs{qH}$, so the ratios of the eigenvalues to their common nonzero
+modulus are preserved; we work on $D$, whose occupied elements generate
+it. Write $f=q_2\prod_{p\in I}p$ with $I$ the set of odd primes dividing
+$f$ and $q_2\in\{1,4,8\}$, let $\chi_p$ be the Legendre character at $p$
+and, if $q_2>1$, $\kappa$ the primitive quadratic character modulo $q_2$
+in the factorization of $\chi$. Then $D=B\times\prod_{p\in I}E_p$ with
+$E_p$ an $\F_p$-vector space, and $B$ elementary abelian of exponent
+dividing $2$ (odd $f$) or of exponent dividing $q_2$ (even $f$).
+
+Fix an active character $y_0$, with components $x_p\mapsto
+\zeta_p^{u_p(x_p)}$ for linear forms $u_p$, and, for even $f$,
+$z\mapsto\zeta_{q_2}^{u(z)}$ for a homomorphism $u:B\to\grwCyc_{q_2}$.
+For odd $f$ twist $b$ by the sign character given by the $B$-component
+of $y_0$; this permutes the eigenvalues and makes that component trivial.
+Now $y_0(x)$ has order exactly $f$ on the support, so $u_p(x_p)\ne0$ for
+all $p$ and, for even $f$, $u(z)$ is odd; in particular these forms are
+onto. Since $P(\zeta_f^c)=\chi(c)\tau/\varphi(f)$ for $c\in U_f$ and all
+summands have one argument, the Chinese remainder theorem shows that, up
+to an overall sign, $b$ agrees on its support with
+\begin{equation}\label{grw:eq:cayleysign}
+ \prod_{p\in I}\chi_p(u_p(x_p))\cdot\begin{cases}1,&q_2=1,\\ \kappa(u(z)),&q_2>1.\end{cases}
+\end{equation}
+The units modulo $f$ act on the support by independent scalar
+multiplications on the factors $E_p$ and on $B$ (trivially on $B$ when
+$f$ is odd), freely, so each orbit has $\varphi(f)$ elements, and the
+equations $u_p(x_p)=1$ and, if $q_2>1$, $u(z)=1$ select exactly one point
+of each orbit. Let $A$ be the set of selected points with the uniform law
+and $(Z,(X_p))$ a random point of $A$; since $b$ transforms by $\chi$,
+$A$ determines $b$.
+
+\emph{Three-valued correlations.} For linear forms $L_p$ on $E_p$ and
+shifts $t_p\in\F_p$, and for $F$ a sign character of $B$ when $q_2=1$, or
+$F(Z)=\kappa(t+L(Z))$ with $L:B\to\grwCyc_{q_2}$ and $t\in\grwCyc_{q_2}$
+when $q_2>1$,
+\begin{equation}\label{grw:eq:cayleyextreme}
+ \mathbb E\Bigl[F(Z)\prod_{p\in I}\chi_p\bigl(t_p+L_p(X_p)\bigr)\Bigr]\in\{-1,0,1\}.
+\end{equation}
+Indeed, evaluate the eigenvalue at the character with components
+$\zeta_p^{(L_p+t_pu_p)(x_p)}$ (and $F$, respectively
+$\zeta_{q_2}^{(L+tu)(z)}$) by summing over the orbits of the points of
+$A$. By \eqref{grw:eq:cayleysign} and the Gauss sums
+$\sum_{s\in U_p}\chi_p(s)\zeta_p^{sm}=\tau_p\chi_p(m)$, and the same
+identity for the primitive $\kappa$, the eigenvalue is $\pm\abs A$ times
+the product of the local Gauss sums times the left side of
+\eqref{grw:eq:cayleyextreme}. At $y_0$ itself the left side is one, so
+$\abs A$ times the product of the Gauss sums has the common modulus of all
+active eigenvalues and their phase up to sign; division gives
+\eqref{grw:eq:cayleyextreme}.
+
+\emph{Rigidity at odd primes.} We use the elementary fact that a random
+variable on a finite abelian group all of whose character means have
+modulus $0$ or $1$ is uniform on a coset: if $K$ is generated by the
+differences of support points and $x_0$ is one of them, the characters of
+mean modulus one are exactly those trivial on $K$, by equality in the
+triangle inequality, and the means are those of the uniform law on
+$x_0+K$. Let $X$ be a random point of an $\F_p$-space, $p$ odd, with
+$\mathbb E\chi_p(t+L(X))\in\{-1,0,1\}$ for all linear $L$ and all $t$.
+Fix $L$, let $q_j=\Pr(L(X)=j)$ and $v_t=\sum_jq_j\chi_p(t+j)$. If $q_j>0$,
+every nonzero $v_t$ forces $\chi_p(t+j)=v_t$, by equality in an average
+of numbers in $[-1,1]$; with
+$\sum_t\chi_p(t+i)\chi_p(t+j)=p\mathbf 1_{i=j}-1$ this gives
+$pq_j-1=\sum_tv_t\chi_p(t+j)=\abs{\supp v}$. So $q$ is constant on its
+support, of size $p/(1+\abs{\supp v})\in\{1,p\}$: every linear image
+$L(X)$ is constant or uniform on $\F_p$, every additive character of $X$
+has mean of modulus $0$ or $1$, and $X$ is uniform on an affine subspace. Taking the other factors of \eqref{grw:eq:cayleyextreme}
+trivial, each $X_p$ is uniform on an affine subspace $D_p\subseteq\{u_p=1\}$.
+If some $L_p$ is nonconstant on $D_p$ it is uniform on $\F_p$, so for every
+choice of shifts the corresponding factor vanishes with positive
+probability and \eqref{grw:eq:cayleyextreme} is zero; summing against
+$\prod_p\zeta_p^{-t_p}$ over the shifts (the Gauss sums are nonzero), and
+also over $t$ against $\zeta_{q_2}^{-t}$ when $q_2>1$, all mixed Fourier
+coefficients of $(Z,(X_p))$ involving such an $L_p$ vanish. Hence the law
+is the product of its marginals, $A=A_B\times\prod_pD_p$ with
+$A_B=\supp Z$, uniform. As the occupied elements generate $D$, the scalar
+multiples of $D_p$ span $E_p$, so $D_p=\{u_p=1\}$.
+
+\emph{The two-primary part.} For odd $f$, every sign character of $B$
+has mean in $\{-1,0,1\}$ under $Z$, so $A_B=z_0+K$ is a coset spanning $B$:
+either $A_B=B$, or $K$ has index two and $A_B$ is its nontrivial coset.
+For $q_2=4$, $\kappa(s)=\Im(i^s)$, so \eqref{grw:eq:cayleyextreme} with
+$t=0,1$ puts the real and imaginary parts of $\mathbb Ei^{L(Z)}$ in
+$\{-1,0,1\}$; all character means have modulus $0$ or $1$, $A_B=z_0+K$
+with $u(z_0)=1$, and since $\langle z_0,K\rangle=B$ has exponent dividing
+four, $B=\langle z_0\rangle\oplus K$ with $K=\ker u$, so $A_B=\{u=1\}$.
+For $q_2=8$ \cref{grw:lem:dyadic} below, applied to $Y=Z-z_0$ on
+$K=\langle\supp Y\rangle$ (every character of $K$ extends to $B$, and
+translation by $z_0$ only changes the shift $t$), shows that $Y$ is uniform on $K$ or on
+$h^{-1}(\{0,1\})$ for a surjection $h:K\to\grwCyc_4$. As before
+$B=\langle z_0\rangle\oplus K$ with $K=\ker u$, and in the second case
+$h$ extends to $\lambda:B\to\grwCyc_4$ with $\lambda(z_0)=0$; an occupied
+point with $u(z)=s$ odd is $s$ times a point of the slice, so its
+condition is $\lambda(z)\in\{0,s\bmod4\}$.
+
+\emph{Reconstruction.} Combine the $u_p$ and $u$ into $j:D\to\grwCyc_f$
+by the Chinese remainder theorem; \eqref{grw:eq:cayleysign} gives
+$\chi(j)$ on the recovered support. Undoing the twist gives (A) or (B)
+for odd $f$; for even $f$ one gets (A), or (C) with $(j,\lambda)$ onto
+because $u$ and $\lambda$ are independent on $\langle z_0\rangle\oplus K$.
+Pull back to $H$. The occupied fraction of $H$ is $\varphi(f)/f$ in (A)
+and $\varphi(f)/(2f)$ in (B) and (C), and $\abs{\supp b}=a\varphi(f)$
+gives the orders of $H$.
+
+\emph{Converse.} In (A) the symbol $s\mapsto\chi(s)$ on $\grwCyc_f$ has
+spectrum in $\{0,\pm\tau\}$; pullback multiplies the eigenvalues by
+$\abs H/f=a$, a sign twist permutes the characters, and the support
+contains a whole fibre over $1$, hence generates $H$. In (B),
+$(j,\eta):H\to\grwCyc_f\times\grwCyc_2$ is onto, the coset of $\eta=-1$
+is a point of $\grwCyc_2$ whose transform is $\pm1$, so the nonzero
+eigenvalues are $\pm\abs H\tau/(2f)=\pm a\tau$, and the support generates
+since $(1,1)$ has order $2f$. In (C), on $\grwCyc_f\times\grwCyc_4$ the
+transform at $(d,h)$ is
+$\sum_s\chi(s)\zeta_f^{ds}(1+i^{hs})=\tau[\chi(d)+\chi(d+hf/4)]$; as
+$8\mid f$, the two arguments have the same divisibility by $2$ and by
+every odd prime of $f$, so the bracket lies in $\{0,\pm2\}$ and equals $2$
+at $(1,0)$, and pullback multiplies by $\abs H/(4f)$. The support contains
+the fibres over $(1,0)$ and $(1,1)$ and generates $H$. All three forms are
+odd, since $\chi(-1)=-1$ and the mask in (C) is closed under negation, and
+counting positive steps gives the outdegree.
+\end{proof}
+
+\begin{lemma}[The dyadic slice]\label[lemma]{grw:lem:dyadic}
+Let $K$ be a finite abelian group of exponent dividing eight, $\kappa$ a
+primitive quadratic character modulo eight, and $Y$ a random point of $K$
+with $0\in\supp Y$, $\langle\supp Y\rangle=K$ and
+$\mathbb E\kappa(t+L(Y))\in\{-1,0,1\}$ for all $t\in\grwCyc_8$ and
+homomorphisms $L:K\to\grwCyc_8$. Then $Y$ is uniform on $K$, or uniform on
+$h^{-1}(\{0,1\})$ for a surjection $h:K\to\grwCyc_4$.
+\end{lemma}
+
+\begin{proof}
+If $\mathbb E\zeta_8^{L(Y)}\ne0$, its product with a nonzero Gauss sum is
+the discrete Fourier transform in $t$ at frequency one of
+$\mathbb E\kappa(t+L(Y))$, so some shift has mean $\pm1$; then $t+L(Y)$ is
+odd on the support, and as $0$ is a support point that generates, $L(K)$
+consists of even residues. Thus no character of order eight has nonzero
+mean. For $\gamma$ of order two write $\gamma=\zeta_8^L$ with $L\in\{0,4\}$;
+$\kappa(t+4)=-\kappa(t)$ for odd $t$ gives $\mathbb E\gamma(Y)\in\{-1,0,1\}$,
+and mean $\pm1$ would make $\gamma$ trivial on the generating support;
+so every nontrivial order-two character has mean zero. Let $\gamma=i^h$
+have order four and nonzero mean, $h:K\to\grwCyc_4$ onto. Then $h(Y)$ has
+fair parity, and at a shift with $\mathbb E\kappa(t+2h(Y))=\pm1$ the sign of
+$\kappa$ is constant on the values; the signs of the two primitive real
+characters modulo eight on the odd residues in cyclic order are
+$(+,+,-,-)$ and $(+,-,-,+)$, so $h(Y)$ lies on an adjacent pair of
+residues, each with probability $1/2$, and $\abs{\mathbb E\gamma(Y)}=1/\sqrt2$;
+after inverting $\gamma$ the pair is $\{0,1\}$. Two order-four characters
+of nonzero mean with different squares would have independent fair parity
+bits, each determining its character value, and then their product would
+have mean modulus $1/2\notin\{0,1/\sqrt2,1\}$. So all of them have the
+same square and, normalised, agree on the generating support, hence
+coincide. If every nontrivial mean vanishes, $Y$ is uniform on $K$;
+otherwise only one inverse pair $\gamma^{\pm1}$ has nonzero mean, and
+Fourier inversion gives the uniform law on the two adjacent fibres
+$h^{-1}(\{0,1\})$.
+\end{proof}
+
+\begin{proof}[Proof of \cref{grw:cor:cayleyconnected}]
+Connectedness means $H=G$. The condition $f\mid n$ gives a surjection
+$G\to\grwCyc_f$ from the invariant factors, and every finite abelian group
+of even order has a nontrivial sign character, so the forms (A), (B) and
+(C) with $H=G$ exist exactly in the stated cases.
+\end{proof}
+
+The symbol list of \cref{gra:thm:cayleyfast} is the case $a=N/f_0$ of
+\cref{grw:thm:cayleyequality}: then $\abs H\ge af=N$ forces $H=G$ and form
+(A), and a nontrivial sign character $\epsilon$ combines with $j$ into a
+surjection onto $\grwCyc_f\times\grwCyc_2\cong\grwCyc_{2f}$. For the two
+smallest conductors the classification takes the following form.
+
+\begin{corollary}[Minimum degree at conductors three and four; \stU]\label[corollary]{gra:prop:cayleycoset}
 For $d=-4$ on any finite abelian host, and for $d=-3$ on a host of odd
 order, the symbols of least outdegree with spacing $a\sqrt d$ are exactly
 those with
@@ -593,29 +834,16 @@ those with
 Each connected component is obtained from a directed $f$-cycle by
 replacing its vertices with $a$ independent vertices and its arrows with
 all arrows between consecutive parts.
-\end{proposition}
+\end{corollary}
 
 \begin{proof}
-Here $\varphi(f)=2$ and $\abs P=a$. For $f=4$ every active character, one
-with $\lambda_\psi\ne0$, satisfies
-$2a=\abs{\lambda_\psi}=2\abs{\sum_{p\in P}\Im\psi(p)}$, so $\psi$ is
-constant on $P$, with value $i$ or $-i$. For $f=3$ every active character
-attains equality in \eqref{gra:eq:cayleydual}, so by \cref{li:lem:norm} and
-\cref{gra:lem:cayleydual} each $\psi(p)$ has order three or six; odd group
-order excludes six. Each imaginary part is then $\pm\sqrt3/2$, and
-$\abs{\lambda_\psi}=a\sqrt3$ forces all signs to agree, so again $\psi$ is
-constant on $P$.
-
-Put $K=\langle P-P\rangle$. All active characters are trivial on $K$, so by
-inversion $b$ and its positive set are invariant under translation by $K$,
-and since $P$ lies in one coset, $P=x+K$. For characters of $G/K$ the
-eigenvalues are $a(z-\bar z)$ with $z=\psi(x+K)$, and since restriction of
-characters to a subgroup is onto, $z$ ranges over all roots of unity of
-order dividing $o=\ord_{G/K}(x+K)$. For $f=4$ the allowed imaginary parts
-are $0,\pm1$, so $o=4$, as some eigenvalue is nonzero; for $f=3$ on an odd
-host only cube roots of unity are allowed, so $o=3$. Conversely, summing
-over the coset gives exactly the required spacing. The cosets of $K$ in
-$\langle K,x\rangle$ give the directed cycle.
+For $f=4$ only form (A) with $\epsilon=1$ occurs; for $f=3$ on an odd host
+forms (B) and a nontrivial $\epsilon$ are excluded by parity. So
+$b=\chi(j)$ on $H$ with $\abs H=af$, $P=j^{-1}(1)=x+K$ with $K=\ker j$ of
+order $a$, and $x+K$ has order $f$ in $G/K$. The cosets of $K$ in
+$H=\langle K,x\rangle$ give the directed cycle. Conversely such a $P$ is
+$j^{-1}(1)$ for the surjection $j:\langle K,x\rangle\to\grwCyc_f$ with
+kernel $K$ and $j(x)=1$, which is form (A).
 \end{proof}
 
 For a walk on $N$ vertices, \emph{instantaneous uniform mixing} at time $t$
@@ -624,49 +852,78 @@ transfer} from $x$ to $y\ne x$ means that $U(t)e_x$ is a unimodular scalar
 times $e_y$. Translation invariance and the fixed constant vector force the
 whole matrix at such a time to be a translation, with scalar one.
 
-\begin{corollary}[Mixing and transfer at the fastest period; \stU]\label[corollary]{gra:cor:cayleymixing}
-Among the fastest walks of \cref{gra:thm:cayleyfast}, only the directed
-four-cycle admits uniform mixing, at the times $T/4$ and $3T/4$ modulo its
-period $T$. Perfect transfer between distinct vertices occurs exactly for
-the directed three-cycle and four-cycle, first at the times $T/3$ and
-$T/2$ respectively.
-\end{corollary}
+\begin{theorem}[Mixing and transfer at least outdegree; \stU]\label{gra:cor:cayleymixing}
+Among all walks of \cref{grw:thm:cayleyequality}, for every conductor and
+every $a$, the only graph admitting instantaneous uniform mixing is the
+directed four-cycle, at the times $T/4$ and $3T/4$ modulo its period $T$.
+Perfect transfer between distinct vertices occurs exactly when their
+component is the directed three-cycle, the directed four-cycle, or the
+oriented graph on $\grwCyc_8$ with positive steps $\{1,3\}$, first at the
+times $T/3$, $T/2$ and $T/2$ respectively. In particular, among the fastest
+walks of \cref{gra:thm:cayleyfast} only the directed four-cycle mixes
+uniformly, and transfer occurs exactly for the directed three-cycle and
+four-cycle.
+\end{theorem}
 
 \begin{proof}
-Each fastest symbol is pulled back from a cyclic quotient of order $q=f_0$
-or $2f_0$. Order the vertices by fibres, each of size $m=N/q$. If $V(s)$ is
-the evolution on the quotient, then
-\[
- U(t)=I+\bigl(V(mt)-I_q\bigr)\otimes J_m/m ,
-\]
-with $J_m$ the all-ones matrix, by exponentiating $S_q\otimes J_m$ on the
-fibre-constant subspace and its orthogonal complement. If $m>1$, a
-diagonal entry and a different entry in its own fibre differ by one, and
-uniform mixing would force both real entries to have absolute value
-$N^{-1/2}$, hence $N=4$; the hosts of order four have no fastest graph with
-$m>1$. Transfer between different fibres is impossible since the entry has
-absolute value at most $1/m$; within a fibre, an off-diagonal entry of
-absolute value one requires $m=2$ and a diagonal entry $-1$ of $V$, which
-an orthogonal matrix fixing the all-ones vector cannot have, since the rest
-of that row would vanish.
+\emph{Mixing.} Uniform mixing forces connectedness, so $N=\abs H$. The
+real orthogonal matrix $\sqrt NU(t)$ then has sign entries and row sums
+$\sqrt N$, so $N$ is a square, and as $N\ge af\ge3$, a real Hadamard
+matrix of order $N$ forces $4\mid N$ (normalise the first row to ones;
+the next two rows are balanced and orthogonal, so each sign class of the
+second row has even size). By Parseval the number $r$ of nonzero
+eigenvalues satisfies $r/N=\abs{\supp b}/(a^2f)=\varphi(f)/(af)$, and every
+diagonal entry is the normalised trace $1-(r/N)(1-\cos(a\sqrt f\,t))$.
+For $a\ge3$ it is at least $1-2/a\ge1/3$, so $N\le9$, which with $4\mid N$
+and $N\ge9$ is impossible. Hence $a\le2$. Since $N\in\{af,2af\}$ is a
+square and each odd prime divides $f$ to the first power, no odd prime
+divides $f$, so $f\in\{4,8\}$. For $f=4$ only (A) occurs and $4a$ is a
+square only for $a=1$: the directed four-cycle. For $f=8$, (A) needs
+$a=2$, $N=16$, with diagonal entry at least $1/2>1/4$; (C) needs
+$N=16a\ge32$ by its quotient $\grwCyc_8\times\grwCyc_4$, so $a=2$ and
+$N=32$ is not a square. On the directed four-cycle a row of $U(t)$ is, up
+to signs and order, $(1+\cos2t)/2$, $(1-\cos2t)/2$ and twice $\sin(2t)/2$,
+all of modulus $1/2$ exactly at $t\equiv\pi/4,3\pi/4\pmod\pi$, and $T=\pi$.
 
-Now let $m=1$. If $q$ is an odd prime or twice an odd prime, uniform mixing
-would give a real Hadamard matrix of order $q$; but a real Hadamard matrix
-of order greater than two has order divisible by four (normalise the first
-row to ones, split the columns by the signs of the second row, and use
-orthogonality of a third row to see that each half has even size). On the
-directed four-cycle the entries of a row are, up to signs and order,
-$(1+\cos2t)/2$, $(1-\cos2t)/2$ and twice $\sin(2t)/2$, which gives exactly
-the stated mixing times, as $T=\pi$. For transfer on $C_p$ with $p$ an odd
-prime, a nonidentity translation has $p$ distinct eigenvalues, while the
-fastest walk has at most three by \cref{gra:cor:cayleyduality}; so $p=3$,
-where the two nontrivial Fourier phases are $\exp(\pm i\sqrt3\,t)$ and the
-first nonidentity translation occurs at $T/3$. On $C_4$ the Fourier mode
-of order two is fixed, so only translation by two is possible, first at
-$T/2$. On the parity-twisted $C_{2p}$ with $p$ odd only primitive
-frequencies are active, and a translation fixing the frequencies $2$ and
-$p$ has displacement divisible by $2p$, so it is the identity.
+\emph{Transfer.} Work on a component of order $N$; the evolution is then
+a translation by some $h\ne0$, which is nonidentity on
+$N(1-1/\ord h)\ge N/2$ Fourier modes, all of which must be active. As
+$r/N=\varphi(f)/(af)<1/a$, this forces $a=1$. Form (C) needs a quotient of
+order $4f>2f=\abs H$. In form (B), $H=\grwCyc_f\times\grwCyc_2$, the sign
+twist is constant on the occupied coset, and the eigenvalues are, up to
+sign, $(-1)^v\chi(k)\tau$ at $(k,v)$; they vanish at $k=0$, forcing zero
+binary displacement, and the two eigenvalues at a fixed $k$ are conjugate
+but must give the same translation phase, so all phases square to one,
+which is impossible for a nonzero displacement in the odd factor. In form
+(A), $H=\grwCyc_f$ with trivial twist. If two distinct primes $p,\ell$
+divide $f$, the inactive frequencies $p,\ell$ force $ph\equiv\ell h\equiv0
+\pmod f$, so $h=0$. The remaining conductors are odd primes $p\equiv3
+\pmod4$, $4$ and $8$. At $p$ a nonidentity translation has $p$ distinct
+eigenphases while $U(t)$ has at most three, so $p=3$, where the phases at
+frequencies $1,2$ are $\exp(\pm i\sqrt3\,t)$ and the first nonidentity
+translation occurs at $T/3$. At $4$ and $8$ the inactive frequency $2$
+forces $h=f/2$, which has phase $-1$ at every odd and $+1$ at every even
+frequency; all odd frequencies have eigenvalue $\pm\tau$, so this happens
+first at $T/2$. The positive residues of $\chi_{-8}$ are $1,3\bmod 8$.
+Finally, a fastest walk is connected and of least outdegree, and on
+$\grwCyc_8$ the fastest conductor is $f_0=4$, so the graph with steps
+$\{1,3\}$ is not fastest.
 \end{proof}
+
+Song classifies perfect state transfer on all oriented circulants, with the
+possible conductors $3,4,8$ \cite{Song2026Perfect}; \cref{gra:cor:cayleymixing}
+covers noncyclic abelian hosts at least outdegree, where transfer itself
+forces the component to be cyclic. An exhaustive search over the
+Galois-equivariant symbols on twelve pairs of host and conductor, with
+cyclotomic arithmetic, found $288$ connected equality symbols in
+$552{,}918$ orbit assignments, in agreement with
+\cref{grw:thm:cayleyequality}; for instance $\grwCyc_8\times\grwCyc_4$ at
+$f=8$ has $16$ symbols for $a=2$ and $8$ for $a=4$, and $\grwCyc_{30}$ at
+$f=15$ has $2$ for $a=1$ and $4$ for $a=2$. A separate search tests
+\cref{grw:lem:dyadic} on all generating subsets with the uniform law for
+six groups of orders four to sixteen:
+\grafiles{\artifact{erdelyi_ellipse_and_proveit_extensions/04_cayley_walks/graph-output.txt},
+\artifact{erdelyi_ellipse_and_proveit_extensions/04_cayley_walks/octadic-output.txt}}
 
 \subsection{Optimal signings of square cycles}\label{gra:sec:cycles}
 \sources{grh_transfers_cycle_signings_and_lubin_tate; grh_transfer_advances_2026-11-26}
@@ -1127,7 +1384,7 @@ these points.
 \end{proof}
 
 \subsection{A bipartite family with all zeros on the canonical line}\label{gra:sec:ehrhart}
-\sources{grh_method_transfers}
+\sources{grh_method_transfers; multipartite-ehrhart}
 
 For a graph $G$ on $v$ vertices let $P_G$ be the convex hull of
 $\pm(e_i-e_j)$ over its edges, in the lattice
@@ -1320,26 +1577,34 @@ lattice-point counts, at dilations $0,1,2,3$, are $1,73,1915,26547$.
 \end{example}
 
 \begin{proposition}[Membership in the dilated polytope; \stU]\label[proposition]{gra:prop:membership}
-Split a lattice vector into its coordinates $(u,v)$ on the two sides of
-$K_{m,n}$. It belongs to $kP_{K_{m,n}}$ if and only if
+Let $G$ be a complete multipartite graph with parts $A_1,\dots,A_r$,
+$r\ge2$. For an integer vector $x$ of coordinate sum zero let $p_i$ and
+$n_i$ be the sums of its positive entries and of the absolute values of
+its negative entries in $A_i$, and $q=\sum_ip_i=\sum_in_i$. For integral
+$k\ge0$, $x\in kP_G$ if and only if
 \[
- \textstyle\sum u_i+\sum v_j=0,\qquad
- \max(\norm u_1,\norm v_1)\le k .
+ q\le k\qquad\text{and}\qquad p_i+n_i\le k\quad(1\le i\le r).
 \]
+For $K_{m,n}$, writing $x=(u,v)$ by the two sides, this reads
+$\sum u_i+\sum v_j=0$ and $\max(\norm u_1,\norm v_1)\le k$.
 \end{proposition}
 
 \begin{proof}
-A weighted sum of signed edges is a matrix with row sums $u$, column sums
-$-v$, and cost equal to the sum of the absolute entries. Both marginal
-norms bound that cost from below. For the converse let $T$ be the larger
-marginal norm and let $s=\sum u_i$. On each side choose nonnegative
-positive and negative margins with total positive mass $(T+s)/2$ and total
-negative mass $(T-s)/2$: starting from the ordinary positive and negative
-parts, add the same padding to both where needed. Nonnegative matrices
-with each pair of prescribed margins exist by successively matching
-supplies and demands. The difference of the two matrices realises the
-desired vector with cost at most $T$. Real edge weights suffice for
-membership in the polytope.
+Each signed edge has positive mass one and at most one endpoint in any
+part, so convexity and the triangle inequality give necessity. For
+sufficiency regard $x$ as a transport problem with $q$ units of supply
+and of demand, each unit a vertex of a bipartite graph joined to the
+demands in other parts. If $p_i+n_i\le q$ for all $i$, a set of supplies
+in one part sees $q-n_i\ge p_i$ demands and a set meeting two parts sees
+all of them, so Hall's theorem routes all units by $q\le k$ signed edges.
+Otherwise, since $\sum_i(p_i+n_i)=2q$, exactly one part $h$ has
+$p_h+n_h=q+\delta$ with $\delta>0$, and $\delta\le\min(p_h,n_h)$. Route
+$\delta$ units inside $A_h$ through a vertex of another part, with two
+edges each. The remaining masses are $q-\delta$ on each side, held
+equally by $A_h$ and by the other parts, and Hall's test routes them
+directly. The total is $q+\delta=p_h+n_h\le k$ signed edges, and $0\in
+P_G$. For two parts, $p_i+n_i$ are the two $\ell^1$ norms and $q$ is their
+mean.
 \end{proof}
 
 Counting integer vectors by their sum and $\ell^1$ norm on each side
@@ -1348,19 +1613,953 @@ $K_{2,2}$, $K_{3,5}$, $K_{6,6}$ and $K_{7,9}$, a total of $40$ comparisons
 with \eqref{gra:eq:rotated}; see
 \artifact{grh_method_transfers/checks/instances_output.txt}.
 
+\subsection{Complete multipartite graphs: gamma vectors and reconstruction}\label{grw:sec:multipartite}
+\sources{multipartite-ehrhart; cycle-complements-and-dirichlet-zero-matching}
+
+Let $G=K_{a_1,\dots,a_r}$ have $r\ge2$ nonempty parts $A_i$, $v=\sum_ia_i$
+vertices and $d=v-1$, and let $P_G$ be its symmetric edge polytope as in
+\cref{gra:sec:ehrhart}, of dimension $d$. Its Ehrhart numerator $h^*_G$ is
+palindromic of degree $d$, and the gamma coefficients are defined by
+\[
+ \sum_{k\ge0}E_G(k)t^k=\frac{h^*_G(t)}{(1-t)^{d+1}},\qquad
+ h^*_G(t)=\sum_{0\le j\le d/2}\gamma_j(G)\,t^j(1+t)^{d-2j}.
+\]
+The largest $j$ with $\gamma_j\ne0$ is the \emph{cross-degree} of $E_G$ in
+K\"olbl's terminology \cite[Proposition~4.3]{Kolbl2024Ehrhart}. The
+enumerative input is the suspension formula of Ohsugi and Tsuchiya. For a
+graph $F$ on a set $W_0$ of $d$ vertices, its \emph{suspension}
+$\widehat F$ adds one vertex adjacent to every vertex of $W_0$.
+
+\begin{lemma}[Gamma coefficients of a suspension]\label[lemma]{grw:lem:cut}
+For every graph $F$ on $d$ vertices, $\gamma_j(P_{\widehat F})$ is the
+number of ordered pairs $(U,V)$ of disjoint $j$-subsets of $W_0$ for which
+the edges of $F$ from $U$ to $V$ admit a perfect matching.
+\end{lemma}
+
+\begin{proof}
+For a set $S$ call $S$ \emph{perfectly matchable} in a graph if the induced
+subgraph has a perfect matching ($\varnothing$ included), and let $p(F,z)$
+be the generating polynomial of these sets by half their size. For
+connected $F$, Theorem~3.1 and Proposition~4.1 of
+\cite{OhsugiTsuchiya2021Symmetric} give
+$\sum_j\gamma_jz^j=2^{-d}\sum_{D\subseteq W_0}p(F_D,4z)$, where $F_D$ keeps the
+edges of $F$ crossing between $D$ and its complement (the source averages
+over unordered cuts with weight $2^{1-d}$). A perfectly matchable $2j$-set
+$T$ of $F_D$ has sides $U=T\cap D$ and $V=T\setminus D$ of size $j$, and
+conversely a qualifying ordered pair arises from exactly $2^{d-2j}$ sets $D$,
+so it contributes $2^{-d}4^j2^{d-2j}=1$. For general $F$, delete the
+suspension coordinate: the suspension edges give $\pm e_i$ and the edges of
+$F$ give $\pm(e_i-e_j)$, so the polytope is the free sum of those of the
+components, whose gauges are integral by reflexivity. Counting lattice
+points by exact gauge, the series $h^*/(1-t)^{\dim}$ multiply, hence so do
+the $h^*$ and gamma polynomials, and so do the pair counts. An isolated
+vertex gives a segment with numerator $1+t$ and gamma polynomial $1$.
+\end{proof}
+
+\begin{theorem}[Gamma vector of a complete multipartite graph; \stU]\label{grw:thm:gamma}
+Identify one vertex of one part with one vertex of another part to form a
+set $W$ of $d$ elements, and let $B_i\subseteq W$ be the image of $A_i$.
+Then
+\begin{equation}\label{grw:eq:subsetgamma}
+ \gamma_j(G)=\binom{2j}{j}\,
+ \#\{T\subseteq W:\abs T=2j,\ \abs{T\cap B_i}\le j\text{ for all }i\}.
+\end{equation}
+In particular all gamma coefficients are nonnegative, and for
+$0\le j\le\floor{d/2}$
+\begin{equation}\label{grw:eq:multigamma}
+ \frac{\gamma_j(G)}{\binom{2j}{j}}=\binom d{2j}-\sum_{i=1}^r\sum_{\ell=j+1}^{2j}
+ \binom{a_i}{\ell}\binom{d-a_i}{2j-\ell}.
+\end{equation}
+\end{theorem}
+
+\begin{proof}
+Let $G_i$ be $K_v$ with only the edges inside $A_i$ deleted. In $kP_{K_v}$
+the only condition of \cref{gra:prop:membership} is $q\le k$, and a vector
+violates $p_i+n_i\le k$ for at most one $i$, since its absolute mass is
+$2q\le2k$. Hence
+\begin{equation}\label{grw:eq:defects}
+ E_G=E_{K_v}-\sum_{i=1}^r\bigl(E_{K_v}-E_{G_i}\bigr),
+\end{equation}
+an identity of polynomials, and gamma coefficients are linear in the
+Ehrhart polynomial at fixed dimension. Take the suspension vertex of $G_i$
+outside $A_i$, so $G_i=\widehat F$ with $F=K_d$ minus the edges inside $A_i$.
+In $F$ a set of vertices of $U$ meeting the complement of $A_i$ sees all of
+$V$, and a nonempty set inside $A_i$ sees $V\setminus A_i$; so by Hall's
+theorem the pair $(U,V)$ is admissible in \cref{grw:lem:cut} exactly when
+$\abs{(U\cup V)\cap A_i}\le j$, and each admissible union has $\binom{2j}j$
+ordered splittings. For $K_v$ every $2j$-set qualifies. Substituting in
+\eqref{grw:eq:defects} gives \eqref{grw:eq:multigamma}, the defect of part
+$i$ counting the $2j$-sets with more than $j$ points in $A_i$. In $W$ the
+$B_i$ have sizes $a_i$ and pairwise meet in at most one point, so a
+$2j$-set cannot violate two bounds (it would have at least $2j+1$ points);
+the forbidden families are disjoint, and counting their complement gives
+\eqref{grw:eq:subsetgamma}.
+\end{proof}
+
+For $K_{m,n}$ the two images meet in the identified point, which a
+permitted set must avoid, and \eqref{grw:eq:subsetgamma} returns the formula
+$\gamma_j=\binom{2j}j\binom{m-1}j\binom{n-1}j$ of Higashitani, Jochemko and
+Micha\l{}ek used in \cref{gra:sec:ehrhart}.
+
+\begin{theorem}[Exact cross-degree; \stU]\label{grw:thm:crossdegree}
+Let $b=\max_ia_i$ and $s=v-b$. The cross-degree of $E_G$ is
+\[
+ m=\min\{\floor{(v-1)/2},\ s-1\},
+\]
+and $\gamma_j(G)>0$ for every $0\le j\le m$.
+\end{theorem}
+
+\begin{proof}
+A permitted $2j$-set in \eqref{grw:eq:subsetgamma} has at least $j$ points
+outside a largest $B_i$, and there are $d-b=s-1$ of them, so $j\le s-1$; also
+$2j\le d$. If $b<v/2$, every part has size at most $\floor{d/2}$ and every
+set of that size $2\floor{d/2}$ is permitted. If $b\ge v/2$, then $s-1\le
+\floor{d/2}$; with at least three parts the other parts have size at most
+$s-1$, and all $s-1$ points outside a largest $B_i$ with any $s-1$ points
+inside it form a permitted set; with two parts of sizes $a\le b$, a
+permitted set avoids the common point and takes $j$ points on each side, so
+$j=a-1$ is attained. Finally, from a permitted $2j$-set with $j\ge2$ remove
+two points meeting every part with exactly $j$ chosen points (at most two
+such parts, since the intersection counts total at most $2j+1<3j$); this
+gives a permitted $(2j-2)$-set, and the empty set covers $j=1$.
+\end{proof}
+
+\begin{remark}[K\"olbl's cross-degree question]\label[remark]{grw:rem:kolbl}
+K\"olbl's Conjecture~4.8 \cite{Kolbl2024Ehrhart} takes positive integers
+$a_1\le\dots\le a_k\le n$, lets $m$ be the cross-degree of the Ehrhart
+polynomial of $K_{a_1,\dots,a_k}$, and conjectures
+$\floor{\sum_ia_i/2}\le m+1\le\sum_ia_i$; its second part asks for the
+interlacing of $K_{1^k,n}$ and $K_{1^{k+1},n}$. Read literally, with $n$
+not entering the graph, the lower bound fails already for $K_{1,3}$, where
+$m=0$. If $n$ is read as one further largest part, so that the graph is
+$K_{a_1,\dots,a_k,n}$ and $s=\sum_ia_i$, \cref{grw:thm:crossdegree} gives
+\[
+ m+1=\min\{\ceil{(s+n)/2},\ s\},
+\]
+which implies both inequalities and gives equality in the upper bound
+exactly when $n\ge s-1$. The interlacing part is addressed, for $k\le20$, by
+\cref{grw:thm:split}.
+\end{remark}
+
+\begin{theorem}[Reconstruction; \stU]\label{grw:thm:inverse}
+Among connected complete multipartite graphs on at least two vertices, the
+Ehrhart polynomial of the symmetric edge polytope determines the graph up
+to isomorphism, and the multiset of part sizes is recovered by integer
+arithmetic. Since $E_G(0)=1$, the same holds for the multiset of its complex
+zeros.
+\end{theorem}
+
+\begin{proof}
+The degree gives $d$ and $v=d+1$; compute the gamma vector, put
+$h=\floor{d/2}$, $D_j=\binom d{2j}-\gamma_j/\binom{2j}j$ and
+$L_j(a)=\sum_{\ell=j+1}^{2j}\binom a\ell\binom{d-a}{2j-\ell}$, so that
+$D_j=\sum_iL_j(a_i)$ by \eqref{grw:eq:multigamma}. If the cross-degree $m$ is
+less than $h$, \cref{grw:thm:crossdegree} gives the largest part $b=d-m>v/2$,
+which therefore occurs once; subtract $L_j(b)$ from every $D_j$. The
+remaining parts then have size at most $h$, and if $m=h$ every part has size
+at most $d-h\le h+1$. For $j=h,h-1,\dots,1$ in turn the remaining parts have
+size at most $j+1$; $L_j(a)=0$ for $a\le j$ and
+$L_j(j+1)=\binom{d-j-1}{j-1}>0$, so dividing the residual $D_j$ by this number
+gives the multiplicity of $j+1$, whose contributions are then subtracted. The
+total $v$ gives the number of singleton parts.
+\end{proof}
+
+For example $K_{1,4,4}$ and $K_{2,2,5}$ have the same dimension and the same
+number of edges, but $\gamma_2=216$ and $210$ respectively.
+
+\begin{proposition}[Balancing the parts; \stU]\label[proposition]{grw:prop:schur}
+At fixed $v$, moving a vertex from a larger part to a smaller one weakly
+increases every $\gamma_j$; equivalently, the gamma coefficients are
+Schur-concave in the partition of $v$.
+\end{proposition}
+
+\begin{proof}
+Fix $j\ge1$ and let $F(a)$ be the loss of a part of size $a$ in
+\eqref{grw:eq:multigamma}. Adding a vertex to the part newly disqualifies
+the sets containing it, $j$ old vertices of the part and $j-1$ others, so
+$D(a)=F(a+1)-F(a)=\binom aj\binom{d-a-1}{j-1}$, a product of log-concave
+sequences with interval supports, hence unimodal. For the move
+$(a,b)\mapsto(a+1,b-1)$ with $a\ge b\ge1$, put $u=b-1$, so $u\le a\le d-u$.
+If $D(u)>0$ then $D(d-u)/D(u)=(d-u)/u\ge1$, and unimodality on $[u,d-u]$
+gives $D(a)\ge D(u)$; the case $D(u)=0$ is trivial. So the total loss
+changes by $D(a)-D(u)\ge0$; unit transfers generate majorization.
+\end{proof}
+
+\paragraph{Split graphs.}
+Write $E_{k,n}$ for the Ehrhart polynomial of $K_{1^k,n}$, with $k$
+singleton parts and one part of size $n$. K\"olbl proved the first two
+steps of the interlacing in \cref{grw:rem:kolbl}
+\cite[Theorem~3.3]{Kolbl2024Ehrhart}.
+
+\begin{theorem}[Strict interlacing for split graphs; \stU]\label{grw:thm:split}
+For $1\le k\le20$ and every $n\ge1$, the zeros of $E_{k,n}$ and $E_{k+1,n}$
+are simple, lie on $\Re z=-1/2$, and strictly interlace by imaginary part.
+In particular all zeros of $E_{k,n}$ are simple and on the canonical line
+for $k\le21$.
+\end{theorem}
+
+\begin{proof}
+Let $r=k-1$ and $d=n+r$. By \eqref{grw:eq:subsetgamma}, in which only the
+large part can hold more than half of a set,
+$\gamma_j=\binom{2j}j\sum_{\ell=0}^j\binom n\ell\binom r{2j-\ell}$ for
+$0\le j\le r$ (zero for $2j>d$). As in \eqref{gra:eq:rotated}, with the
+cross-polytope polynomials $Q_k$,
+\[
+ R_{r,n}(y)=4^rd!\,i^{-d}E_{k,n}((iy-1)/2)=\sum_{0\le h\le\min(r,\floor{d/2})}
+ (d)_{2h}\Bigl(\sum_{j=h}^r4^{r-j}\gamma_j\binom jh\Bigr)Q_{d-2h}(y),
+\]
+with positive leading coefficient. For $n\ge r+2$ the recurrence in both
+directions gives $R_{r,n}=AQ_n-BQ_{n-1}$ and $R_{r+1,n}=CQ_n-DQ_{n-1}$, with
+$y$-degrees at most $r,r-1$ (respectively $r+1,r$) and the corresponding
+parities. If the Bezoutian matrix of $(A,B)$ is positive definite (for
+$r=0$ take $A=1$, $B=0$) and $T=AD-BC$ is positive on the real axis, then
+the argument of \cref{gra:lem:bezout} shows that the zeros of $R_{r,n}$ are
+real and simple and that, at each of them,
+$R_{r+1,n}/R_{r,n}'=-\lambda^2T/(\lambda^2W+W_n)<0$; with the positive
+leading coefficient and the extra degree this places one zero of
+$R_{r+1,n}$ in each gap and each exterior interval, which is the claim. Both
+tests are certified for every integer $n\ge r+2$ as in the proof of
+\cref{gra:thm:ehrhart}: after clearing the backward-recurrence denominators
+$\prod_{i=1}^{s-1}(n-i)^2$ ($s=r,r+1$), each cleared coordinate has degree
+at most $7s$ in $n$, which interpolation at $7s+4$ consecutive integers
+turns into identities; every leading minor of the two parity blocks of the
+Bezoutian, and every row $\Delta_n^jV(r+2,z)$ of $T(y)=V(n,y^2)$, has
+positive forward differences or is positive on $[0,\infty)$ by an exact
+Sturm count, and Newton's identity extends positivity to all $n\ge r+2$. For
+$1\le n<r+2$ the negative remainders of the Euclidean algorithm of the two
+full rotated polynomials drop in degree by one with positive leading
+coefficients, which gives strict interlacing directly. The certificates for
+$r=0,\dots,19$ are recorded in
+\artifact{multipartite-ehrhart/interlacing_checks.txt}.
+\end{proof}
+
+Exact enumeration of lattice points by signed edge steps agrees with
+\cref{grw:thm:gamma} in $312$ counts on $58$ multipartitions with at most
+eight vertices, and positivity, cross-degree and reconstruction were checked
+on all $7{,}313$ connected multipartitions with two to $24$ vertices
+(\artifact{multipartite-ehrhart/checks.txt}). For the six parts of size two
+in the counterexample to the line property cited in \cref{gra:sec:ehrhart},
+$\gamma=(1,98,1980,9240,11550,2772)$, and an exact Sturm count gives seven
+zeros on the canonical line and four off it.
+
+\subsection{Complete graphs with a matching deleted}\label{grw:sec:matching}
+\sources{multipartite-ehrhart; proveit_three_extensions_2026-11-27}
+
+Let $G_{d,M}$ be $K_{d+1}$ with a matching of $M$ edges deleted,
+$0\le M\le\floor{(d+1)/2}$, $d\ge2$; write $E_{d,M}$ for its Ehrhart
+polynomial, $H_d=E_{d,0}$, and $C_d$ for the Ehrhart polynomial of the
+$d$-dimensional cross-polytope. A deleted edge is a part of size two, which
+in \eqref{grw:eq:multigamma} lowers only $\gamma_1$, by $2$. With
+$4t=(1+t)^2-(1-t)^2$ this gives
+\begin{equation}\label{grw:eq:matching}
+ E_{d,M}(s)=H_d(s)-M\,D_d(s),\qquad D_d=\tfrac12\bigl(C_d-C_{d-2}\bigr).
+\end{equation}
+We use \eqref{grw:eq:matching} to define $E_{d,M}$ for real $M$; only integer
+$M$ give graph polynomials. The palindromic numerators give
+$E_{d,M}(-1-s)=(-1)^dE_{d,M}(s)$, so conjugation and the reflection
+$s\mapsto-1-\bar s$ in the canonical line preserve the zeros.
+
+Put $s^*=-1-s$, $\epsilon=(-1)^d$, $L=\log d$, and
+\[
+ A(s)=\Gamma(1+s)^{-2},\qquad B(s)=2^s/\Gamma(s).
+\]
+
+\begin{lemma}[Dimension asymptotics]\label[lemma]{grw:lem:expansion}
+\textup{(a)} One has $C_d(s)=\sum_k2^k\binom dk\binom sk$,
+$H_d(s)=\sum_k\binom dk\binom{d+k}k\binom sk$, and
+\[
+ \sum_{d\ge0}C_d(s)z^d=\frac{(1+z)^s}{(1-z)^{1+s}},\qquad
+ \sum_{d\ge0}H_d(s)z^d=(1-z)^{-1-2s}\,{}_2F_1(-s,-s;1;z^2).
+\]
+\textup{(b)} Uniformly on compact sets of $s=\sigma+it$ avoiding the
+resonances $1+2s\in\Z$,
+\begin{align*}
+ H_d(s)&=A(s)d^{2s}+\epsilon A(s^*)d^{2s^*}+O\bigl(d^{2\sigma-1}+d^{-3-2\sigma}\bigr),\\
+ D_d(s)&=B(s)d^{s-1}+\epsilon B(s^*)d^{s^*-1}+O\bigl(d^{\sigma-2}+d^{-3-\sigma}\bigr).
+\end{align*}
+\textup{(c)} Fix $0<\eta<1/4$ and a bounded set of $\mu$, and write
+$s=-1/2+z$, $u=Lz$, $M=\mu\sqrt d$. Throughout $\abs z\le\eta$,
+\begin{equation}\label{grw:eq:four}
+ dE_{d,M}(s)=A(s)e^{2u}+\epsilon A(s^*)e^{-2u}
+ -\mu\bigl\{B(s)e^u+\epsilon B(s^*)e^{-u}\bigr\}+O_\eta(d^{-1+2\eta}),
+\end{equation}
+and the same bound holds for any fixed number of $u$-derivatives on a
+bounded $u$-disk and for the $\mu$-derivative. Away from $s=-1/2$, on
+compact sets of positive height, \eqref{grw:eq:four} holds with
+$e^u=d^{s+1/2}$ for arbitrary $\mu=O(\sqrt d)$ and error
+$O(d^{-1}(\abs{e^u}^2+\abs{e^u}^{-2}+\mu(\abs{e^u}+\abs{e^u}^{-1})))$.
+\end{lemma}
+
+\begin{proof}
+The cross-polytope counts lattice points by support, which gives $C_d$ and
+its series. For $K_{d+1}$, \cref{grw:thm:gamma} gives
+$h^*(x)=\sum_j\binom dj^2x^j$, and extracting coefficients from its Ehrhart
+series gives $H_d$; the identity
+$\sum_du^d\sum_j\binom dj^2x^j=(1-2(1+x)u+(1-x)^2u^2)^{-1/2}$ (the constant
+term in $y$ of $[1-u(1+y)(1+x/y)]^{-1}$), applied twice, proves the series
+for $H_d$ at nonnegative integers $s$, hence for all $s$ since each
+coefficient is a polynomial of degree at most $d$. At $z=1$ the connection
+formula \cite[15.8.4]{NISTDLMFHypergeometric} gives the singular part
+$(1-z)^{-1-2s}\Gamma(1+2s)\Gamma(1+s)^{-2}(1+O(1-z))$, and at $z=-1$ the
+singular part is $(1+z)^{1+2s}\Gamma(-1-2s)\Gamma(-s)^{-2}(1+O(1+z))$; the
+series of $D_d$ is $\frac12(1+z)^{s+1}(1-z)^{-s}$. Transfer at both
+singularities \cite[Chapter~VI]{FlajoletSedgewick2009Analytic}, with
+$[z^d](1-z)^{-w}\sim d^{w-1}/\Gamma(w)$ and the first omitted singular power
+supplying a factor $d^{-1}$, gives (b) uniformly on nonresonant compact sets.
+For (c), on the circle $\abs{s+1/2}=\eta$, which avoids all resonances, (b)
+gives the absolute error $O(d^{-1+2\eta})$; the difference of the two sides
+of \eqref{grw:eq:four} without the error is holomorphic in the disk, so the
+maximum modulus principle extends the bound inside, and Cauchy's estimates
+give the derivatives; the dependence on $\mu$ is affine. The last statement
+is (b) multiplied by $d$.
+\end{proof}
+
+\begin{theorem}[Bounded-height zero counts; \stU]\label{grw:thm:strings}
+Fix $0<t_1<t_2$, put $I=[t_1,t_2]$, and let $d\to\infty$.
+\begin{enumerate}[label=\textup{(\arabic*)}]
+\item If $M=o(\sqrt d)$, then in every fixed rectangle
+$\abs{\Re s+1/2}\le R$, $\Im s\in I$, all zeros are simple and on
+$\Re s=-1/2$ for large $d$; there are $2\abs IL/\pi+O(1)$ of them, with
+consecutive spacings $(\pi/2+o(1))/L$.
+\item If $M/d^\alpha\to\lambda>0$ with $1/2<\alpha\le1$, then in a fixed
+rectangle containing the three real parts below in its interior, the zeros
+with height in $I$ are simple for large $d$ and lie in three rows: real part
+$-\alpha+O(1/L)$, with $\abs IL/(2\pi)+O(1)$ zeros at spacing
+$(2\pi+o(1))/L$; real part exactly $-1/2$, with $\abs IL/\pi+O(1)$ zeros at
+spacing $(\pi+o(1))/L$; and real part $\alpha-1+O(1/L)$, with
+$\abs IL/(2\pi)+O(1)$ zeros at spacing $(2\pi+o(1))/L$. A zero
+$\sigma+it$ of the right row satisfies
+\[
+ L(\sigma-\alpha+1)=\log\bigl\lvert\lambda\,2^{\alpha-1+it}(\alpha-1+it)\Gamma(\alpha+it)\bigr\rvert+o(1).
+\]
+\end{enumerate}
+All errors are uniform on $I$.
+\end{theorem}
+
+For example, deleting $\floor{d^{3/4}}$ disjoint edges splits the
+bounded-height zeros between the lines $\Re s=-3/4,-1/2,-1/4$, and a largest
+matching gives the limiting real parts $-1,-1/2,0$, although the fraction of
+deleted edges tends to zero.
+
+\begin{proof}
+Write $w=e^{(s+1/2)L}$ and $\mu=M/\sqrt d$; on a compact rectangle of positive
+heights the four coefficients in \eqref{grw:eq:four} are bounded and bounded
+away from zero. If $\mu\to0$, outside a band $\abs{\log\abs w}\le C$ one of
+$w^{\pm2}$ dominates, and inside it a zero satisfies
+$w^4=-\epsilon A(s^*)/A(s)+o(1)$. If $\mu\to\infty$, the magnitudes
+$x^{-2},\mu x^{-1},\mu x,x^2$ of the four terms, $x=\abs w$, cross at
+$x=\mu^{-1},1,\mu$; outside fixed multiplicative neighbourhoods of these
+crossings one term dominates the others and the error. Near $x=1$ a zero
+satisfies $w^2=-\epsilon B(s^*)/B(s)+o(1)$, and near $x=\mu$, dividing by
+$A(s)\mu w$, $e^{(s-\alpha+1)L}=(M/d^\alpha)B(s)/A(s)+o(1)$; reflection gives
+the left row, and absolute values with the gamma recurrence give the
+displayed formula. Each reduced equation has the form
+$e^{k(s-a)L}=g_d(s)+o(1)$ on $\abs{\Re s-a}\le C/L$ with $k=4,2,1$, where
+$g_d$ has an analytic logarithm $\ell_d$ with bounded value and derivative.
+For each $j$ with $y_j=2\pi j/(kL)$ in a slightly larger interval the leading
+equation has a unique root $a+iy_j+\ell_d(a+iy_j)/(kL)+O(L^{-2})$, by a
+contraction on a disk of radius $C'/L$; Rouch\'e's theorem on circles of
+radius $\eta_d/L$, $\eta_d\to0$ slowly, gives one simple zero in each disk,
+and taking logarithms at a true zero places it in one of them. This gives
+the counts, spacings and simplicity. On the central rows
+$\abs{g_d(-1/2+it)}=1$, the disks are invariant under $s\mapsto-1-\bar s$,
+and uniqueness puts the zero exactly on the line.
+\end{proof}
+
+\begin{corollary}[The limiting zero set; \stU]\label[corollary]{grw:cor:strip}
+Over all admissible $M=M(d)$, the set of finite limits of zeros of $E_{d,M}$
+as $d\to\infty$ is exactly the strip $\{s\in\C:-1\le\Re s\le0\}$.
+\end{corollary}
+
+\begin{proof}
+Every point with real part in $(-1/2,0]$ and positive height is a limit by
+\cref{grw:thm:strings}(2) with $\alpha=1+\Re s$; conjugation, reflection and
+part (1) give the other nonreal points, and diagonal sequences with heights
+tending to zero give the real interval. Conversely, on compact subsets of
+$\Re s>0$, \cref{grw:lem:expansion}(b) and $M=O(d)$ give
+$d^{-2s}E_{d,M}(s)\to A(s)$ uniformly, also near the real resonances by the
+maximum modulus principle on small circles; $A$ has no zeros there, and
+reflection excludes limits left of $-1$.
+\end{proof}
+
+\begin{theorem}[The square-root threshold; \stU]\label{grw:thm:critical}
+Let $M/\sqrt d\to c\ge0$ and $c_*=\sqrt{8/\pi}$.
+\begin{enumerate}[label=\textup{(\arabic*)}]
+\item If $c<c_*$, then for large $d$ all zeros in any fixed bounded region
+are simple and on the canonical line.
+\item If $c>c_*$, put $r=c\sqrt{\pi/8}$, $x_-=(-r-\sqrt{r^2+8})/2$ and
+$h=\grwarcosh(-x_-/2)>0$. For all large even $d$ there are zeros
+$-1/2+(\pm h+i\pi)/\log d+o(1/\log d)$ and their conjugates, off the
+canonical line. For odd $d$ the same holds when $r>2$, with
+$h=\grwarcosh(r/2)$.
+\end{enumerate}
+\end{theorem}
+
+\begin{proof}
+By \cref{grw:lem:expansion}(b),(c), $d^{-2s}E_{d,M}(s)\to A(s)$ on compact
+sets right of the line, a zero in a bounded region has $\abs{\log\abs w}=O(1)$,
+and \eqref{grw:eq:four} has error $o(1)$ there. Fix the parity and real
+heights $t_d\to t$, and pass to a subsequence with $e^{it_dL}\to\theta$,
+$\abs\theta=1$. At $s=-1/2+it_d+u/L$, \eqref{grw:eq:four} converges locally
+uniformly in $u$ to $P(\theta e^u)/(\theta e^u)^2$ with $s_0=-1/2+it$ and
+\begin{equation}\label{grw:eq:quartic}
+ P(w)=A(s_0)w^4-cB(s_0)w^3-\epsilon c\overline{B(s_0)}w+\epsilon\overline{A(s_0)}.
+\end{equation}
+On $\abs w=1$ the equation $P=0$ reads $\Re(\kappa A(s_0)w^2)=
+c\Re(\kappa B(s_0)w)$ with $\kappa=1$ for even and $\kappa=-i$ for odd $d$;
+if $c\abs{B(s_0)/A(s_0)}<1$ the signs alternate at the four extrema of the
+left side, giving four simple unit roots. By the reflection formula
+\[
+ \Bigl\lvert\frac{B(-1/2+it)}{A(-1/2+it)}\Bigr\rvert^2=\frac{\pi(1/4+t^2)}{2\cosh(\pi t)}\le\frac\pi8,
+\]
+as $\cosh(\pi t)\ge1+\pi^2t^2/2\ge1+4t^2$. If (1) failed along a sequence of
+multiple or off-line zeros, their rescaled offsets would converge to a unit
+root, near which a reflection-invariant disk contains exactly one zero for
+large $d$, which must then be simple and on the line. For (2), at $t=0$ one
+has $A=1/\pi$ and $B=-1/(2\sqrt{2\pi})$. For even $d$ the quartic divided by
+$Aw^2$ is $x^2+rx-2$ with $x=w+w^{-1}$, whose root $x_-$ is below $-2$
+exactly when $r>1$, i.e.\ $c>c_*$, giving $w=-e^{\pm h}$; for odd $d$ it is
+$(w^2-1)(w^2+rw+1)$, with two negative roots off the unit circle for $r>2$.
+Rouch\'e's theorem at $u=\pm h+i\pi$ gives the zeros.
+\end{proof}
+
+\paragraph{The collision windows.}
+At $c=c_*$ for even $d$, and at $c=2c_*$ for odd $d$, the limiting quartic
+has a multiple root at $w=-1$, so the collisions occur near the heights
+$h/L$ with $h=(2j+1)\pi$. These windows are resolved as follows, for every
+fixed $j\ge0$. Put
+\[
+ \beta=2-\log2,\qquad C=\gamma+\tfrac53\log2+\tfrac23,\qquad
+ \kappa=\tfrac{\pi^2}4-2+\tfrac23\beta^2,
+\]
+with $\gamma$ Euler's constant; numerically $C=2.39912763\ldots$ and
+$\kappa=1.60597729\ldots$. The \emph{cluster} is the disk
+$\abs{L^2(s+1/2-ih/L)}<R$ in \cref{grw:thm:even} and
+$\abs{L^{4/3}(s+1/2-ih/L)}<R$ in \cref{grw:thm:odd}, for a sufficiently large
+fixed $R$; the statements hold for every larger $R$ and concern only this
+cluster, not the first off-line zero of the polynomial.
+
+\begin{theorem}[The even-dimensional collision; \stU]\label{grw:thm:even}
+Let $d\to\infty$ through even integers with
+$M=c_*\sqrt d\,(1+\alpha_d/L^2)$, $\alpha_d\to\alpha\ne\kappa h^2$. The
+cluster contains exactly two zeros,
+\[
+ s_\pm=-\frac12+\frac{ih}L+\frac{-ihC\pm\sqrt{\frac23(\alpha-\kappa h^2)}}{L^2}+o(L^{-2}),
+\]
+both simple; they lie exactly on the canonical line if $\alpha<\kappa h^2$
+and form a reflected off-line pair if $\alpha>\kappa h^2$. For large even
+$d$ there is a unique real collision parameter and height,
+\[
+ M^{\mathrm{ev}}_{d,h}=c_*\sqrt d\Bigl(1+\frac{\kappa h^2}{L^2}+O(L^{-3})\Bigr),\qquad
+ t^{\mathrm{ev}}_{d,h}=\frac hL-\frac{hC}{L^2}+O(L^{-3}),
+\]
+at which the cluster has one zero of multiplicity exactly two; increasing $M$
+through it turns two simple on-line zeros into a simple off-line pair.
+\end{theorem}
+
+\begin{theorem}[The odd-dimensional cubic window; \stU]\label{grw:thm:odd}
+Let $d\to\infty$ through odd integers with
+$M=2c_*\sqrt d\,(1+\alpha_d/L^{2/3})$, $\alpha_d\to\alpha$, and put
+$b=(\beta h)^{1/3}$ and $\alpha_*=-\frac32b^2$. If $\alpha\ne\alpha_*$, the
+cluster contains exactly three simple zeros,
+\[
+ s_k=-\frac12+\frac{ih}L+\frac{ix_k}{L^{4/3}}+o(L^{-4/3}),\qquad
+ x_k^3+2\alpha x_k-2\beta h=0 ;
+\]
+all three are on the canonical line if $\alpha<\alpha_*$, and if
+$\alpha>\alpha_*$ exactly one is, the other two forming a reflected off-line
+pair. There is a unique real collision parameter and height,
+\[
+ M^{\mathrm{odd}}_{d,h}=2c_*\sqrt d\Bigl(1-\frac{3(\beta h)^{2/3}}{2L^{2/3}}+O(L^{-1})\Bigr),\qquad
+ t^{\mathrm{odd}}_{d,h}=\frac hL-\frac{(\beta h)^{1/3}}{L^{4/3}}+O(L^{-5/3}),
+\]
+at which two zeros form one of multiplicity exactly two and the third stays
+simple near $x=2b$; increasing $M$ through it turns three on-line zeros into
+one on-line zero and an off-line pair.
+\end{theorem}
+
+\begin{corollary}[The two boundary values; \stU]\label[corollary]{grw:cor:equality}
+For even $d$ and $M$ either integer nearest to $c_*\sqrt d$, each fixed
+cluster of \cref{grw:thm:even} has two simple on-line zeros. For odd $d$ and
+$M$ either integer nearest to $2c_*\sqrt d$, each fixed cluster of
+\cref{grw:thm:odd} contains the off-line pair
+$-\frac12\pm\frac{\sqrt3\,r}{2L^{4/3}}+i\bigl(\frac hL-\frac r{2L^{4/3}}\bigr)+o(L^{-4/3})$,
+$r=(2\beta h)^{1/3}$, and the on-line zero
+$-\frac12+i(h/L+r/L^{4/3})+o(L^{-4/3})$.
+\end{corollary}
+
+\begin{proof}[Proofs]
+Let $a(z)=A(-1/2+z)/A(-1/2)=1+a_1z+a_2z^2+\cdots$ and
+$b(z)=B(-1/2+z)/B(-1/2)=1+b_1z+b_2z^2+\cdots$, with $A(-1/2)=1/\pi$,
+$c_*B(-1/2)=-1/\pi$. From $\psi(1/2)=-\gamma-2\log2$ and
+$\psi'(1/2)=\pi^2/2$,
+\[
+ a_1=2\gamma+4\log2,\quad a_2=\tfrac{a_1^2}2-\tfrac{\pi^2}2,\quad
+ b_1=\gamma+3\log2-2,\quad b_2=\tfrac{b_1^2}2-\tfrac{\pi^2}4-2,
+\]
+so $a_1-2b_1=2\beta$, $(2a_1-b_1)/3=C$ and $(3C^2-2(a_2-b_2))/2=\kappa$. For
+even $d$ put $u=ih+V/L$ and $\mu=c_*(1+\alpha/L^2)$; since $e^{ih}=-1$,
+Taylor expansion of \eqref{grw:eq:four} in $v=u-ih$ and $z=u/L$ gives
+$3v^2+(4a_1-2b_1)zv+2(a_2-b_2)z^2-2\alpha/L^2$, hence
+\[
+ \frac{L^2d}{A(-1/2)}E_{d,M}\Bigl(-\frac12+\frac{ih}L+\frac V{L^2}\Bigr)
+ =3(V+ihC)^2-2(\alpha-\kappa h^2)+O(L^{-1}),
+\]
+uniformly with derivatives on compact sets of $(V,\alpha)$, the error of
+\cref{grw:lem:expansion}(c) being $O(L^2d^{-1+2\eta})$. For odd $d$ put
+$u=ih+ix/L^{1/3}$ and $\mu=2c_*(1+\alpha/L^{2/3})$; the linear terms cancel,
+the leading terms are $2v^3-4\alpha L^{-2/3}v+2(a_1-2b_1)z$, and
+\[
+ -\frac{Ld}{2iA(-1/2)}E_{d,M}\Bigl(-\frac12+\frac{ih}L+\frac{ix}{L^{4/3}}\Bigr)
+ =x^3+2\alpha x-2\beta h+O(L^{-1/3}).
+\]
+Rouch\'e's theorem with the limiting quadratic, respectively cubic (whose
+discriminant $-32\alpha^3-108\beta^2h^2$ is positive exactly for
+$\alpha<\alpha_*$), gives the zero counts and locations. Reflection in the
+canonical line is complex conjugation in $x$ (and $V\mapsto-\bar V$), and the
+normalised functions are real on the real axis, so a simple limiting root on
+the line gives an exact simple zero on it, while roots with nonzero offset
+stay off it. For the collisions, in the even case put $V=ix$: the function
+tends to $q(x,\alpha)=-3(x+hC)^2+2(\kappa h^2-\alpha)$, and $q=q_x=0$ at
+$(-hC,\kappa h^2)$ with invertible Jacobian
+$\bigl(\begin{smallmatrix}0&-2\\-6&0\end{smallmatrix}\bigr)$; in the odd case
+the cubic is $(x+b)^2(x-2b)$ at $\alpha_*$, with Jacobian determinant
+$-12b^2\ne0$ at $x=-b$. The implicit function theorem gives the unique exact
+collisions with the stated expansions, and $q_\alpha<0$, $q_{xx}<0$ give the
+direction of the transition and multiplicity exactly two. For the corollary,
+rounding changes the rescaled parameter by $O(L^2/\sqrt d)$, respectively
+$O(L^{2/3}/\sqrt d)$, so $\alpha=0$, which is on the on-line side since
+$\kappa>0$ and on the off-line side since $\alpha_*<0$; at $\alpha=0$ the
+cubic has the roots $r,re^{\pm2\pi i/3}$.
+\end{proof}
+
+At a general height the quartic \eqref{grw:eq:quartic}, rotated so that its
+unit-circle equation reads $\cos2\theta+a\cos\theta+b\sin\theta=0$, has a
+double unit root exactly on the curve
+$(a,b)=(2\cos^3\theta-3\cos\theta,\,3\sin\theta-2\sin^3\theta)$, which meets
+every ray from the origin once; inside it all four roots are simple on the
+unit circle, outside two of them leave as a reciprocal-conjugate pair.
+
+\paragraph{Real zeros of the numerator.}
+For $G_{d,M}$, \eqref{grw:eq:multigamma} gives the gamma polynomial
+\begin{equation}\label{grw:eq:gammamatch}
+ \Gamma_{d,M}(z)=G_d(z)-2Mz,\qquad G_d(z)=\sum_{j=0}^{\floor{d/2}}\binom{2j}j\binom d{2j}z^j,
+\end{equation}
+whereas $h^*$ is real-rooted for every complete bipartite graph
+\cite{HigashitaniJochemkoMichalek2018Hstar}.
+
+\begin{theorem}[Threshold for real-rootedness of the numerator; \stU]\label{grw:thm:numerator}
+Let $N_d$ be the number of nonreal zeros of $\Gamma_{d,M}$ with
+multiplicity; $h^*$ has exactly $2N_d$. Put
+$A_0(t)=e^{2t}/(2\sqrt\pi\,t^{5/4})$ and
+$c_{\mathrm{num}}=A_0(5/8)=\frac{e^{5/4}}{2\sqrt\pi}(8/5)^{5/4}$.
+\begin{enumerate}[label=\textup{(\arabic*)}]
+\item For $d\ge4$ there is a real $T_d$ with $T_d/d^{3/4}\to c_{\mathrm{num}}$
+such that $N_d=0$ if and only if $M\le T_d$.
+\item If $M/d^{3/4}\to c>c_{\mathrm{num}}$ and $t_-<t_+$ solve $A_0(t)=c$,
+then $N_d/\sqrt d\to2(\sqrt{t_+}-\sqrt{t_-})/\pi$; at $c=c_{\mathrm{num}}$,
+$N_d=o(\sqrt d)$.
+\item If $M/d^\alpha\to\lambda>0$ with $3/4<\alpha\le1$ and $2M\le d+1$, then
+$N_d/\sqrt{d\log d}\to(2/\pi)\sqrt{(\alpha-3/4)/2}$. In particular a maximum
+matching gives $(\sqrt2/\pi+o(1))\sqrt{d\log d}$ nonreal zeros of $h^*$.
+\end{enumerate}
+\end{theorem}
+
+\begin{proof}
+Let $P(x)=G_d(-x)$ and $m=\floor{d/2}$. Summing over $d$,
+$\sum_dP(x)z^d=(1-2z+(1+4x)z^2)^{-1/2}$, so with the Legendre polynomial
+$L_d$ ($L_d(1)=1$) one has $P(x)=(1+4x)^{d/2}L_d(\cos\theta)$,
+$\theta=\arctan(2\sqrt x)$, and $P$ has $m$ distinct positive roots. The
+negative zeros of $\Gamma_{d,M}$ are the positive solutions of $Y(x)=M$,
+$Y(x)=-P(x)/(2x)$. The critical points solve $xP'-P=0$, which has a zero in
+every gap between positive roots of $P$ by Rolle, exactly one negative
+zero (its value at $-z$ is $-1+\sum_{j\ge2}(j-1)\binom{2j}j\binom d{2j}z^j$),
+and degree $m$; so each bounded positive lobe of $Y$ has one maximum and
+contributes two solutions exactly when its maximum is at least $M$, while the
+exterior branches are monotone. As $\Gamma_{d,M}$ has nonnegative
+coefficients (\cref{grw:thm:gamma}) and constant term one, it has no
+nonnegative zero, so $N_d$ is
+twice the number of positive bounded lobes with maximum below $M$, and $T_d$
+is the least lobe maximum. A nonreal zero $z$ of the gamma polynomial gives
+two nonreal solutions of $z(1+t)^2=t$, and a negative one gives two real
+solutions.
+
+For the lobe maxima put $n=d+\frac12$, $u(\theta)=\sqrt{\sin\theta}\,
+L_d(\cos\theta)$ and $q=n^2+1/(4\sin^2\theta)$, so $u''+qu=0$. On
+$(0,\pi/2)$, $q$ decreases, so $S=u^2+u'^2/q$ satisfies $S'\ge0$ and
+$(qS)'\le0$, whence $(q(\pi/2)/q(\theta))S(\pi/2)\le S(\theta)\le S(\pi/2)$
+with $S(\pi/2)\sim2/(\pi d)$ by the values of $L_d$ and $L_d'$ at $0$ and
+Stirling's formula. With $t=dx$ and
+$V_d(t)=(1+4t/d)^{d/2+1/4}/(2\sqrt\pi\,t^{5/4})$ this gives
+$\abs{Y(x)}\le(1+o(1))d^{3/4}V_d(t)$ uniformly, and at a point of each lobe
+with $u'=0$ a matching lower bound up to the factor
+$\sqrt{q(\pi/2)/q(\theta)}$, which is bounded below on every lobe (by
+Markov's inequality $\abs{L_d'}\le d^2$ and $L_d(\cos\theta)>0$ for
+$\theta\le1/d$) and tends to one for $t$ in compact subsets of
+$(0,\infty)$. A Pr\"ufer phase $u=\rho\sin\phi$, $u'=n\rho\cos\phi$ gives
+$\phi'=n+\sin^2\phi/(4n\sin^2\theta)$, so $[\theta_1,\theta_2]\subseteq
+[1/d,\pi/2]$ contains $n(\theta_2-\theta_1)/\pi+O(1)$ zero gaps, half of them
+positive lobes, each of angular length at most $\pi/n$. Hence on compact
+$t$-intervals the normalised lobe maxima are $A_0(t)+o(1)$ uniformly, they
+diverge as $t\to0$ or $t\to\infty$, and lobes occur arbitrarily close to
+$t=5/8$, the minimum of $A_0$; this proves (1). For (2), the lobes with maxima
+below $M$ are, up to small neighbourhoods of $t_\pm$, those in $(t_-,t_+)$,
+and the angular count there is $(2/\pi)(\sqrt{t_+}-\sqrt{t_-})\sqrt d+
+o(\sqrt d)$; halve for positive lobes and double for nonreal roots. For (3)
+let $k_0=(\alpha-3/4)/2$: for $k<k_0$ every lobe in $1\le t\le k\log d$ has
+maximum $O(d^{3/4+2k})<M$, for $k>k_0$ every lobe beyond $k\log d$ has maximum
+above $M$, the angle at $t=k\log d$ is $(2+o(1))\sqrt{k\log d/d}$, and the
+gap count with $k\to k_0$ gives the limit.
+\end{proof}
+
+Within this family $d=169$ is the first dimension in which the numerator
+can have a nonreal zero. For $3\le d\le168$, $\floor{d/2}$ disjoint positive
+intervals with alternating endpoint signs for $\Gamma_{d,M}(-x)$ at the
+largest matching, $7{,}139$ enclosures in all with the case $(169,84)$,
+are certified in integer arithmetic, and the lobe comparison extends them
+to smaller $M$. At $d=169$ a matching of $84$ edges leaves all $84$ gamma
+roots real, while adding the $85$th leaves $82$ real roots and one nonreal
+pair, by exact Sturm counts; for $P=\Gamma_{169,85}$ already
+$-13348<P'(x)^2-P(x)P''(x)<-13347$ at $x=-1/218$, which violates Laguerre's
+inequality for real-rooted polynomials:
+\grafiles{\artifact{multipartite-ehrhart/matching_threshold_checks.txt},
+\artifact{multipartite-ehrhart/numerator_checks.txt}}
+
+\subsection{Face realizations of gamma vectors of graph suspensions}\label{grw:sec:gamma}
+\sources{cycle-complements-and-dirichlet-zero-matching}
+
+For a simplicial complex $\Delta$ let $f(\Delta,z)=\sum_{F\in\Delta}z^{\abs F}$,
+the empty face included. A complex of maximum face size $r$ is
+\emph{balanced} if its vertices admit $r$ colours with all faces
+multicoloured, and \emph{flag} if it contains every clique of its graph.
+Nevo and Petersen conjectured that the gamma vector of a flag homology
+sphere satisfies the Kruskal--Katona inequalities (that is, is the face
+vector of a simplicial complex) \cite[Conjecture~1.4]{NevoPetersen2011Gamma},
+and more strongly the Frankl--F\"uredi--Kalai inequalities (the face vector
+of a balanced complex) \cite[Conjecture~6.3]{NevoPetersen2011Gamma}; they
+asked whether it is always the face vector of a flag complex
+\cite[Problem~6.4]{NevoPetersen2011Gamma}. A flag realization implies a
+balanced one by Frohmader's theorem \cite{Frohmader2008Face}.
+
+For a graph $G$ on $n\ge1$ vertices let $P_{\widehat G}$ be the symmetric
+edge polytope of its suspension and
+$\mathcal B_G=\grwconv(\{\pm e_a\}\cup\{\pm e_a\pm e_b:ab\in E(G)\})$ its
+type-B analogue, with independent signs. Both have dimension $n$;
+$P_{\widehat G}$ is reflexive, and $\mathcal B_G$ is reflexive for bipartite
+$G$ \cite{OhsugiTsuchiya2021Symmetric}. If $\partial P$ has a flag unimodular
+triangulation, its $h$-polynomial is $h^*_P$, since coning from the origin
+triangulates the reflexive polytope unimodularly; the realizations below
+therefore give the conclusions of these conjectures for every such boundary
+triangulation, and are statements about $h^*_P$ in any case. Let $\nu(G)$
+and $\tau(G)$ be the matching and vertex-cover numbers.
+
+\begin{theorem}[Face realizations; \stU]\label{grw:thm:faces}
+\begin{enumerate}[label=\textup{(\arabic*)}]
+\item For every $G$, the gamma polynomial of $P_{\widehat G}$ is the face
+polynomial of a simplicial complex on $2\abs{E(G)}$ vertices, of degree
+$\nu(G)$ and linear coefficient $2\abs{E(G)}$; when $\nu(G)=\tau(G)$, in
+particular for bipartite $G$, it has a balanced realization.
+\item If $G$ is chordal bipartite or strongly chordal, or has no simple even
+cycle of length at least six, it has a flag realization.
+\item For bipartite $G$ the gamma polynomial of $\mathcal B_G$ has a
+balanced realization, and for chordal bipartite $G$ one that is both flag
+and balanced.
+\end{enumerate}
+\end{theorem}
+
+Ohsugi and Tsuchiya proved flag realizability in type A for bases without
+even cycles and in type B for forests
+\cite[Theorems~1.3 and~7.5]{OhsugiTsuchiya2021Symmetric}, and constructed a
+flag unimodular boundary triangulation in type A for chordal bipartite bases
+\cite[Theorem~6.9]{OhsugiTsuchiya2021Symmetric}; Ferroni's examples of
+symmetric edge polytopes that are not gamma-positive
+\cite{Ferroni2026Symmetric} show that the suspension hypothesis matters.
+
+\begin{proof}[Proof of \textup{(1)}]
+Give each directed edge $u\to v$ of $G$ a distinct power of two as weight,
+and for each pair $(U,V)$ counted in \cref{grw:lem:cut} choose the unique
+least-weight matching directed from $U$ to $V$; let $\Delta_G$ be the set of
+these matchings. If $M$ is chosen and $N\subseteq M$, a cheaper matching with
+the endpoints of $N$ uses the same vertices as $N$ and, combined with
+$M\setminus N$, would undercut $M$; so $\Delta_G$ is a simplicial complex,
+each feasible pair labels exactly one face, and its face polynomial is the
+gamma polynomial. Any monomial order may replace the weights. Single edges
+are faces, and a maximum matching with any orientation shows that faces of
+size $\nu(G)$ occur and none larger. Colour each directed edge by one of its
+endpoints in a minimum vertex cover; edges of a face are disjoint, so the
+colours are distinct, which gives $\nu(G)$ colours when $\tau=\nu$, as for
+bipartite graphs by K\H{o}nig's theorem.
+\end{proof}
+
+For $D\subseteq V(G)$ let $H_D$ be the bipartite graph on two copies $L,R$
+of $V(G)$ joining $u_L$ to $v_R$ for $uv\in E(G)$ and $u_L$ to $u_R$ for
+$u\in D$.
+
+\begin{proposition}[Flagness from a quadratic Gr\"obner basis; \stU]\label[proposition]{grw:prop:diagonal}
+If $H_D$ is chordal bipartite for some $D$, then for a suitable monomial
+order $\Delta_G$ is flag.
+\end{proposition}
+
+\begin{proof}
+Map the variable of an edge $u_Lv_R$ of $H_D$ to $s_ut_v$. By Ohsugi and Hibi
+\cite{OhsugiHibi1999Koszul} the toric ideal of a chordal bipartite graph has
+a quadratic Gr\"obner basis for some term order, and in each fibre the least
+monomial is the unique standard monomial. In a fibre $s_Ut_V$ with $U,V$
+disjoint every monomial is a directed matching from $U$ to $V$ and no
+diagonal edge is usable, so the normal forms are the faces of $\Delta_G$ for
+this order. A non-face either has two arcs sharing a vertex, or is a
+matching whose squarefree product is divisible by a quadratic initial
+monomial, whose two arcs form a non-face; so all minimal non-faces have size
+two.
+\end{proof}
+
+\begin{proof}[Proof of \textup{(2)} and \textup{(3)}]
+If $G$ is chordal bipartite, $H_\varnothing$ is two copies of $G$. If $G$ is
+strongly chordal, its closed-neighbourhood matrix is totally balanced by
+Farber's theorem \cite{Farber1983Characterizations}, so its incidence graph
+$H_{V(G)}$ has no induced cycle of length at least six. Both cases follow
+from \cref{grw:prop:diagonal}. If $G$ has no simple even cycle of length at
+least six and an oriented matching is not minimal, its symmetric difference
+with the minimal matching on the same endpoints decomposes into alternating
+simple cycles, all of length four, and by additivity one of them improves it;
+so a two-edge submatching is already not minimal, and $\Delta_G$ is flag for
+the additive weights. For (3), $\Gamma_{\mathcal B_G}(z)=p(G,4z)$ by
+\cite[Proposition~4.1 and Theorem~7.1]{OhsugiTsuchiya2021Symmetric}.
+Choosing a least-weight perfect matching on each perfectly matchable set
+gives, by the same replacement argument and for every graph, a complex on the
+edges with face polynomial $p(G,z)$; a minimum cover colours it with
+$\nu(G)$ colours for bipartite $G$, and for chordal bipartite $G$ a quadratic
+Gr\"obner basis of the toric ideal of $G$ makes it flag as above. Replacing
+each vertex by four copies, with faces choosing at most one copy of each
+original vertex, multiplies the $j$-faces by $4^j$ and preserves the colouring
+and flagness.
+\end{proof}
+
+For example the complete split graph, a clique joined completely to an
+independent set, satisfies the hypothesis of \cref{grw:prop:diagonal} with
+$D$ the clique, since the resulting matrix has nested rows; as $K_{1^k,n}$ is
+the suspension of the complete split graph $K_{1^{k-1},n}$, every
+$P_{K_{1^k,n}}$, $k\ge1$, has a flag gamma realization. For bipartite bases
+the hypothesis of (2) is sharp for this kind of representation.
+
+\begin{theorem}[The long-cycle obstruction; \stU]\label{grw:thm:flagiff}
+For bipartite $G$, there is a flag complex, closed under subsets, consisting
+of one oriented matching for each feasible ordered endpoint pair if and only
+if $G$ is chordal bipartite.
+\end{theorem}
+
+\begin{proof}
+Sufficiency is \cref{grw:prop:diagonal}. Otherwise take an induced cycle
+$C_{2r}$, $r\ge3$, with alternating sides $U,V$. Exactly two perfect
+matchings run from $U$ to $V$ and only one can be chosen. Every proper
+submatching of the other is forced by its endpoints, whose induced subgraph
+is a forest and so has at most one perfect matching. The omitted matching is
+therefore a minimal non-face of size $r\ge3$, whatever the choices.
+\end{proof}
+
+For a bipartite $G$ with sides $A\sqcup B$ and $h=\min(\abs A,\abs B)$, let
+$N_j(q)$ count ordered $q$-tuples of pairwise disjoint perfectly matchable
+sets, empty entries allowed, with union of size $2j$. Splitting the edges of
+a directed matching by direction gives $N_j(2)=\gamma_j(P_{\widehat G})$, and
+$4^jN_j(1)=\gamma_j(\mathcal B_G)$.
+
+\begin{theorem}[Newton inequalities; \stU]\label{grw:thm:newton}
+For bipartite $G$ and every $q\ge1$ the numbers $N_j(q)/\binom hj$,
+$0\le j\le h$, are log-concave without internal zeros. In particular the
+gamma coefficients of both $P_{\widehat G}$ and $\mathcal B_G$ satisfy
+$\gamma_j^2\ge\frac{(j+1)(h-j+1)}{j(h-j)}\gamma_{j-1}\gamma_{j+1}$ for
+$1\le j<h$.
+\end{theorem}
+
+\begin{proof}
+Let $\abs A=h$ and $Z$ the $A\times B$ matrix with independent
+indeterminates at the edges. A minor of $Z$ is nonzero exactly when its rows
+and columns have a perfect matching, so the basis generating polynomial of
+the column matroid of $[I\mid Z]$ is
+$F=\sum_{(S,T)}\prod_{i\in A\setminus S}x_i\prod_{k\in T}y_k$ over matchable
+pairs $S\subseteq A$, $T\subseteq B$, and $F$ is Lorentzian
+\cite{BrandenHuh2020Lorentzian}; products, derivatives and nonnegative
+linear substitutions preserve this. Truncating to degree at most one in a
+variable $y$ does as well, by the characterization of
+\cite[Theorem~2.25]{BrandenHuh2020Lorentzian}: the support stays M-convex,
+and the Hessian of each derivative of degree two is zero, a principal
+submatrix of the original, or the original minus a nonnegative diagonal
+matrix, so it still has at most one positive eigenvalue. Differentiate
+$F^q$ $q-1$ times in each $x_i$ and truncate in each $y_k$; the surviving
+terms are the $q$-tuples of disjoint matchable pairs, and setting all
+$x_i=t$, $y_k=z$ gives the Lorentzian form
+$((q-1)!)^h\sum_jq^{h-j}N_j(q)t^{h-j}z^j$. A bivariate form of degree $h$ is
+Lorentzian exactly when its coefficients divided by $\binom hj$ are
+log-concave with interval support \cite[Example~2.26]{BrandenHuh2020Lorentzian},
+and every $j\le\nu(G)$ occurs.
+\end{proof}
+
+For $q=1$ this is the log-concavity of the regular-minor enumerator of a
+bimatroid \cite{RohrleUlirsch2025Logarithmic}. The type-A and type-B vectors
+are $(1,8,6)$ and $(1,16,16)$ for $C_4$, $(1,12,36,14)$ and $(1,24,144,64)$
+for $C_6$, and $(1,18,54,20)$ and $(1,36,144,64)$ for $K_{3,3}$. The face
+counts agree with direct lattice computations for all $208$ graphs on at
+most six vertices in type A and all $61$ bipartite ones in type B, and the
+cover colouring was checked on all $134$ of them with $\tau=\nu$:
+\grafiles{\artifact{cycle-complements-and-dirichlet-zero-matching/04-graph-gamma-vectors/face_checks.txt}}
+
+\subsection{Stable set polytopes of complements of cycles}\label{grw:sec:stable}
+\sources{cycle-complements-and-dirichlet-zero-matching}
+
+For a graph $G$ on $V$, $\abs V=n$, let
+$\mathcal S_G=\grwconv\{\mathbf 1_S:S\text{ a clique of }G\}$, the empty
+clique included; this is the stable set polytope of the complement of $G$,
+of dimension $n$. Let $h_G$ be its Ehrhart numerator,
+$\sum_k\abs{k\mathcal S_G\cap\Z^V}z^k=h_G(z)/(1-z)^{n+1}$, and $p_G=p(G,z)$
+the perfectly matchable set polynomial of \cref{grw:lem:cut}. Davis and Kohl
+proved $h_G=p_G$ for bipartite $G$ \cite[Lemma~3.11]{DavisKohl2024Perfectly}
+and conjectured that $h_{C_n}=p_{C_n}+\frac{1+(-1)^{n+1}}2z^{(n+1)/2}$ for
+$n\ge4$ \cite[Conjecture~3.15]{DavisKohl2024Perfectly}.
+
+\begin{theorem}[The Davis--Kohl cycle conjecture; \stU]\label{grw:thm:cycle}
+For every odd $n=2m+1\ge5$, $h_{C_n}(z)=p_{C_n}(z)+z^{m+1}$; explicitly
+\[
+ h_{C_{2m+1}}(z)=z^{m+1}+\sum_{j=0}^m\frac{2m+1}{2m+1-j}\binom{2m+1-j}jz^j .
+\]
+\end{theorem}
+
+\begin{proof}
+As $C_n$ is triangle-free, $\mathcal S_G=\grwconv(0,e_i,e_i+e_{i+1})$, every
+point of $k\mathcal S_G$ is nonnegative with coordinate sum at most $2k$, and
+for $k\le m$ every lattice point has a zero coordinate. The face supported on
+$W\subseteq V$ is $\mathcal S_{G[W]}$, and proper induced subgraphs are
+forests, so inclusion--exclusion over the zero coordinates and the bipartite
+case give
+$h_G\equiv\sum_{W\subsetneq V}(-1)^{n-\abs W+1}(1-z)^{n-\abs W}p_{G[W]}
+\pmod{z^{m+1}}$. For a perfectly matchable $T$ of size $2j$ the terms of its
+proper supersets sum to
+$z^j\sum_{\ell=1}^{n-2j}(-1)^{\ell+1}\binom{n-2j}\ell(1-z)^\ell=z^j-z^{n-j}$
+with $n-j\ge m+1$, so $h_G\equiv p_G\pmod{z^{m+1}}$. By Ehrhart reciprocity
+\cite[Chapter~4]{BeckRobins2015Computing} the first dilation with an interior
+point is $n+1-\deg h_G$ and its number of interior points is the leading
+coefficient. An interior point of $k\mathcal S_G$ has positive coordinates of
+sum less than $2k$, so none exists for $k\le m$ and only $\mathbf 1$ for
+$k=m+1$; and $\mathbf 1/(m+1)$ lies in the interior of the simplex spanned by
+$0$ and the $n$ vectors $e_i+e_{i+1}$, which are independent on an odd cycle.
+Hence $h_G$ has degree $m+1$ and leading coefficient one, and as
+$\deg p_G=m$ the identity follows. Each perfectly matchable set of an odd
+cycle has a unique perfect matching, and $C_n$ has
+$\binom{n-j}j+\binom{n-j-1}{j-1}=\frac n{n-j}\binom{n-j}j$ matchings of size $j$.
+\end{proof}
+
+With the bipartite case this proves Conjecture~3.15 of
+\cite{DavisKohl2024Perfectly} for all $n\ge4$. For example
+$h_{C_9}=1+9z+27z^2+30z^3+9z^4+z^5$.
+
+\begin{theorem}[First discrepancy and odd girth; \stU]\label{grw:thm:oddgirth}
+If $G$ is triangle-free and not bipartite, with shortest odd cycles of length
+$g=2m+1$ and $c_g$ of them (unoriented, without base point), then
+$h_G-p_G=c_gz^{m+1}+O(z^{m+2})$ as formal power series.
+\end{theorem}
+
+\begin{proof}
+For $W\subseteq V$ let $A_W$ count lattice points of exact support $W$ by
+dilation, and let $B_W$ be the same Boolean inversion applied to the model
+series $p_{G[U]}/(1-z)^{\abs U+1}$; then
+$B_W=(1-z)^{-s-1}\sum_Tz^{s-\abs T/2}$ over perfectly matchable $T\subseteq W$,
+$s=\abs W$, and $\sum_WA_W$, $\sum_WB_W$ are the Ehrhart series and
+$p_G/(1-z)^{n+1}$. Both $A_W$ and $B_W$ start in degree at least $\ceil{s/2}$,
+and $A_W=B_W$ when $G[W]$ is bipartite. For $s<g$ all $G[W]$ are bipartite. For
+$s=g$ a nonbipartite $G[W]$ is a chordless $g$-cycle, and
+\cref{grw:thm:cycle} gives $A_W-B_W=z^{m+1}/(1-z)^{g+1}$. For $s=g+1$ the only
+full-support point at dilation $m+1$ is $\mathbf 1_W$, which lies in
+$(m+1)\mathcal S_G$ exactly when $G[W]$ has a fractional perfect matching. An
+extreme fractional perfect matching has independent incidence columns, so its
+components are single edges or odd cycles with weights $1/2$; an even number
+of odd cycles, each of at least $g$ vertices, cannot fit in $g+1$ vertices, so
+this happens exactly when $G[W]$ has a perfect matching, which is also when
+$B_W$ has a term in degree $m+1$. Larger $s$ start later, and multiplying
+$\sum_W(A_W-B_W)$ by $(1-z)^{n+1}$ preserves its first coefficient.
+\end{proof}
+
+\begin{corollary}[A characterization of bipartite graphs; \stU]\label[corollary]{grw:cor:bipartite}
+For every finite simple graph, $h_G=p_G$ if and only if $G$ is bipartite.
+\end{corollary}
+
+\begin{proof}
+For triangle-free nonbipartite graphs use \cref{grw:thm:oddgirth}. If $G$
+has a triangle, the lattice points of $\mathcal S_G\subseteq[0,1]^n$ are the
+clique indicators, so $[z]h_G-[z]p_G$ is the number of cliques of size at
+least three. The converse is \cite[Lemma~3.11]{DavisKohl2024Perfectly}.
+\end{proof}
+
+Let $F_n=h_{C_n}$ for odd $n=2m+1$, $\theta_*=\arccos(1/4)$ and
+$x(\theta)=-1/(4\cos^2\theta)$ for $0<\theta<\pi/2$.
+
+\begin{theorem}[Zeros of the odd-cycle numerators; \stU]\label{grw:thm:cyclezeros}
+All real zeros of $F_n$ lie in $[-4,-1/4)$; with multiplicity there are
+$n\theta_*/\pi+O(1)$ of them, a proportion tending to $2\theta_*/\pi$. The
+empirical measures of all $m+1$ zeros converge weakly to the measure on
+$x<-1/4$ with density $1/(\pi\abs x\sqrt{4\abs x-1})$. For a closed interval
+$J\subset(\theta_*,\pi/2)$, with $\delta_m=0$ for even and $\pi$ for odd $m$,
+each $t_k=(2\pi k+\delta_m)/n\in J$ carries a pair of simple conjugate zeros
+\[
+ z_{k,\pm}=x(t_k)\pm\frac in\abs{x'(t_k)}\,\grwarcosh\Bigl(\frac1{4\cos t_k}\Bigr)+O_J(n^{-2}).
+\]
+\end{theorem}
+
+\begin{proof}
+With $a,b=(1\pm\sqrt{1+4z})/2$, the matching polynomial of $C_n$ is
+$a^n+b^n=\tr\bigl(\begin{smallmatrix}1&z\\1&0\end{smallmatrix}\bigr)^n$, so
+$F_n=a^n+b^n+z^{m+1}$. For $z\ge0$ all coefficients are positive; for
+$-1/4\le z<0$, $a^n+b^n\ge2(-z)^{n/2}>(-z)^{m+1}$. For $z=x(\theta)<-1/4$,
+$a,b=e^{\pm i\theta}/(2\cos\theta)$ and the zero equation is
+$4\cos\theta\cos(n\theta)=(-1)^m$, which forces $\theta\le\theta_*$ and
+$z\ge-4$. On each full lobe of $\cos(n\theta)$ of the required sign the left
+side is strictly log-concave in modulus (the second logarithmic derivative is
+$-\sec^2\theta-n^2\sec^2(n\theta)$), so it has at most two solutions, and
+exactly two simple ones when the lobe centre is below $\theta_*$; this gives
+the count, and $n\abs I/\pi+O(1)$ real zeros for angles in a fixed interval
+$I\subset(0,\theta_*)$. On $J$, $h(\theta)=\grwarcosh(1/(4\cos\theta))$ is
+holomorphic nearby, and $\theta=t_k\pm ih(\theta)/n$ is a contraction on a
+disk of radius $C_J/n$ about $t_k$, with fixed points
+$t_k\pm ih(t_k)/n+O_J(n^{-2})$, simple and distinct; $x(\theta)$ is conformal
+and injective on a thin strip over $J$, which gives the pairs. Both kinds of
+zeros have angular density $n/\pi$, so the normalised counts converge to the
+pushforward of $(2/\pi)\,d\theta$ under $x$, whose density is the one stated.
+\end{proof}
+
+The limiting mass on $(-\infty,-4)$ is $2\arcsin(1/4)/\pi\approx0.16086$,
+carried by conjugate pairs although the limit measure is real.
+
+\begin{corollary}[Real-rootedness; \stU]\label[corollary]{grw:cor:realrooted}
+For $n\ge4$, $h_{C_n}$ is real-rooted if and only if $n$ is even or
+$n\in\{5,7\}$.
+\end{corollary}
+
+\begin{proof}
+For $n=2r$, subtracting $z^r$ from $a^{2r}+b^{2r}$ gives $p_{C_n}=h_{C_n}$,
+and at $z=x(\theta)$ the equation $2\cos(2r\theta)=(-1)^r$ has one solution
+on each of the $r$ monotone arcs of $(0,\pi/2)$. For $n=5,7$ the numerators
+are $(1+z)(1+4z+z^2)$ and $(1+3z+z^2)(1+4z+z^2)$. For odd $n\ge9$ the last lobe
+of the required sign is $[\pi/2-\pi/n,\pi/2]$, where with $u=n(\pi/2-\theta)$
+the amplitude is $4\sin(u/n)\sin u\le4u\sin u/n<8/n<1$ (since $u\sin u<2$ on
+$[0,\pi]$), so it has no root; the remaining lobes, by the log-concavity
+bound, allow at most $m-1$ roots, fewer than the degree $m+1$.
+\end{proof}
+
+The counts of lattice points for $C_n$, $4\le n\le10$, and the first
+discrepancies $2z^3$ for the theta graph with paths of lengths $2,3,3$ and
+$z^3$ for a $5$-cycle with leaves at two adjacent vertices agree with these
+results:
+\grafiles{\artifact{cycle-complements-and-dirichlet-zero-matching/01-cycle-complements/cycle_checks.txt}}
+
 \subsection{Open questions}\label{grw:sec:open}
-{\raggedright\sources{grh_method_transfers; grh_transfers_cycle_signings_and_lubin_tate; grh_transfer_advances_2026-11-26; grh_cayley_and_filters}}
+{\raggedright\sources{grh_method_transfers; grh_transfers_cycle_signings_and_lubin_tate; grh_transfer_advances_2026-11-26; grh_cayley_and_filters; erdelyi_ellipse_and_proveit_extensions; multipartite-ehrhart; proveit_three_extensions_2026-11-27; cycle-complements-and-dirichlet-zero-matching}}
 
 \begin{enumerate}
-\item \emph{Oriented Cayley walks.} For a prescribed conductor $f$ and
-spacing $a\sqrt{-f}$, what is the least outdegree of a periodic oriented
-Cayley graph that is connected on the whole host?
-\Cref{gra:prop:cayleycoset} shows that this requirement can change the
-answer of \cref{gra:thm:cayleyperiods}. For larger conductors, which
-connection sets attain the degree bound on hosts of order greater than
-$af$? \Cref{gra:cor:cayleyduality} constrains them by a duality, the
-spectrum and the rank. Nonabelian groups would require control of
-higher-dimensional irreducible representations.
+\item \emph{Oriented Cayley walks.} On a connected host that fails
+\cref{grw:cor:cayleyconnected}, what is the least outdegree of a periodic
+oriented Cayley graph with spacing $a\sqrt{-f}$ that is connected on the whole
+host, or is that spacing impossible? A first case is $G=\F_p^3$ at spacing
+$p\sqrt{-p}$, $p\equiv3\pmod4$. Which constraints on the support survive an
+outdegree slightly above $a\varphi(f)/2$? Nonabelian groups would require
+control of higher-dimensional irreducible representations.
 \item \emph{Square cycles at lengths incompatible with period eight.}
 What are the exact optima of \cref{gra:sec:cycles} at large lengths
 incompatible with period eight? The first undetermined even length is
@@ -1378,5 +2577,23 @@ two parity blocks of the Bezoutian of \cref{gra:lem:bezout} positive in
 every width? A representation of their minors as sums with positive
 coefficients could replace the width-by-width certificates and give a
 route to the line property and to interlacing for unrestricted part
-sizes.
+sizes. The same question for the split graphs: does the interlacing of
+\cref{grw:thm:split} hold for every $k$, as K\"olbl conjectured?
+\item \emph{Deleted matchings.} The collision windows of
+\cref{grw:thm:even,grw:thm:odd} are described for each fixed $h=(2j+1)\pi$.
+Is there a statement uniform in growing $j$, and hence an exact
+bounded-region threshold at $c=c_*$ for even $d$, and what is the exact
+critical integer $M$ when a real collision lies between consecutive
+integers? Is there a comparably explicit numerator threshold, as in
+\cref{grw:thm:numerator}, when the deleted edges form disjoint triangles or
+larger cliques?
+\item \emph{Gamma vectors of suspensions.} Does every bipartite suspension
+have a flag gamma realization by a complex other than the endpoint
+representatives excluded by \cref{grw:thm:flagiff}? Do the Newton
+inequalities of \cref{grw:thm:newton} extend to all suspensions?
+\item \emph{Stable set polytopes.} Are all coefficients of $h_G-p_G$
+nonnegative for triangle-free $G$, and is there an expansion over induced
+subgraphs with odd cycles with controlled signs? How does a conjugate pair of
+zeros of $h_{C_n}$ form at $x=-4$ when a lobe maximum approaches the
+threshold?
 \end{enumerate}
