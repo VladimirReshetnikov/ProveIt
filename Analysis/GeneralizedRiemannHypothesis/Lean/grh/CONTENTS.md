@@ -148,7 +148,7 @@ The heads of these files give an overview of a theory: `Lib/ClassField/Global/Ar
 - `New/UpperBound/ElementaryDivisors/Depth` (502): Few forms have only deep translates
 - `New/UpperBound/ElementaryDivisors/FrobeniusFactors` (516): The substitution by Frobenius powers of generic matrices; weight and defect
 - `New/UpperBound/ElementaryDivisors/AveragingMap` (365): Averaging: removing the terms of large defect in all Levi translates at once
-- `New/UpperBound/ElementaryDivisors/PieriCone` (379): The Pieri cone, the step map and the slab: interlacing and volume of the cone
+- `New/UpperBound/ElementaryDivisors/PieriCone` (368): The Pieri cone, the step map and the slab: interlacing and volume of the cone
 - `New/UpperBound/ElementaryDivisors/DefectCount` (635): The dimension of the forms of bounded defect
 - `New/UpperBound/ElementaryDivisors/ElementaryDivisorTheorem` (815): Elementary divisors of the edge Hecke operator
 

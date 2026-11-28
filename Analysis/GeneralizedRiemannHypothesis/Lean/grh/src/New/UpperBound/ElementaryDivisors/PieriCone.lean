@@ -76,11 +76,12 @@ def positiveStepSet (D : T → ℝ) (σ τ : T → Perm (Fin k)) (Y : Set (Fin k
       (∀ (j : T) (b : Fin k), 0 < permStep v P σ (ν ∘ prodCongrLeft τ) (b, j)) ∧
         permStep v P σ (ν ∘ prodCongrLeft τ) ∈ Y}
 
-/-- For weakly decreasing `x` and `y` in `ℝ ^ k`, the matrix with `(b, c)` entry `1` if `y c < x b`
+/-- For two weakly decreasing sequences in a linear order, the matrix with `(b, c)` entry `1` if `y c < x b`
 and `0` otherwise has determinant `1` if the two interlace, `x 0 > y 0 ≥ x 1 > y 1 ≥ ⋯`, and `0`
 otherwise. -/
-lemma det_interlacing_indicator {x y : Fin k → ℝ} (hx : Antitone x) (hy : Antitone y) :
-    det (of fun b c : Fin k ↦ if y c < x b then (1 : ℝ) else 0) =
+lemma det_interlacing_indicator {α R : Type*} [LinearOrder α] [CommRing R]
+    {x y : Fin k → α} (hx : Antitone x) (hy : Antitone y) :
+    det (of fun b c : Fin k ↦ if y c < x b then (1 : R) else 0) =
       if (∀ b : Fin k, y b < x b) ∧ ∀ b c : Fin k, b.val + 1 = c.val → x c ≤ y b then 1 else 0 := by
   induction k with
   | zero => simp
@@ -92,9 +93,9 @@ lemma det_interlacing_indicator {x y : Fin k → ℝ} (hx : Antitone x) (hy : An
       rw [ite_eq_right fun ⟨_, h_le⟩ ↦ (h_row_succ b.castSucc).not_ge (h_le b.castSucc b.succ rfl)]
       exact det_zero_of_row_eq b.succ_ne_zero (funext fun c ↦ by simp [h_row_succ, h_row_zero])
     · -- Otherwise column `0` vanishes below the top: expand along it.
-      have h_expand : det (of fun b c : Fin (k + 1) ↦ if y c < x b then (1 : ℝ) else 0) =
+      have h_expand : det (of fun b c : Fin (k + 1) ↦ if y c < x b then (1 : R) else 0) =
           (if y 0 < x 0 then 1 else 0) *
-            det (of fun b c : Fin k ↦ if y c.succ < x b.succ then (1 : ℝ) else 0) := by
+            det (of fun b c : Fin k ↦ if y c.succ < x b.succ then (1 : R) else 0) := by
         simp [det_succ_column_zero, sum_univ_succ, h_none]
         rfl
       rw [h_expand, ih (x := fun b ↦ x b.succ) (y := fun b ↦ y b.succ)
@@ -132,10 +133,11 @@ noncomputable def detOneSubPerm (q : ℝ) (τ : Perm (Fin k)) : ℝ :=
 
 variable (P : ℝ)
 
-/-- For linear maps `A : ℝ^ι → ℝ^κ` and `B : ℝ^κ → ℝ^ι`, the endomorphisms `1 - A B` and
+/-- For linear maps `A : R^ι → R^κ` and `B : R^κ → R^ι`, the endomorphisms `1 - A B` and
 `1 - B A` have the same determinant. -/
-lemma det_one_sub_comp_comm {ι κ : Type} [Fintype ι] [DecidableEq ι] [Fintype κ] [DecidableEq κ]
-    (A : (ι → ℝ) →ₗ[ℝ] κ → ℝ) (B : (κ → ℝ) →ₗ[ℝ] ι → ℝ) :
+lemma det_one_sub_comp_comm {R ι κ : Type*} [CommRing R] [Fintype ι] [DecidableEq ι] [Fintype κ]
+    [DecidableEq κ]
+    (A : (ι → R) →ₗ[R] κ → R) (B : (κ → R) →ₗ[R] ι → R) :
     (1 - A ∘ₗ B).det = (1 - B ∘ₗ A).det := by
   rw [← det_toMatrix', ← det_toMatrix', map_sub, map_sub, toMatrix'_one, toMatrix'_one,
     toMatrix'_comp, toMatrix'_comp, det_one_sub_mul_comm]
@@ -241,6 +243,19 @@ lemma volume_positiveStepSet (v : Fin (m + 1) → Bool) (hP : 1 < P) (D : Fin (m
   rw [h_pre, addHaar_preimage_linearMap _ hL_det, measure_inter_conull h_walls]
   simp [L, abs_unit_intCast, abs_inv]
 
+/-- Changing the row and column order at each link of a cycle preserves the product of the
+determinants. Each permutation contributes its sign once as a row change and once as a column
+change. -/
+lemma prod_det_reindex_cycle {ι n R : Type*} [Fintype ι] [Fintype n] [DecidableEq n] [CommRing R]
+    (M : ι → Matrix n n R) (τ : ι → Perm n) (e : Perm ι) :
+    ∏ j, ((M j).reindex (τ j).symm (τ (e j)).symm).det = ∏ j, (M j).det := by
+  have h_sign : ∏ j, (sign (τ j) : R) * sign (τ (e j)) = 1 := by
+    rw [prod_mul_distrib, e.bijective.prod_comp fun j ↦ (sign (τ j) : R), ← prod_mul_distrib]
+    simp [← Int.cast_mul, ← Units.val_mul]
+  simp_rw [Matrix.det_reindex]
+  simp only [symm_symm, sign_trans, sign_symm, Units.val_mul, Int.cast_mul]
+  rw [prod_mul_distrib, h_sign, one_mul]
+
 open Classical in
 /-- Let `P ≥ 0` and let `τ j` sort block `j` of `ν` decreasingly, giving `ν'`. The step
 `permStep v P σ ν (b, j)` is `± (P * ν (b, j + 1) - ν (σ j b, j))`, with `+` where `v j` is true,
@@ -256,31 +271,18 @@ lemma sum_sign_indicator_pos_eq_indicator_pieriCone (v : Fin (m + 1) → Bool) (
       if (∀ (j : Fin (m + 1)) (b : Fin k), 0 < permStep v P 1 (ν ∘ prodCongrLeft τ) (b, j)) ∧
         ν ∘ prodCongrLeft τ ∈ pieriCone v P then 1 else 0 := by
   -- Both sides are the product over `j` of the determinants of the indicators of positive steps.
-  -- `M j b' b` indicates that the step at `(b, j)` is positive if `σ j b = b'` (the transposition
-  -- serves only as some permutation sending `b` to `b'`).
+  -- Row `b'`, column `b` records the positive-step test when `σ j b = b'`.
   let M (j : Fin (m + 1)) : Matrix (Fin k) (Fin k) ℝ :=
-    of fun b' b ↦ if 0 < permStep v P (fun _ ↦ .swap b b') ν (b, j) then 1 else 0
+    of fun b' b ↦ if 0 < (if v j then P * ν (b, j + 1) - ν (b', j)
+      else ν (b', j) - P * ν (b, j + 1)) then 1 else 0
   trans ∏ j, ((M j).reindex (τ j).symm (τ (j + 1)).symm).det
-  · -- Expand the determinants; the signs of the `τ j` occur twice and cancel.
-    have h_entries (σ : Fin (m + 1) → Perm (Fin k)) : ∏ j, ∏ b, M j (σ j b) b =
-        if ∀ (j : Fin (m + 1)) (b : Fin k), 0 < permStep v P σ ν (b, j) then 1 else 0 := by
-      simp [M, Fintype.prod_ite_zero]
-    have h_sign (σ : Fin (m + 1) → Perm (Fin k)) :
-        (sign (ofFn σ).prod : ℝ) = ∏ j, (sign (σ j) : ℝ) := by
-      simp [map_list_prod, List.map_ofFn, List.prod_ofFn, prod_univ_succ]
-    have h_cancel : ∏ j, (sign (τ j) : ℝ) * sign (τ (j + 1)) = 1 := by
-      rw [prod_mul_distrib,
-        (AddGroup.addRight_bijective 1).prod_comp fun j ↦ (sign (τ j) : ℝ), ← prod_mul_distrib]
-      simp [← Int.cast_mul, ← Units.val_mul]
-    calc
-      _ = ∑ σ : Fin (m + 1) → Perm (Fin k),
-            ∏ j, (sign (σ j) : ℝ) * ∏ b, M j (σ j b) b := by
-          simp only [prod_mul_distrib, h_entries, h_sign, mul_ite, mul_one, mul_zero]
-      _ = ∏ j, (M j).det := by simp only [det_apply', prod_univ_sum, piFinset_univ]
-      _ = ∏ j, ((sign (τ j) : ℝ) * sign (τ (j + 1))) * (M j).det := by
-          rw [prod_mul_distrib, h_cancel, one_mul]
-      _ = ∏ j, ((M j).reindex (τ j).symm (τ (j + 1)).symm).det := by
-          exact prod_congr rfl fun j _ ↦ by rw [Matrix.det_reindex]; simp
+  · -- Expanding each determinant chooses one permutation per letter.
+    refine Eq.trans ?_ (prod_det_reindex_cycle M τ (Equiv.addRight 1)).symm
+    simp only [det_apply', prod_univ_sum, piFinset_univ]
+    refine sum_congr rfl fun σ _ ↦ ?_
+    rw [prod_mul_distrib]
+    simp [M, Fintype.prod_ite_zero, map_list_prod, List.map_ofFn, List.prod_ofFn,
+      prod_univ_succ, mul_ite]
   · -- After sorting, each factor is an interlacing determinant.
     let ν' : Fin k × Fin (m + 1) → ℝ := ν ∘ prodCongrLeft τ
     have h_det (j : Fin (m + 1)) : ((M j).reindex (τ j).symm (τ (j + 1)).symm).det =
@@ -289,18 +291,13 @@ lemma sum_sign_indicator_pos_eq_indicator_pieriCone (v : Fin (m + 1) → Bool) (
         else 0 := by
       have h_anti_mul : Antitone fun b ↦ P * ν (τ (j + 1) b, j + 1) := (h_anti (j + 1)).const_mul hP
       by_cases hv : v j
-      · have h_matrix : (M j).reindex (τ j).symm (τ (j + 1)).symm =
-            (of fun b c : Fin k ↦
-              if ν (τ j c, j) < P * ν (τ (j + 1) b, j + 1) then (1 : ℝ) else 0)ᵀ := by
-          simp [M, ← ext_iff, hv]
-        rw [h_matrix, det_transpose, det_interlacing_indicator h_anti_mul (h_anti j)]
-        simp [ν', hv, forall_and]
-      · have h_matrix : (M j).reindex (τ j).symm (τ (j + 1)).symm =
-            of fun b c : Fin k ↦
-              if P * ν (τ (j + 1) c, j + 1) < ν (τ j b, j) then (1 : ℝ) else 0 := by
-          simp [M, ← ext_iff, hv]
-        rw [h_matrix, det_interlacing_indicator (h_anti j) h_anti_mul]
-        simp [ν', hv, forall_and, sub_add]
+      · rw [← det_transpose]
+        convert det_interlacing_indicator (R := ℝ) h_anti_mul (h_anti j) using 1
+        · congr 1; ext; simp [M, hv]
+        · simp [ν', hv, forall_and]
+      · convert det_interlacing_indicator (R := ℝ) (h_anti j) h_anti_mul using 1
+        · congr 1; ext; simp [M, hv]
+        · simp [ν', hv, forall_and, sub_add]
     simp only [h_det, Fintype.prod_boole]
     congr! 1
     simp only [ν', pieriCone, mem_ofPred_eq, forall_and]
@@ -336,28 +333,21 @@ lemma sum_indicator_positiveStepSet {v : Fin (m + 1) → Bool} (hP : 0 ≤ P) (D
       Prod.Lex.left _ _ (neg_lt_neg (h_desc j b b' h_cov.coe_fin.succ_eq)))
   rw [sum_eq_single τ fun τ' h_ne ↦ indicator_of_notMem (mt (h_sort τ') h_ne) _]
   by_cases h_deg : ∀ j, ∑ b, permStep v P 1 ν (b, j) ∈ Icc (D j - 1) (D j)
-  · have h_left : ν ∈ positiveStepSet v P D 1 τ Ω ↔
-        (∀ (j : Fin (m + 1)) (b : Fin k), 0 < permStep v P 1 (ν ∘ prodCongrLeft τ) (b, j)) ∧
-          ν ∘ prodCongrLeft τ ∈ pieriCone v P := by
-      simp only [positiveStepSet, mem_ofPred_eq, h_deg, hΩ, implies_true, true_and]
-    have h_right (σ : Fin (m + 1) → Perm (Fin k)) : ν ∈ positiveStepSet v P D σ 1 univ ↔
-        ∀ (j : Fin (m + 1)) (b : Fin k), 0 < permStep v P σ ν (b, j) := by
-      simp only [positiveStepSet, mem_ofPred_eq, h_deg, implies_true, true_and, Set.mem_univ,
-        and_true, show ν ∘ prodCongrLeft (1 : Fin (m + 1) → Perm (Fin k)) = ν from rfl]
-    simp only [indicator_apply, h_left, h_right]
-    simpa using (sum_sign_indicator_pos_eq_indicator_pieriCone P v hP h_anti).symm
+  · simpa only [indicator_apply, positiveStepSet, mem_ofPred_eq, h_deg, hΩ, implies_true,
+      true_and, Set.mem_univ, and_true,
+      show ν ∘ prodCongrLeft (1 : Fin (m + 1) → Perm (Fin k)) = ν from rfl] using
+      (sum_sign_indicator_pos_eq_indicator_pieriCone P v hP h_anti).symm
   · simp only [indicator_apply, positiveStepSet, mem_ofPred_eq, h_deg, false_and, ite_false,
       sum_const_zero]
 
-/-- For `f` on permutations of `Fin k`, the sum of `f (σ 0 * ⋯ * σ m)` over all families `σ` is
-`k ! ^ m` times the sum of `f`: choose `σ 1, …, σ m` and solve for `σ 0`. -/
-lemma sum_comp_prod_ofFn (f : Perm (Fin k) → ℝ) :
-    ∑ σ : Fin (m + 1) → Perm (Fin k), f (ofFn σ).prod =
-      k.factorial ^ m * ∑ τ : Perm (Fin k), f τ := by
-  let e : Perm (Fin k) × (Fin m → Perm (Fin k)) ≃ (Fin (m + 1) → Perm (Fin k)) :=
-    (prodCongrLeft fun g ↦ .mulRight (ofFn g).prod⁻¹).trans (consEquiv fun _ ↦ Perm (Fin k))
+/-- Over a finite group each product of an ordered nonempty tuple occurs equally often.
+Fixing its tail and its product determines its first entry. -/
+lemma sum_comp_prod_ofFn {G A : Type*} [Group G] [Fintype G] [AddCommMonoid A] (f : G → A) :
+    ∑ σ : Fin (m + 1) → G, f (ofFn σ).prod = card G ^ m • ∑ g, f g := by
+  let e : G × (Fin m → G) ≃ (Fin (m + 1) → G) :=
+    (prodCongrLeft fun g ↦ .mulRight (ofFn g).prod⁻¹).trans (consEquiv fun _ ↦ G)
   rw [← e.sum_comp]
-  simp [e, sum_prod_type_right, card_perm]
+  simp [e, sum_prod_type_right]
 
 /-- Let `P > 1` and `q = P ^ (m + 1)`. Let `Ω` be a set whose preimage under the step map is the
 cone. Then `Ω` fills the fraction `|det (1 - id / q)| / k ! * ∑ τ, sign τ / |det (1 - τ / q)|` of
@@ -407,7 +397,9 @@ lemma volume_real_inter_degreeSlab_eq_signed_sum {v : Fin (m + 1) → Bool} (hP 
   have h_eq : (k.factorial : ℝ) ^ (m + 1) * ((|c| * Δ 1)⁻¹ * volume.real (Ω ∩ degreeSlab k D)) =
       k.factorial ^ m * ∑ τ : Perm (Fin k),
         (|c| * Δ τ)⁻¹ * volume.real (degreeSlab k D) * sign τ := by
-    simpa [← sum_comp_prod_ofFn, h_vol, card_perm] using h_int
+    simp only [h_vol, univ_inter] at h_int
+    simpa [card_perm, nsmul_eq_mul] using h_int.trans (sum_comp_prod_ofFn (m := m)
+      fun τ : Perm (Fin k) ↦ (|c| * Δ τ)⁻¹ * volume.real (degreeSlab k D) * sign τ)
   have h_sum : ∑ τ : Perm (Fin k), (|c| * Δ τ)⁻¹ * volume.real (degreeSlab k D) * sign τ =
       |c|⁻¹ * (∑ τ : Perm (Fin k), τ.sign / Δ τ) * volume.real (degreeSlab k D) := by
     rw [mul_sum, sum_mul]

@@ -4,7 +4,7 @@
 
 This sorting is a working classification. `REFERENCES.md` lists the citations and says which were compared with their sources.
 
-`Lib` has 495 files and 177,533 lines of code. `New`, `Main` and `Statements` have 308 files and 122,111 lines. The tables below are read from the heads of the files. The head of the file in the column "file" has the full note.
+`Lib` has 495 files and 177,533 lines of code. `New`, `Main` and `Statements` have 308 files and 122,100 lines. The tables below are read from the heads of the files. The head of the file in the column "file" has the full note.
 
 ## The last step
 
