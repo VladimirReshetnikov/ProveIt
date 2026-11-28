@@ -175,6 +175,8 @@ For the explicit margins, [PolynomialIrreducibleDegrees.lean](GRHArticle/Progres
 
 [PolynomialIrreducibleLowerBound.lean](GRHArticle/ProgressionFree/PolynomialIrreducibleLowerBound.lean) proves $dI_q(d)\ge q^d/2$ for every finite field and every positive degree. [PolynomialPrimeDivisorTail.lean](GRHArticle/ProgressionFree/PolynomialPrimeDivisorTail.lean) bounds the probability of at least $t$ distinct degree-$d$ prime divisors by $\binom{I_q(d)}{t}q^{-dt}$. The same bound holds after prescribing any nonzero leading coefficient. These are two inputs to the article's large-field density estimate.
 
+[PolynomialLayerCharging.lean](GRHArticle/ProgressionFree/PolynomialLayerCharging.lean) proves that a preferred target layer and a positive step determine at most one source layer for any three-term-progression-free system of preferred indices. Applied to polynomials, each target receives at most one charge per distinct prime divisor of the specified degree. Rankin's preferred layers have the required predecessors.
+
 ## RH and Dirichlet GRH input
 
 The article uses the five theorems in
