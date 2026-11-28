@@ -149,9 +149,9 @@ lemma eventuallyEq_of_eq_far_right {f g : ℂ → ℂ} {a b : ℝ} (hf : Meromor
   have order_s₀ : meromorphicOrderAt (f - g) s₀ = ⊤ :=
     meromorphicOrderAt_eq_top_iff.mpr <| eventually_nhdsWithin_of_eventually_nhds <|
       mem_of_superset ((isOpen_re_gt b).mem_nhds hbs₀) fun z hz ↦ sub_eq_zero.mpr (hfg z hz)
-  exact eventuallyEq_iff_sub.mpr <| meromorphicOrderAt_eq_top_iff.mp <| by_contra fun hne ↦
-    (hf.sub hg).meromorphicOrderAt_ne_top_of_isPreconnected
-      (convex_halfSpace_re_gt a).isPreconnected hρ has₀ hne order_s₀
+  exact eventuallyEq_iff_sub.mpr <| meromorphicOrderAt_eq_top_iff.mp <|
+    (hf.sub hg).meromorphicOrderAt_eq_top_of_isPreconnected
+      (convex_halfSpace_re_gt a).isPreconnected has₀ hρ order_s₀
 
 /-- **Landau's lemma.** Let `X ≤ 0` be measurable and let the moment generating function
 `s ↦ ∫ exp (s X) ∂μ` converge to the right of `a`. If it agrees near the real points `x > a` close
@@ -186,11 +186,11 @@ lemma exists_Ioi_subset_integrableExpSet {μ : Measure ℝ} {X : ℝ → ℝ} (h
     (hΨ_res : Tendsto (fun z : ℂ ↦ (z - a) * Ψ z) (𝓝[≠] a) (𝓝 c)) :
     ∃ b : ℝ, b < a ∧ Ioi b ⊆ integrableExpSet X μ := by
   have tendsto_real : Tendsto (fun x : ℝ ↦ (x : ℂ)) (𝓝[>] a) (𝓝[≠] a) :=
-    ((hasDerivAt_id' a).ofReal_comp.tendsto_nhdsNE one_ne_zero).mono_left (nhdsGT_le_nhdsNE a)
+    continuous_ofReal.continuousWithinAt.tendsto_nhdsWithin fun _ hx ↦ ofReal_injective.ne hx.ne'
   have eq_near : ∀ᶠ x : ℝ in 𝓝[>] a, Ψ =ᶠ[𝓝 (x : ℂ)] complexMGF X μ := by
-    filter_upwards [tendsto_real.eventually hΨ.eventually_analyticAt, self_mem_nhdsWithin]
-      with x hΨx hx using (hΨx.frequently_eq_iff_eventually_eq (analyticAt_complexMGF (ha hx))).mp
-        (hΨ_eq x hx).frequently
+    filter_upwards [tendsto_real.eventually hΨ.eventually_analyticAt, self_mem_nhdsWithin] with x hΨx hx
+    exact (hΨx.continuousAt.eventuallyEq_nhds_iff_eventuallyEq_nhdsNE
+      (analyticAt_complexMGF (ha hx)).continuousAt).1 (hΨ_eq x hx)
   -- A residue of negative real part would make `Ψ(x) ≥ 0` tend to `-∞`: as `(x - a) Ψ(x) ≥ 0` for
   -- real `x > a` near `a`, we have `c ≥ 0`, and with `hc` this gives `c = 0`.
   have c_nonneg : 0 ≤ c := by
@@ -222,10 +222,7 @@ lemma IsPolar.landau {r : ℂ → ℂ} (h : IsPolar E r) {β : ℝ} (hβ : 0 < �
   -- larger of `β` and the abscissa of convergence of `F`; `Ψ` has no pole in `re s > a`. If
   -- `β < a`, the sign of the residue at `a` makes `F` converge to the left of `a`, which is absurd.
   obtain ⟨hE, C, Φ, hΦ, hE_growth, Φ_eq, Φ_res⟩ := h
-  obtain ⟨μ, K, hμ⟩ : ∃ (μ : Measure ℝ) (K : ℝ), ∀ s : ℂ, β + 2 < s.re →
-      s.re ∈ integrableExpSet (fun v : ℝ ↦ -|v|) μ ∧ complexMGF (fun v : ℝ ↦ -|v|) μ s =
-        K / (s - β) - ∫ v : ℝ in Ioi 0, E v * cexp ((1 - s) * v) :=
-    exists_measure_laplace_eq hE hE_growth hβ hE_le
+  obtain ⟨μ, K, hμ⟩ := exists_measure_laplace_eq hE hE_growth hβ hE_le
   -- `S` is the set of real points where `F` converges.
   let S : Set ℝ := integrableExpSet (fun v ↦ -|v|) μ
   let F : ℂ → ℂ := complexMGF (fun v ↦ -|v|) μ
