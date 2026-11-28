@@ -171,6 +171,8 @@ For the explicit margins, [PolynomialIrreducibleDegrees.lean](GRHArticle/Progres
 
 [PolynomialRationalSmoothMaximum.lean](GRHArticle/ProgressionFree/PolynomialRationalSmoothMaximum.lean) computes and attains each exact smooth-ball optimum for rational-function ratios by testing polynomial coefficient vectors over the finite field. [PolynomialRationalFibers.lean](GRHArticle/ProgressionFree/PolynomialRationalFibers.lean) proves that squarefree rough fibers may each use an independent smooth rule while preserving rational-ratio admissibility.
 
+[PolynomialIrreducibleLowerBound.lean](GRHArticle/ProgressionFree/PolynomialIrreducibleLowerBound.lean) proves $dI_q(d)\ge q^d/2$ for every finite field and every positive degree. [PolynomialPrimeDivisorTail.lean](GRHArticle/ProgressionFree/PolynomialPrimeDivisorTail.lean) bounds the probability of at least $t$ distinct degree-$d$ prime divisors by $\binom{I_q(d)}{t}q^{-dt}$. The same bound holds after prescribing any nonzero leading coefficient. These are two inputs to the article's large-field density estimate.
+
 ## RH and Dirichlet GRH input
 
 The article uses the five theorems in
