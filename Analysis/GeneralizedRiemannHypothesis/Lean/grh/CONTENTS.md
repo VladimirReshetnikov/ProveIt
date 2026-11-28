@@ -321,7 +321,7 @@ The heads of these files give an overview of a theory: `Lib/ClassField/Global/Ar
 **One lift and Hecke values**
 
 - `New/OneLift/TestedForms` (350): Point forms, Hecke adjoints and false lifts on the definite space of a descent pair
-- `New/OneLift/LiftVolumeHeight` (453): The cost of one lift: a height bound for Z_j(1)/Z_j(ξ^j)
+- `New/OneLift/LiftVolumeHeight` (457): The cost of one lift: a height bound for Z_j(1)/Z_j(ξ^j)
 
 **The comparison operator**
 

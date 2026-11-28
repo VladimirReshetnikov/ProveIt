@@ -277,8 +277,8 @@ lemma comparisonOp_mem_integralForms {j : D.LiftIndex} {ϑ : D.Twist} {l : ℕ} 
   classical
   let B := ChoiceIndex j × D.SecondFactorClasses
   let κ := (untwistedDescentPair j).colsMinus
-  let W := SecondFactorFormValues j
   let I := WeylIndex D.SecondFactorIndex κ
+  let W : Type := I → ℂ
   let K := U (stdSpace D.E D.SecondFactorIndex).J
   have h_exists (c : D.SecondFactorClasses) : ∃ γ : K,
       (stdSpace D.E D.SecondFactorIndex).embFin γ * c.out ∈ integralAbove D.SecondFactorIndex l :=
@@ -291,14 +291,16 @@ lemma comparisonOp_mem_integralForms {j : D.LiftIndex} {ϑ : D.Twist} {l : ℕ} 
       map_smul' := by simp }
   have h_inv (γ : K) (x : W) : u γ⁻¹ (u γ x) = x := by simp [u]
   have h_unitary (γ : K) (x y : W) : gramForm (u γ⁻¹ x) y = gramForm x (u γ y) := by
-    have h := gramForm_map_weightRep (e := 0) conj γ⁻¹ (star x) (star (u γ y))
-    change gramForm (u γ⁻¹ x) (u γ⁻¹ (u γ y)) = gramForm (star (star x)) (star (star (u γ y))) at h
-    simpa only [h_inv, star_star] using h
+    have h : gramForm (u γ⁻¹ x) (u γ⁻¹ (u γ y)) =
+        gramForm (star (star x)) (star (star (u γ y))) :=
+      gramForm_map_weightRep (e := 0) conj γ⁻¹ (star x) (star (u γ y))
+    rwa [h_inv, star_star, star_star] at h
   have h_coords (ι' : PadicPlace l) (w : FormTuples j) :
       IsIntegralFormTuple ι' w ↔ ∀ (b : B) (k : I), ‖ι'.ιₚ (u (δ b.2) (w b) k)‖ ≤ 1 := by
     unfold IsIntegralFormTuple
     refine forall_congr' fun b ↦ ?_
-    rw [← weylGauge_embFin (δ b.2), weylGauge_le_one_iff (ι := ⟨ι'.ιₚ.comp conj⟩) _ (hδ b.2)]
+    rw [← weylGauge_embFin (ι := ⟨ι'.ιₚ.comp conj⟩) (g := b.2.out) (δ b.2),
+      weylGauge_le_one_iff (ι := ⟨ι'.ιₚ.comp conj⟩) _ (hδ b.2)]
     rfl
   -- Translating to an integral representative makes the gauge a coordinate bound. The k-th
   -- Fock column gives h times its coordinate. A second factor of h gives the comparison scale.
@@ -330,7 +332,7 @@ lemma comparisonOp_mem_integralForms {j : D.LiftIndex} {ϑ : D.Twist} {l : ℕ} 
       (D.card_classAut_dvd_chosenGroupOrder
         (card_rowIndex_sum_fin_le_two_mul_n D) levelOf_le_stdLevel)
       (glue_mem_integralForms j ϑ ⟨ι.ιₚ.comp conj⟩ hl (h_e _ b k)) hφ
-    have h_inner (x y : W) : inner ℂ x y = gramForm x y := dotProduct_comm ..
+    have h_inner (x y : SecondFactorFormValues j) : inner ℂ x y = gramForm x y := dotProduct_comm ..
     have h_pair : inner ℂ (e b k) z = gramForm
         (u (δ b.2)⁻¹ ((hookNumberMinus j : ℂ) • H k)) (z b) := by
       rw [← h_inner, PiLp.inner_apply, Fintype.sum_eq_single b fun b' hb ↦ by simp [e, hb]]
@@ -340,7 +342,9 @@ lemma comparisonOp_mem_integralForms {j : D.LiftIndex} {ϑ : D.Twist} {l : ℕ} 
     change ‖ι.ιₚ (u (δ b.2) (s • z b) k)‖ ≤ 1
     rw [map_smul]
     change ‖ι.ιₚ (s * u (δ b.2) (z b) k)‖ ≤ 1
-    simpa [s, H, gramForm_fockColumn, nsmul_eq_mul, pow_two, mul_assoc] using h_test
+    have h_column (v : W) : gramForm (H k) v = (hookNumberMinus j : ℂ) * v k :=
+      gramForm_fockColumn (κ := κ) v k
+    simpa [s, h_column, nsmul_eq_mul, pow_two, mul_assoc] using h_test
   rw [comparisonOp, LinearMap.smul_apply, LinearMap.comp_apply, ← map_smul]
   exact glue_mem_integralForms j ϑ ι hl h_scaled
 
@@ -400,7 +404,7 @@ lemma normSqAt_comparisonOp_le (j : D.LiftIndex) (φ : (D.descentPair (1 : D.Twi
           gcongr
           · exact le_exp_of_log_le D.log_chosenGroupOrder_le
           · exact hookNumberMinus_le j
-      _ = exp (D.x ^ 32 + 2 * D.x ^ 999) := by rw [← exp_nat_mul, Nat.cast_two, ← exp_add]
+      _ = exp (D.x ^ 32 + 2 * D.x ^ 999) := by simp only [two_mul, exp_add, sq]
       _ ≤ exp A := exp_le_exp.2 (by dsimp [A]; exact D.le_of_hasLogBound)
   have h_adj := formTupleNormSq_glue_adjoint_le j φ σ
   have h_φ := φ.normSqAt_nonneg σ
