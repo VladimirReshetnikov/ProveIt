@@ -106,6 +106,22 @@ def gramForm : (WeylIndex n κ → ℂ) →ₗ⋆[ℂ] (WeylIndex n κ → ℂ) 
 /-- The Gram form at `ξ` and `η` is `ξ* G η` for the Gram matrix `G = weylGramOver`. -/
 lemma gramForm_apply (ξ η : WeylIndex n κ → ℂ) : gramForm ξ η = star ξ ⬝ᵥ weylGramOver *ᵥ η := rfl
 
+/-- A field automorphism acts on the second Gram argument by `σ` and on the first by
+complex conjugation composed with `σ` and conjugation again. The Gram matrix is integral. -/
+lemma map_gramForm (σ : ℂ ≃+* ℂ) (u v : WeylIndex n κ → ℂ) :
+    σ (gramForm u v) = gramForm (((starRingAut.trans σ).trans starRingAut) ∘ u) (σ ∘ v) := by
+  simp [gramForm_apply, dotProduct, mulVec]
+
+/-- Pairing the `k`-th integral Fock column with a Weyl vector gives its `k`-th coordinate
+times the hook number. -/
+lemma gramForm_fockColumn (v : WeylIndex n κ → ℂ) (k : WeylIndex n κ) :
+    gramForm (fun i ↦ (fockPairing ℤ (nablaBasis ℤ (fun _ : Φ ↦ n) κ i)
+      (nablaBasis ℤ (fun _ : Φ ↦ n) κ k) : ℂ)) v =
+      (hookNumber κ (rankAt fun _ ↦ n) : ℂ) * v k := by
+  rw [← fockPairing_toPoly_nablaBasis (R := ℂ) v k,
+    fockPairing_toPoly_nablaBasis_eq_mulVec, map_mul_intCast, ← mulVec_mulVec]
+  simp [gramForm_apply, mulVec, dotProduct]
+
 omit [DecidableEq Φ] in
 /-- If all columns of `κ` have height `card n` (`κ τ k = 0` for `k ≠ card n`), every basis
 polynomial `nablaBasis R _ κ j` is the empty product `1`. -/

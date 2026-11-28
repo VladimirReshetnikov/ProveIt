@@ -405,10 +405,7 @@ lemma norm_map_stdClassSum_gramForm_le {κ : InfinitePlace E → ℕ → ℕ} (K
       √(stdClassSum K fun g : Gf E n ↦
           weylNormSq (((starRingAut.trans σ).trans starRingAut) ∘ φ g)) *
         √(stdClassSum K fun g : Gf E n ↦ weylNormSq (σ ∘ φ' g)) := by
-  set σ' : ℂ ≃+* ℂ := (starRingAut.trans σ).trans starRingAut with hσ'
-  -- The Gram matrix has integer entries, so `σ` passes through the pairing.
-  have h_map (u v : WeylIndex n κ → ℂ) : σ (gramForm u v) = gramForm (σ' ∘ u) (σ ∘ v) := by
-    simp [hσ', gramForm_apply, dotProduct, mulVec]
+  set σ' : ℂ ≃+* ℂ := (starRingAut.trans σ).trans starRingAut
   have h_nonneg (N : ℕ) (ξ : WeylIndex n κ → ℂ) : 0 ≤ (N : ℚ)⁻¹ • weylNormSq ξ := by
     simp [Rat.smul_def, mul_nonneg]
   -- Cauchy–Schwarz for the Gram matrix at each class, then for the sum over the classes.
@@ -421,7 +418,7 @@ lemma norm_map_stdClassSum_gramForm_le {κ : InfinitePlace E → ℕ → ℕ} (K
     refine le_sqrt_of_sq_le ?_
     calc ‖σ ((N : ℚ)⁻¹ • gramForm u v)‖ ^ 2
       _ = (N : ℝ)⁻¹ ^ 2 * ‖gramForm (σ' ∘ u) (σ ∘ v)‖ ^ 2 := by
-        simp [h_map, Rat.smul_def, mul_pow]
+        simp [map_gramForm, σ', Rat.smul_def, mul_pow]
       _ ≤ (N : ℝ)⁻¹ ^ 2 * (weylNormSq (σ ∘ v) * weylNormSq (σ' ∘ u)) := by gcongr
       _ = _ := by simp only [Rat.smul_def, Rat.cast_inv, Rat.cast_natCast]; ring
   let m (c : DoubleCosets (stdSpace E n).Γf K) : ℕ := Nat.card (classAut (stdSpace E n).Γf K c.out)

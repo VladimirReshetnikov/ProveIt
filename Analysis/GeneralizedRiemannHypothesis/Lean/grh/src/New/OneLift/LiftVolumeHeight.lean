@@ -5,8 +5,8 @@ import New.OneLift.HeckeValues.TwistedValueHeights
 # The cost of one lift: a height bound for Z_j(1)/Z_j(ξ^j)
 
 The comparison operators `U_ϑ = n_Aut hk² glue_ϑ glue_ϑ*` take lifts to forms orthogonal to the
-false lifts. A tight frame of integral tuples writes them as sums of operators of rank one, so they
-keep integrality away from `Q` and `U_1` is short (`IsComparisonOperator`). The product
+false lifts. The integral Fock columns give coordinates of the adjoint, and the conjugated
+pairing bounds its norm. Thus the operators satisfy `IsComparisonOperator`. The product
 `Z_j (ϑ) det (pr U_ϑ)` depends on the twist `ϑ` only through Hecke values. Eigenvalue bounds control
 the denominator of `det (pr U_ϑ)` at `ι` and the conjugates of `det (pr U_1)`; this bounds the
 height of `Z_j (1) / Z_j (ξ_ι ^ j)`, for m-fold twists `ξ_ι`.
@@ -268,277 +268,147 @@ variable {P : Parameters} {D : Data P}
 
 section Gluing
 
-/-- The index set of the frame of tuples of forms on `V°`: an index `ChoiceIndex j` of a component
-of the tuple (a matrix modulo `D.piM ^ 2` with a row choice), a class of `U(V°)` at principal level
-`D.piM ^ 2`, and a basis tensor of the shape `μ⁻ = (untwistedDescentPair j).colsMinus`, the column
-counts of the negative sign for the descent pair at the trivial twist. -/
-abbrev TightFrameIndex (j : D.LiftIndex) : Type :=
-  (ChoiceIndex j × D.SecondFactorClasses) ×
-    ColumnFilling (fun _ ↦ D.SecondFactorIndex) (untwistedDescentPair j).colsMinus
-
-/-- Let `V° = stdSpace D.E D.SecondFactorIndex` be the standard definite hermitian space over the CM
-field `D.E` of the data `D`, with basis `D.SecondFactorIndex`. Let `γ` be an element of its rational
-unitary group `U (stdSpace D.E D.SecondFactorIndex).J`. Let
-`μ⁻ = (untwistedDescentPair j).colsMinus` be the family of Young diagrams, one at each infinite
-place and given by its column counts. The group acts by `weightRep μ⁻ 0` on coordinate vectors
-indexed by the standard fillings `WeylIndex` of `μ⁻`. There is a tight frame of such vectors `η T`,
-one for each filling `T` of `μ⁻` with increasing columns (`ColumnFilling`): (a)
-`∑ T, ⟨η T, ξ⟩ η T = hk² ξ` for all `ξ`, where `hk = hookNumberMinus j` is the hook number of `μ⁻`
-and `⟨·, ·⟩ = gramForm` is the Hermitian form of the integer Gram matrix; (b) `γ` takes the complex
-conjugate of each `η T` to an integer vector; (c) each has squared norm (`weylNormSq`, for that
-form) at most `hk²` after every automorphism of `ℂ`. -/
-lemma exists_frame_weightRep_eq_intCast (j : D.LiftIndex)
-    (γ : U (stdSpace D.E D.SecondFactorIndex).J) :
-    ∃ η : ColumnFilling (fun _ ↦ D.SecondFactorIndex) (untwistedDescentPair j).colsMinus →
-        WeylIndex D.SecondFactorIndex (untwistedDescentPair j).colsMinus → ℂ,
-      (∀ ξ : WeylIndex D.SecondFactorIndex (untwistedDescentPair j).colsMinus → ℂ,
-        ∑ T : ColumnFilling (fun _ ↦ D.SecondFactorIndex) (untwistedDescentPair j).colsMinus,
-          gramForm (η T) ξ • η T = (hookNumberMinus j : ℂ) ^ 2 • ξ) ∧
-      (∀ T : ColumnFilling (fun _ ↦ D.SecondFactorIndex) (untwistedDescentPair j).colsMinus,
-        ∃ z : WeylIndex D.SecondFactorIndex (untwistedDescentPair j).colsMinus → ℤ,
-          (stdSpace D.E D.SecondFactorIndex).weightRep (untwistedDescentPair j).colsMinus 0 γ
-            (star (η T)) = Int.cast ∘ z) ∧
-      ∀ (T : ColumnFilling (fun _ ↦ D.SecondFactorIndex) (untwistedDescentPair j).colsMinus)
-        (σ : ℂ ≃+* ℂ),
-        weylNormSq (σ ∘ η T) ≤ (hookNumberMinus j : ℝ) ^ 2 := by
-  -- Move the integral frame of `exists_tightFrame` by the unitary map `ξ ↦ star (γ⁻¹ (star ξ))`.
-  classical
-  let W : Type := WeylIndex D.SecondFactorIndex (untwistedDescentPair j).colsMinus → ℂ
-  obtain ⟨η, h_frame, h_norm⟩ :
-      ∃ η : ColumnFilling (fun _ ↦ D.SecondFactorIndex) (untwistedDescentPair j).colsMinus →
-          WeylIndex D.SecondFactorIndex (untwistedDescentPair j).colsMinus → ℤ,
-        (∀ ξ : W, ∑ T, gramForm (Int.cast ∘ η T) ξ • (Int.cast ∘ η T : W) =
-          (hookNumberMinus j : ℂ) ^ 2 • ξ) ∧
-        ∀ T, weylNormSq (Int.cast ∘ η T) ≤ (hookNumberMinus j : ℝ) ^ 2 :=
-    exists_tightFrame
-  let ρ : Representation ℂ (U (stdSpace D.E D.SecondFactorIndex).J) W :=
-    (stdSpace D.E D.SecondFactorIndex).weightRep (untwistedDescentPair j).colsMinus 0
-  let u (δ : U (stdSpace D.E D.SecondFactorIndex).J) : W →ₗ[ℂ] W :=
-    { toFun := fun ξ ↦ star (ρ δ (star ξ))
-      map_add' ξ ξ' := by rw [star_add, map_add, star_add]
-      map_smul' := by simp }
-  have h_inv (δ : U (stdSpace D.E D.SecondFactorIndex).J) (ξ : W) : u δ⁻¹ (u δ ξ) = ξ := by simp [u]
-  refine ⟨fun T ↦ u γ⁻¹ (Int.cast ∘ η T), fun ξ ↦ ?_, fun T ↦ ⟨η T, ?_⟩, fun T σ ↦ ?_⟩
-  · have h_unitary (ξ' : W) : gramForm (u γ⁻¹ ξ') ξ = gramForm ξ' (u γ ξ) := by
-      have h_conj : gramForm (u γ⁻¹ ξ') (u γ⁻¹ (u γ ξ)) =
-          gramForm (star (star ξ')) (star (star (u γ ξ))) :=
-        gramForm_map_weightRep (e := 0) conj γ⁻¹ (star ξ') (star (u γ ξ))
-      rwa [h_inv, star_star, star_star] at h_conj
-    calc ∑ T, gramForm (u γ⁻¹ (Int.cast ∘ η T)) ξ • u γ⁻¹ (Int.cast ∘ η T)
-      _ = u γ⁻¹ (∑ T, gramForm (Int.cast ∘ η T) (u γ ξ) • Int.cast ∘ η T) := by simp [h_unitary]
-      _ = (hookNumberMinus j : ℂ) ^ 2 • ξ := by rw [h_frame, map_smul, h_inv]
-  · have h_real : star (Int.cast ∘ η T : W) = Int.cast ∘ η T := funext fun _ ↦ by simp
-    simp [u, ρ, h_real]
-  · -- After `σ` the map `u` is still unitary, and `σ` fixes the integer vector `ξ`.
-    let ξ : W := Int.cast ∘ η T
-    have h_fix : σ ∘ ξ = ξ := funext fun i ↦ map_intCast σ (η T i)
-    have h_value : (weylNormSq (σ ∘ u γ⁻¹ ξ) : ℂ) = weylNormSq (σ ∘ star (star ξ)) := by
-      rw [coe_weylNormSq, coe_weylNormSq]
-      exact gramForm_map_weightRep (e := 0) (σ.toRingHom.comp conj) γ⁻¹ (star ξ) (star ξ)
-    rw [star_star, h_fix] at h_value
-    exact (Complex.ofReal_injective h_value).le.trans (h_norm T)
-
-/-- A tuple (`FormTuples j`) has one form for each `i` in the finite set `ChoiceIndex j`, given by
-its values at the classes `c` in `D.SecondFactorClasses`, the double cosets of `U(V°)(𝔸_f)` by the
-rational points and a principal congruence subgroup. The values are coordinate vectors, indexed by
-standard fillings (`WeylIndex`), of the representation `weightRep` whose weight is the family of
-Young diagrams `μ⁻ = (untwistedDescentPair j).colsMinus`. Let `δ c` be an element of the rational
-unitary group of `V°` for each class `c`. There are tuples `f a`, for `a` in `TightFrameIndex j`,
-with (a) `∑ a, ⟨f a, ζ⟩ f a = hk² ζ` for all `ζ`, where `hk` is the hook number of `μ⁻`; (b) `δ c`
-takes the complex conjugate of the value of `f a` at `(i, c)` to an integer vector; (c) squared norm
-(`formTupleNormSq`) at most `hk²` at every automorphism of `ℂ`. -/
-lemma exists_tight_frame_formTuples (j : D.LiftIndex)
-    (δ : D.SecondFactorClasses → U (stdSpace D.E D.SecondFactorIndex).J) :
-    ∃ f : TightFrameIndex j → FormTuples j,
-      (∀ ζ : FormTuples j,
-        ∑ a : TightFrameIndex j, inner ℂ (f a) ζ • f a = (hookNumberMinus j : ℂ) ^ 2 • ζ) ∧
-      (∀ (a : TightFrameIndex j) (i : ChoiceIndex j) (c : D.SecondFactorClasses),
-        ∃ z : WeylIndex D.SecondFactorIndex (untwistedDescentPair j).colsMinus → ℤ,
-          (stdSpace D.E D.SecondFactorIndex).weightRep (untwistedDescentPair j).colsMinus 0 (δ c)
-            (star (f a (i, c))) = Int.cast ∘ z) ∧
-      ∀ (a : TightFrameIndex j) (σ : ℂ ≃+* ℂ),
-        formTupleNormSq σ (f a) ≤ (hookNumberMinus j : ℝ) ^ 2 := by
-  -- The tuple `f (b, T)` is the vector `η b T` of the moved frame at `b`, and `0` elsewhere.
-  classical
-  choose η h_frame h_coord h_norm using
-    fun b : ChoiceIndex j × D.SecondFactorClasses ↦ exists_frame_weightRep_eq_intCast j (δ b.2)
-  let f (a : TightFrameIndex j) : FormTuples j := .toLp 2 (Pi.single a.1 (η a.1 a.2))
-  -- The metric of `SecondFactorFormValues` is the form of the Gram matrix.
-  have h_inner (ξ ξ' : SecondFactorFormValues j) : inner ℂ ξ ξ' = gramForm ξ ξ' :=
-    dotProduct_comm ..
-  refine ⟨f, fun ζ ↦ ?_, fun a i c ↦ ?_, fun a σ ↦ ?_⟩
-  · have h_coeff (a : TightFrameIndex j) : inner ℂ (f a) ζ = gramForm (η a.1 a.2) (ζ a.1) := by
-      rw [← h_inner, PiLp.inner_apply, Fintype.sum_eq_single a.1 fun b hb ↦ by simp [f, hb]]
-      simp [f]
-    ext1 b
-    calc (∑ a : TightFrameIndex j, inner ℂ (f a) ζ • f a) b
-      _ = ∑ T, gramForm (η b T) (ζ b) • η b T := by
-        simp only [h_coeff]
-        simp [Fintype.sum_prod_type (α₁ := ChoiceIndex j × D.SecondFactorClasses), f,
-          Pi.single_apply]
-      _ = ((hookNumberMinus j : ℂ) ^ 2 • ζ) b := h_frame b (ζ b)
-  · rcases eq_or_ne (i, c) a.1 with hb | hb
-    · simpa [f, ← hb] using h_coord (i, c) a.2
-    · exact ⟨0, by simp [f, hb]⟩
-  · rw [formTupleNormSq, Fintype.sum_eq_single a.1 fun b hb ↦ by simp [f, hb, weylNormSq]]
-    simpa [f] using h_norm a.1 a.2 σ
-
-/-- The operator `U_ϑ = comparisonOp j ϑ` is a sum of operators of rank one: if the tuples `f a`
-satisfy `∑ a, ⟨f a, ζ⟩ f a = hk² ζ` for all tuples `ζ` of forms on `V°`, with the hook number
-`hk = hookNumberMinus j`, then `U_ϑ φ = ∑ n_Aut ⟨φ′, φ⟩ φ′`. Here `n_Aut = D.chosenGroupOrder` and
-`φ′` runs over the glued forms `glue_ϑ (f a) = glue j ϑ (f a)`. -/
-lemma comparisonOp_eq_sum {j : D.LiftIndex} {ϑ : D.Twist} {f : TightFrameIndex j → FormTuples j}
-    (h_frame : ∀ ζ : FormTuples j,
-      ∑ a : TightFrameIndex j, inner ℂ (f a) ζ • f a = (hookNumberMinus j : ℂ) ^ 2 • ζ)
-    (φ : (D.descentPair ϑ j).FormV) :
-    comparisonOp j ϑ φ = ∑ a : TightFrameIndex j,
-      (D.chosenGroupOrder • inner ℂ (glue j ϑ (f a)) φ) • glue j ϑ (f a) := by
-  have h_sum : ∑ a : TightFrameIndex j, inner ℂ (glue j ϑ (f a)) φ • glue j ϑ (f a) =
-      (hookNumberMinus j : ℂ) ^ 2 • glue j ϑ ((glue j ϑ).adjoint φ) := by
-    simp only [← adjoint_inner_right, ← map_smul, ← map_sum, h_frame]
-  simp [comparisonOp, mul_smul, nsmul_eq_mul, ← smul_sum, ← h_sum]
-
-/-- Let `ϑ` be a twist (a tame character of `U(1)`, ramified at a finite set `Q` of places), `l` a
-prime that does not divide the product `ϑ.normQ` of the norms of the places in `Q`, and `ι` a ring
-homomorphism `ℂ → ℂ_[l]`. A form on `V_j`, the target of the `j`-th lift, is integral at `ι`
-(`integralForms ι`) if for every `g` the vector `g⁻¹ ι (φ g)` has coordinates of norm at most `1`.
-The operator `comparisonOp j ϑ`, an integer multiple of the gluing map `glue j ϑ` after its adjoint,
-takes integral forms to integral forms. -/
+/-- The comparison operator preserves integrality above primes prime to the twist conductor.
+Integral Fock columns test the coordinates of the scaled adjoint in the translated lattice. -/
 lemma comparisonOp_mem_integralForms {j : D.LiftIndex} {ϑ : D.Twist} {l : ℕ} [Fact l.Prime]
     (ι : PadicPlace l) (hl : l.Coprime ϑ.normQ) {φ : (D.descentPair ϑ j).FormV}
     (hφ : φ ∈ integralForms ι) :
     comparisonOp j ϑ φ ∈ integralForms ι := by
-  -- Take the frame `f` at representatives that are integral above `l`. The forms `φ′ = glue (f a)`
-  -- are integral at `ι` and at its conjugate, so the coefficients `n_Aut ⟨φ′, φ⟩` are integral.
-  have h_exists (c : D.SecondFactorClasses) : ∃ γ : U (stdSpace D.E D.SecondFactorIndex).J,
+  classical
+  let B := ChoiceIndex j × D.SecondFactorClasses
+  let κ := (untwistedDescentPair j).colsMinus
+  let W := SecondFactorFormValues j
+  let I := WeylIndex D.SecondFactorIndex κ
+  let K := U (stdSpace D.E D.SecondFactorIndex).J
+  have h_exists (c : D.SecondFactorClasses) : ∃ γ : K,
       (stdSpace D.E D.SecondFactorIndex).embFin γ * c.out ∈ integralAbove D.SecondFactorIndex l :=
     (exists_mul_mem_integralAbove l c.out 1).imp fun _ ↦ And.left
   choose δ hδ using h_exists
-  obtain ⟨f, h_frame, h_coord, -⟩ := exists_tight_frame_formTuples j δ
-  have h_int (ι' : PadicPlace l) (a : TightFrameIndex j) :
-      glue j ϑ (f a) ∈ integralForms ι' := by
-    refine glue_mem_integralForms j ϑ ι' hl fun b ↦ ?_
-    obtain ⟨z, hz⟩ : ∃ z : WeylIndex D.SecondFactorIndex (untwistedDescentPair j).colsMinus → ℤ,
-        (stdSpace D.E D.SecondFactorIndex).weightRep (untwistedDescentPair j).colsMinus 0 (δ b.2)
-          (star (f a b)) = Int.cast ∘ z := h_coord a b.1 b.2
-    -- The gauge at a rational translate is the gauge of the translated vector.
-    rw [← weylGauge_embFin, weylGauge_le_one_iff (ι := ⟨ι'.ιₚ.comp conj⟩) _ (hδ b.2), hz]
-    simp [IsUltrametricDist.norm_intCast_le_one]
-  rw [comparisonOp_eq_sum h_frame]
-  refine sum_mem fun a _ ↦ ?_
-  have h_conj : glue j ϑ (f a) ∈ integralForms ⟨ι.ιₚ.comp conj⟩ := h_int _ a
-  have h_coeff : ‖ι.ιₚ (D.chosenGroupOrder • inner ℂ (glue j ϑ (f a)) φ)‖ ≤ 1 :=
-    (glue j ϑ (f a)).norm_nsmul_inner_le_one φ ι (D.card_classAut_dvd_chosenGroupOrder
-      (card_rowIndex_sum_fin_le_two_mul_n D) levelOf_le_stdLevel) h_conj hφ
-  exact (integralForms ι).smul_mem ⟨_, h_coeff⟩ (h_int ι a)
+  let ρ : Representation ℂ K W := (stdSpace D.E D.SecondFactorIndex).weightRep κ 0
+  let u (γ : K) : W →ₗ[ℂ] W :=
+    { toFun := fun x ↦ star (ρ γ (star x))
+      map_add' x y := by rw [star_add, map_add, star_add]
+      map_smul' := by simp }
+  have h_inv (γ : K) (x : W) : u γ⁻¹ (u γ x) = x := by simp [u]
+  have h_unitary (γ : K) (x y : W) : gramForm (u γ⁻¹ x) y = gramForm x (u γ y) := by
+    have h := gramForm_map_weightRep (e := 0) conj γ⁻¹ (star x) (star (u γ y))
+    change gramForm (u γ⁻¹ x) (u γ⁻¹ (u γ y)) = gramForm (star (star x)) (star (star (u γ y))) at h
+    simpa only [h_inv, star_star] using h
+  have h_coords (ι' : PadicPlace l) (w : FormTuples j) :
+      IsIntegralFormTuple ι' w ↔ ∀ (b : B) (k : I), ‖ι'.ιₚ (u (δ b.2) (w b) k)‖ ≤ 1 := by
+    unfold IsIntegralFormTuple
+    refine forall_congr' fun b ↦ ?_
+    rw [← weylGauge_embFin (δ b.2), weylGauge_le_one_iff (ι := ⟨ι'.ιₚ.comp conj⟩) _ (hδ b.2)]
+    rfl
+  -- Translating to an integral representative makes the gauge a coordinate bound. The k-th
+  -- Fock column gives h times its coordinate. A second factor of h gives the comparison scale.
+  let H (k : I) : W := fun i ↦ (fockPairing ℤ
+    (nablaBasis ℤ (fun _ : NumberField.InfinitePlace D.E ↦ D.SecondFactorIndex) κ i)
+    (nablaBasis ℤ (fun _ : NumberField.InfinitePlace D.E ↦ D.SecondFactorIndex) κ k) : ℂ)
+  let e (b : B) (k : I) : FormTuples j :=
+    .toLp 2 (Pi.single b (u (δ b.2)⁻¹ ((hookNumberMinus j : ℂ) • H k)))
+  have h_e (ι' : PadicPlace l) (b : B) (k : I) : IsIntegralFormTuple ι' (e b k) := by
+    apply (h_coords ι' (e b k)).2
+    intro b' k'
+    by_cases hb : b' = b
+    · subst b'
+      have h := h_inv ((δ b.2)⁻¹) ((hookNumberMinus j : ℂ) • H k)
+      simp only [inv_inv] at h
+      simp only [e, Pi.single_eq_same, h]
+      change ‖ι'.ιₚ ((hookNumberMinus j : ℂ) * ((fockPairing ℤ _ _ : ℤ) : ℂ))‖ ≤ 1
+      rw [← Int.cast_mul, map_intCast]
+      apply norm_intCast_le_one
+    · simp only [e, Pi.single_eq_of_ne hb, map_zero]
+      change ‖ι'.ιₚ 0‖ ≤ 1
+      simp
+  let z := (glue j ϑ).adjoint φ
+  let s : ℂ := D.chosenGroupOrder * hookNumberMinus j ^ 2
+  have h_scaled : IsIntegralFormTuple ι (s • z) := by
+    apply (h_coords ι (s • z)).2
+    intro b k
+    have h_test := (glue j ϑ (e b k)).norm_nsmul_inner_le_one φ ι
+      (D.card_classAut_dvd_chosenGroupOrder
+        (card_rowIndex_sum_fin_le_two_mul_n D) levelOf_le_stdLevel)
+      (glue_mem_integralForms j ϑ ⟨ι.ιₚ.comp conj⟩ hl (h_e _ b k)) hφ
+    have h_inner (x y : W) : inner ℂ x y = gramForm x y := dotProduct_comm ..
+    have h_pair : inner ℂ (e b k) z = gramForm
+        (u (δ b.2)⁻¹ ((hookNumberMinus j : ℂ) • H k)) (z b) := by
+      rw [← h_inner, PiLp.inner_apply, Fintype.sum_eq_single b fun b' hb ↦ by simp [e, hb]]
+      simp [e]
+    rw [← adjoint_inner_right, show (glue j ϑ).adjoint φ = z from rfl, h_pair,
+      h_unitary] at h_test
+    change ‖ι.ιₚ (u (δ b.2) (s • z b) k)‖ ≤ 1
+    rw [map_smul]
+    change ‖ι.ιₚ (s * u (δ b.2) (z b) k)‖ ≤ 1
+    simpa [s, H, gramForm_fockColumn, nsmul_eq_mul, pow_two, mul_assoc] using h_test
+  rw [comparisonOp, LinearMap.smul_apply, LinearMap.comp_apply, ← map_smul]
+  exact glue_mem_integralForms j ϑ ι hl h_scaled
 
-/-- A tuple of forms on the definite space `V°` has one value for each pair of an index in
-`ChoiceIndex j` and a class in `D.SecondFactorClasses`. The number of these pairs, times the square
-of `#(TightFrameIndex j) n_Aut hk²`, is at most `exp (2 f m b log² b)`. Here `TightFrameIndex j` is
-the set of such pairs together with a filling with increasing columns of the Young diagrams `μ⁻`
-that give the weight of the forms on `V°`, `hk = hookNumberMinus j` is the hook number of `μ⁻` and
-`n_Aut = D.chosenGroupOrder` is a multiple of the orders of all stabilisers; `f = D.f` is the number
-of infinite places, `m = D.m` the number of lifts in the chain and `b = D.b`, with `log b = D.logB`,
-the weight at the infinite places in `D.bPlaces`. -/
-lemma card_prod_mul_card_tightFrameIndex_mul_sq_le (j : D.LiftIndex) :
-    Fintype.card (ChoiceIndex j × D.SecondFactorClasses) *
-        (Fintype.card (TightFrameIndex j) * (D.chosenGroupOrder * hookNumberMinus j ^ 2) : ℝ) ^ 2 ≤
-      exp (2 * (D.f * D.m * D.b * D.logB ^ 2)) := by
-  set A : ℝ := D.f * D.m * D.b * D.logB ^ 2 with hA
-  set N : ℝ := Nat.cast (Fintype.card (ChoiceIndex j × D.SecondFactorClasses))
-  have h_aut : (1 : ℝ) ≤ D.chosenGroupOrder := mod_cast NeZero.one_le
-  have h_hook : (0 : ℝ) < hookNumberMinus j := Int.cast_pos.2 hookNumber_pos
-  have h_classes : (N * D.chosenGroupOrder) ^ 2 ≤ exp A := by
-    have hM : (1 : ℝ) ≤ D.M := mod_cast NeZero.one_le
-    have hb : 1 ≤ exp D.b := one_le_exp (exp_pos _).le
-    -- `M_pow_denominatorExponent_sq_mul_le_exp` has further factors `M` and `exp b`, all of which
-    -- are at least `1`.
-    calc (N * D.chosenGroupOrder) ^ 2
-      _ = (1 ^ (splittingV j 1).denominatorExponent) ^ 2 *
-        (1 * (N * (1 * D.chosenGroupOrder)) ^ 2) := by simp
-      _ ≤ (D.M ^ (splittingV j 1).denominatorExponent) ^ 2 *
-          (exp D.b * (N * (exp D.b * D.chosenGroupOrder)) ^ 2) := by gcongr
-      _ ≤ exp A := M_pow_denominatorExponent_sq_mul_le_exp j
-  have h_root : N * D.chosenGroupOrder ≤ exp (A / 2) := by
-    refine le_of_sq_le_sq ?_ (exp_pos _).le
-    rwa [← exp_nat_mul, Nat.cast_two, mul_div_cancel₀ _ two_ne_zero]
-  have h_card : N ≤ exp (A / 2) := (le_mul_of_one_le_right (Nat.cast_nonneg _) h_aut).trans h_root
-  have h_pow_x_le : 6 * D.x ^ 999 ≤ A / 2 := by simpa [hA] using D.le_of_hasLogBound
-  calc
-    _ = N * (N * D.chosenGroupOrder) ^ 2 * (Nat.card (ColumnFilling (fun _ ↦ D.SecondFactorIndex)
-        (untwistedDescentPair j).colsMinus) * hookNumberMinus j ^ 2) ^ 2 := by
-      rw [Fintype.card_prod _ (ColumnFilling _ _), Nat.card_eq_fintype_card, Nat.cast_mul]
-      ring
-    _ ≤ exp (A / 2) * exp A * (exp (D.x ^ 999) * exp (D.x ^ 999) ^ 2) ^ 2 := by
-      grw [h_classes, h_card, card_columnFilling_colsMinus_le, hookNumberMinus_le]
-    _ = exp (A / 2 + A + 6 * D.x ^ 999) := by
-      simp only [← exp_nat_mul, ← exp_add]
-      ring_nf
-    _ ≤ exp (2 * A) := exp_le_exp.2 (by linarith)
+/-- An explicit dual test for the gluing adjoint at an arbitrary complex field automorphism. -/
+private lemma formTupleNormSq_glue_adjoint_le (j : D.LiftIndex)
+    (φ : (D.descentPair (1 : D.Twist) j).FormV) (σ : ℂ ≃+* ℂ) :
+    formTupleNormSq σ ((glue j 1).adjoint φ) ≤
+      exp (2 * (D.f * D.m * D.b * D.logB ^ 2)) * φ.normSqAt σ := by
+  let A : ℝ := D.f * D.m * D.b * D.logB ^ 2
+  let z := (glue j (1 : D.Twist)).adjoint φ
+  let τ : ℂ ≃+* ℂ := (starRingAut.trans σ).trans starRingAut
+  -- The first variable of the conjugated pairing transforms by τ. Choose v so that its
+  -- τ-coordinates agree with the σ-coordinates of the adjoint.
+  let v : FormTuples j := .toLp 2 fun b k ↦ τ.symm (σ (z b k))
+  have h_v (b : ChoiceIndex j × D.SecondFactorClasses) : τ ∘ v b = σ ∘ z b := by
+    ext k
+    simp [v]
+  have h_inner (x y : SecondFactorFormValues j) : inner ℂ x y = gramForm x y := dotProduct_comm ..
+  have h_pair : σ (inner ℂ v z) = (formTupleNormSq σ z : ℂ) := by
+    rw [PiLp.inner_apply, formTupleNormSq, map_sum, Complex.ofReal_sum]
+    refine Finset.sum_congr rfl fun b _ ↦ ?_
+    calc σ (inner ℂ (v b) (z b))
+      _ = gramForm (τ ∘ v b) (σ ∘ z b) := by
+        rw [h_inner, map_gramForm]
+      _ = _ := by rw [h_v, gramForm_apply, ← coe_weylNormSq]
+  set S : ℝ := formTupleNormSq σ z with hS
+  have h_v_norm : formTupleNormSq τ v = S := by simp only [hS, formTupleNormSq, h_v]
+  have h_nonneg : 0 ≤ S := Finset.sum_nonneg fun _ _ ↦ weylNormSq_nonneg _
+  have h_φ : 0 ≤ φ.normSqAt σ := φ.normSqAt_nonneg σ
+  change S ≤ exp (2 * A) * φ.normSqAt σ
+  by_cases hzero : S = 0
+  · exact hzero.trans_le (mul_nonneg (exp_pos _).le h_φ)
+  have h_bound : S ≤ √(φ.normSqAt σ) * √(exp (2 * A) * S) := by
+    calc S = ‖σ (inner ℂ v z)‖ := by rw [h_pair, Complex.norm_real, Real.norm_of_nonneg h_nonneg]
+      _ = ‖σ (inner ℂ (glue j 1 v) φ)‖ := by rw [adjoint_inner_right]
+      _ ≤ _ := by grw [norm_map_inner_le, normSqAt_glue_le, h_v_norm]
+  have h_sq : S ^ 2 ≤ (√(φ.normSqAt σ) * √(exp (2 * A) * S)) ^ 2 :=
+    pow_le_pow_left₀ h_nonneg h_bound 2
+  rw [mul_pow, sq_sqrt h_φ, sq_sqrt (by positivity)] at h_sq
+  exact le_of_mul_le_mul_right (by nlinarith only [h_sq]) (lt_of_le_of_ne h_nonneg (Ne.symm hzero))
 
-/-- Let `φ` be a form on `V_j`, the target of the `j`-th lift at the trivial twist `1`, and
-`φ.normSqAt σ` the weighted sum over classes of the squared norms of its values after applying an
-automorphism `σ` of `ℂ`. The operator `U_1 = comparisonOp j 1`, a multiple of the gluing map
-`glue j 1` after its adjoint, multiplies this number by at most `exp (6 f m b log² b)`. Here
-`f = D.f` is the number of infinite places, `m = D.m` the number of lifts and `b = D.b` the weight
-parameter, with `log b = D.logB`. -/
+/-- The comparison operator has squared norm at most `exp (6 f m b log² b)`. -/
 lemma normSqAt_comparisonOp_le (j : D.LiftIndex) (φ : (D.descentPair (1 : D.Twist) j).FormV)
     (σ : ℂ ≃+* ℂ) :
     (comparisonOp j 1 φ).normSqAt σ ≤
       exp (3 * (D.f * D.m * D.b * D.logB ^ 2)) ^ 2 * φ.normSqAt σ := by
-  -- `U_1 φ` is glued from the tuple `∑ c a • f a` with `c a = n_Aut ⟨glue (f a), φ⟩`.
-  -- Cauchy–Schwarz bounds `σ (c a)`, and there are few terms.
-  set A : ℝ := D.f * D.m * D.b * D.logB ^ 2
-  obtain ⟨f, h_frame, h_norm⟩ : ∃ f : TightFrameIndex j → FormTuples j,
-      (∀ ζ : FormTuples j,
-        ∑ a : TightFrameIndex j, inner ℂ (f a) ζ • f a = (hookNumberMinus j : ℂ) ^ 2 • ζ) ∧
-      ∀ (a : TightFrameIndex j) (τ : ℂ ≃+* ℂ),
-        formTupleNormSq τ (f a) ≤ (hookNumberMinus j : ℝ) ^ 2 :=
-    (exists_tight_frame_formTuples j 1).imp fun _ h ↦ h.imp_right And.right
-  -- `formTupleNormSq` is the sum of the Gram norms `weylNormSq` of the values of a tuple.
-  let hk : ℝ := hookNumberMinus j
-  let c (a : TightFrameIndex j) : ℂ := D.chosenGroupOrder • inner ℂ (glue j 1 (f a)) φ
-  let S : ℝ := exp (2 * A) * φ.normSqAt σ
-  have h_hook : 0 < hk := Int.cast_pos.2 hookNumber_pos
-  have h_normSq_nonneg : 0 ≤ φ.normSqAt σ := φ.normSqAt_nonneg σ
-  have h_coeff (a : TightFrameIndex j) : ‖σ (c a)‖ ≤ D.chosenGroupOrder * (√S * hk) := by
-    calc ‖σ (c a)‖
-      _ = D.chosenGroupOrder * ‖σ (inner ℂ (glue j 1 (f a)) φ)‖ := by
-        rw [map_nsmul, nsmul_eq_mul, norm_mul, Complex.norm_natCast]
-      _ ≤ D.chosenGroupOrder * (√(φ.normSqAt σ) * √(exp (2 * A) * hk ^ 2)) := by
-        grw [norm_map_inner_le, normSqAt_glue_le, h_norm]
-      _ = _ := by
-        rw [sqrt_mul (exp_pos _).le, sqrt_mul (exp_pos _).le, sqrt_sq h_hook.le]
-        ring
-  have h_value (b : ChoiceIndex j × D.SecondFactorClasses) :
-      √(weylNormSq (σ ∘ (∑ a : TightFrameIndex j, c a • f a) b)) ≤
-        Fintype.card (TightFrameIndex j) * (D.chosenGroupOrder * hk ^ 2) * √S := by
-    have h_term (a : TightFrameIndex j) :
-        √(weylNormSq (σ ∘ (c a • f a b))) ≤ D.chosenGroupOrder * hk ^ 2 * √S := by
-      have h_single : weylNormSq (σ ∘ f a b) ≤ formTupleNormSq σ (f a) :=
-        single_le_sum (fun b _ ↦ weylNormSq_nonneg (σ ∘ f a b)) (mem_univ b)
-      calc √(weylNormSq (σ ∘ (c a • f a b)))
-        _ = ‖σ (c a)‖ * √(weylNormSq (σ ∘ f a b)) := by
-          rw [weylNormSq_comp_smul, sqrt_mul (sq_nonneg _), sqrt_sq (norm_nonneg _)]
-        _ ≤ D.chosenGroupOrder * (√S * hk) * √(hk ^ 2) := by grw [h_coeff, h_single, h_norm a σ]
-        _ = _ := by
-          rw [sqrt_sq h_hook.le]
-          ring
-    rw [WithLp.ofLp_sum, Finset.sum_apply, mul_assoc, ← nsmul_eq_mul]
-    exact (sqrt_weylNormSq_sum_le σ univ _).trans (sum_le_card_nsmul _ _ _ fun a _ ↦ h_term a)
-  have h_tupleNormSq : formTupleNormSq σ (∑ a : TightFrameIndex j, c a • f a) ≤
-      Fintype.card (ChoiceIndex j × D.SecondFactorClasses) *
-        (Fintype.card (TightFrameIndex j) * (D.chosenGroupOrder * hk ^ 2)) ^ 2 * S := by
-    rw [mul_assoc, ← nsmul_eq_mul]
-    refine sum_le_card_nsmul _ _ _ fun b _ ↦ ?_
-    grw [(sqrt_le_left (by positivity)).1 (h_value b), mul_pow, sq_sqrt (by positivity)]
-  calc
-    _ = (glue j 1 (∑ a : TightFrameIndex j, c a • f a)).normSqAt σ := by
-      simp only [comparisonOp_eq_sum h_frame, map_sum, map_smul, c]
-    _ ≤ exp (2 * A) * (exp (2 * A) * S) := by
-      grw [normSqAt_glue_le, h_tupleNormSq, card_prod_mul_card_tightFrameIndex_mul_sq_le]
-    _ = _ := by
-      simp only [S, ← exp_nat_mul, ← mul_assoc, ← exp_add]
+  let A : ℝ := D.f * D.m * D.b * D.logB ^ 2
+  let z := (glue j (1 : D.Twist)).adjoint φ
+  let s : ℝ := (D.chosenGroupOrder : ℝ) * (hookNumberMinus j : ℝ) ^ 2
+  have h_hook : 0 ≤ (hookNumberMinus j : ℝ) := (Int.cast_pos.2 hookNumber_pos).le
+  have h_scalar : ‖σ (D.chosenGroupOrder * hookNumberMinus j ^ 2 : ℂ)‖ = s := by
+    simp [s, norm_pow, abs_of_nonneg h_hook]
+  rw [comparisonOp, LinearMap.smul_apply, LinearMap.comp_apply, normSqAt_smul, h_scalar]
+  have h_s : s ≤ exp A := by
+    calc s ≤ exp (D.x ^ 32) * exp (D.x ^ 999) ^ 2 := by
+          dsimp [s]
+          gcongr
+          · exact le_exp_of_log_le D.log_chosenGroupOrder_le
+          · exact hookNumberMinus_le j
+      _ = exp (D.x ^ 32 + 2 * D.x ^ 999) := by rw [← exp_nat_mul, Nat.cast_two, ← exp_add]
+      _ ≤ exp A := exp_le_exp.2 (by dsimp [A]; exact D.le_of_hasLogBound)
+  have h_adj := formTupleNormSq_glue_adjoint_le j φ σ
+  have h_φ := φ.normSqAt_nonneg σ
+  calc s ^ 2 * (glue j 1 z).normSqAt σ
+    _ ≤ exp A ^ 2 * (exp (2 * A) * (exp (2 * A) * φ.normSqAt σ)) := by
+      grw [normSqAt_glue_le, h_adj, h_s]
+    _ = exp (3 * A) ^ 2 * φ.normSqAt σ := by
+      simp only [← exp_nat_mul, ← mul_assoc, ← exp_add]
       ring_nf
 
 /-- The operators `U_ϑ = comparisonOp j ϑ = n_Aut hk² glue_ϑ glue_ϑ*` on the forms on `V_j`, one for

@@ -606,23 +606,6 @@ lemma hookNumberMinus_le : (hookNumberMinus j : ℝ) ≤ exp (D.x ^ 999) := by
         grw [log_pow, log_pow, log_le_self (Nat.cast_nonneg L), Nat.cast_ofNat]
     _ ≤ exp (D.x ^ 999) := exp_le_exp.2 h_size
 
-/-- The diagram `μ⁻` has few boxes, so the number of basis tensors of its shape with rows indexed by
-the basis `D.SecondFactorIndex` of `V°` (`ColumnFilling`) is at most `exp (x ^ 999)`, with `x = D.x`
-the length of the prime sum. -/
-lemma card_columnFilling_colsMinus_le :
-    (Nat.card (ColumnFilling (fun _ : NumberField.InfinitePlace D.E ↦ D.SecondFactorIndex)
-      (untwistedDescentPair j).colsMinus) : ℝ) ≤ exp (D.x ^ 999) := by
-  set L : ℕ := card D.Φ * (D.t * (D.t * D.gap)) with hL
-  have h_card : Nat.card (ColumnFilling (fun _ ↦ D.SecondFactorIndex)
-      (untwistedDescentPair j).colsMinus) ≤ (D.t + 1) ^ L :=
-    GL.card_columnFilling_le (by omega)
-      (fun _ ↦ (card_secondFactorIndex_le D).trans D.t.le_succ) (sum_mul_colsMinus_le j)
-  have h_size : (L : ℝ) * (D.t + 1 : ℕ) ≤ D.x ^ 999 := by simpa [hL] using D.le_of_hasLogBound
-  grw [h_card]
-  refine le_exp_of_log_le ?_
-  grw [← h_size, Nat.cast_pow, log_pow,
-    log_le_self (Nat.cast_nonneg _)]
-
 variable {j} in
 /-- If the index type `n` has at most `2 * D.n D.m` elements, a level `K` that contains `J (ϖ²)`
 (`principalLevel n (D.piM ^ 2)`) has at most `exp D.b` classes (`StdClasses K`). -/

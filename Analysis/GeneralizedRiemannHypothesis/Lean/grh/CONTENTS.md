@@ -321,7 +321,7 @@ The heads of these files give an overview of a theory: `Lib/ClassField/Global/Ar
 **One lift and Hecke values**
 
 - `New/OneLift/TestedForms` (350): Point forms, Hecke adjoints and false lifts on the definite space of a descent pair
-- `New/OneLift/LiftVolumeHeight` (528): The cost of one lift: a height bound for Z_j(1)/Z_j(ξ^j)
+- `New/OneLift/LiftVolumeHeight` (453): The cost of one lift: a height bound for Z_j(1)/Z_j(ξ^j)
 
 **The comparison operator**
 
@@ -335,7 +335,7 @@ The heads of these files give an overview of a theory: `Lib/ClassField/Global/Ar
 - `New/OneLift/ComparisonOperator/FirstFactors` (509): The first factors: P_V along W_j and W^add, integrality and size
 - `New/OneLift/ComparisonOperator/ThreeExchanges` (562): Three exchanges: the carrier, the third exchange and its left side as a theta series
 - `New/OneLift/ComparisonOperator/ProductsSpan` (595): Products span
-- `New/OneLift/ComparisonOperator/GluingMaps` (703): The first factors and the gluing maps
+- `New/OneLift/ComparisonOperator/GluingMaps` (690): The first factors and the gluing maps
 
 **Periods of false lifts**
 
@@ -473,7 +473,7 @@ The heads of these files give an overview of a theory: `Lib/ClassField/Global/Ar
 - `Lib/Adelic/AutomorphicForms/AutomorphicAsAlgebraic` (248): Automorphic forms on standard definite spaces as algebraic forms
 - `Lib/Adelic/AutomorphicForms/HeckeEigenforms` (278): Algebraic modular forms: delta forms, unitary translation and spanning by Hecke eigenforms
 - `Lib/Adelic/AutomorphicForms/BlockPeriods` (126): Periods of algebraic forms over a block subgroup as class sums via branching
-- `Lib/Adelic/AutomorphicForms/PAdicGauge` (507): The p-adic gauge of algebraic forms, class sums, and integral forms of a level
+- `Lib/Adelic/AutomorphicForms/PAdicGauge` (505): The p-adic gauge of algebraic forms, class sums, and integral forms of a level
 
 **Hecke**: Hecke operators and class sums
 
@@ -788,7 +788,7 @@ The heads of these files give an overview of a theory: `Lib/ClassField/Global/Ar
 - `Lib/GLn/SchurModule/WeylKernel` (408): The Weyl kernel and its Gram matrix: the hook number bound, positivity, Schur's lemma
 - `Lib/GLn/SchurModule/GramMatrix` (438): Fock pairing, Hermitian norm and Cartan products for the Gram matrix of the Weyl kernel
 - `Lib/GLn/SchurModule/LeadingRows` (320): Fillings whose columns begin with the leading rows
-- `Lib/GLn/SchurModule/SchurOrthogonality` (173): Algebraic representations of GL(n) on unitary groups: Schur orthogonality
+- `Lib/GLn/SchurModule/SchurOrthogonality` (183): Algebraic representations of GL(n) on unitary groups: Schur orthogonality
 - `Lib/GLn/SchurModule/Polarisation` (197): Irreducibility under U(n)^Φ, polarisation and averaging of determinant polynomials
 - `Lib/GLn/SchurModule/SchurNorm` (227): Norm bound for Schur matrices and basic facts on the weight representations
 
