@@ -156,7 +156,7 @@ The heads of these files give an overview of a theory: `Lib/ClassField/Global/Ar
 
 **The second moment and the spanning theorem**
 
-- `New/Spanning/SecondMoment/PositiveType` (139): Functions of positive type and singular minors
+- `New/Spanning/SecondMoment/PositiveType` (122): Functions of positive type and singular minors
 - `New/Spanning/SecondMoment/FewTranslates` (395): Few translates fill
 - `New/Spanning/SecondMoment/SpanningTheorem` (202): The dimension of the target and one good translate of the Poincaré map
 

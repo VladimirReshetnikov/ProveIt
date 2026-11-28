@@ -128,7 +128,7 @@ Each declaration below adapts or closely follows, in whole or in part and with c
 | `src/New/Spanning/Bessel/GramSection.lean` | `IsBoundedInCell.isUnit_det_and_norm_inv_le` | `Units.add` | `Mathlib/Analysis/Normed/Ring/Units.lean` |
 | `src/New/Spanning/Bessel/GramSection.lean` | `New.RealPlace.norm_fderiv_sectionMatrix_le` | `Complex.norm_fderiv_le_div_of_mapsTo_ball` | `Mathlib/Analysis/Complex/Schwarz.lean` |
 | `src/New/Spanning/RemainingTerms/OneRealPlace.lean` | `New.RealPlace.norm_det_subframeBlock` | `Matrix.mulVec_cramer` | `Mathlib/LinearAlgebra/Matrix/Adjugate.lean` |
-| `src/New/Spanning/SecondMoment/PositiveType.lean` | `New.expect_addChar_dotProduct` | `AddChar.expect_eq_ite` | `Mathlib/Analysis/Fourier/FiniteAbelian/Orthogonality.lean` |
+| `src/New/Spanning/SecondMoment/PositiveType.lean` | `New.card_mul_sum_det_eq_zero_le` | `AddChar.expect_eq_ite` | `Mathlib/Analysis/Fourier/FiniteAbelian/Orthogonality.lean` |
 | `src/New/UpperBound/Seesaw/IntegralAsCosetSum.lean` | `New.Seesaw.exists_index_dvd_pow_of_pow_mem` | `IsPGroup.index` | `Mathlib/GroupTheory/PGroup.lean` |
 
 ## Copyright and author lines of these Mathlib files
