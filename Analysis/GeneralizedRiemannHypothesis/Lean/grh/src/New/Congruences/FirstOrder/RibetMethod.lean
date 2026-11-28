@@ -82,19 +82,29 @@ lemma amitsur_charpoly_comp_coeff_mem_range (ρ : Λ →ₐ[R] Matrix σ σ L)
   split_ifs
   exacts [hρ _ _, zero_mem _]
 
-/-- Cramer's rule over `Λ[X]`, from the Cayley–Hamilton theorem, read through `ρ` coefficient by
-coefficient. Let `ρ` be an `R`-algebra map from `Λ` to square matrices over `L` whose characteristic
-polynomials all have their coefficients in the image of `R`. For a square matrix `B` over `Λ[X]`
-there are a polynomial `P` over `R` and a matrix `B'` such that `P(0)` is the determinant of the
-block matrix with blocks `ρ (B i j (0))`, and `B' B` is the scalar matrix `P` once `ρ` is applied to
-the coefficients of the entries. -/
-lemma Selmer.exists_adjugate_polynomial (ρ : Λ →ₐ[R] Matrix σ σ L)
+/-- Suppose the characteristic coefficients of `ρ` lift to `R` and its kernel annihilates
+`x`. If `a` annihilates `x`, then `det (ρ a)` lifts to a scalar in `R` annihilating `x`. -/
+lemma exists_det_smul_eq_zero_of_charpoly_mem {V : Type*} [AddCommGroup V] [Module Λ V]
+    (ρ : Λ →ₐ[R] Matrix σ σ L)
+    (h_coeff : ∀ (a : Λ) (k : ℕ), (ρ a).charpoly.coeff k ∈ (algebraMap R L).range)
+    {x : V} (hker : ∀ a : Λ, ρ a = 0 → a • x = 0) {a : Λ} (ha : a • x = 0) :
+    ∃ c : R, (ρ a).det = algebraMap R L c ∧ algebraMap R Λ c • x = 0 := by
+  obtain ⟨b, c, hc, hba, -⟩ := exists_adjugate_of_charpoly_mem ρ h_coeff a
+  refine ⟨c, hc, ?_⟩
+  have h := hker (b * a - algebraMap R Λ c) (by
+    rw [map_sub, map_mul, hba, AlgHom.commutes, Algebra.algebraMap_eq_smul_one, sub_self])
+  simpa only [sub_smul, mul_smul, ha, smul_zero, zero_sub, neg_eq_zero] using h
+
+open scoped Matrix.Module in
+/-- The determinant scalar of the polynomial relation matrix kills the given vector. Constants
+act on the quotient by left multiplication and the variable by right multiplication. -/
+private lemma Selmer.exists_ribet_annihilator_polynomial (ρ : Λ →ₐ[R] Matrix σ σ L)
     (h_coeff : ∀ (w : Λ) (k : ℕ), (ρ w).charpoly.coeff k ∈ (algebraMap R L).range)
-    (B : Matrix N N Λ[X]) :
-    ∃ (P : R[X]) (B' : Matrix N N Λ[X]),
-      algebraMap R L (P.eval 0) = (comp N N σ σ L (B.map fun p : Λ[X] ↦ ρ (p.coeff 0))).det ∧
-      ∀ (i j : N) (m : ℕ), ρ (((B' * B) i j).coeff m) =
-        ρ (((diagonal fun _ : N ↦ P.map (algebraMap R Λ)) i j).coeff m) := by
+    {Q : Type*} [Ring Q] (π : Λ →+* Q) (hπρ : ∀ w : Λ, ρ w = 0 → π w = 0)
+    (y : N → Λ) (ρ₀ : Λ) (B B₁ : Matrix N N Λ)
+    (h_kill : ∀ i : N, π ((B *ᵥ y) i) = π ((B₁ *ᵥ y) i * ρ₀)) :
+    ∃ P : R[X], algebraMap R L (P.eval 0) = (comp N N σ σ L (B.map ρ)).det ∧
+      ∀ i : N, π (y i * aeval ρ₀ P) = 0 := by
   -- Extend `ρ` to `ρX` on `Λ[X]`, coefficient by coefficient. As `Λ` spans `Λ[X]` over `R[X]`,
   -- Amitsur's formula puts the characteristic polynomials of `ρX` over `R[X]`.
   let _ : Algebra R[X] Λ[X] := Polynomial.algebra R Λ
@@ -119,46 +129,10 @@ lemma Selmer.exists_adjugate_polynomial (ρ : Λ →ₐ[R] Matrix σ σ L)
     refine ⟨C c, ?_⟩
     rw [hρX_C, charpoly_map, Polynomial.coeff_map, ← hc]
     simp
-  -- Cayley–Hamilton for the block matrix `φX B` gives `B'` and the determinant `P`.
   let φX : Matrix N N Λ[X] →ₐ[R[X]] Matrix (N × σ) (N × σ) L[X] :=
     (blockFlattenAlgEquiv N).toAlgHom.comp ρX.mapMatrix
-  obtain ⟨B', P, hP, hB', -⟩ : ∃ (B' : Matrix N N Λ[X]) (P : R[X]),
-      (φX B).det = algebraMap R[X] L[X] P ∧ φX B' * φX B = P • 1 ∧ φX B * φX B' = P • 1 :=
-    exists_adjugate_of_charpoly_mem φX (amitsur_charpoly_comp_coeff_mem_range ρX h_coeffX) B
-  have h_mul : φX (B' * B) = φX (P • 1) := by rw [map_mul, hB', map_smul, map_one]
-  have hφX (M : Matrix N N Λ[X]) (i j : N) (a b : σ) : φX M (i, a) (j, b) = ρX (M i j) a b := rfl
-  have h_entry (i j : N) : ρX ((B' * B) i j) = ρX ((P • (1 : Matrix N N Λ[X])) i j) :=
-    Matrix.ext fun a b ↦ by rw [← hφX, ← hφX, h_mul]
-  have h_one : P • (1 : Matrix N N Λ[X]) = diagonal fun _ ↦ P.map (algebraMap R Λ) := by
-    ext i j
-    by_cases h_ij : i = j
-    · simp [h_ij, Algebra.smul_def]
-    · simp [h_ij, one_apply]
-  refine ⟨P, B', ?_, fun i j m ↦ ?_⟩
-  · -- The constant terms: `P(0)` and the determinant of `φX B` at `X = 0`.
-    have h_map : (φX B).map constantCoeff = comp N N σ σ L (B.map fun p ↦ ρ (p.coeff 0)) := by
-      ext ⟨i, a⟩ ⟨j, b⟩
-      simp [φX, hρX]
-    calc algebraMap R L (P.eval 0) = constantCoeff (algebraMap R[X] L[X] P) := by
-          simp [← coeff_zero_eq_eval_zero]
-      _ = constantCoeff (φX B).det := by rw [hP]
-      _ = (comp N N σ σ L (B.map fun p ↦ ρ (p.coeff 0))).det := by
-          rw [RingHom.map_det, RingHom.mapMatrix_apply, h_map]
-  · ext a b
-    rw [← hρX, ← hρX, h_entry, h_one]
-
-/-- Let `Λ[X]` act on `Q` through a ring homomorphism `π : Λ → Q`, with `Λ` acting by left
-multiplication and `X` by right multiplication with `π ρ₀`. Suppose that `B - X B₁` kills the image
-of the vector `y`, that is, `B y` and `(B₁ y) ρ₀` have the same image, and that `B' (B - X B₁)` is
-the scalar matrix `P`, with `P` a polynomial over `R`, once `π` is applied to the coefficients of
-the entries. Then `π (y i P(ρ₀)) = 0`. -/
-lemma Selmer.mul_aeval_eq_zero_of_adjugate {Q : Type*} [Ring Q] (π : Λ →+* Q) (y : N → Λ)
-    (ρ₀ : Λ) (B B₁ : Matrix N N Λ) (h_kill : ∀ i : N, π ((B *ᵥ y) i) = π ((B₁ *ᵥ y) i * ρ₀))
-    (P : R[X]) (B' : Matrix N N Λ[X])
-    (h_adj : ∀ (i j : N) (m : ℕ), π (((B' * (B.map C - (X : Λ[X]) • B₁.map C)) i j).coeff m) =
-      π (((diagonal fun _ : N ↦ P.map (algebraMap R Λ)) i j).coeff m))
-    (i : N) :
-    π (y i * aeval ρ₀ P) = 0 := by
+  let B_X : Matrix N N Λ[X] := B.map C - (X : Λ[X]) • B₁.map C
+  let v : N → Q := fun j ↦ π (y j)
   let left : Λ →+* AddMonoid.End Q := (Module.toAddMonoidEnd Q Q).comp π
   let right : AddMonoid.End Q := AddMonoid.End.mulRight (π ρ₀)
   have h_comm (r : Λ) : Commute (left r) right :=
@@ -172,38 +146,50 @@ lemma Selmer.mul_aeval_eq_zero_of_adjugate {Q : Type*} [Ring Q] (π : Λ →+* Q
   have hX (q : Q) : (X : Λ[X]) • q = q * π ρ₀ := by
     rw [h_smul, eval₂_X]
     rfl
-  -- The action sees the coefficients only through `π`.
-  have h_act (c c' : Λ[X]) (h : ∀ m : ℕ, π (c.coeff m) = π (c'.coeff m)) (q : Q) :
-      c • q = c' • q := by
-    have h_zero : eval₂ left right (c - c') = 0 := by
-      rw [eval₂_eq_sum, Polynomial.sum_def]
-      exact Finset.sum_eq_zero fun m _ ↦ by simp [left, h m]
-    rw [← sub_eq_zero, ← sub_smul, h_smul, h_zero]
-    rfl
   have h_poly (p : R[X]) (r : Λ) : p.map (algebraMap R Λ) • π r = π (r * aeval ρ₀ p) := by
     induction p using Polynomial.induction_on with
     | C a => rw [map_C, hC, aeval_C, ← map_mul, Algebra.commutes]
     | add p q hp hq => simp only [Polynomial.map_add, add_smul, hp, hq, map_add, mul_add]
     | monomial j a ih =>
-      calc (C a * X ^ (j + 1)).map (algebraMap R Λ) • π r
-        _ = (X : Λ[X]) • (C a * X ^ j).map (algebraMap R Λ) • π r := by
-          rw [pow_succ, ← mul_assoc, Polynomial.map_mul, map_X, ← X_mul, mul_smul]
-        _ = π (r * aeval ρ₀ (C a * X ^ j) * ρ₀) := by rw [ih, hX, ← map_mul]
-        _ = π (r * aeval ρ₀ (C a * X ^ (j + 1))) := by simp [pow_succ, mul_assoc]
-  have h_row (l : N) : ∑ j, (B.map C - (X : Λ[X]) • B₁.map C) l j • π (y j) = 0 := by
+      rw [pow_succ, ← mul_assoc, Polynomial.map_mul, map_X, ← X_mul, mul_smul, ih, hX]
+      simp [mul_assoc]
+  -- Every coefficient of an element of the kernel of φX lies in the kernel of ρ.
+  have h_kernel (M : Matrix N N Λ[X]) (hM : φX M = 0) : M • v = 0 := by
+    funext i
+    rw [Matrix.Module.smul_apply, Pi.zero_apply]
+    refine Finset.sum_eq_zero fun j _ ↦ ?_
+    have hπ (m : ℕ) : π ((M i j).coeff m) = 0 := hπρ _ <| Matrix.ext fun a b ↦ by
+      rw [← hρX]
+      change ((φX M) (i, a) (j, b)).coeff m = 0
+      simp [hM]
+    have h_eval : eval₂ left right (M i j) = 0 := by
+      rw [eval₂_eq_sum, Polynomial.sum_def]
+      exact Finset.sum_eq_zero fun m _ ↦ by simp [left, hπ m]
+    rw [h_smul, h_eval]
+    rfl
+  have h_relation : B_X • v = 0 := by
+    funext l
+    rw [Matrix.Module.smul_apply, Pi.zero_apply]
     calc _ = ∑ j, (π (B l j * y j) - π (B₁ l j * y j * ρ₀)) := by
-          simp [sub_smul, mul_smul, hC, hX, mul_assoc]
+          simp [B_X, v, sub_smul, mul_smul, hC, hX, mul_assoc]
       _ = π ((B *ᵥ y) l) - π ((B₁ *ᵥ y) l * ρ₀) := by
           simp [mulVec, dotProduct, Finset.sum_mul]
       _ = 0 := sub_eq_zero.2 (h_kill l)
-  calc π (y i * aeval ρ₀ P) = ∑ j, (diagonal fun _ ↦ P.map (algebraMap R Λ)) i j • π (y j) := by
-        simp [diagonal_apply, h_poly]
-    _ = ∑ j, (B' * (B.map C - (X : Λ[X]) • B₁.map C)) i j • π (y j) :=
-        Finset.sum_congr rfl fun j _ ↦ (h_act _ _ (h_adj i j) _).symm
-    _ = 0 := by
-        simp only [Matrix.mul_apply, Finset.sum_smul, mul_smul]
-        rw [Finset.sum_comm]
-        simp only [← Finset.smul_sum, h_row, smul_zero, Finset.sum_const_zero]
+  obtain ⟨P, hP, hP_kill⟩ := exists_det_smul_eq_zero_of_charpoly_mem φX
+    (amitsur_charpoly_comp_coeff_mem_range ρX h_coeffX) h_kernel h_relation
+  have h_scalar := (Matrix.Module.scalar_smul (algebraMap R[X] Λ[X] P) v).symm.trans hP_kill
+  refine ⟨P, ?_, fun i ↦ ?_⟩
+  · have h_map : (φX B_X).map constantCoeff = comp N N σ σ L (B.map ρ) := by
+      ext ⟨i, a⟩ ⟨j, b⟩
+      change (ρX (B_X i j) a b).coeff 0 = ρ (B i j) a b
+      rw [hρX]
+      simp [B_X]
+    calc algebraMap R L (P.eval 0) = constantCoeff (algebraMap R[X] L[X] P) := by
+          simp [← coeff_zero_eq_eval_zero]
+      _ = constantCoeff (φX B_X).det := by rw [hP]
+      _ = (comp N N σ σ L (B.map ρ)).det := by
+          rw [RingHom.map_det, RingHom.mapMatrix_apply, h_map]
+  · exact (h_poly P (y i)).symm.trans (congrFun h_scalar i)
 
 /-- Ribet's method. Let `ρ` represent the `R`-algebra `Λ` by matrices over `L` such that the
 characteristic polynomials of a spanning set have coefficients in the image of `R`, and let `𝔞` be
@@ -224,8 +210,7 @@ lemma Selmer.exists_ribet_polynomial [Nonempty σ] (ρ : Λ →ₐ[R] Matrix σ 
       (∀ ρ₁ : Λ, (ρ (ρ₁ * aeval ρ₀ P)).trace ∈ (algebraMap R L).range) ∧
       ∀ (ρ₁ : Λ) (δ : R), (∃ z ∈ span Λ (Set.range y), ρ z = algebraMap R (Matrix σ σ L) δ) →
         ∃ a ∈ 𝔞, algebraMap R L δ * (ρ (ρ₁ * aeval ρ₀ P)).trace = (ρ a).trace := by
-  -- Write `B y = B₁ y ρ₀` modulo `𝔞`. Then `B_X = B - X B₁` kills `y` in `Λ / 𝔞`, where `X` acts as
-  -- right multiplication with `ρ₀`. As `B' B_X = P` after applying `ρ`, `P` kills `y` too.
+  -- Write `B y = B₁ y ρ₀` modulo `𝔞` and apply the polynomial relation to the image of `y`.
   have h_coeff : ∀ (w : Λ) (k : ℕ), (ρ w).charpoly.coeff k ∈ (algebraMap R L).range :=
     amitsur_charpoly_mem_of_span ρ hρ_span
   have h_rows : ∀ i : N, ∃ a ∈ 𝔞, ∃ c : N → Λ, (B *ᵥ y) i = a + (c ⬝ᵥ y) * ρ₀ := by
@@ -234,35 +219,26 @@ lemma Selmer.exists_ribet_polynomial [Nonempty σ] (ρ : Λ →ₐ[R] Matrix σ 
     obtain ⟨c, rfl⟩ : ∃ c : N → Λ, ∑ j, c j • y j = z := (mem_span_range_iff_exists_fun Λ).1 hz
     exact ⟨a, ha, c, h_split⟩
   choose a ha B₁ h_split using h_rows
-  let B_X : Matrix N N Λ[X] := B.map C - (X : Λ[X]) • (of B₁).map C
-  obtain ⟨P, B', hP, hB'⟩ : ∃ (P : R[X]) (B' : Matrix N N Λ[X]),
-      algebraMap R L (P.eval 0) = (comp N N σ σ L (B_X.map fun p ↦ ρ (p.coeff 0))).det ∧
-      ∀ (i j : N) (m : ℕ), ρ (((B' * B_X) i j).coeff m) =
-        ρ (((diagonal fun _ ↦ P.map (algebraMap R Λ)) i j).coeff m) :=
-    Selmer.exists_adjugate_polynomial ρ h_coeff B_X
   let π : Λ →+* 𝔞.ringCon.Quotient := 𝔞.ringCon.mk'
   have hπ (w w' : Λ) : π w = π w' ↔ w - w' ∈ 𝔞 := (RingCon.eq _).trans (𝔞.rel_iff w w')
-  have hπρ (w w' : Λ) (h : ρ w = ρ w') : π w = π w' :=
-    (hπ w w').2 (hρ_ker _ (by rw [map_sub, h, sub_self]))
+  have hπρ (w : Λ) (h : ρ w = 0) : π w = 0 := by
+    simpa using (hπ w 0).2 (by simpa using hρ_ker w h)
   have h_kill (i : N) : π ((B *ᵥ y) i) = π ((of B₁ *ᵥ y) i * ρ₀) := by
     have h_row : (of B₁ *ᵥ y) i = B₁ i ⬝ᵥ y := rfl
     rw [hπ, h_split, h_row, add_sub_cancel_right]
     exact ha i
+  obtain ⟨P, hP, h_ann⟩ :=
+    Selmer.exists_ribet_annihilator_polynomial ρ h_coeff π hπρ y ρ₀ B (of B₁) h_kill
   have hy (i : N) : y i * aeval ρ₀ P ∈ 𝔞 := by
     rw [← sub_zero (y i * aeval ρ₀ P), ← hπ, map_zero]
-    exact Selmer.mul_aeval_eq_zero_of_adjugate π y ρ₀ B (of B₁) h_kill P B'
-      (fun i j m ↦ hπρ _ _ (hB' i j m)) i
+    exact h_ann i
   have h_mem (w : Λ) (hw : w ∈ span Λ (Set.range y)) : w * aeval ρ₀ P ∈ 𝔞 := by
     obtain ⟨c, rfl⟩ : ∃ c : N → Λ, ∑ j, c j • y j = w := (mem_span_range_iff_exists_fun Λ).1 hw
     rw [Finset.sum_mul]
     refine sum_mem fun i _ ↦ ?_
     rw [smul_eq_mul, mul_assoc]
     exact 𝔞.mul_mem_left _ _ (hy i)
-  refine ⟨P, ?_, h_mem, fun ρ₁ ↦ ?_, fun ρ₁ δ ⟨z₀, hz₀, hz₀_eq⟩ ↦ ?_⟩
-  · have h_const : (B_X.map fun p ↦ ρ (p.coeff 0)) = B.map ρ := by
-      ext i j : 2
-      simp [B_X]
-    rw [hP, h_const]
+  refine ⟨P, hP, h_mem, fun ρ₁ ↦ ?_, fun ρ₁ δ ⟨z₀, hz₀, hz₀_eq⟩ ↦ ?_⟩
   · rw [trace_eq_neg_charpoly_coeff]
     exact neg_mem (h_coeff _ _)
   · -- With `ρ z₀ = δ` and `z₀ ∈ I`, the element `ρ₁ (z₀ P(ρ₀))` of `𝔞` has trace `δ tr (ρ₁ P(ρ₀))`.

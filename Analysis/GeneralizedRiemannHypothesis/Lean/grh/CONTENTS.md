@@ -370,7 +370,7 @@ The heads of these files give an overview of a theory: `Lib/ClassField/Global/Ar
 
 **Congruences to first order**
 
-- `New/Congruences/FirstOrder/RibetMethod` (433): Amitsur's formula and Ribet's method for matrices over an algebra
+- `New/Congruences/FirstOrder/RibetMethod` (418): Amitsur's formula and Ribet's method for matrices over an algebra
 - `New/Congruences/FirstOrder/FittingBlock` (526): Modules of functions, Fitting ideals and trace ideals for Ribet's method
 - `New/Congruences/FirstOrder/RibetMatrices` (691): Tied rows and the matrices of Ribet's method to first order
 - `New/Congruences/FirstOrder/RibetLemma` (476): Ribet's method to first order over a discrete valuation ring
