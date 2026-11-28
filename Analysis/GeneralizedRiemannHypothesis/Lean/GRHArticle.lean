@@ -24,6 +24,7 @@ import GRHArticle.ProgressionFree.GreedyLengthDensityComputability
 import GRHArticle.ProgressionFree.GreedyLengthDensityGain
 import GRHArticle.ProgressionFree.GreedyLengthExponents
 import GRHArticle.ProgressionFree.GreedyLengthSmoothBound
+import GRHArticle.ProgressionFree.GreedyLengthThree
 import GRHArticle.ProgressionFree.HeavyPrimeBlocks
 import GRHArticle.ProgressionFree.ImprovingPrimeBlocks
 import GRHArticle.ProgressionFree.IndependentPrimeRuleDensity
@@ -190,6 +191,7 @@ import GRHArticle.ProgressionFree.SatelliteProfiles
 import GRHArticle.ProgressionFree.SharedDeletionMass
 import GRHArticle.ProgressionFree.SharedDeletionProgressions
 import GRHArticle.ProgressionFree.SingletonPrimeBlocks
+import GRHArticle.ProgressionFree.ThreeTermBoundedBlockEndpoints
 import GRHArticle.ProgressionFree.WidthPreservingFiniteExceptions
 import GRHArticle.SingularModuli.BaseChange
 import GRHArticle.SingularModuli.Binomial
