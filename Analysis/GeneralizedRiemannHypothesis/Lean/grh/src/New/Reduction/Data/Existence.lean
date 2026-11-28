@@ -237,18 +237,28 @@ lemma Parameters.exists_large_isSparse (P : Parameters) {s n H L : ℕ}
     nlinarith only [h_order, h_small, hL]
 
 /-- **A large sparse set of places.** The infinite places `P.Φ s` of `E = P.E s` form the group
-`(ℤ/q₁)ˣ`. Let `0 < n`, `1 ≤ W ≤ 2 ^ s ≤ W ^ n`, `(2 l₀) ^ n ≤ W`, `3 l₀ n 2 ^ n ≤ W ^ 3` and
+`(ℤ/q₁)ˣ`. Let `0 < n`, `W ≤ 2 ^ s ≤ W ^ n`, `(2 l₀) ^ n ≤ W` and
 `2 l₀ (L + 1) < 2 ^ s`. There is a set of at least `towerDeg s / W ^ 6` places of class `-1` modulo
 `q₀` that is sparse for the primes `ℓ ≤ L`: it has no places `σ, τ, ρ` with `τ / σ ≡ ± ℓ ^ i` and
 `ρ / σ ≡ ± ℓ ^ j`, `0 < i < j < l₀`, modulo the part of `q₁` prime to `ℓ`. -/
-lemma Parameters.exists_isSparse (P : Parameters) {s n L : ℕ} {W : ℝ} (hn : 0 < n) (hW : 1 ≤ W)
+lemma Parameters.exists_isSparse (P : Parameters) {s n L : ℕ} {W : ℝ} (hn : 0 < n)
     (h_lower : W ≤ 2 ^ s) (h_upper : 2 ^ s ≤ W ^ n) (h_room : (2 * l₀ s) ^ n ≤ W)
-    (h_count : 3 * l₀ s * n * 2 ^ n ≤ W ^ 3) (hL : 2 * l₀ s * (L + 1) < 2 ^ s) :
+    (hL : 2 * l₀ s * (L + 1) < 2 ^ s) :
     ∃ T : Finset (P.Φ s),
       (∀ σ ∈ T, P.placeClass (P.q₀.dvd_mul_right (towerDeg s)) σ = -1) ∧
       towerDeg s ≤ #T * W ^ 6 ∧
       P.IsSparse s L T := by
+  have h_base : 2 ≤ 2 * l₀ s := by linarith [mul_lt_l₀ s]
+  have h_two : (2 : ℝ) ^ n ≤ W := h_room.trans' (by exact_mod_cast Nat.pow_le_pow_left h_base n)
+  have hW : 1 ≤ W := (one_le_pow₀ one_le_two).trans h_two
   have hW_pos : 0 < W := one_pos.trans_le hW
+  have h_count : 3 * (l₀ s : ℝ) * n * 2 ^ n ≤ W ^ 3 := calc
+    _ = (3 / 2 : ℝ) * (2 * l₀ s * n) * 2 ^ n := by ring
+    _ ≤ W ^ 3 := by
+      rw [pow_succ, pow_two]
+      gcongr
+      · linarith [(le_self_pow₀ one_le_two hn.ne').trans h_two]
+      · exact h_room.trans' (by exact_mod_cast Nat.mul_le_pow (by omega : 2 * l₀ s ≠ 1) n)
   -- the side `H = 2 ^ k` of Behrend's cube has `H ^ n ≤ 2 ^ s / W < (2 H) ^ n`, so `H ≤ W`
   obtain ⟨k, hk_lower, hk_upper⟩ :
       ∃ k : ℕ, (2 ^ n) ^ k ≤ 2 ^ s / W ∧ 2 ^ s / W < (2 ^ n) ^ (k + 1) :=
@@ -480,30 +490,28 @@ lemma exists_isLeast_dvd_log_log_mem_Icc {q n : ℕ} {W : ℝ} (hq : 0 < q) (hW 
   nlinarith [add_one_le_exp 1]
 
 /-- Let `2 ≤ y`, `0 < n`, `10⁶ y ≤ W ≤ exp (y / 2) ≤ m`, `r ≤ 3 exp (5 y)`,
-`2 ^ s = m ^ 22 ≤ W ^ n`, `s ≤ 32 y`, `(5184 y) ^ n ≤ W` and `7776 y n 2 ^ n ≤ W`. At least
-`towerDeg s / W ^ 6` places of class `-1` modulo `q₀` form a set that is sparse for the primes
+`2 ^ s = m ^ 22 ≤ W ^ n`, `s ≤ 32 y` and `(5184 y) ^ n ≤ W`. At least `towerDeg s / W ^ 6` places of
+class `-1` modulo `q₀` form a set that is sparse for the primes
 `ℓ ≤ k t`, where `k = r + 1 - m` and `t = 5 r`: it has no places `σ, τ, ρ` with `τ / σ ≡ ± ℓ ^ i`
 and `ρ / σ ≡ ± ℓ ^ j`, `0 < i < j < l₀`, modulo the part of `q₁` prime to `ℓ`
 (`Parameters.IsSparse`). -/
 lemma Parameters.exists_isSparse_of_ranks (P : Parameters) {m r s n : ℕ} {y W : ℝ} (hy : 2 ≤ y)
     (hn : 0 < n) (hm : exp (y / 2) ≤ m) (hr : r ≤ 3 * exp (5 * y)) (h_pow : 2 ^ s = m ^ 22)
     (hs : s ≤ 32 * y) (hW : W ≤ exp (y / 2)) (h_upper : 2 ^ s ≤ W ^ n) (h_large : 1e6 * y ≤ W)
-    (h_room : (5184 * y) ^ n ≤ W) (h_count : 7776 * y * n * 2 ^ n ≤ W) :
+    (h_room : (5184 * y) ^ n ≤ W) :
     ∃ T : Finset (P.Φ s), (∀ σ ∈ T, P.placeClass (P.q₀.dvd_mul_right (towerDeg s)) σ = -1) ∧
       towerDeg s ≤ #T * W ^ 6 ∧
       P.IsSparse s ((r + 1 - m) * (5 * r)) T := by
-  have hW_one : 1 < W := by linarith
   have h_lower : W ≤ 2 ^ s :=
     calc W ≤ m ^ 22 := (hW.trans hm).trans (le_self_pow₀ (by linarith) (by norm_num))
       _ = 2 ^ s := mod_cast h_pow.symm
-  have hs_ne : s ≠ 0 := fun h ↦ by simp [h, hW_one.not_ge] at h_lower
+  have hs_ne : s ≠ 0 := fun h ↦
+    (show W ≤ 1 by simpa [h] using h_lower).not_gt (by linarith)
   have hl : l₀ s ≤ 2592 * y := by linarith [show (l₀ s : ℝ) ≤ 81 * s from mod_cast l₀_le_mul hs_ne]
   have h_exp : 1e6 * y ≤ exp y := (h_large.trans hW).trans (exp_le_exp.2 (by linarith))
-  refine P.exists_isSparse hn hW_one.le h_lower h_upper ?_ ?_
+  exact P.exists_isSparse hn h_lower h_upper
+    (by grw [← h_room, hl, ← mul_assoc, show (2 * 2592 : ℝ) = 5184 by norm_num])
     (mul_rank_lt_two_pow (by linarith) h_exp hm hr h_pow hl)
-  · grw [← h_room, hl, ← mul_assoc, show (2 * 2592 : ℝ) = 5184 by norm_num]
-  · grw [hl, ← le_self_pow₀ hW_one.le three_ne_zero]
-    linarith
 
 /-- The level `N`. Let `E = P.E s = K(ζ_{q₁})` with `K = ℚ(√-d)`, `d = P.d` and `q₁ = P.q₁ s`. Let
 `b = exp L` with `7 ≤ L` and `W ^ 2 ≤ L`, let `2 ≤ m`, let the weights `κ τ` at the infinite places
@@ -636,14 +644,12 @@ structure Parameters.IsLargeScale (P : Parameters) (n : ℕ) (y W : ℝ) : Prop 
   le_mul_log_W : 99 * P.q₀ * P.d * y ≤ n * log W
   /-- Room for a set of Behrend's type. -/
   pow_le : (5184 * y) ^ n ≤ W
-  /-- The loss in the size of that set. -/
-  mul_two_pow_le : 7776 * y * n * 2 ^ n ≤ W
 
 /-- For `0 < ε < 1 / 100` there is an `n` such that `W = x ^ (ε / 6)` is a large scale for
 `y = log x` with exponent `n` at every large integer `x`: `0 < n`, `100 (6 log W + 1) ≤ y`,
-`99 q₀ d y ≤ n log W`, and `W` is at least `2 · 10⁶ y`, `(5184 y) ^ n`, `7776 y n 2 ^ n`, `n + 1`,
-`2 h + 2` with `h` the class number of `K = P.K`, and `exp (10¹² c)`, where `c = P.constantBound`
-bounds the constants that depend on `q₀ = P.q₀` and `d = P.d` only. -/
+`99 q₀ d y ≤ n log W`, and `W` is at least `2 · 10⁶ y`, `(5184 y) ^ n`, `n + 1`, `2 h + 2` with `h` the
+class number of `K = P.K`, and `exp (10¹² c)`, where `c = P.constantBound` bounds the constants that
+depend on `q₀ = P.q₀` and `d = P.d` only. -/
 lemma Parameters.exists_eventually_isLargeScale (P : Parameters) {ε : ℝ} (hε : 0 < ε)
     (hε_lt : ε < 1 / 100) :
     ∃ n : ℕ, ∀ᶠ x : ℕ in atTop, P.IsLargeScale n (log x) ((x : ℝ) ^ (ε / 6)) := by
@@ -658,10 +664,10 @@ lemma Parameters.exists_eventually_isLargeScale (P : Parameters) {ε : ℝ} (hε
     simpa [abs_of_nonneg (rpow_nonneg x.cast_nonneg _)] using (le_norm_self _).trans hx
   use n
   filter_upwards [eventually_gt_atTop 0, h_pow_le 2e6 1, h_pow_le (5184 ^ n) n,
-    h_pow_le (7776 * n * 2 ^ n) 1, hW.eventually_ge_atTop (exp (1e12 * P.constantBound)),
+    hW.eventually_ge_atTop (exp (1e12 * P.constantBound)),
     hW.eventually_ge_atTop (2 * classNumber P.K + 2), hW.eventually_ge_atTop (n + 1),
     (tendsto_log_atTop.comp tendsto_natCast_atTop_atTop).eventually_ge_atTop (100 / (1 - 100 * ε))]
-    with x hx h_large h_room h_count h_const h_classNumber hn_le
+    with x hx h_large h_room h_const h_classNumber hn_le
       (h_small : 100 / (1 - 100 * ε) ≤ log x)
   have h_log : log ((x : ℝ) ^ (ε / 6)) = ε / 6 * log x := log_rpow (mod_cast hx) _
   exact
@@ -670,8 +676,7 @@ lemma Parameters.exists_eventually_isLargeScale (P : Parameters) {ε : ℝ} (hε
       mul_y_le_W := by simpa only [pow_one] using h_large
       classNumber_le := h_classNumber, n_pos := hn_pos, add_one_le := hn_le
       le_mul_log_W := by grw [h_log, hn, mul_assoc]
-      pow_le := by rwa [mul_pow]
-      mul_two_pow_le := by linarith only [h_count] }
+      pow_le := by rwa [mul_pow] }
 
 namespace Parameters.IsLargeScale
 
@@ -841,7 +846,7 @@ lemma Parameters.IsLargeScale.exists_isAdmissibleData {P : Parameters} {x n : �
   have hm_lower : exp (log x / 2) ≤ m := hm.1.2
   -- places
   obtain ⟨T, h_class_T, h_card, h_sparse⟩ := P.exists_isSparse_of_ranks (by linarith) h_scale.n_pos
-    hm_lower hr_upper h_pow hs hW_le h_two_pow (by linarith) h_scale.pow_le h_scale.mul_two_pow_le
+    hm_lower hr_upper h_pow hs hW_le h_two_pow (by linarith) h_scale.pow_le
   -- scales and weights
   obtain ⟨b, hb, hb_eq, hL, -⟩ := h_scale.exists_isLeast_dvd_log_log_mem_Icc hs
   set L : ℝ := log b
