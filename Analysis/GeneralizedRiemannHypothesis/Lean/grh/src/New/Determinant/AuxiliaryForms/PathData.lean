@@ -501,10 +501,6 @@ order of the residue ring of `𝔪` to the power `(2 * D.n D.m) ^ 2`, where `2 *
 ranks of such nodes. -/
 abbrev edgeMatrixCountBound : ℕ := card (D.gridModulus ϑ).ResidueRing ^ (2 * D.n D.m) ^ 2
 
-/-- A bound for the number of column vectors modulo `𝔪` of a space of the grids at indices at most
-`D.m`. -/
-abbrev vectorCountBound : ℕ := card (D.gridModulus ϑ).ResidueRing ^ (2 * D.n D.m)
-
 variable {ϑ}
 
 variable {w : Finset (GridNode × GridNode)} {S : EdgeTuple ϑ}
@@ -541,10 +537,6 @@ structure IsPathDatum (N : ℕ) (w : Finset (GridNode × GridNode)) (Ψ : EdgeTu
     ∀ e ∈ w, IsVerticalEdge e.1 e.2 → HasLeftInv (S e)
   /-- (iii) The values of `Ψ` are sums of at most `N` roots of unity. -/
   isSumOfRootsOfUnity (S : EdgeTuple ϑ) : IsSumOfRootsOfUnity N (Ψ S)
-
-lemma IsPathDatum.mono {N N' : ℕ} {Ψ : EdgeTuple ϑ → ℂ} (hΨ : IsPathDatum N w Ψ) (hN : N ≤ N') :
-    IsPathDatum N' w Ψ :=
-  { hΨ with isSumOfRootsOfUnity S := (hΨ.isSumOfRootsOfUnity S).mono hN }
 
 /-- The factor `New.Data.edgeCharProd` of the edge characters is multiplicative in the family of
 invertible matrices. -/

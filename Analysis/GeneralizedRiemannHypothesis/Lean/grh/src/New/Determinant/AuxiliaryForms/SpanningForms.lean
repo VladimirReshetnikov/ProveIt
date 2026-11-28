@@ -56,12 +56,10 @@ open Real Matrix Fintype Submodule LevelPlaces.LevelForm Space Rows Finset Funct
 variable {P : Parameters} (D : Data P)
 
 variable {D} in
-/-- The bound for the number of roots of unity in a value of the data on the last path: that for
-the first path times one factor for each of the `m` diagonal turns. Here `vectorCountBound ϑ` bounds
-the number of column vectors modulo `𝔪` at a node, and `edgeMatrixCountBound ϑ` bounds the number
-of matrices modulo `𝔪` at an edge. -/
+/-- The first-path bound multiplied by the number of columns in the diagonal Fourier
+transforms. Their ranks sum to `m * (r + m * t)`. -/
 abbrev lastPathBound (ϑ : D.MFoldTwist) : ℕ :=
-  vectorCountBound ϑ ^ D.m * edgeMatrixCountBound ϑ ^ (2 * D.m)
+  card (gridModulus ϑ).ResidueRing ^ (D.m * (D.r + D.m * D.t)) * edgeMatrixCountBound ϑ ^ (2 * D.m)
 
 /-! ### Denominators on the last path -/
 

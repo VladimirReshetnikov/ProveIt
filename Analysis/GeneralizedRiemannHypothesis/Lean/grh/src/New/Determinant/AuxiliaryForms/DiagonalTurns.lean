@@ -481,14 +481,9 @@ lemma char_diagonalCorner (ϑ : D.MFoldTwist) : (D.diagonalCorner j).char ϑ =
     (edgeChar ϑ (columnEdge false j j) * edgeChar ϑ (rowEdge false j j))⁻¹ := by
   simp [Corner.char, edgeChar, IsVerticalEdge]
 
-/-- For `S = Y^(j+1)_j` the number of columns modulo `𝔪`, the modulus `gridModulus ϑ`, is at most
-`vectorCountBound ϑ`. -/
-lemma card_column_le_vectorCountBound (hj : j < D.m) (ϑ : D.MFoldTwist) :
-    card (Matrix (D.GridIndex false (j + 1) j) Unit (gridModulus ϑ).ResidueRing) ≤ vectorCountBound
-      ϑ :=
-  (card_congr Matrix.of.symm).trans_le <| by
-    simpa [vectorCountBound] using Nat.pow_le_pow_right Fintype.card_pos
-      (D.card_gridIndex_le hj hj.le)
+/-- The number of columns in the Fourier transform at diagonal turn `j`. -/
+abbrev diagonalColumnCount (j : ℕ) (ϑ : D.MFoldTwist) : ℕ :=
+  card (Matrix (D.GridIndex false (j + 1) j) Unit (gridModulus ϑ).ResidueRing)
 
 /-- If the kernel from the line with column `v` is `c` times the Fourier transform of the kernels to
 the line with rows `v'`, the same holds for their `periodPairing`, the integral of such a kernel
@@ -587,12 +582,12 @@ lemma columnPeriod_eq_mul_rowPeriod (hj : j < D.m) (q : Bool → GridPath 0 D.m 
 `turnRatio j j ϑ` up to a constant and a power of `Nm Q`, with `Q` the modulus of the twist `ϑ`,
 such that the following holds for all pairs `q` of monotone paths from `(0, m)` to `(j, j + 1)`, one
 in each grid. Path data `Ψ'` on `downPath q` give path data `Ψ` on `rightPath q`, with the bound for
-the number of roots of unity in a value multiplied by `vectorCountBound = (Nm 𝔪) ^ (2 * n_m)`, where
-`𝔪 = gridModulus ϑ` and `n_m = D.n D.m`, and `Ψ ∝ Ξ` implies `Ψ' ∝ Ξ / c`. -/
+the number of roots of unity in a value multiplied by the number of columns in the Fourier transform,
+and `Ψ ∝ Ξ` implies `Ψ' ∝ Ξ / c`. -/
 lemma exists_transfersPeriods_diagonal (hj : j < D.m) :
     ∃ c : D.MFoldTwist → ℂˣ, D.HasAbsUpToNormPower (fun ϑ : D.MFoldTwist ↦ c ϑ) (D.turnRatio j j) ∧
       ∀ q : Bool → GridPath 0 D.m j (j + 1),
-        TransfersPeriods (downPath q) (rightPath q) vectorCountBound c := by
+        TransfersPeriods (downPath q) (rightPath q) (diagonalColumnCount j) c := by
   -- Reverse the line and exchange on the square, between two seesaws.
   obtain ⟨κ, σ, c, hc, h_law⟩ := exists_squareLaw_grid_hasAbsUpToNormPower false hj hj
   obtain ⟨τ, ψ, c_line, h_norm, h_line⟩ := D.exists_columnLineKernel_eq j
@@ -602,13 +597,12 @@ lemma exists_transfersPeriods_diagonal (hj : j < D.m) :
         (by simpa [field, eq_comm] using h_norm)
     simpa [div_eq_mul_inv, Pi.mul_def] using hc.mul h_inv
   have h_exists_matched (ϑ : D.MFoldTwist) : ∃ Ψ : EdgeTuple ϑ → ℂ,
-      IsPathDatum (vectorCountBound ϑ * N ϑ) (rightPath q).edges Ψ ∧
+      IsPathDatum (diagonalColumnCount j ϑ * N ϑ) (rightPath q).edges Ψ ∧
       ∀ S v', AreMatched ⊤ σ ((D.diagonalCorner j).char ϑ)
         (fun X ↦ Ψ ((D.diagonalCorner j).newTuple S X v'))
         ((D.diagonalCorner j).columnFourier (ψ ϑ) (Ψ' ϑ) S v') := by
     simp only [edges_downPath, edges_rightPath] at hΨ' ⊢
-    obtain ⟨Ψ, hΨ, h_match⟩ := (isTurn_diagonalCorner hj q ϑ).exists_isPathDatum (hΨ' ϑ) σ (ψ ϑ)
-    exact ⟨Ψ, hΨ.mono (Nat.mul_le_mul_right _ (card_column_le_vectorCountBound hj ϑ)), h_match⟩
+    exact (isTurn_diagonalCorner hj q ϑ).exists_isPathDatum (hΨ' ϑ) σ (ψ ϑ)
   choose Ψ hΨ h_match using h_exists_matched
   refine ⟨Ψ, hΨ, fun Ξ hΞ ↦ isProportional_of_columnPeriod hj fun z p ↦ ?_⟩
   obtain ⟨β, hβ⟩ := hΞ.exists_rowPeriod_eq_mul hj z (τ p)
@@ -621,24 +615,34 @@ lemma exists_transfersPeriods_diagonal (hj : j < D.m) :
 
 /-- There are numbers `c ϑ ≠ 0` whose absolute value is the product over `i, j < m` of
 `turnRatio i j ϑ`, up to a constant and a power of `Nm Q`, with `Q` the modulus of the twist `ϑ`.
-They transfer periods from the first path to the last. Each diagonal turn costs one factor of
-`vectorCountBound`, and each pair of reflected off-diagonal turns has cost one. -/
+They transfer periods from the first path to the last. The exact cost is the size of the residue ring to
+the power `m * (r + m * t)`, the sum of the column ranks along the diagonal. -/
 theorem exists_transfersPeriods_first_last (D : Data P) : ∃ c : D.MFoldTwist → ℂˣ,
     D.HasAbsUpToNormPower (fun ϑ : D.MFoldTwist ↦ c ϑ)
       (∏ s ∈ range D.m ×ˢ range D.m, D.turnRatio s.1 s.2) ∧
-    TransfersPeriods (.first D.m) (.last D.m) (vectorCountBound ^ D.m) c := by
+    TransfersPeriods (.first D.m) (.last D.m) (fun ϑ ↦
+      card (gridModulus ϑ).ResidueRing ^ (D.m * (D.r + D.m * D.t))) c := by
+  let residueSize (ϑ : D.MFoldTwist) := card (gridModulus ϑ).ResidueRing
+  let rankSum (j : ℕ) := (D.m - j) * (D.r + (D.m + j) * D.t)
+  have step (j : ℕ) (hj : j < D.m) :
+      residueSize ^ rankSum j = diagonalColumnCount j * residueSize ^ rankSum (j + 1) := by
+    ext ϑ
+    simp [residueSize, diagonalColumnCount, card_congr Matrix.of.symm, card_gridIndex, ← pow_add]
+    congr 1
+    obtain ⟨k, hk⟩ := Nat.exists_eq_add_of_le hj
+    simp [rankSum, hk, Nat.succ_eq_add_one, show j + 1 + k - j = 1 + k by omega]
+    ring
   apply TwoGridPath.sweep_induction
     (motive := fun Γ T ↦ ∃ c : D.MFoldTwist → ℂˣ,
       D.HasAbsUpToNormPower (fun ϑ ↦ c ϑ) (∏ s ∈ T, D.turnRatio s.1 s.2) ∧
-      TransfersPeriods Γ (.last D.m) (vectorCountBound ^ (D.m - Γ.diagonalIndex)) c)
+      TransfersPeriods Γ (.last D.m) (residueSize ^ rankSum Γ.diagonalIndex) c)
   · exact ⟨1, by simpa [Pi.one_def] using (HasAbsUpToNormPower.one (D := D)), by
-      simpa [TwoGridPath.last] using (TransfersPeriods.refl (D := D) (.last D.m))⟩
+      simpa [TwoGridPath.last, rankSum] using (TransfersPeriods.refl (D := D) (.last D.m))⟩
   · intro j hj q T hjj ⟨c, hc, ht⟩
     obtain ⟨a, ha, h⟩ := exists_transfersPeriods_diagonal hj
     refine ⟨a * c, ?_, ?_⟩
     · simpa [prod_insert hjj, Pi.mul_def] using ha.mul hc
-    · simpa only [TwoGridPath.double, show D.m - j = (D.m - (j + 1)) + 1 by omega, pow_succ']
-        using (h (fun _ ↦ q)).trans ht
+    · simpa only [TwoGridPath.double, step j hj] using (h (fun _ ↦ q)).trans ht
   · intro j b hjb hb q r T h₁₂ h₂₁ ⟨c, hc, ht⟩
     obtain ⟨a, ha, h₀⟩ := exists_transfersPeriods_off_diagonal false hjb hb
     obtain ⟨a', ha', h₁⟩ := exists_transfersPeriods_off_diagonal true hjb hb
