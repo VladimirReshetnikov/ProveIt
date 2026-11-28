@@ -1,0 +1,325 @@
+\documentclass[11pt]{article}
+\usepackage[a4paper,margin=24mm,headheight=15pt]{geometry}
+\usepackage[T1]{fontenc}
+\usepackage{lmodern,amsmath,amssymb,mathtools,booktabs,tabularx,array,microtype,xcolor,fancyhdr}
+\usepackage[colorlinks=true,linkcolor=blue!45!black,urlcolor=blue!55!black]{hyperref}
+\definecolor{navy}{HTML}{17334D}
+\definecolor{teal}{HTML}{126E78}
+\newcommand{\art}[3]{\href{https://github.com/VladimirReshetnikov/ProveIt/blob/3c4d27a69c98d09319a51e41a19fca05bb80a3e2/Analysis/GeneralizedRiemannHypothesis/Article/sections/#1.tex\#L#2}{#3}}
+\newcommand{\baseline}{\href{https://github.com/VladimirReshetnikov/ProveIt/blob/3c4d27a69c98d09319a51e41a19fca05bb80a3e2/Analysis/GeneralizedRiemannHypothesis/Article/remarkable-results.tex}{existing remarkable-results.tex}}
+\newcommand{\status}[1]{\par\smallskip\noindent\textcolor{teal}{\textbf{Status:}} #1\par\smallskip}
+\newcommand{\sources}[1]{\par\smallskip\noindent\textbf{Article anchors:} #1\par}
+\newcommand{\TV}{\operatorname{TV}}
+\newcommand{\F}{\mathbb F}
+\newcommand{\Q}{\mathbb Q}
+\newcommand{\Z}{\mathbb Z}
+\newcommand{\R}{\mathbb R}
+\newcommand{\meas}{\operatorname{meas}}
+\newcommand{\tr}{\operatorname{tr}}
+\pagestyle{fancy}\fancyhf{}\lhead{\small\textcolor{navy}{ProveIt / research assessment}}\rhead{\small 27 November 2026}\cfoot{\thepage}
+\setlength{\parindent}{0pt}\setlength{\parskip}{5pt}
+\setlength{\emergencystretch}{2em}
+\begin{document}
+{\color{teal}\large\textbf{RESEARCH ASSESSMENT \quad / \quad SUPPLEMENT}}
+\vspace{5mm}
+
+{\color{navy}\huge\bfseries Remarkable results not yet covered in the GRH survey\par}
+\vspace{3mm}
+{\large A ranked assessment of the expanded ProveIt article}\par
+\vspace{2mm}
+27 November 2026 \quad $\bullet$ \quad Snapshot-specific review
+\vspace{5mm}
+
+\textbf{Executive judgment.} The most compelling omissions are a uniform, relative local Cauchy law for the logarithmic derivatives of completed $L$-functions; sharp $p$-adic fewnomial bounds with an unexpectedly abrupt transition; exact density thresholds for agreement of Euler products; a sharp full-spectrum positive zero filter; and graph-coupled inverse spectral rigidity. These are substantive mathematical assertions beyond the usual consequences of RH or Dirichlet GRH. Several further results in finite-field statistics, lattice geometry, quantum walks, and additive number theory merit a separate account.
+
+\textbf{Scope.} The \href{https://github.com/VladimirReshetnikov/ProveIt/blob/3c4d27a69c98d09319a51e41a19fca05bb80a3e2/Analysis/GeneralizedRiemannHypothesis/Article/README.md}{article inventory} reports 209 research reports, 982 pages and 1,321 theorem-like results. Its existing survey describes 194 reports. I compared the current \baseline{} against the present section inventory, reviewed subsection headings throughout the 20 substantive sections, examined changed theorem groups and selected proofs, and checked selected prior literature. The comparison is semantic: refinements of a topic already mentioned are included only when they constitute a substantial new theorem, not merely a stronger numerical constant. This is a selective review, not certification of all proofs or worldwide priority.
+
+\textbf{Dependencies.} U denotes a result stated without RH/GRH; G denotes a result using the supplied Dirichlet GRH input (ordinary RH is included where sufficient). These are dependency labels, not independent proof-verification grades. The article itself explicitly describes its merge as not a review. All claims below are attributed to the article; finite checks performed for this supplement are separately identified.
+
+\textbf{Named questions.} The closest additional links to established problems are a correction to a published Mills-type constant, sharp extensions of a prime-plus-prime-power representation problem, and a partial quantitative result on the longstanding bounded-gap geometric-progression question. The latter is not a solution of that question. I found no basis for declaring that this selected set settles another Millennium-level or comparably prominent conjecture.
+
+\vfill
+\textbf{Repository snapshot}\par
+\small\href{https://github.com/VladimirReshetnikov/ProveIt/tree/3c4d27a69c98d09319a51e41a19fca05bb80a3e2/Analysis/GeneralizedRiemannHypothesis/Article}{Pinned article directory}\par
+Commit: \texttt{3c4d27a69c98d09319a51e41a19fca05bb80a3e2}.\par
+Survey blob: \texttt{bc7f7cf2a948f60a9ddfc8abd1950bfbe8f2b6b4}.
+\clearpage
+\section*{Ranked recommendations}
+The ranking balances mathematical depth, breadth, sharpness, novelty relative to the existing survey, and likely interest outside the immediate research project. It is an editorial judgment, not a numerical measure of importance. The separate named-problem discussion on pp.~\pageref{named}--\pageref{namedend} is ordered by relevance to the literature rather than by the ranking below.
+
+\begin{tabularx}{\textwidth}{@{}r>{\raggedright\arraybackslash}p{.38\textwidth}c>{\raggedright\arraybackslash}X@{}}
+\toprule
+&Result & Input & Why it stands out\\\midrule
+1 & Uniform local Cauchy law and spectral shift & G & Relative errors on all value sets, including extremely rare tails; dimension-free transport.\\
+2 & Exact deep-disk $p$-adic fewnomial bounds & U & Degree-free sharp counts; one additional term causes a jump to $p^2$ roots.\\
+3 & Sharp Euler-factor matching densities & U/G & Exact finite-group extremal formulas and a short prime certificate.\\
+4 & Full-spectrum positive zero cancellation & G & Optimal double-exponential decay; multiplicity-preserving cancellation of every noncentral zero.\\
+5 & Graph-coupled $L$-function inverse spectra & U/G & Recovery of unknown arithmetic labels and coupling invariants from defective zero data.\\
+6 & Hidden forms and many-frame detection & U & Sharp information thresholds and dependence invisible to proper subcollections.\\
+7 & Oriented Cayley quantum-walk periods & U & Complete period list, minimum degree, fastest return and classification.\\
+8 & Minimum rank-two integral Gram determinant & U & Sharp fourth-power asymptotic and a six-row structure theorem.\\
+9 & Periodic bounded-gap progression spectra & U & Near-dense sets with an exact restriction on permitted progression ratios.\\
+10 & Corrected least Mills-type constants & G & Corrects a previously published numerical example; certifies five constants.\\
+11 & Prime plus multiples of prime cubes/fourth powers & G & Explicit exact exceptional sets and sharp thresholds.\\
+12 & Prime-subset products at every fixed density & G & Complete sparse transition profiles, including all bounded quotient obstructions.\\
+13 & Conditional extremes of gamma-weighted zeros & U/G & Marked Poisson and bridge limits with an explicit Gumbel centre.\\\bottomrule
+\end{tabularx}
+
+\textbf{Recommendation.} Promote items 1--8 to substantial new survey sections. Add items 9--11 to the existing account of named questions and explicit arithmetic results; add 12--13 as shorter entries if space permits. Items 3, 5 and 6 are best presented as groups of closely related theorems, rather than individual theorem labels detached from their common mechanism.
+\clearpage
+\section{Uniform local Cauchy law and spectral transport}
+\status{G; strongest analytic result selected. No new zero-spacing conjecture is claimed.}
+Let $F(t)$ be a real phase-normalized completed primitive Dirichlet $L$-function on the critical line, with $g=F'/F$ and conductor $q$ (including the zeta case $q=1$). Put $d_q(t)=\tfrac12\log(qt/(2\pi))$, and let $p_{q,t}$ and $p^*_{q,T}$ be the Cauchy probability laws with densities
+\[
+\frac{d_q(t)}{\pi((v+\pi/4)^2+d_q(t)^2)},\qquad
+\frac{d_q(T)}{\pi(v^2+d_q(T)^2)},
+\]
+respectively. The article establishes, for large $T$, every interval $I\subset[T,2T]$ of length $H$ and every Borel set $E\subset\R$,
+\begin{equation*}
+\left|\meas\{t\in I:g(t)\in E\}-\int_I p_{q,t}(E)\,dt\right|
+\le \frac{C\,p^*_{q,T}(E)}{\log d_q(T)}.
+\end{equation*}
+Values at poles are irrelevant to Lebesgue measure. For a set of positive model probability, division by $H p^*_{q,T}(E)$ gives a relative error of order
+\[
+O\left(d_q(T)^{-1}+(H\log d_q(T))^{-1}\right).
+\]
+The same error control works regardless of how small the Cauchy probability is. For example, in the zeta case take $H=(\log\log T)^{-1/2}$, $I=[T,T+H]$ and $E=[e^T,e^T+e^{-T}]$. The asserted occupation time is asymptotic to $H d_1(T)e^{-3T}/\pi$. This is not obtainable merely from weak convergence to a Cauchy law: that permits absolute errors far larger than this entire event.
+
+\textbf{Mechanism.} A stronger matrix spectral-shift theorem considers Hermitian $A$ and a positive semidefinite increment $B$, with diagonal scales $D=\operatorname{diag}(d_{q_i}(T))$. The integrated difference between the crossing count and an explicit matrix phase model is bounded in absolute value by $C\Omega/\log d$, where $d=\min_i d_{q_i}(T)$ and $\Omega$ is the nonnegative phase increment
+\[
+\tr\left[\arctan\big(D^{-1/2}(A+B)D^{-1/2}\big)-\arctan\big(D^{-1/2}AD^{-1/2}\big)\right].
+\]
+The key is the normalization by the phase increment, not the dimension. The proof uses analytic positivity, Cayley transforms, a nonnegative kernel built from $2P_h-P_{2h}$ (Poisson kernels), and a contour estimate to replace the smoothing error by endpoint contributions. The selected scalar and matrix arguments were inspected, not independently formalized.
+
+\textbf{Significance and limits.} Cauchy laws for logarithmic derivatives and Herglotz functions have substantial prior literature: see \href{https://doi.org/10.1093/qmath/hax033}{Sodin}, \href{https://doi.org/10.1007/s00440-014-0587-3}{Aizenman--Warzel}, and \href{https://arxiv.org/abs/2609.15862}{Najnudel--Nikeghbali}. The contribution to emphasize is the uniform relative, short-window and all-Borel-set estimate and its matrix extension, not the existence of a Cauchy limit. It does not establish Montgomery's pair correlation conjecture, GUE statistics, or simplicity of zeros. This is a potential standalone analytic-number-theory paper.
+\sources{\art{zer}{6533}{Sharp interval theorem}; \art{zer}{6618}{uniform Cauchy law}; \art{zer}{6547}{proof and transport estimates}.}
+\clearpage
+\section{Exact root counts of $p$-adic fewnomials}
+\status{U; a sharp extremal theorem independent of the claimed RH proof.}
+Let $a\ne0$, and write
+\[
+D(a)=\{x\in\overline{\Q}_p:v_p(x/a-1)>1/(p-1)\}.
+\]
+For a polynomial with at most $t$ nonzero terms, let $N_p^\circ(t)$ be the maximum number of its roots in $D(a)$, over nonzero polynomials and nonzero centres. The upper bounds count multiplicity; there are extremizers with distinct roots. The surprising assertion is the exact formula
+\[
+\boxed{N_p^\circ(t)=(h-1)p+\mathbf1_{e=h},\quad
+ t=\frac{h(h+1)}2+e,\quad 0\le e\le h,\quad 2\le t\le p+1.}
+\]
+But the next term produces a qualitatively different regime:
+\[
+\boxed{N_p^\circ(p+2)=p^2.}
+\]
+For example, at $p=11$, twelve terms permit at most 33 deep-disk roots, whereas thirteen terms permit 121. This is a degree-free extremum even though the exponents may be arbitrarily large.
+
+The paper also gives a fixed-support formula via the Ferrers diagram of exponent multiplicities modulo $p$, and a rank rule for more general disk depths. Thus it identifies both the universal maximum and the support structure responsible for it. The proof works by expanding after the $p$-adic exponential substitution, exploiting integral recurrences among exponent powers and analysing the rank of the residue data. It is not a consequence of a complex analogue of Descartes' rule of signs.
+
+\textbf{A direct witness.} For the jump, the article uses the shape
+\[
+P(X)=(X^p-1)^p-p^p\big(X^p-1-p(X-1)\big)+p^M,
+\qquad M>p^2/(p-1).
+\]
+With $\pi^{p-1}=p$, the rescaled polynomial $\pi^{-p^2}P(1+\pi Z)$ is monic integral with reduction $Z^{p^2}$; for an appropriate perturbation the roots are distinct. Thus all $p^2$ roots lie strictly inside the disk. The attached independent script verifies coefficient valuations and squarefreeness of witnesses at $p=2,3,5,7,11,13,17$, including a concrete degree-289 example. This is an exact finite verification of lower-bound witnesses, not a verification of the general upper bounds.
+
+\textbf{Relation to prior work.} Sparse $p$-adic polynomials are an established subject; e.g. \href{https://arxiv.org/abs/2107.09173}{Rojas--Zhu} study solving sparse polynomials over $p$-adic fields. The new claim concerns a specific logarithmic disk in the algebraic closure, not the total number of roots in $\Q_p$ or an arbitrary field. The existing survey describes sparse singular-moduli equations, but not this general extremal theorem. I found no named classical conjecture with precisely this formulation. The exact formula and jump are more striking than a numerical extension of the CM applications, and deserve a separate entry.
+\sources{\art{smd}{216}{Definitions and rank-rule setup}; \art{smd}{303}{rank theorem}; \art{smd}{392}{fixed support}; \art{smd}{457}{open-disk bound}; \art{smd}{518}{jump at $p+2$}.}
+\clearpage
+\section{Exact agreement densities for Euler products}
+\status{U for the density formulas; G for the quantitative short-prime certificates.}
+Given a finite group $X$ of Dirichlet characters and a multiset $A$ of size $k$ from $X$, the good-prime local Euler polynomial is $\prod_{\chi\in A}(1-\chi(p)T)$. For distinct multisets $A,B$, ask how small the natural density of primes where these polynomials differ can be. This is a strong multiplicity-one extremal problem for reducible Dirichlet products, involving the entire polynomial and not merely its linear coefficient.
+
+For cyclic $X$ of order $E$ with distinct prime divisors $\ell_1<\cdots<\ell_s$, the article gives the exact minimal disagreement density
+\[
+ d_X(k)=\prod_{i=1}^{\min\{s,\lfloor\log_2(2k)\rfloor\}}(1-\ell_i^{-1}).
+\]
+This is sharp, not an upper or lower estimate alone. Taking the minimum over cyclic groups yields an asymptotic $e^{-\gamma}/\log\log k$ as $k\to\infty$; the relevant finite constructions can be realized with primitive characters of one prime conductor. Notice that the density need not remain bounded away from zero as the product length grows.
+
+A complementary result applies to abelian $\ell$-groups. After cancellation of common factors, let $m$ be the remaining mass of either multiset. The disagreement density is at least $(\ell-1)/(\ell m)$, with equality characterized by appropriate cosets translated by a genuine order-$\ell$ element. For $X\cong\bigoplus_i C_{\ell^{a_i}}$, put $b=\min_i a_i$ and $M=|X|/\ell^b$. At sizes $k=\ell^u$ the exact density is
+\[
+ d_X(k)=\frac{\ell-1}{\ell\min(k,M)}.
+\]
+Saturation begins at $k\ge M$. The article also gives exact elementary-abelian formulas for all ranks and sizes at odd primes $3,5,7,11$. These are nontrivial refinements, especially when the group is noncyclic or its exponent is composite.
+
+Under Dirichlet GRH, with $Q$ a common modulus, the cyclic theorem gives a distinguishing prime in each interval $(Y/2,Y)$ for $Y\ge C4^t\log^2(2Q)$, where $t=\min(s,\lfloor\log_2(2k)\rfloor)$. In particular, exact identifiability has a quantitative finite certificate.
+
+\textbf{Evidence and relevance.} The attached script exhaustively enumerates all pairs of multisets via exact histograms in 52 small $(E,k)$ cases, for $E$ from 2 to 30 in the specified list and $1\le k\le4$; the cyclic formula agrees in every case. The result is related in spirit to \href{https://arxiv.org/abs/1501.07343}{Walji's matching-density work}, but the problems are not identical: irreducible representation trace equality is not the same as full Euler-polynomial matching for these reducible products. No claim is made to settle general refined strong multiplicity one for arbitrary automorphic representations. The existing survey's recovery of individual characters from zeros is not this exact density theorem.
+\sources{\art{rec}{4713}{Cyclic formula}; \art{rec}{4759}{global minimum}; \art{rec}{4797}{mass bound}; \art{rec}{4825}{$\ell$-group saturation}; \art{rec}{4895}{prime windows}; \art{rec}{5001}{elementary abelian cases}; \art{rec}{5484}{exponents 7 and 11}.}
+\clearpage
+\section{Positive filters annihilating the entire zero spectrum}
+\status{G for the full-spectrum theorem; U for the finite-frequency mean bound.}
+Consider a finite conjugation-closed multiset of $d$ primitive Dirichlet characters, including the trivial conductor-one character if desired. The article asserts existence of an even, strictly positive continuous probability density $p$ such that its entire Fourier transform vanishes at every noncentral critical-line zero ordinate, to at least the required multiplicity, with
+\[
+ p(t)\le C\exp\{-c\exp(2|t|/d)\}.
+\]
+Here $d$ counts the factors with repetitions. Conversely, a probability measure annihilating that spectrum with multiplicity and satisfying
+\[
+\int_{\R}\exp\{b\exp(\alpha|t|)\}\,d\mu(t)<\infty,\quad b>0,
+\]
+necessarily has $\alpha\le2/d$. Thus the double-exponential exponent is optimal. The optimal coefficient at that exponent is not established; the article gives an upper bound $b\le2\pi d/Q_*$, with $Q_*$ its geometric-mean conductor parameter.
+
+\textbf{Why this is not a routine smoothing theorem.} An arbitrary signed kernel is easy to construct using an entire product. The substantive difficulty is simultaneously requiring positivity, exact zeros with multiplicity, and the fastest possible tail decay. The article starts with theta kernels (potentially signed), removes the central zero factor, and obtains a positive smoothing; Jensen's formula and zero density force the optimal decay exponent. For zeta alone the classical Riemann kernel already supplies a closely related positive transform. The multi-character positivity and sharp converse are the reasons to highlight this result.
+
+Applied to prime sums in a logarithmic variable, the filter cancels all noncentral zero terms, leaving the central contribution and controlled residual terms. This is exact cancellation after a prescribed weighted average, not an improved pointwise prime number theorem; it cannot be used to assert a bound on unaveraged errors without further work.
+
+A separate finite-spectrum extremum asks for the smallest support diameter $B$ of a positive probability measure with Fourier zeros at prescribed positive frequencies $\lambda_1,\ldots,\lambda_N$ (including repetitions). If $\kappa=N^{-1}\sum\lambda_j$, the article proves $B\kappa\ge N\pi$ and characterizes equality by a lattice-supported optimizer with step $\pi/\kappa$ and explicit polynomial positivity and reflection conditions. Related polynomial angular inequalities occur in \href{https://arxiv.org/abs/1409.4849}{Eremenko--Fryntov}. The paper also gives sharp leading support growth for cancelling increasingly long initial zero segments, under its zero-counting hypotheses. The full-spectrum statement is the distinctive new entry; the baseline's discussion of Kozma--Oravecz and its mention of a logarithmic filter constant do not cover it.
+
+\textbf{Open-problem assessment.} This resolves a sharp optimization problem posed in the article itself. It is not evidence that a separate classical conjecture about zero multiplicities, central nonvanishing, or prime gaps has been resolved.
+\sources{\art{fil}{1717}{Full-spectrum construction}; \art{fil}{1785}{optimality}; \art{fil}{1839}{prime-sum application}; \art{fil}{252}{finite-frequency mean bound}; \art{fil}{1294}{support tradeoff}.}
+\clearpage
+\section{Inverse spectral rigidity of graph-coupled functions}
+\status{U for algebraic and polynomial parts; G for the real-zero reconstruction results.}
+For an undirected weighted graph $G$, assign real-rooted polynomials $p_i$ of degrees $d_i$ to vertices. The rooted-forest polynomial weights each rooted forest by its edge weights, differentiates the polynomial at each root, and keeps the polynomial at every nonroot. Let $N=\sum_i d_i$. The article obtains a degree-$N-1$ real-rooted polynomial and an exact transport identity. For a connected graph, the Wasserstein-1 distance between its normalized zero measure and that of $(\prod_i p_i)'$ is
+\[
+ W_1=\frac{\sum_{i<j}d_i d_j R_{ij}}{N(N-1)},
+\]
+where $R_{ij}$ is the effective resistance. The total displacement is determined by electrical network geometry, not by the actual roots of the input polynomials.
+
+For completed Dirichlet functions $F_i$, a related determinant construction has the form
+\[
+ \mathcal P_A(z)=\Big(\prod_i F_i(z)\Big)
+ \det\left(A+\operatorname{diag}(F_i'(z)/F_i(z))\right).
+\]
+Here $A$ is Hermitian. A key algebraic theorem asserts the algebraic independence of the completed logarithmic derivatives of distinct primitive Dirichlet characters over $\mathbb C(z)$. The determinant's coefficients encode principal minors of the coupling. The article derives a converse to the forward real-zero theorem: the coupled spectrum determines the arithmetic labels and principal minors, even when some of the zeros are missing.
+
+For distinct labels, under its hypotheses on the number of competing labels, the theorem rules out a different model whose one-sided discrepancy of distinct positive ordinates has $\liminf_{T\to\infty}D_+(T)/T=0$. With identical recovered labels the principal minors must agree. For weighted Laplacians these recover every edge weight. For repeated labels the available invariants are grouped sums of minors, not necessarily each individual minor. General Hermitian matrices need not be recovered uniquely from their principal minors.
+
+The short-window theorem goes further: for genuinely distinct models, each direction of distinct excess occurs in windows of half-length $H\ge C\sqrt{\log\log T}$ with at least order $H$ witnesses and alternation; at the smaller scale $H=b_0\log\log\log T$, $b_0>1/\pi$, at least one witness in each direction is asserted. A finite-window decoder for known labels gives Lipschitz recovery of the coefficient data under limited erasures, displacements and insertions; the theorem is not a dimension-independent numerical condition-number guarantee.
+
+\textbf{Significance.} An inverse problem for a nonlinear coupling of arithmetic functions is far more general than identifying a single character from its zeros, which the survey already discusses. This supplies a bridge between inverse spectral graph theory, real-rootedness, electrical networks and arithmetic information. The unconditional complex-divisor version for equal-size models is also independently notable. Do not advertise it as solving the general ``can one hear the shape of a graph?'' problem, which concerns different spectral data.
+\sources{\art{zer}{5030}{Graph and resistance setup}; \art{zer}{5057}{electrical transport}; \art{zer}{5544}{algebraic independence}; \art{zer}{5942}{local witnesses}; \art{zer}{6023}{blind reconstruction}; \art{zer}{6052}{complex divisors}; \art{zer}{6207}{stable decoder}.}
+\clearpage
+\section{Hidden symplectic forms and high-order dependence}
+\status{U; probabilistic finite-field results rather than consequences of GRH.}
+Choose a uniform projective nondegenerate alternating form on an even-dimensional vector space $\F_q^n$. Observations are independent uniform two-dimensional totally isotropic planes for that hidden form. Under the null model, they are independent uniform planes without the isotropy restriction. The projective dimension of the linear parameter space is $d=\binom n2-1$.
+
+The article proves a sharp threshold at $d$: with $t=d-\omega(1)$ samples, total variation distance between planted and null models tends to zero and recovery probability tends to zero; with $t=d+\omega(1)$, total variation tends to one and the projective form is recoverable by linear elimination with probability tending to one. In the bounded critical window $t=d+a$, its chi-square calculation gives the limit $c_q^{-1}q^a$, where
+\[
+ c_q=\prod_{j\ge2}(1-q^{-(2j-1)}).
+\]
+This is an exact chi-square limit, not an assertion that total variation has this same value or an exact limiting TV formula in the hidden-form critical window.
+
+\textbf{Many-frame theorem.} For frames in a symplectic ambient space of dimension $2n$, the total observed frame dimension $D$ controls the onset of dependence, subject to the article's balance hypotheses. In the regime $D=2n+w$ with maximal block dimension $o(D)$, there is a universal TV profile $\delta_q(w)$. For $q=2$ the reported values at $w=0,1$ are approximately $0.130634$ and $0.261269$. Forest-indexed observation blocks are exactly independent. Conversely, there are families in which every proper subcollection is exponentially close to uniform while the full family is almost maximally distinguishable. For cactus graphs there is exact cycle factorization; under the small-effect regime in which the summed chi-square contributions converge to $\tau$, the limiting TV is $2\Phi(\sqrt\tau/2)-1$, with $\Phi$ the standard normal cdf.
+
+\textbf{Why this matters.} The location of an information threshold at the dimension of the hidden object might be plausible from linear algebra, but the rigorous below-threshold indistinguishability, bounded transition window and universal dependence profile are much stronger. These results exhibit higher-order information not detectable by pairwise tests, with potential applications to random linear-algebra models, hypothesis testing and finite-field statistical inference. They do not establish security or insecurity of a concrete cryptosystem. The older survey's two-frame compression and rectangular-law results do not describe these new many-block and planted-form experiments. No established named conjecture is identified as resolved.
+\sources{\art{spn}{2139}{Hidden-form threshold}; \art{spn}{2150}{critical window}; \art{spn}{3372}{joint threshold}; \art{spn}{3483}{critical profile}; \art{spn}{3660}{forest law}; \art{spn}{3676}{hidden hierarchy}; \art{spn}{3909}{cactus detection}.}
+\clearpage
+\section{Two sharp algebraic and geometric extrema}
+\subsection{Fastest periodic oriented Cayley walk}
+\status{U.}
+For a finite abelian group $G$ of order $N$ and exponent $n$, consider simple nonempty oriented Cayley graphs with skew adjacency matrix $S$ and evolution $e^{tS}$. The exact possible least positive return periods are
+\[
+ \frac{2\pi}{a\sqrt f},\quad -f\text{ a negative fundamental discriminant},\quad
+ f\mid n,\quad a f\mid N,\quad a\in\Z_{>0}.
+\]
+At that period the minimum outdegree is $a\varphi(f)/2$. Let $f_0$ be the smallest member of the set consisting of 4 if $4\mid n$ and primes $p\mid n$ with $p\equiv3\pmod4$. If it is empty, no nonempty orientation is periodic. Otherwise the fastest possible return is $2\pi\sqrt{f_0}/N$, with minimum degree $N\varphi(f_0)/(2f_0)$. The article classifies all fastest orientations using quadratic-character pullbacks and the stated parity twists on quotient groups. All fastest orientations are connected.
+
+The advance over periodicity criteria such as \href{https://arxiv.org/abs/2405.14140}{Godsil--Zhang} is a complete optimization, with sharp attainability. An independent exact cyclotomic enumeration verifies the periods and minimum degrees for cyclic groups $C_3,\ldots,C_{14}$. It does not verify the classification of every fastest orientation for every finite abelian group. This is a strong standalone contribution to algebraic graph theory; no specific named conjecture was found to be resolved.
+\sources{\art{gra}{3048}{All periods and minimum degree}; \art{gra}{3061}{fastest return and classification}.}
+
+\subsection{Minimum integral Gram determinant in rank two}
+\status{U.}
+For an integral $2\times n$ matrix $A$ with pairwise nonparallel columns, let $D$ be the gcd of its absolute $2\times2$ minors. The article claims a sharp extremum
+\[
+ \min_A \frac{\det(AA^\top)}{D^2}=\kappa(n-1)^4+O(n^2),\qquad
+ \kappa\approx0.068157932354.
+\]
+It is governed by a one-variable maximization: define
+\[
+ \Phi(T)=\frac4{3T}\sum_{1\le j\le T}\frac{\varphi(j)}j(1-j^2/T^2)^{3/2}.
+\]
+Its unique global maximizer $T_*$ lies in $(6,7)$ and $\kappa=1/(64\Phi(T_*)^2)$. For large $n$, minimizers after normalization have primitive columns on exactly six rows besides the distinguished column $(1,0)$, with explicit asymptotic row proportions. The claimed algebraic degrees of $\kappa,T_*,\Phi(T_*)$ are 48, 96 and 96 respectively.
+
+The sum of squared minors is a different invariant from the largest absolute minor, as considered in work on generic modular matrices (e.g. \href{https://arxiv.org/abs/2502.15394}{Kriepke--Schymura}). The exact leading constant and structural classification are the notable features; the algebraic-degree certification deserves a targeted independent audit. This is not known here to settle an externally named conjecture.
+\sources{\art{src}{571}{Asymptotic minimum}; \art{src}{725}{algebraic degrees}.}
+\clearpage
+\section{Named problems and explicit arithmetic results}\label{named}
+\subsection{Bounded-gap sets and geometric progressions: a partial result}
+\status{U; established external question, not fully resolved by this result.}
+A well-known question in additive and multiplicative combinatorics, posed in work of Beiglb\"ock, Bergelson, Hindman and Strauss (\href{https://www.sciencedirect.com/science/article/pii/S0097316505002141}{2006 paper}; see also \href{https://doi.org/10.1007/s00013-020-01488-7}{Nathanson}), asks about geometric progressions in syndetic subsets of positive integers. The article constructs, for primes $p$ and $L\ge2$ satisfying $\log L=o(\log p)$, a $p$-periodic set of units $W$ with
+\[
+ d(W)\ge e^{-CE},\qquad \operatorname{gap}(W)\le\sqrt p\,e^{CE},\qquad
+ E=\sqrt{\log p\log(2L)}.
+\]
+For the prescribed $1\le i<j\le L$, a triple $a,ar^i,ar^j$ occurs precisely when $r=u/v$ in lowest terms is a $p$-adic unit and $r^{\gcd(i,j)}\equiv1\pmod p$. In particular the least nontrivial positive integral ratio of an ordinary three-term geometric progression is $p+1$. The set can be relatively dense while avoiding every smaller integral ratio. The article also shows a growing-gap obstruction to this construction as $p$ grows.
+
+\textbf{Crucial distinction.} A periodic set always admits geometric progressions of arbitrary length with ratio congruent to 1 modulo its period. Its bounded-gap constant also depends on $p$. Therefore these examples do not supply a single syndetic set lacking geometric progressions, nor do they resolve the general syndetic-set question. The new contribution is the exact ratio spectrum and quantitative density/gap tradeoff, not a counterexample. This is worth adding as a partial advance.
+\sources{\art{gpp}{1368}{Periodic-set ratio theorem and obstruction}.}
+
+\subsection{A correction to a published prime-generating constant}
+\status{G (ordinary RH suffices for the continuation); a correction, not a conjecture of comparable scope to RH.}
+Define $M_\alpha=\min\{A>1:\lfloor A^{\alpha^n}\rfloor\text{ is prime for all }n\ge1\}$. For $\alpha=9/4$, the article reports that a published example in \href{https://arminstraub.com/pub/legendre-riemann}{Chamberland--Straub} gave digits $1.385510850556\ldots$, whereas the new certified answer is
+\[
+ M_{9/4}=1.374277825758088669776655315788864285945977\ldots.
+\]
+The beginning of its prime sequence is $2,5,37,3457,91637597$. The issue is that for nonintegral exponents, overlapping prime intervals can permit a smaller continuation than an algorithm which insists that each next prime interval be nested inside the previous one. The article combines an exact finite search with a short-prime-interval theorem under RH to certify infinite continuation and minimality.
+
+Additional values are reported for $11/5$, $21/10$, $41/20$ and $201/100$, beginning respectively $1.403714668\ldots$, $1.440684278\ldots$, $1.478399833\ldots$, $1.514625418\ldots$. The original authors' preprint, \href{https://arminstraub.com/downloads/pub/legendre-riemann.pdf#page=10}{Example 5.2, p.~10}, explicitly claims minimality for the same definition and gives the old value and $q_3=41$. There is an independent short check of the correction to minimality: for $q=(2,5,37,3457)$, all four entries are prime, and for $i=1,2,3$ the integer inequalities
+\[
+ q_i^{9^{4-i}}\le 3457^{4^{4-i}},\qquad
+ 3458^{4^{4-i}}<(q_i+1)^{9^{4-i}}
+\]
+show that the fourth prime interval lies in the preceding three. The original paper's own RH continuation theorem for $\alpha=9/4$ now supplies a constant in that fourth interval, necessarily smaller than the old value because its third prime is 37 rather than 41. The script verifies these inequalities. This establishes the correction to minimality using the authors' theorem, independently of the new 40-digit certificate, which was not replayed. It does not prove Legendre's conjecture.
+\sources{\art{dir}{835}{Mills-type constants and comparison}.}
+\clearpage
+\subsection{A prime plus a positive multiple of a prime power}\label{namedend}
+\status{G; exact new higher-power cases of a published type of question.}
+For positive integers $n$, seek a representation
+\[
+ n=p+kq^j,\qquad p,q\text{ prime},\quad k\in\Z_{>0}.
+\]
+The square case ($j=2$) is not an original result of this article: it was treated by Lee--O'Clarey under GRH, with a later unconditional approach reported by \href{https://arxiv.org/abs/2609.14714}{Campbell}. The article's genuinely new higher-power claims are as follows.
+
+\begin{center}
+\begin{tabular}{@{}lrr@{}}\toprule
+Exponent & Number of exceptions & Largest exception\\\midrule
+$j=3$ &62&10,500\\
+$j=4$ &811&1,561,560\\\bottomrule\end{tabular}
+\end{center}
+Consequently, the thresholds $10,500$ and $1,561,560$ are sharp in the two respective cases: every integer strictly above the indicated bound has the required representation. The proof uses a least-prime-in-progression bound under GRH, primorial estimates and finite exceptional-set calculations. The attached independent sieve tests every $n$ through 540,961 for cubes and through 2,000,000 for fourth powers, and reproduces exactly the displayed counts and maxima. This validates the specified finite ranges, not the full analytic tail or any additional large fourth-power checks in the article.
+
+This is an appealing public-facing arithmetic result: a concrete question, exact answer, and independent finite checks. It is not the Goldbach conjecture or a statement about representing $n$ as a prime plus a single prime power (the unrestricted positive multiplier is essential). It extends the previously investigated square case rather than settling a classical named conjecture of equal prominence.
+\sources{\art{dir}{567}{Prime-power representation section}; \art{dir}{576}{cubes}; \art{dir}{625}{fourth powers and finite calculations}.}
+
+\section{Further strong omissions}
+\subsection{Prime-subset products: all fixed retained densities}
+\status{G.}
+Let $S$ be a retained subset of the small primes up to $C\log^2 q$ with fixed density parameter $a>0$, $m=|S|$, and $h=\min(k,m-k)$. In the sparse regime $h\ge B\log q$, $h=o(m)$, put $D=\lfloor1/a\rfloor$ and $s_D(S)$ equal to the minimum number of primes outside a largest character fibre over the nontrivial characters of orders at most $D$ (with the article's convention when no such character exists). The article characterizes convergence to uniformity in the normalized relative sup norm by the exact criterion $hs_D(S)/m\to\infty$. Every sparse transition profile, after phase correction, is lifted from a compound Poisson law on a quotient of order at most $D$, with a realization converse. The complete classification of low-order obstructions goes substantially beyond the survey's parity and quarter-density cases. This is a useful application of GRH to probabilistic product distributions, but does not settle an established named conjecture.
+\sources{\art{dir}{4665}{Setup}; \art{dir}{4870}{mixing criterion}; \art{dir}{4912}{profile classification}.}
+\clearpage
+\subsection{Conditional extremes in a random model of zero contributions}
+\status{U for the general gamma-weight model; G for its Dirichlet zero specialization.}
+For positive zero ordinates $\gamma_j$ and independent gamma weights $G_j$ of shape $\theta$, consider the random series $X=\sum_j G_j/\gamma_j^2$. In the small-deviation regime $X\le x$ as $x\downarrow0$, the article derives a conditional marked Poisson limit for the largest contributions, a Gumbel extreme-value law, a half-normal mark law, independent exponential slack and a functional bridge limit. With its exact saddle parameter $u\to\infty$ and $d$ the zero-counting degree parameter, the centering has the explicit form
+\[
+ b_u=\log u+(\theta-\tfrac12)\log\log u+
+ \log\frac{d}{4\sqrt\pi\,\Gamma(\theta)}+o(1).
+\]
+The mark associated with a maximum uses the scale $\sqrt{b_u}\gamma_{I_1}/u$. For exponential weights and zeta, $d=\theta=1$. The insight is the joint conditional limit and independence structure rather than a marginal extreme-value estimate.
+
+This is potentially valuable to rare-event probability for weighted sums, but all randomness here is in the imposed independent weights. It is not a theorem about the observed spacing or random-matrix statistics of the deterministic zeta zeros. No externally named problem is resolved by this model. The existing survey's zero statistics discussion does not include this marked conditional extreme-value result.
+\sources{\art{ana}{3772}{Marked extremes}; \art{ana}{3919}{functional bridge}; \art{ana}{4001}{Dirichlet specialization}.}
+
+\section{What not to add as another breakthrough}
+The existing survey already treats the Riffaut, McNew, Asada, Brown--Gordon, class-group, O'Hara, CM, Zhao/Suzuki, Suvagiya, Vaas, Kozma--Oravecz, Ehrhart and other named-question results. The supplement does not re-rank them. The new local-disk result is distinct from the already discussed sparse CM results; the graph-coupled inverse theorem is distinct from ordinary character and field identification; the many-frame results are distinct from the older two-frame compression results. Those distinctions justify including related research themes rather than duplicating them.
+
+The idoneal/genus results following from previous conditional classification theorems (see \art{dir}{330}{discussion}), and previously known GRH implications such as the qualitative conjecture discussed at \art{rec}{4282}{this source anchor}, are excluded on the user's criterion. Reductions to nonabelian GRH or other unproved estimates are not ranked as theorems resolving those problems. Neither the selected results nor the comparison process justifies saying all automorphic $L$-functions satisfy RH, that RH proves pair correlation, or that a further major conjecture has been solved. The full status of every open question in the external literature was not independently established.
+
+\textbf{Publication strategy.} The best initial extraction would be three papers: (i) relative Cauchy laws and spectral shift; (ii) fewnomial extremal theory; (iii) sharp Euler-factor agreement. They have clear statements, strong sharpness claims, and identifiable prior literature. The filter and inverse-coupling results could be a second analytic cluster; the hidden-form and Cayley results should be independently presented for algebraic and probabilistic audiences. Before claiming priority or submitting, independently check each general proof, its dependency chain, the external definitions and novelty.
+\clearpage
+\section{Reproducibility and assessment limits}
+\textbf{Snapshot.} All article links point to the pinned commit on the cover, not a mutable main branch. The previous survey is read at that same commit. The survey mentions earlier snapshots \texttt{cb0cb077fdaed91ea722783ba2b61d60973b7f18} and \texttt{7f951e1dfd9ea7873a26b9c5f8d317e3b4ed836d}; the latter is 64 commits behind the reviewed head. The inventory counts include theorem-like items, not just independently novel results. Its 862 unconditional marks, 374 Dirichlet-GRH marks and 43 reductions are not an exhaustive mutually exclusive partition. The 15-report difference is a scope indicator, not proof that every omitted result is in exactly those 15 reports.
+
+\textbf{Method.} I retrieved the article index, section headings and survey source through GitHub; compared the surveyed subjects to the theorem groups in the current article; inspected selected statements, related proof sections, bibliographic notes and changes; and checked targeted external references. The article is too large for a full independent proof audit in this assessment. I made no changes to the repository. The choice and order of the 13 groups are discretionary, and some older omitted results are included along with new additions because the criterion is absence from the survey, not commit date.
+
+\textbf{Independent finite checks.} The included \texttt{verify\_selected.py} and \texttt{verification.txt} reproduce these tests:\par\noindent
+\begin{tabularx}{\textwidth}{@{}>{\raggedright\arraybackslash}p{.30\textwidth}>{\raggedright\arraybackslash}X@{}}\toprule
+Check & Result and boundary of verification\\\midrule
+Prime-power exceptional sets & Exact finite sieve: 62 cube exceptions through 540,961, 811 fourth-power exceptions through 2,000,000. Analytic tails not checked.\\
+Cyclic Euler agreement & 52 exhaustive cases using integer residue histograms; exact predicted minima. General group proofs not checked by enumeration.\\
+Cyclic Cayley graphs & Every nonempty orientation on $C_3$ through $C_{14}$; exact cyclotomic arithmetic confirms possible spacings and min degrees. Does not prove general classification.\\
+Deep-disk witnesses & Exact valuation and squarefree checks for seven primes, including $p=17$; establishes finite lower-bound examples, not general upper bounds.\\
+Mills correction & Exact prime and interval-containment checks for $2,5,37,3457$; original RH continuation theorem supplies the infinite sequence, not the full new digit certificate.\\\bottomrule
+\end{tabularx}
+
+\textbf{External literature.} Links are supplied in the relevant entries to help distinguish older theorems from the new claimed refinements. This is a targeted prior-art check, not a comprehensive novelty search. In particular, the original Mills minimality claim was checked in Example 5.2 of the authors' preprint, and its failure follows under RH from the independently checked interval witness and their continuation theorem. The full new decimal-minimality certificate remains to be independently replayed. No downstream Lean kernel verification was performed. The assessment takes the supplied Dirichlet GRH input as stipulated; it does not independently adjudicate the upstream proof or its reception.
+
+\textbf{Package contents.} This document's TeX and compiled PDF, a structured candidate ledger, the finite verification script, its actual output, and rebuild instructions. The TeX is a standalone supplement, so it can be compared with or incorporated into the existing survey without overwriting it.
+\end{document}
