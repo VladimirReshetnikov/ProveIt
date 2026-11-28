@@ -1,62 +1,43 @@
-# How theta lifts locate the zeros of Dirichlet L-functions
+# Theta lifts and the zeros of Dirichlet L-functions
 
-A 79-page mathematical guide to the proof of the Riemann hypothesis and the generalized Riemann hypothesis for Dirichlet characters by Levent Alpöge with Claude. This edition expands the supplied 60-page revised guide. The remaining higher-rank groups and their special values occur inside the proof. The downloadable PDF has a linked contents page, subsection bookmarks, internal cross-references, and links into the readable Lean source.
+This archive contains an English mathematical exposition of the proof of Levent Alpöge with Claude. It combines the explanatory guide in ProveIt with Ye Yu's natural-language account and ties the argument to a fixed revision of the readable Lean package.
 
-## Reading routes
+## Read or rebuild
 
-| Interest | Where to start |
-| --- | --- |
-| The argument in outline | Page 3 starts with the divisors of 924. Pages 56–61 carry out the volume comparison. Pages 62–67 explain why it excludes an off-line zero. |
-| The inspiration for the construction | Pages 9–16 connect Stepanov multiplicity, a finite Fourier calculation on a path, the Nyman–Beurling criterion, and the de Bruijn–Newman deformation. |
-| What a prime does to a derivative | Pages 21–23 compute a differential operator on one elliptic curve, then use the formal parameter to explain the odd Frobenius exponents in the proof. |
-| Which forms survive projection | Pages 32–36 describe the finite-field labels and work through 72 pairs over the field of five elements. |
-| The hardest coefficient to match | Pages 42–45 show how the squared special-value product recovers the ordinary-direction cost. Pages 57–58 derive the centering constant twice and show where the compensating power of the level enters. |
-| Why congruences can be tolerated | Pages 48–52 identify the coefficient that controls the determinant, demonstrate what a weak lift detects, and show how a single operator can clear every eigenline. |
-| Why one-sided control is enough | Pages 62–75 follow a possible zero into the smoothed prime remainder, explain how a quadratic twist keeps its pole visible, and derive a conditional deficit for an ordinary prime count. |
-| Formal scope and independent checks | Section 20 begins on page 75. The notation guide is on page 79. |
+Open **dirichlet_zeros.pdf**. The PDF has a linked contents page, links between equations and sections, and links to the cited source modules. Section 8 combines the three arithmetic theorems. Sections 9–11 give the analytic deduction.
 
-## Contents
+The master file is **dirichlet_zeros.tex**. The eight other TeX files are the editable chapters and appendices. Keep them in the same directory and run a standard TeX Live installation with
 
-- **theta_lifts_and_dirichlet_zeros.pdf** is the typeset guide.
-- **theta_lifts_and_dirichlet_zeros.tex** is its self-contained LaTeX source. The diagrams are built from this file.
-- **source-index.html** links 253 section references to 243 distinct declarations in 83 Lean files. Open it locally in a browser.
-- **source-map.tsv** contains the same index, including full paths, line numbers, Git blob identifiers, and immutable links.
-- **check_sources.py** verifies every entry against the readable package.
-- **check_examples.py**, **check_lifts.py**, **check_torsion.py**, and **check_analytic.py** check the inherited examples of prime weights, rank and dimension, finite-field point counting, cyclotomic valuations, and residues.
-- **check_local_models.py** checks the derivatives at 3 and 5, the odd prime-power differences, and the finite Fourier path counts.
-- **check_good_types.py** enumerates the allowed polynomials and their representation weights.
-- **check_denominators.py** checks the weak-lift, relation-lattice, and residue-field examples.
-- **check_twists.py** checks the pair correlations and the exceptional-prime exponent exactly, and tests the Gaussian inversion numerically in conductor 7.
+    latexmk -pdf -interaction=nonstopmode -halt-on-error dirichlet_zeros.tex
 
-The finite Fourier calculation, the elliptic curve over the rationals with complex multiplication by i, the auxiliary examples over small finite fields, and the conditional quantitative excursion are explanatory calculations in the guide. They illustrate specific transitions. The PDF identifies the theorems used in the formal proof and gives Alpöge’s source for the discovery chronology.
+Three runs of pdflatex also suffice. The diagram is drawn directly by the TeX source.
 
-## Rebuild and reproduce
+## Reproduce the checks
 
-Run this command from the extracted archive with a standard TeX Live installation.
+**check_examples.py** checks the progression selector, finite Fourier path count, elliptic-curve derivatives, rational projector, and exceptional-prime exponent with exact arithmetic. It needs only Python 3.
 
-```sh
-latexmk -pdf -halt-on-error theta_lifts_and_dirichlet_zeros.tex
-```
+    python3 check_examples.py
 
-The eight example scripts need Python 3 and its standard library. Run each with Python, for example `python3 check_local_models.py`. Each exits with a failure on a mismatch.
+**source-map.tsv** lists 225 declaration locations in 97 Lean files. Each row has a mathematical role, declaration name, source-relative path, line number, Git blob hash and immutable URL. The script below verifies the actual bytes and the declaration lines against a local checkout.
 
-The source links are pinned to [ProveIt revision d8415e76](https://github.com/VladimirReshetnikov/ProveIt/tree/d8415e76ad850651f8c0083afe689dd9f4a45a10/Analysis/GeneralizedRiemannHypothesis/vendor/grh-lean/grh). The readable package has the same Git tree as the [independently checked upstream revision](https://github.com/lsernau/grh-lean/tree/72fead102f663d5c7a407964a13dc0cf9d977207/grh) and as the ProveIt revision used by the supplied draft.
+    git clone --filter=blob:none --no-checkout https://github.com/VladimirReshetnikov/ProveIt.git ProveIt
+    git -C ProveIt sparse-checkout init --cone
+    git -C ProveIt sparse-checkout set Analysis/GeneralizedRiemannHypothesis/Lean/grh
+    git -C ProveIt checkout --detach 7a5bb1e051e4bad127bafe90abbea19764778e32
+    python3 check_sources.py ProveIt/Analysis/GeneralizedRiemannHypothesis/Lean/grh
 
-```sh
-git clone https://github.com/lsernau/grh-lean.git upstream-grh
-git -C upstream-grh checkout --detach 72fead102f663d5c7a407964a13dc0cf9d977207
-git -C upstream-grh rev-parse HEAD:grh
-python3 check_sources.py upstream-grh/grh
-```
+**changes-from-checked-tree.tsv** lists the 20 paths whose contents differ between the independently checked upstream readable package at 72fead10 and the current ProveIt package used here. Column one is Git's modification flag. Column two is the path from the package root. The local source-map and arithmetic checks have a different purpose from building Lean and replaying exported proofs.
 
-The expected tree is `2e133df63d7f4da6b3059c4195324f8e9187ba73`. The index checker should report 253 declaration anchors and 83 Git blobs.
+To build that pinned ProveIt Lean package in an environment with the Lean v4.35.0 toolchain and dependencies available, run the following in its grh directory.
 
-The source comparison, example calculations, PDF compilation, and document checks were performed for this edition. The formal build and independent kernel checks cited in the guide come from [Andrew Sutherland’s verification of the shorter editions](https://math.mit.edu/~drew/shortgrh/). They used Lean v4.35.0 and Mathlib revision `56a005855ea17e0b0958f73ec801ae140b0a1679`. To build the readable Lean package with its dependencies and inspect the axioms of the five public theorems, run the following from its `grh/` directory.
+    lake exe cache get
+    lake build
+    lake env lean scripts/PrintAxioms.lean
+    lake env leanchecker Main
 
-```sh
-lake exe cache get
-lake build
-lake env lean scripts/PrintAxioms.lean
-```
+## Sources and attribution
 
-The verification records also link the challenge statement, comparator logs, and outputs of independent checkers. Alpöge’s [announcement and discovery notes](https://alpo.ge/remark.pdf) describe the original proof.
+- ProveIt guide and Lean package at commit **7a5bb1e051e4bad127bafe90abbea19764778e32**. The package tree is **9603e445408c4ff6915133cafd89102bcfd2d991**.
+- Ye Yu's English outline and correspondence at **5edf43ce39c068fec64e0cc122e9cbdcec343b24** in sdyy1990/riemann-hypothesis. The outline credits Gemini assistance. Its license notice is included.
+- Sutherland's public build and independent checking record concerns lsernau/grh-lean at **72fead102f663d5c7a407964a13dc0cf9d977207**, whose grh subtree is **2e133df63d7f4da6b3059c4195324f8e9187ba73**. See <https://math.mit.edu/~drew/shortgrh/>.
+- The original mathematical proof is credited to Levent Alpöge with Claude. The readable edition credits Claude with its Lean text and documentation. The PDF gives full source links. Original project notices are in attribution/.

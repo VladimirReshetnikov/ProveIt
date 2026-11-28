@@ -1,0 +1,113 @@
+\section{Three calculations behind the proof}\label{sec:worked-guide}
+
+The ProveIt guide develops two finite models of the arithmetic construction and a quantitative consequence of the analytic criterion. The models explain why composing maps and differentiating a theta kernel are plausible operations. The final calculation describes the prediction an off-line zero would make for a count of ordinary primes. All three can be read independently of the determinant estimates.
+
+\subsection{A path on which composition saves a square root}
+
+Fix a prime $p$, write $e(u)=\exp(2\pi i u/p)$ for $u\in\mathbb F_p$, and choose functions $t_j:\mathbb F_p\to\mathbb C$ of absolute value at most one, for $1\le j\le k$ with $k\ge2$. Give a point $x=(x_1,\ldots,x_k)$ weight $w(x)=\prod_jt_j(x_j)$. Let $N$ be the weighted count of solutions to $x_1x_2+\cdots+x_{k-1}x_k=0$, and put
+\[
+ S_h=\sum_x w(x)\, e\!\left(h\sum_{j=1}^{k-1}x_jx_{j+1}\right).
+\]
+Summing over $h$ detects the equation and gives $pN=\prod_j(\sum_u t_j(u))+\sum_{h\ne0} S_h$. To estimate an individual $S_h$ for $h\ne0$, keep the middle variables of the path as matrix indices. The Fourier matrix $F_h(u,v)=p^{-1/2}e(huv)$ is unitary, since two different rows have scalar product zero. With $D_j$ the diagonal matrix of the values of $t_j$, ordinary matrix multiplication yields
+\[
+ S_h=p^{(k-1)/2}\,t_1^{\mathsf T} F_h D_2 F_h\cdots D_{k-1}F_h t_k .
+\]
+Each diagonal matrix is a contraction and the norm of either end vector is at most $\sqrt p$. Thus $|S_h|\le p^{(k+1)/2}$, while taking absolute values in the defining sum would give $p^k$. For $k=3$ and $t_j=1$, the equation is $x_2(x_1+x_3)=0$, so $N=2p^2-p$. Summing over $x_1$ in $S_h$ forces $x_2=0$, and $S_h=p^2$ at each $h\ne0$. Both computations give the same count. The bound in this example is an equality.
+
+The number-field proof also composes maps and reads the result in two orders. Each edge now has a nontrivial norm and a possible denominator. The extra information supplied by the global determinant is a lower bound with a definite sign. Unitarity in the finite example alone would give no such inequality for a signed prime remainder.
+
+\subsection{An elliptic derivative that sees the splitting of a prime}
+
+On $E:y^2=x^3-x$ put $A=\mathbb Z[x,y]/(y^2-x^3+x)$ and let $D$ be the invariant derivation dual to $dx/(2y)$. Explicitly $Dx=2y$ and $Dy=3x^2-1$. The derivative of the defining equation vanishes, so the product rule gives an operation on $A$. The automorphism $(x,y)\mapsto(-x,iy)$ gives this example complex multiplication by $i$. The odd primes $3$ and $5$ have good reduction, and $T^2+1$ detects that $3$ is inert and $5$ splits in $\mathbb Q(i)$.
+
+The calculation in the two coordinate generators gives
+\[
+ D^3x=24xy,\qquad D^3y=60x^3-36x,\qquad
+ D^5x=(720x^2-144)y.
+\]
+In characteristic $p$, the operator $D^p$ is a derivation because the intermediate binomial coefficients vanish in the iterated product rule. Consequently the first two identities prove that $D^3$ kills the whole reduced coordinate ring in characteristic $3$. Iterating blocks of three differentiations over the integers yields $D^u A\subseteq 3^{\lfloor u/3\rfloor}A$. In characteristic $5$, the third identity gives $D^5 x=3Dx$. Commuting with $D$ and using $2y=Dx$ gives the same identity on $y$, hence $D^5=3D$ on the whole ring. In particular $D^{4v+1}x=3^v Dx\pmod5$ for every $v\ge0$.
+
+This single curve accounts for the first $u/p$ in the inert-prime heuristic. In the proof, the height-two CM formal group, its Frobenius-conjugate partner places, and the multivariable theta expansion resolve the deeper $p^{-3},p^{-5},\ldots$ contributions and the loss for using a partner derivative. These details explain why the von Mangoldt weight eventually distinguishes odd and even powers of an inert prime. The curve here is a local model over $\mathbb Q(i)$, whereas the globally selected field is $\mathbb Q(\sqrt{-d})$.
+
+\subsection{The prime deficit predicted by a hypothetical zero}
+
+For this optional consequence of the analytic argument, fix a putative zero $\rho=\sigma+i\tau$ with $1/2<\sigma<1$. Inflate its modulus to $Q$ and choose $d$ by quadratic-twist separation using a fixed $\beta\in(1/2,\sigma)$ and height $|\tau|$. Write $h=\varphi(Q)$, $R=R_{d,Q}$ and let $r(z)$ denote the residue of the shifted transform of $v\mapsto R(e^v)$ at $z$. In the box under consideration
+\[
+ r(z)=\frac{n(z)}{h z(1-z)}\quad(z\ne1),
+ \qquad n(z)=\sum_{\psi\bmod Q}\operatorname{ord}_{z} E_\psi ,
+\]
+where $E_\psi$ is the pole-removed $L$-function. Here $n(\rho)>0$. Every real residue to the right of $\beta$ is nonnegative, including zero residue at $1$. Set
+\[
+ c_\rho=
+ \begin{cases}
+ r(\sigma),&\tau=0,\\
+ r(\sigma)+|r(\rho)|,&\tau\ne0 .
+ \end{cases}
+\]
+Then $c_\rho>0$ and $\limsup_{x\to\infty} x^{1-\sigma}R(x)\ge c_\rho$.
+
+Indeed, any finite eventual upper bound $C$ for $W(v)=e^{(1-\sigma)v}R(e^v)$ gives a nonnegative function $C-W$ for $v\ge V$ with some $V$. If no such bound exists the assertion follows at once. Write $\Phi$ for the shifted transform of $R(e^v)$. For large $\operatorname{Re}s$, the Laplace integral
+\[
+ D_C(s)=\int_V^\infty (C-W(v))e^{-(s-\sigma)v}\,dv
+ = \frac{Ce^{-(s-\sigma)V}}{s-\sigma}-\Phi(s)
+ +\int_0^V W(v)e^{-(s-\sigma)v}\,dv
+\]
+gives a continuation of $D_C$. If its abscissa of absolute convergence were $u>\sigma$, the residue at $u$ would be $-r(u)\le0$. Positivity forces this residue to be nonnegative by approach from the right along the real axis. Its vanishing would make the singularity removable, since poles are at most simple. Landau's theorem excludes removability at a finite abscissa. Thus the integral converges absolutely throughout $\operatorname{Re}s>\sigma$. For every $t>0$ we can compare the oscillating and nonoscillating integrals there:
+\[
+ |tD_C(\sigma+t+i\tau)|\le tD_C(\sigma+t).
+\]
+As $t\downarrow0$ the right side tends to $C-r(\sigma)$. For $\tau\ne0$ the left side tends to $|r(\rho)|$. For $\tau=0$, positivity already gives $C\ge r(\sigma)$. Every finite eventual bound therefore satisfies $C\ge c_\rho$.
+
+To see the sign in the underlying prime count, put $B(t)=\sum_{n\le t}\lambda_{d,Q}(n)-t/h$. Partial summation and fixed-modulus centering give
+\[
+ R(x)=-\int_x^\infty B(t)t^{-2}\,dt.
+\]
+If $B(t)\ge b_0 t^\sigma$ eventually, then $x^{1-\sigma}R(x)\le-b_0/(1-\sigma)$ for all large $x$. Hence $\liminf B(t)/t^\sigma\le-(1-\sigma)c_\rho$. Split primes contribute zero. For inert primes the first proper power of nonzero weight is a cube, so the total higher-power contribution is $O(t^{1/3}\log t)$ by Chebyshev's bound. All powers of the ramified prime together cost $O(\log t)$. On writing $\vartheta^-_{Q,d}(t)=\sum_{p\le t,\,p\equiv1\, (Q),\,(p/d)=-1}\log p$, with the sum over primes, we obtain
+\[
+ \liminf_{t\to\infty}\frac{2\vartheta^-_{Q,d}(t)-t/h}{t^\sigma}
+ \le -(1-\sigma)c_\rho .
+\]
+Thus the same hypothetical zero would predict an upward excursion of a smoothed count and a downward excursion of the ordinary inert-prime sum. Their observation scales can differ. The formal theorem uses the qualitative Landau contradiction. The calculation of the excursion constant is an additional deduction in the ProveIt guide, \S19.
+
+\section{Concordance of the two accounts}\label{sec:concordance}
+
+Ye Yu's English exposition organizes the proof by seven successive mathematical obligations. The ProveIt guide devotes separate sections to why the constructions work, including local computations and the arithmetic meaning of the normalizing constants. The cross-reference below uses their original section numbers. The companion to Yu's exposition supplies an inventory of the implementation underlying that account. The separate declaration map in this archive points into the ProveIt revision used for this exposition.
+
+\begin{center}
+\begin{tabular}{@{}p{.18\linewidth}p{.15\linewidth}p{.57\linewidth}@{}}
+\hline
+\textbf{Yu} & \textbf{ProveIt} & \textbf{Common argument and complementary details}\\
+\hline
+\S1 & \S\S1, 17, 20 & Half-plane theorem, inverse-character reflection, imprimitive Euler factors, and the zeta specialization.\\[3pt]
+\S2 & \S\S16--19 & The shifted Mellin transform and the sign of a real residue. The guide follows the exceptional-twist estimate down to a finite character mean.\\[3pt]
+\S3 & \S\S5, 8, 11 & Construction of places and weights. The finite place classes manufacture the desired congruence, while the twisted product formula compares determinants computed with different local choices.\\[3pt]
+\S4 & \S\S1, 5, 16 & Exact decomposition at two cutoffs, upper and lower bounds on one corrected covolume, and conversion of its error to a half-power estimate.\\[3pt]
+\S5 & \S\S5--8, 12, 16 & Source of the gain in short columns. CM jets explain the prime weights, the seesaw identifies two lifts, and the period computation fixes the constant.\\[3pt]
+\S6 & \S\S9--10 & Spectral second moment, selection of good finite-field types, and translates which cover a large fraction of the target space.\\[3pt]
+\S7 & \S\S11--15 & Factorization of the chain determinant, sharpness in the ordinary directions, and the cost of congruences on the genuine lift space.\\
+\hline
+\end{tabular}
+\end{center}
+
+\subsection{Points where the source determines the reading}
+
+\paragraph{Zeros versus exceptional conductors.}
+The explanation of Yu's Lemma~2.2 describes a bound for a total number of zeros. The predicate in the source counts a prime $d$ once if any zero exists for any twist in the specified box. For $\beta=1/2+9\eta$, the count is $O(X^{1-\eta/2})$. This suffices because such a set contributes a convergent $\sum_d (\log d)/d$, whereas the required progression has a divergent prime sum. This proves existence of a suitable twist with precisely the input available. \href{https://github.com/VladimirReshetnikov/ProveIt/blob/7a5bb1e051e4bad127bafe90abbea19764778e32/Analysis/GeneralizedRiemannHypothesis/Lean/grh/src/Lib/Analytic/QuadraticTwist.lean\#L670-L835}{Quadratic-twist estimate and selection.}
+
+\paragraph{Poles of the archimedean factor.}
+Yu's Proposition~1.3(b) translates an implementation convention about exceptional arguments of $\Gamma_{\mathbb R}$. In ordinary meromorphic notation $\Gamma_{\mathbb R}$ has poles at $0,-2,-4,\ldots$ and its entire reciprocal vanishes there. For $\zeta(s)=0$ with the trivial zeros excluded, $s=0$ is ruled out by $\zeta(0)=-1/2$. Thus $\Gamma_{\mathbb R}(s)$ is finite and nonzero, and the completed function vanishes at $s$. At $1-s$ division is expressed using the entire reciprocal. This formulation also handles the formal convention of totalized division. \href{https://github.com/VladimirReshetnikov/ProveIt/blob/7a5bb1e051e4bad127bafe90abbea19764778e32/Analysis/GeneralizedRiemannHypothesis/Lean/grh/src/New/Main.lean\#L29-L65}{Reflection for the inverse character and for zeta.}
+
+\paragraph{The different and the ranks in the seesaw.}
+The phase factor in the field construction is a unit $u$ satisfying $u\bar u=1$. If $g$ generates the relative different for $E/K$, the proof takes $\delta_E=u g\sqrt{-d}$, a generator of the absolute different for $E/\mathbb Q$. The last factor supplies the contribution from the quadratic field. On the automorphic side the ranks are $k+j(t+1)$ for $X_j$ and $r+jt$ for $Y_j$, with $r=k+m-1$. Subtracting gives $\operatorname{rk}X_j-\operatorname{rk}Y_j=j-m+1$. The ranks meet at stage $m-1$, then the final $X_m$ exceeds $Y_m$ by one. A restriction at the top of the seesaw therefore persists. \href{https://github.com/VladimirReshetnikov/ProveIt/blob/7a5bb1e051e4bad127bafe90abbea19764778e32/Analysis/GeneralizedRiemannHypothesis/Lean/grh/src/New/Derivatives/Field/PrimeDecomposition.lean\#L333-L374}{Absolute different}, \href{https://github.com/VladimirReshetnikov/ProveIt/blob/7a5bb1e051e4bad127bafe90abbea19764778e32/Analysis/GeneralizedRiemannHypothesis/Lean/grh/src/New/UpperBound/Seesaw/SeesawIdentity.lean\#L623-L658}{final restriction}.
+
+\paragraph{When to choose the few translates.}
+Yu's conclusion of \S6 restricts an already selected family to the ramified source. The current proof first restricts the spreading estimate to that subspace, increasing its error from $\epsilon_0=1/(8b^2)$ to $2\epsilon_0$. It then applies the greedy dimension estimate on the restricted domain. Since $16(2\epsilon_0)=4/b^2$, the desired fraction of missing dimensions appears directly. Upper bounds on individual columns concern squared norms measured after the untwisted lift and under every coefficient conjugation. These are the norms that enter the target Gram determinant. \href{https://github.com/VladimirReshetnikov/ProveIt/blob/7a5bb1e051e4bad127bafe90abbea19764778e32/Analysis/GeneralizedRiemannHypothesis/Lean/grh/src/New/Reduction/ShortAndEnough.lean\#L400-L458}{Ramified spreading and Theorem B.}
+
+\paragraph{Recognition of lifts.}
+A trace identity for a Galois representation supplies information about its characteristic-zero constituents. Integral extensions can survive such an identity. The argument needs their lengths because distinct eigensystems can coincide modulo powers of a coefficient prime. Its construction of a common Hecke denominator uses integral lattices, first-order congruences and a Selmer estimate for the resulting cocycles. Passing immediately from a trace identity to integral direct summands would lose precisely the cost needed in the determinant inequality. \href{https://github.com/VladimirReshetnikov/ProveIt/blob/7a5bb1e051e4bad127bafe90abbea19764778e32/Analysis/GeneralizedRiemannHypothesis/Lean/grh/src/New/Congruences/FirstOrder/DenominatorBound.lean}{First-order denominator argument.}
+
+\medskip
+\noindent\emph{Reading sources.}
+\href{https://github.com/VladimirReshetnikov/ProveIt/tree/7a5bb1e051e4bad127bafe90abbea19764778e32/Analysis/GeneralizedRiemannHypothesis/docs/guide}{ProveIt mathematical guide};
+\href{https://github.com/sdyy1990/riemann-hypothesis/blob/5edf43ce39c068fec64e0cc122e9cbdcec343b24/GRH_Proof_EN.md}{Ye Yu, English exposition};
+\href{https://github.com/sdyy1990/riemann-hypothesis/blob/5edf43ce39c068fec64e0cc122e9cbdcec343b24/GRH_Lean4_Correspondence.md}{formal correspondence}.

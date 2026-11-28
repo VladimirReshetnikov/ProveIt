@@ -1,0 +1,287 @@
+\section{Theorem C. The lower bound for the volume of theta lifts}
+\label{sec:arithmetic-lower}
+Continue to write $V$ for the space of good target forms on $Y_0$, with $d_T=\dim_{\mathbb C}V$.
+The parameter $d$ specifying the imaginary quadratic field remains fixed throughout this construction.
+For a twist $\xi$, let $\Theta_\xi$ denote the chain from $V$ to forms on $Y_m$. Write
+\[
+ Z(\xi)=\det(\Theta_\xi^*\Theta_\xi),\qquad
+ H_{\rm dir}=\sum_\tau\bigl(s_\infty(\kappa_\tau)-
+                      s_{\rm fin}(\kappa_\tau,\tau)\bigr),
+ \qquad H=mkH_{\rm dir}.
+\]
+The quantity $H_{\rm dir}$ records the cost at infinity of the derivatives in one ordinary direction, less their forced prime divisibility. The upper bound paid for $k$ such directions at each of $m$ lifts. We will recover this whole amount as a lower bound. Precisely, suppose independent $y_1,\ldots,y_n\in V$ satisfy the index bound $\delta$ and the logarithmic squared-covolume bound $c$ for the target twisted lattice. Then Theorem C asserts
+\begin{equation}
+ n\ge (1-4/b^2)d_T\quad\Longrightarrow\quad
+ c+2\delta\ \ge\ d_T\bigl(H-3fa(\log b)^4\bigr).
+ \label{eq:lowlong}
+\end{equation}
+There are three mathematical issues here. We need a formula for the volume change through an entire chain. We must estimate its finite-place denominators without restricting which Dirichlet character occurs in the final theorem. Finally, since the volume change is defined in dimension $d_T$, we must complete the given vectors to a basis. We take these in turn.
+\sources{\src{src/New/Determinant/Twist/LongForms.lean}{Statement and proof of Theorem C}.}
+
+\subsection{Exchanging two theta integrals}
+On the arrow $Y_i\to Y_{i+1}$ the ranks are $r+it$ and $r+(i+1)t$.
+The available Rallis inner-product formula requires twice the source rank to be less than the target rank. This is true for $i=0$, since $t=5r$, and fails for $i\ge1$. There is a second issue familiar from linear algebra. Given maps $A$ and $B$, the Gram operator of $BA$ is $A^*(B^*B)A$. To compute its determinant one must know how the Gram form of $B$ restricts to the image of $A$.
+
+The elementary move that overcomes both difficulties compares theta integrals from two complementary spaces $V,V'$ to a common space $W$. In the exchange theorem their ranks satisfy
+\[
+ \dim W=\dim V+\dim V',\qquad \dim V=\dim V'+2e .
+\]
+The signatures match, and with $q_-$ negative signs on $W$ the inequalities $2q_-+2\le\dim W\le2\mu_\tau+2q_-$ hold at each infinite place for the specified weight $\mu_\tau$. Fix an archimedean Schwartz vector on the smaller side. The theorem supplies a partner on the larger side, chosen before the modulus and tame character. With compatible splitting characters and matched finite test functions, integration over $[U(V)]$ gives $c_\nu$ times integration over $[U(V')]$, as functions on $U(W)$. The magnitude is
+\[
+ |c_\nu|^2=C\prod_{w\in S} q_w^{e^2}
+                  \prod_{z=1}^{e}|L^S(z,\nu)|^2>0 .
+\]
+Here $C>0$ belongs to the fixed data, $S$ consists of the modulus places, and a superscript $S$ on the partial Hecke function uses the source's convention of omitting $S$ and its conjugate. The theorem allows $c_\nu$ to depend on the character and modulus. The proof unfolds the theta kernel for a split isotropic frame, factors the kernel on an orthogonal sum, and compares complementary integrals on matched data. Equal-rank theta periods supply the normalization. Locally, a common system of symmetric representatives for lattice cosets lets the same finite section be read from either system of matrix coordinates.
+\sources{\src{src/New/Determinant/Exchange/LargeTriple.lean}{Parabolic terms and equal-rank periods},
+\src{src/New/Determinant/Exchange/MatchingPartners.lean}{Matching finite sections},
+\src{src/New/Determinant/Exchange/TheoremForPartners.lean}{Complementary-space exchange}.}
+
+Apply this identity on a direct sum of two spaces. A product of two kernels may be read as a lift followed by a transposed lift. Changing the intermediate space gives the two routes round a square. At this point the asserted relation is between the appropriate sums over matched finite data. Its factor takes the form $\kappa/c_\nu$ with $\kappa$ independent of the twist. The square theorem alone allows $\kappa=0$.
+\sources{\src{src/New/Determinant/Exchange/OneSquare.lean}{The two routes round one square}.}
+
+Arrange the lifts by the interval of blocks present. Adding the next block on the right extends an interval. A descent removes the leftmost block. Sliding a descent across the additions moves it to the beginning of the interval, where a single lift and descent can be evaluated. For example, in a row of three blocks the first descent crosses blocks $2,3$ and the second descent crosses block $3$. Those moves produce the pairs $(1,2),(1,3),(2,3)$. Since the twist on block $j$ is $\xi^j$, crossing blocks $i,j$ leaves a quotient character twisted by $\xi^{j-i}$. In the current realization one induction on interval length carries both commutation and inner-product identities needed at a move. It tracks the scalar for moving the descent past the row at the same time as the scalar in the inner product. Level factors are computed by counting block upper triangular invertible matrices. The inductive zero-vector test starts with an empty interval. It commutes a descent along a row that kills a vector, then uses injectivity at the rank-$r$ stem of the shorter row. Thus the chain is injective and its Gram determinant is positive. This permits division in the assembled determinant formula.
+\sources{\src{src/New/Determinant/Chain/TriangleNorms.lean}{The joint induction for chain identities},
+\src{src/New/Determinant/Chain/ChainNorms.lean}{Weighted chains and their level factors}.}
+
+For each $j$ there is now a single lift $u_{j,\eta}$ from the good forms on $W_j$ of rank $r$ to forms on a definite space of rank $r+t$, with $\eta=\xi^j$. It lies in the stated convergence range. In the doubling argument the two arguments of the inner product are put on $W_j\oplus W_j^-$, with the form negated in the second summand. In the Siegel--Weil formula the support of the test datum removes every contributing maximal isotropic space except graphs of rational isometries. Summing over those isometries unfolds one quotient integral. What remains is a convolution operator given by the Rallis series. Its determinant is initially computed on good forms on $W_j$. Equality of multiplicities for Hecke systems on $W_j$ and $Y_0$ moves it to the common $d_T$-dimensional space $V$. In the finite-dimensional trace comparison this also follows by matching the traces of powers, which determine the characteristic polynomial.
+\sources{\src{src/Lib/SiegelWeil/RallisInner/Doubling.lean}{Doubling in the convergence range},
+\src{src/New/Spanning/Multiplicities/EqualMultiplicities.lean}{Comparing the Hecke spectra}.}
+
+Write $R_j$ for the resulting operator on $V$, $q(\xi)=\prod_{w\in Q(\xi)}q_w$, and $Z_j(\eta)=\det(u_{j,\eta}^*u_{j,\eta})$. There are constants $A_j\ne0$ independent of $\xi$ and a common modulus factor $c_{\rm lev}$ such that
+\[
+ \Theta_\xi^*\Theta_\xi=c(\xi)c_{\rm lev}^m\prod_{j=1}^m R_j,
+ \qquad Z_j(\xi^j)=(A_jc_{\rm lev})^{d_T}\det R_j .
+\]
+The common $c_{\rm lev}$ exists because the first $m$ powers ramify on the same support. Taking the determinant of the first equality and substituting the second cancels $c_{\rm lev}^{md_T}$. Dividing by the resulting formula for the trivial twist and using the positive Gram determinants gives
+\begin{align}
+ \frac{Z(1)}{Z(\xi)}
+ &= S(\xi)^{-d_T}\prod_{j=1}^{m}\frac{Z_j(1)}{Z_j(\xi^j)},&
+ S(\xi)&=q(\xi)^{e_0/2}\prod_{1\le i<j\le m} R_{ij}(\xi).
+ \label{eq:arithchain}
+\end{align}
+The exponent $e_0\in\mathbb Z$ is fixed. Each $R_{ij}$ is a product of $t$ partial Hecke-value ratios of the quotient of the lift characters at the power $j-i$. The exponent $d_T$ is the dimension on which the scalar acts. In this notation $Z_j$ takes a single character. The Lean declaration takes an $m$-fold character and the index $j$, and forms its $j$th power internally.
+\sources{\src{src/New/Determinant/Chain/NormOfChain.lean}{Positivity and chain factorization}.}
+
+\subsection{A comparison operator for a single lift}
+Fix $j$ and suppress it in the notation. Put $u=u_{j,\eta}$, $Z=\operatorname{im}u$, and let $P_Z$ be orthogonal projection. For an endomorphism $U$ of the ambient space there is a determinant identity
+\[
+ \det(u^*u)\det(P_ZU|_Z)=\det(u^*Uu).
+\]
+Indeed $u$ gives an isomorphism from its source onto $Z$, and $u^*$ kills $Z^\perp$. Composing $u^*u$ with the pullback of $P_ZU|_Z$ along this isomorphism gives $u^*Uu$. The choice of $U$ determines whether either side can be estimated.
+
+Let $g_\eta$ glue a tuple of forms on a smaller definite unitary group into a form on the target of $u$. Its adjoint measures periods on that subgroup. Three exchanges compare the period map for different twists. They yield a nonzero scalar $c'_\eta$ for which $c'_\eta g_\eta^*u_{j,\eta}$ is a single fixed map $u^\circ$. A period nonvanishing argument gives this fixed map zero kernel. Moreover $|c'_1|^2/|c'_\eta|^2=P_j(\eta)/P_j(1)$, where $P_j$ is an explicit product of squared absolute Hecke values and local factors. Set
+\[
+ U_\eta=n_{\rm Aut}\,h_j^2\,g_\eta g_\eta^*,\qquad
+ \Delta_\eta=\det(P_ZU_\eta|_Z),\qquad \rho_\eta=P_j(\eta)/P_j(1).
+\]
+The multiplier $n_{\rm Aut}$ clears stabilizer orders in class sums, and $h_j$ is the hook product of a weight diagram. The preceding identity for adjoints gives $u^*U_\eta u=n_{\rm Aut}h_j^2|c'_\eta|^{-2}(u^\circ)^*u^\circ$.
+The positivity of the fixed Gram form justifies cancelling its determinant and yields
+\begin{equation}
+ \frac{Z_j(1)}{Z_j(\eta)}
+       =\frac{\Delta_\eta}{\Delta_1}\,\rho_\eta^{-d_T}.
+ \label{eq:arithcomp}
+\end{equation}
+\sources{\src{src/New/OneLift/ComparisonOperator/ThreeExchanges.lean}{The three exchanges},
+\src{src/New/OneLift/ComparisonOperator/GluingMaps.lean}{Gluing and period maps},
+\src{src/New/OneLift/LiftVolumeHeight.lean}{Compression determinant identity}.}
+
+The operator has two further properties that make \eqref{eq:arithcomp} arithmetic. An integral tight frame for the tuple space writes $U_\eta$ as a sum of rank-one operators with controlled coefficients. It takes integral forms to integral forms at every prime away from $Q(\eta)$. Also $U_\eta z$ is orthogonal to false lifts for every $z\in Z$. At a split place off the level a false lift has the good local type, belongs to $Z^\perp$, and is killed by the Hecke polynomial at the prescribed lift root. Vanishing of its first descent and of certain sums over hyperplanes gives vanishing up a tower obtained by adjoining hyperbolic planes. Reading a Fourier coefficient at the top gives zero for the block periods that enter the gluing. This supplies the precise orthogonality needed after applying $U_\eta$ to a genuine lift.
+\sources{\src{src/New/OneLift/FalseLifts/PeriodsOfFalseLifts.lean}{Period vanishing up the tower},
+\src{src/New/OneLift/LiftVolumeHeight.lean}{Integrality and orthogonality of the comparison operator}.}
+
+Write $h((y_\iota))\le C$ for the source's height bound. The family is indexed by a prime $\ell$ and a field isomorphism $\iota:\mathbb C\simeq\overline{\mathbb Q}_\ell$. One multiplier $H_0\ne0$ has all complex conjugates at most $e^\alpha$, while $|\iota(H_0 y_\iota)|_\ell\le\ell^{h_\ell}$ with $h_\ell\ge0$, and $\alpha+\sum_{\ell\in F}h_\ell\log\ell\le C$ for every finite set $F$ of primes. Products add the bounds. A varying family can have negative height bound. For example choose $y_\iota=9$ at $\ell=3$ and $y_\iota=1$ elsewhere. Taking $H_0=1/9$ gives zero finite cost and $\alpha=-\log9$. For the constant family $1$, boundedness at every identification over $2$ forces its multiplier to be algebraic. Taking its field norm to $\mathbb Q$ and applying the rational product formula gives $C\ge0$. This distinction explains why local choices of $\xi_\iota$ can eventually give a positive lower bound on a fixed complex volume.
+\sources{\src{src/New/Reduction/Lattices/Heights.lean}{Multipliers and the product formula}.}
+
+Choose a regular family of twists, whose existence is proved below. Its denominator allowance for each $j$ consists of logarithmic costs $\beta_\ell$ with
+\[
+ \sum_{\ell\in F}\beta_\ell\le B_{\rm den},
+ \qquad B_{\rm den}=\frac{fa(\log b)^3}{mk}.
+\]
+At $\iota$ and $\eta=\xi_\iota^j$, some operator $\Lambda$ on $Z$ clears $P_Z$ on integral forms orthogonal to the false lifts and satisfies $|\iota(\det\Lambda)|_\ell\ge e^{-d_T r\beta_\ell}$. Thus $\Lambda P_ZU_\eta|_Z$ preserves integral lifts. Scale an eigenvector to have maximal integral gauge equal to one. Its image then shows that the eigenvalue has norm at most one. Multiplication of eigenvalues bounds $|\iota(\Delta_\eta)|_\ell\le e^{d_T r\beta_\ell}$. At infinity the untwisted operator bound gives $|\sigma\Delta_1|\le e^{3d_T fmb(\log b)^2}$ for every conjugate. The common multiplier $\Delta_1$ therefore controls the first factor of \eqref{eq:arithcomp}. The term of size $-kH_{\rm dir}$ in the one-stage bound comes from the special values in the other factor.
+
+\subsection{Why the critical values recover exactly $k$ directions}
+For a critical pair $(\nu,z)$, let $r_{\nu,z}(\eta)$ be the ratio of the magnitudes of the partial Hecke values at $z$ for $(\nu\eta)^{-1}$ and $\nu^{-1}$. Both omit the chosen level places and their conjugates. The numerator also omits $Q(\eta)$ and its conjugate. These functions are those of characters of the CM field obtained from $U(1)$ by $x\mapsto x/\bar x$. Their critical values enter as coefficients in the proof of the zero-free theorem for Dirichlet $L$-functions.
+
+There are three lists of critical values for a single comparison. Their endpoints are
+\[
+ z_*=7m/2+k/2,\qquad m,\qquad m/2.
+\]
+The chosen $k,m$ are even. The terms $7m/2<z\le z_*$ in the first list are \emph{main pairs}. Their tame character is fixed at the chosen places, and their weights are close to those of lift $j$. Their row lengths $l_\tau=c_\tau-z$ satisfy $\kappa_\tau\le l_\tau\le\kappa_\tau+x^{42}$. There are exactly $k/2$ of them. The other terms consist of the first $7m/2$ entries of that list and the whole of the two shorter lists, exactly $5m$ entries. All of these are ramified pairs, with a specified sign $s=1$ or $-1$. The exchange calculates \emph{squared} magnitudes. Consequently
+\[
+ \rho_\eta=q(\eta)^{e_j}
+    \left(\prod_{p\,\mathrm{main}}r_p(\eta)
+                 \prod_{p\,\mathrm{other}}r_p(\eta^{s_p})\right)^2 .
+\]
+The exponent $e_j$ is the sum of the squares of the three endpoints. A rational power of the positive conductor norm costs zero in the family height when its underlying prime $\ell$ does not divide that norm. The regular family gives each of the $5m$ other inverse ratios height bound $x_1$. A sharper bound for each main pair is the decisive step.
+\sources{\src{src/New/Determinant/Twist/FitTwists.lean}{Main pairs and ramified pairs},
+\src{src/New/OneLift/HeckeValues/TwistedValueHeights.lean}{The three lists and their cardinalities}.}
+
+Let $\phi_\eta$ be the normalized lift associated with one such main pair. It lifts a character from rank one to a definite group of rank $2z$. Evaluation of the Rallis formula at this rank gives the identity
+\begin{equation}
+ r_p(\eta)^{-1}=q(\eta)^{2z-1}
+                        \frac{\|\phi_1\|^2}{\|\phi_\eta\|^2}.
+ \label{eq:arithrankone}
+\end{equation}
+For $\eta=1$ the comparison of the normalized norm with that of a pair with an empty weight row cancels an unknown archimedean constant. The empty-row algebraic part is integral. The factorials and the common CM period in the remaining expression give
+\[
+ h\bigl(\|\phi_1\|^2\bigr)\le B_{\rm den}-\sum_\tau s_\infty(\kappa_\tau).
+\]
+At finite places the reciprocal of the twisted norm has to be bounded from above. Choose test forms $v,v'$ at $\iota$ and its conjugate for the \emph{same} $\eta$, and let $P$ project onto the line of $\phi_\eta$. With inner products conjugate-linear in their first argument,
+\[
+ \langle Pv,Pv'\rangle=
+ \frac{\langle v,\phi_\eta\rangle\langle\phi_\eta,v'\rangle}{\|\phi_\eta\|^2}.
+\]
+The numerator must contain nonzero pairings whose valuations do not grow too large. A universal divisibility assertion on theta derivatives alone would also be true for a zero pairing. We need to find test data that nearly attain the predicted divisibility.
+\sources{\src{src/New/OneLift/HeckeValues/CharacterLiftNorm.lean}{The rank-one inner product},
+\src{src/New/OneLift/HeckeValues/AlgebraicPartSize.lean}{Untwisted norm and weight rows}.}
+
+The sharpness argument can be seen on one CM elliptic curve. Let $M_n$ be the largest $p$-adic absolute value of an $n$th derivative in the additive coordinate of any integral series in the formal parameter of the curve, evaluated at the origin. Only finitely many monomials contribute in degree $n$, so the ultrametric inequality realizes the maximum on a monomial. The integral formal addition law, expanded in two variables and differentiated, gives $M_{n+h}\le M_nM_h$. Explicit coefficients of the rescaled parameter at $N=q_p^a$, where $q_p$ is the quadratic residue-field size, give
+\[
+ M_N\ge p^{-(N-1)\gamma_p},\qquad
+ \gamma_p=\frac{1}{p-1}-\frac1{e_p(q_p-1)}
+\]
+for arbitrarily large $a$, with $e_p$ the ramification index. A strict inequality $M_n<p^{-n\gamma_p}$ at even one positive $n$ would contradict these indices. Write $N=un+r$, $0\le r<n$, and bound $M_N p^{N\gamma_p}$ by $(M_np^{n\gamma_p})^u$ times the largest of the $n$ possible remainders $M_rp^{r\gamma_p}$. This tends to zero while the displayed lower bound stays positive. Hence some derivative in every degree has valuation at most $n\gamma_p$. At an inert prime $\gamma_p=p/(p^2-1)=p^{-1}+p^{-3}+p^{-5}+\cdots$, the same rate encountered in the upper bound.
+
+Several infinite places can interact in the multivariable derivative. The proof separates nearby places using disjoint sets of variables, takes products on twelve copies and uses Fourier inversion to recover an indicator datum supported on one residue class. The output is a single nonzero scalar of bounded complex conjugates for all primes, and, separately for each $p$ and coefficient embedding, an indicator datum and a coefficient of the required degrees. After multiplication by the vacuum normalization and $\prod_\tau l_\tau!$, this coefficient has valuation at most the ordinary-direction local prime sum plus the valuation of the common scalar. An integral point test form then reads the coefficient in an actual pairing. Both tests satisfy false-lift orthogonality.
+\sources{\src{src/New/Derivatives/Sharpness/OneCurve.lean}{Sharpness in every degree},
+\src{src/New/Derivatives/Sharpness/BoundAttained.lean}{A coefficient at each prime},
+\src{src/New/OneLift/HeckeValues/TwistedValueHeights.lean}{From coefficients to test pairings}.}
+
+There is a precise account of the losses in \eqref{eq:arithrankone}. Write
+$A_\eta=\langle v,\phi_\eta\rangle\langle\phi_\eta,v'\rangle$ and $r_{0,\eta}$ for the ratio of a second, ramified empty-row pair. After suppressing the conductor unit the four factors of $r_p(\eta)^{-1}$ are
+\[
+    \|\phi_1\|^2,\qquad
+    \langle Pv,Pv'\rangle,\qquad
+    r_{0,\eta}^{-2},\qquad r_{0,\eta}^{2}/A_\eta .
+\]
+The first has the bound just computed. The second costs $B_{\rm den}$ by the rank-one projection part of regularity. The third costs $2x_1$. The sharp coefficient, used also at the conjugate embedding, bounds the fourth by $2B_{\rm den}+\sum_\tau s_{\rm fin}(\kappa_\tau,\tau)$. Since $x_1\le B_{\rm den}$, addition gives $h(r_p^{-1})\le6B_{\rm den}-H_{\rm dir}$. Applying this to the $k/2$ main factors and taking the square gives
+\[
+ h(\rho^{-1})\le k(6B_{\rm den}-H_{\rm dir})+10m x_1 .
+\]
+The factor $k$ is now accounted for by an exact cardinality and an exact exponent. Substitution in \eqref{eq:arithcomp} and the scale bound
+\[
+ 3fmb(\log b)^2+(r+6k)B_{\rm den}+10m x_1
+      \le k(\log b)B_{\rm den}
+\]
+give the required bound for a single stage,
+\begin{equation}
+ h\!\left(\left(\frac{Z_j(1)}{Z_j(\xi_\iota^j)}\right)_\iota\right)
+ \le d_T\left(\frac{fa(\log b)^4}{m}-kH_{\rm dir}\right).
+ \label{eq:arithonestage}
+\end{equation}
+\sources{\src{src/New/OneLift/HeckeValues/TwistedValueHeights.lean}{Four-factor height estimate},
+\src{src/New/OneLift/LiftVolumeHeight.lean}{The one-stage bound}.}
+
+\section{Congruences, simultaneous twists and completion of the basis}
+\label{sec:arithcong}
+At a finite prime orthogonal projection can produce a denominator even for an integral symmetric operator. For example
+\[
+ A=\begin{pmatrix}1&3\\3&9\end{pmatrix}
+\]
+has eigenvectors $(1,3)$ and $(-3,1)$, with eigenvalues $10$ and $0$. Projection onto the first eigenline is $A/10$. At $2$ or $5$ the two eigenvalues become congruent, so a lattice vector can have a nonintegral projection. In the theta spaces there are many Hecke operators and many simultaneous eigensystems. The cost that enters \eqref{eq:arithcomp} is the valuation of a \emph{determinant} on the genuine lift space. Summing separate estimates for every possible pair of congruent forms would incur an uncontrolled multiplicity.
+
+\subsection{From Hecke congruences to a controlled determinant}
+Fix $\ell$ and a coefficient isomorphism $\iota$. A normalized Galois representation attached to a lift of a good eigensystem has a prescribed trace. For the rank-$r$ descent pair, with the appropriate $\ell$-adic avatar $\psi$ of the inverse twisting character, it is
+\[
+ \operatorname{tr} N(g)=\psi(g)\operatorname{tr} R(g)
+              +\sum_{a=0}^{t-1}\chi_{\rm cyc}(g)^{-a}.
+\]
+Here $R$ depends on the eigensystem and index $j$ and can be fixed before the twist. The good residue labels and the weight conditions supply the needed inertia and Hodge--Tate restrictions. For sufficiently large coefficient rings the integral image of the main block spans its full matrix algebra, and a suitable inertia element acts by a scalar whose order modulo the maximal ideal is large. These are specific properties used in the cohomological calculation. The construction uses compatibility with Frobenius data in the precise form proved for the relevant Hecke systems. Its output at this interface is an equality of traces. Integral extensions still contain arithmetic information invisible to such an equality. For instance upper-triangular matrices with diagonal characters $\alpha,\nu$ and upper entry $b(g)$ have trace $\alpha(g)+\nu(g)$ for every splitting. The functions $b(g)/\nu(g)$ obey the cocycle equation for the character $\alpha/\nu$, and changing the splitting adds a coboundary. This identifies the natural objects that measure persistent congruence.
+\sources{\src{src/New/Congruences/GaloisRepresentations/AttachedRepresentations.lean}{Representations of eigenforms},
+\src{src/New/Congruences/GaloisRepresentations/RowsFromEigensystems.lean}{Main-summand traces},
+\src{src/New/Congruences/GaloisRepresentations/SelmerHypotheses.lean}{Twisting and local hypotheses}.}
+
+A genuine lift has $\det(1-N(g))=0$ for every $g$, by the term indexed by $a=0$ in the character string and the induced characteristic-polynomial identities. Call systems satisfying this vanishing weak lifts. There is a reason for retaining the false-lift condition in the statement about projections. A group can have eigenvalue one on every element in a representation whose global fixed space is zero. For example, let two generators of the Klein four group change respectively the signs in coordinates $(2,3)$ and $(1,3)$ of a three-dimensional space. Each nonidentity element fixes a different coordinate line. In the automorphic argument a local Hecke-string theorem and the type projection identify the weak components of the projection error, and orthogonality to false lifts removes the ones in $Z^\perp$.
+
+For the remaining systems at base level choose, for each non-weak $y$, some $g_y$ for which $a_y=\det(1-N_y(g_y))\ne0$. Write $\delta_g(x)=\det(1-N_x(g))$. The product
+\[
+ D(x)=\prod_y\bigl(a_y-\delta_{g_y}(x)\bigr)
+\]
+vanishes on every such $y$ and equals $n_0=\prod_y a_y\ne0$ on weak systems. Dividing by $n_0$ would produce a projector of unknown cost. The proof uses this product only to separate systems at an intermediate precision.
+
+To see which coefficient will be charged, adjoin one variable $X_v$ per ordered auxiliary prime. Relations linking tame inertia $\tau_v$ to Frobenius $F_v$ have the form
+\[
+       (\tau_v-1)-X_v(F_v-1)H_v(F_v),\qquad H_v(1)=1 .
+\]
+Traces of multiples of these relations, together with the allowed precision terms, give a module of relations in the Hecke-polynomial algebra. A first-order Ribet argument supplies one multiplier $F$ taking all the determinants $\delta_g$ into that module, and hence taking $D-n_0$ there. At the designated lift systems, every coefficient of $F$ on a proper squarefree divisor of $\prod_v X_v$ vanishes. At a selected lifted eigensystem the valuation estimate controls \(c_0^2\) times the coefficient of the full squarefree monomial, where \(c_0\) is the fixed group-order multiple used to clear stabilizers. Relations among the matrices $N(g)-1$ give relations on their cocycles. Full-sized minors present these relations by determinants. Over a discrete valuation ring their valuations measure the lengths of finite cokernels. The zeroth Fitting ideal performs this calculation simultaneously on the main block and the cyclotomic character blocks. Ordered auxiliary primes give triangular conditions on even cocycles, sufficient to control the minors even when the total orders of the even class groups are unavailable.
+\sources{\src{src/New/Congruences/FirstOrder/RibetLemma.lean}{One multiplier for the determinants},
+\src{src/New/Congruences/FirstOrder/FittingBlock.lean}{The minors and the squarefree coefficient}.}
+
+On the space of forms the auxiliary norm operators have first-order deformations. In the coefficient of $\prod_v X_v$ in their product times $F$, every proper squarefree coefficient of $F$ drops out on the lift. The ordinary level norm is left acting on the full coefficient. The tied relations vanish at the prescribed precision, so $D$ can be replaced by $n_0$ in that calculation. Crucially the finite index type $J$ of auxiliary primes can be fixed before choosing precision $\nu$. For ambient rank $n_0'$ and the stabilizer multiple $c_0$, one can demand $2(n_0')!\,(n_0c_0^2)^{|J|+1}\mid\ell^\nu$ in the coefficient valuation ring. Finite-precision errors are then integral after the necessary divisions. The price of an arbitrarily divisible $n_0$ has been transferred to the choice of precision. The eventual eigenvalue bound depends on the valuation of the full squarefree coefficient, estimated by the Selmer lengths and the local defects.
+\sources{\src{src/New/Congruences/FirstOrder/AuxiliaryPrimeTie.lean}{Deformed norm operators},
+\src{src/New/Congruences/FirstOrder/DenominatorBound.lean}{Cancellation and the clearing bound}.}
+
+For each selected generator of the lift space this produces a diagonal operator with a good eigenvalue on that generator. To combine them, take a basis of generators and write $a_{ik}$ for the eigenvalue of operator $i$ on vector $k$. Divide each column by an entry of maximum absolute value. For every column the resulting linear form $\sum_i (a_{ik}/a_{i_k k})U_i$ has nonzero reduction. The residue field of $\overline{\mathbb Q}_\ell$ is infinite, so a point avoids the zero sets of all these finitely many linear forms. Its coordinates lift to integral coefficients. The corresponding linear combination of the operators still clears the projections, while its eigenvalue in each direction has exactly the largest available norm. Taking the product of those eigenvalues gives the asserted lower bound for the determinant of one operator $\Lambda$. The stabilizer multiple also supplies the integral pairing estimate needed on rank-one lifts.
+\sources{\src{src/New/Congruences/FirstOrder/HeckeStrings.lean}{Local Hecke strings and simultaneous eigenvalue bounds},
+\src{src/New/Congruences/FirstOrder/DenominatorBound.lean}{A single operator on the full lift space}.}
+
+\subsection{One character for all the local conditions}
+We still owe the choice of a regular family. Having fixed $\iota$, there are finitely many eigensystems of good forms on $W_m$ to test for each $j$, and finitely many relevant main pairs. Their representations include both the rank-$r$ blocks of the single lifts and the rank-one blocks used in \eqref{eq:arithrankone}. The preliminary trace comparison makes it possible to form this list before choosing the twist. At this same $\iota$ one character must work for every member of the list, all the demands on the ramified Hecke-value ratios, and each power $1\le j\le m$. Different choices for different $j$ would destroy the single chain in \eqref{eq:arithchain}.
+
+The Galois cohomology groups used here are Selmer groups cut out by cocycles obeying specified conditions on restriction to decomposition groups. Length is normalized so that the coefficient ring modulo $\ell$ has length one. For the main representations one estimates a Selmer group with divisible coefficients. At an auxiliary split place one may impose a linear relation $z(\tau_v)=s_v z(F_v)$ between the values of a cocycle on tame inertia and Frobenius. Global duality compares the length of this constrained group with the length of a dual group of relations, up to explicit local terms. When their total length is still too large, one chooses a new auxiliary split place with prescribed Frobenius data and a slope. The change reduces the length in the descent. This gives enough places, with their number bounded before the final precision is requested. Finite-coefficient cocycles at places above $\ell$ require an additional comparison with genuinely crystalline cocycles. Local Tate duality measures the discrepancy by a defect on the dual lattice. The Hodge-weight sparseness and the small number of low jumps bound this defect. A separate tame calculation applies at the level primes. These corrections are retained when passing from the length bound to a bound on denominators.
+\sources{\src{src/New/Congruences/Selmer/Count.lean}{Local terms in the global duality count},
+\src{src/New/Congruences/Selmer/Descent.lean}{Descent with auxiliary primes},
+\src{src/New/Congruences/LocalLoss/CrystallineDefect.lean}{The defect at a place over the coefficient prime}.}
+
+There remains a simultaneity problem. The specialization chosen to shorten one Selmer group may send a different critical value very close to zero. To solve it, use auxiliary homomorphisms $\lambda_v:G_E\to\mathbb Z/\ell^N$ from class field theory. A tuple of roots of unity $\zeta_v$ of orders dividing $\ell^N$ defines the character
+\[
+              \psi(g)=\prod_v\zeta_v^{\lambda_v(g)}.
+\]
+It is anticyclotomic, trivial at places above $\ell$, and its inertia values at the auxiliary places are prescribed. The variables $X_v=\zeta_v-1$ record different choices. Minors of the cocycle relation matrices give integral polynomials whose valuations control Selmer lengths. Integral group-ring elements of finite class groups, satisfying norm relations as primes are added, give another set of polynomials whose evaluations control the critical values. Each polynomial has an individual test point on which its valuation is suitably small. These points can have different coordinates and need not be torsion points.
+
+Here is the estimate that permits a single torsion specialization. For one integral polynomial $P(X)=\sum c_i X^i$, use the weighted Gauss valuation $w_t(P)=\min_i(v(c_i)+it)$ with $v(\ell)=1$. At a point of valuation $t$ the gap between $v(P(X))$ and $w_t(P)$ arises from roots at that same valuation level. For a primitive root of unity of order $\ell^h$, $X=\zeta-1$ has valuation $t_h=1/\varphi(\ell^h)$. If $n_h$ roots of $P$, counted with multiplicity, have valuation $t_h$ and an integral reference point of valuation at least $t$ gives $v(P)\le B$, factorization of $P$ gives
+\[
+      \sum_{h:\,t_h\le t} n_h t_h\le w_t(P)\le B .
+\]
+A single root $\alpha$ at level $h$ has total truncated distance valuation
+\[
+ \sum_{\operatorname{ord}\zeta=\ell^h}
+       \min\{v(\zeta-1-\alpha),1\}\le h+1 .
+\]
+Indeed the polynomial $(1+\alpha+Y)^{\ell^h}-1$ has these points among its roots, and its coefficient of $Y$ has valuation $h$. The Gauss bound of radius parameter one gives the inequality. Given $0<\varepsilon<1$, divergence of $\sum_h1/(h+1)$ now forces some $h$ below a ceiling depending on $B,t,\varepsilon,\ell$ for which $(h+1)n_h t_h\le\varepsilon$. Averaging over the $1/t_h$ primitive roots at that level supplies a point where total truncation is at most $\varepsilon$. Since it is less than one, it can be removed. Thus $v(P(\zeta-1))\le w_{t_h}(P)+\varepsilon$ at an order whose ceiling is independent of the degree of $P$.
+\sources{\src{src/New/Congruences/Selmer/RootsOfUnity.lean}{The uniform torsion specialization}.}
+
+Apply this argument to the product of the polynomials on one coordinate, holding each polynomial's other coordinates at its own current test point. The excess above the Gauss valuation is nonnegative for each factor and additive in products. Small total excess therefore gives small excess simultaneously for all factors. Repeating across coordinates gives one tuple at which every polynomial meets its valuation bound. To handle the powers $j$, include the polynomials obtained by substituting $(1+X_v)^j-1$ into every coordinate. Individual reference points still exist: for an integral $x$, some solution of $(1+y)^j=1+x$ has valuation at least $v(x)/j$, by the product of the roots in $y$. Starting with a sufficiently small upper bound on $v(\zeta_v-1)$ forces each $\zeta_v$ to have order greater than $m$. Thus every required power is ramified on the whole chosen support. The order ceiling can be specified before choosing $N$ and constructing the polynomials for that $N$. This order of choices is essential since the polynomials themselves can grow in degree with $N$.
+\sources{\src{src/New/Congruences/Selmer/GeneralTheorem.lean}{One character for all systems and powers},
+\src{src/New/Congruences/Selmer/TwistingTheorem.lean}{Specialization for the lift representations}.}
+
+The remaining accounting explains the allowed chain length. The local defect includes a level contribution \(b\,v_\ell(M)\) as well as the crystalline loss. The global sum of the combined local defects, with each $\ell$ weighted by $\log\ell$, is at most $4\cdot10^6e^{180} f(m/k)b\log b$. The finite terms from class numbers, ramification and the other clearing errors also fit in the budget. Dividing the displayed defect bound by $B_{\rm den}$ and using $a=xb$ leaves
+\[
+          4\cdot10^6 e^{180}\frac{m^2}{x(\log b)^2}.
+\]
+For $m\le2\sqrt{x}$ this tends to zero. Terms bounded by fixed powers of $x$ are absorbed by the much larger scale of $b$. The result furnishes one twist at each $\iota$ prime to its underlying $\ell$, with the logarithmic projection allowances summing to $B_{\rm den}$ and all required inverse ramified ratios of height at most $x_1$. These are the two assertions about regularity used above.
+\sources{\src{src/New/Congruences/FitTwistsExist.lean}{Global budget and construction of the regular family}.}
+
+\subsection{Passing from the twisted determinants to the untwisted basis}
+Apply \eqref{eq:arithonestage} for every $j$ to the family just constructed. The scalar $S$ in \eqref{eq:arithchain} contributes at most $m^2tx_1\le b$ to the height of $S^{-1}$. Thus
+\begin{equation}
+ h\!\left(\left(\frac{Z(1)}{Z(\xi_\iota)}\right)_\iota\right)
+       \le d_T\bigl(b+fa(\log b)^4-H\bigr).
+ \label{eq:arithfull}
+\end{equation}
+To apply this inequality to $y_1,\ldots,y_n$, we need another $n'=d_T-n$ vectors whose denominators and untwisted sizes can be bounded simultaneously. They can be much longer than the $y_i$ since there are so few of them.
+
+The auxiliary construction starts with restrictions from deeper level, where short integral forms span. An adjoint of an injective chain is onto the relevant level. A Poincaré-period argument proves surjectivity of a restriction at a suitable real point. Pairing the lift of such a restriction with a delta test form gives a period along the first path of two grids. Move this path across the grids in $m^2$ turns. Each off-diagonal turn is an exchange, while a diagonal turn uses a line factor and a seesaw to match the two intermediate kernels. On the final definite path the period is a finite sum. Bounding its denominators and its conjugates, and testing against delta forms, gives a spanning family of target vectors $z$ and clearing scalars $\gamma_\xi\ne0$, $\gamma_1=1$, satisfying
+\[
+ \gamma_\xi\Theta_\xi z\text{ integral away from }q(\xi),\qquad
+ \|\Theta_1 z\|^2_\sigma\le\exp(2x_1^2 b^2).
+\]
+The magnitude of $\gamma_\xi$ is a power of $q(\xi)$ times the $m^2$ turn factors. The height of $|\gamma_{\xi_\iota}|^{-2}$ is at most $2m^2tx_1\le b$. This two-grid calculation constructs completing vectors. The triangular exchange leading to \eqref{eq:arithchain} computed a different quantity, the determinant of the full lift.
+\sources{\src{src/New/Determinant/AuxiliaryForms/FirstPath.lean}{Surjective maps and the initial period},
+\src{src/New/Determinant/AuxiliaryForms/DiagonalTurns.lean}{Moving the path},
+\src{src/New/Determinant/AuxiliaryForms/SpanningForms.lean}{The completing vectors}.}
+
+Choose $n'$ vectors from that spanning family which complete the $y_i$, and call the ordered basis $w$. If $G_\xi$ denotes the Gram determinant of $\Theta_\xi w$, change of basis gives $G_\xi=Z(\xi)\det\operatorname{Gram}(w)$. At every $\iota$, write $G_1$ as
+\[
+ \bigl(|\gamma_{\xi_\iota}|^{2n'}G_{\xi_\iota}\bigr)
+ \ |\gamma_{\xi_\iota}|^{-2n'}\,
+ \frac{Z(1)}{Z(\xi_\iota)} .
+\]
+In the first factor the auxiliary columns have been cleared. The index bound clears the original columns and costs $2\delta$ for the Gram determinant. One uses a matrix at $\iota$ in the linear argument of the inner product, and a matrix at $z\mapsto\iota(\bar z)$ in its conjugate-linear argument. They both clear the \emph{same} twist because the index bound works for every twist allowed at their common prime. At infinity the rational metric and Cauchy--Schwarz bound each conjugate of $G_1$ using the untwisted covolume bound and the squared norms of the added columns. The proof accommodates automorphisms of $\mathbb C$ which do not commute with complex conjugation by pairing the two corresponding conjugate families. The determinant $G_1$ is fixed and nonzero by injectivity. The product formula therefore yields
+\[
+ 0\le c+2\delta+n'(2x_1^2 b^2+b)
+                  +d_T\bigl(b+fa(\log b)^4-H\bigr).
+\]
+Finally $n'\le4d_T/b^2$ and $4(2x_1^2+b^{-1})\le b$, hence the entire completion costs at most $d_Tb$. Absorb the two occurrences of $b$ into $fa(\log b)^4$ to obtain \eqref{eq:lowlong}. The lower estimate has reproduced the upper construction's ordinary-direction contribution $H$, with the sign required for cancellation.
+\sources{\src{src/New/Reduction/Lattices/TwistedLattice.lean}{The determinant product formula},
+\src{src/New/Determinant/Twist/LongForms.lean}{Completing the proof of Theorem C}.}

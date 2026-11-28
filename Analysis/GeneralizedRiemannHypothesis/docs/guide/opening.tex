@@ -1,0 +1,67 @@
+\section{The theorem and the source of the half power}\label{sec:opening}
+For a Dirichlet character \(\chi\) of positive modulus \(q\), extend \(\chi\) periodically to the integers, taking value zero away from integers coprime to \(q\). In \(\Re s>1\) its \(L\)-function is the sum of \(\chi(n)n^{-s}\). Elsewhere \(L(s,\chi)\) denotes its meromorphic continuation. Throughout this article GRH means the generalized Riemann hypothesis for these functions, including characters induced from smaller moduli.
+
+\begin{statement}[Half-plane and critical-line forms]\label{thm:main}
+For every such \(\chi\), if \(\Re s>1/2\) and either \(\chi\) is nonprincipal or \(s\ne1\), then \(L(s,\chi)\ne0\). Consequently every zero of \(L(s,\chi)\) in \(0<\Re s<1\) has real part \(1/2\). Every zero of the Riemann zeta function other than the trivial zeros at \(-2,-4,\dots\), with its pole at \(1\) excluded, has real part \(1/2\).
+\end{statement}
+
+The half-plane theorem is where the proof does its work. The critical-line statement follows by applying the half-plane theorem to a zero and its reflection for the inverse character. The level-one character gives \(\zeta\). To see where the half power enters the half-plane theorem, it helps to start with an elementary determinant.
+
+Let \(u_1,\ldots,u_n\) be independent columns of an \(n\times n\) integer matrix \(U\). Their Gram determinant satisfies
+\[
+  1\ \le\ |\det U|^2=\det(U^*U)\ \le\ \prod_{j=1}^n\|u_j\|^2 .
+\]
+On the left is integrality. On the right is Hadamard's inequality. If a prime divides every entry of one column, dividing that column by the prime preserves integrality and saves \(2\log p\) in its log squared norm. More prime divisibility than expected can now have an observable consequence. If it makes too many independent columns too short, the two inequalities become incompatible.
+
+The columns in the proof are forms on unitary groups. They are obtained from differentiated theta kernels. The kernel derivatives have large archimedean sizes and predictable prime-power divisibilities. Dividing out those divisibilities leaves a log size containing \(-m\mathcal R\), where \(\mathcal R\) measures a prime-power excess and \(m\) counts the lifts in a chain. The determinant lower bound includes the much larger background cost \(H\) of the other derivative directions. Three difficulties distinguish the argument from the integer example. One needs sufficiently many independent columns, one must pay for finite denominators, and one must compute the \emph{same} \(H\) on both sides of the comparison. Coarse bounds that differ by a small fixed proportion of \(H\) would obliterate the desired error.
+
+\begin{center}\small
+\renewcommand{\arraystretch}{1.17}
+\begin{tabularx}{.97\linewidth}{@{}p{.21\linewidth}X@{}}
+\toprule
+Result & What is carried into the comparison\\ \midrule
+A. Short forms & A spanning supply of integral source forms with short normalized images after the untwisted lift, and a separate bound on the index of finite families of images.\\
+B. Enough forms & A small set of translates whose images of the ramified source together cover at least \(1-4/b^2\) of the target dimension.\\
+C. Long forms & For any independent family that large, its log squared covolume plus twice its denominator allowance is bounded below in terms of \(H\).\\ \bottomrule
+\end{tabularx}
+\end{center}
+The factor of two in C can already be read off from \(U^*U\). A change of basis multiplies a Gram determinant by the product of a determinant and its conjugate. The near-full dimension in B matters twice. It lets us compare an upper bound on actual columns to a lower bound on volume, and it limits how many auxiliary forms C must add to obtain a square determinant.
+
+One might try to get the half power from a square-root cancellation estimate for primes. Here the square root first enters as an integer we choose. For every large \(x\) we can build a chain of \(m\) lifts, \(\sqrt x\le m\le2\sqrt x\). Its upper bound accumulates the same prime excess \(m\) times. Its lower bound pays for the ordinary directions of all \(m\) lifts, up to a loss which, after division by the relevant dimension and weight, grows only as a power of \(\log b\). The scales give \(\log b\le2x^\eta\) for any fixed sufficiently small \(\eta>0\). The resulting \(1/m\) survives in the final estimate.
+
+There are two different uses of twisting. Inside C one chooses finite-order characters of a unitary group, separately at finite coefficient places, to bound denominators and determinant ratios. At the end one chooses a quadratic Dirichlet character depending on a putative zero to isolate the pole it would produce. They have different moduli, different quantifiers, and different effects on the proof.
+\sources{\src{src/Statements.lean}{Public statements}, \src{src/Main.lean}{five exported theorems}, \src{src/New/Reduction/MainInequality.lean}{comparison}, and \src{src/New/Reduction/Zeros/Criterion.lean}{one-sided criterion}.}
+
+\subsection{The arithmetic observable}\label{sec:observable}
+Fix a positive modulus \(Q\) divisible by \(18480\) and a prime \(d\equiv Q/2-1\pmod Q\). Thus \(d\equiv7\pmod8\) and \((d,Q)=1\). Write \(\chi_d(n)=(n/d)\) for the quadratic character of \(K=\mathbb Q(\sqrt{-d})\). For \(q=Q\) or \(1\) put
+\[
+ \lambda_{d,q}(n)=\mathbf1_{n\equiv1\bmod q}\,\Lambda(n)(1-\chi_d(n)),\qquad
+ R_q(y)=\sum_{n\le y}\lambda_{d,q}(n)
+ \left(\frac1n-\frac1y\right)-\frac{\log y}{\varphi(q)}-c_q.
+\]
+Here \(\Lambda(p^e)=\log p\) for \(e\ge1\) and is zero elsewhere. At a split prime the weight vanishes. At an inert prime it is \(2\log p\) at odd powers and zero at even powers, subject in each case to the congruence on the \emph{power}. At the ramified prime \(d\) it is \(\log d\) at every power allowed by the congruence. The constants \(c_q\) are fixed below by an analytic regularization. This is important because an arbitrary additive constant would be larger than the upper bound we intend to prove.
+
+Let \(E_\psi(s)\) be \(L(s,\psi)\) for a nonprincipal character and the entire continuation of \((s-1)L(s,\psi)\) for a principal character. Define
+\begin{equation}\label{eq:Gmean}
+ G_q(s)=\frac1{\varphi(q)}
+ \left[\sum_{\psi\bmod q}
+ \left(\frac{E'_{\psi\chi_d}}{E_{\psi\chi_d}}(s)
+       -\frac{E'_\psi}{E_\psi}(s)\right)-1\right],
+ \qquad c_q=\Re G_q(1).
+\end{equation}
+The character sum commutes with complex conjugation on the real axis, so \(G_q(1)\) is real. The principal character has been regularized and no twist is principal. Logarithmically differentiating the Euler products, and summing characters to pick out the residue \(1\), yields
+\[
+   \sum_{n\ge1}\frac{\lambda_{d,q}(n)}{n^s}
+        =\frac{s}{\varphi(q)(s-1)}+G_q(s) \qquad(\Re s>1).
+\]
+In particular, for \(Z(s)=(s-1)\zeta(s)\) one has \(Z(1)=1\), \(Z'(1)=\gamma\), and
+\[
+                c_1=-1-\gamma+\Re\frac{L'}{L}(1,\chi_d).
+\]
+An elliptic period in the construction will recover exactly this constant. The remaining sections prove that for each fixed \(Q,d\) and every \(\varepsilon>0\),
+\begin{equation}\label{eq:target}
+                R_Q(y)\le y^{-1/2+\varepsilon}
+                \qquad\hbox{for all sufficiently large real }y.
+\end{equation}
+Only an upper bound appears here. A negative discrepancy can make an arithmetic vector longer and does not lead to a determinant contradiction. Section~\ref{sec:landau} shows why this is the correct direction for excluding zeros.
+\sources{\src{src/New/Reduction/Zeros/PrimeError.lean}{Weights, regularization and Dirichlet series}, \src{src/New/Reduction/OneSidedBound.lean}{eventual real-variable estimate}.}

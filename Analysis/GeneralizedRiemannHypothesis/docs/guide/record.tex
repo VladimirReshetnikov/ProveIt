@@ -1,0 +1,42 @@
+\section{Notation and source record}\label{sec:record}
+\subsection{Notation for reading the interfaces}
+\begin{center}\small
+\renewcommand{\arraystretch}{1.18}
+\begin{tabularx}{.98\linewidth}{@{}p{.18\linewidth}X@{}}
+\toprule
+Symbol & Meaning\\ \midrule
+\(q,Q,d\) & Original positive modulus, its admissible enlargement \(18480q\) in the final proof, and a prime \(d\equiv Q/2-1\bmod Q\).\\
+\(x,x_1,b,a\) & Near and distant cutoffs, ordinary weight on marked places, and long derivative order \(a=xb\).\\
+\(K,E,f\) & Imaginary quadratic field, its cyclotomic CM extension, and the number of conjugate pairs of embeddings of \(E\).\\
+\(\Phi_a,\Phi_b\) & Whole fibre over \(1\bmod Q\), and selected sparse subset of the fibre over \(-1\bmod Q\).\\
+\(m,k,r,t\) & Number of lifts, initial source rank, initial target rank, and step for target ranks. Here \(k=r+1-m\) and \(t=5r\).\\
+\(M,N\) & Product of two principal-level primes and the separate level prime used in the terminal restriction.\\
+\(S,S_{\rm ram},V\) & Full definite source, its ramified subspace, and the space of good target forms on \(Y_0\), of dimension \(d_T\).\\
+\(\mathcal P_s,\Theta_\xi\) & Normalized translated map to \(V\), and the chain lifting a target form along \(Y_0,\ldots,Y_m\).\\
+\(\xi,\chi_d\) & A character used to twist an automorphic lift, and the quadratic Dirichlet character used to separate poles.\\
+\(\mathcal R,H\) & Total excess of the long-row prime sums, and the common contribution \(mkH_{\rm dir}\) of the ordinary directions.\\
+\(Z(\xi),c,\delta\) & The full chain's Gram determinant, an allowance for log squared covolume, and an allowance for finite index on a family of forms.\\
+\(R_Q,G_Q,r_d\) & Centered smoothed prime count, regularized logarithmic-derivative mean, and residues of the smoothed count's transform.\\
+\bottomrule
+\end{tabularx}
+\end{center}
+The smoothing parameter \(\eta\) for choosing data at scale \(x\), the small error parameter in the greedy estimate, and \(\delta\) in the quadratic-twist density calculation are local to their arguments. The budgets in A and C use logarithms of \emph{squared} lengths. Thus a denominator allowance for a change of basis occurs with coefficient two in a volume inequality.
+
+\subsection{Versions and what was checked}
+The manuscript follows the mathematical formalization of Levent Alpöge with Claude through its shorter, readable Lean edition. The ProveIt guide supplied local models, arithmetic explanations, and the route from oscillation to zeros. Ye Yu's English exposition supplied the organization around three arithmetic theorems and its companion provided a second route into the Lean modules. Large component theorems such as the global moment estimate and the first-order denominator theorem are stated at the strength needed here. Their arguments and the mechanisms giving their constants are explained, with links to the component proofs. The source package contains further developments, including proofs of the background theory of automorphic representations and CM periods.
+
+\begin{itemize}
+ \item \textbf{ProveIt snapshot.} Both the guide and the current readable development were inspected at commit \texttt{7a5bb1e051e4bad127bafe90abbea19764778e32}. The readable package is under \texttt{Analysis/GeneralizedRiemannHypothesis/Lean/grh}. Its Git tree is \texttt{9603e445408c4ff6915133cafd89102bcfd2d991}. It contains 803 Lean files under \texttt{src}. \gd{Mathematical guide}, \src{GUIDE.md}{package guide}, \src{lakefile.toml}{toolchain dependencies}.
+ \item \textbf{Second account.} The English outline, the correspondence and the reported verification logs were consulted at \texttt{5edf43ce39c068fec64e0cc122e9cbdcec343b24}. They give a second exposition of the same proof. \ghout{GRH_Proof_EN.md}{English outline}, \ghout{GRH_Lean4_Correspondence.md}{correspondence}, \ghout{grh_source_verify.log}{reported source-build log}.
+ \item \textbf{Independent kernel checks.} Andrew Sutherland's verification record covers the shorter editions at upstream revision \texttt{72fead102f663d5c7a407964a13dc0cf9d977207}, with Lean 4.35.0 and Mathlib \texttt{56a00585}. It reports a successful build, kernel replays, external checker acceptance, and challenge comparison for the five public theorems. The axiom reports list propositional extensionality, classical choice and quotient soundness. \href{https://math.mit.edu/~drew/shortgrh/}{Sutherland's verification record}.
+ \item \textbf{Checks for this edition.} The upstream readable tree in that verification is \texttt{2e133df63d7f4da6b3059c4195324f8e9187ba73}. A Git comparison with the current ProveIt subtree found changes in 17 Lean files and three documentation files. The public statements, exported theorem bodies and top-level comparison theorem have identical file contents across the two snapshots. The current tree changes some of their dependencies, including the argument for choosing translates. We checked the source locations, file identities, illustrative calculations and typeset manuscript for this edition. A fresh Lean build or kernel replay of the newer ProveIt subtree was outside these checks.
+\end{itemize}
+A machine-readable index accompanies the article. Its 225 rows give a mathematical role, a declaration as written in the file, a line number, a Git blob hash and a revision-pinned URL. The included checker matched all 225 declarations in 97 distinct Lean files. This is a reproducible check of the correspondence between the exposition and the source text. The independent kernel evidence above addresses the formal statements of the specified upstream release.
+
+\subsection{Reading the primary sources}
+\begin{itemize}
+ \item Levent Alpöge's account describes the Stepanov analogy, the search for arithmetic multiplicity, the finite Fourier model and the choice of a chain of length \(\sqrt x\). \href{https://alpo.ge/remark.pdf}{Author's note}.
+ \item The English natural-language guide in ProveIt follows a prime through the construction, works out sample local models, and discusses the origins of the determinant method. Ye Yu's two-part account includes a notation dictionary and an inventory of the modules treated by the shorter formalization. \gd{ProveIt guide}, \ghout{README.md}{Ye Yu's guide and correspondence}.
+ \item The implementation's bibliography distinguishes classical sources, related arguments, and the particular versions established in the code. Its index groups theorems by module. \src{REFERENCES.md}{References}, \src{INDEX.md}{mathematical index}, \src{ATTRIBUTION.md}{attribution}.
+ \item To read the public statement backward, start with \src{src/Main.lean}{the exports}, then \src{src/New/Reduction/OneSidedBound.lean}{the half-plane proof}, \src{src/New/Reduction/MainInequality.lean}{the determinant comparison}, \src{src/New/Reduction/ShortAndEnough.lean}{A and B}, and \src{src/New/Determinant/Twist/LongForms.lean}{C}. Reading in the reverse direction follows the order in which these estimates become available.
+\end{itemize}
