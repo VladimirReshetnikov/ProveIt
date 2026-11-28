@@ -1080,7 +1080,7 @@ private lemma descentPairing_eq_zero_of_coset_subset_blockDatum
       simpa [hx] using translatedBlockFn_leftMul A h⁻¹ x
     have h_out : t⁻¹.val • (leftMul E r n h.val⁻¹ x - z) ∉ integralBox (n × r) O.places :=
       fun h_mem ↦ zero_ne_one (h_zero.symm.trans (h_const _ h_mem))
-    simp only [LinearMap.proj_apply, levelTranslate_apply, C, cosetIndicator, boxIndicator_apply,
+    simp only [LinearMap.proj_apply, levelTranslate_apply, cosetIndicator, boxIndicator_apply,
       ite_eq_right h_out, mul_zero]
   rw [← h_pairing, eq_smul_translatedBlockFn (h_const z (by simp)) h_idem h_inv h_supp, map_smul,
     LinearMap.smul_apply, descentPairing_translatedBlockFn_eq_zero u P g h_datum hA, smul_zero]
