@@ -1,0 +1,234 @@
+\documentclass[11pt]{article}
+\usepackage[margin=1in]{geometry}
+\usepackage[T1]{fontenc}
+\usepackage{lmodern,amsmath,amssymb,amsthm,booktabs,array,microtype,xcolor,hyperref}
+\hypersetup{colorlinks=true,linkcolor=blue!55!black,urlcolor=blue!55!black,pdftitle={Finite duality instead of iterative Fitting costs},pdfauthor={Research note for the ProveIt project}}
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{corollary}[theorem]{Corollary}
+\theoremstyle{remark}\newtheorem{remark}[theorem]{Remark}
+\newcommand{\Ocal}{\mathcal O}
+\newcommand{\Fitt}{\operatorname{Fitt}_0}
+\newcommand{\len}{\operatorname{length}_{\Ocal}}
+\newcommand{\Hom}{\operatorname{Hom}_{\Ocal}}
+\newcommand{\Ann}{\operatorname{Ann}}
+\newcommand{\src}[2]{\href{https://github.com/VladimirReshetnikov/ProveIt/blob/9050b04000647d588d0c78d945180abcd3b0bcf7/Analysis/GeneralizedRiemannHypothesis/Lean/grh/src/#1}{\texttt{#2}}}
+\newcommand{\baseurl}{https://github.com/VladimirReshetnikov/ProveIt/tree/9050b04000647d588d0c78d945180abcd3b0bcf7/Analysis/GeneralizedRiemannHypothesis}
+\title{\bfseries Finite duality instead of iterative Fitting costs\\[4pt]\large Three exact substitutions in the first-order congruence proof of Dirichlet GRH}
+\author{Research note for the ProveIt project}
+\date{27 November 2026}
+\begin{document}
+\maketitle
+\begin{abstract}
+The readable Alp\"oge--Claude proof of RH and Dirichlet GRH spends substantial effort transferring local bounds for cocycles into polynomial Fitting ideals and block determinants. We propose to perform this transfer by finite-length duality over a discrete valuation ring, rather than by successively adjoining relations and measuring drops in the solution space. A single annihilator gives the exact relative Fitting cost, with no Noetherian assumption on the auxiliary polynomial algebra. Specialization at zero gives a determinant of actual relation rows whose valuation equals the length of the specialized solution module, replacing a second Fitting enlargement. A row-lattice form of Morita equivalence gives an exact block determinant theorem directly for divisible coefficients, with a finite-coefficient variant. These substitutions preserve the stated constants in the first-order Ribet lemma and therefore the downstream denominator interface. The note proves the substitutions at the mathematical level, gives a source-level Lean integration plan, and records the overlap audit. No integrated Lean build or net global line-count saving is claimed.
+\end{abstract}
+\tableofcontents
+\section{Recommendation and scope}
+The target is the congruence-to-denominator step, not the analytic passage from prime sums to zeros or the theta-lift construction itself. In the source's terminology, small Selmer groups give a clearing operator on the image of a lift. To obtain its bound one first needs a common Ribet element: an element of the coefficient algebra whose product with each relevant determinant is a controlled trace relation and whose squarefree coefficient at the lift has bounded valuation. The proof builds a matrix of relations for the main summand and Fitting ideals for the rank-one characters, then glues them.
+
+The following three replacements form one coherent change: expose the actual finite module of relations (or its dual), and read determinant costs from its length. They are intended as exact-contract refactors of the readable edition, compatible with changes to twist selection, labels, Hecke estimates, spanning and determinant accounting.
+
+\begin{center}
+\begin{tabular}{@{}p{.30\linewidth}p{.32\linewidth}p{.29\linewidth}@{}}
+\toprule
+Source operation & Replacement & Benefit\\\midrule
+Adjoin one relation of uniformizer cost at a time & One annihilator; finite cyclic decomposition; alternating determinant & No Noetherian induction on the polynomial relation submodule\\[3pt]
+Bound constant coefficient by another Fitting enlargement & Specialize at zero; choose a basis of the specialized relation lattice & A single determinant, with its exact valuation\\[3pt]
+Reduce block problem modulo a large power; lift determinant modulo that power & Row lattice of the matrix algebra; dual of its quotient & Exact optimum, direct treatment of divisible coefficients\\\bottomrule
+\end{tabular}
+\end{center}
+The existing argument is not alleged to be incorrect. Its extra machinery is reasonable for a general formal development; the point here is that its hypotheses allow a more direct finite-length argument. The deep Selmer and Galois representation inputs remain necessary. This is a local simplification of the claimed, externally reported kernel-checked proof, not a new independent proof of RH or a claim about GRH for general automorphic $L$-functions.
+
+\subsection{Source snapshot and verification boundary}
+The analysis uses the readable \href{\baseurl/Lean/grh}{Lean project}, its \href{\baseurl/Lean/grh/GUIDE.md}{reading guide}, and the human-readable \href{\baseurl/docs/guide}{guide directory}, especially the sections on the congruence and denominator mechanism (TeX lines 1263--1389). The guide already illustrates relation length by a two-by-two determinant; the new step is to use that exact length directly in the polynomial relative-cost and block interfaces. The inspected baseline is ProveIt commit \texttt{9050b04000647d588d0c78d945180abcd3b0bcf7}; the central source blobs were rechecked at that commit. The baseline README reports Lean 4.35.0, Mathlib revision \texttt{56a005855ea17e0b0958f73ec801ae140b0a1679}, and acceptance of the five public theorem statements by independent checkers. See also the \href{https://math.mit.edu/~drew/shortgrh/}{external verification record cited by the project}. We did not rebuild or replay the baseline, or establish whole-tree identity with that record. No Lean executable was available locally. All new results below are paper proofs; finite tests accompany them, and do not substitute for general proofs.
+
+\section{The exact duality needed}
+Let $\Ocal$ be a discrete valuation ring with uniformizer $\pi$, fraction field $K$, and normalized additive valuation $v(\pi)=1$, $v(0)=\infty$. Fix $p\ne0$ in $\Ocal$; write $h=v(p)$ and $E=\Ocal/(p)$. For a finite-length $\Ocal$-module $M$ killed by $p$, put $M^\vee=\Hom(M,E)$.
+\begin{lemma}[Finite duality]\label{lem:duality}
+The functor $(-)^\vee$ is exact on finite-length modules killed by $p$, preserves length, and evaluation identifies $M$ with $(M^\vee)^\vee$. For any submodule $U\subseteq M^\vee$,
+\[
+ L_U=\{m\in M:\lambda(m)=0\ \text{for all }\lambda\in U\}
+ \quad\text{satisfies}\quad
+ \len L_U=\len(M^\vee/U).
+\]
+\end{lemma}
+\begin{proof}
+For $0\le a\le h$, $\Hom(\Ocal/\pi^a,E)$ is the submodule $\pi^{h-a} E$, isomorphic to $\Ocal/\pi^a$. Evaluation is an isomorphism on this cyclic module (the coordinate $\pi^{h-a}$ detects every nonzero class), hence on every finite direct sum by the elementary divisor theorem. In particular length is preserved.
+
+For exactness one can use $E\simeq (K/\Ocal)[p]$ via $x\mapsto x/p$. Any homomorphism into $K/\Ocal$ on a submodule of a finitely generated module extends: add one generator $x$ at a time, and let $(a)$ be the ideal of $r$ with $rx$ in the old submodule. If $a\ne0$, choose a value $y\in K/\Ocal$ with $ay=f(ax)$, using divisibility. If $a=0$, choose any $y$. The extension $f(m+rx)=f(m)+ry$ is well defined by the choice of $y$. For a domain module killed by $p$, its image automatically lies in $(K/\Ocal)[p]$. Thus restriction is surjective. Apply this to $U\subseteq M^\vee$, identify $(M^\vee)^\vee$ with $M$, and take the kernel of restriction to $U^\vee$. Exactness and length preservation give the claim. The case $p$ a unit is the zero category.
+\end{proof}
+This proof uses length, not cardinality of a residue field, and allows infinite residue fields. The function index set below is also allowed to be infinite. Finiteness comes from the finite coordinate module.
+
+\begin{lemma}[One alternating determinant cost]\label{lem:cost}
+Let $R$ be a commutative $\Ocal$-algebra, $N\subseteq R^s$, and let $w_1,\ldots,w_k\in R^s$ satisfy $a_iw_i\in N$ for $a_i\in\Ocal$. Put $N'=N+\sum_i Rw_i$. Then
+\[
+ \Big(\prod_i a_i\Big)\Fitt(R^s/N')\subseteq \Fitt(R^s/N).
+\]
+No finiteness or Noetherian condition on $R$ is needed.
+\end{lemma}
+\begin{proof}
+The Fitting ideal here is the ideal generated by determinants of square matrices whose rows lie in the relation module, as in the source. For each row of such a matrix for $N'$, write it as a row in $N$ plus a linear combination of the $w_i$. Expand the determinant multilinearly. Terms in which a particular $w_i$ occurs twice vanish by alternation. In each other term, multiply its occurrence by $a_i$ and use the remaining $a_i$ as scalars outside the determinant. Every resulting row lies in $N$. Linearity extends the inclusion from determinants to their ideal. Alternatively, iterate the usual one-generator Fitting product inclusion; the source already proves this inclusion.
+\end{proof}
+The lemma is valid even if the chosen generators become dependent over $R$, or if the image of $\Ocal$ in $R$ is not injective. No choice of a basis over $R$ is required.
+
+\section{Replacement I: the relative cost in one step}
+Use the exact abstract setup of \src{Lib/General/Algebra/FittingIdealsAndLengths.lean\#L680}{exists\_addVal\_le\_relLength} (lines 680--717). Thus $R$ is a commutative $\Ocal$-algebra, $N\subseteq R^s$, $F=\Ocal^n$, $\Phi:F\to R^s$ is $\Ocal$-linear, and $\Phi(pF)\subseteq N$. Let $z:G\to F$ be an arbitrary family. Write
+\[
+ D=\{\lambda\in\Hom(F,E): \lambda(\Phi^{-1}N)=0\},\qquad
+ e:D\to E^G,\quad e(\lambda)(g)=\lambda(z(g)),
+ \qquad Z=e(D).
+\]
+This $Z$ is exactly the source's \texttt{formsMod} (the extra coordinate indexed by \texttt{Unit} is immaterial). For a submodule $V\subseteq E^G$, define $\operatorname{relLength}(Z,V)=\len(Z/(Z\cap V))$.
+\begin{theorem}[Canonical relative Fitting cost]\label{thm:relative}
+There is a canonical enlargement $N\subseteq N'$ and an element $c=\pi^a$ with
+\[
+ a=\operatorname{relLength}(Z,V),\qquad
+ c\Fitt(R^s/N')\subseteq\Fitt(R^s/N).
+\]
+Moreover $\Phi(w)\in N'$ whenever every $\lambda\in D$ with $e(\lambda)\in V$ kills $w$. In particular the original condition, quantified over all linear forms on $F$ whose composites with $z$ lie in $V$, is satisfied. There is no need for $R$ to be Noetherian.
+\end{theorem}
+\begin{proof}
+Let $L=\Phi^{-1}N$ and $M=F/L$. Since $pF\subseteq L$, $M$ has finite length and $D=M^\vee$. Define $U=e^{-1}(V)$ and $M'=\Ann_M(U)$. The first isomorphism theorem gives
+\[
+ D/U\simeq Z/(Z\cap V).
+\]
+By Lemma~\ref{lem:duality}, $\len M'=a$. Take the preimage $L'$ of $M'$ in $F$ and set $N'=N+R\Phi(L')$. This is the stated canonical enlargement. The annihilator definition proves the membership assertion.
+
+Decompose $M'$ into cyclic summands $\bigoplus_i\Ocal/(\pi^{a_i})$. Choose lifts $w_i\in L'$ of their generators. Then $\sum_i a_i=a$, $\pi^{a_i}w_i\in L$, and $L'=L+\sum_i\Ocal w_i$. Consequently $N'=N+\sum_iR\Phi(w_i)$ and $\pi^{a_i}\Phi(w_i)\in N$. Lemma~\ref{lem:cost} gives the asserted inclusion with $c=\prod_i\pi^{a_i}=\pi^a$.
+\end{proof}
+\paragraph{Why the quotient matters.} The map $e$ need not be injective, and $V$ need not be contained in $Z$. For example, if all $z(g)=0$, then $Z=0$ even when $M\ne0$; $U=D$ and $M'=0$. Replacing $a$ by $\len D$ would introduce a spurious loss. The theorem uses the actual image quotient, exactly as the original source contract requires.
+
+\paragraph{What disappears.} The source proof uses Noetherian induction on $N$, finds a uniformizer-power multiple of a missing relation just before it enters $N$, proves that the image of the solution module in the quotient by $V$ strictly decreases, and recurses. The new proof uses a fixed submodule of $F/L$ and one determinant expansion. The helper declarations \texttt{exists\_pow\_smul\_notMem\_and\_succ\_mem} (line 635) and \texttt{map\_mkQ\_formsMod\_lt} (line 652) no longer occur in this proof. They may be removed only after an actual reverse-dependency audit. The result is stronger than the existing result both in the membership quantifier and the choice of $c$; it does not claim $a$ is the minimal possible Fitting cost over every $R$.
+
+\section{Replacement II: a determinant at the origin}
+Let $R=\Ocal[X_j:j\in J]$, with finite $J$ as in the source, and let $\epsilon:R\to\Ocal$ be evaluation at zero. Let $T\subseteq R^s$ and put $T_0=T+\ker(\epsilon)R^s$. Suppose $\Phi(pF)\subseteq T$ and for each $g$ in a finite subset $S\subseteq G$ of size $s$,
+\[
+ \Phi(z(g))-e_g\in T,
+\]
+where $(e_g)$ is the standard basis of $R^S$. Write $Z_0=\texttt{formsMod}(\Phi,z,T_0,p)$ (only in this section). Let $C\in\Ocal$, and $Z_0[C]=\{f\in Z_0:Cf=0\}$.
+\begin{theorem}[Specialize first, then take one determinant]\label{thm:constant}
+There is a square matrix $B$ whose rows are in $T$ such that, with $d=\det B\in\Fitt(R^s/T)$,
+\begin{align*}
+ v(\epsilon(d))&=\len Z_0\\
+ &\le \len(Z_0/Z_0[C])+s\min\{v(C),v(p)\}.
+\end{align*}
+In particular it satisfies the exact existing upper-bound contract with $s v(C)$ in place of the last term.
+\end{theorem}
+\begin{proof}
+Set $\bar T=\epsilon(T)\subseteq\Ocal^s$ and $Q=\Ocal^s/\bar T$. The composite $F\xrightarrow{\Phi}R^s\to Q$ is onto because the $z(g)$ for $g\in S$ map to the standard basis classes. Its kernel is $\Phi^{-1}T_0$, since $T_0$ is precisely the inverse image of $\bar T$ under $\epsilon$. As $pF$ maps to zero, $pQ=0$.
+
+It follows that the linear forms defining $Z_0$ are $Q^\vee$. Evaluation on $z(g)$ is injective on this dual already for $g\in S$. Thus $Z_0\simeq Q^\vee$, so $\len Z_0=\len Q$. In particular $Z_0[C]$ embeds in $E[C]^S$, of length $s\min(v(C),h)$. Length additivity gives the inequality.
+
+Since $p\Ocal^s\subseteq\bar T$, the relation lattice $\bar T$ has full rank. Choose an $\Ocal$-basis of it and form the square matrix $\bar B$ of basis rows. By the elementary divisor theorem $v(\det\bar B)=\len Q$. Every row of $\bar B$ is the specialization of a row of $T$; lift them to a matrix $B$. The determinant commutes with the ring homomorphism $\epsilon$, so $v(\epsilon(\det B))=\len Z_0$. The empty basis case $s=0$ has determinant $1$ and length zero.
+\end{proof}
+\paragraph{Source impact.} This is a direct replacement for \src{New/Congruences/FirstOrder/FittingBlock.lean\#L65}{FittingBlock:65} (lines 65--102). The existing proof enlarges $T_0$ to a submodule making forms $C$-torsion, constructs the rows of $C I_s$, takes that determinant, multiplies by a Fitting cost, and lifts through a Fitting base-change inclusion. The new proof needs only the specialized relation lattice and the original row lifts. It additionally yields a determinant rather than a general ideal member. We do not infer that arbitrary ideal members in the other character stages are single determinants.
+
+\paragraph{Lean-friendly weaker version.} The exact equality is not needed by a caller. Apply the existing \src{Lib/General/Algebra/FittingIdealsAndLengths.lean\#L303}{FittingIdealsAndLengths:303} to $\bar T$ with $p\Ocal^s\subseteq\bar T$ and identify its annihilator with a submodule of $Z_0$. This gives the required inequality without first proving an exact basis theorem for determinants. This is likely the easiest first patch.
+
+\section{The triangular Fitting theorem with unchanged cost}
+Here is the complete recombination for the key character theorem \src{New/Congruences/FirstOrder/FittingBlock.lean\#L137}{FittingBlock:137}. It makes clear that the replacements are not merely a change in an isolated statement. Keep all of its hypotheses, in particular the source's predicate \texttt{HasTriangleCost} (line 46).
+
+For clarity write $y(g)=\Phi(z(g))$, $w_j=y(\phi_j)-y(\phi'_j)$, and $I$ for the selected ordered set of indices. The two tie relations modulo $N$ are $y(\tau_j)=X_j y(\phi_j)$ and $y(\tau'_j)=X_j y(\phi'_j)$. Let $Z=\texttt{formsMod}(\Phi,z,N,p)$. The triangle hypothesis supplies a set $A\subseteq G$ and $Z_A=\{f\in Z:f|_A=0\}$ such that:
+\begin{itemize}
+\item for $j\in I$, if $f\in Z_A$ agrees on the two $\tau$-entries for each $i<j$ and on the two $\phi$-entries for $i\in I$, $i<j$, then $C(f(\tau_j)-f(\tau'_j))=0$;
+\item for every submodule $Z'\subseteq Z_A$ vanishing at every $\tau_j,\tau'_j$ and agreeing on the two $\phi$-entries for $j\in I$, one has $\len(Z/Z_A)+\len(Z'/Z'[C])\le b$.
+\end{itemize}
+For any $j\in I$ and earlier $i<j$ outside $I$, the source assumes $X_iR^s\subseteq N$.
+
+\begin{corollary}[Same triangular contract]\label{cor:triangle}
+Under the source hypotheses there is $F_0\in R$ with
+\[
+ F_0\prod_{j\in I}X_j\in\Fitt(R^s/N),\qquad
+ v(\epsilon(F_0))\le b+(|I|+s)v(C).
+\]
+If desired, the term $s v(C)$ can be replaced by $s\min(v(C),h)$.
+\end{corollary}
+\begin{proof}
+Use Theorem~\ref{thm:relative} with the functions vanishing on $A$. Obtain $K\supseteq N$ and a factor $c$ with $v(c)=\len(Z/Z_A)$, $c\Fitt(R^s/K)\subseteq\Fitt(R^s/N)$, and $y(g)\in K$ for $g\in A$.
+
+For each $j\in I$ set $K_j=K+\sum_{i\in I,i<j}Rw_i$. Any linear form killing $\Phi^{-1}K_j$ defines a function $f\in Z_A$. It kills the earlier $w_i$ for $i\in I$. The tie relations give $f(\tau_i)=f(\tau_i')$ for every $i<j$, either using those earlier $w_i$ or using $X_iR^s\subseteq N$. The triangle condition then gives $C(f(\tau_j)-f(\tau'_j))=0$. By the separating property of finite duality, $C(y(\tau_j)-y(\tau'_j))\in K_j$. The tie relation now implies $CX_j w_j\in K_j$.
+
+Set $T=K+\sum_{j\in I}Rw_j$. Iterating the one-generator Fitting inclusion along the ordered set $I$ gives
+\[
+ cC^{|I|}\Big(\prod_{j\in I}X_j\Big)\Fitt(R^s/T)\subseteq\Fitt(R^s/N).
+\]
+Take $T_0=T+\ker(\epsilon)R^s$. Its solution module $Z'$ lies in $Z_A$, kills the $\tau$-entries by specialization of the ties, and agrees on the selected $\phi$-entries since $w_j\in T$. Apply Theorem~\ref{thm:constant} to obtain $d\in\Fitt(R^s/T)$ with $v(\epsilon(d))\le\len(Z'/Z'[C])+s\min(v(C),h)$. Set $F_0=cC^{|I|}d$. The claimed membership follows from the preceding inclusion, and length additivity and the second triangle condition give the claimed bound. All inequalities with infinite valuation are understood in $\mathbb N\cup\{\infty\}$, with empty sums zero.
+\end{proof}
+The central triangle relation and the arithmetic proof of \texttt{HasTriangleCost} are untouched. In particular the argument does not assume a stronger Selmer bound or erase any of the two paired local conditions. This matters: the even-class cost is handled by the triangular constraints, not by bounding the entire solution module indiscriminately.
+
+\section{Replacement III: exact block determinant by the row lattice}
+The next theorem subsumes both versions of the main-block estimate in \src{Lib/General/Algebra/BlockFittingBound.lean\#L36}{BlockFittingBound}. The source works with a surjective $\Ocal$-algebra map $\psi:A\to M_d(\Ocal)$, and an $A$-submodule $N\subseteq A^s$ for the left scalar action. For $t=(t_1,\ldots,t_s)\in N$ put
+\[
+ H(t)=[\psi(t_1)\ \cdots\ \psi(t_s)]\in M_{d,sd}(\Ocal).
+\]
+Write $W\subseteq\Ocal^{sd}$ for the row module generated by all the rows of these matrices, and $Q=\Ocal^{sd}/W$. No finiteness hypothesis on $A$ is needed. For any $\Ocal$-module $E'$, the solution module
+\[
+ Z(E')=\{u\in(E'^d)^s: H(t)u=0\ \forall t\in N\}
+\]
+is canonically $\Hom(Q,E')$, by the pairing with rows.
+\begin{lemma}[Row packing]\label{lem:packing}
+The matrices $H(t)$ for $t\in N$ are exactly the $d$-row matrices all of whose rows belong to $W$.
+\end{lemma}
+\begin{proof}
+One inclusion follows from the definition. For the other, the image is closed under addition and under left multiplication by every matrix in $M_d(\Ocal)$, since $\psi$ is onto. Multiplication by the matrix unit $E_{ab}$ moves row $b$ to row $a$ and makes every other row zero. Linear combinations of such products therefore realize any desired row from $W$ in any specified position, and summing over positions packs all $d$ rows. If $d=0$, the assertion is vacuous.
+\end{proof}
+\begin{theorem}[Optimal determinant]\label{thm:block}
+Suppose $s,d>0$ and $W$ has rank $sd$. Let $a_1,\ldots,a_{sd}\ge0$ be its elementary divisor valuations. For a square $A$-matrix $B$ of size $s$ with each row in $N$, let $\psi^{[s]}(B)$ denote its $sd$-square block matrix. Then
+\[
+ \min_{B\text{ of relation rows}}v(\det\psi^{[s]}(B))
+ =\len Q=\sum_{i=1}^{sd}a_i.
+\]
+Moreover $\len Z(K/\Ocal)=\len Q$, and $\len Z(\Ocal/(p))=\sum_i\min(a_i,v(p))$. If $W$ has smaller rank, every such determinant is zero and $Z(K/\Ocal)$ has infinite length. For finite coefficients, each missing rank contributes an additional $v(p)$ to the solution length.
+\end{theorem}
+\begin{proof}
+If $W$ has full rank, choose a row basis matrix $U$ of $W$. Every block matrix of relation rows has all its rows in $W$ and is therefore $DU$ for some integral matrix $D$. Its determinant valuation is at least $v(\det U)=\len Q$. Partition the basis rows of $U$ into $s$ consecutive groups of $d$; by Lemma~\ref{lem:packing} each group equals $H(t)$ for some $t\in N$. Using these $t$ as rows gives a square matrix $B$ with block matrix exactly $U$. Thus the minimum is attained.
+
+In general the elementary divisor theorem gives $Q\simeq\Ocal^r\oplus\bigoplus_i\Ocal/(\pi^{a_i})$, where $r$ is the missing rank. Taking $\Hom(Q,E')$ yields the stated lengths: $K/\Ocal$ has unbounded finite-length submodules $(K/\Ocal)[\pi^m]$, and its $\pi^a$-torsion has length $a$; the analogous torsion in $\Ocal/(p)$ has length $\min(a,h)$. If $r>0$, no $sd$ rows in $W$ are independent over $K$. The cases $s=0$ or $d=0$ have determinant $1$ and zero solution length and can be handled separately.
+\end{proof}
+\begin{corollary}[The two original contracts]
+If $Z(K/\Ocal)$ embeds in a module of length at most $b<\infty$, there is a relation-row matrix with determinant valuation at most $b$. If instead $Z(\Ocal/(p))$ embeds in a module of length at most $b<v(p)$, the same conclusion follows: missing rank and every elementary divisor with $a_i\ge v(p)$ are ruled out, so the finite-coefficient solution length equals $\len Q$.
+\end{corollary}
+\paragraph{Why the strict inequality cannot be dropped.} Take $s=d=1$, $A=\Ocal$, $\psi=\mathrm{id}$, and $N=\pi^{h+1}\Ocal$. Modulo $p=\pi^h$ the solution module has length $h$, but all nonzero relation determinants have valuation at least $h+1$. The source's strict inequality is essential for the finite-coefficient contract; the new proof does not silently weaken it.
+
+\paragraph{Source impact.} Lines 36--83 of \texttt{BlockFittingBound.lean} use a row-sum map, enlarge the row lattice by $p\Ocal^{sd}$, construct an approximate basis matrix, and show that lifting rows changes its determinant by a multiple of $p$ whose valuation is too large to matter. Lines 157--181 apply that result with $p=\pi^{b+1}$. The direct row-lattice proof removes the need to manufacture this artificial modulus and to preserve valuation under a congruence of determinants. It is not a proposal to remove all divisible-quotient or finite-modulus lemmas from the project. For an implementation minimizing new elementary-divisor API, first show $W$ has full rank, choose some $p\ne0$ with $p\Ocal^{sd}\subseteq W$, apply the existing finite annihilator lemma directly to $W$, and use \texttt{divQuot} to embed its solution module into $Z(K/\Ocal)$. Then pack the actual relation rows. There is no need to choose $p$ depending on $b$ or to lift determinants modulo $p$.
+
+\section{Integration into the common Ribet element}
+The dependency route is explicit in the following source declarations; their blob identifiers appear in the companion TSV.
+\begin{center}
+\begin{tabular}{@{}p{.30\linewidth}p{.61\linewidth}@{}}
+\toprule
+Input & Source and unchanged consumer\\\midrule
+Relative length and specialized constant coefficient & \src{Lib/General/Algebra/FittingIdealsAndLengths.lean\#L680}{FittingIdealsAndLengths:680}; \src{New/Congruences/FirstOrder/FittingBlock.lean\#L137}{FittingBlock:137}; then \src{New/Congruences/FirstOrder/RibetMatrices.lean\#L724}{RibetMatrices:724}, the character Fitting ideal.\\[4pt]
+Block determinant & \src{Lib/General/Algebra/BlockFittingBound.lean\#L157}{BlockFittingBound:157}; then \src{New/Congruences/FirstOrder/FittingBlock.lean\#L619}{FittingBlock:619} and \src{New/Congruences/FirstOrder/RibetMatrices.lean\#L539}{RibetMatrices:539}, the main summand.\\[4pt]
+Gluing and common coefficient & \src{New/Congruences/FirstOrder/RibetLemma.lean\#L218}{RibetLemma:218} and \src{New/Congruences/FirstOrder/RibetLemma.lean\#L551}{RibetLemma:551}.\\[4pt]
+Denominator and global proof & \src{New/Congruences/FirstOrder/RibetElement.lean\#L289}{RibetElement:289}, then \src{New/Congruences/FirstOrder/DenominatorBound.lean}{DenominatorBound}, regular twists, integral forms are long, and the main inequality.\\\bottomrule
+\end{tabular}
+\end{center}
+In the notation of the common Ribet theorem (line 551), the original output has an element $c\in\Ocal$ with the common-coefficient property and
+\begin{multline*}
+ v(c)\le b_0+\sum_e b_e\\
+ +t\left(\sum_{v\in W}v(o_v(1))+2|S|v(C)\right)
+ +( |J|+1)v(C).
+\end{multline*}
+Here $W$ in this displayed bound denotes the source's set of old tame generators, not the row lattice of Section~6. The main-block result continues to give the same $b_0$; the character theorem gives the same $b_e+(|I_e|+|S|)v(C)$. The source gluing then contributes the same factors and adds the same valuations. We recommend retaining the bound as stated, rather than propagating the optional improvement $\min(v(C),h)$ until all other simplifications are merged. Nothing changes in the determinant, theta kernel or prime-remainder side of the proof. In particular no extra logarithmic loss, stronger parameter separation, or change of admissible data is needed.
+
+\subsection{What a successful Lean patch would simplify}
+The exact local replacement region consists of the relative-cost theorem and its two preceding induction helpers, the constant-coefficient proof, and the two block estimates (roughly two hundred source lines of proof and comments, plus their callers' opportunities for cleanup). This is a count of affected regions, not a net deletion count. The entire development has hundreds of thousands of lines; this note does not promise a large percentage reduction in that total. The mathematical advantage is removal of three different forms of detour in a foundational interface that is reused by the hardest congruence part of the argument.
+
+The principal engineering risk is that a missing finite-length duality or elementary-divisor interface in the pinned Mathlib may require more code than the old targeted argument. The report's first Lean plan therefore starts with the specialized constant-coefficient inequality using an existing source lemma; the finite duality API is added only if it is actually simpler. The block lemma should be implemented in a way that reuses existing row and matrix infrastructure. Measure the dependency closure and code size, not just the length of the top-level theorem. See \texttt{LEAN\_PLAN.md} for a concrete acceptance procedure.
+
+\section{Comparison with the existing proposal corpus}
+We checked all 18 proposal directories and their README summaries at the inspected tree, and ran a targeted full-text keyword scan of all 28 TeX files at the pinned revision. The only hit was in the sparse-cutoff report (line 41), where the Selmer/Ribet mechanism is explicitly unchanged. The accompanying audits record each directory tree, each TeX blob and the respective mechanism. This is a mechanism and keyword audit, not a line-by-line proof review or an exhaustive priority claim. The key distinctions are as follows.
+\begin{itemize}
+\item \texttt{theta-lift-simplifications} constructs integral flags and rows for clearing local projections and compressed determinants. Here the object is the earlier module of polynomial relation rows in the first-order Ribet construction. Neither the projection flag nor its determinant is changed.
+\item The discrete and edge Hecke proposals count exceptional Smith factors, using saturation or principal-submatrix rank. Our use of elementary divisors is for the annihilator of the entire relation module, with a relative dual image quotient and a Fitting-ideal inclusion. The local Hecke contracts do not enter the three replacements.
+\item Gram-adjoint duality uses Weyl--Fock forms and dual norms to remove a tight-frame construction. The present duality is the finite-length exact duality of modules killed by $p$, not an inner-product duality.
+\item Signed gains, centered moments, sparse cutoffs, torsion interpolation, primitive-label replacements, CM norm cancellation, orbital exchange, and the finite-quotient class count affect different stages. They may all remain in place.
+\end{itemize}
+The arguments use classical elementary-divisor theory, finite duality and the standard Fitting product property, not a claim of new mathematical priority for these facts. The contribution is their particular use as exact-contract replacements within this proof. For standard background on Fitting ideals see the \href{https://stacks.math.columbia.edu/tag/07Z6}{Stacks Project, Fitting ideals}. The source itself cites standard Fitting base change and determinant/length identities.
+
+\section{Further research and validation}
+The most valuable follow-up is to replace both character and main-block modules by a single small interface for annihilators of finitely generated torsion quotients. It may permit fewer explicit coordinate maps in \texttt{RibetMatrices} and \texttt{FittingBlock}. A second possible step is to test whether the actual determinant witness in Theorem~\ref{thm:constant} can reduce the number of ideal generators used in character gluing. The current gluing uses an ideal member obtained by successive products, so the single-determinant property alone does not justify deleting the sum-of-determinants argument. A third question is whether a uniform length bound for the actual kernel of the specialized solution space can lower the separating-character losses; such a strengthening would need new arithmetic input.
+
+The supplied Python regression script tests finite duality with non-injective evaluation, arbitrary submodule intersections, determinant valuations under specialization, alternating determinant costs, block row packing, and the sharp finite-cutoff counterexample. All 964 test instances passed (including 28 non-injective evaluation cases and 45 cases with $V$ not contained in $Z$). These are exact finite checks, not proof of the universal statements. The mathematical proofs above are the evidence for the universal substitutions. The next required verification is a Lean elaboration of the three replacements in the pinned project, followed by the original theorem build, axiom audit, and independent replay. No repository file has been modified.
+\end{document}
