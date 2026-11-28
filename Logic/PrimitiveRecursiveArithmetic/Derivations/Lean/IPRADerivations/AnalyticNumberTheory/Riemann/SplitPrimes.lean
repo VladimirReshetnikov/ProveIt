@@ -99,26 +99,26 @@ private theorem read2 {c} (f : PR 2) (a b : E c) (e) :
   funext i
   exact Fin.cases rfl (fun j => Fin.cases rfl (fun i => i.elim0) j) i
 
-private theorem read1 {c} (f : PR 1) (x : E c) (e) :
+theorem read1 {c} (f : PR 1) (x : E c) (e) :
     denote (call f [x]) e = value f (fun _ => denote x e) := by
   apply congrArg (value f)
   funext i
   exact Fin.cases rfl (fun i => i.elim0) i
 
-private theorem readLog {c} (x : E c) (e) :
+theorem readLog {c} (x : E c) (e) :
     denote (call logCode [x]) e = (denote x e).log2 := by rw [read1, value_logCode]
 private theorem readZero {c} (x : E c) (e) :
     denote (ztest x) e = (if denote x e = 0 then 1 else 0) := by
   unfold ztest; rw [read1,value_isZeroR]
-private theorem readLe {c} (a b : E c) (e) :
+theorem readLe {c} (a b : E c) (e) :
     denote (leB a b) e = (if denote a e ≤ denote b e then 1 else 0) := by
   unfold leB; rw [read1, value_isZeroR]
   simp only [minus,Nat.sub_eq_zero_iff_le]
-private theorem readEq {c} (a b : E c) (e) :
+theorem readEq {c} (a b : E c) (e) :
     denote (eqB a b) e = (if denote a e = denote b e then 1 else 0) := by
   simp only [eqB,times,readLe]
   split <;> split <;> split <;> first | rfl | omega
-private theorem readIte {c} (t a b : E c) (e) :
+theorem readIte {c} (t a b : E c) (e) :
     denote (iteE t a b) e = (if denote t e=0 then denote b e else denote a e) := by
   simp only [iteE,plus,times,read1,value_isZeroR,value_clipR,bit]
   split <;> simp_all

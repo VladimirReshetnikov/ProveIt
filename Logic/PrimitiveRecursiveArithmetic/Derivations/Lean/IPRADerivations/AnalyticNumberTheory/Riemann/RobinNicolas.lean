@@ -14,6 +14,8 @@ The analytic equivalences and endpoint convergence proofs are in the report. -/
 namespace LeanProofs.IPRA.AnalyticNumberTheory.Riemann.RiemannIPRA.RobinNicolas
 open LeanProofs.ConciseIPRA PacketLanguage Discrete
 open scoped Fm
+open SplitPrimes (readEq readIte readLe readLog)
+open SplitPrimes renaming read1 → readUnary
 
 /-- Pair of numerator and denominator expressions in one finite scope. -/
 private abbrev Fraction (ctx : List String) := E ctx × E ctx
@@ -217,25 +219,6 @@ private theorem readProd {c} (j : String) (n : E c) (s : E (j::c)) (e) :
     denote (prodTo j n s) e = overRange 1 (fun i a => a*denote s (Fin.cases i e)) (denote n e) := rfl
 private theorem readMax {c} (a b : E c) (e) :
     denote (call maxR [a,b]) e = max (denote a e) (denote b e) := value_maxR _
-private theorem readLog {c} (x : E c) (e) :
-    denote (call logCode [x]) e = (denote x e).log2 := value_logCode _
-private theorem readUnary {c} (f : PR 1) (x : E c) (e) :
-    denote (call f [x]) e = value f (fun _ => denote x e) := by
-  apply congrArg (value f)
-  funext i
-  exact Fin.cases rfl (fun j => j.elim0) i
-private theorem readLe {c} (a b : E c) (e) :
-    denote (leB a b) e = (if denote a e ≤ denote b e then 1 else 0) := by
-  unfold leB
-  simp only [readUnary,value_isZeroR,Discrete.minus,Nat.sub_eq_zero_iff_le]
-private theorem readEq {c} (a b : E c) (e) :
-    denote (eqB a b) e = (if denote a e = denote b e then 1 else 0) := by
-  simp only [eqB,Discrete.times,readLe]
-  split <;> split <;> split <;> first | rfl | omega
-private theorem readIte {c} (t a b : E c) (e) :
-    denote (iteE t a b) e = (if denote t e=0 then denote b e else denote a e) := by
-  simp only [iteE,Discrete.plus,Discrete.times,readUnary,value_clipR,value_isZeroR,bit]
-  split <;> simp
 
 private theorem readFact {c} (x : E c) (e) :
     denote (call Lagarias.factorial [x]) e = (denote x e).factorial := by

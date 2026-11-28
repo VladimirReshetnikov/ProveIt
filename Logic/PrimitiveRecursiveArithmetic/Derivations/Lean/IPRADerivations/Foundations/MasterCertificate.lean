@@ -215,6 +215,13 @@ theorem master_closed (b : PTm 1) (A : BF) :
     ([] : List (Fm PTm 0)) ⊢[PRAAx] univ 2 (masterFormula b A) :=
   closeUniv 2 (.impI (master_valid b A (var 0) (var 1) Prf.hyp0))
 
+theorem entry_congr {c c' i i' : PTm n}
+    (hc : Γ ⊢[PRAAx] c ≐ c') (hi : Γ ⊢[PRAAx] i ≐ i') :
+    Γ ⊢[PRAAx] entry c i ≐ entry c' i' := by
+  have h := congrInst2 (entry (var 0) (var 1) : PTm 2) hc hi
+  simpa only [inst2, subst_entry, Syn.subst_var,
+    Matrix.cons_val_zero, Matrix.cons_val_one] using h
+
 end LeanProofs.IPRA.Foundations.MasterCertificate
 
 export_ipra Foundations.MasterCertificate (sequence_decode sequence_length stack stack_succ stack_zero subst_sequence)

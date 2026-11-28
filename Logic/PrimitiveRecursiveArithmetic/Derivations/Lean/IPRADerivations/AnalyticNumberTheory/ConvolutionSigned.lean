@@ -24,6 +24,7 @@ open LeanProofs.IPRA.AnalyticNumberTheory.Fermat (subst_up_shift')
 open LeanProofs.IPRA.AnalyticNumberTheory.PNTStageStep (pos_of_one_le)
 open LeanProofs.IPRA.Foundations.SignedSumScale (sum_scale)
 open SumPhi renaming shift_mul' → shift_product
+open ConvolutionDivisorWeights renaming complementary_divisor → complement_divisor
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
@@ -82,11 +83,6 @@ private theorem weight_absorb (f g : ZB) (d M y : PTm n) :
       ZT.toZ Γ ((weight f g).val d (pairT M y)) := by
   have h (a b : PTm 2) := natEq (ConvolutionDivisorWeights.weight_absorb (Γ := Γ) a b d M y)
   ipra_lc [weight, ZB.toZ_val, inst2_addBody] h f.pos g.pos + h f.neg g.neg - h f.pos g.neg - h f.neg g.pos
-
-private theorem complement_divisor {d M : PTm n} (hM : Γ ⊢[PRAAx] M ≐ succ (pred M))
-    (hd : Γ ⊢[PRAAx] dvd d M) : Γ ⊢[PRAAx] dvd (quo M d) M := by
-  have e := eq_of_dvd' (pos_of_dvd hM hd) hd
-  exact dvd_of_eq' (pos_of_eq_mul hM e) (e.eqTrans (mul_comm _ _))
 
 private theorem weight_product (f g : ZB) {a b m N y : PTm n}
     (hm : Γ ⊢[PRAAx] m ≐ succ (pred m)) (hN : Γ ⊢[PRAAx] N ≐ succ (pred N))

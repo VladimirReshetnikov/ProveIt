@@ -34,6 +34,7 @@ open LeanProofs.IPRA.AnalyticNumberTheory.SymmetryInstances (epsB inst2_eps conv
 open LeanProofs.IPRA.AnalyticNumberTheory.HyperbolaSwap (conv_congr_m conv_comm0)
 open LeanProofs.IPRA.AnalyticNumberTheory.MobiusFloor (mul_one1)
 open LeanProofs.IPRA.Signum (sg sg_zero sg_succ)
+export DirichletLeibniz (conv_congr2)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
@@ -46,14 +47,6 @@ theorem conv_congr1 (a a' b : PTm 2)
   refine sum_congr_bounded _ _ _ _ _ (.allI (.impI ?_))
   rw [inst2_cvB, inst2_cvB]
   exact congrMul (.eqRefl _) (congrMul (h _ _) (.eqRefl _))
-
-/-- The convolution respects a schematic pointwise equation of the second body. -/
-theorem conv_congr2 (a b b' : PTm 2)
-    (h : ∀ {m : ℕ} {Δ : List (Fm PTm m)} (i y : PTm m), Δ ⊢[PRAAx] inst2 b i y ≐ inst2 b' i y) (N y : PTm n) :
-    Γ ⊢[PRAAx] conv a b N y ≐ conv a b' N y := by
-  refine sum_congr_bounded _ _ _ _ _ (.allI (.impI ?_))
-  rw [inst2_cvB, inst2_cvB]
-  exact congrMul (.eqRefl _) (congrMul (.eqRefl _) (h _ _))
 
 theorem dist_r (D A G H : PTm n) : Γ ⊢[PRAAx] D * (A * (G + H)) ≐ D * (A * G) + D * (A * H) := by
   ipra_ring

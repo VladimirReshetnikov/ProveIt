@@ -20,7 +20,7 @@ namespace LeanProofs.IPRA.Foundations.StrategyRealization
 open_ipra exports
 open LeanProofs.IPRA.Foundations.BoundedFormulas
 open LeanProofs.IPRA.Foundations.BoundedReflection
-open LeanProofs.IPRA.Foundations.MasterCertificate (entry subst_entry)
+open LeanProofs.IPRA.Foundations.MasterCertificate (entry subst_entry entry_congr)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
@@ -72,13 +72,6 @@ private theorem check_congr (P : Pattern) {c c' x x' : PTm n}
 private alias pair_congr := Common.congrPairT
 
 private alias eqb_congr := Common.congrEqb
-
-private theorem entry_congr {c c' i i' : PTm n}
-    (hc : Γ ⊢[PRAAx] c ≐ c') (hi : Γ ⊢[PRAAx] i ≐ i') :
-    Γ ⊢[PRAAx] entry c i ≐ entry c' i' := by
-  have h := congrInst2 (entry (var 0) (var 1) : PTm 2) hc hi
-  simpa only [inst2, subst_entry, Syn.subst_var,
-    Matrix.cons_val_zero, Matrix.cons_val_one] using h
 
 /-- If a Boolean guard times another value is one, both accepted parts are one. -/
 private theorem split_guard {a b rest : PTm n}

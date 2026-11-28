@@ -30,18 +30,10 @@ the actual coordinate sums and the actual coordinatewise-maximum code.
 namespace LeanProofs.IPRA.Foundations.DemandClosure
 
 open_ipra exports
-open LeanProofs.IPRA.Foundations.MasterCertificate (sequence entry sequence_decode)
+open LeanProofs.IPRA.Foundations.MasterCertificate (sequence entry sequence_decode entry_congr)
 open LeanProofs.IPRA.Foundations.BoundedReflection
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
-
-private theorem entry_congr {a b i j : PTm n}
-    (hab : Γ ⊢[PRAAx] a ≐ b) (hij : Γ ⊢[PRAAx] i ≐ j) :
-    Γ ⊢[PRAAx] entry a i ≐ entry b j := by
-  have h := Prf.eqCongr (entry (var 0) (var 1) : PTm 2)
-    (σ := ![a, i]) (σ' := ![b, j]) (fun k => by fin_cases k <;> assumption)
-  simpa only [MasterCertificate.subst_entry, Syn.subst_var, Matrix.cons_val_zero,
-    Matrix.cons_val_one] using h
 
 /-- Body of the finite product testing coordinatewise order. -/
 def orderBody : PTm 2 :=

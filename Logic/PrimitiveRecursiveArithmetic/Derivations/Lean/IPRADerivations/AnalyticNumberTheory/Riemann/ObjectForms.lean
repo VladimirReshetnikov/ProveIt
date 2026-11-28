@@ -274,7 +274,7 @@ private theorem invariantToPrefix (p : Fin 4 → PTm n) :
     simp only [P,Fm.subst_eq,substCount,subst_var,repl_zero,PTm.subst_zero,raised,replShift]
     exact Prf.impE stepProof.wk (Prf.hyp0 (φ := P))
 
-private theorem upShiftTerm (σ : Fin n → PTm m) (t : PTm n) :
+theorem upShiftTerm (σ : Fin n → PTm m) (t : PTm n) :
     subst (up σ) (Syn.shift t) = Syn.shift (subst σ t) := by
   simp [Syn.subst_shift, Syn.shift_subst]
 

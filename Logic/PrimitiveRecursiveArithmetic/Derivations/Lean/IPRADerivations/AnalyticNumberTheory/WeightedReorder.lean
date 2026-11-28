@@ -22,18 +22,11 @@ namespace LeanProofs.IPRA.AnalyticNumberTheory.WeightedReorder
 open_ipra exports
 open LeanProofs.IPRA.AnalyticNumberTheory.SummatoryCompose (dH inst2_dH Mono hRB inst2_hRB compose)
 open LeanProofs.IPRA.AnalyticNumberTheory.DirichletLeibniz (cvB conv inst2_cvB)
+export DirichletLeibniz (conv_congr2)
 
 set_option autoImplicit false
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
-
-/-- Convolution respects a schematic pointwise equation of the second body. -/
-theorem conv_congr2 (a b b' : PTm 2)
-    (h : ∀ {m : ℕ} {Δ : List (Fm PTm m)} (i y : PTm m), Δ ⊢[PRAAx] inst2 b i y ≐ inst2 b' i y) (N y : PTm n) :
-    Γ ⊢[PRAAx] conv a b N y ≐ conv a b' N y := by
-  refine sum_congr_bounded _ _ _ _ _ (.allI (.impI ?_))
-  rw [inst2_cvB, inst2_cvB]
-  exact congrMul (.eqRefl _) (congrMul (.eqRefl _) (h _ _))
 
 section Reorder
 

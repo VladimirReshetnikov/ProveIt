@@ -26,6 +26,7 @@ namespace LeanProofs.IPRA.Foundations.CrossingSearch
 
 open_ipra exports
 open LeanProofs.IPRA.Foundations.BoundedReflection (exB wit ex_intro ex_elim ex_least)
+export LeanProofs.IPRA.Common (monus_of_eq)
 
 set_option autoImplicit false
 
@@ -42,11 +43,6 @@ theorem ne_transport {a b : PTm n} (h : Γ ⊢[PRAAx] a ≐ b) (ha : Γ ⊢[PRAA
 theorem wit_le_of (f : PTm 2) {N k x : PTm n} (hk : Γ ⊢[PRAAx] neg (inst2 f k x ≐ zero)) :
     Γ ⊢[PRAAx] le (wit f N x) k :=
   .orE (lt_or_le k (wit f N x)) (.botE _ (.impE hk.wk (ex_least f Prf.hyp0))) Prf.hyp0
-
-/-- `a = b + c` gives `a ∸ b = c`. -/
-theorem monus_of_eq {a b c : PTm n} (h : Γ ⊢[PRAAx] a ≐ b + c) : Γ ⊢[PRAAx] monus a b ≐ c := by
-  have hle : Γ ⊢[PRAAx] le b a := le_of_eq_add h
-  ipra_lc natEq h - natEq (eq_add_of_le hle)
 
 /-! ## The shifted and reflected bodies -/
 
@@ -197,4 +193,4 @@ theorem crossing (H L : PTm 2) {i0 j0 x : PTm n} (hi0 : Γ ⊢[PRAAx] neg (inst2
 
 end LeanProofs.IPRA.Foundations.CrossingSearch
 
-export_ipra Foundations.CrossingSearch (monus_of_eq)
+export_ipra Common (monus_of_eq)

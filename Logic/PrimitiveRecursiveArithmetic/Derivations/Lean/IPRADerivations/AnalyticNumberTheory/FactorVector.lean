@@ -122,9 +122,7 @@ abbrev good (N c : PTm n) : Fm PTm n := le c one ⋎ le N (lpf c)
 theorem good_congr {N c c' : PTm n} (e : Γ ⊢[PRAAx] c ≐ c') (h : Γ ⊢[PRAAx] good N c) : Γ ⊢[PRAAx] good N c' :=
   .orE h (.orI₁ (le_congr e.wk (.eqRefl _) Prf.hyp0)) (.orI₂ (le_congr (.eqRefl _) (lpf_congr e.wk) Prf.hyp0))
 
-theorem pos_right {x a b : PTm n} (hx : Γ ⊢[PRAAx] x ≐ succ (pred x)) (h : Γ ⊢[PRAAx] x ≐ a * b) :
-    Γ ⊢[PRAAx] b ≐ succ (pred b) :=
-  DiophantineNumberTheory.Coprime.pos_of_eq_mul hx h
+alias pos_right := LeanProofs.IPRA.DiophantineNumberTheory.Coprime.pos_of_eq_mul
 
 theorem zero_good {N c : PTm n} (h0 : Γ ⊢[PRAAx] isP N ≐ zero) (hc : Γ ⊢[PRAAx] good N c) :
     Γ ⊢[PRAAx] good (succ N) c := by

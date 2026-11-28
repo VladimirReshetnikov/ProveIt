@@ -10,6 +10,7 @@ namespace LeanProofs.IPRA.AnalyticNumberTheory.Riemann.RiemannIPRA.ProductCertif
 open LeanProofs.ConciseIPRA Syn PacketLanguage
 open PTm (app zero succ)
 open scoped Fm
+open LeanProofs.IPRA.AnalyticNumberTheory.Riemann.PacketAudit renaming upShiftTerm → upShift
 variable {n m k : Nat} {Γ : List (Fm PTm n)}
 
 private def pair {α : Type} (x y : α) : Fin 2 → α := Fin.cases x (fun _ => y)
@@ -79,9 +80,6 @@ private def raised (p : Fin 4 → PTm n) : Fin 4 → PTm (n+1) := fun i => Syn.s
   simp [one]
 private theorem replShift (t : PTm (n+1)) (a : PTm n) :
     subst (repl t) (Syn.shift a) = Syn.shift a := by rw [Syn.subst_shift]; rfl
-private theorem upShift (σ : Fin n → PTm m) (t : PTm n) :
-    subst (up σ) (Syn.shift t) = Syn.shift (subst σ t) := by
-  simp [Syn.subst_shift, Syn.shift_subst]
 
 private def point (f : PR 5) (p : Fin 4 → PTm n) : Fm PTm n :=
   .all (dataAt f (raised p) (var 0) ≐ zero)

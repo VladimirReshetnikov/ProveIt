@@ -73,7 +73,7 @@ theorem weight_absorb (f g : PTm 2) (d M y : PTm n) :
     exact (mul_eq_zero_of_left hz).eqTrans w.eqSymm
   · exact (congrMul Prf.hyp0 (.eqRefl _)).eqTrans (one_mul _)
 
-private theorem complementary_divisor {d M : PTm n} (hM : Γ ⊢[PRAAx] M ≐ succ (pred M))
+theorem complementary_divisor {d M : PTm n} (hM : Γ ⊢[PRAAx] M ≐ succ (pred M))
     (h : Γ ⊢[PRAAx] dvd d M) : Γ ⊢[PRAAx] dvd (quo M d) M := by
   have e := eq_of_dvd' (pos_of_dvd hM h) h
   exact dvd_of_eq' (pos_of_eq_mul hM e) (e.eqTrans (mul_comm _ _))

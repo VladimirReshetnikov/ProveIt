@@ -11,6 +11,7 @@ namespace LeanProofs.IPRA.AnalyticNumberTheory.Riemann.RiemannIPRA.OneSided
 open LeanProofs.ConciseIPRA Syn PacketLanguage Discrete
 open scoped Fm
 open PTm (app zero succ)
+attribute [local simp] LeanProofs.IPRA.AnalyticNumberTheory.Riemann.PacketAudit.upShiftTerm
 
 def positivePart : PR 5 := program ["d","H","u","v","t"] <|
   let n := v "t"+100
@@ -234,10 +235,6 @@ private theorem subAtom {m n : Nat} (σ : Fin n → PTm m) (k : PR 5) (a b c d t
   funext i
   refine Fin.cases rfl (fun i => Fin.cases rfl (fun i => Fin.cases rfl (fun i =>
     Fin.cases rfl (fun _ => rfl) i) i) i) i
-
-@[simp] private theorem subsUpShift (σ : Fin n → PTm m) (t : PTm n) :
-    subst (up σ) (Syn.shift t) = Syn.shift (subst σ t) := by
-  simp [Syn.subst_shift, Syn.shift_subst]
 
 private theorem justOpen {q} {Γ : List (Fm PTm q)} {A : Fm PTm (q+1)}
     (t : PTm q) (h : Prf PRAAx Γ (.all A)) : Prf PRAAx Γ (A.subst (inst t)) := Prf.allE t h

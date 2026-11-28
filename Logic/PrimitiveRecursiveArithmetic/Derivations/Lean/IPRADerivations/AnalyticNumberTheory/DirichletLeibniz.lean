@@ -97,6 +97,14 @@ theorem dirichlet_leibniz (f g : PTm 2) {m y : PTm n} (hm : Γ ⊢[PRAAx] m ≐ 
 
 end Leibniz
 
+/-- The convolution respects a schematic pointwise equation of the second body. -/
+theorem conv_congr2 (a b b' : PTm 2)
+    (h : ∀ {m : ℕ} {Δ : List (Fm PTm m)} (i y : PTm m), Δ ⊢[PRAAx] inst2 b i y ≐ inst2 b' i y) (N y : PTm n) :
+    Γ ⊢[PRAAx] conv a b N y ≐ conv a b' N y := by
+  refine sum_congr_bounded _ _ _ _ _ (.allI (.impI ?_))
+  rw [inst2_cvB, inst2_cvB]
+  exact congrMul (.eqRefl _) (congrMul (.eqRefl _) (h _ _))
+
 end LeanProofs.IPRA.AnalyticNumberTheory.DirichletLeibniz
 
 export_ipra AnalyticNumberTheory.DirichletLeibniz (cvB cv_at inst2_DwB inst2_cvB)
