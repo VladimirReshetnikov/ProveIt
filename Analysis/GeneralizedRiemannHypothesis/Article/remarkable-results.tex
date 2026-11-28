@@ -34,6 +34,9 @@
 \newcommand{\shaC}{3c4d27a69c98d09319a51e41a19fca05bb80a3e2}
 \newcommand{\baseC}{\repo/blob/\shaC/Analysis/GeneralizedRiemannHypothesis/Article}
 \newcommand{\arcC}[3]{\href{\baseC/sections/#1.tex\#L#2}{#3}}
+\newcommand{\shaD}{2f9fb0b144d324c5ff7f4a810eaa76894d7752a7}
+\newcommand{\baseD}{\repo/blob/\shaD/Analysis/GeneralizedRiemannHypothesis/Article}
+\newcommand{\arcD}[3]{\href{\baseD/sections/#1.tex\#L#2}{#3}}
 \newcommand{\refs}[2]{\href{#1}{#2}}
 \newcommand{\Q}{\mathbb Q}\newcommand{\Z}{\mathbb Z}\newcommand{\F}{\mathbb F}\newcommand{\R}{\mathbb R}
 \newcommand{\Cl}{\operatorname{Cl}}\newcommand{\ord}{\operatorname{ord}}
@@ -50,13 +53,14 @@ The strongest candidates for new solutions of established problems are the five-
 \begin{tabularx}{\linewidth}{@{}p{.255\linewidth}Y@{}}\toprule
 \textbf{Selection} & \textbf{What the article adds}\\\midrule
 Singular moduli & An independent proof of Riffaut's trinomial conjecture and exact classifications for four and five terms.\\
-Integer progressions & A set of greater natural density than Rankin's, refuting McNew's Conjecture 7.2. Three other strict inequalities answer his numbered questions.\\
-Progressions over $\F_q[x]$ & A disproof of Asada and coauthors' Conjecture 6.3 for every prime power $q$. The predicted density agrees with the truth to every fixed order in $1/q$.\\
+Integer progressions & A set of greater natural density than Rankin's, refuting McNew's Conjecture 7.2; three strict inequalities answer his questions.\\
+Progressions over $\F_q[x]$ & A disproof of Asada and coauthors' Conjecture 6.3 for every prime power $q$; the predicted density is right to every fixed order in $1/q$.\\
 Quadratic class groups & Exclusion of the last possible discriminant ranges for exact exponents six and seven.\\
-CM modular forms & A classification of coefficient fields of weight-two CM newforms valid in every prime degree at least seven, and an exact quintic list.\\\bottomrule
+CM modular forms & A classification of coefficient fields of weight-two CM newforms valid in every prime degree at least seven, and an exact quintic list.\\
+Lorentz degrees & Erd\'elyi's 1991 question answered negatively, with the true order.\\\bottomrule
 \end{tabularx}
 \topic{What the evidence supports}
-The live article now combines 209 reports into 988 pages in 29 sections, counting 1285 theorem-like results (854 unconditional marks, 378 GRH marks and 43 reduction marks; the status counts are not a partition). It has since been regrouped by topic, with duplicated statements and subsumed special cases removed; every label was kept, so the links below, pinned to earlier commits, still name the same results. Its latest merge, of fifteen reports, extends the $-87$ frontier and adds sharp results on sparse $p$-adic roots, Gram minima and Cayley walks, but no selection: like the ten before them, these reports answer the article's own questions (p.~\pageref{batch8}). The 64 earlier reports of batches four to six, now reviewed, add one partial answer to a published question, on zero-free intervals of trigonometric polynomials (p.~\pageref{kozma}). The article supersedes the 103-report, 621-page version covered by the four supplied assessments. The merge is explicitly not independent verification. The external Lean theorem has independent kernel and statement checks. The present review replays selected finite tests; see p.~\pageref{audit}.
+The live article now combines 242 reports into 1,140 pages in 30 sections, counting 1,517 theorem-like results (1,058 unconditional marks, 395 GRH marks and 45 reduction marks; the status counts are not a partition). Regrouped by topic, without duplicates or subsumed special cases, it keeps every label, so links pinned to earlier commits still name the same results. Its latest merge, of 33 reports, answers seven published questions, two substantially, and six more in part (p.~\pageref{batch9}); the fifteen before it answer the article's own questions (p.~\pageref{batch8}). The 64 reports of batches four to six add one partial answer to a published question, on zero-free intervals (p.~\pageref{kozma}). The article supersedes the 103-report, 621-page version covered by the four supplied assessments. The merge is explicitly not independent verification. The external Lean theorem has independent kernel and statement checks. The present review replays selected finite tests; see p.~\pageref{audit}.
 
 The named problems answered here are chiefly specialist problems. Several have precise conjecture numbers and published authors. None of the selected arguments establishes a further major general conjecture such as nonabelian GRH, Artin's primitive-root conjecture, or Birch--Swinnerton-Dyer.
 \sources{\href{\baseB/README.md}{ProveIt Contributors, \emph{Beyond the Riemann hypothesis for Dirichlet $L$-functions}, article and verification note}. Upstream records are available from \refs{https://github.com/lsernau/grh-lean}{Sernau's Lean repository} and \refs{https://math.mit.edu/~drew/grh/}{Sutherland's independent verification project}.}
@@ -76,11 +80,11 @@ The order below favors substantive new mathematical work, closeness to a precise
 7 & Heavenly elliptic curves & U/G & O'Hara A/B; uniform finiteness in higher degree subject to descent exclusions.\\
 8 & One-sided nonabelian detectors & R & Potential route to general field RH, not a solution.\\
 9 & Zhao and Suzuki sign phenomena & G & Exhaustive sufficient-condition census and fixed-cutoff sign transition.\\
-10 & Kozma--Oravecz zero-free intervals & U/G & Partial answer to their Question~1: wide-step limit at the sharp rate $1/K$; exact at resonance and for two frequencies.\\
+10 & Kozma--Oravecz zero-free intervals & U/G & Order in their Question~2; partial answer to Question~1: sharp rate $1/K$, exact for two frequencies and some three- and four-frequency families.\\
 11 & Sharp local transfer and graph results & U & Optimal torsion selection, signed spectra, graph-tower onset and random matrix laws.\\\bottomrule\end{tabularx}}
 
 \topic{Why the ranking differs from a list of RH consequences}
-The upstream theorem changes the status of numerous earlier conditional results. It does not make their implications original to this article. The classification of exponents six and seven is more deserving of new-result credit than the classical idoneal-number census, even though the latter has greater historical name recognition. Likewise the independent trinomial proof would retain its mathematical value even if the upstream proof were unavailable. Ten further sharp theorems, from the merged supplementary review, are ranked 12 to 21 on the next page.
+The upstream theorem changes the status of numerous earlier conditional results. It does not make their implications original to this article. The classification of exponents six and seven is more deserving of new-result credit than the classical idoneal-number census, even though the latter has greater historical name recognition. Likewise the independent trinomial proof would retain its mathematical value even if the upstream proof were unavailable. Ten further sharp theorems, from the merged supplementary review, are ranked 12 to 21 on the next page; the published problems answered in the ninth merge are rated separately (p.~\pageref{batch9}).
 \sources{\href{\base/README.md}{Current inventory and status policy}. The four supplied assessments are reconciled below; their rankings differed principally in whether they valued named resolutions or general analytic methods most.}
 
 \pagepart{Executive synthesis}{Ten further sharp theorems}
@@ -90,22 +94,43 @@ A supplementary review of the article at \texttt{3c4d27a69c} looked for substant
 {\small\begin{tabularx}{\linewidth}{@{}p{.055\linewidth}p{.30\linewidth}p{.075\linewidth}Yr@{}}\toprule
 \textbf{No.}&\textbf{Contribution}&\textbf{Type}&\textbf{What is new or consequential}&\textbf{p.}\\\midrule
 12 & Uniform local Cauchy law & G & Relative error on all Borel value sets; matrix transport & \pageref{cauchy}\\
-13 & Deep-disk $p$-adic fewnomials & U & Exact degree-free root count; jump to $p^2$ roots & \pageref{fewnomial}\\
+13 & Deep-disk $p$-adic fewnomials & U & Exact root counts through $2p+4$ terms; jump to $p^2$ & \pageref{fewnomial}\\
 14 & Euler-product agreement & U/G & Exact least disagreement; short prime certificate & \pageref{euler}\\
-15 & Full-spectrum positive filter & G & Every noncentral zero; optimal double-exponential decay & \pageref{filter}\\
+15 & Full-spectrum positive filter & G & Every noncentral zero; optimal decay, exact endpoint & \pageref{filter}\\
 16 & Graph-coupled inverse spectra & U/G & Electrical transport; labels and minors from zeros & \pageref{coupled}\\
-17 & Hidden forms and many frames & U & Sharp threshold; dependence invisible to marginals & \pageref{hidden}\\
+17 & Hidden forms and many frames & U & Sharp threshold and complete critical law & \pageref{hidden}\\
 18 & Oriented Cayley-walk periods & U & All periods, fastest return, all fastest orientations & \pageref{cayleygram}\\
 19 & Rank-two Gram minimum & U & Constant of degree 48; six-row minimizers & \pageref{cayleygram}\\
 20 & Prime-subset products & G & Mixing criterion and profiles at every density & \pageref{further}\\
 21 & Conditional zero extremes & U/G & Marked Poisson, Gumbel and bridge limits & \pageref{further}\\\bottomrule\end{tabularx}}
 
 \topic{How the two reviews' judgments fit together}
-Neither review found a named conjecture or published question resolved by items 12 to 21. The supplementary reviewer regards items 12 to 19, its first eight, as substantial enough for separate papers or survey sections. This review had judged four of them, items 13, 16, 18 and 19 from the latest merge, sharp but short of the bar of a resolution worth immediate publication (p.~\pageref{batch8}). Both judgments stand: these are sharp new theorems on questions the article poses itself, valued for sharpness and mechanism rather than for a named problem. They rank below items 1 to 11 because this ranking favours closeness to a precisely identified published question.
+Neither review found a named conjecture or published question resolved by items 12 to 21. The supplementary reviewer regards items 12 to 19, its first eight, as substantial enough for separate papers or survey sections. This review had judged four of them, items 13, 16, 18 and 19 from the eighth merge, sharp but short of the bar of a resolution worth immediate publication (p.~\pageref{batch8}). Both judgments stand: these are sharp new theorems on questions the article poses itself, valued for sharpness and mechanism rather than for a named problem. They rank below items 1 to 11 because this ranking favours closeness to a precisely identified published question.
 
 \topic{Publication strategy proposed by the supplementary review}
 Extract three papers first: relative Cauchy laws and spectral shift (item 12), fewnomial extremal theory (13) and sharp Euler-factor agreement (14), each with clear statements, strong sharpness claims and identifiable prior literature. The filter and coupled inverse results (15, 16) form a second analytic cluster; the hidden-form and Cayley results (17, 18) suit probabilistic and algebraic audiences. Before claiming priority, check each general proof, its dependency chain, the external definitions and novelty independently.
 \sources{\href{\baseC/README.md}{Article inventory at \texttt{3c4d27a69c}}. Types as on the previous page; the supplementary review's U and G were dependency labels, not verification grades.}
+
+\pagepart{Executive synthesis}{Published problems answered in the ninth merge}
+\phantomsection\label{batch9}
+The 33 reports merged at \href{\repo/commit/\shaD}{\texttt{2f9fb0b144}} name about a dozen problems from the published literature. Seven answers meet this document's bar, a complete answer to a question or conjecture posed by a named author in a cited source; they are rated below. The partial results, which do not, are listed on p.~\pageref{batch9low}. Strength is graded \emph{strong} (an established question, answered with the true order or a sharp constant and a substantial new argument), \emph{moderate} (a complete answer to a specialist question, often with a short proof) or \emph{modest} (a recent problem of limited scope). \emph{Provisional} means that this review could not read the source, so the problem's wording rests on the reports and the merge.
+
+{\small\begin{tabularx}{\linewidth}{@{}p{.03\linewidth}>{\raggedright\arraybackslash}p{.25\linewidth}Yp{.055\linewidth}>{\raggedright\arraybackslash}p{.13\linewidth}r@{}}\toprule
+ & \textbf{Problem} & \textbf{Answer in the article} & \textbf{Type} & \textbf{Strength} & \textbf{p.}\\\midrule
+A & Erd\'elyi (1991), Lorentz degree with zeros in a thin ellipse & No; the least degree has order $\max\{n/\varepsilon,\varepsilon^{-2}\}$; complete, constants open & U & Strong & \pageref{erdelyi}\\
+B & Rajan (2000), Conjecture~3 & False, agreement $7/9>3/4$; sharp $2/27$ for cubic representations; complete & U & Moderate to strong, provisional & \pageref{rajan}\\
+C & Kozma--Oravecz, Question~2 & Order $\min(K+1,N)/N^2$; complete as to order & U & Moderate & \pageref{kozma}\\
+D & Kriepke--Kyureghyan--Schymura, Question~3.4 & Yes, $g(\Delta,r)=\Theta_r(\Delta^{1/(r-1)})$; complete & U & Moderate & \pageref{daviskohl}\\
+E & Davis--Kohl, Conjecture~3.15 & Proved for all $n\ge4$; complete & U & Moderate & \pageref{daviskohl}\\
+F & Steinerberger, Problem~41 & Yes, with sharp constant $1/(\pi\sqrt2)$; complete & U & Moderate, provisional & \pageref{erdelyi}\\
+G & Sheth--Voo, Conjecture~1.5 & Proved, with all 31 turning points; unconditional for $q<512$ & G & Modest & \pageref{shethvoo}\\\bottomrule\end{tabularx}}
+
+\topic{How they compare with the ranking}
+The numbered ranking of pp.~\pageref{supprank} and before is not renumbered. On its criteria, items A and B would rank directly after item~5: each settles a precisely posed published problem, A with the correct order after 35 years and B by an explicit counterexample. Items C to F rank with items 9 to 11, as answers to specialist questions with short or moderate proofs; C strengthens item~10 itself. Item G ranks below them: it uses the verified Dirichlet input, and its conjecture is weeks old.
+
+\topic{What the merge does not claim}
+None of these is a major conjecture. D, E and G were checked against their arXiv texts, E by this review and D and G by the merge's reviewers; A rests on two merge agents' reading of the scanned page, C on the article's statement of the question, and B and F on the reports' wording. No proof was replayed here beyond the degree-three character check of B; priority rests on targeted searches only. The merge is not verification, and the claims are the article's.
+\sources{\href{\baseD/README.md}{Article inventory at \texttt{2f9fb0b144}}. Types as on p.~\pageref{supprank}.}
 
 \pagepart{Complex multiplication}{Sparse equations for singular moduli}
 \phantomsection\label{sparsesm}
@@ -406,6 +431,17 @@ A separate theorem encodes \emph{all} primitive Dirichlet zero multisets in the 
 
 \sources{\arc{li}{187}{Sparse Li criterion}, \arc{rec}{3025}{finite decoder}, \arc{rec}{973}{universal reconstruction}, \refs{https://websites.umich.edu/~lagarias/doc/bombieri.pdf}{Bombieri--Lagarias}, \refs{https://arxiv.org/abs/2302.07073}{Banks}.}
 
+\pagepart{Central values}{Turning points of even central derivatives}
+\phantomsection\label{shethvoo}
+For a fundamental discriminant $D$, $|D|>1$, with quadratic character $\chi_D$ of conductor $q=|D|$ and completed $L$-function $\Lambda_\chi$, let $A_m(D)=\Lambda_\chi^{(2m)}(\tfrac12)$, ordinary derivatives at the centre. Sheth and Voo (arXiv:2611.12152, 2026) conjecture, as their Conjecture~1.5, that $(A_m)_{m\ge0}$ is eventually increasing and has at most one turning point. They prove both when the theta function of $\chi$ is positive on $[1,\infty)$, which can fail, for instance at $D=53$, and found numerically no turn beyond conductor $97$ for the first ten derivatives up to conductor $10^4$.
+
+\topic{The complete list of turning points}
+Under the critical-line statement for quadratic Dirichlet $L$-functions, part of the verified input, the theorem \texttt{li:thm:turning} proves both parts and more: $(A_m(D))$ changes direction for exactly $31$ signed fundamental discriminants, from $D=-47$ to $D=97$, each decreasing strictly to one minimum and increasing strictly thereafter, the latest minimum being of order $14$ at $D=-3$; every other sequence is nondecreasing and increases strictly from its first nonzero term. For $q<512$ the classification is unconditional, and the eventual increase holds unconditionally for every conductor beyond $m\ge\lceil500(1+\log q)^2\rceil$ (\texttt{li:thm:centralincrease}). The mechanism is short. Pairing zeros, $\Lambda_\chi(\tfrac12+w)=Cw^{2\ell}\prod_j(1+w^2/\gamma_j^2)$, so $A_m$ is a positive multiple of an elementary symmetric function of the $\gamma_j^{-2}$; a weighted-subset average bounds the ratio $A_{m+1}/A_m$ from below by one real value of the logarithmic derivative, which is above the threshold for every $q\ge384$. No simplicity or central nonvanishing is assumed.
+
+\topic{Assessment}
+A complete proof of a published conjecture, under the Dirichlet input that the article takes as given, with unconditional parts. The conjecture was posed only weeks before the merge, the scope is a single sequence attached to each quadratic character, and the method is a sharp but elementary use of the Hadamard product. The statement was checked against arXiv by a merge reviewer, not in this revision. Strength: modest; it meets the bar narrowly, as a resolution of a named conjecture rather than for its depth.
+\sources{\arcD{li}{1940}{Central derivatives} $\cdot$ \arcD{li}{1962}{All turning points} $\cdot$ \arcD{li}{2132}{Unconditional eventual increase} $\cdot$ \refs{https://arxiv.org/abs/2611.12152}{Sheth--Voo, Conjecture~1.5}}
+
 \pagepart{Inverse spectral theory}{A short spectrum identifies a character or a field}
 \phantomsection\label{shortspec}
 The current \texttt{rec.tex} contains stronger results than the quadratic-only reconstruction emphasized in the earlier PDF reports. Let $\mathcal C(Q)$ be all primitive Dirichlet characters of conductor at most $Q$, including the conductor-one character, and write $L_Q=\log(2Q)$. The theorem \texttt{rec:thm:lowzero} asserts that the multiset of positive ordinates, with multiplicity, through height
@@ -468,24 +504,43 @@ This review reran the supplied exact rational matrix-elimination certificate for
 
 \sources{\arc{gra}{172}{Effective graph towers}, \arc{gra}{397}{five examples}, \arc{gra}{1804}{cycle optimum}, \refs{https://doi.org/10.5802/alco.304}{DuBose--Vallières}, \refs{https://arxiv.org/abs/2606.03579}{Kataoka}, \refs{https://arxiv.org/abs/2607.17343v2}{Suvagiya}, \refs{https://www.trureturing.org/research/suvagiya-conjecture28-refutation/}{prior counterexample}.}
 
-\pagepart{Harmonic analysis}{Zero-free intervals for wide spectral progressions}
-\phantomsection\label{kozma}
-For a finite symmetric set $S$ of nonzero integers, Kozma and Oravecz write $M(S)$ for the supremum of the lengths of intervals of $\mathbb R/\Z$ on which a real trigonometric polynomial with spectrum in $S$ has no zero. For $S=\pm\{N+jb:\ 0\le j\le K\}$ with $b<2N$, their Theorem~3 gives $M(S)=(K+1)/(2N+Kb)$. Their Question~1 asks, ``What happens when $b\ge2N$?'', and whether an explicit formula exists there too. Write $M_K$ for $M(S)$, $\beta=N/b$ and $c=\lceil b/(2N)\rceil$.
+\pagepart{Harmonic analysis}{Zero-free intervals: both Kozma--Oravecz questions}
+\phantomsection\label{kozma}\enlargethispage{\baselineskip}
+For a finite symmetric set $S$ of nonzero integers, Kozma and Oravecz write $M(S)$ for the supremum of the lengths of intervals of $\mathbb R/\Z$ on which a real trigonometric polynomial with spectrum in $S$ has no zero. For $S=\pm\{N+jb:\ 0\le j\le K\}$ with $b<2N$, their Theorem~3 gives $M(S)=(K+1)/(2N+Kb)$. Their Question~1 asks, ``What happens when $b\ge2N$?'', and whether an explicit formula exists there too. Their Question~2, as the article states it, asks whether their uniform bound $O(1/N)$ for the squares $N^2,\dots,(N+K)^2$ has the right order. The ninth merge moved this material to a new section, \texttt{zfg}, with labels unchanged.
 
-\topic{The wide-step theorem}
-If $2N$ divides $b$, the theorem \texttt{rec:thm:wide} gives $bM_K=c$ for every $K$, attained by $\cos2\pi Nx$. Otherwise $c\ge2$, and $(2\beta c-1)/(K+2\beta)\le c-bM_K\le C_\beta/K$, the lower bound for every $K\ge0$ and the upper bound for large $K$. Hence $M_K\to c/b$, with a deficit of exact order $1/K$. Since $c=1$ when $b<2N$, the limit $\lceil b/(2N)\rceil/b$ also matches Theorem~3.
+\topic{Question 2: the order for squares}
+Write $M_{N,K}$ for the squares. The theorem \texttt{zfg:thm:squares} gives, for all $N\ge1$ and $K\ge0$,
+\[
+ \frac{3\min(K+1,N)}{14N^2}\le M_{N,K}\le\frac{K+1}{N(N+K+1)},\qquad\text{so}\qquad M_{N,K}\asymp\frac{\min(K+1,N)}{N^2}.
+\]
+The bound $O(1/N)$ thus has the right order exactly when $K$ is at least a fixed multiple of $N$. The lower bound is an exact maximum over prefixes, attained at an explicit prefix length; short bands are determined to fourth order in $K/N$, and as $N\to\infty$ every limit point of $NM_{N,\infty}$ lies in $[\sqrt3-\tfrac32,\tfrac{21}{62}]$. Whether $NM_{N,\infty}$ converges is open.
 
-In the variable $t=2\pi bx$, every allowed mode equals $e^{2\pi i\beta j}$ at $t=2\pi j$. For $0\le j\le c$ these points leave no circular gap larger than $\pi$, so a probability measure on them annihilates the whole spectrum and bounds the gap by $c/b$. The lower bound for the deficit adapts Kozma and Oravecz's argument-principle count; the construction truncates the binomial series of $(1-\rho e^{it})^{-2\beta}$, whose phase stays within $\pi/2$ of a constant for almost $c$ turns.
-
-\topic{Two frequencies, exactly}
-For integers $0<N<M$, the corollary \texttt{rec:cor:kozma} gives the supremum for the spectrum $\{\pm N,\pm M\}$ as $\mathcal B(M/N)/(2\pi N)$. Here $\mathcal B(r)$, the least diameter of a probability measure whose Fourier transform vanishes at $1$ and $r$, is determined for every real $r>1$ by \texttt{rec:thm:twofreq}. It equals $4\pi/(1+r)$ for $r<3$, recovering Theorem~3 with $K=1$, and $\pi$ at odd integers. Otherwise it is $2T$, where $T$ solves an explicit transcendental equation. The case $K=1$ is thus solved for every $b$, though not in elementary closed form.
-
-\topic{Transfer to zeros of $L$-functions}
-Assume Dirichlet GRH and fix a primitive $\chi$. The theorem \texttt{rec:thm:twopack} takes ordinates $\gamma_j$ of $L(s,\chi)$ within a bounded distance above $T(N+bj)$, $0\le j\le K$, with $K$ up to a small multiple of $\log T/\log\log T$. The least logarithmic span $D_T$ of a positive average cancelling every $\tfrac12+i\gamma_j$ satisfies $|TD_T-2\pi M_K|\le K^{-p_0}$, so off resonance the saving $2\pi c/b-TD_T$ has exact order $1/K$.
+\topic{Question 1: wide steps}
+Write $M_K$ for $M(S)$, $\beta=N/b$ and $c=\lceil b/(2N)\rceil$. If $2N\mid b$, then $bM_K=c$ for every $K$ (\texttt{rec:thm:wide}). Otherwise $c\ge2$ and $(2\beta c-1)/(K+2\beta)\le c-bM_K\le C_\beta/K$, so $M_K\to c/b$ with a deficit of exact order $1/K$; the upper bound comes from atoms at the points $t=2\pi j$, $0\le j\le c$, and the construction from a truncated binomial series. Two frequencies are solved for every ratio, by a transcendental equation (\texttt{rec:thm:twofreq}). The ninth merge adds a finite algebraic rule computing $M_2(N,b)$ for every $(N,b)$ (\texttt{zfg:thm:threerule}), closed analytic branches with expansions in $N/b$ when $b/N$ is an odd integer ($K=2,3$) or half an odd integer at least $5/2$ ($K=2$), and in these cases non-attainment and a unique extremal measure, with six or eight atoms (\texttt{zfg:thm:three}, \texttt{zfg:thm:half}, \texttt{zfg:thm:four}); for example $M(\{1,4,7,10\})=0.631478391694771\ldots$. Under Dirichlet GRH the wide-step law transfers to positive averages cancelling ordinates of $L(s,\chi)$ placed near such a progression (\texttt{rec:thm:twopack}).
 
 \topic{Assessment}
-This is a partial answer: the limit and sharp rate for every wide step, and exact values when $2N\mid b$ and for two frequencies. There is no explicit formula for finite $K\ge2$ off resonance, and $C_\beta$ is not computed. This review checked the question against the arXiv text, the agreement with Theorem~3 for $b<2N$ and $K=1$, and the convex-hull bound. The construction and the GRH transfer were not reviewed line by line, and priority was checked only by targeted searches. The result ranks with the Suvagiya, Zhao and Suzuki answers, below the McNew and Asada disproofs: it addresses one of four questions in a short specialist paper, not a numbered conjecture.
-\sources{\arcB{fil}{817}{Wide steps} $\cdot$ \arcB{fil}{723}{Two frequencies} $\cdot$ \arcB{fil}{529}{Classification} $\cdot$ \arcB{fil}{842}{Zeros} $\cdot$ \refs{https://arxiv.org/abs/math/0601021}{Kozma and Oravecz, Real Anal.\ Exchange 28 (2002/03)}}
+Question~2 is answered as to order, with absolute constants a factor $14/3$ apart; its sharp constant is open. Question~1 remains partial: the limit and sharp rate for every wide step, exact values for two frequencies and for the stated three- and four-frequency families, and no explicit formula for general $K\ge3$. This review earlier checked Question~1 against the arXiv text, the agreement with Theorem~3 and the convex-hull bound; the wording of Question~2 rests on the article, as the PDF text could not be extracted in this revision. Proofs and certificates were not reviewed line by line, and priority was checked only by targeted searches. Together the two answers address half of a short specialist paper's questions: moderate strength, with Question~2 complete as to order. The ranking as item~10 stands.
+\sources{\arcB{fil}{817}{Wide steps} $\cdot$ \arcB{fil}{723}{Two frequencies} $\cdot$ \arcB{fil}{842}{Zeros} $\cdot$ \arcD{zfg}{815}{Squares} $\cdot$ \arcD{zfg}{866}{Long bands} $\cdot$ \arcD{zfg}{495}{Three-frequency rule} $\cdot$ \arcD{zfg}{645}{Odd ratio} $\cdot$ \arcD{zfg}{698}{Four frequencies} $\cdot$ \arcD{zfg}{1248}{Open questions} $\cdot$ \refs{https://arxiv.org/abs/math/0601021}{Kozma and Oravecz, Real Anal.\ Exchange 28 (2002/03)}}
+
+\pagepart{Approximation theory}{Erd\'elyi's thin ellipse and Steinerberger's support problem}
+\phantomsection\label{erdelyi}
+\topic{Lorentz degree with all zeros in a thin ellipse}
+A real polynomial $P$ positive on $(-1,1)$ has a Lorentz representation $P(x)=\sum_{j=0}^Da_j(1-x)^j(1+x)^{D-j}$ with all $a_j\ge0$; the least such $D$ is its Lorentz degree $d_L(P)$. Erd\'elyi proved that $((x-a)^2+\varepsilon^2(1-a^2))^n$ has Lorentz degree of order $n/\varepsilon^2$, and asked (J.~Approx.\ Theory 67 (1991), \S8, p.~197) whether $d_L(p)\ge cn/\varepsilon^2$, with $c>0$ absolute, for every polynomial $p$ of degree $n$ with all zeros in the open ellipse $\mathcal E_\varepsilon$ with semiaxes $1$ and $\varepsilon$. The answer is no (\texttt{zfg:thm:erdelyi}): for $4\mid n$ the polynomial $P_n(x)=2+T_n((1+n^{-2})x)$ has rational coefficients, $n$ distinct zeros in $\mathcal E_{2/n}$, and
+\[
+ \tfrac13n^2\le d_L(P_n)\le8n^2,\qquad\text{so}\qquad \varepsilon_n^2\,d_L(P_n)/n\le32/n\to0 .
+\]
+Moreover the least finite Lorentz degree $L_n(\varepsilon)$ over all such polynomials of even degree $n$ satisfies (\texttt{zfg:thm:lorentz})
+\[
+ \tfrac3{100}\max\{n/\varepsilon,\varepsilon^{-2}\}\le L_n(\varepsilon)\le513\max\{n/\varepsilon,\varepsilon^{-2}\}.
+\]
+The upper bound inverts the Bernstein operator on polynomials of degree $n$ with a Neumann series; the lower bounds use Jensen's formula on confocal ellipses (many zeros) and log-convexity of $(\cosh s)^Dp(\tanh s)$ (one extreme zero).
+
+\topic{Steinerberger's support uncertainty}
+In his list of open problems (Problem~41 of the version of 31 March 2026, ``A kind of uncertainty principle?''; numbered 42 in an earlier version), Steinerberger asks, as the reports state it, whether a nonnegative $f$ on $\R/\Z$ with positive integral, support in $(-r,r)$ and $\widehat f(a)=0$ for all $a$ in a finite $A\subset\mathbb N$ must have $r\ge c(\sum_{a\in A}a^{-2})^{1/2}$. It must, with the optimal constant $c=1/(\pi\sqrt2)$, and the optimal constant for each size $|A|=n$ is explicit (\texttt{zfg:thm:support}). The source is a sharp inequality for any compactly supported probability measure $\mu$ of support diameter $L$: the imaginary parts $0<\lambda_1\le\lambda_2\le\dots$ of selected zeros of $\int e^{zt}d\mu(t)$ satisfy $\sum_j\lambda_j^{-p}\le(L/\pi)^p\sum_j(2j-1)^{-p}$, with equality only for two endpoint atoms (\texttt{zfg:thm:recip}). The direct analogue fails in every dimension $d\ge2$.
+
+\topic{Assessment}
+Erd\'elyi's question is answered completely in the negative, with the true order of the extremal degree; only the constants $3/100$ and $513$ are open. It is an established question from a leading author in constrained-polynomial inequalities, open for 35 years as far as targeted searches show (Erd\'elyi's 2014 survey of Lorentz polynomials recalls the zero-free-ellipse bounds but not an answer). Two merge agents checked the question against the scanned page; this revision did not see the page. Strength: strong within approximation theory; it needs no RH. Steinerberger's problem is answered with its sharp constant, but his list returned HTTP~404, so the wording rests on the two reports' identical statements: moderate, provisional on that wording.
+\sources{\arcD{zfg}{1089}{Lorentz section} $\cdot$ \arcD{zfg}{1109}{Order of the least degree} $\cdot$ \arcD{zfg}{1122}{Scaled Chebyshev polynomials} $\cdot$ \arcD{zfg}{1199}{One extreme zero} $\cdot$ \arcD{zfg}{966}{Reciprocal moments} $\cdot$ \arcD{zfg}{1028}{Support uncertainty} $\cdot$ Erd\'elyi, J.\ Approx.\ Theory 67 (1991) 187--198 $\cdot$ \refs{https://arxiv.org/abs/1406.2843}{Erd\'elyi (2014)}}
 
 \pagepart{Further transfers}{Three results independent of zero locations}
 Three other theorems illustrate the range of the compilation. Each has a sharp mathematical conclusion. Their relations to the open literature differ.
@@ -562,7 +617,7 @@ Item 13. For a nonzero centre $a$ let $D(a)=\{x\in\overline{\Q}_p:v_p(x/a-1)>1/(
 \[
  N_p^\circ(t)=(h-1)p+\mathbf 1_{e=h}\quad\Bigl(t=\tfrac{h(h+1)}2+e,\ 0\le e\le h,\ 2\le t\le p+1\Bigr),\qquad N_p^\circ(p+2)=p^2 .
 \]
-Integer polynomials with distinct roots attain both. At $p=11$, twelve terms allow at most 33 roots in the disk and thirteen allow 121; for large $p$ the extra term multiplies the maximum by about $\sqrt{p/2}$. The strict inequality matters: a closed disk of depth exactly $1/(p-1)$ can contain more roots.
+Integer polynomials with distinct roots attain both. At $p=11$, twelve terms allow at most 33 roots in the disk and thirteen allow 121; for large $p$ the extra term multiplies the maximum by about $\sqrt{p/2}$. Then two terms add one root, up to $p^2+p$ roots at $2p+4$ terms (\texttt{smd:thm:jump}). The strict inequality matters: a closed disk of depth exactly $1/(p-1)$ can contain more roots.
 
 \topic{Support structure and depth}
 The theorem \texttt{smd:thm:fixedsupport} shows that for a prescribed support of at most $p$ exponents the open-disk maximum depends only on the multiplicities of the exponents modulo $p$, through a Ferrers-diagram formula. On closed disks of every depth a rank rule in $\F_p[T]/\prod_{n\in E}(T-\bar n)$ gives the exact maximum. The proof expands after the $p$-adic exponential substitution, uses integral recurrences among the power sums of the exponents, and analyses the rank of the residue data. It is not a $p$-adic form of Descartes' rule of signs.
@@ -574,11 +629,11 @@ The polynomial $P(X)=(X^p-1)^p-p^p\bigl(X^p-1-p(X-1)\bigr)$ has $p+2$ terms. Wit
 Avendaño and Krick count roots in a fixed finite extension $K$ of $\Q_p$, of all valuations, with bounds linear in $t$ from below and quadratic from above. The disk count does not close that gap; whether it sharpens their upper bound in some range deserves a check. Rojas and Zhu solve very sparse polynomials over $p$-adic fields and bound root separation; the new theorem concerns one logarithmic disk in $\overline{\Q}_p$, not the roots in a field. Van der Poorten and Rumely treat general exponential polynomials. The sources cite no earlier sharp constant, and neither review found a named conjecture with this formulation. The sparse singular-moduli theorems (p.~\pageref{sparsesm}) bound conjugates of one number in such disks; this is a general extremal theorem.
 
 \topic{Assessment}
-This review rated it the best standalone note of the latest batch, of specialist interest. The supplementary review finds the formula and the jump more striking than a numerical extension of the CM applications and proposes a separate paper. Both agree that it resolves no published conjecture.
-\sources{\arcC{smd}{216}{Definitions}; \arcC{smd}{303}{Rank rule}; \arcC{smd}{392}{Fixed support}; \arcC{smd}{457}{Open disk}; \arcC{smd}{518}{$p+2$ terms}. \refs{https://arxiv.org/abs/1008.4808}{Avend\~ano--Krick}, \refs{https://arxiv.org/abs/2107.09173}{Rojas--Zhu}, \refs{https://doi.org/10.1112/jlms/s2-36.1.1}{van der Poorten--Rumely}.}
+This review rated it the best standalone note of the eighth batch, of specialist interest. The supplementary review finds the formula and the jump more striking than a numerical extension of the CM applications and proposes a separate paper. Both agree that it resolves no published conjecture.
+\sources{\arcC{smd}{216}{Definitions}; \arcC{smd}{303}{Rank rule}; \arcC{smd}{392}{Fixed support}; \arcC{smd}{457}{Open disk}; \arcC{smd}{518}{$p+2$ terms}; \arcD{smd}{3021}{To $2p+4$}. \refs{https://arxiv.org/abs/1008.4808}{Avend\~ano--Krick}, \refs{https://arxiv.org/abs/2107.09173}{Rojas--Zhu}, \refs{https://doi.org/10.1112/jlms/s2-36.1.1}{van der Poorten--Rumely}.}
 
 \pagepart{Multiplicity one}{How rarely two Euler products can differ}
-\phantomsection\label{euler}
+\phantomsection\label{euler}\enlargethispage{\baselineskip}
 Item 14. Take a finite group $X$ of Dirichlet characters and two distinct multisets $A,C$ of $k$ members of $X$. At each prime $p$ not dividing the modulus compare the local polynomials $\prod_{\chi\in A}(1-\chi(p)T)$ and $\prod_{\chi\in C}(1-\chi(p)T)$, and let $d_X(k)$ be the least natural density of primes at which they differ. This is an extremal strong-multiplicity-one problem for reducible products, and the whole polynomial matters, not only its trace: if $\chi$ has order four and $\chi(p)=i$, the multisets $\{1,\chi^2\}$ and $\{\chi,\chi^3\}$ both have trace zero at $p$, but their polynomials are $1-T^2$ and $1+T^2$.
 
 \topic{Cyclic groups}
@@ -599,8 +654,22 @@ with saturation from $k\ge M$ on. For groups of odd prime exponent $\ell$ the mi
 Under Dirichlet GRH, with $Q$ a common modulus and $t=\min\{s,\lfloor\log_2(2k)\rfloor\}$, every interval $(Y/2,Y)$ with $Y\ge C4^t\log^2(2Q)$ contains a prime distinguishing two distinct cyclic products (\texttt{rec:thm:cwindow}); the bound is $O(k^2\log^2(2Q))$ and stops growing once $t=s$.
 
 \topic{Evidence and assessment}
-The supplementary review enumerated all pairs of multisets by exact residue histograms in 52 small cyclic cases, with $E$ between 2 and 30 and $1\le k\le4$, and found the predicted minimum in each; that does not check the general proofs. Walji's matching densities concern trace agreement of irreducible Galois representations, not full Euler-polynomial agreement of these reducible products. Nothing is claimed about refined strong multiplicity one for automorphic representations, and the recovery of characters from zeros (p.~\pageref{shortspec}) is a different theorem. The question is the article's own; the supplementary review proposes these theorems as one of three first papers.
+The supplementary review enumerated all pairs of multisets by exact residue histograms in 52 small cyclic cases, with $E$ between 2 and 30 and $1\le k\le4$, and found the predicted minimum in each; that does not check the general proofs. Walji's matching densities concern trace agreement of irreducible Galois representations, not full Euler-polynomial agreement of these reducible products. Nothing is claimed about refined strong multiplicity one for automorphic representations, and the recovery of characters from zeros (p.~\pageref{shortspec}) is a different theorem. The cyclic question is the article's own (for Rajan's conjecture see the next page); the supplementary review proposes these theorems as one of three first papers.
 \sources{\arcC{rec}{4713}{Cyclic formula}; \arcC{rec}{4759}{Global minimum}; \arcC{rec}{4797}{Mass bound}; \arcC{rec}{4825}{$\ell$-group saturation}; \arcC{rec}{4895}{Prime windows}; \arcC{rec}{5001}{Odd prime order}; \arcC{rec}{5484}{Exponents 7 and 11}. \refs{https://arxiv.org/abs/1501.07343}{Walji}.}
+
+\pagepart{Multiplicity one}{A counterexample to Rajan's Conjecture~3 and the cubic constant $2/27$}
+\phantomsection\label{rajan}
+For a multiset $A$ of $n$ idele class characters, the representation $\pi(A)$ of $\mathrm{GL}_n$ induced from the diagonal torus has, at an unramified place $v$, the complete local polynomial $\prod_{\alpha\in A}(1-\alpha(v)T)$. As the article quotes it, Rajan's Conjecture~3 (Proc.\ Amer.\ Math.\ Soc.\ 128 (2000), p.~698) predicts that agreement of these polynomials on a set of places of density greater than $1-2^{-d(n)}$, $d(n)=\lfloor\log_2(2n)\rfloor$, forces $A=B$. In degree three the predicted ceiling is $3/4$. For quadratic characters of large rank $2^{-d(n)}$ is exactly the least disagreement density of p.~\pageref{euler}; cubic characters do better.
+
+\topic{The counterexample}
+Let $\chi\bmod7$ and $\psi\bmod13$ be the cubic characters with $\chi(3)=\psi(2)=e^{2\pi i/3}$, and put $A=\{1,\chi,\chi^2\}$, $B=\{\psi,\psi\chi,\psi\chi^2\}$. If $\chi(p)\ne1$ both local polynomials equal $1-T^3$; if $\chi(p)=1$ they are $(1-T)^3$ and $(1-\psi(p)T)^3$. So the packets are distinct but their complete local factors agree at natural and Dirichlet density $7/9>3/4$, differing exactly on sixteen residue classes modulo $91$; the least distinguishing prime is $29$ (\texttt{eul:thm:rajan}). Tensoring with independent quadratic characters gives counterexamples in every degree $3\cdot2^k\le n<4\cdot2^k$, over $\Q$. The verification is a finite character computation that this review checked by hand for the degree-three example.
+
+\topic{The exact replacement}
+For three characters of a compact group, distinct multisets have disagreement measure at least $2/9$, with equality exactly for the twisted pairs above (\texttt{eul:thm:abelian}); over a number field, agreement density is at most $7/9$. For inequivalent three-dimensional unitary representations of a compact group, complete characteristic polynomials differ on measure at least $2/27$, at least $1/8$ if one is reducible and at least $1/2$ if the determinants differ; equality $2/27$ holds exactly when both are irreducible and scalar on a common open subgroup of index nine with quotient $C_3\times C_3$ (\texttt{eul:thm:cubic}). Consequently Artin representations of dimension three agreeing at upper density above $25/27$ are equivalent, and $25/27$ is sharp, realized by an explicit Heisenberg extension of $\Q(\sqrt{-3})$ of degree $27$; the same sharp constant holds for unitary cuspidal $\mathrm{GL}_3$ representations tempered at almost all places (\texttt{eul:cor:artin}, \texttt{eul:thm:gl3}). The key input is that the trace of a matrix in $\mathrm{SU}(3)$ lies in the triangle with vertices $3$, $3\omega$, $3\omega^2$. The classical sharp trace-only cubic constant $1/18$, recalled by Martin and Walji, belongs to a different problem, since traces ignore determinants.
+
+\topic{Assessment}
+A short, checkable counterexample to a numbered conjecture published 26 years ago, plus a sharp theorem of independent interest. Rajan's paper returned HTTP~403 to this review, so the conjecture's wording, its density convention and whether Rajan intended to exclude Borel-induced packets rest on the report and the merge; the article notes that the conjecture as printed does not require cuspidality and that Ramakrishnan's cuspidal density conjecture is untouched. Targeted searches found no earlier counterexample. Strength: moderate to strong, provisional until the printed statement is checked; complete as a disproof. It needs no RH.
+\sources{\arcD{eul}{1197}{Rajan's conjecture} $\cdot$ \arcD{eul}{1217}{Counterexamples} $\cdot$ \arcD{eul}{1275}{Three characters} $\cdot$ \arcD{eul}{1312}{Sharp cubic separation} $\cdot$ \arcD{eul}{1383}{Artin representations} $\cdot$ \arcD{eul}{1428}{Tempered $\mathrm{GL}_3$} $\cdot$ \refs{https://doi.org/10.1090/S0002-9939-99-05616-6}{Rajan, Proc.\ Amer.\ Math.\ Soc.\ 128 (2000)} $\cdot$ \refs{https://arxiv.org/abs/1607.07586}{Martin--Walji}}
 
 \pagepart{Zeros and filters}{One positive filter for every zero}
 \phantomsection\label{filter}\enlargethispage{\baselineskip}
@@ -612,7 +681,7 @@ Conversely, if a probability measure $\mu$ has these zeros with these multiplici
 \[
  \int_{\R}\exp\{b\exp(\alpha|t|)\}\,d\mu(t)<\infty\quad\text{for some }b>0,
 \]
-then $\alpha\le2/d$. The exponent is exact, including its endpoint. The optimal coefficient is not established: at $\alpha=2/d$ the article proves only $b\le2\pi d/Q_*$, with $Q_*$ the geometric mean of the conductors. No simplicity or independence of zeros is assumed.
+then $\alpha\le2/d$. The exponent is exact, including its endpoint, and so is the coefficient: at $\alpha=2/d$ the supremum of admissible $b$ is $\pi d/Q_*$, $Q_*$ the geometric mean of the conductors, for every family (\texttt{fil:thm:endpoint}). No simplicity or independence of zeros is assumed.
 
 \topic{Why this is not a routine smoothing}
 A signed kernel with these zeros is easy to build from an entire product. The difficulty is to require positivity, exact zeros with multiplicity and the fastest decay at once. The article convolves theta kernels, which may be signed, divides out the central zero factor, and applies a compact Gaussian smoothing that makes the result positive; Jensen's formula and the zero count force the optimal exponent. For zeta alone Riemann's classical kernel already gives a positive density with exponent $2$. The positivity for several characters and the sharp converse are the new points. The exponent is sharp for cancellation with multiplicity; one vanishing per distinct ordinate might allow faster decay.
@@ -622,7 +691,7 @@ Averaging a smoothed prime sum $S_\chi(xe^u)$ against this density in the logari
 
 \topic{Assessment}
 This resolves a sharp optimization problem that the article poses itself. It resolves no classical conjecture on zero multiplicities, central values or prime gaps. The two-frequency and wide-step results of p.~\pageref{kozma}, and the logarithmic filter constant, are different problems. The supplementary review groups it with the coupled inverse spectra as a second analytic cluster.
-\sources{\arcC{fil}{1717}{Full-spectrum construction}; \arcC{fil}{1785}{Optimality}; \arcC{fil}{1811}{Endpoint constant}; \arcC{fil}{1838}{Prime sums}; \arcC{fil}{252}{Mean-frequency bound}; \arcC{fil}{1294}{Support for low zeros}. \refs{https://arxiv.org/abs/1409.4849}{Eremenko--Fryntov}.}
+\sources{\arcC{fil}{1717}{Full-spectrum construction}; \arcC{fil}{1785}{Optimality}; \arcC{fil}{1811}{Endpoint constant}; \arcD{fil}{1938}{Exact endpoint}; \arcD{fil}{2150}{Attainment}; \arcC{fil}{1838}{Prime sums}; \arcC{fil}{252}{Mean-frequency bound}; \arcC{fil}{1294}{Support for low zeros}. \refs{https://arxiv.org/abs/1409.4849}{Eremenko--Fryntov}.}
 
 \pagepart{Inverse spectral theory}{Graph-coupled $L$-functions and electrical transport}
 \phantomsection\label{coupled}
@@ -655,17 +724,17 @@ Let $n\to\infty$ with $q$ fixed (\texttt{spn:thm:hidden-threshold}). With $t\le 
 \[
  c_q=\prod_{j\ge2}\bigl(1-q^{-(2j-1)}\bigr).
 \]
-This is an exact chi-square limit. It is not a limiting value of the total variation, which the article bounds inside the window but does not identify.
+The ninth merge completes the window (\texttt{spn:thm:hidden-window}), for isotropic $r$-planes as well as two-planes. At a fixed offset the pair formed by the dimension of the solution space of the linear constraints and the number $Y$ of compatible nondegenerate forms converges in total variation to an explicit law, a dimension law and, given the dimension, a binomial count, and to its size-biased version under the planted model. So the limiting total variation, $\mathbb E(1-Y/\mathbb EY)_+$, the optimal recovery probability and the probability of a unique compatible form are all explicit.
 
 \topic{Many frames}
 For $k$ independent frames in a symplectic space of dimension $2n$, with total dimension $D$, the comparison with independent uniform cross pairings has a transition at $D=2n$. When $D=2n+w$ and the largest block has dimension $o(D)$, the total variation tends to a universal profile $\delta_q(w)$, for arbitrary prescribed forms; over $\F_2$ it is about $0.130634$ at $w=0$ and $0.261269$ at $w=1$. Observations indexed by a forest are exactly independent. There are families of isotropic frames in which every proper subcollection is within $O(q^{-\varepsilon n})$ of uniform while the full family is at distance $1-O(q^{-\varepsilon n})$. On growing cactus graphs the cycles factor exactly, and when the summed chi-square contributions tend to $\tau$, the limiting distance is $2\Phi(\sqrt\tau/2)-1$, with $\Phi$ the standard normal distribution function.
 
 \topic{Assessment}
 A threshold at the dimension of the hidden object is plausible from linear algebra, but the rigorous indistinguishability below it, the bounded transition window and the universal profile are much stronger. The results exhibit information invisible to pairwise tests and to every proper marginal, with possible uses in random linear algebra and finite-field inference. They establish neither security nor insecurity of any cryptosystem. They differ from the exact compression and rectangular laws of p.~\pageref{advances}. No named conjecture is resolved; the supplementary review recommends a separate presentation for a probabilistic audience.
-\sources{\arcC{spn}{2139}{Hidden-form threshold}; \arcC{spn}{2150}{Critical window}; \arcC{spn}{3372}{Joint threshold}; \arcC{spn}{3483}{Critical profile}; \arcC{spn}{3660}{Forest law}; \arcC{spn}{3676}{Hidden hierarchy}; \arcC{spn}{3909}{Cactus detection}.}
+\sources{\arcC{spn}{2139}{Hidden-form threshold}; \arcC{spn}{2150}{Critical window}; \arcD{cmp}{1901}{Complete critical law}; \arcD{cmp}{1930}{Additive threshold}; \arcC{spn}{3372}{Joint threshold}; \arcC{spn}{3483}{Critical profile}; \arcC{spn}{3660}{Forest law}; \arcC{spn}{3676}{Hidden hierarchy}; \arcC{spn}{3909}{Cactus detection}.}
 
 \pagepart{Algebraic extrema}{Fastest Cayley walks and the rank-two Gram minimum}
-\phantomsection\label{cayleygram}
+\phantomsection\label{cayleygram}\enlargethispage{\baselineskip}
 \topic{Every period of an oriented Cayley walk}
 Item 18, without RH. Let $G$ be a finite abelian group of order $N$ and exponent $n$, and consider nonempty simple oriented Cayley graphs on $G$ with skew adjacency matrix $S$ and evolution $e^{tS}$. The least positive return periods are exactly (\texttt{gra:thm:cayleyperiods})
 \[
@@ -684,11 +753,27 @@ The theorem \texttt{src:thm:gramasym} gives
 \[
  \min_A\frac{\det(AA^\top)}{D^2}=\kappa(n-1)^4+O(n^2),\qquad \kappa=\frac1{64\,\Phi(T_*)^2}\approx0.0681579323545,
 \]
-where $T_*\in(6,7)$ is the unique maximizer of $\Phi$. For large $n$ every minimizer has, in a suitable basis, the column $(1,0)$ and primitive columns on exactly six rows. The degrees of $\kappa$, $T_*$ and $\Phi(T_*)$ are 48, 96 and 96, by a certificate modulo 53 that deserves a targeted audit. The theorem answers part of the article's question \texttt{src:q:gram}. Bárány and Tokushige (sums of absolute determinants) and Kriepke and Schymura (the largest minor of generic $\Delta$-modular matrices) study other invariants and do not pose it.
+where $T_*\in(6,7)$ is the unique maximizer of $\Phi$. For large $n$ every minimizer has, in a suitable basis, the column $(1,0)$ and primitive columns on exactly six rows. The degrees of $\kappa$, $T_*$ and $\Phi(T_*)$ are 48, 96 and 96, by a certificate modulo 53 that deserves a targeted audit. The theorem answers part of the article's question \texttt{src:q:gram}. Bárány and Tokushige (sums of absolute determinants) and Kriepke and Schymura (the largest minor of generic $\Delta$-modular matrices) study other invariants and do not pose it. Rank $r$: order $n^{3r-2}$ (p.~\pageref{daviskohl}).
 
 \topic{Assessment}
 This review rated the first a clean classification and the second an elegant extremal theorem; the supplementary review calls the Cayley result a strong standalone contribution to algebraic graph theory. Neither found a named conjecture resolved.
-\sources{\arcC{gra}{3048}{All periods}; \arcC{gra}{3061}{Fastest return}; \arcC{src}{571}{Gram minimum}; \arcC{src}{725}{Algebraic degrees}; \arcC{src}{1139}{Question}. \refs{https://arxiv.org/abs/2405.14140}{Godsil--Zhang}, \refs{https://www.renyi.hu/~barany/cikkek/94.pdf}{B\'ar\'any--Tokushige}, \refs{https://arxiv.org/abs/2502.15394}{Kriepke--Schymura}.}
+\sources{\arcC{gra}{3048}{All periods}; \arcC{gra}{3061}{Fastest return}; \arcC{src}{571}{Gram minimum}; \arcC{src}{725}{Algebraic degrees}; \arcC{src}{1139}{Question}; \arcD{spn}{1314}{Every rank}. \refs{https://arxiv.org/abs/2405.14140}{Godsil--Zhang}, \refs{https://www.renyi.hu/~barany/cikkek/94.pdf}{B\'ar\'any--Tokushige}, \refs{https://arxiv.org/abs/2502.15394}{Kriepke--Schymura}.}
+
+\pagepart{Lattice combinatorics}{Davis--Kohl's cycle conjecture and generic column numbers}
+\phantomsection\label{daviskohl}
+\topic{Ehrhart numerators of stable set polytopes}
+For a graph $G$ on $n$ vertices let $\mathcal S_G$ be the convex hull of the indicator vectors of its cliques, the stable set polytope of the complement of $G$, with Ehrhart numerator $h_G$, and let $p_G(z)=\sum_kp_{2k}z^k$ count the vertex sets of size $2k$ whose induced subgraph has a perfect matching. Davis and Kohl proved $h_G=p_G$ for bipartite $G$ and stated, as Conjecture~3.15 of arXiv:2207.14759 (Discrete Math.\ 347 (2024)),
+\[
+ h_{C_n}(z)=p_{C_n}(z)+\tfrac12\bigl(1+(-1)^{n+1}\bigr)z^{(n+1)/2}\qquad(n\ge4).
+\]
+Even cycles are bipartite. For odd $n=2m+1\ge5$ the theorem \texttt{grw:thm:cycle} proves $h_{C_n}=p_{C_n}+z^{m+1}$, with an explicit binomial formula; for example $h_{C_9}=1+9z+27z^2+30z^3+9z^4+z^5$, the entry of the authors' table. The proof is half a page: inclusion--exclusion over zero coordinates reduces the low coefficients to the bipartite case, and Ehrhart reciprocity identifies the top coefficient with the single interior point $\mathbf 1$ of the $(m+1)$st dilate. The article goes further: for triangle-free nonbipartite $G$ of odd girth $2m+1$, $h_G-p_G$ begins with the number of shortest odd cycles times $z^{m+1}$, so $h_G=p_G$ exactly when $G$ is bipartite (\texttt{grw:thm:oddgirth}, \texttt{grw:cor:bipartite}).
+
+\topic{Generic matrices with a bounded largest minor}
+Let $g(\Delta,r)$ be the largest number of columns of an integer $r\times n$ matrix whose maximal minors are all nonzero and whose largest one has absolute value exactly $\Delta$. Kriepke, Kyureghyan and Schymura proved $g(\Delta,r)=O_r(\Delta^{2/r})$ for $r\ge3$, gave constructions with about $\Delta^{1/(r-1)}$ columns along a sparse sequence, and asked in their Question~3.4 whether $g(\Delta,r)=\Theta(\Delta^{1/(r-1)})$ for fixed $r\ge3$. The answer is yes, for every large $\Delta$ and also for the bound ``at most $\Delta$'' (\texttt{spn:thm:gramcolumn}). The upper bound comes from the new order of the least normalized Gram determinant, $c_rn^{3r-2}\le E_r(n)\le2^{2r-2}n^{3r-2}$ (\texttt{spn:thm:gramorder}), via Cauchy--Binet; the construction lifts a moment curve modulo a prime $p\nmid\Delta$, with an anchor block of determinant exactly $\Delta$.
+
+\topic{Assessment}
+Both are complete answers to precisely stated published problems, unconditional, with short proofs that can be checked directly. Davis--Kohl's conjecture was checked against the arXiv text in this revision; Question~3.4 was checked against arXiv by a merge reviewer. Targeted searches found no earlier proof of either. Strength: moderate for each, specialist, Ehrhart theory and the geometry of numbers respectively. The constants in the Gram order are not optimized.
+\sources{\arcD{grw}{2406}{Stable set polytopes} $\cdot$ \arcD{grw}{2419}{Cycle conjecture} $\cdot$ \arcD{grw}{2454}{Odd girth} $\cdot$ \arcD{grw}{2480}{Bipartite characterization} $\cdot$ \arcD{spn}{1314}{Order $n^{3r-2}$} $\cdot$ \arcD{spn}{1354}{Generic column numbers} $\cdot$ \refs{https://arxiv.org/abs/2207.14759}{Davis--Kohl} $\cdot$ \refs{https://arxiv.org/abs/2309.03772}{Kriepke--Kyureghyan--Schymura}}
 
 \pagepart{Probability and arithmetic}{Product profiles at every density, and conditional extremes}
 \phantomsection\label{further}
@@ -703,7 +788,7 @@ Item 21. For positive zero ordinates $\gamma_j$ and independent gamma weights $G
 and the height of the maximizing ordinate, on the scale $\sqrt{b_u}\,\gamma_{I_1}/u$, has a half-normal limit. For zeta with exponential weights $d=\theta=1$. The insight is the joint conditional limit and its independence structure, not a marginal estimate. All randomness lies in the imposed weights: this is not a theorem about the spacing or random-matrix statistics of the actual zeros, and no named problem is resolved.
 \sources{\arcC{dir}{4665}{Product setup}; \arcC{dir}{4870}{Mixing criterion}; \arcC{dir}{4912}{Profile classification}; \arcC{ana}{3772}{Marked extremes}; \arcC{ana}{3919}{Functional bridge}; \arcC{ana}{4001}{Dirichlet specialization}.}
 
-\pagepart{Latest merge}{Fifteen reports checked against the literature}
+\pagepart{Eighth merge}{Fifteen reports checked against the literature}
 \phantomsection\label{batch8}
 The fifteen reports merged at \href{\repo/commit/\shaC}{\texttt{3c4d27a69c}} claim no answer to a question or conjecture from the published literature, and this review found none. The four results most likely to matter outside the article were compared with the work they cite: sparse roots in a $p$-adic disk, the rank-two Gram minimum, the fastest oriented Cayley walks, and coupled Dirichlet spectra. Each now has one combined account with the supplementary review's evidence (pp.~\pageref{fewnomial}, \pageref{coupled} and~\pageref{cayleygram}).
 
@@ -713,6 +798,26 @@ This review rated the $p$-adic count the best standalone note of the batch, of s
 \topic{The rest of the batch}
 The other reports also answer the article's own questions: Euler matching at composite exponent (p.~\pageref{euler}); five-step towers, at most $4(p+1)+16$ for $p>10$ except at $p=11,31$; the many-frame laws (p.~\pageref{hidden}); the cluster-filter Hessian; and $-87$ (p.~\pageref{sixterm}).
 \sources{\arcC{smd}{457}{Open disk}; \arcC{src}{571}{Gram minimum}; \arcC{gra}{3048}{Cayley periods}; \arcC{zer}{5770}{Unknown labels}; \arcC{rec}{4713}{Euler matching}; \arcC{gra}{1676}{Five steps}; \arcC{spn}{3372}{Many frames}.}
+
+\pagepart{Latest merge}{Ninth merge: checked, below the bar}
+\phantomsection\label{batch9low}
+\topic{Partial results on published problems}
+Each is in the ledger (p.~\pageref{ledger9}): a genuine but partial advance on a named problem.
+\begin{itemize}\setlength{\itemsep}{1pt}
+\item \emph{Kozma--Oravecz, Question~1.} Exact three- and four-frequency families and a finite rule for $K=2$; the general wide-step formula stays open (p.~\pageref{kozma}).
+\item \emph{Kova\v{c}evi\'c, Conjecture~7.1} (arXiv:2607.21037). The diameter-three case of the anticode conjecture in every rank $A_n$, with all maximizers (\texttt{gpp:thm:diamthree}). Kova\v{c}evi\'c proved $n=3$, and a preprint of Schubr, in a nonstandard research archive, is cited for ranks $4,5,6$ and $n\ge44$, so ranks $7$ to $43$ are new; one diameter only, on a computer certificate implemented twice.
+\item \emph{Meagher--Purdy conjecture} on $t$-intersecting families of multisets. The conjectured maximum for $t=k-3$ and $m\ge48$, including a range outside their theorem; maximizers are not classified (\texttt{gpp:cor:defectthree}).
+\item \emph{K\"olbl, Conjecture~4.8} (arXiv:2404.02136). Read literally it fails already for $K_{1,3}$; under a corrected reading the exact cross-degree implies its inequalities, and the interlacing part is proved only for $k\le20$ (\texttt{grw:rem:kolbl}, \texttt{grw:thm:split}).
+\item \emph{Nevo--Petersen, Conjectures 1.4 and 6.3 and Problem~6.4.} Face realizations of gamma vectors of symmetric edge polytopes of graph suspensions and type-B analogues: the conclusions hold for flag unimodular boundary triangulations of these polytopes, not for all flag spheres (\texttt{grw:thm:faces}).
+\item \emph{Randriambololona, Problem~21} (ISIT 2015). The limiting law of $\dim(C*C')$ given $\dim(C\cap C')$ in one asymptotic regime, a fixed offset from the number of formal products; arbitrary finite parameters stay open (\texttt{spn:thm:code-products}).
+\end{itemize}
+
+\topic{Sharper answers to the article's own questions}
+The full-spectrum filter endpoint is now exactly $\pi d/Q_*$ (p.~\pageref{filter}); the hidden-form window has its complete critical law (p.~\pageref{hidden}); the sparse $p$-adic count is a staircase through $2p+4$ terms (p.~\pageref{fewnomial}); and $E_r(n)$ has order $n^{3r-2}$ in every rank (p.~\pageref{daviskohl}). Zeros for groups containing $A_n$, $n\ge5$, are detected by subfields smaller by a factor $\exp(\tfrac13n\log3+O(1))$, without Artin holomorphy or RH, and the $S_n$ multiplicity constant is found for $n\le16$ (\texttt{nab:thm:lowdegree}, \texttt{nab:thm:snsharp}). These are strong theorems, but like items 12 to 21 they answer the article's own questions.
+
+\topic{What this revision checked}
+Merged statements and proof outlines for every published-problem claim, not every proof; Davis--Kohl's conjecture against arXiv; the degree-three Rajan computation, by hand; targeted searches, which found no earlier answer to Erd\'elyi's, Davis--Kohl's or Rajan's problem. Rajan's paper (HTTP~403), Steinerberger's list (HTTP~404) and the text of Kozma and Oravecz's PDF could not be read. The merge reviewers' checks (Erd\'elyi's page; three arXiv statements) were not repeated.
+\sources{\arcD{gpp}{2316}{Diameter three} $\cdot$ \arcD{gpp}{2388}{Defect three} $\cdot$ \arcD{grw}{1727}{Cross-degree} $\cdot$ \arcD{grw}{1794}{Split graphs} $\cdot$ \arcD{grw}{2256}{Face realizations} $\cdot$ \arcD{cmp}{1713}{Code products} $\cdot$ \arcD{cmp}{1805}{Literature} $\cdot$ \arcD{nab}{1306}{Smaller detecting fields} $\cdot$ \arcD{nab}{769}{Sharp multiplicities} $\cdot$ \refs{https://arxiv.org/abs/2607.21037}{Kova\v{c}evi\'c} $\cdot$ \refs{https://arxiv.org/abs/1504.06657}{Meagher--Purdy} $\cdot$ \refs{https://arxiv.org/abs/2404.02136}{K\"olbl} $\cdot$ \refs{https://doi.org/10.1007/s00454-010-9243-6}{Nevo--Petersen} $\cdot$ \refs{https://arxiv.org/abs/1501.05978}{Randriambololona}}
 
 \pagepart{Evidence and attribution}{What was checked, and what remains open}
 \phantomsection\label{audit}\enlargethispage{\baselineskip}
@@ -730,7 +835,7 @@ New inverse results & Statements and portions of analytic method inspected; no c
 
 The supplied materials are three ChatGPT PDF assessments (\emph{Select Remarkable Results}, \emph{Assess GRH Results}, \emph{Summarize Article Results}) and a ZIP containing the earlier LaTeX report and its certificate script. The present report incorporates their arguments but does not inherit their verification claims as personal work. The actual execution transcript and unchanged certificate script accompany this report. The review is not peer review, and global originality is not certified.
 
-This revision adds links pinned at \href{\repo/commit/\shaB}{\texttt{7f951e1dfd}}, the merge of ten further reports. Their source packets were read against the merged statements. The questions they name are the article's own (symplectic fixed gaps, dyadic deletions, quarter density, Gaussian conductors, several torsion powers, four-point stencils, the logarithmic filter constant). The Grover-walk, prime-cubature and Legendre-code reports extend article results without naming a published problem, and the codes expressly do not improve the Gilbert--Varshamov bound. Three reviewers have since read the other 64 reports (batches four to six): one partial answer to a published question (p.~\pageref{kozma}), checked here; the rest answer the article's own questions or refine its theorems, as do the fifteen reports merged at \href{\repo/commit/\shaC}{\texttt{3c4d27a69c}}, where the newest links are pinned (p.~\pageref{batch8}). The merge is not verification; claims are the article's. A merged supplementary review of that snapshot adds ten sharp theorems, three published questions and its own checks (p.~\pageref{supplement}); this is not further verification.
+This revision adds links pinned at \href{\repo/commit/\shaB}{\texttt{7f951e1dfd}}, the merge of ten further reports. Their source packets were read against the merged statements. The questions they name are the article's own (symplectic fixed gaps, dyadic deletions, quarter density, Gaussian conductors, several torsion powers, four-point stencils, the logarithmic filter constant). The Grover-walk, prime-cubature and Legendre-code reports extend article results without naming a published problem, and the codes expressly do not improve the Gilbert--Varshamov bound. Three reviewers have read batches four to six (64 reports): one partial answer to a published question (p.~\pageref{kozma}), checked here; the rest answer the article's own questions or refine its theorems, as do the fifteen merged at \href{\repo/commit/\shaC}{\texttt{3c4d27a69c}}, with earlier links (p.~\pageref{batch8}). The merge is not verification; claims are the article's. A merged supplementary review of that snapshot adds ten sharp theorems, three published questions and its own checks (p.~\pageref{supplement}); this is not further verification. Newest links: \href{\repo/commit/\shaD}{\texttt{2f9fb0b144}} (p.~\pageref{batch9low}).
 \sources{\href{\base/README.md}{Live article inventory}; \href{\repo/tree/10802a6b36/Analysis/GeneralizedRiemannHypothesis/Research}{First research packets}; \href{\repo/tree/f2f9fd7531/Analysis/GeneralizedRiemannHypothesis/Research}{Later packets}; \refs{https://math.mit.edu/~drew/grh/}{Original Lean checks}; \refs{https://math.mit.edu/~drew/shortgrh/}{Shorter Lean checks}.}
 
 \pagepart{Evidence and attribution}{The merged supplementary review}
@@ -770,7 +875,7 @@ Martin's finiteness conjecture & CM refinement only & Varying nebentypus; exact 
 Zhao's Mertens criterion & Claimed abelian classification & Exactly 229 pass sufficient test; necessity is not shown.\\
 Suzuki's fixed cutoff & Claimed sign transition; partial general answer & Central nonvanishing above known range remains open.\\
 Suvagiya's signed cycles & Claimed exact optimum & Earlier counterexample already refuted constant conjecture; exact optimization new.\\
-Kozma--Oravecz, Question~1 & Partial answer & Sharp $1/K$ limit law; exact if $2N\mid b$ or $K=1$.\\
+Kozma--Oravecz, Question~1 & Partial answer & Sharp $1/K$ limit law; exact families (p.~\pageref{ledger9}).\\
 Beiglb\"ock et al., syndetic sets & Partial, RH-independent &Exact ratio spectra of periodic sets only.\\
 Chamberland--Straub, $M_{9/4}$ & Corrected under RH & $1.3742778\ldots$, not $1.3855108\ldots$\\
 Lee--O'Clarey, higher powers & Exact under Dirichlet GRH & Last exceptions 10,500 and 1,561,560.\\
@@ -781,6 +886,27 @@ Pomerance & Reduction & Least-prime congruence obstruction still open.\\\bottomr
 \topic{How famous are these questions?}
 Several are named, numbered, peer-literature conjectures. The integer and polynomial progression questions and the class-group completeness problems are well established within their areas. None is comparable in general mathematical prominence to RH itself. Their interest comes from precision, novelty of mechanism and the scope of the conclusions rather than from an inflated label of a second Millennium Problem.
 \sources{Primary literature links are on the topic pages. The ledger reports article claims, not certified resolutions.}
+
+\pagepart{Problem ledger}{Published problems from the ninth merge}
+\phantomsection\label{ledger9}
+{\small\renewcommand{\arraystretch}{1.0}\begin{tabularx}{\linewidth}{@{}>{\raggedright\arraybackslash}p{.31\linewidth}>{\raggedright\arraybackslash}p{.235\linewidth}Y@{}}\toprule
+\textbf{Problem in earlier literature} & \textbf{Status in article} & \textbf{Scope and qualification}\\\midrule
+Erd\'elyi (1991), Lorentz degree in a thin ellipse & Claimed no, RH-independent; complete & Least degree of order $\max\{n/\varepsilon,\varepsilon^{-2}\}$; constants open.\\
+Rajan (2000), Conjecture~3 & Claimed false, RH-independent & Agreement $7/9$ in degree three; fails for $3\cdot2^k\le n<4\cdot2^k$. Printed wording not seen here.\\
+Kozma--Oravecz, Question~2 & Order claimed & $\min(K+1,N)/N^2$; sharp constant and convergence open.\\
+Kozma--Oravecz, Question~1 & Partial, extended & Exact three- and four-frequency families; general $K$ open.\\
+Kriepke--Kyureghyan--Schymura, Q.~3.4 & Claimed yes & Every fixed $r\ge3$; constants not optimized.\\
+Davis--Kohl, Conjecture~3.15 & Claimed proved & All $n\ge4$; wording checked against arXiv.\\
+Steinerberger, Problem~41 & Claimed yes, sharp & Constant $1/(\pi\sqrt2)$; list unreachable, wording from reports.\\
+Sheth--Voo, Conjecture~1.5 & Proved under Dirichlet GRH & 31 turning points; unconditional for $q<512$.\\
+Kova\v{c}evi\'c, Conjecture~7.1 & Partial, computer-assisted & Diameter three in every rank; new ranks 7--43.\\
+Meagher--Purdy & Partial & Maximum for $t=k-3$, $m\ge48$; maximizers not classified.\\
+K\"olbl, Conjecture~4.8 & False as printed; corrected part & Cross-degree bounds; interlacing for $k\le20$.\\
+Nevo--Petersen, Conj.~1.4, 6.3, Problem~6.4 & Partial & Particular symmetric edge polytopes only.\\
+Randriambololona, Problem~21 & Partial & One asymptotic regime of the conditional law.\\\bottomrule\end{tabularx}}
+
+Rows record the article's claims, not certified resolutions. Apart from Kozma--Oravecz's Question~1, the first eight rows meet the bar (p.~\pageref{batch9}); that row and the last five do not (p.~\pageref{batch9low}).
+\sources{Primary literature links are on the topic pages.}
 
 \pagepart{Scope and attribution}{Standard implications deliberately excluded}
 \phantomsection\label{exclusions}\enlargethispage{\baselineskip}The following are not ranked as original mathematical contributions of this article, even if the verified upstream result makes earlier conditional statements unconditional in the usual mathematical sense. The distinction matters for scholarly credit.
@@ -806,9 +932,9 @@ The input theorem concerns the Riemann zeta function and Dirichlet $L$-functions
 The merged supplementary review's additions are distinct from earlier pages: the deep-disk count from the sparse singular-moduli theorems, the coupled inverse theorem from identifying single characters and fields, the many-frame results from the two-frame compression laws. Neither review supports saying that all automorphic $L$-functions satisfy RH or that a further major conjecture is solved, and neither established the status of every external open question.
 \sources{\arc{dir}{85}{Published implications}; \arc{dir}{184}{Primitive roots}; \arc{dir}{281}{Idoneal numbers}; \arc{dir}{977}{Prime-gap graphs}; \arc{nab}{1945}{Open nonabelian questions}; \arc{hec}{2413}{Open degree-two questions}; \arcC{dir}{334}{Idoneal genera}; \arcC{rec}{4281}{Bennett et al., Conj.~1.3}.}
 
-\pagepart{Research priorities}{What to extract, verify, and publish first}
+\pagepart{Research priorities}{What to extract, verify, and publish first}\enlargethispage{\baselineskip}
 \topic{Priority 1: three independent conjecture papers}
-Extract the sparse-singular-moduli article (with the three-term proof as a short independent section, followed by the five-term theorem and full-support families). Extract a unified integer-progression paper containing the explicit McNew disproof, the every-length theorem, the bounded-prime-block obstruction and the natural/upper-density gaps. A third paper should focus on the polynomial-ring conjecture and the beyond-all-orders discrepancy. All three can be reviewed without relying on the recent RH proof. Publish exact witnesses, generation scripts, small checkers and precise definitions of density and ratio. In particular, don't claim the optimum is known in closed form merely because it is computable.
+Extract the sparse-singular-moduli article (with the three-term proof as a short independent section, followed by the five-term theorem and full-support families). Extract a unified integer-progression paper containing the explicit McNew disproof, the every-length theorem, the bounded-prime-block obstruction and the natural/upper-density gaps. A third paper should focus on the polynomial-ring conjecture and the beyond-all-orders discrepancy. All three can be reviewed without relying on the recent RH proof. Publish exact witnesses, generation scripts, small checkers and precise definitions of density and ratio. In particular, don't claim the optimum is known in closed form merely because it is computable. Short notes on Erd\'elyi's question, Rajan's conjecture and Davis--Kohl's conjecture can follow.
 
 \topic{Priority 2: a definitive arithmetic census}
 Write a separate exponent-six/seven paper preserving the distinction between previously found lists and new completeness. Independently implement the paired norm-equation exclusions and interval arithmetic, verify all endpoints, compare the order lists against the published conductor enumeration, and package minimal exact certificates. This is the most compelling new arithmetic application that genuinely uses Dirichlet GRH. In parallel, repair the odd-weight lemma in the CM section and extract the weight-two prime-degree classification and local conductor test.
@@ -820,5 +946,5 @@ The current short-spectrum theorem for all primitive characters and the unrestri
 A realistic next milestone is the $S_3$ splitting field of $X^3-X-1$. Use the explicit nonsplit-prime inequality as the target. The article's torsion, Selmer, spanning and determinant interfaces help specify what a proof must supply, and identify which apparently plausible uniform hypotheses fail. Further research should focus on constructing and checking the missing arithmetic inequality, not adding more equivalent formulations alone. An actual proof for a nonabelian field would be a qualitatively different accomplishment.
 
 \topic{Final verdict}
-Yes: the article contains credible candidates for several new resolutions of specialist conjectures and published open questions, as well as striking new structural theorems. The clearest conjecture disproofs are McNew and Asada et al.; the strongest unconditional rigidity theorem is the five-term singular-moduli classification and its extensions; the strongest genuinely GRH-dependent classification is the exponent-six/seven census. These claims deserve independent validation and individual publication. No new major general Riemann hypothesis has yet been proved by the downstream collection.
+Yes: the article contains credible candidates for several new resolutions of specialist conjectures and published open questions, as well as striking new structural theorems. The clearest conjecture disproofs are McNew and Asada et al.; the strongest unconditional rigidity theorem is the five-term singular-moduli classification and its extensions; the strongest genuinely GRH-dependent classification is the exponent-six/seven census. The ninth merge adds answers to Erd\'elyi's 1991 question and Rajan's Conjecture~3. These claims deserve independent validation and individual publication. No new major general Riemann hypothesis has yet been proved by the downstream collection.
 \end{document}
