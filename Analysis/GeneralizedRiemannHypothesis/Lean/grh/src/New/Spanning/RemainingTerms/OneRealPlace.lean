@@ -24,7 +24,7 @@ Notions from other files:
 ## Main definitions and results
 
 * `New.volumeRatio`: the ratio `ν(y)` of the two volumes.
-* `New.RealPlace.IsNegativeBasis.volumeRatio_eq`: `ν(y)` in a basis of `y V₋ ∩ I^⊥`.
+* `New.RealPlace.volumeRatio_eq_det_dualProducts`: `ν(y)` from the dual products on the selected frame.
 * `New.RealPlace.IsTriangularBasis.norm_det_mul_le_volumeRatio`: the lower bound for `ν(y)`.
 * `New.RealPlace.differenceX₀_eq_add`: the dependence of `v` on the unipotent element.
 * `New.RealPlace.exists_majorant_volumeRatio_inv_pow`: an integrable majorant of `ν ^ (-(k + i))`.
@@ -108,7 +108,7 @@ lemma continuous_frameVolume : Continuous (frameVolume : 𝔰.G₁ → ℝ) := b
 
 /-- The ratio `ν(y)` of the volumes of the projections of the frame of `γ` and of the standard
 frame to the negative space `y V₋`. Vectors shared by the two flags cancel in it
-(`New.RealPlace.IsNegativeBasis.volumeRatio_eq`). -/
+(`New.RealPlace.volumeRatio_eq_det_dualProducts`). -/
 def volumeRatio (y : 𝔰.G₁) : ℝ := frameVolume (γ⁻¹ * y) / frameVolume y
 
 lemma volumeRatio_pos (y : 𝔰.G₁) : 0 < volumeRatio γ y :=
@@ -238,49 +238,6 @@ lemma RealPlace.J₁_mul_frameLeftInverse_conjTranspose (y : 𝔰.G₁) :
     ← Matrix.mul_assoc 𝔰.J₁, J₁_mul_inv_conjTranspose, Matrix.mul_assoc y.val.val,
     J₁_mul_one_sub_J₁_mul, Matrix.mul_neg, Matrix.neg_mul]
 
-/-- The `-1` eigenspace `V₋` of `J₁` is spanned by the columns of `(1 - J₁) * frameCols`: a matrix
-`W` with `J₁ * W = -W` equals `(1 - J₁) * frameCols * a` for some matrix `a`. -/
-lemma RealPlace.exists_eq_one_sub_J₁_mul {m : Type} {W : Matrix 𝔰.BesselIndex m ℂ}
-    (hW : 𝔰.J₁ * W = -W) :
-    ∃ a : Matrix (Fin 𝔰.n) m ℂ, W = (1 - 𝔰.J₁) * 𝔰.frameCols * a := by
-  obtain ⟨h_eStar, h_X₀, -⟩ : (∀ (b : Fin 𝔰.ϱ) (l : m), W (eStar b) l = -W (.inl b) l) ∧
-      (∀ (x : 𝔰.κ) (l : m), W (𝔰.indexX₀ x) l = -W (𝔰.indexX₀ x) l) ∧
-      ∀ (b : Fin 𝔰.ϱ) (l : m), W (.inl b) l = -W (eStar b) l := by
-    simpa [← ext_iff, J₁_eq, inclMatrix, mul_apply, Matrix.one_apply, sum_univ_castSucc] using hW
-  have h_X₀_zero (x : 𝔰.κ) (l : m) : W (.inr (.inl (.inl x))) l = 0 := self_eq_neg.1 (h_X₀ x l)
-  refine ⟨of fun a l ↦ lastCases (W 𝔰.z l / 2) (fun b ↦ W (.inl b) l) a, ?_⟩
-  ext b l
-  obtain b | (b | ⟨⟩) | b := b <;>
-    simp [J₁_eq, inclMatrix, mul_apply, Matrix.one_apply, sum_univ_castSucc, h_eStar,
-      h_X₀_zero, one_add_one_eq_two, mul_div_cancel₀]
-
-/-- A vector of the negative space `y V₋` is determined by its products for `J₁` with the frame
-`f`. Let `B = frameLeftInverse y` be the left inverse of `frameCols` (so `B f = 1`) that vanishes
-on the orthogonal complement of `y V₋` for `J₁`. If the columns of `y⁻¹ ω` lie in the `-1`
-eigenspace `V₋` of `J₁`, then `ω` is `J₁ Bᴴ` times the matrix `fᴴ J₁ ω` of these products. -/
-lemma RealPlace.eq_mul_of_J₁_mul_eq_neg {m : Type} {y : 𝔰.G₁} {ω : Matrix 𝔰.BesselIndex m ℂ}
-    (hω : 𝔰.J₁ * (y⁻¹.val.val * ω) = -(y⁻¹.val.val * ω)) :
-    ω = 𝔰.J₁ * (frameLeftInverse y)ᴴ * (𝔰.frameColsᴴ * 𝔰.J₁ * ω) := by
-  -- Write `y⁻¹ ω = (1 - J₁) f a`; both sides equal `y (1 - J₁) f a`.
-  obtain ⟨a, ha⟩ :
-      ∃ a : Matrix (Fin 𝔰.n) m ℂ, y⁻¹.val.val * ω = (1 - 𝔰.J₁) * 𝔰.frameCols * a :=
-    exists_eq_one_sub_J₁_mul hω
-  obtain rfl : ω = y.val.val * ((1 - 𝔰.J₁) * 𝔰.frameCols * a) := by
-    rw [← ha, ← Matrix.mul_assoc]
-    simp
-  set M : 𝔰.FrameMatrix := ((1 - 𝔰.J₁) * 𝔰.frameCols)ᴴ * y⁻¹.val.val * 𝔰.frameCols with hM
-  have hM_det : IsUnit Mᴴ.det := by
-    rw [det_conjTranspose]
-    exact (norm_pos_iff.1 (frameVolume_pos y)).isUnit.star
-  have h_products :
-      𝔰.frameColsᴴ * 𝔰.J₁ * (y.val.val * ((1 - 𝔰.J₁) * 𝔰.frameCols * a)) = -(Mᴴ * a) := by
-    rw [Matrix.mul_assoc, ← Matrix.mul_assoc 𝔰.J₁, J₁_mul_coe, Matrix.mul_assoc,
-      ← Matrix.mul_assoc 𝔰.J₁, J₁_mul_one_sub_J₁_mul, hM]
-    simp [Matrix.mul_assoc]
-  rw [h_products, J₁_mul_frameLeftInverse_conjTranspose, ← hM, Matrix.neg_mul, Matrix.mul_neg,
-    neg_neg, Matrix.mul_assoc _ Mᴴ⁻¹, nonsing_inv_mul_cancel_left _ _ hM_det,
-    Matrix.mul_assoc y.val.val]
-
 /-- Let the columns of `inclMatrix ℂ e` be the basis vectors at the indices `e l`, and let `pᴴ`
 be a left inverse of this matrix. Suppose that for each other index `b` the matrix `N` maps a
 vector `x'` to a vector `x` in the kernel of `pᴴ`, both with last nonzero coefficient at `b`,
@@ -357,74 +314,6 @@ matrix `Z` of the products of the frames. -/
 abbrev RealPlace.subframeBlock (Z : 𝔰.FrameMatrix) : Matrix (Fin (i + 1)) (Fin (i + 1)) ℂ :=
   Z.submatrix (subframeIndex hi) (subframeIndex hi)
 
-/-- The columns of `ω` lie in the negative space at `y`, are orthogonal to `I = A ∩ γ A`, where `A`
-is the isotropic space, and pair perfectly with the subframe. For `γ` with norm-one pairs occurring
-from level `j` with `i = min ϱ j` they are a basis of `y V₋ ∩ I^⊥`. -/
-structure RealPlace.IsNegativeBasis (γ y : 𝔰.G₁) (ω : Matrix 𝔰.BesselIndex (Fin (i + 1)) ℂ) :
-    Prop where
-  /-- The columns of `y⁻¹ ω` lie in `V₋`. -/
-  J₁_mul : 𝔰.J₁ * (y⁻¹.val.val * ω) = -(y⁻¹.val.val * ω)
-  /-- The columns of `ω` are orthogonal to every vector `f x = γ f x'` that lies in `A`. -/
-  orthogonal : ∀ x x' : Fin (𝔰.ϱ + 1) → ℂ,
-    γ.val.val *ᵥ 𝔰.frameCols *ᵥ x' = 𝔰.frameCols *ᵥ x →
-    x 𝔰.top = 0 → (𝔰.frameColsᴴ * 𝔰.J₁ * ω)ᴴ *ᵥ x = 0
-  /-- The products of the subframe with the columns of `ω` form an invertible matrix. -/
-  det_ne_zero : ((subframeCols hi)ᴴ * 𝔰.J₁ * ω).det ≠ 0
-
-/-- **The weight modulo `I`.** Let `γ, y ∈ G₁`, let `f = (e₁, …, e_ϱ, z)` be the frame, `A` the span
-of the `e_a`, `I = A ∩ γ A` and `V₋` the `-1` eigenspace of `J₁`. Let `NormOnePairOccursFrom j γ`
-hold, with `i = min ϱ j`; `subframeCols` has the vectors `e₁, …, e_i, z` of the subframe as columns.
-Let `ω` be a negative basis (`IsNegativeBasis`): its `i + 1` columns lie in `y V₋`, are orthogonal
-to `I` for `J₁`, and their `J₁`-products with the subframe form an invertible matrix. Then
-`volumeRatio γ y`, the ratio `ν(y)` of the volumes of the projections of `γ f` and `f` to `y V₋`, is
-the modulus of the determinant of the products of `ω` with `γ e₁, …, γ e_i, γ z`, divided by that of
-the products of `ω` with `e₁, …, e_i, z`. -/
-theorem RealPlace.IsNegativeBasis.volumeRatio_eq (hi_le : i ≤ 𝔰.ϱ)
-    {ω : Matrix 𝔰.BesselIndex (Fin (i + 1)) ℂ} (hω : IsNegativeBasis hi_le γ y ω)
-    (hγ : NormOnePairOccursFrom j γ) (hij : i = min 𝔰.ϱ j) :
-    volumeRatio γ y =
-      ‖(((γ : Matrix 𝔰.BesselIndex 𝔰.BesselIndex ℂ) * subframeCols hi_le)ᴴ * 𝔰.J₁ * ω).det‖ /
-        ‖((subframeCols hi_le)ᴴ * 𝔰.J₁ * ω).det‖ := by
-  -- `N` is the matrix of the projection of `γ f` in the basis given by the projection of `f`.
-  -- `P` holds the products of the frame with `ω`, and `P * (inclᴴ * P)⁻¹` those with the basis
-  -- dual to the subframe. The shared vectors reduce `det N` to a determinant on the subframe.
-  obtain ⟨ζ, hζ, h_flag⟩ : ∃ ζ : ℂ, ζ * star ζ = 1 ∧
-      ∀ b : Fin (𝔰.ϱ + 1), j ≤ b.val → PairOccursAt γ ζ 1 b := hγ
-  have hζ_norm : ‖ζ‖ = 1 :=
-    (pow_eq_one_iff_of_nonneg (norm_nonneg ζ) two_ne_zero).1 (by simpa [sq] using congrArg norm hζ)
-  let incl : Matrix (Fin 𝔰.n) (Fin (i + 1)) ℂ := inclMatrix ℂ (subframeIndex hi_le)
-  let N : 𝔰.FrameMatrix := frameLeftInverse y * γ.val.val * 𝔰.frameCols
-  let P : Matrix (Fin 𝔰.n) (Fin (i + 1)) ℂ := 𝔰.frameColsᴴ * 𝔰.J₁ * ω
-  have h_subframe_products : (subframeCols hi_le)ᴴ * 𝔰.J₁ * ω = inclᴴ * P := by
-    simp only [P, incl, conjTranspose_mul, Matrix.mul_assoc]
-  have h_det : IsUnit (inclᴴ * P).det := by
-    simpa only [h_subframe_products, isUnit_iff_ne_zero] using hω.det_ne_zero
-  have h_image : (γ.val.val * subframeCols hi_le)ᴴ * 𝔰.J₁ * ω = (N * incl)ᴴ * P := by
-    conv_lhs => rw [eq_mul_of_J₁_mul_eq_neg hω.J₁_mul]
-    simp [N, P, incl, Matrix.mul_assoc, mul_mul_eq_of_mul_eq mul_self]
-  have h_left_inv : (P * (inclᴴ * P)⁻¹)ᴴ * incl = 1 := by
-    simpa [Matrix.mul_assoc] using congrArg conjTranspose (mul_nonsing_inv _ h_det)
-  have h_reduce : ‖N.det‖ = ‖((P * (inclᴴ * P)⁻¹)ᴴ * (N * incl)).det‖ := by
-    refine norm_det_eq_norm_det_mul_inclMatrix h_left_inv fun b hb ↦ ?_
-    obtain ⟨h_le, h_ne⟩ : i ≤ b ∧ b ≠ 𝔰.top := le_and_ne_top_of_notMem_range hi_le hb
-    have h_level : j ≤ b.val := by grind
-    obtain ⟨x, x', h_shared, hx_lead, h_lead, h_above⟩ : PairOccursAt γ ζ 1 b :=
-      h_flag b h_level
-    have h_frames : γ.val.val *ᵥ 𝔰.frameCols *ᵥ x' = 𝔰.frameCols *ᵥ x := by
-      rw [mulVec_mulVec, mul_inclMatrix]
-      exact h_shared.symm
-    have hx_top : x 𝔰.top = 0 := (h_above _ (lt_top_iff_ne_top.2 h_ne)).1
-    refine ⟨x, x', ?_, ?_, (congrArg norm hx_lead).trans hζ_norm, h_lead, h_above⟩
-    · simp [N, ← mulVec_mulVec, h_frames, mulVec_mulVec x, frameLeftInverse_mul_frameCols]
-    · rw [conjTranspose_mul, ← mulVec_mulVec, hω.orthogonal x x' h_frames hx_top, mulVec_zero]
-  calc
-    volumeRatio γ y = ‖((P * (inclᴴ * P)⁻¹)ᴴ * (N * incl)).det‖ :=
-      (volumeRatio_eq_norm_det γ y).trans h_reduce
-    _ = ‖((N * incl)ᴴ * P).det‖ / ‖(inclᴴ * P).det‖ := by
-      rw [← norm_star, ← det_conjTranspose]
-      simp [← Matrix.mul_assoc, det_mul _ (inclᴴ * P)⁻¹, div_eq_mul_inv]
-    _ = _ := by rw [h_image, h_subframe_products]
-
 /-- The products of the frame with the basis of the span of `γ e₁, …, γ e_i, γ z` that is dual to
 the subframe `e₁, …, e_i, z`, in terms of the matrix `Z` of the products of the two frames. -/
 def RealPlace.dualProducts (Z : 𝔰.FrameMatrix) : Matrix (Fin 𝔰.n) (Fin (i + 1)) ℂ :=
@@ -439,6 +328,39 @@ lemma RealPlace.inclMatrix_mul_dualProducts (hδ : (subframeBlock hi Z).det ≠ 
   rw [dualProducts, ← Matrix.mul_assoc, ← mul_nonsing_inv _ hδ.isUnit]
   congr 1
   simp [← Matrix.ext_iff, inclMatrix, mul_apply, Matrix.one_apply]
+
+/-- The shared flag vectors reduce the projected-frame determinant to its selected coordinates.
+The left inverse on those coordinates is given by the conjugate transpose of the dual products. -/
+lemma RealPlace.volumeRatio_eq_det_dualProducts {Z : 𝔰.FrameMatrix}
+    (hZ : realFrameGram γ = Z) (hδ : (subframeBlock hi Z).det ≠ 0)
+    (hγ : NormOnePairOccursFrom j γ) (hij : i = min 𝔰.ϱ j) :
+    volumeRatio γ y = ‖((dualProducts hi Z)ᴴ *
+      ((frameLeftInverse y * γ.val.val * 𝔰.frameCols) * inclMatrix ℂ (subframeIndex hi))).det‖ := by
+  obtain ⟨ζ, hζ, h_flag⟩ : ∃ ζ : ℂ, ζ * star ζ = 1 ∧
+      ∀ b : Fin (𝔰.ϱ + 1), j ≤ b.val → PairOccursAt γ ζ 1 b := hγ
+  have hζ_norm : ‖ζ‖ = 1 :=
+    (pow_eq_one_iff_of_nonneg (norm_nonneg ζ) two_ne_zero).1 (by simpa [sq] using congrArg norm hζ)
+  let incl : Matrix (Fin 𝔰.n) (Fin (i + 1)) ℂ := inclMatrix ℂ (subframeIndex hi)
+  rw [volumeRatio_eq_norm_det]
+  have h_left : (dualProducts hi Z)ᴴ * incl = 1 := by
+    simpa only [conjTranspose_mul, conjTranspose_conjTranspose, conjTranspose_one] using
+      congrArg conjTranspose (inclMatrix_mul_dualProducts hi hδ)
+  apply norm_det_eq_norm_det_mul_inclMatrix h_left
+  intro b hb
+  obtain ⟨h_le, h_ne⟩ : i ≤ b ∧ b ≠ 𝔰.top := le_and_ne_top_of_notMem_range hi hb
+  have h_level : j ≤ b.val := by grind
+  obtain ⟨x, x', h_shared, hx_lead, h_lead, h_above⟩ : PairOccursAt γ ζ 1 b :=
+    h_flag b h_level
+  have h_frames : γ.val.val *ᵥ 𝔰.frameCols *ᵥ x' = 𝔰.frameCols *ᵥ x := by
+    rw [mulVec_mulVec, mul_inclMatrix]
+    exact h_shared.symm
+  have hx_top : x 𝔰.top = 0 := (h_above _ (lt_top_iff_ne_top.2 h_ne)).1
+  refine ⟨x, x', ?_, ?_, (congrArg norm hx_lead).trans hζ_norm, h_lead, h_above⟩
+  · simp [← mulVec_mulVec, h_frames, mulVec_mulVec x, frameLeftInverse_mul_frameCols]
+  · obtain ⟨h_products, h_norm⟩ := conjTranspose_realFrameGram_mulVec h_frames
+    have hx' : x' 𝔰.top = 0 := by rwa [hx_top, norm_zero, norm_eq_zero] at h_norm
+    have h_orth : Zᴴ *ᵥ x = 0 := by rw [← hZ, h_products, hx', neg_zero, Pi.single_zero]
+    simp [dualProducts, ← mulVec_mulVec, h_orth]
 
 /-- If `Z` is the matrix of the products of the two frames, the products of the frame with the
 image under `γ` of the subframe `e₁, …, e_i, z` are the columns of `Z` at its indices. -/
@@ -457,9 +379,8 @@ structure RealPlace.IsTriangularBasis (y : 𝔰.G₁) (Z : 𝔰.FrameMatrix)
   J₁_mul : 𝔰.J₁ * (y⁻¹.val.val * ω) = -(y⁻¹.val.val * ω)
   /-- The Gram matrix of `ω` is `-1`. -/
   gram_eq_neg_one : ωᴴ * 𝔰.J₁ * ω = -1
-  /-- The products of the frame with `ω` are those with the basis of the span of the image of the
-  subframe whose products with the subframe form `L`. -/
-  products_eq : 𝔰.frameColsᴴ * 𝔰.J₁ * ω = dualProducts hi Z * L
+  /-- The normalized frame is obtained by applying `L` to the canonical dual frame. -/
+  frame_eq : ω = 𝔰.J₁ * (frameLeftInverse y)ᴴ * dualProducts hi Z * L
   /-- `L` is lower triangular. -/
   triangular : ∀ a b : Fin (i + 1), a < b → L a b = 0
   /-- `L` is invertible. -/
@@ -499,12 +420,11 @@ lemma RealPlace.exists_isTriangularBasis {i : ℕ} {Z : 𝔰.FrameMatrix} (hi_le
       (∀ a b : Fin (i + 1), a < b → L a b = 0) ∧ Lᴴ * (Wᴴ * W) * L = 1 :=
     exists_lowerTriangular_conjTranspose_mul_mul_eq_one (PosDef.conjTranspose_mul_self W h_inj)
   refine ⟨ω₀ * L, L,
-    { J₁_mul := ?_, gram_eq_neg_one := ?_, products_eq := ?_, triangular := h_triangular,
+    { J₁_mul := ?_, gram_eq_neg_one := ?_, frame_eq := rfl, triangular := h_triangular,
       det_ne_zero := fun h_zero ↦ ?_ }⟩
   · rw [← Matrix.mul_assoc y⁻¹.val.val, ← Matrix.mul_assoc, hW, Matrix.neg_mul]
   · rw [← hL, ← Matrix.neg_mul, ← Matrix.mul_neg, ← h_gram]
     simp only [conjTranspose_mul, Matrix.mul_assoc]
-  · simp [← Matrix.mul_assoc, h_products]
   · simpa [h_zero] using congrArg det hL
 
 section TriangularBasis
@@ -516,30 +436,19 @@ namespace RealPlace.IsTriangularBasis
 
 variable {hi}
 
+lemma products_eq (h : IsTriangularBasis hi y Z ω L) :
+    𝔰.frameColsᴴ * 𝔰.J₁ * ω = dualProducts hi Z * L := by
+  rw [h.frame_eq]
+  simp only [Matrix.mul_assoc, mul_mul_eq_of_mul_eq mul_self, Matrix.one_mul]
+  rw [← Matrix.mul_assoc, ← conjTranspose_mul, frameLeftInverse_mul_frameCols,
+    conjTranspose_one, Matrix.one_mul]
+
 /-- If the block of `Z` at the subframe `e₁, …, e_i, z` is invertible and `(ω, L)` is a triangular
 basis at `y ∈ G₁`, the products of the subframe with `ω` form the matrix `L`. -/
 lemma conjTranspose_subframeCols_mul_J₁_mul_eq (h : IsTriangularBasis hi y Z ω L)
     (hδ : (subframeBlock hi Z).det ≠ 0) : (subframeCols hi)ᴴ * 𝔰.J₁ * ω = L := by
   rw [conjTranspose_mul, Matrix.mul_assoc, Matrix.mul_assoc, ← Matrix.mul_assoc 𝔰.frameColsᴴ,
     h.products_eq, ← Matrix.mul_assoc, inclMatrix_mul_dualProducts hi hδ, Matrix.one_mul]
-
-/-- Let `γ, y ∈ G₁`, let `Z` be the matrix of products of the frames `f` and `γ f` and let its block
-at the subframe `e₁, …, e_i, z` be invertible. Then a triangular basis `ω` is a negative basis: its
-columns lie in `y V₋`, pair perfectly with the subframe and are orthogonal to `A ∩ γ A`. -/
-lemma isNegativeBasis (h : IsTriangularBasis hi y Z ω L)
-    (hZ : realFrameGram γ = Z) (hδ : (subframeBlock hi Z).det ≠ 0) :
-    IsNegativeBasis hi γ y ω := by
-  have h_det : ((subframeCols hi)ᴴ * 𝔰.J₁ * ω).det ≠ 0 := by
-    rw [h.conjTranspose_subframeCols_mul_J₁_mul_eq hδ]
-    exact h.det_ne_zero
-  refine ⟨h.J₁_mul, fun x x' h_shared hx ↦ ?_, h_det⟩
-  -- A vector of `I` lies in `γ A`, so it is orthogonal to the frame of `γ`.
-  obtain ⟨h_products, h_norm⟩ :
-      (realFrameGram γ)ᴴ *ᵥ x = Pi.single 𝔰.top (-x' 𝔰.top) ∧ ‖x' 𝔰.top‖ = ‖x 𝔰.top‖ :=
-    conjTranspose_realFrameGram_mulVec h_shared
-  have hx' : x' 𝔰.top = 0 := by rwa [hx, norm_zero, norm_eq_zero] at h_norm
-  have h_orth : Zᴴ *ᵥ x = 0 := by rw [← hZ, h_products, hx', neg_zero, Pi.single_zero]
-  simp [h.products_eq, dualProducts, ← mulVec_mulVec, h_orth]
 
 /-- The vectors `y⁻¹ ω_l` of a triangular basis are orthonormal in the `-1` eigenspace `V₋` of
 `J₁`, so the product for the form `J₁` of a vector `x` with `y⁻¹ ω_l` is at most the length of
@@ -667,15 +576,16 @@ lemma norm_det_mul_le_volumeRatio (h : IsTriangularBasis hi y Z ω L)
   have hL : 0 < ‖L.det‖ := norm_pos_iff.2 h.det_ne_zero
   have hδ_pos : 0 < ‖(subframeBlock hi Z).det‖ := norm_pos_iff.2 hδ
   have h_det : ‖(-K).det‖ = volumeRatio γ y * ‖L.det‖ ^ 2 / ‖(subframeBlock hi Z).det‖ := by
-    have h_factor : K = ((γ.val.val * subframeCols hi)ᴴ * 𝔰.J₁ * ω)ᴴ * (subframeBlock hi Z)⁻¹ *
-      L := by
-      simp only [K, hω', imageBasis, conjTranspose_mul, conjTranspose_conjTranspose,
-        isHermitian.eq, Matrix.mul_assoc]
-    rw [(h.isNegativeBasis hZ hδ).volumeRatio_eq hi hγ hij,
-      h.conjTranspose_subframeCols_mul_J₁_mul_eq hδ, det_neg, h_factor]
-    simp only [det_mul _ L, det_mul _ _⁻¹, det_conjTranspose, det_nonsing_inv, Ring.inverse_eq_inv,
-      norm_mul, norm_pow, norm_neg, norm_one, one_pow, norm_star, norm_inv]
-    field_simp
+    have h_factor : K = Lᴴ * ((dualProducts hi Z)ᴴ *
+        ((frameLeftInverse y * γ.val.val * 𝔰.frameCols) * inclMatrix ℂ (subframeIndex hi))) *
+        (subframeBlock hi Z)⁻¹ * L := by
+      simp only [K, hω', imageBasis, h.frame_eq, conjTranspose_mul, conjTranspose_conjTranspose,
+        isHermitian.eq, subframeCols, Matrix.mul_assoc, mul_mul_eq_of_mul_eq mul_self, Matrix.one_mul]
+    rw [volumeRatio_eq_det_dualProducts hi hZ hδ hγ hij, det_neg, h_factor]
+    simp only [det_mul, det_conjTranspose, det_nonsing_inv, Ring.inverse_eq_inv, norm_mul,
+      norm_pow, norm_neg, norm_one, one_pow, norm_star, norm_inv]
+    ring
+
   calc
     _ = ‖(subframeBlock hi Z).det‖ * ‖(1 + vᴴ * v).det‖ := by rw [det_one_add_mul_comm]
     _ ≤ ‖(subframeBlock hi Z).det‖ * (2 ^ (i + 1) * ‖(-K).det‖) := by grw [h_ostrowski]

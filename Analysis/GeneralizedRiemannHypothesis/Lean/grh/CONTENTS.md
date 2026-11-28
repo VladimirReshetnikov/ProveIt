@@ -209,7 +209,7 @@ The heads of these files give an overview of a theory: `Lib/ClassField/Global/Ar
 - `New/Spanning/RemainingTerms/BorderedDeterminant` (417): Links, lifts and gauges of a term
 - `New/Spanning/RemainingTerms/FrameCount` (496): Frames of near terms: short shared vectors and moves between frames
 - `New/Spanning/RemainingTerms/ColumnLattice` (186): The covolume of the lattice of columns
-- `New/Spanning/RemainingTerms/OneRealPlace` (712): The weight of Schur's test at one real place
+- `New/Spanning/RemainingTerms/OneRealPlace` (651): The weight of Schur's test at one real place
 - `New/Spanning/RemainingTerms/SchurTest` (212): Schur's test: Cauchy–Schwarz and integration in stages
 - `New/Spanning/RemainingTerms/Discriminants` (505): Discriminants of lattices and sums over sublattices
 - `New/Spanning/RemainingTerms/OrbitSize` (272): Near terms in the filling theorem: the bound for an orbit, the tail and the open-cell term
