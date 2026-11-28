@@ -179,6 +179,8 @@ For the explicit margins, [PolynomialIrreducibleDegrees.lean](GRHArticle/Progres
 
 [PolynomialLayerCharging.lean](GRHArticle/ProgressionFree/PolynomialLayerCharging.lean) proves that a preferred target layer and a positive step determine at most one source layer for any three-term-progression-free system of preferred indices. Applied to polynomials, each target receives at most one charge per distinct prime divisor of the specified degree. Rankin's preferred layers have the required predecessors.
 
+[PolynomialExceptionalPrimeBounds.lean](GRHArticle/ProgressionFree/PolynomialExceptionalPrimeBounds.lean) bounds the fraction of exceptional polynomials on every degree layer, including layers with prescribed nonzero leading coefficient. For $q\ge16$ the bound is $q^{-q+14}$ for linear primes and $q^{-q}$ for higher degrees. The admissible weights of all prime degrees sum to at most one on every finite set.
+
 ## RH and Dirichlet GRH input
 
 The article uses the five theorems in
