@@ -1,0 +1,104 @@
+\documentclass[11pt]{article}
+\usepackage[margin=0.98in]{geometry}
+\usepackage{amsmath,amssymb,hyperref}
+\hypersetup{colorlinks=true,urlcolor=blue}
+\title{The inert-prime elliptic coefficient\\ by one finite polynomial substitution}
+\author{Proof-shortening proposal for ProveIt}
+\date{28 November 2026}
+\begin{document}
+\maketitle
+\noindent\textbf{Result.}
+The inert-prime unit theorem in \texttt{FrobeniusCongruence.lean}
+follows from a finite polynomial identity in the residue field. This
+replaces the second derivative of the translated coordinate and the
+ultrametric two-step induction. The proof uses neither a formal inverse
+nor a square-root construction. This is a written replacement, not a
+Lean-checked patch.
+
+\section*{1. One change of variable using an integer power}
+Write \(p=2m+1\). The existing proof gives \(x=z^2+\cdots\) for the
+translated elliptic \(x\)-coordinate, the equation
+\[
+ (x')^2=4xQ(x),\qquad Q(X)=1+AX+X^2,\qquad A=a_1^2/4,
+\]
+and coefficient integrality through degree \(p+1\) at an inert prime
+(\(p+1<p^2\)). The coefficient \(A\) is integral since \(p\) is odd and
+\(a_1\) is integral. Reduce this much of the equation to the residue
+field \(k\). The reduced square equation holds modulo \(z^{p+2}\):
+the derivative lost one degree, but each factor \(x'\) has order at
+least one. In what follows \(x\) can be any polynomial representing that
+reduced jet.
+
+Put \(u=x/z^2\), which is a polynomial with constant term 1, and set
+\(t=zu^{m+1}\). The identities
+\[
+ t^2=xu^p,\qquad 2tt'=x'u^p,\qquad u^p\equiv1\pmod{z^p}
+\]
+follow from \(2(m+1)=p+1\) and characteristic \(p\).
+Square the middle identity and use the equation for \(x\). After
+cancelling \(4xu^p\), which has order exactly \(2\), this gives
+\[
+ t'^2\equiv u^p Q(x)\equiv Q(t^2)\pmod{z^p}.
+\]
+Therefore the square of \(t'Q(t^2)^m\) is congruent to
+\(Q(t^2)^p\equiv1\pmod{z^p}\). Its constant coefficient is 1, so its
+sum with 1 is a unit modulo \(z^p\), and
+\[
+ t'Q(t^2)^m\equiv1\pmod{z^p}.
+\]
+All operations can be done with polynomials and powers of \(z\) as the
+precision cutoff. Neither series composition nor its inverse is needed.
+
+\section*{2. Extracting the coefficient}
+For \(0\le j<p-1\), the polynomial \(t^jt'\) is the derivative of
+\(t^{j+1}/(j+1)\). Its coefficient of \(z^{p-1}\) vanishes in
+characteristic \(p\). For \(j=p-1\) that coefficient is 1 since
+\(t=z+\cdots\), and for \(j>p-1\) it vanishes for degree reasons.
+This is the elementary differential-coefficient invariance in this jet.
+
+As \(x^n\equiv t^{2n}Q(t^2)^mt'\pmod{z^p}\), expand the ordinary
+polynomial \(X^n Q(X)^m\) and use the preceding monomial calculation:
+\[
+ [z^{p-1}]x^n=[X^{m-n}]Q(X)^m\quad(0\le n\le m).
+\]
+Writing \(c_j=[X^j]Q^m\), the case \(n=0\) gives \(c_m=0\).
+The ordinary polynomial identity \(Q(Q^m)'=mQ'Q^m\) gives
+\[
+ (j+1)c_{j+1}=(m-j)Ac_j+(2m-j+1)c_{j-1}.
+\]
+If \(m=1\), then \(c_{m-1}=c_0=1\). Otherwise, if \(c_{m-1}=0\),
+descend for \(j=m-1,\ldots,1\) using \(2m-j+1=p-j\ne0\) in \(k\).
+This would give \(c_0=0\), a contradiction. Thus the coefficient at
+\(n=1\) is nonzero in \(k\). An integral coefficient has norm 1
+exactly when its residue is nonzero, proving the original unit statement.
+
+\section*{3. Integration and checks}
+\textbf{Baseline.}
+The audit pins ProveIt at \texttt{f2d6ab6c4b70ea73b2deac9e33ad966bc92ea36f}.
+In the
+\href{https://github.com/VladimirReshetnikov/ProveIt/blob/f2d6ab6c4b70ea73b2deac9e33ad966bc92ea36f/Analysis/GeneralizedRiemannHypothesis/Lean/grh/src/New/Derivatives/FormalGroup/FrobeniusCongruence.lean#L301}{source file},
+retain the first derivative square identity, the leading term, the
+bound on \(a_1\) and the integer coefficient bound through \(p+1\).
+Replace the local route to \texttt{norm\_coeff\_taylorVia\_translatedX\_eq\_one};
+its statement is unchanged. Audit references before deleting any helpers.
+
+\smallskip\noindent\textbf{Lean milestones.}
+Reduce the integral polynomial jet coefficient by coefficient. Prove the
+square congruence at precision \(p+2\); multiplication by \(x=z^2u\)
+shifts the modulus by two because \(u(0)=1\). Prove the single monomial
+coefficient lemma from the power rule and apply it by linearity to
+\(X^nQ(X)^m\). The only recursion is on coefficients of an ordinary
+polynomial over the residue field. The quotient and truncation
+interfaces, total proof length, and actual dependency savings remain
+to be tested in Lean.
+
+\smallskip\noindent\textbf{Scope.}
+The source audit covers all proposal TeX and README files at the pin.
+The existing finite Frobenius-jet proposal concerns the coupling normal
+form and exponent signatures, not this coefficient theorem. The exact
+replay independently generates jets from the second-order equation
+and checks the new identities in prime and quadratic finite fields.
+It covers both vanishing and nonvanishing central coefficients;
+only the former satisfy the full square equation at the required
+precision. The replay is not a proof by finite testing.
+\end{document}
