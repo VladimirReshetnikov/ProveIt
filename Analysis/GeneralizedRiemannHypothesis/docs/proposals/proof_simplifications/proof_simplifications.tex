@@ -1,0 +1,227 @@
+\documentclass[11pt,letterpaper]{article}
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage{lmodern,microtype,amsmath,amssymb,amsthm,mathtools,booktabs,tabularx,array}
+\usepackage[margin=0.89in,top=0.83in,bottom=0.86in,headheight=14pt]{geometry}
+\usepackage[dvipsnames]{xcolor}
+\usepackage{fancyhdr,enumitem}
+\usepackage{hyperref}
+\definecolor{ink}{HTML}{163D50}
+\definecolor{accent}{HTML}{16635F}
+\hypersetup{colorlinks=true,linkcolor=ink,urlcolor=accent,citecolor=accent,
+ pdftitle={Three shorter steps in the theta-lift proof of Dirichlet GRH},
+ pdfsubject={Auxiliary quadratic twists, a Perron integral, and the dimension of theta-lift images}}
+\pagestyle{fancy}\fancyhf{}\fancyhead[L]{\small\color{ink}THETA LIFTS AND DIRICHLET ZEROS}
+\fancyhead[R]{\small Proof simplifications}\fancyfoot[C]{\small\thepage}
+\setlength{\parindent}{0pt}\setlength{\parskip}{0.48em plus .07em minus .1em}
+\setlength{\emergencystretch}{2em}
+\setlist{nosep,leftmargin=1.65em}
+\newtheorem{theorem}{Theorem}
+\newtheorem{lemma}[theorem]{Lemma}
+\newcommand{\Source}[3]{\href{https://github.com/VladimirReshetnikov/ProveIt/blob/d8415e76ad850651f8c0083afe689dd9f4a45a10/Analysis/GeneralizedRiemannHypothesis/vendor/grh-lean/grh/src/#1.lean\#L#2}{#3}}
+\newcommand{\Half}{\tfrac12}
+\newcommand{\E}{\mathcal E}
+\newcommand{\sg}{\sigma_0}
+\newcommand{\M}{\mathcal M}
+\newcommand{\e}{\varepsilon}
+\raggedbottom
+\begin{document}
+\thispagestyle{plain}
+{\small\bfseries\color{accent} RESEARCH NOTE\hfill 27 NOVEMBER 2026}\par
+\vspace{0.6em}
+{\LARGE\bfseries\color{ink} Three shorter steps in the theta-lift proof\\[.15em] of Dirichlet GRH}\par
+\vspace{0.3em}
+{\large Quadratic twists, a smoothed prime sum, and the dimension of the lifted space}\par
+\vspace{0.5em}
+\textbf{The proposed changes.}
+Alpöge and Claude's argument \cite{source,origin} proves a one-sided estimate for primes inert in an auxiliary imaginary quadratic field. To exclude a proposed zero, it must choose the field so that twisting by its quadratic character leaves the zero detectable. The most economical replacement for this selection, for a reader with access to the classical quadratic large sieve, uses two ordinary Dirichlet polynomials of length $\lfloor\sqrt X\rfloor$. At a zero, their mollified error has absolute value one. An average over the auxiliary prime shows that very few primes can have such a zero. The same argument works simultaneously for all characters of a fixed modulus, so it retains Dirichlet GRH as well as RH.
+
+Two other steps admit shorter proofs using the estimates already established in the readable Lean source. A contour shift gives the required prime number theorem at the distant cutoff. An affine recurrence gives a better lower bound on the dimension spanned by the actual ramified forms.
+\begin{center}\small\renewcommand{\arraystretch}{1.24}
+\begin{tabularx}{\linewidth}{@{}p{.18\linewidth}X X@{}}
+\toprule
+Step & Input retained & What the replacement gives\\\midrule
+Auxiliary prime & Quadratic large sieve and a character-sum bound & For $g=\beta-\Half>0$, at most $O(X^{1-g/2+\e})$ exceptional primes at fixed height. An elementary version gives $O(X^{1-g/4+\e})$.\\
+Distant cutoff & The source's narrow zero-free region & A single absolutely convergent Perron integral gives $|R(x)|\ll\exp[-(\log x)^{1/27}/3]$ eventually.\\
+Independent forms & Both geometric moment bounds and the ramified dimension & Missing dimension at most $20d_T/b^4$ within the original budget of translates.\\
+\bottomrule
+\end{tabularx}\end{center}
+\textbf{Scope.} The lower bound for the covolume of long forms, the construction of short integral forms, and the geometric moment estimates still supply the arithmetic content. These substitutions give proofs on paper with explicit interfaces to the source. The published Lean checks apply to the original development. Section~\ref{sec:sources} records the extent of verification and the arithmetic that the accompanying scripts check.
+
+\textbf{Reading routes.} The auxiliary-prime proof is in Section~\ref{sec:selector}, followed immediately by the zero contradiction. Section~\ref{sec:perron} can be read independently with the definition of the smoothed count on page~\pageref{sec:setup}. Section~\ref{sec:affine-spanning} needs only finite-dimensional linear algebra once its two moment inequalities are given.
+
+\clearpage
+\section{Where the three changes enter}\label{sec:setup}
+Write $Q=18480q$ for a target character of modulus $q$, and $a=Q/2-1$. For an auxiliary prime $p\equiv a\pmod Q$, write $\eta_p(n)=(n/p)$. This class is invertible modulo $Q$ and is $7\pmod8$. For $u=1,Q$ the source uses
+\begin{align}
+ \lambda_{u,p}(n)&=\mathbf1_{n\equiv1\ (u)}\Lambda(n)(1-\eta_p(n)),\nonumber\\
+ R_{u,p}(x)&=\sum_{n\le x}\lambda_{u,p}(n)(1/n-1/x)
+                       -\frac{\log x}{\varphi(u)}-c_{u,p}.\label{eq:R}
+\end{align}
+Here $c_{u,p}$ is fixed by the regularized logarithmic derivative at one. A split prime contributes zero, an inert prime contributes twice its logarithm at its odd powers, and the ramified prime has the intermediate weight. This is why the auxiliary character occurs in both the arithmetic and the analytic portions.
+
+\textbf{The near cutoff.} In the guide's notation, $m$ is the length of a chain of lifts, $a_0$ is a long derivative order (written $a$ in the source), $b$ is a weight, and $A,B$ are sets of places. The identity for the total remainder $\mathcal R$ and the volume inequality give
+\begin{align*}
+ \mathcal R/a_0
+   &=|B|\big(R_{Q,p}(x)-R_{Q,p}(x_1)\big)+|A|R_{1,p}(x_1),\\
+ m\mathcal R&\le f a_0(\log b)^5,\qquad
+ f=\varphi(Q)|A|,\qquad |A|/|B|\le\log b .
+\end{align*}
+The inequality compares the upper lengths of short integral forms with a lower bound for the covolume of a family spanning almost the whole target. Section~\ref{sec:affine-spanning} chooses that family directly from the ramified source. It meets the same budget for denominators. Dividing the two displays gives
+\[
+ R_{Q,p}(x)\le \frac{\varphi(Q)(\log b)^6}{m}
+             +|R_{Q,p}(x_1)|+(\log b)|R_{1,p}(x_1)|.
+\]
+For each sufficiently small fixed $\eta>0$ the source supplies data with $m\ge\sqrt x$, $\log b\le2x^\eta$ and $\log x_1\ge x^{\eta/12}$. Every fixed inverse logarithmic power at $x_1$ is available by Section~\ref{sec:perron}. Choosing the power large enough makes the last two terms negligible. Taking $\eta$ small, and using the source's $O(1/x)$ passage from integer to real $x$, gives
+\begin{equation}
+ R_{Q,p}(x)\le x^{-1/2+\e}\quad\text{eventually, for each fixed admissible } Q,p,\e>0 .
+ \label{eq:arith}
+\end{equation}
+\textbf{The choice of the field.} An offending zero $\rho$ determines $\Half<\beta<\Re\rho$ and a height $H=|\Im\rho|$. Section~\ref{sec:selector} supplies a prime $p\equiv a\pmod Q$ such that every twist $L(s,\psi\eta_p)$ is zero-free in the box $\Re s\ge\beta$, $|\Im s|\le H$. Only after this choice is \eqref{eq:arith} invoked. Its threshold may depend on $p$ and on $\e$. Section~\ref{sec:endgame} gives the resulting contradiction. Even for zeta one takes $Q=18480$ when using these arithmetic estimates.
+
+\clearpage
+\section{Selecting the auxiliary prime with two short polynomials}\label{sec:selector}
+For $Q$ a fixed positive integer, $H\ge0$ and $1/2<\beta<1$, let $\mathcal B(X)$ be the odd primes $X<p\le2X$, $p\nmid Q$, for which at least one $\psi\bmod Q$ has a zero of $L(s,\psi\eta_p)$ with $\Re s\ge\beta$ and $|\Im s|\le H$. Count each such prime once.
+\begin{theorem}\label{th:selector}
+For every $\e>0$,
+\[
+ |\mathcal B(X)|\ll_{Q,H,\beta,\e} X^{1-(\beta-1/2)/2+\e}.
+\]
+Consequently every fixed invertible class modulo $Q$ contains infinitely many primes at which all the twists avoid the box.
+\end{theorem}
+The introduction to \Source{Lib/Analytic/QuadraticTwist}{7}{the source module for quadratic twists} explicitly points out that a large sieve for real characters implies a density estimate. The calculation here identifies the version of the sieve needed, gives a first-moment proof, and supplies the exponent. In the notation $g=\beta-1/2$ the source proves $O(X^{1-g/18})$ for the admissible class. We use the specific corollary for unrestricted integer coefficients, so that prime powers and repeated prime factors are covered.
+
+\textbf{One dyadic estimate.} Heath-Brown's Corollary~3 \cite{HB} gives, for real primitive characters of conductor at most $D$,
+\[
+ \sum_{\chi}\Big|\sum_{n\le N} a_n\chi(n)\Big|^2
+ \ll_{e} D^e N^{1+e}(D+N)\max_{n\le N}|a_n|^2
+ \qquad(e>0).
+\]
+The $a_n$ may be complex. Below $\|Y_p\|_2$ denotes the unnormalized $\ell^2$ norm over the primes $X<p\le 2X$, $p\nmid 2Q$. Fix a compact rectangle $K$ with left edge $\sg=1/2+\delta$, $0<\delta<\beta-1/2$, containing a neighborhood of $[\beta,1]+i[-H,H]$. For $V\le X$, $V<n\le2V$ and any deterministic $|c_n|\le\tau(n)$, we obtain, for $s\in K$,
+\begin{equation}
+ \bigg\|\sum_{V<n\le2V} c_n\psi(n)\eta_p(n)n^{-s}\bigg\|_2
+      \ll_{e,K} X^{1/2+e} V^{-\delta}.\label{eq:block}
+\end{equation}
+Indeed take $D=\lceil 2X\rceil$, $N=\lfloor2V\rfloor$ and zero off the block. The coefficient bound is $\ll_{e'}V^{-\sg+e'}$ by the elementary divisor bound. Use $D+N\ll X$ and take the small sieve and divisor exponents in terms of $e$. Restricting a block to any subinterval is allowed. Summing norms on blocks above $V=U$ costs only a constant depending on $\delta$, since $\sum_{j\ge0}2^{-j\delta}<\infty$. The coefficient at $n=1$, when present, costs at most $\sqrt{2X}$.
+
+\textbf{Ordinary truncation.} Put $\xi_p=\psi\eta_p$. Splitting the sum of $\xi_p(n)$ on any interval into classes modulo $Q$ reduces it to at most $Q$ translated sums of the Legendre character modulo $p$. Indeed $\eta_p(a+Qj)=\eta_p(Q)\eta_p(j+a Q^{-1})$ with the inverse taken modulo $p$. Pólya--Vinogradov bounds each interval sum by $O(\sqrt p\log(2p))$. This bound follows by expanding the interval in additive characters, using the size $\sqrt p$ of the nonzero Gauss sums and summing the resulting harmonic series. This treatment includes imprimitive $\psi$ and ensures that $\xi_p$ is nonprincipal. Partial summation on the convergent Dirichlet series for $\Re s>0$ gives, uniformly on $K$,
+\begin{equation}
+ L(s,\xi_p)-\sum_{n\le X}\xi_p(n)n^{-s}
+       \ll_{Q,K} X^{1/2-\Re s}\log(2X).\label{eq:truncate}
+\end{equation}
+\newpage\textbf{The first moment.} Set $U=\lfloor\sqrt X\rfloor$ and form
+\[
+ P_p(s)=\sum_{n\le U}\xi_p(n)n^{-s},\qquad
+ M_p(s)=\sum_{m\le U}\mu(m)\xi_p(m)m^{-s}.
+\]
+Here $M_p$ is a finite approximation to the Dirichlet inverse. The coefficient of $\xi_p(n)n^{-s}$ in $P_pM_p$ is
+\begin{equation}
+ b_U(n)=\sum_{\substack{m\mid n,\ m\le U\\ n/m\le U}}\mu(m).
+ \label{eq:mob}
+\end{equation}
+It is one at $n=1$, zero for $1<n\le U$, and zero for $n>U^2$. Thus $P_pM_p-1$ is supported entirely on $U<n\le X$, and $|b_U(n)|\le\tau(n)$. Equation~\eqref{eq:block}, followed by \eqref{eq:truncate} for the tail beyond $X$, gives the three estimates
+\begin{alignat}{2}
+ \|M_p\|_2&\ll X^{1/2+e}, &\quad&
+       \text{blocks starting at }1,\nonumber\\
+ \|P_pM_p-1\|_2&\ll X^{1/2+e}U^{-\delta}, &&
+       \text{blocks starting at }U,\label{eq:three}\\
+ \|L(s,\xi_p)-P_p\|_2&\ll X^{1/2+e}U^{-\delta}, &&
+       \text{blocks from }U\text{ to }X\text{ and the tail}.\nonumber
+\end{alignat}
+For the last line the tail costs $O(X^{1/2-\delta}\log(2X))$ in this norm. These estimates require neither a bound for $1/L$ nor a zero-free hypothesis.
+
+Use $LM_p-1=(L-P_p)M_p+(P_pM_p-1)$. Cauchy--Schwarz over the varying prime, twice, gives
+\begin{align}
+ \sum_p|L(s,\xi_p)M_p(s)-1|
+ &\le \|L-P_p\|_2\|M_p\|_2+\sqrt{2X}\,\|P_pM_p-1\|_2\nonumber\\
+ &\ll X^{1+2e} U^{-\delta}\ll X^{1-\delta/2+2e}.
+ \label{eq:first}
+\end{align}
+Using a first absolute moment at this point allows $U$ as large as $\sqrt X$. Bounding $M_p$ individually by the sum of its absolute coefficients would introduce a power of $U$ precisely where the saving is needed.
+
+\textbf{From values to zeros.} A zero $z$ in the box belongs to $[\beta,1]+i[-H,H]$ by the Euler product for $\Re s>1$. Choose a single radius $r>0$ such that every disk $D(z,r)$ around this rectangle lies in $K$. At $z$, $|L(z,\xi_p)M_p(z)-1|=1$. Holomorphy and the disk mean-value inequality yield
+\[
+ \pi r^2\le\int_K |L(s,\xi_p)M_p(s)-1|\,dA(s).
+\]
+This compares the values at different zero locations with the same integral. Sum over bad primes for one $\psi$, integrate \eqref{eq:first}, and sum over the fixed finite set of $\psi$. Take $\sg$ sufficiently close to $\beta$ and $e$ sufficiently small. This proves the asserted bound. The prime number theorem in a fixed invertible class now supplies good primes in every sufficiently large dyadic interval. Alternatively, the source uses just the divergence of $\sum_{p\equiv a\ (Q)}(\log p)/p$ for the existence statement. A power saving makes this sum over bad primes converge. \hfill$\square$
+
+At $\beta=3/4$ the resulting exponent is $7/8+\e$, compared with $71/72$ in the source. Section~\ref{sec:fourier} gives $15/16+\e$ in this example using only short quadratic sums and Fourier completion. These exponents count exceptional primes at a fixed height. The square-root estimate in \eqref{eq:arith} has a different origin.
+\clearpage
+\section{Why this choice of prime still proves RH}\label{sec:endgame}
+Here is the logical check on the substitution. Assume some $L(s,\chi)$ has a zero $\rho$ with $1/2<\Re\rho<1$. After raising its modulus from $q$ to $Q=18480q$, the extra factors $1-\chi(\ell)\ell^{-s}$ are nonzero for $\Re s>0$, so the induced character still has a zero at $\rho$. Choose $\beta$ between $1/2$ and $\Re\rho$. Theorem~\ref{th:selector} supplies a prime in the required class for height $|\Im\rho|$.
+
+Let $E_\psi$ be $L(s,\psi)$ for nonprincipal characters and the entire regularization of $(s-1)L(s,\psi)$ for the principal character. Define
+\[
+ N(z)=\sum_{\psi\bmod Q}\operatorname{ord}_z E_\psi,\qquad
+ N_p(z)=\sum_{\psi\bmod Q}\operatorname{ord}_z E_{\psi\eta_p}.
+\]
+These are multiplicities. The class $1\bmod Q$ gives coefficient $+1$ for each $\psi$ by character orthogonality. The transform $\Phi(s)=\int_0^\infty R_{Q,p}(e^v)e^{(1-s)v}\,dv$ starts in a right half-plane. It continues meromorphically to $\Re s>0$, with at most simple poles, and for $z\ne 1$ its residue there is
+\begin{equation}
+ r(z)=\frac{N(z)-N_p(z)}{\varphi(Q)z(1-z)}.\label{eq:res}
+\end{equation}
+For the sign, the Dirichlet series of the weights is an average of
+$L'_{\psi\eta_p}/L_{\psi\eta_p}-L'_\psi/L_\psi$, and the smoothing divides by $s(s-1)$. The coefficient of an untwisted zero is therefore $+1/[\varphi(Q)z(1-z)]$. At $1$ the centering constant cancels the would-be residue. These are the source's transform and residue calculations \cite{primeerror}.
+
+In particular $r(\rho)\ne0$ because $N(\rho)\ge1$ and $N_p(\rho)=0$. For every real $u\in(\beta,1)$, the same prime gives $N_p(u)=0$ and $r(u)\ge0$. Above one the Euler products have no zeros. To use these signs, take $K_0>0$ large enough, by \eqref{eq:arith} with $\e=\beta-1/2$, that
+\[
+ d\mu(v)=\bigl(K_0e^{\beta v}-e^v R_{Q,p}(e^v)\bigr)\,dv\ge0
+       \quad (v\ge0).
+\]
+Continuity on bounded intervals permits increasing $K_0$ once. The Laplace transform equals $K_0/(s-\beta)-\Phi(s)$ far to the right. If its real abscissa of convergence were $u>\beta$, its possible simple pole there would have residue $-r(u)\le0$. Positivity of the transform on the right forces that residue to be nonnegative, so the singularity is removable. Landau's lemma forbids this for a positive measure at its finite abscissa of convergence. Thus the integral is holomorphic on $\Re s>\beta$, forcing $r(\rho)=0$, a contradiction.
+
+The classical boundary nonvanishing results handle $\Re s=1$ with the principal pole excepted. The functional equation then puts every zero in the open strip on its critical line, and for zeta leaves the familiar trivial zeros at the negative even integers. This is the same public target as the readable formal proof. The analytic replacement supplies the prime before the determinant estimate is applied to it. It requires no information about zeros on the critical line itself.
+
+\clearpage
+\input{perron}
+\clearpage
+\input{spanning}
+
+\clearpage
+\section{Source interfaces and verification}\label{sec:sources}
+The 79-page attached guide describes the readable \texttt{grh/} package. Its sections 9, 16, 17 and 18 describe the moments, the two cutoffs, Landau's argument and the twist selection. The source below is pinned to the guide's ProveIt commit \texttt{d8415e76}. Its readable directory, the one at the inspected main commit \texttt{8dd060b0}, and the independently checked upstream revision \texttt{72fead10} all have Git tree \texttt{2e133df63d7f4da6b3059c4195324f8e9187ba73}. The file \texttt{source-anchors.tsv} gives immutable links and Git blob hashes.
+\begin{center}\small\renewcommand{\arraystretch}{1.26}
+\begin{tabularx}{\linewidth}{@{}p{.21\linewidth}X X@{}}
+\toprule
+Proof step & Existing inputs & Replacement boundary\\\midrule
+Choice of a good prime &
+\Source{Lib/Analytic/QuadraticTwist}{206}{Three-lines zero detector}, \Source{Lib/Analytic/QuadraticTwist}{536}{theta-series mean square}, \Source{Lib/Analytic/QuadraticTwist}{732}{exceptional count} &
+\Source{Lib/Analytic/QuadraticTwist}{796}{Existence of a simultaneous good twist}, consumed by \Source{New/Reduction/Zeros/Criterion}{52}{the one-sided criterion}.\\
+Distant cutoff &
+\Source{New/Reduction/Zeros/PrimeError}{263}{Prime Dirichlet series} and \Source{New/Reduction/Zeros/PrimeNumberTheorem}{178}{the narrow zero-free estimate} &
+\Source{New/Reduction/Zeros/PrimeNumberTheorem}{217}{Every fixed inverse logarithmic power}, used for $q=1,Q$ in \Source{New/Reduction/OneSidedBound}{95}{the far-cutoff bound}.\\
+Ramified span &
+\Source{New/Spanning/SecondMoment/FewTranslates}{320}{One-translate preimage estimate} and \Source{New/UpperBound/Size/ShortColumns}{944}{ramified dimension} &
+\Source{New/Reduction/ShortAndEnough}{410}{Choice of translates} and \Source{New/Reduction/ShortAndEnough}{448}{Theorem B}, used by \Source{New/Reduction/MainInequality}{87}{the main inequality}.\\
+\bottomrule
+\end{tabularx}\end{center}
+\textbf{Which substitution to make first.} For a human proof, the two-polynomial argument is the shortest path from a standard reference to the exact good-twist statement. The original source already identifies the quadratic large sieve as an alternative and cites Jutila and Heath-Brown. The worked substitution above and its exponent make that suggestion explicit. If avoiding that external theorem matters, Appendix~\ref{sec:fourier} proves a sufficient mean estimate by completing smooth sums. The fixed-height bounds here make no claim to priority as zero-density theorems.
+
+For a Lean refactor, the ramified-span recurrence is the smallest self-contained target. It reuses the one-translate estimate, changes a finite-dimensional argument, and improves its conclusion. The Perron proof requires a formal contour inversion and estimates for the three sides. The large-sieve proof would also require a formal version of the real-character inequality or its proof. A shorter mathematical argument can therefore have a larger formal dependency. The published kernel checks by Sutherland cover the original five statements \cite{checks}. Here the new arguments were checked on paper, the source interfaces were inspected, and finite identities were checked by the included scripts. There has been no new Lean replay of any substitution.
+
+{\small
+\begin{thebibliography}{9}
+\bibitem{HB} D. R. Heath-Brown.
+\emph{A mean value estimate for real character sums}.
+Acta Arithmetica 72 (1995), 235--275, especially Corollary 3, p.~238.
+\href{https://doi.org/10.4064/aa-72-3-235-275}{Journal article}.
+\bibitem{source} Levent Alpöge and Claude. Readable Lean development for RH and Dirichlet GRH, revision \texttt{72fead10}, 2026.
+\href{https://github.com/lsernau/grh-lean/tree/72fead102f663d5c7a407964a13dc0cf9d977207/grh}{Readable package}.
+\Source{Lib/Analytic/QuadraticTwist}{7}{Discussion of the large-sieve alternative}.
+\Source{New/Reduction/OneSidedBound}{239}{Half-plane theorem}.
+\Source{Main}{5}{Public zeta theorem}.
+\bibitem{primeerror} Readable development, \emph{Prime error and the one-sided criterion}.
+\Source{New/Reduction/Zeros/PrimeError}{293}{Transform}.
+\Source{New/Reduction/Zeros/PrimeError}{414}{Residues}.
+\Source{Lib/Analytic/Landau}{217}{Landau's lemma in the required form}.
+\bibitem{checks} Andrew V. Sutherland. \emph{Verification files for the shorter Lean proof of RH and of GRH for Dirichlet $L$-functions}, 27 November 2026.
+\href{https://math.mit.edu/~drew/shortgrh/}{Verification record and logs}.
+\bibitem{origin} Levent Alpöge. \emph{Announcement and remarks on the proof}, 2026.
+\href{https://alpo.ge/remark.pdf}{The chain-length idea and its Stepanov motivation}.
+\end{thebibliography}
+}
+
+\clearpage
+\appendix
+\input{fourier}
+
+\end{document}

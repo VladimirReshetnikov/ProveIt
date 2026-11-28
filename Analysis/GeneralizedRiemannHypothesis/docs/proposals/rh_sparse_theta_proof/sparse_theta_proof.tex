@@ -1,0 +1,355 @@
+\documentclass[11pt,a4paper]{article}
+\usepackage[T1]{fontenc}
+\usepackage{lmodern,microtype,amsmath,amssymb,amsthm,mathtools,booktabs,array,tabularx}
+\usepackage[margin=28mm]{geometry}
+\usepackage[dvipsnames]{xcolor}
+\usepackage[colorlinks=true,linkcolor=MidnightBlue,citecolor=MidnightBlue,urlcolor=MidnightBlue]{hyperref}
+\usepackage{fancyhdr}
+\pagestyle{fancy}\fancyhf{}\lhead{\small Sparse cutoffs in the theta-lift proof}\rhead{\small Research note}\cfoot{\thepage}
+\setlength{\headheight}{14pt}
+\setlength{\parindent}{1em}\setlength{\parskip}{3pt}
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{corollary}[theorem]{Corollary}
+\theoremstyle{remark}\newtheorem{remark}[theorem]{Remark}
+\newcommand{\R}{\mathbb R}\newcommand{\C}{\mathbb C}\newcommand{\N}{\mathbb N}
+\newcommand{\ph}{\varphi}\newcommand{\ord}{\operatorname{ord}}\newcommand{\Rea}{\operatorname{Re}}
+\newcommand{\Ima}{\operatorname{Im}}\newcommand{\E}{\mathcal E}\newcommand{\pos}[1]{\left(#1\right)_+}
+\newcommand{\upstream}{\href{https://github.com/lsernau/grh-lean/tree/72fead102f663d5c7a407964a13dc0cf9d977207/grh}{readable upstream revision}}
+\newcommand{\repo}{\href{https://github.com/VladimirReshetnikov/ProveIt/tree/main/Analysis/GeneralizedRiemannHypothesis/Lean/grh}{ProveIt, Lean/grh}}
+\title{\vspace{-1.4cm}\textbf{Sparse cutoffs and averaged twist selection}\par\large Two reductions of the arithmetic burden in the Alp\"oge--Claude proof of RH and Dirichlet GRH}
+\author{Research and proof-simplification note}
+\date{27 November 2026}
+\begin{document}\maketitle
+\begin{abstract}
+The theta-lift proof establishes a one-sided upper bound for a smoothed, centered prime-power sum by comparing two volumes. We isolate an elementary structural fact: in the reciprocal cutoff the uncentered sum is convex. Consequently the arithmetic construction need only be carried out on a grid of relative mesh $O(x^{-1/4})$, for example the fourth powers. Interpolation costs $O(x^{-1/2})$, exactly the scale tolerated by the zero-detection argument. A dyadically organized grid is compatible with the existing power-of-two chain length. We also give an averaged quadratic-twist selection using a second moment of the Gaussian tails, including a direct logarithmic bound and an improved exceptional-prime exponent. Together they give a weakened sufficient arithmetic hypothesis for all Dirichlet GRH: sparse cutoffs and a suitable divergent family of auxiliary primes. These are proved reductions, not a replacement for the deep automorphic determinant estimate. No new Lean kernel replay or claim of priority is made.
+\end{abstract}
+\tableofcontents
+\section{Scope, source, and conclusions}
+This note analyzes the 79-page guide \emph{How theta lifts locate the zeros of Dirichlet L-functions} supplied with the request \cite{guide}. Its Sections 5--16 follow the arithmetic construction; Sections 17--19 handle the analytic deduction. We used its LaTeX source and declaration index. In ProveIt the old \texttt{vendor/grh-lean} directory now contains an import record pointing to \repo. The current files sampled via GitHub agree by blob identifiers with the guide's selected anchors; the import record identifies upstream commit \texttt{72fead10} (full identifier in the linked upstream revision). The source guide cites tree \texttt{2e133df6}. The separate verification page \cite{sutherland} records a complete build, axiom checks, and independent proof checking of this readable edition. The original proof was certified in the joint Lean FRO/Mathlib Initiative statement \cite{joint}. We rely on the existing arithmetic theorems, not on the assumption that RH is true.
+
+\paragraph{What is actually proved here.} The central new deductions are the reciprocal interpolation inequality (Theorem~\ref{thm:interp}), its sparse-cutoff corollaries, an averaged twist-selection estimate (Theorem~\ref{thm:density}), and a combined sufficient criterion (Theorem~\ref{thm:criterion}). The new arithmetic hypothesis is weaker in its required data: it suffices to construct the same admissible data only for the prescribed grid and a sufficiently plentiful set of auxiliary primes. The present argument does not prove that constructing such data is substantially easier; that is a research opportunity. We also distinguish a provable averaged-cutoff variant from a proposed future method to establish it.
+
+\begin{center}\small
+\begin{tabularx}{\linewidth}{@{}p{.29\linewidth}XX@{}}\toprule
+Component&Existing guide&This note\\\midrule
+Near cutoff&Every large integer; Lipschitz passage to real&Fourth-power or dyadic block grid; convex interpolation\\
+Chain length&Least power of $2$ at least $\sqrt x$&Unchanged; can organize grid by chain length\\
+Quadratic twists&Individual bad-prime threshold and first moment of tail integrals&Joint second moment; direct selection; sharper power saving\\
+Main volume term&Exact cancellation of ordinary directions&Unchanged; cannot be discarded\\
+Finite-prime denominators&Selmer/Ribet and synchronized twists&Unchanged\\\bottomrule
+\end{tabularx}
+\end{center}
+
+\section{The arithmetic interface of the original proof}\label{sec:interface}
+\subsection{The one-sided quantity}
+Let $q\ge1$, $Q=18480q$, $h_Q=\ph(Q)$, and let $d$ be a prime in the class $d\equiv Q/2-1\pmod Q$. It is coprime to $Q$ and $d\equiv7\pmod8$: $Q/2$ is divisible by $8$, and $\gcd(Q,Q/2-1)=\gcd(2,Q/2-1)=1$. Put $\eta_d(n)=(n/d)$. For $u\in\{1,Q\}$ define
+\begin{align*}
+\lambda_{u,d}(n)&=\mathbf1_{n\equiv1\pmod u}\,\Lambda(n)(1-\eta_d(n)),\\
+R_{u,d}(x)&=\sum_{n\ge1}\lambda_{u,d}(n)\pos{\frac1n-\frac1x}
+-\frac{\log x}{\ph(u)}-c_{u,d}.
+\end{align*}
+The sum is finite at $x>0$; the constant is the one for which the remainder tends to zero at infinity. We suppress $d$ when fixed. Nonnegativity of $\lambda_{u,d}$ is essential below. Notice that for an inert prime the odd powers contribute $2\log p$, the even powers contribute zero; this arithmetic pattern is not altered by our reduction.
+
+The existing formal proof establishes, for every fixed $Q,d$ and every $\epsilon>0$,
+\begin{equation}\label{eq:old}
+R_Q(x)\le x^{-1/2+\epsilon}\qquad(x\text{ sufficiently large}).
+\end{equation}
+See \texttt{New/Reduction/OneSidedBound.lean}, \texttt{eventually\_primeRemainder\_le\_rpow}. This is a one-sided estimate, not an estimate of $|R_Q|$. Both our interpolation and the subsequent zero criterion preserve this distinction.
+
+\subsection{Why the determinant calculation is indispensable}
+Use the guide's notation: the target dimension is $D=d_T$, the number of independent short forms is $n$, the chain length is $m$, the ordinary-direction main term is $H\ge0$, and $\mathcal R$ is the total prime excess. Write $L=fa(\log b)^4$ and $I=10\log(1+2b^2)fa(\log b)^3$. The three results A, B, C give the same-family comparison
+\begin{equation}\label{eq:compare}
+D(H-3L)\le n(H-m\mathcal R+L)+2DI,\qquad n\ge (1-4/b^2)D.
+\end{equation}
+Here A bounds squared norms after normalization by arithmetic divisibility, B provides the large independent family by translates, and C bounds corrected log covolume from below using twisted Gram determinants and the product formula. Rearrangement gives
+\[
+nm\mathcal R\le (n-D)H+(n+3D)L+2DI\le D(4L+2I).
+\]
+With $n\ge D/2$ and the prescribed parameters this yields\par\noindent the formal theorem \texttt{star\_inequality},
+\begin{equation}\label{eq:star}m\mathcal R\le fa(\log b)^5.\end{equation}
+It is crucial that the same main term $H$ occurs twice. The guide obtains the upper $H$ from factorials and local prime divisibility and the lower $H$ from the single-lift volume-height formula and its factorization over the chain. A coarse lower bound that forgets $H$ would not imply \eqref{eq:star}. Nor can one discard the index or rank terms. We do not modify these results.
+
+The long rows of order $a=xb$, the two ordinary weights, and the finite place counting identity give
+\begin{equation}\label{eq:two}
+\frac{\mathcal R}{a}=|B|[R_Q(x)-R_Q(x_1)]+|A|R_1(x_1).
+\end{equation}
+Here $f=h_Q|A|$ and $|A|/|B|\le\log b$. Combining \eqref{eq:star} and \eqref{eq:two} gives the exact interface we keep:
+\begin{equation}\label{eq:cutoff}
+R_Q(x)\le \frac{h_Q(\log b)^6}{m}+|R_Q(x_1)|+\log b\,|R_1(x_1)|.
+\end{equation}
+All sign-sensitive information from the lower and upper calculations is contained here.
+
+For fixed $Q,d$, the source's admissible data exist at all large integer $x$. For a small fixed $0<\tau<1/100$, they satisfy
+\begin{equation}\label{eq:scales}
+m\ge\sqrt x,\quad \log b\le2x^\tau,\quad \log x_1\ge x^{\tau/12}.
+\end{equation}
+The chain length is the least power of two at least $\sqrt x$. See\par\noindent \texttt{eventually\_exists\_data} in \texttt{Data/Existence.lean}. Classical fixed-modulus prime estimates give $|R_u(y)|\le (\log y)^{-K}$ for each integer $K$ eventually. Take $K\ge24/\tau$ to bound both distant remainders by $x^{-2}$. Thus \eqref{eq:cutoff} yields
+\begin{equation}\label{eq:power}
+R_Q(x)\le (64h_Q+3)x^{-1/2+6\tau}
+\end{equation}
+wherever the admissible data exist at scale $x$ (for sufficiently large $x$). Up to this point there is no use of the assumption that the data exist at every integer. The existing real passage uses a Lipschitz bound and a floor. We replace it by a stronger geometric property.
+
+\section{Reciprocal convexity: the sparse-cutoff theorem}\label{sec:sparse}
+\begin{theorem}[Interpolation with a quadratic mesh loss]\label{thm:interp}
+Let $w_n\ge0$, $\alpha>0$, $c\in\R$, and
+\[R(x)=\sum_{n\ge1}w_n\pos{1/n-1/x}-\alpha\log x-c\qquad(x\ge1).\]
+For $1\le a<b$ and $a\le x\le b$, put
+\[t=1/x,\quad t_a=1/a,\quad t_b=1/b,\quad \theta=\frac{t-t_b}{t_a-t_b}\in[0,1].\]
+Then
+\begin{align}
+R(x)&\le\theta R(a)+(1-\theta)R(b)
+ +\alpha[\log t-\theta\log t_a-(1-\theta)\log t_b]\label{eq:exact}\\
+&\le \max(R(a),R(b))+\frac{\alpha}{8}\left(\frac{b-a}{a}\right)^2.\label{eq:mesh}
+\end{align}
+The result is independent of the centering constant, the size of the weights, and the number of prime powers in the interval.
+\end{theorem}
+\begin{proof}
+As a function of $t>0$, every summand $w_n(1/n-t)_+$ is convex: it is a nonnegative multiple of the maximum of two affine functions. On $[1/b,1/a]$ only the terms with $n\le b$ can be nonzero. Their sum $S(t)$ is therefore convex, and
+\[R(1/t)=S(t)+\alpha\log t-c.\]
+Applying convexity to $S$ proves \eqref{eq:exact}. The function $t\mapsto\log t+b^2 t^2/2$ is convex on this interval, because its second derivative is $b^2-1/t^2\ge0$. Its Jensen inequality gives
+\begin{align*}
+\log t-\theta\log t_a-(1-\theta)\log t_b
+&\le \frac{b^2}{2}\{\theta t_a^2+(1-\theta)t_b^2-t^2\}\\
+&=\frac{b^2}{2}\theta(1-\theta)(t_a-t_b)^2\\
+&\le \frac{b^2}{8}\left(\frac1a-\frac1b\right)^2
+=\frac18\left(\frac{b-a}{a}\right)^2.
+\end{align*}
+This establishes the claim, including intervals containing atoms of the prime sum: the argument does not differentiate $S$.
+\end{proof}
+\paragraph{Why the reciprocal variable matters.} In the original variable the cutoff weight has a curved active branch. In reciprocal coordinates it becomes a hinge. Thus large or irregular jumps of the prime count can only help convexity. It is not necessary to bound them via Chebyshev. Only the explicitly known logarithmic centering generates the quadratic error.
+
+\begin{corollary}[General sparse mesh]\label{cor:mesh}
+Suppose $x_j\to\infty$ is a strictly increasing grid with $x_{j+1}-x_j\le C_0 x_j^{3/4}$ eventually. If for every $\epsilon>0$ one has $R(x_j)\ll_\epsilon x_j^{-1/2+\epsilon}$ for all large $j$, with a one-sided upper bound, then $R(x)\le x^{-1/2+\epsilon}$ for all sufficiently large real $x$, for each $\epsilon>0$.
+\end{corollary}
+\begin{proof}
+Apply \eqref{eq:mesh} with $a=x_j$, $b=x_{j+1}$. Eventually $b/a\le2$, and the second term is at most $\alpha C_0^2 a^{-1/2}/8=O(x^{-1/2})$. For a given $\epsilon$ choose $0<\epsilon'<\min(\epsilon,1/2)$ and use the hypothesis at both endpoints with exponent $-1/2+\epsilon'$. The endpoints are comparable to $x$, so the resulting fixed multiplicative constant is absorbed by $x^{\epsilon-\epsilon'}$.
+\end{proof}
+\begin{corollary}[Fourth powers suffice]\label{cor:fourth}
+In the original arithmetic proof, replace the requirement of admissible data at all large integers by the requirement at $x_j=j^4$ for all sufficiently large $j$, with the same scales \eqref{eq:scales}, for each fixed $Q,d,\tau$. The final conclusion \eqref{eq:old} follows unchanged.
+\end{corollary}
+\begin{proof}
+For $j\ge1$, $(j+1)^4-j^4\le15j^3$. Thus the fourth-power grid satisfies Corollary~\ref{cor:mesh}. The existing comparison gives \eqref{eq:power} on the grid; $\tau$ may be taken arbitrarily small. Apply the corollary with $\alpha=1/h_Q$.
+\end{proof}
+
+\subsection{A grid respecting the dyadic chain length}
+The fourth-power grid does \emph{not} make $m=j^2$ admissible in the current construction: $m$ must be a power of two. A more natural schedule partitions the integers into blocks $[M^2/4,M^2]$ with $M=2^h$, $h\ge4$. In block $h$ set
+\[\Delta_h=2^{\lfloor3h/2\rfloor},\qquad
+x_{h,j}=2^{2h-2}+j\Delta_h,\quad
+0\le j\le \frac{3\cdot2^{2h-2}}{\Delta_h}.\]
+The quotient is integral for $h\ge4$, and the adjacent blocks share an endpoint. At every grid point in $(M^2/4,M^2]$, the least admissible power of two is exactly $M$. At the left endpoint it is $M/2$, supplied by the preceding block. For any consecutive points $a,b$ in one block,
+\[\frac{b-a}{a}\le4M^{-1/2}\le4x^{-1/4},\qquad a\le x\le b\le M^2.\]
+Therefore the interpolation cost is at most $2h_Q^{-1}x^{-1/2}$. The number of points in block $h$ is $O(2^{h/2})$, and by summing the geometric series the total number through scale $X$ is $O(X^{1/4})$, compared to $O(X)$ integer cutoffs. This is a reduction in the set of required inputs, not a runtime estimate for a proof checker. It creates a convenient blockwise setting in which the chain length is fixed, although the field, weights, auxiliary primes and other admissible data may still depend on the cutoff.
+
+\subsection{Sharpness and the limits of coarsening}
+At the reciprocal midpoint, the exact centering gap is
+\begin{equation}\label{eq:gap}
+J(a,b)=\tfrac12\log\frac{(a+b)^2}{4ab}=-\tfrac12\log\left(1-\left(\frac{b-a}{a+b}\right)^2\right).
+\end{equation}
+As $b/a\to1$, this is asymptotic to $(b-a)^2/(8a^2)$. If $S$ is affine on the interval, \eqref{eq:exact} is equality. This can even occur for a hinge sum with one atom below the interval; choosing its positive weight and $c$ to equalize the endpoint remainders makes the midpoint excess exactly $\alpha J(a,b)$. This is a local model, not a counterexample for actual primes or a centered global prime remainder.
+
+Hence, in the class of all nonnegative hinge sums with logarithmic centering, a universal interpolation inequality cannot improve the order of this quadratic mesh loss. The choice $x_j=j^4$ corresponds to relative spacing $\asymp x^{-1/4}$, matching $x^{-1/2}$. A fixed geometric progression has a nonvanishing centering gap; merely proving the bound at dyadic squares $x=4^h$ would not suffice by this argument. If the target exponent has a fixed positive slack $\epsilon$, slightly larger gaps $O(x^{3/4+\epsilon/2})$ are possible, provided all other losses fit that slack. Taking arbitrarily small slack recovers the stated critical grid.
+
+\section{A second relaxation: local averages instead of samples}
+An additional structural consequence may be useful for a future reworking of the volume estimate. Let $t>0$ and $0<r<t$, with $t+r\le1$. Define $F(t)=R(1/t)$. The function
+\[u\mapsto F(u)+\frac{\alpha}{2(t-r)^2}u^2\]
+is convex on $[t-r,t+r]$, by the same argument as Theorem~\ref{thm:interp}. Jensen's inequality against the uniform measure on that interval gives
+\begin{equation}\label{eq:average}
+F(t)\le\frac1{2r}\int_{t-r}^{t+r} F(u)\,du+\frac{\alpha r^2}{6(t-r)^2}.
+\end{equation}
+Here the average of $u$ is $t$ and its variance is $r^2/3$. Choosing $r=t^{5/4}/4$ makes the second term $O(t^{1/2})$. Thus a one-sided bound of order $t^{1/2-\epsilon}$ on these reciprocal-window averages would suffice for the final prime bound, even without pointwise control inside a window.
+
+This is a proved analytic reduction, but no such direct average determinant theorem is supplied here. A potentially useful route would be to average the normalized log-volume comparisons at nearby cutoffs, taking care to use the correct main term, index, and rank for each cutoff. Averaging unrelated upper and lower determinants without a common comparison is not justified. The window bound suggests a concrete target for a blockwise construction, rather than assuming a new pointwise theorem.
+
+\section{A shorter route to a good quadratic twist}\label{sec:twists}
+\subsection{The exact obstacle}
+Fix $1/2<\beta<1$ and $H_0\ge0$. We need a prime $d\equiv Q/2-1\pmod Q$ such that every twisted $L(s,\psi\eta_d)$, for $\psi$ modulo $Q$, is nonzero on
+\[K_{\beta,H_0}=\{s:\beta\le\Rea s\le1,\ |\Ima s|\le H_0\}.
+\]
+The finite extra Euler factors of imprimitive characters are nonzero for $\Rea s>0$; it suffices to use the primitive representative $\psi^*$ of conductor $k_0\mid Q$. Its twist by $\eta_d$ is primitive, nonprincipal, and has conductor $k_0d$ by coprimality. The parity $j\in\{0,1\}$ of the twist is fixed for a given $\psi^*$ since $d\equiv7\pmod8$. This includes the original principal character (primitive conductor $1$).
+
+The guide's Sections 17--18 prove a density estimate using a Gaussian theta tail and the three-lines theorem. We keep the same analytic objects, but use a second moment of the tails rather than their first moment. This directly yields a good prime by averaging, with an optional stronger quantitative estimate. This simplification concerns Dirichlet quadratic twists, not the unrelated anticyclotomic twists in the lower determinant calculation.
+
+\subsection{Theta tails and an elementary second moment}
+For $T\ge2$, $w_j(y)=y^j e^{-\pi y^2}$, and a coefficient sequence $c(n)$ with $|c(n)|\le1$, put
+\[\theta_c(u)=\sqrt u\sum_{n\ge1}c(n)w_j(nu),\qquad
+J(\chi,T)=\int_{1/T}^{\infty}(|\theta_\chi(u)|+|\theta_{\mu\chi}(u)|)\frac{du}{u}.
+\]
+For fixed bounded $\alpha_n$, extend the prime family to all $1\le v\le T^2$ using $c_v(n)=\alpha_n(-v/n^\circ)$, where $n^\circ$ is the odd part and the symbol is Jacobi. For the actual primes $d\equiv7\pmod8$, quadratic reciprocity gives $c_d(n)=\alpha_n(n/d)$. The extension is used only for a sum of nonnegative squares, not for a mean of signed prime coefficients.
+
+The source proves the estimate (for every fixed $\delta>0$)
+\begin{equation}\label{eq:sourceS}
+\sum_{v\le T^2}|\theta_{c_v}(u)|^2\ll_\delta T^2u^{-2\delta}\quad (u\ge1/T).
+\end{equation}
+See \texttt{sum\_sq\_thetaSeries\_jacobiSym\_le} in \texttt{Lib/Analytic/QuadraticTwist.lean}. The following alternative bound makes the averaging even more transparent.
+\begin{lemma}[Logarithmic Gaussian mean]\label{lem:gaussian}
+Uniformly in the bounded coefficients, parity and $T\ge2$, for $1/T\le u\le1$,
+\[\sum_{v\le T^2}|\theta_{c_v}(u)|^2\ll T^2\log(2+1/u),\]
+and for $u\ge1$ the sum is $\ll T^2(1+u)e^{-c_0u^2}$ for an absolute $c_0>0$. The same holds with $\alpha_n$ replaced by $\mu(n)\alpha_n$.
+\end{lemma}
+\begin{proof}
+Expand the square, and write $V=\lfloor T^2\rfloor$. For the pair $n,m$ the character sum is
+\[K_V(n,m)=\sum_{v\le V}(-v/(nm)^\circ).
+\]
+If $(nm)^\circ$ is a square, use $|K_V|\le V$. Otherwise the Jacobi character is nonprincipal, so P\'olya--Vinogradov gives $|K_V|\ll (nm)^{1/2}\log(2nm)$. These are the same two cases as in the guide. Absolute convergence at fixed $u>0$ follows from Gaussian decay, so expansion and grouping are legitimate.
+
+For square pairs uniquely write $n=2^a r h^2$ with $r$ odd squarefree and $h$ odd positive, and similarly for $m$. The square condition is equality of $r$ in the two decompositions. Since $|w_j(z)|\ll e^{-c z^2}$ with an absolute $c>0$,
+\[
+\sum_{a\ge0,\ h\ge1\text{ odd}}|w_j(2^a r h^2u)|\ll (ru)^{-1/2}e^{-c'(ru)^2}.
+\]
+Indeed for $z=2^a ru$ we use $e^{-c z^2 h^4}\le e^{-cz^2/2}e^{-cz^2h^4/2}$ and the decreasing-function integral bound $\sum_{h\ge1}e^{-cz^2h^4/2}\le\int_0^\infty e^{-cz^2y^4/2}dy\ll z^{-1/2}$, then sum $2^{-a/2}$. The contribution of square pairs is bounded by
+\[Vu\sum_{r\ge1}(ru)^{-1}e^{-2c'(ru)^2}\ll V\log(2+1/u)\quad (0<u\le1),\]
+using the harmonic sum up to $1/u$ and an integral bound on the tail. For $u\ge1$ it is $O(Ve^{-c''u^2})$.
+
+The nonsquare contribution is at most a constant times
+\[u\left(\sum_{n\ge1}\sqrt n\log(2n)|w_j(nu)|\right)
+\left(\sum_{m\ge1}\sqrt m|w_j(mu)|\right),\]
+using $\log(2nm)\le\log(2n)+\log(2m)$ and symmetry. For $u\le1$, the two sums are respectively $O(u^{-3/2}\log(2+1/u))$ and $O(u^{-3/2})$. For example split at $1/u$ and then into dyadic ranges $2^k/u<n\le2^{k+1}/u$: the number of terms and the power factors grow geometrically in $k$, while the Gaussian decays as $e^{-c4^k}$. For $u\ge1$ both sums are $O(e^{-c'''u^2})$ by factoring half the Gaussian and summing over $n$. Hence the nonsquare contribution is $O(u^{-2}\log(2+1/u))$ on the small interval and $O(u e^{-c_0u^2})$ on the large interval. Since $u^{-2}\le T^2$ on the required interval, adding the bounds proves the lemma. Multiplying coefficients by $\mu(n)$ changes none of the bounds.
+\end{proof}
+
+\begin{corollary}[Joint second moment of tail integrals]\label{cor:moment}
+For $X\ge2$ and $T=\sqrt{QX}$, let $\mathcal D_X$ be the primes $d\le X$ in the prescribed residue class. For each primitive representative $\psi^*$ modulo a divisor of $Q$,
+\begin{equation}\label{eq:moment}
+\sum_{d\in\mathcal D_X}J(\psi^*\eta_d,T)^2\ll_Q T^2(1+\log T)^3.
+\end{equation}
+A weaker but sufficient variant using the existing estimate \eqref{eq:sourceS} is $\ll_{Q,\delta}T^{2+2\delta}$ for any $\delta>0$.
+\end{corollary}
+\begin{proof}
+Apply the triangle inequality for the finite-dimensional Euclidean norm (Minkowski's integral inequality) to the vector of integrals indexed by $d$. Since sums of squares are nonnegative, enlarge $d$ to $v\le T^2$ in the pointwise bound and use Lemma~\ref{lem:gaussian} for both sequences. On $[1/T,1]$ the norm of the integrand is at most $CT\sqrt{\log(2+1/u)}$, so its integral against $du/u$ is $O(T(1+\log T)^{3/2})$. The tail for $u\ge1$ is $O(T)$ by exponential decay. Squaring yields \eqref{eq:moment}. Alternatively the square root of \eqref{eq:sourceS} integrates to $O_\delta(T^{1+\delta})$. No new character-sum theorem beyond the one already used by the source is needed.
+\end{proof}
+
+\subsection{Mollifier and a short uniform selection proof}
+For a primitive nonprincipal $\chi$ of conductor $k\le T^2$ and parity $j$, define
+\[\Gamma_j(s)=\tfrac12\pi^{-(s+j)/2}\Gamma((s+j)/2),\quad
+M_\chi(s)=\int_{1/T}^\infty \theta_{\mu\chi}(u)u^{s-1/2}\frac{du}{u},\]
+\[P_\chi(s)=\Gamma_j(s)L(s,\chi)M_\chi(s)-\Gamma_j(s)^2.\]
+These are the objects of the guide; the Mellin identities at $\Rea s>1$ are $\Gamma_j L$ and $\Gamma_j/L$, respectively, when the full range $(0,\infty)$ is integrated. The primitive theta functional equation yields
+\[|\theta_\chi(1/(ku))|=|\theta_\chi(u)|,\]
+so on $\Rea s=1/2$ the full integral for $\Gamma_j L$ has absolute value at most $2J(\chi,T)$. Indeed fold at $1/\sqrt k\ge1/T$; the Mellin power has modulus one. Also $|M_\chi|\le J$. Uniformly in height,
+\begin{equation}\label{eq:left}|P_\chi(1/2+it)|\ll1+J(\chi,T)^2.\end{equation}
+On any fixed line $\Rea s=B>1$, absolute convergence and $|\theta_{\mu\chi}(u)|\ll u^{-1/2}$ for $u\le1$ give
+\begin{equation}\label{eq:right}|P_\chi(B+it)|\ll_B T^{1-B}.
+\end{equation}
+Indeed the omitted integral is bounded by $C\int_0^{1/T}u^{B-2}du$, and $|\Gamma_j(B+it)L(B+it,\chi)|\le\Gamma_j(B)\zeta(B)$. The bounds are independent of the height, $T$, and $\chi$ (within the two parities). For any fixed $\chi,T$, the functions in $P_\chi$ are holomorphic and bounded on this closed vertical strip: the primitive theta series decays at both ends using the functional equation, and the truncated series has Gaussian decay at infinity; the Mellin factor is controlled by its real part. Thus the classical three-lines theorem applies.
+
+For a fixed $Q$, sum \eqref{eq:moment} over its finitely many primitive representatives (or over the finitely many characters, allowing repetition). The prime number theorem in the prescribed invertible class gives $|\mathcal D_X|\asymp_Q X/\log X$. Some prime $d$ therefore satisfies simultaneously for all these representatives
+\[J(\psi^*\eta_d,T)^2\ll_Q (1+\log T)^4.\]
+The prime can be selected by minimizing the sum of these nonnegative quantities; a separate density-counting theorem is not required for the existence assertion. Using \eqref{eq:left}, \eqref{eq:right} with $B=2$, three-lines makes $P_\chi(s)$ tend uniformly to zero on $K_{\beta,H_0}$ as $X\to\infty$. At a zero of $L$, it would have absolute value $|\Gamma_j(s)|^2$, with positive minimum on this compact set. This excludes all zeros on the box for the single selected $d$, once $X$ is large. This is a replacement for the final bad-prime/selection portion of the source's analytic lemma. The power-moment variant also suffices by taking $\delta$ sufficiently small relative to $\beta-1/2$.
+
+\subsection{A stronger density statement, if wanted}
+\begin{theorem}[Exceptional primes with a second-moment saving]\label{thm:density}
+Fix $Q$, $\beta\in(1/2,1)$, and $H_0<\infty$. Call $d$ bad if some twist by $\eta_d$ of a character modulo $Q$ has a zero on $K_{\beta,H_0}$. Among the primes $d\le X$ in the admissible class,
+\[\#\{d\text{ bad}\}\ll_{Q,\beta,H_0,\gamma}X^{1-\gamma}
+\qquad\text{for every }0<\gamma<\frac{\beta-1/2}{2}.
+\]
+The argument is unconditional; it uses neither RH nor the arithmetic volume estimate.
+\end{theorem}
+\begin{proof}
+Suppose $L(\rho,\chi)=0$ with $\sigma=\Rea\rho\in[\beta,1]$ and $|\Ima\rho|\le H_0$. Put $w=(\sigma-1/2)/(B-1/2)$ in three-lines. On the compact box $|\Gamma_j|^2\ge c>0$. Therefore
+\[c\le |P_\chi(\rho)|\ll_B(1+J^2)^{1-w}T^{-(B-1)w}.\]
+Since $1-w$ is bounded away from zero for fixed $B>1$, this implies
+\begin{equation}\label{eq:threshold}
+1+J^2\gg_{B,\beta,H_0} T^{A_B},\qquad
+A_B=\frac{(B-1)(\beta-1/2)}{B-\beta}.
+\end{equation}
+The exponent is the minimum over $\sigma\ge\beta$ of $(B-1)(\sigma-1/2)/(B-\sigma)$. Summing \eqref{eq:threshold} over bad primes and all the finitely many primitive representatives, and using \eqref{eq:moment}, gives
+\[\#\{d\text{ bad}\}\ll_{B,Q,\beta,H_0} T^{2-A_B}(1+\log T)^3.
+\]
+With $T^2=QX$ and $A_B\to\beta-1/2$ as $B\to\infty$, choose a finite $B$ with $A_B/2>\gamma$ and absorb the logarithm. The same limiting saving follows from the weaker version of \eqref{eq:moment} by choosing its $\delta$ small enough. All choices are made with $\beta,H_0,Q$ fixed, before $X\to\infty$.
+\end{proof}
+\begin{remark}
+For $\beta=3/4$, the guide's explicit exponent is $1-1/72$. Keeping the right line $B=2$ gives $A_B=1/5$ and hence every saving less than $1/10$; varying $B$ gives every saving less than $1/8$. The endpoint saving $1/8$ is not claimed. These are improvements relative to the estimates in the supplied guide, not a claim to the best classical density estimate or priority in analytic number theory.
+\end{remark}
+
+\section{A weakened sufficient criterion for GRH}\label{sec:criterion}
+We now spell out the entire logical connection, including the sign issue in Landau's argument. In particular, the improved analytic argument does not improperly change the order of choices of $d$ and $x$.
+
+\begin{theorem}[Sparse-cutoff, divergent-twist criterion]\label{thm:criterion}
+For each $q\ge1$ put $Q=18480q$. Suppose that for every $0<\tau<1/100$ there is a subset $\mathcal S_{Q,\tau}$ of primes in the admissible class with
+\begin{equation}\label{eq:divergence}
+\sum_{d\in\mathcal S_{Q,\tau}}\frac{\log d}{d}=\infty,
+\end{equation}
+and that for each fixed $d\in\mathcal S_{Q,\tau}$ the admissible data needed for \eqref{eq:cutoff}--\eqref{eq:scales} exist at $x=j^4$ for every sufficiently large integer $j$. (The threshold may depend on $Q,\tau,d$.) Then all Dirichlet $L$-functions have no zero in $\Rea s>1/2$, with the usual pole exception at $s=1$; in particular RH and Dirichlet GRH follow.
+
+The fourth-power grid can be replaced by any grid satisfying Corollary~\ref{cor:mesh}; the arithmetic data themselves may be different for different grid points.
+\end{theorem}
+\begin{proof}
+Assume for contradiction that $L(\rho,\chi)=0$ for a character modulo $q$ and $1/2<\Rea\rho<1$. The region $\Rea s\ge1$ is dealt with by the classical nonvanishing theorem and Euler product, with the pole at $1$ excluded. Choose $1/2<\beta<\Rea\rho$ and $0<\tau<1/100$ so that $6\tau<\beta-1/2$. Fix $H_0=|\Ima\rho|$. By Theorem~\ref{thm:density}, the bad primes have a convergent sum of $(\log d)/d$: group them into $2^j<d\le2^{j+1}$, whose contribution is $O((j+1)2^{-j\gamma})$. The divergent subset \eqref{eq:divergence} therefore contains a good prime $d$. Fix that prime permanently.
+
+By \eqref{eq:power} on the grid and Theorem~\ref{thm:interp}, $R=R_{Q,d}$ satisfies $R(x)\ll_{Q,d,\tau} x^{-1/2+6\tau}$ for every sufficiently large real $x$. Since $6\tau<\beta-1/2$, this implies
+\begin{equation}\label{eq:beta}R(x)\le x^{\beta-1}\quad(x\text{ large}).\end{equation}
+There is no required uniformity in $d$.
+
+Write $E_\psi(s)=L(s,\psi)$ for a nonprincipal character, and $(s-1)L(s,\psi)$ for the principal character, with the value at $1$ filled by analytic continuation. These are entire, and nonzero on the real interval $[1,\infty)$. For the twists $\psi\eta_d$, which are nonprincipal, use the same notation. By character orthogonality for class $1$ and the log derivative identity, initially for $\Rea s>1$,
+\begin{align*}
+\sum_{n\ge1}\lambda_{Q,d}(n)n^{-s}&=\frac{s}{h_Q(s-1)}+G(s),\\
+G(s)&=\frac1{h_Q}\left[\sum_{\psi\bmod Q}\left(\frac{E'_{\psi\eta_d}}{E_{\psi\eta_d}}(s)-\frac{E'_\psi}{E_\psi}(s)\right)-1\right].
+\end{align*}
+The centering is $c_{Q,d}=G(1)$, real. This follows either from the guide's transform theorem or by letting $s\downarrow1$ in the integral of the convergent remainder: for $h=s-1>0$, $h\int_0^\infty R(e^v)e^{-hv}dv\to0$ since $R(e^v)\to0$. Termwise integration of the positive-part kernel gives, first for $\Rea s>1$,
+\begin{align*}
+\Phi(s)&=\int_0^\infty R(e^v)e^{(1-s)v}dv
+=\frac{G(s)/s-c_{Q,d}}{s-1}.
+\end{align*}
+In fact the contribution of $n$ is $n^{-s}/[s(s-1)]$; the integral of $v/h_Q$ is $1/[h_Q(s-1)^2]$, and that of $c$ is $c/(s-1)$. The right side is meromorphic for $\Rea s>0$, removable at $1$, with at most simple poles. Its residue at $z\ne0,1$ is
+\begin{equation}\label{eq:residue}
+r(z)=\frac{n(z)-n_d(z)}{h_Q z(1-z)},\quad
+n(z)=\sum_{\psi\bmod Q}\ord_z E_\psi,\quad
+n_d(z)=\sum_{\psi\bmod Q}\ord_z E_{\psi\eta_d}.
+\end{equation}
+This sign is important: the original zeros have positive real residue at real $z\in(\beta,1)$, twisted zeros negative. Because $d$ is good, $n_d$ is zero on the box, including $\rho$ and the real interval $(\beta,1]$. Thus $r(u)\ge0$ for all real $u>\beta$, with no poles for $u\ge1$.
+
+Choose $K\ge2$ large enough that $R(e^v)\le (K-1)e^{(\beta-1)v}$ for $v\ge0$; this uses \eqref{eq:beta} and continuity on the remaining compact interval. The positive measure
+\[d\nu(v)=[Ke^{\beta v}-e^vR(e^v)]\,dv\qquad(v\ge0)\]
+has transform $F(s)=K/(s-\beta)-\Phi(s)$ far to the right. Its abscissa of convergence $a$ is finite (the smoothed remainder is bounded at infinity by the fixed-modulus prime number theorem) and $a\ge\beta$ because the density is at least $e^{\beta v}$. If $a>\beta$, its meromorphic continuation at $a$ has at most a simple pole with residue $-r(a)\le0$. But $F(u)\ge0$ for real $u>a$, so the residue, if present, must be nonnegative by multiplying by $u-a$ and taking the limit. It is zero and the singularity is removable. Landau's theorem for a positive Laplace transform rules this out: if the function were analytic across $a$, at a real $u>a$ sufficiently close to $a$ its Taylor series could be evaluated at $u-h<a$ within the analytic disk. Each term equals $\int e^{-uv}(hv)^k/k!\,d\nu(v)\ge0$, and summing by monotone convergence would imply finite transform at $u-h$, a contradiction. Therefore $a=\beta$, $F$ is holomorphic for $\Rea s>\beta$, and so is $\Phi$.
+
+Since $d$ was chosen good, at the proposed zero $\rho$ equation \eqref{eq:residue} has $n_d(\rho)=0$. Holomorphy forces $n(\rho)=0$. Inducing $\chi$ from $q$ to $Q$ multiplies its $L$-function by finite Euler factors nonzero in this half-plane, so its zero would contribute a positive order to $n(\rho)$. Contradiction. At $\Rea s\ge1$ the classical nonvanishing already noted applies. The functional equation sends a zero in the open strip to a zero at $1-s$ for the inverse character (and similarly for primitive representatives; the finite factors have no zeros there). The two right-half-plane exclusions give $\Rea s=1/2$. For zeta the other zeros are the trivial negative even integers, as in \texttt{New.zeta\_zeros\_on\_line}. This proves the criterion.
+\end{proof}
+
+\paragraph{Why the weakened hypothesis is useful.} The original arithmetic statement works for every admissible $d$ and every large integer cutoff. Theorem~\ref{thm:criterion} allows one to redesign the construction to exploit favorable auxiliary primes, provided the set remains divergent as in \eqref{eq:divergence}; it also allows a sparse grid at each fixed prime. A positive relative density of primes in the residue class would be more than sufficient. There is no permission to let $d=d(x)$ drift with $x$: the Laplace transform must refer to a single fixed remainder. A finite set of primes is also not sufficient by the selection argument alone.
+
+\section{What could be simplified further?}\label{sec:future}
+The quantitative obstruction is not primarily the short analytic tail of the proof. The hard arithmetic part lies in sharp divisibility, the nearly full span, the single-lift norm ratios, and clearing the congruence denominators simultaneously for powers of one local twist. The supplied guide gives a useful scale diagnostic: the local-defect contribution to the denominator allowance is bounded in relative terms by a constant times
+\[\frac{m^2}{x(\log b)^2}.\]
+Thus taking $m$ much larger than $\sqrt x$ is not free. The sparse construction retains the existing $m\asymp\sqrt x$ and does not change that estimate.
+
+A more substantial simplification would require exploiting the new freedom before the data are built. Here are three precise targets.
+\begin{enumerate}
+\item \textbf{Fixed-length block construction.} In each dyadic block of Section~\ref{sec:sparse}, $m$ and the associated exponent determining the cyclotomic field are fixed by the chain length. Seek a uniform family of admissible parameters for the $O(\sqrt m)$ selected cutoffs. The source chooses $b$, two cutoff weights, level primes, and the sparse places with inequalities depending on $x$. One must verify all these constraints simultaneously before sharing any data across a block; we have not done so. A first implementation can simply restrict the domain of \texttt{eventually\_exists\_data} to the block grid.
+\item \textbf{A favorable prime subfamily.} Identify one of the current field, local type, or CM-period restrictions that becomes simpler under extra congruences on $d$. An extra fixed congruence compatible with the current class is a promising candidate because the intersection of invertible classes contains a divergent prime set by the prime number theorem in progressions. Do not assume class-number-one or a finite list of CM fields suffices: divergence is essential. Any actual simplification must be justified by the exact arithmetic hypotheses; no new restriction is asserted here.
+\item \textbf{Averaged volume estimate.} Try proving the reciprocal-window upper bound of \eqref{eq:average} directly. An averaged version could tolerate a small exceptional set of cutoffs, but only if the contributions of large positive excess on that set are controlled. In particular the term $H$ in \eqref{eq:compare} cannot be averaged away unless both sides use matching data and normalizations. This remains a proposal, not an established replacement for A, B, or C.
+\end{enumerate}
+
+\paragraph{Rejected shortcuts.} Using only a single fixed quadratic twist without proving the sign of real residues would be invalid. The model $R(x)=-x^{a-1}$ for $\beta<a<1$ obeys the required upper bound yet has transform $-1/(s-a)$: a negative real pole defeats the Landau argument. Similarly, the small rank defect in B must not be ignored in C, and a formal comparison of determinant heights cannot omit the contribution of the index. The arithmetic cancellation is what makes the proof powerful. None of our reductions relies on such a shortcut.
+
+\section{Formalization and verification plan}\label{sec:formal}
+The attached \texttt{LEAN\_PLAN.md} gives declarations and suggested replacement interfaces. The simplest integration retains every upstream construction and changes only the endpoint. In a first formalization one can prove the sparse-cutoff criterion as an independent alternative to the floor step; only afterward specialize the arithmetic existence lemma. The interpolation theorem uses finite sums, convexity of $\max$ of affine functions and of $\log t+b^2t^2/2$, elementary algebra, and real powers. The averaged twist selection can initially reuse \eqref{eq:sourceS} without formalizing the improved logarithmic estimate. This minimizes additional dependencies.
+
+\begin{center}\small
+\begin{tabularx}{\linewidth}{@{}p{.40\linewidth}X@{}}\toprule
+Source declaration (short form)&Action\\\midrule
+\texttt{star\_inequality}&Retain exactly.\\
+\texttt{Data.primeRemainder\_le}&Retain exactly; use only at grid points.\\
+\texttt{eventually\_exists\_data}&Weaken required domain; prove restricted version from current theorem as regression test.\\
+\texttt{eventually\_primeRemainder\_}\newline\texttt{natCast\_le}&Replace in new route by grid-bound version.\\
+\texttt{primeRemainder\_sub\_}\newline\texttt{primeRemainder\_floor\_le}&Not needed in new endpoint; may still serve other callers.\\
+\texttt{sum\_sq\_thetaSeries\_}\newline\texttt{jacobiSym\_le}&Reuse to obtain tail second moment by Minkowski.\\
+\texttt{exists\_entireL\_quadTwist\_}\newline\texttt{ne\_zero}&Alternative proof by averaging; retain original interface.\\
+\texttt{IsPolar.landau}, \texttt{New.zeros\_on\_line}&Retain exactly.\\\bottomrule
+\end{tabularx}
+\end{center}
+
+The Python checks exercise the finite hinge inequality, the logarithmic interpolation penalty, dyadic grid construction and exponent arithmetic. They are regression examples, not proofs of the analytic or automorphic theorems. No Lean installation was available in this environment; the new arguments are human-readable proofs and the formalization plan is explicitly untested. No changes were made to ProveIt. The source audit lists sampled blob hashes, not a fresh full-tree comparison or a new kernel replay. The existing compact edition \cite{sutherland} is already much shorter in Lean source; these changes aim at mathematical hypotheses and argument structure, not an unmeasured code-size record.
+
+\section*{Conclusion}\addcontentsline{toc}{section}{Conclusion}
+The prime remainder is a convex hinge sum in disguise. Once this fact is noticed, it becomes unnecessary to prove the deep arithmetic inequality at every integer: an $O(X^{1/4})$ grid through scale $X$ is sufficient. The existing chain can be organized in blocks of fixed power-of-two length. Independently, a second-moment argument streamlines the selection of quadratic twists and sharpens the density exponent obtained from the same Gaussian method. Together these reductions offer a concrete, verified-at-the-mathematical-level route to weakening the required arithmetic construction without sacrificing the conclusion of GRH. The main theorem remains dependent on the original determinant estimate, and the major open task for simplification is to translate the newly available flexibility into shorter admissible-data and volume proofs.
+
+\begin{thebibliography}{9}\small
+\bibitem{guide} Supplied archive, \emph{How theta lifts locate the zeros of Dirichlet L-functions}, 79-page guide, 27 Nov. 2026. Especially Sections 1, 5--16 (arithmetic), 17--19 (analytic reduction), and 20 (verification). Source index in accompanying \texttt{source-map.tsv}.
+\bibitem{source} L. Alp\"oge with Claude, readable rewriting of the RH/Dirichlet GRH proof: \upstream, 25 Nov. 2026; \repo. The declaration and blob audit accompanying this note identifies the inspected source files.
+\bibitem{sutherland} A. V. Sutherland, \emph{Verification files for the shorter Lean proof of RH and of GRH for Dirichlet L-functions}, \url{https://math.mit.edu/~drew/shortgrh/}, updated 27 Nov. 2026. Records for readable and compact editions at commit \texttt{72fead10}.
+\bibitem{joint} Lean FRO and Mathlib Initiative, \emph{Lean verification of the Riemann Hypothesis}, 21 Nov. 2026, \url{https://leanprover-community.github.io/blog/posts/riemann-hypothesis/}.
+\bibitem{alpoge} L. Alp\"oge, announcement and discovery notes, \url{https://alpo.ge/remark.pdf} (as cited by the guide).
+\bibitem{mv} H. L. Montgomery and R. C. Vaughan, \emph{Multiplicative Number Theory I: Classical Theory}, Cambridge University Press, 2007 (classical analytic tools, including character sums and Landau-type arguments).
+\end{thebibliography}
+\end{document}

@@ -1,0 +1,57 @@
+% Standalone mathematical insert; no macro prerequisites beyond amsmath, amssymb.
+\section{Selecting the twist by elementary Fourier completion}\label{sec:fourier}
+One can also prove the fixed-height twist-selection lemma using Fourier completion. A smooth partition of the Dirichlet series reduces the required character-sum estimate to P\'olya--Vinogradov. The first-moment and disk arguments from Section~\ref{sec:selector} apply again. Throughout this section the modulus $Q$, the rectangle and its slightly larger neighborhood are fixed. Let $1/2<\sigma_0=1/2+\delta<1$ be a lower bound for the real parts in the neighborhood. Let $X$ be large and let $p$ run over primes $X<p\le 2X$. Fix one primitive character $\psi$ of conductor $c\mid Q$, including $c=1$. For $p\nmid c$, the product $\xi_p=\psi(\cdot)(\cdot/p)$ is primitive of conductor $cp$ by the Chinese remainder theorem. Passing from this primitive character to the character induced modulo $Qp$ only multiplies its $L$-function by factors $1-\xi_p(\ell)\ell^{-s}$, which have no zeros in $\Re s>0$.
+
+\paragraph{A short mean square.} For arbitrary complex $a_n$ supported on $1\le n\le V$, put $A=\max_n|a_n|$. For every $e>0$,
+\begin{equation}
+ \left(\sum_{X<p\le2X}\left|\sum_{n\le V}a_n(n/p)\right|^2\right)^{1/2}
+ \ll_e (XV)^e\left(\sqrt{XV}+V^{3/2}\right)A.\tag{C1}
+\end{equation}
+To see this, extend the family on the left to all positive odd denominators up to $2X$ using the Jacobi symbol. Expand the square. When $n_1n_2$ is a square the inner sum is at most $2X$, and there are $O(V\log(2V))$ such pairs, since $n_j=kr_j^2$ with common squarefree $k$. For a positive nonsquare $n_1n_2$, quadratic reciprocity expresses the Jacobi symbol on odd denominators as a nonprincipal Dirichlet character of modulus at most $8n_1n_2$, zero on even denominators. This also treats twice a square, through the nontrivial character modulo eight. Removing imprimitive factors by inclusion--exclusion and applying P\'olya--Vinogradov bounds it by $O_e(V^{1+e})$. There are at most $V^2$ pairs. Renaming $e$ gives (C1). This calculation also appears in the introduction to Heath-Brown's 1995 paper, prior to its main large-sieve theorem.
+
+\paragraph{Completion of the long blocks.} Let $w$ be a smooth function supported on $[1,4]$ and $Y\ge1$. Uniformly for $s=\sigma+it$ in the chosen bounded neighborhood,
+\begin{equation}
+ \left(\sum_{X<p\le2X}\left|\sum_{n\ge1}\xi_p(n)n^{-s}w(n/Y)\right|^2\right)^{1/2}
+ \ll_{Q,w,e} X^{1/2+e}Y^{1/2-\sigma}.\tag{C2}
+\end{equation}
+For $Y\le\sqrt X$ this is (C1), with the fixed character and the smooth weight in the coefficients. For $Y\ge\sqrt X$ apply Poisson summation in the residue classes modulo $cp$. Set $K_s(u)=\int_0^\infty v^{-s}w(v)e^{-2\pi iuv}\,dv$. The primitive Gauss-sum formula gives the exact block
+\[
+ \frac{Y^{1-s}\tau(\xi_p)}{cp}
+ \sum_{m\ne0}\overline{\xi_p}(m)K_s\!\left(\frac{mY}{cp}\right),
+ \qquad |\tau(\xi_p)|=\sqrt{cp}.
+\]
+The zero frequency has vanished. For each sign of $m$ let $S_p(t)=\sum_{1\le m\le t}\overline\psi(m)(m/p)$. The parity factor in the negative part has absolute value one. Put $Z=cX/Y$. The derivative of $K_s(\pm tY/(cp))$ is bounded by $C_A Z^{-1}(1+t/(2Z))^{-A}$, uniformly in $p$ and $s$, by integration by parts in the defining Fourier integral. Partial summation, Minkowski's inequality and (C1) bound the $\ell^2$ norm of each frequency sum by
+\[
+ C_{A,e}X^e\int_1^\infty
+ \frac{t^e}{Z}(1+t/(2Z))^{-A}
+ \bigl(\sqrt{X}t^{1/2}+t^{3/2}\bigr)\,dt.
+\]
+For $1\le Z\le c\sqrt X$ this is $O_{c,e}(X^{O(e)}\sqrt{XZ})$, by $t=Zu$. For $0<Z<1$ use $(1+t/(2Z))^{-A}\le(2Z/t)^A$ with $A\ge5+e$, obtaining the same bound. Multiply by $Y^{1-\sigma}/\sqrt{cp}$, use $p\asymp X$, and rename $e$ to obtain (C2). The decay in (C2) for $\sigma>1/2$ is summable over increasing dyadic $Y$.
+
+\paragraph{Mollification.} Take a smooth cutoff $\phi$ equal to one on $[0,1]$ and zero on $[2,\infty)$. Let $U=M=\lfloor X^{1/4}/4\rfloor$, and put
+\[
+ P_p(s)=\sum_n\xi_p(n)n^{-s}\phi(n/U),\qquad
+ D_p(s)=\sum_{l\le M}\mu(l)\xi_p(l)l^{-s}.
+\]
+Telescope the smooth cutoffs at $U,2U,4U,\ldots$. Consecutive differences use $w(v)=\phi(v/2)-\phi(v)$ supported on $[1,4]$. For fixed $p$ the cutoffs converge to $L(s,\xi_p)$ in $\sigma>0$ by the bounded partial sums of a nonprincipal character and partial summation. Applying (C2) and summing geometrically gives
+\[
+ \|L(s,\xi_p)-P_p(s)\|_{\ell_p^2}\ll X^{1/2+e}U^{-\delta}.
+\]
+The short mean square (C1) bounds $\|D_p\|_{\ell_p^2}\ll X^{1/2+e}$. Indeed, on each dyadic block of length comparable to $V\le M$ the coefficients after extracting the symbol $(n/p)$ have modulus at most $V^{-\sigma_0}$, up to a fixed constant. Equation (C1) gives $O(X^{1/2+O(e)}V^{-\delta})$, summable over $V=1,2,4,\ldots$. Meanwhile $P_pD_p-1$ has support $M<n\le 2UM$ with coefficients of $\xi_p(n)n^{-s}$ bounded by $\|\phi\|_\infty\tau(n)$. Vanishing for $1<n\le M$ follows from $M\le U$ and $\sum_{l\mid n}\mu(l)=0$. Since $2UM\le\sqrt X$, apply (C1) on dyadic blocks $V<n\le 2V$ and sum the norms, using $\tau(n)\ll_e n^e$. This gives
+\[
+ \|P_pD_p-1\|_{\ell_p^2}\ll X^{1/2+O(e)}M^{-\delta}.
+\]
+Use the first absolute moment for the final estimate. Cauchy--Schwarz, first on the product and then on the short polynomial, gives
+\begin{align*}
+ \sum_{X<p\le2X}|L(s,\xi_p)D_p(s)-1|
+ &\le \|L(s,\xi_p)-P_p(s)\|_{\ell_p^2}\|D_p(s)\|_{\ell_p^2}
+       +\sqrt{2X}\|P_pD_p-1\|_{\ell_p^2}\\
+ &\ll X^{1+O(e)}(U^{-\delta}+M^{-\delta})
+ \ll X^{1-\delta/4+O(e)} .
+\end{align*}
+All bounds are uniform on the neighborhood. If $L$ vanishes at a point of the original compact rectangle, $|LD_p-1|=1$ there. The disk mean-value inequality for the absolute value of a holomorphic function gives a uniform positive lower bound for the integral of $|LD_p-1|$ on the larger neighborhood. Integrating the last display bounds the exceptional primes by $O(X^{1-\delta/4+O(e)})$. For a rectangle with left edge $\beta>1/2$, choose the disk margin and the losses $e$ sufficiently small in terms of a prescribed $\varepsilon>0$. The resulting count is
+\[
+ O_{Q,H,\beta,\varepsilon}
+ \bigl(X^{1-(\beta-1/2)/4+\varepsilon}\bigr).
+\]
+A finite union covers all characters modulo $Q$, and the prime number theorem for the fixed admissible progression supplies a good prime.

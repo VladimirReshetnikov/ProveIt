@@ -1,0 +1,146 @@
+\section{Choosing translates directly on the ramified source}
+\label{sec:affine-spanning}
+
+The volume comparison needs a small family of translates whose images span
+almost all of the target. The source first chooses translates of the entire
+space of Poincar\'e series. It then restricts each map to the ramified
+source and subtracts a possible dimension loss for every translate. One
+can restrict at each choice instead. This gives the following stronger
+version of the spanning conclusion. Here $b$ is the weight parameter,
+$d$ is the target dimension, and $r$ is the ramified source dimension.
+For $b\ge 8$ there is a set $J$ of translates satisfying
+\begin{equation}
+ |J|r\le 5d\log(1+2b^2),\qquad
+ \operatorname{codim}\sum_{s\in J}
+  \operatorname{im}(\text{normalized Poincar\'e map at }s)
+ \le \frac{20d}{b^4}.
+ \label{eq:affine-spanning-bound}
+\end{equation}
+The volume argument asks for codimension at most $4d/b^2$ with exactly
+this translate budget. The proof below uses the existing geometric moment
+estimates at their original precision.
+
+\subsection*{An affine recurrence for the missing dimension}
+
+Let $S$ and $V$ have positive dimensions $h$ and $d$. Let $P_s:S\to V$
+be a nonempty finite family of linear maps and let $S_0\subset S$ have
+dimension $r\ge (1-\tau)h$, where $0\le\tau\le1$. Suppose that for
+every $F\subset V$ of codimension $c$ there is an $s$ with
+\begin{equation}
+ \dim P_s^{-1}(F)\le h\left(1-\frac{c}{2d}+\omega\right).
+ \label{eq:affine-spread}
+\end{equation}
+Assume $0<h\le 2d$ and $\omega\ge0$. For each integer $u\ge 0$
+one can choose at most $u$ indices whose restricted images have
+codimension at most
+\begin{equation}
+  d\left[\kappa+(1-\kappa)\left(1-\frac{h}{2d}\right)^u\right],
+  \qquad \kappa=2\omega+2\tau.
+  \label{eq:affine-spread-recurrence}
+\end{equation}
+In particular, the missing fraction is at most
+$\kappa+\exp(-uh/(2d))$.
+
+To prove this, begin with $F=0$. If $F$ is the current span, use
+\eqref{eq:affine-spread} and compose $P_s|_{S_0}$ with the quotient
+$V\to V/F$. Its kernel is $S_0\cap P_s^{-1}(F)$. The dimension it adds is
+therefore at least
+\[
+ r-\dim P_s^{-1}(F)\ \ge\ \frac{h}{2}\left(\frac{c}{d}
+                                      -2\omega-2\tau\right).
+\]
+Writing $q_j$ for the missing fraction after $j$ choices and
+$t=h/(2d)$, we have $q_{j+1}\le(1-t)q_j+t\kappa$ and $q_0=1$.
+Iteration gives \eqref{eq:affine-spread-recurrence}, including when the
+one-step lower bound is negative near full coverage. Finally
+$(1-t)^u\le e^{-tu}$. Repeated indices contribute only one element to
+the resulting set. The loss $\tau$ enters the limiting missing fraction.
+It is absorbed into the fixed point of the recurrence.
+
+\subsection*{Checking the hypotheses against the source}
+
+Write $P$ for the scaled full-source Poincar\'e map, $e$ for orthogonal
+projection onto the target, and $s$ for the unitary action of a member
+of the finite group. The target is invariant and $e$ commutes with the
+action. The geometric estimates in
+\texttt{SpanningTheorem.lean}, at
+\Source{New/Spanning/SecondMoment/SpanningTheorem}{257}{the projected near-isometry} and
+\Source{New/Spanning/SecondMoment/SpanningTheorem}{288}{the normalized second moment},
+give, in Hilbert--Schmidt norm,
+\[
+ \|eP\operatorname{pr}_U\|_{\rm HS}^2\ge\dim U-5b^{-4}h
+ \quad(U\subset S),\qquad
+ d\,\underset{s}{\operatorname{avg}}\,\|P^*sP\|_{\rm HS}^2
+ \le(1+9b^{-4})h^2 .
+\]
+In particular $U=\ker(eP)$ gives $d\ge(1-5b^{-4})h$. Thus $h\le 2d$
+for $b\ge8$. Write $P_s=esP$.
+For a subspace $F$ of relative dimension $a=1-c/d$, put
+$K=|G|^{-1}\sum_s sPP^*s^*$. Cycling the trace gives
+\[
+ \|K\|_{\rm HS}^2=\underset{s}{\operatorname{avg}}\,\|P^*sP\|_{\rm HS}^2,
+ \qquad
+ \underset{s}{\operatorname{avg}}\,\|\operatorname{pr}_F sP\|_{\rm HS}^2
+ =\operatorname{tr}(\operatorname{pr}_F K)
+ \le h\sqrt{a(1+9b^{-4})}.
+\]
+Choose $s$ whose projected energy is at most this average. On
+$U=P_s^{-1}(F)$ one has $esP=\operatorname{pr}_F sP$, and unitarity
+and $es=se$ give
+\[
+ \dim U-5b^{-4}h
+ \le \|eP\operatorname{pr}_U\|_{\rm HS}^2
+ \le \|\operatorname{pr}_F sP\|_{\rm HS}^2.
+\]
+Now $2\sqrt{a(1+9b^{-4})}\le a+1+9b^{-4}$ proves
+\eqref{eq:affine-spread} with $\omega=(5+9/2)b^{-4}$.
+This is the trace argument of
+\Source{New/Spanning/SecondMoment/FewTranslates}{320}{the one-translate lemma}
+with the two errors kept separate.
+
+The ramified codimension estimate used in
+\Source{New/Reduction/ShortAndEnough}{410}{the published choice of translates} is
+$h-r\le b^{-8}h$. The source-coordinate change transports $S_0$;
+the nonzero normalization factors preserve its image. Apply the
+recurrence with $\tau=b^{-8}$ and
+\[
+        u=\left\lceil\frac{2d}{h}\log(b^5)\right\rceil .
+\]
+The codimension fraction is at most $19b^{-4}+2b^{-8}+b^{-5}\le20b^{-4}$. For the count, use $r\le h$, $h\le2d$ and $b\ge8$ to obtain
+\[
+ |J|r\le 10d\log b+h\le 10d\log b+2d
+ \le 5d\log(2b^2)\le5d\log(1+2b^2).
+\]
+This proves \eqref{eq:affine-spanning-bound}. Since
+$20/b^4\le4/b^2$ in this range, Theorem B supplies its published
+interface to the determinant comparison. A minimal formal substitution can use the existing one-translate lemma verbatim: taking $\varepsilon=9b^{-4}$ gives $\omega=3\varepsilon/2$ and codimension at most $29d/b^4$, also sufficient. The $20$ uses the separate errors above. The new step is the recurrence on
+the restricted image and its iteration. The stronger estimate does
+not change the exponent in the prime sum, which also depends on the
+length and cost of the theta chain.
+
+\subsection*{Why the number of translates contains a logarithm}
+
+There is a finite example with ideal moments in which the logarithm
+has the correct order. Give $\mathbb C^{\binom Nk}$ coordinates indexed
+by the $k$-subsets of an $N$-element set. The symmetric group permutes
+the coordinates. Let $P$ include the coordinate subspace spanned by
+the $k$-subsets containing a specified point. Here $d=\binom Nk$,
+$h=\binom{N-1}{k-1}$, and $h/d=k/N$. The translated image picks a
+point and spans all coordinates containing it. Each coordinate occurs
+in $k$ of the $N$ images, so the average of their orthogonal projectors
+is $(h/d)I$. In particular the first moment is exact and the mean of
+$\|P^*sP\|_{\rm HS}^2$ is $h^2/d$.
+
+Choosing $j$ distinct points leaves exactly
+$\binom{N-j}{k}/\binom Nk$ of the coordinates uncovered. For fixed $L>0$,
+take $k\to\infty$, $k/N\to0$, and $j=\lfloor LN/k\rfloor$. The logarithm
+of this fraction is
+\[
+ \sum_{a=0}^{k-1}\log\left(1-\frac{j}{N-a}\right)=-L+o(1).
+\]
+Indeed the sum of the fractions tends to $L$ and the sum of their
+squares tends to zero. Thus even exact moments can require order
+$(d/h)\log(1/\theta)$ translates to reach a prescribed missing
+fraction $\theta$. This example concerns the information in the two
+moment bounds. The particular Poincar\'e maps could have additional
+structure.

@@ -1,0 +1,52 @@
+\section{A finite Dirichlet polynomial selects the auxiliary prime}
+\label{sec:analyticsieve}
+We give a replacement for the quadratic-twist selection theorem used at the end of the argument. It applies to every Dirichlet character of the fixed modulus, including the complex characters. Its substantial external input is Heath--Brown's quadratic large sieve. The proof only needs the following form \cite[Corollary~2]{HB}. If $\mathcal{S}(U)$ consists of the primitive real characters of conductor at most $U$, then for complex coefficients $a_n$ and every $e>0$,
+\begin{equation}\label{eq:hbsieve}
+ \sum_{\xi\in\mathcal{S}(U)}\left|\sum_{n\le V}a_n\xi(n)\right|^2
+ \ll_e (UV)^e(U+V)\!\sum_{\substack{j,k\le V\\jk\text{ a square}}}|a_j a_k|.
+\end{equation}
+We average over the real quadratic character $\eta_d$. The fixed, possibly complex, character $\psi$ goes into the coefficients.
+
+\paragraph{Proposition.} Fix $Q$, $1/2<\beta<1$, and $H\ge0$. Among the primes $d\in(X,2X]$ coprime to $Q$, the number for which some $L(s,\psi\eta_d)$, $\psi\bmod Q$, has a zero in $K=[\beta,1]+i[-H,H]$ is $O_{Q,\beta,H}(X^{1-c})$ for some $c=c(\beta)>0$. Here $\eta_d(n)=(n/d)$ for odd prime $d$. For example, $c=(\beta-1/2)^2/8$ is admissible. Consequently every invertible residue class modulo $Q$ contains good primes, including $Q/2-1\bmod Q$ for $18480\mid Q$.
+
+\paragraph{Proof.} Write $\alpha=(\beta-1/2)/2$, $\sigma_0=1/2+\alpha$ and $b=\alpha/2$. Fix a bounded open rectangle $U_0$ containing $K$ with $\Re s>\sigma_0$ throughout. It contains a disk of some fixed radius $r>0$ about each point of $K$. Fix $\psi\bmod Q$ and write $\chi=\psi\eta_d$. Its partial sums on every interval are $O_Q(\sqrt X\log(2X))$. Indeed partition the interval by classes $n=j\bmod Q$. In each class $\psi$ is constant and $\eta_d(Qk+j)=\eta_d(Q)\eta_d(k+jQ^{-1})$, with $Q^{-1}$ taken modulo $d$. The classical P\'olya--Vinogradov inequality applies to each of the resulting intervals. Partial summation therefore gives, uniformly on $U_0$,
+\[
+ L(s,\chi)=\sum_{n\le N}\frac{\chi(n)}{n^s}
+     +O_{Q,U_0}\big(\sqrt X\log(2X)N^{-\sigma_0}\big).
+\]
+This follows from the ordinary Dirichlet series on $\Re s>0$ for a nonprincipal character. These twists are nonprincipal since $d\nmid Q$ and the quadratic character at $d$ is nonprincipal.
+
+Take $N=\lfloor X^{1-b}\rfloor$, $M=\lfloor X^b\rfloor$ and $P_d(s)=\sum_{m\le M}\mu(m)\chi(m)m^{-s}$. Since $|P_d(s)|\ll M^{1-\sigma_0}$, putting $F_d=LP_d-1$ gives
+\begin{align}
+ F_d(s)&=\sum_{M<k\le NM} A(k)\psi(k)k^{-s}\eta_d(k)
+                 +O_{Q,U_0}\big(X^{-\alpha/2}\log(2X)\big),\label{eq:shortproduct}\\
+ A(k)&=\sum_{\substack{m\mid k\\m\le M,\ k/m\le N}}\mu(m).\nonumber
+\end{align}
+Indeed $A(1)=1$, $A(k)=0$ for $1<k\le M$ by M\"obius inversion, and $|A(k)|\le\tau(k)$. The exponent in the error is $1/2-(1-b)\sigma_0+b(1-\sigma_0)=-\alpha+b$. The two truncations have complementary lengths, so $NM\le X$.
+
+For $a_k=\mathbf 1_{M<k\le NM}A(k)\psi(k)k^{-s}$ the square-pair sum in \eqref{eq:hbsieve} satisfies, for any $0<e<\alpha$,
+\begin{align*}
+ \sum_{jk=\square}|a_j a_k|
+ &\ll_e\sum_{h\ \mathrm{squarefree}}
+   \left(\sum_{h v^2>M}(h v^2)^{-\sigma_0+e}\right)^2
+ \ll_{e,\sigma_0} M^{-2\alpha+2e}\log(2M).
+\end{align*}
+For $h\le M$, comparison with the integral of $v^{-2\sigma_0+2e}$ bounds the inner sum by $O(M^{-\alpha+e}h^{-1/2})$. For $h>M$ it is $O(h^{-\sigma_0+e})$. The standard divisor estimate $\tau(k)\ll_e k^e$ gives the first inequality. It is essential to count all pairs with square product, since different integers can have the same squarefree part.
+
+Apply \eqref{eq:hbsieve} with $U=2X$ and $V=NM$, putting $\psi$ in the coefficients. Summing the squared uniform error in \eqref{eq:shortproduct} over at most $2X$ primes gives
+\[
+ \sum_{X<d\le2X\ {\rm prime},\ d\nmid Q}|F_d(s)|^2
+  \ll_{Q,U_0,e} X^{1-2b\alpha+2e+2be}\log(2X)
+                +X^{1-\alpha}\log^2(2X).
+\]
+Here and above $X$ can be taken sufficiently large for $N,M\ge1$. Since $2b\alpha=\alpha^2$, take $e$ sufficiently small in terms of $\alpha$ and absorb logarithms to obtain $O(X^{1-\alpha^2/2})$, uniformly in $s\in U_0$.
+
+If $L(z,\chi)=0$ for some $z\in K$, then $F_d(z)=-1$. The mean-value inequality for a holomorphic function gives
+\[
+ 1\le (\pi r^2)^{-1}\int_{U_0}|F_d(s)|^2\,dA(s).
+\]
+The radius and the containing rectangle work uniformly as the zero varies with $d$. Integrating the uniform bound above counts at most $O(X^{1-\alpha^2/2})$ such primes. A union over the finitely many $\psi\bmod Q$ proves the bound with $c=\alpha^2/2$. The fixed-modulus prime number theorem gives $\asymp_Q X/\log X$ primes per invertible progression in $(X,2X]$. This dominates the exceptional count. For $\Re s>1$ all twists are nonzero by the Euler product.\hfill$\square$
+
+One can also finish with the exact prime-supply input used in the source. On $(2^j,2^{j+1}]$ the exceptional primes contribute $O(j2^{-cj})$ to $\sum_d (\log d)/d$. This is summable. The same weighted series diverges over any invertible progression, so it contains arbitrarily large good primes. If the requested box begins at $\beta\ge1$, a box with left edge strictly between $1/2$ and $1$ together with the Euler product suffices.
+
+\noindent\textit{Source interface.} The proposition supplies the conclusion of \source{Lib/Analytic/QuadraticTwist}{796}{the choice of a good prime}. The source proves a stronger quantitative exponent in its parametrization. Only existence is consumed by \source{New/Reduction/Zeros/Criterion}{37}{the one-sided criterion}. The large sieve replaces the auxiliary Gaussian theta-series estimate and strip interpolation in this branch. Its own proof is a substantial external input. The reference is Corollary~2 of \cite{HB}, which allows arbitrary complex coefficients. Invoking a zero-density theorem restricted to real target characters would leave a gap for complex $\psi$.

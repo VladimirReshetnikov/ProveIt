@@ -1,0 +1,68 @@
+\section{Simultaneous torsion specialization by interpolation}
+\label{sec:torsion}
+In the determinant lower bound one needs a single local character whose first $m$ powers keep finitely many valuations small. Both special values and Selmer relations give polynomials in the character coordinates. Their degrees can depend on the level at which the character is constructed. The bound on the level must be chosen first. The source handles this by factoring a polynomial, counting its roots on valuation circles, and estimating their truncated distances to primitive roots of unity. We give a proof by interpolation on a set chosen before seeing any polynomial.
+
+Fix a prime $\ell$. Work in $\overline{\mathbb Q}_\ell$ with its ordinary additive valuation $v(\ell)=1$, $v(0)=+\infty$, and valuation ring $\OO$. For $h\ge1$ let $t_h=1/\varphi(\ell^h)$. Every primitive $\ell^h$-th root $\xi$ satisfies $v(\xi-1)=t_h$, since its conjugates have equal valuation and $\Phi_{\ell^h}(1)=\ell$.
+
+\begin{theorem}[Uniform torsion specialization]\label{thm:torsion}
+Fix $s_0\in\NN$, $r\in\mathbb Q_{>0}$, $B\ge0$ and $\varepsilon>0$. There is an $H$ with the following property. Let $n\le s_0$ and let $P_i\in\OO[X_1,\ldots,X_n]$ be any finite family. Suppose $x_i\in\OO^n$, all $v(x_{ij})\ge r$, and $\sum_i v(P_i(x_i))\le B$. There exist $\ell^H$-th roots of unity $\zeta_1,\ldots,\zeta_n$, with $v(\zeta_j-1)<r$, such that
+\[
+ v\bigl(P_i(\zeta_1-1,\ldots,\zeta_n-1)\bigr)
+                         \le v(P_i(x_i))+\varepsilon\qquad\text{for every }i .
+\]
+\end{theorem}
+
+\subsection*{A finite set on which interpolation costs little}
+Choose $0<\delta\le1$. For every $h$ with $t_h<r$, fix a primitive root $\xi_h$ of order $\ell^h$. At this level use the points
+\[
+ z=\xi_h^{a}-1,\qquad 1\le a\le N_h,\quad \ell\nmid a,
+ \qquad N_h=\left\lfloor\frac{\delta}{4(h+1)t_h}\right\rfloor.
+\]
+Each point has weight $t_h$. Write $\mu(S)=\sum_{z\in S}v(z)$ for the weight of a finite set of nodes. Nodes from distinct levels have distinct valuations. Within one level $N_h<\ell^h$, so distinct exponents yield distinct nodes. The weight available over all levels is infinite. In fact $N_h$ tends to infinity, and at least $N_h/2$ of the first $N_h$ integers are prime to $\ell$. For all large $h$ the weight at level $h$ is at least $\delta/(16(h+1))$. Thus for any prescribed mass we can fix a finite union of levels exceeding it.
+
+For two different nodes at level $h$ we have
+\[
+ v(\xi_h^a-\xi_h^{a'})=t_h\ell^{v_\ell(a-a')}.
+\]
+For a fixed $a$, the sum of these valuations over the other nodes is at most
+\begin{equation}
+ 2t_h\sum_{k=1}^{N_h}\ell^{v_\ell(k)}
+ \le 2t_hN_h(1+\lfloor\log_\ell N_h\rfloor)
+ \le\delta/2. \label{eq:spacing}
+\end{equation}
+The middle bound follows by summing $\ell^j\lfloor N_h/\ell^j\rfloor$ over the possible $j$. Only levels with nodes enter this calculation.
+
+\begin{lemma}[Weight of unsuccessful nodes]\label{lem:capacity}
+Let $g\in\OO[X]$, $v(y)\ge r$, and $b=v(g(y))<\infty$. In any finite union of the above levels, the nodes with $v(g(z))>b+\delta$ have total weight at most $b$.
+\end{lemma}
+\begin{proof}
+Take the set $S$ of these nodes and suppose $\mu(S)>b$. Divide $g$ by the monic polynomial $D(X)=\prod_{w\in S}(X-w)$. Its quotient $q$ and remainder have integral coefficients. Lagrange interpolation of the remainder gives the exact identity
+\[
+ g(y)=q(y)D(y)+\sum_{z\in S}g(z)
+            \prod_{w\in S\setminus\{z\}}\frac{y-w}{z-w}.
+\]
+Since $v(y)>v(w)$, $v(D(y))=\mu(S)>b$. In each interpolation factor $v(y-w)=v(w)$. For nodes of different levels $v(z-w)=\min(v(z),v(w))$, so their contributions to the valuation of the product are nonnegative. The total loss at the same level is at most $\delta/2$ by \eqref{eq:spacing}. Every interpolation summand and the quotient term have valuation greater than $b$. The ultrametric inequality contradicts $v(g(y))=b$.
+\end{proof}
+
+The bound on the weight is exact. For any subset $S$ take $g_S(T)=\prod_{w\in S}(T-w)$ and $y=0$. Then $v(g_S(0))=\mu(S)$ and every point of $S$ is unsuccessful. As each grid weight is positive, Lemma~\ref{lem:capacity} says the unsuccessful set is exactly $S$. In particular a fixed grid of weight at most $B$ can be defeated even by one test with reference valuation at most $B$. This explains the strict mass threshold in the selection argument.
+
+\subsection*{Moving many different reference points at once}
+Suppose the $g_i$ are integral one-variable polynomials with $v(y_i)\ge r$, $b_i=v(g_i(y_i))$ and $b_*=\sum_i b_i<\infty$. One extra test controls their total valuation after the move. Choose $u$ with $v(u)=r$. For each $g_i(uT)$ divide by a coefficient of least valuation. Its reduction is a nonzero polynomial over $\overline{\mathbb F}_\ell$. There is a single nonzero residue class avoiding the roots of all these reductions. Lift it to a unit $w$. At $y_*=uw$, every $g_i$ attains this least coefficient valuation. As $y_i/u$ is integral, $v(g_i(y_*))\le b_i$. The product $G=\prod_i g_i$ therefore satisfies $v(G(y_*))\le b_*$.
+
+Apply Lemma~\ref{lem:capacity} to each $(g_i,y_i)$ and then to $(G,y_*)$. The union of all unsuccessful nodes has weight at most $2b_*$. On any fixed grid of weight greater than $2b_*$, some node $z$ therefore satisfies both
+\[
+ v(g_i(z))\le b_i+\delta\quad(\text{all }i),\qquad
+ \sum_i v(g_i(z))=v(G(z))\le b_*+\delta.
+\]
+The second inequality prevents the number of tests from entering the level bound.
+
+To prove Theorem~\ref{thm:torsion}, take $\delta=\min(1,\varepsilon)/(s_0+1)$ and fix a grid of weight greater than $2(B+1)$. Its greatest level is the promised $H$. Freeze every coordinate except the next one at the current point of each test. Apply the one-variable conclusion and update this coordinate to the same node in every test. Unvisited coordinates still have valuation at least $r$. After $j$ moves the sum is at most $B+j\delta\le B+1$, and each individual increase is at most $j\delta\le\varepsilon$. This proves the assertion even as the family size and polynomial degrees vary.
+
+\subsection*{Every power of the same character}
+For each $1\le k\le m$, apply the theorem simultaneously to the polynomials
+\[
+ P_{i,k}(Y_1,\ldots,Y_n)=P_i\big((1+Y_1)^k-1,\ldots,(1+Y_n)^k-1\big).
+\]
+For an old coordinate $x$ pick a root $y$ of $(1+Y)^k-(1+x)$ satisfying $v(y)\ge r/k$. If $x=0$, take $y=0$. Otherwise the polynomial is monic and integral with constant $-x$, so its $k$ roots are integral and the sum of their valuations is $v(x)$. At least one has the required valuation. Use radius $r/m$ and total budget $mB$. We obtain one tuple with $v(\zeta_j-1)<r/m$ whose $k$-th powers satisfy the requested inequalities for every $i,k$. In the application $r<1$. An order at most $m$ would give $v(\zeta_j-1)\ge 1/m$, so each power is nontrivial. The exact formula for the order of $\zeta_j^k$ gives $v(\zeta_j^k-1)=\ell^{v_\ell(k)}v(\zeta_j-1)\le r$.
+
+\noindent\textit{Source interface.} This proves the conclusion of \source{New/Congruences/Selmer/RootsOfUnity}{474}{the multivariable torsion theorem} and supplies the hypothesis used in \source{New/Congruences/Selmer/GeneralTheorem}{325}{the all-powers construction}. Its bound $H$ must precede the auxiliary level, because the source constructs the polynomials at that level. Harmonic divergence gives such an $H$ with no useful computational size guarantee. In a formal implementation the Lagrange quotients require the signed valuation on the fraction field, or an equivalent norm inequality after clearing denominators. All evaluations in the theorem's conclusion are integral.

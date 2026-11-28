@@ -1,0 +1,75 @@
+\section{Assembly and the Riemann hypothesis}\label{sec:endpoint}
+\subsection*{What the determinant proves}
+In the notation of the guide let $d_T$ be the dimension of the target, $f$ the number of infinite places in the chosen CM type, $a$ the derivative order, and $b$ the larger ordinary weight. Set $L=fa(\log b)^4$, $I=10\log(1+2b^2)fa(\log b)^3$. Let $H_0\ge0$ denote the common volume main term. Theorem~A gives sufficiently short vectors. Section~\ref{sec:spectral-spanning} permits a choice of $n$ independent vectors from their translates at the allowance required for Theorem~C. The local character construction in Section~\ref{sec:torsion}, together with the source's cohomological estimates and special-value identities, supplies the requisite denominator bound for C. The squared-volume comparison is
+\[
+ d_T(H_0-3L)\le n(H_0-m\mathcal R+L)+2d_T I.
+\]
+The determinant on the upper side is bounded by the product of squared lengths. On the lower side the $2d_T I$ term accounts for clearing denominators. Both sides carry the same $H_0$, a mathematical equality furnished by the one-lift period and special-value formulas. Since $n\le d_T$ and $n\ge d_T/2$ for the large scales at issue,
+\[
+ nm\mathcal R\le(n-d_T)H_0+(n+3d_T)L+2d_T I
+              \le d_T(4L+2I).
+\]
+For the source's large $b$ this gives \source{New/Reduction/MainInequality}{87}{$m\mathcal R\le fa(\log b)^5$}. The tighter rank estimate gives extra margin here. The gain in the power of $x$ still comes from dividing by the number $m$ of lifts.
+
+Substitute the two-cutoff identity from Section~1 and use $f=\varphi(Q)|A|$, $|A|/|B|\le\log b$. Suppressing the fixed $d$ in the subscripts, we get
+\[
+ R_Q(x)\le\frac{\varphi(Q)(\log b)^6}{m}
+                 +|R_Q(x_1)|+(\log b)|R_1(x_1)|.
+\]
+For any sufficiently small fixed $\tau>0$ the source supplies data at every large integer $x$ with $m\ge\sqrt x$, $\log b\le 2x^\tau$ and $\log x_1\ge x^{\tau/12}$. At the fixed moduli involved, the classical prime number theorem with its fixed-modulus remainder gives $|R_u(y)|\ll_A(\log y)^{-A}$ for every fixed $A$. One can also see the smoothing step directly: for $T_u(t)=\sum_{n\le t,\ n\equiv1\ (u)}\Lambda(n)(1-\eta_d(n))$, integrate $(T_u(t)-t/\varphi(u))/t^2$ from $y$ to infinity and reverse its sign. The constant in \eqref{eq:remainder} makes this tail integral equal to $R_u(y)$. The estimate for $T_u$ follows from the fixed-modulus progression theorem modulo $ud$ with finitely many ramified prime powers handled separately. Taking $A$ large enough absorbs the far terms. Between consecutive integers the smoothed remainder changes by $O(1/x)$ by the Chebyshev bound. Taking $6\tau<\varepsilon$ recovers the arithmetic conclusion, for every fixed admissible $Q,d$ and $\varepsilon>0$:
+\begin{equation}
+                  R_{Q,d}(x)\le x^{-1/2+\varepsilon}
+                     \quad\text{for all sufficiently large real }x.
+ \label{eq:finalbound}
+\end{equation}
+The upper bound with its $d$-dependent threshold suffices for zero detection.
+
+\subsection*{Why the new prime selection suffices}
+Suppose that a character at modulus $Q$ has a zero $\rho$ in $1/2<\Re\rho<1$. Choose $1/2<\beta<\Re\rho$. Section~\ref{sec:analyticsieve} supplies a prime $d\equiv Q/2-1\pmod Q$ such that every twisted function is nonzero for $\Re s\ge\beta$, $|\Im s|\le |\Im\rho|$. Fix this prime and apply \eqref{eq:finalbound}. This order of choices is essential.
+
+Let $E_\psi=L(s,\psi)$ for a nonprincipal character, and remove the pole of a principal character by replacing its $L$-function with $(s-1)L(s,\psi)$ regularized at one. Let $n(z)$ and $n_d(z)$ count the zeros at $z$, with multiplicity, summed over all $E_\psi$ and $E_{\psi\eta_d}$ respectively. Orthogonality in the class $1\bmod Q$ gives every character coefficient one. The smoothed transform
+\[
+ \Phi(s)=\int_0^\infty R_{Q,d}(e^v)e^{(1-s)v}\,dv
+\]
+initially exists far to the right. The integral of a single kernel is $n^{-s}/[s(s-1)]$. Insert the Dirichlet series for the logarithmic derivatives and continue meromorphically. At $z\ne0,1$ in $\Re z>0$ the residue is
+\[
+             \frac{n(z)-n_d(z)}{\varphi(Q) z(1-z)}.
+\]
+The centering makes the singularity at one removable. These identities are proved in the source's \source{New/Reduction/Zeros/PrimeError}{414}{prime-error module}. The chosen $d$ makes the residue nonzero at $\rho$. It also makes it nonnegative at every real point $u\in(\beta,1)$. Regularized functions have no zeros on the real interval $[1,\infty)$.
+
+For completeness take $K$ so large that $K e^{\beta v}-e^vR_{Q,d}(e^v)\ge0$ on $[0,\infty)$, using \eqref{eq:finalbound} with $\varepsilon=\beta-1/2$ and continuity on a bounded initial interval. The Laplace transform of this positive density continues as $K/(s-\beta)-\Phi(s)$. At a finite real abscissa of convergence $a>\beta$, its only possible singularity is a simple pole of nonpositive residue, by the preceding sign computation. A nonnegative transform has nonnegative residue there, by taking the real limit from the right. Thus such a singularity would be removable. Landau's lemma excludes removability at a finite abscissa of convergence of a positive measure: a Taylor expansion just to its right has nonnegative integrated terms when evaluated to the left, and convergence across the abscissa would extend the integral there by monotone convergence. Hence the integral is holomorphic throughout $\Re s>\beta$. The continued $\Phi$ is holomorphic at $\rho$, contradicting its nonzero residue.
+
+\subsection*{Specialization and scope}
+At $Q=18480$ the admissible residue class is $9239\pmod{18480}$. The principal character has
+\[
+ L(s,\mathbf1_Q)=\zeta(s)\prod_{p\mid Q}(1-p^{-s}),
+\]
+whose finite factors are nonzero for $\Re s>0$. We have excluded every zeta zero in the right half of the open critical strip. The functional equation reflects any zero in its left half into the right half. Together with the classical zero-free boundary, Euler product and trivial-zero classification, this proves RH from the retained inputs. For a character modulo $q$ one inflates to $Q=18480q$. Finite Euler factors preserve its zeros in the open strip, and the functional equation for its primitive representative reflects a zero to one of the inverse character. The argument therefore gives the Dirichlet GRH endpoint as well.
+
+\section{Verification and remaining formal work}
+The attached guide's sections 9, 15, 16 and 17 identify the points in the original construction corresponding respectively to Sections~\ref{sec:spectral-spanning}, \ref{sec:torsion}, the volume comparison, and Section~\ref{sec:analyticsieve}. We compared the declarations and their uses with the pinned source. Andrew Sutherland's public record reports a successful build, replay of all 803 readable modules, independent checking of the exported theorems, and comparison with the specified statements \cite{check}. Those checks concern the original edition. We have given mathematical proofs of the replacements. The included \texttt{RankRecurrence.lean} was checked with Lean 4.32.0 and its standard library. It proves the scalar induction over linearly ordered commutative rings and the exact rational identity $x(19x-25)/[x(x+9)]=19-196/(x+9)$ for $x>0$. A kernel-checked implementation of all three replacements in the pinned Lean 4.35.0 package remains open.
+
+\begin{center}\small
+\begin{tabularx}{\linewidth}{@{}p{.17\linewidth}X@{}}
+\toprule
+\textbf{Change}&\textbf{What a Lean implementation would need}\\\midrule
+Rank estimate&
+Reuse the projected-norm inequality and rank--nullity lemmas. Form the preimage inside the ramified source, keep both fourth-power errors, and prove the scalar recurrence. This change has the smallest external dependency cost.\\
+Torsion grid&
+Prove the spacing sum, monic division and valuation bound for the Lagrange basis on every subset of the grid. The public theorem can retain its current statement, including the quantifier over all finite index types after the level bound.\\
+Good prime&
+The source already proves P\'olya--Vinogradov. The proof here also requires the quadratic large sieve with the square-pair term for arbitrary complex coefficients. Its formalization cost could exceed the savings in this branch.\\\bottomrule
+\end{tabularx}
+\end{center}
+The archive includes exact finite checks of the rank calculation and extremal family, cyclotomic distances and interpolation bounds, and the sieve coefficient identities. A separate script verifies the listed Lean declaration anchors and Git blob hashes against a checkout. The README gives the reproduction commands. Measuring any change in formal proof size or build time requires an integrated implementation.
+
+\subsection*{Further research questions}
+The extremal cyclic action has a large invariant complement of the orbit. Does a particular automorphic feature of the actual Poincar\'e maps rule out this configuration strongly enough to beat $19b^{-4}$? For the local problem, can one raise the weight of an explicit cyclotomic grid at a fixed maximum order while bounding every Lagrange denominator as in \eqref{eq:spacing}? Both questions have numerical targets. Either improvement would sharpen its own step. Changing the final exponent in \eqref{eq:finalbound} would additionally require an improvement in the determinant or chain-length estimates.
+
+\begin{thebibliography}{9}\small
+\bibitem{archive} L. Alp\"oge and collaborators, theta-lift proof of RH and Dirichlet GRH. L. Sernau, \emph{grh-lean}, readable edition, \href{https://github.com/lsernau/grh-lean/tree/72fead102f663d5c7a407964a13dc0cf9d977207/grh}{revision \texttt{72fead10}}. \href{https://github.com/VladimirReshetnikov/ProveIt/tree/d8415e76ad850651f8c0083afe689dd9f4a45a10/Analysis/GeneralizedRiemannHypothesis/vendor/grh-lean}{ProveIt snapshot and vendor notes}.
+\bibitem{guide} \emph{How theta lifts locate the zeros of Dirichlet $L$-functions}, supplied guide, 79-page edition, 27 November 2026. See especially sections 9, 15--19 and its source map.
+\bibitem{check} A. V. Sutherland, \href{https://math.mit.edu/~drew/shortgrh/}{Verification files for the shorter Lean proof of RH and GRH for Dirichlet $L$-functions}, verification record for \texttt{72fead10}.
+\bibitem{HB} D. R. Heath-Brown, \href{https://doi.org/10.4064/aa-72-3-235-275}{A mean value estimate for real character sums}, \emph{Acta Arith.}\ \textbf{72} (1995), 235--275, Corollary 2.
+\bibitem{note} L. Alp\"oge, \href{https://alpo.ge/remark.pdf}{Announcement and notes on the discovery of the proof}, November 2026.
+\end{thebibliography}
