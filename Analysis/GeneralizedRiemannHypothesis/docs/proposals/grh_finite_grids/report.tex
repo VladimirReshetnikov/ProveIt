@@ -1,0 +1,381 @@
+\documentclass[11pt,letterpaper]{article}
+\usepackage[margin=0.9in,top=0.85in,bottom=0.85in,headheight=15pt]{geometry}
+\usepackage{lmodern}\usepackage{amsmath,amssymb,amsthm,booktabs,array,tabularx,xcolor,fancyhdr,microtype,hyperref}
+\definecolor{ink}{HTML}{183F4C}
+\definecolor{accent}{HTML}{176454}
+\hypersetup{colorlinks=true,urlcolor=accent,linkcolor=accent,pdftitle={Finite-field grids in the theta-lift proof of Dirichlet GRH},pdfauthor={OpenAI}}
+\pagestyle{fancy}\fancyhf{}\fancyhead[L]{\small\sffamily\color{ink}Finite-field grids in the theta-lift proof}\fancyhead[R]{\small\sffamily Dirichlet GRH}
+\fancyfoot[C]{\small\thepage}\renewcommand{\headrulewidth}{0.3pt}
+\setlength{\parindent}{0pt}\setlength{\parskip}{4.5pt plus 1pt minus 1pt}
+\setlength{\emergencystretch}{2em}
+\setcounter{tocdepth}{1}
+\begin{document}
+\thispagestyle{plain}
+{\sffamily\small\color{accent} MATHEMATICAL RESEARCH NOTE\hfill 27 NOVEMBER 2026}\par
+\vspace{7pt}
+{\sffamily\bfseries\color{ink}\LARGE Finite-field grids in the theta-lift proof\\[3pt] of Dirichlet GRH}\par
+\vspace{3pt}
+{\large An explicit orbit for the local Hecke depth estimate}\par
+\vspace{5pt}
+\textbf{Abstract.} The readable proof of Alpöge with Claude bounds the elementary divisors of an edge Hecke operator by studying forms that remain deep under every translate. We exhibit a family of translates whose specialized points, after two Vandermonde changes of coordinates, form a rectangular grid. The grid has side lengths exactly reciprocal to the prescribed monomial weights. One-variable root counting with multiplicity now gives the required depth estimate. A lowest-coefficient argument permits the same specialized orbit to work for every nonzero form. Two independent reductions address Fourier frequencies in the spanning theorem and the archimedean determinant estimate used to construct auxiliary forms.
+\section{Where the three replacements enter}
+The public result concerns the Riemann zeta function and Dirichlet $L$-functions for all positive moduli. The arithmetic part compares the squared covolume of a family of theta lifts with its loss of integrality. Short integral forms give an upper bound (Theorem A), a second moment gives enough independent translates (Theorem B), and a lower determinant estimate bounds the same corrected covolume from below (Theorem C). Their common leading term cancels. If $m$ is the number of lifts and $\mathrm{rem}$ is the weighted prime remainder in the formalization, the resulting inequality is
+\[
+ m\,\mathrm{rem}\le f a(\log b)^5 .
+\]
+Here $f$ counts infinite places, and $a,b$ are scales of the arithmetic construction. With $m$ of order $\sqrt{x}$ and the remaining error estimates, this gives a one-sided $O_\varepsilon(x^{-1/2+\varepsilon})$ bound on the centered, smoothed prime sum at cutoff $x$. The analytic criterion gives nonvanishing for $\Re s>1/2$, with the principal-character pole excepted. The functional equation supplies the critical-line statements. Use the following three points of entry in the guide and source.
+\par \href{https://github.com/VladimirReshetnikov/ProveIt/blob/8f274fb25a0be551cbb53ee802033689da108138/Analysis/GeneralizedRiemannHypothesis/Lean/grh/src/New/Reduction/MainInequality.lean}{Covolume comparison} $\cdot$ \href{https://github.com/VladimirReshetnikov/ProveIt/blob/8f274fb25a0be551cbb53ee802033689da108138/Analysis/GeneralizedRiemannHypothesis/Lean/grh/src/New/Reduction/OneSidedBound.lean}{One-sided bound} $\cdot$ \href{https://github.com/VladimirReshetnikov/ProveIt/blob/8f274fb25a0be551cbb53ee802033689da108138/Analysis/GeneralizedRiemannHypothesis/Lean/grh/src/Main.lean}{Public theorems} $\cdot$ \href{https://github.com/VladimirReshetnikov/ProveIt/blob/8f274fb25a0be551cbb53ee802033689da108138/Analysis/GeneralizedRiemannHypothesis/docs/guide/theta_lifts_and_dirichlet_zeros.tex}{Mathematical guide}.
+
+\begin{center}\small
+\begin{tabularx}{\linewidth}{@{}p{0.14\linewidth}p{0.43\linewidth}X@{}}
+\toprule
+Input & Source argument & Proposed replacement \\ \midrule
+A, index & Bound the mean depth of translates at a marked Hecke prime & Specialize to a product of finite fields and count multiplicities on its fibers. \\
+B, spanning & Sum Fourier-frequency weights in the global sieve & Inject a bounded-height set into two residue charts at one prime above $2$. \\
+C, determinant & Expand a principal minor in the local period estimate & Integrate the evolution of the two blocks of a matrix product. \\ \bottomrule
+\end{tabularx}\end{center}
+The first change is the main proposal. Its two disjoint source footprints are 232 lines of the Hecke calculation and 174 lines of its general multiplicity argument. These counts include comments and blank lines. The paper establishes the replacements mathematically, and the accompanying Lean files check selected component theorems. Integration into the full GRH development and net line savings remain to be measured.
+\section{An explicit orbit for the depth estimate}
+\label{sec:depth-orbit}
+
+The local Hecke argument needs to bound the dimension of the space of forms whose every translate is deep. In the source, the proof turns this into a multiplicity estimate on a finite set of points. It constructs those points over a rational function field, solves linear systems in generic monomials, and interpolates linear functions of the parameters. We can choose the shallow coordinates so that the equations of the points each have just two terms. One auxiliary element of a finite field supplies all the coordinates, and a polynomial of degree less than $r$ proves that the parameters give distinct points.
+
+\subsection{The precise inequality}
+
+Let $P=p^f\geq 5$, let $N>0$ be the number of letters, and put $q=P^N$. The given parity of a letter reverses at every step, so $N$ is even. Choose an even letter as the origin and write $s\in\mathbb Z/N\mathbb Z$ relative to it. Write $k=2r+m$. The variables in each letter have row indices $0,\ldots,k-1$. At an even letter, the deep variables are those in rows $r,\ldots,k-1$. At an odd letter, they are those in rows $0,\ldots,r-1$. Denote the list of deep variables by $X$ and the complementary list by $U$.
+
+Let $F$ be a nonzero polynomial over a field $K$ of characteristic $p$, homogeneous of degree $n$ at each letter, such that every translate of $F$ under the source action of $\mathrm{GL}_k(W)$ belongs to $(X)^\tau$. Here $(X)$ denotes the ideal generated by all the deep variables. At an even letter the action sends variable $j$ to the linear combination with coefficients from column $j$ of the given matrix. At an odd letter it uses the inverse transpose. The entries in letter $s$ are read by the given map $\iota_s:W\longrightarrow K$.
+
+Give each shallow variable weight zero. Give each deep variable in the first $2r$ rows weight $1/P$, and every remaining deep variable weight $1/P^{2r}$. We claim that some monomial with nonzero coefficient in $F$ has weight at least $\tau$. This is the conclusion of \texttt{exists\_le\_weight\_of\_mem\_deepForms}.
+
+The maps $\iota_s$ really do read the residue field here. In characteristic $p$ the cycle law is $\iota_{s+1}(u)=\iota_s(u)^P$. Its $N$-fold iterate gives $\iota_s(u)^q=\iota_s(u)$. The image is a finite subring of a field and hence a field. The kernel is therefore the unique maximal ideal of the local ring $W$. Since its residue field has cardinality $q$, we may identify it with the subfield $\mathbb F_q$ of $K$ through $\iota_0$. In these coordinates $\iota_s(u)=\bar u^{P^s}$. Representatives of $s$ give the same value.
+
+If $r=0$, every nonzero monomial of the identity translate has total deep degree at least $\tau$, and the weight of each deep variable is $P^0=1$. This proves the claim in that case. For the rest of the argument take $r>0$. Extend coefficients to an algebraic closure $L$ of $K$. Scalar extension preserves the support of $F$ and all the given identities over $K$.
+
+\subsection{Why one may prescribe the shallow coordinates}
+
+The following coefficient extraction allows deliberately nongeneric choices of $U$. Suppose a finite family of translations has the form
+\[
+ (U,X)\longmapsto (U,X+Z_y(U)), \qquad
+ F(U,X+Z_y(U))\in (X)^\tau \quad\hbox{for each }y.
+\]
+Fix \emph{any} vector $c$ of shallow coordinates in $L$. In new variables $V$, write
+\[
+ F(c+V,X)=\sum_{\alpha} V^\alpha G_\alpha(X).
+\]
+Translation $U\mapsto c+V$ is invertible, so there is some nonzero $G_\alpha$. Choose one with $|\alpha|$ minimal. The polynomial $G_\alpha$ works simultaneously for every $y$. Indeed, the coefficient of $V^\alpha$ in $F(c+V,X+Z_y(c+V))$ equals $G_\alpha(X+Z_y(c))$. A contributing index $\beta$ must satisfy $\beta\leq\alpha$ coordinatewise. A strict inequality forces $G_\beta=0$ by minimality. In the remaining term only the constant part in $V$ of the substitution contributes. Membership in $(X)^\tau$ can also be read coefficientwise in $V$. Consequently
+\begin{equation}
+ G_\alpha\in\mathfrak m_{Z_y(c)}^{\,\tau}
+ \qquad\text{for every }y.
+ \label{eq:depth-special}
+\end{equation}
+Here $\mathfrak m_z=(X_i-z_i)_i$. Each monomial in $G_\alpha$ retains its exponent in $X$ from at least one monomial in $F$. The shallow exponents carry weight zero. Thus the weight bound for $F$ follows from the same bound for $G_\alpha$.
+
+Simply evaluating $F(c,X)$ can give zero. For example, over $\mathbb F_5$ take $F(U,X)=(U-1)^2(X^5-U^4X)^3$ and $c=1$. For each $y\in\mathbb F_5$, $F(U,X+Uy)$ is divisible by $X^3$. The first nonzero coefficient in powers of $U-1$ is $(X^5-X)^3$, which still has a zero of multiplicity three at every $y$. Coefficients in a translated polynomial apply in every characteristic, including when derivative orders reach $p$.
+
+\subsection{The translations and their specialized points}
+
+Use one parameter $u_a$ for each $0\leq a<r$, and parameters $v_{aj}$ for each such $a$ and $0\leq j<m$, all in $\mathbb F_q$. Lift them arbitrarily to $W$. Form a matrix $A$ having the lift of $u_a$ in position $(a,r+a)$ and the lift of $v_{aj}$ in position $(a,2r+j)$. Set all other entries to zero. The supports of its rows and columns are disjoint, hence $A^2=0$. The matrix $I+A$ and its inverse $I-A$ give valid translates. With the source convention, $I+A$ acts by upper triangular translations on even variables and by $I-A^t$ on odd variables. In particular all shallow variables are fixed. In an even letter the shift in paired row $r+a$ is $U_{a,s}u_a^{P^s}$. The shift in spare row $2r+j$ is $\sum_a U_{a,s}v_{aj}^{P^s}$. In an odd letter the shift in deep row $a$ is
+\[
+ -U_{r+a,s}u_a^{P^s}-\sum_{j<m}U_{2r+j,s}v_{aj}^{P^s}.
+\]
+These are translations of the type used in \eqref{eq:depth-special}. The residual values determine them independently of the chosen lifts.
+
+Choose $b\in \mathbb F_{P^{2r}}^\times$ generating that field over $\mathbb F_{P^2}$, for example a generator of its multiplicative group. Both fields are taken inside $L$. At every even letter put $U_{a,s}=b^a$ for $a<r$. At every odd letter put $U_{r+a,s}=1$ and $U_{2r+j,s}=0$. Now there is one paired coordinate per $a,s$ and one spare coordinate per $j$ and even $s$. The coordinates of the resulting point are
+\begin{align}
+ z_{a,s}&=d_{a,s}u_a^{P^s},
+ &d_{a,s}&=\begin{cases}b^a,&s\text{ even},\\-1,&s\text{ odd},\end{cases}
+ \label{eq:depth-paired}\\
+ w_{j,s}&=\sum_{a=0}^{r-1} b^a v_{aj}^{P^s}
+ &&(s\text{ even}).
+ \label{eq:depth-spare}
+\end{align}
+The coordinate $z_{a,s}$ is in row $r+a$ when $s$ is even, and row $a$ when $s$ is odd. The coordinate $w_{j,s}$ is always in row $2r+j$. Exponentiating \eqref{eq:depth-paired} and \eqref{eq:depth-spare} gives two equations valid at every point,
+\begin{equation}
+ z_{a,s}^P=\frac{d_{a,s}^P}{d_{a,s+1}}\,z_{a,s+1},
+ \qquad
+ w_{j,s}^{P^{2r}}=w_{j,s+2r}.
+ \label{eq:depth-relations}
+\end{equation}
+In the second equation use $b^{P^{2r}}=b$, additivity of Frobenius and $v^q=v$. The subscripts are cyclic. In particular the second equation remains valid when $s+2r$ wraps around the letter cycle more than once.
+
+\subsection{Changing coordinates to a Cartesian grid}
+\label{sec:depth-grid}
+
+We now identify the point set with a rectangular grid. The coordinate changes take place entirely within blocks of constant weight.
+
+Write $Q=P^2$, $h=N/2$ and $E=\mathbb F_{Q^r}$. For $t\in\mathbb F_q$ set
+\[
+ B(t)=(t,t^Q,\ldots,t^{Q^{h-1}})\in L^h.
+\]
+Choose a generator $t$ of the multiplicative group of $\mathbb F_q$ and write $t_i=t^{i-1}$, $1\leq i\leq h$. Since $t$ has degree $h$ over $\mathbb F_Q$, these powers form a basis. The matrix of the vectors $B(t_i)$ has entries $(t^{Q^j})^{i-1}$. This is the ordinary Vandermonde matrix on the $h$ distinct conjugates $t^{Q^j}$, hence is invertible over $L$. Equivalently, a polynomial of degree less than $h$ vanishing on all these conjugates is zero.
+
+For each spare column express $v_a=\sum_i c_{ai}t_i$, with $c_{ai}\in\mathbb F_Q$. Its vector of $h$ even-letter coordinates becomes
+\[
+ \sum_a b^a B(v_a)
+    =\sum_{i=1}^{h}\left(\sum_{a=0}^{r-1}b^a c_{ai}\right)B(t_i).
+\]
+The inner coefficient ranges over $E$ because $1,b,\ldots,b^{r-1}$ is an $\mathbb F_Q$-basis of $E$. Different $i$ can be prescribed independently. Thus, in the basis $B(t_i)$, the spare column is exactly the grid $E^h$. This uses no containment between $E$ and $\mathbb F_q$. Both contain $\mathbb F_Q$ and embed in $L$.
+
+For each paired column, apply the same basis argument to $\mathbb F_q/\mathbb F_P$ with $N$ coordinates and Moore vector $(t,t^P,\ldots,t^{P^{N-1}})$. Its matrix for the power basis $1,t,\ldots,t^{N-1}$ is Vandermonde on the $N$ distinct $P$-conjugates of $t$. Multiplication by the invertible diagonal matrix with entries $d_{a,s}$ gives the coordinates in \eqref{eq:depth-paired}. The resulting column is an invertible linear image of the grid $\mathbb F_P^N$. Since the parameters for different columns are independent, the complete orbit is the image under an invertible block-diagonal $L$-linear map $M$ of
+\[
+ \bigl(\mathbb F_P^N\bigr)^r\times\bigl(E^{h}\bigr)^m.
+\]
+Each block mixes variables only within its own weight. Linear substitution by $M$ preserves the degree in each block of every multihomogeneous part, and has an inverse with the same property. In particular it preserves the maximum weighted degree of a nonzero polynomial. Also $G_\alpha(MX)$ vanishes to order $\tau$ at every grid point by \eqref{eq:depth-special}, since invertible linear substitution carries point ideals and their powers to the corresponding point ideals of the inverse images.
+
+\paragraph{A grid multiplicity bound.} The rectangular multiplicity inequality below is due to Geil and Thomsen. In this application the reciprocal side lengths recover the two distinct Hecke weights. We include a proof to identify the exact fiber estimate to formalize. \href{https://arxiv.org/pdf/0912.1436}{\textit{On the number of zeros of multiplicity $r$}, Theorem~8.}
+Let $A_i$ be finite nonempty subsets of a field $L$. For a nonzero polynomial $H$ in $d$ variables, let $\operatorname{ord}_x H$ be the minimum total degree of a nonzero term of $H(x+Y)$. Choose a monomial $X^e$ of $H$ by taking the highest power of $X_d$, then the highest power of $X_{d-1}$ in its coefficient, and continuing. Then
+\begin{equation}
+ \frac{1}{\prod_i |A_i|}\sum_{x\in\prod_i A_i}\operatorname{ord}_x H
+       \ \leq\ \sum_i\frac{e_i}{|A_i|}.
+ \label{eq:depth-cartesian}
+\end{equation}
+For one variable this is the usual bound on roots counted with multiplicity. Induct on $d$, writing $H(X',T)=\sum_{j=0}^t H_j(X')T^j$ with $H_t\ne0$. At a fixed grid point $a'$ in the first $d-1$ variables set $v=\operatorname{ord}_{a'} H_t$. Choose $\beta$ of degree $v$ with $[Y'^\beta]H_t(a'+Y')\ne0$. The one-variable polynomial
+\[
+ h(T)=[Y'^\beta]H(a'+Y',T)
+\]
+has degree $t$. For any $u\in A_d$, the coefficient of $Y'^\beta Y_d^{\operatorname{ord}_u h}$ in $H(a'+Y',u+Y_d)$ is nonzero by its definition. Hence
+\[
+ \operatorname{ord}_{(a',u)}H\leq v+\operatorname{ord}_u h.
+\]
+Average over $u$ using the one-variable result, then average over $a'$ and apply the induction hypothesis to $H_t$. This gives \eqref{eq:depth-cartesian}, since $e_d=t$. The zero-variable case just says that a nonzero constant has order zero.
+
+Apply \eqref{eq:depth-cartesian} to $H(X)=G_\alpha(MX)$ on the displayed grid. Every term on the left is at least $\tau$. The reciprocal side lengths on the right are exactly $1/P$ and $1/P^{2r}$. Therefore $G_\alpha(MX)$ has weighted degree at least $\tau$, which transfers to $G_\alpha$ and to the support of $F$. This proves the original monomial theorem directly. 
+\paragraph{A short cycle with a large side.}
+For $P=5$, $N=2$, $r=2$, $m=1$, take $b\in\mathbb F_{625}$ of degree two over $\mathbb F_{25}$. The spare column has just one even-letter coordinate. It is $v_0+bv_1$ with $v_0,v_1\in\mathbb F_{25}$, so it takes all 625 values. After undoing the two paired basis changes, the grid is
+\[
+ (\mathbb F_5^{\,2})^2\times\mathbb F_{625}.
+\]
+This accounts for all $25^4=390625$ translates in the chosen family. It explains why a single spare coordinate gets the small weight $1/625$ although only two letters occur.
+\subsection{Recovering the dimension estimate}
+
+For a fixed depth $\tau$, restriction of coefficients to the set of monomials of weight at least $\tau$ is injective on the deep-forms space. Summing the dimension bound over positive integer $\tau$ charges each monomial at most its weight. In degree $n$ at a letter the uniform mean exponent in each of its $k$ rows is $n/k$ by row symmetry. The mean total weight for $r>0$ is therefore
+\[
+ \frac{Nn}{k}\left(\frac{r}{P}+\frac{k-2r}{2P^{2r}}\right)
+ \ \leq\ Nn\left(\frac{1}{P^{2r}}+\frac{r^2}{kP}\right).
+\]
+The right side is exactly the source's \texttt{divisorConstant}. This recovers \texttt{sum\_finrank\_deepForms\_le} with its input parameters and numerical bound. The source already performs this conversion from a monomial to a dimension bound. Its subsequent lattice determinant estimates accept the displayed constant.
+
+\subsection{A shorter first port using the existing multiplicity lemma}
+
+The existing library also provides a route that needs only the binomial equations and injectivity of the point map. Equations \eqref{eq:depth-paired} recover each $u_a$ from an even letter at the origin. It suffices to treat one spare column in the difference of two parameter tuples. Write its entries as $v_a$. If the resulting coordinates vanish, then for every integer $i\geq 0$,
+\[
+ 0=w_{2i}=\sum_{a=0}^{r-1} b^a v_a^{P^{2i}} .
+\]
+Indeed $2i$ reduces to an even letter modulo $N$, and the parameters belong to $\mathbb F_q$. Let $\sigma$ be the automorphism $x\mapsto x^{P^2}$ of $L$. Applying $\sigma^{-i}$ gives
+\[
+ H(\sigma^{-i}b)=0,
+ \qquad H(T)=\sum_{a=0}^{r-1}v_a T^a.
+\]
+For $0\leq i<r$ these are $r$ distinct arguments. The $P^2$-Frobenius orbit of $b$ has length $r$, since $b$ generates $\mathbb F_{P^{2r}}$ over $\mathbb F_{P^2}$. The degree of $H$ is less than $r$, so $H=0$ and all $v_a$ vanish. This proves that the point map is injective. The coefficients of $H$ can lie outside $\mathbb F_{P^2}$, since the bound on roots applies in the common overfield $L$. In particular the proof includes cases with $r>N/2$ or $\gcd(r,N/2)>1$.
+
+
+
+We use the existing weighted polynomial lemma \texttt{exists\_le\_weight\_of\_mem\_}\allowbreak\texttt{vanishingIdeal\_pow}. For variables $x_i$ with positive integers $D_i$, give $x_i$ weight $1/D_i$. Suppose there are at least $\prod_i D_i$ distinct points and, at all these points, each $x_i^{D_i}$ equals a polynomial of weight strictly below one. The lemma says that a nonzero polynomial vanishing to order $\tau$ at all the points has a monomial of weight at least $\tau$.
+
+Take $D_i=P$ for every paired coordinate and $D_i=P^{2r}$ for every spare coordinate. The count is exact,
+\[
+ \prod_iD_i
+   =P^{rN}\,(P^{2r})^{mN/2}
+   =q^{r(m+1)}
+   =\#\{(u_a,v_{aj})\}.
+\]
+Every right side of \eqref{eq:depth-relations} is a scalar multiple of a single variable of weight strictly less than one, since $P>1$ and $r>0$. Equation \eqref{eq:depth-special} supplies multiplicity $\tau$ for the same nonzero $G_\alpha$ at every point. The lemma produces the required monomial of $G_\alpha$, hence one of $F$. For $m=0$ there are only paired coordinates. For $\tau=0$ the conclusion follows from any monomial in the support, and degree $n=0$ is included.
+
+\subsection{Source impact}
+
+
+
+Three disjoint blocks of \texttt{Depth.lean} illustrate the change. Lines 211--238 contain the generic determinant, lines 272--367 contain the low-power submodule and its spanning proof, and lines 463--570 contain interpolation by linear functionals, reconstruction of coordinate powers and the generic injectivity proof. These intervals total 232 physical source lines, including comments and blank lines. A whole-word scan of the other Lean files under \texttt{src} found no occurrences of the nine declaration names defined in these blocks. The Lean port must connect the group action and coefficient-extraction lemma to a finite-field realization of \eqref{eq:depth-paired}--\eqref{eq:depth-spare}, before applying the multiplicity bound. Thus 232 measures the footprint of superseded source blocks. The net line saving can be measured when the replacement elaborates in the pinned development.
+
+The integration boundary is narrow. The existing monomial theorem begins at line 612 and the dimension theorem at line 755. The direct downstream invocation of the latter is at line 907 of \texttt{ElementaryDivisorTheorem.lean}, applied to the Frobenius cycle reduced modulo the maximal ideal of the coefficient ring. This explains why characteristic $p$ is available at precisely the point where the proof specializes the shallow variables.
+
+Lines 74--247 of \texttt{MultivariatePolynomials.lean} contain the general polynomial argument. Its seven declarations deal with translated coefficients, powers of the point ideals, simultaneous interpolation of jets, monomial spans, well-founded induction on costs, division with control of the cost, and the general multiplicity theorem. A name scan of \texttt{src} found no reference to those seven declarations outside this source file and \texttt{Depth.lean}. Thus this additional 174-line section becomes unnecessary for the depth estimate when the grid proof is used. Its other mathematical uses as a stand-alone library result, and the unrelated sections of its containing file, can be retained.
+\par \href{https://github.com/VladimirReshetnikov/ProveIt/blob/8f274fb25a0be551cbb53ee802033689da108138/Analysis/GeneralizedRiemannHypothesis/Lean/grh/src/New/UpperBound/ElementaryDivisors/Depth.lean#L612-L665}{Depth estimate} $\cdot$ \href{https://github.com/VladimirReshetnikov/ProveIt/blob/8f274fb25a0be551cbb53ee802033689da108138/Analysis/GeneralizedRiemannHypothesis/Lean/grh/src/Lib/General/Algebra/MultivariatePolynomials.lean#L80-L247}{General multiplicity argument} $\cdot$ \href{https://github.com/VladimirReshetnikov/ProveIt/blob/8f274fb25a0be551cbb53ee802033689da108138/Analysis/GeneralizedRiemannHypothesis/Lean/grh/src/New/UpperBound/ElementaryDivisors/ElementaryDivisorTheorem.lean#L881-L910}{Use in the lattice determinant}.
+\section{Counting Fourier frequencies at one finite place}
+\label{sec:frequencyheight}
+
+There is a second, independent shortening in the proof of spanning. The global sieve sums Fourier transforms over field elements. After the local decay estimates, the frequency count it needs is a bound for the sum of inverse cubes of their heights. The source groups the frequencies by denominator ideal, labels their cosets modulo the algebraic integers, covers each complex embedding by small squares, and finally sums ideal norms using a Dedekind zeta function. Reduction at one prime ideal gives the entire bound from the elementary height inequality for a difference.
+\href{https://github.com/VladimirReshetnikov/ProveIt/blob/8f274fb25a0be551cbb53ee802033689da108138/Analysis/GeneralizedRiemannHypothesis/Lean/grh/src/New/Spanning/MainTerm/Frequencies.lean#L43-L278}{\textit{Source proof, lines 43--278.}}
+
+\paragraph{The height.}
+For a number field $E$ of degree $D$, write $d_v=1$ or $2$ for the multiplicity of an infinite place and let $\mathfrak b_x=\{b\in\mathcal O_E:bx\in\mathcal O_E\}$. Use the relative height
+\[
+ H(x)=N\mathfrak b_x\prod_{v\mid\infty}\max(1,|x|_v)^{d_v}.
+\]
+At a finite prime $w$ normalize $|x|_w=(Nw)^{-\operatorname{ord}_w x}$ for $x\ne0$. The exponent of $w$ in $\mathfrak b_x$ is $\max(0,-\operatorname{ord}_w x)$, as follows by localizing the defining condition $bx\in\mathcal O_E$. Thus the denominator norm is precisely the product of the finite factors $\max(1,|x|_w)$. For $x=0$ all height factors equal one. The product formula gives $H(u^{-1})=H(u)$ for $u\ne0$. Local triangle inequalities give
+\[
+ H(u-v)\le 2^{D}H(u)H(v).
+\]
+Indeed the nonarchimedean factors have triangle constant one, and the infinite-place constants multiply to $2^{\sum d_v}=2^D$. Both height identities are already in the pinned mathlib.
+\href{https://github.com/leanprover-community/mathlib4/blob/56a005855ea17e0b0958f73ec801ae140b0a1679/Mathlib/NumberTheory/Height/Basic.lean#L596}{\textit{Inversion}} and
+\href{https://github.com/leanprover-community/mathlib4/blob/56a005855ea17e0b0958f73ec801ae140b0a1679/Mathlib/NumberTheory/Height/Basic.lean#L915}{\textit{subtraction}}.
+
+\paragraph{Counting theorem.}
+Fix any prime ideal $w$ above $2$ and set $q=Nw$. For $B\ge1$,
+\begin{equation}\label{eq:freq-height-count}
+ \#\{x\in E:H(x)\le B\}\le 2^D(q+1)B^2 .
+\end{equation}
+Take the least $k\ge1$ with $q^k>2^D B^2$, and write $R=\mathcal O_{E,w}$ for the localized ring and $\mathfrak m=wR$. Give each point its chart and a residue modulo $\mathfrak m^k$. If $x\in R$, record $x\bmod\mathfrak m^k$ in the first chart, including $x=0$. For $x\notin R$, record $x^{-1}\bmod\mathfrak m^k$ in the second chart. These second residues belong to $\mathfrak m/\mathfrak m^k$. Each graded quotient $\mathfrak m^i/\mathfrak m^{i+1}$ is a one-dimensional residue vector space, by multiplication by a power of a uniformizer. Consequently the two charts together have $q^k+q^{k-1}$ labels. This reasoning includes ramified $w$ and requires no global generator of $w$.
+
+Suppose distinct points $x,y$ have the same label, and let $z$ be the difference of their chart coordinates. Then $z\ne0$ and $z\in\mathfrak m^k$. In either chart inversion preserves the heights of the coordinates, and
+\[
+ q^k\le |z^{-1}|_w\le H(z^{-1})=H(z)
+     \le 2^D H(x)H(y)\le 2^D B^2.
+\]
+This contradicts the strict choice of $k$. The label map is injective, including on the full height ball. Now $q^{k-1}\le 2^D B^2$, which proves~\eqref{eq:freq-height-count}.
+
+\paragraph{The bound used by the sieve.}
+For any finite $X\subset E$ and $s>2$, sum the individual integral identities $H(x)^{-s}=s\int_{H(x)}^\infty t^{-s-1}\,dt$ and apply~\eqref{eq:freq-height-count}. This gives
+\[
+ \sum_{x\in X}H(x)^{-s}\le 2^D(q+1)\frac{s}{s-2}.
+\]
+In the source $E$ is totally complex with $f\ge1$ infinite places and $D=2f$. Since the residue field at $w$ is a quotient of $\mathcal O_E/(2)$, $q\le2^D$. At $s=3$ we obtain
+\[
+ \sum_{x\in X}H(x)^{-3}\le 3\cdot4^f(4^f+1)\le 60^f.
+\]
+The last inequality follows from $4^f+1\le5^f$ and $3\le3^f$. This directly implies the existing bound $(64\cdot38\cdot e^4)^f$. For a finite-sum implementation one may use the shells $2^j\le H(x)<2^{j+1}$, $j\ge0$. Writing $C=2^D(q+1)$, shell $j$ has size at most $C4^{j+1}$ and each term weighs at most $8^{-j}$. The geometric bound is $8C\le160^f$, also within the existing budget.
+
+\paragraph{Formal impact.}
+Keep the definition of the denominator and its first two elementary lemmas. In this revision the thirteen subsequent helper declarations in lines 46--250 of \texttt{Frequencies.lean} have no clients in other project modules. The final theorem at line 253 has one direct client at line 194 of \texttt{GlobalSieve.lean}. That client feeds the density-sum recursion at line 852, hence the main-term sieve. Lines 43--278 cover 236 gross source lines, including comments and the public theorem. The remaining Lean work is to identify the denominator factor with the finite part of the height, construct the two local residue maps and their cardinalities, and specialize the checked counting lemma to the finite shells. The resulting net line reduction awaits integration. The change is independent of the determinant argument and the existing proposals on theta spanning, Frobenius packing, lattice heights and the sparse twist sieve.
+\href{https://github.com/VladimirReshetnikov/ProveIt/blob/8f274fb25a0be551cbb53ee802033689da108138/Analysis/GeneralizedRiemannHypothesis/Lean/grh/src/New/Spanning/MainTerm/GlobalSieve.lean#L177-L198}{\textit{Consumer of the height bound}.}
+
+\paragraph{What was checked.}
+The accompanying \texttt{HeightSeparation.lean} verifies the bound of a nonarchimedean factor by the height, the displayed separation inequality, and the two-chart cardinality theorem in the pinned mathlib. Its inputs are two finite residue codes satisfying the indicated local closeness property. The separate file \texttt{HeightCounting.lean} verifies the abstract divisibility contradiction using a natural-valued obstruction, and the finite dyadic recurrence, with Lean 4.35.0. An integral obstruction for distinct $x,y$ is $N((x-y)\mathfrak b_x\mathfrak b_y)$. It is at most $2^D H(x)H(y)$ by the archimedean triangle inequality; the exponent of $w$ in the ideal inside this norm equals the valuation of the difference of chart coordinates in either collision chart. Thus a collision makes its norm divisible by $q^k$.
+
+The exact check in \texttt{check\_height.py} enumerates all 1,183 elements of height at most 32 in $\mathbb Q(\sqrt{-5})$ and checks all 699,153 pairs. Here $(2)=w^2$ and $w=(2,1+\sqrt{-5})$ is nonprincipal, since $a^2+5b^2=2$ has no integral solution. The point $(1+\sqrt{-5})/2$ has denominator $w$, height $3$, and uses the reciprocal chart. For primitive $(a,b,c)$ with $c>0$ the norm of the denominator of $(a+b\sqrt{-5})/c$ is $c^2/\gcd(c,a^2+5b^2)$. Indeed its ideal is the kernel of multiplication by $a+b\sqrt{-5}$ modulo $c$; the two Smith invariants of the multiplication matrix have product $a^2+5b^2$ and the first is coprime to $c$ (handle zero separately). This gives the exact heights and makes the enumeration finite by $c\le H$ and $a^2+5b^2\le cH$. The tests verify divisibility in colliding pairs at thirteen precisions, and injectivity for each integer height cutoff from 1 through 32.
+\section{A shorter second-order estimate for a principal minor}
+\label{sec:compressed-minor}
+
+The archimedean period argument needs a dimension-independent estimate for a minor
+of a product of three matrix exponentials. Its error must be quadratic in the
+off-diagonal blocks, even when those blocks are much smaller than the matrices.
+Integrating the first-order equation for the compressed product gives this
+dependence directly.
+
+\paragraph{The estimate.}
+Let $P=P^*=P^2$ act on a finite-dimensional complex Hilbert space. For three
+complex endomorphisms $A_i$ suppose
+\[
+ \|A_i\|_F\le\delta\le 1/20,\qquad \|[P,A_i]\|_F\le\zeta
+ \quad(i=1,2,3),
+\]
+where $\|\cdot\|_F$ is the Frobenius norm. Write $R=I-P$ and
+$T_{ij}=\operatorname{tr}(PA_iRA_j)$. For $G=e^{A_1}e^{A_2}e^{A_3}$,
+\[
+ \det(I+P(G-I))=
+ \exp\!\left(\operatorname{tr}\Big(P\sum_i A_i\Big)
+     +\frac12\sum_i T_{ii}+\sum_{i<j}T_{ij}+r\right),
+ \qquad |r|\le 27\delta\zeta^2.
+\]
+The source permits $10^4\delta\zeta^2$.
+
+\paragraph{Proof.}
+Let $A(t)$ take the values $A_3,A_2,A_1$ successively on three unit intervals.
+Set $g(0)=I$ and $g'=A(t)g$, so $g(3)=G$. All the following integrals are
+ordinary integrals of piecewise continuous matrix functions. On the ambient
+space put
+\[
+\begin{gathered}
+ U=I+P(g-I)P,\qquad V=RgP,\qquad L(t)=\int_0^t C(s)\,ds,\\
+ B=PAR,\qquad C=RAP,\qquad D=RAR,\qquad H=PAP .
+\end{gathered}
+\]
+Here $A=A(t)$. The two off-diagonal blocks $B,-C$ comprise $[P,A]$, hence each has Frobenius
+norm at most $\zeta$. Orthogonal compression gives $\|D\|_F\le\delta$.
+Block multiplication yields
+\[
+ U'=HU+BV,\qquad V'=CU+DV,\qquad U(0)=I,\quad V(0)=0.
+\]
+From $(g-I)'=A+A(g-I)$ the integral Gronwall inequality gives
+$\|g-I\|_F\le e^{t\delta}-1$. Thus
+$\|U-I\|_F\le e^{t\delta}-1\le (6/5)t\delta\le1/5$,
+using $e^{3/20}\le(1-3/20)^{-1}<6/5$.
+Consequently $U$ is invertible, and with $K=U^{-1}-I$ one has
+\[
+ \|K\|_F\le\frac{\|U-I\|_F}{1-\|U-I\|_F}\le\tfrac32 t\delta.
+\]
+This follows also from $K=-(U-I)-(U-I)K$. In the equation for $V$,
+$\|CU\|_F\le\zeta(1+\|U-I\|_F)\le\zeta e^{t\delta}$.
+Gronwall, in its inhomogeneous form, gives
+$\|V(t)\|_F\le \int_0^t e^{(t-s)\delta}\zeta e^{s\delta}ds
+=t e^{t\delta}\zeta$. Since $(V-L)'=C(U-I)+DV$, it follows that
+\[
+ \|(V-L)'\|_F\le\tfrac{12}{5}t\delta\zeta,\qquad
+ \|V-L\|_F\le\tfrac65t^2\delta\zeta.
+\]
+Writing $VU^{-1}-L=(V-L)(I+K)+LK$ and using
+$1+\|K\|_F\le 5/4$ and $\|L\|_F\le t\zeta$ now gives
+\[
+ \|VU^{-1}-L\|_F\le3t^2\delta\zeta.
+\]
+Jacobi's formula and the initial value $\det U(0)=1$ give
+\[
+ \det U(3)=\exp\int_0^3\operatorname{tr}\bigl(H+B VU^{-1}\bigr)\,dt.
+\]
+Sylvester's identity $\det(I+XY)=\det(I+YX)$, applied to
+$X=P$, $Y=P(G-I)$, identifies the left side with the required minor.
+Replacing $VU^{-1}$ in the integral by $L$ costs at most
+$\int_0^3 3t^2\delta\zeta^2\,dt=27\delta\zeta^2$ by the
+Frobenius trace inequality. Finally $\int_0^3\operatorname{tr}(BL)$
+integrates $\operatorname{tr}(B(t)C(s))$ over $s<t$. Each same-interval triangle
+has area $1/2$. Each ordered pair of distinct intervals is a unit square,
+with the later interval carrying the smaller generator index. This gives the
+stated $T_{ij}$, including their order. The proof covers $\delta=0$,
+$\zeta=0$ and projections of rank zero or full rank.\hfill$\square$
+
+\paragraph{A two-dimensional check on the error.}
+Take $P=E_{11}$, $A_1=hE_{12}$, $A_2=dE_{22}$ and $A_3=hE_{21}$.
+The minor is $1+h^2 e^d$, and the exponent through the crossing term is
+$h^2$. With $h=d^2$ and $d\downarrow0$, the small remainder is
+$\log(1+h^2e^d)-h^2\sim dh^2$. Here $\delta=d$ and $\zeta=h$.
+Thus the product $\delta\zeta^2$ in the estimate has the correct scale.
+
+\paragraph{Source impact.}
+The module \texttt{MinorSecondOrder.lean} has 585 physical lines, including
+documentation, and 37 declarations. The inventory in \texttt{CONTENTS.md}
+assigns it 410 code lines. A reference scan of the 803 Lean files under
+\texttt{grh/src} found three names from the module in its consumer
+\texttt{OneMinor.lean}: the two crossing-trace definitions and the final
+theorem, invoked on line~609. The new calculation replaces the cubic
+expansion, principal-logarithm, rescaling and Schwarz-lemma arguments
+behind that theorem. The observed counts describe the implementation
+available for replacement. A net Lean line count requires an integrated port.
+
+For such a port, all blocks above have the same index type as $P$. Reuse
+\texttt{det\_one\_add\_mul\_comm}, the near-identity determinant derivative,
+and the Frobenius trace inequality from \texttt{MatricesNearIdentity.lean}.
+Move the two projection estimates from \texttt{OneMinor.lean} lines
+352--367 into the common dependency. Construct $g$ by explicit
+matrix exponentials on three segments. Scalar integrating factors handle
+both Gronwall bounds, and integrating the scalar determinant equation
+avoids a choice of complex logarithm. The application passes through
+\texttt{GaussianShape.lean} line~167, the period estimates in
+\texttt{Periods.lean} and \texttt{PositionGroup.lean}, and the deep-level
+vanishing criterion in \texttt{DeepLevelVanishing.lean} line~761.
+\texttt{FirstPath.lean} line~304 uses that criterion to start the
+auxiliary-form transfer in the determinant lower bound.
+\par \href{https://github.com/VladimirReshetnikov/ProveIt/blob/8f274fb25a0be551cbb53ee802033689da108138/Analysis/GeneralizedRiemannHypothesis/Lean/grh/src/New/Appendix/DiscreteSeries/MinorSecondOrder.lean#L551-L581}{Matrix-exponential estimate} $\cdot$ \href{https://github.com/VladimirReshetnikov/ProveIt/blob/8f274fb25a0be551cbb53ee802033689da108138/Analysis/GeneralizedRiemannHypothesis/Lean/grh/src/New/Appendix/DiscreteSeries/OneMinor.lean#L599-L617}{Principal-minor application}.
+
+\section{Comparison with the existing proposals}
+The comparison uses the 28 proposal directories and 43 LaTeX files in the pinned repository. The archive's \texttt{proposal-catalog.tsv} identifies every directory and the subject it addresses. Three distinctions matter when judging what the grid would still save after the proposed Hecke changes have landed.
+\begin{itemize}
+\item \emph{Pieri cones and exceptional elementary divisors.} The discrete Hecke proposal computes the density of a defect cone and supplies a saturation argument. The edge Hecke proposal gives an integral invariant average and bounds the exceptional Smith directions. The depth theorem here supplies the bound on the determinant cost of the local lattice at both ends of the map. Its input is a polynomial all of whose translates vanish to prescribed order in the deep variables. The target theorem is called in the local lattice calculation even if the cone, average and exceptional-direction arguments are shortened.
+\item \emph{Frobenius jets and torsion interpolation.} The Frobenius jet proposal inverts a formal-parameter equation in a truncated algebra for theta derivatives. The cyclotomic and Newton proposals choose roots of unity at controlled valuation for Selmer twists. Here the parameters range over a residue field, the observable is the rank of a space of deep forms, and the aim is to preserve an exact weighted monomial inequality. Choosing coordinates in an algebraic closure is legitimate because the unipotent matrices themselves still lift from the original residue field.
+\item \emph{Other uses of heights or determinants.} The projected determinant heights in the lattice and chain proposals concern the arithmetic of lift maps. The Fourier-frequency result here counts field elements appearing in a Poisson sum. Likewise the determinant in the period estimate is a complex principal minor of three exponentials. Its error is controlled by the off-diagonal blocks of the three generators. The modular determinant and orbital-exchange proposals have different inputs and output inequalities.
+\end{itemize}
+The strongest test of overlap is whether implementing an earlier proposal eliminates the call to the theorem under discussion. The closest catalog entries operate on different calls. The whole-project proof graph could change under a future redesign; the source ranges and comparison here are tied to their recorded revision.
+\section{Implementation and verification}
+The lowest-cost integration is to give the existing depth monomial theorem a new proof using the explicit binomial relations. This isolates the finite-field and specialization work from changes to the polynomial library. The Cartesian version then replaces the general multiplicity lemma with the fiber estimate. The source endpoint for acceptance is the dimension estimate invoked by the elementary-divisor theorem at line 907. The two companion changes can be ported independently by keeping their public inequalities.
+\paragraph{Checked Lean components.}
+\texttt{FrobeniusSamples.lean} verifies twisted interpolation, its inverse-Frobenius specialization with a primitive element, the Vandermonde block formula and its invertibility. It also proves the coefficient-specialization step in a one-parameter formulation. To use that formulation, set $U=c+tV$, take the polynomial in $t$ over $L[V,X]$, and reduce each moving-point translation modulo $(X)^\tau$. The map fixes $t$. If the whole family maps to zero, the lowest nonzero $t$-coefficient maps to zero at $t=0$. Extracting a nonzero $V^\alpha$ coefficient gives the polynomial of Section~\ref{sec:depth-orbit}. This formulation works over quotient rings with nilpotents.
+\par
+\texttt{GridMultiplicity.lean} verifies the fiber step over any field. Its first theorem bounds the vanishing order by the total degree of a selected base-variable coefficient plus its univariate root multiplicity. Its second theorem sums this inequality over a finite set of last-coordinate values. The induction over the remaining coordinates is given in the paper.
+\par
+\texttt{HeightSeparation.lean} verifies the height inequality for separation and the two-chart cardinality theorem with local coding hypotheses in mathlib's height API. \texttt{HeightCounting.lean} verifies the divisibility argument and dyadic arithmetic. The matrix-flow proof is supplied as a mathematical derivation. The new lemmas were checked separately using Lean 4.35.0 and the project's pinned mathlib revision. The remaining integration includes identifying the source polynomial action with the specified translations, realizing the finite fields and side sets, instantiating local residue codes, and elaborating the matrix estimates. A rebuild of the complete development with the proposed proofs is still outstanding.
+\paragraph{Exact computations.}
+The finite-field program checks equal prime-field spans for the specialized point set and the rectified grid in eight parameter choices, including several spare columns, a prime power $P=9$, and cycles shorter than $2r$. It also checks multiplicity under a specialization that annihilates the naive evaluation. The height program checks the ramified nonprincipal example in Section~\ref{sec:frequencyheight}. The matrix program checks the Taylor coefficients of 91 cases and an order-sensitive example. These computations exercise the delicate identities. The uniform claims follow from the proofs above.
+\paragraph{Further research.}
+The basis argument suggests a specific extension. For a translated representation with several distinct row blocks, which choices of shallow coordinates make the orbit a product of finite fields under a weight-preserving linear change? The constraint is to match each grid side length to the reciprocal of its prescribed monomial cost. On the analytic side, the height counting proof also gives convergence for every exponent $s>2$. A separate question is whether the local Fourier estimates in the global sieve can use a smaller common exponent without strengthening their regularity hypotheses.
+\par\small Source analysis uses ProveIt commit \texttt{8f274fb25a0b}. \href{https://github.com/VladimirReshetnikov/ProveIt/tree/8f274fb25a0be551cbb53ee802033689da108138/Analysis/GeneralizedRiemannHypothesis/docs/proposals}{Full proposal catalog} $\cdot$ \href{https://github.com/VladimirReshetnikov/ProveIt/blob/8f274fb25a0be551cbb53ee802033689da108138/Analysis/GeneralizedRiemannHypothesis/Lean/grh/README.md}{Proof package and reported upstream checks}.
+\end{document}
