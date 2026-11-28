@@ -1,0 +1,330 @@
+\documentclass[11pt]{article}
+\usepackage[T1]{fontenc}
+\usepackage{lmodern,amsmath,amssymb,amsthm,mathtools,booktabs,tabularx,microtype}
+\usepackage[left=1in,right=1in,top=0.9in,bottom=0.9in]{geometry}
+\usepackage{xcolor}
+\usepackage[colorlinks=true,linkcolor=blue!45!black,urlcolor=blue!50!black]{hyperref}
+\usepackage{enumitem}
+\setlength{\emergencystretch}{4em}
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{corollary}[theorem]{Corollary}
+\theoremstyle{remark}\newtheorem{remark}[theorem]{Remark}
+\newcommand{\Z}{\mathbb Z}
+\newcommand{\R}{\mathbb R}
+\newcommand{\N}{\mathbb N}
+\newcommand{\floor}[1]{\left\lfloor #1\right\rfloor}
+\newcommand{\ceil}[1]{\left\lceil #1\right\rceil}
+\newcommand{\src}[1]{\texttt{#1}}
+\newcommand{\baseurl}{https://github.com/VladimirReshetnikov/ProveIt/blob/89d12dd40424f1217fd818d84877b3da52396a3b/Analysis/GeneralizedRiemannHypothesis/}
+\newcommand{\srcurl}[2]{\href{\baseurl#1}{#2}}
+\newcommand{\E}{\mathcal E}
+\title{\textbf{Dyadic-shift coloring for the theta-lift proof}\\[4pt]\large A replacement for sparse-place selection, independent of the existing simplification proposals}
+\author{Research note}
+\date{27 November 2026}
+\begin{document}
+\maketitle
+\begin{abstract}
+The theta-lift proof of the Riemann hypothesis and Dirichlet GRH needs many infinite places in a cyclotomic tower, with no short triple of signed prime-power ratios. The readable Lean development obtains them by a weighted Behrend construction. We propose a different finite construction: color the entire dyadic exponent group by small cells of a modular-shift embedding and by a quantized squared length. A direct dyadic separation lemma and strict convexity prove that every color class is free of the required weighted congruences. The resulting estimate strengthens the original $W^6$ density loss to $W^4$ under the same principal hypotheses, removes the separate counting hypothesis, and gives a loss $\exp(O(\sqrt{\log x\log\log x}))$ after optimization. The construction preserves the exact source sparsity predicate, not merely a weaker asymptotic property. It works independently of the five existing proposals for the analytic reduction, spanning, completion and interpolation. All replacement theorems are proved here on paper; no new Lean kernel replay is claimed.
+\end{abstract}
+\tableofcontents
+
+\section{Scope and the choice of target}
+The source is the readable edition of Alp\"oge's proof with Claude, in ProveIt's GRH subtree \src{Lean/grh}, inspected at revision \src{89d12dd4} (full commit in the accompanying source audit). Its directory tree is \src{2e133df63d7f4da6b3059c4195324f8e9187ba73}, matching the readable upstream snapshot verified independently by Andrew Sutherland \cite{verification}. The README reports about 300,000 lines of Lean code. The compact edition is much shorter; the present analysis targets the readable source named in the request. The public endpoint is Mathlib's \src{RiemannHypothesis}, along with four other statements on Dirichlet and zeta zeros. We use its established inputs rather than reprove the whole automorphic argument.
+
+The strategy is to create short integral forms, span a large part of a target space, and compare their Gram determinant and index with a lower bound supplied by twisted theta lifts. Three large theorems (A, B and C) enter \src{star\_inequality}. If $m$ is the number of lifts, $f$ the number of infinite places, $a=xb$, and $\mathcal R$ the total prime remainder, the source proves
+\begin{equation}\label{eq:star}
+ m\mathcal R\le fa(\log b)^5.
+\end{equation}
+The two cutoff weights at the infinite places turn this into a one-sided prime remainder estimate. A classical zero-detection argument, auxiliary quadratic twist and functional equation finish the proof. See the guide \cite{guide}, particularly its discussion of the two cutoff weights and its determinant comparison, and the source headers of \src{MainInequality.lean}, \src{OneSidedBound.lean}.
+
+This note targets the data needed \emph{before} Theorem A: selection of the distinguished places $\Phi_b$. It neither changes the theta kernels nor assumes any of the proposed future changes to the other modules. It is a conservative replacement: after constructing the places, all the original hypotheses on the data still hold.
+
+\subsection{Nonduplication audit}
+The five proposal directories were enumerated, their READMEs read, and the section headings and sparse-place-related terms in all twelve TeX sources examined. The main distinctions are as follows.
+\begin{center}\small
+\begin{tabularx}{\linewidth}{@{}p{.32\linewidth}X@{}}
+\toprule
+Existing directory & Principal mathematical targets \\
+\midrule
+\src{centered\_theta\_lift\_}\newline\src{simplification} & Centered rank increments; adaptive basis-completion cost; revised main inequality. \\
+\src{proof\_simplifications} & Auxiliary-prime selection using Dirichlet polynomials and Fourier completion; distant-cutoff Perron inversion; spanning. \\
+\src{rh-simplifications} & Rank gain, simultaneous torsion specialization by interpolation, quadratic large sieve. \\
+\src{rh\_sparse\_theta\_proof} & Sparse \emph{cutoffs}, reciprocal convexity, local averages, averaged twist selection. Mentions shared admissible data as future work, not the present coloring. \\
+\src{shorter-theta-lift-proof} & Auxiliary-prime selection, Gauss transforms, spanning and analytic cutoff bounds. \\
+\bottomrule
+\end{tabularx}
+\end{center}
+The use of ``sparse'' in the fourth directory concerns the sampling of $x$, not the finite residue-class set $\Phi_b$. In addition, the repository's article \src{Article/sections/gpp.tex} discusses the original weighted digit-sphere lemma, a sharper projective-order obstruction and the two-prime capacity. Those results are not repeated as new results here. Our construction keeps the dyadic fiber and uses a different coloring of that fiber; the transfer to places uses the existing arithmetic. Both the new and old exponent arguments are Behrend-type in the broad sense that they use strict convexity. The novelty claimed is a distinct replacement in this repository, not priority in additive combinatorics. Optimizing the old digit-sphere construction can also give subpower losses; the main benefit here is the integer coloring interface and elimination of the separate count and coupled dimension constraints.
+
+\section{The exact problem in the source}\label{sec:setup}
+Let $q_0$ be a positive multiple of $18480$ and $d$ an auxiliary prime with $d\equiv q_0/2-1\pmod{q_0}$. For an integer $s\ge1$, write
+\[
+ z=l_0(s)=3^{\floor{\log_3s}+4},\quad M=2^s,\quad
+ q_1=q_0\,3zM,\quad E=\mathbb Q(\sqrt{-d},\zeta_{q_1}).
+\]
+The notation $M$ in Sections~\ref{sec:setup}--\ref{sec:bounds} means the dyadic exponent modulus only, \emph{not} the product of level primes (also called $M$ in the source). We have $27s<z\le81s$. Infinite places of $E$ identify with units modulo $q_1$ through \src{Parameters.placeMulEquiv}. The set $\Phi_a$ consists of those in class $1$ modulo $q_0$; it has cardinality $3zM$ (\src{card\_placeClass\_eq\_one\_eq\_towerDeg}). The distinguished set $\Phi_b=T$ must lie in the class $-1$ modulo $q_0$ and satisfy
+\begin{equation}\label{eq:density}
+ 3zM\le |T|\log b.
+\end{equation}
+If $p$ is prime, denote by $q_{1,p}$ the part of $q_1$ prime to $p$. For a prescribed prime cutoff $L$, the predicate \src{Parameters.IsSparse} requires that for every $p\le L$ there be no $\sigma,\tau,\rho\in T$, signs $\eta,\eta'\in\{\pm1\}$ and integers $0<i<j<z$ with
+\begin{equation}\label{eq:sparse}
+ \tau/\sigma\equiv \eta p^i\pmod{q_{1,p}},\qquad
+ \rho/\sigma\equiv \eta' p^j\pmod{q_{1,p}}.
+\end{equation}
+The three places need not be distinct. This is essential: avoiding only triples of \emph{distinct} places would not meet the Lean statement. The two signs are independent. In the final admissible data, $L=kt$, where $k=r+1-m$, $t=5r$ and the rank $r$ is of size $x^5$.
+
+The original \src{exists\_large\_isSparse} chooses labels $-g^e$ for
+\[
+ g=1+3zq_0,
+\]
+using a Behrend set of exponents $e$ in $[0,M)$. It requires $(2zH)^n\le M$ and $2z(L+1)<M$, and proves $|T|\ge H^n/(nH^2)$. Its next lemma \src{exists\_isSparse} chooses a dyadic $H$ using $1\le W\le M\le W^n$, $(2z)^n\le W$, and $3zn2^n\le W^3$, and returns $3zM\le |T|W^6$. These are precise source interfaces; see \cite{existence,admissible,fields}.
+
+The source uses the sparsity property both for near pairs in derivative sharpness and for local-loss estimates on the congruence side (\src{NearPairs.lean}, \src{LocalLoss/Basic.lean}). Keeping \eqref{eq:sparse} intact prevents a hidden need to reprove those arguments. A random set obtained just by removing a few bad triples need not achieve the required density, and would need to account for repetitions and the omitted prime-power part of the modulus. We avoid both problems.
+
+\section{A modular-shift coloring}\label{sec:color}
+The replacement is an integer map on all $2^s$ exponents. Use a coefficient budget $B\ge2$ and any block length $h\ge1$. Put $H=2^h$ and $K=\ceil{s/h}$; the capital $K$ in this section is a count of coordinates, not the imaginary quadratic field. For $0\le e<M$ and $0\le j<K$, let
+\begin{align}
+ r_j(e)&=2^{jh}e\bmod M\in\{0,\ldots,M-1\},\\
+ c_j(e)&=\floor{Br_j(e)/M}, & t_j(e)&=Br_j(e)-Mc_j(e),\\
+ E(e)&=\sum_{j=0}^{K-1}t_j(e)^2,&
+ c_*(e)&=\floor{\frac{2H^2 E(e)}{BM^2}}.\label{eq:energy}
+\end{align}
+Color $e$ by the tuple $\mathcal C(e)=(c_0(e),\ldots,c_{K-1}(e),c_*(e))$. Everything here is a natural number, computable by shifts, divisions and remainders. There is no choice of sphere radius, digit embedding, or carry propagation. The proof uses three facts: separation, exact linearity inside a cell, and a quantitative convexity gap.
+
+\begin{lemma}[Dyadic separation]\label{lem:sep}
+For distinct exponents $u,w\in[0,M)$ there is a coordinate $j<K$ with
+\[
+ H|r_j(u)-r_j(w)|\ge M.
+\]
+The corresponding cyclic distance is also at least $M/H$.
+\end{lemma}
+\begin{proof}
+Write $v=v_2(|u-w|)$, so $0\le v<s$. Set $j=\floor{(s-1-v)/h}$. Then $0\le j<K$ and $1\le s-v-jh\le h$. The residue of $2^{jh}(u-w)$ modulo $M$ has additive order $2^{s-v-jh}$, dividing $H$. Thus it is nonzero and a multiple of $M/2^{s-v-jh}$; its distance to $0$ modulo $M$ is at least $M/H$. The ordinary distance of the two representatives is no smaller. Equivalently, $H(r_j(u)-r_j(w))$ is a nonzero multiple of $M$. This last formulation needs only integer divisibility.
+\end{proof}
+
+\begin{lemma}[Cell lifting]\label{lem:cell}
+Suppose $\alpha,\beta$ are positive integers with $\alpha+\beta\le B$. If $u,v,w$ have identical cell colors $c_j$ and
+\begin{equation}\label{eq:weighted}
+ (\alpha+\beta)v\equiv \alpha u+\beta w\pmod M,
+\end{equation}
+then, in $\R^K$,
+\[
+ (\alpha+\beta)t(v)=\alpha t(u)+\beta t(w),
+\]
+where $t(e)=(t_0(e),\ldots,t_{K-1}(e))$.
+\end{lemma}
+\begin{proof}
+Multiplying \eqref{eq:weighted} by $2^{jh}$ gives the same congruence for the representatives $r_j$. Because all three lie in one half-open interval of length $M/B$, the integer
+\[
+ (\alpha+\beta)r_j(v)-\alpha r_j(u)-\beta r_j(w)
+\]
+is a multiple of $M$ of absolute value strictly less than $(\alpha+\beta)M/B\le M$. Hence it is zero. Multiplying the equality by $B$ and subtracting the common cell offset gives the assertion. The strict inequality follows even when the coefficient budget is attained exactly: the intervals are half-open.
+\end{proof}
+
+\begin{theorem}[Uniform weighted-congruence coloring]\label{thm:color}
+For every $s,h\ge1$, $B\ge2$, the map $\mathcal C$ partitions $\Z/2^s\Z$ into at most
+\begin{equation}\label{eq:count}
+ C(s,B,h)=B^{\ceil{s/h}}\left(1+\floor{\frac{2\ceil{s/h}\,2^{2h}}{B}}\right)
+\end{equation}
+classes. Within any one class, \eqref{eq:weighted} with positive $\alpha,\beta$ and $\alpha+\beta\le B$ implies $u=v=w$. Consequently, for every subset $U$ of $[0,M)$ there exists a weighted-congruence-free subset $S\subseteq U$ with $|S|\ge|U|/C(s,B,h)$.
+\end{theorem}
+\begin{proof}
+Each $c_j$ takes at most $B$ values and $0\le t_j<M$. Thus $E<KM^2$ and the radial color takes at most $1+\floor{2KH^2/B}$ values. This gives \eqref{eq:count}.
+
+For the exclusion, take a common full color and let $a=\alpha/(\alpha+\beta)$. Lemma~\ref{lem:cell} gives $t(v)=at(u)+(1-a)t(w)$. The exact Euclidean identity is
+\begin{equation}\label{eq:gap}
+ aE(u)+(1-a)E(w)-E(v)=a(1-a)\|t(u)-t(w)\|^2.
+\end{equation}
+If $u\ne w$, Lemma~\ref{lem:sep} and the common cells imply
+$\|t(u)-t(w)\|^2\ge B^2M^2/H^2$. For $n=\alpha+\beta\ge2$, one has $\alpha\beta\ge n-1\ge n/2$, and hence $a(1-a)\ge1/(2B)$. The right side of \eqref{eq:gap} is therefore at least $BM^2/(2H^2)$. But equality of $c_*$ forces the three energies to lie in the same half-open interval of length exactly $BM^2/(2H^2)$; their weighted-average gap is strictly smaller than that length. This contradiction proves $u=w$. Then Lemma~\ref{lem:cell} implies $t(u)=t(v)$, hence $r_0(u)=r_0(v)$ by the common cell color. Since $r_0(e)=e$, we obtain $u=v=w$. This last step covers the case of equal endpoints without requiring $\alpha+\beta$ to be invertible modulo $M$.
+
+Finally choose the most populated color in $U$. Pigeonhole gives the asserted cardinality, also for $U=\varnothing$.
+\end{proof}
+
+\paragraph{Why the construction is useful.} It is not an embedding of a digit cube into a cyclic group. Instead it partitions the entire cyclic group and uses the first coordinates at which a difference survives sufficiently far toward the top of the dyadic modulus. Neither an injectivity proof for a base-$BH$ encoding nor an equality of long base expansions is needed. The energy need not be exactly constant, only in an interval of controlled width. In particular the lemma can also be used when the available exponents have been restricted in advance. An elementary finite algorithm is given in the accompanying Python script; it enumerates colors for small groups only. The uniform proof, not enumeration, is the argument for the very large groups in the GRH proof.
+
+\section{Transfer to the infinite places}\label{sec:transfer}
+Here we use the same cyclic fiber as the source. We include the transfer proof to show that the new finite lemma suffices with no unproved interface.
+\begin{lemma}[Transfer of any weighted-free class]\label{lem:transfer}
+Let $s\ge1$, $z=l_0(s)$, $q_1=q_0\,3z2^s$, $g=1+3zq_0$, and $2z(L+1)<2^s$. If $S\subset[0,2^s)$ satisfies the conclusion of Theorem~\ref{thm:color} for $B=2z$, the labels
+\[
+ T=\{-g^e\bmod q_1:e\in S\}
+\]
+are distinct, lie in class $-1$ modulo $q_0$, and satisfy \eqref{eq:sparse} for all primes $p\le L$.
+\end{lemma}
+\begin{proof}
+Write $q_0=2^v u$ with $u$ odd, $v\ge4$. The integer $3z$ is odd, so $v_2(g-1)=v$. Every prime dividing $q_1$ divides $3zq_0$, so $g$ is a unit. The standard elementary valuation formula $v_2(g^n-1)=v+v_2(n)$ for $n\ge1$ follows by first taking odd powers and then successive squaring (the second factor of each difference of squares has valuation one). Thus $g$ has order $2^s$ modulo $2^{s+v}$, proving injectivity, and $g\equiv1\pmod{q_0}$ proves the class assertion.
+
+Suppose \eqref{eq:sparse} holds, and write the three labels as $-g^{e_1},-g^{e_2},-g^{e_3}$. For $p=2$ the odd modulus $3z$ divides $q_{1,p}$ and every ratio of labels equals $1$ there. The first congruence gives $4^i\equiv1\pmod{3z}$. Since $3z$ is a power of three, $4$ has order $z$ modulo $3z$ (the elementary identity $v_3(4^i-1)=1+v_3(i)$), contradicting $0<i<z$.
+
+For odd $p$, reduce both congruences modulo $2^{s+v}$ and square to remove signs. Raising the first to $j$ and the second to $i$ yields
+\[
+ 2j e_2\equiv 2(j-i)e_1+2i e_3\pmod{2^s}.
+\]
+The two positive coefficients sum to $2j<2z=B$. The coloring therefore gives $e_1=e_2=e_3$. The original congruence now gives $p^{2i}\equiv1\pmod{2^{s+1}}$. We check the order obstruction explicitly: for odd $p$,
+\[
+ v_2(p^{2i}-1)=v_2(p-1)+v_2(p+1)+v_2(i)
+ \le 1+\log_2(p+1)+\log_2 i.
+\]
+Indeed one of $p\pm1$ has valuation exactly one; the valuation identity follows by successive squaring of $p^2\equiv1\pmod 8$. The congruence forces $2^s\le(p+1)i$, contradicting $2z(L+1)<2^s$ and $i<z$. (The source uses the slightly weaker bound $2^s\le(p+1)2i$, which also suffices.) This includes repeated places, ramified primes other than $2$, and both independent signs.
+\end{proof}
+\begin{remark}
+The transfer is not a new theorem about the optimal prime cutoff. The repository's article gives sharper projective-order information \cite{gpp}. We retain the original conservative cutoff bound deliberately, since the aim is a drop-in replacement with unchanged ranks, field and local estimates. One may keep the original Lean proof of the transfer, factoring out only the source of the weighted-free set.
+\end{remark}
+
+\section{Quantitative consequences}\label{sec:bounds}
+\begin{theorem}[Drop-in finite replacement]\label{thm:drop}
+Let $s\ge1$, $n\ge1$, $W\ge1$, $z=l_0(s)$, and assume
+\[
+ 2^s\le W^n,\qquad (2z)^n\le W,\qquad 2z(L+1)<2^s.
+\]
+There is a set $T$ of class $-1$ modulo $q_0$ satisfying the original sparsity predicate and
+\begin{equation}\label{eq:W4}
+ 3z2^s\le |T|W^4.
+\end{equation}
+In particular $W^6$ suffices. The separate hypotheses $W\le2^s$ and $3zn2^n\le W^3$ of \src{exists\_isSparse} are not needed for this replacement.
+\end{theorem}
+\begin{proof}
+Take $B=2z\ge162$ and $h=\ceil{\log_2 W}$, so $W\le H=2^h<2W$. We have $W\ge B$ and $h\ge1$. The assumption $2^s\le W^n\le 2^{hn}$ implies $K\le n$. Theorem~\ref{thm:color} on the full group gives $|S|\ge M/C$ where
+\[
+ C\le B^n(1+8nW^2/B)\le W+8nW^3/B.
+\]
+By the transfer, $|T|=|S|$. Thus
+\[
+ \frac{3z M}{|T|}\le 3zC\le\tfrac32 BW+12nW^3.
+\]
+For $B\ge2$, $Bn\le B^n\le W$ (by elementary induction), so $n\le W/B$ and $B\le W$. The right side is at most
+\[
+ \tfrac32 W^2+\frac{12}{B}W^4\le W^4,
+\]
+since $W\ge B\ge162$. This proves \eqref{eq:W4}.
+\end{proof}
+
+The old \src{exists\_isSparse\_of\_ranks} used $W\le m$ to obtain $W\le 2^s$, the rank bounds to control the prime cutoff, and its two extra hypotheses to supply the digit-sphere count. The new theorem can reuse the same rank-to-cutoff lemma and the existing proof of $(2z)^n\le W$. It simply drops the count premise and the lower bound on $2^s$ in the exponent selection. No stronger assumption on primes in arithmetic progressions has been introduced.
+
+\subsection{An optimized subpower loss, independent of the window exponent}
+\begin{theorem}[Uniform optimized density]\label{thm:opt}
+Let $s\ge1$, $z=l_0(s)$, and $2z(L+1)<2^s$. Put $B=2z$ and $q=\ceil{\log_2 B}$, and choose the entirely integer parameters
+\[
+ h=\ceil{\sqrt{s q}},\qquad K=\ceil{s/h}.
+\]
+There are sparse places $T$ with
+\begin{equation}\label{eq:optimized}
+ \log_2\frac{3z2^s}{|T|}
+ \le 3\sqrt{sq}+q+2+\log_2(9zs).
+\end{equation}
+In particular the right side is $O(\sqrt{s\log(2+s)})$, with an absolute implied constant.
+\end{theorem}
+\begin{proof}
+Theorem~\ref{thm:color} and Lemma~\ref{lem:transfer} give loss at most $3zC$. Since $K\ge1$, $B\ge2$, $H\ge2$,
+\[
+ 3zC\le9zK B^K H^2.
+\]
+Taking logarithms gives $\log_2(9zK)+K\log_2 B+2h$. Now $K\le s/h+1$, $K\le s$, $h\ge\sqrt{sq}$, and $h\le\sqrt{sq}+1$. Therefore $K\log_2 B\le \sqrt{sq}+q$ and $2h\le2\sqrt{sq}+2$. Use $z\le81s$ to obtain the stated asymptotic bound.
+\end{proof}
+
+The optimized bound is valid even when the right side exceeds $\log_2(3z2^s)$; in that range the estimate is weak. It is not a claim of numerical superiority for small $s$ (the article has good finite examples). It is designed for the eventual-scale regime of the proof. For orientation the exact integer upper bounds from \src{check\_coloring.py} are:
+\begin{center}\small
+\begin{tabular}{rrrr}
+\toprule
+$s$ & $h$ & $K$ & upper bound on $\log_2$ loss \\
+\midrule
+44 & 24 & 2 & 90\\
+1,000 & 131 & 8 & 421\\
+10,000 & 459 & 22 & 1,407\\
+1,000,000 & 5,197 & 193 & 15,642\\
+100,000,000 & 57,446 & 1,741 & 172,391\\
+\bottomrule
+\end{tabular}
+\end{center}
+These numbers are bounds, not computed maximum color sizes or measured complexity reductions. The integer bound used is $\ceil{\log_2(9zK)}+qK+2h$, which may be sharper than \eqref{eq:optimized}.
+
+\section{Integration into the RH and GRH proof}\label{sec:integration}
+We now verify that the stronger asymptotic estimate can be transported through the existing data construction rather than merely asserted for unrelated moduli. Fix $P=(q_0,d)$ and an exponent $0<\epsilon<1/100$. The original data construction chooses $m$ the least power of two at least $\sqrt{x}$, $r$ the least power of three at least $x^5$, $2^s=m^{22}$, $s\le32\log x$, and the scales with
+\[
+ W=x^{\epsilon/6},\qquad x_1=\floor{\exp W},\qquad
+ x^\epsilon\le\log b\le x^\epsilon+1.
+\]
+It uses a fixed integer $n$ large enough in terms of $P$ and $\epsilon$ for the prime-window estimates (Siegel--Walfisz). In the present proposal that $n$ need not govern the number of exponent coordinates.
+
+\begin{corollary}[Admissible data with a denser distinguished set]\label{cor:data}
+Retaining the prime-window, rank, and remaining field and data existence inputs of the readable proof, for every $0<\eta\le\epsilon$ and every sufficiently large integer $x$ there are data $D$ with the original exact choices of ranks and scales, satisfying additionally
+\begin{equation}\label{eq:extra}
+ \frac{|\Phi_a|}{|\Phi_b|}\le x^\eta.
+\end{equation}
+The threshold may depend on $P,\epsilon,\eta$. No uniformity in the auxiliary prime $d$ is claimed.
+\end{corollary}
+\begin{proof}
+By the source rank bounds, $r\le3x^5$, $m\ge\sqrt x$, and $s\le32\log x$. Consequently
+\[
+ L=(r+1-m)5r\le5r(r+1)=O(x^{10}),\quad
+ 2^s=m^{22}\ge x^{11},\quad z=O(\log x).
+\]
+Thus $2z(L+1)<2^s$ for all sufficiently large $x$. Theorem~\ref{thm:opt} constructs $T$ with $|\Phi_a|/|T|\le\exp(O(\sqrt{\log x\log\log x}))\le x^\eta$. Since $\log b\ge x^\epsilon\ge x^\eta$, the original density condition \eqref{eq:density} holds. Give the selected places the same weight $b$ and all other places the same weight $xb/x_1$. These are exactly the weights permitted by the original data. The remaining steps of the admissible-data existence lemma use only the class condition, density, sparsity and the permitted weight range, so the original construction of $p_0,p_1,N$ and their norm generators applies without change. The final \src{exists\_hasFields} lemma converts these choices into $D$; the extra inequality is inherited from the chosen $T$.
+\end{proof}
+
+\paragraph{Important logical order.} We do not start with an arbitrary $D$ and replace its set $\Phi_b$ while holding all level primes fixed. The lower end of the window for $N$ depends on the weights. We first choose the new places, then use the existing level-selection argument with these weights, in precisely the order of the source. This avoids a circular dependency. The source's prime-window lemma is unconditional; no appeal to GRH for the construction is made.
+
+The most conservative implementation is Theorem~\ref{thm:drop}, which returns stronger bounds at the same intermediate interface and requires only a small edit in \src{Existence.lean}. Corollary~\ref{cor:data} is a second implementation path: pass a witness $T$ into the rest of the admissible-data construction, and establish the witness by Theorem~\ref{thm:opt} at the eventual-scale stage. This separates the prime-window exponent $n$ from the sparse-set construction entirely. The \src{IsLargeScale} record can then omit its Behrend-specific \src{pow\_le} and \src{mul\_two\_pow\_le} fields if a dependency audit confirms no other uses. Its other conditions, notably the window modulus and class-number bounds, stay intact. See the accompanying \src{LEAN\_PLAN.md}.
+
+\subsection{Effect on the one-sided analytic bound}
+Let $R_q(y)$ denote the original prime remainder for the fixed auxiliary prime $d$ (we suppress it in the notation), $q=q_0$. The exact source identity \src{totalRemainder\_eq} gives
+\[
+ R_q(x)=\frac{\mathcal R}{a|\Phi_b|}+R_q(x_1)
+         -\frac{|\Phi_a|}{|\Phi_b|}R_1(x_1).
+\]
+Since $f=\varphi(q)|\Phi_a|$, any main inequality of the form
+\begin{equation}\label{eq:generic}
+ m\mathcal R\le C_0 fa(\log b)^p
+\end{equation}
+yields
+\begin{equation}\label{eq:remainder}
+ R_q(x)\le C_0\varphi(q)\frac{|\Phi_a|}{|\Phi_b|}
+ \frac{(\log b)^p}{m}+|R_q(x_1)|+
+ \frac{|\Phi_a|}{|\Phi_b|}|R_1(x_1)|.
+\end{equation}
+This is the source's \src{Data.primeRemainder\_le} calculation with the actual ratio retained. The original inequality \eqref{eq:star} supplies $C_0=1,p=5$. The centered-moment proposal, if implemented and verified, instead supplies $C_0=17,p=4$ under its stated conditions. We do not use it as an established Lean input.
+
+By the original far-cutoff estimate, $|R_q(x_1)|,|R_1(x_1)|\le x^{-2}$ eventually, and $m\ge\sqrt x$, $\log b\le2x^\epsilon$. Combining Corollary~\ref{cor:data} with \eqref{eq:remainder} gives
+\begin{equation}\label{eq:newnear}
+ R_q(x)\le 2^p C_0\varphi(q)x^{-1/2+p\epsilon+\eta}
+             +x^{-2}+x^{-2+\eta}.
+\end{equation}
+Thus the original near-cutoff exponent $-1/2+6\epsilon$ can be replaced by $-1/2+5\epsilon+\eta$ for arbitrary fixed $0<\eta\le\epsilon$. With the proposed improved main inequality it becomes $-1/2+4\epsilon+\eta$. This is only an improvement in the loss of the construction; RH already follows from the original exponent. For any $\delta>0$, choose $\epsilon,\eta>0$ sufficiently small that $p\epsilon+\eta<\delta$. Absorb the constant and the two faster-decaying terms into $x^{-1/2+\delta}$ after increasing the eventual threshold (one may choose strict slack). The existing passage from integers to real $y$, using the floor estimate in \src{OneSidedBound.lean}, then supplies the same hypothesis of \src{LFunction\_ne\_zero\_of\_primeRemainder\_le}. No new proof of the zero criterion or of functional equations is required.
+
+\section{Implementation and assessment}\label{sec:implementation}
+\subsection{A minimal replacement versus an architectural replacement}
+For the minimal version, formalize the following mathematical lemmas in a small independent module: (1) dyadic separation, (2) equal cells lift weighted congruences, (3) the integer color bound, (4) the nontriviality exclusion, (5) the most-populated-class theorem. Natural-number operations define all colors; cast to integers for congruences and to reals or rationals for the energy identity. Factoring the existing transfer after \src{exists\_large\_isSparse} should avoid duplicating the field-specific reasoning.
+
+For the optimized version, use integer $q=\ceil{\log_2 B}$ and $h=\ceil{\sqrt{s q}}$. It is not necessary to formalize a new asymptotic library: the inequality $\sqrt{s\log(2+s)}=o(s)$ and $s\le32\log x$ suffice; alternatively use a fixed $h=\ceil{\theta\log_2 x}$ with $\theta>0$ chosen from $\eta$ and $K=O(1/\theta)$ to prove \eqref{eq:extra} by a direct polynomial-vs-log comparison. For the latter proof take $\theta=\eta/8$, say. Then $H<2x^\theta$, $K\le\ceil{32\log 2/\theta}+1$, and $3zC=O((\log x)^{K+1} x^{2\theta})\le x^\eta$ eventually. This fixed-parameter variant avoids square roots and is probably easier in Lean. Its dimension depends only on the chosen loss exponent, not on $q_0d$ or the Siegel--Walfisz exponent.
+
+\subsection{What is and is not improved}
+\begin{itemize}[leftmargin=*]
+\item \textbf{Proved here:} the exact integer coloring theorem, the transfer preserving \src{IsSparse}, the stronger $W^4$ finite estimate, and the optimized loss and integration statements using the explicitly identified original inputs.
+\item \textbf{Not claimed:} an independent proof of RH, a new zero-free region beyond RH, a quantitative reduction of actual Lean line counts, or a faster finite algorithm for the enormous moduli. The theorem does not reduce the number of lifts, change the arithmetic local divisibility estimates, or avoid Galois representations. The difficult determinant and congruence machinery remains.
+\item \textbf{Why this is still a simplification:} the finite coloring is a total function on a cyclic group, no choice of digit-sphere radius or large power with a prescribed interval is needed to define it, the proof uses only one modular separation identity and one convexity identity, and the finite counting conditions for selecting places become fewer. The optimized version separates two logically independent scale parameters. A future Lean implementation should compare actual elaborated dependency closures and source size before accepting a claim of overall shortening.
+\end{itemize}
+
+\subsection{Further research questions}
+\begin{enumerate}[leftmargin=*]
+\item Can the color partition be made compatible with the previously proposed dyadic-block sampling of cutoffs, choosing a single $T$ on each block where the field exponent is fixed? The rank cutoff can be taken at the largest $r$ on that block. The remaining weights and the $N$ window must still be checked separately.
+\item The estimate uses $B=2z$ to remove signs by squaring, as in the readable source. The projective signed-representative map in the article allows a smaller coefficient budget. Can that be combined with the coloring, without complicating the local proofs, to improve the finite constants?
+\item Can using both the dyadic and ternary coordinates (with separate constraints for $p=2$ and $p=3$) improve density at finite scales? The article's exact two-prime capacity is an upper bound to respect. The present proof makes no claim of achieving that capacity.
+\item Can sparsity be relaxed to an averaged overlap condition in both derivative sharpness and local loss? This would be a deeper mathematical simplification, but would require independent replacements of the two consumers of \src{Data.sparse}. The current note deliberately avoids that risk.
+\end{enumerate}
+
+\section{Verification and source provenance}
+The accompanying Python 3 script tests the integer separation lemma for every nonzero difference in small groups, tests all coefficient pairs and all solutions of the modular midpoint equation within color classes, tests transfer including the prime $2$, and checks the $W^4$ count on sample exact integer parameters. It also computes rigorous integer loss bounds without trying to enumerate huge groups. Recorded outputs are in \src{checks.txt}. Tests are finite regressions, not a substitute for the proof above. The full Lean environment was unavailable (no Lean executable or project cache was present); the replacement is not compiled and no repository files have been changed. The source audit contains immutable links and blob hashes; the included verifier can check them in a local checkout. The original upstream independent verification \cite{verification} concerns the unmodified proof, not this proposal.
+
+\begin{thebibliography}{9}\small
+\bibitem{verification} A. Sutherland, \emph{Verification files for the shorter Lean proof of RH and of GRH for Dirichlet L-functions}, updated 27 November 2026. \url{https://math.mit.edu/~drew/shortgrh/}. Reports independent statement comparison, kernel replay, and external checker acceptance of the readable and compact editions.
+\bibitem{guide} ProveIt, \srcurl{docs/guide/theta_lifts_and_dirichlet_zeros.tex}{How theta lifts locate the zeros of Dirichlet L-functions}, human-readable guide, pinned source revision.
+\bibitem{existence} Alp\"oge with Claude, \srcurl{Lean/grh/src/New/Reduction/Data/Existence.lean}{Existence.lean}, especially lines 59--273, 488--512, 621--679, 820--898.
+\bibitem{admissible} \srcurl{Lean/grh/src/New/Reduction/Data/AdmissibleData.lean}{AdmissibleData.lean}, lines 54--64 and 100--133: sparse predicate and data conditions.
+\bibitem{fields} \srcurl{Lean/grh/src/New/Reduction/Data/FieldsAndPlaces.lean}{FieldsAndPlaces.lean}, lines 90--106, 278--296, 353--369.
+\bibitem{main} \srcurl{Lean/grh/src/New/Reduction/MainInequality.lean}{MainInequality.lean}; \srcurl{Lean/grh/src/New/Reduction/OneSidedBound.lean}{OneSidedBound.lean}; \srcurl{Lean/grh/src/New/Reduction/Zeros/Criterion.lean}{Criterion.lean}.
+\bibitem{gpp} ProveIt article, \srcurl{Article/sections/gpp.tex}{Progression-free sets in polynomial rings and finite rings; additive constraints}, subsection on sparse places (near line 1493).
+\bibitem{proposals} \href{https://github.com/VladimirReshetnikov/ProveIt/tree/89d12dd40424f1217fd818d84877b3da52396a3b/Analysis/GeneralizedRiemannHypothesis/docs/proposals}{Existing proposals directory}, five subdirectories listed in Section 1.1.
+\end{thebibliography}
+\end{document}

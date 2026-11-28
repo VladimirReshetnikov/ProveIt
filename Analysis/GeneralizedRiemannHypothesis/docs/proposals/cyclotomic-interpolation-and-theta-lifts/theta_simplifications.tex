@@ -1,0 +1,257 @@
+\documentclass[11pt]{article}
+\usepackage[T1]{fontenc}
+\usepackage{lmodern,microtype,amsmath,amssymb,amsthm,mathtools,booktabs,array}
+\usepackage[letterpaper,margin=0.91in,top=0.83in,bottom=0.83in]{geometry}
+\usepackage{xcolor,fancyhdr,enumitem}
+\definecolor{ink}{HTML}{193E47}\definecolor{link}{HTML}{126579}
+\usepackage[colorlinks=true,urlcolor=link,linkcolor=ink,citecolor=ink,pdfauthor={Research note for Vladimir Reshetnikov},pdftitle={Choosing Selmer twists by cyclotomic interpolation}]{hyperref}
+\setlength{\headheight}{14pt}\setlength{\parskip}{3.2pt plus 1pt minus 0.5pt}
+\setlength{\parindent}{0pt}
+\pagestyle{fancy}\fancyhf{}\fancyhead[L]{\small\color{ink}Cyclotomic interpolation and theta lifts}\fancyhead[R]{\small Research note}\fancyfoot[R]{\small\thepage}\renewcommand{\headrulewidth}{0.3pt}
+\newtheorem{theorem}{Theorem}[section]\newtheorem{lemma}[theorem]{Lemma}\newtheorem{corollary}[theorem]{Corollary}
+\newcommand{\cO}{\mathcal O}\newcommand{\Tr}{\operatorname{tr}}
+\newcommand{\src}[3]{\href{https://github.com/lsernau/grh-lean/blob/72fead102f663d5c7a407964a13dc0cf9d977207/grh/src/#1.lean\#L#2}{#3}}
+\newcommand{\cmp}[3]{\href{https://github.com/lsernau/grh-lean/blob/72fead102f663d5c7a407964a13dc0cf9d977207/grh-compact/src/#1.lean\#L#2}{#3}}
+\newcommand{\rootsrc}[2]{\src{New/Congruences/Selmer/RootsOfUnity}{#1}{#2}}
+\newcommand{\gensrc}[2]{\src{New/Congruences/Selmer/GeneralTheorem}{#1}{#2}}
+\newcommand{\rH}{\operatorname{RH}}
+\begin{document}
+\thispagestyle{plain}
+{\small\color{ink}\sffamily NUMBER THEORY\quad /\quad PROOF SIMPLIFICATION}\par\vspace{7pt}
+{\LARGE\bfseries Choosing Selmer twists by cyclotomic interpolation}\par
+{\large Two simplifications in the theta-lift proof of Dirichlet GRH}\par
+\vspace{4pt}{\small November 27, 2026}\par\vspace{4pt}
+\textbf{Abstract.} A character used to control the denominators of a chain of theta lifts must pass many polynomial tests at once. We prove the required selection theorem by ordinary Lagrange interpolation on a finite set of roots of unity. The same order ceiling works for arbitrarily many variables, arbitrarily high degrees and any finite number of tests of bounded total reference valuation. The construction uses a Cartesian product of one explicitly described set of nodes and spends its tolerance once. A second argument derives near-spanning directly from the two established moment estimates. It bounds the missing dimension by $(20b^{-4}+2b^{-8})$ times the target dimension within the translate budget of the readable proof. Both replacements are proved here on paper. A small Lean file certifies the discrete iteration in the second argument.
+\section{Where the two changes enter}
+Alp\"oge's construction extracts information about primes from the size and divisibility of the same determinant. An integer divisible by a large product of prime powers must be at least that large in absolute value, unless it vanishes. The proof uses lattices of automorphic forms in place of a single integer. Derivatives of theta kernels give divisible, short vectors. Their divisibility counts prime powers with weights determined by a quadratic field. A chain of $m$ lifts makes the desired prime discrepancy appear $m$ times. How many independent short vectors survive the projection? What does it cost to clear their denominators?
+
+The first question is answered by translating a Poincar\'e map. The source controls the average overlap of its translates and the loss from a projection onto chosen automorphic types. Section~\ref{sec:cover} uses just these estimates on the subspace of forms with the prescribed ramification. For the second question, congruences between Hecke eigensystems introduce local denominators. Auxiliary characters of a norm-one torus control them. For each coefficient prime $\ell$ and embedding, the arithmetic construction supplies polynomials whose evaluations bound Selmer lengths and special-value losses. A single character and its first $m$ powers must pass every test. Sections~\ref{sec:statement}--\ref{sec:powers} give a different proof of this selection step.
+
+The covariance and arithmetic estimates live on opposite sides of a comparison. The \src{New/Reduction/MainInequality}{87}{main inequality} which results has the form
+\[
+                   m\mathcal R\ \leq\ f a(\log b)^5 .
+\]
+Here $\mathcal R$ is a linear combination of smoothed prime remainders and $f,a,b$ are parameters of the auxiliary forms. The length $m\ge\sqrt{x}$ pays for the square-root saving at the near cutoff $x$. Section~\ref{sec:end} follows this estimate through to ordinary RH and identifies the inputs on which the shorter argument still relies.
+\newpage
+\section{A uniform torsion selection theorem}\label{sec:statement}
+Fix a prime $\ell$. Write $v(\ell)=1$, $v(0)=+\infty$, and let $\cO$ be the valuation ring of $\overline{\mathbb Q}_\ell$. Let $\mu_{\ell^j}$ denote the group of all $\ell^j$-th roots of unity. If $z$ has exact order $\ell^j$, $j\ge1$, then
+\begin{equation}
+                  v(z-1)=t_j:=\frac{1}{\varphi(\ell^j)}
+                  =\frac{1}{(\ell-1)\ell^{j-1}}.\label{eq:radius}
+\end{equation}
+Indeed the primitive roots are conjugate with the same valuation of $1-z$, and the product of $1-z$ over those roots is $\Phi_{\ell^j}(1)=\ell$.
+\begin{theorem}[Simultaneous torsion selection]\label{th:main}
+For every $\rho>0$, $B\ge0$ and $\epsilon>0$ there is an integer $H=H(\ell,\rho,B,\epsilon)$ with the following property. Take any finite number $n$ of variables, any finite family $P_i\in\cO[X_1,\ldots,X_n]$, and a possibly different point $x_i\in\cO^n$ for each polynomial. Suppose
+\[
+     v(x_{ij})\ge\rho\quad(\text{all }i,j),\qquad
+     \sum_i v(P_i(x_i))\le B .
+\]
+There are $z_1,\ldots,z_n\in\mu_{\ell^H}$, with $0<v(z_j-1)\le\rho$, such that, writing $a=(z_j-1)_j$,
+\[
+  v(P_i(a))\le v(P_i(x_i))+\epsilon\quad(\text{every }i),\qquad
+  \sum_i v(P_i(a))\le \sum_i v(P_i(x_i))+\epsilon .
+\]
+\end{theorem}
+The \rootsrc{474}{readable edition's public selection lemma} fixes an upper bound for $n$ before choosing $H$. The theorem above moves that quantifier past $H$. A finite budget on the \emph{sum} of reference valuations is essential to this formulation. The proof does not require an upper bound on the number of monomials, nor a common reference point for all the tests. The stronger assertion about the total loss is also useful when the tests are multiplied.
+
+\paragraph{Why the order of choices matters.} In the Selmer argument the polynomials themselves come from auxiliary primes chosen at level $N$. Raising $N$ can increase their degrees. A proof that first inspects the polynomials and then selects a larger $N$ would give a circular construction. Here $H$ is fixed before $N$ or any polynomial is chosen. The source then takes a sufficiently large $N\ge H$ and uses the cyclic quotients at that level to realize the chosen roots as values of a character. See the choices in the \gensrc{392}{anticyclotomic twisting theorem}.
+
+\paragraph{The Gauss valuation.} For $P=\sum_\nu c_\nu X^\nu$ and $t\ge0$, put
+\[
+ w_t(P)=\min_\nu\{v(c_\nu)+t|\nu|\},\qquad |\nu|=\nu_1+\cdots+\nu_n .
+\]
+We allow coefficients in the field for this definition and put $w_t(0)=+\infty$. It is increasing in $t$, satisfies the ultrametric sum inequality, and adds on products. For the last property, choose in each factor the lexicographically largest multi-index realizing the minimum. The sum of these indices has just one minimum-weight contribution in the product, so its coefficient cannot cancel at that weight. Also $w_t(P)\le v(P(x))$ whenever $v(x_j)\ge t$ for every coordinate. These facts reduce simultaneous selection to one polynomial, the product of all tests.
+\newpage
+\section{An interpolation grid with an integral bound}\label{sec:grid}
+Choose integers $d,N\ge1$. For each $u\in\mu_{\ell^N}$, choose one solution of $z_u^{\ell^d}=u$. For $u=1$ choose a primitive $\ell^d$-th root. Set
+\[
+ A=A(d,N)=\{z_u-1:u\in\mu_{\ell^N}\},\qquad
+ F(X)=\prod_{a\in A}(X-a).
+\]
+The choices for $u\ne1$ are arbitrary. This choice of one preimage per $u$ makes the following two valuations differ by exactly $t_d$.
+\begin{lemma}[Interpolation weights]\label{lem:grid}
+Every $a\in A$ has $t_{d+N}\le v(a)\le t_d$. For every $a\in A$,
+\[
+ w_{t_d}(F)=t_d+N\ell^{-d},\qquad v(F'(a))=N\ell^{-d},\qquad
+ w_{t_d}\!\left(\frac{F(X)}{(X-a)F'(a)}\right)=t_d-v(a)\ge0 .
+\]
+\end{lemma}
+\begin{proof}
+For $u$ of order $\ell^h>1$, $z_u$ has exact order $\ell^{d+h}$. At $u=1$ its order is $\ell^d$. There are $\varphi(\ell^h)$ indices of order $\ell^h$. Each factor $X-a$ has Gauss valuation $\min(t_d,v(a))=v(a)$, hence
+\[
+ w_{t_d}(F)=t_d+\sum_{h=1}^{N}\varphi(\ell^h)t_{d+h}
+           =t_d+N\ell^{-d}.
+\]
+For $u\ne u'$, $v(z_u-z_{u'})=v(z_u/z_{u'}-1)$. If $u/u'$ has order $\ell^h$, its chosen quotient lift has order $\ell^{d+h}$. With $u$ fixed, the ratios $u/u'$ run through all nonidentity elements. Multiplying the differences in $F'(z_u-1)$ gives exactly the same sum with the exceptional term $t_d$ absent. Subtraction proves the last formula.
+\end{proof}
+\paragraph{A four-node check.} For $\ell=2$, $d=1$, $N=2$, let $\omega$ have order eight. Take the lifts $-1,\omega,\omega^2,\omega^3$ of $1,i,-1,-i$, where $i=\omega^2$. Subtracting one gives node valuations $1,1/4,1/2,1/4$. Their sum is $2$. Each derivative valuation is $1$, and the four Lagrange polynomials have Gauss valuations $0,3/4,1/2,3/4$. Weighted integrality is the pertinent property. Individual ordinary coefficients of a Lagrange polynomial may have denominators.
+
+\begin{lemma}[Interpolation in any number of variables]\label{lem:tensor}
+If $P\in\cO[X_1,\ldots,X_n]$ satisfies
+\(
+ w_{t_d}(P)<t_d+N\ell^{-d},
+\)
+some $a\in A^n$ satisfies $v(P(a))\le w_{t_d}(P)$.
+\end{lemma}
+\begin{proof}
+Divide successively by the monic polynomials $F(X_j)$ in their own variables. This gives $P=R+\sum_j Q_j F(X_j)$, with integral quotients and with $\deg_{X_j} R<|A|$ in each variable. Later monic divisions preserve the degree restrictions already obtained. On the grid $R=P$, so repeated ordinary Lagrange interpolation gives
+\[
+ R(X)=\sum_{a\in A^n}P(a)\prod_{j=1}^n
+       \frac{F(X_j)}{(X_j-a_j)F'(a_j)}.
+\]
+Every term $Q_j F(X_j)$ has Gauss valuation strictly above $w_{t_d}(P)$. In the displayed sum every product of basis polynomials has nonnegative Gauss valuation by Lemma~\ref{lem:grid}. If all $v(P(a))$ exceeded $w_{t_d}(P)$, the sum inequality would give $w_{t_d}(P)>w_{t_d}(P)$. This proves the lemma. For zero variables the claim is evaluation of a constant.
+\end{proof}
+\newpage
+\section{One choice of scales for all the tests}\label{sec:bands}
+The interpolation lemma locates a point where the value is at most the Gauss valuation at $t_d$. To allocate its gain or loss among the factors of a product, we also need a lower bound for each factor at that \emph{same} point. The coordinates on the grid can have different valuations. We choose a band on which the Gauss valuation of the product varies by at most the permitted error.
+\begin{proof}[Proof of Theorem~\ref{th:main}]
+Form $P=\prod_i P_i$. It is nonzero and
+\[
+       0\le w_\rho(P)=\sum_i w_\rho(P_i)\le\sum_i v(P_i(x_i))\le B .
+\]
+Choose $d_0\ge1$ with $t_{d_0}\le\rho$. Put $K=\lfloor B/\epsilon\rfloor+1$. Before examining $P$, define
+\begin{equation}
+     N_j=\lfloor B\ell^{d_j}\rfloor+1,\qquad
+     d_{j+1}=d_j+N_j\quad(0\le j<K),\qquad H=d_K .
+     \label{eq:ceiling}
+\end{equation}
+The sum of the nonnegative drops $w_{t_{d_j}}(P)-w_{t_{d_{j+1}}}(P)$ telescopes to at most $B$. As $K\epsilon>B$, some drop is at most $\epsilon$. Fix such a $j$, put $s=t_{d_j}$ and $t=t_{d_{j+1}}$, and use the grid $A(d_j,N_j)$. Then $N_j\ell^{-d_j}>B$ and $w_s(P)\le B$. Lemma~\ref{lem:tensor} gives a tuple $a$ such that
+\[
+             v(P(a))\le w_s(P)\le w_t(P)+\epsilon .
+\]
+All its coordinates have valuation at least $t$ and at most $s\le\rho$. Consequently the real numbers $e_i=v(P_i(a))-w_t(P_i)$ are nonnegative. The product has finite value, and Gauss multiplicativity gives
+\[
+       \sum_i e_i = v(P(a))-w_t(P)\le\epsilon .
+\]
+Each $e_i\le\epsilon$, and $w_t(P_i)\le w_\rho(P_i)\le v(P_i(x_i))$. These inequalities give the two claims about the values. Each $1+a_j$ has order dividing $\ell^{d_{j+1}}$, hence dividing $\ell^H$.
+\end{proof}
+
+\paragraph{What the bound buys.} The number of nodes that enter the proof is exponential in $n$ even for a fixed one-dimensional grid. The order ceiling in \eqref{eq:ceiling} can itself grow by iterated exponentiation. Its advantage is that it is explicit and independent of $n$ and of the degrees. The readable construction uses a harmonic sum to set its ceiling and then spends a small allowance separately for each coordinate. The present proof trades an enormous order ceiling for the single product-grid inequality. The downstream theorem asks only for a finite ceiling. For fixed $\ell,\rho$, is a ceiling $H$ singly exponential in $B+1$ and $1/\epsilon$ sufficient uniformly in the number of variables?
+
+\paragraph{Why some ceiling must grow with the budget.} Let $d_0$ be the \emph{least} index with $t_{d_0}\le\rho$. For a proposed ceiling $H\ge d_0$, the integral polynomial
+\[
+           P_H(X)=\prod_{j=d_0}^{H}\Phi_{\ell^j}(1+X)
+\]
+has $v(P_H(0))=H-d_0+1$. It vanishes at every eligible $z-1$ of order dividing $\ell^H$. Thus when $B\ge H-d_0+1$ this ceiling fails even in one variable. Discarding the reference budget altogether would lose precisely the control that licenses a level chosen in advance.
+\newpage
+\section{One character for every power in the chain}\label{sec:powers}
+The arithmetic application tests $P_i((z_u^j-1)_u)$ for every $1\le j\le m$. Independent choices of the $z_u$ for different $j$ would describe different chains. The source's \gensrc{325}{power substitution} fits Theorem~\ref{th:main} directly.
+\begin{corollary}\label{cor:power}
+Under the assumptions of Theorem~\ref{th:main}, fix $m\ge1$. There is one tuple of roots of order dividing $\ell^{H(\ell,\rho/m,mB,\epsilon)}$ with $v(z_u-1)\le\rho/m$ and
+\[
+ v\bigl(P_i((z_u^j-1)_u)\bigr)\le v(P_i(x_i))+\epsilon
+       \qquad(i\ \text{arbitrary},\ 1\le j\le m).
+\]
+\end{corollary}
+\begin{proof}
+For each pair $(i,j)$ use $P_{ij}(Y)=P_i(((1+Y_u)^j-1)_u)$. Choose a reference coordinate $y$ solving $(1+y)^j=1+x_{iu}$. For $x_{iu}=0$ use $y=0$. Otherwise all roots of this monic integral equation are integral, and their product has valuation $v(x_{iu})$. At least one has $v(y)\ge v(x_{iu})/j\ge\rho/m$. The reference value of $P_{ij}$ is precisely $P_i(x_i)$. Sum over the $m$ copies and apply Theorem~\ref{th:main}.
+\end{proof}
+For the radii $0<\rho<1$ of the twisting argument, every selected $z$ has order $\ell^h>m$, since $1/\varphi(\ell^h)\le\rho/m$. For $1\le j\le m$ its power is nontrivial and $v(z^j-1)=\ell^{v_\ell(j)}v(z-1)\le\rho$. This gives the needed control of tame inertia, including when $\ell\mid j$. The cyclotomic choices specialize the Selmer and special-value tests constructed in the source. Existence of those tests, their arithmetic interpretation, and the transfer from their bounds to the lattice denominators still use the arithmetic theorems. See \gensrc{392}{the construction of the character} and the \src{New/Congruences/FitTwistsExist}{517}{regular-family conclusion}.
+
+\paragraph{Bounded power series.} Theorem~\ref{th:main} also holds for $P_i\in\cO_{\mathbb C_\ell}[[X_1,\ldots,X_n]]$, evaluated at points of positive coordinate valuations in the complete field $\mathbb C_\ell$. Its proof works over this field for polynomials. Take $H$ from \eqref{eq:ceiling} and choose an integer $L$ with $(L+1)\min(\rho,t_H)>B+\epsilon$. Truncating above total degree $L$ changes each value at every reference point and every candidate grid point by an amount of valuation greater than $B+\epsilon$. At the reference points all original values have valuation at most $B$. Apply the polynomial theorem to the truncations. At its selected point their valuations are at most $B+\epsilon$, so the strong triangle inequality preserves those valuations on restoring the tails. The order of $H$ and $L$ in this proof is possible precisely because the polynomial theorem has no degree bound.
+
+\paragraph{Comparison with the two Lean editions.} The \rootsrc{300}{readable proof} counts polynomial roots at cyclotomic valuation levels, estimates truncated distances, and then \rootsrc{427}{moves the coordinates successively}. The \cmp{New/Selmer/RootsOfUnityPoints}{21}{compact edition} already uses polynomial division, Gauss norms and roots of unity. It uses harmonic summation and also treats extra monic tests in its multivariable result. Our replacement addresses the readable theorem at its \rootsrc{474}{existential order ceiling}. Kriz and Nordentoft study valuations at characters in a related horizontal Iwasawa setting (\href{https://arxiv.org/abs/2310.20678}{\emph{Horizontal $p$-adic $L$-functions}}). The sparse grid here makes every tensor interpolation weight have nonnegative Gauss valuation. This explains how the number of coordinates disappears. Equation~\eqref{eq:ceiling} supplies a different ceiling from the explicit harmonic condition inside the readable file.
+\newpage
+\section{Near-spanning from two moment estimates}\label{sec:cover}
+Let a finite group $G$ act unitarily on a finite-dimensional complex Hilbert space $V$. Let $e$ be the orthogonal projection onto an invariant subspace $T$ of dimension $D>0$. Let $P:X\to V$ be linear with $h=\dim X>0$. Fix a subspace $S\subset X$ of dimension at least $(1-r)h$. It represents the forms for which the arithmetic construction supplies short integral vectors. Write $\pi_U$ for orthogonal projection, $\mathbb E_g$ for uniform averaging, and $\|\cdot\|_{\rm HS}$ for the Hilbert--Schmidt norm. The source proves
+\begin{align}
+ \|eP\pi_U\|_{\rm HS}^2 &\ \ge\ \dim U-ah
+                 &&\text{for every } U\subset X, \label{eq:near}\\
+ D\,\mathbb E_g\|P^*gP\|_{\rm HS}^2 &\ \le\ (1+v)h^2 .
+                                      \label{eq:second}
+\end{align}
+Here $a,v,r\ge0$ are error fractions. In this section $a$ and $v$ are unrelated to the arithmetic weight and the valuation used earlier.
+
+\begin{theorem}[Rank after a prescribed number of translates]\label{th:span}
+Let $\Delta=v+2a+2r$ and $p=h/(2D)\le1$. Under \eqref{eq:near}--\eqref{eq:second}, for each $k\ge0$ some $J\subset G$ with $|J|\le k$ satisfies
+\[
+   \frac1D\operatorname{codim}_T\sum_{g\in J}e gP(S)
+       \ \le\ \Delta+(1-\Delta)(1-p)^k.
+\]
+\end{theorem}
+\begin{proof}
+Let $F\subset T$ be the span so far, with missing fraction $u=1-\dim F/D$. For a candidate $g$, write $U_g=\{x\in S:egPx\in F\}$. The gain in dimension equals $\dim S-\dim U_g$. Since $e$ commutes with $g$ and $F\subset T$, on $U_g$ we have $egP=\pi_FgP$. Apply \eqref{eq:near} to $U_g$ and use an orthonormal basis to obtain
+\[
+ \dim U_g-ah\le\|eP\pi_{U_g}\|_{\rm HS}^2
+ =\|\pi_F gP\pi_{U_g}\|_{\rm HS}^2\le\|\pi_FgP\|_{\rm HS}^2 .
+\]
+Put $A=\mathbb E_g\,gPP^*g^*$ on $V$. Expanding $\Tr(A^2)$ and cycling the factors under the trace gives
+\[
+     \Tr(A^2)=\mathbb E_{g,t}\|P^*g^*tP\|_{\rm HS}^2
+             =\mathbb E_g\|P^*gP\|_{\rm HS}^2.
+\]
+Here $g^*t$ is uniform on $G$ when $g,t$ are independent and uniform. Hilbert--Schmidt Cauchy--Schwarz, \eqref{eq:second}, and the arithmetic--geometric mean inequality give
+\[
+ \mathbb E_g\|\pi_FgP\|_{\rm HS}^2
+   =\Tr(\pi_F A)
+   \le\sqrt{\dim F\,\Tr(A^2)}
+   \le h\sqrt{(1-u)(1+v)}
+   \le h\bigl(1+(v-u)/2\bigr).
+\]
+Subtracting the bound for $\mathbb E_g\dim U_g$ from $\dim S$ leaves a mean gain of at least $h(u-\Delta)/2$. Select a translate attaining at least the mean. The new fraction satisfies $u'-\Delta\le(1-p)(u-\Delta)$. Iterate from $u=1$, using $1-p\ge0$. Discarding repeats preserves the span.
+\end{proof}
+
+\newpage
+\subsection*{The constants paid by the determinant}
+The \src{New/Spanning/SecondMoment/SpanningTheorem}{257}{near-isometry} and \src{New/Spanning/SecondMoment/SpanningTheorem}{288}{second-moment estimate} give $a=5b^{-4}$ and $v=9b^{-4}$. The \src{New/Reduction/ShortAndEnough}{410}{source-dimension bound} allows $r=b^{-8}$. Use the \src{New/Reduction/ShortAndEnough}{386}{range identification} to pass from the projected maps on $S$ to the normalized Poincar\'e maps in the source. Scalar normalizations here are nonzero. Theorem~\ref{th:span} counts the dimensions of the actual spans of their ranges in $T$.
+
+Applying \eqref{eq:near} to $\ker(eP)$ gives $D\ge(1-a)h$. For $b\ge8$, this guarantees $0<p<1$. Taking
+\[
+                   k=\left\lceil (2D/h)\log(b^4)\right\rceil
+\]
+gives $(1-p)^k\le e^{-pk}\le b^{-4}$. Hence the \emph{same} $J$ satisfies
+\begin{align}
+ \operatorname{codim}_T\sum_{g\in J}egP(S)
+      &\le (20b^{-4}+2b^{-8})D,\label{eq:improved}\\
+ |J|\dim S &\le (8\log b+(1-5b^{-4})^{-1})D .\label{eq:budget}
+\end{align}
+The first right-hand side is at most $4D/b^2$ for $b\ge8$. In the second, $(1-5b^{-4})^{-1}\le2\le2\log b$, so the right-hand side is at most $5D\log(1+2b^2)$. These are precisely the rank and size requirements of \src{New/Reduction/ShortAndEnough}{448}{the readable Theorem B}. The rank bound in \eqref{eq:improved} has a stronger exponent. The translate budget matters because each translate incurs a cost in the lattice index used in the upper covolume estimate.
+
+\paragraph{How much improvement can the moment estimates support?} For an integer $b\ge2$, take $D=b^4+1$, $X=S=\mathbb C$ and $e=I$. A cyclic group of order $b^4$ regularly permutes the first $b^4$ coordinate axes and fixes the last one. Let $P(1)$ be the first coordinate vector. The near-isometry is exact. Only the identity contributes to $\mathbb E_g\|P^*gP\|_{\rm HS}^2$, so the second moment multiplied by $D$ equals $1+b^{-4}$. Their joint span is the coordinate hyperplane perpendicular to the final axis. The unfilled proportion is at least $1/(b^4+1)$ even if all translates are taken. Thus an $o(b^{-4})$ bound cannot follow from these two moment hypotheses alone. Further structure of the automorphic spaces could convey more information.
+
+\paragraph{Comparison and formal scope.} The readable proof passes through a \src{New/Spanning/SecondMoment/FewTranslates}{320}{spread estimate} on the full source, iterates until a threshold is reached and charges a separate rank loss for restriction. The \cmp{New/Filling/FillingTheorem}{25}{compact proof} already accounts for ramification before selecting the translates, using a \cmp{New/Filling/Moments}{301}{related overlap estimate} and a \cmp{New/Heights/OneDeterminant}{97}{logarithmic potential}. The direct proof above combines the classical trace estimate with rank-nullity and one affine recurrence. For rational coefficients the accompanying Lean file proves the recurrence in integers after clearing denominators. In the present application one may take denominator $2Db^8$, multiplier $(2D-h)b^8$ and additive allowance $hD(19b^4+2)$ for the \emph{unnormalized} missing dimension.
+\clearpage
+\section{From the determinant comparison to RH}\label{sec:end}
+Fix a character of modulus $q$ and set $Q=18480q$. For a prime $d\equiv Q/2-1\pmod Q$, let $\eta_d(n)=(n/d)$ and define the centered prime remainder
+\[
+ R_{d,Q}(x)=\sum_{\substack{n\le x\\n\equiv1\ (Q)}}\!
+       \Lambda(n)(1-\eta_d(n))\left(\frac1n-\frac1x\right)
+        -\frac{\log x}{\varphi(Q)}-c_{d,Q}.
+\]
+Here $\Lambda$ is the von Mangoldt function, and the arithmetic centering agrees with the constant for which $R_{d,Q}(x)\to0$. This analytic quadratic twist serves to detect zeros. The anticyclotomic twists of Section~\ref{sec:powers} control denominators much earlier.
+
+The short vectors, the almost-spanning result, and the lower covolume bound compare the same rank-$n$ determinant in a target of dimension $D$. In the guide's notation $H_0\ge0$ is the common main term, $L=fa(\log b)^4$, and $I=10\log(1+2b^2)fa(\log b)^3$ is the index allowance per dimension. The comparison has the form
+\[
+        D(H_0-3L)\le n(H_0-m\mathcal R+L)+2DI .
+\]
+The upper and lower constructions produce the same $H_0$ through the theta norm and period formulas. Since $n\le D$, the leftover $(n-D)H_0$ has the favorable sign. Since $n\ge D/2$ for these parameters, rearrangement bounds $m\mathcal R$ by $2(4L+2I)$. Absorbing the constants at the allowed scales gives \src{New/Reduction/MainInequality}{87}{the source inequality}. Resolving the two cutoffs yields
+\[
+ R_{d,Q}(x)\le\frac{\varphi(Q)(\log b)^6}{m}
+        +|R_{d,Q}(x_1)|+(\log b)|R_{d,1}(x_1)|.
+\]
+For each sufficiently small fixed $\alpha>0$ the construction gives $m\ge\sqrt x$, $\log b\le2x^\alpha$ and $\log x_1\ge x^{\alpha/12}$ at all sufficiently large integer $x$. The classical fixed-modulus prime number theorem supplies arbitrarily high inverse powers of $\log x_1$ for the last two terms. Interpolation between successive integers and choice of $6\alpha<\varepsilon$ give the \src{New/Reduction/OneSidedBound}{200}{one-sided bound} $R_{d,Q}(x)\le x^{-1/2+\varepsilon}$ eventually.
+
+\paragraph{Why a one-sided bound suffices.} For a proposed zero $s_0$ to the right of $1/2$ in the critical strip, fix $1/2<\beta<\Re s_0$. The source chooses $d$ so the relevant quadratically twisted $L$-functions have no zeros with $\Re s\ge\beta$ and $|\Im s|\le|\Im s_0|$. Away from $0,1$, the meromorphic transform $\int_0^\infty R_{d,Q}(e^v)e^{(1-s)v}\,dv$, initially defined far to the right, has residue
+\[
+  \frac{n(s)-n_d(s)}{\varphi(Q)s(1-s)}.
+\]
+Here $n,n_d$ are sums of zero multiplicities of the original and twisted characters (moduli $Q$ and $Qd$ respectively), after removing the principal pole. Every real residue right of $\beta$ is nonnegative. An untwisted zero at $s_0$ gives a nonzero residue there. The one-sided estimate makes $K e^{\beta v}-e^v R_{d,Q}(e^v)$ a nonnegative density for suitable $K$. Landau's lemma puts a real singularity at the abscissa of convergence of its Laplace transform if that abscissa is finite. Were it right of $\beta$, a pole there would have nonpositive residue by the displayed formula (the centering removes the singularity at $1$), while positivity forces a genuine simple pole there to have strictly positive residue. Thus the transform is holomorphic for $\Re s>\beta$, contradicting the residue at $s_0$. This uses the \src{New/Reduction/Zeros/Criterion}{37}{existing analytic criterion}. Reflection under the functional equation gives the line statement. Modulus one yields the \src{Main}{5}{ordinary Riemann hypothesis}. Auxiliary characters already occur for $Q=18480$ in this specialization.
+\clearpage
+\section*{Source correspondence and verification}
+The supplied 79-page guide, \emph{How theta lifts locate the zeros of Dirichlet $L$-functions}, explains the two stages in its sections on near-spanning and simultaneous character selection. Its examples illustrate the readable proof. The arguments here target the mathematical statements used at those stages.
+
+\begin{center}\small\renewcommand{\arraystretch}{1.25}
+\begin{tabular}{@{}p{.21\linewidth}p{.34\linewidth}p{.37\linewidth}@{}}\toprule
+Stage & Source input or conclusion & Use here\\\midrule
+Torsion points & \rootsrc{474}{Simultaneous evaluation on roots} & Theorem~\ref{th:main} supplies its conclusion with a dimension-independent order ceiling.\\
+Powers and arithmetic & \gensrc{325}{Power substitution} and \gensrc{392}{twisting theorem} & Corollary~\ref{cor:power} handles all powers of a single character. The arithmetic construction of the tests is inherited.\\
+Moments & \src{New/Spanning/SecondMoment/SpanningTheorem}{257}{Projected near-isometry} and \src{New/Spanning/SecondMoment/SpanningTheorem}{288}{averaged second moment} & Two estimates suffice for the direct rank bound.\\
+Ramified subspace & \src{New/Reduction/ShortAndEnough}{386}{Range identification} and \src{New/Reduction/ShortAndEnough}{410}{dimension loss} & The normalized map has the required range and the excluded source dimension is at most $b^{-8}h$.\\
+Determinant & \src{New/Reduction/ShortAndEnough}{448}{Theorem B} and \src{New/Reduction/MainInequality}{87}{main inequality} & The same translates meet both the index budget and the rank requirement.\\
+Zeros & \src{New/Reduction/OneSidedBound}{239}{Half-plane theorem} and \src{Main}{5}{public conclusion} & The existing analytic proof converts the determinant inequality into Dirichlet GRH and RH.\\\bottomrule
+\end{tabular}\end{center}
+
+\textbf{Revision.} The supplied \href{https://github.com/VladimirReshetnikov/ProveIt/blob/f13df7c1a4d9e9f0bb133cbab29b63341cb5f0cd/Analysis/GeneralizedRiemannHypothesis/vendor/grh-lean/README.md}{ProveIt link} now points to an import record. The readable package is under \href{https://github.com/VladimirReshetnikov/ProveIt/tree/f13df7c1a4d9e9f0bb133cbab29b63341cb5f0cd/Analysis/GeneralizedRiemannHypothesis/Lean/grh}{Analysis/GeneralizedRiemannHypothesis/Lean/grh}. The source links in this note pin upstream revision \texttt{72fead102f663d5c7a407964a13dc0cf9d977207}, the revision named by the import record. For context see \href{https://alpo.ge/remark.pdf}{Alp\"oge's announcement}. Sutherland's \href{https://math.mit.edu/~drew/shortgrh/}{independent verification record} covers the baseline readable and compact editions, including their theorem statements, axioms and independent kernel replays.
+
+\textbf{Checks for this note.} The archive contains exact checks on finite cyclotomic grids and finite-dimensional examples, a checked Lean proof of the discrete affine recurrence, and a manifest of pinned Lean sources. The interpolation theorem, the arithmetic substitutions, and the Hilbert-space reduction are proved in this paper. The Lean recurrence was checked separately with Lean 4.32.0. The baseline project uses Lean 4.35.0. An integrated Lean replacement and its build-size change have yet to be verified. No numerical evidence about zeta zeros enters the two arguments.
+\end{document}
