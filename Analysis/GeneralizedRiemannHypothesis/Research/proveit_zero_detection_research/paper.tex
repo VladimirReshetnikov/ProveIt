@@ -1,0 +1,389 @@
+\documentclass[11pt]{article}
+\usepackage[a4paper,margin=28mm]{geometry}
+\usepackage[T1]{fontenc}
+\usepackage{lmodern,microtype,amsmath,amssymb,amsthm,mathtools,booktabs,array}
+\usepackage{xcolor}
+\usepackage[colorlinks=true,linkcolor=blue!45!black,citecolor=blue!45!black,urlcolor=blue!45!black]{hyperref}
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{corollary}[theorem]{Corollary}
+\newtheorem{proposition}[theorem]{Proposition}
+\theoremstyle{remark}\newtheorem{remark}[theorem]{Remark}
+\newcommand{\ord}{\operatorname{ord}}
+\newcommand{\Ind}{\operatorname{Ind}}
+\newcommand{\Res}{\operatorname{Res}}
+\newcommand{\Reg}{\operatorname{Reg}}
+\newcommand{\wt}{\operatorname{wt}}
+\newcommand{\RH}{\mathrm{RH}}
+\newcommand{\F}{\mathbb F}
+\newcommand{\Q}{\mathbb Q}
+\newcommand{\C}{\mathbb C}
+\newcommand{\one}{\mathbf{1}}
+\newcommand{\sgn}{\varepsilon}
+\newcommand{\ceil}[1]{\left\lceil #1\right\rceil}
+\newcommand{\floor}[1]{\left\lfloor #1\right\rfloor}
+\allowdisplaybreaks[2]
+\title{Exponentially Smaller Zero Detectors for Symmetric-Group Extensions\\[3pt]\large Coding-theoretic constructions and sharp multiplicity certificates beyond degree twelve}
+\author{Research note prepared for the ProveIt project}
+\date{27 November 2026}
+\begin{document}
+\maketitle
+\begin{abstract}
+For a Galois extension $E/k$ with group $S_n$, we construct intermediate fields $K$ such that the Dedekind zeta functions of $K$ and $E$ have the same zero set away from $s=1$, without Artin holomorphy or any Riemann hypothesis. In particular, with $r=\lfloor n/3\rfloor$ and $d=\lceil\log_2(r+1)\rceil$, one may take $[K:k]=n!/3^{r-d}$ for $n\ge3$. This exponentially improves the transposition-fixed detector of degree $n!/2$ in ProveIt's nonabelian zero-detection program. The proof uses full-weight-spectrum linear codes to force invariant vectors in honest abelian restrictions of Heilbronn characters. We give an exact multiplicity constant for the local method, its optimal dimension, and explicit Frobenius weights. We also prove a new all-degree transposition bound with leading constant between $1.48335$ and $1.48337$ (previously $2$), and give independently checkable positive rational monomial-character certificates establishing the optimal bound $n-1$ in degrees $13$ through $16$ (previously through $12$). These results answer the smaller-detector question and partially resolve the all-degree sharp-bound question in the repository. They do not assert a new proof of nonabelian GRH.
+\end{abstract}
+\tableofcontents
+
+\section{Context, scope, and results}
+The starting point is the ProveIt consolidated article \emph{Beyond the Riemann hypothesis for Dirichlet $L$-functions: consequences, transfers and limits} \cite{proveit}. The inspected snapshot is main commit \texttt{6fc594264337ccd8deef0148bd9418d8f5a3dc49}. Its README describes a merge of 194 reports, with a further 15 reports placed but not merged. We inspected the source-mechanism section, the nonabelian reductions and selected adjacent sections and open questions; this is not a line-by-line review of the 895-page article or of every delivered report.
+
+The vendored upstream development \cite{upstream} states RH and GRH for \emph{Dirichlet} $L$-functions, including imprimitive characters in the open critical strip. Its \texttt{Statements.lean} and \texttt{Main.lean} specify that scope exactly. In particular, the upstream theorem \texttt{LFunction\_eq\_zero\_re} does not quantify over higher-dimensional Artin representations or general Hecke characters. The source describes a comparison of short automorphic forms with a corrected integral covolume lower bound, producing a one-sided smoothed prime inequality. A transferable idea is to extract analytic information using local positivity and compatible global comparisons. The nonabelian section applies this principle to local orders of Artin $L$-functions via Heilbronn characters. We extend that interface; we do not reproduce the source's theta-lift or arithmetic estimates. We read the upstream statements and proof entry point but did not rebuild or kernel-replay the upstream Lean project. All the new mathematical theorems below are unconditional, except for explicitly identified consequences using the Dirichlet theorem.
+
+In \texttt{Article/sections/nab.tex}, Question \texttt{nab:q:lowdegree} asks for a replacement of the field $E^{\langle t\rangle}$ (degree $n!/2$) by lower-degree detecting fields without Artin holomorphy. We answer it by a single explicitly described field for every $n\ge5$, with degree exponentially smaller as $n\to\infty$. Question \texttt{nab:q:un} asks whether a certain actual character $U_n$ lies in the positive rational cone of induced linear characters for all $n\ge13$. We settle degrees $13$--$16$ with exact certificates and obtain a strictly improved analytic bound for every degree. The unrestricted conjecture is not established.
+
+\section{Analytic interface: local positivity}
+Let $E/k$ be a finite Galois extension of number fields with group $G$, and let $s_0\in\C\setminus\{1\}$. Orders below are orders of meromorphic functions at $s_0$ (negative for poles). By Artin formalism and Brauer meromorphy the virtual character
+\begin{equation}\label{eq:theta}
+ \Theta=\sum_{\chi\in\operatorname{Irr}(G)}\ord_{s_0} L(s,\chi,E/k)\,\chi
+\end{equation}
+is well-defined. The standard Heilbronn character method \cite{heilbronn} gives
+\begin{equation}\label{eq:positive}
+ \langle\Res_H\Theta,\lambda\rangle
+ =\ord_{s_0}L(s,\lambda,E/E^H)\ge0
+\end{equation}
+for every subgroup $H\le G$ and linear character $\lambda$ of $H$. Indeed, induction of Artin $L$-functions is compatible with the tower, and each linear Artin $L$-function is a Hecke $L$-function. Nontrivial ones are entire; the trivial one is a Dedekind zeta function with its only pole at $1$. In particular,
+\begin{equation}\label{eq:orders}
+ m:=\Theta(1)=\ord_{s_0}\zeta_E,\qquad
+ a_H:=\langle\Res_H\Theta,\one\rangle=\ord_{s_0}\zeta_{E^H}.
+\end{equation}
+This uses the regular and coset permutation characters respectively. We will work algebraically with any virtual character satisfying \eqref{eq:positive}, even when it is not known to arise as a Heilbronn character. Then $\Theta(1)\ge0$ by taking $H=\{1\}$.
+
+If $H$ is abelian, \eqref{eq:positive} makes $\Res_H\Theta$ an actual character. In particular $a_H\le m$. More generally a subgroup in which all irreducible characters are induced from linear characters (a monomial group) also has this property, by induction and Frobenius reciprocity. We need it for dihedral groups: in such a group each irreducible character is linear or is induced from a non-inversion-invariant character of the cyclic rotation subgroup. This follows by decomposing under the rotations and observing that a reflection exchanges the two inverse eigenspaces. We also use $A_4$, whose irreducibles are its three linear characters and the three-dimensional character induced from any nontrivial character of its normal Klein four group. These subgroup positivity facts do not assume Artin holomorphy for $G$.
+
+\section{Coding-theoretic zero detection}
+\subsection{An exact local criterion}
+Fix $G=S_n$, a prime $p$, and $1\le r\le\lfloor n/p\rfloor$. Let $A\cong C_p^r$ act by $r$ disjoint $p$-cycles on $pr$ letters, fixing all others. Identify $A$ and its character group with $\F_p^r$ via the usual pairing $\chi_v(x)=\exp(2\pi i\,v\cdot x/p)$. For a linear code $D\le\F_p^r$, put $H=D^\perp\le A$ and
+\[
+ A_h(D)=\#\{v\in D:\wt(v)=h\},\qquad T_h=\binom rh(p-1)^h\quad(0\le h\le r).
+\]
+Here Hamming weight is the number of nonzero coordinates. The code has \emph{full weight spectrum} if $A_h(D)>0$ for all $h$.
+
+\begin{theorem}[Exact local detection criterion]\label{thm:local}
+Let $D$ have full weight spectrum, and put
+\begin{equation}\label{eq:constant}
+ C(D)=\max_{0\le h\le r}\frac{T_h}{A_h(D)}.
+\end{equation}
+For every $\Theta$ satisfying \eqref{eq:positive},
+\begin{equation}\label{eq:detector}
+ a_H\le m\le C(D)a_H.
+\end{equation}
+In the local argument using only an actual $A$-character invariant under the normalizer of $A$, full weight spectrum is necessary, and $C(D)$ is best possible. Equivalently, $\Ind_H^G\one-C(D)^{-1}\Reg_G$ belongs to the nonnegative rational cone of characters induced from linear characters of $A$.
+\end{theorem}
+\begin{proof}
+The normalizer of $A$ contains independent multipliers in $\F_p^\times$ on each cycle, and permutations of the $r$ cycle blocks. On the dual of $A$ these transformations act transitively on the characters of each fixed Hamming weight. Indeed, permute the nonzero coordinates into place and multiply each by the necessary nonzero scalar. Write
+\[
+ \Res_A\Theta=\sum_{v\in\F_p^r}m_v\chi_v,\qquad m_v\ge0,\qquad \sum_v m_v=m.
+\]
+Normalizing permutations conjugate elements inside $G$, so the coefficients $m_v$ are constant on every weight orbit. Write their common value as $c_h$. Then
+\[
+ m=\sum_{h=0}^r T_hc_h,\qquad a_H=\sum_{h=0}^r A_h(D)c_h,
+\]
+because the characters trivial on $H$ are exactly those indexed by $D$. The inequalities follow term by term. If a weight is absent, the sum of all characters of that weight is an actual, normalizer-invariant character of $A$ with zero $H$-invariants and positive dimension. If no weight is absent, the orbit sum at a maximizing weight in \eqref{eq:constant} attains equality. These extremizers are local characters, not asserted to extend to $G$.
+
+For the cone formulation, induction in stages gives $\Ind_H^G\one=\Ind_A^G\sum_{v\in D}\chi_v$. Average the inner sum over the block multipliers and block permutations; induction to $G$ is unchanged. The coefficient of $\chi_v$ becomes $A_h(D)/T_h$ for $h=\wt(v)$. Also $\Reg_G=\Ind_A^G\Reg_A$. Subtracting $C(D)^{-1}\Reg_G$ leaves nonnegative rational coefficients, as claimed.
+\end{proof}
+
+\begin{corollary}[Zeta-zero equivalence]\label{cor:zero}
+For $E/k$ Galois with group $S_n$ and $K=E^H$ as above, at every $s_0\ne1$,
+\[
+ \ord_{s_0}\zeta_K\le\ord_{s_0}\zeta_E\le C(D)\ord_{s_0}\zeta_K.
+\]
+Consequently the zero sets agree, and $\RH(\zeta_E)\iff\RH(\zeta_K)$. For $M=\ceil{C(D)}$, the quotient $\zeta_K^M/\zeta_E$ is holomorphic away from $1$, with a pole of order $M-1$ there if $M>1$ (and a nonzero regular value there if $M=1$).
+\end{corollary}
+\begin{proof}
+Apply Theorem~\ref{thm:local} to \eqref{eq:theta}. A quotient of meromorphic functions can have a pole only where its local order is negative, which is excluded at every point other than $1$. Dedekind zeta functions have simple poles at $1$; the zero-set statement follows from both inequalities.
+\end{proof}
+
+\subsection{Optimal dimension and an explicit construction}
+The full-weight-spectrum condition is classical in coding theory (see Alderson \cite{alderson}). The following direct proof and construction make the needed form self-contained.
+\begin{lemma}[Full-weight-spectrum dimension]\label{lem:dimension}
+A full-weight-spectrum $p$-ary linear code of length $r$ has dimension at least $d=\ceil{\log_2(r+1)}$. This dimension is attained over every finite field.
+\end{lemma}
+\begin{proof}
+For the lower bound start with no vectors and union of supports of size $s=0$. While $s<r$, select a codeword of weight $s+1$. Its support cannot be contained in the union already selected, so it is independent of the previous vectors. The new union has size at most $2s+1$. After $j$ selections its size is at most $2^j-1$; the process must cover all $r$ coordinates by the time a basis has been selected. Thus $r\le2^{\dim D}-1$.
+
+For attainment, partition the coordinates into $d$ blocks of sizes
+\begin{equation}\label{eq:blocks}
+ b_1,\ldots,b_d=1,2,4,\ldots,2^{d-2},\ r-(2^{d-1}-1),
+\end{equation}
+where for $d=1$ only the last term is present. The last size is between $1$ and $2^{d-1}$ since $2^{d-1}\le r\le2^d-1$. The first $d-1$ sizes have all subset sums $0,\ldots,2^{d-1}-1$. Adding the last block size makes the two resulting integer intervals overlap or touch, covering $0,\ldots,r$. Take $D$ to consist of the vectors constant on each block. The block indicator vectors form a basis, and the weights are precisely the subset sums of the block sizes. In fact
+\begin{equation}\label{eq:weightD}
+ \sum_{h=0}^r A_h(D)x^h=\prod_{i=1}^d(1+(p-1)x^{b_i}).
+\end{equation}
+\end{proof}
+
+\begin{theorem}[Exponential degree reduction]\label{thm:main}
+Let $E/k$ be Galois with group $S_n$, $n\ge3$. For any prime $p\le n$, put $r=\lfloor n/p\rfloor$, $d=\lceil\log_2(r+1)\rceil$. There is an explicit subgroup $H$ of order $p^{r-d}$ such that $K=E^H$ satisfies Corollary~\ref{cor:zero}, and
+\begin{equation}\label{eq:degree}
+ [K:k]=\frac{n!}{p^{r-d}}.
+\end{equation}
+For fixed $p$ this is the least possible degree within the local construction of Theorem~\ref{thm:local} on $r$ disjoint $p$-cycles. In particular, $p=3$ gives
+\[
+ [K:k]=\Theta_{\rm asymp}\!\left(n!\,3^{-n/3}n^{\log_2 3}\right),
+\]
+where $\Theta_{\rm asymp}$ denotes two-sided asymptotic order. Its exponential improvement is optimal among abelian subgroup detectors, up to polynomial factors.
+\end{theorem}
+\begin{proof}
+Take the code of Lemma~\ref{lem:dimension}. Orthogonality to each indicator vector imposes a block-sum-zero condition, so $H=D^\perp$ has dimension $r-d$. The result follows from Theorem~\ref{thm:local}. Optimality within that method follows from its local necessity statement and the lower bound on dimension. For $p=3$, the powers $3^r$ and $3^d$ are respectively within fixed multiplicative factors of $3^{n/3}$ and $n^{\log_2 3}$.
+
+Finally if $B\le S_n$ is abelian with orbit sizes $e_1,\ldots,e_j$, its image on each orbit is an abelian transitive faithful permutation group and therefore acts regularly: an element fixing one point fixes the entire orbit by commutativity. Its order is $e_i$. Hence $B$ injects into the product of the orbit images, and $|B|\le\prod_i e_i\le3^{n/3}$. The integer inequality $e\le3^{e/3}$ follows by checking $e=1,2,3,4$ and then using $e+3\le3e$ for $e\ge2$. The ternary detector approaches this bound within a polynomial factor. This does not claim optimality among nonabelian subgroups, or even an exact optimum among all abelian subgroups.
+\end{proof}
+
+\subsection{Small degrees: a single three-cycle}
+The code detector is already smaller than the transposition-fixed field for $n\ge10$ by choosing $p=2$: then $r\ge5$ and $r-\ceil{\log_2(r+1)}\ge2$. For $5\le n\le9$ we use a different argument which also works in all larger degrees.
+\begin{theorem}[Three-cycle detector]\label{thm:three}
+For $n\ge5$, let $g$ be a three-cycle and $J=\langle g\rangle$. Then for every virtual $S_n$-character satisfying \eqref{eq:positive},
+\[
+ a_J\le m\le5a_J.
+\]
+Consequently the field $E^J$ of degree $n!/3$ has the same zeta-zero set away from $1$ as $E$, and $\zeta_{E^J}^5/\zeta_E$ is holomorphic away from $1$. The factor $5$ cannot be improved uniformly for all $n\ge5$ by this character-positivity method.
+\end{theorem}
+\begin{proof}
+Write $a=a_J$ and $b=(m-\Theta(h))/2$, where $h$ is any double transposition. Restrict to a copy of $A_4$ containing $g$ and a double transposition. This is an actual character by \eqref{eq:positive} and the monomial description in Section~2. If $u$ is the multiplicity of the trivial character and $x$ that of the three-dimensional one, the fixed-space dimension for $g$ is $a=u+x$; the dimension of the $(-1)$-eigenspace for $h$ is $b=2x$. Thus $b\le2a$.
+
+Express $g$ (or its inverse) as the product $(12)(45)\,(23)(45)$ after relabeling. These two double transpositions generate a dihedral group of order six. The restriction of $\Theta$ to this group is actual. On each two-dimensional standard irreducible, a double transposition has a one-dimensional negative eigenspace and $g$ has no fixed vector; on the linear irreducibles $g$ is trivial. If $y$ is the two-dimensional multiplicity, then $m-a=2y\le2b\le4a$. The other inequality follows by abelian restriction. The analytic conclusions are as in Corollary~\ref{cor:zero}.
+
+For sharpness take $S_5$ acting on unordered pairs of letters. The degree-five natural permutation module embeds in the degree-ten pair module by sending $e_i$ to the sum of all pairs containing $i$; injectivity follows because $x_i+x_j=0$ for every pair implies all $x_i=0$ over $\C$. Its complementary representation has dimension five. At a three-cycle, the pair character is $1$ and the natural permutation character is $2$, so the complementary trace is $-1$ and its three-cycle invariant dimension is $(5-2)/3=1$. It is an actual character satisfying \eqref{eq:positive}. This establishes sharpness uniformly across the family, not in each individual degree.
+\end{proof}
+
+\begin{corollary}\label{cor:answer}
+For every $n\ge5$, there is a \emph{single} detecting field of degree strictly less than $n!/2$, with neither Artin holomorphy nor GRH assumed. For $n\ge12$ the ternary construction in Theorem~\ref{thm:main} is already strictly smaller, and the improvement is exponential as $n\to\infty$.
+\end{corollary}
+
+\subsection{Explicit Frobenius weights and the prime-sum bridge}
+The subgroup in Theorem~\ref{thm:main} yields a nonnegative and very sparse permutation weight on rational primes when $k=\Q$. This supplies a concrete input for the repository's one-sided analytic criterion; it does not supply the requisite prime-sum estimate itself.
+
+For the block sizes in \eqref{eq:blocks}, define integers $B_h$ by
+\begin{equation}\label{eq:weightH}
+ \sum_{h=0}^r B_hx^h=\prod_{i=1}^d\frac{(1+(p-1)x)^{b_i}+(p-1)(1-x)^{b_i}}p.
+\end{equation}
+Each factor counts vectors of given Hamming weight with coordinate sum zero on that block. To see this, average the additive character of the coordinate sum over all $p$ possible frequencies: at the zero frequency a nonzero coordinate contributes $p-1$, while at any other frequency it contributes $-1$. In particular $B_h\ge0$ and $\sum_h B_h=|H|$.
+
+For $\pi_H=\Ind_H^{S_n}\one$, the class-function formula is
+\begin{equation}\label{eq:frob}
+ \pi_H(g)=\begin{cases}
+ \displaystyle\frac{p^h h!(n-ph)!}{p^{r-d}}B_h,&g\text{ has cycle type }p^h1^{n-ph},\\[4pt]
+ 0,&\text{otherwise}.
+ \end{cases}
+\end{equation}
+Indeed the fixed cosets of $g$ are counted by $|C_G(g)|\,|H\cap g^G|/|H|$, where the centralizer has size $p^h h!(n-ph)!$. Elements of $H$ with weight $h$ have exactly this cycle type. The mean of $\pi_H$ over $G$ is one because the coset action is transitive. The support contains at most $r+1$ conjugacy classes.
+
+For any unramified rational prime $\ell$, the coefficient at $\ell^{-js}\log\ell$ in $-\zeta_K'/\zeta_K$ is $\pi_H(\operatorname{Frob}_\ell^j)$. This follows either from Artin formalism or by counting fixed cosets of Frobenius powers (each orbit length is a residue degree). Thus the smaller-degree detector gives a positive Frobenius statistic in the precise form used in the repository's nonabelian prime tests. Ramified Euler factors can be kept as usual; they have no bearing on the zero equivalence. The new arithmetic problem is to obtain the one-sided centered prime bound for this weight. Nothing here asserts that bound.
+
+\begin{table}[ht]
+\centering
+\caption{Examples of the ternary detector; the improvement is the factor by which its degree is smaller than $n!/2$. The exact local multiplicity constant is computable from \eqref{eq:weightD}.}
+\label{tab:examples}
+\begin{tabular}{rrrrl}
+\toprule
+$n$&$r$&$d$&$|H|$&Improvement\\
+\midrule
+12&4&3&$3$&$3/2$\\
+15&5&3&$9$&$9/2$\\
+30&10&4&$729$&$729/2$\\
+60&20&5&$3^{15}$&$3^{15}/2$\\
+300&100&7&$3^{93}$&$3^{93}/2$\\
+\bottomrule
+\end{tabular}
+\end{table}
+For example, at $n=15$ the block sizes are $1,2,2$, and the subgroup weight enumerator is $1+4x^2+4x^4$. Thus only three conjugacy classes are used: the identity, two disjoint three-cycles and four disjoint three-cycles. The included \texttt{detector\_examples.py} computes and checks these enumerators and weights in exact arithmetic for illustrative cases.
+
+\section{Improved transposition bound in all degrees}
+In this section let $t$ be a transposition, $K_t=E^{\langle t\rangle}$, and $\sgn$ the sign character of $S_n$. Put $\Psi=\sgn\Theta$, which still satisfies \eqref{eq:positive}: multiplication by the restricted sign permutes the linear characters on every subgroup. Use the notation
+\begin{equation}\label{eq:ab}
+ m=\Psi(1),\quad a=\frac{m-\Psi(t)}2,\quad b=\langle\Psi,\one\rangle.
+\end{equation}
+For the Heilbronn character, $a=\ord_{s_0}\zeta_{K_t}$ and $b=\ord_{s_0}L(s,\sgn,E/k)$. All character values of $S_n$ are real since each permutation is conjugate to its inverse. For a permutation $g$, write $\delta(g)=m-\Psi(g)\ge0$; nonnegativity follows from actualness of the restriction to $\langle g\rangle$. For an involution $h$, write $a(h)=\delta(h)/2$ for its negative eigenspace dimension in the honest cyclic restriction.
+
+The prior bound in \cite{proveit}, \texttt{nab:cor:sn}, comes from a reflection estimate of $2(n-H_n)$, where $H_n=\sum_{j=1}^n1/j$. The following refinement exploits the fact that the traces of primitive powers of each cycle agree, not just their reflection length.
+
+\begin{lemma}[Reflection length bound]\label{lem:reflection}
+If an involution $h$ has $l$ disjoint transpositions, then $a(h)\le la$. For any permutation $g$ with $c(g)$ cycles (including fixed points),
+\[
+ \delta(g)\le2(n-c(g))a.
+\]
+\end{lemma}
+\begin{proof}
+The disjoint transpositions generate an elementary abelian group whose restriction is actual. The negative eigenspace of their product is contained in the sum of the negative eigenspaces of the factors, proving the first claim. Next reverse each cycle of $g$ by a permutation $h$ acting on its cyclically numbered positions by $i\mapsto-i$. Both $h$ and $hg$ are involutions; together they contain $n-c(g)$ transpositions, because a cycle of length $k$ contributes $k-1$. The group generated by the two involutions is dihedral or abelian. In the honest restricted representation, $g=h(hg)$ and
+\[
+ \operatorname{rank}(I-g)\le\operatorname{rank}(I-h)+\operatorname{rank}(I-hg)=a(h)+a(hg).
+\]
+The inequality follows by writing $I-UV=(I-U)+U(I-V)$. Each nonidentity eigenvalue contributes at most $2$ to the real trace deficit. Combining with the first claim proves the lemma.
+\end{proof}
+
+For an odd positive integer $u$, define
+\begin{equation}\label{eq:eta}
+ \eta(u)=\begin{cases}1,&u=1,\\1-\dfrac1{P(u)-1},&u>1,\end{cases}
+\end{equation}
+where $P(u)$ is the least prime divisor of $u$. For each $k\ge2$ let $u_k$ be its odd part, so $k=2^v u_k$ for some $v\ge0$.
+
+\begin{lemma}[Improved single-cycle bound]\label{lem:cycle}
+If $g$ is a $k$-cycle, $k\ge2$, then
+\begin{equation}\label{eq:single}
+ \delta(g)\le\bigl(2(k-1)-\eta(u_k)(u_k-1)\bigr)a.
+\end{equation}
+\end{lemma}
+\begin{proof}
+For $k=2$ this is equality. Suppose $k\ge3$, let $h$ reverse $g$ as in Lemma~\ref{lem:reflection}, and consider the honest representation on the dihedral group $\langle g,h\rangle$. Write $u=u_k$, $c=2-\eta(u)$. The one-dimensional irreducibles in which $g$ acts by $-1$ (possible only for even $k$) contribute trace deficit $2$ and combined negative eigenspace dimension $1$ for the two reflections $h,hg$. Let their total multiplicity be $x$. The other one-dimensional irreducibles have $g=1$ and trace deficit zero.
+
+A two-dimensional irreducible has rotation eigenvalues $\xi,\xi^{-1}$ of order $d>2$ dividing $k$, and each reflection has one negative eigenvalue. Average its trace over the rotations $g^j$ with $j$ coprime to $k$. The reduction map $(\mathbb Z/k\mathbb Z)^\times\to(\mathbb Z/d\mathbb Z)^\times$ is surjective, so the mean of each eigenvalue is $\mu(d)/\varphi(d)$, with $\mu$ the M\"obius function and $\varphi$ Euler's totient. This is at least $1-c$. In fact, for $u=1$ the order $d>2$ is a higher power of two and $\mu(d)=0$. Otherwise if $\mu(d)=-1$, then $d>2$ contains an odd prime factor at least $P(u)$, so $\varphi(d)\ge P(u)-1$. Thus the averaged trace deficit of this irreducible is at most $2c$, which is $c$ times its combined negative eigenspace dimension. All the primitive powers of $g$ are conjugate in $S_n$, so the average of the total trace deficit equals $\delta(g)$. Summing these estimates gives
+\[
+ \delta(g)\le c\bigl(a(h)+a(hg)\bigr)+(2-c)x\le c(k-1)a+(2-c)x.
+\]
+Because $u$ is odd, $g^u$ is $-1$ on all $x$ of the distinguished linear summands. Its other summands have nonnegative trace deficits (each conjugate eigenvalue pair has real trace at most its dimension). Hence $2x\le\delta(g^u)$. The permutation $g^u$ splits into $u$ cycles of length $k/u$ on the moved letters. By Lemma~\ref{lem:reflection}, $\delta(g^u)\le2(k-u)a$. Substitution gives
+\[
+ \delta(g)\le[c(k-1)+(2-c)(k-u)]a
+ =[2(k-1)-(2-c)(u-1)]a,
+\]
+which is \eqref{eq:single}.
+\end{proof}
+
+\begin{lemma}[Subadditivity over disjoint cycles]\label{lem:subadd}
+If $g=g_1\cdots g_j$ is the product of disjoint nontrivial cycles, then $\delta(g)\le\sum_i\delta(g_i)$.
+\end{lemma}
+\begin{proof}
+The disjoint cycles generate an abelian group, so its restricted representation is actual. Average independently over primitive powers of each cycle; the resulting permutations are all conjugate to the original product. For any one-dimensional summand, let $x_i$ denote the average eigenvalue of $g_i$ over its primitive powers. The average is real and in $[-1,1]$ by inversion symmetry of the set of powers. The product average is $\prod_i x_i$. Since
+\[
+ 1-xy\le(1-x)+(1-y)\qquad(-1\le x,y\le1),
+\]
+induction gives $1-\prod_i x_i\le\sum_i(1-x_i)$. Multiply by each summand's nonnegative multiplicity and sum. The primitive powers of $g_i$ alone are also conjugate, so the right side is $\sum_i\delta(g_i)$.
+\end{proof}
+
+\begin{theorem}[Uniform improved multiplicity bound]\label{thm:uniform}
+For all $n\ge3$ and every virtual $S_n$-character satisfying \eqref{eq:positive}, with \eqref{eq:ab},
+\begin{align}
+ m&\le C_n a+b,\label{eq:uniform}\\
+ C_n&=2(n-H_n)-\sum_{k=2}^n\frac{\eta(u_k)(u_k-1)}k.\label{eq:Cn}
+\end{align}
+In particular $C_n<2(n-H_n)$, and $C_n/n\to C_\infty$ with
+\begin{equation}\label{eq:lim}
+ C_\infty=\frac43\left(1+\sum_{p\ge3\text{ prime}}\frac{1}{p(p-1)}\prod_{q<p\text{ prime}}\left(1-\frac1q\right)\right),\qquad
+ 1.48335<C_\infty<1.48337.
+\end{equation}
+\end{theorem}
+\begin{proof}
+By Lemmas~\ref{lem:cycle} and \ref{lem:subadd}, the deficit of any permutation is bounded by the sum of the single-cycle bounds. Average over uniform $g\in S_n$. Its expected number of $k$-cycles is $1/k$, because the number of possible $k$-cycles is $\binom nk(k-1)!$ and each is present with probability $(n-k)!/n!$. The averaged deficit is $m-b$. This proves \eqref{eq:uniform}--\eqref{eq:Cn}. The term for $k=3$ is positive and all terms are nonnegative, giving strict improvement.
+
+For the limit let
+\[
+ S=\sum_{p\ge3\text{ prime}}\frac1{p(p-1)}\prod_{q<p\text{ prime}}(1-1/q).
+\]
+Among positive integers, odd integers have density $1/2$, and integers with least prime factor $p$ have density $p^{-1}\prod_{q<p}(1-1/q)$, by inclusion--exclusion on the finitely many primes up to $p$. The mean of $\eta(u)$ restricted to odd integers is therefore $1/2-S$. To justify the infinite sum, truncate the least prime at $M$; the contribution from integers with least prime greater than $M$ to the mean of $1/(P(u)-1)$ is at most $1/(M-1)$, uniformly in the averaging length. The integer $u=1$ is negligible in the mean. Multiplying the summand by $1-1/u$ does not change the limit, since the average of $1/u$ over $u\le N$ tends to zero.
+
+For fixed $v\ge0$ the contribution from $k=2^v u$ ($u$ odd) to the saving in \eqref{eq:Cn}, divided by $n$, tends to $4^{-v}(1/2-S)$. Indeed the summand is $2^{-v}\eta(u)(1-1/u)$, and the averaging range has length $\lfloor n/2^v\rfloor$. The contribution of all $v\ge V$ is bounded uniformly by $\sum_{v\ge V}4^{-v}$. Summation of the geometric series yields a total limiting saving of $\frac43(1/2-S)$, proving the formula for $C_\infty$.
+
+For an exact numerical enclosure, let $M=10000$, compute the partial sum $S_M$ and $D_M=\prod_{q\le M}(1-1/q)$, with the products over primes. Least-prime-factor events are disjoint, and the union of those with least prime $>M$ is contained in the integers coprime to the product of all primes up to $M$. Thus their total density is bounded by $D_M$ (first take finite unions). For such primes, $1/(p-1)\le1/M$, giving
+\[
+ S_M\le S\le S_M+D_M/M.
+\]
+The included \texttt{verify.py} evaluates the rational endpoints and proves the displayed decimal enclosure by exact inequalities; its output is in \texttt{verification.txt}.
+\end{proof}
+
+\begin{corollary}[Analytic consequence]\label{cor:analytic}
+For $E/k$ with Galois group $S_n$ and $N=\ceil{C_n}$, the quotient
+\[
+ \frac{\zeta_{K_t}(s)^N L(s,\sgn,E/k)}{\zeta_E(s)}
+\]
+is holomorphic away from $1$, with a pole of order $N-1$ at $1$ if $N>1$. If $k=\Q$ and Dirichlet GRH is assumed (or supplied by the upstream theorem), then for every $\rho$ in the open critical strip off its central line,
+\[
+ \ord_\rho\zeta_E\le C_n\ord_\rho\zeta_{K_t}.
+\]
+\end{corollary}
+\begin{proof}
+Use the definitions \eqref{eq:ab} and \eqref{eq:uniform} at every $s_0\ne1$. The sign $L$-function is nontrivial and nonzero at $1$, by the abelian factorization for the quadratic subextension and the simple poles of the two Dedekind zeta functions. For base $\Q$ it is a quadratic Dirichlet $L$-function, so its order at the indicated $\rho$ is zero under Dirichlet GRH. No other application of that hypothesis is needed.
+\end{proof}
+
+\section{Sharp bound in degrees 13 through 16}
+\subsection{The exact cone question}
+For $n\ge3$ the repo's sharp-bound question concerns
+\[
+ U_n=(n-1)\Ind_{\langle t\rangle}^{S_n}\sigma-\Reg_{S_n}+\one,
+\]
+where $\sigma$ is the nontrivial character of $\langle t\rangle$. Its character values are
+\[
+ U_n(T)=\frac{n-1}{2}\left(n!\,\one_{T=1^n}-z_t\,\one_{T=21^{n-2}}\right)-n!\,\one_{T=1^n}+1,
+\]
+where $T$ denotes a cycle type (a partition of $n$) and $z_T=\prod_j j^{m_j}m_j!$ is the centralizer size if $m_j$ is the multiplicity of part $j$. Hence $U_n$ has normalized row
+\begin{equation}\label{eq:target}
+ R_n(T)=\frac{2U_n(T)}{(n-1)z_T}
+ =\frac{n-3}{n-1}\one_{T=1^n}-\one_{T=21^{n-2}}+\frac{2}{(n-1)z_T}.
+\end{equation}
+A monomial row associated to a subgroup $J$ and a linear character $\lambda$ is
+\begin{equation}\label{eq:row}
+ B_{J,\lambda}(T)=\sum_{h\in J\cap T}\overline{\lambda(h)}
+ =\frac{|J|}{z_T}\Ind_J^{S_n}\overline\lambda(T).
+\end{equation}
+We also allow finite averages of such rows. Their rational nonnegative combinations describe the relevant cone after the positive classwise scaling in \eqref{eq:target}.
+
+\begin{theorem}[Exact extension of the sharp bound]\label{thm:sharp}
+For $n=13,14,15,16$ the character $U_n$ lies in the positive rational cone of characters induced from linear characters of subgroups. Consequently, for every $s_0\ne1$ and $E/k$ Galois with group $S_n$,
+\begin{equation}\label{eq:sharp}
+ \ord_{s_0}\zeta_E\le(n-1)\ord_{s_0}\zeta_{K_t}+\ord_{s_0} L(s,\sgn,E/k).
+\end{equation}
+The quotient $\zeta_{K_t}^{n-1}L(s,\sgn,E/k)/\zeta_E$ is holomorphic away from $1$, with a pole of order $n-2$ there. The coefficient $n-1$ is optimal for the abstract character-positivity method even when both linear multiplicities vanish.
+\end{theorem}
+\begin{proof}
+The proof is computer-assisted only for the finite rational identities. The four supplied certificate files establish
+\begin{equation}\label{eq:certificate}
+ R_n(T)=\sum_i w_i B_i(T)\qquad\text{for every partition $T$ of $n$},\quad w_i\in\Q_{>0},
+\end{equation}
+where each $B_i$ is an average of rows \eqref{eq:row}. We describe all entries and the exact verification below. The scaling of \eqref{eq:row} implies the cone assertion. Pairing $U_n$ with $\Psi=\sgn\Theta$ gives $(n-1)a-m+b\ge0$ by \eqref{eq:positive}. This is \eqref{eq:sharp}; the holomorphy follows by the same local-order argument as above.
+
+For sharpness let $\Psi$ be the standard augmentation representation of $S_n$, the natural permutation character minus $\one$. It is an actual character and satisfies \eqref{eq:positive}; its dimension is $n-1$, its value at a transposition is $n-3$, and its trivial and sign multiplicities are zero for $n\ge3$. Thus $a=1$, $b=0$, and $m=n-1$. This proves optimality of the coefficient under the stated abstract assumptions, not the existence of a zeta zero realizing it.
+\end{proof}
+
+\subsection{Certificate encoding and independent verifier}
+Each entry in \texttt{cert\_13.json} through \texttt{cert\_16.json} has a positive rational weight and a list of block descriptors. These specify subgroups acting on disjoint letters and linear characters, possibly averaged over primitive roots of unity. All unassigned letters are fixed. The row of a product is computed by multiplying the rows of the blocks and concatenating their cycle partitions, with sorting. Here is the complete descriptor grammar:
+\begin{description}
+\item[\texttt{[C,k,d]}] Cyclic group of order $k$ acting by a $k$-cycle. The generator character is averaged over primitive $d$th roots of unity, with $d\mid k$ (including $d=1$).
+\item[\texttt{[D,k,a,b]}] Dihedral group of order $2k$, $k\ge3$, on $\mathbb Z/k\mathbb Z$ via $i\mapsto i+1$ and $i\mapsto-i$. These generators map to $(-1)^a$ and $(-1)^b$, where $a,b\in\{0,1\}$ and $ka$ is even.
+\item[\texttt{[S,k,a]}] Full symmetric group on $k$ letters with the trivial or sign character according to $a\in\{0,1\}$.
+\item[\texttt{[A,k]}] Alternating group on $k$ letters, with trivial character.
+\item[\texttt{[F,p,d,e]}] Affine group on $\F_p$, with translations and a multiplier of exact order $d\mid p-1$, $d\ge2$, $p$ prime. The character is trivial on translations and the multiplier is mapped to a primitive $e$th root, averaged over all such roots, with $e\mid d$.
+\end{description}
+
+All these averaged characters are nonnegative rational averages of linear characters. To compute the averaged value of the $j$th power of a generator, the verifier uses the integer Ramanujan trace $c_d(j)$ divided by $\varphi(d)$. It computes the traces recursively from
+\[
+ \sum_{e\mid d}c_e(j)=\begin{cases}d,&d\mid j,\\0,&d\nmid j.\end{cases}
+\]
+This follows by summing $j$th powers over all $d$th roots of unity and grouping by their order. In particular the verifier uses no numerical approximations or unverified character tables. For symmetric and alternating blocks it counts permutations of cycle type $T$ by $k!/z_T$ and parity $(-1)^{k-c(T)}$; for cyclic, dihedral and affine blocks it directly enumerates the permutations. It checks every rational weight is strictly positive, that every block descriptor is valid, and compares every row coefficient to \eqref{eq:target}. It also checks the vanishing pairings with the trivial and standard characters, an independent sanity condition for the target and every positive summand.
+
+\begin{table}[ht]
+\centering
+\caption{Verified exact cone identities. The largest bit length is the maximum over all weight numerators and denominators.}
+\begin{tabular}{rrrr}
+\toprule
+$n$&Cycle types&Positive rows&Largest bit length\\
+\midrule
+13&101&97&84\\
+14&135&132&123\\
+15&176&164&207\\
+16&231&225&319\\
+\bottomrule
+\end{tabular}
+\end{table}
+The separate search program uses floating-point linear programming only to identify a candidate support, then solves the equality system over $\Q$. Its numerical feasibility result is not part of the proof. The independent verifier, written using only Python's standard library, reconstructs and checks the supplied identities without calling that search program. Run \texttt{python3 verify.py} (without the \texttt{-O} switch). The recorded output shows that all four identities pass. The discovery scripts are included for experimentation and are not required to validate the result; the final search settings may recover different positive identities or fail to recover a support.
+
+\section{Assessment and next steps}
+The coding theorem supplies an unconditional answer to \texttt{nab:q:lowdegree}: for every $n\ge5$ a single field of degree strictly below $n!/2$ suffices, and in unbounded degree one can save a factor of order $3^{n/3}/n^{\log_2 3}$. The proof also gives exact optimality within the specified local code construction, and an exponential-rate optimality comparison among abelian subgroups. Neither of these is a claim of a globally minimal detecting field. For $n=3,4$ the smaller-degree question is not addressed by the three-cycle result.
+
+The sharp monomial-cone problem \texttt{nab:q:un} now has positive identities in degrees $13$--$16$, in addition to the repository's earlier certificates through degree twelve. The primitive-power refinement improves the general bound from leading coefficient $2$ to approximately $1.48336$, but leaves a gap to the conjectural coefficient $1$ in the all-degree problem. No certificate in degree $17$ or beyond is claimed here. The search can be continued, but a uniform theoretical decomposition is still desirable.
+
+For a nonabelian RH application the Frobenius formula \eqref{eq:frob} gives a specific positive prime weight. The genuinely difficult missing step is a one-sided prime estimate with that weight, or a new arithmetic mechanism establishing it. Dirichlet GRH is not sufficient merely by its stated quantifier domain, and none of the results here claims Artin holomorphy, a new nonabelian RH, or resolution of a Millennium Prize problem. The new results are research-level deductions relative to the repository snapshot, with exact finite checks and human-readable proofs; they are not Lean-formalized or independently peer-reviewed. Targeted literature comparison identified the standard Heilbronn and full-weight-spectrum code ingredients, but priority of the combined application and the new estimates is not asserted as an exhaustive literature determination.
+
+\begin{thebibliography}{9}
+\bibitem{proveit} ProveIt, \emph{Generalized Riemann hypothesis: consequences, transfers and limits}, main commit \texttt{6fc594264337ccd8deef0148bd9418d8f5a3dc49} (accessed 27 November 2026). Especially \texttt{Article/sections/src.tex}, \texttt{Article/sections/nab.tex}, labels \texttt{nab:thm:snsharp}, \texttt{nab:rem:un}, \texttt{nab:q:un}, and \texttt{nab:q:lowdegree}. \href{https://github.com/VladimirReshetnikov/ProveIt/tree/6fc594264337ccd8deef0148bd9418d8f5a3dc49/Analysis/GeneralizedRiemannHypothesis/}{Pinned repository directory}.
+\bibitem{upstream} L. Alp\"oge and contributors, \emph{The Generalized Riemann Hypothesis for Dirichlet L-functions, in Lean 4}, \texttt{lsernau/grh-lean}, pinned commit \texttt{72fead102f663d5c7a407964a13dc0cf9d977207}. \href{https://github.com/lsernau/grh-lean/tree/72fead102f663d5c7a407964a13dc0cf9d977207}{Upstream repository}. See the vendored \texttt{grh/src/Statements.lean} and \texttt{grh/src/Main.lean}.
+\bibitem{heilbronn} R. Foote, J. Ginsberg and M. R. Murty, \emph{Heilbronn characters}, Bull. Amer. Math. Soc. 52 (2015), 465--496. \href{https://doi.org/10.1090/bull/1492}{doi:10.1090/bull/1492}.
+\bibitem{alderson} T. L. Alderson, \emph{A note on full weight spectrum codes}, Trans. Comb. (2019); \href{https://arxiv.org/abs/1807.11798}{arXiv:1807.11798}.
+\end{thebibliography}
+\end{document}

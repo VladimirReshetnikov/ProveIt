@@ -1,0 +1,142 @@
+SOURCE ANALYSIS AND RESEARCH STATUS
+27 November 2026
+
+PINNED INPUT
+
+Repository: https://github.com/VladimirReshetnikov/ProveIt
+Commit: b82291c1f75389938c7464ef161907d7d5e75b2a
+Directory: Analysis/GeneralizedRiemannHypothesis/
+
+The article inventory describes a merged 895-page collection combining
+194 reports, with roughly 1,200 theorem-like environments, together with
+subsequent Research packets. Its own inventory distinguishes editorial
+integration from independent verification. This session made a targeted
+mathematical audit of the branches below; it did not independently reprove
+every result in the entire collection.
+
+The exact source files used are listed with SHA-256 and Git blob identifiers
+in results/source_manifest.json. The repository was not modified.
+
+FOUNDATIONAL SCOPE
+
+Article/sections/src.tex identifies the input as RH and GRH for Dirichlet
+L-functions. That scope is retained here; it does not automatically supply
+general automorphic or Artin GRH, or simplicity of all critical-line zeros.
+
+The upstream formalization is lsernau/grh-lean at commit
+72fead102f663d5c7a407964a13dc0cf9d977207, using Lean 4.35.0 and Mathlib
+56a00585. Its README and Andrew Sutherland's independent verification page
+were inspected. The latter reports completed kernel replay, statement and
+axiom checks, and acceptance by multiple external checkers for the five
+stated RH/Dirichlet-GRH theorems. These are reported external verification
+results; this session did not rebuild the entire formalization.
+
+Primary links:
+  https://github.com/lsernau/grh-lean
+  https://math.mit.edu/~drew/shortgrh/
+
+The two new papers are unconditional. Their proofs use transferable local
+algebra and torsion-specialization ideas, not RH or GRH as hypotheses.
+
+BRANCH 1: SPARSE POLYNOMIALS IN LOCAL DISKS
+
+Read inputs:
+  Article/sections/smd.tex
+  Research/padic-support-rank/report.tex
+  Research/sparse-padic-roots-and-graph-towers/fewnomial/paper.tex
+
+The article develops moment normalization and recurrence arguments. The rank
+packet gives exact support-sensitive root counts in closed exponential disks
+for at most p exponents. The later packet gives sharp open-disk results
+through p+2 terms, including the jump to p^2 at t=p+2.
+
+New development in papers/sparse_roots.tex:
+
+1. An exact minimum-valuation-basis formula for arbitrary support size and
+   every positive disk depth. Lenstra's 1999 local cutoff reduces the
+   otherwise degree-dependent Taylor matrix to a uniform finite matrix.
+
+2. An explicit finite precision P such that the multiset of exponent
+   residues modulo p^P determines the whole optimum profile above a fixed
+   positive depth floor. Enumerating those residue multisets computes the
+   least possible uniform local geometric root bound, not just an upper
+   bound. Rational witnesses are constructed by a dual basis; perturbation
+   and the Chinese remainder theorem impose full support and Eisenstein
+   irreducibility for at least two terms.
+
+3. Frobenius compression gives a smaller finite cutoff valid simultaneously
+   throughout the exponential region, including its open boundary limit.
+
+4. For odd p and p+2 <= t <= 2p-1, the sharp open-disk optimum is
+       p^2 + floor((t-p-2)/2).
+   The p+2 endpoint agrees with the source. The further values extend it.
+
+5. Exact binary profiles at t=5,6,7, with eight-root thresholds 4/3 and 3/2
+   for six and seven terms respectively. Explicit squarefree integer
+   polynomials certify both endpoints.
+
+Prior work and limits:
+  A degree-independent effective local upper bound at arbitrary positive
+  depth is already in Lenstra's Theorem 3; that is not new. Valuated basis
+  exchange is also standard linear algebra. The proposed contribution is
+  exact optimization, the finite residue classification and its consequences,
+  and the new sharp formulas. See literature_fewnomials.txt for source details.
+  These counts are geometric roots in C_p. They do not solve Lenstra's
+  separate global best-bound problem for roots in a specified finite
+  extension K/Q_p throughout K^times. A closed formula for all p,t is not
+  proved. The related six-term singular-modulus problem needs additional
+  information about conjugates and is not resolved here.
+
+BRANCH 2: FINITELY MANY TORSION TESTS AT POSITIVE TOLERANCE
+
+Read input:
+  Article/sections/cost.tex, especially the root reduction, fixed-cardinality
+  theorem, and Question cost:q:cardinality(b).
+
+The source proves a tower law when the tolerance is zero. It also treats
+positive tolerance when the number of tests is unrestricted. It explicitly
+asks for the asymptotic with a fixed number n of tests and fixed delta>0.
+
+New development in papers/torsion_phase_transition.tex:
+  For fixed p,h0,n and delta>0, as B tends to infinity,
+      c B^n <= H_n(B,delta) <= C B^n (log B)^2 log log B.
+  Hence log H_n(B,delta)/log B tends to n, and the minimum blocking budget
+  through shell H is H^(1/n+o(1)). For n=1 the sharper order Theta(B) holds.
+  H is the exponent in the torsion order p^H.
+
+The new upper-bound step shifts accumulated costs by delta, uses a capped
+one-root average, and controls increments of a product potential. An explicit
+sequence of consecutive shell blocks supplies the matching lower exponent.
+This resolves the growth-exponent aspect of the repository's question.
+Whether the logarithmic loss can be removed for n>=2, whether a leading
+constant exists, and the joint limit delta -> 0 remain open.
+
+BRANCH 3: ATTEMPT ON A NAMED CANONICAL-LINE CONJECTURE
+
+Read input:
+  Article/sections/gra.tex, finite-width Ehrhart theorem and all-width question.
+
+The relevant literature is Higashitani--Kummer--Michalek's interlacing and
+canonical-line program for Ehrhart polynomials of symmetric edge polytopes,
+and Koelbl's extensions for complete multipartite graphs:
+  https://arxiv.org/abs/1612.07538
+  https://arxiv.org/abs/2404.02136
+
+The pinned repository proves the complete-bipartite line property and the
+specified interlacings through width 32, with a further line-property result
+at width 33. Its certificates use positive Bezoutians. We investigated an
+extension to arbitrary width, looking for a uniform positive representation
+or an interlacing mechanism replacing the width-by-width certificates.
+No all-width positivity argument was obtained. The finite-width certificates
+do not imply the infinite family, so no resolution is claimed.
+
+ASSESSMENT
+
+The archive supplies complete proofs of the displayed new local and growth
+theorems and exact finite certificates for their implementations and examples.
+It does not contain a proof of a further prominent named conjecture. Limited
+primary-literature searches and comparison with the pinned repository did
+not establish global priority. The new theorems have undergone separate
+mathematical readings by AI collaborators in this session, not external
+peer review or proof-assistant verification. These distinctions are also
+stated in the papers.

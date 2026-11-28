@@ -1,0 +1,57 @@
+TORSION PHASE TRANSITION: REVIEW AND VERIFICATION RECORD
+Date: 2026-11-27
+Source repository: VladimirReshetnikov/ProveIt
+Pinned source commit: b82291c1f75389938c7464ef161907d7d5e75b2a
+Immediate source: Analysis/GeneralizedRiemannHypothesis/Article/sections/cost.tex
+
+Claim reviewed
+For fixed prime p, starting shell h0, number n of integral p-adic
+polynomials, and positive tolerance delta, the least universally sufficient
+torsion exponent H_n(B,delta) satisfies
+    c B^n <= H_n(B,delta) <= C B^n (log B)^2 log log B.
+Thus log H_n(B,delta)/log B tends to n. Constants can depend on the fixed
+parameters; the estimate is uniform over degrees and coefficient ramification.
+This concerns the exponent h in order p^h, not the torsion order itself.
+
+Separate mathematical review within this session
+The candidate_research collaborator independently read the complete proof
+and compared it with the pinned cost.tex. The review checked:
+- Reduction of arbitrary integral polynomials to torsion root multisets.
+- The one-root capped average and normalized positive-loss inequality.
+- The lambda comparison of delayed charges with shifted accumulated costs.
+- The bound for the number of exceptional shells.
+- The shifted-product increment telescope and logarithmic cost summation.
+- The explicit late-block construction and lower-bound recursion.
+- Compatibility of the n=1 statement with the source's exact zero-tolerance law.
+The reviewer reported no mathematical gap and requested that the conclusion
+remain at the growth-exponent level. No proof changes were required.
+This was an independent second reading by another AI collaborator within the
+session, not external peer review or independent Lean verification.
+
+Exact finite checks
+Run from the archive root:
+    python3 code/verify_torsion_phase_transition.py
+The deterministic standard-library program uses rational arithmetic and checks:
+- 267 exact greedy shell-capacity instances.
+- 52 capped-root-average instances.
+- 176 late-block constructions.
+- All 16,384 two-member subset-root packets on p=2, shells h=1,2,3,
+  tolerance 1/4; 5,363 block all three shells, with minimum cost 2.
+The report is written to results/torsion_phase_transition_checks.json.
+These finite checks do not prove the asymptotic theorem.
+
+Document checks
+The original mathematical draft was compiled and every page visually checked.
+The packaged version adds references and reproducibility notes without changing
+the mathematical proof. It was compiled twice with no LaTeX warnings or overfull
+boxes, and its added reference/reproducibility pages were visually inspected.
+
+Scope and limitations
+- No RH or GRH assumption enters the theorem or its proof.
+- This answers the growth-exponent aspect of cost:q:cardinality(b) in the
+  pinned repository. It is not a resolution of a prominent named conjecture.
+- A leading asymptotic constant, a Theta(B^n) theorem for n>=2, and uniform
+  joint limits as delta tends to zero remain open in this note.
+- Limited primary-literature searching found no matching fixed-packet
+  exponent theorem, but it does not establish global novelty or priority.
+- No claim is made that this new result is formalized in Lean.

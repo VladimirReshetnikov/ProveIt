@@ -1,0 +1,182 @@
+\documentclass[11pt]{article}
+\usepackage[margin=1in]{geometry}
+\usepackage[T1]{fontenc}
+\usepackage{lmodern,amsmath,amssymb,amsthm,mathtools,booktabs,microtype,xcolor}
+\usepackage[colorlinks=true,linkcolor=blue!50!black,urlcolor=blue!50!black,citecolor=blue!50!black]{hyperref}
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{corollary}[theorem]{Corollary}
+\newcommand{\Z}{\mathbb Z}
+\newcommand{\Q}{\mathbb Q}
+\newcommand{\F}{\mathbb F}
+\newcommand{\ord}{\operatorname{ord}}
+\newcommand{\vol}{\operatorname{vol}}
+\newcommand{\ac}{\operatorname{ac}}
+\title{When does the spanning-tree law start?\\
+\large A logarithmic height bound for abelian graph towers of every rank}
+\author{Research note}
+\date{}
+\begin{document}
+\maketitle
+\begin{abstract}
+Fix a prime $p$, a deck rank $d$, and a finite graph. For connected abelian voltage covers with deck groups $(\Z/p^n\Z)^d$, the $p$-adic valuation of the spanning-tree count eventually has a polynomial formula in $p^n$ and $n$. We prove that this formula starts after $O(1+\log H)$ levels, where $H$ bounds the integral voltage coordinates. We give an explicit constant independent of support size in every rank. In each fixed rank there are fixed bouquets for which the onset is at least $\log_p H-O_d(1)$. The argument separates the digit positions where projected exponents first differ, then changes a long gap between such positions by rescaling a rational subspace. This answers the logarithmic-upper-bound part of the higher-rank question in the ProveIt graph-tower section and gives matching order for sufficiently many loops.
+\end{abstract}
+
+\section{Statement}
+Let a finite connected undirected multigraph $G$ have an integral voltage in $\Z^d$ on one orientation of each edge, and the opposite voltage on the reversed orientation. At level $n$, an edge $u\to v$ of voltage $s$ connects $(u,g)$ to $(v,g+s)$ on $V(G)\times (\Z/p^n\Z)^d$. Assume all levels are connected. Let $\kappa_n$ be the number of spanning trees, $\nu_n=v_p(\kappa_n)$, and normalize $v_p(p)=1$.
+
+DuBose and Vallières \cite[Theorem 6.2]{DV} prove that $\nu_n=P(p^n,n)$ eventually, with total degree at most $d$ and degree in the second variable at most one, in their graph setting. The underlying qualitative valuation-sum theorem is due to Monsky \cite[Theorem 5.6]{Monsky}. Deleting pendant trees preserves the tree count, and the case of a cyclic core is immediate, so the law applies here as well. Linear independence of the sequences $p^{in}$ and $np^{in}$ for distinct $i$ makes $P$ unique. The \emph{onset} is the least $N\ge0$ from which the identity holds at every level.
+
+The Laurent Laplacian of $G$ is the matrix whose contribution for an edge $u\to v$ of voltage $s$ adds one to the two endpoint diagonal entries and subtracts $X^s$ and $X^{-s}$ in the two off-diagonal positions. For a loop all four terms occur in one position. Let $F$ be its determinant, collect equal exponents, and let $t$ be the number of nonzero monomials. Connectivity ensures that $F$ is nonzero on every nonidentity point of $p$-power torsion. It vanishes at the identity. Let $H\ge1$ bound the absolute exponent coordinates in $F$, and put
+\begin{equation}\label{bounds}
+D=\left\lceil\log_p\big(d!(2H)^d\big)\right\rceil,\quad
+B=1+dD+(d+1)(D+1).
+\end{equation}
+
+\begin{theorem}\label{main}
+The spanning-tree law holds for every $n>B$. In particular its onset is $O_{p,d,G}(1+\log H_{\rm volt})$ when $H_{\rm volt}\ge1$ bounds the absolute voltage coordinates. For a bouquet the implied constant depends only on $p,d$, uniformly in the number of loops.
+\end{theorem}
+
+For a fixed base, the determinant expansion has boundedly many terms and all exponent coordinates are at most $|V(G)|H_{\rm volt}$. For a bouquet one may take $H=H_{\rm volt}$ for every number of loops. Our constant is meant for a uniform order of growth. The existing rank-two estimate \cite{repo} has a smaller coefficient of $\log H$. The same source gives an exact algorithm in arbitrary rank with a much larger upper bound on onset. Here the bound is independent of the number of monomials and the sizes of the coefficients in every rank, including when exceptional directions intersect along positive-dimensional sets.
+
+\begin{theorem}\label{lower}
+For every fixed $p,d$ and $m\ge pd+1$, the largest onset among connected $m$-loop rank-$d$ bouquets of height at most $H_{\rm volt}$ is $\Theta_{p,d,m}(\log H_{\rm volt})$ as $H_{\rm volt}\to\infty$. Explicitly, for all sufficiently large $k$ there is a bouquet of height $p^k$ and onset at least $k-2d+1$.
+\end{theorem}
+
+The conclusions concern spanning trees and cyclotomic evaluations. Their proofs use no hypothesis on Dirichlet zeros. The source of the transfer is the repository's treatment of individual character evaluations through the uniformizer $\zeta_{p^n}-1$ and its question on how late the stable law can start in rank at least three \cite{repo}.
+
+\section{Valuations on a finite tree of residues}
+For a Laurent polynomial $F=\sum_{i=1}^t c_i X^{a_i}$ with distinct exponents, let $\zeta_h$ be compatible primitive $p^h$-th roots, $\zeta_h^p=\zeta_{h-1}$, $\pi_h=\zeta_h-1$, and $e_h=(p-1)p^{h-1}$. For $x\in\Z_p^d$ put $n_i=a_i\cdot x$ and evaluate powers modulo $p^h$. We sum $v_p(F(\zeta_h^x))$ over $(\Z/p^h\Z)^d$, assigning contribution zero to a zero evaluation. Denote this sum by $A_h$. The zero convention is convenient for arbitrary symbols. For graph determinants it only removes the identity.
+
+For a nonzero $z\in\Z_p[\zeta_h]$ write $q_h(z)=e_hv_p(z)$ and $u_h(z)=(z/\pi_h^{q_h(z)})\bmod\pi_h\in\F_p^\times$. Put $q_h(0)=+\infty$. Multiplication by any power of $\zeta_h$ leaves this pair unchanged.
+
+\begin{lemma}\label{rec}
+For $h\ge2$, write $z=\sum_{r=0}^{p-1}\zeta_h^r z_r$, where $z_r\in\Z_p[\zeta_{h-1}]$. If at least one $z_r\ne0$, let $q=\min_r q_{h-1}(z_r)$ and form the nonzero polynomial
+\[
+D_0(T)=\sum_{q_{h-1}(z_r)=q}u_{h-1}(z_r)(1+T)^r \in\F_p[T].
+\]
+If $\delta=\ord_{T=0}D_0$ and $u$ is its first nonzero coefficient, then $q_h(z)=pq+\delta$ and $u_h(z)=u$. In particular, $z$ vanishes exactly when every $z_r$ vanishes.
+\end{lemma}
+\begin{proof}
+The polynomials $(1+T)^r$ for $0\le r<p$ form a basis through degree $p-1$, hence $\delta<p$. After division by $\pi_{h-1}^{q}$ all coefficient errors in lifting $D_0$ are multiples of $\pi_{h-1}$ and have $\pi_h$-order at least $p$. The coefficients of $T^j$ for $j<\delta$ in any integral lift of $D_0$ that reduce to zero modulo $p$ likewise have $\pi_h$-order at least $e_h\ge p$. Finally $\pi_{h-1}/\pi_h^p\equiv1\pmod{\pi_h}$ follows by expanding $(1+\pi_h)^p-1$, since $e_h+1>p$. The term of degree $\delta$ gives the stated order and residue.
+\end{proof}
+
+Group the exponents by common residues modulo $p^j$, starting at $j=0$. A node at depth $j$ contains a set $I$ of indices congruent modulo $p^j$. Choose an index $i_0\in I$ and use the centered exponents $(n_i-n_{i_0})/p^j$. The child labels are their residues $r\bmod p$. For a child one may center again at its own reference index, since the extra factor is a root of unity. The child labels at a splitting node are determined by the first nonzero residues of the pairwise differences at that depth. If a node has only one child, its only centered label is zero, $\delta=0$, and its leading residue persists.
+
+Stop this construction at depth $h-1$. A terminal node is evaluated directly in $\Q_p(\zeta_1)$ as $\sum_{i\in I} c_i\zeta_1^{r_i}$ with centered residues $r_i$. If it is nonzero, its order $q_1$ and leading residue are fixed by these labels and the integer coefficients. This step also treats $p=2$, for which $\pi_1=-2$. Both zero and high-content terminal sums are permitted.
+
+\begin{lemma}\label{digits}
+For fixed $h$, record the distinct depths where pairwise exponents first differ below $h$, including the leading residue of each nonzero difference there. Also record which differences vanish modulo $p^h$. Distinguish the endpoints $0,h-1$ from interior depths. On all inputs with these data the zero flag is constant, and on a nonzero cell the exact order has an expansion
+\[
+q_h\big(F(\zeta_h^x)\big)=q_*p^{h-1}+\sum_{0\le j<h-1}\delta_j p^j,
+\qquad 0\le\delta_j<p .
+\]
+Here $q_*$ is a nonnegative integer. Only splitting depths may have $\delta_j\ne0$. If gaps between the recorded depths change while their ordering, endpoint flags and leading residues stay fixed, the same $q_*$ and the same digits occur at the corresponding depths.
+\end{lemma}
+\begin{proof}
+Apply Lemma~\ref{rec} upwards from the terminal nodes. A child order is a nonnegative terminal integer followed by a string of digits in $\{0,\ldots,p-1\}$. Comparing two child orders at the same height compares their terminal integers first, then their digits from largest position to smallest. Inserting a common zero position in all digit strings has no effect on a comparison, including ties. At a node the minimizing children and their leading residues therefore determine a fixed next digit and residue. Unary nodes insert only zeros. The same reasoning treats branches with infinite order by omitting them until a whole node vanishes.
+\end{proof}
+
+\section{Varying the distance between two depths}
+Take a list $\mathcal L$ of all pairwise difference forms $(a_i-a_j)\cdot x$, $i<j$, together with the $d$ coordinate functions. Repetitions cause no problem. For each $L\in\mathcal L$ record
+\[
+k_L=\min\{v_p(Lx),h\}.
+\]
+If $k_L<h$, also record $\ac(Lx)=p^{-k_L}Lx\bmod p$. If $k_L=h$, use a terminal flag. This gives finitely many measurable cells at a fixed $h$, unions of residue classes modulo $p^h$. Write $\vol$ for normalized Haar measure on $\Z_p^d$.
+
+Arrange the distinct marks $0,h-1,h$ and all $k_L$ in increasing order. The final gap from $h-1$ to $h$ is always one and will be held fixed. Pick two successive marks $u<v\le h-1$, and call a form \emph{deep} if $k_L\ge v$. Let $r$ be the dimension over $\Q_p$ of the span of the deep forms. Lengthening the gap by one increases $h$ and every mark $\ge v$ by one, preserving all angular residues and terminal flags.
+
+\begin{lemma}\label{gap}
+If $v-u\ge D+1$, a cell $E$ and the cell $E'$ with this gap lengthened are in bijection by a rational linear transformation. Their volumes satisfy $\vol(E')=p^{-r}\vol(E)$. This includes cells of volume zero and the case $r=0$.
+\end{lemma}
+\begin{proof}
+Read the forms in decreasing order of $k_L$, breaking ties by a fixed ordering. Retain a form whenever it increases the rational span. The coordinate forms ensure that this selects a basis $T$ of $d$ integral rows. In coordinates $y=Tx$ the allowed lattice is $\Lambda=T\Z_p^d$. The first $r$ selected forms are deep and span every deep form. The determinant of $T$ is a nonzero integer of absolute value at most $d!(2H)^d$. Hence $v_p(\det T)\le D$ and the adjugate identity gives $p^D\Z_p^d\subset\Lambda$. Every coefficient of every form expressed in the $y$ coordinates has valuation at least $-D$.
+
+Multiply $y_1,\ldots,y_r$ by $p$, fixing the remaining coordinates. Each changed coordinate was divisible by $p^v$, so the difference belongs to $p^D\Z_p^d$. The new point is in $\Lambda$. Every deep form is multiplied exactly by $p$. Any other form changes by a multiple of $p^{v-D}$, hence by a multiple of $p^{u+1}$. Its depth and angular residue persist, since its depth was at most $u$. This maps $E$ to $E'$. Conversely, divide the first $r$ coordinates by $p$ on $E'$: they were divisible by $p^{v+1}$, and the same estimates put the inverse point in $E$. The determinant of the map has absolute $p$-adic value $p^{-r}$, both in $y$ and in $x$ coordinates. This proves the volume formula.
+\end{proof}
+
+The proof works at intersections of any number of exceptional hyperplanes. Their rank determines the volume factor.
+
+\section{Summing all conductors}
+\begin{theorem}\label{series}
+For every integral Laurent polynomial as above, the series $\sum_{h\ge1} A_hz^h$ is rational. Its polynomial part under division at infinity has degree at most $B$ in \eqref{bounds}. Its reduced denominator divides $(1-p^dz)\prod_{i=0}^{d-1}(1-p^iz)^2$. In particular, beyond level $B$, $A_h$ has the form $P(p^h,h)$ with total degree at most $d$ and degree in $h$ at most one.
+\end{theorem}
+\begin{proof}
+Compress each gap between $0$ and $h-1$ to $\min\{v-u,D+1\}$, and mark the gaps whose compressed length is $D+1$. Retain the order, equalities, angular residues and terminal flags. There are finitely many signatures since the list of forms is finite, the residues come from a finite field and each compressed gap is bounded. Lemma~\ref{gap} shows in both directions that a nonempty cell has a nonempty compressed representative. Every actual cell with that signature is obtained by independently adding $b_i\ge0$ levels to each marked gap $i$. The ordering of forms, and hence each rank $r_i$ of the deep span, stays fixed.
+
+We bound the compressed conductor $h_0$ independently of the length of the list of forms. In the nonempty compressed cell, let $b_1,\ldots,b_d$ be the truncated depths of the rows of the greedy basis $T$. Each form at an interior mark $k<h_0-1$ is a rational linear combination of selected rows of depths at least $k$, with coefficient valuations at least $-D$. Indeed the greedy procedure already spans the form when it reaches its place, and the coefficient bound follows from the same adjugate estimate as before. Since its value has exact valuation $k$, some selected row in this combination must have depth $b_j\le k+D$. Thus all interior marks lie in the union of the $d$ intervals $[b_j-D,b_j]$. Intersect these intervals with $[0,h_0-1]$. Their union has length at most $dD$. Each of at most $d+1$ complementary intervals has no interior mark, so has length at most the largest compressed gap $D+1$. Hence $h_0\le B$.
+
+The cell's contribution is $p^{dh}\vol(E)q_h/e_h$, because $E$ is a union of classes modulo $p^h$. A zero cell contributes zero. Handle separately the terminal part and each digit part in Lemma~\ref{digits}. The terminal term has valuation $q_* /(p-1)$ and hence multiplies by $p^{d-r_i}$ for one increment of gap $i$. A digit term has valuation $\delta_jp^{j-h+1}/(p-1)$. Increasing the gap shifts $h$ once and shifts its position $j$ either once or zero times. Its full contribution therefore multiplies by $p^{d-r_i}$ or $p^{d-r_i-1}$, respectively. All these multipliers are constant on the signature, and the same is true for any order in which gaps are extended.
+
+Summing each surviving term across the signature thus gives
+\[
+c\,z^{h_0}\prod_i(1-p^{w_i}z)^{-1}
+\]
+with $c\in\Q$ and $w_i\in\Z$. Empty products give single monomials. Each summand has polynomial part of degree at most $h_0$, so the finite sum has polynomial part of degree at most $B$. It remains to bound pole multiplicities. List the marked gaps $(u_i,v_i)$ in increasing order. Their deep ranks $r_i$ decrease strictly. Indeed, for two successive marked gaps the mark $v_i$ lies strictly between $0$ and $h-1$ and is a depth of some actual form, with $v_i\le u_{i+1}$. If both deep spans had the same rank, they would coincide by containment. That form would lie in the span of the deep basis at $v_{i+1}$, forcing its valuation to be at least $v_{i+1}-D>u_{i+1}$. This contradicts its assigned depth.
+
+For a terminal contribution the exponents $d-r_i$ are therefore distinct and lie in $[0,d]$. For a digit at $j$ they are $d-r_i$ through the gaps to its left ($v_i\le j$), then $d-r_i-1$ through the gaps to its right. Each run increases strictly, and only one equal pair is possible at the transition. For a gap to the right of a nonzero digit, there is a form at the splitting depth $j\le u_i$. Its valuation is too small to lie in the deep span by the same coefficient bound. Thus $r_i<d$ there, so every exponent is nonnegative. Repetition is possible only for an exponent at most $d-1$. This yields the asserted denominator, and its partial fractions give the claimed degree bounds.
+\end{proof}
+
+\begin{proof}[Proof of Theorem~\ref{main}]
+Characters diagonalize the voltage cover into blocks indexed by the $p^h$-torsion points. The trivial block is the base Laplacian, and the product of the determinants of the other blocks yields
+\[
+\nu_h=\nu_0-dh+A_h .
+\]
+The factor $p^{-dh}$ arises from dividing the product of the nonzero Laplacian eigenvalues by the number of vertices of the cover. Both $\nu_0$ and $-dh$ have proper rational generating series over $h\ge0$, with pole only at one of order at most two. Theorem~\ref{series} therefore proves the spanning-tree polynomial shape directly. The polynomial part of the series for $\nu_h$ is the polynomial of discrepancies between actual coefficients and the partial-fraction formula. Its degree is at most $B$, as required.
+
+Alternatively, given the eventual shape of DuBose and Vallières, the pole-multiplicity argument following the geometric series above can be omitted. The known form makes the generating series of $P(p^h,h)$ proper rational, and its difference from the true series is a polynomial. The degree bound on the polynomial part immediately bounds every discrepancy.
+\end{proof}
+
+In particular the stable law can be recovered without building the repository's full digit automaton. Compute $2d+1$ consecutive valuations beginning at $B+1$ and solve in the independent functions $p^{in}$ ($0\le i\le d$) and $np^{in}$ ($0\le i<d$). Their common recurrence has characteristic polynomial $(X-p^d)\prod_{i<d}(X-p^i)^2$ with nonzero constant term. A linear combination vanishing on $2d+1$ consecutive integers vanishes identically. Exact computation at the finitely many earlier levels then gives the least onset. The precision bound does not imply polynomial running time in the bit length of the voltages.
+
+\section{A lower bound in every rank}
+We first identify the highest exponential coefficient. Let $g=\min_i v_p(c_i)$ denote the content valuation of the collected symbol $F$. The integral below uses the same zero convention as $A_h$.
+
+\begin{lemma}\label{content}
+For every nonzero integral Laurent polynomial $F$ with distinct exponents,
+\[
+\lim_{h\to\infty}p^{-dh}A_h=g.
+\]
+\end{lemma}
+\begin{proof}
+Except on a union of finitely many rational hyperplanes of measure zero, all $a_i\cdot x$ are distinct in $\Z_p$. For such an $x$, take $J$ so large that the projections are distinct modulo $p^J$. Write $m_i\in[0,p^J)$ for these residues. The polynomial $\sum_i(c_i/p^g)(1+T)^{m_i}$ is nonzero modulo $p$, since different $m_i$ give distinct degrees and at least one coefficient is a unit. Its first nonzero index $j$ is less than $p^J$. Every lift to a later conductor has the same coefficients below degree $p^J$ modulo $p$, by $(1+T)^{p^J}\equiv1\pmod{(p,T^{p^J})}$. Once $e_h\ge p^J$, the valuation of $p^{-g}F(\zeta_h^x)$ is $j/e_h$, and it tends to zero.
+
+For domination use Lemma~\ref{digits}. There are finitely many possible nonzero terminal sums $\sum_{i\in I}c_i\zeta_1^{r_i}$ for these fixed coefficients. Their finite $q_1$ values have a common bound $Q$. The valuation at any nonzero evaluation is at most $(Q+1)/(p-1)$, since the lower digits sum to less than $p^{h-1}$. Zero evaluations have assigned weight zero. Dominated convergence proves the claim.
+\end{proof}
+
+\begin{proof}[Proof of Theorem~\ref{lower}]
+Take $p$ copies of each basis step $e_1,\dots,e_d$, and one further step $t e_1$ with $t=0$ or $t=p^k$. Extra loops may be given zero voltage. Both towers are connected. With $h(U)=2-U-U^{-1}$, their symbols are
+\[
+F_0=p\sum_{j=1}^d h(X_j),\qquad
+F_k=F_0+h(X_1^{p^k}).
+\]
+For $k\ge1$, the content valuations are one and zero, respectively. By Lemma~\ref{content} these are the coefficients of $p^{dn}$ in their stable laws. The two laws are therefore different. Their finite graphs agree at every level $0\le n\le k$.
+
+Take $k$ large enough that the fixed tower $F_0$ is stable throughout $[k-2d,k]$. If the perturbed tower were already stable at $k-2d$, the two polynomials would agree at $2d+1$ consecutive levels. The recurrence argument following Theorem~\ref{series} would make them identical, a contradiction. Thus its onset is at least $k-2d+1$. Taking $k=\lfloor\log_p H_{\rm volt}\rfloor$ and invoking Theorem~\ref{main} proves the matching orders.
+\end{proof}
+
+For example, at $p=2$, $d=3$, use two copies of each coordinate direction and one further step $(2^k,0,0)$. The unperturbed tower has coefficient one on $8^n$ and the perturbed one has coefficient zero. Seven-loop towers can therefore agree through level $k$ while the latter's onset is at least $k-5$ for large $k$. Every nonzero projected frequency in this example is treated by the same cyclotomic recursion as at odd primes.
+
+For $k=2$ the two exact valuation sequences over the first four levels are $(21,166,1027,6344)$ and $(21,166,1043,5288)$, obtained by reducing every character eigenvalue modulo its cyclotomic polynomial. The agreement ends precisely when the extra step first becomes visible.
+
+A three-variable example checks Theorem~\ref{series} with many zero evaluations. Take
+\[
+F=(X^{p^k}-1)(Y-1)(Z-1),\qquad k\ge2.
+\]
+The total $A_h$ is zero through $h=k$. For $h\ge k$, put $N=p^h$ and $K=p^k$. Then
+\[
+ A_h=K(h-k)(N-1)^2+2h(N-K)(N-1).
+\]
+Indeed the nonidentity roots of order dividing $p^s$ satisfy $\prod_{\xi\ne1}(1-\xi)=p^s$. The nonzero choices on each of the last two coordinates thus have total valuation $h$. The first coordinate has $N-K$ nonzero choices for its factor and contributes total valuation $K(h-k)$ by the $K$-to-one power map. Summing valuations over the allowed tuples proves the identity. Its continuation to $h=k-1$ is strictly negative, while $A_{k-1}=0$, so the onset is exactly $k$. The coefficient of $hN^2$ is $K+2$, exhibiting a double pole at $z=p^{-2}$ in rank three. At $p=k=2$ direct reduction gives the totals $0,0,364,3240$.
+
+\section{Scope and open questions}
+For fixed $p,d,m$ the upper bound applies to all connected bouquets. The matching construction uses $m\ge pd+1$. When $m=d$, spanning modulo $p$ makes the steps a basis over $\Z_p$ and all such towers are levelwise isomorphic. The repository also proves bounded onset for odd $p$ and $m<p$, and gives a sharper classification in rank two. The loop-count threshold in all higher ranks and the optimal leading constant in $\log_p H$ remain to be determined. The proof uses every pair of exponents to index the cells. A smaller description of the cells could decrease the cost of computing the first stable level.
+
+The argument gives a quantitative refinement of an established existence theorem, and addresses a question explicitly posed in the repository. The accompanying standard-library Python program compares the recursive order and leading residue with direct cyclotomic reduction on 2,856 inputs for $p=2,3,5,7$, including 90 zero evaluations. A separate test enumerates grid points in rank three at levels four through six and checks the cell-size change under gap extension in 481 cases, covering deep ranks zero through three.
+
+\begin{thebibliography}{9}
+\bibitem{Monsky} P. Monsky, \emph{On $p$-adic power series}, Mathematische Annalen 255 (1981), 217--227. \href{https://doi.org/10.1007/BF01450672}{doi:10.1007/BF01450672}.
+\bibitem{DV} S. DuBose and D. Vallières, \emph{On $\mathbb Z_\ell^d$-towers of graphs}, Algebraic Combinatorics 6 (2023), 1331--1346. \href{https://doi.org/10.5802/alco.304}{doi:10.5802/alco.304}.
+\bibitem{repo} V. Reshetnikov, \emph{ProveIt, Generalized Riemann Hypothesis article, graph towers, spanning-tree valuations and signed cycles}, source revision \texttt{ff96fd44ab16}. See the subsections on effective computation, onset, and open questions. \href{https://github.com/VladimirReshetnikov/ProveIt/blob/ff96fd44ab160e65fb8a9d861243828d07c156cf/Analysis/GeneralizedRiemannHypothesis/Article/sections/gra.tex}{Pinned source file}.
+\end{thebibliography}
+\end{document}

@@ -1,0 +1,124 @@
+\documentclass[11pt]{article}
+\usepackage[T1]{fontenc}
+\usepackage{lmodern,microtype,amsmath,amssymb,amsthm,booktabs,xcolor}
+\usepackage[margin=1in]{geometry}
+\usepackage[colorlinks=true,urlcolor=teal,linkcolor=teal,citecolor=teal]{hyperref}
+\newtheorem{theorem}{Theorem}\newtheorem{lemma}[theorem]{Lemma}
+\newcommand{\T}{\mathbb T}
+\newcommand{\R}{\mathbb R}
+\newcommand{\E}{\mathbb E}
+\title{Zero-free intervals for trigonometric polynomials\\with square frequencies}
+\author{Research note on Kozma and Oravecz's Question 2}
+\date{}
+\begin{document}
+\maketitle
+\begin{abstract}
+Let $M_{N,K}$ be the supremal length of a zero-free interval on the unit circle for a real trigonometric polynomial supported at the frequencies $\pm n^2$, $N\le n\le N+K$. Uniformly in both parameters, $M_{N,K}\asymp\min(K+1,N)/N^2$. This answers the order-of-magnitude question of Kozma and Oravecz. For $K=o(N)$ an elementary pairing determines the answer with relative error $O((K/N)^4)$. For arbitrarily long blocks, $\sqrt3-3/2\le\liminf_N N\sup_K M_{N,K}\le\limsup_N N\sup_K M_{N,K}\le21/62$. The last upper bound uses a partition of the index tail into triples whose frequency ratios approach $1:3:7$.
+\end{abstract}
+
+\section{What the square question asks}
+Write $\T=\R/\mathbb Z$ with circumference one. For a nonempty finite set $F$ of positive frequencies in $\mathbb N$ let $M(F)$ be the supremum of lengths of intervals on which some real trigonometric polynomial with spectrum in $\pm F$ never vanishes. It may use any subset of those harmonics. If $F=\{n^2:N\le n\le N+K\}$ write $M_{N,K}=M(F)$ and $M_{N,\infty}=\sup_{K\ge0}M_{N,K}$. These are already well-defined for $N\ge1$ and $K\ge0$. Kozma and Oravecz \cite[Question 2]{ko} asked whether their uniform $O(1/N)$ upper estimate for squares can be improved in order. Both how many squares are available and where the first one lies affect the answer.
+
+\begin{theorem}\label{main}
+With absolute constants, for every $N\ge1$ and integer $K\ge0$,
+\[
+ \frac{\min(K+1,N)}{8N^2}\ \le\ M_{N,K}\ \le\ \frac{\min(K+1,N)}{N^2}.
+\]
+If $K/N\to\infty$, then
+\[
+ \sqrt3-\tfrac32\ \le\ \liminf NM_{N,K}
+ \ \le\ \limsup NM_{N,K}\ \le\ \tfrac{21}{62}.
+\]
+The same bounds hold for $NM_{N,\infty}$. In particular the uniform order $1/N$ is sharp.
+\end{theorem}
+The two constants in the second display are about $0.23205$ and $0.33871$. Their difference is genuine slack in these estimates. The existence and value of a limiting constant remain open here.
+
+\section{From a positive measure to a sign interval}
+For a finite set of positive real frequencies $F$ define $D(F)$ as the smallest diameter of a real interval carrying a probability measure $\mu$ with $\int e^{2\pi i a t}\,d\mu(t)=0$ for every $a\in F$. Such a measure exists, by convolving equal two-atom measures at $\pm1/(4a)$ for each $a$. The minimum exists by translation to a common origin and weak compactness. The same convolution gives
+\begin{equation}\label{sep}
+                D(F)\le\frac12\sum_{a\in F}\frac1a .
+\end{equation}
+For integer frequencies $D(F)=M(F)$. On an interval of length $D(F)$, a translate of a minimizing measure integrates every allowed polynomial to zero. On any shorter compact interval, the convex hull of the curve $t\mapsto(\cos 2\pi a t,\sin 2\pi a t)_{a\in F}$ omits the origin, since a convex representation of zero would provide a measure. Strict separation gives a polynomial positive throughout the interval. This also reconciles the supremum over open intervals with the minimum in the measure formulation. Both notions are monotone in $F$.
+
+We use the mean-frequency bound in the ProveIt article \cite{repo}. For completeness its argument in the normalization above gives
+\begin{equation}\label{mean}
+ D(F)\ \ge\ \frac{|E|^2}{2\sum_{a\in E} a}
+ \qquad(\varnothing\ne E\subseteq F).
+\end{equation}
+Take an atomic minimizing measure for $E$, which exists by the convex-hull argument, and translate its support to have extreme points $0,D$. With $G(z)=\int e^{zt}\,d\mu(t)$ define
+\[
+ J(T)=\int_\R\log\frac{G(x)}{|G(x+iT)|}\,dx.
+\]
+The triangle inequality gives $J(T)\ge0$. Integrating $\Delta\log|G|=2\pi\sum_\rho\delta_\rho$ first horizontally and then twice vertically gives
+\[
+ J(T)=DT^2/2-2\pi\sum_{0<\Im\rho<T}(T-\Im\rho).
+\]
+Indeed the horizontal logarithmic slopes at $+\infty$ and $-\infty$ are $D$ and $0$ by dominance of the endpoint atoms, uniformly on bounded strips. The integrand decays exponentially there at both ends; its logarithmic singularities are integrable. Also $J(0)=J'(0)=0$ by positivity on the real axis and conjugation symmetry. The identity extends by continuity to a boundary zero. The prescribed zeros at $2\pi i a$ contribute at least $|E|T-2\pi\sum_{a\in E}a$ inside the sum, counting positive parts. Set $T=4\pi\sum_Ea/|E|$ and rearrange. This proves \eqref{mean}.
+
+Even the order assertion for long blocks has a short independent proof. For a centered measure of diameter $D$, its entire Fourier transform satisfies $|\widehat\mu(z)|\le e^{\pi D|\Im z|}$. Jensen's formula gives $D\ge R^{-1}\sum_{a\in F,\,a<R}\log(R/a)$ from the zeros at $\pm a$. For $K\ge N-1$ take $R=8N^2$ and the first $N$ squares to obtain $D\ge(\log2)/(8N)$. The strip estimate \eqref{mean} supplies the more precise joint bounds below.
+
+\section{Uniform estimates and short blocks}
+Apply \eqref{mean} to the first $m\le K+1$ squares. It yields
+\begin{equation}\label{prefix}
+ M_{N,K}\ge\frac{m}{2\bigl(N^2+N(m-1)+(m-1)(2m-1)/6\bigr)}.
+\end{equation}
+Taking $m=\min(K+1,N)$ bounds its mean frequency by $4N^2$. From \eqref{sep}, the sum is at most $(K+1)/(2N^2)$ and at most $(N^{-2}+N^{-1})/2\le1/N$ by integral comparison. This gives the first assertion of Theorem~\ref{main}. If $m/N\to x>0$, the lower limit for $NM_{N,K}$ is at least $x/[2(1+x+x^2/3)]$. This expression is maximized at $x=\sqrt3$, where it equals $\sqrt3-3/2$. For $K/N\to c\in(0,\infty)$ one can use $x=\min(c,\sqrt3)$.
+
+\begin{theorem}[Short blocks]\label{short}
+Suppose $(N+K)^2\le3N^2$. Put $m=K+1$, $C=N+K/2$, and $V=K(K+2)/12$. Then
+\[
+ 1\le \frac{M_{N,K}}{m/[2(C^2+V)]}
+ \le 1+\frac{K(K-1)(K+2)(K+3)}{180 C^2(C^2+V)} .
+\]
+For $K=o(N)$ this gives relative error $O((K/N)^4)$ around the displayed approximation. The cases $K=0$ and $K=1$ in the stated range are exact.
+\end{theorem}
+\begin{proof}
+For $a<b\le3a$ one three-point rule cancels both frequencies on a span $2/(a+b)$. Place masses $1/[2(1-c)]$ at $\pm1/(a+b)$ and $-c/(1-c)$ at $0$, where $c=\cos(2\pi a/(a+b))\le0$. Both cosine moments vanish and symmetry cancels the sine moments. Pair indices $j,K-j$ in $0,\ldots,K$; if $j=K/2$, use the single-frequency rule. Each pair mean is $C^2+(j-K/2)^2$. Let $Y=(j-K/2)^2$ for $j$ uniform in this finite interval. Convolving and using \eqref{prefix} therefore gives
+\[
+ \frac{m}{2(C^2+\E Y)}\le M_{N,K}\le \frac m2\E\frac1{C^2+Y}.
+\]
+We have $\E Y=V$ and $\operatorname{Var}Y=K(K-1)(K+2)(K+3)/180$ by summing powers up to four. With $A=C^2+V$, the identity
+$A\E[(C^2+Y)^{-1}]-1=\E[(Y-V)^2/(A(C^2+Y))]$ gives the bound. The gain to fourth order comes from cancelling the terms linear in $j-K/2$ in the pair means.
+\end{proof}
+
+For example, the eleven squares from $100^2$ to $110^2$ give
+\[
+       0.0004984141368<M_{100,10}<0.0004984144560.
+\]
+These are outward roundings of the exact lower and paired upper sums in the proof. The relative separation is less than $6.5\cdot10^{-7}$.
+
+\section{Three nearly odd frequencies on the long tail}
+At frequencies $(1,3,7)$ the equal atoms at $\pm1/4$ cancel all three. The support can be enlarged arbitrarily slightly to make this cancellation stable.
+
+\begin{lemma}\label{stable}
+For every $\epsilon>0$ all triples $(1,a,b)$ sufficiently close to $(1,3,7)$ admit a simultaneous cancelling probability measure supported on an interval of length $1/2+\epsilon$.
+\end{lemma}
+\begin{proof}
+Convolve the two atoms with the uniform law on $[-\epsilon/2,\epsilon/2]$. Its transform retains the three zeros. The origin lies in the interior of the convex hull of the six sine/cosine coordinates on the enlarged interval. Otherwise a nonzero linear combination would be nonnegative there and have integral zero. It would vanish on an open interval where the convolution has positive density, contradicting analyticity and linear independence of the six functions. Uniform perturbation of the curve preserves this interior property: the minimum, over all unit vectors, of the maximum scalar product with the curve is strictly positive and changes by at most the uniform perturbation. A convex combination representing the origin gives the assertion.
+\end{proof}
+
+Partition the integer indices $n\ge N$ into triples having asymptotic size ratios $1:\sqrt3:\sqrt7$. For an explicit construction choose two disjoint periodic sets of positive integers $U,V$ consisting of $58$ and $38$ residue classes, respectively, modulo $100$. If $u_k,v_k$ are their increasing enumerations starting at $k=1$, then
+\[
+ u_k=k/.58+O(1),\quad v_k=k/.38+O(1).
+\]
+Define $P(n)=u_{\lfloor .58\sqrt3\,n\rfloor}$ and $Q(n)=v_{\lfloor .38\sqrt7\,n\rfloor}$. Both indexing slopes exceed one. Consequently the maps are injective, have disjoint ranges, and satisfy $P(n)=\sqrt3\,n+O(1)$, $Q(n)=\sqrt7\,n+O(1)$. For large $N$ they both exceed $n$ throughout the tail. Scan the integers from $N$ upwards. Whenever an index $n$ remains unused take the triple $(n,P(n),Q(n))$. Its two larger members cannot be earlier starting indices and cannot be targets of a different starting index. This proves that the process partitions the entire tail.
+
+By scaling Lemma~\ref{stable}, the three squares in a triple have a cancelling measure of diameter at most $(1/2+o(1))/n^2$, uniformly over starts $n\ge N$ as $N\to\infty$. The sum of their individual two-point widths is
+\[
+ \frac12\left(n^{-2}+P(n)^{-2}+Q(n)^{-2}\right)
+      =\frac{1}{2n^2}\left(1+\frac13+\frac17+O(1/N)\right).
+\]
+Thus the joint cost is at most $(21/31+o(1))$ times the separate cost. For a finite block convolve the finitely many triple laws meeting that block, even when one of their targets lies beyond its end. The total diameter is bounded by the cost of all the triples, hence
+\[
+ M_{N,\infty}\le(21/31+o(1))\frac12\sum_{n\ge N}n^{-2}
+       =\frac{21/62+o(1)}{N}.
+\]
+This proves the remaining assertion of Theorem~\ref{main}. The partition argument also works with any fixed list of distinct odd integers $h_1,\ldots,h_l>1$ satisfying $\sum_i h_i^{-1/2}<1$: choose disjoint periodic sets of respective rational densities $>h_i^{-1/2}$ and repeat the proof. It replaces $21/62$ by $[2(1+\sum_i h_i^{-1})]^{-1}$. For example, $3,7,625$ already give a slightly smaller constant. Optimizing such partitions or identifying the true long-block constant would go beyond the order question.
+
+\paragraph{Source and scope.}
+The mean-frequency inequality is credited to the repository. The optimized square prefix, the short-block pairing and the long-tail triple construction are the contributions of this note. The proof of the order question needs no statement about Dirichlet zeros. It gives an asymptotic order for the two-parameter question, a relative asymptotic in the thin regime, and explicit bounds elsewhere. An exact formula for $M_{N,K}$ for general squares is still unknown here.
+\begin{thebibliography}{9}
+\bibitem{ko} G. Kozma and F. Oravecz, \emph{On the gaps between zeros of trigonometric polynomials}, Real Anal. Exchange 28 (2002/03), 447--454. \href{https://arxiv.org/html/math/0601021v1}{Question 2 and Theorem 1}.
+\bibitem{repo} ProveIt contributors, \emph{Beyond the Riemann hypothesis for Dirichlet $L$-functions}, section on positive filters, especially \texttt{fil:lem:strip}, \texttt{fil:thm:meanbound} and the two-frequency formula. \href{https://github.com/VladimirReshetnikov/ProveIt/blob/ff96fd44ab160e65fb8a9d861243828d07c156cf/Analysis/GeneralizedRiemannHypothesis/Article/sections/fil.tex}{Pinned article source}.
+\end{thebibliography}
+\end{document}

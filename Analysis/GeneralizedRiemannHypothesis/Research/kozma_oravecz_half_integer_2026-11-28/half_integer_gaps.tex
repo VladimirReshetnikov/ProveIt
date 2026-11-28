@@ -1,0 +1,273 @@
+\documentclass[11pt]{article}
+\usepackage[margin=1in]{geometry}
+\usepackage{amsmath,amssymb,amsthm}
+\usepackage[hidelinks]{hyperref}
+\newtheorem{theorem}{Theorem}
+\title{Sharp zero-free gaps for\\half-integer steps in three-frequency progressions}
+\author{}
+\date{28 November 2026}
+\begin{document}
+\maketitle
+\vspace{-2em}
+\begin{abstract}
+We determine the longest zero-free interval, as a supremum, for
+every real trigonometric spectrum \(\{\pm 2n,\pm(d+2)n,\pm(2d+2)n\}\)
+with \(n\ge1\) and odd \(d\ge5\). There are two analytic branches,
+one for each residue of \(d\bmod4\). For every spectrum the critical
+closed interval has a unique nonnegative polynomial up to positive
+scale and a unique annihilating probability measure, necessarily
+on six points. A replayable rational certificate proves the two
+branches on their full parameter ranges.
+\end{abstract}
+
+\section{Exact answer}
+Kozma and Oravecz ask for the sharp zero-free length of real
+trigonometric polynomials with frequencies in a symmetric arithmetic
+progression of step at least twice its start \cite[Question~1]{KO}.
+The positive-measure formulation in ProveIt \cite{P} gives dual
+certificates for this extremum. This note treats three frequencies when
+the step-to-start ratio is a nonintegral half-integer. The integer-ratio
+case is covered in the companion note. Neither uses RH or GRH.
+
+Set \(r=d/2\), \(\epsilon=1/r\), and
+\(\sigma=-1\) if \(d\equiv1\pmod4\), \(+1\) if \(d\equiv3\pmod4\).
+For \(\epsilon\ge 0\) put \(h_\epsilon(s)=\sin(\epsilon s)/\epsilon\),
+with \(h_0(s)=s\), and \(L_\epsilon=\pi/(2\epsilon)\) with \(L_0=+\infty\).
+The other two functions are
+\[
+ C_{\sigma,\epsilon}(s)=\cos((1+\epsilon)s)+\sigma\sin((1+\epsilon)s),
+ \qquad D_\epsilon(s)=\cos((2+\epsilon)s).
+\]
+For each sign let \(A,B,u,v,x=x_\sigma(\epsilon)\) be the certified
+solution to the equations
+\begin{gather*}
+ F=h_\epsilon+A C_{\sigma,\epsilon}+B D_\epsilon,\\
+ F(u)=F(v)=F'(u)=F'(v)=F(x)=0,\qquad -2<x<0<u<v<L_\epsilon.
+\end{gather*}
+Here and below derivatives of \(F\) with respect to \(s\) are marked
+with primes. The inequalities in Section~\ref{sec:interval} specify
+the branch uniquely. Its enclosure can be obtained at any parameter
+by locating the appropriate row in the bundled certificate.
+
+\begin{theorem}\label{thm:half}
+Let \(M\) be the supremal zero-free length on \(\mathbb R/\mathbb Z\)
+for the spectrum \(\{\pm 2n,\pm(d+2)n,\pm(2d+2)n\}\), where \(d\ge5\)
+is odd and \(n\) is a positive integer. Then
+\[
+ M=\frac1{4n}-\frac{x_\sigma(2/d)}{\pi dn}.
+\]
+The supremum is not attained even on an open interval. On the fixed
+critical closed interval there is a unique ray of nonnegative
+polynomials and a unique annihilating probability measure,
+with six atoms. If \(N=2n\), then for each residue class as \(r\to\infty\),
+\[
+ NM=\frac12+\frac{c_{1,\sigma}}{r}+
+               \frac{c_{2,\sigma}}{r^2}+O(r^{-3}),\qquad
+ c_{1,\sigma}=-\frac{x_\sigma(0)}{\pi},\quad
+ c_{2,\sigma}=-\frac{x_\sigma'(0)}{\pi}.
+\]
+\end{theorem}
+
+\section{Two compact interval certificates}\label{sec:interval}
+Use the parameter ranges \(0\le\epsilon\le 2/5\) for \(\sigma=-1\)
+and \(0\le\epsilon\le 2/7\) for \(\sigma=+1\).
+The replayable checks establish, uniformly on these ranges:
+\begin{enumerate}
+\item The five equations have a solution in the indicated order,
+with nonsingular Jacobian.
+On \([x,L_\epsilon]\), \(F\ge0\) with zeros precisely at \(x,u,v\).
+The derivatives \(F'(x),F''(u),F''(v)\) are strictly positive.
+\item With \(w(s)=(C_{\sigma,\epsilon}(s),D_\epsilon(s))\), the
+three cyclic determinants of \(w(x),w(u),w(v)\) are nonzero with the
+same sign.
+\item The three rows
+\[
+ \bigl(\cos(\epsilon s),\
+   \sin((1+\epsilon)s)-\sigma\cos((1+\epsilon)s),\
+   \sin((2+\epsilon)s)\bigr),\quad s=x,u,v,
+\]
+form an invertible matrix.
+\end{enumerate}
+
+\paragraph{Root boxes.}
+Write \(z=(A,B,u,v,x)\) and
+\(g=(F(u),F(v),F'(u),F'(v),F(x))\).
+For each parameter interval \(E\), the data contain a center \(z_0\),
+a radius \(a>0\), and a numerical inverse proposal converted to a
+rational matrix \(R\). Put \(Z=z_0+[-a,a]^5\).
+Enclose \(Rg(E,z_0)\) and \(I-R D_z g(E,Z)\).
+With \(q_i\) the sum of the absolute-value upper bounds in row \(i\)
+of the second enclosure, check
+\[
+ q_i<1,\qquad
+ \sup_{\epsilon\in E}|(Rg(\epsilon,z_0))_i|+a q_i<a.
+\]
+Then \(z\mapsto z-Rg(\epsilon,z)\) is a contraction taking \(Z\)
+strictly inside itself for each \(\epsilon\in E\). The norm bound
+implies \(R D_zg\) is invertible, so \(R\) and \(D_zg\) are invertible
+and the fixed point solves \(g=0\). Completeness of the full parameter
+cover is checked by equality of adjacent rational endpoints.
+
+\paragraph{Positivity.}
+For each root box the order \(-2<x<0<u<v<L_\epsilon\) is checked,
+using \(3.14<\pi\) for the last inequality.
+Enlarge the three root-coordinate intervals by \(1/9\) rounded down
+to the arithmetic grid. On the enlarged \(x\) interval check \(F'>0\);
+on those for \(u,v\) check \(F''>0\). This gives the signs near the
+zeros. The intervening intervals and the portion after \(v\) up
+to the compact cutoff are checked by subdivision and direct
+positive lower bounds on \(F\). The cutoff is 9 for a parameter
+interval with lower endpoint zero, otherwise
+\(\min(9,11/(7\epsilon_-))\), rounded up to the grid.
+Since \(\pi<22/7\), this covers up to \(\min(9,L_\epsilon)\).
+The checked bound \(3|A|+2|B|<126/11\) and
+\(|C_{\sigma,\epsilon}|\le\sqrt2<3/2\) imply that for the tail
+\(9\le s\le L_\epsilon\),
+\[
+ h_\epsilon(s)\ge 2s/\pi\ge18/\pi>63/11>
+                  \sqrt2\,|A|+|B| .
+\]
+The cyclic determinants and sine determinant are evaluated on the
+root boxes with the same arithmetic.
+
+\paragraph{Outward rounding.}
+Every sign is checked on a \(10^{-23}\) fixed grid using integer
+floor and ceiling. For a sine or cosine interval, evaluate the midpoint
+divided by eight by Taylor polynomials of degrees 43 or 42 respectively,
+and use three double-angle steps. The initial reduced arguments are
+checked to lie in \([-3,3]\); \(3^{44}/44!<10^{-23}\) bounds the Taylor
+remainder. The same bound applies to the integrated cosine series for
+\(\sin y/y=\int_0^1\cos(ty)\,dt\) on this reduced domain. Input radii
+are propagated by the Lipschitz bounds \(1,1,1/2\), respectively.
+The final covers have 354 and 780 cells and use 70,624 and 77,808
+compact sign evaluations. The replay uses no floating-point
+proposals; a separate optional mode regenerates the rational data.
+
+\section{Sharpness and rigidity}
+For a fixed parameter, take the three cyclic determinants in
+item 2 and multiply by a common sign to make positive weights
+\(\lambda_x,\lambda_u,\lambda_v\).
+The \(2\times 3\) determinant identity gives
+\(\sum_s\lambda_s w(s)=0\); because \(F(x)=F(u)=F(v)=0\),
+the same weights cancel \(h_\epsilon\).
+
+This also proves uniqueness of the branch specified above.
+If two such endpoints satisfied \(x_1<x_2<0\), the first candidate
+would be nonnegative on the second contact set and strictly positive
+at \(x_2\), contradicting the second weights.
+At equal endpoints the weights force equality of the two contact
+sets. The equations at \(u,v\) then fix \(A,B\) by their nonzero
+minor. The analytic implicit function theorem applies on every
+cell; uniqueness at common endpoints glues the analytic branches.
+In particular each has a germ at \(\epsilon=0\).
+
+Put \(\theta=2\pi(2n)t\) and \(s=r(\pi/2-\theta)\). By expanding
+the phases at \(\theta=\pi/2\), the three cosine modes at
+\(1,1+r,1+2r\) in \(\theta\) become nonzero scalar multiples of
+\(h_\epsilon,C_{\sigma,\epsilon},D_\epsilon\), respectively.
+Indeed \(\tan((1+r)\pi/2)=\sigma\), and \(1+2r\) is even.
+The critical half-angle is \(\theta_*=\pi/2-x/r\).
+Place the weights \(\lambda_x,\lambda_u,\lambda_v\) in equal pairs
+at angles \(\pm(\pi/2-s/r)\), \(s=x,u,v\), and normalize.
+The cosine moments vanish by construction and the sine moments
+by reflection.
+
+If a polynomial were zero-free on an interval of angular length
+\(2\theta_*\), translate its center to zero and adjust the sign.
+It is strictly positive in the interior, and nonnegative at the
+endpoints by continuity. Its integral against the paired measure
+is strictly positive (four atoms are interior), a contradiction.
+A larger interval contains one of the critical length and is
+likewise impossible. For any \(x<a<0\), the combination
+\(F+\delta h_\epsilon\) is positive for sufficiently small
+\(\delta>0\) on \([a,L_\epsilon]\). On \([a,0]\) this follows
+from the positive minimum of \(F\); above zero the added term
+is positive, including at both double zeros. The resulting
+interval lengths approach the critical value. Conversion from
+\(\theta\) to \(t\) gives \(M=\theta_*/(2\pi n)\).
+
+If any polynomial is nonnegative throughout the critical interval,
+integration shows it must vanish at all six points. The odd part
+vanishes by the determinant in item 3: after expansion at \(\pi/2\),
+its three columns are nonzero scalar multiples of the sine-mode
+evaluation columns. The even equations at \(u,v\) have rank two,
+so the even part is a multiple of the certified combination.
+The multiple must be nonnegative. Conversely, integrating that
+combination against any annihilating probability measure forces
+its support onto the six points. The odd determinant makes the
+pair masses equal; the cosine equations have rank two on the three
+pair totals. Normalization determines their unique positive values,
+so no atom can be deleted.
+
+\section{Asymptotics}
+The analytic germ gives the asymptotic expansion in
+Theorem~\ref{thm:half}. Its derivatives can be computed by a
+five-by-five linear solve with the same Jacobian as above:
+\(D_zg\,z'(0)=-\partial_\epsilon g\) at zero.
+For example, holding coefficients fixed, the first derivative of
+\(F\) in \(\epsilon\) at zero is
+\[
+ A\,s(-\sin s+\sigma\cos s)-B\,s\sin(2s).
+\]
+Approximate constants are \(c_{1,-}=0.6064836353\),
+\(c_{2,-}=-0.3704115178\), \(c_{1,+}=0.2224839370\), and
+\(c_{2,+}=-0.1254621878\). The exact definitions are the germ
+expressions; these decimal approximations are not used by the proof.
+The distinct \(1/r\) coefficients show that a single expansion
+without the residue class cannot describe both branches.
+
+\clearpage
+\section{Independent first case and numerical comparison}
+For \(d=5\) there is also a separate algebraic certificate.
+Use \(T_j\) for Chebyshev polynomials of the first kind and set
+\(P=T_2+A_0T_7+B_0T_{12}\). There is a unique triple with
+\(P(u_0)=P(v_0)=P'(u_0)=P'(v_0)=0\) after eliminating \(A_0\),
+in the specified boxes
+\begin{align*}
+ B_0&\in[0.46688711936350,\ 0.46688711936362],\\
+ u_0&\in[0.94228289217292,\ 0.94228289217299],\\
+ v_0&\in[0.72954822734434,\ 0.72954822734442].
+\end{align*}
+The checker obtains the two stationary points of
+\(R=(T_2+B_0T_{12})/T_7\) using opposite endpoint signs
+and monotonicity of the numerator of \(R'\) in each box.
+Then \(R(u_0,B_0)-R(v_0,B_0)\) has derivative
+\((T_{12}/T_7)(u_0)-(T_{12}/T_7)(v_0)>0\) and opposite
+signs at the ends of the \(B_0\) interval.
+Set \(A_0=-R(u_0,B_0)\). The remaining endpoint \(\xi\)
+is the unique simple root in \((0.46362209927,0.46362209930)\).
+After factoring \((y-\xi)(y-u_0)^2(y-v_0)^2\) out of \(P(y)\),
+the degree-seven quotient has 256 positive Bernstein bounds
+across 32 equal subintervals of \([0.46362209927,1]\).
+The signs of \(T_7\) at \(\xi,u_0,v_0\) are \(+,-,+\),
+with \(T_{12}/T_7\) at \(u_0\) strictly between the other two
+ratios. This gives the same positive dual argument independently,
+and \(T_2\) is positive at the two double roots, so it permits
+the perturbation for the lower bound. Thus
+\(M=\arccos(\xi)/(\pi n)\simeq0.346549538462/n\).
+Here \(y=\cos(2\pi nt)\), unlike the angular rescaling in the main
+certificate. The exact sine determinant is also checked separately.
+
+For comparison, here are approximate scaled lengths from the two
+branches:
+\[
+\begin{array}{c|rrrr}
+d & 5 & 7 & 9 & 11\\ \hline
+n M & 0.346549538462 & 0.276881103951 &
+      0.309113910011 & 0.268194148020
+\end{array}
+\]
+The result addresses the wide three-frequency part of Question~1
+for half-integer ratios. It does not classify further denominators
+or progressions with more than three frequencies.
+
+\begin{thebibliography}{9}
+\bibitem{KO} G. Kozma and F. Oravecz,
+\emph{On the gaps between zeros of trigonometric polynomials},
+Real Anal. Exchange 28 (2002/03), no.~2, 447--454.
+\href{https://arxiv.org/abs/math/0601021}{arXiv:math/0601021}.
+\bibitem{P} ProveIt,
+\href{https://github.com/VladimirReshetnikov/ProveIt/blob/3c4d27a69c98d09319a51e41a19fca05bb80a3e2/Analysis/GeneralizedRiemannHypothesis/Article/sections/fil.tex}{GRH article, spectral-filter chapter},
+revision \texttt{3c4d27a69c98}.
+\end{thebibliography}
+\end{document}

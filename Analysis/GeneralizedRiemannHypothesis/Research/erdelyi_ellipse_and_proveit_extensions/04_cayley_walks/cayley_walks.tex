@@ -1,0 +1,279 @@
+\documentclass[11pt,letterpaper]{article}
+\usepackage[margin=1in,headheight=14pt]{geometry}
+\usepackage[T1]{fontenc}
+\usepackage{lmodern,amsmath,amssymb,amsthm,mathtools,booktabs,microtype,enumitem,xcolor,hyperref}
+\definecolor{ink}{RGB}{22,61,85}
+\hypersetup{colorlinks=true,linkcolor=ink,urlcolor=ink,citecolor=ink,pdftitle={Equality in the spectral spacing bound for oriented Cayley graphs}}
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{corollary}[theorem]{Corollary}
+\newtheorem{proposition}[theorem]{Proposition}
+\newcommand{\Z}{\mathbb Z}\newcommand{\F}{\mathbb F}\newcommand{\E}{\mathbb E}
+\newcommand{\supp}{\operatorname{supp}}\newcommand{\ord}{\operatorname{ord}}
+\newcommand{\Cyc}{\mathrm C}
+\newcommand{\e}{\mathrm e}
+\newcommand{\one}{\mathbf 1}
+\newcommand{\z}{\zeta}
+\newcommand{\rr}{\textup{(R)}}\newcommand{\ooe}{\textup{(O)}}\newcommand{\ee}{\textup{(E)}}
+\title{Equality in the spectral spacing bound\\for oriented Cayley graphs}
+\author{Research note}
+\date{November 27, 2026}
+\begin{document}
+\maketitle
+\begin{abstract}
+On a finite abelian group, a prescribed spectral spacing $a\sqrt{-f}$ for a periodic oriented Cayley graph forces outdegree at least $a\varphi(f)/2$. We classify all symbols attaining equality, for every negative fundamental discriminant $-f$. Each connected component has exactly $af$ or $2af$ vertices. At odd conductor the second possibility comes from restriction to the nonidentity coset of an index-two subgroup. At conductor divisible by eight it comes from an adjacent pair in a cyclic group of order four. The classification gives an exact test for when a given connected host can attain the general bound. It also shows that, among all these minimizers, only the directed four-cycle admits instantaneous uniform mixing. Perfect state transfer within a component occurs exactly on three explicit graphs of orders three, four and eight. The proof uses quadratic Gauss sums and rigidity of probability measures with three-valued character correlations. It is unconditional.
+\end{abstract}
+
+\section{The equality problem}
+Let $G$ be a finite abelian group, written additively. A simple oriented Cayley graph is described by its symbol $b:G\to\{0,1,-1\}$, with $b(-x)=-b(x)$; the positive support gives the steps of the arrows. Its skew adjacency matrix has entries $S_{g,h}=b(h-g)$ and eigenvalues
+\[
+ \widehat b(y)=\sum_{x\in G} b(x)y(x),\qquad y\in\widehat G,
+\]
+where $\widehat G$ is the character group. The group $H=\langle\supp b\rangle$ gives the vertex set of the component of zero. Every other component is its translate. Every character of $H$ extends to $G$, so passing to $H$ preserves the set of distinct eigenvalues.
+
+Fix a negative fundamental discriminant $-f$, write $\chi=\chi_{-f}$ for its primitive real character, and put $\tau=\sqrt{-f}=i\sqrt f$. Fix a positive integer $a$. The spacing condition means $\widehat b(y)\in a\tau\Z$ for every $y$. The least possible outdegree for a nonempty symbol is $a\varphi(f)/2$, when $f\mid\exp G$ and $af\mid|G|$; the repository gives both the bound and attainment \cite{repo}. At equality there is a nonzero eigenvalue $\pm a\tau$, so the least positive period of the evolution $\exp(tS)$ is exactly $2\pi/(a\sqrt f)$. We include the lower-bound argument in Section~\ref{sec:fourier}.
+
+The repository classifies the fastest period on any host, the equality symbols at conductor four, and those at conductor three on odd hosts. Its open question on oriented Cayley walks asks which symbols attain the bound on larger hosts and what connectedness costs. We settle the first question and characterize exactly when connectedness permits the same bound. The value of the higher connected minimum on the remaining hosts is a separate optimization problem.
+
+In the statement below $\Cyc_n=\Z/n\Z$. All symbols are zero on $G\setminus H$ and may be reversed by one overall sign. All maps displayed as quotient maps are surjective. A sign character is a homomorphism to $\{1,-1\}$, including the trivial map.
+
+\begin{theorem}[Classification of equality]\label{th:main}
+A nonzero symbol has spectral spacing in $a\tau\Z$ and outdegree $a\varphi(f)/2$ if and only if on its support-generated subgroup $H$ it has one of the following forms. In each row there is a quotient map $j:H\to\Cyc_f$.
+\begin{enumerate}[leftmargin=1.15cm]
+\item[\rr] $|H|=af$ and $b(x)=\epsilon(x)\chi(j(x))$. If $f$ is odd, $\epsilon$ may be any sign character. If $f$ is even, take $\epsilon=1$.
+\item[\ooe] $f$ is odd, $|H|=2af$, and
+\[
+ b(x)=\epsilon(x)\chi(j(x))\one_{\eta(x)=-1},
+\]
+where $\epsilon$ is any sign character and $\eta$ is a nontrivial sign character.
+\item[\ee] $8\mid f$, $|H|=2af$, and there is a homomorphism $\lambda:H\to\Cyc_4$ such that $(j,\lambda):H\to\Cyc_f\times\Cyc_4$ is surjective and
+\[
+ b(x)=\chi(j(x))\,
+ \one_{\{\lambda(x)=0\ \text{or}\ \lambda(x)=j(x)\bmod4\}} .
+\]
+\end{enumerate}
+The parametrization describes the set of symbols and allows multiple descriptions of the same symbol.
+\end{theorem}
+
+\begin{corollary}[Connected attainment]\label{cor:connected}
+On a given host $G$ with $f\mid\exp G$, the universal outdegree bound can be attained by a connected graph precisely in these cases:
+\[
+\begin{array}{ll}
+ |G|=af & \text{at every conductor},\\
+ |G|=2af & \text{at odd conductor},\\
+ |G|=2af,\ \ G\twoheadrightarrow\Cyc_f\times\Cyc_4 & \text{at }8\mid f .
+\end{array}
+\]
+In particular no connected equality case at $|G|=2af$ occurs when $f\equiv4\pmod8$.
+\end{corollary}
+
+At odd prime conductor $p\equiv3\pmod4$ on an odd-order host, the regular case is the blow-up of the Paley tournament on $\F_p$ by independent fibers of size $a$. For example, in $G=\F_7^3$ the outdegree-$21$ minimizers for $a=7$ have components of order $49$. A plane supplies the component and a nonzero linear form on it supplies the tournament quotient. The exceptional case at eight already occurs on $\Cyc_8\times\Cyc_4$, with $j(s,k)=s$, $\lambda(s,k)=k$ and $a=2$. Its four positive steps and their negatives lie over the odd residues $s$, with $k=0$ or $k=s\bmod4$. The support generates the whole group. Both examples illustrate why the choice of group matters in the connected problem.
+
+\section{The character bound and the affine slice}\label{sec:fourier}
+Take $J$ divisible by $f$ and $\exp H$. Write $U_J=(\Z/J\Z)^\times$, $\z_n=\exp(2\pi i/n)$ and $\varphi$ for Euler's function. The quadratic Gauss identity gives $\tau=\sum_{v\bmod f}\chi(v)\z_f^v$. The Galois automorphism $\z_J\mapsto\z_J^v$ sends $\tau$ to $\chi(v)\tau$. Hence the spacing condition implies $\widehat b(y^v)=\chi(v)\widehat b(y)$, and inversion gives $b(vx)=\chi(v)b(x)$.
+
+For a root of unity $w\in\mu_J$ of order $k$, define
+\[
+ P(w)=\frac{1}{\varphi(J)}\sum_{v\in U_J}\chi(v)w^v .
+\]
+It vanishes unless $f\mid k$, since otherwise primitivity makes $\chi$ nontrivial on the kernel of $U_J\to U_k$. For $k=fh$ and $w=\z_k^c$ primitive of order $k$, we have
+\[
+ P(w)=\frac{\chi(c)\mu(h)\chi(h)\tau}{\varphi(k)}.
+\]
+Indeed reduction to $U_k$ and the substitution $v\mapsto c^{-1}v$ remove $c$. Insert $\one_{(v,k)=1}=\sum_{e\mid(v,k)}\mu(e)$; terms with $(e,f)>1$ vanish. For the others $e\mid h$ and summing the $k/e$ residues by classes modulo $f$ leaves only $k/e=f$. This proves the formula, including vanishing for $(h,f)>1$. In particular
+\begin{equation}\label{eq:projection}
+ |P(w)|\le\sqrt f/\varphi(f),
+\end{equation}
+with equality only for order $f$, and also order $2f$ when $f$ is odd. Indeed nonvanishing requires $(h,f)=1$ and the absolute ratio to the bound then equals $|\mu(h)|/\varphi(h)$.
+
+Averaging over units gives $\widehat b(y)=\sum_x b(x)P(y(x))$. The spacing condition and any active character (one with nonzero eigenvalue) yield
+\[
+ a\sqrt f\le |\widehat b(y)|\le |\supp b|\sqrt f/\varphi(f).
+\]
+At equality $|\supp b|=a\varphi(f)$, every active character has eigenvalue $\pm a\tau$, and $y(x)$ attains equality in \eqref{eq:projection} for every occupied $x$ and active $y$. All of the nonzero summands point in the same direction.
+
+Put $q=2f$ for odd $f$ and $q=f$ for even $f$. Because the occupied elements generate $H$, every active character has order dividing $q$. Fourier inversion shows that $b$ factors through $D=H/qH$. The spacing and the outdegree of the descended symbol are divided by $|qH|$ in the obvious Fourier and counting formulas; in particular the ratio of each eigenvalue to its largest absolute value is preserved. We will use this ratio, allowing us to work entirely on $D$. Its occupied elements generate $D$.
+
+Write $f=q_2\prod_{p\in I}p$ with $I$ the odd primes dividing $f$ and $q_2=1,4$ or $8$. Write $\chi_p$ for the Legendre character at $p$ and, when $q_2>1$, $\kappa$ for the primitive quadratic character at $q_2$ in the factorization of $\chi$. The quotient decomposes as
+\[
+ D=B\times\prod_{p\in I}E_p,
+\]
+where $E_p$ is a vector space over $\F_p$. For odd $f$, $B$ is an elementary abelian two-group, possibly trivial. For even $f$, $B$ has exponent dividing $q_2$.
+
+Choose an active character $y_0$. Its components at odd primes are represented by linear forms $u_p:E_p\to\F_p$; thus their values are $\z_p^{u_p(x_p)}$. For odd $f$, twist $b$ by the sign character given by the $B$-component of $y_0$. This permutes its Fourier values and makes the active character trivial on $B$. For even $f$, the $B$-component has the form $\z_{q_2}^{u(z)}$ for a homomorphism $u:B\to\Cyc_{q_2}$. The equality in \eqref{eq:projection} forces $u_p(x_p)\ne0$ on the support for all $p$, and $u(z)$ odd there if $f$ is even. In particular all these forms are onto. After the odd-conductor twist and an overall sign the symbol agrees on its support with
+\begin{equation}\label{eq:sign}
+ \prod_{p\in I}\chi_p(u_p(x_p))\ 
+ \begin{cases}
+ 1,&q_2=1,\\
+ \kappa(u(z)),&q_2>1 .
+ \end{cases}
+\end{equation}
+To see the sign directly, the value of the chosen character on an occupied point now has order exactly $f$ (also in the twisted odd case). Its unit projection is $\chi(c)\tau/\varphi(f)$ with $w=\z_f^c$. The Chinese remainder theorem expresses $\chi(c)$ as the right side of \eqref{eq:sign} times a fixed sign independent of the point.
+
+The units at the primes of $f$ act by independent scalar multiplications. They fix $B$ when $f$ is odd. On each occupied orbit, the equations $u_p(x_p)=1$ and, if $q_2>1$, $u(z)=1$, therefore select precisely one point. Each orbit has $\varphi(f)$ elements. Let $A$ be the set of selected points and give it the uniform probability distribution. Denote a random point of $A$ by $(Z,(X_p))$. It is enough to recover $A$ to recover the whole symbol.
+
+For every collection of linear forms $L_p$ on $E_p$ and shifts $t_p\in\F_p$, we have
+\begin{equation}\label{eq:extreme}
+ \E\left[F(Z)\prod_{p\in I}\chi_p(t_p+L_p(X_p))\right]\in\{-1,0,1\},
+\end{equation}
+where $F$ ranges over the sign characters of $B$ when $q_2=1$, or over
+$F(Z)=\kappa(t+L(Z))$ for $L:B\to\Cyc_{q_2}$ and $t\in\Cyc_{q_2}$ when $q_2>1$.
+Indeed sum the Fourier transform over each orbit using \eqref{eq:sign}. The $p$-factor is
+$\sum_{s\in U_p}\chi_p(s)\z_p^{s(L_p+t_pu_p)(X_p)}
+ =\tau_p\chi_p(L_p(X_p)+t_p)$, with $\tau_p$ its Gauss sum. At the even conductor the same formula holds for $\kappa$ and $L+tu$, by primitivity. The global multiplier is the product of the local Gauss sums times $|A|$, up to sign. Taking the chosen frequency shows that its absolute value is precisely the common magnitude of all active eigenvalues and that its phase agrees up to sign with theirs. Division yields \eqref{eq:extreme}.
+
+\section{Rigidity of the slice}
+We use the following elementary Fourier observation. If $X$ is a random variable on a finite abelian group and every $|\E\gamma(X)|$ is zero or one, its law is uniform on a coset. Indeed let $K$ be generated by differences of points of its support, and $x_0$ one of these points. The characters of unit mean modulus are exactly $K^\perp$ by equality in the triangle inequality. On those characters the mean is $\gamma(x_0)$; elsewhere it vanishes. These are the Fourier coefficients of the uniform law on $x_0+K$.
+
+\begin{lemma}[Odd-prime rigidity]\label{lem:odd}
+Let $X$ be a random point of a vector space over $\F_p$, with $p$ odd. If $\E\chi_p(t+L(X))\in\{-1,0,1\}$ for every linear $L$ and every $t$, then $X$ is uniform on an affine subspace. Each linear projection is constant or uniform on $\F_p$.
+\end{lemma}
+\begin{proof}
+Fix $L$, put $q_j=\Pr(L(X)=j)$, and write $v_t=\sum_j q_j\chi_p(t+j)$. The elementary Legendre correlation is
+\[
+ \sum_t\chi_p(t+i)\chi_p(t+j)=p\one_{i=j}-1.
+\]
+For $i\ne j$ use the bijection $t\mapsto(t+i)/(t+j)$ from $\F_p\setminus\{-j\}$ to $\F_p\setminus\{1\}$. If $q_j>0$, every nonzero $v_t$ forces $\chi_p(t+j)=v_t$ by equality in an average of numbers in $[-1,1]$. Consequently
+\[
+ p q_j-1=\sum_t v_t\chi_p(t+j)=|\supp v|.
+\]
+This is constant on the support of $(q_j)$, whose size must therefore be the integer $p/(1+|\supp v|)$. It equals $1$ or $p$. Thus every additive character of $X$ has mean of modulus zero or one, giving the claim.
+\end{proof}
+
+Taking all other factors in \eqref{eq:extreme} equal to one shows that $X_p$ is uniform on an affine subspace $D_p\subseteq\{u_p=1\}$. These marginals are independent of each other and jointly independent of $Z$. To see this, fix linear forms $L_p$. If one $L_p$ is nonconstant on $D_p$, it is uniform on $\F_p$. For each tuple of shifts a positive-probability event makes this factor zero. Hence the absolute value of \eqref{eq:extreme} is strictly below one and its value is zero. Multiply the identity by $\prod_p\z_p^{-t_p}$ and sum over the shifts. Each Gauss sum is nonzero, giving
+\[
+ \E\left[F(Z)\prod_p\z_p^{L_p(X_p)}\right]=0 .
+\]
+At even conductor, summing also over $t$ with weight $\z_{q_2}^{-t}$ gives the same vanishing with $F$ replaced by any additive character of $B$. For odd conductor these additive characters were already the choices of $F$. When every $L_p$ is constant on $D_p$, the product of their additive characters is constant on the support. Thus all mixed Fourier coefficients agree with those of the product of the marginals. Fourier inversion gives
+\[
+ A=A_B\times\prod_p D_p,\qquad A_B=\supp(Z).
+\]
+If $I$ is empty the product is empty. Since $A$ is uniform, the law on $A_B$ is uniform as well.
+
+The occupied elements generate $D$, so the scalar multiples of $D_p$ span $E_p$. Since $D_p$ is affine with $u_p=1$, its linear span has dimension $1+\dim D_p$. Thus
+\begin{equation}\label{eq:oddplane}
+ D_p=\{x_p:u_p(x_p)=1\}.
+\end{equation}
+
+\subsection*{The two-primary slice}
+For odd $f$, all sign characters of $B$ have expectation in $\{-1,0,1\}$ under $Z$. Hence $A_B=z_0+K$ is an affine subspace. Its span is $B$ because the occupied elements generate $D$. Therefore either $A_B=B$, or $K$ has index two and $A_B$ is its nonidentity coset.
+
+For $q_2=4$, the primitive quadratic character is $\kappa(s)=\Im(i^s)$, also at even $s$. Thus \eqref{eq:extreme} puts both real and imaginary parts of $\E i^{L(Z)}$ in $\{-1,0,1\}$ for every $L:B\to\Cyc_4$. Being in the unit disk, each coefficient has modulus zero or one. The law is uniform on a coset $z_0+K\subseteq\{u=1\}$. As $\langle z_0,K\rangle=B$, $u(z_0)=1$ and the exponent divides four, we have $B=\langle z_0\rangle\oplus K$ and $K=\ker u$. In particular $A_B=\{u=1\}$.
+
+\begin{lemma}[The exceptional dyadic slice]\label{lem:dyadic}
+Let $B$ have exponent dividing eight and $\kappa$ be a primitive quadratic character modulo eight. Suppose $Z$ is supported on $u^{-1}(1)$ for $u:B\to\Cyc_8$, and
+\[
+ \E\kappa(t+L(Z))\in\{-1,0,1\}
+ \quad(t\in\Cyc_8,\ L:B\to\Cyc_8).
+\]
+Let $z_0$ be a support point and $K=\langle\supp(Z)-z_0\rangle$. The law of $Z-z_0$ either is uniform on $K$ or, for some surjection $h:K\to\Cyc_4$, is uniform on $h^{-1}(\{0,1\})$.
+\end{lemma}
+\begin{proof}
+Write $Y=Z-z_0$. Every character of $K$ extends to $B$ and can there be expressed as $\z_8^L$. Translation by $z_0$ changes only the freely variable $t$. We may therefore apply the three-value condition on $K$ to every $L:K\to\Cyc_8$. If $\E\z_8^{L(Y)}\ne0$, at least one $\E\kappa(t+L(Y))$ is nonzero, because the discrete Fourier transform in $t$ at frequency one is the given mean times a nonzero Gauss sum. At that shift the absolute mean equals one, so $t+L(Y)$ is odd throughout the support. Since zero is a support point and the support generates $K$, $L(K)$ consists of even residues. No character of order eight has a nonzero mean.
+
+If $\gamma$ has order two, choose $\z_8^{L}=\gamma$ with values $L=0,4$. Primitivity gives $\kappa(t+4)=-\kappa(t)$ for odd $t$. Hence $\E\gamma(Y)\in\{-1,0,1\}$. A nontrivial character on the support-generated $K$ cannot be constant on the support, which includes zero. Every nontrivial order-two character therefore has mean zero.
+
+Suppose $\gamma$ has order four and nonzero mean. Write $\gamma=i^h$ with $h:K\to\Cyc_4$ onto. The character $\gamma^2$ is unbiased, so the parity of $h(Y)$ is a fair bit. At a shift making the $\kappa$ mean equal to $\pm1$, $\kappa(t+2h(Y))$ has constant sign. On the four odd residues, the signs of the two primitive real characters modulo eight are $(+,+,-,-)$ and $(+,-,-,+)$ in cyclic order. Thus $h(Y)$ lies on an adjacent pair of residues in $\Cyc_4$, one even and one odd, each with probability $1/2$. Consequently $|\E\gamma(Y)|=1/\sqrt2$. Since $0$ is a support point, inversion of $\gamma$ if needed normalizes this pair to $\{0,1\}$.
+
+If two order-four characters $\gamma,\delta$ with nonzero means had different squares, their two sign characters would be independent as characters over $\F_2$. Each of these and their product has mean zero. Therefore their two parity bits under $Y$ are independent and fair. Each order-four character value is determined by its own parity bit, by the adjacent-pair description. This gives $|\E(\gamma\delta)(Y)|=1/2$, outside the possible mean moduli $0,1/\sqrt2,1$ just proved. Thus all order-four characters with nonzero mean have the same square. Normalize their adjacent pairs to $\{1,i\}$ in the complex plane by taking inverses as needed. Their values coincide on the support since the common square determines the value. As the support generates $K$, the normalized characters coincide on $K$.
+
+If all nontrivial Fourier coefficients vanish, $Y$ is uniform on $K$. Otherwise the only nontrivial characters of nonzero mean form one inverse pair $\gamma,\gamma^{-1}$. The law is invariant under $\ker\gamma$ by Fourier inversion and gives mass $1/2$ to each of two adjacent fibers. This proves the alternative.
+\end{proof}
+
+Apply the lemma to $q_2=8$. Connectivity gives $B=\langle z_0,K\rangle$. The point $z_0$ has order eight since $u(z_0)=1$, and $K\subseteq\ker u$, hence $B=\langle z_0\rangle\oplus K$ with $K=\ker u$. In the exceptional alternative extend $h$ to $\lambda:B\to\Cyc_4$ by $\lambda(z_0)=0$. An occupied point with $u(z)=s$ odd is a scalar multiple by $s$ of a point on the normalized slice. Its condition is exactly
+\[
+ \lambda(z)\in\{0,s\bmod4\}.
+\]
+The regular alternative allows the whole slice.
+
+\section{Reconstruction and the converse}
+Combine the $u_p$ and, if present, $u$ into $j:D\to\Cyc_f$ by the Chinese remainder theorem. Equations \eqref{eq:sign} and \eqref{eq:oddplane} give the character $\chi(j)$ on the recovered support. The binary coset restriction and twist in the odd case give \ooe\ or \rr. In the exceptional even case $(j,\lambda)$ is onto because $u$ and $\lambda$ are independent on the direct sum of $B$. Pull these maps back to $H$. The occupied fraction of $H$ is $\varphi(f)/f$ in \rr, and $\varphi(f)/(2f)$ in \ooe\ and \ee. Comparing with $|\supp b|=a\varphi(f)$ gives the component orders.
+
+Conversely, in \rr\ the quotient symbol $s\mapsto\chi(s)$ has Fourier spectrum in $\{0,\pm\tau\}$ by the primitive Gauss identity. Pullback multiplies the nonzero eigenvalues by $|H|/f$. A sign twist permutes the characters. The support contains the full fiber at $1$, hence generates $H$. In \ooe\ the joint map $(j,\eta)$ is onto by coprime orders, and on $\Cyc_f\times\Cyc_2$ the binary coset is a singleton. Its Fourier transform at each binary frequency is $\pm1$, so the nonzero eigenvalues of the pullback are $\pm |H|\tau/(2f)$. The support generates the quotient, since $(1,1)$ has order $2f$, and contains whole fibers.
+
+For \ee\ first work on $\Cyc_f\times\Cyc_4$. For a frequency $(d,h)$ its transform is
+\[
+ \sum_{s\bmod f}\chi(s)\z_f^{ds}(1+i^{hs})
+   =\tau\left[\chi(d)+\chi(d+hf/4)\right].
+\]
+As $8\mid f$, the two arguments have identical divisibility by two and by each odd prime dividing $f$. Thus the sum in brackets belongs to $\{0,\pm2\}$ and equals $2$ at $d=1,h=0$. Pullback multiplies by $|H|/(4f)$, giving the required spacing. The support contains $(1,0)$ and $(1,1)$ in the quotient and all points over them, hence generates $H$. All three cases are odd under $x\mapsto-x$, since $\chi(-1)=-1$ and the mask in \ee\ is closed under simultaneous negation. Counting the positive steps gives the stated outdegree. This proves Theorem~\ref{th:main}. Corollary~\ref{cor:connected} follows since $f\mid\exp G$ gives a quotient $\Cyc_f$ by invariant factors, and every finite abelian group of even order has a nontrivial sign character.
+
+\section{Uniform mixing and perfect state transfer}
+\begin{theorem}\label{th:mixing}
+Among all equality cases in Theorem~\ref{th:main}, the only graph admitting instantaneous uniform mixing is the directed four-cycle, up to isomorphism. Its mixing times are the quarter and three-quarter periods modulo its least period.
+\end{theorem}
+\begin{proof}
+Write $N=|G|$. If every entry of $U(t)=\exp(tS)$ has magnitude $1/\sqrt N$, the graph must be connected. The matrix is real orthogonal, and its row sums are one since $S$ kills the constant vector. Thus each row of $\sqrt N U(t)$ consists of signs whose sum is $\sqrt N$, so $N$ is a square. Moreover a real Hadamard matrix of order $N>2$ has $4\mid N$: normalize the first row to ones by changing column signs. The next two rows are balanced and orthogonal, so each sign class of the second row has even length. Our graphs have $N\ge3$.
+
+Parseval and the ternary spectrum show that the number $r$ of nonzero eigenvalues counted with multiplicity satisfies
+\[
+ \frac rN=\frac{|\supp b|}{a^2f}=\frac{\varphi(f)}{af}.
+\]
+Translation invariance makes each diagonal entry equal to the normalized trace, namely
+\[
+ 1-\frac rN\bigl(1-\cos(a\sqrt f\,t)\bigr).
+\]
+For $a\ge3$ this is at least $1-2/a\ge1/3$, so uniform mixing requires $N\le9$. The only square divisible by four in this range is four, impossible since $N\ge af\ge9$. Thus $a\le2$.
+
+By Theorem~\ref{th:main}, $N=af$ or $2af$. Each odd prime dividing $f$ occurs to exponent one in $f$ and must occur in $a$ for $N$ to be a square. With $a\le2$, no such prime occurs. The negative fundamental discriminants remaining are $-4$ and $-8$. For $f=4$ there is only \rr, and $4a$ is a square only for $a=1$, giving the directed four-cycle. For $f=8$, the regular case requires $a=2$, $N=16$, and its diagonal entry is at least $1/2>1/4$. The exceptional case requires $N=16a\ge32$ by its quotient $\Cyc_8\times\Cyc_4$, leaving only $a=2$ and the nonsquare $N=32$. On the directed four-cycle the entries in one row, up to signs and order, are $(1+\cos2t)/2,(1-\cos2t)/2$, and twice $\sin(2t)/2$. They all have absolute value $1/2$ precisely at $t=\pi/4,3\pi/4\bmod\pi$.
+\end{proof}
+
+\begin{theorem}[Perfect state transfer]\label{th:pst}
+In an equality graph, transfer between distinct vertices occurs precisely when their component is one of the following up to isomorphism: the directed three-cycle, the directed four-cycle, or the oriented graph on $\Cyc_8$ with positive steps $\{1,3\}$. The first nontrivial transfer time is $T/3$ on the three-cycle and $T/2$ on each of the other two components, where $T$ is the least period.
+\end{theorem}
+\begin{proof}
+It suffices to work on a connected component of order $N$. If $U(t)$ takes one standard basis vector to a unit scalar multiple of another, translation invariance makes the entire matrix that scalar times a translation by $h$. The constant vector is fixed, so the scalar is one. For $h\ne0$, the translation is nonidentity on $N(1-1/\ord h)\ge N/2$ Fourier modes. They must all have nonzero eigenvalue for $S$. The preceding rank formula gives $r/N=\varphi(f)/(af)<1/a$, so $a=1$.
+
+The quotient required in \ee\ would have order $4f>|H|=2f$, so this case is impossible. In \ooe\ the group is $\Cyc_f\times\Cyc_2$ by the joint quotient map. The sign twist restricts to a constant on the occupied coset since $f$ is odd. The eigenvalues, up to an overall sign, are $(-1)^v\chi(k)\tau$ at frequencies $(k,v)$. At $k=0$ both eigenvalues vanish, forcing the binary displacement to be zero. The two phases at any fixed $k$ are complex conjugates and must equal the same translation phase. Thus all translation phases have square one, impossible for a nonzero displacement in the odd-order factor.
+
+In \rr\ we have $H=\Cyc_f$, with the twist trivial since $f$ is odd whenever a twist is allowed. If $f$ has distinct prime factors $p,q$, the inactive frequencies $p,q$ force $ph=qh=0\bmod f$, hence $h=0$. A prime-power conductor here is an odd prime $p\equiv3\bmod4$, or $4$ or $8$. At an odd prime a nonidentity translation has $p$ distinct eigenphases, while $U(t)$ has at most three. For $p=3$ the phases at frequencies $1,2$ are $\exp(\pm i\sqrt3\,t)$, giving the first nontrivial translation at $T/3$. At $4$ and $8$, vanishing at frequency $2$ forces the nontrivial displacement $f/2$. Translation by $f/2$ gives sign $-1$ on every odd frequency and $1$ on every even one. All odd frequencies have eigenvalue $\pm\tau$, so this occurs first at $T/2$. The positive residues of $\chi_{-8}$ are $1,3\bmod8$.
+\end{proof}
+
+\section{Relation to prior work and remaining questions}
+Godsil and Zhang characterize periodicity through the action of units in a cyclotomic Galois group on the connection set \cite{gz}. Godsil described the classification of uniform mixing on oriented abelian Cayley graphs as a research goal \cite{godsil}. Song classifies perfect state transfer for all oriented circulants, obtaining the possible conductors $3,4,8$ \cite{song}. The scope of Theorem~\ref{th:pst} includes noncyclic abelian groups at minimum outdegree. In this class it proves that transfer itself forces the component to be cyclic and identifies its graph. The repository transfers a character-projection bound to spectral spacing, proves sharpness, and gives rank and duality in the equality case. It also determines uniform mixing among its fastest walks \cite{repo}. Theorem~\ref{th:main} addresses every allowed spacing, every negative fundamental discriminant and every finite abelian host. Its new ingredient is the inverse argument from a three-valued spectrum to the entire support. Theorem~\ref{th:mixing} answers the uniform-mixing question within this extremal class. The general class includes graphs of larger outdegree and remains outside the proof. We did not find an earlier statement of this all-conductor classification in the sources reviewed. All three theorems have unconditional finite proofs.
+
+For a fixed connected host that fails Corollary~\ref{cor:connected}, the exact higher minimum (or impossibility of the prescribed spacing) remains to be determined. One possible next case is $G=\F_p^3$ at spacing $p\sqrt{-p}$ for $p\equiv3\pmod4$. Another is to determine which constraints on the support survive a small excess over $a\varphi(f)/2$, when the equality argument no longer forces exact signs.
+
+\clearpage
+\section{Computational checks}
+The script \texttt{check\_graphs.py} exhausts the Galois-equivariant symbols at twelve choices of host and conductor. It calculates Fourier values by reducing polynomials modulo the cyclotomic polynomial of the group exponent, tests connectivity and equality, then compares the resulting \emph{sets of labelled symbols} with the three constructions of Theorem~\ref{th:main}. Across $552{,}918$ orbit assignments it finds $288$ connected equality symbols, with agreement at every host. Selected counts, including both exceptional constructions, are displayed here. The full output accompanies the script.
+\begin{center}
+\begin{tabular}{lrrl}
+\toprule
+Host & $f$ & Assignments & Spacing divisor $a$ (number of symbols)\\
+\midrule
+$\Cyc_3\times\Cyc_6$ & 3 & 6,561 & $3\ (8),\ 6\ (16)$\\
+$\Cyc_8\times\Cyc_4$ & 8 & 81 & $2\ (16),\ 4\ (8)$\\
+$\Cyc_7^2$ & 7 & 6,561 & $7\ (16)$\\
+$\Cyc_{30}$ & 15 & 9 & $1\ (2),\ 2\ (4)$\\
+$\Cyc_4\times\Cyc_{20}$ & 20 & 729 & $4\ (12)$\\
+$\Cyc_8\times\Cyc_{24}$ & 24 & 531,441 & $4\ (48),\ 8\ (24)$\\
+\bottomrule
+\end{tabular}
+\end{center}
+
+The accompanying script \texttt{check\_octadic\_slices.py} independently tests the local classification in Lemma~\ref{lem:dyadic}. On each group in the table, it exhausts all subsets whose differences generate the group, gives the subset the uniform law, and checks every shifted quadratic correlation by integer sums. It compares the complete set of survivors with the full group and all inverse images of adjacent pairs. The proof covers arbitrary probabilities.
+\begin{center}
+\begin{tabular}{lrr}
+\toprule
+Group & Affinely spanning subsets & Passing all tests\\
+\midrule
+$\Cyc_2^3$ &149&1\\
+$\Cyc_4$ &9&5\\
+$\Cyc_4\times\Cyc_2$ &189&9\\
+$\Cyc_4^2$ &64,125&25\\
+$\Cyc_8$ &225&5\\
+$\Cyc_8\times\Cyc_2$ &64,125&9\\
+\bottomrule
+\end{tabular}
+\end{center}
+
+\begin{thebibliography}{9}
+\bibitem{repo} V. Reshetnikov, \emph{ProveIt}, Analysis/GeneralizedRiemannHypothesis, revision \texttt{41a284d6ef8e}. See
+\href{https://github.com/VladimirReshetnikov/ProveIt/blob/41a284d6ef8eb16d783bfc685ab99cc6e1d28daa/Analysis/GeneralizedRiemannHypothesis/Article/sections/gra.tex}{Graph towers, spanning-tree valuations and signed cycles}, subsections \emph{Least periods of oriented Cayley walks} and \emph{Open questions}, and the
+\href{https://github.com/VladimirReshetnikov/ProveIt/blob/41a284d6ef8eb16d783bfc685ab99cc6e1d28daa/Analysis/GeneralizedRiemannHypothesis/Article/sections/li.tex}{lemma on the norm of a character projection}.
+\bibitem{gz} C. Godsil and X. Zhang, \emph{Oriented or signed Cayley graphs with all eigenvalues integer multiples of $\sqrt\Delta$}, \href{https://arxiv.org/abs/2405.14140}{arXiv:2405.14140}, 2024, especially Theorem 8.1.
+\bibitem{godsil} C. Godsil, \emph{Periodicity of oriented Cayley graphs}, Canadian Mathematical Society Winter Meeting 2023, \href{https://www2.cms.math.ca/Reunions/hiver23/res/pdf/ctm-cg.pdf}{abstract}.
+\bibitem{song} X. Song, \emph{Perfect state transfer on oriented circulant graphs: a complete classification}, \href{https://arxiv.org/abs/2608.11992}{arXiv:2608.11992}, 2026.
+\end{thebibliography}
+\end{document}

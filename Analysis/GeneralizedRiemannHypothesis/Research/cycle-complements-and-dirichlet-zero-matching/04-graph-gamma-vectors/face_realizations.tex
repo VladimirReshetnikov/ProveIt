@@ -1,0 +1,179 @@
+\documentclass[11pt]{article}
+\usepackage[T1]{fontenc}
+\usepackage{lmodern,amsmath,amsfonts,amssymb,amsthm,booktabs,microtype}
+\usepackage[margin=1.03in]{geometry}
+\usepackage[colorlinks=true,linkcolor=blue!55!black,urlcolor=blue!55!black,citecolor=blue!55!black]{hyperref}
+\usepackage{xcolor}
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{corollary}[theorem]{Corollary}
+\newtheorem{proposition}[theorem]{Proposition}
+\newcommand{\G}{\Gamma}
+\newcommand{\A}{\mathcal A}
+\newcommand{\B}{\mathcal B}
+\newcommand{\F}{\mathcal F}
+\newcommand{\NN}{\mathbb N}
+\newcommand{\RR}{\mathbb R}
+\newcommand{\ZZ}{\mathbb Z}
+\DeclareMathOperator{\conv}{conv}
+\title{Matching complexes for the gamma vectors\\of symmetric edge polytopes}
+\author{Research note}
+\date{November 27, 2026}
+\begin{document}
+\maketitle
+\begin{abstract}
+For every graph suspension, we realize the Ehrhart gamma polynomial of its symmetric edge polytope as the face polynomial of a simplicial complex. The complex has two vertices per edge of the base graph and its maximum face size is the matching number. A minimum vertex cover gives a balanced realization for every bipartite base and, more generally, whenever the matching and vertex-cover numbers agree. We construct flag realizations for chordal bipartite and strongly chordal bases. For bipartite bases an induced long cycle is exactly the obstruction to flagness of a coherent choice of matching representatives. We also establish Newton inequalities for the gamma coefficients of bipartite suspensions by a Lorentzian polynomial construction. Parallel face realizations hold for the Ehrhart gamma polynomial in type B. The results verify instances of the Nevo--Petersen conjectures and their flag strengthening.
+\end{abstract}
+
+\section{The question and the graph families}
+For a $d$-dimensional lattice polytope $P$, the counts $E_P(k)=|kP\cap\ZZ^N|$ define
+\[
+ \sum_{k\ge0} E_P(k)t^k=\frac{h^*_P(t)}{(1-t)^{d+1}}.
+\]
+When $h^*_P$ is palindromic of degree $d$, define $\G_P(z)=\sum_j\gamma_j z^j$ by
+\[
+ h^*_P(t)=\sum_{j=0}^{\lfloor d/2\rfloor}\gamma_jt^j(1+t)^{d-2j}.
+\]
+For a simplicial complex $\Delta$ write $f(\Delta,z)=\sum_{F\in\Delta}z^{|F|}$, including the empty face. A complex of maximum face size $r$ is \emph{balanced} if its vertices admit $r$ colors and every face has distinct colors. A \emph{flag} complex contains every clique of its graph of vertices and edges. Nevo and Petersen conjectured that the gamma vector of a flag homology sphere is a simplicial face vector and, more strongly, a balanced face vector. They asked whether it always admits a flag realization \cite[Conj.~1.4, Conj.~6.3 and Problem~6.4]{NP}. The balanced version gives the Frankl--F\"uredi--Kalai inequalities. A flag realization implies the existence of a balanced realization by Frohmader's theorem \cite{Froh}.
+
+Our graphs are finite, simple and undirected. Given $G$ with $n\ge1$ vertices, its suspension $\widehat G$ adds a new vertex adjacent to all of $G$. Let
+\[
+ \A_H=\conv\{\pm(e_a-e_b):ab\in E(H)\},\qquad
+ \B_G=\conv\bigl(\{\pm e_a\}_a\ \cup\ \{\pm e_a\pm e_b:ab\in E(G)\}\bigr),
+\]
+where the signs in the second set vary independently. Put $P=\A_{\widehat G}$ or $P=\B_G$. Both have dimension $n$, using the zero-sum lattice for the first. The first is reflexive, and the second is reflexive when $G$ is bipartite \cite{OT}. If $\partial P$ has a flag unimodular triangulation then its $h$-polynomial is $h^*_P$, since coning to the origin gives a unimodular triangulation of a reflexive polytope. The gamma realizations below thus give the corresponding Nevo--Petersen conclusions for every such boundary triangulation. They are assertions about $h^*_P$ even when the existence of a flag boundary triangulation is unspecified.
+
+The ProveIt article investigates the zero locations of graph Ehrhart polynomials by isolating a finite positivity certificate \cite{repo}. Here we study the same graph-polytope setting at the level of the generating numerator. We use a different finite certificate: choosing a unique least-weight matching for each pair of attainable endpoint sets turns a coefficient count into a face structure. The only arithmetic of the proofs is finite counting and polynomial algebra. They use neither RH nor GRH.
+
+\begin{theorem}\label{main}
+Let $\nu(G)$ and $\tau(G)$ denote the maximum size of a matching and the minimum size of a vertex cover.
+\begin{enumerate}
+\item For every $G$, $\G_{\A_{\widehat G}}$ is a simplicial face polynomial. Its degree is $\nu(G)$ and its linear coefficient is $2|E(G)|$. When $\nu(G)=\tau(G)$ it has a balanced realization. This includes every bipartite $G$.
+\item For a chordal bipartite or strongly chordal $G$, $\G_{\A_{\widehat G}}$ has a flag realization. The same conclusion holds whenever $G$ has no simple even cycle of length at least six.
+\item For every bipartite $G$, $\G_{\B_G}$ has a balanced realization. For chordal bipartite $G$ it has a realization that is simultaneously flag and balanced.
+\end{enumerate}
+\end{theorem}
+Ohsugi and Tsuchiya \cite[Thms.~1.3 and 7.5]{OT} proved flag realizability in type A for bases without even cycles and in type B for forests. Their Theorem~6.9 gives a flag unimodular boundary triangulation in type A for every chordal bipartite base. In particular the two different flag complexes in that case, the sphere being triangulated and the complex enumerating its gamma vector, both exist. The realization for complete bipartite \emph{edge polytopes of symmetric type} proved by Higashitani, Jochemko and Micha\l ek \cite{HJM} concerns $\A_{K_{a,b}}$. A bipartite base in our theorem instead gives $\A_{\widehat{G}}$.
+Ferroni's counterexamples to gamma positivity for unrestricted symmetric edge polytopes \cite{Fer} make the suspension hypothesis substantive.
+
+\section{A face complex from ordered endpoint sets}
+Call $S\subseteq V(G)$ \emph{perfectly matchable} if $G[S]$ has a perfect matching. The empty set qualifies. Write $p(G,z)=\sum_{S}z^{|S|/2}$, summed over such sets. This is the perfectly matchable set polynomial studied by Davis and Kohl \cite{DK}.
+
+\begin{lemma}\label{cut}
+$\gamma_j(\A_{\widehat G})$ counts ordered pairs $(U,V)$ of disjoint $j$-subsets for which the edges of $G$ from $U$ to $V$ admit a perfect matching.
+\end{lemma}
+\begin{proof}
+First take $G$ connected. For $D\subseteq V(G)$ let $G_D$ be the spanning subgraph consisting of edges crossing between $D$ and its complement. Theorem~3.1 and Proposition~4.1 of \cite{OT} give
+\[
+ \G_{\A_{\widehat G}}(z)=2^{-n}\sum_{D\subseteq V(G)}p(G_D,4z).
+\]
+The source averages over distinct cuts with factor $2^{1-n}$. Each occurs twice when all $D$ are used. Fix a perfectly matchable $2j$-set $T$ of $G_D$. Its two sides $U=T\cap D$ and $V=T\setminus D$ have size $j$. Conversely a qualifying ordered pair occurs for exactly $2^{n-2j}$ choices of $D$. Its contribution is $2^{-n}4^j2^{n-2j}=1$.
+
+For general $G$, delete the suspension coordinate and use the other $n$ lattice coordinates. The suspension edges give the vectors $\pm e_i$. Each original edge still gives $\pm(e_i-e_j)$. The polytope is a free sum in the separate coordinate lattices of the components. Its gauge on lattice points is the sum of the component gauges, and each component gauge is integral because the component suspension polytopes are reflexive. Thus their series counting points of \emph{exact} gauge multiply. The exact-gauge series equals $(1-t)\sum_kE_P(k)t^k=h_P^*(t)/(1-t)^{\dim P}$. Both the $h^*$ and gamma polynomials consequently multiply. The ordered pair counts multiply by the same component decomposition. An isolated vertex has component suspension polytope a lattice segment with numerator $1+t$ and gamma polynomial $1$.
+\end{proof}
+
+Give each oriented edge $u\to v$ of $G$ a distinct power of two as weight. Matchings here always have disjoint \emph{underlying} vertices. For every pair $(U,V)$ counted by Lemma~\ref{cut}, minimize total weight among matchings directed from $U$ to $V$. Weights make the minimizing subset unique. Denote by $\Delta_G$ the collection of these minimizing matchings.
+
+\begin{proposition}\label{hered}
+$\Delta_G$ is a simplicial complex on the $2|E(G)|$ directed edges. Its face polynomial is $\G_{\A_{\widehat G}}$. Any monomial order on the edge variables can replace the weights, choosing its least matching monomial in each fiber.
+\end{proposition}
+\begin{proof}
+Suppose $N\subseteq M$ and $M$ is minimizing. A cheaper replacement for $N$ with its own tails and heads uses exactly the same vertices as $N$. Combining it with $M\setminus N$ would give a cheaper replacement for $M$. Hence $N$ is minimizing. For a monomial order, multiplication by the common factor from $M\setminus N$ preserves the comparison. Each feasible endpoint pair now labels exactly one face. Every one-edge matching is forced. A maximum matching can be oriented arbitrarily, and the minimizing representative of its endpoint pair still has $\nu(G)$ edges. No face can have more.
+\end{proof}
+
+Choose a minimum vertex cover $C$ of $G$. Assign to each directed edge any one of its endpoints in $C$. Edges in a face are vertex disjoint, so their assigned colors are distinct. This proves Theorem~\ref{main}(1) when $\tau=\nu$, including bipartite graphs by K\H{o}nig's theorem. The empty cover colors the empty complex. More generally the same proof works if the edges can be partitioned into $\nu(G)$ pairwise-intersecting families. A family of edges around a triangle, for example, consumes just one color.
+
+\section{Flag realizations and a sharp obstruction}
+A graph is \emph{chordal bipartite} if it is bipartite with no induced cycle of length at least six. For $D\subseteq V(G)$ form the bipartite graph $H_D$ on copies $L,R$ of $V(G)$, joining $u_L$ to $v_R$ when $uv\in E(G)$, and also $u_L$ to $u_R$ when $u\in D$. The added diagonal is a proof device.
+
+\begin{proposition}\label{diagonal}
+If $H_D$ is chordal bipartite for some $D$, there is a monomial order for which $\Delta_G$ is flag.
+\end{proposition}
+\begin{proof}
+For each edge $u_Lv_R$ of $H_D$, map a variable $X_{uv}$ to $s_ut_v$. The kernel of this monomial map is the toric edge ideal. By Ohsugi--Hibi \cite{OH}, a chordal bipartite graph has a term order for which the initial ideal is generated by quadratics. In a fixed fiber of the monomial map, its least monomial is the unique standard monomial: any larger monomial is the leading term of its difference from the least one, and a reduction of the least would contradict minimality. In the fiber $s_Ut_V=\prod_{u\in U}s_u\prod_{v\in V}t_v$ with $U,V$ disjoint, every monomial is a matching, and no added diagonal is usable. Hence the normal form gives exactly Proposition~\ref{hered}'s choice.
+
+A set of genuine arcs fails to be a face either because two arcs share an underlying vertex, or, when it is a matching, because its product belongs to the initial ideal. In the second case a quadratic initial monomial divides it. Its two factors are distinct genuine arcs since the matching product is squarefree. They form a two-element nonface. Thus all minimal nonfaces have size two.
+\end{proof}
+
+If $G$ is chordal bipartite, $H_\varnothing$ is two disjoint copies of $G$. If $G$ is strongly chordal, its closed-neighborhood matrix is totally balanced by Farber's characterization \cite{Farber}. This means it has no cycle submatrix of order at least three, equivalently its bipartite incidence graph has no induced cycle of length at least six. This incidence graph is exactly $H_{V(G)}$. Proposition~\ref{diagonal} applies in both cases.
+
+For example, the complete split graph with a clique and an independent set and every edge between them has a flag gamma realization after suspension. One may fill the diagonal only at clique vertices. The resulting bipartite graph has all entries equal to one except the independent-set by independent-set block, which is zero. Such a matrix has nested row neighborhoods and no induced cycle of length at least six. By choosing a clique vertex as suspension vertex, this covers the full multipartite family $K_{1^k,n}$ for $k\ge1$. This is a face realization for the gamma vector. The interlacing problem for the Ehrhart zeros of these graphs \cite{Kolbl} is separate.
+
+For the remaining assertion of Theorem~\ref{main}(2), suppose $G$ has no simple even cycle of length at least six. If an oriented matching $M$ is nonminimal, compare it to its minimum representative on the same endpoint pair. Their symmetric difference decomposes into alternating simple even cycles on distinct underlying vertices. At least one alternating replacement on a single cycle improves $M$, by additivity of the weights. That cycle has length four, so a two-edge submatching is already nonminimal. This proves flagness with any of our generic additive weights.
+
+\begin{theorem}\label{iff}
+For a bipartite base $G$, there exists a flag complex consisting of one oriented matching for every feasible ordered endpoint pair, closed under taking subsets, if and only if $G$ is chordal bipartite.
+\end{theorem}
+\begin{proof}
+Sufficiency follows from Proposition~\ref{diagonal}. Otherwise take an induced cycle $C_{2r}$, $r\ge3$, with alternating sides $U,V$. Exactly two perfect matchings run from $U$ to $V$. Only one can be chosen. Every proper submatching of the unchosen one is forced by its own endpoints: the induced subgraph on them is a forest, where two distinct perfect matchings would have an alternating cycle. Thus the omitted matching is a minimal nonface of cardinality $r$. The argument allows arbitrary choices, including choices independent of a term order.
+\end{proof}
+The obstruction in Theorem~\ref{iff} concerns this specific form of representation. It leaves room for a different flag complex with the same face numbers.
+
+\section{The type B construction}
+For a bipartite graph $G$ fix its two sides. By \cite[Prop.~4.1 and Thm.~7.1]{OT},
+\begin{equation}\label{Bidentity}
+ \G_{\B_G}(z)=p(G,4z).
+\end{equation}
+Choose one minimum-weight undirected perfect matching on each perfectly matchable vertex set. The replacement proof of Proposition~\ref{hered} gives a simplicial complex with polynomial $p(G,z)$, on the ordinary edges. This last observation works for \emph{every} graph. A minimum cover again colors the complex with $\nu(G)$ colors in the bipartite case. For chordal bipartite $G$, use a quadratic initial ideal of $G$ as above: each fiber on chosen vertices has one standard matching, and all its nonfaces contain a conflicting pair. This is the undirected version of Proposition~\ref{diagonal}. Finally replace each edge-vertex of the complex by four copies. A face chooses at most one copy per original and projects to an original face. This multiplies the number of $j$-faces (by cardinality) by $4^j$, preserves the coloring, and preserves flagness whenever present. Equation~\eqref{Bidentity} completes Theorem~\ref{main}(3).
+
+\section{Newton inequalities for bipartite suspensions}
+Let $G$ have bipartition $A\sqcup B$, $a=|A|$, $b=|B|$, and $h=\min(a,b)$. For $q\ge1$ let $N_j(q)$ count ordered $q$-tuples of pairwise disjoint perfectly matchable vertex sets, empty entries allowed, with union of size $2j$. For $q=1$ these count perfectly matchable sets. For $q=2$, the first class describes the directed edges from $A$ to $B$ and the second the directed edges from $B$ to $A$. A feasible ordered endpoint pair uniquely specifies the two vertex sets by this rule, independent of matching choices. Thus $N_j(2)=\gamma_j(\A_{\widehat G})$ and $4^jN_j(1)=\gamma_j(\B_G)$.
+
+\begin{theorem}\label{newton}
+For every positive integer $q$, the numbers $N_j(q)/\binom hj$, $0\le j\le h$, are log-concave and have no internal zeros. In particular the coefficients of both gamma polynomials in Theorem~\ref{main} satisfy
+\[
+ \gamma_j^2\ \ge\ \frac{(j+1)(h-j+1)}{j(h-j)}\,\gamma_{j-1}\gamma_{j+1}
+ \qquad(1\le j<h).
+\]
+\end{theorem}
+\begin{proof}
+Interchange sides so $a=h$. Let $Z$ be the $a\times b$ matrix with an independent indeterminate in every edge position and zero elsewhere. Over the rational function field a minor of $Z$ is nonzero exactly when the selected row and column vertices have a perfect matching: distinct permutations give distinct monomials. The column matroid of $[I_a\mid Z]$ consequently has basis polynomial
+\[
+ F(x,y)=\sum_{(S,T)} \prod_{i\in A\setminus S}x_i\prod_{k\in T}y_k ,
+\]
+over matchable pairs $S\subseteq A,T\subseteq B$. Each monomial has coefficient one. By Br\"and\'en and Huh \cite{BH}, $F$ is Lorentzian, and products, partial derivatives and nonnegative linear substitutions preserve Lorentzianity.
+
+We record why keeping only terms of degree at most one in a variable $y$ also preserves this property, allowing the zero polynomial. The Hessian characterization of \cite[Thm.~2.25]{BH} requires M-convex support, meaning the integral symmetric exchange axiom, and at most one positive eigenvalue for each derivative down to degree two. Intersecting the support with $\alpha_y\le1$ preserves symmetric exchange: the two exchanged values of each coordinate stay between its starting values. For a derivative using $y$ twice, the truncated derivative vanishes. If it uses $y$ once, the resulting Hessian is that of the original derivative with the $y$ row and column set to zero. If it does not use $y$, truncation removes only the $y^2$ entry of the remaining quadratic, subtracting a nonnegative diagonal matrix from the Hessian. In all cases the positive index stays at most one. Degrees zero and one are immediate.
+
+Starting with $F^q$, differentiate $q-1$ times in each $x_i$, then impose degree at most one in each $y_k$. The first step permits each vertex of $A$ to be used in at most one chosen matchable pair, and the second enforces the same on $B$. For a surviving $q$-tuple using $j$ left vertices, the derivative contributes $((q-1)!)^a q^{a-j}$, leaving one factor $x_i$ for each unused left vertex. On identifying all $x_i=t$ and all $y_k=z$ we therefore get the Lorentzian bivariate form
+\[
+ ((q-1)!)^a\sum_{j=0}^{a}q^{a-j}N_j(q)t^{a-j}z^j.
+\]
+A degree-$a$ bivariate form is Lorentzian exactly when its coefficients divided by $\binom aj$ are log-concave with interval support \cite[Ex.~2.26]{BH}. Removing the geometric and constant factors proves the theorem. Every $j\le\nu(G)$ occurs by taking a $j$-edge submatching in one slot.
+\end{proof}
+For $q=1$ the construction is the regular-minor enumerator of a bimatroid, whose log-concavity is known \cite{RU}. The disjoint-support operation on products gives the extension to $q\ge2$ and the oriented gamma coefficients. Newton inequalities are necessary for a polynomial with positive coefficients to have only real roots, but do not by themselves prove such a root theorem.
+
+\section{Examples and verification}
+The following exact vectors list the coefficients starting with $\gamma_0$.
+\begin{center}
+\begin{tabular}{lll}
+\toprule
+Base $G$ & Suspension of type A & Type B\\\midrule
+$C_4$ & $(1,8,6)$ & $(1,16,16)$\\
+$C_6$ & $(1,12,36,14)$ & $(1,24,144,64)$\\
+$K_{3,3}$ & $(1,18,54,20)$ & $(1,36,144,64)$\\
+\bottomrule
+\end{tabular}
+\end{center}
+For $C_4$, type A has eight oriented edge-vertices. There are six feasible ordered pairs of opposite sets of size two on its four vertices. In type B the four single edges and the full four-vertex set give $p(C_4,z)=1+4z+z^2$. For $C_6$ a choice between the two alternating perfect matchings produces the three-element obstruction of Theorem~\ref{iff}.
+
+The accompanying Python program generates each graph isomorphism class on one through six vertices by adjoining a vertex and canonicalizing within degree classes. It compares the oriented face counts for all 208 graphs and the fourfold undirected counts for all 61 bipartite graphs against an independent lattice calculation. That calculation enumerates the integer sums of up to $k$ signed generators for $k\le\lfloor n/2\rfloor$ and inverts the two defining generating identities. These sums give the lattice dilates because ordinary symmetric edge polytopes admit unimodular triangulations, as do bipartite type B polytopes \cite{OT,HJM}. The script also checks closure under deleting an edge and the minimum-cover coloring for all 134 graphs with $\tau=\nu$. Its checks supplement the proofs.
+
+Two questions remain. Does every bipartite suspension have a flag gamma realization by a complex allowed to differ from the endpoint representatives? Can the Newton inequalities for bipartite bases be extended to general suspensions, or strengthened to a real-rootedness criterion for families beyond cactus bases? The flag-sphere conjecture in arbitrary dimension is outside the scope of the present results.
+
+\small
+\begin{thebibliography}{99}
+\bibitem{repo} V. Reshetnikov, \emph{ProveIt}, Analysis/GeneralizedRiemannHypothesis, \href{https://github.com/VladimirReshetnikov/ProveIt/blob/cc919c585f90be8e0fba7a1b90c70afdea39998e/Analysis/GeneralizedRiemannHypothesis/Article/sections/gra.tex}{article, graph towers and Ehrhart polynomials}, snapshot \texttt{cc919c585f90}.
+\bibitem{NP} E. Nevo and T. K. Petersen, On $\gamma$-vectors satisfying the Kruskal--Katona inequalities, \emph{Discrete Comput. Geom.} 45 (2011), 503--521. \href{https://doi.org/10.1007/s00454-010-9243-6}{DOI}.
+\bibitem{Froh} A. Frohmader, Face vectors of flag complexes, \emph{Israel J. Math.} 164 (2008), 153--164. \href{https://arxiv.org/abs/math/0605673}{Preprint}.
+\bibitem{OT} H. Ohsugi and A. Tsuchiya, Symmetric edge polytopes and matching generating polynomials, \emph{Combinatorial Theory} 1 (2021), no.~9. \href{https://doi.org/10.5070/C61055371}{DOI}.
+\bibitem{HJM} A. Higashitani, K. Jochemko and M. Micha\l ek, Arithmetic aspects of symmetric edge polytopes, \emph{Mathematika} 65 (2019), 763--784. \href{https://doi.org/10.1112/S0025579319000147}{DOI}.
+\bibitem{OH} H. Ohsugi and T. Hibi, Koszul bipartite graphs, \emph{Adv. Appl. Math.} 22 (1999), 25--28. \href{https://doi.org/10.1006/aama.1998.0615}{DOI}.
+\bibitem{Farber} M. Farber, Characterizations of strongly chordal graphs, \emph{Discrete Math.} 43 (1983), 173--189. \href{https://doi.org/10.1016/0012-365X(83)90154-1}{DOI}.
+\bibitem{DK} R. Davis and F. Kohl, Perfectly matchable set polynomials and $h^*$-polynomials for stable set polytopes of complements of graphs, \emph{Discrete Math.} 347 (2024), 114018. \href{https://doi.org/10.1016/j.disc.2024.114018}{DOI}.
+\bibitem{Fer} L. Ferroni, Symmetric edge polytopes are not gamma-positive (2026). \href{https://arxiv.org/abs/2607.02424}{Preprint}.
+\bibitem{Kolbl} M. K\"olbl, On a conjecture concerning the roots of Ehrhart polynomials of symmetric edge polytopes from complete multipartite graphs (2024). \href{https://arxiv.org/abs/2404.02136}{Preprint}.
+\bibitem{BH} P. Br\"and\'en and J. Huh, Lorentzian polynomials, \emph{Ann. of Math.} 192 (2020), 821--891. \href{https://doi.org/10.4007/annals.2020.192.3.4}{DOI}.
+\bibitem{RU} F. R\"ohrle and M. Ulirsch, Logarithmic concavity of bimatroids, \emph{Ann. Comb.} (2025). \href{https://doi.org/10.1007/s00026-025-00780-z}{DOI}.
+\end{thebibliography}
+\end{document}

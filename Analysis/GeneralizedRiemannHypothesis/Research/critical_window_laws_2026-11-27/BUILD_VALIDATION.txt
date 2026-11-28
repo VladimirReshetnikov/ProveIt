@@ -1,0 +1,25 @@
+BUILD AND VERIFICATION RECORD
+27 November 2026
+
+Document: critical_window_laws.pdf
+Length: 22 pages
+Build: latexmk -pdf -interaction=nonstopmode -halt-on-error critical_window_laws.tex
+Outcome: success; no LaTeX warnings, undefined references, overfull boxes,
+or underfull boxes in the final log.
+Visual review: all 22 rendered pages inspected in contact sheets; title,
+critical square theorem, and figure/reproduction page inspected at larger size.
+
+Exact calculations: PASS. See results/exact_checks.json.
+Certified limiting profiles: PASS, 44 profiles, absolute evaluation error
+at most 1e-45. See results/profiles.json and results/profile_validation.txt.
+Finite experiments: 27,000 binary samples in 18 settings, seed 20261127.
+These experiments illustrate convergence and do not prove the theorems.
+
+Mathematical review: the Fourier/subspace inversion proof, quadratic and
+plane specializations, code-pair parameterization and conditioning,
+alternating joint-corank argument, and hidden-form likelihood calculations
+received an independent internal proof review. This is not external peer
+review or a Lean kernel verification.
+
+All new proofs are unconditional. See the paper's scope and prior-art
+sections for the precise extent of the contribution.

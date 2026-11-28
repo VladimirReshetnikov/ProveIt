@@ -1,0 +1,138 @@
+\documentclass[11pt]{article}
+\usepackage[T1]{fontenc}
+\usepackage{lmodern,amsmath,amssymb,amsthm,booktabs,microtype,xcolor}
+\usepackage[margin=1in]{geometry}
+\usepackage[colorlinks=true,allcolors=blue!50!black]{hyperref}
+\newtheorem{theorem}{Theorem}
+\newcommand{\coef}{\succeq 0}
+\begin{document}
+\begin{center}
+{\LARGE\bfseries Central multiplicity in shortest positive Fourier filters\par}
+\smallskip
+{\itshape An exact finite criterion and a large-multiplicity phase transition}
+\end{center}
+\begin{abstract}
+For frequencies paired about a central frequency, a positive annihilating measure attains a prescribed lower bound on its support diameter precisely when an associated polynomial has nonnegative coefficients. We determine how much central multiplicity suffices. In the angular band $\pi/3\le\theta_j\le\pi/2$ the exact criterion for arbitrary pairs is $r\ge 2\sum_j\cos\theta_j$, with repetitions allowed. For a single pair of order $m$ at any angle $0<\theta<\pi/3$, the least central multiplicity is $\tau(\cos\theta)m+o(m)$, with $\tau$ determined by a scalar equation. These results give the sharp large-power asymptotic of the Lorentz degree of the centered quadratic $X^2+\varepsilon^2$.
+\end{abstract}
+
+\section{The extremal filter}
+
+Fix $\kappa>0$, $h=\pi/\kappa$. Prescribe frequencies $\alpha_j$ and $2\kappa-\alpha_j$, together with $\kappa$ of multiplicity $r$. Here $0<\alpha_j<\kappa$ and each repeated pair counts separately. Write $m$ for the number of pairs, $N=r+2m$, and $\theta_j=h\alpha_j$. For a compactly supported probability measure $\mu$ we ask that
+$\widehat\mu(t)=\int e^{itu}\,d\mu(u)$ vanish at each target to its prescribed multiplicity. Write $D$ for the smallest diameter of such a measure. The repository's reflection theorem \cite{repo} gives
+\begin{equation}\label{reflection}
+ D\ge Nh,\qquad D=Nh\quad\Longleftrightarrow\quad
+ P(z):=(1+z)^r\prod_{j=1}^m(1-2\cos(\theta_j)z+z^2)\coef .
+\end{equation}
+Here $P\coef$ means that every coefficient is nonnegative. At equality the minimizing measure is unique up to translation. Its mass at $\ell h$ is $[z^\ell]P/P(1)$ for $0\le\ell\le N$. A common real part for the target exponents tilts these masses by an exponential and preserves the diameter. This unconditional problem applies when a positive average must cancel the associated Fourier modes.
+
+The filter section asks which wide reflected bands attain equality when central roots are added. Formula \eqref{reflection} supplies a coefficient test for each finite instance. The next theorem replaces that test by a single sum for arbitrarily many pairs.
+
+\begin{theorem}\label{finite}
+If $a_1,\ldots,a_m\in[0,1]$ and $r$ is a nonnegative integer, then
+\[
+ (1+z)^r\prod_{j=1}^m(1-a_jz+z^2)\coef
+ \quad\Longleftrightarrow\quad r\ge\sum_{j=1}^m a_j.
+\]
+Consequently, for $\pi/3\le\theta_j\le\pi/2$ the least central multiplicity attaining the bound in \eqref{reflection} is $\lceil2\sum_j\cos\theta_j\rceil$.
+\end{theorem}
+\begin{proof}
+The coefficient of $z$ gives necessity. For sufficiency induct on $m$. The cases $m=0,1$ follow from the endpoint argument below. Hold all but two fractional coordinates fixed and vary these two, say $u,v$, with $u+v$ fixed. Their quadratic factors have product
+\[
+ (1+z^2)^2-(u+v)z(1+z^2)+uvz^2.
+\]
+The remaining factors multiplied by $(1+z)^r$ have nonnegative coefficients by induction, since the sum of their parameters is at most $r$. Moving $u,v$ to the endpoint of their allowable segment that minimizes $uv$ makes at least one entry equal to $0$ or $1$ and decreases every coefficient weakly. Repeat until there are $b$ ones, some zeros, and at most one fractional entry $a$. The $b$ binomials pair with the $b$ unit entries by $(1+z)(1-z+z^2)=1+z^3$. If $0<a<1$, integrality gives $r\ge b+1$ and another binomial yields
+$(1+z)(1-az+z^2)=1+(1-a)z+(1-a)z^2+z^3$. All remaining factors have nonnegative coefficients. The initial product dominates this final product coefficientwise.
+\end{proof}
+
+\section{The phase transition for a repeated pair}
+
+Let $Q_c(z)=1-2cz+z^2$ and let $R_m(c)$ be the smallest $r\in\mathbb Z_{\ge0}$ with $(1+z)^rQ_c(z)^m\coef$. For $-1\le c\le0$ the answer is zero. For $0<c<1$, define
+\[
+ G_c(a)=\frac{1+c}{(a+1)(1-c)}
+     \left(\frac{a(1+c)}{2(a+1)}\right)^a \qquad(a>0).
+\]
+\begin{theorem}\label{phase}
+For $0<c\le1/2$, one has $R_m(c)=\lceil 2cm\rceil$ at every $m\ge1$. For $1/2<c<1$, there is a unique $a_c>c$ satisfying $G_c(a_c)=1$, and
+\[
+ R_m(c)>2a_cm\quad(m\ge1),\qquad
+ \lim_{m\to\infty}\frac{R_m(c)}m=2a_c.
+\]
+Writing $\tau(c)=\lim_m R_m(c)/m$ and letting $W$ denote the positive inverse of $w\mapsto we^w$, one has
+$\lim_{c\uparrow1}(1-c)\tau(c)=4W(e^{-1})$.
+\end{theorem}
+
+The change at $c=1/2$ occurs at $\alpha=\kappa/3$, where the upper frequency is five times the lower one. Up to that frequency ratio the degree-one coefficient detects every failure of equality for the repeated pair. Beyond it, a modulus test at a nonreal point of the unit circle forces a larger central multiplicity.
+
+\subsection{From powers to moduli}
+
+At $m=1$, direct expansion gives $R_1(c)=2\lceil(1-c)^{-1}\rceil-3$ for $0<c<1$. Indeed, with $D=r+2$, the $j$th coefficient divided by $\binom Dj$ is
+$1-2(1+c)j(D-j)/(D(D-1))$. The minimum occurs at $j=\lfloor D/2\rfloor$. Checking the two parities of $D$ gives the stated formula. Thus $R_m\le mR_1$ is finite. The sequence is subadditive by multiplication, so $\lim_m R_m/m=\inf_m R_m/m$.
+
+For $\lambda>0$, consider
+\begin{equation}\label{modulus}
+ \left(\frac{|1+z|}{1+|z|}\right)^\lambda
+     \frac{|Q_c(z)|}{Q_c(|z|)}\le1 \qquad(z\in\mathbb C).
+\end{equation}
+Every polynomial with nonnegative coefficients is bounded in modulus by its value at $|z|$. Thus any admissible $r,m$ satisfies \eqref{modulus} with $\lambda=r/m$. If \eqref{modulus} holds at $\lambda_0\ge 2c$, every rational $A/B>\lambda_0$ with positive integers $A,B$ gives a polynomial $P=(1+z)^A Q_c^B$ satisfying $|P(z)|<P(|z|)$ off the nonnegative real axis. Its linear and penultimate coefficients are both $A-2cB>0$, and both endpoint coefficients are $1$. By De Angelis's positive-power theorem \cite{deangelis}, these hypotheses imply that all coefficients of $P^k$ are positive for sufficiently large $k$. Therefore $R_{Bk}\le Ak$ eventually. Subadditivity and rational approximation give $\lim_m R_m/m\le\lambda_0$.
+
+\subsection{Optimizing over all complex points}
+
+Theorem~\ref{finite} deals with $c\le1/2$. Take $1/2<c<1$, write $d=1-c$, $b=(1+c)/2$, $z=xe^{it}$ with $x>0$, and set
+\[
+ v=\frac{4x}{(1+x)^2},\qquad s=v\sin^2(t/2),\qquad u=1-bv .
+\]
+It suffices to take $0<s<1$, since $s=0$ is equality and $s=1$ means $z=-1$. The squared binomial ratio in \eqref{modulus} is $1-s$. Direct expansion gives
+\begin{equation}\label{quadratic}
+ B(s,u):=\frac{|Q_c(z)|^2}{Q_c(x)^2}
+     =1+\frac{2s}{u}+\frac{s(s-2d)}{u^2},
+ \qquad \frac d2\le u\le1-bs .
+\end{equation}
+Indeed $Q_c(x)/(1+x)^2=1-bv$, and subtracting $Q_c(x)^2$ from $|Q_c(z)|^2$ and dividing by $(1+x)^4$ gives $s(s+2c-2bv)$. The range follows from $s\le v\le1$, and every pair in it is realized.
+
+We need the supremum of $\log B(s,u)/[-\log(1-s)]$, with $\log 0=-\infty$. At fixed $s$ the numerator increases with $B$, a quadratic in $1/u$. Its interior maximum, if present, has $u=2d-s$ and $B=1/(1-s/(2d))$. This point is allowable exactly for $0<s\le 3d/2$ (including its boundary), because $2d<1$ implies $2d-s\le 1-bs$. The ratio
+\[
+ \frac{-\log(1-s/(2d))}{-\log(1-s)}
+\]
+increases on this interval. It is the weighted average over $0<t<s$ of $(1-t)/(2d-t)$ with weight $1/(1-t)$, and the function being averaged is increasing as $2d<1$. Thus every interior maximum is bounded by the one at $s=3d/2$, already on the endpoint $u=d/2$. It suffices to test the two endpoints.
+
+At $u=1-bs$ one has $v=s$, or $z=-x$. The unsquared quadratic ratio is $(1-(1-b)s)/(1-bs)$. It satisfies
+\[
+ \log\frac{1-(1-b)s}{1-bs}
+  =\sum_{j\ge1}\frac{b^j-(1-b)^j}{j}s^j
+  \le c\sum_{j\ge1}\frac{s^j}j.
+\]
+Indeed $b^j-(1-b)^j$ is $(2b-1)=c$ times a sum of $j$ monomials of degree $j-1$ in $b,1-b$, bounded by $(b+(1-b))^{j-1}=1$. Hence this endpoint costs at most $2c$ in \eqref{modulus}.
+
+At $u=d/2$ one has $v=1$, or $x=1$. The unsquared quadratic ratio is $|1-2s/d|$. Writing $\lambda=2a$, the bound becomes
+\begin{equation}\label{unit}
+   (1-s)^a |1-2s/d|\le1\qquad (0\le s\le1).
+\end{equation}
+For $s\le d/2$ it holds automatically. On $s>d/2$ the left side has its unique maximum at $s=(2+ad)/(2(a+1))$ by differentiation. The maximum is $G_c(a)$. It decreases strictly in $a$ since the maximizer is in $(0,1)$ and the factor $(1-s)^a$ decreases there. Its limits as $a\downarrow0$ and $a\to\infty$ are $(1+c)/(1-c)>1$ and zero. Also $G_c(c)=(c/2)^c/(1-c)>1$ for $c>1/2$: the strictly convex function $c\log(c/2)-\log(1-c)$ vanishes at $1/2$ and has positive derivative there. This gives a unique root $a_c>c$.
+
+Formula \eqref{quadratic} now shows that \eqref{modulus} holds at $\lambda=2a_c$. A smaller slope violates \eqref{unit}. At the critical slope equality occurs at the displayed interior value of $s$, hence at a nonreal point of the unit circle. A nonnegative polynomial with positive constant and linear coefficients has strict triangle inequality at such a point. Since $r-2cm>0$ at $r=2a_cm$, this excludes equality in the finite bound even if $2a_cm$ is integral. The preceding subsection proves the matching limit.
+
+Finally, hold $w>0$ fixed and substitute $a=2w/d$, $c=1-d$. Elementary limits give $G_{1-d}(2w/d)\to e^{-1-w}/w$ as $d\downarrow0$. The limiting function is strictly decreasing and equals $1$ only at $w=W(e^{-1})$. Evaluating just above and below that point and using monotonicity gives $da_c/2\to W(e^{-1})$, completing Theorem~\ref{phase}.
+
+\section{Lorentz degree and finite checks}
+
+Let $d_L(p)$ be the smallest $D$ for which $p(X)$ is a nonnegative linear combination of $(1-X)^j(1+X)^{D-j}$. The substitution $X=(1-z)/(1+z)$ shows that $d_L(p)\le D$ exactly when $(1+z)^Dp((1-z)/(1+z))\coef$ for $D\ge\deg p$ (multiply by $1+z$ to elevate degree). Consequently
+\[
+ d_L((X^2+\varepsilon^2)^m)=2m+R_m\!\left(\frac{1-\varepsilon^2}{1+\varepsilon^2}\right)
+ \qquad(0<\varepsilon<1).
+\]
+This gives the exact degree at every $m$ for $1/\sqrt 3\le\varepsilon<1$ and its exact first-order asymptotic for every fixed $0<\varepsilon<1/\sqrt3$. Erd\'elyi obtained upper and lower bounds of order $m/\varepsilon^2$ for this family, including translates with a correction to the imaginary part \cite{erd}. Theorem~\ref{phase} gives the centered iterated limit
+\[
+ \lim_{\varepsilon\downarrow0}\varepsilon^2\lim_{m\to\infty}
+ \frac{d_L((X^2+\varepsilon^2)^m)}m =2W(e^{-1})=0.556929\ldots .
+\]
+
+The table gives the least central multiplicities $R_m(c)$, computed by integer arithmetic. The last column gives the limiting ratio rounded to four decimals. The program \texttt{check\_filters.py} reproduces every entry.
+\begin{center}\input{filter-table.tex}\end{center}
+At $c=3/4$, $m=1$, the coefficient of $z$ would allow $r=2$, while the exact minimum is $5$. For $c=1/4$ the minimum for every $m$ is $\lceil m/2\rceil$. For $c>1/2$, the size of $R_m(c)-m\tau(c)$ beyond $o(m)$ remains to be determined. For distinct angles below $\pi/3$, each evaluation point constrains a product of different quadratic ratios, whose maxima can occur at different points.
+
+\begin{thebibliography}{9}
+\bibitem{repo} V.~Reshetnikov, \emph{ProveIt}, Analysis/GeneralizedRiemannHypothesis, section on positive filters, theorem on reflection-paired spectra and open question on global phase diagrams. \href{https://github.com/VladimirReshetnikov/ProveIt/blob/41a284d6ef8eb16d783bfc685ab99cc6e1d28daa/Analysis/GeneralizedRiemannHypothesis/Article/sections/fil.tex}{Repository source}.
+\bibitem{deangelis} V.~De Angelis, Asymptotic expansions and positivity of coefficients for large powers of analytic functions, \emph{Int. J. Math. Math. Sci.} \textbf{2003} (2003), 1003--1025. \href{https://doi.org/10.1155/S0161171203205056}{doi:10.1155/S0161171203205056}. See Theorem 6.2 in print and Theorem 4 in the \href{https://vdeangel.xula.edu/Publications/asy.pdf}{author's version}.
+\bibitem{erd} T.~Erd\'elyi, Estimates for the Lorentz degree of polynomials, \emph{J. Approx. Theory} \textbf{67} (1991), 187--198. \href{https://doi.org/10.1016/0021-9045(91)90017-5}{doi:10.1016/0021-9045(91)90017-5}.
+\end{thebibliography}
+\end{document}

@@ -1,0 +1,332 @@
+\documentclass[11pt]{article}
+\usepackage[a4paper,margin=26mm]{geometry}
+\usepackage[T1]{fontenc}
+\usepackage{lmodern,microtype,amsmath,amssymb,amsthm,mathtools}
+\usepackage{booktabs,tabularx,array,xcolor,enumitem,fancyhdr}
+\usepackage[colorlinks=true,linkcolor=blue!45!black,citecolor=blue!45!black,urlcolor=blue!45!black]{hyperref}
+\hypersetup{pdftitle={Counterexamples to Rajan's Euler-factor agreement conjecture},pdfauthor={Research prepared for Vladimir Reshetnikov}}
+\setlength{\headheight}{14pt}
+\pagestyle{fancy}\fancyhf{}\fancyhead[L]{\small Rajan's Conjecture 3: counterexamples}\fancyhead[R]{\small 27 November 2026}\fancyfoot[C]{\thepage}
+\setlength{\parskip}{4pt}\setlength{\parindent}{0pt}\setlist{nosep,leftmargin=*}
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{corollary}[theorem]{Corollary}
+\theoremstyle{remark}\newtheorem{remark}[theorem]{Remark}
+\newcommand{\C}{\mathbb C}\newcommand{\Q}{\mathbb Q}\newcommand{\T}{\mathbb T}
+\newcommand{\GL}{\mathrm{GL}}\newcommand{\SU}{\mathrm{SU}}\newcommand{\tr}{\operatorname{tr}}
+\newcommand{\pathcode}[1]{\texttt{\detokenize{#1}}}
+\title{\textbf{Counterexamples to Rajan's\\Euler-factor agreement conjecture}\\[5pt]\large An explicit cubic example, an infinite family,\\and the sharp cubic threshold for character packets}
+\author{Research manuscript prepared for Vladimir Reshetnikov}
+\date{27 November 2026}
+\begin{document}
+\maketitle
+\begin{abstract}
+Conjecture~3 of C.~S.~Rajan, \emph{Proc. Amer. Math. Soc.}~128 (2000), 691--700, predicts a degree-dependent upper bound for local agreement of distinct automorphic representations induced from one-dimensional characters. We give a counterexample in degree three over $\Q$: the character packets $\{1,\chi,\chi^2\}$ and $\{\psi,\psi\chi,\psi\chi^2\}$, where $\chi$ and $\psi$ are independent cubic Dirichlet characters, have equal complete local factors at density $7/9$, strictly exceeding the proposed $3/4$ ceiling. Characters modulo $7$ and $13$ give an explicit example, distinguished first at the unramified prime $29$.
+
+For every $k\ge0$, a cubic/quadratic construction gives counterexamples in all degrees $3\cdot2^k\le n<4\cdot2^k$. We prove that $7/9$ is the exact maximum agreement for distinct triples of one-dimensional unitary characters of a compact group, and classify all equality cases. Using Rajan's qualitative theorem for $\GL_1$, we extend this sharp replacement to arbitrary Hecke quasi-character triples over number fields. The elementary cubic packet already occurs in the supplied ProveIt research; the connection to Rajan's printed conjecture and the mixed-order extension are emphasized here. The arguments do not use RH or GRH. This is a disproof of the stated abelian conjecture, not of Ramakrishnan's cuspidal density conjecture. Publication priority remains subject to further literature checking.
+\end{abstract}
+
+\section{The published conjecture and its hypotheses}
+
+In \cite[Conjecture~3, p.~698]{Rajan}, Rajan considers the class $A_B$ of irreducible automorphic representations of $\GL_n(\mathbb A_K)$ induced from characters of the diagonal torus of the Borel subgroup. For two such representations with inducing character multisets $A$ and $B$, each of cardinality $n$, the proposed implication is
+\begin{equation}\label{eq:conjecture}
+ \operatorname{density}\{v:\pi(A)_v\simeq\pi(B)_v\}
+ >1-2^{-d(n)}\quad\Longrightarrow\quad A=B,
+ \qquad d(n)=\lfloor\log_2(2n)\rfloor.
+\end{equation}
+Here equality of the multisets includes multiplicities. In particular the proposed ceiling for distinct degree-three packets is $3/4$.
+
+Throughout this note, natural density is relative to all prime ideals ordered by norm. Dirichlet density has its usual logarithmic-limit meaning:
+\[
+ \delta_D(S)=\lim_{s\downarrow1}
+ \frac{\sum_{v\in S}(Nv)^{-s}}{\log(1/(s-1))},
+\]
+when the limit exists. No analytic continuation of a remainder term is included in this definition.
+
+The source defines $A_B$ on pp.~694--695 and explicitly identifies the unramified local component with the spherical principal series determined by the unordered inducing characters. Accordingly, at an unramified prime $v$,
+\begin{equation}\label{eq:local}
+ \pi(A)_v\simeq\pi(B)_v
+ \quad\Longleftrightarrow\quad
+ P_A(v,T)=P_B(v,T),\qquad
+ P_A(v,T)=\prod_{\alpha\in A}(1-\alpha(v)T).
+\end{equation}
+This compares the complete local Euler factors, not only their linear coefficients.
+
+Finite-order Hecke characters of $\Q$ suffice for the counterexamples. Their isobaric sums are standard irreducible automorphic representations in $A_B$. The word \emph{irreducible} here refers to the representation of $\GL_n(\mathbb A_\Q)$; it does not assert that its diagonal Galois parameter is irreducible. The conjecture does not require cuspidality. The character multisets constructed below are distinct, so their isobaric automorphic representations are distinct by uniqueness of the cuspidal support, or simply by the exhibited unequal unramified components.
+
+\section{A counterexample using only the moduli 7 and 13}
+
+Set $\omega=e^{2\pi i/3}$. Define cubic Dirichlet characters by
+\begin{equation}\label{eq:chars}
+ \chi\pmod7,\quad \chi(3)=\omega,
+ \qquad
+ \psi\pmod{13},\quad \psi(2)=\omega.
+\end{equation}
+The residues $3$ and $2$ generate the respective unit groups. Since their orders are $6$ and $12$, these prescriptions give well-defined characters of order three. Regard both as characters modulo $91$ when comparing their values. By the Chinese remainder theorem the map
+\[
+ (\mathbb Z/91\mathbb Z)^\times\longrightarrow\mu_3\times\mu_3,
+ \qquad a\longmapsto(\chi(a),\psi(a))
+\]
+is onto, and each of its nine fibers has cardinality eight. The prime number theorem in arithmetic progressions assigns density $1/9$ to each joint value.
+
+\begin{theorem}[Explicit disproof in degree three]\label{thm:counter}
+Let
+\begin{equation}\label{eq:packets}
+ A=\{1,\chi,\chi^2\},\qquad
+ B=\{\psi,\psi\chi,\psi\chi^2\}.
+\end{equation}
+The packets are globally distinct, but their complete Euler factors agree at natural and Dirichlet density $7/9$. Hence they contradict \eqref{eq:conjecture}, since $7/9>3/4$.
+\end{theorem}
+
+\begin{proof}
+The six characters in the two packets are distinct: an equality between the packets would put $\psi$ in the cyclic group generated by $\chi$, contrary to independence of the two coordinates.
+
+At a prime $p\nmid91$, put $x=\chi(p)$ and $y=\psi(p)$. The local eigenvalue multisets are
+\[
+ \{1,x,x^2\},\qquad \{y,yx,yx^2\}.
+\]
+If $x\ne1$, each multiset is the set of all cube roots of unity, so both polynomials equal $1-T^3$. If $x=1$, the polynomials are $(1-T)^3$ and $(1-yT)^3$, equal exactly when $y=1$. Thus disagreement occurs precisely when $x=1$ and $y\ne1$, at density $2/9$. The agreement density is therefore $7/9$, and
+\[
+ \frac79-\frac34=\frac1{36}>0.
+\]
+Equation~\eqref{eq:local} transfers the statement to the local automorphic representations.
+\end{proof}
+
+\begin{center}
+\begin{tabular}{@{}llll@{}}\toprule
+Character values & Density & $P_A(p,T)$ & $P_B(p,T)$\\\midrule
+$x\ne1$, any $y$ & $2/3$ & $1-T^3$ & $1-T^3$\\
+$x=1$, $y=1$ & $1/9$ & $(1-T)^3$ & $(1-T)^3$\\
+$x=1$, $y\ne1$ & $2/9$ & $(1-T)^3$ & $(1-yT)^3$\\\bottomrule
+\end{tabular}
+\end{center}
+
+For a completely explicit congruence description, the disagreeing reduced classes modulo $91$ are
+\begin{equation}\label{eq:classes}
+ \begin{gathered}
+ 6,15,20,22,29,36,41,43,\\
+ 48,50,55,62,69,71,76,85.
+ \end{gathered}
+\end{equation}
+These are $16$ of the $72$ reduced classes; the other $56$ agree. The smallest unramified distinguishing prime is $29$. Indeed $29\equiv1\pmod7$, while $29\equiv3=2^4\pmod{13}$, so
+\[
+ \chi(29)=1,\qquad\psi(29)=\omega,
+ \qquad P_A(29,T)=(1-T)^3\ne(1-\omega T)^3=P_B(29,T).
+\]
+The finite primes below $29$ other than $7,13$ all fall in the agreement classes. This smallest-prime assertion is a finite check, not an asymptotic estimate or a use of GRH.
+
+\section{An infinite family in mixed cubic and quadratic order}
+
+For $k\ge0$ let
+\[
+ G_k=C_3\times C_3\times C_2^k
+\]
+with independent dual characters $\chi,\psi$ of order three and $\eta_1,\ldots,\eta_k$ of order two. Expand the integral virtual character
+\begin{equation}\label{eq:virtual}
+ F_k=(1+\chi+\chi^2)(1-\psi)\prod_{i=1}^k(1-\eta_i).
+\end{equation}
+Its monomials have the form
+\[
+ \chi^j\psi^t\prod_{i\in I}\eta_i,
+ \qquad 0\le j\le2,\quad t\in\{0,1\},\quad I\subseteq\{1,\ldots,k\}.
+\]
+They are all distinct characters. Put those with $t+|I|$ even into $A_k$ and those with $t+|I|$ odd into $B_k$. Both packets have size $n_k=3\cdot2^k$, and they are disjoint.
+
+\begin{theorem}[Exact disagreement for every $k$]\label{thm:family}
+The complete local eigenvalue multisets of $A_k$ and $B_k$ differ precisely on
+\begin{equation}\label{eq:Dk}
+ D_k=\{g:\chi(g)=1,\ \psi(g)\ne1,\ \eta_i(g)=-1\text{ for every }i\}.
+\end{equation}
+Consequently their disagreement proportion is $2/(9\cdot2^k)$ and their agreement proportion is $1-2/(9\cdot2^k)$.
+\end{theorem}
+
+\begin{proof}
+Write $x=\chi(g)$, $y=\psi(g)$ and $z_i=\eta_i(g)$. We compare full multisets directly.
+
+If some $z_i=1$, toggling membership of $i$ in $I$ gives a sign-reversing bijection between the two packets without changing their local eigenvalues. If $y=1$, toggling $t$ gives the same kind of bijection.
+
+If $x\ne1$, fix $I$. As $j$ runs through $0,1,2$, the three values $x^j\prod_{i\in I}z_i$ form a full cube-root coset. The parity rule puts one choice of $t$ in $A_k$ and the other in $B_k$. Multiplication by $y\in\mu_3$ permutes that coset. This matches the spectra separately for each $I$. These cases establish equality outside $D_k$.
+
+On $D_k$, the trace difference is the evaluation of \eqref{eq:virtual}:
+\[
+ F_k(g)=3(1-y)2^k\ne0.
+\]
+Different traces force different complete polynomials. Equivalently, if $k\ge1$, the spectrum of $A_k$ consists of $1$ and $-y$, each with multiplicity $3\cdot2^{k-1}$, whereas the spectrum of $B_k$ consists of $-1$ and $y$ with those same multiplicities. For $k=0$ the spectra are three copies of $1$ and three copies of $y$.
+
+Exactly two elements of $G_k$, whose order is $9\cdot2^k$, satisfy \eqref{eq:Dk}. This proves the claimed proportions.
+\end{proof}
+
+\begin{corollary}[Infinitely many counterexample degrees]\label{cor:intervals}
+Rajan's Conjecture~3, as formulated in \eqref{eq:conjecture}, fails in every degree
+\begin{equation}\label{eq:intervals}
+ 3\cdot2^k\le n<4\cdot2^k,\qquad k=0,1,2,\ldots.
+\end{equation}
+All these counterexamples can be realized by Dirichlet characters over $\Q$.
+\end{corollary}
+
+\begin{proof}
+For $n=n_k$, we have $d(n)=k+2$. The conjectured disagreement floor is $1/(4\cdot2^k)$, but our disagreement is smaller:
+\[
+ \frac{2}{9\cdot2^k}=\frac89\frac1{4\cdot2^k}.
+\]
+The agreement therefore exceeds the proposed ceiling by $1/(36\cdot2^k)>0$.
+
+For any $n$ in \eqref{eq:intervals}, add the same multiset of $n-n_k$ characters to both packets. This multiplies both local polynomials by the same nonzero polynomial, so their equality set is unchanged. The value of $d(n)$ remains $k+2$ throughout the interval.
+
+To realize $G_k$ arithmetically, use \eqref{eq:chars}, choose $k$ distinct odd primes $q_i$ different from $7,13$, and let $\eta_i$ be the quadratic character modulo $q_i$. The joint character map on units modulo $91\prod_iq_i$ is onto by the Chinese remainder theorem. Each fiber has the same size. The prime number theorem in arithmetic progressions gives exactly the finite-group proportions as natural and Dirichlet prime densities. Equation~\eqref{eq:local} again supplies the required automorphic representations in $A_B$.
+\end{proof}
+
+\begin{center}
+\begin{tabular}{@{}llll@{}}\toprule
+$k$ & Counterexample degrees & Actual agreement & Proposed ceiling\\\midrule
+0 & 3 & $7/9$ & $3/4$\\
+1 & 6--7 & $8/9$ & $7/8$\\
+2 & 12--15 & $17/18$ & $15/16$\\
+3 & 24--31 & $35/36$ & $31/32$\\
+4 & 48--63 & $71/72$ & $63/64$\\\bottomrule
+\end{tabular}
+\end{center}
+
+\section{The exact replacement for cubic character packets}
+
+The value $7/9$ is optimal among all triples of one-dimensional unitary characters, with no restriction on their orders. The determinant constraint supplies the missing sharp estimate.
+
+Let $G$ be a compact group with normalized Haar measure $m$. For a multiset $A$ of continuous characters $G\to\T$ put
+\[
+ P_A(g,T)=\prod_{\alpha\in A}(1-\alpha(g)T),\qquad
+ D(A,B)=\{g:P_A(g,T)\ne P_B(g,T)\}.
+\]
+
+\begin{theorem}[Sharp cubic packet threshold and all extremizers]\label{thm:abelian}
+For distinct multisets $A,B$ of three continuous one-dimensional unitary characters of $G$,
+\begin{equation}\label{eq:corrected}
+ m(D(A,B))\ge\frac29.
+\end{equation}
+Equality holds if and only if, after possibly exchanging the packets, there are a continuous character $\theta:G\to\T$ and independent order-three characters $\chi,\psi$ such that
+\begin{equation}\label{eq:all-extremizers}
+ A=\theta\{1,\chi,\chi^2\},\qquad
+ B=\theta\psi\{1,\chi,\chi^2\}.
+\end{equation}
+Independence means that the joint map $(\chi,\psi):G\to\mu_3^2$ is onto. Thus the corrected maximum agreement is exactly $7/9$.
+\end{theorem}
+
+\begin{lemma}[The cubic trace bound]\label{lem:triangle}
+If unitary matrices $U,V$ of size three have equal determinant, then
+\[
+ |\tr U-\tr V|^2\le27.
+\]
+Equality holds only when both matrices are scalar and their scalar ratio is a nontrivial cube root of unity.
+\end{lemma}
+
+\begin{proof}
+Multiply both matrices by a common scalar to give determinant one. For eigenvalues $a,b,(ab)^{-1}$ of a matrix $W\in\SU(3)$,
+\[
+ 3+2\Re\tr W=|1+a+ab|^2\ge0.
+\]
+Applying this also to $\omega W$ and $\omega^2W$ puts the trace in the triangle with vertices $3,3\omega,3\omega^2$. Its squared diameter is $27$, attained only by two distinct vertices. A unitary matrix with trace of modulus three is scalar, which proves the equality statement. The companion paper gives the same lemma and its stability refinement \cite{Companion}.
+\end{proof}
+
+\begin{proof}[Proof of Theorem~\ref{thm:abelian}]
+The product characters $d_A=\prod_{\alpha\in A}\alpha$ and $d_B=\prod_{\beta\in B}\beta$ are the determinants. If they differ, the complement of the kernel of their nontrivial quotient has measure at least $1/2$ and lies in $D$. We may therefore assume $d_A=d_B$.
+
+Cancel common characters, with multiplicity, leaving two disjoint multisets of the same size $r$, where $1\le r\le3$. Cancellation does not change $D$ or equality of the remaining determinants. Write their trace difference as $f=\sum_\gamma c_\gamma\gamma$. Orthogonality of one-dimensional characters gives
+\begin{equation}\label{eq:energy}
+ M=\int_G|f|^2\,dm=\sum_\gamma c_\gamma^2
+ \ge\sum_\gamma|c_\gamma|=2r.
+\end{equation}
+For $r\le2$, the pointwise bound $|f|\le2r$ and vanishing off $D$ yield
+\[
+ m(D)\ge\frac{2r}{4r^2}=\frac1{2r}\ge\frac14>\frac29.
+\]
+For $r=3$, use Lemma~\ref{lem:triangle} for the two diagonal unitary matrices to obtain $M\le27m(D)$. Equation~\eqref{eq:energy} gives $m(D)\ge6/27=2/9$.
+
+Suppose equality holds. Necessarily $r=3$, $M=6$, and every nonzero $c_\gamma$ equals $1$ or $-1$. Thus each packet contains three distinct characters, and the packets are disjoint. The squared trace difference equals $27$ at every point of $D$. To justify pointwise equality for a compact group, $D$ is open and the continuous nonnegative deficit $27-|f|^2$ has integral zero on it. A positive value would give a nonempty open set of positive Haar measure, a contradiction.
+
+By the equality statement of Lemma~\ref{lem:triangle}, both diagonal representations are scalar on $D$. If one is scalar at a point outside $D$, equality of the characteristic polynomials forces the other to be the same scalar. Therefore their scalar kernels coincide in a closed normal subgroup $K$. Choose $\alpha\in A$ and $\beta\in B$; on $K$ all characters in $A$ equal $\alpha$, and all in $B$ equal $\beta$. Equal determinants imply $(\alpha/\beta)^3=1$ on $K$, and this ratio is nontrivial there because $D$ is nonempty. Moreover
+\[
+ D=\{g\in K:\alpha(g)\ne\beta(g)\},\qquad
+ m(D)=\frac23m(K).
+\]
+It follows that $m(K)=1/3$, so $K$ is open of index three. Every ratio of two characters in $A$ is trivial on $K$. There are exactly three characters of $G/K\simeq C_3$; since the three characters in $A$ are distinct,
+\[
+ A=\alpha\{1,\chi,\chi^2\},\qquad
+ B=\beta\{1,\chi,\chi^2\}
+\]
+for a generator $\chi$ of the character group of $G/K$. Now $d_A=\alpha^3$ and $d_B=\beta^3$, so $\psi=\beta/\alpha$ has order dividing three. It cannot belong to $\langle\chi\rangle$, which would make the packets equal. Thus $\chi,\psi$ are independent cubic characters, giving \eqref{eq:all-extremizers} with $\theta=\alpha$.
+
+Conversely, for \eqref{eq:all-extremizers}, twisting both packets by $\theta$ does not affect equality of their local multisets. Haar measure pushes forward uniformly onto $\mu_3^2$, so the computation of Theorem~\ref{thm:counter} gives disagreement $2/9$.
+\end{proof}
+
+\begin{corollary}[Finite-order Borel parameters]\label{cor:finite}
+For distinct triples of finite-order Hecke characters over any number field, complete-factor agreement has density at most $7/9$. The bound is attained over $\Q$, and all equality cases have the form \eqref{eq:all-extremizers}, with finite-order $\theta$. Hence $7/9$ is the exact replacement for $3/4$ in degree three within this class.
+\end{corollary}
+
+\begin{proof}
+Factor the six characters through a common finite abelian Galois group and apply Chebotarev and Theorem~\ref{thm:abelian}.
+\end{proof}
+
+\subsection{The sharp replacement for arbitrary Hecke triples}
+
+The order restriction can also be removed arithmetically. The following statement addresses the inducing-character conclusion of the original conjecture over number fields. It makes no additional claim about uniqueness of arbitrary global subquotients with the same inducing data.
+
+\begin{theorem}[Sharp cubic replacement over number fields]\label{thm:allHecke}
+Let $K$ be a number field and let $A,B$ be distinct multisets of three idele class quasi-characters of $K$. At the finite primes unramified for all six characters, form the local polynomials $P_A(v,T)$ and $P_B(v,T)$. Their agreement set has a natural density, equal to its Dirichlet density, and
+\[
+ \operatorname{density}\{v:P_A(v,T)=P_B(v,T)\}\le\frac79.
+\]
+Equality holds exactly for
+\[
+ A=\theta\{1,\chi,\chi^2\},\qquad
+ B=\theta\psi\{1,\chi,\chi^2\},
+\]
+up to exchanging the packets, where $\theta$ is an arbitrary idele class quasi-character and $\chi,\psi$ are independent cubic finite-order Hecke characters. Consequently, $7/9$ is the exact cubic threshold for distinct inducing data in Rajan's $A_B$ over number fields.
+\end{theorem}
+
+\begin{proof}
+We use \cite[Theorem~1, p.~692]{Rajan}: if two idele class quasi-characters have equal local components on a set of positive upper natural density, their quotient has finite order. Partition the characters in $A\cup B$ by the relation
+\[
+ \alpha\sim\beta\quad\Longleftrightarrow\quad\alpha/\beta\text{ has finite order}.
+\]
+For two characters in different classes, the primes where their unramified values coincide have upper natural density zero. Indeed, equality of unramified values is equality of the local characters, so the cited theorem applies contrapositively. Let $E$ be the union of these finitely many cross-class coincidence sets and the finite ramification set. It has density zero.
+
+At every prime outside $E$, equality of the full local multisets must match values within each equivalence class separately. If a class occurs with different multiplicities in $A$ and $B$, no agreement is possible outside $E$, and the agreement density is zero.
+
+Assume instead that the multiplicities balance in every class. Within a class, divide all its characters by one fixed member of the class. The resulting characters have finite order. All such finite-order characters, from every class, factor through one finite abelian Galois group. Outside $E$, full agreement is exactly the intersection of the within-class agreement conditions on this group. Chebotarev therefore gives a natural density for the total agreement set. A modification on a density-zero set does not change it; natural prime density also gives the same Dirichlet density by partial summation.
+
+If at least two classes occur, each class has size at most two on either side. Because $A\ne B$, at least one class has different character multisets. After the division just described and cancellation of common characters, its reduced size is $r=1$ or $r=2$. The energy argument \eqref{eq:energy} and the bound $|f|\le2r$ give disagreement at least $1/(2r)\ge1/4$. Total disagreement is at least this large, up to $E$. Its agreement is therefore at most $3/4$, strictly below $7/9$.
+
+If only one class occurs, divide all six characters by a single quasi-character $\theta_0$. This common nonzero local scaling preserves full-factor equality and leaves finite-order characters. Corollary~\ref{cor:finite} gives agreement at most $7/9$. It also classifies equality: absorb its finite-order common twist into $\theta_0$ to obtain the stated arbitrary quasi-character $\theta$. Conversely, that stated form has agreement exactly $7/9$ by the independent cubic calculation and Chebotarev.
+\end{proof}
+
+\section{Attribution, scope, and verification}
+
+\subsection{How the source repository leads to the counterexample}
+
+The ProveIt snapshot inspected here is commit \texttt{8528159d15e864e603ba4ded6ebb694c48cf160b}. Its Article section \pathcode{rec.tex}, subsection \pathcode{rec:sec:omatch}, already studies exact matching of Euler factors for packets of odd-prime-order characters. In particular, Corollary \pathcode{rec:cor:ocubicmin} gives the density $2/9$ for cubic packets of size three and rank at least two, with extremizers given by distinct cosets of a line. Under multiplicative notation these are exactly the packets in \eqref{eq:packets}.
+
+The underlying cubic construction is therefore credited to the supplied repository, not presented as a discovery of this note. What this note adds is its application to the precise statement of Rajan's Conjecture~3, a small explicit arithmetic realization, the mixed cubic/quadratic family with a full-multiset proof, and the exact cubic replacement theorem, with all equality cases, for arbitrary compact-group characters and Hecke quasi-characters over number fields. Targeted searches located the original conjecture but did not identify a prior counterexample or this exact replacement theorem. That search is not an exhaustive certification of novelty.
+
+The contradiction is independent of the status of the source's RH and Dirichlet-GRH proofs. Classical prime distribution in residue classes already suffices. The conclusion concerns a published specialist conjecture in the strong-multiplicity-one program; it does not settle the broad cuspidal conjecture, and the packets are not cuspidal examples.
+
+\subsection{Exact, reproducible checks}
+
+The program \pathcode{code/verify_rajan_family.py} uses only the Python standard library. Each character in the mixed-order construction is stored by its dual-group coordinates. Local eigenvalues are encoded by exponents modulo six, and the complete local spectrum is a six-entry multiplicity vector. Thus the program checks equality of full eigenvalue multisets directly, without floating-point arithmetic or a trace-only shortcut.
+
+It exhaustively checks all $567$ group elements for $k=0,1,2,3,4,5$, corresponding to packet sizes $3,6,12,24,48,96$. It also checks every reduced residue class modulo $91$, all nine equal joint fibers, the $16$ classes in \eqref{eq:classes}, and the first distinguishing prime $29$. The output is \pathcode{results/rajan_family_exact_checks.json}. The proof for arbitrary $k$ is Theorem~\ref{thm:family}, not an extrapolation from these finite checks.
+
+\begin{verbatim}
+python3 code/verify_rajan_family.py
+pdflatex -halt-on-error rajan_counterexample.tex
+pdflatex -halt-on-error rajan_counterexample.tex
+\end{verbatim}
+
+The archive includes this source, the compiled PDF, the independent mathematical review, and the companion paper \cite{Companion}. No formal proof-assistant verification or external peer review is claimed.
+
+\begin{thebibliography}{9}
+\raggedright
+\bibitem{Rajan} C.~S.~Rajan, \emph{Refinement of strong multiplicity one for automorphic representations of $\GL(n)$}, Proceedings of the American Mathematical Society \textbf{128} (2000), 691--700. Conjecture~3, p.~698; definition of $A_B$ and unramified components, pp.~694--695. \href{https://doi.org/10.1090/S0002-9939-99-05616-6}{doi:10.1090/S0002-9939-99-05616-6}. Author/institutional copy: \url{https://repository.ias.ac.in/95366/1/Refinement.pdf}.
+\bibitem{ProveIt} V.~Reshetnikov, \emph{ProveIt: Generalized Riemann Hypothesis and downstream research}, commit \texttt{8528159d15e864e603ba4ded6ebb694c48cf160b}, inspected 27 November 2026. Article, \pathcode{sections/rec.tex}, labels \pathcode{rec:sec:omatch}, \pathcode{rec:cor:ocubicmin}. \url{https://github.com/VladimirReshetnikov/ProveIt/tree/8528159d15e864e603ba4ded6ebb694c48cf160b/Analysis/GeneralizedRiemannHypothesis}.
+\bibitem{Companion} \emph{A sharp $25/27$ threshold for cubic Euler-factor agreement: rigidity, reducibility, stability, and a tempered $\GL_3$ theorem}, companion research manuscript prepared for Vladimir Reshetnikov, 27 November 2026. File \pathcode{cubic_euler_agreement.tex} in this archive.
+\end{thebibliography}
+\end{document}

@@ -1,0 +1,55 @@
+DEPENDENCY AUDIT OF PROVEIT GENERALIZED RIEMANN HYPOTHESIS
+Snapshot: 8528159d15e864e603ba4ded6ebb694c48cf160b
+Audit date: 27 November 2026.
+Auditor: independent analytic review, not Lean kernel replay.
+
+1. Exact input.
+The inspected files vendor/grh-lean/grh/src/Statements.lean and Main.lean state and invoke:
+- Mathlib RiemannHypothesis.
+- All Dirichlet characters modulo all N>=1, primitive or imprimitive: no zero at Re s>1/2, excluding the conventional value at the principal pole s=1.
+- All zeros of those Dirichlet L-functions in 0<Re s<1 lie on Re s=1/2.
+They do not state central nonvanishing, simplicity, independence of ordinates, general Hecke GRH, Artin GRH, or automorphic GRH.
+The upstream snapshot is 72fead102f663d5c7a407964a13dc0cf9d977207.
+The vendor README says the 818-file import is unmodified and unbuilt, separate from ProveIt's root build.
+The reported upstream checks have not been replayed in this session.
+
+2. Audited mechanism.
+Article/sections/src.tex, src:sec:mechanism:
+lambda_{d,q}(n)=Lambda(n) 1_{n=1 mod q}(1-chi_d(n))>=0.
+R_{d,q}(x)=sum_{n<=x}lambda(n)(1/n-1/x)-log(x)/phi(q)-c_{d,q}.
+A common lattice supplies a short-form upper covolume bound, an almost-full-dimensional spanning estimate, and an integral lower covolume bound. Their common main term cancels.
+With a theta-lift chain of length m asymptotic sqrt(x), this gives the eventual one-sided bound
+R_{d,q}(x)<=x^(-1/2+epsilon).
+Its Mellin transform has residues
+[sum_chi ord_rho L^circ(s,chi)-sum_chi ord_rho L^circ(s,chi chi_d)]
+ / [phi(q) rho(1-rho)].
+Quadratic-twist zero density chooses d AFTER a hypothetical off-line zero, avoiding cancellation by all twists. Landau positivity then excludes the remaining pole.
+Quantifier dependence and matching integral lattices are essential; a character-table substitution does not create the needed arithmetic estimate.
+
+3. Existing nonabelian transfer boundary.
+Article/sections/nab.tex reduces many nonabelian RH targets to one-sided weighted Frobenius-prime bounds. Its final open question nab:q:arithmetic explicitly asks for any one such inequality for a nonabelian field, with an arithmetic lattice whose local divisibility sees nonlinear Frobenius data.
+The periodic approximation theorem states that a nonlinear irreducible trace has minimum prime mean-square error exactly 1 against every fixed congruence modulus (for its unnormalized trace). More generally the best congruence predictor is the projection onto abelian constituents. Therefore fixed Dirichlet-character linear combinations cannot supply nonlinear Frobenius weights.
+This is not a logical independence theorem, and says nothing with a modulus growing with the prime cutoff.
+
+4. Prominent conjectures not settled by the inspected inputs.
+- General nonabelian Artin/Hecke RH: needs a new arithmetic one-sided estimate; the analytic detection reductions already exist.
+- Chowla central nonvanishing for quadratic characters: the input allows central zeros of even multiplicity. hec:thm:chowla and hec:thm:kernels are finite certificate criteria, not uniform nonvanishing.
+- Pair correlation or simplicity: the zero-location input has no spacing or multiplicity conclusion.
+- Hooley's route to Artin's primitive-root conjecture requires the relevant nonabelian Kummer-field RH statements, not just Dirichlet GRH.
+These are boundaries of this analysis, not proofs that no other route exists.
+
+5. A concrete unresolved finite-character question.
+nab:q:un asks whether, for n>=13,
+U_n=(n-1)Ind_{<t>}^{S_n}(sign)-Reg_{S_n}+1
+is a positive rational sum of characters induced from linear characters of subgroups.
+The article certifies n<=12. A uniform identity would prove unconditional holomorphy on C\{1} of
+zeta_{E^{<t>}}(s)^(n-1) zeta_{E^{A_n}}(s)/(zeta_E(s)zeta_k(s))
+for S_n extensions E/k and the sharp off-line multiplicity bound n-1 over Q under Dirichlet GRH.
+A useful Foulkes-character identity was derived, but does not close monomial positivity; see notes/foulkes_boundary.txt.
+
+6. Chosen downstream direction.
+The full-Euler-factor cubic separation theorem is a clean new extension of local-factor reconstruction. Its finite/compact proof needs only unitary trace geometry and orthogonality; its arithmetic transfer uses Chebotarev. The tempered automorphic extension uses classical Rankin-Selberg theory and is detailed in cubic_euler_agreement.tex, Section 8.
+It does not invoke RH or GRH, though it follows the repository's method-transfer program and moves its one-dimensional local-factor comparisons to irreducible dimension three.
+
+
+Integration update: The companion rajan_counterexample.tex additionally disproves the printed Rajan2000 Conjecture3 using the source's cubic packets and proves an exact 7/9 replacement for arbitrary Hecke triples. This was discovered after this initial route audit.

@@ -1,0 +1,181 @@
+\documentclass[11pt]{article}
+\usepackage[margin=1in]{geometry}
+\usepackage{amsmath,amssymb,amsthm}
+\usepackage[hidelinks]{hyperref}
+\newtheorem{theorem}{Theorem}
+\title{The exact zero-free gap for\\the spectrum \(\boldsymbol{\{\pm1,\pm4,\pm7\}}\)}
+\author{}
+\date{27 November 2026}
+\begin{document}
+\maketitle
+\vspace{-2em}
+\begin{abstract}
+For \(\{\pm N,\pm4N,\pm7N\}\) the supremal zero-free
+interval has length \(\arccos(\xi)/(\pi N)\), where
+\(\xi=-0.3639080166\ldots\) is an explicitly isolated algebraic
+number. The supremum is not attained. On the critical closed interval,
+there is a unique nonnegative polynomial up to positive scale, and a
+unique probability measure annihilating the spectrum. That measure
+requires exactly six atoms.
+\end{abstract}
+
+\section{Statement and algebraic data}
+For a symmetric set \(S\) of nonzero integers let \(M(S)\) be the
+supremum of lengths of intervals in \(\mathbb R/\mathbb Z\) on which a
+real trigonometric polynomial with spectrum contained in \(S\) has no
+zeros. Intervals may equivalently be taken in the periodic lift.
+Kozma and Oravecz ask for \(M(\{\pm(N+jb):0\le j\le K\})\) when
+\(b\ge 2N\) \cite{KO}. The ProveIt spectral-filter chapter relates the
+problem to minimum-width positive annihilators \cite{P}. We settle the
+subfamily \(K=2,\ b=3N\), without using RH or GRH.
+
+\begin{theorem}
+For every positive integer \(N\),
+\[
+ M(\{\pm N,\pm4N,\pm7N\})=\frac{\arccos(\xi)}{\pi N}
+       \simeq \frac{0.6185577534840}{N}.
+\]
+No zero-free interval has this length, even with both endpoints removed.
+On a fixed closed interval of this length, the cone of nonnegative
+polynomials on this spectrum is a single ray, and the probability
+measure annihilating the three frequencies is unique and has six atoms.
+\end{theorem}
+
+Write \(T_j(\cos\phi)=\cos(j\phi)\) and set
+\[
+ U(x)=64x^6-112x^4+56x^2-7,\qquad V(x)=8x^3-8x+x^{-1}.
+\]
+Thus \(U=T_7/x\) away from zero and \(V=T_4/x\). Define
+\(H(x,B)=B U(x)+V(x)\) and \(F=\partial_xH\).
+The triple \((B_*,u,v)\) is the unique solution in the boxes
+\begin{align*}
+ J_B&=[0.9208242456520,\ 0.9208242456522],\\
+ J_u&=[0.2680823592348,\ 0.2680823592351],\\
+ J_v&=[0.8545996486673,\ 0.8545996486676]
+\end{align*}
+of \(F(u,B_*)=F(v,B_*)=0\) and \(H(v,B_*)=H(u,B_*)\).
+Put \(A=-H(u,B_*)\) and \(P(x)=T_4(x)+Ax+B_*T_7(x)\).
+The number \(\xi\) is the unique root of \(P\) in
+\((-0.363908019,-0.363908014)\).
+
+\section{Isolation and sign of the polynomial}
+The reproducible sign checks in Section~\ref{sec:check} give
+\(\partial_x F>0\) on each of \(J_u\times J_B\) and \(J_v\times J_B\),
+and \(F<0\) at the left and \(F>0\) at the right endpoint of each
+\(x\)-box, uniformly in \(B\). Hence there are unique differentiable
+root branches \(u(B),v(B)\). The derivative of
+\(\Delta(B)=H(v(B),B)-H(u(B),B)\) is \(U(v(B))-U(u(B))>0\);
+the implicit-derivative contributions vanish by stationarity.
+The endpoints of \(J_B\) give \(\Delta(B_{\rm left})<0<
+\Delta(B_{\rm right})\), proving existence and uniqueness. Clearing the
+nonzero denominators gives a polynomial system over \(\mathbb Q\).
+The solution has algebraic coordinates by quantifier elimination for
+real closed fields: the same unique solution exists over the real
+algebraic numbers.
+
+Since \(P=x(A+H(x,B_*))\) away from zero, \(u,v\) are double zeros:
+\[
+ P(x)=(x-u)^2(x-v)^2G(x),\qquad
+ G(x)=c_3x^3+c_2x^2+c_1x+c_0 .
+\]
+With \(h=u+v,\ k=uv,\ w=h^2+2k\), comparing the top four coefficients gives
+\begin{align*}
+ c_3&=64B_*, & c_2&=2hc_3,\\
+ c_1&=-112B_*+2hc_2-wc_3, &
+ c_0&=8+2hc_1-wc_2+2hkc_3.
+\end{align*}
+Let \(x_-=-0.363908019,\ x_+=-0.363908014\). The exact checks give
+\(c_3>0\), \(G'(x_-)>0\), \(G''(x_-)>0\), and \(G(x_-)<0<G(x_+)\).
+Thus \(G\) is strictly increasing on \([x_-,1]\), with unique root
+\(\xi\in(x_-,x_+)\). Therefore \(P\) is nonnegative on \([\xi,1]\)
+and vanishes there exactly at \(\xi,u,v\).
+The same checks give \(U(u)<U(\xi)<U(v)\).
+
+\section{Sharp dual certificate and approximation}
+It is enough to work at \(N=1\): the changes of variable \(s=Nt\) and
+\(t=s/N\) biject the classes of lifted polynomials and scale interval
+lengths by \(N\) and \(1/N\), respectively. Write \(L=\arccos(\xi)/\pi\).
+For \(x\in\{\xi,u,v\}\) set \(t_x=\arccos(x)/(2\pi)\), and define
+\[
+ \theta=\frac{U(v)-U(\xi)}{U(v)-U(u)},\qquad
+ w_\xi=1,\quad w_u=\frac{|\xi|\theta}{u},\quad
+ w_v=\frac{|\xi|(1-\theta)}{v}.
+\]
+The weights are positive and satisfy
+\(\sum_x w_xx=\sum_xw_xT_7(x)=0\); summing \(P(x)=0\) gives
+\(\sum_xw_xT_4(x)=0\). Split each weight equally between \(t_x\) and
+\(-t_x\), and divide by the total mass. The resulting measure \(\mu\)
+annihilates all six sine and cosine modes of frequencies \(1,4,7\),
+since the sine modes cancel in pairs. Its support lies in
+\([-L/2,L/2]\), with four atoms strictly inside.
+
+If a polynomial is zero-free on an interval of length at least \(L\),
+center a subinterval of length \(L\) at zero by translation and change
+the sign of the polynomial if necessary. It is strictly positive
+in the interior and nonnegative at the endpoints. Integration against
+\(\mu\) is strictly positive, contradicting annihilation.
+Conversely, for any \(\xi<a<0\), \(P(x)+\varepsilon x\) is strictly
+positive on \([a,1]\) for sufficiently small \(\varepsilon>0\).
+On \([a,0]\) the polynomial \(P\) has a positive minimum, and at
+positive \(x\) the perturbation is positive. Substituting
+\(x=\cos(2\pi t)\) yields zero-free intervals of lengths
+\(\arccos(a)/\pi\) approaching \(L\) with no new frequencies.
+
+\clearpage
+\section{Uniqueness on the critical interval}
+Let \(g\) be nonnegative on \([-L/2,L/2]\) with the allowed spectrum.
+Its integral against \(\mu\) is zero, so \(g(\pm t_x)=0\) for each \(x\).
+The even part is \(C_1T_1+C_4T_4+C_7T_7\) in \(x\). Evaluation at
+\(u,v\) has rank two: the \(T_1,T_7\) submatrix has determinant
+\(uv(U(v)-U(u))\ne 0\). As \(P\) vanishes at both points, the even
+part must be a scalar multiple of \(P\).
+
+For the odd part use
+\(\sin(j\phi)=\sin(\phi)W_{j-1}(\cos\phi)\) with
+\[
+ W_0=1,\qquad W_3=8x^3-4x,\qquad
+ W_6=64x^6-80x^4+24x^2-1 .
+\]
+The determinant with rows \((1,W_3(x),W_6(x))\) at \(x=u,v,\xi\)
+lies strictly between \(4.54\) and \(4.55\) by the rational check.
+The factors \(\sin(2\pi t_x)\) are nonzero; hence the odd part vanishes.
+The scalar multiplying \(P\) is nonnegative because \(P(1)>0\).
+
+For any annihilating probability measure on the interval,
+integration of \(P(\cos(2\pi t))\) forces it to be supported
+on the six zeros. The sine equations, by the same invertible matrix,
+force the masses of each pair to agree. The cosine equations for
+\(T_1,T_7\) have rank two in the three pair totals, so normalization
+determines the pair totals uniquely. This is precisely \(\mu\);
+all six masses are necessary.
+
+\section{Exact replay}\label{sec:check}
+Run \texttt{node certify.js} and \texttt{python3 verify.py}. Neither
+program requires third-party packages. The first uses outward-rounded
+integer intervals on a \(10^{-24}\) grid to check the original boxes;
+only its printed summary uses floating point. The second uses
+exact rational endpoints, isolates the stationary roots at the two
+endpoints of a tighter \(B\)-box by bisection, and checks the cubic and
+sine determinant on tighter boxes. These lie inside the original boxes,
+so their isolated solution is the same. In particular,
+\[
+ -0.36390801664214987744459<\xi<-0.36390801664214987744456.
+\]
+The proof uses the exact inequalities rather than the displayed
+approximation to \(L\). General finite off-resonance progressions are
+not resolved here.
+
+\begin{thebibliography}{9}
+\bibitem{KO}
+G. Kozma and F. Oravecz,
+\emph{On the gaps between zeros of trigonometric polynomials},
+Real Anal. Exchange 28 (2002/03), no.~2, 447--454.
+\href{https://arxiv.org/abs/math/0601021}{arXiv:math/0601021},
+Question~1.
+\bibitem{P}
+ProveIt,
+\href{https://github.com/VladimirReshetnikov/ProveIt/blob/531fa8ce559ed7a34b1a962bd325472171741000/Analysis/GeneralizedRiemannHypothesis/Article/sections/fil.tex}{GRH article, spectral-filter chapter},
+revision \texttt{531fa8ce559e}, paragraph on zero-free intervals
+and the convolution bound.
+\end{thebibliography}
+\end{document}

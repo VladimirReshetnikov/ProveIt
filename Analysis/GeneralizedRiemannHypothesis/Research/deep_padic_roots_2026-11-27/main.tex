@@ -1,0 +1,162 @@
+\input{preamble.tex}
+\hypersetup{pdftitle={Exact exponent compression and deep p-adic roots},pdfauthor={Research prepared for Vladimir Reshetnikov}}
+\title{Exact Exponent Compression\\and Deep $p$-adic Roots}
+\author{Research prepared for Vladimir Reshetnikov\\\small An extension of the ProveIt GRH research programme}
+\date{November 27, 2026}
+\begin{document}
+\maketitle
+\begin{abstract}
+We construct an invertible rational linear map between spaces of sparse
+polynomials whose exponents agree to an explicit finite $p$-adic precision.
+The map matches the first $t$ Euler derivatives and preserves, simultaneously,
+the entire multiset of geometric root depths above $1/(p-1)$. This holds for
+every term count $t$, including the range beyond $p$ left open in the source
+article. Canonical representatives give a degree bound independent of the
+original exponents. Finite lattice formulas then compute the sharp maxima
+in every deeper closed disk and in the open critical disk; full-support,
+simple, rational witnesses attain the maxima. As a concrete sharp case,
+we prove that an eight-term polynomial has at most nine roots in
+$v_2(X-1)>1$, with an explicit squarefree witness. Two independent exact
+computations check all 165 residue patterns in that classification. The
+theorems are unconditional. They address an explicit research question in
+the repository; no resolution of a prominent classical conjecture or
+certification of publication priority is claimed.
+\end{abstract}
+{\setlength{\parskip}{0pt}\tableofcontents}
+\clearpage
+\section*{Reader's guide and status}
+\addcontentsline{toc}{section}{Reader's guide and status}
+The main contribution is Theorem~\ref{thm:transport}: an exact equivalence
+between spaces of polynomials of potentially enormous degree and finite
+canonical models that retain at most the same number of terms. A usual
+$p$-adic root bound alone does not give such an equivalence. The coefficient
+map, the finite residue precision, and preservation of every deep root
+radius are the structural results proved here.
+
+The source is the ProveIt directory
+\texttt{Analysis/GeneralizedRiemannHypothesis}, inspected at commit
+\texttt{cfab41369737c66ae520d179419509eb719367cd}. Its question
+\texttt{smd:q:roots} asks for additional residue data and exact root counts
+when the number of exponents exceeds $p$. The present work answers this
+in the form of explicit finite data and exact algorithms, without giving
+a closed formula for all global maxima. The nine-root theorem is a complete
+particular global evaluation, not a search over a bounded original degree.
+
+Throughout, roots lie in an algebraic closure of $\mathbb Q_p$ and counts
+include multiplicity, unless distinctness is stated. In particular, the
+nine roots in the explicit example have nonintegral depth $10/9$ and are
+not asserted to belong to $\mathbb Q_2$. The main proof has been checked
+independently within this research session, but has not been formalized
+or compiled in Lean. The accompanying finite certificates are exact
+integer and rational computations.
+
+\input{main_body.tex}
+
+\section{Initial forms and an effective implementation}
+The proof gives slightly more than equality of counts. At any rational
+$r>1/(p-1)$, after the common moment normalization and the substitution
+$X=\exp(bY)$, the two series differ in every coefficient by a quantity of
+valuation strictly greater than the common minimum. Divide both by a
+coefficient attaining that minimum. Their reductions are then identical
+polynomials over the residue field. Thus the exact transfer preserves
+the initial polynomial at every deep radius, as well as the radial Newton
+data. At a fixed depth $r$, the nonzero roots of this reduced polynomial
+record, with multiplicity, the leading residue of $(\alpha-1)/b$:
+$\exp(bY)-1$ and $bY$ have the same leading term. Hence the deep roots
+can be paired, with multiplicity, so that for each pair different from one,
+\[
+ v_p(\alpha-\beta)>v_p(\alpha-1)=v_p(\beta-1).
+\]
+Roots at one are paired separately; their multiplicity is the first
+nonzero moment index, which is below $t$ and is exactly preserved.
+This is a statement about the first residue at each depth. It does not
+assert equality of individual roots, higher cluster geometry, or fields
+of definition.
+
+For a specified rational input polynomial, the transport can be computed
+by forming its first $t$ moments and solving one rational Vandermonde
+system on the canonical support. Expand the resulting bounded-degree
+polynomial at $X=1$, compute its coefficient valuations exactly, and take
+the lower Newton polygon. Retain its segments of slope less than
+$-1/(p-1)$ and record the horizontal lengths. The initial zero coefficients
+record the multiplicity at $X=1$.
+
+For fixed $p$, this procedure takes polynomial time in the sparse binary
+input size. Indeed, if $h=\lfloor\log_p(t-1)\rfloor$, then
+$D_p(t)\le(p-1)(h+1)$, so
+$P_p(t)\le p^{h+1}\le p(t-1)$ and the degree span is at most
+$p(t-1)^2$. The moments use powers of order below $t$, hence have
+polynomial bit length; rational elimination and the subsequent dense
+translation also have polynomial bit complexity. If $p$ varies, this
+bound is polynomial in $p$, not in $\log p$. The complexity statement
+is a consequence of this construction, not a claim of the first
+polynomial-time geometric profile algorithm: classical finite root
+bounds also permit a dense Taylor truncation approach.
+
+\section{Prior work, novelty, and remaining questions}
+Lenstra's fewnomial work already proves degree-independent bounds for
+geometric roots in positive-depth disks, and explicitly discusses the
+factorial method in the exponential convergence range \cite{Lenstra}.
+Avenda\~no and Krick study sharp bounds for roots in fixed local fields,
+with hypotheses involving ramification, residue degree, and term count
+\cite{AvendanoKrick}. Rojas and Zhu give algorithms and separation bounds
+for very sparse polynomials over $p$-adic fields \cite{RojasZhu}. These
+are important precedents. Finiteness itself, the Newton polygon rule,
+and linear recurrence arguments are not claimed as new.
+
+The new assertions relative to the inspected source article are the
+explicit support-space isomorphism, its uniform residue precision for
+arbitrary $t$, its simultaneous preservation of every deep radius,
+the finite classification of exact extrema, and the evaluation
+$N_2^\circ(8)=9$. Targeted searches in the primary literature did not
+locate these exact statements. Such searches do not establish global
+publication priority. In particular, this work does not compute the
+optimal number of roots in a prescribed finite extension of $\mathbb Q_p$:
+the transfer need not preserve splitting fields. It also does not settle
+the six-term singular-modulus question in the repository, or a general
+fewnomial conjecture. The explicit uniform modulus is sufficient; its
+minimality for arbitrary $(p,t)$ remains open.
+
+\section{Reproduction and formalization boundary}
+The archive contains two independent implementations of the eight-term
+classification. The Hermite-normal-form computation in
+\texttt{checks/exact\_lattice\_check.py} uses SymPy over exact integers and
+rationals. The computation in \texttt{checks/independent\_dvr\_check.py}
+uses only Python's standard library and valuation-minimal pivots over
+$\mathbb Z_{(2)}$. They agree on every one of the 165 residue vectors.
+Both outputs give the distribution $(23,100,42)$ of maxima $(7,8,9)$.
+The first output retains full HNF bases and prefix-index drops; the second
+retains the independent pivot data.
+
+An additional standard-library checker compares complete Newton polygons
+before and after the rational moment map in 256 deterministic cases,
+using $p=2,3,5,7$ and $2\le t\le9$. It also includes cases with more
+than $t-1$ deep roots. These examples test the implementation; the
+general theorem is established by the recurrence and strict-weight proof,
+not by sampling. The explicit eight- and nine-root witnesses are checked
+by exact expansions, coefficient valuations, and polynomial gcds.
+
+The file \texttt{FORMALIZATION.md} separates finite algebra, valuation
+estimates, the analytic Newton--Weierstrass bridge, and the finite
+certificate theorem into suggested formalization units. No new result
+in this archive is represented as Lean-kernel checked.
+
+\begin{thebibliography}{9}
+\bibitem{ProveIt} V. Reshetnikov, \emph{ProveIt: Beyond the Riemann hypothesis
+for Dirichlet $L$-functions}, pinned revision
+\texttt{cfab41369737c66ae520d179419509eb719367cd}, section on sparse equations
+for singular moduli, especially \texttt{smd:thm:rankrule} and
+\texttt{smd:q:roots}.\newline
+\url{https://github.com/VladimirReshetnikov/ProveIt/blob/cfab41369737c66ae520d179419509eb719367cd/Analysis/GeneralizedRiemannHypothesis/Article/sections/smd.tex}.
+\bibitem{Lenstra} H. W. Lenstra Jr., \emph{On the factorization of lacunary
+polynomials}, Number Theory in Progress, vol. 1 (1999), 277--292.
+\url{https://doi.org/10.1515/9783110285581.277}.
+\bibitem{AvendanoKrick} M. Avenda\~no and T. Krick, \emph{Sharp bounds for the
+number of roots of univariate fewnomials}, Journal of Number Theory
+131 (2011), 1209--1228. \url{https://doi.org/10.1016/j.jnt.2011.01.006}.
+\bibitem{RojasZhu} J. M. Rojas and Y. Zhu, \emph{Root repulsion and faster
+solving for very sparse polynomials over $p$-adic fields}, preprint
+arXiv:2107.09173 (2021). \url{https://arxiv.org/abs/2107.09173}.
+\end{thebibliography}
+\end{document}
+

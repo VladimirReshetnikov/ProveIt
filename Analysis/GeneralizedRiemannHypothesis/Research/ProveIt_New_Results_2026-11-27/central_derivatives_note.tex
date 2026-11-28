@@ -1,0 +1,375 @@
+\documentclass[11pt]{article}
+\usepackage[margin=1in]{geometry}
+\usepackage{amsmath,amssymb,amsthm,mathtools,hyperref}
+\hypersetup{hidelinks}
+\newtheorem{theorem}{Theorem}
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{corollary}[theorem]{Corollary}
+\newtheorem{remark}[theorem]{Remark}
+\newcommand{\dd}{\,\mathrm d}
+\newcommand{\R}{\mathbb R}
+\title{High central derivatives of quadratic Dirichlet functions:\\effective monotonicity, asymptotics, and eventual Hankel positivity}
+\author{Research note}
+\date{27 November 2026}
+\begin{document}
+\maketitle
+\begin{abstract}
+For every primitive quadratic Dirichlet character, we give an explicit conductor-dependent threshold after which its even completed central derivatives increase. More substantially, Hankel matrices formed from derivatives at index $m$ are positive definite in every dimension below an explicit constant times $m\log m$, for all sufficiently large $m$ at fixed conductor. We give a finite sufficient inequality and a simpler explicit bound valid in a linear range of dimensions. Neither result assumes GRH or positivity of the whole theta kernel. Central-derivative asymptotics were already established, to arbitrary order, by Wagner; we give a self-contained leading form and a direct quantitative proof of the eventual-increase assertion later stated as part (1) of Conjecture 1.5 of Sheth--Voo. The new focus is the effective threshold and growing-matrix estimates, not a first central-derivative asymptotic. The assertion of at most one turning point, part (2) of that conjecture, is not proved here.
+\end{abstract}
+
+\section{Statements and normalization}
+Let $\chi$ be a primitive quadratic Dirichlet character of conductor $q>1$, and write $a\in\{0,1\}$ for its parity: $\chi(-1)=(-1)^a$. Set
+\[
+ \Lambda_\chi(s)=\left(\frac q\pi\right)^{(s+a)/2}
+ \Gamma\!\left(\frac{s+a}{2}\right)L(s,\chi),\qquad
+ A_m(\chi)=\Lambda_\chi^{(2m)}(1/2),\quad m\ge0.
+\]
+These are ordinary derivatives, not Taylor coefficients. The normalization in Sheth--Voo \cite{SV} is $q^{-a/2}\Lambda_\chi$; multiplication by this positive constant preserves every monotonicity and positivity assertion below. Wagner's Theorem 2.1 and Corollary 1.4 \cite{Wagner} already give arbitrary-order central-derivative asymptotics for these functions. Thus qualitative eventual increase should not be advertised as a wholly new consequence of the recent GRH work. The direct proof below makes a uniform threshold explicit and extends the positive-tail argument to matrices of increasing dimension.
+
+\begin{theorem}[Effective eventual increase]\label{thm:increase}
+For every primitive quadratic $\chi$ of conductor $q$, one has
+\[
+ A_{m+1}(\chi)>A_m(\chi)
+ \quad\text{whenever}\quad
+ m\ge\left\lceil500(1+\log q)^2\right\rceil.
+\]
+In particular the even central derivatives are eventually strictly increasing. This gives a direct, unconditional and effective version of the assertion in Conjecture 1.5(1) of \cite{SV}; the qualitative conclusion also follows from the older asymptotic theory \cite{Wagner}. The displayed constant is deliberately generous.
+\end{theorem}
+
+For $x>0$, write $W(x)$ for the positive solution of $W e^W=x$.
+\begin{theorem}[Leading asymptotic with its prefactor]\label{thm:asymp}
+Fix $\chi$, and put $\beta=a+1/2$ and $w_m=W(2mq/\pi)$. As $m\to\infty$,
+\begin{align}
+ A_m(\chi)
+ &=\frac{2\sqrt\pi\,w_m}{\sqrt{m(1+w_m)}}
+ \left(\frac{w_m}{2}\right)^{2m}
+ \exp\!\left(-\frac{2m}{w_m}+\frac{\beta w_m}{2}\right)
+ \left(1+O_q\!\left(\frac{\log m}{m}\right)\right).
+ \label{eq:asymp}
+\end{align}
+In particular,
+\[
+ \frac{A_{m+1}(\chi)}{A_m(\chi)}
+ \sim \frac14 W(2mq/\pi)^2,
+ \qquad
+ A_m(\chi)^{1/(2m)}\sim\frac12\log m.
+\]
+More precisely, define the positive universal integral
+\[
+ U_m(q,a)=4\int_0^\infty t^{2m}
+ \exp\!\left((a+1/2)t-\frac\pi q e^{2t}\right)\dd t.
+\]
+For every $0<\kappa<4\log2$,
+\[
+ A_m(\chi)=U_m(q,a)
+ \left(1+O_{q,\kappa}\!\left(e^{-\kappa m/\log m}\right)\right).
+\]
+\end{theorem}
+
+\begin{theorem}[An explicit linear-range Hankel bound]\label{thm:hankel}
+Put $T=\max(1,\frac12\log(q/\pi))$. For integers $r,m\ge0$, the real symmetric matrix
+\[
+ H_{m,r}(\chi)=\bigl(A_{m+i+j}(\chi)\bigr)_{0\le i,j\le r}
+\]
+is positive definite whenever
+\begin{equation}\label{eq:matrix-threshold}
+ m\ge\left\lceil(T+1)\left(225+2\log q+\log(r+1)+r\log(2T+4)\right)\right\rceil.
+\end{equation}
+In particular, for each fixed conductor this allows $r$ to grow at a fixed positive linear rate in $m$. Consequently $A_m>0$ eventually, and
+\[
+ A_mA_{m+2}>A_{m+1}^2
+\]
+for all sufficiently large $m$. Also, for every fixed integer $j\ge0$, the forward difference $\Delta^j A_m$ is strictly positive for all sufficiently large $m$.
+\end{theorem}
+
+\begin{theorem}[Hankel positivity for dimensions of order $m\log m$]\label{thm:superlinear}
+Use the notation of Theorem \ref{thm:hankel}, and set $c=\pi/q$ and $C_q=4qTe^{3T/2}$. For any real numbers $U,V$ with $T<U<V$, the matrix $H_{m,r}(\chi)$ is positive definite if
+\begin{equation}\label{eq:interval-threshold}
+ \begin{split}
+ 2m\log(U/T)\;>&\;ce^{2V}
+ +\log\!\left(\frac{C_qV}{V^2-U^2}\right)
+ +2\log(r+1)\\
+ &+2r\log\!\left(\frac{V+U}{V-U}\right).
+ \end{split}
+\end{equation}
+Consequently, for every fixed conductor $q$ and every
+\[
+ 0<\alpha<\frac1{4eT},
+\]
+there is an integer $M(q,\alpha)$ such that $H_{m,r}(\chi)$ is positive definite for every $m\ge M(q,\alpha)$ and every integer $0\le r\le\alpha m\log m$.
+\end{theorem}
+
+The sufficient coefficient $1/(4eT)$ is not asserted to be optimal for the actual theta kernels. Inequality \eqref{eq:interval-threshold} is finite and explicit; its asymptotic consequence follows by choosing $U=eT$ and allowing $V$ to grow with $m$.
+
+Theorems \ref{thm:asymp}--\ref{thm:superlinear} give more information than eventual increase. They do not control all early derivatives and do not prove that the sequence has at most one turning point. In particular, eventual log-convexity is not a substitute for the global assertion in Conjecture 1.5(2).
+
+\section{The theta kernel and its positive tail}
+For $t\in\R$ set
+\[
+ K_\chi(t)=2e^{\beta t}\sum_{n\ge1}\chi(n)n^a
+ \exp\!\left(-c n^2e^{2t}\right),
+ \qquad c=\frac\pi q,\quad\beta=a+\frac12.
+\]
+The classical theta transformation for a primitive real character has root number $+1$ and gives $K_\chi(-t)=K_\chi(t)$. Mellin integration first in a right half-plane, followed by analytic continuation, gives
+\begin{equation}\label{eq:kernel}
+ \Lambda_\chi(1/2+z)=\int_{\R}K_\chi(t)e^{zt}\dd t,
+ \qquad
+ A_m=2\int_0^\infty t^{2m}K_\chi(t)\dd t.
+\end{equation}
+All derivatives and integrals converge absolutely, locally uniformly in $z$, since theta transformation gives double-exponential decay at both ends. These standard formulas are also the starting point of \cite{SV}. The ProveIt article uses the same eventual-tail argument in \texttt{fil:lem:tails} \cite{ProveIt}.
+
+For later estimates, let
+\[
+ T=\max\left(1,\frac12\log(q/\pi)\right).
+\]
+If $t\ge T$, put $B=ce^{2t}\ge1$. Since $a\le1$,
+\begin{align*}
+ \left|\sum_{n\ge2}\chi(n)n^a e^{-B(n^2-1)}\right|
+ &\le\sum_{n\ge2}n e^{-B(n^2-1)}\\
+ &\le e^{-3B}\sum_{k\ge0}(k+2)e^{-5Bk}
+ =e^{-3B}\frac{2-e^{-5B}}{(1-e^{-5B})^2}<\frac12.
+\end{align*}
+Here $(k+2)^2-1\ge3+5k$ for all integers $k\ge0$. Hence
+\begin{equation}\label{eq:positive-tail}
+ K_\chi(t)>e^{\beta t-ce^{2t}}>0\qquad(t\ge T).
+\end{equation}
+No assertion about the sign of $K_\chi$ on $[0,T]$ is required. Indeed, theta functions associated with quadratic characters need not be everywhere positive; this is a substantive restriction in \cite{SV}, not an automatic property \cite{LM}.
+
+\section{A uniform threshold for increase}
+We prove Theorem \ref{thm:increase}. On $[0,T]$,
+\[
+ |K_\chi(t)|\le2e^{3T/2}\sum_{n\ge1}n e^{-cn^2}
+ \le2qe^{3T/2}.
+\]
+For the last inequality, integrating over $[n-1,n]$ gives
+\[
+ \sum_{n\ge1}n e^{-cn^2}
+ \le\int_0^\infty(x+1)e^{-cx^2}\dd x
+ =\frac q{2\pi}+\frac{\sqrt q}{2}\le q,
+\]
+using $q\ge3$. Define
+\[
+ C=\int_0^T|t^2-1|\,|K_\chi(t)|\dd t
+ \le4qT^3e^{3T/2}.
+\]
+The negative contribution to $\frac12(A_{m+1}-A_m)$ is at worst $-T^{2m}C$. All contributions from $t\ge T$ are positive, because $T\ge1$. On $[T+1,T+2]$, \eqref{eq:positive-tail} and $t^2-1\ge3$ show
+\[
+ \int_{T+1}^{T+2}(t^2-1)K_\chi(t)\dd t
+ \ge3\exp(-ce^{2(T+2)})>e^{-440}.
+\]
+Indeed $ce^{2T}=\max(\pi e^2/q,1)<8$ and $e^4<55$. We have proved
+\begin{equation}\label{eq:diff-bound}
+ \frac12(A_{m+1}-A_m)
+ >(T+1)^{2m}e^{-440}-T^{2m}C.
+\end{equation}
+Write $L=\log q\ge0$. Since $1\le T\le1+L/2$ and $\log T\le T$,
+\[
+ \log C\le\log4+L+3\log T+\frac32T
+ <\frac{13}{2}+\frac{13}{4}L.
+\]
+Also $\log(1+1/T)\ge1/(T+1)$. Therefore \eqref{eq:diff-bound} is positive as soon as
+\[
+ m>\frac{T+1}{2}(440+\log C)
+ <\left(1+\frac L4\right)\left(\frac{893}{2}+\frac{13}{4}L\right)
+ <500(1+L)^2.
+\]
+The claimed integer threshold follows. If $C=0$, positivity follows directly and logarithms of $C$ may simply be omitted.
+
+\section{A saddle lemma}
+For fixed $c>0$ and fixed $\beta\in\R$, set
+\[
+ I_N(c,\beta)=\int_0^\infty t^N e^{\beta t-ce^{2t}}\dd t,
+ \qquad w=W(N/c),\quad N\to\infty.
+\]
+\begin{lemma}\label{lem:saddle}
+One has
+\begin{equation}\label{eq:saddle}
+ I_N(c,\beta)=\frac{\sqrt{2\pi}\,w}{2\sqrt{N(1+w)}}
+ \left(\frac w2\right)^N
+ \exp\!\left(-\frac Nw+\frac{\beta w}{2}\right)
+ \left(1+O_{c,\beta}\!\left(\frac wN\right)\right).
+\end{equation}
+For every fixed $\lambda>1$,
+\begin{equation}\label{eq:saddle-ratio}
+ \log\frac{I_N(\lambda c,\beta)}{I_N(c,\beta)}
+ =-\frac{N\log\lambda}{W(N/c)}
+ +O_{c,\beta,\lambda}\!\left(\frac{N}{W(N/c)^2}\right).
+\end{equation}
+\end{lemma}
+\begin{proof}
+Let $h(t)=N\log t+\beta t-ce^{2t}$. Its derivative decreases strictly from $+\infty$ to $-\infty$, so there is a unique maximizer $r$. Let
+\[
+ r_0=\frac w2,\qquad
+ V_0=\frac{N}{r_0^2}+4ce^{2r_0}
+ =\frac{4N(1+w)}{w^2}.
+\]
+The equality $we^w=N/c$ implies $N/r_0=2ce^{2r_0}$. The derivative of $h$ at $r_0$ is $\beta$, so the mean value theorem, followed by one further Taylor expansion, gives
+\[
+ r-r_0=O_{c,\beta}(w/N),\qquad
+ h(r)=N\log(w/2)-N/w+\beta w/2+O_{c,\beta}(w/N),
+\]
+and $V=-h''(r)=V_0(1+O_{c,\beta}(w/N))$.
+
+For completeness, the local Gaussian estimate has an error uniform in the slowly growing saddle. On $|t-r|\le1$, the quantity $-h''(t)$ is comparable to $V$, and $|h^{(j)}(t)|\ll_{c,\beta,j}N/r$ for $3\le j\le6$. With $y=\sqrt V(t-r)$ and $\varepsilon=(r/N)^{1/2}$, Taylor expansion gives
+\[
+ h(t)-h(r)=-\frac{y^2}{2}+a_3y^3+a_4y^4
+ +O(\varepsilon^3|y|^5+\varepsilon^4|y|^6),
+ \quad a_3=O(\varepsilon),\quad a_4=O(\varepsilon^2).
+\]
+Use this expansion for $|y|\le\varepsilon^{-1/6}$. The first cubic correction integrates to zero on this symmetric interval; the quartic correction and the square of the cubic correction contribute $O(\varepsilon^2)$ after Gaussian integration. Taylor's theorem for the exponential, together with Gaussian domination, bounds the remaining contribution by $O(\varepsilon^3)$; enlarging this to $O(\varepsilon^2)$ suffices. For $\varepsilon^{-1/6}<|y|\le\sqrt V$, concavity gives a bound $e^{-c_0y^2}$. Beyond $|t-r|=1$, the tangent slopes have magnitude $\gg V$ and concavity bounds each remaining tail by $O(e^{h(r)-c_1V}/V)$. Thus
+\[
+ I_N(c,\beta)=e^{h(r)}\sqrt{\frac{2\pi}{V}}
+ \left(1+O_{c,\beta}(r/N)\right).
+\]
+Substitution of $r_0,V_0$ proves \eqref{eq:saddle}.
+
+To obtain \eqref{eq:saddle-ratio}, take logarithms in \eqref{eq:saddle}. Under variation of $\log c$, $w$ satisfies
+\[
+ \frac{\partial w}{\partial\log c}=-\frac{w}{1+w},
+ \qquad
+ \frac{\partial}{\partial\log c}
+ N\left(\log(w/2)-\frac1w\right)=-\frac Nw.
+\]
+Integrating the displayed main expression over the fixed interval $[\log c,\log c+\log\lambda]$, during which $w$ changes by $O_\lambda(1)$, gives the asserted main term and error. The $\beta$ term and logarithmic prefactor change by $O_{c,\beta,\lambda}(1)$, which is absorbed by the displayed error. This differentiation is of the explicit main expression only, so no differentiation of an unspecified error term is being used.
+\end{proof}
+
+\section{Asymptotics of the derivatives}
+By \eqref{eq:kernel}, absolute convergence, and the theta expansion,
+\begin{equation}\label{eq:termwise}
+ A_m=4\sum_{n\ge1}\chi(n)n^a I_{2m}(cn^2,\beta).
+\end{equation}
+For $t\ge0$,
+\[
+ \sum_{n\ge2}n^a e^{-cn^2e^{2t}}
+ \le e^{-4ce^{2t}}\sum_{n\ge2}n^a e^{-c(n^2-4)}.
+\]
+The last sum is a finite constant depending on $q,a$. Hence the contribution of $n\ge2$ in \eqref{eq:termwise} is $O_q(I_{2m}(4c,\beta))$. Lemma \ref{lem:saddle} gives
+\[
+ \frac{I_{2m}(4c,\beta)}{I_{2m}(c,\beta)}
+ =\exp\!\left(-(4\log2+o(1))\frac m{\log m}\right).
+\]
+This proves the universal-integral assertion of Theorem \ref{thm:asymp}. Applying \eqref{eq:saddle} with $N=2m$ proves \eqref{eq:asymp}, including its prefactor.
+
+The logarithm of the main saddle expression, viewed as a function of the real parameter $N$, has derivative $\log(W(N/c)/2)+o(1)$: this follows either by differentiating its explicit expression or from the saddle envelope identity. Its change when $N$ increases by two is therefore $2\log(W(N/c)/2)+o(1)$. The relative error in \eqref{eq:asymp} is $o(1)$ at both adjacent indices, so the asserted adjacent ratio follows. Finally $W(N/c)\sim\log N$ gives the root asymptotic. None of these deductions differentiates an error term.
+
+\section{Fixed Hankel matrices and finite differences}
+We prove Theorem \ref{thm:hankel} using only \eqref{eq:positive-tail}. Write $P(x)=\sum_{j=0}^r v_jx^j$ for $v\in\R^{r+1}$. Then
+\[
+ v^{\mathsf T}H_{m,r}v
+ =2\int_0^\infty t^{2m}P(t^2)^2K_\chi(t)\dd t.
+\]
+Set $B=(T+1)^2$, $C=(T+2)^2$, $D=C-B=2T+3$, and $R=2T+4$. We first prove the elementary polynomial extrapolation bound
+\begin{equation}\label{eq:poly-extrapolation}
+ \sup_{0\le x\le T^2}|P(x)|^2
+ \le\frac{(r+1)^2R^{2r}}{D}\int_B^C P(x)^2\dd x.
+\end{equation}
+Indeed, on $[B,C]$ an orthonormal polynomial basis is
+\[
+ \phi_j(x)=\sqrt{\frac{2j+1}{D}}\,
+ \mathcal P_j\!\left(\frac{2x-B-C}{D}\right),\quad0\le j\le r,
+\]
+where $\mathcal P_j$ denotes the ordinary Legendre polynomial, normalized by $\mathcal P_j(1)=1$. For $0\le x\le T^2$, the absolute value of its argument is at most $(B+C)/D<T+2$. The elementary bound $|\mathcal P_j(y)|\le(2E)^j$ for $|y|\le E$, $E\ge1$, follows from $|\mathcal P_j(y)|\le1$ on $[-1,1]$ and the integral formula
+\[
+ \mathcal P_j(y)=\frac1\pi\int_0^\pi
+ (y+\sqrt{y^2-1}\cos\theta)^j\dd\theta\quad(y\ge1),
+\]
+with parity handling $y\le-1$. Expanding $P$ in the orthonormal basis and applying Cauchy--Schwarz therefore proves \eqref{eq:poly-extrapolation}, since $\sum_{j=0}^r(2j+1)=(r+1)^2$.
+
+Let $C_0=2\int_0^T|K_\chi(t)|\dd t\le4qTe^{3T/2}$. The negative part of the quadratic form is bounded in absolute value by
+\[
+ C_0T^{2m}\frac{(r+1)^2R^{2r}}D\int_B^C P(x)^2\dd x.
+\]
+All contributions beyond $T$ are nonnegative. Changing variable $x=t^2$ on the positive interval $[T+1,T+2]$ gives the lower bound
+\[
+ 2\int_{T+1}^{T+2}t^{2m}P(t^2)^2K_\chi(t)\dd t
+ \ge\frac{B^me^{-440}}{T+2}\int_B^CP(x)^2\dd x.
+\]
+Thus strict positivity for every nonzero $P$ follows if
+\[
+ 2m\log(1+1/T)>440+\log C_0+2\log(r+1)+2r\log R,
+\]
+where we used $(T+2)/D<1$. Put $L=\log q$. The inequalities $\log T\le T\le1+L/2$ give $\log C_0<9/2+(9/4)L$, while \eqref{eq:matrix-threshold} and $\log(1+1/T)\ge1/(T+1)$ make the left side at least
+\[
+ 450+4L+2\log(r+1)+2r\log R.
+\]
+This is strictly larger than the required right side. The estimate applies simultaneously to every polynomial of degree at most $r$ and proves the claimed positive definiteness. Taking $r=0,1$ gives eventual positivity and strict log-convexity.
+
+Finally,
+\[
+ \Delta^j A_m=2\int_0^\infty t^{2m}(t^2-1)^jK_\chi(t)\dd t.
+\]
+For fixed $j$, the factor $(t^2-1)^jK_\chi(t)$ is strictly positive for $t\ge T+1$ and has no negative part beyond the compact interval $[0,\max(T,1)]$. The same compact-core versus farther-positive-interval comparison proves eventual strict positivity of each fixed forward difference.
+
+\section{A growing interval and superlinear matrix dimension}
+We prove Theorem \ref{thm:superlinear}.
+Keep $T<U<V$ fixed for the moment. The argument of \eqref{eq:poly-extrapolation} can be sharpened on $[U^2,V^2]$. The maximum absolute transformed coordinate for $x\in[0,T^2]$ is
+\[
+ E=\frac{V^2+U^2}{V^2-U^2}>1,
+ \qquad E+\sqrt{E^2-1}=\frac{V+U}{V-U}=:R_{U,V}.
+\]
+The Legendre integral representation gives $|\mathcal P_j(y)|\le(E+\sqrt{E^2-1})^j$ for $|y|\le E$; this also covers $|y|\le1$ since the right side is at least one. The same orthonormal expansion and Cauchy--Schwarz estimate now give
+\[
+ \sup_{0\le x\le T^2}|P(x)|^2
+ \le\frac{(r+1)^2R_{U,V}^{2r}}{V^2-U^2}
+ \int_{U^2}^{V^2}P(x)^2\dd x.
+\]
+The compact core therefore contributes at worst
+\[
+ -C_q T^{2m}\frac{(r+1)^2R_{U,V}^{2r}}{V^2-U^2}
+ \int_{U^2}^{V^2}P(x)^2\dd x.
+\]
+On $[U,V]$, \eqref{eq:positive-tail} gives $K_\chi(t)>e^{-ce^{2V}}$. Thus the positive part of the quadratic form is at least
+\[
+ \frac{U^{2m}e^{-ce^{2V}}}{V}
+ \int_{U^2}^{V^2}P(x)^2\dd x.
+\]
+The remaining part beyond $T$ is nonnegative. Comparing these two coefficients proves \eqref{eq:interval-threshold}, uniformly over all polynomials of degree at most $r$.
+
+For the asserted range, set
+\[
+ U=eT,\qquad V=V_m=\frac12\log(m/c)-\log\log m.
+\]
+For all sufficiently large $m$ one has $V_m>U$, and
+\[
+ ce^{2V_m}=\frac{m}{(\log m)^2}=o(m),\qquad
+ \log R_{U,V_m}=\frac{2U}{V_m}+O_q(V_m^{-3})
+ =\frac{4U+o_q(1)}{\log m}.
+\]
+For every $r\le\alpha m\log m$, the right side of \eqref{eq:interval-threshold} is at most
+\[
+ (8U\alpha+o_{q,\alpha}(1))m.
+\]
+Here $\log(C_qV_m/(V_m^2-U^2))=O_q(\log\log m)$ and $\log(r+1)=O_\alpha(\log m)$. The left side equals $2m$, and $8U\alpha<2$ by hypothesis. The strict inequality holds for all sufficiently large $m$, uniformly in the permitted integers $r$. This proves Theorem \ref{thm:superlinear}.
+
+\begin{remark}[A fixed derivative index cannot always cover every dimension]
+If $K_\chi$ is negative on a nonempty interval, then for every fixed $m\ge0$ there is an $r$ for which $H_{m,r}(\chi)$ fails to be positive semidefinite. Thus the increasing-index requirement is substantive. To see this, put
+\[
+ \dd\sigma_m(x)=x^{m-1/2}K_\chi(\sqrt x)\dd x\quad(x\ge0).
+\]
+Its total variation has every exponential moment, by the double-exponential theta tail, and polynomials are dense in $L^2(|\sigma_m|)$. Here is a short justification of the latter fact. If $f$ is orthogonal to every polynomial, Cauchy--Schwarz gives all exponential moments for $f\,\dd|\sigma_m|$; its bilateral Laplace transform is entire and every derivative at zero vanishes. The transform, and hence the finite measure, is zero. Therefore the orthogonal complement of the polynomials is zero. Approximate the indicator of a bounded negative interval by polynomials in this $L^2$ space. The corresponding integrals of their squares against $\sigma_m$ tend to a strictly negative number, since
+\[
+ \left|\int(P^2-f^2)\dd\sigma_m\right|
+ \le\|P-f\|_{L^2(|\sigma_m|)}
+ \bigl(\|P\|_{L^2(|\sigma_m|)}+\|f\|_{L^2(|\sigma_m|)}\bigr).
+\]
+Some polynomial therefore gives a negative Hankel quadratic form. The conductor-$53$ example discussed below has such a negative interval. This argument gives no optimal upper bound on the permissible dimension as a function of $m$.
+\end{remark}
+
+\section{Relation to the source work and limitations}
+The ProveIt section on positive filters establishes eventual positivity and double-exponential decay of theta kernels and their convolutions, then uses compact smoothing to obtain a positive averaging measure. Here no smoothing is used. High powers $t^{2m}$ suppress the possibly negative compact core and isolate the positive tail. That observation yields unconditional high-derivative information, even though the full-spectrum zero interpretation in the source uses Dirichlet GRH.
+
+Sheth--Voo \cite{SV} formulate eventual increase in Conjecture 1.5(1), prove it under positivity of the entire theta kernel in Theorem 1.6, and ask for an asymptotic immediately afterwards. Wagner \cite{Wagner} had already established general central-derivative asymptotics in 2019, including the real primitive Dirichlet case. Theorem \ref{thm:asymp} is therefore supplied as a convenient self-contained form of a known kind of asymptotic, rather than as a first solution of that asymptotic problem. The quantitative contributions developed here are the uniform explicit threshold and the increasing-dimension Hankel bounds \eqref{eq:matrix-threshold} and \eqref{eq:interval-threshold}, especially the $m\log m$ range in Theorem \ref{thm:superlinear}.
+
+The positivity hypothesis really is removed: for the quadratic character of conductor $53$, the associated theta function at $1$ is negative, as recorded in \cite[Section 1.1]{LM}. The accompanying numerical illustration gives approximately $-0.11074775738627$ and checks the asymptotic for conductors $3,5,53$ at $m=10,50,200$. These are numerical checks, not the proof. We do not claim a proof of Conjecture 1.5(2), a global positivity theorem for theta functions, a new Riemann hypothesis, or worldwide priority for every corollary of the elementary tail argument.
+
+\begingroup\footnotesize
+\begin{thebibliography}{9}
+\setlength{\itemsep}{3pt}
+\bibitem{SV} A. Sheth and W. Voo, \emph{Super-positivity via Dirichlet theta functions}, arXiv:2611.12152v1, 9 November 2026. \url{https://arxiv.org/abs/2611.12152}. The inspected five-page author manuscript is also available at \url{https://borowiecki.dev/pdf/2611.12152}.
+\bibitem{Wagner} I. Wagner, \emph{The Jensen--P\'olya program for various $L$-functions}, Forum Math. \textbf{32} (2020), no. 2; preprint arXiv:1905.11269v1 (2019), especially Theorem 2.1 and Corollary 1.4. \url{https://arxiv.org/pdf/1905.11269}. DOI: \href{https://doi.org/10.1515/forum-2019-0104}{10.1515/forum-2019-0104}.
+\bibitem{ProveIt} V. Reshetnikov, \emph{ProveIt: Beyond the Riemann hypothesis for Dirichlet $L$-functions: consequences, transfers and limits}, snapshot \texttt{41a284d6ef8eb16d783bfc685ab99cc6e1d28daa}, section \texttt{fil.tex}, especially \texttt{fil:lem:tails}. \url{https://github.com/VladimirReshetnikov/ProveIt/tree/41a284d6ef8eb16d783bfc685ab99cc6e1d28daa/Analysis/GeneralizedRiemannHypothesis}.
+\bibitem{LM} S. R. Louboutin and M. Munsch, \emph{On positive real zeros of theta and $L$-functions associated with real, even and primitive characters}, Publ. Math. Debrecen \textbf{83} (2013), 643--665. \url{https://publi.math.unideb.hu/paper/1837/download/10_5486_PMD_2013_5670.pdf}.
+\bibitem{Davenport} H. Davenport, \emph{Multiplicative Number Theory}, third edition, revised by H. L. Montgomery, Springer, 2000. Theta transformation and the functional equation for primitive Dirichlet characters.
+\end{thebibliography}
+\endgroup
+\end{document}

@@ -1,0 +1,84 @@
+\section{Sharpness for general Dirichlet products}\label{sec:general}
+
+A signed combination of small translations can repair a sign-changing kernel while preserving its zeros. The coefficients may have either sign. The resulting density is strictly positive. The arithmetic input is the gap between the first and second terms of each ordinary Dirichlet series.
+
+\begin{theorem}[Sharp supremum for all admissible families]\label{thm:general}
+Suppose the central-zero-removed product $H$ has no real zero. For every $0<b<\bcrit$ there is an admissible strictly positive continuous probability density with $\calI_b<\infty$. Hence $\bcrit$ is the exact supremum for this family. If $H$ has a real zero, no admissible probability law exists. In particular the upper bound is sharp as a supremum for every family satisfying the critical-line property.
+\end{theorem}
+
+We give the proof in three steps. Throughout this section assume $H$ has no real zero. Let $h$ be its real even inverse bilateral Laplace kernel. The repository constructs this continuous kernel by convolving the theta kernels and integrating $m$ times from the right to remove the central zero. It also proves that there exists a nonnegative compactly supported integrable $k_0$ such that $h*k_0>0$ everywhere. Indeed $H(u)>0$ on $\R$, $h$ is even, positive on both tails, and has every exponential moment in total variation. The signed-to-positive smoothing lemma in \cite{proveit} applies. We will use this single broad smoothing only at the end of a separation argument.
+
+\subsection*{The first Dirichlet coefficient}
+For $c_j=1/2+a_j$, let
+\[
+ v_j(t)=2e^{c_jt}\exp(-\pi e^{2t}/q_j),\quad
+ v=v_1*\cdots*v_d,\quad \beta_0=d^{-1}\sum_j c_j .
+\]
+Let $Rg(t)=\int_t^\infty g(u)\dd u$, put $v_m=R^m v$ with $R^0$ the identity,
+and let $D$ denote differentiation in $t$. There is a positive constant $c_*$ for which
+\begin{equation}
+ h(t)=c_*\sum_{n\ge1}\frac{\alpha_n}{\sqrt n}\,
+             B(D)v_m(t+\log n),\quad
+ B(D)=\left(\frac{D^2-1/4}{2}\right)^{n_0}.                 \label{eq:Dir-exp}
+\end{equation}
+Here $\alpha_1=1$ and $\sum_n\alpha_n n^{-s}=\prod_jL(s,\chi_j)$ for $\Re s>1$. In particular $|\alpha_n|$ grows at most polynomially. To verify the formula, the bilateral transform of $v_j$ is the conductor and gamma part of the $j$th completion. Integration from the right divides its transform by $w$ for real $w>0$, and $B(D)$ supplies the zeta factors $s(s-1)/2$. Translation by $\log n$ supplies $n^{-w}$. These calculations and the sum are absolutely integrable on a sufficiently far right vertical line. For example, each $v_j$ and each of its fixed derivatives has an integrable absolute exponential tilt there, as does $R^m v$, by Tonelli's theorem applied to $|v|$. Derivatives commute with $R$ here by decay at $+\infty$. Fourier uniqueness on that line gives \eqref{eq:Dir-exp}. The normalization $c_*$ is positive since $F(w)/w^m$ is positive for large positive $w$ and has no real zero after central removal.
+
+There is a positive measure $\rho$ supported on $[\bcrit,\infty)$ with infimum of support exactly $\bcrit$ and
+\begin{equation}
+ v_m(t)=e^{\beta_0 t}\int_{\bcrit}^\infty e^{-u e^{t/A}}\dd\rho(u).
+ \label{eq:leading}
+\end{equation}
+In the integral for $v$, write $t_j=t/d+y_j$ with $\sum_jy_j=0$. The exponent is $-e^{t/A}\sum_j(\pi/q_j)e^{2y_j}$. The positive weight on this hyperplane is a constant times $\exp(\sum_j c_j y_j)\dd y_1\cdots\dd y_{d-1}$. The sum in the exponent attains its minimum $\bcrit$ when all $(\pi/q_j)e^{2y_j}$ coincide; this is the arithmetic--geometric mean inequality. The pushforward of the weight has positive mass arbitrarily close to the minimum. For $d=1$ the pushforward is a point mass. For $m>0$ use
+$R^mv(t)=\int_0^\infty z^{m-1}v(t+z)\dd z/(m-1)!$.
+This mixes the same positive measure under the dilations $u\mapsto u e^{z/A}$ with positive weights. Its infimum of support stays $\bcrit$. The integral in \eqref{eq:leading} is finite for every $e^{t/A}>0$.
+
+Here are two consequences that control the convergence boundaries below. On the right tail,
+\begin{equation}
+ h(t)>0,\qquad
+ \lim_{t\to+\infty} e^{-t/A}\log h(t)=-\bcrit .             \label{eq:exacttail}
+\end{equation}
+Indeed put $x=e^{t/A}$. Applying $B(D)$ under \eqref{eq:leading} replaces $e^{-xu}$ by $e^{-xu}$ times a polynomial in $xu$ of degree $2n_0$ with positive leading coefficient, since $D$ acts as $\beta_0+(x/A)\partial_x$ after the prefactor is removed. For $x$ large this polynomial is positive uniformly on $u\ge\bcrit$ and bounded below by a positive constant. Mass of $\rho$ on $[\bcrit,\bcrit+\epsilon]$ gives the lower logarithmic rate, and exponential damping of every polynomial gives the upper one. In \eqref{eq:Dir-exp} all $n\ge2$ have the strictly faster rate coming from $n^{1/A}x$. More precisely, for complex $s$ in a compact subset of $\Re(e^{-s/A})>0$ and large real $t$, the absolute sum over $n\ge J$ in $h(t-s)$ is bounded by
+\begin{equation}
+ C\exp\big[-(\bcrit-\epsilon)J^{1/A}\Re(e^{-s/A}) e^{t/A}\big],
+ \qquad J=1,2,                                               \label{eq:tailanalytic}
+\end{equation}
+for every fixed $0<\epsilon<\bcrit$. To see uniformity, each integrand has a fixed polynomial factor in $n^{1/A}xu$ and a power of $n$ from $\alpha_n n^{\beta_0-1/2}$. A fraction of the exponential absorbs these factors and $e^{\beta_0 t}$. A further arbitrarily small fraction makes the $n$-sum bounded and supplies an integrable factor $e^{-u}$ against $\rho$. The compact lower bound for $\Re(e^{-s/A})$ makes these estimates uniform. This proves \eqref{eq:tailanalytic} by a convergent holomorphic sum, and proves \eqref{eq:exacttail} because $(\bcrit-\epsilon)2^{1/A}>\bcrit$ for small enough $\epsilon$. Evenness supplies the left tail.
+
+\subsection*{Annihilating small translations}
+Fix $\delta>0$. On the two tails choose $W(t)=h(|t|-\delta)$, extending it to a strictly positive continuous function on $\R$. By \eqref{eq:exacttail} the functions
+\[
+       f_s(t)=h(t-s)/W(t),\qquad |s|\le\delta ,
+\]
+are continuous on the compact interval $[-\infty,+\infty]$ after setting their endpoint values by limits. They vanish at both endpoints for $|s|<\delta$. The value at $+\infty$ of $f_\delta$ is one and its value at $-\infty$ is zero. For $f_{-\delta}$ the two values are interchanged.
+
+We claim their real linear span contains a strictly positive function on this compact interval. Otherwise separation of the span from the open cone of strictly positive continuous functions, followed by the Riesz representation theorem, supplies a nonzero positive finite measure $\sigma$ that annihilates the span. On $\R$ set $\dd\lambda=\dd\sigma/W$. For $|s|<\delta$ this implies
+\begin{equation}
+                 \int_\R h(t-s)\dd\lambda(t)=0 .             \label{eq:orth}
+\end{equation}
+The measure $\lambda$ is positive and locally finite, but its tails can grow very rapidly. Define
+\[
+ r_\pm=\inf\{r>0:\int_{\{\pm t\ge0\}}\!
+          \exp(-r e^{|t|/A})\dd\lambda(t)<\infty\},\qquad
+ a_\pm=A\log(\bcrit/r_\pm),
+\]
+with $a_\pm=\infty$ for $r_\pm=0$. Formula \eqref{eq:exacttail} applied to $W$ shows $r_\pm\le\bcrit e^{-\delta/A}$, so $a_\pm\ge\delta$. By \eqref{eq:tailanalytic} and evenness, the left side of \eqref{eq:orth} is real analytic for $-a_-<s<a_+$, with a holomorphic neighborhood of every real point there. It vanishes throughout this interval by analytic continuation.
+
+Suppose $a_+<\infty$, so $r_+>0$. Near $s=a_+$ the contribution of $t<0$ continues holomorphically since the opposite convergence boundary is at most $-\delta$. The contribution of the $n\ge2$ terms from $t\ge0$ also continues holomorphically by \eqref{eq:tailanalytic}, because
+$2^{1/A}\bcrit e^{-a_+/A}>r_+$.
+Bounded ranges of $t$ cause no issue by \eqref{eq:leading} and local uniform convergence. Thus the $n=1$ contribution from $t\ge0$ has analytic continuation across $a_+$. It equals $c_*B(-\partial_s)V(s)$ on the original side, where
+\[
+ V(s)=\int_{t\ge0}v_m(t-s)\dd\lambda(t).
+\]
+An ordinary differential equation with constant coefficients and nonzero leading coefficient has analytic solutions across an ordinary point whenever its right side continues analytically. Continuing from a nearby interior point shows that $V$ itself continues holomorphically through $a_+$. For $n_0=0$ the operator is the identity.
+
+On the other hand, \eqref{eq:leading} gives a positive measure $\nu$ with
+\[
+ V(s)=e^{-\beta_0s}\int e^{-zv}\dd\nu(v),\qquad z=e^{-s/A}.
+\]
+Here $\nu$ is the pushforward under $v=u e^{t/A}$ of
+$e^{\beta_0 t}\mathbf1_{t\ge0}\dd\lambda(t)\dd\rho(u)$. Its real Laplace abscissa is exactly $z_0=r_+/\bcrit$. For $z>z_0$, use $u\ge\bcrit$ and the small slack in $z\bcrit>r_+$ to absorb the prefactor and integrate over $\rho$. For $0<z<z_0$, choose $\epsilon>0$ with $z(\bcrit+\epsilon)<r_+$. The strictly positive $\rho$-mass below $\bcrit+\epsilon$ forces divergence, since $e^{\beta_0t}\ge1$. A positive Laplace integral cannot continue holomorphically across a finite real abscissa. Indeed, if it did, take $z_1>z_0$ sufficiently close that its Taylor disk extends to a real $z_2<z_0$. Expanding at $z_1$ towards $z_2$ gives nonnegative Taylor terms, and monotone convergence makes their sum equal to the divergent integral at $z_2$. This contradicts the continuation just proved, because $s\mapsto e^{-s/A}$ is locally invertible at $a_+$. Hence $r_+=0$. Applying the same argument after reflection gives $r_-=0$.
+
+It follows that \eqref{eq:orth} holds for every real $s$. Its integrals converge absolutely and uniformly for $s$ in bounded sets by \eqref{eq:tailanalytic}. Integrate the identity against the compact kernel $k_0(s)\dd s$ from the start of the proof. Fubini's theorem gives $\int(h*k_0)(t)\dd\lambda(t)=0$. Strict positivity of $h*k_0$ forces $\lambda=0$. The remaining masses of $\sigma$ at $+\infty$ and $-\infty$ vanish by pairing respectively with $f_\delta$ and $f_{-\delta}$. This contradicts $\sigma\ne0$, proving the claim about the span.
+
+\subsection*{Construction of a positive law}
+Some finite real combination $g(t)=\sum_\ell c_\ell h(t-s_\ell)$, $|s_\ell|\le\delta$, therefore has $g/W$ strictly positive and bounded on the compactification. Normalize $g$ to integral one. Its bilateral transform is $H(w)$ times a finite sum of real multiples of $e^{s_\ell w}$, so it retains all prescribed zeros with their multiplicities. The upper bound $g\le C W$ and \eqref{eq:exacttail} give $\calI_b<\infty$ for every $b<\bcrit e^{-\delta/A}$. For any specified $b<\bcrit$ choose $\delta<A\log(\bcrit/b)$. This proves Theorem~\ref{thm:general}. The separation argument proves existence and gives no uniform bound on the number or absolute sizes of the coefficients.

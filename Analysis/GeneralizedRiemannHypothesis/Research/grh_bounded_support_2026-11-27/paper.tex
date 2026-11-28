@@ -1,0 +1,351 @@
+\documentclass[11pt,letterpaper]{article}
+\usepackage[T1]{fontenc}
+\usepackage{lmodern,amsmath,amssymb,amsthm,mathtools,booktabs,enumitem}
+\usepackage[margin=.96in,headheight=14pt]{geometry}
+\usepackage{xcolor,fancyhdr,hyperref}
+\definecolor{navy}{HTML}{15344D}
+\definecolor{teal}{HTML}{176B68}
+\hypersetup{colorlinks=true,linkcolor=teal,citecolor=teal,urlcolor=teal,pdftitle={Bounded-excess positive filters for Dirichlet zero spectra}}
+\pagestyle{fancy}\fancyhf{}
+\fancyhead[L]{\small\sffamily\color{navy} Positive spectral filters}
+\fancyhead[R]{\small\sffamily\color{navy} Research note\enspace /\enspace 27 Nov 2026}
+\fancyfoot[C]{\small\thepage}
+\setlength{\headsep}{16pt}
+\setlength{\parskip}{3pt}\setlength{\parindent}{1.1em}
+\setlength{\emergencystretch}{2em}
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{corollary}[theorem]{Corollary}
+\newtheorem{proposition}[theorem]{Proposition}
+\theoremstyle{remark}\newtheorem{remark}[theorem]{Remark}
+\newcommand{\R}{\mathbb R}\newcommand{\C}{\mathbb C}\newcommand{\N}{\mathbb N}
+\newcommand{\dd}{\,\mathrm d}\newcommand{\sinc}{\operatorname{sinc}}
+\newcommand{\ord}{\operatorname{ord}}\newcommand{\supp}{\operatorname{supp}}
+\newcommand{\arcosh}{\operatorname{arcosh}}\newcommand{\sech}{\operatorname{sech}}
+\newcommand{\abs}[1]{\lvert#1\rvert}\newcommand{\norm}[1]{\lVert#1\rVert}
+\newcommand{\F}{\mathcal F}\newcommand{\Lam}{\mathcal L}
+\newcommand{\repo}{https://github.com/VladimirReshetnikov/ProveIt}
+\begin{document}
+\begin{center}
+{\small\sffamily\bfseries\color{teal} PROVEIT EXTENSION \quad $\vert$ \quad HARMONIC ANALYSIS AND NUMBER THEORY}\par\vspace{10pt}
+{\LARGE\bfseries\color{navy} Bounded-excess positive filters\\[3pt] for Dirichlet zero spectra}\par\vspace{8pt}
+{\large Nested frequency grids and sharp logarithmic support}\par\vspace{8pt}
+{\small 27 November 2026}
+\end{center}
+\begin{abstract}
+For a symmetric multiset of nonzero real frequencies whose positive counting function is
+$N(T)=aT\log T+bT+O(\log(T+2))$, we prove that the minimum half-width $H(B,L)$ of a positive probability filter cancelling all frequencies up to $B$ with multiplicity and attenuating the entire stopband $|x|\ge B$ by $e^{-L}$ is
+$L/B+\pi a\log B+O(1)$, uniformly for $L\ge0$. This answers the bounded-excess question explicitly posed in the ProveIt article's section on positive filters, improving its $O(1+\log\log B)$ upper error. The new ingredient is a nested-bin allocation of the spectrum with a fixed density capacity per level. Saturation in earlier bins absorbs the cost of the low frequencies rather than charging them twice. The constructed measures have a uniform subgaussian moment bound, up to the necessary stopband factor. For a fixed family of $d$ primitive Dirichlet $L$-functions, the coefficient is $d/2$. Under Dirichlet GRH, the same construction yields common positive averages of all reduced-class prime ramps on scales within a constant times $(\log X)^{\varphi(q)/2}$ of $X$, including arbitrarily accurate versions after explicit residue and Euler-factor corrections. The filter theorem uses no hypothesis on the locations of zeros off the critical line, simplicity, or spacing.
+\end{abstract}
+
+\section{Problem and result}
+For a finite positive Borel measure $\mu$ on $\R$ write
+$F_\mu(z)=\int e^{izt}\dd\mu(t)$. A probability measure supported in $[-H,H]$ has $F_\mu(0)=1$, $|F_\mu(x)|\le1$ for real $x$, and $|F_\mu(x+iy)|\le e^{H|y|}$. Let $\Lam$ be a locally finite symmetric multiset in $\R\setminus\{0\}$, with multiplicities $m(\lambda)$ and with no accumulation at $0$ (equivalently, finitely many occurrences in each bounded interval). Assume that its positive counting function, including multiplicities, satisfies
+\begin{equation}\label{eq:count}
+ N(T)=\sum_{0<\lambda\le T}m(\lambda)=aT\log T+bT+O_{\Lam}(\log(T+2)),\qquad T\ge2,\quad a>0.
+\end{equation}
+Define $H_{\Lam}(B,L)$ for $B\ge2$, $L\ge0$, as the infimum of $H$ for which a probability measure on $[-H,H]$ satisfies
+\begin{equation}\label{eq:constraints}
+ \ord_\lambda F_\mu\ge m(\lambda)\quad(0<|\lambda|\le B),\qquad
+ \sup_{|x|\ge B}|F_\mu(x)|\le e^{-L}.
+\end{equation}
+Here a Fourier zero of order $m$ means that all derivatives of orders $0,\ldots,m-1$ vanish. Infima are attained by compactness of probability measures on bounded intervals; all conditions are weakly closed there. Reflection and averaging preserve the conditions, so one may restrict to even measures.
+
+\begin{theorem}[Bounded excess]\label{thm:main}
+Assume \eqref{eq:count}. There are constants $C_1,C_2,C_3$ depending only on the multiset and its counting bound, not on $B$ or $L$, such that for all $B\ge2$, $L\ge0$,
+\begin{align}
+ H_{\Lam}(B,L)&\ge \frac{L}{B}+\pi a\log B+\pi(b-a\log2)-C_1\frac{\log^2(B+2)}{B},\label{eq:lower}\\
+ H_{\Lam}(B,L)&\le \frac{\arcosh(e^L)}{B}+\pi a\log B+C_2.\label{eq:upper}
+\end{align}
+The upper estimate is achieved by an even probability measure with
+\begin{equation}\label{eq:mgf}
+ \int e^{rt}\dd\mu(t)\le \exp\left(\frac{r^2}{2}\left[C_3+\frac{\arcosh(e^L)}{B^2}\right]\right)\qquad(r\in\R).
+\end{equation}
+An even smooth density is possible at additional half-width $1/B$ and additional variance proxy $1/B^2$. In particular, uniformly in $L\ge0$,
+\begin{equation}\label{eq:main}
+ \boxed{H_{\Lam}(B,L)=L/B+\pi a\log B+O_{\Lam}(1).}
+\end{equation}
+\end{theorem}
+The earlier theorem in \cite{ProveIt} has the same lower bound, with $O_{\Lam}(1+\log\log B)$ instead of $C_2$ in the upper bound. Its open-questions paragraph explicitly asks for bounded excess and the exact constant term. We settle the former. We do not prove convergence of $H_{\Lam}(B,L)-L/B-\pi a\log B$, or identify its optimal constant. No broad conjecture outside this extremal problem is claimed solved.
+
+The proof keeps two useful ingredients from the prior article: interpolation by a nearly lattice-spaced family and a positive Chebyshev stopband measure. The novelty lies between them, in the allocation theorem of Section~\ref{sec:allocation}. All three pieces, and the slit-plane lower bound, are proved below so that the new result does not require trusting a merged report.
+
+\section{A positive near-lattice interpolator}\label{sec:interpol}
+\begin{lemma}[Near-lattice interpolation]\label{lem:phase}
+Let $0<\eta\le1$, let $M$ be a positive integer with $M\eta\ge100$, put $C=M+1$, and let $\delta>0$. Fix $r\in\{0,\ldots,M-1\}$. Suppose $\Gamma_+$ is a finite set with at most one point in each interval
+\begin{equation}\label{eq:phase}
+ [\delta(k+r/M),\delta(k+(r+1)/M)),\quad k\ge C,\quad k\in\mathbb Z,
+\end{equation}
+and no other points. There is an even probability density on $[-A,A]$, $A=(\pi+\eta)/\delta$, with transform vanishing on $\Gamma=\Gamma_+\cup(-\Gamma_+)$. Its transform can be obtained by a finite linear system whose column-sum condition bound is uniform in the number of points.
+\end{lemma}
+\begin{proof}
+The empty set is harmless. Write $g$ for the convolution of uniform probability densities on $[-\pi/\delta,\pi/\delta]$ and $[-\eta/\delta,\eta/\delta]$. Its transform is $f(x)=\sinc(\pi x/\delta)\sinc(\eta x/\delta)$, with $\sinc y=\sin(y)/y$, extended at $0$. Let $D_{\lambda\kappa}=f(\lambda-\kappa)$ and $b_\lambda=f(\lambda)$, indexed by $\Gamma$.
+
+If two frequencies have the same sign and distinct cell indices $k,l$, then $y=(\lambda-\kappa)/\delta$ lies within $1/M$ of an integer of absolute value $m=|k-l|\ge1$. Thus $|y|\ge m/2$ and $|\sin\pi y|\le\pi/M$, giving
+$|f(\lambda-\kappa)|\le 4/(M\eta m^2)$.
+There are at most two cells at distance $m$, so the same-sign off-diagonal column sum is at most $8\sum_{m\ge1}m^{-2}/(M\eta)<0.16$. For opposite signs, $|y|\ge k+l$ and $|f|\le1/(\pi\eta y^2)$, so their column sum is at most $1/(\pi\eta(2C-1))$. Also $\norm b_1\le2/(\pi\eta(C-1))$. These bounds imply
+\[
+ \norm{D-I}_1<1/4,\qquad \norm b_1<1/4,\qquad
+ \norm{D^{-1}}_1\le4/3.
+\]
+Take $c=-D^{-1}b$. The matrix and $b$ are real and reflection invariant, hence $c$ is real, $c_{-\lambda}=c_\lambda$, and $\norm c_1<1/3$. The even function
+$Q(t)=1+\sum_{\lambda\in\Gamma}c_\lambda e^{-i\lambda t}$ lies between $2/3$ and $4/3$. Therefore $w=gQ/\int gQ$ is an even probability density. Its transform at $\lambda\in\Gamma$ equals $(b_\lambda+(Dc)_\lambda)/\int gQ=0$. Its half-width is $A$.
+\end{proof}
+
+\section{Nested-bin allocation}\label{sec:allocation}
+The point of the new construction is not to improve the constant in Lemma~\ref{lem:phase}. A single grid of very long cells works cheaply for the high frequencies but cannot include the lowest frequencies. Paying separately for the latter gives the earlier logarithmic loss. We instead use a sequence of nested bins, each with a fixed capacity per unit length, and arrange that the earlier bins are saturated wherever they are needed to count the carry to the next level.
+
+\subsection{Interval bounds and parameters}
+Put $N_<(x)=\#\{0<\lambda<x\}$, counting multiplicity. The passage from $N$ to $N_<$ preserves \eqref{eq:count} by taking the left limit. Replacing $a x\log x+b x$ by $a(x+2)\log(x+2)+b x$ changes it by $O(\log(x+2))$. Thus there are $c\ge |a+b|$ and $K\ge1$ such that for every $x\ge0$, $h\ge1$ the number $n([x,x+h))$ of occurrences satisfies
+\begin{align}
+ \frac{n([x,x+h))}{h}&\le a\log(x+h+2)+c+\frac K h\log(x+h+2),\label{eq:upbin}\\
+ \frac{n([x,x+h))}{h}&\ge a\log(x+2)-c-\frac K h\log(x+h+2).\label{eq:lowbin}
+\end{align}
+Indeed, integrate the derivative $a\log(x+2)+a+b$ and charge the two endpoint errors to $K\log(x+h+2)$. Taking the constant larger if necessary covers $x<2$ as well.
+
+Choose an integer $h_0\ge\max(1,64K/a)$. For levels $j\ge1$ set
+\begin{equation}\label{eq:params}
+ \begin{gathered}
+ h_j=h_0 2^{j-1},\quad \eta_j=j^{-2},\quad M_j=100j^2,\\
+ \delta_j=M_jh_j,\quad R_j=(M_j+1)\delta_j .
+ \end{gathered}
+\end{equation}
+Let $D$ be a positive integer chosen so large that
+\begin{equation}\label{eq:D}
+ D\ge16(c+a\log2+1),\qquad D/a\ge\log32,\qquad
+ e^{3D/(4a)}\ge4(R_2+h_2+2).
+\end{equation}
+Define $T_j=\exp((j-1/4)D/a)$. These parameters are fixed once and for all, independent of $B,L$. The ratios $R_{j+1}/R_j$ are at most $32$, since $M_j=100j^2$ and $h_{j+1}/h_j=2$. It follows from \eqref{eq:D} that
+\begin{equation}\label{eq:Tlarge}
+ T_j\ge4(R_{j+1}+h_{j+1}+2)\quad(j\ge1).
+\end{equation}
+The exact large constants are of no asymptotic importance. They make the allocation estimates uniform over all admissible bins.
+
+\begin{lemma}[Upper and lower capacities]\label{lem:capacities}
+The following hold for the parameters just defined.
+\begin{enumerate}[label=(\roman*)]
+\item If $j=1$, $k=1$, or $j\ge2$, $k=j-1$, and a bin of length $h_k$ has right endpoint at most $T_j+h_j$, its count is at most $Dj h_k$.
+\item If a bin $[x,x+h_i)$ of length $h_i$ has $x\ge T_{i+1}/2$, its count is at least $Di h_i$.
+\end{enumerate}
+\end{lemma}
+\begin{proof}
+For (i), \eqref{eq:Tlarge} gives $h_j+2\le T_j$, so \eqref{eq:upbin} bounds the density by
+\[
+ Dj-D/4+a\log2+c+\frac{K}{h_k}\left(\frac{(j-1/4)D}{a}+\log2\right).
+\]
+For the indicated $k$, $j/h_k\le2/h_0$. Hence the term with $D$ is at most $D/32$, and $K\log2/h_k\le a\log2/64$. Together with \eqref{eq:D}, the displayed bound is at most $Dj$.
+
+For (ii), $h_i\le x+2$ by \eqref{eq:Tlarge}; use $\log(x+h_i+2)\le\log(x+2)+\log2$ in \eqref{eq:lowbin}. The coefficient $a-K/h_i$ is positive. Substituting $\log(x+2)\ge (i+3/4)D/a-\log2$ gives a density at least
+\[
+ Di+3D/4-a\log2-c-\frac K{h_i}\frac{(i+3/4)D}{a}\ \ge\ Di,
+\]
+since $(i+1)/h_i\le2/h_0$. This proves both estimates.
+\end{proof}
+
+\subsection{Allocation and the two induction invariants}
+Initially remove all occurrences with $\lambda<R_1$; these are the base set. For each $j=1,2,\ldots$, partition the positive half-line into bins $I=[kh_j,(k+1)h_j)$ with $k\in\mathbb Z_{\ge0}$. At level $j$ allocate up to $Dh_j$ currently unallocated occurrences in each eligible bin, namely each bin whose left endpoint is at least $R_j$. If there are fewer than $Dh_j$, allocate all. Carry all unallocated occurrences forward. The choice within a bin can be arbitrary, and multiple occurrences of a repeated frequency are distinct items. Since $R_j$ is a multiple of $h_j$, eligibility never splits a bin. All grids are nested.
+
+\begin{theorem}[Allocation with constant density per level]\label{thm:allocate}
+At every level $j$:
+\begin{enumerate}[label=(\alph*)]
+\item \textbf{Saturation:} each $h_j$-bin with left endpoint at least $T_{j+1}/2$ allocates exactly $Dh_j$ occurrences.
+\item \textbf{Coverage:} every occurrence at height at most $T_j$ belongs to the base set or to one of the first $j$ levels.
+\end{enumerate}
+\end{theorem}
+\begin{proof}
+For saturation, induct on $j$. An $h_j$-bin $I$ starting at $x\ge T_{j+1}/2$ is eligible, disjoint from the base set, and by Lemma~\ref{lem:capacities}(ii) contains at least $Dj h_j$ occurrences. For every $i<j$ it is a union of $h_j/h_i$ bins at level $i$, each with left endpoint at least $T_{i+1}/2$. The induction hypothesis says precisely $D h_j$ occurrences were allocated in $I$ at that earlier level. Consequently at least $Dh_j$ remain. The rule allocates precisely that many. For $j=1$ the argument has no earlier levels, so it starts the induction.
+
+Now induct on $j$ for coverage. At $j=1$, any occurrence $\lambda\le T_1$ not in the base lies in an eligible $h_1$-bin with right endpoint at most $T_1+h_1$. Lemma~\ref{lem:capacities}(i) says this bin contains at most $Dh_1$ occurrences. All are allocated.
+
+For $j\ge2$, suppose an occurrence $\lambda\le T_j$ remains unallocated after $j-1$ levels. By induction $\lambda>T_{j-1}$. Its level-$j$ bin $I$ has left endpoint $x> T_{j-1}-h_j\ge T_{j-1}/2$ by \eqref{eq:Tlarge}. Thus it is eligible at level $j$, and all its sub-bins of levels $1,\ldots,j-1$ are eligible and lie beyond the base set. Each sub-bin of any level $i\le j-2$ starts at least at $T_{i+1}/2$. Saturation at these earlier levels is already proved.
+
+Split $I$ into its two $h_{j-1}$-children $J_1,J_2$. Each child has original count $n(J_\ell)\le Dj h_{j-1}$ by Lemma~\ref{lem:capacities}(i), because its right endpoint is at most $T_j+h_j$. Each earlier level $i\le j-2$ allocated exactly $Dh_{j-1}$ occurrences within each child. So after level $j-1$, the number left in a child is exactly
+\[
+ \max\{0,n(J_\ell)-D(j-1)h_{j-1}\}\le Dh_{j-1}.
+\]
+This is also valid for $j=2$, with no earlier saturated levels. Adding the two child counts, at most $Dh_j$ occurrences remain in $I$. Level $j$ therefore allocates every one of them, in particular $\lambda$. This proves coverage.
+\end{proof}
+\begin{remark}[Finite algorithm]\label{rem:finite}
+Every full level-$j$ bin with left endpoint at most $T_j$ is exhausted after level $j$: if $j=1$ use Lemma~\ref{lem:capacities}(i); if $j\ge2$ and the bin ends below or at $T_{j-1}$, use coverage at level $j-1$; otherwise its start exceeds $T_{j-1}-h_j$, so the two-child estimate in the proof applies. Removing occurrences decreases initial bin counts and therefore every later residual count, since a parent's residual is $\max(0,\sum R_{\rm child}-\text{capacity})$, with capacity zero in an ineligible bin. Thus one may run the finite allocation on only the occurrences up to $B\le T_J$, with no input beyond $B$.
+\end{remark}
+
+\section{Construction and extremal proof}\label{sec:construct}
+\subsection{Cancellation with bounded excess}
+For each base occurrence up to $B$, use the even two-atom probability at $\pm\pi/(2\lambda)$. Its transform $\cos(\pi z/(2\lambda))$ vanishes at $\pm\lambda$. The sum of the half-widths over the entire base set is a finite constant $H_\mathrm{base}$, and the sum of their squares is a finite constant $V_\mathrm{base}$.
+
+Let $J=\lceil a\log B/D+1/4\rceil\ge1$, so $B\le T_J$. The allocation theorem covers the requested frequencies by level $J$. For a given level $j$, express each eligible bin index uniquely as $kM_j+r$, $0\le r<M_j$. Its left endpoint is $\delta_j(k+r/M_j)$; eligibility implies $k\ge M_j+1$. Within each bin give its at most $Dh_j$ allocated occurrences distinct colours from $1,\ldots,Dh_j$. For each fixed phase $r$ and colour the resulting positive frequencies have exactly the geometry of Lemma~\ref{lem:phase}; repeated ordinates cannot share a colour within a bin. Apply the lemma to the frequencies up to $B$ in this class. Empty classes need no factor.
+
+The number of factors at level $j$ is at most $M_j D h_j=D\delta_j$. Each has half-width $A_j=(\pi+\eta_j)/\delta_j$, so their convolution costs at most
+\begin{equation}\label{eq:levelcost}
+ D\delta_j A_j=D(\pi+\eta_j).
+\end{equation}
+This is the key accounting identity: the level cost is proportional to the \emph{incremental density}, not the maximum density of all frequencies below the current height. Convolve the factors over all nonempty classes and the base factors to form $\nu_B$. The transform is the product of entire transforms, so at every requested frequency the multiplicities add. No spacing condition is imposed across classes or levels.
+
+Using $\sum_{j\ge1}j^{-2}=\pi^2/6$ and $J\le a\log B/D+5/4$ gives
+\begin{equation}\label{eq:cancelbound}
+ H(\nu_B)\le H_\mathrm{base}+\pi D J+D\sum_{j=1}^J\eta_j
+ \le \pi a\log B+H_\mathrm{base}+\frac{5\pi D}{4}+\frac{D\pi^2}{6}.
+\end{equation}
+This is the asserted $O(1)$ excess with an explicit, albeit conservative, constant. Further, for any even measure on $[-A,A]$, its Laplace transform at real $r$ is at most $\cosh(rA)\le e^{r^2A^2/2}$. The variance proxy for $\nu_B$ is therefore bounded uniformly in $B$ by
+\begin{equation}\label{eq:variance}
+ V_\mathrm{base}+D(\pi+1)^2\sum_{j\ge1}\delta_j^{-1}=C_3<\infty.
+\end{equation}
+Thus a construction that widens logarithmically can have bounded exponential moments even with arbitrarily severe clusters of zero ordinates.
+
+\subsection{Positive stopband factor}
+\begin{lemma}\label{lem:cheb}
+For $s\ge0$, $B>0$ there is an even probability measure $\sigma_{B,s}$ on $[-s,s]$ with transform
+\[
+ P_{B,s}(z)=\frac{\cos(s\sqrt{z^2-B^2})}{\cosh(sB)}.
+\]
+The expression is entire by its power series. For real $|x|\ge B$, $|P_{B,s}(x)|\le\sech(sB)$; its real Laplace transform at $r$ is at most $\exp(sr^2/(2B))$.
+\end{lemma}
+\begin{proof}
+Put $U_t=\tfrac12\mathbf1_{[-t,t]}\dd u$ (mass $t$), $\alpha_{0,t}=\tfrac12(\delta_{-t}+\delta_t)$ and recursively $\alpha_{n+1,t}=B^2\int_0^t U_{t-v}*\alpha_{n,v}\dd v$. Every term is even positive, supported in $[-t,t]$, and has mass $(Bt)^{2n}/(2n)!$, by integrating $(t-v)v^{2n}$. Their sum converges as a finite positive measure with mass $\cosh(Bt)$. Its transform satisfies the integral equation
+$C_t(z)=\cos(tz)+B^2\int_0^t\frac{\sin((t-v)z)}z C_v(z)\dd v$, with removable value at $z=0$. Differentiation (or the convergent series) gives $C_t''+(z^2-B^2)C_t=0$, $C_0=1$, $C_0'=0$. Thus $C_t=\cos(t\sqrt{z^2-B^2})$. Divide the measure at $t=s$ by its mass. The real stopband bound is immediate. For the moment estimate use
+\[
+ \log\frac{\cosh(s\sqrt{B^2+r^2})}{\cosh(sB)}
+ \le s(\sqrt{B^2+r^2}-B)\le sr^2/(2B),
+\]
+since the derivative of $\log\cosh$ is bounded by one.
+\end{proof}
+Take $s=B^{-1}\arcosh(e^L)$ and $\mu=\nu_B*\sigma_{B,s}$. This retains all the zeros, and $|F_{\nu_B}(x)|\le1$ supplies the stopband bound. Adding supports proves \eqref{eq:upper}; multiplying Laplace transforms proves \eqref{eq:mgf}. Convolution with any even smooth probability bump on $[-1/B,1/B]$ gives the smooth variant. Since $L\le\arcosh(e^L)\le L+\log2$, it remains only to prove the lower estimate.
+
+\subsection{Slit-plane lower bound}
+Let $F$ be the transform of a competitor with support half-width $H$. On the slit plane $\C\setminus(( -\infty,-B]\cup[B,\infty))$, let $Q(z)=\sqrt{B^2-z^2}$ with $Q(0)=B$ and use the conformal map
+\[
+ w=\frac{z}{B+Q(z)},\qquad z=\frac{2Bw}{1+w^2},\qquad Q=B\frac{1-w^2}{1+w^2}.
+\]
+This maps the slit plane to the unit disc. If $z=x+iy$, then $(\Re Q)^2=(|B^2-z^2|+B^2-x^2+y^2)/2\ge y^2$. Hence $G(w)=F(z(w))e^{-HQ(z(w))}$ is bounded by one on the disc, and $G(0)=e^{-HB}$. A prescribed zero $\lambda$ in $(-B,B)$ maps to a zero of equal order with $\log(1/|w(\lambda)|)=\arcosh(B/|\lambda|)$. Apply Jensen's formula on discs of radii tending to one, keeping the prescribed zeros. On the unit circle away from finitely many exceptional points the boundary has $z=B/\cos\theta$ and $\Re Q=0$, so $\limsup\log|G|\le-L$. Reverse Fatou applies since $\log|G|\le0$. We obtain
+\begin{equation}\label{eq:slit}
+ H\ge \frac LB+\frac2B\sum_{0<\lambda\le B}m(\lambda)\arcosh(B/\lambda).
+\end{equation}
+A zero at $B$ contributes zero and so may be included. Stieltjes partial summation yields
+\[
+ \frac2B\sum_{0<\lambda\le B}m(\lambda)\arcosh(B/\lambda)
+ =2\int_0^B\frac{N(t)}{t\sqrt{B^2-t^2}}\dd t.
+\]
+Substitute \eqref{eq:count}, extending the model $a t\log t+b t$ down to $0$. The error for $t\le2$ is $O(1/B)$ since the first positive frequency is bounded away from zero. For $2\le t\le B/2$ the error is $O(\log^2(B+2)/B)$; on $B/2\le t\le B$ it is $O(\log(B+2)/B)$. The model integral with $t=B\sin\theta$ is $\pi a\log B+\pi b-\pi a\log2$, using $\int_0^{\pi/2}\log\sin\theta\dd\theta=-(\pi/2)\log2$. This proves \eqref{eq:lower} and completes the proof of Theorem~\ref{thm:main}.
+
+\begin{corollary}[Free cutoff]\label{cor:free}
+As $L\to\infty$, $\inf_{B\ge2}H_{\Lam}(B,L)=\pi a\log L+O_{\Lam}(1)$.
+\end{corollary}
+\begin{proof}
+Uniformly in $B\ge2$, \eqref{eq:main} reduces the infimum, up to a bounded error, to that of $L/B+\pi a\log B$, whose minimizer for large $L$ is $B=L/(\pi a)$.
+\end{proof}
+
+\section{Dirichlet zeros and arithmetic consequences}\label{sec:arith}
+\subsection{Optimal half-width for a family}
+Let $\F$ be a fixed, nonempty, conjugation-closed finite multiset of primitive Dirichlet characters, including the character of conductor $1$ for $\zeta$ if desired. Write $d=|\F|$ and $f_\chi$ for their conductors. Take $\Lam$ to be the aggregate nonzero imaginary parts of the nontrivial zeros of the corresponding $L$-functions, counted with multiplicity. For complex characters, conjugation closure ensures symmetry; repetitions are allowed. The usual Riemann--von Mangoldt formulas (see \cite{Bennett,Titchmarsh}) give
+\[
+ a=\frac d{2\pi},\qquad b=\frac1{2\pi}\sum_{\chi\in\F}\log\frac{f_\chi}{2\pi e}.
+\]
+For each character the two-sided count is used before dividing the aggregate count by two; central zeros contribute only a bounded correction. This argument is unconditional.
+\begin{corollary}\label{cor:dir}
+For $B\ge2$ uniformly in $L\ge0$,
+\[
+ H_{\F}(B,L)=\frac LB+\frac d2\log B+O_\F(1).
+\]
+The more precise lower bound is
+\[
+ \frac LB+\frac d2\log B+\frac12\sum_{\chi\in\F}\log\frac{f_\chi}{4\pi e}
+ -O_\F(\log^2(B+2)/B).
+\]
+The upper-bound measures have the moment bound \eqref{eq:mgf}.
+\end{corollary}
+This answers the first part of the second-order support question in \cite[\texttt{fil:sec:open}]{ProveIt}. The remaining exact second-order constant and the distinct-ordinate version without multiplicity are not addressed.
+
+\subsection{A sharp-window prime average, with residue corrections}
+For fixed $q\ge1$ put $d=\varphi(q)$ and let $\chi$ range over all characters modulo $q$. Write $\chi^*$ for the primitive inducer, $\delta_\chi=1$ for the principal character and $0$ otherwise. For $x\ge2$ let
+\begin{align*}
+ S_\chi(x)&=\sum_{n\le x}\Lambda(n)\chi(n)(1/n-1/x),\\
+ c_\chi&=\lim_{s\to1}\left(-\frac{L'}{L}(s,\chi)-\frac{\delta_\chi}{s-1}\right)-\delta_\chi,\\
+ R_\chi(x)&=S_\chi(x)-\delta_\chi\log x-c_\chi.
+\end{align*}
+Here $\Lambda(n)$ is the von Mangoldt function, unrelated to the multiset $\Lam$. For a reduced residue class $a_0\pmod q$, define $R_{a_0}=d^{-1}\sum_\chi\overline{\chi(a_0)}R_\chi$. Thus $R_{a_0}$ is the class-restricted ramp after subtracting its main term and constant.
+
+Assume Dirichlet GRH, exactly the input theorem in \cite{Sernau,ProveIt}. If $m_\chi(\gamma)$ is the multiplicity at $1/2+i\gamma$ for the primitive inducer, put
+\[
+ K_\chi(t)=\sum_\gamma \frac{m_\chi(\gamma)e^{i\gamma t}}{1/4+\gamma^2},\quad
+ v_{a_0}(\gamma)=d^{-1}\sum_\chi\overline{\chi(a_0)}m_\chi(\gamma),\quad
+ \beta_{a_0}=4v_{a_0}(0).
+\]
+The local zero-count bound $O_q(\log(|y|+2))$ in unit intervals makes these sums absolutely and uniformly convergent. No central nonvanishing is assumed.
+
+We give corrections permitting any fixed power accuracy. Set
+\begin{align*}
+ E_\chi(x)&=\sum_{\substack{p\mid q\\p\nmid f_{\chi^*}}}\sum_{p^k\le x}
+  \chi^*(p)^k\log p\,(p^{-k}-x^{-1}),\\
+ E_\chi^\infty&=\sum_{\substack{p\mid q\\p\nmid f_{\chi^*}}}
+ \frac{\chi^*(p)\log p}{p-\chi^*(p)}.
+\end{align*}
+For the primitive inducer, expand $A(s)=-L'(s,\chi^*)/L(s,\chi^*)=r_{-1}/s+r_0+O(s)$ at $0$; coefficients depend on $\chi^*$. If $n_\chi(k)=\ord_{-k}L(s,\chi^*)$ for $k\ge1$ (zero if not a trivial zero), define for integer $m\ge0$
+\begin{align}
+ P_\chi(u)&=-r_0-r_{-1}(1+u),\notag\\
+ C_{\chi,m}(x)&=E_\chi^\infty-E_\chi(x)+x^{-1}P_\chi(\log x)
+  -\sum_{k=1}^{m}\frac{n_\chi(k)}{k(k+1)}x^{-k-1},\label{eq:correct}\\
+ R^{\mathrm{corr}}_{a_0,m}(x)&=R_{a_0}(x)-d^{-1}\sum_\chi\overline{\chi(a_0)}C_{\chi,m}(x).\notag
+\end{align}
+The correction is completely explicit in local factors and Taylor data at the origin; for $\zeta$, $P_\chi=\log(2\pi)$ and the Euler correction is empty.
+
+\begin{lemma}[Corrected explicit formula]\label{lem:ramp}
+Under Dirichlet GRH, for $x\ge2$,
+\[
+ R_\chi(x)-C_{\chi,m}(x)=x^{-1/2}K_\chi(\log x)+O_{q,m}(x^{-m-3/2}).
+\]
+\end{lemma}
+\begin{proof}
+First take $\chi$ primitive. The Mellin transform of the ramp gives, on $c>1$,
+\[
+ S_\chi(x)=\frac1{2\pi i}\int_{c-i\infty}^{c+i\infty}
+ A(s)\frac{x^{s-1}}{s(s-1)}\dd s.
+\]
+Shift to $\Re s=-m-1/2$. The functional equation and Stirling bounds give $A(s)=O_{q,m}(\log(2+|\Im s|))$ on the new line; the horizontal contours may be chosen at heights at distance $\gg_q 1/\log(2+|t|)$ from all ordinates, on which the usual local logarithmic-derivative bound (see \cite{Davenport}) is $O_{q,m}(\log^2(2+|t|))$. The horizontal integrals vanish in the limit for fixed $x$, and the new vertical integral is $O_{q,m}(x^{-m-3/2})$. The residue at $1$ is $\delta_\chi\log x+c_\chi$. At a nontrivial zero $\rho=1/2+i\gamma$ of order $n$, $A$ has residue $-n$, so the contribution is $n x^{-1/2+i\gamma}/(1/4+\gamma^2)$. At $0$, expand the kernel as $-x^{-1}(s^{-1}+1+\log x+O(s))$; the residue is $x^{-1}P_\chi(\log x)$. At negative integer $-k$ the residue is $-n_\chi(k)x^{-k-1}/(k(k+1))$. There are no other poles in the contour. The zero series converges absolutely as stated. For an imprimitive character, $S_\chi=S_{\chi^*}-E_\chi$, and $c_\chi=c_{\chi^*}-E_\chi^\infty$, by the finite Euler product or geometric summation. Substitution proves the formula.
+\end{proof}
+
+\begin{theorem}[Common positive averages at the sharp scale]\label{thm:prime}
+Assume Dirichlet GRH. Fix $q\ge1$ and $m\ge0$. For all sufficiently large $X$ there is one even smooth probability density $\mu_{X,m}$, independent of the residue class, supported on $[-H_X,H_X]$ with
+\begin{equation}\label{eq:window}
+ H_X\le \frac{\varphi(q)}2\log\log X+O_{q,m}(1),
+\end{equation}
+and simultaneously for every reduced residue class $a_0$,
+\begin{equation}\label{eq:prime}
+ \int e^{u/2}R^{\mathrm{corr}}_{a_0,m}(Xe^u)\dd\mu_{X,m}(u)
+ =\frac{\beta_{a_0}}{\sqrt X}+O_{q,m}(X^{-m-3/2}).
+\end{equation}
+The scales used all lie in $[X/(C_{q,m}(\log X)^{d/2}),\,C_{q,m}X(\log X)^{d/2}]$ for some constant $C_{q,m}$. Without correction the original ramp satisfies, with the same measure for $m=0$,
+\begin{equation}\label{eq:uncorrected}
+ \int e^{u/2}R_{a_0}(Xe^u)\dd\mu_{X,0}(u)=\frac{\beta_{a_0}}{\sqrt X}+O_q((1+\log X)/X).
+\end{equation}
+\end{theorem}
+\begin{proof}
+Use Corollary~\ref{cor:dir} for the $d$ primitive inducers, counting each once per original character. Put $T=\log X$, $B=T$ and $L=(m+1)T$. Theorem~\ref{thm:main} supplies the desired measure with \eqref{eq:window} since $L/B=m+1$, and a variance proxy bounded by a constant depending only on $q,m$, as $\arcosh(e^L)/B^2=O_m(1/T)$. For $X$ large, $T+u\ge\log 2$ throughout the support. Lemma~\ref{lem:ramp}, character orthogonality and absolute convergence give
+\begin{align*}
+ &\int e^{u/2}R^{\mathrm{corr}}_{a_0,m}(Xe^u)\dd\mu_{X,m}(u)\\
+ &=\frac1{\sqrt X}\sum_\gamma
+ \frac{v_{a_0}(\gamma)e^{i\gamma T}F_{\mu_{X,m}}(\gamma)}{1/4+\gamma^2}
+ +O_{q,m}\left(X^{-m-3/2}\int e^{-(m+1)u}\dd\mu_{X,m}(u)\right).
+\end{align*}
+The integral in the error is uniformly bounded by the moment estimate. The mode at $0$ yields $\beta_{a_0}/\sqrt X$; all other modes with $|\gamma|\le B$ vanish, and the total of the high modes is $O_q(X^{-1/2}e^{-L})=O_q(X^{-m-3/2})$. This proves \eqref{eq:prime}. For $m=0$, $C_{\chi,0}(x)=O_q((1+\log x)/x)$: the Euler tail is bounded by a geometric series plus $O_q(\log x/x)$ from the ramp term, and $P_\chi$ is linear. Its average under the moment estimate is $O_q((1+T)/X)$, giving \eqref{eq:uncorrected}.
+\end{proof}
+For the corrected formula, the input vector is continuous in $u$ because the ramp vanishes at its breakpoints and the corrections are continuous. By Carath\'eodory's theorem, at each fixed $X,m$ one can also realize the $d$ simultaneous real averages by at most $d+1$ scales with positive (nonnegative, summing to one) weights. This smaller rule need not cancel the same spectrum at other centres. The support coefficient $d/2$ is necessary \emph{within the prescribed universal frequency-filter model} with attenuation $e^{-(m+1)T}$, by Corollary~\ref{cor:free}; we make no lower-bound claim for arbitrary centre-dependent prime balancing.
+
+\section{Scope, verification and comparison}
+\begin{itemize}[leftmargin=1.4em,itemsep=2pt]
+\item The new mathematical step is Theorem~\ref{thm:allocate}: nested intervals and saturation remove the extra low-frequency cost. The other analytic ingredients are reproduced with proofs from the repository's framework.
+\item The improvement is an asymptotic theorem for every locally finite symmetric real multiset with \eqref{eq:count}. The constants from \eqref{eq:D} are deliberately large. This is not a claim that these filters beat existing numerical filters at small heights.
+\item The corrected prime averages extend the repository's \texttt{rec:thm:polylogavg} to bounded excess, and explicitly identify the finite Euler and trivial-zero terms. They use the established Dirichlet GRH input, not GRH for nonabelian Artin or general automorphic functions.
+\item The companion Python checks exercise compressed, clustered synthetic bin counts at heights with up to 244 decimal digits, and the near-lattice linear system on four finite instances. They are regression tests, not a machine-checked proof. A formalization roadmap is included; no Lean build was performed for the new theorem.
+\item Literature comparison is limited: the precise bounded-excess problem was located in the supplied repository and the derivation here is independent. General multiplier theory (e.g. \cite{BM}) concerns related support/decay questions but is not used. We do not certify priority against all mathematical literature, nor claim a solution of a named major external conjecture.
+\end{itemize}
+
+\begin{thebibliography}{9}
+\raggedright
+\bibitem{ProveIt} ProveIt contributors, \emph{Beyond the Riemann hypothesis for Dirichlet $L$-functions: consequences, transfers and limits}, merged article, retrieved 27 Nov 2026. Especially \texttt{Article/sections/fil.tex}: \texttt{fil:lem:phase}, \texttt{fil:thm:optsupport}, \texttt{fil:sec:open}; \texttt{Article/sections/zer.tex}: \texttt{zer:lem:ramp}. \href{https://github.com/VladimirReshetnikov/ProveIt/tree/main/Analysis/GeneralizedRiemannHypothesis/Article}{Repository article}. Exact retrieved blob identifiers are in \texttt{SOURCE\_AUDIT.md}.
+\bibitem{Sernau} L. Sernau and contributors, \emph{grh-lean}, readable edition, commit \nolinkurl{72fead102f663d5c7a407964a13dc0cf9d977207} (25 Nov 2026). \href{https://github.com/lsernau/grh-lean/tree/72fead102f663d5c7a407964a13dc0cf9d977207}{Pinned source}. The input is RH and Dirichlet GRH only. See also the \href{https://leanprover-community.github.io/blog/posts/riemann-hypothesis/}{Lean FRO/Mathlib Initiative verification statement} (21 Nov 2026).
+\bibitem{Bennett} M. A. Bennett, G. Martin, K. O'Bryant, A. Rechnitzer, \emph{Counting zeros of Dirichlet $L$-functions}, Math. Comp. \textbf{90} (2021), 1455--1482. \href{https://doi.org/10.1090/mcom/3599}{doi:10.1090/mcom/3599}.
+\bibitem{Titchmarsh} E. C. Titchmarsh, revised by D. R. Heath-Brown, \emph{The Theory of the Riemann Zeta-Function}, 2nd ed., Oxford University Press, 1986.
+\bibitem{Davenport} H. Davenport, revised by H. L. Montgomery, \emph{Multiplicative Number Theory}, 3rd ed., Springer, 2000. Classical Dirichlet explicit-formula background; see Lemma~\ref{lem:ramp}.
+\bibitem{BM} A. Beurling and P. Malliavin, \emph{On Fourier transforms of measures with compact support}, Acta Math. \textbf{107} (1962), 291--309.
+\end{thebibliography}
+\end{document}

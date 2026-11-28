@@ -1,0 +1,82 @@
+{
+  "purpose": "Independent exact checks and illustrations accompanying the mathematical proof.",
+  "limitations": "Finite enumeration does not prove the universal theorem; numerical plots do not compute the extremal zero-free interval. The symbolic identities and exact Bernstein certificate have the explicit scopes stated below.",
+  "convention": "T=R/Z and Fourier exp(2*pi*i*a*x); H is number of square frequencies.",
+  "versions": {
+    "python": "3.12.14",
+    "sympy": "1.14.0",
+    "mpmath": "1.3.0"
+  },
+  "symbolic_checks": {
+    "sum_of_squares_identity": "m*(6*N**2 - 6*N + 2*m**2 + m*(6*N - 3) + 1)/6",
+    "square_prefix_bound": "3*m/(6*N**2 - 6*N + 2*m**2 + m*(6*N - 3) + 1)",
+    "successive_difference": "-3*(-6*N**2 + 6*N + 2*m**2 + 2*m - 1)/((6*N**2 + 6*N*m + 2*m**2 + m)*(6*N**2 + 6*N*m - 6*N + 2*m**2 - 3*m + 1))",
+    "no_tie_reason": "6*N^2-6*N+1 is odd, while 2*m*(m+1) is even; the successive difference cannot vanish for integer N,m.",
+    "unrestricted_optimizer": "floor((1 + sqrt(12*N^2-12*N+1))/2)",
+    "restricted_optimizer": "min(H, floor((1 + sqrt(12*N^2-12*N+1))/2))",
+    "integer_implementation": "min(H, (1+isqrt(12*N*N-12*N+1))//2)",
+    "equivalent_alternative_optimizer": "floor((1 + sqrt(12*N^2-12*N+3))/2)",
+    "equivalence_reason": "Let A=3*N*(N-1), an integer. The unique unrestricted maximizing m satisfies m*(m-1)<=A<m*(m+1), giving the canonical discriminant 4*A+1. The floor of (1+sqrt(D))/2 increases only when D reaches an odd square, which is 1 modulo 4. There is no odd square in (4*A+1,4*A+3], so replacing the discriminant +1 by +3 leaves this floor unchanged.",
+    "asymptotic_lower_envelope": "3*u/(2*u**2 + 6*u + 6)",
+    "asymptotic_lower_derivative": "(9 - 3*u**2)/(2*(u**2 + 3*u + 3)**2)",
+    "asymptotic_lower_plateau": "-3/2 + sqrt(3)",
+    "odd_inverse_square_sum": "pi**2/8",
+    "hinge_integral_identity": "p*(p+1)*integral_x^infinity (t-x)*t^(-p-2) dt = x^(-p)",
+    "status": "All listed symbolic identities verified exactly by SymPy."
+  },
+  "square_optimizer_checks": {
+    "N_range": [
+      1,
+      100
+    ],
+    "H_range_for_each_N": "1 <= H <= 4*N+10",
+    "cases_checked": 21200,
+    "optimizer_ties": 0,
+    "all_closed_form_optimizers_match_exact_enumeration": true,
+    "canonical_plus_one_and_alternative_plus_three_formulas_agree": true,
+    "all_exact_lower_bounds_do_not_exceed_Kozma_Oravecz_upper_bounds": true,
+    "interpretation": "The optimizer is that of the proved prefix lower bound, not necessarily the actual maximum zero-free interval. The algebraic sign formula in the paper proves the result for all N,H; this finite enumeration is an independent consistency check.",
+    "csv": "square_prefix_checks.csv"
+  },
+  "sharp_constants": {
+    "finite_constant": "C_n = 1/(4*sqrt(sum_{j=1}^n (2*j-1)^(-2)))",
+    "universal_constant": "C_infinity = 1/(sqrt(2)*pi)",
+    "universal_constant_decimal": "0.2250790790392765173887997977516851456661",
+    "sharpness_for_measures": "A_n={1,3,...,2*n-1}; mu=(delta_{-1/4}+delta_{1/4})/2. Its Fourier coefficient at integer a is cos(pi*a/2). The radius-to-reciprocal-norm ratio is exactly C_n.",
+    "sharpness_for_smooth_functions": "Fix a nonnegative C-infinity probability density beta supported in [-1/2,1/2]. Set beta_epsilon(x)=epsilon^(-1)*beta(x/epsilon) and f_epsilon(x)=(beta_epsilon(x-1/4)+beta_epsilon(x+1/4))/2, periodized on R/Z. For 0<epsilon<1/2 its support lies strictly inside (-1/4-epsilon,1/4+epsilon). Its Fourier coefficients are cos(pi*a/2)*hat(beta_epsilon)(a), hence vanish at every odd a. As epsilon decreases to zero the ratio tends to C_n. Taking epsilon=1/(100*n) and n increasing shows the universal constant cannot be increased.",
+    "precision_decimal_digits": 70,
+    "csv": "sharp_constants.csv"
+  },
+  "illustrative_exact_positivity_certificate": {
+    "status": "Exact rational polynomial identity and all coefficient signs verified.",
+    "trigonometric_polynomial": "5*cos(8*pi*x)-5*cos(18*pi*x)+2*cos(32*pi*x)",
+    "spectrum": [
+      -16,
+      -9,
+      -4,
+      4,
+      9,
+      16
+    ],
+    "certified_interval": "[-3/40,3/40]",
+    "interval_length": "3/20",
+    "Chebyshev_polynomial": "65536*u**16 - 262144*u**14 + 425984*u**12 - 360448*u**10 - 1280*u**9 + 168960*u**8 + 2880*u**7 - 43008*u**6 - 2160*u**5 + 5416*u**4 + 600*u**3 - 296*u**2 - 45*u + 7",
+    "substitution": "u = 89/100 + (11/100)*t, 0 <= t <= 1",
+    "Bernstein_degree": 16,
+    "minimum_Bernstein_coefficient": "1143/1600",
+    "exact_uniform_positive_lower_bound": "1143/1600",
+    "trigonometric_endpoint_certificate": "cos(3*pi/20)^2=(4+sqrt(10-2*sqrt(5)))/8; sqrt(5)<9/4, hence sqrt(10-2*sqrt(5))>sqrt(11/2)>117/50; therefore cos(3*pi/20)^2>317/400>(89/100)^2.",
+    "interpretation": "An illustrative explicit zero-free interval for one square spectrum. No claim that this polynomial or interval is extremal. The degree-16 Bernstein basis functions are nonnegative and sum to one on [0,1], so the exact certificate is a proof of the displayed positivity claim.",
+    "csv": "bernstein_certificate.csv"
+  },
+  "figure": {
+    "files": [
+      "reciprocal_bounds_figure.pdf",
+      "reciprocal_bounds_figure.png"
+    ],
+    "left_panel": "Sharp C_n and its universal limit; logarithmic n axis.",
+    "right_panel": "Lower 3*u/[2*(u^2+3*u+3)] with u=min(tau,sqrt(3)); upper tau/[2*(1+tau)]. Curves are bounds, not computed optima.",
+    "right_panel_data_csv": "square_asymptotic_bounds.csv",
+    "matplotlib_version": "3.10.8"
+  }
+}

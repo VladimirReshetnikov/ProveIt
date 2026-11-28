@@ -1,0 +1,184 @@
+\section{The gamma vector of a complete multipartite graph}\label{sec:gamma}
+
+Let $G=K_{a_1,\ldots,a_r}$ with $r\ge2$ nonempty parts $A_i$,
+$v=\sum_i a_i$ vertices and $d=v-1$. Its symmetric edge polytope is
+\[
+ P_G=\operatorname{conv}\{\pm(e_u-e_w):uw\in E(G)\}
+ \quad\text{in the lattice}\quad
+ \{x\in\mathbb Z^v:\textstyle\sum_i x_i=0\}.
+\]
+The dimension is $d$ because the edge differences of a spanning tree span
+the zero-sum hyperplane. Write $E_G(k)=|kP_G\cap\mathbb Z^v|$.
+The Ehrhart numerator $h^*_G$ and its gamma coefficients are specified by
+\[
+  \sum_{k\ge0} E_G(k)t^k=\frac{h^*_G(t)}{(1-t)^{d+1}},\qquad
+  h^*_G(t)=\sum_{0\le j\le d/2}\gamma_j(G)t^j(1+t)^{d-2j}.
+\]
+The second expansion follows here from the proof below. The largest index
+with $\gamma_j\ne0$ is the \emph{cross-degree} of $E_G$ in
+K\"olbl's terminology~\cite[Prop.~4.3]{kolbl}.
+
+\begin{theorem}\label{thm:gamma}
+Identify one vertex in each of two distinct parts with each other to form
+a set $W$ of $d$ elements. Denote the images of the parts by $B_i$.
+Then
+\begin{equation}\label{eq:subset-gamma}
+ \gamma_j(G)=\binom{2j}{j}\,
+ \#\{T\subseteq W: |T|=2j,\ |T\cap B_i|\le j\text{ for every }i\}.
+\end{equation}
+In particular, all gamma coefficients are nonnegative. For
+$0\le j\le\lfloor d/2\rfloor$ they satisfy the closed formula
+\begin{equation}\label{eq:multipartite-gamma}
+ \frac{\gamma_j(G)}{\binom{2j}{j}}
+  =\binom{d}{2j}-
+    \sum_{i=1}^r\sum_{\ell=j+1}^{2j}
+       \binom{a_i}{\ell}\binom{d-a_i}{2j-\ell},
+\end{equation}
+where out-of-range binomial coefficients are zero.
+\end{theorem}
+
+\subsection{Lattice points and the loss from a single part}
+For an integer vector $x$ of coordinate sum zero, let $p_i$ and $n_i$
+denote the sums of its positive entries and the absolute values of its
+negative entries in $A_i$. Put $q=\sum_i p_i=\sum_i n_i$.
+
+\begin{lemma}\label{lem:gauge}
+For integral $k\ge0$, membership $x\in kP_G$ is equivalent to
+$q\le k$ and $p_i+n_i\le k$ for all $i$.
+\end{lemma}
+\begin{proof}
+Each signed edge has total positive mass one and has at most one endpoint
+in any one part. Convexity and the triangle inequality give necessity.
+For sufficiency, view $x$ as a transportation problem with $q$ units each
+of supply and demand. Direct transport across different parts can route
+all units when $p_i+n_i\le q$ for every $i$. Indeed, treat each unit as a
+distinct vertex of a bipartite graph of supply and demand. A set of
+supplies in one part has access to $q-n_i\ge p_i$ demands. A set of
+supplies meeting two parts has access to every demand. Hall's theorem
+gives a perfect matching.
+
+Otherwise exactly one part, say $h$, has $p_h+n_h=q+\delta$ with
+$\delta>0$, since the sum of all $p_i+n_i$ equals $2q$. Pair $\delta$
+supplies and demands in that part, routing each through any vertex in
+another part. This is possible since $\delta\le\min(p_h,n_h)$.
+The remaining total mass is $q-\delta$ on each side. Part $h$ holds
+$q-\delta$ residual endpoints, and the other parts combined also hold
+$q-\delta$. Hall's test now supplies a direct matching of the remaining
+units. The total number of signed edges used is $q+\delta\le k$.
+Since $0\in P_G$, this exhibits $x\in kP_G$.
+\end{proof}
+
+This criterion also follows from the known facet descriptions and is
+the multipartite lattice-membership criterion used by Davis~\cite{davis}.
+Its role here is to make the losses from different parts additive.
+Let $G_i$ be the graph formed by deleting just the edges within $A_i$
+from $K_v$, so all other vertices are singleton parts. In $kP_{K_v}$ the
+sole bound is $q\le k$. A vector can violate $p_i+n_i\le k$ for at most
+one $i$, since its total absolute mass is $2q\le2k$. Thus
+\begin{equation}\label{eq:additive-defects}
+ E_G=E_{K_v}-\sum_{i=1}^r(E_{K_v}-E_{G_i}).
+\end{equation}
+This identity at all nonnegative integers is also a polynomial identity.
+Taking Ehrhart numerators is linear at the fixed dimension $d$.
+
+\subsection{Balanced subsets for one part}
+For a connected graph $F$ on a set $W_0$ of $d$ vertices, its suspension
+$\widehat F$ adds a new vertex adjacent to every old vertex.
+The cut formula of Ohsugi and Tsuchiya
+\cite[Thm.~3.1 and Prop.~4.1]{ot} gives
+\[
+ \gamma_j(\widehat F)=
+ \frac{4^j}{2^d}\sum_{S\subseteq W_0}
+ \#\{T\subseteq W_0: |T|=2j,\ F[S,W_0\setminus S][T]
+     \text{ has a perfect matching}\}.
+\]
+Here the graph inside the count retains only the edges crossing the
+displayed cut, then restricts to $T$. The cut average is over all
+ordered sides $S$; this counts complementary choices twice.
+For a fixed ordered pair of disjoint $j$-subsets $U,V$, let $T=U\cup V$.
+Exactly $2^{d-2j}$ cuts restrict to $U$ on $T$, with $V$ on the other
+side. Consequently $\gamma_j(\widehat F)$ counts the ordered pairs
+$(U,V)$ for which the bipartite edges of $F$ between $U$ and $V$ admit a
+perfect matching. This counts each admissible pair once, irrespective of
+the number of its perfect matchings.
+
+The same ordered-pair description holds for an edgeless $F$: its
+suspension is a star, whose incident edge differences are a lattice basis,
+so its polytope is the cross-polytope with numerator $(1+t)^d$.
+
+In $G_i$ take the suspension vertex outside $A_i$. The graph $F$ consists
+of a complete graph on $d$ vertices with the edges within $A_i$ deleted. It is connected whenever an old vertex
+outside $A_i$ remains, and edgeless otherwise.
+On $U\cup V$, the sole possible obstruction to a perfect matching is
+$|U\cap A_i|>|V\setminus A_i|$. Indeed, any subset of $U$ meeting
+the complement of $A_i$ sees all of $V$, and a nonempty subset contained
+in $A_i$ sees all of $V\setminus A_i$. Thus the admissibility condition
+is exactly $|(U\cup V)\cap A_i|\le j$. Each such union admits
+$\binom{2j}{j}$ choices of ordered sides. The same cut formula for
+the complete graph counts all $2j$-element unions.
+Substituting the resulting coefficients in \eqref{eq:additive-defects}
+gives \eqref{eq:multipartite-gamma}, since the defect of part $i$
+counts the unions with more than $j$ points in that part.
+
+To prove \eqref{eq:subset-gamma}, take the common set $W$ obtained by
+identification as in the theorem. Every $B_i$ has size $a_i$, and any two
+distinct $B_i$ intersect in at most one point. If a $2j$-element set
+violated two bounds, it would contain at least $2j+2-1$ points. Hence
+the forbidden families are disjoint. Counting their complement gives
+exactly the right side of \eqref{eq:multipartite-gamma}.
+This completes the proof of Theorem~\ref{thm:gamma}.
+
+\section{Exact cross-degree and the formulation of K\"olbl's question}
+\label{sec:cross-degree}
+
+\begin{theorem}\label{thm:crossdegree}
+Put $b=\max_i a_i$ and $s=v-b$. The cross-degree of the complete
+multipartite Ehrhart polynomial is
+\begin{equation}\label{eq:degree}
+ m=\min\{\lfloor(v-1)/2\rfloor,\ s-1\}.
+\end{equation}
+In fact $\gamma_j>0$ for every $0\le j\le m$.
+\end{theorem}
+
+\begin{proof}
+We have $2j\le d$. The set $W$ contains just $d-b=s-1$ points outside
+the largest $B_i$. A permitted $2j$-set needs at least $j$ outside that
+part, so $j\le s-1$.
+
+If $b<v/2$, set $j=\lfloor d/2\rfloor$. All parts have size at most $j$,
+and every $2j$-set is permitted. Suppose next that $b\ge v/2$ and put
+$j=s-1$. If there are at least three parts, each of the other parts has
+size at most $s-1$. Choose all $s-1$ points outside a largest $B_i$ and
+any $s-1$ points inside it. This attains the bound. With two parts of
+sizes $a,b$, their two images intersect in a single point. A permitted
+$2j$-set must avoid that point (the two intersection counts sum to at most
+$2j$) and must take exactly $j$ of the $a-1$ and $b-1$ remaining points
+on the two sides. In particular $j=\min(a,b)-1$ is attained; this also
+recovers the complete bipartite formula of Higashitani, Jochemko and
+Micha\l ek~\cite[Thm.~4.1]{hjm}.
+
+Finally, from any permitted $2j$-set with $j\ge2$ one obtains a
+permitted $(2j-2)$-set by removing two points that meet every part
+containing exactly $j$ selected points. There are at most two such parts,
+because the total of the intersection counts is at most $2j+1<3j$.
+Choose one point from each if there are two (distinct choices are
+possible since each contains $j\ge2$ points), or fill the two removals
+arbitrarily after meeting a unique saturated part. When $j=1$ the empty
+set suffices. This proves positivity at every smaller index.
+\end{proof}
+
+K\"olbl's Conjecture~4.8~\cite{kolbl} introduces
+$a_1\le\cdots\le a_k\le n$, then prints $K_{a_1,\ldots,a_k}$ and the
+bounds $\lfloor(\sum_i a_i)/2\rfloor\le m+1\le\sum_i a_i$.
+On that literal reading the lower bound fails already at $K_{1,3}$,
+where $m=0$ and $\lfloor4/2\rfloor=2$. If the unused $n$ designates
+one further largest part, write $s=\sum_i a_i$. Formula~\eqref{eq:degree}
+then gives
+\[
+  m+1=\min\{\lceil(s+n)/2\rceil,\ s\},
+\]
+which implies both displayed inequalities for $K_{a_1,\ldots,a_k,n}$ and
+gives equality in the upper bound whenever $n\ge s-1$. The theorem
+covers both graph conventions explicitly. The interlacing question for
+$K_{1^k,n}$ and $K_{1^{k+1},n}$ concerns Ehrhart zeros and is a separate
+part of the conjecture.

@@ -1,0 +1,395 @@
+\documentclass[11pt]{article}
+\usepackage[T1]{fontenc}
+\usepackage{lmodern,microtype}
+\usepackage[margin=1in]{geometry}
+\usepackage{amsmath,amssymb,amsthm,mathtools,booktabs,graphicx}
+\usepackage[hidelinks]{hyperref}
+\usepackage{xurl}
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{corollary}[theorem]{Corollary}
+\theoremstyle{remark}\newtheorem{remark}[theorem]{Remark}
+\newcommand{\F}{\mathbb F_q}
+\newcommand{\Pp}{\mathbb P}
+\newcommand{\E}{\mathbb E}
+\newcommand{\TV}{d_{\mathrm{TV}}}
+\newcommand{\rank}{\operatorname{rank}}
+\newcommand{\Poi}{\operatorname{Pois}}
+\newcommand{\Bin}{\operatorname{Bin}}
+\newcommand{\GL}{\operatorname{GL}}
+\newcommand{\ind}{\mathbf 1}
+\newcommand{\qb}[2]{\genfrac{[}{]}{0pt}{}{#1}{#2}_q}
+\title{Two detection scales for bilinear observations over finite fields\\\large Exact finite likelihoods and a Gaussian--Poisson transition}
+\author{Research note prepared for the ProveIt program}
+\date{27 November 2026}
+\begin{document}
+\maketitle
+\begin{abstract}
+Choose independent uniform nonzero vectors on both sides of a complete bipartite graph and observe their pairings under any fixed nondegenerate bilinear form over a finite field. We compare the whole observed matrix with independent entries having exactly the same one-entry distribution. We give its exact finite likelihood, which depends on only four statistics: rank, the numbers of zero rows and columns, and the number of zero entries. When one side has a fixed codimension in the ambient vector space, dependence becomes visible on two separated scales. A classical random-matrix rank transition appears after a number of observations comparable with the ambient dimension. Its information then reaches a plateau. A second transition occurs after exponentially many observations, and has an explicit defective Poisson likelihood. For square anchor systems this second profile is the maximum of a constant and an exponential curve; in positive codimension it has an infinite sequence of precisely located corners. When the codimension instead grows, the Gaussian profile of the fixed-anchor theorem persists uniformly. All results are unconditional. The new contribution concerns the exact constrained likelihood and its two-scale statistical consequences, not a new proof of RH or a resolution of a prominent classical conjecture.
+\end{abstract}
+\tableofcontents
+
+\section{Model, provenance, and the main result}
+Fix a prime power $q$ and a vector space $V=\F^d$. Let $B$ be any nondegenerate bilinear form on $V$. Independently sample
+\[
+ X_1,\ldots,X_a,Z_1,\ldots,Z_m\quad\text{uniformly from }V\setminus\{0\},
+ \qquad Y_{ij}=B(X_i,Z_j).
+\]
+Write $N=q^d$, and let $P_{d,a,m}$ denote the law of $Y$. Changing coordinates on either side shows that this law does not depend on $B$. The symplectic model in the source article is the special case $d=2n$ and $B$ alternating. One observed entry has distribution
+\begin{equation}\label{eq:p}
+ p_N(0)=\frac{N-q}{q(N-1)},\qquad p_N(t)=\frac{N}{q(N-1)}\quad(t\ne0).
+\end{equation}
+Our null distribution is $Q_{d,a,m}=p_N^{\otimes am}$. Thus the comparison preserves every one-entry marginal. Total variation is half the sum of the absolute differences of the probability masses. With equal prior probabilities, the best classification success is $(1+\TV(P,Q))/2$.
+
+The immediate source is the independent-anchor calculation and fixed-anchor critical profile in \cite[\S\texttt{spn:sec:many}, Proposition \texttt{spn:prop:anchors} and Theorem \texttt{spn:thm:anchors}]{ProveIt}. That theorem keeps $a$ fixed as $d\to\infty$. Its proof removes the event of linearly dependent anchors, whose probability then tends to zero. This removal is no longer valid when $a=d-c$ and $c$ is fixed. We retain that event and prove the following description.
+
+Set
+\begin{equation}\label{eq:products}
+ g_j=\prod_{i=1}^j(1-q^{-i}),\qquad
+ g_\infty=\prod_{i=1}^\infty(1-q^{-i}),\qquad
+ \alpha_c=\frac{g_\infty}{g_c}=\prod_{i=c+1}^\infty(1-q^{-i}).
+\end{equation}
+For an integer $b$, define
+\begin{equation}\label{eq:pi}
+ \pi_b(j)=\frac{g_\infty q^{-j(j+b)}}{g_jg_{j+b}},
+ \qquad j\ge\max(0,-b),
+\end{equation}
+and set it to zero otherwise. These are the classical limiting row-nullity laws of uniform rectangular matrices; they are not new distributions \cite{FulmanGoldstein}.
+
+\begin{theorem}[Two scales at fixed codimension]\label{thm:two}
+Fix $q$ and $c\ge0$, and let $a=d-c\to\infty$.
+\begin{enumerate}
+\item If $m=a+s$ for a fixed integer $s$, then
+\[
+ \TV(P_{d,a,m},Q_{d,a,m})\longrightarrow
+ D_q(c,s):=\frac12\sum_{j\ge0}
+ \left|\sum_{k=0}^j\pi_c(k)\pi_{s+k}(j-k)-\pi_s(j)\right|.
+\]
+Moreover $D_q(c,s)\to0$ as $s\to-\infty$ and $D_q(c,s)\to1-\alpha_c$ as $s\to+\infty$.
+\item Suppose $m-a\to\infty$ and $m/N\to\lambda\in[0,\infty)$. Then
+\begin{equation}\label{eq:poisson-profile}
+ \TV(P_{d,a,m},Q_{d,a,m})\longrightarrow
+ T_q(c,\lambda)=1-\E\min\{1,\alpha_c e^\lambda(1-q^{-c})^Z\},
+ \quad Z\sim\Poi(\lambda q^c),
+\end{equation}
+with $0^0=1$. The asymptotically sufficient statistics for this binary testing problem are the full-row-rank flag and the number of zero columns.
+\item In particular, throughout the intermediate range $m-a\to\infty$, $m=o(N)$, the distance tends to $1-\alpha_c$. If $m/N\to\infty$, it tends to one.
+\end{enumerate}
+\end{theorem}
+
+The first transition occurs around $m=a$, while the second occurs around $m=q^d$. For example, when $q=2$ and $c=0$,
+\begin{equation}\label{eq:square}
+ T_2(0,\lambda)=\max\{1-g_\infty,\,1-e^{-\lambda}\},
+ \qquad g_\infty=0.2887880950866\ldots.
+\end{equation}
+The second-scale distance remains at approximately $0.7112119049134$ until $\lambda=-\log g_\infty=1.2420620948\ldots$. These decimal values are evaluations of the product in \eqref{eq:products}; the theorem uses the exact product.
+
+\section{An exact finite likelihood}
+For a matrix $Y\in\F^{a\times m}$ define
+\[
+ r=\rank Y,\quad h=\#\{\text{zero rows of }Y\},\quad
+ k=\#\{\text{zero columns of }Y\},\quad
+ W=\#\{(i,j):Y_{ij}=0\}.
+\]
+The Gaussian binomial coefficient $\qb uv$ is zero unless $0\le v\le u$; in its usual range it counts $v$-dimensional subspaces of $\F^u$.
+
+\begin{theorem}[Four statistics give the complete likelihood]\label{thm:exact}
+For any $d,a,m\ge1$ and every $Y\in\F^{a\times m}$,
+\begin{align}
+ P_{d,a,m}(Y)
+ &=\frac1{(N-1)^{a+m}}
+ \sum_{s=r}^{\min(a,d)}C_{a,r,h}(s)
+ \prod_{i=0}^{s-1}(N-q^i)
+ (N/q^s-1)^k(N/q^s)^{m-k},\label{eq:exact}\\
+ C_{a,r,h}(s)&=\sum_{j=0}^h(-1)^j\binom hj\qb{a-r-j}{s-r}.\label{eq:C}
+\end{align}
+The empty sum is zero and $0^0=1$. Also
+\[
+ Q_{d,a,m}(Y)=p_N(0)^W\left(\frac{N}{q(N-1)}\right)^{am-W}.
+\]
+Consequently, when $d\ge2$, the likelihood ratio $P/Q$ depends only on $(r,h,k,W)$, and an exactly optimal test between these two laws may be chosen using only those statistics. In fact $P_{d,a,m}(Y)$ alone depends only on $(r,h,k)$.
+\end{theorem}
+
+\begin{proof}
+Choose coordinates so that $Y=AZ$, with $A$ an $a\times d$ matrix whose rows are nonzero, and $Z$ a $d\times m$ matrix whose columns are nonzero. These matrices are independent and uniform among their respective constrained sets. Thus every pair $(A,Z)$ has probability $(N-1)^{-a-m}$.
+
+Write $S=\operatorname{col}(Y)$. If $A$ has rank $s$, its image $U\le\F^a$ has dimension $s$ and contains $S$. A row of $A$ is zero exactly when $U$ lies in the corresponding coordinate hyperplane. Hence the permitted images are precisely the $s$-dimensional superspaces of $S$ contained in no coordinate hyperplane. Only the $h$ coordinate hyperplanes containing $S$ can be forbidden: these are exactly the zero rows of $Y$. Intersecting any $j$ of them leaves a coordinate subspace of dimension $a-j$ containing $S$, so the number of eligible $s$-spaces follows from inclusion-exclusion and equals \eqref{eq:C}.
+
+For a fixed eligible image $U$, the number of surjections $A:\F^d\to U$ is $\prod_{i=0}^{s-1}(N-q^i)$, obtained by counting the independent rows after choosing a basis of $U$. Each fiber of $A$ has size $N/q^s$. A nonzero column of $Y$ has exactly $N/q^s$ preimages, all nonzero; a zero column has $N/q^s-1$ nonzero preimages. Multiplying these counts and summing over $U$ and $s$ proves \eqref{eq:exact}. The formula for $Q$ follows from independence.
+\end{proof}
+
+\begin{remark}
+The formula is symmetric under transposition, although its expression singles out the anchors. The identity obtained by exchanging $(a,h)$ with $(m,k)$ is also an independent algebraic check. The cases $a>d$ are included: the law then vanishes on matrices of rank greater than $d$. The assumptions $d\ge2$ and $N\ge q^2$ ensure that every null probability is positive; the probability formula itself remains valid for $d=1$.
+\end{remark}
+
+\section{A finite overlap certificate}
+Assume now $2\le a\le d$. The anchors are independent with probability
+\begin{equation}\label{eq:alpha-finite}
+ A_{d,a}=\prod_{i=0}^{a-1}\frac{N-q^i}{N-1}.
+\end{equation}
+Conditional on independence, the map $z\mapsto(B(X_i,z))_{i=1}^a$ is onto. The observed columns are therefore independent with distribution
+\begin{equation}\label{eq:rho}
+ \rho_{a,N}(0)=\frac{N-q^a}{q^a(N-1)},\qquad
+ \rho_{a,N}(y)=\frac{N}{q^a(N-1)}\quad(y\ne0).
+\end{equation}
+Let $R=\rho_{a,N}^{\otimes m}$. Then
+\begin{equation}\label{eq:mixture}
+ P=A_{d,a}R+(1-A_{d,a})D,
+\end{equation}
+where $D$ is supported on matrices with row rank less than $a$.
+
+\begin{lemma}[Exact independent-component likelihood]\label{lem:L}
+Let $K$ denote the number of zero columns and $W$ the total number of zero entries. Then
+\begin{equation}\label{eq:L}
+ L(Y):=\frac{R(Y)}{Q(Y)}
+ =(1-N^{-1})^{m(a-1)}(1-q/N)^{-W}(1-q^a/N)^K.
+\end{equation}
+On matrices of full row rank, $P(Y)/Q(Y)=A_{d,a}L(Y)$ exactly.
+\end{lemma}
+
+\begin{proof}
+For a column $y$ with $z$ zero entries, the ratio $\rho_{a,N}(y)/p_N^{\otimes a}(y)$ is $(1-N^{-1})^{a-1}(1-q/N)^{-z}$, with the extra factor $1-q^a/N$ if $y=0$. Multiply over columns. A matrix of full row rank cannot be produced by dependent anchors, proving the last assertion.
+\end{proof}
+
+\begin{proposition}[Finite upper and lower certificates]\label{prop:finite}
+Define
+\[
+ \mathcal T_{d,a,m}=1-\E_Q\min\{1,A_{d,a}L\},\qquad
+ \varepsilon_{d,a,m}=\frac{q^a-1}{q-1}
+ \left(\frac{1+(q-1)/(N-1)^2}{q}\right)^m.
+\]
+Then
+\begin{equation}\label{eq:finite-bound}
+ \max\{0,\mathcal T_{d,a,m}-\varepsilon_{d,a,m}\}
+ \le \TV(P,Q)\le\mathcal T_{d,a,m}.
+\end{equation}
+Both bounds are computable without enumerating all matrices. The joint generating function under $Q$ is
+\begin{equation}\label{eq:generating}
+ \E_Q[t^Wu^K]=
+ \left[(1-p_N(0)+p_N(0)t)^a+(u-1)p_N(0)^at^a\right]^m.
+\end{equation}
+\end{proposition}
+
+\begin{proof}
+The overlap of $P$ and $Q$ is $\sum_Y\min(P(Y),Q(Y))=1-\TV(P,Q)$. Since $P\ge A_{d,a}R$, this overlap is at least $\E_Q\min(1,A_{d,a}L)$. Equality holds on the full-row-rank event, so the difference is at most the null probability of rank deficiency.
+
+For a nonzero row vector $v\in\F^a$ with support size $b$, additive-character orthogonality and \eqref{eq:p} give
+\[
+ Q(v\cdot Y_{\cdot j}=0)
+ =q^{-1}\left(1+(q-1)(-1/(N-1))^b\right)
+ \le q^{-1}\left(1+\frac{q-1}{(N-1)^2}\right).
+\]
+The columns are independent. A union bound over the $(q^a-1)/(q-1)$ projective nonzero vectors proves the rank-deficiency bound. Finally, one column has a binomial number of zero entries, except that its all-zero outcome also adds one to $K$. This gives \eqref{eq:generating}.
+\end{proof}
+
+\section{The second scale: a defective Poisson experiment}
+We prove the second and third assertions of Theorem~\ref{thm:two}.
+
+\begin{theorem}[The limiting experiment]\label{thm:experiment}
+Fix $c\ge0$, put $a=d-c$, and suppose $m-a\to\infty$ and $m/N\to\lambda<\infty$. Send every rank-deficient observed matrix to a symbol $\star$ and every full-row-rank matrix to its number $K$ of zero columns. Under the null law the resulting statistic converges in total variation to
+\[
+ \mathsf Q(Z=z)=\Poi(\lambda q^c)\{z\},\qquad \mathsf Q(\star)=0.
+\]
+Under the bilinear law it converges in total variation to
+\[
+ \mathsf P(\star)=1-\alpha_c,\qquad
+ \mathsf P(Z=z)=\alpha_c\Poi(\lambda(q^c-1))\{z\}.
+\]
+Furthermore this statistic loses $o(1)$ in optimal total variation, so its limiting likelihood describes optimum testing of the entire matrix.
+\end{theorem}
+
+\begin{proof}
+First,
+\[
+ A_{d,a}=(1-N^{-1})^{-a}\prod_{j=c+1}^{d}(1-q^{-j})\longrightarrow\alpha_c.
+\]
+Under $Q$, $K$ is binomial with parameters $m,p_N(0)^a$. Since $a=O(\log N)$,
+\[
+ p_N(0)^a=q^{-a}(1+O_q(a/N)),\qquad
+ mp_N(0)^a\longrightarrow\lambda q^c.
+\]
+The binomial-to-Poisson approximation holds in total variation, including at $\lambda=0$. Under $R$, the corresponding zero-column probability is $(q^c-1)/(N-1)$, giving $\Poi(\lambda(q^c-1))$.
+
+Under $Q$, row-rank deficiency tends to zero by Proposition~\ref{prop:finite}: if $m\le2a$ then the bound is $O(q^{a-m})$ with a factor tending to one, and if $m>2a$ it decays exponentially in $m$. Under $R$, every nonzero row functional of a column has distribution $p_N$, so another projective union bound gives
+\[
+ R(\rank Y<a)\le\frac{q^a-1}{q-1}p_N(0)^m\le\frac{q^{a-m}}{q-1}\longrightarrow0.
+\]
+The dependent component in \eqref{eq:mixture} always has rank deficiency. These facts prove convergence of the displayed statistic under both laws.
+
+It remains to show that the discarded entry information does not improve testing. Put
+\[
+ F_N=(1-N^{-1})^{m(a-1)}(1-q/N)^{-W},
+ \qquad L=F_N(1-q^{-c})^K.
+\]
+Under $Q$, $W\sim\Bin(am,p_N(0))$. Elementary Taylor estimates give
+\begin{align*}
+ \E_Q\log F_N&=m/N+O_q(am/N^2)\longrightarrow\lambda,\\
+ \operatorname{Var}_Q(\log F_N)&=O_q(am/N^2)\longrightarrow0.
+\end{align*}
+The binomial moment generating function also gives $\E_QF_N\to e^\lambda$ and $\E_QF_N^2\to e^{2\lambda}$, hence $F_N\to e^\lambda$ in $L^2(Q)$. Because $0\le(1-q^{-c})^K\le1$, the exact likelihood satisfies
+\[
+ \E_Q\left|A_{d,a}L-\alpha_c e^\lambda(1-q^{-c})^K\right|\longrightarrow0.
+\]
+The function $x\mapsto\min(1,x)$ is Lipschitz. Proposition~\ref{prop:finite} therefore identifies the limiting overlap with that of $(\mathsf P,\mathsf Q)$, proving asymptotic sufficiency and \eqref{eq:poisson-profile}.
+\end{proof}
+
+\begin{corollary}[A plateau and exact corner locations]\label{cor:corners}
+For $c=0$,
+\[
+ T_q(0,\lambda)=\max\{1-\alpha_0,1-e^{-\lambda}\}.
+\]
+For $c\ge1$, set $\beta_c=-\log(1-q^{-c})$. The profile is constant at $1-\alpha_c$ for $0\le\lambda\le-\log\alpha_c$. Above that point, put
+\[
+ b(\lambda)=\left\lfloor\frac{\lambda+\log\alpha_c}{\beta_c}\right\rfloor.
+\]
+Writing $F_\mu(b)=\Pp(\Poi(\mu)\le b)$, one has
+\begin{equation}\label{eq:cdf}
+ T_q(c,\lambda)=1-\alpha_c+
+ \alpha_cF_{\lambda(q^c-1)}(b(\lambda))-F_{\lambda q^c}(b(\lambda)).
+\end{equation}
+The function is continuous and has a positive jump in its first derivative at every
+\[
+ \lambda_j=-\log\alpha_c+j\beta_c,\qquad j=0,1,2,\ldots.
+\]
+The derivative jump at $\lambda_j$ is exactly $\Poi(\lambda_jq^c)\{j\}$.
+\end{corollary}
+
+\begin{proof}
+On the nonsingular part, the likelihood is $\alpha_ce^\lambda(1-q^{-c})^z$, decreasing in $z$. If its value at zero is at most one, all nonsingular mass lies below the null mass, so only the singular component contributes to the positive difference and the distance is $1-\alpha_c$. Otherwise sum the positive differences over $z\le b(\lambda)$, obtaining \eqref{eq:cdf}.
+
+At $\lambda_j$ the newly admitted summand
+\[
+ a_j(\lambda)=\alpha_c\Poi(\lambda(q^c-1))\{j\}-\Poi(\lambda q^c)\{j\}
+\]
+vanishes. Its two masses are then equal. Since the logarithmic derivative of a Poisson mass of mean $\lambda u$ is $j/\lambda-u$, their derivative difference at the crossing is that common mass times $q^c-(q^c-1)=1$. This proves both continuity and the stated jump. When $c=0$ the first Poisson law is the point mass at zero, giving the simpler formula directly.
+\end{proof}
+
+\begin{proof}[The case $m/N\to\infty$ in Theorem~\ref{thm:two}]
+For every fixed $\Lambda>0$, retain only the first $\lfloor\Lambda N\rfloor$ columns. Total variation cannot increase under this deletion, so the liminf of the full distance is at least $T_q(c,\Lambda)$. These limiting profiles tend to one as $\Lambda\to\infty$: for $c=0$ this is immediate, and for $c\ge1$ the two Poisson means differ by $\Lambda$, while their variances are $O_{q,c}(\Lambda)$. A threshold midway between the means separates them with error $O_{q,c}(1/\Lambda)$ by Chebyshev's inequality. The singular outcome is already perfectly identified. Thus the full distance tends to one.
+\end{proof}
+
+\section{The first scale: a classical rank law inside a new comparison}
+Here we establish the first assertion of Theorem~\ref{thm:two}. The rank formulas are classical; their role is to identify the first transition and its connection with the later Poisson experiment.
+
+Replace every nonzero latent vector by an unrestricted uniform vector. There are $a+m$ such vectors, so coupling changes $P$ by at most $(a+m)/N$. Replacing each null entry by an unrestricted uniform field element changes $Q$ by at most $am/(N-1)$. At $a=d-c$ and $m=a+s$, both errors tend to zero. We are left with a product $AB$, with independent uniform matrices
+\[
+ A\in\F^{a\times d},\qquad B\in\F^{d\times m},
+\]
+compared with a uniform $a\times m$ matrix.
+
+Both laws are invariant under left and right invertible changes of basis, and these act transitively on matrices of each fixed rank. Consequently their total variation equals the total variation between their rank distributions. If $K=a-\rank A$, then conditional on $K=k$ the quotient of $AB$ by its forced $k$ row relations is an unrestricted uniform $(a-k)\times m$ matrix. Thus its row nullity is $J=k+L$, where $L$ is the row nullity of that smaller matrix.
+
+For a uniform $u\times(u+b)$ matrix with $u\ge0$ and $u+b\ge0$, elementary rank counting gives
+\begin{equation}\label{eq:finite-pi}
+ \Pp(\text{row nullity}=j)
+ =q^{-j(j+b)}\frac{g_ug_{u+b}}{g_jg_{j+b}g_{u-j}},
+ \qquad \max(0,-b)\le j\le u.
+\end{equation}
+For fixed $b$, these probabilities converge pointwise to \eqref{eq:pi}; their uniformly summable quadratic-exponential tails prove convergence in total variation. Apply this first to $K$, then condition on $K$ in a fixed finite range, and finally remove the range using tightness. It follows that the product row-nullity law converges in total variation to
+\[
+ \Pp(J=j)=\sum_{k=0}^j\pi_c(k)\pi_{s+k}(j-k),
+\]
+whereas the null law converges to $\pi_s$. This proves the formula for $D_q(c,s)$.
+
+As $s\to+\infty$, a matrix with $m$ columns and fewer rows has full row rank with probability tending to one. Thus $\pi_s$ tends to the point mass at zero, the mixture tends to $\pi_c$, and the distance tends to $1-\pi_c(0)=1-\alpha_c$. For $s\to-\infty$, condition instead on the columns of $B$ being independent. On that event the product is exactly uniform. The limiting probability of column dependence is $1-\alpha_{c-s}\to0$, so $D_q(c,s)\to0$.
+
+\begin{proposition}[Optimal rank threshold at the first scale]\label{prop:rank-threshold}
+In the unrestricted finite product model, the likelihood ratio at a matrix of row nullity $j$ is
+\begin{equation}\label{eq:rank-L}
+ f(j)=\sum_{k=0}^j\Pp(K=k)q^{mk}\frac{\qb jk}{\qb ak}.
+\end{equation}
+It is nondecreasing in $j$. Thus a threshold on row nullity is an exactly optimal equal-prior test for that model, and is asymptotically optimal for the original model in the first-scale window.
+\end{proposition}
+
+\begin{proof}
+Conditional on $K=k$, the image of $A$ is a uniform $(a-k)$-space. A prescribed $Y$ of rank $a-j$ has all columns in that image with probability $\qb jk/\qb ak$. Conditional on containment, its mass is $q^{-(a-k)m}$ instead of the uniform mass $q^{-am}$, giving \eqref{eq:rank-L}. The number $\qb jk$ is nondecreasing in $j$ for fixed $k$, and all coefficients are nonnegative. Coupling transfers the asymptotic optimality assertion.
+\end{proof}
+
+\section{Growing codimension restores the Gaussian profile}
+The other possible subsequential regime for $a\le d$ is $d-a\to\infty$. This includes the source theorem's fixed $a$ and permits arbitrary growth of $a$ below the boundary.
+
+\begin{theorem}[Uniform Gaussian regime]\label{thm:gaussian}
+Fix $q$. Let $d\to\infty$, $2\le a\le d$, and $d-a\to\infty$. Put
+\[
+ J_{a,q}=q^a-1-a(q-1),\qquad I_{d,a,m}=\frac{mJ_{a,q}}{N^2}.
+\]
+If $I_{d,a,m}\to\tau\in[0,\infty]$, then
+\[
+ \TV(P_{d,a,m},Q_{d,a,m})\longrightarrow
+ 2\Phi(\sqrt\tau/2)-1,
+\]
+where the value at infinity is one. For $0<\tau<\infty$, the independent-component log likelihood tends under $Q$ to $\mathcal N(-\tau/2,\tau)$ and under $P$ to $\mathcal N(\tau/2,\tau)$.
+\end{theorem}
+
+\begin{proof}
+The independent-anchor failure probability is
+\[
+ 1-A_{d,a}\le\frac{(q^a-1)/(q-1)-a}{N-1}=O_q(q^{a-d})\longrightarrow0.
+\]
+Hence $P$ is within this distance of $R$, uniformly in $m$. Let $u=\rho_{a,N}/p_N^{\otimes a}-1$ be a single-column likelihood increment and $v=\E_{p_N^{\otimes a}}u^2$.
+
+We claim uniformly for $2\le a\le d$ that
+\begin{equation}\label{eq:vdelta}
+ v=\frac{J_{a,q}}{N^2}\bigl(1+O_q(a/N)\bigr),\qquad
+ \|u\|_\infty=O_q(q^a/N).
+\end{equation}
+To see this without cancellation-prone Taylor expansions, put $\kappa(0)=q-1$ and $\kappa(t)=-1$ otherwise. Under uniform field elements, the products $\kappa_S(y)=\prod_{i\in S}\kappa(y_i)$ form an orthogonal family with squared norms $(q-1)^{|S|}$. Relative to the uniform measure on $\F^a$, the single-column density difference is exactly
+\[
+ D(y)=\sum_{|S|\ge2}\left[-\frac1{N-1}-\left(-\frac1{N-1}\right)^{|S|}\right]\kappa_S(y).
+\]
+The denominator density of $p_N^{\otimes a}$ is $\prod_i(1-\kappa(y_i)/(N-1))=1+O_q(a/N)$ uniformly because $a\le\log_qN$. Squaring $D$ and using orthogonality proves the first formula in \eqref{eq:vdelta}, since $\sum_{s\ge2}\binom as(q-1)^s=J_{a,q}$. Bounding the same sum termwise proves the second formula. Its right side tends to zero in the present regime.
+
+For completeness, independent small mean-zero likelihood increments with $\max|u|=\delta\to0$ and total variance $mv\to\tau$ have the stated Gaussian limit: Taylor expansion gives
+\[
+ \E_Q\log(1+u)=-v/2+O(\delta v),\quad
+ \operatorname{Var}_Q\log(1+u)=v+O(\delta v),
+\]
+and the sum of third absolute centered moments is $O(\delta mv)$. Lyapunov's theorem applies for positive finite $\tau$. Under the tilted law, weighting by $1+u$ changes the mean to $v/2+O(\delta v)$ and leaves the variance asymptotically unchanged. The identity $\TV(R,Q)=\E_Q(1-e^{\log L})_+$ has a bounded continuous integrand, yielding the displayed Gaussian profile. When $mv\to0$, use $\chi^2(R,Q)=(1+v)^m-1$. When $mv\to\infty$, Taylor's theorem for the square root bounds the Hellinger affinity by $\exp[-mv/(8(1+\delta)^{3/2})]$, which tends to zero. The coupling between $P$ and $R$ completes the proof.
+\end{proof}
+
+The single-column variance also has an exact expression useful for finite computations:
+\begin{equation}\label{eq:exact-v}
+ 1+v=\frac{(N-1)^{a-2}}{(N-q)^a}
+ \left[N^{2-a}(N-q+1)^a+q^a-2N\right].
+\end{equation}
+It follows directly by writing $\rho(y)=N/[q^a(N-1)]-\ind_{y=0}/(N-1)$ and summing $\rho(y)^2/p_N^{\otimes a}(y)$.
+
+\begin{corollary}[Zero columns suffice when both sides of the boundary grow]\label{cor:scalar}
+In Theorem~\ref{thm:gaussian}, suppose also $a\to\infty$ and $0<\tau<\infty$. Put $b=q^a/N$. Under $Q$,
+\[
+ \log L=-b(K-m/q^a)-\tau/2+o_{\Pp}(1).
+\]
+Consequently the zero-column count alone is asymptotically sufficient for optimal testing. In the fixed-codimension regime, this scalar statistic needs the additional rank flag.
+\end{corollary}
+
+\begin{proof}
+Now $J_{a,q}/q^a\to1$, so $mq^a/N^2\to\tau$. In \eqref{eq:L}, the logarithm of the first two factors is $m/N+o_{\Pp}(1)$ because its bias and variance errors are $O_q(am/N^2)=O_q(a/q^a)\to0$. Also $K\sim\Bin(m,p_N(0)^a)$, with $\E K=m/q^a+o(b^{-1})$, $b^2K\to\tau$ in probability, and $b^3K\to0$. Expanding $K\log(1-b)$ gives the formula. The small-increment proof of Theorem~\ref{thm:gaussian} gives the same approximation under the alternative; equivalently one may use the independent-component tilt and its bounded limiting second moment.
+\end{proof}
+
+\section{What is new, what is inherited, and what remains open}
+The exact full-support factorization count in Theorem~\ref{thm:exact} and the defective Poisson experiment in Theorem~\ref{thm:experiment} are the central additions to the source article. They expose an obstruction which the fixed-anchor approximation legitimately discards but which persists at fixed codimension. The explicit plateau, corners, and exponentially separated detection scales are consequences of retaining that obstruction. The uniform Gaussian theorem completes the comparison with the source's fixed-anchor regime.
+
+The independent-anchor decomposition itself is already in \cite{ProveIt}. The limiting rectangular rank distribution, the Gaussian limit of products of small likelihood increments, and Poisson limits for rare independent events are standard tools. We have given the necessary proofs or reductions to make clear where the new constrained experiment enters. The first-scale rank law is an application of classical random-matrix counting, not a claimed new rank distribution.
+
+The comparison with graph-masked real Wishart matrices in \cite{BrennanBreslerHuang} is conceptual: both study how shared latent vectors create observable dependence through a graph. That paper concerns real Gaussian vectors and a different limit. The finite-field nullity literature \cite{FulmanGoldstein} supplies the first-scale background. The literature search conducted for this note did not find this particular nonzero-vector, fixed-codimension defective Poisson profile; that is a scoped priority assessment rather than an exhaustive novelty certificate.
+
+No Riemann-hypothesis assumption is used. The result is a transfer from the finite-field spanning and observation mechanism developed in the GRH project. It resolves a specific growing-frame observation regime identified as open in that project, not a prominent general conjecture such as nonabelian GRH, pair correlation, or Artin's primitive-root conjecture. General observation graphs with overlapping cycles remain substantially more difficult.
+
+\section{Reproducibility and proof status}
+The companion program \texttt{verify.py} enumerates all nonzero-vector assignments in nine small prime-field cases and compares every possible observed matrix with \eqref{eq:exact}, including matrices of zero probability. It independently verifies transposition symmetry and total mass, compares the complete finite likelihood with the four-statistic formula, and checks \eqref{eq:exact-v} by direct column enumeration. It also evaluates the two limiting profiles. These finite computations support the algebra and reveal small-parameter failures; they do not replace the general proofs.
+
+The mathematical results in this note have human-readable proofs and independently checkable finite calculations. They have not been formalized or compiled in Lean. The upstream RH/GRH development was not rebuilt for these results, because none of them depends on its theorem.
+
+\begin{thebibliography}{9}
+\bibitem{ProveIt}
+V. Reshetnikov, \emph{ProveIt: Beyond the Riemann hypothesis for Dirichlet $L$-functions: consequences, transfers and limits}, repository snapshot \texttt{cfab41369737c66ae520d179419509eb719367cd}, section \texttt{spn.tex}, especially \texttt{spn:prop:anchors}, \texttt{spn:thm:anchors}, and \texttt{spn:q:dependence}.\newline
+\url{https://github.com/VladimirReshetnikov/ProveIt/tree/cfab41369737c66ae520d179419509eb719367cd/Analysis/GeneralizedRiemannHypothesis/Article}
+\bibitem{FulmanGoldstein}
+J. Fulman and L. Goldstein, Stein's method and the rank distribution of random matrices over finite fields, \emph{Annals of Probability} \textbf{43} (2015), 1274--1314.\newline
+\url{https://doi.org/10.1214/13-AOP889}.
+\bibitem{BrennanBreslerHuang}
+M. Brennan, G. Bresler, and B. Huang, \emph{De Finetti-style results for Wishart matrices: combinatorial structure and phase transitions}, arXiv:2103.14011 (2021).\newline
+\url{https://arxiv.org/abs/2103.14011}.
+\end{thebibliography}
+\end{document}

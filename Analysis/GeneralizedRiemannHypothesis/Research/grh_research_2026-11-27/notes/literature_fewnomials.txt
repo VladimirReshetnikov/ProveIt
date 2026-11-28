@@ -1,0 +1,132 @@
+FEWNOMIAL LITERATURE CHECK AND SCOPE
+Research date: 27 November 2026.
+
+1. H. W. Lenstra, Jr., On the factorization of lacunary polynomials,
+   in Number Theory in Progress, vol. 1, De Gruyter (1999), 277-292.
+   Publisher DOI: https://doi.org/10.1515/9783110285581.277
+   Author's scanned full text:
+   https://pub.math.leidenuniv.nl/~lenstrahw/PUBLICATIONS/1999b/art.pdf
+   Author's publication list:
+   https://pub.math.leidenuniv.nl/~lenstrahw/PUBLICATIONS/pub.html
+
+   Primary-source inspection: pages 278, 279, 280, 281, and 282 were
+   read from the author-hosted scan, with visual inspection of pp. 278
+   and 282 to correct OCR errors. In particular, the disk inequality
+   in Theorem 3 is GREATER THAN OR EQUAL TO, not strict greater than.
+
+   Theorem 3 (p. 278) already proves a uniform degree-independent
+   upper bound C(p,k,r), for every r>0 and polynomials with at most
+   k+1 nonzero terms, on zeros with v(x-1)>=r, counting multiplicity.
+   The field can be any characteristic-zero valued field with v(p)=1;
+   the result is therefore applicable to geometric roots. Neither
+   degree independence nor the existence of an effective local upper
+   bound is new in the present work.
+
+   On p. 280, d_k(m) denotes the least common multiple of products of
+   at most k distinct members of {1,...,m}. Proposition 2.2 says that
+   for a prescribed set E of k+1 integer exponents, d_k(m)*binom(T,m)
+   has, on E, an interpolating polynomial with integer coefficients.
+   Corollary 2.3 (p. 281) expresses binom(T,m), on E, in terms of
+   binom(T,i), 0<=i<=k, with coefficient denominators dividing
+   d_k(m)/i!. Proposition 2.4 bounds v_p(d_k(m)) by k floor(log_p m).
+
+   Section 3, p. 282, gives the explicit finite cutoff
+
+     C(p,k,r) = max { m>=0 :
+       m*r - v_p(d_k(m)) <= max_{0<=i<=k}(i*r - v_p(i!)) }.
+
+   The valuation of d_k(m) can equivalently be calculated as
+
+     v_p(d_k(m)) = sum_{a>=1} min(k, floor(m/p^a)).
+
+   Explanation of this equivalent expression: the k integers in
+   {1,...,m} with the largest p-adic valuations maximize the valuation
+   of their product, and at level a the number of such integers with
+   valuation >=a is min(k,floor(m/p^a)). Only finitely many terms occur.
+   C is a proved upper bound, not generally the exact optimum.
+
+   The introduction (p. 279) asks whether the BEST GLOBAL value
+   B(k,L) is computable from k and data defining a fixed finite
+   extension L of Q_p. That B counts all nonzero roots belonging to
+   L, with no one-disk restriction. The local geometric algorithm
+   developed here is a different problem. It must not be presented
+   as a solution of Lenstra's stated global B(k,L) question.
+
+2. A. J. van der Poorten and R. S. Rumely, Zeros of p-adic
+   exponential polynomials II, Journal of the London Mathematical
+   Society (2) 36 (1987), 1-15.
+   DOI: https://doi.org/10.1112/jlms/s2-36.1.1
+   Publisher abstract:
+   https://londmathsoc.onlinelibrary.wiley.com/doi/abs/10.1112/jlms/s2-36.1.1
+
+   The publisher abstract states a bound (n-2)p for order-n
+   exponential polynomials defined over Q_p when p>n>=3, and says
+   analogous bounds hold in general. The full article was not
+   accessible through the publisher during this review, so no claim
+   about what it does not contain is based on its abstract alone.
+
+3. J. Maurice Rojas, Arithmetic multivariate Descartes' rule,
+   American Journal of Mathematics 126 (2004), 1-30.
+   Primary paper mirror:
+   https://citeseerx.ist.psu.edu/document?doi=506b0ec662ed92d9fee412b5822b60c2de238564&repid=rep1&type=pdf
+   Related author preprint:
+   https://arxiv.org/abs/math/0010260
+
+   This work concerns finiteness and explicit bounds for isolated
+   roots of sparse systems over local and number fields. It supplies
+   important arithmetic fewnomial background; it is not evidence
+   that a specific exact local profile or the sharp staircase was
+   already known. Its field and root conventions must be retained
+   when making comparisons.
+
+4. P. Buergisser, A. Kulkarni, A. Lerario, Nonarchimedean integral
+   geometry, Selecta Mathematica (N.S.) 32, article 10 (2026).
+   Published 5 January 2026; DOI:
+   https://doi.org/10.1007/s00029-025-01120-y
+   Open-access primary article:
+   https://link.springer.com/article/10.1007/s00029-025-01120-y
+
+   Section 7 reviews deterministic sparse root bounds and develops
+   expected zero counts for random fewnomials over nonarchimedean
+   local fields. Its discussion reports Lenstra's O(t^2 q e log(et))
+   bound in a finite extension with residue-field size q and
+   ramification index e, and O(t^2 p log t) over Q_p. Its random
+   result is a different question from optimizing geometric local
+   root counts over all coefficients.
+
+5. Repository antecedents, inspected at ProveIt commit
+   b82291c1f75389938c7464ef161907d7d5e75b2a:
+
+   Analysis/GeneralizedRiemannHypothesis/Research/
+     sparse-padic-roots-and-graph-towers/fewnomial/paper.tex
+
+   This proves the fixed-support open-disk formula for t<=p,
+   the uniform triangular formula through t=p+1, and the exact
+   p^2 jump at t=p+2. Its concluding questions ask for larger-t
+   support invariants and deeper closed-disk classifications.
+
+   Analysis/GeneralizedRiemannHypothesis/Research/
+     padic-support-rank/report.tex
+
+   This gives an exact mod-p rank rule at each closed-disk depth
+   in the exponential range when t<=p. The arbitrary-t determinant
+   algorithm and the explicit t=p+2,...,2p-1 staircase extend
+   that prescribed-support program. They do not use RH or GRH.
+
+ASSESSMENT
+
+The independently derived staircase extends the pinned repository's
+proved range. The finite-basis and finite-residue results aim at exact
+support-sensitive optimization, rather than merely at another
+upper bound. The searched primary literature does not by itself
+establish publication priority for these formulations. Priority
+remains subject to a fuller literature review and external review.
+
+The work does not resolve a further prominent general conjecture.
+In particular it does not solve global B(k,L) computability,
+multivariate fewnomial optimization, general automorphic GRH,
+Artin's primitive-root conjecture, or Birch--Swinnerton-Dyer.
+
+Reproducibility note: the downloaded third-party PDF and OCR files
+were used only as research intermediates. They are not included in
+the deliverable archive; the primary URLs above identify the sources.

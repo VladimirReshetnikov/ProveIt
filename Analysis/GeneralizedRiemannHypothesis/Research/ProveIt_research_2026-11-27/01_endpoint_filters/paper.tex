@@ -1,0 +1,275 @@
+\documentclass[11pt]{article}
+\usepackage[T1]{fontenc}
+\usepackage{lmodern,microtype,amsmath,amssymb,amsthm,mathtools,booktabs}
+\usepackage[margin=27mm,headheight=14pt]{geometry}
+\usepackage[dvipsnames]{xcolor}
+\usepackage[colorlinks=true,linkcolor=MidnightBlue,citecolor=MidnightBlue,urlcolor=MidnightBlue]{hyperref}
+\usepackage{fancyhdr}
+\pagestyle{fancy}\fancyhf{}\lhead{\small Sharp decay of positive zero filters}\rhead{\small ProveIt research note}\cfoot{\thepage}
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{corollary}[theorem]{Corollary}
+\newtheorem{proposition}[theorem]{Proposition}
+\theoremstyle{remark}\newtheorem{remark}[theorem]{Remark}
+\newcommand{\R}{\mathbb R}\newcommand{\C}{\mathbb C}
+\newcommand{\abs}[1]{\lvert#1\rvert}
+\newcommand{\dd}{\,\mathrm d}
+\newcommand{\ord}{\operatorname{ord}}
+\newcommand{\Rea}{\operatorname{Re}}\newcommand{\Ima}{\operatorname{Im}}
+\setlength{\emergencystretch}{2em}
+\allowdisplaybreaks[2]
+\title{\textbf{The sharp double-exponential constant for positive zero filters}\\[5pt]\large A factor-two improvement, endpoint rigidity, and sharp zeta--beta examples}
+\author{Research note prepared for the ProveIt project}
+\date{27 November 2026}
+\begin{document}
+\maketitle
+\begin{abstract}
+Let a finite conjugation-closed family of primitive Dirichlet completions have total degree $d$ and geometric mean conductor $Q_*$. A probability measure whose entire Fourier transform contains their full noncentral zero divisor cannot have a finite moment $\int\exp(b\exp(2|t|/d))\dd\mu(t)$ when $b>\pi d/Q_*$. This improves the necessary constant $2\pi d/Q_*$ in the supplied ProveIt article by a factor of two. The proof divides the transform by the completed divisor and uses directional entire-function growth, retaining information lost by circular Jensen averaging. At equality the quotient has zero exponential type, and a precise gamma-factor exponent often rules out equality as well. For any product of powers of the Riemann zeta and Dirichlet beta functions the admissible constants are exactly $0<b<\pi(r+s)/4^{s/(r+s)}$. An explicit positive theta convolution attains every constant in this interval. The divisor formulation and the constructions are unconditional; identifying the whole divisor with real zero ordinates uses Dirichlet GRH. No claim of sharp attainability for every character family is made.
+\end{abstract}
+
+\section{The problem and the new bound}
+
+For a probability measure $\mu$ on $\R$, use the Fourier convention
+\[
+ F_\mu(z)=\int_\R e^{izt}\dd\mu(t).
+\]
+A moment of the form considered below makes $F_\mu$ entire. A zero of order $k$ at $z_0$ means exact cancellation of the $k$ functions $t^j e^{iz_0t}$, $0\le j<k$. Thus the multiplicity convention is substantive: cancelling each distinct frequency just once is a different problem.
+
+Let $\mathcal F$ be a nonempty finite multiset of primitive Dirichlet characters closed under complex conjugation. The trivial character of conductor one is allowed. Write
+\[
+ d=|\mathcal F|,\qquad Q_* =\left(\prod_{\chi\in\mathcal F}q_\chi\right)^{1/d},
+ \qquad a_\chi\in\{0,1\},\quad \chi(-1)=(-1)^{a_\chi}.
+\]
+For the trivial character put $q_\chi=1$ and $a_\chi=0$. Define the entire completions
+\[
+ \mathcal L_\chi(s)=
+ \begin{cases}
+ \xi(s)=\frac12s(s-1)\pi^{-s/2}\Gamma(s/2)\zeta(s),&q_\chi=1,\\
+ (q_\chi/\pi)^{(s+a_\chi)/2}\Gamma((s+a_\chi)/2)L(s,\chi),&q_\chi>1.
+ \end{cases}
+\]
+Let $P(s)=\prod_\chi\mathcal L_\chi(s)$, let $m=\ord_{s=1/2}P(s)$, and put
+\begin{equation}\label{eq:Psi}
+ \Psi(z)=\frac{P(1/2+iz)}{(iz)^m},
+\end{equation}
+with the removable value at zero. Functional equations and conjugation give $\Psi(-z)=\Psi(z)$ and $\Psi(0)\ne0$. Indeed $P(1/2-w)=\varepsilon P(1/2+w)$, and comparison of the first nonzero coefficient gives $\varepsilon=(-1)^m$.
+
+We say that $\mu$ \emph{contains the completed divisor} if $F_\mu/\Psi$ is entire. This requires all the noncentral zeros, with their product multiplicities. Central zeros are removed because $F_\mu(0)=1$.
+
+\begin{theorem}[Universal coefficient bound]\label{thm:bound}
+Suppose that $\mu$ contains the completed divisor and
+\begin{equation}\label{eq:moment}
+ \int_\R\exp\bigl(b\exp(2|t|/d)\bigr)\dd\mu(t)<\infty
+\end{equation}
+for some $b>0$. Then
+\begin{equation}\label{eq:sharp}
+ \boxed{b\le b_*:=\frac{\pi d}{Q_*}.}
+\end{equation}
+Let $r$ be the number of trivial characters in $\mathcal F$, and set
+\begin{equation}\label{eq:A}
+ A=\frac12\sum_{\chi\in\mathcal F}a_\chi-\frac d4+2r-m.
+\end{equation}
+If $A\ge0$, the inequality in \eqref{eq:sharp} is strict.
+\end{theorem}
+
+The article's \texttt{fil:cor:endpoint} gives $b\le2\pi d/Q_*$ by circular Jensen averaging \cite{ProveIt}. Theorem~\ref{thm:bound} keeps the directional growth of the completed functions and halves that bound. This is new relative to the pinned article and the inspected incoming reports. An exhaustive publication-priority claim is not made.
+
+The formulation does not assume RH. Under Dirichlet GRH, the noncentral divisor in \eqref{eq:Psi} consists exactly of the prescribed nonzero real ordinates. Without that input it also includes any nonreal zeros in the Fourier variable. An assumption of vanishing only at the real zeros would then be weaker and would not justify the theorem.
+
+\begin{theorem}[An exact family of sharp examples]\label{thm:examples}
+Fix integers $r,s\ge0$ with $d=r+s>0$, and take $r$ copies of $\xi$ and $s$ copies of the completion of $\beta=L(s,\chi_{-4})$. A probability measure containing this completed divisor and satisfying \eqref{eq:moment} exists if and only if
+\begin{equation}\label{eq:interval}
+ \boxed{0<b<\frac{\pi(r+s)}{4^{s/(r+s)}}.}
+\end{equation}
+One explicit even positive theta convolution works simultaneously for every $b$ in this interval. In particular the supremum is $\pi$ for $\xi$, $\pi/4$ for the beta completion, and $\pi$ for their product (whose double-exponential exponent is then one).
+\end{theorem}
+
+\section{Growth lemmas}
+
+We use two classical facts about entire functions; precise statements are included to expose the analytic input \cite{Levin,Boas}.
+
+\begin{lemma}[Entire quotients and indicators]\label{lem:entire}
+\begin{enumerate}
+\item If $f,g$ are entire, $g\not\equiv0$, both satisfy $\log M(R)=O(R\log(2+R))$, and $f/g$ is entire, then $f/g$ has order at most one. More explicitly, for every $\epsilon>0$ it has a bound $\exp(C_\epsilon(1+|z|)^{1+\epsilon})$.
+\item If a nonzero entire function $G$ has finite exponential type, its indicator
+\[
+ h_G(\theta)=\limsup_{R\to\infty}R^{-1}\log|G(Re^{i\theta})|
+\]
+is the support function $\sup_{w\in K}\Rea(we^{i\theta})$ of a nonempty compact convex set $K$. If $G$ is even, then $K=-K$, so $h_G(\theta)\ge0$.
+\item An entire function of zero exponential type that is bounded on a line is constant.
+\end{enumerate}
+\end{lemma}
+\begin{proof}[Analytic inputs and their use]
+For (1), the elementary Nevanlinna inequalities give
+$T(R,f/g)\le T(R,f)+T(R,1/g)+O(1)=O(R\log(2+R))$; a zero at the origin can first be divided out. For an entire function $H$, the Poisson inequality gives $\log M(R,H)\le3T(2R,H)+O(1)$, and hence the asserted order bound. Part (2) is the indicator-diagram theorem for functions of exponential type. Evenness makes the support function $\pi$-periodic and therefore the diagram centrally symmetric. Part (3) is the zero-type boundary case of the Phragm\'en--Lindel\"of theorem in the two half-planes. These are classical complex-analytic results, not extra arithmetic hypotheses. Standard proofs and conventions are in \cite{Levin,Boas}; the bounded-line consequence is also used explicitly in \cite{Dyakonov}.
+\end{proof}
+
+\begin{lemma}[Moment bound]\label{lem:moment}
+Put $\alpha=2/d$ and
+\[
+ \ell_b(y)=\frac y\alpha\left(\log\frac y{b\alpha}-1\right)\quad(y\ge b\alpha).
+\]
+If \eqref{eq:moment} holds, then $F_\mu$ is entire of order at most one and
+\[
+ \log|F_\mu(x+iy)|\le\ell_b(|y|)+O(1)\qquad (|y|\to\infty),
+\]
+uniformly in $x\in\R$. In addition,
+\begin{equation}\label{eq:littleo}
+ F_\mu(iy)=o\bigl(e^{\ell_b(|y|)}\bigr)\qquad(y\to\pm\infty).
+\end{equation}
+\end{lemma}
+\begin{proof}
+The maximum over $u\ge0$ of $yu-be^{\alpha u}$ equals $\ell_b(y)$ once $y\ge b\alpha$, attained at $u=\alpha^{-1}\log(y/(b\alpha))$. Therefore
+\[
+ |F_\mu(x+iy)|\le\int e^{|y||t|}\dd\mu(t)
+ \le e^{\ell_b(|y|)}\int e^{be^{\alpha|t|}}\dd\mu(t).
+\]
+On every compact set of $z$, the integrand and all its derivatives are dominated by a multiple of the integrable last weight. This proves entire continuation and the growth bound. For \eqref{eq:littleo}, divide by $e^{\ell_b(|y|)}$ and rewrite the integrand as
+\[
+ e^{|y||t|-be^{\alpha|t|}-\ell_b(|y|)}e^{be^{\alpha|t|}}.
+\]
+The first factor is at most one and tends to zero for every fixed $t$, because the maximizing $u$ tends to infinity. Dominated convergence applies; the same majorant controls $e^{-yt}$.
+\end{proof}
+
+\begin{lemma}[The completed divisor]\label{lem:stirling}
+The function $\Psi$ has order at most one. Fix $a>3/2$. For $z=x+iy$ with $y\ge a$, $R=|z|\to\infty$,
+\begin{align}\label{eq:sector}
+ \log|\Psi(z)|={}&\frac{dy}{2}\log\frac R2
+ -\frac{d|x|}{2}\arctan\frac{|x|}{y}-\frac{dy}{2}
+ +\frac{dy}{2}\log\frac{Q_*}{\pi}+O_{\mathcal F}(\log(2+R)).
+\end{align}
+The error is uniform in this half-plane. On the positive imaginary axis there is the more precise expansion
+\begin{equation}\label{eq:vertical}
+ \log|\Psi(iy)|=\frac{dy}{2}\left(\log y+\log\frac{Q_*}{2\pi}-1\right)
+ +A\log y+O_{\mathcal F}(1).
+\end{equation}
+The same statements hold in the lower half-plane after replacing $y$ by $|y|$.
+\end{lemma}
+\begin{proof}
+The functional equation changes $s=1/2+iz$ into $1/2+y-ix$. In $\Rea s\ge1/2+a>2$, the Euler products for all the finitely many $L$-functions are bounded above and bounded away from zero, uniformly in $s$. Apply Stirling's formula in the right half-plane to
+\[
+ \frac{s+a_\chi}{2}=\frac y2+\frac14+\frac{a_\chi}{2}-\frac{ix}{2}.
+\]
+The leading terms are \eqref{eq:sector}; bounded shifts in the gamma arguments cost $O(\log(2+R))$. Each zeta completion has the additional polynomial $s(s-1)/2$, and removal of the central zero divides by $(iz)^m$; these likewise affect only that error. On $x=0$ the coefficient of $\log y$ is $a_\chi/2-1/4$ for an ordinary Dirichlet gamma factor, plus two for each zeta factor and minus $m$ in total. This gives \eqref{eq:A} and \eqref{eq:vertical}. The entire order-one bounds for the completions follow from the same estimates, the functional equations, and bounds on a fixed vertical strip. The uniform version of Stirling used here is the standard expansion in sectors avoiding the negative real axis \cite[\S5.11]{DLMF}.
+\end{proof}
+
+\section{Proof of the improved constant and endpoint exclusion}
+
+We may symmetrize $\mu$. Replacing it by $(\mu+\mu^{-})/2$, where $\mu^{-}(E)=\mu(-E)$, preserves the moment and divisor conditions because $\Psi$ is even, and makes $F=F_\mu$ even. Its value at zero remains one. The quotient
+\[
+ G(z)=F(z)/\Psi(z)
+\]
+is thus nonzero, entire, and even. By Lemma~\ref{lem:entire}(1), it has order at most one.
+
+Choose $a>\max\{3/2,2b/d\}$. Combining Lemmas~\ref{lem:moment} and \ref{lem:stirling} gives, for $|y|\ge a$,
+\begin{equation}\label{eq:Gbound}
+ \log|G(x+iy)|\le
+ \frac d2\left[|y|\log\left(\frac{b_*}{b}\frac{|y|}{R}\right)
+ +|x|\arctan\frac{|x|}{|y|}\right]+O(\log(2+R)).
+\end{equation}
+The right side is $O(R)$ uniformly, so $G$ has a finite exponential bound outside a fixed horizontal strip. This also extends across the strip. To see the required growth condition explicitly, choose $C$ larger than the exponential bound on its two horizontal edges, multiply by $e^{-Cz}$ in the right half-strip and by $e^{Cz}$ in the left one, and apply Phragm\'en--Lindel\"of. For a direct barrier, multiply further by $e^{-\epsilon\cosh(kz)}$ with $0<k<\pi/(2a)$. On the horizontal edges its real exponent is nonpositive, and on far vertical edges its decay dominates the order-at-most-one bound. The maximum principle on rectangles followed by $\epsilon\downarrow0$ proves the assertion. Hence $G$ has finite exponential type.
+
+At $x=0$, \eqref{eq:Gbound} implies
+\[
+ h_G(\pi/2)\le\frac d2\log\frac{b_*}{b}.
+\]
+Evenness and Lemma~\ref{lem:entire}(2) make the left side nonnegative. Thus $b\le b_*$.
+
+Now suppose $b=b_*$. Write $s=|\sin\theta|$ and $c=|\cos\theta|$. For $s>0$, \eqref{eq:Gbound} yields
+\begin{equation}\label{eq:indicator}
+ h_G(\theta)\le\frac d2\left[s\log s+c\arctan(c/s)\right].
+\end{equation}
+At $\theta=\pi/2$ the bound is zero. The centrally symmetric indicator diagram $K$ is consequently contained in the real axis, so $K=[-\tau,\tau]$ for some $\tau\ge0$. For $\theta=\pi/2-\delta$, $\delta\downarrow0$, the upper bound in \eqref{eq:indicator} is
+\[
+ \frac d2\bigl(\cos\delta\log\cos\delta+\delta\sin\delta\bigr)
+ =\frac d4\delta^2+O(\delta^4),
+\]
+whereas the support function of $K$ is $\tau\sin\delta$. Therefore $\tau=0$: \emph{the quotient has zero exponential type}.
+
+Finally \eqref{eq:vertical}, \eqref{eq:littleo}, and $b=b_*$ give
+\begin{equation}\label{eq:Gdecay}
+ G(iy)=o(y^{-A})\qquad(y\to+\infty).
+\end{equation}
+If $A\ge0$, evenness makes $G$ bounded on the whole imaginary axis and tending to zero at both ends. Lemma~\ref{lem:entire}(3) makes $G$ constant and then identically zero, a contradiction. This proves Theorem~\ref{thm:bound}.
+
+\begin{corollary}[Rigidity at the coefficient threshold]\label{cor:rigidity}
+Under the hypotheses of Theorem~\ref{thm:bound}, if $b=b_*$ then the even quotient obtained after symmetrization has zero exponential type. In particular a nonzero indicator segment is incompatible with the critical coefficient. When $A<0$ the argument still gives \eqref{eq:Gdecay}, but this note makes no general attainability claim.
+\end{corollary}
+
+\begin{remark}[Why Jensen loses a factor]
+A circular zero count averages the gamma-factor growth over every angle. It imposes a necessary constraint on the whole Fourier transform but does not control the growth left over after dividing out the prescribed divisor. The quotient must itself be an entire function. The impossibility of a negative indicator in both opposite directions is exactly the extra constraint used above. The quadratic vanishing of the endpoint envelope in \eqref{eq:indicator} then gives the stronger zero-type conclusion.
+\end{remark}
+
+\section{Explicit positive kernels and sharpness}
+
+Let
+\begin{align*}
+ \Phi(t)&=\sum_{n\ge1}\bigl(4\pi^2n^4e^{9t/2}-6\pi n^2e^{5t/2}\bigr)e^{-\pi n^2e^{2t}},\qquad t\ge0,\\
+ K_\beta(t)&=2e^{3t/2}\sum_{n\ge0}(-1)^n(2n+1)e^{-\pi(2n+1)^2e^{2t}/4},\qquad t\ge0.
+\end{align*}
+Extend each function evenly. The theta transformations and Mellin identities give
+\begin{equation}\label{eq:kernels}
+ \int_\R\Phi(t)e^{izt}\dd t=\xi(1/2+iz),\qquad
+ \int_\R K_\beta(t)e^{izt}\dd t=\mathcal L_\beta(1/2+iz).
+\end{equation}
+These are classical theta-kernel identities; the supplied article states and proves them in \texttt{fil:lem:kernels} \cite{ProveIt,Titchmarsh}. Both kernels are strictly positive. For $\Phi$, every displayed term is positive since $2\pi n^2e^{2t}>3$. For $K_\beta$, the alternating term magnitudes strictly decrease for $t\ge0$, and the first exceeds the second. Consequently their integrals, denoted $Z_\zeta$ and $Z_\beta$, are strictly positive and neither completion has a central zero.
+
+The first terms also show that for every $\epsilon>0$ there are finite constants $C_\epsilon$ with
+\begin{equation}\label{eq:tails}
+ \Phi(t)\le C_\epsilon e^{-(\pi-\epsilon)e^{2|t|}},\qquad
+ K_\beta(t)\le C_\epsilon e^{-(\pi/4-\epsilon)e^{2|t|}}.
+\end{equation}
+Indeed their respective leading asymptotics as $t\to+\infty$ are
+\[
+ 4\pi^2e^{9t/2}e^{-\pi e^{2t}}(1+o(1)),\qquad
+ 2e^{3t/2}e^{-(\pi/4)e^{2t}}(1+o(1)),
+\]
+and polynomial exponential prefactors can be absorbed into any fixed $\epsilon e^{2t}$.
+
+Let $X_1,\ldots,X_d$ be independent variables, $r$ with density $\Phi/Z_\zeta$ and $s$ with density $K_\beta/Z_\beta$, and put $S=\sum_jX_j$. Its law is the explicit even positive convolution in Theorem~\ref{thm:examples}, and its Fourier transform is the normalized product of the completions. It therefore contains the full required divisor, including any multiplicities or coincidences.
+
+Assign $c_j=\pi$ to a zeta variable and $c_j=\pi/4$ to a beta variable. The arithmetic--geometric mean inequality gives, for every real tuple,
+\begin{equation}\label{eq:AMGM}
+ \sum_{j=1}^dc_j e^{2|X_j|}
+ \ge d\left(\prod_jc_j\right)^{1/d}\exp\left(\frac2d\sum_j|X_j|\right)
+ \ge b_*e^{2|S|/d},
+\end{equation}
+where $b_* =\pi d/4^{s/d}$. If $0<b<b_*$, then each $\theta_j=(b/b_*)c_j<c_j$. Thus
+\[
+ \mathbb E e^{b e^{2|S|/d}}
+ \le\prod_{j=1}^d\mathbb E e^{\theta_j e^{2|X_j|}}<\infty
+\]
+by \eqref{eq:tails}. Conversely $m=0$ and
+\[
+ A=\frac{7r+s}{4}>0,
+\]
+so Theorem~\ref{thm:bound} excludes every $b\ge b_*$. This proves Theorem~\ref{thm:examples} without a saddle-point approximation.
+
+\section{Scope, verification, and further questions}
+
+The numerical constants in a few examples are recorded below. The exponent is $\alpha=2/(r+s)$ and the critical coefficient is $b_*$. ``Supremum'' is essential: the endpoint moment itself is impossible in these examples.
+\begin{center}
+\begin{tabular}{cccc}
+\toprule
+$(r,s)$ & $\alpha$ & $Q_*$ & $b_*$\\\midrule
+$(1,0)$ & $2$ & $1$ & $\pi$\\
+$(0,1)$ & $2$ & $4$ & $\pi/4$\\
+$(1,1)$ & $1$ & $2$ & $\pi$\\
+$(2,0)$ & $1$ & $1$ & $2\pi$\\
+$(1,2)$ & $2/3$ & $4^{2/3}$ & $3\pi/4^{2/3}$\\\bottomrule
+\end{tabular}
+\end{center}
+
+The accompanying script verifies the algebra in the critical coefficient, the expansion of the indicator envelope, the gamma logarithmic exponent, and the AM--GM equality configuration for small families. Its floating-point theta evaluations are illustrations, not a proof of global positivity or of the entire-function theorem. The proof above supplies those statements. None of the new analytic theorems has been formalized in Lean in this work.
+
+The main unresolved question is sharp attainability of $\pi d/Q_*$ for arbitrary character families. The article's compact signed-to-positive smoothing proves existence at the optimal \emph{power} $2/d$, but a smoothing supported on $[-R,R]$ can reduce the leading tail coefficient by a factor $e^{-2R/d}$. That argument alone does not give sharp attainability. The present theorem resolves the constant for explicitly positive theta products and gives a stronger universal obstruction. It does not establish a nonabelian Riemann hypothesis, central nonvanishing for every character, or simplicity of zeros.
+
+\begin{thebibliography}{9}
+\bibitem{ProveIt} V. Reshetnikov, \emph{ProveIt: Generalized Riemann Hypothesis}, article and incoming reports, snapshot \texttt{ce35f320bc88c02093e479f5fe5003ff86b2795f}, especially \texttt{Article/sections/fil.tex}, \texttt{fil:thm:global}, \texttt{fil:cor:endpoint}, and \texttt{fil:lem:kernels}. \url{https://github.com/VladimirReshetnikov/ProveIt/tree/ce35f320bc88c02093e479f5fe5003ff86b2795f/Analysis/GeneralizedRiemannHypothesis}
+\bibitem{Levin} B. Ya. Levin, \emph{Lectures on Entire Functions}, Translations of Mathematical Monographs 150, American Mathematical Society, 1996. Indicator diagrams and Phragm\'en--Lindel\"of theory.
+\bibitem{Boas} R. P. Boas, Jr., \emph{Entire Functions}, Academic Press, 1954. Classical growth and quotient theorems.
+\bibitem{Dyakonov} K. M. Dyakonov, \emph{Polynomials and entire functions: zeros and geometry of the unit ball}, Mathematical Research Letters 7 (2000), 393--404; see p.~401. \url{https://intlpress.com/site/pub/files/_fulltext/journals/mrl/2000/0007/0004/MRL-2000-0007-0004-a005.pdf}
+\bibitem{DLMF} NIST Digital Library of Mathematical Functions, \S5.11, \emph{Asymptotic Expansions of the Gamma Function}. \url{https://dlmf.nist.gov/5.11}
+\bibitem{Titchmarsh} E. C. Titchmarsh, revised by D. R. Heath-Brown, \emph{The Theory of the Riemann Zeta-function}, second edition, Oxford University Press, 1986, Chapter II.
+\end{thebibliography}
+\end{document}

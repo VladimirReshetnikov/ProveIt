@@ -1,0 +1,773 @@
+\documentclass[11pt]{article}
+\usepackage[T1]{fontenc}
+\usepackage{lmodern,amsmath,amssymb,amsthm,mathtools,booktabs,microtype}
+\usepackage[margin=1in]{geometry}
+\usepackage[colorlinks=true,linkcolor=blue,citecolor=blue,urlcolor=blue]{hyperref}
+\usepackage{enumitem}
+\setlist{itemsep=3pt,topsep=5pt}
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{corollary}[theorem]{Corollary}
+\theoremstyle{remark}\newtheorem{remark}[theorem]{Remark}
+\newcommand{\R}{\mathbb R}\newcommand{\C}{\mathbb C}
+\newcommand{\dd}{\,\mathrm d}\newcommand{\supp}{\operatorname{supp}}
+\newcommand{\Var}{\operatorname{Var}}\newcommand{\Res}{\operatorname{Res}}
+\newcommand{\Rea}{\operatorname{Re}}\newcommand{\Ima}{\operatorname{Im}}
+\newcommand{\norm}[1]{\left\lVert#1\right\rVert}
+\newcommand{\abs}[1]{\left\lvert#1\right\rvert}
+\title{A sharp cancellation inequality for damped modes\\
+and a normal form for shortest positive filters}
+\author{Research note prepared for the ProveIt program}
+\date{27 November 2026}
+\begin{document}\maketitle
+
+\begin{abstract}
+A positive filter is a compactly supported probability measure, and cancelling
+a damped oscillatory mode means prescribing a zero of its bilateral Laplace
+transform. We prove that cancelling $N$ upper-half-plane targets, counted with
+multiplicity, requires support diameter at least $N^2\pi/\sum_j\Ima s_j$.
+The damping rates may be unrelated. Equality is characterized exactly by a
+reflection condition and a polynomial with nonnegative coefficients.
+
+The main result describes the entire local geometry at every equality
+configuration having strictly positive coefficients. After fixing the complex
+mean of the targets, the coefficients of their centered polynomial provide
+coordinates that remain valid at collisions. The shortest width is real
+analytic, has a positive-definite Hessian transverse to the reflection locus,
+and admits the exact local form $N\pi/\kappa+\norm{\eta}^2$. We give its Hessian
+as a weighted complete-graph energy with explicit Hermite interpolation.
+This answers the sign and degeneracy part of the repository's open question
+about second variations at general mirror configurations. An exact cubic
+example shows that mixed-derivative signs can change even though positive
+definiteness persists. The theorems are unconditional Fourier--Laplace
+analysis; no assertion about a new major number-theoretic conjecture is made.
+\end{abstract}
+
+\section{Scope, provenance, and the main result}
+
+The starting point is the section ``Positive filters that cancel zeros'' of
+the ProveIt article, pinned to commit
+\texttt{cfab41369737c66ae520d179419509eb719367cd} \cite{ProveIt}.
+That section proves an exact reflection theorem, an analytic continuation
+theorem when target multiplicities are held fixed, a mean-frequency inequality
+for targets with a common real part, and a detailed Hessian theorem at a
+single coalesced frequency. Its open-question list asks for the Hessian at a
+general mirror configuration, especially its sign for perturbations fixing
+the mean imaginary part. We resolve this question in coefficient coordinates,
+allowing arbitrary damping and allowing multiple targets to split.
+
+The contribution is the general normal form and its explicit positive
+quadratic form. The strip identity and the reflection certificate used below
+are mechanisms already present in the repository; they are proved here to
+make the argument self-contained. The global inequality for unrelated real
+parts is a short additional consequence. The local normal form does not
+solve the global support-transition problem at a configuration where some
+optimal masses are zero.
+
+For a compactly supported probability measure $\mu$ on $\R$, put
+\[
+ F_\mu(s)=\int_\R e^{st}\dd\mu(t).
+\]
+A multiset $S=(s_1,\ldots,s_N)$ in $\Ima s>0$ specifies zeros of $F_\mu$,
+with repeated entries specifying the corresponding multiplicity. Write
+$D(S)$ for the least possible diameter of $\supp\mu$. This quantity is
+unchanged by translating the measure. It is also unchanged by subtracting
+a common real number from all targets: exponential tilting of the measure
+gives the required bijection of feasible measures.
+
+Here is the main result. Its notation is developed in the proof.
+
+\begin{theorem}[Normal form at every positive mirror configuration]
+\label{thm:main}
+Fix $N\ge2$ and $\kappa>0$, and put $h=\pi/\kappa$. Let
+\[
+ P_0(y)=y^N+\sum_{r=2}^N c_r^0y^{N-r},\qquad c_r^0\in\R,
+\]
+have all its roots $y_j$, counted with multiplicity, in
+$\abs{\Ima y}<\kappa$. Suppose that
+\[
+ A(z)=\prod_{j=1}^N(z+e^{hy_j})=\sum_{k=0}^N a_kz^k
+ \quad\hbox{has }a_k>0\text{ for every }k.
+\]
+For complex coefficient vectors $c=(c_2,\ldots,c_N)$ close to $c^0$, let
+$S_c$ be the multiset of targets $i\kappa+y$, where $y$ runs over the roots
+of $P_c(y)=y^N+\sum_{r=2}^N c_ry^{N-r}$. Then:
+\begin{enumerate}[label=(\roman*)]
+\item The shortest filter is unique up to translation. With left endpoint
+zero, it has exactly $N+1$ strictly positive atoms; its nodes, masses, and
+width $D(c)$ are real analytic in $(\Rea c,\Ima c)$, including at repeated
+roots of $P_c$.
+\item The equality locus is exactly $\Ima c=0$. There are constants
+$0<C_1<C_2<\infty$ and a neighborhood of $c^0$ on which
+\[
+ C_1\norm{\Ima c}^2\le D(c)-Nh\le C_2\norm{\Ima c}^2.
+\]
+The Hessian has kernel exactly the tangent space to the real coefficient
+locus. Its restriction to the imaginary coefficient directions is
+positive definite.
+\item There is a real analytic change of coordinates
+$(\Rea c,\Ima c)\mapsto(\Rea c,\eta)$, preserving that locus, for which
+\[
+ \boxed{\quad D(c)=Nh+\norm{\eta}^2.\quad}
+\]
+\item For a real polynomial $V(y)$ of degree at most $N-2$, let
+$P_\epsilon=P_0+i\epsilon V$ and write the extremal nodes as
+$t_k(\epsilon)=kh+\epsilon\sigma_k+O(\epsilon^2)$. Then
+$\sigma_0=\sigma_N=0$ and
+\begin{equation}\label{eq:energy}
+ D(P_\epsilon)=Nh+\epsilon^2 Q_{P_0}(V)+O(\epsilon^3),\qquad
+ Q_{P_0}(V)=\frac1h\sum_{0\le j<k\le N}
+ a_ja_k(\sigma_j-\sigma_k)^2
+ \int_0^\infty\frac{z^{j+k-1}}{A(z)^2}\dd z.
+\end{equation}
+The linear map $V\mapsto(\sigma_1,\ldots,\sigma_{N-1})$ is an isomorphism.
+An explicit interpolation formula for it is given in
+Proposition~\ref{prop:interpolation}.
+\end{enumerate}
+\end{theorem}
+
+The coefficients, rather than individually labeled roots, are essential.
+Near a repeated root a root displacement can change the coefficient vector
+only at high order. Thus the theorem is consistent with the sixth-, tenth-,
+and higher-order width effects already proved in the article. There is no
+contradiction between nondegeneracy in coefficient coordinates and high-order
+flatness along special root-coordinate paths.
+
+\section{A sharp global inequality for arbitrary damped targets}
+
+\subsection{Existence and the strip identity}
+
+For a single target $\beta+i\gamma$ with $\gamma>0$, a positive two-point
+measure on $0,\pi/\gamma$, with masses in ratio
+$e^{\beta\pi/\gamma}:1$, has the required simple zero. Convolution gives
+feasible measures for every finite multiset and every multiplicity. After
+translation, a minimizing sequence lies in one fixed compact interval;
+weak compactness, and continuity of every jet test $t^ke^{st}$ on that
+interval, give attainment of $D(S)$.
+
+\begin{lemma}[Finite exponential-sum strip identity]\label{lem:strip}
+Let $0=t_0<t_1<\cdots<t_M=L$ and let the positive numbers $w_j$ have sum
+one. Put $G(s)=\sum_jw_je^{t_js}$. Then, for $T>0$,
+\begin{equation}\label{eq:strip}
+ J(T):=\int_\R\log\frac{G(x)}{\abs{G(x+iT)}}\dd x
+ =\frac{LT^2}{2}-2\pi\sum_{0<\Ima\rho<T}(T-\Ima\rho),
+ \qquad J(T)\ge0,
+\end{equation}
+where zeros are counted with multiplicity. Zeros on the top boundary are
+understood by continuity and contribute zero to the sum.
+\end{lemma}
+
+\begin{proof}
+On the right and left ends of the real axis, the last and first terms,
+respectively, dominate uniformly in the imaginary part. Thus all zeros have
+bounded real part. The logarithm in the integral decays exponentially at
+both real ends; its singularities at zeros are integrable. The distributional
+identity
+$\Delta\log\abs{G}=2\pi\sum_\rho\delta_\rho$ follows by factoring each
+zero locally. Integrating in $x$, the $x$-derivative term has endpoint
+contribution $L$, because the limiting logarithmic slopes are $L$ and $0$.
+Consequently
+$J''(T)=L-2\pi\sum_\rho\delta_{\Ima\rho}(T)$ for $T>0$.
+The initial values are $J(0)=J'(0)=0$: $G$ is positive on the real line
+and its coefficients are real. Two integrations give \eqref{eq:strip}.
+Finally $\abs{G(x+iT)}\le G(x)$ is the triangle inequality.
+\end{proof}
+
+\begin{theorem}[Mean imaginary-part inequality and equality cases]
+\label{thm:global}
+For arbitrary upper-half-plane targets $S=(s_1,\ldots,s_N)$, counted with
+multiplicity, put $\kappa=N^{-1}\sum_j\Ima s_j$ and $h=\pi/\kappa$. Then
+\begin{equation}\label{eq:global}
+ \boxed{\qquad D(S)\ge \frac{N\pi}{\kappa}
+       =\frac{N^2\pi}{\sum_j\Ima s_j}.\qquad}
+\end{equation}
+Equality holds if and only if:
+\begin{enumerate}[label=(\alph*)]
+\item $0<\Ima s_j<2\kappa$ for every $j$;
+\item the target multiset is invariant under
+$s\mapsto\overline{s}+2i\kappa$;
+\item $A_S(z)=\prod_j(z-e^{hs_j})$ has nonnegative coefficients.
+\end{enumerate}
+At equality the unique minimizing measure up to translation has masses
+given by the coefficients of $A_S(z)/A_S(1)$ at $0,h,\ldots,Nh$.
+\end{theorem}
+
+\begin{proof}
+The real and imaginary parts of the jet constraints form a finite-dimensional
+continuous vector of functions on any fixed support interval. Its integral
+can be realized by a finite positive measure on that interval, by the
+finite-dimensional convex hull theorem. Thus an optimal measure can be
+replaced by a finite one without increasing its width. Translate its support
+to $[0,L]$ and discard any zero masses. Apply Lemma~\ref{lem:strip} with
+$T=2\kappa$. Its zero sum is at least
+\[
+ \sum_{j=1}^N(T-\Ima s_j)_+
+ \ge NT-\sum_j\Ima s_j=N\kappa.
+\]
+Since $J(T)\ge0$, this yields $2\kappa^2L\ge2\pi N\kappa$.
+
+At equality $J(T)=0$, and the continuous nonnegative integrand must vanish
+away from its possible singularities; a top-boundary zero would make the
+integral strictly positive. Equality in the triangle inequality at $x=0$
+shows that every $e^{iTt_j}$ is $1$. Hence the nodes belong to $h\mathbb Z$
+and $G(s)=B(e^{hs})$, where $B$ has degree $N$, nonnegative coefficients,
+and $B(1)=1$. Equality in the preceding sum requires $\Ima s_j\le2\kappa$;
+the equality case at the top boundary is excluded because $B(e^{hs})>0$
+there for real $s-2i\kappa$. Exponentiation is injective on the open strip
+$0<\Ima s<2\kappa$, so the prescribed roots determine $B=A_S/A_S(1)$,
+with their multiplicities. Since $B$ is real, its roots are closed under
+conjugation, which gives (b). This proves necessity.
+
+Conversely (a)--(c) produce the stated positive measure, whose transform
+has exactly the required zeros and whose endpoint masses are positive.
+Its diameter is $Nh$, so the lower bound is attained. Uniqueness for
+arbitrary, possibly nonfinite, minimizing measures follows from the
+certificate in Lemma~\ref{lem:certificate}: every such measure is supported
+on its lattice zero set, after which polynomial divisibility fixes all
+masses.
+\end{proof}
+
+The inequality does not depend on the real parts of the targets. Its equality
+conditions do. It therefore distinguishes a lower bound which is insensitive
+to damping from the exact compatibility conditions required to attain it.
+The integrated angular inequality of Eremenko and Fryntov
+\cite{EremenkoFryntov} is a related statement for polynomials with
+nonnegative coefficients; the variable here is support duration rather than
+polynomial degree.
+
+\subsection{The reflection certificate}
+
+\begin{lemma}[A certificate with nondegenerate zeros]\label{lem:certificate}
+Under conditions (a)--(b) of Theorem~\ref{thm:global}, there is a real
+exponential polynomial $g$ in the span of the prescribed real and imaginary
+jet functions such that $g\ge0$ on $[0,Nh]$, with exactly the zeros
+$0,h,\ldots,Nh$. Its endpoint zeros are simple and its interior zeros are
+double with strictly positive second derivatives.
+\end{lemma}
+
+\begin{proof}
+Put $q_j=-e^{hs_j}$ and $Q(z)=\prod_j(z-q_j)$. The branch
+$\log q_j=hs_j-i\pi$ is defined by $-\pi<\Ima\log q_j<\pi$.
+Reflection invariance makes the multiset of $q_j$ conjugation invariant;
+real $q_j$ are positive. Thus
+$Q(-t)=(-1)^N\abs{Q(-t)}$ for $t\ge0$.
+With repeated poles included, define
+\[
+ E(x)=\sum_{q}\Res_{z=q}\frac{z^{x-1}}{Q(z)},\qquad
+ g(hx)=(-1)^{N+1}\sin(\pi x)E(x).
+\]
+The residue formula expresses $E$ in the functions
+$x^ke^{x\log q_j}$. Multiplication by $\sin(\pi x)$ gives exactly the
+target and conjugate-target jet span. A keyhole contour around the negative
+real axis gives, for $0<x<N$,
+\begin{equation}\label{eq:certificate}
+ g(hx)=\frac{\sin^2(\pi x)}{\pi}
+       \int_0^\infty\frac{t^{x-1}}{\abs{Q(-t)}}\dd t.
+\end{equation}
+The outer and inner contour integrals tend to zero because their bounds
+are $O(R^{x-N})$ and $O(\epsilon^x)$, respectively. The integral in
+\eqref{eq:certificate} is strictly positive. At $x\downarrow0$ it is
+$1/(\abs{Q(0)}x)+O(1)$, and at $x\uparrow N$ it is
+$1/(N-x)+O(1)$. These formulas prove the asserted simple endpoint zeros,
+double interior zeros, and all strict signs.
+\end{proof}
+
+\section{Coordinates that remain regular at multiple targets}
+
+Fix the data of Theorem~\ref{thm:main}. The constraint $c_1=0$ fixes the
+complex mean of the targets at $i\kappa$. No generality is lost locally:
+first remove the common real mean by exponential tilting and then fix the
+positive imaginary mean. In these coordinates a multiset is a mirror
+configuration exactly when its centered polynomial has real coefficients.
+
+Choose a positively oriented contour $C$ surrounding the roots of $P_0$,
+and no nearby root lies on $C$. For an entire function $f$, define
+\begin{equation}\label{eq:remainder}
+ (\mathcal R_cf)(y)=\frac1{2\pi i}\int_C
+ \frac{f(z)}{P_c(z)}\frac{P_c(z)-P_c(y)}{z-y}\dd z.
+\end{equation}
+This is the polynomial of degree below $N$ which agrees with $f$ and its
+required derivatives at the roots of $P_c$. It depends holomorphically on
+$c$. Indeed Cauchy's formula rewrites it inside $C$ as $f(y)$ minus
+$P_c(y)$ times a holomorphic function. Consequently
+\[
+ \mathcal R_c\bigl[F_\mu(i\kappa+\,\cdot\,)\bigr]=0
+\]
+is equivalent to all zero and jet conditions, even at collisions.
+
+\begin{proposition}[Analytic optimizer in coefficient space]
+\label{prop:analytic}
+For $c$ close to $c^0$, there are real analytic positive weights $w_k(c)$
+and increasing nodes $0=t_0(c)<\cdots<t_N(c)$ satisfying the constraints,
+with $t_k(c^0)=kh$ and $w_k(c^0)=a_k/A(1)$. This measure is the unique
+global optimizer after anchoring its left endpoint at zero.
+\end{proposition}
+
+\begin{proof}
+There are $2N+1$ real unknowns: $N+1$ weights and $N$ nonzero nodes. The
+equations are total mass one and the real and imaginary parts of the $N$
+coefficients of \eqref{eq:remainder}. To check the Jacobian at the base,
+write a homogeneous variation of the transform as
+\[
+ \dot F(s)=W(e^{hs})+sB(e^{hs}),\quad
+ W(z)=\sum_k\dot w_kz^k,\quad B(z)=\sum_kw_k\dot t_kz^k.
+\]
+Both polynomials are real, $W(1)=0$, and $B(0)=0$. The homogeneous
+constraint says
+\[
+ P_0(y)\mid W(-e^{hy})+(y+i\kappa)B(-e^{hy}).
+\]
+Here divisibility means vanishing with the required multiplicities, or
+equivalently zero remainder. Since $P_0$ is real, conjugating the
+coefficients of the analytic function in $y$ gives the same statement with
+$i\kappa$ replaced by $-i\kappa$. Subtraction shows that
+$P_0(y)\mid B(-e^{hy})$. The exponential map is injective on the root strip
+and has nonzero derivative, so $A\mid B$. Since $\deg B\le N$ and
+$B(0)=0\ne A(0)$, $B=0$. Then $A\mid W$, and $W(1)=0\ne A(1)$ gives
+$W=0$. All $w_k>0$, so all node and weight variations vanish. The real
+Jacobian is invertible, and the real analytic implicit function theorem
+produces the asserted branch. In particular this argument does not require
+distinct roots.
+
+For completeness, global optimality follows from a persistent dual
+certificate, not merely from solving stationary equations. Let $Y_c(t)$
+be the $2N$ real functions obtained by taking real and imaginary
+coefficients of $\mathcal R_c[e^{(i\kappa+y)t}]$. The vectors
+$Y_c(t_k)$ for $0\le k\le N$ and $Y_c'(t_k)$ for $1\le k<N$ span a
+hyperplane. They have the positive weight dependence, and adding
+$Y_c'(t_N)$ gives full rank by the Jacobian calculation. Choose the normal
+analytically with a fixed nonzero normalization on $Y_c'(t_N)$.
+Its scalar product with $Y_c(t)$ is a certificate vanishing at all nodes
+and with vanishing derivative at interior nodes. At the base it is a
+positive multiple of Lemma~\ref{lem:certificate}'s certificate. Strict
+endpoint slopes, positive interior curvatures, and positivity away from
+small neighborhoods of these finitely many zeros persist. Thus the
+certificate is nonnegative on the entire new interval and has exactly
+the new nodes as zeros.
+
+Every feasible measure of diameter no greater than the new width can be
+translated into this interval and must live on those nodes. The mass row
+together with the moment columns is independent, again by the full
+Jacobian, so the weights are uniquely determined. Both endpoint weights
+are positive, excluding a smaller diameter.
+\end{proof}
+
+\section{The exact deficit and the general Hessian}
+
+\subsection{No unaccounted zeros in the strip}
+
+\begin{lemma}[Exact deficit identity near the mirror locus]
+\label{lem:deficit}
+Write $G_c(s)=\sum_kw_k(c)e^{t_k(c)s}$ and
+\[
+ p_k(x,c)=\frac{w_k(c)e^{xt_k(c)}}{G_c(x)}.
+\]
+After shrinking the coefficient neighborhood, $G_c$ has exactly $N$ zeros
+in $0<\Ima s<2\kappa$, namely the prescribed targets. Moreover
+\begin{equation}\label{eq:deficit}
+ D(c)-Nh=\frac1{2\kappa^2}\int_\R
+ -\log\abs{\sum_{k=0}^N p_k(x,c)e^{2i\kappa t_k(c)}}\dd x.
+\end{equation}
+\end{lemma}
+
+\begin{proof}
+The endpoint weights have a uniform positive lower bound and all successive
+node gaps have a uniform positive lower bound on a sufficiently small
+closed coefficient neighborhood. On $\Rea s>R$, division by the last term
+bounds the sum of the other absolute values by $Ce^{-gR}$; on
+$\Rea s<-R$, use the first term. Choosing $R$ large therefore excludes
+zeros outside one fixed vertical rectangle, uniformly in $c$ and in
+$0\le\Ima s\le2\kappa$.
+
+At the base $G_0(s)=A(e^{hs})/A(1)$. It has precisely $N$ zeros in that
+strip, since each polynomial root has exactly one logarithm there.
+Neither horizontal boundary contains a zero: $G_0(x)$ and
+$G_0(x+2i\kappa)$ are the same positive number. Uniform convergence on
+the compact rectangle and the argument principle preserve the number of
+zeros. The prescribed target polynomial supplies $N$ of them, counted
+with multiplicity, and all remain inside the strip. Thus there are no
+extra zeros. Their imaginary parts sum to $N\kappa$ because $c_1=0$.
+Lemma~\ref{lem:strip} at $T=2\kappa$ now gives
+$J(2\kappa)=2\kappa^2(D(c)-Nh)$. Dividing its integrand by $G_c(x)$
+gives \eqref{eq:deficit}.
+\end{proof}
+
+The identity is useful because it expresses the width loss as an integral
+of failures of equality in the triangle inequality. It has no unspecified
+zero contribution. Endpoint dominance is what makes that assertion uniform
+when targets split or collide.
+
+\subsection{The quadratic form}
+
+\begin{proposition}[Variance and graph-energy formulas]
+\label{prop:variance}
+For any real analytic coefficient path through the base with node
+velocities $\sigma_k$, the coefficient of $\epsilon^2$ in $D-Nh$ is
+\begin{equation}\label{eq:variance}
+ Q=\int_\R \Var_{p(x,c^0)}(\sigma_k)\dd x.
+\end{equation}
+Equivalently it is the right side of \eqref{eq:energy}.
+\end{proposition}
+
+\begin{proof}
+At the base $e^{2i\kappa kh}=1$. For any probability vector $p$ and real
+$\sigma_k$,
+\[
+ -\log\abs{\sum_kp_ke^{2i\kappa\epsilon\sigma_k}}
+ =2\kappa^2\epsilon^2\Var_p(\sigma_k)+O(\epsilon^3).
+\]
+Changes of $p$ do not contribute to the quadratic coefficient: its total
+mass remains one, the first-order modulus loss is zero, and replacing $p$
+by its base value in the displayed second-order term changes only higher
+orders. Differentiation under the integral in \eqref{eq:deficit} is valid.
+Indeed, after factoring out the endpoint phase, endpoint dominance bounds
+the first two parameter derivatives of the integrand by
+$C(1+\abs x)^2e^{-g\abs x}$ on the tails. On the remaining compact
+interval the phase sum is bounded away from zero near the base.
+
+Now set $z=e^{hx}$. Then $\dd x=\dd z/(hz)$ and
+$p_k=a_kz^k/A(z)$. The identity
+\[
+ \Var_p(\sigma)=\sum_{j<k}p_jp_k(\sigma_j-\sigma_k)^2
+\]
+gives \eqref{eq:energy}. Every integral is finite: near zero the exponent
+is at least zero, and near infinity the largest exponent after division
+by $A^2$ is $-2$.
+\end{proof}
+
+\begin{proposition}[Explicit velocity map and its invertibility]
+\label{prop:interpolation}
+For a real $V$ of degree at most $N-2$, let
+\[
+ H(y)=\frac{A(-e^{hy})}{A(1)P_0(y)}.
+\]
+The apparent singularities of $H$ at roots of $P_0$ are removable and its
+values there are nonzero. The real polynomial
+\[
+ B_V(z)=\sum_{k=0}^N\frac{a_k}{A(1)}\sigma_k z^k
+\]
+is characterized by
+\begin{equation}\label{eq:hermite}
+ \deg B_V\le N-1,\quad B_V(0)=0,\qquad
+ \kappa B_V(-e^{hy})\equiv V(y)H(y)\pmod{P_0(y)}.
+\end{equation}
+It depends linearly and injectively on $V$.
+If the $y_j$ are distinct, an explicit formula is
+\begin{equation}\label{eq:explicitR}
+ R_V(z)=\sum_{j=1}^N\frac{z_jV(y_j)}{P_0'(y_j)}
+                     \frac{A(z)}{z-z_j},\quad z_j=-e^{hy_j},\qquad
+ \sigma_k=\frac h\kappa\frac{[z^k]R_V(z)}{a_k}.
+\end{equation}
+For repeated roots, the unique confluent interpolation in
+\eqref{eq:hermite}, or the continuous limit of \eqref{eq:explicitR},
+defines the same map.
+\end{proposition}
+
+\begin{proof}
+Along $P_\epsilon=P_0+i\epsilon V$, differentiate the divisibility
+$P_\epsilon\mid G_\epsilon(i\kappa+\,\cdot\,)$. At the base this gives
+\[
+ W(-e^{hy})+(y+i\kappa)B_V(-e^{hy})
+       \equiv iV(y)H(y)\pmod{P_0(y)}.
+\]
+Both $P_0$ and $H$ are real in the sense of conjugating all coefficients.
+Taking imaginary parts in the real quotient algebra gives
+\eqref{eq:hermite}'s congruence. Also $B_V(0)=0$ by anchoring, and the
+global bound has a minimum at the base along this two-sided path, so
+$\dot D=0$. This is exactly the vanishing of the leading coefficient
+of $B_V$, since $w_N>0$.
+
+If $B_V=0$, then $P_0\mid VH$. The local nonvanishing of $H$ implies
+$P_0\mid V$, including multiplicities. Since $\deg V<N$, $V=0$.
+Thus the map is injective. Its source and target both have real dimension
+$N-1$, so it is an isomorphism onto the internal node velocities.
+
+For distinct roots,
+$H(y_j)=hz_jA'(z_j)/(A(1)P_0'(y_j))$. Lagrange interpolation now gives
+$B_V=hR_V/(\kappa A(1))$. The constant coefficient vanishes because
+\[
+ R_V(0)=-A(0)\sum_j\frac{V(y_j)}{P_0'(y_j)}=0;
+\]
+the last sum is zero for a polynomial of degree at most $N-2$, by the
+leading-coefficient formula for interpolation. Finally the maps involved
+are analytic in the coefficient data. Simple real coefficient polynomials
+are dense among real coefficient polynomials, and positivity and the strip
+condition persist in a sufficiently small neighborhood. The formula
+therefore extends continuously to repeated roots and agrees with the
+unique congruence solution there.
+\end{proof}
+
+All edge weights in \eqref{eq:energy} are strictly positive. Its kernel
+on vectors $\sigma$ is the constant vectors; anchoring gives
+$\sigma_0=0$, so it has zero kernel on internal velocities with fixed
+endpoints. Proposition~\ref{prop:interpolation} therefore proves
+$Q_{P_0}(V)>0$ for every $V\ne0$. This establishes the asserted transverse
+positive definiteness without requiring any spacing assumption on target
+roots.
+
+\section{Exact local normal form and quantitative stability}
+
+Write $c=E+iO$ with real coefficient vectors. For all nearby $E$, the
+reflection conditions persist and all coefficients of the corresponding
+exponential-root polynomial remain positive. Hence $D(E,0)=Nh$.
+The global inequality gives $D(E,O)\ge Nh$, so the first derivative in
+$O$ vanishes at $O=0$. Real analyticity and Taylor's theorem in $O$ give
+\begin{equation}\label{eq:factor}
+ D(E,O)-Nh=O^{\mathsf T}M(E,O)O,
+\end{equation}
+where $M$ is a real analytic symmetric matrix; for example one may take
+\[
+ M(E,O)=\int_0^1(1-t)\,\partial_{OO}^2D(E,tO)\dd t.
+\]
+The preceding section proves that $M(c^0,0)$ is positive definite. Thus
+all its eigenvalues stay between two fixed positive constants on a
+sufficiently small neighborhood. This proves both stability inequalities
+and the exact kernel of the full Hessian. The mixed $E,O$ block vanishes
+on $O=0$ because $\partial_OD(E,0)=0$, and the $E,E$ block vanishes
+because $D(E,0)$ is constant.
+
+A positive definite matrix near $M(c^0,0)$ has a real analytic positive
+definite square root. One justification is the analytic implicit function
+theorem applied to $X^2=M$: on symmetric matrices the derivative
+$Z\mapsto XZ+ZX$ is invertible when $X$ is positive definite, since in
+an eigenbasis it multiplies the $(j,k)$ entry by the positive number
+$\lambda_j+\lambda_k$. Set
+$\eta=M(E,O)^{1/2}O$. The derivative in $O$ at the base is invertible,
+so $(E,O)\mapsto(E,\eta)$ is a local real analytic coordinate change.
+Equation~\eqref{eq:factor} becomes the exact claimed normal form.
+This completes the proof of Theorem~\ref{thm:main}.
+
+\begin{corollary}[Root-coordinate interpretation at simple targets]
+At a positive mirror configuration with distinct targets and fixed complex
+mean, the second variation vanishes precisely for infinitesimal motions
+which preserve the reflection pairing. Every transverse infinitesimal
+motion has strictly positive second variation.
+\end{corollary}
+
+\begin{proof}
+For distinct roots the change from labeled roots to polynomial coefficients
+has invertible complex Jacobian after fixing their sum. The polynomial
+variation has real coefficients exactly when the root velocities obey
+$\dot y_{j'}=\overline{\dot y_j}$ for conjugate partners. Apply the
+Hessian kernel statement.
+\end{proof}
+
+\begin{remark}[Collisions and unusually high powers]
+At a collision the last corollary's root-coordinate Jacobian is singular,
+but the coefficient-space theorem is unchanged. If a root-coordinate path
+has its first nonzero imaginary coefficient at order $r$, its width
+excess has first nonzero order $2r$. This explains the high even powers
+seen in asymmetric frequency splitting, and extends that explanation from
+one coalesced frequency to every strictly positive mirror configuration.
+\end{remark}
+
+\begin{corollary}[The quartic interaction of damping and frequency]
+\label{cor:quartic}
+For two targets
+$s_\pm=\pm\beta+i(\kappa\pm\delta)$, with
+$\abs\beta+\abs\delta$ sufficiently small relative to $\kappa$, the
+shortest positive filter has width
+\[
+ D=\frac{2\pi}{\kappa}
+ +\frac{4\pi^3}{3\kappa^5}\beta^2\delta^2
+ \left[1+O\left(\frac{\beta^2+\delta^2}{\kappa^2}\right)\right].
+\]
+Within this neighborhood, equality $D=2\pi/\kappa$ holds exactly when
+$\beta\delta=0$.
+\end{corollary}
+
+\begin{proof}
+The centered polynomial is
+$P(y)=y^2-(\beta+i\delta)^2$, so its normal coordinate is
+$O=-2\beta\delta$. At the base $P_0(y)=y^2$ and $A(z)=(1+z)^2$.
+For $V=1$, congruence \eqref{eq:hermite} gives
+$B_V(z)=-h^2z/(4\kappa)$; hence the only internal velocity is
+$\sigma_1=-h^2/(2\kappa)$. Formula~\eqref{eq:energy} gives
+\[
+ Q(1)=\frac{\sigma_1^2}{h}
+       \int_0^\infty\frac{2(1+z^2)}{(1+z)^4}\dd z
+      =\frac{4\sigma_1^2}{3h}=\frac{\pi^3}{3\kappa^5}.
+\]
+Use the analytic factorization \eqref{eq:factor}, noting that both the
+real and imaginary coefficient displacements have size
+$O(\beta^2+\delta^2)$ after the appropriate scaling. The exact equality
+statement is Theorem~\ref{thm:main}(ii).
+\end{proof}
+
+\section{An exact example with a negative mixed curvature}
+
+Let $\kappa=1$, $h=\pi$, and $a=\log 2/\pi$. Choose the centered targets
+\[
+ y_1=-2a,\quad y_2=-a,\quad y_3=3a.
+\]
+The actual targets $s_j=i+y_j$ all have frequency one but different
+real parts. Their mean is $i$, and
+\begin{align*}
+ P_0(y)&=y^3-7a^2y-6a^3,\\
+ A(z)&=(z+\tfrac14)(z+\tfrac12)(z+8)
+      =z^3+\tfrac{35}{4}z^2+\tfrac{49}{8}z+1.
+\end{align*}
+All coefficients are positive. The base optimizer has weights
+$(8,49,70,8)/135$ at $0,\pi,2\pi,3\pi$.
+
+Perturb $P_0$ by $i\epsilon(v_2y+v_3)$. Formula~\eqref{eq:explicitR}
+gives
+\begin{align*}
+ R_y(z)&=-\frac{z(196z+173)}{160a},&
+ (\sigma_1,\sigma_2)&=
+ \left(-\frac{173\pi}{980a},-\frac{7\pi}{50a}\right),\\
+ R_1(z)&=-\frac{z(52z-49)}{160a^2},&
+ (\sigma_1,\sigma_2)&=
+ \left(\frac{\pi}{20a^2},-\frac{13\pi}{350a^2}\right).
+\end{align*}
+Writing $Q(v_2y+v_3)=(v_2,v_3)\mathsf Q(v_2,v_3)^{\mathsf T}$, exact
+rational integration in \eqref{eq:energy} yields
+\begin{align}
+ \mathsf Q_{22}&=\frac\pi{a^2}
+ \left(\frac{49}{200}-\frac{6646079\log2}{22785000}\right),\label{eq:q22}\\
+ \mathsf Q_{23}&=\frac\pi{a^3}
+ \left(-\frac{27}{200}+\frac{29441\log2}{155000}\right),\label{eq:q23}\\
+ \mathsf Q_{33}&=\frac\pi{a^4}
+ \left(\frac{21}{200}-\frac{21933\log2}{155000}\right).\label{eq:q33}
+\end{align}
+In particular $\mathsf Q_{23}<0$, already from $\log2<7/10$.
+For example, the normalized mixed integral has the rational integrand
+\[
+ \frac{2912z^4-3460z^3-10919z^2+2912z-3460}
+ {1000(z+8)^2(2z+1)^2(4z+1)^2}.
+\]
+Its partial fractions integrate to the bracket in \eqref{eq:q23}.
+The full matrix is approximately
+\[
+ \mathsf Q=
+ \begin{pmatrix}
+ 2.763297996804292&-0.977611543533047\\
+ -0.977611543533047&9.170495331361458
+ \end{pmatrix}.
+\]
+The Hessian is $2\mathsf Q$, not $\mathsf Q$.
+
+Time reversal of a feasible positive measure sends target zeros $s$ to
+$-\overline s$ and preserves width. In centered coordinates this replaces
+$P(y)$ by $(-1)^N\overline{P(-\overline y)}$. Thus the reflected damping
+example with base roots $2a,a,-3a$ has the opposite mixed entry in the same
+ordered imaginary coefficient coordinates. Along a real coefficient path
+between these bases through positive mirror configurations the mixed entry
+therefore passes through zero. Universal positive definiteness does not
+give a universal sign for individual mixed derivatives. Coordinate
+orientations must be specified whenever such sign claims are made.
+
+\section{A stiffness singularity at a three-frequency boundary}
+
+One additional consequence illustrates what happens as the strict-positive
+hypothesis degenerates. Set $\kappa=1$ and take the real frequencies
+$1-d,1,1+d$, where $0<d<2/3$. Their centered polynomial in the $y$ variable
+is $P_0(y)=y^3+d^2y$, and
+\[
+ A(z)=(z+1)(z^2+2\cos(\pi d)z+1)
+      =1+bz+bz^2+z^3,\quad b=1+2\cos(\pi d)>0.
+\]
+For the constant normal direction $P_0+i\epsilon$, the internal velocities
+are $(s,-s)$, where
+$s=\pi(1-\cos(\pi d))/(bd^2)$. Hence
+\begin{equation}\label{eq:tripleQ}
+ Q_d=\frac{s^2}{\pi}\int_0^\infty
+ \frac{b(1+z+z^3+z^4)+4b^2z^2}{(1+bz+bz^2+z^3)^2}\dd z.
+\end{equation}
+As $d\uparrow2/3$,
+\begin{equation}\label{eq:blowup}
+ \boxed{\quad Q_d\sim\frac{81\pi}{16(2/3-d)}.\quad}
+\end{equation}
+
+To prove this, divide the integrand in \eqref{eq:tripleQ} by $b$ and use
+dominated convergence. For $b$ in a bounded positive interval,
+$A(z)\ge1+z^3$, and the resulting polynomial numerator divided by
+$(1+z^3)^2$ is integrable. The limiting integral is
+\[
+ \int_0^\infty\frac{1+z+z^3+z^4}{(1+z^3)^2}\dd z
+ =\frac{4\pi}{3\sqrt3},
+\]
+by the beta integral. Since $b\sim\sqrt3\pi(2/3-d)$, substitution gives
+\eqref{eq:blowup}. This is a limit of the Hessian coefficients: one first
+takes the small perturbation limit at fixed $d$, then lets $d$ approach
+the boundary. No uniform joint error estimate in the two parameters is
+asserted. The divergence explains why a uniform coefficient neighborhood
+cannot be inferred as an optimal mass approaches zero.
+
+\section{Reproducibility, interpretation, and limits}
+
+The accompanying \texttt{check\_mirror.py} performs exact symbolic checks
+of the interpolation polynomials and the three integrals
+\eqref{eq:q22}--\eqref{eq:q33}. It also solves the seven real moment
+equations independently at 80 decimal digits for each of the coefficient
+directions $(1,0)$, $(0,1)$, and $(1,1)$. The ratios of the computed width
+excess to the proved quadratic prediction are:
+\begin{center}
+\begin{tabular}{@{}lrrr@{}}\toprule
+Direction & $\epsilon=10^{-3}$ & $\epsilon=10^{-4}$ & $\epsilon=10^{-5}$\\\midrule
+$(1,0)$ & 0.999706003 & 0.999970579 & 0.999997058\\
+$(0,1)$ & 0.998232451 & 0.999822980 & 0.999982295\\
+$(1,1)$ & 0.999298455 & 0.999929756 & 0.999992975\\\bottomrule
+\end{tabular}
+\end{center}
+The largest moment residual in these nine runs is below $10^{-60}$.
+The numerical calculations check the formula and conventions; the
+certificate and analytic arguments prove global optimality and the
+asymptotic, independently of numerical output.
+
+In the repository's intended arithmetic application, a positive average on
+logarithmic scales multiplies a term $x^s$ by $F_\mu(s)$. Theorems
+\ref{thm:global} and \ref{thm:main} therefore control the least logarithmic
+range needed for prescribed cancellations, including hypothetical zeros
+away from a common vertical line. They neither assert that such zeros occur
+nor prove that they do not. In engineering language, real parts encode
+damping and imaginary parts encode oscillation; positive input shaping is
+an established application of such cancellation constraints
+\cite{SinghoseCrainSeering}. The new theorem is a structural duration and
+stability result for the exact positive-filter problem.
+
+The scope of the proof is finite target multisets, fixed $N$, and
+neighborhoods of a base whose coefficient polynomial is strictly positive.
+It supplies an exact computable Hessian but no universal neighborhood size
+as $N$ varies or as a base coefficient tends to zero. It is a human-readable
+proof with reproducible symbolic and numerical artifacts, not a completed
+Lean formalization. Its claimed contribution is relative to the pinned
+repository and the literature checked here; an exhaustive historical
+priority assertion would require a broader review.
+
+For formalization, the main dependency chain is: finite convex-hull
+reduction; the strip identity for positive exponential sums; a confluent
+remainder map; the real analytic implicit function theorem; persistence of
+a finite certificate with simple and double zeros; uniform zero counting
+by the argument principle; dominated differentiation; positive quadratic
+forms; and the finite-dimensional analytic square-root map. The algebraic
+Hermite interpolation and the exact rational example can be formalized
+separately from the complex-analytic existence theorem.
+
+\begin{thebibliography}{9}
+\bibitem{ProveIt}
+V.~Reshetnikov, ProveIt repository, \emph{Beyond the Riemann hypothesis for
+Dirichlet $L$-functions: consequences, transfers and limits}, section
+``Positive filters that cancel zeros'', commit
+\texttt{cfab41369737c66ae520d179419509eb719367cd}.
+\url{https://github.com/VladimirReshetnikov/ProveIt/blob/cfab41369737c66ae520d179419509eb719367cd/Analysis/GeneralizedRiemannHypothesis/Article/sections/fil.tex}.
+In particular, labels \texttt{fil:thm:reflect}, \texttt{fil:thm:perturb},
+\texttt{fil:lem:strip}, \texttt{fil:thm:meanbound},
+\texttt{fil:thm:hessian}, and \texttt{fil:sec:open}.
+
+\bibitem{EremenkoFryntov}
+A.~Eremenko and A.~Fryntov, \emph{Remarks on the Obrechkoff inequality},
+Proceedings of the American Mathematical Society \textbf{144} (2016),
+703--707. Preprint: \url{https://arxiv.org/abs/1409.4849}.
+Author-hosted paper:
+\url{https://www.math.purdue.edu/~eremenko/dvi/fryntov6.pdf}.
+
+\bibitem{SinghoseCrainSeering}
+W.~Singhose, E.~Crain, and W.~Seering,
+\emph{Convolved and simultaneous two-mode input shapers},
+IEE Proceedings--Control Theory and Applications \textbf{144} (1997),
+515--520. The bibliographic entry and background are also recorded in
+the pinned repository's \texttt{Article/bib/fil.bib}.
+\end{thebibliography}
+\end{document}

@@ -1,0 +1,306 @@
+\documentclass[11pt]{article}
+\usepackage[margin=1in]{geometry}
+\usepackage{amsmath,amssymb,amsthm,mathtools,booktabs,microtype,xcolor,hyperref}
+\hypersetup{colorlinks=true,linkcolor=blue!50!black,urlcolor=blue!55!black,citecolor=blue!50!black}
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{corollary}[theorem]{Corollary}
+\theoremstyle{remark}
+\newtheorem{remark}[theorem]{Remark}
+\newcommand{\Ind}{\operatorname{Ind}}
+\newcommand{\Res}{\operatorname{Res}}
+\newcommand{\Reg}{\operatorname{Reg}}
+\newcommand{\ord}{\operatorname{ord}}
+\newcommand{\Cone}{\mathcal{M}}
+\newcommand{\Z}{\mathbb Z}
+\newcommand{\Q}{\mathbb Q}
+\newcommand{\C}{\mathbb C}
+\newcommand{\R}{\mathbb R}
+\newcommand{\one}{\mathbf 1}
+\newcommand{\sgn}{\operatorname{sgn}}
+\newcommand{\fix}{\operatorname{fix}}
+\title{Asymptotically sharp zero-multiplicity bounds\\for symmetric-group extensions\\[4pt]\large A cyclic-wreath-product transfer of the nonabelian GRH detector}
+\author{Research note for the ProveIt project}
+\date{27 November 2026}
+\begin{document}
+\maketitle
+\begin{abstract}
+An open question in the ProveIt GRH article asks whether a particular character of $S_n$ is a positive rational combination of characters induced from linear characters, for all $n\ge13$. This would sharpen a zero-multiplicity inequality for Dedekind zeta functions from $2(n-H_n)$ to $n-1$, without assuming Artin holomorphy. We prove the asymptotic version in all degrees. Define $B(1)=0$ and $B(k)=k+B(k/P^+(k))$ for $k\ge2$, where $P^+(k)$ is the largest prime factor, and put $C_n=\sum_{k=2}^n B(k)/k$. We show that $C_n$ is an admissible positive-cone constant and that $C_n=n-1+(1+o(1))\sum_{k\le n}1/P^+(k)$. Thus the best constant is asymptotic to $n-1$ with a relative error smaller than any fixed inverse power of $\log n$. An elementary explicit error bound is also given. Exact positive rational identities establish the optimal constant $n-1$ for $n=13,14,15,16$. A standalone integer/rational verifier is supplied. The multiplicity theorem itself is unconditional; its off-critical-line specialization over $\Q$ uses only the stated Dirichlet GRH. The exact all-degree question and the nonabelian Riemann hypothesis remain open here.
+\end{abstract}
+
+\section{Scope and the question}
+The project \cite{project} has a merged article of 209 reports, whose \texttt{nab.tex} section \cite{nab} formulates a precise question (\texttt{nab:q:un}) about symmetric-group extensions. Its theorem \texttt{nab:thm:snsharp} supplies finite certificates for $3\le n\le12$, and \texttt{nab:cor:sn} supplies an all-degree bound $2(n-H_n)$, where $H_n=\sum_{j=1}^n1/j$. We take these as the prior results being extended; we did not independently replay their finite certificates. The relevant character-theoretic positivity mechanism is separate from the arithmetic input to the upstream GRH proof.
+
+Let $G=S_n$, $t=(12)$, $T=\langle t\rangle$, and let $\sigma$ be the nontrivial linear character of $T$. For a real number $c$ define
+\begin{equation}\label{eq:U}
+ U_n(c)=c\Ind_T^G\sigma-\Reg_G+\one_G.
+\end{equation}
+Let $\Cone(G)$ be the cone of nonnegative real combinations of all $\Ind_H^G\eta$ with $H\le G$ and $\eta$ a linear complex character of $H$. When the coefficients are rational we write $\Cone_{\Q}(G)$. All characters of $S_n$ are real and rational-valued: every element is conjugate to each coprime power of itself, so each character value is fixed by the cyclotomic Galois group. In particular the generators of this cone are integer-valued.
+
+The repository asks whether $U_n(n-1)\in\Cone_{\Q}(S_n)$ for every $n\ge13$. This is a strictly stronger assertion than being the character of an actual representation. In fact $U_n(n-1)$ is the first homology character of the Cayley graph for the $n-1$ adjacent transpositions, as noted in the repository. Mere representation positivity cannot be applied to a possibly virtual Heilbronn character.
+
+Our two advances are (i) a uniform near-optimal theorem, which does not use any finite certificate, and (ii) exact certificates at the four new degrees $13$ through $16$. We do not claim that the full all-degree exact problem is settled or that this proves a new nonabelian Riemann hypothesis. A focused literature search found classical Heilbronn-character and smooth-number results, but is not a comprehensive priority search. Novelty is asserted relative to the inspected repository snapshot, subject to independent review.
+
+\section{The main results}
+For $k\ge2$ let $P(k)=P^+(k)$ denote the largest prime factor, and set $P(1)=1$. Recursively define
+\begin{equation}\label{eq:B}
+ B(1)=0,\qquad B(k)=k+B(k/P(k)),\qquad
+ C_n=\sum_{k=2}^n\frac{B(k)}k .
+\end{equation}
+All of these are effectively computable, with $B(k)$ integral and $C_n$ rational.
+\begin{theorem}[Uniform positive-cone bound]\label{thm:main}
+For every $n\ge3$, $U_n(C_n)\in\Cone_{\Q}(S_n)$. Moreover
+\begin{equation}\label{eq:comparison}
+ n-1\le C_n < 2(n-H_n),\qquad
+ C_n-(n-1)\le 2\sum_{k=2}^n\frac1{P(k)}.
+\end{equation}
+For $n\ge55$ an elementary explicit estimate is
+\begin{equation}\label{eq:explicit}
+ C_n\le n-1+4n\exp\bigl(-\tfrac18\sqrt{\log n}\bigr).
+\end{equation}
+The constant $n-1$ is a lower bound for every admissible cone constant. In particular, if
+\[
+ c_n^*=\inf\{c\in\R:U_n(c)\in\Cone(S_n)\},
+\]
+then $c_n^*/(n-1)\to1$ and $c_n^*-(n-1)=O_A(n/(\log n)^A)$ for every fixed $A>0$.
+\end{theorem}
+\begin{theorem}[Exact new degrees; computer-certified]\label{thm:finite}
+For each $n\in\{13,14,15,16\}$, $U_n(n-1)\in\Cone_{\Q}(S_n)$. In each of these degrees $c_n^*=n-1$. The identities are finite rational equalities, verified by the attached program \texttt{verify.py} with only the Python standard library.
+\end{theorem}
+\begin{theorem}[Second term of the explicit bound]\label{thm:second}
+With $S(x)=\sum_{k\le x}1/P(k)$ one has
+\begin{equation}\label{eq:second}
+ C_n-(n-1)\sim S(n)\sim n\delta(n),\qquad
+ \delta(x)=\int_2^x \rho\!\left(\frac{\log x}{\log t}\right)\frac{dt}{t^2},
+\end{equation}
+where $\rho$ is the Dickman--de Bruijn function ($\rho(u)=1$ on $[0,1]$, $u\rho'(u)=-\rho(u-1)$ for $u>1$). Consequently the explicit excess has logarithmic scale
+\[
+ C_n-(n-1)=n\exp\bigl(-(\sqrt2+o(1))\sqrt{\log n\log\log n}\bigr).
+\]
+The second-term assertion is about $C_n$, not necessarily the unknown optimal $c_n^*$.
+\end{theorem}
+
+\section{Positivity and trace deficits}
+Use the usual normalized inner product on class functions. Fix $n\ge3$ and let $\Phi$ be any real class function on $S_n$ in the dual of the monomial cone, meaning
+\begin{equation}\label{eq:dual}
+ \langle\Phi,\Ind_H^G\eta\rangle=\langle\Res_H\Phi,\eta\rangle\ge0
+ \quad (H\le G,\ \eta\text{ linear}).
+\end{equation}
+Put $M=\Phi(1)$, $d=(M-\Phi(t))/2$, and $b=\langle\Phi,\one_G\rangle$. Thus $d\ge0$. Define the deficit $D(g)=M-\Phi(g)$, which is real. On an abelian subgroup, restriction is a nonnegative real combination of irreducible characters, by \eqref{eq:dual}. More generally this holds on every monomial subgroup, i.e. every subgroup whose irreducibles are induced from linear characters of its own subgroups. Indeed transitivity of induction and Frobenius reciprocity give nonnegative multiplicities. Such a restriction need not be an actual representation if the coefficients are nonintegral, but linear inequalities can be checked on each genuine representation and then summed with those coefficients. On a cyclic subgroup the real part of each character value is at most its degree, so $D(g)\ge0$ for every $g$.
+
+\begin{lemma}[Disjoint cycles]\label{lem:cycles}
+If $g$ is the product of disjoint cycles $g_i$ (fixed points may be ignored), then
+\[ D(g)\le\sum_i D(g_i). \]
+In particular, a product of $j$ disjoint transpositions has deficit at most $2jd$.
+\end{lemma}
+\begin{proof}
+Work on the abelian subgroup generated by the cycles, and use its nonnegative weight decomposition. Every independent replacement of a cycle of length $k_i$ by a coprime power gives the same cycle type of $g$. On a joint eigenspace with eigenvalues $\lambda_i$, the corresponding average for the $i$th cycle is
+\[
+ r_i=\frac{1}{\varphi(k_i)}\sum_{\substack{u\bmod k_i\\(u,k_i)=1}}\lambda_i^u\in[-1,1].
+\]
+Reality follows by pairing $u$ and $-u$. The average for the product is $\prod_i r_i$. For any real $r_i\in[-1,1]$, $1-\prod_i r_i\le\sum_i(1-r_i)$, by induction from $1-ab=(1-a)+a(1-b)$. Multiply by the nonnegative multiplicities and sum. Conjugacy invariance identifies all averages with the original character values.
+\end{proof}
+
+\begin{lemma}[Prime cycles]\label{lem:prime}
+If $p$ is prime and $g$ is a $p$-cycle, then $D(g)\le p d$.
+\end{lemma}
+\begin{proof}
+The case $p=2$ is equality. For odd $p$, identify the support with $\Z/p$ and embed the dihedral group generated by $r:i\mapsto i+1$ and $u:i\mapsto-i$. This group is monomial: its irreducibles are the two linear characters and the two-dimensional characters induced from nontrivial rotation characters, paired under inversion. Equivalently, diagonalize $r$; the $u$-action exchanges opposite nontrivial eigenspaces and acts by signs on the $r$-fixed space. By \eqref{eq:dual} we may work on an actual representation and then take nonnegative linear combinations.
+
+Write $N$ for the total dimension of the nontrivial $r$-eigenspaces, with multiplicities. The trace of $u$ there is zero. On the $r$-fixed space its trace is at most that dimension. Hence $D(u)\ge N$. On the other hand $u$ is a product of $(p-1)/2$ disjoint transpositions; Lemma~\ref{lem:cycles} gives $D(u)\le(p-1)d$. The average over $r^j$, $1\le j<p$, is $1$ on the fixed space and $-1/(p-1)$ on every nontrivial eigenline, by the geometric series. All $r^j$ are conjugate in $S_n$. Thus
+\[ D(r)=\frac p{p-1}N\le p d. \qedhere\]
+\end{proof}
+
+\section{The cyclic wreath product inequality}
+This is the new structural step. It replaces a long decomposition into transpositions by a recursive bound in terms of prime factors of cycle lengths.
+\begin{lemma}[Cyclic wreath products are monomial]\label{lem:mono}
+For positive integers $a,b$ the finite group $W=C_a^b\rtimes C_b$, with cyclic permutation of the $b$ factors, is monomial.
+\end{lemma}
+\begin{proof}
+Let $A=C_a^b$ and let $\tau$ generate the cyclic factor. In an irreducible representation the $A$-weight spaces form a single $\tau$-orbit (otherwise their orbit sums are invariant proper subspaces). Choose a weight $\lambda$ with orbit length $h\mid b$. Its stabilizer is $A\rtimes\langle\tau^h\rangle$. The operator $\tau^h$ preserves that weight space and has finite order, so choose an eigenline there. It affords a linear character of the stabilizer because $A$ acts on that line by $\lambda$. The $h$ translates of the line lie in distinct weight spaces and span an invariant nonzero subspace. By irreducibility this is the whole representation, which is therefore induced from the stabilizer character. This also covers $h=1$.
+\end{proof}
+
+\begin{theorem}[Wreath-product trace inequality]\label{thm:wreath}
+For $a,b\ge2$, $ab\le n$, choose $g_{ab},g_a,g_b$ to be cycles of the indicated lengths (their supports need not be related). Then
+\begin{equation}\label{eq:wreath}
+ D(g_{ab})\le a D(g_b)+D(g_a).
+\end{equation}
+\end{theorem}
+\begin{proof}
+Arrange $ab$ points as $b$ blocks of size $a$. Let $c_i$ rotate the $i$th block, $\tau$ rotate the blocks while preserving each within-block coordinate, and $A=\prod_i\langle c_i\rangle$. They generate the embedded wreath product of Lemma~\ref{lem:mono}. The permutation $c_1^u\tau^v$ is an $ab$-cycle whenever $(u,a)=(v,b)=1$: its block projection is a $b$-cycle and its $b$th power acts on each block as the $u$th power of its $a$-cycle. Thus its orbit on each point has length $ab$.
+
+By Lemma~\ref{lem:mono} the restriction of $\Phi$ is a nonnegative linear combination of actual representations. In each one, decompose into joint eigenspaces of $A$. Their weight tuples are permuted by $\tau$. If the tuple is not constant, no coprime power $\tau^v$ fixes it: a cyclic shift of full period $b$ has the same fixed tuples as $\tau$. Both $\tau^v$ and $c_1^u\tau^v$ therefore have zero trace on the sum of the nonconstant-weight spaces. On this sum their deficits are equal, and the averaged deficit of $c_1$ is nonnegative.
+
+On a constant-weight space $(\lambda,\ldots,\lambda)$, $c_1$ acts as the scalar $\lambda$ and $\tau$ preserves the space. Diagonalize $\tau$ there, with eigenvalues $\omega$. On each eigenline define
+\[
+ r=\frac1{\varphi(a)}\sum_{(u,a)=1}\lambda^u,\qquad
+ s=\frac1{\varphi(b)}\sum_{(v,b)=1}\omega^v,
+\]
+where the sums range over residue classes. Both are real in $[-1,1]$. The averaged deficit of $c_1^u\tau^v$ on the line is $1-rs$, at most $(1-r)+(1-s)$. Sum over the constant spaces, add the nonconstant spaces, and then sum over representations with the nonnegative coefficients. Conjugacy of the coprime powers gives
+\[
+ D(g_{ab})\le D(\tau)+D(c_1).
+\]
+But $\tau$ is the product of $a$ disjoint $b$-cycles, so Lemma~\ref{lem:cycles} gives $D(\tau)\le aD(g_b)$. Also $D(c_1)=D(g_a)$. This proves \eqref{eq:wreath}.
+\end{proof}
+
+\begin{corollary}[Recursive cycle bound]\label{cor:rec}
+Every $k$-cycle in $S_n$ satisfies $D(g_k)\le B(k)d$.
+\end{corollary}
+\begin{proof}
+Induct on $k$. A fixed point has zero deficit and prime cycles are covered by Lemma~\ref{lem:prime}. If $k$ is composite use $b=P(k)$, $a=k/b$ in Theorem~\ref{thm:wreath}. The two summands are bounded by $ab d+B(a)d=B(k)d$.
+\end{proof}
+
+\section{From a cycle bound to a cone theorem}
+A uniformly random $g\in S_n$ has expected number $1/k$ of $k$-cycles: a specified $k$-set can be cyclically ordered in $(k-1)!$ ways and the complement permuted in $(n-k)!$ ways. Multiplying by $\binom nk$ and dividing by $n!$ gives $1/k$. From Lemma~\ref{lem:cycles} and Corollary~\ref{cor:rec},
+\begin{equation}\label{eq:average}
+ M-b=\frac1{n!}\sum_{g\in S_n}D(g)
+ \le d\sum_{k=2}^n\frac{B(k)}k=C_nd.
+\end{equation}
+In terms of \eqref{eq:U}, this says $\langle\Phi,U_n(C_n)\rangle\ge0$ for every element $\Phi$ of the dual cone. The cone is finitely generated (there are finitely many subgroups and linear characters), hence closed. Finite-dimensional cone duality implies $U_n(C_n)\in\Cone(S_n)$. All generators and the target have rational coordinates in the basis of conjugacy classes. Starting from any finite nonnegative representation, remove linear dependencies among generators with positive coefficients, decreasing one coefficient to zero while preserving the target, until the remaining generators are independent. Solving the resulting rational linear system gives nonnegative rational coefficients. This proves the rational cone assertion, without enumerating all subgroups.
+
+For sharpness as a lower bound, take $\Phi$ to be the standard character $g\mapsto\fix(g)-1$ (the natural permutation representation with its invariant line removed). It satisfies \eqref{eq:dual} and $M=n-1$, $b=0$, $d=1$. Thus every admissible constant is at least $n-1$.
+
+By induction $k\le B(k)\le2(k-1)$ for $k\ge2$: the upper bound holds for primes, and for a composite $k$ with $q=k/P(k)\ge2$,
+\[ B(k)=k+B(q)\le k+2(q-1)\le2(k-1). \]
+The prime $3$ gives strictness in the sum for $n\ge3$. Also
+\[
+ \frac{B(k)}k-1=\frac{B(k/P(k))}k\le\frac2{P(k)},
+\]
+using $B(1)=0$. Summation proves \eqref{eq:comparison}.
+
+\subsection{Elementary quantitative convergence}
+Let $L=\log n\ge4$, $y=\exp(\sqrt L/8)$, and $\alpha=1-1/\sqrt L\ge1/2$. The number $\Psi(n,y)$ of integers at most $n$ all of whose prime factors are at most $y$ satisfies the elementary Rankin estimate
+\[
+ \Psi(n,y)\le n^\alpha\prod_{p\le y}(1-p^{-\alpha})^{-1}.
+\]
+This follows by majorizing each counted integer by $(n/k)^\alpha$ and extending the resulting sum over all $y$-smooth integers. By $-\log(1-z)\le z/(1-z)$ and $\alpha\ge1/2$,
+\begin{align*}
+ \log\prod_{p\le y}(1-p^{-\alpha})^{-1}
+ &\le4\sum_{2\le j\le y}j^{-\alpha}\le4\int_1^y t^{-\alpha}\,dt\\
+ &=4(e^{1/8}-1)\sqrt L.
+\end{align*}
+Since $4(e^{1/8}-1)<7/8$, $\Psi(n,y)\le n e^{-\sqrt L/8}$. Splitting the sum of reciprocals of $P(k)$ at $P(k)=y$ gives
+\[ \sum_{2\le k\le n}\frac1{P(k)}\le\Psi(n,y)+n/y\le2n e^{-\sqrt L/8}. \]
+This proves \eqref{eq:explicit}, and the error divided by $n$ is $O_A((\log n)^{-A})$ for every fixed $A>0$.
+
+\subsection{The actual second term of this construction}
+List the prime factors of $k$, with multiplicity, as $p_1\ge\cdots\ge p_r$. Iterating \eqref{eq:B} yields
+\[
+ \frac{B(k)}k=1+\sum_{j=1}^{r-1}\frac1{p_1\cdots p_j}.
+\]
+The first term of the correction is $1/P(k)$ exactly for composite $k$. The missing prime contributions to $S(n)$, and the $k=1$ term, total $O(1+\log n)$. The remaining correction, summed over $k\le n$ with $r\ge3$, is nonnegative and bounded above by $\sum 2/(p_1p_2)$.
+
+Fix $Y\ge2$. Where $p_2>Y$, this bound is at most $2S(n)/Y$. Where $p_2\le Y$, write $k=p_1 m$ with $m$ composed only of primes at most $Y$. For fixed $Y$ there are at most $(1+\log n/\log 2)^{\pi(Y)}$ possible $m$. For each $m$ the sum of $1/p_1$ is at most $H_n$. Thus this part is bounded by a fixed power of $1+\log n$. The classical estimate $S(n)=n^{1-o(1)}$ follows from \cite[eq.~(1.1)]{EIP}, making that bound $o(S(n))$. Dividing the total correction by $S(n)$, then letting $n\to\infty$ and finally $Y\to\infty$, shows that the higher terms are $o(S(n))$. Theorem~1 and eq.~(1.1) of \cite{EIP} now give \eqref{eq:second} and its stated logarithmic scale. This finishes Theorem~\ref{thm:second}.
+
+\section{Four new exact certificates}
+\label{sec:cert}
+Here we prove Theorem~\ref{thm:finite} via reproducible exact identities, not numerical character tables. For a partition $\lambda$ of $n$, write $z_\lambda=\prod_j j^{m_j}m_j!$ for the size of the centralizer of cycle type $\lambda$; here $m_j$ is the number of parts $j$. Introduce formal monomials $p_\lambda=\prod_j p_j^{m_j}$. The injective characteristic map on class functions is
+\[ \mathrm{ch}(f)=\sum_{\lambda\vdash n}\frac{f(\lambda)}{z_\lambda}p_\lambda. \]
+For $H\le S_m$, a linear character $\eta$ satisfies
+\begin{equation}\label{eq:ch}
+ \mathrm{ch}(\Ind_H^{S_m}\eta)=\frac1{|H|}\sum_{h\in H}\eta(h)p_{\operatorname{type}(h)}.
+\end{equation}
+This follows from the induced-character formula by summing over conjugacy classes. Products of such polynomials correspond to induction from the product subgroup on disjoint blocks, since cycle types concatenate and subgroup sizes multiply. At degree $n$, \eqref{eq:U} becomes
+\begin{equation}\label{eq:certtarget}
+ \mathrm{ch}(U_n(n-1))=\frac{n-3}{2}p_1^n-\frac{n-1}{2}p_1^{n-2}p_2
+ +\sum_{\lambda\vdash n}\frac{p_\lambda}{z_\lambda}.
+\end{equation}
+Indeed $\mathrm{ch}(\Reg_G)=p_1^n$ and $\mathrm{ch}(\Ind_T^G\sigma)=(p_1^n-p_1^{n-2}p_2)/2$.
+
+\paragraph{Block families.}
+Every JSON term specifies a list of blocks on disjoint point sets and a strictly positive rational weight. The block types are:
+\begin{itemize}
+\item \texttt{[S,m,e]}: $S_m$ with character $\sgn^e$, $e\in\{0,1\}$.
+\item \texttt{[C,m,d]}: the translation group on $\Z/m$, with the sum of all $\varphi(d)$ characters of exact order $d\mid m$. The weight of translation by $j$ is the Ramanujan sum $c_d(j)=\sum_{h\mid(d,j)}h\mu(d/h)$.
+\item \texttt{[D,m,a,b]}: the dihedral group on $\Z/m$, $m\ge3$, with $r^j s^h$ acting by $i\mapsto(-1)^h i+j$ and character $(-1)^{aj+bh}$; $a,b\in\{0,1\}$ and $am$ even.
+\item \texttt{[A,m,u,d]}: the affine group on $\Z/m$ generated by translations and multiplication by a unit $u$ of order $o$. Its maps are $i\mapsto u^ji+a$, with weight $c_d(j)$, $d\mid o$. This is the sum of characters of exact order $d$ inflated from the cyclic multiplier quotient.
+\end{itemize}
+Each block inventory is the numerator in \eqref{eq:ch}, with the indicated character sum when applicable, divided by the positive gcd of its integer coefficients. Thus its normalized polynomial is a positive rational combination of induced linear characters under the characteristic map. Multiplying block inventories and then by the positive JSON weight preserves this property. The verifier recomputes every inventory by direct enumeration (including all permutations of each symmetric block), checks validity of the parameters, positivity of every weight and the exact equality of the weighted sum with \eqref{eq:certtarget} on every partition. It also checks zero pairing with the trivial and standard characters for every term. No floating-point number is used in the verification.
+
+\begin{table}[ht]
+\centering
+\begin{tabular}{rrrrl}\toprule
+$n$&Partitions&Positive terms&Sharp $c$&Verification\\\midrule
+13&101&92&12&Exact\\
+14&135&119&13&Exact\\
+15&176&143&14&Exact\\
+16&231&190&15&Exact\\\bottomrule
+\end{tabular}
+\caption{New finite certificates, all checked by \texttt{verify.py}.}
+\end{table}
+
+\paragraph{Discovery versus proof.} Candidate inventories were generated from products of the four block families, excluding rows with nonzero trivial or standard multiplicity. A floating-point linear program selected a support; rational linear algebra solved for exact weights. The discovery programs are included for reproducibility, but only the JSON identities and independent verifier enter the proof. The number of rows searched was 4,905, 9,192, 16,840 and 30,541, respectively. This procedure is not an exhaustive search over subgroups; no conclusion is drawn from failed candidate searches. The previous bound in degrees $3$--$12$ is a separate result of the repository, not part of this computation.
+
+\section{Consequences for Dedekind zeta functions}
+Let $E/k$ be a Galois extension of number fields with $G\cong S_n$, $n\ge3$. Set $K=E^{\langle t\rangle}$ and $F=E^{A_n}$, and let $\varepsilon=\sgn$. For $s_0\ne1$ the Heilbronn virtual character is
+\[
+ \Theta=\sum_{\chi\in\operatorname{Irr}(G)}
+ \ord_{s=s_0} L(s,\chi,E/k)\,\chi.
+\]
+Artin meromorphic continuation and Artin formalism are sufficient here: no assumption of Artin holomorphy is made. For every subgroup $H$ and linear character $\eta$, Frobenius reciprocity and induction of Artin $L$-functions identify $\langle\Res_H\Theta,\eta\rangle$ with the order at $s_0$ of a finite-order Hecke $L$-function over $E^H$, holomorphic away from $1$. This is the classical local positivity underlying Heilbronn's method (see \cite{nab,gun}). Therefore $\Phi=\varepsilon\Theta$ satisfies \eqref{eq:dual}, because twisting $\eta$ by $\Res_H\varepsilon$ is again linear. Under this choice,
+\[
+ M=\ord_{s_0}\zeta_E,\qquad d=\ord_{s_0}\zeta_K,\qquad
+ b=\ord_{s_0}L(s,\varepsilon,E/k).
+\]
+For $d$, note that $\varepsilon|_T=\sigma$ and $\sigma^2=\one_T$, hence $\langle\varepsilon\Theta,\Ind_T^G\sigma\rangle=\langle\Theta,\Ind_T^G\one_T\rangle$. The other two identifications follow from the regular representation and the sign twist.
+
+\begin{corollary}[Unconditional analytic inequality]\label{cor:analytic}
+For every $s_0\in\C\setminus\{1\}$,
+\begin{equation}\label{eq:analytic}
+ \ord_{s_0}\zeta_E\le C_n\ord_{s_0}\zeta_K+\ord_{s_0}L(s,\varepsilon,E/k).
+\end{equation}
+For $n=13,14,15,16$, $C_n$ may be replaced by $n-1$. If $c=P/Q$ is any of these admissible rational constants, $P,Q$ positive integers, then
+\begin{equation}\label{eq:quotient}
+ \frac{\zeta_K(s)^P L(s,\varepsilon,E/k)^Q}{\zeta_E(s)^Q}
+ =\frac{\zeta_K(s)^P\zeta_F(s)^Q}{\zeta_E(s)^Q\zeta_k(s)^Q}
+\end{equation}
+ is holomorphic on $\C\setminus\{1\}$ and has a pole of order $P-Q$ at $1$.
+\end{corollary}
+\begin{proof}
+Pair the certified cone character $U_n(c)$ with $\Phi$. This gives $cd-M+b\ge0$. The orders in \eqref{eq:quotient} are consequently nonnegative away from $1$. At $1$ all Dedekind zeta functions have simple poles; the quadratic Hecke factor is holomorphic and nonzero there (also clear from the ratio of residues). Since $n\ge3$ gives $P>Q$, the stated pole order follows.
+\end{proof}
+
+\begin{corollary}[Dirichlet GRH specialization]\label{cor:GRH}
+Let $k=\Q$ and assume Dirichlet GRH as stated by the source development. At every $s_0$ with $1/2<\Re s_0<1$,
+\[
+ \ord_{s_0}\zeta_E\le C_n\ord_{s_0}\zeta_K,
+\]
+with the sharp constant $n-1$ in the four new degrees. In particular, if $\zeta_E$ has an off-line zero of multiplicity $M>0$, it is visible in $\zeta_K$ with multiplicity at least $\lceil M/c\rceil$ for an admissible constant $c$.
+\end{corollary}
+\begin{proof}
+The sign character is quadratic over $\Q$, so its Artin $L$-function is a primitive quadratic Dirichlet $L$-function. The stated GRH makes $b=0$ in the open right half of the critical strip. The functional equations reflect any left-half zero to the right half with the same multiplicity, if needed. Apply Corollary~\ref{cor:analytic} and integrality of orders.
+\end{proof}
+The equivalence of the Riemann hypotheses for $\zeta_E$ and $\zeta_K$ under Dirichlet GRH was already in the article (the reverse direction uses the quadratic Hecke factor of $E/K$). The novelty of the present result is quantitative: it improves the forced multiplicity, not the existence of the equivalence. Neither the Dirichlet zero-free theorem nor the above group theory supplies the missing prime remainder bound for $\zeta_K$. In particular there is no deduction here of Artin holomorphy or of nonabelian GRH.
+
+\begin{table}[ht]
+\centering\small
+\begin{tabular}{rrrr}\toprule
+$n$&Conjectured sharp $n-1$&New uniform $C_n$&Old $2(n-H_n)$\\\midrule
+13&12&14.616667&19.639732\\
+16&15&18.834524&25.238542\\
+50&49&59.452874&91.001589\\
+100&99&116.694891&189.625245\\
+1,000&999&1,071.849887&1,985.029058\\
+10,000&9,999&10,255.960871&19,980.424788\\
+100,000&99,999&100,905.154552&199,975.819708\\
+1,000,000&999,999&1,003,412.170276&1,999,971.214547\\\bottomrule
+\end{tabular}
+\caption{Numerical illustration of the general formula; approximate display only. For $13\le n\le16$ the separate exact certificates replace the uniform bound by $n-1$.}
+\end{table}
+
+\section{Dependency audit and remaining problem}
+The upstream Lean statement \texttt{LFunction\_ne\_zero\_of\_half\_lt\_re} is formulated for all Dirichlet characters over $\Q$, with the principal pole exception, and \texttt{LFunction\_eq\_zero\_re} gives the zero-line form. We inspected the vendored \texttt{Statements.lean}, \texttt{Main.lean} and README, pinned in ProveIt to upstream commit \texttt{72fead102f663d5c7a407964a13dc0cf9d977207}. The vendor README explicitly says that the root ProveIt build does not compile the separate package. We have not rerun the upstream kernel checks. In the present paper Theorems~\ref{thm:main}--\ref{thm:second} and Corollary~\ref{cor:analytic} do not require the GRH assertion at all; only Corollary~\ref{cor:GRH} uses it. Thus the core advance is independent of the verification status of the upstream theorem.
+
+To finish the exact question it would suffice, for instance, to establish $D(g_k)\le k d$ for every cycle length $k\ge2$ and every real class function obeying \eqref{eq:dual}. Lemma~\ref{lem:cycles} would then give $M-b\le(n-1)d$ exactly. The prime case is proved here, but \eqref{eq:wreath} introduces an extra $B(k/P(k))$ for composite lengths. There may be additional constraints on the constant-weight spaces which remove this excess, or a different family of averaged inequalities might bypass pointwise cycle bounds. We have not proved either assertion. Our cone duality result settles the asymptotic form of the repository question and the computations settle four further finite cases, leaving the exact all-degree claim unresolved.
+
+\paragraph{Reproducibility.} Run \texttt{python3 verify.py} to verify all four identities. Run \texttt{python3 bounds.py} for the numerical table. The paper and certificates are stand-alone research artifacts; no Lean formalization of the new theorem is claimed, and no GitHub files have been modified.
+
+\begin{thebibliography}{9}
+\bibitem{project} ProveIt, \emph{Generalized Riemann Hypothesis}, repository README, inspected 27 November 2026. \url{https://github.com/VladimirReshetnikov/ProveIt/tree/main/Analysis/GeneralizedRiemannHypothesis}
+\bibitem{nab} ProveIt, \emph{Nonabelian zero detection: general reductions}, merged article, \texttt{Article/sections/nab.tex}, blob \texttt{7390a4bceb51e7ba358f3062398da5891c25db71}; see \texttt{nab:thm:snsharp}, \texttt{nab:rem:un}, \texttt{nab:q:un}. \url{https://github.com/VladimirReshetnikov/ProveIt/blob/main/Analysis/GeneralizedRiemannHypothesis/Article/sections/nab.tex}
+\bibitem{upstream} lsernau/grh-lean, readable edition, commit \texttt{72fead102f663d5c7a407964a13dc0cf9d977207}, files \texttt{grh/src/Statements.lean}, \texttt{grh/src/Main.lean}, \texttt{grh/README.md}. \url{https://github.com/lsernau/grh-lean/tree/72fead102f663d5c7a407964a13dc0cf9d977207/grh}
+\bibitem{gun} S. Gun, S. Hazra and D. Sahu, On holomorphy and non-vanishing of Artin $L$-functions, \emph{Monatshefte f\"ur Mathematik} 206 (2025), 853--883. \url{https://doi.org/10.1007/s00605-025-02060-7}
+\bibitem{EIP} P. Erd\H{o}s, A. Ivi\'c and C. Pomerance, On sums involving reciprocals of the largest prime factor of an integer, \emph{Glasnik Matemati\v{c}ki} 21(41) (1986), 283--300, Theorem~1 and eq.~(1.1). \url{https://www.renyi.hu/~p_erdos/1986-10.pdf}
+\end{thebibliography}
+\end{document}

@@ -1,0 +1,134 @@
+\documentclass[11pt]{article}
+\usepackage[letterpaper,margin=1in]{geometry}
+\usepackage{amsmath,amssymb,amsthm,booktabs,mathtools,microtype}
+\usepackage[T1]{fontenc}\usepackage{lmodern}
+\usepackage[hidelinks]{hyperref}
+\newtheorem{theorem}{Theorem}
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{corollary}[theorem]{Corollary}
+\newcommand{\R}{\mathbb R}\newcommand{\C}{\mathbb C}
+\newcommand{\E}{\mathcal E}\newcommand{\F}{\mathcal F}
+\newcommand{\Rea}{\operatorname{Re}}\newcommand{\ord}{\operatorname{ord}}
+\setlength{\emergencystretch}{2em}
+\title{The critical moment of a positive filter for Dirichlet zeros}
+\author{Research note}\date{November 27, 2026}
+\begin{document}\maketitle
+\begin{abstract}
+A probability measure can suppress prescribed frequencies through zeros of its Fourier transform. For the complete noncentral zero divisor of a conjugation-stable family of $d$ primitive Dirichlet completions, the critical double-exponential decay exponent is $2/d$. We prove that the coefficient of the exponential moment at that exponent is at most $\pi d/Q_*$, where $Q_*$ is the geometric mean conductor. This halves the previous bound. At the limiting coefficient every transform equals the normalized completed product, with its central zero removed, times a polynomial of explicitly bounded degree. For positive theta kernels the bound is the exact supremum. The endpoint can either fail to exist or have a unique attaining probability measure, depending on the gamma factors. The statements apply to the full complex divisor unconditionally and to the real-frequency formulation under the corresponding critical-line hypothesis.
+\end{abstract}
+
+\section{The extremal problem}
+Let $\F$ be a finite nonempty multiset of primitive Dirichlet characters, closed under conjugation with multiplicities. Set $d=|\F|$. Write $q_\chi$ for the conductor and $a_\chi\in\{0,1\}$ for the parity. At the trivial character take $q=1$ and $a=0$. Use
+\[
+ \Lambda_\chi(s)=(q_\chi/\pi)^{(s+a_\chi)/2}\Gamma((s+a_\chi)/2)L(s,\chi),
+ \qquad \Lambda_{\bf1}(s)=\xi(s)=\tfrac12 s(s-1)\pi^{-s/2}\Gamma(s/2)\zeta(s),
+\]
+where the first formula applies to nontrivial characters. Define
+\begin{align*}
+ G(w)&=\prod_{\chi\in\F}\Lambda_\chi(1/2+w),&m&=\ord_0G,&
+ H(w)&=\frac{G(w)}{c_0 w^m},\qquad c_0=\lim_{w\to0}G(w)/w^m,\\
+ Q_*&=\left(\prod_{\chi\in\F} q_\chi\right)^{1/d},& \alpha&=2/d,& b_*&=\pi d/Q_*.
+\end{align*}
+The functional equations and conjugation give $G(-w)=(-1)^mG(w)$, so $H$ is even, entire, real on the real line and $H(0)=1$. Let $z_0$ denote the number of trivial characters, counted with multiplicity, and put
+\begin{equation}\label{power}
+ \kappa=2z_0+\tfrac12\sum_{\chi\in\F}a_\chi-\tfrac d4-m.
+\end{equation}
+For a Borel probability measure $\mu$ on $\R$, write $F(w)=\int e^{wt}\,d\mu(t)$ wherever the integral exists. Define its critical moment by
+\[
+ \E_b(\mu)=\int_{\R}\exp\!\left(b e^{\alpha|t|}\right)d\mu(t),\qquad b>0.
+\]
+Any finite such moment makes $F$ entire. The divisor condition means $F/H$ extends to an entire function. In particular, the required multiplicity at each point is the sum contributed by all factors. When all nontrivial zeros in this family lie on the critical line, this says exactly that the Fourier transform $\widehat\mu(\gamma)=F(i\gamma)$ vanishes at every nonzero ordinate with its required multiplicity. The full-divisor formulation makes sense for zeros away from that line as well. A prescribed noncentral zero on the real $w$-axis would preclude a positive measure, since $F(x)>0$ there.
+
+The starting point is the full-spectrum localization theorem and its endpoint corollary in ProveIt \cite{repo}. They give exponent $2/d$ for real-frequency cancellation under Dirichlet GRH, construct a strictly positive filter by compact smoothing, and bound the coefficient by $2\pi d/Q_*$. Their open question concerns the sharp coefficient. Related work of Bondarenko, Radchenko and Seip reconstructs functions having the zeta divisor from Fourier samples on a logarithmic grid \cite{brs}. Here we prescribe an integrability condition instead of samples.
+
+\begin{theorem}\label{main}
+Suppose $\mu$ is a probability measure satisfying the divisor condition and $\E_b(\mu)<\infty$. Then $b\le b_*$. If $b=b_*$, there is a real polynomial $P$ such that
+\begin{equation}\label{classification}
+ F=HP,\qquad P(0)=1,\qquad \deg P+\kappa<-\tfrac12.
+\end{equation}
+Its degree is even (including zero). Conversely, if $P$ is a real polynomial with $P(0)=1$ and $HP$ is the bilateral Laplace transform, for all real arguments, of a probability measure, that measure has finite $\E_{b_*}$ exactly when the strict degree inequality holds. For every $0<b<b_*$ it has finite $\E_b$, for every such $P$ regardless of degree.
+\end{theorem}
+
+\section{Four rays in the Laplace plane}
+The logarithm of a moment-generating function can be estimated in any direction using just the real part of its argument. The completed product has different angular behavior, given by the phase of $w\log w$ in Stirling's formula. Comparing the two on rays close to the real axis detects a factor of two lost in circular averaging.
+
+\begin{lemma}\label{rays}
+Under the hypotheses of Theorem~\ref{main}, $Q=F/H$ is entire of order at most one. For $0<\delta<\pi/2$, on each of the four rays $w=\pm R e^{\pm i\delta}$ one has
+\begin{equation}\label{angular}
+ \limsup_{R\to\infty}R^{-1}\log|Q(w)|\le \frac d2\left[\cos\delta\log\frac{b_*}b+\cos\delta\log\cos\delta+\delta\sin\delta\right].
+\end{equation}
+\end{lemma}
+\begin{proof}
+If $x=|\Rea w|\ge\alpha b$, optimizing $xu-be^{\alpha u}$ over $u\ge0$ gives
+\begin{equation}\label{legendre}
+ \log |F(w)|\le \log\E_b(\mu)+\frac{x}{\alpha}\left(\log\frac{x}{\alpha b}-1\right).
+\end{equation}
+For bounded $x$, $F$ is bounded in the corresponding vertical strip. Thus $F$ has order at most one. The order-one Hadamard products of $F$ and $H$, formed using genus-one factors, have all factors of $H$ in common. After cancellation the remaining canonical product still has order at most one: the convergence exponent of its zeros is at most one and, if those zeros even have exponent less than one, its genus-one product differs from their genus-zero product by the exponential of a linear function. The prefactor is also exponential-linear. This proves the order claim, including the finite-zero case.
+
+For $w=Re^{i\delta}$, let $x=R\cos\delta$. Stirling's formula on a fixed ray and $L(1/2+w,\chi)=1+O(2^{-x})$ give
+\begin{equation}\label{stirling}
+ \log|H(w)|=\tfrac d2\left[x\left(\log R+\log(Q_*/(2\pi))-1\right)-R\delta\sin\delta\right]+\kappa\log R+O(1).
+\end{equation}
+The power of $R$ comes from $(1/2+a_\chi)/2-1/2$ in each gamma factor, two additional powers at each trivial character, and the central division. Evenness and conjugation give the same estimate on the other rays. Subtracting \eqref{stirling} from \eqref{legendre} proves \eqref{angular}.
+\end{proof}
+
+\begin{proof}[Proof of the upper bound and polynomial rigidity]
+If $b>b_*$ the right side of \eqref{angular} is negative for all sufficiently small $\delta>0$. The four rays bound sectors of openings $2\delta$ and $\pi-2\delta$. On their boundaries $Q$ tends to zero. The Phragm\'en--Lindel\"of principle applies on each sector because its opening is strictly less than $\pi$ and $Q$ has order at most one. Thus $Q$ is bounded on the plane, hence constant, and its limit on a ray is zero. This contradicts $Q(0)=1$.
+
+At $b=b_*$ the angular expression is $O_d(\delta^2)$. Fix $0<\delta<1/4$. For some $K$ independent of $\delta$ and a constant $C_\delta$ the boundary bound is $|Q(w)|\le C_\delta\exp(K\delta^2|w|)$. On the broad upper sector, multiply $Q$ by $\exp(i K\delta^2 w/\sin\delta)$, making both boundary rays bounded. Use the opposite sign on the lower sector. On the narrow right and left sectors use $\exp(\mp K\delta^2 w/\cos\delta)$ respectively. Applying the same principle to these four functions yields a global bound $|Q(w)|\le C_\delta\exp(O(K\delta)|w|)$. Letting $\delta$ approach zero proves that $Q$ is of zero exponential type.
+
+On the two real rays, \eqref{legendre} and \eqref{stirling} with $\delta=0$ give $|Q(x)|=O(|x|^{-\kappa})$ for $|x|\to\infty$. Choose a nonnegative integer $J\ge\max(0,-\kappa)$. The function $Q(w)/(w+i)^J$ is bounded on the real axis and holomorphic of zero exponential type in the closed upper half-plane. The half-plane Phragm\'en--Lindel\"of principle for zero exponential type gives a bound there; for completeness, on a half-disk of radius $R$ the logarithmic boundary excess is $o(R)$ on the arc, whose harmonic measure at each fixed interior point is $O(1/R)$. In the lower half-plane use $(w-i)^J$. These bounds imply $Q(w)=O((1+|w|)^J)$ globally, so $Q=P$ is a polynomial. It is real on the real axis. Since $H(x)$ is even and $F(x)>0$ for both signs of $x$, the leading terms of $P(x)$ and $P(-x)$ have the same sign. Thus $\deg P$ is even.
+\end{proof}
+
+\section{The endpoint is a summability test}
+The polynomial bound from the real axis alone misses the strict half-power in \eqref{classification}. Positivity supplies it by summing the entire sequence of exponential moments.
+
+\begin{lemma}\label{sumtest}
+Suppose $F=HP$ is the bilateral Laplace transform, finite on $\R$, of a probability measure, with $P$ polynomial. Then $\E_b$ is finite for $b<b_*$, infinite for $b>b_*$, and finite at $b=b_*$ if and only if $\deg P+\kappa<-1/2$.
+\end{lemma}
+\begin{proof}
+For every real $t$, the sum of $\exp(be^{\alpha t})$ and $\exp(be^{-\alpha t})$ lies between $\exp(be^{\alpha|t|})$ and twice that number. Tonelli's theorem therefore makes finiteness equivalent to convergence of
+\[
+ \sum_{n\ge0}\frac{b^n}{n!}\bigl(F(\alpha n)+F(-\alpha n)\bigr).
+\]
+Put $k=\deg P$. On the real axis Stirling's formula with its positive leading constant in absolute value gives
+\[
+ |H(u)|\sim C\,u^\kappa\left(\frac{Q_*u}{2\pi e}\right)^{du/2}\quad(u\to+\infty),\qquad C>0.
+\]
+As $F(\pm u)>0$, evenness of $H$ and the leading term of $P$ give $F(u)+F(-u)\sim C' u^k |H(u)|$ for $C'>0$. Substituting $u=2n/d$ and using Stirling's formula for $n!$ shows that the $n$th summand is asymptotic to a positive constant times
+\[
+  (b/b_*)^n n^{k+\kappa-1/2}.
+\]
+The ratio of exponential scales and the ordinary $p$-series criterion give the three conclusions, including divergence in the harmonic boundary case. Together with the preceding section this proves Theorem~\ref{main}.
+\end{proof}
+
+\section{When the critical coefficient is sharp}
+There is a direct way to decide the remaining positivity condition in any concrete example. The standard primitive theta kernels have two-sided superexponential decay, as do their derivatives. Convolve them, using the classical Riemann kernel for $\xi$, to obtain the inverse bilateral Laplace transform $g$ of $G$. For $m>0$, take
+\[
+ h(t)=\frac{1}{c_0(m-1)!}\int_t^\infty(v-t)^{m-1}g(v)\,dv;
+\]
+for $m=0$ take $h=g/c_0$. Vanishing of the first $m$ moments of $g$ lets one use the left-hand tail integral with the opposite sign as well. Integration by parts gives $\mathcal Lh=H$. The function $h$ is real, smooth, even, has mass one, and it and all its derivatives are integrable against every $e^{x|t|}$. For the underlying theta identities, the division argument, and the signed compact smoothing see \cite{repo}, Lemmas \texttt{fil:lem:kernels}, \texttt{fil:lem:tails}, \texttt{fil:lem:smooth}, and the proof of \texttt{fil:thm:global}.
+
+For every real polynomial $P$ with $P(0)=1$, the unique candidate density with transform $HP$ is $P(-\partial_t)h$. This follows by integration by parts on the real axis and uniqueness of Fourier transforms of finite measures. It gives the following criterion even for a sign-changing $h$:
+\[
+ \boxed{\quad \E_{b_*}<\infty\ \text{is attainable}\quad\Longleftrightarrow\quad
+ \exists P:\ P(0)=1,\ \deg P+\kappa<-\tfrac12,\ P(-\partial_t)h\ge0.\quad}
+\]
+For a nonnegative canonical kernel $h$, taking $P=1$ attains every $b<b_*$. Hence $b_*$ is its family's exact supremum. An endpoint measure exists precisely when $\kappa<-1/2$. When $h$ changes sign the differential criterion still decides endpoint existence in principle. Compact smoothing may lower the available coefficient, and the argument gives no universal approximation to $b_*$ by positive filters in that case.
+
+\begin{corollary}[Examples]\label{examples}
+For the zeta kernel alone, $b_*=\pi$ is the supremum and the moment diverges at the supremum for every eligible measure. For the primitive character modulo four the supremum is $\pi/4$ and is also unattained. For $d$ copies of the quadratic character of conductor five, the supremum is $d\pi/5$ and it is attained exactly when $d\ge3$. For $3\le d\le10$ the unique attaining probability measure is the $d$-fold convolution of the normalized theta kernel. For $d\ge11$ there are infinitely many attaining measures, and every even degree allowed by \eqref{classification} occurs. These assertions use the full complex divisor and are consequently unconditional.
+\end{corollary}
+\begin{proof}
+The Riemann kernel is positive \cite{bpy} and $\xi(1/2)>0$. Here $\kappa=7/4$. The odd character modulo four has a positive kernel: on the positive half of the logarithmic variable its defining theta series is alternating with decreasing terms, and reflection gives the other half \cite{repo}. Here $\kappa=1/4$. For a real even primitive character of conductor $5$, Louboutin and Munsch prove that its theta kernel is everywhere positive, and give the same conclusion for conductors $8,12,13,17$ \cite{lm}. Thus the normalized convolution is positive and $m=0$. With $d$ even-character factors one has $\kappa=-d/4$. Consequently the degree condition is $k<(d-2)/4$. This permits $k=0$ exactly when $d\ge3$. For $3\le d\le 10$ it permits no positive even degree, proving uniqueness. To realize a positive even degree $2j<(d-2)/4$, write $K$ for a normalized positive even-character kernel. As $t\to+\infty$ its leading theta summand is $C e^{t/2}\exp(-c e^{2t})$, with $c=\pi/q$; the rest, and its first two derivatives, are exponentially smaller relative to that term, up to powers of $e^{2t}$. Therefore $K''(t)/K(t)\sim 4c^2 e^{4t}$. Evenness gives the other tail, and strict positivity and continuity give a finite global lower bound for $K''/K$. For all sufficiently small $\varepsilon>0$, $K+\varepsilon K''$ is a positive probability density. Its transform is $(1+\varepsilon w^2)\mathcal LK(w)$, since integration by parts shows $\int K''=0$ and $\mathcal L K''=w^2\mathcal L K$. Replace $j$ of the $d$ kernels by their modified densities and convolve. This realizes $P(w)=(1+\varepsilon w^2)^j$ and Lemma~\ref{sumtest} verifies its endpoint moment. At $d\ge11$ take $j=1$; varying $\varepsilon$ gives distinct transforms. The entire proof applies to mixtures of the five positive even kernels, taking the common $\varepsilon$ small enough for each modified factor.
+\end{proof}
+
+\noindent For $d=3$ copies of the conductor-five character the endpoint series has terms asymptotic to $C n^{-5/4}$, while for $d=2$ it is harmonic. The degree and conductor set the limiting exponential scale; gamma parity, central vanishing and the pole-removing factors in $\xi$ determine summability on that scale. At $d=11$ the first quadratic correction becomes integrable, and the same critical coefficient admits a continuum of distinct extremizers.
+
+\begin{thebibliography}{9}\small
+\bibitem{repo} V. Reshetnikov et al., \emph{ProveIt}, Analysis/GeneralizedRiemannHypothesis/Article/sections/fil.tex, revision \texttt{cfab41369737c66ae520d179419509eb719367cd}. See \texttt{fil:thm:global}, \texttt{fil:cor:endpoint}, and the global-filters question in \texttt{fil:sec:open}. \href{https://github.com/VladimirReshetnikov/ProveIt/blob/cfab41369737c66ae520d179419509eb719367cd/Analysis/GeneralizedRiemannHypothesis/Article/sections/fil.tex}{Pinned source.}
+\bibitem{lm} S. R. Louboutin and M. Munsch, On positive real zeros of theta and $L$-functions associated with real, even and primitive characters, \emph{Publ. Math. Debrecen} \textbf{83} (2013), 643--665, p.~644. \href{https://doi.org/10.5486/PMD.2014.5670}{doi:10.5486/PMD.2014.5670}.
+\bibitem{brs} A. Bondarenko, D. Radchenko and K. Seip, Fourier interpolation with zeros of zeta and $L$-functions, \emph{Constr. Approx.}, Theorem~1.1 and Corollary~1.1. \href{https://doi.org/10.1007/s00365-022-09599-w}{doi:10.1007/s00365-022-09599-w}.
+\bibitem{bpy} P. Biane, J. Pitman and M. Yor, Probability laws related to the Jacobi theta and Riemann zeta functions, and Brownian excursions, \emph{Bull. Amer. Math. Soc.} \textbf{38} (2001), 435--465. \href{https://doi.org/10.1090/S0273-0979-01-00912-0}{doi:10.1090/S0273-0979-01-00912-0}.
+\end{thebibliography}
+\end{document}

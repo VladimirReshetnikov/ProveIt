@@ -1,0 +1,194 @@
+\documentclass[11pt]{article}
+\usepackage[letterpaper,margin=1.02in]{geometry}
+\usepackage{lmodern}
+\usepackage{amsmath,amssymb,amsthm,booktabs,array,xcolor}
+\usepackage[colorlinks=true,linkcolor=blue!45!black,urlcolor=blue!50!black,citecolor=blue!45!black]{hyperref}
+\newtheorem{theorem}{Theorem}
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{corollary}[theorem]{Corollary}
+\newcommand{\D}{\mathcal D}
+\newcommand{\LL}{\Lambda}
+\newcommand{\dd}{\,dt}
+\numberwithin{equation}{section}
+\setlength{\emergencystretch}{1.8em}
+\title{The turning points of quadratic Dirichlet\texorpdfstring{\\}{ }central derivatives}
+\author{Research note}
+\hypersetup{pdftitle={The turning points of quadratic Dirichlet central derivatives},pdfauthor={Research note}}
+\date{27 November 2026}
+\begin{document}
+\maketitle
+\begin{abstract}
+For a primitive quadratic Dirichlet character, Sheth and Voo conjectured that its sequence of even central derivatives of the completed $L$-function eventually increases and changes direction at most once. Using Dirichlet GRH as input, we determine every change of direction. Exactly 31 signed fundamental discriminants give an initial decline. The last by conductor is $+97$, and the latest minimum occurs at derivative order 14 for $D=-3$. The proof bounds the ratio of two consecutive even derivatives from below by a logarithmic derivative evaluated to the right of 1. An increasing explicit lower bound and 555 rigorous derivative comparisons prove the classification. An independent theta-integral certificate proves it unconditionally for every conductor below 512, at every derivative order. For each fixed character the ratios tend to infinity unconditionally.
+\end{abstract}
+
+\section{The classification}
+Let $D$ be a fundamental discriminant with $|D|>1$, let $q=|D|$, and let $\chi_D(n)=(D/n)$ be its primitive quadratic character. Put $a=0$ if $D>0$ and $a=1$ if $D<0$. We use the normalization of Sheth and Voo,
+\[
+ \LL_D(s)=q^{s/2}\pi^{-(s+a)/2}\Gamma((s+a)/2)L(s,\chi_D),
+ \qquad A_m(D)=\LL_D^{(2m)}(1/2)\quad(m\ge0).
+\]
+The derivatives are unscaled. Dividing them by $(2m)!$ changes the question. Multiplying the completion by the fixed positive constant $q^{a/2}$, as in the accompanying paper on filters, preserves every comparison.
+
+Sheth and Voo's Conjecture 1.5 asks whether $A_m$ eventually increases and has at most one turning point. Their Theorem 1.6 proves both assertions when the associated theta function is positive on $[1,\infty)$. They report numerical tests of the first ten derivatives up to conductor $10{,}000$ and mention 97 as the last conductor at which they observed a turn \cite{SV}. Theta positivity can fail, for example for $D=53$ \cite{LM}. The following result includes such characters.
+
+\begin{theorem}\label{th:classification}
+Assume that every nontrivial zero of each primitive quadratic Dirichlet $L$-function lies on the critical line. The full list of strict turning points of $A_m(D)$ is given in Table~\ref{tab:turns}. For each listed $D$ the sequence decreases strictly to the indicated $A_j(D)$ and increases strictly thereafter. For every other $D$ it is nondecreasing and increases strictly from its first nonzero term. If the central value vanishes, the only possible equalities in the latter case are consecutive initial zeros. For every $q<512$ the classification of changes of direction holds unconditionally.
+\end{theorem}
+
+\begin{table}[ht]
+\centering\small
+\caption{All discriminants with a change of direction. The derivative at the minimum has order $2j$.}\label{tab:turns}
+\begin{tabular}{@{}r r p{0.65\linewidth}@{}}
+\toprule
+$j$ & Count & Signed fundamental discriminants $D$\\
+\midrule
+1 & 21 & $-47,-39,-31,-24,-23,-20,-15,21,24,28,29,$ \newline $33,37,40,41,44,57,65,73,76,97$\\[2pt]
+2 & 4 & $-11,12,13,17$\\
+3 & 3 & $-8,-7,8$\\
+5 & 2 & $-4,5$\\
+7 & 1 & $-3$\\
+\bottomrule
+\end{tabular}
+\end{table}
+
+For instance $A_0(97),A_1(97),A_2(97)$ are approximately $16.61430$, $15.53449$, $34.67269$. The first step goes down, the second goes up, and the theorem determines every subsequent step. At conductor 8 the two primitive quadratic characters have the same minimum index even though their parities differ.
+
+\paragraph{Connection to the repository.}
+The project takes Dirichlet GRH as its source theorem \cite{repo}. Its sections on Li coefficients and zero statistics develop paired products of completed functions, retaining multiplicity. We use the same product to express a derivative ratio as an average over subsets of the zero multiset. Comparing it to an Euler product then gives a bound uniform in the conductor and derivative order. Only the quadratic special case of the source theorem is required here. We do not assume nonvanishing at the centre, simple zeros, or independence of zero ordinates. The computer certificate checks finite numerical inequalities; the result on zeros is a separate input.
+
+\section{A ratio bound from the zero multiset}
+Write $f(w)=\LL_D(1/2+w)$. The classical functional equation for a primitive quadratic character gives $f(-w)=f(w)$. It is real on the real axis and entire of order one. If $2\ell$ is the order at the centre, Hadamard factorization under the hypothesis of Theorem~\ref{th:classification} gives
+\begin{equation}\label{eq:product}
+ f(w)=C w^{2\ell}\prod_{j\ge1}(1+w^2 u_j),
+ \qquad u_j=\gamma_j^{-2},\qquad \sum_{j\ge1}u_j<\infty .
+\end{equation}
+Here each positive ordinate $\gamma_j$ occurs with its multiplicity. Pairing the zeros cancels the linear terms of the canonical factors, and evenness removes the remaining linear exponential. One has $C>0$ by evaluating at real $w>1/2$, where the Euler product is positive. There are infinitely many positive ordinates by the zero-counting formula. If $e_k$ denotes the $k$th elementary symmetric function of the $u_j$, with $e_0=1$, then
+\[
+ A_m=0\quad(m<\ell),\qquad A_m=C(2m)!e_{m-\ell}>0\quad(m\ge\ell).
+\]
+
+\begin{lemma}\label{lem:subsets}
+For $k\ge0$ and $r>0$,
+\[
+ (k+1)\frac{e_{k+1}}{e_k}\ \ge \sum_j\frac{u_j}{1+r^2u_j}-\frac{k}{r^2}.
+\]
+\end{lemma}
+\begin{proof}
+Give a $k$-element subset $S$ weight $\prod_{j\in S}u_j/e_k$. The expected value of $\sum_{j\notin S}u_j$ is $(k+1)e_{k+1}/e_k$, by counting a $(k+1)$-element subset with one distinguished element. Replace each summand by $u_j/(1+r^2u_j)$. Each excluded index costs at most $1/r^2$, which gives the assertion for every $S$ before averaging. The finite total sum of the $u_j$ justifies the countable sums.
+\end{proof}
+
+\begin{theorem}\label{th:ratio}
+Let $m\ge\ell$, $r>0$, and $G(r)=f'(r)/f(r)$. Whenever $G(r)-2m/r\ge0$,
+\begin{equation}\label{eq:ratio}
+ \frac{A_{m+1}}{A_m}\ \ge \frac{2m+1}{r}\left(G(r)-\frac{2m}{r}\right).
+\end{equation}
+In particular $G(r)>r/(2m+1)+2m/r$ implies $A_{m+1}>A_m$.
+\end{theorem}
+\begin{proof}
+Differentiating \eqref{eq:product} at $r$ gives
+$G(r)/(2r)=\ell/r^2+\sum_j u_j/(1+r^2u_j)$.
+Lemma~\ref{lem:subsets} with $k=m-\ell$ therefore bounds $(k+1)e_{k+1}/e_k$ from below by $G(r)/(2r)-m/r^2$. The factorial ratio is $(2m+2)(2m+1)$. After division by $k+1$ the right side of \eqref{eq:ratio} still has a factor $(m+1)/(k+1)\ge1$, which can be dropped under the stated sign condition.
+\end{proof}
+
+The term $\ell/r^2$ cancels the contribution of the missing $\ell$ indices. Thus the test has the same threshold at every possible central multiplicity. All zeros contribute through one real evaluation of $G$. No individual zero ordinates need to be computed.
+
+\section{The analytic cutoff and finite certificate}
+Set $r=2m+2$ and $s_m=r+1/2=2m+5/2$. Then
+\[
+ \frac{r}{2m+1}+\frac{2m}{r}
+ =2+\frac{1}{2m+1}-\frac{1}{m+1}\le2.
+\]
+For $s>1$, absolute convergence of the Euler products and $\chi_D(n)\le1$ give
+\[
+ \frac{L'}{L}(s,\chi_D)
+ =-\sum_{n\ge2}\frac{\Lambda_{\rm vM}(n)\chi_D(n)}{n^s}
+ \ \ge\ \frac{\zeta'}{\zeta}(s),
+\]
+where $\Lambda_{\rm vM}$ is the von Mangoldt function. Writing $\psi=\Gamma'/\Gamma$ yields the lower bound
+\begin{equation}\label{eq:cut}
+ G(2m+2)\ \ge\ B(q,a,m):=
+ \frac12\log(q/\pi)+\frac12\psi((s_m+a)/2)
+       +\frac{\zeta'}{\zeta}(s_m).
+\end{equation}
+It increases in $q$, $a$ and $m$. Indeed $\psi'(x)=\sum_{j\ge0}(x+j)^{-2}>0$, and differentiating the negative Dirichlet series for $\zeta'/\zeta$ on $s>1$ gives a positive derivative. For fixed $q,a$ it tends to infinity with $m$.
+
+\begin{corollary}
+If $B(q,a,M)>2$, every comparison with $m\ge\max(M,\ell)$ is strictly increasing. This applies with $M=0$ for every $q\ge384$.
+\end{corollary}
+\begin{proof}
+Use \eqref{eq:ratio} and monotonicity. At the corner of the infinite range, direct interval evaluation gives
+\[
+ 2.00048888<B(384,0,0)<2.00048889 .
+\]
+The expression contains only $\log$, the digamma function at $5/4$, and $\zeta'/\zeta$ at $5/2$. The verification script checks its strict lower bound.
+\end{proof}
+
+For each remaining character define $M$ to be the first nonnegative integer for which the interval check proves $B(q,a,M)>2$. There are 234 primitive quadratic characters of conductor below 384. Only $\sum M=555$ comparisons remain, and the largest $M$ is 56. The first script in the archive executes the following finite proof.
+\begin{enumerate}
+\item Enumerate the Conrey labels coprime to each modulus $3\le q<384$. Keep precisely the primitive characters of order two. Their signed discriminants are $D=(-1)^a q$.
+\item Expand $\LL_D(1/2+x)$ through $x^{2M}$ using the rigorous complex ball operations for the Dirichlet $L$-function, the exponential and the gamma function in FLINT \cite{flint}. The script uses the equivalent normalization $q^{a/2}\LL_D$. Multiply coefficient $2m$ by $(2m)!$.
+\item Require a strictly positive lower bound for the central value and a strictly signed interval for every difference with $0\le m<M$. Repeat at higher precision if needed. Reject any positive difference followed by a negative one. Append the positive analytic tail proved above.
+\end{enumerate}
+The output records every index and sign in \texttt{verification/signs.csv}. Grouping rows with a negative step yields Table~\ref{tab:turns}. Since all central values in this finite range are strictly positive, there are no initial plateaux in the finite check. For $q\ge384$ the zero central derivatives preceding $A_\ell$ are covered by \eqref{eq:product}, and every subsequent step is increasing. This proves the classification using the stated zero-location hypothesis.
+
+\section{An unconditional tail argument}
+The large-order part has a proof that works even when the theta kernel changes sign. For $q,a$ as above, set
+\[
+ K(t)=2q^{-a/2}e^{(1/2+a)t}
+       \sum_{n\ge1}n^a\chi_D(n)\exp(-\pi n^2 e^{2t}/q).
+\]
+Theta inversion makes $K$ even, and Mellin integration gives $f(w)=\int_{\mathbb R} K(t)e^{wt}\,dt$. Termwise integration first gives the formula in the half-plane of absolute convergence, and theta inversion gives it on the whole plane. The first term of the sum dominates as $t\to+\infty$. Thus $K$ is strictly positive outside a compact interval and has finite absolute moments of all orders.
+\begin{theorem}\label{th:tail}
+For each fixed $D$, unconditionally, $A_m(D)>0$ for all sufficiently large $m$ and
+\[
+ \lim_{m\to\infty}\frac{A_{m+1}(D)}{A_m(D)}=+\infty .
+\]
+Every fixed-order forward difference of the sequence is eventually positive.
+\end{theorem}
+\begin{proof}
+For any $R>0$, $A_{m+1}-R A_m$ is the integral of $t^{2m}(t^2-R)K(t)$. Choose $T>\sqrt R+1$ beyond the last sign change of $K$. The contribution of $|t|\le T$ has absolute value at most $C_T T^{2m}$. The integrand outside this interval is nonnegative, and $[T+1,T+2]$ alone contributes at least $c_T(T+1)^{2m}$ with $c_T>0$. The same argument for $A_m$ proves eventual positivity. Since $R$ is arbitrary the ratio diverges. Replacing $t^2-R$ by $(t^2-1)^k$ proves the assertion for the $k$th forward difference.
+\end{proof}
+Wagner's earlier all-orders saddle-point asymptotics for central derivatives already describe their fixed-conductor growth \cite[Theorem 4.1 and \S4.1.2]{Wagner}. The compact-interval argument isolates the sign mechanism. The new classification concerns all orders simultaneously in all conductors, including the initial segment, outside the previously proved positive-theta case.
+
+\subsection*{Unconditional signs at every order for all $q<512$}
+There is a finite proof of the entire sign pattern in this range that uses only the theta integral. Write $g(t)=(t^2-1)K(t)$ for $t\ge0$. Then $A_{m+1}-A_m=2\int_0^\infty t^{2m}g(t)\,dt$. Choose $T=1$ if $q\le56$, $T=2$ if $57\le q\le432$, and $T=3$ otherwise. These choices give $\pi e^{2T}/q\ge\pi/8$. On $t\ge T$ the first term of the theta sum dominates: the absolute tail relative to the first term is bounded by
+\[
+ \sum_{n\ge2} n e^{-(n^2-1)\pi/8}
+ \le\frac{2e^{-3\pi/8}}{1-(3/2)e^{-5\pi/8}}<0.79.
+\]
+This estimate bounds consecutive terms by a geometric progression. In particular $g(t)\ge0$ for $t\ge T$.
+
+For each of the 312 signed fundamental discriminants of conductor below 512, the second certificate verifies the 16 differences with $0\le m<16$ and the strict inequality
+\begin{equation}\label{eq:seed}
+ J_D:=\int_0^T t^{32}\min(g(t),0)\,dt+\int_T^\infty t^{32}g(t)\,dt>0.
+\end{equation}
+For $m\ge16$, the factor $t^{2(m-16)}$ is at most $T^{2(m-16)}$ on the first interval and at least that large on the second. It follows that
+\[
+ A_{m+1}-A_m\ge 2T^{2(m-16)}J_D>0.
+\]
+A single integral enclosure thereby covers infinitely many comparisons for each character. The finite signs in this calculation give exactly Table~\ref{tab:turns}. In particular every displayed decrease and the subsequent infinite increasing tail for each listed character are unconditional.
+
+\paragraph{How to check the enclosures.}
+The included standard-library Python program uses the positive multiple $q^{a/2}K/2$ of the kernel. It integrates on $[0,6]$ using 256 theta terms. On each dyadic cell the positive and negative Gaussian subsums are decreasing separately, so their endpoint values enclose their difference over the entire cell. Multiplying by intervals for $e^{(1/2+a)t}$, $t^{2m}$ and $t^2-1$, then summing the cell widths times these bounds, encloses the integral. The map $v\mapsto\min(v,0)$ is increasing and 1-Lipschitz, so the same enclosures apply in \eqref{eq:seed}. Scaled integer arithmetic and directed exponential enclosures control rounding. Each sign decision requires an interval strictly on one side of zero.
+
+For clarity about truncation, on $0\le t\le6$ the omitted theta terms in absolute value are at most $300e^{-3\cdot257^2/511}$ by the ratio bound. Multiplication by $6\cdot6^{32}\cdot37e^9$ bounds their integrated contribution. For $t\ge6$, put $X=\pi e^{2t}/q>950(1+2(t-6))$. The absolute theta sum is at most $2e^{-X}$, and the remaining factors are at most $e^{19t}$ for $m\le16$, using $\log t\le t/2$. Together these errors are below the $10^{-18}$ allowance used in each integration. Thus the 4,992 ordinary differences and 312 positive lower bounds in the table of enclosures prove the unconditional small-conductor result.
+
+The standard-library check also suffices for the finite part of the global theorem without the FLINT calculation. For the remaining range $q\ge512$, formula \eqref{eq:cut} gives $B(q,a,m)\ge B(512,0,0)>2.01$. Indeed $\psi(5/4)=4-\gamma-\pi/2-3\log2> -0.231$ and
+\[
+ -\frac{\zeta'}{\zeta}(5/2)\le\sum_{n\ge2}\frac{\log n}{n^{5/2}}
+ \le\frac{\log2}{2^{5/2}}+\frac{\log3}{3^{5/2}}+
+ \int_3^\infty\frac{\log x}{x^{5/2}}\,dx<0.420 .
+\]
+The integral in the middle is $3^{-3/2}((2/3)\log 3+4/9)$. This gives a second proof of the classification using only the critical-line input for $q\ge512$.
+
+\paragraph{Further questions.}
+Can the one-turn theorem for unbounded conductors be proved using an unconditional substitute for the positive zero product? For other self-dual completions whose zeros have the required location, Lemma~\ref{lem:subsets} still applies. Determining when their archimedean factors and Euler products supply an effective analogue of \eqref{eq:cut} would give a way to investigate their initial derivative sequences. The possible vanishing of quadratic central values is a distinct question.
+
+\begin{thebibliography}{9}\small
+\bibitem{SV} A. Sheth and W. Voo, \emph{Super-positivity via Dirichlet theta functions}, Conjecture 1.5 and Theorem 1.6, 2026. \href{https://arxiv.org/abs/2611.12152}{arXiv:2611.12152}.
+\bibitem{repo} V. Reshetnikov, \emph{ProveIt}, Generalized Riemann Hypothesis article, revision \texttt{cfab41369737}. See the \href{https://github.com/VladimirReshetnikov/ProveIt/blob/cfab41369737c66ae520d179419509eb719367cd/Analysis/GeneralizedRiemannHypothesis/Article/sections/src.tex}{source theorem}, \href{https://github.com/VladimirReshetnikov/ProveIt/blob/cfab41369737c66ae520d179419509eb719367cd/Analysis/GeneralizedRiemannHypothesis/Article/sections/li.tex}{Li coefficients}, and \href{https://github.com/VladimirReshetnikov/ProveIt/blob/cfab41369737c66ae520d179419509eb719367cd/Analysis/GeneralizedRiemannHypothesis/Article/sections/fil.tex}{positive filters}.
+\bibitem{LM} S. R. Louboutin and M. Munsch, \emph{On positive real zeros of theta and $L$-functions associated with real, even and primitive characters}, Publ. Math. Debrecen \textbf{83} (2013), 643--665. \href{https://doi.org/10.5486/PMD.2014.5670}{doi:10.5486/PMD.2014.5670}.
+\bibitem{Wagner} I. Wagner, \emph{The Jensen--P\'olya program for various $L$-functions}, Forum Math. \textbf{32} (2020), 525--539. \href{https://doi.org/10.1515/forum-2019-0104}{doi:10.1515/forum-2019-0104}.
+\bibitem{flint} The FLINT authors, \href{https://flintlib.org/doc/acb_dirichlet/index.html}{FLINT documentation on complex Dirichlet functions}; F. Johansson, \emph{Arb: efficient arbitrary-precision midpoint-radius interval arithmetic}, IEEE Trans. Comput. \textbf{66} (2017), 1281--1292.
+\end{thebibliography}
+\end{document}

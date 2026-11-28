@@ -1,0 +1,485 @@
+\documentclass[11pt]{article}
+\usepackage[T1]{fontenc}
+\usepackage{lmodern}
+\usepackage[margin=0.91in]{geometry}
+\usepackage{amsmath,amssymb,amsthm,mathtools,booktabs,array}
+\usepackage{xcolor}
+\usepackage[colorlinks=true,linkcolor=blue!45!black,urlcolor=blue!45!black,citecolor=blue!45!black]{hyperref}
+\usepackage{microtype}
+\usepackage{enumitem}
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{corollary}[theorem]{Corollary}
+\newtheorem{proposition}[theorem]{Proposition}
+\theoremstyle{remark}\newtheorem{remark}[theorem]{Remark}
+\newcommand{\Ind}{\operatorname{Ind}}
+\newcommand{\Reg}{\operatorname{Reg}}
+\newcommand{\ord}{\operatorname{ord}}
+\newcommand{\RH}{\mathrm{RH}}
+\newcommand{\Gal}{\operatorname{Gal}}
+\newcommand{\one}{\mathbf{1}}
+\newcommand{\Q}{\mathbb Q}
+\newcommand{\C}{\mathbb C}
+\newcommand{\sgn}{\operatorname{sgn}}
+\newcommand{\Fix}{\operatorname{Fix}}
+\newcommand{\source}{\texttt{nab:q:lowdegree}}
+\title{\bfseries Exponentially smaller fields detecting\newline nonabelian Riemann hypotheses\\[6pt]\large A positive induction identity and its iteration in symmetric groups}
+\author{Research extension for the ProveIt GRH project}
+\date{27 November 2026}
+\begin{document}
+\maketitle
+\begin{abstract}
+An open question in the ProveIt GRH article asks whether the subfield of degree
+$n!/2$ used to detect all zeros off the critical line in an $S_n$-extension can be
+replaced by subfields of smaller degree without invoking Artin holomorphy. We give
+an unconditional affirmative answer for $n\ge5$, with one subfield of degree at
+most $n!/3^{\lfloor(n-2)/3\rfloor}$. The same argument applies to $A_n$, and a
+four-letter refinement improves the degree by another factor of two in one
+congruence class. We prove a stronger statement: equality of the zero supports of
+the two Dedekind zeta functions at every point other than the pole at $1$, with a
+quantitative bound on their multiplicities. The mechanism is an integral positive
+induction identity in $A_5$ which can be reused on arbitrarily many disjoint triples
+with the same two spare letters. An explicit nonnegative Frobenius weight gives
+a corresponding one-sided prime-sum criterion. The arithmetic estimate needed to
+establish nonabelian GRH itself is not proved here.
+\end{abstract}
+
+\section{Statement and relation to the source}
+Let $E/k$ be a finite Galois extension of number fields, $G=\Gal(E/k)$, and
+$\pi_U=\Ind_U^G\one$ for $U\le G$. In the case $G=S_n$, the source article
+\cite{proveit} proves under Dirichlet GRH that $\RH(\zeta_E)$ is equivalent to
+$\RH(\zeta_{E^{\langle(12)\rangle}})$; its question \source{} asks for lower-degree
+subfields without Artin holomorphy. The known reflection comparison uses
+$2(n-H_n)$, where $H_n=\sum_{j=1}^n1/j$. The source also gives a stronger
+multiplicity coefficient $n-1$ for $n\le12$ in that particular reflection
+construction. Here we change the detecting subgroup, not the constant for the
+transposition subgroup.
+
+\begin{theorem}[Single-field compression]\label{thm:main}
+Suppose $G$ contains a copy of $A_n$, $n\ge5$. Write
+\[
+ r=\left\lfloor\frac{n-2}{3}\right\rfloor,\quad
+ \delta=\begin{cases}1& n-3r=4,\\0& n-3r=2\text{ or }3,\end{cases}
+ \qquad h=2^\delta3^r,\quad M=3^\delta5^r.
+\]
+There is an explicitly specified abelian subgroup $H\simeq C_3^r\times C_2^\delta$ of
+$G$, with fixed field $K=E^H$, such that
+\begin{enumerate}[label=\textup{(\roman*)},nosep]
+\item $[K:k]=|G|/h$;
+\item $\zeta_E/\zeta_K$ is entire, and $\zeta_K^M/\zeta_E$ is holomorphic
+on $\C\setminus\{1\}$ with a pole of exact order $M-1$ at $1$;
+\item at every $s_0\ne1$,
+\begin{equation}\label{eq:mult}
+ 0\le \ord_{s_0}\zeta_K\le\ord_{s_0}\zeta_E\le M\ord_{s_0}\zeta_K;
+\end{equation}
+\item $\RH(\zeta_E)\Longleftrightarrow\RH(\zeta_K)$.
+\end{enumerate}
+All assertions are unconditional, in particular independent of Dirichlet GRH or
+Artin holomorphy.
+\end{theorem}
+
+For $G=S_n$, $h\ge3$ and the new index is strictly smaller than $n!/2$; the ratio
+of old to new degree is $h/2=\exp((\log3)n/3+O(1))$. For $G=A_n$, the new
+index is $n!/(2h)$. The multiplicity bound $M$ is a guaranteed upper bound,
+not an asserted optimal value for the iterated construction.
+
+The distinction from the source's abelian theorem is important. The vendored
+Lean development exports RH and GRH for Dirichlet $L$-functions. It does not
+state GRH for all Dedekind zeta functions or all Artin $L$-functions. The present
+proof uses the source's positive-monomial/Heilbronn method (its
+\texttt{nab:lem:heilbronn} and \texttt{nab:cor:sn}) and its $A_5$ class computations,
+but does not assume or recheck that Lean proof. The new detector is a single
+Dedekind zeta function, rather than a signed combination of tests. See
+\texttt{SOURCE\_AUDIT.md} for repository paths, inspected blob identifiers,
+and scope of the novelty assessment.
+
+\section{The local positive identities}
+\begin{lemma}[Five-letter identity]\label{lem:a5}
+In $A=A_5$ on $\{1,2,3,4,5\}$, set
+\[
+ C=\langle(123)\rangle,\quad P=\operatorname{Stab}_A(5)\simeq A_4,\quad
+ D=\langle(123),(12)(45)\rangle\simeq S_3.
+\]
+Let $\epsilon:D\to\{\pm1\}$ be the sign character of its action on
+$\{1,2,3\}$. Then $\ker\epsilon=C$, and the following is an equality of virtual
+characters of $A$:
+\begin{equation}\label{eq:a5}
+ 5\Ind_C^A\one-\Reg_A=4\Ind_P^A\one+2\Ind_D^A\epsilon.
+\end{equation}
+\end{lemma}
+\begin{proof}
+The map $S_3\to D$ extends each odd permutation on the first three letters by
+$(45)$, and each even permutation by the identity. This identifies $D$ with
+$S_3$ and verifies the kernel assertion. For any $U\le A$ and a character $\lambda$
+of $U$, the induced character at $g$ is
+\begin{equation}\label{eq:ind}
+ (\Ind_U^A\lambda)(g)=\frac{|C_A(g)|}{|U|}
+    \sum_{u\in U\cap g^A}\lambda(u).
+\end{equation}
+The conjugacy classes of $A$ have sizes $1,15,20,12,12$, respectively. The
+nonidentity elements of $P$ are three double transpositions and eight
+three-cycles; those of $D$ are three double transpositions (sign $-1$) and
+ two three-cycles (sign $+1$). Thus the entire calculation is
+\[
+\begin{array}{c|rrrrr}
+\text{class}&1&2^2&3&5_a&5_b\\\hline
+|C_A(g)|&60&4&3&5&5\\
+\Ind_C^A\one&20&0&2&0&0\\
+\Reg_A&60&0&0&0&0\\
+\Ind_P^A\one&5&1&2&0&0\\
+\Ind_D^A\epsilon&10&-2&1&0&0\\\hline
+5\Ind_C^A\one-\Reg_A&40&0&10&0&0\\
+4\Ind_P^A\one+2\Ind_D^A\epsilon&40&0&10&0&0
+\end{array}
+\]
+Both split five-cycle classes vanish on all rows. This establishes the identity
+on all of $A$ without appealing to the irreducible character table.
+\end{proof}
+
+\begin{lemma}[Four-letter refinement]\label{lem:a4}
+In $B=A_4$, let $V\simeq C_2^2$ be its normal Klein four subgroup, and let
+$J$ be generated by one double transposition. Then
+\begin{equation}\label{eq:a4}
+ 3\Ind_J^B\one-\Reg_B=2\Ind_V^B\one.
+\end{equation}
+\end{lemma}
+\begin{proof}
+At the identity the two sides are $3\cdot6-12=6$ and $2\cdot3=6$.
+At a double transposition, the centralizer has order $4$, and the induced
+characters $\Ind_J^B\one,\Ind_V^B\one$ take values $2,3$. Both sides are $6$.
+At each of the two three-cycle classes all the terms vanish.
+\end{proof}
+
+\begin{remark}[Optimality of the five-letter step]\label{rem:sharp}
+The coefficient $5$ in \eqref{eq:a5} cannot be decreased if the only input is
+nonnegative order on all induced linear characters, even if the trivial and
+sign character orders are required to vanish. Indeed, inside $S_5$ consider
+the $10$-dimensional permutation representation on unordered pairs and its
+$5$-dimensional vertex subrepresentation, embedded by
+$(x_i)\mapsto(x_i+x_j)_{i<j}$. This map is injective over $\C$ (the equations
+$x_i+x_j=0$ for three distinct vertices force all $x_i=0$). Its invariant
+orthogonal complement has character $\xi$, degree $5$, and value $-1$ at a
+three-cycle: one unordered pair is fixed but two vertices are fixed. Hence
+$\langle\xi,\Ind_C^{S_5}\one\rangle=(5-1-1)/3=1$. Both permutation modules
+have trivial multiplicity one and sign multiplicity zero, since their point
+stabilizers contain odd permutations. The complement therefore has neither
+linear constituent. Its restriction to $A_5$ also has no trivial constituent,
+by transitivity of $A_5$ on both sets. This is an actual representation, so all
+local positivity tests are met. A proposed bound smaller than $5$ would fail
+on this abstract order vector. This does not assert existence of an arithmetic
+zero realizing that vector, or sharpness of $5^r$ for general $r$.
+\end{remark}
+
+\section{Iteration and proof of Theorem \ref{thm:main}}
+Choose $r$ disjoint triples $T_1,\ldots,T_r$ in the $n$-letter copy of $A_n$,
+and two spare letters $u,v$ outside all triples. Choose a three-cycle $c_i$ on
+$T_i$ and let
+\[
+ C_i=\langle c_i\rangle,\quad H_i=C_1\times\cdots\times C_i,\quad H_0=1.
+\]
+On $T_i\cup\{u,v\}$ take the $A_5$ subgroup $A_i$ of permutations of those five
+letters. Let $P_i$ be the $A_4$ fixing $v$ inside $A_i$, and $D_i$ the copy of
+$S_3$ acting on $T_i$ with parity corrected by $(uv)$. Let $\epsilon_i$ be its
+sign. Importantly, $A_i$ need not commute with $A_j$ for $i\ne j$; only
+$A_i$ and $H_{i-1}$ must commute, which follows from disjoint supports. They
+also intersect trivially. Thus $A_iH_{i-1}=A_i\times H_{i-1}$.
+
+Tensor \eqref{eq:a5} by the trivial character of $H_{i-1}$, and induce from
+$A_i\times H_{i-1}$ to $G$. Transitivity of induction gives
+\begin{equation}\label{eq:iter}
+5\pi_{H_i}-\pi_{H_{i-1}}=4\pi_{P_iH_{i-1}}+
+ 2\Ind_{D_iH_{i-1}}^G(\epsilon_i\boxtimes\one).
+\end{equation}
+Here $\Reg_{A_i}=\Ind_{1}^{A_i}\one$; this is exactly why the preceding
+subfield, not a power of some unrelated zeta function, occurs in the identity.
+Define $K_i=E^{H_i}$, $M_i=E^{P_iH_{i-1}}$, and $N_i=E^{D_iH_{i-1}}$.
+The last linear character in \eqref{eq:iter} has kernel $H_i$, so $K_i/N_i$
+is quadratic. Artin formalism and abelian reciprocity \cite{fgm} give
+\begin{align}
+ \frac{\zeta_{K_i}(s)^5}{\zeta_{K_{i-1}}(s)}
+ &=\zeta_{M_i}(s)^4 L(s,\epsilon_i\boxtimes\one;E/N_i)^2\label{eq:q1}\\
+ &=\zeta_{M_i}(s)^4\left(\frac{\zeta_{K_i}(s)}{\zeta_{N_i}(s)}\right)^2.\notag
+\end{align}
+For clarity, $E/N_i$ may be nonabelian, but the displayed linear character
+factors through its quadratic quotient, so its $L$-function is an entire
+nontrivial finite-order Hecke function of $N_i$. No assertion about individual
+nonmonomial Artin $L$-functions is involved. Equivalently, a pure zeta identity is
+\begin{equation}\label{eq:purezeta}
+ \zeta_{K_i}^3\zeta_{N_i}^2=\zeta_{K_{i-1}}\zeta_{M_i}^4.
+\end{equation}
+These identities hold as meromorphic identities on $\C$, including the factors
+at ramified primes, by Artin induction formalism. The right-hand side of
+\eqref{eq:q1} is holomorphic away from $1$; its pole at $1$ is of order four,
+as also follows directly from the simple poles of the quotient on the left.
+
+If $\delta=1$, there are four spare letters, including $u,v$. Let $B$ be the
+$A_4$ on these letters and choose $J,V$ as in Lemma \ref{lem:a4}. It commutes
+with $H_r$ and intersects it trivially. Tensor \eqref{eq:a4} by $\one_{H_r}$
+and induce to $G$:
+\[
+ 3\pi_{JH_r}-\pi_{H_r}=2\pi_{VH_r}.
+\]
+Put $H=JH_r$ and $W=E^{VH_r}$. This time
+\begin{equation}\label{eq:extra}
+ \frac{\zeta_{E^H}(s)^3}{\zeta_{K_r}(s)}=\zeta_W(s)^2.
+\end{equation}
+If $\delta=0$ put $H=H_r$, with no extra step.
+
+For $\delta=0$ multiply \eqref{eq:q1} over $i$ with exponents $5^{i-1}$:
+\begin{equation}\label{eq:tel}
+ \frac{\zeta_{K_r}^{5^r}}{\zeta_E}=
+ \prod_{i=1}^r\left(\zeta_{M_i}^4L(s,\epsilon_i\boxtimes\one;E/N_i)^2\right)^{5^{i-1}}.
+\end{equation}
+For $\delta=1$, multiply this by the $5^r$-th power of \eqref{eq:extra}.
+In both cases the result is the required holomorphic quotient outside $1$,
+with a pole of order $M-1$ at $1$ (all Dedekind zeta functions have simple
+poles there). Since $E/E^H$ is Galois with abelian group $H$, its zeta quotient
+$\zeta_E/\zeta_{E^H}$ is a product of the entire nontrivial Hecke functions
+of $E^H$ associated to the characters of $H$. Taking orders at any $s_0\ne1$
+now proves \eqref{eq:mult}. Both zeta functions are holomorphic there, and their
+zero sets coincide there. Restricting to the open critical strip proves (iv).
+The field degree follows from the explicit direct product and the Galois
+correspondence. This completes the proof.
+
+\begin{corollary}[Artin nonvanishing away from detected zeros]\label{cor:artin}
+For every $s_0\ne1$ such that $\zeta_K(s_0)\ne0$, all irreducible Artin
+$L$-functions of $E/k$ are holomorphic and nonzero at $s_0$. In particular
+$\RH(\zeta_K)$ implies their zero and pole exclusion in the open critical strip
+off the line $\Re s=1/2$.
+\end{corollary}
+\begin{proof}
+By Brauer meromorphic continuation, define the Heilbronn character
+\[\Theta=\sum_{\chi\in\operatorname{Irr}(G)}\ord_{s_0}L(s,\chi;E/k)\chi.\]
+Its degree is $\ord_{s_0}\zeta_E=0$. Its restriction to any cyclic subgroup
+$U$ is a genuine character: Frobenius reciprocity and induction identify
+its linear-character multiplicities with orders of Hecke $L$-functions
+of $E^U$, all nonnegative at $s_0\ne1$. A genuine character of degree zero
+is zero. Thus $\Theta(g)=0$ for all $g$, by taking $U=\langle g\rangle$.
+Orthogonality forces every Artin order to be zero. This is the standard
+Heilbronn argument \cite{fgm}, with the new input supplied by Theorem
+\ref{thm:main}. No claim of holomorphy on the critical line is made.
+\end{proof}
+
+\section{The explicit prime statistic}
+Assume now $k=\Q$ and $G=S_n$ or $A_n$. Choose a finite set $S$ of rational
+primes containing all primes ramified in $E$. For $p\notin S$ let $g_p$ be a
+Frobenius conjugacy class in $G$. The number of degree-one primes of $K$
+over $p$ equals the permutation character $w(g_p)=\pi_H(g_p)$.
+
+\begin{proposition}[Closed Frobenius weight]\label{prop:weight}
+For $G=S_n$ and $H$ as in Theorem \ref{thm:main}, $w(g)=0$ unless $g$ has
+cycle type $2^{2e}3^j1^{n-4e-3j}$, for $0\le e\le\delta$ and $0\le j\le r$.
+On these classes,
+\begin{equation}\label{eq:weight}
+ w(g)=\frac{2^{2e}(2e)!\,3^j j!\,(n-4e-3j)!}{2^\delta3^r}
+              \binom{r}{j}2^j.
+\end{equation}
+For $G=A_n$ divide the right-hand side by two. In both cases the weight has
+mean one on $G$ and nonnegative integer values.
+\end{proposition}
+\begin{proof}
+There are $\binom{r}{j}2^j$ elements of $H$ of the indicated type (choose
+$j$ nonidentity triple rotations, each in two ways, and choose the uniquely
+specified $J$ component). The centralizer size in $S_n$ is the numerator
+factor before the binomial; \eqref{eq:ind} yields \eqref{eq:weight}. For
+$A_n$ the relevant classes do not split: if $e=0$ at least two letters are fixed,
+and if $e=1$ one of the disjoint two-cycles is an odd centralizing permutation.
+In either case the centralizer has exactly half its $S_n$ size inside $A_n$.
+Burnside's lemma yields mean one since the coset action is transitive.
+\end{proof}
+
+\begin{corollary}[One-sided prime criterion]\label{cor:prime}
+Define
+\[
+ P(x)=\sum_{\substack{p\le x\\p\notin S}} w(g_p)\log p
+             \left(\frac1p-\frac1x\right),\qquad
+ R(x)=P(x)-\log x-c,
+\]
+where $c=\lim_{x\to\infty}(P(x)-\log x)$. Then the following are equivalent:
+\begin{enumerate}[label=\textup{(\roman*)},nosep]
+\item $\RH(\zeta_E)$;
+\item for every $\eta>0$, $R(x)\le C_\eta x^{-1/2+\eta}$ for all sufficiently
+large $x$;
+\item $R(x)=O_{K,S}(x^{-1/2})$.
+\end{enumerate}
+More generally, an eventual upper bound $R(x)\le Cx^{\beta-1}$ with
+$1/2<\beta<1$ excludes every zero of $\zeta_E$ in $\Re s>\beta$.
+\end{corollary}
+\begin{proof}
+We give the analytic reduction, following \texttt{nab:prop:dedekind} in the source. Write
+$\theta(x)=\sum_{p\le x,p\notin S}w(g_p)\log p$. The classical prime ideal
+theorem (with its fixed-field error term) gives the existence of $c$ and
+\begin{equation}\label{eq:rint}
+ R(x)=-\int_x^\infty(\theta(t)-t)t^{-2}\,dt.
+\end{equation}
+Indeed $P(x)=\int_1^x\theta(t)t^{-2}dt$ and the error integral converges:
+$\psi_K(t)-t=O_K(t\exp(-a_K\sqrt{\log t}))$ for large $t$ (a fixed possible
+exceptional real zero may be absorbed by enlarging the implicit constant),
+and $\psi_K(t)-\theta(t)=O_{K,S}(\sqrt t)$.
+
+For $\Re s>1$ put $D(s)=\sum_{p\notin S}w(g_p)\log p\,p^{-s}$.
+The omitted prime powers, higher residue degrees, and the finitely many primes
+in $S$ give a holomorphic correction on $\Re s>1/2$; thus
+$D(s)=-\zeta_K'(s)/\zeta_K(s)+b(s)$ there, by meromorphic continuation.
+Integrating by parts first for $\Re s>1$ gives
+\[
+ F(s)=\int_1^\infty R(x)x^{-s}\,dx
+ =\frac{R(1)}{s-1}+\frac{1}{s-1}\left(\frac{D(s)}s-\frac1{s-1}\right).
+\]
+At $1$ the apparent double pole cancels by the residue of $D(s)$; the possible
+simple pole cancels since $R(x)\to0$, which implies
+$\lim_{\sigma\downarrow1}(\sigma-1)F(\sigma)=0$ (split at a sufficiently large
+fixed $x$). At a zero $\rho$ of $\zeta_K$ with $\Re\rho>1/2$, the residue of
+$F$ is $\ord_\rho\zeta_K/[\rho(1-\rho)]$. It is nonzero and positive for a
+real zero in $(1/2,1)$.
+
+Suppose $R(x)\le Cx^{\beta-1}$ eventually. Increase $C$ to make the bound hold
+for all $x\ge1$, using continuity on compact intervals. Then the Mellin transform
+of $Cx^{\beta-1}-R(x)\ge0$ equals $C/(s-\beta)-F(s)$ for $\Re s>1$.
+If its abscissa of convergence were a real $\sigma_0>\beta$, Landau's theorem
+for a nonnegative Mellin transform would force a real singularity at $\sigma_0$.
+The only possible singularities there are simple poles at real zeros of
+$\zeta_K$ in $(\beta,1)$ (classical nonvanishing on $\Re s\ge1$ apart from the
+pole). Each has \emph{negative} residue in $C/(s-\beta)-F(s)$, contradicting
+nonnegativity on the real axis to the right of the abscissa. Hence the abscissa
+is at most $\beta$ (or $-\infty$), so the transform is holomorphic on
+$\Re s>\beta$. All zeros of $\zeta_K$ there would be nonremovable poles of $F$,
+and are excluded. Theorem \ref{thm:main} transfers the result to $E$.
+
+If $\RH(\zeta_E)$ holds, it holds for $\zeta_K$. The integrated explicit formula
+under RH \cite{gm} gives $\int_1^x(\psi_K(t)-t)dt=O_K(x^{3/2})$.
+Since the terms not in $\theta$ are $O_{K,S}(\sqrt t)$ by the Chebyshev bound
+for prime squares and higher powers, $A(x)=\int_1^x(\theta(t)-t)dt=O_{K,S}(x^{3/2})$.
+Integration by parts in \eqref{eq:rint} yields
+\[
+ R(x)=A(x)x^{-2}-2\int_x^\infty A(t)t^{-3}dt=O_{K,S}(x^{-1/2}).
+\]
+This proves (i)$\Rightarrow$(iii)$\Rightarrow$(ii); taking
+$\beta=1/2+\eta$ arbitrarily close to $1/2$ gives (ii)$\Rightarrow$(i)
+by the functional equation. All constants are for fixed fields and $S$.
+\end{proof}
+
+For example, when $n=8$ there are two triples and two spare letters, so
+$|H|=9$. In an $S_8$-extension the weight is $4480$ at the identity,
+$160$ at a single three-cycle, $16$ at a pair of disjoint three-cycles, and
+zero otherwise. The corresponding class densities are $1/40320$, $112/40320$,
+$1120/40320$; their weighted sum is one. The test does not require that all
+primes split completely. In particular, one may take the splitting field of
+$T^8-T-1$, whose Galois group is $S_8$ by the factorization and primitivity
+certificate in the source (\texttt{grp:ex:s8}). This uses only three
+Frobenius patterns, rather than the six in that source example. A bound in (ii) for these explicit weights is still
+an open arithmetic problem, not a consequence of the character identity.
+
+\section{The small-degree boundary}
+\begin{proposition}[$S_4$: two smaller detectors]\label{prop:s4}
+Let $G=S_4$ and $C=\langle(123)\rangle$, $V$ the normal Klein four subgroup.
+Then, with $F=E^{A_4}$, $K_8=E^C$, $K_6=E^V$,
+\begin{equation}\label{eq:s4}
+ \zeta_{K_8}^3\zeta_{K_6}=\zeta_E\zeta_F^3.
+\end{equation}
+In particular, RH for $\zeta_E$ is equivalent to RH for both $\zeta_{K_8}$
+and $\zeta_{K_6}$. The relative degrees $8,6$ are both smaller than $4!/2$.
+\end{proposition}
+\begin{proof}
+The identity of characters $3\pi_C+\pi_V-\Reg_G=3\pi_{A_4}$ follows from
+\eqref{eq:ind} on the five cycle types $1^4,2,2^2,3,4$; the left side takes
+values $6,0,6,6,0$, respectively. Hence \eqref{eq:s4}. At $s_0\ne1$, if both
+smaller zeta orders vanish, the identity forces the order of $\zeta_E$ to vanish
+since $\zeta_F$ is holomorphic there. Conversely $E/K_8$ and $E/K_6$ are
+abelian, so each smaller order is at most that of $\zeta_E$. The conclusion
+follows on the open critical strip. Over $\Q$, Dirichlet GRH implies that
+$\ord_\rho\zeta_F=0$ at any point of the strip off the line; in that case
+\eqref{eq:s4} gives the exact formula
+$\ord_\rho\zeta_E=3\ord_\rho\zeta_{K_8}+\ord_\rho\zeta_{K_6}$.
+\end{proof}
+
+\begin{proposition}[Limit of a single-field local positivity method]\label{prop:smallobs}
+For $S_3$, no family of subgroups of index strictly smaller than $3$ can
+provide zero detection using only monomial-order positivity and vanishing
+of the two linear constituents. For $S_4$ no \emph{single} subgroup of index
+strictly smaller than $12$ can do so. These are obstructions to that abstract
+method, not counterexamples to arithmetic RH.
+\end{proposition}
+\begin{proof}
+In $S_3$, every subgroup of index less than $3$ contains $C_3$. The standard
+two-dimensional representation has no invariants under $C_3$, has no linear
+constituent, and is genuine, so it supplies the common obstruction.
+
+In $S_4$, a subgroup $U$ of index less than $12$ has order greater than two.
+If it contains a three-cycle, use the standard representation of $S_3$ inflated
+from $S_4/V\simeq S_3$, which has no invariants under that three-cycle. If it
+contains a four-cycle, use the three-dimensional standard representation
+of $S_4$ (the sum-zero subspace of its vertex representation). A four-cycle
+has no fixed vector there. Otherwise all nonidentity elements of $U$ have
+order two, and $U$ is elementary abelian since $(ab)^2=1$ implies $ab=ba$.
+If $U$ has no transposition it must be $V$, which acts transitively on vertices,
+so the standard representation has no invariants. If it contains a
+transposition, say $(12)$, it must lie in the centralizer
+$\{1,(12),(34),(12)(34)\}$ and be all of that subgroup. The sign twist of the
+standard representation then has no $U$-invariants: the $-1$ eigenspaces
+of $(12)$ and $(34)$ in the untwisted representation are two different
+coordinate-difference lines with zero intersection. Every representation just
+used is genuine, of positive degree, and has neither a trivial nor a sign
+constituent. It therefore satisfies the necessary local positivity and
+linear-vanishing conditions while its $U$-invariant dimension is zero.
+\end{proof}
+
+\section{Quantitative comparison and status}
+\begin{center}
+\begin{tabular}{rrrrr}
+\toprule
+$n$&$|H|$&old degree $n!/2$&new degree $n!/|H|$&$M$\\\midrule
+5&3&60&40&5\\
+6&3&360&240&5\\
+7&6&2,520&840&15\\
+8&9&20,160&4,480&25\\
+10&18&1,814,400&201,600&75\\
+12&27&239,500,800&17,740,800&125\\
+\bottomrule
+\end{tabular}
+\end{center}
+The algebraic certificate consists of the two small integral identities,
+transitivity of induction, and their telescoping product. The included
+\texttt{verify.py} independently evaluates the local induced characters on every
+group element and checks the class-coefficient identities for every tower step
+for $5\le n\le60$ in exact rational arithmetic. The file
+\texttt{verification.json} records these checks and the degree formulas. The
+proof is symbolic and valid for arbitrary $n$; the finite verification is an
+audit, not the basis of the universal quantifier.
+
+\paragraph{What is resolved.} The explicit lower-degree detector question
+\source{} of the ProveIt article receives an affirmative answer for all
+$n\ge5$ with one field, and for $n=4$ with two fields. The result is stronger
+than off-line detection and does not rely on the external Lean theorem. A
+particular $A_5$ identity is amplified using shared spare letters; choosing
+five disjoint letters for each step would yield only $3^{\lfloor n/5\rfloor}$,
+rather than the achieved factor $3^{\lfloor(n-2)/3\rfloor}$. The construction
+applies to any ambient finite Galois group containing $A_n$.
+
+\paragraph{What is not resolved.} No new zero-free region for a nonabelian
+Dedekind zeta function is claimed, and the distinct open question in the source
+about the optimal $n-1$ reflection coefficient in all degrees is not answered.
+The article gives a proved reduction of nonabelian RH to a single, smaller
+field, or to a nonnegative prime statistic. Establishing the requisite upper
+bound for that statistic remains the substantive analytic obstacle. The degree
+reduction does not imply an equal reduction of conductor, numerical cost, or
+prime-sum difficulty. No claim of global optimality for $H$ or $M$ is made.
+The proof and finite certificates have been checked in this research session,
+not formally kernel-checked in Lean or independently peer reviewed. The
+result is new relative to the inspected source section; an exhaustive priority
+search across the mathematical literature has not been performed.
+
+\begin{thebibliography}{9}
+\bibitem{proveit} V. Reshetnikov, \emph{ProveIt: Generalized Riemann Hypothesis},
+Article, section ``Nonabelian reductions'' (in \texttt{nab.tex}), especially
+\texttt{nab:prop:dedekind}, \texttt{nab:lem:heilbronn}, \texttt{nab:cor:sn},
+\source{}. Repository main branch inspected 27 November 2026.
+\href{https://github.com/VladimirReshetnikov/ProveIt/tree/main/Analysis/GeneralizedRiemannHypothesis}{Repository}.
+\bibitem{fgm} R. Foote, H. Ginsberg and V. K. Murty, \emph{Heilbronn characters},
+Bull. Amer. Math. Soc. \textbf{52} (2015), 465--496.
+\href{https://doi.org/10.1090/bull/1492}{doi:10.1090/bull/1492}.
+\bibitem{gm} L. Greni\'e and G. Molteni, \emph{Explicit smoothed prime ideals
+ theorems under GRH}, Math. Comp. \textbf{85} (2016), 1875--1899.
+\href{https://doi.org/10.1090/mcom3039}{doi:10.1090/mcom3039}.
+\end{thebibliography}
+\end{document}

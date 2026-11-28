@@ -1,0 +1,217 @@
+# Independent audit: reciprocal zero moments, stability, derivative appendix
+
+## Reciprocal zero moments
+
+Let \(\mu\) be a probability measure supported on an interval of length \(L>0\), and let \(0<\lambda_1\le\cdots\le\lambda_N\) be prescribed real Fourier zeros, counted with admissible multiplicity. The audited strip lemma and finite moment reduction give
+\[
+ S_m:=\sum_{j=1}^m\lambda_j\ge c m^2,\qquad c=\pi/L,\quad1\le m\le N.
+\]
+For a nondecreasing list define
+\[
+ H_\lambda(t)=\sum_{j=1}^N(t-\lambda_j)_+
+             =\max_{0\le m\le N}(mt-S_m).
+\]
+For \(v_j=c(2j-1)\), its prefix sum is \(cm^2\). Hence
+\[
+ H_\lambda(t)\le H_v(t)\qquad(t\ge0).
+\]
+
+For \(p>0\), the exact identity
+\[
+ x^{-p}=p(p+1)\int_0^\infty (t-x)_+t^{-p-2}\,dt
+\]
+and Tonelli give
+\[
+ \sum_{j=1}^N\lambda_j^{-p}
+ \le (L/\pi)^p\sum_{j=1}^N(2j-1)^{-p}.
+\]
+The inequality is sharp at every finite \(N\).
+
+If equality holds, the nonnegative continuous function \(H_v-H_\lambda\) has zero integral against a strictly positive weight. It is therefore identically zero. Its breakpoints and jumps of derivative recover the two multisets, so \(\lambda_j=c(2j-1)\).
+
+The first real Fourier zero is then \(c=\pi/L\). Shift support to \([0,L]\). The imaginary part of the annihilation condition is
+\[
+ \int\sin(\pi t/L)\,d\mu(t)=0.
+\]
+The integrand is nonnegative and strictly positive in the interior, so \(\mu\) is supported on the endpoints. Its real part forces equal masses. Thus the equality measure is the endpoint Bernoulli, up to translation.
+
+For any locally finite infinite prescribed divisor, use the infinite hinge function, which is finite at each fixed \(t\), and the full odd-grid hinge. For \(p>1\),
+\[
+ \sum_j\lambda_j^{-p}
+ \le(L/\pi)^p(1-2^{-p})\zeta(p).
+\]
+The equality argument remains valid by Tonelli. In particular,
+\[
+ \sum_j\lambda_j^{-2}\le L^2/8.
+\]
+
+### Function formulation and sharp constant
+
+For \(A\subset\mathbb N\), Fourier convention \(\widehat f(a)=\int_{\mathbb T}f(x)e^{-2\pi iax}\,dx\), and a nonzero nonnegative function supported in \((-r,r)\), lift and normalize it as a probability on that interval. Angular frequencies are \(2\pi a\), and \(L=2r\), so
+\[
+ r\ge\frac1{\sqrt2\pi}\left(\sum_{a\in A}a^{-2}\right)^{1/2}.
+\]
+The sum here is over positive frequencies only.
+
+For exactly \(N\) positive frequencies, the stronger constant is
+\[
+ r\ge\frac{(\sum_{a\in A}a^{-p})^{1/p}}
+ {4(\sum_{j=1}^N(2j-1)^{-p})^{1/p}}.
+\]
+For \(p=2\), its limit is \(1/(\sqrt2\pi)\).
+
+The extremizers among measures are equal atoms at \(\pm1/4\), with all odd integer frequencies. For functions, convolve those atoms with a nonnegative smooth bump of arbitrarily small support. This preserves all odd Fourier zeros and increases the support radius by an arbitrarily small amount. Taking increasingly long finite sets of odd frequencies proves sharpness of the universal function constant. An \(L^1\) density cannot be the atomic equality measure, so the sharp bound is approached rather than attained in that class.
+
+### Optional stronger formulation
+
+The prefix argument also applies to positive imaginary parts of arbitrary zeros \(\rho_j\) of the bilateral Laplace transform \(G(z)=\int e^{zt}\,d\mu(t)\). Carathéodory preserves any finite collection of the complex zero and derivative constraints. Thus the same reciprocal-moment bound holds for \(\lambda_j=\Im\rho_j>0\).
+
+In that formulation equality allows arbitrary nonzero endpoint masses:
+\(\mu=a\delta_u+(1-a)\delta_{u+L}\), \(0<a<1\).
+Its upper-half-plane zero heights are exactly \((2j-1)\pi/L\), while their real parts encode the imbalance. The real Fourier specialization forces \(a=1/2\).
+
+All zeros with imaginary part in a fixed bounded interval have bounded real part, even without endpoint atoms: exponential tilting by a real parameter concentrates the measure near the right or left endpoint, and the corresponding characteristic functions converge uniformly to the endpoint phase for bounded imaginary parameters. Hence the projected zero divisor is locally finite.
+
+### Convex-statistics corollaries
+
+The hinge proof gives every decreasing convex statistic whose representation by positive hinge weights is valid. Two notable choices are
+\[
+ \sum_j e^{-s\lambda_j}\le\frac1{2\sinh(\pi s/L)},\qquad s>0,
+\]
+and
+\[
+ \prod_j(1+x^2/\lambda_j^2)\le\cosh(Lx/2),\qquad x\ge0.
+\]
+For the product, \(f(u)=\log(1+x^2/u^2)\) has
+\[
+ f''(u)=\frac{2x^2(3u^2+x^2)}{u^2(u^2+x^2)^2}>0.
+\]
+The odd-grid product is the standard product for cosh. These are optional consequences, not needed for the uncertainty-principle answer.
+
+## Stability audit
+
+Center the support in \([-L/2,L/2]\) and put
+\[
+ \Delta=\pi^2/8-(\pi/L)^2\sum_j\lambda_j^{-2}.
+\]
+Assume \(0\le\Delta\le1/8\). Let \(a=L\lambda_1/\pi=1+\eta\).
+
+In normalized coordinates, the target hinge is zero on \([1,a]\), while the full odd-grid hinge is at least \(t-1\). Therefore
+\[
+ \Delta\ge6\int_1^a(t-1)t^{-4}\,dt
+ =1-\frac3{a^2}+\frac2{a^3}
+ =\frac{\eta^2(3+\eta)}{(1+\eta)^3}.
+\]
+The function at \(a=2\) equals \(1/2\), so the deficit assumption first gives \(\eta<1\). On \(0\le\eta\le1\), the last ratio is at least \(\eta^2/2\); hence
+\(\eta\le\sqrt{2\Delta}\le1/2\).
+
+Let \(d(x)=L/2-|x|\). Since
+\[
+ \int\cos(\lambda_1x)\,d\mu=0,\qquad
+ |\cos(\pi x/L)-\cos(\lambda_1x)|\le\pi\eta/2,
+\]
+and
+\[
+ \cos(\pi x/L)=\sin(\pi d(x)/L)\ge 2d(x)/L,
+\]
+we have
+\[
+ \mathbb E_\mu d\le\pi\eta L/4.
+\]
+
+Push each point to its nearest endpoint, obtaining
+\(\nu=p\delta_{L/2}+(1-p)\delta_{-L/2}\). Then
+\(W_1(\mu,\nu)\le\mathbb Ed\).
+The imaginary Fourier condition and Lipschitz continuity of \(e^{i\lambda_1x}\) give
+\[
+ |2p-1|\cos(\pi\eta/2)\le\lambda_1\mathbb Ed.
+\]
+Consequently
+\[
+ W_1\!\left(\mu,\tfrac12\delta_{-L/2}+\tfrac12\delta_{L/2}\right)
+ \le \mathbb Ed
+ \left[1+\frac{\pi(1+\eta)}{2\cos(\pi\eta/2)}\right]
+ \le5L\sqrt\Delta.
+\]
+At \(\eta=1/2\), the constant before \(L\sqrt\Delta\) is approximately \(4.813\), so 5 is safe. This proof does not assume symmetry of \(\mu\). It does not establish optimality of the square-root rate.
+
+## Audit of central_derivatives_note.tex
+
+The following passed independent verification:
+
+- Completed-function normalization and Mellin factor 2 are correct; the even-derivative integral carries factor 4 after restricting to \(t\ge0\).
+- The Sheth–Voo normalization is exactly \(q^{-a/2}\) times the note's standard completion.
+- For \(T=\max(1,\frac12\log(q/\pi))\), positivity of the theta tail follows from the \(n=1\) term and the displayed geometric bound on the rest.
+- \(\sum n e^{-cn^2}\le q/(2\pi)+\sqrt q/2\le q\) for \(q\ge3\).
+- Every inequality leading to the uniform increase threshold \(500(1+\log q)^2\) is valid, including the \(e^{-440}\) positive interval bound.
+- The saddle \(r_0=W(N/c)/2\), curvature \(4N(1+w)/w^2\), relative error \(O(w/N)\), and final prefactor \(2\sqrt\pi\,w/\sqrt{m(1+w)}\) all agree.
+- Bounding all \(n\ge2\) terms by a conductor-dependent constant times \(I_{2m}(4c,\beta)\) proves the error \(e^{-(4\log2+o(1))m/\log m}\).
+- Adjacent ratios follow from the explicit main expression and two \(o(1)\) relative errors; no unjustified differentiation of error terms occurs.
+- The revised growing-order Hankel threshold is correct:
+\[
+ m\ge\left\lceil (T+1)
+ [225+2\log q+\log(r+1)+r\log(2T+4)]\right\rceil.
+\]
+The Legendre-polynomial extrapolation uses the correct normalization \(\sqrt{(2j+1)/D}\), with \(D=2T+3\). The transformed core satisfies \(|y|<(T+2)\), giving the factor \(R=2T+4\). Core and tail integrals compare uniformly over every coefficient vector. The omitted factor \((T+2)/D<1\) strengthens the sufficient condition in the safe direction.
+- This threshold permits \(r\) to grow at any fixed rate smaller than \(1/((T+1)\log(2T+4))\) times \(m\), for sufficiently large \(m\) at fixed \(q\).
+
+Primary Sheth–Voo manuscript independently opened at https://borowiecki.dev/pdf/2611.12152. It does formulate eventual increase as Conjecture 1.5(1) and asks for asymptotics after Theorem 1.6. However the revised note correctly credits Wagner 2019 for older arbitrary-order asymptotics. Qualitative eventual increase must not be advertised as a newly solved conjecture without that qualification. The effective threshold and growing-matrix bound are the note's quantitative focus.
+
+The numerical checks are clearly marked high-precision illustrations rather than interval-certified proofs.
+
+## Final audit of the m log m upgrade
+
+The fresh Theorem 4 and Section 7 of central_derivatives_note.tex also pass.
+
+For arbitrary \(T<U<V\), define \(D=V^2-U^2\) and
+\(R=(V+U)/(V-U)\). The transformed coordinate bound is
+\(E=(V^2+U^2)/D\), and exactly
+\(E+\sqrt{E^2-1}=R\).
+The Legendre estimate therefore gives
+\[
+ \sup_{[0,T^2]}|P|^2
+ \le (r+1)^2R^{2r}D^{-1}\int_{U^2}^{V^2}P^2.
+\]
+The positive part of the quadratic form is bounded below by
+\(U^{2m}e^{-ce^{2V}}V^{-1}\int P^2\);
+the negative core is bounded above in magnitude by
+\(C_qT^{2m}(r+1)^2R^{2r}D^{-1}\int P^2\).
+Their comparison is precisely the stated explicit interval criterion.
+
+For \(U=eT\) and \(V_m=\tfrac12\log(m/c)-\log\log m\),
+\[
+ ce^{2V_m}=m/(\log m)^2=o(m),\qquad
+ \log R=(4eT+o(1))/\log m.
+\]
+Uniformly for \(r\le\alpha m\log m\), the right side of the criterion is at most
+\((8eT\alpha+o(1))m\), whereas the left side is \(2m\).
+Therefore every fixed \(\alpha<1/(4eT)\) is valid. No optimality of this coefficient is proved.
+
+Optional conceptual limitation: if the theta kernel is negative on an interval, then at every fixed \(m\) there is some finite \(r\) for which \(H_{m,r}\) is not positive semidefinite. The signed measure
+\(d\sigma_m(x)=x^{m-1/2}K_\chi(\sqrt x)\,dx\)
+has exponential moments of every order. Polynomials are dense in \(L^2(|\sigma_m|)\): an orthogonal function would give an analytic Fourier transform all of whose derivatives at zero vanish. Approximate the indicator of a negative interval to obtain a polynomial \(P\) with \(\int P^2\,d\sigma_m<0\). Thus increasing matrix size with \(m\) is a substantive issue; all sizes cannot be treated simultaneously at one fixed derivative index in the sign-changing case.
+
+## Final manuscript read, 27 November 2026 (America/Los_Angeles)
+
+Independently read the full `research_bundle/sharp_reciprocal_zero_inequalities.tex` and final `central_derivatives_note.tex`. No mathematical gaps were found in either manuscript. The final read specifically checked:
+
+- Finite moment preservation includes all requested derivative equations and cannot collapse to a one-point measure when a zero is preserved.
+- Strip boundary zeros have zero weight, logarithmic singularities are integrable, and distributional integration yields the stated factor \(2\pi\).
+- The projected zero divisor is locally finite, including zeros escaping in their real coordinate; the prefix estimate already proves this.
+- Complex-height equality permits unequal endpoint masses, while Fourier equality and the stability theorem require equal masses.
+- Infinite hinge functions are locally finite, their reciprocal-moment integrals converge for \(p>1\), and equality forces every odd-grid height.
+- The decreasing-convex integral representation has vanishing boundary terms: \(-tf'(t)\le2f(t/2)\to0\).
+- Circle frequencies carry the factor \(2\pi\), giving radius constant \(1/(\sqrt2\pi)\) on \(\mathbb R/\mathbb Z\). Smooth sharpness uses exact-zero-preserving convolution.
+- The zero-free-interval duality is a statement about suprema; no unjustified endpoint attainment by a strictly positive polynomial is asserted.
+- The exact discrete optimizer is \(\lfloor(1+\sqrt{12N^2-12N+1})/2\rfloor\), truncated to the available band. No ties occur.
+- The short-band, proportional-band, long-band, and unrestricted-tail asymptotics have the stated quantifiers and constants.
+- The higher-power critical-point equation has exactly one positive solution, and the uniform order estimate follows with constants depending only on the fixed exponent.
+- The final derivative note includes the fixed-index obstruction above with a valid polynomial-density argument, and its superlinear Hankel threshold is uniform over all allowed dimensions.
+
+The only optional wording precision suggested for the main paper was to state \(n\ge1\) explicitly in its finite reciprocal-moment theorem, since an empty selected list has trivial equality for every measure. The intended nonempty-list interpretation is already evident from the theorem's displayed ordered list.
+
+These are independent mathematical checks within this investigation. They do not constitute external peer review, a full Lean formalization, or a certification of publication priority.
+
+
+
+Packaging note: the suggested n>=1 precision edit was applied to the delivered main manuscript.

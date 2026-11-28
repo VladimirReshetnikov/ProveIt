@@ -1,0 +1,139 @@
+REFEREE REVIEW: THE SHARP 7/9 BOUND FOR THREE CHARACTER FACTORS
+2026-11-27
+
+Assessment: the compact-group theorem, its equality classification, and the
+extension to arbitrary Hecke quasi-character triples over number fields are
+correct. The latter follows directly from Rajan's Theorem 1 and finite-order
+twist classes; a separate unitary Hecke second-moment argument is unnecessary.
+
+1. Precise compact-group statement
+
+Let A and B be distinct multisets of three continuous one-dimensional unitary
+characters of a compact group G with normalized Haar measure. Write D for the
+set where their complete characteristic polynomials differ. Then m(D)>=2/9.
+Equality holds exactly when, after possibly exchanging the packets, there are
+a continuous unitary character a and independent order-three characters chi,
+psi such that
+
+  A = a {1,chi,chi^2},    B = a psi {1,chi,chi^2}.
+
+Independence means <chi,psi> is isomorphic to C3 x C3. No finite-image or
+abelian hypothesis on G is necessary; all the characters factor through its
+abelianization. The common character a can have infinite order.
+
+2. Bound, with cancellation handled explicitly
+
+Cancel common characters with multiplicity; let r be the number of remaining
+characters on each side. The disagreement set is unchanged because common
+polynomial factors cancel. For the resulting trace difference f, orthogonality
+gives N=int|f|^2=sum_c m_c^2 >= sum_c |m_c| = 2r, as positive and negative
+multiplicities now have disjoint support. If r=1 or r=2, the pointwise bound
+|f|<=2r gives m(D)>=1/(2r), hence at least 1/4. For r=3, different determinant
+characters force disagreement on the complement of the kernel of their
+quotient, a set of measure at least 1/2. If determinants coincide, the SU(3)
+trace triangle gives |f|^2<=27. Therefore 6<=N<=27 m(D), proving 2/9.
+
+3. Equality classification
+
+At m(D)=2/9 we must have r=3, identical determinants, N=6, and |f|^2=27
+throughout D. The last conclusion first holds almost everywhere and then
+pointwise: D is open, the nonnegative deficit 27-|f|^2 is continuous there,
+and Haar measure is positive on every nonempty open set. N=6 means all six
+characters are distinct. Equality in the SU(3) trace diameter forces both
+diagonal matrices to be scalar on D, with distinct scalar values whose ratio
+is a primitive cube root of unity.
+
+The two scalar kernels coincide: on D both matrices are scalar; outside D,
+equal characteristic polynomials imply that if one matrix is scalar, so is
+the other, with the same scalar value. Call this common closed subgroup K,
+and the two scalar characters on K lambda and mu. The quotient lambda/mu
+has nontrivial image in mu_3, and
+
+  D = {g in K : lambda(g) != mu(g)}.
+
+Consequently m(D)=(2/3)m(K), so m(K)=1/3 and [G:K]=3. The ratios among
+characters within either packet are trivial on K. Since G/K=C3 and each
+packet consists of three distinct characters, for a generator chi of the
+annihilator of K we have A=a{1,chi,chi^2}, B=b{1,chi,chi^2}. Their determinants
+are a^3 and b^3, hence psi=b/a satisfies psi^3=1. The packets are distinct,
+so psi is not in <chi>; chi and psi are independent. Conversely this form
+has disagreement exactly chi=1, psi!=1, of Haar measure 2/9.
+
+4. Arbitrary Hecke quasi-character triples: unconditional reduction
+
+Let K be a number field. Let A and B be distinct multisets of three idele
+class quasi-characters. Omit the finitely many primes ramified for any of
+them. Partition the six characters into equivalence classes under
+
+  alpha ~ beta  iff  alpha/beta has finite order.
+
+Rajan 2000, Theorem 1, p. 692, says that equality of the local components of
+two quasi-characters on a positive-upper-density set forces their quotient
+to have finite order. Therefore, for any characters in different classes,
+the primes where their local components agree have upper natural density
+zero. The union E of these finitely many exceptional sets also has density
+zero. For an unramified character, equality of its value on a uniformizer
+is equivalent to equality of its local character.
+
+At every prime outside E, equality of the complete degree-three polynomials
+is equivalent to equality of the two multisets inside every equivalence
+class separately. If some class has unequal multiplicities in A and B,
+there is no agreement outside E, so the total agreement density is zero.
+
+Otherwise the multiplicities balance in every class. Within each class,
+divide all characters by one fixed member. All resulting characters have
+finite order. They factor through one common finite abelian Galois extension,
+and Chebotarev computes every Boolean combination of their local equality
+conditions. In particular the total agreement set has a natural density;
+up to E it is a Chebotarev set.
+
+If at least two classes occur and the full packets are unequal, some
+nonidentical class has size at most two on each side. Its local disagreement
+density is at least 1/4 by the cancellation bound above. Total disagreement
+therefore has density at least 1/4. If just one class occurs, divide all six
+characters by a common quasi-character and apply the finite compact-group
+theorem: total disagreement density is at least 2/9.
+
+Equality 2/9 can only occur in the single-class case. Hence all equality
+pairs are exactly
+
+  A = a {1,chi,chi^2},    B = a psi {1,chi,chi^2},
+
+where a is now an ARBITRARY idele class quasi-character and chi,psi are
+independent cubic finite-order Hecke characters. Conversely every such pair
+has agreement density 7/9 by class field theory and Chebotarev. This proves
+the optimal replacement of the n=3 threshold for arbitrary inducing triples,
+including the triples appearing in Rajan's A_B. No RH or GRH is used.
+
+5. Wording and scope
+
+State the strongest result directly for distinct inducing character
+multisets. At unramified primes the spherical principal-series classification
+identifies these local multisets with the local representation. Thus the
+result applies exactly to the character conclusion of Rajan's Conjecture 3.
+If asserting a further global-isomorphism conclusion for arbitrary A_B
+subquotients, follow Rajan's stated convention for pi(mu_1,...,mu_n); do not
+silently strengthen to a uniqueness theorem for arbitrary subquotients of
+one fixed induced representation. The optimal 7/9 bound and classification
+of unequal inducing data do not need that additional issue resolved.
+
+The finite-order cubic equality construction already appears in the supplied
+repository. The contribution here is the sharp extension to all compact
+one-dimensional character triples and all Hecke quasi-character triples,
+its equality classification, and the connection to the published conjecture.
+
+6. Source verification
+
+C. S. Rajan, Refinement of strong multiplicity one for automorphic
+representations of GL(n), Proc. Amer. Math. Soc. 128 (2000), 691-700.
+DOI: 10.1090/S0002-9939-99-05616-6.
+Primary institutional PDF:
+https://repository.ias.ac.in/95366/1/Refinement.pdf
+
+Theorem 1 was directly confirmed in the indexed primary PDF by searching
+that exact URL for "quasi-characters" / "positive upper density". Tool
+source ref from this subagent: turn470361630search0. Parent must retrieve
+or search the source itself before using this ref in final chat citations.
+The proof of Rajan's Theorem 5, pp. 696-697, uses precisely the same finite-
+order twist-class reduction. The local spherical classification is recalled
+on p. 695. Conjecture 3 is on p. 698. Avoid reproducing long direct quotes.

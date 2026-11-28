@@ -1,0 +1,556 @@
+\documentclass[11pt]{article}
+\usepackage[a4paper,margin=27mm]{geometry}
+\usepackage[T1]{fontenc}
+\usepackage{lmodern,amsmath,amssymb,amsthm,mathtools,booktabs,microtype,xcolor,hyperref}
+\hypersetup{colorlinks=true,linkcolor=blue!50!black,citecolor=blue!50!black,urlcolor=blue!50!black}
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{corollary}[theorem]{Corollary}
+\theoremstyle{remark}\newtheorem{remark}[theorem]{Remark}
+\newcommand{\Ind}{\operatorname{Ind}}
+\newcommand{\Irr}{\operatorname{Irr}}
+\newcommand{\Reg}{\operatorname{Reg}}
+\newcommand{\St}{\operatorname{St}}
+\newcommand{\ord}{\operatorname{ord}}
+\newcommand{\PSL}{\operatorname{PSL}}
+\newcommand{\PGL}{\operatorname{PGL}}
+\newcommand{\SL}{\operatorname{SL}}
+\newcommand{\F}{\mathbb F}
+\newcommand{\C}{\mathbb C}
+\newcommand{\Q}{\mathbb Q}
+\newcommand{\one}{\mathbf 1}
+\newcommand{\RH}{\mathrm{RH}}
+\title{Optimal families of zero detectors for $\PSL_2(q)$\\[4pt]
+\large A positive Hecke factorization in odd characteristic}
+\author{Research note prepared for the ProveIt project}
+\date{27 November 2026}
+\begin{document}
+\maketitle
+\begin{abstract}
+Let $L/k$ be a Galois extension of number fields with group $\PSL_2(q)$,
+where $q\equiv1\pmod4$ is an odd prime power. We show that two explicitly
+specified intermediate fields, of degrees $(q^2-1)/2$ and $q(q-1)/2$,
+detect every zero of $\zeta_L$, without Artin holomorphy or any Riemann
+hypothesis. A positive factorization into finite-order Hecke $L$-functions
+gives an explicit multiplicity inequality at every point other than $1$.
+The larger field degree is the least possible maximum degree of an
+arbitrary spectrally detecting family, except at $q=9$, where the exact
+optimum is $36$ and a separate positive identity supplies zero detection.
+We also give a three-field identity valid for every odd $q$, removing
+Artin holomorphy from a broader family of reductions. These results address
+the odd-characteristic question in the inspected ProveIt article; they
+do not prove nonabelian GRH. All finite exceptional calculations are
+included in an exact standard-library Python verifier.
+\end{abstract}
+\tableofcontents
+
+\section{Source question and status}
+The inspected ProveIt snapshot is
+\texttt{ce35f320bc88c02093e479f5fe5003ff86b2795f}.
+Its consolidated article, in \texttt{Article/sections/grp.tex}, asks in
+Question \texttt{grp:q:odd} for the least possible maximum degree in a
+spectrally detecting family for $\PSL_2(q)$ in odd characteristic, and asks
+whether the Artin-holomorphy assumption can be removed from such
+reductions. It already determines the least degree for a \emph{single}
+spectrally detecting field and provides unconditional analytic transfers
+in even characteristic. This note settles the maximum-degree question for
+$q\equiv1\pmod4$, including its unique exception, and proves unconditional
+analytic transfers. A supplementary three-field identity works for all
+odd $q$.
+
+The finite-group input is the ordinary character table of $\PSL_2(q)$,
+obtained from the central-trivial rows of the $\SL_2(q)$ table in
+\cite[Table 1]{BFL}, and Dickson's subgroup classification in
+\cite[Theorem A.1]{GZ}. The analytical input is Artin formalism and the
+classical fact that a linear Artin $L$-function is a finite-order Hecke
+$L$-function. The argument uses none of the zero-location conclusions of
+RH or Dirichlet GRH. Novelty is claimed relative to the inspected project
+and is subject to an independent literature and proof review. No Lean
+formalization or resolution of nonabelian GRH is claimed.
+
+\section{The two fields and the main theorem}
+Throughout Sections 2--6, let $q\equiv1\pmod4$ be an odd prime power,
+$q\ge5$, and put
+\[
+ G=\PSL_2(\F_q),\qquad |G|=\frac{q(q^2-1)}2,\qquad
+ a=\frac{q-1}2,\quad b=\frac{q+1}2.
+\]
+Let $B$ be the stabilizer of a point of $\mathbb P^1(\F_q)$, let $U$ be
+its unipotent subgroup, and let $T_s=B/U$ and $T_n$ be respectively the
+split and nonsplit projective tori. Their orders are
+\[
+ |U|=q,\quad |B|=q(q-1)/2,\quad |T_s|=a,\quad |T_n|=b.
+\]
+Write $N=N_G(T_n)$; it is dihedral of order $q+1=2b$. For a subgroup $H$
+write $\pi_H=\Ind_H^G\one_H$. For a Galois extension $L/k$ with group
+$G$, put $F_H=L^H$.
+
+\begin{theorem}[Unconditional two-field zero detection]\label{thm:analytic}
+For every such $L/k$ and every $s_0\in\C\setminus\{1\}$,
+\begin{equation}\label{eq:orders}
+ 0\le\ord_{s_0}\zeta_{F_U},\ \ord_{s_0}\zeta_{F_N}
+ \le\ord_{s_0}\zeta_L
+ \le \frac{q+1}2\ord_{s_0}\zeta_{F_U}
+       +(q-1)\ord_{s_0}\zeta_{F_N}.
+\end{equation}
+The middle notation means each of the two displayed subfield orders is at
+most the order of $\zeta_L$. Consequently the zero set of $\zeta_L$ away
+from $1$ is the union of the zero sets of these two subfield zeta functions,
+and
+\[
+ \RH(\zeta_L)\quad\Longleftrightarrow\quad
+ \RH(\zeta_{F_U})\ \text{and}\ \RH(\zeta_{F_N}).
+\]
+The field degrees are
+\[
+ [F_U:k]=\frac{q^2-1}2,\qquad [F_N:k]=\frac{q(q-1)}2.
+\]
+The quotient
+\begin{equation}\label{eq:quotient}
+ \frac{\zeta_{F_U}(s)^{(q+1)/2}\zeta_{F_N}(s)^{q-1}}{\zeta_L(s)}
+\end{equation}
+is holomorphic away from $1$, where it has a pole of exact order
+$3(q-1)/2$.
+\end{theorem}
+
+A family $(F_{H_i})$ is \emph{spectrally detecting} if each nontrivial
+irreducible character of $G$ occurs in at least one $\pi_{H_i}$.
+This is the definition used by the source article. It is a finite-group
+condition; it alone does not prevent zeros and poles of meromorphic Artin
+factors from cancelling. Theorem~\ref{thm:analytic} supplies the extra
+analytic assertion for our family.
+
+\begin{theorem}[Optimal maximum degree]\label{thm:optimal}
+Let $q\equiv1\pmod4$ be an odd prime power. Among all finite spectrally
+detecting families of subfields of a $\PSL_2(q)$-extension, the smallest
+possible value of the largest degree is
+\begin{equation}\label{eq:opt}
+ \mathcal D(q)=
+ \begin{cases}
+ 36,&q=9,\\
+ (q^2-1)/2,&q\ne9.
+ \end{cases}
+\end{equation}
+For $q\ne9$, the pair $(F_U,F_N)$ attains the optimum and satisfies
+Theorem~\ref{thm:analytic}. For $q=9$, a nonsplit torus normalizer $N$ of
+order $10$ and a subfield subgroup $A\simeq\PSL_2(3)\simeq A_4$ of order
+$12$ attain it. Adding the base field $k$, of degree one, gives an
+unconditional zero-detecting family of the same optimal maximum degree.
+\end{theorem}
+
+The optimality in this theorem is among spectrally detecting families, not
+a lower bound for every imaginable analytic criterion. In particular,
+positivity of the Hecke factorization is an additional theorem rather than
+an assumed consequence of spectral coverage.
+
+\section{The character identity}
+Let $z$ be the involution of $T_s$ and let $\delta$ be its unique quadratic
+character. The principal series consists of
+$P_\alpha=\Ind_B^G\alpha$, where $\alpha$ ranges over nontrivial
+characters of $T_s$ other than $\delta$, with $\alpha$ and $\alpha^{-1}$
+identified; these have degree $q+1$. The cuspidal series $D_\beta$ is
+indexed by nontrivial characters of $T_n$, up to inversion; these have
+degree $q-1$. The remaining characters are $\one$, the Steinberg character
+$\St$ of degree $q$, and two exceptional characters $E_+,E_-$ of degree
+$(q+1)/2$. Their sum is
+\[
+ E:=E_++E_-=\Ind_B^G\delta.
+\]
+Set
+\[
+ P_0=\sum_{\substack{\alpha\ne1,\delta\ ({\rm mod\ inversion})\\
+                         \alpha(z)=1}}P_\alpha,
+ \qquad
+ I=\frac{1+\delta(z)}2=
+ \begin{cases}1,&q\equiv1\pmod8,\\0,&q\equiv5\pmod8.\end{cases}
+\]
+The following table lists fixed-space dimensions, i.e. multiplicities in
+the permutation characters. The subsequent analytic argument permits
+negative orders for individual irreducible Artin functions.
+\begin{center}
+\begin{tabular}{@{}lrrrr@{}}\toprule
+irreducible & degree & $\langle\pi_U,\chi\rangle$
+ & $\langle\pi_N,\chi\rangle$ & $\langle\pi_B,\chi\rangle$\\\midrule
+$\one$ & $1$ & $1$ & $1$ & $1$\\
+$\St$ & $q$ & $1$ & $1$ & $1$\\
+$P_\alpha$ & $q+1$ & $2$ & $1+\alpha(z)$ & $0$\\
+$D_\beta$ & $q-1$ & $0$ & $1$ & $0$\\
+$E_+$ & $(q+1)/2$ & $1$ & $I$ & $0$\\
+$E_-$ & $(q+1)/2$ & $1$ & $I$ & $0$\\\bottomrule
+\end{tabular}
+\end{center}
+
+\begin{lemma}[Fixed-space calculations]\label{lem:fixed}
+The table is correct. In particular, $\pi_U+\pi_N$ contains every
+irreducible character.
+\end{lemma}
+\begin{proof}
+For reference, an ordinary principal character has value $1$ at a
+nonidentity unipotent, value $\alpha(t)+\alpha(t)^{-1}$ at a split
+semisimple element $t$, and value zero at a nonsplit semisimple element.
+An ordinary cuspidal character has the values $-1$, zero, and
+$-\beta(t)-\beta(t)^{-1}$ on these respective types. Steinberg has values
+$0,1,-1$. Each exceptional character has value $\delta(t)$ at a split
+semisimple element and zero at a nonsplit element; its two unipotent
+values are $(1+\sqrt q)/2$ and $(1-\sqrt q)/2$, interchanged for the
+other exceptional character. These are the central-trivial rows of
+\cite[Table 1]{BFL}.
+
+The group $U$ has $(q-1)/2$ nonidentity elements of each unipotent type.
+Averaging gives the $U$ column. The two unipotent values of each
+exceptional character sum to one, so its $U$-fixed dimension is
+$((q+1)/2+(q-1)/2)/q=1$.
+
+Since $b$ is odd, all $b$ involutions in $N\setminus T_n$ are split.
+Each principal character is zero on $T_n\setminus\{1\}$ and has value
+$2\alpha(z)$ on those involutions. Its average is therefore
+$(q+1+2b\alpha(z))/(2b)=1+\alpha(z)$.
+For each cuspidal parameter, $\sum_{t\ne1}\beta(t)=-1$, so its sum over
+$T_n$ is $q-1+2=q+1$; the reflections contribute zero. This gives fixed
+dimension one. The exceptional average is
+$((q+1)/2+b\delta(z))/(2b)=I$.
+Steinberg's average is $(q-(b-1)+b)/(2b)=1$.
+Finally $\pi_B=\one+\St$ because the projective-line action is doubly
+transitive. The table and the coverage assertion follow.
+\end{proof}
+
+\begin{proposition}[Positive character identity]\label{prop:identity}
+In the character ring of $G$,
+\begin{equation}\label{eq:identity}
+ (q-1)\pi_N+\frac{q+1}2\pi_U-\Reg_G
+ =(q-1)\left(\one+\frac12\pi_B+2P_0+I E\right).
+\end{equation}
+Every coefficient on the right is a nonnegative integer after the outer
+factor is multiplied in, and every summand is induced from a linear
+character of a subgroup.
+\end{proposition}
+\begin{proof}
+Compare irreducible multiplicities using Lemma~\ref{lem:fixed}.
+For a principal character the difference on the left is
+$(q-1)(1+\alpha(z))$, which is $2(q-1)$ for the parameters in $P_0$ and
+zero for the others. It is zero on every cuspidal character and
+$(q-1)I$ on each exceptional character. The Steinberg coefficient is
+$(q-1)/2$, and the trivial coefficient is $3(q-1)/2$.
+These are exactly the coefficients on the right.
+The principal series and $E$ are induced from nontrivial linear
+characters of $B$. The character $\pi_B$ is induced from its trivial
+character, and $\one$ is linear on $G$ itself.
+\end{proof}
+
+\section{From the identity to zeros}
+For a point $s_0\ne1$ define the Heilbronn virtual character
+\[
+ \Theta=\sum_{\chi\in\Irr(G)}
+       \ord_{s_0}L(s,\chi,L/k)\,\chi.
+\]
+Artin meromorphy gives meaning to the orders, including negative orders
+when an individual Artin function has a pole. Artin induction and Hecke
+holomorphy imply
+\begin{equation}\label{eq:Heilbronn}
+ \langle\Theta,\Ind_H^G\lambda\rangle
+ =\ord_{s_0}L(s,\lambda,L/F_H)\ge0
+\end{equation}
+for every linear character $\lambda$ of every subgroup $H$. The trivial
+case is a Dedekind zeta function, which also has no pole away from $1$.
+
+Put $m=\Theta(1)=\ord_{s_0}\zeta_L$ and
+$a_H=\langle\Theta,\pi_H\rangle=\ord_{s_0}\zeta_{F_H}$.
+On each cyclic subgroup the restriction of $\Theta$ is an actual
+character, by \eqref{eq:Heilbronn}; hence $|\Theta(g)|\le m$ for all
+$g\in G$. Averaging over $H$ shows $0\le a_H\le m$ for every $H$.
+Pairing \eqref{eq:identity} with $\Theta$ proves the last inequality in
+\eqref{eq:orders}. This proves all zero-set and RH assertions of
+Theorem~\ref{thm:analytic}.
+
+More explicitly, Artin formalism gives the exact meromorphic identity
+\begin{align}\label{eq:factorization}
+ \frac{\zeta_{F_U}^{(q+1)/2}\zeta_{F_N}^{q-1}}{\zeta_L}
+ &=\zeta_k^{q-1}\zeta_{F_B}^{(q-1)/2}
+   \prod_{\substack{\alpha\ne1,\delta\ ({\rm mod\ inversion})\\
+                    \alpha(z)=1}}
+        L(s,\alpha,L/F_B)^{2(q-1)}
+   L(s,\delta,L/F_B)^{I(q-1)}.
+\end{align}
+This includes the ramified Euler factors. The finite-order Hecke
+characters in the product are nontrivial, so their $L$-functions are
+entire and nonzero at $1$. The two zeta factors have simple poles there.
+This proves the asserted holomorphy and the pole order $3(q-1)/2$.
+
+\begin{remark}[What this does and does not prove]
+The multiplicity bound is unconditional and holds over arbitrary number
+fields. It prevents cancellation from concealing every off-line zero
+from the specified fields. It does not establish RH for either smaller
+field and consequently does not establish RH for $\zeta_L$. The source
+Dirichlet-GRH theorem does not by itself provide RH for these nonabelian
+intermediate fields.
+\end{remark}
+
+\section{Optimality for \texorpdfstring{$q\ne9$}{q different from 9}}
+For a finite group $G$ define
+\[
+ h_{\rm fam}(G)=\max_{(H_i)}\min_i|H_i|,
+\]
+where the maximum ranges over spectrally detecting finite families.
+Then the least possible maximum field degree is $|G|/h_{\rm fam}(G)$.
+Lemma~\ref{lem:fixed} gives $h_{\rm fam}(G)\ge q$.
+For $q\ge13$, and also for the obstruction calculation at $q=9$, choose
+a faithful character $\alpha$ of the cyclic group $T_s$ and let
+$P=\Ind_B^G\alpha$. It is irreducible of degree $q+1$ because
+$\alpha\ne1,\delta$.
+
+\begin{lemma}[The faithful principal-series obstruction]\label{lem:obstruction}
+If $q\equiv1\pmod4$ and $q\ge13$, then $P^H=0$ for every subgroup
+$H\le G$ with $|H|>q$.
+\end{lemma}
+\begin{proof}
+We apply Dickson's classification \cite[Theorem A.1]{GZ}; $H=G$ is
+immediate because $P$ is nontrivial irreducible.
+
+\emph{Borel subgroups and their subgroups.}
+Conjugate $H$ into $B=\F_q\rtimes(\F_q^\times)^2$, write
+$A=H\cap U$, and let $C$ be its multiplier image.
+If $C=1$ then $|H|\le q$. Otherwise translate the fixed point of a lift
+of a generator of $C$ to zero, so that $H=A\rtimes C$.
+For the subfield $\F_r$ generated by $C$, the additive group $A$ is an
+$\F_r$-vector subspace. If $A\ne U$, then
+$|A|\le q/r$ and $|C|\le r-1$, giving $|H|<q$.
+Thus $|H|>q$ forces $A=U$ and $C\ne1$.
+The sum of $P$ on $U$ is $(q+1)+(q-1)=2q$.
+For each $c\in C\setminus\{1\}$, its $q$ affine lifts are all split
+semisimple and contribute $q(\alpha(c)+\alpha(c)^{-1})$.
+Faithfulness gives $\sum_{c\ne1}\alpha(c)=-1$ and the same for
+$\alpha^{-1}$. The total sum on $H$ is therefore $2q-2q=0$.
+
+\emph{Torus normalizers.}
+A subgroup of a split torus normalizer has order at most $q-1$.
+The only subgroup of the nonsplit normalizer of order greater than $q$
+is the entire group $N$, of order $q+1$.
+Since $a$ is even and $\alpha$ is faithful, $\alpha(z)=-1$.
+Lemma~\ref{lem:fixed} gives $\dim P^N=0$.
+
+\emph{Subfield subgroups.}
+Suppose $H\simeq\PSL_2(t)$ with $q=t^j$, $j\ge2$, or
+$H\simeq\PGL_2(t)$ with even $j\ge2$.
+If $j\ge3$ in the first case or $j\ge4$ in the second, the subgroup
+order is less than $q$. Thus only $q=t^2$ need be considered.
+Here $t\ge5$. Every semisimple element of either subfield group is split
+in $G$; both types of maximal torus have nontrivial faithful $\alpha$
+restriction. There are $t(t+1)/2$ split tori and $t(t-1)/2$ nonsplit tori
+in the subfield group, and each nonidentity semisimple element belongs
+to exactly one such torus. In $\PSL_2(t)$ their orders are
+$(t-1)/2,(t+1)/2$, and in $\PGL_2(t)$ their orders are $t-1,t+1$.
+The sum of $P$ over the nonidentity elements of each torus is $-2$.
+There are $t^2-1$ nonidentity unipotents, at which $P=1$.
+Consequently the sum of $P$ over $H$ is
+\[
+ (t^2+1)+(t^2-1)-2\left(\frac{t(t+1)}2+
+                                 \frac{t(t-1)}2\right)=0.
+\]
+This calculation is independent of any possible subgroup fusion into
+the ambient group, because it uses complete cyclic tori.
+
+\emph{The exceptional groups.}
+The remaining groups are $A_4,S_4,A_5$, of orders at most $60$.
+The condition $|H|>q\ge13$ leaves only the pairs in the following table.
+Their existence conditions are the ones in Dickson's list; in each case
+the character average is zero:
+\begin{center}
+\begin{tabular}{@{}rrrrrrr@{}}\toprule
+$q$&$17$&$25$&$29$&$41$&$49$\\
+$H$&$S_4$&$A_5$&$A_5$&$A_5$&$A_5$\\
+$\sum_{h\in H}P(h)$&$18-18$&$26-30-20+24$&$30-30$
+ &$42-30-12$&$50-30-20$\\\bottomrule
+\end{tabular}
+\end{center}
+For completeness, $A_4,S_4,A_5$ have respectively
+$(3,8,0,0)$, $(9,8,6,0)$, $(15,20,0,24)$ elements of orders
+$(2,3,4,5)$. An element of order $d$ prime to the characteristic is
+split precisely when $d\mid a$; the average of the faithful principal
+character over all generators of a split cyclic subgroup of order $d$
+is $2\mu(d)/\varphi(d)$. On a nonsplit subgroup it is zero, and on a
+unipotent it is one. These rules give all entries exactly, with no
+numerical approximation. They finish the proof.
+\end{proof}
+
+If every subgroup in a family had order greater than $q$, it would miss
+the same character $P$. This proves $h_{\rm fam}(G)\le q$ for $q\ge13$.
+Together with the upper construction, this proves
+Theorem~\ref{thm:optimal} in those degrees.
+
+\paragraph{The field size $q=5$.}
+Here $G\simeq A_5$. Take either irreducible character $E$ of degree three.
+The proper subgroups of order greater than five have types $A_4,D_{10},
+D_6$. At an involution $E=-1$, and at an element of order three $E=0$.
+The sum on the four nonidentity elements of a $C_5$ is two, because the
+two five-cycle values are $(1\pm\sqrt5)/2$, each appearing twice.
+Thus the sums over these three subgroups are respectively
+$3-3=0$, $3+2-5=0$, and $3-3=0$.
+The full group also has no invariant. Therefore no family using only
+subgroups of order greater than five is spectrally detecting.
+The pair $U,N$ has orders five and six, and establishes
+$h_{\rm fam}(A_5)=5$, or $\mathcal D(5)=12$.
+
+\section{The unique exception \texorpdfstring{$q=9$}{q = 9}}\label{sec:q9}
+For $G=\PSL_2(9)\simeq A_6$, let $A\simeq\PSL_2(3)\simeq A_4$ be a
+subfield subgroup and let $N$ again be a nonsplit torus normalizer, of
+order ten. In an ordering of the seven irreducibles, their permutation
+multiplicities are
+\begin{center}
+\begin{tabular}{@{}lrrrrrrr@{}}\toprule
+ & $\one$&$\St$&$P$&$D_1$&$D_2$&$E_+$&$E_-$\\
+degree&1&9&10&8&8&5&5\\\midrule
+$\pi_N$&1&1&0&1&1&1&1\\
+$\pi_A$&1&1&1&0&0&2&0\\
+$\pi_B$&1&1&0&0&0&0&0\\
+$\pi_{H_+}$&1&0&0&0&0&1&0\\
+$\pi_{H_-}$&1&0&0&0&0&0&1\\\bottomrule
+\end{tabular}
+\end{center}
+Here $H_+,H_-$ are subgroups isomorphic to $A_5$, of index six.
+An index-six permutation character is $\one$ plus a degree-five
+irreducible; the outer automorphism induced by $\PGL_2(9)$ swaps the
+two unipotent classes and the two degree-five characters, and supplies
+both choices. We label them so that $E_+$ occurs in $\pi_A$.
+
+The $A$ row follows by averaging: its three involutions are split, its
+eight elements of order three are unipotent in the same ambient class,
+and the exceptional values on that class are $2,-1$.
+Thus $\pi_N+\pi_A$ contains every irreducible, and the corresponding
+field degrees are $36$ and $30$.
+
+To prove optimality, take either degree-eight cuspidal character $D$.
+Every subgroup of order greater than ten contained in a Borel contains
+$U$, on which $D$ has no fixed vector, by the affine argument above.
+No torus normalizer has order greater than ten. The remaining proper
+subgroups of order greater than ten have types $A_4,S_4,A_5$.
+For the first two, the sum of $D$ is $8-8=0$, since their elements of
+order three are unipotent and the other nonidentity elements are split.
+For $A_5$ the sum is $8-20+24/2=0$: elements of order five are nonsplit,
+and the average cuspidal value on their generators is $1/2$.
+The full group also fixes nothing. Hence $h_{\rm fam}(G)=10$ and
+$\mathcal D(9)=36$.
+
+The displayed multiplicities also prove the integral character identity
+\begin{equation}\label{eq:q9}
+ 8\pi_N+10\pi_A+18\one-\Reg_G
+ =9\pi_B+23\pi_{H_+}+3\pi_{H_-}.
+\end{equation}
+It gives the exact zeta identity
+\[
+ \frac{\zeta_{F_N}^{8}\zeta_{F_A}^{10}\zeta_k^{18}}{\zeta_L}
+ =\zeta_{F_B}^{9}\zeta_{F_{H_+}}^{23}\zeta_{F_{H_-}}^{3}
+\]
+and, away from $1$, the inequality
+\[
+ \ord\zeta_L\le8\ord\zeta_{F_N}+10\ord\zeta_{F_A}+18\ord\zeta_k.
+\]
+As before each subfield zero is a zero of $\zeta_L$. The family
+$(k,F_N,F_A)$ is therefore an unconditional zero detector with maximum
+degree $36$. Over $\Q$, if RH for $\zeta$ is supplied as a separate
+premise, the degree-one member adds no further RH assumption.
+No zero-location premise is needed for the unconditional equivalence
+with the three stated fields.
+
+\section{A three-field identity for every odd \texorpdfstring{$q$}{q}}
+In this section let $q\ge3$ be any odd prime power. Keep the same
+definitions of $U,B,T_n$; the normalizer $N$ is not needed.
+
+\begin{proposition}[All odd field sizes]\label{prop:allodd}
+For $G=\PSL_2(q)$,
+\begin{equation}\label{eq:allodd}
+ \Reg_G=\frac{q-1}2\bigl(\pi_{T_n}+\pi_B-2\one\bigr)+\pi_U.
+\end{equation}
+Consequently, for every Galois $L/k$ with that group,
+\[
+ \zeta_L\zeta_k^{q-1}
+ =\zeta_{F_{T_n}}^{(q-1)/2}\zeta_{F_B}^{(q-1)/2}\zeta_{F_U}.
+\]
+The three fields $F_{T_n},F_B,F_U$ detect all zeros of $\zeta_L$
+away from $1$, and the RH for $\zeta_L$ is equivalent to their three
+Riemann hypotheses without assuming Artin holomorphy. Their largest
+degree is $q(q-1)$.
+\end{proposition}
+\begin{proof}
+Every ordinary principal or cuspidal irreducible has two $T_n$-fixed
+vectors, while Steinberg and each exceptional constituent have one.
+The trivial character also has one. The $U$-fixed dimensions are one
+for Steinberg, two for each ordinary principal character, zero for
+each ordinary cuspidal character, and either one or zero for the
+exceptional pair according as $q\equiv1$ or $3\pmod4$.
+The exceptional degrees are correspondingly $(q+1)/2$ or $(q-1)/2$.
+Comparing these multiplicities with the degrees gives
+\eqref{eq:allodd}; it also holds for $q=3$, where the exceptional pair
+is the pair of nontrivial linear characters of $A_4$.
+
+Artin formalism gives the zeta identity. At $s_0\ne1$ all Dedekind
+orders on its right, and $\ord\zeta_k$, are nonnegative, so
+\[
+ \ord\zeta_L\le\frac{q-1}2
+      (\ord\zeta_{F_{T_n}}+\ord\zeta_{F_B})+\ord\zeta_{F_U}.
+\]
+Every subfield order is at most $\ord\zeta_L$ by the local positivity
+argument in Section 4. This proves zero detection and the RH equivalence.
+The degrees are $q(q-1)$, $q+1$, and $(q^2-1)/2$ respectively.
+\end{proof}
+
+This proposition does not claim optimality for $q\equiv3\pmod4$.
+Its contribution is an unconditional transfer valid in all odd
+characteristics; the sharper optimal theorem above addresses the other
+congruence class.
+
+\section{Example, verification, and precise remaining scope}
+For $q=13$, the group has order $1092$. Theorem~\ref{thm:analytic}
+uses fields of degrees $84$ and $78$, and gives
+\[
+ \ord_{s_0}\zeta_L\le7\ord_{s_0}\zeta_{F_U}
+                       +12\ord_{s_0}\zeta_{F_N}\qquad(s_0\ne1).
+\]
+No spectrally detecting family can have all field degrees below $84$.
+The source article's optimal single field for this value of $q$ has
+degree $156$. If $\alpha$ denotes either primitive cubic character of
+$B/U\simeq C_6$, the positive factorization is particularly short:
+\[
+ \frac{\zeta_{F_U}^{7}\zeta_{F_N}^{12}}{\zeta_L}
+   =\zeta_k^{12}\zeta_{F_B}^{6}L(s,\alpha,L/F_B)^{24}.
+\]
+The inverse characters give the same induced Artin character, so choosing
+either representative gives the same function.
+
+The accompanying \texttt{verify\_psl2.py} uses only exact integers and
+fractions. It checks the main identity in both class values and
+irreducible multiplicities for the $94$ prime powers
+$q\equiv1\pmod4$ with $5\le q\le1000$: $41{,}636$ class cases and
+$21{,}006$ irreducible cases. It checks the all-odd identity at $183$
+prime powers, all eight exceptional subgroup cases used in the
+optimality proof (including the three $q=9$ cases), and the complete
+$q=9$ identity. These finite checks confirm the algebra; the all-degree
+theorems rest on the proofs above, not extrapolation from computations.
+
+The paper resolves the inspected odd-characteristic question for the
+maximum degree when $q\equiv1\pmod4$, and removes the Artin-holomorphy
+assumption by explicit positive identities. The exact optimal
+maximum-degree classification when $q\equiv3\pmod4$ is not proved here.
+Neither RH for the smaller nonabelian fields nor a prominent general
+conjecture such as Artin holomorphy or nonabelian GRH is proved.
+
+\begin{thebibliography}{9}
+\bibitem{BFL}
+B. B\"ohmler, N. Farrell, and C. Lassueur,
+\emph{Trivial source character tables of $\mathrm{SL}_2(q)$},
+Journal of Algebra \textbf{598} (2022), 308--350,
+doi:10.1016/j.jalgebra.2022.01.024.
+\url{https://arxiv.org/abs/2107.06241}. See Table 1.
+\bibitem{GZ}
+R. M. Guralnick and M. E. Zieve,
+\emph{Polynomials with $\mathrm{PSL}(2)$ monodromy},
+Annals of Mathematics \textbf{172} (2010), 1315--1359,
+doi:10.4007/annals.2010.172.1315.
+\url{https://arxiv.org/abs/0707.1835}. See Theorem A.1.
+\bibitem{ProveIt}
+V. Reshetnikov, \emph{ProveIt},
+\path{Analysis/GeneralizedRiemannHypothesis/Article/sections/grp.tex},
+commit \texttt{ce35f320bc88c02093e479f5fe5003ff86b2795f}.
+\href{https://github.com/VladimirReshetnikov/ProveIt/tree/ce35f320bc88c02093e479f5fe5003ff86b2795f/Analysis/GeneralizedRiemannHypothesis/}{Pinned repository source}.
+\end{thebibliography}
+\end{document}

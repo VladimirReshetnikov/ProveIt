@@ -1,0 +1,26 @@
+INTERNAL REVIEW — not external peer review or formal verification.
+
+Independent mathematical audit of audit/finite_population_parity.tex
+27 November 2026
+
+Conclusion: The core parity-equivalence theorem and complete critical profile are proved correctly, subject to the stated r->infinity, n>=2 and a=(1-2s/(rn))^n->0 hypotheses. No gap found in the main argument.
+
+Checked:
+1. Exact conditional derivatives: u=-2np(1-p)t^(n-1), v=-2ba+4b^2(1-1/n)t^(n-2), and both displayed formulas for the conditional sum mean/variance.
+2. Uniform inequalities b>=(1-a)/4, bt^(n-2)<=1/2, bt^(2n-2)<=-a log(a)/2. They remain valid with polynomial interpretation at t=0.
+3. The boundary n=2,p=1/2: odd conditioned occupancy is constant one, even conditioned occupancy is equiprobable zero/two. Conditional sum variance is (r+J)/2, which diverges on the stated typical sets. The roots representation admits empty sums, so this boundary is covered.
+4. Uniform triangular-array local limit theorem: the characteristic-function modulus exp(-2v sin^2(theta/2)), variance-based Taylor error, and dominated-convergence argument yield uniform sup_k error. The parity-conditioned sum is a translate of twice a Bernoulli sum and the matching parity ensures the factor two.
+5. Likelihood identity P/Q_eta = ((1+eta a^r)/2)P(T=s|Y)/P(T=s). Typical-set convergence in Q_eta probability plus E_Q likelihood=1 implies TV->0 via the bounded min(likelihood,1) identity; no unproved uniform-integrability claim is needed.
+6. Finite-lambda likelihood expansion, Gaussian integral, lambda=infinity Chebyshev separation, and varying parity eta are all valid.
+7. Nonlinear clock, rounding derivative -2/(r t), fixed-n valley exponent, growing-n linear window, and the intermediate-capacity shift -1/(8 kappa) check algebraically.
+8. The full-label entropy calculation follows from the hypergeometric variance and entropy chain rule. It requires m>=2; m=1 should be handled separately as the equality P=Q.
+
+Exact rational combinatorial sanity check for n=2:
+P(number of odd blocks=k)=binom(r,k)binom(r-k,(s-k)/2)2^k/binom(2r,s), with the binomial term zero outside range.
+At r=100,s=100: TV(P,Q_eta)=0.0199724350.
+At r=500,s=500: TV(P,Q_eta)=0.0089228577.
+At r=100,s=68: TV(P,U_eta)=0.3881392012, finite-parameter profile 0.3913489904.
+At r=500,s=394: TV(P,U_eta)=0.3853486304, finite-parameter profile 0.3846765496.
+These computations are sanity checks only, not the proof.
+
+Bibliographic novelty is not certified by this audit. The Gaussian hypercube profile itself is classical; the new claim should be the capacity-uniform finite-slice parity equivalence and its finite-population parameter and windows.

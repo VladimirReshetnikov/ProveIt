@@ -1,0 +1,330 @@
+\section{Where a deleted matching sends the zeros}\label{sec:zeros}
+Let $G_{d,M}$ be $K_{d+1}$ with a matching of $M$ edges deleted, with
+$0\le M\le\lfloor(d+1)/2\rfloor$ and $d\ge2$. Write $E_{d,M}$ for
+its Ehrhart polynomial, $H_d=E_{d,0}$, and $C_d$ for the Ehrhart polynomial
+of the $d$-dimensional cross-polytope. An omitted edge is a part of size
+two. In \eqref{eq:multipartite-gamma} such a part changes only
+$\gamma_1$, by $-2$. Since $4t=(1+t)^2-(1-t)^2$, comparison of the
+Ehrhart series gives the exact identity
+\begin{equation}\label{eq:matching}
+ E_{d,M}(s)=H_d(s)-\tfrac M2\big(C_d(s)-C_{d-2}(s)\big).
+\end{equation}
+Here and below $s$ is the complex dilation variable. The palindromic
+numerators give $E_{d,M}(-1-s)=(-1)^d E_{d,M}(s)$, so conjugation
+and reflection across $\Re s=-1/2$ both preserve the zero multiset.
+
+\begin{theorem}[Bounded-height zero counts]\label{thm:strings}
+Fix $0<t_1<t_2<\infty$, write $I=[t_1,t_2]$, $L=\log d$, and let
+$d\to\infty$.
+\begin{enumerate}
+\item If $M=o(\sqrt d)$, then in every fixed rectangle
+$|\Re s+1/2|\le R$, $\Im s\in I$, $R>0$, all the zeros are simple
+and on $\Re s=-1/2$ for sufficiently large $d$. Their number is
+$2|I|L/\pi+O(1)$, and consecutive spacings are
+$(\pi/2+o(1))/L$.
+\item Suppose $M/d^\alpha\to\lambda>0$, $1/2<\alpha\le1$,
+subject to the matching-size bound. In any fixed rectangle as above
+containing the following three real parts in its interior, the zeros with
+height in $I$ are simple for sufficiently large $d$. Their locations
+and counts are
+\[
+\begin{array}{c|c|c}
+ \text{real part} & \text{number} & \text{spacing in height}\\ \hline
+ -\alpha+O(1/L) & |I|L/(2\pi)+O(1)&(2\pi+o(1))/L\\
+ -1/2\ \text{exactly} & |I|L/\pi+O(1)&(\pi+o(1))/L\\
+ \alpha-1+O(1/L) & |I|L/(2\pi)+O(1)&(2\pi+o(1))/L .
+\end{array}
+\]
+Spacing is measured within a single row. For a root
+$s=\sigma+it$ in the right-hand row one has the sharper formula
+\begin{equation}\label{eq:shift}
+ L(\sigma-\alpha+1)
+ =\log\left|\lambda\,2^{\alpha-1+it}(\alpha-1+it)
+               \Gamma(\alpha+it)\right|+o(1).
+\end{equation}
+\end{enumerate}
+All errors in the location and spacing statements are uniform on $I$.
+\end{theorem}
+
+For example, deleting $\lfloor d^{3/4}\rfloor$ pairwise disjoint edges
+splits the bounded-height zeros between the lines with real parts
+$-3/4,-1/2,-1/4$. A largest matching gives limiting real parts $-1,-1/2,0$.
+In all of these graphs the fraction of edges deleted tends to zero.
+The proportions in Theorem~\ref{thm:strings} concern bounded heights,
+where only order $\log d$ zeros in a bounded rectangle are counted.
+
+\subsection{Two dimension generating functions}
+Define $s^*=-1-s$, $\epsilon=(-1)^d$, and
+\[
+ A(s)=\Gamma(1+s)^{-2},\qquad B(s)=2^s/\Gamma(s).
+\]
+\begin{lemma}\label{lem:expansion}
+Uniformly on compact sets of $s=\sigma+it$ with $t\ne0$, one has
+\begin{align}
+ H_d(s)&=A(s)d^{2s}+\epsilon A(s^*)d^{2s^*}
+       +O\big(d^{2\sigma-1}+d^{-3-2\sigma}\big),\label{eq:Hexp}\\
+ \tfrac12(C_d(s)-C_{d-2}(s))
+   &=B(s)d^{s-1}+\epsilon B(s^*)d^{s^*-1}
+       +O\big(d^{\sigma-2}+d^{-3-\sigma}\big).\label{eq:Cexp}
+\end{align}
+The same estimates hold on compact sets avoiding the resonances
+$1+2s\in\mathbb Z$.
+\end{lemma}
+\begin{proof}
+Use the dimension variable $z$. The cross-polytope counts lattice points
+by their support, so $C_d(s)=\sum_j 2^j\binom dj\binom sj$. Summing
+yields
+\[
+ \sum_{d\ge0} C_d(s)z^d=(1+z)^s(1-z)^{-1-s}.
+\]
+For the complete graph, Theorem~\ref{thm:gamma} gives
+$h^*(x)=\sum_{j=0}^d\binom dj^2 x^j$. Indeed the coefficient of $x^j$
+can be counted by two $j$-subsets according to their symmetric
+difference. Its dimension generating function is
+\begin{equation}\label{eq:dimension}
+ \sum_{d\ge0}H_d(s)z^d=(1-z)^{-1-2s}
+       {}_2F_1(-s,-s;1;z^2).
+\end{equation}
+For details, set $H_0=1$. The elementary identity
+\[
+ \sum_{d\ge0} u^d\sum_j\binom dj^2 x^j
+ =\big(1-2(1+x)u+(1-x)^2u^2\big)^{-1/2}
+\]
+follows by taking the constant term in $y$ of
+$[1-u(1+y)(1+x/y)]^{-1}$. The bivariate generating function
+$\sum_{n,d\ge0}H_d(n)x^nz^d$ is therefore
+$[(1-z)^2-2(1+z^2)x+(1+z)^2x^2]^{-1/2}$.
+Applying the same elementary identity with $u=x/(1-z)^2$ and
+argument $z^2$ gives \eqref{eq:dimension} at nonnegative integers $s=n$.
+For fixed $d$, its $z^d$ coefficient is a polynomial in $s$ of degree
+at most $d$, proving the identity for complex $s$.
+
+At $z=1$ the connection formula for the hypergeometric function at argument one
+\cite[Eq.~15.8.4]{dlmf} writes the right side of
+\eqref{eq:dimension} as a function analytic near $1$ plus
+\[
+ (1-z)^{-1-2s}\frac{\Gamma(1+2s)}{\Gamma(1+s)^2}
+ (1+O(1-z)).
+\]
+At $z=-1$ the corresponding singular part is
+$(1+z)^{1+2s}\Gamma(-1-2s)/\Gamma(-s)^2$ times
+$1+O(1+z)$. The cancellation of analytic factors here uses
+$(1-z^2)^{1+2s}(1-z)^{-1-2s}=(1+z)^{1+2s}$.
+For the second line of the lemma use instead
+$\tfrac12(1+z)^{s+1}(1-z)^{-s}$, obtained by multiplying the
+cross-polytope series by $(1-z^2)/2$.
+
+These functions continue analytically to a disk of radius $1+\eta$
+cut outward at $1$ and $-1$. In the hypergeometric case take the
+preimage of its standard slit under $z\mapsto z^2$. Transfer at the two
+singularities now gives the stated terms, using the binomial transfer
+coefficient $d^{w-1}/\Gamma(w)$ of $(1-z)^{-w}$.
+Specifically the first omitted singular power at each point supplies
+one additional factor $d^{-1}$. The analytic local terms can be
+subtracted to arbitrarily high order by a polynomial matching their
+jets at both points. The indented contours can be chosen the same for
+parameters in the given compact set, and the convergent local
+connection series have uniformly bounded remainders there. This gives
+the uniform errors by multiple-singularity transfer
+\cite[Ch.~VI]{fs}.
+\end{proof}
+
+\subsection{Counting and locating the zeros}
+Put $w=\exp((s+1/2)L)$ and $\mu=M/\sqrt d$. Combining the two expansions
+with \eqref{eq:matching} gives
+\begin{align}
+ dE_{d,M}(s)={}&A(s)w^2+\epsilon A(s^*)w^{-2}
+        -\mu\{B(s)w+\epsilon B(s^*)w^{-1}\}+\mathcal E,\label{eq:four}\\
+ |\mathcal E|\ll{}&d^{-1}
+ \big(|w|^2+|w|^{-2}+\mu(|w|+|w|^{-1})\big).
+ \label{eq:error}
+\end{align}
+On a compact rectangle of positive heights all four coefficients
+are bounded and bounded away from zero.
+
+\begin{proof}[Proof of Theorem~\ref{thm:strings}]
+If $\mu\to0$, all zeros satisfy $|\log|w||\le C$ for a fixed
+$C$. Outside this band one of $w^2,w^{-2}$ dominates the other three
+terms and the error. Inside, divide \eqref{eq:four} by $A(s)w^{-2}$.
+The resulting equation for a zero is
+\[
+ w^4=-\epsilon A(s^*)/A(s)+o(1).
+\]
+Here and in what follows the errors hold for holomorphic functions
+uniformly on bands of width $C/L$, for arbitrarily large fixed $C$.
+
+If $\mu\to\infty$ in part (2), set $x=|w|$. In order of increasing
+$x$, the controlling magnitudes are
+$x^{-2},\mu x^{-1},\mu x,x^2$.
+Their consecutive crossings are $x=\mu^{-1},1,\mu$.
+Outside a fixed multiplicative neighborhood of each crossing, a
+single term dominates. Choose the neighborhood factor larger than
+ten times the ratio of the maximum to the minimum coefficient
+modulus on a slightly enlarged rectangle. Equation~\eqref{eq:error}
+then excludes zeros there. Near $x=1$, division by the central terms
+gives $w^2=-\epsilon B(s^*)/B(s)+o(1)$. Near $x=\mu$, division
+by $A(s)\mu w$ gives
+\[
+  e^{(s-\alpha+1)L}
+    = \frac{M}{d^\alpha}\,\frac{B(s)}{A(s)}+o(1).
+\]
+Reflection gives the left band. Taking absolute values on the right
+gives \eqref{eq:shift} by the gamma recurrence.
+
+For clarity, each reduced equation has the form
+$e^{k(s-a)L}=g_d(s)+o(1)$ on $|\Re s-a|\le C/L$.
+Here $k=4,2,1$ in the three cases (subcritical, central supercritical,
+right supercritical). At each fixed parity $g_d$ is a nonvanishing
+analytic function times a positive scalar tending to a positive limit.
+It has an analytic logarithm $\ell_d$ with bounded value and first
+derivative on the enlarged rectangle. For each integer $j$ whose height
+$y_j=2\pi j/(kL)$ is in a slightly larger interval, the leading equation
+has a unique nearby root
+\[
+ s_j=a+iy_j+\frac{\ell_d(a+iy_j)}{kL}+O(L^{-2}).
+\]
+Indeed $s\mapsto a+iy_j+\ell_d(s)/(kL)$ is a contraction on a disk
+of radius $C'/L$ about $a+iy_j$. On a circle about $s_j$ of radius
+$\eta_d/L$, the leading difference has modulus $\gg\eta_d$ for
+$\eta_d\to0$ slowly enough to dominate the uniform error. Rouch\'e's
+theorem gives one simple true zero in each disk. Conversely, taking
+a logarithm at a true zero yields $k(s-a)L=2\pi i j+\ell_d(s)+o(1)$,
+placing it in one of the disks, enlarging $\eta_d$ if necessary.
+This proves the counts, spacings, and simplicity, including the
+$O(1)$ possible endpoint adjustments. For the central equations
+$|g_d(-1/2+it)|=1$. The leading roots there lie on the canonical line
+by contraction restricted to that line. Their disks
+are invariant under $s\mapsto-1-\bar s$. Uniqueness puts the true
+zero exactly on that line.
+\end{proof}
+
+\begin{corollary}[The entire limiting zero set]\label{cor:strip}
+Over all admissible choices of $M=M(d)$, the set of finite limits of
+zeros of $E_{d,M}$ along sequences $d\to\infty$ is exactly
+\[
+                     \{s\in\mathbb C:-1\le\Re s\le0\}.
+\]
+\end{corollary}
+\begin{proof}
+For every real part in $(-1/2,0]$ choose $\alpha=1+\Re s$ and a
+permitted positive $\lambda$ in Theorem~\ref{thm:strings}(2).
+Its spacing assertion supplies a sequence of zeros converging to
+every point of that line of positive height. Conjugation, reflection,
+and part (1) supply the remaining nonreal points. A diagonal sequence
+with heights tending to zero gives every point of the real interval.
+
+Conversely, on each compact subset of $\Re s>0$ avoiding the real
+resonances, \eqref{eq:Hexp}, \eqref{eq:Cexp} and $M=O(d)$ give
+$d^{-2s}E_{d,M}(s)\to A(s)$ uniformly over all allowed matchings.
+The same convergence holds near each resonance by applying the maximum
+modulus principle to the difference on a small circle contained in
+that half-plane and avoiding all resonances. The limit $A$ has no zeros
+in the half-plane. Reflection excludes limits to the left of $-1$.
+\end{proof}
+
+\section{The threshold at the square-root scale}\label{sec:critical}
+A finer question asks whether deleting just $c\sqrt d$ edges can
+already produce zeros off the canonical line. The threshold has a
+closed form if one asks for uniform stability over both dimension
+parities. Below, a bounded region can be taken to be any fixed compact
+rectangle in the complex plane.
+
+\begin{theorem}[Sharp parity-uniform threshold]\label{thm:critical}
+Assume $M/\sqrt d\to c\ge0$ and set $c_*= \sqrt{8/\pi}$.
+\begin{enumerate}
+\item If $c<c_*$, all zeros in any bounded region are simple and lie on
+the canonical line for sufficiently large $d$.
+\item If $c>c_*$, all sufficiently large even $d$ have off-line zeros
+converging to $-1/2$. More precisely, set $r=c\sqrt{\pi/8}$,
+$x_-=(-r-\sqrt{r^2+8})/2$, and
+$h=\operatorname{arcosh}(-x_-/2)>0$. There are zeros
+\[
+ -\tfrac12+\frac{\pm h+i\pi}{\log d}
+                  +o(1/\log d)
+\]
+and their complex conjugates. For odd $d$ the same conclusion holds
+when $r>2$, with $h=\operatorname{arcosh}(r/2)$.
+\end{enumerate}
+\end{theorem}
+
+\begin{proof}
+At positive and negative heights, \eqref{eq:four} is uniform. It also
+has absolute error $o(1)$ on a small fixed disk about $-1/2$ for bounded
+$\mu$. Indeed on a circle of radius $0<\delta<1/4$ about that point
+\eqref{eq:error} gives $O(d^{-1+2\delta})$. Both sides of
+\eqref{eq:four} are holomorphic in $s$, and the maximum modulus principle
+extends the absolute bound to the disk. On a compact set strictly
+to the right of the canonical line, $d^{-2s}E_{d,M}(s)\to A(s)$
+by the four-term expansion. The same small-circle argument for this
+normalized difference extends across any real resonance in that open
+half-plane. Reflection gives the corresponding exclusion on the left.
+Near the canonical line the coefficients $A(s),A(s^*)$ are separated
+from zero and all four coefficients are bounded. Dominance at large or
+small $|w|$ gives $|\log|w||=O(1)$ for a zero in a bounded region;
+the absolute $o(1)$ error on the exceptional disk suffices as well.
+
+Fix one parity $\epsilon$ and any sequence of real heights $t_d\to t$.
+On a subsequence $e^{it_d L}\to\tau$, $|\tau|=1$. At
+$s=-1/2+it_d+u/L$, \eqref{eq:four} converges locally uniformly in $u$
+to $P(\tau e^u)/(\tau e^u)^2$, where, with $s_0=-1/2+it$,
+\begin{equation}\label{eq:quartic}
+ P(w)= A(s_0) w^4-c B(s_0)w^3
+             -\epsilon c\overline{B(s_0)}w+\epsilon\overline{A(s_0)} .
+\end{equation}
+On the unit circle the equation $P(w)=0$ is
+$\Re(\kappa A(s_0)w^2)=c\Re(\kappa B(s_0)w)$, with $\kappa=1$ for
+even $d$ and $\kappa=-i$ for odd $d$.
+If $c|B(s_0)/A(s_0)|<1$, the signs alternate at the four successive
+extrema of the left side. This gives four distinct unit roots of a
+quartic, necessarily simple. The gamma reflection identity gives
+\[
+ \left|\frac{B(-1/2+it)}{A(-1/2+it)}\right|^2
+     =\frac{\pi(1/4+t^2)}{2\cosh(\pi t)}
+     \le\frac{\pi}{8},
+\]
+since $\cosh(\pi t)\ge1+\pi^2t^2/2\ge1+4t^2$.
+This proves the strict inequality uniformly for $c<c_*$.
+
+To see that exact finite-$d$ roots are on the line, argue by
+contradiction along a sequence of multiple or off-line roots and take
+$t_d$ to be their imaginary parts. Their rescaled real offsets $u_d$
+are bounded and have a convergent subsequence. A unit-modulus limiting
+root forces $u_d\to0$. Simplicity in the limiting quartic implies that
+a fixed small disk about $u=0$ contains just one zero counted with
+multiplicity for all large $d$, by Rouch\'e's theorem. Reflection
+$u\mapsto-\bar u$ preserves this disk and the finite zero set, so that
+zero is simple and has real part zero. This contradiction proves (1).
+
+At $t_d=t=0$ one has $\tau=1$, $A=1/\pi$ and
+$B=-1/(2\sqrt{2\pi})$. For even $d$ the limiting quartic divided
+by $A w^2$ is $x^2+r x-2$, $x=w+w^{-1}$. If $r>1$, its lower
+root $x_-$ is less than $-2$, giving the two simple roots
+$w=-e^{\pm h}$. For odd $d$ the quartic divided by $A$ factors as
+$(w^2-1)(w^2+r w+1)$; this gives two simple negative roots off the
+unit circle for $r>2$. Rouch\'e at $u=\pm h+i\pi$ proves (2).
+At equality the limiting root is multiple; the strict assertions above
+do not decide that case.
+\end{proof}
+
+\paragraph{The critical law at other heights.}
+Equation~\eqref{eq:quartic} also determines the local transition at each
+fixed height. For an explicit test rotate $w$ so that the unit-circle
+equation becomes $\cos(2\theta)+a\cos\theta+b\sin\theta=0$.
+Explicitly set $D=\kappa B(s_0)e^{-i\arg(\kappa A(s_0))/2}/|A(s_0)|$
+and $(a,b)=c(-\Re D,\Im D)$. A double root requires the equation and
+its derivative to vanish, giving the boundary
+\[
+ (a,b)=(2\cos^3\theta-3\cos\theta,\,
+              3\sin\theta-2\sin^3\theta).
+\]
+This curve meets every ray once. Its radius squared is
+$1+3\sin^2(2\theta)$ and its polar-angle derivative has numerator
+$ab'-ba'=-3\cos^2(2\theta)$. Its four quadrants trace one turn, as
+can also be seen from the signs of $a$ and $b$. The number of unit
+roots is constant on either side of the curve. The origin has four,
+and a point sufficiently far along the real axis has two, by the
+quadratic in $\cos\theta$. Inside the boundary all four roots are
+simple on the unit circle; outside, two remain there and the other
+two form a reciprocal-conjugate pair. This description concerns
+the quartic at regular parameter values. Multiple roots on the
+boundary require higher-order information.

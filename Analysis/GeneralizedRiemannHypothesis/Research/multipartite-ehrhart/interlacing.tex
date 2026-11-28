@@ -1,0 +1,123 @@
+\section{Strict interlacing for split graphs}\label{sec:interlacing}
+
+Write $E_{k,n}$ in this section for the Ehrhart polynomial of the graph
+$K_{1^k,n}$, with $k$ singleton parts and one part of size $n$.
+K\"olbl's interlacing conjecture asks what happens when one adds a
+singleton, keeping $n$ fixed. His Theorem~3.3(a,d) gives the first two
+steps~\cite{kolbl}. The following theorem has no upper bound on $n$.
+
+\begin{theorem}\label{thm:split}
+For $1\le k\le20$ and every positive integer $n$, the zeros of
+$E_{k,n}$ and $E_{k+1,n}$ are simple, have real part $-1/2$, and strictly
+interlace when ordered by imaginary part. In particular the simple-root
+canonical-line property holds through $21$ singleton parts.
+\end{theorem}
+
+\begin{proof}
+Let $r=k-1$, $d=n+r$. The formula of Theorem~\ref{thm:gamma}
+specializes to
+\[
+ g_j=\binom{2j}{j}\sum_{\ell=0}^j
+           \binom n\ell\binom r{2j-\ell}\qquad (0\le j\le r).
+\]
+Only the $n$-part can contain more than half of a set of size $2j$,
+for $j\ge1$. We set $g_j=0$ for $2j>d$, as the formula already does.
+Let $C_m$ be the cross-polytope Ehrhart polynomial and put
+\[
+ Q_m(y)=m!\,i^{-m}C_m((iy-1)/2).
+\]
+Then $Q_0=1$, $Q_1=y$ and
+$Q_{m+1}=yQ_m-m^2Q_{m-1}$. This recurrence also follows by
+differentiating the generating function
+$\sum_{m\ge0}C_m(x)u^m=(1+u)^x/(1-u)^{x+1}$.
+The gamma expansion, the Ehrhart series
+$(1+t)^m/(1-t)^{m+1}$ of $C_m$, and
+$4t=(1+t)^2-(1-t)^2$ give
+\[
+ R_{r,n}(y)=4^r d!\,i^{-d}E_{k,n}((iy-1)/2)
+       =\sum_{0\le h\le\min(r,\lfloor d/2\rfloor)}
+           (d)_{2h}\left(\sum_{j=h}^r 4^{r-j}g_j\binom jh\right)Q_{d-2h}(y).
+\]
+Here $(d)_a=d(d-1)\cdots(d-a+1)$. The leading coefficient is positive.
+
+For $n\ge r+2$, apply the three-term recurrence in both directions to
+write
+\[
+ R_{r,n}=A Q_n-B Q_{n-1},\qquad R_{r+1,n}=C Q_n-D Q_{n-1}.
+\]
+This expresses both polynomials using the pair $Q_n,Q_{n-1}$, as in the
+repository's graph-tower section. In the first pair the degrees in $y$ are
+at most $r,r-1$, respectively, and the respective parities are those of
+$r,r-1$. For the second pair replace $r$ by $r+1$.
+Define the two quantities
+\begin{align*}
+ H&=\text{coefficient matrix of }
+      \frac{A(u)B(v)-B(u)A(v)}{u-v}
+      \quad\text{in }1,u,\ldots,u^{r-1}\text{ and }1,v,\ldots,v^{r-1},\\
+ T(y)&=A(y)D(y)-B(y)C(y).
+\end{align*}
+For $r>0$ the tests are $H$ positive definite and $T(y)>0$ on the real
+axis. When $r=0$ take $A=1,B=0$ and omit the matrix test.
+
+We recall why these tests suffice. In the upper half-plane, evaluating
+$H$ at $(u,\bar u)$ shows that $A$ never vanishes there and
+$\operatorname{Im}(B/A)<0$ for $r>0$. Meanwhile
+$\operatorname{Im}(Q_n/Q_{n-1})>0$ by the recurrence, beginning with
+$Q_1/Q_0=y$. Thus all roots of $R_{r,n}$ are real. On the real axis
+$W=A'B-AB'>0$ by the diagonal of $H$ (use $W=0$ for $r=0$).
+Also $W_n=Q_n'Q_{n-1}-Q_nQ_{n-1}'>0$, since
+$W_1=1$ and $W_n=Q_{n-1}^2+(n-1)^2W_{n-1}$.
+At any root $s$ of $R_{r,n}$, both pairs are nonzero and
+$(Q_n,Q_{n-1})(s)=\lambda (B,A)(s)$ for some real $\lambda\ne0$.
+Consequently
+\[
+ R_{r,n}'(s)=\frac{\lambda^2 W(s)+W_n(s)}{\lambda},\qquad
+ \frac{R_{r+1,n}(s)}{R_{r,n}'(s)}
+   =-\frac{\lambda^2 T(s)}{\lambda^2 W(s)+W_n(s)}<0.
+\]
+Each gap between consecutive roots therefore contains a root of
+$R_{r+1,n}$. Its positive leading coefficient and extra degree give a
+root in each exterior gap as well. This accounts for every root and proves
+simplicity.
+
+\emph{Certification over the entire half-line of integers.}
+The bundled program \texttt{split\_interlacing.py} carries out the
+following rational and integer calculations for $r=0,\ldots,19$.
+For coordinates of width $s=r$ or $r+1$, put
+$S_s(n)=\prod_{i=1}^{s-1}(n-i)^2$. Multiplication by $S_s$ clears the
+backward recurrence denominators. To see the degree bound, note that the
+forward coordinates have degree at most $2s$ in $n$. At relative index
+$-t$, the backward coordinates have denominator
+$\prod_{i=1}^{t-1}(n-i)^2$ and numerator degree at most $2t$, by
+induction in $t$. Thus either coordinate after clearing has degree at
+most $4s$. The weight contributes at most $2s+s$ more from the falling
+factorial and $g_j$. Each cleared coordinate has degree at most $7s$.
+
+At $7s+4$ consecutive integers starting at $b=r+2$, exact forward
+differences certify that each coefficient of the first coordinate
+agrees with a polynomial in $n$ of degree at most $s$, and each
+coefficient of the second has degree at most $s+1$. Multiplying the
+interpolant by $S_s$ makes this an identity by the preceding degree
+bound (also for $s=0$). Each entry of $H$ therefore has degree at most
+$2r+1$ in $n$, and $T(y)=V(n,y^2)$ has degree at most $2r+2$ in $n$.
+
+Parity splits $H$ into an even and an odd block. For each leading minor
+$f$ of size $a$ in either block, the program computes $f(b)>0$ and
+$\Delta^j f(b)\ge0$ through degree $(2r+1)a$, by integer elimination.
+Newton's identity $f(b+h)=\sum_j\binom hj\Delta^j f(b)$ proves $f(b+h)>0$
+for every integer $h\ge0$, so Sylvester's criterion proves the matrix
+test. For $0\le j\le2r+2$, the program forms the polynomial
+$\Delta_n^jV(b,z)$ exactly. Each row is either zero or has a positive
+constant term and is positive for $z\ge0$, as verified by its
+coefficients or an exact Sturm root count. The zeroth row is positive.
+Newton's identity proves $T(y)>0$ for every real $y$ and every integer
+$n\ge b$.
+
+For $1\le n<b$, the program computes both full rotated polynomials.
+The negative remainders in their Euclidean algorithm strictly drop in
+degree by one and have positive leading coefficients through the final
+constant. Backwards induction, by evaluating at consecutive roots and at
+both infinities, gives strict interlacing. All finite checks are recorded
+in \texttt{interlacing\_checks.txt}. The full run took 48 seconds with Python
+3.12.14 and SymPy 1.14.0.
+\end{proof}

@@ -1,0 +1,198 @@
+\section{Balancing parts and zeros of the Ehrhart numerator}
+\label{sec:numerator}
+
+\begin{proposition}[Schur concavity]\label{prop:schur}
+At fixed vertex count $v$, moving a vertex from a larger part to a
+smaller one to make the sizes more equal weakly increases every
+$\gamma_j$. Equivalently, the gamma coefficients are Schur-concave in
+the partition of $v$, with zero parts allowed for comparison.
+\end{proposition}
+\begin{proof}
+Fix $j\ge1$ and put $d=v-1$. In \eqref{eq:multipartite-gamma} the loss
+for one part of size $a$ is
+$F(a)=\sum_{\ell>j}\binom a\ell\binom{d-a}{2j-\ell}$.
+Adding one vertex to the marked part newly disqualifies precisely the
+sets containing this vertex, $j$ old marked vertices and $j-1$ old
+unmarked vertices. Thus
+\[
+ D(a):=F(a+1)-F(a)=\binom a j\binom{d-a-1}{j-1}
+ \qquad(0\le a<d).
+\]
+Each factor is log-concave in $a$ with interval support, so their
+product is unimodal. Consider the inverse move $(a,b)\mapsto(a+1,b-1)$
+for $a\ge b\ge1$, with both graphs connected. Set $u=b-1$, so
+$u\le a\le d-u$ and $a<d$. If $D(u)>0$, then $u>0$ and
+$D(d-u)/D(u)=(d-u)/u\ge1$. Unimodality on $[u,d-u]$ gives
+$D(a)\ge D(u)$. The inequality also holds when $D(u)=0$. Hence the
+loss increases by $D(a)-D(u)\ge0$. Such unit transfers generate
+majorization of integer partitions, and $\gamma_0=1$ throughout.
+\end{proof}
+
+Deleting $M$ disjoint edges from $K_{d+1}$ gives $M$ parts of size two,
+the remaining parts being singletons. Formula~\eqref{eq:multipartite-gamma}
+specializes to the gamma polynomial
+\begin{equation}\label{eq:gamma-match}
+ \Gamma_{d,M}(z)=G_d(z)-2Mz,\qquad
+ G_d(z)=\sum_{j=0}^{\lfloor d/2\rfloor}\binom{2j}{j}\binom d{2j}z^j .
+\end{equation}
+The real-rootedness of $h^*$ for every complete bipartite symmetric edge
+polytope~\cite[Thm.~4.8]{hjm} therefore raises a different question from
+the location of the roots of $E_G$ itself.
+
+\begin{theorem}[Threshold for real roots of the numerator]\label{thm:nonnumerator}
+Write $N_d$ for the number of nonreal roots of $\Gamma_{d,M}$ with
+multiplicity. The number for $h^*$ is exactly $2N_d$. Set
+\[
+ A_0(t)=\frac{e^{2t}}{2\sqrt\pi\,t^{5/4}},\qquad
+ c_{\rm num} = A_0(5/8)=\frac{e^{5/4}}{2\sqrt\pi}(8/5)^{5/4}.
+\]
+\begin{enumerate}
+\item For $d\ge4$ there is a real threshold $T_d$ with
+$T_d/d^{3/4}\to c_{\rm num}$, such that $N_d=0$ if and only if $M\le T_d$.
+\item If $M/d^{3/4}\to c>c_{\rm num}$, let $t_-<t_+$ solve $A_0(t)=c$.
+Then $N_d/\sqrt d\to 2(\sqrt{t_+}-\sqrt{t_-})/\pi$.
+At $c=c_{\rm num}$, $N_d=o(\sqrt d)$.
+\item If $M/d^\alpha\to\lambda>0$ with $3/4<\alpha\le1$, subject to
+$2M\le d+1$, then
+\[
+ \frac{N_d}{\sqrt{d\log d}}\ \longrightarrow\ 
+ \frac{2}{\pi}\sqrt{\frac{\alpha-3/4}{2}} .
+\]
+In particular, a maximum matching gives
+$(\sqrt2/\pi+o(1))\sqrt{d\log d}$ nonreal roots of $h^*$.
+\end{enumerate}
+\end{theorem}
+
+\begin{proof}
+Put $P(x)=G_d(-x)$ and $m=\lfloor d/2\rfloor$.
+Let $L_d$ denote the Legendre polynomial normalized by $L_d(1)=1$.
+Summing the binomial series in \eqref{eq:gamma-match} over $d$ gives
+$\sum_d P(x)z^d=(1-2z+(1+4x)z^2)^{-1/2}$.
+The Legendre generating function therefore gives
+\[
+ P(x)=(1+4x)^{d/2} L_d(\cos\theta),\qquad
+ \theta=\arctan(2\sqrt{x}),\qquad x>0 .
+\]
+In particular $P$ has $m$ distinct positive roots, from the positive
+zeros of $L_d$. We use the usual Legendre identities, orthogonality and
+normalization~\cite[Ch.~18]{dlmf}.
+
+\emph{Counting horizontal intersections.}
+The negative roots of $\Gamma_{d,M}$ correspond to the positive
+solutions of $Y(x)=M$, where $Y(x)=-P(x)/(2x)$. Its critical points
+are given by $xP'(x)-P(x)=0$. This polynomial has at least one
+zero in every gap between consecutive positive roots of $P$, by Rolle
+applied to $Y$. It also has exactly one negative zero, since its value
+at $x=-z$, $z>0$, is $-1+\sum_{j\ge2}(j-1)
+\binom{2j}{j}\binom d{2j}z^j$. Its degree $m$ accounts for all
+these zeros, each simple. Thus a bounded positive lobe of $Y$ between
+consecutive zeros has one maximum. At $M>0$ it contributes two
+solutions with multiplicity precisely when this maximum is at least $M$.
+The first and last exterior intervals are monotone, and any positive
+terminal branch attains every positive level once.
+All gamma coefficients are nonnegative by Theorem~\ref{thm:gamma}, so
+$\Gamma_{d,M}$ has no nonnegative real root. It follows that $N_d$ is
+twice the number of positive bounded lobes whose maxima are below $M$.
+For $m\ge2$ such positive lobes exist, and $T_d$ is the smallest of
+their maxima. At $M=0$ all roots are real as well. Each nonreal root
+$z$ of the gamma polynomial produces two distinct nonreal roots of
+$z(1+t)^2=t$ in $h^*$. Each real gamma root is negative and gives
+two real solutions. Any additional numerator zeros are at $t=-1$.
+
+\emph{Legendre amplitude.}
+Set $n=d+\tfrac12$, $u(\theta)=\sqrt{\sin\theta}\,L_d(\cos\theta)$,
+and $q=n^2+1/(4\sin^2\theta)$. The Legendre equation gives
+$u''+q u=0$. On $(0,\pi/2)$, $q$ decreases, so for
+$S=u^2+u'^2/q$ we have $S'=-q'u'^2/q^2\ge0$ and $(qS)'=q'u^2\le0$.
+Consequently
+\[
+ \frac{q(\pi/2)}{q(\theta)}S(\pi/2)\le S(\theta)\le S(\pi/2),
+ \qquad S(\pi/2)\sim\frac{2}{\pi d}.
+\]
+The last estimate follows from
+$L_{2h}(0)=(-1)^h\binom{2h}{h}/4^h$, $L_{2h+1}(0)=0$,
+$L_{2h+1}'(0)=(2h+1)L_{2h}(0)$ and Stirling's formula.
+Write $t=dx$ and
+\[
+ V_d(t)=\frac{(1+4t/d)^{d/2+1/4}}{2\sqrt\pi\,t^{5/4}} .
+\]
+The upper energy inequality gives
+$|Y(x)|/d^{3/4}\le (1+o(1))V_d(t)$, with the prefactor uniform
+in $x>0$. In each bounded lobe choose a point where $u'=0$, possible
+by Rolle. At this point the lower bound is
+$(1+o(1))V_d(t)\sqrt{q(\pi/2)/q(\theta)}$.
+The square root is bounded below by an absolute positive constant
+throughout every such lobe. Indeed, $|L_d|\le1$ on $[-1,1]$, so
+Markov's polynomial inequality gives $|L_d'|\le d^2$ there, and
+$L_d(\cos\theta)>0$ for $0<\theta\le1/d$. The square root converges to
+one uniformly when $t$ ranges over a compact subinterval of $(0,\infty)$.
+
+\emph{Counting lobes.}
+Write $u=r\sin\psi$, $u'=nr\cos\psi$, with continuous phase and $r>0$.
+The differential equation gives
+$\psi'=n+\sin^2\psi/(4n\sin^2\theta)$. On any subinterval of
+$[1/d,\pi/2]$ the integral of the second term is $O(1)$, by integrating
+$\csc^2\theta/(4n)$. Thus the number of all zero gaps in
+$[\theta_1,\theta_2]\subseteq[1/d,\pi/2]$ is
+$n(\theta_2-\theta_1)/\pi+O(1)$, with half as many positive lobes up
+to $O(1)$. The same estimate counts lobes meeting the interval instead
+of those contained in it. Each angle gap has length at most $\pi/n$.
+
+On a compact $t$-interval bounded away from zero the gap widths in $t$
+therefore tend uniformly to zero, and $V_d(t)\to A_0(t)$ uniformly.
+The maximum of each positive lobe, divided by $d^{3/4}$, is consequently
+$A_0(t)+o(1)$ uniformly for any $t$ in it. For a sequence of chosen
+extrema of $u$ with $t\to0$ or $t\to\infty$, the lower bound for the
+normalized lobe maximum diverges. At zero this follows from $t^{-5/4}$.
+At infinity, $V_d$ increases past $t=5d/(8d-16)$ and
+$A_0(T)\to\infty$ as fixed $T\to\infty$. There are lobes arbitrarily
+close to $t=5/8$, the unique minimum of $A_0$. These facts prove (1).
+
+For (2), away from small neighborhoods of $t_-$ and $t_+$, the lobes
+with maxima below $M$ are precisely those in $(t_-,t_+)$ for large $d$.
+In a fixed $t$-interval $[a,b]\subset(0,\infty)$,
+$n(\theta_b-\theta_a)/\pi=(2/\pi)(\sqrt b-\sqrt a)\sqrt d+o(\sqrt d)$.
+Halving this count to take positive lobes and doubling for nonreal
+roots proves (2), by shrinking the endpoint neighborhoods. For $c=c_{\rm num}$
+only an arbitrarily small neighborhood of the minimum can contribute.
+
+For (3) put $k_0=(\alpha-3/4)/2$. For any fixed $0<k<k_0$, throughout
+$1\le t\le k\log d$ the upper bound $V_d(t)=O(d^{2k})$ shows that
+every positive lobe contained there has maximum below $M$. For any
+fixed $k>k_0$, the value
+$V_d(k\log d)=d^{2k+o(1)}$ and the monotonicity of $V_d$ show that
+every positive lobe whose chosen extremum is above $k\log d$ has
+maximum greater than $M$. The angle at $t=k\log d$ is
+$(2+o(1))\sqrt{k\log d/d}$, while the angle at $t=1$ is $O(d^{-1/2})$.
+Apply the gap count to these upper and lower bounds and let $k\to k_0$.
+\end{proof}
+
+Within the family of complete graphs with a matching deleted, $d=169$
+is the first dimension in which the numerator can have a nonreal
+zero. For $3\le d\le168$ the program \texttt{matching\_threshold.py}
+exhibits $\lfloor d/2\rfloor$ disjoint positive intervals with
+alternating endpoint signs for $\Gamma_{d,M}(-x)$ at the maximum allowed
+matching size. It uses trigonometric estimates only to suggest rational
+endpoints; their ordering and the signs are tested by integer arithmetic.
+The lobe comparison above covers all smaller matchings when $d\ge4$.
+Dimensions $d\le3$ have gamma degree at most one. Across the smaller
+dimensions and the check at $(d,M)=(169,84)$ there are 7,139 disjoint
+root enclosures, counted within their respective polynomials.
+
+At $d=169$ the last admissible deletion is decisive. A matching of $84$
+edges gives $84$ real gamma roots and no nonreal roots. Adding the
+$85$th edge to the matching leaves $82$ real roots and produces one
+nonreal conjugate pair, hence four nonreal $h^*$-roots. The program
+\texttt{numerator\_check.py} uses primitive signed Euclidean
+remainders. Its Sturm variations at $-\infty,+\infty$ are $(84,0)$
+and $(83,1)$, respectively, and both terminal remainders are nonzero
+constants. An even shorter certificate suffices to show failure of
+real-rootedness at $M=85$. For $P=\Gamma_{169,85}$ and
+$x=-1/218$, exact rational arithmetic gives
+\[
+ -13348 < P'(x)^2-P(x)P''(x) < -13347.
+\]
+A real polynomial with only real roots satisfies
+$(P')^2-PP''\ge0$ on $\mathbb R$, by differentiating its logarithmic
+derivative away from the roots and extending by continuity. The checker evaluates $P,P',P''$ together by Horner's recurrence in
+exact rational arithmetic.

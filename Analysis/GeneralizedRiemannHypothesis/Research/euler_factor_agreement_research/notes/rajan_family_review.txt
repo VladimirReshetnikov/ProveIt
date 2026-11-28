@@ -1,0 +1,61 @@
+UNIFORM CUBIC/QUADRATIC COUNTEREXAMPLE FAMILY: COMPLETE PROOF AND REVIEW
+
+Source target: Rajan2000, Conjecture3, p698. Root has confirmed the conjecture's printed threshold from the indexed primary IAS PDF: agreement greater than1-2^{-floor(log_2(2n))} is claimed to force equality for the abelian Eisenstein family. The construction below contradicts this formulation in infinitely many dimensions. This is a specialist published conjecture; it is not Ramakrishnan's cuspidal density conjecture.
+
+1. Construction
+
+LetG=C3 x C3 x C2^k, with independent dual characterschi,psi of order3 andeta_1,...,eta_k of order2. Expand the integral virtual character
+ F=(1+chi+chi^2)(1-psi) product_{i=1}^k(1-eta_i).
+Every monomialchi^j psi^t product_{i in I}eta_i, with0<=j<=2,t in{0,1},I subset{1,...,k}, is a distinct global character. Put monomials with t+|I| even into packetA_k and those with t+|I| odd into packetB_k. Each packet has dimensionn_k=3*2^k. The packets have no repeated global characters and are disjoint as sets, hence define different global parameters.
+
+2. Exact full-spectrum comparison
+
+Atg inG writechi(g)=x,psi(g)=y,eta_i(g)=z_i. The two multisets of local eigenvalues coincide outside
+ D_k={g:x=1,y!=1,and z_i=-1 for everyi}.
+This is proved at the level of multisets, not merely by the vanishing ofF.
+
+If somez_i=1, pair each monomial with the monomial obtained by togglingi inI. The signs are opposite and the local values identical, so this gives a matching of the packets' local spectra.
+
+Ify=1, pair terms by togglingt. Again their signs are opposite and their local values identical.
+
+Ifx!=1, fixI. Asj runs over{0,1,2}, the local values form the complete cube-root coset(product_{i inI}z_i){1,x,x^2}. The packet parity picks exactly one oft=0,1 forA_k and the other forB_k. Multiplication byy, a cube root of unity, permutes that three-element multiset. Thus the spectra match for everyI and hence globally.
+
+OnD_k they differ. For k=0 the spectra are{1,1,1} and{y,y,y}, withy=omega oromega^2. For k>=1, exactly2^{k-1} subsetsI have each parity. TheA_k spectrum is
+  1 with multiplicity3*2^{k-1}, and -y with multiplicity3*2^{k-1};
+theB_k spectrum is
+ -1 with multiplicity3*2^{k-1}, and  y with multiplicity3*2^{k-1}.
+These are different:1 occurs inA_k and never inB_k wheny is a nontrivial cube root. Therefore their complete characteristic polynomials (equivalently Euler denominators) are unequal precisely onD_k.
+
+3. Exact density and contradiction
+
+There are exactly2 elements inD_k out of9*2^k group elements. Therefore
+ disagreement delta_k=2/(9*2^k), agreement1-2/(9*2^k).
+For n_k=3*2^k,
+ floor(log_2(2n_k))=k+2,
+and the conjectured disagreement floor is1/(4*2^k). The actual disagreement is exactly8/9 times that floor and the actual agreement exceeds the conjectured ceiling by1/(36*2^k)>0.
+
+At k=0 this is the particularly small counterexample agreement7/9>3/4 in degree3. No GRH input is needed for the finite theorem or for the prime-density conclusion below.
+
+4. Infinite intervals of counterexample dimensions
+
+For any integern with3*2^k<=n<4*2^k, add the same n-3*2^k global characters (allowing repetitions) to both packets. Equality of their Euler polynomials is unchanged, since the same nonzero polynomial factor is multiplied into both and polynomial rings overC are integral domains. The floor(log_2(2n)) remainsk+2. Hence the conjecture fails in every dimension in each interval
+ [3*2^k,4*2^k-1], k>=0.
+This padding does not preserve the disjoint-global-packets feature, which should only be claimed for the base dimensions3*2^k.
+
+5. Arithmetic realization
+
+Takechi modulo7 withchi(3)=omega andpsi modulo13 withpsi(2)=omega. Choosek distinct odd primesq_i outside{7,13}, and leteta_i be the quadratic character moduloq_i. The combined map from units moduloM=91 product_i q_i toC3^2 xC2^k is surjective byCRT, with equal fibres. Dirichlet's theorem gives the group proportions as natural prime densities. Thus the automorphic Eisenstein/principal-series packets in Rajan'sA_B have different global character multisets but exactly the above local-agreement density. The irreducibility terminology inA_B concerns the automorphic representation ofGL_n(A_Q), and does not require the sum of its one-dimensional Galois parameters to be irreducible. The source's discussion precedingTheorem5 explicitly matches unramified local components with the character multisets.
+
+6. Explicit smallest example modulo91
+
+The16 disagreeing reduced classes are
+ 6,15,20,22,29,36,41,43,48,50,55,62,69,71,76,85.
+There are56 agreeing classes out of72. The smallest unramified distinguishing prime is29. At29, chi(29)=1 andpsi(29)=omega, so the Euler denominators are(1-T)^3 and(1-omega T)^3. They are unequal, and the character packets are globally different independently of this prime witness.
+
+7. Exact verification
+
+verify_rajan_family.py uses only Python's standard library. It expands positive and negative packets as distinct dual-group elements and evaluates each local eigenvalue as an exponent modulo6. A six-entry multiplicity vector records the complete local spectrum; equality is checked by these vectors, not by trace comparison. All567 group elements acrossk=0,1,2,3,4,5 are enumerated, corresponding to dimensions3,6,12,24,48,96. Every case agrees with the claimed exact discrepancy predicate. The checker also enumerates all72 reduced classes modulo91, confirms equal joint character fibres of size8, certifies the16 bad classes, and finds the smallest bad prime29. Results:rajan_family_exact_checks.json, statusPASS.
+
+8. Novelty and attribution
+
+The user's existingArticle rec:sec:omatch already gives the cubic packet disagreement2/9 atmass3. It deserves explicit credit as a source of the construction. The contribution of this work is the connection to the precise published Rajan conjecture, the transparent small arithmetic counterexample, and its uniform cubic/quadratic family with full-multiset proof and exact artifacts. Targeted searches found the original conjecture but no identified prior resolution; this remains a limited novelty search, not a guarantee that the counterexample is unpublished. Do not describe the underlying k=0 packet law as newly discovered, or conflate the false abelian conjecture with Ramakrishnan's cuspidal conjecture.

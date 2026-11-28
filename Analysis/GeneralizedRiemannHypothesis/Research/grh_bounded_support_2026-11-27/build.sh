@@ -1,0 +1,7 @@
+#!/usr/bin/env bash
+set -euo pipefail
+cd "$(dirname "$0")"
+pdflatex -interaction=nonstopmode -halt-on-error paper.tex
+pdflatex -interaction=nonstopmode -halt-on-error paper.tex
+python3 checks/verify.py
+python3 checks/allocate.py

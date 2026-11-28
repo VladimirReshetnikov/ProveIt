@@ -1,0 +1,95 @@
+\section{Verification, reproducibility, and remaining work}
+\label{sec:verification}
+
+\subsection{What the computations establish}
+The archive separates exact proof certificates from checks of finite
+identities and from numerical illustrations.
+\begin{center}
+\small
+\begin{tabular}{@{}>{\raggedright\arraybackslash}p{0.33\textwidth}>{\raggedright\arraybackslash}p{0.22\textwidth}>{\raggedright\arraybackslash}p{0.36\textwidth}@{}}
+\toprule
+Artifact & Extent & Logical role \\
+\midrule
+Continuum interval replay &
+1,127 parameter cells; 121,990 positivity boxes &
+Proof of existence, global positivity, dual-weight signs, and
+nonsingularity for every real $e\in[0,1/3]$ \\
+\addlinespace
+Independent $m=3$ polynomial certificate &
+3,308 positivity boxes &
+Separate algebraic formulation using integer Chebyshev polynomials \\
+\addlinespace
+Point and derivative enclosures &
+$e=0$ and eight odd ratios &
+Certified displayed gap intervals and first two asymptotic coefficients \\
+\addlinespace
+Ehrhart exact checks &
+172 symbolic or integer checks &
+Finite identities, direct lattice counts, normal-form coefficients,
+and discriminant; not a replacement for the asymptotic proof \\
+\addlinespace
+Mixture rational checks &
+400 frames and 60 compression cases &
+Exact finite-matrix algebra; not verification of the analytic
+zero-count theorem \\
+\addlinespace
+Ehrhart numerical collisions &
+Dimensions through 100,001; four 80-digit cross-checks &
+Illustrations only; no interval-certification claim \\
+\bottomrule
+\end{tabular}
+\end{center}
+
+The continuum checker uses Python's integer and rational arithmetic only.
+Its largest verified contraction bound is less than $0.714$.
+Floating-point solvers supply optional proposals during generation;
+every proposal is checked independently by the replay routine.
+The supplied witness is therefore sufficient without NumPy or SciPy.
+Do not disable Python assertions when running the checks.
+
+The gap proof still has a trusted computational base: the short Python
+checker, Python's integer arithmetic, the stated elementary remainder
+inequalities, and the human-readable mathematical reduction.
+It is not a proof object checked by a Lean kernel.
+The remaining two results have analytic proofs; their scripts verify
+selected exact identities and finite instances.
+
+\subsection{Reproduction}
+From the extracted archive root, run
+\begin{verbatim}
+./build.sh
+./verify.sh
+\end{verbatim}
+The first command builds the PDF with a normal LaTeX installation.
+The second replays the exact certificates and the finite algebra checks.
+It requires Python and the packages in \texttt{requirements.txt};
+the spectral replay itself uses only the standard library.
+The optional commands in the component READMEs regenerate illustrations
+or perform higher-precision numerical experiments.
+
+The file \texttt{provenance/source\_manifest.json} records the pinned
+repository trees. The companion hash report records the 44 retrieved
+article text files. The source audit describes the inspected comparisons
+and the exact boundary of the upstream-proof inspection.
+The archive checksum manifest permits integrity checks after extraction.
+
+\subsection{Natural next mathematical targets}
+The first target is an analytic explanation of the four-contact branch
+that removes or substantially shortens the interval certificate.
+The next spectral extension is five or more frequencies, or a step
+ratio not restricted to an integer. Such an extension must control
+global positivity and changes in contact pattern, not merely solve
+the contact equations numerically.
+
+For the Ehrhart problem, a global root classification would require
+uniform control of clusters whose index grows with dimension, together
+with exclusion of other departures. The fixed-index normal forms
+proved here do not supply that control.
+
+For spectral recovery, explicit conductor-dependent constants and an
+observation model with uncertain jump locations would make the
+information bounds operational. The present exact-bin theorem does not
+automatically imply robustness to positional noise.
+
+These are specific remaining problems. No proof of a broader named
+conjecture is inferred from them.

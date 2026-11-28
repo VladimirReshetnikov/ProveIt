@@ -1,0 +1,228 @@
+% Standalone section for incorporation into the main paper.
+% All arguments below are independent of Dirichlet GRH.
+\section{The whole corank pattern of a random alternating pencil}
+
+Write $\operatorname{Alt}_n(q)$ for the vector space of alternating bilinear
+forms on $\mathbb F_q^n$, including zero diagonal in characteristic two. Put
+\[
+ g_j=\prod_{i=1}^j(1-q^{-i}),\qquad
+ g_\infty=\prod_{i\ge1}(1-q^{-i}),\qquad
+ \beta_q=\prod_{i\ge1}(1-q^{-(2i-1)}).
+\]
+All limits in this section keep $q$ and all coefficient directions fixed,
+and send $n$ to infinity through even integers.
+
+\begin{theorem}[Joint coranks at every fixed projective direction]
+\label{thm:pencil-coranks}
+Let $A_1,\ldots,A_k$ be independent uniform elements of
+$\operatorname{Alt}_n(q)$. Choose nonzero vectors
+$a_1,\ldots,a_s\in\mathbb F_q^k$, no two proportional, and put
+$B_i=\sum_j a_{ij}A_j$. Then
+\[
+ \bigl(\dim\ker B_1,\ldots,\dim\ker B_s\bigr)
+ \ \longrightarrow\ (R_1,\ldots,R_s)
+\]
+in total variation, where the $R_i$ are independent and have distribution
+\[
+ \Pr(R_i=2h)=\frac{\beta_q q^{-h(2h-1)}}{g_{2h}},
+ \qquad h=0,1,2,\ldots.
+\]
+In particular the nonsingularity indicators are asymptotically independent
+Bernoulli variables of parameter $\beta_q$.
+\end{theorem}
+
+The independence assertion allows arbitrary linear dependencies among the
+coefficient vectors; only distinct projective directions are required.
+
+\begin{lemma}[Strict tensor dimension surplus]
+\label{lem:tensor-surplus}
+Let $a_i$ be pairwise nonproportional nonzero vectors in a vector space $E$
+over any field, and let $W_i$ be finite-dimensional subspaces of another
+vector space. Set
+\[
+ U=\sum_iW_i,\qquad T=\sum_i a_i\otimes W_i\subseteq E\otimes U.
+\]
+Then $\dim T\ge\dim U$, with equality if and only if the sum of the $W_i$
+is direct.
+\end{lemma}
+
+\begin{proof}
+Pass to an infinite extension field; this preserves dimensions and directness.
+Choose $f\in E^*$ nonzero on every $a_i$. Contraction by $f$ maps $T$ onto
+$U$, proving the inequality. If the dimensions are equal this contraction
+is an isomorphism. Choose $g\in E^*$ so that all ratios
+$g(a_i)/f(a_i)$ are distinct; finitely many proper hyperplanes are excluded.
+The operator
+\[
+ (g\otimes1)\circ(f\otimes1)^{-1}:U\longrightarrow U
+\]
+acts on $W_i$ by the scalar $g(a_i)/f(a_i)$. Eigenspaces with distinct
+eigenvalues have direct sum. Conversely a direct sum of the $W_i$ makes the
+displayed tensor sum direct, of dimension $\sum_i\dim W_i=\dim U$.
+\end{proof}
+
+For $r,m\ge0$ define the number of injective maps
+\[
+ I_m(r)=\prod_{j=0}^{m-1}(q^r-q^j).
+\]
+The empty product is one, and $I_m(r)=0$ when $m>r$.
+
+\begin{lemma}[All mixed injection moments]
+\label{lem:mixed-injection-moments}
+For fixed nonnegative integers $m_1,\ldots,m_s$ and $r_i=\dim\ker B_i$,
+\[
+ \lim_n\mathbb E\prod_i I_{m_i}(r_i)
+   =\prod_i q^{m_i(m_i+1)/2}.
+\]
+Consequently, for fixed nonnegative integers $\ell_i$,
+\[
+ \lim_n\mathbb E\prod_i q^{\ell_i r_i}
+ =\prod_i M_{\ell_i},\qquad
+ M_\ell=\prod_{j=1}^{\ell}(1+q^j).
+\]
+\end{lemma}
+
+\begin{proof}
+Expand the injection counts over tuples of injective maps
+$f_i:\mathbb F_q^{m_i}\to\mathbb F_q^n$, and let $W_i$ be their images.
+Write $M=\sum_i m_i$.
+
+First suppose the $W_i$ have direct sum. The number of such ordered tuples
+of injections is $I_M(n)$. In a basis adapted to their sum, the constraints
+$W_i\subseteq\ker B_i$ have total codimension
+\[
+ M(n-M)+\sum_i\binom{m_i}{2}+2\sum_{i<j}m_im_j
+ =nM-\sum_i\frac{m_i(m_i+1)}2.
+\]
+Indeed, each block joining $W_i$ to the complementary space imposes one
+linear condition per entry; each alternating block within $W_i$ imposes
+one; and a block joining $W_i$ to $W_j$ imposes two independent conditions,
+because $a_i$ and $a_j$ are nonproportional. All underlying upper-triangular
+entries of the independent $A_j$ are uniform. The contribution of direct
+tuples is therefore
+\[
+ I_M(n)q^{-nM+\sum_i m_i(m_i+1)/2}
+ \longrightarrow q^{\sum_i m_i(m_i+1)/2}.
+\]
+
+For a nondirect tuple put $u=\dim\sum_iW_i<M$ and
+$v=\dim\sum_i a_i\otimes W_i$. Lemma~\ref{lem:tensor-surplus} gives
+$v\ge u+1$. For each of the $n-u$ complementary basis vectors, the
+kernel conditions impose $v$ independent linear equations on the
+$k\times u$ cross-block entries. These entries for different complementary
+vectors are independent. Thus the probability of all kernel conditions
+is at most $q^{-v(n-u)}$. The number of tuples spanning a space of dimension
+$u$ is at most $C_{q,M}q^{nu}$: choose the $u$-space, then the bounded-size
+coordinate matrices of the injections within it. Their contribution is
+at most $C_{q,M}q^{-n+v u}$, which tends to zero. There are only finitely many
+possible $u,v$ for the fixed moment tuple.
+
+Finally, counting maps by their kernels gives
+\[
+ q^{\ell r}=\sum_{j=0}^{\ell}\qbinom{\ell}{j} I_j(r).
+\]
+Apply the first part and the finite $q$-binomial identity
+\[
+ \sum_{j=0}^{\ell}\qbinom{\ell}{j} q^{j(j+1)/2}
+ =\prod_{j=1}^{\ell}(1+q^j).
+\]
+\end{proof}
+
+\begin{proof}[Proof of Theorem~\ref{thm:pencil-coranks}]
+We give the moment-determination step explicitly, since ordinary moment
+convergence by itself would not justify this conclusion. Put
+\[
+ B_q=\prod_{j\ge1}(1-q^{-2j}),\qquad
+ C_q^+=\prod_{j\ge1}(1+q^{-j}).
+\]
+Both are finite positive constants. For fixed $h\ge0$ and $m\ge h$, define
+the polynomial in $q^r$
+\[
+ L_{m,h}(r)=\prod_{\substack{0\le j\le m\\j\ne h}}
+            \frac{q^r-q^{2j}}{q^{2h}-q^{2j}}.
+\]
+Every alternating form in even dimension has even nullity, over every
+finite field. On the even values $0,2,\ldots,2m$, this polynomial equals
+$\mathbf1_{\{r=2h\}}$. If $r\ge2m+2$ is even, bounding the numerator
+factors by $q^r$ and the denominator factors separately above and below
+$h$ gives
+\[
+ |L_{m,h}(r)|
+ \le B_q^{-2}q^{mr-m(m+1)-h(h-1)}.
+\]
+Consequently, at every even $r\ge0$,
+\[
+ \left|L_{m,h}(r)-\mathbf1_{\{r=2h\}}\right|
+ \le E_{m,h}(r):=
+ B_q^{-2}q^{-h(h-1)}q^{(m+1)r-(m+1)(m+2)}.
+\]
+By Lemma~\ref{lem:mixed-injection-moments}, all fixed mixed moments of
+these error majorants factor in the limit. Moreover,
+\[
+ \lim_n\mathbb E E_{m,h}(r_i)
+ \le B_q^{-2}C_q^+q^{-h(h-1)}q^{-(m+1)(m+2)/2}
+ =:\varepsilon_{m,h}\longrightarrow0,
+\]
+since $M_{m+1}\le C_q^+q^{(m+1)(m+2)/2}$.
+For fixed $h_1,\ldots,h_s$, the difference between the product of the
+indicators and the product of the polynomials is bounded by
+$\prod_i(1+E_{m,h_i}(r_i))-1$. Its limiting expected value is at most
+$\prod_i(1+\varepsilon_{m,h_i})-1$, tending to zero with $m$.
+The mixed polynomial expectations factor in the limit, again by the
+mixed moment lemma. Thus each joint point probability converges to the
+product of its marginal limits.
+
+For completeness, choosing the radical and then a nondegenerate form on
+the quotient gives, for even $r\le n$,
+\[
+ \Pr(\dim\ker A_1=r)
+ =\qbinom{n}{r}
+ q^{\binom{n-r}{2}-\binom n2}
+ \prod_{j=1}^{(n-r)/2}(1-q^{-(2j-1)}).
+\]
+Its limit is $\beta_q q^{-r(r-1)/2}/g_r$. The first moment bound
+$\mathbb E q^{r_i}\to q+1$ makes the marginals tight, so these probabilities
+sum to one. Joint tightness follows by a union bound. Pointwise
+convergence on the countable state space, together with tightness, gives
+total-variation convergence.
+\end{proof}
+
+\begin{corollary}[A random finite-dimensional space of alternating forms]
+\label{cor:binomial-pencil}
+Let $U_n$ be a uniformly chosen $k$-dimensional subspace of
+$\operatorname{Alt}_n(q)$, where $k$ is fixed. Put
+$m_k=(q^k-1)/(q-1)$, and let $Z(U_n)$ be the number of its projective points
+represented by nonsingular forms. Then
+\[
+ Z(U_n)\longrightarrow\operatorname{Bin}(m_k,\beta_q)
+\]
+in total variation. More strongly, with respect to a uniformly chosen
+ordered basis of $U_n$, the entire projective corank pattern converges to
+independent copies of the distribution in Theorem~\ref{thm:pencil-coranks}.
+In particular,
+\[
+ \Pr(\text{every nonzero form of }U_n\text{ is nonsingular})
+ \longrightarrow\beta_q^{m_k}.
+\]
+\end{corollary}
+
+\begin{proof}
+Independent uniform $A_1,\ldots,A_k$ are linearly independent with
+probability $\prod_{j=0}^{k-1}(1-q^{j-\binom n2})\to1$. Conditioning on
+that event gives a uniform ordered basis of a uniform $k$-space. Apply
+the theorem to one representative of every point of
+$\mathbb P^{k-1}(\mathbb F_q)$. The case $k=0$ is interpreted with zero
+projective points.
+\end{proof}
+
+\paragraph{Relation to prior work.}
+The tensor-dimension mechanism has a closely related unrestricted-matrix
+antecedent in the November 2026 Omega Institute proof of the fixed-field
+column limit for MRD-code densities \cite{OmegaMRD2026}. That work uses mixed kernel moments
+and finite Mobius inversion to establish joint zero-nullity probabilities.
+Here the matrices are alternating, every nullity has fixed parity, and
+the conclusion determines the entire projective corank pattern. The
+explicit interpolation argument above is included to establish this
+stronger distributional statement without importing a moment-uniqueness
+theorem. This comparison is a targeted prior-art check, not a claim of
+exhaustive priority verification.

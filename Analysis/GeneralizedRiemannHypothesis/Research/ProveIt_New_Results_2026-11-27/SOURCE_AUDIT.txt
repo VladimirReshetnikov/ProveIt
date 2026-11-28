@@ -1,0 +1,138 @@
+SOURCE AUDIT AND MATHEMATICAL DEPENDENCIES
+27 November 2026 (America/Los_Angeles)
+
+REPOSITORY SNAPSHOT
+
+https://github.com/VladimirReshetnikov/ProveIt/tree/41a284d6ef8eb16d783bfc685ab99cc6e1d28daa/Analysis/GeneralizedRiemannHypothesis/
+
+The requested directory was analyzed at this fixed revision. The default branch
+moved during the investigation; later changes were not silently incorporated.
+
+The article README describes a merged collection of 209 research reports,
+982 pages, and 1,321 theorem-like statements. Those are repository descriptions,
+not an independently certified count of correct new theorems. The investigation
+surveyed the article structure and result indices, searched the section text,
+closely reviewed the positive-filter arguments and source-scope discussions,
+and compared candidate extensions with the sixteen available incoming ZIPs.
+The source manifest records the inspected article copies and incoming archives.
+
+The incoming files matter: several initially promising symplectic and
+finite-observation extensions were already covered there. Those candidates
+were discarded rather than presented again as new.
+
+FORMAL INPUT: OBSERVED SCOPE
+
+The inspected vendored Statements.lean defines nonvanishing to the right of
+Re(s)=1/2 and critical-strip zero localization for Dirichlet L-functions,
+with the principal-character pole convention handled separately. Main.lean
+exports the corresponding statements through New.grh. These are Dirichlet
+statements; they do not by themselves assert nonabelian Artin GRH, general Hecke
+GRH, simple zeros, central nonvanishing, or Elliott–Halberstam.
+
+The vendor README pins lsernau/grh-lean at
+72fead102f663d5c7a407964a13dc0cf9d977207 and says its 818 files are byte-identical
+to that upstream snapshot. This investigation read selected source files and
+the stated interface; it did not rebuild or kernel-check that dependency tree.
+The ordinary ProveIt build does not by itself validate those vendored files.
+
+The source reduction was also inspected: its simultaneous upper/lower lattice
+bounds and torsion substitution are substantial reusable mechanisms, but their
+arithmetic carriers and conductor costs are specific. No arbitrary Frobenius
+weight replacement or nonabelian transfer was assumed. The source article itself
+identifies missing ingredients for such transfers.
+
+DIRECT INPUTS USED BY THE PAPERS
+
+Article/sections/fil.tex:
+
+  fil:lem:strip — the integrated strip identity for positive exponential sums;
+  fil:thm:meanbound — support diameter times mean Fourier frequency >= n*pi;
+  fil:lem:tails — eventual positivity and tail control for theta kernels.
+
+The first paper reproduces the strip proof and its finite moment reduction,
+then proves the full complex-height prefix bound, hinge domination, sharp
+reciprocal moments, equality, stability, support uncertainty and gap applications.
+The second uses the eventually positive theta tail to dominate a possibly signed
+compact core, with a polynomial extrapolation bound uniform in matrix size.
+Neither argument invokes RH or GRH.
+
+PUBLISHED QUESTIONS AND THEIR PRECISE TREATMENT
+
+Stefan Steinerberger, Some Open Problems:
+https://faculty.washington.edu/steinerb/openproblems.pdf
+
+The author PDF's indexed primary text identifies Problem 41, page 41, in the
+version last updated 31 March 2026. It asks whether nonnegative functions with
+specified vanishing Fourier coefficients satisfy a support-radius lower bound
+proportional to the square root of the sum of reciprocal frequency squares.
+The main paper proves that inequality with the optimal constant. The broader
+question of exact minimum support for every prescribed set remains open here.
+Direct PDF retrieval returned HTTP 404; the mathematical problem was retrieved
+from the indexed text of the author's PDF. The query
+
+  site:faculty.washington.edu/steinerb/openproblems.pdf "probability measure centered"
+
+retrieved the complete relevant question. An older 10 June 2024 copy numbers the
+same question 42. The paper states the Fourier convention explicitly to avoid
+ambiguity between a unit circle and a 2*pi angular circle.
+
+Gady Kozma and Ferenc Oravecz, On the gaps between zeros of trigonometric
+polynomials, Real Analysis Exchange 28(2) (2002/2003), 447–454:
+https://arxiv.org/pdf/math/0601021
+
+Question 2, page 2 of the preprint, concerns square frequencies and asks whether
+the O(1/N) bound is the correct order even when the band is large. The main paper
+answers that order alternative, gives a uniform finite-band comparison, and an
+exact short-band leading term. It does not determine the exact wide-band
+extremum or its leading constant.
+
+EARLIER WORK THAT IS CREDITED
+
+Alexandre Eremenko and Alexander Fryntov, Remarks on the Obrechkoff inequality,
+Proceedings of the AMS 144 (2016), 703–707:
+https://arxiv.org/pdf/1409.4849
+
+This is the integrated angular positive-polynomial antecedent of the repository's
+strip identity. The manuscript does not claim that integrated zero counting or
+the general majorization principle was invented here.
+
+Ian Wagner, The Jensen–Polya program for various L-functions, Forum Math. 32(2)
+(2020), preprint 2019:
+https://arxiv.org/pdf/1905.11269
+
+Theorem 2.1 and Corollary 1.4 already give arbitrary-order central-derivative
+asymptotics for real primitive Dirichlet characters. This rules out treating the
+existence of such an asymptotic, or its qualitative eventual-increase consequence,
+as a first result of this investigation. The companion credits it prominently.
+
+Arshay Sheth and Wayne Voo, Super-positivity via Dirichlet theta functions,
+arXiv:2611.12152v1 (9 November 2026):
+https://borowiecki.dev/pdf/2611.12152
+
+Their Conjecture 1.5 asks for eventual increase and at most one turning point.
+The companion gives a direct effective eventual-increase proof but does not
+claim the global turning-point conclusion. Its main new quantitative focus is
+the finite Hankel criterion and the growing range r <= alpha*m*log(m).
+
+Stephane R. Louboutin and Marc Munsch, On positive real zeros of theta and
+L-functions associated with real, even and primitive characters, Publ. Math.
+Debrecen 83 (2013), 643–665:
+https://publi.math.unideb.hu/paper/1837/download/10_5486_PMD_2013_5670.pdf
+
+Section 1.1 records the negative theta value at conductor 53. This confirms that
+allowing a signed compact core is a substantive enlargement beyond globally
+positive theta kernels. The companion also proves that a negative interval
+prevents positivity of all Hankel dimensions at a single fixed derivative index.
+
+LIMITS OF THE NOVELTY CHECK
+
+The search compared the pinned article, incoming archives, the cited primary
+papers, and targeted searches for the precise support and square-gap questions.
+No earlier matching resolution was found. This is not an exhaustive priority
+determination. A result answering a precisely stated specialist question is not
+being represented as a solution of a globally prominent conjecture.
+
+The complete arguments and exact scope are in the two PDFs. Internal independent
+proof review is recorded separately. No empirical computation is substituted
+for a universal mathematical proof.
+

@@ -1,0 +1,132 @@
+SOURCE AND CONTRIBUTION RECORD
+Prepared 27 November 2026
+
+1. Source pin and scope
+
+Repository: https://github.com/VladimirReshetnikov/ProveIt
+Directory: Analysis/GeneralizedRiemannHypothesis/
+Pinned revision: 3413bfb1edb3636437f9cec7e5dd975869f7d120
+
+The source tree was frozen for this analysis; claims of source-relative
+novelty refer to this revision. Later additions may change that comparison.
+The main Article TeX sections were retrieved, and the relevant zero-statistics
+and disjoint-prime-product sections were read closely. Relevant unmerged
+incoming reports were also inspected. The entire 895-page article was not
+independently reproved or formally checked in this project.
+
+The Article README describes its 194-report, 895-page consolidation as a
+merge, not an independent mathematical review. Source statements used as
+inputs are therefore identified explicitly in the new papers.
+
+2. Upstream RH and Dirichlet GRH
+
+The vendored release is lsernau/grh-lean revision
+72fead102f663d5c7a407964a13dc0cf9d977207.
+Its statements include Mathlib RiemannHypothesis and the stated critical-line
+results for primitive and imprimitive Dirichlet L-functions. This package
+does not extend that scope to general Artin or automorphic L-functions.
+
+The primary verification record inspected was:
+https://math.mit.edu/~drew/shortgrh/
+The record was updated 27 November 2026, 17:27 UTC and reports builds,
+statement comparisons, kernel replay and independent proof-checker runs.
+These reports were inspected; none of those Lean or external-checker builds
+was rerun here. The new papers are ordinary mathematical proofs, not Lean
+formalizations.
+
+The proof program combines smoothed prime sums and positivity, an integral
+target-lattice argument, and an analytic continuation/Landau endgame. The
+continuations in this package use two structures developed in its downstream
+work: finite-contrast spectral inversion and finite-quotient allocation laws.
+
+3. Five-point paper: existing results credited
+
+Merged source:
+Article/sections/zer.tex
+Labels zer:thm:stencilbank, zer:thm:fourpoint, zer:thm:missingfreq;
+also zer:lem:ramp and zer:sec:coalesce for the prime explicit formula.
+
+The merged article already provides the finite-bank Mellin criterion,
+the four-point classification, recovery from any two distinct four-point
+shapes, the one-frequency tangent description and its two-dilation repair,
+and a five-point example with infinitely many blind frequencies.
+
+Incoming source at the same pin:
+docs/incoming/dirichlet-coupled-zeros-and-prime-variances.zip
+Member: five_node_filters/five_node_frequencies.tex
+Title: The missing frequencies of five-point prime variances
+Its Theorem 1 already proves the quadratic/phase criterion and the upper
+bound of two missing positive frequencies. Theorem 2 proves attainment
+by genuine five-weight filters and a stronger local density statement.
+None of those results is claimed as new in this package.
+
+New relative to these inspected sources:
+- Any two distinct normalized five-point response shapes have disjoint
+  real blind sets, hence jointly recover the spectral counting limit.
+- The exact three-line criterion for a uniform joint finite-symbol gap.
+- Uniqueness of the normalized infinitely blind shape.
+- The full positive anti-periodic tangent classification for that shape
+  and its universal two-dilation repair.
+- The extension to two invisible modes, with at most four dilation averages.
+- The exact feasible shape domain and global smallness of defective shapes.
+
+The rational two-frequency certificate is an explicit independent witness;
+it is not the first proof that the two-frequency bound is attained.
+Classical Mellin-Tauberian theory is credited in the paper, including Wiener
+and Bingham--Inoue. Uniform separation of finite symbols is not asserted to
+give a full noisy inversion theorem.
+
+4. Parity paper: existing results credited
+
+Merged source:
+Article/sections/dir.tex
+Labels dir:lem:disjoint-iid, dir:prop:sparseexc,
+dir:thm:disjoint-growing and dir:thm:disjoint-mixing.
+The last growing-block lifting theorem is a stated arithmetic input,
+not reproved here. The entropy calculation for fixed blocks is inherited;
+the paper makes its dependence on the number of blocks explicit.
+
+Incoming source at the same pin:
+docs/incoming/grh_extensions_2026-11-27(2).zip
+Member: grh_extensions/prime_product_limits.tex
+Title: Every sparse prime-product transition is compound Poisson
+
+That report controls one sparse sampled product in a bounded quotient and
+proves a uniform finite-population expansion in a bounded expected-defect
+window. Its classification expressly excludes dense quotas. It does not
+give the full parity-vector comparison when the number of blocks diverges.
+Encoding the vector in C_2^r gives all nonidentity labels, outside its stated
+defect-count hypothesis; translating one block to the identity still leaves
+rn-n defects, more than half the population for r>2.
+
+New relative to these inspected sources:
+- Total variation equivalence to parity-conditioned independent signs for
+  every sequence n_r >= 2 under only a_r=(1-2s/(rn))^n -> 0.
+- The exact parameter sqrt(r)*a_r, including fixed capacities and sampling
+  fractions tending to one half.
+- The finite-capacity transition location and the intermediate-capacity
+  correction when n/(log r)^2 has a finite positive limit.
+- The resulting joint quadratic-character prime-product profile under the
+  source's logarithmic-block hypotheses.
+
+The Gaussian shape for ordinary hypercube walks is classical; the paper
+cites Diaconis--Graham--Morrison (1990). Alves et al., arXiv:2410.00831v2,
+study a related full-label comparison with a fixed number of suits; their
+observed object and asymptotic regime differ from the present theorem.
+
+5. Literature and verification limits
+
+Targeted primary-source searches covered Mellin cancellation/inverse-filter
+theorems, Allan-variance ambiguity, hypercube profiles, parity observations,
+and sampling without replacement. Such searches do not certify global
+historical priority. Publication novelty remains a claim for specialist
+assessment, separate from the self-contained proofs given here.
+
+Internal mathematical reviews checked the five-point algebra, tangent
+argument, finite-population conditioning argument, and the arithmetic
+compatibility/fibre counts. These are internal reviews, not external peer
+review or formal proof checking.
+
+The rational certificate is an exact existence argument. The symbolic
+checks establish the displayed finite identities. The finite parity
+enumerations check examples; they are not proofs of the asymptotic claims.

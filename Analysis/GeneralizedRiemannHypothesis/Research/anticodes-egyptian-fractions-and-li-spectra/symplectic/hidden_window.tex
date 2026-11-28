@@ -1,0 +1,272 @@
+\documentclass[11pt]{article}
+\usepackage[T1]{fontenc}
+\usepackage{lmodern}
+\usepackage{amsmath,amssymb,amsthm,booktabs,geometry,xcolor,hyperref}
+\geometry{margin=1in}
+\hypersetup{pdftitle={The critical window for learning a symplectic form},colorlinks=true,linkcolor=blue!60!black,urlcolor=blue!60!black,citecolor=blue!60!black}
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{corollary}[theorem]{Corollary}
+\newcommand{\F}{\mathbb F}
+\newcommand{\PP}{\mathbb P}
+\newcommand{\E}{\mathbb E}
+\newcommand{\Alt}{\operatorname{Alt}}
+\newcommand{\TV}{\operatorname{TV}}
+\newcommand{\radic}{\operatorname{rad}}
+\newcommand{\rank}{\operatorname{rank}}
+\newcommand{\gb}[2]{\genfrac{[}{]}{0pt}{}{#1}{#2}_{q}}
+\newcommand{\defeq}{\mathrel{:=}}
+\title{The critical window for learning a symplectic form\\from random isotropic subspaces}
+\author{}
+\date{}
+\begin{document}
+\maketitle
+\begin{abstract}
+Choose a hidden nondegenerate alternating form on $\F_q^n$ up to scale, then independently sample $t$ uniformly random $r$-dimensional subspaces isotropic for that form. How many other forms remain compatible, and how well can the data be distinguished from independent uniform subspaces? For each fixed $r\ge2$ and fixed excess $s=t\binom r2-\binom n2$, we determine the limiting law, testing distance and optimal recovery probability. Under the uniform experiment the law is an explicit binomial mixture indexed by the nullity of a uniform rectangular matrix. Two structural results give the proof. The full nullspace of the grouped isotropy constraints has asymptotically the same distribution in total variation as the kernel of independent uniform equations. In a uniform fixed-dimensional space of alternating forms, nonsingularity at distinct projective points becomes jointly independent. For unconditioned wide symplectic blocks we also prove a Gaussian transition for testing and recovery, with its center and width given by the first two moments of the number of constraints per block. These results hold over every fixed finite field and answer the corresponding questions in the ProveIt article.
+\end{abstract}
+
+\section{The experiment and the answer}
+Fix a prime power $q$ and an integer $r\ge2$. Let $V=\F_q^n$ with $n$ even, $n\ge2r$, and $W=\Alt(V)$, the space of bilinear forms $H$ with $H(v,v)=0$ for all $v$. Write
+\[
+ D=\binom n2,\quad c=\binom r2,\quad s=ct-D,\quad
+ e_j=\prod_{i=1}^j(1-q^{-i}),\quad
+ \delta=\prod_{j=1}^\infty(1-q^{-(2j-1)}).
+\]
+Here $e_0=1$ and $e_\infty=\prod_{i\ge1}(1-q^{-i})$. Under $Q$, the observations $K_1,\ldots,K_t$ are independent uniform $r$-planes. Under $P$, choose a projective nondegenerate alternating form $[H]$ uniformly and then sample independent uniform $H$-isotropic $r$-planes. All probabilities refer to these laws at the indicated $n,r,t$. Define
+\[
+ N=\{G\in W:G|_{K_i\times K_i}=0\ (1\le i\le t)\},\quad K=\dim N,
+ \quad Z=\#\{[G]\in \mathbb P(N):\radic G=0\}.
+\]
+Each observed plane gives $c$ linear constraints. The observation vectors inside a single plane satisfy many algebraic relations, and even a single plane with $r=2$ gives a row supported on the Pl\"ucker variety of decomposable bivectors. This makes the comparison with independent uniform equations a substantive step.
+
+\begin{theorem}[Window law]\label{main}
+Along every sequence with $n\to\infty$ even and $s$ fixed, $(K,Z)$ under $Q$ converges in total variation on $\mathbb N^2$ to $(J,Y)$. For $k\ge\max(0,-s)$ put
+\[
+ \pi_s(k)=\frac{q^{-k(k+s)}e_\infty}{e_k e_{k+s}},\qquad
+ h_k=\frac{q^k-1}{q-1}.
+\]
+Then $\PP(J=k)=\pi_s(k)$ and $Y\mid J=k\sim\mathrm{Binomial}(h_k,\delta)$. Set $\mu=\delta q^{-s}/(q-1)$. Under $P$ the joint limit is the $Y/\mu$ size-biased version of this same pair. In particular
+\[
+ \lim\TV(P,Q)=\E\, (1-Y/\mu)_+,\qquad
+ \lim\PP_P(\text{optimal recovery of }[H])=\frac{\PP(Y>0)}{\mu}.
+\]
+Under the planted law the chance of a one-dimensional nullspace tends to zero for $s<-1$ and to $e_\infty/e_{s+1}$ for $s\ge-1$.
+\end{theorem}
+The congruence $D+s\equiv0\pmod c$ is required whenever the offset is fixed. The result also determines each attainable subsequential profile when $ct-D$ is bounded. At $r=2$ the article uses $t=(D-1)+a$, so its offset is $a=s+1$. Its sharp threshold and limiting chi-square divergence left the law of $Z$ and the total variation inside the window open \cite{repo}. All arguments below concern finite fields and use no statement about analytic $L$-functions.
+
+For $q=2$, the numerical values below use $\delta=0.41942244\ldots$.
+\begin{center}
+\begin{tabular}{rcc}
+\toprule
+Excess $s$&Limiting testing distance&Optimal probability of recovery\\
+\midrule
+$-3$ &0.204665&0.292187\\
+$-2$ &0.297541&0.503311\\
+$-1$ &0.411496&0.701565\\
+$0$ &0.649350&0.836031\\
+$1$ &0.808320&0.914019\\
+$2$ &0.899761&0.955970\\
+$3$ &0.948740&0.977720\\
+\bottomrule
+\end{tabular}
+\end{center}
+Already at $s=0$, the hidden form is recoverable with probability about $0.836$. Requiring that the linear solution space have dimension one gives the smaller probability $e_\infty/e_1=0.577576\ldots$. A solution space of dimension at least two can contain a unique nonsingular projective point.
+
+\section{Universality for the whole kernel}
+Let $U$ be the kernel of a $ct\times D$ matrix with independent uniform entries, in any fixed basis of $W$. In this section the parity of $n$ is immaterial.
+\begin{theorem}\label{universality}
+For fixed $q,r,s$, the laws of $N$ under $Q$ and of $U$ on the lattice of all subspaces of $W$ have total variation tending to zero.
+\end{theorem}
+
+For an $\ell$-dimensional subspace $S\subset W$, let $p(S)$ be the probability a single random $r$-plane is isotropic for every form in $S$. For $U$ the corresponding containment probability is $q^{-\ell ct}$; for $N$ it is $p(S)^t$. We first prove that for each fixed $\ell$,
+\begin{equation}\label{inc}
+ \sum_{\dim S=\ell}\left|p(S)^t-q^{-\ell ct}\right|\longrightarrow0 .
+\end{equation}
+
+Generate a plane by conditioning independent uniform $x_1,\ldots,x_r\in V$ on linear independence. Conditioning changes probabilities by $O_{q,r}(q^{-n})$. Fix a nontrivial additive character $\psi$ of $\F_q$. Orthogonality gives the unconditioned probability
+\[
+ q^{-\ell c}\sum_{(A_{ij})\in S^c}
+ \E\psi\bigg(\sum_{1\le i<j\le r} A_{ij}(x_i,x_j)\bigg).
+\]
+If some $A_{ij}$ has rank $>R$, the absolute expectation is at most $q^{-R/2}$. Indeed, squaring the bias of a quadratic function and differencing with an independent shift bounds its squared modulus by the fraction of shifts annihilating the polarized bilinear form. This fraction is $q^{-\rank B}$, where $B$ is its block matrix, and $B$ contains $A_{ij}$ as a submatrix. Character orthogonality uses all scalar multiples of any nonzero image and thus works also for nonprime fields and characteristic two.
+
+Take $R=\lceil 10\log_q n\rceil$ and let $B_S$ be the span of elements in $S$ of rank $\le R$. If $b=\dim B_S=0$, the zero tuple contributes one, while every other term has the preceding bias bound. Thus
+\[
+ p(S)=q^{-\ell c}(1+O_{q,r,\ell}(q^{-R/2}+q^{-n})).
+\]
+This estimate has relative error $o(1/t)$. Since $\gb D\ell q^{-\ell ct}=O_{q,\ell,s}(1)$, the good spaces give $o(1)$ in \eqref{inc}.
+
+If $b\ge1$, first sum the tuples lying in $B_S^c$. Their net contribution to the original probability is $q^{-(\ell-b)c}$ times the unconditioned common-isotropy probability for $B_S$. This probability is at most $\theta=q^{-1}+(1-q^{-1})q^{-2}<1$: for any fixed nonzero form of rank $a\ge2$, the probability $A(x_1,x_2)=0$ is $q^{-1}+(1-q^{-1})q^{-a}$. Every remaining tuple has some form of rank $>R$, giving, uniformly in $S$,
+\[
+ p(S)\le q^{-(\ell-b)c}(\theta+o(1)).
+\]
+There are at most $q^{2nR}$ matrices of rank at most $R$ by factorization through $\F_q^R$. Choose $b$ such forms spanning $B_S$ and $\ell-b$ further arbitrary forms spanning $S$ together with them. Thus the number of spaces of type $b$ is at most $q^{2bnR+(\ell-b)D}$. Their summed contribution to $p(S)^t$ is at most
+\[
+ q^{O(n\log n)-(\ell-b)s}(\theta+o(1))^t=o(1)
+\]
+because $t\asymp n^2$. Their contribution to the comparison probability is $O(q^{-bD+O(n\log n)})$. This proves \eqref{inc}.
+
+To pass to the exact kernel, fix $k$ and any function $0\le f(S)\le1$ on $k$-spaces, allowed to vary with $n$. For a realized kernel $L$ define the incidence sums
+\[
+ T_j(L)=
+ \sum_{\substack{S\subset T\subseteq L\\\dim S=k,\ \dim T=k+j}} f(S),
+\]
+where $S\subset T$ permits equality at $j=0$. Each $T$ carries at most $\gb{k+j}k$ possible $S$, so \eqref{inc} gives $\E T_j(N)-\E T_j(U)=o(1)$ uniformly in $f$, for each fixed $j$. The successive Gaussian-binomial sieve truncations
+\[
+ \sum_{j=0}^m(-1)^j q^{\binom j2} T_j(L)
+\]
+majorize $f(L)\mathbf1_{\dim L=k}$ for even $m$ and minorize it for odd $m$ (set this expression to zero when $\dim L\ne k$). In fact, for each $S\subseteq L$ with $b'=\dim L-k>0$, its multiplier equals
+$(-1)^m q^{\binom{m+1}2}\gb{b'-1}m$ by the Gaussian Pascal identity, with a zero Gaussian coefficient if $m>b'-1$. For $b'=0$ the multiplier is one. The width between consecutive bounds, in expectation for $U$, is at most
+\[
+ q^{\binom j2}\gb{k+j}k\gb D{k+j}q^{-(k+j)ct}
+ \le e_\infty^{-2}q^{\binom j2+kj-(k+j)(k+j+s)}
+ \xrightarrow[j\to\infty]{}0 .
+\]
+We used $\gb ab\le e_\infty^{-1}q^{b(a-b)}$. Taking $n\to\infty$ first proves equality up to $o(1)$ uniformly for every such $f$ at fixed $k$. Finally \eqref{inc} with $\ell=1$ gives uniformly bounded expected numbers of lines in $N$ and $U$, hence tightness of their dimensions. Summing over finitely many $k$ and then removing the tail proves Theorem~\ref{universality}.
+
+\section{Nonsingularity along a random linear family}
+Fix $k\ge1$, take $A_1,\ldots,A_k$ independent uniform alternating forms on $V$, and write $A(a)=\sum_{j=1}^k a_j A_j$. Its nonsingularity depends only on the projective class of $a\ne0$.
+\begin{theorem}\label{marks}
+For any fixed list of distinct projective parameters $[a_1],\ldots,[a_m]\in\mathbb P^{k-1}(\F_q)$, the indicators of nonsingularity of the forms $A(a_i)$ converge jointly, as $n\to\infty$ through even integers, to independent Bernoulli variables of parameter $\delta$.
+\end{theorem}
+The parameter vectors can satisfy many linear dependencies: the theorem applies to all projective points at once.
+
+\begin{lemma}\label{tensor}
+Let $U_i$ be subspaces, $U=\sum_i U_i$, and $U'=\sum_i U_i\otimes\langle a_i\rangle\subset U\otimes\F_q^k$. Then $\dim U'\ge\dim U$, with equality precisely when $\sum_i U_i$ is direct.
+\end{lemma}
+\begin{proof}
+Extend scalars to an infinite field and choose a linear functional $f$ nonzero at each $a_i$. Contraction of $U'$ by $f$ maps onto $U$. If it is an isomorphism, contraction by a second functional $g$ composed with its inverse gives an endomorphism of $U$ that acts on $U_i$ by the scalar $g(a_i)/f(a_i)$. Choose $g$ outside the finitely many hyperplanes imposing equality of two ratios, possible because the projective points are distinct. The $U_i$ lie in distinct eigenspaces so form a direct sum. The other implication follows at once by dimension. Extension of scalars preserves all dimensions involved.
+\end{proof}
+
+Let $d_i=\dim\radic A(a_i)$. Fix nonnegative integers $b_i$. We claim
+\begin{equation}\label{mixed}
+ \E\prod_{i=1}^m\gb{d_i}{b_i}
+  -\prod_{i=1}^m\E\gb{d_i}{b_i}\ \longrightarrow\ 0 .
+\end{equation}
+Expand the product into a sum over ordered tuples of $b_i$-spaces $U_i\subset V$ required to belong to the indicated radicals. For a direct tuple, choose a basis of $V$ extending bases of all $U_i$. Each unordered pair of distinct basis vectors labels an independent uniform element of $\F_q^k$, recording the values of the $k$ forms there. From a vector in $U_i$ this vector of entries acquires one scalar constraint in direction $a_i$. If both basis vectors belong to different designated subspaces it acquires two independent constraints, because the two projective directions differ. If both belong to the same $U_i$ it acquires just one. Thus the joint probability for a direct tuple is exactly the product of its marginal probabilities, namely $\prod_i q^{-nb_i+\binom{b_i+1}2}$.
+
+Write $h=\dim\sum_i U_i$ and $B=\sum_i b_i$. For $h<B$, the number of tuples of span dimension $h$ is $O_{q,\mathbf b}(q^{nh})$, by choosing the span and then the tuple inside it. For each basis vector in a complement of $\sum_iU_i$, the constraints on its pairings with that sum have rank $\dim U'$ of Lemma~\ref{tensor}. The entries for different complementary basis vectors are independent. Thus the joint probability is at most $q^{-(h+1)(n-h)}$. The summed contribution of such tuples is $O(q^{-n})$; they also contribute $O(q^{-n})$ under the product of marginal probabilities because $B\ge h+1$. This proves \eqref{mixed}, including zero-dimensional choices. In particular mixed expectations of any fixed polynomials in the $q^{d_i}$ differ by $o(1)$ from the product of the marginal expectations, since $\gb db$ is a polynomial of degree $b$ in $q^d$ with nonzero leading coefficient.
+
+A parity-sensitive approximation converts these moments into nonsingularity probabilities. For $j\ge0$ define the polynomial
+\[
+ f_j(x)=\prod_{a=1}^j\frac{x-q^{2a}}{1-q^{2a}} .
+\]
+For $x=q^d$, $d$ even, it equals one at $d=0$, vanishes at $d=2,4,\ldots,2j$, and has sign $(-1)^j$ for $d>2j$. For even $j$ it thus majorizes $\mathbf1_{d=0}$ and for odd $j$ minorizes it. Uniformly in even $n$ the one-form tail satisfies
+\[
+ \PP(d\ge u)\le\E\gb du
+ =\gb nu q^{-nu+\binom{u+1}2}\le e_\infty^{-1}q^{-u(u-1)/2}\quad(0\le u\le n).
+\]
+For $d\ge2j+2$, $|f_j(q^d)|\le e_\infty^{-1} q^{jd-j(j+1)}$. Hence the expected absolute error, bounded by the sum over $d\ge2j+2$ of
+$e_\infty^{-2}q^{-d(d-1)/2+jd-j(j+1)}$, tends uniformly to zero as $j\to\infty$. Its first term has exponent $-(j+1)^2$ and successive terms decrease by factors at most $q^{-(j+2)}$.
+
+To justify products without assuming independence, write $I_i=\mathbf1_{d_i=0}$, $u_i=f_{2j}(q^{d_i})$ and $l_i=f_{2j+1}(q^{d_i})$. Pointwise,
+\[
+ 0\le\prod_i u_i-\prod_i I_i\le
+ \sum_i(u_i-l_i)\prod_{h\ne i}u_h.
+\]
+Take $n\to\infty$ with $j$ fixed. Relation \eqref{mixed} factors the expectations of each product up to $o(1)$. Then let $j\to\infty$ using the preceding uniform single-variable approximation. The density of nonsingular alternating forms is
+$\delta_n=\prod_{i=1}^{n/2}(1-q^{-(2i-1)})\to\delta$. For completeness the count is $|\mathrm{GL}_n(q)|/|\mathrm{Sp}_n(q)|$ by transitivity; counting a symplectic basis recursively gives $|\mathrm{Sp}_{2d}(q)|=q^{d^2}\prod_{i=1}^d(q^{2i}-1)$, and division by $q^D$ yields the formula. We obtain $\PP(I_i=1\ \forall i)\to\delta^m$. Applying this to all sublists and using inclusion--exclusion proves Theorem~\ref{marks}.
+
+\begin{corollary}[Nonsingular spaces and prescribed coranks]
+For fixed $k$, the number of $k$-subspaces of $W$ all of whose nonzero alternating forms are nonsingular is asymptotic to $\gb Dk\delta^{h_k}$. More generally, the coranks at any fixed list of distinct projective parameters become asymptotically independent, in the sense that the joint law has vanishing total variation from the product of its marginals.
+\end{corollary}
+\begin{proof}
+Condition $k$ independent uniform generators on linear independence. This changes the probability by $O_{q,k}(q^{-D})$ and supplies a uniform $k$-subspace; Theorem~\ref{marks} at the $h_k$ projective points gives the first assertion. For a fixed target even corank $2b$, replace $f_j$ in the proof by
+\[
+ F_{j,b}(x)=\prod_{\substack{0\le a\le j\\a\ne b}}\frac{x-q^{2a}}{q^{2b}-q^{2a}},\qquad j\ge b.
+\]
+It is the required indicator for even coranks $d\le2j$. Its sign above $2j$ is $(-1)^{j-b}$, and $|F_{j,b}(q^d)|\le C_{q,b}q^{jd-j(j+1)}$ there, by factoring $q^{2a}$ from the denominator factors with $a>b$. Thus the same one-variable error bound and product argument apply, choosing the truncation parity separately for each target. All marginals are tight by the radical bound, so finitely many target values suffice to any fixed accuracy.
+\end{proof}
+
+\section{The marked kernel, testing and recovery}
+For a uniform $m\times D$ matrix with $m=D+s$, the chance of kernel dimension $k$ equals
+\[
+ q^{-k(k+s)}\frac{e_D e_{D+s}}{e_k e_{k+s}e_{D-k}},
+ \qquad \max(0,-s)\le k\le D.
+\]
+To verify it, choose a $k$-space kernel and an injection of the resulting $(D-k)$-dimensional quotient into $\F_q^{D+s}$, and divide by $q^{D(D+s)}$. The finite law tends to $\pi_s$, with tightness supplied either by the same expression or the expected line count. This rectangular rank distribution is classical \cite{fulman}. Conditional on dimension $k$, the kernel of the uniform matrix is a uniform $k$-space. A basis of this space can be obtained by sampling $k$ independent uniform alternating forms and conditioning on linear independence. For fixed $k$ the conditioning event has probability $1-O_{q,k}(q^{-D})$, so Theorem~\ref{marks} gives the displayed binomial law conditional on this dimension. For $k=0$ the number of points is zero. Truncate to a finite range of $k$ by tightness. Theorem~\ref{universality} transfers the whole joint law to the observed kernel under $Q$, proving the null part of Theorem~\ref{main}.
+
+The number of possible hidden projective forms is $M_n=q^D\delta_n/(q-1)$. For one fixed nonsingular alternating form, the fraction $p_n$ of isotropic $r$-planes is
+\[
+ p_n=\prod_{j=0}^{r-1}\frac{q^{n-j}-q^j}{q^n-q^j}
+ =q^{-c}\big(1+O_{q,r}(q^{-n})\big).
+\]
+Indeed when a $j$-dimensional isotropic space has been chosen, its orthogonal complement has dimension $n-j$, and the $q^j$ vectors in its span have to be removed before extending the basis. Thus $\mu_n\defeq \E_Q Z=M_np_n^t\to\mu$. The limiting variable has $\E Y=\mu$ as well: a uniform kernel has expected line count $h_D q^{-(D+s)}\to q^{-s}/(q-1)$, with uniformly bounded second moment by counting ordered pairs of distinct lines and assigning probability $q^{-2(D+s)}$ to each pair. Hence $\E h_J=q^{-s}/(q-1)$. The null convergence of $Z$ together with convergence of means to $\E Y$ implies uniform integrability (truncate using $Z\wedge B$). The exact likelihood identity
+\[
+ \frac{dP}{dQ}=\frac{Z}{\mu_n}
+\]
+now gives convergence of the planted joint law to the stated size bias, including total variation by tightness and the discrete state space.
+
+Under $P$ the posterior is uniform on the $Z$ compatible projective forms. Therefore the optimal recovery probability equals $Q(Z>0)/\mu_n$, and the total variation equals $\E_Q(1-Z/\mu_n)_+$. Both converge to the values in Theorem~\ref{main}. When $\mu\le1$, the latter simplifies to $\PP(Y=0)$. The planted probability of $K=1$ converges to $\delta\pi_s(1)/\mu$, giving the product in the theorem. Under the planted law conditional on $K=k\ge1$, the limiting number of compatible forms has law $1+\mathrm{Binomial}(h_k-1,\delta)$.
+
+\begin{corollary}[More general sample counts]
+For sequences with $ct-D\to-\infty$, the testing distance and optimal recovery probability tend to zero. For $ct-D\to+\infty$, testing distance and the success probability of recovery by a one-dimensional kernel tend to one. These implications hold for every fixed observation dimension $r\ge2$.
+\end{corollary}
+\begin{proof}
+For the limiting mixture the ordered-pair line count, using the uniform kernel formula and its uniformly bounded third power of the line count, gives $\E Y(Y-1)=\mu^2$. The bounded third moment follows by classifying triples of lines according to their span dimension $j\le3$, with $O_q(q^{jD})$ such triples and containment probability $q^{-j(D+s)}$. Hence $\mathrm{Var}(Y)=\mu$, and the limiting testing distance is at most $1/(2\sqrt\mu)$ by Cauchy--Schwarz. Optimal recovery is at most $1/\mu$. As $s\to-\infty$, these both tend to zero. As $s\to+\infty$, $\PP(Y=0)\ge1-\mu$ tends to one and the limiting one-dimensional recovery probability $e_\infty/e_{s+1}$ tends to one. Having more observations can only improve optimal testing and optimal recovery. Under the planted model $N$ always contains the hidden line, so that having more observations preserves the event $K=1$ once reached. For comparison at any offset bound $B$ choose the nearest admissible offset among $B,B+1,\ldots,B+c-1$; the finitely many possible residues allow application of the fixed-offset result on subsequences.
+\end{proof}
+
+\section{Unconditioned wide symplectic blocks}
+The same sampling problem has a different window when the row ranks are allowed to fluctuate. Fix $r\ge2$ and put $b=n-r$. Choose a nonsingular alternating form on the $n$-dimensional source up to scale. For any representative $H$, choose independent, uniformly random $2b\times n$ frames $X_i$ with Gram matrix $X_i^{\mathsf T}J_bX_i=H$, where $J_b$ is the standard symplectic form. Observe the top $b\times n$ blocks of the frames. Their law is independent of the chosen representative of $[H]$. The null experiment uses independent uniform $b\times n$ matrices. Thus the smallest possible kernel dimension is $r$; in the previous sections the observations were conditioned to have precisely that dimension.
+
+Let $A$ have mass function
+\[
+ \PP(A=a)=\frac{q^{-a(a+r)}e_\infty}{e_a e_{a+r}},\qquad a=0,1,\ldots .
+\]
+Write $m=\E\binom{r+A}2$ and $\sigma^2=\mathrm{Var}\binom{r+A}2$. Both are finite and $\sigma>0$. Let $\Phi$ be the standard normal distribution function.
+\begin{theorem}[Gaussian window for unconditioned blocks]\label{gauss}
+If $t=t_n$ obeys
+\[
+ \frac{mt-D}{\sigma\sqrt{t}}\longrightarrow x\in\mathbb R,
+\]
+then the testing distance, the optimal probability of recovering the hidden projective form, and the probability that the common solution space is one-dimensional under the planted law all converge to $\Phi(x)$. For sequences with the standardized offset tending to $-\infty$ these limits are zero, and for offset tending to $+\infty$ they are one.
+\end{theorem}
+For example, at $q=r=2$, $m=1.489767\ldots$ and $\sigma=0.944489\ldots$. The center is approximately $0.671246D$ unconditioned blocks, and changing $t$ by order $\sqrt D$ moves across the transition. The random dimensions of the observed kernels account for this wider window.
+
+\begin{proof}
+For a proposed top block $M$ with $j$-dimensional kernel, the source's exact wide-block law \cite{repo} gives its likelihood relative to a uniform matrix, at fixed hidden form:
+\begin{equation}\label{blocklike}
+ \mathbf1_{H|_{\ker M}=0}\ q^{\binom j2}/C_n,\qquad
+ C_n=\prod_{a=(n-2r)/2+1}^{n-r}(1-q^{-2a}).
+\end{equation}
+One may verify the formula directly. For a bottom block $B$ the required identity is $M^{\mathsf T}B-B^{\mathsf T}M=H$. Reducing $M$ to a rank normal form shows that the image of this linear map is precisely the forms vanishing on $\ker M\times\ker M$, of dimension $D-\binom j2$. Thus the number of completions is $q^{bn-D+\binom j2}$ when the required restriction vanishes and zero otherwise. Each completion is an injective frame as $H$ is nonsingular. The number of all frames with Gram $H$ is $|\mathrm{Sp}_{2b}(q)|/|\mathrm{Sp}_{2b-n}(q)|=q^{2bn-D}C_n$, by extension of symplectic bases. This proves \eqref{blocklike}. Given kernel dimension $j$, the remaining data consist of a uniform kernel under the null or a uniform isotropic kernel under the planted form, followed by identical uniform choices of an injective map from the quotient. The rank probabilities are independent of $[H]$.
+
+Under the null the kernel dimension $j$ has the law $r+A_n$ where the rectangular rank count gives
+\[
+ \PP(A_n=a)=
+ q^{-a(a+r)}\frac{e_{n-r}e_n}{e_a e_{r+a} e_{n-r-a}}.
+\]
+The planted-to-null ratio for dimension $j$ equals $q^{\binom j2}p_{n,j}/C_n$, with $p_{n,j}$ the fraction of $j$-planes isotropic for a nonsingular form. The product for $p_{n,j}$ in the preceding section gives $q^{\binom j2}p_{n,j}\le1$ (and it vanishes if $j>n/2$). Thus the one-block dimension distance is at most $C_n^{-1}-1=O_{q,r}(q^{-n})$. The two $t$-tuples of dimensions differ in total variation by $O_{q,r}(tq^{-n})=o(1)$ in the claimed central regime. Conditional on the observed dimensions, the prior is still uniform.
+
+We detail the uniform conditional estimates needed at the random offsets. Write $j_i$ for the observed dimensions, $C_i=\binom{j_i}2$ and $v=\sum_i C_i-D$. Suppose for the moment that $t\asymp D$, $r\le j_i\le L\sqrt{\log_q n}$ and $|v|\le n^{3/2}$, with $L$ fixed. Let $\mu_{\boldsymbol j}=M_n\prod_i p_{n,j_i}$ be the conditional mean of $Z$ under the null. The product formula for $p_{n,j}$ gives $p_{n,j}=q^{-\binom j2}(1+O(jq^{2j-n}))$ on this range. Consequently $\mu_{\boldsymbol j}=(\delta/(q-1)+o(1))q^{-v}$ uniformly.
+
+Here is the required second-moment estimate, keeping its uniformity explicit. In the Fourier calculation of Section~2 replace $r$ in a single sample by $j_i$ and take $R=\lceil B\log_q n\rceil$ with $B>4L^2+12$. For any space $S$ of dimension at most two the error from tuples with a form of rank exceeding $R$ is at most $q^{-R/2}$ in absolute probability. Conditioning on independent vectors changes the probability by at most $O_q(q^{j_i-n})$. Multiplication by $q^{2C_i}\le n^{L^2}$ makes both errors $o(n^{-3})$. For each independent ordered pair of projective nonsingular forms with span $S$ such that its nonzero forms all have rank $>R$, the common survival probability is therefore $q^{-2(D+v)}(1+o(1))$ over all observations. The $o(1)$ is uniform because $t=O(n^2)$.
+
+An exceptional such $S$ has a one-dimensional span of its rank-$\le R$ members: two independent low-rank forms would force every form in $S$ to have rank at most $2R<n$, although $S$ contains a nonsingular form. The number of exceptional pairs is $O_q(q^{D+2nR})$ by choosing one small-rank matrix and one arbitrary matrix as a basis of $S$. For each individual plane, the proof of Section~2 bounds the exceptional common survival probability by $q^{-C_i}(\theta+o(1))$, where $\theta=q^{-1}+(1-q^{-1})q^{-2}<1$. The total contribution of exceptional pairs to $\E Z(Z-1)/\mu_{\boldsymbol j}^2$ is thus at most
+\[
+ O_q(q^{v+2nR})(\theta+o(1))^t=o(1).
+\]
+The regular pairs contribute at most $1+o(1)$ after the same normalization. Hence whenever $v\to-\infty$, $\mathrm{Var}(Z)/\mu_{\boldsymbol j}^2=o(1)$ uniformly on this range. The conditional testing distance tends to zero by Cauchy--Schwarz applied to $Z/\mu_{\boldsymbol j}$, and the conditional optimal recovery is at most $1/\mu_{\boldsymbol j}\to0$.
+
+When $v\to+\infty$, conditional testing distance tends to one since $Q(Z>0\mid\boldsymbol j)\le\mu_{\boldsymbol j}$. For linear recovery fix the hidden form $H$. Each competing $G\notin\langle H\rangle$ imposes the same condition as $aG+bH$ for $a\ne0$, and there are $O_q(q^D)$ such competitor classes. For a regular pair the conditional survival at all samples is $q^{-(D+v)}(1+o(1))$ after division by $\prod_i p_{n,j_i}$. Only $O_q(q^{2nR})$ competitor classes are exceptional, because each such span contains a form of rank at most $R$ independent from $H$. Each exceptional class has conditional survival at most $(\theta+o(1))^t$. By the union bound the probability of any surviving competitor is $O_q(q^{-v})+o(1)$. This holds uniformly in $H$ and the specified dimensions.
+
+Finally the null ranks are independent. The product formula for $A_n$ shows that its law differs from that of $A$ by $O_{q,r}(q^{-n/2})$ in total variation, including after weighting by any fixed polynomial in $a$: split at $a=n/4$, use relative error $O_{q,r}(q^{-3n/4})$ below the split and the quadratic exponential tail above it. Thus the full list of $t$ null ranks can be coupled with independent copies of $r+A$ with error $o(1)$. The ordinary central limit theorem gives $(\sum_i C_i-mt)/(\sigma\sqrt t)\Rightarrow N(0,1)$. The quadratic exponential tail makes $\max_i j_i\le L\sqrt{\log_q n}$ with probability tending to one for sufficiently large fixed $L$. Also $|v|\le n^{3/2}$ with probability tending to one. The probabilities of $v\ge n^{1/3}$ and $v\le-n^{1/3}$ tend to $\Phi(x)$ and $1-\Phi(x)$, respectively. The remaining strip has probability tending to zero since the normal law has no atoms.
+
+The rank lists are observed, with asymptotically identical marginals under both laws. Replacing the planted rank marginal by the null marginal costs $o(1)$ in total variation, and for equal rank marginals the joint distance is the mean of the conditional distances. Conditional optimal recovery probabilities likewise average under the planted rank marginal. The conditional estimates above yield all three limits. For offsets diverging in either direction compare with the nearest integer sample size at any fixed standardized offset and then send that offset to the desired infinity; all three performance probabilities or distances are monotone in the number of blocks.
+\end{proof}
+
+\section{Scope and further questions}
+The article's problem uses kernels of full-row-rank wide symplectic blocks. Its proposition about conditioned blocks identifies the two-dimensional kernel experiment exactly with isotropic-plane sampling \cite{repo}. For general fixed $r$ the theorem here concerns independent uniform isotropic $r$-planes under the hidden form. In a block model where, conditional on its kernel, each observed matrix is uniformly distributed on the surjections with that kernel under both laws, adjoining these surjections leaves likelihoods and optimal recovery unchanged. Theorem~\ref{gauss} covers the unconditioned block law coming from Lagrangian projections.
+
+Prior work on squares of random codes uses low-rank quadratic forms to study when structured evaluations fill their ambient space \cite{cascudo}. Rank-one matrices similarly arise from componentwise products of two independent codes \cite{rand}. Pott, Schmidt and Zhou give finite exact counts for the dependent triple $A,B,A+B$ at prescribed ranks \cite{psz}. Our joint limit applies to every fixed collection of distinct projective parameter points. The present statement compares the full kernel on the subspace lattice for grouped alternating evaluations from a common random $r$-plane, and then resolves simultaneous nonsingularity on all of its projective lines. The counting and sieve proofs provide those assertions directly.
+
+An effective total-variation bound with explicit dependence on $q,r$ would quantify how large $n$ must be for the table to guide inference. Sampling corrupted planes introduces a distinct decoding problem because a compatible form may need to violate a positive fraction of the equations. The regime of growing $r$ changes the number of Fourier coordinates in one observation and also the spacing $\binom r2$ between accessible excesses. These questions remain open here.
+
+\begin{thebibliography}{9}
+\bibitem{repo} V. Reshetnikov, \emph{ProveIt, Analysis/GeneralizedRiemannHypothesis, Article}, section \emph{A hidden source form shared by many wide blocks} and open question \emph{Growing symplectic compressions}, revision \texttt{2f2bf0c4e0}. \href{https://github.com/VladimirReshetnikov/ProveIt/blob/2f2bf0c4e0027ad5397e627da0217644dcd6f95a/Analysis/GeneralizedRiemannHypothesis/Article/sections/spn.tex}{Pinned source}.
+\bibitem{fulman} J. Fulman and L. Goldstein, Stein's method and the rank distribution of random matrices over finite fields, \emph{Ann. Probab.} \textbf{43} (2015), 1274--1314. \href{https://doi.org/10.1214/13-AOP889}{doi:10.1214/13-AOP889}.
+\bibitem{cascudo} I. Cascudo, R. Cramer, D. Mirandola and G. Z\'emor, Squares of random linear codes, \emph{IEEE Trans. Inform. Theory} \textbf{61} (2015), 1159--1173. \href{https://arxiv.org/abs/1407.0848}{arXiv:1407.0848}.
+\bibitem{psz} A. Pott, K.-U. Schmidt and Y. Zhou, Pairs of quadratic forms over finite fields. \href{https://math.uni-paderborn.de/fileadmin-eim/mathematik/AG-Diskrete_Mathematik/Publications-schmidt/quad_pairs.pdf}{Author manuscript, Theorem 1}.
+\bibitem{rand} H. Randriambololona, Linear independence of rank 1 matrices and the dimension of $*$-products of codes. \href{https://arxiv.org/abs/1501.05978}{arXiv:1501.05978}.
+\end{thebibliography}
+\end{document}

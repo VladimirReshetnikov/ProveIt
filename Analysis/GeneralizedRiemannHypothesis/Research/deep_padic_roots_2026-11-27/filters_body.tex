@@ -1,0 +1,345 @@
+\section{The transverse Hessian at an arbitrary positive mirror spectrum}
+
+The repository article \cite{ProveItFilters} proves analytic continuation of the optimum at each strictly
+positive reflection-paired configuration, and computes the width Hessian at a
+coalesced frequency. Its second open question asks for the Hessian at a
+general mirror configuration. The theorem below answers its definiteness and
+kernel questions for distinct real frequencies (equivalently, exponents with
+one common real part). It does not settle signs of all mixed minors, vanishing
+base weights, repeated-frequency strata, or independently moving real parts.
+
+For a list $\lambda=(\lambda_1,\ldots,\lambda_n)$ of distinct positive real
+numbers, let $B(\lambda)$ be the least support diameter of a probability
+measure $\mu$ on $\mathbb R$ for which
+\[
+ \int e^{i\lambda_jt}\,d\mu(t)=0\qquad(1\leq j\leq n).
+\]
+All Fourier frequencies here are angular frequencies; there is no $2\pi$ in
+the exponential. We normalize the mean frequency to $1$.
+
+\clearpage
+\begin{theorem}[Explicit Hessian and transverse rigidity]
+Suppose
+\[
+ 0<\lambda_1<\cdots<\lambda_n<2,\qquad
+ \lambda_j+\lambda_{n+1-j}=2.
+\]
+Put $j^*=n+1-j$, $r_j=e^{i\pi\lambda_j}$, and
+\[
+ W(z)=\frac{\prod_{j=1}^n(z-r_j)}{\prod_{j=1}^n(1-r_j)}
+      =\sum_{k=0}^n w_kz^k.
+\]
+Assume $w_k>0$ for every $0\leq k\leq n$. Then $B(\lambda)=n\pi$,
+and the unique optimum anchored at zero has masses $w_k$ at $k\pi$.
+For $v\in\mathbb R^n$ with $\sum_jv_j=0$, define the real polynomial
+\begin{equation}\label{new:eq:S}
+ S_v(z)=-\frac\pi2\,zW(z)
+              \sum_{j=1}^n\frac{v_j+v_{j^*}}{z-r_j}
+        =\sum_{k=0}^n w_ks_k(v)z^k.
+\end{equation}
+The expression is a polynomial, $s_0(v)=s_n(v)=0$, and
+\begin{equation}\label{new:eq:Q}
+ Q_\lambda(v)=\frac1\pi\sum_{0\leq k<\ell\leq n}
+  w_kw_\ell\bigl(s_k(v)-s_\ell(v)\bigr)^2
+  \int_0^\infty\frac{z^{k+\ell-1}}{W(z)^2}\,dz
+\end{equation}
+satisfies
+\[
+ B(\lambda+\varepsilon v)
+       =n\pi+\varepsilon^2Q_\lambda(v)+O_{\lambda,v}(\varepsilon^3).
+\]
+Thus the Hessian of $B$ restricted to $\sum\lambda_j=n$ is $2Q_\lambda$.
+Its kernel is exactly
+\[
+ \{v: v_j+v_{j^*}=0\text{ for every }j\}.
+\]
+Consequently its rank is $\lceil n/2\rceil-1$, and it is strictly positive
+on every nonzero direction transverse to the mirror locus.
+\end{theorem}
+
+\begin{proof}
+We spell out the analytic and positivity inputs, because an arbitrary
+solution of the moment equations need not minimize width.
+
+\emph{The analytic minimizing branch.}
+The reflection-paired theorem of the article supplies a nonnegative
+exponential-polynomial certificate on $[0,n\pi]$ whose zero set is exactly
+$\{0,\pi,\ldots,n\pi\}$. Its endpoint zeros are simple, its interior zeros
+are double with positive second derivatives, and it lies in the real span of
+$\cos(\lambda_jt),\sin(\lambda_jt)$. This last statement follows directly
+from the keyhole-residue formula in the article, not from an assumption on
+unproved RH inputs.
+
+Let $\eta$ be near $\lambda$. Seek weights and nodes
+$w_k(\eta)$, $0=u_0(\eta)<\cdots<u_n(\eta)$ solving total mass $1$ and
+all $n$ complex annihilation equations. There are $2n+1$ unknown real
+parameters and equations. At the base, a homogeneous variation in the
+Jacobian kernel has exponential transform
+\[
+ \delta G(s)=A(e^{\pi s})+sC(e^{\pi s}),
+\]
+where $A,C$ are real polynomials of degree at most $n$, $A(1)=0$, and
+$C(0)=0$. Its vanishing at $i\lambda_j$, together with the conjugate of
+its vanishing at $i(2-\lambda_j)$, gives
+$2iC(r_j)=0$. Since all $r_j$ are distinct, $W$ divides $C$; since
+$C(0)=0$ and $W(0)>0$, $C=0$. Similarly $W$ divides $A$, and
+$A(1)=0$, $W(1)=1$ imply $A=0$. Positivity of the weights implies that
+all node variations vanish. The Jacobian is therefore invertible.
+
+The real analytic implicit function theorem supplies an analytic branch of
+positive weights and ordered nodes. To construct its certificate explicitly,
+let $Y(t)$ be the vector of the $n$ cosine and $n$ sine moment functions,
+and let $J$ be the full Jacobian in coordinates
+$(w_0,\ldots,w_n,u_1,\ldots,u_n)$. Solve
+$J^{\mathsf T}(a_0,b)=-e_{\mathrm{last}}$. The weight-coordinate equations
+give $a_0+b\cdot Y(u_k)=0$ at every node. Taking the weighted sum shows
+$a_0=0$, since the total mass is one and all moments vanish. Therefore
+$q(t)=b\cdot Y(t)$ vanishes at every node, has derivative zero at each
+interior node, and satisfies $w_nq'(u_n)=-1$. Invertibility of $J$
+makes this normalized certificate unique and analytic. At the base it
+is the positive scalar multiple of the reflection certificate with this
+endpoint normalization. The strict endpoint slopes, interior
+curvatures, and positivity on the remaining compact subintervals persist.
+Thus the certificate remains nonnegative on $[0,u_n(\eta)]$ and zero only
+at those nodes. Every feasible measure supported in that interval is
+supported on those nodes. The mass and moment equations determine its
+weights uniquely; both endpoint masses are positive. Hence no narrower
+feasible measure exists: any such measure could be translated into this
+interval, preserving its zero Fourier moments. Thus $B(\eta)=u_n(\eta)$ is analytic and globally
+minimal in a neighbourhood of the base.
+
+\emph{A defect identity valid at this general base.}
+For the mean-preserving path $\eta=\lambda+\varepsilon v$, put
+\[
+ G_\varepsilon(s)=\sum_{k=0}^n
+                 w_k(\varepsilon)e^{u_k(\varepsilon)s},\qquad
+ p_k(x,\varepsilon)=
+ \frac{w_k(\varepsilon)e^{xu_k(\varepsilon)}}{G_\varepsilon(x)}.
+\]
+For sufficiently small $\varepsilon$, $G_\varepsilon$ has exactly the $n$
+zeros $i\eta_j$ in $0<\operatorname{Im}s<2$, counted with multiplicity.
+Indeed the base $G_0(s)=W(e^{\pi s})$ has precisely those zeros there.
+For $|\operatorname{Re}s|>R$ the first or last term dominates uniformly
+for small $\varepsilon$, since the extreme weights remain bounded below
+and all node gaps stay bounded below. On the finite rectangle
+$|\operatorname{Re}s|\leq R$, $0\leq\operatorname{Im}s\leq2$, the base
+has no boundary zeros, so the argument principle or Rouche's theorem
+preserves the zero count. The prescribed simple zeros already account for
+all $n$ zeros.
+
+The article's horizontal-strip identity, at height $2$, is
+\[
+ \int_{\mathbb R}\log\frac{G_\varepsilon(x)}
+             {|G_\varepsilon(x+2i)|}\,dx
+  =2B(\eta)-2\pi\sum_{j=1}^n(2-\eta_j).
+\]
+Because $\sum\eta_j=n$, this becomes
+\begin{equation}\label{new:eq:defect}
+ B(\eta)-n\pi
+ =\frac12\int_{\mathbb R}
+   -\log\left|\sum_{k=0}^np_k(x,\varepsilon)
+                       e^{2iu_k(\varepsilon)}\right|\,dx.
+\end{equation}
+This is precisely the general-base version of the defect formula used by
+the article at the coalesced spectrum.
+
+Let $s_k=\dot u_k(0)$. The elementary expansion of a characteristic
+function at zero gives, for each fixed $x$,
+\[
+ -\log\left|\sum_kp_k(x,\varepsilon)e^{2iu_k(\varepsilon)}\right|
+ =2\varepsilon^2\operatorname{Var}_{p(x,0)}(s_k)
+      +O_x(\varepsilon^3).
+\]
+The variation of the weights does not affect the quadratic coefficient:
+the phases agree at the base, and the weights always sum to one. The
+exchange of differentiation and integration is justified as follows.
+On a fixed compact $x$-interval the expression inside the logarithm is
+uniformly nonzero for small $\varepsilon$. On either tail, factor out
+the phase of the dominant endpoint; the sum of all other probabilities,
+and its first three parameter derivatives, are bounded by
+$C(1+|x|)^3e^{-g|x|}$ for fixed $g>0$. The logarithm and its first three
+parameter derivatives have the same integrable bound. Taylor's theorem
+under the integral therefore yields
+\[
+ B(\lambda+\varepsilon v)-n\pi
+ =\varepsilon^2\int_{\mathbb R}
+            \operatorname{Var}_{p(x,0)}(s_k)\,dx+O(\varepsilon^3).
+\]
+Now $p_k(x,0)=w_ke^{k\pi x}/W(e^{\pi x})$. Using
+$\operatorname{Var}_p(s)=\sum_{k<\ell}p_kp_\ell(s_k-s_\ell)^2$ and
+$z=e^{\pi x}$ gives exactly \eqref{new:eq:Q}. Every integral is finite
+and strictly positive: near zero its power is at least zero, and near
+infinity it is at most $z^{-2}$, since $k+\ell\leq2n-1$.
+
+\emph{Explicit node velocities.}
+Write
+$A(z)=\sum_k\dot w_k(0)z^k$ and
+$S(z)=\sum_kw_ks_kz^k$. Differentiating the $j$th annihilation equation
+gives
+\[
+ A(r_j)+i\lambda_jS(r_j)
+       +i\pi v_jr_jW'(r_j)=0.
+\]
+Conjugating the equation for $j^*$ and subtracting it gives
+\[
+ 2iS(r_j)+i\pi(v_j+v_{j^*})r_jW'(r_j)=0.
+\]
+The polynomial in \eqref{new:eq:S} has exactly these values at every
+$r_j$ and vanishes at $0$. These $n+1$ interpolation conditions determine
+a polynomial of degree at most $n$ uniquely. Thus it is $S$. Its realness
+also follows from conjugate pairing. Its coefficient of degree $n$ is
+$-(\pi/2)w_n\sum_j(v_j+v_{j^*})=0$, and its constant coefficient is zero.
+This proves $s_0=s_n=0$ and the velocity formula, without differentiating
+the implicit optimizer numerically.
+
+\emph{Kernel and rank.}
+All edge weights in \eqref{new:eq:Q} are strictly positive. Thus $Q(v)=0$
+if and only if every $s_k$ is equal. Since $s_0=0$, this means $S_v=0$.
+The partial fraction expression in \eqref{new:eq:S}, whose poles are
+distinct, vanishes identically if and only if $v_j+v_{j^*}=0$ for all $j$.
+The mean-zero space has dimension $n-1$ and the reflection-preserving
+subspace has dimension $\lfloor n/2\rfloor$, giving the stated rank.
+\end{proof}
+
+\begin{corollary}[Uniform quadratic distance from symmetry]
+Near any base of the theorem, on the ordered mean-one hyperplane, put
+\[
+ m_j(\eta)=1+\frac{\eta_j-\eta_{j^*}}2,\qquad
+ a_j(\eta)=\frac{\eta_j+\eta_{j^*}}2-1.
+\]
+Then $m$ is the orthogonal projection onto the local mirror locus and
+$a=\eta-m$. There are constants $0<c<C$ and a neighbourhood on which
+\[
+ c\sum_ja_j(\eta)^2
+ \ \leq\ B(\eta)-n\pi\ \leq\ C\sum_ja_j(\eta)^2.
+\]
+In particular the normalized width has a nondegenerate quadratic minimum
+transverse to its entire local equality manifold.
+\end{corollary}
+
+\begin{proof}
+The nearby mirror points $m$ remain distinct with every coefficient of
+$W_m$ positive. The theorem applies uniformly on a compact neighbourhood
+of these mirror points. Its Hessian restricted to the fixed normal
+subspace is positive definite and depends continuously on $m$, hence its
+least eigenvalue is bounded below by a positive constant. Expand
+$B(m+a)$ at $m$ in the normal direction. The constant term is $n\pi$,
+the linear term vanishes, the quadratic term is $Q_m(a)$, and the cubic
+remainder is uniform. Shrinking the neighbourhood proves both bounds.
+\end{proof}
+
+\subsection{An exact noncoalesced three-frequency example}
+Take
+\[
+ \lambda=(1/2,1,3/2),\quad W(z)=(1+z+z^2+z^3)/4,
+ \quad v=(1,-2,1).
+\]
+Then
+\[
+ S_v(z)=\frac\pi2(z-z^2),\qquad
+ (s_0,s_1,s_2,s_3)=(0,2\pi,-2\pi,0).
+\]
+Let $P(z)=1+z+z^2+z^3$. For $f=(0,1,-1,0)$ the variance integral is
+\[
+ \int_{\mathbb R}\operatorname{Var}_{p(x,0)}f\,dx
+ =\frac1\pi\int_0^\infty
+  \frac{(z+z^2)P(z)-(z-z^2)^2}{zP(z)^2}\,dz
+ =\frac1\pi\int_0^\infty
+  \left(\frac1{(z+1)^2}+\frac{z}{(z^2+1)^2}\right)\,dz
+ =\frac3{2\pi}.
+\]
+Consequently
+\[
+ B(1/2+\varepsilon,1-2\varepsilon,3/2+\varepsilon)
+ =3\pi+6\pi\varepsilon^2+O(\varepsilon^3).
+\]
+For any mean-zero $v\in\mathbb R^3$, the normal part is
+$-(v_2/2)(1,-2,1)$, so the full restricted Hessian is described by
+\[
+ Q_\lambda(v)=\frac{3\pi}{2}v_2^2,
+ \qquad D^2B(\lambda)[v,v]=3\pi v_2^2.
+\]
+The null direction $(1,0,-1)$ moves along the mirror locus.
+
+More generally, at $\lambda=(1-d,1,1+d)$ with $0<d<2/3$, let
+$c=\cos(\pi d)>-1/2$. Then
+\[
+ W(z)=\frac{(z+1)(z^2+2cz+1)}{4(1+c)},\quad
+ S_{(1,-2,1)}(z)=\frac{\pi(1-c)}{2(1+c)}(z-z^2),
+\]
+and
+\[
+ s_1=-s_2=\frac{2\pi(1-c)}{1+2c},\qquad s_0=s_3=0.
+\]
+In fact the entire three-frequency transverse curvature has the closed
+form
+\begin{equation}\label{new:eq:threecurv}
+ Q_{(1-d,1,1+d)}(1,-2,1)
+ =6\pi\left(1-\frac{3\pi d\cos(\pi d)}
+                    {(1+2\cos(\pi d))\sin(\pi d)}\right),
+ \qquad 0<d<2/3.
+\end{equation}
+This positive expression has both a coalescence asymptotic and a
+coefficient-boundary blow-up:
+\[
+ Q_{(1-d,1,1+d)}(1,-2,1)
+   =\frac{3\pi^5}{10}d^4+\frac{3\pi^7}{28}d^6+O(d^8)
+       \quad(d\downarrow0),
+\]
+\[
+ Q_{(1-d,1,1+d)}(1,-2,1)
+   \sim\frac{4\pi}{2/3-d}\quad(d\uparrow2/3).
+\]
+The leading $d^4$ term agrees with the article's sixth-order coalescence
+law after differentiation in the symmetry-breaking direction; the displayed
+$d^6$ term is a further term in the curvature expansion. The second asymptotic
+quantifies the loss of smooth uniform control as the two interior masses
+approach zero.
+
+Here is an exact evaluation of the integral. Set $A=1+2c$ and
+$P(z)=(z+1)(z^2+2cz+1)$. With $f=(0,1,-1,0)$ the variance density after
+$z=e^{\pi x}$ is $R(z)\,dz/\pi$, where
+\[
+ R(z)=\frac{A(z+z^2)P(z)-A^2(z-z^2)^2}{zP(z)^2}.
+\]
+Partial fractions give the rational identity
+\[
+ R(z)=\frac{c(c-4)A}{(c-1)^2(z^2+2cz+1)}
+      -\frac{z(c+1)A^2}{(c-1)(z^2+2cz+1)^2}
+      +\frac{A^2}{(c-1)^2(z+1)^2}.
+\]
+Write $J(c)=\arccos(c)/\sqrt{1-c^2}$. Direct integration yields
+\[
+ \int_0^\infty\frac{dz}{z^2+2cz+1}=J(c),\qquad
+ \int_0^\infty\frac{z\,dz}{(z^2+2cz+1)^2}
+        =\frac{1-cJ(c)}{2(1-c^2)}.
+\]
+Therefore
+\[
+ \int_0^\infty R(z)\,dz
+    =\frac{3A}{2(1-c)^2}\bigl(A-3cJ(c)\bigr).
+\]
+Multiplying by $s_1^2/\pi$ gives \eqref{new:eq:threecurv}. Taylor
+expansion at $d=0$ gives the first asymptotic. At $d=2/3$,
+$1+2\cos(\pi d)\sim\pi\sqrt3(2/3-d)$, while the remaining factors
+have finite nonzero limits, giving the second. This calculation also
+shows explicitly why the theorem excludes the zero-weight boundary.
+
+\subsection{Novelty and limits}
+The explicit velocity polynomial, all-base variance formula, exact kernel,
+and quadratic-distance theorem extend the inspected article's real,
+simple-spectrum mirror problem. Their proof develops its strip-defect
+method. Established positive-input-shaping work, including
+Crain--Singhose--Seering \cite{Crain1996}, provides related optimization
+context; the accessible abstract discusses two-mode designs and their
+mode-ratio dependence. Targeted primary-source searches did not locate
+this arbitrary-$n$ Hessian formula. This is a new extension relative to
+the inspected article; publication priority remains unverified.
+
+For exponent targets $\beta+i\lambda_j$ with a common real $\beta$, the
+positive tilt $d\nu=e^{\beta t}d\mu/\int e^{\beta u}d\mu$ preserves the
+support and identifies the problem with the Fourier problem; all width
+formulas above therefore apply unchanged. RH/Dirichlet GRH is needed only
+if these targets are asserted to be zero contributions in a prime explicit
+formula. This new theorem itself is unconditional and contains no
+assumption about actual zero spacings, simplicity, or their independence.

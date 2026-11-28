@@ -1,0 +1,430 @@
+\section{Parity changes the critical exponent of Ehrhart zeros}
+\label{sec:ehrhart-critical}
+
+\subsection{The family and what is being resolved}
+For $d\ge2$, let $G_{d,M}$ be the complete graph on $d+1$ vertices with a matching of
+$M$ edges deleted. For integer $0\le M\le\lfloor(d+1)/2\rfloor$, let
+$E_{d,M}(s)$ be the Ehrhart polynomial of its symmetric edge polytope.
+The lattice is the integer zero-sum hyperplane, and the polytope is the
+convex hull of $\pm(e_i-e_j)$ over the remaining edges. Write $H_d=E_{d,0}$
+and let $C_d$ denote the Ehrhart polynomial of the $d$-dimensional
+cross-polytope. The exact identity from the incoming multipartite
+report~\cite{EhrhartIncoming} is
+\begin{equation}\label{ae:exact}
+ E_{d,M}(s)=H_d(s)-M D_d(s),\qquad
+ D_d(s)=\frac{C_d(s)-C_{d-2}(s)}2. 
+\end{equation}
+We use \eqref{ae:exact} to define $E_{d,M}$ also for real $M$. This real
+interpolation is necessary for discussing an exact collision parameter;
+only the integer values are asserted to be graph Ehrhart polynomials.
+The eventual collision parameters below are positive and much smaller
+than $(d+1)/2$, so rounding them to integers gives legitimate graphs.
+
+For clarity, the matching-deletion identity has a direct lattice-counting
+proof. For an integer zero-sum vector $x$, put $q=\sum_i\max(x_i,0)$.
+The complete graph gauge is $q$. For a complete multipartite graph the
+gauge is
+\[
+ \max\left(q,\ \max_A\sum_{i\in A}|x_i|\right),
+\]
+where $A$ runs over its parts. Indeed, direct transport from positive to
+negative coordinates has only the same-part restrictions. Hall's
+deficiency is $\delta=\max_A(P_A+N_A-q)_+$: a supply set meeting two
+parts reaches every demand, so only a single-part set can be deficient.
+At most one part has positive deficiency. Send $q-\delta$ units directly
+and send the remaining $\delta$ units within that part through an outside
+vertex using two edges each. This gives cost $q+\delta$, and the displayed
+lower bounds on cost are immediate. The argument also works with real
+flows, so it computes the polytope gauge.
+
+For a deleted matching the nontrivial parts are disjoint pairs. A point
+of $kP_{K_{d+1}}$ is lost at a pair $\{1,2\}$ precisely when
+$|x_1|+|x_2|>k$. It cannot be lost at two pairs, since
+$\sum_i|x_i|=2q\le2k$. The two coordinates of a lost pair have opposite
+signs. Fix the remaining vector $z\in\mathbb Z^{d-1}$ with positive and
+negative masses $P,N$. For one choice of the two signs, write
+$x_1=N+c$, $x_2=-P-c$ with $c\ge1$. The lost dilations satisfy
+$P+N+c\le k\le P+N+2c-1$. Hence the generating function of the loss
+from one pair is
+\[
+ 2\sum_{z\in\mathbb Z^{d-1}}t^{\|z\|_1}
+       \sum_{c\ge1}\frac{t^c-t^{2c}}{1-t}
+ =\frac{2t(1+t)^{d-2}}{(1-t)^{d+1}}.
+\]
+This equals the Ehrhart series of $(C_d-C_{d-2})/2$. Additivity of the
+disjoint losses proves \eqref{ae:exact} at every nonnegative integer
+$s=k$, and therefore as a polynomial identity.
+
+The preceding report established strict subcritical and supercritical
+statements at the scale $M\asymp\sqrt d$, and left the equalities out.
+The results here describe the previously unresolved local collision
+windows. They are unconditional. They use no claim about RH or GRH.
+They concern specified clusters of zeros near the canonical line
+$\operatorname{Re}s=-1/2$. In particular, ``critical'' below means the
+unique collision in that specified cluster, not a claim that this is the
+first off-line zero anywhere in the polynomial.
+
+Set
+\begin{align}
+ L&=\log d,&c_*&=\sqrt{8/\pi},&\beta&=2-\log 2,\label{ae:constants1}\\
+ C&=\gamma+\frac53\log2+\frac23,&
+ \kappa&=\frac{\pi^2}{4}-2+\frac23(2-\log2)^2.\label{ae:constants2}
+\end{align}
+Here $\gamma$ is Euler's constant. Numerically,
+$C=2.3991276325\ldots$, $\kappa=1.6059772947\ldots$, and
+$\kappa\pi^2=15.8503605761\ldots$.
+Throughout, $h=(2j+1)\pi$ with a fixed integer $j\ge0$.
+The fixed-$j$ condition is essential to the stated error estimates.
+
+\begin{theorem}[The even-dimensional collision]\label{ae:thm-even}
+Let $d$ tend to infinity through even integers, and suppose
+\[
+ M=c_*\sqrt d\left(1+\frac{\alpha_d}{L^2}\right),
+ \qquad \alpha_d\longrightarrow\alpha\ne\kappa h^2.
+\]
+There are precisely two zeros in the corresponding local cluster, counted
+with multiplicity, and they satisfy
+\begin{equation}\label{ae:even-roots}
+ s_\pm=-\frac12+\frac{ih}{L}
+ +\frac{-ihC\ \pm\sqrt{\frac23(\alpha-\kappa h^2)}}{L^2}
+ +o(L^{-2}).
+\end{equation}
+The square root may be taken in either order. If $\alpha<\kappa h^2$,
+both roots are simple and lie exactly on the canonical line. If
+$\alpha>\kappa h^2$, both are simple and off that line, forming a reflected
+pair. Their complex conjugates form the corresponding negative-height
+cluster.
+
+More precisely, for every fixed sufficiently small neighborhood of
+$\alpha=\kappa h^2$, there is for all large even $d$ a unique real local
+collision parameter $M^{\mathrm{ev}}_{d,h}$ and collision height
+$t^{\mathrm{ev}}_{d,h}$ with
+\begin{align}
+ M^{\mathrm{ev}}_{d,h}
+ &=c_*\sqrt d\left(1+\frac{\kappa h^2}{L^2}+O(L^{-3})\right),
+ \label{ae:even-critical}\\
+ t^{\mathrm{ev}}_{d,h}
+ &=\frac hL-\frac{hC}{L^2}+O(L^{-3}).\label{ae:even-height}
+\end{align}
+At that parameter the local root has multiplicity exactly two. In the
+local neighborhood, increasing $M$ through this value changes two simple
+on-line roots into a simple off-line reflected pair.
+\end{theorem}
+
+The meaning of ``precisely two in the local cluster'' in this and the next
+theorem is unambiguous under rescaling: for any bounded parameter set
+separated from its stated transition, choose a sufficiently large fixed
+$R$. The cluster is the disk
+$|L^2(s+1/2-ih/L)|<R$ in Theorem~\ref{ae:thm-even}, and the disk
+$|L^{4/3}(s+1/2-ih/L)|<R$ in Theorem~\ref{ae:thm-odd}.
+For all sufficiently large $d$ the indicated number of zeros lies in the
+disk, all zeros there have the expansions given, and no zeros lie on its
+boundary. A larger fixed $R$ gives the same cluster.
+
+\begin{theorem}[The odd-dimensional cubic window]\label{ae:thm-odd}
+Let $d$ tend to infinity through odd integers, and suppose
+\[
+ M=2c_*\sqrt d\left(1+\frac{\alpha_d}{L^{2/3}}\right),
+ \qquad \alpha_d\longrightarrow\alpha.
+\]
+Define
+\begin{equation}\label{ae:alpha-star}
+ b=(\beta h)^{1/3},\qquad \alpha_*=-\frac32 b^2.
+\end{equation}
+If $\alpha\ne\alpha_*$, the cluster consists of exactly three simple
+zeros, whose locations are
+\begin{equation}\label{ae:odd-roots}
+ s_k=-\frac12+\frac{ih}{L}+
+             \frac{i x_k}{L^{4/3}}+o(L^{-4/3}),\qquad k=1,2,3,
+\end{equation}
+where $x_1,x_2,x_3$ are the roots of the explicit cubic
+\begin{equation}\label{ae:cubic}
+ x^3+2\alpha x-2\beta h=0.
+\end{equation}
+If $\alpha<\alpha_*$, all three exact zeros lie on the canonical line.
+If $\alpha>\alpha_*$, exactly one does, and the other two form an off-line
+reflected pair.
+
+There is a unique local real collision parameter and height satisfying
+\begin{align}
+ M^{\mathrm{odd}}_{d,h}
+ &=2c_*\sqrt d\left(1-
+       \frac{3(\beta h)^{2/3}}{2L^{2/3}}+O(L^{-1})\right),
+ \label{ae:odd-critical}\\
+ t^{\mathrm{odd}}_{d,h}
+ &=\frac hL-\frac{(\beta h)^{1/3}}{L^{4/3}}+O(L^{-5/3}).
+ \label{ae:odd-height}
+\end{align}
+At this parameter two roots coalesce into a root of multiplicity exactly
+two; the third remains simple, at scaled coordinate $x=2b+o(1)$.
+In the local neighborhood, increasing $M$ through the collision value
+changes three on-line roots into one on-line root and an off-line pair.
+\end{theorem}
+
+\begin{corollary}[What happens at the two previously omitted equalities]
+\label{ae:cor-equality}
+For even $d$, either nearest integer to $c_*\sqrt d$ gives two simple
+on-line zeros in each of the fixed clusters in
+Theorem~\ref{ae:thm-even}. For odd $d$, either nearest integer to
+$2c_*\sqrt d$ gives an off-line pair in each of the fixed clusters in
+Theorem~\ref{ae:thm-odd}. In the odd case put $r=(2\beta h)^{1/3}$.
+The off-line pair has the explicit form
+\[
+ s_\pm=-\frac12\pm\frac{\sqrt3\,r}{2L^{4/3}}
+       +i\left(\frac hL-\frac{r}{2L^{4/3}}\right)
+       +o(L^{-4/3}),
+\]
+and the remaining zero is
+$-1/2+i(h/L+r/L^{4/3})+o(L^{-4/3})$.
+\end{corollary}
+
+\subsection{Analytic input, including the resonance at the center}
+The argument needs asymptotics in the dimension $d$, not a hypothesis on
+arithmetic zeros. The elementary formulas
+\begin{align}
+ C_d(s)&=\sum_{k=0}^d 2^k\binom dk\binom sk,\label{ae:Cexact}\\
+ H_d(s)&=\sum_{k=0}^d\binom dk\binom{d+k}k\binom sk\label{ae:Hexact}
+\end{align}
+lead to the dimension generating functions
+\begin{align}
+ \sum_{d\ge0}C_d(s)z^d
+  &=(1+z)^s(1-z)^{-1-s},\label{ae:Cgen}\\
+ \sum_{d\ge0}H_d(s)z^d
+  &=(1-z)^{-1-2s}\,{}_2F_1(-s,-s;1;z^2).\label{ae:Hgen}
+\end{align}
+One can alternatively obtain \eqref{ae:Hexact} from the complete graph
+numerator $\sum_k\binom dk^2 t^k$, followed by coefficient extraction in
+its Ehrhart series. These are polynomial identities in $s$; checking the
+lattice-counting generating functions for nonnegative integers $s$ proves
+them for all complex $s$.
+
+Write $s^*=-1-s$ and
+\[
+ A(s)=\Gamma(1+s)^{-2},\qquad B(s)=2^s\Gamma(s)^{-1},
+ \qquad \epsilon=(-1)^d.
+\]
+Transfer at $z=1,-1$ in \eqref{ae:Cgen}--\eqref{ae:Hgen} gives
+\begin{align}
+ H_d(s)&=A(s)d^{2s}+\epsilon A(s^*)d^{2s^*}
+             +O(d^{2\operatorname{Re}s-1}+d^{-3-2\operatorname{Re}s}),
+ \label{ae:Hasy}\\
+ D_d(s)&=B(s)d^{s-1}+\epsilon B(s^*)d^{s^*-1}
+             +O(d^{\operatorname{Re}s-2}+d^{-3-\operatorname{Re}s}).
+ \label{ae:Dasy}
+\end{align}
+These estimates are uniform on compact parameter sets avoiding the
+resonances $1+2s\in\mathbb Z$; only the extension across $s=-1/2$ is
+needed below. For completeness, near $z=1$ the hypergeometric connection
+formula yields a singular term
+\[
+ (1-z)^{-1-2s}\frac{\Gamma(1+2s)}{\Gamma(1+s)^2}
+                      (1+O(1-z))
+\]
+plus an analytic term. The corresponding singular term at $-1$ is
+$(1+z)^{1+2s}\Gamma(-1-2s)/\Gamma(-s)^2$ times an analytic factor
+with value one. Binomial coefficient transfer gives \eqref{ae:Hasy}.
+Multiplying \eqref{ae:Cgen} by $(1-z^2)/2$ gives the generating function
+for $D_d$, and the same transfer gives \eqref{ae:Dasy}. Local analytic
+terms may be subtracted to any fixed order; both singular expansions and
+their remainder bounds are uniform on a compact nonresonant parameter
+set. This is the standard two-singularity Darboux argument, equivalently
+multiple-singularity transfer~\cite[Chapter VI]{FS2009}; the hypergeometric
+connection formulas are recorded in~\cite[Section 15.8]{DLMF}.
+
+\begin{lemma}[Uniform holomorphic error at the resonant center]
+\label{ae:lemma-uniform}
+Fix $0<\eta<1/4$, a bounded set of $\mu\in\mathbb C$, and write
+$s=-1/2+z$, $u=Lz$, $M=\mu\sqrt d$. Then throughout $|z|\le\eta$,
+\begin{align}
+ dE_{d,M}(-1/2+z)={}& A(-1/2+z)e^{2u}
+       +\epsilon A(-1/2-z)e^{-2u}\notag\\
+ &-\mu\{B(-1/2+z)e^u
+       +\epsilon B(-1/2-z)e^{-u}\}
+       +O_\eta(d^{-1+2\eta}).\label{ae:uniform}
+\end{align}
+On any fixed bounded $u$-disk, the same error bound holds after any fixed
+number of $u$-derivatives. It also holds after one $\mu$-derivative;
+higher such derivatives vanish.
+\end{lemma}
+
+\begin{proof}
+The circle $|s+1/2|=\eta$ contains no resonance. On it,
+\eqref{ae:Hasy}--\eqref{ae:Dasy}, multiplied by $d$, give the stated
+absolute error uniformly for bounded $\mu$; the largest exponent is
+$-1+2\eta$. The difference between the two sides of \eqref{ae:uniform}
+without its error term is holomorphic in the whole disk. In particular,
+the apparent resonance occurs only in the connection formula used to
+estimate the boundary; it is not a singularity of that difference.
+The maximum-modulus principle extends the bound to the disk. For all
+large $d$, a fixed slightly larger $u$-disk maps strictly inside it.
+Cauchy's derivative estimates then give all fixed-order $u$-derivative
+bounds. The dependence on $\mu$ is affine, and its coefficient has the
+same separately proved bound.
+\end{proof}
+
+\subsection{The two normal forms}
+Define holomorphic functions near zero by
+\[
+ a(z)=\frac{A(-1/2+z)}{A(-1/2)},\qquad
+ b(z)=\frac{B(-1/2+z)}{B(-1/2)}.
+\]
+Here $A(-1/2)=1/\pi$ and $c_*B(-1/2)=-1/\pi$. Write
+\begin{align*}
+ a(z)&=1+a_1z+a_2z^2+O(z^3),&
+ a_1&=2\gamma+4\log2,&a_2&=\frac{a_1^2}{2}-\frac{\pi^2}{2},\\
+ b(z)&=1+b_1z+b_2z^2+O(z^3),&
+ b_1&=\gamma+3\log2-2,&b_2&=\frac{b_1^2}{2}-\frac{\pi^2}{4}-2.
+\end{align*}
+The values follow from the gamma recurrence and
+$\psi(1/2)=-\gamma-2\log2$, $\psi'(1/2)=\pi^2/2$.
+In particular
+\begin{equation}\label{ae:algebra}
+ a_1-2b_1=2\beta,\qquad
+ \frac{2a_1-b_1}{3}=C,\qquad
+ \frac{3C^2-2(a_2-b_2)}2=\kappa.
+\end{equation}
+
+For even $d$, put $u=ih+V/L$ and
+$\mu=c_*(1+\alpha/L^2)$. Since $e^{ih}=-1$, divide
+\eqref{ae:uniform} by $A(-1/2)$ and multiply by $L^2$.
+Taylor expansion, using $z=u/L$, gives
+\begin{equation}\label{ae:even-normal}
+ \frac{L^2d}{A(-1/2)}E_{d,M}
+ \left(-\frac12+\frac{ih}{L}+\frac V{L^2}\right)
+ =3(V+ihC)^2-2(\alpha-\kappa h^2)+O(L^{-1}).
+\end{equation}
+The error is uniform on every fixed compact set of complex $(V,\alpha)$,
+with all derivatives of any fixed order on smaller compact sets. Indeed,
+the Taylor remainder after multiplication by $L^2$ is $O(L^{-1})$,
+and the error from Lemma~\ref{ae:lemma-uniform} is
+$O(L^2d^{-1+2\eta})=o(L^{-N})$ for every fixed $N$.
+One direct way to check the coefficients is to expand first in
+$v=u-ih$:
+\[
+ 3v^2+(4a_1-2b_1)zv+2(a_2-b_2)z^2-2\alpha/L^2.
+\]
+Multiplication by $L^2$, followed by \eqref{ae:algebra}, gives
+\eqref{ae:even-normal}.
+
+For odd $d$, put $u=ih+i x/L^{1/3}$ and
+$\mu=2c_*(1+\alpha/L^{2/3})$. The normalized leading expression is now
+\[
+ a(z)e^{2v}-a(-z)e^{-2v}
+ -2(1+\alpha/L^{2/3})\{b(z)e^v-b(-z)e^{-v}\},\qquad v=u-ih.
+\]
+The linear terms in $v$ cancel. The remaining leading terms are
+\[
+ 2v^3-4\alpha L^{-2/3}v+2(a_1-2b_1)z.
+\]
+Consequently
+\begin{equation}\label{ae:odd-normal}
+ -\frac{Ld}{2iA(-1/2)}E_{d,M}
+ \left(-\frac12+\frac{ih}{L}+\frac {ix}{L^{4/3}}\right)
+ =x^3+2\alpha x-2\beta h+O(L^{-1/3}).
+\end{equation}
+Again the error is holomorphic and locally uniform with every fixed
+number of derivatives. Its largest term comes from retaining
+$z=ih/L+ix/L^{4/3}$ in the last displayed expression. All other neglected
+terms are of the indicated or smaller order. The dimension-asymptotic
+error is exponentially small compared with these logarithmic scales.
+
+\subsection{Proof of the collision theorems}
+\begin{proof}[Proof of Theorem~\ref{ae:thm-even}]
+If $\alpha\ne\kappa h^2$, the limiting quadratic in
+\eqref{ae:even-normal} has two distinct roots. Rouch\'e's theorem on
+small disjoint circles around them, and on a sufficiently large fixed
+circle enclosing both, proves the root count, simplicity, and
+\eqref{ae:even-roots}. Reflection across the canonical line preserves
+the exact zero multiset, by real coefficients and
+$E_{d,M}(-1-s)=(-1)^dE_{d,M}(s)$. When the limiting roots are on the
+line, choose reflection-invariant disks centered on that line. Each
+contains exactly one exact root counted with multiplicity, so the root
+is exactly on-line and simple. When the limiting roots have nonzero
+real offsets, their exact roots are off-line for all large $d$.
+
+For the exact collision, set $V=ix$ in \eqref{ae:even-normal}. The
+result is real for real $x,\alpha$, and tends in every fixed derivative
+norm to
+\[
+ q(x,\alpha)=-3(x+hC)^2+2(\kappa h^2-\alpha).
+\]
+The equations $q=q_x=0$ have the solution
+$(x,\alpha)=(-hC,\kappa h^2)$. The Jacobian of $(q,q_x)$ with
+respect to $(x,\alpha)$ there is
+$\left(\begin{smallmatrix}0&-2\\-6&0\end{smallmatrix}\right)$,
+which is invertible. The quantitative implicit-function theorem,
+or its proof by a contraction on a fixed small neighborhood, gives a
+unique nearby solution for the exact functions, with errors $O(L^{-1})$.
+This proves \eqref{ae:even-critical}--\eqref{ae:even-height}.
+The second $x$-derivative and the $\alpha$-derivative stay strictly
+negative. The local graph therefore has a strict nondegenerate maximum,
+which crosses zero as $M$ increases. It has two real roots on the lower
+side, a double real root at the crossing, and no real roots on the upper
+side. The two-root complex count and reflection then give the claimed
+off-line pair. The nonzero second derivative also proves multiplicity
+exactly two.
+\end{proof}
+
+\begin{proof}[Proof of Theorem~\ref{ae:thm-odd}]
+The discriminant of \eqref{ae:cubic} is
+\[
+ -32\alpha^3-108\beta^2h^2.
+\]
+It is positive, respectively negative, precisely for
+$\alpha<\alpha_*$, respectively $\alpha>\alpha_*$. Thus the cubic
+has three distinct real roots on the first side, and one real root and
+a nonreal conjugate pair on the second. Apply Rouch\'e to
+\eqref{ae:odd-normal} as in the even case. In the $x$ coordinate,
+reflection across the canonical line is complex conjugation, and the
+normalized exact function is real for real $x,\alpha$. The simple-root
+uniqueness argument therefore proves exact on-line location, not merely
+an asymptotically vanishing displacement, for each limiting real root.
+
+At $\alpha=\alpha_*$, the cubic is $(x+b)^2(x-2b)$. At the double
+root $x=-b$, the Jacobian of $(q,q_x)$ is
+\[
+ \begin{pmatrix}0&-2b\\-6b&2\end{pmatrix},\qquad
+ \det=-12b^2\ne0.
+\]
+The implicit-function theorem gives a unique nearby exact collision
+with $(x,\alpha)=(-b,\alpha_*)+O(L^{-1/3})$. This yields
+\eqref{ae:odd-critical}--\eqref{ae:odd-height}. Both $q_\alpha$ and
+$q_{xx}$ are negative at the double root, so the same local-maximum
+argument proves the direction of the transition. The third root stays
+simple and real near $2b$. The nonzero second derivative at the colliding
+pair gives multiplicity exactly two in the exact finite-$d$ polynomial.
+\end{proof}
+
+\begin{proof}[Proof of Corollary~\ref{ae:cor-equality}]
+Rounding changes $M$ by $O(1)$. Hence the even rescaled parameter changes
+by $O(L^2/\sqrt d)=o(1)$ and the odd one by
+$O(L^{2/3}/\sqrt d)=o(1)$. Both limits are therefore $\alpha=0$.
+Since $\kappa>0$, this is on the even on-line side; since
+$\alpha_*<0$, it is on the odd off-line side. At $\alpha=0$ the cubic
+has roots $r,r e^{2\pi i/3},r e^{-2\pi i/3}$, giving the stated formulas.
+\end{proof}
+
+\subsection{Exact checks and the limits of the result}
+The supplementary programs check the exact polynomial identity, reflection,
+and both dimension recurrences by independent rational arithmetic for
+small dimensions. They check the Taylor coefficient identities symbolically
+and compute local collision parameters with high-precision arithmetic
+using the stable real recurrences
+\[
+ (d+1)^2h_{d+1}=2(2d+1)t h_d-d^2h_{d-1},\qquad
+ (d+1)c_{d+1}=2t c_d-dc_{d-1},
+\]
+where $h_d(t)=i^{-d}H_d(-1/2+it)$ and
+$c_d(t)=i^{-d}C_d(-1/2+it)$. These computations illustrate the
+convergence; the asymptotic theorems are proved above independently of
+the computations.
+
+The result determines local multiplicities, displacement scales, and
+collision thresholds for every fixed odd multiple $h$ of $\pi$.
+It does not establish the complete bipartite all-width canonical-line
+conjecture, a global finite-dimensional graph threshold, a statement
+uniform in growing $j$, or an exact critical parameter for integer
+$M$ when a real collision lies between consecutive integers. It is a
+human-readable mathematical proof, not a Lean formalization. Its novelty
+claim is relative to the inspected repository and incoming report;
+publication priority has not been exhaustively established.

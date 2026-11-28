@@ -1,0 +1,170 @@
+\documentclass[11pt]{article}
+\usepackage[margin=.84in]{geometry}
+\usepackage{amsmath,amssymb,hyperref}
+\hypersetup{colorlinks=true,urlcolor=blue}
+\newcommand{\Z}{\mathbb Z}
+\newcommand{\Q}{\mathbb Q}
+\title{\vspace{-1.6em}Exact sparse \(p\)-adic root counts\\ and a sharp exponent-digit bound}
+\author{ProveIt GRH article supplement}
+\date{27 November 2026}
+\begin{document}
+\maketitle
+
+The prescribed-support root count admits a finite determinant formula
+for \emph{any} number of terms, including more terms than the prime.
+A bounded number of base-\(p\) digits of each exponent suffices to
+determine the count at every depth. We prove that this digit bound
+is sharp for every prime on an infinite family of term counts.
+For example, at the prime 2 the first failure of parity alone is
+at eight terms: swapping exponent 2 for 8 changes the exact maximum
+from seven roots to eight at depth 2.
+
+\section{The determinant rule}
+Fix a prime \(p\), distinct nonnegative exponents \(E\) of size \(t\ge2\),
+a nonzero center \(A\), and depth \(r>1/(p-1)\).
+We allow coefficients and distinct roots over finite extensions of
+\(\Q_p\), with \(v_p(p)=1\), in the closed disk \(v_p(X/A-1)\ge r\).
+In the basis \(1,T,\ldots,T^{t-1}\), let \(u_k\in\Z^t\) be the remainder
+vector of \(T^k\) modulo \(\prod_{n\in E}(T-n)\). Write
+\[
+ w(k)=rk-v_p(k!),\qquad W=\max_{i<t}w(i),\qquad
+ \delta=r-\frac1{p-1}.
+\]
+Keep indices \(k\le\lfloor W/\delta\rfloor\) with \(w(k)\le W\).
+For each \(t\)-element subset \(I\) of those indices, form the cost
+\[
+ v_p\!\left(\det [u_k]_{k\in I}\right)+\sum_{k\in I}w(k),
+\]
+with a zero determinant assigned infinite cost.
+The exact maximum is the largest index in \emph{any} minimum-cost
+set. Thus ties must be retained. The cutoff in the index depends on
+\(t,p,r\), not on the largest exponent. The result bounds multiplicities,
+and is attainable even by distinct roots with every support coefficient
+nonzero. At center \(1\) the coefficients may be chosen rational.
+
+\paragraph{Proof.}
+For rational \(r\), choose \(b\) in a finite extension with \(v_p(b)=r\).
+Use the \href{https://github.com/VladimirReshetnikov/ProveIt/blob/dd990b27a22290c756c1bd4adce1d971bf7e7821/Analysis/GeneralizedRiemannHypothesis/Article/sections/smd.tex#L57}{article's substitution}
+\(X=A\exp(bY)\), identifying the disk with \(v_p(Y)\ge0\).
+Its series coefficients are the values of a linear functional on
+the scaled columns \(v_k=b^ku_k/k!\). Indeed the unscaled values
+on \(u_k\) are the moments \(\sum_{n\in E}c_n A^n n^k\).
+After normalizing by a moment of least valuation among the first \(t\),
+all moments are integral by the monic recurrence, and some early
+series coefficient has valuation at most \(W\). Legendre's formula
+gives \(w(k)\ge\delta k\), so discarded indices cannot minimize.
+\newpage
+Let \(M\) be the lattice generated over the valuation ring by the
+retained columns. It is free of rank \(t\).
+A subset of columns is a basis exactly when its determinant valuation
+is minimum: in any lattice basis every column is integral and some
+subset reduces to a basis modulo the maximal ideal, by spanning.
+Its determinant is then a unit relative to that basis.
+A generating column belongs to some basis exactly when its residue
+in \(M/\mathrm m M\) is nonzero.
+
+Normalize a functional by its least valuation on the retained
+columns. It is now integral on \(M\), with a unit value at some
+column. A column of zero residue cannot give a unit.
+Conversely, choose a lattice basis containing the eligible column
+of greatest index, and use the corresponding dual functional.
+It has a unit value there. Thus the largest possible minimizing index
+is the one in the determinant rule. Weierstrass preparation identifies
+that index with the root count, including multiplicities.
+The determinant comparison is unchanged by any further finite
+extension of the coefficient field.
+
+For the dual functional at column \(k\), its coordinates in the
+unscaled power basis are rational up to the scalar \(k!/b^k\).
+Indeed the underlying rational basis is formed by the \(u_j\)'s,
+and the dual row uses only the scaling at \(k\).
+At center \(1\) the rational row gives rational polynomial
+coefficients by evaluation on the Lagrange cardinal polynomials for
+the exponents. Small rational perturbations preserve the minimizing
+indices: their contribution to every coefficient has valuation
+at least the precision plus \(w(k)\ge0\). One can fill any missing
+support coefficients and avoid the discriminant after removing
+the smallest monomial. For other centers rescale the variable.
+For irrational \(r\) use a single finite candidate set valid in a
+neighborhood of \(r\), from the uniform cutoff on a compact interval
+above the convergence boundary. The determinant costs are
+affine with rational coefficients, so the rational result is constant
+in a neighborhood of each irrational depth. Monotonicity then gives
+the same count and attainability there.
+
+\section{How many exponent digits suffice?}
+Put \(S=\max_{0\le i<t}S_p(i)\), where \(S_p(i)\) is the base-\(p\)
+digit sum, and let \(B=\lceil(S-1)/(p-1)\rceil\).
+The count at every allowed depth depends only on the multiset of
+exponents modulo \(p^B\). To see this, matching that multiset makes
+the exponent polynomials congruent modulo \(p^B\), hence makes all
+remainder vectors congruent. For \(k\ge t\),
+\[
+ W-w(k)\le \frac{S-1}{p-1}-\delta < B
+\]
+by Legendre's formula and \(S_p(k)\ge1\).
+Thus the difference between the scaled columns for the two supports
+has all coordinate valuations greater than \(W\).
+It lies in \(\mathrm m\) times the lattice generated by the first
+\(t\) scaled basis vectors, which is identical for the two supports.
+Their full lattices coincide and the columns have identical residues
+in the common lattice modulo its maximal ideal. This preserves the
+answer. The one-term case has no roots in the disk.
+\newpage
+\section{Sharpness for every prime at \(t=p^m\)}
+Take \(t=p^m\), with \(m\ge1\) for odd \(p\) and \(m\ge2\) for \(p=2\).
+Here \(S=m(p-1)\), so \(B=m\) for odd \(p\) and \(B=m-1\) for \(p=2\).
+Set \(d=1\) for odd \(p\) and \(d=2\) for \(p=2\);
+put \(q=p^d\), \(i=t/q=p^{B-1}\).
+Compare the two \(t\)-element supports
+\[
+ E=\{0,\ldots,t-1\},\qquad E'=\{0,\ldots,t\}\setminus\{i\}.
+\]
+They have equal residue multisets modulo \(p^{B-1}\), since the exchange
+\(i\mapsto t\) is zero modulo \(i=p^{B-1}\). Yet at depth \(d\),
+and in fact for every \(1/(p-1)<r\le d\), their exact maxima
+are \(t-1\) and \(t\), respectively. The first follows by degree
+and a product of distinct linear factors close to \(1\) (or by the
+default moment witness and small perturbation). For the second, use
+\[
+ F(X)=(X-1)^{t-1}\bigl((q-1)(X-1)+q\bigr)+p^{dt+1}.
+\]
+The coefficient of \(X^j\) for \(1\le j<t\) vanishes exactly when
+\((q-1)\binom{t}{j}=q\binom{t-1}{j}\), that is, when \(j=i\).
+The leading and constant coefficients are nonzero, so the support
+is exactly \(E'\).
+
+At depth \(d\), the only coefficient indices of minimum valuation
+after the scaling \(X=1+p^dY\) are \(t-1,t\), both with valuation \(dt\).
+This puts all \(t\) roots in the disk. The derivative, in \(Z=X-1\),
+is \(Z^{t-2}\bigl(t(q-1)Z+q(t-1)\bigr)\). Neither critical point
+is a root: \(Z=0\) has nonzero value, and the other point has
+valuation \(d-m\le0\). So the roots are distinct.
+This proves that the digit bound is optimal for these term counts,
+not just an upper bound from the lattice proof.
+
+For \(r>d\), the maximum for \(E'\) drops to \(t-1\).
+Otherwise the monic version of a degree-\(t\) polynomial supported
+on \(E'\) would have every root \(1+\epsilon\) with \(v_p(\epsilon)>d\).
+Its \(X^i\)-coefficient would be congruent to
+\((-1)^{t-i}\binom{t}{i}\) up to an error of valuation \(>d\).
+But \(\binom{t}{i}=(t/i)\binom{t-1}{i-1}\) has valuation exactly
+\(d\), since \((1+X)^{t-1}\bmod p\) has no zero coefficients.
+This contradicts the missing term.
+The lower bound \(t-1\) follows from the default moment witness.
+
+At \(p=2\), up to seven terms have \(S\le2\), so parity suffices;
+the member \(t=8\) of the family is the first counterexample.
+At odd \(p\), the family shows that arbitrarily many digits can
+be necessary even at the fixed depth \(1\).
+
+\paragraph{Replay and scope.}
+The script uses exhaustive determinant costs and cofactor witnesses
+on 120 cases, checking the predicted counts by independently shifting
+the polynomial and computing Newton weights. It also checks 16 examples
+of the sharp digit family. For classical background, see
+\href{https://doi.org/10.1112/jlms/s2-36.1.1}{van der Poorten--Rumely}
+on zeros of \(p\)-adic exponential polynomials.
+This is an unconditional written proof, not a Lean formalization
+or a claim of publication priority.
+\end{document}

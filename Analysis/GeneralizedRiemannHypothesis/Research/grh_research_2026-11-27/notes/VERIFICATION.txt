@@ -1,0 +1,97 @@
+VERIFICATION RECORD
+27 November 2026
+
+MATHEMATICAL STATUS
+
+The two manuscripts contain proofs for the arbitrary-parameter results.
+Separate AI collaborators in this session reviewed the main arguments and
+compared their scope with the pinned source. This is internal mathematical
+review, not external peer review or proof-assistant verification. The four
+clarity/scope corrections identified in the main-paper review were incorporated.
+The review notes identify the specific steps considered.
+
+The new results are unconditional. The published external verification of the
+source RH/Dirichlet-GRH formalization was consulted but not rerun. Nothing in
+this record represents the new manuscripts as Lean-verified.
+
+REPRODUCTION RUN
+
+Command, runnable from any working directory:
+    python3 /path/to/archive/code/run_checks.py
+
+Final packaged run: ALL ARCHIVE CHECKS PASSED.
+Runtime: Python 3.12.14; integer, Fraction and finite-field arithmetic only.
+All random sampling uses a fixed seed. No floating-point root approximation
+is used. The machine-readable summary is results/reproduction_summary.json.
+
+1. General all-depth determinant solver
+   245 prescribed-support/depth cases compared with exhaustive determinants
+   of the full ORIGINAL binomial matrix, without the quotient-algebra cutoff.
+   Every solver witness was checked by direct expansion at X=1. In the
+   exponential region the falling-factorial and power realizations were also
+   compared. Cases include the convergence boundary and shallower disks.
+
+2. Odd-prime sharp range
+   1,540 exhaustive residue-multiplicity profiles at p=5, t=7,8,9.
+   44 attaining profiles across primes 3 through 17.
+   400 deterministically seeded residue profiles.
+   233,770 evaluations of the explicit finite-field functional.
+   An explicit nine-term integer polynomial at p=5, depth 53/208, has last
+   Newton minimum at index 26. The coefficient list is Eisenstein at 2;
+   it is therefore irreducible over Q and has simple roots.
+
+3. Binary profiles
+   The two explicit six- and seven-term degree-eight polynomials were
+   expanded exactly at 1. Their Newton polygons give the claimed depth
+   groups and retain all eight roots at the closed endpoints 4/3 and 3/2.
+   Modular Bezout identities certify squarefreeness.
+
+4. Universal residue enumeration
+   Every one of the 84 multisets of six residues modulo 4 was enumerated.
+   The largest open binary-disk count is 8. There are 60 profiles with
+   maximum 5 and 24 profiles with maximum 8.
+   Code review checked the enumeration count, realization by distinct
+   integer exponents, translation invariance, and refusal of partial answers
+   when the configured profile budget is exceeded.
+
+5. Fixed-support depth transitions
+   For E={0,1,5,6,10,15,20,25,30} at p=5, the exact profile is:
+       (1/4,5/19]    26
+       (5/19,4/15]   25
+       (4/15,1/2]    10
+       (1/2,infinity) 8
+   Transition calculations use rational basis inequalities, not sampled
+   floating-point depths.
+
+6. Positive-tolerance torsion theorem
+   267 exact greedy shell-capacity instances.
+   52 capped-root-average instances.
+   176 explicit late-block constructions.
+   All 16,384 two-member subset-root packets at p=2 on shells 1,2,3, with
+   tolerance 1/4. Of these, 5,363 block every test point, and the minimum
+   cost among these subset-root packets is 2.
+
+WHAT FINITE CHECKS DO AND DO NOT ESTABLISH
+
+These calculations verify the finite examples and help detect implementation
+and proof errors. They do not prove an asymptotic law by extrapolation, prove
+an arbitrary-prime assertion by sampling, or establish publication priority.
+Those mathematical claims are justified in the written arguments, with the
+classical input and remaining open questions expressly identified.
+
+DOCUMENT AND PACKAGING CHECKS
+
+Both papers were compiled with pdflatex/latexmk. The final main manuscript
+has 14 pages and the torsion manuscript 7 pages. Their final LaTeX logs have
+no warnings, overfull boxes or underfull boxes. Every page was rendered and
+visually inspected. The contents-page pagination was polished after the
+initial inspection; the final contents page fits on one page.
+
+The archive contains all LaTeX inputs and embeds its bibliographies. All
+program paths derive from the program location, so verification is independent
+of the extraction location and current working directory. The final runner
+was executed from outside the archive directory and passed.
+
+Source provenance is recorded in results/source_manifest.json. SHA256SUMS.txt
+records the delivered file contents. The ZIP is checked for CRC errors and
+required source, PDF, code and report members before delivery.
