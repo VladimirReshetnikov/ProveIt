@@ -240,6 +240,10 @@ For the explicit margins, [PolynomialIrreducibleDegrees.lean](GRHArticle/Progres
 
 [FourPrimeWeightedLineCapacities.lean](GRHArticle/ProgressionFree/FourPrimeWeightedLineCapacities.lean) certifies the four weighted capacity tables for nine positions. [FourPrimeMaskBoxSoundness.lean](GRHArticle/ProgressionFree/FourPrimeMaskBoxSoundness.lean) proves the soundness of the corresponding finite prefix checker. The analytic reduction accepts either checker through the same integer score bound.
 
+## Quadratic class-group censuses
+
+[SixthNormPairCertificates.lean](GRHArticle/ClassGroups/SixthNormPairCertificates.lean) verifies the sixth-power norm obstruction for all 28 eligible prime pairs through 2113 and the additional pair (2381, 3323). [SixthNormCollisionBound.lean](GRHArticle/ClassGroups/SixthNormCollisionBound.lean) derives the bound of 18 positive norm coefficients from the pair checks and the small-prime nonresidue assumptions. The full pair search through 5500 and the passage to the exponent-six class-group census remain open.
+
 ## RH and Dirichlet GRH input
 
 The article uses the five theorems in [grh/src/Main.lean](grh/src/Main.lean).
