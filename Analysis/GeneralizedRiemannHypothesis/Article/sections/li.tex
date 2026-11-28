@@ -1,3 +1,19 @@
+\providecommand{\recsinc}{\operatorname{sinc}}
+\providecommand{\recgE}{\gamma_{\mathrm{E}}}
+\providecommand{\recGen}{\operatorname{Gen}}
+\providecommand{\recav}{\operatorname{av}}
+\providecommand{\recA}{\mathcal{A}}
+\providecommand{\recartanh}{\operatorname{artanh}}
+\providecommand{\anapos}[1]{\bigl(#1\bigr)_{+}}
+\providecommand{\ananeg}[1]{\bigl(#1\bigr)_{-}}
+\providecommand{\anaone}{\mathbf{1}}
+\providecommand{\anaE}{\mathcal{E}}
+\providecommand{\anaEx}{\mathbb{E}}
+\providecommand{\anaPr}{\mathbb{P}}
+\providecommand{\anaM}{\mathcal{M}}
+\providecommand{\anaW}{\mathcal{W}}
+\providecommand{\anaZ}{\mathcal{Z}}
+\providecommand{\anaC}{\mathcal{C}}
 % Section li: Li coefficients, moment pencils and positivity certificates
 \providecommand{\liE}{\mathcal{E}}
 \providecommand{\liD}{\mathcal{D}}
@@ -409,6 +425,134 @@ For real $s>1$ this gives $Z(s)=Z(s+2m)\to1$, so $\zeta_K=\zeta_L$.
 The theorem identifies a zeta function up to equality, so it does not separate nonisomorphic
 arithmetically equivalent fields. It concerns infinitely many samples and gives no effective
 window length for a given pair of fields (\cref{li:q:rigidity}).
+
+\subsection{The character from filtered Li coefficients}\label{rec:sec:li}
+\sources{dirichlet_li_rigidity}
+
+For a primitive $\chi$ of conductor $f$ with zero multiset $Z_\chi$ use the complex Li coefficients
+of Lagarias \cite{Lagarias2007Li}, $u_\rho=1-1/\rho$ and
+$\lambda_\chi(k)=\lim_{T\to\infty}\sum_{\rho\in Z_\chi,\abs\rho\le T}(1-u_\rho^k)$. For an integer
+stride $h\ge1$ and a complex polynomial $A(z)=\sum_{j=0}^Ja_jz^j$ with $A(1)=1$ the observation is
+\[
+ X_{\chi,h,A}(n)=\sum_{j=0}^Ja_j\lambda_\chi(hn+j)\qquad(n\ge0).
+\]
+Thus $A=z^r$ encodes an unknown offset, and several coefficients a weighted mixture of offsets.
+
+\begin{theorem}[Uniform separation; \stU]\label{rec:thm:liseparation}
+For distinct triples $(\chi,h,A)$ and $(\psi,k,B)$ and an integer $D\ge0$ there are
+$\eps,\eta>0$ and $N_0$ such that for every interval $I$ of at least $N_0$ consecutive nonnegative
+integers and every complex polynomial $P$ of degree at most $D$,
+\[
+ \#\set{n\in I:\abs{X_{\chi,h,A}(n)-X_{\psi,k,B}(n)-P(n)}>\eps}\ge\eta\abs I .
+\]
+\end{theorem}
+
+\begin{corollary}[Incomplete observations; \stU]\label{rec:cor:liincomplete}
+If $\abs{I_j}\to\infty$ and the data on $I_j$ have the form $X_{\chi,h,A}(n)+P_j(n)+e_j(n)$ with
+$\sup_j\deg P_j<\infty$ and, for every $t>0$, a proportion of indices with $\abs{e_j(n)}>t$ tending
+to zero, then $(\chi,h,A)$ is unique.
+\end{corollary}
+
+\begin{proof}
+Two representations differ by a polynomial of bounded degree, and outside the two error sets at
+level $\eps/2$ the residual difference is at most $\eps$, contradicting
+\cref{rec:thm:liseparation}.
+\end{proof}
+
+For example, on the windows $[2^{j^2},2^{j^2}+j^2)$, whose union has density zero, samples of
+$\lambda_\chi(11n+2)$ and $\lambda_\chi(11n+5)$ mixed with weights $1/4,3/4$ determine $\chi$, the
+stride $11$, both offsets and both weights, even with an arbitrary quadratic background on each
+window and arbitrary replacements at square indices.
+
+The proof uses the classical facts that $\Xi_\chi$ has order one with zero multiset $Z_\chi$, that
+$\rho\mapsto1-\bar\rho$ preserves $Z_\chi$ with multiplicities, and that
+\begin{equation}\label{rec:eq:licount}
+ N_\chi(T)=\#\set{\rho\in Z_\chi:\abs{\Im\rho}\le T}=\frac T\pi\log\frac{fT}{2\pi e}+O_\chi(\log(2+T))
+\end{equation}
+\cite{BennettMartinOBryantRechnitzer2021Counting}, so that $\sum\abs\rho^{-2}<\infty$ and a zero at
+height $T$ has multiplicity $O_\chi(\log(2+T))$. Let $\Delta x(n)=x(n+1)-x(n)$ and $d=\max(2,D+1)$.
+Applying $\Delta^d$ to the common truncation and removing the cutoff,
+\begin{equation}\label{rec:eq:liexp}
+ \Delta^dX_{\chi,h,A}(n)=\sum_wb_{\chi,h,A}(w)w^n,\qquad
+ b_{\chi,h,A}(w)=-(w-1)^d\sum_{\rho\in Z_\chi:\,u_\rho^h=w}A(u_\rho),
+\end{equation}
+with summable coefficients, bounded nodes and $1$ as the only accumulation point; contributions
+with $w=1$ vanish.
+
+\begin{lemma}[Detection on translated intervals; \stU]\label{rec:lem:lishell}
+Let $s(n)=\sum_wc_ww^n$ with distinct bounded nodes accumulating only at $1$ and
+$M=\sum_w\abs{c_w}<\infty$, and suppose $c_w\ne0$ for some $\abs w\ge1$. Let $c_v\ne0$ have maximal
+node modulus $R=\abs v\ge1$. Then $\frac1N\sum_{n=L}^{L+N-1}s(n)v^{-n}\to c_v$ uniformly in $L\ge0$,
+and on every sufficiently long interval at least the fraction $\abs{c_v}/(4M)$ of the indices
+satisfy $\abs{s(n)}\ge\abs{c_v}R^n/2$.
+\end{lemma}
+
+\begin{proof}
+For every $\delta>0$ only finitely many nodes have $\abs w\ge1+\delta$, so the maximum exists. For
+$w\ne v$ the average of $(w/v)^n$ is at most $\min(1,2/(N\abs{1-w/v}))$ uniformly in $L$; sum over
+finitely many nodes and bound the tail by its $\ell^1$ norm. For large $N$ the average has modulus
+at least $3\abs{c_v}/4$, and each summand has modulus at most $M$.
+\end{proof}
+
+\begin{proposition}[Decoding; \stU]\label{rec:prop:lidecode}
+If the coefficients \eqref{rec:eq:liexp} of two triples agree at every $\abs w\ge1$, then their
+strides, conductors and filters agree, and their zero multisets differ at only finitely many
+points.
+\end{proposition}
+
+\begin{proof}
+For $w\ne1$ near $1$ an occupied node has the single preimage $u=\exp((\mathrm{Log}\,w)/h)$, since
+all but finitely many $u_\rho$ lie in a neighbourhood of $1$ on which $u\mapsto u^h$ is injective. On
+an occupied exterior or unit node there, $H(w)=-b(w)/(w-1)^d=mA(u)$ with $m=m_\chi(\rho)$, and
+$\bigl\lvert\abs{H(w)}-m\bigr\rvert\le m\abs{A(u)-1}=O(\log(2+\abs{\Im\rho})/\abs\rho)\to0$, so rounding
+recovers $m$. Reflection gives $u_{1-\bar\rho}=1/\bar u_\rho$, which supplies the interior nodes
+with their multiplicities after rounding. For high zeros
+$\abs{\mathrm{Log}\,w}=h/\abs\gamma+O_h(\abs\gamma^{-2})$, so by \eqref{rec:eq:licount} the number
+$C(\delta)$ of nodes with $\delta\le\abs{\mathrm{Log}\,w}<\delta_0$ is
+\[
+ C(\delta)=\frac h{\pi\delta}\Bigl(\log\frac1\delta+\log\frac{fh}{2\pi e}\Bigr)+O\bigl(\log(1/\delta)\bigr),
+\]
+whose two terms recover $h$ and then $f$. With $h$ common, the unfolded $u$ coincide, so $A(u)=B(u)$
+at infinitely many points and $A=B$; every sufficiently high zero is common with its multiplicity,
+by $\rho=1/(1-u)$.
+\end{proof}
+
+\begin{proof}[Proof of \cref{rec:thm:liseparation}]
+By \cref{rec:prop:lidecode} and \cref{rec:lem:char}, distinct triples have a coefficient difference
+$c_w\ne0$ at some $\abs w\ge1$. Apply \cref{rec:lem:lishell} to
+$s=\Delta^d(X_{\chi,h,A}-X_{\psi,k,B})$, which kills every $P$ of degree at most $D$. The binomial
+coefficients of $\Delta^d$ have absolute sum $2^d$, so $\abs{s(n)}\ge\abs{c_v}R^n/2$ forces some
+$n+j$, $0\le j\le d$, with $\abs{X-X'-P}\ge\abs{c_v}/2^{d+1}$ there; each witness is used at most $d+1$
+times. Take $\eps=\abs{c_v}/2^{d+2}$ and $\eta=\abs{c_v}/(8M(d+1))$.
+\end{proof}
+
+Under \cref{src:thm:dgrh} every node has $\abs w=1$, $\Delta^dX_{\chi,h,A}$ is bounded with an
+absolutely convergent Fourier series, and every coefficient is a Bohr mean,
+\begin{equation}\label{rec:eq:limean}
+ b(w)=\lim_{N\to\infty}\frac1N\sum_{n=L}^{L+N-1}\Delta^dX_{\chi,h,A}(n)\,\bar w^{\,n}\qquad(\abs w=1),
+\end{equation}
+uniformly in $L$; then
+$h=\lim_{\delta\downarrow0}\pi\delta C(\delta)/\log(1/\delta)$ and
+$f=\frac{2\pi e}h\exp\bigl(\lim_{\delta\downarrow0}[\pi\delta C(\delta)/h-\log(1/\delta)]\bigr)$
+(\stG). With unbounded outliers, apply \eqref{rec:eq:limean} to the radial projection onto a disc of
+radius $K>\sum_w\abs{b(w)}$ of the differenced data; outside $d+1$ translates of the bad set the
+projection error is at most $2^dt$, so the means are unchanged. This uses infinite data; division by
+$(w-1)^d$ amplifies finite-sample errors near $1$.
+
+\begin{corollary}[Real observations; \stU]\label{rec:cor:lireal}
+With real filter coefficients, observations of $\Re X_{\chi,h,A}$ under the conditions of
+\cref{rec:cor:liincomplete} determine $h$, $A$ and the unordered pair $\set{\chi,\bar\chi}$, and
+conjugation is exactly the ambiguity.
+\end{corollary}
+
+\begin{proof}
+Since $\lambda_{\bar\chi}(n)=\overline{\lambda_\chi(n)}$, twice the real observation is the filtered
+Li sum of $Z_\chi\cup Z_{\bar\chi}$, which satisfies reflection, the same multiplicity bound and twice
+\eqref{rec:eq:licount}. The argument above gives $h$, $A$ and the union up to a finite divisor. The
+proof of \cref{rec:lem:char}, applied to the products of the two gamma factors, gives
+$L(s,\chi)L(s,\bar\chi)=L(s,\psi)L(s,\bar\psi)$, so $(\chi+\bar\chi)(p)=(\psi+\bar\psi)(p)$ for
+$p\nmid f$; every reduced class contains a prime, and orthogonality gives equality of the pairs.
+\end{proof}
 
 \subsection{Second differences of Li coefficients}\label{li:sec:curv}
 \sources{li_sampling_and_curvature}
@@ -1621,6 +1765,174 @@ Certified Hermite matrices from approximate roots are due to Ayyildiz Akoglu and
 \cite{AyyildizAkogluSzanto2023Certified}, and Hankel relaxations for zeros of entire functions under
 a spacing condition to Bickel, Pascoe and Sargent \cite{BickelPascoeSargent2023Zero}.
 
+\subsection{Sparse Hankel tests at rational centres}\label{ana:sec:hankel}
+{\raggedright\sources{sparse_dirichlet_zero_tests}}
+
+A different positivity test uses sparse derivatives of a logarithm instead of prime sums. Let
+$F\not\equiv0$ be entire of order at most one and real on $\R$ up to a constant phase. At a
+real $c$ let $r_c$ be the multiplicity of $c$ as a zero and $F_c(z)=F(z)/(z-c)^{r_c}$. By
+Hadamard's factorization, for $k\ge2$,
+\[
+ P_k(c)=-\frac1{(k-1)!}\frac{\dd^k}{\dd z^k}\log F_c(z)\Big|_{z=c}=\sum_{\gamma\ne c}(\gamma-c)^{-k},
+\]
+with multiplicities and absolute convergence. For a stride $m\ge1$, an even $K\ge2$ and a width
+$b\ge1$ put
+\[
+ H(c,m;K,b)=\bigl[P_{m(K+i+j)}(c)\bigr]_{0\le i,j<b},
+\]
+a real symmetric matrix using $2b-1$ derivative orders. Map each zero $\gamma\ne c$ to
+$u=(\gamma-c)^{-m}$, add the multiplicities $a_u$ of equal values, and let
+$d_c\in\set{0,1,\dots,\infty}$ be the number of distinct nonreal conjugate pairs among the values.
+Write $\nu_-(H)$ for the number of negative eigenvalues.
+
+\begin{theorem}[Moving-window inertia; \stU]\label{ana:thm:hankel}
+For even $K_j\to\infty$ and $b_j\to\infty$,
+$\lim_{j\to\infty}\nu_-\bigl(H(c,m;K_j,b_j)\bigr)=d_c$; a finite limit is attained for all large
+$j$, and if $d_c=0$ every block is positive semidefinite.
+\end{theorem}
+
+\begin{proof}
+For $p(t)=\sum_{i<b}x_it^i$ the quadratic form is $Q_K(p)=\sum_ua_uu^Kp(u)^2$. Real nodes give
+nonnegative terms because $K$ is even, and a conjugate pair gives
+$2a_u\abs u^K\Re(e^{iK\arg u}p(u)^2)$, which is nonnegative on the hyperplane
+$\Im(e^{iK\arg(u)/2}p(u))=0$; so $\nu_-\le d_c$. Conversely choose $s$ distinct pairs with
+representatives $v_\ell$ in the upper half-plane, $r=\min\abs{v_\ell}$, the finite set $A$ of
+nodes with $\abs u\ge r$, of size $n$, and $q<r$ bounding the other nodes. For $t\in\R^s$ let
+$p$ of degree $<n$ interpolate $p(v_\ell)=ie^{-iK\arg(v_\ell)/2}t_\ell$,
+$p(\bar v_\ell)=\overline{p(v_\ell)}$, and $p=0$ at the other nodes of $A$. Its coefficients
+are real and $\sup_{\abs z\le q}\abs p\le B\norm t$ with $B$ independent of $K$. The nodes of $A$
+contribute at most $-2r^K\norm t^2$ and the others at most
+$B^2\norm t^2q^{K-2}\sum_ua_u\abs u^2$, so the form is negative definite on an $s$-dimensional
+space once $K$ is large and $b\ge n$.
+\end{proof}
+
+A nonreal zero can still be invisible when its image is real. For $w=x+iy$ with $y>0$ call
+$c\in\R$ \emph{blind for $w$ at stride $m$} if $(w-c)^{-m}\in\R$. With
+$T_w(t)=(t-w)/(t-\bar w)$, which maps the real projective line onto the unit circle, this is
+$T_w(c)^m=1$, that is,
+\begin{equation}\label{ana:eq:cot}
+ c=x-y\cot(k\pi/m),\qquad1\le k<m .
+\end{equation}
+
+\begin{lemma}[Rational cross ratios of roots of unity]\label{ana:lem:cyclo}
+A rational cross ratio greater than $1$ of four distinct roots of unity lies in
+$\anaE_\times=\set{4/3,3/2,2,3,4}$ \cite[Theorem~3.10]{GardnerGritzmann1997Discrete}. If their
+orders divide $m$, a prime $p\nmid m$ divides neither the numerator nor the denominator of the
+reduced cross ratio or of its complement.
+\end{lemma}
+
+\begin{proof}
+In $\Q(\zeta_N)$ the norm of $1-\xi$, for $\xi\ne1$ of order $d\mid N$, is
+$\Phi_d(1)^{[\Q(\zeta_N):\Q]/\varphi(d)}$, and $\Phi_d(1)=p$ for $d=p^a$ and $1$ otherwise. So the
+normalized $p$-valuation of a difference of two roots of unity lies in $[0,1/(p-1)]$ and is $0$
+for $p\nmid N$. A cross ratio $r$ and $1-r$ are quotients of products of two such differences,
+so $\abs{v_p(r)},\abs{v_p(1-r)}\le2/(p-1)$. With $r=A/B>1$ in lowest terms and $D=A-B$, the
+pairwise coprime $A,B,D$ divide $12$, and $A=B+D$ leaves $2=1+1$, $3=1+2$, $4=1+3$ and
+their reversals.
+\end{proof}
+
+For rational centres $a<b<c<d$ simultaneously blind for $w$, invariance of cross ratios gives
+\begin{equation}\label{ana:eq:ratios}
+ \frac{c-a}{b-a}\in\anaE_\times,\qquad\frac{(c-a)(d-b)}{(c-b)(d-a)}\in\anaE_\times .
+\end{equation}
+Let $\anaM_\times=\set{-3,-1,0,1,3}$; an affine copy is $a+b\anaM_\times$ with $a,b\in\Q$, $b\ne0$.
+
+\begin{theorem}[Rational sampling sets; \stU]\label{ana:thm:centres}
+For a finite set $C\subset\Q$ the following are equivalent:
+\begin{enumerate}[label=\textup{(\arabic*)}]
+\item some nonreal $w$ is blind at every $c\in C$, with any strides;
+\item $C$ is contained in an affine copy of $\anaM_\times$;
+\item a real quadratic with a nonreal pair of zeros passes every test at every $c\in C$ with
+ the common stride $6$.
+\end{enumerate}
+Consequently, for the centres $\set{0,1,5}$, any strides $m_c$ and any even $K_j\to\infty$,
+$b_j\to\infty$, all zeros of $F$ are real if and only if all blocks at the three centres are
+positive semidefinite for large $j$; if $F$ has a nonreal zero, one fixed centre has a negative
+eigenvalue for every large $j$. Six distinct rational centres always suffice, some sets of
+five do not, and three is the least number of chosen centres that suffices for all strides.
+\end{theorem}
+
+\begin{proof}
+Rescale the extreme points of $C$ to $0,1$. By \eqref{ana:eq:ratios} each interior point lies
+in the set $\set{1/4,\,1/3,\,1/2,\,2/3,\,3/4}$, and the four-point test on $0,u,v,1$ leaves only the pairs
+\[
+ (1/4,1/2),\ (1/3,1/2),\ (1/3,2/3),\ (1/2,2/3),\ (1/2,3/4);
+\]
+for instance $1/4,3/4$ gives $9/8$. So the interior lies in $\set{1/4,1/2}$,
+$\set{1/3,1/2,2/3}$ or $\set{1/2,3/4}$, and $4t-1$, $6t-3$, $4t-3$ map these sets with the
+endpoints into $\anaM_\times$. Conversely $w=i\sqrt3$ satisfies
+\eqref{ana:eq:cot} at every point of $\anaM_\times$ for $m=6$, so $(z-a)^2+3b^2$ is blind on
+$a+b\anaM_\times$, its images are real and all blocks are semidefinite. If such a quadratic passes
+throughout, \cref{ana:thm:hankel} shows that its pair is blind throughout. The triple $0,1,5$
+has ratio $5\notin\anaE_\times$, so a nonreal zero has a nonreal image at one of the centres,
+and \cref{ana:thm:hankel} applies. Any two rational centres lie in an affine copy of
+$\anaM_\times$.
+\end{proof}
+
+\begin{theorem}[Total loss over all rational centres; \stU]\label{ana:thm:hankelloss}
+Let $D$ be the number of distinct nonreal conjugate pairs of zeros of $F$, and choose a stride
+$m_c$ at each rational centre. If $D<\infty$, then $0\le d_c\le D$ and
+\[
+ \sum_{c\in\Q}(D-d_c)\le5D+\binom D2,
+\]
+with equality for every $D$ for an integer polynomial at common stride six. If $D=\infty$,
+then $d_{c_n}\to\infty$ along every sequence of distinct rational centres.
+\end{theorem}
+
+\begin{proof}
+A pair loses one unit at a centre where its image is real, which happens at most at five
+rational centres by \cref{ana:thm:centres}. Pairs with the same unordered image pair have
+$\abs{w_i-c}=\abs{w_j-c}$, that is $2c(x_j-x_i)=\abs{w_j}^2-\abs{w_i}^2$, which has at most one
+solution; a group of size $h$ loses $h-1\le\binom h2$. For equality take
+$F_D(z)=\prod_{j<D}((z-t_j)^2+3)$ with $t_j=10\cdot2^j$: pair $j$ disappears exactly on
+$t_j+\anaM_\times$, and at the distinct midpoints $(t_j+t_k)/2$, which lie in no $t_\ell+\anaM_\times$,
+two pairs merge. For $D=\infty$ any $s$ pairs give $s$ distinct nonreal images outside
+$5s+\binom s2$ centres.
+\end{proof}
+
+For a finite $S\subset\Q$ with $\abs S\ge2$ let
+$h(S)=\max_{a,b}\abs{S\cap(a+b\anaM_\times)}$. If $F$ has a nonreal zero, at least
+$\abs S-h(S)$ centres of $S$ have a negative eigenvalue in every late block, whatever the
+strides, and $(z-a)^2+3b^2$ at stride six shows that $\abs S-h(S)$ is best possible. A
+Behrend-type construction \cite{Behrend1946Sets} gives, for $N\ge3$, $N$ integer centres of
+diameter $N\exp(O(\sqrt{\log N}))$ with $h=2$, so that any three of them suffice: a jointly blind
+triple $A<C<B$ satisfies $vC=(v-u)A+uB$ with $1\le u<v\le4$, which is impossible on a sphere of
+digit vectors in base $4M$ with digits below $M$, by strict convexity of the norm.
+
+For a prescribed common stride the cyclotomic restriction gives more. A finite rational set is
+jointly blind for some nonreal point exactly when: it is empty for $m=1$; it has at most one
+centre for $m=2$; at most two for odd $m\ge3$; at most two or a three-term progression for
+even $m\ge4$ with $3\nmid m$; and it lies in an affine copy of $\anaM_\times$ for $6\mid m$. For odd
+$m$ the numerator, denominator and difference of a rational cross ratio would all be odd; for
+$3\nmid m$ only $r=2$ survives. If all zeros satisfy $\abs{\Im z}<h$, two centres at distance
+$\Delta$ suffice at common stride $m\ge3$ exactly when $\Delta\ge2h\cot(\pi/m)$.
+
+\begin{corollary}[Dirichlet $L$-functions; \stU\ and \stG]\label{ana:cor:hankel}
+Let $\chi$ be primitive of conductor $q>1$, $\chi(-1)=(-1)^a$,
+$\Lambda(s,\chi)=(q/\pi)^{(s+a)/2}\Gamma((s+a)/2)L(s,\chi)$ with root number $\eps_\chi$, and
+$F_\chi(z)=\eps_\chi^{-1/2}\Lambda(\frac12+iz,\chi)$; for $q=1$ take $F_1(z)=\xi(\frac12+iz)$.
+Then $F_\chi$ is real on $\R$ and of order one, a zero $\beta+it$ becomes $t+i(\frac12-\beta)$,
+and the critical-line statement for $\chi$ is equivalent to the tests of
+\cref{ana:thm:centres} at $\set{0,1,5}$. By \cref{src:thm:dgrh} every block is positive
+definite. For $\xi$ and real primitive characters the zero set is symmetric under $z\mapsto-z$,
+and the two centres $1,4$ suffice, since they act as $-1,1,4$, of ratio $5/2\notin\anaE_\times$.
+\end{corollary}
+
+\begin{proof}
+The functional equation $\Lambda(s,\chi)=\eps_\chi\overline{\Lambda(1-\bar s,\chi)}$ makes
+$F_\chi$ real on $\R$, and imprimitive characters have the same zeros in the open strip. Under
+GRH the nodes are real and infinitely many, each value has finite fibres, and a nonzero
+polynomial cannot vanish on all of them. For a symmetric zero set the entries at $-c$ differ
+from those at $c$ by $(-1)^{m(i+j)}$, a diagonal congruence.
+\end{proof}
+
+A single centre does not suffice for even functions and all strides: $z^2+c^2\tan^2(\pi/m)$ is
+blind at $c\ne0$ for $m\ge3$, and $z^2+1$ at $c=0$ for $m=2$. For $3z^2-3z+1$, whose roots
+$\frac12\pm i/(2\sqrt3)$ lie in the strip of Dirichlet ordinates, the stride-six images are
+real at $c=0,1$, while at $c=5$ with $K=b=2$,
+$\det H=(u\bar u)^2(u-\bar u)^2=-11226235159675972800/61^{24}<0$ for $u=(\gamma-5)^{-6}$; see
+\artifact{sparse_dirichlet_zero_tests/checks/verification.txt}.
+
 \subsection{Complete cluster counts and what finite data cannot decide}\label{li:sec:cluster}
 \sources{grh_new_results_2026-11-26}
 
@@ -1816,932 +2128,6 @@ compatible, within real-zero entire functions, with an arbitrarily high multiple
 eventual counting function. No Euler product or arithmetic explicit formula is preserved, so this
 does not decide the multiplicities of $\Xi$. Finite-jet nonrigidity by Hermite interpolation was
 recorded by Eberwein \cite{Eberwein2026Truncated}.
-
-\subsection{A universal process from the Cayley angles}\label{li:sec:univ}
-\sources{rh_li_universality_2026-11-26}
-
-In this subsection $\liZ$ is a locally finite multiset of real numbers with multiplicities, and
-$N(T)=\#\{\gamma\in\liZ:\abs\gamma\le T\}$ satisfies, for constants $d>0$ and $B\in\R$,
-\begin{equation}\label{li:eq:count}
- N(T)=\frac d\pi T\log T+\frac B\pi T+O(\log(T+2))\qquad(T\to\infty).
-\end{equation}
-Put $\theta(\gamma)=2\arctan(1/(2\gamma))$ for $\gamma\ne0$, $\theta(0)=\pi$,
-$\nu=\frac12\sum_{\gamma\in\liZ}(\delta_{\theta(\gamma)}+\delta_{-\theta(\gamma)})$, so that $m$ occurrences
-of $0$ give mass $m/2$ at each of $\pm\pi$, and
-\begin{equation}\label{li:eq:symbol}
- \Psi(u)=\int_\R(1-\cos uy)\,\nu(\dd y)=\sum_{\gamma\in\liZ}(1-\cos(u\theta(\gamma))).
-\end{equation}
-Euler's constant is $\gamma_E$ here.
-
-\begin{lemma}[The process; \stU]\label{li:lem:levy}
-$\nu$ is a symmetric L\'evy measure on $[-\pi,\pi]$ with $\nu(\R)=\infty$, $\int\abs y\,\nu(\dd y)=\infty$
-and $0<V:=\int y^2\,\nu(\dd y)<\infty$. There is a symmetric L\'evy process $(X_t)_{t\ge0}$ with
-$\liEx e^{iuX_t}=e^{-t\Psi(u)}$; it has no Gaussian part, infinitely many jumps, infinite variation,
-and $\liEx X_t^2=tV$.
-\end{lemma}
-
-\begin{proof}
-By \eqref{li:eq:count} and partial summation $\sum_{\abs\gamma>1}\gamma^{-2}<\infty$ and
-$\sum_{\abs\gamma>1}\abs\gamma^{-1}=\infty$, and $\abs{\theta(\gamma)}\sim\abs\gamma^{-1}$. L\'evy--Khintchine
-gives the process with zero Gaussian coefficient and drift, the variation criterion gives infinite
-variation, and two derivatives of the characteristic function at zero give the variance.
-\end{proof}
-
-\begin{lemma}[The symbol at large frequency; \stU]\label{li:lem:symbol}
-With $A=d/2$ and $\kappa=\gamma_E+B/d$,
-\[
- \Psi(u)=A\abs u(\log\abs u+\kappa)+O(\sqrt{\abs u}\log(\abs u+2))\qquad(\abs u\to\infty).
-\]
-\end{lemma}
-
-\begin{proof}
-Take $u\ge2$ and $T=\sqrt u$. Ordinates with $\abs\gamma\le T$ contribute $O(T\log(T+2))$. Beyond,
-$\theta(\gamma)=\gamma^{-1}+O(\abs\gamma^{-3})$, and replacing $\theta$ by $1/\gamma$ costs
-$O(u\int_T^\infty v^{-3}\,\dd N(v))=O(\log u)$. Let $M(v)=(dv\log v+Bv)/\pi$ and $R=N-M$. For
-$g(v)=1-\cos(u/v)$, integration by parts and $\abs{g'(v)}\le u/v^2$ give
-$\int_T^\infty g\,\dd R=O(\log(T+2)+u\int_T^\infty\log(v+2)v^{-2}\,\dd v)=O(\sqrt u\log u)$, and extending the
-main integral down to zero costs $O(T\log(T+2))$. Hence
-\begin{align*}
- \Psi(u)&=\frac1\pi\int_0^\infty(1-\cos(u/v))(d\log v+d+B)\,\dd v+O(\sqrt u\log u)\\
- &=\frac u\pi[(d\log u+d+B)I_0-dI_1]+O(\sqrt u\log u),
-\end{align*}
-with $I_0=\int_0^\infty(1-\cos y)y^{-2}\dd y=\pi/2$ and
-$I_1=\int_0^\infty(1-\cos y)y^{-2}\log y\,\dd y=\frac\pi2(1-\gamma_E)$. Both follow by differentiating
-$\int_0^\infty(1-\cos y)y^{-1-\alpha}\dd y=\pi/(2\Gamma(1+\alpha)\sin(\pi\alpha/2))$, $0<\alpha<2$, at
-$\alpha=1$; this identity follows from the Laplace representation of $y^{-1-\alpha}$, Tonelli's theorem
-and $\int_0^\infty e^{-ty}(1-\cos y)\dd y=1/[t(1+t^2)]$.
-\end{proof}
-
-Let $W_0$ be the positive branch of Lambert's function and put
-\begin{equation}\label{li:eq:scale}
- w(t)=W_0\Bigl(\frac{e^\kappa}{At}\Bigr),\qquad a(t)=Atw(t),\qquad\text{so}\quad a=e^{\kappa-w},\quad
- \log(1/a)+\kappa=w,\quad t=\frac a{Aw}.
-\end{equation}
-For $k\ge0$ define, with the principal logarithm,
-\begin{equation}\label{li:eq:profiles}
- Q_k(x)=\frac{(-1)^k}{\pi k!}\Re\Bigl.\frac{\partial^k}{\partial z^k}\bigl[\Gamma(z)(1-ix)^{-z}\bigr]\Bigr|_{z=k+1}.
-\end{equation}
-
-\begin{theorem}[Universal expansion at every logarithmic order; \stU]\label{li:thm:allorders}
-For every $t>0$, $X_t$ has a density $f_t$ that extends to an entire function. For fixed integers
-$K,r\ge0$, as $t\downarrow0$,
-\[
- \sup_{x\in\R}\Bigl|\frac{\dd^r}{\dd x^r}\Bigl[a(t)f_t(a(t)x)-\sum_{k=0}^K\frac{Q_k(x)}{w(t)^k}\Bigr]\Bigr|
- =O_{K,r}\bigl(w(t)^{-K-1}+\sqrt{a(t)}\bigr)=O_{K,r}(w(t)^{-K-1}).
-\]
-The constants depend on the multiset and its counting estimate.
-\end{theorem}
-
-\begin{proof}
-\Cref{li:lem:symbol} makes $\exp(-t\Psi(u)+c\abs u)$ integrable for all $c>0$, so Fourier inversion
-gives an entire density. Put $F_w(s)=s+s\log s/w$ for $s>0$; by \eqref{li:eq:scale},
-$tA\frac sa(\log\frac sa+\kappa)=F_w(s)$. We first show
-\begin{equation}\label{li:eq:fcomp}
- \int_0^\infty s^r\bigl|e^{-t\Psi(s/a)}-e^{-F_w(s)}\bigr|\,\dd s=O_r(\sqrt a).
-\end{equation}
-On $0<s<\sqrt a$ both exponentials are bounded (the negative part of $F_w$ is at most $e^{-w-1}/w$).
-On $s\ge\sqrt a$ both exponents are at least $cs$ for small $t$, since $F_w(s)/s\ge\frac12+\kappa/(2w)$
-and the remainder in \cref{li:lem:symbol} is a small fraction of its main term for
-$s/a\ge a^{-1/2}$; the exponential mean value bound gives
-$\abs{e^{-t\Psi(s/a)}-e^{-F_w(s)}}\le Ct\sqrt{s/a}\log(2+s/a)e^{-cs}$, and $t=a/(Aw)$ with
-$\log(2+s/a)\le w+C_\kappa+\log(2+s)$ gives \eqref{li:eq:fcomp}. Next, Taylor's remainder for
-$e^{-z}$, $z\ge0$, and $\abs{s\log s}\le1/e$ on $(0,1)$ give
-\[
- \int_0^\infty s^re^{-s}\Bigl|e^{-s\log s/w}-\sum_{k=0}^K\frac{(-s\log s)^k}{k!\,w^k}\Bigr|\,\dd s=O_{K,r}(w^{-K-1}).
-\]
-These are $L^1$ bounds for the Fourier transforms with polynomial weights; Fourier inversion and
-differentiation give the uniform claim, and
-$\int_0^\infty s^k(\log s)^ke^{-(1-ix)s}\dd s=\partial_z^k[\Gamma(z)(1-ix)^{-z}]_{z=k+1}$ identifies the
-profiles. As $a=e^{\kappa-w}$, $\sqrt a$ is smaller than every power of $1/w$.
-\end{proof}
-
-The first profiles are
-\begin{gather*}
- Q_0(x)=\frac1{\pi(1+x^2)},\qquad Q_1(x)=-\frac1\pi\Re\frac{1-\gamma_E-\log(1-ix)}{(1-ix)^2},\\
- Q_2(x)=\frac1\pi\Re\frac{(\frac32-\gamma_E-\log(1-ix))^2+\frac{\pi^2}6-\frac54}{(1-ix)^3},
-\end{gather*}
-so the leading shape is the standard Cauchy density.
-
-\begin{corollary}[Universality beyond every logarithmic order; \stU]\label{li:cor:universal}
-If two multisets satisfy \eqref{li:eq:count} with the same $d,B$, their scaled densities differ by
-$O_r(\sqrt a)$ in $C_b^r(\R)$, and in particular have the same expansion to every order in
-$1/\log(1/t)$.
-\end{corollary}
-
-\begin{proof}
-Both scaled characteristic functions differ from $e^{-F_w(\abs s)}$ by $O_r(\sqrt a)$ in the weighted
-$L^1$ norm \eqref{li:eq:fcomp}; apply Fourier inversion.
-\end{proof}
-
-For the ordinates of a fixed primitive Dirichlet $L$-function of conductor $q$, counted with
-multiplicity and both signs, $N_\chi(T)=\frac T\pi\log\frac{qT}{2\pi e}+O_\chi(\log(T+2))$
-\cite{BennettMartinOBryantRechnitzer2021Counting}, and $q=1$ gives $\zeta$. Thus $d=1$,
-$B=\log(q/(2\pi))-1$, and
-\[
- w_q(t)=W_0\Bigl(\frac{qe^{\gamma_E-1}}{\pi t}\Bigr),\qquad a_q(t)=\frac t2w_q(t)\sim\tfrac12t\log(1/t).
-\]
-These density statements are unconditional, and all primitive characters of one conductor share the
-expansion to every logarithmic order; no uniformity in $q$ is asserted. By \cref{src:thm:dgrh}
-every zero is $\rho=\frac12+i\gamma$ with $1-1/\rho=e^{i\theta(\gamma)}$ (with $e^{i\pi}=-1$ at a central zero),
-so the Li coefficients satisfy
-\begin{equation}\label{li:eq:liident}
- \Re\lambda_\chi(n)=\sum_\rho\Re\bigl[1-(1-1/\rho)^n\bigr]=\Psi_\chi(n),\qquad
- \liEx e^{inX_t}=e^{-t\Re\lambda_\chi(n)}\quad(\text{\stG}),
-\end{equation}
-and $\liEx e^{inX_t}=e^{-t\lambda_n}$ for $\zeta$. For nonreal characters the real part is essential.
-
-Reduce $X_t$ modulo $2\pi$, with density $p_t(y)=\frac1{2\pi}\sum_{n\in\Z}e^{-t\Psi(n)}e^{iny}$ on
-$[-\pi,\pi]$, an entire periodic function. By \eqref{li:eq:liident} the generator $\mathcal A$ of this
-circle semigroup has eigenvalues $\Re\lambda_\chi(\abs n)$.
-
-\begin{proposition}[Circle kernel and heat trace; \stU]\label{li:prop:trace}
-For fixed $R>0$ and $K,r\ge0$,
-$\sup_{\abs x\le R}\bigl|\frac{\dd^r}{\dd x^r}[ap_t(ax)-\sum_{k\le K}Q_k(x)w^{-k}]\bigr|=O_{R,K,r}(w^{-K-1}+\sqrt a)$,
-and
-\[
- \Tr(e^{-t\mathcal A})=2\pi p_t(0)=\frac2a\Bigl[1-\frac{1-\gamma_E}w+\frac{(\frac32-\gamma_E)^2+\frac{\pi^2}6-\frac54}{w^2}
- +O(w^{-3})\Bigr].
-\]
-For a primitive Dirichlet character the leading term is $4/(tw_q(t))$.
-\end{proposition}
-
-\begin{proof}
-The scaled series has frequency mesh $a$. Splitting at $an=\sqrt a$ and the estimates of
-\eqref{li:eq:fcomp} bound its difference from the model Riemann sum by $O_r(\sqrt a)$. The model
-function $s^re^{-F_w(s)}e^{ixs}$ has uniformly integrable derivative for $\abs x\le R$, so the
-Riemann-sum error is $O_{R,r}(a)$; the Taylor step is unchanged, and $x=0$ gives the trace.
-\end{proof}
-
-Uniformity over all real $x$ fails on the circle: periodicity produces returning peaks at distance
-$2\pi/a$.
-
-\begin{theorem}[Moment transition; \stU]\label{li:thm:moments}
-Let $L=\log(1/t)$. As $t\downarrow0$,
-\[
- \liEx\abs{X_t}^p\sim\frac{a(t)^p}{\cos(\pi p/2)}\ (0<p<1),\qquad
- \liEx\abs{X_t}\sim\frac d{2\pi}tL^2,\qquad
- \liEx\abs{X_t}^p\sim t\int\abs y^p\,\nu(\dd y)\ (1<p<2),
-\]
-and $\liEx X_t^2=tV$. Moreover $X_t/a(t)\Rightarrow\mathrm{Cauchy}(0,1)$ as $t\downarrow0$ and
-$X_t/\sqrt{tV}\Rightarrow N(0,1)$ as $t\to\infty$.
-\end{theorem}
-
-\begin{proof}
-For $0<p<2$, $\liEx\abs{X_t}^p=c_p\int_0^\infty(1-e^{-t\Psi(u)})u^{-p-1}\dd u$ with
-$c_p=2\Gamma(1+p)\sin(\pi p/2)/\pi$, by Tonelli and the cosine integral of \cref{li:lem:symbol}. For
-$0<p<1$ put $u=s/a$: the range $s\le aU_0$ contributes $O(ta^{-p})=o(1)$ to the normalized moment by
-$\Psi(u)\le Vu^2/2$; on $aU_0\le s\le1$, $t\Psi(s/a)\le Cs$, and on $s\ge1$, $1-e^{-t\Psi}\le1$;
-dominated convergence gives the limit $c_p\int_0^\infty(1-e^{-s})s^{-p-1}\dd s=1/\cos(\pi p/2)$. For
-$1<p<2$ divide by $t$ and use $(1-e^{-t\Psi})/t\le\Psi$ with the majorant from $\Psi=O(u^2)$ at $0$ and
-\cref{li:lem:symbol} at infinity. For $p=1$ the range $u<1$ is $O(t)$; splitting at $1/t$ with
-$1-e^{-z}\le\min(z,1)$ gives the upper bound $\frac A\pi tL^2+O(tL)$, and keeping
-$1\le u\le1/(tL^2)$ with $1-e^{-z}\ge z-z^2/2$ gives the lower bound $\frac A\pi t(L-2\log L)^2+O(tL)$.
-The weak limits follow from $t\Psi(s/a)\to\abs s$ and from $\Psi(u)=Vu^2/2+o(u^2)$ at $0$.
-\end{proof}
-
-The Cauchy limit has no variance because second moments are not uniformly integrable under the
-small-time scaling. Nakamura and Suzuki relate RH to infinitely divisible distributions built from
-ordinates with inverse-square weights \cite{NakamuraSuzuki2023Infinitely}; here the jumps are the
-transformed angles with equal weights. General small-time moment asymptotics for L\'evy processes are
-in \cite{FigueroaLopez2008Small}.
-
-The densities of \cref{li:cor:universal} are one-time laws seen at the central scale. A single
-exact time slice of the circle kernel already determines the character up to conjugation
-(\cref{rec:thm:liheat}); \cref{li:sec:path} shows that one path does so almost surely, although no
-finite set of times does, and \cref{li:sec:offorigin} describes the oriented kernel away from the
-origin.
-
-\subsection{One path identifies the character}\label{li:sec:path}
-\sources{grh_path_rigidity_2026-11-27}
-
-Let $\chi$ be primitive of conductor $q_\chi$, with $q_\chi=1$ for $\zeta$, let $m_\chi(\gamma)$ be the
-multiplicity of the ordinate $\gamma$ (zero if $\gamma$ is not an ordinate), and let $X^\chi$, $\nu_\chi$ and
-$\Psi_\chi$ be the process, L\'evy measure and exponent of \cref{li:lem:levy} for the ordinates of
-$L(s,\chi)$, counted with multiplicity and both signs. For $\gamma>0$ the jump rate at each of
-$\pm\theta(\gamma)$ is $c_\chi(\gamma)=\frac12(m_\chi(\gamma)+m_\chi(-\gamma))$, and a central zero of multiplicity $m$ gives
-rate $m/2$ at each of $\pm\pi$; for a real character the two multiplicities coincide and the rate is
-$m_\chi(\gamma)$. Under \cref{src:thm:dgrh}, $\liEx e^{inX^\chi_t}=e^{-t\Re\lambda_\chi(n)}$ by \eqref{li:eq:liident}. Complex
-conjugation reflects the ordinates and preserves $\nu_\chi$, so $X^\chi$ and $X^{\bar\chi}$ have the same law;
-write $[\chi]=\set{\chi,\bar\chi}$.
-
-For $0<\abs y<\pi$ put $G(y)=1/(2\tan(\abs y/2))$, so that $\pm\theta(\gamma)\mapsto\abs\gamma$, and for $T>1$ let
-\[
- B_T=\set{y:T<G(y)\le2T}=\set{y:\theta(2T)\le\abs y<\theta(T)},
-\]
-a band of jump sizes asymptotic to $[1/(2T),1/T]$ with $\nu_\chi(B_T)<\infty$. The marked jumps
-$\set{(s,\Delta X_s):0<s\le t,\ \Delta X_s\in B_T}$, $\Delta X_s=X_s-X_{s-}$, form a finite Poisson random measure with
-intensity $\dd s\,\nu_\chi(\dd y)$. Hence for bounded real $f,g$ supported on $B_T$ the finite sums
-$J_f=\sum_{0<s\le t}f(\Delta X_s)$ satisfy
-\begin{equation}\label{li:eq:poisson}
- \liEx J_f=t\int f\,\dd\nu_\chi,\qquad\operatorname{Cov}(J_f,J_g)=t\int fg\,\dd\nu_\chi,
-\end{equation}
-and no compensation of smaller jumps is needed. Write $\Lambda(x)=\log p$ if $x=p^k$ is an integral prime
-power and $\Lambda(x)=0$ otherwise, also for nonintegral $x$.
-
-\begin{lemma}[Band masses and prime frequencies; \stG]\label{li:lem:bands}
-As $T\to\infty$,
-\[
- \nu_\chi(B_T)=\frac T\pi\log T+C_\chi T+O_\chi(\log T),\qquad C_\chi=\frac{\log(q_\chi/(2\pi))+2\log2-1}\pi.
-\]
-For fixed rational $x>1$,
-\begin{equation}\label{li:eq:bandcos}
- \int_{B_T}\cos(G(y)\log x)\,\nu_\chi(\dd y)=-\frac{T\Lambda(x)\Re\chi(x)}{\pi\sqrt x}+O_{\chi,x}(\log^2T).
-\end{equation}
-Consequently, for fixed primes $p\ne r$,
-\begin{gather*}
- V_{\chi,p}(T):=\int_{B_T}\cos^2(G(y)\log p)\,\nu_\chi(\dd y)=\frac T{2\pi}\log T+O_{\chi,p}(T),\\
- \int_{B_T}\cos(G(y)\log p)\cos(G(y)\log r)\,\nu_\chi(\dd y)=O_{\chi,p,r}(\log^2T).
-\end{gather*}
-\end{lemma}
-
-\begin{proof}
-The band mass is $N_\chi(2T)-N_\chi(T)$ with the count recalled after \cref{li:cor:universal}. The integral
-in \eqref{li:eq:bandcos} is $\sum_{T<\abs\gamma\le2T}m_\chi(\gamma)\cos(\gamma\log x)$, the two half atoms of each ordinate
-together carrying its multiplicity. Since $m_\chi(-\gamma)=m_{\bar\chi}(\gamma)$, it is the sum of the real parts of
-$\sum_{T<\gamma\le2T}m_\xi(\gamma)x^{i\gamma}$ for $\xi=\chi,\bar\chi$, and \cref{zer:lem:rational} with $H=T$ gives
-\eqref{li:eq:bandcos}; the estimate there covers $1<x<2$, which occurs below for ratios of primes. For
-$V_{\chi,p}$ write $\cos^2v=\frac12(1+\cos2v)$ and use \eqref{li:eq:bandcos} at $x=p^2$. For the cross term the
-product-to-sum identity leaves the frequencies $\log(pr)$ and $\abs{\log(p/r)}$; neither $pr$ nor a ratio of
-distinct primes is a prime power, so both main terms vanish.
-\end{proof}
-
-For a path $X$ on $[0,t]$, a prime $p$ and $T>1$ define the jump statistic
-\begin{equation}\label{li:eq:decoder}
- D_{T,t}(p;X)=-\frac{\pi\sqrt p}{tT\log p}\sum_{\substack{0<s\le t\\ \Delta X_s\in B_T}}\cos\bigl(G(\Delta X_s)\log p\bigr).
-\end{equation}
-It involves no conductor, character, zero location or multiplicity.
-
-\begin{theorem}[Recovery of Euler coefficients from jumps; \stG]\label{li:thm:decoder}
-For each primitive $\chi$, fixed $t>0$ and prime $p$,
-\[
- \liEx_\chi D_{T,t}(p)=\Re\chi(p)+O_{\chi,p}\Bigl(\frac{\log^2T}T\Bigr),\qquad
- \operatorname{Var}_\chi D_{T,t}(p)=\frac{\pi p}{2t(\log p)^2}\,\frac{\log T}T+O_{\chi,p}\bigl((tT)^{-1}\bigr).
-\]
-Almost surely $D_{2^n,t}(p;X^\chi)\to\Re\chi(p)$ as $n\to\infty$, simultaneously for all primes. For fixed distinct
-primes $p_1,\dots,p_k$,
-\[
- \sqrt{\frac{tT}{\log T}}\bigl(D_{T,t}(p_j)-\Re\chi(p_j)\bigr)_{j=1}^k\Longrightarrow
- N_k\Bigl(0,\operatorname{diag}\Bigl(\frac{\pi p_j}{2(\log p_j)^2}\Bigr)_{j\le k}\Bigr),
-\]
-so the limiting errors at distinct primes are independent.
-\end{theorem}
-
-\begin{proof}
-With $f=\cos(G\log p)\mathbf 1_{B_T}$, \eqref{li:eq:poisson} and \cref{li:lem:bands} give the mean and the variance.
-Chebyshev's inequality gives
-$\Pr(\abs{D_{2^n,t}(p)-\liEx D_{2^n,t}(p)}>\eps)\ll_{\chi,p,t,\eps}n2^{-n}$, which is summable; Borel--Cantelli and the mean give the almost sure limit, and one intersects over all primes and a
-sequence of tolerances. For the joint law fix real $b_1,\dots,b_k$. The centred combination is a
-compensated Poisson integral on $B_T$ with integrand
-\[
- h_T=-(tT\log T)^{-1/2}\mathbf 1_{B_T}\sum_jb_j\frac{\pi\sqrt{p_j}}{\log p_j}\cos(G\log p_j),\qquad
- \norm{h_T}_\infty=O\bigl((tT\log T)^{-1/2}\bigr).
-\]
-Its log characteristic function at $u$ is
-$t\int(e^{iuh_T}-1-iuh_T)\dd\nu_\chi=-\frac{u^2}2t\int h_T^2\dd\nu_\chi+R_T$ with
-$\abs{R_T}\le\frac{\abs u^3}6\norm{h_T}_\infty t\int h_T^2\dd\nu_\chi$. By \cref{li:lem:bands},
-$t\int h_T^2\dd\nu_\chi\to\sum_jb_j^2\pi p_j/(2(\log p_j)^2)$ and $R_T\to0$, while the bias times
-$\sqrt{tT/\log T}$ tends to zero. The Cram\'er--Wold argument concludes.
-\end{proof}
-
-The independence is a limit theorem for Poisson jump counts; it neither uses nor implies linear
-independence of ordinates, and multiplicities and shared ordinates are included in the rates. The
-number of jumps in $B_T$ is of order $tT\log T$, the arithmetic signal of the unnormalized sum of order
-$tT$, which explains the scale $\sqrt{\log T/(tT)}$.
-
-\begin{proposition}[Finite-band confidence bound; \stU]\label{li:prop:confidence}
-With $a_p=\pi\sqrt p/\log p$ and $V=V_{\chi,p}(T)$, for every $z>0$,
-\[
- \Pr_\chi\bigl(\abs{D_{T,t}(p)-\liEx_\chi D_{T,t}(p)}\ge z\bigr)\le2\exp\Bigl(-\frac{tT^2z^2}{2a_p^2V+\frac23a_pTz}\Bigr).
-\]
-\end{proposition}
-
-\begin{proof}
-For $\abs f\le1$, comparing exponential series termwise gives
-$\log\liEx e^{v(J_f-\liEx J_f)}=t\int(e^{vf}-1-vf)\dd\nu_\chi\le tv^2\int f^2\dd\nu_\chi/(2(1-\abs v/3))$ for $\abs v<3$. The
-exponential Markov inequality, optimized in $v$, gives
-$\Pr(\abs{J_f-\liEx J_f}\ge u)\le2\exp(-u^2/(2(tV+u/3)))$; substitute $u=tTz/a_p$.
-\end{proof}
-
-A confidence interval for $\Re\chi(p)$ must also contain the deterministic bias of
-\cref{li:thm:decoder}.
-
-\begin{lemma}[Real prime values determine the conjugacy orbit; \stU]\label{li:lem:orbit}
-If primitive $\chi,\psi$ satisfy $\Re\chi(p)=\Re\psi(p)$ for all primes $p$, then $\psi\in[\chi]$; in particular
-$q_\chi=q_\psi$.
-\end{lemma}
-
-\begin{proof}
-Induce both to $(\Z/M\Z)^\times$, $M=\lcm(q_\chi,q_\psi)$. Every class contains a prime, so
-$\chi+\bar\chi=\psi+\bar\psi$ there, and linear independence of characters gives equality of the multisets
-$\set{\chi,\bar\chi}$ and $\set{\psi,\bar\psi}$ of induced characters. Primitive inducing characters are unique.
-\end{proof}
-
-Let $P_\chi^t$ be the law of $X^\chi$ on the Skorokhod space $D([0,t],\R)$ with its Borel $\sigma$-field.
-
-\begin{theorem}[Path-law dichotomy and recovery; \stG]\label{li:thm:path}
-For every $t>0$:
-\begin{enumerate}[label=\textup{(\roman*)}]
-\item $P_\chi^t=P_\psi^t$ if and only if $[\chi]=[\psi]$;
-\item if $[\chi]\ne[\psi]$, then $P_\chi^t$ and $P_\psi^t$ are mutually singular;
-\item one measurable map on $D([0,t],\R)$ returns $[\chi]$ almost surely under every $P_\chi^t$;
-\item almost surely $[\chi]$ is recovered from every interval of positive length of one path, and from
-the germ of the path at $0$.
-\end{enumerate}
-\end{theorem}
-
-\begin{proof}
-Conjugate characters have the same law. If the orbits differ, \cref{li:lem:orbit} gives a prime with
-$\Re\chi(p)\ne\Re\psi(p)$, and the two limits of \cref{li:thm:decoder} define disjoint events of full measure
-under the two laws. These events are measurable: on a band bounded away from $0$ a c\`adl\`ag path has
-finitely many jumps, and integrals of Borel functions against its jump measure are measurable path
-functionals. For (iii) enumerate the countably many orbits; the events on which every limit
-exists and equals $\Re\chi(p)$ are pairwise disjoint by \cref{li:lem:orbit}; output the orbit on its event
-and a default elsewhere. Stationary increments give the same decoder on every $[\alpha,\beta]$; intersect
-over rational endpoints. For the germ let $F_n$ be the decoder on $[0,t/n]$ and $F$ its eventual value
-(a default if none). For every $N$, $F$ is a function of $(F_n)_{n\ge N}$, hence measurable for the path on
-$[0,t/N]$, and under each law all $F_n$ equal the orbit almost surely.
-\end{proof}
-
-Under each fixed law the recovered orbit is a constant, in agreement with the zero-one law; the theorem
-compares different laws on one path space. Part (i) also follows from \cref{rec:thm:liheat}(ii), since
-the law of $X^\chi_t$ modulo $2\pi$ has Fourier coefficients $e^{-t\Re\lambda_\chi(n)}$.
-
-\begin{corollary}[Continuous perturbations and finitely many altered jumps; \stG]\label{li:cor:pathrobust}
-The almost sure recovery of \cref{li:thm:path} persists after adding any continuous function to the
-path and after altering, inserting or deleting finitely many jumps, even when these changes are chosen
-after the path is observed.
-\end{corollary}
-
-\begin{proof}
-A continuous perturbation changes no jump. Finitely many altered jumps have a positive least nonzero
-size, so they leave $B_T$ for all large $T$, and the decoder sequences agree eventually.
-\end{proof}
-
-No stability under errors in every small jump is claimed: $G$ has derivative of order $T^2$ on $B_T$.
-
-Fix nonconjugate primitive $\chi,\psi$ and a prime $p$ with $\Delta_p=\Re\chi(p)-\Re\psi(p)\ne0$. For $y$ in the
-finite union of the atoms of $\nu_\chi,\nu_\psi$ in $B_T$ put $\lambda_y=\nu_\chi\set y$, $\mu_y=\nu_\psi\set y$, and
-\[
- H_T(\chi,\psi)=\sum_{y\in B_T}\bigl(\sqrt{\lambda_y}-\sqrt{\mu_y}\bigr)^2,\qquad K_p=\frac{(\log p)^2\Delta_p^2}{2\pi p}.
-\]
-
-\begin{theorem}[Finite-band information and testing; \stG]\label{li:thm:information}
-The Hellinger sum satisfies
-\[
- \liminf_{T\to\infty}\frac{\log T}TH_T(\chi,\psi)\ge K_p.
-\]
-If the jumps in $B_T$ are observed during time $t$ with
-their exact sizes, the least equal-prior error of a test between the two characters satisfies
-\[
- P_{\rm err}(T,t)\le\tfrac12e^{-tH_T/2},\qquad
- P_{\rm err}(T,t)\le\tfrac12\exp\Bigl[-(1-o(1))\frac{t(\log p)^2\Delta_p^2}{4\pi p}\,\frac T{\log T}\Bigr].
-\]
-The counts at each size suffice; the jump times add no information.
-\end{theorem}
-
-\begin{proof}
-With $f_y=\cos(G(y)\log p)$, \eqref{li:eq:bandcos} gives
-$M_T:=\sum_yf_y(\lambda_y-\mu_y)=-\frac{T\log p}{\pi\sqrt p}\Delta_p+O(\log^2T)$. Cauchy--Schwarz and
-$(\sqrt\lambda+\sqrt\mu)^2\le2(\lambda+\mu)$ give $M_T^2\le2H_T\int_{B_T}\cos^2(G\log p)\,\dd(\nu_\chi+\nu_\psi)$, and the last integral is
-$\frac T\pi\log T+O(T)$ by \cref{li:lem:bands}. Under the two hypotheses the counts at the sizes $y$ are
-independent Poisson variables with means $t\lambda_y$ and $t\mu_y$; the Hellinger affinity of Poisson laws with
-means $a,b$ is $\exp(-(\sqrt a-\sqrt b)^2/2)$, so the product affinity is $e^{-tH_T/2}$, and the least error is half
-the integral of the smaller density, at most half the affinity. Given the counts, the jump times are
-uniform under both hypotheses.
-\end{proof}
-
-At a size threshold $\eps\asymp1/T$ the bound is of order $1/(\eps\log(1/\eps))$. It holds when the two
-$L$-functions share many ordinates and is not claimed to be optimal, since atoms of only one character
-add information.
-
-\begin{theorem}[Finite-grid equivalence; \stU]\label{li:thm:grid}
-For any primitive $\chi,\psi$ and fixed $0<t_1<\dots<t_k$, the laws of $(X^\chi_{t_1},\dots,X^\chi_{t_k})$ and
-$(X^\psi_{t_1},\dots,X^\psi_{t_k})$ are mutually absolutely continuous.
-\end{theorem}
-
-\begin{proof}
-By \cref{li:thm:allorders} each $X^\chi_s$, $s>0$, has a nonnegative entire density, not identically zero; its
-real zeros are discrete, so it is positive almost everywhere and the law is equivalent to Lebesgue
-measure. The independent increments have a product density positive almost everywhere, and the
-triangular map from increments to positions preserves equivalence.
-\end{proof}
-
-\begin{corollary}[Grids against paths; \stG]\label{li:cor:grid}
-For nonconjugate $\chi,\psi$ no classifier using a fixed finite time grid is almost surely correct under
-both laws, whereas the complete path on the same interval admits one.
-\end{corollary}
-
-\begin{proof}
-Such a classifier would give an event of probability one under one grid law and zero under the
-other, contradicting \cref{li:thm:grid}; the second assertion is \cref{li:thm:path}.
-\end{proof}
-
-A c\`adl\`ag path carries infinitely many ever smaller jumps, and the null sets that separate the
-path laws are not decided by finitely many coordinates. Likewise \cref{li:cor:universal} concerns
-one-time densities and does not control the jump counts used by the decoder.
-
-\begin{example}[Conductor five]\label{li:ex:five}
-Let $\chi_2$ be the quadratic character modulo $5$ and $\chi_4$ the quartic one with $\chi_4(2)=i$; their orbits
-differ. At $p=2$ the limits of \cref{li:thm:decoder} are $-1$ and $0$, the limiting variance is
-$\pi/(\log2)^2$ under either law, $\liminf_T\frac{\log T}TH_T(\chi_2,\chi_4)\ge(\log2)^2/(4\pi)$, and
-$P_{\rm err}(T,t)\le\frac12\exp[-(1-o(1))\frac{t(\log2)^2}{8\pi}\frac T{\log T}]$. Their scaled densities have the same
-expansion $\sum_kQ_k/w_5(t)^k$ and differ by $O(\sqrt{a_5(t)})$ in every $C^r_b$ norm, their finite-grid laws are
-equivalent, and their path laws are singular on every interval.
-\end{example}
-
-\begin{remark}[A finite Poisson model]\label{li:rem:illustration}
-With the first $150$ positive zeros of $\zeta$, computed numerically and not certified, the finite
-band $128<\gamma\le256$ ($T=128$) and $t=1$, the exact finite-model means of $D_{128,1}(p)$ are $0.97431$, $0.99960$
-and $0.99115$ for $p=2,3,5$, with variances $0.15430$, $0.09322$ and $0.07055$; $50{,}000$ simulated
-realizations agree with these moments. This illustrates the finite model and proves nothing about the
-limits:
-\begin{center}
-\artifact{grh_path_rigidity_2026-11-27/checks/decoder_checks.json}
-\end{center}
-\end{remark}
-
-\Cref{src:thm:dgrh} enters only through \eqref{li:eq:bandcos}: it turns $x^\rho$ in Landau's formula into the
-phase $\sqrt x\,e^{i\gamma\log x}$, which is read from a jump size. The process, its densities and
-\cref{li:thm:grid} use only the zero count. Banks studies differences of zero multisets of Dirichlet
-$L$-functions through the same prime frequencies \cite{Banks2023Comparing}.
-
-\subsection{The oriented kernel away from the origin}\label{li:sec:offorigin}
-\sources{dirichlet-li-kernels}
-
-Here $p_t=p_{\chi,t}$ is the oriented circle kernel of \cref{rec:prop:liheat}, with complex Li coefficients
-$\lambda_\chi(n)$ and jump measure $\nu_\chi=\sum_\gamma\delta_{\theta_\gamma}$ on $\mathbb T=\R/2\pi\Z$, $L=\log(1/t)$ and $a=a(t)\sim\frac12tL$.
-Let $S_m$ be the set of sums modulo $2\pi$ of at most $m$ zero angles, $M_k$ the ordered representation
-counts, and $\delta_m(x)=\operatorname{dist}(x,S_m)$. At points of $S_k\setminus S_{k-1}$ the kernel is a rescaled copy of the
-central Cauchy profile with weight $M_k/k!$, at points outside $\bigcup_mS_m$ it is $O(t^N)$ for every $N$
-(\cref{rec:thm:liecho}), and at almost every point and at its minimum
-$-\log p_t\sim L\log L/\log2$ (\cref{rec:thm:litypical}). The relative estimate of \cref{rec:thm:liecho} holds with
-derivatives: for $x\in S_k\setminus S_{k-1}$ and fixed $R,r$,
-\begin{equation}\label{li:eq:Crprofile}
- \Bigl\|ap_t(x+a\,\cdot)-\frac{M_k(x)}{k!}t^kap_t(a\,\cdot)\Bigr\|_{C^r([-R,R])}=O_{x,k,R,r}(t^{k+1})\qquad(\text{\stG}),
-\end{equation}
-and off $\bigcup_mS_m$ the left-hand rescaled density is $O(t^H)$ in $C^r([-R,R])$ for every $H$. Indeed
-$a^{r+1}\sum_n\abs n^re^{-t\Re\lambda_\chi(n)}=O_r(1)$ by \eqref{rec:eq:lagarias}; removing the finitely many large jumps
-multiplies the Fourier coefficients by factors of modulus at most $e^{2t\ell}$, so this bound and an $O(t)$
-error in $C^r$ persist for the remaining density $g_t$; and the mass bound $O(t^{h/(4\eta)})$ for $g_t$ away from
-$0$ becomes a $C^r$ bound after convolution with a mollifier of width $t^H$, which moves $r$th derivatives
-by $O(t^H)$ and costs a factor $t^{-H(r+1)}$. The expansion of the proof of \cref{rec:thm:liecho} then
-runs in $C^r$. Combined with \cref{li:prop:trace}, the profile at each minimal sum has the full
-logarithmic expansion multiplied by $M_k(x)/k!$.
-
-\paragraph{Exceptional decay rates.} Put
-\[
- R_t(x)=\frac{-\log p_t(x)}{L\log L},\qquad F(x)=\liminf_{t\downarrow0}R_t(x),\qquad
- \omega(x)=\limsup_{m\to\infty}\frac{\log\log(1/\delta_m(x))}m,
-\]
-with $\omega(x)=\infty$ on $\bigcup_mS_m$. The greedy approximation after \cref{rec:thm:litypical} gives
-$\delta_m(x)\le\exp(-c2^m)$ for large $m$, so $\omega\ge\log2$ everywhere. List the distinct values of $\abs{\theta_\gamma}$ in
-nonincreasing order as $b_1\ge b_2\ge\cdots$. Every sum of zero angles is a signed sum
-$\sum_{i\le k}e_ib_{j_i}$, $e_i=\pm1$.
-
-\begin{lemma}[Separation from signed sums; \stU]\label{li:lem:separation}
-Let $p,s>1$, $0<d\le1$, $pd>1$ and $0<\eta<1$ with $2\eta^d\zeta(pd)<1$. The set of $x\in\mathbb T$ lying in
-infinitely many of the arcs of radius $\eta^k\prod_{i\le k}j_i^{-p}$ about the signed sums $\sum_{i\le k}e_ib_{j_i}$
-($k\ge0$, all signs and indices) has zero $d$-dimensional Hausdorff measure. Every $x$ outside this set and
-outside the countable set of signed sums satisfies, for all $m\ge1$,
-\[
- \delta_m(x)\ge\exp\bigl\{-C_{x,s,p}(1+sp)^m\log(2m)\bigr\},\qquad\text{so}\quad\omega(x)\le\log(1+sp).
-\]
-\end{lemma}
-
-\begin{proof}
-The sum of the $d$th powers of the diameters of all arcs is at most $2^d\sum_k(2\eta^d\zeta(pd))^k<\infty$, so the
-tails of the family are covers of vanishing mesh and vanishing $d$-cost. For $x$ outside the limsup set
-and the centres, decreasing a constant handles the finitely many arcs containing $x$, and
-$\operatorname{dist}(x,\sum e_ib_{j_i})\ge c_x\eta^k\prod j_i^{-p}$ for all tuples. The zero count gives
-$\#\set{j:b_j\ge u}\ll u^{-1}\log(2/u)$, hence $b_j\le C_sj^{-1/s}$. Take a tuple of length $n\le m$ with magnitudes
-in decreasing order, let $r_k$ be the distance from $x$ to the sum of its first $k$ signed terms,
-$\delta=r_n$, and $B_k=\sum_{i\le k}\log j_i$. Stop at the first $k$ with $r_k\le2\delta$. Before it,
-$r_k\le\delta+mb_{j_{k+1}}$, so $b_{j_{k+1}}>r_k/(2m)$, and the magnitude and separation bounds give
-$B_{k+1}\le(1+sp)B_k+s(\log(2mC_s/c_x)+k\log(1/\eta))$. From $B_0=0$, geometric summation gives
-$B_k\le C(1+sp)^k\log(2m)$ up to the stopping index, where $\delta\ge r_k/2\ge\frac12c_x\eta^k e^{-pB_k}$.
-\end{proof}
-
-With $d=1$ and $p,s$ near $1$ it gives $\omega\le\log2$ almost everywhere, the separation half of the almost-everywhere law of \cref{rec:thm:litypical}.
-
-\begin{lemma}[Decay away from short sums; \stG]\label{li:lem:decay}
-Let $c>0$ and $0<\beta<\beta'<1$, and for small $t$ put $m=\floor{c\log L}$, $\delta=\exp(-L^\beta)$ and $b=\exp(-L^{\beta'})$.
-If $\delta_m(x)\ge\delta$, then
-\[
- p_t(x)\le\frac Ca\Bigl[\exp\bigl(-\tfrac12e^{L^{\beta'}-L^\beta}+o(1)\bigr)+\exp\bigl(-(m+1)(L-O(L^{\beta'}))\bigr)\Bigr],
-\]
-with $C$ depending on $\chi,c,\beta,\beta'$ only; hence $R_t(x)\ge c+o(1)$ uniformly in such $x$.
-\end{lemma}
-
-\begin{proof}
-Split the jumps at size $b$. The larger ones are compound Poisson of rate $\lambda\le V/b^2$,
-$V=\int\theta^2\dd\nu_\chi$, so $t\lambda\le\exp(-L+O(L^{\beta'}))$. Let $q_v$ be the density of the remainder and $Y_v$ its
-real lift; its Fourier coefficients are those of $p_v$ times factors of modulus at most $e^{2v\lambda}$, so
-$\norm{q_v}_\infty=O(1/a)$ for $v=t,t/2$. With all jumps compensated the lift has drift $d_0$, and the
-remainder has drift $d_b=d_0-\int_{\abs y>b}y\,\nu_\chi(\dd y)$, $\abs{d_b}\le\abs{d_0}+V/b$. Then
-$\log\liEx e^{\pm Y_{t/2}/b}\le Ct(\abs{d_0}/b+V/b^2)=o(1)$. If $\operatorname{dist}(u,0)\ge\delta$, one of the two factors of
-$q_t=q_{t/2}*q_{t/2}$ is evaluated at distance at least $\delta/2$ from $0$, and exponential Markov gives
-$\sup_{\operatorname{dist}(u,0)\ge\delta}q_t(u)\le(C/a)\exp(-\delta/(2b)+o(1))$. On the event of at most $m$ large jumps their sum
-lies in $S_m$, so this bound applies at the residual; otherwise bound the density by $C/a$ and use
-$\Pr(N\ge m+1)\le(t\lambda)^{m+1}/(m+1)!$ for the Poisson number $N$ of large jumps. Since $\log(1/a)=O(L)$ the last
-claim follows.
-\end{proof}
-
-\begin{theorem}[Spectrum of decay rates; \stG]\label{li:thm:spectrum}
-\begin{enumerate}[label=\textup{(\roman*)}]
-\item $F(x)=1/\omega(x)$ for every $x\in\mathbb T$, with $1/\infty=0$.
-\item For $0<h\le1/\log2$, $\dim_{\mathrm H}\set{x:F(x)=h}=1/(e^{1/h}-1)$; the level $h=1/\log2$ has full measure.
-\item $\set{x:F(x)=0}$ is a dense $G_\delta$ of Hausdorff dimension zero.
-\item There is a dense $G_\delta$ set of points outside every $S_m$ at which $\liminf_{t\downarrow0}R_t(x)=0$ and
-$\limsup_{t\downarrow0}R_t(x)=1/\log2$; at these points every value in $[0,1/\log2]$ is a subsequential limit of $R_t(x)$.
-\end{enumerate}
-\end{theorem}
-
-\begin{proof}
-(i) If $\omega(x)<B<\infty$, then $\delta_m(x)\ge\exp(-e^{Bm})$ for large $m$; for $c<1/B$ and $cB<\beta<\beta'<1$,
-$m=\floor{c\log L}$ gives $e^{Bm}\le L^{cB}<L^\beta$, and \cref{li:lem:decay} gives $F(x)\ge c$; hence $F\ge1/\omega$. If
-$B<\omega(x)$ there are arbitrarily large $m$ with $\delta_m(x)\le\exp(-e^{Bm})$; put $L=e^{Bm}$, $t=e^{-L}$, and take a sum
-$z$ of at most $m$ angles with $\operatorname{dist}(x,z)\le t\le a$. Deleting one unit of intensity at each distinct angle
-used, as in the proof of the lower bound of \cref{rec:thm:litypical}, gives $p_t(x)\ge c_0e^{-tm}t^m/(2a\,m!)$,
-so $R_t(x)\le1/B+o(1)$ along these $t$ and $F(x)\le1/B$. Finally $F\ge0$ everywhere since $p_t\ll1/a$.
-
-(ii) For $R>2$ let $E_R=\set{\omega\ge\log R}$ and $D=1/(R-1)$. For $D<d<1$ choose $p\in(1/d,R-1)$, $s>1$ with
-$1+sp<R$, and $\eta$ with $2\eta^d\zeta(pd)<1$; by \cref{li:lem:separation}, $E_R$ has zero $d$-dimensional measure, so
-$\dim_{\mathrm H}E_R\le D$. For the lower bound take small $r_0>0$ and $r_{m+1}=r_m^R$. By the one-sided zero
-count every small $r$ admits a positive angle in $[r-Cr^2,r]$, so one can choose $M_m\asymp1/r_m$ angles in
-$[r_m/4,3r_m/4]$ with mutual distances at least $cr_m^2$. Starting from $[0,r_0]$, replace each interval
-$[z,z+r_m]$ of level $m$, $z$ a sum of $m$ angles, by the children $[z+y,z+y+r_{m+1}]$ for the chosen $y$; they
-are disjoint since $R>2$. Every limit point $x$ has $\delta_m(x)\le r_m$, so lies in $E_R$. Give the children
-equal shares of mass and let $A_m=\prod_{i<m}M_i$; then $\log A_m=D\log(1/r_m)+O(m+1)$. An interval of length
-$r_{m+1}\le\ell\le r_m$ meets at most two intervals of level $m$ and at most $C(1+\ell/r_m^2)$ children of each, so has
-mass at most $CA_m^{-1}\min(1,r_m+\ell/r_m)$, which is $O(\ell^{d'})$ for every $d'<D$ because $RD=D+1$ and
-$A_m^{-1}=O(r_m^{d'})$. By Frostman's lemma the measure vanishes on sets of dimension below $D$, in particular on
-$\bigcup_jE_{R+1/j}$, so $\set{\omega=\log R}$ has dimension $D$. Put $R=e^{1/h}$ and use (i); for $h=1/\log2$ use
-\cref{rec:thm:litypical}.
-
-(iii) The set $\set{\omega=\infty}$ lies in every $E_R$, so has dimension zero, and equals
-$\bigcap_{n,M}\bigcup_{m\ge M}\set{x:\delta_m(x)<\exp(-e^{nm})}$; each inner union is open and contains the dense set
-$\bigcup_mS_m$, and Baire's theorem applies.
-
-(iv) At a point $z$ of some $S_k$, $p_t(z)\gg_zt^k/a$, so $R_t(z)\to0$; points with $R_t\to1/\log2$ have full
-measure, hence are dense. For $j\ge1$ and $N\ge3$ the sets $\bigcup_{n\ge N}\set{R_{e^{-n}}<1/j}$ and
-$\bigcup_{n\ge N}\set{R_{e^{-n}}>1/\log2-1/j}$ are open, by continuity and positivity of $p_t$, and dense. Intersect them
-and remove the countable set $\bigcup_mS_m$. The bounds $p_t\ll1/a$ and the uniform lower bound of
-\cref{rec:thm:litypical} give the two extreme limits over all real $t$, and $R_t(x)$ is continuous in $t$, so
-every intermediate value is a subsequential limit.
-\end{proof}
-
-For example the rate $1/\log3$ occurs on a set of dimension $\frac12$. Picard studied small-time densities
-of L\'evy processes at points reachable by finitely many jumps and at their limits; his dyadic model
-has a different almost-everywhere logarithmic rate \cite{Picard1997Density,Picard1997Accessible}.
-
-\begin{example}[Two neighbouring two-jump peaks for $\zeta$; \stG]\label{li:ex:zetapeaks}
-Let $a_j=2\arctan(1/(2\gamma_j))$ for the $j$th positive ordinate of $\zeta$; the first eight zeros are simple.
-Since $44a_1<\pi$, for $1\le k\le44$ the two largest points of $S_k\setminus S_{k-1}$ in $(0,\pi)$ are $ka_1$ and
-$(k-1)a_1+a_2$, with $M_k=1$ and $M_k=k$, so the coefficients $M_k/k!$ are $1/k!$ and $1/(k-1)!$. Rational
-enclosures from Odlyzko's ordinates give $0.00003542639447445315<v-u<0.00003542639447445316$ for $u=2a_2$ and
-$v=a_1+a_7$, both above $a_1$,
-with $a_1+a_8<u<v$; the largest two-jump sum without $a_1$ is $2a_2$. Hence $u$ and $v$ are consecutive
-two-jump centres with $M_2(u)=1$, $M_2(v)=2$, and the peak at $v$ is asymptotically twice as high as the
-peak at $u$:
-\begin{center}
-\artifact{dirichlet-li-kernels/zeta-check.txt}
-\end{center}
-\end{example}
-
-\subsection{What one time slice remembers}\label{li:sec:slice}
-\sources{dirichlet-li-kernels; dirichlet_li_recovery}
-
-Write $\mathbb T$ multiplicatively as $\set{z\in\C:\abs z=1}$ in this subsection. For $z=e^{i\theta}\in\mathbb T\setminus\set1$
-the point $\rho=1/(1-z)=\frac12+i\gamma$ lies on the critical line, with \emph{ordinate}
-$\gamma=\gamma(z)=\frac12\cot(\theta/2)$; this identifies the critical line with the punctured circle, and both the
-multiplicity and the sign of $\gamma$ matter. An \emph{admissible multiset} $E$ in $\mathbb T\setminus\set1$ has
-nonnegative integral multiplicities $m_E(z)$ with $\sum_zm_E(z)\abs{1-z}^2<\infty$ and with
-$\lim_{\eps\downarrow0}\sum_{\abs{1-z}\ge\eps}m_E(z)\Im z$ existing. Put
-\[
- \lambda_E(n)=\lim_{\eps\downarrow0}\sum_{\abs{1-z}\ge\eps}m_E(z)(1-z^n),\qquad H_{E,t}(n)=e^{-t\lambda_E(n)}\qquad(n\in\Z,\ t>0);
-\]
-the limit exists since $1-z^n+in\Im z=O_n(\abs{1-z}^2)$, and $H_{E,t}$ is the Fourier sequence of the weak limit of
-the truncated compound Poisson laws, which fixes the drift. The \emph{time slice} of $E$ at time $t$ is the
-sequence $H_{E,t}$, equivalently that probability measure on $\mathbb T$; the positive modes determine the
-negative ones by conjugation, and $H_{E,t}(0)=1$. A \emph{collision} at time $t$ is a pair of distinct admissible
-multisets with the same time slice. For a finitely supported integral measure $b=\sum_zb_z\delta_z$ write
-$\widehat b(n)=\sum_zb_zz^n$ and $\norm b_1=\sum_z\abs{b_z}$; its positive and negative parts are admissible. Put
-$\beta_t=2\pi i/t$, $\zeta_k=e^{2\pi i/k}$, $\mu_k=\set{z:z^k=1}$, $U_k=(\Z/k\Z)^\times$ and $\varphi(k)=\abs{U_k}$, and
-for $a\in U_k$ let $\sigma_a$ be the automorphism $\zeta_k\mapsto\zeta_k^a$ of $\Q(\zeta_k)$; $\mu(\cdot)$ is the M\"obius
-function. Everything down to \cref{li:rem:fibersizes} is a statement about arbitrary admissible multisets and
-uses no information on zeros.
-
-\begin{lemma}[Almost periodic second differences; \stU]\label{li:lem:per}
-For admissible $E,F$ put $D=\lambda_E-\lambda_F$ and $u=\Delta^2D$, $\Delta^2f(n)=f(n+1)-2f(n)+f(n-1)$. Then
-$u(n)=\int z^n\dd\tau(z)$ with $\tau=\sum_z\abs{1-z}^2(m_E(z)-m_F(z))\delta_z$ of finite variation, and for each $\delta>0$ the
-$\delta$-almost periods of $u$ have bounded gaps. If $e^{-tu(n)}=1$ for all $n$, $\tau$ is supported on a finite cyclic
-subgroup of $\mathbb T$. If $e^{-tu(n)}\ne1$ for some $n$, there are $\eta>0$ and $L_0$ such that every block of $L_0$
-consecutive integers contains $n$ with $\abs{e^{-tu(n)}-1}>\eta$.
-\end{lemma}
-
-\begin{proof}
-The formula for $u$ holds at each cutoff and passes to the limit. Approximate $u$ within $\delta/4$ by
-$\sum_jc_jz_j^n$; in the closure of the orbit of $(z_1,\dots,z_J)$ in the torus take an identity neighbourhood on
-which $\sum_j\abs{c_j}\abs{z_j^h-1}<\delta/2$; finitely many orbit translates cover the closure, which gives returns at
-bounded distance from every integer, and each return is a $\delta$-almost period. If $e^{-tu}\equiv1$, $u$ takes values
-in $\beta_t\Z$, so a positive $\abs{\beta_t}/2$-almost period $r$ is an exact period, all Fourier coefficients
-of $(z^r-1)\tau$ vanish and $\tau$ lives on the $r$th roots of unity. The last claim follows from uniform continuity
-of the exponential on the bounded range of $u$ and the bounded gaps of almost periods.
-\end{proof}
-
-\begin{lemma}[Finite torsion reduction; \stU]\label{li:lem:torsion}
-Let $E\ne F$ be admissible with $H_{E,t}=H_{F,t}$, and $b=\sum_z(m_E(z)-m_F(z))\delta_z$. Then $b$ is supported on
-$\mu_q$ for some $q$, has mass $\sum_zb_z=0$, and $\lambda_E-\lambda_F=-\widehat b$ with $\widehat b(n)\in\beta_t\Z$ for every
-$n\in\Z$; moreover $\beta_t^2\in\Q$. Conversely, if an integral measure $b$ on $\mu_q\setminus\set1$ has mass zero and
-$\widehat b(n)\in\beta_t\Z$ for all $n\ge1$, then adding its positive and its negative part to a common admissible
-multiset gives two multisets with the same time slice.
-\end{lemma}
-
-\begin{proof}
-Equality of the slices gives $D(n)=\lambda_E(n)-\lambda_F(n)\in\beta_t\Z$, hence $e^{-t\Delta^2D}\equiv1$, and
-\cref{li:lem:per}, with $\abs{1-z}>0$ for $z\ne1$, confines $b$ to some $\mu_q$. Writing $s=\sum_zb_z$ gives
-$D(n)=s-\widehat b(n)$. Its real part vanishes since $\beta_t$ is imaginary, so Fourier inversion on $\mu_q$ gives
-$b_z+b_{\bar z}=2s\mathbf 1_{z=1}$; as $b_1=0$, $s=0$ and $D=-\widehat b$. Since $E\ne F$, some $D(n_0)$ is a nonzero
-multiple of $\beta_t$, hence $\beta_t\in\Q(\zeta_q)$. For $a\in U_q$ the automorphism $\sigma_a$ sends $D(n_0)$ to $D(an_0)$,
-another nonzero integral multiple of $\beta_t$. Thus $a\mapsto\sigma_a(\beta_t)/\beta_t\in\Q^\times$ is a character of a finite
-group, with values $\pm1$, and every automorphism fixes $\beta_t^2$. Conversely $D=-\widehat b$ takes values in $\beta_t\Z$,
-the negative modes by conjugation, so $e^{-tD}\equiv1$.
-\end{proof}
-
-Call $t$ \emph{exceptional} if $\beta_t^2\in\Q$, that is, $(\pi/t)^2\in\Q$. Then $\beta_t^2<0$; let $d<0$ be the
-fundamental discriminant of $\Q(\beta_t)$, $f=\abs d$, and $\chi_d=(d/\cdot)$ the primitive odd quadratic character of
-conductor $f$, extended by zero to nonunits. Its Gauss sum satisfies
-\[
- G=\sum_{j\bmod f}\chi_d(j)\zeta_f^j,\qquad G^2=d,\qquad\sum_{j\bmod f}\chi_d(j)\zeta_f^{jn}=G\chi_d(n)\quad(n\in\Z),
-\]
-including the zero at nonunits \cite{Davenport2000Multiplicative}, and $\abs G=\sqrt f$. Since $\beta_t/G\in\Q^\times$,
-define coprime positive integers $A,B$ by $\abs{\beta_t/G}=A/B$. For $m\ge1$ put
-$\Omega_m=\sum_{j\bmod fm}\chi_d(j)\delta_{\zeta_{fm}^j}$.
-
-\begin{theorem}[Determining times and all invisible changes; \stU]\label{li:thm:times}
-Fix $t>0$. If $(\pi/t)^2\notin\Q$, the map $E\mapsto H_{E,t}$ on admissible multisets is injective. If $t$ is
-exceptional, the differences $m_E-m_F$ of the pairs with $H_{E,t}=H_{F,t}$ form exactly the group
-\begin{equation}\label{li:eq:lattice}
- \liKk_t=\bigoplus_{m\ge1}\Z\,\frac A{\gcd(A,m)}\,\Omega_m ,
-\end{equation}
-and any common admissible multiset may be added to both members of a pair. The elements of $\liKk_t$ supported
-on $\mu_q$ are spanned by the generators with $fm\mid q$; their rank is zero if $f\nmid q$ and equals the number of
-divisors of $q/f$ otherwise. In particular two multisets with the same slice agree, with multiplicity,
-outside the roots of unity of some finite order, and every exceptional time has collisions.
-\end{theorem}
-
-\begin{proof}
-Off the exceptional times \cref{li:lem:torsion} gives injectivity. Let $t$ be exceptional and $b$ a collision
-difference on $\mu_q$, and take $Q=\lcm(q,f)$. For $a\in U_Q$, $\sigma_a(G)=\chi_d(a)G$, and $\beta_t/G$ is rational, so
-$\widehat b(an)=\sigma_a(\widehat b(n))=\chi_d(a)\widehat b(n)$ by \cref{li:lem:torsion}, and Fourier inversion gives
-$b_{z^a}=\chi_d(a)b_z$. On the shell of primitive $k$th roots, $k\mid Q$, the power action of $U_Q$ is transitive. A
-nonzero coefficient there forces $\chi_d$ to be trivial on the kernel of $U_Q\to U_k$, equivalently $f\mid k$ by the
-definition of the conductor; the coefficients on such a shell have the form $v_k\chi_d(j)$ at $\zeta_k^j$, $j\in U_k$, with
-$v_k\in\Z$. Each $\Omega_m$ is equivariant under this character; on its highest shell $k=fm$ its coefficient at $\zeta_{fm}$
-is $1$, and its other shells have orders properly dividing $fm$. Removing shell coefficients in decreasing order
-gives a unique integral expansion $b=\sum_{fm\mid q}c_m\Omega_m$, and the argument applies to every integral
-equivariant array. Writing $j=u+f\ell$ and summing first over $\ell$ gives
-\begin{equation}\label{li:eq:DFT}
- \widehat\Omega_m(n)=\begin{cases}mG\chi_d(n/m),&m\mid n,\\0,&m\nmid n.\end{cases}
-\end{equation}
-Each $\Omega_m$ has mass zero, so by \cref{li:lem:torsion} equality of the slices is equivalent to $\widehat b(n)\in\beta_t\Z$
-for $n\ge1$. The integer $\widehat b(n)/G=\sum_{m\mid n}mc_m\chi_d(n/m)$ lies in $(A/B)\Z$ exactly when $A$ divides it. At
-$n=m$ the new term is $mc_m$, so induction gives $A\mid mc_m$ for all $m$, and the same formula proves
-sufficiency. Finally $A\mid mc_m$ exactly when $A/\gcd(A,m)\mid c_m$.
-\end{proof}
-
-The denominator $B$ drops out: exceptional times with the same field and numerator $A$ have identical
-invisible changes. At $t=\pi$ one has $f=4$, $G=2i$, $A=1$ and $\Omega_1=\delta_i-\delta_{-i}$, so single atoms at $i$ and at $-i$
-give the same law; the examples of Hasebe and Hotta are of this kind \cite{HasebeHotta2022Additive}. At $t=\pi/3$ in
-the same field $A=3$, the first two generators are $3\Omega_1$ and $3\Omega_2$, and $\Omega_3$ itself is invisible. Exact
-quadratic Gauss sums for $d=-3,-4,-7,-8$ are checked in \artifact{dirichlet-li-kernels/gauss-check.txt}, and the
-classification is compared with exact cyclotomic Fourier computations on bounded integral arrays for
-$q\in\set{3,4,5,6,8,12}$ in
-\artifact{dirichlet_li_recovery/checks/heat.txt}. The splitting of primitive shells into the two classes of a
-quadratic character also occurs in the classification of integral mixed circulant graphs
-\cite{KadyanBhattacharjya2023Integral}; here every Fourier coefficient must in addition lie in the prescribed lattice
-$\beta_t\Z$, whose spacing fixes the least mass of an invisible change.
-
-\paragraph{Low-ordinate probes and the sharp band.}
-For $k\ge3$ let $\Gamma_k=\set{\frac12\cot(\pi j/k):j\in U_k}$ be the ordinates of the primitive $k$th roots of unity
-and $h_k=\min_{\gamma\in\Gamma_k}\abs\gamma$; these are the locations available to a competing multiset.
-
-\begin{theorem}[Exact supplementary data; \stU]\label{li:thm:probe}
-At an exceptional time, the time slice together with the multiplicities at all ordinates in a set $W\subseteq\R$
-determines every admissible multiset exactly when
-\begin{equation}\label{li:eq:hit}
- W\cap\Gamma_k\ne\emptyset\qquad\text{for every positive multiple $k$ of $f$}.
-\end{equation}
-For $W=[-r,r]$ the exact threshold, endpoint included, is $r_f=\frac12\tan(\pi/f)$. The positive ordinates $h_k$, one
-for each multiple $k$ of $f$, suffice; they accumulate only at $0$.
-\end{theorem}
-
-\begin{proof}
-A collision difference has shell coefficients $v_k\chi_d(j)$, as in the proof of \cref{li:thm:times}, so if it vanishes at
-one primitive $k$th root it vanishes on the whole shell. Conversely, if $W$ misses the shell of order $k$, assign
-$\chi_d(j)$ on that shell and zero elsewhere; this integral equivariant array is an integral combination of the
-$\Omega_m$, so $A$ times it is invisible by \eqref{li:eq:lattice}, and its positive and negative parts give a collision
-agreeing on $W$. A unit $j$ nearest to $k/2$ minimizes the absolute height, which gives
-\begin{equation}\label{li:eq:heights}
- h_k=\begin{cases}\frac12\tan(\pi/(2k)),&k\text{ odd},\\ \frac12\tan(\pi/k),&4\mid k,\\ \frac12\tan(2\pi/k),&k\equiv2\pmod4,\ k\ge6:\end{cases}
-\end{equation}
-for odd $k$ choose $j=(k-1)/2$; if $4\mid k$, $k/2-1$ is odd and its common divisors with $k$ divide $2$; for
-$k\equiv2\pmod4$ the neighbours of $k/2$ are even, while $k/2-2$ is odd with common divisors dividing $4$. If $f$ is
-even then $4\mid f$, and the largest $h_k$ occurs at $k=f$; if $f$ is odd it occurs at $k=2f$, since odd multiples
-have tangent argument at most $\pi/(2f)$, multiples divisible by four at most $\pi/(4f)$, and the remaining multiples
-at most $\pi/f$. Both cases give the maximum $r_f$, and \eqref{li:eq:heights} gives $h_k\to0$.
-\end{proof}
-
-\begin{corollary}[Universal central band; \stU]\label{li:cor:band}
-At any $t>0$, two admissible multisets with equal time slices and equal multiplicities at every ordinate
-$\abs\gamma\le\sqrt3/2$ coincide. The constant is sharp over all times: at $t=2\pi/\sqrt3$ the single atoms at
-$e^{\pm i\pi/3}$, the zeros $\frac12\pm i\sqrt3/2$, have the same time slice.
-\end{corollary}
-
-\begin{proof}
-Off the exceptional times use \cref{li:thm:times}. At an exceptional time $f\ge3$, and $r_f$ decreases in $f$, so
-$r_f\le r_3=\sqrt3/2$ and \cref{li:thm:probe} applies. At $t=2\pi/\sqrt3$, $\beta_t=i\sqrt3$, and the difference
-$\delta_{e^{i\pi/3}}-\delta_{e^{-i\pi/3}}$ has transform $2i\sin(n\pi/3)\in i\sqrt3\,\Z$, so \cref{li:lem:torsion} applies.
-\end{proof}
-
-\begin{corollary}[Ambiguity below the threshold; \stU]\label{li:cor:rank}
-At an exceptional time and for $r>0$, the invisible changes that vanish on all ordinates in $[-r,r]$ form a group
-of finite rank
-\[
- R_f(r)=\#\set{k\in f\Z_{>0}:h_k>r}=\frac\pi{2fr}+O(1)\qquad(r\downarrow0).
-\]
-\end{corollary}
-
-\begin{proof}
-Each missed shell allows one integral amplitude, and $A$ times each individual shell is in the kernel. Put
-$u=\arctan(2r)$. For even $f$, $k=fm$ is missed precisely when $m<\pi/(fu)$. For odd $f$ the tests are $m<\pi/(2fu)$
-for odd $m$, $m<\pi/(fu)$ for $4\mid m$, and $m<2\pi/(fu)$ for $m\equiv2\pmod4$, on residue classes of densities
-$\frac12,\frac14,\frac14$. Either parity gives $\pi/(fu)+O(1)$, and $u=2r+O(r^3)$.
-\end{proof}
-
-An admissible multiset has finitely many atoms in a bounded interval of ordinates, because $\abs{1-z}$ is bounded
-away from zero there. The data in the band can therefore be supplied as a finite list of signed ordinates with
-multiplicities, together with the information that the list is complete.
-
-\paragraph{Least number of altered atoms.}
-$\norm b_1$ counts the atoms left on the two sides of a collision after common multiplicities are cancelled; by
-\cref{li:lem:torsion} each side carries $\norm b_1/2$ of them.
-
-\begin{lemma}[Norm of a character projection; \stU]\label{li:lem:norm}
-Let $f\mid Q$ and let $w\in\mu_Q$ have order $k$. The average $P(w)=\varphi(Q)^{-1}\sum_{a\in U_Q}\chi_d(a)w^a$ vanishes unless $f\mid k$.
-For $k=fh$ and $w=\zeta_k^v$, $v\in U_k$,
-\begin{equation}\label{li:eq:projection}
- P(w)=\frac{\chi_d(v)\mu(h)\chi_d(h)G}{\varphi(k)},\qquad\abs{P(w)}\le\frac{\sqrt f}{\varphi(f)},
-\end{equation}
-with equality in the bound precisely at order $k=f$, or at $k=2f$ when $f$ is odd.
-\end{lemma}
-
-\begin{proof}
-If $\chi_d$ is nontrivial on the kernel of $U_Q\to U_k$, the sum over that kernel vanishes. Otherwise $f\mid k$, equal
-fibres reduce the average to $U_k$, and changing variables by $v$ extracts $\chi_d(v)$. Insert
-$\mathbf 1_{(a,k)=1}=\sum_{e\mid(a,k)}\mu(e)$. Terms with $(e,f)>1$ vanish; for $e\mid k$ coprime to $f$ the inner sum is
-$\chi_d(e)\sum_{b\bmod k/e}\chi_d(b)\exp(2\pi ib/(k/e))$, so $e\mid h$, and summing over lifts modulo $f$ gives zero unless $k/e=f$,
-by a geometric series. The surviving term is $\mu(h)\chi_d(h)G$, read as zero when $(h,f)>1$. Since $\varphi(k)\ge\varphi(f)$
-the bound follows; equality requires $(h,f)=1$ and $\varphi(k)=\varphi(f)$, hence $\varphi(h)=1$, and precisely $h=1$ and, for odd
-$f$, $h=2$ qualify.
-\end{proof}
-
-\begin{theorem}[Exact distance; \stU]\label{li:thm:dist}
-At an exceptional time the least value of $\norm b_1$ over nonzero $b\in\liKk_t$ is $A\varphi(f)$. Both $A\Omega_1$ and $\Omega_A$
-attain it, and $\Omega_A$ has no repeated atoms on either side. For packets of at most $M$ atoms added to an
-arbitrary fixed background, the time slice is injective exactly when $M<A\varphi(f)/2$.
-\end{theorem}
-
-\begin{proof}
-Choose $n$ with $\widehat b(n)\ne0$. By \eqref{li:eq:DFT} and \cref{li:thm:times}, $\widehat b(n)/G$ is a nonzero multiple of $A$, so
-$\abs{\widehat b(n)}\ge A\sqrt f$. Since $\widehat b(an)=\chi_d(a)\widehat b(n)$, averaging over $a\in U_Q$ gives
-$\abs{\widehat b(n)}=\abs{\sum_zb_zP(z^n)}\le\norm b_1\sqrt f/\varphi(f)$ by \cref{li:lem:norm}. Each $\Omega_m$ has $m\varphi(f)$ coefficients of
-modulus one, so the examples attain equality. Differences of packets of at most $M$ atoms have norm at most
-$2M$; at the threshold take the positive and negative parts of a minimizer, since a common background multiplies
-both slices by the same nonzero sequence.
-\end{proof}
-
-Let $q$ be the least positive integer with $\supp b\subseteq\mu_q$, so that the support generates $\mu_q$, and write
-$q=fm$.
-
-\begin{theorem}[All collisions at the minimum distance; \stU]\label{li:thm:eq}
-Let $t$ be exceptional and $b\in\liKk_t$ with $\norm b_1=A\varphi(f)$. If $f$ is even or $m$ is odd, then $m\mid A$ and
-$b=\pm(A/m)\Omega_m$. If $f$ is odd and $m$ is even, put $s=\chi_d(2)$; then $b=c\,\Omega_m+e\,\Omega_{m/2}$ with
-$c=(Y-sX)/m\in\Z\setminus\set0$ and $e=2X/m\in\Z$ for some $X,Y\in\set{-A,0,A}$, not both zero, and every such choice
-gives a minimizer with least order $q$. All minimizers are supported on $\mu_{fA}$ for even $f$ and on $\mu_{2fA}$ for
-odd $f$.
-\end{theorem}
-
-\begin{proof}
-Equality in both bounds of the preceding proof forces $\abs{\widehat b(n)}=A\sqrt f$ for every $n$ with $\widehat b(n)\ne0$, and
-$\abs{P(z^n)}=\sqrt f/\varphi(f)$ at every $z\in\supp b$. Thus each $z^n$ has order $f$, or possibly $2f$ for odd $f$. The support
-generates $\mu_q$, so its $n$th powers generate a group of order $q/\gcd(q,n)$, which is $f$ or $2f$; on the frequency
-side only the shell of order $f$ and, when $f$ is odd and $2f\mid q$, the shell of order $2f$ occur. On each frequency
-shell $\widehat b/G$ transforms by $\chi_d$ under multiplication of the index by units modulo $q$, so it is determined by its
-value at one representative. The representative of order $f$ is $n=m$, where $\widehat\Omega_m/G$ equals $m$ and vanishes off that
-shell by \eqref{li:eq:DFT}. When this is the only shell, inversion gives $b=\pm(A/m)\Omega_m$ and integrality forces $m\mid A$.
-
-In the second case put $X=\widehat b(m/2)/G$ and $Y=\widehat b(m)/G$, the values at the representatives of orders $2f$ and
-$f$. By \eqref{li:eq:DFT}, $\widehat\Omega_m/G$ takes the values $0,m$ there and $\widehat\Omega_{m/2}/G$ the values $m/2,sm/2$, and both vanish
-off these shells. Solving at the two representatives and inverting gives the stated $c,e$, integral by the
-triangular basis of \cref{li:thm:times}, and $c\ne0$ by minimality of $q$. Conversely these conditions give the
-Fourier lattice, as $X,Y$ are multiples of $A$. At $\zeta_q^j$ the coefficient of $b$ is $(sc+e)\chi_d(\ell)$ for even $j=2\ell$
-and $c\chi_d(j)$ for odd $j$, and each parity has $(m/2)\varphi(f)$ positions coprime to $f$, so
-\[
- \norm b_1=\tfrac12m\varphi(f)(\abs c+\abs{sc+e})=\tfrac12\varphi(f)(\abs{Y-sX}+\abs{Y+sX})=\varphi(f)\max(\abs X,\abs Y).
-\]
-The coefficient at $\zeta_q$ is $c\ne0$, so the least order is $q$. Finally $mc=Y-sX$ is a nonzero element of
-$\set{\pm A,\pm2A}$, so $m\mid2A$.
-\end{proof}
-
-\begin{example}[An odd conductor]\label{li:ex:oddcond}
-At $t=2\pi/\sqrt3$ one has $f=3$, $A=1$ and $s=-1$. At $q=3$ the minimal pair consists of the single atoms at
-$\zeta_3^{\pm1}$. At $q=6$ take $X=Y=1$, so $c=e=1$: the measure $\Omega_2+\Omega_1$ cancels on the primitive third roots and
-has coefficients $+1,-1$ at $\zeta_6,\bar\zeta_6$, which is the pair of \cref{li:cor:band}. Up to exchanging the sides and
-adding a common background, \cref{li:thm:eq} gives no further minimal pairs at this time.
-\end{example}
-
-\paragraph{Positivity and the number of possible spectra.}
-
-\begin{theorem}[Every time slice has a finite fibre; \stU]\label{li:thm:fiber}
-At an exceptional time, for each multiple $k$ of $f$ let $S_k$ be the total multiplicity of $E$ at the ordinates
-$+h_k$ and $-h_k$. These integers are determined by the moduli $\abs{H_{E,t}(n)}$, only finitely many are nonzero,
-and
-\[
- \#\set{F\text{ admissible}:H_{F,t}=H_{E,t}}\le\prod_{f\mid k}(1+S_k)<\infty .
-\]
-When $A=1$ equality holds for every prescribed finite list of positive $S_k$, all other $S_k$ being zero. In
-particular a multiset with no atom of ordinate $\abs\gamma\le r_f$ is determined by its time slice among all
-admissible multisets, and the radius $r_f$ is sharp for this guarantee.
-\end{theorem}
-
-\begin{proof}
-The moduli give $\Re\lambda_E(n)=-t^{-1}\log\abs{H_{E,t}(n)}$, whose central second differences are the Fourier coefficients
-of the finite measure $\frac12\sum_z\abs{1-z}^2(m_E(z)+m_E(\bar z))\delta_z$; Fourier uniqueness recovers every total on a
-conjugate pair. The pairs at $\pm h_k$ are distinct for different $k$, since they lie on distinct primitive shells, and
-they lie in $[-r_f,r_f]$, where an admissible multiset has finitely many atoms. The multiplicity at $+h_k$ has at most
-$1+S_k$ possible values, and once these are chosen \cref{li:thm:probe} determines the whole multiset; when all $S_k=0$
-this is uniqueness without supplementary data. For equality when $A=1$, on each prescribed shell put
-multiplicity $S_k$ at every point with $\chi_d(j)=+1$ and zero where $\chi_d(j)=-1$; the two members of a conjugate pair have
-opposite character signs. The array $\chi_d(j)$ confined to one shell is invisible by \cref{li:thm:times}, and
-independently transferring $0,1,\dots,S_k$ units from the positive half to the negative half gives the stated number of
-distinct multisets with one slice. For any $A$, the single-shell construction in the proof of \cref{li:thm:probe} at a
-shell with $h_k=r_f$ gives two multisets with one slice, both avoiding every smaller closed band.
-\end{proof}
-
-\begin{remark}[Every fibre size occurs]\label{li:rem:fibersizes}
-At every exceptional time every positive integer is the size of some fibre. Take $m=A^2$ and $k=fm$. The array $V_k$
-equal to $\chi_d(j)$ on the primitive $k$th roots and zero elsewhere satisfies, by inclusion--exclusion on the exponents
-divisible by primes of $m$ outside $f$,
-\[
- V_k=\sum_{e\mid m,\ (e,f)=1}\mu(e)\chi_d(e)\,\Omega_{m/e}.
-\]
-For each squarefree $e\mid A^2$ one has $A\mid m/e$, so every term lies in $\liKk_t$, and the single-shell construction of
-the preceding proof gives exactly $S_k+1$ multisets for any $S_k\ge0$.
-\end{remark}
-
-\paragraph{Arithmetic multisets.}
-For a finite product $P$ of primitive Dirichlet $L$-functions, the empty product and $\zeta$ included, let
-$E_P$ be the union of the Cayley multisets $\set{1-1/\rho}$ of its factors. By \cref{src:thm:dgrh}, $E_P$ lies in
-$\mathbb T\setminus\set1$ (with $-1$ for a central zero), the cutoff $\abs{1-z}\ge\eps$ means $\abs\rho\le1/\eps$, $\sum\abs\rho^{-2}<\infty$, and
-starred convergence of the Li zero sums \cite{Lagarias2007Li} makes $E_P$ admissible with $\lambda_{E_P}$ the complex Li
-coefficients of \cref{rec:sec:liheat}. Write $H_{P,t}=H_{E_P,t}$.
-
-\begin{corollary}[Products of $\zeta$ and $\beta$ against arbitrary multisets; \stG]\label{li:cor:zetabetaslice}
-Let $\beta(s)=L(s,\chi_{-4})$. For every $t>0$ and every finite product $P=\zeta^{a_1}\beta^{a_2}$, $E_P$ is the only admissible
-multiset with time slice $H_{P,t}$, even when the competitor is not assumed to come from an $L$-function.
-\end{corollary}
-
-\begin{proof}
-Both zero sets are symmetric, with no central zero, and their least positive ordinates lie in $(14.13,14.14)$
-and $(6.02,6.03)$ (see \cref{rec:thm:li255}); so $E_P$ has no atom of ordinate $\abs\gamma\le6$, and $6>\sqrt3/2\ge r_f$. Off the exceptional times use \cref{li:thm:times}, and at
-the exceptional ones \cref{li:thm:fiber}.
-\end{proof}
-
-\begin{corollary}[Every time determines a primitive product; \stG]\label{li:thm:products}
-Let $t>0$ and let $P,Q$ be finite products of primitive Dirichlet $L$-functions. If $H_{P,t}(n)/H_{Q,t}(n)$
-tends to a finite nonzero limit as $n\to+\infty$, then $P$ and $Q$ have the same primitive factors with
-multiplicity, and the limit is $1$. More precisely, with $C_{P,t}(n)=H_{P,t}(n+1)H_{P,t}(n-1)/H_{P,t}(n)^2$, if the factor
-multisets differ there are $\eta>0$ and $L_0\ge1$ such that every block of $L_0$ consecutive positive integers
-contains $n$ with $\abs{C_{P,t}(n)/C_{Q,t}(n)-1}>\eta$.
-\end{corollary}
-
-\begin{proof}
-Let $\mathcal C$ be the set of characters occurring in $P$ or $Q$, with multiplicities $a_\chi$ and $a'_\chi$, and $b=t(a-a')$.
-Then $H_{P,t}/H_{Q,t}=\exp(-A_b)$ in the notation of \cref{rec:thm:liblock} with $h=1$ and $r=0$. If the ratio tends to
-$\ell\ne0$, the constant calibration $\log\ell$ makes the left side of \eqref{rec:eq:calibration} tend to zero along
-intervals of fixed length moving to infinity, so $b=0$ by \cref{rec:thm:liblock} with $d=0$ and $M=\norm b_2$; then the
-ratio is identically $1$. If the factors differ, $b\ne0$, and $C_{P,t}(n)/C_{Q,t}(n)=\exp(-\Delta^2A_b(n-1))$ with the
-forward difference of \cref{rec:thm:liblock}(ii), which gives the block statement.
-\end{proof}
-
-Thus no two distinct primitive products collide at any time, although every exceptional time has
-collisions among admissible multisets (\cref{li:thm:times}). The multiset of $\bar P$ is the conjugate of $E_P$, hence
-$\abs{H_{P,t}}^2=H_{P\bar P,t}$. So a finite nonzero limit of $\abs{H_{P,t}(n)}/\abs{H_{Q,t}(n)}$ determines exactly the total
-multiplicity of the factors in each conjugacy orbit $\set{\chi,\bar\chi}$, and the symmetric law is blind precisely to
-conjugating individual factors. For one character this is \cref{rec:thm:liheat}, which also allows different
-times, a rotation and agreement only in natural density; finite blocks on an arithmetic progression of indices
-suffice by \cref{rec:thm:liblock}.
 
 \subsection{Open questions}\label{li:sec:open}
 \sources{li_sampling_and_curvature; grh_method_transfers_research; li_ritz_zero_recovery; grh_ritz_relative_asymptotics; li_zero_separation; dirichlet-li-kernels; grh_path_rigidity_2026-11-27; dirichlet_li_recovery}

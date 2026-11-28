@@ -1,3 +1,12 @@
+\providecommand{\zerJ}{\mathcal{J}}
+\providecommand{\zerK}{\mathcal{K}}
+\providecommand{\zersinc}{\operatorname{sinc}}
+\providecommand{\zergE}{\gamma_{\mathrm{E}}}
+\providecommand{\zerLL}{\mathcal{L}}
+\providecommand{\zerconv}{\operatorname{conv}}
+\providecommand{\zerdiag}{\operatorname{diag}}
+\providecommand{\zerSym}{\mathfrak{D}}
+\providecommand{\zerLog}{\operatorname{Log}}
 \section{Degree-two targets: Artin, Hecke and modular \texorpdfstring{$L$}{L}-functions}\label{sec:hec}
 
 \providecommand{\hecsgn}{\operatorname{sgn}}
@@ -606,100 +615,111 @@ $\Gal(H/\Q)$. These are limitations of particular transfer routes, not statement
 from \cref{src:thm:dgrh}.
 \end{remark}
 
-\subsection{Two further cubic tests}\label{hec:ss:othercubic}
-{\emergencystretch=\textwidth\sources{grh-lean-transfers; mcnew_counterexample_and_grh_transfers}}
-
-\paragraph{All class weights for the pure cubic field.}
-Let $E=\Q(\sqrt[3]2)$ and $M=E(\zeta_3)$. The polynomial $X^3-2$ is Eisenstein at $2$ and has discriminant
-$-108$; its splitting field $M$ has group $S_3$ and quadratic subfield $\Q(\sqrt{-3})$. For $p>3$ let $g_p$
-be the Frobenius class and $r_p$ the number of roots of $X^3-2$ modulo $p$, and let $\tau$ be the character
-of the standard representation, so that $\tau(g_p)=r_p-1$.
-\begin{center}
-\begin{tabular}{lrrrr}
-\toprule
-Factorization mod $p$ & Class size & $r_p$ & $\hecsgn(g_p)$ & $\tau(g_p)$\\
-\midrule
-Three linear factors & 1 & 3 & $1$ & $2$\\
-One linear and one quadratic factor & 3 & 1 & $-1$ & $0$\\
-One irreducible cubic & 2 & 0 & $1$ & $-1$\\
-\bottomrule
-\end{tabular}
-\end{center}
-For example $7$ and $31$ are both $7\pmod{24}$, but the cubes modulo $7$ are $0,\pm1$, whereas
-$4^3\equiv2\pmod{31}$; the traces are $-1$ and $2$. The permutation character on the roots is $1+\tau$, so
-the standard factor is $F=\zeta_E/\zeta$. By \cref{src:thm:dgrh} it is holomorphic in the right half of the
-critical strip, and $F(1)$ is finite and positive.
-
-\begin{theorem}[Three splitting types; \stR]\label{hec:thm:cuberoot}
-Assume \cref{src:thm:dgrh}. Let $w=(u,v,z)$ be real weights on the three rows of the table, in order, and put
+\paragraph{Controlling a degree-two zero sum.}
+For $K=\Q[\alpha]$, $\alpha^3-\alpha-1=0$, the standard Artin factor is the Hecke
+$L$-function of the weight-one form
 \[
- A=\frac{u+3v+2z}6,\qquad B=\frac{u-3v+2z}6,\qquad C=\frac{u-z}3,
+ f(z)=\eta(z)\eta(23z),\qquad\zeta_K(s)=\zeta(s)L(s,\rho),
 \]
-so that $w=A+B\,\hecsgn+C\tau$. Let
-\[
- S_w(x)=\sum_{3<p\le x}w(g_p)\log p\,\Bigl(\frac1p-\frac1x\Bigr),\qquad
- R_w(x)=S_w(x)-A\log x-c_w,
-\]
-where the constant $c_w$ is fixed by $R_w(x)\to0$.
-\begin{enumerate}[label=\textup{(\arabic*)}]
-\item If $C=0$, then $R_w(x)=O_w(x^{-1/2}\log^2(2x))$.
-\item If $C\ne0$, then RH for $\zeta_E$ is equivalent to the following one-sided estimate: for every
-$\eps>0$ there is $K_{w,\eps}>0$ such that, for all sufficiently large $x$,
-\[
- \hecsgn(C)\,R_w(x)\le K_{w,\eps}x^{-1/2+\eps}.
-\]
-Under RH for $\zeta_E$ the two-sided bound of \textup{(1)} holds for these weights as well.
-\end{enumerate}
-\end{theorem}
+with completed function $\zerLL(s)=(\sqrt{23}/(2\pi))^s\Gamma(s)L(s,\rho)$ and
+$\zerLL(s)=\zerLL(1-s)$ \cite{Serre2003Jordan,Zagier2008Elliptic}. The eta product is
+positive on the positive imaginary axis, and its Mellin integral makes $\zerLL(s)>0$ for
+all real $s$, including $s=1/2$. The zero sum $Z$ of \eqref{zer:eq:Z} needs quantitative
+control of the logarithmic derivative as well.
 
-Thus an upper bound for the primes at which $X^3-2$ splits completely suffices, and so does a lower bound
-for the primes at which it is irreducible. For $w=(2,0,-1)$ the logarithmic main term vanishes; this choice
-measures exactly the part missed by the two Dirichlet characters in the table.
-
+\begin{proposition}[\stU]\label{zer:prop:eta}
+Let $F(y)=\prod_j\eta(id_jy)^{r_j}$ with finitely many $d_j,r_j>0$. For the entire Mellin
+transform $M(s)=\int_0^\infty F(y)y^s\,\dd y/y$ let
+\[
+ c=\frac\pi{12}\inf_{y>0}\sum_jr_j\max\set{d_jy,(d_jy)^{-1}}.
+\]
+For every real $\sigma$, $(\log M)''(\sigma)\le1/c$. The transform has no zero at any $s$
+with $\abs{\Im s}\le(\pi/2)\sqrt c$.
+\end{proposition}
 \begin{proof}
-Let $\theta_w(t)=\sum_{3<p\le t}w(g_p)\log p$, so that $S_w(x)=\int_1^x\theta_w(t)t^{-2}\,\dd t$. The prime
-ideal theorem for the fixed fields $E$, $\Q(\sqrt{-3})$ and $\Q$ gives
-$\theta_w(t)=At+O_w(te^{-b\sqrt{\log t}})$ for some $b>0$: the degree-one primes of $E$ above $p>3$ are
-counted by $r_p$, the quadratic field gives $1+\hecsgn(g_p)$, and the terms of higher residue degree and
-higher powers add $O(\sqrt t\log^2(2t))$ in each field. Hence
-\[
- c_w=\int_1^\infty(\theta_w(t)-At)t^{-2}\,\dd t,\qquad
- R_w(x)=-\int_x^\infty(\theta_w(t)-At)t^{-2}\,\dd t .
-\]
-Under RH for the respective Dedekind zeta function the prime ideal theorem has error
-$O(\sqrt t\log^2(2t))$ \cite{GrenieMolteni2016Explicit}; for the quadratic field this hypothesis is supplied
-by $\zeta_{\Q(\sqrt{-3})}=\zeta L(s,\chi_{-3})$ and \cref{src:thm:dgrh}. The last integral proves (1) and the
-forward implication in (2).
+Set $v=\log y$. The product formula for $\eta(ie^v)$ starts with $\exp(-\pi e^v/12)$. For
+$z=ae^v$, the derivative of $\log(1-e^{-z})$ in $v$ is $z/(e^z-1)$, decreasing in $v$. Thus
+$-(\log\eta(ie^v))''\ge(\pi/12)e^v$. Termwise differentiation is justified locally by
+exponential convergence. Eta inversion gives $\eta(ie^{-v})=e^{v/2}\eta(ie^v)$, making this
+second logarithmic derivative even. Apply the two lower bounds to each factor separately.
+The potential $V(v)=-\log F(e^v)$ satisfies $V''\ge c$. The eta product and its inversion
+also give double exponential decay in $v$ at both ends, up to an exponential linear factor.
+The integral is entire and all differentiations below are justified.
 
-For the reverse implication it suffices, by linearity and (1), to treat $w=\tau$ and an upper bound. For
-$\Re s>1$ put $D(s)=\sum_{p>3}(r_p-1)(\log p)p^{-s}$. Comparing Euler factors gives
-$D(s)=-F'(s)/F(s)-H(s)$ with $H$ holomorphic in $\Re s>1/2$: the coefficient at the $j$th power of an
-unramified prime is $\tau(g_p^j)\log p$ with $\abs\tau\le2$, the sum over $j\ge2$ converges absolutely and
-locally uniformly there, and the two ramified primes have local inverse roots that are zero or roots of
-unity. The prime ideal theorem gives $c_\tau=D(1)$. For $\Re s>1$,
-\[
- \int_1^\infty R_\tau(x)x^{-s}\,\dd x=\frac{D(s)}{s(s-1)}-\frac{D(1)}{s-1},
-\]
-and the singularity at $1$ is removable. Each zero $\rho$ of $F$ in $\Re s>1/2$, of multiplicity $m_\rho$,
-gives a simple pole with residue $m_\rho/(\rho(1-\rho))$, which is positive at real zeros because these lie
-below $1$. Fix $1/2<\beta<1$ and take the assumed bound with $\eps=\beta-1/2$. \Cref{hec:lem:landau},
-applied to $g(x)=xR_\tau(x)$, shows that the transform is holomorphic in $\Re s>\beta$. Hence $F$, and with
-it $\zeta_E$ away from its pole, is zero-free in $\Re s>1/2$, and the functional equation of $\zeta_E$ gives
-the left half. In this argument the prime-power correction is holomorphic on the open half-plane, which is
-exactly the domain needed.
+Give $U$ density proportional to $\exp(\sigma v-V(v))$, and write $\mu=\mathbb E\,U$.
+Logarithmic differentiation gives $(\log M)''(\sigma)=\operatorname{Var}U$. Integration by
+parts gives $\mathbb E[(U-\mu)(V'(U)-\sigma)]=1$. Subtracting $V'(\mu)$ in place of $\sigma$
+leaves this expectation unchanged. Strong convexity then gives $1\ge c\operatorname{Var}U$.
+Finally, $\cos w\ge\pi/4-w^2/\pi$ on $\R$, strictly except at $w=\pm\pi/2$: on $[0,\pi/2]$
+this follows by differentiating and using $\sin w\ge2w/\pi$, and past $\pi/2$ one has
+$2w/\pi\ge1$. The centered characteristic function consequently has strictly positive real
+part whenever $t^2\operatorname{Var}U\le\pi^2/4$. It equals
+$e^{-it\mu}M(\sigma+it)/M(\sigma)$.
 \end{proof}
 
-For this field \cref{nab:thm:periodic}, applied to the nonlinear character $\tau$ of $\Gal(M/\Q)$, gives as
-in \cref{hec:prop:meansq}(i), for every complex function $a$ on $(\Z/q)^\times$,
+\begin{corollary}\label{zer:cor:cubicZ}
+For $f=\eta(z)\eta(23z)$ one has $c=\pi\sqrt{23}/6$, and the completed function
+$\zerLL(s)$ has no zero with $\abs{\Im s}\le(\pi/2)\sqrt c=2.48915\ldots$ \textup{(\stU)}.
+If all zeros of $L(s,\rho)$ in the critical strip have real part $1/2$, then
+$Z\le1/c=6/(\pi\sqrt{23})$ and
 \[
- \lim_{x\to\infty}\frac1{\pi(x)}\sum_{\substack{p\le x\\p\nmid6q}}\abs{\tau(g_p)-a(p\bmod q)}^2
- =1+\frac1{\varphi(q)}\sum_{b\in(\Z/q)^\times}\abs{a(b)}^2 .
+ \liminf_{x\to\infty}\sqrt x\,J_4(x)\ \ge\ 1-\frac9{\pi\sqrt{23}}>0.4026
 \]
-The field $M$ is the case $n=3$ of the fields $\Q(\zeta_n,2^{1/n})$, $n$ squarefree, in Hooley's
-conditional treatment of Artin's primitive-root conjecture for the base $2$, and
-$\zeta_M=\zeta\,L(s,\chi_{-3})F^2$. The theorem therefore identifies the first missing instance, with its
-sign and arithmetic weight; the full conjecture would require the whole family, with the uniformity used
-in the sieve \cite{FanPollack2025Counting}. The Kummer family is treated in \cref{sec:grp}.
+for the cubic weight $b(p)=\#\set{y\in\F_p:y^3-y-1=0}-1$.
+\end{corollary}
+\begin{proof}
+For $d_1=1$, $d_2=23$ the infimum is $2\sqrt{23}$, attained at $y=1/\sqrt{23}$, by
+comparison with $1/y+23y$. Multiplying $M(s)$ by $23^{s/2}$ gives $\zerLL(s)$ and leaves
+the second logarithmic derivative unchanged. The symmetry forces $(\log\zerLL)'(1/2)=0$.
+Integrating the variance bound up to $1$ gives $(\log\zerLL)'(1)\le1/(2c)$, and
+\eqref{zer:eq:Zformula} gives $Z\le1/c$ under the Riemann hypothesis for $L(s,\rho)$. Take
+$\tau=4$ in \eqref{zer:eq:liminf}.
+\end{proof}
+
+\begin{theorem}[The cubic race; \stR]\label{zer:thm:cubicrace}
+For the cubic weight $b(p)=\#\set{y\in\F_p:y^3-y-1=0}-1$, $p\ne23$, the following are
+equivalent:
+\begin{enumerate}[label=\textup{(\roman*)}]
+\item every zero of $L(s,\rho)$ in the critical strip has real part $1/2$;
+\item $J_4(x)\ge0$ for every sufficiently large real $x$;
+\item $\displaystyle\liminf_{x\to\infty}\sqrt x\,J_4(x)\ge1-\frac9{\pi\sqrt{23}}>0.4026$.
+\end{enumerate}
+The same equivalence holds with strict positivity in \textup{(ii)}. Without any hypothesis,
+the cubic $J_4$ takes positive values at arbitrarily large $x$.
+\end{theorem}
+\begin{proof}
+The implication (i)$\Rightarrow$(iii) is \cref{zer:cor:cubicZ}, and (iii)$\Rightarrow$(ii) is
+immediate, with strict positivity. For (ii)$\Rightarrow$(i), the Mellin transform of
+$J_\tau$ is $(1-\tau^{s-1})/(s(s-1))$ times $\sum_{p\ne23}b(p)(\log p)p^{-s}$ for
+$\Re s>1$; it has a pole at every zero of $L(s,\rho)$ with $1/2<\Re s<1$, it is regular on
+the real interval $(1/2,\infty)$ because $\zerLL$ is positive there, and the Landau step
+given in \cref{sec:hec} (an instance of \cref{ana:thm:onesided}) then shows that an
+eventually nonnegative $J_\tau$ forces (i). An eventually nonpositive $J_\tau$ forces (i)
+in the same way, by applying the argument to $-J_\tau$; for $\tau=4$ this would contradict
+(iii), which proves the last assertion.
+\end{proof}
+
+The Riemann hypothesis for $L(s,\rho)$ is not a consequence of \cref{src:thm:dgrh}, and
+establishing the sign in (ii) is the open step. The obstruction to replacing the cubic
+weight by congruence weights is treated in
+\cref{sec:hec}. \Cref{zer:prop:eta} gives one formula for all positive eta products; earlier
+computations reach much farther for this particular field \cite{Ng2000Limiting}. The
+quantity $2\zerLL'(1)/\zerLL(1)$ has also been enclosed numerically: with
+$G(t)=f(it/\sqrt{23})$ and $G(1/t)=tG(t)$,
+\[
+ \zerLL(s)=\int_1^\infty G(t)\bigl(t^{s-1}+t^{-s}\bigr)\,\dd t,
+\]
+so $2\zerLL'(1)/\zerLL(1)$ is twice the ratio of the integrals of $G(t)\log t\,(1-1/t)$
+and $G(t)(1+1/t)$, and \artifact{grh-transfer/checks/cubic23.py} encloses it in
+$(0.32770,0.35161)$, consistently with the bound $1/c=0.39823\ldots$. The enclosure
+evaluates the positive eta product on intervals of width $1/64$ up to $16$, using the first
+$12$ factors of each infinite product; for omitted factors $1-u_i$ their product lies
+between $1-\sum u_i$ and $1$, and for the integral tails one uses
+$0<G(t)\le e^{-2\pi t/\sqrt{23}}$ and $\log t\le t$. These integrals and enclosures hold
+independently of any hypothesis on zeros.
+
+\subsection{Two further cubic tests}\label{hec:ss:othercubic}
+{\emergencystretch=\textwidth\sources{grh-lean-transfers; mcnew_counterexample_and_grh_transfers}}
 
 \paragraph{A binary event isolating one twisted factor.}
 Let $H$ be the splitting field of $P(X)=X^3-X-1$ as before and $E=H(i)$, so that
@@ -2160,255 +2180,6 @@ $t_r(p)=C_r(t(p))$, so the weight $r+1-C_r(\tau(p)p^{-11/2})$ gives a nonnegativ
 $L(s,\Sym^r\Delta)$ alone. In contrast with \cref{hec:thm:symDelta}, the tested function enters with a
 negative coefficient, the test detects a single symmetric power, and the residue at $1$ is the full degree.
 Neither criterion bears on the order of vanishing at the centre.
-
-\subsection{Central zeros of Dirichlet \texorpdfstring{$L$}{L}-functions}\label{hec:ss:central}
-{\emergencystretch=\textwidth\sources{grh-lean-transfers; mcnew-density-and-dirichlet-grh}}
-
-\Cref{src:thm:dgrh} places the zeros of Dirichlet $L$-functions on the critical line but says nothing
-about the central point. This subsection gives one prime race in which central zeros can only help, and a
-finite test for central nonvanishing together with the exact limits of such tests. All results here use
-\cref{src:thm:dgrh}.
-
-\paragraph{A simultaneous weighted prime race.}
-Chebyshev's assertion that
-\[
- \sum_{p>2}(-1)^{(p-1)/2}e^{-p/x}\longrightarrow-\infty\qquad(x\to\infty)
-\]
-is equivalent to the location of the zeros of the character modulo four, by Hardy--Littlewood and Landau;
-see \cite[\S1.2]{Suzuki2025Variants}.
-With a different smoothing one can measure the lead of every nonsquare class at once.
-
-\begin{theorem}[Weighted race; \stG]\label{hec:thm:race}
-Fix a modulus $q$ and a quotient $G$ of $(\Z/q\Z)^\times$, and write $h=\abs G$,
-$G^2=\set{a^2:a\in G}$ and $G[2]=\set{a:a^2=1}$. For $g\in G$ put
-\[
- S_g(x)=\sum_{\substack{p\le x,\ p\nmid q\\{}[p]=g}}\frac{\log p}{\sqrt p}\log\frac xp ,
-\]
-and for a nonprincipal $\chi\in\widehat G$ let $m_\chi=\ord_{s=1/2}L(s,\chi)$. Then, simultaneously for all
-$g$,
-\[
- S_g(x)-S_1(x)=B_g(\log x)^2+O_q(\log x),\qquad
- B_g=\frac{\abs{G[2]}}{4h}\,\hecind_{g\notin G^2}+\frac1{2h}\sum_{\chi\ne1}(1-\Re\chi(g))\,m_\chi .
-\]
-In particular every nonsquare class eventually leads the identity class, by at least
-$(\abs{G[2]}/(4h)+o(1))(\log x)^2$; if every element of $G$ has order dividing two, all $g\ne1$ lead by at
-least $(1/4+o(1))(\log x)^2$.
-\end{theorem}
-
-For a multiquadratic extension of $\Q$ the identity class consists of the primes that split completely,
-and the other classes are the other patterns of quadratic splitting.
-
-\begin{proof}
-Let $u=\log x$. For a nonprincipal character, the explicit formula \cite[(62), (64)]{Suzuki2025Variants}
-gives
-\[
- A_\chi(x)=\sum_{n\le x}\frac{\Lambda(n)\chi(n)}{\sqrt n}\log\frac xn=-\frac{m_\chi}2u^2+O_q(u):
-\]
-the central zero gives the quadratic term, the other zeros $1/2+i\gamma$ contribute a bounded series
-because $\abs{x^{i\gamma}}=1$ by \cref{src:thm:dgrh} and $\sum_{\gamma\ne0}\gamma^{-2}<\infty$, and all
-other terms are $O_q(u)$. Passing from a primitive character to a character it induces costs $O_q(u)$, and
-the extra Euler factors do not vanish at $s=1/2$. The terms $n=p^k$ with $k\ge3$ contribute $O(u)$. The
-terms $n=p^2$ equal
-\[
- 2\int_1^{\sqrt x}\Bigl(\sum_{p\le t}\frac{\chi^2(p)\log p}p\Bigr)\frac{\dd t}t
- =\hecind_{\chi^2=1}\frac{u^2}4+O_q(u),
-\]
-since the inner sum is $\log t+O_q(1)$ for principal $\chi^2$ by Mertens' estimate, and $O_q(1)$ otherwise
-by the prime number theorem in progressions. The sum over primes alone therefore has quadratic coefficient
-$-m_\chi/2-\hecind_{\chi^2=1}/4$. By orthogonality, $S_g-S_1$ is the sum of these prime sums with
-coefficients $(\overline{\chi(g)}-1)/h$; the principal character cancels, and conjugate characters have
-equal central orders, so real parts may be taken. The characters with $\chi^2=1$ are the dual of $G/G^2$,
-and their sum at $g$ is $\abs{G/G^2}=\abs{G[2]}$ for $g\in G^2$ and zero otherwise. This gives $B_g$; each
-central-zero term is nonnegative.
-\end{proof}
-
-\begin{example}\label{hec:ex:mod8}
-For $q=8$ and $g\in\set{3,5,7}$, $S_g(x)-S_1(x)=\tfrac14(\log x)^2+O(\log x)$. Here all three central orders
-vanish: on the odd classes $1,3,5,7$ the three characters have sign patterns $+,-,+,-$, $+,+,-,-$ and
-$+,-,-,+$, each block of four consecutive odd summands of the series at $s=1/2$ has positive sum (for the
-last pattern by strict convexity of $t^{-1/2}$), and so every central value is positive. Values of the
-normalized difference are tabulated in \artifact{grh-lean-transfers/checks/weighted_race.csv}. The theorem
-concerns these weighted sums; an unweighted two-way race can change sign.
-{\emergencystretch=14em\par}
-\end{example}
-
-\paragraph{A finite test for central nonvanishing.}
-Let $\chi$ be a primitive nonprincipal Dirichlet character of conductor $q$, put
-$\kappa=(1-\chi(-1))/2$ and
-\[
- \Lambda_\chi(s)=(q/\pi)^{(s+\kappa)/2}\Gamma((s+\kappa)/2)L(s,\chi).
-\]
-Chowla's question, in the quadratic case, is whether $L(1/2,\chi)\ne0$ for every real $\chi$. Fix a real
-$t$, let $m_t=\ord_{s=1/2+it}L(s,\chi)$, and put
-\[
- H_j(t)=\sqrt j\,\Re\frac{\Lambda_\chi'}{\Lambda_\chi}\bigl(\tfrac12+\sqrt j+it\bigr),\qquad
- B_k(t)=\sum_{j=1}^k(-1)^{j-1}\binom kjH_j(t),\qquad
- K_k(u)=\prod_{j=1}^k\frac j{j+u}.
-\]
-Only values of $L$ in the half-plane of absolute convergence enter.
-
-\begin{theorem}[Finite criterion; \stG]\label{hec:thm:chowla}
-For every $k\ge1$, summing over the ordinates $\gamma$ of the nontrivial zeros with multiplicity,
-\[
- B_k(t)=\sum_\gamma K_k\bigl((\gamma-t)^2\bigr),
-\]
-and $B_k(t)$ decreases to $m_t$ as $k\to\infty$. Consequently, for each integer $r\ge0$, $m_t\le r$ if and
-only if $B_k(t)<r+1$ for some $k$. For a real character, $B_k(0)<2$ for some $k$ certifies
-$L(1/2,\chi)\ne0$, and $B_k(0)<2K_k(g^2)$ certifies that $L(s,\chi)$ has no nontrivial zero with
-$\abs\gamma\le g$. Moreover:
-\begin{enumerate}[label=\textup{(\roman*)}]
-\item If $h$ is the least positive distance $\abs{\gamma-t}$ and $d_h$ the number of zeros at that
-distance, then $B_k(t)-m_t\sim d_h\,\Gamma(1+h^2)\,k^{-h^2}$.
-\item At $t=0$ and fixed $k$, uniformly in $\chi$,
-\[
- B_k(0)=\tfrac12c_k\log q+O_k(1),\qquad
- c_k=\sum_{j=1}^k(-1)^{j-1}\binom kj\sqrt j=\frac1{2\sqrt\pi}\int_0^\infty(1-e^{-v})^k\frac{\dd v}{v^{3/2}}>0,
-\]
-and $c_k\sim(\pi\log k)^{-1/2}$. Thus every fixed $k$ eventually gives $B_k(0)>2$ as the conductor grows,
-whatever the order of vanishing.
-\end{enumerate}
-\end{theorem}
-
-\begin{proof}
-The Hadamard product gives the logarithmic derivative as a constant plus $\sum_\rho(1/(s-\rho)+1/\rho)$,
-and $\sum\Re(1/\rho)$ converges absolutely. On the critical line, away from zeros, the functional equation
-$\Lambda_\chi(s)=\epsilon_\chi\overline{\Lambda_\chi(1-\bar s)}$ makes $\Lambda_\chi'/\Lambda_\chi$ purely
-imaginary. Since every $\rho$ is $1/2+i\gamma$ by \cref{src:thm:dgrh}, this identifies the real constant
-and gives
-\[
- H_j(t)=\sum_\gamma\frac j{j+(\gamma-t)^2}.
-\]
-Partial fractions give $\sum_{j=1}^k(-1)^{j-1}\binom kjj/(j+u)=K_k(u)$. For $u>0$ the product tends to zero
-because $\sum1/j$ diverges, and dominated convergence applies since the sum for $H_1(t)$ is finite. For a
-real character the root number is $+1$, so $m_0$ is even, and nonreal zeros occur in pairs of opposite
-ordinates; a pair with $\abs\gamma\le g$, or a central zero, contributes at least $2K_k(g^2)$.
-
-(i) $K_k(u)=\Gamma(k+1)\Gamma(1+u)/\Gamma(k+1+u)$. For $u\ge h^2$ the quotient $K_k(u)/K_k(h^2)$ decreases
-in $k$, is bounded by $K_1(u)/K_1(h^2)$, which is summable over the zeros, and tends to zero for $u>h^2$.
-
-(ii) The gamma terms are bounded at each of the finitely many arguments, and the logarithmic derivatives
-of $L$ are bounded uniformly in $q$ by their absolutely convergent prime-power series. The integral follows
-from $\sqrt j=(2\sqrt\pi)^{-1}\int_0^\infty(1-e^{-jv})v^{-3/2}\,\dd v$. With $v=y\log k$ the factor
-$(1-k^{-y})^k$ tends to $\hecind_{y>1}$ almost everywhere; on $y\ge1/2$ the factor $y^{-3/2}$ is
-integrable, for $0<v<1/2$ one bounds $(1-e^{-v})^k$ by $v^k$, and for $1/2\le v\le(\log k)/2$ by
-$\exp(-\sqrt k)$. The surviving integral is $\int_1^\infty y^{-3/2}\,\dd y=2$.
-\end{proof}
-
-\begin{example}[A certified conductor]\label{hec:ex:chowla}
-Let $q=1\,000\,004\,329$, a prime, and $\chi(n)=\legendre nq$. Then $L(s,\chi)$ has no zero in
-$0<\Re s<1$, $\abs{\Im s}\le1/5$. Indeed outward-rounded evaluation gives
-\[
- 0.94936<B_{10}(0)<1.66669,\qquad1.78105<2K_{10}(1/25)<1.78106
-\]
-(\artifact{mcnew-density-and-dirichlet-grh/checks/chowla.py}). The evaluation uses
-$\Lambda_\chi'/\Lambda_\chi(s)=\tfrac12(\log(q/\pi)+\psi_0((s+\kappa)/2))-\sum_n\chi(n)\Lambda(n)n^{-s}$ at
-$s=1/2+\sqrt j$, with all prime powers up to $N=65\,536$, the tail bound $4(\log2)sN^{1-s}/(s-1)$ obtained
-from $\sum_{n\le x}\Lambda(n)\le4x\log2$, and
-$\log y-1/(2y)-1/(12y^2)\le\psi_0(y)\le\log y-1/(2y)$ after shifting the argument up by $128$. The character
-is even and its conductor lies just above the range $10^9$ of \cite{PlattTrudgian2026Even}; all primitive
-characters of modulus up to $2\,000\,000$ were treated in \cite{Platt2016Numerical}. For the family see
-\cite{Soundararajan2000Nonvanishing}.
-{\emergencystretch=14em\par}
-\end{example}
-
-\paragraph{The best positive bound from prescribed samples.}
-Fix distinct offsets $a_1,\dots,a_k>1/2$ and a target ordinate $t$, and let
-$H_i=a_i\Re(\Lambda_\chi'/\Lambda_\chi)(1/2+a_i+it)=\sum_\gamma a_i^2/(a_i^2+(\gamma-t)^2)$. Call
-\[
- F(u)=\sum_{i=1}^kc_i\frac{a_i^2}{a_i^2+u^2},\qquad c_i\in\R,
-\]
-\emph{admissible} if $F(0)=1$ and $F\ge0$ on $\R$. Each admissible $F$ gives the bound
-$m_t\le\sum_ic_iH_i$; the coefficients may have either sign.
-
-\begin{theorem}[Optimal certificates and their limits; \stG]\label{hec:thm:kernels}
-\begin{enumerate}[label=\textup{(\roman*)}]
-\item The matrix $G_{ij}=(a_jH_i+a_iH_j)/(a_i+a_j)$ is positive definite, and with
-$\mathbf e=(1,\dots,1)^{\mathsf T}$,
-\[
- \min_{F\ \mathrm{admissible}}\ \sum_\gamma F(\gamma-t)=\frac1{\mathbf e^{\mathsf T}G^{-1}\mathbf e}.
-\]
-In particular, at $t=0$ and for real $\chi$, if $G-2\mathbf e\mathbf e^{\mathsf T}$ is not positive
-semidefinite then $L(1/2,\chi)\ne0$.
-\item Let $t=0$, $S=\sum_ia_i^{-1}$, and keep the sites fixed. Uniformly over primitive nonprincipal
-characters of conductor $q$, the minimum in \textup{(i)} equals
-\[
- \frac{\log q}{2S}+O_{a_1,\dots,a_k}(1)\qquad(q\to\infty).
-\]
-The function attaining the least coefficient of $\log q$ is
-\[
- F_*(u)=\frac{\sin^2\bigl(\sum_j\arctan(u/a_j)\bigr)}{S^2u^2},\qquad F_*(0)=1 .
-\]
-\item Let $M_k(\chi)$ be the infimum of the central bound over all choices of $k$ distinct sites
-$a_j>1/2$ and all admissible $F$. For fixed $k$, uniformly over primitive nonprincipal characters,
-\[
- \frac{M_k(\chi)}{\log q}\longrightarrow\frac1{4k}\qquad(q\to\infty).
-\]
-\end{enumerate}
-\end{theorem}
-
-Thus no fixed number of samples certifies central nonvanishing uniformly in the conductor, even when the
-sample sites and the signed coefficients are chosen after inspecting the character. For the sites
-$a_j=\sqrt j$ the optimal coefficient of $\log q$ is $1/(2\sum_{j\le k}j^{-1/2})\sim1/(4\sqrt k)$, whereas
-the binomial test of \cref{hec:thm:chowla} has $c_k/2\sim1/(2\sqrt{\pi\log k})$. The limit in (iii) is for
-fixed $k$ and says nothing about $k=k(q)\to\infty$.
-
-\begin{proof}
-(i) Let $g_i(u)=a_i/(a_i-iu)$, so $g_i(0)=1$, and symmetrize the counting measure of the numbers
-$u=\gamma-t$ by placing mass $1/2$ at $u$ and at $-u$; this does not change the integral of an even
-function. Against this measure the Gram matrix of the $g_i$ is real, and the identity
-\[
- \Re\bigl(g_i(u)\overline{g_j(u)}\bigr)
- =\frac{a_j}{a_i+a_j}\frac{a_i^2}{a_i^2+u^2}+\frac{a_i}{a_i+a_j}\frac{a_j^2}{a_j^2+u^2}
-\]
-shows that it is $G$. It is positive definite because a nonzero combination of the $g_i$ has finitely
-many zeros and the measure has infinite support. Every admissible $F$ is $\abs{\sum_iv_ig_i}^2$: after
-multiplication by $\prod(u^2+a_i^2)$ its numerator is a real polynomial of degree at most $2k-2$,
-nonnegative on $\R$, hence of the form $\abs{P(u)}^2$ with $\deg P\le k-1$, and partial fractions of
-$P(u)/\prod(a_i-iu)$ give the representation; a phase makes $\sum v_i=1$. The Cauchy--Schwarz inequality
-for the inner product $G$ gives the lower bound $(\mathbf e^{\mathsf T}G^{-1}\mathbf e)^{-1}$, attained by
-$v=G^{-1}\mathbf e/(\mathbf e^{\mathsf T}G^{-1}\mathbf e)$. This vector is real, so the squared modulus is
-even, and it lies in the span of the functions $a_i^2/(a_i^2+u^2)$ since its denominator has the distinct
-factors $u^2+a_i^2$ and its numerator has smaller degree. Finally a real vector $v$ with
-$v^{\mathsf T}(G-2\mathbf e\mathbf e^{\mathsf T})v<0$ has $\mathbf e^{\mathsf T}v\ne0$, and after
-normalization gives a bound below $2$; the central order of a real character is even.
-
-(ii) By absolute convergence of the prime sums at the sample sites, $G=(\log q)C+O(1)$ entrywise with
-$C_{ij}=a_ia_j/(a_i+a_j)$, the Gram matrix of the functions $x\mapsto a_ie^{-a_ix}$ on $[0,\infty)$, which
-is positive definite. For $w=C^{-1}\mathbf e$ put $R(z)=\sum_jw_ja_j/(z+a_j)$. The equations $a_iR(a_i)=1$
-give
-\[
- 1-zR(z)=\prod_j\frac{a_j-z}{a_j+z},
-\]
-since both sides have the same denominator, numerators of degree at most $k$ with the same $k$ zeros, and
-value $1$ at $z=0$. Differentiating at zero gives $\mathbf e^{\mathsf T}C^{-1}\mathbf e=2S$, and inversion
-of the matrix of fixed size gives the asymptotic. The extremal function is $\abs{R(-iu)/(2S)}^2$, which is
-$F_*$; for $k=1$ it is the single kernel and for $k=2$ the product of the two single kernels. The
-calculation is an instance of a rational reproducing kernel \cite{Dzhrbashyan1974Biorthogonal}.
-
-(iii) Any admissible $F$ at any sites has the form $P(u)/\prod_j(1+u^2/a_j^2)$ with $P$ even, nonnegative,
-$P(0)=1$ and $\deg P\le2k-2$. For fixed $b>1/2$,
-\[
- F(u)\ge(2b)^{-2k}f(u),\qquad f(u)=\frac{P(u)}{(1+u^2/b^2)^k},
-\]
-because each denominator factor is at most $1+4u^2\le4b^2(1+u^2/b^2)$. The extremum for fixed poles gives
-$\int_\R f\ge\pi b/k$ also for the repeated pole: replace the $k$ copies of $b$ by distinct sites tending
-to $b$, keep $P$ fixed, and use dominated convergence in the inequality $\int F\ge\pi/\sum_j(1/a_j)$,
-which follows from $\int a_j^2/(a_j^2+u^2)\,\dd u=\pi a_j$ and the minimal value of the quadratic form of
-$C$. On the fixed finite-dimensional space spanned by $(b^2+u^2)^{-j}$, $1\le j\le k$,
-\[
- \Bigl\lvert\sum_\gamma f(\gamma)-\frac{\log q}{2\pi}\int_\R f(u)\,\dd u\Bigr\rvert
- \le A_{b,k}\int_\R\abs{f(u)}\,\dd u .
-\]
-This follows by differentiating at $v=b^2$ the identity
-\[
- \sum_\gamma\frac1{v+\gamma^2}=\frac1{\sqrt v}\,\Re\frac{\Lambda_\chi'}{\Lambda_\chi}\bigl(\tfrac12+\sqrt v\bigr)
- =\frac{\log q}{2\sqrt v}+O_b(1),
-\]
-whose error has uniformly bounded derivatives up to order $k-1$ near $b^2$, and using
-$\int_\R(v+u^2)^{-1}\,\dd u=\pi/\sqrt v$ and the equivalence of norms on the space. Since $f\ge0$, this gives
-$\liminf M_k(\chi)/\log q\ge(2b)^{-2k}b/(2k)$, and $b\downarrow1/2$ gives $1/(4k)$. Conversely, fixed
-distinct sites close to $1/2$ from above have leading coefficient $1/(2S)$ close to $1/(4k)$ by (ii).
-\end{proof}
 
 \subsection{Open questions}\label{hec:ss:open}
 {\emergencystretch=\textwidth\sources{grh_transfers; grh-lean-transfers; grh_dihedral_47_71; grh_transfers_density_gaps_and_zero_tests; mcnew_density_and_grh_transfers; mcnew_counterexample_and_grh_transfers; grh-methods-polynomial-density; grh-torsion-and-zero-data; grh_transfers_singular_moduli_and_symmetric_powers; mcnew-density-and-dirichlet-grh; grh_transfers_lubin_tate_and_graph_towers}}

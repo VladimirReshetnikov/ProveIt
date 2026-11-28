@@ -1,3 +1,12 @@
+\providecommand{\grpIrr}{\operatorname{Irr}}
+\providecommand{\grpSt}{\mathrm{St}}
+\providecommand{\grpFix}{\operatorname{Fix}}
+\providecommand{\grpsgn}{\operatorname{sgn}}
+\providecommand{\grpstd}{\mathrm{std}}
+\providecommand{\grpone}{\mathbf{1}}
+\providecommand{\grpDiff}{\mathfrak{D}}
+\providecommand{\grprd}{\operatorname{rd}}
+\providecommand{\grppos}[1]{#1^{+}}
 \section{Nonabelian zero detection: general reductions}\label{sec:nab}
 \providecommand{\nabFix}{\operatorname{Fix}}
 \providecommand{\nabIrr}{\operatorname{Irr}}
@@ -105,6 +114,146 @@ axis, whereas the kernel $1/(s(s-1))$ of the ramp $1/n-1/x$ is negative on $(0,1
 (\cref{ana:lem:fd}). This is why a nonnegative weight is tested by an upper bound for a
 finite difference in \cref{nab:thm:deficit} and by a lower bound for the ramp in
 \cref{nab:thm:nonsplit}.
+
+\paragraph{Prime sums.}
+Let $S$ be a finite set of rational primes containing all primes ramified in
+$L$, and let $w$ be a real class function on $G$ with mean
+$\delta_w=\langle w,\triv\rangle$. Put
+\begin{align*}
+ \theta_w(x)&=\sum_{p\le x,\ p\notin S}w(\Frob_p)\log p, &
+ S_w(x)&=\sum_{p\le x,\ p\notin S}w(\Frob_p)\log p\Bigl(\frac1p-\frac1x\Bigr),\\
+ P_w(s)&=\sum_{p\notin S}\frac{w(\Frob_p)\log p}{p^{s}}\quad(\Re s>1). &&
+\end{align*}
+When $w$ is given by the factorization pattern of a polynomial modulo $p$, the
+primes dividing its discriminant are placed in $S$. In the notation of
+\cref{ana:sec:primeonly}, $S_w$ is the prime-only ramp $P_w$, $\theta_w$ is
+$\Theta_w$ and $\delta_w$ is $a_w$; the Dirichlet series $P_w(s)$ above is the
+prime-only part of the series $D_w$ there.
+
+The analytic engine is owned by \cref{sec:ana}. We recall, in the present
+notation, the part of it used in this section; nothing is added to the
+statements cited.
+
+\begin{proposition}[Analytic interface; \stU]\label[proposition]{grp:prop:interface}
+With the notation above, the following hold.
+\begin{enumerate}[label=\textup{(\alph*)}]
+\item \textup{(\eqref{ana:eq:Rw} and \cref{ana:lem:mellin}.)} The limit
+$c_w=\lim_{x\to\infty}\bigl(S_w(x)-\delta_w\log x\bigr)$ exists. The centred
+remainder
+\[
+ R_w(x)=S_w(x)-\delta_w\log x-c_w
+\]
+is continuous and bounded on $[1,\infty)$ and tends to $0$, and for $\Re s>1$
+\begin{equation}\label{grp:eq:mellin}
+ \int_1^\infty R_w(x)x^{-s}\,\dd x
+ =\frac{P_w(s)}{s(s-1)}-\frac{\delta_w}{(s-1)^2}-\frac{c_w}{s-1}.
+\end{equation}
+\item \textup{(\cref{ana:thm:primeonly,ana:thm:zerotest}.)} Suppose that for
+$\Re s>1$
+\begin{equation}\label{grp:eq:decomp}
+ P_w(s)=-\sum_{j=1}^{r}a_j\frac{Q_j'(s)}{Q_j(s)}+H(s),
+\end{equation}
+where the $a_j$ are positive, every $Q_j$ is a finite product of integer powers
+of $L$-functions of finite-order Hecke characters of number fields, Dedekind
+zeta functions included, with no pole in $1/2<\Re s<1$, and $H$ is holomorphic
+on $\Re s>1/2$ and bounded on $\Re s\ge1/2+\eta$ for every $\eta>0$. Then the
+poles of \eqref{grp:eq:mellin} in $1/2<\Re s<1$ are simple and lie at the zeros
+$\rho$ of the $Q_j$, with residue
+\begin{equation}\label{grp:eq:residue}
+ \frac{\sum_j a_j\ord_\rho Q_j}{\rho(1-\rho)} ,
+\end{equation}
+which is positive when $\rho$ is real. If $1/2<\beta<1$ and
+$R_w(x)\le Cx^{\beta-1}$ for all sufficiently large $x$, then no $Q_j$ has a
+zero in $\Re s>\beta$; in particular an eventual bound $R_w(x)\le Cx^{-1/2}$
+excludes the zeros of every $Q_j$ in $\Re s>1/2$.
+\item \textup{(\cref{ana:thm:primeonly}\textup{(iv)} and \cref{ana:rem:finite}.)}
+In the situation of \textup{(b)}, suppose that for every $0<\eps<1/2$ there is
+$K_\eps$ with
+\begin{equation}\label{grp:eq:dyadic}
+ S_w(n)-S_w(2n)+\delta_w\log2\le K_\eps n^{-1/2+\eps}
+\end{equation}
+for all sufficiently large integers $n$. Then
+$R_w(x)\le K'_\eps x^{-1/2+\eps}$ for all large real $x$, and no $Q_j$ has a
+zero in $\Re s>1/2$. The left side of \eqref{grp:eq:dyadic} equals
+\[
+ R_w(n)-R_w(2n)=-\frac{\theta_w(n)}{2n}
+ -\sum_{n<p\le2n,\ p\notin S}w(\Frob_p)\log p\Bigl(\frac1p-\frac1{2n}\Bigr)+\delta_w\log2,
+\]
+so no centring constant enters.
+\item \textup{(\cref{ana:thm:primeonly}\textup{(iii)} and its last assertion.)}
+In the situation of \textup{(b)}, if no $Q_j$ has a zero in $\Re s>1/2$, then
+$R_w(x)=O_\eps(x^{-1/2+\eps})$ for every $\eps>0$; if $\zeta_L$ satisfies the
+Riemann hypothesis, then $R_w(x)=O_{L,w}(x^{-1/2}\log^2(2x))$.
+\end{enumerate}
+\end{proposition}
+
+The prime-only series $P_w$ differs from $D_w$ by a series that converges
+normally on $\Re s\ge1/2+\eta$ for every $\eta>0$ (\cref{ana:lem:powers}), so
+\eqref{grp:eq:decomp} is the hypothesis of \cref{ana:thm:primeonly}, and the
+residue \eqref{grp:eq:residue} is \eqref{ana:eq:residue}, through
+\cref{ana:lem:mellin}\textup{(iv)}. The kernel identity behind
+\eqref{grp:eq:mellin} is \eqref{ana:eq:mellin} for the prime-only coefficients.
+
+\begin{remark}[Variants]\label[remark]{grp:rem:variants}
+Three variants of \cref{grp:prop:interface} are used below, all owned by
+\cref{sec:ana}.
+First, one may sum over all prime powers and all primes, with the coefficient
+$a_J(p^k)=\log p\,\tr\bigl(g_p^k\mid V_J^{I_p}\bigr)
+=\log p\,\abs{I_p}^{-1}\sum_{h\in I_p}J(g_p^kh)$ of
+$-L'(s,J)/L(s,J)$ for a representation $V_J$ with character $J$, inertia group
+$I_p$ and Frobenius lift $g_p$, and with the constant
+$c_J=b_J-\delta_J$ read from
+$-L'/L(s,J)=\delta_J/(s-1)+b_J+O(s-1)$ (\cref{ana:def:ramp}). By
+\cref{ana:lem:powers} and \eqref{ana:eq:RwR} the two remainders differ by
+$O(x^{-1/2})$, the constants being related by $c_{J,S}=c_J-\sum a_J(n)/n$, the
+sum over all omitted prime powers; the criterion at the scale
+$x^{-1/2+\eps}$ is unchanged.
+Second, for the full prime-power remainder $R$ the pointwise bound may be
+replaced by the mean bound $\int_X^{2X}\grppos{R(x)}\,\dd x=O_\eps(X^{\beta+\eps})$
+for the positive part (\cref{ana:thm:zerotest,ana:cor:forms}).
+Third, the difference $S_w(n)-S_w(n^2)+\delta_w\log n$ at the integer scales
+$n,n^2$ may replace the dyadic difference in \textup{(c)}
+(\cref{ana:thm:primeonly}\textup{(v)}).
+\end{remark}
+
+\begin{corollary}[Monomially certified detectors; \stU]\label[corollary]{grp:cor:detector}
+Let $J=a\,\triv+\sum_i\Ind_{H_i}^G\lambda_i$ with an integer $a\ge0$ and
+nontrivial linear characters $\lambda_i$ of subgroups $H_i\le G$, and assume
+that $J$ is real-valued. Then $L(s,J)$ is holomorphic on $\C\setminus\set1$,
+has a pole of order $a=\delta_J$ at $1$, and does not vanish on $\Re s\ge1$.
+\begin{enumerate}[label=\textup{(\roman*)}]
+\item If $1/2\le\beta<1$ and $R_J(x)\le Cx^{\beta-1}$ for all large $x$, then
+$L(s,J)\ne0$ for $\Re s>\beta$.
+\item Suppose in addition that there is a constant $k$ with
+$\ord_\rho\zeta_L\le k\,\ord_\rho L(s,J)$ for all $\rho$ with $1/2<\Re\rho<1$.
+Then the following are equivalent: the Riemann hypothesis for $\zeta_L$; for
+every $\eps>0$, $R_J(x)\le K_\eps x^{-1/2+\eps}$ for all large $x$; for every
+$\eps>0$, $R_J(x)=O_\eps(x^{-1/2+\eps})$; the dyadic condition
+\eqref{grp:eq:dyadic} for $w=J$. If they hold, every Artin $L$-function of
+$L/\Q$ is holomorphic and nonzero in $1/2<\Re s<1$.
+\end{enumerate}
+\end{corollary}
+
+\begin{proof}
+The first assertion is Hecke's theorem for the factors $L(s,\lambda_i,L/L^{H_i})$.
+For unramified $p$ the coefficient of $p^{-ks}\log p$ in $-L'/L(s,J)$ is
+$J(\Frob_p^k)$, of modulus at most $J(1)$; the terms with $k\ge2$ converge
+normally on $\Re s\ge1/2+\eta$ for every $\eta>0$ and the finitely many local
+series at $p\in S$ converge normally on $\Re s>0$ (\cref{ana:lem:powers}).
+Hence $P_J=-L'/L(s,J)-H_J$ with $H_J$ holomorphic on $\Re s>1/2$ and bounded
+on each half-plane $\Re s\ge1/2+\eta$, which is \eqref{grp:eq:decomp} with
+$Q_1=L(s,J)$, a finite product of Hecke $L$-functions. Now (i) is
+\cref{grp:prop:interface}(b). In (ii), zero-freeness of $L(s,J)$ on
+$\Re s>1/2$ gives that of $\zeta_L$; the functional equation and the classical
+nonvanishing on $\Re s=1$ give the Riemann hypothesis. The converse and the
+two-sided bound are \cref{grp:prop:interface}(d), the dyadic form is
+\cref{grp:prop:interface}(c), and the last assertion follows from
+\eqref{grp:eq:heil}.
+\end{proof}
+
+Replacing an inequality of \cref{grp:cor:detector} by its negative does not
+give the same conclusion, because the sign of the residue
+\eqref{grp:eq:residue} at a real pole is reversed.
 
 \subsection{Heilbronn characters and multiplicity domination}\label{nab:sec:heilbronn}
 \begingroup\raggedright
@@ -482,6 +631,46 @@ the centering constant. A worked instance of the cyclic-generator form in degree
 with six patterns, is in \cref{sec:grp}.
 \end{example}
 
+\subsubsection{A degree-eight target}
+
+\begin{example}[The splitting field of $T^8-T-1$; \stR]\label[example]{grp:ex:s8}
+Let $f(T)=T^8-T-1$ with splitting field $E$. Modulo $7$, $19$ and $61$ the
+factorization types are $(8)$, $(1,7)$ and $(1,2,5)$, with distinct factors;
+the certificates are in\\
+\artifact{grh_cyclic_generator_transfer_2026-11-25/certificate.json}.\\
+Irreducibility modulo $7$ gives transitivity. The $7$-cycle gives primitivity:
+in an invariant block system the block of its fixed point is stable under the
+$7$-cycle, so has size $1$ or $8$. The fifth power of the element of type
+$(1,2,5)$ is a transposition; the graph of its conjugates has components
+forming a block system, hence is connected, and the transpositions along the
+edges of a connected graph generate $S_8$. Therefore $\Gal(E/\Q)=S_8$.
+
+The cyclic-generator form of \cref{nab:thm:sylow} uses the character
+$W=\sum_C(\Reg_G-\Ind_C^G\triv)$, the sum over one cyclic subgroup $C$ of each
+of the prime-order types $2^2\,1^4$, $2^4$, $3\,1^5$, $5\,1^3$, $7\,1$. With
+$W_C(1)=\abs G(1-\abs C^{-1})$ and
+$W_C(u)=-\abs{C_G(u)}\,\abs{C\cap u^G}/\abs C$ for $u\ne1$, the weight
+$w=W/6$, as a function of the factorization pattern of $f$ modulo a prime
+$\ell$ not dividing its discriminant, is
+\begin{center}
+\begin{tabular}{lrrrrrrr}\toprule
+pattern & $1^8$ & $2^2\,1^4$ & $2^4$ & $3\,1^5$ & $5\,1^3$ & $7\,1$ & other\\\midrule
+$w(\ell)$ & $22336$ & $-16$ & $-32$ & $-40$ & $-4$ & $-1$ & $0$\\\bottomrule
+\end{tabular}
+\end{center}
+The class sizes are $1,210,105,112,1344,5760$, and the weighted sum vanishes.
+With $c_w$ as in \cref{grp:prop:interface}, the inequality
+\[
+ \sum_{\ell\le x}w(\ell)\log\ell\Bigl(\frac1\ell-\frac1x\Bigr)-c_w
+ \le C_\eps x^{-1/2+\eps}\qquad(\text{each }\eps>0)
+\]
+would, by \cref{nab:thm:sylow} and Dirichlet GRH for the quadratic subfield of
+$E$, give the Riemann hypothesis for $\zeta_E$ and the absence of zeros and
+poles of all its Artin factors off the critical line. It uses six patterns;
+the Sylow-filtered weight for $S_8$ also involves $4\,2\,1^2$, $4^2$ and
+$3^2\,1^2$.
+\end{example}
+
 \subsection{Reflection detectors}\label{nab:sec:reflection}
 \begingroup\raggedright
 \sources{grh_reflection_transfer_2026-11-25; grh_method_transfers_2026-11-26}
@@ -750,6 +939,130 @@ line has multiplicity at least $\ceil{m/4}$ in $\zeta_K$; Corollary~\ref{nab:cor
 $\ceil{30m/163}$. For $S_6$ the two constants are $5$ and $71/10$.
 \end{example}
 
+
+\subsubsection{A three-subgroup identity in \texorpdfstring{$S_5$}{S5}}
+Let $G=S_5$, $t=(12)$, let $\sigma$ be the nontrivial character of
+$\langle t\rangle$, and $\grpstd$ the standard character,
+$\grpstd(g)=\#\grpFix(g)-1$. Consider
+\[
+\begin{array}{c|c|c}
+H&\text{generators}&\text{character}\\ \hline
+C=C_6 &(12)(345)&\chi((12)(345))=e^{\pi i/3}\\
+V=C_2\times C_2 &(12),\ (34)&\eta((12))=\eta((34))=-1\\
+W=C_5\rtimes C_4 &a=(12345),\ b=(2354)&\xi(a)=1,\quad\xi(b)=i
+\end{array}
+\]
+where $W$ is the affine group of $\F_5$, with $bab^{-1}=a^2$.
+
+\begin{theorem}[Three-subgroup identity; \stU]\label{grp:thm:s5-identity}
+\begin{equation}\label{grp:eq:s5-identity}
+ \Ind_{\langle t\rangle}^{G}\sigma-\grpstd
+ =\Ind_{C}^{G}\chi+\Ind_{V}^{G}\eta+\Ind_{W}^{G}\xi ,
+\end{equation}
+the three summands having degrees $20,30,6$. Both sides take the values
+$(56,-8,-1,0,0,1,1)$ on the cycle types $1,\ 2,\ 3,\ 2^2,\ 4,\ 3\,2,\ 5$.
+Let $\varepsilon$ be the sign character, $\tau=\varepsilon\,\grpstd$ and
+$\alpha=(\varepsilon|_C)\chi$, of order three. Then
+\begin{equation}\label{grp:eq:s5-twisted}
+ \Ind_{\langle t\rangle}^{G}\triv-\tau
+ =\Ind_{C}^{G}\alpha+\Ind_{V}^{G}\triv+\Ind_{W}^{G}\overline\xi .
+\end{equation}
+\end{theorem}
+
+\begin{proof}
+The sizes $c_T$ of the seven types, in the stated order, are
+$1,10,20,15,30,20,24$. For a linear character $\theta$ of $H$ put
+$B_{H,\theta}(T)=\sum_{h\in H\cap T}\theta(h)$. Direct enumeration gives
+\[
+\begin{array}{c|rrrrrrr}
+ &1&2&3&2^2&4&3\,2&5\\ \hline
+B_{C,\chi}&1&-1&-1&0&0&1&0\\
+B_{V,\eta}&1&-2&0&1&0&0&0\\
+B_{W,\xi}&1&0&0&-5&0&0&4
+\end{array}
+\]
+For $C$ the two values on elements of order three sum to $-1$ and the two on
+elements of order six to $1$. In $W$ the four nonidentity translations are
+$5$-cycles of value $1$, the five elements with multiplier $-1$ are double
+transpositions of value $-1$, and the ten elements of order four have five
+values $i$ and five values $-i$. The induction formula at type $T$ is
+$(\Ind_H^G\theta)(T)=\frac{120}{\abs Hc_T}B_{H,\theta}(T)$. Pairing the left
+side of \eqref{grp:eq:s5-identity} against an arbitrary class function is the
+functional with coordinate row
+\[
+ \frac12\delta_1-\frac12\delta_2
+ -\Bigl(\frac{c_T(\#\grpFix(T)-1)}{120}\Bigr)_T
+ =\Bigl(\frac7{15},-\frac23,-\frac16,0,0,\frac16,\frac15\Bigr),
+\]
+which equals $\frac16B_{C,\chi}+\frac14B_{V,\eta}+\frac1{20}B_{W,\xi}$ entry
+by entry. The denominators are the subgroup orders, so this is
+\eqref{grp:eq:s5-identity}. For \eqref{grp:eq:s5-twisted} multiply by
+$\varepsilon$: on $V$ one has $\varepsilon\eta=\triv$, and on $W$, where $a$
+is even and $b$ is odd, $\varepsilon\xi=\overline\xi$. The exact verification
+is recorded in\\
+\artifact{grh_spanning_and_s5_2026-11-26/checks/sn5_verification.json}.
+\end{proof}
+
+\begin{corollary}[Two entire quotients; \stU]\label[corollary]{grp:cor:s5-quotients}
+Let $M/K$ be a Galois extension of number fields with group $S_5$, and put
+\[
+ E=M^{\langle t\rangle},\quad P=M^{S_4},\quad A=M^C,\quad F=M^V,\quad J=M^W,
+\]
+of degrees $60,5,20,30,6$ over $K$, with $S_4$ a point stabilizer. Then
+\begin{equation}\label{grp:eq:s5-four-zeta}
+ \mathcal Z(s)=\frac{\zeta_M(s)\zeta_K(s)}{\zeta_E(s)\zeta_P(s)}
+ =L_A(s,\chi)L_F(s,\eta)L_J(s,\xi)
+\end{equation}
+is entire and nonzero at $s=1$, so that at every $\rho\in\C$
+\begin{equation}\label{grp:eq:s5-order}
+ \ord_\rho\zeta_E+\ord_\rho\zeta_P\le\ord_\rho\zeta_M+\ord_\rho\zeta_K .
+\end{equation}
+Moreover
+\begin{equation}\label{grp:eq:s5-companion}
+ \mathcal H(s)=\frac{\zeta_E(s)}{L_K(s,\tau,M/K)}
+ =L_A(s,\alpha)\,\zeta_F(s)\,L_J(s,\overline\xi)
+\end{equation}
+is holomorphic on $\C\setminus\set1$ with a simple pole at $1$, and
+\begin{equation}\label{grp:eq:s5-tau}
+ \ord_\rho L_K(s,\tau,M/K)\le\ord_\rho\zeta_E\qquad(\rho\ne1).
+\end{equation}
+\end{corollary}
+
+\begin{proof}
+Induction of the regular representation of $C_2$ gives
+$\Ind_{C_2}^G\sigma=\Reg_G-\Ind_{C_2}^G\triv$, and
+$\grpstd=\Ind_{S_4}^G\triv-\triv$; so the left side of
+\eqref{grp:eq:s5-identity} has Artin $L$-function $\mathcal Z$. Artin
+induction and multiplicativity give \eqref{grp:eq:s5-four-zeta}, first for
+$\Re s>1$ and then by continuation, with all local factors included. The
+characters $\chi,\eta,\xi$ are nontrivial, of orders $6,2,4$, so the three
+Hecke factors are entire and nonzero at $1$. The second statement follows in
+the same way from \eqref{grp:eq:s5-twisted}; Brauer's theorem provides the
+meromorphy of $L_K(s,\tau,M/K)$, the two nontrivial Hecke factors are nonzero
+at $1$, and $\zeta_F$ has a simple pole there.
+\end{proof}
+
+Both statements are independent of the Riemann hypothesis and of Dirichlet
+GRH. They do not prove that $L_K(s,\tau,M/K)$ is entire, since
+\eqref{grp:eq:s5-tau} permits a negative left side, and they leave the zero
+locations of $\zeta_E$ and $\zeta_M$ open. Four-zeta quotients for solvable
+groups and normal subgroups occur in \cite{GunHazraSahu2025Holomorphy}; here
+the subgroups are not normal.
+
+\begin{remark}[The step in a general induction]\label[remark]{grp:rem:s5-induction}
+For $n\ge4$ put
+\[
+ U_n=(n-1)\Ind_{C_2}^{S_n}\sigma-\Reg_{S_n}+\triv,\qquad
+ V_n=\Ind_{C_2}^{S_n}\sigma-\grpstd_n .
+\]
+Induction in stages gives $U_n=\Ind_{S_{n-1}}^{S_n}U_{n-1}+V_n$. The
+reflection detector of \cref{sec:nab} rests on a positive rational
+decomposition of $U_n$ into characters induced from linear characters, which
+is certified there for $3\le n\le12$; a positive monomial decomposition of
+every $V_n$ would extend it to all degrees. Equation
+\eqref{grp:eq:s5-identity} is such a decomposition of $V_5$, with integral
+coefficients.
+\end{remark}
 
 \subsection{Compression along normal towers and mixed factors of composita}\label{nab:sec:tower}
 \begingroup\raggedright
@@ -1287,54 +1600,6 @@ with complex conjugates included as needed, are disjoint because their normalize
 traces differ at $h$; hence $P_+/P_-=\kappa(G)$. Scale $f$ to have maximum one.
 \end{proof}
 
-For $A_5$ the character table gives the ratios $3/5$, $5/8$ and $(10-2\sqrt5)/15$ at
-elements of orders $2$, $3$ and $5$: at one class of $5$-cycles the extreme normalized
-traces are $(1+\sqrt5)/6$ for a representation of degree three and $-1/4$ for the
-representation of degree four. So omitting even one nonidentity class costs at least
-$(10-2\sqrt5)/15$ in the ratio $P_+/P_-$.
-
-If $f$ on $A_5$ is required to depend only on the order of the Frobenius element, that is
-on the cycle type in the natural action of degree five, write $a,b,c\ge0$ for its values at
-orders $2,3,5$. With class sizes $(1,15,20,12,12)$, and the two characters of degree three
-combined, the signed contributions $60\chi(1)a_\chi$ to the masses are
-\[
- v_3=-90a+72c,\qquad v_4=80b-96c,\qquad v_5=75a-100b ,
-\]
-and $60P_\pm$ is the sum of the positive, respectively negative, parts of these numbers.
-Since $\sum_iv_i=-15a-20b-24c$, every nonzero admissible weight has $P_->0$.
-
-\begin{proposition}[The rational frontier for $A_5$; \stU]\label{nab:prop:a5frontier}
-The minimum of $P_+/P_-$ over nonzero weights $(a,b,c)$ supported on at most $B$ group
-elements is:
-\begin{center}
-\begin{tabular}{c|c|c}
-$B$ & $\min P_+/P_-$ & $(a,b,c)$ attaining it\\\hline
-$0$--$14$ & no nonzero weight & --\\
-$15$--$19$ & $5/6$ & $(1,0,0)$\\
-$20$--$23$ & $4/5$ & $(0,1,0)$\\
-$24$--$34$ & $3/4$ & $(0,0,1)$\\
-$35$--$38$ & $2/3$ & $(1,3/4,0)$\\
-$39$--$43$ & $5/8$ & $(4/5,0,1)$\\
-$44$--$58$ & $3/5$ & $(0,1,5/6)$\\
-$59$--$60$ & $0$ & $(1,1,1)$
-\end{tabular}
-\end{center}
-\end{proposition}
-\begin{proof}
-Supporting one order fixes the ratio. Below budget $59$ at most two orders are supported;
-normalize their values to sum to one. On each interval where the signs of the $v_i$ are
-fixed the ratio of linear forms is monotone or constant, so its minimum lies at an axis or
-at a zero of some $v_i$. The three interior candidate rays are $(4,3,0)$, $(4,0,5)$ and
-$(0,6,5)$, which give the table by substitution; at budget $59$ the full indicator has
-$P_+=0$. The frontier is recomputed in exact arithmetic by
-\artifact{grh_sharp_torsion_and_symplectic_blocks/checks/check_support.py}.
-\end{proof}
-
-In particular, monitoring fewer than all three nonidentity splitting types of an $A_5$
-quintic forces a positive contribution of at least three fifths of the negative mass. This
-is a statement about the spectrum of the observable; converting mixed signs into a
-conclusion on zeros would need additional information about their multiplicities.
-
 \paragraph{Binary tests.}
 At an unramified prime one often records a yes/no event, such as whether a polynomial
 stays irreducible. Let $N\ne1$ be normal in $G$, $\pi:G\to Q=G/N$, $q=[G:N]$, $n=\abs N$.
@@ -1757,190 +2022,6 @@ closure, or of a nonnormal field generating it, needs more than a finite product
 quotient of Dirichlet $L$-functions. The obstruction concerns that strategy only; zeros of
 distinct functions can still be related by other means, as in
 \cref{nab:sec:heilbronn}.
-
-\subsection{Sampling a positive ramp on sparse scales}\label{nab:sec:sampling}
-\begingroup\raggedright
-\sources{grh_method_transfers_2026-11-25}
-\endgroup
-
-The one-sided tests with nonnegative weights need only be verified on a sparse set of
-scales. The argument uses positivity alone, and within that class it is sharp. Sampling on
-fourth powers at the square-root scale is due to Setiawan
-\cite{Setiawan2026Primacohedron}; what follows is a version for arbitrary positive ramp
-measures with the exact interpolation loss, a sharpness example, and a centering-free
-specialization to Dedekind zeta functions.
-
-Let $\mu$ be a positive locally finite Borel measure on $[1,\infty)$, $A\ge0$ and $c\in\R$.
-Put
-\[
- S(x)=\int_{[1,x]}\Bigl(\frac1u-\frac1x\Bigr)\dd\mu(u),\qquad R(x)=S(x)-A\log x-c\quad(x\ge1).
-\]
-For prime weights $\mu=\sum_pw(p)\log p\,\delta_p$ with $w(p)\ge0$.
-
-\begin{lemma}[Exact interpolation loss; \stU]\label{nab:lem:jensen}
-Let $1\le x_0<x_1$, $x\in[x_0,x_1]$, $t_i=x_i^{-1}$, $t=x^{-1}$ and
-$\lambda=(t-t_1)/(t_0-t_1)\in[0,1]$. Then
-\begin{align}
- R(x)&\le\lambda R(x_0)+(1-\lambda)R(x_1)+A\,J_\lambda(t_0,t_1),\label{nab:eq:interp}\\
- J_\lambda(t_0,t_1)&=\log\bigl(\lambda t_0+(1-\lambda)t_1\bigr)-\lambda\log t_0-(1-\lambda)\log t_1
- \le\tfrac18\log^2(x_1/x_0).\label{nab:eq:loggap}
-\end{align}
-The maximum of $J_\lambda$ over $\lambda\in[0,1]$ is
-\[
- J(r)=\log\frac{r-1}{\log r}-1+\frac{\log r}{r-1},\qquad r=x_1/x_0>1,
-\]
-and $J(r)\sim\tfrac18\log^2r$ as $r\downarrow1$.
-\end{lemma}
-\begin{proof}
-The function $H(t)=S(1/t)=\int_{[1,\infty)}(u^{-1}-t)_+\,\dd\mu(u)$, $t>0$, is convex, since
-each integrand is a maximum of two affine functions and $\mu$ is positive; only $u\le1/t$
-contributes, so the integral is finite. Apply convexity and substitute
-$H(t)=R(1/t)-A\log t+c$ to get \eqref{nab:eq:interp}. For the bound put
-$y=\log(t_0/t_1)$ and $f_\lambda(y)=\log(1-\lambda+\lambda e^y)-\lambda y$. Then
-$f_\lambda(0)=f_\lambda'(0)=0$ and $f_\lambda''(y)=p(1-p)\le\tfrac14$ with
-$p=\lambda e^y/(1-\lambda+\lambda e^y)$, so $f_\lambda(y)\le y^2/8$. For the exact maximum
-write $u=t/t_1\in[1,r]$; the gap is $\log u-(u-1)\log r/(r-1)$, maximal at
-$u=(r-1)/\log r$.
-\end{proof}
-
-\begin{theorem}[Nonuniform sampling; \stU]\label{nab:thm:sampling}
-Let $\theta>0$ and $1\le x_1<x_2<\dots\to\infty$ with
-$\log(x_{j+1}/x_j)=O(x_j^{-\theta/2})$. Then $R(x)\le Cx^{-\theta}$ for some $C\ge0$ and all
-sufficiently large $x$ if and only if $R(x_j)\le C_0x_j^{-\theta}$ for some $C_0\ge0$ and
-all sufficiently large $j$. More precisely, if the sampled inequality holds and
-$\log^2(x_{j+1}/x_j)\le Kx_j^{-\theta}$, then for $x\in[x_j,x_{j+1}]$
-\[
- R(x)\le\bigl(C_0+AK/8\bigr)x_j^{-\theta}\le\bigl(C_0+AK/8\bigr)(x_{j+1}/x_j)^\theta x^{-\theta}.
-\]
-When $A>0$ the required gaps are of size $x_{j+1}-x_j=O(x_j^{1-\theta/2})$.
-\end{theorem}
-\begin{proof}
-Both endpoint values in \eqref{nab:eq:interp} are at most $C_0x_j^{-\theta}$; use
-\eqref{nab:eq:loggap}. The ratio $x_{j+1}/x_j$ tends to one and is bounded.
-\end{proof}
-
-For weights on the integers, \cref{ana:thm:meshclass} shows that the gap condition of
-\cref{nab:thm:sampling} is also necessary, and the cubic sampling criterion
-\cref{ana:thm:cubic}, which the proof of \cref{ana:thm:sparse} uses, replaces the pointwise
-gap condition by a summed cubic budget; \cref{ana:thm:mpt} answers the corresponding question
-for bounds in mean instead of bounds at sampled points.
-
-\begin{corollary}[Fourth powers; \stU]\label{nab:cor:quartic}
-If $R(n^4)\le Cn^{-2}$ for $n\ge n_0$, with $C\ge0$, then $R(x)\le(C+8A)x^{-1/2}$ for
-$x\ge n_0^4$. Hence an eventual bound $R(x)\le C'x^{-1/2}$ is equivalent to an eventual
-bound $R(n^4)\le Cn^{-2}$. On the grid $x_j=j^r$ \cref{nab:thm:sampling} applies whenever
-$r\theta\le2$. Moreover, if $L=\limsup_{n\to\infty}n^2R(n^4)$ is finite, then
-\[
- L\le\limsup_{x\to\infty}\sqrt x\,R(x)\le L+2A .
-\]
-\end{corollary}
-\begin{proof}
-Here $\log(x_{n+1}/x_n)=4\log(1+1/n)\le4/n$, so the interpolation loss is at most $2A/n^2$.
-Because $C\ge0$ and the square root is concave, the endpoint contribution is
-$C(\lambda\sqrt{t_0}+(1-\lambda)\sqrt{t_1})\le C\sqrt t$, and $n^{-2}\le4x^{-1/2}$ for
-$x\in[n^4,(n+1)^4]$. For the last statement, on $[n^4,(n+1)^4]$ the normalized endpoint
-weights $\sqrt x/n^2$ and $\sqrt x/(n+1)^2$ tend uniformly to one, so multiplying
-\eqref{nab:eq:interp} by $\sqrt x$ bounds the endpoint term by $L+o(1)$ and the Jensen
-loss by $2A(n+1)^2\log^2(1+1/n)=2A+o(1)$.
-\end{proof}
-
-\begin{proposition}[Sharpness of the positivity argument; \stU]\label{nab:prop:samplingsharp}
-Fix $A>0$, $r>0$ and the nodes $x_j=j^r$. There is a positive measure $\mu$ supported on
-the nodes for which, with $c=0$, $R(x_j)=0$ for every $j$ and $R(x)\to0$, but at suitable
-$x_j^*\in(x_j,x_{j+1})$
-\[
- R(x_j^*)=A\,J\bigl((1+1/j)^r\bigr)\sim\frac{Ar^2}{8j^2}.
-\]
-Consequently $x^\theta R(x)$ is unbounded above if $r\theta>2$, and in the critical case
-$r=4$, $\theta=1/2$ the loss $2A$ of Corollary~\ref{nab:cor:quartic} cannot be improved by
-positivity alone.
-\end{proposition}
-\begin{proof}
-Let $t_j=j^{-r}$ and let $H$ be the piecewise affine interpolant of $-A\log t$ at the nodes
-$t_j$, with $H(t)=0$ for $t\ge1$. It is convex; on $[t_{j+1},t_j]$ its slope is $-D_j$ with
-$D_j=A\log(x_{j+1}/x_j)/(x_j^{-1}-x_{j+1}^{-1})$, and the $D_j$ increase strictly. With
-$D_0=0$ put $\mu=\sum_{j\ge1}(D_j-D_{j-1})\delta_{x_j}$, a positive locally finite measure.
-The function $\sum_j(D_j-D_{j-1})(x_j^{-1}-t)_+$ has the same slopes as $H$ and the same
-value at $t=1$, so it equals $H$. Hence $S(x_j)=A\log x_j$ and $R(x_j)=0$, and between
-nodes $R$ is exactly the Jensen gap of Lemma~\ref{nab:lem:jensen}, with maximum at
-$x_j^*=\log(x_{j+1}/x_j)/(x_j^{-1}-x_{j+1}^{-1})\sim j^r$. The maximum on the $j$th interval
-is $O(j^{-2})$, so $R(x)\to0$; multiplying by $(x_j^*)^\theta$ gives the divergence.
-\end{proof}
-
-The masses of this measure satisfy $\mu(\set{j^r})\sim Arj^{r-1}$; they are not von
-Mangoldt coefficients. The proposition bounds what positivity and interpolation can prove.
-It does not show that sparser arithmetic sampling fails: for Dedekind zeta functions the
-explicit formula gives one-sided tests on much sparser grids
-(\cref{ana:thm:powers,ana:thm:blocks}). The analogous limit for bounds in mean, rather than
-at sampled points, is \cref{ana:prop:mptsharp}.
-
-Suppose now that $R(x)\to0$, and let $q\ge2$ be an integer. On the quartic grid the
-statistic
-\begin{equation}\label{nab:eq:B}
- B_q(n)=4A\log q-\bigl(S((qn)^4)-S(n^4)\bigr)=R(n^4)-R((qn)^4)
-\end{equation}
-does not involve the centering constant $c$, and it uses only the weights at $u\le(qn)^4$:
-with $X=n^4$ and $Q=q^4$,
-\[
- S(QX)-S(X)=\frac{Q-1}{QX}\,\mu([1,X])+\int_{(X,QX]}\Bigl(\frac1u-\frac1{QX}\Bigr)\dd\mu(u).
-\]
-
-\begin{proposition}[Centering-free certificate; \stU]\label{nab:prop:certificate}
-If $B_q(n)\le Cn^{-2}$ for all sufficiently large integers $n$, with $C\ge0$, then
-$R(n^4)\le C(1-q^{-2})^{-1}n^{-2}$ for those $n$, and hence $R(x)\le C'x^{-1/2}$ for large
-$x$. Conversely a two-sided estimate $R(x)=O(x^{-1/2})$ implies $B_q(n)=O(n^{-2})$.
-\end{proposition}
-\begin{proof}
-For every $N\ge0$,
-$R(n^4)-R((q^{N+1}n)^4)=\sum_{k=0}^NB_q(q^kn)\le Cn^{-2}\sum_{k=0}^Nq^{-2k}$. Let
-$N\to\infty$, use $R(x)\to0$, and apply Corollary~\ref{nab:cor:quartic}. The converse is immediate
-from \eqref{nab:eq:B}; it needs a two-sided estimate, since two upper bounds cannot be
-subtracted.
-\end{proof}
-
-For the remainder of a Dedekind zeta function, \cref{ana:cor:finite} gives the same
-centering-free statistic on every power grid $m^k$, using the explicit formula in place of
-positivity; \cref{nab:prop:certificate} needs only a positive measure, on the quartic grid.
-
-\begin{corollary}[Root counts on the quartic grid; \stR]\label{nab:cor:rootcount}
-Let $f\in\Z[T]$ be monic and irreducible, $K=\Q[T]/(f)$, and for $p\nmid\disc(f)$ let
-$r_f(p)$ be the number of roots of $f$ in $\F_p$. Put
-\[
- B_f(n)=\log16-\frac{15}{16n^4}\sum_{\substack{p\le n^4\\p\nmid\disc(f)}}r_f(p)\log p
- -\sum_{\substack{n^4<p\le16n^4\\p\nmid\disc(f)}}r_f(p)\log p\Bigl(\frac1p-\frac1{16n^4}\Bigr).
-\]
-Then
-\[
- \mathrm{RH}(\zeta_K)\quad\Longleftrightarrow\quad\sup_{n\ge1}n^2B_f(n)<\infty
- \quad\Longleftrightarrow\quad\sup_{n\ge1}n^2R_K(n^4)<\infty ,
-\]
-where $R_K$ is the remainder of Proposition~\ref{nab:prop:dedekind} with $S$ the set of primes
-dividing $\disc(f)$. The bounds are one-sided, and no unspecified centering constant
-appears in $B_f$.
-\end{corollary}
-\begin{proof}
-Here $r_f(p)=a_K(p)$. By Proposition~\ref{nab:prop:dedekind} and the remark following it,
-$\mathrm{RH}(\zeta_K)$ is equivalent to an eventual bound $R_K(x)\le Cx^{-1/2}$, and
-implies the two-sided bound $R_K(x)=O(x^{-1/2})$. Apply Corollary~\ref{nab:cor:quartic} to the
-positive measure $\sum_pr_f(p)\log p\,\delta_p$ with $A=1$, and observe that $B_f$ is the
-statistic $B_2$ of \eqref{nab:eq:B}. Proposition~\ref{nab:prop:certificate} gives the implication from
-the upper bound on $B_f$, and the two-sided estimate gives the converse. Finitely many
-initial terms are finite, so eventual boundedness and the supremum condition agree.
-\end{proof}
-
-The criterion applies to every irreducible polynomial, with no assumption on the
-holomorphy of Artin factors: the Dedekind zeta function itself supplies the continuation
-and the nonnegative multiplicities. The restriction to fourth powers comes from the
-positivity argument; with the explicit formula the same equivalence holds on every fixed
-power grid (\cref{ana:thm:powers,ana:cor:finite}), and by \cref{ana:lem:powers} the
-corollary is also the case $k=4$ of \cref{ana:cor:finite} with prime powers removed. For $f=T^3-T-1$, of discriminant $-23$ and group $S_3$,
-$r_f=1+\tr\rho$ with $\rho$ the standard representation, only $p=23$ is omitted, and the
-bound $\sup_nn^2B_f(n)<\infty$ is equivalent to the Riemann hypothesis for the cubic field;
-\cref{src:thm:dgrh} does not supply it, since the root-count character contains $\rho$.
-The values of the statistic for $n\le20$ are in
-\artifact{grh_method_transfers_2026-11-25/results/cubic_checkpoints.csv}; they illustrate
-the definition and certify nothing about the limit. This field is treated in
-\cref{sec:hec}.
 
 \subsection{Open questions}\label{nab:sec:open}
 

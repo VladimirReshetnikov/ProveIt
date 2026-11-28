@@ -1,3 +1,22 @@
+\providecommand{\zerJ}{\mathcal{J}}
+\providecommand{\zerK}{\mathcal{K}}
+\providecommand{\zersinc}{\operatorname{sinc}}
+\providecommand{\zergE}{\gamma_{\mathrm{E}}}
+\providecommand{\zerLL}{\mathcal{L}}
+\providecommand{\zerconv}{\operatorname{conv}}
+\providecommand{\zerdiag}{\operatorname{diag}}
+\providecommand{\zerSym}{\mathfrak{D}}
+\providecommand{\zerLog}{\operatorname{Log}}
+\providecommand{\anapos}[1]{\bigl(#1\bigr)_{+}}
+\providecommand{\ananeg}[1]{\bigl(#1\bigr)_{-}}
+\providecommand{\anaone}{\mathbf{1}}
+\providecommand{\anaE}{\mathcal{E}}
+\providecommand{\anaEx}{\mathbb{E}}
+\providecommand{\anaPr}{\mathbb{P}}
+\providecommand{\anaM}{\mathcal{M}}
+\providecommand{\anaW}{\mathcal{W}}
+\providecommand{\anaZ}{\mathcal{Z}}
+\providecommand{\anaC}{\mathcal{C}}
 \section{Positive filters that cancel zeros}\label{sec:fil}\label{rec:sec:dilation}
 \providecommand{\filStir}[2]{\genfrac\{\}{0pt}{}{#1}{#2}}
 
@@ -1988,6 +2007,338 @@ not needed. Finally $e^{H_B}=16\sqrt{M(4\log X)+3}$.
 
 Matching finitely many further moments $e^{ct}$ in \cref{fil:thm:compress} (with $H=\tfrac12\log n+C_a$) and shifting
 the contour farther left gives variants with any fixed number of lower-order residue terms.
+
+A different averaging rule is independent of the centre and of the target.
+
+\begin{theorem}[Common compact kernel; \stG]\label{zer:thm:kernel}
+For $B\ge2$ let $\mathcal Z_B$ be the multiset of the absolute values $0<\abs\gamma\le B$ of the
+ordinates of all $L(s,\chi^*)$, $\chi\bmod q$, with multiplicity and both signs, $N_B=\abs{\mathcal Z_B}$,
+\[
+ H_B=\pi\sum_{g\in\mathcal Z_B}\frac1g,\qquad
+ \mu_B=\mathop{\ast}_{g\in\mathcal Z_B}\operatorname{Unif}[-\pi/g,\pi/g].
+\]
+Then $\mu_B$ is a probability measure on $[-H_B,H_B]$, and for $T\ge H_B$ and fixed
+$0<\delta<\tfrac12$,
+\[
+ \Bigl\|\int F(T+w)\,\dd\mu_B(w)-\beta\Bigr\|_2\le K\pi^{-N_B}+C_{q,\delta}e^{-(1/2-\delta)(T-H_B)}.
+\]
+Moreover $H_B=O_q(1+\log^2B)$ and $N_B\gg B\log B$.
+\end{theorem}
+\begin{proof}
+Convolution adds support radii and preserves mass, and
+\[
+ \widehat\mu_B(\omega)=\prod_{g\in\mathcal Z_B}\frac{\sin(\pi\omega/g)}{\pi\omega/g}.
+\]
+This vanishes at every
+nonzero ordinate of modulus at most $B$, and for $\abs\omega>B$ each factor has modulus at most
+$g/(\pi\abs\omega)\le1/\pi$. Integrating \eqref{zer:eq:Zexp} termwise, the high frequencies
+contribute at most $K\pi^{-N_B}$, and the remainder is bounded on the support. The zero count
+$O_q(B\log(B+2))$ and partial summation give $\sum_{g\le B}1/g=O_q(1+\log^2B)$, with a fixed
+positive minimum among the finitely many small ordinates; the zeta factor and the
+Riemann--von Mangoldt formula give $N_B\gg B\log B$.
+\end{proof}
+
+The kernel is an explicit product of sinc factors, with the explicit high-frequency bound
+$K\pi^{-N_B}$; its support $O_q(\log^2B)$ is not optimal. For a family of $d$ characters the filters of
+\cref{rec:thm:logfilter} cancel all ordinates up to $B$ with half-width $\frac d2\log B+O(\log\log B)$,
+which is sharp to leading order, and $(\frac d2+c_0)\log B+O(\log\log B)$ with high-frequency tail
+$e^{-c_0B\log B}$. With $B=\log X$ and attenuation $e^{-(\log X)/2}$ they give \cref{rec:thm:polylogavg},
+one probability measure for all classes, supported in
+\[
+ \Bigl[-H_X,H_X\Bigr],\qquad H_X\le\frac{\varphi(q)}2\log\log X+O_q(1+\log\log\log X),
+\]
+with remainder $O_q((1+\log X)/X)$ after the weight $e^{u/2}$. This supersedes the consequence of
+\cref{zer:thm:kernel} with $B=\log X$, which has remainder $O_{q,\eps}(X^{-1+\eps})$ on the scales
+$X\exp(\pm O_q((\log\log X)^2))$.
+
+\paragraph{Finite positive grids and central zeros.}
+For a family $\anaC$ as above let $S$ be the ramp of $\Lambda a_\anaC$ and $R$ its centred
+remainder (\cref{ana:def:ramp}), let $\delta=\sum_{\chi\ \mathrm{principal}}b_\chi$, and put
+\[
+ d(t)=\frac{e^{(t+1)/2}}{e^{1/2}-1}\bigl\{\delta+S(e^t)-S(e^{t+1})\bigr\}
+ =\frac{e^{(t+1)/2}}{e^{1/2}-1}\bigl(R(e^t)-R(e^{t+1})\bigr),
+\]
+the normalized finite difference of \cref{ana:sec:fd} with $\lambda=e$. It is computed from
+prime powers alone, with no centring constant. Let
+\[
+ M_\anaC=\sum_{\chi\in\anaC}b_\chi\ord_{s=1/2}L(s,\chi)=m_\anaC(\tfrac12),\qquad
+ K(w)=\frac{e^{1/2}-e^w}{e^{1/2}-1},
+\]
+the second equality because imprimitive Euler factors do not vanish at $1/2$; and for real
+$\gamma$ write $\nu_\gamma=m_\anaC(\frac12+i\gamma)$.
+
+\begin{lemma}[Spectral expansion of the difference; \stG]\label{ana:lem:gridexp}
+Uniformly for $t\ge0$,
+\begin{equation}\label{ana:eq:gridexp}
+ d(t)=4M_\anaC+\sum_{\gamma\ne0}\frac{K(i\gamma)\nu_\gamma}{1/4+\gamma^2}e^{i\gamma t}
+ +O_\anaC(e^{-t/4}),
+\end{equation}
+over the distinct nonzero ordinates, and $\abs{K(i\gamma)}\le B_K:=(e^{1/2}+1)/(e^{1/2}-1)$.
+\end{lemma}
+
+\begin{proof}
+Put $D(s)=-\sum_\chi b_\chi L'/L(s,\chi)$. By \cref{ana:lem:mellin} the transform $\Phi$ of $R$ is
+regular at $1$, and at a nontrivial zero $\rho$ it has residue $m_\anaC(\rho)/(\rho(1-\rho))$,
+which is $\nu_\gamma/(1/4+\gamma^2)$ at $\rho=\frac12+i\gamma$. By \cref{src:thm:dgrh} all
+nontrivial zeros lie on the critical line. Mellin inversion for the continuous ramp and a
+contour shift to $\Re s=1/4$ give
+\[
+ R(x)=\sum_\gamma\frac{\nu_\gamma x^{-1/2+i\gamma}}{1/4+\gamma^2}+O_\anaC(x^{-3/4}).
+\]
+The integral on the new line converges absolutely, since the logarithmic derivatives are
+$O_\anaC(\log(2+\abs{\Im s}))$ there by the partial-fraction expansion and the local zero counts,
+and the kernel decays quadratically. The horizontal edges are taken at heights avoiding the
+zeros, where the logarithmic derivatives are $O_\anaC(\log^2T)$, so their integrals tend to zero.
+Finite Euler factors have no zero in $\Re s>0$. Local zero counts with multiplicity are in
+\cite{BennettMartinOBryantRechnitzer2021Counting}. With $r(t)=e^{t/2}R(e^t)$ one has
+$d(t)=(e^{1/2}r(t)-r(t+1))/(e^{1/2}-1)$, which multiplies $e^{i\gamma t}$ by $K(i\gamma)$; the
+ordinate $0$ occurs with weight $M_\anaC$ and $K(0)/(1/4)=4$.
+\end{proof}
+
+\emph{The averaging operator.} For integers $k\ge2$ and $m\ge1$ define
+\[
+ U_k(w)=\frac1{k+1}\sum_{j=0}^ke^{jw/k},\qquad
+ \anaM_{k,m}f(t)=\sum_{j=0}^{mk}p_jf(t+j/k),\qquad
+ \sum_{j=0}^{mk}p_jz^j=\Bigl(\frac{1+z+\dots+z^k}{k+1}\Bigr)^m .
+\]
+All $p_j$ are positive rationals with $\sum_jp_j=1$; the operator has $mk+1$ distinct taps and
+support length $m$, and its multiplier on $e^{wt}$ is $U_k(w)^m$. The polynomial is the
+transfer polynomial of a cascade of uniform averages, a classical digital filter
+\cite{Hogenauer1981Economical}.
+
+\begin{lemma}[Contraction away from the aliases]\label{ana:lem:contraction}
+For $0<\theta\le\pi$, $k\ge2$ and $\operatorname{dist}(\gamma,2\pi k\Z)\ge\theta$,
+\[
+ \abs{U_k(i\gamma)}\le\exp\Bigl(-\frac{\theta^2}{6\pi^2}\Bigr).
+\]
+For $a>0$, $0<U_k(-a)\le v_a:=(1+e^{-a})/2<1$.
+\end{lemma}
+
+\begin{proof}
+Reduce $\gamma$ modulo $2\pi k$ to $\delta'\in[-\pi k,\pi k]$, so $\abs{\delta'}\ge\theta$. If
+$\abs{\delta'}\le\pi$, let $X,Y$ be independent and uniform on $\set{0,1/k,\dots,1}$. Since
+$1-\cos u\ge2u^2/\pi^2$ for $\abs u\le\pi$ and $\operatorname{Var}X=(k+2)/(12k)$,
+\[
+ 1-\abs{U_k(i\delta')}^2=\anaEx\bigl[1-\cos(\delta'(X-Y))\bigr]
+ \ge\frac{2\delta'^2}{\pi^2}\anaEx(X-Y)^2=\frac{k+2}{3k\pi^2}\delta'^2\ge\frac{\delta'^2}{3\pi^2},
+\]
+so $\abs{U_k(i\delta')}\le e^{-\delta'^2/(6\pi^2)}$. If $\pi\le\abs{\delta'}\le\pi k$, the
+geometric sum gives
+\[
+ \abs{U_k(i\delta')}\le\frac1{(k+1)\sin(\abs{\delta'}/(2k))}\le\frac1{(k+1)\sin(\pi/(2k))}
+ \le\frac1{\sqrt2},
+\]
+using $\sin x\ge(2\sqrt2/\pi)x$ on $[0,\pi/4]$, and $2^{-1/2}<e^{-1/6}$. Finally $e^{-ax}$ lies
+below its chord on $[0,1]$, and the uniform average has mean $1/2$.
+\end{proof}
+
+\begin{theorem}[Alias-controlled positive spectral projection; \stU]\label{ana:thm:alias}
+Let $\Gamma\subset\R\setminus\set0$ be locally finite with $\abs\gamma\ge\eta>0$ on $\Gamma$, let
+$\nu_\gamma\ge0$, and let $A,B,E,a>0$. Suppose that
+\[
+ \sum_{\gamma\in\Gamma\cap[u-\pi,u+\pi]}\nu_\gamma\le A\log(2+\abs u)\quad(u\in\R),\qquad
+ \abs{c_\gamma}\le\frac{B\nu_\gamma}{1/4+\gamma^2},
+\]
+and that $f(t)=c_0+\sum_{\gamma\in\Gamma}c_\gamma e^{i\gamma t}+E_0(t)$ with
+$\abs{E_0(t)}\le Ee^{-at}$ for $t\ge0$. Put $W=\sum_\gamma\nu_\gamma/(1/4+\gamma^2)$,
+$\theta=\min(\pi,\eta)$, $\kappa=\min\set{\theta^2/(6\pi^2),-\log v_a}>0$ and $C_*=2+2\pi$. Then
+$W<\infty$, and for all $k\ge2$, $m\ge1$ and $t\ge0$,
+\begin{equation}\label{ana:eq:aliasbound}
+ \abs{\anaM_{k,m}f(t)-c_0}\le BWe^{-\theta^2m/(6\pi^2)}+Ee^{-at}v_a^m
+ +\frac{2AB}{\pi^2k^2}\bigl\{\zeta(2)\log(C_*k)-\zeta'(2)\bigr\}.
+\end{equation}
+In particular, with $m_k=\lceil2\log k/\kappa\rceil$,
+\[
+ \sup_{t\ge0}\abs{\anaM_{k,m_k}f(t)-c_0}
+ \le\frac{BW+E+(2AB/\pi^2)\bigl[\zeta(2)\log(C_*k)-\zeta'(2)\bigr]}{k^2}.
+\]
+\end{theorem}
+
+\begin{proof}
+Summing $O(\log(2+\abs n)/(1+n^2))$ over unit intervals shows $W<\infty$, so the series converges
+absolutely and may be averaged termwise, uniformly in $t$. Away from the intervals
+$I_\ell=(2\pi k\ell-\theta,2\pi k\ell+\theta)$, \cref{ana:lem:contraction} gives the first term
+of \eqref{ana:eq:aliasbound}. The interval $I_0$ contains no frequency, since $\theta\le\eta$.
+For $\ell\ne0$ and $\gamma\in I_\ell$ one has $\abs\gamma\ge\pi k\abs\ell$, and the local count
+with $\abs{U_k(i\gamma)}\le1$ gives
+\[
+ \sum_{\gamma\in I_\ell}\abs{c_\gamma}\abs{U_k(i\gamma)}^m\le
+ \frac{AB\log(2+2\pi k\abs\ell)}{\pi^2k^2\ell^2}.
+\]
+Use $2+2\pi k\ell\le C_*k\ell$ for $\ell\ge1$, sum over both signs of $\ell$, and use
+$\sum\ell^{-2}=\zeta(2)$ and $\sum(\log\ell)\ell^{-2}=-\zeta'(2)$. The averaged remainder is at
+most $Ee^{-at}U_k(-a)^m$. The choice of $m_k$ makes both exponential factors at most $k^{-2}$.
+\end{proof}
+
+The same proof gives $O(e^{-\kappa m}+\log k/k^r)$ when
+$\abs{c_\gamma}\le B\nu_\gamma(1+\abs\gamma)^{-r}$ with $r>1$, the alias constant now involving
+$\zeta(r)$ and $-\zeta'(r)$. With $m\ge(r/\kappa)\log k$ and $m\asymp\log k$, the error in
+$N\asymp k\log k$ taps is $O((\log N)^{r+1}/N^r)$.
+
+\begin{proposition}[The alias term is necessary; \stU]\label{ana:prop:alias}
+For every integer $k\ge2$, every probability measure supported on $k^{-1}\Z$ has Fourier
+transform $1$ at $2\pi k$. There are symmetric spectra satisfying the count and gap hypotheses
+of \cref{ana:thm:alias}, with constants independent of $k$, for which every such averaging rule
+has error at least $c\log k/k^2$ at $t=0$, with an absolute $c>0$.
+\end{proposition}
+
+\begin{proof}
+Put mass $M_k=\floor{\log(2+2\pi k)}$ at each of $\gamma=\pm2\pi k$, with coefficients
+$M_k/(1/4+(2\pi k)^2)$, and $E_0=0$. These spectra satisfy the local count with one absolute
+constant and have a fixed positive gap. Every lattice sample sees both exponentials as $1$, so
+every probability average leaves their total $2M_k/(1/4+4\pi^2k^2)$ unchanged.
+\end{proof}
+
+This is a lower bound for the abstract spectral class, not a statement that Dirichlet ordinates
+lie at these aliases.
+
+\begin{theorem}[Central multiplicity from a finite grid; \stG]\label{ana:thm:grid}
+For the fixed family $\anaC$, apply \cref{ana:thm:alias} to $f=d$, with the constants supplied
+by \cref{ana:lem:gridexp}, the local zero count and $a=1/4$, and with
+$\eta$ the least positive ordinate of the family, and set
+\[
+ Z_k(t)=\tfrac14\anaM_{k,m_k}d(t),\qquad N_k=(m_k+1)k+1 .
+\]
+\begin{enumerate}[label=\textup{(\roman*)}]
+\item Uniformly for $t\ge0$,
+ \[
+  Z_k(t)=M_\anaC+O_\anaC(\log k/k^2)=M_\anaC+O_\anaC\bigl((\log N_k)^3/N_k^2\bigr).
+ \]
+ The statistic uses exactly the $N_k$ ramp values $S(e^{t+j/k})$, $0\le j\le(m_k+1)k$. At $t=0$
+ it uses prime powers only up to $e^{m_k+1}=N_k^{O_\anaC(1)}$, and its logarithmic span is
+ $m_k+1=O_\anaC(\log N_k)$. If $M_\anaC$ is an integer, rounding $Z_k(t)$ to the nearest
+ integer is valid as soon as the right side of
+ \eqref{ana:eq:aliasbound}, divided by $4$, is below $1/2$.
+\item Without any information on the gap, the prescribed depth
+ $m_k=\lceil\log k\,\log\log(k+e^e)\rceil$ gives, for every fixed family,
+ \[
+  Z_k(t)-M_\anaC=O_\anaC\Bigl(\frac{(\log N_k)^3(\log\log N_k)^2}{N_k^2}\Bigr),\qquad
+  e^{m_k+1}=N_k^{O(\log\log N_k)} .
+ \]
+\end{enumerate}
+\end{theorem}
+
+\begin{proof}
+By \cref{ana:lem:gridexp}, $d$ has the form of \cref{ana:thm:alias} with $c_0=4M_\anaC$,
+$B=B_K$, $E_0=O_\anaC(e^{-t/4})$, $A$ from the local zero count, and $\eta>0$ by discreteness
+of the ordinates; dividing by $4$ gives (i). The tap $j$ of $\anaM_{k,m}$ applied to $d$ uses
+$S(e^{t+j/k})$ and $S(e^{t+j/k+1})$, that is, the indices $j$ and $j+k$; and
+$N_k\asymp_\anaC k\log k$ converts $\log k/k^2$ into $(\log N_k)^3/N_k^2$. In (ii) the
+prescribed $m_k$ exceeds $2\log k/\kappa$ for all large $k$, so both exponential terms in
+\eqref{ana:eq:aliasbound} are eventually at most $k^{-2}$, and now $N_k\asymp k\log k\log\log k$.
+\end{proof}
+
+The onset in (ii) depends on the family. Neither part claims uniformity in an unbounded
+conductor, or a practical cutoff without explicit values of $A$, $E$ and $\eta$.
+
+\begin{remark}[Noise]\label{ana:rem:gridnoise}
+If each observed value of $d$ has error at most $\eps$, positivity and $\sum_jp_j=1$ give an
+error at most $\eps/4$ in $Z_k$. If instead the normalized ramp values
+$Y_j=e^{(t+j/k)/2}S(e^{t+j/k})$ have error at most $\eps$, then
+$\abs{Z_k^{\mathrm{obs}}-Z_k}\le B_K\eps/4$, because
+$d(t+j/k)=\bigl[e^{1/2}Y_j-Y_{j+k}+\delta e^{(t+j/k+1)/2}\bigr]/(e^{1/2}-1)$. No bound independent
+of the span is claimed for a uniform absolute error in the unnormalized values of $S$; such errors
+are multiplied by the exponential factors displayed.
+\end{remark}
+
+\begin{corollary}[Individual central orders; \stG]\label{ana:cor:gridchar}
+Let $\chi$ be a nonprincipal character modulo $q$ and $\chi_0$ the principal one. The real
+nonnegative weight
+\[
+ a_\chi(n)=\Lambda(n)\bigl\{\chi_0(n)+\Re\chi(n)\bigr\}\ge0
+\]
+is $\Lambda a_\anaC$ for the family $\chi_0,\chi,\bar\chi$ with weights $1,\frac12,\frac12$
+(repeated characters combined), and for it $M_\anaC=\ord_{s=1/2}L(s,\chi)\in\Z_{\ge0}$. Hence
+\cref{ana:thm:grid} recovers the central order of an individual, possibly nonreal, character
+from a finite positive grid of real prime statistics.
+\end{corollary}
+
+\begin{proof}
+Conjugation gives equal central orders for $\chi$ and $\bar\chi$, and the principal factor does
+not vanish at $1/2$: $\zeta(1/2)=\eta(1/2)/(1-\sqrt2)<0$, since the alternating series
+$\eta(1/2)$ is positive, and the finitely many omitted Euler factors are nonzero at $1/2$.
+\end{proof}
+
+For noncentral zeros the same statistic sees all three factors. No assumption of central
+nonvanishing, simple zeros, separation of distinct noncentral ordinates or rational independence
+is used.
+
+\begin{theorem}[Every fixed grid retains one-sided detection; \stU]\label{ana:thm:gridconverse}
+Fix $k\ge2$ and $m\ge1$. For a family $\anaC$ as above, GRH for all the $L(s,\chi)$, $\chi\in\anaC$,
+is equivalent to an eventual upper bound for $\anaM_{k,m}d(t)$, and to an eventual two-sided
+bound. If one of them has a zero $\rho$ with $\Re\rho>1/2+\sigma$, $\sigma\ge0$, then
+\[
+ \limsup_{t\to\infty}e^{-\sigma t}\anaM_{k,m}d(t)=+\infty .
+\]
+\end{theorem}
+
+\begin{proof}
+The Laplace transform of $r(t)=e^{t/2}R(e^t)$ is $\Phi(w+1/2)$, whose poles in $\Re w>0$ are at
+$w=\rho-1/2$ with residue $m_\anaC(\rho)/(\rho(1-\rho))$. A forward shift by $h$ multiplies the
+continuation by $e^{hw}$ up to an entire function, the contribution of an initial compact
+interval. So the transform of $\anaM_{k,m}d$ is $K(w)U_k(w)^m$ times that of $r$, plus an entire
+function. The zeros of $U_k$ satisfy $\Re w=0$: with $z=e^{w/k}$ they are the nontrivial
+$(k+1)$st roots of unity. The zeros of $K$ satisfy $\Re w=1/2$. So no pole in $0<\Re w<1/2$ is
+cancelled, and at real $w$ in that interval both factors are positive. Put
+$\tilde R(x)=x^{-1/2}\anaM_{k,m}d(\log x)$. Its Mellin transform is meromorphic on $\Re s>0$,
+with simple poles at the zeros in $1/2<\Re\rho<1$, nonzero residues there and positive residues
+at real ones. An eventual bound $\anaM_{k,m}d(t)\le Ce^{\sigma t}$ is
+$\tilde R(x)\le Cx^{\sigma-1/2}$, so \cref{ana:thm:onesided} with \cref{ana:cor:forms}(a)
+excludes zeros with $\Re\rho>1/2+\sigma$; at $\sigma=0$ the functional equation excludes the rest.
+Under GRH, \eqref{ana:eq:gridexp} is bounded, and so is every positive finite average of it.
+\end{proof}
+
+\paragraph{A binomial grid.}
+The two-step grid with incommensurable steps $1$ and $\sqrt2$ also projects onto the central
+zeros, at a slower rate. Let $X$ be the group of characters modulo $q$ trivial on a subgroup
+$H\le(\Z/q\Z)^\times$, a family as above with all $b_\chi=1$, so that
+$\Lambda a_X=[(\Z/q\Z)^\times:H]\Lambda\anaone_{n\bmod q\in H}$ and $\delta=1$. With $T_hf(t)=f(t+h)$
+and $A_h=(I+T_h)/2$, put
+\[
+ B_md(t)=A_1^mA_{\sqrt2}^md(t)=4^{-m}\sum_{j,k=0}^m\binom mj\binom mkd(t+j+k\sqrt2),
+\]
+with $(m+1)^2$ shifts and positive weights of sum one, and write $M_X=M_\anaC$.
+
+\begin{theorem}[Binomial filter; \stU\ and \stG]\label{ana:thm:binomial}
+\begin{enumerate}[label=\textup{(\roman*)}]
+\item \textup{(\stU)} For every fixed $m\ge0$, GRH for the characters in $X$ is equivalent to
+ an upper bound for $B_md(t)$ for large $t$, and to a two-sided bound. If some $L(s,\chi)$,
+ $\chi\in X$, has a zero with $\Re\rho>1/2+\sigma$, $\sigma\ge0$, then
+ $\limsup_{t\to\infty}e^{-\sigma t}B_md(t)=+\infty$.
+\item \textup{(\stG)} There is $C_{q,H}$ with $\abs{B_md(t)-4M_X}\le C_{q,H}\log(2m)/\sqrt m$
+ for all $m\ge1$ and $t\ge0$. Hence $M_X=\frac14\lim_mB_md(0)$, which uses only prime powers
+ up to $\exp(1+(1+\sqrt2)m)$ and no constant, $L$-value or ordinate, and $M_X$ is the nearest
+ integer to $B_md(t)/4$ for all $t\ge0$ once $m$ is large.
+\end{enumerate}
+\end{theorem}
+
+\begin{proof}
+(i) is the proof of \cref{ana:thm:gridconverse} with the multiplier
+$K(w)\bigl(\frac{1+e^w}2\cdot\frac{1+e^{\sqrt2w}}2\bigr)^m$, which has no zero in
+$0<\Re w<1/2$ and is positive on $(0,1/2)$.
+
+(ii) By \cref{ana:lem:gridexp} it suffices to damp the nonzero ordinates. On the imaginary axis
+the Bernoulli part has modulus $\abs{\cos(\gamma/2)\cos(\sqrt2\gamma/2)}^m$. For $\abs u\ge\eta$,
+\[
+ \abs{\cos(u/2)\cos(\sqrt2u/2)}\le\exp\bigl(-c_\eta/(1+\abs u)^2\bigr):
+\]
+with $v=u/2\pi$ and nearest integers $a$ to $v$ and $b$ to $\sqrt2v$, the nonzero integer
+$b^2-2a^2$ gives $1\le\abs{b^2-2a^2}\ll(\abs{a-v}+\abs{b-\sqrt2v})(1+\abs u)$, and
+$\abs{\cos\pi d}\le e^{-2d^2}$ for $\abs d\le1/2$. Summing
+$\exp(-c_*m/(1+\abs\gamma)^2)/(1/4+\gamma^2)$ over the ordinates, dyadically above and below
+$\sqrt m$, gives $O(\log(2m)/\sqrt m)$. The error $O(e^{-t/4})$ is multiplied by at most
+$\bigl(\frac{1+e^{-1/4}}2\frac{1+e^{-\sqrt2/4}}2\bigr)^m$.
+\end{proof}
+
+In terms of samples, $B_m$ uses $(m+1)^2$ values of $d$, or $(m+1)(m+2)$ distinct ramp values,
+for an error $O(\log N/N^{1/4})$ in $N$ observations over logarithmic span $(1+\sqrt2)m$, while
+\cref{ana:thm:grid} gives $O((\log N)^3/N^2)$ over span $O(\log N)$. The inverse-square damping
+of $B_m$ cannot be improved uniformly: the solutions of $b^2-2a^2=\pm1$ give $u=2\pi a$ with
+damping $1-O(a^{-2})$. Equal Bernoulli weights matter: $p+(1-p)e^{hw}$ with $p>1/2$ vanishes at
+real part $h^{-1}\log(p/(1-p))>0$, which would cancel poles. If the ordinates up to $U$ are known,
+the product $\prod_{0<\gamma\le U}A_{\pi/\gamma}$ annihilates them exactly and gives
+$4M_X+O(\log(2U)/U)+O(e^{-t/4})$ with total shift $O(\log^2(2U))$, and the converse in (i) holds
+for any fixed finite product of such operators.
 
 \subsection{Open questions}\label{fil:sec:open}
 \sources{quadratic_spectra; dirichlet_zero_filters; grh_positive_spectral_extensions_2026-11-27; logarithmic_dirichlet_zero_filters_2026-11-26; grh_global_positive_filters_2026-11-27; grh_optimal_positive_filters; optimal_dirichlet_zero_filters; optimal_zero_filters; sharp_positive_zero_filters; sharp_zero_filters; sharp_zeta_filters; grh_extensions_2026-11-27_2; grh_zero_filter_tradeoff; gram-euler-and-zero-filters; grh_cayley_and_filters; grh_hidden_forms_and_filters_2026-11-27}
