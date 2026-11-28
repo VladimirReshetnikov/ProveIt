@@ -14,14 +14,8 @@ lifts.
   and of `ι` on the target forms.
 * `New.Data.exists_normDet_goodLift_sq_eq`: the volume of one lift in terms of the determinant on
   the target forms of the series of Rallis' formula.
-* `New.Data.exists_adjoint_chain_comp_eq_smul_rallisProduct`: on the target forms `ι* ι` is the
-  product `New.Data.rallisProduct` of these series times `c_Q ^ m`, up to a factor `c ϑ`, where the
-  absolute value of `c ϑ` is a product of ratios of Hecke values, a power of the norm of the modulus
-  of `ϑ` and a positive constant.
-* `New.Data.exists_div_chainDeterminant_one_eq`: the resulting formula for
-  `chainDeterminant ϑ / chainDeterminant 1`;
-  `New.Data.exists_chainDeterminant_pos_and_div_chainDeterminant_one_eq` joins it with the
-  positivity of the volumes.
+* `New.Data.exists_chainDeterminant_eq_norm_pow_mul_prod` factors the chain volume into
+  single-lift volumes and a scalar whose normalized norm has bounded height.
 * `New.Data.range_goodLift_le`: the space of lifts is spanned by lifts of good eigenforms.
 
 Notions from other files:
@@ -260,190 +254,51 @@ lemma isRamifiedRatio_of_mem_sigma {ij : Σ _ : ℕ, ℕ}
 lemma card_sigma_Ioc_le (m : ℕ) : #((Ioc 0 m).sigma fun i : ℕ ↦ Ioc i m) ≤ m * m := by
   simpa using sum_le_card_nsmul (Ioc 0 m) (fun i ↦ #(Ioc i m)) m (by simp)
 
-/-- At the trivial twist the product of the ratios `quotientRatio i j` over `1 ≤ i < j ≤ m` is
-`1`. -/
-lemma prod_quotientRatio_one :
-    ∏ i ∈ Ioc 0 D.m, ∏ j ∈ Ioc i D.m, D.quotientRatio i j 1 = 1 := by
-  rw [prod_sigma']
-  exact prod_eq_one fun x hx ↦ (D.isRamifiedRatio_of_mem_sigma hx).apply_one
-
-/-- At every m-fold twist `ϑ : D.MFoldTwist`, the product of the ratios `D.quotientRatio i j ϑ` over
-`1 ≤ i < j ≤ m` is nonnegative. -/
-lemma prod_quotientRatio_nonneg (ϑ : D.MFoldTwist) :
-    0 ≤ ∏ i ∈ Ioc 0 D.m, ∏ j ∈ Ioc i D.m, D.quotientRatio i j ϑ := by
-  rw [prod_sigma']
-  exact prod_nonneg fun x hx ↦ (D.isRamifiedRatio_of_mem_sigma hx).nonneg ϑ
-
-/-- Let `c` satisfy `HasAbsUpToNormPower c f`, that is `‖c ϑ‖² = C (normQ ϑ)^k (f ϑ)²` with `C` and
-`k` independent of `ϑ`, where `f` is the product of the ratios of Hecke values `quotientRatio i j`
-over `1 ≤ i < j ≤ m`, and let `c 1 ≠ 0`. Then `‖c ϑ / c 1‖` is `normQ ϑ ^ (e / 2)` times the product
-of the `quotientRatio i j ϑ`, for an integer `e` independent of the twist `ϑ`. -/
-lemma HasAbsUpToNormPower.exists_norm_div_eq_mul_prod_quotientRatio {D : Data P}
-    {c : D.MFoldTwist → ℂ}
-    (h_modulus : D.HasAbsUpToNormPower c (∏ i ∈ Ioc 0 D.m, ∏ j ∈ Ioc i D.m, D.quotientRatio i j))
-    (hc : c 1 ≠ 0) :
-    ∃ e : ℤ, ∀ ϑ : D.MFoldTwist, ‖c ϑ / c 1‖ =
-      (ϑ.normQ : ℝ) ^ (e / 2 : ℝ) *
-        ∏ i ∈ Ioc 0 D.m, ∏ j ∈ Ioc i D.m, D.quotientRatio i j ϑ := by
-  simpa only [Finset.prod_apply] using h_modulus.exists_norm_div_eq
-    (by simp [prod_quotientRatio_one]) (by simp [prod_quotientRatio_nonneg]) hc
-
-/-- **Norm of the chain.** For an `m`-fold twist `ϑ` let `Θ = D.Θ ϑ` be the chain of lifts from
-forms on `Y₀` to forms on `Y_m`, restricted to the target forms. There are a constant `C > 0`, an
-integer `e` and numbers `c ϑ` such that for all `ϑ`
-* `‖c ϑ‖ = C (Nm Q) ^ (e / 2) ∏_{1 ≤ i < j ≤ m} quotientRatio i j ϑ`, and
-* `Θ* Θ = c ϑ * c_Q ^ m * R`.
-
-Here `Q` is the set of places of `ϑ` and `Nm Q = ϑ.normQ` the product of their norms `q_w`. The
-operator `R = D.rallisProduct ϑ` is the product over `1 ≤ j ≤ m` of the series of Rallis' formula
-for the `j`-th lift at `ϑ ^ j`. The number `c_Q = (D.descentPair ϑ 1).twistFactor` is
-`(Nm Q) ^ (r t) ∏_{w ∈ Q} ∏_{t < i ≤ t + r} (1 - q_w ^ (-i))`, and `quotientRatio i j ϑ` is the
-product of the ratios of Hecke values of the quotient of the `j`-th and `i`-th lift characters at
-`ϑ ^ (j - i)`. -/
-theorem exists_adjoint_chain_comp_eq_smul_rallisProduct (D : Data P) :
-    ∃ (C : ℝ) (e : ℤ) (c : D.MFoldTwist → ℂ),
-      0 < C ∧
-      (∀ ϑ : D.MFoldTwist, ‖c ϑ‖ = C * ((ϑ.normQ : ℝ) ^ (e / 2 : ℝ) *
-        ∏ i ∈ Ioc 0 D.m, ∏ j ∈ Ioc i D.m, D.quotientRatio i j ϑ)) ∧
-      ∀ ϑ : D.MFoldTwist, (D.Θ ϑ).adjoint ∘ₗ D.Θ ϑ =
-        (c ϑ * (D.descentPair ϑ 1).twistFactor ^ D.m) • D.rallisProduct ϑ := by
-  -- The Gram form of the chain gives the operator identity. If `c 1 ≠ 0`, divide by `c 1` to get
-  -- the modulus of `c`; if `c 1 = 0`, the target forms are zero and any factor serves.
-  obtain ⟨c, h_modulus, h_gram⟩ := D.exists_inner_chain_eq
-  let ratio (ϑ : D.MFoldTwist) : ℝ := ∏ i ∈ Ioc 0 D.m, ∏ j ∈ Ioc i D.m, D.quotientRatio i j ϑ
-  by_cases hc_one : c 1 = 0
-  · have h_injective : Function.Injective (D.Θ 1) :=
-      (D.lowerChainAtLevel_injective 1).comp D.targetForms.injective_subtype
-    have h_forms_zero (y : D.targetForms) : y = 0 := by
-      have h_inner : inner ℂ (D.Θ 1 y) (D.Θ 1 y) = 0 := by
-        rw [h_gram, hc_one, zero_mul, zero_mul]
-      have h_image : D.Θ 1 y = 0 := inner_self_eq_zero.1 h_inner
-      exact (map_eq_zero_iff (D.Θ 1) h_injective).1 h_image
-    have h_end (S : End ℂ D.targetForms) : S = 0 := LinearMap.ext fun y ↦ h_forms_zero (S y)
-    have h_norm (ϑ : D.MFoldTwist) :
-        ‖(ratio ϑ : ℂ)‖ = 1 * ((ϑ.normQ : ℝ) ^ ((0 : ℤ) / 2 : ℝ) * ratio ϑ) := by
-      rw [Complex.norm_real, Real.norm_of_nonneg (D.prod_quotientRatio_nonneg ϑ), Int.cast_zero,
-        zero_div, Real.rpow_zero, one_mul, one_mul]
-    refine ⟨1, 0, fun ϑ ↦ ratio ϑ, one_pos, h_norm, fun ϑ ↦ ?_⟩
-    rw [h_end ((D.Θ ϑ).adjoint ∘ₗ D.Θ ϑ), h_end (D.rallisProduct ϑ), smul_zero]
-  · obtain ⟨e, h_div⟩ : ∃ e : ℤ, ∀ ϑ : D.MFoldTwist,
-        ‖c ϑ / c 1‖ = (ϑ.normQ : ℝ) ^ (e / 2 : ℝ) * ratio ϑ :=
-      h_modulus.exists_norm_div_eq_mul_prod_quotientRatio hc_one
-    have h_pos : 0 < ‖c 1‖ := norm_pos_iff.2 hc_one
-    have h_norm (ϑ : D.MFoldTwist) :
-        ‖c ϑ‖ = ‖c 1‖ * ((ϑ.normQ : ℝ) ^ (e / 2 : ℝ) * ratio ϑ) :=
-      calc ‖c ϑ‖ = ‖c 1‖ * (‖c ϑ‖ / ‖c 1‖) := (mul_div_cancel₀ ‖c ϑ‖ h_pos.ne').symm
-        _ = ‖c 1‖ * ((ϑ.normQ : ℝ) ^ (e / 2 : ℝ) * ratio ϑ) := by rw [← norm_div, h_div]
-    have h_inner (ϑ : D.MFoldTwist) (x y : D.targetForms) :
-        inner ℂ x (((D.Θ ϑ).adjoint ∘ₗ D.Θ ϑ) y) =
-          inner ℂ x (((c ϑ * (D.descentPair ϑ 1).twistFactor ^ D.m) • D.rallisProduct ϑ) y) := by
-      rw [comp_apply, adjoint_inner_right, h_gram, LinearMap.smul_apply, inner_smul_right]
-    refine ⟨‖c 1‖, e, c, h_pos, h_norm, fun ϑ ↦ ?_⟩
-    exact LinearMap.ext fun y ↦ ext_inner_left ℂ fun x ↦ h_inner ϑ x y
-
-/-- There are a constant `C > 0` and an integer `e` such that for every `m`-fold twist `ϑ` `det (Θ*
-Θ) = (C (Nm Q) ^ (e / 2) ∏_{1 ≤ i < j ≤ m} quotientRatio i j ϑ) ^ d ∏_{1 ≤ j ≤ m} λ_j`. Here
-`Θ = D.Θ ϑ` is the chain of lifts from forms on `Y₀` to forms on `Y_m`, restricted to the target
-forms (the good forms on `Y₀`, of dimension `d = D.targetDim`), and `det (Θ* Θ)` is
-`D.chainDeterminant ϑ`. The number `λ_j = D.liftDeterminant ϑ j` is `det (u* u)` for the `j`-th
-single lift `u` at `ϑ ^ j` on the good forms (`goodLift`), `Nm Q = ϑ.normQ` is the product of the
-norms of the places of `ϑ`, and `quotientRatio i j ϑ` is the product of the ratios of Hecke values
-of the quotient of the `j`-th and `i`-th lift characters at `ϑ ^ (j - i)`. -/
-lemma exists_chainDeterminant_eq_pow_mul_prod_liftDeterminant :
-    ∃ (C : ℝ) (e : ℤ), 0 < C ∧ ∀ ϑ : D.MFoldTwist,
-      D.chainDeterminant ϑ =
-        ((C * ((ϑ.normQ : ℝ) ^ (e / 2 : ℝ) *
-            ∏ i ∈ Ioc 0 D.m, ∏ j ∈ Ioc i D.m, D.quotientRatio i j ϑ) : ℝ) : ℂ) ^ D.targetDim *
-          ∏ j ∈ Icc 1 D.m, D.liftDeterminant ϑ j := by
-  -- Take determinants in the norms of the chain and of the single lifts. The determinants of the
-  -- series and the factor `c_Q` cancel.
-  obtain ⟨C, e, c, hC, hc, h_chain⟩ := D.exists_adjoint_chain_comp_eq_smul_rallisProduct
+/-- The chain volume is the product of the single-lift volumes times the target dimension power
+of a scalar norm. For any family of twists with small ratios the normalized norm costs at most
+`b` in height. -/
+theorem exists_chainDeterminant_eq_norm_pow_mul_prod :
+    ∃ c : D.MFoldTwist → ℂ,
+      (∀ {θ : PrimePadicIso → D.MFoldTwist}, D.HasSmallRatios θ →
+        HeightLe D.b fun ι ↦ (‖c 1 / c (θ ι)‖ : ℂ)) ∧
+      ∀ ϑ, D.chainDeterminant ϑ =
+        (‖c ϑ‖ : ℂ) ^ D.targetDim * ∏ j ∈ Icc 1 D.m, D.liftDeterminant ϑ j := by
+  obtain ⟨c, hc, h_gram⟩ := D.exists_inner_chain_eq
   choose A hA h_lift using fun i : Fin D.m ↦ D.exists_normDet_goodLift_sq_eq ⟨i + 1, by simp⟩
   have hA_prod : ∏ i, A i ≠ 0 := prod_ne_zero_iff.2 fun i _ ↦ hA i
-  refine ⟨C * ‖∏ i, A i‖⁻¹, e, by positivity, fun ϑ ↦ ?_⟩
-  let cQ : ℂ := (D.descentPair ϑ 1).twistFactor
-  let rallisDet (i : ℕ) : ℂ := (D.rallisOnGood (D.spaceY 0) (ϑ.pow (i + 1)) (i + 1)).det
-  -- The powers of `ϑ` have the same modulus `Q`, hence the same `c_Q`.
-  have h_liftDet (i : Fin D.m) :
-      D.liftDeterminant ϑ (i + 1) = (A i * cQ) ^ D.targetDim * rallisDet i :=
-    h_lift i (ϑ.pow (i + 1))
-  have h_det : (D.rallisProduct ϑ).det = ∏ i : Fin D.m, rallisDet i := by
-    simp [rallisProduct, rallisDet, map_list_prod, Function.comp_def, prod_range,
-      ← List.prod_toFinset _ List.nodup_range, List.toFinset_range]
-  have h_prod : ∏ j ∈ Icc 1 D.m, D.liftDeterminant ϑ j = ∏ i : Fin D.m,
-    D.liftDeterminant ϑ (i + 1) := by
-    rw [← prod_range fun i ↦ D.liftDeterminant ϑ (i + 1), range_eq_Ico, prod_Ico_add',
-      zero_add, Ico_add_one_right_eq_Icc]
-  have h_eq : D.chainDeterminant ϑ =
-      (c ϑ * (∏ i, A i)⁻¹) ^ D.targetDim * ∏ j ∈ Icc 1 D.m, D.liftDeterminant ϑ j := by
-    calc D.chainDeterminant ϑ = ((D.Θ ϑ).adjoint ∘ₗ D.Θ ϑ).det := by
-          simpa [chainDeterminant] using (D.Θ ϑ).normDet_sq
-      _ = (c ϑ * cQ ^ D.m) ^ D.targetDim * ∏ i : Fin D.m, rallisDet i := by
-        rw [h_chain, det_smul, h_det]
-      _ = (c ϑ * (∏ i, A i)⁻¹) ^ D.targetDim * ∏ i, ((A i * cQ) ^ D.targetDim * rallisDet i) := by
-        simp_rw [prod_mul_distrib, prod_pow, prod_mul_distrib, Fin.prod_const]
-        rw [← mul_assoc, ← mul_pow]
-        field_simp
-      _ = _ := by simp_rw [h_prod, h_liftDet]
-  -- The determinants are squares of real numbers, so they equal their norms.
-  rw [mul_right_comm, ← hc]
-  simpa [chainDeterminant, liftDeterminant] using congrArg (fun z : ℂ ↦ (‖z‖ : ℂ)) h_eq
-
-/-- There is an integer `e` such that, for every twist `ϑ` whose first `m` powers are twists, the
-ratio `chainDeterminant ϑ / chainDeterminant 1` is `(normQ ϑ ^ (e / 2) * ∏_{1 ≤ i < j ≤ m}
-quotientRatio i j ϑ) ^ targetDim` times the product over `1 ≤ j ≤ m` of the ratios
-`liftDeterminant ϑ j / liftDeterminant 1 j`. -/
-theorem exists_div_chainDeterminant_one_eq :
-    ∃ e : ℤ, ∀ ϑ : D.MFoldTwist,
-      D.chainDeterminant ϑ / D.chainDeterminant 1 =
-        (((ϑ.normQ : ℝ) ^ (e / 2 : ℝ) *
-            ∏ i ∈ Ioc 0 D.m, ∏ j ∈ Ioc i D.m, D.quotientRatio i j ϑ : ℝ) : ℂ) ^ D.targetDim *
-          ∏ j ∈ Icc 1 D.m, D.liftDeterminant ϑ j / D.liftDeterminant 1 j := by
-  obtain ⟨C, e, hC, h_volume⟩ := D.exists_chainDeterminant_eq_pow_mul_prod_liftDeterminant
-  refine ⟨e, fun ϑ ↦ ?_⟩
-  -- Divide by the identity for `ϑ = 1`, where the norm of the level and the ratios are `1`.
-  have h_one : D.chainDeterminant 1 = C ^ D.targetDim * ∏ j ∈ Icc 1 D.m, D.liftDeterminant 1 j := by
-    simp [h_volume, D.prod_quotientRatio_one, toAutChar_one_and_toTwist_one_and_Q_one]
-  rw [h_volume ϑ, h_one, prod_div_distrib, Complex.ofReal_mul, mul_pow, mul_assoc,
-    mul_div_mul_left _ _ (by simp [hC.ne']), mul_div_assoc]
-
-open scoped ComplexOrder in
-/-- **Factorization of the determinant.** For the data `D`, let `ϑ` be an `m`-fold twist
-(`MFoldTwist`): a twist whose tame part has `ψ_wⁿ` nontrivial for all `w` in `Q` and `1 ≤ n ≤ m`.
-Let `Θ = D.Θ ϑ` be the chain of lifts restricted to the target forms, and `u = goodLift` the lift at
-`1 ≤ j ≤ m` for `ϑ ^ j`, restricted to the good forms on W_j. Then the volumes
-`chainDeterminant ϑ` = det(Θ* Θ) and `liftDeterminant ϑ j` = det(u* u), with * the adjoint, are
-positive. The ratio `chainDeterminant ϑ / chainDeterminant 1` is `(normQ ϑ ^ (e / 2) * ∏_{i < j}
-quotientRatio i j ϑ) ^ targetDim` times the product of the ratios
-`liftDeterminant ϑ j / liftDeterminant 1 j`, with an integer `e` independent of `ϑ`. -/
-theorem exists_chainDeterminant_pos_and_div_chainDeterminant_one_eq :
-    ∃ e : ℤ, ∀ ϑ : D.MFoldTwist,
-      0 < D.chainDeterminant ϑ ∧
-      (∀ j : D.LiftIndex, 0 < D.liftDeterminant ϑ j) ∧
-      D.chainDeterminant ϑ / D.chainDeterminant 1 =
-        (((ϑ.normQ : ℝ) ^ (e / 2 : ℝ) *
-            ∏ i ∈ Ioc 0 D.m, ∏ j ∈ Ioc i D.m, D.quotientRatio i j ϑ : ℝ) : ℂ) ^ D.targetDim *
-          ∏ j ∈ Icc 1 D.m, D.liftDeterminant ϑ j / D.liftDeterminant 1 j := by
-  obtain ⟨e, h_factor⟩ := D.exists_div_chainDeterminant_one_eq
-  exact ⟨e, fun ϑ ↦ ⟨D.chainDeterminant_pos ϑ, D.liftDeterminant_pos ϑ, h_factor ϑ⟩⟩
-
-/-- Let `θ` be a family of twists indexed by the isomorphisms `ι : ℂ ≃ ℚ̄_l` for primes `l`, with
-small ratios: `normQ (θ ι)`, the product of the norms of the places of the twist, is prime to `l`,
-and for every ramified pair the inverse ratios of L-values at the powers `(θ ι) ^ (±j)`,
-`1 ≤ j ≤ m`, have height at most `D.x₁`, the second cut-off of the data. Then the inverses of `normQ
-^ (e / 2) * ∏_{1 ≤ i < j ≤ m} quotientRatio i j` at the `θ ι` form a family of height at most
-`m² * D.t * D.x₁`. -/
-lemma HasSmallRatios.heightLe_inv_rpow_mul_prod_quotientRatio {D : Data P}
-    {θ : PrimePadicIso → D.MFoldTwist} (hθ : D.HasSmallRatios θ) (e : ℤ) :
-    HeightLe (D.m * D.m * (D.t * D.x₁)) fun ι : PrimePadicIso ↦
-      ((((θ ι).normQ : ℝ) ^ (e / 2 : ℝ) *
-        ∏ i ∈ Ioc 0 D.m, ∏ j ∈ Ioc i D.m, D.quotientRatio i j (θ ι) : ℝ) : ℂ)⁻¹ := by
-  have h_height := hθ.heightLe_inv_rpow_mul_prod e
-    (s := (Ioc 0 D.m).sigma fun i : ℕ ↦ Ioc i D.m) fun x hx ↦ D.isRamifiedRatio_of_mem_sigma hx
-  simp only [prod_sigma']
-  -- There are at most `m²` pairs, and a height bound may be increased.
-  refine h_height.mono ?_ fun ι ↦ le_rfl
-  grw [card_sigma_Ioc_le, Nat.cast_mul]
+  let a : D.MFoldTwist → ℂ := c * fun _ ↦ (∏ i, A i)⁻¹
+  have ha : D.HasAbsUpToNormPower a
+      (∏ ij ∈ (Ioc 0 D.m).sigma (fun i : ℕ ↦ Ioc i D.m), D.quotientRatio ij.1 ij.2) := by
+    simpa only [a, prod_sigma', mul_one] using hc.mul (HasAbsUpToNormPower.const (D := D) (∏ i, A i)⁻¹)
+  refine ⟨a, fun {θ} hθ ↦ ?_, fun ϑ ↦ ?_⟩
+  · have h := ha.heightLe_norm_div hθ fun x hx ↦ D.isRamifiedRatio_of_mem_sigma hx
+    refine h.mono (le_trans ?_ (D.le_of_hasLogBound : D.m * D.m * (D.t * D.x₁) ≤ D.b))
+      fun _ ↦ le_rfl
+    grw [card_sigma_Ioc_le, Nat.cast_mul]
+  · let cQ : ℂ := (D.descentPair ϑ 1).twistFactor
+    let rallisDet (i : ℕ) : ℂ := (D.rallisOnGood (D.spaceY 0) (ϑ.pow (i + 1)) (i + 1)).det
+    -- The powers of `ϑ` have the same modulus `Q`, hence the same `c_Q`.
+    have h_liftDet (i : Fin D.m) :
+        D.liftDeterminant ϑ (i + 1) = (A i * cQ) ^ D.targetDim * rallisDet i :=
+      h_lift i (ϑ.pow (i + 1))
+    have h_det : (D.rallisProduct ϑ).det = ∏ i : Fin D.m, rallisDet i := by
+      simp [rallisProduct, rallisDet, map_list_prod, Function.comp_def, prod_range,
+        ← List.prod_toFinset _ List.nodup_range, List.toFinset_range]
+    have h_prod : ∏ j ∈ Icc 1 D.m, D.liftDeterminant ϑ j = ∏ i : Fin D.m,
+      D.liftDeterminant ϑ (i + 1) := by
+      rw [← prod_range fun i ↦ D.liftDeterminant ϑ (i + 1), range_eq_Ico, prod_Ico_add',
+        zero_add, Ico_add_one_right_eq_Icc]
+    have h_eq : D.chainDeterminant ϑ =
+        (c ϑ * (∏ i, A i)⁻¹) ^ D.targetDim * ∏ j ∈ Icc 1 D.m, D.liftDeterminant ϑ j := by
+      calc D.chainDeterminant ϑ = (c ϑ * cQ ^ D.m) ^ D.targetDim * ∏ i : Fin D.m, rallisDet i := by
+              rw [← h_det]
+              exact normDet_sq_eq_pow_mul_det (D.Θ ϑ) (D.rallisProduct ϑ) (h_gram ϑ)
+        _ = (c ϑ * (∏ i, A i)⁻¹) ^ D.targetDim * ∏ i, ((A i * cQ) ^ D.targetDim * rallisDet i) := by
+          simp_rw [prod_mul_distrib, prod_pow, prod_mul_distrib, Fin.prod_const]
+          rw [← mul_assoc, ← mul_pow]
+          field_simp
+        _ = _ := by simp_rw [h_prod, h_liftDet]
+    simpa [a, chainDeterminant, liftDeterminant] using congrArg (fun z : ℂ ↦ (‖z‖ : ℂ)) h_eq
 
 open scoped Classical in
 /-- Let `f` be a representation of the group algebra of `D.chosenGL`, the product of the finite

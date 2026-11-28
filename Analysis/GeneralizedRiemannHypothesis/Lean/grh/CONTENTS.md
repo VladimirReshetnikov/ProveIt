@@ -271,7 +271,7 @@ The heads of these files give an overview of a theory: `Lib/ClassField/Global/Ar
 **A twist for each prime**
 
 - `New/Determinant/Twist/FitTwists` (76): The ratio of twisted to untwisted Hecke L-values, main pairs and regular families of twists
-- `New/Determinant/Twist/LongForms` (151): Theorem C: integral forms are long
+- `New/Determinant/Twist/LongForms` (109): Theorem C: integral forms are long
 
 **Norms of theta lifts**
 
@@ -300,7 +300,7 @@ The heads of these files give an overview of a theory: `Lib/ClassField/Global/Ar
 - `New/Determinant/Chain/Moduli` (266): Ratios of Hecke values and heights of functions of the twist
 - `New/Determinant/Chain/TriangleLifts` (387): Theta lifts as a triangle of arrows: spaces, lifts, descents and the first lift
 - `New/Determinant/Chain/ChainNorms` (587): Norms along the chain of theta lifts and injectivity of ι_ϑ
-- `New/Determinant/Chain/NormOfChain` (292): The volume of ι on the target forms as a product of volumes of theta lifts
+- `New/Determinant/Chain/NormOfChain` (210): The volume of ι on the target forms as a product of volumes of theta lifts
 
 **Auxiliary forms**
 

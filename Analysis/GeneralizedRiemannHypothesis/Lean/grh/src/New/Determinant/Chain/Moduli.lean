@@ -15,6 +15,8 @@ stated with `New.HeightLe c y`: the family y, indexed by the ι : ℂ ≅ ℚ̄_
 
 * `New.Data.lRatioProd`, `New.Data.HasAbsUpToNormPower`: ratios of Hecke values, and the absolute
   value of a function of the twist up to a constant and a power of the norm of Q.
+* `New.Data.HasAbsUpToNormPower.heightLe_norm_div` bounds the height of the normalized scalar norm
+  at families of twists with small ratios. Each ramified factor contributes at most `t x₁`.
 * `New.Data.CriticalPair.isTameFor_mul_and_lValueProd_eq`: for a ramified pair with character ν and
   a twist ξ, the character νξ and its inverse are tame, and their products of `L`-values are
   expressed by the ratios of Hecke values.
@@ -73,9 +75,6 @@ lemma CriticalPair.L_mul_inv (p : D.CriticalPair) (ϑ : D.TameChar) :
       (p.character * ϑ.toAutChar).L ({w : FinPlace D.E | D.IsChosen w} ∪ ϑ.Q) := by
   refine (p.hasWeight.mul ϑ.hasWeight).L_inv fun w hw ↦ ?_
   simp [p.tamePart_eq_one w (fun h ↦ hw (.inl h)), ϑ.tamePart_eq_one w (fun h ↦ hw (.inr h))]
-
-lemma lRatioProd_nonneg (ν : AutChar D.E) (s : ℕ) (ϑ : D.TameChar) : 0 ≤ D.lRatioProd ν s ϑ :=
-  prod_nonneg fun _ _ ↦ div_nonneg (norm_nonneg _) (norm_nonneg _)
 
 /-- For a pair `p = (ν, z)`, the number `lRatioProd` is the product over `1 ≤ i ≤ z` of the ratios
 `CriticalPair.ratio` `= |L(i, (ν ϑ)⁻¹)| / |L(i, ν⁻¹)|` of the pairs `p.lowerPoint i = (ν, i)`; the
@@ -174,26 +173,6 @@ lemma HasAbsUpToNormPower.prod {A : Type} {s : Finset A} {γ : A → D.MFoldTwis
     simpa only [prod_cons] using
       (h a (mem_cons_self a s)).mul (ih fun b hb ↦ h b (mem_cons_of_mem hb))
 
-/-- Let `c` and `f` be a complex and a real function of the `m`-fold twist `ϑ`, and write
-`N(Q) = ϑ.normQ` for the norm of the modulus `Q` of `ϑ`. Suppose `c` has absolute value `f` up to a
-norm power, that is `‖c ϑ‖² = C N(Q)ᵏ (f ϑ)²` with `C` and `k` independent of `ϑ`, and that `f ≥ 0`,
-`f 1 = 1` and `c 1 ≠ 0` at the trivial twist `1`. Then there is an integer `e` with
-`‖c ϑ / c 1‖ = N(Q) ^ (e / 2) * f ϑ` for all `ϑ`. -/
-lemma HasAbsUpToNormPower.exists_norm_div_eq {c : D.MFoldTwist → ℂ} {f : D.MFoldTwist → ℝ}
-    (h_abs : D.HasAbsUpToNormPower c f) (hf_one : f 1 = 1) (hf : ∀ ϑ : D.MFoldTwist, 0 ≤ f ϑ)
-    (hc : c 1 ≠ 0) :
-    ∃ e : ℤ, ∀ ϑ : D.MFoldTwist, ‖c ϑ / c 1‖ = (ϑ.normQ : ℝ) ^ (e / 2 : ℝ) * f ϑ := by
-  obtain ⟨C, k, h_norm⟩ := h_abs
-  have hC : ‖c 1‖ ^ 2 = C := by simp [h_norm, hf_one, toAutChar_one_and_toTwist_one_and_Q_one]
-  refine ⟨k, fun ϑ ↦ ?_⟩
-  have h_sq : ((ϑ.normQ : ℝ) ^ (k / 2 : ℝ)) ^ 2 = (ϑ.normQ : ℝ) ^ k := by
-    rw [← Real.rpow_natCast, ← Real.rpow_mul (Nat.cast_nonneg _), Nat.cast_ofNat,
-      div_mul_cancel₀ _ two_ne_zero, Real.rpow_intCast]
-  refine (pow_left_inj₀ (norm_nonneg _) (mul_nonneg (by positivity) (hf ϑ)) two_ne_zero).1 ?_
-  rw [norm_div, div_pow, div_eq_iff (pow_ne_zero 2 (norm_ne_zero_iff.2 hc)), h_norm ϑ, mul_pow,
-    h_sq, hC]
-  ring
-
 /-- Let `p = (ν, z)` be a critical pair, `e ≠ 0`, and `c` a complex function of the `m`-fold twist
 `ϑ`. Write `Q` for the modulus of `ϑ` and `𝔪 = ϖᵉ Q`, with `(ϖ)` the product of the chosen places.
 Suppose `‖c ϑ‖²` is a constant `C` times `lValueProd` up to `z` for `(ν ϑⁿ)⁻¹` and the places of
@@ -219,16 +198,18 @@ def IsRamifiedRatio (F : D.MFoldTwist → ℝ) : Prop :=
   ∃ (p : D.CriticalPair) (n : D.LiftIndex), p.IsRamified ∧
     ∀ ϑ : D.MFoldTwist, F ϑ = D.lRatioProd p.character p.z (ϑ.pow n)
 
-/-- Let `θ ι` be twists with small ratios: their moduli have norm `N ι = (θ ι).normQ` prime to `ℓ`,
-and the inverse ratios of L-values of ramified pairs at their powers have height at most the cut-off
-`D.x₁`. For `a` in a finite set `s`, let `F a` be a ramified ratio: `F a ϑ` is the product
-`lRatioProd` of the ratios of Hecke values of a ramified pair at `ϑⁿ`, for a fixed `1 ≤ n ≤ m`. Then
-the family `((N ι) ^ (e / 2) ∏_{a ∈ s} F a (θ ι))⁻¹` has height at most `#s · t · x₁`. -/
-theorem HasSmallRatios.heightLe_inv_rpow_mul_prod {A : Type} {s : Finset A}
+lemma IsRamifiedRatio.apply_one {G : D.MFoldTwist → ℝ} (h : D.IsRamifiedRatio G) : G 1 = 1 := by
+  obtain ⟨p, n, -, h_eq⟩ := h
+  rw [h_eq, p.lRatioProd_one_pow]
+
+/-- For twists whose inverse L-ratios have height at most `x₁`, each ramified factor in the
+squared-modulus identity for `c` costs at most `t x₁` in the height of the normalized norm.
+The common constant cancels, and the conductor is a unit at the prime of each embedding. -/
+theorem HasAbsUpToNormPower.heightLe_norm_div {A : Type} {s : Finset A}
     {F : A → D.MFoldTwist → ℝ} {θ : PrimePadicIso → D.MFoldTwist}
-    (hθ : D.HasSmallRatios θ) (e : ℤ) (hF : ∀ a ∈ s, D.IsRamifiedRatio (F a)) :
-    HeightLe (#s * (D.t * D.x₁)) fun ι : PrimePadicIso ↦
-      ((((θ ι).normQ : ℝ) ^ (e / 2 : ℝ) * ∏ a ∈ s, F a (θ ι) : ℝ) : ℂ)⁻¹ := by
+    (hc : D.HasAbsUpToNormPower c (∏ a ∈ s, F a)) (hθ : D.HasSmallRatios θ)
+    (hF : ∀ a ∈ s, D.IsRamifiedRatio (F a)) :
+    HeightLe (#s * (D.t * D.x₁)) fun ι ↦ (‖c 1 / c (θ ι)‖ : ℂ) := by
   -- Each factor is a product of at most `t` ratios, whose inverses have height at most `x₁`.
   have h_factor (a : A) (ha : a ∈ s) :
       HeightLe (D.t * D.x₁) fun ι : PrimePadicIso ↦ ((F a (θ ι) : ℝ) : ℂ)⁻¹ := by
@@ -245,22 +226,30 @@ theorem HasSmallRatios.heightLe_inv_rpow_mul_prod {A : Type} {s : Finset A}
   have h_prod : HeightLe (#s * (D.t * D.x₁))
       (∏ a ∈ s, fun ι : PrimePadicIso ↦ ((F a (θ ι) : ℝ) : ℂ)⁻¹) :=
     (HeightLe.prod h_factor).mono (by simp) fun _ ↦ le_rfl
-  -- The norm of the modulus is prime to the prime of `ι`, so its power does not raise the height.
-  refine (h_prod.rpow_mul le_rfl hθ.coprime fun _ ↦ -(e / 2)).mono le_rfl fun ι ↦ le_of_eq ?_
-  rw [Rat.cast_neg, Real.rpow_neg (Nat.cast_nonneg _), Complex.ofReal_inv, Finset.prod_apply,
-    prod_inv_distrib, ← mul_inv, Complex.ofReal_mul, Complex.ofReal_prod]
-  norm_cast
-
-/-- A function `G` of the twist that is a ramified ratio (`IsRamifiedRatio`) is nonnegative at every
-`m`-fold twist `ϑ`. -/
-lemma IsRamifiedRatio.nonneg {G : D.MFoldTwist → ℝ} (h : D.IsRamifiedRatio G)
-    (ϑ : D.MFoldTwist) : 0 ≤ G ϑ := by
-  obtain ⟨p, n, -, h_eq⟩ := h
-  simpa [h_eq] using lRatioProd_nonneg p.character p.z (ϑ.pow n)
-
-lemma IsRamifiedRatio.apply_one {G : D.MFoldTwist → ℝ} (h : D.IsRamifiedRatio G) : G 1 = 1 := by
-  obtain ⟨p, n, -, h_eq⟩ := h
-  rw [h_eq, p.lRatioProd_one_pow]
+  obtain ⟨C, k, h⟩ := hc
+  by_cases ho : c 1 = 0
+  · apply h_prod.mono le_rfl
+    intro ι
+    simp only [ho, zero_div, norm_zero, Complex.ofReal_zero, map_zero]
+    exact norm_nonneg _
+  have hf_one : (∏ a ∈ s, F a) 1 = 1 := by
+    simpa only [Finset.prod_apply] using prod_eq_one fun a ha ↦ (hF a ha).apply_one
+  have hC : C ≠ 0 := by
+    have heq : ‖c 1‖ ^ 2 = C := by
+      simpa [hf_one, toAutChar_one_and_toTwist_one_and_Q_one] using h 1
+    exact heq ▸ pow_ne_zero 2 (norm_ne_zero_iff.mpr ho)
+  refine h_prod.mono le_rfl fun ι ↦ le_of_eq ?_
+  have hratio : (‖c 1 / c (θ ι)‖ : ℂ) ^ 2 =
+      ((θ ι).normQ : ℂ) ^ (-k) * ((∏ a ∈ s, (F a (θ ι) : ℂ))⁻¹) ^ 2 := by
+    rw [← Complex.ofReal_prod]
+    norm_cast
+    rw [norm_div, div_pow, h, h, hf_one, Finset.prod_apply]
+    have hC' : (C : ℂ) ≠ 0 := by exact_mod_cast hC
+    simp [field, zpow_neg, toAutChar_one_and_toTwist_one_and_Q_one]
+  apply (pow_left_inj₀ (norm_nonneg _) (norm_nonneg _) two_ne_zero).1
+  rw [← norm_pow, ← map_pow, hratio, map_mul, norm_mul, map_zpow₀, norm_zpow,
+    map_natCast, (hθ.coprime ι).norm_natCast_eq_one, one_zpow, one_mul,
+    map_pow, norm_pow, Finset.prod_apply, prod_inv_distrib]
 
 variable (D) in
 /-- The pair of the character `ν = (υ ^ (-Δ) χ) ^ n` and the integer `t`. Here
