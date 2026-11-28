@@ -1,12 +1,7 @@
-import New.UpperBound.Objects.RowChain
+import Lib.General.LinearAlgebra.TensorChains
 
 /-!
-# Orders of block triangular groups and Gram forms of chains in triangles
-
-The group `New.parabolic (New.blockNumber j)` consists of the invertible block upper triangular
-matrices whose diagonal blocks are one copy of `N` and `j` copies of `T`. Its order is
-`#GL N R * (#GL T R) ^ j` times a power of `#R` whose exponent does not depend on the commutative
-ring `R`.
+# Gram forms of chains in triangles
 
 An abstract triangle of spaces `F i n` has arrows `a t i n : F i n → F i (n + 1)` along row `i` and
 `d t i n : F i (n + 1) → F (i + 1) n` down to the next row. The map `j i` embeds `V` in `F i 0`. The
@@ -20,8 +15,6 @@ element, and `d` stands for the adjoint of the map that adds the least element.
 
 ## Main definitions and results
 
-* `New.exists_card_parabolic_blockNumber_eq`: the order of the group of block triangular matrices
-  `New.parabolic (New.blockNumber j)`.
 * `New.Exchange.IsTriangle`, `New.Exchange.weightedChain`: the conditions of a triangle; the
   weighted chain of a row.
 * `New.Exchange.HasSquareModuli`: the moduli of the constants of the squares and the adjoint law.
@@ -32,93 +25,9 @@ element, and `d` stands for the adjoint of the map that adds the least element.
   `S t k` of the arrows `a t k 0`, times a ratio of weights and a constant of modulus `∏ L r k`.
 
 Notions from other files:
-* `New.BlockIndex N T j`, `New.blockNumber j`: the disjoint union of `N` and `j` copies of `T`, and
-  the number of the block of an index (`0` on `N`, and `l` on the `l`-th copy of `T`).
 * `New.compUpTo L j`: for linear maps `L i : M i → M (i + 1)`, the composite
   `L (j - 1) ∘ ⋯ ∘ L 0 : M 0 → M j`.
 -/
-
-/-! ## Order of a group of block triangular matrices -/
-
-namespace New
-
-open Matrix Fintype
-
-variable {N T : Type}
-
-/-- A matrix indexed by `BlockIndex N T (j + 1) = BlockIndex N T j ⊕ T`, the union of `N` and
-`j + 1` copies of `T`, is block upper triangular for the numbering `blockNumber` of the blocks
-exactly when its upper left corner is block upper triangular and its lower left corner vanishes. -/
-lemma blockTriangular_fromBlocks_blockNumber_succ_iff {R : Type*} [Zero R] {j : ℕ}
-    {A : Matrix (BlockIndex N T j) (BlockIndex N T j) R} {B : Matrix (BlockIndex N T j) T R}
-    {C : Matrix T (BlockIndex N T j) R} {D : Matrix T T R} :
-    (fromBlocks A B C D).BlockTriangular (blockNumber (R := N) (T := T) (j + 1)) ↔
-      A.BlockTriangular (blockNumber (R := N) (T := T) j) ∧ C = 0 := by
-  refine ⟨fun h ↦ ⟨fun a b hlt ↦ h (i := .inl a) (j := .inl b) (by simpa [blockNumber] using hlt),
-    Matrix.ext fun a b ↦ h (i := .inr a) (j := .inl b) (by simp [blockNumber])⟩, ?_⟩
-  rintro ⟨hA, rfl⟩ (a | a) (b | b) hlt
-  · exact hA (by simpa [blockNumber] using hlt)
-  · simp [blockNumber, ← Fin.top_eq_last] at hlt
-  · simp
-  · simp [blockNumber] at hlt
-
-variable (N T) [Fintype N] [Fintype T] [DecidableEq T] [DecidableEq N]
-
-/-- An invertible block upper triangular matrix with blocks `N` and `j + 1` copies of `T` is a
-triple: such a matrix with `j` copies of `T`, an arbitrary upper right block and an invertible last
-diagonal block. Hence the orders multiply. -/
-lemma card_parabolic_blockNumber_succ (R : Type*) [CommRing R] (j : ℕ) :
-    Nat.card (parabolic (R := R) (blockNumber (R := N) (T := T) (j + 1))) =
-      Nat.card (parabolic (R := R) (blockNumber (R := N) (T := T) j)) *
-        (Nat.card (Matrix (BlockIndex N T j) T R) * Nat.card (GL T R)) := by
-  let P (k : ℕ) : Subgroup (GL (BlockIndex N T k) R) := parabolic (blockNumber k)
-  let mat (u : P (j + 1)) : Matrix (BlockIndex N T j ⊕ T) (BlockIndex N T j ⊕ T) R :=
-    (u : GL (BlockIndex N T (j + 1)) R).val
-  have h_corners (u : P (j + 1)) :
-      (mat u).toBlocks₁₁.BlockTriangular (blockNumber j) ∧ (mat u).toBlocks₂₁ = 0 := by
-    rw [← blockTriangular_fromBlocks_blockNumber_succ_iff, fromBlocks_toBlocks]
-    exact u.property
-  have h_blocks (u : P (j + 1)) :
-      fromBlocks (mat u).toBlocks₁₁ (mat u).toBlocks₁₂ 0 (mat u).toBlocks₂₂ = mat u := by
-    rw [← (h_corners u).right, fromBlocks_toBlocks]
-  have h_unit (u : P (j + 1)) : IsUnit (mat u).toBlocks₁₁ ∧ IsUnit (mat u).toBlocks₂₂ := by
-    rw [← isUnit_fromBlocks_zero₂₁, h_blocks]
-    exact Units.isUnit _
-  let e : P (j + 1) ≃ P j × Matrix (BlockIndex N T j) T R × GL T R :=
-    { toFun u :=
-        (⟨(h_unit u).left.unit, (h_corners u).left⟩, (mat u).toBlocks₁₂, (h_unit u).right.unit)
-      invFun := fun (x, y, z) ↦
-        ⟨(isUnit_fromBlocks_zero₂₁ (B := y).mpr ⟨x.val.isUnit, z.isUnit⟩).unit,
-          blockTriangular_fromBlocks_blockNumber_succ_iff.mpr ⟨x.property, rfl⟩⟩
-      left_inv u := Subtype.ext (Units.ext (h_blocks u))
-      right_inv := fun (x, y, z) ↦
-        Prod.ext (Subtype.ext (Units.ext rfl)) (Prod.ext rfl (Units.ext rfl)) }
-  rw [Nat.card_congr e, Nat.card_prod, Nat.card_prod]
-
-/-- The group `parabolic (blockNumber j)` of invertible block upper triangular matrices with one
-diagonal block indexed by `N` and `j` diagonal blocks indexed by `T` has order
-`#GL N R * (#GL T R) ^ j * #R ^ k`, with `k` independent of the commutative ring `R`. -/
-lemma exists_card_parabolic_blockNumber_eq.{u} (j : ℕ) :
-    ∃ k : ℕ, ∀ (R : Type u) [CommRing R],
-      Nat.card (parabolic (R := R) (blockNumber (R := N) (T := T) j)) =
-        Nat.card (GL N R) * Nat.card (GL T R) ^ j * Nat.card R ^ k := by
-  induction j with
-  | zero =>
-    refine ⟨0, fun R _ ↦ ?_⟩
-    have h_top : parabolic (R := R) (blockNumber (R := N) (T := T) 0) = (⊤ : Subgroup (GL N R)) :=
-      eq_top_iff.mpr fun g _ a b hlt ↦ by simp [blockNumber] at hlt
-    rw [h_top, pow_zero, pow_zero, mul_one, mul_one]
-    exact Subgroup.card_top
-  | succ j ih =>
-    obtain ⟨k, hk⟩ := ih
-    refine ⟨k + card (BlockIndex N T j) * card T, fun R _ ↦ ?_⟩
-    have h_matrix : Nat.card (Matrix (BlockIndex N T j) T R) =
-        Nat.card R ^ (card (BlockIndex N T j) * card T) := by
-      simp [Matrix, Nat.card_fun, ← pow_mul, mul_comm]
-    rw [card_parabolic_blockNumber_succ, hk, h_matrix]
-    ring
-
-end New
 
 /-! ## Triangles of arrows: injectivity and Gram forms of chains -/
 
@@ -379,7 +288,8 @@ lemma IsTriangle.inner_weightedChain_succ [∀ (t : I) (n : ℕ), NeZero (w t n)
   have chain_x' : X' = (w t (n + 1) / (w t 1 * w t 0 * conj (β t)) : ℂ) • d t i n X := by
     rw [hX, ← h_commutes, ← hx']
   have inner_chain_x' : ⟪X', Y⟫ = w t (n + 1) / (w t 1 * w t 0 * β t) * ⟪d t i n X, Y⟫ := by
-    simp [chain_x', inner_smul_left, mul_comm]
+    rw [chain_x', inner_smul_left]
+    simp [mul_comm]
   have hw (k : ℕ) : (w t k : ℂ) ≠ 0 := NeZero.ne _
   calc
     ⟪X, weightedChain w a t i (n + 1) (j i z)⟫ = w t n * (κ t * ⟪d t i n X, Y⟫) := by
