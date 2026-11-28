@@ -1,0 +1,1113 @@
+\documentclass[11pt,letterpaper]{article}
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage{lmodern,microtype,amsmath,amssymb,amsthm,mathtools}
+\ifdefined\pdfmapfile\pdfmapfile{+euler.map}\fi
+\usepackage[margin=.88in,headheight=15pt,headsep=.19in,footskip=.32in]{geometry}
+\usepackage{booktabs,tabularx,longtable,array,enumitem,xcolor,fancyhdr,needspace}
+\usepackage{xurl}
+\usepackage[colorlinks=true,linkcolor=teal!65!black,citecolor=teal!65!black,urlcolor=teal!65!black]{hyperref}
+\hypersetup{pdftitle={Four copies suffice for local theta sharpness},pdfauthor={OpenAI},pdfsubject={A source-grounded simplification proposal for the Lean proof of RH and Dirichlet GRH},bookmarksnumbered=true}
+\definecolor{ink}{HTML}{173246}
+\definecolor{accent}{HTML}{006F73}
+\definecolor{pale}{HTML}{EDF5F5}
+\definecolor{quiet}{HTML}{52636D}
+\pagestyle{fancy}\fancyhf{}
+\fancyhead[L]{\small\sffamily\color{quiet}CM norm cancellation and local theta sharpness}
+\fancyhead[R]{\small\sffamily\color{quiet}Research proposal}
+\fancyfoot[R]{\small\sffamily\color{accent}\thepage}
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{5pt plus 1pt minus .5pt}
+\setlength{\emergencystretch}{2em}
+\setlist{topsep=4pt,itemsep=3pt,parsep=0pt}
+\renewcommand{\arraystretch}{1.12}
+\raggedbottom
+\clubpenalty=7000\widowpenalty=7000
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{proposition}[theorem]{Proposition}
+\theoremstyle{remark}\newtheorem{remark}[theorem]{Remark}
+\newcommand{\Cp}{\mathbb C_p}
+\newcommand{\Qp}{\mathbb Q_p}
+\newcommand{\Zp}{\mathbb Z_p}
+\newcommand{\Fp}{\mathbb F_p}
+\newcommand{\OO}{\mathcal O}
+\newcommand{\NN}{\mathbb N}
+\newcommand{\A}{\mathcal A}
+\newcommand{\Np}{\mathcal N_p}
+\newcommand{\vp}{v_p}
+\newcommand{\val}{\operatorname{val}}
+\newcommand{\coef}[2]{[z^{#1}]\,#2}
+\newcommand{\Src}[2]{\href{https://github.com/VladimirReshetnikov/ProveIt/blob/89d12dd40424f1217fd818d84877b3da52396a3b/Analysis/GeneralizedRiemannHypothesis/Lean/grh/src/#1}{#2}}
+\newcommand{\PropSrc}[2]{\href{https://github.com/VladimirReshetnikov/ProveIt/blob/89d12dd40424f1217fd818d84877b3da52396a3b/Analysis/GeneralizedRiemannHypothesis/docs/proposals/#1}{#2}}
+\newcommand{\decl}[1]{\textnormal{\small\texttt{\detokenize{#1}}}}
+\newcommand{\keybox}[1]{\par\smallskip\noindent\colorbox{pale}{\parbox{\dimexpr\linewidth-2\fboxsep\relax}{#1}}\par\smallskip}
+\newcommand{\source}[1]{\par{\small\color{quiet}\textsf{Source:} #1}\par}
+\AddToHook{cmd/section/before}{\Needspace{6\baselineskip}}
+\AddToHook{cmd/subsection/before}{\Needspace{4\baselineskip}}
+\begin{document}
+\thispagestyle{empty}
+{\sffamily\bfseries\color{accent} PROOF SIMPLIFICATION\hfill 27 NOVEMBER 2026}\par
+\vspace{.24in}
+{\fontsize{29}{34}\selectfont\bfseries\color{ink}Four copies suffice for\\local theta sharpness\par}
+\vspace{.13in}
+{\Large CM norm cancellation in the Alp\"oge--Claude proof\\of RH and Dirichlet GRH\par}
+\vspace{.18in}
+{\large Analysis of the supplied Lean development}\par
+\vspace{.18in}
+\keybox{\textbf{Recommendation.} Replace cancellation by squares of rational
+$p$-adic scalars with cancellation by local CM norms. This reduces the local
+sharpness construction from twelve copies to four, with \emph{the same valuation
+bound}. First recover the existing twelve-copy interface by zero-degree padding;
+then consider a separate geometric refactor.}
+
+\textbf{Main result of the analysis.} Under the same hypotheses as the
+source's twelve-copy theorem, the paper argument below gives
+\begin{equation*}
+ \boxed{\vp(l!)+\val_4(l)\ \leq\ S_p+2\sum_\tau\vp(B_\tau).}
+\end{equation*}
+Here $S_p$ and $B_\tau$ are the \emph{unchanged} local prime sum and loss
+products of the existing proof. The notation $\val_n(l)\leq r$ is an
+existential coefficient bound, defined precisely in Section~\ref{sec:notation}.
+
+\begin{center}
+\begin{tabular}{lll}
+\toprule
+Prime case & New construction & Copies needed\\
+\midrule
+Split, including $2$ & Norm pair $(1,-1)$ & $2$\\
+Inert, $p>k$ & Two coupling copies; one spanning copy & $3$\\
+Inert, $p\leq k$ & Two coupling copies; two residual copies & $4$\\
+Ramified, $p=d$ & Three rational scales; no near pairs & $3$\\
+\bottomrule
+\end{tabular}
+\end{center}
+
+\textbf{Status.} This is a mathematical replacement argument from named
+theorems in the pinned source, with independently inspected source interfaces,
+an exclusion audit of the existing proposals, and exact finite sanity checks.
+The supplied Lean module is explicitly \textbf{uncompiled}; it is a candidate
+for part of the refactor, not a completed formalization of the four-copy theorem.
+The original development was not rebuilt or kernel-replayed in this session.
+
+\textbf{Source revision.} All repository assertions refer to ProveIt commit
+\begin{center}\small\ttfamily 89d12dd40424f1217fd818d84877b3da52396a3b\end{center}
+The accompanying archive contains this \texttt{.tex}, its compiled PDF,
+candidate Lean code, exact-check scripts and results, and immutable source
+inventories with Git blob hashes.
+\newpage
+\begingroup\small\setlength{\parskip}{0pt}\tableofcontents\endgroup
+\newpage
+
+\section{What was analyzed and what is being proposed}
+\label{sec:scope}
+
+The supplied development proves Mathlib's \decl{RiemannHypothesis} and
+nonvanishing to the right of $\operatorname{Re}s=1/2$ for Dirichlet
+$L$-functions, with the usual exclusion of the principal-character pole.
+Its public zero-on-the-line statements cover every positive modulus and
+primitive or imprimitive Dirichlet characters. In this report, ``GRH'' means
+\emph{this Dirichlet GRH}; no claim about every automorphic or Artin
+$L$-function is being inferred. The public statement file imports only
+Mathlib, and the public proof file connects those statements to
+\decl{New.grh}.\cite{public}
+
+The selected Lean source tree contains 803 files and 477,124 lines, including
+comments and blank lines. It pins Lean 4.35.0 and Mathlib commit
+\texttt{56a005855ea17e0b0958f73ec801ae140b0a1679}. Its source-tree hash is
+\begin{center}\small\ttfamily 55fe9c6cb2e5be421c5871e772b6d736ecb5d164.\end{center}
+That tree agrees with the readable edition of upstream
+\texttt{lsernau/grh-lean} at commit
+\href{https://github.com/lsernau/grh-lean/commit/72fead102f663d5c7a407964a13dc0cf9d977207}{\texttt{72fead102f}}.
+Andrew Sutherland's verification page reports compilation, replay of all
+803 modules, independent checker acceptance, and a successful paranoid
+comparator run for that edition. These are \emph{external verification
+results}, not a replay performed for this report.\cite{verification}
+
+The review followed the reduction to the main determinant inequality, the
+local sharpness-to-global-form bridge, the local formal-group and CM
+integrality arguments on which that bridge relies, and all existing proposal
+manuscripts and plans. It does not claim an independent line-by-line audit
+of the entire development. The detailed contribution is confined to a
+specific arithmetic step whose interfaces can be inspected precisely.
+
+\subsection{Why choose this simplification}
+
+Many natural analytic and linear-algebra simplifications are already
+proposed in the supplied directory. The local derivative sharpness argument,
+in contrast, retains a uniform six-copy construction based on four squares.
+An existing CM integrality theorem is stronger than the rational-square
+specialization used there. Applying its full strength supplies a concrete
+replacement, rather than another suggestion to optimize an asymptotic
+constant or to repackage the endpoint.
+
+The first implementation should replace the proof of a local theorem while
+retaining its external type. This makes the simplification compatible with
+the existing proposals: improvements to spanning, auxiliary-prime choice,
+torsion interpolation and cutoff arguments can be implemented independently.
+No saving in total source size or build time is asserted before an actual
+formalization and measurement.
+
+\section{Where local sharpness enters the proof}
+\label{sec:architecture}
+
+The central comparison bounds one corrected covolume from above and below.
+A short integral source family and sufficiently many Poincar\'e translates
+give an upper bound. Arithmetic height and denominator control give a lower
+bound. With $D$ denoting admissible data, the formal conclusion is
+\begin{equation}
+ D.m\,D.\mathrm{totalRemainder}
+ \leq D.f\,D.a\,(D.\mathrm{logB})^5.
+ \label{eq:main}
+\end{equation}
+The same large main term occurs on both sides and cancels. The finite index
+and the cost of completing the selected family are included in the
+comparison; they cannot simply be dropped.\cite{mainineq}
+
+The admissible lift-chain length satisfies $\sqrt{x}\leq m\leq2\sqrt{x}$.
+The exact relation between the total remainder and the two prime-sum cutoffs,
+together with a prime number theorem at the distant cutoff, converts
+\eqref{eq:main} to
+\begin{equation}
+ R_{q,d}(x)\leq x^{-1/2+\varepsilon}
+ \quad\hbox{for all sufficiently large }x.
+ \label{eq:onesided}
+\end{equation}
+Here $R_{q,d}$ is the centered smoothed sum with nonnegative weights
+$\Lambda(n)(1-\chi_{-d}(n))$ on $n\equiv1\pmod q$.
+The auxiliary prime $d$ is fixed before $x$ tends to infinity. A suitable
+choice of $d$ removes twisted zeros from the relevant rectangle, so that
+Landau's sign-sensitive one-sided argument applies; functional-equation
+reflection then gives the critical line.\cite{endpoint}
+
+The arithmetic lower bound uses a chain-to-single-lift factorization,
+comparison operators, special values and denominator estimates from
+congruences and Selmer groups. The local sharpness calculation supplies
+coefficient witnesses for rank-one theta test vectors. It is the existence
+of a witness at a particular valuation, not merely a divisibility estimate
+in the opposite direction, that is needed.
+
+This distinction explains the target of the proposal. Weakening the local
+leading coefficient would change the main arithmetic term and can destroy
+the cancellation in \eqref{eq:main}. Reducing the number of copies
+\emph{without changing the valuation budget} is safe at that interface.
+The new argument keeps the normal form, the coupling coefficient identity,
+the factorial losses, and the eventual main term intact.\cite{couplings,cases,boundattained}
+
+\subsection{An analytic shortcut that the review does not endorse}
+
+For a fixed quadratic twist, the relevant transform detects the difference
+of untwisted and twisted zero multiplicities. A zero can therefore cancel,
+and a twisted real zero can introduce a real residue with the wrong sign.
+An upper bound alone cannot rule out this possibility: the model remainder
+$-x^{\alpha-1}$ has the desired upper bound for smaller exponents but has a
+negative-residue pole at $\alpha$. Thus replacing the source's twist selection
+with an arbitrary fixed twist is not a valid alternative proof. The existing
+guide and proposal corpus already discuss this obstruction.\cite{endpoint,guide,sparse}
+
+\section{Exclusion audit: how this differs from the existing proposals}
+\label{sec:exclusions}
+
+The audit covered all five bundles and twelve TeX sources, including
+included sections, README files, integration plans, and explicitly proposed
+future work. The inventories in \texttt{sources/} identify every audited
+file by its pinned path and blob hash. The exclusion criterion was broader
+than ``already implemented'': an idea explicitly proposed for future work
+was treated as occupied.
+
+\begin{longtable}{@{}p{.25\linewidth}p{.69\linewidth}@{}}
+\toprule
+Bundle & Ideas treated as already proposed\\
+\midrule
+\endhead
+\PropSrc{centered_theta_lift_simplification/centered_theta_lifts.tex}{Centered theta lifts}
+& Centered covariance, adaptive rank completion, random contraction products,
+continuous rank--height budgets, weaker moment tolerances, charging index by
+new rank, and partial/exterior-power determinant arguments.\\[4pt]
+\PropSrc{proof_simplifications/proof_simplifications.tex}{Proof simplifications}
+& Direct ramified-source rank recurrence; short Dirichlet polynomials and
+mollifiers; quadratic large sieve or Fourier completion; direct smoothed
+Perron estimates at the distant cutoff.\\[4pt]
+\PropSrc{rh-simplifications/rh-simplifications.tex}{RH simplifications}
+& Rank recurrence and its obstruction; simultaneous torsion interpolation,
+including powers of a common character; large-sieve twist choice; endpoint
+assembly and further interpolation-grid refinements.\\[4pt]
+\PropSrc{rh_sparse_theta_proof/sparse_theta_proof.tex}{Sparse theta proof}
+& Reciprocal convexity, sparse fourth-power and compatible dyadic grids,
+window averages, Gaussian theta-tail second moments, divergent auxiliary
+prime subfamilies, data reuse across blocks, and averaged volume bounds.\\[4pt]
+\PropSrc{shorter-theta-lift-proof/shorter_theta_proof.tex}{Shorter theta-lift proof}
+& Centered spanning, elementary quadratic mean squares and Fourier
+completion, a large-sieve alternative, fixed-modulus prime number theorem
+shortcuts, and monotone ceiling interpolation.\\
+\bottomrule
+\end{longtable}
+
+None of these manuscripts or plans proposes using
+\decl{normPairClosure} to replace the six rational-square scales, the
+inert norm-minus-one root of unity below, the split limit pair $(1,-1)$,
+or the resulting four-copy local sharpness theorem. Their occurrences of
+``sharpness'' concern other estimates or the retention of the derivative
+input. The torsion-interpolation proposal chooses specializations for
+Selmer/special-value data; it does not cancel norm weights in a local theta
+product.
+
+The novelty claim is consequently precise and limited: this is a distinct
+proposal \emph{relative to the user's specified corpus at the pinned
+revision}. No claim of priority over all mathematical literature is made.
+
+\section{Notation and the exact coefficient interface}
+\label{sec:notation}
+
+Fix a prime $d\equiv7\pmod8$, the CM field
+$K=\mathbb Q(\sqrt{-d})$, a prime $p$, and the source's chosen embedding
+$\iota_p$ into $\Cp$. Set $\OO=\OO_{\Cp}$. We normalize
+$\vp(p)=1$, so $|a|_p=p^{-\vp(a)}$ for nonzero $a$; negative valuations
+are allowed. For a multi-index $\nu=(\nu_x)$, put
+\[
+ |\nu|=\sum_x\nu_x,\qquad
+ \nu!=\prod_x\nu_x!,\qquad
+ V_p(\nu)=\vp(\nu!)=\sum_x\vp(\nu_x!).
+\]
+
+Let $C$ be the source CM lattice, let $\theta(0)=1$ be its normalized
+translated theta series, and write
+\[
+ g(z)=-\log\theta(z),\qquad g(0)=0,\qquad\theta(z)=\exp(-g(z)).
+\]
+All statements here concern formal series. The source's parameter
+$y=\mathrm{translatedY}$ has $y(0)=0$ and linear coefficient $1$. Define
+\[
+ \A=\OO[[y(z)]]\subset\Cp[[z]].
+\]
+This denotes the image of integral power series under substitution by
+$y(z)$, namely \decl{C.integralSeriesRing}; it need not be identified
+with the ring of series integral in the original coordinate $z$.
+
+For the finite family of linear forms $\mu_j(z)$ and nonnegative
+multiplicities $c_j$, set
+\[
+ \Theta(z)=\prod_j\theta(\mu_j(z))^{c_j},\qquad
+ \A_\mu=\OO[[\,y(\mu_j(z)):j\in J\,]],
+\]
+where $\A_\mu$ is the source's substituted multivariate series ring.
+In particular $\Theta(0)=1$, whether or not $\Theta\in\A_\mu$.
+
+The assertion $\val_n(\nu)\leq r$ will mean exactly that there exist
+$H_i\in\A_\mu$ and multi-indices $\alpha_i$ for $0\leq i<n$ such that
+\begin{equation}
+ \sum_{i<n}\alpha_i=\nu,\qquad
+ p^{-r}\leq\prod_{i<n}\bigl|[z^{\alpha_i}](H_i\Theta)\bigr|_p.
+ \label{eq:leastval}
+\end{equation}
+This is \decl{C.LeastValLE mu c n nu r}. The notation is shorthand for an
+existential proposition; it does not assert that an infimum is attained
+or introduce a new real-valued function.
+
+Two source rules will be used repeatedly. Bounds add under concatenating
+independent copies, and extra degree-zero copies have zero valuation cost:
+\begin{align}
+ \val_n(\nu)\leq r,\ \val_{n'}(\eta)\leq s
+ &\ \Longrightarrow\ \val_{n+n'}(\nu+\eta)\leq r+s,\label{eq:add}\\
+ \val_n(\nu)\leq r
+ &\ \Longrightarrow\ \val_{n+h}(\nu)\leq r\quad(h\geq0).
+ \label{eq:pad}
+\end{align}
+For the second rule take the new $H_i=1$ and $\alpha_i=0$.
+\source{\Src{New/Derivatives/Sharpness/LeastValuation.lean}{LeastValuation},
+lines 259--306: \decl{LeastValLE}, \decl{leastValLE_zero}, and
+\decl{LeastValLE.add}.}
+
+\section{The unused generality: cancellation by CM norms}
+\label{sec:normbalance}
+
+Define the closed set of local norm pairs
+\begin{equation}
+ \Np=\overline{\{(\iota_p(\alpha),\iota_p(\alpha\bar\alpha)):
+                         \alpha\in\OO_K\}}\ \subset\Cp^2.
+ \label{eq:normclosure}
+\end{equation}
+This is exactly \decl{normPairClosure d}. The source proves
+\begin{equation}
+  (\delta,s)\in\Np
+  \quad\Longrightarrow\quad
+  \exp\!\bigl(sg(z)-g(\delta z)\bigr)\in\A.
+  \label{eq:cm_input}
+\end{equation}
+For an actual CM integer this follows from its theta isogeny relation.
+The theorem for limits follows by coefficientwise continuity and closedness
+of the integral-series ring. These are existing, proved source inputs.
+\source{\Src{Lib/General/NumberTheory/PadicLimitsValuation.lean}{PadicLimitsValuation},
+line 169; \Src{Lib/CM/Integrality/LogTheta.lean}{LogTheta}, lines 271--318,
+especially \decl{expSubst_sub_rescale_mem}.}
+
+\begin{lemma}[Norm-balanced theta product]\label{lem:balance}
+Suppose $(\delta_i,s_i)\in\Np$ for $0\leq i<n$ and
+$\sum_i s_i=0$. Then
+\[
+ u(z)=\prod_{i<n}\theta(\delta_i z)\in\A^\times,\qquad u(0)=1.
+\]
+Consequently $U(z)=\prod_{i<n}\Theta(\delta_i z)$ is a unit in $\A_\mu$
+with constant term $1$.
+\end{lemma}
+
+\begin{proof}
+All exponential arguments have zero constant term. Hence formal
+exponentials multiply according to addition of their arguments, giving
+\begin{align*}
+ \prod_i\exp(s_i g(z)-g(\delta_i z))
+ &=\exp\!\left(\Bigl(\sum_i s_i\Bigr)g(z)-\sum_i g(\delta_i z)\right)\\
+ &=\prod_i\theta(\delta_i z).
+\end{align*}
+Each factor on the left belongs to $\A$ by \eqref{eq:cm_input}.
+The product has constant term $1$. Writing it as a series in $y$, its
+formal inverse is again an integral series in $y$ (the coefficient
+recursion divides only by the unit constant term). Let $v\in\A$ satisfy
+$uv=1$.
+
+Substitution in $\mu_j(z)$ gives
+\[
+ U(z)=\prod_j u(\mu_j(z))^{c_j},\qquad
+ U(z)^{-1}=\prod_j v(\mu_j(z))^{c_j}\in\A_\mu.
+\]
+Thus inversion is justified in one variable before substitution. No
+general assertion about units of an arbitrary subring is needed.
+\end{proof}
+
+In particular $(1,1)\in\Np$ and any $(\delta,-1)\in\Np$ give
+\begin{equation}
+ \theta(z)\theta(\delta z)\in\A^\times,
+ \qquad \Theta(z)\Theta(\delta z)\in\A_\mu^\times.
+ \label{eq:two}
+\end{equation}
+The current proof restricts to $(a,a^2)$ with $a\in\Zp$. It represents
+$-1$ by four squares, uses the scales $(1,a_1,a_2,a_3,a_4,0)$, and obtains
+six factors. The last zero is padding. Lemma~\ref{lem:balance} replaces
+this restriction by the natural CM norm coordinate.\cite{leastval}
+
+\section{Local constructions with two or three factors}
+\label{sec:local}
+
+\subsection{Inert odd primes: a root of unity of norm minus one}
+
+Assume $p$ is inert in $K$ and odd. Choose $\zeta\in\Cp$ of exact order
+$2(p+1)$. Since
+\[
+ 2(p+1)\mid p^2-1,
+\]
+we have $\zeta^{p^2-1}=1$ and $|\zeta|_p=1$. Also
+$\zeta^{p+1}$ has order two, so it equals $-1$ in characteristic zero.
+The source theorem
+\decl{mem_normPairClosure_of_pow_eq_one} states, in this inert case,
+\[
+ \zeta^{p^2-1}=1
+ \quad\Longrightarrow\quad
+ (\zeta,\zeta^{p+1})\in\Np.
+\]
+Thus $(\zeta,-1)\in\Np$, and \eqref{eq:two} gives the required
+two-factor unit.
+
+The multipliers are $1$ and $\zeta$, both of norm one. There is no need
+for $\zeta\in\Qp$ or $\zeta^2=-1$. The scalar norm used by the CM
+identity is $\zeta^{p+1}$, not $\zeta^2$.
+Since $d\equiv7\pmod8$, $2$ splits in $K$; moreover the admissible data
+in the application force every nonsplit prime to be at least $13$.
+There is consequently no inert-$2$ case in the theorem being replaced.
+\source{\Src{Lib/CM/FormalGroup/FormalParameter.lean}{FormalParameter}, line 44;
+\Src{New/Reduction/Data/FieldsAndPlaces.lean}{FieldsAndPlaces}, line 162.}
+
+\subsection{Split primes, including two: the closure point \texorpdfstring{$(1,-1)$}{(1,-1)}}
+
+Let $p\OO_K=\mathfrak p\bar{\mathfrak p}$ with distinct prime ideals,
+where $\mathfrak p$ is the place selected by $\iota_p$. For every
+$n\geq1$, the Chinese remainder theorem supplies $\alpha_n\in\OO_K$
+with
+\[
+ \alpha_n\equiv1\pmod{\mathfrak p^n},\qquad
+ \alpha_n\equiv-1\pmod{\bar{\mathfrak p}^{\,n}}.
+\]
+In the chosen embedding, $\iota_p(\alpha_n)\longrightarrow1$ and
+$\iota_p(\bar\alpha_n)\longrightarrow-1$. Multiplication is continuous
+in $\Cp$, so their norm pairs converge to $(1,-1)$. Hence
+\begin{equation}
+ (1,-1)\in\Np,\qquad\theta(z)^2\in\A^\times,
+ \qquad\Theta(z)^2\in\A_\mu^\times.
+ \label{eq:split}
+\end{equation}
+
+This argument applies at $2$: the two primes above $2$ are still distinct.
+It does not divide by $2$ in the coefficient ring. It also does not
+assert the existence of a global CM integer or unit of norm $-1$;
+the point is obtained only in a $p$-adic closure.
+
+A second, elementary description is useful for implementation and checking.
+Let $b=\iota_p(\sqrt{-d})\in\Zp^\times$, which lies in $\Qp$ at a
+split prime. Choose ordinary integers $n_j\to b^{-1}$ and take
+$\alpha_j=n_j\sqrt{-d}$. Then
+\[
+ \iota_p(\alpha_j)\to1,\qquad
+ \iota_p(\alpha_j\bar\alpha_j)=d n_j^2\to d/b^2=-1.
+\]
+At $2$, the needed square root exists because $-d\equiv1\pmod8$.
+The CRT proof avoids introducing that square-root lemma separately.
+
+This local-density result must be added to Lean: it is not a consequence
+of the existing Teichm\"uller-pair theorem alone. At $p=2$, membership
+of $\theta^2$ does not justify membership of $\theta$ by dividing an
+integral square-root recursion by $2$; two copies are retained here.
+\source{\Src{Lib/CM/FormalGroup/PrimeNotation.lean}{PrimeNotation}, line 352,
+\decl{QuadField.star_ne_of_chiK_eq_one}, supplies the distinct-place fact.}
+
+\subsection{The ramified prime: three rational scales}
+
+Here $p=d\equiv3\pmod4$. In $\Fp$, the two sets
+\[
+ \{a^2:a\in\Fp\},\qquad\{-1-b^2:b\in\Fp\}
+\]
+each have $(p+1)/2$ elements, so they intersect. Thus
+$a_0^2+b_0^2=-1$ has a solution. Both coordinates are nonzero, since
+$-1$ is not a square in $\Fp$. Fix an integer lift $b$ of $b_0$.
+Hensel's lemma, applied to $X^2+b^2+1$ at $a_0$, supplies
+$a\in\Zp$ with
+\begin{equation}
+ 1+a^2+b^2=0.
+ \label{eq:ramified}
+\end{equation}
+The derivative $2a_0$ is a unit, so this is an ordinary simple-root lift.
+
+Density of integers in $\Zp$ gives $(t,t^2)\in\Np$ for every
+$t\in\Zp$. Applying Lemma~\ref{lem:balance} to
+$(1,1),(a,a^2),(b,b^2)$ proves
+\[
+ \theta(z)\theta(az)\theta(bz)\in\A^\times
+\]
+and the corresponding three-factor statement for $\Theta$.
+
+There is a precise obstruction to using the same two-factor recipe here.
+Modulo the ramified prime, conjugation acts trivially on the residue field;
+the residue of a norm is therefore a square. It cannot be $-1$.
+Consequently $(\delta,-1)\notin\Np$ for all $\delta$ at this prime.
+Three is minimal for this \emph{norm-balancing recipe with the first pair
+$(1,1)$}. This is not a lower bound for every conceivable sharpness proof.
+
+Crucially, near pairs in the source are necessarily inert. At $p=d$ there
+are no near pairs, hence no second coupling construction to combine with
+these three factors.\cite{nearpairs}
+
+\section{Transferring cancellation to a coefficient witness}
+\label{sec:transfer}
+
+\begin{lemma}[Copy-independent transfer]\label{lem:transfer}
+Suppose $\delta_0=1$, $|\delta_i|_p\leq1$, and
+$U=\prod_{i<n}\Theta(\delta_i z)\in\A_\mu^\times$.
+For every $G\in\A_\mu$, a bound
+$|[z^\nu]G|_p\geq p^{-r}$ implies $\val_n(\nu)\leq r$.
+\end{lemma}
+\begin{proof}
+Take $H_0=GU^{-1}$ and $H_i=1$ for $i>0$. Because $\delta_0=1$,
+\[
+ \prod_{i<n}(H_i\Theta)(\delta_i z)=G(z).
+\]
+Its coefficient at $\nu$ is a finite sum over $\sum_i\alpha_i=\nu$ of
+\[
+ \left(\prod_i\delta_i^{|\alpha_i|}\right)
+ \prod_i[z^{\alpha_i}](H_i\Theta).
+\]
+The first factor has norm at most one. The ultrametric inequality gives
+one summand with norm at least $p^{-r}$, and therefore the required product
+in \eqref{eq:leastval} has norm at least $p^{-r}$.
+\end{proof}
+
+This is the existing \decl{leastValLE_of_rescale}; that theorem already
+allows arbitrary integral scalars in $\Cp$. Its type does not restrict
+the scales to $\Zp$. Only the current constructor for a cancelling product
+has that more restrictive type.\cite{leastval}
+
+\subsection{The same Katz bound with fewer copies}
+
+Define the source scaling exponent and derivative rate by
+\[
+\begin{array}{c|ccc}
+&\text{split}&\text{inert}&\text{ramified}\\ \hline
+\rho_p&1/(p-1)&1/(p^2-1)&1/(2p-2)\\[2pt]
+\gamma_p=1/(p-1)-\rho_p&0&p/(p^2-1)&1/(2p-2).
+\end{array}
+\]
+Assume some linear form $\mu_{j_0}$ has a unit coefficient in every
+coordinate. The source Katz divisibility-limit theorem supplies
+$h\in\A$ with
+\[
+ \vp\bigl(h^{(|\nu|)}(0)\bigr)\leq\gamma_p|\nu|.
+\]
+For $G(z)=h(\mu_{j_0}(z))$, the multinomial formula gives
+\[
+ [z^\nu]G=\frac{h^{(|\nu|)}(0)}{\nu!}
+                   \prod_x\mu_{j_0,x}^{\nu_x}.
+\]
+All coefficients in the last product are units. Thus
+\[
+ \vp([z^\nu]G)\leq\gamma_p|\nu|-V_p(\nu).
+\]
+Apply Lemma~\ref{lem:transfer} with the products constructed above:
+\begin{equation}
+ \val_{c(p)}(\nu)\leq\gamma_p|\nu|-V_p(\nu),\qquad
+ c(p)=\begin{cases}2,&p\ne d,\\3,&p=d.\end{cases}
+ \label{eq:katz}
+\end{equation}
+This is the proof of \decl{leastValLE_of_unit_coefficients} with a
+different cancelling product. No new Katz estimate is needed.
+
+\subsection{The one-copy spanning witness is already in the source}
+
+Suppose each coordinate can be recovered from the forms with integral
+coefficients and a common unit $s$:
+\[
+ \sum_j a_{xj}\mu_j(z)=s z_x,\qquad a_{xj}\in\OO,\quad |s|_p=1.
+\]
+Then $G_x=\sum_j a_{xj}y(\mu_j(z))\in\A_\mu$ has leading homogeneous
+term $s z_x$. Since $\Theta(0)=1$, the coefficient at $z^\nu$ in
+\[
+ \left(\prod_xG_x^{\nu_x}\right)\Theta
+\]
+is $s^{|\nu|}$, a unit. Consequently
+\begin{equation}
+ \val_1(\nu)\leq0.
+ \label{eq:span}
+\end{equation}
+The existing proof of \decl{leastValLE_zero_of_span} constructs exactly
+this assertion as \decl{h_one_copy}, then adds five zero-degree copies.
+Exposing the stronger statement is an interface change, not a new
+mathematical ingredient.\cite{leastval}
+
+\section{The coupling estimate also needs only two copies}
+\label{sec:coupling}
+
+At an inert prime, the existing formal-group analysis writes the scaled
+theta product as
+\[
+ F(z)=\Theta(\varpi z)=W(z)\exp(\kappa\Xi(z)),\qquad
+ \vp(\varpi)=\rho_p,\qquad \kappa=\varpi^{p+1}/p,
+\]
+with $W$ an integral unit and
+$\vp(\kappa)=1/(p-1)-1<0$. The series $\Xi$ and its unit coefficients
+satisfy the existing normal-form hypotheses. A coupling family supplies
+degrees $\nu',\nu''$ and multiplicities $j_\tau$, extended by zero outside
+its set $\Phi_0$ of coupling starts, with
+\[
+ \nu=\nu'+\nu'',\qquad J=\sum_\tau j_\tau,\qquad
+ |\nu''|=J,\qquad |\nu'|\geq pJ.
+\]
+
+The decisive source theorem,
+\decl{IsCouplingFamily.norm_coeff_pairExponent}, is already stated for
+an arbitrary number $n+1$ of copies. It requires $\delta_0=1$ and an
+integral product $\prod_iF(\delta_i z)$ of constant term $1$.
+It does not require six copies or rational $p$-adic scales. The two-factor
+CM product supplies this hypothesis after scaling, because the source
+maps $\A_\mu$ to integral series under $z\mapsto\varpi z$.
+\cite{couplings}
+
+For $\delta=(1,\zeta)$ the theorem applies to
+\[
+ F(z'+z'')F(\zeta z').
+\]
+It states that the valuation of its coefficient at
+$(z')^{\nu'}(z'')^{\nu''}$ is
+$J\vp(\kappa)-V_p(\nu'')$. Undoing the common $\varpi$ scaling and
+applying the integral-substitution coefficient extraction gives
+\begin{equation}
+ \val_2(\nu)\leq
+ \frac{J}{p-1}-J-\rho_p|\nu|-V_p(\nu'').
+ \label{eq:couplingprecise}
+\end{equation}
+From $|\nu|\geq(p+1)J$ and $\rho_p(p+1)=1/(p-1)$, the first
+useful consequence is
+\begin{equation}
+ \val_2(\nu)\leq-J.
+ \label{eq:couplingzero}
+\end{equation}
+Legendre's inequality $V_p(\nu')\leq|\nu'|/(p-1)$ gives the other:
+\begin{equation}
+ V_p(\nu')+V_p(\nu'')+\val_2(\nu)
+ \leq\gamma_p|\nu|-J.
+ \label{eq:couplinggamma}
+\end{equation}
+These are exactly the numerical bounds in the current six-copy wrapper.
+Only the copy count has changed.
+
+\begin{remark}[A check directly in the normal form]
+The monomial degrees in the inert coupling series are
+$(p^a+1)p^b$ with $a$ odd. Modulo $2(p+1)$ this is $p+1$:
+for odd $p,a$, the quotient $(p^a+1)/(p+1)$ is odd, and $p^b$ is odd.
+Thus $\zeta^{(p^a+1)p^b}=-1$ and $\Xi(\zeta z)=-\Xi(z)$.
+It follows directly that $F(z)F(\zeta z)=W(z)W(\zeta z)$ is integral.
+This is a useful consistency check. The CM-norm argument additionally
+places the unscaled product in $\A_\mu$, which is what the residual
+Katz argument requires.
+\end{remark}
+
+\section{The four-copy replacement theorem}
+\label{sec:four}
+
+Keep the exact admissible data $D$, CM lattice, resolution forms,
+multiplicities, and near-weight condition of
+\decl{Data.leastValLE_twelve}. Explicitly, the frame is tight, one
+resolution form has unit coefficients at the chosen place, and the
+multi-index satisfies
+\[
+ \kappa_\tau\leq l_\tau\leq\kappa_\tau+x^{42}.
+\]
+Let
+\begin{align*}
+ n^\sharp&=\lceil6b/k\rceil, & l_\tau^-&=\max(l_\tau-n^\sharp,0),\\
+ B_\tau&=\prod_{j=1}^{n^\sharp}(l_\tau^-+j), &
+ L_p(l)&=\sum_\tau\vp(B_\tau),\\
+ S_p&=D.\mathrm{localPrimeSumTotal}(p), &
+ E_p(l)&=S_p+2L_p(l).
+\end{align*}
+The finite sums over $\tau$ suppress the source's harmless
+$\Phi\times\mathrm{Unit}$ indexing. The $B_\tau$ are positive integers,
+so $L_p(l)\geq0$. These definitions are unchanged.\cite{nearpairs,cases}
+
+More explicitly, the local prime sum is
+\[
+ S_p=a_p\sum_\tau\sum_{e\in I_p}
+       \left(\frac{\kappa_\tau}{p^e}-\kappa_{u(-p^e)\tau}\right)_+,
+ \qquad
+ a_p=\begin{cases}1/2,&p=d,\\1,&p\ne d.\end{cases}
+\]
+Here $u(-p^e)\tau$ denotes the source's partner action, and $I_p$ is empty
+at split primes, consists of positive odd integers at inert primes, and
+of all positive integers at the ramified prime. There is no $\log p$
+factor in this local sum.
+\source{\Src{New/UpperBound/Size/ShortColumns.lean}{ShortColumns}, lines 72--78.}
+
+\begin{theorem}[Four-copy local sharpness]\label{thm:four}
+Under exactly the hypotheses of \decl{Data.leastValLE_twelve},
+\begin{equation}
+ \val_4(l)\leq E_p(l)-V_p(l).
+ \label{eq:four}
+\end{equation}
+The theorem is a paper-level consequence of the stated existing inputs
+and the local constructions in this report. Its new Lean implementation
+is an outstanding formalization task.
+\end{theorem}
+
+\begin{proof}
+Use the same prime cases as the source, separating the ramified prime from
+the small nonsplit case.
+
+\textbf{Split primes.}
+Here $\gamma_p=0$ and $S_p=0$.
+Equation~\eqref{eq:katz} yields $\val_2(l)\leq-V_p(l)$.
+Add two zero-degree copies and use $L_p(l)\geq0$ to obtain
+\eqref{eq:four}. This includes $p=2$.
+
+\textbf{Inert primes $p>k$.}
+The source's coupling family and truncation decompose $l=\nu+\eta$.
+Its unchanged factorial estimate gives
+\[
+ V_p(l)\leq J+S_p+2L_p(l).
+\]
+The coupling witness \eqref{eq:couplingzero} costs two copies and
+valuation $-J$. The tight-frame spanning argument valid in this branch
+supplies \eqref{eq:span} for $\eta$, costing one copy and valuation zero.
+Their concatenation gives
+\[
+ V_p(l)+\val_3(l)\leq V_p(l)-J\leq S_p+2L_p(l).
+\]
+Pad by one copy. The assertion that a nonsplit prime $p>k$ is inert
+uses the original admissible inequality $d\leq k$.
+
+\textbf{Inert primes $p\leq k$.}
+Use the original set of near-pair starts and its exponents $e_\tau$.
+Set $j_\tau=\lfloor l_\tau/p^{e_\tau}\rfloor$ at those starts and
+$j_\tau=0$ elsewhere.
+The source decomposes
+$l=\nu'+\nu''+\eta$, with $\nu'+\nu''$ the coupling degree.
+Combine the two-copy bound \eqref{eq:couplinggamma} with the
+two-copy residual bound \eqref{eq:katz}. By \eqref{eq:add},
+\begin{equation}
+ \val_4(l)\leq\gamma_p|l|-J
+                     -V_p(\nu')-V_p(\nu'')-V_p(\eta).
+ \label{eq:smalladd}
+\end{equation}
+Put $C_0=3f(\log b+2)$.
+Two existing numerical estimates, with no copy count in their statements,
+are
+\begin{align}
+ V_p(l)&\leq V_p(\nu')+V_p(\nu'')+V_p(\eta)+C_0,
+ \label{eq:factorialloss}\\
+ \gamma_p|l|-J+C_0&\leq S_p+L_p(l).
+ \label{eq:nearcompare}
+\end{align}
+Combining them with \eqref{eq:smalladd} gives the slightly stronger
+$V_p(l)+\val_4(l)\leq S_p+L_p(l)$, which implies the stated bound.
+
+\textbf{The ramified prime $p=d$.}
+Here $d\leq k$. A near pair would force inertness, so the near-pair
+set is empty. Take $j=0$ and any unused exponent assignment. The same
+comparison estimate \eqref{eq:nearcompare} applies vacuously to this
+empty family and becomes
+\[
+ \gamma_p|l|+C_0\leq S_p+L_p(l).
+\]
+The three-copy bound \eqref{eq:katz} applies directly to all of $l$;
+there is no coupling block. Since $C_0\geq0$,
+\[
+ V_p(l)+\val_3(l)\leq\gamma_p|l|\leq S_p+L_p(l).
+\]
+Pad by one copy and use $L_p(l)\geq0$.
+\end{proof}
+
+\source{\Src{New/Derivatives/Sharpness/Cases.lean}{Cases}, lines 403,
+526--579, 619--690; \Src{New/Derivatives/Sharpness/NearPairs.lean}{NearPairs},
+\decl{IsNearPair.ne_d} and \decl{IsNearPair.inert}.}
+
+\subsection{Why the same argument does not establish three copies uniformly}
+
+In the small inert case the residual valuation bound must be
+$\gamma_p|\eta|-V_p(\eta)$, which can be negative. For one variable
+with $\eta=p^2$, Legendre's formula gives $V_p(\eta)=p+1$, while
+\[
+ \gamma_p p^2-(p+1)=\frac{p}{p^2-1}-1<0.
+\]
+The one-copy spanning lemma yields only a bound of zero, so it cannot
+replace this residual estimate. The present proof establishes a uniform
+four-copy result; it neither establishes nor rules out a different
+uniform three-copy argument.
+
+\section{Why the local multipliers do not create global height costs}
+\label{sec:global}
+
+The scalars $\zeta$, $a$, and $b$ may depend on $p$ and the chosen
+embedding. This is compatible with the actual quantifiers. They are
+temporary devices for proving \eqref{eq:leastval}, not coefficients that
+must be placed in one global theta test function.
+
+The source theorem \decl{LeastValLE.exists_monomial} replaces each
+arbitrary $H_i\in\A_\mu$ by a monomial
+\[
+ \prod_j y(\mu_j(z))^{e_{ij}}
+\]
+without worsening the relevant coefficient norm. Only finitely many
+monomials can contribute below the specified degree. Expanding each
+integral series and taking an ultrametric maximum selects one; its
+integral coefficient has norm at most one and can be removed.
+The exponents are natural numbers and can be bounded in terms of $|l|$.
+The locally selected CM scales have disappeared by this stage.
+\cite{leastval}
+
+The following \decl{BoundAttained} argument realizes those fixed-function
+monomials as algebraic theta vectors, then uses finite Fourier inversion
+to select an indicator datum. The datum may depend on $p$ and the
+embedding, as it already does in the original proof.
+The common global scalar is chosen \emph{before} the universal quantifier
+over primes and embeddings. In the existing twelve-copy implementation
+it has the shape
+\[
+ t=M^{12f}c_0\prod_\tau B_\tau^2.
+\]
+Proving the four-copy bound and padding it to twelve preserves that
+choice and the conjugate-height bound literally. In particular, the
+proposal adds no global field containing all the local $\zeta$ and asks
+for no simultaneous global norm-minus-one element.\cite{boundattained}
+
+This is an essential compatibility check. If the local scales had survived
+as coefficients in the final global test form, their arithmetic and
+archimedean costs would need a new analysis. The existing extraction
+interface is precisely what makes that extra task unnecessary here.
+
+\section{A concrete Lean integration plan}
+\label{sec:implementation}
+
+\subsection{Stage one: replace the local proof and preserve its public interface}
+
+The recommended first change consists of the following finite sequence.
+\begin{enumerate}
+\item Add the general norm-balanced product lemma next to the current
+square-balanced lemma. Its proof follows the same formal exponential
+identity and calls \decl{expSubst_sub_rescale_mem} for each pair.
+\item Add selectors for an inert norm-minus-one root of unity, the split
+closure point $(1,-1)$, and the ramified three-scale construction.
+The split-density and two-squares/Hensel arguments need new local lemmas.
+\item Generalize the scaled theta product and its unit witnesses to
+integral $\Cp$ scalars and a variable number of copies. Generalize the
+unit-coefficient wrapper over such a witness; do not duplicate the Katz
+proof for each prime case.
+\item Generalize the coupling wrapper over the number of copies. Its
+central coefficient theorem is already generic. Instantiate with two
+copies in the inert case.
+\item Expose the one-copy result already present in
+\decl{leastValLE_zero_of_span}; retain the old six-copy statement as a
+padded corollary if useful to avoid intermediate breakage.
+\item Prove \decl{Data.leastValLE_four}, using the four cases in
+Theorem~\ref{thm:four} and the original numerical estimates.
+\item Derive \decl{Data.leastValLE_twelve} by adding eight degree-zero
+copies with \decl{LeastValLE.add} and \decl{leastValLE_zero}.
+\end{enumerate}
+
+The result of this stage is a simplification of the local proof and a
+stronger intermediate theorem. \decl{BoundAttained}, the common
+normalizing scalar, and the downstream determinant and analytic theorems
+can retain their existing statements and proof bodies.
+The helper \decl{padicInt_sum_four_squares} is used only by the
+six-scale constructor within the selected source tree, so that particular
+four-square/compactness route becomes unnecessary. This does not imply
+that every use of four-square theory disappears from the full dependency
+closure.
+
+\subsection{Stage two: optionally change the actual derivative block}
+
+A separate refactor could parameterize \decl{twelveSpace},
+\decl{twelveTaylor}, the indicator data and their realization lemmas,
+then instantiate the copy count with four. The Fourier multiplier would
+have exponent $4f$ instead of $12f$, and the vacuum factor exponent
+would change from twelve to four. Their rank-dependent positive height
+terms decrease, but the dependent types and the corresponding product
+identities still have to be checked.
+
+In particular the original rank-one lift has block decomposition
+\[
+ 12+4+4+(2z-20)=2z.
+\]
+With a four-coordinate derivative block the compatible decomposition is
+\[
+ 4+4+4+(2z-12)=2z.
+\]
+\emph{The total ambient rank remains $2z$.} The complementary block
+grows; it does not vanish. The source's large lower bound on $z$ leaves
+room for these blocks, and their parities remain even. Rewriting all
+relevant block-character and finite-cardinality identities is nevertheless
+a real implementation task.\cite{rankblocks}
+
+This stage has not been carried out. A global search-and-replace of
+``12'' by ``4'' would not be justified. Nor does the local change shorten
+the main lift chain $m\asymp\sqrt{x}$, improve the RH exponent, or
+remove the Galois/Selmer, period-normalization or seesaw inputs.
+
+\subsection{Files and declarations at the integration boundary}
+
+\begin{longtable}{@{}p{.31\linewidth}p{.63\linewidth}@{}}
+\toprule
+Source file & Intended change or reused interface\\
+\midrule\endhead
+\texttt{LogTheta.lean} & Reuse the existing norm-pair integrality theorem;
+no new theta isogeny theorem.\\[3pt]
+\texttt{FormalParameter.lean} & Reuse the root-of-unity norm-pair lemma;
+add an inert norm-minus-one selector.\\[3pt]
+\texttt{LeastValuation.lean} & Generalize the cancelling product and the
+unit-coefficient wrapper; expose the one-copy spanning lemma.\\[3pt]
+\texttt{Couplings.lean} & Reuse the generic coefficient identity; replace
+six-copy wrappers with a generic or two-copy wrapper.\\[3pt]
+\texttt{Cases.lean} & Add the four-copy theorem, split out ramification,
+and derive the old twelve-copy theorem by padding.\\[3pt]
+\texttt{BoundAttained.lean} & No change required for stage one. Optional
+parameterization for stage two.\\[3pt]
+\texttt{FitTwists.lean} and\newline\texttt{TwistedValueHeights.lean}
+& Stage two only: migrate the derivative and complementary blocks while
+keeping total rank $2z$.\\
+\bottomrule
+\end{longtable}
+
+The archive's \texttt{lean/INTEGRATION.txt} gives the actionable plan,
+and \texttt{sources/source\_anchors.tsv} records exact declaration lines
+and blob hashes. The candidate Lean file covers the basic product,
+two-factor inverse and padding lemmas; it does \emph{not} contain the
+complete selectors, case split, or downstream integration.
+
+\section{Checks performed and what remains to verify}
+\label{sec:checks}
+
+\subsection{Source and mathematical checks}
+
+The repository was pinned before inspection. The source inventories and
+declaration anchors were compared with Git objects at that revision.
+Independent reviews checked the norm-pair argument, the prime cases,
+the generic coupling signature, the exposed one-copy span witness,
+the unchanged error terms, and the local-to-global quantifier order.
+The proposal audit included optional and future-work sections, not only
+the main advertised results.
+
+The source checker in \texttt{sources/audit\_sources.py} can repeat
+the recorded Git and declaration checks against a supplied local checkout.
+It performs no network access. Source matching verifies what was analyzed;
+it is not a substitute for Lean elaboration or kernel replay.
+
+\subsection{Exact finite computations}
+
+The standard-library Python suite in \texttt{checks/} was run with exact
+integer, residue-ring and rational arithmetic. It passed:
+\begin{itemize}
+\item 61 inert cases, including exact order $2(p+1)$, norm $-1$,
+Teichm\"uller lifting, and $\zeta^p=\bar\zeta$;
+\item 55 split cases, including eight cases at $2$, verifying the
+two selected embeddings and the norm-minus-one congruence;
+\item eight ramified cases, checking the two-norm residue obstruction,
+the sum-of-two-squares solutions, and their Hensel lifts;
+\item six formal exponential identities through degree ten, including
+nonzero norm-weight-sum controls and the unit/inverse identity.
+\end{itemize}
+The test parameters are $d=7,23,31,47,71,79,103,127$.
+Unramified primes range through $47$; every listed ramified prime is also
+tested. Odd-prime precision is $p^7$, and split-at-two precision is
+$2^{12}$. At two the script retains all root branches while lifting,
+rather than incorrectly applying simple-root Hensel or choosing a branch
+that may fail to extend. The JSON records witnesses and lifts.
+
+These computations catch sign, order and small-prime mistakes. They do
+not prove the infinitary local-density statements, the CM theta
+integrality input, or the four-copy theorem. Those depend on the
+mathematical arguments above and the existing source lemmas. The formal
+series tests use arbitrary rational scalar examples to check algebra;
+they do not assert that those examples are actual CM norm pairs.
+
+\subsection{Formal status and next validation gate}
+
+No Lean executable was available in the working environment. The included
+candidate module contains no proof placeholders or added axioms, but
+its syntax, typeclass inference and API uses have not been elaborated.
+It should be treated as implementation scaffolding with proposed proof
+terms. An uncompiled file is not formal evidence merely because it has
+no visible \texttt{sorry}.
+
+The next validation gate is to compile the local lemmas against the pinned
+Lean/Mathlib versions, complete the generic wrappers and four-copy theorem,
+then rebuild the unchanged twelve-copy downstream interface. Only after
+that should one measure source/build effects or attempt stage two.
+There is no measured threefold speedup or whole-proof size reduction in
+this report; the factor of three refers to the \emph{local witness copy
+count}, twelve to four.
+
+\Needspace{13\baselineskip}
+\section{Assessment}
+
+The strongest recommendation supported by the review is a focused
+arithmetic refactor: use the CM norm coordinate already present in the
+integrality theorem, construct two cancelling factors at unramified primes
+and three at the ramified prime, and combine the existing generic
+coefficient bounds to prove four-copy sharpness.
+
+The mathematical gain is concrete: the same local valuation budget is
+achieved with fewer auxiliary copies, the universal four-squares
+construction is replaced by elementary local CM choices, and an existing
+one-copy result is exposed instead of discarded by padding. The safe
+integration route lets this coexist with the earlier proposals while
+preserving the exact determinant main term and all global normalization
+interfaces. The remaining work is formalization of this replacement,
+not a new conjectural analytic estimate.
+
+\appendix
+\section{Reproduction and archive contents}
+
+The archive is self-contained for reading, building the PDF, and running
+the finite checks. It does not redistribute the 803-file Lean project or
+the Mathlib cache. Obtain the pinned repository separately to run source
+audits or complete Lean integration.
+
+\begin{center}\small
+\begin{tabularx}{\linewidth}{@{}lX@{}}
+\toprule
+Path & Contents\\\midrule
+\texttt{report.tex}, \texttt{report.pdf} & This report and its compiled form.\\
+\texttt{README.txt} & Status, contents, and reproduction commands.\\
+\texttt{lean/} & Uncompiled candidate, integration plan, attribution and license.\\
+\texttt{checks/} & Exact Python suite, recorded output, detailed JSON witnesses.\\
+\texttt{sources/} & Revision metadata, proposal inventory/exclusions,
+declaration anchors, and offline source audit.\\
+\texttt{SHA256SUMS} & SHA-256 checksums of the delivered contents.\\
+\bottomrule
+\end{tabularx}
+\end{center}
+
+Build the document with a standard TeX installation:
+\begin{verbatim}
+latexmk -pdf -interaction=nonstopmode -halt-on-error report.tex
+\end{verbatim}
+Run the finite checks from the archive root:
+\begin{verbatim}
+python3 checks/check_norm_cancellation.py --output checks/reproduced.json
+\end{verbatim}
+Run the source audit with the path to the ProveIt checkout:
+\begin{verbatim}
+python3 sources/audit_sources.py /path/to/ProveIt
+\end{verbatim}
+The \texttt{lean/INTEGRATION.txt} file explains the candidate-module
+compilation command and the unimplemented pieces. The status markings
+should be retained if the archive is forwarded.
+
+\begin{thebibliography}{20}
+\raggedright
+\bibitem{public}
+ProveIt, pinned revision \texttt{89d12dd4}.
+\Src{Statements.lean}{\texttt{Statements.lean}} and
+\Src{Main.lean}{\texttt{Main.lean}}. Public RH and Dirichlet-GRH statements
+and proofs. Repository README, toolchain and manifest supply version and
+attribution information.
+
+\bibitem{verification}
+Andrew V. Sutherland,
+\href{https://math.mit.edu/~drew/shortgrh/}{Verification of the shorter
+Lean proof of RH and GRH}, MIT, consulted 27 November 2026.
+Upstream revision \texttt{72fead102f663d5c7a407964a13dc0cf9d977207}.
+
+\bibitem{guide}
+\href{https://github.com/VladimirReshetnikov/ProveIt/blob/89d12dd40424f1217fd818d84877b3da52396a3b/Analysis/GeneralizedRiemannHypothesis/docs/guide/theta_lifts_and_dirichlet_zeros.tex}{How theta lifts locate the zeros of Dirichlet $L$-functions},
+the supplied human-readable guide, at the same pinned revision.
+
+\bibitem{mainineq}
+\Src{New/Reduction/MainInequality.lean}{\texttt{New/Reduction/MainInequality.lean}},
+especially \decl{star_inequality} and the file's input/cancellation documentation.
+
+\bibitem{endpoint}
+\Src{New/Reduction/OneSidedBound.lean}{\texttt{New/Reduction/OneSidedBound.lean}};
+\Src{New/Reduction/Zeros/Criterion.lean}{\texttt{New/Reduction/Zeros/Criterion.lean}};
+\Src{New/Main.lean}{\texttt{New/Main.lean}}.
+
+\bibitem{normpairs}
+\Src{Lib/General/NumberTheory/PadicLimitsValuation.lean}{\texttt{PadicLimitsValuation.lean}},
+\decl{normPairClosure} and its Teichm\"uller limit theorem;
+\Src{Lib/CM/FormalGroup/FormalParameter.lean}{\texttt{FormalParameter.lean}},
+\decl{mem_normPairClosure_of_pow_eq_one}.
+
+\bibitem{logtheta}
+\Src{Lib/CM/Integrality/LogTheta.lean}{\texttt{Lib/CM/Integrality/LogTheta.lean}},
+especially \decl{expSubst_sub_rescale_mem}.
+
+\bibitem{leastval}
+\Src{New/Derivatives/Sharpness/LeastValuation.lean}{\texttt{LeastValuation.lean}},
+especially \decl{LeastValLE}, the copy-substitution and monomial-extraction
+lemmas, the six-scale constructor, and the one-copy subproof in
+\decl{leastValLE_zero_of_span}.
+
+\bibitem{couplings}
+\Src{New/Derivatives/Sharpness/Couplings.lean}{\texttt{Couplings.lean}},
+especially \decl{IsCouplingFamily.norm_coeff_pairExponent} and the
+specialized six-copy wrappers.
+
+\bibitem{nearpairs}
+\Src{New/Derivatives/Sharpness/NearPairs.lean}{\texttt{NearPairs.lean}},
+the near-pair restrictions and loss-product definitions.
+
+\bibitem{cases}
+\Src{New/Derivatives/Sharpness/Cases.lean}{\texttt{Cases.lean}},
+especially \decl{gammaPrime_mul_degree_sub_le_localPrimeSumTotal_add},
+the prime cases, and \decl{leastValLE_twelve}.
+
+\bibitem{boundattained}
+\Src{New/Derivatives/Sharpness/BoundAttained.lean}{\texttt{BoundAttained.lean}},
+especially \decl{exists_le_norm_coeff_indicatorDatum} and
+\decl{exists_rpow_neg_localPrimeSumTotal_le_norm_coeff}.
+
+\bibitem{rankblocks}
+\Src{New/Determinant/Twist/FitTwists.lean}{\texttt{FitTwists.lean}},
+\decl{RankOneIndex};
+\Src{New/OneLift/HeckeValues/TwistedValueHeights.lean}{\texttt{TwistedValueHeights.lean}},
+rank-one test-form blocks and heights.
+
+\bibitem{sparse}
+\PropSrc{rh_sparse_theta_proof/sparse_theta_proof.tex}{\texttt{sparse\_theta\_proof.tex}}.
+The other four proposal bundles are linked in Section~\ref{sec:exclusions};
+the complete exclusion inventory is delivered with this report.
+\end{thebibliography}
+\end{document}

@@ -1,0 +1,300 @@
+LOCAL CM-NORM CANCELLATION: INTEGRATION GUIDE
+==========================================
+
+Status
+------
+The accompanying NormPairCancellation_UNCOMPILED.lean is a candidate module.
+It has been compared with the pinned source interfaces but has NOT been
+elaborated, compiled, or replayed through a Lean kernel in this session.
+It contains four small lemmas; it does NOT implement the local selectors,
+the four-copy sharpness theorem, or the complete RH refactor. The report
+supplies the mathematical proofs and identifies the remaining formal work.
+
+No new axiom declarations or unfinished proof terms are provided. Their
+absence does not imply successful elaboration. Treat compilation as an
+outstanding gate, not as a completed check.
+
+Source baseline
+---------------
+Repository: https://github.com/VladimirReshetnikov/ProveIt
+Commit:     89d12dd40424f1217fd818d84877b3da52396a3b
+Project:    Analysis/GeneralizedRiemannHypothesis/Lean/grh
+Toolchain:  leanprover/lean4:v4.35.0
+Mathlib:    56a005855ea17e0b0958f73ec801ae140b0a1679
+
+All source paths below are relative to that project's src/ directory.
+LICENSE, NOTICE and ATTRIBUTION.md are exact copies from that pinned project.
+The candidate's header marks the adapted proof material and the changes.
+
+How to attempt the first check
+-----------------------------
+Use a checkout of the pinned project with its required toolchain and built
+dependencies. For example, from a local checkout:
+
+    cd /path/to/ProveIt/Analysis/GeneralizedRiemannHypothesis/Lean/grh
+    lake env lean --version
+    lake exe cache get
+    lake build
+    lake env lean /absolute/path/to/lean/NormPairCancellation_UNCOMPILED.lean
+
+The last path should name the candidate file from this archive. The preceding
+build is needed only if the imported project modules are not already built.
+Do not infer that the original project's recorded verification checks this
+new module. Keep new build logs and inspect the resulting theorem types and
+axiom lists before claiming verification.
+
+The candidate imports New.Derivatives.Sharpness.LeastValuation. For a merged
+implementation, move the general cancellation lemmas earlier in that file
+or into a new module below it; do not introduce an import cycle. This archive
+uses a separate importing module only to make the first experiment isolated.
+
+Stage 1: abstract the existing cancellation interface
+----------------------------------------------------
+Current definitions use Fin n -> Z_p in scaledThetaProd. The new inert
+multiplier is generally in an unramified quadratic extension of Q_p, hence
+in C_p, and MUST NOT be restricted to Z_p. Change or wrap this interface as
+
+    scaledThetaProdCp C mu c delta
+      = product_i (C.thetaProd mu c).rescale (fun _ => delta_i),
+    delta : Fin n -> C_p.
+
+Provide the following generic consequences:
+
+1. Its constant coefficient is 1.
+2. It equals the product over linear forms mu_j of the one-variable product
+   product_i theta(delta_i z), substituted at mu_j and raised to c_j.
+3. If (delta_i,s_i) belongs to normPairClosure d for every i and sum s_i=0,
+   then the product belongs to C.multiSeriesRing mu.
+4. Under those hypotheses it has an inverse in C.multiSeriesRing mu.
+
+For (4), invert the one-variable constant-one product using the existing
+isSeriesGenerator_translatedY.exists_mul_eq_one, then substitute the inverse
+into each mu_j and take products. An arbitrary constant-one member of an
+arbitrary subring need not be a unit; the series-generator theorem supplies
+the required reason here.
+
+The candidate implements the one-variable norm-product lemma and the
+two-copy product/inverse from a hypothesis (delta,-1) in normPairClosure.
+Its proof adapts the original prod_rescale_theta_mem, replacing delta_i^2
+by the independent CM norm parameter s_i.
+
+For later bounds it is convenient to bundle a cancellation package with:
+  - a positive copy count n;
+  - delta : Fin n -> C_p;
+  - delta_0=1;
+  - norm(delta_i)<=1 for every i;
+  - the scaled product U belongs to C.multiSeriesRing mu;
+  - an inverse of U in that ring;
+  - constantCoeff U=1.
+
+The norm-pair lemma itself does not need the norm bounds. The bounds are
+essential when applying integral substitution and leastValLE_of_rescale.
+
+Stage 2: formalize the local selectors
+------------------------------------
+A. Inert p
+
+Use the existing
+  Lib/CM/FormalGroup/FormalParameter.lean
+    mem_normPairClosure_of_pow_eq_one
+and primeNorm d p=p^2. For odd p choose zeta of order 2(p+1), prove
+
+    zeta^(p+1)=-1,
+    zeta^(p^2-1)=1,
+    norm(zeta)=1.
+
+The divisibility 2(p+1) | p^2-1 uses oddness of p. A primitive root of unity
+exists in C_p by the same roots-of-unity infrastructure already used in
+FormalParameter. The source lemma then yields (zeta,-1) in the closure.
+Take the two scalars (1,zeta). No global field extension is required.
+
+In the admissible-data application, every nonsplit prime is >=13 by
+New/Reduction/Data/FieldsAndPlaces.thirteen_le_of_chiK_ne_one. Never apply
+this inert construction at p=2.
+
+B. Split p, including 2
+
+Use
+  Lib/CM/FormalGroup/PrimeNotation.lean
+    QuadField.star_ne_of_chiK_eq_one.
+Let w be the prime selected by the p-adic embedding. Then w and star(w)
+are distinct maximal ideals. Their n-th powers are coprime. By CRT choose
+alpha_n in O_K with
+
+    alpha_n = 1 mod w^n,
+    alpha_n = -1 mod star(w)^n.
+
+Under the selected embedding, prove alpha_n -> 1 and star(alpha_n) -> -1.
+Use continuity of multiplication and the closure definition to obtain
+(1,-1) in normPairClosure d. Take the two scalars (1,1). This argument
+covers p=2 without dividing by 2. It does not assert the existence of a
+global unit of norm -1 in the imaginary quadratic field.
+
+An optional elementary local-root implementation uses
+beta=(1+sqrt(-d))/2, with polynomial X^2-X+(d+1)/4. At a split prime its
+two residue roots are distinct; Hensel lift them. Solve the two local
+linear equations a+b beta=1 and a+b(1-beta)=-1. The determinant
+2 beta-1 is a unit even at p=2. The CRT route aligns more directly with
+the cited source theorem, so the local-root proof is an alternative
+obligation, not an additional assumption required by the proposal.
+
+C. Ramified p=d
+
+Here p is odd and p=7 mod 8. Prove a_0^2+b_0^2=-1 over F_p by the
+intersection of the two sets of cardinality (p+1)/2 consisting of squares
+and -1 minus squares. Choose a nonzero coordinate. Hensel lift that
+coordinate, keeping the other fixed, to obtain a,b in Z_p with
+a^2+b^2=-1. Use density of integers in Z_p to put the three rational norm
+pairs (1,1), (a,a^2), (b,b^2) in normPairClosure. The scalars (1,a,b)
+form the required three-copy package.
+
+Do not force a two-copy norm-minus-one selector at this prime: modulo d,
+norms are squares and -1 is not a square. The three-copy clause is needed.
+
+Stage 3: generalize the two coefficient mechanisms
+-------------------------------------------------
+A. Unit-coefficient mechanism
+
+Generalize leastValLE_of_unit_coefficients in
+New/Derivatives/Sharpness/LeastValuation.lean to a cancellation package
+with arbitrary positive n. The source proof uses its fixed six copies
+only to obtain the package. It already permits C_p contraction scalars
+in leastValLE_of_rescale.
+
+Keep exactly the current single-curve input katz_divisibility_limit.
+Set H_0=G/U, H_i=1 for i>0, with G(z)=g(mu_i0(z)). The substituted
+product is G, so the same proof gives
+
+    LeastValLE mu c n nu (gamma_p * |nu| - v_p(nu!)).
+
+Instantiate n=2 for split and inert primes, n=3 at the ramified prime.
+
+B. Coupling mechanism
+
+IsCouplingFamily.norm_coeff_pairExponent in
+New/Derivatives/Sharpness/Couplings.lean is already generic over n+1
+scalars in C_p. Generalize exists_prod_rescale_rescale_thetaProd_eq and
+the specialized coupling witnesses, which currently fix that number to
+six. At inert primes instantiate the new two-copy package. Preserve the
+existing leading-coefficient, derivative, factorial and scaling proofs.
+
+C. Span residual
+
+leastValLE_zero_of_span in LeastValuation already proves
+
+    h_one_copy : LeastValLE mu c 1 nu 0
+
+before its last line pads five zero-degree factors. Expose that inner
+result as leastValLE_one_zero_of_span. The old lemma can remain as a
+compatibility wrapper. This stronger one-copy result is used for the
+large-inert-prime residual only. The small-inert-prime residual needs
+the stronger gamma_p*|nu|-v_p(nu!) bound and therefore uses two copies.
+
+Stage 4: prove the exact four-copy theorem
+-----------------------------------------
+Target the identical hypotheses and right side of
+  New/Derivatives/Sharpness/Cases.lean
+    Data.leastValLE_twelve,
+but replace its copy count 12 by 4:
+
+    LeastValLE mu c 4 l
+      (S_p + 2 * sum_tau v_p(B_tau) - v_p(l!)).
+
+Here S_p is localPrimeSumTotal p and B_tau is the unchanged lossProduct
+at the relevant degree. Do not reoptimize the loss constants in this step.
+
+Cases:
+  Split p: generic two-copy bound, gamma_p=S_p=0; pad two copies.
+  Inert p<=k: two-copy coupling plus two-copy residual; use the existing
+    factorial comparison and partner-loss inequalities unchanged.
+  Inert p>k: two-copy coupling plus the one-copy span residual; pad one.
+  Ramified p=d: IsNearPair.ne_d in NearPairs makes the near-pair set
+    empty. Apply the generic three-copy rule directly to the whole degree.
+    In gammaPrime_mul_degree_sub_le_localPrimeSumTotal_add, put e=j=0;
+    the near-pair hypotheses are vacuous. Drop the nonnegative
+    3*f*(logB+2) term, and pad one copy. The scale inequality d<=k is
+    the same one used by the existing proof to show p>k is inert.
+
+The candidate supplies a generic LeastValLE.pad wrapper. It can implement
+the zero-degree padding in all these clauses via LeastValLE.add and
+leastValLE_zero.
+
+Stage 5: preserve the existing global interface first
+----------------------------------------------------
+Reprove leastValLE_twelve by applying the four-copy result and padding
+eight zero-degree copies. Since (4+8)=12, the bound and theorem type are
+identical to the existing interface. Then build the project and inspect
+the main theorem statements and axiom lists.
+
+This route leaves BoundAttained, its global scalar t, the rank-one test
+forms, all determinant statements and the analytic endpoint unchanged.
+It is the recommended first integration. No downstream height claim
+needs to be altered merely to test the local refactor.
+
+Why the local selectors do not create a global-height problem:
+LeastValLE.exists_monomial removes arbitrary integral-series coefficients
+by a finite ultrametric maximum. It returns monomials in the fixed global
+functions y(mu_i z), with natural exponents and coefficient 1. The local
+multiplier does not become a coefficient of the eventual global test
+form. BoundAttained chooses t before the universal quantifier over primes
+and embeddings; only the coefficient/indicator witnesses depend on them.
+
+Stage 6: optional reduction of the global derivative block
+---------------------------------------------------------
+After the compatibility route is checked, parameterize the definitions
+now named twelveSpace, twelveTaylor and indicatorDatum, and their Fourier
+coefficient bridge in BoundAttained, by a positive copy count h. With h=4:
+
+    vacuumScale^12 -> vacuumScale^4,
+    M^(12*f)      -> M^(4*f).
+
+The loss product remains the same. The positive rank-dependent terms in
+the conjugate bound decrease from
+12*f*log M + 12*constantBound*q1^2
+to
+4*f*log M + 4*constantBound*q1^2.
+
+In New/Determinant/Twist/FitTwists.RankOneIndex, replace the decomposition
+
+    (Fin 12 + Fin 4 + Fin 4) + Fin (2*z-20)
+
+with
+
+    (Fin 4 + Fin 4 + Fin 4) + Fin (2*z-12).
+
+The total ambient rank stays 2*z; all four blocks remain even. The last
+empty-row character now has rank 2*(z-6). In the application z>m>=10000
+and z<=r, so the required positivity and upper bound by t=5*r remain
+available. Update all embedding maps, Fin cardinality calculations,
+normalizing powers and dependent types in TwistedValueHeights and its
+consumers. This is a broader migration, not an implemented result of
+the supplied candidate. Do not blindly replace every numeric occurrence
+of 12 or 20: many numbers elsewhere have unrelated mathematical roles.
+
+This changes an auxiliary derivative block. It does not shorten the
+main chain of m theta lifts, change its total target rank, improve the
+one-half exponent, or bypass the deep arithmetic inputs.
+
+Static review of the candidate and remaining risks
+-------------------------------------------------
+- The exponential product identity follows the exact source proof; its
+  norm parameters are generalized from rational squares to the h_pair
+  hypotheses. The source expSubst_sum interface was checked.
+- The two-copy proof uses the exact expSubst_sub_rescale_mem and
+  expSubst_sub_rescale_eq declarations from LogTheta.
+- The inverse proof explicitly supplies constantCoeff_taylorVia_theta
+  to simplification; this lemma is not marked simp in its declaration.
+- The padding proof follows the source's existing h_one_copy.add padding.
+- The candidate's proof terms still depend on Lean elaboration of the
+  power-series rescaling and finite-product expressions, coercions between
+  one-variable and multivariable series, simplifier orientation and
+  namespace resolution. These have not been checked by a Lean executable.
+- The Cp-valued multivariate wrappers, local selectors, generalized
+  coefficient lemmas and four-copy case theorem are specifications in this
+  guide, not hidden declarations in the candidate.
+- A successful check of the four small candidate lemmas would verify only
+  those lemmas. Full integration, downstream compilation and the theorem
+  audit are separate remaining gates.
+
+Finite exact checks in the archive support algebraic identities and
+edge-case handling. They do not discharge any of those Lean obligations.

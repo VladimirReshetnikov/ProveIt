@@ -1,0 +1,228 @@
+\documentclass[11pt]{article}
+\usepackage[T1]{fontenc}
+\usepackage{lmodern,amsmath,amssymb,amsthm,mathtools,booktabs,array,tabularx,geometry,xcolor,hyperref,microtype}
+\geometry{letterpaper,margin=0.90in}
+\hypersetup{pdftitle={A nearest-pole proof of the analytic endpoint},pdfauthor={Research note for ProveIt},colorlinks=true,linkcolor=blue!55!black,urlcolor=blue!55!black,citecolor=blue!55!black}
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{corollary}[theorem]{Corollary}
+\newtheorem{example}[theorem]{Example}
+\theoremstyle{remark}\newtheorem{remark}[theorem]{Remark}
+\newcommand{\R}{\mathbb R}\newcommand{\C}{\mathbb C}\newcommand{\N}{\mathbb N}
+\newcommand{\res}{\operatorname{Res}}\newcommand{\ord}{\operatorname{ord}}
+\newcommand{\Rea}{\operatorname{Re}}\newcommand{\abs}[1]{\left|#1\right|}
+\newcommand{\repo}{https://github.com/VladimirReshetnikov/ProveIt/blob/ef7d441dcb37ea944b7ac15731bb766f2e1354ea/Analysis/GeneralizedRiemannHypothesis/}
+\newcommand{\src}[3]{\href{\repo Lean/grh/src/#1.lean\#L#2}{#3}}
+\newcommand{\guide}[2]{\href{\repo docs/guide/theta_lifts_and_dirichlet_zeros.tex\#L#1}{#2}}
+\title{A nearest-pole proof of the analytic endpoint\\\large A finite-disk replacement for Landau's lemma in the theta-lift proof of RH and Dirichlet GRH}
+\author{Research note for ProveIt}
+\date{27 November 2026}
+\begin{document}
+\maketitle
+\begin{abstract}
+The Alp\"oge--Claude proof produces a one-sided bound for a smoothed prime-power remainder. Its final analytic step uses a positive measure, an abscissa of exponential integrability, a meromorphic identity theorem, and Landau's lemma. We give a direct replacement: choose a real Taylor center sufficiently far to the right, and apply the inequality $|G(z)|\le G(|z|)$ to the nearest genuine pole of a meromorphic function whose Taylor coefficients are nonnegative. This elementary meromorphic case of the Pringsheim principle yields a sharper local statement: a nearest pole forces a real pole on the same circle, whose inward radial residue dominates every other residue on that circle. Nonnegative Taylor coefficients of the corrected prime transform follow either from a local exponential expansion or from finite differences, with no need to extend a Laplace integral past its known domain. We recover the exact existing one-sided criterion and give a weaker twist-selection contract involving real zeros and the single proposed zero only. All geometric, arithmetic, determinant and far-cutoff inputs remain unchanged. The replacement is proved on paper; a Lean integration plan and exact finite regression tests accompany this note.
+\end{abstract}
+\tableofcontents
+\section{Scope and the proof interface}
+The goal is a mathematical simplification that remains useful after the ten existing proposal packages are implemented. The source snapshot is ProveIt commit \texttt{ef7d441d} (full hash in the source manifest). We use the source statements, not merely the guide. The source-level target is the final lemma \src{Lib/Analytic/Landau}{217}{\texttt{New.IsPolar.landau}}, called by \src{New/Reduction/Zeros/Criterion}{37}{\texttt{LFunction\_ne\_zero\_of\_}\allowbreak\texttt{primeRemainder\_le}}. The guide's \guide{1754}{Section 17} explains the original endpoint; its \guide{1947}{abscissa argument} is precisely what is replaced here.
+
+For fixed modulus $Q$ and an admissible prime $d$, let $\eta_d(n)=(n/d)$ and set
+\begin{align*}
+ \lambda(n)&=\Lambda(n)(1-\eta_d(n))\mathbf1_{n\equiv1\bmod Q},\\
+ R_{d,Q}(x)&=\sum_{n\le x}\lambda(n)(1/n-1/x)-\frac{\log x}{\varphi(Q)}-c_{d,Q}.
+\end{align*}
+Here $c_{d,Q}=\Rea G_{d,Q}(1)$, in the notation of \src{New/Reduction/Zeros/PrimeError}{56}{\texttt{logDerivMean}}. The proof's deep part yields, for every $\varepsilon>0$ and fixed admissible $d$,
+\begin{equation}\label{one}
+ R_{d,Q}(x)\le x^{-1/2+\varepsilon}\qquad(x\text{ sufficiently large}).
+\end{equation}
+It uses a CM field, a chain of theta lifts, short integral forms, a spanning estimate, and a lower determinant/height estimate. The key inequality is \src{New/Reduction/MainInequality}{87}{\texttt{star\_inequality}}, namely $m\,\mathrm{rem}\le fa(\log b)^5$. In the source's notation,
+\[
+ \mathrm{rem}=a|\Phi_b|\big(R_{d,Q}(x)-R_{d,Q}(x_1)\big)+a|\Phi_a|R_{d,1}(x_1).
+\]
+The estimates $m\ge\sqrt{x}$, $|\Phi_a|/|\Phi_b|\le\log b$, and a classical prime number theorem at the distant cutoff $x_1$ give \eqref{one}; see \src{New/Reduction/OneSidedBound}{33}{\texttt{Data.primeRemainder\_le}} and \src{New/Reduction/OneSidedBound}{200}{\texttt{eventually\_primeRemainder\_le\_rpow}}. These expensive inputs are not replaced by the present note. In particular we do not claim an elementary proof of RH.
+
+The next input is a meromorphic continuation. Put $E(v)=R_{d,Q}(e^v)$ and denote the continuation of
+\begin{equation}\label{phi}
+ \Phi(s)=\int_0^\infty E(v)e^{(1-s)v}\,dv\qquad(\Rea s>2)
+\end{equation}
+by the same letter. Its only possible poles in $\Rea s>0$ are simple, and, for $s\ne1$ in that half-plane, the residue is
+\begin{equation}\label{residue}
+ r_d(s)=\frac{n(s)-n_d(s)}{\varphi(Q)s(1-s)},\quad
+ n(s)=\sum_{\chi\bmod Q}\ord_s\mathcal L_\chi,\quad
+ n_d(s)=\sum_{\chi\bmod Q}\ord_s\mathcal L_{\chi\eta_d}.
+\end{equation}
+Here $\mathcal L_\chi$ is the entire regularization of $L(s,\chi)$ (multiply by $s-1$ for the principal character and extend at $1$). A zero order is zero at a nonzero value. The continuation is regular at $1$; its residue there is defined to be zero. This is exactly \src{New/Reduction/Zeros/PrimeError}{414}{\texttt{isPolar\_primeRemainder}}. The abstract definition \src{Lib/Analytic/EntireLFunction}{76}{\texttt{IsPolar E r}} also supplies measurability and $|E(v)|\le Ce^v$ on $v\ge0$.
+
+The original strategy fixes $\rho$ with $\Rea\rho>\beta>1/2$, selects $d$ with no twisted zero in a rectangle containing the real segment and $\rho$, and proves that the real residues of $\Phi$ are nonnegative for $s>\beta$. A positive-measure Landau lemma then implies $r_d(\rho)=0$. We keep the selection as an available black box, but replace the latter argument and identify exactly how much selection is needed.
+
+\section{A finite-disk pole domination principle}\label{sec:disk}
+Meromorphic functions in the following statements are understood as meromorphic germs, with removable singularities filled in. This convention matters in Lean, where total functions can have arbitrary values at isolated points.
+
+\begin{theorem}[Nearest-pole domination]\label{thm:pole}
+Let $G$ be meromorphic on an open neighborhood of the closed disk $|z|\le D$, holomorphic at $0$, and have at least one genuine pole in that disk. Suppose its Taylor coefficients at $0$ are real and nonnegative. Let $r$ be the smallest modulus of a pole in the disk. Then $r>0$, the positive real point $r$ is a pole, and if all poles on $|z|=r$ are simple, then
+\begin{equation}\label{dom}
+ -\res_{z=r}G(z)\ \ge\ \abs{\res_{z=w}G(z)}>0
+ \qquad (|w|=r,\ w\text{ a pole}).
+\end{equation}
+In particular the residue at $r$ is a strictly negative real number.
+\end{theorem}
+\begin{proof}
+Poles are isolated, so there are finitely many in the compact disk and the minimum exists. On $|z|<r$ the holomorphic representative equals its Taylor series $G(z)=\sum_{k\ge0}a_kz^k$, where $a_k\ge0$. Thus for $0<t<r$ and $|w|=r$,
+\begin{equation}\label{radial}
+ \abs{G(tw/r)}\le\sum_{k\ge0}a_kt^k=G(t).
+\end{equation}
+If $w$ is a pole, the left side tends to infinity as $t\uparrow r$. Hence $r$ cannot be a regular point (including a removable singularity). In the simple-pole case multiply \eqref{radial} by $r-t>0$ and take the limit. Since $tw/r-w=-(r-t)w/r$ and $|w/r|=1$, the limit on the left is $|\res_wG|$. On the right it is $-\res_rG$. The claimed inequality follows.
+\end{proof}
+
+This is a particularly short meromorphic specialization of the classical Vivanti--Pringsheim theorem for power series with nonnegative coefficients \cite{FS}. It is not a claim of a new general theorem in analytic combinatorics. In contrast to the general theorem, no continuation across a radius of convergence via a second Taylor expansion is needed: a pole diverges radially, and the triangle inequality alone suffices. The residue bound in \eqref{dom} follows from the same comparison.
+
+\begin{example}[Sharpness]\label{ex:sharp}
+$G(z)=1/(1-z^4)$ has nonnegative coefficients (equal to $1$ in degrees divisible by four and zero otherwise), and four simple poles on $|z|=1$. Each residue has modulus $1/4$, so \eqref{dom} is sharp even for nonreal poles. For $G(z)=1/(1+z^2)$ the two nearest poles are $\pm i$ with no positive real pole; its alternating coefficients show why the positivity premise cannot be omitted.
+\end{example}
+\begin{remark}
+The same proof works for higher-order poles: the positive real pole has order at least that of every pole on the first circle; if the orders agree, their leading Laurent coefficients obey the corresponding inward radial inequality. The source needs only simple poles, so this extension is unnecessary for integration.
+\end{remark}
+
+\section{Positive coefficients without continuing an integral}\label{sec:positive}
+Let $E$ be real measurable on $[0,\infty)$, $|E(v)|\le Ce^v$, and suppose $E(v)\le e^{(\beta-1)v}$ for all sufficiently large $v$, with $\beta>0$. Choose $K\ge1$ sufficiently large that
+\begin{equation}\label{density}
+ D(v):=K e^{\beta v}-e^vE(v)\ge0\qquad(v\ge0).
+\end{equation}
+For example, if the eventual bound holds for $v\ge V\ge0$, one can take $K=\max(1,C e^{2V})$ (enlarge $C$ to be nonnegative). On the initial interval $e^vE(v)\le C e^{2v}$, while $e^{\beta v}\ge1$. This is the elementary estimate in the old \texttt{exists\_mul\_exp\_le}.
+
+Assume \eqref{phi} has a meromorphic continuation as in \texttt{IsPolar}. Define
+\[
+ F(s)=\frac{K}{s-\beta}-\Phi(s),\qquad G(z)=F(A-z)
+\]
+for a real $A>\max(2,\beta)$. For $\Rea s>\max(2,\beta)$ we have $F(s)=\int_0^\infty D(v)e^{-sv}\,dv$, by ordinary integration of the exponential and \eqref{phi}. We need this identity only in that initial half-plane. In particular $F$ is holomorphic there by the local estimates below, and all its genuine singularities in $\Rea s>\beta$ are simple. The pole at $\beta$ of the correction is outside the domain under consideration.
+
+\begin{lemma}[Local Taylor positivity]\label{lem:positive}
+The Taylor coefficients of $G$ at zero are real and nonnegative. More explicitly,
+\begin{equation}\label{coeff}
+ a_k=\frac1{k!}\int_0^\infty D(v)e^{-Av}v^k\,dv\ge0.
+\end{equation}
+\end{lemma}
+\begin{proof}
+Take $0<\delta<A-\max(2,\beta)$. For $|z|\le\delta$,
+\[
+ \sum_{k\ge0}D(v)e^{-Av}\frac{|zv|^k}{k!}
+ \le D(v)e^{-(A-\delta)v}
+ \le K e^{-(A-\delta-\beta)v}+C e^{-(A-\delta-2)v}.
+\]
+The last expression is integrable. Expand $e^{zv}$ inside the defining integral for $G(z)$ and use dominated convergence to integrate the partial sums. The resulting convergent power series proves holomorphy and \eqref{coeff}. No assertion of convergence of the integral near the eventual pole is made.
+\end{proof}
+
+\subsection{A finite-difference alternative for Lean}
+One may avoid interchange of an infinite series and an integral even in Lemma~\ref{lem:positive}. For $n\ge0$, $h>0$ and $nh<A-\max(2,\beta)$, the finite forward difference satisfies
+\begin{align*}
+ \Delta_h^nG(0)&=\sum_{j=0}^n(-1)^{n-j}\binom njG(jh)\\
+ &=\int_0^\infty D(v)e^{-Av}(e^{hv}-1)^n\,dv\ge0.
+\end{align*}
+Only finite linearity of the integral and the binomial theorem were used. For a function analytic at $0$, the Taylor expansion through order $n$ gives
+\begin{equation}\label{difflim}
+ \lim_{h\downarrow0}h^{-n}\Delta_h^nG(0)=n!a_n.
+\end{equation}
+Indeed the coefficient of $h^k$ in the difference for the monomial $z^k$ is $\sum_j(-1)^{n-j}\binom nj j^k$, zero for $k<n$ and $n!$ for $k=n$. This follows by applying the unit-step difference $n$ times to the polynomial $X^k$, each application reducing degree by one and multiplying the leading coefficient by the old degree. The Taylor remainder is $O(h^{n+1})$ for each of the finitely many $j$. For $n=0$ the formula is simply $G(0)\ge0$. Thus the difference quotient has a nonnegative real limit. In the Lean route one can first obtain local analyticity from the existing MGF analytic lemma at the single center, or directly from holomorphy of an absolutely convergent Laplace transform there; there is no need for a global integrability set. If using the local MGF Taylor derivative formula directly is shorter in Mathlib, it is also valid. The finite-difference route is a separate option, not an extra prerequisite.
+
+\section{The replacement for the source Landau lemma}\label{sec:landau}
+\begin{theorem}[One-sided bound, finite-disk version]\label{thm:local}
+Assume the hypotheses of Section~\ref{sec:positive}, including meromorphic continuation of $\Phi$ with at most simple poles in $\Rea s>0$. Let $\rho$ have $u=\Rea\rho>\beta$, and choose a real $A>\max(2,\beta)$ with
+\begin{equation}\label{geometry}
+ D_0=|A-\rho|<A-\beta.
+\end{equation}
+If $\Rea r_\Phi(x)\ge0$ for real $x$ in $[A-D_0,A]$, then $r_\Phi(\rho)=0$. Here $r_\Phi$ is the residue of $\Phi$, zero at regular points.
+\end{theorem}
+\begin{proof}
+If the residue at $\rho$ is nonzero, $G(z)=K/(A-z-\beta)-\Phi(A-z)$ has a genuine simple pole at $w_0=A-\rho$. The closed disk $|z|\le D_0$ is contained in $\Rea(A-z)>\beta$. Lemma~\ref{lem:positive} supplies nonnegative Taylor coefficients. Apply Theorem~\ref{thm:pole} to obtain a real pole $r\in(0,D_0]$ with $\res_rG<0$. But the change of variable $s=A-z$ and the minus sign in $-\Phi$ give
+\begin{equation}\label{sign}
+ \res_{z=r}G=\res_{s=A-r}\Phi=r_\Phi(A-r).
+\end{equation}
+For clarity, $-r_\Phi(A-r)/(A-z-(A-r))=r_\Phi(A-r)/(z-r)$; the rational correction is regular. This contradicts the assumed sign on the interval. If $D_0=0$ then $\rho=A$ lies in the initial domain of holomorphy, so there is no pole in the first place.
+\end{proof}
+
+The choice of $A$ is always possible. Writing $t=\Im\rho$, for every $\beta<u$ it suffices to take
+\begin{equation}\label{center}
+ A>\max\left(2,\,\beta+\frac{(u-\beta)^2+t^2}{2(u-\beta)}\right).
+\end{equation}
+Indeed $(A-\beta)^2-|A-\rho|^2=2(A-\beta)(u-\beta)-(u-\beta)^2-t^2>0$.
+\begin{corollary}[Exact existing interface]\label{cor:landau}
+If \texttt{IsPolar E r} holds, $\beta>0$, $E(v)\le e^{(\beta-1)v}$ eventually, and $\Rea r(x)\ge0$ for all real $x>\beta$, then $r(\rho)=0$ for every $\Rea\rho>\beta$.
+\end{corollary}
+This is the statement of \src{Lib/Analytic/Landau}{217}{\texttt{IsPolar.landau}} verbatim in mathematical notation. Proof: choose $A$ by \eqref{center} and apply Theorem~\ref{thm:local}.
+
+\subsection{A stronger contrapositive and a genuinely weaker selection contract}
+The disk proof also localizes any obstruction. Suppose the one-sided estimate holds and $r_\Phi(\rho)\ne0$ for $u=\Rea\rho>\beta$. For each sufficiently large $A$, the proof yields a real pole $x_A$ with
+\begin{equation}\label{lower}
+ x_A\ge A-|A-\rho|=u-\frac{t^2}{\sqrt{(A-u)^2+t^2}+A-u}\qquad(A>u),
+\end{equation}
+where $r_\Phi(x_A)<0$. If $\rho$ is real, the expression is $u$. If $\rho$ is not real, it approaches $u$ from below. Moreover, every real pole is at most $\max(2,\beta)$, since the initial integral is holomorphic further right. The real genuine poles in any compact interval $[\eta,\max(2,\beta)]$, $\beta<\eta<u$, are finite. Consequently some real pole $x\ge u$ must have strictly negative residue: otherwise finitely many possible $x_A<u$ would have a maximum strictly smaller than $u$, contradicting \eqref{lower}. This is a real-pole obstruction theorem. It is consistent with the original abscissa argument, but here follows from finite disks and elementary geometry.
+
+For a given proposed zero, the real sign need only hold on $[A-D_0,A]$; one does not need any hypothesis on off-real poles other than the target itself. In particular a sufficient test is sign control at every real $x\ge\eta$, for any chosen $\eta\in(\beta,u)$: select $A$ using \eqref{center} with $\eta$ in place of $\beta$. In the prime setting this becomes an inequality of multiplicities, not necessarily zero-freeness of the twisted factors.
+
+\section{Return to the five RH/GRH statements}\label{sec:grh}
+Fix $Q$ and the admissible progression for $d$, and assume the arithmetic estimate \eqref{one}. Suppose an original factor has a zero at $\rho$ with $\Rea\rho=u>1/2$, $\rho\ne1$. Choose $1/2<\beta<\eta<u$. The existing selection lemma \src{Lib/Analytic/QuadraticTwist}{796}{\texttt{exists\_entireL\_quadTwist\_ne\_zero}} (or any of the already proposed replacements of that lemma) produces a prime $d$ in the prescribed class for which $n_d(s)=0$ whenever $\Rea s\ge\eta$ and $|\Im s|\le |\Im\rho|$. In particular, we obtain only the following two facts that are needed:
+\begin{equation}\label{weak}
+ \boxed{\quad n_d(\rho)\ne n(\rho),\qquad n_d(x)\le n(x)\quad (\eta\le x<1,\ x\text{ real}).\quad}
+\end{equation}
+These facts are a strictly weaker sufficient selection contract than absence of every twisted zero throughout the rectangle. The existing selector implies them because $n(\rho)>0$. For real $x\ge1$ the entire regularized Dirichlet factors are nonzero, so $r_d(x)=0$. For $\eta\le x<1$, the denominator of \eqref{residue} is positive and \eqref{weak} gives $r_d(x)\ge0$. The actual criterion also works with $\eta=\beta$ and the existing selector verbatim; the intermediate $\eta$ just exhibits the weaker contract.
+
+Now fix this $d$ and apply \eqref{one} with $\varepsilon=\beta-1/2$. Substitution $x=e^v$ gives the required eventual exponential bound. No uniformity in $d$ is required. Choose the Taylor center using \eqref{center} with $\eta$; Theorem~\ref{thm:local} implies $r_d(\rho)=0$. But \eqref{weak} and \eqref{residue} give $r_d(\rho)\ne0$, a contradiction. This establishes the half-plane criterion without passing through a convergence abscissa. If one wants just RH, apply the same argument to the original principal factor induced from modulus $1$; the proof still uses the auxiliary characters modulo the enlarged $Q$, so it does not remove the higher-rank arithmetic.
+
+The original \src{New/Reduction/OneSidedBound}{239}{\texttt{New.grh}} passes from an arbitrary character modulo $q$ to its induced character at $Q=18480q$, selecting the class $d\equiv9240q-1\pmod{Q}$. This class is coprime to $Q$ and is $7$ modulo $8$. The point $s=1$ is treated by classical nonvanishing (principal pole excepted). The induced $L$-function is the original one multiplied by finitely many Euler factors; nonvanishing of the product implies nonvanishing of the original. Nothing here changes these steps. \src{New/Main}{30}{\texttt{New.zeros\_on\_line}} uses the functional equation to reflect any zero in $0<\Rea s<1$ across the critical line; \src{New/Main}{48}{\texttt{New.zeta\_zeros\_on\_line}} handles the zeta statement with the trivial zeros excluded. The five public statements in \src{Main}{5}{\texttt{Main.lean}} can therefore be preserved literally, conditional on formal integration of the new analytic lemma.
+
+\begin{remark}[What is not shown by the weaker contract]
+For example, $E(v)=-e^{(a-1)v}$ with $0<\beta<a<1$ satisfies the one-sided bound, but has $\Phi(s)=-1/(s-a)$ and a negative real residue. Thus the sign premise is indispensable. The new selection contract does not itself prove a better exceptional-prime estimate. Existing selectors already provide a stronger condition and hence suffice. A selector using only a real interval and a target point might simplify its analytic estimates, but this would require additional work. In particular, choosing a prime solely on the basis of nonvanishing at $\rho$ is not valid: a real twisted surplus could still obstruct the conclusion.
+\end{remark}
+
+\section{Comparison with the original proof and existing proposals}
+The old \texttt{Lib/Analytic/Landau.lean} (262 split lines including a terminal blank) contains the exponential integrability-set Taylor argument, a construction of a measure, the meromorphic identity theorem on a half-plane, and two steps for enlarging an interval of convergence. This note replaces that architecture by a local positive-coefficient lemma and a finite-disk pole lemma. The following is a mathematical dependency comparison, not a measured Lean line-count reduction.
+\begin{center}\small
+\begin{tabularx}{\linewidth}{@{}p{.30\linewidth}XX@{}}\toprule
+Operation & Existing endpoint & Proposed endpoint\\\midrule
+Positivity & Positive Laplace measure and MGF & Nonnegative Taylor coefficients at one real center\\
+Analytic continuation & Identify transform throughout convergence half-plane & Use meromorphic continuation already supplied by \texttt{IsPolar}\\
+Boundary & Supremum of complement of integrability set & Closest genuine pole in compact disk\\
+Contradiction & Removable real pole implies greater convergence & Radial triangle inequality forces negative real residue\\
+Twist selection & No twisted zeros in full rectangle & Same selector usable; only \eqref{weak} needed\\\bottomrule
+\end{tabularx}
+\end{center}
+The nonduplication audit used the ten READMEs, ten main TeX files, and the included mathematical sections of the three multi-file packages, pinned to the commit cited above. The relevant findings are summarized below; hashes and paths are in \texttt{proposal\_audit.tsv}. This is a targeted mathematical comparison, not a claim of worldwide originality.
+\begin{center}\small
+\begin{tabularx}{\linewidth}{@{}p{.45\linewidth}X@{}}\toprule
+Existing package (directory name) & Main change; relation to this work\\\midrule
+\texttt{centered\_theta\_lift\_simplification} & Centered rank increment, adaptive completion; explicitly retains Landau.\\
+\texttt{cyclotomic-interpolation-and-theta-lifts} & Torsion interpolation and missing dimension; invokes existing criterion.\\
+\texttt{dyadic\_place\_coloring} & Modular coloring for sparse places; arithmetic input only.\\
+\texttt{proof\_simplifications} & Quadratic prime selection, distant Perron cutoff, spanning; retains abscissa proof.\\
+\texttt{rh-simplifications} & Rank estimate, torsion interpolation, large sieve; endpoint uses Landau.\\
+\texttt{rh\_sparse\_theta\_proof} & Sparse/local-average cutoff and twist selection; explicitly retains \texttt{IsPolar.landau}.\\
+\texttt{robust\_theta\_labels} & Three power tests replacing primitive labels; retains endpoint.\\
+\texttt{shorter-theta-lift-proof} & Prime selection, spanning; uses abscissa and positive Taylor moments there.\\
+\texttt{signed\_theta\_gain\_simplification} & Signed local gains, colength, normalization; preserves endpoint.\\
+\texttt{theta-lift-simplifications} & Flag/pivot denominator clearing, local labels, sparse places; retains analytic step.\\\bottomrule
+\end{tabularx}
+\end{center}
+In particular, the earlier use of positive Taylor moments in the usual Landau proof is not new. The new substitution is the closest-pole argument applied directly in a finite disk, with the residue inequality and local selection contract. It is compatible with all ten proposals: none must be undone, and their changes upstream of \eqref{one} feed the same premise.
+
+\section{Formalization strategy, tests, and limitations}\label{sec:formal}
+The companion \texttt{LEAN\_PLAN.md} specifies exact target statements and a staged proof. The minimal integration keeps the declaration name and type \texttt{New.IsPolar.landau}, replacing its proof and using the same call in \texttt{Criterion.lean}. This avoids changing any downstream public theorem. The alternate integration extracts \texttt{landau\_on\_disk} and a multiplicity-based criterion from Theorem~\ref{thm:local}. To keep the formal effort small, use the source's existing elementary growth bound and local MGF lemmas if helpful, rather than formalizing a new general theorem about Laplace transforms. The central proof obligation is to handle meromorphic representatives correctly: a total function may have a removable value incompatible with its analytic germ. One must fill these removable values before invoking a Taylor theorem on a whole open disk. Meromorphic order and residue limits supply the classification of genuine simple poles. A correct Lean proof must justify compact finiteness of poles, the radial norm limit, and the limiting real inequality. Do not assume \texttt{MeromorphicAt} plus zero residue makes the given total function analytic at its assigned value.
+
+The exact Python script \texttt{check\_nearest\_pole.py} verifies finite-difference polynomial identities, rational discrete positive-density examples, disk geometry, and sharp rational-function models. The tests check computations and expose failure modes; the universal proofs are in Sections~\ref{sec:disk}--\ref{sec:grh}. There is no Lean executable or Mathlib cache in this working environment. No Lean file was compiled and no integrated line-count or runtime improvement was measured. It may turn out that the needed meromorphic-germ normalization is more expensive to formalize than the existing Landau module; the paper-level simplification stands independently of that engineering question. No repository files have been changed.
+
+\subsection*{Source and verification status}
+The independently checked readable upstream commit is \texttt{72fead102f663d5c7a40}\allowbreak\texttt{7964a13dc0cf9d977207}, with the verification record at \cite{Suth}. A GitHub tree comparison shows 803 Lean-source blobs in each of the upstream \texttt{grh/src} and current ProveIt \texttt{Lean/grh/src} directories, with 802 identical. The only differing path is \texttt{New/Determinant/Chain/TriangleNorms.lean}; the current version consolidates some chain-law inductions. The corresponding source trees are \texttt{55fe9c6cb2e5be421c58}\allowbreak\texttt{71e772b6d736ecb5d164} (upstream) and \texttt{098bd35e534ec370db55}\allowbreak\texttt{9bf88cb9138d960d649e} (current). The analytic endpoint files inspected here are identical to the verified upstream versions. We have not independently checked the changed determinant file or built the current ProveIt tree. Independent verification of the upstream proof is not verification of this new replacement or of the full modified current tree.
+
+\subsection*{Further research questions}
+\begin{enumerate}
+\item Can the closest-pole lemma be expressed directly in Mathlib's meromorphic-order API, avoiding a global representative construction? This is the most concrete test of net formal savings.
+\item Can one reduce the positive-coefficient argument to the existing local derivative identity for MGF, or prove a reusable finite-difference lemma for analytic functions with nonnegative differences?
+\item Can a selection proof restricted to the real interval and one target value exploit the weaker contract \eqref{weak} to avoid a two-dimensional covering argument? A proof must retain control of real twisted surplus, including possible real zeros.
+\item Can the finite-disk residue inequality bound multiplicities of a target pole by those of a real obstruction, using sharper information about a finite family of twists? The radius comparison is sharp in general, so further gains need arithmetic information, not just positivity.
+\end{enumerate}
+\begin{thebibliography}{9}
+\bibitem{base} L. Alp\"oge, with Claude, readable Lean proof of RH and Dirichlet GRH, upstream revision \texttt{72fead10}, \href{https://github.com/lsernau/grh-lean/tree/72fead102f663d5c7a407964a13dc0cf9d977207/grh}{source}. Current ProveIt snapshot: \href{https://github.com/VladimirReshetnikov/ProveIt/tree/ef7d441dcb37ea944b7ac15731bb766f2e1354ea/Analysis/GeneralizedRiemannHypothesis}{repository}. See the guide's Sections 16--18 for the determinant comparison and analytic endpoint.
+\bibitem{FS} P. Flajolet and R. Sedgewick, \emph{Analytic Combinatorics}, Cambridge University Press, 2009, Theorem IV.6 (Pringsheim's theorem). The present proof only needs the elementary meromorphic specialization.
+\bibitem{MV} H. L. Montgomery and R. C. Vaughan, \emph{Multiplicative Number Theory I: Classical Theory}, Cambridge University Press, 2007, Section 15.1 (Landau's lemma).
+\bibitem{Suth} A. Sutherland, \href{https://math.mit.edu/~drew/shortgrh/}{Verification files for the shorter Lean proof of RH and of GRH for Dirichlet L-functions}, updated 27 November 2026. The record reports independent kernel checks and comparison of all five statements against the challenge file for upstream revision \texttt{72fead10}.
+\end{thebibliography}
+\end{document}
