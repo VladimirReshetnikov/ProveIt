@@ -217,6 +217,8 @@ For the explicit margins, [PolynomialIrreducibleDegrees.lean](GRHArticle/Progres
 
 [PolynomialExteriorValuationProduct.lean](GRHArticle/ProgressionFree/PolynomialExteriorValuationProduct.lean) identifies the greedy cofactor density with the article's exterior Euler product, verifies the squarefree product over all monic primes, and gives the joint valuation law with its stated constant. [PolynomialExteriorValuationTail.lean](GRHArticle/ProgressionFree/PolynomialExteriorValuationTail.lean) bounds the omitted prime-square events uniformly at every degree.
 
+[PolynomialGreedyProductDensity.lean](GRHArticle/ProgressionFree/PolynomialGreedyProductDensity.lean) identifies the actual greedy polynomial natural density with its prime Euler product and expresses the one-free-prime optimum with the article's exterior constant. [PolynomialValuationScalarClosure.lean](GRHArticle/ProgressionFree/PolynomialValuationScalarClosure.lean) transports any predicate on all prime valuations from monic layers to full degree balls.
+
 ## RH and Dirichlet GRH input
 
 The article uses the five theorems in
