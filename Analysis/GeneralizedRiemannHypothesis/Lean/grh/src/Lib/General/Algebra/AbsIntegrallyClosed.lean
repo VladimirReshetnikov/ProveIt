@@ -17,11 +17,13 @@ import Lib.Base
   `New.Variety.IsAbsIntegrallyClosed.mem_range_of_isIntegralElem`: for `f : A →+* B` from an
   absolutely integrally closed ring into a domain, roots in `B` of monic polynomials over `A` lift
   to roots in `A`, so integral elements lie in the image.
+* `New.exists_val_coeff_le_val_eval`: finitely many multivariable polynomials over an algebraically
+  closed valued field attain the sizes of their largest coefficients at one integral point.
 -/
 
-open Polynomial IsLocalization
-
 namespace New.Variety
+
+open Polynomial IsLocalization
 
 /-- The ring endomorphism `x ↦ x ^ p ^ f` of a commutative ring `B` in which the prime `p` is
 zero. -/
@@ -153,3 +155,69 @@ lemma mem_range_of_isIntegralElem [hA : IsAbsIntegrallyClosed A] {f : A →+* B}
 end IsAbsIntegrallyClosed
 
 end New.Variety
+
+/-!
+## A general integral point
+
+Each polynomial is a constant times a polynomial with nonzero reduction. As the residue field is
+infinite, there is a point at which none of the reductions vanishes. This is the Gauss norm
+property on the unit polydisc, as in Bosch, Güntzer and Remmert, *Non-Archimedean Analysis*.
+-/
+
+section IntegralityPrinciple
+
+open Finset IsLocalRing MvPolynomial New.Variety.IsAbsIntegrallyClosed
+
+/-- Over an algebraically closed valued field there is an integral point at which each of finitely
+many polynomials takes a value at least as large as all its coefficients. -/
+lemma New.exists_val_coeff_le_val_eval {K σ : Type*} {n : ℕ} [Field K] [IsAlgClosed K]
+    (v : Valuation K NNReal) (f : Fin n → MvPolynomial σ K) :
+    ∃ y : σ → v.valuationSubring,
+      ∀ (i : Fin n) (m : σ →₀ ℕ),
+        v ((f i).coeff m) ≤ v (eval (algebraMap v.valuationSubring K ∘ y) (f i)) := by
+  classical
+  -- Write `f i = c i • g i` with `g i` over `V` of nonzero reduction. The residue field is
+  -- algebraically closed, hence infinite, so at some `y` no reduction vanishes: each `g i` takes
+  -- a unit value at `y`.
+  set V : ValuationSubring K := v.valuationSubring
+  have h_scale (q : MvPolynomial σ K) :
+      ∃ (c : K) (g : MvPolynomial σ V), map (residue V) g ≠ 0 ∧ q = c • g.map (algebraMap V K) := by
+    -- A coefficient `q.coeff k` of largest valuation divides the others, with quotients `w m`.
+    obtain ⟨k, hk⟩ : ∃ k : σ →₀ ℕ, ∀ m ∈ q.support,
+        V.valuation (q.coeff m) ≤ V.valuation (q.coeff k) :=
+      Set.exists_upper_bound_image q.support (V.valuation ∘ q.coeff) (Set.toFinite _)
+    have h_dvd : ∀ m ∈ q.support, ∃ w : V, (w : K) * q.coeff k = q.coeff m :=
+      fun m hm ↦ (V.valuation_le_iff _ _).1 (hk m hm)
+    choose! w hw using h_dvd
+    let g : MvPolynomial σ V := monomial k 1 + ∑ d ∈ q.support.erase k, monomial d (w d)
+    have h_coeff (d : σ →₀ ℕ) :
+        g.coeff d = if k = d then 1 else if d ∈ q.support then w d else 0 := by
+      obtain rfl | hkd := eq_or_ne k d <;> simp [g, coeff_monomial, eq_comm, *]
+    refine ⟨q.coeff k, g, ne_of_apply_ne (·.coeff k) (by simp [coeff_map, h_coeff]), ?_⟩
+    ext d
+    rw [coeff_smul, coeff_map, h_coeff]
+    split_ifs with hkd hd
+    · simp [hkd]
+    · simp [← hw d hd, mul_comm]
+    · simpa using hd
+  -- Now `f i = c i • g i`, and the reduction of each `g i` is not zero.
+  choose c g hg hfg using fun i : Fin n ↦ h_scale (f i)
+  have : IsAlgClosed (ResidueField V) :=
+    ((of_isIntegrallyClosedIn K).of_surjective residue_surjective).isAlgClosed
+  -- Over an infinite field a nonzero polynomial has a nonzero value.
+  obtain ⟨y₀, hy₀⟩ :
+      ∃ y₀ : σ → ResidueField V, eval y₀ (∏ i : Fin n, map (residue V) (g i)) ≠ eval y₀ 0 :=
+    not_forall.1 fun h_eq ↦ prod_ne_zero_iff.2 (fun i _ ↦ hg i) (MvPolynomial.funext h_eq)
+  obtain ⟨y, rfl⟩ : ∃ y : σ → V, residue V ∘ y = y₀ := residue_surjective.comp_left y₀
+  have h_unit (i : Fin n) : IsUnit (eval y (g i)) := by
+    rw [map_prod, map_zero, prod_ne_zero_iff] at hy₀
+    rw [← residue_ne_zero_iff_isUnit]
+    simpa [eval_map, ← eval₂_comp] using hy₀ i (mem_univ i)
+  refine ⟨y, fun i m ↦ ?_⟩
+  -- The factor `c i` is common, and the unit `eval y (g i)` divides every coefficient of `g i`.
+  have h_le : v (algebraMap V K ((g i).coeff m)) ≤ v (algebraMap V K (eval y (g i))) :=
+    (Valuation.integer.integers v).le_of_dvd (h_unit i).dvd
+  grw [hfg i, coeff_smul, coeff_map, smul_eval, eval_map, ← eval₂_comp, smul_eq_mul, map_mul,
+    map_mul, h_le]
+
+end IntegralityPrinciple

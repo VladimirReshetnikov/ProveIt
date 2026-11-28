@@ -45,7 +45,7 @@ The citations of 122 other files were not part of this check, nor were further c
 | Bombieri–Gubler, Heights in Diophantine Geometry, 2006 | place confirmed at second hand | `New/Reduction/Lattices/Heights` |
 | Bombieri–Vaaler, On Siegel's lemma, Invent. Math. 73 (1983) | work found, no place given | `New/Spanning/RemainingTerms/SiegelLemma` |
 | Borel, Automorphic forms on reductive groups (Park City) | work found, no place given | `Lib/Adelic/AutomorphicForms/Cuspidality` |
-| Bosch, Güntzer, Remmert, Non-Archimedean Analysis | work found, no place given | `Lib/General/Algebra/SeriesBounds`, `Lib/General/NumberTheory/GaussValuation` |
+| Bosch, Güntzer, Remmert, Non-Archimedean Analysis | work found, no place given | `Lib/General/Algebra/AbsIntegrallyClosed`, `Lib/General/NumberTheory/GaussValuation` |
 | Bosch, Lütkebohmert, Raynaud, Néron Models (1990) | compared, place confirmed | `Lib/Shimura/AbelianScheme/IsogenyFlatness` |
 | Bost, Algebraic leaves of algebraic foliations over number fields, 2001 | work found, no place given | `New/Reduction/Lattices/TwistedLattice` |
 | Bourbaki, Algebra, Chapter IV | work found, no place given | `Lib/General/Algebra/SeriesCongruences` |

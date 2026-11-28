@@ -842,7 +842,7 @@ The heads of these files give an overview of a theory: `Lib/ClassField/Global/Ar
 
 **Algebra**: Commutative algebra, cohomology and p-adic algebra
 
-- `Lib/General/Algebra/AbsIntegrallyClosed` (82): Absolutely integrally closed rings and their stability properties; Frobenius powers
+- `Lib/General/Algebra/AbsIntegrallyClosed` (127): Absolutely integrally closed rings and their stability properties; Frobenius powers
 - `Lib/General/Algebra/AdicCompletion` (414): Adic completeness: p-adic tools, extension by continuity, topological bases
 - `Lib/General/Algebra/SeriesCongruences` (264): Power series with prime power exponents, congruences and convergent sums
 - `Lib/General/Algebra/CartanMap` (423): Higman's criterion, dévissage and multiplicative functions on finite modules (Cartan map)
@@ -854,7 +854,7 @@ The heads of these files give an overview of a theory: `Lib/ClassField/Global/Ar
 - `Lib/General/Algebra/PerfectAlgebras` (350): Perfect algebras, étale algebras over perfect rings, and constant Laurent polynomials
 - `Lib/General/Algebra/FittingIdealsAndLengths` (424): Relations, relative lengths and Fitting ideals for Selmer group estimates
 - `Lib/General/Algebra/BlockFittingBound` (115): A matrix of relations with small block determinant valuation
-- `Lib/General/Algebra/SeriesBounds` (271): Integrality of exponentials, logarithms and roots of power series
+- `Lib/General/Algebra/SeriesBounds` (226): Integrality of exponentials, logarithms and roots of power series
 - `Lib/General/Algebra/SharpMinors` (181): Maximal minors and lengths
 - `Lib/General/Algebra/LevelModulus` (229): Level moduli, residue data as Schwartz–Bruhat functions, and descent in positive degree
 

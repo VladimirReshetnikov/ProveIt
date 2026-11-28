@@ -1,4 +1,4 @@
-import Lib.General.Algebra.SeriesBounds
+import Lib.General.Algebra.AbsIntegrallyClosed
 import Lib.LocalGL.SphericalChainLemma
 import New.Congruences.GaloisRepresentations.SelmerHypotheses
 

@@ -251,7 +251,7 @@ The prime number theorem in this table is known (Montgomery and Vaughan, Multipl
 | Flat base change in functor cohomology; base change of algebras is left adjoint to restriction | `Lib/General/Algebra/CohomologyBaseChange` |  |  |
 | Chain rule and exponential functional equation for formal power series; Legendre's formula | `Lib/General/Algebra/IntegralPowerSeries` |  |  |
 | Fitting ideals: base change, product rule for exact sequences, bound by length (fixed generators) | `Lib/General/Algebra/FittingIdealsAndLengths` |  | Stacks Project, Tag 07ZA |
-| The Gauss norm equals the supremum norm on the unit polydisc over an algebraically closed valued field | `Lib/General/Algebra/SeriesBounds` |  | Bosch, Güntzer and Remmert, *Non-Archimedean Analysis* |
+| The Gauss norm equals the supremum norm on the unit polydisc over an algebraically closed valued field | `Lib/General/Algebra/AbsIntegrallyClosed` |  | Bosch, Güntzer and Remmert, *Non-Archimedean Analysis* |
 | The integrality of the `p`-adic exponential and logarithm on series of large enough valuation, and of the binomial series with exponent in `ℤ_p` | `Lib/General/Algebra/SeriesBounds` |  |  |
 | Length of a matrix kernel modulo `a` over a discrete valuation ring via maximal minors | `Lib/General/Algebra/SharpMinors` |  |  |
 | Ostrowski–Taussky inequality and the complex Gaussian integral | `Lib/General/Analysis/GaussianIntegral` |  |  |
