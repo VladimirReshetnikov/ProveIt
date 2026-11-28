@@ -1,0 +1,339 @@
+\documentclass[11pt,letterpaper]{article}
+\usepackage[T1]{fontenc}
+\usepackage{lmodern,amsmath,amssymb,amsthm,mathtools,booktabs,tabularx,microtype}
+\usepackage[margin=1in,headheight=15pt]{geometry}
+\usepackage{xcolor,fancyhdr}
+\usepackage[colorlinks=true,linkcolor=teal!65!black,urlcolor=teal!65!black]{hyperref}
+\definecolor{ink}{HTML}{19364A}
+\definecolor{accent}{HTML}{006C70}
+\pagestyle{fancy}\fancyhf{}\fancyhead[L]{\small\sffamily\color{ink}Signed local gains in the theta-lift proof}\fancyhead[R]{\small\sffamily Research note}\fancyfoot[R]{\thepage}
+\setlength{\parskip}{4pt}\setlength{\parindent}{0pt}\setlength{\emergencystretch}{2em}
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{corollary}[theorem]{Corollary}
+\theoremstyle{remark}\newtheorem{remark}[theorem]{Remark}
+\newcommand{\R}{\mathcal R}\newcommand{\E}{\mathcal E}\newcommand{\Lfour}{\mathcal L}\newcommand{\K}{\mathcal K}\newcommand{\G}{\mathcal G}\newcommand{\Gr}{\operatorname{Gram}}\newcommand{\rk}{\operatorname{rank}}\newcommand{\Height}{\operatorname{HeightLe}}
+\newcommand{\src}[3]{\href{https://github.com/VladimirReshetnikov/ProveIt/blob/89d12dd40424f1217fd818d84877b3da52396a3b/Analysis/GeneralizedRiemannHypothesis/Lean/grh/src/#1.lean\#L#2}{\texttt{#3}}}
+\newcommand{\guide}[2]{\href{https://github.com/VladimirReshetnikov/ProveIt/blob/89d12dd40424f1217fd818d84877b3da52396a3b/Analysis/GeneralizedRiemannHypothesis/docs/guide/theta_lifts_and_dirichlet_zeros.tex\#L#1}{#2}}
+\begin{document}
+\thispagestyle{empty}
+{\small\sffamily\bfseries\color{accent} MATHEMATICAL RESEARCH NOTE \hfill 27 NOVEMBER 2026}\par\vspace{.22in}
+{\huge\bfseries\color{ink} Signed local gains and cheaper colength\par}\vspace{6pt}
+{\large A normalization-free determinant comparison for the theta-lift proof of RH and Dirichlet GRH}\par\vspace{9pt}\textcolor{accent}{\rule{\linewidth}{.8pt}}
+
+\textbf{Abstract.} In the readable Alp\"oge--Claude development, a rational factor formed from rounded local gains is used to make projected Poincar\'e images short. The same error function is then charged a second time, as a colength per source dimension for every translate. We replace these two operations by a single signed determinant comparison and a separate, much smaller colength certificate. The signed comparison is a product-formula lemma for a constant Gram determinant, even when the auxiliary twist varies with the $p$-adic embedding. The colength improvement follows from an intermediate bound already in the marked-prime argument. With $\lambda=\log b$, the existing budget $fa\lambda^3$ for divisibility loss remains unchanged, but the total colength per full source dimension is at most $150fa\lambda$. Consequently the index cost in the final comparison is of order $d_T fa\lambda^2$, not $d_T fa\lambda^4$. Retaining the original spanning and completion results gives, for sufficiently large admissible data,
+\[
+  m\R\le (1+O(1/\lambda))fa\lambda^4\le 2fa\lambda^4.
+\]
+The bound remains valid if the other proposals are implemented, and the adaptive centered spanning proposal improves the explicit coefficient further. All deep automorphic, Galois and analytic inputs are preserved. This is a paper-level replacement, not a newly kernel-checked Lean proof.
+
+\textbf{Status.} Source analysis: GitHub connector, ProveIt commit \texttt{89d12dd40424} (full hash in the source record); selected declarations and the five proposal folders were inspected. The published project states that its five public theorems compile and have only the usual Lean axioms; this report does not replay that build. The accompanying exact finite tests check the new algebraic bookkeeping, not the underlying theta-lift results. No repository modification is made.
+
+\setcounter{tocdepth}{1}
+\makeatletter\renewcommand*\l@section{\@dottedtocline{1}{0em}{1.5em}}\makeatother
+\begingroup\small\setlength{\parskip}{0pt}\tableofcontents\endgroup
+\newpage
+\section{Where the new argument belongs}
+The public statements in \texttt{src/Statements.lean} are formulated using Mathlib, and \texttt{src/Main.lean} invokes \texttt{New.grh} and functional-equation consequences. The half-plane theorem excludes a zero of a Dirichlet $L$-function with real part greater than $1/2$, with the pole exception for the principal character. The source reports a readable proof of roughly 300,000 lines and independent verification records; our proposal changes the assembly of estimates, not the statement or the theory of their proof.
+
+The guide's \guide{532}{Section 6} explains the prime-power valuation of differentiated theta kernels. Its \guide{999}{Section 11} explains the full-dimensional twisted determinant bound. Its \guide{1554}{Section 16} shows that the same large main amount occurs in the upper and lower estimates. The proof cannot tolerate a proportional error in this main amount. It is crucial to preserve its exact coefficient.
+
+We use the following notation; $D$ denotes admissible data and is omitted from mathematical expressions.
+\begin{center}\small
+\begin{tabularx}{\linewidth}{@{}lXl@{}}\toprule
+Symbol & Meaning & Source name\\\midrule
+$d_T$ & target dimension, positive & \texttt{targetDim}\\
+$h,h_r$ & full and ramified source dimensions & \texttt{SourceForm}, \texttt{ramifiedSourceForms}\\
+$x,x_1,b,a$ & two cutoffs, large weight, $a=xb$ & \texttt{x}, \texttt{x1}, \texttt{b}, \texttt{a}\\
+$m,f$ & number of lifts, number of infinite places & \texttt{m}, \texttt{f}\\
+$H,\R$ & common main amount, total prime remainder & \texttt{mainAmount}, \texttt{totalRemainder}\\
+$g_p,e_p$ & requested valuation and allowed loss & \texttt{gain}, \texttt{allowedLoss}\\
+$\lambda,\E,\Lfour$ & $\log b$, $fa\lambda^3$, $fa\lambda^4$ & \texttt{logB}, \texttt{errorUnit}\\
+$N$ & auxiliary level prime & \texttt{N}\\
+$A_s$ & projected map, including seesaw scalar and good projector & \texttt{projectedPoincare}\\
+$\Theta_\xi$ & chain for an $m$-fold auxiliary twist & \texttt{Theta}\\\bottomrule
+\end{tabularx}
+\end{center}
+Here $\G=\sum_p g_p\log p$ is a finite sum, with support among the nonsplit primes below $x_1$. In particular $g_N=0$. The requested exponent $g_p$ incorporates the contributions of all $m$ lifts, both long and ordinary directions. We retain its exact definition. We also retain the special-value period and the scalar of the seesaw identity; neither can be discarded.
+
+The original assembly is
+\[
+ \begin{array}{c}
+ \text{raw short integral source forms}\\
+ \downarrow\quad A_s\\
+ c_B A_s,\quad c_B=\displaystyle\prod_p p^{-\lfloor g_p-e_p\rfloor}\\
+ \downarrow\quad \text{uniform index and Archimedean length}\\
+ \text{almost-basis, completion, twisted determinant, product formula}.
+ \end{array}
+\]
+The proposed assembly leaves $A_s$ unscaled and uses the following two certificates:
+\[
+ \begin{array}{c}
+ \text{raw Archimedean bound with }+2\G\\
+ \text{local divisibility }g_p-e_p\quad\text{and separate colength }c_p h\\
+ \downarrow\quad \text{signed determinant comparison}\\
+ \text{the term }+2n\G\text{ cancels }-2n\G\text{ exactly.}
+ \end{array}
+\]
+The original proof uses no inconsistent sign: the rational factor is a valid way to implement the same cancellation. The purpose of this change is to remove that global scalar from the geometric maps, reduce the local bookkeeping, and expose the previously hidden sharper colength allowance.
+
+\section{Extract the stronger local colength bound}\label{sec:cost}
+\subsection{The source already proves more than it exports}
+Write $e_p=\texttt{allowedLoss}(p)$. In \src{New/UpperBound/Size/Estimates}{318}{allowedLoss} it equals $2\,\texttt{loss}(p)$ for a nonsplit prime $p<x_1$, $2mfb$ at $N$, and zero otherwise. The existing \src{New/UpperBound/Size/Estimates}{342}{sum\_allowedLoss\_mul\_log\_le} proves
+\begin{equation}\label{eq:ebudget}
+ e_p\ge0,\qquad \sum_{p\in U}e_p\log p\le\E
+\end{equation}
+for each finite prime set $U$. The output of \src{New/UpperBound/Divisibility/LocalDivisibility}{407}{exists\_colengthDvd\_gaugeLe\_compositeLift} is a local source module, a colength exponent at most $he_p$, and a uniform gauge bound $p^{e_p-g_p}$. Its four cases, however, have different costs. The split or large case and the nonsplit nonexceptional case use the entire integral source module. The exceptional case uses the marked Hecke product, and the $N$ case uses \texttt{upIntegralForms}.
+
+In the marked case, before the proof of \src{New/UpperBound/Divisibility/LocalDivisibility}{331}{isOntoUpToColength\_prod\_scaledHeckeOperator\_pow} enlarges its colength allowance to $h\,\texttt{loss}(p)$, the exact bound is $h$ times
+\begin{equation}\label{eq:exactmark}
+ m\sum_{\ell\in\Lambda}\left(\frac{12A_\ell}{mp}+\frac{j_p}{m^2 f}\right).
+\end{equation}
+Here $A_\ell=a\cdot\#\{\text{$a$-places inducing }\ell\}$, $\Lambda$ is the full mark, and $j_p=\lceil 2mfa/p\rceil$. The proof of \src{New/UpperBound/Divisibility/LocalDivisibility}{294}{mul\_sum\_heckeScalingExponent\_le\_loss} shows $\sum A_\ell\le fa$, $|\Lambda|\le f$, and $j_p\le2mfa/p+1$. Substitution into \eqref{eq:exactmark} yields
+\[
+ m\sum_{\ell\in\Lambda}\left(\frac{12A_\ell}{mp}+\frac{j_p}{m^2 f}\right)
+ \le \frac{14fa}{p}+\frac1m\le\frac{15fa}{p}.
+\]
+The last step uses $p<x_1\le b\le a$, $m,f\ge1$. No new elementary-divisor estimate is needed. At $N$ the original proof obtains a colength exponent at most $hmfb$ before doubling that allowance. We may therefore take
+\begin{equation}\label{eq:cp}
+ c_p=\begin{cases}
+ \min\bigl(\texttt{loss}(p),14fa/p+1/m\bigr),&p<x_1\text{ nonsplit and exceptional},\\
+ mfb,&p=N,\\
+ 0,&\text{otherwise}.
+ \end{cases}
+\end{equation}
+The cases are disjoint because $N\ge x_1$. The minimum is legitimate: the same marked module and exponent arise before both inequalities are applied. In particular $c_p\le e_p/2$.
+
+\begin{theorem}[Two local budgets]\label{thm:two}
+For every prime $p$ and embedding $\iota:\mathbb C\simeq\overline{\mathbb Q}_p$, the integral ramified source module admits a submodule $S_\iota$ such that its colength divides $p^j$ with an integer $0\le j\le h c_p$. For every member of $S_\iota$ the composite lift has gauge at most $p^{e_p-g_p}$, simultaneously for every allowed twist and chain datum, exactly as in the original local divisibility theorem. For every finite set of primes,
+\begin{equation}\label{eq:kbound}
+ \sum_{p\in U}c_p\log p\le\K:=150fa\lambda.
+\end{equation}
+\end{theorem}
+\begin{proof}
+Repeat the four-case proof, using \eqref{eq:exactmark} without its last enlargement. Restrict to the integral ramified module by the same \texttt{ColengthDvd.comap} step as in \src{New/UpperBound/Divisibility/LocalDivisibility}{494}{exists\_err\_gaugeLe\_compositeLift}. The gauge is unchanged. For the global estimate, put $u=\log x_1\ge1$ and use the scale bounds $u^6\le\lambda$, $m\le2\sqrt x$, $\log N\le30m\lambda$. These are in \src{New/Reduction/Data/Sizes}{58}{logX1\_pow\_le\_logB}, \src{New/Reduction/Data/AdmissibleData}{114}{m\_mem}, and \src{New/Reduction/Data/LevelAndTwists}{234}{log\_N\_mem\_Icc}. For any $U$, positivity and the harmonic-sum bound give
+\begin{align*}
+ \sum_{p\in U}c_p\log p
+ &\le 15fa\sum_{p<x_1}\frac{\log p}{p}+mfb\log N\\
+ &\le 15fa\,u(1+u)+30m^2fb\lambda\\
+ &\le 30fa\lambda^{1/3}+120fa\lambda\\
+ &\le 150fa\lambda.
+\end{align*}
+Here we bounded the prime sum by a sum over all integers, so the proof needs no prime distribution theorem. The earlier scale bounds guarantee $\lambda\ge1$. For completeness, an even smaller bound is $\min(\E/2,\K)$, by \eqref{eq:ebudget}.
+\end{proof}
+
+\begin{remark}[Minimal implementation first]
+Even if the normalization $c_B$ is kept, Theorem~\ref{thm:two} replaces the uniform index allowance $2h_r\E$ per translate by $h\K$. No change to any analytic or determinant theorem is then needed. One can additionally use the already proved ramification estimate
+\begin{equation}\label{eq:ram}
+ (1-b^{-8})h\le h_r
+\end{equation}
+from \src{New/UpperBound/Size/ShortColumns}{944}{le\_finrank\_ramifiedSourceForms} and \src{New/UpperBound/Size/ShortColumns}{955}{f\_div\_N\_sub\_one\_le}. Unlike the published factor $h\le2h_r$, this preserves the nearly equal source dimensions. Both changes are independent of how translates are selected.
+\end{remark}
+
+\section{A signed product formula}\label{sec:signed}
+We use the original notion of family height, not a newly postulated height. If $Y=(Y_\iota)$ has $\Height(B,Y)$, there are $M_0\ne0$, $\alpha\in\mathbb R$ and $h_p\ge0$ with
+\[
+ |\sigma M_0|\le e^\alpha,\qquad |\iota(M_0Y_\iota)|_p\le p^{h_p},\qquad
+ \alpha+\sum_{p\in U}h_p\log p\le B
+\]
+for every field automorphism $\sigma$ of $\mathbb C$, embedding $\iota$ at $p$, and finite prime set $U$. The exponent $B$ may be negative. This height calculus is defined in \src{New/Reduction/Lattices/Heights}{35}{HeightLe}.
+
+\begin{lemma}[Product formula with finite signed credit]\label{lem:signed}
+Suppose $A\ne0$ in $\mathbb C$ and $|\sigma A|\le e^C$ for all $\sigma$. Suppose, uniformly for all $\iota$ at $p$,
+\[
+ |\iota(A)|_p\le p^{q_p-r_p},
+\]
+where $q_p\ge0$, $r_p\ge0$, the support of $r$ is finite, and $\sum_{p\in U}q_p\log p\le Q$ for every finite prime set $U$. Then
+\begin{equation}\label{eq:sgn}
+ 0\le C+Q-\sum_p r_p\log p.
+\end{equation}
+More generally, the same conclusion follows if the joint budget is $C+\sum_{p\in U}q_p\log p\le C_*$ with $C+Q$ replaced by $C_*$. All exponents may be real; rounding is unnecessary.
+\end{lemma}
+\begin{proof}
+The bound at $p=2$ for all field isomorphisms implies $A$ is algebraic: this is the same algebraicity lemma used by \src{New/Reduction/Lattices/Heights}{191}{HeightLe.nonneg\_of\_one}. Alternatively, the bound on its complex conjugates alone implies this: a transcendental element of $\mathbb C$ can be sent by an automorphism to transcendental elements of arbitrarily large absolute value (extend a transcendence basis and then an isomorphism of algebraic closures). Put $F=\mathbb Q(A)$, $v=[F:\mathbb Q]>0$, and $a_0=N_{F/\mathbb Q}(A)\ne0$. The norm is a product of conjugates, and each embedding of $F$ extends to the isomorphisms in the hypotheses, exactly as in \src{New/Reduction/Lattices/Heights}{175}{norm\_algebraMap\_norm\_gen\_le}. Thus
+\[
+ \log|a_0|\le v C,\qquad \log|a_0|_p\le v(q_p-r_p)\log p.
+\]
+Choose a finite prime set $T$ containing both the support of the numerator and denominator of $a_0$ and the support of $r$. The rational product formula over this set gives
+\[
+ 0=\log|a_0|+\sum_{p\in T}\log|a_0|_p
+ \le v\left(C+\sum_{p\in T}q_p\log p-\sum_p r_p\log p\right).
+\]
+Divide by $v>0$ and apply the budget. The joint-budget version is identical. In particular the prime set must contain the entire credit support, not just the primes of the rational norm.
+\end{proof}
+
+\begin{remark}[Why this is not the ordinary nonnegative height bound]
+Discarding negative local exponents by replacing each with its positive part loses precisely the divisibility that drives the proof. A family indexed by $\iota$ need not be constant, and there is no product formula for that family itself. We apply the signed formula only after multiplication has produced one fixed nonzero scalar. The multipliers in the original \texttt{HeightLe} witnesses are kept unchanged. This avoids confusing a varying twist with a single global algebraic number.
+\end{remark}
+
+\section{The normalization-free determinant theorem}\label{sec:det}
+Let $V$ have dimension $d_T$, with the twisted lattices and lifts of the source. For an embedding $\iota$ at $p$ write $\bar\iota=\iota\circ\mathrm{conj}$. The integrality compatibility is that $\langle v',v\rangle$ is $\iota$-integral when $v'$ is integral at $\bar\iota$ and $v$ at $\iota$, for the \emph{same} allowed twist. The trivial-twist Gram matrix in coordinates is rational positive definite, as in \texttt{TwistedLattice}. For $y=(y_1,\ldots,y_n)$ independent, choose $z=(z_1,\ldots,z_{n'})$ completing $y$ to a basis, $n'=d_T-n$. Write
+\[
+ D_\xi=\det\Gr(\Theta_\xi(y,z)),\qquad Z(\xi)=\det(\Theta_\xi^*\Theta_\xi).
+\]
+The injectivity inputs ensure $D_1,Z(\xi)\ne0$ and the full-dimensional identity $D_1=D_\xi Z(1)/Z(\xi)$. The ordinary Gram determinant of $(y,z)$ cancels in the ratio.
+
+\begin{lemma}[Local signed Gram bound]\label{lem:local}
+Fix $p,\iota$ and an allowed twist $\xi$. Suppose for every rational $t>e_p-g_p$ a matrix $U$ over the valuation ring at $\iota$, with $|\iota(\det U)|_p\ge p^{-a_p}$, carries the short family $p^t\Theta_\xi y$ into its integral lattice. Suppose the analogous assertion at $\bar\iota$ holds with exponent $a'_p$. Suppose also that $\gamma\Theta_\xi z_i$ is integral at both embeddings. Then
+\begin{equation}\label{eq:localgram}
+ \left|\iota\left((|\gamma|^2)^{n'}D_\xi\right)\right|_p
+ \le p^{a_p+a'_p+2n(e_p-g_p)}.
+\end{equation}
+\end{lemma}
+\begin{proof}
+For rational $t$ take the positive real algebraic number $p^t$; every $p$-adic embedding has its norm equal to $p^{-t}$ by raising to an integer denominator. At the two embeddings use the (possibly different) clearing matrices and extend by $\gamma I_{n'}$. The norm of the determinant of the integral pairing matrix is at most one by the nonarchimedean triangle inequality. In the notation of \src{New/Reduction/Lattices/TwistedLattice}{375}{norm\_det\_mul\_det\_gram\_le\_one}, the factors contributed by the two matrices have absolute values at least $p^{-a_p-nt}|\iota(\gamma)|_p^{n'}$ and $p^{-a'_p-nt}|\bar\iota(\gamma)|_p^{n'}$. The determinant of the Gram matrix transforms with a conjugated determinant on the first side and an ordinary determinant on the second. Since $|\gamma|^2=\bar\gamma\gamma$, this gives the bound $p^{a_p+a'_p+2nt}$. Taking the infimum over rational $t>e_p-g_p$ proves \eqref{eq:localgram}. The matrices need not be consistent as $t$ varies; the bounded scalar on the left is fixed. Empty blocks use determinant one.
+\end{proof}
+
+\begin{theorem}[Signed twisted-lattice comparison]\label{thm:compare}
+Assume:
+\begin{enumerate}
+\item all chain maps are injective, and the full basis $(y,z)$ has the preceding Gram determinant identity;
+\item the trivial-twist log squared covolume of $y$ is at most $C_y$, and every conjugate of each lifted auxiliary vector has squared norm at most $e^{B_s}$;
+\item a chosen allowed twist $\xi_\iota$ for each embedding, and nonzero $\gamma(\xi)$, satisfy the auxiliary integrality hypothesis of Lemma~\ref{lem:local}; the two ratio families $\bigl(|\gamma(\xi_\iota)|^{-2}\bigr)_\iota$ and $\bigl(Z(1)/Z(\xi_\iota)\bigr)_\iota$ have heights at most $B_d,B_v$;
+\item the hypotheses of Lemma~\ref{lem:local} hold for $\xi_\iota$ at $\iota,\bar\iota$, with $a_p=a'_p=\delta_p\ge0$, $\sum_{p\in U}\delta_p\log p\le\delta$; $g_p\ge0$ has finite support and $e_p\ge0$ satisfies \eqref{eq:ebudget}.
+\end{enumerate}
+Then
+\begin{equation}\label{eq:master}
+ \boxed{0\le C_y+2\delta+2n(\E-\G)+n'(B_s+B_d)+B_v.}
+\end{equation}
+\end{theorem}
+\begin{proof}
+The original family height product and power rules give a height bound $n'B_d+B_v$ for
+\[
+ Y_\iota=(|\gamma(\xi_\iota)|^2)^{-n'}\,Z(1)/Z(\xi_\iota).
+\]
+Take its witness $(M_0,\alpha,h_p)$. The key fixed number is $A=M_0D_1\ne0$. The determinant identity and Lemma~\ref{lem:local} give
+\begin{align*}
+ |\iota(A)|_p
+ &=|\iota(M_0Y_\iota)|_p\,\left|\iota\left((|\gamma(\xi_\iota)|^2)^{n'}D_{\xi_\iota}\right)\right|_p\\
+ &\le p^{h_p+2\delta_p+2ne_p-2ng_p}.
+\end{align*}
+At infinity the source's Gram block bound \src{New/Reduction/Lattices/TwistedLattice}{330}{CovolumeLe.sumElim} gives $|\sigma A|\le\exp(\alpha+C_y+n'B_s)$ for all $\sigma$. Apply Lemma~\ref{lem:signed}, with $r_p=2ng_p$ and $q_p=h_p+2\delta_p+2ne_p$. The joint budget is bounded by the height allowance and the two separate local budgets. This proves \eqref{eq:master}.
+\end{proof}
+
+\begin{remark}[A non-negotiable conjugation condition]
+It is not enough to clear the chosen twist at $\iota$ and the generally different twist $\xi_{\bar\iota}$ at $\bar\iota$. One needs $\xi_\iota$ at both. Even for one vector, take $p=5$ and $v=(2+i)/(2-i)$ in $\mathbb Q(i)$. The two embeddings give valuations $1$ and $-1$, while $\bar vv=1$. A spurious argument charging the gain twice using only the first embedding would give $v_p(\bar vv)\ge2$, which is false. Our source application preserves the existing all-twist uniformity, so the condition holds. For future refactoring, the theorem needs only this paired uniformity; it does not require one clearing matrix for all allowed twists, nor does it require the twist family to be invariant under conjugation.
+\end{remark}
+
+\section{Feed the source estimates into the signed comparison}\label{sec:assembly}
+\subsection{The raw short-form estimate}
+Write $A_s$ for the map \texttt{projectedPoincare}$(s)$, defined before \texttt{normalizedPoincare}. The proof of \src{New/Reduction/ShortAndEnough}{254}{span\_short\_integralRamified\_eq\_top}, before the use of \texttt{log\_invGainFactor\_le}, contains precisely
+\begin{equation}\label{eq:raw}
+ \|\Theta_1 A_s\phi\|_\sigma^2\le\exp\left(H-m\R+2\G+x^{99}+2\E\right).
+\end{equation}
+It holds for all translates $s$ and all $\sigma$ on a spanning set of globally integral ramified forms. To see the constants, the local \texttt{let} $\beta$ in that proof is $H-m\R+2\G+\E$; the composite lift bound adds another $\E$; projecting and translating adds $x^{99}$. No division by $c_B$ is needed to prove \eqref{eq:raw}. The underlying source lemmas are \src{New/UpperBound/Size/ArchimedeanSize}{436}{weylNormSq\_compositeLift\_le} and \src{New/UpperBound/Size/ArchimedeanSize}{526}{normSqAt\_goodProjTranslate\_le}.
+
+The prime sum term $\G$ is exactly the same as in the local gauge estimate; it is not an approximate prime number theorem term. The centered amount $H-m\R$ has already been calculated through the period, the auxiliary level and the prime sum definition. This is why the cancellation below retains the correct main term.
+
+\subsection{Transfer the local certificate to projected forms}
+Let $y_i=A_{s_i}\phi_i$ with $s_i\in J$ and $\phi_i$ globally integral and ramified. At $p,\iota$ group these vectors by translates. For each group apply Theorem~\ref{thm:two}'s colength assertion to the source vectors. This yields a square matrix with determinant dividing $p^j$, $j\le hc_p$, whose source combinations lie in $S_\iota$. The block diagonal matrix has determinant norm at least $p^{-|J|hc_p}$. The composite lift of every cleared combination has gauge at most $p^{e_p-g_p}$, uniformly in the permitted twists. By the seesaw identity in \src{New/Reduction/ShortAndEnough}{217}{exists\_lowerChain\_poincare\_eq} and the scalar-compatible integrality lemma \src{New/UpperBound/Size/ArchimedeanSize}{497}{goodProjTranslate\_mem\_integralForms}, the lifts of the projected forms multiplied by $p^t$ are integral for every rational $t>e_p-g_p$. The gauge bound implies this because $|\iota(p^t)|_p=p^{-t}$; $p^t$ is applied to the \emph{output}, not required to preserve the source lattice. This proves the hypothesis of Lemma~\ref{lem:local} with
+\begin{equation}\label{eq:delta}
+ \delta_p=|J|hc_p,\qquad \delta=|J|h\K.
+\end{equation}
+In particular we do not need to introduce a new global intersection lattice for signed radii. One can instead define a local certificate for the scaled output family. This also avoids proving the existence of a single scalar with a prescribed real valuation at every prime.
+
+\subsection{Spanning and completion unchanged}
+Nonzero scalar multiplication does not change any of the translate ranges, so the old spanning theorem \src{New/Reduction/ShortAndEnough}{448}{enough\_forms} applies to $A_s$ without $c_B$. Choose $J$ and $n$ independent vectors from the images of the raw short spanning set, with
+\begin{equation}\label{eq:oldB}
+ |J|h_r\le5d_T\log(1+2b^2),\qquad n\ge(1-4/b^2)d_T.
+\end{equation}
+No nonintegral Gram--Schmidt process is applied to these vectors. The conjugate Hadamard bound and \eqref{eq:raw} give $C_y=n(H-m\R+2\G+x^{99}+2\E)$. The original auxiliary form theorem, regular family of twists and determinant heights in \texttt{LongForms.lean} give
+\begin{equation}\label{eq:Cinputs}
+ B_s=2x_1^2b^2,\qquad B_d=b,\qquad B_v=d_T(b+\Lfour-H).
+\end{equation}
+The source's \src{New/Determinant/Twist/LongForms}{120}{mul\_completion\_cost\_le} ensures $(d_T-n)(B_s+B_d)\le d_T b$. The previous adaptive completion proposal makes precisely this last bound the hypothesis instead of the stronger old rank threshold. Both choices work.
+
+\begin{theorem}[New main inequality, with explicit rank dependence]\label{thm:main}
+Let $J,n$ satisfy the spanning and completion requirements above (or the previously proposed adaptive variants). For sufficiently large admissible data,
+\begin{equation}\label{eq:main}
+ m\R\le x^{99}+4\E+\frac{d_T(\Lfour+2b)+2|J|h\K}{n}.
+\end{equation}
+\end{theorem}
+\begin{proof}
+Apply Theorem~\ref{thm:compare} with \eqref{eq:delta} and \eqref{eq:Cinputs}. The finite-place term $-2n\G$ cancels the raw Archimedean $+2n\G$ exactly. The two occurrences of $2n\E$ add, once from the raw Archimedean bound and once from the local loss. Then
+\begin{align*}
+ n m\R&\le (n-d_T)H+n(x^{99}+4\E)+2|J|h\K\\
+ &\qquad+(d_T-n)(B_s+B_d)+d_T(b+\Lfour)\\
+ &\le n(x^{99}+4\E)+2|J|h\K+d_T(\Lfour+2b).
+\end{align*}
+We used $H\ge0$, $n\le d_T$, and the completion allowance. Since the rank threshold makes $n>0$, divide by $n$. Notice that no multiplicative relaxation of $H$ has been made, and the final bound involves no rounding loss from the gains.
+\end{proof}
+
+\section{Quantitative consequence and compatibility}\label{sec:constants}
+Let $n\ge(1-\vartheta)d_T$ and $|J|h_r\le B_J d_T\lambda$. By \eqref{eq:ram} and Theorem~\ref{thm:main},
+\begin{equation}\label{eq:ratio}
+ \frac{m\R}{\Lfour}\le
+ \frac{4}{\lambda}+\frac{x^{99}}{\Lfour}+
+ \frac{1+2b/\Lfour+300B_J/\bigl((1-b^{-8})\lambda^2\bigr)}{1-\vartheta}.
+\end{equation}
+We have $x^{99}\le fa$ because $b\ge x_1^{10^6}\ge x^{10^{12}}$ and $a=xb$, and $b\le fa$. Thus $x^{99}/\Lfour$ and $b/\Lfour$ are at most $\lambda^{-4}$.
+
+\textbf{With the original spanning theorem alone.} For $b\ge16$, $1+2b^2\le b^3$ and \eqref{eq:oldB} gives $B_J=15$, $\vartheta=4/b^2$. Since $1-b^{-8}\ge255/256$ and $1-\vartheta\ge63/64$, for $\lambda\ge100$ the right-hand side of \eqref{eq:ratio} is at most
+\[
+ \frac4{100}+\frac1{100^4}+\frac{64}{63}
+ \left(1+\frac2{100^4}+\frac{4500\cdot256}{255\cdot100^2}\right)<\frac85<2.
+\]
+As $b\to\infty$, it is $1+O(1/\lambda)$, uniformly in the other admissible scales. Thus the theorem is independent of every existing proposal. We emphasize that this leading coefficient uses exact pre-completion and pre-normalization bounds, as well as the genuinely new separated colength budget. The improvement is not merely that one stops absorbing a constant into an extra logarithm.
+
+\textbf{After the centered adaptive proposal.} Its Theorem B gives $B_J=3$ and $\vartheta=(1+2x_1^2b)^{-1}$. For $b\ge16,x_1\ge1$, $\vartheta\le1/33$. The right-hand side of \eqref{eq:ratio} is then at most
+\[
+ \frac4{100}+\frac1{100^4}+\frac{33}{32}
+ \left(1+\frac2{100^4}+\frac{900\cdot256}{255\cdot100^2}\right)<\frac65
+\]
+for $\lambda\ge100$. This estimate uses the centered proposal as an assumed input, rather than claiming its spanning theorem again. Its previous displayed sufficient bound was $17\Lfour$ (with a sharper asymptotic constant near $8$); the above comparison uses a different local estimate, along with the less enlarged Archimedean and determinant bounds. The proposed arithmetic colength refinement makes the number of translates irrelevant to the leading coefficient for either logarithmic budget.
+
+\begin{remark}[A safer first patch with the same asymptotic saving]
+Keep $c_B$ in the source and prove the smaller index allowance \eqref{eq:delta}, with normalized rather than raw projected forms. The original \texttt{log\_invGainFactor\_le} gives $\log c_B\le-\G+\E+b$. Thus the original squared-norm calculation yields $H-m\R+x^{99}+4\E+2b$ before absorption. Use the existing pre-completion inequality with $\delta=|J|h\K$ and \eqref{eq:Cinputs}. This yields \eqref{eq:main} with an extra $2b$ on its right. It has the same $1+O(1/\lambda)$ coefficient and the same stated coarse bounds when $\lambda\ge100$. This is the recommended first integration because it requires no new product-formula lemma. The signed version subsequently removes the normalization layer and the floor loss, not the deep arithmetic lower bound.
+\end{remark}
+
+\section{The RH and GRH endpoint is preserved}
+The source identity \src{New/Reduction/PrimeSums}{177}{totalRemainder\_eq} rewrites the total remainder in terms of the two smoothed prime remainders $R_{q_0}(x),R_{q_0}(x_1)$ and $R_1(x_1)$. In the notation of the guide, let $A,B$ denote the $a$- and $b$-places, with $f=\varphi(q_0)|A|$ and $|A|/|B|\le\lambda$. For the new bound $m\R\le2fa\lambda^4$, the algebra of \src{New/Reduction/OneSidedBound}{33}{Data.primeRemainder\_le} gives
+\[
+ R_{q_0}(x)\le\frac{2\varphi(q_0)\lambda^5}{m}
+ +|R_{q_0}(x_1)|+\lambda|R_1(x_1)|.
+\]
+The original exponent in the first term was $6$ instead of $5$. With fixed admissible $q_0,d$, for each small $\eta>0$ the existing data existence theorem supplies all sufficiently large integer $x$ with $\lambda\le2x^\eta$, $m\ge\sqrt x$, and $\log x_1\ge x^{\eta/12}$. Since the classical prime number theorem bounds the distant remainders by every inverse power of $\log x_1$, both can be made at most $x^{-2}$, as in the source. Consequently the new bound is $O_{q_0}(x^{-1/2+5\eta})$ at integers, with an additional $O(x^{-2+\eta})$ term. The original floor interpolation extends it to reals and arbitrary $\varepsilon>0$ in $R_{q_0}(y)\le y^{-1/2+\varepsilon}$ eventually. The existing one-sided zero-detection criterion and the functional equation yield the original public statements. Alternatively, for $\lambda\ge100$, $2\Lfour\le fa\lambda^5$, so the original main inequality suffices at all sufficiently large data, and the analytic proof can remain verbatim after an eventual-threshold adjustment.
+
+If the sparse-cutoff proposal is implemented, the same estimate holds for its chosen admissible cutoffs; the interpolation work of that proposal is independent. The new proof does not select the auxiliary quadratic prime $d$ by a new method, nor change the anticyclotomic twist families. These are distinct uses of twisting.
+
+\section{Nonduplication, integration and limits}
+\subsection{Comparison with the five proposal folders}
+The directory listing and each README and TeX section list at the pinned revision were reviewed. The following table describes the relation, not a claim that no similar idea exists anywhere in the mathematical literature.
+\begin{center}\small
+\begin{tabularx}{\linewidth}{@{}p{.28\linewidth}X X@{}}\toprule
+Existing folder & Its main changes & Relation to this note\\\midrule
+\texttt{centered\_theta\_lift\_}\newline\texttt{simplification} & Centered orbit moments, adaptive completion, smaller translate budget, random-product variant. & Keeps $2\E$ per ramified source dimension in A(b); our change acts on local costs and exact signed normalization, and accepts its budget.\\
+\texttt{proof\_simplifications} & Auxiliary-prime selection, Perron at the far cutoff, strengthened spanning, Fourier completion. & No change to these steps.\\
+\texttt{rh-simplifications} & Spectral rank recurrence, torsion interpolation, quadratic large sieve. & We do not modify torsion specialization or its valuation bounds.\\
+\texttt{rh\_sparse\_theta\_proof} & Sparse cutoffs, reciprocal convexity, local averages, Gaussian moments and twist selection. & Our arithmetic estimate is per admissible datum, and combines with its relaxed existence requirement.\\
+\texttt{shorter-theta-lift-proof} & Elementary character sums or quadratic sieve, direct ramified spanning. & Orthogonal to our local colength and product formula.\\\bottomrule
+\end{tabularx}
+\end{center}
+
+\subsection{Suggested formalization order}
+\begin{enumerate}
+\item Extract the exact colength-cost estimate at marked primes from the existing proof; return the same submodule with the two separate bounds. Keep the gauge theorem and its proof intact. Prove the harmonic budget and the near-equality \eqref{eq:ram} of dimensions.
+\item First replace the original index lemma for normalized projected forms. Reuse the existing \texttt{IndexLe}, \texttt{ColengthDvd}, block diagonal and Gram height proofs. This establishes a low-risk mathematical saving even before the signed refactor.
+\item In \texttt{Heights.lean}, factor the proof of \texttt{nonneg\_of\_one} into the signed product lemma, adding a finite credit support and the joint budget. Replace the old fixed support by its union with the gain support. Use the existing algebraicity and rational norm lemmas.
+\item In \texttt{TwistedLattice.lean}, add Lemma~\ref{lem:local} and Theorem~\ref{thm:compare}. A positive rational power of $p$ has the requisite $p$-adic norm: the proof pattern of \texttt{HeightLe.rpow\_mul} already establishes this for rational powers of integers prime to $p$; for $p$ itself it gives $p^{-t}$ instead of one. Use rational density or, equivalently, prove the inequality with arbitrary positive real slack and let the slack tend to zero. Retain distinct clearance at the two embeddings.
+\item In \texttt{ShortAndEnough.lean}, expose the raw inequality \eqref{eq:raw} and the local certificates. Use the existing \texttt{projectedPoincare} directly. The nonzero scalar was used only to preserve range in B; substitute the raw range. The definitions \texttt{gainExponent}, \texttt{invGainFactor}, \texttt{normalizedPoincare}, their floor/cast/norm lemmas, and normalized norm identities become unnecessary in the new assembly (keep compatibility aliases until downstream references have been checked).
+\item In \texttt{LongForms.lean}, retain all height and auxiliary lemmas; apply the signed determinant theorem before the last completion estimates. In \texttt{MainInequality.lean}, combine the raw bound and local budget. Either keep the original final theorem for sufficiently large data or expose the new explicit bound and adjust the one-sided theorem.
+\item Run the pinned Lean build, the five public statements, \texttt{PrintAxioms.lean}, and the same independent comparator and kernel-export checks documented in the project. Verify that the public theorem types and permitted axioms are unchanged.
+\end{enumerate}
+
+\textbf{Limits.} The proposed proof uses, rather than reproves, the formal-group divisibility, seesaw, elementary-divisor, spanning, full determinant and Selmer estimates. It reduces the assembly and improves error bookkeeping; it is not a new independent proof of the Riemann hypothesis, a proof of a broader GRH, or a claim of a particular number of Lean lines saved. The Lean environment was not available in this session, so the new arguments have not been elaborated or kernel checked. The analysis covers the current pinned source interfaces and all five proposal summaries and section topics, not a complete rereading of the 300,000-line formalization.
+
+\subsection{Further research questions}
+\begin{enumerate}
+\item Can the $N$-level colength $mfb$ be replaced by an actual rank-weighted cost of its nontrivial local elementary divisors? It is now the dominant term of the separate budget. Even a modest reduction would remove most of the $150$ constant.
+\item Can the gauge and colength costs be optimized jointly by an exterior-power valuation bound for the source-to-target map, rather than choosing a submodule and paying a scalar loss on all $n$ vectors? One would need a uniform bound at both conjugate embeddings and the same selected twist.
+\item Can the arithmetic estimates be proved for just the twist pair required in Lemma~\ref{lem:local} after choosing the regular family, avoiding universal integrality requirements? The current results are stronger; an improvement in deep proofs would require a careful dependency analysis and preservation of the auxiliary-form integrality.
+\item Can the lower determinant height itself be sharpened by tracking its local losses separately, instead of its current $fa(\log b)^4$ allowance? The upper index and raw-size errors are now lower order; the existing single-lift height sum dominates. This is the next meaningful target for a leading-constant improvement.
+\end{enumerate}
+
+\section*{Source and reproduction record}\addcontentsline{toc}{section}{Source and reproduction record}
+\small
+\textbf{Pinned source.} Commit \nolinkurl{89d12dd40424f1217fd818d84877b3da52396a3b}. \href{https://github.com/VladimirReshetnikov/ProveIt/tree/89d12dd40424f1217fd818d84877b3da52396a3b/Analysis/GeneralizedRiemannHypothesis/Lean/grh}{Readable Lean tree}, \href{https://github.com/VladimirReshetnikov/ProveIt/tree/89d12dd40424f1217fd818d84877b3da52396a3b/Analysis/GeneralizedRiemannHypothesis/docs/guide}{human-readable guide}, and \href{https://github.com/VladimirReshetnikov/ProveIt/tree/89d12dd40424f1217fd818d84877b3da52396a3b/Analysis/GeneralizedRiemannHypothesis/docs/proposals}{existing proposals}. The source anchors TSV records the Git blob SHA-1s, immutable revision and declaration locations. The independently checked upstream edition is identified in the repository guide and links to \url{https://math.mit.edu/~drew/shortgrh/}. These external verification claims are reported by the project; we did not rerun those checks.
+
+\textbf{Reproduce this report.} Run \texttt{latexmk -pdf -halt-on-error signed\_theta\_gain.tex}. Run \texttt{python3 check\_gain\_accounting.py} for exact finite algebra and constant checks. The accompanying \texttt{FORMALIZATION.md} contains proposed interfaces and an integration checklist. \texttt{verify\_sources.py} checks the selected Git blob hashes and declaration anchors in a checkout of the specified ProveIt revision. These tests are not a substitute for a Lean proof. The recorded output concerns this report's checks only.
+\end{document}
