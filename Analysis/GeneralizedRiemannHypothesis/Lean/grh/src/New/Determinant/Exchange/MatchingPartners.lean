@@ -14,7 +14,7 @@ matrix is primitive (`New.IsPrimitiveMatrix O`) if it is integral with an integr
   `New.Rows.blockColDatum` are matched functions.
 * `New.localSection χ y`: a linear functional that is the sum of χ(det g) Ψ(y g) over
   representatives g of GL_b(F)/GL_b(O) (`New.IsCommonCosetRep`,
-  `New.exists_linearMap_eq_sum_and_isCommonCosetRep`) when that sum is finite;
+  `New.isCommonCosetRep_commonCosetRep`) when that sum is finite;
   `New.exists_isPrimitiveMatrix_localSection_eq` computes it for Ψ with primitive support.
 * `New.sameSectionPairs`: the pairs (Φ, Ψ) of Schwartz–Bruhat functions, Φ(x) zero unless xᵀ has a
   left inverse and Ψ(y) zero unless y has one, such that the section of y ↦ Φ(yᵀ) at x_kᵀ is χ(det
@@ -157,94 +157,65 @@ structure IsCommonCosetRep (r : GL b F ⧸ intGL b (O : Subring F) → GL b F) :
   existsUnique_mul_inv (y : Matrix n b F) (hy : HasLeftInv y) :
     ∃! q : GL b F ⧸ intGL b O, IsPrimitiveMatrix O (y * (r q).val⁻¹)
 
-variable (F b n) in
-/-- For a semilocal field `F` with ring of integers `O` there are representatives `r q` of the
-cosets `q` in `GL_b(F)/GL_b(O)` such that, for every `n × b` matrix `y` with a left inverse, exactly
-one `q` makes `y * r q` primitive and exactly one makes `y * (r q)⁻¹` primitive
-(`IsCommonCosetRep n r`). -/
-lemma exists_isCommonCosetRep : ∃ r : GL b F ⧸ intGL b O → GL b F, IsCommonCosetRep n r := by
-  -- Each left coset has a symmetric representative `r q` (`exists_invTransposeGL_inv_eq`). On
-  -- these, inversion agrees with the inverse transpose `invTransposeGL`, which permutes the left
-  -- cosets.
-  have exists_symm (q : GL b F ⧸ intGL b O) :
-      ∃ g : GL b F, (g : GL b F ⧸ intGL b O) = q ∧ (invTransposeGL g)⁻¹ = g := by
-    obtain ⟨k, hk, h_symm⟩ :
-        ∃ k ∈ intGL b O, invTransposeGL q.out⁻¹ = invTransposeGL k * q.out * k :=
-      exists_invTransposeGL_inv_eq isValuationPair q.out
-    refine ⟨q.out * k, by simp [hk], ?_⟩
-    rw [map_mul, _root_.mul_inv_rev, ← map_inv _ q.out, h_symm, mul_assoc, inv_mul_cancel_left]
-  choose r r_mk r_symm using exists_symm
+variable (F b) in
+/-- A symmetric representative of each coset of `GL_b(O)` in `GL_b(F)`. The same representatives
+work for matrices with any number of rows. -/
+def commonCosetRep (q : GL b F ⧸ intGL b (O : Subring F)) : GL b F :=
+  (isValuationPair.exists_symmetric_cosetRep q).choose
+
+/-- For every matrix with a left inverse, exactly one representative makes the matrix primitive by
+right multiplication, and exactly one does so by right multiplication by its inverse. -/
+lemma isCommonCosetRep_commonCosetRep : IsCommonCosetRep n (commonCosetRep F b) := by
+  let r := commonCosetRep F b
+  change IsCommonCosetRep n r
+  have rep_spec (q : GL b F ⧸ intGL b O) : (r q : GL b F ⧸ intGL b O) = q ∧
+      (invTransposeGL (r q))⁻¹ = r q :=
+    (isValuationPair.exists_symmetric_cosetRep q).choose_spec
   -- Some `y * u` is primitive, and then `y * g` is primitive exactly for `g` in the coset of `u`.
   have exists_coset (y : Matrix n b F) (hy : HasLeftInv y) : ∃ u : GL b F, ∀ g : GL b F,
       IsPrimitiveMatrix O (y * g.val) ↔ u⁻¹ * g ∈ intGL b O := by
     obtain ⟨u, -, hu⟩ := isValuationPair.exists_isPrimitiveMatrix_mul hy
     refine ⟨u, fun g ↦ ?_⟩
     simpa [y.mul_assoc] using hu.mul_iff.trans (isPrimitiveMatrix_iff_mem_intGL (u⁻¹ * g))
-  refine ⟨r, r_mk, fun y hy ↦ ?_, fun y hy ↦ ?_⟩
+  refine ⟨fun q ↦ (rep_spec q).1, fun y hy ↦ ?_, fun y hy ↦ ?_⟩
   · obtain ⟨u, prim_iff⟩ := exists_coset y hy
     have mul_iff (q : GL b F ⧸ intGL b O) : IsPrimitiveMatrix O (y * (r q).val) ↔ q = ↑u := by
-      rw [prim_iff, ← QuotientGroup.eq, r_mk, eq_comm]
+      rw [prim_iff, ← QuotientGroup.eq, (rep_spec q).1, eq_comm]
     simp only [mul_iff, existsUnique_eq]
   · -- Apply `invTransposeGL` to `u⁻¹ * (r q)⁻¹`: the condition says that `r q` lies in the coset
     -- of `invTransposeGL u`.
     obtain ⟨u, prim_iff⟩ := exists_coset y hy
     have mul_inv_iff (q : GL b F ⧸ intGL b O) :
         IsPrimitiveMatrix O (y * (r q).val⁻¹) ↔ q = ↑(invTransposeGL u) := by
-      rw [← coe_units_inv, prim_iff, ← invTransposeGL_mem_intGL, map_mul, map_inv, map_inv, r_symm,
-        ← QuotientGroup.eq, r_mk, eq_comm]
+      rw [← coe_units_inv, prim_iff, ← invTransposeGL_mem_intGL, map_mul, map_inv, map_inv,
+        (rep_spec q).2, ← QuotientGroup.eq, (rep_spec q).1, eq_comm]
     simp only [mul_inv_iff, existsUnique_eq]
 
-/-- There are representatives `r q` of the cosets `q` in `GL_b(F)/GL_b(O)` and a linear functional
-`ℓ` on the complex functions on `GL_b(F)` such that `ℓ f = ∑ q, f (r q)` when only finitely many of
-the values `f (r q)` are nonzero, and, for every `n × b` matrix `y` with a left inverse, exactly one
-`q` makes `y * r q` primitive and exactly one makes `y * (r q)⁻¹` primitive. -/
-lemma exists_linearMap_eq_sum_and_isCommonCosetRep :
-    ∃ (ℓ : (GL b F → ℂ) →ₗ[ℂ] ℂ) (r : GL b F ⧸ intGL b O → GL b F),
-      (∀ (t : Finset (GL b F ⧸ intGL b O)) (f : GL b F → ℂ),
-        (∀ q : GL b F ⧸ intGL b O, f (r q) ≠ 0 → q ∈ t) → ℓ f = ∑ q ∈ t, f (r q)) ∧
-      IsCommonCosetRep n r := by
-  obtain ⟨ℓ, hℓ⟩ := exists_linearMap_eq_sum (GL b F ⧸ intGL b O)
-  obtain ⟨r, hr⟩ := exists_isCommonCosetRep (F := F) (b := b) (n := n)
-  exact ⟨ℓ ∘ₗ LinearMap.funLeft ℂ ℂ r, r, fun t f hf ↦ hℓ t (fun q ↦ f (r q)) hf, hr⟩
-
-variable (F b n) in
-/-- A linear functional on all functions on `GL b F`, chosen from
-`exists_linearMap_eq_sum_and_isCommonCosetRep`. It extends the finite sum of the values at the
-representatives `commonCosetRep` (`commonCosetSum_eq_sum`). -/
+variable (F b) in
+/-- The linear extension of finite summation on the quotient, evaluated at the chosen
+representatives. -/
 def commonCosetSum : (GL b F → ℂ) →ₗ[ℂ] ℂ :=
-  (exists_linearMap_eq_sum_and_isCommonCosetRep (F := F) (b := b) (n := n)).choose
+  (exists_linearMap_eq_sum (GL b F ⧸ intGL b O)).choose ∘ₗ
+    LinearMap.funLeft ℂ ℂ (commonCosetRep F b)
 
-variable (F b n) in
-/-- The representatives of the cosets of `GL b O` in `GL b F` that are chosen from
-`exists_linearMap_eq_sum_and_isCommonCosetRep` together with `commonCosetSum`
-(`isCommonCosetRep_commonCosetRep`). -/
-def commonCosetRep : GL b F ⧸ intGL b O → GL b F :=
-  (exists_linearMap_eq_sum_and_isCommonCosetRep (F := F) (b := b) (n := n)).choose_spec.choose
-
-/-- `commonCosetSum f` is the sum of the values of `f` at the representatives, when the nonzero
-values are indexed by a finite set `t` of cosets. -/
+/-- `commonCosetSum f` is the sum of the values at the representatives when their nonzero values
+are indexed by a finite set `t`. -/
 lemma commonCosetSum_eq_sum (f : GL b F → ℂ) (t : Finset (GL b F ⧸ intGL b O))
-    (ht : ∀ q : GL b F ⧸ intGL b O, f (commonCosetRep F b n q) ≠ 0 → q ∈ t) :
-    commonCosetSum F b n f = ∑ q ∈ t, f (commonCosetRep F b n q) :=
-  (exists_linearMap_eq_sum_and_isCommonCosetRep (n := n)).choose_spec.choose_spec.left t f ht
-
-/-- The chosen matrices `commonCosetRep` represent the cosets of `GL_b(O)` in `GL_b(F)`. For each
-`n × b` matrix `y` with a left inverse, exactly one of them, `r`, makes `y * r` primitive, and
-exactly one makes `y * r⁻¹` primitive (`IsCommonCosetRep`). -/
-lemma isCommonCosetRep_commonCosetRep : IsCommonCosetRep n (commonCosetRep F b n) :=
-  exists_linearMap_eq_sum_and_isCommonCosetRep.choose_spec.choose_spec.right
+    (ht : ∀ q : GL b F ⧸ intGL b O, f (commonCosetRep F b q) ≠ 0 → q ∈ t) :
+    commonCosetSum F b f = ∑ q ∈ t, f (commonCosetRep F b q) :=
+  (exists_linearMap_eq_sum (GL b F ⧸ intGL b O)).choose_spec t (f ∘ commonCosetRep F b) ht
 
 /-- For `y` with a left inverse, exactly one of the chosen coset representatives `r` makes `y * r`
 primitive (integral with an integral left inverse). -/
 lemma existsUnique_isPrimitiveMatrix_mul_commonCosetRep {y : Matrix n b F} (hy : HasLeftInv y) :
-    ∃! q : GL b F ⧸ intGL b O, IsPrimitiveMatrix O (y * (commonCosetRep F b n q).val) :=
+    ∃! q : GL b F ⧸ intGL b O, IsPrimitiveMatrix O (y * (commonCosetRep F b q).val) :=
   isCommonCosetRep_commonCosetRep.existsUnique_mul y hy
 
 /-- For `y` with a left inverse (`HasLeftInv y`), exactly one coset `q` of `GL b O` in `GL b F`
-makes `y * (commonCosetRep F b n q)⁻¹` primitive (entries in `O`, with a left inverse that has
+makes `y * (commonCosetRep F b q)⁻¹` primitive (entries in `O`, with a left inverse that has
 entries in `O`). -/
 lemma existsUnique_isPrimitiveMatrix_mul_inv_commonCosetRep {y : Matrix n b F} (hy : HasLeftInv y) :
-    ∃! q : GL b F ⧸ intGL b O, IsPrimitiveMatrix O (y * (commonCosetRep F b n q).val⁻¹) :=
+    ∃! q : GL b F ⧸ intGL b O, IsPrimitiveMatrix O (y * (commonCosetRep F b q).val⁻¹) :=
   isCommonCosetRep_commonCosetRep.existsUnique_mul_inv y hy
 
 /-- For a character `χ` of `F` and an `n × b` matrix `y`, the section at `y` is the functional
@@ -252,17 +223,18 @@ sending `Ψ` to `commonCosetSum` of `g ↦ χ (det g) * Ψ (y * g)` on `GL b F`,
 this function over representatives of `GL_b(F)/GL_b(O)` when the sum is finite
 (`localSection_eq_sum`). -/
 def localSection (χ : MulChar F ℂ) (y : Matrix n b F) : (Matrix n b F → ℂ) →ₗ[ℂ] ℂ :=
-  commonCosetSum F b n ∘ₗ LinearMap.mulLeft ℂ (fun g : GL b F ↦ χ g.val.det) ∘ₗ
+  commonCosetSum F b ∘ₗ LinearMap.mulLeft ℂ (fun g : GL b F ↦ χ g.val.det) ∘ₗ
     LinearMap.funLeft ℂ ℂ fun g : GL b F ↦ y * g.val
 
+omit [Fintype n] [DecidableEq n] in
 /-- The section of `Ψ` at `y` is the sum of `χ (det r) * Ψ (y * r)` over the chosen matrices `r`
 indexed by `GL_b(F)/GL_b(O)` (`commonCosetRep`), when the indices with `Ψ (y * r) ≠ 0` lie in a
 finite set `t`. -/
 lemma localSection_eq_sum (χ : MulChar F ℂ) (y : Matrix n b F) (Ψ : Matrix n b F → ℂ)
     (t : Finset (GL b F ⧸ intGL b O))
-    (ht : ∀ q : GL b F ⧸ intGL b O, Ψ (y * (commonCosetRep F b n q).val) ≠ 0 → q ∈ t) :
+    (ht : ∀ q : GL b F ⧸ intGL b O, Ψ (y * (commonCosetRep F b q).val) ≠ 0 → q ∈ t) :
     localSection χ y Ψ =
-      ∑ q ∈ t, χ (commonCosetRep F b n q).val.det * Ψ (y * (commonCosetRep F b n q).val) :=
+      ∑ q ∈ t, χ (commonCosetRep F b q).val.det * Ψ (y * (commonCosetRep F b q).val) :=
   commonCosetSum_eq_sum (fun g : GL b F ↦ χ g.val.det * Ψ (y * g.val)) t fun q hq ↦
     ht q (right_ne_zero_of_mul hq)
 
@@ -334,7 +306,7 @@ lemma exists_isPrimitiveMatrix_localSection_eq (χ : MulChar F ℂ) (y : Matrix 
         localSection χ y Ψ = χ g.val.det * Ψ (y * g.val) := by
   -- Exactly one representative `r` makes `y * r` primitive, and only it counts in the sum.
   obtain ⟨q, hq, hq_unique⟩ := existsUnique_isPrimitiveMatrix_mul_commonCosetRep (n := n) hy
-  refine ⟨commonCosetRep F b n q, hq, fun Ψ hΨ ↦ ?_⟩
+  refine ⟨commonCosetRep F b q, hq, fun Ψ hΨ ↦ ?_⟩
   simpa using localSection_eq_sum χ y Ψ {q} fun p hp ↦ by simp [hq_unique p (hΨ _ hp)]
 
 /-- In a semilocal field with ring of integers `O` and uniformiser `ϖ`, the element `1 - ϖ t` is a
@@ -404,15 +376,15 @@ lemma exists_eq_invLastRows_iff_isPrimitiveMatrix (e : b ⊕ a ≃ n) (x : Matri
 
 /-- Let `Φ` be locally constant with compact support in the `x` such that `xᵀ` has a left inverse.
 There is a finite set `t` of cosets `q` in `GL_a(F)/GL_a(O)` such that each `x` in the support has
-`xᵀ * r⁻¹` primitive for the chosen representative `r = commonCosetRep F a n q` of some `q` in
+`xᵀ * r⁻¹` primitive for the chosen representative `r = commonCosetRep F a q` of some `q` in
 `t`. -/
 lemma exists_finset_isPrimitiveMatrix_mul_inv_commonCosetRep {Φ : Matrix a n F → ℂ}
     (hΦ : Φ ∈ schwartzBruhat fun x : Matrix a n F ↦ HasLeftInv xᵀ) :
     ∃ t : Finset (GL a F ⧸ intGL a O), ∀ x : Matrix a n F, Φ x ≠ 0 →
-      ∃ q ∈ t, IsPrimitiveMatrix O (xᵀ * (commonCosetRep F a n q).val⁻¹) := by
+      ∃ q ∈ t, IsPrimitiveMatrix O (xᵀ * (commonCosetRep F a q).val⁻¹) := by
   obtain ⟨hΦ_const, hΦ_compact, hΦ_supp⟩ := hΦ
   let U (q : GL a F ⧸ intGL a O) : Set (Matrix a n F) :=
-    {x | IsPrimitiveMatrix O (xᵀ * (commonCosetRep F a n q).val⁻¹)}
+    {x | IsPrimitiveMatrix O (xᵀ * (commonCosetRep F a q).val⁻¹)}
   have h_compact : IsCompact Φ.support :=
     hΦ_compact.of_isClosed_subset (hΦ_const {0}).isClosed_compl (subset_tsupport Φ)
   obtain ⟨t, ht⟩ := h_compact.elim_finite_subcover U
@@ -445,7 +417,7 @@ lemma sameSectionPairs.exists_linear_factor (χ : MulChar F ℂ) (e : b ⊕ a �
   refine ⟨Λ ∘ₗ recover, fun Φ Ψ h_pair ↦ ?_⟩
   obtain ⟨hΦ, -, h_match⟩ := mem_sameSectionPairs_iff.1 h_pair
   have ⟨hΦ_const, hΦ_compact, hΦ_supp⟩ := hΦ
-  let r : GL a F ⧸ intGL a O → GL a F := commonCosetRep F a n
+  let r : GL a F ⧸ intGL a O → GL a F := commonCosetRep F a
   let piece (q : GL a F ⧸ intGL a O) (x : Matrix a n F) : ℂ :=
     if IsPrimitiveMatrix O (xᵀ * (r q).val⁻¹) then Φ x else 0
   have piece_mem (q : GL a F ⧸ intGL a O) :
