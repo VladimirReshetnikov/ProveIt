@@ -213,6 +213,8 @@ For the explicit margins, [PolynomialIrreducibleDegrees.lean](GRHArticle/Progres
 
 [PolynomialNaturalExchange.lean](GRHArticle/ProgressionFree/PolynomialNaturalExchange.lean) proves polynomial-ratio avoidance for the joint valuation exchange over any field. [PolynomialNaturalExchangeNumerics.lean](GRHArticle/ProgressionFree/PolynomialNaturalExchangeNumerics.lean) verifies the three small-field bracket and gain-factor estimates and gives a uniform bracket of at least 1/15 for five or more linear factors. Relating these factors to the actual natural-density difference also requires the valuation density formula.
 
+[PolynomialFiniteValuationDensity.lean](GRHArticle/ProgressionFree/PolynomialFiniteValuationDensity.lean) proves the finite joint valuation law for arbitrary exponent sets at monic irreducibles of any degree, with either unrestricted or greedy exponents elsewhere. [PolynomialMonicBallDensity.lean](GRHArticle/ProgressionFree/PolynomialMonicBallDensity.lean) transfers a monic degree-layer limit to the natural density of all its nonzero scalar multiples.
+
 ## RH and Dirichlet GRH input
 
 The article uses the five theorems in
