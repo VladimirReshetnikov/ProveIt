@@ -25,7 +25,7 @@ The heads of these files give an overview of a theory: `Lib/ClassField/Global/Ar
 - `New/Reduction/Data/FieldsAndPlaces` (267): The parameters q₀ and d, the field E = K(ζ), its infinite places and its roots of unity
 - `New/Reduction/Data/AdmissibleData` (162): Admissible data
 - `New/Reduction/Data/Magnitudes` (332): Logarithmic bounds for the sizes of the data
-- `New/Reduction/Data/Existence` (640): Admissible data exist at every large x
+- `New/Reduction/Data/Existence` (646): Admissible data exist at every large x
 - `New/Reduction/Data/LevelAndTwists` (177): Weight bounds, the level N, and twists and m-fold twists for chains of lifts
 - `New/Reduction/Data/Sizes` (113): Sizes of the data
 
@@ -33,7 +33,7 @@ The heads of these files give an overview of a theory: `Lib/ClassField/Global/Ar
 
 - `New/Reduction/PrimeSums` (185): Prime sums: main amount, expected value and total remainder
 - `New/Reduction/IntegralTargetForms` (51): The target forms as a twisted lattice
-- `New/Reduction/ShortAndEnough` (273): Theorem A (short forms) and Theorem B (enough forms)
+- `New/Reduction/ShortAndEnough` (276): Theorem A (short forms) and Theorem B (enough forms)
 - `New/Reduction/MainInequality` (65): The main inequality
 - `New/Reduction/OneSidedBound` (199): The one-sided bound, and the theorem in half-plane form
 
@@ -157,7 +157,7 @@ The heads of these files give an overview of a theory: `Lib/ClassField/Global/Ar
 **The second moment and the spanning theorem**
 
 - `New/Spanning/SecondMoment/PositiveType` (139): Functions of positive type and singular minors
-- `New/Spanning/SecondMoment/FewTranslates` (404): Few translates fill
+- `New/Spanning/SecondMoment/FewTranslates` (395): Few translates fill
 - `New/Spanning/SecondMoment/SpanningTheorem` (202): The dimension of the target and one good translate of the Poincaré map
 
 **Equality of multiplicities**
@@ -195,7 +195,7 @@ The heads of these files give an overview of a theory: `Lib/ClassField/Global/Ar
 - `New/Spanning/Unfolding/TermStructure` (566): The structure of a term
 - `New/Spanning/Unfolding/SquareExpansion` (474): The expansion of the squares and the second moment near the Bessel subgroup
 - `New/Spanning/Unfolding/MomentBounds` (376): The second moment over the whole group
-- `New/Spanning/Unfolding/Moments` (746): The second moments of the operators `P* s P`, and good forms
+- `New/Spanning/Unfolding/Moments` (744): The second moments of the operators `P* s P`, and good forms
 - `New/Spanning/Unfolding/PoincareSeries` (649): Poincaré series of fitting spaces, unfolding, Petersson products and source form coordinates
 - `New/Spanning/Unfolding/BesselFormula` (249): The Bessel function as an integral over `R(F_∞)`
 - `New/Spanning/Unfolding/FrameMass` (239): Masses of spheres and of frames
@@ -281,7 +281,7 @@ The heads of these files give an overview of a theory: `Lib/ClassField/Global/Ar
 **The exchange identity**
 
 - `New/Determinant/Exchange/NegativeIndices` (357): Theta coefficients vanish off negative forms
-- `New/Determinant/Exchange/MatchingPartners` (413): Matched functions, sections over GL cosets and same-section pairs of matrix functions
+- `New/Determinant/Exchange/MatchingPartners` (401): Matched functions, sections over GL cosets and same-section pairs of matrix functions
 - `New/Determinant/Exchange/EquivariantDifference` (223): The difference in the exchange identity as an equivariant lift
 - `New/Determinant/Exchange/StableSpacesStandardData` (563): Criteria for a function with a matched function to lie in a stable space; vanishing of lifts
 - `New/Determinant/Exchange/ConeImage` (319): The image of the cone integral
@@ -417,7 +417,7 @@ The heads of these files give an overview of a theory: `Lib/ClassField/Global/Ar
 
 - `New/Congruences/Lifting/ExponentLattices` (725): Lattices with prescribed orders, depth steps and the depth lemma
 - `New/Congruences/Lifting/HodgeExpansion` (496): Exponents of lattice elements in a Hodge basis and the length of one step on a line
-- `New/Congruences/Lifting/CupProductBound` (830): Sides of a pairing, cokernel killers and the pairing lemma for cup products
+- `New/Congruences/Lifting/CupProductBound` (809): Sides of a pairing, cokernel killers and the pairing lemma for cup products
 - `New/Congruences/Lifting/SidePoints` (504): Jump windows, the gap condition and points of the sides of a Kummer chart
 - `New/Congruences/Lifting/TameCharts` (427): Tame Kummer charts and the power of p that kills cokernels of Kisin modules
 - `New/Congruences/Lifting/LongGap` (307): The long gap lemma for a side of a Kummer chart, by expansion in powers of E
@@ -537,7 +537,7 @@ The heads of these files give an overview of a theory: `Lib/ClassField/Global/Ar
 - `Lib/Analytic/PolyaVinogradov` (146): Gauss sums of primitive characters and the Pólya–Vinogradov bound
 - `Lib/Analytic/DirichletTheta` (373): Theta series of Dirichlet characters, Poisson summation, and `L(s, χ)` as a Mellin transform
 - `Lib/Analytic/EntireLFunction` (123): Quadratic twists, polar functions and logarithmic derivatives of Dirichlet L-functions
-- `Lib/Analytic/Landau` (179): Landau's lemma
+- `Lib/Analytic/Landau` (176): Landau's lemma
 - `Lib/Analytic/QuadraticTwist` (620): A prime `d` in a class whose quadratic twists have no zero in a box
 - `Lib/Analytic/Primes` (333): Primes congruent to `1` modulo `M ^ k` with logarithm in a prescribed window
 
@@ -892,7 +892,7 @@ The heads of these files give an overview of a theory: `Lib/ClassField/Global/Ar
 - `Lib/General/LinearAlgebra/TensorChains` (173): Chains of linear maps, tensor products of their data, and separation by forms
 - `Lib/General/LinearAlgebra/Eigenvalues` (507): Eigenvalues: traces of powers, common eigenvectors, Amitsur's theorem, Sylvester's law
 - `Lib/General/LinearAlgebra/HermitianMatrices` (216): Determinants of positive semidefinite matrices, principal minors and hermitian involutions
-- `Lib/General/LinearAlgebra/IntegralLattices` (455): Integral matrices over subrings: Smith normal form, Gelfand's condition and lattices
+- `Lib/General/LinearAlgebra/IntegralLattices` (460): Integral matrices over subrings: Smith normal form, Gelfand's condition and lattices
 - `Lib/General/LinearAlgebra/MatricesNearIdentity` (262): Matrices near the identity: Jacobi's formula and norm estimates
 - `Lib/General/LinearAlgebra/MinorProducts` (296): Products of principal minors, Fischer's inequality and the Cauchy–Binet formula
 - `Lib/General/LinearAlgebra/GramDeterminant` (78): Gram determinants
