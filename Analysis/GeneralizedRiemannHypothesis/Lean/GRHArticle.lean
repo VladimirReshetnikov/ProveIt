@@ -87,6 +87,7 @@ import GRHArticle.ProgressionFree.IntegerUpperDensityComputability
 import GRHArticle.ProgressionFree.IntegerUpperDensityLowerBound
 import GRHArticle.ProgressionFree.IntegerUpperDensityUpperBound
 import GRHArticle.ProgressionFree.IntegerWheelTail
+import GRHArticle.ProgressionFree.IntervalRothCertificate
 import GRHArticle.ProgressionFree.LightPrimeBlocks
 import GRHArticle.ProgressionFree.LogarithmicAverages
 import GRHArticle.ProgressionFree.NumberFieldIdeals.BoundedIdealQuotient
@@ -213,6 +214,8 @@ import GRHArticle.ProgressionFree.SharedDeletionMass
 import GRHArticle.ProgressionFree.SharedDeletionProgressions
 import GRHArticle.ProgressionFree.SingletonPrimeBlocks
 import GRHArticle.ProgressionFree.ThreeTermBoundedBlockEndpoints
+import GRHArticle.ProgressionFree.TriangleRothDeficiency
+import GRHArticle.ProgressionFree.TriangleRothSmallCases
 import GRHArticle.ProgressionFree.WidthPreservingFiniteExceptions
 import GRHArticle.SingularModuli.BaseChange
 import GRHArticle.SingularModuli.Binomial

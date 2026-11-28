@@ -197,6 +197,8 @@ For the explicit margins, [PolynomialIrreducibleDegrees.lean](GRHArticle/Progres
 
 [PolynomialTwoPrimeTransfer.lean](GRHArticle/ProgressionFree/PolynomialTwoPrimeTransfer.lean) transfers the article's three finite triangle losses, as hypotheses, to the actual polynomial density supremum. [PolynomialTwoPrimeFibers.lean](GRHArticle/ProgressionFree/PolynomialTwoPrimeFibers.lean) counts the two-prime classes with the leading scalar retained. The resulting upper bound uses the same one-prime Roth series as Asada et al.
 
+[TriangleRothSmallCases.lean](GRHArticle/ProgressionFree/TriangleRothSmallCases.lean) proves the first two triangle losses in `gpp:thm:twoprime`. All interval maxima at lengths 5, 9, 13 and 20, and their forced or omitted points, are kernel-checked. [TriangleRothDeficiency.lean](GRHArticle/ProgressionFree/TriangleRothDeficiency.lean) proves that any previous loss persists in a translated tip and that a row-column conflict forces another unit.
+
 ## RH and Dirichlet GRH input
 
 The article uses the five theorems in
