@@ -384,12 +384,10 @@ lemma HasAmplitudeBlocks.adjoint_comp_rep_mul_left [HasPrimitiveRoot5040 E]
     (hρ : ∀ (s : S.ResidueGL) (x y : V), ⟪ρ s x, ρ s y⟫_ℂ = ⟪x, y⟫_ℂ) (s : S.ResidueGL)
     {t : S.ResidueGL} (ht : t ∈ S.reducedImage besselS) :
     P.adjoint ∘ₗ ρ (t * s) ∘ₗ P = S.besselTranslate t ∘ₗ (P.adjoint ∘ₗ ρ s ∘ₗ P) := by
-  -- The adjoint of `t⁻¹ P = P r_ψ(t⁻¹)` is `P* t = r_ψ(t) P*`.
-  have h_adjoint : P.adjoint ∘ₗ ρ t = S.besselTranslate t ∘ₗ P.adjoint := by
-    simpa [LinearMap.adjoint_comp, adjoint_rep_of_unitary hρ, adjoint_besselTranslate] using
-      congrArg LinearMap.adjoint (hP.rep_comp_eq_comp_besselTranslate hρ (inv_mem ht))
-  rw [map_mul, End.mul_eq_comp, ← LinearMap.comp_assoc, ← LinearMap.comp_assoc, h_adjoint]
-  simp only [LinearMap.comp_assoc]
+  -- Take the adjoint of right equivariance at `(s⁻¹, t⁻¹)`.
+  simpa only [LinearMap.adjoint_comp, LinearMap.adjoint_adjoint, adjoint_rep_of_unitary hρ,
+    adjoint_besselTranslate, _root_.mul_inv_rev, inv_inv, LinearMap.comp_assoc] using
+      congrArg LinearMap.adjoint (hP.adjoint_comp_rep_mul_right s⁻¹ (inv_mem ht))
 
 /-- Let `S` be admissible filling data for a unitary group `G` over the CM field `E`, which contains
 a primitive `5040`-th root of unity, and let `Ḡ = S.ResidueGL` be the product of the general linear
