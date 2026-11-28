@@ -205,6 +205,8 @@ For the explicit margins, [PolynomialIrreducibleDegrees.lean](GRHArticle/Progres
 
 [PolynomialGreedyCofactorDensity.lean](GRHArticle/ProgressionFree/PolynomialGreedyCofactorDensity.lean) proves the exact degree-layer limit for greedy monic polynomials avoiding any finite set of monic primes. The constant has an explicit convergent series and a positive squarefree lower bound. [PolynomialOneFreePrimeFibers.lean](GRHArticle/ProgressionFree/PolynomialOneFreePrimeFibers.lean) gives the cofactor decomposition and proves rational-ratio progression avoidance for independent progression-free exponent choices at one prime.
 
+[FourPrimeLowBoxTransfer.lean](GRHArticle/ProgressionFree/FourPrimeLowBoxTransfer.lean) reduces unrestricted Rankin optimality for the covered four-prime tuples to concrete weighted rectangular prefix bounds. [FourPrimeOptimalityFromBoxes.lean](GRHArticle/ProgressionFree/FourPrimeOptimalityFromBoxes.lean) sums the low and high ternary-digit contributions. The finite prefix inequalities remain hypotheses.
+
 ## RH and Dirichlet GRH input
 
 The article uses the five theorems in
