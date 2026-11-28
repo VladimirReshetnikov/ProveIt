@@ -229,6 +229,8 @@ For the explicit margins, [PolynomialIrreducibleDegrees.lean](GRHArticle/Progres
 
 [GreedyExponentDigitProduct.lean](GRHArticle/ProgressionFree/GreedyExponentDigitProduct.lean) proves the ternary generating product throughout the open unit ball of every complete normed field and derives the digit product for the degree benchmark. [PolynomialNaturalExchangeMixedRatio.lean](GRHArticle/ProgressionFree/PolynomialNaturalExchangeMixedRatio.lean) constructs a nonconstant rational-ratio triple in the natural exchange whenever two distinct primes are selected.
 
+[FourPrimeWeightedLineCapacities.lean](GRHArticle/ProgressionFree/FourPrimeWeightedLineCapacities.lean) certifies the four weighted capacity tables for nine positions. [FourPrimeMaskBoxSoundness.lean](GRHArticle/ProgressionFree/FourPrimeMaskBoxSoundness.lean) proves the soundness of the corresponding finite prefix checker. The analytic reduction accepts either checker through the same integer score bound.
+
 ## RH and Dirichlet GRH input
 
 The article uses the five theorems in [grh/src/Main.lean](grh/src/Main.lean).

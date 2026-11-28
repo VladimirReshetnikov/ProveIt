@@ -29,6 +29,15 @@ private theorem sum_map_fourPrimeSortedExponents {M : Type*} [AddCommMonoid M]
   rw [fourPrimeSortedExponents_coe]
   rfl
 
+/-- The target equals the integer score of the greedy subset. -/
+theorem fourPrimeBoxTarget_eq_sum (q r : Fin 4 → ℕ) :
+    fourPrimeBoxTarget q r =
+      ∑ a ∈ exponentBox r, if fourPrimeBoxGood a then fourPrimeBoxScore q a else 0 := by
+  unfold fourPrimeBoxTarget
+  rw [sum_map_filter]
+  simp only [fourPrimeBoxEntries,List.map_map,Function.comp_def]
+  exact sum_map_fourPrimeSortedExponents q r _
+
 /-- If a base prefix passes the checker, its greedy vectors bound the
 inflated integer score of every progression-free subset. -/
 theorem fourPrimeBoxScore_le_of_check
@@ -90,11 +99,13 @@ private theorem cast_fourPrimeBoxScore (q a : Fin 4 → ℕ) (hq : ∀ i, (q i).
   change _ = 20*D*_
   cases fourPrimeBoxGood a <;> simp <;> ring
 
-/-- The checked bound on a rectangular prefix, with real reciprocal weights. -/
-theorem fourPrimeBoxWeighted_le_of_check
-    (q r : Fin 4 → ℕ) (hq : ∀ i, (q i).Prime) (hInj : Function.Injective q)
-    (hr : ∀ i, r i ≤ fourPrimeLowBoxLimit i) (hc : fourPrimeBoxCheck q r = true)
-    (F : Set (Fin 4 → ℕ)) (hF : ThreeAPFree F) :
+/-- A bound on the inflated integer score gives the identical inequality
+with real reciprocal weights. -/
+theorem fourPrimeBoxWeighted_le_of_integerScore
+    (q r : Fin 4 → ℕ) (hq : ∀ i, (q i).Prime) (hr : ∀ i, r i ≤ fourPrimeLowBoxLimit i)
+    (F : Set (Fin 4 → ℕ))
+    (h : letI : DecidablePred (· ∈ F) := fun _ ↦ Classical.propDecidable _
+      (∑ a ∈ exponentBox r, if a ∈ F then fourPrimeBoxScore q a else 0) ≤ fourPrimeBoxTarget q r) :
     letI : DecidablePred (· ∈ F) := fun _ ↦ Classical.propDecidable _
     (∑ a ∈ exponentBox r, if a ∈ F then (if fourPrimeBoxGood a then 1 else (21:ℝ)/20) *
         ∏ i, (1/(q i : ℝ))^(a i) else 0) ≤
@@ -103,7 +114,7 @@ theorem fourPrimeBoxWeighted_le_of_check
   let C := (20:ℝ) * ∏ i, (q i : ℝ)^(fourPrimeLowBoxLimit i)
   have hC : 0 < C := mul_pos (by norm_num)
     (prod_pos fun i _ ↦ pow_pos (by exact_mod_cast (hq i).pos) _)
-  have h := fourPrimeBoxScore_le_of_check q r hq hInj hc F hF
+  rw [fourPrimeBoxTarget_eq_sum] at h
   have hCast :
       (∑ a ∈ exponentBox r, if a ∈ F then (fourPrimeBoxScore q a : ℝ) else 0) ≤
         ∑ a ∈ exponentBox r, if fourPrimeBoxGood a then (fourPrimeBoxScore q a : ℝ) else 0 := by
@@ -119,5 +130,17 @@ theorem fourPrimeBoxWeighted_le_of_check
     intro a ha
     have he := cast_fourPrimeBoxScore q a hq (fun i ↦ (mem_exponentBox.mp ha i).trans (hr i))
     cases h : fourPrimeBoxGood a <;> simp [h,he,C]
+
+/-- The checked bound on a rectangular prefix, with real reciprocal weights. -/
+theorem fourPrimeBoxWeighted_le_of_check
+    (q r : Fin 4 → ℕ) (hq : ∀ i, (q i).Prime) (hInj : Function.Injective q)
+    (hr : ∀ i, r i ≤ fourPrimeLowBoxLimit i) (hc : fourPrimeBoxCheck q r = true)
+    (F : Set (Fin 4 → ℕ)) (hF : ThreeAPFree F) :
+    letI : DecidablePred (· ∈ F) := fun _ ↦ Classical.propDecidable _
+    (∑ a ∈ exponentBox r, if a ∈ F then (if fourPrimeBoxGood a then 1 else (21:ℝ)/20) *
+        ∏ i, (1/(q i : ℝ))^(a i) else 0) ≤
+      ∑ a ∈ exponentBox r, if fourPrimeBoxGood a then ∏ i, (1/(q i : ℝ))^(a i) else 0 :=
+  fourPrimeBoxWeighted_le_of_integerScore q r hq hr F
+    ((fourPrimeBoxScore_le_of_check q r hq hInj hc F hF).trans_eq (fourPrimeBoxTarget_eq_sum q r).symm)
 
 end GRHArticle.ProgressionFree

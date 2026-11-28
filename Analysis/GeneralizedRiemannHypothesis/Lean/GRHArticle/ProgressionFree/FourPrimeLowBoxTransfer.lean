@@ -15,12 +15,14 @@ open Finset
 open scoped BigOperators
 
 /-- The base-prefix checks give the low-box deficit at all larger weights. -/
-theorem fourPrimeLowBox_deficit_of_checkedPrefixes
-    (b : Fin 4 → ℕ) (hb : ∀ i, (b i).Prime) (hDistinct : Function.Injective b)
+theorem fourPrimeLowBox_deficit_of_scorePrefixes
+    (b : Fin 4 → ℕ) (hb : ∀ i, (b i).Prime)
     (q : Fin 4 → ℚ) (hBQ : ∀ i, (b i:ℚ) ≤ q i)
     (fixed : Finset (Fin 4)) (hFixed : ∀ i ∈ fixed, (b i:ℚ) = q i)
-    (hCheck : ∀ r ∈ exponentBox fourPrimeLowBoxLimit,
-      (∀ i ∈ fixed, r i = fourPrimeLowBoxLimit i) → fourPrimeBoxCheck b r = true)
+    (hScore : ∀ r ∈ exponentBox fourPrimeLowBoxLimit, (∀ i ∈ fixed, r i = fourPrimeLowBoxLimit i) →
+      ∀ A : Set (Fin 4 → ℕ), ThreeAPFree A →
+        letI : DecidablePred (· ∈ A) := fun _ ↦ Classical.propDecidable _
+        (∑ a ∈ exponentBox r, if a ∈ A then fourPrimeBoxScore b a else 0) ≤ fourPrimeBoxTarget b r)
     (A : Set (Fin 4 → ℕ)) (hA : ThreeAPFree A) :
     let u := fun i ↦ 1/(q i:ℝ)
     (21:ℝ)/20 * exponentDigitSliceMass u fourPrimeLowDigitDepth (A \ rankinExponentVectors _) 0 ≤
@@ -35,8 +37,8 @@ theorem fourPrimeLowBox_deficit_of_checkedPrefixes
   have hPrefix (r : Fin 4 → ℕ) (hr : r ∈ L)
       (hR : ∀ i ∈ fixed, r i = fourPrimeLowBoxLimit i) :
       (∑ a ∈ exponentBox r, c a * ∏ i, (1/(b i:ℝ))^(a i)) ≤ 0 := by
-    have h := fourPrimeBoxWeighted_le_of_check b r hb hDistinct (mem_exponentBox.mp hr)
-      (hCheck r hr hR) A hA
+    have h := fourPrimeBoxWeighted_le_of_integerScore b r hb (mem_exponentBox.mp hr) A
+      (hScore r hr hR A hA)
     simp only [c,sub_mul,sum_sub_distrib]
     apply sub_nonpos.mpr
     simpa only [s,g,ite_mul,zero_mul,one_mul] using h
@@ -73,12 +75,14 @@ theorem fourPrimeLowBox_deficit_of_checkedPrefixes
 
 /-- Rankin is optimal on every tuple covered by the checked prefixes and
 a certified high-digit margin at its base tuple. -/
-theorem reciprocalExponentMass_fourPrimeRankinOptimal_of_checkedPrefixes
-    (b : Fin 4 → ℕ) (hb : ∀ i, (b i).Prime) (hDistinct : Function.Injective b)
+theorem reciprocalExponentMass_fourPrimeRankinOptimal_of_scorePrefixes
+    (b : Fin 4 → ℕ) (hb : ∀ i, (b i).Prime)
     (q : Fin 4 → ℚ) (hBQ : ∀ i, (b i:ℚ) ≤ q i)
     (fixed : Finset (Fin 4)) (hFixed : ∀ i ∈ fixed, (b i:ℚ) = q i)
-    (hCheck : ∀ r ∈ exponentBox fourPrimeLowBoxLimit,
-      (∀ i ∈ fixed, r i = fourPrimeLowBoxLimit i) → fourPrimeBoxCheck b r = true)
+    (hScore : ∀ r ∈ exponentBox fourPrimeLowBoxLimit, (∀ i ∈ fixed, r i = fourPrimeLowBoxLimit i) →
+      ∀ A : Set (Fin 4 → ℕ), ThreeAPFree A →
+        letI : DecidablePred (· ∈ A) := fun _ ↦ Classical.propDecidable _
+        (∑ a ∈ exponentBox r, if a ∈ A then fourPrimeBoxScore b a else 0) ≤ fourPrimeBoxTarget b r)
     (hMargin : (20:ℚ)/21 + fourPrimeHighDigitTail (fun i ↦ (b i:ℚ)) ≤ 1)
     {F : Set (Fin 4 → ℕ)} (hF : ThreeAPFree F) :
     let u := fun i ↦ 1/(q i:ℝ)
@@ -88,6 +92,39 @@ theorem reciprocalExponentMass_fourPrimeRankinOptimal_of_checkedPrefixes
   have hTail := fourPrimeHighDigitTail_le_of_le hPrime hBQ
   have hm : (20:ℚ)/21 + fourPrimeHighDigitTail q ≤ 1 := by linarith
   exact reciprocalExponentMass_fourPrimeRankinOptimal_of_boxes q hq hm hF
-    (fourPrimeLowBox_deficit_of_checkedPrefixes b hb hDistinct q hBQ fixed hFixed hCheck)
+    (fourPrimeLowBox_deficit_of_scorePrefixes b hb q hBQ fixed hFixed hScore)
+
+/-- The base-prefix checks give the low-box deficit at all larger weights. -/
+theorem fourPrimeLowBox_deficit_of_checkedPrefixes
+    (b : Fin 4 → ℕ) (hb : ∀ i, (b i).Prime) (hDistinct : Function.Injective b)
+    (q : Fin 4 → ℚ) (hBQ : ∀ i, (b i:ℚ) ≤ q i)
+    (fixed : Finset (Fin 4)) (hFixed : ∀ i ∈ fixed, (b i:ℚ) = q i)
+    (hCheck : ∀ r ∈ exponentBox fourPrimeLowBoxLimit,
+      (∀ i ∈ fixed, r i = fourPrimeLowBoxLimit i) → fourPrimeBoxCheck b r = true)
+    (A : Set (Fin 4 → ℕ)) (hA : ThreeAPFree A) :
+    let u := fun i ↦ 1/(q i:ℝ)
+    (21:ℝ)/20 * exponentDigitSliceMass u fourPrimeLowDigitDepth (A \ rankinExponentVectors _) 0 ≤
+      exponentDigitSliceMass u fourPrimeLowDigitDepth (rankinExponentVectors _ \ A) 0 :=
+  fourPrimeLowBox_deficit_of_scorePrefixes b hb q hBQ fixed hFixed
+    (fun r hr hR A hA ↦
+      (fourPrimeBoxScore_le_of_check b r hb hDistinct (hCheck r hr hR) A hA).trans_eq
+        (fourPrimeBoxTarget_eq_sum b r).symm) A hA
+
+/-- Rankin is optimal on every tuple covered by the checked prefixes and
+a certified high-digit margin at its base tuple. -/
+theorem reciprocalExponentMass_fourPrimeRankinOptimal_of_checkedPrefixes
+    (b : Fin 4 → ℕ) (hb : ∀ i, (b i).Prime) (hDistinct : Function.Injective b)
+    (q : Fin 4 → ℚ) (hBQ : ∀ i, (b i:ℚ) ≤ q i)
+    (fixed : Finset (Fin 4)) (hFixed : ∀ i ∈ fixed, (b i:ℚ) = q i)
+    (hCheck : ∀ r ∈ exponentBox fourPrimeLowBoxLimit,
+      (∀ i ∈ fixed, r i = fourPrimeLowBoxLimit i) → fourPrimeBoxCheck b r = true)
+    (hMargin : (20:ℚ)/21 + fourPrimeHighDigitTail (fun i ↦ (b i:ℚ)) ≤ 1)
+    {F : Set (Fin 4 → ℕ)} (hF : ThreeAPFree F) :
+    let u := fun i ↦ 1/(q i:ℝ)
+    reciprocalExponentMass u F ≤ reciprocalExponentMass u (rankinExponentVectors (Fin 4)) :=
+  reciprocalExponentMass_fourPrimeRankinOptimal_of_scorePrefixes b hb q hBQ fixed hFixed
+    (fun r hr hR A hA ↦
+      (fourPrimeBoxScore_le_of_check b r hb hDistinct (hCheck r hr hR) A hA).trans_eq
+        (fourPrimeBoxTarget_eq_sum b r).symm) hMargin hF
 
 end GRHArticle.ProgressionFree
