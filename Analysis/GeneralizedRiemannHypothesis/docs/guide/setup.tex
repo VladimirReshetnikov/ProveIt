@@ -1,0 +1,82 @@
+\section{Constructing the arithmetic data at a prescribed scale}\label{sec:setup}
+The proof must bound \(R_Q(x)\) at every sufficiently large \(x\), while using level primes and CM fields with special properties. It achieves this by prescribing a sufficiently large integer \(x\) first. The auxiliary levels, degrees and weights may then depend on it. In this section \(Q,d\), and a small positive \(\eta<1/100\) are fixed.
+
+\subsection{A field whose places can detect a progression}
+Take \(m\) to be the least power of two at least \(\sqrt{x}\), and \(r\) the least power of three at least \(x^5\). Then \(m\le2\sqrt{x}\) and \(r\le3x^5\). Put \(k=r+1-m\), \(t=5r\), and choose the integer \(s_0\) with \(2^{s_0}=m^{22}\). If \(l_0\) is the least power of three strictly larger than \(27s_0\), set
+\[
+ T_0=3l_0\,2^{s_0},\qquad q_1=QT_0,\qquad q_2=(Qd)^{s_0+6},
+ \qquad E=K(\zeta_{q_1}).
+\]
+Complex conjugation gives the CM field \(E\) its totally real fixed field \(E^+\). Choose one of the embeddings of \(K\) into \(\mathbb C\). Each conjugate pair of embeddings of \(E\) now has a distinguished member, the one extending that embedding of \(K\). The coprime quadratic and cyclotomic conductors make the possible images of \(\zeta_{q_1}\) exactly its powers by the units modulo \(q_1\). Hence the infinite places \(\Phi\) carry the group structure of \((\mathbb Z/q_1\mathbb Z)^\times\). Write \(f=|\Phi|\).
+
+Let \(\Phi_a\) be the whole fibre above \(1\) modulo \(Q\), and let \(\Phi_b\) be a carefully chosen subset of the fibre above \(-1\). Reduction modulo \(Q\) has equal-size fibres. The prime divisors of \(T_0\) already divide \(Q\), so
+\[
+             |\Phi_a|=T_0,\qquad f=\varphi(Q)|\Phi_a|.
+\]
+Put \(W=x^{\eta/6}\), \(x_1=\lfloor e^W\rfloor\), and choose \(b\) as the least multiple of \(q_1x_1\) strictly exceeding \(e^{W^6}\). With \(a=xb\), the inequalities
+\[
+       x^\eta\le\log b\le x^\eta+1,\qquad
+       x^{\eta/6}-1\le\log x_1\le x^{\eta/6}
+\]
+hold eventually. Each place carries an ordinary integral weight
+\[
+ \kappa(\tau)=
+ \begin{cases}b=a/x,&\tau\in\Phi_b,\\ a/x_1,&\tau\notin\Phi_b.\end{cases}
+\]
+At the places in \(\Phi_a\) we also use a distinguished derivative of order \(a\). Thus a place in \(\Phi_a\) has ordinary weight \(a/x_1\) as well as the extra long derivative. The translates of \(\Phi_b\) will determine which of two cutoffs this derivative measures.
+
+To see the selection rule in a small group, reduce the units modulo \(21\) to the units modulo \(3\). The \(+1\) fibre is \(A=\{1,4,10,13,16,19\}\). Mark \(B=\{2,11\}\) in the \(-1\) fibre. At \(n=13\), multiplication by \(-n\) sends \(A\) onto the \(-1\) fibre, so exactly two of the six partners are marked. At \(n=5\), the same multiplication sends \(A\) onto itself, so none are marked. This is the only group fact needed for the progression selector. In the actual field all prime powers with nonzero weight are units modulo \(q_1\), since the prime divisors of \(q_1\) split in \(K\). Applying the selection rule to the positive part
+\[
+       (a/n-\kappa(-n\tau))_+
+       =a(1/n-1/x)_+\quad\hbox{or}\quad a(1/n-1/x_1)_+
+\]
+shows how a sum of derivative valuations distinguishes the residue \(1\bmod Q\).
+\sources{\src{src/New/Reduction/Data/FieldsAndPlaces.lean}{Fields, embeddings and place classes}, \src{src/New/Reduction/Data/AdmissibleData.lean}{data and weights}, \src{src/New/Reduction/PrimeSums.lean}{the fibre count}.}
+
+\subsection{Density and sparsity of the marked places}
+If \(B=\Phi_b\) were very small, the term involving \(R_Q(x)\) would be swamped when we divide a total excess by \(a|B|\). On the other hand, clusters of large weights at places related by small prime powers would destroy a bound for simultaneous local divisibility. The construction proves both
+\[
+        |B|\log b\ge|\Phi_a|
+\]
+and the following restriction. For every prime \(\ell\le kt\) and \(0<i<j<l_0\), there are no \(\sigma,\tau,\rho\in B\) and independent signs such that
+\[
+ \tau/\sigma\equiv\pm\ell^i,\qquad
+ \rho/\sigma\equiv\pm\ell^j
+ \pmod{\text{prime-to-}\ell\text{ part of }q_1}.
+\]
+Even repeated places are covered by this restriction.
+
+The geometric ingredient is a sphere of integer digit vectors. Partition the vectors in \(\{0,\ldots,h-1\}^{v}\) by squared length. One sphere contains at least \(h^v/(vh^2)\) vectors for positive \(h,v\). Encode their digits in base \(Lh\), with modulus \(o\ge(Lh)^v\). A relation
+\((u+v')e_2\equiv u e_1+v'e_3\pmod o\), with \(u,v'>0\) and \(u+v'\le L\), is an equality digit by digit. The base prevents carries and the modulus prevents wraparound. After division by \(u+v'\), the middle vector is a convex combination of two vectors of the same squared length as itself. The strict convexity of squared length forces all three vectors to coincide.
+
+Here the exponents \(e\) label places with unit class \(-g^e\), where \(g=1+3l_0Q\). On the indicated power-of-two component of the modulus \(g\) has order \(2^{s_0}\). For odd \(\ell\), raising two hypothetical prime-power congruences to powers \(2j\) and \(2i\) removes their signs and produces the same \(\ell^{2ij}\). The resulting congruence for the three exponents has coefficients \(2(j-i),2i\) and sum \(2j\le2l_0\). The digit lemma forces equality of the exponents. The remaining order condition would imply \(2^{s_0}\le2i(\ell+1)\), which the construction prevents by \(2l_0(kt+1)<2^{s_0}\). For \(\ell=2\) the odd part of the modulus still contains \(3l_0\), and the order of \(4\) there excludes the two relations. The resulting set satisfies \(|B|\ge T_0/W^6\). Since \(W^6\le\log b\), it is sufficient even after all the exclusions.
+\sources{\src{src/New/Reduction/Data/Existence.lean}{Sphere lemma, multiplicative orders and existence of sparse places}.}
+
+\subsection{Levels, periods and the two chains of spaces}
+Two primes \(p_0,p_1\in[b^{10},b^{11}]\), both \(1\bmod q_2^2\), give \(M=p_0p_1\). We need to write \(M\) as the norm of an algebraic integer in \(K\). One split prime by itself can represent a nontrivial ideal class. Take \(h_K+1\) distinct split primes in admissible windows, where \(h_K\) is the class number, and choose one prime ideal above each. Two selected ideals \(I_i,I_j\) have the same class. Then \(I_i\overline{I_j}\) is principal, and its generator has norm \(p_ip_j\). This supplies the required pair.
+
+A further prime \(N\equiv1\bmod q_2^2\) lies in the window
+\begin{align}
+ \log N_-&=m\log\bar\kappa+(m-1)\log\!\left(\frac{M\,\mathrm{rd}_E}{2\pi}\right)
+                       -\tfrac{15}{2}\log b,\label{eq:Nlevel}\\[-2pt]
+ \log N_-&\le\log N\le\log N_-+\sqrt{\log b},\qquad
+ \log\bar\kappa=f^{-1}\sum_{\tau\in\Phi}\log\kappa(\tau).\notag
+\end{align}
+Here \(\mathrm{rd}_E\) is the root discriminant of \(E\). The size of the levels relative to the progression modulus permits the use of prime windows of Siegel--Walfisz type. Also \(i=\sqrt{-1}\in E\) and \(N\equiv1\bmod4\), so a representation \(N=u^2+v^2\) gives \(\pi_N=u+iv\) with \(\pi_N\overline{\pi_N}=N\). The order of these choices matters. The marked places determine \(\bar\kappa\), and both \(\bar\kappa\) and the previously chosen \(M\) determine the window for \(N\).
+
+We explain why the leading terms in \eqref{eq:Nlevel} have these coefficients. The cost of a derivative of order \(h\) at infinity is
+\(s_\infty(h)=\log h!+h\log(M/\Omega)\), with
+\[
+ \Omega=\frac{2\pi}{\mathrm{rd}_E}
+   \exp\!\left(\gamma-\Re\frac{L'}{L}(1,\chi_d)\right).
+\]
+The Chowla--Selberg formula supplies the normalization of the periods of the CM elliptic curves used for the theta series. The source first controls all conjugate periods by a simultaneous scaling which is a unit at every finite place. This lets the same Taylor expansion have the asserted archimedean size and the requisite finite-place divisibility. Thus \(\Omega\) is tied to the derivatives of an actual function. Its relation to \(c_1\) implies
+\[
+  \log(M/\Omega)=1+c_1+\log(M\,\mathrm{rd}_E/2\pi).
+\]
+Subtracting the expected finite gain \(a(\log(a/\bar\kappa)+c_1)\) from \(s_\infty(a)\), Stirling's \( -a\) cancels the \(+a\) in the period term. This leaves \(a\log(\bar\kappa M\,\mathrm{rd}_E/2\pi)+O(\log a)\). On the entire chain the final restriction contributes a leading \(-a\log N\) per long place. Formula~\eqref{eq:Nlevel} lets a single restriction repay \(m\) of the leading terms to within \(O(a\log b)\). This explains why an error of fixed size in \(c_1\) would be serious. It would accumulate \(m\) times alongside the signal.
+
+The geometric maps are built on two sequences of Hermitian spaces. With \(0\le j\le m\), the definite spaces \(X_j\) have rank \(k+j(t+1)\). The spaces \(Y_j\) have rank \(r+jt\). Initially \(Y_0\) is \(X_0\) together with \((m-2)/2\) hyperbolic planes and one line of norm \(-N\). At the far end \(Y_m\) is a definite codimension-one subspace of \(X_m\), since \(k+m-r=1\). The integral source forms live on the definite group of \(X_0\). The target being spanned consists of selected forms on \(Y_0\); the norm for such a form is measured after lifting along the \(Y\)-chain to \(Y_m\). This creates two paths to the same terminal calculation. An iterated seesaw identity relates the paths.
+
+At the finite coefficient places a target vector has to meet several tests at once. For a prime \(\ell\) and an identification of the coefficients with \(\overline{\mathbb Q}_\ell\), take the intersection of the inverse images of the integral lattices under all admissible lifts \(\Theta_\xi\) of conductor prime to \(\ell\). A bound \(\delta\) on the index of a family \(y_i\) means that at each such identification there is an integral matrix \(U\) taking the tuple into this intersection, with \(|\det U|_\ell\ge\ell^{-e_\ell}\). One can choose \(e_\ell\ge0\) with \(\sum_{\ell\in F}e_\ell\log\ell\le\delta\) for every finite set \(F\) of primes. Thus a single change of coordinates works for all allowed twists at that identification. At infinity, the assertion that the log squared covolume is at most \(c\) bounds by \(e^c\) the absolute Gram determinant computed from the conjugated coordinates of the \emph{untwisted} lifts, for every coefficient conjugation. These are the two quantities compared in A and C. The following sections construct the forms to which they apply.
+\sources{\src{src/New/Reduction/Data/Existence.lean}{Level primes and norm generators}, \src{src/Lib/CM/ChowlaSelberg.lean}{period normalization}, \src{src/New/UpperBound/Size/ArchimedeanSize.lean}{level compensation}, \src{src/New/Reduction/Lattices/TwistedLattice.lean}{index and Gram bound}, \src{src/New/Reduction/IntegralTargetForms.lean}{target realization}.}

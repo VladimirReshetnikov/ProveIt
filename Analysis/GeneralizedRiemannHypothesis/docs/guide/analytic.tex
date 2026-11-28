@@ -1,0 +1,139 @@
+\section{The transform of the remainder}\label{sec:transform}
+We now have a bound on \(R_Q(y)\) for every fixed admissible pair \(Q,d\). The zero to be excluded belongs to a particular \(L\)-function and can have any ordinate. To connect these statements we must recover complex information from a bound on one real-valued function. We first calculate exactly which zeros its transform records.
+
+Write \(V(v)=R_q(e^v)\) for \(v\ge0\), with \(q=1\) or \(Q\). If \(n\le e^v\), its contribution to the uncentered sum is \(\lambda_{d,q}(n)(1/n-e^{-v})\). For \(\Re s>2\) one may integrate term by term. A single term has transform
+\[
+ \int_{\log n}^{\infty}(n^{-1}-e^{-v})e^{(1-s)v}\,dv
+ =n^{-s}\left(\frac1{s-1}-\frac1s\right)
+ =\frac{n^{-s}}{s(s-1)}.
+\]
+The terms \(-v/\varphi(q)\) and \(-c_q\) have transforms \(-1/[\varphi(q)(s-1)^2]\) and \(-c_q/(s-1)\). Substitution of the Dirichlet series computed in Section~\ref{sec:observable} cancels the double pole. With continuation understood, the result is
+\begin{equation}\label{eq:transform}
+ \mathcal F_{d,q}(s)
+   =\int_0^\infty V(v)e^{(1-s)v}\,dv
+   =\frac{G_q(s)/s-c_q}{s-1}.
+\end{equation}
+The integral initially defines the function on the right half-plane of absolute convergence. The right-hand expression supplies its meromorphic continuation. At \(s=1\) its numerator vanishes, by the reality of \(G_q(1)\) and the choice of \(c_q\). This point is removable.
+
+For a zero of an entire function \(E\) of order \(j\), writing \(E(s)=(s-\rho)^j u(s)\) with \(u(\rho)\ne0\) shows that \(E'/E\) has residue \(j\). Consequently for \(\Re\rho>0,\ \rho\ne1\), the only possible singularities of \eqref{eq:transform} are simple poles, and the residue at \(\rho\) is
+\begin{equation}\label{eq:residues}
+ r_d(\rho)=
+ \frac{\displaystyle\sum_{\psi\bmod q}\ord_\rho E_\psi-
+       \displaystyle\sum_{\psi\bmod q}\ord_\rho E_{\psi\chi_d}}
+      {\varphi(q)\rho(1-\rho)}.
+\end{equation}
+The denominator has the sign shown because the order of an \emph{untwisted} zero enters \(G_q\) with a minus sign while the transform divides by \(s-1\). For a real zero \(0<\rho<1\) that sign will be decisive. A zero of a twisted factor could cancel the residue of an untwisted one. The quadratic character \(d\) is still available to rule this out.
+\sources{\src{src/New/Reduction/Zeros/PrimeError.lean}{Dirichlet series, transform, and residues}, \src{src/Lib/Analytic/EntireLFunction.lean}{pole removal and the meromorphic transform}.}
+
+\subsection{Why the distant cutoff needs only a classical zero-free region}
+The arithmetic comparison used two very different estimates for \(R\). At \(x\) it needed a power of \(x\). At \(x_1\) it used \(|R_q(y)|\le(\log y)^{-B}\), eventually for each fixed \(q,d,B\). For clarity we give the analytic reason for the latter input here. Write
+\[
+  B_q(t)=\sum_{n\le t}\lambda_{d,q}(n)-t/\varphi(q).
+\]
+Partial summation gives \(R_q(y)=\int_1^y B_q(t)\,dt/t^2-c_q\) for \(y\ge1\). Chebyshev's upper bound on \(\sum_{n\le t}\Lambda(n)\) gives \(|B_q(t)|\le13t\). It follows that \(R_q(e^v)\) is Lipschitz for \(v\ge0\). The weights vanish at the entering endpoint \(n=y\), so this remains true through jumps in the unsmoothed count.
+
+For the finite list of characters entering \(G_q\), classical zero-free estimates near \(\Re s=1\) give the following convenient weak form. For all sufficiently large \(l\), \(G_q(s)/s\) is holomorphic and bounded by \(l^{26}\) on \(\Re s\ge 1-l^{-26}\), \(|s|\le e^l\). At heights near zero, nonvanishing at \(1\) supplies a neighborhood for the finitely many characters. At large heights the zero-free region follows from Euler product positivity, including \(3+4\cos t+\cos 2t\ge0\), and bounds for the functions and their derivatives. The width shrinks with \(l\); it suffices here because the test scale \(x_1\) is large.
+
+One can see the strength of this input by estimating the same derivative of \(\mathcal F\) in two ways. Take \(v_0=\log y\), let \(j=\lfloor v_0^{2B+4}\rfloor\), and put \(h=(j+1)/v_0\). For large \(y\), \(1+h>2\). Differentiation under the integral gives
+\[
+ C_j=\frac{(-1)^jh^{j+1}}{j!}\mathcal F^{(j)}(1+h)
+     =\int_0^\infty V(v)\frac{h^{j+1}v^j e^{-hv}}{j!}\,dv .
+\]
+The density on the right has mean \(v_0\) and variance \(v_0^2/(j+1)\). The Lipschitz estimate implies \(C_j=V(v_0)+O(v_0/\sqrt{j+1})\). For the other estimate use Cauchy's inequality on the circle of radius \(h+w\) about \(1+h\), with \(l=(2B+5)\log v_0\), \(w=l^{-26}\). The circle and its interior lie in the stated region. The singularity at \(1\) is removable, and the boundary stays at distance at least \(w\) from \(1\). Thus
+\[
+ |C_j|\ \ll\ h\,l^{26}w^{-1}
+      \left(\frac h{h+w}\right)^j .
+\]
+Since \(j/h\) is comparable to \(v_0\), the final factor is at most \(\exp(-c v_0/(\log v_0)^{26})\) for a constant \(c>0\) depending only on \(B\). It absorbs the prefactor and every fixed inverse power of \(v_0\). The two estimates prove the claimed decay. This explains how the distant scale can be disposed of without assuming nonvanishing throughout \(\Re s>1/2\).
+\sources{\src{src/Lib/Analytic/PrimeNumberTheorem/ZeroFreeRegion.lean}{Classical region}, \src{src/Lib/Analytic/PrimeNumberTheorem/Tauberian.lean}{Taylor-coefficient argument}, \src{src/New/Reduction/Zeros/PrimeNumberTheorem.lean}{application to the remainder}.}
+
+\section{Choosing a quadratic twist}\label{sec:twist}
+Suppose a character of modulus \(Q\) has a candidate zero \(\rho\) with \(\Re\rho>1/2\) and \(\rho\ne1\). Ordinary nonvanishing on \(\Re s\ge1\) allows us to take \(\Re\rho<1\). Choose \(1/2<\beta<\Re\rho\) and put \(H_0=|\Im\rho|\). We need one prime \(d\) in the required residue class for which \emph{all} the functions \(E_{\psi\chi_d}\), \(\psi\bmod Q\), are nonzero throughout
+\[
+            \Re s\ge\beta,\qquad |\Im s|\le H_0.
+\]
+Only a bounded-height region is needed. It contains the candidate and it covers every potentially problematic real point to its right or left down to \(\beta\). Avoiding twisted zeros at \(\rho\) alone would leave the sign on the real axis unknown.
+
+\subsection{A zero forces a large theta integral}
+For this argument a theta function is a one-dimensional Gaussian sum. Its role is distinct from that of the high-rank automorphic kernels in the arithmetic construction. Let \(j=0\) or \(1\) select a character's parity and set
+\[
+ w_j(v)=v^j e^{-\pi v^2},\quad
+ \theta_c(u)=\sqrt u\sum_{n\ge1}c(n)w_j(nu),\quad
+ \Gamma_j(s)=\int_0^\infty w_j(v)v^s\,\frac{dv}{v}.
+\]
+For primitive nonprincipal \(c\) of conductor \(D\), the Mellin transform of \(\theta_c(u)u^{s-1/2}\) with measure \(du/u\) is \(\Gamma_j(s)L(s,c)\) initially for \(\Re s>1\), and theta inversion continues this identity to the critical strip. Poisson summation and the primitive Gauss sum of magnitude \(\sqrt D\) give \(|\theta_c(u)|=|\theta_c(1/(Du))|\). The inversion fixes \(D^{-1/2}\). If \(D\le T^2\), the integral of the absolute theta kernel on the critical line can therefore be bounded by twice its integral over \(u\ge1/T\). Matching the parity is essential: an odd character paired with an even weight has a vanishing two-sided theta series.
+
+Let \(\mu\) denote the Möbius function. Define the nonnegative quantity
+\[
+ J(c,T)=\int_{1/T}^\infty
+       \bigl(|\theta_c(u)|+|\theta_{\mu c}(u)|\bigr)\,\frac{du}{u}.
+\]
+The truncated transform \(M_c(s)=\int_{1/T}^\infty \theta_{\mu c}(u)u^{s-1/2}\,du/u\) approximates \(\Gamma_j(s)/L(s,c)\) on \(\Re s=2\). Indeed the full Dirichlet series with coefficients \(\mu(n)c(n)\) equals \(1/L(s,c)\) there, and the omitted part of the integral gives the error. Apply the three-lines theorem to
+\[
+  \Psi(s)=\Gamma_j(s)L(s,c)M_c(s)-\Gamma_j(s)^2
+       \quad\text{on }1/2\le\Re s\le2.
+\]
+If \(J(c,T)\le T^{2\delta}\), the folded theta integral and the triangle inequality bound the left edge by \(O(T^{4\delta})\). The truncation bound gives \(O(T^{-1})\) on the right edge. At \(\Re s\ge1/2+9\delta\) the interpolation weight of the right edge is at least \(6\delta\), so the interpolated exponent is at most \(-2\delta\). But if \(L(s,c)=0\), then \(|\Psi(s)|=|\Gamma_j(s)|^2\). The latter has a positive minimum on the fixed compact rectangle \(1/2\le\Re s\le1,\ |\Im s|\le H_0\). For large \(T\) this is a contradiction. We have proved that a zero with \(\Re s\ge1/2+9\delta\) forces \(J(c,T)>T^{2\delta}\).
+
+\subsection{Why few primes can have any bad twist}
+First take a fixed primitive \(\psi\) of modulus coprime to an odd prime \(d\equiv7\bmod8\). Its twist by \(\chi_d\) is primitive of product conductor. Quadratic reciprocity gives
+\[
+           (n/d)=(-d/n^\circ),\qquad n^\circ=n/2^{v_2(n)}
+\]
+for positive \(n\), with a Jacobi symbol on the right. The factor \(2\) produces no sign since \(d\equiv7\bmod8\). We may extend a sum of the nonnegative quantities \(J\) from prime \(d\) to integers \(v\le T^2\) with coefficients \(c_v(n)=\alpha_n(-v/n^\circ)\), where \(|\alpha_n|\le1\). The same argument applies after multiplying the coefficients by \(\mu(n)\).
+
+Here is the arithmetic behind the mean value. Expanding \(\sum_{v\le T^2}|\theta_{c_v}(u)|^2\) gives a sum over positive \(n,m\). The inner character sum is that of \((-v/(nm)^\circ)\). If the denominator is a square, cancellation can fail even for distinct \(n,m\). However, writing \(n=2^a r h^2\) with \(r\) odd and squarefree shows that the two indices must have the same \(r\). Consequently
+\[
+      \sum_{\substack{n,m\ge1\\(nm)^\circ\ {\rm square}}}(nm)^{-1/2-\delta}<\infty.
+\]
+The two powers of two give geometric series, and the squarefree part and both odd square parts are summed with exponent \(1+2\delta>1\). The trivial bound \(T^2\) for this inner character sum now suffices. For nonsquare denominator it is a nonprincipal Jacobi character, and Pólya--Vinogradov bounds the sum over \(v\) by \(O_\delta((nm)^{1/2+\delta/2})\), independently of the length of averaging.
+
+To add the Gaussian weights, use \(w_j(t)\ll_A t^{-A}\), first at \(A=1/2+\delta\) for the square case and then at \(A=3/2+\delta\) for the nonsquare case. The resulting contributions to the mean square are \(O_\delta(T^2u^{-2\delta})\) and \(O_\delta(u^{-2-2\delta})\). In the latter, the remaining \(n,m\)-series converges with exponent \(1+\delta/2\) in each variable. Now \(u\ge T^{-1}\), hence \(u^{-2}\le T^2\). Both contributions fit inside the first bound. Cauchy--Schwarz, followed by integration against \(du/u\) from \(1/T\), gives
+\[
+                  \sum_{v\le T^2}J(c_v,T)\ll_\delta T^{2+\delta}.
+\]
+Every prime yielding a zero in the box spends more than \(T^{2\delta}\) in this sum. There are at most \(O(T^{2-\delta})\) such primes for the fixed primitive character.
+
+For general characters modulo \(Q\), first pass to the primitive inducing character. A removed Euler factor \(1-\psi(p)p^{-s}\) is nonzero in \(\Re s>0\); if its character value is nonzero it has absolute value one, whereas \(|p^{-s}|<1\). Thus all zeros in the box persist on passage to primitive conductor. Take \(T^2=QX\), so that \(d\le X\) satisfies the conductor bound for every primitive character in question. There are only finitely many characters for fixed \(Q\). For \(\beta=1/2+9\delta\) the count of primes \(d\le X\) in the prescribed class for which \emph{any} character has \emph{any} twisted zero in the box is
+\begin{equation}\label{eq:bad}
+                  O_{Q,\beta,H_0}\!\left(X^{1-\delta/2}\right).
+\end{equation}
+For example \(\beta=3/4\) gives the exponent \(71/72\). This is a bound on exceptional primes. A prime with many offending zeros is counted once.
+
+The class \(d\equiv Q/2-1\bmod Q\) is invertible. If all its primes were exceptional, partial summation of \eqref{eq:bad} would make their \(\sum_d(\log d)/d\) finite. Dirichlet's divergence theorem in this class gives the contradiction. We may fix one prime \(d\) with the required simultaneous nonvanishing. The threshold in \eqref{eq:target} may now depend on this \(d\). This order of choices is why the arithmetic argument only needs a bound for each fixed twist. The scale \(T\) used to select \(d\) does not enter the later limit \(y\to\infty\).
+\sources{\src{src/Lib/Analytic/DirichletTheta.lean}{Theta inversion}, \src{src/Lib/Analytic/PolyaVinogradov.lean}{character-sum bound}, \src{src/Lib/Analytic/QuadraticTwist.lean}{three lines, mean square, exceptional primes and prime selection}.}
+
+\section{One-sided control and the critical line}\label{sec:landau}
+Use the \(d\) just chosen with \(q=Q\). For \(\Re s>\beta,\ |\Im s|\le H_0,\ s\ne1\), the residue \eqref{eq:residues} becomes
+\[
+       r_d(s)=\frac{\sum_{\psi\bmod Q}\ord_s E_\psi}
+                    {\varphi(Q)s(1-s)} .
+\]
+At the candidate zero \(\rho\) the numerator is positive. At real \(\beta<u<1\) the numerator is nonnegative and the denominator is positive. At 1 the singularity was removed. On the real axis beyond 1 the Euler products give no zeros. Hence \(r_d(u)\ge0\) at all real \(u>\beta\).
+
+\subsection{A measure whose residue has the opposite sign}
+Equation~\eqref{eq:target}, with \(\varepsilon=\beta-1/2\), says \(V(v)\le e^{(\beta-1)v}\) eventually. Increasing a constant \(K_0\) covers the remaining compact interval and gives a positive measure on \(v>0\) with density
+\[
+    d\nu(v)=\bigl(K_0e^{\beta v}-e^v V(v)\bigr)\,dv.
+\]
+Far to the right its ordinary Laplace transform is
+\[
+        P(s)=\int_0^\infty e^{-sv}\,d\nu(v)
+                =\frac{K_0}{s-\beta}-\mathcal F_{d,Q}(s).
+\]
+This equation gives a meromorphic continuation to the right of \(\beta\), and the possible poles there are simple. At real \(u>\beta\), its residues are \(-r_d(u)\le0\).
+
+If the abscissa of convergence \(\alpha\) of this positive measure exceeded \(\beta\), it would have to be a singularity of \(P\) on the real axis. One proof of this last fact, Landau's lemma, expands at a real \(z>\alpha\). For real \(\sigma<z\) the Taylor terms have the signs of the nonnegative functions \(e^{-zv}((z-\sigma)v)^j/j!\). If \(P\) continued holomorphically across \(\alpha\), we could choose \(z\) sufficiently near \(\alpha\) and \(\sigma<\alpha\) in the same disk of convergence. Monotone convergence would turn that convergent Taylor series into the finite integral at \(\sigma\), contradicting the definition of \(\alpha\).
+
+Thus if \(\alpha>\beta\), the meromorphic continuation must have a simple pole there. Approaching from \(u>\alpha\), \(P(u)\ge0\) forces the residue \(\lim_{u\downarrow\alpha}(u-\alpha)P(u)\) to be nonnegative. A simple pole gives a nonzero real residue, hence a positive one, in contradiction with \(-r_d(\alpha)\le0\). The integral for \(P\) therefore converges and is holomorphic throughout \(\Re s>\beta\). The same holds for \(\mathcal F_{d,Q}\) there, by the displayed identity. In particular \(r_d(\rho)=0\). The sum of the nonnegative integral orders of the untwisted zeros must be zero, contradicting the candidate zero. This proves the zero-free conclusion for the chosen widened modulus.
+
+There is a precise reason for two design choices in this argument. The residue class \(1\bmod Q\) gives every character coefficient \(+1\) when orthogonality is applied. This makes multiplicities add on the real axis. The subtraction of \(c_Q\) removes a pole at \(1\) that could otherwise be the first obstruction in the positive-measure argument.
+\sources{\src{src/Lib/Analytic/Landau.lean}{Laplace transforms of positive measures}, \src{src/New/Reduction/Zeros/Criterion.lean}{choice of twist and application of the residue sign}.}
+
+\subsection{Every modulus, and the reflection of a zero}
+For the original character \(\chi\bmod q\) take \(Q=18480q\) and the residue class \(d_0=9240q-1\). Indeed \(d_0\equiv7\bmod8\), and \(Q=2(d_0+1)\) with \(d_0\) odd, so \((d_0,Q)=1\). Inflate \(\chi\) to a character modulo \(Q\). The foregoing proof yields nonvanishing at every \(s\ne1\) with \(\Re s>1/2\) for that character. Its \(L\)-value is the original \(L\)-value times finitely many Euler factors, so the original factor is nonzero. When \(s=1\) and \(\chi\) is nonprincipal, classical Dirichlet nonvanishing at \(1\) applies directly. This proves Theorem~\ref{thm:main} in half-plane form.
+
+Suppose \(L(s,\chi)=0\) in the open strip. First pass to the primitive inducing character. Extra Euler factors have no zero at this \(s\). The primitive completed \(L\)-function vanishes there because its archimedean factor is finite and nonzero. Its functional equation gives a zero at \(1-s\) for the inverse primitive character. Passing back to the original modulus gives \(L(1-s,\chi^{-1})=0\). The half-plane theorem for the two characters forces both \(\Re s\le1/2\) and \(1-\Re s\le1/2\). Therefore \(\Re s=1/2\). For a complex character the reflected point \(1-s\) belongs to the inverse character; using conjugation as well gives the usual symmetry about the vertical critical line for the original character.
+
+For \(\zeta\) the formal public theorem also covers the possibility that an alleged nontrivial zero had started outside the strip. Let \(s\ne1\) be a zero other than a negative even integer. The value \(\zeta(0)=-1/2\) gives \(s\ne0\). Hence \(\Gamma_{\mathbb R}(s)=\pi^{-s/2}\Gamma(s/2)\) has no pole there, and the completed zeta function vanishes there. Its symmetry gives a completed zero at \(1-s\), which gives \(\zeta(1-s)=0\) by multiplication by the entire reciprocal \(1/\Gamma_{\mathbb R}(1-s)\). Also \(1-s\ne1\). Applying half-plane nonvanishing at level one to \(s\) and \(1-s\) proves \(\Re s=1/2\), as claimed.
+\sources{\src{src/New/Reduction/OneSidedBound.lean}{All positive moduli}, \src{src/Lib/Analytic/ZeroSymmetry.lean}{reflection for imprimitive characters}, \src{src/New/Main.lean}{Dirichlet and zeta conclusions}, \src{src/Main.lean}{exported theorems}.}

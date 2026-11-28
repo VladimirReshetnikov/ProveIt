@@ -1,0 +1,245 @@
+\section{How a derivative measures primes in one residue class}\label{sec:bridge-jets}
+
+Fix admissible data, and write \(Q=q_0\). The Taylor series to be differentiated comes from a theta kernel on a definite unitary group. The standard test function, called the vacuum, uses a Gaussian at infinity and a lattice function at the finite places. Translating it, taking linear combinations, and summing over rational vectors produces the kernel. Its derivatives prescribe the algebraic representation in which a lift takes its values. A single derivative has two numerical consequences. Its order controls its complex size, and its divisibility at a rational prime depends on the way Frobenius permutes the coordinates of the kernel. The permutation is what makes it possible to measure an arithmetic progression.
+
+\subsection{The partners of an embedding}
+
+Identify the infinite places \(\Phi\) of \(E=K(\zeta_{q_1})\) by choosing the embedding over a fixed embedding of \(K=\mathbb Q(\sqrt{-d})\) in each conjugate pair. Write \(-p^e\tau\) for the partner of \(\tau\) specified by the cyclotomic class of \(-p^e\). At a nonsplit prime the class is a unit. Put \(\pi_p=p\) at an inert prime and \(\pi_d=\sqrt{-d}\) at the ramified prime. At the chosen \(p\)-adic embedding, the congruence
+\[
+     \tau(u)^{p^e}\equiv\overline{\tau'(u)}\pmod{\pi_p},
+     \qquad \tau'=-p^e\tau,\quad u\in\mathcal O_E ,
+\]
+can be checked on the cyclotomic and quadratic generators. On roots of unity, taking the \(p^e\)-th power multiplies the exponent by \(p^e\), and conjugation changes its sign. In the inert quadratic residue field, the odd powers of Frobenius give conjugation. At \(d\), conjugation acts trivially on the residue of the quadratic generator. Thus the allowed positive exponents \(I_p\) are all positive odd integers at an inert prime and all positive integers at \(d\). We set \(I_p=\varnothing\) at a split prime. The ramified normal form also has an exponent zero, which requires its own correction at the derivative stage. \src{src/New/Derivatives/FormalGroup/ThetaProducts.lean}{Frobenius at partner places}.
+
+A normal form for the Taylor series makes this congruence effective. A collection of vectors \(u_j\), counted with multiplicities \(b_j\), resolves the identity when \(z=\sum_j b_j(u_j^\dagger z)u_j\). One can then express the relevant series through products of one-variable theta functions of the CM curve, evaluated at \(u_j^\dagger z\). At a nonsplit prime the formal group of the curve and an integral resolution give, for standard data of level one, a factorization of the shape
+\[
+ F(\varpi z)=W(z)\exp\!\left(\frac{\varpi^{p+1}}p
+        \sum_{e\in I_p^\circ}\sum_{j\ge0}
+                    \lambda_{ej}\Gamma_e(z)^{p^j}\right),
+ \qquad \Gamma_e(z)=\sum_{\tau,c}z_{\tau,c}^{p^e}z_{-p^e\tau,c}.
+\]
+Here \(W\) and the \(\lambda_{ej}\) are integral, \(\varpi\) is the prescribed local scale, and \(I_p^\circ\) includes zero only at \(p=d\). For a fixed degree the expression involves finitely many terms. To see the force of the identity resolution, reduce \(\sum_j b_j(u_j^\dagger z)^{p^e}(u_j^\dagger z)\) modulo \(\pi_p\). Frobenius distributes over the first factor's sum. The congruence just proved replaces its coefficient by the conjugate coefficient at the partner place, and the resolution contracts the remaining sum to \(\Gamma_e\). This explains how the complicated translated test function leaves a uniform list of possible denominators. \src{src/New/Derivatives/Vacuum/Divisibility.lean}{normal form for standard data}.
+
+For an integral polynomial \(P\), the jet of \(F\) is \(P(\partial)F(0)\). Taking a column of height \(h\) in a Young diagram means taking an \(h\)-row minor of the matrix of derivatives. Products of such minors give the operators for the weights in the lifts. For a monomial derivative the coefficient is multiplied by a product of factorials. Legendre's formula for the factorial valuation has layers indexed by \(p^e\). The denominator from a term \(z^{p^e}w\) can use one unit of the second degree for every \(p^e\) units of the first. If the available degrees are \(y\) and \(u\), the unpaired part of \(y/p^e\) is \((y/p^e-u)_+\), where \(h_+=\max(h,0)\).
+
+Here is the corresponding estimate for actual diagrams. At a place \(\tau\), let \(t_\tau\) count the height-one columns below the row cutoff, \(c_\tau\) the other columns below it, and \(u_\tau\) their boxes (those in the latter columns). Write \(N'\) for the row cutoff and \(B'\) for the total number of boxes of columns below it. For each \(e\in I_p\) and \(\tau'=-p^e\tau\), the predicted valuation includes
+\[
+  v_p(\pi_p)\left\{
+       (t_\tau/p^e-t_{\tau'}-c_{\tau'})_+
+       +(u_\tau/p^e-u_{\tau'})_+-c_\tau/p^e\right\}.
+\]
+At the ramified prime one subtracts the half-weighted contribution of the zero-exponent pairing. To obtain the lower bound for the valuation one further subtracts at most
+\(f(N')^3(1+\log_p\max(B',1))\), with \(f=|\Phi|\). The argument chooses linear substitutions which make the troublesome couplings divisible in the degrees tested. Applying the factorial estimate there and accounting for the cost of the substitutions gives the displayed two positive parts. Passing from products of minors to entries of the Schur matrices preserves the bound. This estimate is used with the varying diagrams of the chain. The proof also establishes a sharpness result using other, specially chosen test vectors. That result enters the lower determinant estimate, which needs valuations in the opposite direction. \src{src/New/Derivatives/Divisibility/Count.lean}{minor products and Schur jets}, \src{src/New/UpperBound/Divisibility/JetExponent.lean}{valuation for the lifting diagrams}.
+
+\subsection{Reading the two cutoffs}
+
+Write \(\kappa(\tau)=a/x=b\) on \(\Phi_b\) and \(\kappa(\tau)=a/x_1\) elsewhere. The prime-by-prime quantity requested from a row of length \(y\), with \(0\le y\le a\), is
+\[
+ s_p(y,\tau)=v_p(\pi_p)\sum_{e\in I_p}
+                  (y/p^e-\kappa(-p^e\tau))_+.
+\]
+Use \(v_p(p)=1\), so \(v_d(\pi_d)=1/2\). At any contributing prime, \(2v_p(\pi_p)\,\mathbf 1_{e\in I_p}=1-\chi_d(p^e)\) for \(e\ge1\), where \(\chi_d\) denotes the quadratic character of \(K\). The factor two comes from comparing squared complex lengths. It follows term by term that
+\begin{equation}\label{eq:bridge-finsum}
+ s_{\rm fin}(y,\tau):=2\sum_p s_p(y,\tau)\log p
+ =\sum_{1\le n\le a}\Lambda(n)(1-\chi_d(n))(y/n-\kappa(-n\tau))_+ .
+\end{equation}
+All the sums on the left are effectively finite. Formula \eqref{eq:bridge-finsum} is an identity for the requested gains. The jet bounds, the treatment of collisions below, and an index correction are needed to realize those gains in vectors. \src{src/New/UpperBound/Size/ShortColumns.lean}{local prime sum and gain}, \src{src/New/UpperBound/Size/ArchimedeanSize.lean}{sum of all local gains}.
+
+Write \(N_a=|\Phi_a|\), \(N_b=|\Phi_b|\), and \(K_z(n)=(1/n-1/z)_+\). As \(\tau\) runs over \(\Phi_a\), precisely \(N_b\) of the places \(-n\tau\) belong to \(\Phi_b\) if \(n\equiv1\pmod Q\), and none do otherwise. Indeed \(\Phi_a\) is the fibre over \(+1\), and \(\Phi_b\) lies in the fibre over \(-1\). Multiplication by the unit \(-n\) sends the first fibre onto the second exactly in the indicated class. The code extends the notation for nonunits by using the identity place. A nonunit shares a prime factor with \(Q\), since \(q_1\) and \(Q\) have the same prime divisors, and cannot belong to the class \(1\pmod Q\). The formula therefore still holds.
+
+Let \(\lambda(n)=\Lambda(n)(1-\chi_d(n))\) and \(\lambda_Q(n)=\lambda(n)\mathbf1_{n\equiv1\pmod Q}\). For \(y=a\), the total contribution of a single \(n\) to the sum over \(\Phi_a\), divided by \(a\), is exactly
+\[
+ N_a\lambda(n)K_{x_1}(n)+N_b\lambda_Q(n)\{K_x(n)-K_{x_1}(n)\}.
+\]
+The first term counts every place at the distant cutoff. The second replaces it by the near cutoff just where the progression test succeeds. This identity explains how an unrestricted calculation at each individual lift retains a specific residue class after summation.
+
+Put \(\log\bar\kappa=f^{-1}\sum_\tau\log\kappa(\tau)\), and denote by \(c_u\) the additive constant in the centered remainder \(R_u\) for modulus \(u\). Define
+\[
+ s_{\rm main}=a\{\log(a/\bar\kappa)+c_1\},\qquad
+ \mathcal R=\sum_{\tau\in\Phi_a}(s_{\rm fin}(a,\tau)-s_{\rm main}).
+\]
+The uncentered logarithms left by this sum are
+\(N_a(\log x_1+c_1)+(N_b/\varphi(Q))\log(x/x_1)\). The terms involving \(c_Q\) cancel between the two cutoffs. Using \(f=N_a\varphi(Q)\) and the two values of \(\kappa\) shows that the displayed expression equals \(N_a s_{\rm main}/a\). Hence
+\begin{equation}\label{eq:bridge-remainder}
+ \frac{\mathcal R}{a}=N_b\{R_Q(x)-R_Q(x_1)\}+N_a R_1(x_1).
+\end{equation}
+A positive \(\mathcal R\) is now an explicit excess of logarithmic divisibility over a specified main term. The job of the next estimates is to bound that excess from above. \src{src/New/Reduction/PrimeSums.lean}{the place count and the exact remainder identity}.
+
+\section{Theorem A. Building short images with controlled index}\label{sec:bridge-short}
+
+Let \(S\) denote the forms on the definite space \(X_0\) with the specified weight and level. At each of the \(f\) primes above \(\pi_N\), a scaling \(Z_w\) has order dividing \(N-1\) on \(S\). The ramified source \(S_{\rm ram}\) consists of forms whose average under every such cyclic group vanishes. Decomposing each operator into its root-of-unity eigenspaces gives
+\[
+             S_{\rm ram}=\operatorname{im}\prod_{w\mid\pi_N}(1-Z_w).
+\]
+The differences provide an integral way to impose the character condition. On a definite group at free level, a form is specified independently on each of finitely many lattice classes. Short integral spanning vectors for the weight representations give a short spanning set supported on those classes. Each application of \(1-Z_w\) preserves integrality and costs at most a factor of four in the squared norm. The vectors obtained after applying all the differences span \(S_{\rm ram}\); their conjugate squared sizes are at most \(\exp(fa(\log b)^3)\). Passing to forms fixed by one scaling enlarges the free level by index at least \(N-1\), so class counting gives
+\[
+     h-h'\le \frac{f}{N-1}h\le b^{-8}h,
+     \qquad h=\dim S,\quad h'=\dim S_{\rm ram}.
+\]
+Thus very few source dimensions were lost in imposing a condition needed for the lifting identity. \src{src/New/UpperBound/Size/ShortColumns.lean}{ramified forms and short spanning vectors}, \src{src/New/Reduction/ShortAndEnough.lean}{source dimension bounds}.
+
+\subsection{Two descriptions of the same vector}
+
+A theta lift integrates an automorphic form against the theta kernel associated with a pair of unitary groups. Equivalently, one may use the realization by class sums when the spaces are definite. The target is the good subspace \(V\) of forms on \(Y_0\), with projector \(e_0\) and finite level group \(G\). Write \(\mathcal P\) for the Poincar\'e series map from \(S\) to principal-level forms on \(Y_0\), and \(\Theta_\xi\) for the chain on \(V\) with twist \(\xi\). Two compositions connect a source form with a form on the final space \(Y_m\).
+\begin{itemize}
+\item Starting with \(X_0\), apply \(m\) theta lifts on the definite groups of rank \(k+j(t+1)\). The finite combination of chains determined by \(\Psi\), followed by restriction from \(X_m\) to \(Y_m\), is denoted \(B_{\xi,\Psi}\).
+\item Apply \(\mathcal P\), then the raw lower chain \(\Theta^{\rm raw}_\xi\) through the spaces \(Y_j\) of rank \(r+jt\). Its restriction to the good target gives the corresponding chain on \(V\).
+\end{itemize}
+The following diagram records the two operations in the seesaw for a fixed \(\phi\) and \(\xi\). The scalar is specified in \eqref{eq:bridge-seesaw}.
+\begin{center}
+\begin{tikzpicture}[x=1cm,y=1cm,>=Stealth,
+  obj/.style={draw=ocean!48,rounded corners=2pt,fill=ocean!4,inner sep=5pt,font=\small},
+  lab/.style={font=\footnotesize,align=center,text=ink}]
+  \node[obj] (a) at (0,1.35) {\(\phi\) on \(X_0\)};
+  \node[obj] (b) at (8.0,1.35) {Form on \(X_m\)};
+  \node[obj] (c) at (0,-.25) {\(\mathcal P\phi\) on \(Y_0\)};
+  \node[obj] (d) at (8.0,-.25) {Form on \(Y_m\)};
+  \draw[->,semithick,ink] (a)--node[lab,above]{Linear combination of definite lift chains} (b);
+  \draw[->,semithick,ink] (c)--node[lab,below]{Chain of \(m\) lifts on the \(Y_j\)} (d);
+  \draw[->,semithick,ink] (a)--node[lab,right]{Poincaré map} (c);
+  \draw[->,semithick,ink] (b)--node[lab,right]{Restriction} (d);
+\end{tikzpicture}
+\end{center}
+
+For \(j<m\) the difference in ranks is \(\dim Y_j-\dim X_j=m-1-j\). The extra block consists of hyperbolic pairs and, in odd length, a middle line. At step \(m-1\) the ranks meet. At the final step \(Y_m\) is a definite codimension-one subspace of \(X_m\). This reversal accounts for the restriction and its normalization at \(N\).
+
+For fixed real evaluation data there is one nonzero scalar \(c_{\rm ss}\) such that for every twist \(\xi\) there are chain data \(\Psi_\xi\) for which
+\begin{equation}\label{eq:bridge-seesaw}
+   \Theta^{\rm raw}_\xi(\mathcal P\phi)=
+          c_{\rm ss}\,B_{\xi,\Psi_\xi}\phi
+       \qquad (\phi\in S_{\rm ram}).
+\end{equation}
+Pair the left side with any final test form. Unfolding the Poincar\'e series gives an integral against the character of the Bessel subgroup, called a Bessel period. At a single step the theta kernel transfers this period and shortens the extra block. Each transfer contributes a real integral and a finite sum of classes. After the last transfer the pairing is exactly the pairing with a restricted definite lift. The reciprocals of stabilizer indices in the finite sums introduce denominators only above the conductor of the twist. This supplies the required integrality of the coefficients away from that conductor. For the trivial twist the sum of their complex sizes is bounded as well. The scalar in \eqref{eq:bridge-seesaw} is common to all twists and all vectors. The coefficient family can depend on the twist. The rank of the resulting images will be obtained from a separate calculation. \src{src/New/UpperBound/Seesaw/SeesawIdentity.lean}{the iterated seesaw identity}.
+
+\subsection{Recovering the requested powers on a large submodule}
+
+The requested gain across the chain is
+\[
+ g_p=m\left(\sum_{\tau\in\Phi_a}s_p(a,\tau)+
+              k\sum_{\tau\in\Phi}s_p(\kappa(\tau),\tau)\right).
+\]
+The first sum records long rows, the second the ordinary directions whose cost must also be recovered in the lower bound. A collision occurs when a long row at \(\tau\in\Phi_a\) has another long row at \(-p^e\tau\in\Phi_a\). The partner can consume the gain of the first row. Charging \(a/p^e\) for every such collision at every step gives the correct valuation up to an acceptable error at the nonexceptional nonsplit primes. At some inert primes a small \(e\) repeats the loss \(m\) times. In the source the exceptional condition is \(p\not\equiv\pm1\pmod m\) and \(\operatorname{ord}_{Q}(-p)\) odd and at most \(\lceil\log_p m\rceil\), in addition to inertness. The gain vanishes outside nonsplit primes below \(x_1\).
+
+Fix a \(p\)-adic embedding above one such exceptional prime. From each pair of conjugate finite primes induced by \(\Phi_a\) choose one member. Every colliding pair meets this choice. The normalized Hecke operator attached to each marked prime is a sum of lattice-neighbor correspondences, multiplied by a power of \(p\) fixed by its long rows. Moving the product \(U\) of these operators through the chain carries the extra powers to the marked coordinates. The jet estimate with the corresponding long rows removed now achieves the required exponent up to a controlled loss. In particular, on \(U^m L_p\), with \(L_p\) the integral source module, the raw lift has valuation at least \(g_p-2L(p)\), where
+\[
+ L(p)=\frac{fa(\log b)^2}{p}
+          \begin{cases} m,&p\equiv\pm1\pmod m,\\
+                         1,&\text{otherwise}.\end{cases}
+\]
+On \(p^{j_p}L_p\) with \(j_p=\lceil 2mfa/p\rceil\) the same inequality follows by the crude collision count. The sum \(U^mL_p+p^{j_p}L_p\) thus has high valuation and contains substantially more vectors than those forced by the scalar \(p^{j_p}\) alone. \src{src/New/UpperBound/Divisibility/LocalDivisibility.lean}{marked primes and divisibility of the composite}.
+
+The remaining issue is its index. In the model of diagonal elementary divisors \(p^{t_i}\) over \(\mathbb Z_p\), the index exponent in a sum of this form is \(\sum_i\min(t_i,j_p)\). For the actual valuation ring, which need not be discrete, the theorem bounds determinants of change-of-generators matrices. To obtain the bound, factor the Hecke correspondence through functions on neighboring lattice pairs. Intermediate edge congruences admit a near inverse to the map which sums functions over the edges. Their restrictions leave only a bounded number of additional generators modulo the chosen precision. Nakayama's lemma converts this generator bound into control of the image. The two endpoint lattices have controlled colengths as well. Adding these costs gives a bound \(L(p)h\) in powers of \(p\) for the exceptional-prime module above. This is a bound on the total loss for a family of vectors, even if particular elementary divisors have high valuation. \src{src/New/UpperBound/ElementaryDivisors/ElementaryDivisorTheorem.lean}{elementary divisors of the edge operator}.
+
+At \(p=N\), where the upper description has gluing denominators, the cost is treated separately. In elementary terms, homogeneous monomials of degree \(a\) in \(k\) variables have mean degree \(a/k\) in each coordinate by symmetry. For diagonal rescaling by \(N\) in that coordinate, the colength is the sum of the degrees over the monomials. The corresponding mean-degree bound on the relevant weight coordinates controls the changes of local lattices under the \(m/2\) powers of the level operator. The formal bound allows the exponent \(2mfb\) for the local loss. On summing this term and the losses at small nonsplit primes one obtains nonnegative \(e_p\) with \(\sum_p e_p\log p\le \mathcal E:=fa(\log b)^3\). At each embedding there is a submodule of integral ramified source forms of colength dividing \(p^j\), \(j\le e_p h\), on which \(B_{\xi,\Psi}\) has valuation at least \(g_p-e_p\). One submodule works for every twist of conductor prime to \(p\) and every permitted chain datum. \src{src/New/UpperBound/Divisibility/ColengthAtLevel.lean}{mean degree at the level prime}, \src{src/New/UpperBound/Divisibility/LocalDivisibility.lean}{simultaneous local bounds}.
+
+\subsection{The complex size, the level, and the index}
+
+Put
+\[
+ c_B=\prod_{p\text{ small nonsplit or }p=N}p^{-\lfloor g_p-e_p\rfloor},
+ \qquad \mathcal P_s=c_B c_{\rm ss}^{-1}|G|\,e_0s\mathcal P
+                      \big|_{S_{\rm ram}}\quad (s\in G).
+\]
+The floor ensures that multiplying by \(c_B\) preserves the required local integrality on the submodules just constructed. Its finite support has \(\sum\log p\le b\), so
+\[
+            \log c_B\le -\sum_p g_p\log p+\mathcal E+b.
+\]
+Multiplication by this positive rational rescales every conjugate complex squared norm by the same factor \(c_B^2\). The multiplier \(|G|\) clears the finite-group projector. This explains the different roles of divisibility and colength. Divisibility can be spent on the common complex size, whereas the price of having restricted the source is still payable separately at the finite places.
+
+The charge for a complex derivative of order \(j\) is
+\[
+        s_\infty(j)=\log(j!)+j\log(M/\Omega).
+\]
+Set \(H_{\rm dir}=\sum_{\tau\in\Phi}(s_\infty(\kappa(\tau))-s_{\rm fin}(\kappa(\tau),\tau))\) and \(H=mkH_{\rm dir}\). The fixed-modulus calculation in Section~\ref{sec:observable} and the CM area formula in Section~\ref{sec:setup} supply the same constant \(c_1\). The simultaneous period normalization uses a unit at every finite place. A separate scalar normalizes the vacuum so that its values are integral. In the period calculation the absolute different of \(E\) has generator equal to a unit phase times the relative-different generator times \(\sqrt{-d}\). For \(C=M\mathrm{rd}_E/(2\pi)\), the relation \(\log(M/\Omega)=1+c_1+\log C\) now gives the bound with the precision required for \emph{each} conjugate:
+\[
+       s_\infty(a)-s_{\rm main}\le
+                  a\log(\bar\kappa C)+1+\tfrac12\log a .
+\]
+Indeed the \(+a\) cancels the linear term in Stirling's bound, and \(ac_1\) is removed by the expected finite gain. \src{src/Lib/CM/ChowlaSelberg.lean}{simultaneous period normalization}, \src{src/New/Derivatives/Field/PrimeDecomposition.lean}{the absolute different}, \src{src/New/UpperBound/Size/ArchimedeanSize.lean}{the one-row estimate}.
+
+At the reversal of the towers, restriction has a scalar formed from powers of the conjugates of \(\bar\pi_N\), with \(\pi_N\bar\pi_N=N\). Its squared size is \(N^{-\sum n_\tau}\), and the endpoint weight computation gives \(\sum n_\tau=N_a a-fm\Delta/2\). Thus \(-N_a a\log N\) enters once at the last restriction. The level window \eqref{eq:Nlevel} gives \(m\log(\bar\kappa C)-\log N\le\log C+(15/2)\log b\), an error with no factor of \(m\). With the Stirling error and the scale bounds, one gets
+\[
+          m(s_\infty(a)-s_{\rm main})-a\log N\le32a\log b.
+\]
+At each step the short ordinary rows still contribute their common main amount. By \eqref{eq:bridge-finsum},
+\[
+     2\sum_p g_p\log p =
+      m\sum_{\tau\in\Phi_a}s_{\rm fin}(a,\tau)
+      +mk\sum_{\tau\in\Phi}s_{\rm fin}(\kappa(\tau),\tau).
+\]
+Subtracting these finite gains leaves \(H-m\mathcal R\) up to the bounded errors. The two terms have different origins. The first comes from all the ordinary rows, the second from the signed excess of the long rows. \src{src/New/UpperBound/Divisibility/ChainValuation.lean}{the last restriction}, \src{src/New/UpperBound/Size/ArchimedeanSize.lean}{the chain-size estimate}.
+
+\paragraph{Theorem A.} Put \(L=fa(\log b)^4\). The source \(S_{\rm ram}\) is spanned by globally integral \(\phi\) for which, simultaneously for every \(s\in G\) and every complex field automorphism \(\sigma\),
+\begin{equation}\label{eq:bridge-short}
+              \|\Theta_1(\mathcal P_s\phi)\|_\sigma^2
+                        \le \exp(H-m\mathcal R+L).
+\end{equation}
+For a finite set \(J\subset G\), any finite family of target vectors drawn from images \(\mathcal P_s\) of integral ramified vectors with \(s\in J\) has index at most \(2|J|h'\mathcal E\). Precisely, for each identification \(\iota:\mathbb C\simeq\overline{\mathbb Q}_p\), an integral matrix of combinations makes every member's lifts integral for all admissible \(m\)-fold twists of conductor prime to \(p\); an \(m\)-fold twist stays ramified at every conductor place in its first \(m\) powers. The weighted sum of the permitted determinant valuations is bounded by the stated index. Group the vectors by the translate used and add the local colength bounds on the blocks. The inequality \(h\le2h'\) gives the factor two. For the size bound, the cost of the initial short forms, the norm of the good projection and the rounding costs in \(c_B\) together fit in \(L\). The quantifiers on the two conclusions differ in a necessary way. Archimedean shortness uses the untwisted lift at all complex conjugates. Finite-place integrality must hold for a whole family of twists at once. \src{src/New/Reduction/ShortAndEnough.lean}{the two assertions of Theorem A}.
+
+\section{Theorem B. How many short images are independent?}\label{sec:bridge-enough}
+
+The size bound for a family of vectors is compatible with every vector lying on one line, even with every vector being zero. What rules that out here is a pair of moment calculations. One keeps track of the norm surviving the projection to the target. The other measures how much of the same norm can keep appearing in overlapping translates. The normalization coefficients of their automorphic inputs are essential because a fixed multiplicative error in the second moment could leave a fixed fraction of all the target dimensions unaccounted for.
+
+\subsection{The finite projector and a common mass}
+
+The group \(G\) acting at the chosen places above \(p_0,p_1\) is a product of finite general linear groups of rank \(r\). At a place with residue field \(\mathbb F_q\), a monic squarefree polynomial of degree \(r\) with nonzero constant term labels a Green character and hence a central projector. The good projector \(e_0\) sums the tensor projectors for the families of labels satisfying both of the following tests. At every chosen place the polynomial has no root in \(\mathbb F_q\) of order dividing \(q_2\). Above each of \(p_0,p_1\), at least one polynomial has as a root a generator of \(\mathbb F_{q^r}^\times\). This last polynomial is irreducible. Its local test function is cuspidal, meaning that its integrals along the unipotent radicals of proper parabolics vanish. It supplies a place for a trace comparison. The root exclusion has a different purpose: a weighted average over the subgroup fixing a specified hyperplane acts as zero on the retained types whenever its character parameter is a forbidden root. This vanishing will also be used for the periods of false lifts. Requiring a primitive place above both level primes permits the subsequent Galois argument to choose a witness away from a given coefficient prime.
+
+The price of the tests can be computed in the regular representation. For \(A=\sum_g a_g g\), the trace of left multiplication is \(|G|a_1\). Thus the identity coefficient of a projector gives its relative rank, and a label of degree \(d_\lambda\) has mass \(d_\lambda^2/|G|\). In each residue field a prescribed forbidden linear factor leaves at most \(q^{r-1}\) monic polynomials; a union over possible repeated factors gives another loss bounded by \(rq^{r-1}\). Meanwhile \(\varphi(q^r-1)/r\) labels are primitive, by counting generators in Frobenius orbits. The lower bound \((1-r/q)q^{-r}\) for the mass of a label turns these counts into a bound for tuples of labels. The cost of one forbidden label is estimated by summing over places, while the chance of missing a primitive label in all \(f\) factors has an exponentially decaying upper bound. At each of the two level primes the identity coefficient of the discarded projector is at most \(1/(2b^8)\). The automorphic moment calculation is still needed to transfer a regular-representation count to the actual forms. \src{src/New/UpperBound/Objects/LabelsAndIndexTypes.lean}{polynomial labels and good families}, \src{src/New/Spanning/MainTerm/BadTypes.lean}{weighted count of the excluded types}.
+
+Let \(d_T=\dim V\). Matching traces of spherical Hecke operators on these good subspaces compares multiplicities on \(Y_0\) with those on a definite rank-\(r\) space. The comparison is made for each selected type and added over the good types. On the definite side the free principal level gives a dimension bound by class counting. If \(D_\infty\) is the product of the Bessel formal degrees at infinity and \(\mu_r\) is the mass of the genus of the standard rank-\(r\) lattice, the bound reads
+\[
+                      d_T\le |G|D_\infty\mu_r .
+\]
+Here the mass is the sum of the inverse orders of lattice automorphism groups. Exactly the same product \(D_\infty\mu_r\) occurs in the denominator in the second moment. The match is why a dimension estimate involving these particular local types is required. \src{src/New/Spanning/Multiplicities/EqualMultiplicities.lean}{comparison of Hecke multiplicities}, \src{src/New/Spanning/SecondMoment/SpanningTheorem.lean}{the target dimension}.
+
+\subsection{The two moment estimates}
+
+For this calculation let \(P\) be the normalized Poincar\'e map on the full source of dimension \(h\), taking values in the entire principal-level space. Its scalar normalization is determined by the Haar volume and the covolume of the unipotent quotient. The scalar and coordinates differ from those used for \(\mathcal P_s\); the ranges after projection and restriction agree up to nonzero scalar. For any source subspace \(U\), let \(\pi_U\) denote orthogonal projection. The two estimates are
+\begin{align}
+ \|e_0 P\pi_U\|_{\rm HS}^2&\ge \dim U-5b^{-4}h,\label{eq:bridge-isom}\\
+ \frac{d_T}{|G|}\sum_{s\in G}\|P^*sP\|_{\rm HS}^2
+                 &\le (1+9b^{-4})h^2.\label{eq:bridge-moment}
+\end{align}
+The Hilbert--Schmidt norm squared is the sum of the squared absolute values of matrix entries in orthonormal bases.
+
+One can see exactly which matrix entries are being counted. Label a source coordinate by a definite lattice class \(c\) and an index \(i\) of the Bessel function at infinity. In the block \((c,s,c')\), unfolding gives a sum of matrices indexed by rational \(\gamma\) for which \(h_c^{-1}\gamma h_{c'}\) is integral and reduces to \(s\). An entry is an integral pairing two Bessel components at \(y\) and \(\gamma^{-1}y\) against the class cutoffs. The block is obtained with the factor \(1/\nu\) for the unipotent covolume (and conjugation according to the matrix-entry convention). Its squared Frobenius norm therefore sums over pairs \(\gamma,\gamma'\) in the same block.
+
+At the identity, the contributions in the Bessel subgroup give the identity operator. The squared error is \(\|P^*P-I\|_{\rm HS}^2\le b^{-12}h\). Controlling the same pairings after applying the two complementary type projectors bounds the portion discarded by \(e_0\), which proves \eqref{eq:bridge-isom} for every \(U\). For the full-group average, the infinite-place test functions can be cut off with very small tail error because the discrete-series weights have a large gap. Integral bounds for the cut Bessel kernels control each orbit. Squaring the class sums leads to two different arithmetic counts.
+\begin{itemize}
+ \item Two rational elements in one block give lattice frames congruent at the level. For frames with different link subspaces, or with a degenerate discriminant, the common lattice and its discriminant supply a saving. Congruence at the primes of \(M\) forces a divisibility of discriminants. Bounding the number of lattices of a given corank and using a weighted Schur estimate makes the combined contribution of these terms at most \(b^{-kf}\) times the identity second moment.
+ \item For pairs with the same link in the open cell, unfolding gives local orbital integrals. At finite places these give generalized Kloosterman sums. The real and finite positive kernel estimates combine into a global sieve via Poisson summation. Fixing a nonzero frame vector at each of \(j\) selected places saves a factor \(b^{-6kj}\) in the normalized main term. On the other reductions one controls the failure of a leading minor to be nonzero by finite-field averaging. Together with the degenerate-pair bounds and the terms on the scalar cosets, this yields
+ \[
+       \sum_{s\in G}\|P^*sP\|_{\rm HS}^2
+          \le (1+9b^{-4})\frac{h^2}{D_\infty\mu_r}.
+ \]
+\end{itemize}
+Multiplying by the dimension bound gives \eqref{eq:bridge-moment}. The coefficient approaching one, and the independence from the unknown mass, both matter to the application. \src{src/New/Spanning/Unfolding/Moments.lean}{the operator and amplitude identities}, \src{src/New/Spanning/RemainingTerms/Sum.lean}{pairs of lattice frames}, \src{src/New/Spanning/MainTerm/EnergyEstimate.lean}{the open-cell sieve}, \src{src/New/Spanning/Unfolding/MomentBounds.lean}{the whole-group estimate}.
+
+\subsection{Restriction followed by greedy selection}
+
+There is a short argument from these two estimates to rank. Put \(\eta=1/(8b^2)\), which bounds both \(5b^{-4}\) and \(9b^{-4}\). Inside the target let \(F\) have dimension \(\alpha d_T\), and set \(K_G=|G|^{-1}\sum_{s\in G}sPP^*s^{-1}\). Cyclicity of trace gives \(\operatorname{tr}(K_G^2)=|G|^{-1}\sum_s\|P^*sP\|_{\rm HS}^2\). Thus Cauchy--Schwarz for the matrices \(\pi_F,K_G\) shows that the average of \(\|\pi_F sP\|_{\rm HS}^2\) is at most \(h\sqrt{\alpha(1+\eta)}\). Choose an \(s\) at or below this average. On the inverse image of \(F\) under \(e_0sP\), the maps \(e_0sP\) and \(\pi_FsP\) agree. Since \(e_0\) commutes with translation and the action is unitary, \eqref{eq:bridge-isom} applies to the first map on that subspace. Using \(\sqrt{\alpha(1+\eta)}\le (1+\alpha+\eta)/2\), we obtain
+\[
+   \dim (e_0sP)^{-1}F
+     \le \bigl((1+\alpha)/2+3\eta/2\bigr)h.
+\]
+For every current span \(F\) one translate has a preimage this small. That is the spreading property used in the source.
+
+In the implementation on the cited revision one first restricts this property to \(S_{\rm ram}\), then chooses the translates. Here are the constants which make the order work. We have \(h'\ge(1-\eta)h\) and the scales imply
+\[
+     (1+3\eta/2)h\le(1+3\eta)h'.
+\]
+Write \(a_F=(1+\alpha)/2\le1\). Since
+\((a_F+3\eta/2)h-(a_F+3\eta)h'\) is increasing in \(a_F\), the same inequality with \(a_F\) in place of \(1\) follows. The inverse image inside \(S_{\rm ram}\) is contained in the full inverse image, so the additive loss in the spreading estimate on the smaller source is \(3\eta\). In the greedy lemma this is \(3\eta'/2\) with \(\eta'=2\eta\). All subsequent images are images of the required ramified source.
+
+If a fraction \(1-\alpha>16(2\eta)\) of the target remains missing, adjoining the chosen image increases rank by at least
+\[
+   \bigl((1-\alpha)/2-3\eta\bigr)h'
+            \ \ge\ \tfrac25(1-\alpha)h'.
+\]
+The uncovered dimension contracts by a factor at most \(1-2h'/(5d_T)\). Iteration down to the stated threshold requires a number of translates bounded by a logarithm times \(d_T/h'\). Nontriviality of the full source and \eqref{eq:bridge-isom} give \(d_T>0\). Thus \textbf{Theorem B} supplies a set \(J\subset G\) such that
+\begin{equation}\label{eq:bridge-enough}
+  |J|h'\le5d_T\log(1+2b^2),\qquad
+  \dim\sum_{s\in J}\mathcal P_s S_{\rm ram}
+                         \ge(1-4/b^2)d_T .
+\end{equation}
+The same \(J\) now gives independent vectors from Theorem A and bounds their index. The order of restriction accounts for the deficit \(4/b^2=16(2\eta)\). \src{src/New/Spanning/SecondMoment/FewTranslates.lean}{restriction of spreading and greedy covering}, \src{src/New/Reduction/ShortAndEnough.lean}{Theorem B on the ramified source}.

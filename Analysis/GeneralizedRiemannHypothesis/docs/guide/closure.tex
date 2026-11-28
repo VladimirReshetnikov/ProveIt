@@ -1,0 +1,64 @@
+\section{Comparing the volumes and isolating the prime remainder}\label{sec:bridge-closure}
+
+\subsection{The coefficient that determines the exponent}
+
+The three estimates can now be applied to one family. Keep \(H=mkH_{\rm dir}\), \(L=fa(\log b)^4\) and \(\mathcal E=fa(\log b)^3\), with \(\mathcal R\) as in \eqref{eq:bridge-remainder}. Theorem B supplies the finite set of translates \(J\). The short, integral source forms of Theorem A span \(S_{\rm ram}\), so their images across \(J\) span the combined image in \eqref{eq:bridge-enough}. Choose a basis \(y_1,\ldots,y_n\) of that image from among those vectors. In particular
+\[
+          (1-4/b^2)d_T\le n\le d_T .
+\]
+The complex volume is computed on \(\Theta_1 y_1,\ldots,\Theta_1 y_n\). At every conjugate the Gram determinant is at most the product of its diagonal entries by Hadamard's inequality. Equation \eqref{eq:bridge-short} therefore gives the logarithmic squared-covolume allowance
+\[
+             V_0=n(H-m\mathcal R+L).
+\]
+The change-of-generators estimate of Theorem A and the cardinality bound of Theorem B together permit a logarithmic index
+\[
+  \delta_0=d_T I,\qquad I=10\log(1+2b^2)\,\mathcal E.
+\]
+Inserting precisely these two allowances in Theorem C gives
+\[
+ d_T(H-3L)\le V_0+2\delta_0=n(H-m\mathcal R+L)+2d_T I .
+\]
+The two occurrences of the main amount reflect the same \(mk\) ordinary-direction costs, evaluated once on each side. The factor two in front of the index is forced by the square in the Gram determinant. The bounds for the admissible weights give \(H\ge0\). Moving the main amounts together now has a favorable sign because \(n\le d_T\), even though the selected vectors can miss some target dimensions:
+\begin{align*}
+ nm\mathcal R
+   &\le (n-d_T)H+(n+3d_T)L+2d_T I\\
+   &\le d_T(4L+2I).
+\end{align*}
+Since \(n\ge d_T/2>0\), dividing by \(n\) and using the scale inequalities yields
+\begin{equation}\label{eq:bridge-star}
+                   m\mathcal R\le fa(\log b)^5.
+\end{equation}
+No assertion about the sign of \(\mathcal R\) was needed. An excess in the prime sum shrinks the upper bound for the short vectors. A deficit enlarges that upper bound, which explains the direction in which this comparison controls the primes. \src{src/New/Reduction/MainInequality.lean}{the volume comparison and the main inequality}, \src{src/New/Reduction/PrimeSums.lean}{nonnegativity of the main amount}.
+
+\subsection{Why the distant cutoff costs almost nothing}
+
+Recall that \(N_a=|\Phi_a|\), \(N_b=|\Phi_b|\), \(f=\varphi(Q)N_a\) and \(N_a/N_b\le\log b\). Equations \eqref{eq:bridge-remainder} and \eqref{eq:bridge-star} give
+\begin{align}
+ R_Q(x)
+  &=\frac{\mathcal R}{aN_b}+R_Q(x_1)-\frac{N_a}{N_b} R_1(x_1)\notag\\
+  &\le\frac{\varphi(Q)(\log b)^6}{m}
+                      +|R_Q(x_1)|+(\log b)|R_1(x_1)|.\label{eq:bridge-distant}
+\end{align}
+Five logarithmic powers came from the volume comparison; the sixth is the possible imbalance in the sizes of the two sets of places. The fixed-modulus prime number theorem implies that for each positive integer \(D_0\), eventually \(|R_u(z)|\le (\log z)^{-D_0}\) for \(u=1,Q\). Here \(Q,d\) are fixed. In the formal argument the needed classical input is control of the regularized logarithmic derivatives in a strip adjoining \(\Re s=1\); it is derived before the comparison at the near cutoff. Smoothing the prime sum and estimating its transform in that strip gives the arbitrary logarithmic saving.
+
+Choose \(0<\eta<1/100\). At \emph{each} sufficiently large integer \(x\) the construction supplies admissible data with
+\[
+           m\ge\sqrt{x},\qquad \log b\le2x^\eta,\qquad
+           \log x_1\ge x^{\eta/12}.
+\]
+Thus \(D_0\ge24/\eta\) makes the classical bound at \(x_1\) at most \(x^{-2}\). Substituting in \eqref{eq:bridge-distant} gives, ultimately at every integer,
+\begin{equation}\label{eq:bridge-integer}
+              R_Q(x)\le(64\varphi(Q)+3)x^{-1/2+6\eta}.
+\end{equation}
+This is the first point at which the chain length becomes the critical exponent. Its \(m\) copies multiply the signed excess. After the ordinary directions cancel, the total loss in \eqref{eq:bridge-star} carries no factor \(m\). Dividing by \(m\ge\sqrt x\) therefore provides the square-root saving at \(x\).
+
+For real \(y\ge2\), a Chebyshev bound for the unsmoothed prime weights gives enough slow variation of the smoothed sum:
+\[
+         R_Q(y)-R_Q(\lfloor y\rfloor)\le 26/y .
+\]
+For \(-1\le t\le0\), \(\lfloor y\rfloor^t\le2y^t\). Given \(\varepsilon>0\), choose \(0<\eta<1/100\) with \(7\eta\le\varepsilon\). The fixed multiplicative constant in \eqref{eq:bridge-integer} and the floor error are absorbed by the extra factor \(y^\eta\). We have proved that for every positive multiple \(Q\) of \(18480\), every prime \(d\equiv Q/2-1\pmod Q\), and every \(\varepsilon>0\),
+\begin{equation}\label{eq:bridge-onesided}
+             R_Q(y)\le y^{-1/2+\varepsilon}
+                 \qquad (y\text{ sufficiently large for }Q,d,\varepsilon).
+\end{equation}
+The dependence of the threshold on \(d\) is important. It permits the analytic argument to choose the quadratic field after a putative zero is specified. \src{src/New/Reduction/Zeros/PrimeNumberTheorem.lean}{classical distant-cutoff bound}, \src{src/New/Reduction/OneSidedBound.lean}{integer estimate and real interpolation}.

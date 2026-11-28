@@ -1,0 +1,67 @@
+\documentclass[11pt,letterpaper]{article}
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage{lmodern}
+\usepackage[margin=1.06in,top=.97in,bottom=1.02in,headheight=15pt,headsep=18pt]{geometry}
+\usepackage{amsmath,amssymb,amsthm,mathtools,booktabs,array,tabularx,longtable,microtype}
+\usepackage{tikz}
+\usetikzlibrary{arrows.meta}
+\usepackage{xcolor,titlesec,fancyhdr,enumitem,xurl}
+\definecolor{ink}{HTML}{183548}
+\definecolor{ocean}{HTML}{126C75}
+\definecolor{muted}{HTML}{52636B}
+\usepackage[colorlinks=true,linkcolor=ocean,urlcolor=ocean,citecolor=ocean,bookmarksnumbered=true,pdfencoding=auto,psdextra]{hyperref}
+\hypersetup{bookmarksdepth=2,pdftitle={Theta lifts and the zeros of Dirichlet L-functions},pdfauthor={A synthesis of the ProveIt guide and Ye Yu's exposition}}
+\setcounter{tocdepth}{1}
+\setlength{\parskip}{3.4pt plus .8pt minus .5pt}
+\setlength{\parindent}{1.05em}
+\setlength{\emergencystretch}{2.5em}
+\raggedbottom
+\setlist{itemsep=2pt,topsep=4pt,parsep=1pt}
+\titleformat{\section}{\normalfont\Large\bfseries\color{ink}}{\thesection}{.65em}{}
+\titleformat{\subsection}{\normalfont\large\bfseries\color{ink}}{\thesubsection}{.55em}{}
+\titlespacing*{\section}{0pt}{15pt plus 4pt minus 3pt}{6pt}
+\titlespacing*{\subsection}{0pt}{11pt plus 2pt minus 1pt}{4pt}
+\pagestyle{fancy}\fancyhf{}
+\fancyhead[L]{\small\sffamily\color{muted}Theta lifts and Dirichlet zeros}
+\fancyhead[R]{\small\sffamily\color{muted}\thepage}
+\renewcommand{\headrulewidth}{.3pt}
+\newcommand{\src}[2]{\href{https://github.com/VladimirReshetnikov/ProveIt/blob/7a5bb1e051e4bad127bafe90abbea19764778e32/Analysis/GeneralizedRiemannHypothesis/Lean/grh/#1}{#2}}
+\newcommand{\ghout}[2]{\href{https://github.com/sdyy1990/riemann-hypothesis/blob/5edf43ce39c068fec64e0cc122e9cbdcec343b24/#1}{#2}}
+\newcommand{\gd}[1]{\href{https://github.com/VladimirReshetnikov/ProveIt/blob/7a5bb1e051e4bad127bafe90abbea19764778e32/Analysis/GeneralizedRiemannHypothesis/docs/guide/theta_lifts_and_dirichlet_zeros.tex}{#1}}
+\newcommand{\sources}[1]{\par{\small\color{muted}\noindent\textit{Source.} #1\par}}
+\newtheorem{statement}{Theorem}[section]
+\newtheorem{proposition}[statement]{Proposition}
+\newtheorem{lemma}[statement]{Lemma}
+\DeclareMathOperator{\ord}{ord}
+\begin{document}
+\thispagestyle{empty}
+{\small\sffamily\color{ocean} NUMBER THEORY \quad / \quad MATHEMATICAL EXPOSITION}\par
+\vspace{.55in}
+{\fontsize{31}{36}\selectfont\bfseries\color{ink}Theta lifts and the zeros\\of Dirichlet \(L\)-functions\par}
+\vspace{.18in}
+{\large A natural-language presentation of the proof of Levent Alpöge with Claude\par}
+\vspace{.31in}{\color{ocean}\hrule height 1.1pt}\vspace{.14in}
+\noindent\textbf{Abstract.}
+Fix a large integer \(x\). An excess in a smoothed count of prime powers makes certain integral automorphic forms unusually short. A chain of about \(\sqrt{x}\) theta lifts repeats the gain. A spanning theorem ensures that enough of the short forms are independent, and a determinant calculation forces their joint squared volume, corrected for denominators, to exceed a precise lower bound. The main terms in the two bounds agree. Their difference gives \(R_Q(x)\le x^{-1/2+\varepsilon}\) eventually for each admissible modulus and quadratic twist. We derive the analytic implication of this one-sided estimate by choosing a twist, identifying the residues of a Mellin transform, and applying Landau's theorem for positive measures. The functional equation then places the zeros on the critical line.
+\par\vspace{.12in}
+\noindent The exposition combines the ProveIt guide's local calculations with Ye Yu's formulation of the three arithmetic theorems, A, B and C. Links in the text identify where the readable Lean development proves the results used. The mathematical endpoints are ordinary RH and GRH for every Dirichlet character of positive modulus.
+\vfill
+\noindent{\small\sffamily\color{muted} SOURCE EDITION \quad 27 NOVEMBER 2026}\\[3pt]
+{\small ProveIt \texttt{7a5bb1e0}\quad $\cdot$ \quad Ye Yu's outline \texttt{5edf43ce}}
+\clearpage
+\tableofcontents
+\bigskip
+\noindent{\sffamily\bfseries\color{ink} Reading routes}\par
+\noindent For the implication from prime powers to zeros, read Sections~\ref{sec:opening}, \ref{sec:bridge-closure} and \ref{sec:transform}--\ref{sec:landau}. For the construction of multiplicity, follow the two cutoffs in Section~\ref{sec:bridge-jets} into the upper bound in Section~\ref{sec:bridge-short}, then compare the single-lift calculation in Section~\ref{sec:arithmetic-lower}. Appendix~\ref{sec:worked-guide} gives finite calculations that illustrate these steps.
+\clearpage
+\input{opening}
+\input{setup}
+\input{bridge}
+\input{arithmetic}
+\input{closure}
+\input{analytic}
+\appendix
+\input{outline}
+\input{record}
+\end{document}
