@@ -496,10 +496,26 @@ open scoped Classical in
 def tuplesOn (w : Finset (GridNode × GridNode)) : Finset (EdgeTuple ϑ) :=
   univ.image (updateFinset (0 : EdgeTuple ϑ) w)
 
-/-- A bound for the number of matrices of an edge between nodes with indices at most `D.m`: the
-order of the residue ring of `𝔪` to the power `(2 * D.n D.m) ^ 2`, where `2 * D.n D.m` bounds the
-ranks of such nodes. -/
-abbrev edgeMatrixCountBound : ℕ := card (D.gridModulus ϑ).ResidueRing ^ (2 * D.n D.m) ^ 2
+/-- Number of matrix entries for the level cosets at the first-column nodes. -/
+def firstPathMatrixEntries (D : Data P) : ℕ :=
+  ∑ p : Bool × Fin D.m, card (D.GridIndex p.1 0 p.2) ^ 2
+
+/-- Number of matrix entries on the two rows making up the last path. -/
+def lastPathMatrixEntries (D : Data P) : ℕ :=
+  ∑ p : Bool × Fin D.m, card (D.GridIndex p.1 p.2 D.m) * card (D.GridIndex p.1 (p.2 + 1) D.m)
+
+private lemma sum_matrixEntries_le {f : Bool × Fin D.m → ℕ}
+    (hf : ∀ p, f p ≤ (2 * D.n D.m) ^ 2) : ∑ p, f p ≤ 2 * D.m * (2 * D.n D.m) ^ 2 := by
+  simpa using sum_le_sum (s := univ) (fun p _ ↦ hf p)
+
+lemma firstPathMatrixEntries_le (D : Data P) :
+    D.firstPathMatrixEntries ≤ 2 * D.m * (2 * D.n D.m) ^ 2 :=
+  sum_matrixEntries_le fun p ↦ Nat.pow_le_pow_left (D.card_gridIndex_le (Nat.zero_le _) p.2.isLt.le) 2
+
+lemma lastPathMatrixEntries_le (D : Data P) :
+    D.lastPathMatrixEntries ≤ 2 * D.m * (2 * D.n D.m) ^ 2 :=
+  sum_matrixEntries_le fun p ↦ (Nat.mul_le_mul (D.card_gridIndex_le p.2.isLt.le le_rfl)
+    (D.card_gridIndex_le p.2.isLt le_rfl)).trans_eq (sq _).symm
 
 variable {ϑ}
 
@@ -614,31 +630,15 @@ lemma IsPathDatum.sum_tupleAction {N : ℕ} {Ψ : EdgeTuple ϑ → ℂ} (hΨ : I
       edgeCharProd g w * ∑ S ∈ tuplesOn ϑ w, Ψ S * f S := by
   simp_rw [← sum_tuplesOn_tupleAction g fun S ↦ Ψ S * f S, mul_sum, ← mul_assoc, hΨ.invariant g hg]
 
-/-- For nodes `p` and `q` whose indices `p.2` and `q.2` are at most `(D.m, D.m)`, the number of
-matrices from `NodeIndex q` to `NodeIndex p` (rows indexed by `p`, columns by `q`) over the residue
-ring of `𝔪 = gridModulus ϑ` is at most `edgeMatrixCountBound ϑ`, the order of that residue ring to
-the power `(2 * D.n D.m) ^ 2`. -/
-lemma card_matrix_le_edgeMatrixCountBound {p q : GridNode} (hp : p.2 ≤ (D.m, D.m))
-    (hq : q.2 ≤ (D.m, D.m)) :
-    card (Matrix (D.NodeIndex p) (D.NodeIndex q) (gridModulus ϑ).ResidueRing) ≤
-      edgeMatrixCountBound ϑ := by
-  have hp_card : card (D.NodeIndex p) ≤ 2 * D.n D.m := D.card_gridIndex_le hp.1 hp.2
-  have hq_card : card (D.NodeIndex q) ≤ 2 * D.n D.m := D.card_gridIndex_le hq.1 hq.2
-  rw [card_congr Matrix.of.symm, card_fun, card_fun, ← pow_mul, edgeMatrixCountBound, sq]
-  exact Nat.pow_le_pow_right Fintype.card_pos (Nat.mul_le_mul hq_card hp_card)
-
-/-- If the ends of the edges in `w` have indices at most `D.m`, there are at most
-`edgeMatrixCountBound ϑ ^ #w` tuples supported on `w`. -/
-lemma card_tuplesOn_le
-    (hw : ∀ p q : GridNode, (p, q) ∈ w → p.2 ≤ (D.m, D.m) ∧ q.2 ≤ (D.m, D.m)) :
-    #(tuplesOn ϑ w) ≤ edgeMatrixCountBound ϑ ^ #w := by
+/-- Restriction to the edges recovers the original tuple of matrices used for zero extension. -/
+lemma card_tuplesOn (ϑ : D.MFoldTwist) (w : Finset (GridNode × GridNode)) :
+    #(tuplesOn ϑ w) = ∏ e ∈ w, card (gridModulus ϑ).ResidueRing ^
+      (card (D.NodeIndex e.1) * card (D.NodeIndex e.2)) := by
   classical
-  refine card_image_le.trans ?_
-  rw [card_univ, Fintype.card_pi, ← card_coe w, ← card_univ]
-  refine prod_le_pow_card _ _ _ ?_
-  rintro ⟨⟨p, q⟩, hpq⟩ -
-  obtain ⟨hp, hq⟩ := hw p q hpq
-  exact card_matrix_le_edgeMatrixCountBound hq hp
+  have hinj : Injective (updateFinset (0 : EdgeTuple ϑ) w) :=
+    (show LeftInverse w.restrict _ from restrict_updateFinset _).injective
+  rw [tuplesOn, card_image_of_injective _ hinj, card_univ, Fintype.card_pi, ← prod_attach w _]
+  simp [card_congr Matrix.of.symm, ← pow_mul]
 
 /-- The edge from `(a, b)` to `(a, b + 1)` in the grid `z`: the vertical edge `Y^a_b → Y^a_(b+1)`
 or the horizontal edge `Ỹ^b_a → Ỹ^(b+1)_a`. -/
@@ -724,18 +724,6 @@ lemma eq_and_le_of_mem_edges {p : GridPath a₀ b₀ a b} {u v : GridNode} (he :
     · obtain ⟨hu, hv, h_lower, h_step, h_upper⟩ := ih h_old
       exact ⟨hu, hv, h_lower, h_step, h_upper.trans (by simp)⟩
 
-/-- A path from `(a₀, b₀)` to `(a, b)` has at most `(a - a₀) + (b₀ - b)` edges, stated without
-subtraction. -/
-lemma card_edges_le (p : GridPath a₀ b₀ a b) : #(p.edges z) + a₀ + b ≤ a + b₀ := by
-  induction p with
-  | nil => simp [edges]
-  | @down a b p ih =>
-    have h_card : #((down p).edges z) ≤ #(p.edges z) + 1 := card_insert_le ..
-    omega
-  | @right a b p ih =>
-    have h_card : #((right p).edges z) ≤ #(p.edges z) + 1 := card_insert_le ..
-    omega
-
 end GridPath
 
 /-- The edges of a path `Γ` through the two grids: those of its halves `Γ.half z`, each a path in
@@ -744,27 +732,6 @@ def TwoGridPath.edges (Γ : TwoGridPath m) : Finset (GridNode × GridNode) :=
   (Γ.half false).edges false ∪ (Γ.half true).edges true
 
 namespace Data
-
-/-- A path `Γ` through the two grids `Y` and `Ỹ` has at most `2 * D.m` edges. So there are at most
-`edgeMatrixCountBound ϑ ^ (2 * D.m)` tuples `tuplesOn ϑ Γ.edges`, which carry a matrix on each edge
-of `Γ` and are zero elsewhere. -/
-lemma card_tuplesOn_edges_le (Γ : TwoGridPath D.m) :
-    #(tuplesOn ϑ Γ.edges) ≤ edgeMatrixCountBound ϑ ^ (2 * D.m) := by
-  have h_card : #Γ.edges ≤ 2 * D.m := by
-    have h_half (z : Bool) : #((Γ.half z).edges z) + 0 + Γ.diagonalIndex ≤ Γ.diagonalIndex + D.m :=
-      (Γ.half z).card_edges_le
-    have h_union : #Γ.edges ≤ #((Γ.half false).edges false) + #((Γ.half true).edges true) :=
-      card_union_le _ _
-    grind [TwoGridPath.diagonalIndex_le]
-  have h_ends (p q : GridNode) (hpq : (p, q) ∈ Γ.edges) :
-      p.2 ≤ (D.m, D.m) ∧ q.2 ≤ (D.m, D.m) := by
-    obtain ⟨z, hz⟩ : ∃ z : Bool, (p, q) ∈ (Γ.half z).edges z := by
-      simpa [TwoGridPath.edges] using hpq
-    obtain ⟨-, -, -, hp_le, hq_le⟩ := GridPath.eq_and_le_of_mem_edges hz
-    have hq : q.2 ≤ (D.m, D.m) := hq_le.trans ⟨Γ.diagonalIndex_le, le_rfl⟩
-    exact ⟨hp_le.trans hq, hq⟩
-  exact (card_tuplesOn_le h_ends).trans
-    (Nat.pow_le_pow_right (pow_pos Fintype.card_pos _) h_card)
 
 /-- The period of a conjugate form on `Y^j_j` and a form on `Ỹ^j_j` along `U(Y^j_j) → U(Ỹ^j_j)`. The
 second form is translated by a real point `g` of `U(Ỹ^j_j)` and, on the added line, by the `j`-th

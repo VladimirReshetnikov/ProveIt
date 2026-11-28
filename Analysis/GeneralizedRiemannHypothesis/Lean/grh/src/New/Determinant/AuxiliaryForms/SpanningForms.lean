@@ -59,7 +59,7 @@ variable {D} in
 /-- The first-path bound multiplied by the number of columns in the diagonal Fourier
 transforms. Their ranks sum to `m * (r + m * t)`. -/
 abbrev lastPathBound (ϑ : D.MFoldTwist) : ℕ :=
-  card (gridModulus ϑ).ResidueRing ^ (D.m * (D.r + D.m * D.t)) * edgeMatrixCountBound ϑ ^ (2 * D.m)
+  card (gridModulus ϑ).ResidueRing ^ (D.m * (D.r + D.m * D.t)) * firstPathBound ϑ
 
 /-! ### Denominators on the last path -/
 
@@ -370,6 +370,8 @@ lemma norm_lastPathPeriod_le {Ψ : EdgeTuple (1 : D.MFoldTwist) → ℂ}
     simp [hn, -Nat.card_eq_fintype_card]
   have h_const : L * (G ^ D.m * G ^ (D.m + 1)) * (C * G ^ D.m * G ^ D.m) ≤
       exp (D.x ^ 200 * D.b ^ 2) := by
+    have := D.hasLogUpper_of_le D.firstPathMatrixEntries_le
+    have := D.hasLogUpper_of_le D.lastPathMatrixEntries_le
     grw [hL, ← le_exp_of_log_le]
     simpa [C, log_mul, G, NeZero.ne, card_residueRing_twistModulus, prod_q_chosenPlace,
       toAutChar_one_and_toTwist_one_and_Q_one] using

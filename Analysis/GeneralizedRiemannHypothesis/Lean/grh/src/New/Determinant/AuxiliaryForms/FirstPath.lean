@@ -414,7 +414,7 @@ functions `Ψ ϑ`, one for each twist `ϑ`, of tuples `EdgeTuple ϑ` and a const
 * `Ψ ϑ` is a path datum (`IsPathDatum`) on the first path: a function of the matrices on its edges,
   invariant up to the edge characters under admissible families of group elements at the nodes, zero
   unless those on twisted edges have left inverses, with values sums of at most
-  `edgeMatrixCountBound ϑ ^ (2 * D.m)` roots of unity.
+  `firstPathBound ϑ` roots of unity.
 * Whenever `r` is a restriction map at `g`, the pairing of a conjugate form `y'` on `Y_m` with the
   chain `lowerChainUpTo` of theta lifts of `r φ` is `α` times `gridPeriod`: the sum over the tuples
   `S` on the path of `Ψ ϑ S` times the period `diagonalPeriodForm` at `g` of the images of `y'` and
@@ -422,7 +422,7 @@ functions `Ψ ϑ`, one for each twist `ϑ`, of tuples `EdgeTuple ϑ` and a const
 lemma exists_isPathDatum_integral_eq :
     ∃ Ψ : ∀ ϑ : D.MFoldTwist, EdgeTuple ϑ → ℂ,
       (∀ ϑ : D.MFoldTwist,
-        IsPathDatum (edgeMatrixCountBound ϑ ^ (2 * D.m)) (TwoGridPath.first D.m).edges (Ψ ϑ)) ∧
+        IsPathDatum (firstPathBound ϑ) (TwoGridPath.first D.m).edges (Ψ ϑ)) ∧
       ∃ α : ℂ, ∀ (g : GInf D.E (D.gridSigns true 0 0 0))
         (r : D.gridLevelForms D.m →ₗ[ℂ] D.principalForms (D.spaceY 0)), IsFlatRestriction g r →
         ∀ (ϑ : D.MFoldTwist) (y' : D.GridForm false 0 D.m) (φ : D.gridLevelForms D.m),
@@ -438,7 +438,7 @@ constant `α` and a map `r` from the forms of level `𝔟` on `Ỹ^m_0` onto the
 * `Ψ ϑ` is a path datum (`IsPathDatum`) on the first path: a function of the matrices on its edges,
   invariant up to the edge characters under admissible families of group elements at the nodes, zero
   unless those on twisted edges have left inverses, with values sums of at most
-  `edgeMatrixCountBound ϑ ^ (2 * D.m)` roots of unity.
+  `firstPathBound ϑ` roots of unity.
 * The pairing of a conjugate form `y'` on `Y_m` with the chain `lowerChainUpTo` of theta lifts of
   `r φ` is `α` times `gridPeriod`: the sum over the tuples `S` on the path of `Ψ ϑ S` times the
   period `diagonalPeriodForm` at `g` of the images of `y'` and `φ` under the transposed lifts with
@@ -446,7 +446,7 @@ constant `α` and a map `r` from the forms of level `𝔟` on `Ỹ^m_0` onto the
 lemma exists_isPathDatum_first :
     ∃ Ψ : ∀ ϑ : D.MFoldTwist, EdgeTuple ϑ → ℂ,
       (∀ ϑ : D.MFoldTwist,
-        IsPathDatum (edgeMatrixCountBound ϑ ^ (2 * D.m)) (TwoGridPath.first D.m).edges (Ψ ϑ)) ∧
+        IsPathDatum (firstPathBound ϑ) (TwoGridPath.first D.m).edges (Ψ ϑ)) ∧
       ∃ (g : GInf D.E (D.gridSigns true 0 0 0)) (α : ℂ)
         (r : D.gridLevelForms D.m →ₗ[ℂ] D.principalForms (D.spaceY 0)),
         r.range = ⊤ ∧

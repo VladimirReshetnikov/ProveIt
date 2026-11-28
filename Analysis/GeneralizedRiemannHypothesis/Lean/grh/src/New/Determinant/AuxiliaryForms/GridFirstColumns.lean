@@ -669,27 +669,27 @@ lemma firstPathDatum_invariant {ϑ : D.MFoldTwist} {g : NodeFamily ϑ} (hg : IsA
   rw [← firstPointDatum_invariant h_level (tupleAction (σ x).family S)]
   simp only [← mul_assoc, ← edgeCharProd_mul, ← tupleAction_mul, mul_inv_cancel, one_mul]
 
-/-- The number of coset families `LevelCosets ϑ` is at most `edgeMatrixCountBound ϑ ^ (2 * D.m)`.
-`edgeMatrixCountBound ϑ` bounds the number of matrices modulo `gridModulus ϑ` of an edge between
-nodes of index at most `D.m`. -/
+/-- A bound for the number of roots of unity in each value of the first path datum. -/
+abbrev firstPathBound (ϑ : D.MFoldTwist) : ℕ :=
+  card (gridModulus ϑ).ResidueRing ^ D.firstPathMatrixEntries
+
+/-- Bound each level quotient by all square matrices at its own node in the first column. -/
 lemma card_levelCosets_le {ϑ : D.MFoldTwist} :
-    card (LevelCosets ϑ) ≤ edgeMatrixCountBound ϑ ^ (2 * D.m) := by
-  rw [Fintype.card_pi]
-  refine (prod_le_pow_card univ _ (edgeMatrixCountBound ϑ) fun ⟨z, i⟩ _ ↦ ?_).trans_eq (by simp)
+    card (LevelCosets ϑ) ≤ firstPathBound ϑ := by
+  rw [Fintype.card_pi, firstPathBound, firstPathMatrixEntries, ← prod_pow_eq_pow_sum]
+  refine Finset.prod_le_prod fun ⟨z, i⟩ _ ↦ ?_
   calc _ ≤ card (GL (D.NodeIndex (z, 0, i)) (gridModulus ϑ).ResidueRing) :=
         card_le_of_surjective _ QuotientGroup.mk_surjective
     _ ≤ card (Matrix (D.NodeIndex (z, 0, i)) (D.NodeIndex (z, 0, i)) (gridModulus ϑ).ResidueRing) :=
         card_le_of_injective _ Units.val_injective
-    _ ≤ edgeMatrixCountBound ϑ := card_matrix_le_edgeMatrixCountBound (by simp) (by simp)
+    _ = _ := by simp [card_congr Matrix.of.symm, ← pow_mul, sq]
 
 /-- Put `m = D.m`. The function `Ψ⁰ = firstPathDatum ϑ`, the weighted sum of the translates of the
 indicator `firstPointDatum`, is a path datum on the first path, the edges from `(z, 0, i)` to
-`(z, 0, i + 1)` with `i < m`. Its values are sums of at most `N ^ (2 m)` roots of unity, where
-`N = edgeMatrixCountBound ϑ` bounds the number of matrices modulo `gridModulus ϑ` between two nodes
-with indices at most `m`. -/
+`(z, 0, i + 1)` with `i < m`. Its values are sums of at most as many roots of unity as the product of
+the numbers of square matrices over the residue ring at the first-column nodes with `i < m`. -/
 lemma isPathDatum_firstPathDatum (ϑ : D.MFoldTwist) :
-    IsPathDatum (edgeMatrixCountBound ϑ ^ (2 * D.m)) (TwoGridPath.first D.m).edges
-      (firstPathDatum ϑ) where
+    IsPathDatum (firstPathBound ϑ) (TwoGridPath.first D.m).edges (firstPathDatum ϑ) where
   dependsOn S S' hS := by
     have h_column (x : LevelCosets ϑ) (z : Bool) : columnPointDatum z 0 (tupleAction x.family S) =
         columnPointDatum z 0 (tupleAction x.family S') :=
@@ -794,7 +794,7 @@ the images is `C` times `gridPeriod`: the sum over the tuples `S` on the first p
 the period at `g` of the images of `y'` and `φ` under the matrices of `S`. -/
 lemma exists_isPathDatum_diagonalPeriodForm_eq :
     ∃ (C : ℂ) (Ψ : ∀ ϑ : D.MFoldTwist, EdgeTuple ϑ → ℂ), ∀ ϑ : D.MFoldTwist,
-      IsPathDatum (edgeMatrixCountBound ϑ ^ (2 * D.m)) (TwoGridPath.first D.m).edges (Ψ ϑ) ∧
+      IsPathDatum (firstPathBound ϑ) (TwoGridPath.first D.m).edges (Ψ ϑ) ∧
       ∀ (g : GInf D.E (D.gridSigns true 0 0 0)) (y' : D.GridForm false 0 D.m)
         (φ : D.GridForm true 0 D.m),
         diagonalPeriodForm ϑ zero_le g (transposedChain ϑ false 0 y')

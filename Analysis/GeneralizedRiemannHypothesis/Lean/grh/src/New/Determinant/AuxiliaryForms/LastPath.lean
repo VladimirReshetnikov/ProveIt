@@ -680,7 +680,7 @@ of classes.
 
 section LastPathPairingTerms
 
-open Finset Subgroup Pointwise Exchange Rows Matrix TensorChain
+open Finset Fintype Subgroup Pointwise Exchange Rows Matrix TensorChain
 
 variable {P : Parameters} {D : Data P} {ϑ : D.MFoldTwist} {N : ℕ} {Ψ : EdgeTuple ϑ → ℂ}
 
@@ -696,14 +696,29 @@ lemma edges_last : (TwoGridPath.last D.m).edges =
   rw [← h_row, ← h_row]
   rfl
 
+/-- A product over the edges of the last path is a product over its two rows. -/
+private lemma prod_edges_last {M : Type*} [CommMonoid M] (f : GridNode × GridNode → M) :
+    (∏ e ∈ (TwoGridPath.last D.m).edges, f e) = ∏ z : Bool, ∏ i ∈ range D.m, f (rowEdge z i D.m) := by
+  have h_inj (z : Bool) : Set.InjOn (fun j ↦ rowEdge z j D.m) (range D.m) := by simp [Set.InjOn]
+  rw [edges_last, prod_union (by simp [disjoint_left]), prod_image (h_inj false),
+    prod_image (h_inj true), Fintype.prod_bool, mul_comm]
+
+/-- The exact number of supported tuples on the last path, one matrix for each row edge. -/
+lemma card_tuplesOn_last (ϑ : D.MFoldTwist) :
+    #(tuplesOn ϑ (TwoGridPath.last D.m).edges) =
+      card (gridModulus ϑ).ResidueRing ^ D.lastPathMatrixEntries := by
+  rw [card_tuplesOn, prod_edges_last, lastPathMatrixEntries, Fintype.sum_prod_type]
+  simp only [Finset.prod_pow_eq_pow_sum]
+  congr 1
+  refine sum_congr rfl fun z _ ↦ ?_
+  exact (Fin.sum_univ_eq_sum_range (fun i ↦ card (D.GridIndex z i D.m) *
+    card (D.GridIndex z (i + 1) D.m)) D.m).symm
+
 /-- For a family `g` of invertible matrices at the nodes, the product `edgeCharProd g` of the
 characters of the edges of the last path splits into one factor for each of these edges. -/
 lemma edgeCharProd_last (g : NodeFamily ϑ) : edgeCharProd g (TwoGridPath.last D.m).edges =
     ∏ z : Bool, ∏ j ∈ range D.m, edgeCharProd g {rowEdge z j D.m} := by
-  have h_inj (z : Bool) : Set.InjOn (fun j ↦ rowEdge z j D.m) (range D.m) := by simp [Set.InjOn]
-  simp only [edgeCharProd, prod_singleton]
-  rw [edges_last, prod_union (by simp [disjoint_left]), prod_image (h_inj false),
-    prod_image (h_inj true), Fintype.prod_bool, mul_comm]
+  simpa only [edgeCharProd, prod_singleton] using prod_edges_last (D := D) _
 
 /-- Let `g` be a family of invertible matrices modulo `gridModulus ϑ` at the nodes. Let the integral
 points `u`, `u'` reduce modulo `gridModulus ϑ` to the values of `g` at the ends `(z, j, m)`,
@@ -887,7 +902,8 @@ fixed number `M`, for each pairing `a` of vectors with this property at correspo
 
 Then the sum `Ξ = lastPathPeriod Ψ y` over the last path is a sum of numbers with this bound. The
 number of summands is `L` times the product of the numbers of classes (`StdClasses`) of the
-`2 * m + 1` levels that occur, for some `L ≤ N * edgeMatrixCountBound ^ (2 * m)`. -/
+`2 * m + 1` levels that occur, for some `L ≤ N * h ^ lastPathMatrixEntries`, where `h` is the
+size of the residue ring. -/
 theorem exists_lastPathPeriod_mem_smul_norm_le {ϑ : D.MFoldTwist} {N : ℕ} {Ψ : EdgeTuple ϑ → ℂ}
     (hΨ : IsPathDatum N (TwoGridPath.last D.m).edges Ψ)
     {y : ∀ z : Bool, D.GridForm z 0 D.m} (hy : FixedByOuterLevels ϑ y)
@@ -903,7 +919,7 @@ theorem exists_lastPathPeriod_mem_smul_norm_le {ϑ : D.MFoldTwist} {N : ℕ} {Ψ
       {v : D.LastPathVector true D.m}, IsReached false D.m g v' →
       IsReached true D.m (lastPathBlockPoint ϑ g) v →
       ‖σ (M * D.lastPathPairing v' v)‖ ≤ R) :
-    ∃ L ≤ N * edgeMatrixCountBound ϑ ^ (2 * D.m), lastPathPeriod Ψ y ∈
+    ∃ L ≤ N * card (gridModulus ϑ).ResidueRing ^ D.lastPathMatrixEntries, lastPathPeriod Ψ y ∈
       (L * ∏ z : Bool, ∏ j ∈ range (D.m + (!z).toNat),
         Nat.card (StdClasses (lastPathLevel ϑ z j))) • {a : ℂ | ‖σ (M * a)‖ ≤ R} := by
   -- The sum against `Ψ` is invariant under the levels, so the last integral and both chains of
@@ -984,7 +1000,7 @@ theorem exists_lastPathPeriod_mem_smul_norm_le {ϑ : D.MFoldTwist} {N : ℕ} {Ψ
       Nat.card (StdClasses (lastPathLevel ϑ z j)) =
         classes true * classes false * Nat.card (StdClasses (lastPathLevel ϑ false D.m)) := by
     simp [classes, prod_range_succ, mul_assoc]
-  refine ⟨N * #W, Nat.mul_le_mul_left N (card_tuplesOn_edges_le _), ?_⟩
+  refine ⟨N * #W, by simp [W, card_tuplesOn_last], ?_⟩
   rw [h_swap, h_count, mul_nsmul, mul_nsmul, mul_nsmul, mul_nsmul]
   refine classIntegral_mem_nsmul (h_free false D.m le_rfl) ?_ h_sum_both_chains
   -- The integrand is right invariant under the level of `Y^m_m`.
