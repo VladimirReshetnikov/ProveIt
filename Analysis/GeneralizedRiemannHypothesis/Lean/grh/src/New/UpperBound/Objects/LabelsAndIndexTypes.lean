@@ -358,17 +358,18 @@ def goodTupleFamilies :
 open scoped Classical in
 /-- Let `c = (c_w)` be a family of polynomials over the residue fields at the chosen places `w`, the
 finite places of E that divide `D.piM` and one of the two level primes p₀, p₁ of the data `D`. Then
-`c` lies in `New.Data.goodTupleFamilies` exactly when, for `i = 0, 1`, the `c_w` with `w` above p_i
-form a good tuple (`New.goodTuples`): each is a label of degree `r = card D.RowIndex` with no
-`q₂`-th root of unity of the residue field as a root, and at least one is primitive. -/
+`c` lies in `New.Data.goodTupleFamilies` exactly when every label is allowed and there is a
+primitive label above each level prime. -/
 lemma mem_goodTupleFamilies
     {c : (x : (i : Fin 2) × D.ChosenPlace i) → Polynomial (ResField
       (D.chosenPlace ⟨x.fst, x.snd⟩))} :
     c ∈ D.goodTupleFamilies ↔
-      ∀ i : Fin 2, (fun w : D.ChosenPlace i ↦ c ⟨i, w⟩) ∈
-        goodTuples (P.q₂ D.towerExp) (card D.RowIndex) := by
+      ∀ i : Fin 2,
+        (∀ w : D.ChosenPlace i,
+          IsAllowedPolynomial (P.q₂ D.towerExp) (card D.RowIndex) (c ⟨i, w⟩)) ∧
+        ∃ w : D.ChosenPlace i, IsPrimitivePolynomial (card D.RowIndex) (c ⟨i, w⟩) := by
   rw [goodTupleFamilies, Finset.mem_map_equiv, mem_piFinset]
-  rfl
+  exact forall_congr' fun _ ↦ mem_goodTuples
 
 open scoped Classical in
 /-- The element e₀ of ℂ[𝖦]: the sum of the idempotents `New.tupleIdem` over the families in
@@ -419,9 +420,9 @@ lemma hyperplaneSum_mul_e₀
   refine piTensorElem_mul_eq_zero ⟨i, w⟩ ?_
   -- A good label has no `q₂`-th root of unity of the residue field as a root, and the unit
   -- `charName χ`, the image of `χ` under the isomorphism of characters with units, is such a root.
-  obtain ⟨h_allowed, -⟩ := mem_goodTuples.1 (D.mem_goodTupleFamilies.1 hc i)
+  have h_allowed := (D.mem_goodTupleFamilies.1 hc i).1 w
   rw [hx]
-  exact hyperplaneSum_mul_labelIdem ((h_allowed w).not_isRoot (charName_pow_eq_one hχ)) hl
+  exact hyperplaneSum_mul_labelIdem (h_allowed.not_isRoot (charName_pow_eq_one hχ)) hl
 end New.Data
 
 end

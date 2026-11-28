@@ -82,11 +82,7 @@ theorem isLiftSetting_descentPair (j : D.LiftIndex)
     {c : ∀ x : Σ i : Fin 2, D.ChosenPlace i, (ResField (D.chosenPlace x))[X]}
     (hc : c ∈ D.goodTupleFamilies) : IsLiftSetting (D.descentPair ϑ j) c ϑ := by
   classical
-  -- Over each of the two primes, the labels form a good tuple.
-  have h_good (i : Fin 2) :
-      (∀ w : D.ChosenPlace i, IsAllowedPolynomial (P.q₂ D.towerExp) (card D.RowIndex) (c ⟨i, w⟩)) ∧
-      ∃ w : D.ChosenPlace i, IsPrimitivePolynomial (card D.RowIndex) (c ⟨i, w⟩) :=
-    mem_goodTuples.1 (mem_piFinset.1 (mem_map_equiv.1 hc) i)
+  have h_good := D.mem_goodTupleFamilies.1 hc
   refine
     { toLevelPlaces_eq := rfl
       exists_tamePart_eq_chiMLocal_zpow_mul := ⟨j, j.2, rfl⟩

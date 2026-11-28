@@ -49,20 +49,6 @@ open Module Submodule LinearMap Gf MonoidAlgebra Representation
 
 variable {P : Parameters} (D : Data P) {s s' : D.RowIndex → ℤˣ}
 
-/-- A family `c` in `D.goodTupleFamilies` consists of a polynomial `c x` over the residue field of
-each chosen place `x`. Above each of the primes `p₀`, `p₁` these polynomials are monic of degree
-`r = card D.RowIndex`, all allowed (`New.IsAllowedPolynomial`), and one of them is primitive. In
-particular, some `c x` is primitive: irreducible, with a root that generates the units of the
-extension of degree `r` of the residue field. -/
-lemma exists_isPrimitivePolynomial
-    {c : ∀ x : (i : Fin 2) × D.ChosenPlace i, Polynomial (ResField (D.chosenPlace x))}
-    (hc : c ∈ D.goodTupleFamilies) :
-    ∃ x : (i : Fin 2) × D.ChosenPlace i, IsPrimitivePolynomial (Fintype.card D.RowIndex) (c x) := by
-  classical
-  rw [goodTupleFamilies, Finset.mem_map_equiv, Fintype.mem_piFinset] at hc
-  obtain ⟨-, -, w, h_prim⟩ := Finset.mem_filter.1 (hc 0)
-  exact ⟨⟨0, w⟩, h_prim⟩
-
 /-- Let `γ` be a finite point of the unitary group whose component is `1` at each place
 `D.chosenPlace x`. There is a spherical Hecke operator `p` away from these places with
 `⟪z, p y⟫ = ⟪z, γ y⟫` for every space `W` and all forms `z`, `y` on `W` of principal level. -/
@@ -246,7 +232,8 @@ lemma trace_mul_tupleIdem_eq [hs : ∀ v : D.Φ, (toHCParam s (D.paramW v)).HasG
       ∀ {s : D.RowIndex → ℤˣ} (W : Space D.E D.RowIndex s) (y : D.principalForms W),
         (T.val W y).val = (W.formRep (typeKernel D.paramW s)).asAlgebraHom
           (mapDomain D.offLevelGroup.subtype a) y := T.prop
-  obtain ⟨x, h_label, h_irr, -⟩ := D.exists_isPrimitivePolynomial hc
+  obtain ⟨w, h_label, h_irr, -⟩ := (D.mem_goodTupleFamilies.1 hc 0).2
+  let x : Σ i : Fin 2, D.ChosenPlace i := ⟨0, w⟩
   -- The element `f` of the group algebra of the finite points acts as `T e_c` on every space.
   let f : ℂ[Gf D.E D.RowIndex] :=
     mapDomain D.offLevelGroup.subtype a * D.liftGroupAlgebra (tupleIdem D.RowIndex c)

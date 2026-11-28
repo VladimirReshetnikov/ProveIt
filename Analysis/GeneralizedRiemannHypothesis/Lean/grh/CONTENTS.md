@@ -90,7 +90,7 @@ The heads of these files give an overview of a theory: `Lib/ClassField/Global/Ar
 - `New/UpperBound/Objects/InsertBlock` (194): Inserting a block into a parameter
 - `New/UpperBound/Objects/LiftLawsModuloN` (570): Direct and mirror data modulo `N`, and the operator `Up`
 - `New/UpperBound/Objects/AuxiliaryPair` (633): Descent pairs: descent data for theta lifts to definite unitary groups
-- `New/UpperBound/Objects/LabelsAndIndexTypes` (202): Good labels, index types of hermitian spaces, the group 𝖦 and idempotent e₀
+- `New/UpperBound/Objects/LabelsAndIndexTypes` (204): Good labels, index types of hermitian spaces, the group 𝖦 and idempotent e₀
 - `New/UpperBound/Objects/Weights` (384): Harish-Chandra parameters, weights and lift diagrams of the definite spaces
 - `New/UpperBound/Objects/LiftChains` (361): Chains of theta lifts, jointly invariant combinations, and free levels
 - `New/UpperBound/Objects/Parameters` (669): Index sets, signs and parameters of the grids; the parameters of every step correspond
@@ -163,7 +163,7 @@ The heads of these files give an overview of a theory: `Lib/ClassField/Global/Ar
 **Equality of multiplicities**
 
 - `New/Spanning/Multiplicities/HeckeEigensystems` (283): Spherical Hecke operators away from the level, and eigensystems
-- `New/Spanning/Multiplicities/EqualMultiplicities` (267): Equality of multiplicities
+- `New/Spanning/Multiplicities/EqualMultiplicities` (260): Equality of multiplicities
 
 **Measures and Bessel functions**
 
@@ -363,7 +363,7 @@ The heads of these files give an overview of a theory: `Lib/ClassField/Global/Ar
 **Congruences and Galois representations**
 
 - `New/Congruences/GaloisRepresentations/SelmerHypotheses` (372): Bad places, ℓ-adic avatars and hypotheses on conjugate self-dual representations
-- `New/Congruences/GaloisRepresentations/AttachedRepresentations` (440): Lift settings and conjugate self-duality of attached Galois representations
+- `New/Congruences/GaloisRepresentations/AttachedRepresentations` (437): Lift settings and conjugate self-duality of attached Galois representations
 - `New/Congruences/GaloisRepresentations/RowsAndColumnsFromLabels` (490): Main summands and conjugate self-dual representations from type polynomials
 - `New/Congruences/GaloisRepresentations/BaseLevelOfLabel` (415): Base data whose forms contain those with given labels in a lift setting
 - `New/Congruences/GaloisRepresentations/RowsFromEigensystems` (358): Main summand conditions on Hodge–Tate jumps and existence of main summands for Hecke eigensystems
