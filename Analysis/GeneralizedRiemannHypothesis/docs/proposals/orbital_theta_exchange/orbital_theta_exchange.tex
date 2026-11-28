@@ -1,0 +1,301 @@
+\documentclass[11pt]{article}
+\usepackage[a4paper,margin=25mm]{geometry}
+\usepackage{amsmath,amssymb,amsthm,mathtools,booktabs,array,tabularx,microtype,xcolor}
+\usepackage[hidelinks]{hyperref}
+\definecolor{navy}{HTML}{173A56}
+\usepackage{titlesec}
+\titleformat{\section}{\large\bfseries\color{navy}}{\thesection}{0.6em}{}
+\titleformat{\subsection}{\normalsize\bfseries\color{navy}}{\thesubsection}{0.6em}{}
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{corollary}[theorem]{Corollary}
+\theoremstyle{remark}\newtheorem{remark}[theorem]{Remark}
+\newcommand{\GL}{\mathrm{GL}}
+\newcommand{\Mat}{\mathrm{Mat}}
+\newcommand{\SB}{\mathcal S}
+\newcommand{\Orb}{\mathcal J}
+\newcommand{\Prj}{\mathcal P}
+\newcommand{\Av}{\mathcal A}
+\newcommand{\Match}{\mathcal B}
+\newcommand{\cc}{\mathbb C}
+\newcommand{\oo}{\mathcal O}
+\newcommand{\one}{\mathbf 1}
+\newcommand{\supp}{\operatorname{supp}}
+\newcommand{\src}[2]{\href{https://github.com/VladimirReshetnikov/ProveIt/blob/ee10f937fedac0955d28b7b860f4c44fab508204/Analysis/GeneralizedRiemannHypothesis/Lean/grh/src/#1\#L#2}{\texttt{#2}}}
+\setlength{\parindent}{0pt}\setlength{\parskip}{5pt plus 1pt}\setlength{\emergencystretch}{3em}
+\hypersetup{pdftitle={Canonical orbital sections for the theta exchange argument},pdfauthor={Research note}}
+\title{\vspace{-1.4em}\color{navy}\bfseries Canonical orbital sections for the theta exchange argument\\[5pt]\large A local simplification of the Alp\"oge--Claude proof of Dirichlet GRH}
+\author{Research note and implementation proposal}
+\date{27 November 2026}
+\begin{document}
+\maketitle
+\begin{abstract}
+The readable Lean proof of RH and Dirichlet GRH constructs matched local matrix data using specially chosen symmetric coset representatives, a linear extension of finite summation, and a finite-support reduction. We propose replacing this part of the determinant exchange argument by normalized orbital integrals and a primitive-frame projection. We prove an explicit, purely algebraic twisted-coinvariant theorem: the kernel of the orbital section consists exactly of finite sums of twisted translation differences. In particular, the factorization works for an arbitrary algebraic linear functional, without any continuity assumption. Complementary primitive frames then give a canonical isomorphism of the two coinvariant spaces. Every full-rank Schwartz--Bruhat column datum consequently admits a canonical primitive row partner, and the equivariant difference can be defined on the entire full-rank Schwartz--Bruhat space. The original analytic and arithmetic estimates need not change. This is a paper-level replacement of a local argument, not a new independently formalized proof of RH. Exact finite tests and a Lean integration plan accompany the note.
+\end{abstract}
+{\small\tableofcontents}\clearpage
+\section{Position in the existing proof}
+The source snapshot is ProveIt commit \texttt{ee10f937fedac0955d28b\allowbreak 7b860f4c44fab508204} (branch \texttt{main} when inspected). The guide's section on the determinant ratio explains why exchanges of lifts and transposed lifts around a triangular chain matter. The key proposal here is not a different estimate of ranks, divisibility, or primes. It changes the local algebra used to construct an equivariant difference of two theta integrals, before their equality is established by vanishing of suitable Fourier coefficients.
+
+For orientation, the arithmetic and analytic proof can be organized as follows. The theta construction gives short forms, sufficiently many independent forms, and a competing long-form estimate via determinant comparisons. In the notation of the readable source the resulting inequality is
+\[
+ mR\leq f a(\log b)^5
+\]
+with $R$ the combined arithmetic remainder in the source, not yet the one-variable prime remainder. The source then derives, for its auxiliary modulus $q_0$ and parameters,
+\[
+ R_{q_0}(x)\leq \frac{\varphi(q_0)(\log b)^6}{m}
+   +|R_{q_0}(x_1)|+(\log b)|R_1(x_1)|,
+\]
+where the prime remainder uses weights $1/n-1/x$ and the quadratic character distinguishing the selected prime powers. The choice $m\asymp\sqrt{x}$, the scale separation, and the far-cutoff estimates yield one-sided bounds of order $x^{-1/2+\epsilon}$. The zero-exclusion argument selects an auxiliary prime and uses a Landau argument and the functional equation. The resulting theorems cover ordinary RH and Dirichlet GRH (not GRH for arbitrary automorphic $L$-functions).
+
+The particular chain of interfaces we target is
+\begin{center}
+\begin{tabularx}{\linewidth}{@{}lX@{}}
+\toprule
+Stage & Role \\
+\midrule
+\texttt{MatchingPartners.lean} & Matching on full-rank local matrices; descent of linear functionals through sections. \\
+\texttt{EquivariantDifference.lean} & Construct the equivariant difference of theta lifts. \\
+\texttt{TheoremForPartners.lean} & Apply vanishing results to matched functions, leading to the exchange identity. \\
+\texttt{ChainNorms.lean}, \texttt{NormOfChain.lean} & Use the exchange identities in the norm and determinant chain. \\
+\texttt{LongForms.lean}, \texttt{MainInequality.lean} & Lower determinant bound and the arithmetic comparison. \\
+\texttt{OneSidedBound.lean}, \texttt{Main.lean} & Analytic endgame and final statements. \\
+\bottomrule
+\end{tabularx}
+\end{center}
+In particular, \texttt{TheoremForPartners.lean}, line \src{New/Determinant/Exchange/TheoremForPartners.lean}{260}, invokes \texttt{exists\_\allowbreak isEquivariantLift\_\allowbreak eq\_\allowbreak thetaLarge\_\allowbreak sub\_\allowbreak smul}. The proposed substitute preserves that existential theorem's output properties; it is not necessary to prove equality of all old and new intermediate definitions.
+
+\section{Setup and canonical sections}
+Let $F=\prod_{v\in V}F_v$ be a finite product of nonarchimedean local fields, with $\oo=\prod_v\oo_v$ their integer rings. This is the actual local situation in the equivariant theta difference. Let $0\le r\le n$, and write
+\[
+ G_r=\GL_r(F),\qquad K_r=\GL_r(\oo),\qquad
+ X_r=\{y\in\Mat_{n,r}(F): y\text{ has a left inverse}\}.
+\]
+The primitive locus $U_r$ consists of matrices integral over $\oo$ with an integral left inverse. Use $\SB_r$ for locally constant complex functions on the ambient matrix space whose support is compact and contained in $X_r$. This is the column version of the full-rank \texttt{schwartzBruhat} submodule in the source. Throughout, $\chi:F^\times\to\cc^\times$ is a locally constant multiplicative character; put $c_r(g)=\chi(\det g)$. It need not be unitary. The modulus factor in the theta proof's \texttt{localChar} is included in this convention.
+
+The definitions cover zero ranks with the trivial group and determinant $1$. For an empty product of fields, all relevant matrix spaces are singletons and the identities reduce to the trivial-group case. In the nonempty case, all statements about rank, integrality, and invertibility mean the corresponding statements componentwise.
+
+\begin{lemma}[Primitive frames]\label{lem:frames}
+The set $U_r$ is compact open in the ambient matrix space. For each $y\in X_r$ there is $h\in G_r$ such that $yh\in U_r$. If $p\in U_r$, then $pg\in U_r$ if and only if $g\in K_r$.
+\end{lemma}
+\begin{proof}
+Over a discrete valuation ring a matrix is primitive precisely when its entries are integral and its reduction has full column rank; one unit maximal minor gives an integral left inverse. Thus the primitive set is a finite union of residue classes in a compact open matrix lattice. Over each factor the intersection of the column space of $y$ with $\oo_v^n$ is saturated: if a uniformizer times an integral vector belongs to the intersection, so does the vector. This is a free direct summand of rank $r$ (the quotient is torsion-free and finitely generated). An integral basis of it gives the columns of $yh$, for some $h\in G_r$. Take the product of the choices. Finally, if $p$ and $pg$ are primitive, integral left inverses of $p$ and $pg$ show respectively that $g$ and $g^{-1}$ are integral. The converse is immediate.
+\end{proof}
+
+Normalize Haar measure $dg_r$ on $G_r$ by $\operatorname{vol}(K_r)=1$. It is bi-invariant: in one local field, take additive Haar measure $dA$ on the $r^2$ entries and on the invertible locus set
+\[
+ dg_r=C_r|\det A|^{-r}\,dA.
+\]
+Left or right multiplication by $h$ scales $dA$ by $|\det h|^r$ and the density by its reciprocal. Products give the assertion for $F$; the positive finite normalization constant exists since $K_r$ is compact open. Define the orbital section, for $f\in\SB_r$, by
+\begin{equation}\label{eq:J}
+ \Orb_r f(y)=\int_{G_r}c_r(g) f(yg)\,dg_r\quad(y\in X_r),
+\end{equation}
+and give it value zero outside $X_r$. For fixed $y$, this integrand is locally constant and compactly supported on $G_r$. Indeed, on all $r\times r$ matrices the map $A\mapsto yA$ has a continuous left inverse and closed image, and $yA$ has full rank exactly when $A$ is invertible. The preimage of $\supp f$ is therefore compact and lies in $G_r$. Hence the integral is well-defined and linear on $\SB_r$; no linear extension of an integral to arbitrary functions is being asserted.
+
+Write $\rho_r(h)f(y)=c_r(h)f(yh)$. This is a representation on $\SB_r$. Left and right changes of variables respectively give
+\begin{equation}\label{eq:cov}
+ \Orb_r f(yh)=c_r(h)^{-1}\Orb_r f(y),\qquad
+ \Orb_r(\rho_r(h)f)=\Orb_r f.
+\end{equation}
+For ambient $t\in G_n$, the section also satisfies
+\begin{equation}\label{eq:amb}
+ \Orb_r(f(t\,\cdot))(y)=\Orb_r f(ty).
+\end{equation}
+These statements concern full-rank points; no compact-support assertion is made for the entire function $\Orb_r f$.
+
+\section{A finite certificate for twisted coinvariants}\label{sec:projection}
+The crucial point is to avoid replacing an algebraic proof with an invalid interchange of an integral and a possibly discontinuous linear functional. Define
+\[
+ \Prj_r f=\one_{U_r}\,\Orb_r f,\qquad
+ W_r=\{w\in\SB_r:\supp w\subset U_r,\ \rho_r(k)w=w\ (k\in K_r)\}.
+\]
+The orbital projection actually has a finite expression.
+\begin{theorem}[Primitive-frame projection]\label{thm:projection}
+$\Prj_r:\SB_r\to W_r$ is a linear retraction, with
+\[
+ \ker\Prj_r=\ker\Orb_r
+ =\operatorname{span}_{\cc}\{\rho_r(h)f-f:h\in G_r,\ f\in\SB_r\}.
+\]
+In particular, for every complex vector space $E$ and every algebraic linear map $\Lambda:\SB_r\to E$ satisfying $\Lambda\rho_r(h)=\Lambda$, one has $\Lambda f=\Lambda\Prj_r f$. No continuity of $\Lambda$ is needed.
+\end{theorem}
+\begin{proof}
+The sets $U_r s$ for left cosets $K_rs\in K_r\backslash G_r$ partition $X_r$: existence follows by normalization in Lemma~\ref{lem:frames}; if $p s=p't$ then $p'=p st^{-1}$ and $st^{-1}\in K_r$. Each set is compact open in the ambient matrix space. Only finitely many meet $\supp f$, by compactness. Choose a representative $s_i$ of each of these finitely many cosets, set $f_i=\one_{U_r s_i}f$, and put $f_0=\sum_i\rho_r(s_i)f_i$, supported on $U_r$.
+
+For $y\in U_r$, the condition $y g\in U_r s_i$ is equivalent to $g\in K_r s_i$. Bi-invariance of Haar measure therefore gives
+\begin{align}
+ \Prj_r f(y)&=\sum_i\int_{K_r}c_r(ks_i)f_i(yks_i)\,dk\\
+ &=\int_{K_r}(\rho_r(k)f_0)(y)\,dk.\label{eq:avg}
+\end{align}
+The formula holds off $U_r$ as well, since both sides vanish there. By local constancy and compactness there is an open subgroup $H\le K_r$ fixing $f_0$ under $\rho_r$. To see this explicitly, use continuity of $(y,k)\mapsto yk$ and local constancy at $(y,1)$, take a finite cover of $U_r$ by the resulting neighborhoods of $y$, and shrink a neighborhood of $1$ into the kernel of $c_r$ and a sufficiently deep principal congruence subgroup. Off $U_r$ the action stays off $U_r$. For any representatives $k_j$ of the right-factor cosets $k_jH$ in $K_r/H$, (\ref{eq:avg}) becomes the exact finite identity
+\begin{equation}\label{eq:finite}
+ \boxed{\displaystyle \Prj_r f=\frac{1}{[K_r:H]}
+    \sum_{i,j}\rho_r(k_j s_i)f_i.}
+\end{equation}
+In particular it is Schwartz--Bruhat. The left invariance of averaging makes it $K_r$-fixed; alternatively use (\ref{eq:cov}) on the primitive set. If $w\in W_r$, then $\Orb_r w(y)=w(y)$ at a primitive $y$, because only $g\in K_r$ contributes and $\rho_r(g)w=w$. Thus $\Prj_r w=w$ and it is a retraction.
+
+If $\Prj_r f=0$, then $\Orb_r f=0$ by (\ref{eq:cov}) and the fact every orbit meets $U_r$; the converse is immediate. Formula (\ref{eq:finite}) and $f=\sum_i f_i$ give
+\[
+ \Prj_r f-f=\frac{1}{[K_r:H]}\sum_{i,j}
+     \bigl(\rho_r(k_j s_i)f_i-f_i\bigr).
+\]
+This proves one inclusion for the kernel; the opposite one follows from (\ref{eq:cov}). Applying any invariant algebraic linear map to the finite relation proves the claimed equality.
+\end{proof}
+\begin{corollary}
+The quotient by the span of twisted translation differences (the twisted coinvariant space) is canonically isomorphic to $W_r$. Also $\Orb_r\Prj_r=\Orb_r$.
+\end{corollary}
+The first identity uses no topological completion of the quotient. The second follows because $\Prj_r$ is idempotent and $f-\Prj_r f$ is in the kernel of $\Orb_r$.
+
+\subsection{Why this is simpler than a chosen coset sum}
+The existing file constructs a common set of representatives that works for both $r$ and $r^{-1}$ normalizations, then extends finite summation to a linear map on \emph{all} functions. It uses this map to define sections and eventually to descend an invariant functional. The normalized Haar section avoids requiring symmetric representatives altogether, and the finite formula proves descent directly. Finite representatives may be chosen during a proof, but they are not part of the definition.
+
+A warning explains why we do not identify the two section definitions on arbitrary input: in rank one with $F=\mathbb Q_3$, $\chi=1$, $f=\one_{1+3\mathbb Z_3}$ and $y=1$, a sum over one representative of $\mathbb Z_3^\times$ could give $1$ or $0$ (choose $1$ or $2$); the normalized orbital integral is $1/2$. Both section definitions agree on the primitive $K_r$-covariant data for which each relevant coset gives a constant integrand. The downstream existence interface, rather than the old section on every function, is the correct target.
+
+\section{Complementary frames and matching}\label{sec:matching}
+Let $n=b+a$ with columns ordered first $b$, then $a$. For $k\in G_n$, use the source's conventions
+\[
+ y_k=k\begin{pmatrix}I_b\\0\end{pmatrix},\qquad
+ x_k=\begin{pmatrix}0&I_a\end{pmatrix}k^{-1}.
+\]
+Rows $x\in\Mat_{a,n}(F)$ are handled by transposition; write $\SB_a^{\rm row}$, $W_a^{\rm row}$, and use the same symbols $\Orb_a^{\rm row},\Prj_a^{\rm row}$ on row functions. Thus $\Orb_a^{\rm row}\Phi(x)=\int_{G_a} c_a(g)\Phi(g^{\mathsf T}x)\,dg$, equivalently integrating $\Phi(gx)$ against the same weight (transposition preserves the normalized bi-invariant measure). We use the transpose convention below.
+
+\begin{lemma}[Simultaneous integral completion]\label{lem:completion}
+Suppose $x=x_k$ and $y=y_k$ are both primitive (for rows, meaning $x^{\mathsf T}\in U_a$). There exists $i\in K_n$ with $x_i=x$ and $y_i=y$ and $\det i=\det k$.
+\end{lemma}
+\begin{proof}
+Choose integral $L,S$ with $Ly=I_b$ and $xS=I_a$. We have $xy=0$ and $\ker_F x=\operatorname{im}_F y$ because $x,y$ are blocks of $k^{-1},k$. Therefore for any $v\in F^n$,
+\[
+ v=yL(I-Sx)v+Sxv.
+\]
+This shows that $i=[y\ S]$ has the integral inverse with block rows $L(I-Sx)$ and $x$. Both $i$ and $k$ have the first columns $y$ and the same last inverse rows. Thus $i^{-1}k$ has the form $\begin{pmatrix}I_b&*\\0&I_a\end{pmatrix}$; its determinant is $1$.
+\end{proof}
+This proof uses only the displayed left and right inverses and exactness of the complementary pair, and is valid over a commutative base ring whenever these data are available. In particular it does not require selecting an integral completion of the row frame first and then separately proving a determinant relation for its column frame.
+
+\begin{theorem}[Matching isomorphism on primitive data]\label{thm:iso}
+There is a canonical linear isomorphism $\Match:W_b\xrightarrow{\sim} W_a^{\rm row}$ characterized by
+\begin{equation}\label{eq:B}
+ (\Match w)(x_i)=\chi(\det i)w(y_i)\qquad(i\in K_n).
+\end{equation}
+\end{theorem}
+\begin{proof}
+Every primitive row $x$ occurs as $x_i$ for $i\in K_n$ (extend the split row frame to an integral basis, componentwise). If $x_i=x_j$, then $i^{-1}j$ has block form $\begin{pmatrix}A&B\\0&I_a\end{pmatrix}$ with $A\in K_b$. Consequently $y_j=y_i A$ and $\det j=\det i\det A$. Since $w(y_i A)=c_b(A)^{-1}w(y_i)$, (\ref{eq:B}) is independent of the completion. Extend the row function by zero off the primitive locus. It is locally constant: near a primitive row $x_0$ complete the rows to an integral invertible square matrix by keeping the other rows fixed; inversion and determinant are continuous, and the primitive locus is open. Compact support follows from the compactness of that locus. Taking $i\operatorname{diag}(I_b,h^{-1})$ for $h\in K_a$ gives the required inverse-determinant covariance under row multiplication by $h$.
+
+Conversely, for $v\in W_a^{\rm row}$ define $w(y_i)=\chi(\det i)^{-1}v(x_i)$ on primitive columns and extend by zero. If $y_i=y_j$, then $i^{-1}j=\begin{pmatrix}I_b&B\\0&D\end{pmatrix}$; hence $x_j=D^{-1}x_i$ and covariance gives independence. Continuity of a local column completion, compact support and covariance follow as in the row case, now using $i\operatorname{diag}(h,I_a)$. The two definitions are inverse by construction.
+\end{proof}
+
+\begin{lemma}[Matching extends to arbitrary frames]\label{lem:global}
+For $w\in W_b$ and $v=\Match w$, one has, for every $k\in G_n$,
+\begin{equation}\label{eq:global}
+ \Orb_a^{\rm row} v(x_k)=\chi(\det k)\Orb_b w(y_k).
+\end{equation}
+\end{lemma}
+\begin{proof}
+Choose $g\in G_a$ and $u\in G_b$ with $g^{\mathsf T}x_k$ and $y_k u$ primitive, and set
+\[
+ j=k\operatorname{diag}(u,(g^{\mathsf T})^{-1}).
+\]
+Then $x_j=g^{\mathsf T}x_k$, $y_j=y_k u$, and $\det j\det g=\det k\det u$. By Lemma~\ref{lem:completion}, an integral completion $i$ has the same pair and determinant as $j$. The two primitive values match by (\ref{eq:B}). By (\ref{eq:cov}) and the retraction identity on primitive data,
+\begin{align*}
+ \Orb_a^{\rm row}v(x_k)&=\chi(\det g)v(x_j)\\
+ &=\chi(\det g\det j)w(y_j)\\
+ &=\chi(\det k)\Orb_b w(y_k).
+\end{align*}
+\end{proof}
+
+\section{Canonical partners for all full-rank data}\label{sec:partners}
+Define a new same-section relation on $\SB_a^{\rm row}\times\SB_b$ by requiring the identity
+\begin{equation}\label{eq:pair}
+ \Orb_a^{\rm row}\Phi(x_k)=\chi(\det k)\Orb_b\Psi(y_k)
+ \quad(k\in G_n).
+\end{equation}
+This is a linear subspace (the source uses a similar relation but different sections).
+\begin{theorem}[Full-space partner theorem]\label{thm:partner}
+For $\Phi\in\SB_a^{\rm row}$ and $\Psi\in\SB_b$, (\ref{eq:pair}) is equivalent to
+\begin{equation}\label{eq:partner}
+ \Prj_a^{\rm row}\Phi=\Match\Prj_b\Psi.
+\end{equation}
+In particular, every $\Psi\in\SB_b$ has the canonical primitive partner $\Phi=\Match\Prj_b\Psi$.
+\end{theorem}
+\begin{proof}
+For the forward implication restrict (\ref{eq:pair}) to $i\in K_n$, whose frames are primitive, and use uniqueness in (\ref{eq:B}). Conversely (\ref{eq:partner}), the identity $\Orb\Prj=\Orb$, and Lemma~\ref{lem:global} prove (\ref{eq:pair}) for all $k$. The last claim follows from idempotence.
+\end{proof}
+\begin{corollary}[Factorization without continuity]\label{cor:factor}
+If $\Lambda:\SB_a^{\rm row}\to E$ is algebraically linear and $\chi(\det h)\Lambda(\Phi(h\,\cdot))=\Lambda\Phi$ for all $h\in G_a$, then the unique map $T:\SB_b\to E$ satisfying $T\Psi=\Lambda\Phi$ on new same-section pairs is
+\[
+ \boxed{T=\Lambda\circ\Match\circ\Prj_b.}
+\]
+\end{corollary}
+\begin{proof}
+The row version of Theorem~\ref{thm:projection} applies (replace the acting $h$ by its transpose). Thus $\Lambda\Phi=\Lambda\Prj_a^{\rm row}\Phi=\Lambda\Match\Prj_b\Psi$. Every $\Psi$ has a partner, so $T$ is uniquely determined. If a signature requires a linear map on all functions, extend this map from the submodule once by a vector-space complement; uniqueness is only asserted on $\SB_b$.
+\end{proof}
+\begin{proposition}[Translation and original matched data]\label{prop:translate}
+The new same-section relation is stable under
+\[
+ (\Phi,\Psi)\mapsto (\chi(\det t)\Phi(\,\cdot\,t),\Psi(t^{-1}\,\cdot)),\qquad t\in G_n.
+\]
+If $(\Phi,\Psi)$ is an original matched pair over $\oo$, and $\Psi$ is locally constant, then both are Schwartz--Bruhat and they satisfy (\ref{eq:pair}).
+\end{proposition}
+\begin{proof}
+Translation preserves compact support in the full-rank locus and local constancy. Since $x_{t^{-1}k}=x_k t$ and $y_{t^{-1}k}=t^{-1}y_k$, apply (\ref{eq:amb}) and multiplicativity of $\chi$ to (\ref{eq:pair}) at $t^{-1}k$.
+
+For matched data, the support is primitive by definition. Replacing $i$ by $i\operatorname{diag}(h,I_a)$ and $i\operatorname{diag}(I_b,h^{-1})$ respectively shows the inverse determinant covariance of $\Psi$ and $\Phi$ on the integral groups. The local row-completion argument in Theorem~\ref{thm:iso} proves local constancy of $\Phi$ from that of $\Psi$. Thus $\Psi\in W_b$, $\Phi=\Match\Psi\in W_a^{\rm row}$, and Lemma~\ref{lem:global} applies. Only the restriction of $\chi$ to integral units is used in the matching definition; hence it may be the source's local character with its absolute-value factor.
+\end{proof}
+
+\section{How the replacement enters the formal proof}
+\subsection{The equivariant difference}
+In \texttt{EquivariantDifference.lean} the invariant map $\Lambda$ in Corollary~\ref{cor:factor} is the composition of the local datum map $D$ with the algebraic linearization of the large theta integral. The existing source proves the twisted invariance, using the Weil action and integration over the relevant quotient (lines \src{New/Determinant/Exchange/EquivariantDifference.lean}{249}--264). Its codomain is a complex vector space of functions; no continuity of $\Lambda\circ D$ is supplied or needed.
+
+Set $M=\SB_b$ (embedded into the ambient function space), and on $M$ use
+\begin{equation}\label{eq:diff}
+ \mathcal D\Psi=(\Lambda\circ D)(\Match\Prj_b\Psi)-c\,\theta_{\rm small}(\Psi).
+\end{equation}
+Here $c$ is the scalar in the source's equivariant-difference theorem, unrelated to $c_r$. The source supplies an algebraic linearization of the small theta integral. For any $\Psi\in M$, choose its canonical primitive partner; the source's automorphy and standard-level lemmas apply because both functions are Schwartz--Bruhat. For translation by $t$, Proposition~\ref{prop:translate} supplies a translated partner, which need not itself be primitive. Corollary~\ref{cor:factor} shows that using the translated partner or the canonical primitive partner of the translated column function gives the same large theta integral. The two source translation formulas therefore give precisely the original equivariance of $\mathcal D$. Finally for original matched data, (\ref{eq:diff}) is the original theta difference by Proposition~\ref{prop:translate}. Extend $\mathcal D$ linearly outside $M$ if necessary; all its claimed properties are only on $M$.
+
+This establishes the mathematical output of the original existential theorem, with an explicit stronger choice of $M$. It does \emph{not} assert that $\mathcal D$ vanishes on $M$; the later vanishing argument must still run. In particular, it does not replace the constant-term calculation, the hypotheses on Fock data, the exchange identity, the determinant bound, or the number-theoretic estimates.
+
+\subsection{Practical Lean migration}
+The actual application uses \texttt{LocProd} at the ramified places. We propose specializing the new orbital machinery to these finite products (or parameterizing it by a normalized bi-invariant Haar measure and the elementary frame properties). One generic caller, \texttt{StableSpacesStandardData.lean}, line 91, only extracts that $\Psi$ is Schwartz--Bruhat: replace this use by a direct lemma that a locally constant function supported on primitive matrices has compact support in the full-rank locus. This direct lemma is available even in the source's abstract semilocal setup: the primitive set is a clopen subset of the compact integer matrix space, as proved in \texttt{MatchingPartners.lean}. The finite-ring block identities in the first section of \texttt{MatchingPartners.lean} are unrelated and should be retained.
+
+A staged implementation is preferable to trying to delete the old declarations all at once. First prove the projection theorem on the submodule of Schwartz--Bruhat functions, with the finite certificate as the key algebraic interface. Then implement complementary matching and the canonical partner map; next build the equivariant difference on the larger space. Finally verify imports and remove the obsolete representative and extension machinery if unused. The accompanying \texttt{FORMALIZATION.md} records precise acceptance tests and anchors. Neither a Lean binary nor a local copy of the complete project was available in this environment; no Lean compilation of this proposal is claimed.
+
+\section{Nonduplication and verification}
+I inspected the eight proposal directories at the pinned snapshot, their READMEs, main TeX files, and the additional included TeX sections of the two multipart proposals. The distinguishing target is summarized below; the searchable manifest lists all 15 inspected TeX files.
+\begin{center}\small
+\begin{tabularx}{\linewidth}{@{}p{0.42\linewidth}X@{}}
+\toprule
+Existing proposal & Principal target \\
+\midrule
+Centered theta lifts & Centered moments, adaptive completion. \\
+Cyclotomic interpolation and theta lifts & Root-of-unity selection and near-spanning. \\
+Dyadic place coloring & Sparse local-place scheduling. \\
+Proof simplifications & Auxiliary-prime selection, smoothed Perron, spanning. \\
+RH simplifications & Analytic endpoint, sieve, rank, torsion. \\
+RH sparse theta proof & Sparse cutoffs, reciprocal convexity, averaged twists. \\
+Shorter theta-lift proof & Prime selection, spanning and cutoff improvements. \\
+Signed theta gain simplification & Signed local gain, colength, product formula. \\
+\midrule
+\textbf{This note} & \textbf{Canonical local orbital projection, matching of complementary frames, and explicit factorization of the equivariant theta difference.} \\
+\bottomrule
+\end{tabularx}
+\end{center}
+These changes concern an earlier and different interface, and are compatible in principle with the existing proposals. No global novelty claim about Haar averaging or coinvariants is made: these are standard mathematical tools. The contribution is their application to this specific proof architecture, the finite certificate ensuring algebraic descent, and the full-space matching result. Nor is a numerical reduction in Lean lines claimed before implementation.
+
+The Python checks accompanying this note use exact arithmetic to test the finite averaging and projection identities with a nonnormal compact-subgroup analogue, nontrivial determinant character, and arbitrary data on multiple orbits; test the kernel rank; and check complementary primitive pairs and the matching isomorphism over two finite rings. These do not prove the local-field theorems, which are established above by algebra and Haar integration. They can detect sign, normalization, order-of-multiplication, and block-completion errors in a port.
+
+\section{Further research questions}
+\begin{enumerate}
+\item Can one prove the entire replacement inside the abstract \texttt{SemilocalField} class using its existing additive Haar measure, or is a finite-product specialization shorter? Compare actual proof terms and source lines rather than assuming a saving.
+\item Can the finite certificate be implemented using finite quotient averages and a sum over compact open cosets, avoiding a separate integration library for $\GL_r(F)$? The two-sided invariance (or the corresponding double-coset index equality) must still be justified.
+\item Does the new full-space equivariant-difference domain simplify subsequent vanishing lemmas, which currently quantify over a stable submodule? This may permit removing some module-membership arguments, but the needed standard-data and coefficient-vanishing hypotheses must remain intact.
+\item Can the matching isomorphism be formulated directly on determinant-twisted functions on the Grassmannian of direct summands? This could unify related local identities in the determinant chain; retaining the explicit integral-frame version may be better for Lean.
+\item Does the compact edition already contain an analogous reduction? Only the requested readable edition and proposal tree were audited here. Compare before porting to the compact edition.
+\end{enumerate}
+
+\section*{Sources and reproducibility}
+\addcontentsline{toc}{section}{Sources and reproducibility}
+\begin{itemize}
+\item ProveIt, pinned readable Lean source: \href{https://github.com/VladimirReshetnikov/ProveIt/tree/ee10f937fedac0955d28b7b860f4c44fab508204/Analysis/GeneralizedRiemannHypothesis/Lean/grh}{repository snapshot}. Principal anchors: \texttt{MatchingPartners.lean}, \src{New/Determinant/Exchange/MatchingPartners.lean}{150}, \src{New/Determinant/Exchange/MatchingPartners.lean}{254}, \src{New/Determinant/Exchange/MatchingPartners.lean}{428}, \src{New/Determinant/Exchange/MatchingPartners.lean}{602}; \texttt{EquivariantDifference.lean}, \src{New/Determinant/Exchange/EquivariantDifference.lean}{235}, \src{New/Determinant/Exchange/EquivariantDifference.lean}{281}; \texttt{TheoremForPartners.lean}, \src{New/Determinant/Exchange/TheoremForPartners.lean}{241}, \src{New/Determinant/Exchange/TheoremForPartners.lean}{1051}; \texttt{MainInequality.lean}, \src{New/Reduction/MainInequality.lean}{87}; \texttt{OneSidedBound.lean}, \src{New/Reduction/OneSidedBound.lean}{33}, \src{New/Reduction/OneSidedBound.lean}{239}; \texttt{Main.lean}, \src{Main.lean}{5}.
+\item \href{https://github.com/VladimirReshetnikov/ProveIt/tree/ee10f937fedac0955d28b7b860f4c44fab508204/Analysis/GeneralizedRiemannHypothesis/docs/guide}{How theta lifts locate the zeros of Dirichlet $L$-functions}, 79-page guide. See the determinant-ratio discussion beginning near TeX line 1020 and the analytic endpoint.
+\item \href{https://github.com/VladimirReshetnikov/ProveIt/tree/ee10f937fedac0955d28b7b860f4c44fab508204/Analysis/GeneralizedRiemannHypothesis/docs/proposals}{Existing proposal tree}, with audit in the companion TSV.
+\item \href{https://math.mit.edu/~drew/shortgrh/}{Andrew Sutherland's verification files}, updated 27 November 2026. The original shorter readable and compact editions at upstream commit \texttt{72fead102f663d5c7a407\allowbreak 964a13dc0cf9d977207} passed compilation, statement comparison, axiom checks and independent checkers; one additional readable-edition run was halted for memory, not a mathematical rejection. These checks apply to the original proof, not this proposal.
+\end{itemize}
+\end{document}
