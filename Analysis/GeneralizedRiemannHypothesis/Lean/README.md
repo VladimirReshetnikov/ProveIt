@@ -207,6 +207,8 @@ For the explicit margins, [PolynomialIrreducibleDegrees.lean](GRHArticle/Progres
 
 [FourPrimeLowBoxTransfer.lean](GRHArticle/ProgressionFree/FourPrimeLowBoxTransfer.lean) reduces unrestricted Rankin optimality for the covered four-prime tuples to concrete weighted rectangular prefix bounds. [FourPrimeOptimalityFromBoxes.lean](GRHArticle/ProgressionFree/FourPrimeOptimalityFromBoxes.lean) sums the low and high ternary-digit contributions. The finite prefix inequalities remain hypotheses.
 
+[PolynomialOneFreePrimeCount.lean](GRHArticle/ProgressionFree/PolynomialOneFreePrimeCount.lean) counts the one-free-prime family in every degree ball by its leading scalar, monic cofactor and allowed exponent. The exact normalized count and the interval Roth upper bound allow the exponent set to depend on the cofactor.
+
 ## RH and Dirichlet GRH input
 
 The article uses the five theorems in
