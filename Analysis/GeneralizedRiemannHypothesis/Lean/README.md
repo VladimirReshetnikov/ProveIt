@@ -123,6 +123,8 @@ For the exchange used in McNew’s Question 7.4, [IntegerBoundaryExchangeReplace
 
 [RectangularPrefixWeights.lean](GRHArticle/ProgressionFree/RectangularPrefixWeights.lean) proves that nonpositive sums on all rectangular prefixes remain nonpositive after increasing the prime denominators independently. It permits fixed axes and coordinatewise prefix limits. This transfers finite prime-tuple bounds once their base inequalities are established.
 
+[FiniteGPBranchCertificate.lean](GRHArticle/ProgressionFree/FiniteGPBranchCertificate.lean) proves soundness of a finite include-or-exclude checker for weighted selections subject to forbidden triples. [FourPrimeHighDigitNumerics.lean](GRHArticle/ProgressionFree/FourPrimeHighDigitNumerics.lean) proves that each of the three numerical margins used in the four-prime high-digit estimate exceeds $1/200$. The concrete finite searches and high-digit sum require additional proofs.
+
 ## Geometric progressions of ideals in number fields
 
 [Density.lean](GRHArticle/ProgressionFree/NumberFieldIdeals/Density.lean) counts nonzero integral ideals in norm order. Multiplying an arbitrary set with natural density by a fixed ideal divides that density by the ideal norm. [LocalFactors.lean](GRHArticle/ProgressionFree/NumberFieldIdeals/LocalFactors.lean) computes the density of ideals coprime to finitely many primes. [ValuationCylinders.lean](GRHArticle/ProgressionFree/NumberFieldIdeals/ValuationCylinders.lean) proves that the exponents at any finite set of prime ideals have the independent geometric densities in `gpi:lem:product`, for every number field.
