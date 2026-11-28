@@ -64,6 +64,8 @@ to place them in the disks, and finite certificates from the
 
 [HeckeDiagonalTraceRecursion.lean](GRHArticle/SingularModuli/HeckeDiagonalTraceRecursion.lean) proves a Newton recursion for the shifted factor product. At prime level the diagonal can be certified using only rational arithmetic on $2p+1$ formal coefficients.
 
+[HeckeComputedDiagonalCertificate.lean](GRHArticle/SingularModuli/HeckeComputedDiagonalCertificate.lean) connects finite integer Newton sums to the coefficients of a prime Hecke diagonal. [HeckePackedSeriesCertificate.lean](GRHArticle/SingularModuli/HeckePackedSeriesCertificate.lean) verifies series-prefix arithmetic using packed integer data. [HeckeCofactorEnclosure.lean](GRHArticle/SingularModuli/HeckeCofactorEnclosure.lean) gives an interval test for excluding other factors at a CM value. These lemmas supply arithmetic for checking proposed quartics.
+
 ## Integer geometric progressions
 
 [Rankin.lean](GRHArticle/ProgressionFree/Rankin.lean) proves that Rankin's
