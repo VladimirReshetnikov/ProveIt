@@ -42,14 +42,19 @@ for which the trivial bound \eqref{smd:eq:trivial} is an equality
 $\Q(i)$; for integer disk depths the factorial criterion is refined by a trace condition
 (\cref{smd:thm:trace}). The orders of degree six left by the five-term classification,
 including $\Delta=-87$, are treated together in
-\cref{smd:sec:sextics,smd:sec:seven,smd:sec:powered}. Finally \cref{smd:sec:exact}, which
-uses only \cref{smd:lem:disk} and its notation, determines the exact number of roots that a polynomial with
-a prescribed support of at most $p$ exponents can have in a deep multiplicative $p$-adic
-disk, by a finite rank rule (\cref{smd:thm:rankrule}); in the open disk of relative depth
-greater than $1/(p-1)$ the maximum for at most $t\le p+1$ terms is a triangular-number
-formula, and for $p+2$ terms it jumps to $p^2$ (\cref{smd:thm:opendisk,smd:thm:jump});
-for at most six terms the dependence on the depth is explicit
-(\cref{smd:thm:rootcount,smd:thm:sixroot}).
+\cref{smd:sec:sextics,smd:sec:seven,smd:sec:powered}. Finally
+\cref{smd:sec:exact,smd:sec:beyond}, which use only \cref{smd:lem:disk} and its notation,
+determine the exact number of roots that a sparse polynomial can have in a deep
+multiplicative $p$-adic disk. For a prescribed support of at most $p$ exponents a finite rank
+rule gives every depth (\cref{smd:thm:rankrule}); in the open disk of relative depth greater
+than $1/(p-1)$ the maximum for at most $t\le p+1$ terms is a triangular-number formula
+(\cref{smd:thm:opendisk,smd:thm:jump}); for at most six terms the dependence on the depth is
+explicit (\cref{smd:thm:rootcount,smd:thm:sixroot}). For any number of terms the whole depth
+profile depends only on the exponents modulo an explicit power of $p$, which cannot be lowered
+in general, and is a finite computation (\cref{smd:thm:minbasis,smd:thm:transport,smd:thm:digits}).
+The open-disk maximum jumps to $p^2$ at $p+2$ terms, then gains one root for every two further
+terms through $2p+1$ terms, and for $p\ge5$ through $2p+3$, and reaches $p^2+p$ at $2p+4$ terms
+(\cref{smd:thm:jump}).
 
 \subsection{Coefficients in the CM field}
 {\raggedright\sources{grh_cm_prime_applications; grh_cm_four_terms_and_prime_bias; grh_sparse_singular_moduli}}
@@ -2399,78 +2404,8 @@ The general estimate $(n-2)p$ of order $n$ over $\Qp$, for $p>n\ge3$, is classic
 the zeros of more general exponential polynomials in terms of a valuation margin of the
 frequencies \cite{vanderPoorten1976Hermite}, and \cite{Avendano2011Sharp} bounds the roots
 in a fixed local field. The results here concern geometric roots, in arbitrary finite
-extensions, of sums with integer frequencies. The triangular formula persists for one more
-term, and then jumps.
-
-\begin{theorem}[The jump at $p+2$ terms; \stU]\label{smd:thm:jump}
-For every prime $p$, $N^\circ_p(p+1)=b_p(p+1)$, computed by the same triangular formula,
-and $N^\circ_p(p+2)=p^2$. In both cases integer polynomials attain the maximum with
-distinct roots.
-\end{theorem}
-
-At $p=11$ this gives $33$ roots with twelve terms and $121$ with thirteen; as $p$ grows,
-the extra term multiplies the maximum by a factor asymptotic to $\sqrt{p/2}$.
-
-\begin{proof}
-Work about $1$. If all exponents of a support of size $t\ge2$ have the same residue, factor
-out the smallest monomial and let $p^k$ be the largest power of $p$ dividing all exponent
-differences, so that $P=X^aQ(X^{p^k})$ with $Q$ having the same number of terms and at
-least two residues. The map $x\mapsto x^{p^k}$ sends $D(1)$ injectively into itself (use
-$\log$) with nonzero derivative, so the count for $P$ is at most that for $Q$. Supports
-with fewer terms are covered by the earlier cases, so let $t\in\set{p+1,p+2}$ be the exact
-size of a support occupying at least two residues, let $r>1/(p-1)$ be rational, and
-normalize the moments as in the residue algebra, so that some $m_{i_0}$, $i_0<t$, is a unit.
-
-Let $p\ge3$. All $i<t\le p+2$ have $S_p(i)\le p-1$, so a minimizing index $k\ge t$ satisfies
-\[
- v_p(m_k)\le w(i_0)-w(k)<\frac{p-1-S_p(k)}{p-1},
-\]
-because $w(i)-w(k)\le\delta(t-1-k)+(p-1-S_p(k))/(p-1)$ with $\delta=r-1/(p-1)$. Hence
-$S_p(k)\le p-2$ and $v_p(m_k)<1$, and the lifting argument of
-\cref{smd:lem:excluded}(b) excludes $k$ whenever $T^k$ lies in the span of classes of
-smaller weight. For $p=2$ and $t=3$ the initial digit sums are at most one, so no $k\ge3$
-can minimize; for $p=2$ and $t=4$ they are at most two, and the same comparison gives
-$S_2(k)\le1$ and $v_2(m_k)<1$ for a minimizing $k\ge4$.
-
-Let $t=p+1$. Every residue has multiplicity at most $p$. For $p\ge3$ the diagram argument
-in the proof of \cref{smd:thm:fixedsupport} applies to every filtered degree $d\le p-2$,
-and the area bound in the proof of \cref{smd:thm:opendisk}, with $d\le p-2$, shows that
-all the power indices it produces are at most $b_p(p+1)$; the initial indices are at most
-$t-1=p\le b_p(p+1)$. The product construction gives matching witnesses, since its term
-count used only $p>2$. For $p=2$ the polynomial $(X-1)(X-5)$ has two distinct roots of
-depth greater than one.
-
-Let $t=p+2$. If every residue has multiplicity at most $p$, the compression of a
-minimizing $k\ge t$ has index at most $pS_p(k)<p^2$, also for $p=2$; for $k>p^2$ compression
-strictly lowers the weight, and $k$ is excluded. The only other profile is $(p+1,1)$. A
-monomial shift places the large class at the residue $0$; then
-$\mathcal R\cong\F_p[T]/(T^{p+1})\times\F_p$, the second factor evaluating $T$ at some
-$c\ne0$, and for every $k>p^2$
-\[
- T^k=c^{\,k-p^2}T^{p^2},
-\]
-since both sides vanish on the first factor. As $S_p(k)\ge1=S_p(p^2)$, the index $p^2$ has
-strictly smaller weight, and $k$ is excluded. This proves $N^\circ_p(p+2)\le p^2$.
-
-For sharpness let
-\[
- P(X)=(X^p-1)^p-p^p\bigl(X^p-1-p(X-1)\bigr),
-\]
-supported in $\set{0,p,2p,\dots,p^2}\cup\set{1}$. Choose $\pi$ with $\pi^{p-1}=p$ and put
-$X=1+\pi Z$. The polynomial $H(Z)=((1+\pi Z)^p-1)/\pi^p$ is monic of degree $p$ with
-integral coefficients and reduces to $Z+Z^p$ modulo the maximal ideal. Hence
-\[
- \pi^{-p^2}P(1+\pi Z)=H(Z)^p-H(Z)+Z\equiv Z^{p^2}.
-\]
-This is a monic integral polynomial, so all its roots are integral with reduction zero, and
-all $p^2$ roots of $P$ lie in $D(1)$. Adding a sufficiently $p$-divisible integer to the
-constant term preserves the congruence and avoids the finitely many critical values, giving
-$p^2$ distinct roots.
-\end{proof}
-
-For $p=3,5,7,11,13,17$ the maxima with $p+1$ terms are $3,10,14,33,40,68$, and with $p+2$
-terms $9,25,49,121,169,289$. At $p=11$ the polynomial
-$(X^{11}-1)^{11}-11^{11}(X^{11}-1-11(X-1))+11^{14}$ is a squarefree witness for $121$.
+extensions, of sums with integer frequencies. Supports with more than $p$ exponents are
+treated in \cref{smd:sec:beyond}.
 
 \paragraph{All depths for at most six terms.}
 For at most six terms the rank rule can be evaluated in closed form for every $p$. In the
@@ -2747,8 +2682,741 @@ polygons and separability of $85$ witnesses);
 \artifact{padic-support-rank/verification.txt} (the seven-term classification and $7{,}218$
 rank-to-witness checks by exact binomial expansion).}
 
+\subsection{Root counts beyond \texorpdfstring{$p$}{p} terms}\label{smd:sec:beyond}
+{\raggedright\sources{sparse-padic-roots-and-graph-towers; padic_sparse_research; deep_padic_roots_2026-11-27; grh_research_2026-11-27; cycle-complements-and-dirichlet-zero-matching; erdelyi_ellipse_and_proveit_extensions; padic-sharp-exponent-digits; ProveIt_research_2026-11-27}}
+
+For more than $p$ exponents the Frobenius power $T^p$ can keep a nonzero nilpotent part on a
+residue factor, and reduction modulo $p$ no longer controls every index. It is replaced by a
+comparison of moments modulo a bounded power of $p$. This makes every count a finite
+computation (\cref{smd:thm:minbasis,smd:thm:transport}), and explicit reductions in the
+residue algebra give closed formulas up to $2p+4$ terms (\cref{smd:thm:jump}). We keep the
+notation of \cref{smd:sec:exact} and extend $N_p(E,r)$ and $N_p(t,r)$ to every real $r>0$ by
+the same definition; they do not depend on the centre. For $t\ge2$ put
+\[
+ D_p(t)=\max_{0\le i<t}S_p(i),\qquad A_p(t)=\ceil*{\frac{D_p(t)-1}{p-1}} .
+\]
+Thus $A_p(t)=0$ only for $t=2$ and for $(p,t)=(2,3)$, and $A_p(t)\le1$ exactly when
+$D_p(t)\le p$, that is, for $t\le3p-1$ when $p$ is odd and for $t\le7$ when $p=2$.
+
+Let $P=\sum_{n\in E}c_nX^n$ be nonzero, with a set $E$ of $t$ distinct nonnegative exponents
+(zero coefficients allowed), moments $M_k=\sum_nc_nn^k$ and
+$\Lambda_E=\Z_{(p)}[T]/\prod_{n\in E}(T-n)$. As in \cref{smd:sec:exact}, $M_k=L(T^k)$ for a
+functional $L$ on $\Lambda_E$, every functional comes from a unique $P$ by Vandermonde
+inversion, and after division by a moment of least valuation among $M_0,\dots,M_{t-1}$ the
+normalized moments $m_k$ are integral and $m_{i_0}$ is a unit for some $i_0<t$. For rational
+$r>1/(p-1)$ the number of roots of $P$ in $v_p(x-1)\ge r$, with multiplicity, is the largest
+index minimizing $v_p(m_k)+w_{p,r}(k)$, where $w_{p,r}(k)=(r-\frac1{p-1})k+\frac{S_p(k)}{p-1}$.
+
+\begin{lemma}[High moments]\label[lemma]{smd:lem:highmoment}
+Let $t\ge2$, let $r>1/(p-1)$ be rational, and put $a=\max\set{1,A_p(t)}$.
+\begin{enumerate}[label=\textup{(\alph*)}]
+\item A minimizing index $k\ge t$ satisfies $S_p(k)\le D_p(t)-1$ and
+$v_p(m_k)<(D_p(t)-S_p(k))/(p-1)\le A_p(t)$. In particular no index $k\ge t$ minimizes when
+$A_p(t)=0$.
+\item If the class of $T^k$ in $\Lambda_E/p^a\Lambda_E$ lies in the $\Z/p^a\Z$-span of the
+classes $T^\ell$ with $w_{p,r}(\ell)<w_{p,r}(k)$, then $k$ does not minimize. When
+$D_p(t)\le p$ this is a condition in $\mathcal R_E=\F_p[T]/\prod_{n\in E}(T-\bar n)$, and it
+holds whenever the span uses only indices $\ell<k$ with $S_p(\ell)\le S_p(k)$.
+\end{enumerate}
+\end{lemma}
+
+\begin{proof}
+(a) With $\delta=r-1/(p-1)>0$ and $k>i_0$, minimality gives
+$0\le v_p(m_k)\le w_{p,r}(i_0)-w_{p,r}(k)=\delta(i_0-k)+(S_p(i_0)-S_p(k))/(p-1)
+<(D_p(t)-S_p(k))/(p-1)$, and $S_p(k)\ge1$. (b) Lift the relation to $\Lambda_E$; the integral
+functional gives $m_k\equiv\sum_\ell\lambda_\ell m_\ell\pmod{p^a\OO}$. As $v_p(m_k)<a$ by (a),
+some $m_\ell$ has $v_p(m_\ell)\le v_p(m_k)$, and its coefficient has strictly smaller
+valuation. The last assertion follows from the formula for $w_{p,r}$.
+\end{proof}
+
+\paragraph{Finite determination for every support.}
+Lenstra's local theorem bounds the roots in every disk of positive depth. In the form used
+here, put $k=t-1$,
+\[
+ a_k(m)=\sum_{j\ge1}\min\Bigl\{k,\floor*{\frac m{p^j}}\Bigr\},\qquad
+ W_k(r)=\max_{0\le i\le k}\bigl(ri-v_p(i!)\bigr),
+\]
+\[
+ N_L(p,t,r)=\max\set{m\ge0 : rm-a_k(m)\le W_k(r)} .
+\]
+
+\begin{lemma}[Lenstra's cutoff]\label[lemma]{smd:lem:lenstra}
+For $t\ge2$ and real $r>0$ the number $N_L(p,t,r)$ is finite and at least $t-1$, and every
+nonzero polynomial with at most $t$ terms has at most $N_L(p,t,r)$ roots in $v_p(x-1)\ge r$,
+counted with multiplicity, whatever its exponents and coefficient field.
+\end{lemma}
+
+This is the explicit bound of \cite[\S3]{Lenstra1999Factorization}. The integer $p^{a_k(m)}$ is
+the largest power of $p$ dividing a product of at most $k$ distinct integers in $[1,m]$. For
+$t$ integer nodes and $m\ge t$, the values of $\binom Tm$ are rational combinations of those of
+$\binom Ti$, $i<t$, with $i$th denominator of valuation at most $a_k(m)-v_p(i!)$; applied to
+the coefficients of $P(1+bY)$ at its last Newton minimum this gives the inequality defining
+$N_L$. Finiteness follows from $a_k(m)\le k\floor{\log_pm}$, and $N_L\ge t-1$ from
+$a_{t-1}(t-1)=v_p((t-1)!)$. For $r>1/(p-1)$ the bound $B_p(t,r)$ of \cref{smd:lem:disk} is
+another cutoff.
+
+\begin{theorem}[Minimum-basis rule for a fixed support; \stU]\label{smd:thm:minbasis}
+Let $E$ be a set of $t\ge2$ distinct nonnegative integers, $d=\max E$, and $r>0$ real. For
+$0\le k\le d$ let $a_k=\bigl(\binom nk\bigr)_{n\in E}\in\Z^t$, and for each $t$-element set
+$B\subseteq\set{0,\dots,d}$ with $\Delta_B=\det(a_k)_{k\in B}\ne0$ put
+\[
+ h_B(r)=v_p(\Delta_B)+r\sum_{k\in B}k .
+\]
+Let $\mathcal B_r$ be the set of those $B$ minimizing $h_B(r)$.
+\begin{enumerate}[label=\textup{(\alph*)}]
+\item $N_p(E,r)=\max\set{\max B : B\in\mathcal B_r}$.
+\item $N^\circ_p(E)=\min\set{\max B : B\in\mathcal B_{1/(p-1)}}$. Equivalently, with
+$\pi^{p-1}=p$ and $L$ the $\Zp[\pi]$-lattice spanned by the vectors $\pi^ka_k$, it is the
+largest $k$ for which the image of $\pi^ka_k$ in $L/\pi L$ is not in the span of the images of
+$\pi^ja_j$, $j<k$.
+\item The formula in (a) also holds when $a_k$ is replaced by the coordinate vector $q_k$, in the
+basis $1,T,\dots,T^{t-1}$, of the remainder of $(T)_k=T(T-1)\cdots(T-k+1)$ modulo
+$\prod_{n\in E}(T-n)$, the cost by $v_p(\det q_B)+\sum_{k\in B}(rk-v_p(k!))$, and $B$ is
+restricted to subsets of $\set{0,\dots,N}$ for any $N\ge N_p(t,r)$, for instance
+$N=N_L(p,t,r)$. The size of this matrix depends only on $p$, $t$ and $r$.
+\item $N_p(E,r)$ is a nonincreasing step function of $r$ with finitely many breakpoints, all
+rational, and at a breakpoint it takes the larger of the two adjacent values.
+\item For each $r>0$, the numbers of roots in $v_p(x-1)\ge r$ of the nonzero polynomials
+supported on $E$ take exactly $t$ distinct values.
+\item Enlarging the coefficient field does not increase $N_p(E,r)$ or $N^\circ_p(E)$. Both are
+attained by integer polynomials in which every exponent of $E$ occurs and which, after division
+by $X^{\min E}$, are irreducible over $\Q$; in particular their roots are distinct.
+\end{enumerate}
+\end{theorem}
+
+\begin{proof}
+Let $r$ be rational, choose $b$ in a finite extension $K$ of $\Qp$ with $v_p(b)=r$, and let
+$\OO$ and $\mathfrak m$ be its valuation ring and maximal ideal. For $c=(c_n)$ and
+$P=\sum_nc_nX^n$ one has $P(1+bY)=\sum_k(u_k\cdot c)Y^k$ with $u_k=b^ka_k$. By the Newton
+polygon rule the number of roots with $v_p(Y)\ge0$ is the largest index minimizing
+$v_p(u_k\cdot c)$, and the number with $v_p(Y)>0$ is the smallest one. The $u_k$ span $K^t$,
+because the polynomials $(1+Y)^n$ are independent; let $L$ be the $\OO$-lattice they span. The
+determinant of $(u_k)_{k\in B}$ has valuation $h_B(r)$. If $B$ minimizes it, Cramer's rule
+shows that every $u_k$ has integral coordinates in the basis $u_B$ (a coordinate of negative
+valuation would give a smaller determinant by exchange), so $u_B$ is an $\OO$-basis of $L$, and
+$u_k$ belongs to some minimizing $B$ if and only if one of its coordinates is a unit, that is,
+$u_k\notin\mathfrak mL$. Normalize $c$ so that $\min_kv_p(u_k\cdot c)=0$; then $c$ is integral
+on $L$, and an index with $u_k\in\mathfrak mL$ does not minimize. Conversely, let $j$ be the
+largest index of a minimizing $B$. The functional equal to one on $u_j$ and to zero on the other
+members of $B$ is integral on $L$, is of positive valuation on every $u_k$ with $k>j$, since
+these lie in $\mathfrak mL$, and attains its minimum at $j$. This proves (a) at rational
+depths. In the unscaled basis $a_B$ this functional is rational up to the factor $b^{-j}$, so
+the coefficients it defines are rational.
+
+For (b) take $b=\pi$. A normalized $c$ has smallest minimizing index $k$ exactly when its
+reduction vanishes on the images of $u_0,\dots,u_{k-1}$ in $L/\pi L$ but not on that of $u_k$;
+such a reduction is $\F_p$-linear on $L/\pi L$ even when the coefficient field is larger, and
+it exists exactly when the image of $u_k$ is outside the span of the earlier images. The
+largest such $k$ is the first index at which the images of $u_0,\dots,u_k$ span $L/\pi L$.
+These images contain a basis, which lifts to a minimizing $B\subseteq\set{0,\dots,k}$, and the
+images of every minimizing $B$ form a basis, so $\max B\ge k$; this is (b).
+
+For (c), the coefficient of $Y^k$ in $P(1+bY)$ is $L((T)_k)b^k/k!=(q_k\cdot\mu)\,b^k/k!$, where
+$\mu=(M_0,\dots,M_{t-1})$ ranges over all of $K^t$, and $q_0,\dots,q_{t-1}$ form a unit
+triangular matrix. The lattice argument applies to the vectors $q_kb^k/k!$. Truncation at $N$
+loses nothing: for every $P$ all minimizing indices are at most $N$, and if the dual functional
+of a truncated minimizing basis had a value of valuation at most zero at an index above $N$, it
+would define a polynomial with more than $N$ roots.
+
+For (d) and irrational $r$, the costs $h_B$ are finitely many affine functions with integer
+data, so their crossings are rational. If $r$ lies strictly between two crossings, choose
+rational $r_1<r<r_2$ in the same interval; then $N_p(E,r_2)\le N_p(E,r)\le N_p(E,r_1)$ and the
+outer terms agree with the formula. At a crossing $r'$ every $B$ that minimizes just to the
+left still minimizes, so the formula at $r'$ is at least the value on the left, and
+monotonicity gives equality.
+
+For (e) let $g_n$ be the Taylor vector of $(1+Y)^n$, and for a nonzero vector $g$ let
+$\lambda(g)$ be the largest index minimizing $v_p(g_j)+rj$, so that $\lambda$ of a combination
+of the $g_n$ is the number of roots of the corresponding polynomial in the disk. Choose one
+vector, record its $\lambda$, clear its coefficient at that index in every remaining vector by
+rational column operations, and repeat. This produces a rational basis $g'_1,\dots,g'_t$ of the
+space with distinct indices $\lambda_i=\lambda(g'_i)$, where $g'_j$ has zero coefficient at
+$\lambda_i$ whenever $i<j$. In a nonzero combination $\sum_ix_ig'_i$ let $S$ be the set of $i$
+for which $v_p(x_i)+\min_j(v_p(g'_{i,j})+rj)$ is least, and let $i^*\in S$ have the largest
+$\lambda_i$. At the index $\lambda_{i^*}$ a summand $i\in S$ with $i>i^*$ vanishes, one with
+$i<i^*$ has weighted valuation above the minimum because $\lambda_{i^*}>\lambda_i$, and the
+summands outside $S$ are larger everywhere; at larger indices every summand is above the
+minimum. So the combination has exactly $\lambda_{i^*}$ roots, the attainable counts are the
+$t$ numbers $\lambda_i$, and each is attained.
+
+For (f), the lattice arguments are unchanged by enlarging $K$. Clear the denominators of a
+rational witness, make every coefficient nonzero, and change the coefficients by multiples of a
+high power $p^H$; this changes every Taylor coefficient by an amount of valuation at least $H$
+and preserves the finitely many comparisons that fix the largest (or, for the open disk, the
+smallest) minimizing index. After division by $X^{\min E}$ the Chinese remainder theorem also
+imposes the Eisenstein congruences at a prime $\ell\ne p$ not dividing the leading coefficient,
+as in the proof of \cref{smd:thm:rankrule}. At an irrational depth use a rational depth on the
+deeper side in the same interval.
+\end{proof}
+
+The open-disk value is also the value of (a) at one depth:
+$N^\circ_p(E)=N_p(E,\frac1{p-1}+\delta)$ whenever $0<\delta<1/((p-1)t(d+1))$, since then the
+order of the costs is the lexicographic order of the pairs
+$\bigl((p-1)v_p(\Delta_B)+\sum_{k\in B}k,\ \sum_{k\in B}k\bigr)$. In the region $r>1/(p-1)$ the
+vectors may also be taken to be the remainders of $T^k$ modulo $\prod_{n\in E}(T-n)$, with the
+weights $w_{p,r}(k)$ in place of $rk$, as in the proof of \cref{smd:lem:disk}. A minimizing
+basis is found without enumerating minors: replacing a basis vector by a new vector whose
+coordinate of least weighted valuation is negative strictly lowers the cost, and a basis
+admitting no such exchange is minimizing.
+
+\begin{theorem}[Exact residue transport; \stU]\label{smd:thm:transport}
+Let $t\ge2$, $A=A_p(t)$, and let $E,F$ be sets of $t$ distinct nonnegative integers with
+\[
+ \prod_{n\in E}(T-n)\equiv\prod_{n\in F}(T-n)\pmod{p^A}
+\]
+coefficientwise, for instance two sets with the same residue multiset modulo $p^A$.
+\begin{enumerate}[label=\textup{(\alph*)}]
+\item The unique $\Q$-linear bijection $\mathcal T$ from the polynomials supported on $E$ to
+those supported on $F$ that preserves $M_0,\dots,M_{t-1}$, that is, the values at $1$ of
+$(X\,d/dX)^iP$ for $i<t$, preserves after any extension of scalars the multiset
+\[
+ \set{v_p(\alpha-1) : P(\alpha)=0,\ v_p(\alpha-1)>1/(p-1)}
+\]
+with multiplicity, a root at $1$ counting with depth $+\infty$. Hence $N_p(E,r)=N_p(F,r)$ for
+every $r>1/(p-1)$ and $N^\circ_p(E)=N^\circ_p(F)$.
+\item At every rational depth $r>1/(p-1)$ the normalized initial forms of $P$ and
+$\mathcal TP$ coincide. Hence their roots in $D(1)$ other than $1$ can be paired, with
+multiplicity, so that $v_p(\alpha-\beta)>v_p(\alpha-1)=v_p(\beta-1)$ in each pair.
+\item Let $f(z)=\sum_{i=1}^s\sum_{j<m_i}c_{ij}z^je^{\lambda_iz}$ be nonzero, with distinct
+$\lambda_i\in\Zp$ and $\sum_im_i=t$. If $F$ has the same residue multiset modulo $p^A$ as the
+$\lambda_i$ repeated $m_i$ times, the multiset of the valuations of the zeros of $f$ in
+$v_p(z)>1/(p-1)$ is that of the depths of some polynomial supported on $F$, and conversely. In
+particular $N^\circ_p(t)$ and $N_p(t,r)$ are also the maxima for such exponential polynomials
+of total order $t$.
+\item Every polynomial with at most $t$ terms has at most $(t-1)p^A\le p(t-1)^2$ roots in
+$D(1)$, and its depth multiset is that of a polynomial whose exponents lie in an interval of
+length at most $(t-1)p^A$. The numbers $N^\circ_p(t)$ and $N_p(t,r)$, $r>1/(p-1)$, are
+computable by applying \cref{smd:thm:minbasis} to one representative of each of the
+$\binom{p^A+t-1}t$ residue multisets.
+\end{enumerate}
+\end{theorem}
+
+\begin{proof}
+Normalize $P$ so that $\min_{i<t}v_p(M_i)=0$ and put $Q=\mathcal TP$. Both moment sequences
+satisfy monic integral recurrences, with characteristic polynomials congruent modulo $p^A$, and
+their first $t$ terms coincide; by induction $M_k(P)\equiv M_k(Q)\pmod{p^A\OO}$ for all $k$.
+For rational $r>1/(p-1)$ the coefficient of $Y^k$ in $P(\exp(bY))$, $v_p(b)=r$, has valuation
+$v_p(M_k)+w_{p,r}(k)$, and the minimum is at most $W=\max_{i<t}w_{p,r}(i)$ for both
+polynomials. For $k\ge t$,
+\[
+ W-w_{p,r}(k)=\max_{i<t}\Bigl(\bigl(r-\tfrac1{p-1}\bigr)(i-k)+\frac{S_p(i)-S_p(k)}{p-1}\Bigr)
+ <\frac{D_p(t)-1}{p-1}\le A ,
+\]
+so the two $k$th coefficients differ by an amount of valuation greater than $W$. The two series
+therefore have the same valuation at every index where either has valuation at most $W$: the
+same minimum, the same minimizing indices, and after division by a coefficient attaining the
+minimum the same reduction. Weierstrass preparation and the bijection $X=\exp(bY)$ give equal
+counts in every closed disk of rational depth. Root depths are rational or $+\infty$ and finite
+in number, so the counting functions determine the multisets, which is (a). For (b), the nonzero
+roots of the reduced initial form at depth $r$ record, with multiplicity, the leading residues of
+$(\alpha-1)/b$ for the roots $\alpha$ of exact depth $r$, since $\exp(bY)-1$ and $bY$ have the
+same leading term.
+
+For (c), $f^{(k)}(0)=L(T^k)$ for the functional $L(u)=\sum_{i,j}c_{ij}u^{(j)}(\lambda_i)$ on
+$\Zp[T]/\prod_i(T-\lambda_i)^{m_i}$; Hermite interpolation shows that $f^{(0)}(0),\dots,
+f^{(t-1)}(0)$ are arbitrary and determine $f$. The same argument applies to $f(bY)$, compared
+with $G(e^{bY})$ for the polynomial $G$ on $F$ with the same first $t$ derivatives, because
+$v_p(e^z-1)=v_p(z)$ on $v_p(z)>1/(p-1)$. A finite set of zeros of $f$ lies in one closed disk of
+rational depth, so $f$ has finitely many zeros there.
+
+For (d), pad smaller supports and replace $E$ by the representatives
+$c,c+p^A,\dots,c+(\nu_c-1)p^A$ of each residue $c\in[0,p^A)$ of multiplicity $\nu_c$. If one
+residue occurs, the exponents span $(t-1)p^A$; otherwise every $\nu_c\le t-1$ and the span is at
+most $(t-2)p^A+p^A-1$. Division by the smallest monomial does not change the roots in $D(1)$, and
+the number of roots is at most the degree. Finally, if $p^h\le t-1<p^{h+1}$ then
+$D_p(t)\le(p-1)(h+1)$, so $A\le h+1$ and $p^A\le p(t-1)$.
+\end{proof}
+
+For fixed $p$ the transport of a given sparse rational polynomial is one rational Vandermonde
+system on the canonical support, followed by a Newton polygon of a polynomial of degree at most
+$p(t-1)^2$, so the deep-root profile is computable in time polynomial in the bit size of the
+sparse input. The transport preserves depths, not individual roots, residue fields or Galois
+orbits.
+
+\begin{theorem}[The residue precision is sharp; \stU]\label{smd:thm:digits}
+Let $t=p^m$ with $m\ge1$ if $p$ is odd and $m\ge2$ if $p=2$, so that $A_p(t)=m$ for odd $p$ and
+$A_2(t)=m-1$. Put $d=1$ for odd $p$ and $d=2$ for $p=2$, $q=p^d$, $i=t/q=p^{A_p(t)-1}$, and
+\[
+ E=\set{0,1,\dots,t-1},\qquad E'=\set{0,1,\dots,t}\setminus\set{i}.
+\]
+These supports have the same residue multiset modulo $p^{A_p(t)-1}$. But $N_p(E,r)=t-1$ for every
+$r>1/(p-1)$, while $N_p(E',r)=t$ for $1/(p-1)<r\le d$ and $N_p(E',r)=t-1$ for $r>d$. In
+particular $N^\circ_p(E)\ne N^\circ_p(E')$, and $p^{A_p(t)}$ cannot be replaced by
+$p^{A_p(t)-1}$ in \cref{smd:thm:transport}.
+\end{theorem}
+
+At $p=2$ and $t=8$ the exchange is $2\mapsto8$: parity of the exponents determines every count
+for at most seven terms, by \cref{smd:thm:transport}, but not for eight. At odd $p$ arbitrarily
+many digits are needed already at the fixed depth $1$.
+
+\begin{proof}
+The exchange $i\mapsto t$ is invisible modulo $i=p^{A_p(t)-1}$. Every $t$-element support $F$ has
+$N_p(F,r)\ge t-1$: the polynomial with $M_0=\dots=M_{t-2}=0$ and $M_{t-1}=1$ vanishes to order
+$t-1$ at $1$, and \cref{smd:thm:minbasis}(f) makes the roots distinct. For $E$ the degree gives
+the upper bound. For $E'$ let $Z=X-1$ and
+\[
+ G(X)=Z^{t-1}\bigl((q-1)Z+q\bigr)+p^{dt+1}.
+\]
+The coefficient of $X^j$, $1\le j<t$, is $\pm\bigl((q-1)\binom tj-q\binom{t-1}j\bigr)$, which
+vanishes exactly when $qj=t$, that is $j=i$; the leading and constant coefficients are nonzero,
+so the support of $G$ is $E'$. At depth $d$, after $Z=p^dY$, the coefficients of $Y^{t-1}$ and
+$Y^t$ have valuation $dt$ and the constant has valuation $dt+1$, so all $t$ roots lie in
+$v_p(x-1)\ge d$. The derivative is $Z^{t-2}\bigl(t(q-1)Z+q(t-1)\bigr)$; $G(0)\ne0$, and the other
+critical point has valuation $d-m\le0$, where $G$ has valuation $t(d-m)<dt+1$. So the roots are
+distinct. If $r>d$ and a polynomial supported on $E'$ had $t$ roots in $v_p(x-1)\ge r$, its
+monic form $\prod_j(X-1-\epsilon_j)$ with $v_p(\epsilon_j)>d$ would have $X^i$-coefficient
+$(-1)^{t-i}\binom ti$ up to an error of valuation greater than $d$; but
+$\binom ti=(t/i)\binom{t-1}{i-1}$ has valuation exactly $d$, since every binomial coefficient
+$\binom{t-1}j$ is a unit by Lucas's theorem. This contradicts the missing term.
+\end{proof}
+
+\begin{proposition}[Every positive depth; \stU]\label[proposition]{smd:prop:floor}
+Let $t\ge2$, let $r_*>0$ be rational, and let $B\ge t-1$ be an integer with
+$N_p(t,r_*)\le B$, for instance $B=N_L(p,t,r_*)$. Put $M_*=\max\set{1,v_p(B!)}$.
+\begin{enumerate}[label=\textup{(\alph*)}]
+\item If $\prod_{n\in E}(T-n)\equiv\prod_{n\in F}(T-n)\pmod{p^{M_*}}$, the map of
+\cref{smd:thm:transport}(a) preserves the number of roots in every closed disk
+$v_p(x-1)\ge r$ and every open disk $v_p(x-1)>r$ with $r\ge r_*$.
+\item With $N=N_L(p,t,r_*)$, $D_0=\sum_{i<t}v_p(i!)$ and $D_{\max}=\sum_{i=N-t+1}^Nv_p(i!)$, two
+$t$-element supports with the same residue multiset modulo $p^{1+D_{\max}-D_0}$ have
+$N_p(E,r)=N_p(F,r)$ for every $r\ge r_*$.
+\item For every rational $r>0$, $N_p(t,r)$ is computable from $p$, $t$ and $r$, and it is
+attained by an integer polynomial with exactly $t$ nonzero terms which is irreducible over $\Q$
+after division by a monomial.
+\end{enumerate}
+\end{proposition}
+
+\begin{proof}
+(a) Normalize as before. The coefficient of $Y^j$ in $P(1+bY)$, $v_p(b)=r$, is
+$L((T)_j)b^j/j!$, and the values $L((T)_i)$, $i<t$, are related to $M_0,\dots,M_{t-1}$ by an
+integral unipotent matrix, so one of them is a unit and they agree for $P$ and $\mathcal TP$;
+all $L((T)_j)$ are integral and congruent modulo $p^{M_*}$ for the two polynomials. A minimizing
+index $k\ge t$ is at most $B$, and comparison with an initial unit at $i<t$ gives
+$v_p(L((T)_k))\le r(i-k)+v_p(k!)-v_p(i!)<v_p(k!)\le v_p(B!)$. So every possible minimum keeps
+its valuation on both sides, and the largest and smallest minimizing indices agree. (b) The
+entries of $q_k$ and the minors $\det q_J$ in \cref{smd:thm:minbasis}(c) are integer polynomials
+in the exponents, hence congruent for the two supports modulo $p^{1+D_{\max}-D_0}$. The initial
+set $J_0=\set{0,\dots,t-1}$ has cost $-D_0+rt(t-1)/2$, and a set $J$ with
+$v_p(\det q_J)\ge1+D_{\max}-D_0$ has cost at least one larger, so it never minimizes for
+$r\ge r_*$; the minimizing sets therefore agree. (c) Enumerate the residue multisets modulo the
+precision of (b), apply \cref{smd:thm:minbasis}(c) to one representative of each, and use
+\cref{smd:thm:minbasis}(f) for the witness.
+\end{proof}
+
+This computes the least bound for geometric roots in one disk. It does not determine the number
+of roots that can lie in a prescribed finite extension of $\Qp$, nor Lenstra's global constant
+for roots in $K^\times$, which are different problems; for fixed local fields see
+\cite{Avendano2011Sharp}, and \cite{Rojas2022Root} for algorithms and root separation for very
+sparse polynomials over $p$-adic fields.
+
+\begin{remark}[The boundary depth]\label[remark]{smd:rem:boundary}
+\Cref{smd:thm:transport} fails on the closed disk of depth exactly $1/(p-1)$. For $t=2$, where
+$A_p(2)=0$, the transport sends $X^p-1$ to $p(X-1)$; both have one root in $D(1)$, but in
+$v_p(x-1)\ge1/(p-1)$ the first has $p$ roots and the second one.
+\end{remark}
+
+\paragraph{Closed formulas up to \texorpdfstring{$2p+4$}{2p+4} terms.}
+The triangular formula of \cref{smd:thm:opendisk} persists for one more term, and then jumps.
+
+\begin{theorem}[Open-disk maxima from $p+1$ to $2p+4$ terms; \stU]\label{smd:thm:jump}
+\leavevmode
+\begin{enumerate}[label=\textup{(\alph*)}]
+\item For every prime $p$, $N^\circ_p(p+1)=b_p(p+1)$, given by the triangular formula of
+\cref{smd:thm:opendisk}.
+\item For every prime $p$ and $p+2\le t\le2p+1$,
+\[
+ N^\circ_p(t)=p^2+\floor*{\frac{t-p-2}2} .
+\]
+\item For every prime $p\ge5$,
+\[
+ N^\circ_p(2p+2)=p^2+\frac{p-1}2,\qquad N^\circ_p(2p+3)=p^2+\frac{p+1}2,\qquad
+ N^\circ_p(2p+4)=p^2+p .
+\]
+\end{enumerate}
+Each maximum is attained by an integer polynomial with distinct roots, in (b) and (c) with
+exactly $t$ nonzero terms. For $2p+4$ terms one may take the support
+\[
+ E_\star=\set{pj : 0\le j\le p+1}\cup\set{1+pj : 0\le j\le p}\cup\set{2},
+\]
+whose largest element is $p^2+p$; all roots of such a witness lie in $D(1)$.
+\end{theorem}
+
+At $p=11$ part (a) gives $33$ roots with twelve terms and part (b) $121$ with thirteen; as $p$
+grows, the term $p+2$ multiplies the maximum by a factor asymptotic to $\sqrt{p/2}$. After this
+jump two further terms buy one more root, through $2p+1$ terms for every $p$ and through $2p+3$
+terms for $p\ge5$, and the term $2p+4$ adds $(p-1)/2$. At $p=5$ the maxima for $7,\dots,14$
+terms are $25,25,26,26,27,27,28,30$, and at $p=7$ those for $9,\dots,18$ terms are
+$49,49,50,50,51,51,52,52,53,56$. For $p\ge5$, since $N^\circ_p(2p+3)<p^2+p$, a polynomial of degree $p^2+p$
+with all its roots in $D(1)$ has at least $2p+4$ terms, and $E_\star$ shows that $2p+4$ suffice.
+At $p=2$ part (b) gives $N^\circ_2(4)=N^\circ_2(5)=4$, but $N^\circ_2(6)=8$
+(\cref{smd:thm:binary}), so (b) does not extend to $2p+2$ terms there.
+
+For a fixed support with one large residue class the exact value is known in a shorter range.
+
+\begin{proposition}[One large residue class; \stU]\label[proposition]{smd:prop:largeclass}
+Let $E$ be a set of at most $2p-1$ distinct nonnegative integers occupying at least two
+residue classes modulo $p$, one of which contains $m>p$ elements of $E$. Let $q$ be the
+largest number of elements of $E$ in another class and $d=\min\set{m-p,q}$. Then
+$N^\circ_p(E)=p^2+d-1$, attained by an integer polynomial with every exponent of $E$ present
+and distinct roots.
+\end{proposition}
+
+\begin{example}[A nine-term profile at $5$]\label[example]{smd:ex:nineterm}
+For $E=\set{0,1,5,6,10,15,20,25,30}$, with $m=7$ and $q=2$, \cref{smd:thm:minbasis} gives
+\[
+ N_5(E,r)=\begin{cases}26,&1/4<r\le5/19,\\25,&5/19<r\le4/15,\\10,&4/15<r\le1/2,\\8,&r>1/2,\end{cases}
+\]
+with every endpoint decided by tied minimizing bases. The open value $26$ is that of
+\cref{smd:prop:largeclass} and equals $N^\circ_5(9)$; an integer witness that is Eisenstein at
+$2$ has exactly $26$ roots at depth $53/208$.
+\end{example}
+
+\begin{lemma}[Prime-power degree with few terms]\label[lemma]{smd:lem:tower}
+For every prime $p$ and every $h\ge1$ there is a monic integer polynomial of degree $p^h$,
+supported in $\set{0,p,2p,\dots,p^h}\cup\set{1}$ and so with at most $p^{h-1}+2$ terms, whose
+$p^h$ roots are distinct and lie in $D(1)$. Thus $N^\circ_p(p^{h-1}+2)\ge p^h$.
+\end{lemma}
+
+\begin{proof}
+Choose $\pi$ with $\pi^{p-1}=p$, put $X=1+\pi Z$, and let $H=(X^p-1)/\pi^p$, a monic integral
+polynomial in $Z$ reducing to $Z+Z^p$ modulo the maximal ideal. Put
+\begin{align*}
+ W_h&=\pi^{p^h}\Bigl(\sum_{j=0}^{h-1}(-1)^{h-1-j}H^{p^j}+(-1)^hZ\Bigr)\\
+ &=\sum_{j=0}^{h-1}(-1)^{h-1-j}p^{(p^h-p^{j+1})/(p-1)}(X^p-1)^{p^j}
+ +(-1)^hp^{(p^h-1)/(p-1)}(X-1),
+\end{align*}
+a monic integer polynomial with the stated support. Modulo the maximal ideal,
+$\pi^{-p^h}W_h(1+\pi Z)\equiv\sum_j(-1)^{h-1-j}(Z^{p^j}+Z^{p^{j+1}})+(-1)^hZ=Z^{p^h}$ by
+telescoping, so all roots in $Z$ are integral with reduction zero and all roots of $W_h$ lie in
+$D(1)$. Adding a sufficiently $p$-divisible integer to the constant term preserves this and
+avoids the finitely many critical values.
+\end{proof}
+
+For $h=2$ the polynomial is $(X^p-1)^p-p^p\bigl(X^p-1-p(X-1)\bigr)$, with $p^2$ roots and $p+2$
+terms; at $p=11$, $(X^{11}-1)^{11}-11^{11}(X^{11}-1-11(X-1))+11^{14}$ is a squarefree witness
+for $121$. For $p=3,5,7,11,13,17$ the maxima with $p+1$ terms are $3,10,14,33,40,68$, and with
+$p+2$ terms $9,25,49,121,169,289$.
+
+\begin{lemma}[A two-residue functional]\label[lemma]{smd:lem:tworesidue}
+Let $1\le d\le p-1$ and $a\in\F_p^\times$, with $a=1$ if $d=p-1$. Let $E$ be a finite set of
+nonnegative integers with at least $p+d$ elements divisible by $p$ and at least $d$ elements
+congruent to $a$ modulo $p$, and put $C=p^2+d-1$. For every rational $r$ with
+$0<(r-\frac1{p-1})C<\frac1{p-1}$ there is an integer polynomial supported on $E$, with every
+exponent of $E$ present and irreducible over $\Q$ after division by $X^{\min E}$, that has at
+least $C$ distinct roots in $v_p(x-1)\ge r$. In particular $N^\circ_p(E)\ge C$.
+\end{lemma}
+
+\begin{proof}
+The residue algebra $\mathcal R_E$ maps onto
+$\mathcal R'=\F_p[T]/T^{p+d}\times\F_p[T]/(T-a)^d$. For $f=(f_0,f_a)\in\mathcal R'$ put
+\[
+ \lambda(f)=[Y^{d-1}]f_a(a+Y)-[T^{d-1}]f_0-da\,[T^d]f_0-a\,[T^{p+d-1}]f_0 ,
+\]
+using the representatives of degree below $d$ and $p+d$. On $T^k$ the first term is
+$\binom k{d-1}a^{k-d+1}$, and the corrections are $-1$, $-da$, $-a$ at $k=d-1$, $d$, $p+d-1$ and
+zero otherwise. As $d-1<p$, Lucas's theorem shows that $\binom k{d-1}\not\equiv0$ forces the
+units digit of $k$ to be at least $d-1$. If $S_p(k)<d$ this leaves $k=d-1$; if $S_p(k)=d$ and
+$k<C$ it leaves $k=d$ and $k=p+d-1$; in these cases the correction cancels the first term,
+since $a^p=a$. At $k=C$ the first term is $a^{p^2}=a$ and there is no correction. So
+$\lambda(T^k)=0$ when $S_p(k)<d$, or $S_p(k)=d$ and $k<C$, while $\lambda(T^C)=a\ne0$.
+
+Compose $\lambda$ with the projection, lift its values on $1,T,\dots,T^{\#E-1}$ to integers with
+value $0$ at $1$, and let $L$ be the resulting integral functional on $\Lambda_E$. The moments
+$M_k=L(T^k)$ are integral and reduce to $\lambda(T^k)$, $M_0=0$, $M_C$ is a unit, and Lagrange
+interpolation on $E$ gives rational $c_n$ with $M_k=\sum_nc_nn^k$. With
+$\delta=r-\frac1{p-1}$, $w_{p,r}(C)=d/(p-1)+\delta C<(d+1)/(p-1)\le p/(p-1)$. An index $j$ with
+$w_{p,r}(j)<w_{p,r}(C)$ has $S_p(j)<d$, or $S_p(j)=d$ and $j<C$; so $p\mid M_j$, and for $j\ge1$
+its coefficient has valuation at least $1+1/(p-1)>w_{p,r}(C)$. Every other index has coefficient
+valuation at least $w_{p,r}(C)$, attained at $C$. So the polynomial has at least $C$ roots in the
+disk. The perturbation and Eisenstein argument of \cref{smd:thm:minbasis}(f) gives the integer
+witness.
+\end{proof}
+
+\begin{proof}[Proof of the upper bounds in \cref{smd:thm:jump}(a),(b)]
+Work about $1$. If all exponents of a support of size $t\ge2$ have the same residue, factor out
+the smallest monomial and let $p^k$ be the largest power of $p$ dividing all exponent
+differences, so that $P=X^aQ(X^{p^k})$ with $Q$ having the same number of terms and at least
+two residues. The map $x\mapsto x^{p^k}$ sends $D(1)$ injectively into itself (use $\log$) with
+nonzero derivative, so the count for $P$ is at most that for $Q$. Padding with zero
+coefficients, let $p+1\le t\le2p+1$ be the exact size of a support occupying at least two
+residues, let $r>1/(p-1)$ be rational, and normalize the moments. Here $D_p(t)\le p$, so by
+\cref{smd:lem:highmoment} a minimizing index $k\ge t$ has $S_p(k)\le p-1$ and is excluded as
+soon as $T^k$ is, in $\mathcal R_E$, a combination of powers $T^\ell$ with $\ell<k$ and
+$S_p(\ell)\le S_p(k)$. For $p=2$ and $t=3$, $A_2(3)=0$ and no $k\ge3$ minimizes.
+
+Let $t=p+1$. Every residue has multiplicity at most $p$, and for $p\ge3$ one has
+$D_p(p+1)=p-1$, so $S_p(k)\le p-2$. The diagram argument in the proof of
+\cref{smd:thm:fixedsupport} applies to every filtered degree $d\le p-2$, and the area bound in
+the proof of \cref{smd:thm:opendisk}, with $d\le p-2$, shows that all the power indices it
+produces are at most $b_p(p+1)$; the initial indices are at most $t-1=p\le b_p(p+1)$.
+
+Let $p+2\le t\le2p+1$ and $h=\floor{(t-p)/2}$, so that $p^2+h-1$ is the claimed bound, and
+suppose that a minimizing $k$ exceeds it; then $k\ge t$, as $t-1\le2p\le p^2$. Let $a$ be the
+units digit of $k$ and $b$ the sum of its other digits, so $a+b\le p-1$, $b\ge1$, and
+$j=a+pb<p^2$ has the same digit sum. If every residue multiplicity is at most $p$, then
+$T^{p^u}=T^p$ on every factor for $u\ge1$, so $T^k=T^j$ and $k$ is excluded. Otherwise exactly
+one residue has multiplicity $p+s>p$; a monomial shift moves it to $0$. Let $m=t-p-s\ge1$ be the
+number of the other exponents, so $1\le s\le p$ and
+$\mathcal R_E\cong\F_p[T]/T^{p+s}\times\mathcal R_{\mathrm{other}}$. On
+$\mathcal R_{\mathrm{other}}$ again $T^k=T^j$, and on the first factor $T^k=0$ since
+$k>p^2\ge p+s$. If $j\ge p+s$, then $T^k=T^j$ in $\mathcal R_E$ and $k$ is excluded; this covers
+$b\ge2$, and $b=1$ with $a\ge s$. There remains $b=1$, $a<s$, so $k=p^u+a$ with $u\ge2$. As
+$T^{p^u}=T^{p^2}$ in $\mathcal R_E$, $k$ is excluded unless $u=2$. Finally the monic polynomial
+of degree $m$ defining $\mathcal R_{\mathrm{other}}$ annihilates $T$ there, and $T^{p^2}=0$ on
+the first factor; so for $a\ge m$ the class $T^{p^2+a}$ is a combination of the
+$T^{p^2+j'}$, $j'<m$, of smaller index and digit sum $1+j'<1+a$, and $k$ is excluded. A
+surviving $k=p^2+a$ thus has $a\le\min\set{s,m}-1\le\floor{(s+m)/2}-1=h-1$, a contradiction.
+Every finite set of roots in $D(1)$ lies in a closed disk of rational depth, so the bounds hold
+in $D(1)$.
+\end{proof}
+
+\begin{proof}[Proof of \cref{smd:prop:largeclass}]
+Here $p\ge3$, all $i<\#E\le2p-1$ have $S_p(i)\le p-1$, and a minimizing $k\ge\#E$ has
+$S_p(k)\le p-2$. Shift the large class to $0$ and put $U=T^p$, $Z=T^{p^2}$ in $\mathcal R_E$.
+On the factors at $c\ne0$, whose multiplicities are at most $q\le p-2$, $U=Z=c$; on the factor
+at $0$, of multiplicity $m\le2p-2$, $Z=0$ and $U^2=0$; and every higher Frobenius power is $Z$.
+So a power of digit sum $h\le p-2$ has the class $T^iU^jZ^\ell$ with $i+j+\ell=h$. If $\ell=0$,
+or $\ell\ge1$ and $j+\ell\ge2$ (then $T^iU^jZ^\ell=T^iU^{j+\ell}$ factor by factor), the class
+is that of an index below $p^2$ with the same digit sum. The remaining indices are
+$p^u+h-1$, $u\ge2$, all of class $T^{h-1}Z$, so only $k=p^2+h-1$ can survive. If $h>m-p$, then $T^{h-1}Z=T^{p+h-1}$, both sides
+vanishing on the factor at $0$. If $h>q$, then $Z(T-Z)^{h-1}=0$, since $T-c$ has nilpotency order
+at most $q\le h-1$ on each factor at $c\ne0$, and expanding,
+\[
+ T^{h-1}Z=\sum_{j=2}^{h}(-1)^j\binom{h-1}{j-1}T^{h-j}Z^j=\sum_{j=2}^{h}(-1)^j\binom{h-1}{j-1}T^{h-j}U^j,
+\]
+whose terms have digit sum $h$ and index below $p^2$. Hence $k$ survives only if
+$h\le\min\set{m-p,q}=d$, which gives $N^\circ_p(E)\le p^2+d-1$. As $d\le p-2$, the lower bound
+is \cref{smd:lem:tworesidue} with $a$ a residue attaining $q$.
+\end{proof}
+
+\begin{proof}[Proof of the upper bounds in \cref{smd:thm:jump}(c)]
+Let $p\ge5$, $2p+2\le t\le2p+4$, and reduce as above to a support of exact size $t$ with at least
+two residues. As $t\le3p-1$, $D_p(t)=p$, and a minimizing $k\ge t$ has $S_p(k)\le p-1$. In
+$\mathcal R=\mathcal R_E$ put $x=T$, $y=T^p$, $z=T^{p^2}$. All multiplicities are below $p^2$, so
+on the factor at $c$, with $u=T-c$, one has $x=c+u$, $y=c+u^p$, $z=c$, and $T^{p^j}=z$ for
+$j\ge2$. Hence $T^k=x^\alpha y^\beta z^\gamma$, where $\alpha,\beta$ are the two lowest digits of
+$k$ and $\gamma$ is the sum of the others, and we call $\alpha+p\beta+p^2\gamma\le k$ the index of
+this monomial; for degree at most $p-1$ it is the class of the power of that index, with the same
+digit sum. It suffices to show that every monomial of degree at most $p-1$ and index above $K_t$
+is a combination of monomials of smaller index and no larger degree, where
+$K_t=p^2+\floor{(t-p-2)/2}$ for $t\le2p+3$ and $K_{2p+4}=p^2+p$. The relations below have leading
+monomial (of largest index) with coefficient one, and so do their multiples by monomials. Call a
+residue thick if its multiplicity exceeds $p$; there are at most two. Let $v=y-z$.
+
+\emph{No thick residue, or one occupied residue.} Then $y=z$, or $z=c$, eliminates $z$, and the
+monomials $x^\alpha y^\beta$ have index below $p^2$.
+
+\emph{One thick residue $c$, of multiplicity $p+s\le2p$.} Let $m=t-p-s$. Then $v^2=0$ and
+$(z-c)v=0$, that is,
+\[
+ yz=y^2-cy+cz,\qquad z^2=y^2-2cy+2cz,
+\]
+which leave the monomials $x^\alpha y^\beta$ and $zx^\alpha$. For $t=2p+4$ this suffices. For
+$t\le2p+3$ shift $c$ to $0$: then $zx^\alpha=yx^\alpha$ if $\alpha\ge s$, both sides vanishing on
+the thick factor and $y=z$ elsewhere, and $zx^\alpha$ reduces to monomials $zx^{\alpha'}$,
+$\alpha'<m$, if $\alpha\ge m$, by the monic polynomial of degree $m$ of the other factors. A
+surviving $zx^\alpha$ has $\alpha<\min\set{s,m}\le\floor{(t-p)/2}$.
+
+\emph{One thick residue of multiplicity greater than $2p$.} The others have total $m\le t-2p-1\le3$.
+Shift the thick residue to $0$. On its factor $z=0$, and on the others $y=z$, as their
+multiplicities are below $p$; so $z^2=yz$. Since $z$ kills the thick factor, $yz=zA(x)$,
+$xyz=zA_1(x)$ and $y^2z=zA_2(x)$, where $A,A_1,A_2$ have degree below $m$ and represent $y$, $xy$,
+$y^2$ on the other factors. For $t\le2p+3$, $m\le2$ and the relations $z^2=yz$, $yz=zA(x)$ and the
+reduction of $zx^\alpha$ for $\alpha\ge m$ leave only $zx^\alpha$ with $\alpha\le1$. For
+$t=2p+4$ use $z^2=yz$, $xyz=zA_1(x)$, $y^2z=zA_2(x)$, of degrees at most three.
+
+\emph{Two thick residues and no other.} Let them be $c,c'$, of multiplicities $p+s,p+s'$ with
+$s+s'=t-2p\le4$; both are below $2p$, so $v^2=0$, and $(z-c)(z-c')=0$:
+\[
+ z^2=(c+c')z-cc',\qquad yz=\tfrac12\bigl(y^2+(c+c')z-cc'\bigr).
+\]
+
+\emph{Two thick residues and at least one other.} Now $s+s'\le t-2p-1\le3$. If $s=s'=1$, then
+with $u=x-z$ one has $uv=0$ and $v^2=0$, so
+\[
+ yz=xz+y^2-xy,\qquad z^2=2xz+y^2-2xy .
+\]
+Otherwise $t=2p+4$ and the profile is $(p+2,p+1,1)$. With $c$ the residue of multiplicity $p+2$
+and $u=x-z$, one has $v^2=0$, $u^2v=0$ and $(z-c)uv=0$, whence
+\[
+ (y-z)^2=0,\qquad (x-c)(x-y)(y-z)=0,\qquad (y-c)(x-y)(y-z)=0,
+\]
+as one sees by writing $x-y=u-v$, $x-c=u+(z-c)$ and $y-c=v+(z-c)$. Their leading monomials are
+$z^2$, $xyz$ and $y^2z$.
+
+In the last two cases with $t\le2p+3$, the element $v$ is annihilated by
+$C(x)=(x-c_1)^{s}(x-c_2)^{s'}$, $c_1,c_2$ the thick residues; for $\alpha\ge s+s'$, writing
+$x^\alpha\equiv\rho_\alpha(x)\pmod{C}$ with $\deg\rho_\alpha<s+s'$,
+\[
+ zx^\alpha=yx^\alpha-\rho_\alpha(x)y+\rho_\alpha(x)z
+\]
+lowers the index, so a surviving $zx^\alpha$ has $\alpha\le s+s'-1\le2$.
+
+For $t\le2p+3$ every case leaves $x^\alpha y^\beta$, of index below $p^2$, and $zx^\alpha$ with
+$\alpha\le\floor{(t-p)/2}-1$; here $\floor{(t-p)/2}\ge(p+1)/2\ge3$, so the index is at most
+$K_t$. For $t=2p+4$ every case eliminates $z^2$, $xyz$ and $y^2z$, which leaves $x^\alpha y^\beta$,
+$zx^\alpha$ with $\alpha\le p-2$, and $yz$, of index $p^2+p$. By \cref{smd:lem:highmoment} the
+bounds follow at every rational depth, hence in $D(1)$.
+\end{proof}
+
+\begin{proof}[Witnesses for \cref{smd:thm:jump}]
+For (a) with $p\ge3$ the product construction in the proof of \cref{smd:thm:opendisk} applies,
+since its term count used only $p>2$; for $p=2$ the polynomial $(X-1)(X-5)$ has two distinct roots
+of depth greater than one. For (b), and for $2p+2$ and $2p+3$ terms in (c), apply
+\cref{smd:lem:tworesidue} with $a=1$ and $d=\floor{(t-p)/2}$, so that $1\le d\le p-1$ and
+$C=p^2+d-1$, to a $t$-element support containing
+$\set{pj : 0\le j<p+d}\cup\set{1+pj : 0\le j<d}$, which has $p+2d\le t$ elements.
+
+For $2p+4$ terms use $E_\star$, whose residue algebra is
+$\F_p[T]/T^{p+2}\times\F_p[U]/U^{p+1}\times\F_p$, with $T$ represented by $T$, $1+U$ and $2$. For
+$f=(f_0,f_1,f_2)$ put
+\[
+ \lambda(f)=f_2-2f_1(0)+f_0(0)-2\bigl([U]f_1-[T]f_0\bigr)+2[T^2]f_0
+ -\bigl([U^p]f_1-[T^p]f_0\bigr)+[T^{p+1}]f_0 .
+\]
+Direct substitution gives $\lambda=0$ on $1,x,y,z,x^2,xy,y^2,xz$ and $\lambda(yz)=1$; for instance
+$yz$ is represented by $(0,1+U^p,4)$. The positive integers of digit sum one are the $p^j$, of
+classes $x$, $y$ and $z$, and those of digit sum two below $K=p^2+p$ are $2,p+1,2p,p^2+1$, of
+classes $x^2,xy,y^2,xz$, while $T^K=yz$. Hence $\lambda(T^j)=0$ if $S_p(j)<2$, or $S_p(j)=2$ and
+$j<K$, and $\lambda(T^K)=1$. Lift and interpolate as in the proof of \cref{smd:lem:tworesidue},
+with $M_0=0$, and take $r=\frac1{p-1}+\delta$ with rational $0<\delta K<\frac1{p-1}$. Then
+$w_{p,r}(K)<3/(p-1)$; indices of digit sum at least three have larger weight, earlier indices of
+digit sum at most two, and all indices of digit sum one, have moments divisible by $p$ and
+coefficient valuation at least $p/(p-1)>3/(p-1)$, and later indices of digit sum two have larger
+weight. So $K$ is the unique minimizing index, and the polynomial, of degree at most $K$, has
+exactly $K$ roots in the disk, all its roots. A small $p$-adic perturbation of the coefficients
+keeps this strict minimum, makes all $2p+4$ coefficients nonzero, and a final small change of the
+constant term avoids the critical values; clearing denominators gives the integer witness with
+distinct roots.
+\end{proof}
+
+For (b) there is also an explicit product witness. Let $W$ be the polynomial of
+\cref{smd:lem:tower} with $h=2$, let $A=\floor{(t-p-2)/2}$, and choose distinct
+$u_1,\dots,u_A\in1+p^2\Z$, not roots of $W$, with distinct $p$th powers. Then
+$W(X)\prod_{j=1}^A(X^p-u_j^p)$ is supported on the $p+A+1$ multiples $0,p,\dots,(p+A)p$ and the
+$A+1$ integers $1,1+p,\dots,1+Ap$, at most $t$ in all, and has $p^2+A$ distinct roots in $D(1)$:
+each new factor contributes $u_j$, its other roots $u_j\zeta$, $\zeta^p=1\ne\zeta$, having depth
+exactly $1/(p-1)$.
+
+\paragraph{The binary disk.}
+For $p=2$ the formulas above stop at five terms. The next values are exact as well.
+
+\begin{theorem}[Five, six and seven terms at $2$; \stU]\label{smd:thm:binary}
+For every real $r>1$,
+\[
+ N_2(5,r)=4,\qquad
+ N_2(6,r)=\begin{cases}8,&1<r\le4/3,\\5,&r>4/3,\end{cases}\qquad
+ N_2(7,r)=\begin{cases}8,&1<r\le3/2,\\6,&r>3/2.\end{cases}
+\]
+Hence $N^\circ_2(5)=4$ and $N^\circ_2(6)=N^\circ_2(7)=8$. Every value is attained by an integer
+polynomial with exactly $t$ nonzero terms and distinct roots in the disk.
+\end{theorem}
+
+\begin{proof}
+For $5\le t\le7$, $D_2(t)=2$, so by \cref{smd:lem:highmoment} a minimizing $k\ge t$ has
+$S_2(k)=1$, that is $k=2^j\ge8$. All multiplicities are at most seven, so $T^{2^j}=T^8$ in
+$\mathcal R_E$ for $j\ge3$, and only $k=8$ can occur. Here $w_{2,r}(k)=(r-1)k+S_2(k)$. For $t=6$
+the largest initial weight is $w_{2,r}(5)=5r-3$ and $w_{2,r}(8)=8r-7$, so $8$ is excluded for
+$r>4/3$; for $t=7$ the largest is $w_{2,r}(6)=6r-4$, so $8$ is excluded for $r>3/2$. For $t=5$
+write $\mathcal R_E=\F_2[T]/(T^a(T-1)^{5-a})$. If $1\le a\le4$, then $T^8=T^4$; if $a=5$, then
+$T^8=0$; if $a=0$, then $T^8=1$; in each case \cref{smd:lem:highmoment}(b) excludes $8$.
+
+For the values $8$ use
+\begin{align*}
+ F_6(X)&=5X^8-28X^6+70X^4-140X^2+128X+65501,\\
+ F_7(X)&=3X^8-28X^6+210X^4-448X^3+420X^2-192X+65571,
+\end{align*}
+with $F_6(1+Y)=2^{16}+112Y^5+112Y^6+40Y^7+5Y^8$ and $F_7(1+Y)=2^{16}+56Y^6+24Y^7+3Y^8$. The
+Newton polygon of the first has vertices $(0,16),(5,4),(8,0)$, giving five roots of depth $12/5$
+and three of depth $4/3$; that of the second has vertices $(0,16),(6,3),(8,0)$, giving six roots of
+depth $13/6$ and two of depth $3/2$. Both are coprime to their derivatives. For the other values
+take $(X-1)^{t-1}-2^K$ with $K\ge(t-1)r$ (with strict inequality for the open disk), which has $t$
+terms and $t-1$ distinct roots of depth $K/(t-1)$.
+\end{proof}
+
+The sixth term doubles the open-disk maximum, and the seventh extends the depth to which eight
+roots survive from $4/3$ to $3/2$ without raising the open maximum.
+
+\begin{theorem}[Eight terms at $2$; \stU]\label{smd:thm:eight}
+For an eight-element support $E$, let $\nu_c$ be the number of its elements congruent to $c$
+modulo $4$, and $e=\nu_0+\nu_2$. Then
+\[
+ N^\circ_2(E)=\begin{cases}
+ 9,&e\equiv2\pmod4,\\
+ 7,&e\equiv0\pmod4\text{ and the four }\nu_c\text{ have the same parity},\\
+ 8,&\text{otherwise}.
+ \end{cases}
+\]
+Consequently $N^\circ_2(8)=9$.
+\end{theorem}
+
+\begin{proof}
+Here $A_2(8)=2$, so by \cref{smd:thm:transport} $N^\circ_2(E)$ depends only on the residue
+multiset modulo $4$, and there are $\binom{11}3=165$ of them. \Cref{smd:thm:minbasis}(b) on a
+canonical representative of each gives the maximum $7$ for $23$ vectors, $8$ for $100$ and $9$
+for $42$, in agreement with the formula. Two independent exact computations, one by Hermite normal
+forms of the Taylor lattices and one by valuation-minimal pivots over $\Z_{(2)}$, agree on every
+vector. A short witness for $9$ is
+\[
+ P(X)=183X^{10}-235X^8+54X^6-6X^4-128X^3+3X^2+128X+2049 ,
+\]
+with eight terms; the Newton polygon of
+$P(1+Y)=183Y^{10}+1830Y^9+8000Y^8+20080Y^7+31904Y^6+33280Y^5+22784Y^4+9728Y^3+2048Y^2+2048$
+has vertices $(0,11),(9,1),(10,0)$, so $P$ has nine roots of depth $10/9$ and one of depth one,
+and $\gcd(P,P')=1$.
+\end{proof}
+
+\Cref{smd:thm:eight} is a finite computer-assisted theorem; the transport that reduces it to $165$
+cases is symbolic. The same exhaustive evaluation of \cref{smd:thm:minbasis} over residue
+multisets gives the open-disk maxima
+\[
+ N^\circ_2(t)=1,2,4,4,8,8,9,16\quad(t=2,\dots,9),\qquad N^\circ_3(t)=1,3,3,9,9,10,10\quad(t=2,\dots,8),
+\]
+over $220$ residue multisets modulo $4$ at $(p,t)=(2,9)$ and $45$ modulo $3$ at $(3,8)$. All values
+except $N^\circ_2(9)=16$ and $N^\circ_3(8)=10$ follow from the theorems above; by
+\cref{smd:lem:tower} ten terms already give $16$ roots at $p=2$, and the computation shows that nine
+suffice.
+
+\paragraph{Clustered conjugates.}
+The local maxima bound sparse annihilators of an algebraic number with many conjugates in one
+disk, independently of the degree.
+
+\begin{corollary}[Sparse annihilators of clustered conjugates; \stU]\label[corollary]{smd:cor:annihilator}
+Let $F\subset\overline{\Q}_p$ be a number field and $\alpha$ algebraic over $F$. If $u$ distinct
+$F$-conjugates of $\alpha$ lie in one disk $D(a)$, then every nonzero polynomial in $F[X]$ with at
+most $t\ge2$ terms that vanishes at $\alpha$ satisfies
+$u\le N^\circ_p(t)\le(t-1)p^{A_p(t)}$, and $u\le p^2+\floor{(t-p-2)/2}$ if $p+2\le t\le2p+1$. In
+particular, if $u$ conjugates of a singular modulus of discriminant $\Delta$ lie in one such disk,
+then $s(\Delta)>t$ for every $t$ with $N^\circ_p(t)<u$.
+\end{corollary}
+
+\begin{proof}
+Such a polynomial vanishes at all $F$-conjugates of $\alpha$; scale the disk to the centre $1$ and
+apply \cref{smd:thm:transport,smd:thm:jump}.
+\end{proof}
+
+The residue spans, transports and witnesses are checked by exact scripts:
+\smdcert{\artifact{padic_sparse_research/verify.py} with \artifact{padic_sparse_research/certificates.json}
+and \artifact{padic_sparse_research/verification.log} (fifteen complete profile searches, $21$
+squarefree two-residue witnesses for primes through $19$, $72$ transport comparisons);
+\artifact{deep_padic_roots_2026-11-27/checks/exact_lattice_check.py} and
+\artifact{deep_padic_roots_2026-11-27/checks/independent_dvr_check.py} with
+\artifact{deep_padic_roots_2026-11-27/data/lattice_certificates.json} and
+\artifact{deep_padic_roots_2026-11-27/data/independent_dvr_results.json} (the $165$ vectors of
+\cref{smd:thm:eight}), and \artifact{deep_padic_roots_2026-11-27/data/transport_results.json}
+($256$ Newton polygons before and after transport);
+\artifact{grh_research_2026-11-27/results/nine_term_profile.json},
+\artifact{grh_research_2026-11-27/results/sharp_range_verification.json} and
+\artifact{grh_research_2026-11-27/results/check_binary_profile.json};
+\artifact{ProveIt_research_2026-11-27/03_sparse_padic/new_phase_certificates.json} (witnesses for
+$2p+4$ terms at $p=5,7,11,13,17$, at depth $\frac1{p-1}+\frac1{2(p-1)(p^2+p)}$);
+\artifact{cycle-complements-and-dirichlet-zero-matching/05-padic-root-counts/checks.txt};
+\artifact{erdelyi_ellipse_and_proveit_extensions/03_padic_roots/results.txt};
+\artifact{padic-sharp-exponent-digits/verification.txt} ($120$ cofactor witnesses and $16$ cases of
+\cref{smd:thm:digits}).}
+
 \subsection{Open questions}\label{smd:sec:open}
-{\raggedright\sources{grh_sparse_singular_moduli; grh_cm_sparse_equations; grh_transfers_singular_moduli_and_symmetric_powers; grh_transfer_bridges_2026-11-25; singular-modulus-support; singular_moduli_seven_terms_2026-11-26; padic-six-term; gaussian-singular-moduli; residue87_2026-11-27; sparse-padic-roots-and-graph-towers}}
+{\raggedright\sources{grh_sparse_singular_moduli; grh_cm_sparse_equations; grh_transfers_singular_moduli_and_symmetric_powers; grh_transfer_bridges_2026-11-25; singular-modulus-support; singular_moduli_seven_terms_2026-11-26; padic-six-term; gaussian-singular-moduli; residue87_2026-11-27; sparse-padic-roots-and-graph-towers; padic_sparse_research; deep_padic_roots_2026-11-27; grh_research_2026-11-27; cycle-complements-and-dirichlet-zero-matching; erdelyi_ellipse_and_proveit_extensions}}
 
 \begin{question}[Six terms]\label{smd:q:six}
 Does every singular modulus of degree $h\ge6$ require at least seven terms, that is, does
@@ -2765,13 +3433,17 @@ by \cref{smd:prop:global} for five terms. More generally, is there a uniform lar
 threshold?
 \end{question}
 
-\begin{question}[Root counts beyond $p$ terms]\label{smd:q:roots}
-\Cref{smd:thm:rankrule} determines $N_p(E,r)$ at every depth for supports of at most $p$
-exponents, and \cref{smd:thm:jump} gives the open-disk maximum for $p+1$ and $p+2$ terms.
-For more than $p$ exponents the Frobenius power $T^p$ can retain a nonzero nilpotent part
-on a residue factor of $\mathcal R_E$. Which additional residue data determine the sharp
-bound in that regime, in the open disk for $t\ge p+3$ terms and on deeper closed disks for
-$t>p$?
+\begin{question}[Closed formulas for more terms]\label{smd:q:roots}
+By \cref{smd:thm:minbasis,smd:thm:transport,smd:prop:floor}, $N_p(E,r)$, $N_p(t,r)$ and
+$N^\circ_p(t)$ are finite computations for every support, number of terms and positive depth,
+and \cref{smd:thm:jump} gives $N^\circ_p(t)$ in closed form through $2p+1$ terms, and through
+$2p+4$ terms when $p\ge5$. What is $N^\circ_p(t)$ for larger $t$, where several residue classes
+keep a nilpotent part after one application of Frobenius? Is there a closed form for the deeper
+closed disks when $t>p$, beyond \cref{smd:thm:binary}? For which $(p,t)$ can the modulus
+$p^{A_p(t)}$ of \cref{smd:thm:transport} be lowered? By \cref{smd:thm:digits} it cannot when $t$
+is a power of $p$. Finally, the largest number of roots in a disk that lie in a prescribed
+finite extension of $\Qp$ is not determined by these geometric counts. The transport need not
+preserve splitting fields.
 \end{question}
 
 \begin{question}[A fixed fraction of the class number]\label{smd:q:fraction}

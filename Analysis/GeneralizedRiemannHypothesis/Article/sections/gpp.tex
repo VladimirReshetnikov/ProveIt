@@ -11,6 +11,7 @@
 \providecommand{\gpplc}{\operatorname{lc}}
 \providecommand{\gppm}{\mathfrak{m}}
 \providecommand{\gppsloppy}{\sloppy}
+\providecommand{\gppB}{\mathcal{B}}
 
 The source proof selects its distinguished infinite places by a finite combinatorial
 construction (\cref{src:sec:mechanism}). The lemma
@@ -1460,6 +1461,155 @@ triple belongs to the family \eqref{gpp:eq:pattern} for each $L\ge2$, and removi
 member of each disjoint triple gives the lower bound for $1-\Delta_L(A)$.
 \end{proof}
 
+\subsection{Finite coefficient rings: cube-zero radicals in residue characteristic two}\label{gpp:sec:cubezero}
+{\raggedright\sources{radical_square_density_2026-11-27; positive-fourier-zeros}}
+
+Beyond square-zero maximal ideals the top coefficients of $r^2f$ can cancel against
+nilpotent coefficients of $r$, and the loss of density is governed by the image of the
+squaring map on the radical, not by the sizes of the radical layers. We keep the
+conventions of \cref{gpp:sec:rings}. Call a finite local ring $(A,\gppm)$ with residue field
+$k$ of order $q$ \emph{eligible} if
+\begin{equation}\label{gpp:eq:eligible}
+ q\text{ is even},\qquad 2\gppm=0,\qquad \gppm a^2=0\quad(a\in\gppm).
+\end{equation}
+Every local ring of characteristic two with $\gppm^3=0$ is eligible, and so is every
+cube-zero local ring with $2\gppm=0$ and even residue characteristic. Put $Q=\abs A$,
+\[
+ S=\set{a^2:a\in\gppm},\qquad w=w(A)=\frac{\abs S}{Q^2}.
+\]
+Since $2\gppm=0$, sums of squares of elements of $\gppm$ are squares, and since $\gppm$
+annihilates $S$, the action of $A$ on $S$ factors through $k$; as $k$ is perfect, $S$ is a
+$k$-subspace of $\gppm^2$ and an ideal. If $r=t+u$ with $u\in\gppm[x]$, then
+$r^2=t^2+u^2$ with $u^2\in S[x^2]$, and every element of $S[x^2]$ is such a square. When
+$A$ has characteristic two and $\gppm^3=0$, squaring induces a Frobenius-semilinear map
+$\gppm/\gppm^2\to\gppm^2$ with image $S$, so $w=q^{\rho}/Q^2$ with $\rho$ the dimension of
+its image. In the square-zero case $S=0$ and $w=Q^{-2}$, the even-$q$ parameter of
+\cref{gpp:thm:local}.
+
+Write $\bar f$ for reduction modulo $\gppm$ and $f_j$ for the coefficient of $x^j$. For
+$n\ge2$ let $D_n$ be the set of $f\in B_n(A)$ with $0\le d=\deg\bar f\le n-2$ such that,
+with $\bar f_{-1}=0$ and the canonical $k$-action on $S$,
+\begin{equation}\label{gpp:eq:squarestart}
+ (f_n,f_{n-1})=\begin{cases}(s\bar f_d,\,s\bar f_{d-1}),&n-d\text{ even},\\
+ (0,\,s\bar f_d),&n-d\text{ odd},\end{cases}\qquad\text{for some }s\in S .
+\end{equation}
+
+\begin{theorem}[Square starts; \stU]\label{gpp:thm:squarestart}
+Let $A$ be eligible and $f\in B_n(A)$ with $\bar f\ne0$. Then $f\in D_n$ if and only if
+$r^2f\in B_n(A)$ for some $r\in A[x]$ with $\deg\bar r\ge1$. If $\gppm^3=0$, this holds if
+and only if some such $r$, which may be taken with $\bar r=x$, has both $rf$ and $r^2f$ in
+$B_n(A)$. Moreover $\abs{D_n}/\abs{B_n(A)}=w\,(1-q^{-(n-1)})$.
+\end{theorem}
+
+\begin{proof}
+Let $z=r^2f\in B_n(A)$ and $e=\deg\bar r\ge1$, so $d+2e\le n$. Lift $\bar r$ to $t$ of degree
+$e$ with unit leading coefficient $t_e$, and write $r=t+u$; then $z=t^2f+U\bar f$ with
+$U=u^2\in S[x^2]$, since $\gppm$ annihilates $S$. Modulo $S$ this reads
+$z\equiv t^2f$, and multiplication by a polynomial with unit leading coefficient adds its
+degree, so $f_n,f_{n-1}\in S$. If both vanish, \eqref{gpp:eq:squarestart} holds with
+$s=0$. Otherwise let $j=\deg f\in\set{n-1,n}$. As $j+2e>n$, the leading terms of $t^2f$ and
+$U\bar f$ cancel, so $\deg U=j+2e-d$ is even, and $j-d$ is even. If $j=n-1$, the second
+case holds. If $j=n$, let $v$ be the leading coefficient of $U$; the coefficients of
+$x^{n+2e}$ and $x^{n+2e-1}$ vanish, $U$ has only even degrees, and $2t_et_{e-1}f_n=0$, so
+$\bar t_e^2f_n+v\bar f_d=0$ and $\bar t_e^2f_{n-1}+v\bar f_{d-1}=0$; take
+$s=-v/\bar t_e^2$.
+
+Conversely choose $c\in\gppm$ with $c^2=s$, let $J=(n+2-d)/2$ if $n-d$ is even and
+$J=(n+1-d)/2$ otherwise, and $r_0=x+cx^J$. Then $J+d\le n$, $r_0^2=x^2+sx^{2J}$, and the
+coefficients of $x^2f$ above degree $n$ cancel against those of $sx^{2J}\bar f$, as
+$2S=0$; so $r_0^2f\in B_n(A)$. If $\gppm^3=0$, every coefficient of $r_0f$ above degree $n$
+lies in $\gppm^2$, which $\gppm$ annihilates; dividing this part by $\bar f$ with
+coefficients in the $k$-space $\gppm^2$ gives $v\in\gppm^2[x]$ with $\deg(r_0f+v\bar f)\le n$,
+and $r=r_0+v$ has $rf\in B_n(A)$ and $r^2=r_0^2$, since $v^2=0=2v$. Finally, the residue
+coefficients of a uniform $f$ are uniform, $0\le d\le n-2$ has probability
+$q^{-2}-q^{-(n+1)}$, and given $\bar f$ exactly $\abs S$ of the $(Q/q)^2$ choices of the top
+coefficients in $\gppm$ satisfy \eqref{gpp:eq:squarestart}, as $\bar f_d\ne0$.
+\end{proof}
+
+When $\gppm^3=0$, $D_n$ is therefore exactly the set of possible first terms, with nonzero
+reduction, of three-term progressions $f,rf,r^2f$ in $B_n(A)$ whose ratio has positive
+residue degree. It need not be an optimal hitting set, since middle or last terms may be
+removed instead, so the theorem does not give $\Delta_L(A)=1-w$.
+
+\begin{theorem}[Product criterion for eligible rings; \stU]\label{gpp:thm:cubezero}
+Let $(A_i,\gppm_i)$ be eligible finite local rings, with $q_i$, $Q_i$ and $w_i=w(A_i)$ as
+above, $\gamma_i=(1-q_i^{-1})^2$ and $R_h=\prod_{i=1}^hA_i$. For every finite $h$ and
+$L\ge2$,
+\[
+ \prod_{i=1}^h(1-w_i)\le\Delta_L(R_h)\le\gppE\,\alpha_K,\qquad K=\sum_{i=1}^hX_i,
+\]
+with independent Bernoulli variables $X_i$ of parameters $3\gamma_iw_i$ and $\alpha_k$ as in
+\cref{gpp:thm:local}. In particular $\gamma_iw_i\le1-\Delta_L(A_i)\le w_i$. The limit of
+$\Delta_L(R_h)$ as $h\to\infty$ exists, and it is positive if and only if
+$\sum_iw_i<\infty$. For an arbitrary sequence of finite products of eligible rings, with
+$W=\sum_iw_i$ for each product and $q_*$ the least residue field size, $\Delta_L\to0$
+exactly when $W\to\infty$, $\Delta_L\to1$ exactly when $W\to0$, and
+$1-\Delta_L=W+O(W^2+W/q_*)$ with an absolute constant.
+\end{theorem}
+
+\begin{proof}
+\emph{Deletion.} The set $B_n(A)\setminus(D_n\cup\set{f:\bar f=0})$ is admissible: a
+polynomial over a finite local ring is a unit exactly when its reduction is a nonzero
+constant, so in a pattern \eqref{gpp:eq:pattern} with nonzero reductions the ratio has
+positive residue degree; one of $a,b,a+b$ is even, and the earlier term of the
+corresponding pair is a square start, hence in $D_n$ by \cref{gpp:thm:squarestart}. Its
+fraction is at least $1-w-q^{-(n+1)}$.
+
+\emph{Packing.} For $n\ge3$ take all $f$ with arbitrary $f_0,\dots,f_{n-2}$, where $f_0$
+and $f_{n-2}$ are units, and $s\in S$, and put $f_n=sf_{n-2}$, $f_{n-1}=sf_{n-3}$. Fix a
+square root $c(s)\in\gppm$ of each $s$, and let $r=x+c(s)(x^2+1)+sx^3$. Then
+$r^2=x^2+s(x^4+1)$, the coefficients of $r^2f$ in degrees $n+2,n+1$ cancel, and the only
+possible term of $rf$ above degree $n$ has coefficient $f_n+sf_{n-2}=0$. The residue
+degrees $n-2,n-1,n$ separate the positions. From $y=rf$ or $z=r^2f$ one recovers $\bar f$,
+then $s$ from $y_0^2=s\bar f_0^2$ or $z_0=s\bar f_0$, hence $r$; multiplication by $r$ is
+injective, by induction on the powers of $\gppm$ starting from $x\bar h=0$. These are
+$Q^{n+1}\gamma w$ pairwise disjoint triples.
+
+\emph{Products.} With these deletion sets and packings in place of those for square-zero
+rings, the gluing identity \eqref{gpp:eq:glueproduct}, the product construction and the
+density Hales--Jewett argument in the proof of \cref{gpp:thm:local} apply verbatim, and
+give the two bounds, the single-factor bounds with $\alpha_1=2/3$, and the existence of
+the limit. Since $w_i\le(q_iQ_i)^{-1}\le1/4$ and $\gamma_i\ge1/4$, convergence of
+$\sum_iw_i$ makes the product positive, and divergence gives $\gppE K\to\infty$ and
+$\gppE\alpha_K\to0$ by Chebyshev's inequality. The same estimates are uniform in the
+factors: $\Delta_L\ge e^{-4W/3}$ and
+$\frac13\bigl(1-\prod_i(1-3\gamma_iw_i)\bigr)\le1-\Delta_L\le W$, whose left side is at least
+$(1-e^{-3W/4})/3$ and equals $\sum_i\gamma_iw_i+O(W^2)$; and $1-\gamma_i\le2/q_i$.
+\end{proof}
+
+\begin{theorem}[Equal layer sizes, opposite limits; \stU]\label{gpp:thm:opposite}
+For every power $q$ of two there are sequences $(A_i)$, $(C_i)$ of local $\F_q$-algebras of
+characteristic two with $\gppm^3=0\ne\gppm^2$, such that corresponding factors have the same
+cardinality, residue field and dimensions of all radical layers, and $\gppm^2$ is the full
+image of multiplication in both, while for every $L\ge2$
+\[
+ \lim_{h\to\infty}\Delta_L(A_1\times\dots\times A_h)>0,\qquad
+ \lim_{h\to\infty}\Delta_L(C_1\times\dots\times C_h)=0 .
+\]
+\end{theorem}
+
+\begin{proof}
+For $\rho\ge1$ take the basis $1,x_1,\dots,x_\rho,y_1,\dots,y_\rho,z_1,\dots,z_\rho$; in
+$A(\rho)$ set $x_iy_i=z_i$, and in $C(\rho)$ set $x_i^2=z_i$, all other products of
+nonidentity basis elements being zero. All triple products of radical elements vanish, so
+both are commutative and associative, with $\gppm^2=\langle z_i\rangle$,
+$\dim\gppm/\gppm^2=2\rho$ and $Q=q^{1+3\rho}$. In $A(\rho)$ every radical element squares to
+zero, while in $C(\rho)$ squaring maps onto $\gppm^2$, by perfection of $\Fq$; so
+$w(A(\rho))=q^{-2-6\rho}$ and $w(C(\rho))=q^{-2-5\rho}$. Using $q^{5\rho}$ copies of the
+ring of rank $\rho$, for $\rho=1,2,\dots$, the sums of the $w$ are $q^{-2}/(q-1)$ and
+$\infty$; apply \cref{gpp:thm:cubezero}. The first limit is at least
+$\exp[-4/(3q^2(q-1))]$.
+\end{proof}
+
+A second family has layer dimensions $(1,h+1,h)$: on $k\oplus V\oplus W$ with bases
+$e_0,\dots,e_h$ and $w_1,\dots,w_h$ put $e_0e_j=w_j$, and in the second algebra also
+$e_j^2=w_j$; then $\abs S=1$ and $\abs S=q^h$, and with $h_i=\ceil{\tfrac27\log_q(i+1)}$ the
+losses are of orders $(i+1)^{-8/7}$ and $(i+1)^{-6/7}$. Exhaustive checks at $n=3$ of the
+square-start criterion and of the packings for six rings of order at most $16$, among them
+$\Z/4\Z$, $\F_2[t]/(t^3)$ and $(\Z/4\Z)[t]/(2t,t^3)$, are recorded in
+\gpifile{radical_square_density_2026-11-27/checks.txt}
+\gpifile{positive-fourier-zeros/ring_density/check_rings.txt}
+
 \subsection{Finite coefficient rings: square-zero algebras and natural density}\label{gpp:sec:squarezero}
 {\raggedright\sources{grh_method_transfers_research; grh_method_transfers_graph_towers_and_finite_rings}}
 
@@ -2057,7 +2207,7 @@ two orders, enumerates all binary cycle supports for $108$ small pairs of size a
 window, and tests explicit attaining supports against the signed-power predicate.\par}
 
 \subsection{Coefficient collisions and higher-dimensional anticodes}\label{gpp:sec:lattice}
-{\raggedright\sources{grh_method_transfers_2026-11-26}}
+{\raggedright\sources{grh_method_transfers_2026-11-26; anticodes-egyptian-fractions-and-li-spectra}}
 
 In \cref{gpp:lem:digits} a prescribed family of coefficient relations between exponents
 is excluded. One may change which relations must be excluded and ask how small an
@@ -2083,8 +2233,9 @@ coordinates and using stars and bars on each sign gives its cardinality
 \[
  M_n(D)=\sum_{j=0}^{\min(n,P)}\binom nj\binom Pj\binom{Q+n-j}{n-j}.
 \]
-Kova\v{c}evi\'c conjectures that $a_n(D)=M_n(D)$ for all $n,D$ and proves this for $n=3$
-\cite[\S7]{Kovacevic2026Isodiametric}.
+Kova\v{c}evi\'c conjectures that $a_n(D)=M_n(D)$ for all $n,D$
+\cite[Conjecture~7.1]{Kovacevic2026Isodiametric} and proves this for $n=3$
+\cite[Theorem~1.1]{Kovacevic2026Isodiametric}.
 
 \begin{theorem}[Exact anticodes in ranks four and five; computer-assisted; \stU]\label{gpp:thm:anticodes}
 The values of $a_4(D)$ for $2\le D\le10$ and of $a_5(D)$ for $2\le D\le6$ are
@@ -2153,6 +2304,257 @@ Nonnegative translations give all larger sums. The classification of equality th
 gives the threshold $K\ge mQ+P-Q$, since $P\ge Q$ and $m\ge2$.
 \end{proof}
 
+\paragraph{Diameter three in every rank.}
+In the rest of this subsection $N=n+1$, $\sigma(z)=\sum_{i=1}^Nz_i$, and $\norm{\cdot}_1$ is
+the $\ell^1$ norm on $\Z^N$, so that $d(z,w)=\frac12\norm{z-w}_1$. For $c\in\Z^N$, not
+necessarily in $A_n$, put $\gppB_j(c)=\set{y\in A_n:\norm{y-c}_1\le j}$. If
+$\sigma(c)=Q-P$, the displacements $y-c$ of $\gppB_D(c)$ have positive mass at most $P$ and
+negative mass at most $Q$, so $\gppB_D(c)$ is a translate of $S_n(P,Q)$, a \emph{balanced
+section}; $\sigma(c)=P-Q$ gives its negative. For $D=3$ one has
+$M_n(3)=N+N\binom N2$.
+
+\begin{theorem}[The isodiametric problem at diameter three; computer-assisted; \stU]\label{gpp:thm:diamthree}
+For every $n\ge1$, $a_n(3)=N+N\binom N2$, and every maximizing family is a section
+$\gppB_3(c)$ with $\sigma(c)=\pm1$.
+\end{theorem}
+
+\begin{proof}
+A family of diameter $d<3$ can be enlarged: for a pair $x,y$ at distance $d$ choose a root
+$u=e_i-e_j$ with $i$ at a positive and $j$ at a negative coordinate of $y-x$ (any $i\ne j$
+if $x=y$); then $y+u$ is at distance $d+1$ from $x$ and at most $d+1$ from every member. So
+it suffices to bound families $\mathcal F$ of exact diameter three. Translate a diametral
+pair to $0,h$. The positive and negative parts of $h$ have mass three, of type $3$, $21$ or
+$111$, which gives six anchor types up to permutation and negation; let $s$ be the support
+size of $h$. Every member $y$ has $\norm y_1,\norm{y-h}_1\le6$, so
+$2\sum_{i\notin\supp h}\abs{y_i}\le\norm y_1+\norm{y-h}_1-\norm h_1\le6$, and the number
+$k(y)$ of nonzero coordinates of $y$ off $\supp h$ is at most three.
+
+Fix $m=15$. For $N\ge m$ keep the $s$ anchor coordinates and choose $m-s$ of the other
+$N-s$ coordinates uniformly; keep the members supported on the chosen $m$ axes. A member
+with $k$ free axes survives with probability $\binom{m-s}k/\binom{N-s}k$, so the expected
+value over the surviving family of
+\[
+ w_k=\frac{\binom{N-s}k}{\binom{m-s}k}=\sum_{j=0}^3\binom{N-m}j\,b_j(k),\qquad
+ b_j(k)=\frac{\binom{m-s}{k-j}}{\binom{m-s}k},
+\]
+equals $\abs{\mathcal F}$, by Vandermonde's identity. As $M(N)=M_n(3)$ is cubic in $N$,
+$M(N)=\sum_{j=0}^3\binom{N-m}jd_j$ with $d_j=\sum_{i\le j}(-1)^{j-i}\binom jiM(m+i)$, that is
+$(d_0,d_1,d_2,d_3)=(1590,346,47,3)$. A finite computation proves: \emph{for every
+diameter-three anticode $E\subset A_{m-1}$ containing $0,h$ and each $0\le j\le3$,
+$\sum_{y\in E}b_j(k(y))\le d_j$; and for $2\le N\le15$ every such anticode has at most
+$M(N)$ points, with equality only for a balanced section.} Since all multipliers
+$\binom{N-m}j$ are nonnegative, every restriction has weighted size at most $M(N)$, and
+taking expectations gives $\abs{\mathcal F}\le M(N)$ for $N\ge m$.
+
+At equality the $j=0$ inequality is an equality for every restriction, so every
+restriction is a full balanced section. A covering centre of the anchors is at $\ell^1$
+distance exactly three from both and lies on their common shortest paths, as
+$\norm h_1=6$, so it vanishes off the anchor axes. Two sampled sets differing in one axis
+share at least three free axes; if their centres $c\ne c'$ differed, a displacement $v$ of
+three unit entries on these axes with sum $-\sigma(c)$ would give a point $c+v$ of both
+restrictions with $\norm{c+v-c'}_1=3+\norm{c-c'}_1>3$. Single exchanges connect all sampled
+sets, and every member survives some restriction since $k(y)\le3$, so $\mathcal F$ lies in
+one balanced section and fills it.
+
+The finite statement is checked in exact integer arithmetic. For each anchor type all
+$y\ne0,h$ with $\norm y_1,\norm{y-h}_1\le6$ are enumerated by tracking the four remaining
+positive and negative budgets of $y$ and $y-h$; they are joined when their $\ell^1$
+distance is at most six, so that cliques together with the anchors are anticodes. Encoding
+each point by signed coordinate levels as a token set, adjacency is
+$\abs{Y\cap Z}\ge(\abs Y+\abs Z-6)/2$. For each $j$ the weights are made integral by their
+least common multiple, and a branch-and-bound search tests for a clique of weight one more
+than the bound: an independent set in the candidate pool, whose residual demands are reduced
+by a common amount, pays at most that amount to any clique, and the search branches on the
+first vertex of positive residual demand that a clique uses. For equality the search keeps
+the balanced centres through the anchors still compatible with the chosen vertices; no
+leaf of target weight lacks a compatible centre. An independent implementation with a
+different encoding repeats all $90$ size and lifting bounds and all $72$ equality tests:
+\gpifile{anticodes-egyptian-fractions-and-li-spectra/anticodes/check_diameter_three.py}
+\gpifile{anticodes-egyptian-fractions-and-li-spectra/anticodes/diameter-three-verification.txt}
+\gpifile{anticodes-egyptian-fractions-and-li-spectra/anticodes/verify_diameter_three.cpp}
+\gpifile{anticodes-egyptian-fractions-and-li-spectra/anticodes/independent_verification.txt}
+\end{proof}
+
+This is the case $D=3$ of Kova\v{c}evi\'c's conjecture, in every rank and with the
+maximizers classified; for $n=4,5$ it is the column $D=3$ of \cref{gpp:thm:anticodes}. For
+$N=8$ the maximum is $232$ and for $N=44$ it is $41668$. Schubr proves the unrestricted
+conjecture when $n\ge256D^2$, and in every fixed rank for sufficiently large $D$
+\cite[Theorems~3.2--3.4]{Schubr2026Maximum}, and the diameter-three case in ranks $4,5,6$ and in
+all ranks $n\ge44$ \cite[Theorem~3.6]{Schubr2026Maximum}; \cref{gpp:thm:diamthree} adds the ranks
+$7\le n\le43$, with all equality cases in every rank. The sampling identity has $D+1$ terms at
+diameter $D$, since the anchors leave at most $D$ units of mass on free axes; whether it
+settles larger diameters at a feasible calibration rank is open.
+
+\begin{corollary}[Multisets with defect three; \stU]\label[corollary]{gpp:cor:defectthree}
+Let $N\ge2$. A family of $K$-multisets on $N$ symbols in which any two members share at
+least $K-3$ elements, counted with multiplicity, has at most $N+N\binom N2$ members, with
+equality possible if and only if $K\ge N+1$. If $N\ge48$, then for every $K\ge3$ the largest
+such family has exactly
+\[
+ \max\Bigl\{\binom{N+2}3,\ N+\min(N,K-1)\binom N2\Bigr\}
+\]
+members: the first term counts the multisets containing a fixed $(K-3)$-multiset, the second
+those sharing at least $K-2$ elements with a fixed $(K-1)$-multiset of support
+$\min(N,K-1)$. The first term is larger for $3K<N+7$, the second for $3K>N+7$.
+\end{corollary}
+
+\begin{proof}
+For two multiplicity vectors of sum $K$ the intersection is $K$ minus their distance, so the
+first bound is \cref{gpp:thm:diamthree}. In the orientation with budgets $(2,1)$ the
+centre has sum $K-1$ and coordinate minima $c_i-1$ on the section, so the section lies in
+the nonnegative orthant exactly when all $c_i\ge1$, possible exactly when $K\ge N+1$; the
+reverse orientation needs $K\ge2N-1$, and the classification of equality covers all cases.
+
+Let $N\ge48$ and put $S=\binom{N+2}3$ and $H=N+\min(N,K-1)\binom N2$, the sizes of the two
+constructions. An optimal family may be taken in a section of radius three. For $K=3$ all
+multisets are allowed. For $4\le K\le N-3$ the theorem of F\"uredi, Gerbner and Vizer
+\cite[Theorem~1.8]{FurediGerbnerVizer2015Discrete}, with its extremal families
+\cite[Theorem~1.4 and the display after it]{MeagherPurdy2016Intersection}, gives a maximizer
+requiring intersection at least $t+j$ with a fixed $(t+2j)$-multiset, $t=K-3$,
+$0\le j\le3$, which is a radius-three section. For $K\ge N-2$, Schubr's comparison with
+Frankl's stability theorem \cite[Proposition~3.5]{Schubr2026Maximum} bounds every family
+lying in no such section by
+$\Phi(3N,3)=1+\sum_{i=0}^3\binom{3N}i-\binom{3N-4}3=(45N^2-69N)/2+22$, and
+$H\ge N+(N-3)\binom N2$ exceeds this: for $N=48+z$ the difference is
+$z^3/2+95z^2/2+1141z+602$.
+
+It remains to optimize over sections. A centre with a negative entry wastes a unit of
+radius on the orthant, leaving at most $1+2N+2N^2<S$ points, and the same holds when the
+parity of the centre sum leaves usable radius at most two. For nonnegative centres the
+positive and negative budgets are $(3,0)$, $(2,1)$, $(1,2)$ or $(0,3)$. The first and last
+give at most $S$, and the second at most $H$ by the count above. For $(1,2)$ let the centre,
+of sum $K+1$, have $v$ positive entries, $u$ of them at least two; the section has
+$v+(N-2)\binom v2+(N-1)u$ points, maximal for $u=\min(v,K+1-v)$ and then for
+$v=\min(N,K+1)$, as increasing $v$ gains at least $1+(N-2)v-(N-1)\ge0$. For $K\le N-1$ the
+difference from $H$ is $(K-1)(N-2)(N-K-1)/2\ge0$, at $K=N$ it is $(N-1)(N-2)/2$, and for
+$K\ge N+1$, $H=M(N)$ is the unrestricted maximum. At $3K=N+7$ the two terms coincide.
+\end{proof}
+
+Meagher and Purdy conjecture that for all $m$, $k$ and $t$ the largest $t$-intersecting
+family of $k$-multisets on $m$ symbols consists of the multisets containing at least $t+r$
+elements of a fixed $(t+2r)$-multiset, for some $0\le r\le k-t$, with support of size
+$\min(m,t+2r)$ \cite[Section~5]{MeagherPurdy2016Intersection}; their theorem covers
+$m\ge2k-t$. \Cref{gpp:cor:defectthree} gives the conjectured maximum for $t=k-3$ and every
+$m\ge48$, attained by such a family with $r\in\set{0,1}$ and centre multiplicities as even as
+possible on the largest support; this includes the range $k>m-3$ outside $m\ge2k-t$. It
+does not classify all maximizers.
+
+\paragraph{The largest anticodes outside every ball section.}
+Let $\tau_n(D)$ be the largest size of an anticode of diameter $D$ in $A_n$ contained in no
+$\gppB_D(c)$, $c\in\Z^N$, or zero if there is none. Choose $c$ with $\sigma(c)=Q-P$ and $h$
+with $P+1$ entries $+1$, $Q+1$ entries $-1$ and the others zero, put $x=c+h\in A_n$, and
+\begin{equation}\label{gpp:eq:outmodel}
+ \mathcal H(c,x)=\set x\cup\bigl(\gppB_D(c)\cap\gppB_{2D}(x)\bigr);
+\end{equation}
+other choices give equivalent families under translation in $A_n$ and permutation of
+coordinates. It has diameter at most $D$.
+
+\begin{theorem}[Anticodes outside ball sections; \stU]\label{gpp:thm:outside}
+Fix $D\ge2$. For all sufficiently large $n$, $\tau_n(D)=\abs{\mathcal H(c,x)}$. If $D\ge3$,
+every maximizer is of the form \eqref{gpp:eq:outmodel} up to permutation, translation in
+$A_n$ and negation. At $D=2$ the value is $4N-6$, and up to these symmetries the only other
+maximizer is
+\[
+ \set{b+e_i:1\le i\le N}\cup\set{b+e_i+e_j-e_k:\ i<j\text{ in }\set{1,2,3},\ k\notin\set{i,j}},
+ \qquad\sigma(b)=-1 .
+\]
+For every fixed $D$,
+\[
+ \tau_n(D)=\frac{P(P+1)+Q(Q+1)}{P!\,Q!}\,N^{D-1}+O_D(N^{D-2}),
+\]
+and for sufficiently large $N$, with $G(u,v)=1+u/(1-u)+v/(1-v)$ and $[u^av^b]$ denoting a
+coefficient,
+\begin{equation}\label{gpp:eq:outexact}
+ \tau_n(D)=1+M_n(D)-[u^Pv^Q]\frac{G(u,v)^{N-D-2}}{(1-v)^{P+1}(1-u)^{Q+1}},\qquad
+ M_n(D)=\sum_{j=0}^Q[u^{P-j}v^{Q-j}]\,G(u,v)^N .
+\end{equation}
+In particular $\tau_n(3)=4N^2-15N+22$ for large $N$. For $D\ge3$ there is $\delta_D>0$ such
+that, for large $N$, families escaping every section and every copy of
+\eqref{gpp:eq:outmodel} have at most $(L_D-\delta_D)N^{D-1}$ members, $L_D$ being the leading
+coefficient above.
+\end{theorem}
+
+Since $M_n(D)=N^D/(P!Q!)+O_D(N^{D-1})$, the leading coefficient of $N\tau_n(D)/M_n(D)$ is
+$P(P+1)+Q(Q+1)$. This is consistent with Schubr's bounds, which put $\tau_n(D)$ between
+constant multiples of $D^2M_n(D)/n$ \cite[Theorem~3.3]{Schubr2026Maximum}.
+
+\begin{proof}
+Constants depend only on $D$; put $r=D-1$. For $b\in\Z^N$ with $\sigma(b)\equiv r\pmod2$,
+$u=(r-\sigma(b))/2$ and $v=(r+\sigma(b))/2$, one has
+$\abs{\gppB_r(b)}=N^r/(u!v!)+O(N^{r-1})$ if $u,v\ge0$, by counting $u$ distinct positive and
+$v$ distinct negative unit steps, and the section is empty otherwise; the largest leading
+coefficient is $B_r=(\floor{r/2}!\ceil{r/2}!)^{-1}$.
+
+\emph{Extracting centres.} Let $\mathcal F$ be an anticode of diameter $D$ in no
+$\gppB_D(c)$. There is a set $K$ of $O(1)$ centres such that all but $O(N^{D-2})$ members
+lie in $\bigcup_{b\in K}\gppB_r(b)$, every member has $\norm{y-b}_1\le D+1$ for each $b\in K$,
+all $\sigma(b)\equiv r\pmod2$, and distinct centres are at $\ell^1$ distance exactly two.
+Indeed, translate a member to $0$ and encode each $y$ as the set of $\norm y_1\le2D$ tokens
+(sign, coordinate, level $1,\dots,\abs{y_i}$), so that symmetric difference is $\ell^1$
+distance; the universe has at most $4DN$ tokens. Fix $R=6D+2$ and, for each size $k\le2D$,
+build a tree from the empty core $C$: among members containing $C$ with residual sets of
+size $j=k-\abs C$, stop if $j\le D-2$ (these account for $O(N^{D-2})$ members); record $C$ if
+there are $R$ pairwise disjoint residual sets; otherwise branch on the at most $2DR$ tokens
+of a maximal disjoint collection, which meets every residual set. At a recorded node $C$
+encodes a vector $b$, and each $y\in\mathcal F$ misses one of the $R$ witnesses' residuals,
+so $\norm{y-b}_1+j\le2D$; two witnesses give $j\le D$, and $j=D$ would put $\mathcal F$ in
+$\gppB_D(b)$; so $j=r$. For two recorded nodes choose suitably disjoint witnesses to get
+$2r+\norm{b-b'}_1\le2D$, and parity gives distance at least two.
+
+\emph{Shape of the centres.} Mutually distance-two points of $\Z^N$ either are unit
+neighbours of one integer vector (a star), or are four points $b$, $b+u+v$, $b+u+w$,
+$b+v+w$ for signed unit vectors $u,v,w$ on distinct axes: after translating one point to
+zero the others are pairs of signed steps with pairwise intersections of size one, and
+without a common step only this configuration occurs.
+
+\emph{The model.} $\mathcal H(c,x)$ contains $\gppB_r(c+\epsilon)$ for each of the $D+2$
+signed steps $\epsilon$ of $h$, whose budgets are $(P-1,Q)$ for positive and $(P,Q-1)$ for
+negative steps, with overlaps $O(N^{r-1})$, so it has at least $L_DN^r-O(N^{r-1})$ points,
+\[
+ L_D=\frac{P+1}{(P-1)!Q!}+\frac{Q+1}{P!(Q-1)!}=\frac{P(P+1)+Q(Q+1)}{P!Q!} .
+\]
+For large $N$ it escapes every section: for each centre $c+\epsilon$ take $3D+2$ disjointly
+supported displacements of length $r$; a covering centre $z$ then satisfies
+$\norm{z-c-\epsilon}_1\le1$ for every $\epsilon$, so $z=c$, but $\norm{x-c}_1=D+2$.
+
+\emph{Classification.} In the star case let $c$ be the common neighbour; an outsider $x$
+has $\norm{x-c}_1=D+2$ by parity, and every direction $b-c$ is a signed step towards $x$.
+If $x-c$ has positive and negative masses $A,B$ with $A+B=D+2$, put $a=A-1$, $b=B-1$; the
+available coefficient is at most $\frac A{(A-2)!(B-1)!}+\frac B{(A-1)!(B-2)!}
+=\frac{a(a+1)+b(b+1)}{a!b!}$, uniquely maximized at $\set{a,b}=\set{P,Q}$, since replacing
+$(a,b)$, $a\ge b\ge1$, by $(a+1,b-1)$ multiplies it by $b(S+2(a-b+1))/((a+1)S)<1$ for
+$S=a(a+1)+b(b+1)$. Reaching $L_D$ needs all $D+2$ directions and entries $0,\pm1$ in $x-c$,
+and any other outsider points in the same directions, so equals $x$: the family lies in
+\eqref{gpp:eq:outmodel}. In the tetrahedral case the coefficient is at most
+$4B_r<L_D=2(\floor{D/2}+1)B_r$ for $D\ge4$; for $D=3$ equality would need all four centre
+sums to vanish, which is impossible because two of the steps have the same sign. The finitely
+many possible coefficients and the uniform errors exclude every smaller coefficient for
+large $N$; maximality forces equality, and the gap gives $\delta_D$.
+
+\emph{Diameter two.} A tetrahedral configuration ties $L_2=4$ only if all its centres have
+sum $\pm1$; after reflection the sums are $-1,1,1,1$ with centres $b$ and $b+e_i+e_j$ for the
+pairs from three axes. For $y\in\mathcal F$, $z=y-b$ has sum one and norm at most three, so
+$z=e_k$ or $z=e_i+e_j-e_k$ with $k\notin\set{i,j}$, which is the displayed family; it is the
+union of four radius-one sections with centres at mutual distance two, it escapes every
+section for large $N$ because no point is within one of all four centres, and it has
+$N+3(N-2)=4N-6$ points. The star model at $D=2$ has $2+4(N-1)-4=4N-6$ points and is
+inequivalent to it.
+
+\emph{Exact count.} The coefficients of $G$ record a signed coordinate with positive and
+negative masses marked. Points of $\gppB_D(c)$ at distance at most $D-2$ from $c$ are
+compatible with $x$, and a boundary point $c+z$ is compatible exactly when some coordinate
+of $z$ has the sign of $h$ at a nonzero position of $h$; this gives
+\eqref{gpp:eq:outexact}. At $D=3$ the section has $N$ points of norm one and $N\binom N2$ of
+norm three about $c$, and those of norm three with the negative coordinate off the
+negative positions of $h$ must have a positive coordinate at a positive position of $h$;
+counting gives $4N^2-15N+22$.
+\end{proof}
+
+The least rank from which the classification of \cref{gpp:thm:outside} holds, and whether
+it holds under a hypothesis $n\ge CD^2$, are open. The formula \eqref{gpp:eq:outexact} and
+the value at $D=3$ are checked against enumerations of the models for small parameters in
+\gpifile{anticodes-egyptian-fractions-and-li-spectra/anticodes/model-verification.txt}
+
 \begin{proposition}[Approximation in every fixed rank; \stU]\label[proposition]{gpp:prop:anticodeasymptotic}
 For every fixed $n$, $a_n(D)=M_n(D)+O_n(D^{n-1})$.
 \end{proposition}
@@ -2210,7 +2612,7 @@ property. A diameter-perfect lattice code at $D=3$ would have index $a_4(3)=55$.
 \end{proof}
 
 \subsection{Open questions}\label{gpp:sec:open}
-{\raggedright\sources{grh-methods-polynomial-density; grh-progression-densities-and-cubic-prime-race; mcnew-density-and-dirichlet-grh; grh_method_transfers; grh_method_transfers_graph_towers_and_finite_rings; grh_method_transfers_research; dirichlet-grh-research; exponent_seven_and_grh_transfers; mcnew_counterexample_and_grh_transfers; grh_method_transfers_2026-11-26}}
+{\raggedright\sources{grh-methods-polynomial-density; grh-progression-densities-and-cubic-prime-race; mcnew-density-and-dirichlet-grh; grh_method_transfers; grh_method_transfers_graph_towers_and_finite_rings; grh_method_transfers_research; dirichlet-grh-research; exponent_seven_and_grh_transfers; mcnew_counterexample_and_grh_transfers; grh_method_transfers_2026-11-26; radical_square_density_2026-11-27; positive-fourier-zeros; anticodes-egyptian-fractions-and-li-spectra}}
 
 \begin{question}[The size of $\beta_q-m_q$]\label{gpp:q:beta}
 Determine $\beta_q$. For $q=2$ the results above give
@@ -2232,12 +2634,17 @@ requires avoiding collinear midpoint triples also in mixed directions.
 \end{question}
 
 \begin{question}[Radicals of higher nilpotence]\label{gpp:q:cube}
-For finite local rings with $\gppm^3=0$ and $\gppm^2\ne0$, which invariant controls the
-loss of density? The elimination \eqref{gpp:eq:eliminate} then leaves a term in the
-second radical layer; whether its rank or its multiplication law enters the criterion is
-the first case beyond \cref{gpp:thm:local}. More generally, classify the growing products
-of arbitrary finite local rings with positive limiting density, and determine the
-extremal densities for general finite coefficient rings.
+In residue characteristic two with $2\gppm=0$ and $\gppm S=0$, in particular for all local
+rings of characteristic two with $\gppm^3=0$, the loss is controlled by the size of the image
+$S$ of squaring on $\gppm$, and the multiplication law, not the layer sizes, decides
+positivity of the limit (\cref{gpp:thm:cubezero,gpp:thm:opposite}). Which invariant
+controls the loss for $\gppm^3=0\ne\gppm^2$ in odd residue characteristic, where the
+elimination \eqref{gpp:eq:eliminate} leaves a term in the second radical layer, and in
+residue characteristic two when $2\gppm\ne0$ or $\gppm S\ne0$? Determine $\Delta_L(A)$ for
+a single eligible ring, where \cref{gpp:thm:cubezero} leaves a factor $(1-q^{-1})^2$. More
+generally, classify the growing products of arbitrary finite local rings with positive
+limiting density, and determine the extremal densities for general finite coefficient
+rings.
 \end{question}
 
 \begin{question}[Products of a fixed field]\label{gpp:q:decay}
@@ -2272,9 +2679,11 @@ on which to test the remaining congruences.
 \end{question}
 
 \begin{question}[Anticodes in $A_n$]\label{gpp:q:anticodes}
-Is $a_n(D)=M_n(D)$ for all $n\ge4$ and all $D$, with the translates of the balanced
-simplex difference and of its negative as the only extremal families?
-\Cref{gpp:prop:anticodeasymptotic} gives only the leading term.
+Is $a_n(D)=M_n(D)$ for all $n\ge4$ and all $D\ge4$, with the translates of the balanced
+simplex difference and of its negative as the only extremal families? This holds at $D=3$
+in every rank (\cref{gpp:thm:diamthree}), and the equality $a_n(D)=M_n(D)$ holds for
+$n\ge256D^2$ and for large $D$ in each fixed rank \cite[Theorems~3.2--3.4]{Schubr2026Maximum}. \Cref{gpp:prop:anticodeasymptotic} gives
+the leading term in general.
 \end{question}
 
 \begin{question}[Polynomial rings]

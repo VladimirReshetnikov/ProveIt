@@ -1,0 +1,190 @@
+\section{Finite trace recovery}\label{sec:trace}
+
+\subsection{The source contract}
+
+Write \(T=T^+\), \(T^*=T^-\), and \(e\) for the compact averaging operator.
+The source predicate \code{LineRelation d c A Tp Tm e} provides
+\begin{equation}\label{eq:line}
+ d>0,\qquad c>0,\qquad e^2=e,\qquad
+ TT^*=d(\Id+ce),\qquad AT=TA,\qquad AT^*=T^*A.
+\end{equation}
+Its existing trace-recovery theorem compares two such systems from
+\[
+ \tr(A^{l+1}T^{j+1})=\tr(A'^{\,l+1}T'^{\,j+1})
+ \qquad(l,j\in\N).
+\]
+It passes to generalized eigenspaces of \(A\), determines characteristic polynomials
+of the restricted raising operators, reads off determinant norms, recovers ranks of
+the averaging projector, and reassembles the trace.
+
+The following theorem needs a strictly smaller collection of moments.
+
+\begin{theorem}[Finite positive moments suffice]\label{thm:finite-trace}
+Let \(V,V'\) be finite-dimensional complex inner-product spaces. Let
+\((A,T,e)\) and \((A',T',e')\) satisfy \eqref{eq:line} with the same positive
+numbers \(d,c\). Let
+\[
+ S=\spec(T)\cup\spec(T'),\qquad s=\#S,
+\]
+where eigenvalues are counted distinctly in \(S\). If
+\begin{equation}\label{eq:finite-moments}
+ \tr(AT^j)=\tr(A'T'^{\,j})\qquad(1\leq j\leq s),
+\end{equation}
+then
+\[
+ \tr(Ae)=\tr(A'e').
+\]
+Both raising operators are invertible, so \(0\notin S\), and
+\(s\leq\dim V+\dim V'\). Neither raising operator is required to be normal
+or diagonalizable.
+\end{theorem}
+
+The caller need not compute \(S\). Providing the moments through
+\(\dim V+\dim V'\), or providing all positive moments with only one index,
+is sufficient. Thus an implementation can initially retain a convenient
+unbounded positive-power premise while removing all higher powers of \(A\).
+
+\subsection{A polynomial that represents the projector inside traces}
+
+For \(z\ne0\), set
+\begin{equation}\label{eq:log-weight}
+ f(z)=\frac{\log(\abs{z}^2/d)}{\log(1+c)}
+     =\frac{2\log\abs z-\log d}{\log(1+c)}.
+\end{equation}
+The denominator is nonzero because \(c>0\). Interpolate \(f\) on \(S\), together
+with the value \(0\) at the point \(0\). The resulting polynomial \(p\) satisfies
+\begin{equation}\label{eq:polynomial}
+ p(0)=0,\qquad \deg p\leq s,\qquad p(\lambda)=f(\lambda)\quad(\lambda\in S).
+\end{equation}
+Equivalently, for nonempty \(S\), one can use the explicit formula
+\[
+ p(X)=X\sum_{\lambda\in S}\frac{f(\lambda)}{\lambda}
+          \prod_{\substack{\mu\in S\\\mu\ne\lambda}}
+          \frac{X-\mu}{\lambda-\mu}.
+\]
+Only distinct nodes are interpolated. No Hermite interpolation of derivatives
+is needed, even when \(T\) has nontrivial Jordan blocks.
+
+\begin{lemma}[Spectral trace identity]\label{lem:spectral-certificate}
+Under \eqref{eq:line}, if \(p(\lambda)=f(\lambda)\) for every eigenvalue of \(T\),
+then
+\begin{equation}\label{eq:certificate}
+ \tr(Ae)=\tr\bigl(Ap(T)\bigr).
+\end{equation}
+\end{lemma}
+
+\begin{proof}
+First, \(e=(d^{-1}TT^*-\Id)/c\) is self-adjoint, hence an orthogonal projection.
+The identity \eqref{eq:line} shows that \(TT^*\) is positive definite, so \(T\)
+is invertible. In dimension zero these statements and all subsequent trace
+equalities have their usual empty-space interpretations.
+
+Suppose first that \(A=A^*\). Decompose \(V\) orthogonally into its eigenspaces
+\(H_\alpha\). Both \(T\) and \(T^*\) preserve every \(H_\alpha\), because both commute
+with \(A\). Thus each \(H_\alpha\) reduces \(T\); the adjoint of the restriction of
+\(T\) is the restriction of \(T^*\). The projection \(e\) also preserves the block.
+Put
+\[
+ n_\alpha=\dim H_\alpha,\qquad
+ r_\alpha=\rank(e|_{H_\alpha}),\qquad T_\alpha=T|_{H_\alpha}.
+\]
+Taking determinants of the restricted relation gives
+\begin{equation}\label{eq:block-det}
+ \abs{\det T_\alpha}^2
+       =d^{n_\alpha}(1+c)^{r_\alpha}.
+\end{equation}
+For the eigenvalues of \(T_\alpha\), now counted with algebraic multiplicity,
+\begin{align*}
+ \sum_\lambda f(\lambda)
+ &=\frac{2\sum_\lambda\log\abs\lambda-n_\alpha\log d}{\log(1+c)}\\
+ &=\frac{\log\abs{\det T_\alpha}^2-n_\alpha\log d}{\log(1+c)}
+ =r_\alpha.
+\end{align*}
+Every eigenvalue of a restriction to an invariant subspace belongs to the full
+spectrum of \(T\). Triangularizing \(T_\alpha\) gives
+\(\tr p(T_\alpha)=\sum_\lambda p(\lambda)=r_\alpha\).
+This uses algebraic multiplicities, not diagonalizability. Consequently,
+\[
+ \tr(Ap(T))=\sum_\alpha\alpha\,\tr p(T_\alpha)
+            =\sum_\alpha\alpha r_\alpha
+            =\tr(Ae).
+\]
+
+For general \(A\), write
+\[
+ A=H+iK,\qquad H=\frac{A+A^*}{2},\qquad K=\frac{A-A^*}{2i}.
+\]
+The two commutation hypotheses for \(A\), after taking adjoints, imply that
+\(A^*\) also commutes with \(T\) and \(T^*\). Hence \(H,K\) are self-adjoint
+and commute with both. Apply the preceding argument twice, using the same
+polynomial \(p\), and combine by complex linearity of trace.
+\end{proof}
+
+\begin{proof}[Proof of Theorem~\ref{thm:finite-trace}]
+Choose \(p\) simultaneously on the union of spectra as in \eqref{eq:polynomial}.
+Write \(p(X)=\sum_{j=1}^{s}b_jX^j\). Then
+\[
+ \tr(Ae)=\sum_{j=1}^{s}b_j\tr(AT^j)
+        =\sum_{j=1}^{s}b_j\tr(A'T'^{\,j})
+        =\tr(A'e').
+\]
+If \(S\) is empty, both spaces have dimension zero and the assertion is immediate.
+\end{proof}
+
+\subsection{Why the hypotheses and the trace formulation matter}
+
+The assertion is generally false as an equality of operators \(e=p(T)\).
+It is an equality of their trace pairings with the common commutant of
+\(T\) and \(T^*\). This distinction also prevents the invalid inference that
+\eqref{eq:line} makes \(T\) normal.
+
+Here is an exact example. Set
+\[
+ T=\begin{pmatrix}1&3/2\\0&1\end{pmatrix},\qquad
+ e=\begin{pmatrix}4/5&2/5\\2/5&1/5\end{pmatrix},
+ \qquad d=\tfrac14,\quad c=15.
+\]
+Then \(e^2=e\) and \(TT^*=\tfrac14(\Id+15e)\).
+The only eigenvalue of \(T\) is \(1\), so \(f(1)=1/2\), and
+\(p(X)=X/2\) is a valid zero-constant interpolant. But \(e\ne p(T)\).
+If
+\[
+ A=\begin{pmatrix}0&1\\0&0\end{pmatrix},
+\]
+then \(AT=TA\), while \(AT^*\ne T^*A\), and
+\[
+ \tr(Ae)=\tfrac25,\qquad \tr(Ap(T))=0.
+\]
+Thus the second commutation hypothesis cannot simply be discarded. The source
+\code{LineRelation} already supplies it.
+
+Nor does a single positive moment always suffice. With
+\[
+ T=\operatorname{diag}(1,2),\quad e=\operatorname{diag}(0,1),\quad
+ A=\operatorname{diag}(-2,1),\quad d=1,\quad c=3,
+\]
+one has \(\tr(AT)=0\) but \(\tr(Ae)=1\).
+The theorem retains enough moments for the number of distinct spectral nodes.
+The archive checks both examples exactly over \(\mathbb Q\).
+
+\subsection{The source-level gain}
+
+In \code{LevelCut}, keep the local operators and the same line relation.
+Replace the trace premise involving
+\[
+ \texttt{lineHecke}^{\,m+1}\cdot\texttt{offPlace}(a^{\,l+1})
+\]
+by one involving
+\[
+ \texttt{lineHecke}^{\,m+1}\cdot\texttt{offPlace}(a).
+\]
+The existing action identity specializes at \(l=0\).
+In \code{CuspidalComparison}, the original cuspidal test \(a\) remains present;
+the positive power of the auxiliary line operator still imposes the simple-zero
+condition on the support. The outer theorem
+\code{trace_eq_of_isCuspidalAt} can keep its existing signature.
+
+This replacement does not ask the global group algebra to be closed under adjoints.
+The decomposition \(A=H+iK\) occurs entirely inside the finite-dimensional
+linear-algebra lemma. That avoids an unnecessary new assumption on the
+adelic test-function algebra.

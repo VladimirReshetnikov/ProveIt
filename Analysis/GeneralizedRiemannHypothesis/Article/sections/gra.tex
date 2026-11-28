@@ -401,8 +401,9 @@ at most $L+3$, where $L\le(m+1)N_{\mathrm{st}}$ with $N_{\mathrm{st}}$ as in
 \eqref{gra:eq:states}. The computation itself requires only the first $L$
 shell sums after the reachable matrix has been built. This bound is very
 far from the truth in rank two, where the onset is at most logarithmic in
-the size of the voltages (\cref{gra:cor:logbound}); no polynomial bound for
-the running time is claimed.
+the size of the voltages (\cref{gra:cor:logbound}), and in every rank
+(\cref{gra:thm:onsetrank}); no polynomial bound for the running time is
+claimed.
 \end{remark}
 
 \subsection{Explicit towers: the examples of DuBose--Valli\`eres and of Kataoka}\label{gra:sec:explicit}
@@ -1034,7 +1035,7 @@ in accordance with the linear range $m\ge\max(3,p)$ of
 
 \subsection{The largest moment coefficient in rank two}\label{gra:sec:extremal}
 {\raggedright
-\sources{grh_transfers_lubin_tate_and_graph_towers; grh_transfer_extensions_2026-11-26; grh_method_transfers_graph_towers_and_finite_rings; short_tower_distributions_2026-11-27; five_step_graph_towers_2026-11-26; five_step_sharpness_2026-11-27; seven_step_graph_towers_2026-11-27; five_step_refinement_2026-11-27; sparse-padic-roots-and-graph-towers}
+\sources{grh_transfers_lubin_tate_and_graph_towers; grh_transfer_extensions_2026-11-26; grh_method_transfers_graph_towers_and_finite_rings; short_tower_distributions_2026-11-27; five_step_graph_towers_2026-11-26; five_step_sharpness_2026-11-27; seven_step_graph_towers_2026-11-27; five_step_refinement_2026-11-27; sparse-padic-roots-and-graph-towers; moment_rigidity_2026-11-27}
 }
 
 How divisible by $p$ can the spanning-tree count of a connected abelian
@@ -1175,6 +1176,217 @@ integral Laplacian determinant directly; see
 \grafiles{\artifact{grh_transfers_lubin_tate_and_graph_towers/checks/graph_checks.txt}\\
 \artifact{grh_transfer_extensions_2026-11-26/verification/graph_check.txt}}
 \end{example}
+
+\paragraph{Even step counts: rigidity at the moment barrier.}
+For even $m=2s\ge6$ the configurations reaching the barrier $t=s$ of
+\cref{gra:thm:extremal} can be classified, and this determines the maximum
+in a second congruence class and the leading slope at all large primes. The
+classification holds over any field $K$ of characteristic zero or greater
+than $4s$. Let $v_1,\dots,v_{2s}\in K^2$ span $K^2$, with zeros and
+repetitions allowed, let $R$ be the number of distinct lines through the
+origin containing nonzero steps, and let $n_\ell$ be the number of nonzero
+steps on the line $\ell$. If $M_1=\dots=M_{s-1}=0$ identically, then, since
+the binomial coefficients involved are invertible,
+\begin{equation}\label{gra:eq:mixed}
+ \sum_{i=1}^{2s}H(v_i)=0\qquad\text{for every homogeneous }H\in K[X,Y]_{2j},
+ \quad 1\le j<s .
+\end{equation}
+For $k\ge1$ let $E_k=\set{(H(v_1),\dots,H(v_{2s})):H\in K[X,Y]_k}\subseteq K^{2s}$,
+with the symmetric bilinear form $\langle a,b\rangle=\sum_ia_ib_i$.
+
+\begin{lemma}[Evaluation rank and isotropy]\label[lemma]{gra:lem:evalrank}
+Assume \eqref{gra:eq:mixed}. For $k\ge1$, $\dim E_k=\min(R,k+1)$. If $k+l$ is
+even and $2\le k+l\le2s-2$, then $E_k\perp E_l$; in particular $E_{s-1}$ is
+totally isotropic, and $E_{s-1}\perp\mathbf 1$ when $s$ is odd.
+\end{lemma}
+
+\begin{proof}
+At $v_i=c_iw_\ell$, with one representative $w_\ell$ per line, the
+evaluation is $c_i^kH(w_\ell)$, and zero steps give zero, so the rank is
+that of evaluation at $R$ distinct projective points. A nonzero binary
+form of degree $k$ has at most $k$ projective roots, and for $R\le k+1$
+products of linear forms give interpolants. Pairings are sums of
+evaluations of products, so \eqref{gra:eq:mixed} gives the orthogonality.
+\end{proof}
+
+\begin{lemma}[Number of radial lines]\label[lemma]{gra:lem:radial}
+Assume \eqref{gra:eq:mixed}. Then $R\le s$, with $R<s$ when $s$ is odd.
+If $2\le R\le s$, then $R=2$, $n_1=n_2=s$, there are no zero steps, and on
+each line the first $s-1$ power sums of the squared coefficients vanish.
+\end{lemma}
+
+\begin{proof}
+If $R\ge s$, then $\dim E_{s-1}=s$, and total isotropy in the
+nondegenerate space $K^{2s}$ gives $E_{s-1}=E_{s-1}^\perp$. For odd $s$ this
+puts $\mathbf1$ in $E_{s-1}$, contradicting $\langle\mathbf1,\mathbf1\rangle
+=2s\ne0$. For even $s\ge4$ and $R>s$, $E_1\perp E_{s-1}$ gives
+$E_1\subseteq E_{s-1}$, so there are forms $P,Q$ of degree $s-1$ with
+$P(v_i)=x_i$ and $Q(v_i)=y_i$. The form $YP-XQ$ of degree $s$ vanishes at
+$R>s$ projective points, so $P=XH$, $Q=YH$ with $H$ of degree $s-2$, and
+$H(v_i)=1$ at nonzero steps and $H(0)=0$. Since $s-2$ is even and positive,
+\eqref{gra:eq:mixed} gives $0=\#\set{i:v_i\ne0}$, a contradiction.
+
+Now let $2\le R\le s$, write the nonzero steps on line $\ell$ as
+$c_{\ell i}w_\ell$, and put $k_0=\floor{R/2}$. For $k_0\le j\le s-1$ the $R$
+forms $(u\cdot w_\ell)^{2j}$ are independent, since $R\le2j+1$, so
+$0=M_j(u)=\sum_\ell(u\cdot w_\ell)^{2j}\sum_ic_{\ell i}^{2j}$ gives
+$\sum_ic_{\ell i}^{2j}=0$ for these $j$ and every $\ell$. If a line has $d$
+distinct squared coefficients with multiplicities in $[1,2s]$, $d$
+consecutive vanishing power sums would make a Vandermonde system vanish on
+a vector with nonzero entries; hence $d>s-k_0$ and
+$n_\ell\ge s-\floor{R/2}+1$. For $R=3$ this gives at least $3s$ steps, and for
+$4\le R\le s$ at least $4(s-\floor{s/2}+1)>2s$. Hence $R=2$, each count is
+at least $s$, hence exactly $s$, and the vanishing extends to $1\le j<s$.
+\end{proof}
+
+\begin{theorem}[Classification at the barrier; \stU]\label{gra:thm:rigidity}
+Let $m=2s\ge6$ and let $K$ have characteristic zero or greater than $4s$.
+A spanning list of $m$ vectors in $K^2$ has $M_1=\dots=M_{s-1}=0$ if and
+only if it has the form
+\begin{equation}\label{gra:eq:block}
+ (\alpha_1e,\dots,\alpha_se,\ \beta_1f,\dots,\beta_sf),\qquad
+ \set{\alpha_i^2}=a^2\gramu_s,\quad \set{\beta_i^2}=b^2\gramu_s,
+\end{equation}
+with $e,f$ independent, $a,b\ne0$ and $\gramu_s$ the group of $s$-th roots of
+unity, of order $s$. For such lists the first nonzero moment is
+\[
+ M_s(u)=s\bigl(a^{2s}(u\cdot e)^{2s}+b^{2s}(u\cdot f)^{2s}\bigr).
+\]
+In particular no spanning list has $M_1=\dots=M_s=0$. Over $\F_p$ with
+$p>2m$ the form \eqref{gra:eq:block} exists if and only if $m\mid p-1$, so
+$t(S)=s$ exactly for these lists. Every spanning list of $2s\ge6$ vectors
+in $K^d$ with $d\ge3$ has one of $M_1,\dots,M_{s-1}$ nonzero.
+\end{theorem}
+
+\begin{proof}
+By \cref{gra:lem:radial} there are two blocks of length $s$. For the
+squared coefficients $z_i$ of a block, Newton's identities and the first
+$s-1$ vanishing power sums give $\prod_i(T-z_i)=T^s-c$ with $c\ne0$, so
+the $z_i$ are $z_1$ times the $s$-th roots of unity, all of them squares.
+Conversely such blocks have the required vanishing moments by the
+geometric sum formula, and the displayed $M_s$ is nonzero because $e,f$ are
+independent and $s\ne0$ in $K$. In $\F_p$ the $s$-th roots of unity exist and
+are squares exactly when $2s\mid p-1$. For $d\ge3$, pass to an algebraic
+closure and project to the plane by a linear map that is nonzero on every
+nonzero step and keeps nonproportional steps independent; such maps form a
+nonempty Zariski-open set. The moments stay zero, and the image spans the
+plane with at least three radial lines, contradicting
+\cref{gra:lem:radial}.
+\end{proof}
+
+\begin{theorem}[Extremal coefficients for even step counts; \stU]\label{gra:thm:evenmax}
+Let $m=2s\ge6$, $p>2m$, and let $\graA_{\max}$ and $\graA^{\mathrm{simp}}_{\max}$
+be the maxima of $\graA(S)$ over all spanning lists of $m$ steps and over
+simple lists (nonzero and distinct up to sign).
+\begin{enumerate}[label=\textup{(\roman*)}]
+\item If $2m\mid p-1$, then $\graA_{\max}=\graA^{\mathrm{simp}}_{\max}=m(p+1+m)$,
+ and the maximizing residue lists are exactly those of \eqref{gra:eq:block}.
+\item If $m\mid p-1$ and $2m\nmid p-1$, then
+ $m(p+1)\le\graA_{\max}\le\max\set{m(p+1),(m-2)(p+1+m)}$. If moreover
+ $2(p+1)>m(m-2)$, then $\graA_{\max}=\graA^{\mathrm{simp}}_{\max}=m(p+1)$, and
+ the maximizing residue lists are exactly those of \eqref{gra:eq:block}.
+\item If $m\nmid p-1$, then $\graA_{\max}\le(m-2)(p+1+m)$, and for all primes
+ above the explicit cutoff of \cref{gra:thm:barriercurve},
+ $(m-2)(p+1)\le\graA^{\mathrm{simp}}_{\max}\le\graA_{\max}\le(m-2)(p+1)+m(m-2)$.
+\end{enumerate}
+\end{theorem}
+
+\begin{proof}
+In coordinates scaled by $a,b$, the lists \eqref{gra:eq:block} have
+$M_j=0$ for $s\nmid j$ and $M_j=s(X^{2j}+Y^{2j})$ for $s\mid j$, and they
+are simple modulo $p$. The form $X^m+Y^m$ vanishes in exactly $m$
+projective directions when $2m\mid p-1$, where $M_m=2sY^{2m}\ne0$, and in
+none when $m\mid p-1$, $2m\nmid p-1$, since $-1$ must be an $m$-th power.
+Hence $\graA=m(p+1+m)$ in the first case and $\graA=m(p+1)$ in the second.
+By the proof of \cref{gra:thm:extremal} the bound $2t(p+1)+4t(D-t)$, with
+$D=m$ in general and $D=m-1$ if $2m\nmid p-1$, increases strictly in
+$1\le t\le s$. With $D=m$ no list with $t<s$ reaches $m(p+1+m)$, which
+gives (i) by \cref{gra:thm:rigidity}. With $D=m-1$ every list with $t\le s-1$
+has $\graA\le(m-2)(p+1+m)$, which gives the upper bounds in (ii) and (iii),
+since $t=s$ forces $m\mid p-1$; and $m(p+1)>(m-2)(p+1+m)$ is equivalent to
+$2(p+1)>m(m-2)$. The lower bound in (iii) is \cref{gra:thm:barriercurve}.
+\end{proof}
+
+\begin{corollary}[Every layer in the middle class; \stU]\label[corollary]{gra:cor:middlelayers}
+Let $m\ge6$ be even, $p\equiv1+m\pmod{2m}$, $p>2m$ and $2(p+1)>m(m-2)$.
+Then
+\[
+ \max_Sv_p(\kappa_n(S))=m(p+1)\frac{p^n-1}{p-1}-2n\qquad(n\ge1),
+\]
+attained by simple graphs, by one residue list at every level, and only by
+lifts of \eqref{gra:eq:block}. For $m=6$ this holds at every prime
+$p\equiv7\pmod{12}$ with $p>12$, and for $m=8$ at every prime $p\equiv9\pmod{16}$.
+\end{corollary}
+
+\begin{proof}
+Combine \cref{gra:thm:moments} with \cref{gra:thm:evenmax}(ii). For $m=6$
+the threshold is $p>11$, implied by $p>12$; for $m=8$ it is $p>23$, and the
+first prime of the class is $41$.
+\end{proof}
+
+The number of rank-two row planes $W\subset\F_p^m$ with $t(W)=s$ is zero if
+$m\nmid p-1$, and otherwise
+\[
+ \frac12\binom{2s}s\bigl(2^{s-1}(s-1)!\bigr)^2 ;
+\]
+they form one orbit under coordinate permutations and sign changes, and in
+\cref{gra:thm:evenmax}(i),(ii) they are exactly the maximizing planes.
+Indeed the two generating rows have disjoint supports of size $s$, which
+are recovered as the only row directions of support smaller than $2s$, and
+after normalizing one entry per block the remaining squared entries are a
+permutation of $\gramu_s\setminus\set1$, with two square roots each.
+
+\begin{theorem}[Simple lists at the next barrier; \stU]\label{gra:thm:barriercurve}
+Let $s\ge3$, $m=2s$, $p>4s$ and $m\nmid p-1$. Put $D_s=2^{s-2}(s-2)!$ and
+$g_s=1+\frac{D_s}2\bigl((s-2)(s-1)-s\bigr)$. If
+$p+1-2g_s\sqrt p>s^2D_s$, there is a simple list with $t=s-1$, and
+\[
+ \graA^{\mathrm{simp}}_{\max}\ge(m-2)(p+1)+2N,\qquad
+ N=\begin{cases}\gcd(m-2,p-1),&(p-1)/\gcd(m-2,p-1)\text{ even},\\0,&\text{otherwise}.\end{cases}
+\]
+\end{theorem}
+
+\begin{proof}
+Let $C_s\subset\graP^{s-1}$ be defined by $\sum_{i=1}^sX_i^{2j}=0$ for
+$1\le j\le s-2$. It is nonempty over $\overline{\F}_p$ (square roots of the
+$s$-th roots of unity). At a point of the affine cone, a dependence of the
+gradient rows gives a nonzero $B(T)$ of degree at most $s-3$ with
+$X_iB(X_i^2)=0$ for all $i$, so there are at most $s-3$ distinct nonzero
+squared coordinates, and the first $s-2$ vanishing power sums force their
+multiplicities to vanish by the Vandermonde argument of
+\cref{gra:lem:radial}. Thus $C_s$ is a smooth complete intersection curve
+of degrees $2,4,\dots,2s-4$; it is geometrically connected, by the Koszul
+resolution and the cohomology of line bundles on projective space, hence
+geometrically irreducible, of degree $D_s$ and, by adjunction
+($\omega=\mathcal O((s-2)(s-1)-s)$), of genus $g_s$
+\cite{Hartshorne1977Algebraic}. None of the $s^2$ hyperplanes $X_i=0$,
+$X_i=\pm X_j$ contains $C_s$, and each meets it in at most $D_s$ points, so
+the Hasse--Weil bound \cite{Weil1948Courbes} gives a rational point $w$ with
+coordinates nonzero and distinct up to sign. Use the simple list $(w_i,0)$,
+$(0,w_i)$. With $P_j=\sum_iw_i^{2j}$ one has $P_1=\dots=P_{s-2}=0$,
+$P_{s-1}\ne0$ by \cref{gra:thm:rigidity} since $m\nmid p-1$, and
+$P_s=(-1)^{s-1}s\prod_iw_i^2\ne0$ by Newton's identity at index $s$. So
+$M_{s-1}=P_{s-1}(X^{m-2}+Y^{m-2})$ and $M_s=P_s(X^m+Y^m)$, which have no
+common projective zero in odd characteristic. The $N$ roots of the first
+form have depth $s$ and all other directions depth $s-1$.
+\end{proof}
+
+For $s=3$ the cutoff is $p>17$, and for $s=4$ it is $p+1-18\sqrt p>128$.
+Consequently, for fixed even $m\ge6$, $\graA_{\max}(p,m)/(p+1)$ is
+$m+O_m(p^{-1})$ for $p\equiv1\pmod m$ and $m-2+O_m(p^{-1})$ otherwise, and
+the same holds for simple lists. By the prime number theorem in arithmetic
+progressions the empirical law of this statistic over the primes tends to
+the two-point law with mass $1/\varphi(m)$ at $m$; under \cref{src:thm:dgrh}
+(\stG) the weighted count $\sum_{2m<p\le X,\ m\mid p-1}\log p$ of the primes
+admitting a list with $t=s$ is $X/\varphi(m)+O(\sqrt X\log^2(mX)+m\log(2m))$,
+by the explicit-formula estimate for $\theta(X;q,a)$ \cite{Lee2023Prime}. An
+exhaustive search for $m=6$ at the ten primes $13\le p\le47$ gives
+$\graA_{\max}=120,88,120,104,128,192,264,184,264,200$ and
+$\graA^{\mathrm{simp}}_{\max}$ equal except $84$ at $p=17$; at $p=19$ the list
+$(1,0),(7,0),(8,0),(0,1),(0,7),(0,8)$ has $\graA=120$ and first-level
+valuation $118$
+\grafiles{\artifact{moment_rigidity_2026-11-27/six_checks.txt}\\
+\artifact{moment_rigidity_2026-11-27/arithmetic_checks.txt}}
 
 \paragraph{Three steps.}
 For $m=3$ the bound \eqref{gra:eq:tbound} is $2(p+1)+8$; it is attained
@@ -2154,7 +2366,7 @@ $m=3$ exactly when $p\equiv1\pmod6$, for $m=5$ only at $p=11$
 for prime $m\ge11$ once $p>\max(m^{m-1},27^k)$.
 
 \subsection{How late can the eventual law start?}\label{gra:sec:onset}
-\sources{Effective_Graph_Towers; grh_method_transfers; spanning-tree-sharp-cutoff}
+\sources{Effective_Graph_Towers; grh_method_transfers; spanning-tree-sharp-cutoff; positive-fourier-zeros}
 
 The \emph{onset} of a tower is the least level from which the eventual
 polynomial agrees with $\nu_n$. This subsection shows that the onset is
@@ -2163,6 +2375,8 @@ leading coefficient of the eventual polynomial is not a continuous function
 of the voltages, and that in rank two the onset is nevertheless at most
 logarithmic in the size of the voltages; the worst case grows linearly in
 the bit length exactly when the number of loops is at least $\max(3,p)$.
+In every rank the onset is again at most logarithmic, and this order is
+attained for at least $pd+1$ loops.
 We write $C_k$ for a cyclic group of order $k$.
 
 \begin{theorem}[The first stable level can be prescribed; \stU]\label{gra:thm:delayed}
@@ -2461,24 +2675,15 @@ characters there can still be expensive.
 \end{remark}
 
 \begin{remark}[The coefficient of $p^{2n}$]\label[remark]{gra:rem:content}
-The coefficient $\alpha$ of $p^{2n}$ in \cref{gra:cor:logbound} is exactly
-the content valuation $g=\min_iv_p(c_i)$ of the collected Laurent
-determinant: restoring the removed power contributes exactly $g(p^{2n}-1)$
-to the cumulative sum, and every other summand grows as $O(np^n)$. This
-extends the discontinuity of \cref{gra:cor:oracle} to every prime. On a
-bouquet of $2p+1$ loops put $p$ copies each of $e_1,e_2$ and one step
-$p^se_1$ with $s\ge1$, and compare with the same assignment where the
-final step is zero. Both towers are connected, and the graphs agree
-through level $s$. The zero-step determinant is
-$p(\grah(X)+\grah(Y))$ and has content valuation one. The extra summand
-$\grah(X^{p^s})$ changes the content valuation to zero, because its two
-nonconstant exponents are new. So the two eventual laws have different
-$p^{2n}$ coefficients. Moreover, once $s-4$ is at least the bound $h_0$ of
-the zero-step tower, the zero-step law is exact throughout $[s-4,s]$; if
-the other law were exact from $s-4$ onward the two would agree on these
-five consecutive levels, which \cref{gra:rem:five} excludes. Hence the
-onset of the perturbed tower is at least $s-3$. At $p=3$ this is the
-family of \cref{gra:thm:leading}, where the onset is exactly $s$.
+The coefficient $\alpha$ of $p^{2n}$ in \cref{gra:cor:logbound} is the
+content valuation $g=\min_iv_p(c_i)$ of the collected Laurent determinant;
+this is the case $d=2$ of \cref{gra:lem:content} below. It extends the
+discontinuity of \cref{gra:cor:oracle} to every prime: the case $d=2$ of
+\cref{gra:thm:onsetlower} compares $p$ copies each of $e_1,e_2$ plus one
+step $p^se_1$ with the same bouquet whose last step is zero; the towers
+agree through level $s$, their content valuations are $0$ and $1$, and the
+perturbed tower has onset at least $s-3$. At $p=3$ this is the family of
+\cref{gra:thm:leading}, where the onset is exactly $s$.
 \end{remark}
 
 \begin{theorem}[Classification by the number of loops; \stU]\label{gra:thm:loops}
@@ -2563,6 +2768,218 @@ with the upper bound this proves the classification.
 Sample shell sums for \cref{gra:thm:shell} and the vanishing directions
 used in the two constructions are recorded in
 \artifact{grh_method_transfers/checks/onset_output.txt}.
+
+\paragraph{Every rank.}
+The logarithmic bound for the onset holds in every rank, with a constant
+independent of the number of loops. Let $G$ be a finite connected
+multigraph with voltages in $\Z^d$ whose lifts are connected at every
+level. The eventual law $\nu_n=P(p^n,n)$, with total degree at most $d$ and
+degree at most one in $n$, is due to DuBose and Valli\`eres
+\cite[Theorem~6.2]{DuBoseVallieres2023Towers}, on the basis of Monsky's
+theorem \cite[Theorem~5.6]{Monsky1981Padic}; $P$ is unique, since the
+sequences $p^{in}$ and $np^{in}$ are linearly independent. Let $F$ be the
+collected determinant of the Laurent Laplacian, let $H\ge1$ bound the
+absolute values of the coordinates of its exponents, and put
+\begin{equation}\label{gra:eq:onsetB}
+ D=\ceil[\big]{\log_p\bigl(d!(2H)^d\bigr)},\qquad B=1+dD+(d+1)(D+1).
+\end{equation}
+
+\begin{theorem}[Onset in every rank; \stU]\label{gra:thm:onsetrank}
+The law $\nu_n=P(p^n,n)$ holds for every $n>B$. Hence the onset is
+$O_{p,d,G}(1+\log H_{\mathrm{volt}})$ when $H_{\mathrm{volt}}\ge1$ bounds the
+voltage coordinates, and for a bouquet the implied constant depends only on
+$p$ and $d$, uniformly in the number of loops.
+\end{theorem}
+
+\begin{theorem}[Matching lower bound; \stU]\label{gra:thm:onsetlower}
+For fixed $p$, $d$ and $m\ge pd+1$, the largest onset of a connected
+rank-$d$ tower on a bouquet of $m$ loops with voltage coordinates at most
+$H_{\mathrm{volt}}$ in absolute value is $\Theta_{p,d,m}(\log H_{\mathrm{volt}})$.
+Explicitly, for all large $k$ there is such a bouquet of height $p^k$ with
+onset at least $k-2d+1$.
+\end{theorem}
+
+For a fixed base the exponent coordinates of $F$ are at most
+$\abs{V(G)}H_{\mathrm{volt}}$, and for a bouquet $H=H_{\mathrm{volt}}$. In rank
+two \cref{gra:cor:logbound} has the smaller coefficient $3\log_p2$ per
+bit, and \cref{gra:thm:loops} the smaller loop threshold $\max(3,p)$. The
+proof uses the cumulative sums
+\[
+ A_h=\sum_{x\in(\Z/p^h\Z)^d}v_p\bigl(F(\zeta_h^x)\bigr),
+\]
+a zero evaluation contributing zero, with compatible roots
+$\zeta_h^p=\zeta_{h-1}$ and $\pi_h=\zeta_h-1$; for graph determinants only
+the identity is a zero, and \eqref{gra:eq:shells} reads
+$\nu_h=\nu_0-dh+A_h$. For nonzero $z\in\Zp[\zeta_h]$ let
+$q_h(z)=e_hv_p(z)$ and let $u_h(z)\in\F_p^\times$ be the residue of
+$z/\pi_h^{q_h(z)}$; put $q_h(0)=+\infty$. Multiplying $z$ by a power of
+$\zeta_h$ changes neither.
+
+\begin{lemma}[Digit recursion]\label[lemma]{gra:lem:digitrec}
+Let $h\ge2$ and $z=\sum_{r=0}^{p-1}\zeta_h^rz_r$ with
+$z_r\in\Zp[\zeta_{h-1}]$, not all zero. Let $q=\min_rq_{h-1}(z_r)$, let
+$D_0(T)=\sum_{q_{h-1}(z_r)=q}u_{h-1}(z_r)(1+T)^r\in\F_p[T]$, and let
+$\delta<p$ be its order at $T=0$ and $u$ its first nonzero coefficient.
+Then $q_h(z)=pq+\delta$ and $u_h(z)=u$. In particular $z=0$ exactly when
+all $z_r=0$.
+\end{lemma}
+
+\begin{proof}
+The polynomials $(1+T)^r$, $0\le r<p$, are a basis in degrees below $p$,
+so $D_0\ne0$ and $\delta<p$. After division by $\pi_{h-1}^q$, the errors in
+lifting $D_0$ are multiples of $\pi_{h-1}$, of $\pi_h$-order at least $p$,
+and coefficients of an integral lift that reduce to zero have $\pi_h$-order
+at least $e_h\ge p$. Finally $\pi_{h-1}/\pi_h^p\equiv1\pmod{\pi_h}$, by
+expanding $(1+\pi_h)^p-1$. The term of degree $\delta$ gives the order and
+the residue.
+\end{proof}
+
+Write $F=\sum_{i=1}^tc_iX^{a_i}$ with distinct exponents, put
+$n_i=a_i\cdot x$, and group the indices by residues of $n_i$ modulo $p^j$
+for $j=0,1,\dots$; at a node centre the exponents at one of its indices and
+divide by $p^j$, so that the children are labelled by residues modulo $p$.
+Stop at depth $h-1$ and evaluate each terminal node directly in
+$\Qp(\zeta_1)$. Applying \cref{gra:lem:digitrec} upwards from the terminal
+nodes gives the following; comparisons of child orders compare terminal
+integers first and then digits, and inserting a common zero digit changes
+no comparison.
+
+\begin{lemma}[Digit expansion]\label[lemma]{gra:lem:digitexp}
+Fix $h$ and record the distinct depths below $h$ at which pairwise
+exponents first differ, the leading residues of the nonzero differences
+there, which differences vanish modulo $p^h$, and which depths are $0$ or
+$h-1$. On the set of $x$ with given data the vanishing of $F(\zeta_h^x)$ is
+constant, and otherwise
+\[
+ q_h\bigl(F(\zeta_h^x)\bigr)=q_*p^{h-1}+\sum_{0\le j<h-1}\delta_jp^j,\qquad
+ 0\le\delta_j<p,
+\]
+with $\delta_j\ne0$ only at splitting depths. Lengthening the gaps between
+the recorded depths, with their order, endpoint flags and residues fixed,
+keeps $q_*$ and moves the digits with their depths.
+\end{lemma}
+
+Let $\mathcal L$ consist of all forms $(a_i-a_j)\cdot x$, $i<j$, and the $d$
+coordinate functions. For $L\in\mathcal L$ record $k_L=\min\set{\vp(Lx),h}$
+and, if $k_L<h$, the residue $p^{-k_L}Lx\bmod p$. This divides
+$(\Z/p^h\Z)^d$ into finitely many cells. Arrange the marks $0$, $h-1$, $h$
+and all $k_L$ increasingly; the gap from $h-1$ to $h$ is one. For two
+successive marks $u<v\le h-1$ call a form deep if $k_L\ge v$, let $r$ be the
+rank of the deep forms, and lengthen the gap by increasing $h$ and every
+mark $\ge v$ by one, keeping all residues and flags. Write $\mathrm{vol}$
+for normalized Haar measure on $\Zp^d$.
+
+\begin{lemma}[Lengthening a gap]\label[lemma]{gra:lem:gap}
+If $v-u\ge D+1$, a cell and the cell with this gap lengthened correspond
+by a rational linear bijection, and the volume is multiplied by $p^{-r}$.
+\end{lemma}
+
+\begin{proof}
+Read the forms in decreasing order of $k_L$ and retain those that increase
+the rational span; the coordinate forms ensure a basis $T$ of $d$ integral
+rows, the first $r$ of them deep and spanning all deep forms. Since
+$\abs{\det T}\le d!(2H)^d$, $\vp(\det T)\le D$, the adjugate gives
+$p^D\Zp^d\subseteq T\Zp^d$, and every form has coefficients of valuation at
+least $-D$ in the coordinates $y=Tx$. Multiply $y_1,\dots,y_r$ by $p$: these
+were divisible by $p^v$, so the new point is in $T\Zp^d$; deep forms are
+multiplied by $p$, and every other form changes by a multiple of
+$p^{v-D}$, hence of $p^{u+1}$, so its depth $\le u$ and its residue
+persist. Dividing back is the inverse map, and the determinant has absolute
+value $p^{-r}$.
+\end{proof}
+
+\begin{theorem}[Rational generating series; \stU]\label{gra:thm:series}
+For every integral Laurent polynomial $F$ as above, $\sum_{h\ge1}A_hz^h$ is
+rational, its polynomial part has degree at most $B$, and its reduced
+denominator divides $(1-p^dz)\prod_{i=0}^{d-1}(1-p^iz)^2$. Thus beyond level
+$B$, $A_h=P(p^h,h)$ with total degree at most $d$ and degree at most one in
+$h$.
+\end{theorem}
+
+\begin{proof}
+Compress every gap between $0$ and $h-1$ to $\min\set{v-u,D+1}$ and mark the
+gaps of compressed length $D+1$; keep the order, equalities, residues and
+flags. There are finitely many such signatures. By \cref{gra:lem:gap} every
+nonempty cell has a nonempty compressed representative, and the cells with
+a given signature arise by adding $b_i\ge0$ levels to each marked gap $i$,
+with fixed deep ranks $r_i$. The compressed conductor $h_0$ is at most $B$:
+if $b_1,\dots,b_d$ are the truncated depths of the rows of the greedy basis,
+every form at an interior mark $k$ is a combination of selected rows of
+depths at least $k$ with coefficients of valuation at least $-D$, so some
+$b_j\le k+D$; the interior marks lie in $d$ intervals of total length at
+most $dD$, and each of the at most $d+1$ complementary intervals has length
+at most $D+1$.
+
+A cell $E$ contributes $p^{dh}\mathrm{vol}(E)q_h/e_h$. The terminal part
+$q_*/(p-1)$ of \cref{gra:lem:digitexp} is multiplied by $p^{d-r_i}$ when
+gap $i$ grows by one, and a digit term $\delta_jp^{j-h+1}/(p-1)$ by
+$p^{d-r_i}$ or $p^{d-r_i-1}$, according as the gap lies left or right of
+$j$. Summing over the signature gives finitely many terms
+$cz^{h_0}\prod_i(1-p^{w_i}z)^{-1}$, whose polynomial parts have degree at
+most $h_0\le B$. For successive marked gaps the deep ranks decrease
+strictly: equal ranks would make the spans equal, and a form of the depth
+$v_i\le u_{i+1}$ would then have valuation at least $v_{i+1}-D>u_{i+1}$.
+Hence for a terminal term the exponents $d-r_i$ are distinct in $[0,d]$,
+and for a digit term the exponents increase strictly on each side of $j$
+with at most one coincidence at the transition; to the right of a nonzero
+digit, a form at the splitting depth $j\le u_i$ is not in the deep span, so
+$r_i<d$ and all exponents are nonnegative, a repeated exponent being at
+most $d-1$. This gives the denominator.
+\end{proof}
+
+\begin{proof}[Proof of \cref{gra:thm:onsetrank}]
+The series of $\nu_0-dh$ is proper rational with its only pole at $z=1$, of
+order at most two. By \cref{gra:thm:series} the series of $\nu_h$ differs
+from that of $P(p^h,h)$ by a polynomial of degree at most $B$, so the law
+holds for $h>B$. The coefficients of $F$ do not enter $B$, and for a
+bouquet $H=H_{\mathrm{volt}}$.
+\end{proof}
+
+The stable law can therefore be recovered from the $2d+1$ consecutive
+valuations at the levels $B+1,\dots,B+2d+1$, since $p^{in}$ ($0\le i\le d$)
+and $np^{in}$ ($0\le i<d$) satisfy the recurrence with characteristic
+polynomial $(X-p^d)\prod_{i<d}(X-p^i)^2$; exact computation at the earlier
+levels then gives the least onset. The double pole occurs: for
+$F=(X^{p^k}-1)(Y-1)(Z-1)$ with $k\ge2$, $A_h=0$ for $h\le k$ and
+$A_h=p^k(h-k)(p^h-1)^2+2h(p^h-p^k)(p^h-1)$ for $h\ge k$, so the onset is
+exactly $k$ and the coefficient of $hp^{2h}$ is $p^k+2$.
+
+\begin{lemma}[The leading coefficient is the content]\label[lemma]{gra:lem:content}
+For every nonzero integral Laurent polynomial $F$ with distinct exponents
+and content valuation $g=\min_i\vp(c_i)$, $\lim_{h\to\infty}p^{-dh}A_h=g$.
+Thus the coefficient of $p^{dn}$ in the eventual law of a tower is the
+content valuation of its collected Laurent determinant.
+\end{lemma}
+
+\begin{proof}
+Off finitely many rational hyperplanes the projections $a_i\cdot x$ are
+distinct in $\Zp$, hence distinct modulo some $p^J$, with residues
+$m_i<p^J$. Then $\sum_i(c_i/p^g)(1+T)^{m_i}$ is nonzero modulo $p$, with first
+nonzero index $j<p^J$, and once $e_h\ge p^J$ the valuation of
+$p^{-g}F(\zeta_h^x)$ is $j/e_h\to0$. By \cref{gra:lem:digitexp} every nonzero
+evaluation has valuation at most $(Q+1)/(p-1)$, where $Q$ bounds the finitely
+many terminal orders, so dominated convergence applies.
+\end{proof}
+
+\begin{proof}[Proof of \cref{gra:thm:onsetlower}]
+Take $p$ copies of each of $e_1,\dots,e_d$ and one further step $te_1$, with
+$t=0$ or $t=p^k$, and zero voltage on any further loops. Both towers are
+connected, with symbols $F_0=p\sum_j\grah(X_j)$ and
+$F_k=F_0+\grah(X_1^{p^k})$, of content valuations one and zero. By
+\cref{gra:lem:content} their stable laws differ, while the graphs agree at
+every level $n\le k$. For $k$ large the fixed tower is stable on
+$[k-2d,k]$; if the perturbed tower were stable from $k-2d$, the two laws
+would agree at $2d+1$ consecutive levels and hence coincide. So its onset
+is at least $k-2d+1$; take $k=\floor{\log_pH_{\mathrm{volt}}}$ and use
+\cref{gra:thm:onsetrank}.
+\end{proof}
+
+At $p=2$, $d=3$ and $k=2$ the two seven-loop towers have the valuations
+$(21,166,1027,6344)$ and $(21,166,1043,5288)$ at the first four levels;
+these, comparisons of \cref{gra:lem:digitrec} with direct cyclotomic
+reduction on $2856$ inputs and $481$ rank-three instances of
+\cref{gra:lem:gap} are recorded in
+\artifact{positive-fourier-zeros/graph_onset/verification.txt}.
 
 \subsection{Stabilisation of the prime-to-$p$ part}\label{gra:sec:units}
 \sources{spanning-tree-unit-stabilization}
@@ -2731,7 +3148,7 @@ the ternary square grid at every level by \cref{gra:thm:grover} in
 
 \subsection{Open questions}\label{gra:sec:open}
 {\raggedright
-\sources{Effective_Graph_Towers; grh_method_transfers_graph_towers_and_finite_rings; grh_method_transfers; grh_transfers_lubin_tate_and_graph_towers; grh_transfer_extensions_2026-11-26; five_step_graph_towers_2026-11-26; five_step_sharpness_2026-11-27; seven_step_graph_towers_2026-11-27; five_step_refinement_2026-11-27; sparse-padic-roots-and-graph-towers}
+\sources{Effective_Graph_Towers; grh_method_transfers_graph_towers_and_finite_rings; grh_method_transfers; grh_transfers_lubin_tate_and_graph_towers; grh_transfer_extensions_2026-11-26; five_step_graph_towers_2026-11-26; five_step_sharpness_2026-11-27; seven_step_graph_towers_2026-11-27; five_step_refinement_2026-11-27; sparse-padic-roots-and-graph-towers; moment_rigidity_2026-11-27; positive-fourier-zeros}
 }
 
 \begin{enumerate}
@@ -2740,13 +3157,16 @@ fixed loop count $m\ge\max(3,p)$, what is the sharp coefficient of the
 voltage bit length $b$ in the worst-case onset $L_{p,m}(b)$ of
 \cref{gra:thm:loops}? \Cref{gra:cor:logbound} gives at most
 $3b\log_p2+O_p(1)$, and the constructions give at least
-$b\log_p2-O_p(1)$.
-\item \emph{Higher rank.} For fixed $p$, $d\ge3$ and a fixed number of
-voltage vectors, what is the largest possible onset for vectors of bit
-length at most $b$? In rank three the exceptional directions can meet
-along a positive-dimensional set, and an effective bound would require
-controlling such intersections; the only general bound is that of
-\cref{gra:rem:onsetbound}.
+$b\log_p2-O_p(1)$. In rank $d\ge3$, \cref{gra:thm:onsetrank,gra:thm:onsetlower}
+give the order $\log H_{\mathrm{volt}}$ for $m\ge pd+1$ loops; the sharp
+coefficient of $\log_pH_{\mathrm{volt}}$ is open there as well.
+\item \emph{Higher rank: the loop threshold.} For fixed $p$ and $d\ge3$,
+what is the least number of loops for which the worst-case onset is
+unbounded as the voltages grow? It is at most $pd+1$
+(\cref{gra:thm:onsetlower}); for $m=d$ spanning steps all towers are
+levelwise isomorphic. A smaller description of the cells of
+\cref{gra:thm:series} would also lower the cost of computing the first
+stable level.
 \item \emph{Minimal linear representations.} Can one compute the smallest
 rational linear representation of the shell sums directly from the
 exponent vectors, without constructing all reachable digit states? The
@@ -2770,8 +3190,16 @@ is at most $4(p+1)+16$, and for $p\equiv1\pmod{10}$ at least $4(p+1)+12$,
 with $4(p+1)+14$ attained by simple towers at infinitely many such primes.
 Determine
 the seven-step maximum at general $p>14$, where it is at most $6(p+1)+38$
-(\cref{gra:thm:seven}), the maximum for even $m\ge6$ with $2m\nmid p-1$,
-and the exact maximum for general odd $m$ and $p$.
+(\cref{gra:thm:seven}), and the exact maximum for general odd $m$ and $p$.
+For even $m\ge6$ the maximum is known for $2m\mid p-1$ and, when
+$2(p+1)>m(m-2)$, for $m\mid p-1$ (\cref{gra:thm:evenmax}); does
+$\graA_{\max}=m(p+1)$ hold at every $p>2m$ with $m\mid p-1$, $2m\nmid p-1$?
+For $m\nmid p-1$ and large $p$ the maximum lies in
+$[(m-2)(p+1),(m-2)(p+1)+m(m-2)]$; determine the bounded offset, which for
+$m=6$ already takes several values and may differ between simple and
+unrestricted lists. In rank $d\ge3$, what is the largest first nonzero
+moment index, given that the rank-two barrier $t=s$ is excluded
+(\cref{gra:thm:rigidity})?
 \item \emph{Distributions.} For three and four steps the distribution of
 $\graA$ over all row planes is given by
 \cref{gra:thm:three,gra:thm:census} through point counts of a conic and of

@@ -1,0 +1,445 @@
+\documentclass[11pt,letterpaper]{article}
+\usepackage[letterpaper,top=.78in,bottom=.76in,left=.87in,right=.87in,headheight=14pt]{geometry}
+\usepackage{amsmath,amssymb,booktabs,array,xcolor,fancyhdr,hyperref}
+\definecolor{ink}{HTML}{193947}
+\definecolor{accent}{HTML}{00675F}
+\hypersetup{colorlinks=true,linkcolor=accent,urlcolor=accent,pdfauthor={OpenAI},pdftitle={A finite Fourier frame for the theta-lift proof of Dirichlet GRH}}
+\newcommand{\baseurl}{https://github.com/VladimirReshetnikov/ProveIt/blob/f2d6ab6c4b70ea73b2deac9e33ad966bc92ea36f/Analysis/GeneralizedRiemannHypothesis/}
+\newcommand{\source}[3]{\href{\baseurl Lean/grh/src/#1.lean\#L#2}{#3}}
+\newcommand{\cod}[1]{\texttt{\detokenize{#1}}}
+\newcommand{\headnote}[1]{{\small\sffamily\bfseries\color{accent}#1}\par\smallskip}
+\renewcommand{\labelitemi}{\(\bullet\)}
+\pagestyle{fancy}\fancyhf{}
+\lhead{\small\sffamily Fourier frames and theta lifts}\rhead{\small\sffamily Proof simplification}
+\cfoot{\small\sffamily\thepage}
+\setlength{\parindent}{0pt}\setlength{\parskip}{3pt plus 1pt}
+\setlength{\emergencystretch}{2em}
+\raggedbottom
+\begin{document}
+\thispagestyle{plain}
+\headnote{MATHEMATICAL RESEARCH NOTE\hfill 27 NOVEMBER 2026}
+{\LARGE\bfseries\color{ink} A finite Fourier frame for the theta-lift proof\\ of Dirichlet GRH\par}
+\vspace{3pt}
+{\large An explicit construction for the integral theta function, with two independent local shortenings\par}
+\vspace{6pt}
+\textbf{Principal result.} Let $q=q_1$, $n=(d+1)/4$, and let $\mathfrak a_0$ be the lattice used in the integral theta function. For each maximal prime power $p^a\Vert q$ we construct a family in $\mathfrak a_0$ whose frame bound has residue $q/p^a$ modulo $p$ and zero modulo every other prime dividing $q$. Their union has an integer frame bound
+\[
+        1\le H\le 4q^5(1+n)^2,\qquad \gcd(H,q)=1.
+\]
+The family contains a simultaneous unit witness for each $p$-adic embedding. This last property allows the existing sharpness argument to use the family at its prescribed level. The proof takes one Fourier sum, one valuation computation at a cyclotomic prime, and a polynomial size bound. It replaces the construction from a trace-dual basis, Galois orbits and pairwise sums of frame vectors.
+
+\paragraph{Why a Fourier block can do this.}
+The complete list of powers of a primitive $q$th root already has Gram matrix $qI$. Its frame bound is divisible by every prime we need to avoid. At a prime $p\mid q$, change the $p-1$ nonconstant columns in one $p$-point Fourier sum by an affine map. The resulting off-diagonal error is constant across all pairs of distinct residues. Copies of the remaining column cancel this rank-one error, while a fraction with denominator $p^a$ changes the residue of the diagonal. The lattice permits that fraction on precisely the required side of the quadratic field.
+
+\paragraph{Where the frame enters.}
+In the readable Lean edition of Alp\"oge's proof, three estimates compare a single covolume. Short integral forms give its upper bound, a second-moment estimate supplies enough independent forms, and the chain determinant supplies the lower bound. In the source notation, for $r$ selected forms in a target of dimension $D_T$, the comparison has the shape
+\[
+ h_{\rm main}\ \lesssim\ (V+2\Delta)/D_T\ \lesssim\
+ h_{\rm main}-(r/D_T)m\,\mathrm{rem}.
+\]
+Here $V$ is a logarithmic squared covolume, $\Delta$ is the local index cost, and the two inequalities include controlled additive errors. Cancellation of $h_{\rm main}$ and $m\asymp\sqrt{x}$ give the one-sided prime estimate used by the zero-free criterion. The frame supplies arithmetic input on the theta coefficients, including a coefficient of sufficiently small valuation. This explains why a complex frame identity on its own would leave a gap. See the \source{New/Reduction/MainInequality}{1}{main comparison}, \source{New/Reduction/OneSidedBound}{1}{half-plane reduction}, \source{New/Reduction/Zeros/Criterion}{27}{one-sided criterion} and \href{\baseurl docs/guide/theta_lifts_and_dirichlet_zeros.tex}{human-readable guide}.
+
+\paragraph{Other opportunities.}
+Two independent arguments treat the frequency sum in the spanning estimate and a second-order principal minor in the archimedean period estimates. The former replaces counting by denominator ideals with one height-separation inequality. The latter replaces a holomorphic deformation with the differential equation for one block column. Their proof and implementation boundaries appear separately below.
+
+\vfill
+{\small The source snapshot is \href{https://github.com/VladimirReshetnikov/ProveIt/commit/f2d6ab6c4b70ea73b2deac9e33ad966bc92ea36f}{\texttt{f2d6ab6c}}. Five arithmetic Lean modules were checked on Lean 4.35.0 with the source's Mathlib revision. The complete substitutions into the GRH project are mathematical proposals. See \source{Statements}{1}{the theorem statements}, \source{Main}{1}{the Lean conclusions}, and the \href{\baseurl Lean/grh/README.md}{project verification record}.}
+\newpage
+
+\section{An explicit short frame in the theta lattice}
+
+Write $q=q_1>1$, $K=\mathbb Q(\sqrt{-d})$, $E=K(\zeta)$ for a
+primitive $q$th root $\zeta$, and
+\[
+  \beta=(1+\sqrt{-d})/2,\qquad n=\beta\bar\beta=(d+1)/4,
+  \qquad \delta=\Phi'_q(\zeta).
+\]
+Here $\Phi_q$ is the cyclotomic polynomial. Every rational prime $p\mid q$
+divides $n$. The chosen complex embeddings of $E$ all restrict to the
+same embedding of $K$. They are parametrized by
+$s\in(\mathbb Z/q\mathbb Z)^\times$, with $\sigma_s(\zeta)=\zeta^s$.
+At a finite place $w$, let $v_w$ denote an additive valuation.
+The lattice $\mathfrak a_0$ requires $v_w(\delta y)\geq0$ if
+$\beta\in w$, and $v_w(y)\geq0$ otherwise. In particular every
+algebraic integer of $E$ belongs to it. A finite multiset $F$ in this
+lattice has frame bound $H$ if
+\[
+  \sum_{y\in F}\sigma_s(y)\overline{\sigma_t(y)}
+  =H\,\mathbf1_{s=t}.
+\]
+The sum counts multiplicities. The Lean source calls the scalar frame bound its length. The objective is $1\leq H\leq b$,
+$\gcd(H,q)=1$, with a member that supplies a unit linear form for each
+choice of $p$-adic embedding.
+
+\subsection{One block for each prime dividing the conductor}
+Fix $p^a\Vert q$, put $P=p^a$ and $z=\zeta^{q/p}$,
+and write $\bar\beta^{2a}=u_0+v_0\beta$ with $u_0,v_0\in\mathbb Z$.
+Reduce these two coefficients modulo $P^2$ to their representatives
+$0\le u,v<P^2$, and put $c=u+v\beta$. In particular
+$c\equiv\bar\beta^{2a}\pmod{P^2\mathcal O_K}$. With
+$T=1+pP(1+n)$, put
+\[
+     A=T+c/P,\qquad B=-c/P,\qquad
+     L=T^2-p\,N_{K/\mathbb Q}(c)/P^2.
+\]
+The congruence defining $c$ gives $N(c)\equiv n^{2a}\equiv0\pmod{P^2}$.
+Also $|c|/P\le P(1+\sqrt n)$ and
+$(1+\sqrt n)^2\le2(1+n)\le p(1+n)^2$. Thus
+$\sqrt p\,|c|/P<T$ and $L$ is a positive integer. For each $0\leq j<q/p$, include once each of
+\[
+        \zeta^j(Az^k+B)\qquad(1\leq k<p)
+\]
+and include $L$ copies of $\zeta^j$. Denote this multiset by $F_p$.
+In Lean one can store $L$ as a multiplicity, then invoke
+\texttt{IsTightFrame.repeat\_vectors} when an interface requires
+unit multiplicities. The element $1$ occurs in every block.
+
+For $s,t$ prime to $p$ the sum of $z^{sk}$ over $1\leq k<p$ equals
+$-1$, and the sum of $z^{(s-t)k}$ equals
+$p\mathbf1_{s\equiv t\pmod p}-1$. Consequently
+\begin{align*}
+ \sum_{k=1}^{p-1}(Az^{sk}+B)\overline{(Az^{tk}+B)}+L
+ &=p|A|^2\mathbf1_{s\equiv t\pmod p}
+      -|A+B|^2+p|B|^2+L\\
+ &=p|A|^2\mathbf1_{s\equiv t\pmod p}.
+\end{align*}
+The cancellation uses $A+B=T$ and $p|B|^2=pN(c)/P^2$.
+For $s\equiv t\pmod p$, summing
+$\zeta^{(s-t)j}$ over the $q/p$ possible $j$ gives $q/p$ when $s=t$
+in $\mathbb Z/q\mathbb Z$ and zero otherwise. For the other pairs
+the preceding inner sum has already vanished. The frame bound is therefore
+\begin{equation}
+ H_p=q|A|^2=\frac qP
+       \bigl(PT^2+T(c+\bar c)+N(c)/P\bigr).
+ \label{eq:punctured-frame-bound}
+\end{equation}
+The last term inside parentheses is a multiple of $p$. The integers
+$s_i=\beta^i+\bar\beta^i$ satisfy $s_0=2$, $s_1=1$, and
+$s_i=s_{i-1}-n s_{i-2}$. Hence $s_i\equiv1\pmod p$ for every
+$i\geq1$, including $p=2$. The trace $c+\bar c$ agrees with
+$s_{2a}$ modulo $P^2$. Also $T\equiv1\pmod p$. It follows that
+$H_p$ is a positive integer with
+\[
+   H_p\equiv q/P\pmod p,\qquad H_p\equiv0\pmod r
+            \quad(r\mid q,\ r\text{ prime},\ r\ne p).
+\]
+Take the disjoint union $F$ of all $F_p$. Its bound $H=\sum_{p\mid q}H_p$
+is a unit modulo every prime dividing $q$.
+
+\subsection{The local denominator and the unit witness}
+For any $w\mid p$ one has the identity of principal ideals in the
+valuation ring
+\begin{equation}
+         (\delta)=(P/(1-z)).
+         \label{eq:local-vacuum-different}
+\end{equation}
+Here is a proof suited to polynomial operations in Lean. Write $m=q/P$,
+$F=\Phi_m$, $u=\zeta^{P/p}$ and $v=u^p=\zeta^P$. Since $p\nmid m$,
+cyclotomic factorization gives
+\[
+ F(X^P)=\Phi_q(X)F(X^{P/p}).
+\]
+Indeed for $P=p$ the factors of $F(X^p)$ have orders $m$ and $mp$.
+Iteration gives the displayed identity for every $P=p^a$.
+Differentiate at $\zeta$, where $\Phi_q(\zeta)=0$, to get
+\[
+             \delta F(u)=P\zeta^{P-1}F'(v).
+\]
+Let $G=(X^m-1)/F$, a monic integral polynomial. Since $v$ is a
+primitive $m$th root, $F(v)=0$ and
+$F'(v)G(v)=m v^{m-1}$ is a local unit. Thus $F'(v)$ is a unit.
+In the residue field, $F(u)^p=F(v)=0$ because $F$ has integer
+coefficients. The derivative of $FG=X^m-1$ at $u$ then gives
+$F'(u)G(u)\equiv m u^{m-1}\pmod w$, so $G(u)$ is also a unit.
+Now $F(u)G(u)=u^m-1=z-1$. Multiplying the differentiated identity by
+$G(u)$ shows that $(z-1)\delta$ is associated to $P$ in the valuation
+ring. This proves~\eqref{eq:local-vacuum-different} even for $m=1$.
+
+For $1\le k<p$, the quotient $(z^k-1)/(z-1)$ is congruent to $k$
+at $w$ because $z\equiv1\pmod w$. It is a unit. The identity
+$\prod_{k=1}^{p-1}(1-z^k)=p$ now gives, with $v_w(p)=1$,
+\[
+     v_w(\delta)=a-\frac1{p-1}.
+\]
+In particular $v_w(\delta)=0$ when $p=2$ and $a=1$.
+
+Consider $y_k=Az^k+B=Tz^k+(c/P)(z^k-1)$.
+At places away from $p$ it is integral. At $w\mid p$ containing
+$\beta$, the element $\bar\beta=1-\beta$ is a unit, so the congruence defining $c$ makes $c$ a unit.
+Equation~\eqref{eq:local-vacuum-different} gives
+$v_w(\delta(c/P)(z^k-1))=0$ for every $1\leq k<p$.
+Thus $\delta y_k$ is integral. At $w\mid p$ with $\beta\notin w$,
+the identity $\beta\bar\beta=n$ gives
+$v_w(\bar\beta)=v_w(n)\geq v_w(p)$. Both
+$\bar\beta^{2a}$ and $c-\bar\beta^{2a}$ are divisible by $P^2$ locally,
+so $c/P$ is integral.
+All the vectors in $F$ therefore belong to $\mathfrak a_0$.
+
+For a fixed embedding $\iota_p:\mathbb C\to\mathbb C_p$, the maps
+$y\mapsto\iota_p(\overline{\sigma_s(y)})$ agree on $K$. The places
+they select are consequently either all on the $\beta$ side or all on the
+other side. The period-factor formula in the source gives the absolute
+value $|\delta|_w$ on the $\beta$ side and $1$ on the other side.
+For $p\nmid q$ this absolute value is always $1$ because $\delta\mid q$.
+Whenever the period factor is a unit, choose $y=1$.
+In the remaining case $p\mid q$, the selected places contain $\beta$ and
+$v_w(\delta)>0$. Choose the \emph{same} member of $F_p$ for every $s$,
+namely $y=y_1=Tz+(c/P)(z-1)$ at $j=0$.
+Its second summand has valuation $-v_w(\delta)<0$ while its first is
+integral. Therefore $v_w(y)=-v_w(\delta)$ at all these places. Multiplying
+the conjugated coordinates by the period factor gives absolute value
+$1$ simultaneously. This also explains why the unramified dyadic
+case uses the witness $1$.
+
+\subsection{The height and the return to level \texorpdfstring{$M$}{M}}
+The size of the two reduced coefficients makes the height bound polynomial
+in the conductor and discriminant. Indeed $p\le P$, $n\ge1$, and
+\[
+    |A|\le 1+pP(1+n)+P(1+\sqrt n)\le 2P^2(1+n).
+\]
+The maximal prime-power divisors $P=p^a\Vert q$ have sum at most $q$:
+a single factor gives equality, and $rs\ge r+s$ for integers $r,s\ge2$
+proves the general case by induction. Consequently
+\[
+     1\le H\le 4q(1+n)^2\sum_{p^a\Vert q}(p^a)^4
+                \le 4q^5(1+n)^2.
+\]
+To apply this bound in the source, $q\le x^{12}$ and
+$10^6\log x\le\log x_1\le10^{-6}\log b$.
+Furthermore $1+n=(d+5)/4\le d$ for $d\ge7$, and
+$d\le C$, $10^{12} C\le\log\log b$ for
+$C=\texttt{Parameters.constantBound}\ge64$. Thus
+$\log4+2\log(1+n)\le3C\le3\cdot 10^{-12}\log b$ and
+$5\log q\le60\cdot 10^{-12}\log b$.
+This proves $H\le b$, using only the repository's scale inequalities.
+It also removes the need for bounds on the coefficients of a
+cyclotomic polynomial and for a lower bound on the archimedean absolute
+value of its derivative.
+
+A version that omits coefficient reduction uses $c=\bar\beta^{2a}$,
+$T=1+n^a$. Then $L=T^2-p(n/p)^{2a}>0$, and the same Gram, congruence
+and lattice arguments apply. It gives
+$H\le9q^2d^{2\lceil\log_2q\rceil}$, which also meets the source bound
+by its existing estimate $d^{\lceil\log_2q\rceil}\le b^{1/100}$.
+The reduced version avoids invoking that estimate.
+
+Append the ordinary frame $\{\zeta^j:0\le j<q\}$ of bound $q$.
+The existing coprime-coin lemma gives multiplicities at least $R$ for
+the members of these two frames for every integral level
+$M\ge qH+R(q+H)$. With $R=\lceil 6fb\rceil$ the existing level
+estimate applies. Each $p$-adic witness lies in the resulting family.
+
+\section{Implementation at the two frame consumers}
+
+\paragraph{Construct the arithmetic object before imposing a size bound.}
+At the \cod{Parameters} level, return an existential tuple consisting of a positive integer $H$, a finite multiset in $\mathfrak a_0$, the Gram identity, coprimality, and the simultaneous unit property. The polynomial bound is valid already for these parameters. Admissible data first enter when comparing this bound with $b$. This order matters because the vacuum-expansion consumer works at an arbitrary tower exponent $s$ before the admissible scales have been chosen.
+
+\begin{center}\small
+\begin{tabular}{@{}p{.31\linewidth}p{.63\linewidth}@{}}
+\toprule
+\textbf{Source location} & \textbf{Proposed change or dependency}\\
+\midrule
+\source{New/Derivatives/Vacuum/ShortVectors}{508}{ShortVectors, line 508} &
+Introduce the existential Fourier-frame theorem. The old producer names a specific dual-basis resolution factor and a specific vector. These are implementation-specific outputs.\\[3pt]
+\source{New/Derivatives/Vacuum/StandardDataProducts}{226}{StandardDataProducts, line 226} &
+Change the destructuring of the old producer. This use requires a frame of bound coprime to $p$. Repeating it $H$ times gives the required bound $H^2$.\\[3pt]
+\source{New/Derivatives/Vacuum/ShortVectors}{754}{ShortVectors, lines 754 and 787} &
+Apply the polynomial bound and supply the source's short-frame contract. Reuse the level construction at line 584. The public level-$M$ conclusion already returns exactly the witnesses needed.\\[3pt]
+\source{New/Derivatives/Sharpness/BoundAttained}{395}{BoundAttained, line 395} &
+This use receives the frame, multiplicities and a unit vector at the chosen $p$-adic embedding. Its arguments use all three properties.\\[3pt]
+\source{New/UpperBound/Kernels/JetConjugatesAndBounds}{336}{JetConjugatesAndBounds, line 336} &
+Preserve the helper that a conjugation-fixed quadratic integer is an ordinary integer. It has an independent caller in the jet bound.\\
+\bottomrule
+\end{tabular}\end{center}
+
+The supplied Lean theorem \cod{VacuumFrame.Cyclotomic.local_different} applies in the local integral ring. Transfer its association to the absolute value at the chosen embedding, use \cod{VacuumFrame.Local.unit_witness}, and apply the \source{New/Derivatives/Vacuum/ShortVectors}{171}{valuation test for membership in the lattice}. The period-factor norm and the ordinary $q$-frame are available in \source{New/Derivatives/Vacuum/TightFrames}{324}{TightFrames}. The source intervals to retire include the dual-vector pairing and integrality proofs, the orbit and pair-replacement construction, and the estimates for cyclotomic coefficients. The other uses of the different of $E/K$ still need its definition and arithmetic properties.
+
+\paragraph{A small example.}
+Take $q=12$ and $d=23$, so $n=6$. The two blocks illustrate the division of labor between primes. This example exercises the local assumptions on $n$ and $q$. The next example uses an actual conductor of the parameter family.
+\begin{center}
+\begin{tabular}{rrrrrrr}\toprule
+$p$ & $P$ & $c$ & $T$ & $L$ & $H_p$ & $(H_p\bmod 2,\ H_p\bmod 3)$\\\midrule
+2 & 4 & $3+11\beta$ & 57 & 3153 & 42471 & $(1,0)$\\
+3 & 3 & $4+8\beta$ & 64 & 3952 & 53824 & $(0,1)$\\\bottomrule
+\end{tabular}
+\end{center}
+Thus $H=96295$ is coprime to $12$. For the parameter choice $q_0=18480$, $d=9239$, $s=0$, the tower gives $q=4490640$. The five blocks give $H=115189812247889405353$. The archive checks the integer residues and 2645 Gram entries after reduction at a splitting prime. This uses the parameter-level theorem and requires no choice of admissible analytic scales.
+
+\section{A height bound from two charts at each complex place}
+
+The global sieve sums Fourier transforms at frequencies $x\in E$.
+The source attaches a weight to each such frequency.  Write $E$ for a
+totally complex number field of degree $2f$, choose one embedding $\sigma$
+at each complex place, and set
+\[
+ D_x=\{a\in\mathcal O_E:ax\in\mathcal O_E\},\qquad
+ H(x)=\mathrm N(D_x)\prod_\sigma\max(1,|\sigma x|)^2.
+\]
+The weight is $H(x)^{-3}$. The exponents here use the field norm itself,
+without a $2f$-th root. This normalization makes the counting exponent
+independent of the degree.
+
+\paragraph{Replacement theorem.}
+For every finite $X\subset E$, $B\ge1$, and $s>2$,
+\[
+ \#\{x\in X:H(x)\le B\}\le18^fB^2,\qquad
+ \sum_{x\in X}H(x)^{-s}\le\frac{s}{s-2}18^f .
+\]
+In particular the required cubic sum is at most $3\cdot18^f\le54^f$.
+
+\paragraph{The arithmetic input.}
+For $x\ne y$, the ideal $J=(x-y)D_xD_y$ is integral and nonzero.
+Indeed, both $xD_xD_y$ and $yD_xD_y$ are integral. Taking its norm gives
+\[
+ 1\le\mathrm N(J)
+   =\mathrm N(D_x)\mathrm N(D_y)\prod_\sigma|\sigma x-\sigma y|^2 .
+\]
+The same inequality follows using integral ideals only. Choose a positive
+integer $m$ with $a=m(x-y)\in\mathcal O_E$. Then
+$(a)D_xD_y\subseteq(m)$, so
+$|\mathrm N_{E/\mathbb Q}(a)|\mathrm N(D_x)\mathrm N(D_y)\ge m^{2f}$.
+Cancel $m^{2f}$. This proof applies to nonprincipal denominator ideals.
+
+\paragraph{Separation in the unit polydisk.}
+For each embedding choose $u_\sigma(x)=\sigma x$ when $|\sigma x|\le1$,
+and $u_\sigma(x)=1/(\sigma x)$ otherwise. The $f$ decisions give a chart
+pattern. When $x,y$ have the same pattern,
+\[
+ |u_\sigma(x)-u_\sigma(y)|
+ =\frac{|\sigma x-\sigma y|}
+          {\max(1,|\sigma x|)\max(1,|\sigma y|)} .
+\]
+Consequently,
+\[
+ H(x)H(y)\prod_\sigma |u_\sigma(x)-u_\sigma(y)|^2=\mathrm N(J)\ge1.
+\]
+For $H(x),H(y)\le B$ the supremum distance of the chart coordinates
+is at least $r=B^{-1/f}$. Each chart lies in the unit ball of
+$(\mathbb C^f,\|\cdot\|_\infty)$. The open balls of radius $r/2$ around
+these points are disjoint and lie in the ball of radius $1+r/2$. The real
+dimension is $2f$. Volume comparison therefore bounds their number by
+$(1+2/r)^{2f}\le9^f B^2$. Summing over the $2^f$ patterns proves the
+first assertion. Since $H(x)\ge1$, the finite-sum layer identity gives
+\[
+ \sum_{x\in X}H(x)^{-s}
+ =s\int_1^\infty\! B^{-s-1}\#\{x\in X:H(x)\le B\}\,dB
+ \le\frac{s}{s-2}18^f .
+\]
+
+\paragraph{Integration with the source.}
+The source's \texttt{New/Spanning/MainTerm/Frequencies.lean} contains
+282 physical lines and is listed as 197 lines of code in
+\texttt{CONTENTS.md}. Keep the definition and the first two lemmas
+about $D_x$ (lines 28--42). The 13 intermediate declarations from
+\texttt{exists\_mem\_algebraMap\_eq\_mul} through
+\texttt{sum\_weight\_filter\_denominator\_eq\_le} can then be bypassed.
+In particular there is no need to partition by ideal, build ideal-coset
+labels, sum a Dedekind zeta majorant, assign points to grid squares, or
+bound a sum at their corners. The existing real normed-space lemma
+\texttt{New.encard\_le\_of\_separated} takes $R=1$, $m=B^{-1/f}$ and
+$V=(\text{infinite places}\to\mathbb C)$ with the ordinary supremum norm.
+The source already proves the counting-measure layer inequality as
+\texttt{New.DiscreteSeries.integral\_rpow\_neg\_le\_of\_measure\_le}.
+Set its parameters $K=1,e=2,d=1,V=18^f,A=3,c=3$.
+The old cubic bound is $(64\cdot38e^4)^f$. The new theorem implies it
+with the same statement. Its sole direct consumer is line 194 of
+\texttt{New/Spanning/MainTerm/GlobalSieve.lean}. That theorem uses
+$b\ge1000$ to absorb the per-place factor into $b^3$.
+
+\section{A direct second-order estimate for a principal minor}
+\label{sec:minor-flow}
+
+The third shortening applies to the real-place estimates for discrete-series coefficients.
+The proof needs the principal minor of a product of three small exponentials, with an error uniform in the dimension.
+The existing proof first obtains a cubic remainder, then uses a holomorphic deformation of the off-diagonal blocks and Schwarz's lemma to put two commutator factors into this remainder.
+Following the image of just one block column gives both factors directly.
+
+\paragraph{The estimate.}
+Let $Q$ be an orthogonal projection on a finite-dimensional complex Hilbert space. Write $H=\operatorname{im}Q$, $K=H^\perp$, and express each $A_i$ relative to $H\oplus K$ as
+\[
+ A_i=\begin{pmatrix}a_i&b_i\\c_i&d_i\end{pmatrix},\qquad
+ T_{ij}=\operatorname{tr}_H(b_ic_j)
+       =\operatorname{tr}\bigl(QA_i(1-Q)A_j\bigr).
+\]
+Assume $\|A_i\|_{\rm HS}\le\delta\le 1/20$ and
+$\|[Q,A_i]\|_{\rm HS}\le\zeta$ for $i=1,2,3$.
+Here HS is the Hilbert--Schmidt (Frobenius) norm. With $Y=e^{A_1}e^{A_2}e^{A_3}$ there is $r\in\mathbb C$ such that
+\begin{align*}
+ \det(1+Q(Y-1)) &=
+ \exp\!\left(\sum_i\operatorname{tr}_H a_i+
+       \tfrac12\sum_i T_{ii}+\sum_{i<j}T_{ij}+r\right),\\
+ |r|&\le 27\,\delta\zeta^2.
+\end{align*}
+The source requires the coefficient $10^4$.
+
+\paragraph{Proof.}
+Put $\sigma=\min(\delta,\zeta)$. In blocks the squared HS norm of $[Q,A_i]$ is $\|b_i\|_{\rm HS}^2+\|c_i\|_{\rm HS}^2$, so both crossing blocks have HS norm at most $\sigma$. Every block has operator norm at most $\delta$.
+On $[0,3]$ let $A(t)$ take the successive values $A_3,A_2,A_1$ on the three unit intervals, and use $a,b,c,d$ for its blocks. Solve $Y'=A(t)Y$ with $Y(0)=1$ by multiplying the three elementary exponential flows. Thus $Y(3)=e^{A_1}e^{A_2}e^{A_3}$. Write its first block column as $(X,Z)^{\mathsf T}$, where $X(0)=1_H$, $Z(0)=0$. On each open interval,
+\[
+ X'=aX+bZ,\qquad Z'=cX+dZ.
+\]
+Since $\|Y(t)\|_{\rm op}\le e^{t\delta}$, integrating $Y'=AY$ gives $\|X-1_H\|_{\rm op}\le e^{t\delta}-1\le te^{t\delta}\delta$. Also
+$e^{t\delta}\le (1-3/20)^{-1}=20/17<6/5$.
+The Neumann bound therefore gives
+\[
+ \|X^{-1}\|_{\rm op}\le 5/4,\qquad
+ \|X^{-1}-1_H\|_{\rm op}\le\tfrac32 t\delta .
+\]
+Set $U(t)=\int_0^t c(s)\,ds$, so $\|U(t)\|_{\rm HS}\le t\sigma$.
+The propagator $V(t,s)$ of $V'=d(t)V$ has operator norm at most $e^{(t-s)\delta}$ by multiplication of at most three exponential factors. Variation of constants, with $Z(0)=0$, gives
+\[
+ Z(t)=\int_0^t V(t,s)c(s)X(s)\,ds,\qquad
+ \|Z(t)\|_{\rm HS}\le t e^{t\delta}\sigma .
+\]
+These bounds use $\|BCD\|_{\rm HS}\le\|B\|_{\rm op}\|C\|_{\rm HS}\|D\|_{\rm op}$. Integrate
+$(Z-U)'=c(X-1_H)+dZ$ to get
+$\|Z-U\|_{\rm HS}\le\int_0^t 2s e^{s\delta}\delta\sigma\,ds\le (6/5)t^2\delta\sigma$.
+Now $(Z-U)X^{-1}+U(X^{-1}-1_H)=ZX^{-1}-U$, and consequently
+\[
+ \|ZX^{-1}-U\|_{\rm HS}\le
+ \left(\tfrac65\tfrac54+\tfrac32\right)t^2\delta\sigma
+ =3t^2\delta\sigma.
+\]
+Jacobi's formula on each interval shows that $\det X$ solves the scalar differential equation
+$(\det X)'=\operatorname{tr}_H(a+bZX^{-1})\det X$. Continuity at the two joins gives its solution at $t=3$ by exponentiating the integral from zero. The matrix $1+Q(Y(3)-1)$ is block upper triangular with diagonal $X(3),1_K$, so its determinant equals $\det X(3)$.
+
+Finally, $\int_0^3\operatorname{tr}_H a=\sum_i\operatorname{tr}_H a_i$.
+For $b(t)U(t)$ the integration region is $0\le s\le t\le3$. Two times in the same unit interval contribute area $1/2$, and times in distinct intervals contribute area one. Since the generators act in order $3,2,1$,
+\[
+ \int_0^3\operatorname{tr}_H\bigl(b(t)U(t)\bigr)\,dt
+ =\tfrac12\sum_i T_{ii}+\sum_{i<j}T_{ij}.
+\]
+The remaining integral is $r=\int_0^3\operatorname{tr}_H(b(ZX^{-1}-U))\,dt$.
+The HS trace inequality bounds $|r|$ by $\int_0^3 3t^2\delta\sigma^2\,dt=27\delta\sigma^2$. The reasoning includes $\sigma=0$ and the ranks zero and full.\hfill$\square$
+
+\paragraph{Lean integration and scope.}
+In \texttt{New/Appendix/DiscreteSeries/MinorSecondOrder.lean} the target starts at line 556. Keep the definitions \texttt{crossTrace} and \texttt{crossTraceSum} (lines 216 and 225) and the public theorem signature. The direct call in \texttt{OneMinor.lean, line 609} already accepts the weaker constant. Separate comparisons there use the two definitions. One can implement the calculation with three interval lemmas for the constant-matrix flow. Jacobi's formula at an invertible $X(t_0)$ follows by differentiating $X(t)X(t_0)^{-1}$ at the identity using \texttt{New.hasDerivAt\_det\_of\_eq\_one} in \texttt{MatricesNearIdentity.lean, line 34}. This avoids a general existence theory for discontinuous ODEs. The target file has 585 physical lines and 37 named declarations. Those counts measure the existing implementation. A net change in Lean lines requires an integrated build. Through \texttt{GaussianShape}, \texttt{Periods} and \texttt{PositionGroup}, the estimate supplies the period bounds used at \texttt{LargeFunction.lean, line 437} and \texttt{DeepLevelVanishing.lean, line 761}. The attached checker independently expands principal determinants to second order on 496 exact rational matrix/projection triples and certifies the rational arithmetic in the bound. A second suite encloses the full logarithmic remainder using rational intervals for 360 products of exponentials of square-zero generators. In 305 cases the interval certifies a nonzero remainder.
+
+\section{Overlap, size and verification}
+
+\paragraph{Comparison with the proposal archive.}
+The audited proposal tree contains 28 directories and 43 TeX files. The accompanying source inventory records the Git blob for every TeX file. The closest overlaps in subject matter are these.
+\begin{itemize}
+\item \emph{Gram-adjoint simplification} extracts coordinates of the adjoint of a gluing map in a Weyl--Fock space. Its frame lives in the comparison-operator argument. The present construction produces elements of the number-field lattice $\mathfrak a_0$ and a coprime integer bound for the integral vacuum.
+\item \emph{Integral field presentation} computes a codifferent and a conjugation phase and applies trace integrality to the vacuum. The Fourier construction uses the same auxiliary field, then replaces the dual-vector frame construction itself. The different can be supplied by either presentation.
+\item \emph{CM-norm theta simplification} reduces the copy count in local coefficient sharpness. \emph{Frobenius jet simplification} changes the certificate used for theta divisibility. The former calls for a suitably placed unit coefficient and the latter retains frame data. The Fourier frame supplies the required input upstream.
+\item The centered-moment, ramified-source and projective-incidence proposals change rank estimates or finite-group representation counts. The two charts here concern embeddings of a number-field frequency and its denominator ideal. Their output feeds the existing analytic moment estimates.
+\item The exchange, nearest-pole and determinant-height proposals treat other analytic or determinant arguments. The block evolution in Section~\ref{sec:minor-flow} takes place inside the local expansion of an archimedean principal minor. Its output is used by \source{New/Appendix/DiscreteSeries/OneMinor}{609}{the conjugated-minor estimate}.
+\end{itemize}
+
+\paragraph{How much is at stake.}
+\begin{center}
+\begin{tabular}{@{}lrr@{}}\toprule
+\textbf{Target module} & \textbf{Physical lines} & \textbf{Code lines in repository index}\\\midrule
+ShortVectors & 809 & 538\\
+Frequencies & 282 & 197\\
+MinorSecondOrder & 585 & 410\\\midrule
+Total existing scope & 1676 & 1145\\\bottomrule
+\end{tabular}
+\end{center}
+These totals measure the original implementations. Some declarations are reusable, two source-level callers of frame results require different treatment, and replacement proofs have a cost of their own. Net savings can be measured after elaborating the integrated modules. For the frame the remaining implementation work includes the transfer to all the weight embeddings and the assembly of the multiset at level $M$. For the minor argument it is the bookkeeping between operator and Hilbert--Schmidt norms.
+
+\paragraph{What was checked.}
+Five Lean modules establish the Fourier Gram entry, quadratic coefficient identities, block and sum congruences, the prime-power derivative, the full mixed-conductor local different, and the ultrametric unit and integrality estimates. They elaborate with Mathlib \texttt{56a00585} on Lean 4.35.0. The mixed-conductor theorem uses the canonical residue field of a local integral domain. The modules were also replayed from their compiled imports. The log includes their axiom reports. The Python tests recompute 7114 exact Gram entries across two coefficient choices, along with checks of the different and residues. The height tests check 7719 pairs in matching charts in two number fields. The minor tests check second-order coefficients in 496 rational cases and enclose full remainders in 360 cases. The archimedean packing and flow arguments and the number-field integration of the frame are proved here on paper. A build of the modified GRH package and a net line-count comparison remain open.
+
+\end{document}

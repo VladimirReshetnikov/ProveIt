@@ -1257,7 +1257,7 @@ occupied sign class, and the dynamic program above gives the same sign law.
 \end{example}
 
 \subsection{Disjoint products of small primes in one modulus}\label{dir:sec:disjoint}
-\sources{disjoint-prime-products; grh_quadratic_fibre; grh_quarter_density}
+\sources{disjoint-prime-products; grh_quadratic_fibre; grh_quarter_density; grh_research_extensions_2026-11-27}
 
 How can a few extra primes change which products are possible? If every retained prime is a
 quadratic residue modulo an odd prime except one nonresidue, that prime can go into either of two
@@ -1272,7 +1272,9 @@ projections and four linear inequalities with an additional parity cut, and for 
 products a single joint pattern can be missing although every proper marginal is full. It also answers the question of \cref{dir:sec:products} whether the distance from a
 quadratic fibre can replace a fixed density margin above one half: the right quantity is the number of
 minority primes times the relative quota, and for one product the counts on both sign classes follow a
-binomial law with relative error $O(1/h)$, which is sharp (\cref{dir:thm:fibre}).
+binomial law with relative error $O(1/h)$, which is sharp (\cref{dir:thm:fibre}). When the number of
+blocks grows, the parities of the block occupancies follow conditioned independent signs with an explicit Gaussian
+distance profile (\cref{prd:thm:parity,prd:cor:parityprimes}).
 
 Keep the notation of \cref{dir:sec:products}: $q\ge3$, $G=(\Z/q\Z)^\times$, $L=\log q$, $y=CL^2$,
 $\mathcal P$ the primes up to $y$ not dividing $q$, $N=\abs{\mathcal P}$, $S\subseteq\mathcal P$ with
@@ -1739,6 +1741,167 @@ the projected law, without the identities of the primes. Since the relative erro
 lifting of its quotient law, the uniform lifting of the independent-exception model is within
 $q^{-A}/2+s(s-1)/(2m)$ of the law of $X$, after undoing the translation. In \cref{dir:cor:paritycut},
 $s=2r=O(L/\log L)$ and $m\asymp L^2/\log L$, so this error is $O(1/\log L)$.
+
+Keeping the number of boxes in the entropy step of \cref{dir:lem:disjoint-iid} gives a bound that is better than
+\cref{dir:prop:sparseexc} when there are many exceptions and comparatively few blocks.
+
+\begin{proposition}[Entropy comparison for any number of boxes; \stU]\label{prd:prop:entropy}
+Let $R$ nonempty boxes have capacities $n_1,\dots,n_R$, $m=\sum_in_i\ge2$, let $P$ be the joint law of the box
+labels of $s\le m$ distinct uniformly chosen slots, in order, and let $Q$ give independent labels with
+probabilities $n_i/m$. Then
+\[
+ D(P\Vert Q)\le(R-1)\sum_{\ell=0}^{s-1}\frac\ell{(m-1)(m-\ell)},\qquad
+ d_{\mathrm{TV}}(P,Q)\le\frac{\sqrt{(R-1)s(s-1)}}{2\sqrt{(m-1)(m-s+1)}} ,
+\]
+and the same total variation bound holds for every function of the labels, in particular for the colour sums of
+the blocks.
+\end{proposition}
+
+\begin{proof}
+After $\ell$ draws with occupancies $H_i$ the next label has probabilities $(n_i-H_i)/(m-\ell)$. Its relative
+entropy from $(n_i/m)$ is at most the $\chi^2$-divergence, whose mean is
+$\sum_i\operatorname{Var}(H_i)/(\alpha_i(m-\ell)^2)=(R-1)\ell/((m-1)(m-\ell))$, by the hypergeometric variance
+$\ell\alpha_i(1-\alpha_i)(m-\ell)/(m-1)$ with $\alpha_i=n_i/m$. The chain rule gives the first bound, and
+$\sum_{\ell<s}\ell/(m-\ell)\le s(s-1)/(2(m-s+1))$ with Pinsker's inequality the second.
+\end{proof}
+
+In \cref{prd:cor:parityprimes} below, with $R\asymp L/\log L$ blocks, $s\asymp L$ exceptions and
+$m\asymp L^2/\log L$, one has $s^2/m\asymp\log L$, so \cref{dir:prop:sparseexc} gives nothing, while
+\cref{prd:prop:entropy} gives $O(\sqrt{\log L/L})$.
+
+\paragraph{Many products: the parity profile.} When the number of blocks grows, the parities of the block
+occupancies can be described far beyond any comparison of the full label sequence. Partition $m=rn$ slots into
+$r$ labelled blocks of capacity $n$, choose a uniform $s$-subset, let $H_i$ be its occupancy of block $i$ and
+$Y_i=(-1)^{H_i}$, and let $P_{r,n,s}$ be the law of $Y=(Y_1,\dots,Y_r)$; so $\prod_iY_i=(-1)^s$. For
+$\iota\in\set{\pm1}$ let $U_{r,\iota}$ be uniform on $\set{y\in\set{\pm1}^r:\prod_iy_i=\iota}$; for $0\le\alpha<1$ let
+$Q_{r,\alpha}$ have independent coordinates with $Q_{r,\alpha}(Y_i=1)=(1+\alpha)/2$, and $Q_{r,\alpha}^\iota$ the same
+law conditioned on $\prod_iY_i=\iota$. Let $\Phi$ be the standard normal distribution function.
+
+\begin{theorem}[Parity laws of block occupancies; \stU]\label{prd:thm:parity}
+Let $r\to\infty$, let $n=n_r\ge2$ be arbitrary, and let $0\le s=s_r\le rn/2$. Put
+\[
+ p=\frac s{rn},\qquad\beta=1-2p,\qquad\alpha=\beta^n,\qquad\iota=(-1)^s .
+\]
+\begin{enumerate}[label=\textup{(\roman*)}]
+\item If $\alpha\to0$, then $d_{\mathrm{TV}}(P_{r,n,s},Q_{r,\alpha}^\iota)\to0$; neither $n\to\infty$ nor
+$s=o(rn)$ is assumed.
+\item If $\alpha\to0$ and $\sqrt r\,\alpha\to\lambda\in[0,\infty]$, then
+$d_{\mathrm{TV}}(P_{r,n,s},U_{r,\iota})\to2\Phi(\lambda/2)-1$, read as $1$ for $\lambda=\infty$; for finite $\lambda$
+the hypothesis $\alpha\to0$ is automatic.
+\end{enumerate}
+\end{theorem}
+
+The condition $n\ge2$ is needed: for $n=1$ the parities determine the subset, at $s\sim r/2$ the support is one
+Hamming layer of vanishing $U_{r,\iota}$-mass, and the distance tends to one although $\sqrt r\,\alpha\to0$.
+
+\begin{lemma}[Local limit for Bernoulli sums; \stU]\label{prd:lem:llt}
+Let $Z$ be a finite sum of independent Bernoulli variables with arbitrary parameters, $\mu=\dirE Z$ and
+$v=\operatorname{Var}Z$. Uniformly over all such arrays, as $v\to\infty$,
+\[
+ \sup_{k\in\Z}\Bigl|\sqrt v\,\dirP(Z=k)-\frac1{\sqrt{2\pi}}e^{-(k-\mu)^2/(2v)}\Bigr|\to0 .
+\]
+\end{lemma}
+
+\begin{proof}
+A Bernoulli factor has squared modulus $1-4u(1-u)\sin^2(\theta/2)$, so
+$\abs{\dirE e^{i\theta(Z-\mu)}}\le\exp(-2v\sin^2(\theta/2))$ for $\abs\theta\le\pi$. At $\theta=w/\sqrt v$ the centred
+characteristic function tends to $e^{-w^2/2}$ uniformly, since the centred third absolute moments sum to at most
+$v$, and on $\abs w\le\pi\sqrt v$ it is bounded by $e^{-2w^2/\pi^2}$. Dominated convergence in the rescaled inversion
+integral gives the claim uniformly in $k$.
+\end{proof}
+
+\begin{lemma}[A binomial conditioned on its parity; \stU]\label{prd:lem:parityroots}
+If $W\sim\mathrm{Bin}(n,p)$ with $n\ge1$ and $0<p<1$, then conditionally on either parity $e\in\set{0,1}$, $W$ has the
+law of $e+2\sum_jB_j$ for some independent Bernoulli variables $B_j$, the sum possibly empty.
+\end{lemma}
+
+\begin{proof}
+With $q=1-p$, the generating polynomials $E_n(z)$ of $W/2$ on even $W$ and $O_n(z)$ of $(W-1)/2$ on odd $W$ satisfy
+$2E_n(w^2)=(q+pw)^n+(q-pw)^n$ and $2wO_n(w^2)=(q+pw)^n-(q-pw)^n$. At a nonzero root, $(q+pw)/(q-pw)$ is an $n$th
+root $\zeta\ne-1$ of $\mp1$, and $w$ is purely imaginary since $(\zeta-1)/(\zeta+1)$ is; explicitly the roots in $z$
+are $-(q/p)^2\tan^2((2j-1)\pi/(2n))$, $1\le j\le\floor{n/2}$, and $-(q/p)^2\tan^2(j\pi/n)$,
+$1\le j\le\floor{(n-1)/2}$, and these are all of them. A polynomial with positive constant term and only negative
+roots, normalized at $z=1$, is $\prod_j(1-\beta_j+\beta_jz)$ with $0<\beta_j<1$.
+\end{proof}
+
+\begin{proof}[Proof of \cref{prd:thm:parity}]
+(i) The case $p=0$ has $\alpha=1$, so $0<p\le1/2$. Let $W_1,\dots,W_r$ be independent $\mathrm{Bin}(n,p)$, $T=\sum_iW_i$
+and $Y_i=(-1)^{W_i}$. Given $T=s$ the slots form a uniform $s$-subset, so $Y\mid T=s$ has law $P_{r,n,s}$, while $Y$
+has law $Q_{r,\alpha}$. Put $\kappa=np(1-p)$, $u=-2\kappa\beta^{n-1}$ and
+$v=-2\kappa\alpha+4\kappa^2(1-1/n)\beta^{n-2}$. Differentiating the logarithm of the conditional moment generating
+function
+$(1-p+pe^x)^n\bigl(1+y_i((1-p-pe^x)/(1-p+pe^x))^n\bigr)/(1+y_i\alpha)$ twice at $x=0$ gives
+$\dirE(W_i\mid Y_i=y_i)=np+y_iu/(1+y_i\alpha)$ and
+$\operatorname{Var}(W_i\mid Y_i=y_i)=\kappa+y_iv/(1+y_i\alpha)-u^2/(1+y_i\alpha)^2$. So with $J=\sum_iy_i$ the
+conditional mean $\mu_y$ and variance $V_y$ of $T$ are
+\[
+ \mu_y-s=u\frac{J-r\alpha}{1-\alpha^2},\qquad
+ V_y=r\kappa+v\frac{J-r\alpha}{1-\alpha^2}-u^2\frac{r(1+\alpha^2)-2\alpha J}{(1-\alpha^2)^2}.
+\]
+For $n\ge2$ and $0\le\beta<1$ one has $\kappa\ge(1-\alpha)/4$, since $1-\beta^n\le2np$; $\kappa\beta^{n-2}\le1/2$, since with
+$x=\beta^2$ it equals $\frac n4(1-x)x^{n/2-1}$; and $\kappa\beta^{2n-2}\le-\frac12\alpha\log\alpha$, since
+$n(1-x)\le-2\log\alpha$ and $x^{n-1}=\alpha^{2-2/n}\le\alpha$. So $\abs v\le4\kappa$ and $\kappa\beta^{2n-2}\to0$.
+
+On $\mathcal T_M=\set{y:\abs{J-r\alpha}\le M\sqrt r}$, whose complement has $Q_{r,\alpha}^\iota$-probability at most
+$(2+o(1))M^{-2}$ by Chebyshev's inequality and $Q_{r,\alpha}(\prod_iY_i=\iota)=(1+\iota\alpha^r)/2$, these bounds give
+$\abs{\mu_y-s}/\sqrt{r\kappa}\le2M\sqrt{\kappa\beta^{2n-2}}/(1-\alpha^2)=o(1)$ and $V_y/(r\kappa)=1+o(1)$, the linear
+term contributing at most $4M/((1-\alpha^2)\sqrt r)$ and the last at most $4\kappa\beta^{2n-2}/(1-\alpha)^2$; and
+$r\kappa\to\infty$. Given $Y=y$ the $W_i$ stay independent, so by \cref{prd:lem:parityroots} $T$ is an offset, of the
+parity of $s$ when $\prod_iy_i=\iota$, plus twice a Bernoulli sum of variance $V_y/4$, and \cref{prd:lem:llt} gives
+$\dirP(T=s\mid Y=y)=(2+o(1))/\sqrt{2\pi r\kappa}$ uniformly on $\mathcal T_M\cap\set{\prod_iy_i=\iota}$, while
+$\dirP(T=s)=(1+o(1))/\sqrt{2\pi r\kappa}$ since $T\sim\mathrm{Bin}(rn,p)$ has mean $s$. Hence
+\[
+ \frac{P_{r,n,s}(y)}{Q_{r,\alpha}^\iota(y)}=\frac{1+\iota\alpha^r}2\cdot\frac{\dirP(T=s\mid Y=y)}{\dirP(T=s)}=1+o(1)
+\]
+uniformly on $\mathcal T_M$. Letting $M\to\infty$, the likelihood ratio tends to one in probability; its mean is one,
+so $d_{\mathrm{TV}}=1-\dirE_Q\min(dP/dQ,1)\to0$.
+
+(ii) The likelihood ratio of $Q_{r,\alpha}^\iota$ to $U_{r,\iota}$ is $\Lambda(y)=\prod_i(1+\alpha y_i)/(1+\iota\alpha^r)$, and under
+$U_{r,\iota}$, $J/\sqrt r$ tends to a standard normal $Z$ (take $r-1$ fair signs and fix the last). If
+$\sqrt r\,\alpha\to\lambda<\infty$, the logarithm of the ratio is $\alpha J-r\alpha^2/2+O(r\alpha^3)+o(1)$, which converges in
+law to $\lambda Z-\lambda^2/2$, and
+$d_{\mathrm{TV}}=\dirE_U(1-\Lambda)_+\to\dirE(1-e^{\lambda Z-\lambda^2/2})_+=2\Phi(\lambda/2)-1$. If $\sqrt r\,\alpha\to\infty$, the
+event $J>r\alpha/2$ has probability tending to one under $Q_{r,\alpha}^\iota$ and to zero under $U_{r,\iota}$. With (i)
+and the triangle inequality this proves (ii).
+\end{proof}
+
+The value $\lambda=1$ sits at $s_*=\frac{rn}2(1-r^{-1/(2n)})$, and along
+$s(c)=\frac{rn}2(1-e^{-2c/n}r^{-1/(2n)})$, rounded to integers, the limit is $2\Phi(e^{-2c}/2)-1$ for every fixed $c$
+and every $n\ge2$. If $n\gg(\log r)^2$ the classical hypercube centre $\frac r4\log r$ and window $r$ apply
+\cite{DiaconisGrahamMorrison1990Asymptotic}; if $n/(\log r)^2\to\kappa_0\in(0,\infty)$, then at $s=\frac r4\log r+cr$
+the parameter tends to $\lambda=e^{-2c-1/(8\kappa_0)}$, a shift on the classical window; and for fixed $n\ge2$ there is a
+central valley: at $s=rn/2-ur^{1-1/(2n)}+O(1)$ with fixed $u\ge0$ the distance tends to
+$2\Phi\bigl(\frac12(2u/n)^n\bigr)-1$. Complementation gives the same distance at $rn-s$, so the distance is not
+monotone in $s$. Exact coefficient extraction, checked against full enumeration in $56$ small cases, gives the law
+of the number of odd blocks in $95$ larger cases
+(\artifact{grh_research_extensions_2026-11-27/verification/parity_verification.json}). A related comparison for a
+fixed number of suits, retaining the full label sequence, is in \cite{Alves2024Simulating}.
+
+\begin{corollary}[Many simultaneous products with a quadratic bias; \stG]\label{prd:cor:parityprimes}
+Fix $\alpha_0\in(1/3,1/2)$ and $A>0$, and let $B,C$ be the constants of \cref{dir:thm:disjoint-growing} for
+$a=\alpha_0$ and $A$. Let $q\to\infty$, $y=CL^2$, and let $S\subseteq\mathcal P$ have $m=rn\ge\alpha_0N$ elements with
+$r\to\infty$ and $n\ge BL$. Partition $S$ uniformly into $r$ labelled blocks of $n$ primes, with products
+$X_1,\dots,X_r$ modulo $q$, and let $P_S=\prod_{p\in S}p\bmod q$. Let $\chi$ be a nonprincipal quadratic character,
+$\sigma\in\set{\pm1}$, and suppose exactly $s=\frac r4\log r+cr+o(r)$ members of $S$ have $\chi(p)=-\sigma$, with $c$
+fixed. If $\mathcal U_q$ is uniform on $\set{(g_1,\dots,g_r)\in G^r:\prod_ig_i=P_S}$, then
+\[
+ d_{\mathrm{TV}}\bigl(\mathcal L(X_1,\dots,X_r),\mathcal U_q\bigr)\to2\Phi(e^{-2c}/2)-1 .
+\]
+\end{corollary}
+
+\begin{proof}
+Use one block as the reserve of \cref{dir:thm:disjoint-growing}; the recorded tuple determines the reserve residue
+through $P_S$, a bijection onto the compatibility set. Since $N=O(L^2/\log L)$ and $n\ge BL$, $r=O(L/\log L)$ and
+$n\gg(\log r)^2$, so $s/m\to0$; the bias $1-2s/m$ of $\chi$ on $S$ tends to one, so $\chi\in H_\tau$, which has order at
+most $\floor{1/\alpha_0}=2$, and $H_\tau=\langle\chi\rangle$. The signs $\sigma^n\chi(X_i)=(-1)^{H_i}$, with $H_i$ the
+number of exceptional primes in block $i$, have law $P_{r,n,s}$. By \cref{dir:thm:disjoint-growing} the law of the
+residues is within $q^{-A}/2$ in total variation of the uniform lift of this parity law, uniform lifting over
+equal fibres preserves total variation, and $\mathcal U_q$ lifts $U_{r,(-1)^s}$. Finally
+$\log(\sqrt r\,\beta^n)=\frac12\log r-2s/r+O(s^2/(r^2n))\to-2c$, and \cref{prd:thm:parity}(ii) applies.
+\end{proof}
+
+The corollary treats a quadratic quotient of order two only, not the quotients of order four at retained density
+one quarter.
 
 \paragraph{One product: the quadratic-fibre law.}
 For one product above density one third the single possibly large mode can be computed exactly and

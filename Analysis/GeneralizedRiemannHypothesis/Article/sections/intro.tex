@@ -37,7 +37,8 @@ of the repository that holds this article, as it stands at commit \code{10802a6b
 103 reports of the first two batches, at commit \code{f2f9fd7531} for the 17 of the third, at
 commit \code{64f3896557} for the 11 of the fourth, at commit \code{fd9a9cb2bd} for the 11 of the
 fifth, at commit \code{f6b5955e13} for the 42 of the sixth and at commit \code{7f951e1dfd} for the 10 of
-the seventh and at commit \code{3c4d27a69c} for the 15 of the eighth; the packet names are unique. Nothing was recomputed for the
+the seventh, at commit \code{3c4d27a69c} for the 15 of the eighth and at commit \code{2f9fb0b144} for the 33 of the
+ninth; the packet names are unique. Nothing was recomputed for the
 merge, and the mathematical claims are those of the reports.
 
 \subsection{Guide to results}\label{intro:sec:guide}
@@ -82,17 +83,21 @@ Li coefficients: detection schedules, second differences, the character from fil
 coefficients & \cref{sec:li}: \labelcref{li:sec:sampling,rec:sec:li,li:sec:curv}\\
 Moment pencils, Ritz values, matched ordinates, Hermite and Hankel power-sum tests, cluster
 counts & \cref{sec:li}: \labelcref{li:sec:ritz,li:sec:match,li:sec:hermite,ana:sec:hankel,li:sec:cluster}\\
+Even central derivatives of quadratic Dirichlet $L$-functions (Sheth and Voo) &
+  \cref{sec:li}: \labelcref{li:sec:central}\\
 The Li heat semigroup and L\'evy processes from Cayley angles; the character from one kernel,
 one path or one time slice &
   \cref{sec:lih}: \labelcref{li:sec:univ,rec:sec:liheat,li:sec:path,li:sec:offorigin,li:sec:slice}\\
 A small-deviation law for sums over zeros; Euler's Gamma product &
-  \cref{sec:lih}: \labelcref{ana:sec:smalldev,ana:sec:eulergamma}\\[3pt]
+  \cref{sec:lih}: \labelcref{ana:sec:smalldev,ana:sec:eulergamma}\\
+Best underapproximations by distinct unit fractions & \cref{sec:lih}: \labelcref{lih:sec:egypt}\\[3pt]
 \multicolumn{2}{@{}l}{\emph{Part II: nonabelian zero detection}}\\
 The Riemann hypothesis for the Dedekind zeta function of a Galois field from one prime
 inequality; Heilbronn domination & \cref{sec:nab}: \labelcref{nab:sec:heilbronn,nab:sec:sylow}\\
 Symmetric groups, reflection detectors, normal towers, deficits and nonsplit primes, the zeros
 missing from the abelian part &
   \cref{sec:nab}: \labelcref{nab:sec:sn,nab:sec:reflection,nab:sec:tower,nab:sec:deficit,nab:sec:missing}\\
+Smaller zero-detecting fields for $S_n$ & \cref{sec:nab}: \labelcref{nab:sec:lowdegree}\\
 Which Frobenius weights can detect zeros; why fixed congruence weights cannot &
   \cref{sec:nab}: \labelcref{nab:sec:extremal,nab:sec:periodic}\\
 Detectors for $A_5$, $A_6$, $\PSL_2(7)$, $\PSL_2(q)$, $S_4$, six quintic fields and the real
@@ -117,9 +122,16 @@ Peaks, sharp windows and excursions of normalized prime errors; the source remai
 Merging scales: stencil variances and multiplicities of zeros &
   \cref{sec:flu}: \labelcref{zer:sec:coalesce}\\
 Shortest positive averages and filters that cancel prescribed zeros; logarithmic support &
-  \cref{sec:fil}: \labelcref{fil:sec:reflect,fil:sec:two,fil:sec:logsupport,fil:sec:global}\\
+  \cref{sec:fil}: \labelcref{fil:sec:reflect,fil:sec:logsupport,fil:sec:global}\\
 Reading the central multiplicity from prime sums with one positive rule or a finite grid &
   \cref{sec:fil}: \labelcref{fil:sec:primes}, \cref{ana:thm:grid}\\
+Zero-free intervals of trigonometric polynomials: the two-frequency classification, the gaps of
+Kozma and Oravecz for progressions, squares and higher powers &
+  \cref{sec:zfg}: \labelcref{zfg:sec:dual,fil:sec:two,zfg:sec:prog,zfg:sec:squares,zfg:sec:powers}\\
+Steinerberger's support problem; reciprocal moments of zero heights &
+  \cref{sec:zfg}: \labelcref{zfg:sec:recip}\\
+Erd\'elyi's question on the Lorentz degree of polynomials with zeros in a thin ellipse &
+  \cref{sec:zfg}: \labelcref{zfg:sec:lorentz}\\
 Counting zeros from values to the right of the critical strip; certificates for central
 nonvanishing & \cref{sec:rec}: \labelcref{rec:sec:count}\\
 Zero multisets and multiplicities from prime sums, sparse samples, Taylor data and extremal
@@ -128,6 +140,8 @@ The modulus, the character and twists from the zero spectrum, spacings, blurred 
 low zeros and balanced statistics & \cref{sec:chz}: \labelcref{rec:sec:spectrum,rec:sec:gaps,rec:sec:blur,rec:sec:poles,rec:sec:quadratic,rec:sec:lowzero,rec:sec:homometry}\\
 Both signs of multiplicity differences, and ranks of multiplicity vectors, in short windows &
   \cref{sec:chz}: \labelcref{rec:sec:localwin,zer:sec:short}\\
+Matching and binning the zeros of two products on a dyadic range &
+  \cref{sec:chz}: \labelcref{chz:sec:matching}\\
 Graph couplings of completed $L$-functions: real zeros, inverse problems, transport of zeros,
 local Cauchy laws & \cref{sec:cpl}: \labelcref{zer:sec:graph,zer:sec:transport}\\
 How often two products of Dirichlet $L$-functions share Euler factors &
@@ -150,7 +164,8 @@ Coefficient fields of CM newforms, reflected fields, isogeny bounds, heavenly ab
   \cref{sec:cmf}: \labelcref{dir:sec:cm,dir:sec:reflected,dir:sec:isogeny,dir:sec:heavenly}\\
 Sparse polynomial equations for singular moduli; growth of the least support &
   \cref{sec:smd}: \labelcref{smd:sec:classification,smd:sec:growth,smd:sec:uncond}\\
-$p$-adic fewnomial root counts & \cref{sec:smd}: \labelcref{smd:sec:disk,smd:sec:exact}\\[3pt]
+$p$-adic fewnomial root counts, also beyond $p$ terms &
+  \cref{sec:smd}: \labelcref{smd:sec:disk,smd:sec:exact,smd:sec:beyond}\\[3pt]
 \multicolumn{2}{@{}l}{\emph{Part V: combinatorial transfers}}\\
 Sets without three-term geometric progressions in $\F_q[x]$ and in finite coefficient rings &
   \cref{sec:gpp}: \labelcref{gpp:sec:counterexample,gpp:sec:upper,gpi:sec:poly,gpp:sec:rings,gpp:sec:squarezero}\\
@@ -160,7 +175,13 @@ Additive constraints from the sparse-place construction: periodic sets, anticode
 $p$-adic valuations of spanning-tree counts in graph towers & \cref{sec:gra}\\
 Periodic quantum walks, oriented Cayley walks, signed square cycles, Ehrhart zeros &
   \cref{sec:grw}: \labelcref{gra:sec:grover,gra:sec:cayley,gra:sec:cycles,gra:sec:ehrhart}\\
-Laws of compressions of random symplectic and orthogonal matrices & \cref{sec:cmp}\\[3pt]
+Ehrhart theory of graph polytopes: reconstruction from multipartite symmetric edge polytopes,
+complete graphs with a matching deleted, gamma vectors of suspensions, the Davis--Kohl conjecture
+for stable set polytopes &
+  \cref{sec:grw}: \labelcref{grw:sec:multipartite,grw:sec:matching,grw:sec:gamma,grw:sec:stable}\\
+Laws of compressions of random symplectic and orthogonal matrices & \cref{sec:cmp}\\
+Relation spaces of structured random constraints, products of random codes, Schur squares &
+  \cref{sec:cmp}: \labelcref{spn:sec:relations}\\[3pt]
 \multicolumn{2}{@{}l}{\emph{Part VI: local transfers and the arithmetic interface}}\\
 Torsion specialization: the optimal order of the selected root of unity and the exact minimax
 cost & \cref{sec:tors}: \labelcref{cost:sec:minimax,tors:sec:optimal}\\
@@ -188,7 +209,7 @@ Open questions & the last subsection of every section (for \cref{sec:tors}:
 
 \subsection{Contents}
 
-After this introduction the article has twenty-nine sections in six parts.
+After this introduction the article has thirty sections in six parts.
 
 \paragraph{Part I: the input, the source mechanism and the analytic engine.}
 \Cref{sec:src} states the input and the architecture of its proof, proves the determinant
@@ -234,7 +255,11 @@ smoothed prime errors at several scales, without any independence hypothesis on 
 and studies simultaneous balancing, extreme values and merged scales. \Cref{sec:fil}
 determines the shortest positive averages, and the least logarithmic support of positive
 filters, that cancel prescribed zeros or every zero up to a given height, and reads the
-central multiplicity from prime sums. \Cref{sec:rec} asks what prime data, samples to the
+central multiplicity from prime sums. \Cref{sec:zfg} treats zero-free intervals and positivity
+for trigonometric and algebraic polynomials: the two-frequency classification, the gaps of Kozma
+and Oravecz for progressions and squares, Steinerberger's support problem and Erd\'elyi's question
+on the Lorentz degree; it is unconditional apart from applications to zeros of Dirichlet
+$L$-functions. \Cref{sec:rec} asks what prime data, samples to the
 right of the critical strip and local Taylor data determine about the zeros: it counts zeros
 from values to the right of the strip and recovers zero multisets and multiplicities from
 filtered, sparse and extremal prime sums. \Cref{sec:chz} treats the opposite direction: it
@@ -268,8 +293,12 @@ disproved (\cref{gpp:thm:counterexample}), and over the integers and the ideals 
 field, where several questions of McNew are answered
 (\cref{gpi:thm:integer-gap,gpi:thm:beta-alpha}). \Cref{sec:gra} concerns the valuation of
 the number of spanning trees in towers of graphs. \Cref{sec:grw} settles four spectral
-problems on finite graphs: periodic Grover walks, least periods of oriented Cayley walks,
-optimal signings of square cycles and the zeros of a family of Ehrhart polynomials.
+problems on finite graphs, namely periodic Grover walks, least periods of oriented Cayley walks,
+optimal signings of square cycles and the zeros of a family of Ehrhart polynomials, and carries
+the Ehrhart theory of graph polytopes further: complete multipartite symmetric edge polytopes and
+the reconstruction of the graph, complete graphs with a matching deleted, face realizations of
+gamma vectors of graph suspensions, and the Davis--Kohl conjecture on stable set polytopes of
+complements of odd cycles.
 \Cref{sec:cmp} determines the laws of compressions of random symplectic and orthogonal
 matrices over finite fields and local rings, which control the compressions used by the
 spanning step.

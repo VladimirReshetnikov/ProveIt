@@ -1,0 +1,88 @@
+\section{What is being simplified}\label{sec:scope}
+
+The central recommendation is to remove two intermediate constructions while retaining
+the contracts they discharge. The first replaces recovery through generalized eigenspaces
+of an off-place operator by one finite polynomial trace identity. The second retains the
+Gram matrix of a negative frame instead of first normalizing that frame and tracking the
+normalizing triangular matrix.
+
+\subsection{Location in the supplied argument}
+
+The source endpoints are explicit. \src{Statements}{Statements} defines the zero and
+nonvanishing statements using Mathlib's Dirichlet \(L\)-functions.
+\src{Main}{Main} obtains its five public results from \code{New.grh} and the
+functional-equation reductions in \src{New/Main}{New.Main}.
+Here the GRH endpoint concerns Dirichlet characters.
+
+The source reading guide organizes the arithmetic proof into three estimates:
+short forms, enough forms, and a lower bound saying that integral forms are long.
+Their comparison is \src{New/Reduction/MainInequality}{star\_inequality}.
+At the level relevant here it has the shape
+\[
+ H-E_{\mathrm{low}}
+ \ \leq\ \text{corrected logarithmic covolume}
+ \ \leq\ H-\frac{n}{d}\,mR+E_{\mathrm{up}}.
+\]
+The leading term \(H\) cancels. Since \(n/d\) is bounded below and
+\(m\) is of square-root size in the observation scale, this yields the one-sided
+prime-remainder bound used in the analytic reduction. This report does not change
+that cancellation, the arithmetic divisibility estimates, or the analytic endpoint.
+
+\begin{center}
+\begin{tabularx}{\linewidth}{@{}L{.23\linewidth}YL{.24\linewidth}@{}}
+\toprule
+Part of the proof & Existing contract & Proposed change\\
+\midrule
+Short forms & Integral divisibility and archimedean size bounds for the composite lift & Reuse\\
+Enough forms & Moment estimates, including a real-place integrable majorant & Direct bordered integral\\
+Long forms & Determinant estimates and transfer between real signatures & Finite trace recovery in the multiplicity input\\
+Final reduction & Covolume comparison and exclusion of zeros & Reuse\\
+\bottomrule
+\end{tabularx}
+\end{center}
+
+The trace calculation is in
+\src{Lib/Adelic/TraceFormula/LineDeterminant}{LineDeterminant},
+\src{Lib/Adelic/TraceFormula/LevelCut}{LevelCut}, and
+\src{Lib/Adelic/TraceFormula/CuspidalComparison}{CuspidalComparison}.
+It feeds
+\src{New/Spanning/Multiplicities/EqualMultiplicities}{EqualMultiplicities}.
+That multiplicity comparison is used both for dimension estimates in spanning and
+for identifying determinants of Rallis operators on different real signatures.
+The real-place calculation is in
+\src{New/Spanning/RemainingTerms/OneRealPlace}{OneRealPlace}; its main contract is
+used by \src{New/Spanning/RemainingTerms/SchurOrbit}{SchurOrbit}.
+
+\subsection{Significance and the limits of the size claim}
+
+At this pin the source tree has 803 Lean files and 476,849 physical lines,
+including comments and blank lines. All 803 files lie in the static import closure
+of \code{Main}; this is not a declaration-level dependency analysis.
+An unused-declaration sweep and a mathematical replacement are different kinds of saving.
+
+The new trace theorem strengthens an infinite, two-index premise to a finite,
+one-index premise with the off-place operator occurring only to the first power.
+It therefore simplifies both the local linear-algebra contract and the test functions
+sent to the geometric trace comparison.
+
+The new integral argument targets a substantial local construction in a 1,030-line
+module: negative-basis reconstruction, triangular normalization, determinant bookkeeping,
+and the normalized last-column estimates. Its surrounding output inequality is preserved.
+The audit identifies the affected declarations precisely; it does not count the entire
+spanning argument as removable.
+
+\keyresult{\textbf{No measured net line saving is claimed.}
+These are proved mathematical replacements with concrete migration plans.
+An integrated Lean implementation is needed before reporting a net line count or build-time
+reduction. In particular, the 7,438-line trace-formula subtree and the 1,003-line
+\code{SchurOrbit} module are not deletion claims.}
+
+\subsection{Verification scope}
+
+This is a targeted source review and a proof of the replacement mathematics.
+The supplied guide was used to locate the proof's contracts, and the Lean statements
+and their callers were inspected directly. A standalone Lean support development
+was checked with the source's pinned Lean and Mathlib. The full GRH project was not
+rebuilt in this session, and the report does not present a new independent certification
+of its public theorems. Section~\ref{sec:validation} distinguishes the checked support,
+the human proofs, and the remaining source integration.

@@ -11,6 +11,9 @@ characters of exponent two, of cyclic groups, of abelian $\ell$-groups and of od
 section determines, in the cases stated in each subsection, the least density of primes at which the
 local factors differ, the extremal pairs, and the length of a prime window that exhibits a difference.
 The only input from Dirichlet GRH is the prime-sum estimate \cref{rec:lem:gram} in windows (\stG); the rest is finite group theory, and no zero is located.
+\Cref{eul:sec:cubic} compares complete cubic local factors of three arbitrary characters and of
+three-dimensional representations of compact groups, in particular Artin representations, and of cuspidal
+representations of $\GL_3$ tempered at almost all places, and gives counterexamples to a conjecture of Rajan; it is unconditional.
 The local polynomials, the divisor criterion \cref{rec:prop:cdivisor} and the single prime-window
 estimate \eqref{rec:eq:cgram} are stated once and used for all exponents. \Cref{rec:sec:cmatch} precedes
 \cref{rec:sec:omatch}, whose proofs use \cref{rec:lem:pproj,rec:thm:pmass,rec:thm:psat}; at odd prime
@@ -1191,8 +1194,272 @@ In rank two a disagreement set is a union of at most $\ell+1$ punctured lines, s
 $2(\ell+1)$; all distances of a fixed rank-two size converge with error $O(\ell\log(2Q)/\sqrt Y)$, and $24/49$ is also the limiting
 minimum of the windowed problem at $(\ell,r,k)=(7,2,5)$.
 
+\subsection{Complete cubic Euler factors and Rajan's conjecture}\label{eul:sec:cubic}
+\sources{euler_factor_agreement_research}
+
+The cubic packets of \cref{rec:cor:ocubicmin} bear on a published conjecture, and their extremal value $2/9$
+persists for arbitrary characters. Beyond products of Dirichlet $L$-functions, the same comparison of complete
+local factors applies to three-dimensional representations of compact groups, in particular to Artin
+representations, where a determinant constraint gives the sharp threshold $2/27$. Everything in this subsection is
+\stU: the arithmetic statements use only the prime number theorem in progressions, the Chebotarev density theorem,
+and, for $\GL_3$, standard Rankin--Selberg theory under an explicit temperedness hypothesis; no Artin holomorphy is
+assumed, and no zero is located.
+
+\paragraph{Rajan's Conjecture~3.} Rajan considers the irreducible automorphic representations $\pi(A)$ of
+$\GL_n(\mathbb A_K)$ induced from characters of the diagonal torus, indexed by the multiset $A$ of $n$ inducing
+idele class characters; at an unramified place $v$, $\pi(A)_v\simeq\pi(B)_v$ exactly when the complete local
+polynomials $P_A(v,T)=\prod_{\alpha\in A}(1-\alpha(v)T)$ and $P_B(v,T)$ agree. His Conjecture~3
+\cite[p.~698]{Rajan2000Refinement} predicts that agreement on a set of places of
+density greater than $1-2^{-d(n)}$, $d(n)=\floor{\log_2(2n)}$, forces $A=B$ as multisets; in degree three the
+predicted ceiling is $3/4$. For packets of quadratic characters of large rank, $2^{-d(n)}$ is exactly the least
+disagreement density of \cref{rec:thm:qmatch}; cubic characters do better.
+
+\begin{theorem}[Counterexamples to Rajan's Conjecture~3; \stU]\label{eul:thm:rajan}
+\begin{enumerate}[label=\textup{(\roman*)}]
+\item Let $\chi\bmod7$ and $\psi\bmod13$ be the cubic characters with $\chi(3)=\psi(2)=\omega=e^{2\pi i/3}$. The
+packets $A=\set{1,\chi,\chi^2}$ and $B=\set{\psi,\psi\chi,\psi\chi^2}$ are distinct, and their complete local factors
+agree at natural and Dirichlet density $7/9>3/4$, differing exactly when $\chi(p)=1\ne\psi(p)$: at the $16$ reduced
+classes $6,15,20,22,29,36,41,43,48,50,55,62,69,71,76,85$ modulo $91$. The least unramified distinguishing prime is
+$29$.
+\item For $k\ge0$ let $\chi,\psi$ be independent cubic and $\eta_1,\dots,\eta_k$ independent quadratic characters,
+expand $(1+\chi+\chi^2)(1-\psi)\prod_i(1-\eta_i)$, and let $A_k$ and $B_k$ consist of the $3\cdot2^k$ monomials
+$\chi^j\psi^t\prod_{i\in I}\eta_i$ with $t+\abs I$ even and odd, respectively. Their complete local factors differ
+exactly when $\chi=1$, $\psi\ne1$ and every $\eta_i=-1$, a proportion $2/(9\cdot2^k)$. Hence Conjecture~3 fails in
+every degree $3\cdot2^k\le n<4\cdot2^k$, with Dirichlet characters over $\Q$.
+\end{enumerate}
+\end{theorem}
+
+\begin{proof}
+(i) The six characters are distinct, since $\psi\notin\langle\chi\rangle$. At $p\nmid91$ write $x=\chi(p)$,
+$y=\psi(p)$. If $x\ne1$ both eigenvalue multisets are $\mu_3$ and both polynomials are $1-T^3$; if $x=1$ they are
+$(1-T)^3$ and $(1-yT)^3$. The map $(\Z/91\Z)^\times\to\mu_3^2$, $a\mapsto(\chi(a),\psi(a))$, is onto with fibres of
+size eight, so the prime number theorem in progressions gives disagreement density $2/9$. Moreover $29\equiv1\pmod7$
+and $29\equiv2^4\pmod{13}$, so $\chi(29)=1$ and $\psi(29)=\omega$, and the smaller primes other than $7,13$ lie in
+agreeing classes.
+
+(ii) Write $x=\chi(g)$, $y=\psi(g)$, $z_i=\eta_i(g)$. If some $z_i=1$, toggling $i\in I$ is a parity-reversing
+bijection between the packets preserving eigenvalues; if $y=1$, toggling $t$ is. If $x\ne1$, then for fixed $I$ the
+values $x^j\prod_{i\in I}z_i$, $j=0,1,2$, form a coset of $\mu_3$, which multiplication by $y$ permutes, and the two
+choices of $t$ lie in different packets. Otherwise the trace difference is $3(1-y)2^k\ne0$. Two elements of the group
+$C_3^2\times C_2^k$ of order $9\cdot2^k$ lie in the disagreement set. For $n_k=3\cdot2^k$, $d(n_k)=k+2$ and
+$2/(9\cdot2^k)=\frac89\cdot2^{-(k+2)}$; adding a common multiset of $n-n_k$ characters to both packets keeps the
+agreement set and $d(n)=k+2$ for $n<4\cdot2^k$. Taking $\eta_i$ quadratic modulo $k$ distinct odd primes other than
+$7,13$, the Chinese remainder theorem and the prime number theorem in progressions turn the group proportions into
+prime densities.
+\end{proof}
+
+The packets in (i) are a twist of the extremal pairs $\eta+U$, $\eta+\theta+U$ of \cref{rec:cor:ocubicmin} with
+$k=3$; they are Borel-induced, not cuspidal, and the conjecture as printed does not require cuspidality. The theorem
+concerns that abelian conjecture only, not Ramakrishnan's cuspidal density conjecture. The exact checks of
+the $567$ group elements of (ii) for $k\le5$, of all $72$ classes modulo $91$ and of the prime $29$ are in
+\artifact{euler_factor_agreement_research/results/rajan_family_exact_checks.json}. For three characters of arbitrary
+order, $7/9$ is the exact replacement. For a compact group $G$ with Haar probability $m$ and multisets $A,B$ of
+continuous characters $G\to\mathbb T$ put $D(A,B)=\set{g:P_A(g,T)\ne P_B(g,T)}$, with
+$P_A(g,T)=\prod_{\alpha\in A}(1-\alpha(g)T)$.
+
+\begin{lemma}[The cubic trace triangle; \stU]\label{eul:lem:triangle}
+If $U\in\mathrm{SU}(3)$ then $\tr U$ lies in the triangle $\Delta_3$ with vertices $3,3\omega,3\omega^2$. Hence if
+$U,V\in\mathrm U(3)$ have the same determinant, $\abs{\tr U-\tr V}^2\le27$, with equality only if $U,V$ are scalar with
+ratio a nontrivial cube root of unity. Moreover $\det(I-TU)=1-zT+d\bar zT^2-dT^3$ with $z=\tr U$, $d=\det U$, so for
+equal determinants equal traces mean equal characteristic polynomials.
+\end{lemma}
+
+\begin{proof}
+For eigenvalues $a,b,(ab)^{-1}$ of $U\in\mathrm{SU}(3)$, $3+2\Re\tr U=\abs{1+a+ab}^2\ge0$; applied to $\omega U$ and
+$\omega^2U$ this gives the three half-planes cutting out $\Delta_3$. Its diameter $3\sqrt3$ is attained only by two
+distinct vertices, by strict convexity of the disk. For equal determinants divide both matrices by one cube root
+$\alpha$ of the common determinant, chosen pointwise. A unitary matrix with trace of modulus three is scalar. The
+second elementary symmetric function of unimodular $u_1,u_2,u_3$ is $d\sum_iu_i^{-1}=d\bar z$.
+\end{proof}
+
+\begin{theorem}[Sharp threshold for three characters; \stU]\label{eul:thm:abelian}
+For distinct multisets $A,B$ of three continuous unitary characters of a compact group, $m(D(A,B))\ge2/9$. Equality
+holds exactly when, up to exchanging the packets, $A=\theta\set{1,\chi,\chi^2}$ and $B=\theta\psi\set{1,\chi,\chi^2}$
+with $\theta$ a character and $\chi,\psi$ independent characters of order three, that is, $(\chi,\psi)\colon G\to\mu_3^2$
+onto. Over a number field $K$, for distinct multisets of three idele class quasi-characters, the agreement set of
+the local polynomials at the unramified primes has a natural density, equal to its Dirichlet density, of at most
+$7/9$; equality holds exactly for $\theta\set{1,\chi,\chi^2}$ and $\theta\psi\set{1,\chi,\chi^2}$ with $\theta$ any
+quasi-character and $\chi,\psi$ independent cubic Hecke characters of finite order.
+\end{theorem}
+
+\begin{proof}
+If the determinants $\prod_{\alpha\in A}\alpha$ and $\prod_{\beta\in B}\beta$ differ, the complement of the kernel of
+their quotient has measure at least $1/2$ and lies in $D$. Otherwise cancel common characters, leaving disjoint
+multisets of size $r\in\set{1,2,3}$ with trace difference $f=\sum_\gamma c_\gamma\gamma$; orthogonality gives
+$\int\abs f^2\,dm=\sum c_\gamma^2\ge\sum\abs{c_\gamma}=2r$. For $r\le2$, $\abs f\le2r$ gives $m(D)\ge1/(2r)\ge1/4$. For
+$r=3$, \cref{eul:lem:triangle} gives $\abs f^2\le27$, so $m(D)\ge6/27$. At equality $r=3$, all $c_\gamma=\pm1$, and the
+continuous deficit $27-\abs f^2\ge0$ has integral zero on the open set $D$, hence vanishes there, since nonempty open
+sets have positive Haar measure. So both diagonal matrices are scalar on $D$, and equality of polynomials off $D$
+makes their scalar kernels coincide in a closed subgroup $N$, on which $A$ is constant $\alpha$ and $B$ constant
+$\beta$ with $(\alpha/\beta)^3=1$ nontrivial; then $D=\set{g\in N:\alpha(g)\ne\beta(g)}$ has measure $\frac23m(N)$, so
+$[G:N]=3$, $A=\alpha\set{1,\chi,\chi^2}$ for a generator $\chi$ of $\widehat{G/N}$, $B=\beta\set{1,\chi,\chi^2}$, and
+$\psi=\beta/\alpha$ has order three and lies outside $\langle\chi\rangle$. The converse is the computation of
+\cref{eul:thm:rajan}(i).
+
+Over $K$, characters whose quotient has infinite order coincide locally on a set of upper density zero, by
+\cite[Theorem~1]{Rajan2000Refinement}; discard these sets and the ramified primes. If the multiplicities of the
+classes modulo finite order differ, the agreement density is zero. If two or more classes occur, some class differs
+after normalization by one member and cancellation, with reduced size one or two, and the energy bound gives
+disagreement at least $1/4$. If one class occurs, divide by one quasi-character; the remaining characters have finite
+order, factor through a finite abelian Galois group, and Chebotarev and the compact case give the bound, the
+densities and the equality cases.
+\end{proof}
+
+\paragraph{Three-dimensional representations.} For continuous representations $\rho,\sigma\colon G\to\mathrm U(3)$ of a
+compact group, put $P_\rho(g,T)=\det(I-T\rho(g))$, $D(\rho,\sigma)=\set{g:P_\rho(g,T)\ne P_\sigma(g,T)}$, which is open,
+$\delta(\rho,\sigma)=m(D(\rho,\sigma))$, and let $K_\rho=\set{g:\rho(g)\text{ is scalar}}$.
+
+\begin{theorem}[Sharp cubic separation; \stU]\label{eul:thm:cubic}
+Let $\rho,\sigma$ be inequivalent three-dimensional representations of a compact group $G$, not necessarily
+irreducible. Then $\delta(\rho,\sigma)\ge2/27$, and $\delta\ge1/2$ if $\det\rho\ne\det\sigma$. Equality
+$\delta=2/27$ holds if and only if both are irreducible, $\det\rho=\det\sigma$, and $K_\rho=K_\sigma=K$ is open of
+index nine; then $G/K\simeq C_3\times C_3$, both characters vanish off $K$, and with $\rho=\lambda I$, $\sigma=\mu I$ on
+$K$, the character $\lambda/\mu$ has order three and $D=K\setminus\ker(\lambda/\mu)$. If at least one of $\rho,\sigma$
+is reducible, then $\delta\ge1/8$. Both bounds are attained, by groups of orders $27$ and $16$.
+\end{theorem}
+
+\begin{proof}
+The determinant case is as in \cref{eul:thm:abelian}. With $\rho\simeq\bigoplus m_\tau\tau$ and
+$\sigma\simeq\bigoplus n_\tau\tau$, orthogonality gives the integer $M=\int\abs{\chi_\rho-\chi_\sigma}^2\,dm=\sum_\tau(m_\tau-n_\tau)^2$,
+which is positive and not one, since the dimensions agree; so $M\ge2$. For equal determinants
+\cref{eul:lem:triangle} applies pointwise and $\chi_\rho-\chi_\sigma$ vanishes off $D$, so $2\le M\le27\delta$.
+
+At equality $M=2$, so $\chi_\rho-\chi_\sigma=\chi_\alpha-\chi_\beta$ for distinct irreducibles of one degree $d$; if
+$d\le2$ then $2\le4d^2\delta$ and $\delta\ge1/8$, so $d=3$ and both are irreducible. As in the abelian case the squared
+trace difference is $27$ on $D$, both matrices are scalar there, $K_\rho=K_\sigma=K$, $(\lambda/\mu)^3=1$ with
+$\lambda\ne\mu$, and $2/27=\frac23m(K)$, so $K$ is closed of index nine, hence open. A cyclic $G/K$ would make every
+$\rho(g)$ a scalar times a power of one matrix, whose eigenline would be invariant; so $G/K\simeq C_3^2$. Conversely
+$\int_K\abs{\chi_\rho}^2\,dm=9m(K)=1$ forces $\chi_\rho=0$ off $K$, both polynomials there are $1-\det\rho(g)T^3$ by
+\cref{eul:lem:triangle}, and $\delta=\frac23\cdot\frac19$.
+
+Reducible case with equal determinants: if a one-dimensional $\theta$ occurs with different multiplicities, then
+$1\le\abs{\int(\chi_\rho-\chi_\sigma)\bar\theta\,dm}\le3\sqrt3\,\delta$, so $\delta\ge1/(3\sqrt3)>1/8$. Otherwise
+$\rho=\alpha\oplus\theta$, $\sigma=\beta\oplus\theta$ with inequivalent two-dimensional irreducibles, and
+$2\le16\delta$.
+
+Examples. On the Heisenberg group $H=\F_3^3$, $(a,b,c)(a',b',c')=(a+a',b+b',c+c'+ab')$, let
+$\rho_t(a,b,c)e_j=\omega^{t(c+aj)}e_{j+b}$ for $t=1,2$ and $j\in\F_3$. Both have trivial determinant, traces vanish
+off the centre and equal $3\omega^{tc}$ on it, so they are irreducible and inequivalent; the complete factors agree
+at the identity and the $24$ noncentral elements ($1-T^3$) and differ at $(0,0,1)$ and $(0,0,2)$. On
+$D_8\times C_2$, with $\tau$ the two-dimensional irreducible of $D_8$, the representations
+$(\tau\otimes1)\oplus1$ and $(\tau\otimes\mathrm{sgn})\oplus1$ have equal determinants and differ exactly at the two
+elements where $\tr\tau=\pm2$ and the sign is $-1$, a proportion $1/8$.
+\end{proof}
+
+The determinant is what the trace-only problem discards. On $H\times C_2$ the representations $\rho_1$ and
+$\varepsilon\rho_1$ have traces differing on $3/54=1/18$ of the group, the classical sharp cubic trace bound recalled
+in \cite{MartinWalji2017Distinguishing}, but complete factors differing on half of it, since the determinants
+differ wherever $\varepsilon=-1$.
+
+\begin{theorem}[Stability and damaged data; \stU]\label{eul:thm:stability}
+For $U\in\mathrm U(3)$ let $d_{\mathrm{sc}}(U)^2=\min_{\abs z=1}\norm{U-zI}_F^2=6-2\abs{\tr U}$.
+\begin{enumerate}[label=\textup{(\roman*)}]
+\item If $U,V\in\mathrm U(3)$ have equal determinants, then
+$d_{\mathrm{sc}}(U)^2+d_{\mathrm{sc}}(V)^2\le\frac49\bigl(27-\abs{\tr U-\tr V}^2\bigr)$.
+\item If $\rho,\sigma$ are inequivalent and $\delta(\rho,\sigma)=2/27+\eps<1/2$, then their determinants agree and
+$\int_D\bigl(d_{\mathrm{sc}}(\rho(g))^2+d_{\mathrm{sc}}(\sigma(g))^2\bigr)\,dm(g)\le12\eps$; so the part of $D$ where the
+sum is at least $u$ has measure at most $12\eps/u$.
+\item Among all cubic representations of a fixed compact group, a polynomial-valued function known off an erased set
+of measure at most $s$ and agreeing with a candidate except on measure at most $e$ of the rest has at most one
+candidate when $2e+s<2/27$. The pure thresholds $s<2/27$ and $e<1/27$ cannot be enlarged.
+\end{enumerate}
+\end{theorem}
+
+\begin{proof}
+(i) Normalize to $\mathrm{SU}(3)$ and put $z=\tr U$, $w=\tr V$, $a=\abs z+\abs w\le6$; the claim is
+$\abs{z-w}^2\le\frac92a$. For $a\le9/2$ use $\abs{z-w}^2\le a^2$. Otherwise, $\Re(z\bar w)\ge-9/2$ on
+$\Delta_3\times\Delta_3$, checked at pairs of vertices, and $\abs z^2+\abs w^2\le9+(a-3)^2$, so
+$\abs{z-w}^2\le a^2-6a+27\le\frac92a$, as $(a-\frac92)(a-6)\le0$. (ii) Integrate (i) over $D$ and use
+$M\ge2$: the integral is at most $\frac49(27\delta-2)=12\eps$; then Markov's inequality. (iii) Two fitting
+candidates disagree only on the erased set and the two error sets, of measure at most $s+2e$. For sharpness in the
+Heisenberg example erase the two nontrivial central elements, respectively give the received word $\rho_1$'s factor
+at one of them and $\rho_2$'s at the other.
+\end{proof}
+
+The stability statement concerns the disagreement set only: in the extremal example the traces vanish at all
+noncentral elements. Uniqueness within reducible cubic representations holds for $2e+s<1/8$. This is an
+identifiability statement, not a decoding algorithm.
+
+\begin{corollary}[Artin representations; \stU]\label{eul:cor:artin}
+Let $F$ be a number field and $\rho,\sigma$ inequivalent continuous three-dimensional complex representations of its
+absolute Galois group. The natural and Dirichlet densities of the unramified primes at which their complete Euler
+factors differ exist and are at least $2/27$, and at least $1/8$ if one of them is reducible. So agreement on a set of
+upper natural or upper Dirichlet density greater than $25/27$ forces $\rho\simeq\sigma$, and $25/27$ is sharp; in the
+irreducible equality case the common finite quotient is as in \cref{eul:thm:cubic}. If, at the unramified primes
+outside an erased set of upper density at most $s$, the factors of each of two candidates differ from the received
+ones on a set of upper density at most $e$, with $2e+s<2/27$, the candidates are equivalent; the thresholds are sharp
+at both pure endpoints.
+\end{corollary}
+
+\begin{proof}
+A continuous complex representation of a profinite group has finite image, so both factor through one finite Galois
+group; the disagreement condition is conjugation invariant, and Chebotarev gives the density $\abs D/\abs G$.
+Subadditivity of upper densities gives the last assertion, and the two central Frobenius classes of the example
+below, each of density $1/27$, give sharpness.
+\end{proof}
+
+\begin{proposition}[An explicit sharp Galois extension; \stU]\label{eul:prop:field}
+Let $F=\Q(\omega)$, and let $x^3=6$, $y^3=7$, $\alpha=1+x$, $\beta=\alpha^2(1+\omega x)$, $z^3=\beta$ and
+$L=F(x,y,z)$. Then $L/F$ is Galois of degree $27$ with group the Heisenberg group $H$, and the two cubic
+representations of $H$ give Artin factors over $\Q(\sqrt{-3})$ whose complete factors agree at density exactly
+$25/27$.
+\end{proposition}
+
+\begin{proof}
+The prime of $F$ above $2$ has valuation one in $6$, so $E=F(x)$ is cyclic cubic, with $s(x)=\omega x$. The prime
+$7$ splits in $F$; above it, $X^3-6$ has the distinct roots $3,5,6$ modulo $7$, so each prime $\mathfrak p\mid7$ of $F$
+splits into three unramified primes of $E$. Since $N_{E/F}(\alpha)=1+x^3=7$ and only the root $6$ makes $1+x$
+vanish, the valuation vectors of $\alpha,s\alpha,s^2\alpha$ at these primes are the three coordinate vectors. So
+$7$, with vector $(1,1,1)$, is not a cube in $E$, and $M=E(y)$ has degree three. If $b\in E^\times$ is a cube in
+$E(y)$, a cube root is an eigenvector of $y\mapsto\omega y$, hence of the form $cy^j$, so $b\in7^jE^{\times3}$; the
+valuation vector $(2,1,0)$ of $\beta=\alpha^2s\alpha$ is not congruent to $(j,j,j)$ modulo three, so $[L:M]=3$. The
+$F$-automorphisms $\sigma\colon(x,y,z)\mapsto(\omega x,y,yz/\alpha)$, $\tau\colon(x,y,z)\mapsto(x,\omega y,z)$ and
+$\kappa\colon(x,y,z)\mapsto(x,y,\omega z)$ are well defined, by $s\beta/\beta=7/\alpha^3$ for $\sigma$; each has
+order three ($\sigma^3(z)=y^3z/N_{E/F}(\alpha)=z$), $\kappa$ is central and $\tau\sigma=\kappa\sigma\tau$. The $27$
+maps $\sigma^a\tau^b\kappa^c$ are distinct, exhaust the degree and give the Heisenberg presentation; Chebotarev and
+the table of \cref{eul:thm:cubic} finish the proof.
+\end{proof}
+
+The radical identities, the automorphism relations and the valuation data are checked in
+\artifact{euler_factor_agreement_research/results/explicit_field_checks.json}, and the representation-law products,
+characteristic polynomials and the reducible example in
+\artifact{euler_factor_agreement_research/results/exact_checks.json}.
+
+\begin{theorem}[Complete factors for tempered $\GL_3$; \stU]\label{eul:thm:gl3}
+Let $\pi_1,\pi_2$ be inequivalent irreducible unitary cuspidal automorphic representations of $\GL_3(\mathbb A_F)$,
+tempered at all unramified finite places outside a finite set, and let $D$ be the set of the remaining primes at which
+their complete standard Euler factors differ. Then the lower Dirichlet density of $D$ is at least $2/27$, and at least
+$1/2$ if the central characters differ. The constant $2/27$ is sharp in this class, so upper Dirichlet agreement
+density above $25/27$ forces $\pi_1\simeq\pi_2$.
+\end{theorem}
+
+\begin{proof}
+Let $S$ contain the ramified places and the exceptions to temperedness, let $A_i(v)$ be the unitary Satake matrices
+and $a_i(v,k)=\tr A_i(v)^k$, so $\abs{a_i(v,k)}\le3$. The incomplete Rankin--Selberg functions
+$L^S(s,\pi_i\times\widetilde\pi_i)$ have simple poles at $s=1$, and the mixed ones are regular and nonzero there
+\cite[Section~2]{Rajan2003Strong}. For real $s>1$ the logarithm of
+$R(s)=L^S(s,\pi_1\times\widetilde\pi_1)L^S(s,\pi_2\times\widetilde\pi_2)/\bigl(L^S(s,\pi_1\times\widetilde\pi_2)L^S(s,\pi_2\times\widetilde\pi_1)\bigr)$
+is $\sum_{v\notin S}\sum_{k\ge1}\abs{a_1(v,k)-a_2(v,k)}^2/(kNv^{ks})$ and equals $2\log\frac1{s-1}+O(1)$. The terms
+with $k\ge2$ are bounded by $36\sum_v\sum_{k\ge2}Nv^{-k}/k<\infty$, so
+$\sum_{v\notin S}\abs{a_1(v,1)-a_2(v,1)}^2Nv^{-s}=2\log\frac1{s-1}+O(1)$. If the central characters agree, the summand
+is at most $27$ by \cref{eul:lem:triangle} and vanishes off $D$, which gives the bound. Otherwise their quotient
+$\eta$ is a nontrivial unitary Hecke character, $\sum_v\abs{1-\eta(v)}^2Nv^{-s}=2\log\frac1{s-1}+O(1)$ by
+nonvanishing of $L(1,\eta)$, and $\abs{1-\eta(v)}^2\le4$. For sharpness, the two cubic representations of the group
+$H$ of \cref{eul:prop:field} are induced from characters of an abelian normal subgroup of order nine, and cyclic
+automorphic induction \cite[Chapter~3, Sections~6--7]{ArthurClozel1989Simple} gives inequivalent unitary cuspidal
+representations with these unramified factors, tempered since their Satake eigenvalues are roots of unity; Chebotarev
+gives disagreement density exactly $2/27$.
+\end{proof}
+
+Removing temperedness for general cuspidal $\GL_3$ would need generalized Ramanujan or a substitute, which Dirichlet
+GRH does not supply. The trace-only density problem allows different determinants and keeps the sharp cubic examples
+with $1/18$ \cite{MartinWalji2017Distinguishing,Walji2020Conjectural}, so the complete-factor threshold does not
+resolve it, and the equality classification of \cref{eul:thm:cubic} is not claimed for automorphic representations.
+Both groups of order $27$ and $16$ are also realized over $\Q$ by Shafarevich's theorem on solvable Galois groups
+\cite{SchmidtWingberg1998Safarevic}, without an explicit polynomial.
+
 \subsection{Open questions}\label{eul:sec:open}
-{\raggedright\sources{dirichlet_packet_reconstruction; euler-packet-rigidity; odd-order-euler-factor-matching; odd_prime_order_euler_packets; cubic_quintic_euler_agreement; odd_euler_agreement; odd_prime_euler_agreement; odd_prime_euler_agreement_2; odd_prime_euler_packets; prime_exponent_euler_agreement; prime_order_euler_agreement; grh_cubic_matching_and_precision_2026-11-27; euler_agreement_2026-11-27; gram-euler-and-zero-filters}}
+{\raggedright\sources{dirichlet_packet_reconstruction; euler-packet-rigidity; odd-order-euler-factor-matching; odd_prime_order_euler_packets; cubic_quintic_euler_agreement; odd_euler_agreement; odd_prime_euler_agreement; odd_prime_euler_agreement_2; odd_prime_euler_packets; prime_exponent_euler_agreement; prime_order_euler_agreement; grh_cubic_matching_and_precision_2026-11-27; euler_agreement_2026-11-27; gram-euler-and-zero-filters; euler_factor_agreement_research}}
 
 \begin{enumerate}
 \item \emph{Euler packets of prime order.} For Euler packets of odd prime order the least disagreement density and all extremal pairs are known
@@ -1218,4 +1485,9 @@ in particular when several primary components have rank above one? What is the s
 $\ell$-group at sizes that are not powers of $\ell$, where the mass and saturation bounds of
 \cref{rec:thm:pmass,rec:thm:psat} still hold? Is every cyclic extremizer a parity box?
 \item \emph{Quadratic packets.} Can one density measurement in \cref{rec:thm:qmatchfinite} be made at a smaller scale?
+\item \emph{Complete factors in higher dimension.} What is the least disagreement density of complete local factors
+for inequivalent representations of a compact group of dimension at least four, where trace and determinant no
+longer determine the characteristic polynomial? Is there a structure theorem for pairs near the threshold $2/27$
+beyond \cref{eul:thm:stability}, and can the temperedness hypothesis of \cref{eul:thm:gl3} be removed or weakened
+while keeping a positive sharp density?
 \end{enumerate}
