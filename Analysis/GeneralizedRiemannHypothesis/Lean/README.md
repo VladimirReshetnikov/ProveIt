@@ -221,6 +221,8 @@ For the explicit margins, [PolynomialIrreducibleDegrees.lean](GRHArticle/Progres
 
 [PolynomialNaturalExchangeGain.lean](GRHArticle/ProgressionFree/PolynomialNaturalExchangeGain.lean) proves convergence of the actual greedy and exchange degree-ball proportions and factors their limiting difference for every finite selection of monic primes. [PolynomialNaturalExchangeComparison.lean](GRHArticle/ProgressionFree/PolynomialNaturalExchangeComparison.lean) gives the strict comparison and the explicit lower estimate whenever the local bracket is positive.
 
+[PolynomialNaturalExchangeTheorem.lean](GRHArticle/ProgressionFree/PolynomialNaturalExchangeTheorem.lean) answers Asada et al.'s Question 6.1 and proves `gpp:thm:natural`. The specified family uses exactly $\max(q,4)$ primes and has natural density strictly exceeding the actual greedy set. [PolynomialNaturalExchangePrimes.lean](GRHArticle/ProgressionFree/PolynomialNaturalExchangePrimes.lean) checks the printed polynomials and their degree multisets. The actual gains exceed 0.00004244, 0.00007119, and 0.00008364 at $q=2,3,4$. For $q\ge5$ the gain is at least $(1-q^{-1})^{q+1}q^{-q}/15$.
+
 ## RH and Dirichlet GRH input
 
 The article uses the five theorems in
