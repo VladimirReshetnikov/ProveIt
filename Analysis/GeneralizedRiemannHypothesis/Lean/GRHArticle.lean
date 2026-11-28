@@ -2,6 +2,7 @@ import GRHArticle.ProgressionFree.BoundedPrimeBlockComputability
 import GRHArticle.ProgressionFree.BoundedPrimeBlockConvergence
 import GRHArticle.ProgressionFree.BoundedPrimeBlockFiniteSearch
 import GRHArticle.ProgressionFree.BoundedPrimeBlockStrictGap
+import GRHArticle.ProgressionFree.BoundedPrimeBlockWidth225
 import GRHArticle.ProgressionFree.EulerLowerBound
 import GRHArticle.ProgressionFree.ExactPatternDensity
 import GRHArticle.ProgressionFree.ExactRuleApproximation

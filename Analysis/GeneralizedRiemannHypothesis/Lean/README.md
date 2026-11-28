@@ -115,6 +115,8 @@ For the exchange used in McNew’s Question 7.4, [IntegerBoundaryExchangeReplace
 
 [BoundedPrimeBlockComputability.lean](GRHArticle/ProgressionFree/BoundedPrimeBlockComputability.lean) computes the bounded-width supremum uniformly in the progression length $k\ge3$, width $d\ge1$ and precision $n$. Its finite rational search has absolute error at most $2^{-(n+1)}$.
 
+[BoundedPrimeBlockWidth225.lean](GRHArticle/ProgressionFree/BoundedPrimeBlockWidth225.lean) realizes the explicit four-marker exchange as a single prime block with singleton rules on the exterior primes. The triple-progression supremum at width 225 exceeds Rankin's natural density by more than $10^{-596}$.
+
 ## Geometric progressions of ideals in number fields
 
 [Density.lean](GRHArticle/ProgressionFree/NumberFieldIdeals/Density.lean) counts nonzero integral ideals in norm order. Multiplying an arbitrary set with natural density by a fixed ideal divides that density by the ideal norm. [LocalFactors.lean](GRHArticle/ProgressionFree/NumberFieldIdeals/LocalFactors.lean) computes the density of ideals coprime to finitely many primes. [ValuationCylinders.lean](GRHArticle/ProgressionFree/NumberFieldIdeals/ValuationCylinders.lean) proves that the exponents at any finite set of prime ideals have the independent geometric densities in `gpi:lem:product`, for every number field.
