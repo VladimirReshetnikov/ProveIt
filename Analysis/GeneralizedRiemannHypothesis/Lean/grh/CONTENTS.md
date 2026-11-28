@@ -984,7 +984,7 @@ The heads of these files give an overview of a theory: `Lib/ClassField/Global/Ar
 
 **Primitive**: The primitive comparison theorem
 
-- `Lib/PadicComparison/Primitive/PeriodCoefficients` (417): Tilts and period coefficients of p-adic tests: products, comparisons, theories
+- `Lib/PadicComparison/Primitive/PeriodCoefficients` (414): Tilts and period coefficients of p-adic tests: products, comparisons, theories
 - `Lib/PadicComparison/Primitive/Periods` (200): The primitive comparison with period coefficients
 - `Lib/PadicComparison/Primitive/ComparisonTheorem` (251): The primitive comparison theorem and finiteness of p-adic cohomology
 

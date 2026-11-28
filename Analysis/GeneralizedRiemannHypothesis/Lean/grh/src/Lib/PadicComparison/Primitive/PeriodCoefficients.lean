@@ -650,16 +650,14 @@ ideal containing `I`. -/
 def tiltTheory {p : ℕ} (Ω : Type) [CommRing Ω] [InvertsPrime Ω p] [Algebra Ω ℂ_[p]]
     (M : ModuleCat OFlat) (ac : IsAcyclicOnPerfect (moduleCoeff (tensorCoeff M))) :
     Theory (genericTestOver Ω) :=
-  let J (c : PadicTest) (I : Ideal c.GenericRing) : Ideal (TiltRing c) :=
-    c.nearZeros I fun f ↦ ker (tilt.map f).hom
   -- The maps that kill `I` are those whose tilt factors, uniquely, through the perfect algebra
-  -- `TiltRing c ⧸ J c I`.
+  -- `TiltRing c ⧸ c.tiltNearZeros I`.
   have h_supp (c : PadicTest) (I : Ideal c.GenericRing) :=
     surjective_and_map_eq_zero_of_quotient_sieve tilt
       (R := killingMaps (ringOf (genericTestOver Ω)) I)
-      (CommAlgCat.ofHom (mkₐ OFlat (J c I)))
+      (CommAlgCat.ofHom (mkₐ OFlat (c.tiltNearZeros I)))
       (fun {d} f hf ↦ by
-        have h_kill : ∀ y ∈ J c I, (tilt.map f).hom y = 0 := fun y ⟨a, ha, hy⟩ ↦
+        have h_kill : ∀ y ∈ c.tiltNearZeros I, (tilt.map f).hom y = 0 := fun y ⟨a, ha, hy⟩ ↦
           hy d f (by simp [show mapGeneric f a = 0 from le_comap_of_map_le hf.le ha])
         refine ⟨ofHom (liftₐ _ (tilt.map f).hom h_kill), rfl, fun g hg ↦ ?_⟩
         ext ⟨y⟩
@@ -667,15 +665,13 @@ def tiltTheory {p : ℕ} (Ω : Type) [CommRing Ω] [InvertsPrime Ω p] [Algebra 
       (fun f g hg ↦ (map_eq_bot_iff_le_ker _).2 <| c.le_ker_of_tiltNearZeros_le_ker I f fun y hy ↦
         RingHom.mem_ker.mpr <| (ConcreteCategory.congr_hom hg y).symm.trans
           (mk_ker.ge.trans (ker_le_comap (K := ker g.hom) _) hy))
-      (@ac (CommAlgCat.of OFlat (c.TiltRing ⧸ J c I)) (c.perfectRing_quotient_tiltNearZeros I))
+      (@ac (.of OFlat (c.TiltRing ⧸ c.tiltNearZeros I)) (c.perfectRing_quotient_tiltNearZeros I))
   { functor := tilt ⋙ moduleCoeff (tensorCoeff M)
     prime_smul_eq_zero c x := ULift.down_injective (show p • x.down = 0 by
       simp [natCast_eq_zero_of_algebra_oFlat, ← Nat.cast_smul_eq_nsmul OFlat])
-    -- Zariski descent: tilting and `· ⊗ M` keep the product of two tests. The rings `R[1/p]` do
-    -- not depend on the ground field in `hasZariskiDescent_genericOver`, so `ℚ` will do.
+    -- Tilting and tensoring with `M` preserve the products used for Zariski descent.
     zariski_descent :=
-      letI : EmbeddedInQpBar p ℚ := {}
-      hasZariskiDescent_genericOver (k := ℚ) (𝟭 PadicTest)
+      hasZariskiDescent_genericOver (𝟭 PadicTest)
         ⟨exists_isQuotientByElem, fun f g hfg ↦ (bijective_prod_tilt f g hfg).map_prod
           (moduleCoeff (MonoidalCategory.tensorRight M) ⋙ forget AddCommGrpCat)⟩
     -- By `h_supp` it is enough that `R♭ ⊗ M → (R♭ ⧸ J) ⊗ M` is onto.

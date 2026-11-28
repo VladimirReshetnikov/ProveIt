@@ -585,7 +585,7 @@ lemma New.Variety.CutsOutLocus.IsNoetherNormalization.pullback_injective {p : �
       HasZariskiDescent (𝟭 PadicTest ⋙ genericOver ⋙ forget₂ (CommAlg k) CommRingCat)
         genericCoeff := by
     obtain ⟨e, -⟩ := exists_periodAlg_iso_genericAlg (p := p)
-    exact hasZariskiDescent_genericOver (k := k) (𝟭 _) (hasPartitions_periodAlg _ e)
+    exact hasZariskiDescent_genericOver (𝟭 _) (hasPartitions_periodAlg _ e)
   suffices h_l : IsCohomEquiv genericCoeff l by
     exact injective_H_map_of_comp_eq_nsmul k Fintype.card_ne_zero h_transfer h_l n
   refine h_eqv _ (h_zar fun c x (m : Ideal (T.obj c)) hm ↦ ?_)

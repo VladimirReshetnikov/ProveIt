@@ -312,6 +312,22 @@ lemma exists_periodAlg_iso_genericAlg :
   exact (congrArg (a • algebraMap c.ProdRing c.GenericRing ·) (hθ c w)).trans
     (c.algebraGenericRing.smul_def' a _)
 
+/-- Let `Θ : C ⥤ PadicTest` and let `F : AbFunctor C`, a functor from `C` to abelian groups, be
+additive on idempotent partitions (`New.Variety.HasPartitions`) for the rings `R` of the tests
+`Θ(X)`. Then `F` satisfies Zariski descent (`New.Variety.HasZariskiDescent`) for the rings
+`R[1/p]`. -/
+lemma hasZariskiDescent_genericOver {C : Type 1} [Category C] (Θ : C ⥤ PadicTest) {F : AbFunctor C}
+    (h : HasPartitions (Θ ⋙ ringFunctor) F) :
+    HasZariskiDescent (Θ ⋙ genericAlg ⋙ forget₂ (CommAlg ℂ_[p]) CommRingCat) F := by
+  -- The two hypotheses of `HasPartitions.hasZariskiDescent` for `R → R[1/p]`: the map is injective,
+  -- and elements of `R[1/p]` are associated to elements of `R`, which are comparable for
+  -- divisibility after cutting along an idempotent.
+  exact h.hasZariskiDescent
+    ⟨_, fun _ _ g ↦
+      CommRingCat.hom_ext (RingHom.ext fun x ↦ (mapGeneric_algebraMap (Θ.map g) x).symm)⟩
+    (fun c ↦ eq_zero_of_algebraMap_genericRing (Θ c))
+    fun X ↦ (Θ.obj X).isTest.isComparableRing_of_associated exists_associated_localization
+
 end
 
 variable {p : ℕ} {k : Type} [Field k] [EmbeddedInQpBar p k] (c : PadicTest)
@@ -341,22 +357,6 @@ def thickeningOver : PadicTest ⥤ CommAlg k where
   map_comp f g := by
     ext ⟨x⟩
     exact congrArg (⟦·⟧) (by simpa using! .symm (IsLocalization.map_map ..))
-
-/-- Let `Θ : C ⥤ PadicTest` and let `F : AbFunctor C`, a functor from `C` to abelian groups, be
-additive on idempotent partitions (`New.Variety.HasPartitions`) for the rings `R` of the tests
-`Θ(X)`. Then `F` satisfies Zariski descent (`New.Variety.HasZariskiDescent`) for the rings
-`R[1/p]`. -/
-lemma hasZariskiDescent_genericOver {C : Type 1} [Category C] (Θ : C ⥤ PadicTest) {F : AbFunctor C}
-    (h : HasPartitions (Θ ⋙ ringFunctor) F) :
-    HasZariskiDescent (Θ ⋙ genericOver ⋙ forget₂ (CommAlg k) CommRingCat) F := by
-  -- The two hypotheses of `HasPartitions.hasZariskiDescent` for `R → R[1/p]`: the map is injective,
-  -- and elements of `R[1/p]` are associated to elements of `R`, which are comparable for
-  -- divisibility after cutting along an idempotent.
-  exact h.hasZariskiDescent
-    ⟨_, fun _ _ g ↦
-      CommRingCat.hom_ext (RingHom.ext fun x ↦ (mapGeneric_algebraMap (Θ.map g) x).symm)⟩
-    (fun c ↦ eq_zero_of_algebraMap_genericRing (Θ c))
-    fun X ↦ (Θ.obj X).isTest.isComparableRing_of_associated exists_associated_localization
 
 namespace thickeningOver
 
