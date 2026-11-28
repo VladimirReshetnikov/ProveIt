@@ -1,0 +1,269 @@
+\documentclass[11pt]{article}
+\usepackage[T1]{fontenc}
+\usepackage{lmodern,microtype,amsmath,amssymb,amsthm,booktabs,geometry,xcolor,hyperref}
+\geometry{margin=1in}
+\setlength{\emergencystretch}{3em}
+\definecolor{linkblue}{RGB}{15,75,125}
+\hypersetup{colorlinks=true,linkcolor=linkblue,urlcolor=linkblue,pdftitle={Canonical sweeps and normalized Gram pairings in the theta-lift proof}}
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{lemma}[theorem]{Lemma}
+\newcommand{\R}{\mathsf R}
+\newcommand{\Dn}{\mathsf D}
+\newcommand{\Pth}{\mathcal P}
+\newcommand{\Tr}{\mathcal T}
+\newcommand{\inn}[2]{\langle #1,#2\rangle}
+\newcommand{\src}[2]{\href{https://github.com/VladimirReshetnikov/ProveIt/blob/main/Analysis/GeneralizedRiemannHypothesis/Lean/grh/src/#1}{#2}}
+\newcommand{\code}[1]{\texttt{#1}}
+\title{Canonical exchange sweeps and normalized Gram pairings\\\large Two local proof-shortening replacements for Dirichlet GRH}
+\author{Research proposal for ProveIt}
+\date{27 November 2026}
+\begin{document}
+\maketitle
+\begin{abstract}
+The readable Alp\"oge--Claude proof of RH and Dirichlet GRH uses two grids of theta lifts to construct short auxiliary forms, and a related triangle of lifts to compute a determinant. We replace the arbitrary-path search and strong induction by an explicit sweep of the grid, and retain the actual complexity cost of the diagonal exchanges only. The terminal path data require at most $B^m E^{2m}$ roots of unity per value, instead of $B^{m^2} E^{2m}$, with the exact same product of local Hecke ratios. In fact the factor $B^m$ may be replaced by the product of the actual column counts at the diagonal squares. Separately, a rank-dependent rescaling of sesquilinear pairings and descent maps removes all weights from the triangle's local commutation and adjoint laws; the original Gram identity is recovered by a single telescoping factor. Both replacements are derived from existing contracts, without new arithmetic input. The paper includes proofs, implementation boundaries, source provenance, and finite regression tests. No integrated Lean build or measured net line saving is claimed.
+\end{abstract}
+\tableofcontents
+\section{Scope and the location of the savings}
+We study the readable source in \href{https://github.com/VladimirReshetnikov/ProveIt/tree/main/Analysis/GeneralizedRiemannHypothesis/Lean/grh}{\code{Lean/grh}}, together with its \href{https://github.com/VladimirReshetnikov/ProveIt/tree/main/Analysis/GeneralizedRiemannHypothesis/docs/guide}{human-readable guide}. The source README reports an independently checked proof using only the usual three Lean axioms; this study does not rerun those checks. Its GRH statement is for Dirichlet $L$-functions, not arbitrary automorphic $L$-functions. The public statements are in \src{Statements.lean}{\code{Statements.lean}} and \src{Main.lean}{\code{Main.lean}}. The proof compares upper bounds for short forms and lower bounds for the determinant of a chain of lifts; a prime-sum inequality excludes zeros in the right half-plane, and symmetry yields the critical line. The guide's discussion of the norm ratios and the volume comparison explains why the lower-bound constants must be correct for every twist, not just the trivial one.
+
+The changes here concern the lower-bound machinery. They are complementary to the centered rank estimates, signed local gains, torsion interpolation, finite-field labels, class counting, CM cancellation, and local Hecke or orbital simplifications already proposed. In particular, we retain the local exchange law, the diagonal line reversal, the twist characters, all Hecke ratios, and the construction of the first and last path. We shorten the \emph{assembly} of these results rather than attempting to reprove the local theta correspondence.
+
+\begin{center}
+\begin{tabular}{p{.25\linewidth}p{.33\linewidth}p{.32\linewidth}}
+\toprule
+Layer & Existing route & Proposed route\\\midrule
+Two-grid path & Arbitrary dependent path; area sets; find a turn; strong induction & One canonical family of paths; explicit strip enumeration; ordinary iteration\\
+Datum size & Uniform charge at every square & Charge only the diagonal, or use actual diagonal column counts\\
+Triangle Gram form & Two weighted recursive laws; weight ratios at every step & Unweighted laws in rescaled pairings; one conversion at the end\\\bottomrule
+\end{tabular}
+\end{center}
+\noindent This is a local proof-shortening proposal, not an assertion that a constant fraction of the approximately 477,000 total lines of the readable project can be deleted. The two abstract combinatorial/algebraic source files contain 369 and 365 lines respectively in the observed retrieval (including comments and blanks); the one-turn and last-path files are consumers. The precise reachable lines and net savings depend on the Lean implementation and other refactors.
+
+\section{What an exchange actually costs}
+Write $m=D.m$, $\vartheta$ for an $m$-fold twist, and
+\[
+ B(\vartheta)=\code{vectorCountBound}(\vartheta),\qquad
+ E(\vartheta)=\code{edgeMatrixCountBound}(\vartheta).
+\]
+All operations on twist-indexed scalar functions below are pointwise. The type of period transfer in \src{New/Determinant/AuxiliaryForms/Turns.lean\#L803}{\code{Turns.lean:803}} is a relation
+\[
+ \Tr(P,Q;k,c)\qquad (c(\vartheta)\ne0),
+\]
+meaning that path data of size $N(\vartheta)$ on $P$ can be transferred to data of size $k(\vartheta)N(\vartheta)$ on $Q$, with the following backwards implication: if the periods of the new data are proportional to $\Xi$, the old periods are proportional to $\Xi/c$. Proportionality constants are independent of the twist and the forms as in the source. No linearity or equality of the data themselves is asserted. The existing \code{TransfersPeriods.refl}, \code{.mono}, and \code{.trans} lemmas give, respectively,
+\[
+ \Tr(P,P;1,1),\quad
+ \Tr(P,Q;k,c)\ \Rightarrow\ \Tr(P,Q;k',c)\ (k'\ge k),
+\]
+\[
+ \Tr(P,Q;k,c)\wedge\Tr(Q,R;k',c')
+ \quad\Rightarrow\quad\Tr(P,R;kk',cc').
+\]
+The last equality is compatible with the backwards direction because dividing by $c'$ and then by $c$ divides by $cc'$.
+
+For each square $(i,j)$ the modulus class of the nonzero $c_{ij}$ is specified by $r_{ij}(\vartheta)=D.\code{turnRatio}\ i\ j\ \vartheta$. Write $c\sim r$ for the source predicate \code{HasAbsUpToNormPower}, namely
+\[
+ |c(\vartheta)|^2=C\,\operatorname{Nm}(Q_\vartheta)^h r(\vartheta)^2
+\]
+with fixed $C,h$ independent of $\vartheta$ (and with the precise source domains understood). The source provides a multiplicative product law for this predicate. We will use it unchanged, so the conductor normalization and all special-value contributions are preserved.
+
+\paragraph{Off the diagonal.} The off-diagonal theorem (\src{New/Determinant/AuxiliaryForms/Turns.lean\#L944}{\code{Turns.lean:944}}) returns a bound of \emph{exactly} $1$. The proof uses a matrix with empty column index, hence a singleton type: the Fourier sum in the extra line introduces no additional terms. In contrast the diagonal theorem (\src{New/Determinant/AuxiliaryForms/DiagonalTurns.lean\#L592}{\code{DiagonalTurns.lean:592}}) returns $B$. There the auxiliary line genuinely has a nonempty Fourier variable. The code at lines 627--647 replaces both off-diagonal bounds by $B$ via \code{.mono}; this is the sole source of the unnecessary exponent $m^2$ in the global transfer theorem at line 650.
+
+\begin{theorem}[Exact diagonal charge]\label{thm:charge}
+For every admissible data $D$, there exists a function $c$ of twists, with values in $\mathbb C^\times$, such that
+\[
+ c\sim\prod_{0\le i,j<m}r_{ij},\qquad
+ \Tr(\Pth_{\rm first},\Pth_{\rm last};B^m,c).
+\]
+The output scalar modulus is exactly the one in the current source theorem.
+\end{theorem}
+\begin{proof}
+For the shortest initial port, retain the current arbitrary-path induction. Let $T$ be the finite set of squares to be crossed, and define $d(T)=\#\{(i,j)\in T:i=j\}$. Use the induction motive
+\[
+ \Tr(P,\Pth_{\rm last};B^{d(T)},\prod_{s\in T}c_s).
+\]
+The base case is reflexivity. On inserting $s=(i,j)\notin T$, the diagonal count increases by $\mathbf 1_{i=j}$. Use the actual local cost $B^{\mathbf 1_{i=j}}$ and compose using the existing transfer law. Choose the witnesses $c_s$ simultaneously, as in the original proof: each one works for all paths turning at $s$. At the first path $T=\{0,\ldots,m-1\}^2$, and $d(T)=m$ by the bijection $i\mapsto(i,i)$. The multiplicative modulus law gives the claimed product. The proof covers $m=0$ as the empty product.
+\end{proof}
+
+This initial change strengthens the current theorem with essentially the same proof. The next section removes the need for the general turn induction altogether. The two stages are alternatives at first, not changes whose savings should be counted twice.
+
+\section{A deterministic sweep of the two grids}\label{sec:sweep}
+Use the source's convention: each half is a path from $(0,m)$ to $(j,j)$ consisting of steps $\R$ (first coordinate increases) and $\Dn$ (second coordinate decreases). The second half is reflected in the diagonal when naming a physical square. The first path has both words $\Dn^m$ and the last both $\R^m$. We do not replace the source types of the spaces or the forms at a node.
+
+For $0\le j\le m$, define the canonical path $P_j$ with diagonal index $j$ and both halves given by
+\[
+ \R^j\Dn^{m-j}.
+\]
+The diagonal step takes $P_j$ to the path of diagonal index $j+1$ with both halves
+\[
+ H_{j,j+1}=\R^j\Dn^{m-j-1}\R.
+\]
+For $j+1\le b\le m$ set
+\[
+ H_{j,b}=\R^j\Dn^{m-b}\R\Dn^{b-j-1}.
+\]
+Every such word starts at $(0,m)$ and ends at $(j+1,j+1)$. The endpoint $H_{j,m}$ is the half of $P_{j+1}$. As $b$ goes from $j+1$ to $m-1$, interchange a single consecutive $\Dn\R$ with $\R\Dn$, producing $H_{j,b+1}$ from $H_{j,b}$.
+
+\begin{lemma}[Sweep schedule]\label{lem:sched}
+From $P_j$ to $P_{j+1}$ use the diagonal exchange $(j,j)$, then the exchanges $(j,b)$ for $j<b<m$ in increasing order, then $(b,j)$ for $j<b<m$ in increasing order. Each exchange is valid in the original dependent path type, and every square of the $m\times m$ grid occurs exactly once in the concatenation of these schedules.
+\end{lemma}
+\begin{proof}
+The halves of $P_j$ have a common prefix $\R^j\Dn^{m-j-1}$ ending at $(j,j+1)$. Thus the source's diagonal turn constructor applies to both last down steps. For $b<m$, write
+\[
+ H_{j,b}=\underbrace{\R^j\Dn^{m-b-1}}_{q}
+ \Dn\R\underbrace{\Dn^{b-j-1}}_{r}.
+\]
+The prefix $q$ ends at $(j,b+1)$, the suffix $r$ starts at $(j+1,b)$ and ends at $(j+1,j+1)$. These are precisely the types of $q,r$ in the off-diagonal transfer theorem. The exchanged word is $q\R\Dn r=H_{j,b+1}$. Hold the true half fixed while doing the false-half exchanges, then hold the false half fixed while doing the true-half exchanges. The latter squares are reflected, so they are named $(b,j)$. This yields $P_{j+1}$. Finally, every square $(i,k)$ belongs to the unique strip indexed by $j=\min(i,k)$: diagonal if $i=k$, upper if $i<k$, lower otherwise. The strip lengths are $1+2(m-j-1)$ and their sum is $m^2$.
+\end{proof}
+
+\begin{center}
+\begin{tabular}{c|ccccc}
+ &0&1&2&3&4\\\midrule
+0&1&2&3&4&5\\
+1&6&10&11&12&13\\
+2&7&14&17&18&19\\
+3&8&15&20&22&23\\
+4&9&16&21&24&25
+\end{tabular}
+\end{center}
+\noindent\textit{Example ($m=5$): entry $(i,j)$ is the ordinal of its exchange, starting at 1. Only the five diagonal entries carry a Fourier size charge.}
+
+\begin{proof}[Second proof of Theorem~\ref{thm:charge}]
+Apply the diagonal theorem once and the off-diagonal theorem to the two lists of half words in Lemma~\ref{lem:sched}. The three stages yield
+\[
+ \Tr(P_j,P_{j+1};B,\ c_{jj}\prod_{b=j+1}^{m-1}c_{jb}c_{bj}).
+\]
+Induct over $j$ using \code{TransfersPeriods.trans}. The final bound is $B^m$. The scalar product is the full product over the grid by the unique-minimum decomposition in the lemma. No proof of the existence of a turn on an arbitrary nonterminal path, no area function, and no strong induction on its complement are needed.
+\end{proof}
+
+\paragraph{What really shortens.} The arbitrary-path lemmas \code{squares}, \code{Turn.squares\_eq}, \code{exists\_turn}, and \code{turn\_induction} are unnecessary for this application. In a conservative port keep \code{GridPath}, its append operation and the edge identities, since the local analytic and algebraic proofs use them. Instead of deriving the three possible corner decompositions from an abstract \code{Turn}, construct the explicit prefixes and suffixes and call the already proved local transfer lemmas directly. The one-turn theorem can be retained as a compatibility wrapper or deleted if a dependency audit confirms no remaining users. The proof of Lemma~\ref{lem:sched} can be encoded by a short generic function appending $k$ down steps to a path; no new graph theory is required.
+
+\section{Exact column counts and the auxiliary-form estimate}
+The actual diagonal Fourier count is visible in \src{New/Determinant/AuxiliaryForms/DiagonalTurns.lean\#L486}{\code{card\_column\_le\_vectorCountBound}}. Define
+\[
+ B_j(\vartheta)=\#\operatorname{Mat}_{I_j\times\{*\}}(R_\vartheta),\qquad
+ I_j=D.\code{GridIndex}\ \mathrm{false}\ (j+1)\ j,
+\]
+where $R_\vartheta$ is the residue ring of the grid modulus. This is $(\# R_\vartheta)^{\# I_j}$. In the diagonal transfer proof the output of \code{exists\_isPathDatum} already has this bound, and the proof subsequently uses \code{h\_psi.mono} with \code{card\_column\_le\_vectorCountBound}. Thus the stronger diagonal theorem is obtained by retaining the existing output before weakening, with the same transfer scalar and proportionality argument. In particular,
+\[
+ \Tr(\Pth_{\rm first},\Pth_{\rm last};\prod_{j<m}B_j,c),\qquad
+ \prod_{j<m}B_j\le B^m.
+\]
+The exact-bound version is optional: the uniform $B^m$ port needs no change to the diagonal proof itself.
+
+The current \src{New/Determinant/AuxiliaryForms/SpanningForms.lean\#L63}{\code{lastPathBound}} is $B^{m^2}E^{2m}$. With the same first-path data the new bound is
+\[
+ B^m E^{2m},\quad\text{or even}\quad E^{2m}\prod_{j<m} B_j.
+\]
+For $B>0$ the decrease in its logarithm is $(m^2-m)\log B$; for $m=0,1$ there is no uniform-bound gain. It is important not to interpret this as a reduction in the number of local exchanges: there are still $m^2$, and the product of their Hecke ratios is unchanged. Nor does a smaller bound imply an equally large computational speedup. It is a tighter mathematical estimate on the number of roots of unity in a datum value.
+
+The public theorem \code{norm\_lastPathPeriod\_le} (lines 327--389) uses an upper bound on the number of terms to control conjugates. All existing downstream results follow immediately by weakening with \code{IsPathDatum.mono}: $B\ge1$ in this source and $m\le m^2$ for natural $m$. For a second-stage optimization update \code{lastPathBound} and the final size calculation in that file to use the tighter estimate directly; the old archimedean upper bound $\exp(x^{200}b^2)$ still follows. Do not lower that global exponent without separately auditing the class numbers, branching norms and jet bounds. The denominator proof and the ratios in \code{exists\_integral\_lowerChainUpTo\_eq\_lastPathPeriod} remain unchanged.
+
+\section{A second shortening: remove weights from the triangle laws}\label{sec:triangle}
+The other assembly argument appears in \src{New/Determinant/Chain/TriangleNorms.lean}{\code{TriangleNorms.lean}}. Its two local laws carry weights, then two chain laws and a Gram recurrence carry ratios of weights. A normalization before induction removes these ratios. This is separate from the existing proposal to replace a tight frame by an integral adjoint: here no adjoint construction or arithmetic input is removed or assumed.
+
+Fix a twist parameter $t$, and write $w_n=w(t,n)>0$. Write $a_{i,n}:F_{i,n}\to F_{i,n+1}$ and $d_{i,n}:F_{i,n+1}\to F_{i+1,n}$ for the original arrows, and $J_i:V\to F_{i,0}$ for the isometric embeddings. Inner products are conjugate-linear in the first argument, as in the source. Suppress $t$. The source square law, with Lean's convention $1/0=0$, is
+\begin{equation}\label{eq:origcomm}
+ w_n a_{i+1,n}d_{i,n}=\frac{w_{n+2}}{\overline{\beta_{i,n}}}d_{i,n+1}a_{i,n+1}.
+\end{equation}
+The other law asserts that for any $z\in F_{i,n+2}$ there is a vector $x\in F_{i,n+1}$ with
+\begin{align}
+ \inn{a_{i,n+1}v}{z}&=\inn{v}{x} &&(\forall v),\label{eq:origadj1}\\
+ \inn{d_{i,n}x}{u}&=\kappa_{i,n}\inn{d_{i,n+1}z}{a_{i+1,n}u} &&(\forall u).\label{eq:origadj2}
+\end{align}
+No boundedness or existence of an adjoint on the entire Hilbert space need be introduced: the given vector witnesses suffice. The first arrows are adjoint on the copies of $V$, and the first descent after the lift returns to the next copy injectively.
+
+\begin{lemma}[Weight gauge]\label{lem:gauge}
+Define new arrows and new pairings by
+\[
+ A_{i,n}=w_n a_{i,n},\quad D_{i,n}=w_{n+1}d_{i,n},\quad
+ [u,v]_{i,n}=\frac{w_n}{w_0}\inn{u}{v}.
+\]
+Then the original weighted chain is exactly the unweighted composite of the $A$'s. Equations~\eqref{eq:origcomm}--\eqref{eq:origadj2} become the same laws with all $w$'s equal to one, with the \emph{same} $\beta$ and $\kappa$. The base embeddings remain isometric and the first-arrow adjointness and injectivity hypotheses hold.
+\end{lemma}
+\begin{proof}
+For the commutation relation multiply \eqref{eq:origcomm} by $w_{n+1}$; its right side is exactly $D_{i,n+1}A_{i,n+1}/\overline\beta$. For adjointness take $\widetilde x=w_{n+2}x$. Then
+\[
+ [A_{i,n+1}v,z]_{i,n+2}=[v,\widetilde x]_{i,n+1},
+\]
+by \eqref{eq:origadj1}, since both sides have the factor $w_{n+1}w_{n+2}/w_0$. Similarly
+\[
+ [D_{i,n}\widetilde x,u]_{i+1,n}
+ =\kappa_{i,n}[D_{i,n+1}z,A_{i+1,n}u]_{i+1,n+1};
+\]
+both scaling factors are $w_n w_{n+1}w_{n+2}/w_0$. At $n=0$ the pairings on the copies of $V$ are unchanged, and both sides of the first adjoint relation acquire the same factor $w_1$. The first composite acquires the nonzero scalar $w_0w_1$, so its range condition and injectivity are unchanged. No square roots and no new inner-product-space instances are needed: these are sesquilinear forms defined on the existing spaces.
+\end{proof}
+
+Let $X_{i,n}=A_{i,n-1}\cdots A_{i,0}J_i$, with $X_{i,0}=J_i$. Define $P_i$ by the unique relation
+\[
+ J_{i+1}P_i=D_{i,0}A_{i,0}J_i.
+\]
+The base range and injectivity conditions make $P_i$ a well-defined injective endomorphism (linearity follows from that of the maps and injectivity of $J_{i+1}$). Denote the products of square constants across one row by
+\[
+ B_{i,n}=\prod_{k=0}^{n-1}\beta_{i,k},\qquad
+ K_{i,n}=\prod_{k=0}^{n-1}\kappa_{i,k}.
+\]
+These $B_{i,n}$ are unrelated to the datum complexity $B$ in Sections 2--4.
+
+\begin{lemma}[Normalized chain laws]\label{lem:chain}
+For $i+n<m$, the following hold:
+\begin{align}
+ X_{i+1,n}P_i&=\frac{1}{\overline{B_{i,n}}}D_{i,n}X_{i,n+1},\label{eq:chain1}\\
+ [z,X_{i,n+1}y]_{i,n+1}
+ &=K_{i,n}[D_{i,n}z,X_{i+1,n}y]_{i+1,n}.\label{eq:chain2}
+\end{align}
+All $X_{i,n}$ with $i+n\le m$ are injective; if $V\ne\{0\}$ then all $B_{i,n}$ in these formulas are nonzero.
+\end{lemma}
+\begin{proof}
+For $n=0$ the two identities are the definition of $P_i$ and the normalized first adjoint law. To pass to $n+1$ in \eqref{eq:chain1}, compose on the left with $A_{i+1,n}$, then apply the normalized commutation relation. The denominator is multiplied by $\overline{\beta_{i,n}}$, also when a factor is zero using totalized inversion. To pass to $n+1$ in \eqref{eq:chain2}, move the last $A_{i,n+1}$ to the first argument using its adjoint vector $\widetilde x$, use the induction hypothesis and apply the normalized square adjoint law. The multiplier becomes $K_{i,n}\kappa_{i,n}$. These are the only two inductions on chain laws.
+
+Injectivity is an induction on $n$ simultaneously for all $i$: if $X_{i,n+1}y=0$, then \eqref{eq:chain1} implies $X_{i+1,n}P_i y=0$; the induction hypothesis and injectivity of $P_i$ imply $y=0$. This does not require division by a nonzero $B_{i,n}$. Once injectivity is established, a zero $B_{i,n}$ would make the right side of \eqref{eq:chain1} the zero map; if $V\ne0$ this contradicts the injectivity of the left side. In the zero-dimensional case all required Gram identities are tautologies.
+\end{proof}
+
+\begin{theorem}[One Gram recurrence]\label{thm:gram}
+For $G_{i,n}(x,y)=[X_{i,n}x,X_{i,n}y]_{i,n}$,
+\[
+ G_{i,n+1}(x,y)=B_{i,n}K_{i,n}G_{i+1,n}(P_i x,y).
+\]
+Assume the source's first-lift pairing identity
+\[
+ w_0\inn{a_{i,0}J_i x}{a_{i,0}J_i s(y)}=C_i\inn{x}{s(S_i y)}
+\]
+for a map $s:U\to V$ and linear endomorphisms $S_i$ of $U$. For $i+n\le m$ the original Gram form of the weighted chain on $J_i x,J_i s(y)$ is
+\begin{align*}
+ &\frac{w_0w_1^n}{w_n}\,
+ \left(\prod_{i\le p<i+n} C_p\right)
+ \left(\prod_{i\le p<q<i+n}\beta_{p,q-p-1}\kappa_{p,q-p-1}\right)
+ \inn{x}{s(S_iS_{i+1}\cdots S_{i+n-1}y)}.
+\end{align*}
+Here the square index in the double product is $q-p-1$; for example a two-lift chain uses the square $(i,0)$ only.
+\end{theorem}
+\begin{proof}
+Apply \eqref{eq:chain2} with $z=X_{i,n+1}x$ and use \eqref{eq:chain1}. The conjugate-linearity in the first argument cancels the conjugate on $B_{i,n}$, giving the stated Gram recurrence. If $V=0$ there is no need to cancel anything. At the base,
+\[
+ \inn{P_i x}{s(y)}=G_{i,1}(x,s(y))=w_1 C_i\inn{x}{s(S_i y)}.
+\]
+Induct using the recurrence, with $S_{i+1}\cdots S_{i+n-1}y$ as the new argument. The scalar from the peeled row consists of $B_{i,n-1}K_{i,n-1}$, and each first-lift factor contributes $w_1 C_i$. The rows partition the triangular square set by their first index. Finally multiply by $w_0/w_n$ to convert the rescaled pairing to the original pairing. All scalars $B,K,C$ were chosen as functions of the original twist; thus their known modulus predicates multiply exactly as in the original proof. The $S_i$ do not need to commute for this ordered product identity.
+\end{proof}
+
+For $i+n=m$ the double product is indexed by $r=p+1$, $k=q+1$, so $i<r<k\le m$. Its modulus is $\prod_{i<r<k\le m}L(r,k)$ under the source's \code{HasSquareModuli}, since the $\kappa$'s and $C$'s have modulus class $1$. This recovers the precise theorem at \src{New/Determinant/Chain/TriangleNorms.lean\#L311}{\code{IsTriangle.exists\_inner\_weightedChain\_eq}}, including the factor $w_0 w_1^n/w_n$. It is not necessary to alter the caller \src{New/Determinant/Chain/NormOfChain.lean\#L158}{\code{exists\_inner\_weightedChain\_eq}}. The injectivity proof also works for the other triangle (flag \code{true}), which has no supplied modulus law; use only \code{IsTriangle}'s commutation witnesses in that proof.
+
+\section{Lean integration and deletion criteria}
+The following is a staged plan rather than a claimed compiled patch. See \code{LEAN\_PLAN.md} for the detailed contracts and acceptance gates.
+\begin{enumerate}
+\item Strengthen the turn theorem with $k(i,j)=\text{if }i=j\text{ then }B\text{ else }1$. Use Theorem~\ref{thm:charge} with the old path induction to establish the new API. Preserve the existing theorem as a wrapper using $B^m\le B^{m^2}$; this permits a small isolated review.
+\item Add the canonical strip schedule (Lemma~\ref{lem:sched}) using the existing path constructors. Replace the strong induction by two ordinary finite iterations. Audit every remaining reference before deleting path-area and arbitrary-turn lemmas; if some consumers remain, retain them or move them outside the reachable proof.
+\item Change \code{lastPathBound} in the auxiliary-form file or use the old bound as a compatibility statement. Retain the same period ratio, twists, denominator estimates and target dimensions. Optionally preserve exact column counts before the diagonal transfer weakens its size bound.
+\item In \code{TriangleNorms}, define local scaled pairings as functions, and scaled descents as linear maps. Prove the normalized square relations and two recurrences once. Choose square witnesses pointwise in the parameter but retain global modulus-class witnesses. Convert at the boundary to the original Gram and injectivity statements. Leave the geometric construction of descents in \code{ChainNorms} unchanged.
+\item Build with the pinned Lean/Mathlib dependencies of the checked-out repository. Recheck all five public statements and axioms, and measure the transitive dependency cone, proof-token count, and build time relative to the \emph{post-proposal} baseline. Do not count retained compatibility code as deleted.
+\end{enumerate}
+
+\section{Nonduplication, checks and further questions}
+The GitHub connector listed 18 directories in the requested proposal folder. Their README summaries were read (for the class-count note, its report), and all 28 listed TeX files were fetched and scanned for the target declarations and concepts, including grid paths, turns, normalized triangle laws, and path-data size. The only broadly related lexical match was in the orbital theta-exchange note, which treats the local matching functions. That note and the present sweep are composable: the sweep only assumes the local transfer contracts, and does not propose a replacement for orbit matching. The integral Gram-adjoint proposal concerns the one-lift comparison operator, not the rank-dependent normalization of the two triangular chain laws. The signed-gain and centered-rank notes concern other sides of the final determinant inequality. See \code{proposal\_audit.tsv} for the complete inventory and \code{source\_anchors.tsv} for source blob identities.
+
+This is a targeted novelty audit of the observed repository snapshot, not a full-text semantic comparison of every auxiliary file, nor a claim of global mathematical priority. The connector exposed source blobs under \code{main}; the branch head was separately reported as
+\path{d417d0b5b08edd4f5f67224fd310add7f1618ca0}. A pinned-directory recheck failed; therefore the blob identities, not an unverified whole-tree equality, are the provenance anchors. The guide's TeX was inspected by searching for its relevant passages, and its reading guide and source overview were read. The large development was not exhaustively reread or compiled. The Python checks in this archive validate the deterministic schedule, local weights and Gram identities in exact finite models. They are not a replacement for the universal proofs above.
+
+\paragraph{Further research questions.} Can the fixed sweep permit a representation of path data only on the active frontier, so that unused edge coordinates and their invariance proofs disappear? Can the exact diagonal counts remove some of the slack in the auxiliary-form archimedean bound after all other factors are audited? Can the normalized triangle laws be phrased as an elementary categorical identity for a paired diagram and reused by the seesaw proof? Can one use a dependency slice of the compact and readable editions to identify other constructions whose only callers need a canonical schedule rather than general existence?
+
+\paragraph{Source and verification links.} See the \href{https://github.com/VladimirReshetnikov/ProveIt/tree/main/Analysis/GeneralizedRiemannHypothesis/docs/proposals}{existing proposals}, the \href{https://github.com/VladimirReshetnikov/ProveIt/blob/main/Analysis/GeneralizedRiemannHypothesis/Lean/grh/GUIDE.md}{Lean reading guide}, and the \href{https://math.mit.edu/~drew/shortgrh/}{independent verification record for the original proof}. That independent verification does not certify the replacements in this report.
+\end{document}
