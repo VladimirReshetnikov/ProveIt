@@ -66,6 +66,8 @@ to place them in the disks, and finite certificates from the
 
 [HeckeComputedDiagonalCertificate.lean](GRHArticle/SingularModuli/HeckeComputedDiagonalCertificate.lean) connects finite integer Newton sums to the coefficients of a prime Hecke diagonal. [HeckePackedSeriesCertificate.lean](GRHArticle/SingularModuli/HeckePackedSeriesCertificate.lean) verifies series-prefix arithmetic using packed integer data. [HeckeCofactorEnclosure.lean](GRHArticle/SingularModuli/HeckeCofactorEnclosure.lean) gives an interval test for excluding other factors at a CM value. These lemmas supply arithmetic for checking proposed quartics.
 
+[Prime17SigmaCoefficients.lean](GRHArticle/SingularModuli/Prime17SigmaCoefficients.lean) verifies the divisor-power coefficient prefixes for the degree-17 computation. [Prime17DiagonalCertificate.lean](GRHArticle/SingularModuli/Prime17DiagonalCertificate.lean) proves that the remaining packed arithmetic checks suffice to identify the supplied data with the actual analytic Hecke diagonal. The numerical checks are hypotheses of this theorem.
+
 ## Integer geometric progressions
 
 [Rankin.lean](GRHArticle/ProgressionFree/Rankin.lean) proves that Rankin's

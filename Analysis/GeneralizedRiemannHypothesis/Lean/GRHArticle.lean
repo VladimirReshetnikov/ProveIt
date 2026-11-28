@@ -230,6 +230,7 @@ import GRHArticle.SingularModuli.CuspEstimate
 import GRHArticle.SingularModuli.CuspSeparation
 import GRHArticle.SingularModuli.DepthOne
 import GRHArticle.SingularModuli.DiskRootTransfer
+import GRHArticle.SingularModuli.DivisorPowerPrefixCertificate
 import GRHArticle.SingularModuli.HasseCoefficients
 import GRHArticle.SingularModuli.HeckeCofactorEnclosure
 import GRHArticle.SingularModuli.HeckeComputedDiagonalCertificate
@@ -250,6 +251,9 @@ import GRHArticle.SingularModuli.PadicCutoff
 import GRHArticle.SingularModuli.PadicDiskRoots
 import GRHArticle.SingularModuli.PadicExpSubstitution
 import GRHArticle.SingularModuli.PermutationTest
+import GRHArticle.SingularModuli.Prime17DiagonalCertificate
+import GRHArticle.SingularModuli.Prime17DiagonalData
+import GRHArticle.SingularModuli.Prime17SigmaCoefficients
 import GRHArticle.SingularModuli.QuarticAnalyticEnclosure
 import GRHArticle.SingularModuli.QuarticAnalyticNumeric
 import GRHArticle.SingularModuli.QuarticClassPolynomialCertificates
