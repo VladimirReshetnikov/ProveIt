@@ -11,11 +11,12 @@ deepest contact, up to a bounded, eventually periodic defect that vanishes exact
 base-$p$ carry condition. The defect has an eventual period that depends only on $p$, $e$ and
 the multiplicity of the deepest contact, and for contacts of depth at most one its least period
 is an explicit power of $p$. The optimal choice of directions is the same at every precision.
-Over a field, observations of more branches than the jet requires, each at its own precision,
-tolerate erased and corrupted branch records; the exact tolerance is a block distance computed by a
-recursion on the contact tree, every extremal ambiguity is a product of branch equations, and the
-cheapest precision vectors are determined componentwise. Specialized to the multiplicative group, the pole computation becomes a simultaneous
-congruence for weighted Fleck sums. The last subsection treats a related invariant of
+Specialized to the multiplicative group, the pole computation becomes a simultaneous
+congruence for weighted Fleck sums. Over a field, observations of more branches than the jet
+requires, each at its own precision, tolerate erased and corrupted branch records; the exact
+tolerance is a block distance computed by a recursion on the contact tree, every extremal
+ambiguity is a product of branch equations, and the cheapest precision vectors are determined
+componentwise. The last subsection treats a related invariant of
 \cite[Definition~5.1]{BergerSprang2025Integer}, the coefficient depth $s_0(n)$, through an
 exact valuation formula for powers of the Lubin--Tate logarithm.
 
@@ -55,9 +56,8 @@ the reductions of the two branches over $k$ meet to order $q^{v(b-c)}$, and $u_b
 unit of $A_r((X))$ for every $r$.
 \end{lemma}
 \begin{proof}
-For the formal group law $\mathcal F$, the series $\mathcal F(S,T)-S$ equals $T$ times a
-power series with constant term $1$. Substituting $S=[c](X)$ and $T=[b-c](X)$ shows that
-$[b]-[c]$ is a unit multiple of $[b-c]$. If $b-c=\pi^hw$ with $w\in\OO^\times$, then
+By \cref{cost:lem:metric}(ii), $[b]-[c]$ is a unit multiple of $[b-c]$ in $\OO[[X]]$. If
+$b-c=\pi^hw$ with $w\in\OO^\times$, then
 $[b-c]=[w]\circ[\pi^h]$, and $[w](Z)$ is $Z$ times a unit because its linear coefficient is
 $w$. The reduction of $[\pi]$ has order $q$, and orders multiply under composition.
 Finally a series $X^sV+\pi V'$ with $V\in\OO[[X]]^\times$ is invertible in $A_r((X))$:
@@ -311,12 +311,9 @@ in \eqref{lub:eq:carry} equals $1$.
 \end{proof}
 
 \begin{remark}[The weaker slope $q^{h_*}-1$]\label{lub:rem:older}
-Allowing each power of $\pi$ in the geometric expansion of Lemma~\ref{lub:lem:contact} to add at
-most $q^{h_*}-1$ to the pole order gives the cruder estimate
-$t_b(r)\le\omega+(r-1)(q^{h_*}-1)$. Since $D\le q^{h_*}-1$ with equality exactly for
-$h_*=1$, Theorem~\ref{lub:thm:pole} shows that this estimate is attained in precisely the
-following cases: always for $r=1$; always for $h_*=0$; for $r>1$ and $h_*=1$ exactly when
-$(m-1)+(r-1)$ has no carry in base $p$; and never for $r>1$ and $h_*\ge2$.
+The earlier estimate $t_b(r)\le\omega+(r-1)(q^{h_*}-1)$ follows from \eqref{lub:eq:polebound},
+since $D\le q^{h_*}-1$, and by \eqref{lub:eq:carry} it is attained exactly when $r=1$, when
+$h_*=0$, or when $h_*=1$ and $(m-1)+(r-1)$ has no carry in base $p$.
 \end{remark}
 
 \begin{remark}[Frequency of equality]\label{lub:rem:frequency}
@@ -774,6 +771,15 @@ bound at every $r$. The second description holds because the number of
 $i\in\set{1,\dots,d-1}$ with $H_i\ge j$ is $u_j$.
 \end{proof}
 
+\begin{remark}
+The same tree of residue balls is optimized in the opposite direction in
+\cref{cost:lem:shell}, which follows a least-occupied child and bounds the marks at depth
+$j$ by $\floor{m/e_j}$, whereas \cref{lub:thm:directions} follows a most populous child
+and bounds the occupancy by $\ceil{d/q^h}$, with a matching digit construction. Both
+belong to the circle of ideas of Bhargava's $P$-orderings, discussed at the end of
+\cref{lub:ssec:redundant} and in \cref{tors:sec:limits}.
+\end{remark}
+
 \begin{corollary}[Closed forms for the optimum; \stU]\label{lub:cor:optimum}
 \begin{enumerate}[label=\textup{(\alph*)}]
 \item Over the residue field, that is for $r=1$, the least common precision for $d$
@@ -806,8 +812,7 @@ deepest level has multiplicity one. The optimal common precision is $2r+11$ in t
 case and $4r+21$ in the second. At $r=1$ these are $13$ and $25$: inside $\pi\OO$, all
 bivariate coefficients of total degree at most seven are recovered from branch
 coefficients through degree $24$. For $q=2$, five directions constrained to one coset of
-$\pi\OO$ need $17+4(r-1)$ coefficients per branch. These residue-class optimizations are
-related to Bhargava's $P$-orderings \cite{Bhargava1997Porderings}.
+$\pi\OO$ need $17+4(r-1)$ coefficients per branch.
 \end{example}
 
 Berger and Sprang use the case $r=1$ to multiply coefficient polynomials
@@ -843,6 +848,85 @@ $X^{-t_b(r)}A_r[[X]]$, so $\mu_{bj}=0$ for $j>t_b(r)$. This gives the displayed 
 Equation \eqref{lub:eq:products} supplies explicit weights and an optimal common precision
 for the full jet used by this procedure. A single prescribed product can require fewer
 coefficients.
+
+\subsection{A simultaneous congruence for weighted Fleck sums}\label{lub:ssec:fleck}
+\begingroup\raggedright\sources{grh_prime_patterns_and_branch_precision}\endgroup
+
+The multiple-branch calculation has an arithmetic interpretation involving only ordinary
+integers. Fix a prime $p$, a modulus $M=p^h$ with $h\ge1$, and a positive integer $m$. For
+$0\le u<M$ and $0\le j<m$ define
+\[
+ S_{j,u}(n)=\sum_{\substack{0\le k\le n\\ k\equiv u\bmod M}}
+ (-1)^{n-k}\binom nk\binom{(k-u)/M}{j}.
+\]
+The lower argument $(k-u)/M$ is a nonnegative integer at every summand. Sums of this type
+are, up to the displayed sign, the cyclotomic $\psi$-coefficients before normalization, for
+which Sun and Wan prove Lucas-type congruences \cite{SunWan2005Lucas}. Their integrality
+statement gives
+$v_p(S_{j,u}(n))\ge\floor{(n-M/p-jM)/(M-M/p)}$; at $j=m-1$ it supplies the sufficient
+common threshold $U_r$ below. The following result determines the least simultaneous
+threshold and identifies the obstruction one step earlier.
+
+\begin{theorem}[Simultaneous congruence for weighted Fleck sums; \stU]\label{lub:thm:fleck}
+For $r\ge1$ let $T_r$ be the inverse pole order \eqref{lub:eq:pole} for $K=\Qp$, $\pi=p$
+and the contact multiset consisting of $m$ copies of $h$; thus $\omega=mM$, $D=M-M/p$, and
+with $U_r=mM+(r-1)D$
+\[
+ U_r-(m-1)D\le T_r\le U_r,\qquad
+ T_r=U_r\iff\text{$r-1$ and $m-1$ add without a base-$p$ carry.}
+\]
+Then:
+\begin{enumerate}[label=\textup{(\alph*)}]
+\item $p^r\mid S_{j,u}(n)$ for every $0\le j<m$ and $0\le u<M$ if and only if $n\ge T_r$.
+\item For every $r$, the values $S_{m-1,u}(T_r-1)$, $0\le u<M$, are all congruent modulo
+$p^r$ to one nonzero class $c$, and $S_{j,u}(T_r-1)\equiv0\pmod{p^r}$ for $j<m-1$.
+\item When $T_r=U_r$, the common class is
+\[
+ c\equiv(-p)^{r-1}\binom{m+r-2}{r-1}\pmod{p^r}.
+\]
+\end{enumerate}
+\end{theorem}
+\begin{proof}
+The displayed bounds are Theorem~\ref{lub:thm:pole}. Put $\Xi=Y^M-1$ and $\Pi=\Xi^m$ in
+$(\Z/p^r)[Y]$. In the multiplicative Lubin--Tate coordinate $X=Y-1$ one has
+$[p^h](X)=(1+X)^M-1$, so by Lemma~\ref{lub:lem:normal} the number $T_r$ is the nilpotency index
+of $Y-1$ in $(\Z/p^r)[Y]/(\Pi)$. The polynomials $Y^u\Xi^j$ with $0\le u<M$ and $0\le j<m$
+form a basis of this quotient over $\Z/p^r$: their leading monomials run through the
+degrees $0$ to $mM-1$ with coefficient one. Writing $Y^{u+Ml}=Y^u(1+\Xi)^l$ in the binomial
+expansion of $(Y-1)^n$ identifies the coordinates of $(Y-1)^n$ in this basis with the
+$S_{j,u}(n)$. This proves (a).
+
+Let $Q(Y)$ be the polynomial remainder of $(Y-1)^{T_r-1}$ on division by $\Pi$. Then
+$Q\ne0$ and $(Y-1)Q=c\,\Pi$ for some scalar $c\in\Z/p^r$, by the degree bound and the
+vanishing at $T_r$. Multiplication by the monic polynomial $Y-1$ is injective in
+$(\Z/p^r)[Y]$, whence
+\[
+ Q=c\,\Xi^{m-1}(1+Y+\cdots+Y^{M-1}),\qquad c\ne0 .
+\]
+This is the full vector of residues claimed in (b).
+
+For (c), put $\Pi_X=((1+X)^M-1)^m$ and $F_*(z)=z^{mM}\Pi_X(1/z)$. In the variable $X$ the
+coefficient in degree $mM-1$ of the remainder of $X^{T_r-1}$ is still $c$. Monic division
+at infinity identifies it with $[z^{T_r-mM}]F_*^{-1}$, by comparing the coefficients of
+$X^{-1}$ in $X^{T_r-1}/\Pi_X$. In the reverse polynomial of a single factor the nonconstant
+coefficients are $\binom Mi$ in deficit $M-i$, $1\le i<M$. They have valuations
+$h-v_p(i)$, since $\binom Mi=(M/i)\binom{M-1}{i-1}$ and $\binom{M-1}{i-1}$ is prime to $p$.
+The unique coefficient whose deficit equals $D$ times its valuation is at $i=M/p$; for all
+others the deficit is strictly smaller than $D$ times the valuation. The coefficient at
+$i=M/p$, divided by $p$, is
+$\binom{M-1}{M/p-1}\equiv1\pmod p$. So $F_*$ has the same leading face as $(1+pz^D)^m$, and
+the top-degree computation in the proof of Theorem~\ref{lub:thm:pole}, applied to
+$(1+pz^D)^{-m}$, gives the residue \eqref{lub:eq:topcoefficient} with $\pi=p$.
+\end{proof}
+
+\begin{example}\label{lub:ex:fleck}
+\sloppy
+Take $p=2$, $h=2$, $m=2$ and $r=2$. The upper endpoint is $U_2=10$ and the exact threshold
+is $T_2=8$: indeed $(Y^4-1)^2\equiv(Y-1)^8\bmod4$ by the binomial theorem, and at $n=7$
+direct expansion gives $S_{1,u}(7)\equiv1\bmod4$ for every $u$. These residues, and both
+sides of the threshold for further parameters ($3153$ vectors of exact integer sums), are
+recorded in \artifact{grh_prime_patterns_and_branch_precision/results/fleck_checks.txt}.
+\end{example}
 
 \subsection{Redundant branches, erasures and corruptions}\label{lub:ssec:redundant}
 \begingroup\raggedright\sources{ramified_branch_recovery; grh_cubic_matching_and_precision_2026-11-27; grh_extensions_2026-11-27_2}\endgroup
@@ -1298,17 +1382,20 @@ $X^a\prod_c(Y-u_c)^{m_c}$ with $\sum_cm_c=k$, so
 \]
 and the tree recursion starts with $k$ marks and inherited value $a$. If $k<N$ the maximal distance is
 $N-k$, attained exactly when $n_b\ge a+1+{}$the sum of the $k$ largest contacts of $b$, for every $b$; if
-$k\ge N$ the distance is zero.
+$k\ge N$ the distance is zero. For $\kappa=1$, where $k=d-1$ and $a=0$, the statement on the maximal
+distance is \cref{lub:thm:compsat}.
 \end{corollary}
 
 \begin{proof}
 In the proof of \cref{lub:lem:domination} use $\ord_\kappa P=v(a_P)+\sum_\alpha\min(\kappa,v(\alpha))$: roots
 of valuation below $\kappa$ contribute equally at every branch, and the others may be replaced by their
 closest branches. Multiply by $X^{d-1-r}$ and replace each group of $\kappa$ factors $X$ by a branch
-factor, which cannot decrease an evaluation valuation since $v(u_b-u_c)\ge\kappa$. For the maximal
-distance, $k$ distinct branch factors give the bound $N-k$, the $k$ closest neighbours of $b$ and $X^a$
-give necessity, and interpolation on any $k+1$ branches gives sufficiency: the full branch product has
-weighted order $\kappa(k+1)\ge d$ and every Lagrange term has weighted order at least $(a+1)+\kappa k=d$.
+factor, which cannot decrease an evaluation valuation since $v(u_b-u_c)\ge\kappa$. The maximal distance
+is obtained as in the proof of \cref{lub:thm:compsat}, with $X^a$ times $k$ branch factors in place of
+$d-1$ branch factors; for sufficiency, interpolation on any $k+1$ branches works, since the full branch
+product has weighted order $\kappa(k+1)\ge d$ and every Lagrange term has weighted order at least
+$(a+1)+\kappa k=d$.
+
 \end{proof}
 
 \begin{theorem}[A decoder from two linear systems; \stU]\label{lub:thm:decode}
@@ -1454,85 +1541,6 @@ remove factors inside each greedy product, which is a different optimization: fo
 contacts $2^{v_2(a-b)}$ on $\set{0,1,2}$, deleting one branch can retain $\set{0,2}$ with
 first nonzero greedy value $2$, while the one-removed product after choosing $0,1$ is
 $\min(2,1)=1$.
-
-\subsection{A simultaneous congruence for weighted Fleck sums}\label{lub:ssec:fleck}
-\begingroup\raggedright\sources{grh_prime_patterns_and_branch_precision}\endgroup
-
-The multiple-branch calculation has an arithmetic interpretation involving only ordinary
-integers. Fix a prime $p$, a modulus $M=p^h$ with $h\ge1$, and a positive integer $m$. For
-$0\le u<M$ and $0\le j<m$ define
-\[
- S_{j,u}(n)=\sum_{\substack{0\le k\le n\\ k\equiv u\bmod M}}
- (-1)^{n-k}\binom nk\binom{(k-u)/M}{j}.
-\]
-The lower argument $(k-u)/M$ is a nonnegative integer at every summand. Sums of this type
-are, up to the displayed sign, the cyclotomic $\psi$-coefficients before normalization, for
-which Sun and Wan prove Lucas-type congruences \cite{SunWan2005Lucas}. Their integrality
-statement gives
-$v_p(S_{j,u}(n))\ge\floor{(n-M/p-jM)/(M-M/p)}$; at $j=m-1$ it supplies the sufficient
-common threshold $U_r$ below. The following result determines the least simultaneous
-threshold and identifies the obstruction one step earlier.
-
-\begin{theorem}[Simultaneous congruence for weighted Fleck sums; \stU]\label{lub:thm:fleck}
-For $r\ge1$ let $T_r$ be the inverse pole order \eqref{lub:eq:pole} for $K=\Qp$, $\pi=p$
-and the contact multiset consisting of $m$ copies of $h$; thus $\omega=mM$, $D=M-M/p$, and
-with $U_r=mM+(r-1)D$
-\[
- U_r-(m-1)D\le T_r\le U_r,\qquad
- T_r=U_r\iff\text{$r-1$ and $m-1$ add without a base-$p$ carry.}
-\]
-Then:
-\begin{enumerate}[label=\textup{(\alph*)}]
-\item $p^r\mid S_{j,u}(n)$ for every $0\le j<m$ and $0\le u<M$ if and only if $n\ge T_r$.
-\item For every $r$, the values $S_{m-1,u}(T_r-1)$, $0\le u<M$, are all congruent modulo
-$p^r$ to one nonzero class $c$, and $S_{j,u}(T_r-1)\equiv0\pmod{p^r}$ for $j<m-1$.
-\item When $T_r=U_r$, the common class is
-\[
- c\equiv(-p)^{r-1}\binom{m+r-2}{r-1}\pmod{p^r}.
-\]
-\end{enumerate}
-\end{theorem}
-\begin{proof}
-The displayed bounds are Theorem~\ref{lub:thm:pole}. Put $\Xi=Y^M-1$ and $\Pi=\Xi^m$ in
-$(\Z/p^r)[Y]$. In the multiplicative Lubin--Tate coordinate $X=Y-1$ one has
-$[p^h](X)=(1+X)^M-1$, so by Lemma~\ref{lub:lem:normal} the number $T_r$ is the nilpotency index
-of $Y-1$ in $(\Z/p^r)[Y]/(\Pi)$. The polynomials $Y^u\Xi^j$ with $0\le u<M$ and $0\le j<m$
-form a basis of this quotient over $\Z/p^r$: their leading monomials run through the
-degrees $0$ to $mM-1$ with coefficient one. Writing $Y^{u+Ml}=Y^u(1+\Xi)^l$ in the binomial
-expansion of $(Y-1)^n$ identifies the coordinates of $(Y-1)^n$ in this basis with the
-$S_{j,u}(n)$. This proves (a).
-
-Let $Q(Y)$ be the polynomial remainder of $(Y-1)^{T_r-1}$ on division by $\Pi$. Then
-$Q\ne0$ and $(Y-1)Q=c\,\Pi$ for some scalar $c\in\Z/p^r$, by the degree bound and the
-vanishing at $T_r$. Multiplication by the monic polynomial $Y-1$ is injective in
-$(\Z/p^r)[Y]$, whence
-\[
- Q=c\,\Xi^{m-1}(1+Y+\cdots+Y^{M-1}),\qquad c\ne0 .
-\]
-This is the full vector of residues claimed in (b).
-
-For (c), put $\Pi_X=((1+X)^M-1)^m$ and $F_*(z)=z^{mM}\Pi_X(1/z)$. In the variable $X$ the
-coefficient in degree $mM-1$ of the remainder of $X^{T_r-1}$ is still $c$. Monic division
-at infinity identifies it with $[z^{T_r-mM}]F_*^{-1}$, by comparing the coefficients of
-$X^{-1}$ in $X^{T_r-1}/\Pi_X$. In the reverse polynomial of a single factor the nonconstant
-coefficients are $\binom Mi$ in deficit $M-i$, $1\le i<M$. They have valuations
-$h-v_p(i)$, since $\binom Mi=(M/i)\binom{M-1}{i-1}$ and $\binom{M-1}{i-1}$ is prime to $p$.
-The unique coefficient whose deficit equals $D$ times its valuation is at $i=M/p$; for all
-others the deficit is strictly smaller than $D$ times the valuation. The coefficient at
-$i=M/p$, divided by $p$, is
-$\binom{M-1}{M/p-1}\equiv1\pmod p$. So $F_*$ has the same leading face as $(1+pz^D)^m$, and
-the top-degree computation in the proof of Theorem~\ref{lub:thm:pole}, applied to
-$(1+pz^D)^{-m}$, gives the residue \eqref{lub:eq:topcoefficient} with $\pi=p$.
-\end{proof}
-
-\begin{example}\label{lub:ex:fleck}
-\sloppy
-Take $p=2$, $h=2$, $m=2$ and $r=2$. The upper endpoint is $U_2=10$ and the exact threshold
-is $T_2=8$: indeed $(Y^4-1)^2\equiv(Y-1)^8\bmod4$ by the binomial theorem, and at $n=7$
-direct expansion gives $S_{1,u}(7)\equiv1\bmod4$ for every $u$. These residues, and both
-sides of the threshold for further parameters ($3153$ vectors of exact integer sums), are
-recorded in \artifact{grh_prime_patterns_and_branch_precision/results/fleck_checks.txt}.
-\end{example}
 
 \subsection{The logarithmic coefficient window and the first coefficient depth}\label{lub:ssec:depth}
 \begingroup\raggedright\sources{grh_transfer_advances_2026-11-26; grh_transfers_cycle_signings_and_lubin_tate}\endgroup

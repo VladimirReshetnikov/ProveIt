@@ -1,0 +1,1221 @@
+\providecommand{\recsinc}{\operatorname{sinc}}
+\providecommand{\recgE}{\gamma_{\mathrm{E}}}
+\providecommand{\recGen}{\operatorname{Gen}}
+\providecommand{\recav}{\operatorname{av}}
+\providecommand{\recA}{\mathcal{A}}
+\providecommand{\recartanh}{\operatorname{artanh}}
+\section{Matching Euler factors of products of Dirichlet \texorpdfstring{$L$}{L}-functions}\label{sec:eul}
+
+How often can two products of Dirichlet $L$-functions have the same Euler factor at a prime? For
+characters of exponent two, of cyclic groups, of abelian $\ell$-groups and of odd prime order this
+section determines, in the cases stated in each subsection, the least density of primes at which the
+local factors differ, the extremal pairs, and the length of a prime window that exhibits a difference.
+The only input from Dirichlet GRH is the prime-sum estimate \cref{rec:lem:gram} in windows (\stG); the rest is finite group theory, and no zero is located.
+The local polynomials, the divisor criterion \cref{rec:prop:cdivisor} and the single prime-window
+estimate \eqref{rec:eq:cgram} are stated once and used for all exponents. \Cref{rec:sec:cmatch} precedes
+\cref{rec:sec:omatch}, whose proofs use \cref{rec:lem:pproj,rec:thm:pmass,rec:thm:psat}; at odd prime
+order the saturated and prime-power minima and the coset equality case are quoted from there.
+
+\subsection{Matching Euler factors of products of quadratic $L$-functions}\label{rec:sec:qmatch}
+\sources{dirichlet_packet_reconstruction}
+
+Let $X$ be a group of characters modulo $Q$ of order dividing two, $r=\dim_{\F_2}X\ge1$, and $V=\widehat X$,
+written additively. A packet $A$ is a multiset of $k\ge1$ members of $X$, and at $p\nmid Q$ its local
+polynomial $\prod_{\chi\in A}(1-\chi(p)T)$ is determined by the trace $\sum_{\chi\in A}\chi(p)$ (the case $E=2$ of
+\cref{rec:prop:cdivisor}; compare \cref{rec:lem:otrace}). For distinct packets $A,C$ let
+$\delta(A,C)$ be the density of primes with different local polynomials. By the prime number theorem in
+progressions,
+\[
+ \delta(A,C)=2^{-r}\abs{\supp H},\qquad H(v)=\sum_{\chi\in X}c_\chi\chi(v),\quad c_\chi=\operatorname{mult}_A(\chi)-\operatorname{mult}_C(\chi),
+\]
+with $H\ne0$, $H(0)=0$, $B=\sum\abs{c_\chi}\le2k$, and after cancellation each packet has size $B/2$.
+
+\begin{lemma}[Dyadic valuation; \stU]\label{rec:lem:walsh}
+For a nonzero integral combination $H$ of Walsh characters of $\F_2^r$ and $t=\min_{H(x)\ne0}v_2(H(x))$, the map
+$x\mapsto2^{-t}H(x)\bmod2$ is a nonzero Boolean polynomial of degree at most $t$. A nonzero Boolean
+polynomial of degree at most $s\le r$ has relative weight at least $2^{-s}$, with equality only for the
+indicator of an affine flat.
+\end{lemma}
+
+\begin{proof}
+In Boolean coordinates each Walsh character is a product of factors $1-2x_i$, so a monomial of degree
+$j$ has coefficient divisible by $2^j$, and by $2^t$ by M\"obius inversion; divide and reduce. For the
+weight write $f_0+x_rf_1$ and induct. At equality, translates of the support coincide or are
+disjoint, since a nonzero Boolean difference of degree at most $s-1$ has weight at least $2^{1-s}$.
+\end{proof}
+
+\begin{theorem}[Exact minimum and the high-agreement spectrum; \stU]\label{rec:thm:qmatch}
+Put $D=\floor{\log_2(2k)}$ and $d=\min(r,D)$. The least positive disagreement density at rank $r$ and size
+$k$ is $2^{-d}$. If $r>D$, equality holds exactly when $H=\pm2^d\eta\mathbf 1_{a+W}$ with $\eta\in X$ and an affine
+subspace $a+W\not\ni0$ of codimension $d$; if $r\le D$, exactly when $H=m2^r\mathbf 1_{\set a}$, $a\ne0$, $\abs m2^r\le2k$.
+If $r>D$, the densities strictly below $2^{1-d}$ are exactly
+\[
+ \delta_j=2^{1-d}(1-2^{-j}),\qquad1\le j\le\min(d,r-d),\quad k\ge2^d-2^{d-j},
+\]
+and every pair realizing $\delta_j$ reduces after cancellation to two disjoint sets of exactly $2^d-2^{d-j}$
+distinct characters; if $r\le D$ only the minimum occurs below twice the minimum.
+\end{theorem}
+
+\begin{proof}
+Since $\abs H\le2k$, $t\le D$, and \cref{rec:lem:walsh} gives $\delta\ge2^{-t}\ge2^{-d}$. At equality all nonzero values
+are $\pm2^d$ on an affine flat $a+W$, $H(a+w)=2^ds(w)$, and Fourier inversion makes every normalized
+coefficient of $s$ integral; by Parseval exactly one is $\pm1$, so $s$ is a signed character. The
+converse uses the two halves of the Fourier support, padded by common entries. Below twice the
+minimum $t=d$ and the Boolean polynomial is the disagreement indicator, whose weights are given by
+the Kasami--Tokura classification of Reed--Muller weights below twice the minimum
+\cite{KasamiTokura1970Weight}. Then $\abs{c_\chi}\le2^d\delta<2$, so $B=\sum c_\chi^2=4^d\delta$ and $B/2=2^d-2^{d-j}\le k$, and
+$\abs{\supp H}$ is even, forcing $j\le r-d$. Two $d$-dimensional subspaces $U,U'\subset X$ meeting in dimension $d-j$
+give $H=2^d(\mathbf 1_{U^\perp}-\mathbf 1_{(U')^\perp})$ with density $\delta_j$. For $r\le D$ densities are multiples of $2^{-r}$.
+\end{proof}
+
+For example, for $r\ge6$ two products of seven factors can agree at $25/32$ of the primes, but not at
+any proportion strictly between $25/32$ and $13/16$. The classification is checked on $723{,}057$ pairs
+and $95$ constructions through rank ten:
+\begin{center}
+\artifact{dirichlet_packet_reconstruction/prime-traces/verification.txt}
+\end{center}
+
+\begin{theorem}[Finite detection and density recovery; \stG]\label{rec:thm:qmatchfinite}
+Let $M_x(f)=\sum_{p\nmid Q}(\log p)w(p/x)f([p])$ be the window sum of \eqref{rec:eq:cgram} for $f:V\to\C$, and $\norm f_A=\sum_\chi\abs{\widehat f(\chi)}$. If $r>D$ and
+$0<\delta<2^{1-d}$, the disagreement set $S$ has $M_x(\mathbf 1_S)=x\delta+O_w(\sqrt x\log(2Q))$ uniformly in $k,r,Q$, and
+rounding $4^dM_x(\mathbf 1_S)/(2x)$ recovers $B/2$, hence $\delta$, for $x\ge C_w'16^d\log^2(2Q)$.
+\end{theorem}
+
+\begin{proof}
+In the high-agreement range $\mathbf 1_S=4^{-d}H^2$, so $\norm{\mathbf 1_S}_A<4$, and $4^d\delta/2=B/2$ by \cref{rec:thm:qmatch};
+apply \eqref{rec:eq:cgram}.
+\end{proof}
+
+Every distinct pair has a distinguishing prime in $(x/2,x)$ once $x\ge C_wk^2\log^2(2Q)$, by \cref{rec:rem:cscale}
+with $m=B/2\le k$.
+
+\subsection{Matching Euler factors in cyclic groups and abelian $\ell$-groups}\label{rec:sec:cmatch}
+\sources{euler_agreement_2026-11-27}
+
+At exponent two (\cref{rec:sec:qmatch}) and at odd prime exponent (\cref{rec:sec:omatch}) a single trace decides
+the local polynomial. Here $X$ is an arbitrary nontrivial finite abelian group of Dirichlet characters
+modulo $Q$, written additively, $V=\Hom(X,\C^\times)$, and $v_p\in V$ is given by $v_p(x)=x(p)$ for $p\nmid Q$. A
+packet of size $k$ is a function $A:X\to\Z_{\ge0}$ with $\sum_xA(x)=k$, with local polynomial
+\[
+ E_A(v,T)=\prod_{x\in X}(1-v(x)T)^{A(x)}.
+\]
+For distinct packets of equal size put $c=A-B$, $m=\sum_xc(x)^+=\sum_xc(x)^->0$ (the mass left after
+removing common characters, so $m\le k$), $\mathcal D(c)=\set{v\in V:E_A(v,T)\ne E_B(v,T)}$,
+\[
+ \delta(c)=\frac{\abs{\mathcal D(c)}}{\abs X},\qquad d_X(k)=\min_{A\ne B,\ \abs A=\abs B=k}\delta(A-B),\qquad H_c(v)=\sum_xc(x)v(x).
+\]
+
+\begin{lemma}[Histograms, powers and density; \stU]\label{rec:lem:chist}
+\begin{enumerate}
+\item $v\notin\mathcal D(c)$ if and only if $\sum_{x:v(x)=z}c(x)=0$ for every root of unity $z$.
+\item Agreement at $v$ implies agreement at $v^j$, $v^j(x)=v(x)^j$, for every integer $j$, and the two are
+equivalent when $j$ is prime to the exponent of $X$.
+\item The relative natural density of the primes $p\nmid Q$ at which the local polynomials differ exists and
+equals $\delta(c)$.
+\end{enumerate}
+\end{lemma}
+
+\begin{proof}
+Distinct values $z$ give distinct linear factors $1-zT$, and unique factorization in $\C[T]$ gives (i).
+Pushing equal value multisets through $z\mapsto z^j$ gives (ii), with the converse when this map permutes
+the relevant roots of unity. For (iii), the evaluation map $(\Z/Q\Z)^\times\to V$ is onto, since a proper
+image would have a nontrivial annihilator, a nontrivial member of $X$ equal to one at every unit; its
+fibres have equal size, and the prime number theorem in progressions \cite{Davenport2000Multiplicative}
+gives every reduced class the same density.
+\end{proof}
+
+\begin{proposition}[Divisor-indexed traces; \stU]\label{rec:prop:cdivisor}
+If $E$ is the exponent of $X$, then $v\notin\mathcal D(c)$ if and only if $H_c(v^d)=0$ for every positive proper divisor
+$d$ of $E$.
+\end{proposition}
+
+\begin{proof}
+Fourier inversion of the signed histogram on the $E$th roots of unity says that it vanishes exactly when
+all $H_c(v^j)$, $0\le j<E$, vanish. For $j=0$ the value is zero since the packets have equal size. For
+$1\le j<E$ write $d=\gcd(j,E)$ and $j=du$; the automorphism of $\Q(\zeta_{E/d})$ taking $\zeta_{E/d}$ to $\zeta_{E/d}^u$ carries
+$H_c(v^d)$ to $H_c(v^j)$, because $c$ is integral and $\gcd(u,E/d)=1$.
+\end{proof}
+
+One trace no longer suffices at order four: if $\chi(p)=i$, the packets $\set{1,\chi^2}$ and $\set{\chi,\chi^3}$ both have
+trace zero at $p$, but their local polynomials are $1-T^2$ and $1+T^2$.
+
+\paragraph{Cyclic groups.}
+Let $X=\langle\chi\rangle$ be cyclic of order $E\ge2$, let $\ell_1<\dots<\ell_s$ be the distinct prime divisors of $E$, and put
+\[
+ t=t(E,k)=\min\set{s,\floor{\log_2(2k)}},\qquad D(E,k)=\prod_{i=1}^t\Bigl(1-\frac1{\ell_i}\Bigr).
+\]
+
+\begin{theorem}[Cyclic Euler matching; \stU]\label{rec:thm:cyclic}
+For every cyclic character group $X$ of order $E\ge2$ and every $k\ge1$, $d_X(k)=D(E,k)$. The minimum depends
+only on the distinct prime divisors of $E$ and on $k$, every dyadic plateau of the formula is attained
+inside every such $X$, and the unrestricted minimum $\varphi(E)/E$ is first attained at $k=2^{s-1}$.
+\end{theorem}
+
+The finite input is a signed-array form of the classical minimum-volume principle for trades
+\cite{GhorbaniKamaliKhosrovshahiKrotov2020Volumes}.
+
+\begin{lemma}[A small nonzero marginal; \stU]\label{rec:lem:cmarginal}
+Let $B_1,\dots,B_s$ be finite nonempty sets and $c:B_1\times\dots\times B_s\to\Z$ nonzero. For $I\subseteq\set{1,\dots,s}$ let
+$c_I(x_I)=\sum_{x_{I^c}}c(x_I,x_{I^c})$ be its marginal ($c_\varnothing=\sum_xc(x)$). If $r=\min\set{\abs I:c_I\ne0}$, then $\norm c_1\ge2^r$.
+Consequently, if $c_\varnothing=0$ and $\norm c_1=2m$, some nonempty $I$ with $\abs I\le\floor{\log_2(2m)}$ has $c_I\ne0$.
+\end{lemma}
+
+\begin{proof}
+Induct on $s$. If $r=0$, integrality gives $\norm c_1\ge\abs{\sum c}\ge1$. Let $r\ge1$. As $c\ne0$ has total sum zero,
+its support has two points; choose a coordinate $i$ in which two support points differ. There are at
+least two nonzero slices $c^{(z)}$, obtained by fixing $x_i=z$. Every marginal of a slice on fewer than $r-1$ of
+the remaining coordinates is an entry of a marginal $c_{I\cup\set i}$ on fewer than $r$ coordinates, hence zero.
+By induction each nonzero slice has $\norm{c^{(z)}}_1\ge2^{r-1}$, and the slices are disjoint.
+\end{proof}
+
+\begin{proof}[Proof of \cref{rec:thm:cyclic}]
+Identify $X$ and $V$ with $\Z/E\Z$, and write $c_x$ for the difference of multiplicities; after cancellation
+$c\ne0$, $\sum_xc_x=0$ and $\norm c_1=2m\le2k$. By \cref{rec:lem:chist} the polynomials agree at $v$ exactly when the
+signed histogram $(v_*c)(z)=\sum_{vx=z}c_x$ vanishes, and $\delta$ is the fraction of $v$ with $v_*c\ne0$.
+Write $E=\prod_i\ell_i^{a_i}$ and use the coordinates $X\cong\prod_i\Z/\ell_i^{a_i}\Z$. By \cref{rec:lem:cmarginal} some nonzero
+marginal $c_I$ uses $r=\abs I\le\min\set{s,\floor{\log_2(2m)}}\le t$ coordinates. If $\ell_i\nmid v_i$ for all $i\in I$, multiplication
+by $v_i$ is bijective on these coordinates, so the $I$-marginal of $v_*c$ is an invertible relabelling of $c_I\ne0$.
+Hence $\mathcal D(c)$ contains the cylinder $C_I=\set{v:\ell_i\nmid v_i\ (i\in I)}$, of density
+\[
+ d_I=\prod_{i\in I}(1-\ell_i^{-1})\ge\prod_{i=1}^r(1-\ell_i^{-1})\ge D(E,k).
+\]
+For equality let $h_i=E/\ell_i$ for $1\le i\le t$ and take the convolution $c=\mathop{*}_{i=1}^t(\delta_0-\delta_{h_i})$ in $\Z/E\Z$: $A$
+consists of the sums $\sum_{i\in J}h_i$ over even $\abs J$, and $C$ of those over odd $\abs J$ (the \emph{parity box}). The
+$2^t$ sums are distinct, since their projections to the primary components distinguish the choices
+independently, and both packets have size $2^{t-1}\le k$. Under multiplication by $v$ a factor becomes zero
+exactly when $\ell_i\mid v$; otherwise the same argument shows that the $2^t$ signed atoms remain distinct. So
+$v_*c\ne0$ exactly on $C_{\set{1,\dots,t}}$, of density $D(E,k)$; pad both packets with the same $k-2^{t-1}$ characters.
+The products $\prod_{i\le j}(1-\ell_i^{-1})$ decrease strictly in $j$, so $\varphi(E)/E$ is reached exactly when $t=s$, that is
+$k\ge2^{s-1}$.
+\end{proof}
+
+Let $p_j$ be the $j$th prime ($p_1=2$) and $d(k)=\floor{\log_2(2k)}$.
+
+\begin{corollary}[The global cyclic profile; \stU]\label{rec:cor:cglobal}
+For every $k\ge1$, the infimum of $\delta$ over all cyclic groups of Dirichlet characters and all distinct
+packets of size $k$ is $\prod_{j=1}^{d(k)}(1-p_j^{-1})$. It is a minimum, even when all factors are required to be
+primitive of one prime conductor, and it equals $(e^{-\gamma}+o(1))/\log\log k$ as $k\to\infty$.
+\end{corollary}
+
+\begin{proof}
+Replacing the distinct prime factors of $E$ by smaller primes, or adding factors up to $d(k)$ of them, can
+only decrease the product in \cref{rec:thm:cyclic}; this gives the lower bound. For attainment put
+$E=2\prod_{j\le d(k)}p_j$, choose a prime $Q\equiv1\pmod E$ and a character $\chi$ of order $E$ modulo $Q$. The parity
+box has $2^{d(k)}<E$ distinct exponents, so a common additive shift avoids zero modulo $E$; every resulting
+character is nonprincipal modulo the prime $Q$, hence primitive of conductor $Q$, and padding uses a
+common primitive character. Common twisting and padding preserve local agreement. Finally
+$\prod_{p\le p_d}(1-p^{-1})\sim e^{-\gamma}/\log p_d$ by Mertens' product theorem \cite[Eq.~(3)]{KeliherLee2024Constants}, $p_d\sim d\log d$, and
+$d(k)\sim\log k/\log2$, so $\log p_{d(k)}\sim\log\log k$.
+\end{proof}
+
+\paragraph{Abelian $\ell$-groups.}
+Let $\ell$ be a prime and $X\cong\bigoplus_{i=1}^r\Z/\ell^{a_i}\Z$ with all $a_i\ge1$; put $b=\min_ia_i$, $N=\abs X$, $M=N/\ell^b$,
+$X[\ell]=\set{x:\ell x=0}$, and write $V$ additively, so that $(\ell v)(x)=v(x)^\ell$. Write $S=\mathcal D(c)$ and $\delta=\abs S/N$.
+For $f(v)=\sum_x\widehat f(x)v(x)$ put $\norm f_A=\sum_x\abs{\widehat f(x)}$.
+
+\begin{lemma}[Corrected anchored projection; \stU]\label{rec:lem:pproj}
+For $y\in X$ and $a\in X$ put
+\[
+ K_y(v)=\mathbf 1_{v(y)=1}-\tfrac1\ell\mathbf 1_{v(\ell y)=1},\qquad J_a(v)=\sum_xc(x)K_{x-a}(v).
+\]
+Then $\mathbb E_vJ_a=(1-1/\ell)c(a)$, $\abs{J_a}\le m\mathbf 1_S$, and $\norm{J_a}_A\le2(1-1/\ell)m$.
+\end{lemma}
+
+\begin{proof}
+For $y\ne0$ of order $\ell^j$, orthogonality gives $\mathbb EK_y=\ell^{-j}-\ell^{-1}\ell^{-(j-1)}=0$ and
+$K_y(v)=\ell^{-j}\sum_{0\le u<\ell^j,\ \ell\nmid u}v(uy)$; for $y=0$, $K_y=1-1/\ell$. This gives the mean, and the Fourier
+coefficients of each $K_y$ are nonnegative with sum $1-1/\ell$, which gives the norm bound. The values of $K_y$
+are $1-1/\ell$, $-1/\ell$ and $0$, a range of length one; the two signed parts of $c$ each have mass $m$, and $J_a$ is
+a sum of fibre masses of the value histogram, so it vanishes off $S$.
+\end{proof}
+
+\begin{theorem}[Sharp mass bound and its equality cases; \stU]\label{rec:thm:pmass}
+For distinct packets of equal size, $\delta\ge(\ell-1)\norm c_\infty/(\ell m)\ge(\ell-1)/(\ell m)$. Equality $\delta=(\ell-1)/(\ell m)$
+holds if and only if there are a subgroup $P\le X$, $a\in X$ and $t\in X[\ell]\setminus P$ with
+$c=\mathbf 1_{a+P}-\mathbf 1_{a+t+P}$, so $m=\abs P$. The translate must have a representative of order $\ell$ in $X$; order $\ell$ in
+$X/P$ does not suffice.
+\end{theorem}
+
+\begin{proof}
+Average \cref{rec:lem:pproj} at an anchor where $\abs{c(a)}$ is largest, exchanging the packets if necessary. At
+equality every nonzero coefficient is $\pm1$; let $A_0,B_0$ be the positive and negative supports, each of
+size $m$. At a positive anchor, equality of the averages in $J_a\le m\mathbf 1_S$ forces pointwise equality on $S$,
+so for $v\in S$ all elements of $A_0$ have one value under $v$, and the ratio of the value of each element of $B_0$
+to that value is a nontrivial $\ell$th root of unity; with a negative anchor, all elements of $B_0$ also have one
+value, and the two values differ by a root of exact order $\ell$. Let $P$ be generated by $A_0-A_0$ and $B_0-B_0$.
+Then $S\subset P^\perp$, and $H_c$ vanishes off $S$ and equals $m(v(a)-v(b))\ne0$ on $S$ ($a\in A_0$, $b\in B_0$), so its support
+is exactly $S$. Fourier inversion makes $c$ invariant under $P$, and as $A_0\subset a+P$, $B_0\subset b+P$, we get
+$A_0=a+P$, $B_0=b+P$.
+
+We claim $b-a\in P+X[\ell]$. Otherwise duality gives $v\in(P+X[\ell])^\perp$ with $v(b-a)\ne1$; since $X[\ell]^\perp=\ell V$, write
+$v=\ell w$. The two coset histograms disagree at $v$, so $v\in S$, and then $w\in S$, since agreement at $w$ would
+persist after raising all values to the $\ell$th power. But the description of $S$ makes $w(b-a)$ an $\ell$th root of
+unity, contradicting $v(b-a)\ne1$. So $b-a=h+t$ with $h\in P$ and $t\in X[\ell]\setminus P$.
+
+Conversely, for the coset pair and any $v$, the image $v(P)$ is a cyclic $\ell$-group and the image multiset of
+$P$ is uniform on it. If $v(P)\ne1$ it contains all $\ell$th roots of unity, so multiplication by $v(t)$ preserves
+the multiset; if $v(P)=1$, disagreement means $v(t)\ne1$. Hence $S=P^\perp\setminus\langle P,t\rangle^\perp$ and $\abs S=(1-1/\ell)N/\abs P$.
+\end{proof}
+
+\begin{theorem}[Saturation and prime-power sizes; \stU]\label{rec:thm:psat}
+Every distinct equal-size pair has $\delta\ge\varphi(\ell^b)/N=(\ell-1)/(\ell M)$, and this bound is attained at size $k$
+exactly when $k\ge M$. For every $k=\ell^u$,
+\[
+ d_X(k)=\frac{\ell-1}{\ell\min(k,M)},
+\]
+and for $k=\ell^u\le M$ the minimizers are exactly the pairs of \cref{rec:thm:pmass} with $\abs P=k$.
+\end{theorem}
+
+\begin{proof}
+The set $S$ is invariant under multiplication by integers prime to $\ell$ (Galois conjugacy) and satisfies
+$\ell v\in S\Rightarrow v\in S$; it is nonempty, since otherwise all traces vanish and $c=0$. Starting in $S$, take $\ell$th
+roots as long as possible; this ends at $v_0\in S\setminus\ell V$. Such $v_0$ has a coordinate prime to $\ell$ in some cyclic
+factor, so its order is at least $\ell^b$, and its unit orbit, of size at least $\varphi(\ell^b)$, lies in $S$. At equality $S$
+is exactly the set of generators of $\langle v_0\rangle$ with $v_0\notin\ell V$ of order $\ell^b$; the transform of $c$ is supported
+there, so $c$ is invariant under $\ker v_0$, of size $M$, and its positive mass is at least $M$. For
+attainment split $X=C_{\ell^b}\oplus X'$ with $\abs{X'}=M$, take $P=X'$ and $t$ of exact order $\ell$ in the first factor, and
+pad to every $k\ge M$. For $k=\ell^u\le M$ take instead a subgroup $P\le X'$ of order $k$; the coset pair attains
+$(\ell-1)/(\ell k)$, the bound of \cref{rec:thm:pmass}, which leaves no room for cancellation, and the classification
+follows.
+\end{proof}
+
+\begin{proposition}[Saturated equality; \stU]\label{rec:prop:psateq}
+Equality in the saturation bound holds exactly for the nonzero balanced integral $c$ of the following
+form: for some $v_0\in V\setminus\ell V$ of order $\ell^b$, $c$ is constant on the fibres of $v_0:X\to\mu_{\ell^b}$, and the induced
+function $g$ on $C_{\ell^b}$ satisfies $\sum_{j=0}^{\ell-1}g(u+j\ell^{b-1})=0$ for every $u$ modulo $\ell^{b-1}$.
+\end{proposition}
+
+\begin{proof}
+Necessity: by the preceding proof the transform of $c$ is supported on the generators of $\langle v_0\rangle$, and Fourier
+inversion on $C_{\ell^{b-1}}$ says that the nonprimitive coefficients of $g$ vanish exactly when the displayed fibre
+sums do. Conversely, for such a nonzero integral $g$ the primitive coefficients cannot vanish, since by
+Galois conjugacy they would all vanish and then every coefficient would. If some multiple $dv$ lies in
+the generator orbit, primitivity of $v_0$ forces $\ell\nmid d$, so $v$ lies in the same orbit; all power traces vanish
+elsewhere, hence so do all value histograms, and the disagreement set is the orbit.
+\end{proof}
+
+\begin{remark}[Prime exponent]\label{rec:rem:pexp}
+If $X$ has exponent $\ell$, then $b=1$, $X[\ell]=X$, $M=\ell^{r-1}$, every $v(\ell y)$ equals one and, as $\sum c=0$, $J_a$ is the
+anchored projection of \cref{rec:lem:oradon}. \Cref{rec:thm:pmass} then gives the lowest level of \cref{rec:thm:olevel},
+and \cref{rec:thm:psat,rec:prop:psateq} give the prime-power and saturated cases of \cref{rec:thm:odigit}; for elementary $2$-groups \cref{rec:thm:psat}
+gives $2^{-\min(u+1,r)}$ at $k=2^u$, in accordance with \cref{rec:thm:qmatch}. For $X=(C_{\ell^a})^r$ it reads
+$d_X(\ell^u)=(\ell-1)/\ell^{1+\min(u,a(r-1))}$; for $X=C_4\times C_4$ the minima at sizes $1,2,4,8,\dots$ are $1/2,1/4,1/8,1/8,\dots$.
+The cyclic minimum of \cref{rec:cor:cglobal} tends to zero only like $1/\log\log k$, whereas elementary $2$-groups
+of large rank allow disagreement $1/(2k)$ at every power of two $k$: the size alone does not govern the
+possible ambiguity.
+\end{remark}
+
+\begin{example}[The torsion-lifting condition is needed]\label{rec:ex:ctorsion}
+In $X=C_{\ell^2}$ take $P=\ell X$ and $t$ a generator. Although $t+P$ has order $\ell$ in $X/P$, it has no representative
+of order $\ell$, and the packets $P$ and $t+P$ disagree at every nonidentity evaluation: a unit evaluation takes
+the two cosets to disjoint cosets of $\mu_\ell$ in $\mu_{\ell^2}$, and a nonzero evaluation divisible by $\ell$ makes each
+packet constant with distinct constants. So $\delta=1-\ell^{-2}$, not $(\ell-1)/\ell^2$.
+\end{example}
+
+\paragraph{Prime windows.}
+Fix a smooth $w\ge0$ supported in $(\tfrac12,1)$ with $\int w=1$, and put $M_Y(f)=\sum_{p\nmid Q}(\log p)w(p/Y)f(v_p)$ for
+$f:V\to\C$. Under Dirichlet GRH, \cref{rec:lem:gram} and Fourier expansion over $X$ give a constant $C_w$, depending
+only on $w$, with
+\begin{equation}\label{rec:eq:cgram}
+ \abs{M_Y(f)-Y\,\mathbb Ef}\le C_w\norm f_A\sqrt Y\log(2Q)\qquad(Y\ge2)
+\end{equation}
+for every finite group $X$ of characters modulo $Q$ and every $f:V\to\C$. This is the only prime-sum estimate of
+the section; \cref{rec:thm:qmatchfinite,rec:thm:ofinite} use it with $X$ of exponent two and $\ell$.
+
+\begin{remark}[The standard scale]\label{rec:rem:cscale}
+For every finite abelian $X$, whatever its exponent, the anchored trace $\Re(\overline{v(a)}H_c(v))$ has mean $c(a)$, norm
+at most $2m$, and vanishes where the Euler factors agree; with \eqref{rec:eq:cgram} at a positive anchor it gives
+a distinguishing prime in every window $(Y/2,Y)$ at the scale $Y\gg_wm^2\log^2(2Q)$. The finite theorems add the
+best possible density and its extremal configurations, and for cyclic $X$ the possibly smaller scale
+$4^t\log^2(2Q)$ of \cref{rec:thm:cwindow}; \cref{rec:prop:pwindow} gives the window bounds with $\norm c_\infty$ for every
+abelian $\ell$-group.
+\end{remark}
+
+For cyclic $X$ and one primary
+coordinate of order $\ell^a$, choose $h$ of order $\ell$; then $\mathbf 1_{v(h)\ne1}=1-\ell^{-1}\sum_{j<\ell}v(jh)$ has norm $2(1-1/\ell)$, and since
+different primary coordinates have independent Fourier supports, the cylinders $C_I$ of the proof of
+\cref{rec:thm:cyclic} satisfy, for every primary exponent,
+\begin{equation}\label{rec:eq:cnorm}
+ \norm{\mathbf 1_{C_I}}_A=2^{\abs I}d_I.
+\end{equation}
+
+\begin{theorem}[Cyclic window certificate; \stG]\label{rec:thm:cwindow}
+Let $X$ be cyclic of order $E$, $t=t(E,k)$ and $D=D(E,k)$. For distinct packets of size $k$ and $Y\ge2$,
+\[
+ M_Y(\mathbf 1_{\mathcal D(c)})\ge DY\Bigl(1-C_w2^t\frac{\log(2Q)}{\sqrt Y}\Bigr),
+\]
+and the parity-box pairs of \cref{rec:thm:cyclic} have $\abs{M_Y(\mathbf 1_{\mathcal D(c)})-DY}\le C_w2^tD\sqrt Y\log(2Q)$. Hence every interval
+$(Y/2,Y)$ contains a distinguishing prime once $Y\ge C_w'4^t\log^2(2Q)$; as $2^t\le2k$ this is $O(k^2\log^2(2Q))$, and it stops
+growing with $k$ once $t=s$.
+\end{theorem}
+
+\begin{proof}
+The proof of \cref{rec:thm:cyclic} gives $C_I\subseteq\mathcal D(c)$ with $\abs I\le t$ and $d_I\ge D$. Positivity of the weights,
+\eqref{rec:eq:cgram} and \eqref{rec:eq:cnorm} give $M_Y(\mathbf 1_{\mathcal D(c)})\ge d_IY(1-C_w2^{\abs I}\log(2Q)/\sqrt Y)$. If the bracket with $2^t$ is
+nonnegative, replace $\abs I$ by $t$ and $d_I$ by $D$; otherwise the claim is trivial. For the parity box, $\mathcal D(c)$ is the
+cylinder on the first $t$ primary coordinates, and \eqref{rec:eq:cnorm} gives the two-sided bound.
+\end{proof}
+
+\begin{proposition}[Prime windows for $\ell$-groups; \stG]\label{rec:prop:pwindow}
+Let $X$ be an abelian $\ell$-group and $\alpha=1-1/\ell$. For distinct packets of equal size,
+\[
+ M_Y(\mathbf 1_{\mathcal D(c)})\ge\frac\alpha m\bigl(\norm c_\infty Y-2C_wm\sqrt Y\log(2Q)\bigr).
+\]
+For the equality pairs of \cref{rec:thm:pmass,rec:prop:psateq}, $\norm{\mathbf 1_{\mathcal D(c)}}_A=2\alpha$ and
+$\abs{M_Y(\mathbf 1_{\mathcal D(c)})-\delta(c)Y}\le2C_w\alpha\sqrt Y\log(2Q)$.
+\end{proposition}
+
+\begin{proof}
+At an anchor $a$ with $c(a)=\norm c_\infty$ (after exchanging the packets), $J_a/m\le\mathbf 1_{\mathcal D(c)}$ by \cref{rec:lem:pproj}; it
+may take negative values, but the prime weights are nonnegative, and \eqref{rec:eq:cgram} with the mean and norm
+of \cref{rec:lem:pproj} gives the bound. In both equality families $\mathcal D(c)=H\setminus K$ for subgroups $K\le H\le V$ with
+$[H:K]=\ell$ (by the proofs of \cref{rec:thm:pmass,rec:thm:psat}), and the coefficients of $\mathbf 1_H-\mathbf 1_K$ are positive on $H^\perp$,
+negative on $K^\perp\setminus H^\perp$ and zero elsewhere, with positive and negative masses both $\alpha$.
+\end{proof}
+
+\begin{corollary}[Correction threshold; \stG]\label{rec:cor:ccorrect}
+Let $X$ be cyclic of order $E$. If a record of local polynomials differs from each of two size-$k$ packets on
+sets of upper relative density below $D(E,k)/2$, the packets coincide, and this threshold is sharp; these two
+assertions are unconditional. For fixed $0<\eta<1$, with the weights $(\log p)w(p/Y)/M_Y(1)$, distinct size-$k$
+packets are at weighted distance at least $(1-\eta)D(E,k)$ once $Y\ge C_w''\eta^{-2}4^t\log^2(2Q)$, so fewer than $(1-\eta)D(E,k)/2$
+weighted errors leave at most one consistent packet.
+\end{corollary}
+
+\begin{proof}
+The disagreement set of two packets lies in the union of their error sets. For sharpness split the
+distinguishing primes of an extremal pair, in increasing order, into two alternating subsequences of
+relative density $D/2$ each, and take the record from one packet on the first and from the other on the
+second. In a window normalize by $M_Y(1)=Y+O_w(\sqrt Y\log(2Q))$ and apply \cref{rec:thm:cwindow}. This is a uniqueness
+statement, not an efficient decoder.
+\end{proof}
+
+\begin{remark}[Plateaus]\label{rec:rem:cplateau}
+The cyclic minimum is constant between successive powers of two in $k$ until all distinct prime factors
+of $E$ are used:
+\begin{center}
+\begin{tabular}{@{}lccccc@{}}\toprule
+$E$ & $k=1$ & $k=2,3$ & $k=4,\dots,7$ & $k\ge8$ & first saturation\\\midrule
+$30$ & $1/2$ & $1/3$ & $4/15$ & $4/15$ & $4$\\
+$210$ & $1/2$ & $1/3$ & $4/15$ & $8/35$ & $8$\\
+$45$ & $2/3$ & $8/15$ & $8/15$ & $8/15$ & $2$\\
+$72$ & $1/2$ & $1/3$ & $1/3$ & $1/3$ & $2$\\\bottomrule
+\end{tabular}
+\end{center}
+Orders $6$, $12$, $72$ and $2^{100}3^{100}$ have the same matching function.
+\end{remark}
+
+\begin{example}[Two products of four $L$-functions modulo $31$]\label{rec:ex:c31}
+Let $\chi$ be the character of order $30$ modulo $31$ with $\chi(3)=e^{2\pi i/30}$ ($3$ is a primitive root). The parity box on the
+steps $15,10,6$ gives the exponent packets $\set{0,16,21,25}$ and $\set{1,6,10,15}$; twisting by $\chi^2$ gives
+\[
+ A'=\set{\chi^2,\chi^{18},\chi^{23},\chi^{27}},\qquad B'=\set{\chi^3,\chi^8,\chi^{12},\chi^{17}},
+\]
+all primitive of conductor $31$. The two products of four Dirichlet $L$-functions have different local
+factors exactly at the primes that are primitive roots modulo $31$, of relative density $\varphi(30)/30=4/15$, so
+they agree at $11/15$ of the primes, the largest agreement among distinct degree-four packets in this group
+by \cref{rec:thm:cyclic}; the products themselves differ.
+\end{example}
+
+\begin{example}[Quartic characters modulo $65$]\label{rec:ex:c65}
+Let $\alpha$ and $\beta$ have order four modulo $5$ and $13$, viewed modulo $65$, so $X=C_4\times C_4$. The packets
+$\set{1,\alpha,\alpha^2,\alpha^3}$ and $\set{\beta^2,\beta^2\alpha,\beta^2\alpha^2,\beta^2\alpha^3}$ have different Euler factors exactly when $\alpha(p)=1$ and $\beta^2(p)=-1$, that is
+for the six classes $6,11,21,31,41,46$ among the $48$ units modulo $65$; the disagreement density is $1/8$, optimal
+in this group for every size at least four by \cref{rec:thm:psat}. At $p=11$ the two polynomials are $(1-T)^4$
+and $(1+T)^4$.
+\end{example}
+
+Exact enumerations by integer histogram comparison cover $10{,}417{,}835$ unordered packet pairs
+($2{,}453{,}747$ in $53$ cyclic cases, $7{,}964{,}088$ in nine $\ell$-group cases, among them all $7{,}509{,}750$ pairs for $C_4^2$ at
+$k=4$, with minimum $1/8$ attained by exactly $12$ pairs), the equality predicates as equivalences, $49$ cyclic
+constructions, $38$ cylinder transforms, $24$ subgroup constructions and both examples:
+\begin{center}
+\artifact{euler_agreement_2026-11-27/data/verification_summary.json}\\
+\artifact{euler_agreement_2026-11-27/data/cyclic_euler_verification.json}\\
+\artifact{euler_agreement_2026-11-27/data/pprimary_verification.json}
+\end{center}
+Related uncertainty principles and agreement results for finite-group characters are in
+\cite{Meshulam2006Uncertainty,MartinWalji2017Distinguishing}.
+
+\subsection{Matching Euler factors at odd prime order}\label{rec:sec:omatch}
+\sources{euler-packet-rigidity; odd-order-euler-factor-matching; odd_prime_order_euler_packets; cubic_quintic_euler_agreement; odd_euler_agreement; odd_prime_euler_agreement; odd_prime_euler_agreement_2; odd_prime_euler_packets; prime_exponent_euler_agreement; prime_order_euler_agreement; grh_cubic_matching_and_precision_2026-11-27; gram-euler-and-zero-filters}
+
+Let $\ell$ be an odd prime and $X$ a group of Dirichlet characters modulo $Q$ of exponent $\ell$ and rank
+$r\ge1$ over $\F_\ell$, written additively, $V=X^*$, $\zeta_\ell=e^{2\pi i/\ell}$, and for $p\nmid Q$ let $v_p\in V$ be given by
+$\chi(p)=\zeta_\ell^{v_p(\chi)}$. Packets $A,C$ are multisets of $k$ members of $X$, compared through
+$\prod_{\chi\in A}(1-\chi(p)T)$, and $\delta(A,C)$ is the density of primes at which these local polynomials differ.
+Put $c_x=\operatorname{mult}_A(x)-\operatorname{mult}_C(x)$, let $m=\sum_xc_x^+\le k$ be the mass of each side after cancellation,
+\[
+ H(v)=\sum_{x\in X}c_x\zeta_\ell^{v(x)},\qquad S=\set{v\in V:H(v)\ne0},\qquad \beta_m=\frac{\ell-1}{\ell m},
+\]
+and let $d_\ell(r,k)$ be the least $\delta(A,C)$ over distinct packets of size $k$. Common entries are allowed, and
+a packet may lie in a proper subspace. The results below are unconditional except
+\cref{rec:thm:ofinite}. The least disagreement density is the universal staircase bound of
+\cref{rec:thm:odigit} exactly when the leading base-$\ell$ digit of $k$ divides $\ell-1$ or $\ell+1$ or the size is
+saturated, so for every rank and size when $\ell=3,5$; in every such case all extremal pairs are
+classified (\cref{rec:thm:oplanar,rec:thm:odigit}, and \cref{rec:thm:psat,rec:prop:psateq} for saturated sizes). For the other digits \cref{rec:thm:odescent} reduces the minimum
+exactly to packets of size below $\ell$ in rank at least two, \cref{rec:thm:oconic} settles a range of them, and
+the minimum is known for every rank and size when $\ell\le11$ (\cref{rec:cor:oseveneleven}). The results on
+cosets, prime-power sizes and saturation hold for every finite abelian $\ell$-group (\cref{rec:rem:pexp}).
+
+\begin{remark}[Traces decide]\label{rec:lem:otrace}
+The exponent $\ell$ has $1$ as its only positive proper divisor, so by \cref{rec:prop:cdivisor} the local polynomials
+agree at $p$ exactly when $H(v_p)=0$, and by \cref{rec:lem:chist}(iii) $\delta(A,C)=\abs S/\ell^r$, which depends only on
+$(\ell,r,c)$. The set $S$ omits $0$ since $\sum_xc_x=0$, is a union of punctured lines through the origin by
+\cref{rec:lem:chist}(ii), and is nonempty when $A\ne C$ by Fourier inversion. At exponent two the same remark,
+with $E=2$, is the trace criterion of \cref{rec:sec:qmatch}.
+\end{remark}
+
+Every rank occurs: choose $r$ primes $q\equiv1\pmod\ell$ and an order-$\ell$ character at each. In rank one every
+distinct pair has $\delta=1-1/\ell$.
+
+\begin{remark}[Anchored projection count]\label{rec:lem:oradon}
+At exponent $\ell$ the function $K_y$ of \cref{rec:lem:pproj} is $\mathbf 1_{v(y)=0}-1/\ell$, and as $\sum_xc_x=0$ its $J_a$ is the
+signed mass of the projection fibre through $a$, $J_a(v)=\sum_xc_x\mathbf 1_{v(x-a)=0}$. So
+\[
+ \mathbb E_vJ_a=(1-1/\ell)c_a,\qquad\abs{J_a}\le m\mathbf 1_S,\qquad\norm{J_a/m}_A\le2(1-1/\ell),
+\]
+where $\norm f_A=\sum_{x\in X}\abs{\widehat f(x)}$ for $f(v)=\sum_x\widehat f(x)\zeta_\ell^{v(x)}$, and \cref{rec:thm:pmass} gives
+$\delta(A,C)\ge\beta_m\norm c_\infty$. This fibre form is used in \cref{rec:thm:olevel,rec:thm:ofinite}.
+\end{remark}
+
+\begin{lemma}[Unions of hyperplanes; \stU]\label{rec:lem:ounion}
+Let $r\ge2$ and let $H_1,\dots,H_d$ be distinct linear hyperplanes of $V$, $1\le d\le\ell$. Then
+$\abs{\bigcup_iH_i}\le\ell^{r-1}+(d-1)(\ell^{r-1}-\ell^{r-2})$, with equality for $d\ge2$ exactly when all $H_i$ contain a
+common subspace of codimension two. A linear hyperplane is never covered by $d\le\ell$ other linear
+hyperplanes.
+\end{lemma}
+
+\begin{proof}
+Add each $H_i\setminus H_1$, of size $\ell^{r-1}-\ell^{r-2}$. Equality means these pieces are disjoint, so
+$H_i\cap H_j\subseteq H_1$ for $i,j>1$, and by dimensions $H_i\cap H_1=H_j\cap H_1$; the converse is clear. The traces of $d$
+other hyperplanes on a hyperplane are proper subspaces containing $0$, so their union has at most
+$1+d(\ell^{r-2}-1)<\ell^{r-1}$ points.
+\end{proof}
+
+Let $\OO=\Z[\zeta_\ell]$ and $\pi=\zeta_\ell-1$, so $\OO/(\pi)=\F_\ell$ and $(\ell)=(\pi)^{\ell-1}$. All $H(v)$ lie in $\pi\OO$; let $t$ be the
+least $\pi$-adic valuation of a nonzero value. Write $a=\floor{\log_\ell k}$ and $b=\floor{k/\ell^a}\in\set{1,\dots,\ell-1}$.
+
+\begin{lemma}[The first nonzero reduction; \stU]\label{rec:lem:ored}
+If $t=j(\ell-1)+s$ with $j\ge0$ and $1\le s\le\ell-1$, then $k\ge\ell^js$; hence $t\le a(\ell-1)+b$. The function
+$f(v)=\pi^{-t}H(v)\bmod\pi$ is a nonzero polynomial function on $V$ of degree at most $t$ with $f(0)=0$ and
+$f(uv)=u^tf(v)$ for $u\in\F_\ell^\times$.
+\end{lemma}
+
+\begin{proof}
+Evaluation at $\zeta_\ell$ is an additive isomorphism from the zero-sum vectors of $\Z^\ell$ onto $\pi\OO$ (injective by
+the cyclotomic argument above, surjective since the $\zeta_\ell^{i+1}-\zeta_\ell^i$ form a $\Z$-basis). At $v$ attaining $t$,
+$H(v)\in\ell^j\pi\OO$, so the histogram difference is $\ell^jn$ for an integral zero-sum $n$ whose positive and
+negative parts have mass $m'\le k/\ell^j$. Expanding $\zeta_\ell^i=(1+\pi)^i$, valuation $s$ forces
+$\sum_in_i\binom i\lambda\equiv0\pmod\ell$ for $\lambda<s$, so the two $m'$-element multisets represented by $n^\pm$ have equal power
+sums through degree $s-1$; if $m'<s$, Newton's identities (valid as $m'<\ell$) make them equal, a
+contradiction. So $k\ge\ell^jm'\ge\ell^js$, and the numbers $\ell^js$ increase with $j(\ell-1)+s$. For $f$, lift coordinates
+to $\set{0,\dots,\ell-1}$ and expand $\zeta_\ell^{v(x)}=\prod_i\sum_{u_i}\binom{v_i}{u_i}(\zeta_\ell^{x_i}-1)^{u_i}$: the coefficient of the tensor
+binomial indexed by $u$ is divisible by $\pi^{\abs u}$, and, being an iterated forward difference of values of $H$,
+by $\pi^t$. Dividing by $\pi^t$ and reducing kills the terms with $\abs u>t$. Finally $\sigma_u(\pi)/\pi\equiv u\pmod\pi$ for
+the automorphism $\sigma_u:\zeta_\ell\mapsto\zeta_\ell^u$, which acts trivially on the residue field, so $f(uv)=u^tf(v)$.
+\end{proof}
+
+For $n,D\ge0$ put $W(n,D)=\min\set{\prod_{i=1}^n(\ell-e_i):0\le e_i\le\ell-1,\ \sum e_i\le D}$. Moving a unit between unsaturated
+exponents shows $W(n,D)=1$ if $D\ge n(\ell-1)$, and otherwise $W(n,D)=(\ell-h)\ell^{n-j-1}$ for $D=j(\ell-1)+h$, $0\le h<\ell-1$;
+$W(n,\cdot)$ decreases strictly until it reaches $1$.
+
+\begin{lemma}[Surviving directions; \stU]\label{rec:lem:oproj}
+A nonzero polynomial function of degree at most $D$ in $n$ variables over $\F_\ell$ has at least $W(n,D)$
+nonzero values. If a nonzero polynomial function on $\F_\ell^{n+1}$ of degree at most $t\ge1$ vanishes at $0$
+and its support is a union of punctured lines, its support contains at least $W(n,t-1)$ projective
+directions.
+\end{lemma}
+
+\begin{proof}
+Reduce exponents below $\ell$. If $e_1$ is the top exponent of the first variable, above each point where its
+coefficient is nonzero at least $\ell-e_1$ values survive; iterate on that coefficient. For the second claim
+induct on $n$, the case $n=0$ being clear. If some projective hyperplane, say $x_0=0$, misses the support,
+then $F(0,x')$ vanishes identically and $F=x_0G$ with $\deg G\le t-1$; the chart $x_0=1$ meets every supported
+line once, and the first claim applies. Otherwise induction in each of the $(\ell^{n+1}-1)/(\ell-1)$ hyperplanes and
+double counting give more than $\ell W(n-1,t-1)\ge W(n,t-1)$ directions.
+\end{proof}
+
+\begin{construction}[Extremal packets]\label{rec:con:opack}
+In rank two:
+\emph{split}, if $b\mid\ell-1$: for $H_0\le\F_\ell^\times$ of order $b$, the packets $H_0e_1$ and $H_0e_2$ agree at $(u,w)\ne0$
+exactly when $uw\ne0$ and $u/w\in H_0$;
+\emph{nonsplit}, if $b\mid\ell+1$: identify the plane with $K=\F_{\ell^2}$ and its dual through $\Tr_{K/\F_\ell}(vx)$, let $U$ be the
+norm-one group, $H_0\le U$ of order $b$ and $c_0\in U\setminus H_0$; for $v\ne0$ all elements of $vH_0$ and $vc_0H_0$ have the same norm,
+equal traces and norms force equality or Frobenius conjugacy, so the packets $H_0$, $c_0H_0$ agree exactly
+when $v^{\ell-1}\in c_0H_0$, and $v\mapsto v^{\ell-1}$ is a bijection $K^\times/\F_\ell^\times\to U$.
+Either way exactly $b$ of the $\ell+1$ directions agree. \emph{Cosets}: for a subspace $U'\le X$ of dimension $s$ and
+$y-x\notin U'$, $H(v)=\ell^s\mathbf 1_{U'^\perp}(v)(\zeta_\ell^{v(x)}-\zeta_\ell^{v(y)})$ and $\delta(x+U',y+U')=(\ell-1)/\ell^{s+1}$. \emph{Lifting}: replacing every
+entry $x$ by $x+L$ for a subspace $L$ of dimension $a$ independent of the support multiplies $H$ by
+$\ell^a\mathbf 1_{L^\perp}$ and divides $\delta$ by $\ell^a$. Embedding a plane in $X$, padding both sides with common entries and a
+common translation preserve agreement; in a plane a translation outside the at most $2k<\ell^2$ points of
+$-(A\cup C)$ makes every factor of exact order $\ell$.
+\end{construction}
+
+In an affine plane $E\cong\F_\ell^2$ of $X$, a \emph{matching direction} of two finite multisets is a
+one-dimensional space of linear forms on $E$ under which their projection multisets coincide; for
+packets in $E$ these are exactly the projective directions of agreement.
+
+\begin{theorem}[Planar switching configurations; \stU]\label{rec:thm:oplanar}
+Let $1\le b\le\ell-1$ and let $A,C\subset\F_\ell^2$ be disjoint sets of $b$ points. They have at most $b$ matching
+directions, and $b$ is attained if and only if $b\mid\ell-1$ or $b\mid\ell+1$. For $b=1$ any two points attain
+it; for $b=2$ exactly the opposite vertex pairs $\set{x,x+u+w}$, $\set{x+u,x+w}$ of a parallelogram ($u,w$
+independent); for $b\ge3$ exactly the following configurations, up to an affine change of coordinates,
+where $G$ is a subgroup of order $b$ of the indicated cyclic group:
+\begin{enumerate}
+\item $A=G\times\set0$ and $C=\set0\times G$ with $G\le\F_\ell^\times$ (two intersecting lines, their common point omitted);
+\item $A=\set{(t,t^{-1}):t\in G}$ and $C=\set{(t,t^{-1}):t\in\lambda G}$ with $G\le\F_\ell^\times$ and $\lambda\notin G$ (a split hyperbola);
+\item $A=G$ and $C=\lambda G$ in $\F_\ell^2\cong\F_{\ell^2}$, with $G$ in the norm-one group of $\F_{\ell^2}$ and $\lambda\notin G$ of norm one
+ (a nonsplit conic).
+\end{enumerate}
+\end{theorem}
+
+\begin{proof}
+\emph{Counting.} Fix $a\in A$. At a matching direction with kernel line $\kappa$ some $c\in C$ has $c-a\in\kappa$, and
+distinct matching directions have distinct kernels, so they use distinct points of $C$; there are at
+most $b$. At equality every cross difference $c-a$ lies on a matching kernel, from each point of either
+set each matching kernel contains exactly one cross difference, and so every matching projection is
+injective on $A$ and on $C$ (a repeated value on $A$ would put two points of $C$ on one kernel line through
+$a$). For $b=1$ nothing is to prove. For $b=2$ take two matching forms as coordinates: $A=\set{(x_1,y_1),(x_2,y_2)}$
+with $x_1\ne x_2$, $y_1\ne y_2$, and $C$, disjoint from $A$ with the same coordinate values, is $\set{(x_1,y_2),(x_2,y_1)}$; this
+is a parallelogram, and $2\mid\ell-1$.
+
+\emph{Moments.} Let $b\ge3$ and $R_A(Z;u,v)=\prod_{(x,y)\in A}(Z-ux-vy)$, similarly $R_C$. The difference of the
+coefficients of $Z^{b-j}$ is a binary form of degree $j$ vanishing at the $b$ matching directions, hence zero
+for $j<b$. By Newton's identities the power sums of $ux+vy$ over $A$ and $C$ agree through degree $b-1$, and
+since binomial coefficients below $\ell$ are invertible,
+\begin{equation}\label{rec:eq:omixed}
+ \sum_{(x,y)\in A}x^iy^j=\sum_{(x,y)\in C}x^iy^j\quad\text{in }\F_\ell\qquad(i+j\le b-1).
+\end{equation}
+
+\emph{The conic.} Take two matching forms as coordinates $x,y$. By injectivity, $A$ and $C$ are graphs
+$\set{(s,f(s))}$, $\set{(s,g(s))}$ over one $b$-set $S\subset\F_\ell$, with $f(s)\ne g(s)$. Put $P(X)=\prod_{s\in S}(X-s)$. Since
+$\sum_{s\in S}F(s)/P'(s)$ is the coefficient of $X^{b-1}$ in the interpolation polynomial of $F$ on $S$, a function
+$h$ on $S$ with $\sum_ss^ih(s)/P'(s)=0$ for $0\le i\le b-m-2$ has interpolation polynomial of degree at most $m$
+(if the degree were $d>m$, take $i=b-1-d$). By \eqref{rec:eq:omixed} with $y$-degree $1,2,3$ this gives
+$f-g=\gamma/P'$ with $\gamma\in\F_\ell^\times$, then $f+g=L$ with $\deg L\le1$, and $f^2+fg+g^2=R$ with $\deg R\le2$ (for $b=3$ by
+interpolation at three points). With $Y=y-L(x)/2$ both sets lie on $Y^2=D(x)$, $D=R-\tfrac34L^2$, $\deg D\le2$, and
+above each $s\in S$ the two sets take the opposite values $\pm(f-g)(s)/2$; so $D(s)$ is a nonzero square.
+
+\emph{The cases.} If $S_1,S_2$ are subsets of an abelian group with $\abs{S_1}=\abs{S_2}=\abs{S_1S_2}=b$, then all translates
+$S_1s$, $s\in S_2$, coincide, so the stabilizer of $S_1$ has order $b$ and both sets are cosets of it. If $\deg D=1$
+the conic is a parabola $(t,t^2)$, the cross direction of parameters $u\ne v$ is that of $(1,u+v)$, and the
+additive group of order $\ell$ would need a subgroup of order $b$ with $1<b<\ell$. If $D$ has two distinct roots,
+completing the square gives $Y^2-\alpha x'^2=\beta$ with $\alpha\beta\ne0$. For square $\alpha$ this is the hyperbola $(t,t^{-1})$, the
+cross direction is that of $(1,-1/(uv))$, determined injectively by $uv$, and the parameter sets are cosets of
+an order-$b$ subgroup of $\F_\ell^\times$: case (ii), $b\mid\ell-1$. For nonsquare $\alpha$ the conic is a norm level of
+$\F_{\ell^2}$, scaled to the norm-one group; for norm-one $u\ne v$, $(u-v)^{\ell-1}=-1/(uv)$, and $z\mapsto z^{\ell-1}$ is injective on
+directions, so we get case (iii), $b\mid\ell+1$. Otherwise $D$ is a nonzero square constant or a square times
+$(x-x_0)^2$ (a nonsquare multiple would give nonsquare or zero values on $S$), so the conic is two parallel
+or two intersecting lines. If both lines carried points of $A$, an $A$-point on the first line would have
+as many cross differences along that line as there are $A$-points on the second; injectivity forces both
+numbers to be at most one, against $b\ge3$. So $A$ and $C$ lie on different lines. For parallel lines the
+cross directions are determined by differences of parameters, excluded as before. For intersecting lines
+the common point lies in neither set (from it all cross differences would be parallel); on the axes the
+cross directions are determined by the ratios of the parameters, and rescaling the axes gives case (i),
+$b\mid\ell-1$.
+
+\emph{Sufficiency.} In each of (i)--(iii) the cross direction is an injective function of the ratio,
+respectively the product, of the parameters, which takes $b$ values, and from each point each value is
+taken once; the induced bijection $A\to C$ preserves the corresponding projection, so these $b$ directions
+match, and no others by the count. Disjoint cosets exist in (ii), (iii) because $b$ is smaller than the
+group order there; for $b=\ell-1$ use (i).
+\end{proof}
+
+The configurations with $b\ge3$ are the dual $3$-nets with a collinear component, in accordance with
+\cite[Theorem~5.1 and \S5]{BlokhuisKorchmarosMazzocca2011Structure}; the proof above needs only interpolation.
+
+\begin{theorem}[Packets below the character order; \stU]\label{rec:thm:osmall}
+Let $r\ge2$ and $1\le k\le\ell$, and put $D_1(k)=(\ell-1)(\ell+1-k)/\ell^2$.
+\begin{enumerate}
+\item Every distinct pair has $\delta\ge D_1(k)$.
+\item For $2\le k\le\ell$ a pair attains equality if and only if nothing cancels and $A,C$ are disjoint $k$-sets in
+a common affine plane of $X$ whose cross differences $x-y$, $x\in A$, $y\in C$, occupy exactly $k$ projective
+directions, each exactly once from every point of either set. The agreement set is then a pencil of $k$
+hyperplanes, and $A$, $C$ and the $k$ directions at infinity form an embedded dual $3$-net of order $k$.
+\item Equality is attained, in every rank $r\ge2$, if and only if $k=1$, $k=\ell$, $k\mid\ell-1$ or $k\mid\ell+1$. For
+$2\le k\le\ell-1$ the equality pairs are, in their plane, exactly the configurations of \cref{rec:thm:oplanar}; for
+$k=\ell$ they are two parallel affine lines.
+\item If $3\le k<\ell$ and $k$ divides neither $\ell-1$ nor $\ell+1$, every distinct pair of size $k$ has
+$\delta\ge(\ell-1)(\ell+2-k)/\ell^2$, with equality attained when $k-1$ divides $\ell-1$ or $\ell+1$.
+\end{enumerate}
+\end{theorem}
+
+The criterion in (iii) is the same in every rank; for $k=2,3,4$ it always holds, and $k=\ell-1$ gives
+$2(\ell-1)/\ell^2$.
+
+\begin{lemma}[Separating a point; \stU]\label{rec:lem:osep}
+Let $n\ge2$ and let $S_0$ be a set of at most $2n+2$ points of an affine space over a field, contained in no affine
+plane. There are $P\in S_0$ and a polynomial of degree at most $n$ vanishing on $S_0\setminus\set P$ and not at $P$.
+\end{lemma}
+
+\begin{proof}
+If a line contains at least $n+2$ points of $S_0$, take $P$ off it, one hyperplane through the line avoiding $P$
+and one hyperplane avoiding $P$ through each of the at most $n-1$ remaining points. Otherwise fix $P$ and
+group the vectors $x-P$ by their spans; each group has at most $n$ members and at most two have $n$. Choose
+an independent triple meeting every group of size $n$ (the vectors have rank at least three); the at most
+$2(n-1)$ others, in groups of size at most $n-1$, split into at most $n-1$ independent pairs or singletons
+(pad to $2(n-1)$ entries in new groups, sort by group and pair entries $n-1$ places apart). For each part
+choose a linear form equal to $1$ on its vectors; the product of the at most $n$ affine equations works.
+\end{proof}
+
+\begin{proof}[Proof of \cref{rec:thm:osmall}]
+(i) Cancel, and fix $x\in A$. Agreement at $v$ forces $v(x)=v(y)$ for some $y\in C$, so the agreement set lies in
+at most $d\le m\le k$ distinct hyperplanes $(x-y)^\perp$, and \cref{rec:lem:ounion} gives $\delta\ge(\ell-1)(\ell+1-d)/\ell^2$.
+(ii) At equality $d=m=k$, so nothing cancels, $C$ is a set, the union is the whole agreement set and is a
+pencil with axis $W'$ of codimension two; by symmetry $A$ is a set. By the last clause of
+\cref{rec:lem:ounion} the $k$ hyperplanes of every anchor are members of this pencil, so all cross differences
+lie in the plane $W'^\perp\subset X$ with the $k$ normal directions, each once from each anchor, and fixing one point of
+each set puts both in one translate of $W'^\perp$. Conversely, each cross direction then matches $A$ with $C$, so
+the $k$ hyperplanes it defines all agree, and no other $v$ agrees by the inclusion; the pencil attains the
+bound. With the directions at infinity, every line meeting two of the three sets meets each once.
+(iii) Singletons, the coset construction with $s=1$, and the split and nonsplit constructions give
+sufficiency. By (ii) an equality pair with $2\le k\le\ell-1$ consists of disjoint $k$-sets in an affine plane $E$ of $X$
+with exactly $k$ matching directions (the restriction of $v$ to $E$ is uniform), so \cref{rec:thm:oplanar} gives
+necessity and the configurations. For $k=\ell\le\ell^{r-1}$ the minimum is $(\ell-1)/\ell^2$ and \cref{rec:thm:psat} leaves only the
+coset pairs of \cref{rec:thm:pmass} with $\abs P=\ell$, two cosets of one line.
+(iv) If the support $S_0$ of $c$ (at most $2k$ points) lies in an affine plane, translate it into a linear plane;
+restriction of $v$ to that plane is uniform, the disagreement count there is a multiple of $\ell-1$, and strict
+inequality in (i) gives the bound. Otherwise \cref{rec:lem:osep} with $n=k-1$ gives a polynomial $F$ of degree at
+most $k-1$ with $\sum_xc_xF(x)\ne0$ in $\F_\ell$, hence, as $\sum c_x=0$, a monomial $x^\alpha$ of degree $1\le j\le k-1$ with
+$\sum_xc_xx^\alpha\ne0$. Then $M_j(v)=\sum_xc_xv(x)^j$ has coefficient $\binom j\alpha\sum_xc_xx^\alpha\ne0$ at $v^\alpha$, since $j<\ell$; it
+vanishes wherever the projections agree, and \cref{rec:lem:oproj} gives at least $W(r-1,j-1)$ disagreeing
+directions, density at least $(\ell-1)(\ell+1-j)/\ell^2\ge(\ell-1)(\ell+2-k)/\ell^2$. Pad an extremal pair of size $k-1$ for the
+equality.
+\end{proof}
+
+\begin{example}[Order seven]\label{rec:cor:oseven}
+For $\ell=7$ and $k=5$, five divides neither $6$ nor $8$ and four divides $8$, so \cref{rec:thm:osmall}(iv) gives $d_7(r,5)=24/49$ for every
+$r\ge2$: two distinct products of five septic $L$-functions agree at no more than $25/49$ of the primes, and
+this is attained. In rank two the positive disagreement densities of size-$5$ pairs are exactly
+$\set{24,30,36,42,48}/49$. Indeed $\delta=(\ell-1)(\ell+1-d)/\ell^2$ with $d\le m\le k$ the number of agreeing directions;
+$d=5$ is excluded by \cref{rec:thm:osmall}(iii), $d=1,\dots,4$ are realized at size $d$ and padded, and $d=0$ by two copies of $0$
+against two independent points, padded.
+\end{example}
+
+\begin{theorem}[The leading base-$\ell$ digit; \stU]\label{rec:thm:odigit}
+For distinct packets of size $k$,
+\[
+ \delta(A,C)\ge D_\ell(r,k)=\begin{cases}(\ell-1)(\ell+1-b)/\ell^{a+2},&a\le r-2,\\ (\ell-1)/\ell^r,&a\ge r-1.\end{cases}
+\]
+\begin{enumerate}
+\item If $a\ge r-1$ the bound is the saturation bound of \cref{rec:thm:psat} \textup($b=1$, $M=\ell^{r-1}$\textup), the exact minimum,
+and its equality cases are those of \cref{rec:prop:psateq}.
+\item If $a\le r-2$ it is the exact minimum if and only if $b\mid\ell-1$ or $b\mid\ell+1$. In every equality case there is a
+subspace $L\le X$ of dimension $a$ such that, after cancellation, both packets are full inverse images under
+$X\to X/L$ of disjoint $b$-sets in a common affine plane with $b$ matching directions, that is, two points for
+$b=1$, the opposite vertex pairs of a parallelogram for $b=2$, and for $b\ge3$ one of the three configurations
+of \cref{rec:thm:oplanar}; in particular the reduced size is exactly $b\ell^a$ and the reduced packets are sets.
+Conversely every such lift, padded to size $k$, attains $D_\ell(r,k)$.
+\item For $k=\ell^a$ with $a\le r-1$ the minimum and the minimizers are given by \cref{rec:thm:psat,rec:thm:pmass}, as
+$X[\ell]=X$. Equality in $\delta\ge(\ell-1)/(\ell k)$ forces $k$ to be a power of $\ell$, by \cref{rec:thm:pmass} with $m\le k$.
+\item $D_\ell(r,k)=d_\ell(r,k)$ for every $r$ and $k$ when $\ell=3$ or $\ell=5$.
+\end{enumerate}
+\end{theorem}
+
+\begin{proof}
+By \cref{rec:lem:ored,rec:lem:oproj} with $n=r-1$, $S$ contains at least $W(r-1,t-1)\ge W(r-1,a(\ell-1)+b-1)$ directions, each
+with $\ell-1$ points, which is the bound. (ii) Sufficiency: lift the rank-two construction for $b$ by an $a$-dimensional $L$ and pad. Necessity: as
+$W(r-1,\cdot)$ is strictly decreasing here, equality forces $t=e:=a(\ell-1)+b$ and $S=\supp f$. By \cref{rec:lem:ored}
+the reduced representative of $f$ has only monomials of degree $\equiv e\pmod{\ell-1}$ and no constant term;
+raising one positive exponent of each makes it homogeneous of degree $e$ with the same values. So $f$ is a
+minimum-weight word of the projective Reed--Muller code of degree $e$ on $\mathbf P^{r-1}(\F_\ell)$, and by
+\cite[Thm.~4.3]{GhorpadeLudhani2024Minimum} it has a factor $L_a\prod_{i<a}(L_a^{\ell-1}-L_i^{\ell-1})$ with independent linear
+forms; hence $S$ lies in the common kernel $U$ of $L_0,\dots,L_{a-1}$, of codimension $a$. Fourier inversion makes $c$
+invariant under $L=U^\perp$; the induced $c'$ on $X/L$ has masses at most $\floor{k/\ell^a}=b$ and density $\ell^aD_\ell(r,k)=D_1(b)$,
+so \cref{rec:thm:osmall}(ii) applies: $c'$ is the difference of the indicators of two disjoint $b$-sets in a plane
+with $b$ matching directions, classified by \cref{rec:thm:oplanar}. (iv) The admissible digits $1,2$ for $\ell=3$ and $1,2,3,4$ for $\ell=5$ all divide $\ell\pm1$.
+\end{proof}
+
+For example, the least disagreement densities at rank two, for $k=1,\dots,7$ (constant from $k=\ell$ on), are
+$2/3,4/9,2/9,\dots$ for $\ell=3$; $4/5,16/25,12/25,8/25,4/25,\dots$ for $\ell=5$; and
+$6/7,36/49,30/49,24/49,24/49,12/49,6/49$ for $\ell=7$.
+
+\begin{remark}[Cubic packets]\label{rec:cor:ocubicmin}
+For $\ell=3$ every leading digit divides $\ell\pm1$ (\cref{rec:thm:odigit}(iv)), so with $a=\floor{\log_3k}$ the least
+disagreement density of two distinct size-$k$ packets of rank $r$ is
+\[
+ \Delta_{r,k}=\begin{cases}2/3^{a+1},&a\le r-2,\ 3^a\le k<2\cdot3^a,\\ 4/3^{a+2},&a\le r-2,\ 2\cdot3^a\le k<3^{a+1},\\ 2/3^r,&k\ge3^{r-1}.\end{cases}
+\]
+Up to exchanging the packets and adding a common multiset, the extremal pairs of \cref{rec:thm:odigit}(ii) and
+\cref{rec:prop:psateq} take the following normal form. In the first range they are $\eta+U$ and $\eta+\theta+U$ with
+$\dim U=a$, $\theta\notin U$. In the second range the lift of a parallelogram $\set{x,x+u+w}$, $\set{x+u,x+w}$ becomes, with
+$\eta=x+(u+w)/2$, $\alpha=(u+w)/2$, $\beta=(u-w)/2$ ($2$ is invertible), the pair $(\eta+\alpha+U)\sqcup(\eta-\alpha+U)$ and
+$(\eta+\beta+U)\sqcup(\eta-\beta+U)$ with $\dim U=a$ and $\alpha,\beta$ independent modulo $U$. In the saturated range $c$ is
+constant on the three cosets of a hyperplane, with values $d_0+d_1+d_2=0$, not all zero, and $3^{r-1}\max_j\abs{d_j}\le k$,
+since a zero-sum triple has positive mass $\max_j\abs{d_j}$. The pairs $\pm\theta+U$, the pairs with $\eta=0$ and the two
+nonzero cosets of a hyperplane avoid the principal character, and padding can use a nonprincipal one, so $\Delta_{r,k}$
+is also the minimum when every entry is required to be nonprincipal. As in the proof of \cref{rec:cor:ccorrect},
+products of $k$ characters of $X$ observed through their Euler factors at the primes outside a set of upper
+density below $\Delta_{r,k}$ are determined, and a record of local factors that differs from the true one on a set of
+upper density below $\Delta_{r,k}/2$ has at most one packet within that distance; both thresholds are sharp.
+\end{remark}
+
+For example, in rank three two products of six cubic $L$-functions agree at most at $23/27$ of the primes,
+nine factors reach $25/27$, and in rank at least five two products of $54$ factors can agree at $239/243$ of the
+primes, in which case each side has, after cancellation, exactly $54$ distinct characters.
+
+\begin{example}[Six cubic factors modulo $1729$]\label{rec:ex:ocubic}
+Let $Q=7\cdot13\cdot19=1729$ and let $\chi_7,\chi_{13},\chi_{19}$ be the cubic characters with $\chi_7(3)=\chi_{13}(2)=\chi_{19}(2)=\zeta_3$.
+The products
+\[
+ \prod_{j=0}^2L(s,\chi_7^j\chi_{13})L(s,\chi_7^j\chi_{13}^{-1})\quad\text{and}\quad\prod_{j=0}^2L(s,\chi_7^j\chi_{19})L(s,\chi_7^j\chi_{19}^{-1})
+\]
+have six distinct nonprincipal factors each, and
+\[
+ H(p)=\bigl(1+\chi_7(p)+\chi_7(p)^2\bigr)\bigl(\chi_{13}(p)+\overline{\chi_{13}(p)}-\chi_{19}(p)-\overline{\chi_{19}(p)}\bigr)
+\]
+is nonzero exactly when $\chi_7(p)=1$ and
+exactly one of $\chi_{13}(p),\chi_{19}(p)$ is $1$. So the Euler factors agree at $23/27$ of the primes, the maximum by
+\cref{rec:cor:ocubicmin}. Exactly $192$ of the $1296$ reduced classes modulo $1729$ disagree; the first
+distinguishing primes are $113,181,197,281,293,307$, and $2642$ of the $17{,}981$ eligible primes up to $2\cdot10^5$
+disagree:
+\begin{center}
+\artifact{grh_cubic_matching_and_precision_2026-11-27/results/cubic_checks.json}
+\end{center}
+\end{example}
+
+\paragraph{Descent in the size and the rank.}
+For nonzero balanced integral $c$ on $X=\F_\ell^r$ let $\nu(c)=\abs S/(\ell-1)$ be the number of projective directions on
+which $H$ is nonzero (\cref{rec:lem:otrace}), and let $N_\ell(r,k)$ be the least $\nu(c)$ over such $c$ with $m\le k$, so that
+$d_\ell(r,k)=(\ell-1)N_\ell(r,k)/\ell^r$; $N_\ell(r,\cdot)$ is nonincreasing, by padding.
+
+\begin{lemma}[A balanced slice keeping a Fourier direction; \stU]\label{rec:lem:oslice}
+Let $2\le s\le r$, and let $c\ne0$ satisfy $\nu(c)\le\ell^{s-1}$. There is an $s$-dimensional subspace $U\le X$ such that on every
+coset $x+U$ the function $c_x(u)=c_{x+u}$ is nonzero, balanced, and has $\nu(c_x)\le\nu(c)$. Consequently some coset has
+$1\le m(c_x)\le\floor{m/\ell^{r-s}}$.
+\end{lemma}
+
+\begin{proof}
+Let $v_1,\dots,v_n$ represent the supported directions and draw $s-1$ vectors independently and uniformly from
+$\ker v_1\subset X$. For $j>1$ the restriction of $v_j$ to $\ker v_1$ is a nonzero functional, and all draws lie in its
+kernel with probability $\ell^{-(s-1)}$; the union of these events has probability at most $(n-1)/\ell^{s-1}<1$. Extend
+the span of a successful tuple to an $(s-1)$-plane $W\subset\ker v_1$ and adjoin $y$ with $v_1(y)\ne0$ to obtain $U$. Every
+supported direction restricts nontrivially to $U$, $v_1|_U$ vanishes on $W$ while no other supported direction
+does, and $v_1(y)\ne0$; so $v_1$ is the only supported frequency restricting to $v_1|_U$. Fourier inversion on $X$ and
+orthogonality on $U$ give, for $\lambda\in U^*$,
+\[
+ \sum_{u\in U}c_x(u)\zeta_\ell^{\lambda(u)}=\ell^{s-r}\sum_{v|_U=\lambda}H(v)\zeta_\ell^{-v(x)}.
+\]
+The coefficient at $\lambda=0$ vanishes, the one at $v_1|_U$ is a single nonzero term, for every coset, and all other
+supported frequencies of $c_x$ are restrictions of supported frequencies of $c$. The positive masses of the
+$\ell^{r-s}$ restrictions sum to $m$.
+\end{proof}
+
+\begin{theorem}[Leading-digit descent; \stU]\label{rec:thm:odescent}
+For $a=\floor{\log_\ell k}$, $b=\floor{k/\ell^a}$ and $r\ge a+2$,
+\[
+ N_\ell(r,k)=N_\ell(r-a,b),\qquad d_\ell(r,k)=\ell^{-a}d_\ell(r-a,b).
+\]
+\end{theorem}
+
+\begin{proof}
+Put $s=r-a\ge2$. The function $\mathbf 1_{\set0}-\mathbf 1_{\set{e_1}}$ on $\F_\ell^s$ has exactly $\ell^{s-1}$ supported directions, those with
+nonzero first coordinate. Pulling back under a quotient map $X\to\F_\ell^s$ multiplies the mass by $\ell^a$ and keeps the
+number of directions, so $N_\ell(r,k)\le N_\ell(s,b)\le\ell^{s-1}$. Apply \cref{rec:lem:oslice} to a minimizer on $X$: a slice of
+positive mass at most $\floor{k/\ell^a}=b$ has at least $N_\ell(s,b)$ and at most $N_\ell(r,k)$ directions.
+\end{proof}
+
+\begin{corollary}[Inadmissible digits; \stU]\label{rec:cor:ogap}
+Let $a\le r-2$. Every value of $d_\ell(s,b)$, $s\ge2$, $b<\ell$, gives $d_\ell(r,k)$ for all sizes with leading digit $b$ and all
+ranks $r\ge a+2$. If $b$ divides neither $\ell-1$ nor $\ell+1$ and $b_0<b$ is the largest integer dividing $\ell-1$ or $\ell+1$, then
+\[
+ \frac{(\ell-1)(\ell+2-b)}{\ell^{a+2}}\le d_\ell(r,k)\le\frac{(\ell-1)(\ell+1-b_0)}{\ell^{a+2}},
+\]
+with equality on the left when $b_0=b-1$.
+\end{corollary}
+
+\begin{proof}
+Apply \cref{rec:thm:odescent} and \cref{rec:thm:osmall}(iv) in rank $r-a$ (an inadmissible digit is at least three); the
+upper bound is the lift of the construction for $b_0$, padded.
+\end{proof}
+
+\paragraph{Small packets.}
+For $1\le k<\ell$ let $B_\ell(k)$ be the largest integer at most $k$ that divides $\ell-1$ or $\ell+1$.
+
+\begin{theorem}[The conic range; \stU]\label{rec:thm:oconic}
+If $k<\ell$, $B=B_\ell(k)\ge3$ and $2k<3B$, then $d_\ell(r,k)=(\ell-1)(\ell+1-B)/\ell^2$ for every $r\ge2$.
+\end{theorem}
+
+\begin{proof}
+Let $c\ne0$ be balanced with $m\le k$ and support $Z$; its weights are nonzero modulo $\ell$, as $\abs{c_x}\le k<\ell$. For $1\le j\le B$
+put $P_j(v)=\sum_xc_xv(x)^j$, a form of degree $j$ over $\F_\ell$ on $V$. At an agreeing $v$ all projection fibres have signed
+sum zero, so all $P_j$ vanish there. If some $P_j$ is nonzero, \cref{rec:lem:oproj} gives at least $(\ell+1-j)\ell^{r-2}\ge(\ell+1-B)\ell^{r-2}$
+disagreeing directions, as required.
+
+Suppose all $P_j$ vanish identically. Comparing coefficients (the multinomial coefficients in degrees below $\ell$
+are units, and the constant term vanishes by balance) gives $\sum_xc_xf(x)=0$ for every polynomial $f$ of degree at
+most $B$, also over $\overline{\F}_\ell$. So $Z$ has the Cayley--Bacharach property in degree $B$ (no polynomial of degree at most
+$B$ separates a point of $Z$ from the others), and $\abs Z\le2k<3B$. By \cite[Theorem~3.8, Proposition~8.2]{Couvreur2012Dual}, a
+dependent set of fewer than $3B$ points contains $B+2$ collinear points or $2B+2$ points on a plane conic. In the
+conic case all of $Z$ lies on the conic: a point outside it is isolated by a form of degree at most two
+vanishing on the conic and nonzero at the point, times one linear factor for each of the at most $B-3$ other
+outside points (a point outside the plane is first separated from the plane by a linear form). In the line
+case, a hyperplane over $\overline{\F}_\ell$ containing the line and missing the other points of $Z$ turns the relation into a
+full-support relation of degree $B-1$ on the residual set $R$, with $\abs R\le2B-3$; if $R\ne\varnothing$,
+\cite[Proposition~7.3]{Couvreur2012Dual} in degree $B-1$ gives $B+1$ collinear points of $R$, and the same separation
+argument puts all of $R$ on that line. So $Z$ lies on a line, on a plane conic, or on two skew lines. Lines
+spanned by two rational points are rational; in the conic case the plane is rational, a smooth conic is
+rational because its Frobenius conjugate shares more than four rational points with it, and in the reducible
+case both components are rational, each containing at least two rational points.
+
+Affine changes preserve all matching proportions, and the restriction of a uniform functional to the span
+of the translated support is uniform. If $Z$ is collinear only the zero functional on its direction can
+agree, giving agreement $1/\ell$. For two skew lines $(t,0,0)$ and $(0,t,1)$ with signed arrays $f,g$, both are nonconstant
+(a nonzero constant on all $\ell$ points uses mass $\ell$ of one sign); for a functional $(u,v,h)$ with $uv\ne0$ the
+projections are a dilation of $f$ and an $h$-shift of a dilation of $g$, and at most one shift cancels them, since a
+nonconstant array on $\Z/\ell\Z$ has no nonzero period; if exactly one of $u,v$ vanishes one array collapses to one bin
+and the other does not; allowing all $\ell$ shifts when $u=v=0$, the agreement is at most $((\ell-1)^2+\ell)/\ell^3<1/\ell$.
+Both are below $(1+(\ell-1)B)/\ell^2$.
+
+It remains to show that a noncollinear signed array on a plane conic has at most $B$ matching directions.
+A smooth affine conic with a rational point is, by an affine change, the parabola $(t,t^2)$, the split torus
+$(t,t^{-1})$ or the norm-one torus $U=\set{t\in\F_{\ell^2}^\times:t^{\ell+1}=1}$. On the parabola a projection $ut+vt^2$ with $v\ne0$ has as
+fibres the orbits of the reflection $t\mapsto-u/v-t$ ($v=0$ is injective); agreement means that the weight changes
+sign under the reflection, and two such reflections would give a nonzero additive period, so there is at
+most one matching direction. On the split torus a functional $ut+v/t$, $uv\ne0$, has as fibres the orbits of
+$t\mapsto h/t$, $h=v/u$, and the axis functionals are injective; on the nonsplit torus every nonzero functional is
+$t\mapsto\Tr(zt)$, with fibres the orbits of $t\mapsto z^{\ell-1}/t$, and $[z]\mapsto z^{\ell-1}$ is a bijection from directions onto $U$. In
+either case the parameters $h$ for which the weight changes sign under $t\mapsto h/t$ form a coset of its
+multiplicative stabilizer or are empty; the stabilizer acts freely and preserves the weight, so its order
+divides $m$ and the group order $\ell\mp1$, and is at most $B$. For two intersecting lines, taken as axes, a matching
+direction has both coefficients nonzero and forces the weight at the origin to vanish; agreement means that
+one array on $\F_\ell^\times$ is minus a multiplicative translate of the other, and the working translates are empty or a
+subgroup acting freely and preserving both weights, of order dividing $m$, hence at most $B$. For two parallel
+lines $(t,0),(t,1)$, directions with nonzero first coordinate give translated arrays up to a common dilation, at
+most one works, and with the remaining direction there are at most two. So in the plane at most $1+B(\ell-1)$
+vectors agree, which is the bound.
+
+For attainment, if $B\mid\ell-1$ take the two coordinate-axis copies of the subgroup of order $B$ of $\F_\ell^\times$ with
+opposite signs, and if $B\mid\ell+1$ two distinct cosets of the subgroup of order $B$ of $U$ (\cref{rec:con:opack}); embed in
+rank $r$ and pad to size $k$.
+\end{proof}
+
+For $\ell\ge7$ and $(\ell+1)/2\le k\le\floor{(3\ell+2)/4}$, $B_\ell(k)=(\ell+1)/2$ and the largest agreement is $(\ell^2+1)/(2\ell^2)$ in every rank
+$r\ge2$; with \cref{rec:thm:odescent}, $d_{11}(r,k)=60/11^{a+2}$ for $8\cdot11^a\le k<9\cdot11^a$, $r\ge a+2$. At $a=0$ a witness lies on
+$x^2+y^2=1$ modulo $11$: positive points $(\pm1,0),(\pm5,\pm3)$, negative points $(0,\pm1),(\pm3,\pm5)$ (independent signs), matching
+functionals $(1,v)$ with $v\in\set{1,3,4,7,8,10}$, and two common entries on each side.
+
+\begin{theorem}[Exponent eleven, size nine; \stU]\label{rec:thm:oeleven}
+For every $r\ge2$, $d_{11}(r,9)=60/121$.
+\end{theorem}
+
+\begin{proof}
+A padded six-point torus construction attains the value. With $B=6$, unless all moment forms of degrees one
+to six vanish, \cref{rec:lem:oproj} gives at least $6\cdot11^{r-2}$ disagreeing directions. Otherwise $Z$ carries a full-support
+sextic relation. If $\abs Z<18$ the proof of \cref{rec:thm:oconic} applies verbatim. Let $\abs Z=18$; then the reduced
+packets are disjoint nine-sets and $c=\pm1$ on $Z$. The line and conic configurations still give at most six
+planar matching directions, since no divisor of $10$ or $12$ lies between seven and nine. If eight points are
+collinear, the at most ten residual points are Cayley--Bacharach in degree five, so by
+\cite[Proposition~7.3]{Couvreur2012Dual} they contain seven collinear points if nonempty, and the linear-factor separator
+puts them on that line. If fourteen points lie on a plane conic, a quadratic times at most three linear
+factors separates any of the at most four outside points.
+
+So assume no eight collinear and no fourteen on a plane conic. By \cite[Theorem~3.8(iii), Proposition~9.1]{Couvreur2012Dual}
+(the set is linked and every proper subset is independent by \cite[Proposition~8.2]{Couvreur2012Dual}), $Z$ is the complete
+intersection of a plane cubic $F$ and a sextic $G$ without common component; its plane is rational. Restricting
+a cubic through $Z$ to a component $D$ of $F$, B\'ezout gives $6\deg D$ distinct points of $Z$ on $D$, none on two
+components, while a cubic not containing $D$ meets it in at most $3\deg D$ points; so every cubic through $Z$
+contains $F$, Frobenius fixes $F$ up to a scalar, and $F$ may be taken rational and reduced. A geometrically
+irreducible singular cubic has a unique, hence rational, singular point, and each of the twelve rational lines
+through it has at most one further rational point, too few for eighteen. If $F$ is smooth, Hasse's bound gives
+$\#F(\F_{11})\le\floor{12+2\sqrt{11}}=18$, so the rational points are exactly $Z$. At a matching direction the occupied
+parallel lines carry equal numbers of each sign and at most three points of $Z$, so there are nine occupied
+lines with two points each; the third intersection with $F$ is rational, and cannot be a new point of $Z$, so
+all nine lines are tangent to $F$. Their common point at infinity is off $F$, their nine contact points are
+distinct and lie on the polar conic of that point, which is nonzero (in characteristic eleven a vanishing
+directional derivative would make $F$ geometrically reducible); B\'ezout allows at most six contact points, so a
+smooth $F$ gives no matching planar direction.
+
+If $F$ is geometrically reducible without a rational line component, Frobenius cycles three lines and every
+rational point lies on all three, which allows at most one point. So $F$ has a rational line component $L$
+carrying exactly six points of $Z$, with the other twelve on the residual quadratic and off $L$. With an affine
+parameter $t$ on $L$, the six parameters $S\subset\F_{11}$, $P_S(T)=\prod_{x\in S}(T-x)$, and $Q(t)$ the residual quadratic restricted
+to $L$ (of degree at most two and nonzero on $S$), multiplication by the residual quadratic extends every
+polynomial of degree at most four in $t$ to a sextic vanishing at the other twelve points, so
+$\sum_{t\in S}c(t)Q(t)t^j=0$ for $0\le j\le4$. The kernel of this rank-five system is spanned by $(1/P_S'(t))_{t\in S}$, by Lagrange
+interpolation, and as $c(t)^2=1$ the function $(Q(t)P_S'(t))^2$ is constant on $S$. Affine changes of $t$ and scalar
+multiples of $Q$ preserve this condition, and completing the square (with $2$ a nonsquare modulo eleven) reduces
+$Q$ to $1,t,t^2,t^2-1,t^2-2$. An exhaustive test of the $462,210,210,84,462$ six-subsets of the respective nonroots finds no
+subset with constant $(Q(t)P_S'(t))^2$:
+\begin{center}
+\artifact{gram-euler-and-zero-filters/euler/check_euler.json}
+\end{center}
+These cases exhaust the cubic configurations.
+\end{proof}
+
+\begin{corollary}[Exponents seven and eleven; \stU]\label{rec:cor:oseveneleven}
+For $\ell\in\set{7,11}$ and $B_\ell(b)$ the largest divisor of $\ell-1$ or $\ell+1$ at most $b$,
+\[
+ d_\ell(r,k)=\frac{(\ell-1)(\ell+1-B_\ell(b))}{\ell^{a+2}}\quad(r\ge a+2),\qquad d_\ell(r,k)=\frac{\ell-1}{\ell^r}\quad(r\le a+1).
+\]
+\end{corollary}
+
+\begin{proof}
+For $\ell=7$ the only inadmissible digit is $5$ (\cref{rec:cor:ogap}). For $\ell=11$ the inadmissible digits are $7,8,9$ with
+$B_{11}=6$: \cref{rec:thm:oconic} covers $7$ and $8$, and \cref{rec:thm:oeleven} covers $9$, each lifted by \cref{rec:thm:odescent}.
+Admissible digits are \cref{rec:thm:odigit}(ii), and saturated ranks \cref{rec:thm:psat}.
+\end{proof}
+
+In unsaturated rank the minimum is $\ell^{-a-2}$ times the following entry, and its complement is the largest
+agreement:
+\[
+\begin{array}{c|rrrrrrrrrr}
+ & \multicolumn{10}{c}{\text{leading digit }b}\\
+ \ell &1&2&3&4&5&6&7&8&9&10\\\hline
+ 7&42&36&30&24&24&12&-&-&-&-\\
+ 11&110&100&90&80&70&60&60&60&60&20
+\end{array}
+\]
+For instance, at exponent eleven two products of nine $L$-functions agree at most at $61/121$ of the primes in
+every rank at least two, and for sizes $88$ to $98$ at most at $1-60/1331$ in every rank at least three. An
+exhaustive enumeration of the $6{,}674{,}031$ pairs of size three at $(\ell,r)=(3,3)$ and explicit conic witnesses at
+eight primes are in \artifact{gram-euler-and-zero-filters/euler/check_euler.json}.
+
+\paragraph{The second level.}
+Normalize by the reduced mass. By \cref{rec:thm:pmass} with $X[\ell]=X$ (\cref{rec:lem:oradon}), $\delta/\beta_m\ge\norm c_\infty$ for every
+distinct pair, with $\delta=\beta_m$ exactly for the \emph{coset pairs} $c=\mathbf 1_{x+P}-\mathbf 1_{y+P}$, $P$ a subspace and $y-x\notin P$ (so
+$m=\abs P$); a repeated coefficient already gives ratio at least $2$. For $c=\mathbf 1_A-\mathbf 1_B$ with disjoint $m$-sets let $P=\set{t:c(x-t)=c(x)\ \forall x}$ be its period subspace and
+$h=m/\abs P$ the number of $P$-cosets on each side. Passing to $X/P$ divides $m$ by $\abs P$, multiplies $\delta$ by $\abs P$ and
+keeps the ratio. Put $T_\ell=2(1-1/\ell)$.
+
+\begin{theorem}[Isolation of the two lowest levels; \stU]\label{rec:thm:olevel}
+A simple pair with $h\ge2$ has $\delta/\beta_m\ge(3h-2)/(2h-1)$. For $r\ge2$ the least value of $\delta/\beta_m$ over
+all pairs other than the coset pairs and all sizes is $T_\ell$, and it is attained exactly, after passing to the quotient by the period
+subspace and up to translation and exchange of sides, by the opposite vertex pairs $\set{0,u+w}$, $\set{u,w}$ of a
+parallelogram ($u,w$ independent), and by two intersecting affine lines each with the common point deleted.
+At $\ell=3$ the two descriptions coincide and $T_3=4/3$. In rank one $\delta/\beta_m=m$.
+\end{theorem}
+
+\begin{proof}
+Fix $a\in A$ and $g_a=J_a/m$. On $S$, dropping the contribution of $B$,
+\begin{equation}\label{rec:eq:oanchor}
+ \mathbf 1_S-g_a\ge\frac1m\sum_{y\in A}\mathbf 1_{S\cap\set{v(y-a)\ne0}},
+\end{equation}
+and off $S$ both sides vanish. For $y\notin a+P$ and $t=y-a$, $c_t(x)=c(x)-c(x-t)$ is nonzero and balanced with
+transform $H(v)(1-\zeta_\ell^{v(t)})$, so its disagreement set is the summand; its positive part comes from $A\cup(B+t)$
+and the $\abs P$ points of $y+P$ cancel against $A+t$, so its mass is $m_t\le2m-\abs P$. By \cref{rec:lem:oradon} each
+summand has mean at least $(1-1/\ell)/(2m-\abs P)$, and the $m-\abs P$ such $y$ give
+$\delta/\beta_m\ge1+(m-\abs P)/(2m-\abs P)=(3h-2)/(2h-1)$; the terms with $y\in a+P$ vanish since $S\subset P^\perp$.
+
+Assume $P=0$ after the quotient. If $c_t=\mathbf 1_{u'+D}-\mathbf 1_{v'+D}$ with $\abs D=N$, then
+\begin{equation}\label{rec:eq:oflat}
+ N\le h/(1-1/\ell).
+\end{equation}
+Indeed $c_t$ sums to zero along every line parallel to $t$, so $t\notin D$, both cosets project onto the same $N$ points
+modulo $\langle t\rangle$, and $v'+D=u'+D+st$ for one $1\le s\le\ell-1$; on each of these $N$ lines $c$ takes values $0,1$ on
+$s$ points or $-1,0$ on $\ell-s$ points, so with $j$ lines of the first type
+$h\ge\max\set{js,(N-j)(\ell-s)}\ge Ns(\ell-s)/\ell\ge N(1-1/\ell)$.
+
+Let $\alpha$ be the infimum of $\delta/\beta_m$ over pairs not of coset form, at fixed $\ell$ and all ranks. The parallelogram has
+$H=(1-\zeta_\ell^{v(u)})(1-\zeta_\ell^{v(w)})$ up to a unit, $\delta=(1-1/\ell)^2$ and $m=2$, so $\alpha\le T_\ell$. Repeated coefficients give
+ratio at least $2$, a quotient of rank one gives ratio $h\ge2$, and for quotient rank at least two and
+$2\le h\le\ell-1$, \cref{rec:thm:osmall} gives $\delta/\beta_h\ge h(\ell+1-h)/\ell\ge T_\ell$, with equality only for $h\in\set{2,\ell-1}$. For
+$h\ge\ell$ average \eqref{rec:eq:oanchor}: a summand with $c_t$ not of coset form has mean at least $\alpha\beta_N$ with $N\le2h-1$,
+and one of coset form has mean $\beta_N$ with \eqref{rec:eq:oflat}, so
+\[
+ \delta/\beta_h\ge\min\set{1+(1-1/h)(1-1/\ell),\ 1+\alpha(h-1)/(2h-1)}.
+\]
+The first entry exceeds $T_\ell$ by at least $1/\ell^2$; if $\alpha\le T_\ell$ the second exceeds $\alpha$ by at least
+$1-T_\ell\ell/(2\ell-1)=1/(2\ell-1)$. Hence every ratio is at least $\min\set{T_\ell,\alpha+1/(2\ell-1)}$, so $\alpha=T_\ell$, and $h\ge\ell$ never
+attains it. At $h=2$ the vector sums must agree, since otherwise $\delta\ge1-1/\ell$; after translation the pairs are
+$\set{0,u+w}$, $\set{u,w}$, with $u,w$ independent as proportional ones give $1-1/\ell$. At $h=\ell-1\ge4$, $\delta=D_1(\ell-1)$, so
+\cref{rec:thm:osmall}(ii) puts the $2\ell-2>\ell+1$ points in a plane on a reducible conic with monochromatic lines;
+parallel lines would need an additive subgroup of order $\ell-1$, so the lines intersect, the common point lies in
+neither packet, and each packet is its line minus that point. Conversely $c$ is then the difference of the two
+full line indicators, with Fourier support the two punctured annihilator lines, $\delta=2(\ell-1)/\ell^2$ and ratio $T_\ell$.
+\end{proof}
+
+\paragraph{Factors of one primitive conductor.}
+
+\begin{theorem}[Primitive common-conductor floor; \stU]\label{rec:thm:oprim}
+If every character of both packets is primitive modulo the same $Q$, then $\delta(A,C)\ge(\ell-1)2^{r-1}/\ell^r$. For every
+$Q$ supporting a primitive character of order $\ell$ this is the exact minimum in the full exponent-$\ell$ group
+modulo $Q$, of rank $r=\omega(Q)$, attained for every $k\ge2^{r-1}\ell^{r-1}$. In local coordinates, an extremal
+disagreement set is, in rank two, the union of two punctured lines of nonzero finite slopes, and in rank $r\ge3$
+the set $\set{(t,\epsilon_2d_2t,\dots,\epsilon_rd_rt):t\in\F_\ell^\times,\ \epsilon_i=\pm1}$ for some $d_2,\dots,d_r\in\F_\ell^\times$.
+\end{theorem}
+
+\begin{proof}
+For odd $\ell$ the order-$\ell$ characters of each prime-power factor of $Q$ form a group of dimension at most one,
+and the restrictions separate $X$; take $r$ independent ones as coordinates. A primitive character is
+nontrivial at every factor, so $c$ vanishes when a coordinate is zero, and orthogonality gives
+$\sum_{t\in\F_\ell}H(v+te_i)=0$ for all $i$ and $v$. A nonzero array on $\F_\ell^n$ with zero sums along all coordinate lines has at
+least $2^n$ nonzero entries (two nonzero slices in any coordinate, and induction); a nonzero slice at $v_1\ne0$
+exists, Galois conjugation gives all $\ell-1$ such slices, and each has at least $2^{r-1}$ nonzero entries.
+For sharpness, $Q$ is a product of distinct primes $q\equiv1\pmod\ell$, possibly times $\ell^2$, and at each factor the
+nontrivial local order-$\ell$ characters are exactly the primitive ones. Put $\lambda(t)=1$ for even $r$,
+$\lambda(t)=\zeta_\ell^t-\zeta_\ell^{-t}$ for odd $r$, $J(0,v')=0$ and $J(t,v')=\lambda(t)\prod_{i=2}^r(\mathbf 1_{v_i=t}-\mathbf 1_{v_i=-t})$ for $t\ne0$; the line
+sums vanish, using $\lambda(-t)=(-1)^r\lambda(t)$. With $u_\epsilon=x_1+\sum_{i\ge2}\epsilon_ix_i$ and $e_\epsilon=\prod_{i\ge2}\epsilon_i$, the inverse transform
+is $c_x=\sum_\epsilon e_\epsilon\mathbf 1_{u_\epsilon=0}$ for even $r$ and $\sum_\epsilon e_\epsilon(\mathbf 1_{u_\epsilon=1}-\mathbf 1_{u_\epsilon=-1})$ for odd $r$: integers of sum zero,
+masses at most $2^{r-1}\ell^{r-1}$, vanishing at every character with a zero coordinate, with exactly $(\ell-1)2^{r-1}$
+disagreement points; pad with a primitive character. For the shape, equality in the array bound forces
+exactly two nonzero, pointwise opposite slices in each coordinate, so the support of the slice $v_1=1$ is a
+product $D_2\times\dots\times D_r$ of two-element subsets of $\F_\ell^\times$, and the slice $v_1=t$ has support $tD_2\times\dots\times tD_r$. For
+$r\ge3$ the line through a chosen point of the slice $v_1=1$ in the first direction has a second support point
+$t\ne1$, so each chosen element divided by $t$ is its partner; the common ratio squares to one and is not one,
+so $D_i=\set{\pm d_i}$.
+\end{proof}
+
+\begin{theorem}[Primitive cubic packets; \stU]\label{rec:thm:ocubic}
+Let $\ell=3$ and $k\ge1$, and put $d=\min\set{r,\floor{\log_2(2k)}}$. Two distinct size-$k$ packets of primitive
+characters of one conductor, in a rank-$r$ space, satisfy $\delta\ge(2/3)^d$, with equality achieved for every $k$ in the full cubic
+group of every conductor supporting a primitive cubic character. The common-conductor minimum
+$(2/3)^r$ is first reached at $k=2^{r-1}$.
+\end{theorem}
+
+\begin{proof}
+In local coordinates every $x$ with $c_x\ne0$ has $x_i\in\set{1,2}$; with $z_i=\zeta_3^{v_i}$, $H(v)/\prod_iz_i$ is a multilinear
+polynomial with $n\le2k$ monomials on the cube of cube roots of unity. Such a nonzero polynomial is nonzero
+on a fraction at least $(2/3)^{\min(r,\floor{\log_2n})}$: split $P=P_0+z_iP_1$ in a coordinate where both parts are nonzero, apply
+induction to the part with at most $\floor{n/2}$ monomials, and note that where it is nonzero at most one value of
+$z_i$ kills $P$. For equality take the coefficients of $\prod_iz_i\prod_{i\le d}(z_i-1)$: disjoint packets of size $2^{d-1}$ of
+primitive characters, disagreeing exactly where $z_i\ne1$ for $i\le d$; pad.
+\end{proof}
+
+In rank three the primitive cubic minima for $k=1,2,3,4$ are $2/3,4/9,4/9,8/27$, against $2/3,4/9,2/9,2/9$
+without primitivity.
+
+\begin{proposition}[Two factors; \stU]\label{rec:prop:otwo}
+The agreement densities of distinct pairs of size two are $1/\ell$ in rank one; $1/\ell$, $(2\ell-1)/\ell^2$, $1/\ell^2$ in rank
+two; and $1/\ell$, $(2\ell-1)/\ell^2$, $1/\ell^2$, $(2\ell-1)/\ell^3$ in rank at least three.
+\end{proposition}
+
+\begin{proof}
+Write the packets as $\set{s\pm u}$ and $\set{t\pm w}$; as $2$ is invertible they agree exactly on
+$(s-t)^\perp\cap\bigl((u-w)^\perp\cup(u+w)^\perp\bigr)$. Inside the first hyperplane (or the whole space if $s=t$) the conditional
+fraction is $1$, $1/\ell$ or $(2\ell-1)/\ell^2$ according as one of the other forms vanishes there, their restrictions are
+proportional, or independent; the three vectors can be prescribed freely.
+\end{proof}
+
+\begin{example}[Fifteen quintic factors]\label{rec:ex:oquintic}
+Let $Q=11\cdot31\cdot41=13981$, let $\chi_1,\chi_2,\chi_3$ send the least primitive roots $2,3,6$ of the three primes to
+$e^{2\pi i/5}$, and write $(i,j,t)$ for $\chi_1^i\chi_2^j\chi_3^t$. The packets $A=\set{(1,0),(2,2),(2,3)}\times\F_5$ and $C=-A$ consist of
+characters of exact order five (the first two coordinates are the order-three subgroup of the norm-one
+conic in $\F_5[\theta]/(\theta^2-2)$ and its negative). Exactly $12$ of the $125$ evaluation vectors distinguish them, so the two
+products of fifteen $L$-functions have the same Euler factor at $113/125$ of the primes, the maximum in rank
+three by \cref{rec:thm:odigit} ($a=1$, $b=3\mid6$). The smallest distinguishing primes are $3,79,163,173,191$, and $906$ of the
+$9589$ unramified primes up to $10^5$ distinguish them.
+\end{example}
+
+\begin{example}[Five primitive septic factors]\label{rec:ex:oseptic}
+For $Q=29\cdot43=1247$ and coordinates given by order-seven characters at the two primes, the packets
+$\set{(4,3),(2,3),(3,4),(3,2),(3,3)}$ and $\set{(5,5),(1,5),(5,1),(1,1),(3,3)}$ consist of primitive characters of
+conductor $1247$. After translating by $-(3,3)$ and cancelling the common entry, they are $\set{\pm1,\pm i}$ and
+$(2+2i)\set{\pm1,\pm i}$ in $\F_7[i]$, where $2+2i$ has norm one; four of the eight directions agree, and the products
+agree at $25/49$ of the primes, the maximum by \cref{rec:thm:osmall}(iv) (\cref{rec:cor:oseven}). For the translated four-element packets the
+primes up to $10^6$, apart from $29,43$, give $38{,}440$ disagreements and $40{,}056$ agreements.
+\end{example}
+
+Exhaustive enumerations confirm the minima on all $220{,}813{,}980$ pairs in ten small parameter sets and
+$7{,}913{,}653$ primitive cubic pairs, all $189{,}471$ pairs in further small planes with $103$ constructions, and all
+$4{,}276{,}350$ pairs at $(\ell,r,k)=(5,2,3)$:
+\begin{center}
+\artifact{odd-order-euler-factor-matching/checks.json}\\
+\artifact{euler-packet-rigidity/checks/output.txt}\\
+\artifact{odd_prime_order_euler_packets/verification.txt}
+\end{center}
+Independent exact enumerations, including $17{,}735{,}976$ cubic pairs through rank four with $5285$ extremal
+structures, the absence of a planar five-point configuration at $\ell=7$ ($5280$ permutation pairs), and the
+split, nonsplit and line constructions for primes through $31$, are in
+\begin{center}
+\artifact{grh_cubic_matching_and_precision_2026-11-27/results/cubic_checks.json}\\
+\artifact{prime_exponent_euler_agreement/verification.txt}\\
+\artifact{odd_prime_euler_agreement/verification.json}\\
+\artifact{cubic_quintic_euler_agreement/verification.txt}
+\end{center}
+Related matching problems for Galois representations are studied in \cite{Walji2016Matching}; the planar bound
+for $k<\ell$ also follows from Lev's bound on perfect directions \cite{Lev2020Point}, and the projective
+counts are the minimum distance of projective Reed--Muller codes \cite{GhorpadeLudhani2024Minimum}.
+
+Let $w$ and $M_Y$ be as in \eqref{rec:eq:cgram}. At exponent $\ell$, \cref{rec:prop:pwindow} gives
+$M_Y(\mathbf 1_S)\ge\norm c_\infty\beta_mY-2C_w\sqrt Y\log(2Q)$ for every distinct pair, and $M_Y(\mathbf 1_S)=\beta_mY+O(C_w\sqrt Y\log(2Q))$ for the coset
+pairs. The following theorem adds the gains of the higher levels.
+
+\begin{theorem}[Distinguishing primes in one window; \stG]\label{rec:thm:ofinite}
+Let $w$ and $M_Y$ be as in \eqref{rec:eq:cgram}, and let all implied constants depend only on $w$ (in particular not
+on $\ell,r,k,m,Q$). For distinct packets:
+\begin{enumerate}
+\item $M_Y(\mathbf 1_S)\ge\Lambda\beta_mY-O(\sqrt Y\log(2Q))$ with $\Lambda=(3h-2)/(2h-1)\ge4/3$ for simple pairs not of coset form, $h$ as in
+\cref{rec:thm:olevel};
+\item $M_Y(\mathbf 1_S)\ge(\ell-1)\ell^{-r}Y-O(\sqrt Y\log(2Q))$, and for $r\ge2$, $k\le\ell$, $M_Y(\mathbf 1_S)\ge D_1(k)Y-O(k\sqrt Y\log(2Q))$;
+\item for pairs not of coset form, $M_Y(\mathbf 1_S)\ge T_\ell\beta_mY-O(\log(2\ell)\sqrt Y\log(2Q))$, and two-sided
+$M_Y(\mathbf 1_S)=T_\ell\beta_mY+O(\sqrt Y\log(2Q))$ for the second-level pairs of \cref{rec:thm:olevel};
+\item each interval $(Y/2,Y)$ has a distinguishing prime once $Y\ge C\min(m,\ell^{r-1})^2\log^2(2Q)$;
+\item a pair attaining $D_\ell(r,k)$ with $a\le r-2$ has $\norm{\mathbf 1_S}_A=2b(\ell+1-b)(\ell-1)/\ell^2$ exactly, so
+$M_Y(\mathbf 1_S)=Y\delta+O(2b\ell^a\delta\sqrt Y\log(2Q))$; at saturation the norm is $2(1-1/\ell)$. Given only an upper bound
+$K_0$ on the reduced size and the promise of an unsaturated equality case, rounding $M_Y(\mathbf 1_S)/Y$ to the nearest
+admissible value of $D_\ell$ recovers $\delta$ and the reduced size $b\ell^a$ once $Y\ge C_\ell K_0^2\log^2(2Q)$, uniformly in the rank;
+\item with prime weights $(\log p)w(p/Y)/M_Y(1)$ and weighted Hamming distance, every word of local factors
+within weighted distance below $(1-\eta)D_0/2$ of a packet, $D_0=(\ell-1)/(\ell\min(k,\ell^{r-1}))$, determines it once
+$Y\ge C\eta^{-2}\min(k,\ell^{r-1})^2\log^2(2Q)$; more generally erasures of weight $u$ and errors of weight $e$ are tolerated when
+$u+2e<(1-\eta)D_0$. Where $d_\ell(r,k)=D$ is attained by a coset or saturated pair or a small equality
+case, no uniform correction radius above $D/2$ survives as $Y\to\infty$.
+\end{enumerate}
+\end{theorem}
+
+\begin{proof}
+By \eqref{rec:eq:cgram} and $w\ge0$, a pointwise minorant $f\le\mathbf 1_S$ gives $M_Y(\mathbf 1_S)\ge Y\mathbb Ef-C_w\norm f_A\sqrt Y\log(2Q)$.
+(i) Fix $a\in A$; $g_a=J_a/m$ is a minorant of mean $\beta_m$ and norm at most $2$ (\cref{rec:lem:oradon}). Add to $g_a$ the sum over $y\notin a+P$ of $1/m$ times the
+minorant $g$ of the summand of \eqref{rec:eq:oanchor}, anchored and signed so that its largest coefficient is positive;
+the result is below $\mathbf 1_S$, of norm at most $4$, with the mean of the proof of \cref{rec:thm:olevel}.
+(ii) Use $\mathbf 1_\Lambda-\mathbf 1_{\set0}$ for a line $\Lambda$ with $\Lambda\setminus\set0\subset S$ (norm at most $2$), respectively
+$(1-\mathbf 1_{H_1})(1-\sum_{j=2}^d\mathbf 1_{H_j})$ for the anchored hyperplanes of \cref{rec:thm:osmall}, which is $1$ off their union and
+nonpositive on it, has mean $(\ell-1)(\ell+1-d)/\ell^2$ and norm at most $2d$.
+(iii) Let $s=1-1/\ell$. With a repeated coefficient use \cref{rec:prop:pwindow}, as $\norm c_\infty\ge2>T_\ell$. Otherwise pass to the period quotient, with $n$ points of
+each sign; extension by zero from $P^\perp$ divides the mean by $\abs P$ and keeps the norm. For $2\le n\le(\ell-1)/2$ the
+minorant of (ii), scaled by $T_\ell\beta_n/D_1(n)\le1$, has norm at most $2T_\ell\ell/(\ell+1-n)\le8$. For larger $n$ iterate
+\eqref{rec:eq:oanchor} starting from $L_0=1$: a summand of coset form has $m_t\le n/s$ by \eqref{rec:eq:oflat}, so $1+(n-1)/m_t\ge T_\ell$
+(for $n\le\ell-2$ use $m_t\le n$), and its indicator has norm at most $2$; a summand not of coset form has, by the
+previous stage, a minorant of mean at least $L_is/m_t$ with $m_t\le2n-1$. This gives minorants of mean
+$L_{i+1}\beta_n$, $L_{i+1}=\min\set{T_\ell,1+\alpha L_i}$ with $\alpha=(\ell-1)/(2\ell)\le(n-1)/(2n-1)$, the norm growing by at most $2$ per step.
+The fixed point $2\ell/(\ell+1)=T_\ell+2/(\ell(\ell+1))$ is approached with ratio below $\tfrac12$, so $\ceil{\log_2(\ell(\ell+1))}$ steps reach $T_\ell$.
+For the two-sided claim, the parallelogram indicator is a product of two indicators $1-\mathbf 1_{\text{hyperplane}}$, and that
+of two punctured lines is $\mathbf 1_\Lambda+\mathbf 1_{\Lambda'}-2\mathbf 1_{\set0}$; both have norm at most $4$, also after pullback and extension.
+(iv) Combine \cref{rec:prop:pwindow} and (ii) with $\beta_m\ge2/(3m)$ and $(\ell-1)\ell^{-r}\ge\tfrac23\ell^{1-r}$.
+(v) By \cref{rec:thm:odigit}(ii), $S$ is the inverse image of a union $\Pi$ of $d'=\ell+1-b$ punctured lines in a plane. The
+coefficient of $\mathbf 1_\Pi$ is $d'(\ell-1)/\ell^2$ at $0$, $(\ell-d')/\ell^2$ at the $d'(\ell-1)$ nonzero characters trivial on a selected line and
+$-d'/\ell^2$ at the other $b(\ell-1)$; the sum of absolute values is $2bd'(\ell-1)/\ell^2$, and pullback and extension by zero
+preserve the norm, while $\delta=d'(\ell-1)/\ell^{a+2}$. By (ii) of \cref{rec:thm:odigit} the reduced size is $b\ell^a\le K_0$, so $a\le A_0=\floor{\log_\ell K_0}$.
+The values $(\ell-1)(\ell+1-b)/\ell^{a+2}$ decrease strictly in the lexicographic order of $(a,b)$, consecutive ones differing by
+$(\ell-1)/\ell^{a+2}$ also across $(a,\ell-1)\to(a+1,1)$, so the candidates with $a\le A_0$ are $(\ell-1)/\ell^{A_0+2}$-separated, while the norm is
+at most $\ell$ and the error is $O(\ell\log(2Q)/\sqrt Y)$, below half the separation for $Y\ge C_\ell\ell^{2A_0}\log^2(2Q)$.
+(vi) Two packets within weighted distance $e$ of one word are within $2e$ of each other, and two packets
+agreeing with one word off erasures of weight $u$ and up to errors of weight $e$ are within $u+2e$; by (ii) and
+\cref{rec:prop:pwindow} any two distinct packets are at relative distance at least $(D_0-2\eps)/(1+\eps)$, $\eps=C\log(2Q)/\sqrt Y$. For sharpness, on the
+agreeing primes of an extremal pair use the common factor and split the differing primes into two parts of
+nearly equal weight, assigning one packet to each; the largest single weight is $O(\log Y/Y)$, and the
+distances of extremal pairs converge to $D$ by the two-sided bounds.
+\end{proof}
+
+In rank two a disagreement set is a union of at most $\ell+1$ punctured lines, so its indicator has norm at most
+$2(\ell+1)$; all distances of a fixed rank-two size converge with error $O(\ell\log(2Q)/\sqrt Y)$, and $24/49$ is also the limiting
+minimum of the windowed problem at $(\ell,r,k)=(7,2,5)$.
+
+\subsection{Open questions}\label{eul:sec:open}
+{\raggedright\sources{dirichlet_packet_reconstruction; euler-packet-rigidity; odd-order-euler-factor-matching; odd_prime_order_euler_packets; cubic_quintic_euler_agreement; odd_euler_agreement; odd_prime_euler_agreement; odd_prime_euler_agreement_2; odd_prime_euler_packets; prime_exponent_euler_agreement; prime_order_euler_agreement; grh_cubic_matching_and_precision_2026-11-27; euler_agreement_2026-11-27; gram-euler-and-zero-filters}}
+
+\begin{enumerate}
+\item \emph{Euler packets of prime order.} For Euler packets of odd prime order the least disagreement density and all extremal pairs are known
+whenever the leading base-$\ell$ digit $b$ of the size divides $\ell\pm1$ or the size is saturated
+(\cref{rec:thm:odigit,rec:thm:oplanar,rec:prop:psateq}), and the two lowest normalized levels by \cref{rec:thm:olevel}; for the other
+digits \cref{rec:thm:odescent} reduces the minimum to sizes $k<\ell$ in rank at least two, \cref{rec:thm:oconic} settles
+them when $2k<3B_\ell(k)$, and every rank and size is settled for $\ell\le11$ (\cref{rec:cor:oseveneleven}). What is the
+minimum for $k<\ell$ when $2k\ge3B_\ell(k)$, where the support can reach the third configuration of Couvreur's
+hierarchy, and which complete intersections carry a balanced integral relation with unit coefficients and
+many matching directions? At an inadmissible digit, what are all minimizers, and when must a minimizer be a
+pullback? Which minimum-weight words of the projective Reed--Muller code, or which second-weight words, are
+reductions of integral spectra of a prescribed mass, and in rank two for which $(\ell,k)$ with $2k\ge3B_\ell(k)$ does the
+minimum exceed the gap value of \cref{rec:thm:osmall}(iv)? What is the next normalized level above $2(1-1/\ell)$, the next
+density at a fixed size $k=\ell^s$ (at least $T_\ell\beta_k$), and the whole spectrum, already the second-smallest density
+and the range below twice the minimum for $\ell=3,5$? Is there a sharp primitive bound at each packet size for
+$\ell\ge5$ refining \cref{rec:thm:oprim}? How large can the least distinguishing prime of an extremal pair be, can
+the extremality promise in \cref{rec:thm:ofinite}(v) be removed while keeping a rank-free scale polynomial in
+$k$, and is there an efficient decoder at the correction radius of \cref{rec:thm:ofinite} or
+\cref{rec:cor:ccorrect}? At composite exponent the divisor-indexed traces of \cref{rec:prop:cdivisor} decide the
+local polynomial, and the minimum is known for cyclic groups at every size (\cref{rec:thm:cyclic}) and for
+abelian $\ell$-groups at the sizes $\ell^u$ (\cref{rec:thm:psat}). What is $d_X(k)$ for an arbitrary finite abelian $X$ and every $k$,
+in particular when several primary components have rank above one? What is the spectrum of an abelian
+$\ell$-group at sizes that are not powers of $\ell$, where the mass and saturation bounds of
+\cref{rec:thm:pmass,rec:thm:psat} still hold? Is every cyclic extremizer a parity box?
+\item \emph{Quadratic packets.} Can one density measurement in \cref{rec:thm:qmatchfinite} be made at a smaller scale?
+\end{enumerate}

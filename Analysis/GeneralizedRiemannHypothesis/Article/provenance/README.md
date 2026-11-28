@@ -17,32 +17,44 @@ report (or one result in it) and says what happened to it:
 The `packet` and `file` columns name files under `Analysis/GeneralizedRiemannHypothesis/Research/`
 in the history (the first 103 at commit `10802a6b36`, the next 17 at commit `f2f9fd7531`, the next 11 at commit `64f3896557`, the next 11 at commit `fd9a9cb2bd`, the next 42 at commit `f6b5955e13`, the next 10 at commit `7f951e1dfd` and the last 15 at commit `3c4d27a69c`); the packets are no longer in the working tree.
 
-Labels have the form `<key>:<kind>:<name>`, and `<key>` names the section file. The
+Labels have the form `<key>:<kind>:<name>`. `<key>` names the section file the result was first
+merged into; results moved when the article was regrouped on 27 November 2026 kept their labels,
+so a label's prefix need not match the file that now holds it. Each table lists the rows whose
+target is in its section file. The
 `conflict` rows mostly concern how the reports describe the upstream proof; the article
 uses the latest, corrected description.
 
 | Table | `merged` | `duplicate` | `subsumed` | `answered` | `conflict` | `other-unit` | `non-mathematical` | Rows |
 |---|---:|---:|---:|---:|---:|---:|---:|---:|
-| [`src.tsv`](src.tsv) | 79 | 90 | 5 | 0 | 9 | 28 | 55 | 266 |
-| [`ana.tsv`](ana.tsv) | 148 | 21 | 19 | 5 | 1 | 20 | 36 | 250 |
-| [`li.tsv`](li.tsv) | 91 | 8 | 5 | 2 | 0 | 10 | 16 | 132 |
-| [`nab.tsv`](nab.tsv) | 42 | 3 | 11 | 2 | 0 | 32 | 19 | 109 |
-| [`grp.tsv`](grp.tsv) | 72 | 4 | 7 | 3 | 0 | 14 | 8 | 108 |
-| [`hec.tsv`](hec.tsv) | 60 | 11 | 6 | 0 | 0 | 14 | 5 | 96 |
-| [`zer.tsv`](zer.tsv) | 199 | 17 | 28 | 10 | 0 | 47 | 55 | 356 |
-| [`rec.tsv`](rec.tsv) | 306 | 52 | 40 | 11 | 0 | 27 | 46 | 482 |
-| [`fil.tsv`](fil.tsv) | 94 | 19 | 17 | 8 | 0 | 11 | 16 | 165 |
-| [`dir.tsv`](dir.tsv) | 255 | 39 | 14 | 7 | 2 | 39 | 76 | 432 |
-| [`cls.tsv`](cls.tsv) | 23 | 7 | 11 | 5 | 0 | 20 | 6 | 72 |
+| [`src.tsv`](src.tsv) | 59 | 97 | 6 | 0 | 9 | 28 | 55 | 254 |
+| [`spn.tsv`](spn.tsv) | 45 | 1 | 3 | 1 | 0 | 6 | 47 | 103 |
+| [`ana.tsv`](ana.tsv) | 97 | 21 | 20 | 3 | 1 | 20 | 36 | 198 |
+| [`li.tsv`](li.tsv) | 72 | 0 | 2 | 1 | 0 | 10 | 16 | 101 |
+| [`lih.tsv`](lih.tsv) | 67 | 10 | 4 | 1 | 0 | 0 | 0 | 82 |
+| [`nab.tsv`](nab.tsv) | 46 | 4 | 19 | 2 | 0 | 32 | 19 | 122 |
+| [`grp.tsv`](grp.tsv) | 66 | 0 | 1 | 3 | 0 | 14 | 8 | 92 |
+| [`hec.tsv`](hec.tsv) | 57 | 11 | 1 | 0 | 0 | 14 | 5 | 88 |
+| [`zer.tsv`](zer.tsv) | 46 | 2 | 2 | 1 | 0 | 47 | 55 | 153 |
+| [`flu.tsv`](flu.tsv) | 77 | 8 | 7 | 5 | 0 | 0 | 0 | 97 |
+| [`fil.tsv`](fil.tsv) | 137 | 21 | 19 | 11 | 0 | 11 | 16 | 215 |
+| [`rec.tsv`](rec.tsv) | 107 | 4 | 7 | 2 | 0 | 27 | 46 | 193 |
+| [`chz.tsv`](chz.tsv) | 116 | 19 | 10 | 3 | 0 | 0 | 0 | 148 |
+| [`cpl.tsv`](cpl.tsv) | 71 | 8 | 16 | 4 | 0 | 0 | 0 | 99 |
+| [`eul.tsv`](eul.tsv) | 53 | 27 | 24 | 5 | 0 | 0 | 0 | 109 |
+| [`dir.tsv`](dir.tsv) | 43 | 6 | 1 | 0 | 2 | 39 | 76 | 167 |
+| [`prd.tsv`](prd.tsv) | 176 | 31 | 11 | 6 | 0 | 0 | 0 | 224 |
+| [`cls.tsv`](cls.tsv) | 32 | 7 | 11 | 5 | 0 | 20 | 6 | 81 |
+| [`cmf.tsv`](cmf.tsv) | 27 | 1 | 2 | 1 | 0 | 0 | 0 | 31 |
 | [`smd.tsv`](smd.tsv) | 80 | 14 | 25 | 9 | 0 | 16 | 5 | 149 |
-| [`gpp.tsv`](gpp.tsv) | 55 | 3 | 8 | 6 | 0 | 0 | 6 | 78 |
-| [`gpi.tsv`](gpi.tsv) | 39 | 10 | 13 | 7 | 0 | 24 | 7 | 100 |
-| [`gra.tsv`](gra.tsv) | 102 | 13 | 4 | 6 | 0 | 15 | 3 | 143 |
-| [`tors.tsv`](tors.tsv) | 51 | 2 | 9 | 4 | 0 | 10 | 3 | 79 |
-| [`cost.tsv`](cost.tsv) | 64 | 13 | 7 | 8 | 0 | 10 | 9 | 111 |
+| [`gpp.tsv`](gpp.tsv) | 57 | 4 | 7 | 8 | 0 | 0 | 6 | 82 |
+| [`gpi.tsv`](gpi.tsv) | 37 | 9 | 14 | 5 | 0 | 24 | 7 | 96 |
+| [`gra.tsv`](gra.tsv) | 69 | 9 | 3 | 5 | 0 | 15 | 3 | 104 |
+| [`grw.tsv`](grw.tsv) | 33 | 3 | 1 | 1 | 0 | 0 | 0 | 38 |
+| [`cmp.tsv`](cmp.tsv) | 217 | 47 | 19 | 11 | 0 | 0 | 0 | 294 |
+| [`tors.tsv`](tors.tsv) | 59 | 12 | 9 | 8 | 0 | 10 | 3 | 101 |
+| [`cost.tsv`](cost.tsv) | 75 | 3 | 7 | 5 | 0 | 10 | 9 | 109 |
 | [`lub.tsv`](lub.tsv) | 72 | 12 | 11 | 4 | 0 | 8 | 12 | 119 |
-| [`sel.tsv`](sel.tsv) | 64 | 16 | 5 | 4 | 2 | 8 | 10 | 109 |
-| [`spn.tsv`](spn.tsv) | 270 | 54 | 23 | 14 | 0 | 6 | 47 | 414 |
+| [`sel.tsv`](sel.tsv) | 73 | 17 | 6 | 5 | 2 | 8 | 10 | 121 |
 | [`corpus.tsv`](corpus.tsv) | 0 | 0 | 2 | 0 | 0 | 0 | 46 | 48 |
 | Total | 2166 | 408 | 270 | 115 | 14 | 359 | 486 | 3818 |
 

@@ -1,3 +1,8 @@
+\providecommand{\nabFix}{\operatorname{Fix}}
+\providecommand{\nabIrr}{\operatorname{Irr}}
+\providecommand{\nabsgn}{\operatorname{sgn}}
+\providecommand{\nabone}{\mathbf{1}}
+\providecommand{\nabpos}[1]{(#1)^{+}}
 \providecommand{\anapos}[1]{\bigl(#1\bigr)_{+}}
 \providecommand{\ananeg}[1]{\bigl(#1\bigr)_{-}}
 \providecommand{\anaone}{\mathbf{1}}
@@ -17,13 +22,12 @@ excludes them (\cref{src:sec:mechanism}). This section states that analytic step
 generality needed in \cref{sec:nab,sec:grp,sec:hec}, together with its variants: tests in mean,
 tests without a centring constant, joint tests and the sharp constants of dyadic filters, the
 removal of prime powers, constant-free statistics that determine the one-sided growth
-exponent of a family of Dirichlet $L$-functions exactly and recover its central zeros from a
-finite positive grid, tests from samples on sparse meshes,
-the choice of the auxiliary second scale, and tests on thin sets of twists and of scales. Two
-related positivity results close the section: sparse Hankel tests at rational centres and a
-small-deviation law for random sums over zeros, with the conditional spectral structure of its
-lower tail; a finite certificate for Euler's Gamma product follows. With the exceptions
-marked ``\stG'', the results are unconditional statements of analysis. None of them supplies
+exponent of a family of Dirichlet $L$-functions exactly, the pointwise content of averaged
+bounds, the sampling of a positive ramp on sparse scales (\cref{nab:sec:sampling}) and on
+meshes of finite cubic energy, the choice of the auxiliary second scale, and tests on thin sets
+of twists and of scales. The finite positive grids that recover the central zeros of such a
+family are in \cref{fil:sec:grids}. With the exceptions
+marked ``\stG'', and one reduction, marked ``\stR'' (\cref{nab:cor:rootcount}), the results are unconditional statements of analysis. None of them supplies
 the arithmetic inequality that a criterion asks for. For every function outside the scope of
 \cref{src:thm:dgrh} that inequality is open.
 
@@ -984,6 +988,20 @@ For odd $n$ the situation is different: by \cref{ana:rem:dyadicactive}(1) the in
 observations cannot be dropped there. Deletion of odd indices is not covered by
 \cref{ana:thm:dyadiceven}.
 
+\begin{remark}[Residue visibility after deletion]\label{ana:cor:dyadicdelete}
+Let $n$ be even and $S$ as in \cref{ana:thm:dyadiceven}. The residue vector of the retained
+channels is $((1+z(\rho)^{2^j})r)_{j\in S}$, and $\min_z\anaM_S(z)=c_n$, attained at the
+minimizers $r_ne^{\pm2\pi i/3}$ of $\anaM_n$. Hence \cref{ana:thm:dyadic,ana:cor:minimax} hold for the
+channels $j\in S$ alone, with the same constant and the same extremal construction:
+$\max_{j\in S}\abs{\Res_{s=\rho}F_j}\ge c_n\abs r$, best possible even for real smooth $R$; if
+$\abs{y_j-\Res_\rho F_j}\le\eta$ for $j\in S$, dividing the observation with the largest
+multiplier modulus $\abs{1+z(\rho)^{2^j}}$, $j\in S$, by that multiplier estimates $r$ with
+error at most $\eta/c_n$, and no estimator has a smaller worst-case error uniformly over the
+class and the pole locations. At a fixed $\rho$ the optimal worst-case bound is
+$\eta/\anaM_S(z(\rho))$, since the all-zero data are compatible with
+$r=\pm\eta/\anaM_S(z(\rho))$.
+\end{remark}
+
 For odd $n$ the full doubling chain, with $\alpha_{j+1}=\pi-2\alpha_j$ at every step, gives
 $L\alpha_0-\alpha_{n-1}=(L-1)\pi/3$, and the positive-weight Jensen step fails.
 
@@ -1032,28 +1050,6 @@ increases with $L$.
 
 The stability bounds are those of the full family, under the weaker hypothesis that only the
 retained observations are bounded.
-
-\begin{corollary}[Residue visibility after deletion; \stU]\label{ana:cor:dyadicdelete}
-Let $n$ be even and $S$ as in \cref{ana:thm:dyadiceven}. In the setting of
-\cref{ana:thm:dyadic},
-\[
- \max_{j\in S}\abs{\Res_{s=\rho}F_j}\ge c_n\abs r,
-\]
-and $c_n$ is best possible, even for real smooth $R$. If observations satisfy
-$\abs{y_j-\Res_\rho F_j}\le\eta$ for $j\in S$, then at a known $\rho$ dividing the observation
-with the largest multiplier modulus $\abs{1+z(\rho)^{2^j}}$, $j\in S$, by that multiplier
-estimates $r$ with error at most $\eta/c_n$, and no estimator has a smaller worst-case error
-uniformly over the class and the pole locations. At a fixed $\rho$ the optimal worst-case
-bound is $\eta/\anaM_S(z(\rho))$.
-\end{corollary}
-
-\begin{proof}
-The residue vector is $((1+z(\rho)^{2^j})r)_{j\in S}$, so the lower bound and the error bound
-follow from \cref{ana:thm:dyadiceven}. For sharpness run the construction in the proof of
-\cref{ana:thm:dyadic} with $z_*=r_ne^{2\pi i/3}$, a minimizer of $\anaM_S$. At a fixed $\rho$
-the all-zero data are compatible with $r=\pm\eta/\anaM_S(z(\rho))$, whose channel residues
-have modulus at most $\eta$; at an extremal $\rho$ these two values are $2\eta/c_n$ apart.
-\end{proof}
 
 \begin{theorem}[Angular frequency near the sharp loss; \stU]\label{ana:thm:dyadicangle}
 Let $n$ be even, $S$ as in \cref{ana:thm:dyadiceven}, $r=r_n$, $c=c_n$, and let $\theta$ be
@@ -1619,7 +1615,11 @@ distinct real $\tau_0,\dots,\tau_m$ the matrix $R_{ij}=r(\tau_i-\tau_j)$ is Herm
  \liminf_{x\to\infty}\frac{D_{q,b,P}(x)}{\sqrt x}\le\lambda_{\min}(R).
 \]
 Each zero $\rho=\frac12+i\gamma$, $\gamma\ne0$, gives oscillations of both signs of size at
-least $\abs{P(b^\rho)}m_q(\rho)/(\varphi(q)\abs\rho)$. If distinct positive ordinates
+least
+\[
+ \abs{P(b^\rho)}m_q(\rho)/(\varphi(q)\abs\rho).
+\]
+If distinct positive ordinates
 $\gamma_1,\dots,\gamma_m$ have $r(\gamma_j-\gamma_i)=0$ for $i\ne j$, for instance when all their
 differences are below the least positive ordinate of the family, both bounds hold with
 $\pm(\sum_j\abs{r(\gamma_j)}^2)^{1/2}$. For integer $b$ the conclusions hold on the integers.
@@ -1647,294 +1647,68 @@ each of
 and for one of the two bases, independent of $q$, the logarithm exceeds $c\sqrt n/\varphi(q)$
 and is below $-c\sqrt n/\varphi(q)$ infinitely often, with an absolute $c>0$.
 
-\paragraph{Finite positive grids and central zeros.}
-For a family $\anaC$ as above let $S$ be the ramp of $\Lambda a_\anaC$ and $R$ its centred
-remainder (\cref{ana:def:ramp}), let $\delta=\sum_{\chi\ \mathrm{principal}}b_\chi$, and put
-\[
- d(t)=\frac{e^{(t+1)/2}}{e^{1/2}-1}\bigl\{\delta+S(e^t)-S(e^{t+1})\bigr\}
- =\frac{e^{(t+1)/2}}{e^{1/2}-1}\bigl(R(e^t)-R(e^{t+1})\bigr),
-\]
-the normalized finite difference of \cref{ana:sec:fd} with $\lambda=e$. It is computed from
-prime powers alone, with no centring constant. Let
-\[
- M_\anaC=\sum_{\chi\in\anaC}b_\chi\ord_{s=1/2}L(s,\chi)=m_\anaC(\tfrac12),\qquad
- K(w)=\frac{e^{1/2}-e^w}{e^{1/2}-1},
-\]
-the second equality because imprimitive Euler factors do not vanish at $1/2$; and for real
-$\gamma$ write $\nu_\gamma=m_\anaC(\frac12+i\gamma)$.
-
-\begin{lemma}[Spectral expansion of the difference; \stG]\label{ana:lem:gridexp}
-Uniformly for $t\ge0$,
-\begin{equation}\label{ana:eq:gridexp}
- d(t)=4M_\anaC+\sum_{\gamma\ne0}\frac{K(i\gamma)\nu_\gamma}{1/4+\gamma^2}e^{i\gamma t}
- +O_\anaC(e^{-t/4}),
+\paragraph{Prescribed sparse scales for Dirichlet families.}
+The interpolation with an unknown exponent that proves \cref{ana:thm:powers} for Dedekind zeta
+functions also works for a constant-free statistic of a positively weighted family of
+characters modulo $q$. Let $b_\chi\ge0$, not all zero, with
+$b_{\bar\chi}=b_\chi$, call $\chi$ active if $b_\chi>0$, and put $w(n)=\sum_\chi b_\chi\chi(n)$,
+$\mu=b_{\chi_0}$, $\Psi_w(x)=\sum_{n\le x}\Lambda(n)w(n)$,
+$S_w(x)=\sum_{n\le x}\Lambda(n)w(n)(1/n-1/x)=\int_1^x\Psi_w(u)u^{-2}\dd u$ and
+$E_w(x)=S_w(x)-\mu\log x$. For $c>1$ let $a_c=c/(c+1)$, $b_c=1/(c+1)$ and
+\begin{equation}\label{ana:eq:balanced}
+\begin{split}
+ \anaW_w(x;c)&=S_w(x)-a_cS_w(cx)-b_cS_w(x/c)+\mu(a_c-b_c)\log c\\
+ &=E_w(x)-a_cE_w(cx)-b_cE_w(x/c)\qquad(x\ge c),
+\end{split}
 \end{equation}
-over the distinct nonzero ordinates, and $\abs{K(i\gamma)}\le B_K:=(e^{1/2}+1)/(e^{1/2}-1)$.
-\end{lemma}
+which needs no centring constant. Let $B_w$ be the supremum of the real parts of the zeros of
+the active $L(s,\chi)$ in $0<\Re s<1$, and $m_w(\rho)=\sum_\chi b_\chi\ord_\rho L(s,\chi)$.
+
+\begin{theorem}[Prescribed grids for Dirichlet families; \stU]\label{ana:thm:balanced}
+Let $x_j\to\infty$ increase with $x_{j+1}-x_j=O(x_j^{1-\delta})$ for some $\delta>0$. Then
+\[
+ B_w=\limsup_{j\to\infty}\frac{\log\bigl(1+x_j\anaW_w(x_j;c)_+\bigr)}{\log x_j}.
+\]
+Hence, for $1/2\le\theta<1$, no active $L$-function vanishes to the right of $\theta$ if and
+only if $\anaW_w(x_j;c)\le C_\eps x_j^{\theta-1+\eps}$ for all large $j$, for every $\eps>0$.
+For the identity class modulo $q$, GRH for the characters modulo $q$ is equivalent to this
+bound with $\theta=1/2$ on $x_j=j^k$, for any fixed $k\ge1$ and $c>1$; there are
+$\floor{X^{1/k}}$ sample points up to $X$.
+\end{theorem}
 
 \begin{proof}
-Put $D(s)=-\sum_\chi b_\chi L'/L(s,\chi)$. By \cref{ana:lem:mellin} the transform $\Phi$ of $R$ is
-regular at $1$, and at a nontrivial zero $\rho$ it has residue $m_\anaC(\rho)/(\rho(1-\rho))$,
-which is $\nu_\gamma/(1/4+\gamma^2)$ at $\rho=\frac12+i\gamma$. By \cref{src:thm:dgrh} all
-nontrivial zeros lie on the critical line. Mellin inversion for the continuous ramp and a
-contour shift to $\Re s=1/4$ give
-\[
- R(x)=\sum_\gamma\frac{\nu_\gamma x^{-1/2+i\gamma}}{1/4+\gamma^2}+O_\anaC(x^{-3/4}).
-\]
-The integral on the new line converges absolutely, since the logarithmic derivatives are
-$O_\anaC(\log(2+\abs{\Im s}))$ there by the partial-fraction expansion and the local zero counts,
-and the kernel decays quadratically. The horizontal edges are taken at heights avoiding the
-zeros, where the logarithmic derivatives are $O_\anaC(\log^2T)$, so their integrals tend to zero.
-Finite Euler factors have no zero in $\Re s>0$. Local zero counts with multiplicity are in
-\cite{BennettMartinOBryantRechnitzer2021Counting}. With $r(t)=e^{t/2}R(e^t)$ one has
-$d(t)=(e^{1/2}r(t)-r(t+1))/(e^{1/2}-1)$, which multiplies $e^{i\gamma t}$ by $K(i\gamma)$; the
-ordinate $0$ occurs with weight $M_\anaC$ and $K(0)/(1/4)=4$.
-\end{proof}
-
-\emph{The averaging operator.} For integers $k\ge2$ and $m\ge1$ define
-\[
- U_k(w)=\frac1{k+1}\sum_{j=0}^ke^{jw/k},\qquad
- \anaM_{k,m}f(t)=\sum_{j=0}^{mk}p_jf(t+j/k),\qquad
- \sum_{j=0}^{mk}p_jz^j=\Bigl(\frac{1+z+\dots+z^k}{k+1}\Bigr)^m .
-\]
-All $p_j$ are positive rationals with $\sum_jp_j=1$; the operator has $mk+1$ distinct taps and
-support length $m$, and its multiplier on $e^{wt}$ is $U_k(w)^m$. The polynomial is the
-transfer polynomial of a cascade of uniform averages, a classical digital filter
-\cite{Hogenauer1981Economical}.
-
-\begin{lemma}[Contraction away from the aliases]\label{ana:lem:contraction}
-For $0<\theta\le\pi$, $k\ge2$ and $\operatorname{dist}(\gamma,2\pi k\Z)\ge\theta$,
-\[
- \abs{U_k(i\gamma)}\le\exp\Bigl(-\frac{\theta^2}{6\pi^2}\Bigr).
-\]
-For $a>0$, $0<U_k(-a)\le v_a:=(1+e^{-a})/2<1$.
-\end{lemma}
-
-\begin{proof}
-Reduce $\gamma$ modulo $2\pi k$ to $\delta'\in[-\pi k,\pi k]$, so $\abs{\delta'}\ge\theta$. If
-$\abs{\delta'}\le\pi$, let $X,Y$ be independent and uniform on $\set{0,1/k,\dots,1}$. Since
-$1-\cos u\ge2u^2/\pi^2$ for $\abs u\le\pi$ and $\operatorname{Var}X=(k+2)/(12k)$,
-\[
- 1-\abs{U_k(i\delta')}^2=\anaEx\bigl[1-\cos(\delta'(X-Y))\bigr]
- \ge\frac{2\delta'^2}{\pi^2}\anaEx(X-Y)^2=\frac{k+2}{3k\pi^2}\delta'^2\ge\frac{\delta'^2}{3\pi^2},
-\]
-so $\abs{U_k(i\delta')}\le e^{-\delta'^2/(6\pi^2)}$. If $\pi\le\abs{\delta'}\le\pi k$, the
-geometric sum gives
-\[
- \abs{U_k(i\delta')}\le\frac1{(k+1)\sin(\abs{\delta'}/(2k))}\le\frac1{(k+1)\sin(\pi/(2k))}
- \le\frac1{\sqrt2},
-\]
-using $\sin x\ge(2\sqrt2/\pi)x$ on $[0,\pi/4]$, and $2^{-1/2}<e^{-1/6}$. Finally $e^{-ax}$ lies
-below its chord on $[0,1]$, and the uniform average has mean $1/2$.
-\end{proof}
-
-\begin{theorem}[Alias-controlled positive spectral projection; \stU]\label{ana:thm:alias}
-Let $\Gamma\subset\R\setminus\set0$ be locally finite with $\abs\gamma\ge\eta>0$ on $\Gamma$, let
-$\nu_\gamma\ge0$, and let $A,B,E,a>0$. Suppose that
-\[
- \sum_{\gamma\in\Gamma\cap[u-\pi,u+\pi]}\nu_\gamma\le A\log(2+\abs u)\quad(u\in\R),\qquad
- \abs{c_\gamma}\le\frac{B\nu_\gamma}{1/4+\gamma^2},
-\]
-and that $f(t)=c_0+\sum_{\gamma\in\Gamma}c_\gamma e^{i\gamma t}+E_0(t)$ with
-$\abs{E_0(t)}\le Ee^{-at}$ for $t\ge0$. Put $W=\sum_\gamma\nu_\gamma/(1/4+\gamma^2)$,
-$\theta=\min(\pi,\eta)$, $\kappa=\min\set{\theta^2/(6\pi^2),-\log v_a}>0$ and $C_*=2+2\pi$. Then
-$W<\infty$, and for all $k\ge2$, $m\ge1$ and $t\ge0$,
-\begin{equation}\label{ana:eq:aliasbound}
- \abs{\anaM_{k,m}f(t)-c_0}\le BWe^{-\theta^2m/(6\pi^2)}+Ee^{-at}v_a^m
- +\frac{2AB}{\pi^2k^2}\bigl\{\zeta(2)\log(C_*k)-\zeta'(2)\bigr\}.
+The truncated explicit formula at height comparable to $x$
+\cite{Davenport2000Multiplicative} and the zero count give
+$\Psi_w(x)=\mu x+O(x^{B_w}\log^2(2x))$, whether or not $B_w$ is attained. Since
+$E_w'(x)=(\Psi_w(x)-\mu x)/x^2$ almost everywhere and $a_c+b_c=1$, writing
+$\anaW=a_c(E_w(x)-E_w(cx))+b_c(E_w(x)-E_w(x/c))$ gives
+\begin{equation}\label{ana:eq:Wbound}
+ \abs{\anaW_w(x;c)}\ll x^{B_w-1}\log^2(2x),\qquad
+ \abs{\anaW_w'(x;c)}\ll x^{B_w-2}\log^2(2x)\quad\text{a.e.}
 \end{equation}
-In particular, with $m_k=\lceil2\log k/\kappa\rceil$,
+For $\Re s>1$, $\int_1^\infty E_w(x)x^{-s}\dd x=(s-1)^{-1}(F_w(s)/s-\mu/(s-1))$ with
+$F_w=-\sum b_\chi L'/L(s,\chi)$, and the transform of $\anaW_w$ is
+$P_c(s)$ times this plus an entire function, where
 \[
- \sup_{t\ge0}\abs{\anaM_{k,m_k}f(t)-c_0}
- \le\frac{BW+E+(2AB/\pi^2)\bigl[\zeta(2)\log(C_*k)-\zeta'(2)\bigr]}{k^2}.
+ P_c(s)=1-a_cc^{s-1}-b_cc^{1-s}=\frac{(1-u)(cu-1)}{(c+1)u},\qquad u=c^{s-1}.
 \]
-\end{theorem}
+So $P_c$ vanishes only on $\Re s\in\set{0,1}$, is positive on $(0,1)$ and kills the pole at $1$,
+and the transform has a simple pole at each active zero with residue
+$m_w(\rho)P_c(\rho)/(\rho(1-\rho))$, positive at real zeros. If $\anaW_w(x;c)\le Cx^{\eta-1}$ for
+large real $x$, \cref{ana:thm:onesided} with \cref{ana:cor:forms}(a) gives $B_w\le\eta$.
 
-\begin{proof}
-Summing $O(\log(2+\abs n)/(1+n^2))$ over unit intervals shows $W<\infty$, so the series converges
-absolutely and may be averaged termwise, uniformly in $t$. Away from the intervals
-$I_\ell=(2\pi k\ell-\theta,2\pi k\ell+\theta)$, \cref{ana:lem:contraction} gives the first term
-of \eqref{ana:eq:aliasbound}. The interval $I_0$ contains no frequency, since $\theta\le\eta$.
-For $\ell\ne0$ and $\gamma\in I_\ell$ one has $\abs\gamma\ge\pi k\abs\ell$, and the local count
-with $\abs{U_k(i\gamma)}\le1$ gives
-\[
- \sum_{\gamma\in I_\ell}\abs{c_\gamma}\abs{U_k(i\gamma)}^m\le
- \frac{AB\log(2+2\pi k\abs\ell)}{\pi^2k^2\ell^2}.
-\]
-Use $2+2\pi k\ell\le C_*k\ell$ for $\ell\ge1$, sum over both signs of $\ell$, and use
-$\sum\ell^{-2}=\zeta(2)$ and $\sum(\log\ell)\ell^{-2}=-\zeta'(2)$. The averaged remainder is at
-most $Ee^{-at}U_k(-a)^m$. The choice of $m_k$ makes both exponential factors at most $k^{-2}$.
+Let $A$ be the upper limit in the statement, so $0\le A\le B_w$ by \eqref{ana:eq:Wbound}. The
+reverse inequality is the interpolation step of the proof of \cref{ana:thm:powers}, with the
+derivative bound in \eqref{ana:eq:Wbound} in place of the variation estimate there: if $A<B_w$
+and $\max(A,B_w-\delta,0)<\eta<B_w$, integrating $\abs{\anaW_w'}$ from the sample point below
+$x$ gives $\anaW_w(x;c)\ll x^{\eta-1}+x^{B_w-1-\delta}\log^2(2x)\ll x^{\eta-1}$ on the whole
+ray, so $B_w\le\eta$, a contradiction. For $x_j=j^k$, $(j+1)^k-j^k=O(x_j^{1-1/k})$, and the identity
+class has $b_\chi=1/\varphi(q)$ for all $\chi$.
 \end{proof}
 
-The same proof gives $O(e^{-\kappa m}+\log k/k^r)$ when
-$\abs{c_\gamma}\le B\nu_\gamma(1+\abs\gamma)^{-r}$ with $r>1$, the alias constant now involving
-$\zeta(r)$ and $-\zeta'(r)$. With $m\ge(r/\kappa)\log k$ and $m\asymp\log k$, the error in
-$N\asymp k\log k$ taps is $O((\log N)^{r+1}/N^r)$.
-
-\begin{proposition}[The alias term is necessary; \stU]\label{ana:prop:alias}
-For every integer $k\ge2$, every probability measure supported on $k^{-1}\Z$ has Fourier
-transform $1$ at $2\pi k$. There are symmetric spectra satisfying the count and gap hypotheses
-of \cref{ana:thm:alias}, with constants independent of $k$, for which every such averaging rule
-has error at least $c\log k/k^2$ at $t=0$, with an absolute $c>0$.
-\end{proposition}
-
-\begin{proof}
-Put mass $M_k=\floor{\log(2+2\pi k)}$ at each of $\gamma=\pm2\pi k$, with coefficients
-$M_k/(1/4+(2\pi k)^2)$, and $E_0=0$. These spectra satisfy the local count with one absolute
-constant and have a fixed positive gap. Every lattice sample sees both exponentials as $1$, so
-every probability average leaves their total $2M_k/(1/4+4\pi^2k^2)$ unchanged.
-\end{proof}
-
-This is a lower bound for the abstract spectral class, not a statement that Dirichlet ordinates
-lie at these aliases.
-
-\begin{theorem}[Central multiplicity from a finite grid; \stG]\label{ana:thm:grid}
-For the fixed family $\anaC$, apply \cref{ana:thm:alias} to $f=d$, with the constants supplied
-by \cref{ana:lem:gridexp}, the local zero count and $a=1/4$, and with
-$\eta$ the least positive ordinate of the family, and set
-\[
- Z_k(t)=\tfrac14\anaM_{k,m_k}d(t),\qquad N_k=(m_k+1)k+1 .
-\]
-\begin{enumerate}[label=\textup{(\roman*)}]
-\item Uniformly for $t\ge0$,
- \[
-  Z_k(t)=M_\anaC+O_\anaC(\log k/k^2)=M_\anaC+O_\anaC\bigl((\log N_k)^3/N_k^2\bigr).
- \]
- The statistic uses exactly the $N_k$ ramp values $S(e^{t+j/k})$, $0\le j\le(m_k+1)k$. At $t=0$
- it uses prime powers only up to $e^{m_k+1}=N_k^{O_\anaC(1)}$, and its logarithmic span is
- $m_k+1=O_\anaC(\log N_k)$. If $M_\anaC$ is an integer, rounding $Z_k(t)$ to the nearest
- integer is valid as soon as the right side of
- \eqref{ana:eq:aliasbound}, divided by $4$, is below $1/2$.
-\item Without any information on the gap, the prescribed depth
- $m_k=\lceil\log k\,\log\log(k+e^e)\rceil$ gives, for every fixed family,
- \[
-  Z_k(t)-M_\anaC=O_\anaC\Bigl(\frac{(\log N_k)^3(\log\log N_k)^2}{N_k^2}\Bigr),\qquad
-  e^{m_k+1}=N_k^{O(\log\log N_k)} .
- \]
-\end{enumerate}
-\end{theorem}
-
-\begin{proof}
-By \cref{ana:lem:gridexp}, $d$ has the form of \cref{ana:thm:alias} with $c_0=4M_\anaC$,
-$B=B_K$, $E_0=O_\anaC(e^{-t/4})$, $A$ from the local zero count, and $\eta>0$ by discreteness
-of the ordinates; dividing by $4$ gives (i). The tap $j$ of $\anaM_{k,m}$ applied to $d$ uses
-$S(e^{t+j/k})$ and $S(e^{t+j/k+1})$, that is, the indices $j$ and $j+k$; and
-$N_k\asymp_\anaC k\log k$ converts $\log k/k^2$ into $(\log N_k)^3/N_k^2$. In (ii) the
-prescribed $m_k$ exceeds $2\log k/\kappa$ for all large $k$, so both exponential terms in
-\eqref{ana:eq:aliasbound} are eventually at most $k^{-2}$, and now $N_k\asymp k\log k\log\log k$.
-\end{proof}
-
-The onset in (ii) depends on the family. Neither part claims uniformity in an unbounded
-conductor, or a practical cutoff without explicit values of $A$, $E$ and $\eta$.
-
-\begin{remark}[Noise]\label{ana:rem:gridnoise}
-If each observed value of $d$ has error at most $\eps$, positivity and $\sum_jp_j=1$ give an
-error at most $\eps/4$ in $Z_k$. If instead the normalized ramp values
-$Y_j=e^{(t+j/k)/2}S(e^{t+j/k})$ have error at most $\eps$, then
-$\abs{Z_k^{\mathrm{obs}}-Z_k}\le B_K\eps/4$, because
-$d(t+j/k)=\bigl[e^{1/2}Y_j-Y_{j+k}+\delta e^{(t+j/k+1)/2}\bigr]/(e^{1/2}-1)$. No bound independent
-of the span is claimed for a uniform absolute error in the unnormalized values of $S$; such errors
-are multiplied by the exponential factors displayed.
-\end{remark}
-
-\begin{corollary}[Individual central orders; \stG]\label{ana:cor:gridchar}
-Let $\chi$ be a nonprincipal character modulo $q$ and $\chi_0$ the principal one. The real
-nonnegative weight
-\[
- a_\chi(n)=\Lambda(n)\bigl\{\chi_0(n)+\Re\chi(n)\bigr\}\ge0
-\]
-is $\Lambda a_\anaC$ for the family $\chi_0,\chi,\bar\chi$ with weights $1,\frac12,\frac12$
-(repeated characters combined), and for it $M_\anaC=\ord_{s=1/2}L(s,\chi)\in\Z_{\ge0}$. Hence
-\cref{ana:thm:grid} recovers the central order of an individual, possibly nonreal, character
-from a finite positive grid of real prime statistics.
-\end{corollary}
-
-\begin{proof}
-Conjugation gives equal central orders for $\chi$ and $\bar\chi$, and the principal factor does
-not vanish at $1/2$: $\zeta(1/2)=\eta(1/2)/(1-\sqrt2)<0$, since the alternating series
-$\eta(1/2)$ is positive, and the finitely many omitted Euler factors are nonzero at $1/2$.
-\end{proof}
-
-For noncentral zeros the same statistic sees all three factors. No assumption of central
-nonvanishing, simple zeros, separation of distinct noncentral ordinates or rational independence
-is used.
-
-\begin{theorem}[Every fixed grid retains one-sided detection; \stU]\label{ana:thm:gridconverse}
-Fix $k\ge2$ and $m\ge1$. For a family $\anaC$ as above, GRH for all the $L(s,\chi)$, $\chi\in\anaC$,
-is equivalent to an eventual upper bound for $\anaM_{k,m}d(t)$, and to an eventual two-sided
-bound. If one of them has a zero $\rho$ with $\Re\rho>1/2+\sigma$, $\sigma\ge0$, then
-\[
- \limsup_{t\to\infty}e^{-\sigma t}\anaM_{k,m}d(t)=+\infty .
-\]
-\end{theorem}
-
-\begin{proof}
-The Laplace transform of $r(t)=e^{t/2}R(e^t)$ is $\Phi(w+1/2)$, whose poles in $\Re w>0$ are at
-$w=\rho-1/2$ with residue $m_\anaC(\rho)/(\rho(1-\rho))$. A forward shift by $h$ multiplies the
-continuation by $e^{hw}$ up to an entire function, the contribution of an initial compact
-interval. So the transform of $\anaM_{k,m}d$ is $K(w)U_k(w)^m$ times that of $r$, plus an entire
-function. The zeros of $U_k$ satisfy $\Re w=0$: with $z=e^{w/k}$ they are the nontrivial
-$(k+1)$st roots of unity. The zeros of $K$ satisfy $\Re w=1/2$. So no pole in $0<\Re w<1/2$ is
-cancelled, and at real $w$ in that interval both factors are positive. Put
-$\tilde R(x)=x^{-1/2}\anaM_{k,m}d(\log x)$. Its Mellin transform is meromorphic on $\Re s>0$,
-with simple poles at the zeros in $1/2<\Re\rho<1$, nonzero residues there and positive residues
-at real ones. An eventual bound $\anaM_{k,m}d(t)\le Ce^{\sigma t}$ is
-$\tilde R(x)\le Cx^{\sigma-1/2}$, so \cref{ana:thm:onesided} with \cref{ana:cor:forms}(a)
-excludes zeros with $\Re\rho>1/2+\sigma$; at $\sigma=0$ the functional equation excludes the rest.
-Under GRH, \eqref{ana:eq:gridexp} is bounded, and so is every positive finite average of it.
-\end{proof}
-
-\paragraph{A binomial grid.}
-The two-step grid with incommensurable steps $1$ and $\sqrt2$ also projects onto the central
-zeros, at a slower rate. Let $X$ be the group of characters modulo $q$ trivial on a subgroup
-$H\le(\Z/q\Z)^\times$, a family as above with all $b_\chi=1$, so that
-$\Lambda a_X=[(\Z/q\Z)^\times:H]\Lambda\anaone_{n\bmod q\in H}$ and $\delta=1$. With $T_hf(t)=f(t+h)$
-and $A_h=(I+T_h)/2$, put
-\[
- B_md(t)=A_1^mA_{\sqrt2}^md(t)=4^{-m}\sum_{j,k=0}^m\binom mj\binom mkd(t+j+k\sqrt2),
-\]
-with $(m+1)^2$ shifts and positive weights of sum one, and write $M_X=M_\anaC$.
-
-\begin{theorem}[Binomial filter; \stU\ and \stG]\label{ana:thm:binomial}
-\begin{enumerate}[label=\textup{(\roman*)}]
-\item \textup{(\stU)} For every fixed $m\ge0$, GRH for the characters in $X$ is equivalent to
- an upper bound for $B_md(t)$ for large $t$, and to a two-sided bound. If some $L(s,\chi)$,
- $\chi\in X$, has a zero with $\Re\rho>1/2+\sigma$, $\sigma\ge0$, then
- $\limsup_{t\to\infty}e^{-\sigma t}B_md(t)=+\infty$.
-\item \textup{(\stG)} There is $C_{q,H}$ with $\abs{B_md(t)-4M_X}\le C_{q,H}\log(2m)/\sqrt m$
- for all $m\ge1$ and $t\ge0$. Hence $M_X=\frac14\lim_mB_md(0)$, which uses only prime powers
- up to $\exp(1+(1+\sqrt2)m)$ and no constant, $L$-value or ordinate, and $M_X$ is the nearest
- integer to $B_md(t)/4$ for all $t\ge0$ once $m$ is large.
-\end{enumerate}
-\end{theorem}
-
-\begin{proof}
-(i) is the proof of \cref{ana:thm:gridconverse} with the multiplier
-$K(w)\bigl(\frac{1+e^w}2\cdot\frac{1+e^{\sqrt2w}}2\bigr)^m$, which has no zero in
-$0<\Re w<1/2$ and is positive on $(0,1/2)$.
-
-(ii) By \cref{ana:lem:gridexp} it suffices to damp the nonzero ordinates. On the imaginary axis
-the Bernoulli part has modulus $\abs{\cos(\gamma/2)\cos(\sqrt2\gamma/2)}^m$. For $\abs u\ge\eta$,
-\[
- \abs{\cos(u/2)\cos(\sqrt2u/2)}\le\exp\bigl(-c_\eta/(1+\abs u)^2\bigr):
-\]
-with $v=u/2\pi$ and nearest integers $a$ to $v$ and $b$ to $\sqrt2v$, the nonzero integer
-$b^2-2a^2$ gives $1\le\abs{b^2-2a^2}\ll(\abs{a-v}+\abs{b-\sqrt2v})(1+\abs u)$, and
-$\abs{\cos\pi d}\le e^{-2d^2}$ for $\abs d\le1/2$. Summing
-$\exp(-c_*m/(1+\abs\gamma)^2)/(1/4+\gamma^2)$ over the ordinates, dyadically above and below
-$\sqrt m$, gives $O(\log(2m)/\sqrt m)$. The error $O(e^{-t/4})$ is multiplied by at most
-$\bigl(\frac{1+e^{-1/4}}2\frac{1+e^{-\sqrt2/4}}2\bigr)^m$.
-\end{proof}
-
-In terms of samples, $B_m$ uses $(m+1)^2$ values of $d$, or $(m+1)(m+2)$ distinct ramp values,
-for an error $O(\log N/N^{1/4})$ in $N$ observations over logarithmic span $(1+\sqrt2)m$, while
-\cref{ana:thm:grid} gives $O((\log N)^3/N^2)$ over span $O(\log N)$. The inverse-square damping
-of $B_m$ cannot be improved uniformly: the solutions of $b^2-2a^2=\pm1$ give $u=2\pi a$ with
-damping $1-O(a^{-2})$. Equal Bernoulli weights matter: $p+(1-p)e^{hw}$ with $p>1/2$ vanishes at
-real part $h^{-1}\log(p/(1-p))>0$, which would cancel poles. If the ordinates up to $U$ are known,
-the product $\prod_{0<\gamma\le U}A_{\pi/\gamma}$ annihilates them exactly and gives
-$4M_X+O(\log(2U)/U)+O(e^{-t/4})$ with total shift $O(\log^2(2U))$, and the converse in (i) holds
-for any fixed finite product of such operators.
+The argument is not circular: $B_w$ is the actual supremum, and the explicit formula bounds
+the derivative in terms of it. For the full Dirichlet GRH a divisibility-cofinal family of
+moduli, such as $q=m!$, suffices. Under \cref{src:thm:dgrh} the upper limit is exactly $1/2$.
 
 \subsection{What averaged bounds recover pointwise}\label{ana:sec:mpt}
 {\raggedright\sources{grh_transfer_synthesis_2026-11-25; grh_method_transfers_2026-11-25_2}}
@@ -2120,6 +1894,150 @@ directly, and \cref{ana:thm:mpt} kept for diagnostics on finite windows. Convers
 input itself can be obtained from values at sparse sample points, with a cost that is cubic
 in the gaps (\cref{ana:thm:cubic}).
 
+\subsection{Sampling a positive ramp on sparse scales}\label{nab:sec:sampling}
+\begingroup\raggedright
+\sources{grh_method_transfers_2026-11-25}
+\endgroup
+
+The one-sided tests with nonnegative weights need only be verified on a sparse set of
+scales. The argument uses positivity alone, and within that class it is sharp. Sampling on
+fourth powers at the square-root scale is due to Setiawan
+\cite{Setiawan2026Primacohedron}; what follows is a version for arbitrary positive ramp
+measures with the exact interpolation loss, a sharpness example, and a centering-free
+specialization to Dedekind zeta functions.
+
+Let $\mu$ be a positive locally finite Borel measure on $[1,\infty)$, $A\ge0$ and $c\in\R$.
+Put
+\[
+ S(x)=\int_{[1,x]}\Bigl(\frac1u-\frac1x\Bigr)\dd\mu(u),\qquad R(x)=S(x)-A\log x-c\quad(x\ge1).
+\]
+For prime weights $\mu=\sum_pw(p)\log p\,\delta_p$ with $w(p)\ge0$.
+
+\begin{lemma}[Exact interpolation loss; \stU]\label{nab:lem:jensen}
+Let $1\le x_0<x_1$, $x\in[x_0,x_1]$, $t_i=x_i^{-1}$, $t=x^{-1}$ and
+$\lambda=(t-t_1)/(t_0-t_1)\in[0,1]$. Then
+\begin{align}
+ R(x)&\le\lambda R(x_0)+(1-\lambda)R(x_1)+A\,J_\lambda(t_0,t_1),\label{nab:eq:interp}\\
+ J_\lambda(t_0,t_1)&=\log\bigl(\lambda t_0+(1-\lambda)t_1\bigr)-\lambda\log t_0-(1-\lambda)\log t_1
+ \le\tfrac18\log^2(x_1/x_0).\label{nab:eq:loggap}
+\end{align}
+The maximum of $J_\lambda$ over $\lambda\in[0,1]$ is
+\[
+ J(r)=\log\frac{r-1}{\log r}-1+\frac{\log r}{r-1},\qquad r=x_1/x_0>1,
+\]
+and $J(r)\sim\tfrac18\log^2r$ as $r\downarrow1$.
+\end{lemma}
+\begin{proof}
+The function $H(t)=S(1/t)=\int_{[1,\infty)}(u^{-1}-t)_+\,\dd\mu(u)$, $t>0$, is convex, since
+each integrand is a maximum of two affine functions and $\mu$ is positive; only $u\le1/t$
+contributes, so the integral is finite. Apply convexity and substitute
+$H(t)=R(1/t)-A\log t+c$ to get \eqref{nab:eq:interp}. For the bound put
+$y=\log(t_0/t_1)$ and $f_\lambda(y)=\log(1-\lambda+\lambda e^y)-\lambda y$. Then
+$f_\lambda(0)=f_\lambda'(0)=0$ and $f_\lambda''(y)=p(1-p)\le\tfrac14$ with
+$p=\lambda e^y/(1-\lambda+\lambda e^y)$, so $f_\lambda(y)\le y^2/8$. For the exact maximum
+write $u=t/t_1\in[1,r]$; the gap is $\log u-(u-1)\log r/(r-1)$, maximal at
+$u=(r-1)/\log r$.
+\end{proof}
+
+\begin{theorem}[Nonuniform sampling; \stU]\label{nab:thm:sampling}
+Let $\theta>0$ and $1\le x_1<x_2<\dots\to\infty$ with
+$\log(x_{j+1}/x_j)=O(x_j^{-\theta/2})$. Then $R(x)\le Cx^{-\theta}$ for some $C\ge0$ and all
+sufficiently large $x$ if and only if $R(x_j)\le C_0x_j^{-\theta}$ for some $C_0\ge0$ and
+all sufficiently large $j$. More precisely, if the sampled inequality holds and
+$\log^2(x_{j+1}/x_j)\le Kx_j^{-\theta}$, then for $x\in[x_j,x_{j+1}]$
+\[
+ R(x)\le\bigl(C_0+AK/8\bigr)x_j^{-\theta}\le\bigl(C_0+AK/8\bigr)(x_{j+1}/x_j)^\theta x^{-\theta}.
+\]
+When $A>0$ the required gaps are of size $x_{j+1}-x_j=O(x_j^{1-\theta/2})$.
+\end{theorem}
+\begin{proof}
+Both endpoint values in \eqref{nab:eq:interp} are at most $C_0x_j^{-\theta}$; use
+\eqref{nab:eq:loggap}. The ratio $x_{j+1}/x_j$ tends to one and is bounded.
+\end{proof}
+
+For weights on the integers, \cref{ana:thm:meshclass} shows that the gap condition of
+\cref{nab:thm:sampling} is also necessary, and the cubic sampling criterion
+\cref{ana:thm:cubic}, which the proof of \cref{ana:thm:sparse} uses, replaces the pointwise
+gap condition by a summed cubic budget; \cref{ana:thm:mpt} answers the corresponding question
+for bounds in mean instead of bounds at sampled points.
+
+\begin{corollary}[Fourth powers; \stU]\label{nab:cor:quartic}
+If $R(n^4)\le Cn^{-2}$ for $n\ge n_0$, with $C\ge0$, then $R(x)\le(C+8A)x^{-1/2}$ for
+$x\ge n_0^4$. Hence an eventual bound $R(x)\le C'x^{-1/2}$ is equivalent to an eventual
+bound $R(n^4)\le Cn^{-2}$; other power grids are treated after \cref{ana:prop:grids}. Moreover, if $L=\limsup_{n\to\infty}n^2R(n^4)$ is finite, then
+\[
+ L\le\limsup_{x\to\infty}\sqrt x\,R(x)\le L+2A .
+\]
+\end{corollary}
+\begin{proof}
+Here $\log(x_{n+1}/x_n)=4\log(1+1/n)\le4/n$, so the interpolation loss is at most $2A/n^2$.
+Because $C\ge0$ and the square root is concave, the endpoint contribution is
+$C(\lambda\sqrt{t_0}+(1-\lambda)\sqrt{t_1})\le C\sqrt t$, and $n^{-2}\le4x^{-1/2}$ for
+$x\in[n^4,(n+1)^4]$. For the last statement, on $[n^4,(n+1)^4]$ the normalized endpoint
+weights $\sqrt x/n^2$ and $\sqrt x/(n+1)^2$ tend uniformly to one, so multiplying
+\eqref{nab:eq:interp} by $\sqrt x$ bounds the endpoint term by $L+o(1)$ and the Jensen
+loss by $2A(n+1)^2\log^2(1+1/n)=2A+o(1)$.
+\end{proof}
+
+\begin{proposition}[Sharpness of the positivity argument; \stU]\label{nab:prop:samplingsharp}
+Fix $A>0$, $r>0$ and the nodes $x_j=j^r$. There is a positive measure $\mu$ supported on
+the nodes for which, with $c=0$, $R(x_j)=0$ for every $j$ and $R(x)\to0$, but at suitable
+$x_j^*\in(x_j,x_{j+1})$
+\[
+ R(x_j^*)=A\,J\bigl((1+1/j)^r\bigr)\sim\frac{Ar^2}{8j^2}.
+\]
+Consequently $x^\theta R(x)$ is unbounded above if $r\theta>2$, and in the critical case
+$r=4$, $\theta=1/2$ the loss $2A$ of Corollary~\ref{nab:cor:quartic} cannot be improved by
+positivity alone.
+\end{proposition}
+\begin{proof}
+Let $t_j=j^{-r}$ and let $H$ be the piecewise affine interpolant of $-A\log t$ at the nodes
+$t_j$, with $H(t)=0$ for $t\ge1$. It is convex; on $[t_{j+1},t_j]$ its slope is $-D_j$ with
+$D_j=A\log(x_{j+1}/x_j)/(x_j^{-1}-x_{j+1}^{-1})$, and the $D_j$ increase strictly. With
+$D_0=0$ put $\mu=\sum_{j\ge1}(D_j-D_{j-1})\delta_{x_j}$, a positive locally finite measure.
+The function $\sum_j(D_j-D_{j-1})(x_j^{-1}-t)_+$ has the same slopes as $H$ and the same
+value at $t=1$, so it equals $H$. Hence $S(x_j)=A\log x_j$ and $R(x_j)=0$, and between
+nodes $R$ is exactly the Jensen gap of Lemma~\ref{nab:lem:jensen}, with maximum at
+$x_j^*=\log(x_{j+1}/x_j)/(x_j^{-1}-x_{j+1}^{-1})\sim j^r$. The maximum on the $j$th interval
+is $O(j^{-2})$, so $R(x)\to0$; multiplying by $(x_j^*)^\theta$ gives the divergence.
+\end{proof}
+
+The masses of this measure satisfy $\mu(\set{j^r})\sim Arj^{r-1}$; they are not von
+Mangoldt coefficients. The proposition bounds what positivity and interpolation can prove.
+It does not show that sparser arithmetic sampling fails: for Dedekind zeta functions the
+explicit formula gives one-sided tests on much sparser grids
+(\cref{ana:thm:powers,ana:thm:blocks}). The analogous limit for bounds in mean, rather than
+at sampled points, is \cref{ana:prop:mptsharp}.
+
+Suppose now that $R(x)\to0$, and let $q\ge2$ be an integer. On the quartic grid the
+statistic
+\begin{equation}\label{nab:eq:B}
+ B_q(n)=4A\log q-\bigl(S((qn)^4)-S(n^4)\bigr)=R(n^4)-R((qn)^4)
+\end{equation}
+does not involve the centering constant $c$, and it uses only the weights at $u\le(qn)^4$:
+with $X=n^4$ and $Q=q^4$,
+\[
+ S(QX)-S(X)=\frac{Q-1}{QX}\,\mu([1,X])+\int_{(X,QX]}\Bigl(\frac1u-\frac1{QX}\Bigr)\dd\mu(u).
+\]
+
+\begin{proposition}[Centering-free certificate; \stU]\label{nab:prop:certificate}
+If $B_q(n)\le Cn^{-2}$ for all sufficiently large integers $n$, with $C\ge0$, then
+$R(n^4)\le C(1-q^{-2})^{-1}n^{-2}$ for those $n$, and hence $R(x)\le C'x^{-1/2}$ for large
+$x$. Conversely a two-sided estimate $R(x)=O(x^{-1/2})$ implies $B_q(n)=O(n^{-2})$.
+\end{proposition}
+\begin{proof}
+For every $N\ge0$,
+$R(n^4)-R((q^{N+1}n)^4)=\sum_{k=0}^NB_q(q^kn)\le Cn^{-2}\sum_{k=0}^Nq^{-2k}$. Let
+$N\to\infty$, use $R(x)\to0$, and apply Corollary~\ref{nab:cor:quartic}. The converse is immediate
+from \eqref{nab:eq:B}; it needs a two-sided estimate, since two upper bounds cannot be
+subtracted.
+\end{proof}
+
+For the remainder of a Dedekind zeta function, \cref{ana:cor:finite} gives the same
+centering-free statistic on every power grid $m^k$, using the explicit formula in place of
+positivity; \cref{nab:prop:certificate} needs only a positive measure, on the quartic grid. For
+the root-count statistic of a polynomial see \cref{nab:cor:rootcount}.
+
 \subsection{Sampling meshes}\label{ana:sec:mesh}
 {\raggedright\sources{cubic_mesh_sampling_2026-11-26; rh_sampling_and_small_deviations_2026-11-26; grh_periods_sampling_and_zeros; rh_li_universality_2026-11-26}}
 
@@ -2297,7 +2215,10 @@ of energy at most $3375L^3/N=3375$, and there are at most $\log X/(12\log2)$ of 
 The limits follow from \cref{ana:lem:chord}.
 \end{proof}
 
-The threshold in (i) is sharp even for a real pole of positive residue, which satisfies the
+The pointwise criterion gives the same threshold on power grids: on $x_j=j^p$ the gap condition
+$\log(x_{j+1}/x_j)=O(x_j^{-\theta/2})$ of \cref{nab:thm:sampling} with $\theta=1-\beta$ holds
+exactly when $p\le2/(1-\beta)$. The cubic criterion gains only on nonuniform meshes, such as that
+of (ii). The threshold in (i) is sharp even for a real pole of positive residue, which satisfies the
 sign hypothesis of \cref{ana:thm:onesided}.
 
 \begin{proposition}[An invisible real pole on a power grid; \stU]\label{ana:prop:invisible}
@@ -2339,9 +2260,7 @@ is far above the square-root scale while its weighted cost stays bounded.
 \begin{corollary}[The Riemann hypothesis on an admissible mesh; \stU]\label{ana:cor:rhmesh}
 Let the mesh be admissible at $1/2$, let $R_\Q$ be the remainder \eqref{ana:eq:RK} of $\zeta$
 and $b_j=R_\Q(x_j)_+$. The Riemann hypothesis is equivalent to
-$\sum_j(x_jb_j+x_{j+1}b_{j+1})\Delta_j/x_j^{\sigma+1}<\infty$ for every $\sigma>1/2$. For the
-mesh of \cref{ana:prop:grids}(ii) it therefore suffices that
-$R_\Q(x_j)\le C_\eps x_j^{-1/2+\eps}$ eventually.
+$\sum_j(x_jb_j+x_{j+1}b_{j+1})\Delta_j/x_j^{\sigma+1}<\infty$ for every $\sigma>1/2$.
 \end{corollary}
 
 \begin{proof}
@@ -2352,6 +2271,10 @@ $R_\Q(x)=-\int_x^\infty(\psi(u)-u)u^{-2}\dd u=O(x^{-1/2}\log^2x)$, the limit con
 identified by \cref{ana:lem:mellin}(iii), and admissibility forces $\Delta_j/x_j\to0$, so the sums
 are dominated by $\int x^{-1/2-\sigma}\log^2x\,\dd x<\infty$.
 \end{proof}
+
+For every number field $K$, pointwise bounds $R_K(x_j)\le C_\eps x_j^{-1/2+\eps}$ on the mesh of
+\cref{ana:prop:grids}(ii) already give the Riemann hypothesis for $\zeta_K$: that mesh has
+$\log(x_{j+1}/x_j)=O(x_j^{-1/6})$, and \cref{ana:thm:powers}(i) applies with $\delta=1/6$.
 
 \paragraph{Pointwise conclusions.}
 A pointwise bound between the samples needs square instead of cubic control of the gaps, and
@@ -2367,10 +2290,11 @@ that $R(x)\to0$, with $\abs{R(x_j)}\le2/x_j$ at every node and $R/E$ unbounded a
 \end{theorem}
 
 \begin{proof}
-\emph{Sufficiency.} The condition gives $x_{j+1}/x_j\to1$. On $[a,b]=[x_j,x_{j+1}]$, convexity of
-$u\mapsto\sum_nw(n)(1/n-u)_+$ and the bound $(u-v)(z-u)/(2v^2)$ for the excess of $\log u$ over
-its chord on $[v,z]=[1/b,1/a]$ give
-$R(x)\le\max\set{R(a),R(b)}+\frac c8((b-a)/a)^2$, and both terms are $O(E(x))$.
+\emph{Sufficiency.} The condition gives $x_{j+1}/x_j\to1$. On $[a,b]=[x_j,x_{j+1}]$,
+\cref{nab:lem:jensen}, applied to $\mu=\sum_nw(n)\delta_n$ with logarithmic coefficient $c$,
+and $\log(b/a)\le(b-a)/a$ give
+$R(x)\le\max\set{R(a),R(b)}+\frac c8((b-a)/a)^2$, and both terms are $O(E(x))$. For
+$E(x)=x^{-\theta}$ this is \cref{nab:thm:sampling}.
 
 \emph{Necessity.} Choose infinitely many gaps with $h=\min\set{(b-a)/a,1}$ and
 $h^2/E(a)\to\infty$, put $H=ah$, $s_a=\sqrt{E(a)}/h\to0$, $f(t)=t^3(1-t)^3$ on $[0,1]$, and
@@ -2669,14 +2593,10 @@ all large $X$, and the sum would converge by partial summation.
 \end{proof}
 
 \begin{remark}\label{ana:rem:schedule}
-(1) The grid $x_j=j^4$ satisfies the gap condition for every $\beta\ge1/2$; more generally
-$x_j=j^p$ is admissible exactly when $p\le2/(1-\beta)$, and the fourth powers with growing
-deleted blocks of \cref{ana:prop:grids}(ii) are admissible at $\beta=1/2$ although their gaps
-are not $O(x_j^{3/4})$. The mesh may depend on $d$. The fourth-power mesh and the chord
-interpolation for the prime sum of the ordinary zeta function are due to Setiawan
-\cite{Setiawan2026Primacohedron}. The pointwise interpolation loss and its sharpness for general
-positive measures are given in \cref{sec:nab}, and the sharpness of the cubic budget in
-\cref{ana:thm:cubicopt,ana:thm:densityone}.
+(1) The admissible power grids, among them $x_j=j^4$ for every $\beta\ge1/2$, and the
+deleted-block mesh are described in \cref{ana:prop:grids} and after it; the mesh may depend on
+$d$. The pointwise interpolation loss and its sharpness are in \cref{nab:sec:sampling}, and the
+sharpness of the cubic budget in \cref{ana:thm:cubicopt,ana:thm:densityone}.
 
 (2) If a zero $\rho$ with $\Re\rho>\beta$ existed, then for every $\gamma\in(\beta,\Re\rho)$
 the number of admissible primes $d\le X$ with
@@ -2715,6 +2635,48 @@ $\sum_\rho\abs{c_\rho}<\infty$, and by partial summation
  \sum_{\abs{\Im\rho}\le T}\frac1{\abs\rho}\ll_K\log^2(2T),\qquad
  \sum_{\abs{\Im\rho}>T}\frac1{\abs{\rho(1-\rho)}}\ll_K\frac{\log(2T)}T\qquad(T\ge1).
 \end{equation}
+The total of the coefficients $c_\rho$ is a Hadamard difference. The following lemma is stated
+for the two families treated in this article.
+
+\begin{lemma}[Hadamard mass identity; \stU]\label{ana:lem:hadamardmass}
+Let $\Xi$ be one of the following entire functions, with zeros $\rho$ of multiplicity $m(\rho)$.
+\begin{enumerate}[label=\textup{(\alph*)}]
+\item For a primitive Dirichlet character $\chi$ of conductor $f>1$ and parity $b\in\set{0,1}$,
+ $\chi(-1)=(-1)^b$: $\Xi_\chi(s)=(f/\pi)^{(s+b)/2}\Gamma((s+b)/2)L(s,\chi)$.
+\item For a number field $K$ of signature $(r_1,r_2)$ and discriminant $d_K$:
+ $\xi_K(s)=s(s-1)\abs{d_K}^{s/2}\Gamma_\R(s)^{r_1}\Gamma_\C(s)^{r_2}\zeta_K(s)$, with
+ $\Gamma_\R(s)=\pi^{-s/2}\Gamma(s/2)$ and $\Gamma_\C(s)=2(2\pi)^{-s}\Gamma(s)$. The case $K=\Q$ is
+ $\zeta$.
+\end{enumerate}
+Then $\sum_\rho m(\rho)/(\rho(1-\rho))$ converges absolutely and
+\[
+ \sum_\rho\frac{m(\rho)}{\rho(1-\rho)}=\frac{\Xi'}\Xi(1)-\frac{\Xi'}\Xi(0)=2\Re\frac{\Xi'}\Xi(1).
+\]
+With Euler's constant $\gamma$, the Euler--Kronecker constant $\gamma_K$ of
+\cref{ana:ex:instances}(a), $\psi(\frac12)=-\gamma-2\log2$ and $\psi(1)=-\gamma$, the value is
+\begin{alignat*}{2}
+ &\log\frac f\pi+\psi\Bigl(\frac{1+b}2\Bigr)+2\Re\frac{L'}L(1,\chi)&\qquad&\text{in (a)},\\
+ &2+2\gamma_K+\log\abs{d_K}-r_1(\gamma+\log4\pi)-2r_2(\gamma+\log2\pi)&&\text{in (b)};
+\end{alignat*}
+for a real character the real part is redundant, and for $\zeta$ the value is
+$2+\gamma-\log(4\pi)=0.0461914\ldots$. If every $\rho$ lies on the critical line, the terms are
+$m(\rho)/(\frac14+(\Im\rho)^2)>0$.
+\end{lemma}
+
+\begin{proof}
+$\Xi$ is entire of order one \cite{Davenport2000Multiplicative}, with $\Xi(0)\ne0$: in (a)
+$\Xi_\chi(0)$ is a unit multiple of $\Xi_{\bar\chi}(1)\ne0$, and in (b) $\xi_K(0)=\xi_K(1)\ne0$. The
+zero counts give $\sum_\rho m(\rho)\abs\rho^{-2}<\infty$, so the Hadamard product gives
+$\Xi'/\Xi(s)=B+\sum_\rho m(\rho)\bigl(1/(s-\rho)+1/\rho\bigr)$, and the difference at $1$ and $0$
+is $\sum_\rho m(\rho)\bigl(1/(1-\rho)+1/\rho\bigr)$, which is the stated absolutely convergent sum.
+The functional equation $\Xi_\chi(1-s)=\varepsilon\,\Xi_{\bar\chi}(s)$, $\abs\varepsilon=1$, and
+$\overline{\Xi_\chi(\bar s)}=\Xi_{\bar\chi}(s)$ give
+$\Xi_\chi'/\Xi_\chi(0)=-\overline{\Xi_\chi'/\Xi_\chi(1)}$; in (b) $\xi_K(1-s)=\xi_K(s)$ and $\xi_K$
+is real on $\R$. The values follow by adding the logarithmic derivatives of the factors at $1$:
+in (a) $\frac12\log(f/\pi)+\frac12\psi(\frac{1+b}2)+L'/L(1,\chi)$; in (b) $1$ from $s$, $\gamma_K$
+from $(s-1)\zeta_K(s)$, $\frac12\log\abs{d_K}$, $-\frac12(\gamma+\log4\pi)$ from each $\Gamma_\R$ and
+$-(\gamma+\log2\pi)$ from each $\Gamma_\C$; compare \cite[(1.2.2), (1.2.3), (1.3.11)]{IharaEulerKronecker}.
+\end{proof}
 
 \begin{theorem}[Prescribed grids; \stU]\label{ana:thm:powers}
 Let $y_j$ be an unbounded increasing sequence with $\log(y_{j+1}/y_j)=O(y_j^{-\delta})$ for
@@ -2764,68 +2726,41 @@ $\Re s=1$. Telescoping over $m,2m,4m,\dots$ gives $R_K(m^k)\le Cm^{-k/2}/(1-2^{-
 nonnegative upper bound $C$ for the statistic, and \cref{ana:thm:powers} applies.
 \end{proof}
 
-\paragraph{Prescribed sparse scales for Dirichlet families.}
-The same interpolation with an unknown exponent works for a constant-free statistic of a
-positively weighted family of characters modulo $q$. Let $b_\chi\ge0$, not all zero, with
-$b_{\bar\chi}=b_\chi$, call $\chi$ active if $b_\chi>0$, and put $w(n)=\sum_\chi b_\chi\chi(n)$,
-$\mu=b_{\chi_0}$, $\Psi_w(x)=\sum_{n\le x}\Lambda(n)w(n)$,
-$S_w(x)=\sum_{n\le x}\Lambda(n)w(n)(1/n-1/x)=\int_1^x\Psi_w(u)u^{-2}\dd u$ and
-$E_w(x)=S_w(x)-\mu\log x$. For $c>1$ let $a_c=c/(c+1)$, $b_c=1/(c+1)$ and
-\begin{equation}\label{ana:eq:balanced}
-\begin{split}
- \anaW_w(x;c)&=S_w(x)-a_cS_w(cx)-b_cS_w(x/c)+\mu(a_c-b_c)\log c\\
- &=E_w(x)-a_cE_w(cx)-b_cE_w(x/c)\qquad(x\ge c),
-\end{split}
-\end{equation}
-which needs no centring constant. Let $B_w$ be the supremum of the real parts of the zeros of
-the active $L(s,\chi)$ in $0<\Re s<1$, and $m_w(\rho)=\sum_\chi b_\chi\ord_\rho L(s,\chi)$.
-
-\begin{theorem}[Prescribed grids for Dirichlet families; \stU]\label{ana:thm:balanced}
-Let $x_j\to\infty$ increase with $x_{j+1}-x_j=O(x_j^{1-\delta})$ for some $\delta>0$. Then
+\begin{remark}[Root counts on the quartic grid; \stR]\label{nab:cor:rootcount}
+Let $f\in\Z[T]$ be monic and irreducible, $K=\Q[T]/(f)$, and for $p\nmid\disc(f)$ let
+$r_f(p)$ be the number of roots of $f$ in $\F_p$. Put
 \[
- B_w=\limsup_{j\to\infty}\frac{\log\bigl(1+x_j\anaW_w(x_j;c)_+\bigr)}{\log x_j}.
+ B_f(n)=\log16-\frac{15}{16n^4}\sum_{\substack{p\le n^4\\p\nmid\disc(f)}}r_f(p)\log p
+ -\sum_{\substack{n^4<p\le16n^4\\p\nmid\disc(f)}}r_f(p)\log p\Bigl(\frac1p-\frac1{16n^4}\Bigr),
 \]
-Hence, for $1/2\le\theta<1$, no active $L$-function vanishes to the right of $\theta$ if and
-only if $\anaW_w(x_j;c)\le C_\eps x_j^{\theta-1+\eps}$ for all large $j$, for every $\eps>0$.
-For the identity class modulo $q$, GRH for the characters modulo $q$ is equivalent to this
-bound with $\theta=1/2$ on $x_j=j^k$, for any fixed $k\ge1$ and $c>1$; there are
-$\floor{X^{1/k}}$ sample points up to $X$.
-\end{theorem}
-
-\begin{proof}
-The truncated explicit formula at height comparable to $x$
-\cite{Davenport2000Multiplicative} and the zero count give
-$\Psi_w(x)=\mu x+O(x^{B_w}\log^2(2x))$, whether or not $B_w$ is attained. Since
-$E_w'(x)=(\Psi_w(x)-\mu x)/x^2$ almost everywhere and $a_c+b_c=1$, writing
-$\anaW=a_c(E_w(x)-E_w(cx))+b_c(E_w(x)-E_w(x/c))$ gives
-\begin{equation}\label{ana:eq:Wbound}
- \abs{\anaW_w(x;c)}\ll x^{B_w-1}\log^2(2x),\qquad
- \abs{\anaW_w'(x;c)}\ll x^{B_w-2}\log^2(2x)\quad\text{a.e.}
-\end{equation}
-For $\Re s>1$, $\int_1^\infty E_w(x)x^{-s}\dd x=(s-1)^{-1}(F_w(s)/s-\mu/(s-1))$ with
-$F_w=-\sum b_\chi L'/L(s,\chi)$, and the transform of $\anaW_w$ is
-$P_c(s)$ times this plus an entire function, where
+and let $R_K^\flat$ be the prime-only remainder of \cref{nab:prop:dedekind} with $S$ the set of
+primes dividing $\disc(f)$. Then
 \[
- P_c(s)=1-a_cc^{s-1}-b_cc^{1-s}=\frac{(1-u)(cu-1)}{(c+1)u},\qquad u=c^{s-1}.
+ \mathrm{RH}(\zeta_K)\quad\Longleftrightarrow\quad\sup_{n\ge1}n^2B_f(n)<\infty
+ \quad\Longleftrightarrow\quad\sup_{n\ge1}n^2R_K^\flat(n^4)<\infty .
 \]
-So $P_c$ vanishes only on $\Re s\in\set{0,1}$, is positive on $(0,1)$ and kills the pole at $1$,
-and the transform has a simple pole at each active zero with residue
-$m_w(\rho)P_c(\rho)/(\rho(1-\rho))$, positive at real zeros. If $\anaW_w(x;c)\le Cx^{\eta-1}$ for
-large real $x$, \cref{ana:thm:onesided} with \cref{ana:cor:forms}(a) gives $B_w\le\eta$.
+The bounds are one-sided, and no unspecified centering constant appears in $B_f$. This is the
+case $k=4$ of \cref{ana:cor:finite,ana:thm:powers} with prime powers and the primes dividing
+$\disc(f)$ removed. Indeed $\Lambda_K(p)=r_f(p)\log p$ for $p\nmid\disc(f)$, and
+$B_f(n)=R_K^\flat(n^4)-R_K^\flat((2n)^4)$, as in \eqref{nab:eq:B}. By \cref{ana:lem:powers}(ii)
+with $a=\Lambda_K$, $R_K-R_K^\flat=B'+O(x^{-1/2})$ for a constant $B'$, which is $0$ because
+both remainders tend to $0$. At $x=n^4$ the error is $O(n^{-2})$, so $n^2B_f(n)$ and
+$n^2D_4(n)$, and $n^2R_K^\flat(n^4)$ and $n^2R_K(n^4)$, differ by bounded amounts, and
+finitely many initial terms are finite. The positivity argument gives the same equivalences
+without the explicit formula: apply \cref{nab:cor:quartic} to the positive measure
+$\sum_pr_f(p)\log p\,\delta_p$ with $A=1$, \cref{nab:prop:certificate} with $q=2$, and
+\cref{nab:prop:dedekind} with the remark following it.
 
-Let $A$ be the upper limit in the statement, so $0\le A\le B_w$ by \eqref{ana:eq:Wbound}, and
-suppose $A<B_w$. Choose $\max(A,B_w-\delta,0)<\eta<B_w$. Then
-$\anaW_w(x_j;c)\le x_j^{\eta-1}$ for large $j$, and for $x_j\le x<x_{j+1}$
-\[
- \anaW_w(x;c)\le\anaW_w(x_j;c)+\int_{x_j}^x\abs{\anaW_w'}\ll x^{\eta-1}+x^{B_w-1-\delta}\log^2(2x)\ll x^{\eta-1},
-\]
-so $B_w\le\eta$, a contradiction. For $x_j=j^k$, $(j+1)^k-j^k=O(x_j^{1-1/k})$, and the identity
-class has $b_\chi=1/\varphi(q)$ for all $\chi$.
-\end{proof}
-
-The argument is not circular: $B_w$ is the actual supremum, and the explicit formula bounds
-the derivative in terms of it. For the full Dirichlet GRH a divisibility-cofinal family of
-moduli, such as $q=m!$, suffices. Under \cref{src:thm:dgrh} the upper limit is exactly $1/2$.
+The criterion applies to every irreducible polynomial, with no assumption on the holomorphy of
+Artin factors: the Dedekind zeta function itself supplies the continuation and the
+nonnegative multiplicities. For $f=T^3-T-1$, of discriminant $-23$ and group $S_3$,
+$r_f=1+\tr\rho$ with $\rho$ the standard representation, only $p=23$ is omitted, and the bound
+$\sup_nn^2B_f(n)<\infty$ is equivalent to the Riemann hypothesis for the cubic field;
+\cref{src:thm:dgrh} does not supply it, since the root-count character contains $\rho$. The
+values of the statistic for $n\le20$ are in
+\artifact{grh_method_transfers_2026-11-25/results/cubic_checkpoints.csv}; they illustrate the
+definition and certify nothing about the limit. This field is treated in \cref{sec:hec}.
+\end{remark}
 
 \begin{proposition}[One base for every number field; \stU]\label{ana:prop:generic}
 Let $0<\lambda_n\uparrow\infty$ with $\lambda_{n+1}/\lambda_n\to1$. There is a dense countable
@@ -2853,6 +2788,21 @@ every base on one explicit set of integer exponents. Put
 For every $b>1$ at most $O_b(1+\log\log\log X)$ of the cutoffs $b^e$, $e\in\anaE$, lie below
 $X$: indeed $b^{M_j}\le X$ implies $j^2=O_b(1+\log\log\log X)$, and the first $j$ blocks
 contain $j(j+1)/2$ terms.
+
+\begin{lemma}[Box count in a block]\label{ana:lem:boxcount}
+Let $\theta_1,\dots,\theta_t\in\R$, let $q\ge2$ be an integer and $j\ge1$, and put $N=j+1$.
+Then at least $(N/q^t-1)/2$ integers $1\le k\le j$ satisfy $\norm{kM_j\theta_i}_{\R/\Z}\le1/q$ for
+$i=1,\dots,t$. In particular at least one does when $j\ge q^t$.
+\end{lemma}
+
+\begin{proof}
+The fractional parts of the $N$ points $0,M_j\theta,2M_j\theta,\dots,jM_j\theta$ lie in $q^t$
+half-open boxes of side $1/q$ in $[0,1)^t$. If the boxes contain $n_1,\dots,n_{q^t}$ points, the
+number of pairs in a common box is $\sum_b\binom{n_b}2\ge(N^2/q^t-N)/2$ by the Cauchy--Schwarz
+inequality. Two points $k_1M_j\theta$, $k_2M_j\theta$ with $k_1<k_2$ in one box give
+$k=k_2-k_1$ with the stated property, and each positive difference $k$ occurs in at most $N$
+pairs. For $j\ge q^t$ the bound exceeds $0$, and a count is an integer.
+\end{proof}
 
 \begin{theorem}[Extremal values on a prescribed sparse set; \stU]\label{ana:thm:blocks}
 Let $K$ be a number field with signature $(r_1,r_2)$ and discriminant $d_K$, and let $b>1$.
@@ -2883,13 +2833,9 @@ $\sum_{\Re\rho=\Theta}c_\rho\exp(i\gamma_\rho\log x)$, which is empty if $\Theta
 attained.
 
 Fix a finite list of $n$ of its ordinates, set $\theta_i=\gamma_i\log b/(2\pi)$, and take an
-integer $q\ge2$. The fractional parts of $0,M_j\theta,\dots,q^nM_j\theta$ occupy $q^n$
-half-open boxes of side $1/q$ in $[0,1)^n$. Two of these points share a box, and their
-difference supplies $1\le k\le q^n$ with $\norm{kM_j\theta_i}_{\R/\Z}\le1/q$ for all $i$. For
-$j\ge q^n$ this $k$ belongs to the $j$th block. In fact a positive proportion of each large
-block works: for $N=j+1$ points and $B=q^n$ boxes, the number of same-box pairs is at least
-$(N^2/B-N)/2$ by the Cauchy--Schwarz inequality, each positive difference occurs in at most
-$N$ pairs, and so there are at least $(N/B-1)/2$ suitable values of $k$. Absolute summability
+integer $q\ge2$. By \cref{ana:lem:boxcount} with $t=n$, for $j\ge q^n$ at least one, and in
+fact a proportion at least $(2q^n)^{-1}+o(1)$, of the indices $k$ of the $j$th block satisfy
+$\norm{kM_j\theta_i}_{\R/\Z}\le1/q$ for all $i$. Absolute summability
 allows one to discard a tail of arbitrarily small norm and then to choose $q$ so that all
 remaining phases are arbitrarily close to $1$. Hence a subsequence of the normalized values
 tends to $\sum_{\Re\rho=\Theta}c_\rho$. This sum is real by conjugation, and each summand has
@@ -2898,7 +2844,7 @@ positive real part because $\Re[\rho(1-\rho)]=\sigma(1-\sigma)+\gamma_\rho^2>0$.
 
 On the critical line every $c_\rho=1/(1/4+\gamma_\rho^2)$ is positive, and the triangle
 inequality gives the matching upper bound on every block. The value of $S_K$ in terms of the
-invariants of $K$ follows from \cite[(1.2.2), (1.2.3), (1.3.11)]{IharaEulerKronecker}.
+invariants of $K$ is \cref{ana:lem:hadamardmass}(b).
 \end{proof}
 
 For an arbitrary field, a finite upper bound for $\sqrt x\,R_K(x)$ on this grid therefore
@@ -2916,1259 +2862,11 @@ two-dimensional standard representation of $S_3$, which is outside the scope of
 are open.
 \end{example}
 
-\paragraph{Simple zeros.}
-The same remainder detects multiplicity on a sparse sequence. Let
-\[
- x_n=2^n3^{n^2}.
-\]
-Only $O(\sqrt{\log X})$ of these cutoffs lie below $X$. Assume that all nontrivial zeros of
-$\zeta_K$ lie on the critical line. For real $t$ let $m_K(t)$ be the multiplicity of $1/2+it$
-as a zero, and let $\Gamma_K$ be the set of distinct ordinates. By \eqref{ana:eq:explicit},
-\begin{equation}\label{ana:eq:apseries}
- \sqrt x\,R_K(x)=\sum_{t\in\Gamma_K}a_tx^{it}+o(1),\qquad
- a_t=\frac{m_K(t)}{1/4+t^2},\qquad\sum_ta_t<\infty,
-\end{equation}
-with uniform convergence in $\log x$. Let $\xi_K(s)=s(s-1)\abs{d_K}^{s/2}
-\Gamma_\R(s)^{r_1}\Gamma_\C(s)^{r_2}\zeta_K(s)$ be the completed entire zeta function, with
-$\Gamma_\R(s)=\pi^{-s/2}\Gamma(s/2)$ and $\Gamma_\C(s)=2(2\pi)^{-s}\Gamma(s)$, and
-$H_K=(\log\xi_K)'$.
-
-\begin{theorem}[Multiplicities from a sparse sequence; \stG\ when $K$ is abelian]\label{ana:thm:simple}
-Let $K$ be a number field all of whose nontrivial zeros lie on the critical line.
-\begin{enumerate}[label=\textup{(\roman*)}]
-\item For every real $u$,
- \[
-  \lim_{N\to\infty}\frac1N\sum_{n=1}^N\sqrt{x_n}\,R_K(x_n)\,x_n^{-iu}=\frac{m_K(u)}{1/4+u^2}.
- \]
-\item The limit
- \[
-  \lim_{N\to\infty}\frac1N\sum_{n=1}^Nx_nR_K(x_n)^2
-  =\sum_{t\in\Gamma_K}\frac{m_K(t)^2}{(1/4+t^2)^2}
- \]
- exists, and it exceeds $4H_K(1)-2H_K'(1)$ by exactly
- $\sum_{t}m_K(t)\bigl(m_K(t)-1\bigr)/(1/4+t^2)^2\ge0$.
-\item \textup{(\stG.)} For $K=\Q$, all nontrivial zeros of $\zeta$ are simple if and only if
- \[
-  \lim_{N\to\infty}\frac1N\sum_{n=1}^Nx_nR_\Q(x_n)^2
-  =6+2\gamma-2\log(4\pi)+4\gamma_1+2\gamma^2-\frac{\pi^2}4\approx0.00007420127287493 ,
- \]
- where $\zeta(1+u)=u^{-1}+\gamma-\gamma_1u+O(u^2)$. The excess $D$ of the limit over this
- constant satisfies $0\le D<1.67\cdot10^{-34}$.
-\end{enumerate}
-\end{theorem}
-
-The hypothesis holds for $K=\Q$ and for abelian fields by \cref{src:thm:dgrh}; for a general
-field it is an additional assumption. No assumption is made about rational relations among
-the ordinates.
-
-\begin{proof}
-(i) For every real $u$,
-\[
- \lim_{N\to\infty}\frac1N\sum_{n=1}^Nx_n^{iu}=\begin{cases}1,&u=0,\\0,&u\ne0.\end{cases}
-\]
-Indeed, for $u\ne0$ at least one of $u\log2/(2\pi)$ and $u\log3/(2\pi)$ is irrational, since
-$\log2/\log3$ is irrational, and Weyl's theorem applies to the polynomial with these linear
-and quadratic coefficients \cite{Weyl1916Gleichverteilung}. Multiply \eqref{ana:eq:apseries}
-by $x_n^{-iu}$ and average termwise: absolute convergence controls the tail uniformly in $N$,
-and the average of the $o(1)$ term tends to zero.
-
-(ii) The prime sum is real, so its square is its squared absolute value. The double series
-obtained from \eqref{ana:eq:apseries} converges absolutely, and by the same averaging only
-pairs with equal ordinates survive. The Hadamard product of genus one and the symmetry
-$\xi_K(s)=\xi_K(1-s)$ give
-\[
- \sum_\rho\frac1{\rho(1-\rho)}=H_K(1)-H_K(0)=2H_K(1),\qquad
- \sum_\rho\frac1{(1-\rho)^2}=-H_K'(1).
-\]
-With $[z(1-z)]^{-2}=z^{-2}+(1-z)^{-2}+2/[z(1-z)]$ and the same symmetry,
-\[
- \sum_{t\in\Gamma_K}\frac{m_K(t)}{(1/4+t^2)^2}=4H_K(1)-2H_K'(1),
-\]
-and subtracting this from the limit gives the stated excess.
-
-(iii) For $K=\Q$ the expansion at $s=1$ gives
-\[
- H_\Q(1)=1+\tfrac12\gamma-\tfrac12\log(4\pi),\qquad
- H_\Q'(1)=-1-2\gamma_1-\gamma^2+\frac{\pi^2}8,
-\]
-which is the stated constant, and $D$ vanishes exactly when all zeros are simple. For the
-enclosure let $T_0=3\cdot10^{12}$. The zeros up to height $T_0$ are simple
-\cite{PlattTrudgian2021Riemann}. For $t\ge T_0$ the zero-counting function satisfies
-$\abs{N(t)-(t/2\pi)\log(t/(2\pi e))}\le0.1038\log t+0.2573\log\log t+9.3675<\log t$
-\cite[Corollary~1.2]{HasanalizadeShenWong2021Counting}. Hence $N(t)\le t\log t$ there and a
-jump of $N$ at $t>T_0$ has size at most $2\log t$. By conjugation symmetry and Stieltjes
-integration by parts, in which the boundary term discarded at $T_0$ is nonpositive,
-\[
- D\le4\int_{(T_0,\infty)}\frac{\log t}{t^4}\,\dd N(t)
- \le16\int_{T_0}^\infty\frac{\log^2t}{t^4}\,\dd t
- =\frac{16}{T_0^3}\Bigl(\frac{\log^2T_0}3+\frac{2\log T_0}9+\frac2{27}\Bigr)<1.67\cdot10^{-34}.
-\]
-The rational evaluation of the last bound is recorded in the file
-\begin{center}
-\artifact{grh-torsion-and-prime-sampling/verification.txt}.
-\end{center}
-\end{proof}
-
-The identity in (ii) has the same shape for the polynomial $n^d$ in place of $n^2$, for each
-fixed $d\ge2$. Continuous mean squares of prime errors also detect repeated zeros
-\cite{Caceres2026Constant}. Here the reciprocal weights make the series
-\eqref{ana:eq:apseries} absolutely convergent, and the polynomial choice of $\log x_n$ allows
-sampling on one sparse sequence. The arithmetic question that remains is an upper bound for
-the sampled mean square by the explicit constant in (iii). It would require control of the
-off-diagonal terms when the prime side of the mean square is expanded at these cutoffs.
-
-\paragraph{Negative excursions of the source remainder.}
-The remainder of the source is bounded from above by the source itself. Its excursions below
-zero at modulus one can be located as follows. Fix a prime $d\equiv7\pmod8$, let
-$\chi=\chi_d$, and write $R_d=R_{d,1}$, so that
-\[
- R_d(x)=\sum_{n\le x}\Lambda(n)\bigl(1-\chi(n)\bigr)\Bigl(\frac1n-\frac1x\Bigr)
- -\log x+1+\gamma-\frac{L'(1,\chi)}{L(1,\chi)} .
-\]
-Put
-\[
- B_0=2+\gamma-\log(4\pi)=0.0461914179\ldots,\qquad
- B_d=\log\frac d\pi-\gamma+2\,\frac{L'(1,\chi)}{L(1,\chi)} .
-\]
-
-\begin{theorem}[Excursion bounds; \stG]\label{ana:thm:excursion}
-For every prime $d\equiv7\pmod8$,
-\[
- -B_d-B_0\le\liminf_{x\to\infty}\sqrt x\,R_d(x)\le-B_d+B_0 .
-\]
-A single sequence $x_j\to\infty$ realizes $\sqrt{x_j}\,R_d(x_j)\to B_0-B_d$ for every such $d$
-simultaneously, and there is a single sequence of integer exponents $n_j\to\infty$ with
-$\sqrt{a^{n_j}}\,R_d(a^{n_j})\to B_0-B_d$ for every integer $a\ge2$ and every $d$. In
-particular the lower limit divided by $\log d$ tends to $-1$ as $d\to\infty$.
-\end{theorem}
-
-The limits are taken in this order, first in $x$ for fixed $d$. Nothing is asserted about the
-first $x$ at which a given excursion occurs.
-
-\begin{proof}
-By \cref{src:thm:dgrh} the nontrivial zeros of $\zeta$ and of $L(s,\chi)$ lie on the critical
-line. For $F=\zeta$ or $F=L(\cdot,\chi)$ put
-\[
- H_F(u)=\sum_{\rho=1/2+i\gamma_\rho}\frac{e^{i\gamma_\rho u}}{1/4+\gamma_\rho^2},
-\]
-over all nontrivial zeros with multiplicity, central zeros included. The series converges
-absolutely and uniformly, and is real. For fixed $d$,
-\begin{equation}\label{ana:eq:O1}
- \sqrt x\,R_d(x)=H_\zeta(\log x)-H_{L(\cdot,\chi)}(\log x)+O_d\bigl(x^{-1/2}\bigr).
-\end{equation}
-To see this, integrate $x^sA(s)/(s(s-1))$ over $\Re s=2$, with
-$A=-\zeta'/\zeta+L'/L(\cdot,\chi)$. Mellin inversion gives
-$\sum_{n\le x}\Lambda(n)(1-\chi(n))(x/n-1)$. At $s=1$ the residue is
-$x\bigl(\log x-1-\gamma+L'(1,\chi)/L(1,\chi)\bigr)$, and at a zero $\rho$ it is
-$x^\rho\bigl(m_\zeta(\rho)-m_L(\rho)\bigr)/\bigl(\rho(1-\rho)\bigr)$, coincident zeros
-included. Shift the contour to $\Re s=-1/2$. The kernel has a simple pole at $0$, since
-$\zeta(0)L(0,\chi)\ne0$ for this odd primitive character, with a residue depending only on
-$d$. On the new line the logarithmic derivatives are $O_d(\log(\abs{\Im s}+2))$ by the
-functional equations, and the horizontal edges can be sent to infinity along heights at
-distance $\gg_d1/\log T$ from both zero sets. The new integral is $O_d(x^{-1/2})$. Dividing
-by $\sqrt x$ gives \eqref{ana:eq:O1}.
-
-For the completed entire function $\Xi_F$ the Hadamard product gives
-\[
- \frac{\Xi_F'}{\Xi_F}(1)-\frac{\Xi_F'}{\Xi_F}(0)=\sum_\rho\frac1{\rho(1-\rho)}=H_F(0),
-\]
-and by the functional equation the left side is twice the logarithmic derivative at $1$.
-Inserting the gamma factors gives $H_\zeta(0)=B_0$ and $H_{L(\cdot,\chi)}(0)=B_d$. As
-$\abs{H_F(u)}\le H_F(0)$, \eqref{ana:eq:O1} proves the lower bound.
-
-For finitely many real ordinates, simultaneous approximation returns all their phases
-arbitrarily close to $1$ at arbitrarily large times, whatever their rational relations: the
-integer iterates in the finite torus have a convergent subsequence, and differences of
-increasingly separated indices return to the identity. Enumerate the ordinates of $\zeta$ and
-of the countably many characters, and take $u_j>j$ approximating the first $j$ phases to
-within $1/j$. Absolute convergence of each series gives
-$H_\zeta(u_j)-H_{L(\cdot,\chi)}(u_j)\to B_0-B_d$ for every $d$, which proves the upper bound
-and the simultaneous assertion with $x_j=e^{u_j}$. The same argument with the countably many
-frequencies $\gamma_\rho\log a$, $a\ge2$, gives the integer exponents $n_j$. Finally
-$L'(1,\chi)/L(1,\chi)=O(\log\log d)$ under \cref{src:thm:dgrh}
-\cite[Corollary~3.3.2]{IharaMurtyShimura2009Logarithmic}, which gives $B_d\sim\log d$.
-\end{proof}
-
-\begin{proposition}[When the lower endpoint is attained; \stG]\label{ana:prop:parity}
-The value $-B_d-B_0$ is a limiting value of $\sqrt x\,R_d(x)$ if and only if every finite
-integer relation among the positive ordinates of $\zeta$ and of $L(\cdot,\chi)$ has an even
-total coefficient on the ordinates of $\zeta$. Here each occurrence of an ordinate is
-labelled by its function, so a positive ordinate shared by the two functions already violates
-the condition.
-\end{proposition}
-
-\begin{proof}
-Equality forces each cosine with positive weight in $H_\zeta$ to approach $-1$ and each
-cosine in $H_{L(\cdot,\chi)}$ to approach $+1$, because their individually nonnegative
-deficits sum to zero in the limit. The function $\zeta$ has no central zero, and central
-zeros of $L$ contribute with the required sign. On each finite set of frequencies,
-Kronecker's theorem identifies the closure of the real flow with the subtorus cut out by the
-integer relations, and the required sign vector lies in that closure exactly under the
-stated parity condition. A diagonal sequence and the summable tails give the sufficiency for
-all ordinates.
-\end{proof}
-
-For $d=7$ the two endpoints are approximately $-0.30142740$ and $-0.20904456$, and for
-$d=23$ they are $-0.61549819$ and $-0.52311535$. Further values are in the file
-\begin{center}
-\artifact{grh_method_transfers_sharp_torsion/checks/oscillation_bounds.txt}.
-\end{center}
-These numbers evaluate the proven bounds through
-\[
- \frac{L'(1,\chi)}{L(1,\chi)}=\log(2\pi)+\gamma-\frac1{L(0,\chi)}\sum_{a=1}^{d-1}\chi(a)\log\Gamma(a/d),
- \qquad L(0,\chi)=-\frac1d\sum_{a=1}^{d-1}a\chi(a).
-\]
-They are not estimates of a lower limit by sampling.
-
 \paragraph{Li coefficients.}
 The sparse exponent set $\anaE$ of \cref{ana:thm:blocks} also gives a full equivalence for the
 Li coefficients of a number field, which sees zeros whose real parts approach an unattained
 supremum (\cref{li:thm:sparse}), and a rigidity statement for differences of Li coefficients
 of two fields (\cref{li:thm:rigidity}). Both are in \cref{li:sec:sampling}.
-
-\subsection{Sparse Hankel tests at rational centres}\label{ana:sec:hankel}
-{\raggedright\sources{sparse_dirichlet_zero_tests}}
-
-A different positivity test uses sparse derivatives of a logarithm instead of prime sums. Let
-$F\not\equiv0$ be entire of order at most one and real on $\R$ up to a constant phase. At a
-real $c$ let $r_c$ be the multiplicity of $c$ as a zero and $F_c(z)=F(z)/(z-c)^{r_c}$. By
-Hadamard's factorization, for $k\ge2$,
-\[
- P_k(c)=-\frac1{(k-1)!}\frac{\dd^k}{\dd z^k}\log F_c(z)\Big|_{z=c}=\sum_{\gamma\ne c}(\gamma-c)^{-k},
-\]
-with multiplicities and absolute convergence. For a stride $m\ge1$, an even $K\ge2$ and a width
-$b\ge1$ put
-\[
- H(c,m;K,b)=\bigl[P_{m(K+i+j)}(c)\bigr]_{0\le i,j<b},
-\]
-a real symmetric matrix using $2b-1$ derivative orders. Map each zero $\gamma\ne c$ to
-$u=(\gamma-c)^{-m}$, add the multiplicities $a_u$ of equal values, and let
-$d_c\in\set{0,1,\dots,\infty}$ be the number of distinct nonreal conjugate pairs among the values.
-Write $\nu_-(H)$ for the number of negative eigenvalues.
-
-\begin{theorem}[Moving-window inertia; \stU]\label{ana:thm:hankel}
-For even $K_j\to\infty$ and $b_j\to\infty$,
-$\lim_{j\to\infty}\nu_-\bigl(H(c,m;K_j,b_j)\bigr)=d_c$; a finite limit is attained for all large
-$j$, and if $d_c=0$ every block is positive semidefinite.
-\end{theorem}
-
-\begin{proof}
-For $p(t)=\sum_{i<b}x_it^i$ the quadratic form is $Q_K(p)=\sum_ua_uu^Kp(u)^2$. Real nodes give
-nonnegative terms because $K$ is even, and a conjugate pair gives
-$2a_u\abs u^K\Re(e^{iK\arg u}p(u)^2)$, which is nonnegative on the hyperplane
-$\Im(e^{iK\arg(u)/2}p(u))=0$; so $\nu_-\le d_c$. Conversely choose $s$ distinct pairs with
-representatives $v_\ell$ in the upper half-plane, $r=\min\abs{v_\ell}$, the finite set $A$ of
-nodes with $\abs u\ge r$, of size $n$, and $q<r$ bounding the other nodes. For $t\in\R^s$ let
-$p$ of degree $<n$ interpolate $p(v_\ell)=ie^{-iK\arg(v_\ell)/2}t_\ell$,
-$p(\bar v_\ell)=\overline{p(v_\ell)}$, and $p=0$ at the other nodes of $A$. Its coefficients
-are real and $\sup_{\abs z\le q}\abs p\le B\norm t$ with $B$ independent of $K$. The nodes of $A$
-contribute at most $-2r^K\norm t^2$ and the others at most
-$B^2\norm t^2q^{K-2}\sum_ua_u\abs u^2$, so the form is negative definite on an $s$-dimensional
-space once $K$ is large and $b\ge n$.
-\end{proof}
-
-A nonreal zero can still be invisible when its image is real. For $w=x+iy$ with $y>0$ call
-$c\in\R$ \emph{blind for $w$ at stride $m$} if $(w-c)^{-m}\in\R$. With
-$T_w(t)=(t-w)/(t-\bar w)$, which maps the real projective line onto the unit circle, this is
-$T_w(c)^m=1$, that is,
-\begin{equation}\label{ana:eq:cot}
- c=x-y\cot(k\pi/m),\qquad1\le k<m .
-\end{equation}
-
-\begin{lemma}[Rational cross ratios of roots of unity]\label{ana:lem:cyclo}
-A rational cross ratio greater than $1$ of four distinct roots of unity lies in
-$\anaE_\times=\set{4/3,3/2,2,3,4}$ \cite[Theorem~3.10]{GardnerGritzmann1997Discrete}. If their
-orders divide $m$, a prime $p\nmid m$ divides neither the numerator nor the denominator of the
-reduced cross ratio or of its complement.
-\end{lemma}
-
-\begin{proof}
-In $\Q(\zeta_N)$ the norm of $1-\xi$, for $\xi\ne1$ of order $d\mid N$, is
-$\Phi_d(1)^{[\Q(\zeta_N):\Q]/\varphi(d)}$, and $\Phi_d(1)=p$ for $d=p^a$ and $1$ otherwise. So the
-normalized $p$-valuation of a difference of two roots of unity lies in $[0,1/(p-1)]$ and is $0$
-for $p\nmid N$. A cross ratio $r$ and $1-r$ are quotients of products of two such differences,
-so $\abs{v_p(r)},\abs{v_p(1-r)}\le2/(p-1)$. With $r=A/B>1$ in lowest terms and $D=A-B$, the
-pairwise coprime $A,B,D$ divide $12$, and $A=B+D$ leaves $2=1+1$, $3=1+2$, $4=1+3$ and
-their reversals.
-\end{proof}
-
-For rational centres $a<b<c<d$ simultaneously blind for $w$, invariance of cross ratios gives
-\begin{equation}\label{ana:eq:ratios}
- \frac{c-a}{b-a}\in\anaE_\times,\qquad\frac{(c-a)(d-b)}{(c-b)(d-a)}\in\anaE_\times .
-\end{equation}
-Let $\anaM_\times=\set{-3,-1,0,1,3}$; an affine copy is $a+b\anaM_\times$ with $a,b\in\Q$, $b\ne0$.
-
-\begin{theorem}[Rational sampling sets; \stU]\label{ana:thm:centres}
-For a finite set $C\subset\Q$ the following are equivalent:
-\begin{enumerate}[label=\textup{(\arabic*)}]
-\item some nonreal $w$ is blind at every $c\in C$, with any strides;
-\item $C$ is contained in an affine copy of $\anaM_\times$;
-\item a real quadratic with a nonreal pair of zeros passes every test at every $c\in C$ with
- the common stride $6$.
-\end{enumerate}
-Consequently, for the centres $\set{0,1,5}$, any strides $m_c$ and any even $K_j\to\infty$,
-$b_j\to\infty$, all zeros of $F$ are real if and only if all blocks at the three centres are
-positive semidefinite for large $j$; if $F$ has a nonreal zero, one fixed centre has a negative
-eigenvalue for every large $j$. Six distinct rational centres always suffice, some sets of
-five do not, and three is the least number of chosen centres that suffices for all strides.
-\end{theorem}
-
-\begin{proof}
-Rescale the extreme points of $C$ to $0,1$. By \eqref{ana:eq:ratios} each interior point lies
-in the set $\set{1/4,\,1/3,\,1/2,\,2/3,\,3/4}$, and the four-point test on $0,u,v,1$ leaves only the pairs
-\[
- (1/4,1/2),\ (1/3,1/2),\ (1/3,2/3),\ (1/2,2/3),\ (1/2,3/4);
-\]
-for instance $1/4,3/4$ gives $9/8$. So the interior lies in $\set{1/4,1/2}$,
-$\set{1/3,1/2,2/3}$ or $\set{1/2,3/4}$, and $4t-1$, $6t-3$, $4t-3$ map these sets with the
-endpoints into $\anaM_\times$. Conversely $w=i\sqrt3$ satisfies
-\eqref{ana:eq:cot} at every point of $\anaM_\times$ for $m=6$, so $(z-a)^2+3b^2$ is blind on
-$a+b\anaM_\times$, its images are real and all blocks are semidefinite. If such a quadratic passes
-throughout, \cref{ana:thm:hankel} shows that its pair is blind throughout. The triple $0,1,5$
-has ratio $5\notin\anaE_\times$, so a nonreal zero has a nonreal image at one of the centres,
-and \cref{ana:thm:hankel} applies. Any two rational centres lie in an affine copy of
-$\anaM_\times$.
-\end{proof}
-
-\begin{theorem}[Total loss over all rational centres; \stU]\label{ana:thm:hankelloss}
-Let $D$ be the number of distinct nonreal conjugate pairs of zeros of $F$, and choose a stride
-$m_c$ at each rational centre. If $D<\infty$, then $0\le d_c\le D$ and
-\[
- \sum_{c\in\Q}(D-d_c)\le5D+\binom D2,
-\]
-with equality for every $D$ for an integer polynomial at common stride six. If $D=\infty$,
-then $d_{c_n}\to\infty$ along every sequence of distinct rational centres.
-\end{theorem}
-
-\begin{proof}
-A pair loses one unit at a centre where its image is real, which happens at most at five
-rational centres by \cref{ana:thm:centres}. Pairs with the same unordered image pair have
-$\abs{w_i-c}=\abs{w_j-c}$, that is $2c(x_j-x_i)=\abs{w_j}^2-\abs{w_i}^2$, which has at most one
-solution; a group of size $h$ loses $h-1\le\binom h2$. For equality take
-$F_D(z)=\prod_{j<D}((z-t_j)^2+3)$ with $t_j=10\cdot2^j$: pair $j$ disappears exactly on
-$t_j+\anaM_\times$, and at the distinct midpoints $(t_j+t_k)/2$, which lie in no $t_\ell+\anaM_\times$,
-two pairs merge. For $D=\infty$ any $s$ pairs give $s$ distinct nonreal images outside
-$5s+\binom s2$ centres.
-\end{proof}
-
-For a finite $S\subset\Q$ with $\abs S\ge2$ let
-$h(S)=\max_{a,b}\abs{S\cap(a+b\anaM_\times)}$. If $F$ has a nonreal zero, at least
-$\abs S-h(S)$ centres of $S$ have a negative eigenvalue in every late block, whatever the
-strides, and $(z-a)^2+3b^2$ at stride six shows that $\abs S-h(S)$ is best possible. A
-Behrend-type construction \cite{Behrend1946Sets} gives, for $N\ge3$, $N$ integer centres of
-diameter $N\exp(O(\sqrt{\log N}))$ with $h=2$, so that any three of them suffice: a jointly blind
-triple $A<C<B$ satisfies $vC=(v-u)A+uB$ with $1\le u<v\le4$, which is impossible on a sphere of
-digit vectors in base $4M$ with digits below $M$, by strict convexity of the norm.
-
-For a prescribed common stride the cyclotomic restriction gives more. A finite rational set is
-jointly blind for some nonreal point exactly when: it is empty for $m=1$; it has at most one
-centre for $m=2$; at most two for odd $m\ge3$; at most two or a three-term progression for
-even $m\ge4$ with $3\nmid m$; and it lies in an affine copy of $\anaM_\times$ for $6\mid m$. For odd
-$m$ the numerator, denominator and difference of a rational cross ratio would all be odd; for
-$3\nmid m$ only $r=2$ survives. If all zeros satisfy $\abs{\Im z}<h$, two centres at distance
-$\Delta$ suffice at common stride $m\ge3$ exactly when $\Delta\ge2h\cot(\pi/m)$.
-
-\begin{corollary}[Dirichlet $L$-functions; \stU\ and \stG]\label{ana:cor:hankel}
-Let $\chi$ be primitive of conductor $q>1$, $\chi(-1)=(-1)^a$,
-$\Lambda(s,\chi)=(q/\pi)^{(s+a)/2}\Gamma((s+a)/2)L(s,\chi)$ with root number $\eps_\chi$, and
-$F_\chi(z)=\eps_\chi^{-1/2}\Lambda(\frac12+iz,\chi)$; for $q=1$ take $F_1(z)=\xi(\frac12+iz)$.
-Then $F_\chi$ is real on $\R$ and of order one, a zero $\beta+it$ becomes $t+i(\frac12-\beta)$,
-and the critical-line statement for $\chi$ is equivalent to the tests of
-\cref{ana:thm:centres} at $\set{0,1,5}$. By \cref{src:thm:dgrh} every block is positive
-definite. For $\xi$ and real primitive characters the zero set is symmetric under $z\mapsto-z$,
-and the two centres $1,4$ suffice, since they act as $-1,1,4$, of ratio $5/2\notin\anaE_\times$.
-\end{corollary}
-
-\begin{proof}
-The functional equation $\Lambda(s,\chi)=\eps_\chi\overline{\Lambda(1-\bar s,\chi)}$ makes
-$F_\chi$ real on $\R$, and imprimitive characters have the same zeros in the open strip. Under
-GRH the nodes are real and infinitely many, each value has finite fibres, and a nonzero
-polynomial cannot vanish on all of them. For a symmetric zero set the entries at $-c$ differ
-from those at $c$ by $(-1)^{m(i+j)}$, a diagonal congruence.
-\end{proof}
-
-A single centre does not suffice for even functions and all strides: $z^2+c^2\tan^2(\pi/m)$ is
-blind at $c\ne0$ for $m\ge3$, and $z^2+1$ at $c=0$ for $m=2$. For $3z^2-3z+1$, whose roots
-$\frac12\pm i/(2\sqrt3)$ lie in the strip of Dirichlet ordinates, the stride-six images are
-real at $c=0,1$, while at $c=5$ with $K=b=2$,
-$\det H=(u\bar u)^2(u-\bar u)^2=-11226235159675972800/61^{24}<0$ for $u=(\gamma-5)^{-6}$; see
-\artifact{sparse_dirichlet_zero_tests/checks/verification.txt}.
-
-\subsection{A small-deviation law for sums over zeros}\label{ana:sec:smalldev}
-{\raggedright\sources{rh_sampling_and_small_deviations_2026-11-26; dirichlet_spectral_conditioning_2026-11-27; spectral_extremes_2026-11-27}}
-
-Sums over zeros with weights $1/\gamma^2$ also occur as random variables. Let $\gamma_j>0$ be a
-multiset with $N(T)=\#\set{j:\gamma_j\le T}\sim T\log T/(2\pi)$, and suppose that for
-$c,D,q>0$ and $\beta\in\R$
-\[
- H(u)=c\prod_j\Bigl(1+\frac{u^2}{\gamma_j^2}\Bigr),\qquad
- \log\frac{H(u)}c=\frac u2\Bigl(\log\frac{qu}{2\pi}-1\Bigr)+\beta\log u+\log\frac Dc-\frac1{48u}+R_H(u)
-\]
-as $u\to+\infty$, with $R_H^{(k)}(u)=O(u^{-2-k})$ for $k=0,1,2$. For $\theta>0$ let $G_j$ be
-independent gamma variables of shape $\theta$ and mean $\theta$, and $X_\theta=\sum_jG_j/\gamma_j^2$.
-
-\begin{theorem}[Small deviations of gamma sums; \stU]\label{ana:thm:gammasum}
-For small $x>0$ let $v=-W_{-1}(-8\pi x/(\theta q))$ and $u=\theta v/(4x)$, so that
-$v=\log(qu/2\pi)>1$, and put
-\[
- A_\theta(x)=\frac{2(c/D)^\theta}{\sqrt{\pi\theta}}\frac{u^{-\theta\beta-1/2}}{\sqrt{v-1}}
- \exp\Bigl(-\frac{\theta u(v-2)}4\Bigr).
-\]
-Then $X_\theta$ has a smooth density $f_\theta$, and as $x\downarrow0$
-\[
- \anaPr(X_\theta\le x)=A_\theta(x)\Bigl(1+\frac\theta{48u}+O\Bigl(\frac1{u\log u}\Bigr)\Bigr),\qquad
- f_\theta(x)=u^2A_\theta(x)\Bigl(1+\frac\theta{48u}+O\Bigl(\frac1{u\log u}\Bigr)\Bigr).
-\]
-In particular $x\log\anaPr(X_\theta\le x)/\log^2(1/x)\to-\theta^2/16$.
-\end{theorem}
-
-\begin{proof}
-\emph{Tilting.} With $K(t)=\theta\sum_j\log(1+t/\gamma_j^2)$ one has
-$\anaEx e^{-tX_\theta}=e^{-K(t)}=(c/H(\sqrt t))^\theta$. Under
-$\dd\anaPr_t=e^{-tX_\theta+K(t)}\dd\anaPr$ the summands are independent gamma variables with
-rates $\gamma_j^2+t$, of total mean $m(t)=K'(t)$ and variance $\sigma^2(t)=-K''(t)$, and the
-hypothesis gives, with $t=u^2$ and $\ell=\log(qu/2\pi)$,
-\[
- m(u^2)=\theta\Bigl(\frac\ell{4u}+\frac\beta{2u^2}+\frac1{96u^3}+O(u^{-4})\Bigr),\qquad
- \sigma^2(u^2)=\theta\Bigl(\frac{\ell-1}{8u^3}+\frac\beta{2u^4}+O(u^{-5})\Bigr).
-\]
-
-\emph{Local limit.} Let $p_t$ be the $\anaPr_t$-density of $(X_\theta-m(t))/\sigma(t)$,
-$n=u\log u$, $b_j=[\sigma(t)(\gamma_j^2+t)]^{-1}$ and
-$\kappa_3(t)=2\theta\sum_jb_j^3=O(n^{-1/2})$. Then $\theta\sum b_j^2=1$ and $\max b_j=O(n^{-1/2})$;
-the at least $a_1n$ ordinates in $[u,2u]$ have $b_j^2\ge a_2/n$, so the characteristic function
-satisfies $\abs{\phi_t(w)}\le(1+a_3w^2/n)^{-a_4n}$. For $\abs w\le n^{1/12}$,
-$\log\phi_t(w)=-w^2/2-i\kappa_3w^3/6+O(w^4/n)$, and the tails are $O(e^{-a_7n^{1/6}})$. Fourier
-inversion gives $\sup_y\abs{p_t(y)-\varphi(y)-\frac{\kappa_3}6(y^3-3y)\varphi(y)}=O(n^{-1})$.
-
-\emph{Saddle point.} Let $m(t_*)=x$, $u_*=\sqrt{t_*}$ and $a=t_*\sigma(t_*)\asymp\sqrt n$. The
-exact identities
-\[
- \anaPr(X_\theta\le x)=\frac{e^{t_*x-K(t_*)}}a\int_0^\infty e^{-z}p_{t_*}(-z/a)\,\dd z,\qquad
- f_\theta(x)=\frac{e^{t_*x-K(t_*)}p_{t_*}(0)}{\sigma(t_*)}
-\]
-give both quantities as $e^{t_*x-K(t_*)}/\sqrt{2\pi\sigma^2(t_*)}$, times $1/t_*$ for the
-distribution function, with relative error $O(1/(u_*\log u_*))$.
-
-\emph{Evaluation.} The explicit $u,v$ solve $x=\theta v/(4u)$, and the expansion of $m$ gives
-$u_*-u=O(1/\log u)$. For $\Phi(w)=xw^2-\theta\log(H(w)/c)$ one has
-$\Phi'(u)=-\theta\beta/u+O(u^{-2})$ and $\Phi''=O(\log u/u)$ near $u$, so
-$\Phi(u_*)-\Phi(u)=O(1/(u\log u))$, and
-$u^2\sqrt{2\pi\sigma^2(u^2)}=\frac{\sqrt{\pi\theta}}2u^{1/2}\sqrt{v-1}(1+O(1/(u\log u)))$.
-Finally the hypothesis gives
-$e^{\Phi(u)}=(c/D)^\theta u^{-\theta\beta}\exp(-\theta u(v-2)/4)(1+\theta/(48u)+O(u^{-2}))$.
-Smoothness of the density follows from the polynomial decay of the characteristic function.
-\end{proof}
-
-\begin{theorem}[Small deviations from zeta and real characters; \stG]\label{ana:thm:smalldev}
-Let $\gamma_j$ be the positive ordinates of the nontrivial zeros of $\zeta$, with multiplicity,
-$E_j$ independent exponential variables of mean $1$, $X=\sum_jE_j/\gamma_j^2$ and
-$c_0=\xi(1/2)>0$. With $v=-W_{-1}(-8\pi x)$ and $u=v/(4x)$,
-\[
- \anaPr(X\le x)=\frac{2^{5/4}c_0}{\pi^{3/4}}\frac{u^{-9/4}}{\sqrt{v-1}}e^{-u(v-2)/4}
- \Bigl(1+\frac1{48u}+O\Bigl(\frac1{u\log u}\Bigr)\Bigr)\qquad(x\downarrow0),
-\]
-the density is $u^2$ times the same expression, and
-$x\log\anaPr(X\le x)/\log^2(1/x)\to-1/16$. More generally \cref{ana:thm:gammasum} holds for
-$\zeta$ with $q=1$, $\beta=7/4$, $D=(\pi/2)^{1/4}$, $c=c_0$, and for a primitive real
-nonprincipal character $\chi$ of conductor $q$, with $\chi(-1)=(-1)^a$, central order $m$ and
-the ordinates of its noncentral zeros, with
-\[
- c=c_\chi=\frac{\Lambda_\chi^{(m)}(1/2)}{m!}>0,\qquad\beta=\frac{2a-1}4-m,\qquad
- D=2\sqrt\pi\Bigl(\frac q{2\pi}\Bigr)^{(2a+1)/4},
-\]
-where $\Lambda_\chi(s)=(q/\pi)^{(s+a)/2}\Gamma((s+a)/2)L(s,\chi)$.
-\end{theorem}
-
-\begin{proof}
-By \cref{src:thm:dgrh} the paired Hadamard product gives
-$\xi(\frac12+u)=c_0\prod_j(1+u^2/\gamma_j^2)$, the Riemann--von Mangoldt formula gives the
-count, and Stirling's expansion with $\log\zeta(u+\frac12)=O(2^{-u})$ gives
-$\log\xi(\frac12+u)=\frac u2(\log\frac u{2\pi}-1)+\frac74\log u+\frac14\log\frac\pi2-\frac1{48u}+O(u^{-2})$,
-with differentiable remainder. For $\chi$, the functional equation has a real root number
-$\eps$ with $\eps(-1)^m=1$, so $H_\chi(u)=\Lambda_\chi(\frac12+u)/u^m$ is even and entire of order
-one, equal to $c_\chi\prod_j(1+u^2/\gamma_j^2)$. Since $L(s,\chi)>0$ for real $s>1$ and has no
-real zero in $s>1/2$, $c_\chi>0$. With $b=(2a+1)/4$, Stirling's expansion gives
-$\log H_\chi(u)=\frac u2(\log\frac{qu}{2\pi}-1)+(b-\frac12-m)\log u+\log(2\sqrt\pi)+b\log\frac q{2\pi}
-+(b^2-b+\frac16)/u+O(u^{-2})$, and $b^2-b+\frac16=-\frac1{48}$ for $b=\frac14,\frac34$.
-\end{proof}
-
-The reciprocal-$\xi$ law itself is classical \cite{RoynetteYor2005Wald}, and Hadamard
-factorization methods for such laws are in \cite{GaoHannigLeeTorcaso2003Laplace}; a tilted
-local Gaussian limit for the same density appears in \cite{Sra2026Positivity}. No simplicity
-of zeros, pair correlation or central nonvanishing is used.
-
-\paragraph{Conditioning a spectral gamma sum to be small.}
-\Cref{ana:thm:gammasum} gives the size of the lower tail. Its conditional structure is as
-follows: the small value is shared among the spectral coordinates along a deterministic profile,
-with Brownian-bridge fluctuations, an independent exponential slack at the boundary, and a sharp
-threshold for the number of low coordinates that look like independent gamma variables, while the
-largest individual terms form a marked Poisson process at a lower height, independent of the whole
-bulk path. The
-probability statements hold for every regularly varying spectrum; \cref{src:thm:dgrh} enters only
-to identify the law with a reciprocal completed $L$-function.
-
-Let $0<\gamma_1\le\gamma_2\le\cdots\to\infty$, with repetitions, and $N(T)=\#\set{j:\gamma_j\le T}$.
-Assume that $N$ is regularly varying of index $\alpha>0$, that is $N(rT)/N(T)\to r^\alpha$ for every
-$r>0$. Fix $p>\alpha$ and $\theta>0$, let $G_j$ be independent gamma variables of shape $\theta$ and
-rate $1$, and put
-\[
- X=\sum_j\frac{G_j}{\gamma_j^p},\qquad K(t)=\theta\sum_j\log\Bigl(1+\frac t{\gamma_j^p}\Bigr),
-\]
-so that $\anaEx e^{-tX}=e^{-K(t)}$. For $0<x<\anaEx X$ let $t=t_x$ be the unique positive root of
-$K'(t)=\theta\sum_j(\gamma_j^p+t)^{-1}=x$, and $u=t^{1/p}$; this \emph{exact} saddle replaces the
-explicit $u$ of \cref{ana:thm:gammasum}, and $t,u\to\infty$ as $x\downarrow0$. For $c\in[0,\infty]$
-put
-\[
- X_x(c)=\sum_{\gamma_j\le cu}\frac{G_j}{\gamma_j^p},\quad
- m_x(c)=\theta\sum_{\gamma_j\le cu}\frac1{\gamma_j^p+t},\quad
- \sigma_x^2=\theta\sum_j\frac1{(\gamma_j^p+t)^2},\quad Y_x=t(x-X).
-\]
-Let $C_q=\int_0^\infty\alpha r^{\alpha-1}(1+r^p)^{-q}\,\dd r$ for $q>\alpha/p$, so that
-$C_1=\alpha\pi/(p\sin(\pi\alpha/p))$ and $C_2=(1-\alpha/p)C_1$, and
-\[
- A(c)=\frac1{C_1}\int_0^c\frac{\alpha r^{\alpha-1}}{1+r^p}\,\dd r,\qquad
- V(c)=\frac1{C_2}\int_0^c\frac{\alpha r^{\alpha-1}}{(1+r^p)^2}\,\dd r .
-\]
-Let $B$ be a standard Brownian bridge, $\Phi$ the standard normal distribution function and
-$\varphi_\lambda$ the centred normal density of variance $\lambda$. Total variation is
-$d_{\mathrm{TV}}(P,Q)=\sup_E\abs{P(E)-Q(E)}$.
-
-\begin{theorem}[Joint conditional spectral law; \stU]\label{ana:thm:condlaw}
-\begin{enumerate}[label=\textup{(\roman*)}]
-\item $tx\sim\theta C_1N(u)$, $t^2\sigma_x^2\sim\theta C_2N(u)$ and
- $\sigma_x/x\sim\sqrt{C_2}/(\sqrt\theta\,C_1\sqrt{N(u)})$.
-\item Fix $0<c_1<\dots<c_k<\infty$ and $m\ge0$. Conditionally on $X\le x$ the vector
-\[
- \Bigl(\Bigl(\frac{X_x(c_i)-m_x(c_i)}{\sigma_x}\Bigr)_{i\le k},\ Y_x,\
- \Bigl(\frac{tG_j}{\gamma_j^p}\Bigr)_{j\le m}\Bigr)
-\]
-converges in total variation to $\bigl((B(V(c_i)))_{i\le k},E,(\Gamma_j)_{j\le m}\bigr)$, where $E$ is
-exponential of rate $1$, the $\Gamma_j$ are gamma of shape $\theta$ and rate $1$, and the three
-objects are independent.
-\item Conditionally on $X\le x$, $\sup_{0\le c\le\infty}\abs{X_x(c)/x-A(c)}\to0$ in probability, and
-the same holds with $X$ in place of $x$.
-\end{enumerate}
-\end{theorem}
-
-The centring $m_x(c)$ is the exact tilted mean; replacing it by its leading term is in general
-false on the fluctuation scale (\cref{ana:rem:centring}). At $c=\infty$ the standardized value is
-$-Y_x/(t\sigma_x)$, so total variation is claimed only at finite cutoffs. Convergence in law of the
-whole bulk path, jointly with the largest individual terms, is \cref{ana:thm:functional}; it is not a
-total-variation statement, since the finite paths jump and the limit is continuous.
-
-\begin{lemma}[Spectral sums; \stU]\label{ana:lem:specsums}
-For $q>\alpha/p$, $N(u)^{-1}\sum_j(1+(\gamma_j/u)^p)^{-q}\to C_q$, also with sum and integral restricted
-to a fixed interval $(a,b]$, $0\le a<b\le\infty$. Moreover $\sum_j\gamma_j^{-p}<\infty$ and
-$\sum_{\gamma_j\le h}\gamma_j^{2p}\sim\frac\alpha{\alpha+2p}h^{2p}N(h)$ as $h\to\infty$.
-\end{lemma}
-
-\begin{proof}
-The measures $N(u)^{-1}\sum_j\delta_{\gamma_j/u}$ converge to $\alpha r^{\alpha-1}\dd r$ on compact
-subintervals of $(0,\infty)$; near $0$ the integrand is at most $1$ and the mass below $\delta$ tends
-to $\delta^\alpha$. At infinity, given $\eps>0$ one has $N(2T)/N(T)\le2^{\alpha+\eps}$ for $T\ge T_0$,
-hence $N(ru)/N(u)\le C_\eps r^{\alpha+\eps}$ for $u\ge T_0$, $r\ge1$; with $\eps<pq-\alpha$ the part with
-$\gamma_j/u>R$ is at most $C\sum_{\ell\ge0}(2^\ell R)^{-pq}(2^{\ell+1}R)^{\alpha+\eps}$, uniformly small.
-The same dyadic estimate gives $\sum_j\gamma_j^{-p}<\infty$. Finally
-$\sum_{\gamma_j\le h}\gamma_j^{2p}=h^{2p}N(h)-2p\int_0^hr^{2p-1}N(r)\,\dd r$, and dominated convergence on
-$[0,1]$ after the substitution $r=hs$ gives the limit $1-2p/(\alpha+2p)$. The values of $C_1,C_2$ are
-beta integrals.
-\end{proof}
-
-Under the tilted measure $\dd\anaPr_t=e^{-tX+K(t)}\dd\anaPr$ the variables
-$\widetilde G_j=(1+t/\gamma_j^p)G_j$ are independent gamma of shape $\theta$ and rate $1$ (first for
-finite groups, by integrating out the independent tail). Put
-\[
- a_j=\frac1{1+(\gamma_j/u)^p},\qquad\varsigma^2=\theta\sum_ja_j^2=t^2\sigma_x^2,\qquad
- S=tX=\sum_ja_j\widetilde G_j,
-\]
-so $S$ has $\anaPr_t$-mean $tx$ and variance $\varsigma^2$. \Cref{ana:lem:specsums} gives (i) of
-\cref{ana:thm:condlaw}. The event $X\le x$ has positive probability: take a finite initial segment
-whose expected tail is below $x/4$, apply Markov's inequality to the tail and make the finitely many
-initial summands small.
-
-\begin{lemma}[Uniform local limit on a spectral band; \stU]\label{ana:lem:band}
-Let $I=(a,b]$ with $0\le a<b\le\infty$, delete any fixed finite set of indices, and put
-$Z_{I,u}=\varsigma^{-1}\sum_{\gamma_j/u\in I}a_j(\widetilde G_j-\theta)$. For large $u$ it has a
-continuous density $f_{I,u}$, and $f_{I,u}\to\varphi_{\lambda_I}$ uniformly and in $L^1$, where
-$\lambda_I=C_2^{-1}\int_I\alpha r^{\alpha-1}(1+r^p)^{-2}\,\dd r$. If a single index $j$ is deleted, the
-convergence is uniform also in $j$. The same holds for the whole spectrum
-with a lower block $\set{\gamma_j\le h(u)}$ removed, if $h=o(u)$, with limiting variance $1$.
-\end{lemma}
-
-\begin{proof}
-By \cref{ana:lem:specsums}, $\theta\sum_Ia_j^2/\varsigma^2\to\lambda_I$, and since $0<a_j\le1$,
-\[
- \log\phi_{I,u}(z)=\theta\sum_I\Bigl[-\frac{iza_j}\varsigma-\log\Bigl(1-\frac{iza_j}\varsigma\Bigr)\Bigr]
- =-\frac{\theta z^2}{2\varsigma^2}\sum_Ia_j^2+O_{\theta,z}(\varsigma^{-1})\to-\frac{\lambda_Iz^2}2 .
-\]
-For a compact $[a',b']$ inside $I$ with $a'>0$ there are at least $dN(u)$ indices there, each with
-$a_j\ge(1+b'^p)^{-1}$; as $\varsigma^2\asymp N(u)=n$,
-$\abs{\phi_{I,u}(z)}=\prod_I(1+z^2a_j^2/\varsigma^2)^{-\theta/2}\le(1+Az^2/n)^{-Dn}$, unchanged by a finite
-deletion. This is at most $\exp(-ADz^2/(1+A))$ for $\abs z\le\sqrt n$, and
-$\int_{\sqrt n}^\infty(1+Az^2/n)^{-Dn}\dd z\le C\sqrt n(1+A)^{-Dn/2}\to0$. Hence the characteristic
-functions converge in $L^1$, Fourier inversion gives uniform convergence of densities, and Scheff\'e's
-lemma gives $L^1$ convergence. Deleting one index changes the variance fraction by at most
-$\theta/\varsigma^2$ and leaves at least $dN(u)-1$ indices in $[a',b']$, whatever the index, so all
-these bounds are uniform in it. For a deleted block, $h\le\delta u$ eventually gives
-$\limsup N(h)/N(u)\le\delta^\alpha$, so the removed variance $\theta N(h)$ is $o(\varsigma^2)$, and the
-interval $[u,2u]$ still supplies the envelope.
-\end{proof}
-
-\begin{proof}[Proof of \cref{ana:thm:condlaw}]
-Under $\anaPr_t$ let $W=(S-tx)/\varsigma$ and $D_u=\anaEx_t[e^{\varsigma W}\anaone_{W\le0}]$. By
-\cref{ana:lem:band} the density $f_u$ of $W$ tends uniformly to $\varphi_1$, so
-\begin{equation}\label{ana:eq:Du}
- \varsigma D_u=\int_0^\infty e^{-y}f_u(-y/\varsigma)\,\dd y\to\varphi_1(0)=(2\pi)^{-1/2},
-\end{equation}
-and the density of $\anaPr(\cdot\mid X\le x)$ with respect to $\anaPr_t$ is exactly
-$D_u^{-1}e^{\varsigma W}\anaone_{W\le0}$. Omit the $m$ low coordinates and split the rest into the bands
-$I_1=(0,c_1],\dots,I_k=(c_{k-1},c_k],I_{k+1}=(c_k,\infty)$, with independent standardized sums of
-densities $f_{i,u}$ and limiting variances $\lambda_i=V(c_i)-V(c_{i-1})$ ($c_0=0$), $\lambda_{k+1}=1-V(c_k)$.
-Let $U_i$ be the standardized increment on the full band $I_i$. For values $r=(r_1,\dots,r_m)>0$ of
-$tG_j/\gamma_j^p=a_j\widetilde G_j$ put $\delta_u(r)=\varsigma^{-1}\sum_{j\le m}(r_j-\theta a_j)$; their
-tilted density $q_u(r)=\prod_j r_j^{\theta-1}e^{-r_j/a_j}/(\Gamma(\theta)a_j^\theta)$ tends to the
-product $q(r)$ of unit-rate gamma densities, and $\delta_u(r)\to0$. Changing the last increment to
-$y=-\varsigma\sum_{i\le k+1}U_i$ (Jacobian $1/\varsigma$), the conditional density of
-$(U_1,\dots,U_k,Y_x,r)$ is
-\[
- \frac{e^{-y}\anaone_{y\ge0}q_u(r)}{\varsigma D_u}\,f_{1,u}(z_1-\delta_u(r))\prod_{i=2}^kf_{i,u}(z_i)\,
- f_{k+1,u}\Bigl(-\frac y\varsigma-\sum_{i\le k}z_i\Bigr),
-\]
-which converges almost everywhere to
-$e^{-y}\anaone_{y\ge0}q(r)\varphi_1(0)^{-1}\prod_{i\le k}\varphi_{\lambda_i}(z_i)\,
-\varphi_{\lambda_{k+1}}(-\sum_iz_i)$. The normal part divided by $\varphi_1(0)$ is the density of
-independent centred normal increments of variances $\lambda_i$ conditioned to sum to zero, so the limit
-integrates to one and Scheff\'e's lemma gives total-variation convergence. The cumulative increments
-have covariance $V(\min(c_a,c_b))-V(c_a)V(c_b)$, which is the law of $(B(V(c_i)))_i$; an invertible
-linear map preserves total variation, and the factorization gives independence.
-
-For (iii), $m_x(c)/x\to A(c)$ by \cref{ana:lem:specsums} and $\sigma_x/x\to0$, so (ii) gives
-$X_x(c)/x\to A(c)$ at each finite $c$; at $c=\infty$, $X/x=1-Y_x/(tx)\to1$. A finite grid on which $A$
-varies by at most $\eps$, monotonicity of $X_x(c)$ and a union bound give the uniform statement.
-\end{proof}
-
-For a cutoff $h=h(u)$ let $J_u=\set{j:\gamma_j\le h}$, $s_j=(\gamma_j/u)^p$,
-$\tau_u^2=\theta\sum_{J_u}s_j^2$, let $Q_u$ be the conditional law of $(tG_j/\gamma_j^p)_{j\in J_u}$ given
-$X\le x$, and put $P_u=\bigotimes_{J_u}\mathrm{Gamma}(\theta,1+s_j)$ and
-$R_u=\bigotimes_{J_u}\mathrm{Gamma}(\theta,1)$ (second parameter the rate).
-
-\begin{theorem}[Sharp growing-block law; \stU]\label{ana:thm:block}
-Let $h=o(u)$.
-\begin{enumerate}[label=\textup{(\roman*)}]
-\item $d_{\mathrm{TV}}(Q_u,P_u)\to0$; more strongly the joint conditional law of the block and $Y_x$ is
- $o(1)$-close to $P_u\otimes\mathrm{Exp}(1)$.
-\item $d_{\mathrm{TV}}(Q_u,R_u)=2\Phi(\tau_u/2)-1+o(1)$. So the block is asymptotically independent
- unit-rate gamma if and only if $\tau_u\to0$, and the distance tends to $1$ if $\tau_u\to\infty$; the
- same holds with the slack included and compared with an independent $\mathrm{Exp}(1)$.
-\item If $h\to\infty$, $\tau_u^2\sim\frac{\theta\alpha}{\alpha+2p}N(h)(h/u)^{2p}$.
-\end{enumerate}
-\end{theorem}
-
-\begin{proof}
-Under $\anaPr_t$ write $S=S_B+S_R$ for the block and the independent remainder, with means
-$\mu_B+\mu_R=tx$. The block has law $P_u$, and $\mathrm{Var}_t(S_B)\le\theta N(h)=o(\varsigma^2)$. By
-\cref{ana:lem:band} the density $g_u$ of $(S_R-\mu_R)/\varsigma$ tends uniformly to $\varphi_1$ and is
-uniformly bounded. Relative to $P_u\otimes\mathrm{Exp}(1)$ the conditional law of the block values $r$
-and the slack $y$ has density
-\begin{equation}\label{ana:eq:blockratio}
- L_u(r,y)=\frac1{\varsigma D_u}\,g_u\Bigl(-\frac{\sum_{J_u}r_j-\mu_B+y}\varsigma\Bigr),
-\end{equation}
-since the remainder must equal $tx-\sum r_j-y$. Under the reference measure the argument tends to $0$ in
-probability, so $L_u\to1$ in probability by \eqref{ana:eq:Du}; $L_u$ is uniformly bounded, so
-$\anaEx\abs{L_u-1}\to0$, proving (i).
-
-For (ii), under $R_u$ with coordinates $Z_j$ the log-likelihood of $P_u$ is
-$\ell_u=\sum_{J_u}\{\theta\log(1+s_j)-s_jZ_j\}$, with $\max s_j\le(h/u)^p\to0$, mean
-$-\tau_u^2/2+O(\max s_j\,\tau_u^2)$ and variance $\tau_u^2$. If $\tau_u\to\tau\in(0,\infty)$, Lyapunov's
-condition $\sum\anaEx\abs{s_j(Z_j-\theta)}^3\le C_\theta\max s_j\sum s_j^2\to0$ gives
-$\ell_u\Rightarrow\mathcal N(-\tau^2/2,\tau^2)$ (a point mass if $\tau=0$), and
-$d_{\mathrm{TV}}(P_u,R_u)=\anaEx_{R_u}(1-e^{\ell_u})_+\to\Phi(\tau/2)-\Phi(-\tau/2)$. If $\tau_u\to\infty$,
-the Hellinger affinity $\prod_{J_u}(2\sqrt{1+s_j}/(2+s_j))^\theta=\exp(-\tau_u^2(1+o(1))/8)$ tends to $0$,
-and bounds $1-d_{\mathrm{TV}}$. Passing to subsequences in $[0,\infty]$ gives the formula in general;
-the triangle inequality and (i) give (ii), and tensoring with the same exponential law preserves total
-variation. (iii) is \cref{ana:lem:specsums}.
-\end{proof}
-
-A single coordinate, at any height, is never much more likely under the conditioning than under the
-tilted law.
-
-\begin{lemma}[Uniform marginal domination; \stU]\label{ana:lem:margdom}
-Uniformly in the index $j$ and in Borel sets $E\subseteq(0,\infty)$,
-\[
- \anaPr\bigl(tG_j/\gamma_j^p\in E\bigm| X\le x\bigr)\le(1+o(1))\,\anaPr_t\bigl(tG_j/\gamma_j^p\in E\bigr).
-\]
-In particular the factor is at most $2$ for all sufficiently large $u$.
-\end{lemma}
-
-\begin{proof}
-Apply \eqref{ana:eq:blockratio} to the block $\set j$, with $g_u$ the density of the standardized
-complementary sum, and integrate over the slack. The resulting marginal likelihood ratio is at most
-$\sup g_u/(\varsigma D_u)$. By \cref{ana:lem:band} with one index deleted, $\sup g_u\to\varphi_1(0)$
-uniformly in $j$, and $\varsigma D_u\to\varphi_1(0)$ by \eqref{ana:eq:Du}.
-\end{proof}
-
-Put $\mathcal D(\rho)=2\bigl[\Phi\bigl(\sqrt{-\log(1-\rho)/\rho}\bigr)-
-\Phi\bigl(\sqrt{-(1-\rho)\log(1-\rho)/\rho}\bigr)\bigr]$ for $0<\rho<1$, with $\mathcal D(0)=0$ and
-$\mathcal D(1)=1$.
-
-\begin{theorem}[Independence with the tilted rates; \stU]\label{ana:thm:macro}
-For every positive cutoff $h(u)$, $d_{\mathrm{TV}}(Q_u,P_u)=\mathcal D(V(h/u))+o(1)$. Thus
-$d_{\mathrm{TV}}(Q_u,P_u)\to0$ if and only if $h=o(u)$; if $h/u\to c\in(0,\infty)$ the limit is
-$\mathcal D(V(c))>0$, and if $h/u\to\infty$ it is $1$.
-\end{theorem}
-
-\begin{proof}
-Let $h/u\to c\in(0,\infty)$ and $\rho=V(c)$. Bracketing $h/u$ between $c\pm\eps$, the sum and band
-lemmas apply to the moving cutoff, so under $P_u$ the centred block sum $Z_u=(S_B-\mu_B)/\varsigma$
-tends in law to $\mathcal N(0,\rho)$ and $g_u\to\varphi_{1-\rho}$ uniformly. Integrating
-\eqref{ana:eq:blockratio} over the slack (whose shift $y/\varsigma$ has mean $1/\varsigma$), the
-likelihood of $Q_u$ relative to $P_u$ is, uniformly in the block, $o(1)$-close to
-$r(Z_u)=\varphi_{1-\rho}(Z_u)/\varphi_1(0)=(1-\rho)^{-1/2}\exp(-Z_u^2/(2(1-\rho)))$, a bounded continuous
-function. Hence $d_{\mathrm{TV}}(Q_u,P_u)\to\frac12\anaEx\abs{r(Z)-1}$ with $Z\sim\mathcal N(0,\rho)$. Now
-$r$ times the density of $\mathcal N(0,\rho)$ is that of $\mathcal N(0,\rho(1-\rho))$; the two densities
-cross at $\abs z=\sqrt{-(1-\rho)\log(1-\rho)}$, and integrating the difference between the crossings
-gives $\mathcal D(\rho)$. The case $h=o(u)$ is \cref{ana:thm:block}. If $h/u\to\infty$, marginalizing to
-the cutoff $bu$ gives $\liminf d_{\mathrm{TV}}\ge\mathcal D(V(b))\to1$ as $b\to\infty$. Subsequences in
-$[0,\infty]$ give the general formula.
-\end{proof}
-
-\begin{corollary}[The four-fifths transition for completed Dirichlet $L$-functions; \stG]\label{ana:cor:fourfifths}
-Take $p=2$ and let the spectrum be the positive ordinates, with multiplicity, of a finite product of
-$d$ completed degree-one factors: copies of $\xi(\frac12+w)$, primitive real Dirichlet factors with
-their central zeros removed, and conjugate pairs
-$H_\chi(w)=\Lambda_\chi(\frac12+w)\Lambda_{\bar\chi}(\frac12+w)/w^{2m}$, $m=\ord_{s=1/2}\Lambda_\chi$,
-for nonreal primitive $\chi$ (each pair counting $2$). Then $\anaEx e^{-tX}=(H(0)/H(\sqrt t))^\theta$
-for the even entire product $H$, $N(T)\sim\frac d{2\pi}T\log T$, $\alpha=1$, $C_1=\pi/2$, $C_2=\pi/4$,
-\[
- A(c)=\frac2\pi\arctan c,\qquad V(c)=\frac2\pi\Bigl(\arctan c+\frac c{1+c^2}\Bigr),\qquad
- x\sim\frac{\theta d\log u}{4u},\qquad\sigma_x^2\sim\frac{\theta d\log u}{8u^3},
-\]
-and $\tau_u^2\sim\theta d\,h^5\log h/(10\pi u^4)$ as $h\to\infty$. With $h_*(u)=(u^4/\log u)^{1/5}$ and
-$h/h_*(u)\to c\in[0,\infty]$, the conditional block $(u^2G_j/\gamma_j^2)_{\gamma_j\le h}$ is at
-total-variation distance
-\[
- 2\Phi\Bigl(c^{5/2}\sqrt{\frac{\theta d}{50\pi}}\Bigr)-1+o(1)
-\]
-from independent unit-rate gamma coordinates (limits $0$ and $1$ at $c=0,\infty$). In terms of
-$n=N(u)$ and $k=N(h)$, if $k/n^{4/5}\to\kappa\in[0,\infty]$ the distance tends to
-$2\Phi\bigl(\frac12\sqrt{125\theta\kappa^5/256}\bigr)-1$, independently of $d$. Independence with the
-tilted rates holds exactly for $k=o(n)$.
-\end{corollary}
-
-\begin{proof}
-For a nonreal $\chi$ the functional equations make $H_\chi$ even, and on the real axis
-$H_\chi(0)=\abs{\Lambda_\chi^{(m)}(\frac12)/m!}^2>0$. By \cref{src:thm:dgrh} the paired Hadamard product
-gives $H_\chi(w)/H_\chi(0)=\prod_{\gamma_j>0}(1+w^2/\gamma_j^2)$, with the positive zeros of both completed
-functions; evenness removes the exponential factor. The real factors are as in the proof of
-\cref{ana:thm:smalldev}. The count is the sum of the zero counts, and the constants follow from
-\cref{ana:thm:condlaw,ana:lem:specsums}. At $h=ch_*(u)$, $\tau_u^2\to2\theta dc^5/(25\pi)$, which gives
-the distance by \cref{ana:thm:block}. If $h/h_*\to\infty$, restrict to $h'=\min(h,u/\log u)$, which is
-$o(u)$ with $h'/h_*\to\infty$, and marginalize. For the count form,
-$N(h)/N(u)^{4/5}\to\frac{4c}5(d/2\pi)^{1/5}$ at $h=ch_*$; substituting $c=\frac{5\kappa}4(2\pi/d)^{1/5}$
-gives $\tau^2=125\theta\kappa^5/256$, and monotone bracketing handles general sequences. Regular
-variation gives $N(h)/N(u)\to0$ if and only if $h/u\to0$, so \cref{ana:thm:macro} gives the last
-claim.
-\end{proof}
-
-For example, for $\zeta$ with $\theta=1$ the limiting distances at $c=1,2,3,4$ are about $0.0636$,
-$0.3483$, $0.7864$ and $0.9893$. The transition is set by the accumulated squared rate corrections,
-not by the largest one, and it involves of order $n^{4/5}$ coordinates. The conductors, root numbers,
-multiplicities and individual ordinates affect only the exact saddle and finite-scale corrections.
-Monte Carlo comparisons at $u=10^3,10^4$ on a synthetic spectrum with the Riemann--von Mangoldt count
-approach the limit slowly, and no finite-$u$ error bound is claimed; the data are in
-\begin{center}
-\artifact{dirichlet_spectral_conditioning_2026-11-27/data/verification.json}.
-\end{center}
-
-For the height carrying half the total, take $\zeta$ ($q=1$) or a primitive real character of conductor
-$q$, $p=2$, with central zeros removed and every zero counted with multiplicity, and recall
-$N(T)=\frac T{2\pi}(\log\frac{qT}{2\pi}-1)+O_\chi(\log(T+2))$
-\cite{BennettMartinOBryantRechnitzer2021Counting}. With the exact saddle $u$ put
-\[
- \ell=\log\frac{qu}{2\pi},\qquad J(c)=\int_0^c\frac{\log r}{1+r^2}\,\dd r,\qquad
- M_u(c)=\frac\theta{2\pi u}\bigl(\ell\arctan c+J(c)\bigr),
-\]
-so that $J(1)=-G$ with Catalan's constant $G$ and $J(\infty)=0$.
-
-\begin{lemma}[Centring on the fluctuation scale; \stG]\label{ana:lem:centring}
-Uniformly for $c$ in compact subsets of $(0,\infty)$,
-\begin{gather*}
- m_x(c)=M_u(c)+O_\chi\Bigl(\frac{\log u}{u^2}\Bigr)=M_u(c)+o(\sigma_x),\\
- x=\frac{\theta\ell}{4u}+O_\chi\Bigl(\frac{\log u}{u^2}\Bigr),\qquad
- \sigma_x^2=\frac{\theta(\ell-1)}{8u^3}+O_\chi\Bigl(\frac{\log u}{u^4}\Bigr).
-\end{gather*}
-\end{lemma}
-
-\begin{proof}
-Let $R(T)$ be the error of the count, extended to $T\ge0$ with $R(0)=0$. Stieltjes integration by
-parts with $f(T)=(T^2+u^2)^{-1}$ gives $m_x(c)=M_u(c)+\theta f(cu)R(cu)-\theta\int_0^{cu}f'(T)R(T)\,\dd T$,
-with both error terms $O_\chi(\log u/u^2)$; at $c=\infty$ the boundary term vanishes and $J(\infty)=0$
-by $r\mapsto1/r$. For $(T^2+u^2)^{-2}$ the main integrals are $\int_0^\infty(1+r^2)^{-2}\dd r=\pi/4$ and
-$\int_0^\infty\log r\,(1+r^2)^{-2}\dd r=-\pi/4$ (write $(1+r^2)^{-2}=\frac12(r/(1+r^2))'+\frac12(1+r^2)^{-1}$
-and integrate by parts), with error $O_\chi(\log u/u^4)$. Finally $(\log u/u^2)/\sigma_x\to0$.
-\end{proof}
-
-\begin{remark}[A leading-order centring is insufficient]\label{ana:rem:centring}
-$m_x(1)-x/2=-\theta G/(2\pi u)+O_\chi(\log u/u^2)$, which divided by $\sigma_x$ grows like
-$\sqrt{u/\log u}$. So the centring $xA(c)$, valid on the scale $x$ in \cref{ana:thm:condlaw}(iii), is
-not valid in (ii).
-\end{remark}
-
-Let $H_x=\min\{\gamma_j:\sum_{\gamma_i\le\gamma_j}G_i/\gamma_i^2\ge X/2\}$, and for $\ell>0$ let $c_\ell>1$
-be the unique root of $\ell\arctan c_\ell+J(c_\ell)=\pi\ell/4$; the left side minus the right is $-G$ at
-$1$, tends to $\pi\ell/4$ at infinity, and has derivative $(\ell+\log c)/(1+c^2)>0$ for $c\ge1$.
-
-\begin{theorem}[The height carrying half the total; \stG]\label{ana:thm:medianheight}
-Conditionally on $X\le x$, as $x\downarrow0$,
-\[
- \frac x{\pi\sigma_x}\Bigl(\frac{H_x}u-c_\ell\Bigr)\Longrightarrow\mathcal N\Bigl(0,\frac14-\frac1{\pi^2}\Bigr),
-\]
-with $c_\ell=1+2G/\ell+2G^2/\ell^2+O(\ell^{-3})$ and $u\pi\sigma_x/x\sim\pi\sqrt{2u/(\theta\ell)}$. The
-implicit centre $c_\ell$ must be used: the error of the truncation $1+2G/\ell$, after normalization,
-grows like $\sqrt u/\ell^{3/2}$.
-\end{theorem}
-
-\begin{proof}
-If $c_u\to1$, splitting at $c_uu$ gives variance fractions $v_1=V(1)=\frac12+\frac1\pi$ and $1-v_1$ by
-bracketing; the intervals $[u/4,u/2]$ and $[2u,3u]$ lie in the two blocks and supply the Fourier
-envelope of \cref{ana:lem:band}. The two-band density argument of the proof of \cref{ana:thm:condlaw}
-gives $\bigl((X_x(c_u)-m_x(c_u))/\sigma_x,u^2(x-X)\bigr)\Rightarrow(Z,E)$ with
-$Z\sim\mathcal N(0,v_1(1-v_1))$ and $E$ exponential, independent. Let $d_u=\pi\sigma_x/x\to0$, fix $z$, and
-take $c_u=c_\ell+zd_u$. By \cref{ana:lem:centring} and the definition of $c_\ell$,
-$m_x(c_\ell)-x/2=o(\sigma_x)$, and $M_u'(c)=\frac\theta{2\pi u}\frac{\ell+\log c}{1+c^2}\sim x/\pi$ near
-$c=1$, so $(m_x(c_u)-x/2)/\sigma_x\to z$. Also $(x-X)/\sigma_x\to0$ in conditional probability, hence
-$(X_x(c_u)-X/2)/\sigma_x\Rightarrow Z+z$. The exact equivalence $H_x\le uc_u\iff X_x(c_u)\ge X/2$ gives the
-limit $\anaPr(Z\ge-z)$, and $v_1(1-v_1)=\frac14-\frac1{\pi^2}$. \Cref{ana:lem:centring} gives the height
-scale, and Taylor expansion at $c=1$ with $J(1)=-G$, $J'(1)=0$ gives the expansion of $c_\ell$.
-\end{proof}
-
-\paragraph{The largest contributions.}
-Return to a general regularly varying spectrum, with $\alpha<p$ and $\theta>0$ as before. The
-statements above concern fixed coordinates and macroscopic bands; the largest individual terms
-\[
- \varrho_j=\frac{tG_j}{\gamma_j^p}=a_j\widetilde G_j
-\]
-live at a different height. Under $\anaPr_t$ the $\varrho_j$ are independent gamma variables of shape
-$\theta$ and rate $1+(\gamma_j/u)^p$. Let $\bar F_\theta(a)=\Gamma(\theta)^{-1}\int_a^\infty s^{\theta-1}e^{-s}\,\dd s$
-be the gamma survival function, and define $b_u>0$ and $v_u$ by
-\begin{equation}\label{ana:eq:extcentre}
- \mathcal I_u(b):=\sum_j\bar F_\theta\bigl(b[1+(\gamma_j/u)^p]\bigr)=\sum_j\anaPr_t(\varrho_j>b),\qquad
- \mathcal I_u(b_u)=1,\qquad v_u=\frac u{b_u^{1/p}} .
-\end{equation}
-The series converges uniformly on compact subsets of $(0,\infty)$, and $\mathcal I_u$ is continuous and
-strictly decreasing from $\infty$ at $0$ to $0$ at $\infty$, so $b_u$ is well defined. Let
-$\nu_{\alpha,p}$ be the probability law on $(0,\infty)$ with density
-\[
- \nu_{\alpha,p}(\dd y)=\frac p{\Gamma(\alpha/p)}\,y^{\alpha-1}e^{-y^p}\,\dd y ,
-\]
-so that $Z\sim\nu_{\alpha,p}$ if and only if $Z^p\sim\mathrm{Gamma}(\alpha/p,1)$. Since
-$\sum_j\varrho_j<\infty$ the maximum is attained, and it is unique almost surely, also after
-conditioning; order the terms as $\varrho_{I_1}>\varrho_{I_2}>\cdots$ and put
-\[
- \Pi_x=\sum_j\delta_{(\varrho_j-b_u,\ \gamma_j/v_u)} .
-\]
-
-\begin{theorem}[Conditional marked extremes; \stU]\label{ana:thm:extremes}
-\begin{enumerate}[label=\textup{(\roman*)}]
-\item $b_u\sim\log N(u)$, and $\dfrac{\Gamma(1+\alpha/p)}{\Gamma(\theta)}N(v_u)\,b_u^{\theta-1}e^{-b_u}\to1$.
-\item Conditionally on $X\le x$, $\Pi_x$ converges to a Poisson point process $\Pi$ on
- $\R\times(0,\infty)$ of intensity $e^{-z}\dd z\,\nu_{\alpha,p}(\dd y)$; the convergence includes the
- finite configuration of atoms above any fixed level in the first coordinate. Jointly $Y_x\Rightarrow E_0$,
- exponential of rate $1$ and independent of $\Pi$.
-\item For every fixed $k$, conditionally on $X\le x$,
-\[
- \Bigl(\bigl(\varrho_{I_i}-b_u,\ (\gamma_{I_i}/v_u)^p\bigr)_{i\le k},\ Y_x\Bigr)\Longrightarrow
- \Bigl(\bigl(-\log(E_1+\dots+E_i),\ H_i\bigr)_{i\le k},\ E_0\Bigr),
-\]
- where $E_0,E_1,\dots$ are independent exponential variables of rate $1$, $H_1,H_2,\dots$ are independent
- $\mathrm{Gamma}(\alpha/p,1)$ variables, and the two families are independent. In particular
- $\anaPr(\max_j\varrho_j-b_u\le z\mid X\le x)\to\exp(-e^{-z})$, and the limiting height of the maximizer
- is independent of this Gumbel fluctuation and of the slack.
-\end{enumerate}
-\end{theorem}
-
-The location law does not depend on the gamma shape $\theta$. The marks converge only in law: their
-finite-$u$ distributions are discrete. As before, all randomness is in the weights $G_j$.
-
-\begin{lemma}[Centre and marked intensities; \stU]\label{ana:lem:extintensity}
-Part (i) of \cref{ana:thm:extremes} holds. For every $z\in\R$ and every interval $E\subseteq(0,\infty)$,
-whose endpoints may be $0$ or $\infty$,
-\[
- \sum_{\gamma_j/v_u\in E}\anaPr_t(\varrho_j>b_u+z)\to e^{-z}\nu_{\alpha,p}(E),\qquad
- \max_j\anaPr_t(\varrho_j>b_u+z)\to0 .
-\]
-\end{lemma}
-
-\begin{proof}
-For fixed $b>0$ the first $N(u)$ terms give $\mathcal I_u(b)\ge N(u)\bar F_\theta(2b)\to\infty$, so
-$b_u\to\infty$. With $\beta=\max(\theta-1,0)$ the elementary gamma tail bound gives, for $b\ge1$,
-$\mathcal I_u(b)\le Cb^\beta e^{-b}\sum_j(1+(\gamma_j/u)^p)^\beta e^{-(\gamma_j/u)^p}\le C'N(u)b^\beta e^{-b}$,
-by the dyadic counting of \cref{ana:lem:specsums} with an exponentially decaying integrand. At the root
-this gives first $b_u=O(\log N(u))$ and then $b_u\le\log N(u)+O(\log\log N(u))$. For fixed $\eps>0$,
-$1=\mathcal I_u(b_u)\ge N(\eps u)\bar F_\theta((1+\eps^p)b_u)$, and
-$\bar F_\theta(a)\sim a^{\theta-1}e^{-a}/\Gamma(\theta)$, $N(\eps u)\sim\eps^\alpha N(u)$ give
-$\liminf b_u/\log N(u)\ge(1+\eps^p)^{-1}$; so $b_u\sim\log N(u)$ and $v_u\to\infty$.
-
-For $y=\gamma_j/v_u$ and $q=b_u+z$ the argument of the tail is exactly
-$q[1+(\gamma_j/u)^p]=b_u+z+(1+z/b_u)y^p$. Uniformly for $y$ in bounded intervals,
-\[
- \frac{\bar F_\theta(b_u+z+(1+z/b_u)y^p)}{b_u^{\theta-1}e^{-b_u}/\Gamma(\theta)}\to e^{-z-y^p},
-\]
-and for fixed $z$ and large $u$ the quotient is at most $C_z(1+y^p)^{\max(\theta-1,0)}e^{-y^p/2}$ on the
-whole half-line, by the tail bound for arguments at least $b_u/2$ (for $\theta<1$ the power factor is
-bounded since the argument divided by $b_u$ is at least $1/2$). The measures
-$N(v_u)^{-1}\sum_j\delta_{\gamma_j/v_u}$ converge to $\alpha y^{\alpha-1}\dd y$, with mass below $\eps$
-tending to $\eps^\alpha$, and the exponential envelope with a dyadic regular-variation bound gives
-uniformly small tails. Hence
-\[
- \mathcal I_u(b_u+z)\sim\frac{N(v_u)b_u^{\theta-1}e^{-b_u}}{\Gamma(\theta)}e^{-z}
- \int_0^\infty\alpha y^{\alpha-1}e^{-y^p}\,\dd y
- =\frac{\Gamma(1+\alpha/p)}{\Gamma(\theta)}N(v_u)b_u^{\theta-1}e^{-b_u}e^{-z},
-\]
-and the same with the integral restricted to $E$. At $z=0$ the left side is $1$, which is the second
-assertion of (i); division gives the marked limit. Each exceedance probability is at most
-$\bar F_\theta(b_u+z)\to0$.
-\end{proof}
-
-\begin{proof}[Proof of \cref{ana:thm:extremes}]
-Under $\anaPr_t$ the coordinates are independent. The joint generating function of the counts in
-disjoint rectangles is a product of factors $1+\sum_\ell p_{j,\ell}(w_\ell-1)$; its logarithm differs
-from the linear terms by at most $C(\max_j\sum_\ell p_{j,\ell})\sum_{j,\ell}p_{j,\ell}=o(1)$, and the
-linear terms converge to the Poisson intensities by \cref{ana:lem:extintensity}. The same argument with
-$1-e^{-f}$ gives convergence of Laplace functionals for nonnegative continuous $f$ of compact support.
-
-Fix $R<\infty$. The atoms with mark at most $R$ are determined by the block $\gamma_j\le Rv_u$, and
-$Rv_u/u=R/b_u^{1/p}\to0$, so \cref{ana:thm:block}(i) transfers their tilted law to the conditional law,
-jointly with an independent exponential slack. By \cref{ana:lem:margdom}, a union bound and
-\cref{ana:lem:extintensity}, for every fixed $z_0$,
-\[
- \limsup_{u\to\infty}\anaPr\bigl(\exists j:\varrho_j-b_u>z_0,\ \gamma_j/v_u>R\bigm| X\le x\bigr)
- \le2e^{-z_0}\nu_{\alpha,p}((R,\infty)),
-\]
-which tends to $0$ as $R\to\infty$; marks below $\eps$ are excluded in the same way as $\eps\downarrow0$.
-So the truncated limits extend to the full marked process and keep their independence from the slack.
-The same bound gives $\limsup\anaPr(\max_j\varrho_j-b_u>A\mid X\le x)\le2e^{-A}$; and restricting marks to
-a compact interval $I$ with $\nu_{\alpha,p}(I)>0$, the number of atoms above $-A$ tends to a Poisson
-variable of mean $e^A\nu_{\alpha,p}(I)$, which is less than $k$ with probability tending to $0$ as
-$A\to\infty$. This justifies ordering the top $k$ atoms. Under $w=e^{-z}$ the unmarked intensity becomes
-Lebesgue measure on $(0,\infty)$, whose ordered points are $E_1,E_1+E_2,\dots$; the product intensity makes
-the marks independent with law $\nu_{\alpha,p}$ and independent of the arrival times, and taking $p$th
-powers of the marks gives (iii).
-\end{proof}
-
-For arbitrary regular variation $N(u/b^{1/p})\sim N(u)b^{-\alpha/p}$ may fail, because the multiplier
-$b^{-1/p}$ tends to $0$; the implicit centre \eqref{ana:eq:extcentre} avoids this. An explicit centre
-uses a reduced counting scale.
-
-\begin{corollary}[Centre from a reduced counting scale; \stU]\label{ana:cor:extcentre}
-Let $L_u=\log N(u)$ and $n_u^*=N(u/L_u^{1/p})$. Then
-\[
- b_u=\log n_u^*+(\theta-1)\log\log n_u^*+\log\frac{\Gamma(1+\alpha/p)}{\Gamma(\theta)}+o(1).
-\]
-If moreover $N(u/L_u^{1/p})\sim N(u)L_u^{-\alpha/p}$, for instance if $N(T)\sim cT^\alpha(\log T)^\beta$ with
-fixed $c>0$ and $\beta\in\R$, then
-\begin{equation}\label{ana:eq:elemcentre}
- b_u=\log N(u)+\Bigl(\theta-1-\frac\alpha p\Bigr)\log\log N(u)+\log\frac{\Gamma(1+\alpha/p)}{\Gamma(\theta)}+o(1).
-\end{equation}
-\end{corollary}
-
-\begin{proof}
-Since $b_u/L_u\to1$, the uniform convergence theorem for regularly varying functions
-\cite{BinghamGoldieTeugels1987Regular} gives $N(v_u)/n_u^*\to1$; also $\log n_u^*/\log N(u)\to1$. Taking
-logarithms in \cref{ana:thm:extremes}(i) gives the first formula. The additional hypothesis gives
-$\log n_u^*=\log N(u)-(\alpha/p)\log\log N(u)+o(1)$.
-\end{proof}
-
-\begin{remark}[The reduced scale is needed]\label{ana:rem:slowcount}
-Fix $c\ne0$. The integer part of an eventually increasing function
-$N(T)\sim T^\alpha\exp(c\log T/\log\log T)$ is the counting function of a locally finite positive spectrum,
-regularly varying of index $\alpha$. With $a=\log u$ and $\delta=p^{-1}\log L_u=p^{-1}\log a+O(1)$ one has
-$(a-\delta)/\log(a-\delta)-a/\log a\to-1/p$, so $N(u/L_u^{1/p})/(N(u)L_u^{-\alpha/p})\to e^{-c/p}$, and the
-exact centre is the right side of \eqref{ana:eq:elemcentre} minus $c/p$, up to $o(1)$. Omitting the
-reduced scale can thus move the Gumbel location by a nonzero constant.
-\end{remark}
-
-\begin{corollary}[The largest terms come from a band of vanishing mass; \stU]\label{ana:cor:vanishingmass}
-Let $v_u=o(h(u))$ and $h(u)=o(u)$. For every fixed $k$, conditionally on $X\le x$,
-\[
- \anaPr\bigl(\gamma_{I_1},\dots,\gamma_{I_k}\le h(u)\bigm| X\le x\bigr)\to1,\qquad
- \frac1X\sum_{\gamma_j\le h(u)}\frac{G_j}{\gamma_j^p}\to0,\qquad
- \frac{\max_jG_j/\gamma_j^p}X\sim\frac{b_u}{\theta C_1N(u)}
-\]
-in conditional probability.
-\end{corollary}
-
-\begin{proof}
-Tightness of the top $k$ marks and $h/v_u\to\infty$ give the first claim. By \cref{ana:lem:margdom}
-the conditional mean of $\sum_{\gamma_j\le h}\varrho_j$ is at most $2\theta N(h)=o(N(u))$, while
-$tX=tx-Y_x$ with $tx\sim\theta C_1N(u)$ and $Y_x$ tight; Markov's inequality gives the second claim. The
-Gumbel limit gives $\max_j\varrho_j/b_u\to1$.
-\end{proof}
-
-\paragraph{The whole bulk path.}
-The variance clock $V$ is continuous and strictly increasing from $0$ to $1$. With $V^{-1}(0)=0$ and
-$V^{-1}(1)=\infty$ put
-\[
- \mathcal B_x(s)=\frac1\varsigma\sum_{\gamma_j\le uV^{-1}(s)}(\varrho_j-\theta a_j)
- =\frac{X_x(V^{-1}(s))-m_x(V^{-1}(s))}{\sigma_x},\qquad0\le s\le1 .
-\]
-The series converges absolutely almost surely, so $\mathcal B_x\in D[0,1]$, and
-$\mathcal B_x(1)=-Y_x/\varsigma$.
-
-\begin{theorem}[Functional bridge, independent of the extremes; \stU]\label{ana:thm:functional}
-Conditionally on $X\le x$,
-\[
- (\Pi_x,\mathcal B_x,Y_x)\Longrightarrow(\Pi,B,E_0),
-\]
-with $\Pi$ as in \cref{ana:thm:extremes}, $B$ a standard Brownian bridge, $E_0$ exponential of rate $1$,
-the three independent, and $D[0,1]$ carrying the Skorokhod $J_1$ topology. The top-$k$ convergence of
-\cref{ana:thm:extremes}(iii) holds jointly with, and independently of, the bulk path.
-\end{theorem}
-
-\begin{proof}
-\emph{Finitely many cutoffs.} Fix $0<c_1<\dots<c_m$, let $h=Rv_u=o(u)$ be a lower block, put
-$\delta=\varsigma^{-1}\sum_{\gamma_j\le h}(\varrho_j-\theta a_j)$, and split the complement into the bands
-$(h,c_1u],(c_1u,c_2u],\dots,(c_mu,\infty)$. By \cref{ana:lem:band} their standardized sums have independent
-tilted densities $f_{i,u}\to\varphi_{\lambda_i}$ uniformly and in $L^1$, with $\lambda_i=V(c_i)-V(c_{i-1})$,
-$\lambda_{m+1}=1-V(c_m)$, $V(c_0)=0$; removing $h=o(u)$ from the first band changes neither its variance
-nor its Fourier envelope. With $w_1=\mathcal B_x(V(c_1))$ and $w_i=\mathcal B_x(V(c_i))-\mathcal B_x(V(c_{i-1}))$,
-the conditional density relative to the tilted block law times Lebesgue measure in $(w,y)$ is, as in
-\eqref{ana:eq:blockratio},
-\[
- \frac{e^{-y}\anaone_{y\ge0}}{\varsigma D_u}f_{1,u}(w_1-\delta)\prod_{i=2}^mf_{i,u}(w_i)\,
- f_{m+1,u}\Bigl(-\frac y\varsigma-\sum_{i\le m}w_i\Bigr).
-\]
-Under the tilted block law $\delta\to0$ in probability. Replace the last density by its normal limit
-using uniform convergence, and the first $m$ in turn using $L^1$ convergence (the last one being bounded);
-translation continuity in $L^1$ handles $\delta$, and the bounded derivative of the last normal density
-handles $y/\varsigma$. With \eqref{ana:eq:Du} this gives convergence in total variation to the product of
-the tilted block law, $\mathrm{Exp}(1)$ and the Gaussian-bridge density
-$\varphi_1(0)^{-1}\prod_{i\le m}\varphi_{\lambda_i}(w_i)\varphi_{\lambda_{m+1}}(-\sum_iw_i)$, as in the proof of
-\cref{ana:thm:condlaw}. The tilted Poisson limit for the block and the restoration of large marks from the
-proof of \cref{ana:thm:extremes} then give
-$(\Pi_x,(\mathcal B_x(V(c_i)))_i,Y_x)\Rightarrow(\Pi,(B(V(c_i)))_i,E_0)$, with independent components.
-
-\emph{The tilted functional limit.} Under $\anaPr_t$, $\mathcal B_x$ has independent centred increments
-and cumulative variance $V_u(s)=\theta\varsigma^{-2}\sum_{\gamma_j\le uV^{-1}(s)}a_j^2$. By
-\cref{ana:lem:specsums}, $V_u(s)\to s$ for every $s$, and monotonicity gives
-$\eta_u=\sup_s\abs{V_u(s)-s}\to0$. Group equal ordinates: if $\lambda$ occurs $m_\lambda$ times, its jump
-is $(a_\lambda/\varsigma)(\mathrm{Gamma}(m_\lambda\theta,1)-m_\lambda\theta)$ with variance
-$v_\lambda=m_\lambda\theta a_\lambda^2/\varsigma^2\le2\eta_u$. The fourth central moment of a unit-rate
-gamma variable of shape $k$ is $3k^2+6k$, so the fourth moments of the jumps sum to
-$3\sum_\lambda v_\lambda^2+6\theta\varsigma^{-4}\sum_ja_j^4\le3\max_\lambda v_\lambda+6\varsigma^{-2}\to0$;
-the Lindeberg condition holds even with multiplicities varying with height, and the triangular-array
-functional central limit theorem \cite{Whitt2007Proofs} gives a Brownian motion. Directly: partition
-$[0,1]$ into $m$ equal intervals; the increment on each has variance at most $m^{-1}+2\eta_u$, and the
-fourth cumulants sum to at most $6\varsigma^{-2}$. The $L^4$ martingale maximal inequality on each interval
-gives, for the modulus $\omega(f,\delta)=\sup_{\abs{s-s'}\le\delta}\abs{f(s)-f(s')}$,
-\[
- \anaPr_t\bigl(\omega(\mathcal B_x,m^{-1})>\eps\bigr)\le C\eps^{-4}\bigl(m^{-1}+2\eta_u+\varsigma^{-2}\bigr);
-\]
-near $s=1$ truncate the row and pass to the $L^4$ limit.
-
-\emph{Transfer on initial intervals.} Fix $r<1$. The coordinates with $\gamma_j\le uV^{-1}(r)$ form a
-prefix; the standardized complementary sum has a density with bounded supremum (keep a fixed band beyond
-$V^{-1}(r)$ and use the Fourier envelope of \cref{ana:lem:band}; convolution does not increase a
-supremum). The marginal form of \eqref{ana:eq:blockratio} and $\varsigma D_u\to\varphi_1(0)>0$ give
-$\anaPr(E\mid X\le x)\le C_r\anaPr_t(E)$ for all events $E$ of the prefix and all large $u$, so tilted
-tightness on $[0,r]$ transfers.
-
-\emph{The endpoint.} For $r\ge1/2$ the complement of the tail $\gamma_j>uV^{-1}(r)$ contains the fixed band
-$(V^{-1}(1/4),V^{-1}(1/2)]$, so the same argument gives a constant $C_0$, independent of $r\ge1/2$ and of
-large $u$, with $\anaPr(E\mid X\le x)\le C_0\anaPr_t(E)$ for events of the tail. The $L^2$ maximal
-inequality for the reversed tail (truncate, then pass to the limit) gives
-\[
- \anaPr\Bigl(\sup_{s\ge r}\abs{\mathcal B_x(1)-\mathcal B_x(s)}>\eps\Bigm| X\le x\Bigr)
- \le\frac{4C_0}{\eps^2}\bigl(1-r+\eta_u\bigr),
-\]
-which is small for $u\to\infty$ and then $r\uparrow1$. With the modulus on $[0,r]$ (insert the value at $r$
-for pairs straddling it) this proves tightness on $[0,1]$ with continuous subsequential limits, and
-$\mathcal B_x(1)=-Y_x/\varsigma\to0$.
-
-\emph{Identification.} Marginal tightness gives joint tightness; evaluation at fixed times is continuous
-at continuous limits, and the finite-dimensional limits of the first step, with the endpoint values $0$,
-identify every subsequential limit as $(\Pi,B,E_0)$ with independent components. The tail bounds of the
-proof of \cref{ana:thm:extremes} allow the top-$k$ map jointly.
-\end{proof}
-
-\paragraph{Dirichlet spectra.}
-Take the spectrum of \cref{ana:cor:fourfifths}: the positive ordinates, with multiplicity, of an even
-product $H$ of $d$ completed degree-one factors with central zeros removed, so that by
-\cref{src:thm:dgrh} $\anaEx e^{-tX}=(H(0)/H(\sqrt t))^\theta$ for $X=\sum_jG_j/\gamma_j^2$, and
-$p=2$, $\alpha=1$, $N(T)\sim\frac d{2\pi}T\log T$ \cite{BennettMartinOBryantRechnitzer2021Counting}.
-
-\begin{corollary}[Half-normal height of the largest Dirichlet contribution; \stG]\label{ana:cor:dirextremes}
-With the exact saddle $u=\sqrt t$, the centre
-\[
- b_u=\log u+\Bigl(\theta-\frac12\Bigr)\log\log u+\log\frac d{4\sqrt\pi\,\Gamma(\theta)}+o(1)
-\]
-is valid, and conditionally on $X\le x$
-\[
- u^2\max_j\frac{G_j}{\gamma_j^2}-b_u\Longrightarrow G,\qquad
- \frac{\sqrt{b_u}\,\gamma_{I_1}}u\Longrightarrow Z,
-\]
-where $\anaPr(G\le z)=e^{-e^{-z}}$ and $\anaPr(Z\in\dd y)=\frac2{\sqrt\pi}e^{-y^2}\anaone_{y>0}\,\dd y$,
-jointly with $u^2(x-X)\Rightarrow E_0$ and with the bridge of \cref{ana:thm:functional} (for which
-$V(c)=\frac2\pi(\arctan c+\frac c{1+c^2})$), all four limits independent. Thus $Z$ is the absolute value of
-a centred normal variable of variance $1/2$, and
-\[
- x\sim\frac{\theta d\log u}{4u},\qquad\frac{\max_jG_j/\gamma_j^2}X\sim\frac4{\theta d\,u}
-\]
-in conditional probability. For $\zeta$ with exponential weights ($d=\theta=1$) and
-$b_0(u)=\log u+\frac12\log\log u-\log(4\sqrt\pi)$, this reads
-$\bigl(u^2\max_jE_j/\gamma_j^2-b_0(u),\ \sqrt{\log u}\,\gamma_{I_1}/u,\ u^2(x-X)\bigr)\Rightarrow(G,Z,E_0)$.
-\end{corollary}
-
-\begin{proof}
-Here $C_1=\pi/2$ and $C_2=\pi/4$. Substituting $N(u)\sim du\log u/(2\pi)$ into \eqref{ana:eq:elemcentre},
-with $\Gamma(3/2)=\sqrt\pi/2$, gives the centre, and $\nu_{1,2}$ is the displayed half-normal law. The
-saddle asymptotic is \cref{ana:cor:fourfifths}, and the ratio follows from
-\cref{ana:cor:vanishingmass}. Since $b_u\sim\log u$, $\sqrt{b_u}$ may be replaced by $\sqrt{\log u}$.
-\end{proof}
-
-So about half the mass lies below height $u$ (the profile is $A(c)=\frac2\pi\arctan c$), while the largest
-term sits at height of order $u/\sqrt{\log u}$. With $h=u/(\log u)^{1/4}$, \cref{ana:cor:vanishingmass}
-shows that every fixed number of largest terms lies below $h$ with probability tending to $1$, although
-the mass below $h$ is a vanishing fraction of $X$.
-
-The elementary centre converges slowly. For exponential weights a two-term count gives a much sharper
-implicit centre, with an explicit enclosure; this concerns the deterministic normalization only and
-gives no rate for the conditional limit.
-
-\begin{proposition}[Heat-trace centring; \stU]\label{ana:prop:refinedcentre}
-Let $p=2$, $\theta=1$, and $N(T)=c_NT(\log T+a_N-1)+O(\log(T+2))$ with fixed $c_N>0$ and $a_N$. Put
-$k_N=c_N\sqrt\pi/2$ and $\kappa_N=a_N-\gamma_{\mathrm E}/2-\log2$, and let $B_u$ be the unique solution in
-$0<B<u^2e^{2\kappa_N}$ of
-\begin{equation}\label{ana:eq:refinedroot}
- e^B\sqrt B=k_Nu\Bigl[\log\frac u{\sqrt B}+\kappa_N\Bigr].
-\end{equation}
-Then $B_u\sim\log u$ and $b_u=B_u+O(\sqrt{\log u}/u)$. Explicitly, let $R(T)=N(T)-c_NT(\log T+a_N-1)$,
-$R(0)=0$. If $\abs{R(T)}\le C\log(T+2)$ for all $T\ge0$, put $v_B=u/\sqrt{B_u}$ and
-$\eps_u=Ce^{-B_u}[\log(v_B+2)+\sqrt\pi/2]$; whenever $\eps_u<1$,
-\[
- B_u+\log(1-\eps_u)\le b_u\le B_u+\log(1+\eps_u).
-\]
-If instead $\abs{R(T)}\le C_0$ for all $T$, the same holds with $\eps_u=C_0e^{-B_u}$, and
-$b_u-B_u=O(1/(u\sqrt{\log u}))$.
-\end{proposition}
-
-\begin{proof}
-Let $\mathcal H(v)=\sum_je^{-(\gamma_j/v)^2}$. Stieltjes integration gives
-\[
- \mathcal H(v)=c_N\int_0^\infty e^{-(T/v)^2}(\log T+a_N)\,\dd T+\frac2{v^2}\int_0^\infty Te^{-(T/v)^2}R(T)\,\dd T
- =k_Nv(\log v+\kappa_N)+\mathcal R(v),
-\]
-the boundary terms vanishing since $R(0)=0$; here $\int_0^\infty e^{-y^2}\log y\,\dd y=\frac{\sqrt\pi}2(-\frac{\gamma_{\mathrm E}}2-\log2)$,
-by differentiating $\int_0^\infty y^{s-1}e^{-y^2}\dd y=\Gamma(s/2)/2$ at $s=1$ with
-$\psi(1/2)=-\gamma_{\mathrm E}-2\log2$. Since $vy+2\le(v+2)(1+y)$ and $\log(1+y)\le y$,
-$\abs{\mathcal R(v)}\le2C\int_0^\infty ye^{-y^2}\log(vy+2)\,\dd y\le C[\log(v+2)+\sqrt\pi/2]$, and
-$\abs{\mathcal R(v)}\le C_0$ under a bounded error. (An asymptotic count extends to a global logarithmic
-bound by enlarging $C$ on a compact interval.) For $\theta=1$, $\mathcal I_u(q)=e^{-q}\mathcal H(u/\sqrt q)$.
-The function $F_u(q)=e^{-q}k_Nuq^{-1/2}(\log u-\frac12\log q+\kappa_N)$ is positive on
-$(0,u^2e^{2\kappa_N})$, runs from $\infty$ to $0$, and has
-$(\log F_u)'=-1-\frac1{2q}-\frac1{2q(\log u-\frac12\log q+\kappa_N)}<0$, so $F_u(B)=1$, which is
-\eqref{ana:eq:refinedroot}, has one root; $F_u(a\log u)\sim k_Na^{-1/2}u^{1-a}\sqrt{\log u}$ gives
-$B_u\sim\log u$. At $q=B_u$ one gets $\abs{\mathcal I_u(B_u)-1}\le\eps_u$. Termwise,
-\[
- \frac{\dd}{\dd q}\log\mathcal I_u(q)=-\frac{\sum_j[1+(\gamma_j/u)^2]e^{-q[1+(\gamma_j/u)^2]}}{\sum_je^{-q[1+(\gamma_j/u)^2]}}\le-1,
-\]
-so $0\le b_u-B_u\le\log\mathcal I_u(B_u)$ if $\mathcal I_u(B_u)\ge1$ and $0\le B_u-b_u\le-\log\mathcal I_u(B_u)$
-otherwise, which is the enclosure. Finally \eqref{ana:eq:refinedroot} gives
-$e^{-B_u}=1/(k_Nv_B(\log v_B+\kappa_N))$, so $\eps_u=O(1/v_B)=O(\sqrt{\log u}/u)$, and
-$O(1/(v_B\log v_B))=O(1/(u\sqrt{\log u}))$ under a bounded error.
-\end{proof}
-
-Writing $L=\log u$, expansion of \eqref{ana:eq:refinedroot} gives
-$B_u=L+\frac12\log L+\log k_N+(\kappa_N-\frac34\log L-\frac12\log k_N)/L+O((\log L)^2/L^2)$, which explains
-the slow approach to the elementary centre.
-
-\begin{remark}[Conductor dependence of the centre; \stG]\label{ana:rem:conductorcentre}
-For the product of \cref{ana:cor:dirextremes} let $\mathcal Q=\prod_{\ell\le d}q_\ell$ be the product of
-the conductors, conjugate factors counted separately and $\zeta$ given conductor $1$. The two-term zero
-counts give $c_N=d/(2\pi)$ and $a_N=(\log\mathcal Q)/d-\log(2\pi)$, unchanged by removing finitely many
-central zeros, so for exponential weights $B_u$ is the root with positive bracket of
-\[
- e^B\sqrt B=\frac{du}{4\sqrt\pi}\Bigl[\log\Bigl(\frac{\mathcal Q^{1/d}u}{4\pi\sqrt B}\Bigr)-\frac{\gamma_{\mathrm E}}2\Bigr],\qquad
- b_u=B_u+O_H\Bigl(\frac{\sqrt{\log u}}u\Bigr).
-\]
-The estimate is for a fixed product; no uniformity in the conductor or the degree is claimed.
-\end{remark}
-
-On the synthetic spectrum $\gamma_j=2\pi j/W(j/e)$ ($W$ the Lambert function), whose count differs from
-$\frac T{2\pi}(\log\frac T{2\pi}-1)$ by at most $1$, the numerically computed exact centre at $u=10^5$ is
-$10.40117$; it differs from the elementary centre by $0.375$ and from $B_u$ by $1.4\cdot10^{-5}$, inside
-the enclosure with $\eps_u=e^{-B_u}$ (floating-point diagnostics, not interval certificates; these are not
-zeta zeros); see \artifact{spectral_extremes_2026-11-27/results/refined_center_validation.json}.
-
-Conditioning small Gaussian norms and conditional bridge limits for weighted sums have classical
-precedents \cite{VanCampenhoutCover1981Maximum,MayerWolfZeitouni1993Probability,SobolevShklyaev2020Large};
-Gumbel limits for maxima of gamma variables are classical \cite{BoseDasguptaMaulik2008Maxima}, and
-extremal Fourier intensities with power-law rates, without a small-total constraint, are studied in
-\cite{GyorgyiHoldsworthPortelliRacz2003Statistics}.
-All randomness here comes from the gamma weights; nothing is asserted about randomness, spacing,
-simplicity or independence of the zeros, and no uniformity in a growing conductor or degree is
-claimed.
-
-\subsection{A finite certificate for Euler's Gamma product}\label{ana:sec:eulergamma}
-{\raggedright\sources{gamma-euler-quartic}}
-
-Archimedean factors such as those in \cref{ana:thm:smalldev} are values of the Gamma function. For
-$N\ge1$ and $\Re z>0$ put
-\[
- E_N(z)=\frac{N^zN!}{z(z+1)\cdots(z+N)},\qquad A=\frac{z(z+1)}2,\qquad D=-\frac{z(z+1)(2z+1)}{12},\qquad
- C=\frac{A^2}3,
-\]
-so that $E_N(z)\to\Gamma(z)$ (Euler's product), and define the polynomial multiplier
-\[
- P_N=1+\frac AN+\frac{D+A^2/2}{N^2}+\frac{C+AD+A^3/6}{N^3},
-\]
-the cubic truncation of $\exp(A/N+D/N^2+C/N^3)$; its coefficients are the classical Gamma-ratio
-coefficients. The point is an explicit finite error bound for this particular sampler that uses no
-logarithm of a Gamma value.
-
-\begin{proposition}[Fourth-order Euler sampler; \stU]\label{ana:prop:eulergamma}
-Let $R\ge1$ be an integer, $a>0$, $M=R+1$ and $B=\max\{1/a,(R-1)!\}$. Uniformly for $\abs z\le R$ and
-$\Re z\ge a$, and for $N\ge2M^2$,
-\[
- \abs{\Gamma(z)-E_N(z)P_N(z)}\le\frac{3BM^8}{N^4},\qquad\abs{P_N(z)}\le\frac32 .
-\]
-\end{proposition}
-
-\begin{proof}
-\emph{Size.} With $x=\Re z$, termwise comparison gives $\abs{E_N(z)}\le E_N(x)$, and $\log E_N(x)$ is
-convex in $x>0$, its nonlinear terms being $-\log(x+j)$. At $b=\min(a,1)$, concavity of $t^b$ gives
-$\prod_{j\le N}(1+b/j)\ge(N+1)^b$, so $E_N(b)\le1/b$; at the integer $R$, $E_N(R)\le(R-1)!$. Thus $B$
-bounds $\abs{E_N(z)}$ and its limit.
-
-\emph{Telescope.} Put $w=z+1$, $t=1/n$ and $S_n=A/n+D/n^2+C/n^3$. The product gives $E_{n+1}=E_ne^{L_n}$
-with $L_n=w\log(1+t)-\log(1+wt)$, by the logarithm series for $\abs{wt}\le1/2$. Its coefficients in
-degrees $2,3,4$ are $A$, $(w-w^3)/3$, $(w^4-w)/4$, and those of $S_n-S_{n+1}$ are $A$, $-A+2D$,
-$A-3D+3C$, which agree. The rest of the logarithm series is at most
-$(M+M^5)t^5/[5(1-Mt)]\le M^5t^5$. In $S_n-S_{n+1}$ the tail after degree $4$ is at most
-$(\abs A+4\abs D+6\abs C)t^5$, from the geometric series for $(1+t)^{-1}$ and the Taylor bounds for
-$(1+t)^{-2},(1+t)^{-3}$, whose next coefficients are $4$ and $6$ in absolute value. As $\abs A\le M^2/2$,
-$\abs D\le M^3/6$ and $\abs C\le M^4/12$, the defect $d_n=L_n-S_n+S_{n+1}$ satisfies
-$\abs{d_n}\le2M^5/n^5$. For $n\ge4$, $1/n^4-1/(n+1)^4\ge2/n^5$, so every finite sum of defects from $N$
-on is at most $M^5/N^4$. The exact recursion $E_K=E_N\exp(S_N-S_K+\sum_{n=N}^{K-1}d_n)$, $S_K\to0$ and
-$E_K\to\Gamma(z)$ give $\Gamma=E_Ne^{S_N+d}$ with $\abs d\le M^5/N^4$.
-
-\emph{Rational multiplier.} With $u=M^2/N\le1/2$, the coefficients of $e^{S_N}$ as a series in $u$ are
-bounded by those of $\exp(u/2+u^2/6+u^3/12)$, whose sum at $u=1$ is $e^{3/4}<5/2$. Discarding powers
-$u^{\ge4}$ costs at most $\frac52u^4$, and the retained cubic is exactly $P_N$; its coefficient bounds
-$1/2,7/24,3/16$ give $\abs{P_N}\le3/2$. Since $\abs{S_N}+\abs d\le1$,
-$\abs{e^{S_N+d}-e^{S_N}}\le3\abs d$, and $\frac52M^8+3M^5<3M^8$ for $M\ge2$.
-\end{proof}
-
-For $R=8$, $a=1/2$ and $N=2^{42}$, an observation of $E_N$ with absolute error at most $2^{-130}$ gives
-$\Gamma(z)$ to within $2^{-128}$, since $3\cdot5040\cdot9^8\,2^{-168}+\frac32\,2^{-130}<2^{-128}$; for
-the reciprocal $1/E_N$, $156$ absolute bits suffice before exact inversion, as $\abs{1/E_N}\ge1/5040$
-and the inverse error is at most $2\cdot5040^2$ times the input error when that is at most
-$1/(2\cdot5040)$. The uncorrected value $E_N(1)=N/(N+1)$ would need $N\ge2^{128}-1$ for the same
-accuracy. Exact rational checks at $680$ integer inputs and $2232$ nonreal rational local defect
-enclosures are recorded in \artifact{gamma-euler-quartic/verification.txt}. The proposition is
-independent of \cref{ana:thm:window}, whose Gamma averages are probability measures on the logarithmic
-variable rather than values of $\Gamma$.
 
 \subsection{Open questions}\label{ana:sec:open}
 
@@ -4216,18 +2914,6 @@ whereas the Li coefficients on the same index set detect every failure
 (\cref{li:thm:sparse}).
 \end{question}
 
-\begin{question}[Simple zeros]\label{ana:q:simple}
-Prove that the sampled mean square in \cref{ana:thm:simple}(iii) is at most the displayed
-constant, that is, $D=0$. A multiple zero at very large height would contribute less than the
-bound $1.67\cdot10^{-34}$, so no finite computation of zeros decides this.
-\end{question}
-
-\begin{question}[The lower limit of the source remainder]\label{ana:q:parity}
-Does the parity condition of \cref{ana:prop:parity} hold for the ordinates of $\zeta$ and of
-$L(\cdot,\chi_d)$? If it does, $\liminf_{x\to\infty}\sqrt x\,R_d(x)=-B_d-B_0$ exactly. In
-general, where in the interval of \cref{ana:thm:excursion} does the lower limit lie?
-\end{question}
-
 \begin{question}[Other filter patterns]\label{ana:q:dyadic}
 \Cref{ana:thm:dyadiceven,ana:thm:dyadicthree,ana:thm:dyadicodd} determine $c_n$ for the
 doubling exponents $1,2,\dots,2^{n-1}$; for even $n$, \cref{ana:thm:dyadiceven} shows that
@@ -4242,33 +2928,10 @@ $R_j$ rather than on residues?
 \end{question}
 
 \begin{question}[Uniform versions of the family statistics]\label{ana:q:family}
-The constants in \cref{ana:thm:compact,ana:thm:excursions,ana:thm:grid} are for a fixed
-family. Can they be made effective and uniform in the conductor, with explicit values of the
-local-count, remainder and gap constants $A$, $E$ and $\eta$ of \cref{ana:thm:alias} for a
-chosen modulus, and hence an explicit rounding threshold in \cref{ana:thm:grid}, and with a
+The constants in \cref{ana:thm:compact,ana:thm:excursions} are for a fixed
+family. Can they be made effective and uniform in the conductor, with a
 shrinking width $r\downarrow1$ in \cref{ana:thm:compact}? For such constants, which finite
-positive filter is optimal? \Cref{ana:prop:alias} shows that the alias term $\log k/k^2$ cannot be
-removed on the lattice $k^{-1}\Z$ within the abstract spectral class; is the rate of
-\cref{ana:thm:grid} optimal among irregular sampling schedules, or for actual Dirichlet zero
-spectra? Do the converses of \cref{ana:thm:gridconverse,ana:thm:binomial}(i) hold for a depth
-that grows slowly with $t$? Can noncentral multiplicities be recovered robustly from finitely
+positive filter is optimal? Can noncentral multiplicities be recovered robustly from finitely
 many data with bounded errors when ordinates are close?
 \end{question}
 
-\begin{question}[Conditional laws at finite saddles]\label{ana:q:condlaw}
-\Cref{ana:thm:condlaw,ana:thm:block,ana:cor:fourfifths,ana:thm:medianheight,ana:thm:extremes,ana:thm:functional}
-are limit theorems for a fixed function. Give explicit error bounds in the saddle $u$ for the
-total-variation transitions, which Monte Carlo comparisons show to be slow, and rates for the marked
-extreme limit of \cref{ana:cor:dirextremes}; under regular variation alone no rate is available, and for
-exponential weights only the deterministic centre has an effective enclosure
-(\cref{ana:prop:refinedcentre}). Give versions uniform in the conductor or in the degree $d$ of the
-product.
-\end{question}
-
-\begin{question}[Hankel tests]\label{ana:q:hankel}
-At a prescribed odd stride, when can the bounds of \cref{ana:thm:hankelloss} for disappearances
-and for collisions be attained together? Under explicit separation of a bounded set of zeros,
-how much absolute precision in each $P_k(c)$ certifies a negative eigenvalue of
-$H(c,m;K,b)$? How does the classification of \cref{ana:thm:centres} change for centres in a
-fixed real quadratic field?
-\end{question}

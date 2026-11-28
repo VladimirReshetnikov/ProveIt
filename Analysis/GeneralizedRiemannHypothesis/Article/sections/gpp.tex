@@ -1,3 +1,4 @@
+\providecommand{\gpifile}[2][]{\begin{center}\footnotesize\artifact{#2}#1\end{center}}
 \section[Progression-free sets in polynomial rings and finite rings]{Progression-free sets in polynomial rings and finite rings; additive constraints}\label{sec:gpp}
 
 \providecommand{\gppA}{\mathcal{A}}
@@ -22,14 +23,17 @@ collects the results obtained by moving that exponent principle to other setting
 $\Fq[x]$ the exponent map is the whole vector of prime valuations and the congruence becomes
 an equality; this gives answers to the questions and to Conjecture~6.3 of Asada, Fourakis,
 Manski, McNew, Miller and Moreland \cite{Asada2017Subsets} on sets free of three-term
-geometric progressions. Over finite coefficient rings the same ideas, combined with the
-density Hales--Jewett theorem, answer their Question~6.5 for large families of rings. The
-remaining subsections treat additive constraints coming directly from the source
-construction: periodic sets of integers with a prescribed spectrum of ratios, the exact
-capacity of the sparse-place condition of the source, and coefficient collisions in the
-root lattice $A_n$. Nothing in this section uses \cref{src:thm:dgrh} or any other
-hypothesis on zeros of $L$-functions. The corresponding questions for sets of integers and
-of ideals are treated in \cref{sec:gpi}.
+geometric progressions. All results on polynomial rings are collected here: the
+degree-deficit benchmark $m_q$ and its counterexample, the supremum $\beta_q$ of upper
+densities, natural density and rational-function ratios, and, in \cref{gpi:sec:poly},
+McNew's natural-density questions over $\Fq[x]$, proved by the arguments that
+\cref{sec:gpi} uses over the integers and number fields. Over finite coefficient rings the
+same ideas, combined with the density Hales--Jewett theorem, answer Question~6.5 of
+\cite{Asada2017Subsets} for large families of rings. The remaining subsections treat
+additive constraints coming directly from the source construction: periodic sets of
+integers with a prescribed spectrum of ratios, the exact capacity of the sparse-place
+condition of the source, and coefficient collisions in the root lattice $A_n$. Nothing in
+this section uses \cref{src:thm:dgrh} or any other hypothesis on zeros of $L$-functions.
 
 \subsection{The weighted digit-sphere lemma}\label{gpp:sec:digits}
 {\raggedright\sources{dirichlet-grh-research; exponent_seven_and_grh_transfers; mcnew_counterexample_and_grh_transfers; grh_method_transfers_graph_towers_and_finite_rings; grh_method_transfers}}
@@ -234,13 +238,26 @@ deleted lower degrees have density at most $q^{-j-1}$ at the cutoff $N_j$, which
 zero. The union therefore has upper density at least \eqref{gpp:eq:delta}.
 \end{proof}
 
-\begin{theorem}[Counterexample to Conjecture~6.3 of \cite{Asada2017Subsets}; \stU]\label{gpp:thm:counterexample}
-For every prime power $q$ there is an infinite polynomial-ratio progression-free set
-$E\subseteq\Fq[x]$ whose upper density is strictly greater than $m_q$. Consequently
-$\beta_q>m_q$.
+\begin{theorem}[Counterexample to Conjecture~6.3 of \cite{Asada2017Subsets}, with an explicit margin; \stU]\label{gpp:thm:counterexample}
+Let $q$ be a prime power.
+\begin{enumerate}[label=\textup{(\alph*)}]
+\item There is an infinite polynomial-ratio progression-free set $E\subseteq\Fq[x]$ whose
+ upper density is strictly greater than $m_q$. Consequently $\beta_q>m_q$.
+\item\label{gpp:thm:cutoff} Let $B$ be the $74$-point set of deficits in the proof below, let
+ $H$ and $J$ be as in \cref{gpp:lem:replacement} for $A_0=\gppA$, $L=480$ and $D=B$, and let
+ $R_q^*$ be the integer \eqref{gpp:eq:Rstar} of \cref{gpp:sec:margin}. Some integer
+ $R\le R_q^*$ satisfies $[u^R]H(u)J(u)\ge1$. In particular, with $c_q$ as in
+ \eqref{gpp:eq:delta} for $L=480$,
+ \begin{equation}\label{gpp:eq:explicitgap}
+ \beta_q\ge m_q+(q-1)c_q\,q^{-R_q^*-1}>m_q .
+ \end{equation}
+\end{enumerate}
 \end{theorem}
 
-\begin{proof}
+Part~(b) implies the conclusion $\beta_q>m_q$ of~(a); it is proved in \cref{gpp:sec:margin},
+by a variance bound applied to the certificate \eqref{gpp:eq:Jpositive} of part~(a).
+
+\begin{proof}[Proof of~\textup{(a)}]
 Apply \cref{gpp:lem:replacement} with $A_0=\gppA$, $L=480$ and $D=B$, where
 \[
 \begin{split}
@@ -342,9 +359,10 @@ below $3^k$, and already $h=4$ satisfies $4>7^{\log_32}$.
 \subsection{An explicit margin}\label{gpp:sec:margin}
 {\raggedright\sources{grh_beyond_dirichlet_2026-11-25; grh-methods-polynomial-density}}
 
-The proof of \cref{gpp:thm:counterexample} does not exhibit the first positive
+The proof of \cref{gpp:thm:counterexample}(a) does not exhibit the first positive
 coefficient $\Delta_R$. A variance bound for the degree of a random smooth polynomial
-locates one in an explicit range and gives an explicit lower bound for $\beta_q-m_q$.
+locates one in an explicit range and gives the explicit lower bound for $\beta_q-m_q$ of
+\cref{gpp:thm:counterexample}\ref{gpp:thm:cutoff}.
 
 \begin{lemma}[Positive coefficient from a concentrated generating function; \stU]\label[lemma]{gpp:lem:concentration}
 Let $H(u)=\sum_{n\ge0}H_nu^n$ have nonnegative coefficients and $0<H(z)<\infty$ for some
@@ -392,15 +410,7 @@ Define the integers
 \end{align}
 Termwise ceilings give $\gppE X\le U_q^{\circ}$ and $\gppVar X\le V_q^{\circ}$.
 
-\begin{theorem}[Explicit search cutoff and margin; \stU]\label{gpp:thm:cutoff}
-For the $74$-point witness some integer $R\le R_q^*$ satisfies $[u^R]H(u)J(u)\ge1$. In
-particular, with $c_q$ as in \eqref{gpp:eq:delta} for $L=480$,
-\begin{equation}\label{gpp:eq:explicitgap}
- \beta_q\ge m_q+(q-1)c_q\,q^{-R_q^*-1}>m_q .
-\end{equation}
-\end{theorem}
-
-\begin{proof}
+\begin{proof}[Proof of \cref{gpp:thm:counterexample}\ref{gpp:thm:cutoff}]
 Use $P(u)=\sum_{b\in B}u^b$ and $Q(u)=\sum_{a\in\gppA}u^a$. By
 \eqref{gpp:eq:Jpositive} one may take $\gamma=3/200$, and $P(z)\le74$. Put
 $t=\ceil{\sqrt{7400V_q^{\circ}}}$. Then $74V_q^{\circ}/t^2\le1/100$, and the normalized
@@ -685,18 +695,23 @@ and call the resulting set of polynomials $E_S$. Deleting the entire positive pa
 $\gppA^k$ makes it possible to account for every higher-power conflict in one step.
 
 \begin{lemma}[\stU]\label[lemma]{gpp:lem:ES}
-The set $E_S$ contains no triple with a nonconstant polynomial ratio.
+The set $D_S\subset\Z_{\ge0}^k$ contains no three points $u,u+h,u+2h$ with
+$h\in\Z_{\ge0}^k$ and $h\ne0$. Consequently $E_S$ contains no triple with a nonconstant
+polynomial ratio.
 \end{lemma}
 
 \begin{proof}
-The common valuation step of a polynomial ratio is nonnegative at each prime. All its
-coordinates outside $S$ vanish since $\gppA$ is progression-free. Inside $S$ write the
-three vectors as $u,u+h,u+2h$ with $h\ge0$, $h\ne0$. If the final point has a zero
-coordinate, all three points have a zero and belong to $\gppA^k$, which is impossible.
-Otherwise the final point is in the new cube. At every moving coordinate its final value
-is $2$, its initial value $0$ and its middle value $1$. The initial point therefore
-belongs to $\gppA^k$. Any fixed coordinate must be $1$, since its value lies in both
-$\gppA$ and $\set{1,2}$. The middle point is then the deleted all-ones vector.
+Suppose $u,u+h,u+2h\in D_S$ with $h\ge0$, $h\ne0$. If the final point has a zero
+coordinate, then $h$ and $u$ vanish there, so all three points have a zero and belong to
+$\gppA^k$; this is impossible, since $\gppA$ is progression-free and $h$ has a nonzero
+coordinate. Otherwise the final point is in the new cube. At every moving coordinate its
+final value is $2$, its initial value $0$ and its middle value $1$. The initial point
+therefore belongs to $\gppA^k$. Any fixed coordinate must be $1$, since its value lies in
+both $\gppA$ and $\set{1,2}$. The middle point is then the deleted all-ones vector.
+
+For the consequence, the common valuation step of a polynomial ratio is nonnegative at each
+prime. All its coordinates outside $S$ vanish since $\gppA$ is progression-free, so the
+valuation vectors on $S$ of a triple in $E_S$ would be three points as above.
 \end{proof}
 
 \begin{theorem}[An explicit exchange beating the greedy set in natural density; \stU]\label{gpp:thm:natural}
@@ -748,18 +763,14 @@ The monotonicity of the valuation step is essential in \cref{gpp:lem:ES}. For tw
 selected coordinates the three points $(0,3),(1,2),(2,1)$ all obey the new local rule and
 have the mixed common step $(1,-1)$; in larger dimension append coordinates constantly
 equal to $1$. Thus $E_S$ is not free of rational-ratio triples, and that convention needs
-separate constructions: \cref{gpp:thm:rational} below, and the one-digit exchange of
-\cref{gpi:prop:poly-greedy}.
+separate constructions: \cref{gpp:thm:rational} and the one-digit exchange of
+\cref{gpi:prop:poly-greedy}, both below.
 \end{remark}
 
-The bare existence of a polynomial-ratio progression-free set of natural density greater
-than $\gppdens(\gppG)$ also follows from \cref{gpi:prop:poly-greedy}, which produces such a
-set under the stronger rational-ratio convention; every rational-ratio progression-free
-set is polynomial-ratio progression-free. That construction needs a linear marker and
-satellite primes of total weight exceeding $q^2+q-1$ and comes with no numerical gain.
-\Cref{gpp:thm:natural} is retained for what it adds under the polynomial-ratio convention
-of Question~6.1: the exchange uses only $\max(4,q)$ primes, its gain is given exactly by
-\eqref{gpp:eq:gain}, and the table gives certified numerical gains. Neither result
+The one-digit exchange of \cref{gpi:prop:poly-greedy} also beats $\gppdens(\gppG)$ in
+natural density, under the stronger rational-ratio convention, but it needs satellite
+primes of total weight exceeding $q^2+q-1$ and gives no numerical gain; \cref{gpp:thm:natural}
+uses only $\max(4,q)$ primes and gives the exact gain \eqref{gpp:eq:gain}. Neither result
 implies the other.
 
 For the rational-ratio convention fix a monic linear $P$. Every nonzero polynomial has a
@@ -810,19 +821,297 @@ five. This single summand gives the stated gain, and $\prod_{Q\ne P}p_Q\ge1-q^{-
 For $q=2$ the guaranteed gain is $1/2048$. The limits in \cref{gpp:thm:rational} are
 upper densities along cutoffs, whereas \cref{gpp:thm:natural} gives a natural density.
 In particular the existence clause of Question~6.4 of \cite{Asada2017Subsets} has a
-positive answer. That clause, taken alone, is also a consequence of
-\cref{gpi:prop:poly-greedy}, which gives a rational-ratio progression-free set whose
-natural density exceeds $\gppdens(\gppG)$, and of \cref{gpi:thm:poly-gap}, which bounds
-the supremum $u_q$ of the upper densities of such sets from below by the supremum $b_q$ of
-their natural densities plus an explicit positive quantity, greater than $0.003660$ for
-$q=2$; since $b_q\ge\gppdens(\gppG)$ this is a larger excess than $1/2048$.
-\Cref{gpp:thm:rational} is not implied by those results: it determines the exact optimum
-of the family in which the greedy condition is retained outside one linear prime. By
-\cref{gpp:thm:supremum} the unrestricted rational-ratio supremum $u_q$ is the limit of the
-finite optimization problems $U_T$ formed with the rational-ratio convention; the bounds
-$v_TU_T\le u_q\le U_T$ are also proved in \cref{gpi:thm:poly-gap}. For polynomial ratios,
-the supremum of the natural densities is strictly smaller than $\beta_q$
-(\cref{gpi:rem:poly-ratio}).
+positive answer. That clause alone also follows from \cref{gpi:prop:poly-greedy} below,
+and \cref{gpi:thm:poly-gap} gives the larger excess $u_q-b_q>0.003660$ at $q=2$ over the
+natural-density supremum $b_q\ge\gppdens(\gppG)$; but \cref{gpp:thm:rational} is not
+implied by them, since it determines the exact optimum of the family in which the greedy
+condition is retained outside one linear prime. The unrestricted rational-ratio supremum
+$u_q$ is the limit of the finite problems $U_T$ of \cref{gpp:thm:supremum}, formed with the
+rational-ratio convention.
+
+\subsection{The same questions over \texorpdfstring{$\F_q[x]$}{Fq[x]}}\label{gpi:sec:poly}
+{\raggedright\sources{grh_transfers_density_gaps_and_zero_tests; grh_prime_patterns_and_branch_precision; mcnew-density-and-dirichlet-grh}}
+
+The arguments of \cref{gpi:sec:local,gpi:sec:gap,gpi:sec:attain,gpi:sec:onedigit} for the
+integers and number fields apply to $\F_q[x]$ for every prime power $q$, and some steps
+become exact. The valuation laws they need are those of \cref{gpp:lem:valuations}.
+
+We work with monic polynomials over $\F_q$. A forbidden triple is $f,rf,r^2f$ with
+$r\in\F_q(x)$ nonconstant and all three terms monic polynomials; this includes nonconstant
+ratios of degree zero. In factorization coordinates the three valuation vectors form an
+arithmetic progression with a nonzero integral step of either sign in each coordinate. Write
+$\mathbb P_n$ for the uniform measure on the $q^n$ monic polynomials of degree $n$. The
+proportion of a set $E$ in the balls of degree at most $N$ converges to a limit exactly when
+$\mathbb P_n(E)$ converges to it: subtract successive ball counts for one implication and sum
+the geometric weights for the other. This common limit is the natural density of $E$, and
+the limsup of the ball proportions is its upper density. All results also hold for sets of
+nonzero polynomials: a fixed scalar class gives the upper bounds by averaging, and the
+constructions may include all scalar multiples, since equal valuations at every monic
+irreducible force a ratio to lie in $\F_q^\times$. Let $b_q$ and $u_q$ be the suprema of the
+natural and of the upper densities of admissible sets.
+
+For $T\ge1$ let $S_T$ be the set of monic irreducibles of degree at most $T$, let
+$\norm{h}=q^{\deg h}$, let $I_q(d)$ be the number of monic irreducibles of degree $d$, so
+that $\sum_{d\mid k}dI_q(d)=q^k$ and $I_q(d)\le q^d/d$, and set
+\[
+ c_T=\prod_{P\in S_T}(1-\norm P^{-1}),\qquad v_T=\prod_{P\notin S_T}(1-\norm P^{-2}),\qquad
+ B_T=c_T\max_A\sum_{h\in A}\norm h^{-1},
+\]
+the maximum being over the admissible sets $A$ of monic $S_T$-smooth polynomials. It exists
+by the compactness argument of \cref{gpi:sec:local}.
+
+\begin{theorem}[The largest natural density over $\F_q$; \stU]\label{gpi:thm:poly-natural}
+For every $T\ge1$,
+\[
+ v_TB_T\le b_q\le B_T,\qquad0\le B_T-b_q\le\frac{q^{-T}}{q-1}.
+\]
+The number $b_q$ is computable, and there is a decidable admissible set of natural density
+exactly $b_q$. Moreover $b_q$ is the largest upper Banach mean of the sequence of
+exact-degree proportions: for every admissible $E$ and every $T$,
+\begin{equation}\label{gpi:eq:banach}
+ \sum_{j=M}^{M+L-1}\mathbb P_j(E)\ \le\ L\,B_T+O_{q,T}(1)\qquad(M\ge0,\ L\ge1).
+\end{equation}
+For $q=2$, $b_2\le2797/4096=0.682861328125$.
+\end{theorem}
+
+\begin{proof}
+\emph{Upper bound.} Let $E$ be admissible of density $\delta$, and write $f=gh$ with $g$
+$S_T$-rough and $h$ $S_T$-smooth. The fiber $A_g=\set{h:gh\in E}$ is admissible. The sum of
+the exact-layer proportions for $0\le j<N$ is
+\[
+ \sum_{\substack{g\ \mathrm{rough}\\ \deg g<N}}\norm g^{-1}
+ \sum_{\substack{h\in A_g\\ \deg h<N-\deg g}}\norm h^{-1}
+ \ \le\ \frac{B_T}{c_T}\sum_{\substack{g\ \mathrm{rough}\\ \deg g<N}}\norm g^{-1}.
+\]
+By finite inclusion--exclusion the rough proportion is exactly $c_T$ in every sufficiently
+high degree. Dividing by $N$ and passing to the limit gives $\delta\le B_T$.
+
+\emph{Lower bound and computability.} Use a maximizing $A$ in every rough fiber with
+squarefree $g$ and omit every other fiber; call this set $E_T$. In a forbidden triple the
+valuations outside $S_T$ would lie in $\set{0,1}$, so they agree, and the common fiber
+excludes the triple. The density of $E_T$ is $e_T=v_TB_T$, by \cref{gpp:lem:valuations}
+with the exponent set $\set{0,1}$ in place of $\gppA$ outside $S_T$; its proof applies
+verbatim, since this set also contains $0$ and $1$. The two truncations in that proof, of
+large smooth factors at degree $L$ and of squares of primes of degree above $K$, cost at most
+$\sum_{\deg h>L,\ h\ \mathrm{smooth}}\norm h^{-1}$ and $\sum_{\deg P>K}\norm P^{-2}$,
+uniformly in $j$, since $\mathbb P_j(a\mid f)\le\norm a^{-1}$ always, with equality once
+$j\ge\deg a$. Since $B_T\le1$,
+\[
+ B_T-b_q\le1-v_T\le\sum_{d>T}q^dq^{-2d}=\frac{q^{-T}}{q-1}.
+\]
+A finite weighted independent-set optimization over $\deg h\le L$ bounds the unrestricted
+maximum from below, with deficit at most the smooth tail, for example at most
+$\sum_{j>L}(j+1)^{\#S_T}q^{-j}$. This gives an algorithm of any prescribed absolute accuracy.
+
+\emph{A uniform estimate for the largest irreducible factor.} Write $D(f)$ for the largest
+degree of an irreducible divisor of $f$, with $D(1)=0$, and $F_m(j)=\mathbb P_j(D(f)\le m)$.
+For $m\ge1$,
+\begin{equation}\label{gpi:eq:shift}
+ \abs{F_m(j)-F_m(j-1)}\le\frac1m\qquad(j\ge1).
+\end{equation}
+Indeed, let $G(z)=(1-z)\sum_{j\ge0}F_m(j)z^j$. The Euler product over monic polynomials gives
+\[
+ G(z)=\prod_{\deg P>m}\bigl(1-(z/q)^{\deg P}\bigr)
+ =\exp\Bigl(-\sum_{k>m}a_k\frac{z^k}k\Bigr),\qquad
+ a_k=q^{-k}\sum_{d\mid k,\ d>m}dI_q(d)\in[0,1].
+\]
+If $g_j$ is the coefficient of $z^j$ in $G$, then $g_j=0$ for $1\le j\le m$, and for $j>m$
+logarithmic differentiation and coefficientwise majorization by the exponential with positive
+signs give
+\[
+ j\abs{g_j}\le\sum_{i=0}^{j-1}\abs{g_i}\le\exp\Bigl(\sum_{k=m+1}^{j}\frac1k\Bigr)\le\frac jm .
+\]
+The coefficient $g_j$ is the first difference in \eqref{gpi:eq:shift}. Consequently
+$\abs{F_m(j-k)-F_m(j)}\le k/m$ for $0\le k\le j$.
+
+\emph{Pasting by the largest prime degree.} For each $i\ge1$ take the set $E_i$ constructed
+at $T=i$, of density $e_i\to b_q$, and put $\epsilon_i=2^{-i}$. By the two uniform
+truncations there is a cylinder event $C_i$ with $\mathbb P_j(E_i\,\triangle\,C_i)\le\epsilon_i$
+for every $j$. Its indicator has the form $\sum_au_a\mathbf 1_{a\mid f}$ for finitely many
+monic $a$, by inclusion--exclusion. Write $s_i=\sum_au_a/\norm a$, so that
+$\abs{s_i-e_i}\le\epsilon_i$. Choose increasing integers $m_i>i$ exceeding every $\deg a$
+occurring for $C_i$ and satisfying $\sum_a\abs{u_a}\deg(a)/\norm a\le m_i\epsilon_i$. Accept
+$f$ by the rule $E_i$ when $m_i<D(f)\le m_{i+1}$, and omit the $f$ with $D(f)\le m_1$. This
+set is admissible: at a prime of the greatest degree occurring anywhere in a putative
+forbidden triple, all three valuations are zero or one, since wherever it is present it is a
+largest prime and the rule there enforces squarefreeness; as the valuations are in arithmetic
+progression and one of them is one, all are one. So the three polynomials have the same
+largest degree, follow the same rule, and cannot form the triple.
+
+For $m,j\ge m_i$, exact division by $a$ and the shift estimate give
+\[
+ \mathbb P_j(C_i,\ D\le m)=\sum_a\frac{u_a}{\norm a}F_m(j-\deg a)=s_iF_m(j)+\theta\epsilon_i,
+ \qquad\abs\theta\le1 .
+\]
+Replacing $C_i$ by $E_i$ and $s_i$ by $e_i$ raises the error to $3\epsilon_i$. The
+probability retained in the $i$th bin therefore differs from
+$e_i\,\mathbb P_j(m_i<D\le m_{i+1})$ by at most $6\epsilon_i$, and for $j<m_i$ the bin is
+empty. For fixed $m$, $F_m(j)\to0$, since the finitely many permitted prime factors give at
+most $(j+1)^{\#S_m}$ polynomials; hence the mass of any fixed initial segment of bins tends
+to zero. The remaining errors sum to at most $6\sum_{i\ge i_0}\epsilon_i$, and
+$\sup_{i\ge i_0}\abs{e_i-b_q}\to0$. Letting $j\to\infty$ and then $i_0\to\infty$ shows that the
+exact-degree proportions tend to $b_q$.
+
+\emph{Decidability.} At stage $i$ use a finite optimizer whose omitted smooth tail, after
+multiplication by $c_i$, is less than $2^{-i}$, with deterministic tie breaking. The cylinder
+truncations and the endpoints $m_i$ can then be chosen by the effective bounds above. This
+changes $e_i$ by at most $2^{-i}$ and preserves its limit. Factoring a given polynomial and
+finding its bin decides membership.
+
+\emph{Banach means.} For rough cores with degrees in $[M,M+L)$ the fiber bound and the
+eventually exact rough proportions give $LB_T+O_{q,T}(1)$. The contribution of the earlier
+rough cores is at most
+\[
+ \sum_{s\ge1}\ \sum_{\substack{h\ \mathrm{smooth}\\ \deg h\ge s}}\norm h^{-1}
+ =\sum_{h\ \mathrm{smooth}}(\deg h)\norm h^{-1}<\infty ,
+\]
+by summing over $s=M-\deg g$ and bounding the rough shell proportion by one. This proves
+\eqref{gpi:eq:banach}. Divide by $L$, take the supremum over $M$, and let $L$ and $T$ tend to
+infinity; the reverse inequality follows from the set with converging degree proportions.
+
+\emph{The binary certificate.} For $q=2$ and $T=2$, $S_2$ consists of the two linear primes
+and the unique quadratic prime, and $c_2=3/16$. On the exponent triples $(a,b,c)$ with
+$a+b+2c\le12$ the maximum of $\sum2^{12-a-b-2c}$ over admissible sets is $14853$, attained by
+the truncated greedy set. The script
+\gpifile{grh_transfers_density_gaps_and_zero_tests/checks/natural_density_check.py}
+exhausts the independent sets by branching on the earliest remaining vector; including it
+deletes the third vertex of any progression whose first two vertices in the chosen ordering
+are now included, and a branch is pruned when its score plus the total available weight
+cannot improve the incumbent. All scores are integers. Assigning the full mass to the
+untested smooth tail gives
+\[
+ b_2\le B_2\le1-\frac3{16}\Bigl(\sum_{a+b+2c\le12}2^{-a-b-2c}-\frac{14853}{4096}\Bigr)
+ =\frac{2797}{4096}. \qedhere
+\]
+\end{proof}
+
+\begin{theorem}[Natural against upper density over $\F_q$; \stU]\label{gpi:thm:poly-gap}
+For every prime power $q$, $u_q>b_q$. For each $T\ge3$,
+\[
+ u_q-b_q\ \ge\ (1-q^{-1})\,c_T\,q^{-3}-\frac{q^{-T}}{(T+1)(q-1)} .
+\]
+In particular $u_2-b_2>0.003660$, and $\liminf_{q\to\infty}q^3(u_q-b_q)\ge e^{-11/6}$.
+\end{theorem}
+
+\begin{proof}
+Let $J_T(t)$ be the largest cardinality of an admissible set of monic $S_T$-smooth
+polynomials of degree at most $t$, and define
+\[
+ U_T=(1-q^{-1})\,c_T\sum_{t\ge0}q^{-t}J_T(t).
+\]
+\emph{The bounds $v_TU_T\le u_q\le U_T$.} These $U_T$ and $v_T$ are those of
+\cref{gpp:thm:supremum} for $S=S_T$, and $u_q$ is the supremum there under the
+rational-ratio convention (monic sets and sets of nonzero polynomials give the same
+densities, as noted above). So the bounds are the rational-ratio case of
+\cref{gpp:thm:supremum}, whose proof also gives $U_T\le1$.
+
+\emph{Comparison with a fixed set.} For a fixed admissible smooth set $A$ let $A(t)$ count
+its elements of degree at most $t$. A geometric series gives
+\[
+ \sum_{h\in A}\norm h^{-1}=(1-q^{-1})\sum_{t\ge0}q^{-t}A(t),
+\]
+and each difference $J_T(t)-A(t)$ is a nonnegative integer. We show that one of them is
+positive for some $1\le t\le3$. Because $T\ge3$, the smooth polynomials of these degrees are
+all the monic polynomials.
+
+\emph{The three cutoffs are incompatible.} Write $\mathcal L$ for the set of the $q$ monic
+linear polynomials. Expressing the ratio in lowest terms shows that every forbidden triple
+of monic polynomials has the form
+\[
+ ad^2,\quad ade,\quad ae^2
+\]
+with distinct coprime monic $d,e$ and monic $a$. At cutoff three, $d,e\in\set1\cup\mathcal L$
+and $\deg a\le1$; at cutoff two, $a=1$. For each pair of distinct diagonal entries $d^2,e^2$
+the unique middle entry $de$ must be absent if both diagonals are retained, and distinct
+pairs have distinct middle entries. Retaining $k$ of the $q+1$ diagonals at cutoff two
+therefore costs at least
+\[
+ q+1-k+\binom k2\ \ge\ q
+\]
+deletions, and the bound is attained by deleting the $q$ squares of linear polynomials. At
+cutoff one all $q+1$ polynomials are admissible. Thus a set that is optimal at both cutoffs
+one and two retains $1$ and all linear polynomials and deletes exactly those $q$ squares. For
+all $a,d\in\mathcal L$ with $a\ne d$ the entries $a$ and $ad$ are then retained, and their
+progression forces the deletion of $ad^2$. With the $q$ squares these $q(q-1)$ distinct
+cubics give at least $q^2$ deletions up to degree three.
+
+There is an admissible set at cutoff three with only $q^2-1$ deletions. Start with the
+deletion list consisting of every $P^2$ with $P\in\mathcal L$ and every $ad^2$ with distinct
+$a,d\in\mathcal L$. Choose distinct $X,Y\in\mathcal L$, restore $Y^2$ and $YX^2$, and delete
+$Y$. To check admissibility, group the triples by their common factor $a$. For $a=1$ the
+retained diagonals are $1$ and $Y^2$, whose middle is the missing $Y$. For $a=Y$ the retained
+diagonals are $Y^3$ and $YX^2$, whose middle is the missing $XY^2$. For every other linear
+$a$ the only retained diagonals are $a$ and $a^3$, whose middle $a^2$ is missing. This
+exhausts the possibilities, including ratios of degree zero.
+
+\emph{The gap.} The integer loss has weight at least $q^{-3}$ in the series. Maximizing over
+$A$ gives $U_T-B_T\ge(1-q^{-1})c_Tq^{-3}$. With $u_q\ge v_TU_T$, $b_q\le B_T$ and $U_T\le1$
+this proves the bound, since $I_q(d)\le q^d/d$ gives
+\[
+ 1-v_T\le\sum_{d>T}I_q(d)q^{-2d}\le\frac{q^{-T}}{(T+1)(q-1)} .
+\]
+The product $c_T$ decays slowly: its first factor is $(1-1/q)^q\ge1/4$, and for $d\ge2$
+Bernoulli's inequality gives $(1-q^{-d})^{I_q(d)}\ge1-1/d$. Hence $c_T\ge1/(4T)$, and a
+sufficiently large $T$ gives a positive gap for every $q$. For the asymptotic statement take
+$T=3$ and use $I_q(1)=q$, $I_q(2)=(q^2-q)/2$, $I_q(3)=(q^3-q)/3$; then $c_3\to e^{-11/6}$. The
+numerical value for $q=2$ uses $T=8$.
+\end{proof}
+
+The script
+\gpifile{grh_transfers_density_gaps_and_zero_tests/checks/check_gap.py}
+verifies
+the following certified lower bounds for $u_q-b_q$ in rational arithmetic.
+\begin{center}\small
+\begin{tabular}{crl@{\qquad}crl}\toprule
+$q$&$T$&gap exceeds&$q$&$T$&gap exceeds\\\midrule
+2&8&0.003660&5&4&0.000715\\
+3&5&0.002149&7&4&0.000297\\
+4&4&0.001192&&&\\\bottomrule
+\end{tabular}
+\end{center}
+It also exhausts the $2^{15}$ subsets of the binary ball of degree three: the optimal sizes
+up to degrees $0,1,2,3$ are $1,3,5,12$, and preserving the optima up to degree two allows at
+most $11$ at degree three.
+
+\begin{remark}[Polynomial ratios]\label{gpi:rem:poly-ratio}
+The same separation holds when the ratio $r$ must be a nonconstant polynomial, with
+admissibility for this convention in both optimizations; squarefreeness outside $S_T$ still
+fixes the rough core. At cutoff two the monic constant $1$ meets every forbidden triple, so
+one deletion suffices and is necessary. A set optimal at cutoff one retains $1$ and all $q$
+linear polynomials and must then delete all $q$ squares of linear polynomials at cutoff two.
+This proves incompatibility already up to degree two and replaces $q^{-3}$ by $q^{-2}$ in
+\cref{gpi:thm:poly-gap} for this convention.
+\end{remark}
+
+Let $G_q$ be the set of monic members of the greedy set $\gppG$ of
+\cref{gpp:sec:conventions}, the monic polynomials all of whose valuations lie in
+$\gppA$. Asada, Fourakis, Manski, McNew, Miller and Moreland asked for a set avoiding
+rational-function ratios of greater upper density than the greedy set
+\cite[Question~6.4]{Asada2017Subsets}. The one-digit exchange gives one with a natural
+density.
+
+\begin{proposition}[The greedy set over $\F_q$ is not optimal; \stU]\label{gpi:prop:poly-greedy}
+For every prime power $q$ there is a set of monic polynomials over $\F_q$, avoiding all
+progressions with nonconstant ratio in $\F_q(x)$, whose natural density exists and exceeds
+that of $G_q$. Hence $b_q>d(G_q)$. The same holds for sets of nonzero polynomials.
+\end{proposition}
+
+\begin{proof}
+Give a monic irreducible $P$ the weight $w_P=q^{-\deg P}$. \Cref{gpp:lem:valuations} is the
+analogue of \cref{gpi:lem:product}, with exact-degree limits, for the greedy rule outside a
+finite set of primes, which is the case used in \cref{gpi:thm:onedigit}. So the proof of
+\cref{gpi:thm:onedigit}(a),(b) applies verbatim, with \eqref{gpi:eq:capgain} for the weights
+$w_P$. The reciprocal sum over the irreducibles diverges: for $s>1$ the Euler product is
+$(1-q^{1-s})^{-1}$, while the powers of exponent at least two contribute a bounded amount to
+its logarithm as $s\downarrow1$. Choose a linear marker, so $w=1/q$, and enough satellites to
+make $\sum_iu_i>q^2+q-1$. Then \eqref{gpi:eq:capgain} is positive. Including all nonzero
+scalar multiples preserves the result.
+\end{proof}
+
+For $q=2$ the greedy density is approximately $0.6483610761$, by the Euler product of
+\cite{Asada2017Subsets}, against the bound $b_2\le0.682861328125$ of
+\cref{gpi:thm:poly-natural}. The conjecture of \cite{Asada2017Subsets} for polynomial ratios
+uses the different benchmark $m_q$ and is disproved in \cref{gpp:thm:counterexample}.
 
 \subsection{Finite coefficient rings: local rings with square-zero maximal ideal and their products}\label{gpp:sec:rings}
 {\raggedright\sources{grh_method_transfers; grh_method_transfers_graph_towers_and_finite_rings; grh_method_transfers_research}}
@@ -1986,4 +2275,9 @@ on which to test the remaining congruences.
 Is $a_n(D)=M_n(D)$ for all $n\ge4$ and all $D$, with the translates of the balanced
 simplex difference and of its negative as the only extremal families?
 \Cref{gpp:prop:anticodeasymptotic} gives only the leading term.
+\end{question}
+
+\begin{question}[Polynomial rings]
+How large is the true gap $u_2-b_2$, and more generally
+ $u_q-b_q$? What is $b_q$?
 \end{question}

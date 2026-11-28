@@ -1,7 +1,7 @@
 # Merged article
 
 [`article.pdf`](article.pdf) merges 209 delivered research reports into one article of
-982 pages, *Beyond the Riemann hypothesis
+988 pages, *Beyond the Riemann hypothesis
 for Dirichlet L-functions: consequences, transfers and limits*. Each result is stated once,
 in the strongest form the reports prove. A result that follows from a stronger or more
 general result of the collection, with hypotheses no stronger, is left out, and so is
@@ -35,27 +35,36 @@ and file columns of the provenance tables, each refer to exactly one of these co
 
 | Part | Section | File | Results | Unconditional | Uses GRH | Reductions |
 |---|---|---|---:|---:|---:|---:|
-| I | The source theorem and its transferable mechanism | [`src.tex`](sections/src.tex) | 15 | 14 | 1 | 1 |
-| I | One-sided analytic criteria | [`ana.tex`](sections/ana.tex) | 99 | 71 | 21 | 0 |
-| I | Li coefficients, moment pencils and positivity certificates | [`li.tex`](sections/li.tex) | 76 | 44 | 34 | 0 |
-| II | Nonabelian zero detection: general reductions | [`nab.tex`](sections/nab.tex) | 41 | 24 | 10 | 10 |
-| II | Detectors for specific Galois groups and fields | [`grp.tex`](sections/grp.tex) | 45 | 28 | 1 | 17 |
-| II | Degree-two targets: Artin, Hecke and modular L-functions | [`hec.tex`](sections/hec.tex) | 39 | 20 | 3 | 14 |
-| III | Zeros, Euler products and prime races under Dirichlet GRH | [`zer.tex`](sections/zer.tex) | 142 | 47 | 93 | 1 |
-| III | Recovering zeros and characters from prime data | [`rec.tex`](sections/rec.tex) | 172 | 86 | 93 | 0 |
-| III | Positive filters that cancel zeros | [`fil.tex`](sections/fil.tex) | 63 | 50 | 16 | 0 |
-| III | Direct arithmetic consequences of Dirichlet GRH | [`dir.tex`](sections/dir.tex) | 158 | 80 | 92 | 0 |
-| III | Imaginary quadratic fields of class-group exponent six and seven | [`cls.tex`](sections/cls.tex) | 13 | 7 | 6 | 0 |
-| III | Sparse equations for singular moduli | [`smd.tex`](sections/smd.tex) | 48 | 30 | 2 | 0 |
-| IV | Progression-free sets in polynomial rings and finite rings; additive constraints | [`gpp.tex`](sections/gpp.tex) | 34 | 34 | 0 | 0 |
-| IV | Progression-free sets of integers and of ideals | [`gpi.tex`](sections/gpi.tex) | 28 | 22 | 0 | 0 |
-| IV | Graph towers, spanning-tree valuations and signed cycles | [`gra.tex`](sections/gra.tex) | 57 | 49 | 0 | 0 |
-| V | Torsion specialization: selection theorems | [`tors.tex`](sections/tors.tex) | 30 | 18 | 0 | 0 |
-| V | Torsion specialization: exact costs, obstructions and coefficient fields | [`cost.tex`](sections/cost.tex) | 40 | 29 | 1 | 0 |
-| V | Lubin–Tate branches, jet recovery and Fleck congruences | [`lub.tex`](sections/lub.tex) | 42 | 38 | 0 | 0 |
-| VI | The Selmer, Galois-cohomology and K-theory interface | [`sel.tex`](sections/sel.tex) | 44 | 39 | 0 | 0 |
-| VI | Spanning, frames, auxiliary characters and matrix statistics | [`spn.tex`](sections/spn.tex) | 135 | 132 | 1 | 0 |
-| | Total | | 1321 | 862 | 374 | 43 |
+| I | The source theorem and its transferable mechanism | [`src.tex`](sections/src.tex) | 6 | 5 | 1 | 1 |
+| I | Spanning, completion and integral frames | [`spn.tex`](sections/spn.tex) | 30 | 28 | 0 | 0 |
+| I | One-sided analytic criteria | [`ana.tex`](sections/ana.tex) | 70 | 53 | 5 | 2 |
+| I | Li coefficients, moment pencils and positivity certificates | [`li.tex`](sections/li.tex) | 55 | 33 | 22 | 0 |
+| I | The Li heat semigroup and random laws built from zeros | [`lih.tex`](sections/lih.tex) | 55 | 34 | 29 | 0 |
+| II | Nonabelian zero detection: general reductions | [`nab.tex`](sections/nab.tex) | 37 | 22 | 10 | 10 |
+| II | Detectors for specific Galois groups and fields | [`grp.tex`](sections/grp.tex) | 39 | 24 | 1 | 16 |
+| II | Degree-two targets: Artin, Hecke and modular L-functions | [`hec.tex`](sections/hec.tex) | 33 | 22 | 0 | 14 |
+| III | Prime races, Mertens errors and Euler products at the critical line | [`zer.tex`](sections/zer.tex) | 31 | 5 | 25 | 0 |
+| III | Prime errors at several scales: covariance, balancing, peaks and merging | [`flu.tex`](sections/flu.tex) | 66 | 24 | 42 | 0 |
+| III | Positive filters that cancel zeros | [`fil.tex`](sections/fil.tex) | 65 | 55 | 22 | 0 |
+| III | Recovering zeros from prime data and analytic samples | [`rec.tex`](sections/rec.tex) | 44 | 24 | 24 | 0 |
+| III | Characters and arithmetic parameters from zeros | [`chz.tex`](sections/chz.tex) | 84 | 25 | 62 | 0 |
+| III | Hermitian couplings of completed L-functions: real zeros, inverse problems and transport | [`cpl.tex`](sections/cpl.tex) | 40 | 17 | 24 | 0 |
+| III | Matching Euler factors of products of Dirichlet L-functions | [`eul.tex`](sections/eul.tex) | 33 | 28 | 6 | 0 |
+| IV | Consequences through published theorems: primes, primitive roots and prime gaps | [`dir.tex`](sections/dir.tex) | 19 | 4 | 18 | 0 |
+| IV | Small primes in residue classes: subset products, sign patterns and codes | [`prd.tex`](sections/prd.tex) | 98 | 57 | 54 | 0 |
+| IV | Class groups of imaginary quadratic fields and orders | [`cls.tex`](sections/cls.tex) | 23 | 9 | 15 | 0 |
+| IV | CM coefficient fields, reflected fields and uniform Galois bounds | [`cmf.tex`](sections/cmf.tex) | 31 | 18 | 14 | 0 |
+| IV | Sparse equations for singular moduli | [`smd.tex`](sections/smd.tex) | 48 | 30 | 2 | 0 |
+| V | Progression-free sets in polynomial rings and finite rings; additive constraints | [`gpp.tex`](sections/gpp.tex) | 36 | 36 | 0 | 0 |
+| V | Progression-free sets of integers and of ideals | [`gpi.tex`](sections/gpi.tex) | 25 | 19 | 0 | 0 |
+| V | Graph towers and spanning-tree valuations | [`gra.tex`](sections/gra.tex) | 33 | 29 | 0 | 0 |
+| V | Quantum walks, signed square cycles and edge-polytope zeros | [`grw.tex`](sections/grw.tex) | 23 | 19 | 0 | 0 |
+| V | Compressions of random symplectic and orthogonal matrices | [`cmp.tex`](sections/cmp.tex) | 98 | 100 | 0 | 0 |
+| VI | Torsion specialization I: shells, exact costs and selection | [`tors.tex`](sections/tors.tex) | 39 | 24 | 0 | 0 |
+| VI | Torsion specialization II: coefficient fields, characters and limits | [`cost.tex`](sections/cost.tex) | 36 | 30 | 2 | 0 |
+| VI | Lubin–Tate branches, jet recovery and Fleck congruences | [`lub.tex`](sections/lub.tex) | 42 | 38 | 0 | 0 |
+| VI | The Selmer, Galois-cohomology and K-theory interface | [`sel.tex`](sections/sel.tex) | 46 | 42 | 0 | 0 |
+| | Total | | 1285 | 854 | 378 | 43 |
 
 "Results" counts theorems, propositions, corollaries and lemmas. The status columns count
 the marks in theorem headings; lemmas and corollaries are often unmarked, so the status

@@ -1,11 +1,25 @@
-\section{Imaginary quadratic fields of class-group exponent six and seven}\label{sec:cls}
+\providecommand{\dirfiles}[1]{\par\smallskip\noindent
+  {\footnotesize\raggedright\emph{Files:} #1.\par}\smallskip}
+\providecommand{\dirP}{\mathbb{P}}
+\providecommand{\dirE}{\mathbb{E}}
+\providecommand{\dirU}{\mathrm{U}}
+\section{Class groups of imaginary quadratic fields and orders}\label{sec:cls}
 
 \providecommand{\clsp}{\mathfrak p}
 \providecommand{\clsq}{\mathfrak q}
 \providecommand{\clsXz}{X_0}
 
 The \emph{exponent} of a finite abelian group is the least positive integer that
-annihilates every element. Throughout this section $D<0$ is a fundamental discriminant,
+annihilates every element. This section collects every class-group exponent census of
+the article. \Cref{cls:sec:inputs} records the published inputs, the exponents one to five
+and eight (\cref{cls:prop:small}), and the exponent five with rank two
+(\cref{cls:rem:five}); \cref{dir:sec:idoneal} completes Euler's list of idoneal numbers,
+which is the census of exponent at most two for orders (\cref{dir:thm:idoneal}), and
+\cref{dir:sec:xyz} applies it to the representations $n=xy+yz+zx$; the remaining
+subsections close the exponents six and seven and give two restrictions valid for every
+even exponent. The CM coefficient fields and reflected
+fields built from these lists are in \cref{sec:cmf}. Except in
+\cref{dir:sec:idoneal,dir:sec:xyz}, $D<0$ is a fundamental discriminant,
 $x=\abs{D}$, $K=\Q(\sqrt D)$, and $\chi=\chi_D=(D/\cdot)$ is the primitive odd quadratic
 character of conductor $x$. We put
 \[
@@ -48,14 +62,36 @@ $9,56,17,203,27,432,33,778$ fields of exact exponent $1,2,\dots,8$ respectively.
 \item\label{cls:it:bound} (Theorem~3 and Table~2.) If $\zeta_K$ satisfies the Riemann
 hypothesis and $\Cl(K)$ has exponent $e$, then $x\le2.3\cdot10^{20}$ for $e=5$,
 $x\le X_1:=2.5\cdot10^{25}$ for $e=6$, and $x\le3.9\cdot10^{30}$ for $e=7$. The analytic
-input is the bound of Bach and Sorenson \cite{Bach1996Explicit} for the least rational prime
-that splits in $K$, combined with the norm inequality of \cref{cls:lem:norm}.
+input is the bound for the least rational prime that splits in $K$,
+\cref{cls:lem:splitprime}(a), combined with the norm inequality of \cref{cls:lem:norm}.
 \item\label{cls:it:complete} (Theorem~2.) Under the same hypothesis the lists in
 \ref{cls:it:census} are complete for the exponents $1,2,3,4,5$ and $8$. The exponents six
 and seven are excluded from this assertion.
 \end{enumerate}
 Since $\zeta_K(s)=\zeta(s)L(s,\chi_D)$, the hypothesis of \ref{cls:it:bound} and
 \ref{cls:it:complete} holds for every $K$ by \cref{src:thm:dgrh}.
+
+The two published bounds for least split primes used in this section and in
+\cref{sec:cmf} are the following.
+
+\begin{lemma}[Least split primes; \stG]\label{cls:lem:splitprime}
+\begin{enumerate}[label=\textup{(\alph*)}]
+\item \textup{(\cite[Theorem~3]{Elsenhans2020Imaginary}.)} If $D<0$ is a fundamental
+discriminant with $\log\abs D>25$, then some rational prime
+$p\le(1.881\log\abs D+6.18)^2$ splits in $\Q(\sqrt D)$.
+\item \textup{(\cite[Theorem~5.1]{Bach1996Explicit}.)} If $F/\Q$ is an abelian field of
+degree $n$ and discriminant $\Delta_F$, then some rational prime
+$p\le(4\log\abs{\Delta_F}+\tfrac52n+5)^2$ is unramified in $F$ and has trivial Frobenius
+in $\Gal(F/\Q)$. For a quadratic field the bound is $(4\log\abs{\Delta_F}+10)^2$.
+\end{enumerate}
+\end{lemma}
+
+\begin{proof}
+Both statements are proved under the Riemann hypothesis for the Dedekind zeta function
+of the field; the first rests on the second. For $\Q(\sqrt D)$ that zeta function is
+$\zeta(s)L(s,\chi_D)$, and for an abelian field it is a product of Dirichlet $L$-functions
+by \cref{dir:prop:abelian}. In both cases \cref{src:thm:dgrh} supplies the hypothesis.
+\end{proof}
 
 \begin{proposition}[Exponents one to five and eight; \stG]\label{cls:prop:small}
 The numbers of imaginary quadratic fields whose class group has exact exponent
@@ -73,7 +109,10 @@ remains. Of the 27 fields, 25 have class group $\Z/5\Z$, and the class group is
 $(\Z/5\Z)^2$ for $D=-12451$ and $D=-37363$. An independent enumeration of the $75{,}988$
 negative fundamental discriminants with $x\le250{,}000$, through their $11{,}689{,}615$
 reduced forms, finds 196 fields whose class number is a nontrivial power of five, of which
-exactly these 27 have exponent five; see \ref{cls:it:c-five} in \cref{cls:sec:six}.
+exactly these 27 have exponent five; see \ref{cls:it:c-five} in \cref{cls:sec:six}. The
+reflected quintic fields of these 27 fields are determined in \cref{dir:sec:reflected}: the
+twelve over the two bases of rank two are those of \cref{dir:prop:ranktwo} and
+\cref{dir:tab:ranktwo}, and the count of all $37$ is \cref{dir:cor:reflected37}.
 \end{remark}
 
 For orders we use \cite[Theorem~1.3(5),(6) and Section~6]{Aiken2026Boundary}: under ERH,
@@ -83,6 +122,279 @@ by \ref{cls:it:census} and \ref{cls:it:bound} contains no fundamental discrimina
 exponent. The construction reduces all analytic hypotheses to the classification of the
 underlying quadratic fields, for which \cref{src:thm:dgrh} supplies them. The integer
 $\clsXz$ itself is not a fundamental discriminant.
+
+\subsection{Euler's list, integer boxes and K3 surfaces}\label{dir:sec:idoneal}
+\sources{grh-transfer; grh_transfer_analysis_2026-11-25}
+
+A positive integer $n$ is \emph{idoneal} if the class group of primitive positive
+definite binary quadratic forms of discriminant $-4n$ has exponent dividing two;
+equivalently, every such form has an ambiguous class. The discriminant $-4n$ can belong
+to a nonmaximal order.
+
+\begin{theorem}[Euler's list is complete; \stG]\label{dir:thm:idoneal}
+There are exactly $65$ idoneal numbers:
+\begin{align*}
+&1,2,3,4,5,6,7,8,9,10,12,13,15,16,18,21,22,24,25,28,30,33,37,\\
+&40,42,45,48,57,58,60,70,72,78,85,88,93,102,105,112,120,130,133,\\
+&165,168,177,190,210,232,240,253,273,280,312,330,345,357,385,408,\\
+&462,520,760,840,1320,1365,1848.
+\end{align*}
+\end{theorem}
+
+\begin{proof}
+Weinberger's theorem \cite{Weinberger1973Exponents} concerns fundamental discriminants
+and uses a zero-free interval near $1$ for real quadratic Dirichlet characters, which
+Proposition~\ref{dir:prop:positive} supplies. Kani's reduction from orders to fields
+\cite[Theorems~6 and~22, Corollary~23]{Kani2011Idoneal}, together with the finite list,
+gives the statement.
+\end{proof}
+
+The possible extra fundamental discriminant in Weinberger's unconditional statement can
+give two orders and hence two further idoneal numbers, not one; Kani's Corollary~23
+records the distinction. The $65$ fundamental discriminants of exponent dividing two and
+the $65$ idoneal numbers are different lists. The same completeness was drawn earlier
+from a weaker zero-free half-plane in \cite{OpenAI2026Quasi}. Two finite checks
+accompany the theorem: an enumeration of reduced forms for $1\le n\le10\,000$, storing a
+nonambiguous reduced form for each rejected $n$, and an integer sieve of the
+representation problem below through $n=5\,000\,000$.
+\dirfiles{\artifact{grh_transfer_analysis_2026-11-25/data/idoneal_certificates.json},
+\artifact{grh-transfer/checks/idoneal.py},
+\artifact{grh-transfer/checks/idoneal-output.txt}}
+
+A box with integer side lengths $x,y,z$ has surface area $2n$ with $n=xy+yz+zx$.
+
+\begin{corollary}[Integer boxes; \stG]\label{dir:cor:boxes}
+A positive integer $n$ fails to be of the form $xy+yz+zx$ with integers $0<x<y<z$
+exactly when $n$ is idoneal. Hence every even number greater than $3696$ is the
+surface area of a box with three different integer sides, and $3696$ is not. If equal
+sides are allowed, exactly $18$ positive even numbers are not surface areas, namely the
+doubles of
+\[
+ 1,2,4,6,10,18,22,30,42,58,70,78,102,130,190,210,330,462 ,
+\]
+so that $924$ is the last missing even area.
+\end{corollary}
+
+\begin{proof}
+Kani's Remark~35(b), crediting Rains, identifies the idoneal numbers with the failures
+for $0<x<y<z$ \cite{Kani2011Idoneal}; apply Theorem~\ref{dir:thm:idoneal}. The classification
+with repetitions is Theorem~1.1 of Borwein and Choi \cite{BorweinChoi2000Representations},
+conditional on the same hypothesis.
+\end{proof}
+
+For example, the box $8\times9\times23$ has area $926$.
+
+\begin{corollary}[The K3--Enriques obstruction list; \stG]\label{dir:cor:k3}
+The list of $577$ idoneal genera of positive definite integral lattices of
+Brandhorst, Sonel and Veniani is complete, and so is their list of $550$ co-idoneal
+lattices occurring in the criterion for a complex algebraic K3 surface to cover an
+Enriques surface. Exactly $65$ of the co-idoneal lattices have rank ten.
+\end{corollary}
+
+\begin{proof}
+An integral positive definite lattice has a symmetric integer-valued pairing; its genus
+consists of the isometry classes locally isometric to it over every $\Zp$ and over
+$\R$. A genus is \emph{idoneal} if each of its members has a vector of square one. In
+rank two such a vector $u$ splits off a copy of $[1]$, since $v-(v,u)u$ is integral and
+orthogonal to $u$ for every $v$, and the determinant $n$ fixes the remaining factor
+$[n]$. Hence an idoneal genus of rank two consists of the single class $[1]\oplus[n]$,
+and the characterization of idoneal numbers by genera identifies the admissible
+determinants with Euler's list, which is complete by Theorem~\ref{dir:thm:idoneal}.
+Brandhorst, Sonel and Veniani
+\cite[Remark~1.2 and Addendum~1.6]{BrandhorstSonelVeniani2025Idoneal} enumerate the
+other ranks from this input: the numbers of idoneal genera of rank $r=1,\dots,13$ are
+\[
+ 1,65,110,122,107,76,47,24,13,6,4,1,1,
+\]
+with total $577$ and none for $r>13$. This is the enumeration asked for in Kani's
+Problem~45 \cite{Kani2011Idoneal}.
+
+For the geometric statement put $\Lambda^-=U\oplus U(2)\oplus E_8(-2)$, where $U$ is
+the hyperbolic plane, $E_8$ is positive definite and parentheses scale the pairing. Let
+$T$ be the orthogonal complement of the N\'eron--Severi lattice in $H^2(X,\Z)$ of a K3
+surface $X$. Keum's criterion asks for a primitive embedding $T\hookrightarrow\Lambda^-$
+whose orthogonal complement contains no vector of square $-2$. Among the lattices that
+embed primitively, the \emph{co-idoneal} ones are those for which every such embedding
+has a vector of square $-2$ in its complement. By
+\cite[Proposition~3.15]{BrandhorstSonelVeniani2025Idoneal} each complement of a
+co-idoneal $T$ is $L(-2)$ for $L$ in a uniquely determined idoneal genus of rank
+$12-\rank T$, and their Algorithm~4 enumerates the candidates $T$ from the genera and
+discriminant forms. Thus rank two on the arithmetic side supplies rank ten on the
+geometric side. Their Addendum~1.11 and Table~1 give, for $\rank T=2,\dots,11$, the
+counts
+\[
+ 3,8,17,41,76,107,122,110,65,1,
+\]
+with sum $550$ and none in higher rank. Both finite enumerations are the published
+computations of \cite{BrandhorstSonelVeniani2025Idoneal}; the counts concern isometry
+classes of lattices, and one lattice can occur for many surfaces.
+\end{proof}
+
+\subsection{Representations \texorpdfstring{$n=xy+yz+zx$}{n = xy+yz+zx} with a small
+prime \texorpdfstring{$x+y$}{x+y}}\label{dir:sec:xyz}
+\sources{grh-transfer}
+
+For $n\ge1$ consider the strictly ordered positive integral solutions of
+\begin{equation}\label{dir:eq:xyz}
+ n=xy+yz+zx,\qquad 0<x<y<z .
+\end{equation}
+By Corollary~\ref{dir:cor:boxes} a solution exists for every $n>1848$. The results of this
+subsection are quantitative and use only the Riemann hypothesis for $\zeta$ and for
+real Dirichlet characters. All constants are absolute unless indicated.
+
+\begin{lemma}[From a split prime to three coordinates; \stU]\label{dir:lem:split}
+Let $\chi(k)=\legendre{-4n}{k}$ be the real Kronecker character modulo $4n$; it is
+nonprincipal, since $\chi(-1)=-1$. Let $p\le\sqrt n$ be a prime.
+\begin{enumerate}[label=\textup{(\roman*)}]
+\item If $p$ is odd, $p\nmid 4n$ and $\chi(p)=1$, let $b$ be the unique integer with
+ $0<b<p/2$ and $b^2\equiv-n\pmod p$. Then
+ \[
+  x=b,\qquad y=p-b,\qquad z=\frac{n+b^2}{p}-b
+ \]
+ is a solution of \eqref{dir:eq:xyz} with $x+y=p$.
+\item Conversely, if \eqref{dir:eq:xyz} has a solution with $x+y=p$, then
+ $p\nmid2n$ and $\chi(p)=1$.
+\end{enumerate}
+Different primes give different solutions.
+\end{lemma}
+
+\begin{proof}
+In (i), $(x+y)(x+z)=n+x^2$ by construction, which is \eqref{dir:eq:xyz}; and
+$x<y<z$ because $b<p/2$ and $n+b^2>p^2$. The pair sum recovers $p$. In (ii) the same
+product identity gives $x^2\equiv-n\pmod p$ with $0<x<p/2$; hence $p\nmid 2n$ and
+$\chi(p)=1$.
+\end{proof}
+
+\begin{remark}[A uniform smoothed prime sum; \stG]\label{dir:lem:smooth}
+Fix a nonnegative smooth function $w$ supported in $(1,2)$ with $\int w=1$; for a real or
+principal Dirichlet character $\eta$ modulo $q$ and $X\ge2$ the sum
+$S(\eta)=\sum_k\Lambda(k)\eta(k)w(k/X)$ equals $\mathbf 1_{\eta=\chi_0}X+O_w(\sqrt
+X\log(2q))$, where $\chi_0$ is the principal character modulo $q$. This is
+\cref{rec:lem:gram} with $\xi=1$ and $\chi$ the primitive character inducing $\eta$: prime
+powers cost $O_w(\sqrt X)$, passing to the imprimitive $\eta$ costs $O(\log q)$, since for
+each $p\mid q$ at most one power of $p$ lies in $(X,2X)$, and the range $X<X_w$ is trivial.
+\end{remark}
+
+\begin{theorem}[Many representations with a small prime pair sum; \stG]
+\label{dir:thm:xyz}
+There exist $C,c>0$ such that for every sufficiently large $n$ and every real $X$ with
+\[
+ C\log^2(4n)\le X\le\tfrac12\sqrt n
+\]
+there are at least $cX/\log X$ solutions of \eqref{dir:eq:xyz} for which $x+y$ is a
+prime in $(X,2X)$. In particular there are $\gg\log^2n/\log\log n$ solutions with
+$x,y\ll\log^2n$, and $\gg\sqrt n/\log n$ solutions altogether.
+\end{theorem}
+
+\begin{proof}
+Put $q=4n$ and let $\chi$ be as in Lemma~\ref{dir:lem:split}. On integers coprime to $q$ the
+function $(\chi_0+\chi)/2$ is the indicator of $\chi=1$, and it vanishes on the other
+integers. By \cref{dir:lem:smooth}, after deleting higher prime powers,
+\[
+ \sum_{\substack{p\ \mathrm{prime}\\ \chi(p)=1}}(\log p)\,w(p/X)
+ =\frac X2+O_w\bigl(\sqrt X\log(2q)+\sqrt X\log^2(2X)\bigr).
+\]
+Indeed each exponent $k\ge2$ contributes at most $(2X)^{1/k}\log(2X)$, and there are
+$O(\log(2X))$ exponents. For $X\ge C\log^2(4n)$ the first error is at most $X/8$ once
+$C$ is large, and the prime-power error is $o(X)$ as the lower endpoint tends to
+infinity. Each prime contributes at most $\norm{w}_\infty\log(2X)$, so there are
+$\gg X/\log X$ primes $p\in(X,2X)$ with $\chi(p)=1$. They are odd, coprime to $4n$ and
+at most $\sqrt n$, and Lemma~\ref{dir:lem:split} turns them into distinct solutions. Take
+$X=C\log^2(4n)$ for the small coordinates and $X=\sqrt n/3$ for the total count.
+\end{proof}
+
+\begin{theorem}[Several integers at once; \stG]\label{dir:thm:xyzmany}
+For each fixed $k\ge1$ and all sufficiently large $N$, given
+$n_1,\dots,n_k\in[N,2N]$ there are $\gg_k\log^2N/\log\log N$ primes $p\ll_k\log^2N$
+such that every $n_i$ has a solution of \eqref{dir:eq:xyz} with $x_i+y_i=p$.
+\end{theorem}
+
+\begin{proof}
+Inflate the $k$ quadratic characters $\legendre{-4n_i}{\cdot}$ to the modulus
+$Q=4\prod_in_i$ and let $H$ be the group they generate. The function
+$\abs H^{-1}\sum_{\eta\in H}\eta$ is the indicator of simultaneous splitting among
+integers coprime to $Q$. Each member of $H$ is real, so by \cref{dir:lem:smooth} the
+smoothed prime-power sum of this function has main term $X/\abs H$ and error
+$O_w(\sqrt X\log(2Q))$. Since $\abs H\le2^k$ and $\log Q=O_k(\log N)$, the choice
+$X=C_k\log^2N$ with $C_k$ large absorbs the error. Removing prime powers as before and
+applying Lemma~\ref{dir:lem:split} to each $n_i$ gives the claim.
+\end{proof}
+
+\begin{proposition}[A logarithmic obstruction; \stU]\label{dir:prop:xyzlog}
+There are infinitely many $n$ for which \eqref{dir:eq:xyz} has no solution with
+$x+y\le(1-o(1))\log n$, even if composite pair sums are allowed.
+\end{proposition}
+
+\begin{proof}
+For $Y\to\infty$ put $M=4\prod_{3\le p\le Y}p$, the product over primes. Prescribe
+$n\equiv1\pmod4$, choose $-n$ to be a quadratic nonresidue at every odd prime $p\le Y$,
+and take the representative in $[M,2M)$ given by the Chinese remainder theorem. Every
+integer $3\le a\le Y$ has an odd prime divisor at most $Y$ or is divisible by $4$, so
+$x^2\equiv-n\pmod a$ has no solution; this rules out $a=x+y$, because
+$(x+y)(x+z)=n+x^2$. The prime number theorem gives $\log n=(1+o(1))Y$.
+\end{proof}
+
+\begin{proposition}[A stronger obstruction at prime inputs; \stG]\label{dir:prop:xyzprime}
+There are infinitely many primes $n$ such that every solution of \eqref{dir:eq:xyz}
+satisfies
+\[
+ x+y>\bigl(1/\log4-o(1)\bigr)\log n\,\log\log n .
+\]
+\end{proposition}
+
+\begin{proof}
+Impose the signs of the preceding proof modulo $M=4\prod_{3\le p\le Y}p$, this time
+seeking a prime $n$. The sign modulo $4$ and the quadratic signs at the odd primes give
+$r=\pi(Y)$ independent binary conditions on the units modulo $M$, by the Chinese
+remainder theorem. The indicator of the prescribed set on these units is the product of
+$r$ terms $(1+\eps_j\eta_j)/2$ with $\eps_j\in\set{1,-1}$ and $\eta_j$ the corresponding
+local quadratic characters inflated to modulus $M$. Extend the indicator by zero off
+the units, so that the constant term of its expansion is the principal character
+divided by $2^r$. Independence makes every other character in the expansion
+nonprincipal, and the absolute values of all coefficients sum to one. By
+\cref{dir:lem:smooth} and the removal of prime powers, for $X\ge2$ the smoothed sum of
+the indicator over primes $p$ with weight $(\log p)w(p/X)$ is
+\[
+ \frac X{2^r}+O_w\bigl(\sqrt X\,[\log(2M)+\log^2(2X)]\bigr).
+\]
+Take $X=4^r\log^6(2M)$. As $Y\to\infty$, $\log M\sim Y$ and $r\sim Y/\log Y$ by the
+prime number theorem. After division by $\sqrt X$ the main term is $\log^3(2M)$,
+whereas the error is $O_w(Y^2)$. Hence there is a prime $n\in(X,2X)$ with all
+prescribed signs. The congruence argument of Proposition~\ref{dir:prop:xyzlog} rules out
+$x+y\le Y$, and $\log n=(\log4+o(1))Y/\log Y$ gives the bound.
+\end{proof}
+
+\begin{proposition}[When the least splitting prime is the minimum; \stG]
+\label{dir:prop:xyzmin}
+For all sufficiently large squarefree $n\equiv1,2\pmod4$, the minimum of $x+y$ over the
+solutions of \eqref{dir:eq:xyz} equals the least odd prime that splits in
+$\Q(\sqrt{-n})$.
+\end{proposition}
+
+\begin{proof}
+Put $a=x+y$ and $b=x$ in any solution. Then $a\mid n+b^2$ and $0<b<a/2$. Since $-n$ is
+$2$ or $3$ modulo $4$, we have $4\nmid a$. If every odd prime $p\mid a$ divided $n$, it
+would also divide $b$, and squarefreeness would give $\vp(n+b^2)=1$; the odd part of
+$a$ would then divide $b$, although it is at least $a/2$. Thus some odd prime $p\mid a$
+is coprime to $n$, and $-n$ is a square modulo $p$. This splitting prime satisfies
+$p\le a$. Conversely, by Theorem~\ref{dir:thm:xyz} the least odd splitting prime is at most
+$\sqrt n$ for large $n$, so it supplies a solution with this pair sum by
+Lemma~\ref{dir:lem:split}.
+\end{proof}
+
+The congruence restriction matters: for $n\equiv3\pmod4$ and $n>15$ the triple
+$(1,3,(n-3)/4)$ is always a solution.
+
+\begin{remark}[Finding a witness]\label{dir:rem:xyzalg}
+The program \artifact{grh-transfer/checks/represent.py} tests $a=x+y$ in increasing
+order. For each $a$ it tries $0<b<a/2$ with $b^2\equiv-n\pmod a$ and $n+b^2>a^2$, and
+uses the formula of Lemma~\ref{dir:lem:split} with $p$ replaced by $a$. Every solution of
+\eqref{dir:eq:xyz} satisfies $3a^2<4n$, so exhaustive failure proves that there is
+none; for a positive answer the first witness minimizes $x+y$. By Theorem~\ref{dir:thm:xyz},
+for large $n$ at most $O(\log^4n)$ pairs $(a,b)$ are tested, which is deterministic
+polynomial time in the bit length of $n$. The program uses neither the unknown
+threshold of the asymptotic estimate nor a factorization of $n$.
+\end{remark}
 
 \subsection{Norm equations at split primes}\label{cls:sec:norm}
 \sources{grh_transfers; grh-exponent-six-and-transfers; exponent_seven_and_grh_transfers}
@@ -722,10 +1034,8 @@ norms give
 which proves \eqref{cls:eq:genusnorm}. The cost in the norm is $R$, not $R^m$, because the
 ramified ideal is inserted after the $m$th power is taken.
 
-The Dedekind zeta function of the abelian field $F$ is a product of Dirichlet
-$L$-functions, so \cref{src:thm:dgrh} gives its Riemann hypothesis. Theorem~5.1 of
-\cite{Bach1996Explicit} then provides an unramified prime with trivial Frobenius in
-$\Gal(F/\Q)$ and
+Since $F$ is abelian, \cref{cls:lem:splitprime}(b) provides an unramified prime with
+trivial Frobenius in $\Gal(F/\Q)$ and
 \[
  p\le\bigl(4\log\abs{\Delta_F}+\tfrac52n+5\bigr)^2 .
 \]
@@ -766,7 +1076,7 @@ representative formed from a subset of the first $k$ prime ideals, of norm at mo
 \end{proof}
 
 \subsection{Open questions}\label{cls:sec:open}
-\sources{exponent_seven_and_grh_transfers; grh-exponent-six-and-transfers}
+\sources{exponent_seven_and_grh_transfers; grh-exponent-six-and-transfers; grh-transfer}
 
 \begin{enumerate}
 \item In the proof of \cref{cls:thm:seven} the reduced multipliers are limited to $12$.
@@ -780,4 +1090,10 @@ the finite computations cited above.
 census range, new prime weights and a new compatibility proof for pairs of equations would
 be needed. For which further exponents can the interval between an enumerated range and
 the bound of type \ref{cls:it:bound} be closed in this way?
+\item \emph{The least pair sum.} For $n$ outside Euler's list let $b(n)$ be the
+ smallest $x+y$ among the solutions of \eqref{dir:eq:xyz}. Can the uniform upper bound
+ $O((\log n)^2)$ of Theorem~\ref{dir:thm:xyz} be lowered while retaining an explicit
+ algorithm? Proposition~\ref{dir:prop:xyzprime} forces order at least $\log n\log\log n$ on a
+ sequence, and by Proposition~\ref{dir:prop:xyzmin} the question for squarefree $n\equiv1,2\pmod4$
+ is that of the least odd prime splitting in $\Q(\sqrt{-n})$.
 \end{enumerate}
