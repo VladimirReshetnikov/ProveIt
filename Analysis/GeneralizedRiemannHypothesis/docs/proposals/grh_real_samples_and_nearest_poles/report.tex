@@ -1,0 +1,250 @@
+\documentclass[11pt,letterpaper]{article}
+\usepackage[T1]{fontenc}
+\usepackage{lmodern,amsmath,amssymb,amsthm,mathtools,microtype}
+\usepackage[margin=.90in,headheight=15pt]{geometry}
+\usepackage{booktabs,tabularx,array,enumitem,xcolor,fancyhdr,xurl}
+\usepackage[colorlinks=true,linkcolor=blue!50!black,urlcolor=blue!50!black]{hyperref}
+\definecolor{ink}{HTML}{173246}
+\definecolor{muted}{HTML}{53636D}
+\pagestyle{fancy}\fancyhf{}\fancyhead[L]{\small\sffamily\color{muted} Real samples and nearest poles}\fancyhead[R]{\small\sffamily\color{muted} Proof simplification}\fancyfoot[R]{\small\thepage}
+\setlength{\parindent}{0pt}\setlength{\parskip}{5pt plus 1pt minus 1pt}
+\setlength{\emergencystretch}{2em}\raggedbottom
+\setlist{itemsep=3pt,topsep=3pt}
+\newtheorem{theorem}{Theorem}[section]\newtheorem{lemma}[theorem]{Lemma}\newtheorem{corollary}[theorem]{Corollary}\newtheorem{proposition}[theorem]{Proposition}
+\theoremstyle{remark}\newtheorem{remark}[theorem]{Remark}
+\newcommand{\R}{\mathbb R}\newcommand{\C}{\mathbb C}\newcommand{\Res}{\operatorname{Res}}
+\newcommand{\src}[2]{\href{https://github.com/VladimirReshetnikov/ProveIt/blob/main/Analysis/GeneralizedRiemannHypothesis/Lean/grh/src/#1}{#2}}
+\newcommand{\propdir}[1]{\href{https://github.com/VladimirReshetnikov/ProveIt/tree/main/Analysis/GeneralizedRiemannHypothesis/docs/proposals/#1}{\nolinkurl{#1}}}
+\newcommand{\decl}[1]{\texttt{\detokenize{#1}}}
+\newcommand{\guide}{\href{https://github.com/VladimirReshetnikov/ProveIt/blob/main/Analysis/GeneralizedRiemannHypothesis/docs/guide/theta_lifts_and_dirichlet_zeros.tex}{human-readable guide}}
+\begin{document}
+{\sffamily\small\bfseries\color{muted} RESEARCH NOTE \hfill 27 NOVEMBER 2026}\par
+\vspace{.5em}
+{\LARGE\bfseries\color{ink} Real samples and nearest poles:\\[2pt] a shorter analytic endpoint for Dirichlet GRH\par}
+\vspace{.6em}
+{\large A replacement for the positive-measure abscissa argument in the supplied Lean development\par}
+\vspace{.5em}
+\textbf{Recommendation.} Replace the proof of \decl{New.IsPolar.landau} by a nearest-pole argument in a single complex disk, with nonnegative Taylor coefficients certified by finite differences at real points. Then specialize the transform computation to the real axis. The proof no longer constructs a measure, studies its exponential-integrability set, crosses an abscissa, or compares two meromorphic continuations throughout a half-plane.
+
+\textbf{Main theorem.} Suppose $E(v)\le e^{(\beta-1)v}$ eventually and its transform $\Phi(s)$ has only simple poles in $\Re s>\beta$. It suffices that the transform identity hold at sufficiently large \emph{real} $s$. If $\rho$ is a genuine pole and $\beta<b<\Re\rho$, there is a real pole $a>b$ with $\Res_{s=a}\Phi(s)<0$. In the Dirichlet application there is such an $a\ge\Re\rho$. A real pole of the opposite sign cannot mask a complex pole.
+
+\textbf{Consequences.} The original zero-exclusion criterion follows with the existing twist selector unchanged. A narrower sufficient selector requires only a multiplicity mismatch at the proposed zero and no excess twisted multiplicity at real points $a\ge\Re\rho$. No zero-free rectangle is needed by this replacement criterion. The existence of a selector meeting only these weaker requirements without using the existing full-box theorem is a separate problem, not a claimed new zero-density result.
+
+\textbf{Status.} Complete paper proof of the local replacement; exact finite arithmetic tests; a migration plan with explicit interfaces. No Lean installation was available here. No modified or baseline build, kernel replay, measured net line reduction, or independent certification of RH/GRH is claimed. The proposal changes the analytic final step, not the deep theta-lift or congruence inputs.
+
+\smallskip
+\textbf{Sources.} The \href{https://github.com/VladimirReshetnikov/ProveIt/tree/main/Analysis/GeneralizedRiemannHypothesis/Lean/grh}{readable Lean project}, the \guide, and the \href{https://github.com/VladimirReshetnikov/ProveIt/tree/main/Analysis/GeneralizedRiemannHypothesis/docs/proposals}{existing proposals} were inspected through GitHub. See the source and proposal audits in the archive for exact observed blob identities and scope.
+\setcounter{tocdepth}{1}\tableofcontents
+\newpage
+\section{Where the replacement fits}
+The source derives a one-sided smoothed prime estimate from three major arithmetic inputs: short integral forms, enough forms, and the lower height bound for the theta-lift determinant. In the notation of \src{New/Reduction/MainInequality.lean}{\decl{star_inequality}}, the total remainder satisfies
+\[
+ m\,\mathrm{rem}\le f a(\log b)^5.
+\]
+Here $a,b,m,f$ are the arithmetic construction's parameters, unrelated to the real points denoted $a,b$ in the analytic theorem below. The two-cutoff reduction, choice of scales and fixed-modulus prime estimates yield \src{New/Reduction/OneSidedBound.lean}{\decl{eventually_primeRemainder_le_rpow}}:
+\begin{equation}\label{eq:primeupper}
+ R_{Q,d}(x)\le x^{-1/2+\epsilon}\quad(x\text{ sufficiently large}),\qquad \epsilon>0.
+\end{equation}
+The estimate holds for every fixed prime $d\equiv Q/2-1\pmod Q$ with $18480\mid Q$. The threshold can depend on $d,Q,\epsilon$. Nothing here changes those inputs or quantifiers. All previously proposed improvements to the determinant, prime-sum constants, sparse cutoff construction, spanning and twist selection can be applied independently.
+
+The current final analytic argument has three parts:
+\begin{enumerate}
+\item \src{New/Reduction/Zeros/PrimeError.lean}{\decl{isPolar_primeRemainder}} supplies a meromorphic continuation and its residues.
+\item \src{Lib/Analytic/QuadraticTwist.lean}{\decl{exists_entireL_quadTwist_ne_zero}} selects a prime avoiding twisted zeros in a rectangle determined by a hypothetical zero.
+\item \src{Lib/Analytic/Landau.lean}{\decl{IsPolar.landau}} turns the one-sided bound and the sign of the real residues into the absence of poles. \src{New/Reduction/Zeros/Criterion.lean}{\decl{LFunction_ne_zero_of_primeRemainder_le}} uses that result to exclude the hypothetical zero; the final functional equations remain unchanged.
+\end{enumerate}
+The guide's section ``How a one-sided prime estimate locates the zeros'' explains exactly why cancellation and the sign at real poles are separate problems. The present change targets the third step, and then weakens the first step's interface. It does not assume control of the negative part of $R$.
+
+\subsection{Why the existing implementation is long}
+The current \decl{Landau.lean} has 259 lines (including comments and the closing newline). It introduces an auxiliary measure, proves integrability from a summable Taylor series, identifies its complex moment generating function, uses a meromorphic identity theorem, shows that convergence can extend to the left of a real boundary, and finally takes a least upper bound of the complement of the convergence set. Its mathematical purpose is much smaller: if the positive transform has a singularity, a real singularity of the permitted sign must obstruct it. We prove this last fact directly from Taylor coefficients, rather than from the convergence set.
+
+\section{The analytic replacement}
+\subsection{A real finite-difference certificate}
+The first lemma is formulated without a measure-valued moment generating function. It requires only real integrals on a half-line; all complex analysis is confined to the analytic germ at the expansion point.
+\begin{lemma}[Real samples imply positive coefficients]\label{lem:coeff}
+Let $g:[0,\infty)\to[0,\infty)$ be measurable. Assume that $\int_0^\infty g(v)e^{-s v}\,dv$ is finite for all real $s>S$. Let $F$ be meromorphic in a neighborhood of a real $c>S$, and agree there on the real axis with those integrals. Then its meromorphic germ at $c$ is holomorphic and the Taylor coefficients $A_n$ of $H(w)=F(c-w)$ at $w=0$ are real and nonnegative.
+\end{lemma}
+\begin{proof}
+The real integrals are locally bounded near $c$, since $g\ge0$ and $e^{-sv}\le e^{-s_0v}$ whenever $s\ge s_0>S$. Thus $F$ cannot have a genuine pole at $c$. Use its holomorphic representative there. The real sample integral is continuous by dominated convergence, with dominating function $g(v)e^{-s_0v}$; consequently the filled-in representative agrees with the real samples even at removable points.
+
+For a positive real $h$ with $c-nh>S$ and small enough that all samples lie near $c$, define
+\begin{equation}\label{eq:fd}
+ D_n(h)=\sum_{j=0}^n(-1)^{n-j}\binom nj F(c-jh).
+\end{equation}
+The finite sum can be interchanged with the convergent real integrals. The binomial theorem gives the identity
+\begin{equation}\label{eq:fdpositive}
+ D_n(h)=\int_0^\infty g(v)e^{-cv}(e^{hv}-1)^n\,dv\ge0.
+\end{equation}
+For $n=0$ the conclusion is $A_0=F(c)\ge0$. For $n\ge1$, write $H(w)=\sum_{k=0}^n A_kw^k+O(w^{n+1})$ near zero. For $0\le k\le n$ the elementary binomial sum
+\[
+ B_{n,k}=\sum_{j=0}^n(-1)^{n-j}\binom nj j^k
+ =\begin{cases}0&k<n,\\n!&k=n\end{cases}
+\]
+follows by taking the $n$th forward difference of the polynomial $X^k$ (or counting surjections from a $k$-element set onto an $n$-element set). Insert the expansion in \eqref{eq:fd}. Since there are only $n+1$ fixed values of $j$,
+\[
+ \lim_{h\downarrow0}\frac{D_n(h)}{h^n}=n!A_n.
+\]
+The left-hand expressions belong to the closed nonnegative real ray in $\C$. Hence $A_n$ does too.
+\end{proof}
+This proof avoids differentiation under an integral, the probability-theory MGF API, and Tonelli for an infinite series of Taylor terms. It does not require absolute convergence of the integral at any point left of $S$. Alternatively, the coefficient identity can be established by a local exponential-series expansion and absolute convergence in a tiny disk about $c$; the finite-difference route uses only a finite interchange.
+
+\subsection{The one-disk pole lemma}
+\begin{lemma}[Nearest-pole certificate]\label{lem:disk}
+Let $F$ be meromorphic on an open set containing the closed disk $|s-c|\le D$, with $c\in\R$ and $D>0$. Assume that $F$ has a holomorphic germ at $c$, that the Taylor coefficients of $F(c-w)$ there are nonnegative reals, and that there is a genuine pole in the disk. Let $r$ be the distance from $c$ to the nearest genuine pole. Then $s=c-r$ is a real pole. If all poles in the disk are simple, its residue in the $s$ variable is strictly positive. Moreover, for each nearest pole $p$,
+\begin{equation}\label{eq:resdom}
+ |\Res_{s=p} F(s)|\le \Res_{s=c-r}F(s).
+\end{equation}
+\end{lemma}
+\begin{proof}
+Genuine poles are discrete, so there are finitely many in the compact disk, and $0<r\le D$. Use the unique holomorphic representative of $H(w)=F(c-w)$ on $|w|<r$; removable singularities are filled in. Its Taylor series converges on this disk, with the same coefficients $A_n$ as at zero. Therefore
+\begin{equation}\label{eq:radial}
+ |H(w)|\le\sum_{n\ge0}A_n|w|^n=H(|w|),\qquad |w|<r.
+\end{equation}
+Choose a nearest pole $p$ and put $w_0=c-p$, so $|w_0|=r$. Approach it along $w=t w_0/r$ for $0<t<r$. The left side of \eqref{eq:radial} tends to infinity as $t\uparrow r$. Consequently $H(t)$ tends to positive infinity. A holomorphic germ (including a removable singularity) at $w=r$ is bounded in a smaller neighborhood, which is impossible. Thus $s=c-r$ is a genuine real pole.
+
+If the poles are simple, multiply \eqref{eq:radial} by $r-t$ and take the limit. The left side tends to $|\Res_{s=p}F|$ since $|c-tw_0/r-p|=r-t$. On the right $c-t$ approaches $c-r$ from above, and the limit is $\Res_{s=c-r} F$. This proves \eqref{eq:resdom}; the left side is nonzero.
+\end{proof}
+Unlike an abscissa-of-convergence theorem, this argument does not construct a second analytic function on a half-plane or prove anything about integrability at the nearest pole. The radius $r$ is selected from the genuine poles of the already meromorphic function. The sign comes directly from the radial majorization of a positive Taylor series.
+
+\subsection{The real-pole obstruction theorem}
+\begin{theorem}[One-sided bound, real samples only]\label{thm:real}
+Let $\beta>0$ and $E:[0,\infty)\to\R$ be measurable, with $|E(v)|\le C e^v$ and $E(v)\le e^{(\beta-1)v}$ for sufficiently large $v$. Let $\Phi$ be meromorphic in $\Re s>0$, with at most simple poles there, and suppose
+\begin{equation}\label{eq:realtransform}
+ \Phi(u)=\int_0^\infty E(v)e^{(1-u)v}\,dv\qquad(u>\max(2,\beta),\ u\in\R).
+\end{equation}
+For every genuine pole $\rho$ with $\Re\rho>\beta$ and every real $b$ with $\beta<b<\Re\rho$, there exists a real pole $a>b$ of $\Phi$ whose residue is a strictly negative real number. In particular, if the real parts of the residues are nonnegative at all real $u>\beta$, then $\Phi$ has no poles in $\Re s>\beta$.
+\end{theorem}
+\begin{proof}
+Choose $K\ge1$ so that
+\[
+ g(v)=K e^{\beta v}-e^v E(v)\ge0\qquad(v\ge0).
+\]
+For large $v$ this follows from the hypothesis; on $[0,V]$ take $K\ge |C| e^{2V}$, using $\beta>0$. Changing a value at $v=0$ is immaterial. Set
+\[
+ F(s)=\frac{K}{s-\beta}-\Phi(s).
+\]
+For real $s>\max(2,\beta)$, \eqref{eq:realtransform} gives the finite real integral $F(s)=\int_0^\infty g(v)e^{-sv}\,dv$. Every sufficiently large real center $c$ therefore meets Lemma~\ref{lem:coeff}. Choose $c$ still larger so that
+\begin{equation}\label{eq:center}
+ c>b,\qquad 2c(\Re\rho-b)>|\rho|^2-b^2.
+\end{equation}
+Such $c$ exists because $\Re\rho-b>0$. Expanding squares shows $|c-\rho|<c-b$. Thus the closed disk of radius $|c-\rho|$ about $c$ is contained in $\Re s>b$ and contains the genuine pole $\rho$ of $F$. Apply Lemma~\ref{lem:disk} to obtain a real pole $a=c-r>b$ with $\Res_a F>0$. The rational term $K/(s-\beta)$ is analytic there, so $\Res_a\Phi=-\Res_a F<0$.
+\end{proof}
+
+\begin{corollary}[Rightmost-real obstruction]\label{cor:right}
+In Theorem~\ref{thm:real}, if $\Phi$ has no real poles above some fixed real number, then every genuine pole $\rho$ in $\Re s>\beta$ forces a negative-residue real pole $a\ge\Re\rho$.
+\end{corollary}
+\begin{proof}
+Fix $b_0\in(\beta,\Re\rho)$. There are only finitely many genuine real poles on the compact interval from $b_0$ to the given upper bound (or any larger bound). Theorem~\ref{thm:real} supplies a negative-residue pole in that interval for every $b\in(b_0,\Re\rho)$. Their finite nonempty set has a maximum $a$; if $a<\Re\rho$, choose $b$ strictly between them for a contradiction.
+\end{proof}
+The extra assumption in this corollary is automatic if \eqref{eq:realtransform} holds far enough right: on every compact real interval there, the integrals are locally bounded by exponential domination. It also follows directly from the zero-free half-plane $\Re s\ge1$ for the regularized Dirichlet functions, apart from the centering check at $1$ discussed below.
+
+\section{Substitution into the supplied GRH proof}\label{sec:dirichlet}
+For a fixed admissible modulus $Q$ and prime $d$, put $h_Q=\varphi(Q)$, $\eta=(\cdot/d)$, and
+\[
+ \lambda(n)=\mathbf 1_{n\equiv1\bmod Q}\Lambda(n)(1-\eta(n)),\qquad
+ R(x)=\sum_{n\le x}\lambda(n)(1/n-1/x)-\frac{\log x}{h_Q}-c_Q.
+\]
+The regularized entire $L$-functions $E_\psi$ remove the principal pole. Set
+\[
+ G(s)=\frac{1}{h_Q}\left(\sum_{\psi\bmod Q}\left[\frac{E'_{\psi\eta}(s)}{E_{\psi\eta}(s)}-
+ \frac{E'_\psi(s)}{E_\psi(s)}\right]-1\right),\qquad c_Q=\Re G(1).
+\]
+The source computes
+\begin{equation}\label{eq:Phi}
+ \Phi(s)=\frac{G(s)/s-c_Q}{s-1},\qquad
+ r(s)=\frac{n(s)-n_d(s)}{h_Q s(1-s)}\quad(s\ne0,1),
+\end{equation}
+where $n$ and $n_d$ are the sums of zero multiplicities of the regularized original and twisted functions. The source also proves $r(1)=0$. The transform identity and growth in \decl{IsPolar} are precisely the hypotheses of Theorem~\ref{thm:real}, with $E(v)=R(e^v)$. The upper bound \eqref{eq:primeupper} for $\epsilon=\beta-1/2$ gives the required eventual estimate. No change to the definition of $R$, its centering, the main inequality, or its analytic normalization is needed.
+
+\subsection{Immediate interface-preserving port}
+Keep \decl{IsPolar} as it stands and keep \decl{isPolar_primeRemainder}. Specialize its complex transform identity to the real axis and apply Theorem~\ref{thm:real}. The original statement of \decl{IsPolar.landau} follows, including zero residue rather than a claim about arbitrary values of the Lean function at removable singularities. This is an exact replacement, not a new assumption.
+
+The caller in \decl{Criterion.lean} already chooses $d$ for which $n_d(s)=0$ on $\Re s\ge\beta$, $|\Im s|\le|\Im\rho|$. Hence $r(u)\ge0$ for real $\beta<u<1$, and the regularized $L$-functions give no poles for $u\ge1$. The new theorem proves $r(\rho)=0$. Because $n_d(\rho)=0$ and $\rho\ne0,1$, formula \eqref{eq:Phi} implies $n(\rho)=0$. Every summand is a nonnegative integer, so the original $L$-function at the proposed zero cannot vanish. The original induction of characters from modulus $q$ to $Q=18480q$, treatment at $1$, and functional-equation reflection remain verbatim.
+
+\subsection{A strictly weaker sufficient twist-selection condition}\label{sec:selector}
+The full box is unnecessary for the zero-exclusion implication. The following variant isolates exactly the obstruction that needs to be ruled out.
+\begin{corollary}[Targeted twist criterion]\label{cor:twist}
+Fix a putative zero $\rho\ne1$ of some original character modulo $Q$, with $1/2<\Re\rho<1$, and choose $1/2<\beta<\Re\rho$. Assume the one-sided bound for a particular admissible prime $d$. If
+\begin{align}
+ n_d(\rho)&\ne n(\rho),\label{eq:uncancel}\\
+ n_d(u)&\le n(u)\quad\text{for every real }u\in[\Re\rho,1),\label{eq:realorders}
+\end{align}
+then the hypotheses contradict one another. In particular, it is enough to select $d$ with $n_d(\rho)=0$ and with no twisted real zeros on $[\Re\rho,1)$.
+\end{corollary}
+\begin{proof}
+By \eqref{eq:uncancel}, formula \eqref{eq:Phi} gives a genuine pole at $\rho$. Corollary~\ref{cor:right} gives a real pole $a\ge\Re\rho$ with negative residue; necessarily $a<1$. Since $h_Qa(1-a)>0$, the residue formula gives $n_d(a)>n(a)$, contrary to \eqref{eq:realorders}.
+\end{proof}
+Even the nonvanishing version allows twisted zeros at other nonreal points of the rectangle; the multiplicity version also permits some real twisted zeros. This is a weaker \emph{interface}, not a proof that a weaker selector is cheaper to construct. The existing full-box theorem supplies it immediately. One could also deduce this localization from the old Landau lemma by raising the exponent toward $\Re\rho$ and using finiteness of real poles; the novelty here is the direct proof and the real-sample contract, not a claim that the localization was logically inaccessible before.
+
+\paragraph{Quantifiers.} Fix $Q,\rho,\beta$, then select $d$, then apply \eqref{eq:primeupper} for this fixed $d$. The argument never requires a threshold uniform in $d$ or a single twist valid at every height.
+
+\section{Second-stage refactor: compute only real samples}
+The original source's transform proof is more general than the new endpoint needs. An optional, independent stage replaces its complex partial summation with a direct real kernel calculation. This calculation is already suggested by the guide; the new contribution is that no complex transform identity is required by the final criterion.
+
+For real $u>2$ the sum and integral below have nonnegative summands, so Tonelli gives
+\begin{align*}
+ &\int_0^\infty \left(\sum_{n\le e^v}\lambda(n)(n^{-1}-e^{-v})\right)e^{(1-u)v}\,dv\\
+ &=\sum_{n\ge1}\lambda(n)\int_{\log n}^\infty(n^{-1}-e^{-v})e^{(1-u)v}\,dv\\
+ &=\frac{1}{u(u-1)}\sum_{n\ge1}\lambda(n)n^{-u}.
+\end{align*}
+The last equality follows by integrating the two real exponentials separately: the values are $n^{-u}/(u-1)$ and $n^{-u}/u$. The sum is finite, since $0\le\lambda(n)\le 2\Lambda(n)\le2n$ and $u>2$. The subtracted terms in $R(e^v)$ have integrals $1/(h_Q(u-1)^2)$ and $c_Q/(u-1)$. The existing \decl{LSeries_lambdaKResidueClass_eq_add_logDerivMean} yields
+\[
+ \sum_{n\ge1}\lambda(n)n^{-u}=\frac{u}{h_Q(u-1)}+G(u).
+\]
+Thus the real identity simplifies immediately to \eqref{eq:Phi}. Complex powers of positive real numbers at real exponent, and coercions from real sums to complex sums, are all that is needed to invoke the existing $L$-series identity. This replaces two general complex partial summation proofs only if their other callers have been checked.
+
+\subsection{A removable-pole shortcut at one}
+The direct criterion can avoid establishing $G(1)\in\R$ in advance. Because $G$ is analytic at $1$, the expression \eqref{eq:Phi} has at most a simple pole there, of residue
+\[
+ r(1)=G(1)-\Re G(1),\qquad \Re r(1)=0.
+\]
+Theorem~\ref{thm:real} only needs the sign of the real part at real poles. In particular $1$ cannot be the negative-residue obstruction. The proof of \decl{ofReal_re_logDerivMean_one} in the source uses analytic continuation of the imaginary part along the real line; for this new caller it is unnecessary. The more precise statement that the centering makes $1$ removable can still be retained as an independent lemma if other code uses it. Do not set the new residue to zero by definition before proving removability. If using the real-only contract, define the residue by an explicit branch at $1$, and keep \eqref{eq:Phi} for $s\ne1$.
+
+\section{Formalization and assessment}\label{sec:formal}
+\subsection{Concrete migration}
+The initial port should use the existing \decl{IsPolar} interface and the exact original theorem statement, in a separate replacement module. Prove four small components: (i) a finite-difference limit for a holomorphic Taylor germ, (ii) its integral sign certificate, (iii) radial domination for a Taylor series with nonnegative coefficients, and (iv) the nearest-pole contradiction using a disk inside the half-plane. The source already uses Mathlib's Taylor convergence on a ball, meromorphic order and removable singularity APIs. Check the exact names against its pinned toolchain before writing the final proof. The accompanying \texttt{LEAN\_PLAN.md} supplies statement sketches, intermediate goals, and verification gates.
+
+The key Lean subtlety is that a meromorphic function of type $\C\to\C$ may have an arbitrary value at a removable singularity. The theorem must reason about germs: a punctured-neighborhood limit of $(z-p)F(z)$ is nonzero exactly at a genuine simple pole. In a pole-free disk obtain a holomorphic representative agreeing on punctured neighborhoods; apply Taylor convergence to that representative. Its values near an actual pole, along a punctured radial segment, agree with the original meromorphic germ. This avoids the invalid assumption that the pointwise representative of a meromorphic function is analytic everywhere it has zero residue.
+
+\subsection{What can actually be removed}
+\begin{tabularx}{\linewidth}{@{}p{.35\linewidth}X@{}}
+\toprule
+Existing region (observed lines) & Proposed change and preconditions\\
+\midrule
+\src{Lib/Analytic/Landau.lean\#L47-L83}{47--83: Taylor integrability} & Replace with a finite-sample coefficient lemma; no infinite Taylor-to-integral implication.\\
+\src{Lib/Analytic/Landau.lean\#L84-L142}{84--142: positive measure} & Retain elementary global $K$ bound; replace the measure and MGF identity with an equality of real integrals.\\
+\src{Lib/Analytic/Landau.lean\#L143-L216}{143--216: identity and abscissa lemmas} & Remove from the endpoint path; substitute one-disk meromorphic representative and radial domination.\\
+\src{Lib/Analytic/Landau.lean\#L217-L259}{217--259: final least-upper-bound argument} & Replace by choosing a center satisfying \eqref{eq:center}, a nearest pole, and applying the sign test.\\
+\src{New/Reduction/Zeros/PrimeError.lean\#L230-L262}{230--262}; \src{New/Reduction/Zeros/PrimeError.lean\#L293-L334}{293--334} & Optional: replace general complex transform proofs with a real kernel identity; audit callers first.\\
+\src{New/Reduction/Zeros/PrimeError.lean\#L335-L362}{335--362: real centering} & Optional: use the real-part sign directly at $1$; keep any externally used theorem.\\
+\bottomrule
+\end{tabularx}
+
+The first four ranges cover the operative part of a 259-line file. The last two entries cover another 103 gross lines, including comments, in the transform layer. These are \emph{affected source regions}, not a net saving: new analytic lemmas have to be formalized, and some old lemmas may have other users. The biggest structural benefit is removing the need for a separate positive-measure/exponential-integrability abstraction from the endpoint, not a claimed reduction of a large fraction of the source tree (950 entries, including directories).
+
+\subsection{Nonduplication against the combined baseline}
+The proposal tree was recursively enumerated (24 directories, 34 TeX files, untruncated tree). Most reports target other inputs: the local label, valuation, finite field and Selmer machinery; exchange schedules; class counting; Gram operators; or rank/height and data estimates. All these modifications can coexist with the present endpoint. The closest analytic reports were read/screened at the relevant sections:
+\begin{itemize}
+\item \propdir{proof_simplifications}, \propdir{shorter-theta-lift-proof}: quadratic-polynomial mollification and far-cutoff changes. Their endpoints explicitly retain a positive transform and the abscissa argument.
+\item \propdir{rh-simplifications}, \propdir{rh_sparse_theta_proof}: refined rank and cutoff estimates, sparse interpolation, twist selection, and a Landau endpoint. The sparse proposal explicitly lists \decl{IsPolar.landau} as retained.
+\item \propdir{centered_theta_lift_simplification}: centered rank increment and arithmetic constants; the endpoint is retained.
+\end{itemize}
+The remaining reports were screened for endpoint terms, and the inaccessible robust-label TeX was covered at README scope. See \texttt{proposal\_audit.tsv} for the full inventory and exact audit scope. No existing proposal implementing this finite-difference, real-sample disk proof was found. This is a targeted nonduplication audit, not a line-by-line semantic review of every auxiliary artifact or a literature priority claim. The elementary nearest-pole principle is a familiar variant of the reasoning behind Pringsheim's theorem; no novelty in classical complex analysis is asserted. Its application to removing specific proof infrastructure is the proposed improvement.
+
+\section{Boundary examples and further research}
+\textbf{Wrong-sign obstruction.} For $\beta<a<1$, $E(v)=-e^{(a-1)v}$ satisfies the upper bound everywhere but $\Phi(s)=-1/(s-a)$. Thus the negative real pole cannot simply be disregarded. A real pole may even mask nonreal ones: for $\beta<b\le a<1$, $0<\epsilon\le1$,
+\[
+ E(v)=-e^{(a-1)v}+\epsilon e^{(b-1)v}\cos(tv),\qquad t>0,
+\]
+is nonpositive, with transform
+\[
+ \Phi(s)=-\frac1{s-a}+\frac{\epsilon}{2}\left(\frac1{s-b-it}+\frac1{s-b+it}\right).
+\]
+The nonreal poles coexist with the rightmost negative real pole, including when $a=b$. The comparison at equality in \eqref{eq:realorders} is therefore essential. For $a<b$ the positive peaks of the oscillatory term eventually exceed the claimed upper bound; this illustrates the rightmost-real obstruction theorem.
+
+\textbf{Why a far-right center is essential.} The disk must contain the specified pole while staying strictly in $\Re s>b$. For a target of large imaginary part, a small fixed center generally cannot achieve this. Inequality \eqref{eq:center} supplies a center without any estimates on the density of complex zeros. The proof makes no assumption that a globally rightmost nonreal pole exists.
+
+\textbf{Further questions.} Can the targeted criterion be paired with a short real-axis-only nonvanishing argument and fixed-point mollifier, replacing the full-box selector rather than merely reusing it? Can a weaker multiplicity comparison be obtained by a finite average of twist transforms, using positive weights and avoiding all bad real residues collectively? Can the real-only transform interface be moved into Mathlib as a generic lemma on meromorphic functions with completely monotone real samples? Each question is separate from the proved replacement here; in particular a new selector must still prevent cancellation at the target and control negative real residues.
+
+\smallskip\textbf{Reproduction.} Compile twice with \texttt{pdflatex -halt-on-error report.tex}. Run \texttt{python3 check\_real\_samples.py} for exact rational tests (no dependencies). The tests demonstrate finite-difference identities, disk geometry and the sign/cancellation examples, not universal analytic theorems. Source hashes and verification limitations are in the audit files.
+\end{document}

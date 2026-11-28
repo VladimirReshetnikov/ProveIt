@@ -1,0 +1,233 @@
+\documentclass[11pt]{article}
+\usepackage[margin=1in]{geometry}
+\usepackage{amsmath,amssymb,amsthm,mathtools,booktabs,tabularx,array}
+\usepackage[T1]{fontenc}
+\usepackage{lmodern,microtype,xcolor}
+\usepackage[colorlinks=true,linkcolor=blue!55!black,urlcolor=blue!55!black]{hyperref}
+\setlength{\parindent}{0pt}\setlength{\parskip}{5pt}
+\newtheorem{theorem}{Theorem}\newtheorem{lemma}[theorem]{Lemma}\newtheorem{corollary}[theorem]{Corollary}
+\newcommand{\Z}{\mathbb Z}\newcommand{\Q}{\mathbb Q}\newcommand{\F}{\mathbb F}\newcommand{\OO}{\mathcal O}\newcommand{\Tr}{\operatorname{Tr}}\newcommand{\ord}{\operatorname{ord}}\newcommand{\lcm}{\operatorname{lcm}}\newcommand{\codiff}{\mathfrak D^{-1}}\newcommand{\src}[2]{\href{https://github.com/VladimirReshetnikov/ProveIt/blob/fd695fd462aa31b25af3335e2a9c3b6e014b055f/Analysis/GeneralizedRiemannHypothesis/Lean/grh/src/#1}{#2}}
+\title{One integral presentation instead of three local arguments\\[4pt]\large A new simplification of the auxiliary CM-field arithmetic in the formal RH/Dirichlet-GRH proof}
+\author{Research note and implementation proposal}
+\date{27 November 2026}
+\begin{document}
+\maketitle
+\begin{abstract}
+The derivative and divisibility parts of the readable GRH formalization use an auxiliary field $E=\Q(\sqrt{-d},\zeta_n)$, a generator of its different with a prescribed conjugation sign, and several local Frobenius and prime-decomposition identities. We propose deriving all of these from one integral presentation, with a direct trace-dual argument and a finite Frobenius-orbit calculation. In particular, the conjugation phase of the different has an explicit monomial formula, eliminating factor-by-factor choices. The resulting arithmetic interface includes ramified primes and keeps nonreduced residue rings separate from their geometric points. It preserves the constants, fields, local congruences and analytic endpoint of the existing proof. The paper gives proofs of the replacement lemmas, a migration plan, and exact finite regression tests. This is a local mathematical simplification, not a compiled replacement or an independently verified new proof of RH. The proposed net reduction in Lean remains to be measured.
+\end{abstract}
+
+\section{Where the proposal fits}
+We inspected the readable Lean edition and the accompanying mathematical guide at commit \texttt{fd695fd462aa31b25af3335e2a9c3b6e014b055f} of ProveIt. The repository attributes the underlying proof to Levent Alp\"oge, with Claude, and reports independent checking of the original proof. Its stated scope is RH and GRH for Dirichlet $L$-functions. The README reports roughly 300,000 lines in the readable edition; we have not independently rebuilt either edition or audited the proof end to end.
+
+The guide's central argument compares two cutoffs of a weighted prime remainder, with weights involving $\Lambda(a)(1-\chi_d(a))$. The derivative constructions produce short/divisible forms, a spanning argument controls the dimension, and lower bounds on integral forms combine with the product formula to obtain a one-sided estimate of the form $R(x)\leq x^{-1/2+\varepsilon}$ eventually. The zero-exclusion argument uses a Landau-type criterion and quadratic twists. The present proposal changes only the field arithmetic underneath the derivative constructions, not these analytic estimates or the selection of $d$.
+
+The target is \src{New/Derivatives/Field/PrimeDecomposition.lean}{\texttt{PrimeDecomposition.lean}}, with its downstream use in the vacuum tight-frame construction and the marked-prime/divisibility arguments. The proposed dependency graph is
+\[
+\begin{gathered}
+\text{two integral generators + coprime discriminants}\\
+\downarrow\\
+\Z[X,Y]/(\Phi_n(X),g(Y))\ \cong\ \OO_E\\
+\swarrow\hspace{12em}\searrow\\[-2pt]
+\text{trace dual and reciprocal phase}\qquad\text{reduction and Frobenius orbits}\\
+\downarrow\hspace{17em}\downarrow\\
+\text{different, trace integrality}\qquad\text{prime decomposition, partner congruences.}
+\end{gathered}
+\]
+The source already uses checks on two generators for some Frobenius identities; we do not claim to invent that step. The new feature is the common integral presentation, direct proof of maximality and codifferent, explicit phase, and uniform orbit classification, including primes dividing the conductor. We recommend retaining existing declaration signatures during the migration.
+
+\section{Setup and the replacement interface}
+Write $n=P.q_1(s)$, $K=\Q(\sqrt{-d})$, $F=\Q(\zeta_n)$, $E=KF$, with a chosen primitive root $\zeta=\zeta_n$. The source parameters imply that $n$ is divisible by $16$, $d$ is an odd prime congruent to $7$ modulo $8$, $\gcd(d,n)=1$, and
+\[
+q_0\equiv0\pmod {18480},\qquad d\equiv q_0/2-1\pmod {q_0},\qquad q_0\mid n.
+\]
+In the source $n=q_0\,\mathrm{towerDeg}(s)$, with only $2,3$ dividing the additional tower factor; also $2^{s+1}\mid n$. We use these conditions only where explicitly needed. Let
+\[
+\beta=(1+\sqrt{-d})/2,\quad g(Y)=Y^2-Y+(d+1)/4,
+\quad f(X)=\Phi_n(X),\quad h=\varphi(n).
+\]
+The existing cyclotomic irreducibility over $K$ supplies linear disjointness. We retain the standard monogenic integer rings $\OO_K=\Z[\beta]$ and $\OO_F=\Z[\zeta]$. Let $\sigma_v$ fix $K$ and act on $\zeta$ by $\zeta\mapsto\zeta^v$, for $v\in(\Z/n)^\times$. Write $c_e$ for identity ($e=1$) or complex conjugation ($e=-1$).
+
+\begin{theorem}[Integral-field package]\label{thm:package}
+Under the preceding hypotheses:
+\begin{enumerate}
+\item $\OO_E=\Z[\zeta,\beta]$ with integral basis $\zeta^i\beta^j$ ($0\le i<h$, $0\le j<2$). Its presentation is $\Z[X,Y]/(f(X),g(Y))$.
+\item The relative different of $E/K$ is $(f'(\zeta))$, and the absolute different is $(f'(\zeta)\sqrt{-d})$. The element
+\[
+ u=\zeta^{n/4+1-h/2},\qquad \delta=u f'(\zeta)\sqrt{-d}
+\]
+is a generator of the absolute different satisfying $\bar\delta=-\delta$. Every archimedean absolute value of $u$ is $1$.
+\item For every rational prime $p$, put $n=p^a m$ with $p\nmid m$, and $\chi=\left(\frac p d\right)$. The primes of $E$ above $p$ are the Frobenius orbits on the pairs consisting of a primitive $m$th root and a root of $g$ in $\overline{\F}_p$. Each has residue degree
+\[
+ t_p=\lcm(\ord_m(p),\, 2\text{ if }\chi=-1,\text{ else }1)
+\]
+where $\ord_1(p)=1$, and ramification index
+\[
+ r_p=\begin{cases}1&a=0,\\\varphi(p^a)&a>0\end{cases}
+ \cdot\begin{cases}2&p=d,\\1&p\ne d.\end{cases}
+\]
+\item For a prime $w\mid p$, the pullback ideals satisfy
+\begin{equation}\label{eq:pullback}
+ \sigma_v^{-1}(w)=c_e^{-1}(w)\quad\Longleftrightarrow\quad
+ \exists j\ge0:\ v\equiv e p^j\pmod m,\quad
+ (p=d\ \text{or}\ e=\chi^j).
+\end{equation}
+\end{enumerate}
+\end{theorem}
+The main point is to construct the package without repeatedly re-proving arithmetic facts about ideals via separate case analyses. Part 4 is explicitly about pullbacks; using a direct action instead requires inversion of $v$.
+
+\section{A short direct proof of the integral presentation}
+\begin{lemma}[Coprime discriminants]\label{lem:disc}
+Let $A,B$ be linearly disjoint number fields with coprime absolute discriminants in absolute value. Then multiplication identifies $\OO_A\otimes_{\Z}\OO_B$ with $\OO_{AB}$.
+\end{lemma}
+\begin{proof}
+Take integral bases $(a_i)$ and $(b_j)$. Their products are a rational basis by linear disjointness. Put $C=\sum_{i,j}\Z a_i b_j$, a subring of $\OO_{AB}$. Write $z\in\OO_{AB}$ as $\sum_j z_j b_j$ with $z_j\in A$. If $b_j^*$ is the trace-dual basis in $B$, then $z_j=\Tr_{AB/A}(z b_j^*)$, since the relative trace on $B$ is the absolute trace on $B$. If $D_B$ is the signed discriminant of $B$, the inverse trace matrix, expressed using the adjugate, shows $D_Bb_j^*\in\OO_B$. Consequently $D_Bz_j\in\OO_A$: the trace of an integral element is integral and belongs to $A$. Thus $D_Bz\in C$. Swapping $A,B$ gives $D_A z\in C$. Bezout's identity over $\Z$ gives $z\in C$. This proves both surjectivity and the claimed basis.
+\end{proof}
+For $K$, the integral basis $(1,\beta)$ has discriminant $-d$. The discriminant of $F$ has no prime divisor outside $n$: differentiating $X^n-1=f(X)q(X)$ at $\zeta$ gives $f'(\zeta)q(\zeta)=n\zeta^{-1}$, so $f'(\zeta)$ divides $n$ in $\OO_F$, and its norm equals the discriminant up to sign. The coprimality hypothesis holds, and Lemma~\ref{lem:disc} applies. Division by the two monic polynomials in separate variables now reduces every polynomial to a unique integral linear combination of the proposed basis. This proves part 1 of Theorem~\ref{thm:package}.
+
+\paragraph{Why this differs from the existing route.} The current proof builds the different statement and the ring-generation statement using different-ideal and conductor results in the region around lines 145--232 of the target file. Here maximality of the order is proved independently of any different ideal; the different then follows from an explicit dual basis. This avoids using a compositum theorem about differents to establish the presentation. It does not require formalizing the cyclotomic discriminant formula.
+
+\section{Trace duality and an explicit conjugation phase}
+\begin{lemma}[Monogenic trace pairing]\label{lem:trace}
+Let $R$ be an integral domain with fraction field $L$, and let $F_0\in R[X]$ be monic, separable and irreducible over $L$ of degree $h$. With $\alpha$ a root, the trace dual of $R[\alpha]$ over $R$ is $F_0'(\alpha)^{-1}R[\alpha]$.
+\end{lemma}
+\begin{proof}
+For $0\le k<h$, Lagrange interpolation at the roots $\alpha_i$ of $F_0$ gives
+\[
+ X^k=\sum_i \alpha_i^k \frac{F_0(X)}{(X-\alpha_i)F_0'(\alpha_i)}.
+\]
+Compare coefficients of $X^{h-1}$: $\Tr(\alpha^k/F_0'(\alpha))$ is $0$ for $k<h-1$, and $1$ for $k=h-1$. For all higher nonnegative $k$, reduction of $X^k$ by the monic $F_0$ makes the trace integral in $R$. The matrix with entries $\Tr(\alpha^{i+j}/F_0'(\alpha))$, $0\le i,j<h$, is anti-triangular with anti-diagonal $1$, hence unimodular over $R$. A basis with a unimodular pairing spans the full trace dual: for an arbitrary dual element, its coefficients relative to the scaled power basis are obtained by multiplying a vector in $R^h$ by the inverse of this matrix. This proves the equality.
+\end{proof}
+Apply Lemma~\ref{lem:trace} over $R=\OO_K$, using the integral presentation, to obtain the relative codifferent. For the absolute one, note that the trace on a pure product $ab$, $a\in K,b\in F$, is $\Tr_{K/\Q}(a)\Tr_{F/\Q}(b)$, by the independent embeddings of the two factors. Hence the dual basis of the product basis consists of the products of the two trace-dual bases. Lemma~\ref{lem:trace} for each factor yields
+\[
+\codiff_{E/\Q}=(g'(\beta) f'(\zeta))^{-1}\OO_E,
+\qquad g'(\beta)=2\beta-1=\sqrt{-d}.
+\]
+Taking inverse fractional ideals gives the claimed different. This is also a convenient direct proof of the trace integrality required by the vacuum construction: if $z f'(\zeta)\in\OO_E$, then $\Tr_{E/K}(z)\in\OO_K$. No absolute different calculation is needed for that corollary.
+
+\paragraph{One monomial phase.} For $n>2$, $h$ is even and $f$ is reciprocal. Differentiate $f(X)=X^h f(X^{-1})$ and evaluate at $\zeta$:
+\[
+ \overline{f'(\zeta)}=f'(\zeta^{-1})=-\zeta^{2-h}f'(\zeta).
+\]
+Since $4\mid n$, $i_0=\zeta^{n/4}$ is a fourth root of unity with square $-1$. Take $u=i_0\zeta^{1-h/2}$. Then
+\[
+ \bar u/u=-\zeta^{h-2},\qquad \overline{u f'(\zeta)}=u f'(\zeta),
+ \qquad \overline{\delta}=-\delta.
+\]
+The phase is a root of unity, hence a unit with absolute value $1$ under every embedding. The different and all size bounds that depend only on its ideal and absolute values are unchanged. This replaces the factor-by-factor construction of a phase by a single reciprocal-polynomial derivative identity. Negative exponents in the displayed formula may be implemented as powers modulo $n$.
+
+\paragraph{Do not replace the chosen generator prematurely.} Two admissible phases need not be equal. First prove that the explicit phase satisfies the old existential specification and use it as its witness; retain the old chosen generator and definitions. Only after auditing all callers for dependence on the chosen phase may one change the actual definition. The source already exploits the tower identity $\Phi_{q_1}(X)=\Phi_{q_0}(X^T)$ for the archimedean size calculation (in \src{New/Derivatives/Field/ChosenPlaces.lean}{\texttt{ChosenPlaces.lean}}); that estimate is retained, not counted as a new simplification.
+
+\section{One finite algebra for every prime}
+Tensor the integral presentation with $\F_p$. It gives an isomorphism of rings, not just a bijection of points:
+\begin{equation}\label{eq:finite}
+ \OO_E/p\OO_E\cong\F_p[X,Y]/(\bar f,\bar g).
+\end{equation}
+Here a bar on a polynomial means reduction of its coefficients. Let $a=v_p(n)$, $m=n/p^a$, and $r_1=1$ for $a=0$ and $r_1=\varphi(p^a)$ otherwise. Then
+\[
+ \bar f=\overline{\Phi_m}^{\,r_1}.
+\]
+For $a>0$ this follows from $\Phi_{p^a m}(X)\Phi_m(X^{p^{a-1}})=\Phi_m(X^{p^a})$, followed by the characteristic-$p$ power identity and cancellation of a nonzero monic polynomial. For $a=0$ it is immediate. Since $p\nmid m$, the roots of $\overline{\Phi_m}$ are distinct and are exactly the primitive $m$th roots; this follows from the factorization of $X^m-1$ into cyclotomic factors and its separability. The case $m=1$ uses the single root $1$.
+
+For the quadratic polynomial, if $p\ne d$, its two roots are distinct. For odd $p$, its discriminant is $-d$ and quadratic reciprocity (as $d\equiv3\bmod4$) gives $(-d/p)=(p/d)$. For $p=2$, $d\equiv7\bmod8$ gives $\bar g=Y(Y-1)$ and $(2/d)=1$. Thus Frobenius fixes both roots when $\chi=1$ and swaps them when $\chi=-1$. At $p=d$, $\bar g=(Y-1/2)^2$ and the only geometric root is $1/2$. Put $r_2=2$ in this last case and $1$ otherwise.
+
+\begin{lemma}[Geometric orbit model]\label{lem:orbits}
+The maximal ideals of the finite algebra in \eqref{eq:finite} correspond to the orbits of the permutation $(z,b)\mapsto(z^p,b^p)$ on its geometric points. The residue degree of an ideal is the orbit size; its local length over its residue field is $r_1r_2$ in the sense that its dimension over $\F_p$ is its residue degree times $r_1r_2$.
+\end{lemma}
+\begin{proof}
+Evaluation at a pair $(z,b)$ is an $\F_p$-algebra homomorphism into the algebraic closure, with finite field image. Its kernel is maximal. Conversely, a maximal ideal has finite field quotient, which embeds into the algebraic closure and supplies such a pair. Two evaluations have the same kernel exactly when the resulting embeddings of the finite quotient differ by a Frobenius power. This also identifies the number of embeddings with the residue degree. After scalar extension to $\overline{\F}_p$, the Chinese remainder theorem in the two variables expresses the algebra as the product, over all pairs, of
+\[
+ \overline{\F}_p[U,V]/(U^{r_1},V^{r_2}).
+\]
+Each factor has vector-space dimension $r_1r_2$; an orbit of size $t$ gives $t$ factors. Scalar extension preserves dimension. This proves the dimension assertion for each local component over $\F_p$.
+\end{proof}
+
+In the Dedekind ring $\OO_E$, a local component of $\OO_E/p\OO_E$ at $w$ has dimension $e(w/p)f(w/p)$ over $\F_p$, by the filtration of powers of the maximal ideal in a DVR. Thus its ramification index is $r_1r_2$. The period of the first coordinate is $\ord_m(p)$, and the second coordinate has period $2$ if inert, $1$ otherwise. All orbits have the same length. This proves part 3 of Theorem~\ref{thm:package}. In particular, if $p\nmid nd$, $p$ has valuation one at every $w\mid p$ and the residue cardinality is $p^{t_p}$.
+
+\section{The Frobenius action and self-conjugate places}
+Choose any evaluation $(z,b)$ representing $w$. Pullback along $\sigma_v$ is represented by $(z^v,b)$, and pullback along $c_e$ by $(z^e,b_e)$, with $b_1=b$ and $b_{-1}=1-b$. By Lemma~\ref{lem:orbits} the ideals coincide precisely when these points are in the same Frobenius orbit. Applying a $j$th Frobenius power to the latter yields the first precisely if $v\equiv ep^j\bmod m$ and $b=b_e^{p^j}$. When $p\ne d$, the second equality holds precisely if $e=\chi^j$; when $p=d$, it is automatic. This proves \eqref{eq:pullback} and completes Theorem~\ref{thm:package}.
+
+For $p\nmid nd$, put $\gamma=(\chi p,\chi)\in(\Z/n)^\times\times\{\pm1\}$. Equation~\eqref{eq:pullback} says exactly that $(v,e)$ is a nonnegative power of $\gamma$. This recovers the existing Frobenius-pair API. For $\chi=-1$, even powers of $-p$ fix $w$ and odd powers send it to its conjugate. Its residue cardinality is $p^{\lcm(\ord_n(-p),2)}$ because $(\chi p)^j=p^j$ for even $j$ when $\chi=-1$. For $p\equiv1\bmod nd$, Frobenius is trivial, so the prime is fully split.
+
+\begin{corollary}[Exact self-conjugacy criterion]\label{cor:star}
+For the source parameters, $\bar w=w$ holds if and only if $p\nmid nd$, $\chi=-1$, and $\ord_n(-p)$ is odd. In that case $p\equiv-1\bmod 2^{s+1}$.
+\end{corollary}
+\begin{proof}
+Self-conjugacy in \eqref{eq:pullback} means $v=1,e=-1$. For $p\mid n$, the source congruence gives $\chi=1$. Indeed each odd prime divisor of $n$ divides $q_0$ and $d\equiv-1$ modulo that prime; then $(-d/p)=1$. The prime $2$ splits as above. So no exponent can give $e=-1$ in these cases. At $p=d$, self-conjugacy would imply $d^j\equiv-1\pmod n$ and hence modulo $q_0$. But $d\equiv q_0/2-1\pmod{q_0}$, so $d^2\equiv1$ and neither $d$ nor $1$ is $-1$ modulo $q_0$. This case is also impossible. For all other primes the condition is $\chi^j=-1$ and $(-p)^j\equiv1\pmod n$. Such a $j$ exists if and only if $\chi=-1$ and the order of $-p$ is odd. The image of an odd-order element in the $2$-group $(\Z/2^{s+1})^\times$ must be the identity. Therefore $-p\equiv1\pmod{2^{s+1}}$.
+\end{proof}
+
+The corollary packages the source's exclusions of primes dividing $q_1$, its ramified-prime argument, and its congruence condition into one statement. The stronger iff is obtained without extra input and can be used in later callers instead of repeatedly proving only the necessary condition. We do not change the hypotheses or enumeration of marked primes.
+
+\section{The crucial nonreduced-ring safeguard}
+A bijection of prime ideals does not in itself establish divisibility in $\OO_E$ or in a valuation quotient. The nilpotents at ramified primes are particularly important in the theta-product arguments. We retain a second, purely ring-theoretic interface using the presentation in Theorem~\ref{thm:package}, as follows.
+
+For odd $p$, let $S=2Y-1$ in the ring \eqref{eq:finite}. Then $S^2=-d$ and
+\begin{equation}\label{eq:quad}
+ S^{p^j}=\chi^j S\quad(j\ge0),
+\end{equation}
+where $0^0=1$ at $p=d$. For $j=1$, Euler's criterion and quadratic reciprocity give the identity when $p\ne d$; at $p=d$, $S^2=0$ and $p\ge3$ give it directly. Iterate using the Frobenius homomorphism; the integers $0,\pm1$ are fixed by it. At $p=2$, the quadratic is split and $Y^2=Y$, so Frobenius fixes $Y$. These calculations are valid in the actual finite algebra and hence after any homomorphism to a characteristic-$p$ commutative ring.
+
+\begin{corollary}[Partner congruence at inert primes]
+If $\chi=-1$ and $j$ is odd, then $p\nmid n$ for the source parameters, and for every $z\in\OO_E$,
+\[
+ z^{p^j}\equiv\sigma_{-p^j}(\bar z)\pmod{p\OO_E}.
+\]
+\end{corollary}
+\begin{proof}
+Both maps are ring homomorphisms to $\OO_E/p\OO_E$. They agree on $\zeta$ since the two signs cancel, and on $\beta$ since \eqref{eq:quad} sends $2\beta-1$ to its negative. The two integral generators determine a ring map, so the maps agree on all of $\OO_E$.
+\end{proof}
+
+At $p=d$ one must not assert this conjugate-partner identity modulo $p$ in general. For $z=\beta$, its $p$th power reduces to $1/2$, whereas $\bar\beta=1/2-S/2$; the element $S$ is nonzero nilpotent in the universal algebra modulo $p$. But modulo the ideal $(\sqrt{-d})$, $S=0$ and characteristic is $d$, so both maps agree on the quadratic generator. The root-of-unity generator gives the same conjugate-partner calculation for any positive $j$, with index $-d^j$ (a unit modulo $n$). The resulting congruence modulo $(\sqrt{-d})$ is valid, and remains valid on mapping to a valuation quotient that kills this uniformizer. This is the distinction needed by the source's local norm arguments. More general comparisons in arbitrary target rings follow by retaining the source's equality-on-generators wrapper \texttt{forall\_map\_galOfPlaceInt\_eq\_pow\_iff} and using \eqref{eq:quad}. In particular, no cancellation of $S$ in a ring with zero divisors is allowed.
+
+\section{Integration into the readable Lean development}
+\label{sec:integration}
+The initial migration should preserve names, theorem statements, implicit arguments and the present field/phase definitions. The following links target the immutable reviewed snapshot (line ranges recorded separately in the archive).
+
+\begin{tabularx}{\textwidth}{@{}>{\raggedright\arraybackslash}p{.28\textwidth}X@{}}
+\toprule
+Region & Replacement and compatibility requirement\\\midrule
+\src{New/Derivatives/Field/PrimeDecomposition.lean}{PrimeDecomposition} 145--232 & Use the coprime-discriminant order lemma and monogenic trace-dual theorem. Derive the same ideal and ring-generation assertions. Retain the existing proof of $f'(\zeta)\mid n$ if convenient.\\
+Same, 288--347 & Prove the old phase-existence specification with the explicit monomial witness. Keep the existing choice definition at first.\\
+Same, 454--667 & Keep the arbitrary-ring comparison interface; centralize it on the presentation. Replace the prime pullback and residue cardinality arguments by the orbit lemma or its leaner evaluation-map version.\\
+Same, 667--685, 755--843 & Recover unramified valuation, inert divisibility, and the necessary self-conjugacy congruence from the general theorem.\\
+\src{New/Derivatives/Vacuum/TightFrames.lean}{TightFrames} 203--222 & Relative trace integrality is a direct trace-dual corollary. Do not conflate this with the existing proposal for a different tight-frame construction.\\
+\src{New/Derivatives/FormalGroup/ThetaProducts.lean}{ThetaProducts} 139--175 & Preserve \texttt{norm\_pow\_sub\_conj\_partner\_le}; use the full ring congruence, not the maximal-ideal theorem.\\
+\src{New/UpperBound/Divisibility/MarkOperator.lean}{MarkOperator} and \src{New/UpperBound/Divisibility/MarkedPrimes.lean}{MarkedPrimes} & Recover existing Frobenius and inert-prime lemmas with the same pullback convention and ramification assumptions.\\\bottomrule
+\end{tabularx}
+
+\paragraph{Lowest-cost implementation.} Do not begin by implementing a new full general theory of finite algebras. For the original unramified interfaces, the geometric orbit proof can be written directly with evaluations into a common algebraic closure of $\F_p$, equality of kernels, and uniqueness of finite-field embeddings up to Frobenius. The existing source already provides many of these pieces. Use the two-generator presentation to combine the congruence checks. Formalize the general local-length assertion later, if it actually helps reduce the code: the unramified assertion also follows from the existing different calculation and the conductor bound. In particular, the full CRT theorem for nilpotent local factors is mathematically useful but not a prerequisite for the first code reduction.
+
+The five principal candidate ranges 145--232, 288--347, 454--667, 755--843, and the trace-integrality wrapper 203--222 comprise 471 gross lines (including comments and lemmas to be retained). This is the area in which to measure replacement and deletion, not a claim of 471 saved lines. The real test is the number of lines and declarations in the transitive dependency slice after adding new generic lemmas. A full arithmetic-field refactor might remove repeated reasoning in several callers; actual net savings may be modest relative to the entire 300,000-line proof. We do not claim deletion of general class field theory, the theta machinery, or other dependencies that have independent callers.
+
+\paragraph{Preservation of the analytic endpoint.} The existing field, root order, splitting hypotheses, trace normalization, different ideal and archimedean absolute values are preserved. The same congruences are proved in the required rings. In a successful port, the higher-level statements about theta derivatives, spanning, covolume, the one-sided bound, and RH/GRH remain literally unchanged. No improvement of the error exponent, determinant constants, or cutoff range is asserted.
+
+\section{Overlap audit and validation}
+The proposal directory was recursively enumerated at the pinned commit. It contained 24 directories. All 24 README summaries were inspected, and 34 TeX files were fetched and screened for the terms listed in \texttt{README.md}. No exact target-term hits were found in that screen. The topics are recorded individually in \texttt{proposal\_audit.tsv}. This is a targeted novelty check against the repository's proposals, not a comprehensive semantic review of every passage or a claim of novelty in algebraic number theory.
+
+Closest potential overlaps are the CM-norm cancellation proposal (local multipliers for the derivative sharpness proof), the Gram-adjoint proposal (a different tight-frame construction), the cyclotomic-interpolation and Newton torsion proposals (interpolation over roots of unity, rather than the integral order of the ambient CM field), and the finite-quotient class-count proposal (unitary classes, rather than Frobenius orbits of the integral generators). Their main mechanisms remain useful even if the present replacement is implemented. The sparse-place proposal changes the choice of places, not the ring and local arithmetic used for those places.
+
+\paragraph{Exact computational regression.} The accompanying Python script uses SymPy and integer/rational arithmetic. It tests:
+\begin{itemize}
+\item 540 finite quotient cases, 3,045 Frobenius orbits and 10,360 pullback comparisons. The computed orbit multiplicities and local lengths are compared with independent finite polynomial factorizations and the tensor-product degree formula for finite fields.
+\item 13 cyclotomic polynomial quotient rings, checking the reciprocal-derivative identity and the explicit phase exactly.
+\item 20 tensor trace-pairing cases, checking unimodularity of the derivative-scaled trace matrices and coprimality of discriminants.
+\item 39 source-congruence examples for $q_0=18480$, $d=9239$, and $s=0,2,4$. These instantiate the congruence class and tower formula but are not claims of full admissible parameter data.
+\end{itemize}
+All tests passed; actual output is in \texttt{checks.txt}. The tests are regressions for the mathematical claims, not a substitute for their proofs. Some pullback comparisons intentionally test the orbit criterion against the same finite model; they are not a separate number-field ideal implementation. No Lean executable or complete local dependency checkout was available for the new proof, so elaboration, compilation, axiom auditing and line-count comparisons were not performed.
+
+\section{Further research questions}
+\begin{enumerate}
+\item Can the relative trace-dual proof be implemented directly with existing Mathlib power-basis and trace-dual lemmas, rather than introducing a separate generic integral-order library? Measure both variants.
+\item Can all prime-decomposition declarations in the field file be reduced to a single reusable kernel-equality theorem, while keeping the characteristic-$p$ ring identities fully general?
+\item Can the explicit phase eliminate choice-related coercion and normalization lemmas in the vacuum construction after verifying that every use depends only on the ideal, sign and absolute value?
+\item Does the exact odd-order criterion reduce any downstream marked-prime case splits beyond those already targeted by the signed-gain and Hecke proposals?
+\end{enumerate}
+\paragraph{Recommendation.} Implement the trace-dual and explicit-phase stages first; they offer the clearest algebraic shortening and the least risk of increasing Lean complexity. Introduce the orbit stage only after profiling the baseline dependencies. Keep the nilpotent-sensitive congruences as a separate interface throughout.
+
+\section*{Sources and reproducibility}
+\begin{itemize}
+\item \href{https://github.com/VladimirReshetnikov/ProveIt/tree/fd695fd462aa31b25af3335e2a9c3b6e014b055f/Analysis/GeneralizedRiemannHypothesis/Lean/grh}{Readable Lean edition, pinned snapshot}; particularly the files linked above and \src{New/Reduction/Data/FieldsAndPlaces.lean}{FieldsAndPlaces}, \src{New/Reduction/OneSidedBound.lean}{OneSidedBound}.
+\item \href{https://github.com/VladimirReshetnikov/ProveIt/blob/fd695fd462aa31b25af3335e2a9c3b6e014b055f/Analysis/GeneralizedRiemannHypothesis/docs/guide/theta_lifts_and_dirichlet_zeros.tex}{Human-readable guide}, especially lines 597--705, 1554--1754 and 1754--1987.
+\item \href{https://github.com/VladimirReshetnikov/ProveIt/tree/fd695fd462aa31b25af3335e2a9c3b6e014b055f/Analysis/GeneralizedRiemannHypothesis/docs/proposals}{Existing proposal corpus}, pinned snapshot; inventory in accompanying TSV.
+\end{itemize}
+The mathematical arguments are self-contained given the stated standard input theorems (integral bases of quadratic and cyclotomic fields, linear disjointness, elementary finite field facts, and the Dedekind property). The companion archive includes this source, the PDF, implementation plan, audit tables and runnable checks.
+\end{document}

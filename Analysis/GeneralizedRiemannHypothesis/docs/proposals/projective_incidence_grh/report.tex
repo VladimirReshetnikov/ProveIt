@@ -1,0 +1,193 @@
+\documentclass[11pt]{article}
+\usepackage[a4paper,margin=26mm]{geometry}
+\usepackage{amsmath,amssymb,amsthm,mathtools,booktabs,array,hyperref,xcolor}
+\hypersetup{colorlinks=true,linkcolor=blue!50!black,urlcolor=blue!50!black}
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{corollary}[theorem]{Corollary}
+\theoremstyle{remark}\newtheorem{remark}[theorem]{Remark}
+\newcommand{\F}{\mathbb F}
+\newcommand{\Pj}{\mathbb P}
+\newcommand{\wt}{\Theta}
+\newcommand{\code}[1]{\texttt{\detokenize{#1}}}
+\newcommand{\srcroot}{https://github.com/VladimirReshetnikov/ProveIt/blob/a96fd3f7b682add165f649414b90e243bc18b101/Analysis/GeneralizedRiemannHypothesis/Lean/grh/src/}
+\title{Projective incidence instead of additive Fourier analysis\\\large A local simplification of the theta-lift proof of Dirichlet GRH}
+\author{Research proposal}
+\date{27 November 2026}
+\begin{document}
+\maketitle
+\begin{abstract}
+The second-moment argument in the readable Alp\"oge--Claude development bounds the mass of singular compressions of a finite-field representation under a nonnegative positive-type weight. Its present proof passes through additive characters, two orthonormal systems and a Hilbert tensor product. We replace this by the two-intersection-number identity of the projective point--hyperplane incidence matrix, a normalizer-coset inequality for positive-type weights, and an exact count of projective kernel lines. The replacement proves the original theorem with precisely its current constants, and gives an additional estimate for every corank threshold. No arithmetic input, scale, projector, theta lift or analytic zero criterion changes. This is a paper-level refactor, not a compiled Lean patch or a fresh proof verification.
+\end{abstract}
+\section{Where the simplification fits}
+The public statements in \href{\srcroot Main.lean}{\code{Main.lean}} and \href{\srcroot Statements.lean}{\code{Statements.lean}} are formulated using Mathlib's Riemann zeta and Dirichlet $L$-functions. The common proof passes through \code{New.grh}. According to the \href{https://github.com/VladimirReshetnikov/ProveIt/tree/main/Analysis/GeneralizedRiemannHypothesis/docs/guide}{human-readable guide}, its arithmetic core compares the covolume of short integral theta lifts with a lower determinant height; a spanning theorem supplies enough vectors for this comparison. The second moment of the Poincar\'e series is one of the inputs to that spanning theorem. The present proposal changes a finite-field component of the second moment, not the separate rank-increment step.
+
+In \href{\srcroot New/Spanning/Unfolding/MomentBounds.lean#L321-L389}{\code{MomentBounds.lean}, lines 321--389}, the lemma \code{sum_leadingMinor_eq_zero_le} controls the mass of a bad leading minor under a nonnegative positive-type weight on a finite subgroup. Its only finite-field analytic input is \code{New.card_mul_sum_det_eq_zero_le}, at lines 153--209 of \href{\srcroot New/Spanning/SecondMoment/PositiveType.lean#L153-L209}{\code{PositiveType.lean}}. The proof first constructs two orthonormal systems, then estimates each Fourier coefficient by a tensor-product argument, and finally counts the left kernel by additive-character orthogonality. We replace that sequence by a single real incidence calculation.
+
+The goal is significant \emph{local} simplification: remove the Fourier-character and tensor-product constructions from this lemma and keep its exported signature. This is not a claim of a large percentage reduction in the full development, or of measured net lines removed. The existing file is only 211 source lines (plus trailing newline); projective-space infrastructure may require a comparable amount of Lean code initially. The gain is the removal of specialized analytic machinery from this step, with a reusable stronger finite theorem.
+
+\section{Precise replacement}
+Let $q$ be a prime power, $V=\F_q^n$, $U=\F_q^m$, $G$ a finite group and $\pi:G\to\mathrm{GL}(V)$ a representation. Let $A_0:U\to V$ and $A_1:U\to V^*$ be linear maps, writing the latter as an $n\times m$ matrix in dual coordinates. Put
+\[
+ Z_g=A_1^{\mathsf T}\pi(g)A_0,\qquad
+ T=\sum_{g\in G}\wt(g),\qquad B=q^m\sqrt{q^n}\,Y.
+\]
+Assume $\wt:G\to\mathbb R_{\ge0}$ has positive type in the exact form used by the source: there are Hilbert vectors $u_g$ with $\langle u_a,u_b\rangle=\wt(a^{-1}b)$. We use the real part of the inner product, so complex or real Hilbert spaces are equally suitable. For $x\in V$ write $G_x=\{g:\pi(g)x=x\}$; for a covector use the contragredient action $\pi(g)^{-\mathsf T}$. Assume $Y\ge0$ and for every $v\ne0$ in $U$,
+\begin{equation}\label{eq:stab}
+ \wt(G_{A_0v})\le Y,\qquad \wt(G_{A_1v})\le Y,
+\end{equation}
+where $\wt(S)=\sum_{g\in S}\wt(g)$. In particular, no injectivity assumption on the two maps is required.
+
+\begin{theorem}[Projective corank bound]\label{thm:corank}
+Under these hypotheses, for every integer $j$ with $1\le j\le m$,
+\begin{equation}\label{eq:tail}
+ (q^j-1)\,\wt\{g:\operatorname{corank}Z_g\ge j\}\le T+B.
+\end{equation}
+In particular, with $S=\wt\{g:\det Z_g=0\}$,
+\begin{equation}\label{eq:both}
+ (q-1)S\le T+B,\qquad qS\le 2T+B.
+\end{equation}
+The second inequality is precisely the existing Lean theorem, including its coefficient $2$ and its exponent $m+n/2$.
+\end{theorem}
+The new tail estimate is additional, rather than an assertion that the old Fourier proof could not also be strengthened. It controls the expected number of nonzero kernel vectors. In the source application $B\le T$; hence $S\le2T/(q-1)$, which is at most $3T/q$ for $q\ge3$. The old $3T/q$ remains available for every $q$ directly from \eqref{eq:both}.
+
+\section{Positive type on projective stabilizers}
+For a nonzero vector or covector $x$, let $G_{[x]}$ denote the stabilizer of its one-dimensional subspace. The character $G_{[x]}\to\F_q^\times$ describing the scalar on $x$ has kernel $G_x$. Thus $G_x\triangleleft G_{[x]}$ and $[G_{[x]}:G_x]\le q-1$.
+\begin{lemma}[Normalizer-coset estimate]\label{lem:coset}
+If $H\le G$ and $g$ normalizes $H$, then $0\le \wt(gH)\le \wt(H)$.
+\end{lemma}
+\begin{proof}
+Set $p=\sum_{h\in H}u_h$ and $v=\sum_{b\in gH}u_b$. Reindexing the Gram sum gives
+\[
+ \|p\|^2=|H|\wt(H)=\|v\|^2.
+\]
+For each $a\in H$, the map $b\mapsto a^{-1}b$ permutes $gH$ (this is where normalization is used). Consequently $\langle p,v\rangle=|H|\wt(gH)$. Cauchy--Schwarz gives the result; nonnegativity comes from $\wt\ge0$.
+\end{proof}
+\begin{corollary}\label{cor:line}
+For either action, $\wt(G_{[x]})\le(q-1)\wt(G_x)$. Hence for each nonzero image in \eqref{eq:stab} its projective stabilizer has mass at most $(q-1)Y$.
+\end{corollary}
+This is not a bound on arbitrary cosets of arbitrary subgroups: the normalizer hypothesis is essential to the reindexing. It is automatic for the projective stabilizers, and there is no need to change the source's vector-fixer hypothesis.
+
+\section{An incidence mixing identity without characters}
+Assume $n\ge2$. Let $\mathcal P=\Pj(V)$ and $\mathcal H=\Pj(V^*)$, each with
+\[
+ P=\frac{q^n-1}{q-1},\quad h=\frac{q^{n-1}-1}{q-1},\quad
+ c=\frac{q^{n-2}-1}{q-1},\quad p=h/P.
+\]
+A point lies on $h$ hyperplanes; two distinct points lie together on $c$ hyperplanes, by counting lines in annihilators of dimensions $n-1$ and $n-2$. Define the real matrix $I_{\alpha,z}=1_{\alpha(z)=0}$ and $C=I-p\mathbf J$, where $\mathbf J$ denotes the all-ones matrix of the appropriate shape. The two counts give
+\begin{equation}\label{eq:gram}
+ I^{\mathsf T}I=(h-c)\mathrm{Id}+c\mathbf J,
+ \qquad C^{\mathsf T}C=q^{n-2}(\mathrm{Id}-\mathbf J/P).
+\end{equation}
+Indeed $h-c=q^{n-2}$; also $I\mathbf1=h\mathbf1$ and $I^{\mathsf T}\mathbf1=h\mathbf1$, so $C\mathbf1=0$. This determines the coefficient of $\mathbf J$ after centering. Notice that $p\le1/q$ since $q(q^{n-1}-1)\le q^n-1$.
+
+\begin{lemma}[Hilbert-valued incidence mixing]\label{lem:mix}
+For nonzero $x\in V^*$ and $z\in V$,
+\begin{equation}\label{eq:mix}
+ \left|\sum_{s\in G}\wt(s)1_{x(\pi(s)z)=0}-pT\right|
+ \le \sqrt{q^{n-2}\wt(G_{[x]})\wt(G_{[z]})}.
+\end{equation}
+\end{lemma}
+\begin{proof}
+For each covector line $\alpha$ and vector line $w$ define
+\[
+ X_\alpha=\sum_{a:[\pi(a)^{-\mathsf T}x]=\alpha}u_a,
+ \qquad W_w=\sum_{b:[\pi(b)z]=w}u_b.
+\]
+Expanding squares and using $s=a^{-1}b$ shows
+\[
+ \sum_\alpha\|X_\alpha\|^2=|G|\wt(G_{[x]}),\qquad
+ \sum_w\|W_w\|^2=|G|\wt(G_{[z]}).
+\]
+For example, the equality of the projective images of $a$ and $b$ is equivalent to $a^{-1}b$ stabilizing the original line. Each $s$ has $|G|$ representations by $(a,b)$. The corresponding cross sum is
+\[
+ \sum_{\alpha,w} C_{\alpha,w}\langle X_\alpha,W_w\rangle
+ =|G|\left(\sum_s\wt(s)1_{x(\pi(s)z)=0}-pT\right).
+\]
+The equality follows from $(\pi(a)^{-\mathsf T}x)^{\mathsf T}\pi(b)z=x^{\mathsf T}\pi(a^{-1}b)z$; rescaling either vector has no effect on the zero test. By \eqref{eq:gram},
+\[
+ \sum_\alpha\left\|\sum_w C_{\alpha,w}W_w\right\|^2
+ =q^{n-2}\left(\sum_w\|W_w\|^2-
+ \frac{1}{P}\left\|\sum_w W_w\right\|^2\right)
+ \le q^{n-2}\sum_w\|W_w\|^2.
+\]
+Apply ordinary Cauchy--Schwarz to the finite families $X_\alpha$ and $\sum_w C_{\alpha,w}W_w$, and divide by $|G|$. All sums are finite, and the only analytic operation is the elementary Hilbert-space inequality. No Fourier basis or tensor product appears.
+\end{proof}
+
+\section{From incidence to the distribution of corank}
+\begin{proof}[Proof of Theorem~\ref{thm:corank}]
+If $m=0$, the empty determinant is $1$, so $S=0$ and the tail statement is vacuous. If either map $A_i$ has a nonzero kernel vector, \eqref{eq:stab} forces $T\le Y$ (the stabilizer of the zero vector is all of $G$). For $1\le j\le m$, the left side of \eqref{eq:tail} is then at most $(q^m-1)T\le B$. This also handles $n=0$ and $m>0$. Otherwise both maps are injective and $1\le m\le n$. If $n=1$, then $m=1$ and every compression is invertible. We may assume $n\ge2$.
+
+Let $L=(q^m-1)/(q-1)$ and $L'=(q^{m-1}-1)/(q-1)$. For $g\in G$ let $K_g$ be the number of lines in the left kernel of $Z_g$. In $\Pj(U)\times\Pj(U)$ there are exactly
+\begin{equation}\label{eq:count}
+ L L'+q^{m-1}K_g
+\end{equation}
+ordered pairs $([y],[v])$ with $y^{\mathsf T}Z_gv=0$. For a fixed $[y]$, the kernel of the resulting linear form has $L'$ lines unless the form is zero, in which case all $L$ lines qualify; $L-L'=q^{m-1}$. This count requires no information on the elementary divisors of $Z_g$ other than its rank.
+
+By Lemma~\ref{lem:mix} and Corollary~\ref{cor:line}, for each pair $[y],[v]$ its weighted incidence count is at most $pT+(q-1)q^{(n-2)/2}Y$. Summing over pairs and using \eqref{eq:count},
+\begin{align}
+ q^{m-1}\sum_g\wt(g)K_g
+ &\le L(pL-L')T+L^2(q-1)q^{(n-2)/2}Y\label{eq:exact}\\
+ &\le \frac Lq T+L^2(q-1)q^{(n-2)/2}Y,\notag
+\end{align}
+because $p\le1/q$ and $qL'=L-1$. Use $L\le q^m/(q-1)$ to obtain
+\begin{equation}\label{eq:moment}
+ (q-1)\sum_g\wt(g)K_g\le T+q^m q^{n/2}Y=T+B.
+\end{equation}
+Since $(q-1)K_g=q^{\operatorname{corank}Z_g}-1$, positivity proves \eqref{eq:tail}, as well as $(q-1)S\le T+B$. Finally $S\le T$, so
+\[
+ qS=(q-1)S+S\le 2T+B.
+\]
+This last step recovers the exact source bound without any numerical case split. In the degenerate-map cases the same $qS$ bound follows from the already proved $j=1$ case and $S\le T$; when $m=0$ it is immediate.
+\end{proof}
+
+\subsection{Nonuniform version and sharper source interface}
+Equation \eqref{eq:exact} can be sharpened without any new input. Put
+\[
+ M_1([y])=\wt(G_{[A_1y]}),\qquad M_0([v])=\wt(G_{[A_0v]}).
+\]
+When both maps are injective, replacing its last term by
+\[
+ q^{(n-2)/2}\left(\sum_{[y]}\sqrt{M_1([y])}\right)
+             \left(\sum_{[v]}\sqrt{M_0([v])}\right)
+\]
+is valid by summing \eqref{eq:mix}. Consequently one could bound averaged projective stabilizer mass instead of imposing a uniform vector-stabilizer maximum. That is a possible further simplification of the global second-moment argument, but its arithmetic hypotheses are not established here. Keep the old uniform bound for an initial port.
+
+\subsection{Why positivity cannot be omitted}
+Take $q=3$, $n=2$, $m=1$, $G$ the cyclic group generated by $g=\left(\begin{smallmatrix}0&-1\\1&0\end{smallmatrix}\right)$ and $A_0=A_1=e_1$ in vector/dual coordinates. The weight concentrated at $g$ is nonnegative but not of positive type (its value at the identity vanishes). Neither $g$ nor its contragredient fixes $e_1$, so $Y=0$ while $T=S=1$. The claimed old inequality $3S\le2T$ fails. Thus neither the weighted mixing argument nor its conclusion is a consequence of nonnegativity alone.
+
+\section{Preserving the downstream arithmetic bound}
+In \code{MomentBounds.lean} let the subgroup be $\Gamma$, the weight $\beta$, the residue-field cardinality $q=p_0$, and let $e$ be the frame-inclusion matrix. The source sets $A_0=e$, $A_1=Je$ for the split Gram matrix $J$, and obtains the two stabilizer inequalities in lines 360--378. It sets $Y=T/b^{6k}$ and proves $q^m\sqrt{q^n}\le b^{6k}$ in \code{levelPrime_pow_mul_sqrt_le}, lines 308--319, where $m$ is the minor size and $n$ the ambient rank. (These local letters $m,n$ are not the global number of theta lifts and its ranks.) Thus $B\le T$. With the original inequality $qS\le2T+B\le3T$ and $q\ge b^{10}$, the bound $S\le3T/b^{10}$ follows verbatim.
+
+The subsequent union over leading minors in \code{sum_not_isOpenElement_le} (lines 399--427) bounds the non-open mass by $b^{-4}T$. Then \code{sum_secondMoment_le} (lines 441 onward) yields the $1+9b^{-4}$ error. These three callers do not need to change. Centered rank recurrence, sharpened rank tolerance, signed gain accounting, and all proposed lower-determinant and congruence substitutions remain compatible because the original second-moment interface is preserved. The stronger tail estimate is optional; there is no reason to propagate it before the replacement compiles.
+
+\section{Source audit and implementation plan}
+The central files were fetched through GitHub at main and rechecked at commit
+\begin{center}\small\code{a96fd3f7b682add165f649414b90e243bc18b101}.\end{center}
+Their blobs match the recorded \code{source_audit.tsv}. The guide README describes an independently checked upstream version and links to \href{https://math.mit.edu/~drew/shortgrh/}{Sutherland's verification records}; this report does not replay those checks or establish a whole-tree match. The existing proposal directory had 24 folders in the recursively enumerated tree
+\begin{center}\small\code{7fd24ac9ab5506bf6d0d21fd52034010a4f72243}.\end{center}
+The accompanying audit records their topics and the targeted text review. The older proposals for Fourier completion concern the analytic quadratic-twist selector, not this finite representation lemma. The centered spanning arguments begin after the moment estimate, and the orbital/adjoint/Hecke proposals target different maps. No proposal was found targeting this projective incidence substitution. This is a targeted audit, not a global priority or exhaustive semantic claim; the main branch was changing during retrieval.
+
+\begin{center}\small
+\begin{tabular}{p{.31\linewidth}p{.59\linewidth}}
+\toprule
+Source region & Proposed operation \\
+\midrule
+\code{PositiveType.lean}, 39--50 & Generalize finite Gram reindexing to subgroup cosets and orbit fibres. Keep this helper if other files use it. \\
+51--137 & Candidate removal: tensor norm, additive-character orthogonality, Fourier--delta pairing and phase-sum bound. Replace by projective counts and Lemma~\ref{lem:mix}. \\
+140--150 & Candidate removal of separate kernel-cardinality estimate; use projective kernel count (or retain for other callers). \\
+153--209 & Preserve theorem name and statement; use the stronger corank lemma and $S\le T$. \\
+\code{MomentBounds.lean}, 330--389 & Rebuild unchanged; same constants and map orientations. \\
+399--448 and beyond & Rebuild unchanged; no new assumptions at final statements. \\
+\bottomrule
+\end{tabular}
+\end{center}
+The gross candidate region is roughly 160 lines of one file, not a net deletion prediction. In particular, formalizing projective cardinalities may be harder than using existing Fourier lemmas. The Lean plan provides a low-risk fallback: use nonzero vectors with scalar-invariant functions and divide their finite sums by $q-1$, avoiding the need to introduce a quotient type. The most practical first step is a reusable general lemma for a regular incidence relation with two intersection numbers. The incidence calculation needs only finite sums, not a formal spectral theorem.
+
+\section{Validation and further questions}
+The companion Python program independently enumerates projective points and hyperplanes in small prime fields and $\F_4$, verifies their Gram identity exactly, and tests the weighted corank bound on full general linear groups using uniform, delta, subgroup and autocorrelation weights. It also tests the nonuniform mixing bound, normalizer coset bound, degeneracy branches, and the failure without positive type. Its saved output records actual case counts; these are finite regressions and not a proof of the universal theorem. The mathematical proof is above. No Lean executable was available in the working environment. No repository changes were made, and no line count or build-time reduction has been measured.
+
+Further research questions: (1) Can the projective stabilizer mass formulation replace the vector-fixer maximization itself, with compatible bounds for the finite sieve and the main term? (2) Can the corank-tail bound avoid charging every singular minor at full cost in the non-open term estimates? (3) Can Mathlib's projective-space API or a quotient-free implementation make the incidence calculation shorter than the existing file? These questions are not claimed as completed refinements. The immediate result is independent of their resolution.
+
+\bigskip\noindent\textbf{Reproduce.} Compile with \code{pdflatex -halt-on-error report.tex} twice. Run \code{python3 check_incidence.py}. Review \code{LEAN_PLAN.md}, \code{proposal_audit.tsv} and \code{source_audit.tsv}. The archive contains no modified baseline source.
+\end{document}
