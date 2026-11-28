@@ -42,7 +42,7 @@ The heads of these files give an overview of a theory: `Lib/ClassField/Global/Ar
 **Derivatives that count primes**
 
 - `New/Derivatives/Divisibility/NullFrames` (297): The change of directions
-- `New/Derivatives/Divisibility/NormalForm` (280): Couplings and the normal form
+- `New/Derivatives/Divisibility/NormalForm` (268): Couplings and the normal form
 - `New/Derivatives/Divisibility/Count` (522): Divisibility of the jets of a series with the normal form along products of minors
 
 **The field and its characters**

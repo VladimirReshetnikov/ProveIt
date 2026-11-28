@@ -15,8 +15,8 @@ import Lib.General.NumberTheory.PadicLimitsValuation
   without constant term, then `F(ϖ Z)` is integral in degrees at most `B` if the couplings `Γ_e(Z)`
   with `e ∈ S`, `e ≤ log_p B` are divisible by some `π` with `‖c_ϖ π‖ ≤ p ^ (-1 / (p - 1))`.
 * `New.HasNormalForm.of_dvd_sub`: it is enough to know the exponent modulo such a `π`.
-* `New.dvd_pderiv_couplingSum_sub`: the derivatives of `Ξ` modulo `p`, if `0 ∉ S`. They are not
-  needed for the divisibility bound, only for its sharpness.
+* `New.residue_coeff_pderiv_couplingSum` computes the pure-power coefficients of the derivatives
+  modulo the maximal ideal for the sharpness estimate.
 
 ## Notation
 
@@ -331,62 +331,34 @@ lemma exists_single_of_coeff_partnerPowerSum_ne_zero {e : ℕ} {y : Φ × c} {d 
   obtain ⟨x, hx, h_coeff⟩ := Finset.exists_ne_zero_of_sum_ne_zero h_ne
   exact ⟨x, (Finset.mem_filter.1 hx).2, by simpa [coeff_X_pow] using h_coeff⟩
 
-/-- The series `partnerPowerSum pr e y` has order at least `p ^ e`. -/
-lemma le_order_partnerPowerSum (e : ℕ) (y : Φ × c) :
-    ((p ^ e : ℕ) : ℕ∞) ≤ (partnerPowerSum (p := p) pr e y).order := by
-  refine le_order fun d hd ↦ by_contra fun h_ne ↦ ?_
-  obtain ⟨x, -, rfl⟩ := exists_single_of_coeff_partnerPowerSum_ne_zero h_ne
-  simp at hd
-
-/-- The sum `∑_{e ∈ S} λ_{e 0} * partnerPowerSum pr e y`, where `λ_{e 0} = l e 0` and
-`partnerPowerSum pr e y` is the sum of the `z_x ^ p ^ e` over the `x = (τ, i)` with partner
-`(pr e τ, i) = y`, converges, as the term `e` has order at least `p ^ e`. -/
-lemma summable_smul_partnerPowerSum (y : Φ × c) :
-    Summable fun e : S ↦ l e 0 • partnerPowerSum (p := p) pr e y := by
-  refine summable_of_finite_order_le fun n ↦ ?_
-  refine ((Set.finite_Iic n).preimage Subtype.val_injective.injOn).subset fun e he ↦ ?_
-  have h_le : ((p ^ (e : ℕ) : ℕ) : ℕ∞) ≤ n :=
-    ((le_order_partnerPowerSum e y).trans le_order_smul).trans he
-  exact (Nat.lt_pow_self (Fact.out : p.Prime).one_lt).le.trans (Nat.cast_le.1 h_le)
-
-/-- Let `Ξ = couplingSum S pr l` be the series `∑_{e ∈ S} ∑_j λ_{e j} Γ_e ^ p ^ j`. If `0 ∉ S`, then
-modulo `p` only the linear factors in the terms `j = 0` count in the derivatives:
-`∂Ξ / ∂z_y ≡ ∑_{e ∈ S} λ_{e 0} * partnerPowerSum pr e y`. -/
-lemma dvd_pderiv_couplingSum_sub (hS : 0 ∉ S) (y : Φ × c) :
-    C (p : valRingCp p) ∣
-      pderiv y (couplingSum S pr l) - ∑' e : S, l e 0 • partnerPowerSum pr e y := by
-  have h_deriv :
-      HasSum (fun x : S × ℕ ↦ pderiv y (l x.1 x.2 • coupling pr x.1 ^ p ^ x.2))
-        (pderiv y (couplingSum S pr l)) :=
-    hasSum_couplingSum.map (pderiv y).toLinearMap (continuous_pderiv y)
-  -- The second sum, written over the pairs `(e, j)` with zero terms for `j > 0`.
-  have h_main : HasSum (fun x : S × ℕ ↦ if x.2 = 0 then l x.1 0 • partnerPowerSum pr x.1 y else 0)
-      (∑' e : S, l e 0 • partnerPowerSum (p := p) pr e y) := by
+/-- To compute a residue coefficient of the derivative, sum the corresponding coefficients
+of the linear partner factors. Terms indexed by positive `j` differentiate to multiples of `p`. -/
+private lemma residue_coeff_pderiv_couplingSum_of_hasSum (hS : 0 ∉ S) (y : Φ × c)
+    (d : Φ × c →₀ ℕ) {a : valRingCp p}
+    (ha : HasSum (fun e : S ↦ l e 0 * coeff d (partnerPowerSum pr e y)) a) :
+    residue (valRingCp p) (coeff d (pderiv y (couplingSum S pr l))) = residue (valRingCp p) a := by
+  have h_deriv := hasSum_iff_hasSum_coeff.1
+    (hasSum_couplingSum (S := S) (l := l) (pr := pr) |>.map (pderiv y).toLinearMap
+      (continuous_pderiv y)) d
+  have h_main : HasSum (fun x : S × ℕ ↦ if x.2 = 0 then
+      l x.1 0 * coeff d (partnerPowerSum pr x.1 y) else 0) a := by
     refine ((Prod.mk_left_injective 0).hasSum_iff fun x hx ↦ ite_eq_right fun hj : x.2 = 0 ↦
       hx ⟨x.1, Prod.ext rfl hj.symm⟩).1 ?_
-    simpa [Function.comp_def] using (summable_smul_partnerPowerSum y).hasSum
-  refine C_dvd_of_hasSum (h_deriv.sub h_main) ?_
-  rintro ⟨⟨e, he⟩, _ | j⟩
-  · simpa [← smul_sub, smul_eq_C_mul, ← mul_sub] using
-      (dvd_pderiv_coupling_sub (ne_of_mem_of_not_mem he hS) y).mul_left (C (l e 0))
-  · rw [ite_eq_right j.succ_ne_zero, sub_zero, Derivation.map_smul, smul_eq_C_mul]
-    exact (dvd_pderiv_pow_pow _ j.succ_ne_zero y).mul_left _
-
-/-- Let `Ξ = couplingSum S pr l` be the series `∑_{e ∈ S} ∑_j λ_{e j} Γ_e ^ p ^ j`. If `0 ∉ S`, then
-modulo the maximal ideal of `valRingCp p` the coefficients of `∂Ξ / ∂z_y` are those of
-`∑_{e ∈ S} λ_{e 0} * partnerPowerSum pr e y`. -/
-lemma residue_coeff_pderiv_couplingSum_eq (hS : 0 ∉ S) (y : Φ × c) (d : Φ × c →₀ ℕ) :
-    residue (valRingCp p) (coeff d (pderiv y (couplingSum S pr l))) =
-      residue (valRingCp p) (∑' e : S, l e 0 * coeff d (partnerPowerSum pr e y)) := by
-  have h_sum : ∑' e : S, l e 0 * coeff d (partnerPowerSum pr e y) =
-      coeff d (∑' e : S, l e 0 • partnerPowerSum pr e y) :=
-    (hasSum_iff_hasSum_coeff.1 (summable_smul_partnerPowerSum y).hasSum d).tsum_eq
-  obtain ⟨a, ha⟩ : (p : valRingCp p) ∣ coeff d (pderiv y (couplingSum S pr l)) -
-      ∑' e : S, l e 0 * coeff d (partnerPowerSum pr e y) := by
-    simpa only [h_sum, ← map_sub] using
-      C_dvd_iff_forall_dvd_coeff.1 (dvd_pderiv_couplingSum_sub hS y) d
-  rw [sub_eq_iff_eq_add'] at ha
-  simp only [ha, map_add, map_mul, map_natCast, CharP.cast_eq_zero, zero_mul, add_zero]
+    simpa [Function.comp_def] using ha
+  have h_dvd : (p : valRingCp p) ∣ coeff d (pderiv y (couplingSum S pr l)) - a := by
+    refine dvd_of_hasSum (h_deriv.sub h_main) ?_
+    rintro ⟨⟨e, he⟩, _ | j⟩
+    · change (p : valRingCp p) ∣ coeff d (pderiv y (l e 0 • coupling pr e ^ p ^ 0)) -
+          (if (0 : ℕ) = 0 then l e 0 * coeff d (partnerPowerSum pr e y) else 0)
+      rw [ite_eq_left rfl, pow_zero, pow_one, Derivation.map_smul, coeff_smul,
+        ← mul_sub, ← map_sub]
+      exact (C_dvd_iff_forall_dvd_coeff.1
+        (dvd_pderiv_coupling_sub (ne_of_mem_of_not_mem he hS) y) d).mul_left _
+    · simpa [smul_eq_C_mul] using C_dvd_iff_forall_dvd_coeff.1
+        ((dvd_pderiv_pow_pow (coupling pr e) j.succ_ne_zero y).mul_left (C (l e (j + 1)))) d
+  obtain ⟨b, hb⟩ := h_dvd
+  rw [sub_eq_iff_eq_add'] at hb
+  simp only [hb, map_add, map_mul, map_natCast, CharP.cast_eq_zero, zero_mul, add_zero]
 
 /-- Let `Ξ = couplingSum S pr l` be the series `∑_{e ∈ S} ∑_j λ_{e j} Γ_e ^ p ^ j`. Let `0 ∉ S` and
 `e ∈ S`, and let `y = (pr e τ, i)` be the partner of `x = (τ, i)` for `e`. Modulo the maximal ideal
@@ -402,8 +374,11 @@ lemma residue_coeff_pderiv_couplingSum (hS : 0 ∉ S) {e : ℕ} (he : e ∈ S) (
     have h_pow : p ^ (e' : ℕ) = p ^ e := by
       rw [← Finsupp.degree_single x (p ^ e), h_eq, Finsupp.degree_single]
     exact h_ne (Subtype.ext (Nat.pow_right_injective (Fact.out : p.Prime).two_le h_pow))
-  rw [residue_coeff_pderiv_couplingSum_eq hS, tsum_eq_single ⟨e, he⟩ fun e' h_ne ↦ by
-    simp [h_zero e' h_ne], coeff_partnerPowerSum_self, mul_one]
+  apply residue_coeff_pderiv_couplingSum_of_hasSum hS
+  simpa [coeff_partnerPowerSum_self] using
+    (hasSum_single (f := fun e' : S ↦ l e' 0 * coeff (.single x (p ^ e))
+      (partnerPowerSum (p := p) pr e' (pr e x.1, x.2))) ⟨e, he⟩ fun e' hn ↦ by
+      simp [h_zero e' hn])
 
 /-- Let `Ξ = couplingSum S pr l` be the series `∑_{e ∈ S} ∑_j λ_{e j} Γ_e ^ p ^ j`. If `0 ∉ S`, then
 modulo the maximal ideal of `𝒪 = valRingCp p` the series `∂Ξ / ∂z_y` has only monomials
@@ -414,6 +389,7 @@ lemma exists_eq_single_of_residue_coeff_pderiv_ne_zero (hS : 0 ∉ S) {y : Φ ×
   by_contra h_none
   have h_zero (e : S) : coeff d (partnerPowerSum (p := p) pr e y) = 0 :=
     by_contra fun he ↦ h_none ⟨e, e.property, exists_single_of_coeff_partnerPowerSum_ne_zero he⟩
-  simp [residue_coeff_pderiv_couplingSum_eq hS, h_zero] at h_ne
+  exact h_ne ((residue_coeff_pderiv_couplingSum_of_hasSum hS y d
+    (a := 0) (by simp [h_zero])).trans (map_zero _))
 
 end New
