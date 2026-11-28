@@ -145,7 +145,7 @@ The heads of these files give an overview of a theory: `Lib/ClassField/Global/Ar
 - `New/UpperBound/ElementaryDivisors/RootLemma` (655): Gauss filtrations, Stepanov's count and the root lemma
 - `New/UpperBound/ElementaryDivisors/InvariantAverage` (614): An average on polynomials in the entries of a matrix
 - `New/UpperBound/ElementaryDivisors/Edges` (492): Edges, halfway lattices and duality
-- `New/UpperBound/ElementaryDivisors/Depth` (502): Few forms have only deep translates
+- `New/UpperBound/ElementaryDivisors/Depth` (485): Few forms have only deep translates
 - `New/UpperBound/ElementaryDivisors/FrobeniusFactors` (516): The substitution by Frobenius powers of generic matrices; weight and defect
 - `New/UpperBound/ElementaryDivisors/AveragingMap` (365): Averaging: removing the terms of large defect in all Levi translates at once
 - `New/UpperBound/ElementaryDivisors/PieriCone` (368): The Pieri cone, the step map and the slab: interlacing and volume of the cone

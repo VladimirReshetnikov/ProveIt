@@ -208,35 +208,6 @@ theorem exists_eq_of_mem_support_specializeShallow {L : Type} [CommRing L] {n r 
   exact ⟨β, fun h_zero ↦ by simp [c, h_zero] at hc,
     fun v ↦ by simp [h_eq, deepPart, deep, Finsupp.indicator_apply]⟩
 
-/-- Let the variable `v u b` determine `b`, and let the exponents `e u` be positive and distinct.
-The determinant of the matrix of the powers `X (v u b) ^ e u` is a signed sum of distinct
-monomials, so it is not zero. -/
-lemma _root_.New.det_X_pow_ne_zero {ι σ R : Type*} [Fintype ι] [DecidableEq ι] [CommRing R]
-    [Nontrivial R] {v : ι → ι → σ} (hv_index : ∀ u u' b b' : ι, v u b = v u' b' → b = b')
-    {e : ι → ℕ} (he_inj : Function.Injective e) (he_pos : ∀ u : ι, e u ≠ 0) :
-    (of fun u b : ι ↦ (X (v u b) : MvPolynomial σ R) ^ e u).det ≠ 0 := by
-  classical
-  -- `d π` is the exponent of the monomial of the permutation `π`.
-  let d (π : Equiv.Perm ι) : σ →₀ ℕ := ∑ b : ι, Finsupp.single (v (π b) b) (e (π b))
-  have d_apply (π : Equiv.Perm ι) (b : ι) :
-      d π (v b b) = if v (π b) b = v b b then e (π b) else 0 := by
-    simp only [d, Finsupp.finsetSum_apply, Finsupp.single_apply]
-    exact Finset.sum_eq_single b (fun b' _ hb' ↦ ite_eq_right (mt (hv_index (π b') b b' b) hb'))
-      (by simp)
-  have h_distinct (π : Equiv.Perm ι) (hπ : d π = d 1) : π = 1 := by
-    ext b
-    have h_exponent : (if v (π b) b = v b b then e (π b) else 0) = e b := by
-      simpa [d_apply] using DFunLike.congr_fun hπ (v b b)
-    grind [he_inj.eq_iff]
-  have h_coeff : (of fun u b : ι ↦ (X (v u b) : MvPolynomial σ R) ^ e u).det.coeff (d 1) = 1 := by
-    have h_expand : (of fun u b : ι ↦ (X (v u b) : MvPolynomial σ R) ^ e u).det =
-        ∑ π : Equiv.Perm ι, π.sign • monomial (d π) 1 := by
-      simp [det_apply, d, X_pow_eq_monomial, monomial_sum_one]
-    rw [h_expand, coeff_sum, Finset.sum_eq_single 1 (fun π _ hπ ↦ by
-      simp [coeff_monomial, mt (h_distinct π) hπ]) (by simp)]
-    simp
-  exact fun h_zero ↦ by simp [h_zero] at h_coeff
-
 end DeepForms
 
 section Points
@@ -294,10 +265,18 @@ lemma single_mem_lowPowerForms_of_ne_zero {r m : ℕ} (hm : 2 * r + m = k) {L : 
   let M : Matrix (Fin r) (Fin r) (MvPolynomial (Fin k × ZMod N) K) :=
     of fun u b' ↦ X (entryRow hm (b', l), i - J u) ^ T.P ^ J u
   have h_det : M.det ≠ 0 := by
-    have h_inj : Function.Injective fun u : Fin r ↦ T.P ^ J u := fun u u' h_eq ↦
-      Fin.ext (by rw [← hJ_div u, Nat.pow_right_injective hP h_eq, hJ_div u'])
-    refine det_X_pow_ne_zero (fun u u' b₁ b₂ h_var ↦ ?_) h_inj fun u ↦ by positivity
-    simpa [entryRow, Fin.ext_iff] using congrArg Prod.fst h_var
+    -- Sending each variable in row b to t^b produces a Vandermonde matrix on the nodes t^(P^J).
+    let φ := eval₂Hom (Polynomial.C : K →+* Polynomial K)
+      (fun v : Fin k × ZMod N ↦ Polynomial.X ^ (v.1 : ℕ))
+    let t (u : Fin r) : Polynomial K := Polynomial.X ^ T.P ^ J u
+    have ht : Function.Injective t := fun u u' h ↦ Fin.ext (by
+      have he : T.P ^ J u = T.P ^ J u' := by simpa [t] using congrArg Polynomial.natDegree h
+      rw [← hJ_div u, Nat.pow_right_injective hP he, hJ_div u'])
+    have hspec : φ.mapMatrix M = vandermonde t := by
+      ext u a
+      simp [φ, M, t, entryRow, vandermonde_apply, pow_right_comm]
+    intro hz
+    exact (det_vandermonde_ne_zero_iff.2 ht) (by rw [← hspec, ← φ.map_det, hz, map_zero])
   have h_unit : IsUnit (x.mapMatrix M) := by
     rw [isUnit_iff_isUnit_det, ← x.map_det]
     exact ((map_ne_zero_iff x hx).2 h_det).isUnit
