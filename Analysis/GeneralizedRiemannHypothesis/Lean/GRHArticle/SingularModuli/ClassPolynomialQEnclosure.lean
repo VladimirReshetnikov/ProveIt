@@ -225,4 +225,23 @@ theorem quartic68QBox_contains (i : Fin 4) : (quartic68QBox i).Contains
     (RationalComplexBox.contains_real (contains_qRadiusInterval 68 _ (by decide)))
     (contains_phaseBox68 i)
 
+/-- A real q-parameter enclosure for forms with middle coefficient zero
+or equal to the leading coefficient. -/
+def realAxisQBox (D a : ℕ+) (negative : Bool) : RationalComplexBox :=
+  (RationalComplexBox.real (qRadiusInterval D a)).mul
+    (RationalComplexBox.point (if negative then -1 else 1) 0)
+
+theorem realAxisQBox_contains (D a : ℕ+) (hD : (D : ℕ) ≤ 68) (negative : Bool) :
+    (realAxisQBox D a negative).Contains
+      (Function.Periodic.qParam 1 (quadraticPoint D a (if negative then (a : ℤ) else 0))) := by
+  rw [qParam_quadraticPoint_polar]
+  apply RationalComplexBox.contains_mul
+    (RationalComplexBox.contains_real (contains_qRadiusInterval D a hD))
+  cases negative with
+  | false => apply contains_phase_point <;> norm_num
+  | true =>
+    have ha : (a:ℝ) ≠ 0 := by positivity
+    have he : -π * ((a:ℤ):ℝ) / (a:ℝ) = -π := by push_cast; field_simp
+    apply contains_phase_point <;> simp only [if_true] <;> rw [he] <;> norm_num [Real.cos_neg, Real.sin_neg]
+
 end GRHArticle.SingularModuli

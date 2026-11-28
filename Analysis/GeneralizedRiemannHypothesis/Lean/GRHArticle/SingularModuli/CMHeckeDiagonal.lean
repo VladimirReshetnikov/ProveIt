@@ -37,7 +37,9 @@ noncomputable def analyticPrimeHeckePolynomial (p : ℕ+) (z : ℍ) : ℂ[X] :=
 private def modularMatrix (a b c d : ℤ) (h : a * d - b * c = 1) : SL(2, ℤ) :=
   ⟨!![a, b; c, d], by simpa [Matrix.det_fin_two] using h⟩
 
-private theorem modularInvariant_heckeShift_of_form (D p : ℕ+) (f : FormCoefficients)
+/-- A determinant-one matrix certificate exhibiting a prime Hecke translate
+of a quadratic point with the same modular invariant. -/
+theorem modularInvariant_heckeShift_of_form (D p : ℕ+) (f : FormCoefficients)
     (hf : f.b ^ 2 - 4 * (f.a : ℤ) * f.c = -(D : ℤ)) (t : ℕ)
     (a b c d k : ℤ) (hdet : a * d - b * c = 1)
     (h₂ : c = k * (f.a : ℤ))

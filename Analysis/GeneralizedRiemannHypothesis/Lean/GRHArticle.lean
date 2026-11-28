@@ -290,6 +290,8 @@ import GRHArticle.SingularModuli.CMHeckeIntegralDiagonal
 import GRHArticle.SingularModuli.CMHeckeInvariance
 import GRHArticle.SingularModuli.CMHeckePolynomialDescent
 import GRHArticle.SingularModuli.CMPoints
+import GRHArticle.SingularModuli.CMQuadratic64Exact
+import GRHArticle.SingularModuli.CMQuadratic64Forms
 import GRHArticle.SingularModuli.CMQuartic55Identification
 import GRHArticle.SingularModuli.CMQuartic68Exact
 import GRHArticle.SingularModuli.CMQuartic68Identification

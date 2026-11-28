@@ -78,6 +78,8 @@ to place them in the disks, and finite certificates from the
 
 [DyadicFullSupport.lean](GRHArticle/SingularModuli/DyadicFullSupport.lean) proves the exact factorial cutoff at every degree in both infinite families of `smd:thm:dyadic`. At seven, the cutoff is one less than the degree, so a full depth-one disk of distinct conjugates implies maximal minimum support. [FactorialWindowLength.lean](GRHArticle/SingularModuli/FactorialWindowLength.lean) reduces the depth-one interval test for every odd prime to lengths logarithmic in the degree. Applying the dyadic result to every stated singular modulus still requires the class-number and CM disk identifications.
 
+[CMQuadratic64Exact.lean](GRHArticle/SingularModuli/CMQuadratic64Exact.lean) proves the first member of the first dyadic family unconditionally. At discriminant −64 the analytic class polynomial is $X^2-82226316240X-7367066619912$, and each of its two singular moduli has minimum support three over the rationals. The level-17 factorization, both analytic root enclosures, and irreducibility modulo five are checked in Lean.
+
 ## Integer geometric progressions
 
 [Rankin.lean](GRHArticle/ProgressionFree/Rankin.lean) proves that Rankin's
