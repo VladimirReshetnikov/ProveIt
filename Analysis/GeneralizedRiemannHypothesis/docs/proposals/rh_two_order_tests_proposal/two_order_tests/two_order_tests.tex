@@ -1,0 +1,1024 @@
+\documentclass[11pt,a4paper]{article}
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage{lmodern}
+\usepackage[margin=27mm,headheight=14pt]{geometry}
+\usepackage{amsmath,amssymb,amsthm,mathtools}
+\usepackage{booktabs,tabularx,longtable,array}
+\usepackage{enumitem}
+\usepackage{microtype}
+\usepackage{xcolor}
+\usepackage{fancyhdr}
+\usepackage{hyperref}
+\usepackage{bookmark}
+\usepackage{xurl}
+\definecolor{ink}{HTML}{172D43}
+\definecolor{accent}{HTML}{1A6582}
+\hypersetup{colorlinks=true,linkcolor=accent,citecolor=accent,urlcolor=accent,
+ pdftitle={Two order tests instead of primitive polynomial labels},
+ pdfauthor={OpenAI ChatGPT},
+ pdfsubject={A source-audited local simplification of the ProveIt theta-lift proof of Dirichlet GRH}}
+\pagestyle{fancy}
+\fancyhf{}
+\fancyhead[L]{\small Two order tests instead of primitive labels}
+\fancyhead[R]{\small Technical proposal}
+\fancyfoot[C]{\thepage}
+\setlength{\parskip}{4pt}
+\setlength{\parindent}{0pt}
+\setlist{itemsep=3pt,topsep=5pt}
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{corollary}[theorem]{Corollary}
+\theoremstyle{definition}
+\newtheorem{definition}[theorem]{Definition}
+\theoremstyle{remark}
+\newtheorem{remark}[theorem]{Remark}
+\newcommand{\F}{\mathbb F}
+\newcommand{\N}{\mathbb N}
+\newcommand{\ord}{\operatorname{ord}}
+\newcommand{\Norm}{\operatorname{N}}
+\newcommand{\good}{\mathcal S}
+\newcommand{\labels}{\mathcal C}
+\newcommand{\code}[1]{{\small\nolinkurl{#1}}}
+\newcommand{\src}[2]{\href{https://github.com/VladimirReshetnikov/ProveIt/blob/89d12dd40424f1217fd818d84877b3da52396a3b/Analysis/GeneralizedRiemannHypothesis/Lean/grh/src/#1.lean}{#2}}
+\newcommand{\guide}{\href{https://github.com/VladimirReshetnikov/ProveIt/blob/89d12dd40424f1217fd818d84877b3da52396a3b/Analysis/GeneralizedRiemannHypothesis/docs/guide/theta_lifts_and_dirichlet_zeros.tex}{human-readable guide}}
+\newcommand{\proposal}[2]{\href{https://github.com/VladimirReshetnikov/ProveIt/tree/89d12dd40424f1217fd818d84877b3da52396a3b/Analysis/GeneralizedRiemannHypothesis/docs/proposals/#1}{#2}}
+\begin{document}
+\hypersetup{pageanchor=false}
+\begin{titlepage}
+\color{ink}
+\vspace*{12mm}
+{\large SOURCE REVIEW AND A CONCRETE SIMPLIFICATION\par}
+\vspace{8mm}
+{\huge\bfseries Two order tests instead of\\[3pt] primitive polynomial labels\par}
+\vspace{7mm}
+{\Large A local replacement in the theta-lift proof\\ of the Riemann hypothesis and Dirichlet GRH\par}
+\vspace{10mm}
+{\large Review of the supplied ProveIt development\par}
+{\large 27 November 2026\par}
+\vspace{12mm}
+\begin{abstract}
+\noindent
+The finite-field primitive-polynomial condition in the supplied proof is stronger than its
+consumers require. For rank \(r=3^a\), replace a root generating
+\(\F_{q^r}^{\times}\) by a root \(z\) satisfying two order tests,
+\(z^{(q^r-1)/2}\ne1\) and \(z^{(q^r-1)/3}\ne1\), and one explicit subgroup
+exclusion, \(z^{3(q^{r/3}-1)}\ne1\).
+These conditions preserve full Frobenius orbits after every prime-power operation,
+survive the original scalar normalization, and give a common scalar power of sufficient
+order after weakening one internal interface. The resulting irreducible labels number
+exactly \((q^r-3q^{r/3}+2)/(3r)\).
+Consequently one block of residue fields of equal cardinality has bad share at most
+\(f\varepsilon+\exp(-f/(6r))\), replacing the source's
+\(f\varepsilon+\exp(-f/[2r(2r\log q+1)])\).
+This removes the analytic totient estimate from this branch.
+The proposal is distinct from all five existing proposal directories.
+Full mathematical proofs, source anchors, executable exact checks, and a checked
+Lean support file accompany this report. Integration into the complete GRH development
+remains to be done.
+\end{abstract}
+\vfill
+\small
+\textbf{Source snapshot.}
+\code{VladimirReshetnikov/ProveIt}, commit\\
+\code{89d12dd40424f1217fd818d84877b3da52396a3b}.\\[4pt]
+\textbf{Scope of verification.}
+Source-level dependency review and a proved local replacement.
+This report does not claim an independent rebuild or certification of the complete
+original RH/GRH project.
+\end{titlepage}
+\hypersetup{pageanchor=true}
+\pagenumbering{roman}
+\setcounter{tocdepth}{1}
+\tableofcontents
+\newpage
+\pagenumbering{arabic}
+
+\section{Recommendation and scope}
+
+I recommend option (a): simplify the arithmetic input that defines the good finite-field
+types. This changes a small, identifiable mathematical interface while leaving the
+theta-lift, congruence, Selmer, and analytic framework available for reuse.
+The main gain is an exact, constant-density count of usable roots, with a direct proof of
+every property that the subsequent argument needs.
+
+Throughout, \emph{GRH} refers to the Dirichlet-\(L\) statements exported by the supplied
+project. Its \src{Statements}{Statements.lean} explicitly quantifies over all moduli and
+Dirichlet characters; it does not state GRH for arbitrary automorphic \(L\)-functions.
+Its \src{Main}{Main.lean} exports Mathlib's \code{RiemannHypothesis} through
+\code{New.zeta_zeros_on_line New.grh}, as well as related zero-location and nonvanishing
+statements. The source snapshot is pinned so that the proposal can be reviewed against
+unchanging definitions.
+
+The audit inspected the guide, every textual source in the five proposal directories,
+and the source interfaces surrounding the candidate replacement. The checked-out
+\code{src} tree contains 803 Lean files. This is not a line-by-line mathematical
+rederivation of all those files, and I did not rerun their complete build.
+The conclusions below distinguish three kinds of evidence:
+
+\begin{enumerate}
+\item \textbf{Mathematical replacement.} Sections~\ref{sec:theorem}--\ref{sec:counting}
+give proofs of the new finite-field, nonresonance, and weighted-count assertions.
+\item \textbf{Source compatibility.} Sections~\ref{sec:uses} and \ref{sec:integration}
+identify the exact consumers of primitivity, including the one order-divisibility
+field that must change.
+\item \textbf{Machine checks.} The archive contains independent exact finite-group
+checks and standalone Lean support. Their scope is narrower than a complete
+integration; see Section~\ref{sec:verification}.
+\end{enumerate}
+
+In particular, the existing unimported \code{Challenge.lean} contains intentional
+comparison placeholders. Their presence is not evidence of a hole in the import
+closure of the exported theorem. Conversely, reading the exported declaration alone
+does not independently certify its entire dependency closure.
+
+\subsection{What improves, quantitatively}
+
+Let \(q\) be the residue-field cardinality in one block, \(r\) the rank, \(f\) the number
+of factors in that block, \(M\) the original tame-character order, and
+\[
+  \varepsilon=\frac{1+M+2r}{q},\qquad 1<r<q.
+\]
+The source's regular-representation projector calculation has two error terms:
+the cost \(f\varepsilon\) of forbidden labels and the cost of having no sufficiently
+strong witness among the \(f\) factors. Only the latter changes.
+
+\begin{center}
+\begin{tabularx}{\textwidth}{@{}lXX@{}}
+\toprule
+ & Inspected source & Proposed replacement\\
+\midrule
+Witness root & Generator of \(\F_{q^r}^{\times}\) & Two order tests and one subgroup exclusion\\
+Witness polynomials & \(\varphi(q^r-1)/r\) & \((q^r-3q^{r/3}+2)/(3r)\)\\
+Uniform usable exponent & \(1/[2r(2r\log q+1)]\) & At least \(1/(6r)\)\\
+Sufficient \(f\) for tail \(e^{-L}\) & \(2r(2r\log q+1)L\) & \(6rL\)\\
+\bottomrule
+\end{tabularx}
+\end{center}
+
+The table compares sufficient bounds in the same counting argument.
+It does not say that actual primitive-label density is as small as the source's lower
+bound, or that the complete proof becomes faster by the ratio of the two bounds.
+For fixed \(r,q\), the exact new exponent in \eqref{eq:uexact} is better than the
+simple \(1/(6r)\) estimate.
+
+\section{Where this sits in the original argument}
+\label{sec:architecture}
+
+The source organizes the proof around a comparison between an upper bound obtained
+from short integral forms and a lower bound obtained from a corrected chain
+covolume. The following description tracks the mathematical interfaces relevant
+to the proposed change rather than enumerating every supporting theory.
+
+\subsection{The common inequality}
+
+The theorem \code{star_inequality} in
+\src{New/Reduction/MainInequality}{New/Reduction/MainInequality.lean}
+combines three inputs:
+
+\begin{enumerate}
+\item short integral source forms, with their index and height costs controlled;
+\item sufficiently many translates to occupy almost all of the required target;
+\item a lower bound for the target's corrected covolume, obtained from chains of
+theta lifts and arithmetic control of their projection denominators.
+\end{enumerate}
+
+In the source's notation, the resulting comparison has the form
+\[
+      m\,\mathcal R \le f a(\log b)^5 .
+\]
+Here \(\mathcal R\) is the relevant difference of smoothed prime remainders, \(m\)
+is the chain length, and the remaining letters encode the admissible scale.
+The exact statement, including all data hypotheses, remains the source theorem.
+The present proposal changes one input to the good target projection; it does not
+replace this comparison.
+
+The source then chooses admissible data to derive the eventual one-sided bound
+\[
+             R_{q_0,d}(x)\le x^{-1/2+\epsilon}
+\]
+for a fixed auxiliary quadratic twist \(d\).
+The zero criterion chooses a twist that leaves a hypothetical zero visible and
+uses a Landau-type sign argument. The functional equation gives the other half
+of the critical strip. See
+\src{New/Reduction/OneSidedBound}{OneSidedBound.lean},
+\src{New/Reduction/Zeros/Criterion}{Zeros/Criterion.lean}, and
+\src{New/Main}{New/Main.lean}.
+
+\subsection{Why local labels matter to both sides}
+
+At a split level place with residue field \(\F_q\), a label is a monic squarefree
+polynomial of degree \(r\) with nonzero constant term. The finite-group
+representation theory associates an idempotent to such a label. A tuple of labels
+defines a tensor idempotent; summing over good tuples defines the chosen target
+projection.
+
+There are two distinct requirements on a good tuple:
+
+\begin{enumerate}
+\item Every entry must be \emph{allowed}: it has no root in the base field whose
+\(M\)-th power is \(1\), in addition to being a label. This is what annihilates the
+weighted hyperplane averages used to eliminate unwanted contributions.
+\item At least one entry in each of the two level-prime blocks must provide a
+strong witness. The current definition asks for a primitive polynomial.
+\end{enumerate}
+
+Irreducibility of the witness supplies the cuspidal local test needed for trace
+comparison across signatures. The same witness subsequently provides an integral
+Galois-image statement: after removing the primary part at any coefficient
+prime, its Frobenius orbit still has size \(r\). Distinct residual eigenvalues give
+unit Vandermonde determinants, so the tame pair spans the full matrix algebra
+integrally. Finally, a common power of those eigenvalues must have enough order
+to stay separated from \(1\) after certain bounded powers.
+These roles are explained in the \guide{} and implemented in
+\src{New/UpperBound/Objects/LabelsAndIndexTypes}{LabelsAndIndexTypes.lean},
+\src{New/Spanning/Multiplicities/EqualMultiplicities}{EqualMultiplicities.lean},
+and \src{New/Congruences/GaloisRepresentations/RowsAndColumnsFromLabels}{RowsAndColumnsFromLabels.lean}.
+
+This is why simply replacing \emph{primitive} by \emph{irreducible} would be invalid.
+It would preserve the trace-comparison input while losing the arithmetic one.
+The replacement below explicitly preserves both.
+
+\section{Non-overlap with the existing proposals}
+
+The exclusion audit covers all 20 textual proposal sources, including subsidiary
+TeX files, READMEs, implementation plans, a Lean supplement, and future-work sections.
+The archive records their paths and SHA-256 hashes in
+\code{provenance/proposal_inventory.csv}.
+
+\begin{center}
+\begin{tabularx}{\textwidth}{@{}p{.31\textwidth}X@{}}
+\toprule
+Existing directory & Proposals treated as already available\\
+\midrule
+\proposal{centered_theta_lift_simplification}{Centered theta-lift simplification}
+& Centered covariance, adaptive spanning, actual completion cost, random
+projection products; future rank--height budgets and partial-volume approaches.\\
+\proposal{proof_simplifications}{Proof simplifications}
+& Direct spanning on the ramified source, Fourier or large-sieve twist selection,
+and direct far-cutoff Perron estimates.\\
+\proposal{rh-simplifications}{RH simplifications}
+& Sharper rank recurrence and its abstract obstruction, quadratic large sieve,
+finite torsion interpolation, and endpoint simplifications.\\
+\proposal{rh_sparse_theta_proof}{Sparse theta proof}
+& Reciprocal convexity, sparse cutoffs, local averaging, Gaussian twist
+selection, favorable auxiliary-prime families, and shared blockwise data.\\
+\proposal{shorter-theta-lift-proof}{Shorter theta-lift proof}
+& A combined shorter route through twist selection, spanning, prime
+asymptotics, and cutoff interpolation.\\
+\bottomrule
+\end{tabularx}
+\end{center}
+
+None of these changes the primitive-polynomial witness condition, replaces its
+finite-field count, or weakens the common-root-order interface below. In particular,
+favorable auxiliary \emph{quadratic} primes \(d\) are different from the residue-field
+labels at the two already chosen level primes.
+
+The proposal therefore remains useful if all the existing proposals are implemented:
+their spanning and analytic improvements still need sufficiently many admissible
+local types and the Galois properties of those types. This is a claim of
+non-overlap with the supplied proposal directory, not a claim that the finite-field
+observations are unprecedented in the mathematical literature.
+
+\section{The exact interface currently supplied by primitivity}
+\label{sec:uses}
+
+The source predicate \code{IsPrimitivePolynomial r c} packages a label, its
+irreducibility, and a root of multiplicative order \(q^r-1\). A direct search finds
+this predicate in exactly six source files, listed in
+Section~\ref{sec:integration}. A related generic orbit lemma lives in
+\code{Lib/LocalGL/Green/LabelCharacters.lean}.
+
+The substantive consumer is the structure \code{IsCommonRootPower}. In mathematical
+notation it asks for an exponent \(e\) and a scalar \(y\) such that:
+
+\begin{enumerate}[label=(\roman*)]
+\item every root \(\xi\) of the normalized type polynomial has \(\xi^e=y\);
+\item every root is fixed by the \(q^r\)-power map;
+\item for each prime \(\ell\) under consideration and every \(u\ge0\), the
+conjugates \((\xi^{q^a})^{\ell^u}\), \(0\le a<r\), remain distinct;
+\item if \(y^x=1\), then \(M\mid jx\), where \(j\) is one of the source's
+bounded twist powers.
+\end{enumerate}
+
+The new finite-field condition supplies (i)--(iii) directly. For (iv), it supplies
+divisibility by a fixed \(2,3\)-smooth order that is sufficient for the sole
+downstream use. Section~\ref{sec:order} proves that weakening explicitly.
+It would be incorrect to retain the old field and claim that the new roots
+always supply the full \(M\)-divisibility.
+
+Scalar normalization matters as well. The original proof rescales roots by a
+base-field scalar \(c\) with \(c^M=1\), using the congruence \(M^2\mid q-1\).
+The new witness family is stable under this exact normalization. The actual \(M\)
+and the congruence are retained.
+
+\section{A replacement finite-field theorem}
+\label{sec:theorem}
+
+Let \(q\) be a prime power, let \(r=3^a\) with \(a\ge1\), let \(M\) be a
+positive integer, and assume
+\begin{equation}
+       6\mid M,\qquad M^2\mid q-1 .
+       \label{eq:hyp}
+\end{equation}
+These hold for the source parameters: \(M=q_2(s)=(q_0d)^{s+6}\),
+\(18480\mid q_0\), and the level primes are \(1\) modulo \(M^2\).
+See \src{New/Reduction/Data/FieldsAndPlaces}{FieldsAndPlaces.lean},
+\src{New/Reduction/Data/AdmissibleData}{AdmissibleData.lean}, and
+\src{New/Reduction/Data/Magnitudes}{Magnitudes.lean}.
+
+Put
+\begin{equation}
+ E=\F_{q^r},\quad
+ A=q^{r/3},\quad
+ N=q^r-1=A^3-1,\quad
+ h=3(A-1),\quad
+ K=\frac{A^2+A+1}{3}.
+ \label{eq:defs}
+\end{equation}
+Thus \(N=hK\). The integer \(K\) is well defined because \(q\equiv1\pmod3\).
+The letter \(M\) here denotes the source's tame order \(q_2\), not a product of
+level primes; this avoids a possible conflict with notation elsewhere in the guide.
+
+\begin{definition}
+Define the selected-root set
+\begin{equation}
+ \good_{q,r}=
+ \left\{z\in E^\times:
+      z^{N/2}\ne1,\quad z^{N/3}\ne1,\quad z^h\ne1
+ \right\}.
+ \label{eq:selection}
+\end{equation}
+Let \(\labels_{q,r}\) be the set of monic irreducible degree-\(r\) polynomials
+over \(\F_q\) whose roots belong to \(\good_{q,r}\).
+\end{definition}
+
+The first two tests retain the full \(2\)-primary and \(3\)-primary components of
+the root's order. The last excludes the subgroup
+\[
+ H=\{z\in E^\times:z^3\in\F_A^\times\}
+   =\{z:z^{3(A-1)}=1\},
+\]
+which has order \(h\). The predicate itself does not depend on all prime factors
+of \(M\).
+
+\begin{theorem}[Replacement labels]
+\label{thm:main}
+Under \eqref{eq:hyp}, the following assertions hold.
+\begin{enumerate}[label=(\alph*)]
+\item For every \(z\in\good_{q,r}\), every prime \(\ell\), and every \(u\ge0\),
+the element \(z^{\ell^u}\) has degree \(r\) over \(\F_q\).
+\item The set \(\good_{q,r}\) is stable under Frobenius and under multiplication
+by every \(c\in\F_q^\times\) with \(c^M=1\).
+\item With
+\[
+             e=\frac{q^r-1}{q-1},\qquad y=z^e\in\F_q^\times,
+\]
+every Frobenius conjugate \(\xi\) of \(z\) satisfies \(\xi^e=y\).
+For \(p=2,3\), the \(p\)-part of \(\ord(y)\) equals the \(p\)-part of \(q-1\).
+In particular, if \(C\mid M\) and every prime factor of \(C\) is \(2\) or \(3\),
+then \(C^2\mid\ord(y)\).
+\item The exact counts are
+\begin{align}
+    |\good_{q,r}|&=\frac{q^r-3q^{r/3}+2}{3},\label{eq:rootcount}\\
+    |\labels_{q,r}|&=\frac{q^r-3q^{r/3}+2}{3r}.\label{eq:labelcount}
+\end{align}
+Every primitive degree-\(r\) polynomial is in \(\labels_{q,r}\).
+\end{enumerate}
+\end{theorem}
+
+\subsection{Elementary arithmetic of the excluded subgroup}
+
+Write \(A=1+3v\). Then
+\begin{equation}
+       K=1+3v+3v^2\equiv1\pmod3 .
+       \label{eq:kmod3}
+\end{equation}
+Since \(q\) is odd, \(A\) is odd; \(A^2+A+1\), and hence \(K\), is odd.
+Thus \(\gcd(K,6)=1\). Also \(6\mid h\), and \(h\mid N\).
+One can note the stronger congruence
+\[
+ K=1+(A-1)\frac{A+2}{3}\equiv1\pmod{q-1},
+\]
+because \(q-1\mid A-1\) and \(3\mid A+2\). Only \(\gcd(K,6)=1\)
+is needed for the fixed two-test count.
+
+\subsection{Full degree after every prime-power operation}
+
+For \(z\in\good_{q,r}\), set \(w=z^{A-1}\).
+Then
+\begin{equation}
+       w^{3K}=1,\qquad w^K=z^{N/3}\ne1,\qquad w^3=z^h\ne1.
+       \label{eq:w}
+\end{equation}
+Let \(d_w=\ord(w)\). It divides \(3K\). Since \(3\nmid K\), the
+condition \(w^K\ne1\) forces \(3\mid d_w\), with exactly one factor \(3\).
+The condition \(w^3\ne1\) then forces \(d_w\) to have a prime factor other than
+\(3\). Therefore \(d_w\) cannot divide a power of any single prime.
+In particular,
+\begin{equation}
+                     w^{\ell^u}\ne1
+                     \quad\text{for all primes \(\ell\) and \(u\ge0\)}.
+                     \label{eq:nokill}
+\end{equation}
+
+Every proper intermediate field of \(E/\F_q\), where \(E=\F_{q^{3^a}}\), is
+contained in its unique maximal proper intermediate field
+\(\F_A=\F_{q^{3^{a-1}}}\). If \(z^{\ell^u}\) belonged to that
+subfield, its \((A-1)\)-th power would be \(1\), contradicting \eqref{eq:nokill}.
+It therefore has degree \(r\). This proves part (a), including ordinary
+irreducibility by taking \(u=0\).
+
+Equivalently, choose a generator \(g\) of \(E^\times\) and write \(z=g^k\).
+The tests say
+\begin{equation}
+                     \gcd(k,6)=1,\qquad K\nmid k.
+                     \label{eq:kselection}
+\end{equation}
+Membership of \(z^{\ell^u}\) in \(\F_A^\times\) would say
+\(3K\mid k\ell^u\). For \(\ell\ne3\), the factor \(3\) already makes this
+impossible. For \(\ell=3\), coprimality of \(K\) and \(3\) contradicts
+\(K\nmid k\). This is a second, purely cyclic-group proof of the same assertion.
+
+The condition needed in Lean is slightly more explicit than a degree assertion:
+the map
+\[
+    a\longmapsto (z^{q^a})^{\ell^u},\qquad 0\le a<r
+\]
+must be injective. The degree assertion is exactly the assertion that the
+Frobenius orbit of \(z^{\ell^u}\) has size \(r\), so it gives this injectivity.
+Frobenius stability then gives the same assertion for every root of the minimal
+polynomial, not just the root used to define it.
+
+\subsection{Common power and the order that survives}
+
+The norm exponent is \(e=1+q+\cdots+q^{r-1}=N/(q-1)\).
+The element \(y=z^e\) is in \(\F_q^\times\). Consequently,
+\[
+       (z^{q^i})^e=y^{q^i}=y
+       \qquad(0\le i<r).
+\]
+This is a common power of all roots; it does not require a primitive root.
+It is also their product, so it agrees with the scalar chosen by the original
+common-root-power proof. There is no sign adjustment.
+
+For \(p=2,3\),
+\[
+             y^{(q-1)/p}=z^{N/p}\ne1.
+\]
+In a cyclic group of order \(q-1\), this means that the \(p\)-adic valuation of
+\(\ord(y)\) is exactly that of \(q-1\).
+Because \(M^2\mid q-1\), every \(2,3\)-smooth \(C\mid M\) has
+\(C^2\mid\ord(y)\). This proves (c).
+
+It is essential to restrict this last conclusion to \(2,3\)-smooth \(C\).
+For example, at \(q=1801\), \(M=30\), a selected root can have norm order \(72\),
+which has no factor \(5\). The statement \(M\mid\ord(y)\) would be false there.
+
+\subsection{Stability under normalization}
+
+Let \(c\in\F_q^\times\) with \(c^M=1\).
+For \(p=2,3\), the hypotheses \(p\mid M\) and \(M^2\mid q-1\) imply
+\[
+                  M\mid\frac{q-1}{p}\mid\frac{N}{p}.
+\]
+Thus \(c^{N/p}=1\), and
+\((cz)^{N/p}=z^{N/p}\ne1\).
+Also \(q-1\mid A-1\), so \(c^h=1\) and
+\((cz)^h=z^h\ne1\).
+All three tests survive.
+
+Frobenius preserves the tests because its action on \(E^\times\) is an
+automorphism. This proves (b). Under polynomial root scaling, monicity and degree
+are restored by the usual normalized polynomial, and irreducibility is preserved
+by the invertible base-field substitution. These are exactly the facts needed by
+the source's \code{scaleRoots} operation.
+
+\subsection{Exact counting}
+
+With \(z=g^k\), the first two tests exclude exponents divisible by \(2\) or \(3\).
+Exactly \(N/3\) of the residues modulo \(N\) remain. The excluded subgroup \(H\)
+consists of exponents \(k=Kt\), \(0\le t<h\).
+Since \(\gcd(K,6)=1\), precisely \(h/3\) of these pass the first two tests.
+Subtracting gives
+\[
+       |\good_{q,r}|=\frac{N-h}{3}
+       =\frac{q^r-3q^{r/3}+2}{3}.
+\]
+By part (a), every Frobenius orbit in this set has length \(r\). Such orbits
+correspond bijectively to monic irreducible degree-\(r\) polynomials, proving
+\eqref{eq:labelcount}.
+
+A generator \(g^k\) has \(\gcd(k,N)=1\). Since \(6\mid N\) and \(K>1\)
+divides \(N\), it passes \eqref{eq:kselection}. Thus all original primitive labels
+are retained. The inclusion is sometimes strict, but need not be strict for
+every \(q,r\).
+
+\section{Why two surviving order components are sufficient}
+\label{sec:order}
+
+The source's local scalar-order hypothesis is used to rule out an equality
+\[
+                       y^{\ell^b t}=1
+\]
+where \(\ell\) is the coefficient prime, \(1\le j\le m\),
+\(1\le t\le4r+2\), and the scale hypotheses ensure
+\begin{equation}
+                         0<jt<2^s .
+                         \label{eq:small}
+\end{equation}
+The relevant helper is \code{not_q2_dvd_mul_pow_mul} (with a subscript \(2\)
+in the actual Lean name) in
+\src{New/Congruences/GaloisRepresentations/RowsAndColumnsFromLabels}{RowsAndColumnsFromLabels.lean}.
+Its original proof chooses \(2\) or \(5\) to obtain a prime different from \(\ell\).
+Choosing \(2\) or \(3\) gives the following elementary replacement.
+
+\begin{lemma}[Two-prime nonresonance]
+\label{lem:nonresonance}
+Let \(\ell\) be prime, and let \(j,t,s,b\) be nonnegative integers with
+\(0<jt<2^s\). Then
+\[
+                     6^s\nmid j\ell^b t.
+\]
+In particular \(6^{s+6}\nmid j\ell^b t\).
+\end{lemma}
+
+\begin{proof}
+Choose \(p=3\) when \(\ell=2\), and \(p=2\) otherwise. Then \(p\ne\ell\),
+\(p\in\{2,3\}\), and \(p^s\mid6^s\).
+If \(6^s\mid j\ell^b t\), coprimality of \(p^s\) and \(\ell^b\) would imply
+\(p^s\mid jt\). Since \(jt>0\), this gives
+\[
+                     2^s\le p^s\le jt,
+\]
+contradicting \eqref{eq:small}. The final assertion follows from
+\(6^s\mid6^{s+6}\).
+\end{proof}
+
+Now put
+\begin{equation}
+               C=6^{s+6},\qquad M=(q_0d)^{s+6}.
+               \label{eq:orderC}
+\end{equation}
+Since \(6\mid q_0d\), we have \(C\mid M\).
+Theorem~\ref{thm:main}(c) gives \(C^2\mid\ord(y)\), and therefore
+\[
+                       y^x=1\ \Longrightarrow\ C\mid x
+                       \ \Longrightarrow\ C\mid jx .
+\]
+Combining this with Lemma~\ref{lem:nonresonance} yields the same exclusion
+\(y^{\ell^b t}\ne1\) that the Galois-image argument consumes.
+
+\subsection{The required source edit}
+
+Change just the final field of the internal common-root-power interface from
+\[
+        y^x=1\ \Longrightarrow\ q_2(s)\mid jx
+        \quad\hbox{to}\quad
+        y^x=1\ \Longrightarrow\ 6^{s+6}\mid jx .
+\]
+Its only downstream field use in the pinned file is in the proof of the
+scalar-inertia separation, where it is passed to the old nondivisibility helper.
+Replace that call by the two-prime helper.
+The ultimate \code{IsMainSummandLike} conclusion is unchanged.
+
+There is a separate rank-one branch with polynomial \(X-1\).
+That branch already supplies the stronger \(M\mid jx\), so it supplies the
+weakened field by \(C\mid M\). It does not have to satisfy the degree-\(3^a\)
+selected-root predicate.
+
+The numbers \(2\) and \(3\) used in this lemma are \emph{order tests}.
+They are not replacements for the two actual level primes \(p_0,p_1\).
+Both actual level-prime blocks remain necessary: for any coefficient prime \(\ell\),
+one of them is away from \(\ell\), and the proof takes its witness there.
+The original \(M\) remains in the tame character and in the forbidden-root condition.
+
+\section{The improved weighted projector estimate}
+\label{sec:counting}
+
+The exact source comparison is in
+\src{New/Spanning/MainTerm/BadTypes}{New/Spanning/MainTerm/BadTypes.lean}.
+For \(1<r<q\), every label contributes at least
+\[
+                         w_q=\frac{1-r/q}{q^r}
+\]
+to the coefficient at the identity of its idempotent. This coefficient is the
+regular-representation dimension share. It is not the uniform probability
+measure on all irreducible representations.
+
+\subsection{Bound the complement, not just the witness mass}
+
+Let \(B_q=|\labels_{q,r}|\). Among all \(q^r\) monic degree-\(r\) polynomials,
+the uniform weight of the nonselected ones is
+\begin{align}
+    (q^r-B_q)w_q
+       &\le \frac{q^r-B_q}{q^r}\notag\\
+       &=1-\frac{B_q}{q^r}
+        \le \exp\left(-\frac{B_q}{q^r}\right).
+        \label{eq:complement}
+\end{align}
+Thus the useful exponent is
+\begin{equation}
+       u_q=\frac{B_q}{q^r}
+          =\frac{1}{3r}
+             \left(1-3q^{-2r/3}+2q^{-r}\right).
+       \label{eq:uexact}
+\end{equation}
+There is no further loss of \(1-r/q\) in this exponent:
+\eqref{eq:complement} bounds the weighted \emph{complement} from above,
+exactly as the original \code{card_not_primitive_mul_le} does.
+
+For \(A=q^{r/3}\ge2\),
+\[
+     A^3-3A+2\ge\tfrac12 A^3,
+\]
+because
+\[
+     A^3-6A+4=(A-2)(A^2+2A-2)\ge0.
+\]
+Consequently
+\begin{equation}
+                         u_q\ge\frac{1}{6r}.
+                         \label{eq:usimple}
+\end{equation}
+The actual source has much larger \(A\); the simple bound deliberately
+avoids optimizing an unimportant constant.
+
+\subsection{The tuple argument}
+
+Let there be \(f\) fields of cardinality \(q\), with the same rank \(r\).
+The allowed-label counting lemma is retained:
+if \(0\le\varepsilon\le1\) and
+\((1+M+2r)/q\le\varepsilon\), the uniform weight of allowed labels in each
+coordinate is at least \(1-\varepsilon\).
+
+Define a new good tuple to have all entries allowed and at least one entry in
+\(\labels_{q,r}\). The weighted count of all-allowed tuples is at least
+\((1-\varepsilon)^f\). The weighted count of tuples with no selected entry is
+at most \(e^{-fu_q}\). Subtracting this latter bound and using the lower
+idempotent weight coordinate by coordinate gives
+\[
+        \operatorname{coeff}_1(e_{\mathrm{good}})
+                 \ge(1-\varepsilon)^f-e^{-fu_q}.
+\]
+All coefficients in this comparison are real, or are read as real parts as in
+the source. Bernoulli's inequality now yields
+\begin{equation}
+       \operatorname{coeff}_1(1-e_{\mathrm{good}})
+          \le f\varepsilon+e^{-fu_q}
+          \le f\varepsilon+e^{-f/(6r)}.
+       \label{eq:bad}
+\end{equation}
+
+The selected labels are themselves allowed, since they are irreducible of degree
+\(r>1\) and hence have no roots in the base field. The counting proof also works
+without needing to exploit this inclusion: it is the same allowed-tuples-minus-
+nonwitness-tuples cover already used by the source.
+
+\subsection{Comparison with the inspected bound}
+
+The original lemma counts primitive polynomials and applies
+\[
+                   n\le\varphi(n)(2\log n+1).
+\]
+It obtains exponent \(1/[2r(2r\log q+1)]\).
+To force a one-block tail at most \(e^{-L}\), it suffices now that
+\[
+                         f\ge6rL,
+\]
+where previously the displayed sufficient condition was
+\[
+                         f\ge2r(2r\log q+1)L.
+\]
+The ratio of these sufficient thresholds is \((2r\log q+1)/3\).
+For the source's \(L=9\log b\), the new local threshold is
+\(f\ge54r\log b\).
+
+The actual projector uses both level primes. If each block has \(f\) factors,
+with errors \(\varepsilon_0,\varepsilon_1\), a combined bound is
+\begin{equation}
+       f(\varepsilon_0+\varepsilon_1)+2e^{-f/(6r)}.
+       \label{eq:twoblock}
+\end{equation}
+The source budgets \(b^{-8}/2\) separately for each block before combining them,
+so retaining that bookkeeping preserves its total \(b^{-8}\) allowance.
+If one instead specifies a single combined exponential allowance \(e^{-L}\),
+use \(f\ge6r(L+\log2)\).
+
+The group-algebra estimate becomes an estimate on the actual automorphic vectors
+through the source's unfolded moment calculation. It does not bound the lost
+dimension in every arbitrary representation. That transfer remains part of
+\src{New/Spanning/SecondMoment/SpanningTheorem}{SpanningTheorem.lean}.
+
+\section{Concrete examples and failure modes}
+\label{sec:examples}
+
+The examples use exponent coordinates in the cyclic group \(\F_{q^r}^\times\).
+If \(g\) is a generator and \(z=g^k\), then
+\[
+       \ord(z)=\frac{q^r-1}{\gcd(k,q^r-1)},\qquad
+       \ord(\Norm(z))=\frac{q-1}{\gcd(k,q-1)}.
+\]
+These formulas make all the following computations exact.
+
+\subsection{A strictly larger family}
+
+Take \(q=37\), \(r=3\), and \(M=6\). Then
+\[
+       N=50652,\quad h=108,\quad K=469.
+\]
+The root \(g^7\) is selected: \(\gcd(7,6)=1\), and \(469\nmid7\).
+It has order \(7236\), so it is not primitive, while its norm has order \(36\).
+Its \(w=z^{36}\) has order \(201=3\cdot67\); removal of either prime-primary
+component leaves the other obstruction to falling into the base field.
+The old primitive-label count is \(4752\), whereas the new count is \(5616\).
+
+\begin{center}
+\begin{tabular}{@{}rrrrr@{}}
+\toprule
+\(q\) & \(r\) & \(M\) & Primitive labels & Selected labels\\
+\midrule
+37 & 3 & 6 & 4,752 & 5,616\\
+73 & 3 & 6 & 43,200 & 43,200\\
+109 & 3 & 6 & 123,120 & 143,856\\
+1801 & 3 & 30 & 445,080,960 & 649,080,000\\
+\bottomrule
+\end{tabular}
+\end{center}
+
+The equality at \(q=73\) illustrates why strict enlargement should not be asserted
+uniformly. The exact count and its simple lower bound are the useful uniform facts.
+The last row is calculated by exact integer formulas, not exhaustive enumeration.
+
+\subsection{Primitive norm does not suffice}
+
+Continue with \(q=37\), \(r=3\), \(M=6\), but take \(z=g^{469}\).
+Its norm has order \(36\), so it is primitive in \(\F_{37}^{\times}\).
+The root itself has order \(108\) and degree \(3\). However,
+\[
+                        \ord(z^3)=36,
+\]
+so \(z^3\in\F_{37}\). The two order tests pass, but \(z^h=1\).
+This is a counterexample under the full hypotheses \(6\mid M\), \(M^2\mid q-1\)
+to dropping the subgroup exclusion.
+
+\subsection{Full \texorpdfstring{\(M\)}{M}-order need not survive}
+
+Take \(q=1801\), \(r=3\), \(M=30\). Then \(M^2=900\mid1800=q-1\).
+The root \(g^{25}\) is selected and its norm has order \(72\).
+That norm retains the full \(2\)-part \(8\) and the full \(3\)-part \(9\)
+of \(1800\), but it has no factor \(5\).
+This both demonstrates a larger family than the conservative condition retaining
+every prime dividing \(M\) and explains why the internal order field
+must actually be weakened.
+
+\subsection{What the square divisibility is doing}
+
+The assumption \(M^2\mid q-1\) makes multiplication by an \(M\)-torsion scalar
+invisible to the two order tests. Merely \(M\mid q-1\) is insufficient in general.
+For instance, in the exponent model at \(q=7,r=3,M=6\), adding the exponent
+\(N/M=57\) of such a scalar changes \(k=1\) into \(58\), which is even and
+fails the \(2\)-test. The source already has the needed square divisibility;
+this proposal retains it.
+
+\clearpage
+\section{Implementation map}
+\label{sec:integration}
+
+The change should be implemented through a fresh predicate and a narrow API.
+The new polynomials do not satisfy the old definition of primitive polynomial.
+Keep \code{IsPrimitivePolynomial} as a useful existing notion; use a new
+predicate, for example \code{IsTwoTestPolynomial}, for the enlarged family.
+All names suggested here are proposed API names, not claims that declarations
+with these names already exist in the repository.
+
+\subsection{The six direct source files}
+
+\begin{longtable}{@{}>{\raggedright\arraybackslash}p{.39\textwidth}>{\raggedright\arraybackslash}p{.56\textwidth}@{}}
+\toprule
+File under \code{src/} & Concrete change\\
+\midrule
+\endhead
+\code{New/UpperBound/Objects/}\newline
+\code{LabelsAndIndexTypes.lean}
+& Introduce the selected-label predicate. Prove its label and irreducibility
+projections, scalar stability, common norm power, and surviving \(2,3\)-order.
+Replace the existential primitive witness in good tuples and good tuple
+families. Preserve the allowed-label predicate.\\[5pt]
+\code{New/Spanning/MainTerm/}\newline
+\code{BadTypes.lean}
+& Prove the count \eqref{eq:labelcount}, or its sufficient lower bound.
+Replace \code{card_not_primitive_mul_le} in this branch by
+\eqref{eq:complement}--\eqref{eq:usimple}. Generalize the tuple-count lemma
+to accept a witness family with an exponential complement bound.\\[5pt]
+\code{New/Spanning/Multiplicities/}\newline
+\code{EqualMultiplicities.lean}
+& Replace extraction of a primitive witness by extraction of a selected witness.
+The local cuspidal-test argument uses only labelhood and irreducibility.\\[5pt]
+\code{New/Congruences/}\newline
+\code{GaloisRepresentations/}\newline
+\code{SelmerHypotheses.lean}
+& Replace the full-rank alternative in \code{exists_primitive_or_one}
+by the selected-label predicate. Preserve the \(X-1\) rank-one alternative and
+a witness above each actual level prime.\\[5pt]
+\code{New/Congruences/}\newline
+\code{GaloisRepresentations/}\newline
+\code{AttachedRepresentations.lean}
+& Fill the revised lift-setting field from the new good tuple families.
+The root exclusions and the rank-one construction remain available.\\[5pt]
+\code{New/Congruences/}\newline
+\code{GaloisRepresentations/}\newline
+\code{RowsAndColumnsFromLabels.lean}
+& Build the first three common-root fields from Theorem~\ref{thm:main}.
+Weaken its last field to \(6^{s+6}\mid jx\); use
+Lemma~\ref{lem:nonresonance} at the unique scalar-order consumer.
+Adapt the rank-one wrapper by divisibility.\\
+\bottomrule
+\end{longtable}
+
+In \src{Lib/LocalGL/Green/LabelCharacters}{the Green-character file}, supplement the
+generic lemma \code{injOn_Iio_pow_card_pow_of_isPrimitiveRoot}
+with a weaker-input orbit lemma.
+Its existing minimal-period conclusion is reusable; the replacement proof uses
+\eqref{eq:w} instead of full primitive order.
+
+The source anchors in \code{provenance/source_anchors.tsv} give exact starting lines,
+Git blob identifiers, and SHA-256 hashes at the pinned revision. Text search is
+evidence for locating these interfaces; it is not a substitute for a compiled
+dependency check after the changes.
+
+\subsection{A useful abstraction for the counting layer}
+
+The tuple-count theorem is naturally independent of the witness's definition.
+It can accept a predicate \(W\) on monic degree-\(r\) polynomials with:
+\[
+ W(c)\Longrightarrow\text{\(c\) is a label},\qquad
+ \#\{c:\neg W(c)\}\,w_q\le e^{-u}.
+\]
+Then the same proof yields \(f\varepsilon+e^{-fu}\).
+Instantiating this theorem with primitive polynomials should reproduce the old
+result. Instantiating it with \(\labels_{q,r}\) gives the new result.
+This separates the representation-theoretic bookkeeping from a particular
+finite-field counting device and supplies a direct regression comparison.
+
+For the arithmetic layer, retain a separate semantic theorem:
+selected witnesses produce the common-root-power structure with the weakened
+order field. Enlarging the projector is not justified by monotonicity alone.
+Every added type must satisfy the Galois and congruence hypotheses, and that is
+the purpose of the replacement theorem.
+
+\subsection{A staged integration with clear stopping points}
+
+\begin{enumerate}
+\item Add finite-field lemmas and the selected-label predicate alongside existing
+definitions. Check the inclusion of primitive labels and the small exact examples.
+\item Generalize the weighted tuple lemma and prove the new bound while retaining
+the original projector. At this stage the original final theorems should be untouched.
+\item Generalize the common-root interface, adapt its sole scalar-order consumer,
+and transfer the rank-one branch.
+\item Change the good tuple families and lift-setting witness to the new predicate.
+Rebuild the trace-comparison, Galois-representation, and congruence consumers.
+\item Rebuild the final exported statements. Inspect their printed axiom dependencies
+and the resolved import closure before describing the replacement as fully
+kernel checked.
+\end{enumerate}
+
+This ordering makes failures local and gives each step a concrete comparison with
+the existing development. It also permits keeping the old parameter choices at
+first: the improved local bound fits their already established budgets.
+
+\section{Verification, artifacts, and limitations}
+\label{sec:verification}
+
+\subsection{Exact executable checks}
+
+The Python checks use only the standard library and perform exact integer
+arithmetic in cyclic-group coordinates. For a group element \(g^k\), Frobenius
+orbit length is computed independently as the multiplicative order of \(q\)
+modulo \(\ord(g^k)\), rather than inferred from the proposed theorem.
+For each tested selected root, the checker removes the entire primary component
+at every prime dividing its order. Full degree after that maximal removal implies full
+degree after any smaller power at the same prime.
+
+The final fixed-two-test run reports:
+\[
+\begin{array}{lr}
+\text{exponents inspected} & 1{,}754{,}908\\
+\text{full-primary-removal checks} & 2{,}799{,}874\\
+\text{scalar-scaling checks} & 3{,}610{,}932 .
+\end{array}
+\]
+All checks passed.
+The cases \((q,r,M)=(37,3,6),(73,3,6),(109,3,6)\) are exhaustive.
+Larger deterministic samples cover
+\((37,9,6),(433,3,12),(1801,3,30),(1297,3,36)\).
+The last two explicitly test \(M\)-torsion scaling with extra prime factors or
+higher \(2,3\)-powers. Sampled cases are labeled as sampled in the JSON;
+their total exact counts come from formulas, not enumeration.
+
+The scripts also record the examples and counterexamples from
+Section~\ref{sec:examples}. An earlier, conservative checker retains the full
+primary components at every prime dividing \(M\). It is included because the
+final runner imports its elementary arithmetic helpers. Its stronger norm-order
+conclusion must not be confused with the final two-test conclusion.
+
+\subsection{Lean support}
+
+The file \code{Lean/PowerOrbit.lean} is a standalone supplement using Lean
+4.35.0 and the source project's pinned Mathlib revision
+\code{56a005855ea17e0b0958f73ec801ae140b0a1679}.
+It compiles with exit status \(0\), with no warnings.
+The checked declarations and their axiom printouts are listed in
+\code{Lean/lean_check.log}.
+
+\begin{center}
+\begin{tabularx}{\textwidth}{@{}lX@{}}
+\toprule
+Checked theorem & Formalized assertion\\
+\midrule
+\code{no_prime_power_kills} & A monoid element satisfying \eqref{eq:w},
+with \(\gcd(3,K)=1\), cannot be killed by a prime-power.\\
+\code{six_power_not_dvd} & For prime \(\ell\), \(0<jt<2^s\) implies
+\(6^s\nmid j\ell^u t\).\\
+\code{six_power_add_not_dvd} & The same nondivisibility for \(6^{s+c}\).\\
+\code{power_orbit_injective} & The full \(3\)-power Frobenius-style orbit
+of a root remains injective after an arbitrary prime-power operation,
+under the explicit power hypotheses of the group lemma.\\
+\bottomrule
+\end{tabularx}
+\end{center}
+
+All four printed axiom lists contain only
+\code{propext}, \code{Classical.choice}, and \code{Quot.sound};
+none contains \code{sorryAx}.
+The orbit proof uses Mathlib's minimal-period lemmas, as does the original
+Green-character helper.
+
+This file checks the delicate root-order and Frobenius-regularity ingredients,
+plus scalar nonresonance. It is not a replacement for the six edited source
+files. In particular, the complete finite-field polynomial count,
+normalization API, weighted projector integration, and final RH/GRH import
+closure have not been rebuilt with this change. The mathematical proofs in
+this report cover those proposed bridges; their complete Lean integration
+is a remaining implementation task.
+
+\subsection{What this proposal establishes}
+
+The defensible gain is an elementary replacement for primitive-root selection,
+an exact label count, and an improved local projector estimate. It removes the
+analytic totient lower bound from that counting branch and relaxes the local
+witness requirement. The trace formula, theta-lift volume identities,
+first-order congruence argument, Selmer bounds, and analytic zero criterion
+remain necessary.
+
+A reduction in total field size does not follow automatically. The sparse-place
+construction separately requires a bound of the form
+\[
+                          2l_0(kt+1)<2^s,
+\]
+and several other admissibility inequalities remain. Reoptimizing all parameters
+could be a subsequent task; no global rank, degree, line-count, or runtime
+improvement is claimed here without doing that work.
+
+The exact counts demonstrate that primitivity supplies unnecessary structure.
+The sole-consumer order audit explains why discarding it is compatible with the
+arithmetic mechanism. These two facts together make this a concrete simplification
+candidate, with a small mathematical interface to validate before changing the
+rest of the proof.
+
+\appendix
+\section{Reproducibility and source record}
+
+The archive contains this \TeX{} source, its compiled PDF, a standalone Lean
+supplement and log, two Python checkers and their JSON results, a count comparison
+CSV, the proposal inventory, and the source-anchor manifest.
+The top-level README gives commands to rebuild the PDF and rerun the checks.
+A SHA-256 manifest covers the delivered artifacts.
+
+The repository references throughout the report are immutable links to commit
+\code{89d12dd40424f1217fd818d84877b3da52396a3b}.
+The guide and the source are the primary evidence for descriptions of the supplied
+proof. The new local assertions are proved in this report. The tests serve as
+independent finite checks and regression artifacts, not as evidence that finite
+enumeration proves a statement for all finite fields.
+
+\begin{thebibliography}{9}
+\bibitem{repo}
+V. Reshetnikov, \emph{ProveIt: Generalized Riemann Hypothesis formalization},
+\href{https://github.com/VladimirReshetnikov/ProveIt/tree/89d12dd40424f1217fd818d84877b3da52396a3b/Analysis/GeneralizedRiemannHypothesis/Lean/grh}{pinned Lean source tree},
+commit \code{89d12dd40424f1217fd818d84877b3da52396a3b}.
+\bibitem{guide}
+\emph{Theta lifts and Dirichlet zeros}, \guide{}, same repository revision.
+The local-label and counting sections explain the interfaces audited here.
+\bibitem{proposals}
+\href{https://github.com/VladimirReshetnikov/ProveIt/tree/89d12dd40424f1217fd818d84877b3da52396a3b/Analysis/GeneralizedRiemannHypothesis/docs/proposals}{Existing proposal collection}, same revision.
+Individual paths and hashes appear in the accompanying inventory.
+\bibitem{mathlib}
+The Mathlib Community, \emph{Mathlib},
+\href{https://github.com/leanprover-community/mathlib4/tree/56a005855ea17e0b0958f73ec801ae140b0a1679}{pinned revision}
+\code{56a005855ea17e0b0958f73ec801ae140b0a1679},
+with Lean 4.35.0. Used for the standalone formal checks.
+\end{thebibliography}
+\end{document}

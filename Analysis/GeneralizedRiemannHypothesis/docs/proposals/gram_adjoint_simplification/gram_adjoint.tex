@@ -1,0 +1,276 @@
+\documentclass[11pt]{article}
+\usepackage[T1]{fontenc}
+\usepackage{lmodern,amsmath,amssymb,amsthm,mathtools}
+\usepackage[left=1in,right=1in,top=.93in,bottom=.93in]{geometry}
+\usepackage{microtype,booktabs,tabularx,array}
+\usepackage[hidelinks]{hyperref}
+\usepackage{xcolor}
+\definecolor{inkblue}{RGB}{22,62,94}
+\hypersetup{colorlinks=true,linkcolor=inkblue,urlcolor=inkblue,citecolor=inkblue}
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{proposition}[theorem]{Proposition}
+\theoremstyle{remark}\newtheorem{remark}[theorem]{Remark}
+\newcommand{\C}{\mathbb C}\newcommand{\Z}{\mathbb Z}\newcommand{\Q}{\mathbb Q}
+\newcommand{\abs}[1]{\left|#1\right|}\newcommand{\norm}[1]{\left\|#1\right\|}
+\newcommand{\code}[1]{\texttt{\detokenize{#1}}}
+\newcommand{\base}{https://github.com/VladimirReshetnikov/ProveIt/blob/cdecfeba5d834fbf2f97de71cc7766b58ec4520e/Analysis/GeneralizedRiemannHypothesis/}
+\newcommand{\src}[3]{\href{\base Lean/grh/src/#1.lean\#L#2}{\code{#3}}}
+\newcommand{\A}{\mathcal A}\newcommand{\T}{\mathcal T}\newcommand{\OO}{\mathcal O}
+\title{\vspace{-1.5em}\textbf{The integral adjoint without a tight frame}\\[.45em]\large A Gram-duality simplification of the theta-lift proof of RH and Dirichlet GRH}
+\author{Research note}
+\date{27 November 2026}
+\begin{document}
+\maketitle
+\begin{abstract}
+The lower determinant estimate in the readable Alp\"oge--Claude proof uses a comparison operator $n_{\rm aut}h^2LL^*$, with $L$ a gluing map and $h$ the hook number of a Weyl module. Its proof of integrality and its archimedean bound construct and count a large tight frame of auxiliary forms. We replace this machinery by two duality arguments. The first uses the existing integer Fock-pairing identity $GH=hI$ for the Weyl Gram matrix $G$; it proves that even $n_{\rm aut}hLL^*$ preserves the integral forms. The second is a paired-conjugation norm identity for the adjoint at arbitrary automorphisms of $\C$; it removes the frame count entirely. Both the original operator and the smaller one satisfy the existing comparison-operator contract, including the orthogonality to false lifts and the uniform archimedean bound. Thus the one-lift height estimate, and all subsequent cancellation and zero exclusion, may be kept unchanged. We give proofs at the mathematical level, exact finite regressions, and a source-level integration plan. This is not a compiled Lean refactor.
+\end{abstract}
+\tableofcontents
+\section{Target of the simplification}
+
+The proof derives a one-sided bound for a smoothed prime remainder by comparing divisibility and the archimedean size of a determinant. The upper bound constructs short integral forms; a spanning argument supplies many independent forms; a lower bound recovers the main cost of the $m$ theta lifts. It is essential that the coefficient of the ordinary-direction cost is recovered \emph{exactly}, not approximately. The detailed human-readable guide, Section 12 (source lines 1163--1262), explains this using a comparison operator and the determinant of its compression. We leave the analytic endpoint and all the deep arithmetic inputs intact.
+
+Fix admissible data $D$ and a lift index $j$. Denote the good source forms by $S$, the twisted target by $V_\eta$, the tuple space by $\T$, the lift by $u_\eta:S\to V_\eta$, and the gluing map by $L_\eta:\T\to V_\eta$. Write $n_{\rm aut}=D.\code{chosenGroupOrder}$ and $h=\code{hookNumberMinus}\,j>0$. The tuple space is a finite product of Weyl-coordinate spaces, one for each choice and second-factor class. The stabilizers at the tuple level are trivial, so its metric is a plain sum of identical Weyl Gram metrics. The metric at the target may have rational class weights.
+
+The original comparison operator is
+\[
+ U_\eta=n_{\rm aut}h^2 L_\eta L_\eta^*.
+\]
+It is constructed in \src{New/OneLift/LiftVolumeHeight}{200}{comparisonOp}. The required interface \src{New/OneLift/LiftVolumeHeight}{172}{IsComparisonOperator} has five fields: nonzero Hecke ratio, a common positive comparison form on $S$, orthogonality to false lifts, preservation of integrality away from the twist conductor, and a uniform bound on all conjugate squared norms. Only the last two fields need new proofs; the first three follow from the same period identity and a positive scalar.
+
+\paragraph{Two levels of change.} The conservative refactor preserves $U_\eta$ exactly and changes just the two proofs. The stronger version replaces $h^2$ by $h$, so that
+\begin{equation}\label{eq:newop}
+ \widetilde U_\eta=n_{\rm aut}h L_\eta L_\eta^*.
+\end{equation}
+This is not a new choice of theta data, representation type, Selmer twist, projection, or smoothing. It is a new method for proving the integrality and size of the same comparison construction, based on a matrix identity already present in the library.
+
+\section{Finite-place duality instead of integral frames}
+\subsection{An abstract scaled-adjoint lemma}
+
+Use inner products conjugate-linear in the first argument. Fix a field embedding $\iota:\C\to\C_\ell$ and let $\OO_\iota=\{z:|\iota(z)|\le1\}$. Put $\bar\iota=\iota\circ c$, where $c$ is complex conjugation. The following lemma deliberately does not require the target lattice to be free or self-dual, or the gluing map to be injective.
+
+\begin{lemma}[Integral adjoint by Gram duality]\label{lem:local}
+Let $T,V$ be finite-dimensional Hermitian spaces, $L:T\to V$ linear, and $M_\iota\subset V$, $M_{\bar\iota}\subset V$ modules over their respective valuation rings. Suppose $b_1,\ldots,b_N$ is a complex basis of $T$ with real rational positive definite Gram matrix $G_T=(\langle b_i,b_k\rangle)_{ik}$. Define $T_\iota=\sum_i\OO_\iota b_i$ and $T_{\bar\iota}=\sum_i\OO_{\bar\iota} b_i$. Assume
+\begin{align*}
+ &L b_i\in M_{\bar\iota}\quad\text{for all }i,\qquad L(T_\iota)\subset M_\iota,\\
+ &n\langle v,w\rangle\in\OO_\iota\quad(v\in M_{\bar\iota},\;w\in M_\iota),\\
+ &hG_T^{-1}\in M_N(\OO_\iota),\qquad n,h\in\Z_{>0}.
+\end{align*}
+Then $nhL^*(M_\iota)\subset T_\iota$, and hence $nhLL^*(M_\iota)\subset M_\iota$.
+\end{lemma}
+\begin{proof}
+For $w\in M_\iota$ write $L^*w=\sum_k a_k b_k$. Form the column $p$ whose $i$-th entry is $n\langle Lb_i,w\rangle$. By the pairing assumption, $p\in\OO_\iota^N$. The adjoint identity gives $p=nG_Ta$. Thus
+\[
+ nh a=(hG_T^{-1})p\in\OO_\iota^N.
+\]
+The assertion follows by applying $L$. No orthogonal basis, frame, norm estimate, or cardinal bound is used.
+\end{proof}
+
+Equivalently, if $B:\C^N\to T$ has columns $b_i$ and the usual metric on its domain, then $B^*B=G_T$ and $BG_T^{-1}B^*=I_T$. In coordinates $nhLL^*$ has the expansion
+\[
+ nhLL^*w=\sum_{k,i}(hG_T^{-1})_{ki}\,\bigl(n\langle Lb_i,w\rangle\bigr)Lb_k.
+\]
+The coefficient matrix is integral. This formula is useful if the formalization prefers sums to inverse matrices. In fact it suffices to exhibit an integer matrix $H_T$ with $G_TH_T=hI$, because invertibility then gives $H_TG_T=hI$ as well. No inverse need be constructed in Lean.
+
+\subsection{The hook number occurs only once}
+
+Let $G=\code{weylGram}$ be the integer symmetric positive definite matrix of the Weyl-coordinate space, and let $b_i(X)$ be the standard minor-product polynomials (\code{nablaBasis}). The integer Fock matrix has entries
+\[
+ H_{ik}=b_i(\partial)b_k(X)\big|_{X=0}.
+\]
+The crucial identity is already a theorem of the library:
+\begin{equation}\label{eq:fock}
+ GH=hI.
+\end{equation}
+See \src{Lib/GLn/SchurModule/GramMatrix}{101}{weylGram_mul_fockPairing}. The source proves it by identifying two equivariant pairings and evaluating their scalar on a permutation-array kernel. Thus $hG^{-1}=H$ is integral over \emph{every} valuation ring, and the dual-lattice exponent divides $h$. This is stronger than the $h^2G^{-1}$ integrality one would obtain by multiplying out the existing tight-frame identity.
+
+For example, the symmetric-square kernel $(X_1Y_1+X_2Y_2)^2$, in the monomial basis $(X_1^2,X_1X_2,X_2^2)$, has
+\[
+ G=\operatorname{diag}(1,2,1),\quad H=\operatorname{diag}(2,1,2),\quad h=2.
+\]
+One factor $h$ really can be necessary: take $L=(0,1,0)$ with standard target metric. Then $LL^*=1/2$, so the unscaled operator is not integral at 2, while $hLL^*=1$. If the target metric is $1/3$ and $n=3$, then $LL^*=1/6$; dropping either of $n$ and $h$ fails integrality at a prime. These models do not depend on an automorphic example; they demonstrate the algebraic obstruction.
+
+\subsection{Local bases of actual form tuples}\label{sec:bases}
+
+We now check the local hypotheses in the source rather than assume self-duality of the tuple lattice. Let $q=(i,a)$ range over the pairs of choices $i$ and second-factor classes $a$ (the index of \code{FormTuples}). At a fixed prime $\ell$ choose rational unitary elements $\delta_a$ with
+\[
+ \operatorname{embFin}(\delta_a)a.\mathrm{out}\quad\text{integral above }\ell.
+\]
+This is the same representative-selection step at lines 413--419 of \src{New/OneLift/LiftVolumeHeight}{407}{comparisonOp_mem_integralForms}, using \code{exists_mul_mem_integralAbove}. It depends on the rational prime, not the embedding. Let $\rho$ be the weight representation of the second-factor unitary group and define $J_\delta(v)=\overline{\rho(\delta)\overline v}$. The maps $J_\delta$ are complex-linear, unitary for the rational Gram metric, and inverse to $J_{\delta^{-1}}$. The unitarity is precisely the use of \code{gramForm_map_weightRep} in the original frame-transport proof (lines 311--339).
+
+For each pair $q=(i,a)$ and each Weyl coordinate $k$, let $b_{qk}$ be the tuple supported at $q$ with value $J_{\delta_a^{-1}}e_k$, where $e_k$ is the standard coordinate vector. This is a basis of the full tuple space, with Gram matrix
+\[
+ G_T=\bigoplus_{q}G,\qquad H_T=\bigoplus_q H,\qquad G_TH_T=hI.
+\]
+For any tuple $z$, its coefficients in this basis at $q$ are exactly $J_{\delta_a}(z_q)$. In the definition of \src{New/OneLift/ComparisonOperator/GluingMaps}{82}{IsIntegralFormTuple}, the gauge is evaluated at the conjugate embedding on $\overline{z_q}$. Translating the representative from $a.\mathrm{out}$ to $\operatorname{embFin}(\delta_a)a.\mathrm{out}$ replaces the vector by $\rho(\delta_a)\overline{z_q}=\overline{J_{\delta_a}z_q}$. At the integral representative the gauge criterion is just coordinatewise integrality. Since
+\[
+ (\iota\circ c)(\overline{J_{\delta_a}z_q})=\iota(J_{\delta_a}z_q),
+\]
+we obtain the exact equivalence
+\begin{equation}\label{eq:localcoords}
+ \code{IsIntegralFormTuple}(\iota,z)\quad\Longleftrightarrow\quad
+ J_{\delta_a}(z_q)_k\in\OO_\iota\quad\text{for all }q,k.
+\end{equation}
+This is a basis calculation, not a new integral-model theorem. It uses \code{weylGauge_embFin} and \code{weylGauge_le_one_iff} as at lines 427--429 of the original integrality proof. In particular every $b_{qk}$ is integral for every embedding above $\ell$, including $\bar\iota$. The equality in \eqref{eq:localcoords}, not just the assertion that a few test vectors are integral, is important when returning $nhL^*w$ to the tuple lattice.
+
+Assume $\ell$ is prime to the twist conductor. The theorem \src{New/OneLift/ComparisonOperator/GluingMaps}{552}{glue_mem_integralForms} supplies the map from integral tuples to integral target forms at both embeddings. The theorem \src{Lib/Adelic/AutomorphicForms/PAdicGauge}{750}{norm_nsmul_inner_le_one}, with the same stabilizer divisibility proof used in the original integrality argument, supplies
+\[
+ n_{\rm aut}\langle v,w\rangle\in\OO_\iota
+ \quad(v\text{ integral at }\bar\iota,\ w\text{ integral at }\iota).
+\]
+All assumptions of Lemma~\ref{lem:local} are therefore available, and \eqref{eq:newop} preserves integrality. The original operator is $h\widetilde U_\eta$ and preserves it as well. We have also proved the stronger intermediate conclusion that the scaled adjoint $n_{\rm aut}hL_\eta^*$ itself lands in the integral tuple space.
+
+\section{Archimedean duality without counting vectors}
+\subsection{The conjugation issue}
+
+For an arbitrary field automorphism $\sigma$ of $\C$, put $\sigma^c=c\sigma c$. It is essential not to replace $\sigma^c$ by $\sigma$. For example, in the splitting field of $X^4-2$, let $\alpha=\sqrt[4]{2}>0$ and $\sigma(\alpha)=i\alpha$, $\sigma(i)=i$. Then $\sigma(\overline\alpha\alpha)=-\alpha^2$ whereas $\overline{\sigma(\alpha)}\sigma(\alpha)=\alpha^2$. The identity $\sigma(\overline z)=\overline{\sigma^c(z)}$ is the appropriate substitute. Such automorphisms of the finite splitting field extend to $\C$ (using a transcendence basis and algebraic closure); the example thus also tests the precise quantifier in the source.
+
+For a rational positive definite Gram matrix $G_T$, define $\norm{z}_{T,\sigma}^2=(\sigma z)^*G_T(\sigma z)$, with entrywise application in the coordinate basis. Then
+\begin{equation}\label{eq:pair}
+ \sigma\langle v,z\rangle_T=\langle\sigma^c v,\sigma z\rangle_T.
+\end{equation}
+In the actual tuple space the coordinates are arbitrary tables, so applying a field automorphism entrywise always gives another tuple. On the target forms it need not give a form at the same level or with the same character. We do \emph{not} assume that it does.
+
+\begin{lemma}[Paired dual norm]\label{lem:dual}
+Let $T$ be a full finite coordinate space with rational positive definite Gram matrix. For every $z\in T$ and $\sigma\in\operatorname{Aut}(\C)$,
+\[
+ \norm{z}_{T,\sigma}=
+ \sup_{v\ne0}\frac{\abs{\sigma\langle v,z\rangle_T}}{\norm{v}_{T,\sigma^c}}
+\]
+when $T\ne0$. In particular, if the numerator is at most $B\norm{v}_{T,\sigma^c}$ for all $v$, then $\norm{z}_{T,\sigma}\le B$ for $B\ge0$, also in the zero-dimensional case.
+\end{lemma}
+\begin{proof}
+Equation~\eqref{eq:pair} and Cauchy--Schwarz give the upper bound. For nonzero $z$, take the tuple
+\begin{equation}\label{eq:test}
+ v=(\sigma^c)^{-1}(\sigma z)
+\end{equation}
+entrywise. Then $\sigma^c v=\sigma z$ and the numerator equals $\norm{z}_{T,\sigma}^2$, while the denominator equals $\norm{z}_{T,\sigma}$. If $z=0$ the assertion is immediate. This is an attained dual norm, so neither a supremum nor continuity of an arbitrary field automorphism is needed in a formal proof.
+\end{proof}
+
+\begin{theorem}[Two-conjugate adjoint bound]\label{thm:arch}
+Let $T$ be as above and $V$ a complex inner product space with a family of nonnegative squared norms $\norm{w}_{V,\sigma}^2$. Assume for all $v,w\in V$
+\[
+ \abs{\sigma\langle v,w\rangle_V}\le \norm{v}_{V,\sigma^c}\norm{w}_{V,\sigma}.
+\]
+Let $L:T\to V$ have adjoint $L^*$ and suppose for all $z,\sigma$ that $\norm{Lz}_{V,\sigma}\le K_\sigma\norm{z}_{T,\sigma}$, where $K_\sigma\ge0$. Then
+\begin{align}
+ \norm{L^*w}_{T,\sigma}&\le K_{\sigma^c}\norm{w}_{V,\sigma},\label{eq:adj}\\
+ \norm{LL^*w}_{V,\sigma}&\le K_\sigma K_{\sigma^c}\norm{w}_{V,\sigma}.\label{eq:product}
+\end{align}
+\end{theorem}
+\begin{proof}
+For any $v\in T$ the adjoint identity and the assumed conjugate pairing inequality give
+\[
+ \abs{\sigma\langle v,L^*w\rangle_T}
+ =\abs{\sigma\langle Lv,w\rangle_V}
+ \le K_{\sigma^c}\norm{v}_{T,\sigma^c}\norm{w}_{V,\sigma}.
+\]
+Use Lemma~\ref{lem:dual} and then apply the original bound on $L$ at $\sigma$. In the proof of \eqref{eq:adj} only the coordinate space $T$ is conjugated entrywise; $V$ is used exclusively through its given pairing inequality. This avoids an invalid assertion about stability of a twisted automorphic-form space under $\sigma$.
+\end{proof}
+
+\subsection{Recovering the original constants}
+
+Set $A=fmb(\log b)^2$ in the notation of the source. For the untwisted gluing map $L=L_1$, the two existing estimates are exactly the hypotheses above:
+\begin{align*}
+ \norm{Lz}_{V,\sigma}^2 &\le e^{2A}\norm{z}_{T,\sigma}^2
+ &&\text{by \src{New/OneLift/ComparisonOperator/GluingMaps}{755}{normSqAt_glue_le}},\\
+ \abs{\sigma\langle v,w\rangle_V}&\le\norm{v}_{V,\sigma^c}\norm{w}_{V,\sigma}
+ &&\text{by \src{Lib/Adelic/AutomorphicForms/PAdicGauge}{673}{norm_map_inner_le}}.
+\end{align*}
+Here the tuple squared norm is \code{formTupleNormSq}, the target squared norm is \code{normSqAt}, and both are exactly the metrics occurring in the original frame proof. Thus
+\begin{equation}\label{eq:archraw}
+ \norm{\widetilde U_1w}_{V,\sigma}^2
+ \le (n_{\rm aut}h)^2e^{4A}\norm{w}_{V,\sigma}^2.
+\end{equation}
+For the original operator the same formula has $h^2$ in place of $h$ inside the parentheses.
+
+For clarity, here is the scalar budget without any new asymptotic assumption. Let $N_0$ be the number of pairs $(i,a)$. If $N_0=0$ the tuple space is zero and the operator norm claim is trivial; in admissible data $N_0>0$ also follows from injectivity of the period map on the nonzero good space. The source's \src{New/OneLift/ComparisonOperator/GluingMaps}{650}{M_pow_denominatorExponent_sq_mul_le_exp} implies $(N_0n_{\rm aut})^2\le e^A$, by dropping factors at least 1. Thus $n_{\rm aut}\le e^{A/2}$. The source gives $h\le e^{x^{999}}$ by \src{New/OneLift/ComparisonOperator/GluingMaps}{599}{hookNumberMinus_le}, and already proves $6x^{999}\le A/2$ at line 463 of \code{LiftVolumeHeight}. We retain that scalar inequality and discard the frame cardinal estimate that used it. In particular
+\[
+ n_{\rm aut}h\le e^{7A/12},\qquad n_{\rm aut}h^2\le e^{2A/3}.
+\]
+Consequently the norm (not squared norm) multipliers in \eqref{eq:archraw} are bounded respectively by $e^{31A/12}$ and $e^{8A/3}$, both at most the original $e^{3A}$. This is a modest quantitative bonus. The principal saving is the proof: there is no sum over an auxiliary frame, no count of column fillings, and no estimate of the tuple's norm by repeated triangle inequalities.
+
+\section{Preserving the determinant and the RH endpoint}
+
+We verify the entire interface, not just the estimates in isolation. The source proves that the map $P=\code{periodLift}\,j:S\to T$ is injective and that a nonzero twist scalar $c_\eta$ satisfies
+\begin{equation}\label{eq:period}
+ c_\eta L_\eta^*u_\eta=P,\qquad
+ \rho_\eta=\frac{\code{heckeValueProd}\,j\,\eta}{\code{heckeValueProd}\,j\,1}
+ =\frac{|c_1|^2}{|c_\eta|^2}\ne0.
+\end{equation}
+See \src{New/OneLift/ComparisonOperator/GluingMaps}{1048}{twistFactor_smul_adjoint_glue_comp} and \src{New/OneLift/ComparisonOperator/GluingMaps}{1068}{periodLift_injective}. Multiplying the adjoint identity by its conjugate shows, with $s=n_{\rm aut}h$ (or $n_{\rm aut}h^2$),
+\[
+ u_\eta^*(sL_\eta L_\eta^*)u_\eta
+ =\rho_\eta B_0,\qquad B_0=\frac{s}{|c_1|^2}P^*P>0.
+\]
+The positivity is strict on nonzero vectors. The image of $L_\eta P$ is orthogonal to the false lifts by \src{New/OneLift/ComparisonOperator/GluingMaps}{1056}{isOrthogonalToFalseLifts_glue_periodLift}. Equation~\eqref{eq:period} expresses $(sL_\eta L_\eta^*)u_\eta$ as $(s/c_\eta)L_\eta P$; orthogonality is preserved by the scalar. Sections 2 and 3 have proved the remaining two fields. Therefore the original \code{IsComparisonOperator} theorem follows for either scalar, with the original numerical bound. No stronger Selmer or local-type condition is needed.
+
+Let $d_S=\dim S$, $Z_\eta=\det(u_\eta^*u_\eta)$ and $\Delta_\eta$ be the determinant of the orthogonal compression of the comparison operator to $u_\eta(S)$. The old compression identity, at line 51 of \code{LiftVolumeHeight}, now gives
+\[
+ Z_\eta\Delta_\eta=\det(B_0)\rho_\eta^{d_S},\qquad
+ \frac{Z_1}{Z_\eta}=\frac{\Delta_\eta}{\Delta_1}\rho_\eta^{-d_S}.
+\]
+All factors cancelled are nonzero by injectivity and positivity. Changing from $h^2$ to $h$ multiplies each $\Delta_\eta$ by $h^{-d_S}$, which cancels from the ratio. The size of the height witness may change, but the finite-place determinant estimate remains valid because the smaller operator preserves integrality directly; it is \emph{not} justified by simply dividing an integral operator by $h$.
+
+The generic local and archimedean compression lemmas (lines 652 and 695) need no changes. For a regular family $\eta=\xi_\iota^j$ the old proof of \src{New/OneLift/LiftVolumeHeight}{729}{heightLe_liftDeterminant_ratio} obtains
+\[
+ \operatorname{HeightLe}\!\left(d_T k\big((\log b)D_{\rm den}-H_{\rm dir}\big),
+           \left\{\frac{Z_j(1)}{Z_j(\xi_\iota^j)}\right\}_\iota\right),
+\]
+where $d_T=D.\code{targetDim}$, $D_{\rm den}=D.\code{denominatorBudget}$ and $H_{\rm dir}=D.\code{directionAmount}$. The new construction fits the same bound $3A$, so all subsequent constants and the exact coefficient $-d_T kH_{\rm dir}$ remain unchanged. The product over the $m$ stages supplies the same negative main term and the same lower bound after the product formula.
+
+\begin{center}
+\small
+\begin{tabularx}{\linewidth}{@{}p{.48\linewidth}X@{}}
+\toprule
+Downstream step & Effect of the substitution\\
+\midrule
+\code{heightLe_liftDeterminant_ratio} & Identical theorem; only the comparison-operator witness changes in the stronger variant.\\
+\code{heightLe_chainDeterminant_one_div} & Identical one-lift inputs; chain factorization and twists unchanged.\\
+\code{integral_forms_long} & Same completion and lower covolume estimate.\\
+\code{star_inequality} & Same bound $mR\le fa(\log b)^5$.\\
+\code{Data.primeRemainder_le} and \code{grh} & Same one-sided prime bound and zero-exclusion argument.\\
+\code{riemannHypothesis} & Same Mathlib statement, derived from Dirichlet half-plane nonvanishing.\\
+\bottomrule
+\end{tabularx}
+\end{center}
+
+In particular, this is compatible with improvements to the other estimates. It does not depend on any of the existing proposals being implemented, nor does it claim that the large analytic or geometric components of the proof can be discarded.
+
+\section{What can be removed and how to formalize it}
+
+The source block in \code{LiftVolumeHeight.lean}, lines 270--553 inclusive, contains the specialized frame index, transport of the frame, construction of the tuple frame, rank-one expansion, integrality proof, frame-count estimate, and archimedean norm proof. These are 284 physical lines including comments and whitespace, not a measured number of removable proof-code lines. The replacement needs one local-coordinate lemma, one block-Gram identity, the scaled-adjoint argument, the paired norm identity and one scalar-budget calculation. No new representation-theoretic input is needed.
+
+The first implementation should retain the existing definition $U_\eta$ and names of the two estimate lemmas. The new proofs establish the sharper local and archimedean statements for $\widetilde U_\eta$ on the way, after which multiplication by $h$ recovers the old definition. A second, optional change can redefine the scalar to $n_{\rm aut}h$ and update the two explicit scalar calculations for the common positive form. The generic determinant and Selmer code should not be edited. This isolates mathematical simplification from changes in interfaces.
+
+\paragraph{Proposed theorem order.} In the Weyl library, expose the integer Fock matrix and its two-sided identity. In the gluing module, prove the rational-translate coordinate criterion \eqref{eq:localcoords} and the adjoint's integral tuple result. Then prove the tuple pairing identity \eqref{eq:pair} and use the explicit test tuple \eqref{eq:test}; avoid introducing an operator norm on a newly conjugated automorphic space. Finally reprove the old comparison contract. The companion \code{LEAN_PLAN.md} gives declaration names, proof sketches, dependencies and verification gates. A local dependency search is needed before deleting the frame declarations or the library theorem \code{exists_tightFrame}; only their use in this comparison proof is removed by the argument here.
+
+\paragraph{Optional generalization.} The least positive integer $e$ with $eG^{-1}$ integral is the exponent of the finite abelian group $\Z^n/G\Z^n$. Since $GH=hI$, it divides $h$. One can use $e$ instead of $h$ if a canonical computable certificate is worthwhile. But this is probably a worse first refactor: computing or formalizing Smith normal form may cost more than using the already proved Fock identity. The one-hook argument is sufficient without this optimization.
+
+\section{Nonduplication, source provenance, and checks}
+
+The baseline is ProveIt commit \href{https://github.com/VladimirReshetnikov/ProveIt/tree/cdecfeba5d834fbf2f97de71cc7766b58ec4520e}{\code{cdecfeba5d83}}. Through the GitHub connector we inspected the public theorem statements, the readable package guide, the relevant human-readable guide sections, the comparison and Gram source, and the downstream reduction. The manifest \code{source_audit.tsv} records the file hashes and declaration coordinates. We also inspected the 12 proposal folders in the pinned snapshot: all README summaries and section headings of 22 TeX files, plus a targeted search of their contents for the gluing, hook, frame, comparison-operator, inverse-Gram and dual-norm concepts. This is a targeted nonduplication audit, not a line-by-line referee review of every unrelated proposal.
+
+\begin{center}\small
+\begin{tabularx}{\linewidth}{@{}p{.43\linewidth}X@{}}
+\toprule
+Existing proposal (folder name abbreviated) & Principal scope; distinct from this note\\
+\midrule
+Centered theta lifts; cyclotomic interpolation & Centered spanning and completion; torsion and rank.\\
+Dyadic place coloring; Newton torsion & Sparse place construction; torsion specialization.\\
+Orbital theta exchange & Finite equivariant orbital sections and exchange data.\\
+Proof simplifications; RH simplifications & Spanning, auxiliary prime selection, analytic endpoint and torsion.\\
+Sparse theta proof; robust theta labels & Sparse cutoffs and averaged twist selection; finite-field types.\\
+Shorter theta-lift proof & Quadratic twist estimates and spanning.\\
+Signed theta gain & Signed product formula and local colength.\\
+Theta-lift simplifications & Integral projection rows, labels and sparse places.\\
+\bottomrule
+\end{tabularx}
+\end{center}
+The last proposal is the nearest neighboring interface: it improves the operator clearing the denominator of the projection onto the lift space and its determinant estimate. We instead prove integrality of the operator \emph{before} that projection, using the tuple Gram matrix. Both changes can be used together. The orbital-exchange proposal changes the construction of periods; we retain the period identity as a black box. Neither the new one-hook argument nor the paired-conjugation adjoint proof was found in the inspected proposal texts. This is a claim of nonduplication relative to this snapshot, not of priority for elementary linear algebra.
+
+\paragraph{Verification.} Andrew Sutherland's \href{https://math.mit.edu/~drew/shortgrh/}{independent verification record}, updated 27 November 2026, reports successful compilation, axiom checks and independent kernel checks of the shorter upstream editions at commit \code{72fead102f663d5c7a407964a13dc0cf9d977207}. Our source audit pins selected ProveIt blobs; it is not a local replay or a full-tree comparison with upstream. No Lean executable or mathlib cache was present in this environment. The new universal arguments are mathematical proofs; the companion Python tests check the finite matrix and field identities exactly, not the entire automorphic development. The local Git verifier is supplied for reproducibility and has not been run against a full checkout. No repository files have been changed.
+
+\paragraph{Further research questions.} (1) Can the same integral-adjoint interface replace frame constructions elsewhere, especially for other Weyl or Schur modules? (2) Can one use exact operator bounds $K_\sigma K_{\sigma^c}$ at individual embeddings to reduce the height budget rather than taking the uniform maximum? (3) Does an analogous rational-duality method simplify the auxiliary-form completion with nontrivial stabilizers, without giving up the fixed multiplier in the product formula? (4) Can the compact edition benefit from the same proof, and does the replacement measurably reduce elaboration or exported proof terms? These questions are separate from the established local substitution.
+
+\end{document}

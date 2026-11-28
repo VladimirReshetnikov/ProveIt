@@ -1,0 +1,350 @@
+\documentclass[11pt]{article}
+\usepackage[letterpaper,margin=1.02in]{geometry}
+\usepackage{amsmath,amssymb,amsthm,mathtools,booktabs,array,microtype,xcolor,hyperref}
+\hypersetup{colorlinks=true,linkcolor=blue!45!black,urlcolor=blue!50!black}
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{corollary}[theorem]{Corollary}
+\theoremstyle{remark}\newtheorem{remark}[theorem]{Remark}
+\newcommand{\Z}{\mathbb Z}\newcommand{\N}{\mathbb N}\newcommand{\R}{\mathbb R}
+\newcommand{\F}{\mathbb F}\newcommand{\Ocal}{\mathcal O}\newcommand{\m}{\mathfrak m}
+\newcommand{\sgn}{\operatorname{sgn}}\newcommand{\im}{\operatorname{im}}\newcommand{\rank}{\operatorname{rank}}
+\newcommand{\diag}{\operatorname{diag}}\newcommand{\card}{\operatorname{card}}\newcommand{\GL}{\operatorname{GL}}
+\newcommand{\code}[1]{\texttt{#1}}
+\title{\vspace{-1.1em}\textbf{A discrete replacement for the local Hecke estimates}\\[0.3em]\large Two complementary shortenings of the Alp\"oge--Claude proof of RH and Dirichlet GRH}
+\author{Research proposal and mathematical derivation}
+\date{27 November 2026}
+\begin{document}
+\maketitle
+\begin{abstract}
+We propose replacing the measure-theoretic Pieri-cone calculation in the readable Lean proof by a signed count on integer lattices. The exact inverse flag number emerges from determinants of permutation cycles and cancellation of monomial orbits with repeated exponents. Frobenius power packing is retained; its dimension bound is converted directly into a finite lattice count, avoiding real integration, convex-boundary measure and multidimensional Riemann sums. A second, independent local-algebra argument replaces auxiliary generators and their Nakayama step by saturation of the bad Smith directions. It yields a stronger truncated colength certificate over arbitrary valuation domains, including nondiscrete ones. Both replacements preserve the original exported inequalities. We give proofs, source-level integration points, quantitative checks and a migration plan; no claim of a new kernel-checked Lean proof is made.
+\end{abstract}
+\tableofcontents
+
+\section{Scope and recommendation}
+The repository's proof and its human-readable guide reduce the zero problem to a one-sided bound via theta lifts, determinants, and congruences. This note treats the existing source as the baseline, not as a theorem independently reverified in this session. The target is its local upper-bound machinery, in particular the large-degree elementary-divisor estimate. The key combinatorial bottleneck is a cancellation between a very small cone fraction and the number of flags. Losing even a moderate multiplicative factor in that cancellation would be fatal to the required $1+\theta$ estimate. We keep the exact factor, not a heuristic approximation.
+
+\paragraph{Source snapshot.} The inspected ProveIt commit is
+\begin{center}\small\code{cdecfeba5d834fbf2f97de71cc7766b58ec4520e}.\end{center}
+Paths below are relative to \code{Analysis/GeneralizedRiemannHypothesis/Lean/grh/src/New}. The guide is \code{docs/guide/theta\_lifts\_and\_dirichlet\_zeros.tex}, relative to the GRH root. The manifest accompanying this note gives the exact blobs and proposal tree hashes. The current upstream verification record is linked in the project's materials; this is a source-based analysis, not an audit of every Lean dependency.
+
+\begin{center}\small
+\begin{tabular}{p{.30\linewidth}p{.31\linewidth}p{.28\linewidth}}
+\toprule
+Stage & Original mechanism & Replacement \\
+\midrule
+Root lemma and power packing & Extreme coefficient, Frobenius amplification, shift & Unchanged \\
+Pieri cone fraction & Signed integral of interlacing indicators; one-letter comparison & Signed lattice cardinalities; determinant and orbit count \\
+Dimension estimate & General lattice-volume convergence and slab volume bound & Residue classes, stars and bars; elementary limits \\
+Middle Hecke factor & Auxiliary vectors via Smith complement and Nakayama & Saturation of projected bad directions \\
+Endpoint lattice factors; global reduction & Determinants, colength composition, downstream bounds & Unchanged contracts; optional improved constant \\
+\bottomrule
+\end{tabular}
+\end{center}
+
+The first replacement is the priority: it removes a continuous-geometric detour from an intrinsically finite arithmetic proof. The second is a smaller but sharp independent improvement, applicable even if the first is not implemented. Neither depends on the other proposals being delayed. In particular, no changes to the choices of twists, places, weights, or spanning algorithm are required.
+
+\section{The precise combinatorial input from the existing proof}
+Write $k$ for the number of variables in each letter, $N$ for the number of letters, $P$ for the Frobenius power, $q=P^N$, and $d=kN$. Here $k,N\geq1$ and $P$ is an integer $>1$; in the actual application the signs alternate and $N$ is even. Use letters $j\in\Z/N$ and coordinates $b=0,\ldots,k-1$. For each $j$ put $\epsilon_j\in\{1,-1\}$, and for a tuple of permutations $\sigma=(\sigma_j)_j$ define the integer matrix
+\begin{equation}\label{eq:step}
+ (T_\sigma\nu)_{b,j}=\epsilon_j(P\nu_{b,j+1}-\nu_{\sigma_j(b),j}).
+\end{equation}
+Let $T=T_{\mathrm{id}}$. The Pieri inequalities in $\nu$-coordinates are
+\begin{equation}\label{eq:pieri}
+\begin{cases}
+ P\nu_{b+1,j+1}\leq\nu_{b,j},&\epsilon_j=1,\\
+ \nu_{b+1,j}\leq P\nu_{b,j+1},&\epsilon_j=-1,
+\end{cases}\qquad 0\leq b<k-1.
+\end{equation}
+In $\beta=T\nu$ coordinates, write $\Omega$ for this cone, \emph{without} imposing nonnegativity of $\beta$; put $C=\Omega\cap\R_{\geq0}^d$. This agrees with the source's zero-defect cone intersected with the nonnegative orthant, by \code{permStep\_mem\_defectCone\_iff}. For $D_j\geq1$ let
+\[
+ B_M(D)=\{x\in\Z_{\geq0}^{d}:M(D_j-1)\leq\sum_b x_{b,j}\leq MD_j\ (\forall j)\}.
+\]
+All $D_j$ in the application are integers. Allowing real $D_j$ just introduces floors and ceilings.
+
+\paragraph{What is already proved.} In \code{DefectCount.lean}, \code{finrank\_defectConditions\_mul\_pow\_le} (lines 674--751) uses the root lemma, power packing and an integral shift to establish, for every $M=q^e$,
+\begin{equation}\label{eq:packing}
+ M^{kN}\dim_K S\ \leq\ F_{\mathrm{Levi}}\,\#(C\cap B_M(D)).
+\end{equation}
+Here $S$ is the bounded-defect subspace at degree $n$, with cross-block threshold $3t$, and $F_{\mathrm{Levi}}$ is the relative flag index for the two-block Levi. The shifted degree parameters are
+\begin{equation}\label{eq:D}
+ D_j=n+k+1+4t\sum_b \eta_{b,j},\qquad 1\leq D_j\leq n+4tP^{2r}.
+\end{equation}
+The existing shift $\eta$ is integral and nonnegative and has defect at most $-1$ across the root $r-1\to r$ and at most zero elsewhere. The assumptions include $1\leq r<k$ and $t\geq2(k+1)$. The upper bound on $D_j$ follows from $\sum_b\eta_{b,j}\leq P^{2r}-1$ and $k+1\leq4t$. Equation~\eqref{eq:packing} is exactly the source's counting inequality after multiplication of its mesh points by $M$; it is not a new claim about extreme coefficients. In particular, we do not discard power packing, which is what makes the rounding error harmless.
+
+The flag bound, already in \code{index\_mul\_relIndex\_le}, is
+\begin{equation}\label{eq:flags}
+ I_{\mathrm{par}}F_{\mathrm{Levi}}\leq [k]_q!,\qquad
+ [k]_q!:=\prod_{i=1}^k\frac{q^i-1}{q-1}.
+\end{equation}
+Our task is to recover the factor $1/[k]_q!$ directly from~\eqref{eq:packing} without a real-volume theorem.
+
+\section{A finite signed identity}
+For a tuple of permutations write $s(\sigma)=\prod_j\sgn(\sigma_j)$. Let $L_\sigma=T_\sigma\Z^d\subseteq\Z^d$. For any real intervals $[a_j,b_j]$ let $B^+$ denote the integer vectors with every coordinate strictly positive and degrees in these intervals. No measure is used in the following identity.
+
+\begin{lemma}[Integer-lattice signed count]\label{lem:signed}
+For every choice of bounded intervals,
+\begin{equation}\label{eq:signed}
+ (k!)^N\#(\Omega\cap B^+\cap L_{\mathrm{id}})
+ =\sum_{\sigma\in(S_k)^N}s(\sigma)\#(B^+\cap L_\sigma).
+\end{equation}
+\end{lemma}
+\begin{proof}
+All $T_\sigma$ are invertible over $\mathbb Q$, by Lemma~\ref{lem:det}. Fix $\nu\in\Z^d$. The degree $\sum_b(T_\sigma\nu)_{b,j}$ is independent of $\sigma$. It is also unchanged by separately permuting the coordinates of each $\nu$-letter. Thus we may multiply all expressions below by the same degree indicator.
+
+Consider $N$ comparison matrices with entry $(b,c)$ equal to
+\[
+ M_j(b,c)=\mathbf1\{\epsilon_j(P\nu_{b,j+1}-\nu_{c,j})>0\}.
+\]
+The signed sum of positivity indicators over $\sigma$ is $\prod_j\det M_j$, by expansion. Sort each letter decreasingly. Signs of the sorting permutations occur once as row and once as column permutations, hence cancel cyclically. For decreasing lists $x,y$, the determinant of the matrix $\mathbf1\{y_c<x_b\}$ is 1 exactly when
+\[
+ x_0>y_0\geq x_1>y_1\geq\cdots\geq x_{k-1}>y_{k-1},
+\]
+and is zero otherwise. Indeed each row is a terminal string of ones; its nonzero length must run through $k,k-1,\ldots,1$ for the rows to be independent. In that case the matrix is upper triangular with diagonal 1. Transpose the matrix for the negative sign. This gives precisely positivity of $T\nu$ and~\eqref{eq:pieri} for the sorted letters.
+
+If there are ties in a letter, a comparison matrix has identical rows or columns. Also, strictly positive steps and~\eqref{eq:pieri} imply strictly decreasing adjacent coordinates in every letter: their difference bounds a positive step from below. Hence the product of determinants is exactly the number (zero or one) of letterwise reorderings of $\nu$ satisfying both positivity and~\eqref{eq:pieri}. Summing this pointwise equality over integer $\nu$ with the specified degrees gives~\eqref{eq:signed}: each of the $(k!)^N$ reorderings is a bijection of the integer lattice, and each $T_\sigma$ maps the lattice bijectively to $L_\sigma$. All nonzero summands lie in a finite union of inverse images of a bounded set, so the sums are finite.
+\end{proof}
+
+The source already establishes the pointwise interlacing identity (\code{PieriCone.lean}, lines 82--112 and 250--353). We can reuse that lemma rather than reprove it; the new move is to sum it over $\Z^d$ instead of integrating it over $\R^d$. Lemma~\ref{lem:signed} is not a numerical signed approximation: its cancellations are exact.
+
+\begin{lemma}[Cycle determinant]\label{lem:det}
+Let $\tau$ be the monodromy permutation obtained by composing the letter permutations around one cycle (up to conjugation or inversion, according to the indexing convention). If its cycle lengths are $\ell_1,\ldots,\ell_h$, then
+\begin{equation}\label{eq:det}
+ \Delta_\sigma:=|\det T_\sigma|=\prod_{a=1}^h(q^{\ell_a}-1)
+ =q^k\det(I-q^{-1}\tau).
+\end{equation}
+In particular $\Delta_{\mathrm{id}}=(q-1)^k$, and the number of tuples with each given monodromy is $(k!)^{N-1}$.
+\end{lemma}
+\begin{proof}
+Remove the signs in~\eqref{eq:step} by a diagonal matrix, and factor the block permutation that applies $\sigma_j$ within each letter. The resulting matrix is $PU-I$, where $U$ is a permutation moving one letter around the cyclic index. Its cycles are in bijection with cycles of the monodromy and have lengths $N\ell_a$. A permutation cycle of length $m$ has $|\det(PU-I)|=P^m-1$ (the characteristic polynomial is $X^m-1$). Multiplying over cycles proves the first equality; the second is the same cycle determinant with $q^{-1}$. Each choice of all but one of the letter permutations determines the remaining one for a prescribed ordered product. Reindexing or inversion does not affect cycle lengths or signs.
+\end{proof}
+
+This is also a shorter alternative to the block-determinant manipulation in \code{PieriCone.lean}, lines 144--213. It works for any signs, not only alternating ones. There is no requirement that $P$ be large relative to the degree.
+
+\section{Evaluate the signed sum by monomial orbits}\label{sec:orbits}
+The original proof evaluates the signed permutation factor by specializing a volume formula to one letter, then applying a triangular change of variables. A direct orbit evaluation avoids that detour.
+
+\begin{lemma}[Alternating Molien identity]\label{lem:molien}
+For $0<x<1$,
+\begin{equation}\label{eq:molien}
+ \frac1{k!}\sum_{\tau\in S_k}\frac{\sgn\tau}{\det(I-x\tau)}
+ =\frac{x^{k(k-1)/2}}{\prod_{i=1}^k(1-x^i)}.
+\end{equation}
+\end{lemma}
+\begin{proof}
+For each $\tau$, the reciprocal determinant is the series $\sum_{\alpha:\,\tau\alpha=\alpha}x^{|\alpha|}$, where $\alpha\in\N^k$ and $|\alpha|=\sum_i\alpha_i$. This follows by one geometric series for each permutation cycle: all coordinates on a cycle are equal. Every sum is absolutely convergent, bounded by $(1-x)^{-k}$.
+
+Interchange the finite sum over $\tau$ with the series. For a fixed exponent tuple the inner signed stabilizer sum is zero if any two exponents coincide (multiply the stabilizer by that transposition). If all are distinct the stabilizer is trivial and its sum is 1. Each orbit of distinct tuples has $k!$ elements, so division by $k!$ leaves
+\[
+ \sum_{0\leq a_1<\cdots<a_k}x^{a_1+\cdots+a_k}.
+\]
+Set $h_1=a_1$, $h_i=a_i-a_{i-1}-1$ for $i>1$. Then $h_i\geq0$ and $\sum_i a_i=k(k-1)/2+\sum_i(k-i+1)h_i$. Taking the product of $k$ geometric series proves~\eqref{eq:molien}. Alternatively, all steps hold coefficientwise in $\Z[[x]]$ after clearing the finite denominators, so no analytic integration is hidden in the proof.
+\end{proof}
+
+Taking $x=q^{-1}$ and using Lemma~\ref{lem:det} gives the cancellation constant directly:
+\begin{align}
+ \frac{\Delta_{\mathrm{id}}}{(k!)^N}
+ \sum_\sigma \frac{s(\sigma)}{\Delta_\sigma}
+ &=\frac{(1-q^{-1})^k}{k!}
+ \sum_{\tau\in S_k}\frac{\sgn\tau}{\det(I-q^{-1}\tau)}\\
+ &=\frac{(q-1)^k}{\prod_{i=1}^k(q^i-1)}=\frac1{[k]_q!}.
+ \label{eq:flagfactor}
+\end{align}
+The exponent $q^{-k(k-1)/2}$ is essential; replacing the signed sum by an unsigned bound would lose it. This argument subsumes the one-letter volume calculation in lines 427--532 of \code{PieriCone.lean}.
+
+\section{A discrete density theorem without measure theory}\label{sec:density}
+We need to bridge two different lattices:~\eqref{eq:packing} counts all integer $\beta$-vectors, while~\eqref{eq:signed} counts the image of $T$ on integer $\nu$-vectors. Treating these as equal would be a serious error. The following residue-class argument handles exactly this issue.
+
+\begin{lemma}[Density in a full integer lattice]\label{lem:lattice}
+Let $L\subseteq\Z^d$ be a full-rank lattice of index $\Delta$. For fixed $D_j\geq1$ and fixed real constants $c_j,c'_j$, let $B_M^+$ be the strictly positive integer vectors with degrees in $[M(D_j-1)+c_j,MD_j+c'_j]$. Then
+\begin{equation}\label{eq:latlimit}
+ \lim_{M\to\infty}\frac{\#(L\cap B_M^+)}{M^{kN}}
+ =\frac{H(D)}{\Delta},\qquad
+ H(D):=\prod_{j=0}^{N-1}\frac{D_j^k-(D_j-1)^k}{k!}.
+\end{equation}
+\end{lemma}
+\begin{proof}
+Take an integer $h\geq1$ such that $h\Z^d\subseteq L$; for example $h=\Delta$ by the quotient group, or $h=|\det A|$ when $L=A\Z^d$ by the adjugate formula. There are exactly $h^d/\Delta$ residue classes of $L$ modulo $h\Z^d$. In any such class choose each coordinate representative in $\{1,\ldots,h\}$. Positive vectors of that class are uniquely $r+h z$ with $z\in\N^d$.
+
+For a single letter with representative sum $r_j$, the number of $k$-tuples of nonnegative integers with sum at most $B$ is $\binom{\lfloor B\rfloor+k}{k}$ for $B\geq0$ and zero otherwise. This is stars and bars with a slack variable. Subtracting two such counts gives the number in the degree interval. Dividing by $M^k$ and writing the binomial as a product of $k$ linear factors, the limit is
+\[
+ \frac{D_j^k-(D_j-1)^k}{h^k k!}.
+\]
+The fixed offsets, representatives, floors, and inclusive endpoint convention change only lower-order terms. The formula holds for $D_j=1$ as the lower cumulative count is bounded. Multiply over independent letters and sum over the finitely many residue classes. This proves~\eqref{eq:latlimit} by elementary polynomial limits alone.
+\end{proof}
+
+For $L_\sigma$ the index is $\Delta_\sigma$: the standard integer Smith form makes this explicit as the product of the absolute nonzero diagonal factors. A standalone Lean lemma about the index of the image of an integral matrix is sufficient; no general result about volumes or Riemann integrability is needed.
+
+\begin{lemma}[Uniform interior shift]\label{lem:shift}
+In the alternating-sign setting of the actual proof, there exists $w\in L_{\mathrm{id}}$ with all coordinates strictly positive and with all simple-root defects strictly negative. Moreover, for any finite set of vectors $R\subset\Z^d$ we can choose such a $w$ with $w-r\in C$ and all coordinates of $w-r$ strictly positive, for all $r\in R$.
+\end{lemma}
+\begin{proof}
+The source lemma \code{exists\_mem\_defectCone\_sum\_le} (lines 529--579) gives, for each simple root $a\to a+1$, an integral nonnegative vector whose defect is at most $-1$ at that root in every letter, and at most zero at all other roots. Sum these finitely many vectors. The sum has every defect at most $-1$. Add the all-ones vector after multiplying the sum by a sufficiently large integer; linearity and finitely many defects imply that the resulting integral vector $v$ is strictly positive and still has strictly negative defects. For $k=1$ there are no root inequalities, so take $v=\mathbf1$. Multiply $v$ by $\Delta_{\mathrm{id}}$ to obtain an element of $L_{\mathrm{id}}$, using the adjugate. A further large integral multiple absorbs all finitely many $r\in R$, since each positivity and strict defect inequality is linear. This is only an existence of a fixed shift; it need not have small degree or be computed by the implementation.
+\end{proof}
+
+In particular, we do not need the cone to be uniformly thick as $P,k,N$ vary. These parameters are fixed while the auxiliary packing scale $M$ tends to infinity. The shift can be enormous and still contributes only a fixed degree offset.
+
+\begin{theorem}[Arithmetic Pieri counting bound]\label{thm:count}
+In the setting of~\eqref{eq:packing},
+\begin{equation}\label{eq:limsup}
+ \limsup_{M\to\infty}\frac{\#(C\cap B_M(D))}{M^{kN}}
+ \leq\frac{H(D)}{[k]_q!}.
+\end{equation}
+Consequently,
+\begin{equation}\label{eq:dimH}
+ \dim S\leq\frac{F_{\mathrm{Levi}}}{[k]_q!}H(D).
+\end{equation}
+\end{theorem}
+\begin{proof}
+Choose a finite set of representatives $R$ of $\Z^d/L_{\mathrm{id}}$. Fix $w$ as in Lemma~\ref{lem:shift}. For each representative $r$, translation $x\mapsto x-r+w$ injects the points of $C\cap B_M(D)$ in the coset $r+L_{\mathrm{id}}$ into the strictly positive points of $\Omega\cap L_{\mathrm{id}}$ in a common padded slab. Indeed $x\in C$ and $w-r\in C$ imply $x-r+w\in C$ by closure under addition; strict positivity is supplied by the shift. Choose a fixed integer $c\geq0$ bounding the absolute degree changes of $w-r$, uniformly over $r$ and $j$. Denote the strictly positive slab with degrees $[M(D_j-1)-c,MD_j+c]$ by $\widehat B_M^+$.
+
+Summing the injections over the $\Delta_{\mathrm{id}}$ cosets and applying~\eqref{eq:signed},
+\begin{align}
+ \#(C\cap B_M(D))
+ &\leq \Delta_{\mathrm{id}}\#(\Omega\cap\widehat B_M^+\cap L_{\mathrm{id}})\\
+ &=\frac{\Delta_{\mathrm{id}}}{(k!)^N}
+ \sum_\sigma s(\sigma)\#(\widehat B_M^+\cap L_\sigma).
+\end{align}
+The latter sum is nonnegative by the exact identity, despite its alternating signs. Normalize by $M^{kN}$; every individual normalized lattice count has the limit in Lemma~\ref{lem:lattice}. Since there are finitely many $\sigma$, take the limit of the whole sum, \emph{not} separate one-sided bounds on its terms. Equations~\eqref{eq:flagfactor} and~\eqref{eq:latlimit} give~\eqref{eq:limsup}. Equation~\eqref{eq:packing} holds along $M=q^e\to\infty$, hence~\eqref{eq:dimH}.
+\end{proof}
+
+\begin{remark}
+A lower bound matching~\eqref{eq:limsup} also follows by translating the positive cone points of $L_{\mathrm{id}}$ in a narrower slab into each coset using fixed interior shifts. It is unnecessary for the dimension inequality, and we do not need to formalize it. The one-sided proof above avoids any treatment of boundary measures.
+\end{remark}
+
+\section{Recover the existing bound, with its original constants}\label{sec:recover}
+Combining~\eqref{eq:flags} and~\eqref{eq:dimH} gives $I_{\mathrm{par}}\dim S\leq H(D)$. The elementary factorization of a difference of powers gives, for $D\geq1$,
+\[
+ \frac{D^k-(D-1)^k}{k!}\leq\frac{D^{k-1}}{(k-1)!}.
+\]
+Hence, with $E=4tP^{2r}$, $H(D)\leq((n+E)^{k-1}/(k-1)!)^N$. The source assumes $n>0$, $\theta\leq1$, and $8NktP^{2r}\leq\theta n$, so $N(k-1) E/n\leq\theta/2$ and $\theta\geq0$. Even the real-exponential estimate can be replaced by the following finite binomial argument. For $h=N(k-1)$ and $x=E/n$, binomial coefficients satisfy $\binom{h}{i}\leq h^i$. When $hx\leq\theta/2<1$,
+\[
+ (1+x)^h\leq\sum_{i=0}^{h}(hx)^i\leq\frac{1}{1-hx}
+ \leq\frac{1}{1-\theta/2}\leq1+\theta.
+\]
+The last inequality follows from $\theta(1-\theta)\geq0$. Thus
+\begin{align*}
+ I_{\mathrm{par}}\dim_K S
+ &\leq (1+\theta)\left(\frac{n^{k-1}}{(k-1)!}\right)^N\\
+ &\leq (1+\theta)\binom{n+k-1}{k-1}^{N}.
+\end{align*}
+The final inequality follows by expanding the binomial into $k-1$ factors each at least $n$. This is precisely the statement of \code{FrobeniusCycle.index\_mul\_finrank\_defectConditions\_le}, lines 939--988. It is a drop-in theorem-level replacement. The original bound is recovered with no extra power of $P$, no shrinkage of $\theta$, and no stronger degree hypothesis.
+
+\paragraph{Why this is not just a different proof of a volume formula.} The primitive objects are finite sets of lattice points, and the two boundary issues (strict versus non-strict inequalities, and the difference between the ambient and image lattice) are resolved by finite translations. The only asymptotic operation is taking the leading term of a stars-and-bars count. The signed calculation never invokes the Lebesgue measure of a polytope, Fubini, a change of real variables, or measure-zero boundaries. It is compatible with rational or integer implementations of the combinatorial core.
+
+\section{A direct saturation lemma for the Hecke factor}\label{sec:saturation}
+The source's middle linear-algebra argument is in \code{ElementaryDivisorTheorem.lean}, especially lines 64--255 and 1011--1079. It establishes the existence of a small auxiliary set $s$ such that the image of the middle matrix plus its span contains $a\Ocal^D$. It then uses a separate colength estimate. The actual application needs only the truncated colength. The following result bypasses this auxiliary-set interface.
+
+\begin{theorem}[Bad Smith directions inject into the residue budget]\label{thm:smith}
+Let $\Ocal$ be a valuation domain with maximal ideal $\m$, fraction field $K_0$, and residue field $\kappa$. Let $F=\Ocal^D$, $E_0=\Ocal^J$ (here $J$ denotes a finite coordinate index), and let $Q:F\to E_0$, $R:E_0\to F$, $A:E_0\to F$, $B:F\to E_0$ be linear maps with $RQ=1$. Let $a,u\ne0$ be scalars with $u/a\in\m$. Suppose
+\begin{equation}\label{eq:near}
+ AB\equiv a I\pmod{u},\qquad \im Q,\im B\subseteq C_0\subseteq E_0,
+\end{equation}
+where $C_0$ is a submodule. Suppose there is a subspace $S_0\subseteq E_0/\m E_0$ containing the reductions of all $h\in E_0$ for which $uh\in C_0$. For a Smith diagonal $(\alpha_i)_{i=1}^D$ of $AQ$ (zero entries permitted), put
+\[
+ s=\#\{i:\alpha_i\in a\m\}.
+\]
+Then $D+s\leq\dim_\kappa S_0$. For $z\ne0$, the image $AQF+zF$ contains a full-rank free lattice with determinant dividing, up to a unit,
+\begin{equation}\label{eq:boundsmith}
+ g^{D-s}z^{s},\qquad g\Ocal=a\Ocal+z\Ocal.
+\end{equation}
+In fact the image itself has a Smith-diagonal basis with determinant dividing this expression.
+\end{theorem}
+\begin{proof}
+Choose Smith bases $x_i,y_i$ of the domain and codomain of $AQ$, so $AQx_i=\alpha_i y_i$. Let $I_b=\{i:\alpha_i\in a\m\}$ and let $\pi:F\to\Ocal^{I_b}$ read the bad $y$-coordinates. By definition, all entries of $\pi AQ$ belong to $a\m$ in these bases. The map $P_0=1-QR$ is the projection onto $\ker R$.
+
+For $j\in I_b$ define $T_j=P_0By_j$, and write $T:\Ocal^{I_b}\to E_0$ for the matrix of these columns. Its image lies in $C_0\cap\ker R$: this follows from~\eqref{eq:near} and the definition of $P_0$. Since $u/a\in\m$,
+\[
+ \pi AT=\pi AB|_{I_b}-\pi AQRB|_{I_b}=aU,
+ \qquad U\equiv I\pmod{\m}.
+\]
+Here $|_{I_b}$ means precomposing with the inclusion of the indicated $y$-basis vectors. Thus $U$ is invertible (its determinant reduces to 1). In particular $T$ is injective over $K_0$.
+
+Let $L=(\im(T\otimes K_0))\cap E_0$ be the saturation. It is a split free submodule of rank $s$ of $E_0$: apply Smith normal form to the finite matrix $T$. Even if only square Smith form is available, pad the rectangular matrix by zero columns or rows; the nonzero diagonal entries then give the same saturated coordinate summand. This argument works for a nondiscrete valuation domain and does not assume all submodules of a finite free module are finitely generated. Also $RL=0$.
+
+For $v\in L$ write $v=T\lambda$ with $\lambda\in K_0^{I_b}$. Then $aU\lambda=\pi Av\in\Ocal^{I_b}$, so $a\lambda\in\Ocal^{I_b}$ and $av\in\im T\subseteq C_0$. Since $a\mid u$, we have $uv\in C_0$. Likewise $u\im Q\subseteq C_0$. The submodule $\im Q\oplus L$ is split: if $\rho:E_0\to L$ retracts $L$, then $(R,\rho(1-QR))$ retracts the inclusion of $F\oplus L$ into $E_0$. Therefore its reduction modulo $\m$ has dimension $D+s$, and the reduction is contained in $S_0$ by hypothesis. This proves the claimed rank bound.
+
+Finally the diagonal generators of $AQF+zF$ in the $y$-basis are generators of the ideals $\alpha_i\Ocal+z\Ocal$. A valuation domain has totally ordered principal ideals. For $i\notin I_b$, $\alpha_i$ divides $a$: if $a$ divides $\alpha_i$, the quotient is a unit or is zero or lies in $\m$, and the latter two cases were excluded. Thus the diagonal generator divides $g$ for a good index, and divides $z$ for a bad index. Since $z\ne0$, all generators are nonzero. Their product divides~\eqref{eq:boundsmith}. Multiplication by the invertible output basis change only changes the determinant by a unit.
+\end{proof}
+
+\begin{remark}[Sharpness and precision]
+Over a discrete valuation ring take $Q$ to be the inclusion of $\Ocal^D$ into the first summand of $\Ocal^{D+s}$, let $AQ$ be $aI$ on $D-s$ coordinates and zero on the other $s$, and let $A$ send the complementary $s$ coordinates to the missing output coordinates. Choose $B$ with the first $D-s$ columns in $\im Q$ and the last $s$ equal to $a$ times those complementary vectors. Then $AB=aI$, and $C_0=\im Q+\im B$ has saturated residue budget $D+s$ whenever $a\mid u$. For $z$ a power of the uniformizer divisible by $a$, the determinant bound~\eqref{eq:boundsmith} is attained. The stronger precision $u/a\in\m$ is necessary in general: if $u=a$, then $AB\equiv aI\pmod u$ holds even with $A=B=0$, while $C_0=\im Q$ can have residue budget $D$. The theorem does not require a uniformizer or a real-valued valuation.
+\end{remark}
+
+\section{Apply the saturation theorem to the existing local data}\label{sec:apply}
+We distinguish the degree parameter $n$, truncation $m$, and rank $D$ in this section. Set
+\[
+ C_* = N\,T.\code{multinomialExponent}\,k,\quad
+ c_2=2C_*,\quad a=p^{c_2},\quad u=w^{5C_*-1},\quad w^2=p.
+\]
+Use the actual near-inverse $B$ from the source and its pairing map $A$. The checkable correspondences are as follows.
+\begin{center}\small
+\begin{tabular}{p{.27\linewidth}p{.62\linewidth}}\toprule
+Abstract hypothesis & Existing source witness \\\midrule
+$RQ=1$ & Left-split origin basis from \code{exists\_basis\_det\_dvd}.\\
+$AB-aI\in u\operatorname{Mat}$ & \code{IsEdgeCondition.pow\_dvd\_mul\_sub\_smul\_one}, originally at precision $w^{5C_*}$, weakened by one.\\
+$u/a\in\m$ & $C_*\geq2$ in this application, hence $5C_*-1\geq4C_*+1$, $aw\mid u$, and $w$ is a nonunit.\\
+$\im Q,\im B\subseteq C_0$ & The two range inclusions at lines 1011--1079, before the generic lemma is invoked.\\
+$uh\in C_0\Rightarrow\bar h\in S_0$ & The edge condition, applied pointwise (\code{valuedIn}); same precision $u$.\\
+$\dim S_0\leq (1+\theta)D$ & $\#(H\times Ed)\dim S$ and the cardinality identity plus \code{index\_mul\_finrank\_le}; $D=\#V\cdot\#\mathrm{Exponents}$.\\\bottomrule
+\end{tabular}
+\end{center}
+In the matrix notation at lines 1080--1147, the total edge map is $d'^{\mathsf T}AQd_0$; here $d_0$ denotes the matrix named \code{d} in the source. The endpoint determinants satisfy
+\[
+ \det(d'^{\mathsf T})\det(d_0)\mid p^{e_0},\qquad
+ e_0=\#V\left\lfloor c_{\mathrm{div}}\,\#\mathrm{Exponents}\right\rfloor.
+\]
+Theorem~\ref{thm:smith} gives $s\leq\theta D$. Use $z=p^m$. Since $p^{\min(c_2,m)}$ generates $a\Ocal+z\Ocal$, the middle factor has a \code{ColengthDvd} certificate with power exponent
+\begin{equation}\label{eq:middle}
+ \ell_{\mathrm{mid}}=\min(c_2,m)(D-s)+ms.
+\end{equation}
+This follows by applying the existing \code{ColengthDvd.of\_det\_dvd} to the diagonal basis of the truncated image (or directly by the coordinate-divisibility chain inside that lemma).
+
+\paragraph{Endpoint composition.} The same certificate with both endpoint determinants multiplied follows from \code{ColengthDvd.comp} twice: treat $AQ$, $d_0$ and $d'^{\mathsf T}$ as endomorphisms of the free module with fixed truncation $p^m$, and use \code{of\_det\_dvd} plus monotonicity for the endpoints. Equivalently first compose the two certificates on the middle and input factors, then push through the output factor. Because the truncation is preserved by each integral linear map, no assumption of surjectivity or invertibility of an endpoint is needed. This gives
+\begin{equation}\label{eq:improved}
+ \ell\leq \min\{mD,\ e_0+\min(c_2,m)(D-s)+ms\}.
+\end{equation}
+The first bound in the minimum holds independently from inclusion of $p^mF$; it includes the case $m=0$. For $m\geq c_2$, the middle exponent is $c_2D+(m-c_2)s$, not $c_2D+ms$. For all $m$ it is at most $c_2D+ms$. The source's $e_0\leq c_{\mathrm{div}}D$ and $c_2\leq2c_{\mathrm{div}}$ recover
+\[
+ \ell\leq(3c_{\mathrm{div}}+\theta m)D.
+\]
+Thus the old edge-restriction colength theorem (lines 1080--1147) and \code{elementary\_divisors} statements are preserved verbatim. There is no requirement to optimize any global parameter. The optional sharper expression~\eqref{eq:improved} is a new local bound, not a claimed improvement to a global RH constant.
+
+\section{Integration, expected size and novelty audit}
+\paragraph{Recommended dependency graph.} Keep the root lemma, power packing, exact finite interlacing indicator, and edge construction. First implement the integer lattice cardinality lemma and the cycle determinant; then replace the entire geometric counting bridge. Independently, prove the saturation lemma over valuation domains, export the old middle colength contract, and recompile downstream. No new axioms, extra regularity, or classical analytic theorem beyond those already used by the proof is intended.
+
+\begin{center}\small
+\begin{tabular}{p{.30\linewidth}p{.31\linewidth}p{.28\linewidth}}\toprule
+Source region (snapshot) & Change & Size of region\\\midrule
+\code{PieriCone.lean} 144--249, 366--532 & Cycle determinant; finite signed sum; no geometric specialization & 273 lines, including comments\\
+\code{DefectCount.lean} 752--868, 902--988 & Replace limit via volume, slab estimates, volume bridge; retain cone correspondence & 204 lines, including comments\\
+\code{ElementaryDivisor}\newline\code{Theorem.lean} 64--255, 1011--1079, part of 1080--1147 & New direct saturation and truncated image contract; preserve edge-specific inputs & 261 lines plus part of wrapper\\\bottomrule
+\end{tabular}
+\end{center}
+These are \emph{affected} regions, not a measurement of lines saved. Some definitions and useful lemmas in them should be retained, and new discrete infrastructure will take lines. In particular, the main win is a smaller mathematical dependency surface and deletion of a whole measure-theoretic argument, not a guaranteed percentage reduction of the complete formalization. A reasonable acceptance test is net removal of several hundred proof-source lines in this module cluster, if integer index and geometric-series tools are readily available; this is a target, not a benchmark. The full proof still needs measure theory elsewhere (e.g. for automorphic forms); it is only removed from the combinatorial counting bridge.
+
+\paragraph{Proposal nonduplication.} At the pinned commit twelve proposal directories are present. We compared their README-level scope and selected relevant report sections/keywords; the twelfth (Newton torsion) appeared during review. None of the surveyed proposals targets the discrete Pieri count or the bad-direction saturation theorem. The main distinctions are listed in the manifest and the following table. A broader automated TeX scan hit the connector call budget; exhaustive full-text nonduplication is therefore not claimed. This is a bounded repository survey, not a claim of worldwide mathematical novelty.
+\begin{center}\small
+\begin{tabular}{p{.44\linewidth}p{.45\linewidth}}\toprule
+Existing proposal family & Separation from this work\\\midrule
+Centered, shorter and general RH simplifications & Modify spanning/rank selection, twist choice, and reduction; we keep their outputs.\\
+Cyclotomic interpolation and Newton torsion & Change specialization at torsion points; we retain the root lemma and Frobenius packing.\\
+Sparse proof, dyadic place coloring & Change sample or place choices; our estimates hold at the original choices.\\
+Robust theta labels & Changes admissible labels; no new label assumptions.\\
+Orbital theta exchange & Simplifies finite kernel matching; no change to exchange identities.\\
+Signed theta gain & Reorganizes final sign/height comparison and uses existing colength estimates; we replace the upstream local estimate itself.\\
+Theta-lift simplifications & Other integrality/flag/determinant improvements; the present flag factor is the finite-field local Hecke cone factor, not the determinant lower-bound flag argument.\\\bottomrule
+\end{tabular}
+\end{center}
+
+\section{Verification and further research}
+The attached \code{checks.py} exercises the finite signed identity, the permutation-cycle determinants, the alternating orbit identity, and representative examples of the saturation theorem using exact integer/rational arithmetic. These are regression tests of the new ingredients, not evidence by themselves for the general theorems. The proofs above are the mathematical justification. The detailed Lean integration plan is provided separately. No Lean executable or complete repository checkout was available in the working environment, so the new lemmas are not elaborated, no axiom audit of them is possible, and no measured net Lean-line saving is claimed. No remote repository was modified.
+
+\paragraph{Further research questions.}
+(1) Can a finite coefficient bound at $M=1$ replace Frobenius power packing without losing the exact flag cancellation? A uniform cell thickening would typically incur shifts of size $P^{2k}$; the original power packing avoids that issue. (2) Can the residue-class count be replaced by a direct Ehrhart quasipolynomial identity, thereby eliminating even the elementary $M\to\infty$ limit? (3) Can the actual multiset of Smith factors, instead of only the exceptional count, be propagated through the later colength inequalities? (4) Can the root-by-root shifts be used to derive a multi-block variant with no extra assumptions? These are open extensions of the proposal, not proved assertions here.
+
+\section*{Source references}
+\addcontentsline{toc}{section}{Source references}
+\small
+Repository: \href{https://github.com/VladimirReshetnikov/ProveIt/tree/cdecfeba5d834fbf2f97de71cc7766b58ec4520e/Analysis/GeneralizedRiemannHypothesis}{pinned GRH tree}. Relevant source directories: \href{https://github.com/VladimirReshetnikov/ProveIt/tree/cdecfeba5d834fbf2f97de71cc7766b58ec4520e/Analysis/GeneralizedRiemannHypothesis/Lean/grh/src/New/UpperBound/ElementaryDivisors}{UpperBound/ElementaryDivisors}; \href{https://github.com/VladimirReshetnikov/ProveIt/blob/cdecfeba5d834fbf2f97de71cc7766b58ec4520e/Analysis/GeneralizedRiemannHypothesis/Lean/grh/src/New/Reduction/Lattices/Colength.lean}{Reduction/Lattices/Colength.lean}; \href{https://github.com/VladimirReshetnikov/ProveIt/tree/cdecfeba5d834fbf2f97de71cc7766b58ec4520e/Analysis/GeneralizedRiemannHypothesis/docs/guide}{human-readable guide}; \href{https://github.com/VladimirReshetnikov/ProveIt/tree/cdecfeba5d834fbf2f97de71cc7766b58ec4520e/Analysis/GeneralizedRiemannHypothesis/docs/proposals}{existing proposals}. The guide refers to the independent verification record at \url{https://math.mit.edu/~drew/shortgrh/}. Exact hashes, line ranges and checked scope accompany this report.
+\end{document}

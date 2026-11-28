@@ -1,0 +1,237 @@
+\documentclass[11pt]{article}
+\usepackage[margin=1in]{geometry}
+\usepackage{amsmath,amssymb,amsthm,mathtools,booktabs,array,hyperref,xcolor}
+\usepackage[T1]{fontenc}
+\usepackage{lmodern,microtype}
+\hypersetup{colorlinks=true,linkcolor=blue!55!black,urlcolor=blue!55!black}
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{corollary}[theorem]{Corollary}
+\newtheorem{remark}[theorem]{Remark}
+\newcommand{\OO}{\mathcal O}
+\newcommand{\fr}{\mathfrak m}
+\newcommand{\kk}{\kappa}
+\newcommand{\tr}{\operatorname{tr}}
+\newcommand{\rk}{\operatorname{rank}}
+\newcommand{\im}{\operatorname{im}}
+\newcommand{\Span}{\operatorname{span}}
+\newcommand{\diag}{\operatorname{diag}}
+\newcommand{\src}[1]{\texttt{#1}}
+\newcommand{\anchor}[3]{\href{https://github.com/VladimirReshetnikov/ProveIt/blob/17bf37ab3b6740d5d7430065d2f2a1a2a03e8a0e/Analysis/GeneralizedRiemannHypothesis/Lean/grh/src/#1.lean\#L#2}{\texttt{#3}}}
+\title{Shortening the edge Hecke estimate in the theta-lift proof\\[5pt]\large Integral orbit traces and a direct exceptional-divisor bound}
+\author{Research proposal for ProveIt}
+\date{27 November 2026}
+\begin{document}
+\maketitle
+\begin{abstract}
+The readable Alp\"oge--Claude proof of RH and Dirichlet GRH contains an intricate local estimate on the elementary divisors of an edge Hecke operator. We give two mathematical replacements within that estimate, independent of the fourteen proposal packages in the inspected repository snapshot. First, a scaled symmetrization of matrix units and a finitely generated integral orbit lattice give the invariant average directly. Its three required properties follow from naturality, cyclicity of trace, and integral evaluation interpolation, with no separate Schur-algebra representation or multinomial adjointness theorem. Second, a threshold Smith decomposition and a low-rank perturbation of a scalar matrix give an exceptional-divisor count directly, avoiding the construction of supplementary generators and the subsequent colength bookkeeping. Both replacements preserve the original public interfaces, or give a stronger local interface implying them. These are paper proofs, not an integrated or kernel-checked Lean refactor. The savings are potential local savings, not a measured reduction of the full project.
+\end{abstract}
+\tableofcontents
+
+\section{Target and scope}
+The repository's readable development has three arithmetic inputs: short integral source forms, enough translates, and a lower bound for the determinant of the theta-lift chain. Their combination gives an upper bound on a one-sided smoothed prime remainder, which excludes off-critical-line Dirichlet zeros. The guide explains the full argument, including the marked local places and the colength costs. Our target is the upper-bound input, not the already heavily optimized analytic endpoint, Selmer torsion specialization, or spanning step.
+
+The local proof studies lattices and adjacent edges at a split local prime, using a Frobenius cycle with $N$ letters. In normalized edge coordinates, the source and dual source lattices are mapped into functions on edges. A weighted pairing combines these functions. The hard inputs are (i) a bound on the depth cost of changing from origin coordinates to saturated edge coordinates, (ii) a small-defect residue-space dimension estimate, and (iii) an average that maps into the defect conditions while acting like a scalar in pairings. The present note simplifies the construction in (iii) and its use in the final linear algebra, leaving (i), (ii), the Frobenius substitution estimates, and all arithmetic inputs unchanged.
+
+\paragraph{Source baseline.} The inspected main snapshot is \href{https://github.com/VladimirReshetnikov/ProveIt/tree/17bf37ab3b6740d5d7430065d2f2a1a2a03e8a0e/Analysis/GeneralizedRiemannHypothesis}{\texttt{17bf37ab}}. The guide and Lean README report the five statements and independent checks of the upstream proof. We do not independently replay those checks here, nor infer that a changing ProveIt tree is identical to the checked upstream tree. GRH refers here to Dirichlet $L$-functions. The scope of our new mathematics is the two local replacements. See the accompanying audit and integration specification.
+
+\begin{center}
+\small
+\begin{tabular}{p{.29\linewidth}p{.58\linewidth}}
+\toprule
+Original module & Change proposed \\
+\midrule
+\src{InvariantAverage} (972 lines) & Construct the same \src{IsAverage} contract using an orbit trace and symmetric tensor naturality. Keep public elementary utilities.\\
+\src{AveragingMap} (623 lines) & Unchanged, including the product over the Frobenius copies.\\
+\src{ElementaryDivisorTheorem} (1251 lines) & Replace the supplementary-generator interface by a truncated Smith determinant bound. Keep the near inverse and the final theorem.\\
+\src{Depth}, \src{DefectCount}, \src{RootLemma} & Unchanged deep inputs.\\
+\bottomrule
+\end{tabular}
+\end{center}
+The line counts include comments and blank lines. They describe the existing files, not a deletion count. In particular the Schur-module import could be needed elsewhere, and a replacement must preserve any external helper uses.
+
+\section{The exact invariant-average contract}
+Let $W$ be a local commutative ring with finite residue field of cardinality $q$, $\OO$ a characteristic-zero valuation domain with fraction field $K$, and $\iota:W\to\OO$ a ring map. Let $p$ be a rational prime that is not a unit in $\OO$. Fix a partition $\tau$ of $\{1,\ldots,k\}$ and let $G$ be the block-diagonal subgroup of $\mathrm{GL}_k(W)$. The generic matrix $X$ has all $k^2$ variables, including off-block variables. Fix integer weights $\rho_i$, threshold $t\in\mathbb Z$, and degree cutoff $D<p^f$, with $D+k\le q$. Put
+\[
+  C=p^{k^2 f},\qquad w(\alpha)=\sum_{i,j}\rho_i\alpha_{ij}.
+\]
+Call a monomial $X^\alpha$ bad if $w(\alpha)>t$. Write $\psi^g(X)=\psi(\iota(g)^{-1}X\iota(g))$.
+
+\begin{theorem}[Required invariant average]\label{thm:avg}
+There exists an $\OO$-linear functional $I:\OO[X]\to\OO$ such that
+\begin{align*}
+ I(\psi^g)&=I(\psi) &&(g\in G),\\
+ I(X^\alpha)&=0 &&(w(\alpha)>t),\\
+ I(\psi)-C\psi(1)&\in J &&\text{if }\deg\psi\le D\text{ and }[X^\alpha]\psi^g\in J\\[-2pt]
+ &&&\text{for every }g\in G\text{ and every bad }\alpha.
+\end{align*}
+Here $J$ is any ideal of $\OO$, not necessarily principal. The functional depends on $D,\tau,\rho,t,C$, but not on $J$.
+\end{theorem}
+This is precisely \anchor{New/UpperBound/ElementaryDivisors/InvariantAverage}{262}{New.Average.IsAverage}, with the scale and hypotheses of \anchor{New/UpperBound/ElementaryDivisors/InvariantAverage}{946}{exists\_isAverage}. The existing proof passes through an explicitly defined Schur algebra, its coefficient-to-operator map, a weighted monomial adjointness theorem, the restricted representation, and traces. The following construction works with just the coefficient operators of a single polynomial representation. It is not a new invariant-theoretic theorem; its advantage is the shorter proof architecture and direct integrality argument.
+
+\section{Integral interpolation and the orbit lattice}
+We need one interpolation fact. The proof works even if $\iota$ is not local; interpolate over $W$ before applying $\iota$.
+\begin{lemma}[Integral evaluation span]\label{lem:density}
+For $d+k\le q$, the vectors $( (g^{\mathsf T})^\alpha )_\alpha$, indexed by degree-$d$ monomials in block-diagonal variables, for $g\in G$, span the full coefficient module over $W$. Their images span it over $\OO$.
+\end{lemma}
+\begin{proof}
+Over $\mathbb F_q$, if the vectors fail to span, a nonzero homogeneous polynomial $F$ of degree $d$ vanishes on every invertible block matrix. Thus $F\det X$ vanishes at every point in the block matrix space. Its degree is $d+k\le q$, and it is homogeneous. A homogeneous polynomial of degree $e\le q$ which vanishes at every point of $\mathbb F_q^s$ is zero: for $e<q$ this is repeated univariate interpolation; when $e=q$, replace each pure power $X_i^q$ by $X_i$. The resulting polynomial has individual degrees $<q$, and no cancellation between these new linear terms and the remaining homogeneous degree-$q$ terms is possible ($q\ge2$). Hence it too is zero, and so was the original polynomial. Constants and the empty-variable case are immediate. The block determinant is nonzero (it takes value $1$ at the identity), so $F=0$, a contradiction.
+
+Choose a full square minor of the evaluation matrix that is invertible over $\mathbb F_q$. Lift its finitely many invertible block matrices to $W$; the determinants remain units, as does that evaluation minor. The lifted evaluation vectors are a basis over $W$, and remain a basis after applying $\iota$. This proves the claim. No density theorem over $K$, no Noetherian assumption on $\OO$, and no localness of $\iota$ are needed.
+\end{proof}
+In the code this can reuse \anchor{New/UpperBound/ElementaryDivisors/InvariantAverage}{301}{eq\_top\_of\_eval\_monomial} or use the finite-minor proof above. The key is integral rather than fraction-field spanning.
+
+Let $V_d=(\OO^k)^{\otimes d}$ with word basis $e_{\mathbf j}$, $\mathbf j=(j_1,\ldots,j_d)$. Use $V_0=\OO$. Set $X_B$ equal to $X$ with the off-block entries set to zero. Define matrices $T_\alpha\in\operatorname{End}_{\OO}(V_d)$ by the polynomial identity
+\begin{equation}\label{eq:generic}
+ (X_B^{\mathsf T})^{\otimes d}=\sum_{|\alpha|=d}X^\alpha T_\alpha.
+\end{equation}
+Here and below the tensor construction may simply be implemented as matrices on words; no tensor-product coherence is required in Lean. In particular $T_\alpha$ is a sum of tensor matrix units, with zero for any off-block monomial. Its column indexed by $\mathbf j$ is zero unless the row multiplicities of $\alpha$ equal those of $\mathbf j$. In particular, if $\alpha$ is bad, only high-weight columns can be nonzero.
+
+Define $H_d=\{\mathbf j:\sum_l\rho_{j_l}>t\}$ and the integral lattice
+\[
+ U_d=\Span_{\OO}\{T_\alpha e_{\mathbf j}:|\alpha|=d,\ \mathbf j\in H_d\}.
+\]
+By evaluating \eqref{eq:generic} at $X=\iota(g)^\mathsf T$ and applying Lemma~\ref{lem:density},
+\begin{equation}\label{eq:orbit}
+ U_d=\Span_{\OO}\{\iota(g)^{\otimes d}e_{\mathbf j}:g\in G,\ \mathbf j\in H_d\}.
+\end{equation}
+The left expression makes finite generation immediate. The right expression makes $G$-stability immediate: multiply group elements. In particular $U_d$ is free of finite rank over the valuation domain, since it is a finitely generated torsion-free module (equivalently use rectangular Smith form). It need not be a direct summand of $V_d$. Every $T_\alpha$ is an integral linear combination of the operators $\iota(g)^{\otimes d}$ by Lemma~\ref{lem:density}; hence every $T_\alpha$ preserves $U_d$.
+
+\section{The short proof of the invariant average}
+For $|\alpha|=d\le D$ let
+\[
+ M_\alpha=\frac{d!}{\prod_{i,j}\alpha_{ij}!},\qquad
+ A_d(\psi)=\sum_{|\alpha|=d}\frac{C}{M_\alpha}\,[X^\alpha]\psi\,T_\alpha.
+\]
+The quotients belong to $\OO$. Indeed a multinomial is a product of at most $k^2$ binomial coefficients of upper index at most $d<p^f$; each has $p$-adic valuation at most $f$ by the carry formula or Legendre's formula. Integers prime to $p$ are units in $\OO$ (B\'ezout and $p\in\fr$). Thus $M_\alpha\mid C$. This reuses the source lemma \anchor{New/UpperBound/ElementaryDivisors/InvariantAverage}{81}{cast\_multinomial\_dvd\_pow}. In fact, for $s$ allowed variables and $f\ge1$, the carry bound gives the stronger exponent $(s-1)(f-1)$ for $d<p^f$, but we retain $C$ so no constant downstream changes.
+
+\begin{lemma}[Naturality without weighted adjointness]\label{lem:natural}
+Writing $P_g=\iota(g)^{\otimes d}$, one has $A_d(\psi^g)=P_g A_d(\psi)P_g^{-1}$.
+\end{lemma}
+\begin{proof}
+Work temporarily over $K$. Restrict $\psi$ to block variables; this commutes with conjugation because $g$ is block diagonal. The substitution $X\mapsto g^{-1}Xg$ on linear forms in the entries is intertwined with the adjoint action on matrix units by $X_{ij}\mapsto E_{ji}$ (the transpose matters). Map the product of $d$ linear forms to the average of the $d!$ ordered tensors of their images. This map is symmetric multilinear and therefore descends to homogeneous polynomials of degree $d$. It is equivariant because tensor permutations commute with the simultaneous conjugation in each factor. For a monomial $X^\alpha$, every distinct ordering occurs $\prod\alpha_{ij}!$ times, so its image is $T_\alpha/M_\alpha$. The scaled map is $A_d$. Both sides have integral entries, so the identity over $K$ descends to $\OO$. The degree-zero case is the scalar identity. No division by $d!$ is performed inside $\OO$.
+\end{proof}
+The proof is an ordinary symmetrization argument, not an invocation of a semisimplicity or Schur--Weyl theorem in positive characteristic. Equivariance is proved in characteristic zero and the integral matrix identity follows by injectivity of $\OO\hookrightarrow K$.
+
+\begin{proof}[Proof of Theorem~\ref{thm:avg}]
+Define
+\begin{equation}\label{eq:avg}
+ I(\psi)=\sum_{d=0}^D\bigl(\tr_{V_d}A_d(\psi)-\tr_{U_d}(A_d(\psi)|_{U_d})\bigr).
+\end{equation}
+This is $\OO$-linear and integral. The traces are on finite free modules; the restriction is legitimate since each $T_\alpha$ preserves $U_d$.
+
+\emph{Invariance.} Lemma~\ref{lem:natural} and \eqref{eq:orbit} make both operators conjugate by automorphisms on their respective modules. Traces are unchanged.
+
+\emph{Bad monomials.} If $\alpha$ is bad, then $T_\alpha e_{\mathbf j}=0$ for $\mathbf j\notin H_d$; for high words its image lies in $U_d$ by definition. Thus $A_d(X^\alpha)$ factors as $V_d\xrightarrow{B}U_d\xrightarrow{j}V_d$. Its restriction is $Bj$, and $\tr(jB)=\tr(Bj)$, valid for two finite free modules of unequal ranks. Consequently the difference in \eqref{eq:avg} vanishes. For monomials of degree above $D$ the functional is zero anyway.
+
+\emph{Congruence.} Suppose $\deg\psi\le D$ and the bad coefficients of every conjugate lie in $J$. For $\mathbf j\in H_d$ only bad $\alpha$ can contribute to $A_d(\psi)e_{\mathbf j}$. Their coefficients are in $J$, so this vector belongs to $J U_d$. By naturality,
+\[
+ A_d(\psi)P_g e_{\mathbf j}=P_g A_d(\psi^{g^{-1}})e_{\mathbf j}\in J U_d.
+\]
+Equation \eqref{eq:orbit} implies $A_d(\psi)U_d\subset J U_d$, not merely $J V_d$. In any basis of $U_d$ the matrix of this restriction has entries in $J$, so its trace lies in $J$.
+
+Finally, for a tensor of matrix units to have nonzero trace, all its factors must be diagonal. For a diagonal monomial $X^\alpha$, $\tr T_\alpha=M_\alpha$, since exactly that many ordered words have the prescribed multiplicities. Otherwise the trace is zero. Therefore
+\[
+ \sum_{d=0}^D\tr A_d(\psi)=C\psi(1).
+\]
+Subtracting the restriction traces proves the congruence. All three properties are established with the exact original scale.
+\end{proof}
+
+\paragraph{A useful equivalent implementation.} Instead of defining a separate trace map for every $\psi$, precompute the integral character polynomial
+\[
+ h_d(X)=\sum_{|\alpha|=d}X^\alpha\left(\tr T_\alpha-\tr(T_\alpha|_{U_d})\right).
+\]
+Then $I(\psi)=\sum_{d\le D}\sum_{|\alpha|=d}(C/M_\alpha)\,[X^\alpha]\psi\,[X^\alpha]h_d$. Over $K$, $h_d$ is the trace on the quotient of the generic tensor representation. Over $\OO$, define it by the trace difference, not by assuming $V_d/U_d$ free. This is a compact executable specification, useful for avoiding several named restricted-representation maps. It is mathematically equivalent to \eqref{eq:avg}; only the latter needs to be proved.
+
+\paragraph{Why an integral orbit is essential.} A tempting shortcut is to use the $K$-span of high-weight words and intersect with $V_d$. It is not enough to know $A(U_d)\subset J V_d$. For example $U=p\OO\subset V=\OO$, $A=1$ and $J=(p)$ give $A(U)\subset JV$ but $A(U)\not\subset JU$ and the trace on $U$ is $1$. The integral orbit description, and not a saturation assumption, proves the required divisibility.
+
+\section{A direct exceptional-divisor lemma}\label{sec:rank}
+We next avoid generating a collection of additional vectors to make the image large. The source near-inverse lemma has exactly the hypotheses used below, with a nonzero scalar in the actual edge application. We formulate the result over an arbitrary valuation domain, including nondiscrete ones. Write $v$ for its additive valuation with values in an ordered abelian group, and $v(0)=+\infty$. Comparisons below may equivalently be expressed as divisibility, so no real-valued valuation assumption is required.
+
+\begin{theorem}[Threshold rank lemma]\label{thm:rank}
+Let $Q,B:\OO^n\to\OO^m$, $R,A:\OO^m\to\OO^n$ satisfy $RQ=1$. Suppose $a,u\in\OO$ are nonzero and $u/a\in\fr$. Let $C_0\subset\OO^m$ be a submodule with $\im Q+\im B\subset C_0$. Assume there is a residue subspace $S_0\subset\kk^m$ of dimension $s$ such that $\overline{x}\in S_0$ whenever $ux\in C_0$. Finally suppose
+\[
+ AB-a1\in u\,\operatorname{Mat}_n(\OO).
+\]
+Then at most $s-n$ of the Smith factors $d_i$ of $M=AQ$ have $v(d_i)>v(a)$, including zero factors. In particular $s\ge n$.
+\end{theorem}
+\begin{proof}
+The projection $P=1-QR$ has image $\ker R$, a finite free direct summand of $\OO^m$. Set $F=PB=B-QRB$. Its image lies in $C_0$. Use a rectangular Smith decomposition of $F:\OO^n\to\ker R$, with codomain basis $f_j$ and nonzero diagonal factors $b_j$. For each index $j$ with $b_j\mid u$, one has $uf_j\in C_0$ because $b_j f_j\in\im F$. Let $h$ be their number. The reductions of these $f_j$, together with all $n$ columns of $Q$, are linearly independent: the two sets belong to complementary free summands, and the selected $f_j$ are part of a basis. Their reductions lie in $S_0$ (for the columns of $Q$ use $uQ\subset C_0$). Thus $n+h\le s$.
+
+Keep the Smith summands with $b_j\mid u$ and group the remaining ones into a multiple of $u$. Since divisibility is total, we obtain $F=F_0+uF_1$ with $\rk_K(F_0)\le h$. Substitution into $AB$ gives
+\[
+ M RB + A F_0 = a1+u Z
+\]
+for some integral $Z$. Write $L=RB$, $E=AF_0$; thus $ML+E=a1+uZ$ and $\rk_K E\le h$.
+
+Take a Smith decomposition $M=U\diag(d_i)V$ and multiply this equation on the left by $U^{-1}$ and on the right by $U$. Let $J=\{i:v(d_i)>v(a)\}$. On its principal submatrix we obtain
+\[
+ E'_{J,J}=a\bigl(1+(u/a)Z'_{J,J}-\diag(d_i/a)_{i\in J} L'_{J,J}\bigr),
+\]
+where $L'=VLU$, $Z'=U^{-1}ZU$, $E'=U^{-1}EU$. Both $u/a$ and every $d_i/a$ for $i\in J$ lie in $\fr$ (zero is allowed), so the bracket reduces to the identity and is invertible. Its rank over $K$ is $|J|$. But $E'$ has rank at most $h$, hence $|J|\le h\le s-n$. There is no need to correct the near inverse globally or to invoke Nakayama on a generated submodule.
+\end{proof}
+The theorem is more direct than a statement about adding $s-n$ generators: it directly isolates all elementary divisors above the scalar threshold. In fact that generator statement and this count are equivalent over a valuation domain when $a\ne0$, as is evident in a Smith basis: add unit vectors at the exceptional indices. The advantage is that no such generators need be constructed in the integrated proof. The original generic lemma covers some degenerate zero cases; keep it if any unrelated callers require those cases.
+
+\begin{corollary}[Truncated determinant]\label{cor:trunc}
+For $z\ne0$, write $\Delta_z(M)=\prod_i\gcd(d_i,z)$, with gcd defined up to a unit by total divisibility. Under Theorem~\ref{thm:rank}, if $H=\min(n,s-n)$, then
+\[
+ \Delta_z(M)\mid a^n z^H.
+\]
+More sharply, if $v(z)\ge v(a)$, then
+\[
+ v(\Delta_z(M))\le (n-H)v(a)+H v(z);
+\]
+if $v(z)<v(a)$ the trivial bound $n v(z)$ suffices.
+\end{corollary}
+\begin{proof}
+Each nonexceptional factor contributes at most $\min(v(a),v(z))$, and each exceptional one at most $v(z)$. Sum. The divisibility formulation follows, also for a nondiscrete valuation. The sharper bound uses only comparisons in the value group.
+\end{proof}
+
+\begin{lemma}[Two-sided change of coordinates]\label{lem:ends}
+For any square matrices $D_1,D_2,M$ over $\OO$ and $z\ne0$,
+\[
+ \Delta_z(D_1 M D_2)\mid \det D_1\det D_2\,\Delta_z(M).
+\]
+Also $\operatorname{ColengthDvd}(\top,\im M+z\OO^n,\Delta_z(M))$ in the source's sense.
+\end{lemma}
+\begin{proof}
+The lattice $\im M+z\OO^n$ is generated in a Smith basis by $\gcd(d_i,z)e_i$. Its basis determinant is $\Delta_z(M)$ up to a unit, so the colength assertion follows from the source's \anchor{New/Reduction/Lattices/Colength}{160}{ColengthDvd.of\_det\_dvd}.
+For the left multiplication assertion, let $L$ be a basis matrix of that lattice. All columns of $D_1 L$ are in $\im(D_1M)+z\OO^n$, because $D_1$ is integral. Relative to a basis of the latter, $D_1 L$ has an integral coordinate matrix, giving the determinant divisibility even if $D_1$ is singular. The right multiplication assertion follows by transposition, since Smith factors of a matrix and its transpose coincide. Combine the two.
+\end{proof}
+
+\section{Insert the replacements into the existing proof}
+For the actual edge application, the source writes $w^2=p$, $c_0=T.\mathrm{multinomialExponent}(k)$, $c=5Nc_0$, and uses
+\[
+ a=p^{2Nc_0}=w^{4Nc_0},\qquad u=w^{c-1},\qquad z=p^m.
+\]
+The code proves $Nc_0\ge2$, so $u/a=w^{Nc_0-1}$ is in the maximal ideal. The near inverse $B$ of the pairing $A$ satisfies $AB\equiv a1\pmod{w^c}$ by \anchor{New/UpperBound/ElementaryDivisors/ElementaryDivisorTheorem}{958}{IsEdgeCondition.pow\_dvd\_mul\_sub\_smul\_one}. In particular it satisfies the congruence modulo $u$. The maps $Q,Q'$ are bases of the saturated origin-function lattices and have left inverses. The defect submodule on the space of functions on edges is $C_0=\mathrm{valuedIn}(H\times\mathrm{Ed},C)$, and $S_0$ is the product of one copy of $S$ per edge coordinate. The source supplies both image inclusions and the residue implication in \anchor{New/UpperBound/ElementaryDivisors/ElementaryDivisorTheorem}{1011}{exists\_finset\_smul\_top\_le\_range\_sup\_span}. Its dimension estimate gives
+\[
+ s=|H\times\mathrm{Ed}|\dim S\le (1+\theta)n,
+ \qquad n=|V\times\mathrm{Exponents}|.
+\]
+The ambient edge-coordinate dimension is not $n$. Keeping those two ranks separate is important. Theorem~\ref{thm:rank} yields at most $\theta n$ exceptional divisors. Here $n$ is the full source coordinate rank, not the degree parameter called $n$ in the Lean file.
+
+The two endpoint matrices $d,d'$ from the depth estimate satisfy $\det(d'^\mathsf T)\det d\mid p^{|V|D_0}$ where $D_0=\lfloor c_{\rm div}|\mathrm{Exponents}|\rfloor$. The source proves $2Nc_0\le2c_{\rm div}$. Apply Corollary~\ref{cor:trunc} and Lemma~\ref{lem:ends} to $d'^\mathsf T M d$. If $h=|J|$, where $J$ is the exceptional Smith set, the resulting colength divides
+\[
+ p^\ell,\qquad \ell=|V|D_0+(2Nc_0)n+mh
+     \le (3c_{\rm div}+\theta m)n.
+\]
+This is exactly the output of the source lemma for edge-restriction colength (\anchor{New/UpperBound/ElementaryDivisors/ElementaryDivisorTheorem}{1080}{line 1080}). The public elementary-divisor theorem (\anchor{New/UpperBound/ElementaryDivisors/ElementaryDivisorTheorem}{1166}{line 1166}) therefore remains unchanged. The sharper bound can save $\min(m,2Nc_0)$ per exceptional divisor when compared to the actual unsharpened per-divisor cost, but no change in the global constants is needed or claimed here.
+
+The invariant-average replacement retains \src{exists\_isAverage} literally. It is called in the \anchor{New/UpperBound/ElementaryDivisors/AveragingMap}{579}{averaging-map theorem}, with $f=T.\mathrm{frobExp}\cdot N$, scale $p^{c_0}$, and a degree cutoff satisfying the required bound. The other invariance consequence, the equality of row and column weights for monomials on which the average is nonzero, is already proved in the source and should be kept. There is no change to the averaging over the $N$ copies, the congruence precision, the root lemma, or the count of bounded-defect forms.
+
+\paragraph{Downstream.} The marked-prime Hecke estimate is consumed by the upper-bound divisibility argument, which contributes to the short-form theorem. Since the theorem on elementary divisors retains its exact statement, the existing arithmetic estimate, determinant comparison, one-sided prime bound, and five final RH/Dirichlet-GRH statements need no modification. This is a local replacement proof relying on the existing downstream development, not an independent proof of RH.
+
+\section{Comparison, risks, and further research}
+The fourteen proposal READMEs and the mathematical TeX files listed in \src{proposal\_audit.tsv} were inspected for their section structure and relevant terms. The proposals concern centered/spectral spanning and completion, the CM norm cancellation witness, cyclotomic/Newton torsion interpolation, sparse-place coloring, primitive label weakening, orbital matching/exchange, analytic twist selection/Perron/nearest-pole arguments, signed local gains, and integral-pivot rows. The signed-gain note mentions a possible reduction of the cost of local elementary divisors at the level prime. The present replacement instead proves the existing edge-Hecke colength estimate directly and preserves its constants; it does not assume a smaller level cost. The orbital exchange note uses a finite orbital certificate for a different matching problem; it is not the integral orbit trace used here. Thus the two changes are distinct from the inspected mathematical proposals, and can be used even if those changes are implemented. This is a targeted audit, not a literature-priority claim or an exhaustive line-by-line audit of every auxiliary artifact.
+
+\paragraph{Where the shortening comes from.} In the invariant-average file, the main target is the section after the interpolation lemma (lines 346--972), plus the adjointness construction (lines 94--153). The direct generic matrix proof replaces explicit Schur-algebra and restricted-action definitions with one polynomial matrix and its coefficient operators; symmetrization replaces the factorial adjoint calculation. The final rank argument targets the linear algebra at lines 59--270 of \src{ElementaryDivisorTheorem} and the supplementary-generator use around lines 1011--1147. Some matrix and colength helpers may still be needed elsewhere. The source is large: even a successful rewrite here will not shorten the entire project by an order of magnitude. It attacks a substantial isolated proof bottleneck. It has not been benchmarked and formalization might find that reusing an existing lemma is cheaper than eliminating it.
+
+\paragraph{Recommended order.} First implement the threshold-rank lemma (small interface, low dependence on representation theory), then the character/orbit trace average (preserve the original public statement). Use the old theorem bodies as a reference until all callers compile. Compare transitive declaration and line counts only after migration and dead-code analysis; run the five theorem axiom reports and independent checks if available. The attached \src{LEAN\_PLAN.md} records exact milestones and acceptance tests.
+
+\paragraph{Further research questions.} Can one dispense with the invariant average altogether by a direct perfect-pairing argument on an integral small-defect space? The residue dimension bound alone does not guarantee this: a pairing can vanish on an entire low-dimensional space. Can the tighter multinomial carry bound reduce the constants in the Frobenius-cycle estimate without changing the precision hypotheses? Can the residue dimension estimate be proved without the power-packing/volume argument in \src{DefectCount}? The present note makes no claims about these harder improvements.
+
+\section*{Verification and provenance}
+\addcontentsline{toc}{section}{Verification and provenance}
+The GitHub connector was used to read the source and proposal materials. The included TSV records relevant source paths and blob IDs, and the proposal file inventory. The exact finite examples in \src{check\_local.py} test the tensor symmetrization formula, covariance under conjugation, the degree-$q$ interpolation boundary, trace congruence in a nontrivial invariant orbit model, and the exceptional-divisor/truncation argument. These checks illustrate the proofs, not prove their universal statements. No Lean executable or project build was available in this environment. The original proof's verification is described in the \href{https://github.com/VladimirReshetnikov/ProveIt/blob/17bf37ab3b6740d5d7430065d2f2a1a2a03e8a0e/Analysis/GeneralizedRiemannHypothesis/Lean/grh/README.md}{repository README} and linked \href{https://math.mit.edu/~drew/shortgrh/}{independent verification record}. This report does not extend those checks to the new argument. No repository files were modified.
+\end{document}

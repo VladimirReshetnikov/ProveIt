@@ -1,0 +1,122 @@
+\documentclass[11pt]{article}
+\usepackage[margin=0.98in]{geometry}
+\usepackage{amsmath,amssymb,hyperref}
+\hypersetup{colorlinks=true,urlcolor=blue}
+\title{A finite-quotient replacement for the\\ explicit unitary class count}
+\author{Proof-shortening proposal for ProveIt}
+\date{28 November 2026}
+\newcommand{\OO}{\mathcal O}
+\newcommand{\CC}{\mathbb C}
+\newcommand{\QQ}{\mathbb Q}
+\begin{document}
+\maketitle
+\noindent\textbf{Result.}
+The proof of \texttt{New.Space.card\_stdClasses\_le} can avoid bounded
+strong approximation and the auxiliary matrix $GX$. Keep the short basis
+and its Gram matrix $G$. At each $G$, count residues of the adelic inverse
+in the finite quotient $G^{-1}R^r/R^r$. The current explicit constant and
+the downstream theorem statement are unchanged. This is a written
+replacement, not a Lean-checked patch or a measurement of lines saved.
+
+\section*{1. The replacement invariant}
+Use the notation and hypotheses of the
+\href{https://github.com/VladimirReshetnikov/ProveIt/blob/2c38f343aa14c8ce85ab1c7a203774c7d05a9780/Analysis/GeneralizedRiemannHypothesis/Lean/grh/src/New/UpperBound/Size/ClassCount.lean#L116}{pinned class-count theorem}.
+Let $E$ be the CM field, $R=\widehat{\OO}_E$ its ring of integral finite
+adeles, and $r$ the rank. For each standard double coset $g$ choose the
+same short basis $Y$ furnished by the existing proof. Over the finite adeles
+put
+\[
+ A=g_{\rm out}^{-1}Y,\qquad G=Y^\ast Y=A^\ast A .
+\]
+Then $A$ has entries in $R$, $G$ is invertible over the adeles, and $G$ has
+entries in $\OO_E$ by the existing integrality lemma. Define
+\[
+ L_G=\{v\in\mathbb A_{E,f}^{r}:Gv\in R^r\}=G^{-1}R^r .
+\]
+It contains $R^r$. Every column of $A^{-1}$ belongs to $L_G$ because
+$GA^{-1}=A^\ast$. Record $G$ and the $r$ ordered column classes of
+$A^{-1}$ in $L_G/R^r$. Equivalently record the columns of $A^\ast$ in
+$R^r/GR^r$. A class representative and a short basis may be chosen once;
+independence from all choices is not needed for an injection.
+
+\paragraph{Collision.}
+For equal data at $g,g'$ the difference $A^{-1}-A'^{-1}$ is integral.
+Since $A'$ is integral,
+\[
+ A'A^{-1}=I+A'(A^{-1}-A'^{-1})
+\]
+is integral. With the equality of rational Gram matrices, this is exactly
+the hypothesis of\par\noindent \texttt{stdClasses\_eq\_of\_gram\_eq}. Thus
+$g=g'$. No approximation or lifting of arbitrary residue tuples is needed.
+
+\section*{2. Cardinality and the explicit constant}
+Multiplication by $G$ identifies $L_G/R^r$ with $R^r/GR^r$.
+At each finite place the local integer ring is a DVR; integral row and
+column operations diagonalize the full-rank matrix $G$ there. Its local
+cokernel has size $q_{\mathrm{p}}^{v_{\mathrm{p}}(\det G)}$, where
+$q_{\mathrm{p}}$ is the residue-field size. Almost all factors are $1$.
+Taking the product gives
+\[
+ |L_G/R^r|=|N_{E/\QQ}(\det G)|.
+\]
+In Lean the local diagonalization need not be added: see the route below.
+
+Let $f$ be the number of infinite places and $c=6N(fr)^2$. For $r>0$ the
+short-basis bound gives $\lvert\phi(Y_{ij})\rvert\le c$ at every
+embedding $\phi$. Set $W=rc^2$. Every Gram entry is bounded by $W\le c^3$.
+The existing integer box estimate gives at most $(1+2c^3)^{2fr^2}$
+Gram matrices. The Leibniz formula yields
+\[
+ |\phi(\det G)|\le r!W^r\le(rW)^r\le c^{3r}
+\]
+since $r^2\le c$. The conjugate pairs of complex embeddings give
+$|N_{E/\QQ}(\det G)|^r\le c^{6fr^2}$ possible column tuples per Gram.
+Multiply the bounds, using $c^3\le 1+2c^3$, to get exactly the current
+$(1+2c^3)^{4fr^2}$ upper bound. Rank zero has one class.
+
+\paragraph{Optional narrower count.}
+Hadamard on $\phi(Y)$ gives $|\phi(\det G)|=|\det\phi(Y)|^2\le W^r$.
+Keeping $W$ in the box estimate gives
+$(1+2W)^{2fr^2}W^{2fr^2}$ for positive rank.
+This improvement is unnecessary to retain the existing interface.
+
+\section*{3. Lean integration and verification boundary}
+Retain the short-basis choice, the Gram-entry integrality lemma, the
+integer box estimate, and the final equality lemma. Replace the approximation
+and second bounded-matrix construction as follows.
+
+\smallskip\noindent\textbf{Quotient.}
+Define the fiber for fixed $G$ as the quotient attached to
+\texttt{preimageLattice} by \texttt{intVectors} (i.e.\ $L_G/R^r$).
+For the column of $A^{-1}$, membership follows directly from $GA^{-1}=A^\ast$.
+The quotient equivalence relation gives an integral column difference.
+Use a dependent sum over bounded integral Gram matrices, or count
+each fiber of the Gram map separately.
+
+\smallskip\noindent\textbf{Index.}
+Identify the preimage lattice with the column lattice of $G^{-1}$
+by applying $G$ and $G^{-1}$. Then
+\href{https://github.com/VladimirReshetnikov/ProveIt/blob/2c38f343aa14c8ce85ab1c7a203774c7d05a9780/Analysis/GeneralizedRiemannHypothesis/Lean/grh/src/Lib/General/NumberTheory/LatticeCovolumes.lean#L197}{\texttt{submoduleIndex\_intVectors\_mul\_genIndex\_det}}
+computes the relative index using $\det(G^{-1})$.
+Alternatively use \texttt{submoduleIndex\_colLattice\_div} on $G$.
+Combine multiplicativity of the generalized index with
+\href{https://github.com/VladimirReshetnikov/ProveIt/blob/2c38f343aa14c8ce85ab1c7a203774c7d05a9780/Analysis/GeneralizedRiemannHypothesis/Lean/grh/src/Lib/Adelic/Adeles/IdeleModulus.lean#L399}{\texttt{New.genIndex\_algebraMap}}.
+For an implementation, establish the nonzero relative index and identify
+it with the relevant quotient's \texttt{Nat.card} before counting tuples.
+Prove the determinant bound with the ordinary finite sum over permutations;
+a Hadamard API is not required.
+
+\smallskip\noindent\textbf{What disappears.}
+The bounded principal representative $X$, both bounds on $X$ and $GX$,
+and the corresponding integrality and collision calculations are
+local to the current argument. No claim is made that all imports used
+for them disappear from the wider development. Lean elaboration and net
+line savings have not been measured.
+
+\smallskip\noindent\textbf{Deduplication.}
+The accompanying audit pins the public source and proposal files.
+I found no proposal for this invariant in that baseline. The included
+exact integer-matrix replay tests the two congruence descriptions and the
+collision calculation, including noncollision cases. It is a check of the
+algebra, not a test of the finite-adelic Lean proof.
+\end{document}
