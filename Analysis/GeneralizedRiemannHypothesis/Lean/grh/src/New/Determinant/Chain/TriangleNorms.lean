@@ -257,26 +257,6 @@ lemma ChainAdjoint.succ {i n : ℕ} {κ κ' : I → ℂ} (h_chain : ChainAdjoint
       rw [adjoint_d, inner_smul_right, Pi.mul_apply]
       ring
 
-/-- Take a triangle of size `m` (`IsTriangle`): spaces `F i n` with arrows `a` along the rows and
-maps `d : F i (n + 1) → F (i + 1) n`, such that `⟪v, a (j i y)⟫ = ⟪d v, j (i + 1) y⟫` on the
-isometric copies `j i` of `V`. Read `M c f` as "the function `c` of the parameter `t : I` has
-modulus `f`". Suppose that this relation is unital and multiplicative, that the squares commute up
-to constants with the moduli `L`, and that every `z` at the corner of a square has a vector `x` with
-`⟪a v, z⟫ = ⟪v, x⟫` and `⟪d x, v'⟫ = κ' * ⟪d z, a v'⟫`, where `M κ' 1` (`HasSquareModuli`). Then
-for `i + n < m` there is `κ` with `M κ 1` and `⟪z, a (X i n)⟫ = κ * ⟪d z, X (i + 1) n⟫`
-(`ChainAdjoint`), where `X i n` is the weighted composite of `n` arrows of row `i` at `j i y`. -/
-lemma IsTriangle.exists_chainAdjoint (h_tri : IsTriangle m w a d j)
-    (h_moduli : HasSquareModuli m w M L a d) (i n : ℕ) (hi : i + n < m) :
-    ∃ κ : I → ℂ, M κ 1 ∧ ChainAdjoint w a d j i n κ := by
-  induction n with
-  | zero =>
-    exact ⟨1, h_moduli.modulus_one, fun t y z ↦ by
-      simp [weightedChain_zero_apply, h_tri.first_adjoint i hi]⟩
-  | succ n ih =>
-    obtain ⟨κ, hκ, h_chain⟩ := ih (by lia)
-    obtain ⟨κ', hκ', h_square⟩ := h_moduli.square_adjoint i n hi
-    exact ⟨κ * κ', by simpa using h_moduli.modulus_mul hκ hκ', h_chain.succ h_square⟩
-
 /-- For nonzero weights, `d` moves past the empty chain with constant `1`. -/
 lemma chainCommutes_zero [∀ (t : I) (n : ℕ), NeZero (w t n)] (i : ℕ) :
     ChainCommutes w a d i 0 1 := by
@@ -299,47 +279,26 @@ lemma IsTriangle.exists_chainCommutes [∀ (t : I) (n : ℕ), NeZero (w t n)]
     obtain ⟨β', h_square⟩ := h_tri.square_commutes i n hi
     exact ⟨β * β', h_chain.succ h_square⟩
 
-/-- Take weights `w t n ≠ 0`, arrows `a t i n : F i n → F i (n + 1)` and maps
-`d t i n : F i (n + 1) → F (i + 1) n`, with a parameter `t : I`. Suppose that the relation `M c f`,
-read "`c` has modulus `f`", is unital and multiplicative and that for `i + n + 2 ≤ m` the square
-`w n • a ∘ d = (w (n + 2) / conj β') • d ∘ a` on `F i (n + 1)` holds with some `β'` of modulus
-`L (i + 1) (i + n + 2)` (part of `HasSquareModuli`). Let `X i n` be the weighted composite of the
-first `n` arrows of row `i`. For `i + n < m` some `β` whose modulus is the product of the
-`L (i + 1) k` over `i + 1 < k ≤ i + 1 + n` satisfies
-`X (i + 1) n ∘ d ∘ a = (w (n + 1) / (w 1 * w 0 * conj β)) • d ∘ X i (n + 1)` (`ChainCommutes`). -/
-lemma HasSquareModuli.exists_chainCommutes [∀ (t : I) (n : ℕ), NeZero (w t n)]
-    (h_moduli : HasSquareModuli m w M L a d) (i n : ℕ) (hi : i + n < m) :
-    ∃ β : I → ℂ, M β (∏ k ∈ Ioc (i + 1) (i + 1 + n), L (i + 1) k) ∧ ChainCommutes w a d i n β := by
-  induction n with
-  | zero => exact ⟨1, by simpa [Ioc_self] using h_moduli.modulus_one, chainCommutes_zero i⟩
-  | succ n ih =>
-    obtain ⟨β, hβ, h_chain⟩ := ih (by lia)
-    obtain ⟨β', hβ', h_square⟩ := h_moduli.exists_modulus_commutes i n hi
-    refine ⟨β * β', ?_, h_chain.succ h_square⟩
-    -- The product of the moduli gains the factor of the new square.
-    rw [← add_assoc, prod_Ioc_succ_top (by lia)]
-    exact h_moduli.modulus_mul hβ hβ'
-
-/-- Take a triangle of size `m` with nonzero weights (`IsTriangle`): arrows `a` along the rows and
-maps `d` down a row whose squares commute up to scalars, with `a` adjoint to `d` on the copies `j i`
-of `V`. Let `X i n` be the weighted composite of the first `n` arrows of row `i`. For `i + n < m`
-there are `β` and `κ`, functions of the parameter `t : I`, such that `X (i + 1) n ∘ d ∘ a = (w
-(n + 1) / (w 1 * w 0 * conj β)) • d ∘ X i (n + 1)` (`ChainCommutes`). Moreover, under
-`HasSquareModuli`, `κ * β` has modulus the product of the `L (i + 1) k` over `i + 1 < k ≤ i + 1 + n`
-and `⟪z, a (X i n)⟫ = κ * ⟪d z, X (i + 1) n⟫` at the images of any `y` in `V` (`ChainAdjoint`). -/
-lemma IsTriangle.exists_chainCommutes_and_chainAdjoint [∀ (t : I) (n : ℕ), NeZero (w t n)]
-    (h_tri : IsTriangle m w a d j) (i n : ℕ) (hi : i + n < m) :
+/-- Accumulate the commuting and adjoint laws together, tracking the
+modulus of the product of their witnesses. -/
+private lemma IsTriangle.exists_chain_laws [∀ (t : I) (n : ℕ), NeZero (w t n)]
+    (h_tri : IsTriangle m w a d j) (h_moduli : HasSquareModuli m w M L a d)
+    (i n : ℕ) (hi : i + n < m) :
     ∃ β κ : I → ℂ,
-      ChainCommutes w a d i n β ∧
-      (HasSquareModuli m w M L a d →
-        M (κ * β) (∏ k ∈ Ioc (i + 1) (i + 1 + n), L (i + 1) k) ∧ ChainAdjoint w a d j i n κ) := by
-  by_cases h_moduli : HasSquareModuli m w M L a d
-  · obtain ⟨β, hβ, h_commutes⟩ := h_moduli.exists_chainCommutes i n hi
-    obtain ⟨κ, hκ, h_adjoint⟩ := h_tri.exists_chainAdjoint h_moduli i n hi
-    exact ⟨β, κ, h_commutes,
-      fun _ ↦ ⟨by simpa only [one_mul] using h_moduli.modulus_mul hκ hβ, h_adjoint⟩⟩
-  · obtain ⟨β, h_commutes⟩ := h_tri.exists_chainCommutes i n hi
-    exact ⟨β, 1, h_commutes, fun h_moduli' ↦ absurd h_moduli' h_moduli⟩
+      M (κ * β) (∏ k ∈ Ioc (i + 1) (i + 1 + n), L (i + 1) k) ∧
+      ChainCommutes w a d i n β ∧ ChainAdjoint w a d j i n κ := by
+  induction n with
+  | zero =>
+    refine ⟨1, 1, by simpa [Ioc_self] using h_moduli.modulus_one, chainCommutes_zero i, ?_⟩
+    intro t y z
+    simp [weightedChain_zero_apply, h_tri.first_adjoint i hi]
+  | succ n ih =>
+    obtain ⟨β, κ, h_pair, h_commutes, h_adjoint⟩ := ih (by lia)
+    obtain ⟨β', hβ', h_square⟩ := h_moduli.exists_modulus_commutes i n hi
+    obtain ⟨κ', hκ', h_square_adjoint⟩ := h_moduli.square_adjoint i n hi
+    refine ⟨β * β', κ * κ', ?_, h_commutes.succ h_square, h_adjoint.succ h_square_adjoint⟩
+    rw [← add_assoc, prod_Ioc_succ_top (by lia), mul_mul_mul_comm]
+    exact h_moduli.modulus_mul h_pair (by simpa only [one_mul] using h_moduli.modulus_mul hκ' hβ')
 
 /-- Take a triangle of size `m` with nonzero weights (`IsTriangle`): spaces `F i n`, arrows `a`
 along the rows and maps `d` down a row whose squares commute up to scalars, and isometries
@@ -464,15 +423,12 @@ lemma IsTriangle.exists_inner_weightedChain_eq [∀ (t : I) (n : ℕ), NeZero (w
     have hi_lt : i < m := by lia
     have h_end : i + 1 + n = m := by lia
     obtain ⟨κ, hκ, gram_next⟩ := ih (i + 1) h_end
-    obtain ⟨β, hβ, h_commutes⟩ : ∃ β : I → ℂ,
-        M β (∏ k ∈ Ioc (i + 1) m, L (i + 1) k) ∧ ChainCommutes w a d i n β := by
-      simpa only [h_end] using h_moduli.exists_chainCommutes i n hin_lt
-    obtain ⟨κ', hκ', h_adjoint⟩ := h_tri.exists_chainAdjoint h_moduli i n hin_lt
+    obtain ⟨β, κ', h_pair, h_commutes, h_adjoint⟩ :=
+      h_tri.exists_chain_laws h_moduli i n hin_lt
     -- The squares between rows `i` and `i + 1` give the factors with `r = i + 1`.
     have h_modulus : M (κ' * β * κ * C i) (∏ r ∈ Ioc i m, ∏ k ∈ Ioc r m, L r k) := by
       rw [← prod_Ioc_consecutive _ i.le_succ hi_lt, Nat.Ioc_succ_singleton, prod_singleton]
-      simpa only [one_mul, mul_one] using
-        h_moduli.modulus_mul (h_moduli.modulus_mul (h_moduli.modulus_mul hκ' hβ) hκ) (hC i)
+      simpa only [h_end, mul_one] using h_moduli.modulus_mul (h_moduli.modulus_mul h_pair hκ) (hC i)
     refine ⟨κ' * β * κ * C i, h_modulus, fun t x y ↦ ?_⟩
     rw [List.range'_succ, List.map_cons, List.prod_cons, End.mul_apply]
     obtain ⟨x', hx'⟩ : ∃ x' : V, j (i + 1) x' = d t i 0 (a t i 0 (j i x)) :=
