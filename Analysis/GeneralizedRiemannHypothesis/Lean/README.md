@@ -195,6 +195,8 @@ For the explicit margins, [PolynomialIrreducibleDegrees.lean](GRHArticle/Progres
 
 [PolynomialLargeFieldAsymptotics.lean](GRHArticle/ProgressionFree/PolynomialLargeFieldAsymptotics.lean) completes the asymptotic conclusions of `gpp:thm:largeq`. For any family of finite fields tending to infinite size along a filter, the difference between the actual supremum and the benchmark tends to zero after multiplication by any fixed natural power of the field size. The extended-real limsup of the normalized logarithm is at most $-1$. Explicit bounds also quantify both convergence statements.
 
+[PolynomialTwoPrimeTransfer.lean](GRHArticle/ProgressionFree/PolynomialTwoPrimeTransfer.lean) transfers the article's three finite triangle losses, as hypotheses, to the actual polynomial density supremum. [PolynomialTwoPrimeFibers.lean](GRHArticle/ProgressionFree/PolynomialTwoPrimeFibers.lean) counts the two-prime classes with the leading scalar retained. The resulting upper bound uses the same one-prime Roth series as Asada et al.
+
 ## RH and Dirichlet GRH input
 
 The article uses the five theorems in

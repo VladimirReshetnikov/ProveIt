@@ -15,11 +15,12 @@ open scoped Classical BigOperators
 
 variable {F : Type*} [Field F] [Fintype F]
 
-private noncomputable def primeExcludingLayer (S : Finset (Polynomial F)) (n : ℕ) :
+/-- Monic degree-`n` polynomials avoiding a specified finite set of primes. -/
+noncomputable def primeExcludingLayer (S : Finset (Polynomial F)) (n : ℕ) :
     Finset (Polynomial F) :=
   (monicLayer F n).filter fun f ↦ ∀ p ∈ S, ¬ p ∣ f
 
-private theorem mem_primeExcludingLayer {S : Finset (Polynomial F)} {n : ℕ} {f : Polynomial F} :
+theorem mem_primeExcludingLayer {S : Finset (Polynomial F)} {n : ℕ} {f : Polynomial F} :
     f ∈ primeExcludingLayer S n ↔ f.Monic ∧ f.natDegree = n ∧ ∀ p ∈ S, ¬ p ∣ f := by
   simp only [primeExcludingLayer, Finset.mem_filter, mem_monicLayer, and_assoc]
 
@@ -61,7 +62,8 @@ private theorem card_primeExcludingLayer_insert (S : Finset (Polynomial F)) {p :
       · exact fun r hr hrg ↦ hav r hr (dvd_mul_of_dvd_right hrg p)
   rw [hdiv, ← hnot, add_comm, Finset.card_filter_add_card_filter_not]
 
-private theorem normalized_primeExcludingLayer (S : Finset (Polynomial F))
+/-- The normalized count for an arbitrary finite set of monic irreducibles. -/
+theorem normalized_primeExcludingLayer (S : Finset (Polynomial F))
     (hS : ∀ p ∈ S, p.Monic ∧ Irreducible p) {n : ℕ}
     (hn : ∑ p ∈ S, p.natDegree ≤ n) :
     ((primeExcludingLayer S n).card : ℝ) / (Fintype.card F : ℝ)^n =
