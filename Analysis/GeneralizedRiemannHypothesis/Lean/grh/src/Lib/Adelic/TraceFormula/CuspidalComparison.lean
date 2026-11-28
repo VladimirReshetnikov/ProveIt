@@ -93,11 +93,10 @@ theorem trace_eq_of_isCuspidalAt (hE : Even (Core.numInfPlaces E)) (hn : 2 ≤ c
   have : Module.Finite ℂ (levelSpace (V'.formRep (typeKernel l s')) K'.1) :=
     V'.finite_levelSpace (isCuspKernel_typeKernel h_gap') K'
   refine trace_eq_of_trace_cutLevel_eq hv h_max i V.inner_formRep V'.inner_formRep ha h_int
-    (fun j m S S' hS hS' ↦ ?_) hT hT'
+    (fun m S S' hS hS' ↦ ?_) hT hT'
   refine trace_comparison hE hn V V' h_gap h_gap' (w' := v) hw ?_ (fun g hg ↦ ?_) hS hS'
   · -- Cuspidality at `w` survives the cut at `v` and convolution on the left.
     obtain ⟨h_ne, h_star_ne⟩ : v ≠ w ∧ star v ≠ w := not_or.1 hv_ne
-    rw [pow_succ a, mapDomain_mul, ← mul_assoc]
     exact (h_cusp.convIndicator_offPlace hv h_ne h_star_ne h_max h_int).convIndicator_mul _
   · -- At `v` an element of the support is `x * k` with `k` in the stabiliser of a line and `x` in
     -- a set that carries the positive powers of `T⁺` and on which `x * k` has a simple zero.
@@ -105,7 +104,7 @@ theorem trace_eq_of_isCuspidalAt (hE : Even (Core.numInfPlaces E)) (hn : 2 ≤ c
         ∀ k ∈ lineStabilizer v i, HasSimpleZero (x * k)},
         ∃ k ∈ lineStabilizer v i, g.atPlace v = x * k :=
       exists_atPlace_eq_of_convIndicator_ne_zero hv
-        (lineHecke_pow_mem_spanOn v i m.succ_pos) (a ^ (j + 1)) hg
+        (lineHecke_pow_mem_spanOn v i m.succ_pos) a hg
     rw [h_eq]
     exact hx k hk
 

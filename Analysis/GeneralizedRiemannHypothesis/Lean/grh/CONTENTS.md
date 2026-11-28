@@ -496,7 +496,7 @@ The heads of these files give an overview of a theory: `Lib/ClassField/Global/Ar
 
 **TraceFormula**: Trace formula for unitary groups of hermitian spaces
 
-- `Lib/Adelic/TraceFormula/LineDeterminant` (243): Traces on the range of an idempotent from traces of a raising operator
+- `Lib/Adelic/TraceFormula/LineDeterminant` (221): Traces on the range of an idempotent from traces of a raising operator
 - `Lib/Adelic/TraceFormula/LevelAlgebra` (60): The elements of a group algebra that keep a level
 - `Lib/Adelic/TraceFormula/LineCount` (209): Lines and hyperplanes over a field
 - `Lib/Adelic/TraceFormula/TestFunction` (150): Test functions and the two local conditions of the comparison of traces
@@ -506,15 +506,15 @@ The heads of these files give an overview of a theory: `Lib/ClassField/Global/Ar
 - `Lib/Adelic/TraceFormula/LineStabiliser` (547): The stabiliser of a line at a finite place
 - `Lib/Adelic/TraceFormula/OffPlace` (81): Test functions with a deeper level at an auxiliary place
 - `Lib/Adelic/TraceFormula/Stretch` (61): Rational points that pair short lattice vectors non-trivially
-- `Lib/Adelic/TraceFormula/CoprimeFactors` (568): Coprime factors
-- `Lib/Adelic/TraceFormula/LevelCut` (243): Passage to the stabiliser of a line at an auxiliary place
+- `Lib/Adelic/TraceFormula/CoprimeFactors` (562): Coprime factors
+- `Lib/Adelic/TraceFormula/LevelCut` (244): Passage to the stabiliser of a line at an auxiliary place
 - `Lib/Adelic/TraceFormula/ChangingSigns` (279): Types of frames with a similitude, and the permutation of orbits that changes signs
 - `Lib/Adelic/TraceFormula/KernelBound` (242): The sum of a majorant over the rational points
 - `Lib/Adelic/TraceFormula/Convergence` (322): Convergence of the geometric side
 - `Lib/Adelic/TraceFormula/ReduciblePolynomials` (160): The geometric side, polynomial by polynomial
 - `Lib/Adelic/TraceFormula/OrbitalUnfolding` (429): Kernels of levels as forms, and unfolding of orbital integrals
 - `Lib/Adelic/TraceFormula/TraceComparison` (492): Comparison of traces of operators on forms for different spaces and signs
-- `Lib/Adelic/TraceFormula/CuspidalComparison` (67): Comparison of traces for a cuspidal test function
+- `Lib/Adelic/TraceFormula/CuspidalComparison` (66): Comparison of traces for a cuspidal test function
 
 **Unitary**: Adelic unitary groups and hermitian spaces
 
@@ -890,7 +890,7 @@ The heads of these files give an overview of a theory: `Lib/ClassField/Global/Ar
 **LinearAlgebra**: Linear algebra and matrix analysis
 
 - `Lib/General/LinearAlgebra/TensorChains` (173): Chains of linear maps, tensor products of their data, and separation by forms
-- `Lib/General/LinearAlgebra/Eigenvalues` (507): Eigenvalues: traces of powers, common eigenvectors, Amitsur's theorem, Sylvester's law
+- `Lib/General/LinearAlgebra/Eigenvalues` (514): Eigenvalues: traces of powers, common eigenvectors, Amitsur's theorem, Sylvester's law
 - `Lib/General/LinearAlgebra/HermitianMatrices` (216): Determinants of positive semidefinite matrices, principal minors and hermitian involutions
 - `Lib/General/LinearAlgebra/IntegralLattices` (460): Integral matrices over subrings: Smith normal form, Gelfand's condition and lattices
 - `Lib/General/LinearAlgebra/MatricesNearIdentity` (260): Matrices near the identity: Jacobi's formula and norm estimates

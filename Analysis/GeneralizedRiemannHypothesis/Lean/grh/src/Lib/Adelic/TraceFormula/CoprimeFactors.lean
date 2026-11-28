@@ -304,15 +304,6 @@ lemma exists_mul_mem_iwasawaSet {O : Subring F} (hO : IsValuationPair O) (T : Fi
   obtain ⟨u, hu, hu_semiconj⟩ := exists_mem_iwasawaSet_semiconjBy hO h_idem h_rank
   exact ⟨g⁻¹ * u, h_semiconj.units_inv_symm_left.mul_left hu_semiconj, by simpa using hu⟩
 
-/-- Over an algebraically closed field the trace of `p(y)` is the sum of `p` over the roots of the
-characteristic polynomial of `y`, with multiplicity. -/
-lemma trace_aeval_eq_sum_roots [IsAlgClosed F] (y : Matrix n n F) (p : F[X]) :
-    (aeval y p).trace = (y.charpoly.roots.map p.eval).sum := by
-  induction p using Polynomial.induction_on' with
-  | add p q hp hq => simp [hp, hq, Multiset.sum_map_add]
-  | monomial m c =>
-    simp [aeval_monomial, ← Algebra.smul_def, trace_pow_eq_sum_roots, Multiset.sum_map_mul_left]
-
 variable {A B u v : F[X]} {y : Matrix n n F}
 
 /-- If `u A + v B = 1` and `y` has characteristic polynomial `A B`, then `(v B)(y)` is

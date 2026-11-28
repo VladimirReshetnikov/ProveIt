@@ -12,7 +12,7 @@ Each declaration below adapts or closely follows, in whole or in part and with c
 | `src/Lib/Adelic/QuotientMeasure/MovingTheQuotient.lean` | `New.integrable_mul_comp_inv_mul` | `MeasureTheory.measurePreserving_prod_mul` | `Mathlib/MeasureTheory/Group/Prod.lean` |
 | `src/Lib/Adelic/Reduction/MinkowskiTheorems.lean` | `exists_min_of_finite_le` | `Northcott.exists_min_image` | `Mathlib/Order/Northcott.lean` |
 | `src/Lib/Adelic/TraceFormula/LineCount.lean` | `New.KeepsLine.rootMultiplicity_charpoly` | `Matrix.charmatrix_toSquareBlock` | `Mathlib/LinearAlgebra/Matrix/Charpoly/Basic.lean` |
-| `src/Lib/Adelic/TraceFormula/LineDeterminant.lean` | `New.trace_pow_mul_eq_sum` | `LinearMap.trace_comp_eq_zero_of_commute_of_trace_restrict_eq_zero` | `Mathlib/Algebra/DirectSum/LinearMap.lean` |
+| `src/Lib/Adelic/TraceFormula/LineDeterminant.lean` | `New.trace_mul_eq_sum_gen` | `LinearMap.trace_comp_eq_zero_of_commute_of_trace_restrict_eq_zero` | `Mathlib/Algebra/DirectSum/LinearMap.lean` |
 | `src/Lib/Adelic/TraceFormula/LineDeterminant.lean` | `New.trace_restrictGenEigenspace_mul` | `LinearMap.trace_comp_eq_zero_of_commute_of_trace_restrict_eq_zero` | `Mathlib/Algebra/DirectSum/LinearMap.lean` |
 | `src/Lib/Adelic/TraceFormula/TestFunction.lean` | `New.exists_eq_pow_of_monic_of_map_eq_pow` | `Polynomial.Monic.irreducible_iff_irreducible_map_fraction_map` | `Mathlib/RingTheory/Polynomial/GaussLemma.lean` |
 | `src/Lib/Adelic/TraceFormula/TestFunction.lean` | `TestFunction.translate` | `Representation.coind` | `Mathlib/RepresentationTheory/Coinduced.lean` |

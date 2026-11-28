@@ -71,6 +71,16 @@ lemma trace_pow_eq_sum_roots (m : ℕ) :
     simpa [eval_charpoly, eval_multiset_prod, algebraMap_eq_diagonal, Pi.algebraMap_def] using h_det
   rw [trace_eq_sum_roots_charpoly, h_charpoly, roots_multiset_prod_X_sub_C]
 
+/-- Over an algebraically closed field the trace of `p(y)` is the sum of `p` over the roots of the
+characteristic polynomial of `y`, with multiplicity. -/
+lemma trace_aeval_eq_sum_roots {n F : Type*} [Fintype n] [DecidableEq n] [Field F] [IsAlgClosed F]
+    (y : Matrix n n F) (p : F[X]) :
+    (aeval y p).trace = (y.charpoly.roots.map p.eval).sum := by
+  induction p using Polynomial.induction_on' with
+  | add p q hp hq => simp [hp, hq, Multiset.sum_map_add]
+  | monomial m c =>
+    simp [aeval_monomial, ← Algebra.smul_def, trace_pow_eq_sum_roots, Multiset.sum_map_mul_left]
+
 /-- Over an algebraically closed field of characteristic 0, if tr A^m = tr B^m + ∑_{e∈S} α_e^m
 for all m ≥ 0, with S finite, then the characteristic polynomial of A is that of B times
 ∏_{e∈S} (X − α_e). -/

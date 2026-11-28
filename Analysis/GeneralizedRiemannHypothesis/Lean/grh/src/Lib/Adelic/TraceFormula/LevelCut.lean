@@ -11,7 +11,7 @@ stabiliser `J` of a line at `w` and agrees with `K` elsewhere. On the vectors of
 representation, an operator `A` that comes from the places off `w` commutes with the operators `T⁺`,
 `T⁻` of `J`, and the mean `e` over `GL_n(𝒪_w)` projects onto the vectors of level `K`. If the
 representation is unitary and the vectors of level `K'` form a finite-dimensional space, then the
-traces of the `A ^ l * T⁺ ^ m`, `l, m ≥ 1`, at level `K'` determine the trace of `A` at level `K`
+traces of `A * T⁺ ^ m` for `m ≥ 1` at level `K'` determine the trace of `A` at level `K`
 (`trace_eq_of_trace_cutLevel_eq`).
 
 Notions from other files:
@@ -340,8 +340,8 @@ lemma lineRelation_offAction (hw : w.IsSplit) (hK : maxCompactAt n w ≤ K) (i :
 in `universalLevelAlgebra K` (it maps the space of `K`-fixed vectors to itself in every
 representation) and be a combination of elements that are integral at `w`. Consider two unitary
 representations whose spaces of vectors of level `K'`, the level cut by the stabiliser of a line at
-`w`, are finite-dimensional. Suppose that for all `l`, `m` the element
-`b = (T⁺) ^ (m + 1) * a' ^ (l + 1)` of the group algebra, with `T⁺ = lineHecke w i` placed at `w`
+`w`, are finite-dimensional. Suppose that for each `m` the element
+`b = (T⁺) ^ (m + 1) * a'` of the group algebra, with `T⁺ = lineHecke w i` placed at `w`
 and `a'` the part of `a` off `w`, has the same trace in both at level `K'` (`h_trace`, where `S`,
 `S'` are the two operators by which `b` acts there). Then `a` has the same trace at level `K` in
 both. -/
@@ -352,11 +352,11 @@ theorem trace_eq_of_trace_cutLevel_eq (hw : w.IsSplit) (hK : maxCompactAt n w �
     [Module.Finite ℂ (levelSpace ρ' (cutLevel K w (lineStabilizer w i)))]
     {a : ℂ[Gf E n]} (ha : a ∈ universalLevelAlgebra K)
     (h_int : a ∈ spanOn ℂ {g : Gf E n | g.atPlace w ∈ localIntGL n w})
-    (h_trace : ∀ (l m : ℕ) (S : End ℂ (levelSpace ρ (cutLevel K w (lineStabilizer w i))))
+    (h_trace : ∀ (m : ℕ) (S : End ℂ (levelSpace ρ (cutLevel K w (lineStabilizer w i))))
       (S' : End ℂ (levelSpace ρ' (cutLevel K w (lineStabilizer w i)))),
       let K' : Subgroup (Gf E n) := cutLevel K w (lineStabilizer w i)
       let b : ℂ[Gf E n] := mapDomain (ofSplitPlace hw) (lineHecke w i ^ (m + 1)) *
-        mapDomain (offPlace hw) (a ^ (l + 1))
+        mapDomain (offPlace hw) a
       (∀ y : levelSpace ρ K', (S y : M) = ρ.asAlgebraHom b y) →
       (∀ y : levelSpace ρ' K', (S' y : M') = ρ'.asAlgebraHom b y) →
         trace ℂ (levelSpace ρ K') S = trace ℂ (levelSpace ρ' K') S')
@@ -373,11 +373,11 @@ theorem trace_eq_of_trace_cutLevel_eq (hw : w.IsSplit) (hK : maxCompactAt n w �
     (hT' y).trans (asAlgebraHom_offRep_apply hw ρ' h_int (levelSpace_anti hK y.2)).symm
   rw [← trace_offAction_mul_mean hw ρ hK i a₁ hT_off,
     ← trace_offAction_mul_mean hw ρ' hK i a₂ hT_off']
-  -- By the line relation it suffices to compare the traces of the products of positive powers.
-  refine (lineRelation_offAction hw hK i hρ a₁).trace_mul_mean_eq
-    (lineRelation_offAction hw hK i hρ' a₂) fun l m ↦ ?_
-  exact h_trace l m _ _ (coe_offAction_pow_mul_raiseAt_pow_apply hw ρ hK i a₁ (l + 1) (m + 1))
-    (coe_offAction_pow_mul_raiseAt_pow_apply hw ρ' hK i a₂ (l + 1) (m + 1))
+  refine (lineRelation_offAction hw hK i hρ a₁).trace_mul_mean_eq_of_positive_moments
+    (lineRelation_offAction hw hK i hρ' a₂) fun m _ ↦ ?_
+  apply h_trace m
+  · simpa only [pow_one] using coe_offAction_pow_mul_raiseAt_pow_apply hw ρ hK i a₁ 1 (m + 1)
+  · simpa only [pow_one] using coe_offAction_pow_mul_raiseAt_pow_apply hw ρ' hK i a₂ 1 (m + 1)
 
 end New
 

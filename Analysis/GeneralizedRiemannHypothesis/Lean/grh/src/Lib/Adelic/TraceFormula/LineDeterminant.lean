@@ -1,18 +1,18 @@
-import Lib.Base
+import Lib.General.LinearAlgebra.Eigenvalues
 
 /-!
 # Traces on the range of an idempotent from traces of a raising operator
 
-Let `T⁺`, `T⁻` be adjoint operators on a finite-dimensional inner product space with
-`T⁺ * T⁻ = d • (1 + c • e)`, where `d, c > 0`, `e` is idempotent and `A` commutes with `T⁺` and
-`T⁻`. The traces of the `A ^ l * T⁺ ^ i`, `l, i ≥ 1`, determine the trace of `A` on the range of `e`
-(`LineRelation.trace_mul_mean_eq`): on the generalised eigenspace of `A` for each non-zero
-eigenvalue they give the eigenvalues of `T⁺`, hence the dimension and
-`|det T⁺| ^ 2 = d ^ dim * (1 + c) ^ rank e`.
+Let `T⁺`, `T⁻` be adjoint operators on a finite-dimensional complex inner product space, with
+`T⁺ * T⁻ = d • (1 + c • e)`, `d, c > 0`, and `e` idempotent. If `A` commutes with both operators,
+then its trace on the range of `e` is determined by the traces of `A * T⁺ ^ j` for positive `j`.
+When comparing two spaces it suffices to take `j` up to the number of distinct eigenvalues in the
+union of their raising-operator spectra (`LineRelation.trace_mul_mean_eq_of_positive_moments`).
 
-The first section collects what traces determine on generalised eigenspaces; in particular the
-traces of all powers of an operator determine its characteristic polynomial
-(`charpoly_eq_of_trace_pow_eq`).
+On a generalized eigenspace of `A`, the determinant relation expresses the rank of `e` as a sum of
+logarithms over the roots of the characteristic polynomial of `T⁺`, counted with multiplicity.
+Interpolate these values by a common polynomial with zero constant term. The trace of that
+polynomial in `T⁺` agrees with the rank on every generalized eigenspace, giving the weighted trace.
 -/
 
 open Module LinearMap Polynomial InnerProductSpace
@@ -51,135 +51,14 @@ lemma trace_restrictGenEigenspace_mul (h : Commute A T) (μ : ℂ) :
   exact trace_comp_eq_mul_of_commute_of_isNilpotent μ h_comm
     (A.isNilpotent_restrict_maxGenEigenspace_sub_algebraMap μ)
 
-/-- If `T` commutes with `A`, then on the generalised eigenspace of `A` for `μ` the trace of
-`A ^ l * T` is `μ ^ l` times the trace of `T`. -/
-lemma trace_restrictGenEigenspace_pow_mul (h : Commute A T) (μ : ℂ) (l : ℕ) :
-    trace ℂ (A.maxGenEigenspace μ)
-        (restrictGenEigenspace (T := A ^ l * T) ((Commute.self_pow A l).mul_right h) μ) =
-      μ ^ l * trace ℂ (A.maxGenEigenspace μ) (restrictGenEigenspace h μ) := by
-  induction l with
-  | zero => simp only [restrictGenEigenspace, pow_zero, one_mul]
-  | succ l ih =>
-    have h_comm : Commute A (A ^ l * T) := (Commute.self_pow A l).mul_right h
-    rw [pow_succ' μ, mul_assoc, ← ih, ← trace_restrictGenEigenspace_mul h_comm]
-    simp only [restrictGenEigenspace, pow_succ', mul_assoc]
-
-/-- Let `T` commute with `A` and let the finite set `S` contain all eigenvalues of `A`. Then the
-trace of `A ^ l * T` is the sum over `μ ∈ S` of `μ ^ l` times the trace of `T` on the generalised
-eigenspace of `A` for `μ`. -/
-lemma trace_pow_mul_eq_sum (h : Commute A T) {S : Finset ℂ}
-    (hS : ∀ μ : ℂ, μ ∉ S → A.maxGenEigenspace μ = ⊥) (l : ℕ) :
-    trace ℂ B (A ^ l * T) =
-      ∑ μ ∈ S, μ ^ l * trace ℂ (A.maxGenEigenspace μ) (restrictGenEigenspace h μ) := by
-  have h_subset : {μ : ℂ | A.maxGenEigenspace μ ≠ ⊥} ⊆ (S : Set ℂ) :=
-    fun μ hμ ↦ by_contra fun hμS ↦ hμ (hS μ hμS)
-  have h_finite : {μ : ℂ | A.maxGenEigenspace μ ≠ ⊥}.Finite := S.finite_toSet.subset h_subset
-  have h_internal := DirectSum.isInternal_submodule_of_iSupIndep_of_iSup_eq_top
-    A.independent_maxGenEigenspace A.iSup_maxGenEigenspace_eq_top
-  have h_comm : Commute A (A ^ l * T) := (Commute.self_pow A l).mul_right h
-  calc _ = ∑ μ ∈ h_finite.toFinset,
-          trace ℂ (A.maxGenEigenspace μ) (restrictGenEigenspace h_comm μ) :=
-      trace_eq_sum_trace_restrict' h_internal h_finite (End.mapsTo_maxGenEigenspace_of_comm h_comm)
-    _ = ∑ μ ∈ S, trace ℂ (A.maxGenEigenspace μ) (restrictGenEigenspace h_comm μ) := by
-      refine Finset.sum_subset (h_finite.toFinset_subset.2 h_subset) fun μ _ hμ ↦ ?_
-      have : Subsingleton (A.maxGenEigenspace μ) :=
-        Submodule.subsingleton_iff_eq_bot.2 (by simpa using hμ)
-      rw [Subsingleton.eq_zero (restrictGenEigenspace h_comm μ), map_zero]
-    _ = ∑ μ ∈ S, μ ^ l * trace ℂ (A.maxGenEigenspace μ) (restrictGenEigenspace h μ) :=
-      Finset.sum_congr rfl fun μ _ ↦ trace_restrictGenEigenspace_pow_mul h μ l
-
-/-- The sequences `l ↦ μ ^ l`, `μ : ℂ`, are linearly independent: two combinations of them that
-agree for all `l` have the same coefficients. -/
-lemma eq_of_sum_pow_mul_eq {S : Finset ℂ} {a a' : ℂ → ℂ}
-    (h_sum : ∀ l : ℕ, ∑ μ ∈ S, μ ^ l * a μ = ∑ μ ∈ S, μ ^ l * a' μ) {μ : ℂ} (hμ : μ ∈ S) :
-    a μ = a' μ := by
-  have h_indep : LinearIndependent ℂ fun μ : ℂ ↦ ⇑(powersHom ℂ μ) :=
-    (linearIndependent_monoidHom (Multiplicative ℕ) ℂ).comp _ (powersHom ℂ).injective
-  have h_fun : ∑ ν ∈ S, a ν • ⇑(powersHom ℂ ν) = ∑ ν ∈ S, a' ν • ⇑(powersHom ℂ ν) := by
-    funext l
-    simpa [mul_comm] using h_sum l.toAdd
-  exact linearIndependent_iff'ₛ.1 h_indep S a a' h_fun μ hμ
-
-/-- Given operators `A` and `A'` and a number `μ`, there is a finite set that contains `μ` and all
-eigenvalues of `A` and of `A'`. -/
-lemma exists_finset_maxGenEigenspace_eq_bot (A : End ℂ B) (A' : End ℂ B') (μ : ℂ) :
-    ∃ S : Finset ℂ, μ ∈ S ∧
-      (∀ ν : ℂ, ν ∉ S → A.maxGenEigenspace ν = ⊥) ∧
-      ∀ ν : ℂ, ν ∉ S → A'.maxGenEigenspace ν = ⊥ := by
-  have h_finite : {ν : ℂ | A.maxGenEigenspace ν ≠ ⊥}.Finite :=
-    Submodule.finite_ne_bot_of_iSupIndep A.independent_maxGenEigenspace
-  have h_finite' : {ν : ℂ | A'.maxGenEigenspace ν ≠ ⊥}.Finite :=
-    Submodule.finite_ne_bot_of_iSupIndep A'.independent_maxGenEigenspace
-  exact ⟨insert μ (h_finite.toFinset ∪ h_finite'.toFinset), Finset.mem_insert_self _ _,
-    by simp +contextual, by simp +contextual⟩
-
-/-- Let `T` commute with `A` and `T'` with `A'`. If the traces of `A ^ l * T` and `A' ^ l * T'`
-agree for all `l`, then so do the traces of `T` and `T'` on the generalised eigenspaces of `A`
-and `A'` for each `μ`. -/
-lemma trace_restrictGenEigenspace_eq (h : Commute A T) (h' : Commute A' T')
-    (h_trace : ∀ l : ℕ, trace ℂ B (A ^ l * T) = trace ℂ B' (A' ^ l * T')) (μ : ℂ) :
-    trace ℂ (A.maxGenEigenspace μ) (restrictGenEigenspace h μ) =
-      trace ℂ (A'.maxGenEigenspace μ) (restrictGenEigenspace h' μ) := by
-  obtain ⟨S, hμ, hS, hS'⟩ := exists_finset_maxGenEigenspace_eq_bot A A' μ
-  refine eq_of_sum_pow_mul_eq
-    (a := fun ν ↦ trace ℂ (A.maxGenEigenspace ν) (restrictGenEigenspace h ν))
-    (a' := fun ν ↦ trace ℂ (A'.maxGenEigenspace ν) (restrictGenEigenspace h' ν)) (fun l ↦ ?_) hμ
-  rw [← trace_pow_mul_eq_sum h hS, ← trace_pow_mul_eq_sum h' hS', h_trace]
-
-/-- Let `T` commute with `A` and `T'` with `A'`. If the traces of `A ^ (l + 1) * T` and
-`A' ^ (l + 1) * T'` agree for all `l`, then so do the traces of `T` and `T'` on the generalised
-eigenspaces of `A` and `A'` for each non-zero `μ`. -/
-lemma trace_restrictGenEigenspace_eq_of_ne_zero (h : Commute A T) (h' : Commute A' T')
-    (h_trace : ∀ l : ℕ, trace ℂ B (A ^ (l + 1) * T) = trace ℂ B' (A' ^ (l + 1) * T'))
-    {μ : ℂ} (hμ : μ ≠ 0) :
-    trace ℂ (A.maxGenEigenspace μ) (restrictGenEigenspace h μ) =
-      trace ℂ (A'.maxGenEigenspace μ) (restrictGenEigenspace h' μ) := by
-  apply mul_left_cancel₀ hμ
-  rw [← trace_restrictGenEigenspace_mul, ← trace_restrictGenEigenspace_mul]
-  refine trace_restrictGenEigenspace_eq _ _ (fun l ↦ ?_) μ
-  rw [← mul_assoc, ← mul_assoc, ← pow_succ, ← pow_succ, h_trace]
-
-/-- The trace of the identity on a generalised eigenspace is the dimension of that space. -/
-lemma trace_restrictGenEigenspace_one (A : End ℂ B) (μ : ℂ) :
-    trace ℂ (A.maxGenEigenspace μ) (restrictGenEigenspace (Commute.one_right A) μ) =
-      finrank ℂ (A.maxGenEigenspace μ) :=
-  trace_one ℂ (A.maxGenEigenspace μ)
-
-/-- Operators whose generalised eigenspaces have the same dimensions for every `μ` have the same
-characteristic polynomial, as these dimensions are the multiplicities of its roots. -/
-lemma charpoly_eq_of_finrank_maxGenEigenspace_eq
-    (h_finrank : ∀ μ : ℂ, finrank ℂ (A.maxGenEigenspace μ) = finrank ℂ (A'.maxGenEigenspace μ)) :
-    A.charpoly = A'.charpoly := by
-  have h_roots : A.charpoly.roots = A'.charpoly.roots := by
-    ext μ
-    simp_rw [count_roots, ← finrank_maxGenEigenspace_eq, h_finrank]
-  rw [(IsAlgClosed.splits A.charpoly).eq_prod_roots_of_monic A.charpoly_monic,
-    (IsAlgClosed.splits A'.charpoly).eq_prod_roots_of_monic A'.charpoly_monic, h_roots]
-
-/-- Operators `A` and `A'` with the same traces of all powers have the same characteristic
-polynomial. -/
+/-- Traces of all powers determine the characteristic polynomial. -/
 lemma charpoly_eq_of_trace_pow_eq (h_trace : ∀ l : ℕ, trace ℂ B (A ^ l) = trace ℂ B' (A' ^ l)) :
     A.charpoly = A'.charpoly := by
-  refine charpoly_eq_of_finrank_maxGenEigenspace_eq fun μ ↦ Nat.cast_injective (R := ℂ) ?_
-  rw [← trace_restrictGenEigenspace_one, ← trace_restrictGenEigenspace_one]
-  exact trace_restrictGenEigenspace_eq _ _ (fun l ↦ by simp only [mul_one, h_trace]) μ
-
-lemma finrank_maxGenEigenspace_zero_of_det_ne_zero (h_det : T.det ≠ 0) :
-    finrank ℂ (T.maxGenEigenspace 0) = 0 := by
-  rw [finrank_maxGenEigenspace_eq]
-  exact rootMultiplicity_eq_zero fun h_root ↦
-    h_det (by simp [det_eq_sign_charpoly_coeff, coeff_zero_eq_eval_zero, h_root.eq_zero])
-
-/-- Two invertible operators with the same traces of all positive powers have the same
-characteristic polynomial. -/
-lemma charpoly_eq_of_trace_pow_succ_eq (h_det : T.det ≠ 0) (h_det' : T'.det ≠ 0)
-    (h_trace : ∀ i : ℕ, trace ℂ B (T ^ (i + 1)) = trace ℂ B' (T' ^ (i + 1))) :
-    T.charpoly = T'.charpoly := by
-  refine charpoly_eq_of_finrank_maxGenEigenspace_eq fun μ ↦ Nat.cast_injective (R := ℂ) ?_
-  obtain rfl | hμ := eq_or_ne μ 0
-  · simp [finrank_maxGenEigenspace_zero_of_det_ne_zero, h_det, h_det']
-  rw [← trace_restrictGenEigenspace_one, ← trace_restrictGenEigenspace_one]
-  exact trace_restrictGenEigenspace_eq_of_ne_zero _ _ (fun l ↦ by simp only [mul_one, h_trace]) hμ
+  let b := Module.finBasis ℂ B
+  let b' := Module.finBasis ℂ B'
+  rw [← charpoly_toMatrix A b, ← charpoly_toMatrix A' b']
+  simpa using charpoly_eq_mul_of_trace_pow_add (toMatrix b b A) (B := toMatrix b' b' A')
+    (∅ : Finset ℂ) id (fun l ↦ by simp [toMatrix_pow, ← trace_eq_matrix_trace, h_trace])
 
 /-- For an idempotent `e`, the determinant of `1 + c e` is `(1 + c) ^ rank e`. -/
 lemma det_one_add_smul_of_isIdempotentElem {e : End ℂ B} (he : IsIdempotentElem e) (c : ℂ) :
@@ -299,44 +178,129 @@ lemma det_ne_zero (h : LineRelation d c A Tp Tm e) : Tp.det ≠ 0 := by
   have := h.c_pos
   positivity
 
-/-- Let `A, T⁺, T⁻, e` and `A', T⁺', T⁻', e'` satisfy the line relations (`T⁺`, `T⁻` adjoint,
-`T⁺ T⁻ = d (1 + c e)`) for the same `c, d > 0`. If `T⁺` and `T⁺'` have the same characteristic
-polynomial, then `e` and `e'` have the same rank: the polynomial gives the dimension and
-`det T⁺`, hence the rank. -/
-lemma finrank_range_eq_of_charpoly_eq (h : LineRelation d c A Tp Tm e)
-    (h' : LineRelation d c A' Tp' Tm' e') (h_charpoly : Tp.charpoly = Tp'.charpoly) :
-    finrank ℂ (range e) = finrank ℂ (range e') := by
-  have h_dim : finrank ℂ B = finrank ℂ B' := by
-    rw [← Tp.charpoly_natDegree, h_charpoly, Tp'.charpoly_natDegree]
-  have h_det : Tp.det = Tp'.det := by
-    rw [det_eq_sign_charpoly_coeff, det_eq_sign_charpoly_coeff, h_dim, h_charpoly]
-  have h_pow : (1 + c) ^ finrank ℂ (range e) = (1 + c) ^ finrank ℂ (range e') :=
-    mul_left_cancel₀ (pow_pos h.d_pos (finrank ℂ B')).ne'
-      (by rw [← h'.norm_det_sq, ← h_det, h.norm_det_sq, h_dim])
-  exact pow_right_injective₀ (add_pos one_pos h.c_pos) (lt_add_of_pos_right 1 h.c_pos).ne' h_pow
+end LineRelation
 
-/-- Let `A, T⁺, T⁻, e` and `A', T⁺', T⁻', e'` satisfy the line relations (`T⁺`, `T⁻` adjoint,
-`T⁺ T⁻ = d (1 + c e)`, `A` commuting with both) for the same `c, d > 0`. If the traces of
-`A ^ (l + 1) * T⁺ ^ (i + 1)` and `A' ^ (l + 1) * T⁺' ^ (i + 1)` agree for all `l, i`, then for
-each non-zero `α` the idempotents `e` and `e'` have the same rank on the generalised eigenspaces
-of `A` and `A'` for `α`. -/
-lemma finrank_range_restrictGenEigenspace_eq (h : LineRelation d c A Tp Tm e)
-    (h' : LineRelation d c A' Tp' Tm' e')
-    (h_trace : ∀ l i : ℕ,
-      trace ℂ B (A ^ (l + 1) * Tp ^ (i + 1)) = trace ℂ B' (A' ^ (l + 1) * Tp' ^ (i + 1)))
-    {α : ℂ} (hα : α ≠ 0) :
-    finrank ℂ (range (restrictGenEigenspace (T := e) h.commute_mean α)) =
-      finrank ℂ (range (restrictGenEigenspace (T := e') h'.commute_mean α)) := by
-  -- On the generalised eigenspaces for `α` the operators `T⁺` are invertible, so the traces of
-  -- their positive powers determine their characteristic polynomials.
-  have h_charpoly : (restrictGenEigenspace h.commute_plus α).charpoly =
-      (restrictGenEigenspace h'.commute_plus α).charpoly := by
-    refine charpoly_eq_of_trace_pow_succ_eq (h.restrict_maxGenEigenspace α).det_ne_zero
-      (h'.restrict_maxGenEigenspace α).det_ne_zero fun i ↦ ?_
-    rw [restrictGenEigenspace_pow, restrictGenEigenspace_pow]
-    exact trace_restrictGenEigenspace_eq_of_ne_zero _ _ (fun l ↦ h_trace l i) hα
-  exact (h.restrict_maxGenEigenspace α).finrank_range_eq_of_charpoly_eq
-    (h'.restrict_maxGenEigenspace α) h_charpoly
+/-- Sum the logarithmic weights over the nonzero roots, including their multiplicities. -/
+private lemma sum_spectral_logs (s : Multiset ℂ) (hs : 0 ∉ s) (d c : ℝ) (hd : 0 < d) :
+    (s.map fun z ↦ Real.log (‖z‖ ^ 2 / d) / Real.log (1 + c)).sum =
+      (Real.log (‖s.prod‖ ^ 2) - s.card * Real.log d) / Real.log (1 + c) := by
+  simp_rw [div_eq_mul_inv _ (Real.log (1 + c)), Multiset.sum_map_mul_right]
+  congr 1
+  have hlog := Real.log_multiset_prod (s := s.map fun z ↦ ‖z‖ ^ 2 / d) (by
+    simpa using fun z (hz : z ∈ s) ↦ And.intro (fun h : z = 0 ↦ hs (h ▸ hz)) hd.ne')
+  rw [Multiset.map_map, Function.comp_def] at hlog
+  have hn : (s.map norm).prod = ‖s.prod‖ := (map_multiset_prod (normHom : ℂ →*₀ ℝ) s).symm
+  rw [← hlog, Multiset.prod_map_div, Multiset.prod_map_pow, hn]
+  simp [Real.log_div (pow_ne_zero _ (norm_ne_zero_iff.mpr (Multiset.prod_ne_zero hs)))
+    (pow_ne_zero _ hd.ne'), Real.log_pow]
+
+variable {V V' : Type*} [NormedAddCommGroup V] [InnerProductSpace ℂ V] [Module.Finite ℂ V]
+  [NormedAddCommGroup V'] [InnerProductSpace ℂ V'] [Module.Finite ℂ V']
+  {A T U e : End ℂ V} {d c : ℝ}
+
+private lemma trace_aeval_eq_root_sum (T : End ℂ V) (p : ℂ[X]) :
+    trace ℂ V (aeval T p) = (T.charpoly.roots.map p.eval).sum := by
+  let b := Module.finBasis ℂ V
+  rw [trace_eq_matrix_trace ℂ b, ← charpoly_toMatrix T b]
+  exact (congrArg Matrix.trace (aeval_algHom_apply (toMatrixAlgEquiv b) T p).symm).trans
+    (trace_aeval_eq_sum_roots _ _)
+
+/-- When a polynomial interpolates the logarithmic weights, its trace is the rank of the mean. -/
+private lemma LineRelation.trace_aeval_eq_rank (h : LineRelation d c A T U e) (p : ℂ[X])
+    (hp : ∀ z ∈ T.charpoly.roots, p.eval z = (Real.log (‖z‖ ^ 2 / d) / Real.log (1 + c) : ℝ)) :
+    trace ℂ V (aeval T p) = finrank ℂ (range e) := by
+  have hdet : T.det = T.charpoly.roots.prod :=
+    End.det_eq_prod_roots_charpoly_of_splits (IsAlgClosed.splits _)
+  have hz : 0 ∉ T.charpoly.roots := by
+    intro hz
+    exact h.det_ne_zero (hdet.trans (Multiset.prod_eq_zero hz))
+  have hn := (IsAlgClosed.splits T.charpoly).natDegree_eq_card_roots
+  rw [T.charpoly_natDegree] at hn
+  let g (z : ℂ) := Real.log (‖z‖ ^ 2 / d) / Real.log (1 + c)
+  have hcast (s : Multiset ℂ) : (s.map fun z ↦ (g z : ℂ)).sum = ↑((s.map g).sum) := by
+    simpa [Multiset.map_map, Function.comp_def] using (map_multiset_sum Complex.ofRealHom (s.map g)).symm
+  rw [trace_aeval_eq_root_sum, Multiset.map_congr rfl hp, hcast]
+  norm_cast
+  rw [sum_spectral_logs _ hz d c h.d_pos, ← hdet, ← hn, h.norm_det_sq]
+  have hpw : (1 + c) ^ finrank ℂ (range e) ≠ 0 := pow_ne_zero _ (by have := h.c_pos; positivity)
+  rw [Real.log_mul (pow_ne_zero _ h.d_pos.ne') hpw, Real.log_pow, Real.log_pow,
+    add_sub_cancel_left, mul_div_cancel_right₀ _ (Real.log_pos (by have := h.c_pos; linarith)).ne']
+
+private noncomputable abbrev eigSupport (A : End ℂ V) : Finset ℂ :=
+  (Submodule.finite_ne_bot_of_iSupIndep A.independent_maxGenEigenspace).toFinset
+
+private lemma trace_mul_eq_sum_gen {A E : End ℂ V} (h : Commute A E) :
+    trace ℂ V (A * E) = ∑ μ ∈ eigSupport A,
+      μ * trace ℂ (A.maxGenEigenspace μ) (restrictGenEigenspace h μ) := by
+  have hd := DirectSum.isInternal_submodule_of_iSupIndep_of_iSup_eq_top
+    A.independent_maxGenEigenspace A.iSup_maxGenEigenspace_eq_top
+  rw [trace_eq_sum_trace_restrict' hd (Submodule.finite_ne_bot_of_iSupIndep A.independent_maxGenEigenspace)
+    (End.mapsTo_maxGenEigenspace_of_comm ((Commute.refl A).mul_right h))]
+  exact Finset.sum_congr rfl fun μ _ ↦ trace_restrictGenEigenspace_mul h μ
+
+private lemma trace_mul_poly_eq_sum_gen (h : Commute A T) (p : ℂ[X]) :
+    trace ℂ V (A * aeval T p) = ∑ μ ∈ eigSupport A,
+      μ * trace ℂ (A.maxGenEigenspace μ) (aeval (restrictGenEigenspace h μ) p) := by
+  induction p using Polynomial.induction_on' with
+  | add f g hf hg => simp only [map_add, mul_add, hf, hg, Finset.sum_add_distrib]
+  | monomial n r =>
+    simp only [aeval_monomial, ← Algebra.smul_def, mul_smul_comm, map_smul, smul_eq_mul,
+      trace_mul_eq_sum_gen (h.pow_right n), ← restrictGenEigenspace_pow h, Finset.mul_sum,
+      mul_left_comm r]
+
+private lemma root_mem_of_restrict {T : End ℂ V} {H : Submodule ℂ V}
+    (hH : ∀ x ∈ H, T x ∈ H) {z : ℂ} (hz : z ∈ (T.restrict hH).charpoly.roots) :
+    z ∈ T.charpoly.roots := by
+  rw [Polynomial.mem_roots (T.restrict hH).charpoly_monic.ne_zero,
+    ← End.hasEigenvalue_iff_isRoot_charpoly] at hz
+  rw [Polynomial.mem_roots T.charpoly_monic.ne_zero, ← End.hasEigenvalue_iff_isRoot_charpoly]
+  exact fun (h : T.eigenspace z = ⊥) ↦ hz (End.eigenspace_restrict_eq_bot hH (by simp [h]))
+
+/-- A polynomial interpolating the logarithmic weights represents the mean inside traces against
+any operator commuting with the raising and lowering operators. -/
+lemma LineRelation.trace_mul_eq_spectral (h : LineRelation d c A T U e) (p : ℂ[X])
+    (hp : ∀ z ∈ T.charpoly.roots, p.eval z = (Real.log (‖z‖ ^ 2 / d) / Real.log (1 + c) : ℝ)) :
+    trace ℂ V (A * e) = trace ℂ V (A * aeval T p) := by
+  rw [trace_mul_eq_sum_gen h.commute_mean, trace_mul_poly_eq_sum_gen h.commute_plus]
+  refine Finset.sum_congr rfl fun μ _ ↦ congrArg (μ * ·) ?_
+  rw [(h.restrict_maxGenEigenspace μ).idem.isProj_range.trace]
+  exact ((h.restrict_maxGenEigenspace μ).trace_aeval_eq_rank p
+    (fun z hz ↦ hp z (root_mem_of_restrict _ hz))).symm
+
+variable {A' T' U' e' : End ℂ V'}
+
+/-- To compare the traces of the means, it suffices to know the positive raising-operator
+moments up to the size of the union of the two distinct spectra. Only one power of the test
+operator occurs. -/
+theorem LineRelation.trace_mul_mean_eq_of_positive_moments
+    (h : LineRelation d c A T U e) (h' : LineRelation d c A' T' U' e')
+    (hmom : ∀ k < (T.charpoly.roots.toFinset ∪ T'.charpoly.roots.toFinset).card,
+      trace ℂ V (A * T ^ (k + 1)) = trace ℂ V' (A' * T' ^ (k + 1))) :
+    trace ℂ V (A * e) = trace ℂ V' (A' * e') := by
+  classical
+  let S := T.charpoly.roots.toFinset ∪ T'.charpoly.roots.toFinset
+  let f (z : ℂ) : ℂ := (Real.log (‖z‖ ^ 2 / d) / Real.log (1 + c) : ℝ)
+  -- Factoring out X gives only positive powers, including when the interpolation set is empty.
+  let q := Lagrange.interpolate S id (fun z ↦ f z / z)
+  have heval {z : ℂ} (hz : z ∈ S) : (X * q).eval z = f z := by
+    rw [eval_mul, eval_X, show q.eval z = f z / z from
+      Lagrange.eval_interpolate_at_node _ Function.injective_id.injOn hz]
+    by_cases h0 : z = 0
+    · simp [h0, f]
+    · rw [mul_comm, div_mul_cancel₀ _ h0]
+  have hdeg : q.degree < S.card := Lagrange.degree_interpolate_lt _ Function.injective_id.injOn
+  rw [h.trace_mul_eq_spectral (X * q) (fun z hz ↦ heval (by simp [S, hz])),
+    h'.trace_mul_eq_spectral (X * q) (fun z hz ↦ heval (by simp [S, hz]))]
+  simp only [map_mul, aeval_X]
+  simp only [aeval_def, eval₂_eq_sum, Polynomial.sum_def,
+    ← Algebra.smul_def, Finset.mul_sum, mul_smul_comm, map_sum, map_smul, ← pow_succ']
+  refine Finset.sum_congr rfl fun k hk ↦ ?_
+  rw [hmom k (WithBot.coe_lt_coe.mp ((le_degree_of_mem_supp k hk).trans_lt hdeg))]
+
+namespace LineRelation
+
+variable [Module.Finite ℂ B] [Module.Finite ℂ B']
+  {A Tp Tm e : End ℂ B} {A' Tp' Tm' e' : End ℂ B'}
 
 /-- Let `A, T⁺, T⁻, e` and `A', T⁺', T⁻', e'` satisfy the line relations (`T⁺`, `T⁻` adjoint,
 `T⁺ T⁻ = d (1 + c e)`, `A` commuting with both) for the same `c, d > 0`. If the traces of
@@ -347,18 +311,7 @@ theorem trace_mul_mean_eq (h : LineRelation d c A Tp Tm e) (h' : LineRelation d 
     (h_trace : ∀ l i : ℕ,
       trace ℂ B (A ^ (l + 1) * Tp ^ (i + 1)) = trace ℂ B' (A' ^ (l + 1) * Tp' ^ (i + 1))) :
     trace ℂ B (A * e) = trace ℂ B' (A' * e') := by
-  -- Both traces are sums over a finite set containing the eigenvalues of `A` and `A'`: the term of
-  -- `α` is `α` times the rank of the idempotent on the generalised eigenspace for `α`.
-  obtain ⟨S, -, hS, hS'⟩ := exists_finset_maxGenEigenspace_eq_bot A A' 0
-  rw [← pow_one A, ← pow_one A', trace_pow_mul_eq_sum h.commute_mean hS,
-    trace_pow_mul_eq_sum h'.commute_mean hS']
-  refine Finset.sum_congr rfl fun α _ ↦ ?_
-  obtain rfl | hα := eq_or_ne α 0
-  · rw [pow_one, zero_mul, zero_mul]
-  -- The trace of an idempotent is its rank.
-  simp only [(h.restrict_maxGenEigenspace α).idem.isProj_range.trace,
-    (h'.restrict_maxGenEigenspace α).idem.isProj_range.trace,
-    h.finrank_range_restrictGenEigenspace_eq h' h_trace hα]
+  exact h.trace_mul_mean_eq_of_positive_moments h' fun k _ ↦ by simpa using h_trace 0 k
 
 end LineRelation
 
