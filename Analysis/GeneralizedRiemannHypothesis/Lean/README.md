@@ -181,6 +181,8 @@ For the explicit margins, [PolynomialIrreducibleDegrees.lean](GRHArticle/Progres
 
 [PolynomialExceptionalPrimeBounds.lean](GRHArticle/ProgressionFree/PolynomialExceptionalPrimeBounds.lean) bounds the fraction of exceptional polynomials on every degree layer, including layers with prescribed nonzero leading coefficient. For $q\ge16$ the bound is $q^{-q+14}$ for linear primes and $q^{-q}$ for higher degrees. The admissible weights of all prime degrees sum to at most one on every finite set.
 
+[PolynomialLargeFieldBall.lean](GRHArticle/ProgressionFree/PolynomialLargeFieldBall.lean) bounds the number of selected polynomials in every finite degree ball by the preferred count, the exceptional counts for individual prime degrees, and the exact size of the deeper ball. [PolynomialWeightedCharging.lean](GRHArticle/ProgressionFree/PolynomialWeightedCharging.lean) proves this comparison for arbitrary preferred indices with admissible predecessors and arbitrary nonnegative prime-degree budgets of sum at most one. One exceptional polynomial contributes at most once per prime degree across all source layers.
+
 ## RH and Dirichlet GRH input
 
 The article uses the five theorems in
