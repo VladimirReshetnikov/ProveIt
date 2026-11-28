@@ -1,0 +1,265 @@
+\documentclass[11pt]{article}
+\usepackage[T1]{fontenc}
+\usepackage{lmodern,amsmath,amssymb,amsthm,mathtools,booktabs,array,enumitem,microtype}
+\usepackage[margin=1in]{geometry}
+\usepackage{xcolor}
+\usepackage[colorlinks=true,linkcolor=blue!55!black,urlcolor=blue!55!black,citecolor=blue!55!black]{hyperref}
+\definecolor{ink}{RGB}{25,49,75}
+\usepackage{fancyhdr}
+\pagestyle{fancy}\fancyhf{}\lhead{\small\textcolor{ink}{Newton torsion selection}}\rhead{\small Research note}\cfoot{\thepage}\setlength{\headheight}{14pt}
+\newtheorem{theorem}{Theorem}[section]\newtheorem{lemma}[theorem]{Lemma}\newtheorem{corollary}[theorem]{Corollary}\newtheorem{remark}[theorem]{Remark}
+\newcommand{\Ocal}{\mathcal O}\newcommand{\Qp}{\overline{\mathbb Q}_{\ell}}
+\newcommand{\src}[3]{\href{https://github.com/VladimirReshetnikov/ProveIt/blob/ef7d441dcb37ea944b7ac15731bb766f2e1354ea/Analysis/GeneralizedRiemannHypothesis/Lean/grh/src/#1.lean\#L#2}{#3}}
+\newcommand{\propbase}{https://github.com/VladimirReshetnikov/ProveIt/tree/ef7d441dcb37ea944b7ac15731bb766f2e1354ea/Analysis/GeneralizedRiemannHypothesis/docs/proposals}
+\title{\vspace{-1.5cm}\textcolor{ink}{\bfseries Newton divided differences for the\\ theta-lift proof of RH and Dirichlet GRH}\\[6pt]\large A dimension-free, singly exponential cyclotomic level bound}
+\author{Research proposal and mathematical derivation}
+\date{27 November 2026}
+\begin{document}\maketitle
+\begin{abstract}
+The Selmer-twist construction in the Alp\"oge--Claude proof selects $\ell$-power roots of unity simultaneously for finitely many integral polynomials. The readable proof spends a small error coordinate by coordinate. A previous proposal obtains a dimension-independent bound by interpolation on a sparse mixed-radius grid, but asks whether its iterated-exponential level ceiling can be made singly exponential. We answer that question at the paper-proof level. A Newton coefficient of minimal weighted valuation can be sampled by a small tensor divided difference; its total index is controlled by the drop of the Gauss valuation between consecutive cyclotomic radii. A harmonic averaging argument makes the loss arbitrarily small. The bound is uniform in dimension and degrees, and all coordinates may have the same exact primitive order. The existing twisting theorem and determinant comparison require no change in their conclusions. This is a local replacement, not a new standalone proof of RH or a completed Lean port.
+\end{abstract}
+\tableofcontents
+\section{Where to simplify after the existing proposals}
+The \href{https://github.com/VladimirReshetnikov/ProveIt/tree/ef7d441dcb37ea944b7ac15731bb766f2e1354ea/Analysis/GeneralizedRiemannHypothesis/Lean/grh}{readable source} and \href{https://github.com/VladimirReshetnikov/ProveIt/tree/ef7d441dcb37ea944b7ac15731bb766f2e1354ea/Analysis/GeneralizedRiemannHypothesis/docs/guide}{human-readable guide} describe a striking arithmetic route to RH. The short-form construction (A), spanning estimate (B), and determinant lower bound (C) compare one corrected covolume with itself. Writing $D$ for admissible data, $m$ for the lift length, $f$ for the number of infinite places, $a=xb$, and $R$ for the total weighted prime remainder, the readable comparison is
+\begin{equation}\label{eq:star} mR\le f a(\log b)^5.\end{equation}
+Its output at fixed admissible modulus $q_0$ and auxiliary prime $d$ is a one-sided upper bound for the smoothed prime remainder of order $x^{-1/2+\eta}$ for each $\eta>0$. The far cutoff is removed by a fixed-modulus prime number theorem. A quadratic twist chosen to keep a putative off-line zero visible, followed by a positivity argument and zero symmetry, gives the final five statements.
+
+The determinant argument is the place where congruences become a height expense. For each coefficient prime $\ell$ and embedding, the first $m$ powers of a \emph{single} tame character must keep Selmer lengths and special-value valuations small, and be nontrivial at the new places. Guide Sections 13--15 explain the arithmetic and its polynomial tests. The key public selection statement is \src{New/Congruences/Selmer/RootsOfUnity}{474}{\texttt{exists\_rootsOfUnity\_ellVal\_eval\_le\_add}}. Its caller \src{New/Congruences/Selmer/GeneralTheorem}{325}{\texttt{exists\_rootsOfUnity\_ellVal\_eval\_le}} handles all the powers. We replace only the first of these statements' proofs. In particular we do not change the small-ramification budget, the existence of the polynomials, the auxiliary prime construction, or the definition of the target lattice.
+
+The previous \href{\propbase/cyclotomic-interpolation-and-theta-lifts}{cyclotomic interpolation proposal} already removes the number of variables from the bound on the level. Its Section 4 explicitly asks for a singly exponential ceiling instead of the tower in its equation for the order ceiling. The approach here is not that mixed-radius interpolation argument. We use a single primitive shell, never divide by a large product of cyclotomic polynomials, and avoid both coordinate-by-coordinate error spending and factorization of a multivariate polynomial into roots. The precise comparison appears in Section~\ref{sec:audit}.
+\section{Statement and proof strategy}\label{sec:statement}
+Fix a prime $\ell$ and the normalized additive valuation $v$ on $K=\Qp$ with $v(\ell)=1$, $v(0)=+\infty$. Write $\Ocal=\{x:v(x)\ge0\}$. Define, for $j\ge1$,
+\[
+ t_j=\frac{1}{(\ell-1)\ell^{j-1}},\qquad K_j=\varphi(\ell^j)=1/t_j,\qquad c_\ell=1-1/\ell.
+\]
+The letter $K_j$ is an integer, not the field $K$. The standard cyclotomic valuation formula is $v(\zeta-1)=t_j$ for a primitive $\ell^j$th root $\zeta$; it follows by multiplying the conjugates of $1-\zeta$, whose product is $\ell$. Put $t_{j+1}=t_j/\ell$.
+
+For a nonzero polynomial $P=\sum_\nu p_\nu X^\nu$ in $n$ variables and a positive real $t$ set
+\[
+ w_t(P)=\min_\nu\{v(p_\nu)+t|\nu|\},\quad |\nu|=\sum_{u=1}^n\nu_u.
+\]
+The minimum is over nonzero coefficients. This is the weighted Gauss valuation. It is increasing in $t$, nonnegative on integral polynomials, and $w_t(PQ)=w_t(P)+w_t(Q)$. For the product identity one may choose a lexicographically largest minimizing exponent in each factor: their sum has a unique contribution of the minimal weight, so cancellation at that weight is impossible. The reverse inequality follows from the ultrametric inequality for coefficients. For $v(x_u)\ge t$ we have $v(P(x))\ge w_t(P)$.
+
+\begin{theorem}[Uniform common-order specialization]\label{thm:main}
+Let $\rho>0$, $B\ge0$, $\epsilon>0$. Set $\eta=\min(\epsilon,1)$, let $d_0\ge1$ be the least integer with $t_{d_0}\le\rho$, and choose
+\begin{equation}\label{eq:H}
+ H=\left\lceil d_0\exp\left(\frac{2B}{c_\ell\eta}\right)\right\rceil.
+\end{equation}
+For every finite number of variables and every finite family $P_i\in\Ocal[X_1,\ldots,X_n]$, suppose that points $x_i$ satisfy $v(x_{iu})\ge\rho$ and $\sum_i v(P_i(x_i))\le B$. Then some $j\in[d_0,H]$ and roots $\zeta_u$ of exact order $\ell^j$ satisfy, with $z=(\zeta_u-1)_u$,
+\begin{align}
+ 0<v(z_u)&=t_j\le\rho,\label{eq:rad}\qquad\\
+ \sum_i\bigl(v(P_i(z))-w_{t_j}(P_i)\bigr)&\le\eta.\label{eq:excess}
+\end{align}
+Each summand in \eqref{eq:excess} is finite and nonnegative. In particular,
+\[
+ \sum_i\max\{0,v(P_i(z))-v(P_i(x_i))\}\le\epsilon.
+\]
+Every polynomial test is therefore met with error at most $\epsilon$, and the sum of its positive errors is at most $\epsilon$.
+\end{theorem}
+
+The upper bound is on the \emph{level} $H$, not the group order $\ell^H$. For fixed $\ell,\rho$ it is singly exponential in $B/\min(\epsilon,1)$; the order bound itself can be doubly exponential. No complexity claim is made for enumerating the roots. The level is chosen before the variable set, polynomials and reference points are known. No uniform coefficient-degree or coefficient-field bound is required. For an empty family the product is $1$; for zero variables, the evaluations are constants.
+
+\section{A primitive shell has inexpensive prefixes}
+Fix $j\ge1$, let $\omega$ be a primitive $\ell^j$th root and list the integers prime to $\ell$ in $[1,\ell^j-1]$ in increasing order,
+\[
+ e_0=1<e_1<\cdots<e_{K_j-1},\qquad a_i=\omega^{e_i}-1.
+\]
+For $i\ne h$ the difference satisfies
+\begin{equation}\label{eq:distance}
+ v(a_i-a_h)=t_j\ell^{v_\ell(e_i-e_h)}.
+\end{equation}
+Indeed the order of $\omega^{e_i-e_h}$ is $\ell^{j-v_\ell(e_i-e_h)}$. All nodes have valuation $t_j$. When $K_j=1$ (the prime $2$, level $1$), only the prefix of length one is used.
+
+\begin{lemma}[Prefix denominator bound]\label{lem:prefix}
+For $0\le i\le k<K_j$,
+\[
+ v\left(\prod_{\substack{0\le h\le k\\h\ne i}}(a_i-a_h)\right)
+ \le t_j k\bigl(1+2c_\ell(j-1)\bigr)\le 2jkt_j.
+\]
+The empty product is $1$ and has valuation zero.
+\end{lemma}
+\begin{proof}
+In the first $2k+1$ positive integers at most $k$ are divisible by $\ell$, so $e_k-e_0\le2k$ (the interval may be truncated at $\ell^j-1$, which only reduces the diameter). For $r\ge1$ let $M_r$ be the number of other exponents in this prefix congruent to $e_i$ modulo $\ell^r$. Counting integers on the two sides of $e_i$ gives
+\[
+ M_r\le \left\lfloor\frac{e_i-e_0}{\ell^r}\right\rfloor+
+ \left\lfloor\frac{e_k-e_i}{\ell^r}\right\rfloor\le2k/\ell^r.
+\]
+Differences are strictly smaller in absolute value than $\ell^j$. Expanding each $\ell^{v_\ell(e_i-e_h)}=1+\sum_{r=1}^{v_\ell(e_i-e_h)}(\ell^r-\ell^{r-1})$ in \eqref{eq:distance}, we get
+\[
+ t_j\left[k+\sum_{r=1}^{j-1}(\ell^r-\ell^{r-1})M_r\right]
+ \le t_j k(1+2c_\ell(j-1)).\qedhere
+\]
+\end{proof}
+This estimate is linear in the \emph{prefix length}, not the number of variables. A full-shell Lagrange basis would instead pay a denominator even in coordinates that the relevant coefficient does not use. The next lemma explains how to avoid that cost.
+
+\section{Newton coefficients expose the low-cost sample}\label{sec:newton}
+We first work over any nonarchimedean valued field. Let $a_0,\ldots,a_{K_*-1}$ be distinct elements all of valuation $t>0$. Extend the sequence to all nonnegative indices, repeating $a_0$ when needed; distinctness of the extended part is unnecessary. For $k\ge0$ define the Newton polynomial
+\[
+ N_k(X)=\prod_{h=0}^{k-1}(X-a_h),\qquad N_0=1,
+\]
+and $N_\alpha(X)=\prod_u N_{\alpha_u}(X_u)$. Monicity makes the Newton basis triangular with respect to componentwise degree; every polynomial has a unique finite expansion $P=\sum_\alpha C_\alpha N_\alpha$.
+
+\begin{lemma}[Weighted triangularity]\label{lem:triangular}
+For every nonzero polynomial $P$,
+\begin{equation}\label{eq:weighted}
+ w_t(P)=\min_\alpha\{v(C_\alpha)+t|\alpha|\}.
+\end{equation}
+If $\alpha$ attains this minimum, some monomial exponent $\nu\ge\alpha$ componentwise attains the defining monomial minimum of $w_t(P)$. Thus every minimizing Newton index is bounded in total degree by a minimizing monomial exponent.
+\end{lemma}
+\begin{proof}
+The recurrence $XN_k=N_{k+1}+a_kN_k$ shows by induction that the coefficient of $N_k$ in $X^d$ has valuation at least $(d-k)t$ for $0\le k\le d$ and is zero if $k>d$. Multiplying these expansions coordinatewise shows
+\begin{equation}\label{eq:coeffbound}
+ v(C_\alpha)+t|\alpha|\ge\min_{\nu\ge\alpha}\{v(p_\nu)+t|\nu|\}\ge w_t(P).
+\end{equation}
+Conversely $w_t(N_k)=kt$: each factor $X-a_h$ has weight $t$ and the polynomial is monic. Hence the Newton expansion gives $w_t(P)\ge\min_\alpha(v(C_\alpha)+t|\alpha|)$. This proves equality. If $\alpha$ attains it, the first inequality in \eqref{eq:coeffbound} forces at least one of the finite set of contributing monomials to have exactly that weight. This proves the additional assertion.
+\end{proof}
+
+The qualifier about a minimizing monomial is important. A Newton coefficient of large index can contribute to a constant monomial of the same weight. Merely selecting a low-degree monomial without controlling all minimizing monomial degrees would not be valid. The valuation drop below provides exactly the required bound.
+
+\begin{lemma}[Tensor divided-difference extraction]\label{lem:dd}
+Suppose $0\le\alpha_u<K_*$ for all $u$. Then
+\begin{equation}\label{eq:dd}
+ C_\alpha=\sum_{0\le i_u\le\alpha_u}
+ \frac{P(a_{i_1},\ldots,a_{i_n})}{\displaystyle\prod_{u=1}^n\prod_{\substack{0\le h\le\alpha_u\\h\ne i_u}}(a_{i_u}-a_h)}.
+\end{equation}
+This identity holds for arbitrary degrees of $P$, including degrees above $K_*$.
+\end{lemma}
+\begin{proof}
+In one variable the indicated functional is the leading coefficient of the interpolating polynomial of degree at most $\alpha_u$ on the prefix. It kills $N_k$ for $k<\alpha_u$, takes value $1$ on the monic polynomial $N_{\alpha_u}$, and kills $N_k$ for $k>\alpha_u$ because all prefix nodes are roots. Applying the functionals independently to each factor of $N_\beta$ therefore gives $1$ if $\beta=\alpha$ and $0$ otherwise. Expand the finite Newton sum. The argument never asks for distinctness beyond the used prefix.
+\end{proof}
+
+If $C_\alpha\ne0$, the ultrametric inequality applied to \eqref{eq:dd} yields a grid point with valuation no more than $v(C_\alpha)$ plus the largest denominator valuation on the grid. On the primitive shell, Lemma~\ref{lem:prefix} bounds this by $v(C_\alpha)+2jt_j|\alpha|$. The grid size is at most $\prod_u(\alpha_u+1)\le2^{|\alpha|}$, and coordinates with $\alpha_u=0$ are fixed. This is a bound on the mathematical witness grid, not a practical algorithm for the astronomical levels used in the global proof.
+
+\section{The harmonic budget and proof of the theorem}\label{sec:proof}
+For a nonzero integral polynomial $P$, define the drop
+\[
+ \Delta_j=w_{t_j}(P)-w_{t_{j+1}}(P)\ge0.
+\]
+Every minimizing monomial exponent at $t_j$ satisfies
+\begin{equation}\label{eq:degree}
+ c_\ell t_j|\nu|\le\Delta_j,
+\end{equation}
+because at $t_{j+1}$ that same monomial has weight $w_{t_j}(P)-(t_j-t_{j+1})|\nu|$. Lemma~\ref{lem:triangular} transfers \eqref{eq:degree} to every minimizing Newton index.
+
+\begin{lemma}[One-shell sampling]\label{lem:shell}
+If $\Delta_j<c_\ell$, there exists a tuple of primitive nodes on shell $j$ such that
+\begin{equation}\label{eq:sample}
+ w_{t_j}(P)\le v(P(z))\le w_{t_j}(P)+\frac{2j}{c_\ell}\Delta_j.
+\end{equation}
+\end{lemma}
+\begin{proof}
+Choose a minimizing Newton index $\alpha$ at $t=t_j$. Its coefficient is nonzero and $t|\alpha|\le\Delta_j/c_\ell<1$, so $|\alpha|<K_j$ and every component fits the primitive prefix. By Lemmas~\ref{lem:prefix} and~\ref{lem:dd}, some grid point has
+\[
+ v(P(z))\le v(C_\alpha)+2jt|\alpha|
+ =w_t(P)+(2j-1)t|\alpha|\le w_t(P)+2j\Delta_j/c_\ell.
+\]
+All nodes have valuation $t$, so the lower bound follows from the definition of $w_t$.
+\end{proof}
+
+\begin{proof}[Proof of Theorem~\ref{thm:main}]
+Let $P=\prod_i P_i$. It is nonzero by finiteness of the reference budget. Gauss multiplicativity and the reference conditions give
+\[
+ w_{t_{d_0}}(P)\le w_\rho(P)=\sum_i w_\rho(P_i)
+ \le\sum_i v(P_i(x_i))\le B.
+\]
+The consecutive drops have total at most $B$:
+\[
+ \sum_{j=d_0}^{H}\Delta_j=w_{t_{d_0}}(P)-w_{t_{H+1}}(P)\le B.
+\]
+By the choice of $H$ in \eqref{eq:H},
+\[
+ \sum_{j=d_0}^{H}\frac1j\ge\int_{d_0}^{H+1}\frac{du}{u}
+ =\log\frac{H+1}{d_0}>\frac{2B}{c_\ell\eta}.
+\]
+Hence at least one $j$ has $j\Delta_j\le c_\ell\eta/2$; otherwise summing the strict reverse inequalities contradicts the budget. This works also for $B=0$. In particular $\Delta_j<c_\ell$, so Lemma~\ref{lem:shell} finds $z$ with $v(P(z))\le w_{t_j}(P)+\eta$. Every individual valuation is finite because the product is nonzero. All nodes are on the same shell. Thus $E_i=v(P_i(z))-w_{t_j}(P_i)\ge0$ and
+\[
+ \sum_i E_i=v(P(z))-w_{t_j}(P)\le\eta.
+\]
+Since $w_{t_j}(P_i)\le w_\rho(P_i)\le v(P_i(x_i))$, every positive reference excess is bounded by the corresponding $E_i$. This proves the theorem.
+\end{proof}
+
+\paragraph{Why this is more than a different ceiling formula.}
+The prior dimension-free interpolation uses a band of many different radii; integral Lagrange weights allow a product evaluation, but the band itself must have sufficiently small Gauss variation. The required width grows like $B\ell^d$ when the band starts at $d$. Here the drop between \emph{adjacent} radii controls the degree of the coefficient that can be sampled cheaply; no band-width recursion remains. A harmonic sum replaces the tower. One could use the sharper prefix bound of Lemma~\ref{lem:prefix} in place of $2j$, slightly improving constants. Keeping $2j$ makes the level estimate particularly simple.
+
+\section{All powers of a single twist, and integration}\label{sec:integration}
+\begin{corollary}[A single primitive order for a chain]\label{cor:powers}
+Under the hypotheses of Theorem~\ref{thm:main}, fix $m\ge1$. The same statement applies simultaneously to all tests $P_i((\zeta_u^h-1)_u)$, $1\le h\le m$, with level ceiling $H(\ell,\rho/m,mB,\epsilon)$. More precisely the sum of positive excesses over all $(i,h)$ is at most $\epsilon$. If $0<\rho<1$, all the first $m$ powers are nontrivial in every coordinate and $v(\zeta_u^h-1)\le\rho$.
+\end{corollary}
+\begin{proof}
+Use $P_{i,h}(Y)=P_i(((1+Y_u)^h-1)_u)$. For each reference $x_{iu}$ choose $y$ with $(1+y)^h-1=x_{iu}$ and $v(y)\ge v(x_{iu})/h\ge\rho/m$. If $x_{iu}=0$ take $y=0$. Otherwise the monic polynomial $(1+Y)^h-1-x_{iu}$ has integral roots and their product has valuation $v(x_{iu})$, so some root has the asserted valuation. Thus each new polynomial has a reference of its original value and their total budget is at most $mB$. Theorem~\ref{thm:main} applied to them gives the simultaneous claim. The selected primitive order $\ell^j$ obeys $K_j=1/t_j\ge m/\rho>m$, hence $\ell^j>m$. For $1\le h\le m$, $v(\zeta_u^h-1)=\ell^{v_\ell(h)}t_j\le ht_j\le\rho$.
+\end{proof}
+The power substitution is inherited from the original argument and the existing proposals; the improvement is entirely in the common-shell selection. We do not assert an improvement in the factor $mB$.
+
+\subsection*{Exact order of choices in the Lean caller}
+In \src{New/Congruences/Selmer/GeneralTheorem}{392}{\texttt{exists\_anticyclotomic\_twist}}, the finite collection of Selmer data and Stickelberger systems supplies upper budgets $\beta_s$. The existing polynomial-existence theorem supplies a dimension cap $s_0$ and the ability to make the auxiliary level $N$ sufficiently large. Choose rational $r>0$ with $s_0r\le\epsilon_0/2$ for the caller's error $\epsilon_0<1$. This cap remains needed for the \emph{ramification} budget even after the polynomial specialization becomes dimension-free. The source takes $\beta_s+1$ as reference bounds, so in the new formula use
+\[
+ \rho'=r/m,\qquad B'=m\sum_s(\beta_s+1),\qquad \epsilon'=\epsilon_0/2.
+\]
+These numbers are available before the polynomials or their variable set. Choose $H$ from \eqref{eq:H}, then use the existing eventual existence of \texttt{TwistPolynomials} at some $N\ge H$. All selected roots satisfy $\zeta_u^{\ell^N}=1$. The source's \texttt{X.twist} therefore still makes the same anticyclotomic character, and \texttt{X.isSmallTwist\_twist} applies to its powers with the same estimates. Nothing requires all auxiliary places to be chosen before $H$ or requires the level $N$ to equal $H$.
+
+The stronger total positive-error inequality is not needed by this caller, but could permit later improvements of error allocation. The current drop-in corollary only uses individual estimates, exactly as before. We deliberately keep the subsequent statements unchanged.
+
+\subsection*{From the local lemma back to RH}
+\begin{center}\small
+\begin{tabular}{>{\raggedright\arraybackslash}p{.37\linewidth}p{.56\linewidth}}
+\toprule
+Source interface & Role and status after the replacement\\\midrule
+\src{New/Congruences/Selmer/RootsOfUnity}{474}{RootsOfUnity, selection theorem} & New proof of the same statement; dimension cap may be ignored in this lemma.\\
+\src{New/Congruences/Selmer/GeneralTheorem}{325}{GeneralTheorem, powers and character} & Retain power substitution and construction; optional stronger common-order conclusion.\\
+\src{New/Congruences/Selmer/TwistingTheorem}{370}{TwistingTheorem} & Short Selmer lengths, small ratios and tame nontriviality for all lifts unchanged.\\
+\src{New/Congruences/FitTwistsExist}{517}{FitTwistsExist} & Regular families of twists; denominator bounds unchanged.\\
+\src{New/Reduction/MainInequality}{1}{MainInequality} & Same comparison \eqref{eq:star} or the stronger comparison from other proposals.\\
+\src{New/Reduction/OneSidedBound}{1}{OneSidedBound}, \src{New/Reduction/Zeros/Criterion}{37}{Criterion} & Existing one-sided estimate and zero-detection argument still apply; no new analytic hypotheses.\\
+\bottomrule
+\end{tabular}
+\end{center}
+At the final step one retains the public source's statements, not a surrogate for RH. The point is to substitute a local theorem with at least the required strength in the existing proof, not to infer RH from cyclotomic interpolation alone. No changes to the other proposed improvements are necessary provided they still consume the same regular-family theorem.
+
+\section{Comparison with the proposal archive}\label{sec:audit}
+The pinned ProveIt revision is \texttt{ef7d441dcb37ea944b7ac15731bb766f2e1354ea}. The proposal directory had ten entries at that revision (a tenth label proposal appeared during retrieval). We inspected all ten README summaries, headings and relevant terms in the other nine packages' TeX sources, and the full relevant cyclotomic interpolation argument. The accompanying manifest records the pinned trees; this is a targeted overlap audit, not a claim of worldwide mathematical priority.
+\begin{center}\small
+\begin{tabular}{>{\raggedright\arraybackslash}p{.40\linewidth}p{.52\linewidth}}
+\toprule
+Existing proposal & Relationship to this work\\\midrule
+\href{\propbase/centered_theta_lift_simplification}{Centered moments} & Rank increment and adaptive completion; independent.\\
+\href{\propbase/cyclotomic-interpolation-and-theta-lifts}{Cyclotomic interpolation} & Same interface, different proof; answers its explicit singly exponential ceiling question.\\
+\href{\propbase/dyadic_place_coloring}{Dyadic place coloring} & Sparse places; independent.\\
+\href{\propbase/proof_simplifications}{Proof simplifications} & Quadratic twist selection, Perron, spanning; independent.\\
+\href{\propbase/rh-simplifications}{RH simplifications} & Spanning, earlier interpolation and large sieve; our contribution is the common-shell Newton proof and explicit improved level.\\
+\href{\propbase/rh_sparse_theta_proof}{Sparse theta proof} & Cutoff interpolation and averaged prime twist selection, not torsion specialization.\\
+\href{\propbase/robust_theta_labels}{Robust theta labels} & Three power tests for finite-field labels, not the later $\ell$-adic interpolation.\\
+\href{\propbase/shorter-theta-lift-proof}{Shorter theta-lift proof} & Character sums, analytic endpoint and spanning; independent.\\
+\href{\propbase/signed_theta_gain_simplification}{Signed local gains} & Colength and height accounting, unchanged.\\
+\href{\propbase/theta-lift-simplifications}{Theta-lift simplifications} & Row-wise denominator clearing, labels, sparse places; unchanged.\\\bottomrule
+\end{tabular}
+\end{center}
+
+For comparison, the readable selection theorem uses a per-coordinate error $\delta=\min(\epsilon,1)/(s_0+2)$ and chooses $H$ from a harmonic sum exceeding $(B+1)/\delta$. This is dimension-dependent at the level-ceiling stage. The recent dimension-free proposal uses $K=\lfloor B/\epsilon\rfloor+1$ bands and the iteration $d\mapsto d+\lfloor B\ell^d\rfloor+1$; its bound is potentially a tower of height $K$. Here a single harmonic budget proves $H=\lceil d_0 e^{2B/(c_\ell\eta)}\rceil$, dimension-free. In base $\ell=2$, the coefficient in the exponent is $4$; for large $\ell$ it tends to $2$. This is a rigorous bound even with arbitrarily many variables and polynomials. It does not show that a given existing numerical level in the enormous arithmetic construction is close to optimal or that the overall proof will run faster.
+
+\section{Limits, exact tests, and formalization}
+\subsection*{Fixed-order obstruction and a lower bound}
+A single primitive order chosen \emph{before} the polynomial cannot work uniformly for budget $B\ge1$: the polynomial $\Phi_{\ell^j}(1+X)$ has reference valuation $1$ at $X=0$, but vanishes at every primitive node of order $\ell^j$. In fact its weights at $t_j$ and $t_{j+1}$ are $1$ and $1/\ell$, so $\Delta_j=c_\ell$. The strict condition in Lemma~\ref{lem:shell} excludes precisely this example. If all orders from $d_0$ through $H$ are allowed, their cyclotomic product has reference valuation $H-d_0+1$ and vanishes everywhere eligible in one variable. Thus a universal ceiling must grow at least linearly with the reference budget. This familiar obstruction (also present in the earlier proposal) does not prove exponential growth is necessary. Our upper bound leaves a wide quantitative gap.
+
+\subsection*{Tests and Lean plan}
+The standard-library program \texttt{check\_newton.py} checks exact prefix denominator valuations, basis transformation and tensor divided differences in small cyclotomic fields. Arithmetic is performed in the integral power basis of $\pi=\zeta-1$, using its Eisenstein polynomial; valuations of the basis summands have distinct fractional parts. It also tests the fixed-order obstruction and harmonic budget using exact rational arithmetic. The recorded output contains 7,433 prefix tests, 216 generated polynomial and divided-difference tests, and 150 rational harmonic models. These finite checks cannot certify the uniform theorem; the mathematical proof is in Sections~\ref{sec:statement}--\ref{sec:proof}.
+
+The main formalization task is a finite multivariate Newton-basis coefficient lemma. One can avoid an analytic or functional-space library entirely: finite polynomial sums, the identity $XN_k=N_{k+1}+a_kN_k$, and the univariate Lagrange leading coefficient formula suffice. A separate elementary counting lemma bounds prefix denominators. For the harmonic choice, there is no need to formalize the exponential ceiling to obtain the existing existential conclusion: reuse the source's harmonic divergence lemma with $c_\ell\eta/2$ (or a smaller rational constant), then add the explicit estimate separately. See \texttt{LEAN\_PLAN.md} for the staged implementation and regression commands. We have no Lean executable/project cache in this environment, so no new theorem was elaborated or kernel-checked. There is no measured source-line or build-time reduction.
+
+\subsection*{Further research questions}
+\begin{enumerate}[leftmargin=*]
+\item Replace the $2j$ bound by a precise prefix factorial valuation, or by a carefully optimized node ordering. Can the resulting degree-dependent bound turn the exponential ceiling into a polynomial one, or establish an exponential lower bound? The product obstruction only gives a linear lower bound.
+\item Use the positive-excess sum in the Selmer budget directly instead of bounding each test separately. This needs a revised global cost analysis; the present port does not assume it.
+\item Improve the $mB$ factor by treating the substitution $Y\mapsto(1+Y)^h-1$ simultaneously, without the product over powers. All powers must still come from the same character, so independent selections are not allowed.
+\item Explore the same Newton argument for bounded analytic power series on the open unit polydisk. With $H$ fixed first, truncation at degree $L$ with $(L+1)t_H>B+\epsilon$ makes tails harmless at references and all candidates. An explicit formal version could cover a more general Iwasawa setting.
+\end{enumerate}
+
+\section*{Source and verification record}\addcontentsline{toc}{section}{Source and verification record}
+The selected source files and proposal directory listings were retrieved through the GitHub connector; the report did not recompile the whole project. The selected five upstream Lean files (roots, general twisting, twisting theorem, regular-family existence, main inequality) have matching Git blob hashes at upstream revision \href{https://github.com/lsernau/grh-lean/tree/72fead102f663d5c7a407964a13dc0cf9d977207/grh}{72fead102f663d5c7a407964a13dc0cf9d977207}. The current ProveIt readable directory tree has a different tree ID from that upstream snapshot, so we make no whole-tree equivalence assertion. The public \href{https://math.mit.edu/~drew/shortgrh/}{independent verification record} reports successful checks of the original shorter editions against their statements, including kernel replay and external checkers; those checks do not verify the replacement in this note. The baseline uses Lean 4.35.0 and Mathlib commit \texttt{56a005855ea17e0b0958f73ec801ae140b0a1679}. No files on GitHub were modified.
+
+\begin{thebibliography}{9}\small
+\bibitem{guide} ProveIt, \emph{How theta lifts locate the zeros of Dirichlet L-functions}, Sections 11--17, \href{https://github.com/VladimirReshetnikov/ProveIt/tree/ef7d441dcb37ea944b7ac15731bb766f2e1354ea/Analysis/GeneralizedRiemannHypothesis/docs/guide}{guide directory}, 27 November 2026 snapshot.
+\bibitem{source} L. Alp\"oge with Claude, \emph{The Generalized Riemann Hypothesis for Dirichlet L-functions, in Lean 4}, \href{https://github.com/lsernau/grh-lean/tree/72fead102f663d5c7a407964a13dc0cf9d977207/grh}{readable edition}, upstream revision 72fead10.
+\bibitem{previous} ProveIt, \emph{Choosing Selmer twists by cyclotomic interpolation}, especially Sections 2--4 and the ceiling question, \href{\propbase/cyclotomic-interpolation-and-theta-lifts}{proposal package}.
+\bibitem{checks} A. Sutherland, \href{https://math.mit.edu/~drew/shortgrh/}{Verification files for the shorter Lean proof of RH and of GRH for Dirichlet L-functions}, retrieved 27 November 2026 (last update 17:27 UTC).
+\end{thebibliography}
+\end{document}
